@@ -27,7 +27,7 @@
   * 
   * These functions should be the sole way to access any files. They will
   * automatically prepend the correct directory, extract the correct file etc.
-  * This enables us to install and package freelords (there is no fixed
+  * This enables us to install and package LordsAWar (there is no fixed
   * directory structure). To use these functions, you issue e.g. an armyset name
   * and have the full path returned, which is a file you can then load.
   */

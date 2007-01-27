@@ -31,7 +31,7 @@ bool Configuration::s_smoothScrolling = false;
 bool Configuration::s_showNextPlayer = true;
 #ifndef __WIN32__
 string Configuration::s_dataPath = LORDSAWAR_DATADIR;
-string Configuration::s_savePath = string(getenv("HOME"))+string("/.freelords/");
+string Configuration::s_savePath = string(getenv("HOME"))+string("/.lordsawar/");
 #else
 string Configuration::s_dataPath = "./data/";
 string Configuration::s_savePath = "./saves/";
@@ -74,7 +74,7 @@ bool Configuration::loadConfigurationFile(string fileName)
 
         //parse the file
         XML_Helper helper(fileName.c_str(), ios::in, false);
-        helper.registerTag("freelordsrc", SigC::slot(*this, 
+        helper.registerTag("lordsawarrc", SigC::slot(*this, 
                     &Configuration::parseConfiguration));
     
         return helper.parse();
@@ -92,7 +92,7 @@ bool Configuration::saveConfigurationFile(string filename)
 
     //start writing
     retval &= helper.begin(LORDSAWAR_CONFIG_VERSION);
-    retval &= helper.openTag("freelordsrc");
+    retval &= helper.openTag("lordsawarrc");
     
     //save the values 
     retval &= helper.saveData("datapath",s_dataPath);

@@ -35,7 +35,7 @@
   * i.e. if you want to save some data concerning the tag map, save it _before_
   * you open the first subtag (here maptile).
   *
-  * The save code in freelords follows a top-down hierarchy. As an example,
+  * The save code in LordsAWar follows a top-down hierarchy. As an example,
   * The player's stacklist saves its data first, then calls
   * the save functions of all the stacks. The stacks themselves call the save
   * functions of their armies when they have stored their own data. The topmost

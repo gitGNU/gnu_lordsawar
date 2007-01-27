@@ -70,7 +70,7 @@ std::list<std::string> File::scanArmysets()
     if (retlist.empty())
     {
         cerr << _("Couldn't find a single armyset!") << endl;
-        cerr << _("Please check the path settings in /etc/freelordsrc or ~/.freelordsrc") << endl;
+        cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
         cerr << _("Exiting!") << endl;
         exit(-1);
     }
@@ -190,7 +190,7 @@ list<string> File::scanTilesets(PG_DropDown* drop_down)
     if (retlist.empty())
     {
         cerr << _("Couldn't find a single tileset!") << endl;
-        cerr << _("Please check the path settings in /etc/freelordsrc or ~/.freelordsrc") << endl;
+        cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
         cerr << _("Exiting!") << endl;
         exit(-1);
     }
@@ -233,7 +233,7 @@ list<string> File::scanMaps()
     if (retlist.empty())
     {
         cerr << _("Couldn't find a single map!") << endl;
-        cerr << _("Please check the path settings in /etc/freelordsrc or ~/.freelordsrc") << endl;
+        cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
     }
 
     PG_FileArchive::RemoveAllArchives();

@@ -231,9 +231,9 @@ bool OptionsDialog::saveClicked(PG_Button* btn)
     
 #ifndef __WIN32__
     char* home = getenv("HOME");
-    Configuration::saveConfigurationFile(std::string(home) + "/.freelordsrc");
+    Configuration::saveConfigurationFile(std::string(home) + "/.lordsawarrc");
 #else
-    Configuration::saveConfigurationFile("./freelordsrc");
+    Configuration::saveConfigurationFile("./lordsawarrc");
 #endif
 
     QuitModal();

@@ -74,26 +74,26 @@ int main(int argc, char* argv[])
     char version[10];
     strcpy(version,VERSION);
     char theme[20];
-    strcpy(theme, "freelords");
+    strcpy(theme, "lordsawar");
     srand(time(NULL));         // set the random seed
 
     Configuration conf;
 
-    // we check for ~/.freelordsrc file
+    // we check for ~/.lordsawarrc file
     bool foundconf = false;
     bool saveconf = false;
 
 #ifndef __WIN32__
     // read the environment variable HOME
     char* home = getenv("HOME");
-    foundconf |= conf.loadConfigurationFile(std::string(home) + "/.freelordsrc");
+    foundconf |= conf.loadConfigurationFile(std::string(home) + "/.lordsawarrc");
 
     if (!foundconf)
     {
     	std::cerr <<_("Couldn't find any good configuration file...trying auto-configuration.") << std::endl;
 
         // we did not find the configuration file so we create the default one
-        saveconf |= conf.saveConfigurationFile(std::string(home) + "/.freelordsrc");
+        saveconf |= conf.saveConfigurationFile(std::string(home) + "/.lordsawarrc");
         if (!saveconf) 
 	{
             std::cerr <<_("Couldn't save the new configuration file...") << std::endl;
@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
 	    exit(-1);
 	}
 
-    	std::cerr <<_("Created the standard configuration file ") << std::string(home) + "/.freelordsrc" << std::endl;
+    	std::cerr <<_("Created the standard configuration file ") << std::string(home) + "/.lordsawarrc" << std::endl;
     }
 
     //Check if the save game directory exists. If not, try to create it.
@@ -115,37 +115,37 @@ int main(int argc, char* argv[])
         {
             std::cerr <<_("Couldn't create save game directory ");
             std::cerr <<Configuration::s_savePath <<".\n";
-            std::cerr <<_("Check permissions and the entries in your freelordsrc file!\n");
+            std::cerr <<_("Check permissions and the entries in your lordsawarrc file!\n");
             exit(-1);
         }
     }
 #else
-    foundconf |= conf.loadConfigurationFile("./freelordsrc");
+    foundconf |= conf.loadConfigurationFile("./lordsawarrc");
 
     if (!foundconf)
     {
     	std::cerr <<_("Couldn't find any good configuration file...trying auto-configuration.") << std::endl;
 
         // we did not find the configuration file so we create the default one
-        saveconf |= conf.saveConfigurationFile("./freelordsrc");
+        saveconf |= conf.saveConfigurationFile("./lordsawarrc");
         if (!saveconf) 
 	{
             std::cerr <<_("Couldn't save the new configuration file...") << std::endl;
             std::cerr <<_("Check permissions of your home directory....aborting!\n");
 	    exit(-1);
 	}
-    	std::cerr <<_("Created the standard configuration file ") << "./freelordsrc" << std::endl;
+    	std::cerr <<_("Created the standard configuration file ") << "./lordsawarrc" << std::endl;
     }    
 #endif
 
     setlocale (LC_ALL, Configuration::s_lang.c_str());
 
 #ifndef __WIN32__
-    bindtextdomain ("freelords",PO_PATH);
+    bindtextdomain ("lordsawar",PO_PATH);
 #else
-    bindtextdomain ("freelords","./locale/");
+    bindtextdomain ("lordsawar","./locale/");
 #endif
-    textdomain ("freelords");
+    textdomain ("lordsawar");
 
     // the editor should always save the files unzipped
     Configuration::s_zipfiles = false;

@@ -37,7 +37,7 @@ class StackItem;    //further information in stackreport.cpp, internal data
   * the index and redraws the dialog.
   */
 
-//TODO: why does bigmap overwrite the stackreport in freelords, but not in the editor
+//TODO: why does bigmap overwrite the stackreport in LordsAWar, but not in the editor
 // (to see what I mean, disable Update() in StackReport::stackSelected)
 //
 // TODO: maybe one could implement this report more elegant by using a scrollbar

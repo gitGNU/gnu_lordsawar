@@ -127,8 +127,8 @@ void MainWindow::loadGame(std::string filename,bool resetfilename)
     Sound::getInstance()->enableBackground();
     d_w_edit->loadGame();
     // Andrea : I have added the boolean control value because there where a bug concerning
-    // the saving of the tutorial game. Instead of saving it into the .freelords directory
-    // it saved it into the ...../share/freelords/map/ directory
+    // the saving of the tutorial game. Instead of saving it into the .lordsawar directory
+    // it saved it into the ...../share/lordsawar/map/ directory
     // Now after loading the tutorial map the filename is reset to "" so that it will save 
     // the file into correct path.
     if (resetfilename) d_lastsave="";
