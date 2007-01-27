@@ -1,0 +1,58 @@
+Freelords Localization Howto. (Andrea Paternesi 2004).
+
+1) Create a new localization from scratch.
+
+You must insert into the game code some special characters to indicate which
+strings are to be translated.
+As example we have the following C++ command in file main.cpp:
+
+   cerr << "No modes available!\n;
+   
+you must add special characters to tell the compiler to stranslate the string:
+
+   cerr << _("No modes available!\n);
+
+The special characters _() are a macro for the gettext() function.
+To create a new .po file you must use the comand "xgettext". Read the man to
+understand its use.
+A new messages.po will be created and you can edit and  save it with your
+localization name (it.po as example).
+
+2) Create a new localization from an existing one (recommended).
+
+Just take the it.po file found into the /po directory and copy it onto a new
+file "language".po (as example de.po or be.po or others).
+Then replace the strings in italian with the strings in you local language.
+The job should be finished.
+When you recompile and install the game also the localization files will be 
+compiled and installed as well.
+
+3) Update your existing localization file.
+
+You can use this tool "update.pl" found into the /po directory as described 
+below: 
+	./update.pl [OPTIONS] LANGCODE
+
+By default, this script updates the pot file (the po template generated
+from the source code) and merges it with the po files (translations).
+
+For instance to do this for Italian language , type the following :
+
+	./update.pl it
+	
+The file it.po will be updated with the new strings that you now must 
+translate by hand.	
+
+The script also supports other options :
+
+  -V, --version     shows the version
+  -H, --help        shows this help page
+  -P, --pot         generates only the potfile
+  -M, --maintain    search for missing files in POTFILES.in
+
+Especially the --maintain option is very handy for package maintainers
+to check if you included all the files that have marked strings in the
+POTFILES.in, so they will be in the generated pot file (po template).
+
+"update.pl" is copyright 2000 The Free Software Foundation 
+and Kenneth Christiansen (kenneth@gnu.org,kenneth@gnome.org)

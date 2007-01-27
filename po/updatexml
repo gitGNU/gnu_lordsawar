@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#  Freelords xml string extractor.
+#  (C) 2005 The Free Software Foundation
+#
+#  Author: Andrea Paternesi
+
+EXTRACTOR=../src/utils/extractv
+INFILENAMESXML="$PWD/../dat/army/ $PWD/../dat/tilesets/default/ $PWD/../dat/various/items/"
+INFILENAMESMAP="$PWD/../dat/map/"
+OUTFILENAME=./xml_extra_text.cpp
+
+rm -f $OUTFILENAME
+touch $OUTFILENAME
+
+for i in $INFILENAMESXML
+do
+ LISTA=`ls $i*.xml`
+ for j in $LISTA 
+ do
+   cat $j | ./$EXTRACTOR 0 >> $OUTFILENAME
+ done
+done
+
+for i in $INFILENAMESMAP
+do
+ LISTA=`ls $i*.map`
+ for j in $LISTA 
+ do
+   cat $j | ./$EXTRACTOR 1 >> $OUTFILENAME
+ done
+done

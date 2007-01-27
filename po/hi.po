@@ -1,0 +1,4201 @@
+# Italian messages for GNU Freelords.
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# This file is distributed under the same license as the Freelords package.
+# Vibhu Rishi, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: Frelords 0.3.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-11-15 13:42+0100\n"
+"PO-Revision-Date: 2004-03-04 13:00+0100\n"
+"Last-Translator: विभू ॠषि <vibhu.rishi@gmail.com>\n"
+"Language-Team: Hindi <vibhu.rishi@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: po/xml_extra_text.cpp:1
+msgid "Standard Units"
+msgstr "आम सेना"
+
+#: po/xml_extra_text.cpp:2
+msgid "Pikeman"
+msgstr "भाला सेना"
+
+#: po/xml_extra_text.cpp:3
+msgid ""
+"A peasant equipped with a simple pike. This is not a serious enemy, but can "
+"nevertheless be fairly effective against cavalry."
+msgstr ""
+
+#: po/xml_extra_text.cpp:4
+msgid "Soldier"
+msgstr "सैनिक"
+
+#: po/xml_extra_text.cpp:5
+msgid "Archer"
+msgstr "तीरंदाज"
+
+#: po/xml_extra_text.cpp:6
+msgid "Veteran"
+msgstr "माहिर"
+
+#: po/xml_extra_text.cpp:7
+msgid "Cavalry"
+msgstr "घुडसवार"
+
+#: po/xml_extra_text.cpp:8
+msgid "Catapult"
+msgstr "गुलेल"
+
+#: po/xml_extra_text.cpp:9
+msgid "Heroes"
+msgstr "हीरो"
+
+#: po/xml_extra_text.cpp:10
+msgid "Barbarian"
+msgstr "आदीवासी"
+
+#: po/xml_extra_text.cpp:11
+msgid "Amazone"
+msgstr "एमाज़ोन"
+
+#: po/xml_extra_text.cpp:12
+msgid "Sandman"
+msgstr "Sandman"
+
+#: po/xml_extra_text.cpp:13
+msgid "Goblin Chieftain"
+msgstr "गोबलिन मुखिया"
+
+#: po/xml_extra_text.cpp:14
+msgid "Male Orc"
+msgstr "Male और्क"
+
+#: po/xml_extra_text.cpp:15
+msgid "Female Orc"
+msgstr "और्क स्त्री"
+
+#: po/xml_extra_text.cpp:16
+msgid "Imperial Troops"
+msgstr "राज सेना"
+
+#: po/xml_extra_text.cpp:17
+msgid "Knight"
+msgstr "Knight"
+
+#: po/xml_extra_text.cpp:18
+msgid "Unicorn"
+msgstr "Unicorn"
+
+#: po/xml_extra_text.cpp:19
+msgid "Mage"
+msgstr "जादूगर"
+
+#: po/xml_extra_text.cpp:20
+msgid "Dragon"
+msgstr "ड्रैगन"
+
+#: po/xml_extra_text.cpp:21
+msgid "Holy Warrior"
+msgstr "पवित्र योद्धा"
+
+#: po/xml_extra_text.cpp:22
+msgid "Transport"
+msgstr "परिवहन"
+
+#: po/xml_extra_text.cpp:23
+msgid "Frigate"
+msgstr "जहाज"
+
+#: po/xml_extra_text.cpp:24
+msgid "Monsters"
+msgstr "दैत्य"
+
+#: po/xml_extra_text.cpp:25
+msgid "Greater Troll"
+msgstr "बडा टॄोल"
+
+#: po/xml_extra_text.cpp:26
+msgid "Killing Sheep"
+msgstr "भेड हलाल"
+
+#: po/xml_extra_text.cpp:27
+msgid "Wood Face"
+msgstr "लक्कड मुख"
+
+#: po/xml_extra_text.cpp:28
+msgid "Beholder"
+msgstr "Beholder"
+
+#: po/xml_extra_text.cpp:29
+msgid "Demon Spawn"
+msgstr ""
+
+#: po/xml_extra_text.cpp:30
+msgid "Flying Hydra"
+msgstr "उडंत हायड्रा"
+
+#: po/xml_extra_text.cpp:31
+msgid "Green Ooze"
+msgstr "हरा कीचड"
+
+#: po/xml_extra_text.cpp:32
+msgid "Octopus"
+msgstr "औकटोपस"
+
+#: po/xml_extra_text.cpp:33
+msgid "Orcs"
+msgstr "और्क"
+
+#: po/xml_extra_text.cpp:34
+#, fuzzy
+msgid "Bomb Thrower"
+msgstr "औकृ Thrower"
+
+#: po/xml_extra_text.cpp:35
+#, fuzzy
+msgid "Shaman"
+msgstr "Sandman"
+
+#: po/xml_extra_text.cpp:36
+#, fuzzy
+msgid "Orcish Catapult"
+msgstr "गुलेल"
+
+#: po/xml_extra_text.cpp:37
+msgid "Wolf Rider"
+msgstr "भेडिया सवार"
+
+#: po/xml_extra_text.cpp:38
+msgid "Bat Rider"
+msgstr "चमगादढ सवार"
+
+#: po/xml_extra_text.cpp:39
+msgid "Orcish Galeon"
+msgstr "और्क जहाज"
+
+#: po/xml_extra_text.cpp:40
+msgid "Dreadnought"
+msgstr "जहाज"
+
+#: po/xml_extra_text.cpp:41
+msgid "default"
+msgstr "default"
+
+#: po/xml_extra_text.cpp:42 src/GamePreferencesDialog.cpp:90
+#: src/editor/MapGenDialog.cpp:29
+msgid "Grass"
+msgstr "घास"
+
+#: po/xml_extra_text.cpp:43 src/GamePreferencesDialog.cpp:92
+#: src/editor/MapGenDialog.cpp:31
+msgid "Water"
+msgstr "पानी"
+
+#: po/xml_extra_text.cpp:44 src/GamePreferencesDialog.cpp:96
+#: src/editor/MapGenDialog.cpp:33
+msgid "Forest"
+msgstr "जंगल"
+
+#: po/xml_extra_text.cpp:45 src/GamePreferencesDialog.cpp:98
+#: src/editor/MapGenDialog.cpp:37
+msgid "Hills"
+msgstr "पहाड"
+
+#: po/xml_extra_text.cpp:46 src/GamePreferencesDialog.cpp:94
+#: src/editor/MapGenDialog.cpp:35
+msgid "Swamp"
+msgstr "दलदल"
+
+#: po/xml_extra_text.cpp:47 src/GamePreferencesDialog.cpp:100
+#: src/editor/MapGenDialog.cpp:39
+msgid "Mountains"
+msgstr "परवत"
+
+#: po/xml_extra_text.cpp:48
+msgid "Moon Blade"
+msgstr "चंद्र तलवार"
+
+#: po/xml_extra_text.cpp:49
+msgid "Mace of the Zealot"
+msgstr "गदा of Zealot"
+
+#: po/xml_extra_text.cpp:50
+msgid "Defender's Helmet"
+msgstr "Defender's Helmet"
+
+#: po/xml_extra_text.cpp:51
+msgid "Scroll of Waterwalking"
+msgstr "Scroll of Waterwalking"
+
+#: po/xml_extra_text.cpp:52
+msgid "Shield of Parrying"
+msgstr "बचाव का ढाल"
+
+#: po/xml_extra_text.cpp:53
+msgid "Field Plate"
+msgstr "कवच"
+
+#: po/xml_extra_text.cpp:54
+msgid "Healthy Cloak"
+msgstr "Healthy Cloak"
+
+#: po/xml_extra_text.cpp:55
+msgid "Ring of Endurance"
+msgstr "Ring of Endurance"
+
+#: po/xml_extra_text.cpp:56
+msgid "Wayfarer's Staff"
+msgstr ""
+
+#: po/xml_extra_text.cpp:57
+msgid "Enchanted Dagger"
+msgstr ""
+
+#: po/xml_extra_text.cpp:58
+msgid "Enchanted Sword"
+msgstr ""
+
+#: po/xml_extra_text.cpp:59
+msgid "Enchanted Axe"
+msgstr ""
+
+#: po/xml_extra_text.cpp:60
+#, fuzzy
+msgid "Defense Rapier"
+msgstr "बचाव: %i"
+
+#: po/xml_extra_text.cpp:61
+msgid "Skull Crusher"
+msgstr ""
+
+#: po/xml_extra_text.cpp:62
+#, fuzzy
+msgid "Orcish Dagger"
+msgstr "और्क जहाज"
+
+#: po/xml_extra_text.cpp:63
+#, fuzzy
+msgid "Orcish Sword"
+msgstr "और्क जहाज"
+
+#: po/xml_extra_text.cpp:64
+#, fuzzy
+msgid "Magic Spear"
+msgstr "Gestisci le reazioni"
+
+#: po/xml_extra_text.cpp:65
+msgid "Enchanted Greatsword"
+msgstr ""
+
+#: po/xml_extra_text.cpp:66
+#, fuzzy
+msgid "Orcish Greatsword"
+msgstr "और्क जहाज"
+
+#: po/xml_extra_text.cpp:67
+msgid "Everburning Torch"
+msgstr ""
+
+#: po/xml_extra_text.cpp:68
+#, fuzzy
+msgid "Dwarven Hammer"
+msgstr "Save as"
+
+#: po/xml_extra_text.cpp:69
+msgid "Berserker Axe"
+msgstr ""
+
+#: po/xml_extra_text.cpp:70
+msgid "Elven Sword"
+msgstr ""
+
+#: po/xml_extra_text.cpp:71
+msgid "Power Halberd"
+msgstr ""
+
+#: po/xml_extra_text.cpp:72
+msgid "Baneblade"
+msgstr ""
+
+#: po/xml_extra_text.cpp:73
+msgid "Thrakil's Battleaxe"
+msgstr ""
+
+#: po/xml_extra_text.cpp:74
+#, fuzzy
+msgid "Trident of the Seas"
+msgstr "बचाव का ढाल"
+
+#: po/xml_extra_text.cpp:75
+msgid "Flaming Death"
+msgstr ""
+
+#: po/xml_extra_text.cpp:76
+msgid "Evening Star"
+msgstr ""
+
+#: po/xml_extra_text.cpp:77
+msgid "Sword of the Avatar"
+msgstr ""
+
+#: po/xml_extra_text.cpp:78
+msgid "Studded Armour"
+msgstr ""
+
+#: po/xml_extra_text.cpp:79
+msgid "Ranger Vest"
+msgstr ""
+
+#: po/xml_extra_text.cpp:80
+msgid "Wall Aegis"
+msgstr ""
+
+#: po/xml_extra_text.cpp:81
+msgid "Golden Shield"
+msgstr ""
+
+#: po/xml_extra_text.cpp:82
+msgid "Silver Cap"
+msgstr ""
+
+#: po/xml_extra_text.cpp:83
+#, fuzzy
+msgid "Ruby Ring"
+msgstr "Rovina"
+
+#: po/xml_extra_text.cpp:84
+msgid "Golden Mask"
+msgstr ""
+
+#: po/xml_extra_text.cpp:85
+msgid "Crystal Rose"
+msgstr ""
+
+#: po/xml_extra_text.cpp:86 po/xml_extra_text.cpp:148
+#: po/xml_extra_text.cpp:267 po/xml_extra_text.cpp:328
+msgid "Neutral"
+msgstr "Neutral"
+
+#: po/xml_extra_text.cpp:87 po/xml_extra_text.cpp:99
+msgid "Seville"
+msgstr ""
+
+#: po/xml_extra_text.cpp:88
+msgid "Illorath"
+msgstr ""
+
+#: po/xml_extra_text.cpp:89
+msgid "Almoravid"
+msgstr ""
+
+#: po/xml_extra_text.cpp:90
+msgid "Ongoladan"
+msgstr ""
+
+#: po/xml_extra_text.cpp:91
+msgid "Badajoz"
+msgstr ""
+
+#: po/xml_extra_text.cpp:92
+msgid "Xaphocles"
+msgstr ""
+
+#: po/xml_extra_text.cpp:93
+#, fuzzy
+msgid "Count of Barcelona"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:94
+#, fuzzy
+msgid "Barcelona"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:95
+msgid "Palma"
+msgstr ""
+
+#: po/xml_extra_text.cpp:96
+msgid "Rabat-Sale"
+msgstr ""
+
+#: po/xml_extra_text.cpp:97
+msgid "Sijilmasa"
+msgstr ""
+
+#: po/xml_extra_text.cpp:98
+#, fuzzy
+msgid "Marrakesh"
+msgstr "Crea"
+
+#: po/xml_extra_text.cpp:100
+msgid "Badjoz"
+msgstr ""
+
+#: po/xml_extra_text.cpp:101
+msgid "Fez"
+msgstr ""
+
+#: po/xml_extra_text.cpp:102
+#, fuzzy
+msgid "Denia"
+msgstr "DelUnit"
+
+#: po/xml_extra_text.cpp:103
+msgid "Murcia"
+msgstr ""
+
+#: po/xml_extra_text.cpp:104
+msgid "Zaragoza"
+msgstr ""
+
+#: po/xml_extra_text.cpp:105
+#, fuzzy
+msgid "Albarracin"
+msgstr "एलडोरीयन"
+
+#: po/xml_extra_text.cpp:106
+msgid "Pamplona"
+msgstr ""
+
+#: po/xml_extra_text.cpp:107
+msgid "Lisbon"
+msgstr ""
+
+#: po/xml_extra_text.cpp:108
+msgid "Oviedo"
+msgstr ""
+
+#: po/xml_extra_text.cpp:109
+#, fuzzy
+msgid "Toledo"
+msgstr "सोना"
+
+#: po/xml_extra_text.cpp:110
+#, fuzzy
+msgid "Granada"
+msgstr "दूरी"
+
+#: po/xml_extra_text.cpp:111
+msgid "Metilla"
+msgstr ""
+
+#: po/xml_extra_text.cpp:112
+#, fuzzy
+msgid "Algiers"
+msgstr "Armies"
+
+#: po/xml_extra_text.cpp:113
+#, fuzzy
+msgid "Tlemsen"
+msgstr "मंदिर"
+
+#: po/xml_extra_text.cpp:114
+#, fuzzy
+msgid "Oran"
+msgstr "दूरी"
+
+#: po/xml_extra_text.cpp:115
+#, fuzzy
+msgid "Tangier"
+msgstr "दूरी"
+
+#: po/xml_extra_text.cpp:116
+#, fuzzy
+msgid "Narbonne"
+msgstr "कुछ नही"
+
+#: po/xml_extra_text.cpp:117 po/xml_extra_text.cpp:302
+#, fuzzy
+msgid "Tomb of Kings"
+msgstr "राजा का मकबरा"
+
+#: po/xml_extra_text.cpp:118 po/xml_extra_text.cpp:298
+msgid "Silent Monastery"
+msgstr ""
+
+#: po/xml_extra_text.cpp:119
+#, fuzzy
+msgid "Shrine of the Crusader"
+msgstr "बचाव का ढाल"
+
+#: po/xml_extra_text.cpp:120
+msgid "Garden of Frost"
+msgstr ""
+
+#: po/xml_extra_text.cpp:121 po/xml_extra_text.cpp:289
+#, fuzzy
+msgid "Small temple"
+msgstr "Dim. piccola"
+
+#: po/xml_extra_text.cpp:122
+#, fuzzy
+msgid "Tomb of Warriors"
+msgstr "पवित्र योद्धा"
+
+#: po/xml_extra_text.cpp:123
+msgid "Order of Spirit"
+msgstr ""
+
+#: po/xml_extra_text.cpp:124
+#, fuzzy
+msgid "Cathedral"
+msgstr "Crea"
+
+#: po/xml_extra_text.cpp:125 po/xml_extra_text.cpp:291
+msgid "House of Small Gods"
+msgstr ""
+
+#: po/xml_extra_text.cpp:126 po/xml_extra_text.cpp:288
+msgid "Druid's Home"
+msgstr ""
+
+#: po/xml_extra_text.cpp:127 po/xml_extra_text.cpp:308
+#, fuzzy
+msgid "Dark Hole"
+msgstr "औकृ Thrower"
+
+#: po/xml_extra_text.cpp:128 po/xml_extra_text.cpp:303
+#, fuzzy
+msgid "Dark Tower"
+msgstr "औकृ Thrower"
+
+#: po/xml_extra_text.cpp:129 po/xml_extra_text.cpp:306
+#, fuzzy
+msgid "Fallen Temple"
+msgstr "मंदिर"
+
+#: po/xml_extra_text.cpp:130 po/xml_extra_text.cpp:305
+msgid "Dark Dungeon"
+msgstr ""
+
+#: po/xml_extra_text.cpp:131
+msgid "Silent Lair"
+msgstr ""
+
+#: po/xml_extra_text.cpp:132 po/xml_extra_text.cpp:313
+#, fuzzy
+msgid "Ruined Temple"
+msgstr "मंदिर"
+
+#: po/xml_extra_text.cpp:133 po/xml_extra_text.cpp:309
+msgid "Dusty Caves"
+msgstr ""
+
+#: po/xml_extra_text.cpp:134 po/xml_extra_text.cpp:316
+#, fuzzy
+msgid "Ruined Castle"
+msgstr "खंडर शहर"
+
+#: po/xml_extra_text.cpp:135
+msgid "Old Thymiaterium"
+msgstr ""
+
+#: po/xml_extra_text.cpp:136
+msgid "Soloeis"
+msgstr ""
+
+#: po/xml_extra_text.cpp:137
+msgid "Spain 1060"
+msgstr ""
+
+#: po/xml_extra_text.cpp:138
+msgid ""
+"For you, the Emir of Seville, difficult times lie ahead.  The Muslims of "
+"Spain are divided amongst themselves and are under pressure from the "
+"Christians in the North such as the Count of Barcelona. From out the Sahara "
+"desert have appeared the Almoravids who may well be strong enough to check "
+"the Christians but are likely to gobble you up in the process. Surely the "
+"other Muslims  such as the Emir of Badajoz will realize they need to unite "
+"under your overlordship?...."
+msgstr ""
+
+#: po/xml_extra_text.cpp:139 po/xml_extra_text.cpp:194
+#: po/xml_extra_text.cpp:254 po/xml_extra_text.cpp:321
+#, fuzzy
+msgid "Player Neutral died."
+msgstr "Il giocatore %s e' sconfitto."
+
+#: po/xml_extra_text.cpp:140
+#, fuzzy
+msgid "Player Seville died."
+msgstr "Il giocatore %s e' sconfitto."
+
+#: po/xml_extra_text.cpp:141
+#, fuzzy
+msgid "Player Almoravid died."
+msgstr "Il giocatore %s e' sconfitto."
+
+#: po/xml_extra_text.cpp:142
+#, fuzzy
+msgid "Player Badajoz died."
+msgstr "Il giocatore %s e' sconfitto."
+
+#: po/xml_extra_text.cpp:143
+#, fuzzy
+msgid "Player Count of Barcelona died."
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:144
+#, fuzzy
+msgid "Player Seville has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:145
+#, fuzzy
+msgid "Player Almoravid has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:146
+#, fuzzy
+msgid "Player Badajoz has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:147
+#, fuzzy
+msgid "Player Count of Barcelona has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:149 po/xml_extra_text.cpp:156
+#, fuzzy
+msgid "Carthage"
+msgstr "Nuova Campagna"
+
+#: po/xml_extra_text.cpp:150
+msgid "Hanibal"
+msgstr ""
+
+#: po/xml_extra_text.cpp:151
+#, fuzzy
+msgid "Rome"
+msgstr "Rimuovi"
+
+#: po/xml_extra_text.cpp:152
+msgid "Fabius"
+msgstr ""
+
+#: po/xml_extra_text.cpp:153
+#, fuzzy
+msgid "Roma"
+msgstr "Random"
+
+#: po/xml_extra_text.cpp:154
+#, fuzzy
+msgid "Taras"
+msgstr "घास"
+
+#: po/xml_extra_text.cpp:155
+#, fuzzy
+msgid "Gades"
+msgstr "घास"
+
+#: po/xml_extra_text.cpp:157
+#, fuzzy
+msgid "New Carthage"
+msgstr "Nuova Campagna"
+
+#: po/xml_extra_text.cpp:158
+#, fuzzy
+msgid "Numantia"
+msgstr "Umano"
+
+#: po/xml_extra_text.cpp:159
+msgid "Saguntum"
+msgstr ""
+
+#: po/xml_extra_text.cpp:160
+#, fuzzy
+msgid "Capua"
+msgstr "गुलेल"
+
+#: po/xml_extra_text.cpp:161
+msgid "Syracuse"
+msgstr ""
+
+#: po/xml_extra_text.cpp:162
+msgid "Ausculum"
+msgstr ""
+
+#: po/xml_extra_text.cpp:163
+#, fuzzy
+msgid "Croton"
+msgstr "Condizioni"
+
+#: po/xml_extra_text.cpp:164
+msgid "Clusium"
+msgstr ""
+
+#: po/xml_extra_text.cpp:165
+msgid "Lilybaeum"
+msgstr ""
+
+#: po/xml_extra_text.cpp:166
+msgid "Lixus"
+msgstr ""
+
+#: po/xml_extra_text.cpp:167
+#, fuzzy
+msgid "Carales"
+msgstr "Crea"
+
+#: po/xml_extra_text.cpp:168
+msgid "Hadrumentum"
+msgstr ""
+
+#: po/xml_extra_text.cpp:169
+msgid "Placentia"
+msgstr ""
+
+#: po/xml_extra_text.cpp:170
+msgid "Massillia"
+msgstr ""
+
+#: po/xml_extra_text.cpp:171
+#, fuzzy
+msgid "Tarraco"
+msgstr "घास"
+
+#: po/xml_extra_text.cpp:172
+#, fuzzy
+msgid "Leptis"
+msgstr "Reports"
+
+#: po/xml_extra_text.cpp:173
+#, fuzzy
+msgid "Messana"
+msgstr "Message"
+
+#: po/xml_extra_text.cpp:174
+msgid "Gegovia"
+msgstr ""
+
+#: po/xml_extra_text.cpp:175
+msgid "Olisippo"
+msgstr ""
+
+#: po/xml_extra_text.cpp:176 po/xml_extra_text.cpp:297
+#, fuzzy
+msgid "Monastery of Io"
+msgstr "दैत्य"
+
+#: po/xml_extra_text.cpp:177
+#, fuzzy
+msgid "Temple of Belisama"
+msgstr "मंदिर"
+
+#: po/xml_extra_text.cpp:178
+#, fuzzy
+msgid "Temple of Apollo"
+msgstr "मंदिर"
+
+#: po/xml_extra_text.cpp:179
+#, fuzzy
+msgid "Shrine of the Mists"
+msgstr "बचाव का ढाल"
+
+#: po/xml_extra_text.cpp:180
+#, fuzzy
+msgid "Temple of Jupitor"
+msgstr "मंदिर"
+
+#: po/xml_extra_text.cpp:181
+#, fuzzy
+msgid "Temple of Hammon"
+msgstr "मंदिर"
+
+#: po/xml_extra_text.cpp:182
+msgid "The Lost City"
+msgstr ""
+
+#: po/xml_extra_text.cpp:183
+msgid "Zelasen's Tomb"
+msgstr ""
+
+#: po/xml_extra_text.cpp:184 po/xml_extra_text.cpp:315
+#: po/xml_extra_text.cpp:336
+msgid "Ruined City"
+msgstr "खंडर शहर"
+
+#: po/xml_extra_text.cpp:185 po/xml_extra_text.cpp:307
+#, fuzzy
+msgid "Weird Ruins"
+msgstr "खंडर"
+
+#: po/xml_extra_text.cpp:186
+msgid "Keltic Barrow"
+msgstr ""
+
+#: po/xml_extra_text.cpp:187
+#, fuzzy
+msgid "Abandoned Temple"
+msgstr "मंदिर"
+
+#: po/xml_extra_text.cpp:188
+msgid "Burial Mound"
+msgstr ""
+
+#: po/xml_extra_text.cpp:189 po/xml_extra_text.cpp:317
+msgid "Misty Maze"
+msgstr ""
+
+#: po/xml_extra_text.cpp:190
+msgid "Tumulus"
+msgstr ""
+
+#: po/xml_extra_text.cpp:191
+msgid "The Sibyl's Cave"
+msgstr ""
+
+#: po/xml_extra_text.cpp:192
+msgid "The Second Punic War"
+msgstr ""
+
+#: po/xml_extra_text.cpp:193
+msgid ""
+"Carthage has lost her dominance on the sea and you, Hannibal, are convinced "
+"that the only hope of avoiding the destruction of your city is to move to "
+"the attack - thru Spain and across the Alps."
+msgstr ""
+
+#: po/xml_extra_text.cpp:195
+#, fuzzy
+msgid "Player Carthage died."
+msgstr "Il giocatore %s e' sconfitto."
+
+#: po/xml_extra_text.cpp:196
+#, fuzzy
+msgid "Player Rome died."
+msgstr "Il giocatore %s e' sconfitto."
+
+#: po/xml_extra_text.cpp:197
+#, fuzzy
+msgid "Player Carthage has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:198
+#, fuzzy
+msgid "Player Rome has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:199
+#, fuzzy
+msgid "If New Carthage falls..."
+msgstr "Nuova Campagna"
+
+#: po/xml_extra_text.cpp:200
+#, fuzzy
+msgid "Neutrale"
+msgstr "Neutral"
+
+#: po/xml_extra_text.cpp:201
+#, fuzzy
+msgid "Northumbria"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:202
+#, fuzzy
+msgid "Ingaron"
+msgstr "इनगोरीयन"
+
+#: po/xml_extra_text.cpp:203
+#, fuzzy
+msgid "T' Pictish King"
+msgstr "Il giocatore e' stato ucciso."
+
+#: po/xml_extra_text.cpp:204
+msgid "Glathros"
+msgstr ""
+
+#: po/xml_extra_text.cpp:205
+msgid "Mercia"
+msgstr ""
+
+#: po/xml_extra_text.cpp:206
+msgid "Andaradan"
+msgstr ""
+
+#: po/xml_extra_text.cpp:207
+#, fuzzy
+msgid "The High King"
+msgstr "Il giocatore e' stato ucciso."
+
+#: po/xml_extra_text.cpp:208
+msgid "Waldorath"
+msgstr ""
+
+#: po/xml_extra_text.cpp:209
+#, fuzzy
+msgid "Wessex"
+msgstr "Message"
+
+#: po/xml_extra_text.cpp:210
+msgid "Cynethryth"
+msgstr ""
+
+#: po/xml_extra_text.cpp:211
+#, fuzzy
+msgid "York"
+msgstr "Colore"
+
+#: po/xml_extra_text.cpp:212
+#, fuzzy
+msgid "Scone"
+msgstr "कुछ नही"
+
+#: po/xml_extra_text.cpp:213
+#, fuzzy
+msgid "Leicester"
+msgstr "पानी"
+
+#: po/xml_extra_text.cpp:214
+#, fuzzy
+msgid "Tara"
+msgstr "घास"
+
+#: po/xml_extra_text.cpp:215
+#, fuzzy
+msgid "Winchester"
+msgstr "पानी"
+
+#: po/xml_extra_text.cpp:216
+#, fuzzy
+msgid "Cork"
+msgstr "Colore"
+
+#: po/xml_extra_text.cpp:217
+msgid "Mayo"
+msgstr ""
+
+#: po/xml_extra_text.cpp:218
+#, fuzzy
+msgid "London"
+msgstr "Condizioni"
+
+#: po/xml_extra_text.cpp:219
+msgid "Whithorn"
+msgstr ""
+
+#: po/xml_extra_text.cpp:220
+#, fuzzy
+msgid "Litchfield"
+msgstr "shield"
+
+#: po/xml_extra_text.cpp:221
+msgid "Dunedin"
+msgstr ""
+
+#: po/xml_extra_text.cpp:222
+msgid "Dingwall"
+msgstr ""
+
+#: po/xml_extra_text.cpp:223
+msgid "Thurso"
+msgstr ""
+
+#: po/xml_extra_text.cpp:224
+#, fuzzy
+msgid "Exeter"
+msgstr "Center"
+
+#: po/xml_extra_text.cpp:225
+#, fuzzy
+msgid "Obar Dheathan"
+msgstr "और्क ताँतरिक"
+
+#: po/xml_extra_text.cpp:226
+#, fuzzy
+msgid "Whitby"
+msgstr "शहर'"
+
+#: po/xml_extra_text.cpp:227
+msgid "Dunadd"
+msgstr ""
+
+#: po/xml_extra_text.cpp:228
+#, fuzzy
+msgid "Hastings"
+msgstr "Game settings"
+
+#: po/xml_extra_text.cpp:229
+#, fuzzy
+msgid "Gloucester"
+msgstr "पानी"
+
+#: po/xml_extra_text.cpp:230
+msgid "Hill of Tara"
+msgstr ""
+
+#: po/xml_extra_text.cpp:231
+#, fuzzy
+msgid "Canterbury"
+msgstr "CenterObj"
+
+#: po/xml_extra_text.cpp:232
+#, fuzzy
+msgid "Iona"
+msgstr "कुछ नही"
+
+#: po/xml_extra_text.cpp:233
+msgid "Lidisfarne"
+msgstr ""
+
+#: po/xml_extra_text.cpp:234
+msgid "Downpatrick"
+msgstr ""
+
+#: po/xml_extra_text.cpp:235
+msgid "Verulamium"
+msgstr ""
+
+#: po/xml_extra_text.cpp:236
+msgid "Stonehenge"
+msgstr ""
+
+#: po/xml_extra_text.cpp:237
+#, fuzzy
+msgid "Carrowmore"
+msgstr "armour"
+
+#: po/xml_extra_text.cpp:238
+msgid "Gleninsheen"
+msgstr ""
+
+#: po/xml_extra_text.cpp:239
+msgid "Drombeg"
+msgstr ""
+
+#: po/xml_extra_text.cpp:240
+msgid "Dolmen of the four Maols"
+msgstr ""
+
+#: po/xml_extra_text.cpp:241
+msgid "Kilcloony Dolmen"
+msgstr ""
+
+#: po/xml_extra_text.cpp:242
+#, fuzzy
+msgid "The Hurlers"
+msgstr "शायर"
+
+#: po/xml_extra_text.cpp:243
+msgid "Long Meg and her Daughters"
+msgstr ""
+
+#: po/xml_extra_text.cpp:244
+msgid "The Rollright Stones"
+msgstr ""
+
+#: po/xml_extra_text.cpp:245
+#, fuzzy
+msgid "Temple Wood"
+msgstr "मंदिर"
+
+#: po/xml_extra_text.cpp:246
+#, fuzzy
+msgid "Sunhoney"
+msgstr "कुछ नही"
+
+#: po/xml_extra_text.cpp:247
+#, fuzzy
+msgid "Corrymoney"
+msgstr "armour"
+
+#: po/xml_extra_text.cpp:248
+msgid "Tinkinswood"
+msgstr ""
+
+#: po/xml_extra_text.cpp:249
+msgid "Bryn Cader Faner"
+msgstr ""
+
+#: po/xml_extra_text.cpp:250
+msgid "Pentre Ifan"
+msgstr ""
+
+#: po/xml_extra_text.cpp:251
+msgid "Gilling Long Cairn"
+msgstr ""
+
+#: po/xml_extra_text.cpp:252
+msgid "Britain 802"
+msgstr ""
+
+#: po/xml_extra_text.cpp:253
+msgid ""
+"The 9th century opens with the isles divided into tribes and petty kingdoms "
+"but several are already emerging as front runners in a struggle for "
+"hegemony. To the West the High King of Ireland. To the North the Pictish "
+"King. To the south the Kings of Wessex and Mercia. And in the middle you, "
+"the King of Northumbria, is surrounded by enemies..."
+msgstr ""
+
+#: po/xml_extra_text.cpp:255
+msgid "You have lost!!"
+msgstr ""
+
+#: po/xml_extra_text.cpp:256
+msgid "Despair at the desolation of defeat!"
+msgstr ""
+
+#: po/xml_extra_text.cpp:257
+#, fuzzy
+msgid "The Pictish King is dead."
+msgstr "Il giocatore e' stato ucciso."
+
+#: po/xml_extra_text.cpp:258
+#, fuzzy
+msgid "The King of Mercia has fled into exile."
+msgstr "Il giocatore e' stato ucciso."
+
+#: po/xml_extra_text.cpp:259
+#, fuzzy
+msgid "The High King has been killed."
+msgstr "Il giocatore e' stato ucciso."
+
+#: po/xml_extra_text.cpp:260
+#, fuzzy
+msgid "The king of Wessex has been killed."
+msgstr "Il giocatore e' stato ucciso."
+
+#: po/xml_extra_text.cpp:261
+#, fuzzy
+msgid "Northumbria has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:262
+msgid "The King of the Picts has won!"
+msgstr ""
+
+#: po/xml_extra_text.cpp:263
+#, fuzzy
+msgid "Player Ulf has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:264
+#, fuzzy
+msgid "Player James has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:265
+#, fuzzy
+msgid "Player Vibhu has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:266
+#, fuzzy
+msgid "defeat"
+msgstr "default"
+
+#: po/xml_extra_text.cpp:268
+msgid "Arkadia"
+msgstr ""
+
+#: po/xml_extra_text.cpp:269
+msgid "Alcanen"
+msgstr ""
+
+#: po/xml_extra_text.cpp:270
+#, fuzzy
+msgid "Gray Horde"
+msgstr "Il giocatore %s e' sconfitto."
+
+#: po/xml_extra_text.cpp:271
+#, fuzzy
+msgid "Omelan"
+msgstr "Apri"
+
+#: po/xml_extra_text.cpp:272
+msgid "Imperium"
+msgstr ""
+
+#: po/xml_extra_text.cpp:273
+msgid "Thastophere"
+msgstr ""
+
+#: po/xml_extra_text.cpp:274
+#, fuzzy
+msgid "Montserrat"
+msgstr "दैत्य"
+
+#: po/xml_extra_text.cpp:275
+#, fuzzy
+msgid "Darcor"
+msgstr "armour"
+
+#: po/xml_extra_text.cpp:276
+#, fuzzy
+msgid "Watchtower"
+msgstr "पानी"
+
+#: po/xml_extra_text.cpp:277
+msgid "Brunnaburgh"
+msgstr ""
+
+#: po/xml_extra_text.cpp:278
+msgid "Coldpeak"
+msgstr ""
+
+#: po/xml_extra_text.cpp:279
+msgid "Kurigalzu"
+msgstr ""
+
+#: po/xml_extra_text.cpp:280
+#, fuzzy
+msgid "Karhain"
+msgstr "आदीवासी"
+
+#: po/xml_extra_text.cpp:281
+msgid "Pelerine"
+msgstr ""
+
+#: po/xml_extra_text.cpp:282
+msgid "Moonshine"
+msgstr ""
+
+#: po/xml_extra_text.cpp:283
+#, fuzzy
+msgid "Hellgate"
+msgstr "कवच"
+
+#: po/xml_extra_text.cpp:284
+#, fuzzy
+msgid "Trales"
+msgstr "मंदिर"
+
+#: po/xml_extra_text.cpp:285 po/xml_extra_text.cpp:287
+#, fuzzy
+msgid "Noname"
+msgstr "कुछ नही"
+
+#: po/xml_extra_text.cpp:286
+#, fuzzy
+msgid "Atena"
+msgstr "ActEvent"
+
+#: po/xml_extra_text.cpp:290
+msgid "Holy Ghost's Archive"
+msgstr ""
+
+#: po/xml_extra_text.cpp:292
+#, fuzzy
+msgid "Holy Wood"
+msgstr "पवित्र योद्धा"
+
+#: po/xml_extra_text.cpp:293
+#, fuzzy
+msgid "Shrine of Power"
+msgstr "बचाव का ढाल"
+
+#: po/xml_extra_text.cpp:294
+msgid "Peasant's church"
+msgstr ""
+
+#: po/xml_extra_text.cpp:295
+msgid "Garden of Peace"
+msgstr ""
+
+#: po/xml_extra_text.cpp:296
+msgid "Order of Fire"
+msgstr ""
+
+#: po/xml_extra_text.cpp:299
+#, fuzzy
+msgid "Offler's Temple"
+msgstr "मंदिर"
+
+#: po/xml_extra_text.cpp:300
+msgid "Sanctuary of the Fallen"
+msgstr ""
+
+#: po/xml_extra_text.cpp:301
+msgid "Holy Place"
+msgstr ""
+
+#: po/xml_extra_text.cpp:304
+msgid "Black Tomb"
+msgstr ""
+
+#: po/xml_extra_text.cpp:310
+#, fuzzy
+msgid "Abandoned Village"
+msgstr "मंदिर"
+
+#: po/xml_extra_text.cpp:311
+msgid "Ghost Town"
+msgstr ""
+
+#: po/xml_extra_text.cpp:312
+msgid "Silent Farm"
+msgstr ""
+
+#: po/xml_extra_text.cpp:314
+msgid "Deserted Monastery"
+msgstr ""
+
+#: po/xml_extra_text.cpp:318
+msgid "Khan's tomb"
+msgstr ""
+
+#: po/xml_extra_text.cpp:319
+#, fuzzy
+msgid "Target"
+msgstr "दूरी"
+
+#: po/xml_extra_text.cpp:320
+msgid ""
+"The two AI players will treat you as their target and will get extra "
+"advantages on top of that. But you're better than the two of them aren't you?"
+msgstr ""
+
+#: po/xml_extra_text.cpp:322
+#, fuzzy
+msgid "Player Arkadia died."
+msgstr "Il giocatore %s e' sconfitto."
+
+#: po/xml_extra_text.cpp:323
+#, fuzzy
+msgid "Player Gray Horde died."
+msgstr "Il giocatore %s e' sconfitto."
+
+#: po/xml_extra_text.cpp:324
+#, fuzzy
+msgid "Player Imperium died."
+msgstr "Il giocatore %s e' sconfitto."
+
+#: po/xml_extra_text.cpp:325
+#, fuzzy
+msgid "Player Arkadia has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:326
+#, fuzzy
+msgid "Player Gray Horde has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:327
+#, fuzzy
+msgid "Player Imperium has won!"
+msgstr "Il giocatore %s ha vinto!"
+
+#: po/xml_extra_text.cpp:329
+msgid "Good guy"
+msgstr "अच्छा आदमी"
+
+#: po/xml_extra_text.cpp:330
+msgid "Ingorian"
+msgstr "इनगोरीयन"
+
+#: po/xml_extra_text.cpp:331
+msgid "Evil Overlord"
+msgstr "शैतान खोपडी"
+
+#: po/xml_extra_text.cpp:332
+msgid "Eldaragon"
+msgstr "एलडोरीयन"
+
+#: po/xml_extra_text.cpp:333
+msgid "The Shire"
+msgstr "शायर"
+
+#: po/xml_extra_text.cpp:334
+msgid "Dragonbone"
+msgstr "Dragonbone"
+
+#: po/xml_extra_text.cpp:335
+msgid "Old Tower"
+msgstr "पुराना मिनार"
+
+#: po/xml_extra_text.cpp:337
+msgid "Tomb of the old king"
+msgstr "राजा का मकबरा"
+
+#: po/xml_extra_text.cpp:338
+msgid "Mysterious hole"
+msgstr "अदभुत छेद"
+
+#: po/xml_extra_text.cpp:339
+msgid "Hydra's Lair"
+msgstr "Hydra's Lair"
+
+#: po/xml_extra_text.cpp:340
+msgid "Dragon's lair"
+msgstr "Dragon's lair"
+
+#: po/xml_extra_text.cpp:341
+msgid "Tutorial and Testing"
+msgstr "सीखना और जाँचना"
+
+#: po/xml_extra_text.cpp:342
+#, fuzzy
+msgid ""
+"This scenario is the Freelords testing Tutorial. Its pourpose is to "
+"demonstrate the advanced features of Freelords."
+msgstr ""
+"ये फरीलौरड सीखने के लीये है, हालाकी हमार एक मकसद फरीलौरड के कई आधूनिक abilities , "
+"दिखाने का भी हे, जैसेकी events."
+
+#: po/xml_extra_text.cpp:343
+msgid "The introduction for the player."
+msgstr "The introduction for the player."
+
+#: po/xml_extra_text.cpp:344
+msgid ""
+"This is the tutorial of FreeLords. Though it is called tutorial, one of the "
+"main aims is to demonstrate some advanced abilities of FreeLords, such as "
+"events."
+msgstr ""
+"ये फरीलौरड सीखने के लीये है, हालाकी हमार एक मकसद फरीलौरड के कई आधूनिक abilities , "
+"दिखाने का भी हे, जैसेकी events."
+
+#: po/xml_extra_text.cpp:345
+msgid ""
+"BTW: If you like (or better: don't yet like) what you see here, we are "
+"always looking for coders, graphics artists and (new) map designers! Enough "
+"ads, let us start with the game."
+msgstr ""
+"BTW: If you like (or better: don't yet like) what you see here, we are "
+"always looking for coders, graphics artists and (new) map designers! Enough "
+"ads, let us start with the game."
+
+#: po/xml_extra_text.cpp:346
+msgid ""
+"For ages you and your ancestors have lived peacefully in the lovely Shire. "
+"Nothing disturbed the quietness here until some months ago..."
+msgstr ""
+"For ages you and your ancestors have lived peacefully in the lovely Shire. "
+"Nothing disturbed the quietness here until some months ago..."
+
+#: po/xml_extra_text.cpp:347
+msgid "Orcs appeared."
+msgstr "Sono giunti gli Orchi."
+
+#: po/xml_extra_text.cpp:348
+msgid ""
+"The foul creatures infested the old tower in the swamp and built up a "
+"fortress there, growing more and more powerful. And aggressive. During one "
+"of their raids, they destroyed a village close to the swamp. So you decided "
+"to drive them out."
+msgstr ""
+"Le odiose creature hanno infestato la vecchia torre nella palude e hanno "
+"costruito una fortezza, crescendo sempre di piu'. E diventando sempre piu' "
+"aggressivi. Durante una delle loro scorribande, hanno distrutto un villaggio "
+"vicino alle paludi. Cosi hai deciso di cacciarli dalla contea."
+
+#: po/xml_extra_text.cpp:349
+msgid ""
+"But the army under the command of your most able leader just vanished in the "
+"swamps."
+msgstr ""
+"Ma le armate comandate dal tuo condottiero piu' abile sono sparite nelle "
+"paludi."
+
+#: po/xml_extra_text.cpp:350
+msgid "\"Huh, Where am I??\""
+msgstr "\"Huh, Dove sono??\""
+
+#: po/xml_extra_text.cpp:351
+#, fuzzy
+msgid "Player has killed the Orc that appeared at the introductory event."
+msgstr ""
+"Il giocatore ha ucciso lo scavatore che e' apparso all'evento "
+"dell'introduzione."
+
+#: po/xml_extra_text.cpp:352
+#, fuzzy
+msgid "When you search the orc, you find some recently used digging tools."
+msgstr ""
+"Quando perquisisci l'orco, noti che i suoi attrezzi sono stati usati di "
+"recente."
+
+#: po/xml_extra_text.cpp:353
+#, fuzzy
+msgid ""
+"After one round, an orc appears at the ruin next to the player's city and "
+"the player is warned of Orcish sappers."
+msgstr ""
+"Dopo un round, appare un orco nella खंडर vicino alla citta' del giocatore e "
+"il giocatore viene avvertito della presenza degli orchi."
+
+#: po/xml_extra_text.cpp:354
+#, fuzzy
+msgid "\"We have come through. Look, the Weakling's castle is there.\""
+msgstr ""
+"\"Siamo passati attraverso. Guarda, il castello degli umani e' da quella "
+"parte.\""
+
+#: po/xml_extra_text.cpp:355
+msgid ""
+"\"My Lord, the orcs have been digging a tunnel to our castle. You must "
+"destroy it!\""
+msgstr ""
+"\"Mio Lord, gli orchi stanno scavando un tunnel sotto il nostro castello. Li "
+"devi annientare!\""
+
+#: po/xml_extra_text.cpp:356
+msgid "\"Die, human!\""
+msgstr "\"मर, आदम!\""
+
+#: po/xml_extra_text.cpp:357
+msgid "\"Argh.\""
+msgstr "\"आरघ.\""
+
+#: po/xml_extra_text.cpp:358
+#, fuzzy
+msgid ""
+"Your advisor informs you: \"If you want to fight the Orcish hordes, it would "
+"be wise to visit the tomb of your father to the west. He had several "
+"powerful artefacts placed there.\""
+msgstr ""
+"Il tuo consigliere ti informa: \"Se vuoi combattere le orde orchesche, "
+"sarebbe saggio visitare la tomba di tuo padre situata ad ovest. Egli aveva "
+"messo li molti potenti artefatti.\""
+
+#: po/xml_extra_text.cpp:359
+msgid ""
+"When the player searches the temple to the east, he gets some artefacts. "
+"This event is enabled by the previous one."
+msgstr ""
+"When the player searches the मंदिर to the east, he gets some artefacts. This "
+"event is enabled by the previous one."
+
+#: po/xml_extra_text.cpp:360
+msgid ""
+"The priests have heard of your task and awaited your coming. They present "
+"you some artefacts of your father."
+msgstr ""
+"The priests have heard of your task and awaited your coming. They present "
+"you some artefacts of your father."
+
+#: po/xml_extra_text.cpp:361
+msgid ""
+"When the ruin to the west of the city is searched, remove the appearance of "
+"orcs (foolowing events)"
+msgstr ""
+"When the खंडर to the west of the city is searched, remove the appearance of "
+"orcs (foolowing अगला)"
+
+#: po/xml_extra_text.cpp:362
+msgid ""
+"You flood the tunnel with the help of the nearby lake. The danger by the "
+"orcs should be banned for now. All that is left is getting rid of the Orcish "
+"fortress."
+msgstr ""
+"You flood the tunnel with the help of the nearby lake. The danger by the "
+"orcs should be banned for now. All that is left is getting rid of the Orcish "
+"fortress."
+
+#: po/xml_extra_text.cpp:363
+msgid ""
+"Maybe you want to search the lair to the south of your town now. It is "
+"rumored that a lot of gold can be found there."
+msgstr ""
+"Maybe you want to search the lair to the south of your town now. It is "
+"rumored that a lot of सोना can be found there."
+
+#: po/xml_extra_text.cpp:364
+msgid "First orcs come through the tunnel."
+msgstr "First orcs come through the tunnel."
+
+#: po/xml_extra_text.cpp:365
+msgid "\"Where are our scouts? Humans!!\""
+msgstr "\"Where are our scouts? Humans!!\""
+
+#: po/xml_extra_text.cpp:366
+msgid "Again, orcs come through the tunnel."
+msgstr "Again, orcs come through the tunnel."
+
+#: po/xml_extra_text.cpp:367
+msgid "\"Let's raze the city!!\""
+msgstr "\"Let's raze the शहर!!\""
+
+#: po/xml_extra_text.cpp:368
+#, fuzzy
+msgid "The Orcish invasion starts."
+msgstr "The orcish invasion starts."
+
+#: po/xml_extra_text.cpp:369
+msgid "\"Hunt them down!\""
+msgstr "\"Hunt them down!\""
+
+#: po/xml_extra_text.cpp:370
+msgid "Now many orcs come out of the tunnel."
+msgstr "Now many orcs come out of the tunnel."
+
+#: po/xml_extra_text.cpp:371
+msgid "\"The humans don't stand a chance. Let's crush them!\""
+msgstr "\"The humans don't stand a chance. Let's crush them!\""
+
+#: po/xml_extra_text.cpp:372
+msgid ""
+"After the ruin is searched (event is activated there) the neutral town "
+"offers its services."
+msgstr ""
+"After the खंडर is searched (event is activated there) the neutral town offers "
+"its services."
+
+#: po/xml_extra_text.cpp:373
+msgid ""
+"The rumours of your deeds have spread. As a result, the nearby town of "
+"Dragonbone decides to join you."
+msgstr ""
+"The rumours of your deeds have spread. As a result, the nearby town of "
+"Dragonbone decides to join you."
+
+#: po/xml_extra_text.cpp:374
+msgid "Hydra's Lair is searched, player gets some gold."
+msgstr "La tana dell'Idra viene espolata, il giocatore trova सोना."
+
+#: po/xml_extra_text.cpp:375
+msgid ""
+"After you have slain the pair of hydras that occupied the cave, you find a "
+"valuable sword and a hidden treasure worth 2000 gold."
+msgstr ""
+"Dopo che sei riuscito ad uccidere la coppia di hydre che occupavano la "
+"caverna, trovi una spada scintillante ed tesoro nascosto ammontante a 2000 "
+"सोना."
+
+#: po/xml_extra_text.cpp:376
+msgid "The player has been killed."
+msgstr "Il giocatore e' stato ucciso."
+
+#: po/xml_extra_text.cpp:377
+msgid ""
+"Though you managed to survived the Orcish raids, you had to escape the land "
+"and find some fortune at other places. Meanwhile, the orcs devastated  the "
+"lands and ruined the towns."
+msgstr ""
+"Nonostante sei sopravvissuto ai raid degli Orchi, sei stato costretto a "
+"lasciare la tua terra e a cercare fortuna in altri luoghi. Nel frattempo, "
+"gli orchi hanno devastato le terre e distrutto le citta'."
+
+#: po/xml_extra_text.cpp:378
+msgid "YOU LOST!"
+msgstr "हार गये!"
+
+#: po/xml_extra_text.cpp:379
+#, fuzzy
+msgid "The Orcish town is conquered, the game is won."
+msgstr "The orcish town is conquered, the game is won."
+
+#: po/xml_extra_text.cpp:380
+msgid ""
+"You captured the fortress that was so well defended by the orcs. When their "
+"remaining troops that ravage the lands hear from this, they panic and run. "
+"The Evil is defeated here. Congratulations, the tutorial is hereby finished."
+msgstr ""
+"You captured the fortress that was so well defended by the orcs. When their "
+"remaining troops that ravage the lands hear from this, they panic and run. "
+"The Evil is defeated here. Congratulations, the tutorial is hereby finished."
+
+#: po/xml_extra_text.cpp:381
+msgid "YOU WIN!"
+msgstr "तुम जीत गये!"
+
+#: src/about.cpp:27 src/MainWindow.cpp:55
+msgid "About"
+msgstr "बारे"
+
+#: src/about.cpp:42
+msgid "Creator of the project:"
+msgstr ""
+
+#: src/about.cpp:48
+msgid "Development:"
+msgstr "बनाने वाले:"
+
+#: src/about.cpp:59
+msgid "Graphics:"
+msgstr "गराफिक्स:"
+
+#: src/about.cpp:70
+#, fuzzy
+msgid "Active Contributors:"
+msgstr "कार्यकरता:"
+
+#: src/about.cpp:81
+#, fuzzy
+msgid "Inactive Members/Contributors:"
+msgstr "कार्यकरता:"
+
+#: src/about.cpp:92
+msgid "Ex Members:"
+msgstr "Ex Membri:"
+
+#: src/about.cpp:104
+#, c-format
+msgid "Version %s"
+msgstr "रूप %s"
+
+#. I assume 500x400 pixels here as well
+#. place the OK button
+#: src/about.cpp:110 src/ArmyDialog.cpp:91 src/ArmyLevelDialog.cpp:31
+#: src/ArmyMedalDialog.cpp:49 src/citiesreport.cpp:143 src/cityinfo.cpp:187
+#: src/cityinfo.cpp:240 src/cityinfo.cpp:277 src/cityinfo.cpp:437
+#: src/goldreport.cpp:25 src/MainWindow.cpp:276 src/MainWindow.cpp:285
+#: src/MainWindow.cpp:317 src/MainWindow.cpp:328 src/OptionsDialog.cpp:88
+#: src/questsreport.cpp:93 src/splash.cpp:360 src/splash.cpp:411
+#: src/splash.cpp:459 src/splash.cpp:486 src/stackreport.cpp:118
+#: src/w_edit.cpp:733 src/w_edit.cpp:754 src/w_edit.cpp:1102
+#: src/VectorDialog.cpp:77 src/ScenariosDialog.cpp:66
+#: src/editor/MainScreen.cpp:187 src/editor/MainScreen.cpp:196
+#: src/editor/MainScreen.cpp:222 src/editor/MainScreen.cpp:233
+#: src/editor/NewMapDialog.cpp:99 src/editor/ArmyDialog.cpp:102
+#: src/editor/CityDialog.cpp:166 src/editor/CityDialog.cpp:283
+#: src/editor/CityDialog.cpp:317 src/editor/MapGenDialog.cpp:42
+#: src/editor/TempleDialog.cpp:30 src/editor/RuinDialog.cpp:39
+#: src/editor/PlayerDialog.cpp:151 src/editor/FindDialog.cpp:43
+#: src/editor/ConditionDialog.cpp:248 src/editor/ReactionDialog.cpp:99
+#: src/editor/EventDialog.cpp:112 src/editor/ScenarioDialog.cpp:44
+#: src/events/RMessage.cpp:59
+msgid "OK"
+msgstr "ऒ के"
+
+#: src/ArmyDialog.cpp:53
+msgid "Items"
+msgstr "नग"
+
+#: src/ArmyDialog.cpp:64
+#, c-format
+msgid "%i shot"
+msgid_plural "%i shots"
+msgstr[0] "%i गोली"
+msgstr[1] "%i गोलीयाँ"
+
+#: src/ArmyDialog.cpp:79 src/ArmyLevelDialog.cpp:42 src/ArmyMedalDialog.cpp:42
+#, c-format
+msgid "xp: %.2f"
+msgstr "अनुभव: %.2f"
+
+#: src/ArmyDialog.cpp:83
+#, c-format
+msgid "level: %i"
+msgstr "औदा: %i"
+
+#: src/ArmyDialog.cpp:87 src/d_buy_production.cpp:128
+#, c-format
+msgid "Upkeep: %i"
+msgstr "Costo: %i"
+
+#: src/ArmyDialog.cpp:347
+msgid ""
+"\n"
+"\n"
+"Unit is especially fast on "
+msgstr ""
+
+#: src/ArmyDialog.cpp:365
+msgid "Abilities: "
+msgstr ""
+
+#: src/ArmyDialog.cpp:369
+#, fuzzy
+msgid "ship"
+msgstr "जाँन"
+
+#: src/ArmyDialog.cpp:374
+#, fuzzy
+msgid "leadership"
+msgstr "नैतिकता"
+
+#: src/ArmyDialog.cpp:379
+#, fuzzy
+msgid "mounted"
+msgstr "Round"
+
+#: src/ArmyDialog.cpp:384
+msgid "effective vs. mounted troops"
+msgstr ""
+
+#: src/ArmyDialog.cpp:389
+msgid "regeneration"
+msgstr ""
+
+#: src/ArmyDialog.cpp:394
+msgid "can score critical hits"
+msgstr ""
+
+#: src/ArmyLevelDialog.cpp:21
+msgid "Your unit advanced a level!"
+msgstr "Your unit advanced a level!"
+
+#. I assume a size of 400*300 pixels here
+#: src/ArmyLevelDialog.cpp:29
+msgid "Choose a characteristic to raise."
+msgstr "Choose a characteristic to raise."
+
+#: src/ArmyLevelDialog.cpp:46 src/ArmyMedalDialog.cpp:45
+msgid "level: "
+msgstr "स्तर : "
+
+#. the head of the table for the single values
+#: src/ArmyLevelDialog.cpp:84
+msgid "Stats"
+msgstr "आँकडे"
+
+#: src/ArmyLevelDialog.cpp:90
+msgid "strength"
+msgstr "दम"
+
+#: src/ArmyLevelDialog.cpp:93
+msgid "ranged"
+msgstr "दूरी"
+
+#: src/ArmyLevelDialog.cpp:97
+msgid "defense"
+msgstr "बचाव"
+
+#: src/ArmyLevelDialog.cpp:99
+msgid "vitality"
+msgstr "जीवनांक"
+
+#: src/ArmyLevelDialog.cpp:101
+#, fuzzy
+msgid "sight"
+msgstr "Knight"
+
+#: src/ArmyLevelDialog.cpp:103
+msgid "hp"
+msgstr "जाँन"
+
+#: src/ArmyLevelDialog.cpp:105
+msgid "moves"
+msgstr "दूरी"
+
+#: src/ArmyMedalDialog.cpp:27
+msgid "medal awarded"
+msgstr "medal awarded"
+
+#: src/armysetlist.cpp:137
+msgid "Error, while loading an armyset. Armyset Name: "
+msgstr "Error, while loading an armyset. Armyset Name:"
+
+#. error handling is required here, up to now we only barf on cerr
+#: src/bigmap.cpp:523
+msgid "original path of stack was blocked\n"
+msgstr "original path of stack was blocked\n"
+
+#: src/citiesreport.cpp:60
+msgid "no information"
+msgstr "कोई सूचना नही"
+
+#: src/citiesreport.cpp:86
+#, c-format
+msgid "gold: %i"
+msgstr "अषर्फीयाँ: %i"
+
+#. no production
+#: src/citiesreport.cpp:98 src/cityinfo.cpp:372 src/cityinfo.cpp:373
+#: src/cityinfo.cpp:374 src/cityinfo.cpp:375 src/cityinfo.cpp:376
+#: src/cityinfo.cpp:377 src/player_preferences.cpp:27
+#: src/player_preferences.cpp:54 src/player_preferences.cpp:73
+#: src/player_preferences.cpp:88
+msgid "None"
+msgstr "कुछ नही"
+
+#: src/citiesreport.cpp:99 src/editor/FindDialog.cpp:120
+msgid "n.a."
+msgstr "n.a."
+
+#: src/citiesreport.cpp:110
+msgid "Idle"
+msgstr "खाली"
+
+#: src/citiesreport.cpp:139
+msgid "city report"
+msgstr "शहर की खबर"
+
+#: src/citiesreport.cpp:146 src/questsreport.cpp:96 src/stackreport.cpp:121
+msgid "Prev."
+msgstr "पिछला"
+
+#: src/citiesreport.cpp:149 src/questsreport.cpp:99 src/stackreport.cpp:124
+msgid "Next"
+msgstr "अगला"
+
+#: src/cityinfo.cpp:36
+msgid "City info"
+msgstr "शहर की सूचना'"
+
+#: src/cityinfo.cpp:45
+#, c-format
+msgid "Village of %s"
+msgstr "%s का गाँव"
+
+#: src/cityinfo.cpp:48
+#, c-format
+msgid "Town of %s"
+msgstr "%s की बसती"
+
+#: src/cityinfo.cpp:51
+#, c-format
+msgid "City of %s"
+msgstr "%s का शहर"
+
+#: src/cityinfo.cpp:55
+#, fuzzy, c-format
+msgid "Income: %i gold , Defense level : %i"
+msgstr "Income: %i सोना , बचाव level : %i"
+
+#. the basic production buttons
+#: src/cityinfo.cpp:60
+msgid "Basic productions"
+msgstr "Basic productions"
+
+#. set advanced production
+#: src/cityinfo.cpp:93
+msgid "Advanced productions"
+msgstr "Advanced productions"
+
+#. another label telling you where to enter the temple name
+#: src/cityinfo.cpp:118 src/d_buy_production.cpp:58 src/ScenariosDialog.cpp:46
+#: src/editor/ArmyDialog.cpp:47 src/editor/CityDialog.cpp:44
+#: src/editor/CityDialog.cpp:106 src/editor/TempleDialog.cpp:38
+#: src/editor/RuinDialog.cpp:32 src/editor/PlayerDialog.cpp:89
+msgid "Name:"
+msgstr "नाम:"
+
+#: src/cityinfo.cpp:119 src/d_buy_production.cpp:59
+#: src/editor/ArmyDialog.cpp:49 src/editor/CityDialog.cpp:114
+msgid "Duration:"
+msgstr "Duration:"
+
+#: src/cityinfo.cpp:120 src/d_buy_production.cpp:64
+#: src/editor/ArmyDialog.cpp:55 src/editor/CityDialog.cpp:108
+msgid "Strength:"
+msgstr "दम:"
+
+#: src/cityinfo.cpp:121 src/d_buy_production.cpp:65
+#: src/editor/ArmyDialog.cpp:57 src/editor/CityDialog.cpp:110
+msgid "Ranged:"
+msgstr "Ranged"
+
+#: src/cityinfo.cpp:122 src/d_buy_production.cpp:61
+#: src/editor/ArmyDialog.cpp:66
+msgid "Moves:"
+msgstr "चाल:"
+
+#: src/cityinfo.cpp:123 src/d_buy_production.cpp:60
+#: src/editor/ArmyDialog.cpp:53 src/editor/CityDialog.cpp:116
+msgid "Upkeep:"
+msgstr "Upkeep:"
+
+#: src/cityinfo.cpp:132
+msgid "Upgrade"
+msgstr "Upgrade"
+
+#: src/cityinfo.cpp:133 src/cityinfo.cpp:239 src/VectorDialog.cpp:33
+#, fuzzy
+msgid "Vectoring"
+msgstr "माहिर"
+
+#: src/cityinfo.cpp:134 src/editor/CityDialog.cpp:151
+msgid "Buy Basic"
+msgstr "Buy Basic"
+
+#: src/cityinfo.cpp:135 src/editor/CityDialog.cpp:156
+msgid "Buy Advanced"
+msgstr "Buy Advanced"
+
+#: src/cityinfo.cpp:136 src/QuestCompletedDialog.cpp:97
+#: src/QuestExpiredDialog.cpp:73 src/RuinSearchDialog.cpp:46
+msgid "Close"
+msgstr "बंद"
+
+#: src/cityinfo.cpp:185
+msgid "Upgrade City"
+msgstr "Upgrade City"
+
+#: src/cityinfo.cpp:197
+#, fuzzy, c-format
+msgid "Do you want to upgrade the city level for %i gold?"
+msgid_plural "Do you want to upgrade the city level for %i gold?"
+msgstr[0] "Vuoi fortificare la citta' per %i moneta d'oro?"
+msgstr[1] "Vuoi fortificare la citta' per %i monete d'oro?"
+
+#: src/cityinfo.cpp:203
+msgid "Upgrade city"
+msgstr "Migliora la शहर'"
+
+#: src/cityinfo.cpp:204 src/cityinfo.cpp:289 src/cityinfo.cpp:449
+#: src/ruininfo.cpp:48 src/editor/MainScreen.cpp:106
+#: src/editor/MainScreen.cpp:139 src/editor/CityDialog.cpp:352
+#: src/editor/PlayerDialog.cpp:173 src/editor/EventDialog.cpp:249
+msgid "Yes"
+msgstr "हाँ"
+
+#: src/cityinfo.cpp:204 src/cityinfo.cpp:290 src/cityinfo.cpp:450
+#: src/ruininfo.cpp:48 src/editor/MainScreen.cpp:107
+#: src/editor/MainScreen.cpp:140 src/editor/CityDialog.cpp:353
+#: src/editor/PlayerDialog.cpp:174 src/editor/EventDialog.cpp:250
+msgid "No"
+msgstr "नहीं"
+
+#: src/cityinfo.cpp:211
+#, c-format
+msgid "Income: %i gold coins , Defense level : %i"
+msgstr "आमदनी: %i सोना ,  बचाव: %i"
+
+#: src/cityinfo.cpp:240
+#, fuzzy
+msgid "No production selected!"
+msgstr "Nessuno slot di produzione disponibile"
+
+#: src/cityinfo.cpp:275 src/cityinfo.cpp:435
+msgid "No free production"
+msgstr "No free production"
+
+#: src/cityinfo.cpp:276 src/cityinfo.cpp:436
+msgid ""
+"There are no free production slots available. Select the one you want to "
+"have replaced or upgrade the city first."
+msgstr ""
+"Non c'e' nessuno slot disponibile per la produzione. Seleziona quello che "
+"vuoi rimpiazzare o prima fortifica la citta'."
+
+#: src/cityinfo.cpp:284 src/cityinfo.cpp:444
+#, c-format
+msgid "Do you really want to replace production \"%s\"?"
+msgstr "Vuoi veramente rimpiazzare la produzione \"%s\"?"
+
+#: src/cityinfo.cpp:288 src/cityinfo.cpp:448
+msgid "No free production slot"
+msgstr "Nessuno slot di produzione disponibile"
+
+#: src/cityinfo.cpp:297
+msgid "Player::city_buyBasicProduction returned false where it shouldn't "
+msgstr ""
+"Player::city_buyBasic_production ha ritornato false dove non avrebbe dovuto"
+
+#: src/cityinfo.cpp:457
+msgid "Player::city_buyAdvancedProduction returned false where it shouldn't "
+msgstr ""
+"Player::city_buyAdvanced_production ha ritornato false dove non avrebbe "
+"dovuto"
+
+#: src/CityOccupationDialog.cpp:32
+msgid "Defeated city"
+msgstr "Defeated शहर"
+
+#: src/CityOccupationDialog.cpp:37
+msgid "Choose your way!"
+msgstr "Scgli la tua strada1"
+
+#: src/CityOccupationDialog.cpp:47
+msgid "Occupy"
+msgstr "कबज़ा"
+
+#: src/CityOccupationDialog.cpp:48
+msgid "Raze"
+msgstr "Distruggi"
+
+#: src/CityOccupationDialog.cpp:54
+msgid "Pillage"
+msgstr "लूटो"
+
+#: src/Configuration.cpp:73
+msgid "Found configuration file: "
+msgstr "Ho trovato un file di configurazione: "
+
+#: src/Configuration.cpp:117
+#, fuzzy
+msgid "Configuration: Something went wrong while saving.\n"
+msgstr "GameScenario: Qualcosa e' andato male durante il salvataggio.\n"
+
+#: src/Configuration.cpp:138
+#, fuzzy
+msgid "Configuration file has wrong version, we want "
+msgstr "il file di salvatagio ha una versione sbagliata, vogliamo "
+
+#: src/Configuration.cpp:140
+#, fuzzy
+msgid "Configuration file offers "
+msgstr "Ho trovato un file di configurazione: "
+
+#. #ifndef __WIN32__
+#. string orig = "./"+s_filename;
+#. string dest = "./"+s_filename+".OLD";
+#. #else
+#. string orig = string(getenv("HOME"))+s_filename;
+#. string dest = string(getenv("HOME"))+s_filename+".OLD";
+#. #endif
+#: src/Configuration.cpp:151
+msgid "I make a backup copy from "
+msgstr ""
+
+#: src/CreateScenario.cpp:180
+msgid "CreateScenario:: wrong size given\n"
+msgstr "CreateScenario:: fornita una size sbagliata\n"
+
+#: src/CreateScenario.cpp:276
+msgid "Creating map"
+msgstr "नकशा बना रहा"
+
+#: src/CreateScenario.cpp:280
+msgid "Distributing players"
+msgstr "Stro distribuendo i giocatori"
+
+#: src/CreateScenario.cpp:284
+msgid "Setting up cities"
+msgstr "Sto posizionando le citta'"
+
+#: src/CreateScenario.cpp:288
+msgid "Setting up temples"
+msgstr "Sto posizionando i tempi."
+
+#: src/CreateScenario.cpp:292
+msgid "Setting up ruins"
+msgstr "Sto posizionando le rovine"
+
+#: src/CreateScenario.cpp:296
+msgid "Setting up players"
+msgstr "Sto impostando i giocatori."
+
+#: src/CreateScenario.cpp:300
+msgid "Setting up victory conditions"
+msgstr "Sto impostando le condizioni per la vittoria"
+
+#: src/CreateScenario.cpp:692
+msgid "Critical Error: Couldn't open citynames data file\n"
+msgstr "Errore Critico: non ho potuto aprire il file dei nomi delle citta'\n"
+
+#: src/d_buy_production.cpp:27
+msgid "Buy Production"
+msgstr "Compra la produzione"
+
+#: src/d_buy_production.cpp:62
+msgid "Production cost:"
+msgstr "Costo di prod. :"
+
+#: src/d_buy_production.cpp:66 src/editor/ArmyDialog.cpp:60
+msgid "Shots:"
+msgstr "Colpi:"
+
+#: src/d_buy_production.cpp:67 src/editor/ArmyDialog.cpp:62
+#: src/editor/CityDialog.cpp:112
+msgid "Defense:"
+msgstr "बचाव:"
+
+#: src/d_buy_production.cpp:68
+msgid "Hitpoints:"
+msgstr "Punti ferita:"
+
+#: src/d_buy_production.cpp:70
+msgid "Buy"
+msgstr "Compra"
+
+#. place the cancel button
+#: src/d_buy_production.cpp:71 src/OptionsDialog.cpp:92
+#: src/PG_FileDialog.cpp:45 src/splash.cpp:271 src/ScenariosDialog.cpp:70
+#: src/editor/ArmyDialog.cpp:106 src/editor/SelectionDialog.cpp:36
+msgid "Cancel"
+msgstr "Annulla"
+
+#: src/d_buy_production.cpp:114
+#, c-format
+msgid "Duration: %i"
+msgstr "Daurata: %i"
+
+#: src/d_buy_production.cpp:116
+#, c-format
+msgid "Strength: %i"
+msgstr "दम: %i"
+
+#: src/d_buy_production.cpp:118
+#, c-format
+msgid "Ranged: %i"
+msgstr "A Distanza: %i"
+
+#: src/d_buy_production.cpp:120
+#, c-format
+msgid "Shots: %i"
+msgstr "Colpi : %i"
+
+#: src/d_buy_production.cpp:122
+#, c-format
+msgid "Defense: %i"
+msgstr "बचाव: %i"
+
+#: src/d_buy_production.cpp:124
+#, c-format
+msgid "Hitpoints: %i"
+msgstr "Punti ferita: %i"
+
+#: src/d_buy_production.cpp:126
+#, c-format
+msgid "Moves: %i"
+msgstr "चाल : %i"
+
+#: src/d_buy_production.cpp:130
+#, c-format
+msgid "Production cost: %i"
+msgstr "Costo di prod. : %i"
+
+#: src/File.cpp:34
+msgid "ERROR: Couldn't load image "
+msgstr "ERRORE: non ho potuto caricare l'immagine "
+
+#: src/File.cpp:72
+msgid "Couldn't find a single armyset!"
+msgstr "Non sono riuscito a trovare nemmeno un armyset!"
+
+#: src/File.cpp:73 src/File.cpp:193 src/File.cpp:236
+msgid "Please check the path settings in /etc/freelordsrc or ~/.freelordsrc"
+msgstr "Per piacere controlla il path in /etc/freelordsrc o ~/.freelordsrc"
+
+#: src/File.cpp:74 src/File.cpp:194
+msgid "Exiting!"
+msgstr "Sto Uscendo!"
+
+#: src/File.cpp:192
+msgid "Couldn't find a single tileset!"
+msgstr "Non sono riuscito a trovare nemmeno un tileset!"
+
+#: src/File.cpp:235
+#, fuzzy
+msgid "Couldn't find a single map!"
+msgstr "Non sono riuscito a trovare nemmeno un armyset!"
+
+#: src/GameMap.cpp:152
+msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
+msgstr "Errore nella GameMap::fillMap la size non corrisponde!! Sto Uscendo.\n"
+
+#: src/GamePreferencesDialog.cpp:41
+msgid "player's turn"
+msgstr "player's turn"
+
+#: src/GamePreferencesDialog.cpp:42
+msgid "new round"
+msgstr "new round"
+
+#: src/GamePreferencesDialog.cpp:44
+msgid "Type"
+msgstr "Type"
+
+#: src/GamePreferencesDialog.cpp:45
+msgid "Name"
+msgstr "नाम"
+
+#: src/GamePreferencesDialog.cpp:46
+msgid "Armyset"
+msgstr "Armyset"
+
+#: src/GamePreferencesDialog.cpp:69
+msgid "Random"
+msgstr "Random"
+
+#: src/GamePreferencesDialog.cpp:71
+msgid "Load Map"
+msgstr "Load Map"
+
+#. choose tileset and turn mode
+#: src/GamePreferencesDialog.cpp:75
+msgid "Choose Tileset"
+msgstr "Choose Tileset"
+
+#: src/GamePreferencesDialog.cpp:81
+msgid "Process armies at beginning of"
+msgstr "rocess armies at beginning of"
+
+#: src/GamePreferencesDialog.cpp:88
+msgid "Browse"
+msgstr "Browse"
+
+#: src/GamePreferencesDialog.cpp:102 src/MainWindow.cpp:47
+#: src/editor/MapGenDialog.cpp:22
+msgid "Cities"
+msgstr "Cities'"
+
+#: src/GamePreferencesDialog.cpp:104 src/editor/MapGenDialog.cpp:27
+msgid "Ruins"
+msgstr "खंडर"
+
+#: src/GamePreferencesDialog.cpp:106 src/editor/MapGenDialog.cpp:25
+msgid "Temples"
+msgstr "मंदिर"
+
+#: src/GamePreferencesDialog.cpp:108
+msgid "Start Game"
+msgstr "Inizia il Gioco"
+
+#: src/GamePreferencesDialog.cpp:109
+msgid "Back to main menu"
+msgstr ""
+
+#. the buttons for the map size
+#: src/GamePreferencesDialog.cpp:112
+msgid "Normal size"
+msgstr "Dim. normale"
+
+#: src/GamePreferencesDialog.cpp:114
+msgid "Small size"
+msgstr "Dim. piccola"
+
+#: src/GamePreferencesDialog.cpp:116
+msgid "Tiny size"
+msgstr "Dim. minima"
+
+#: src/GameScenario.cpp:147
+msgid "Autosave failed.\n"
+msgstr ""
+
+#: src/GameScenario.cpp:154
+msgid "Error while trying to rename the temporary file to autosave.sav\n"
+msgstr ""
+
+#: src/GameScenario.cpp:155
+#, fuzzy
+msgid "Error: "
+msgstr "Errore"
+
+#: src/GameScenario.cpp:168
+msgid "The Filename is well formed"
+msgstr "Il nome del file di salvataggio e' ben formato"
+
+#: src/GameScenario.cpp:173
+msgid "The Filename lacks the extension --> "
+msgstr "Il nome del file di salvataggio non ha l'estensione --> "
+
+#: src/GameScenario.cpp:210 src/GameScenario.cpp:221
+msgid "GameScenario: Something went wrong with saving.\n"
+msgstr "GameScenario: Qualcosa e' andato male durante il salvataggio.\n"
+
+#: src/GameScenario.cpp:231 src/ScenariosDialog.cpp:173
+msgid "savefile has wrong version, we want "
+msgstr "il file di salvatagio ha una versione sbagliata, vogliamo "
+
+#: src/GameScenario.cpp:233 src/ScenariosDialog.cpp:175
+msgid "savefile offers "
+msgstr "il file di salvataggio offre "
+
+#: src/goldreport.cpp:22
+#, fuzzy
+msgid "Gold report"
+msgstr "सवर्ण मुर्दा report"
+
+#: src/goldreport.cpp:29
+msgid "Player's gold ressources:"
+msgstr "Player's सवर्ण ressources:"
+
+#: src/GraphicsCache.cpp:211
+msgid "GraphicsCache: wanted to get city pic without player. Exiting...\n"
+msgstr ""
+"GraphicsCache: ho tentato di prendere un 'immagine della citta' senza "
+"giocatore. Esco...\n"
+
+#: src/GraphicsCache.cpp:244
+msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
+msgstr "GraphicsCache::getFlagPic: nessun gruppo come argomento! Esco...\n"
+
+#: src/hero_offer.cpp:36
+msgid "Hero offer"
+msgstr "Offerta di un eroe"
+
+#: src/hero_offer.cpp:52
+msgid "Accept"
+msgstr "Accetta"
+
+#: src/hero_offer.cpp:55
+msgid "Reject"
+msgstr "Rifiuta"
+
+#: src/hero_offer.cpp:65
+msgid "A hero wants to join you"
+msgstr "Un eroe vuole unirsi a te"
+
+#: src/hero_offer.cpp:66
+#, c-format
+msgid "for %i gold"
+msgstr "for %i सवर्ण"
+
+#: src/hero_offer.cpp:70
+msgid "A hero wants to join for free!"
+msgstr "Un eroe vuole unirsi a te gratuitamente!"
+
+#: src/ItemDialog.cpp:52
+msgid "weapon"
+msgstr "weapon"
+
+#: src/ItemDialog.cpp:56
+msgid "armour"
+msgstr "armour"
+
+#: src/ItemDialog.cpp:60
+msgid "shield"
+msgstr "shield"
+
+#: src/ItemDialog.cpp:64
+msgid "accessoire"
+msgstr "Accessorio"
+
+#. On the right side, display the backpack.
+#: src/ItemDialog.cpp:69
+msgid "Backpack"
+msgstr "Zaino"
+
+#: src/ItemDialog.cpp:70 src/ItemDialog.cpp:80 src/editor/PlayerDialog.cpp:49
+msgid "prev"
+msgstr "Precedente"
+
+#: src/ItemDialog.cpp:76 src/ItemDialog.cpp:86 src/editor/PlayerDialog.cpp:53
+msgid "next"
+msgstr "अगला"
+
+#. On the bottom, display the items on the ground.
+#: src/ItemDialog.cpp:79
+msgid "Ground"
+msgstr "Terreno"
+
+#: src/ItemDialog.cpp:555
+#, c-format
+msgid "+%i strength"
+msgstr "दम +%i"
+
+#: src/ItemDialog.cpp:560
+#, c-format
+msgid "%i strength"
+msgstr "%i दम"
+
+#: src/ItemDialog.cpp:572
+#, c-format
+msgid "+%i defense"
+msgstr "बचाव +%i"
+
+#: src/ItemDialog.cpp:577
+#, c-format
+msgid "%i defense"
+msgstr "%i बचाव"
+
+#: src/ItemDialog.cpp:589 src/ItemDialog.cpp:627
+#, c-format
+msgid "+%i vitality"
+msgstr "जीवनांक' +%i"
+
+#: src/ItemDialog.cpp:594 src/ItemDialog.cpp:632
+#, c-format
+msgid "%i vitality"
+msgstr "जीवनांक' %i"
+
+#: src/ItemDialog.cpp:608
+#, c-format
+msgid "+%i hitpoints"
+msgstr "+%i hitpoints"
+
+#: src/ItemDialog.cpp:613
+#, c-format
+msgid "%i hitpoints"
+msgstr "%i hitpoints"
+
+#: src/ItemDialog.cpp:649
+msgid "move on water"
+msgstr "move on water"
+
+#: src/ItemDialog.cpp:657
+msgid "move through forest"
+msgstr "move through forest"
+
+#: src/ItemDialog.cpp:665
+msgid "move over hills"
+msgstr "move over पहाड"
+
+#: src/ItemDialog.cpp:673
+msgid "move through swamp"
+msgstr "move through swamp"
+
+#: src/ItemDialog.cpp:687
+msgid "double strength against cavalry"
+msgstr "double strength against cavalry"
+
+#: src/ItemDialog.cpp:695
+msgid "can deal instant death"
+msgstr "can deal instant death"
+
+#: src/Itemlist.cpp:34
+msgid "Could not parse items description file. Exiting!\n"
+msgstr "Could not parse items description file. Exiting!\n"
+
+#: src/main.cpp:47 src/editor/main.cpp:42
+msgid "No modes available!\n"
+msgstr "No modes available!\n"
+
+#: src/main.cpp:54 src/editor/main.cpp:49
+msgid "All resolutions available.\n"
+msgstr "All resolutions available.\n"
+
+#. Print valid modes
+#: src/main.cpp:60 src/editor/main.cpp:55
+msgid ""
+"\n"
+"Available Modes\n"
+msgstr ""
+"\n"
+"Available Modes\n"
+
+#: src/main.cpp:64 src/editor/main.cpp:59
+msgid "Resolution = "
+msgstr "Resolution = "
+
+#: src/main.cpp:68
+msgid "You need at least 800 x 600 resolution to run FreeLords!\n"
+msgstr "You need at least 800 x 600 resolution to run FreeLords!\n"
+
+#: src/main.cpp:102 src/main.cpp:136 src/editor/main.cpp:93
+#: src/editor/main.cpp:127
+#, fuzzy
+msgid "Couldn't find any good configuration file...trying auto-configuration."
+msgstr "Couldn't find any configuration file...trying auto-configuration."
+
+#: src/main.cpp:108 src/main.cpp:142 src/editor/main.cpp:99
+#: src/editor/main.cpp:133
+#, fuzzy
+msgid "Couldn't save the new configuration file..."
+msgstr "Ho trovato un file di configurazione: "
+
+#: src/main.cpp:109 src/main.cpp:143 src/editor/main.cpp:100
+#: src/editor/main.cpp:134
+msgid "Check permissions of your home directory....aborting!\n"
+msgstr ""
+
+#: src/main.cpp:113 src/main.cpp:146 src/editor/main.cpp:104
+#: src/editor/main.cpp:137
+#, fuzzy
+msgid "Created the standard configuration file "
+msgstr "Ho trovato un file di configurazione: "
+
+#: src/main.cpp:125 src/editor/main.cpp:116
+msgid "Couldn't create save game directory "
+msgstr "Couldn't create save game directory "
+
+#: src/main.cpp:127 src/editor/main.cpp:118
+msgid "Check permissions and the entries in your freelordsrc file!\n"
+msgstr "Check permissions and the entries in your freelordsrc file!\n"
+
+#: src/main.cpp:171
+msgid "non-numerical value for cache size\n"
+msgstr "non-numerical value for cache size\n"
+
+#: src/main.cpp:215 src/editor/main.cpp:181
+msgid "Available parameters:"
+msgstr "Available parameters:"
+
+#: src/main.cpp:216 src/editor/main.cpp:182
+msgid "-h,      --help             Shows this help screen\n"
+msgstr "-h,      --help             Shows this help screen\n"
+
+#: src/main.cpp:217
+msgid "-r1600                      Resolution set to 1600x1200"
+msgstr "-r1600                      Resolution set to 1600x1200"
+
+#: src/main.cpp:218
+msgid "-r1400                      Resolution set to 1400x1050"
+msgstr "-r1400                      Resolution set to 1400x1050"
+
+#: src/main.cpp:219 src/editor/main.cpp:183
+msgid "-r1280                      Resolution set to 1280x1024"
+msgstr "-r1280                      Resolution set to 1280x1024"
+
+#: src/main.cpp:220 src/editor/main.cpp:184
+msgid "-r1024                      Resolution set to 1024x786"
+msgstr "-r1024                      Resolution set to 1024x786"
+
+#: src/main.cpp:221 src/editor/main.cpp:185
+msgid "-r800                       Resolution set to 800x600"
+msgstr "-r800                       Resolution set to 800x600"
+
+#: src/main.cpp:222
+#, fuzzy
+msgid "-f,      --fullscreen       Fullscreen mode"
+msgstr "-f,      --fullscreen         Fullscreen mode"
+
+#: src/main.cpp:223
+msgid "-c <size>                   set the maximum cache size"
+msgstr "-c <size>                   set the maximum cache size"
+
+#: src/main.cpp:224
+msgid "-t,      --test             Starting with a test-scenario"
+msgstr "-t,      --test             Starting with a test-scenario"
+
+#: src/main.cpp:230 src/editor/main.cpp:187
+msgid "Please send bug reports to ulf82@users.sf.net"
+msgstr "Please send bug reports to ulf82@users.sf.net"
+
+#: src/main.cpp:242
+msgid "Detected GGZ Gaming Zone environment"
+msgstr ""
+
+#: src/main.cpp:263 src/editor/main.cpp:206
+msgid "Unable to load theme: "
+msgstr "Unable to load theme: "
+
+#: src/main.cpp:276 src/editor/main.cpp:219
+msgid "no resolution provided: guessing"
+msgstr "no resolution provided: guessing"
+
+#: src/main.cpp:295 src/editor/main.cpp:238
+msgid "Using resolution: "
+msgstr "Using resolution: "
+
+#: src/main.cpp:305 src/editor/main.cpp:247
+msgid "Couldn't initialize X Windowing System\n"
+msgstr "Couldn't initialize X Windowing System\n"
+
+#: src/MainWindow.cpp:39 src/editor/MainScreen.cpp:52
+msgid "Load"
+msgstr "Load"
+
+#: src/MainWindow.cpp:40 src/OptionsDialog.cpp:96 src/PG_FileDialog.cpp:43
+#: src/PG_FileDialog.cpp:61 src/editor/MainScreen.cpp:53
+#: src/editor/MainScreen.cpp:186 src/editor/MainScreen.cpp:194
+#: src/editor/MainScreen.cpp:221 src/editor/MainScreen.cpp:231
+msgid "Save"
+msgstr "Save"
+
+#: src/MainWindow.cpp:41 src/editor/MainScreen.cpp:54
+msgid "Save as"
+msgstr "Save as"
+
+#: src/MainWindow.cpp:43 src/splash.cpp:90 src/splash.cpp:184
+#: src/editor/MainScreen.cpp:55
+msgid "Quit"
+msgstr "Quit"
+
+#: src/MainWindow.cpp:46
+msgid "Armies"
+msgstr "Armies"
+
+#: src/MainWindow.cpp:48
+msgid "Gold"
+msgstr "सोना"
+
+#: src/MainWindow.cpp:49
+msgid "Quests"
+msgstr "Quests"
+
+#: src/MainWindow.cpp:52
+msgid "Game options"
+msgstr "Game options"
+
+#: src/MainWindow.cpp:57 src/MainWindow.cpp:64
+msgid "Help"
+msgstr "Help"
+
+#: src/MainWindow.cpp:61 src/editor/MainScreen.cpp:56
+msgid "File"
+msgstr "File"
+
+#: src/MainWindow.cpp:62 src/editor/MainScreen.cpp:74
+msgid "Reports"
+msgstr "Reports"
+
+#: src/MainWindow.cpp:63
+msgid "Options"
+msgstr "Options"
+
+#: src/MainWindow.cpp:227 src/MainWindow.cpp:302
+msgid "Freelords savegames"
+msgstr "Freelords savegames"
+
+#: src/MainWindow.cpp:245
+msgid "Couldn't load savefile "
+msgstr "Couldn't load savefile "
+
+#: src/MainWindow.cpp:245 src/editor/MainScreen.cpp:165
+msgid ". Bailing out.\n"
+msgstr ". Bailing out.\n"
+
+#: src/MainWindow.cpp:275 src/MainWindow.cpp:283 src/MainWindow.cpp:315
+#: src/MainWindow.cpp:326
+#, fuzzy
+msgid "Save Game"
+msgstr "Save as"
+
+#: src/MainWindow.cpp:276 src/MainWindow.cpp:316
+msgid "Game Saved."
+msgstr "Game Saved."
+
+#: src/MainWindow.cpp:284 src/MainWindow.cpp:327
+msgid "Error saving. Game not saved"
+msgstr "Error saving. Game not saved"
+
+#: src/MainWindow.cpp:444
+msgid "not implemented yet\n"
+msgstr "not implemented yet\n"
+
+#: src/MapCreationDialog.cpp:25
+msgid "Creating Map"
+msgstr "Creating Map"
+
+#: src/MapCreationDialog.cpp:28
+msgid "Generating random map"
+msgstr "genero la mappa casuale"
+
+#: src/MapGenerator.cpp:154
+msgid "Making random map"
+msgstr "genero la mappa casuale"
+
+#. create the terrain
+#: src/MapGenerator.cpp:157
+msgid "Flatening Plains  ... 10%"
+msgstr "Genero le pianure .. 10%"
+
+#: src/MapGenerator.cpp:159
+msgid "Raining Water     ... 30%"
+msgstr "Genero l'acqua   ... 30%"
+
+#: src/MapGenerator.cpp:161
+msgid "Raising Hills     ... 20%"
+msgstr "Genero le पहाड .. 20%"
+
+#: src/MapGenerator.cpp:163
+msgid "Raising Mountains ... 30%"
+msgstr "Genero le montagne .. 30%"
+
+#: src/MapGenerator.cpp:165
+msgid "Planting Forest   ... 40%"
+msgstr "Pianto le foreste .. 40%"
+
+#: src/MapGenerator.cpp:167
+msgid "Watering Swamps   ... 50%"
+msgstr "Genero le paludi ... 50%"
+
+#: src/MapGenerator.cpp:169
+msgid "Normalizing       ... 60%"
+msgstr "Normalizzo la mappa  60%"
+
+#. place buildings
+#: src/MapGenerator.cpp:178
+msgid "Building Cities   ... 70%"
+msgstr "Costruisco le Citta' 70%"
+
+#: src/MapGenerator.cpp:180
+msgid "Ruining Ruins     ... 80%"
+msgstr "Posiziono खंडर  80%"
+
+#: src/MapGenerator.cpp:182
+msgid "Spawning temples  ... 90%"
+msgstr "Spawning मंदिर  ... 90%"
+
+#: src/MapGenerator.cpp:184
+msgid "Done making map   ... 100%"
+msgstr "Done making map   ... 100%"
+
+#: src/OptionsDialog.cpp:31
+msgid "Game settings"
+msgstr "Game settings"
+
+#: src/OptionsDialog.cpp:42
+msgid "Video"
+msgstr ""
+
+#: src/OptionsDialog.cpp:43
+msgid "Audio"
+msgstr ""
+
+#: src/OptionsDialog.cpp:44
+msgid "Misc"
+msgstr ""
+
+#. now the other items. First, the items for video mode
+#: src/OptionsDialog.cpp:48
+msgid "Fullscreen"
+msgstr "Fullscreen"
+
+#. next, the elements for audio setup (TBD)
+#: src/OptionsDialog.cpp:66
+msgid "Enable music"
+msgstr ""
+
+#: src/OptionsDialog.cpp:70
+#, fuzzy
+msgid "Volume:"
+msgstr "Benedizione"
+
+#. finally, the general things
+#: src/OptionsDialog.cpp:74
+msgid "Smooth scrolling"
+msgstr "Smooth scrolling"
+
+#: src/OptionsDialog.cpp:75
+msgid "Show next player popup"
+msgstr "Show next player popup"
+
+#: src/OptionsDialog.cpp:76
+#, fuzzy
+msgid "Delay:"
+msgstr "Giocatore:"
+
+#: src/PG_FileDialog.cpp:16
+msgid "Look in:"
+msgstr "Guarda in:"
+
+#: src/PG_FileDialog.cpp:16
+msgid "Save in:"
+msgstr "Salva in:"
+
+#. labels
+#: src/PG_FileDialog.cpp:29
+msgid "File name:"
+msgstr "Nome del file:"
+
+#: src/PG_FileDialog.cpp:30
+msgid "File type:"
+msgstr "Tipo del File:"
+
+#. FIXME: to prevent strange bugs: disable the filterdrop
+#. my_filterdrop->sigSelectItem.connect(slot(*this, &PG_FileDialog::filter_select_handler));
+#. ok.cancle btns
+#: src/PG_FileDialog.cpp:43 src/PG_FileDialog.cpp:61
+msgid "Open"
+msgstr "Apri"
+
+#. up a dir
+#: src/PG_FileDialog.cpp:48
+msgid "U"
+msgstr "U"
+
+#: src/PG_FileDialog.cpp:83
+#, c-format
+msgid "Directory '%s' does not exist or has wrong permissions\n"
+msgstr "La directory '%s' non esiste o non ci sono i permessi!\n"
+
+#: src/PG_FileDialog.cpp:158 src/PG_FileDialog.cpp:214
+#, c-format
+msgid "Cannot add directory '%s' to the archive"
+msgstr "Non posso aggiungere la dir '%s' all'archivio"
+
+#: src/player_preferences.cpp:28 src/player_preferences.cpp:46
+#: src/editor/PlayerDialog.cpp:63 src/editor/PlayerDialog.cpp:315
+msgid "Human"
+msgstr "Umano"
+
+#: src/player_preferences.cpp:29 src/player_preferences.cpp:93
+#: src/player_preferences.cpp:98
+msgid "Easy"
+msgstr "Semplice"
+
+#: src/player_preferences.cpp:30 src/player_preferences.cpp:50
+#: src/player_preferences.cpp:93
+msgid "Smart"
+msgstr "Avanzato"
+
+#: src/player_preferences.cpp:114
+msgid "User selected wrong armytype ????\n"
+msgstr "L'utente ha selezioneto il tipo di armata sbagliato????\n"
+
+#: src/QEnemyArmies.cpp:72
+#, c-format
+msgid "You have killed %i so far."
+msgstr "Hai ucciso %i armate fino ad ora."
+
+#: src/QEnemyArmies.cpp:79
+#, c-format
+msgid "You have managed to slaughter %i army."
+msgid_plural "You have managed to slaughter %i armies."
+msgstr[0] "Sei riuscito ad uccidere %i armata."
+msgstr[1] "Sei riuscito ad uccidere %i armate."
+
+#: src/QEnemyArmies.cpp:83
+msgid "Well done!"
+msgstr "Ben fatto!"
+
+#: src/QEnemyArmies.cpp:117
+#, c-format
+msgid "You must destroy %i unit of enemy armies"
+msgid_plural "You must destroy %i units of enemy armies"
+msgstr[0] "Devi distruggere %i unita' delle armate nemiche"
+msgstr[1] "Devi distruggere %i unita' delle armate nemiche"
+
+#: src/QKillHero.cpp:85
+msgid "You're still searching for him..."
+msgstr " Lo stai ancora cercando..."
+
+#: src/QKillHero.cpp:91
+msgid "Seen lately near ("
+msgstr "Avvistato vicino ("
+
+#: src/QKillHero.cpp:100
+#, c-format
+msgid "You slayed the wicked hero %s. He deserved that!"
+msgstr "Hai ucciso il crudele eroe %s. Se lo meritava!"
+
+# c-format
+#: src/QKillHero.cpp:107
+#, c-format
+msgid "You could not slay the wicked hero %s"
+msgstr "Non sei riuscito ad uccidere il crudele eroe %s"
+
+#: src/QKillHero.cpp:111
+msgid "He was slain by other fellows!"
+msgstr "E' stato ucciso da un altro gruppo di armate!"
+
+#: src/QKillHero.cpp:149
+#, c-format
+msgid "Kill the hero named %s, servant of player %s"
+msgstr "Uccidi l'eroe chiamato %s, servitore del giocatore %s"
+
+#: src/QRuinSearch.cpp:81
+msgid "You aren't afraid of doing it, do you?"
+msgstr "Non hai paura di farlo, giusto?"
+
+#: src/QRuinSearch.cpp:86
+msgid "The priests thank you for exploring this gloomy place."
+msgstr "I monaci ti ringraziano per aver esplorato questa tenebrosa locazione."
+
+#: src/QRuinSearch.cpp:87
+msgid "Now they can set a temple here."
+msgstr "Ora potranno costruirci un मंदिर."
+
+#: src/QRuinSearch.cpp:95
+#, c-format
+msgid "You failed searching the ruin \"%s\"."
+msgstr "Hai fallito nel tentitivo di cercare nella rovina \"%s\"."
+
+#: src/QRuinSearch.cpp:97
+msgid "Others had more courage!"
+msgstr "Altri hanno avuto piu' coraggio di te!"
+
+#: src/QRuinSearch.cpp:136
+#, c-format
+msgid "You must search the ruin \"%s\" located at (%i,%i) near the city of %s"
+msgstr ""
+"Devi cervare nella rovina \"%s\"  alla posizione (%i,%i) vicino la citta' di "
+"%s"
+
+#: src/QuestCompletedDialog.cpp:39
+msgid "CONGRATULATIONS!"
+msgstr "CONGRATULAZIONI!"
+
+#: src/QuestCompletedDialog.cpp:49
+#, c-format
+msgid "Your Hero %s completed the quest."
+msgstr "Il tuo eroe %s ha completato la quest."
+
+#: src/QuestCompletedDialog.cpp:87
+#, c-format
+msgid "You have been rewarded with %i gold piece!"
+msgid_plural "You have been rewarded, with %i gold pieces!"
+msgstr[0] "Ti hanno ricompensato con %i सोना!"
+msgstr[1] "Ti hanno ricompensato con %i सोना!"
+
+#: src/QuestExpiredDialog.cpp:39
+msgid "SORRY FOR YOU!"
+msgstr "SPIACENTE!"
+
+#: src/QuestExpiredDialog.cpp:49
+#, c-format
+msgid "Your Hero %s did not complete the quest."
+msgstr "Il tuo Eroe %s non ha completato la quest."
+
+#: src/questsreport.cpp:90
+msgid "Quests report"
+msgstr "Resoconto sulle quest"
+
+#: src/questsreport.cpp:168
+#, c-format
+msgid "No quests for %s"
+msgstr "Nessuna quest per %s"
+
+#: src/real_player.cpp:652
+msgid "Error: searching stack and ruin to be searched not on same position\n"
+msgstr ""
+"Errore: il gruppo che esplora e la rovina che viene esplorata non sono nella "
+"stessa posizione\n"
+
+#: src/real_player.cpp:703 src/real_player.cpp:729
+msgid "Stack tried to visit temple at wrong location\n"
+msgstr "Il gruppo ha cercato di visitare il मंदिर alla locazione sbagliata\n"
+
+#: src/ruininfo.cpp:41
+msgid "Position:"
+msgstr "Posizione:"
+
+#: src/ruininfo.cpp:46
+msgid "Searched:"
+msgstr "Esplorata:"
+
+#: src/RuinSearchDialog.cpp:29
+msgid "Entering the ruin..."
+msgstr "Stai entrando nelle खंडर..."
+
+#: src/RuinSearchDialog.cpp:34
+msgid "You defeated the monsters"
+msgstr "Hai sconfitto i mostri"
+
+#: src/RuinSearchDialog.cpp:37
+#, c-format
+msgid "and found %i gold piece!"
+msgid_plural "and found %i gold pieces!"
+msgstr[0] "e hai trovato %i सोना!"
+msgstr[1] "e hai trovato %i सोना!"
+
+#: src/splash.cpp:65 src/splash.cpp:174
+msgid "New Campaign"
+msgstr "Nuova Campagna"
+
+#: src/splash.cpp:67 src/splash.cpp:176
+msgid "New Game"
+msgstr "Nuovo Gioco"
+
+#: src/splash.cpp:69 src/splash.cpp:178 src/w_edit.cpp:1101
+msgid "Load Game"
+msgstr "Carica Gioco"
+
+#: src/splash.cpp:71 src/splash.cpp:180 src/ScenariosDialog.cpp:33
+#, fuzzy
+msgid "Load Scenario"
+msgstr "Gestisci le reazioni"
+
+#
+#: src/splash.cpp:81 src/splash.cpp:182
+msgid "New Network Game"
+msgstr "Nuovo Gioco in Rete"
+
+#: src/splash.cpp:83 src/splash.cpp:183
+msgid "Language"
+msgstr "Lingua"
+
+#: src/splash.cpp:307
+msgid "random.map was broken when re-reading. Exiting...\n"
+msgstr "il file random.map e' rovinato (durante la rilettura). Esco...\n"
+
+#: src/splash.cpp:340
+msgid "GGZ initialization failed. Exiting.\n"
+msgstr "inizializzazione della GGZ fallita.Esco\n"
+
+#: src/splash.cpp:358
+msgid "Play on GGZ"
+msgstr "Gioca su GGZ"
+
+#: src/splash.cpp:359
+msgid "Please launch Freelords from a GGZ Gaming Zone client."
+msgstr "Per piacere lancia Freelords da un client GGZ Gaming Zone."
+
+#: src/splash.cpp:389
+msgid "FreeLords savegames"
+msgstr "File di salvataggio di Freelords"
+
+#: src/splash.cpp:407
+#, fuzzy
+msgid ": Could not load savegame.\n"
+msgstr ": Non ho potuto caricare il file di salvataggio. Esco.\n"
+
+#: src/splash.cpp:409 src/splash.cpp:457 src/editor/NewMapDialog.cpp:98
+#: src/editor/CityDialog.cpp:282 src/editor/CityDialog.cpp:316
+msgid "Error"
+msgstr "Errore"
+
+#: src/splash.cpp:410 src/splash.cpp:458
+msgid "An error occured while loading the savegame."
+msgstr ""
+
+#: src/splash.cpp:434
+#, fuzzy
+msgid "Load Scenario Clicked!"
+msgstr "Gestisci le reazioni"
+
+#: src/splash.cpp:455
+#, fuzzy
+msgid ": Could not load scenario.\n"
+msgstr ": Non ho potuto caricare il file di salvataggio. Esco.\n"
+
+#: src/splash.cpp:484
+msgid "Not implemented"
+msgstr "non ancora implementato"
+
+#: src/splash.cpp:485
+msgid "Campaigns are not implemented yet."
+msgstr "Le campagne non sono ancora implementate."
+
+#: src/stackreport.cpp:115
+msgid "stack report"
+msgstr "Resoconto sulle armate"
+
+#: src/w_edit.cpp:483
+#, c-format
+msgid "Turns: %i"
+msgstr "Turni: %i"
+
+#: src/w_edit.cpp:486
+#, c-format
+msgid "Gold: %i"
+msgstr "सोना: %i"
+
+#: src/w_edit.cpp:513
+#, c-format
+msgid "Next Player: %s"
+msgstr "Prossimo giocatore %s"
+
+#: src/w_edit.cpp:532
+#, c-format
+msgid "Hero offer for %s"
+msgstr "Un eroe si offre a %s"
+
+#: src/w_edit.cpp:717
+msgid "Select an action"
+msgstr "Seleziona un'azione"
+
+#: src/w_edit.cpp:718
+msgid "Bless"
+msgstr "Benedizione"
+
+#: src/w_edit.cpp:719
+msgid "Quest"
+msgstr "Quest"
+
+#: src/w_edit.cpp:732
+msgid "Your armies have been blessed."
+msgstr "Le tue armate sono state benedette."
+
+#: src/w_edit.cpp:749
+msgid "Quest - "
+msgstr "Quest - "
+
+#: src/w_edit.cpp:751
+msgid "This hero already has a quest"
+msgstr "Questo eroe ha gia' un'altra quest"
+
+#: src/w_edit.cpp:1102
+#, fuzzy
+msgid "Game Loaded."
+msgstr "Game Saved."
+
+#: src/w_edit.cpp:1190
+msgid "Select the previous stack"
+msgstr "Seleziona il precedente gruppo di armate"
+
+#: src/w_edit.cpp:1192
+msgid "Select the next stack"
+msgstr "Seleziona il अगला gruppo di armate"
+
+#: src/w_edit.cpp:1194
+msgid "Select the next stack that can move"
+msgstr "Seleziona il अगला gruppo di armate che abbia punti movimento"
+
+#: src/w_edit.cpp:1196
+msgid "Let the selected stack move to destination"
+msgstr "Muovi il gruppo di armate verso la destinazione"
+
+#: src/w_edit.cpp:1198
+msgid "Let all stacks move to their destinations"
+msgstr "Muovi tutti i possibili gruppi di armate verso la loro destinazione"
+
+#: src/w_edit.cpp:1200
+msgid "Center window on selected stack"
+msgstr "Centra la finestra sul gruppo di armate"
+
+#: src/w_edit.cpp:1202
+msgid "Let the stack defend"
+msgstr "Fai difendere il gruppo di armate"
+
+#: src/w_edit.cpp:1204
+msgid "Let the stack defend and select the next stack"
+msgstr "Fai difendere il gruppo di armate e seleziona il prossimo gruppo"
+
+#: src/w_edit.cpp:1206
+msgid "Let the stack defend and select the next stack that can move"
+msgstr ""
+"Fai difendere il gruppo di armate e seleziona il prossimo gruppo che abbia "
+"punti movimento"
+
+#: src/w_edit.cpp:1208
+msgid "Search a ruin or a temple"
+msgstr "Cerca in una खंडर o un मंदिर"
+
+#: src/w_edit.cpp:1210
+msgid "Next turn"
+msgstr "Turno अगला"
+
+#: src/ScenariosDialog.cpp:47
+#, fuzzy
+msgid "Description:"
+msgstr "Posizione:"
+
+#: src/xmlhelper.cpp:48
+msgid ""
+"XML_Helper: Either open file for reading or writing, not both, exiting\n"
+msgstr ""
+"XML_Helper: Il file puo' essere aperto il lettura o scrittura non in "
+"entrambi i modi, esco\n"
+
+#: src/xmlhelper.cpp:60
+msgid ": Error opening file for reading. Exiting\n"
+msgstr ":Errore aprendo il file in lettura. Esco\n"
+
+#: src/xmlhelper.cpp:70
+msgid "File too short (<=1 byte), propably broken. Skipping load\n"
+msgstr ""
+
+#: src/xmlhelper.cpp:76
+msgid ": The file is obfuscated, attempting to read it....\n"
+msgstr ": Il file e' offuscato, cerco di leggerlo....\n"
+
+#: src/xmlhelper.cpp:107
+msgid ": The file is not obfuscated, attempting to read it....\n"
+msgstr ": Il file non e' offuscato, cerco di leggerlo....\n"
+
+#: src/xmlhelper.cpp:119
+msgid ": Error opening file for writing. Exiting\n"
+msgstr ": Errore aprendo il file in scrittura. Esco\n"
+
+#. should never happen unless there was an error
+#: src/xmlhelper.cpp:132
+msgid "XML_Helper: dtags not empty!!\n"
+msgstr "XML_Helper: dtags non e' vuoto!!\n"
+
+#: src/xmlhelper.cpp:150
+msgid "XML_Helper: no output stream given\n"
+msgstr "XML_Helper: nessun output stream assegnato\n"
+
+#: src/xmlhelper.cpp:156
+msgid ": The tag name starts with a \"d\". Not creating tag!\n"
+msgstr ": Il nome del tag inizia con un \"d\". Non creo il tag!.\n"
+
+#: src/xmlhelper.cpp:176 src/xmlhelper.cpp:203 src/xmlhelper.cpp:224
+#: src/xmlhelper.cpp:245 src/xmlhelper.cpp:266 src/xmlhelper.cpp:290
+msgid "XML_Helper: no output stream given.\n"
+msgstr "XML_Helper: nessun output stream assegnato\n"
+
+#: src/xmlhelper.cpp:198 src/xmlhelper.cpp:219 src/xmlhelper.cpp:240
+#: src/xmlhelper.cpp:261 src/xmlhelper.cpp:285
+msgid "XML_Helper: save_data with empty name\n"
+msgstr "XML_Helper: save_data con nome vuoto\n"
+
+#: src/xmlhelper.cpp:313
+msgid "Saving game and obfuscating the Savefile.\n"
+msgstr "Salvo il gioco e offusco il file di salvataggio.\n"
+
+#: src/xmlhelper.cpp:341
+msgid "Saving game without obfuscation.\n"
+msgstr "Salvo il gioco senza offuscare il file di salvataggio.\n"
+
+#: src/xmlhelper.cpp:541
+msgid "XML_Helper: error parsing xml document.\n"
+msgstr "XML_Helper: errore nel parsing del documento xml.\n"
+
+#: src/xmlhelper.cpp:542
+msgid "Line "
+msgstr "Linea "
+
+#: src/xmlhelper.cpp:544
+msgid "Buffercontent = "
+msgstr "Buffercontent = "
+
+#: src/xmlhelper.cpp:614 src/xmlhelper.cpp:657
+msgid ": Callback for tag returned false. Stop parsing document.\n"
+msgstr ""
+": La callback per il tag ha ritornato falso. Smetto di parsare il "
+"documento.\n"
+
+#: src/editor/main.cpp:63
+msgid "You need at least 800 x 600 resolution to run the editor\n"
+msgstr "Per lavorare con l'editor serve almeno una risoluzione di 800x600!\n"
+
+#: src/editor/main.cpp:186
+msgid "-f,      --fullscreen         Fullscreen mode"
+msgstr "-f,      --fullscreen         Fullscreen mode"
+
+#: src/editor/main.cpp:252
+#, c-format
+msgid "FreeLords Editor %s"
+msgstr "Editor di Freelords %s"
+
+#: src/editor/MainScreen.cpp:51
+msgid "New"
+msgstr "Nuovo"
+
+#: src/editor/MainScreen.cpp:60
+#, fuzzy
+msgid "Scenario"
+msgstr "Gestisci le reazioni"
+
+#: src/editor/MainScreen.cpp:61
+msgid "Players"
+msgstr "Giocatori"
+
+#: src/editor/MainScreen.cpp:62
+msgid "Events"
+msgstr "Eventi"
+
+#: src/editor/MainScreen.cpp:63
+msgid "Edit"
+msgstr "Edita"
+
+#: src/editor/MainScreen.cpp:67
+msgid "By ID"
+msgstr "Per ID"
+
+#: src/editor/MainScreen.cpp:68
+msgid "Find"
+msgstr "Trova"
+
+#: src/editor/MainScreen.cpp:72
+msgid "stacks"
+msgstr "Gruppi"
+
+#: src/editor/MainScreen.cpp:73
+msgid "cities"
+msgstr "Citta'"
+
+#: src/editor/MainScreen.cpp:105
+msgid "Do you really want to create a new map (All changes will be lost)?"
+msgstr ""
+"Vuoi veramente creare una nuova mappa (tutti i cambiamenti verranno persi)?"
+
+#: src/editor/MainScreen.cpp:138
+msgid "Do you really want to load a map (All changes will be lost)?"
+msgstr ""
+"Vuoi veramente caricare una nuova mappa (tutti i cambiamenti verranno persi)?"
+
+#: src/editor/MainScreen.cpp:152
+msgid "Freelords maps"
+msgstr "Mappe di Freelords"
+
+#: src/editor/MainScreen.cpp:165
+msgid "Couldn't load map "
+msgstr "Non ho potuto creare la mappa "
+
+#: src/editor/MainScreen.cpp:187
+msgid "Map Saved"
+msgstr "Mappa salvata"
+
+#: src/editor/MainScreen.cpp:195 src/editor/MainScreen.cpp:232
+msgid "Error saving. Map not saved"
+msgstr "Errore nel salvataggio. Mappa non salvata"
+
+#: src/editor/MainScreen.cpp:208
+msgid "Freelords map files"
+msgstr "File delle mappe di Freelords"
+
+#: src/editor/MainScreen.cpp:222
+msgid "Map Saved."
+msgstr "Mappa salvata."
+
+#: src/editor/NewMapDialog.cpp:34
+msgid "Create New Map"
+msgstr "Crea una nuova Mappa"
+
+#. dropdown to select default creation style; filled when tileset is selected
+#. TODO: use MapGenerator to create a map
+#: src/editor/NewMapDialog.cpp:45
+msgid "Select fill style"
+msgstr "Seleziona lo stile di riempimento"
+
+#. set size of the map
+#: src/editor/NewMapDialog.cpp:51
+msgid "Size:"
+msgstr "Grandezza:"
+
+#: src/editor/NewMapDialog.cpp:59
+msgid "Create"
+msgstr "Crea"
+
+#: src/editor/NewMapDialog.cpp:81 src/editor/NewMapDialog.cpp:129
+msgid "Random Map"
+msgstr "Mappa Casuale"
+
+#: src/editor/NewMapDialog.cpp:98
+msgid "Mapsize must be between 20 and 200!"
+msgstr "La grandezza della mappa deve esssere tra 20 e 200!"
+
+#: src/editor/Bigmap.cpp:479
+msgid "Ambiguity"
+msgstr "Ambigita'"
+
+#: src/editor/Bigmap.cpp:480
+msgid "Do you want to modify the stack or the object beneath?"
+msgstr "Vuoi modificare il gruppo o l'oggetto sottostante?"
+
+#: src/editor/Bigmap.cpp:481 src/editor/FindDialog.cpp:110
+#: src/editor/ReactionDialog.cpp:87
+msgid "Stack"
+msgstr "Gruppo"
+
+#: src/editor/Bigmap.cpp:482
+msgid "Other"
+msgstr "Altro"
+
+#: src/editor/ArmyDialog.cpp:28
+msgid "ArmySelection"
+msgstr "Selezione Unita'"
+
+#: src/editor/ArmyDialog.cpp:51
+msgid "Cost:"
+msgstr "मूल्य:"
+
+#: src/editor/ArmyDialog.cpp:64
+msgid "HP:"
+msgstr "जाँन :"
+
+#: src/editor/ArmyDialog.cpp:68
+msgid "Vitality:"
+msgstr "जीवनांक:"
+
+#: src/editor/ArmyDialog.cpp:70
+msgid "Sight:"
+msgstr "दृष्टि:"
+
+#: src/editor/CityDialog.cpp:29 src/editor/FindDialog.cpp:66
+msgid "City"
+msgstr "शहर'"
+
+#: src/editor/CityDialog.cpp:36
+#, c-format
+msgid "City at (%i,%i)"
+msgstr "शहर a (%i,%i)"
+
+#. a label showing the id,
+#: src/editor/CityDialog.cpp:39 src/editor/TempleDialog.cpp:34
+#, c-format
+msgid "ID: %i"
+msgstr "ID: %i"
+
+#: src/editor/CityDialog.cpp:54 src/editor/PlayerDialog.cpp:95
+#: src/editor/ReactionDialog.cpp:522
+msgid "Gold:"
+msgstr "सोना:"
+
+#: src/editor/CityDialog.cpp:65
+msgid "Owner:"
+msgstr "Proprietario:"
+
+#. create a label for the level and two buttons to raise/lower it.
+#: src/editor/CityDialog.cpp:78
+msgid "Level:"
+msgstr "Livello:"
+
+#: src/editor/CityDialog.cpp:95 src/editor/CityDialog.cpp:101
+msgid "Untouched"
+msgstr "Intonso"
+
+#: src/editor/CityDialog.cpp:96 src/editor/CityDialog.cpp:99
+#: src/editor/CityDialog.cpp:237
+msgid "Burnt down"
+msgstr "Rasa al suolo"
+
+#: src/editor/CityDialog.cpp:161
+msgid "Remove Production"
+msgstr "Rimuovi Produzione"
+
+#: src/editor/CityDialog.cpp:282 src/editor/CityDialog.cpp:316
+msgid "No free productions, maybe remove one first!"
+msgstr "Nessuna produzione disponibile, rimuovine una prima!"
+
+#: src/editor/CityDialog.cpp:351
+msgid "Confirmation"
+msgstr "Conferma"
+
+#: src/editor/CityDialog.cpp:351
+msgid "Do you really want to remove this production?"
+msgstr "Vuoi veramente rimuovere questa produzione?"
+
+#: src/editor/MapGenDialog.cpp:18
+msgid "Set map properties"
+msgstr "Imposta le propriwta' della mappa"
+
+#: src/editor/TempleDialog.cpp:22
+msgid "Modify temple"
+msgstr "Modifica मंदिर"
+
+#: src/editor/TempleDialog.cpp:25
+#, c-format
+msgid "Temple at (%i,%i)"
+msgstr "मंदिर a (%i,%i)"
+
+#. another label telling you the temple type
+#: src/editor/TempleDialog.cpp:45
+#, fuzzy
+msgid "Type:"
+msgstr "Type"
+
+#: src/editor/RuinDialog.cpp:23
+msgid "Modify ruin"
+msgstr "Modifica Rovina"
+
+#: src/editor/RuinDialog.cpp:26
+#, c-format
+msgid "Ruin at (%i,%i)"
+msgstr "Rovina a (%i,%i)"
+
+#: src/editor/RuinDialog.cpp:29 src/editor/FindDialog.cpp:31
+#: src/editor/EventDialog.cpp:59
+msgid "ID:"
+msgstr "ID:"
+
+#: src/editor/RuinDialog.cpp:43
+msgid "Keeper"
+msgstr "Occupante"
+
+#: src/editor/PlayerDialog.cpp:35
+msgid "Manage players"
+msgstr "Gestisci i Giocatori"
+
+#: src/editor/PlayerDialog.cpp:64 src/editor/PlayerDialog.cpp:318
+#: src/editor/PlayerDialog.cpp:369
+msgid "Dummy AI"
+msgstr "IA Semplice"
+
+#: src/editor/PlayerDialog.cpp:65 src/editor/PlayerDialog.cpp:321
+#: src/editor/PlayerDialog.cpp:367
+msgid "Fast AI"
+msgstr "IA Veloce"
+
+#: src/editor/PlayerDialog.cpp:66 src/editor/PlayerDialog.cpp:324
+#: src/editor/PlayerDialog.cpp:371
+msgid "Smart AI"
+msgstr "IA Avanzata"
+
+#: src/editor/PlayerDialog.cpp:84
+#, fuzzy
+msgid "ID"
+msgstr "ID:"
+
+#: src/editor/PlayerDialog.cpp:102
+#, fuzzy
+msgid "Red:"
+msgstr "Ranged"
+
+#: src/editor/PlayerDialog.cpp:109
+#, fuzzy
+msgid "Green:"
+msgstr "हरा कीचड"
+
+#: src/editor/PlayerDialog.cpp:116
+#, fuzzy
+msgid "Blue:"
+msgstr "Benedizione"
+
+#: src/editor/PlayerDialog.cpp:124
+msgid "neutral player"
+msgstr "Giocatore Neutrale"
+
+#: src/editor/PlayerDialog.cpp:128
+msgid "persistent player"
+msgstr ""
+
+#: src/editor/PlayerDialog.cpp:132
+msgid "maniac mode"
+msgstr ""
+
+#: src/editor/PlayerDialog.cpp:136
+msgid "join armies"
+msgstr ""
+
+#: src/editor/PlayerDialog.cpp:143 src/editor/ConditionDialog.cpp:240
+#: src/editor/ReactionDialog.cpp:96 src/editor/EventDialog.cpp:107
+msgid "Add"
+msgstr "Aggiungi"
+
+#: src/editor/PlayerDialog.cpp:147 src/editor/ConditionDialog.cpp:244
+#: src/editor/ReactionDialog.cpp:93 src/editor/EventDialog.cpp:104
+msgid "Remove"
+msgstr "Rimuovi"
+
+#: src/editor/PlayerDialog.cpp:171 src/editor/EventDialog.cpp:247
+msgid "Warning"
+msgstr "Attenzione"
+
+#: src/editor/PlayerDialog.cpp:172
+#, fuzzy
+msgid "Do you really want to remove this player?"
+msgstr "Vuoi veramente rimuovere questo evento?"
+
+#: src/editor/PlayerDialog.cpp:230
+#, fuzzy
+msgid "New Player"
+msgstr "Prossimo Giocatore"
+
+#: src/editor/PlayerDialog.cpp:230
+msgid ""
+"Do you want to add the new player in front of this player or at the end of "
+"the list?"
+msgstr ""
+
+#: src/editor/PlayerDialog.cpp:232
+#, fuzzy
+msgid "Here"
+msgstr "हीरो"
+
+#: src/editor/PlayerDialog.cpp:233
+#, fuzzy
+msgid "End"
+msgstr "Round"
+
+#: src/editor/FindDialog.cpp:26 src/editor/FindDialog.cpp:28
+msgid "Find object"
+msgstr "Trova oggetto"
+
+#: src/editor/FindDialog.cpp:79
+msgid "Temple"
+msgstr "मंदिर"
+
+#: src/editor/FindDialog.cpp:93
+msgid "Ruin"
+msgstr "Rovina"
+
+#: src/editor/ConditionDialog.cpp:27 src/editor/ConditionDialog.cpp:34
+msgid "Manage conditions"
+msgstr "Gestisci le condizioni"
+
+#: src/editor/ConditionDialog.cpp:221 src/editor/ConditionDialog.cpp:323
+msgid "CPlayer"
+msgstr "Player"
+
+#: src/editor/ConditionDialog.cpp:222 src/editor/ConditionDialog.cpp:328
+msgid "CCounter"
+msgstr "Counter"
+
+#: src/editor/ConditionDialog.cpp:223 src/editor/ConditionDialog.cpp:333
+msgid "CLiving"
+msgstr "Living"
+
+#: src/editor/ConditionDialog.cpp:224 src/editor/ConditionDialog.cpp:338
+msgid "CDead"
+msgstr "Dead"
+
+#: src/editor/ConditionDialog.cpp:225 src/editor/ConditionDialog.cpp:343
+msgid "CArmy"
+msgstr "Army"
+
+#: src/editor/ConditionDialog.cpp:271 src/editor/ConditionDialog.cpp:295
+#, c-format
+msgid "%i. CPlayer"
+msgstr "%i. CPlayer"
+
+#: src/editor/ConditionDialog.cpp:274 src/editor/ConditionDialog.cpp:298
+#, c-format
+msgid "%i. CCounter"
+msgstr "%i. CCounter"
+
+#: src/editor/ConditionDialog.cpp:277 src/editor/ConditionDialog.cpp:301
+#, c-format
+msgid "%i. CLiving"
+msgstr "%i. CLiving"
+
+#: src/editor/ConditionDialog.cpp:280 src/editor/ConditionDialog.cpp:304
+#, c-format
+msgid "%i. CDead"
+msgstr "%i. CDead"
+
+#: src/editor/ConditionDialog.cpp:283 src/editor/ConditionDialog.cpp:307
+#, c-format
+msgid "%i. CArmy"
+msgstr "%i. CArmy"
+
+#. first edit is player id, second amount of gold
+#. first edit is player, second xpos, third ypos, + stack button
+#. first edit is player id
+#. edit is the player id
+#: src/editor/ConditionDialog.cpp:324 src/editor/ConditionDialog.cpp:334
+#: src/editor/ConditionDialog.cpp:339 src/editor/ReactionDialog.cpp:520
+#: src/editor/ReactionDialog.cpp:538 src/editor/ReactionDialog.cpp:685
+#: src/editor/ReactionDialog.cpp:696 src/editor/ReactionDialog.cpp:709
+#: src/editor/EventDialog.cpp:461
+msgid "Player:"
+msgstr "Giocatore:"
+
+#: src/editor/ConditionDialog.cpp:329
+msgid "Counter:"
+msgstr "Contatore:"
+
+#. first edit is the army id
+#. edit is the army id
+#: src/editor/ConditionDialog.cpp:344 src/editor/ReactionDialog.cpp:565
+#: src/editor/EventDialog.cpp:481
+msgid "Army:"
+msgstr "Unita':"
+
+#: src/editor/SelectionDialog.cpp:20
+msgid "Select an item"
+msgstr "Seleziona un oggetto"
+
+#: src/editor/ReactionDialog.cpp:43
+msgid "Manage reactions"
+msgstr "Gestisci le reazioni"
+
+#: src/editor/ReactionDialog.cpp:90 src/editor/EventDialog.cpp:99
+msgid "Conditions"
+msgstr "Condizioni"
+
+#: src/editor/ReactionDialog.cpp:306
+msgid "Message"
+msgstr "Message"
+
+#: src/editor/ReactionDialog.cpp:306
+msgid "AddGold"
+msgstr "Add सोना"
+
+#: src/editor/ReactionDialog.cpp:307
+msgid "AddUnit"
+msgstr "AddUnit"
+
+#: src/editor/ReactionDialog.cpp:307
+msgid "DelUnit"
+msgstr "DelUnit"
+
+#: src/editor/ReactionDialog.cpp:308
+msgid "Update"
+msgstr "Update"
+
+#: src/editor/ReactionDialog.cpp:308
+msgid "Center"
+msgstr "Center"
+
+#: src/editor/ReactionDialog.cpp:309
+msgid "CenterObj"
+msgstr "CenterObj"
+
+#: src/editor/ReactionDialog.cpp:309
+msgid "CreateItem"
+msgstr "CreateItem"
+
+#: src/editor/ReactionDialog.cpp:310
+msgid "WinGame"
+msgstr "WinGame"
+
+#: src/editor/ReactionDialog.cpp:310
+msgid "LoseGame"
+msgstr "LoseGame"
+
+#: src/editor/ReactionDialog.cpp:311
+msgid "RaiseEvent"
+msgstr "RaiseEvent"
+
+#: src/editor/ReactionDialog.cpp:311
+msgid "ActEvent"
+msgstr "ActEvent"
+
+#: src/editor/ReactionDialog.cpp:312
+msgid "RevivePlayer"
+msgstr "RevivePlayer"
+
+#: src/editor/ReactionDialog.cpp:312
+msgid "KillPlayer"
+msgstr "KillPlayer"
+
+#: src/editor/ReactionDialog.cpp:313
+msgid "TransferCity"
+msgstr "TransferCity"
+
+#: src/editor/ReactionDialog.cpp:417
+#, c-format
+msgid "%i. Message"
+msgstr "%i. Message"
+
+#: src/editor/ReactionDialog.cpp:420
+#, c-format
+msgid "%i. AddGold"
+msgstr "%i. Add सोना"
+
+#: src/editor/ReactionDialog.cpp:423
+#, c-format
+msgid "%i. AddUnit"
+msgstr "%i. AddUnit"
+
+#: src/editor/ReactionDialog.cpp:426
+#, c-format
+msgid "%i. DelUnit"
+msgstr "%i. DelUnit"
+
+#: src/editor/ReactionDialog.cpp:429
+#, c-format
+msgid "%i. Update"
+msgstr "%i. Update"
+
+#: src/editor/ReactionDialog.cpp:432
+#, c-format
+msgid "%i. Center"
+msgstr "%i. Center"
+
+#: src/editor/ReactionDialog.cpp:435
+#, c-format
+msgid "%i. CenterObject"
+msgstr "%i. CenterObject"
+
+#: src/editor/ReactionDialog.cpp:438
+#, c-format
+msgid "%i. CreateItem"
+msgstr "%i. CreateItem"
+
+#: src/editor/ReactionDialog.cpp:441
+#, c-format
+msgid "%i. WinGame"
+msgstr "%i. WinGame"
+
+#: src/editor/ReactionDialog.cpp:444
+#, c-format
+msgid "%i. LoseGame"
+msgstr "%i. LoseGame"
+
+#: src/editor/ReactionDialog.cpp:447
+#, c-format
+msgid "%i. RaiseEvent"
+msgstr "%i. RaiseEvent"
+
+#: src/editor/ReactionDialog.cpp:450
+#, c-format
+msgid "%i. ActivateEvent"
+msgstr "%i. ActivateEvent"
+
+#: src/editor/ReactionDialog.cpp:453
+#, c-format
+msgid "%i. RevivePlayer"
+msgstr "%i. RevivePlayer"
+
+#: src/editor/ReactionDialog.cpp:456
+#, c-format
+msgid "%i. KillPlayer"
+msgstr "%i. KillPlayer"
+
+#: src/editor/ReactionDialog.cpp:459
+#, c-format
+msgid "%i. TransferCity"
+msgstr "%i. TransferCity"
+
+#. Don't forget to add a virtual "last reaction" with id -1. Since new
+#. reaction are appended before the selected item, we need a mechanism
+#. to append new reactions at the end => add a virtual end
+#: src/editor/ReactionDialog.cpp:469
+msgid "--- End ---"
+msgstr "--- अंत ---"
+
+#. first edit is xpos, second ypos
+#: src/editor/ReactionDialog.cpp:540 src/editor/ReactionDialog.cpp:580
+#: src/editor/ReactionDialog.cpp:611 src/editor/EventDialog.cpp:535
+msgid "X:"
+msgstr "X:"
+
+#: src/editor/ReactionDialog.cpp:542 src/editor/ReactionDialog.cpp:582
+#: src/editor/ReactionDialog.cpp:613 src/editor/EventDialog.cpp:537
+msgid "Y:"
+msgstr "Y:"
+
+#. first edit is the id of the object
+#: src/editor/ReactionDialog.cpp:598
+msgid "Object:"
+msgstr "Oggetto:"
+
+#. first edit is list id of the item, second xpos, third ypos
+#: src/editor/ReactionDialog.cpp:609
+msgid "Item:"
+msgstr "Oggetto:"
+
+#. first edit is the status
+#: src/editor/ReactionDialog.cpp:634 src/editor/ReactionDialog.cpp:645
+msgid "Status:"
+msgstr "Stato:"
+
+#. first edit is event id
+#. first edit is event id, second edit is 0/1 for true/false
+#: src/editor/ReactionDialog.cpp:656 src/editor/ReactionDialog.cpp:667
+msgid "Event:"
+msgstr "Evento:"
+
+#: src/editor/ReactionDialog.cpp:669
+msgid "Activate:"
+msgstr "Attiva:"
+
+#. first edit is city id, second player id
+#. edit is city id
+#: src/editor/ReactionDialog.cpp:707 src/editor/EventDialog.cpp:471
+msgid "City:"
+msgstr "शहर:"
+
+#: src/editor/EventDialog.cpp:39
+msgid "Manage events"
+msgstr "Gestisci gli eventi"
+
+#: src/editor/EventDialog.cpp:66 src/editor/EventDialog.cpp:148
+msgid "Activate"
+msgstr "Attiva"
+
+#: src/editor/EventDialog.cpp:67
+msgid "Deactivate"
+msgstr "Disattiva"
+
+#: src/editor/EventDialog.cpp:88
+msgid "Comment:"
+msgstr "Commento:"
+
+#: src/editor/EventDialog.cpp:96
+msgid "Reactions"
+msgstr "Reazioni"
+
+#: src/editor/EventDialog.cpp:247
+msgid "Do you really want to remove this event?"
+msgstr "Vuoi veramente rimuovere questo evento?"
+
+#: src/editor/EventDialog.cpp:272
+msgid "KillAll"
+msgstr "KillAll"
+
+#: src/editor/EventDialog.cpp:272
+msgid "PlayerDead"
+msgstr "PlayerDead"
+
+#: src/editor/EventDialog.cpp:273
+msgid "CityConquered"
+msgstr "CityConquered"
+
+#: src/editor/EventDialog.cpp:273
+msgid "ArmyKilled"
+msgstr "ArmyKilled"
+
+#: src/editor/EventDialog.cpp:274
+msgid "Round"
+msgstr "Round"
+
+#: src/editor/EventDialog.cpp:274
+msgid "RuinSearch"
+msgstr "RuinSearch"
+
+#: src/editor/EventDialog.cpp:275
+msgid "TempleSearch"
+msgstr "TempleSearch"
+
+#: src/editor/EventDialog.cpp:275
+msgid "Dummy"
+msgstr "Dummy"
+
+#: src/editor/EventDialog.cpp:276
+msgid "NextTurn"
+msgstr "Turno अगला"
+
+#: src/editor/EventDialog.cpp:276
+msgid "StackKilled"
+msgstr "StackKilled"
+
+#: src/editor/EventDialog.cpp:277
+msgid "StackMove"
+msgstr "StackMove"
+
+#: src/editor/EventDialog.cpp:362
+msgid "EKillAll"
+msgstr "KillAll"
+
+#: src/editor/EventDialog.cpp:365
+msgid "EPlayerDead"
+msgstr "PlayerDead"
+
+#: src/editor/EventDialog.cpp:368
+msgid "ECityConquered"
+msgstr "CityConquered"
+
+#: src/editor/EventDialog.cpp:371
+msgid "EArmyKilled"
+msgstr "ArmyKilled"
+
+#: src/editor/EventDialog.cpp:374
+msgid "ERound"
+msgstr "Round"
+
+#: src/editor/EventDialog.cpp:377
+msgid "ERuinSearch"
+msgstr "खंडरSearch"
+
+#: src/editor/EventDialog.cpp:380
+msgid "ETempleSearch"
+msgstr "TempleSearch"
+
+#: src/editor/EventDialog.cpp:383
+msgid "EDummy"
+msgstr "Dummy"
+
+#: src/editor/EventDialog.cpp:386
+msgid "ENextTurn"
+msgstr "NextTurn"
+
+#: src/editor/EventDialog.cpp:389
+msgid "EStackKilled"
+msgstr "StackKilled"
+
+#: src/editor/EventDialog.cpp:392
+msgid "EStackMove"
+msgstr "StackMove"
+
+#. edit is round number
+#: src/editor/EventDialog.cpp:491
+msgid "Round:"
+msgstr "Round:"
+
+#. edit is ruin id
+#: src/editor/EventDialog.cpp:501
+msgid "Ruin:"
+msgstr "खंडर:"
+
+#. edit is temple id
+#: src/editor/EventDialog.cpp:511
+msgid "Temple:"
+msgstr "मंदिर:"
+
+#. edit is stack id
+#: src/editor/EventDialog.cpp:525
+msgid "Stack:"
+msgstr "Gruppo:"
+
+#: src/editor/ScenarioDialog.cpp:24
+#, fuzzy
+msgid "Manage Scenario"
+msgstr "Gestisci le reazioni"
+
+#: src/editor/ScenarioDialog.cpp:27
+#, fuzzy
+msgid "Scenario Name:"
+msgstr "Gestisci le reazioni"
+
+#: src/editor/ScenarioDialog.cpp:33
+#, fuzzy
+msgid "Scenario Description:"
+msgstr "Posizione:"
+
+#: src/events/RAddUnit.cpp:164
+msgid "RAddUnit: got strange tag: "
+msgstr "RAddUnit: ho trovato uno strano tag:"
+
+#~ msgid "Couldn't find any configuration file...trying auto-configuration."
+#~ msgstr "Couldn't find any configuration file...trying auto-configuration."
+
+#~ msgid "Army info"
+#~ msgstr "सेना सूचना"
+
+#~ msgid "basic"
+#~ msgstr "मूल"
+
+#~ msgid "real"
+#~ msgstr "वास्तविक"
+
+#~ msgid "prod. time: None"
+#~ msgstr "बन्ने का समय: कुछ नही"
+
+#~ msgid "prod. time: %i turn"
+#~ msgid_plural "prod. time: %i turns"
+#~ msgstr[0] "बन्ने का समय: %i चाल"
+#~ msgstr[1] "बन्ने का समय: %i चाल"
+
+#~ msgid "prod. cost: None"
+#~ msgstr "बन्ने का खर्च : कुछ नही"
+
+#~ msgid "prod. cost: %i gold"
+#~ msgstr "बन्ने का खर्च : %i अषर्फी"
+
+#~ msgid "Upkeep: %i gold"
+#~ msgstr "भाडा: %i अषर्फी"
+
+#~ msgid "move bonus"
+#~ msgstr "चाल लाभ"
+
+#~ msgid "bonus"
+#~ msgstr "लाभ"
+
+#~ msgid "no shots"
+#~ msgstr "कोई गोली नही"
+
+#~ msgid "Hill"
+#~ msgstr "पहाड"
+
+#~ msgid "Move on water"
+#~ msgstr "पानी पे चलो"
+
+#~ msgid "Stronger vs cavalry"
+#~ msgstr "घुडसवार पे हावी"
+
+#~ msgid "Assassin"
+#~ msgstr "कातिल"
+
+#~ msgid "city masks have too high color depth, Exiting.\n"
+#~ msgstr ""
+#~ "le maschere delle citta' hanno un numero di colori troppo elevato, Esco.\n"
+
+#~ msgid "flag masks have too high color depth. Exiting!\n"
+#~ msgstr ""
+#~ "le maschere delle bandiere hanno un numero di colori troppo elevato, "
+#~ "Esco.\n"
+
+#, fuzzy
+#~ msgid "No Comment"
+#~ msgstr "Commento:"
+
+#, fuzzy
+#~ msgid "Algaragon"
+#~ msgstr "एलडोरीयन"
+
+#, fuzzy
+#~ msgid " Small temple"
+#~ msgstr "Dim. piccola"
+
+#, fuzzy
+#~ msgid "Tower of Prayers"
+#~ msgstr "%s की बसती"
+
+#, fuzzy
+#~ msgid "Rampaged Village"
+#~ msgstr "मंदिर"
+
+#~ msgid "Not enough gold or already reached ugrade level 3!"
+#~ msgstr "Non ci sono abbastanza सोना o hai gia' raggiunto il livello 3!"
+
+#~ msgid "AutoGenerated"
+#~ msgstr "GeneratoAtomaticamente"
+
+#~ msgid "All players have died except one"
+#~ msgstr "Tutti i giocatori sono stati sconfitti tranne uno"
+
+#~ msgid "Player %s died."
+#~ msgstr "Il giocatore %s e' sconfitto."
+
+#~ msgid "Player %s has won!"
+#~ msgstr "Il giocatore %s ha vinto!"
+
+#~ msgid "-g,      --ggz              Run game in GGZ mode"
+#~ msgstr "-g,      --ggz              Run game in GGZ mode"
+
+#~ msgid "Tutorial"
+#~ msgstr "Tutorial"
+
+#~ msgid "TUTORIAL Clicked!"
+#~ msgstr "Cliccato su TUTORIAL!"
+
+#, fuzzy
+#~ msgid "Player Susi died."
+#~ msgstr "Il giocatore %s e' sconfitto."
+
+#, fuzzy
+#~ msgid "Player Ulf died."
+#~ msgstr "Il giocatore %s e' sconfitto."
+
+#, fuzzy
+#~ msgid "Player Vibhu died."
+#~ msgstr "Il giocatore %s e' sconfitto."
+
+#~ msgid "Pegasus"
+#~ msgstr "उडन घोडा"
+
+#~ msgid "Robot"
+#~ msgstr "रोबोट"
+
+#~ msgid "Vampire Bat"
+#~ msgstr "खूनी चमगादढ"
+
+#~ msgid "Orc Sapper"
+#~ msgstr "और्क Sapper"
+
+#~ msgid "Orc Shaman"
+#~ msgstr "और्क ताँतरिक"
+
+#~ msgid "Healfast"
+#~ msgstr "Healfast"
+
+#~ msgid "Color"
+#~ msgstr "Colore"
+
+#~ msgid "R:"
+#~ msgstr "R:"
+
+#~ msgid "G:"
+#~ msgstr "G:"
+
+#~ msgid "B:"
+#~ msgstr "B:"
+
+#~ msgid "Next Player: "
+#~ msgstr "Prossimo Giocatore: "

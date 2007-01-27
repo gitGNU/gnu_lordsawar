@@ -1,0 +1,6 @@
+[RoomInfo]
+Name = Freelords (experimental)
+Description = Room where to play freelords
+GameType = Freelords
+MaxPlayers = 25
+MaxTables = 5

@@ -1,0 +1,366 @@
+Author: Ulf Lorenz
+Version: 0.3.7
+
+updated by Ulf Lorenz 02-17-2006
+updated by Ulf Lorenz 11-04-2005
+updated by Ulf Lorenz 02-27-2005
+updated by Ulf Lorenz 12-14-2004
+updated by Ulf Lorenz 05-02-2004
+updated by Andrea Paternesi 07-03-2004
+updated by Ulf Lorenz 10-14-2004
+updated by Ulf Lorenz 10-29-2004
+
+
+This document wants to give a brief overview about how to play freelords. As
+the current version is still a bit unstable and in more or less heavy
+development the information here can be partly wrong or obsolete, but
+should be a good start if you just want to have a short look. If you find 
+something which isn't written in this document, but would be helpful to know,
+send a mail to the developer list freelords-devel@lists.sf.net
+
+
+
+Contents:
+1. The Splash Screen
+2. The Main Screen
+    2.1. Menu items
+    2.2. Keyboard Shortcuts
+3. Using the interface
+4. Items
+    4.1. Basics
+    4.2. Getting and equipping items
+5. Misc information
+6. Army abilities
+    6.1. Experience and levels
+    6.2. Medals of Honour
+    6.3. Fighting
+
+
+1. The splash screen
+
+There are currently seven buttons here: "New Campaign", "New Game", 
+"Load Game", "Tutorial", "Language", "New Network Game" and "Quit".
+
+The "New Campaign" and "New Network Game" buttons still don't work. There is
+some basic network support, but it currently just is and does nothing.
+
+"Load Game" opens a file dialog where you have to select a game to be loaded.
+The game is always saved automatically at the beginning of each turn, this is
+the autosave.sav entry. If you run into a bug, it would be nice if the
+development team gets it. :)
+
+"Tutorial" loads a kind of tutorial level. This level is meant to show some
+features of FreeLords not yet implemented in the randomly-created game (such as
+events or items). Just play it. :)
+
+"Quit" quits the game.
+
+Clicking on "Language" lets you select the language of the game. Currently, only
+German and Italian localisations exist, a Hindi locale is (hopefully) coming soon.
+The corresponding buttons should be visible if you can select the localisation.
+Should you enter another one, please note that you may get problems when not
+using utf8 (for simplicity: just click on the available buttons unless you know
+what you are doing).
+
+If you click on "New Game", another dialog pops up with a lot of buttons and
+combo boxes etc. There, you can set the parameters for the game. If you want to
+load a map, click on "Load Map" and then on the now visible "Browse" button.
+You may select a map file (random.map is the map that was generated the last
+time) and start the game. If you want to create a new random map, you can
+specify players and map parameters.
+The map parameters you can choose are the size, the distribution of the terrain
+and the tileset. The currently available sizes are "Normal" (100x100 tiles),
+"Small"(70x70) and "Tiny"(50x50). The distribution is done with the sliders at
+the right side of the dialog. The numbers are merely the relative percentages,
+so the sum may exceed 100%, in which case the single percentages will be
+adjusted correspondingly.
+For each player you can choose the player type, the player name and the
+armyset. The available player types are "None" (disable this player), "Human",
+"Easy" (a very stupid AI that may have units standing around doing nothing) and
+"Smart" (an improved, though defensive, AI). The armyset determines which armies
+you can produce.
+Furthermore, you can select if new armies are produced and the existing armies
+healed at the beginning of the corresponding player's turn, or if all armies
+of all players are produced/healed simultanously at the beginning of a new round.
+When you are ready, push the large OK button at the bottom.
+
+
+2. The Main Screen
+
+Most part of the screen is self-explaining. The menu is explained in section
+(2.1). You can scroll the visible part of the map by either using the cursor
+keys, clicking somewhere on the minimap in the top right corner or moving the
+mouse over one of the arrows around the bigmap. On the right you have information
+about your gold, the current round and several control buttons. The meaning of the
+buttons is:
+
+arrow forward/bw- select next/previous unit which is not defending
+arrow + leg     - select next unit which can move and is not defending
+leg             - continue movement of the selected stack
+legs            - continue movement of all stacks
+arrows          - center the map on the currently active unit
+shield          - mark the unit as defending; the unit will be ignored when
+                  searching for the next unit
+arrow + shield  - set the unit to defending and go to the next unit
+shield + leg    - set unit to defending and go to next unit that can move
+question mark   - search a ruin or visit a temple (there has to be a hero in
+                  the stack to do this)
+sand glass      - finish your turn
+
+If the buttons are grey, their function is currently unavailable (e.g. because
+there isn't anything to be searched). If you don't remember the meaning of some
+of the buttons, have the mouse stay over them for a while; a tooltip will
+appear.
+
+If you have selected a stack, the single armies in the stack appear on the
+bottom of the screen. Right-clicking on one of the pictures will display a
+dialog with more information about the army.
+
+
+2.1. The menu
+
+There are four menus, "File", "Reports", "Options" and "Help".
+
+In the "Game" menu you can load a game, save a game and quit the current game.
+The difference between "Save As" and "Save" is that "Save" will overwrite the
+save game which your game is either loaded from or has been saved to last time.
+
+The reports menu contains reports about the gold of all players, the armies,
+the cities and the pending quests your heroes have so far. In the army and city
+report, just click on one item to move the map to the position of the stack or
+city.
+
+Under "Options" you can open an option dialog. In the audio options, you can
+enable/disable music (currently only a demo track in the main screen) and set
+the volume. Under video, you can select a resolution and switch from windowed
+mode to fullscreen and vice versa. Under "misc", you can select if players are
+announced at the beginning of their turn and toggle smooth scrolling (try it
+out to see what it is). Clicking on "OK" applies the new options, while "Save"
+also saves the options in a config file so they are automatically used during
+then next startup.
+
+In the "Help" menu, you can currently select only an about dialog that scrolls
+all developers and contributors. 
+
+2.2. Keyboard Shortcuts
+
+You can use the keyboard to access various functions. The keys are:
+
+f - toggles fullscreen mode
+a - opens the army report
+c - opens the city report
+q - opens the quest report
+g - opens the gold report
+s - opens dialog for saving the game
+l - opens the dialog for loading a game
+Esc - deselects the current stack
+
+The cursor keys move the viewable portion of the map around. In various dialogs you
+can press "Return" to exit the dialog. When selecting a file, Return confirms the
+selection, Escape aborts it.
+
+
+3. Using the interface
+
+Click on a stack to select it. To deselect it, click on the defend
+button, select another stack (with the buttons on the right side) or press
+Escape or the right mouse button. Click on a destination to show the path
+leading there. You can move a stack by double-clicking on the destination. If you
+move onto an enemy unit or city, you start an attack. Moving on another of your
+own stacks will join both stacks.
+
+Right-clicking on a city opens a dialog. It shows you the current units you
+can produce, the tax income of the city, the defense level and some buttons.
+For the following it should be noted that there are two different kinds of
+production which a city can have. Basic productions are armies from the default
+armyset. They are rather weak standard units. Advanced productions are armies that
+are better and usually more expensive. They can be chosen from the player's own
+armyset.
+
+Now the button's use is the following:
+
+Upgrade -   upgrades the city by one level (up to level 3). Costs
+            (current level)*1000 gold. Each level gives a defense bonus of
+            20% to all defending units when the city is attacked. Furthermore,
+            the income is increased by 50% and production capabilities are
+            added. On the first level, a city has 2 basic productions, on the
+            second 3 basic and 1 advanced, and on the third level 4 basic and
+            two advanced production capabilities.
+
+Vecotring - Clicking on this button lets you select vectors for your cities.
+            Freshly produced units will automatically have their path set to
+            the city vector. This way, you just click on the "move all" button
+            to move new units at a destination away from their home city.
+
+Buy basic  -    Adds a basic production to the city. You can select which
+                production you want to add in another dialog.
+
+Buy advanced -  Same as buy basic, but adds an advanced production to the city.
+
+
+Right-clicking on a ruin gives you some information about the id, the
+location and the name of the ruin. The same goes for temples.
+
+For the following informations, it would be good to distinguish the terms stack
+and army. An army is a single unit, like a dragon, a fighter etc. Up to 8 armies
+can be combined in a stack.
+
+If one of your stacks stands on a ruin or a temple and has a hero (!!!),
+you can search it. If you search a temple, you may then choose to either get
+a quest (if your hero currently has none) or bless your armies. Blessing gives
+all participating armies a once and for all bonus of one strength (unless they
+have already been blessed, of course). Quests can be given to a hero, who
+receives some reward upon completion (currently only some amount of gold).
+A quest may be "search this ruin" or "kill this hero". If you search a ruin,
+you will certainly first have to defeat the monsters lurking there. If you do
+this, you will get some reward (currently a random amount of gold).
+
+You can also split stacks and join them if the joining stacks together have not
+more than 8 armies. To join two stacks, simply move one at the top of the other.
+To split a stack, select one and click on the army icons on the bottom of the
+screen which you want to deselect. You can now move the selected armies and
+therefore split the stack.
+
+
+4. Items
+
+Since the 0.3.4 release, FreeLords features items. Items can be worn by heroes
+to increase or decrease some of their statistics.
+
+4.1. Basics
+
+There are four different types of items, namely weapons, shields, (body) armour
+and accessoires. A hero can equip one item of each type. Furthermore, each hero
+can carry an unlimited amount of items in his backpack (imagine that the hero
+has a servant who carries all the stuff for him). Items can increase or
+decrease each stat by an arbitrary value or can even give the hero special
+movement or army abilities (such as the Scroll of Waterwalking).
+
+4.2. Getting and equipping items
+
+It is not yet possible to get an item as a quest award or by searching a ruin.
+They are only found in the tutorial. Items laying around can be identified by a
+special symbol on the map. To get them, move your hero to the location of the
+item and right-click on the image of the hero at the bottom of the screen. By
+pressing "i" or clicking on the "Item" button below the image of the hero, you
+enter the item dialog. There you can now see the items lying on the ground, in
+the backpack etc. To equip an item, drop it or move it to the backpack, first
+select the item by clicking on it, then click on the destination. The item will
+be moved to the destination slot, if neccessary by swapping positions with the
+item in the destination slot.
+If e.g. the backpack contains more than three items and you want to put an
+additional item in the backpack, scroll the backpack list a bit down. This will
+work until a free slot after the last item appears, where you can put the item.
+When you select an item, a description of its characteristics will be given.
+Click on the item again to deselect it.
+
+
+5. Misc Information
+
+This is some unsorted information about FreeLords.
+
+- Each unit costs money every turn. This is the "upkeep" data.
+
+- Sometimes, heroes will offer to work for you. Hiring them will cost you money,
+  however, they are quite powerful, allowing you to search temples/ruins and
+  giving other units a +1 strength bonus in combat.
+
+- Although ships can move and fight on water, embarking/disembarking does not
+  work yet.
+
+- Units heal 1/10th of their hitpoints per turn +1 for every point of vitality
+  above 5 (-1 for every point below 5), but at least 1 HP.
+
+- Negative gold amounts won't make your units run away, but you can neither buy
+  additional productions nor upgrade cities nor will armies be produced.
+
+- You have (usually, not in the tutorial) won when you have defeated all other
+  players.
+
+- You can earn money by searching ruins, having many cities, finishing quests or
+  pillaging cities.
+
+- When a city is taken by another player, the advanced productions are removed
+  while the basic ones are kept. If you pillage a city, the level of the city is
+  decreased or all (basic) productions are removed. For this, you get some gold.
+  Razing a city destroys it permanently.
+
+- Cavalry looses its attacking bonus when not attacking on grass
+
+- ships in cities have their attack strength halved
+
+
+6. Army abilities
+
+Besides the obvious abilities of armies (hitpoints, strength etc.), each army
+has two special boni, the move bonus and the army bonus.
+
+The move bonus reduces the number of movement points required to cross a certain
+terrain to two. Therefore, while a mountain usually needs 6 movement points for
+crossing, the mountain move bonus reduces this cost to two points. If a unit has
+the water move bonus, it may also cross water, which is usually prohibited.
+
+Furthermore, an army can have one of several army boni. They give this army some
+additional special abilities, which are 
+
+Ship        -   the unit may only move on water or within cities
+Hero        -   gives all other units  +1 strength bonus in combat; may search
+                temples and ruins
+Cavalry     -   If the unit is on the attacker side and the defender is located
+                on open terrain (grass, not within cities), the unit gets +1
+                strength.
+Anticavalry -   The unit doubles its strength against cavalry
+Regeneration-   Unit heals one hitpoint per combat round and is completely healed
+                at the end of combat.
+Assassin    -   The unit has a chance of 1% of scoring an instant kill on a
+                succesful hit during combat
+
+
+6.1. Experience and Levels
+
+If two stacks battle each other and some armies are killed, their XP values
+(= how much XP they are worth) are added to a pool and evenly distributed
+among all surviving enemy armies. When a unit has gained enough
+experience, it can advance a level. You need ten experience points
+multiplied with the current level to advance one level, i.e. a level 5
+unit needs 50 experience to advance. Whenever a unit has collected enough
+experience, a dialog will pop up and ask which stat to raise permanently.
+
+6.2. Medals of Honour
+
+There are three medals of honour which will ocassionally be given to units.
+They are displayed at the upper left edge if a unit has these medals. Each medal
+can only be awarded once and sticks to the unit until it dies.
+
+The Medal of Damage (round and blueish) is earned if most of a unit's
+attacks have resulted in a hit during a fight. It increases the strength by one.
+
+The Medal of Defense (red cross) is assigned if a unit has hardly been hit
+during a battle. It increases the defense by one.
+
+The Medal of Honour (yellow star) is awarded if a unit has taken part in 10
+battles. It increases the number of hitpoints by 4.
+
+6.3 Fighting
+
+When two stacks of different players meet, a fight starts. First thing to note is
+that all stacks surrounding the attacked stacks are drawn into the battle.
+However, this affects only stacks that can move on water if the attacked unit is
+located on water, or stacks that move on land if the attacked unit is on land.
+If a city is attacked, all units are thrown into battle.
+
+A fight always ends after 30 rounds. If neither the attacker nor the defending
+stack has been destroyed, it ends with a draw. A round consists of each
+army selecting a victim and attacking it. First, all armies of the attacker
+attack, then the surviving defenders. Each army selects a random adversary.
+Then the attacking army's strength and the attacked army's defense is calculated,
+taking into account terrain bonuses or e.g. heroes.
+After that, for each point of strength, the attacker strikes once. The higher
+the defence, the lower the chance that the strike will hit (in detail, it is
+1/defense). For each successful hit, the attacked army looses one hitpoint.
+
+One further thing to note is that all armies are separated into close-combat and
+ranged-combat units. Closed combat units of one side can only attack close-
+combat units of the other side (unless there are none, then they will strike the
+ranged combat units). Ranged combat units can hit everything, but prefer (2/3
+chance) to strike enemy close combat units.

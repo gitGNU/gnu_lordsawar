@@ -1,0 +1,257 @@
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Library General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+#include "GameMap.h"
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include "citylist.h"
+#include "city.h"
+#include "ruin.h"
+#include "temple.h"
+#include "playerlist.h"
+#include "stacklist.h"
+
+using namespace std;
+
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<flush;}
+#define debug(x)
+
+GameMap* GameMap::s_instance = 0;
+
+int GameMap::s_width = 100;
+int GameMap::s_height = 100;
+
+GameMap* GameMap::getInstance()
+{
+    if (s_instance != 0)
+      return s_instance;
+    else return 0;
+}
+
+
+GameMap* GameMap::getInstance(std::string TilesetName)
+{
+    if (s_instance == 0)
+    {
+        s_instance = new GameMap(TilesetName);
+
+    }
+    return s_instance;
+}
+
+GameMap* GameMap::getInstance(XML_Helper* helper)
+{
+    if (s_instance)
+        deleteInstance();
+
+    s_instance = new GameMap(helper);
+
+    return s_instance;
+}
+
+void GameMap::deleteInstance()
+{
+    if (s_instance)
+        delete s_instance;
+    s_instance = 0;
+}
+
+GameMap::GameMap(std::string TilesetName)
+{
+    d_tileSet = new TileSet(TilesetName);
+
+    d_map = new Maptile*[s_width*s_height];
+    for (int j = 0; j < s_height; j++)
+        for (int i = 0; i < s_width; i++)
+            d_map[j*s_width + i] = 0;
+
+}
+
+GameMap::GameMap(XML_Helper* helper)
+{
+    std::string types;
+    std::string t_name;
+
+    helper->getData(s_width, "width");
+    helper->getData(s_height, "height");
+    helper->getData(t_name,"tileset");
+    helper->getData(types, "types");
+
+    d_tileSet = new TileSet(t_name);
+
+    //create the map
+    d_map = new Maptile*[s_width*s_height];
+
+    int offset = 0;
+    for (int j = 0; j < s_height; j++)
+    {
+        // remove newline and carriage return lines
+        char test = types[j*s_width + offset];
+        while (test == '\n' || test == '\r')
+        {
+            offset++;
+            test = types[j*s_width + offset];
+        }
+
+        for (int i = 0; i < s_width; i++)
+        {
+            //due to the circumstances, types is a long stream of
+            //numbers, so read it character for character (no \n's or so)
+            char type = types[j*s_width + i + offset];  
+
+            //the chars now hold the ascii representation of the numbers, which
+            //we don't want
+            type -= '0';
+            d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, type);
+        }
+    }
+
+    //add some callbacks for item loading
+    helper->registerTag("itemstack", SigC::slot(*this, &GameMap::loadItems));
+    helper->registerTag("item", SigC::slot(*this, &GameMap::loadItems));
+}
+
+
+GameMap::~GameMap()
+{
+    delete d_tileSet;
+
+    for (int i = 0; i < s_width; i++)
+    {
+        for (int j = 0; j < s_height; j++)
+        {
+            if (d_map[j*s_width + i])
+                delete d_map[j*s_width + i];
+        }
+    }
+
+    delete[] d_map;
+}
+
+bool GameMap::fill(MapGenerator* generator)
+//basically, this does the same as the former random function, but you don't
+//need to go the whole way via dumping the map in a file etc.
+{
+    int width;
+    int height;
+    const Tile::Type* terrain = generator->getMap(width, height);
+
+
+    //the sizes should definitely match, else we have a problem here
+    if (width != s_width || height != s_height)
+    {
+        std::cerr <<_("Error in GameMap::fillMap: sizes don't match!! Exiting.\n");
+        exit(-1);
+    }
+
+    // create tiles; there is a hack here: The map generator outputs tile types,
+    // but we supply the index of the tile types in the tileset to Maptile. Was
+    // the easiest version when rewriting this.
+    for (int j = 0; j < height; j++)
+        for (int i = 0; i < width; i++)
+        {
+            Uint32 index = d_tileSet->getIndex(terrain[j*width + i]);
+            d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, index);
+        }
+
+    return true;
+}
+
+bool GameMap::fill(Uint32 type)
+{
+    for (int i = 0; i < s_width; i++)
+        for (int j = 0; j < s_height; j++)
+            d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, type);
+
+    return true;
+}
+
+bool GameMap::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    std::stringstream types;
+
+    types <<endl;
+    for (int i = 0; i < s_height; i++)
+    {
+        for (int j = 0; j < s_width; j++)
+            types << getTile(j, i)->getType();
+        types <<endl;
+    }
+
+
+    retval &= helper->openTag("map");
+    retval &= helper->saveData("width", s_width);
+    retval &= helper->saveData("height", s_height);
+    retval &= helper->saveData("tileset", d_tileSet->getName());
+    retval &= helper->saveData("types", types.str());
+
+    // last, save all items lying around somewhere
+    for (int i = 0; i < s_width; i++)
+        for (int j = 0; j < s_height; j++)
+            if (!getTile(i,j)->getItems().empty())
+            {
+                retval &= helper->openTag("itemstack");
+                retval &= helper->saveData("x", i);
+                retval &= helper->saveData("y", j);
+                
+                std::list<Item*> items = getTile(i,j)->getItems();
+                
+                std::list<Item*>::const_iterator it;
+                for (it = items.begin(); it != items.end(); it++)
+                    (*it)->save(helper);
+
+                retval &= helper->closeTag();
+            }
+     
+    retval &= helper->closeTag();
+    return retval;
+}
+
+bool GameMap::loadItems(std::string tag, XML_Helper* helper)
+{
+    static int x = 0;
+    static int y = 0;
+    
+    if (tag == "itemstack")
+    {
+        helper->getData(x, "x");
+        helper->getData(y, "y");
+    }
+
+    if (tag == "item")
+    {
+        Item* item = new Item(helper);
+        getTile(x, y)->addItem(item);
+    }
+
+    return true;
+}
+
+Maptile* GameMap::getTile(int x, int y) const
+{
+    if ((x < 0) || (x >= s_width) || (y < 0) || (y >= s_height))
+    {
+        std::cerr <<"GameMap::getTile: function tried to access tile out of bonds at (";
+        std::cerr <<x <<"," <<y <<")! Exiting\n" <<std::flush;
+
+        exit(-1);
+    }
+
+    return d_map[y*s_width + x];
+}
+
+// End of file

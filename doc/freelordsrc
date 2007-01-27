@@ -1,0 +1,32 @@
+This document describes the format of the freelordsrc file.
+It should be placed in ~/.freelordsrc or /etc/freelordsrc.
+First, /etc/freelordsrc is read, then ~/.freelordsrc. The last one can override
+the data from the first one.
+
+d_datapath: absolute path (needed)
+d_savepath: absolute path (needed)
+d_lang: actual chosen language (default is C=the current locale)
+d_resolution: NUMBERxNUMBER
+d_fullscreen: (true/false)
+d_hardware: put surfaces in graphics card memory for speed (true/false) 
+d_cachesize: maximum size of the graphics cache in bytes
+d_zipfiles: zip save files or not
+d_smoothscrolling: enable the smooth scrolling (true/false)
+d_shownextplayer: shows the Next player dialog at the end of turn (true/false)
+d_speeddelay: time to pause (in ms) after each stack movement
+
+Example configuration:
+
+<?xml version="1.0"?>
+<freelordsrc version="1.0">
+    <d_datapath>/home/zeddicus/work/freelords_sdl/dat</d_datapath>
+    <d_savepath>/home/zeddicus/.freelords</d_savepath>
+    <d_resolution>1400x1050</d_resolution>
+    <d_fullscreen>true</d_fullscreen>
+    <d_hardware>true</d_hardware>
+    <d_cachesize>100000<d_cachesize>
+    <d_zipfiles>true</d_zipfiles>
+    <d_smoothscrolling>false</d_smoothscrolling>
+    <d_shownextplayer>true</d_shownextplayer>
+    <d_speeddelay>100</d_speeddelay>
+</freelordsrc>

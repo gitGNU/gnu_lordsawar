@@ -1,0 +1,31 @@
+here a list of the files in this directory:
+
+Internals
+    an overview about the internal code design of freelords. Probably useful if 
+    you want to understand how things work. However, it is no longer updated.
+
+Savefile
+    a document describing the layout of the save game files of freelords (at the
+    very end) and the changes throughout the versions
+
+Rendering
+    the document describes how the terrain in FreeLords is drawn. Should be read
+    and understood by people who want to create new tilesets.
+
+freelords-autopack.Changes
+    a Changelog for the autopack script (for uploading a freelords tar ball)
+
+freelordsrc
+    description of options for the config file
+
+Localization.HOWTO
+    a little HOWTO concerning localizations in Freelords
+
+Manual
+    Guess what
+
+Editor
+    manual for the editor
+
+
+translated manuals can be found in the respective subdirectories.

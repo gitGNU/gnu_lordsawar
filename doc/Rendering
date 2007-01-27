@@ -1,0 +1,306 @@
+Rendering description
+Author: Ulf Lorenz
+
+
+0. About this document
+1. Rendering
+    1.1. Tles, Subtiles
+    1.2. How rendering is done
+    1.3. An example
+2. Layout of a tileset
+    2.1. The graphics file
+    2.2. The description file
+3. Other files
+    3.1. City images
+    3.2. Bridges
+
+
+0. About this document
+
+We have adopted the current rendering algorithm for quite a while now. However,
+it may not be obvious to the average coder, leave alone graphic artists. Since
+on the other hand a person that wants to create some tilesets should know a bit
+about the rendering algorithm to create the tilesets in the correct fashion,
+this document emerges.
+
+
+1. Rendering
+
+1.1. Tiles and Subtiles
+
+The basic unit of a map in FreeLords is a single tile. However, for rendering
+purposes, we subdivide this tile in 4 quarters. I will call this quarters
+subtiles from now on. The single subtiles are referenced by ul (upper left),
+ur (upper right), ll (lower left) and lr (lower right), depending on their
+position within the tile. Tiles bordering the tile in question are similarily
+referenced by ul, ur etc. as well as e.g. u (for the tile above the current
+tile).
+
+
+1.2. How rendering is done
+
+Each tile is subdivided into its four subtiles which are then dealt with
+separately. As an example, I will take the ul subtile. The image that is copied
+there depends solely on the bordering tiles, i.e. on the tile to the left, the
+upper tile and the tile to the upper left. The exact transition now depends on
+whether these tiles are of the same or a different (the latter one indicated by
+a "!" for brevity) terrain type compared to the tile we currently consider.
+There are six cases handled separately. You don't need to memorize them, I just
+list them for completeness.
+
+1.l, ul, u
+2. l, !ul, !u
+3. !l, !ul, u
+4. !l, !ul, !u
+5. l, !ul, u
+6. !l, ul, !u (handled more or less like 4.)
+
+How e.g. a borderline actually looks then depends on the case which has to be
+applied. Since people usually don't understand the abstract explanation, I will
+demonstrate the algorithm in the example in the next subchapter. :)
+
+A last thing worth mentioning is the fact, that transitions are always to grass.
+This means that if a mountain tile meets a water tile, there will be a thin
+grass line in the final image. This was neccessary to dramatically cut down the
+number of required transitions and needs to be kept in mind when creating a
+tileset.
+
+
+1.3. An example
+
+To further explain the algorithm, I will use a simple example. I will indicate
+tiles with upper case characters (W for water, M for mountain, G for grass), and
+the subtiles with the corresponding lowercase characters. The example looks like
+this:
+
+        MMG
+        MWW
+
+or, dividing it into subtiles and indexing the subtiles with numbers, we get:
+
+        m m m m g g                 (1,1) (2,1) (3,1) (4,1) (5,1) (6,1)
+        m m m m g g                 (1,2) (2,2) (3,2) (4,2) (5,2) (6,2)
+        m m w w w w                 (1,3) (2,3) (3,3) (4,3) (5,3) (6,3)
+        m m w w w w                 (1,4) (2,4) (3,4) (4,4) (5,4) (6,4)
+
+Now let us have a look at the subtile (3,3), i.e. the ul subtile of the left
+water tile. Since it is the ul subtile, we only need to consider the l, ul and u
+tile. We find that all three of these tiles are different. What we would like to
+have at this position, is a tile that looks like this:
+
+            -------------------------
+            |                       |
+            |   grass               |
+            |          -------------|
+            |        /              |
+            |       |               |
+            |       |  water        |
+            |       |               |
+            |       |               |
+            |       |               |
+            -------------------------
+
+
+Therefore, this is how the subtile for ul water, type 4, looks like. The terrain
+gets changed to the left, upper left and upper side. To further stress the
+point, look at subtile (4,3). It is the upper right subtile of the left water
+tile, therefore we have to look at the u, ur and r neighbouring tiles. What we
+find here is that the upper tile is mountain, the ur tile is grass and the r
+tile is water (to the left is the ul subtile, therefore we know already that
+there is water). Therefore, the terrain changes to the top and top right.
+Following this, the subtile then looks like:
+
+            -------------------------
+            |                       |
+            |       grass           |
+            |                       |
+            |-----------------------|
+            |                       |
+            |                       |
+            |       water           |
+            |                       |
+            |                       |
+            -------------------------
+            
+
+Since this algorithm is applied to every subtile, the final result will look like
+the following image:
+
+
+        --------------------------------------------------------------
+        |                                     |                      |
+        |                                     |                      |
+        |                                     |    grass             |
+        |     mountains                       |                      |
+        |                   ------------------/                      |
+        |                 /                                          |
+        |               /       -------------------------------------|
+        |               |     /                                      |
+        |               |     |                                      |
+        |               |     |                                      |
+        |               |     |           water                      |
+        |               |     |                                      |
+        |               |     |                                      |
+        |               |     |                                      |
+        --------------------------------------------------------------
+
+The thin stripe of grass is an artifact from the fact that the mountain as well
+as the water go over into grass at the transition line.
+
+I hope this example is enough. If not, feel free to mail me.
+
+
+
+2. Layout of a tileset
+
+
+2.1. The graphics file
+
+From chapter 1, you have hopefully understood the basic concepts, now comes the
+task of creating the actual graphics. For illustration, just open the current
+tileset (should be something like $freelords_src/dat/tilesets/default/default.png)
+if you want.
+
+Tiles in FreeLords are always 50x50 pixels each. Subdividing gives subtiles of
+25x25 pixels. The tileset image is divided into rows and columns. Each row
+here stands for one single terrain type, the order has to be the same as in the
+description file (see 2.2). Each column is a specific transition. Each subtile is
+to be found at the position it would also be in the real game, i.e. a ul subtile
+is found in the upper left corner of a cell.
+
+The order of the columns is (using the example of the ul subtile)
+
+1. l, ul, u
+2. l, !ul, !u
+3. !l, !ul, u
+4. !l, !ul, !u
+5. l, !ul, u
+
+The other three column are variations of the first one. For the first version
+of a maptile, just copy the first to the three last columns. The point of 
+variations is that a large area of the same terrain should not look too
+monotonous, so of the (up to 4) different variations, a random one is chosen for
+each subtile.
+
+
+2.2. The description file
+
+Beside the graphics, each tileset also consist of a description file. To
+check this, open the file of the default tileset (should be
+$tileset_dir/default.xml).
+
+The format is xml style. I will here describe the layout writing the description
+of the tags within them.
+
+<?xml version=1.0>
+<tileset>
+    <d_name> The name of the tileset </d_name>
+    <d_info> Additional info string </d_info>
+    <d_tilesize> Always set to 50 :) </d_tilesize>
+    <tile>
+        <d_name> Name of the tile type </d_name>
+        <d_moves> # of movement needed to cross this tile </d_moves>
+        <d_defense> defense bonus/malus in ten percent steps </d_defense>
+        <d_red> red value for the terrain color in the small map </d_red>
+        <d_green> same for green value </d_green>
+        <d_blue> same for the blue value </d_blue>
+        <d_type> terrain type (see Tile.h for a list) </d_type>
+    </tile>
+    <tile>
+        ... more tiles ...
+    </tile>
+    ...
+</tileset>
+
+
+Note that the 'd_*'-tags always enclose actual data while the others just
+give structure. Leading and trailing spaces are not removed, so the following
+is wrong:
+<d_red> 50 </d_red>
+
+Instead use:
+<d_red>50</d_red>
+
+The description of the single tiles has to be in the same order as they appear
+in the graphics file, else the images in the game will be wrong.
+
+
+3. Other files
+
+Though the graphics and the description file are the most important, a
+complete tileset takes several more files. These are
+
+- additional graphics for diagonal bridges (explained below)
+- castle images (three types + razed castle)
+- flag images (they will be removed soon)
+- images for ruins and temples
+
+
+I will not comment the flag images, since they are subject to removal anyway.
+The images for the razed city and the ruins/temples are obvious. The former
+is used when a city is destroyed (100x100 pixels), the latter shows ruins
+and temples on the map (50x50 pixels). What remains to be commented are the
+city  images and the bridges.
+
+
+3.1. City images
+
+There are three city types: village, town and city. Each occupies 4 tiles, so
+the images are 100x100 pixels each. if you again look at the castles.png file
+in the default tileset, you will find that they are arranged next to each other,
+i.e. there is a 300x100 image with the image for the village to the left,
+next to the town image and the city image to the right.
+
+The second important image related to cities is the file castles_mask.png. The
+idea behind this is that the cities should have some player-specific colors.
+This is done by creating a 256 color image that is laid over the original city
+image. Transparent colors get the color with the index 0, the pixels with the
+player colors have the colors with the indexes 3-15 (from brightest to darkest).
+Note that for the mask not the actual colors, but the index of the colors are
+important.
+
+
+3.2. Bridges
+
+Due to some limitations in the rendering algorithm, there is one special case
+that doesn't look really good. This is the case where two tiles of the same
+terrain are placed diagonally, but all other tiles around are of another
+terrain. The situation looks like in the following (G - Grass, W - Water):
+
+    GGGG
+    GWGG
+    GGWG
+    GGGG
+
+The rendered image would look like this:
+
+    --------------------------------------------------
+    |                                                |
+    |                                                |
+    |                                                |
+    |         /---------\                            |
+    |         |         |                            |
+    |         |  Water  |             Grass          |
+    |         |         |                            |
+    |         |         |                            |
+    |         \---------/                            |
+    |                                                |
+    |                       /----------\             |
+    |                       |          |             |
+    |                       |  Water   |             |
+    |                       |          |             |
+    |                       |          |             |
+    |                       \----------/             |
+    |                                                |
+    --------------------------------------------------
+
+This is, of course, not acceptable. While this doesn't look to bad with
+mountains or swamp, something has to be done with water tiles. We want the two
+water tiles to be connected. As a result, an additional bridge is blitted
+over the grass in-between. There are two types of bridges, those going from
+norteast to southwest and from northwest to southeast. Bridges are blitted after
+the rest of the terrain has been done. In the example above, this would work as
+follows. Take the lr subtile of the top water tile, the ul of the bottom water
+tile and the ur and ll subtiles of the bordering grass tiles. You get a new
+virtual tile that has an offset to the actual existing tiles. On this tile, the
+bridge image is then blitted. For ne/sw bridges, you do practically the same.

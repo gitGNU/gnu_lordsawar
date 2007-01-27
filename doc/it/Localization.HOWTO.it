@@ -1,0 +1,61 @@
+Guida alla localizazione di Freelords. (Andrea Paternesi 2004).
+
+1) Creare una nuova localizzazione dal nulla.
+
+E' necessario inserire nel codice del gioco alcuni caratteri speciali per indicare
+quali stringhe devono essere tradotte in automatico.
+Ad esempio, nel caso del seguente comando C++ del file main.cpp,
+
+   cerr << "No modes available!\n";
+   
+aggiungete i caratteri speciali _() per indicare al
+compilatore di tradurre la stringa:
+
+   cerr << _("No modes available!\n);
+
+Questi caratteri speciali sono una macro per la funzione gettext().
+Per creare un nuovo file .po utilizzate il comando "xgettext". Leggete
+il man per capire come si usa.
+Verrà creato un nuovo file chiamto messages.po che può essere
+modificato e salvato con il nome della vostra nuova localizzazione
+(ad esempio it.po).
+
+2)  Creare una nuova localizzazione utilizzando una già esistente (raccomandato).
+
+E' sufficiente prendere il file it.po che si trova nella directory /po e
+copiarlo in un nuovo file "lingua".po (ad esempio de.po o be.po o altri).
+Sostituite le stringhe in italiano  con quelle nella lingua di destinazione.
+Quando ricompilate ed installate il gioco verranno compilati ed
+installati anche i file della nuova localizzazione.
+
+3) Aggiornare un file di localizzazione esistente.
+
+Utilizzate il tool "update.pl", che trovate nella directory  /po, 
+come descritto di seguito : 
+
+	./update.pl [OPTIONS] LANGCODE
+
+Per default, questo script aggiorna il file pot (il template  po generato
+dal codice sorgente) e lo fonde con il file po della traduzione.
+
+As esempio per il linguaggio italiano, digitare la seguente stringa:
+
+	./update.pl it
+	
+Il file it.po sarà aggiornato con la nuove stringhe che dovranno
+essere tradotte a mano in seguito. 
+	
+Lo script supporta anche le seguenti opzioni:
+
+  -V, --version     mostra la versione
+  -H, --help        mostra la pagina di aiuto
+  -P, --pot         genera solo il file pot
+  -M, --maintain    cerca i file mancanti nella lista POTFILES.in
+
+L'opzione --maintain è particolarmente  utile per i manutentori in quanto
+consente di controllare che tutti i file sorgenti siano inclusi nella lista
+POTFILES.in, in modo da garantire che siano generate tutte le stringhe
+da tradurre nel file pot.
+
+"update.pl" è copyright 2000 di The Free Software Foundation 
+e Kenneth Christiansen (kenneth@gnu.org,kenneth@gnome.org)

@@ -1,0 +1,661 @@
+Author: Ulf Lorenz
+Version: 0.3
+Date: 2003-12-20
+
+
+This document wants to describe some internals of the freelords source code in
+a (hopefully) organized fashion. It is aimed at people interested in and willing
+to contribute to a (quoting Michael): "fantastic game". The problem is that
+although the source code is always the last instance when it comes to
+understanding how something works, someone completely new to the project may
+want to have a small guide to understand what each class is for and how several
+concepts work.
+
+NOTE: As of version >0.3.2 the header files themselves are documented, so that
+this file will not be actualized further.
+
+
+Table of Contents:
+
+0. Introduction
+1. Startup
+    1.1. The program flow till the splash screen
+    1.2. Starting a game
+    1.3. Loading a game
+2. The user interface in the actual game
+    2.1. The game screen
+    2.2. The bigmap
+    2.3. The smallmap
+    2.4. The buttons
+    2.5. The stackinfo
+    2.6. The menu
+    2.7. W_Edit and MainWindow
+        2.7.1 Timers
+    2.8. Reports and other widgets 
+3. Loading/saving
+    3.1. The xmlhelper class
+    3.2. Saving a game
+    3.3. Loading a game
+    3.4. Adding a new class
+4. several Game lists and objects
+5. Players
+    5.1. Derivation scheme
+    5.2. Actions
+6. Army handling
+    6.1. Armyset_Army and armysets
+    6.3. Armies and stacks
+7. Configuration
+8. Advanced topics
+    8.1. Maptile drawing
+
+ 
+
+0. Introduction
+
+First of all, I want to ask you to mail me any corrections, suggestions,
+misunderstandings ... whatever you have to comment. As you may know, although
+Open Source lives from contributions, they are quite rare.
+
+This document may be outdated. As version number, I have taken the one which
+this document is based on so you can easily see how outdated this document is.
+
+
+
+1. Startup
+
+
+1.1. The program flow till the splash screen
+
+When you start up freelords, the most important things to happen are (in the
+correct order):
+
+- the configuration is loaded
+- command line options are processed
+- the application is initialized
+- the splash screen is started up
+
+The configuration file (see the section about Configuration for details) is
+called freelordsrc and first searched in /etc, then in the user's home directory
+(in this case it is called .freelordsrc). Under Windows, the config file is
+assumed to be in the current directory.
+
+For the command line options see the file main.cpp, they are (hopefully)
+self-explaining, else look what is done with them during parsing.
+
+For the initialization, a PGApplication class is created and initialized with
+the resolution, the title etc.
+
+The splash class is described in splash.cpp/splash.h. It mainly consists of a
+background image, some buttons for starting or loading a game or quit the
+application. The splash screen also has the responsibility for the game start
+up to the point where the actual game screen is displayed. See the next
+subsections for further explanations.
+
+
+
+1.2 Starting a game
+
+When you start a game, it happens in three steps:
+
+- A dialog pops up for setting some game options
+- a new map is created (if no loaded map is selected)
+- This new map is loaded (as in loading a game)
+
+The dialog description can be found in GamePreferencesDialog.cpp/.h. It mainly
+contains many buttons and sliders for setting game options and some code to get
+the settings. The player specifics are to be found in player_preferences.cpp/.h,
+which also contain various widgets and some get-functions.
+
+The creation of the map is supervised by the CreateScenario class. What happens
+is: the Splash class loads the settings from the GamePreferencesDialog into the
+CreateScenario class. Then it has the CreateScenario class start the map
+creation. Finally, this class dumps a scenario description file (basically, and
+currently even exactly, a savegame which starts at turn 0). The CreateScenario
+class uses the various global lists (playerlist, stacklist etc.) during the
+creation process, but clears them when it is finished. This may change in the
+future (e.g. Andrea doesn't see a point in clearing all filled lists and reload
+them later on, so there could come some patch in this way).
+
+Finally, the Splash class loads the dumped scenario in the same manner as it
+would load a game and starts the game. There is a slight difference between
+starting and loading a game because different functions are called (e.g. when
+starting a game, each player is offered a hero), but apart from the way the
+actual game is started, the loading part is the same.
+
+
+
+1.3. Loading a game
+
+Well, I just see that there is not much to say here. The splash screen starts up
+a PGFileDialog to query the file to load and then loads it (see the section 3
+about loading a game).
+
+
+
+2. The user interface in the actual game
+
+
+2.1. The game screen
+
+The main game screen which you can see after starting a game is divided into
+five parts:
+
+* The bigmap, where the cities, stacks, maptiles etc. are displayed
+* The smallmap, where the whole map can be found (right upper corner)
+* The buttons and information on the right
+* The stackinfo on the bottom (only visible if you select a stack)
+* The menu on the top
+
+
+
+2.2. The BigMap
+
+This class contains a lot of code. I won't explain it all here, since you should
+look at the code for the ultimate description, but there are several remarks and
+concepts about this class I would like to explain. These are the viewrect, the
+selector and the xscreen.
+
+The viewrect is a PG_Rect which contains the part of the map which is currently
+displayed in the bigmap widget. If you wonder where it is created: Bigmap and
+smallmap share the same PG_Rect as viewrect, so it is assigned to them in the
+W_Edit constructor which is the master class of the screen. This has the
+advantage that if the viewrect changes in the bigmap class due to e.g. a stack
+moving, the smallmap viewrect is changed together with the bigmap. If you select
+a different location to view in the smallmap, the bigmap viewrect is updated
+accordingly.
+
+The bigmap class always starts a timer whenever possible. Sole purpose of this
+timer is the update of the selector. The selector appears around the selected
+stack. Select a stack and you will see, that the selector "moves". This is
+caused by the timer which will regularily flip two selector images and update
+the bigmap.
+
+The xscreen is a bit more complicated. Normally, the bigmap widget will move
+maptile by maptile. At some point, smooth scrolling was added to the game. Now
+the problem was: it is easy to position the bigmap along a whole maptile. But
+how do you handle maptiles which aren't completely displayed during the
+transition when scrolling smoothly? The solution is the xscreen. Basically the
+idea is that you store a larger bigmap surface than visible and display only a
+portion of it. When smooth scrolling takes place, you move from the old portion
+of this extended screen to the new location in several steps using offsets.
+Thus, the bigmap internally stores three rectangles, the viewrect discussed
+earlier, the old_rect which is usually the same as the viewrect and the xrect.
+The xrect gives the coordinates in map coordinates (e.g. 20th maptile from the
+left of the game map) of the extended screen. The oldrect is always set to the
+value of viewrect whenever the screen has moved. If the screen moves again, the
+value of viewrect is compared with the value of oldrect. If they differ too
+much, we don't want to scroll smoothly and just move the bigmap in the old-style
+fashion. If they are close to each other, we move the bigmap from the oldrect to
+the new viewrect in several steps, using offsets for the transition.
+
+
+
+2.3. The SmallMap
+
+The smallmap is a rather simple class. Important is the viewrect which it shares
+with the bigmap class. Whenever you click on a location in the smallmap, it
+emits a signal schangedViewrect which is connected with the bigmap class, so
+that bigmap updates its content (this also works vice versa).
+
+The smallmap also has a timer, which it uses to update the colored rectangle
+which shows the part of the map currently displayed by the bigmap. Each time the
+timer is raised, the colors of this rectangle are set to a slightly different
+value.
+
+
+
+2.4. The buttons
+
+All the buttons on the right are properties of the W_Edit class, so whenever
+they are pushed, a correpsonding function in W_Edit is called.
+
+
+
+2.5. The StackInfo
+
+The StackInfo is composed of 8 ArmyInfo objects. Each of these is a small box
+which contains the image of the army, its remaining movement points and the
+hitpoints. The StackInfo only appears if a unit is activated. BigMap then emits
+a signal sselectingStack, which has W_Edit show and update the stackinfo.
+If you click on one of the armyinfo boxes, you can toggle the grouped value of
+the corresponding army on or off. This value becomes crucial when you split a
+stack; all armies with grouped=true are put in a new stack.
+
+
+2.6. The Menu
+
+The menu is implemented in the MainWindow class. All menu points call a function
+in the MainWindow class, so look there for details.
+
+
+
+2.7. W_Edit and MainWindow
+
+The classes which are at the top of the hierarchy of graphics classes are the
+W_Edit and the MainWindow class. The hierarchy goes as follows:
+
+                    MainWindow
+                        |
+                    W_Edit
+           /            |            \          \
+     StackInfo      BigMap          Smallmap    Buttons
+
+
+The MainWindow class holds the whole gamescreen which you can see. However, it
+only cares about the menu items and delegates the whole rest of the
+functionality to the W_Edit class. The W_Edit class knows of all the other
+graphical classes. The classes themselves don't know of each other.
+
+But W_Edit does even more. In its constructor, it sets up the graphical
+subclasses and connects their signals and slots. It is callbacked whenever
+interesting things happen. If you select a stack, some new buttons (such as
+center on unit) have to be activated. This is e.g. done by the W_Edit class.
+It is also informed on every graphically important event. So it is e.g. in
+charge of announcing the next player.
+
+
+2.7.1. Timers
+
+Various graphicl classes have timers. Currently, these are bigmap for displaying
+the stack selector and smallmap for updating the viewed rectangle. However, on
+several occasions, it is neccessary to deactivate the timers. For example, if
+you load a game via the menu, a dialog for selecting the save file will appear.
+If the timers are left activated, the graphics will constantly be screwed up,
+because they draw in the background of the dialog. In the simplest case, this
+causes a flickering. Therefore, each class which uses a timer has functions to
+forcibly turn this timer on and off. The control lies in the hand of
+W_Edit::stop/startTimers() which calls the appropriate other functions. So in
+the example of a loading process, MainWindow (which takes care of the task)
+calls W_Edit::stoptTimers(), then displays the loading dialog etc., and finally
+reactivates the timers via W_Edit.
+
+
+
+2.8. Reports and other widgets
+
+There are several other widgets which I haven't dealt with so far. I won't
+describe them in detail because their scope is very limited (they don't interact
+with each other or have important specialities in opposite to e.g. bigmap), but
+simply list them here. These widgets include:
+
+* ArmyDialog: If you select a stack and right-click on an ArmyInfo button, the
+              ArmyDialog will pop up. It displays all details about the army
+              you have just selected.
+              
+* MapCreationDialog: When the random map is generated, a progress bar is
+                     displayed. The MapCreationDialog is the widget to this
+                     progress bar. It is very, very simple...
+                     
+* NextPlayerPopup: When the next human player starts his/her turn, by default a
+                   popup is displayed with the name of the next player. It is
+                   defined in this class
+
+* CitiesReport, StackReport, GoldReport, QuestsReport:
+        In the menu, you can select several reports. They are implemented in
+        these classes.
+
+* cityinfo: When you right-click on the city, you can modify the city parameters
+            (defense level, production etc.). This class provides the graphical
+            interface to these actions.
+
+* d_buy_production: When, in the cityinfo dialog, you select to purchase another
+                    production, this dialog pops up.
+
+* hero_offer:   Sometimes, a new hero decides to join you. Then this dialog
+                offers  the possibility of editing the hero's name and
+                accepting/rejecting him/her.
+
+* RuinInfo: right-clicking on a ruin displays its location and id. This dialog
+            implements that display.
+
+
+
+3. Loading/Saving
+
+
+3.1. The XML_Helper class
+
+The central class in the freelords sving concept is the XML_Helper class.
+Savegames are basically XML files. To simplify saving data in an xml file this
+class provides functions which do most of the work.First, it can be invoked
+either in reading or in writing mode. Reading is equal to loading, writing
+equals saving. It is not possible to read and write a savefile. The propability
+of a nasty race condition is just too high. Then, there are separate functions
+for saving and loading, which are explained in detail in the next two chapters.
+
+This class uses expat as backend for parsing an xml file and a simple ifstream
+for writing a savefile. Recently, Andrea has added zipping functions. So with
+the appropriate parameters, the XML_Helper zips and obfuscates the savegame a
+bit. When loading, it checks for a simple magic key to look if the file is
+zipped.
+
+
+
+3.2. Saving
+
+The XML_Helper class offers five functions to save your game, which take most of
+the load of actually saving the game off you.
+
+Saving a game is always started with begin(). This function takes a "version"
+parameter which is added to the first opened tag and is to identify the savegame
+version, so that the game aborts when it finds an old savegame version.
+
+Similarily, when you have finished saving, you call close, which will close the
+output stream and do some cleanup if neccessary (e.g. zipping).
+
+You can open and close new tags with the openTag() and closeTag() functions.
+Tags are used to separate your savegame in pieces. See the section about loading
+a game, why you would want to open up new tags. See the next paragraphs, how you
+use them.
+
+Finally, you can save data with the saveData() functions. They take an
+identifier and a value, and automatically write a tag like
+
+<d_identifier>value</d_identifier>
+
+When loading a game, these values are collected and stored in an array, so that
+you can access them in a convenient way.
+
+
+
+3.3. Loading
+
+After saving, the savegame file looks in parts like this
+
+<map>
+    <d_size>100</d_size>
+    <d_tileset>default</d_tilset>
+    ...
+</map>
+
+which means in this example that a class has saved among other things the values
+size and tileset and has reserved the tag <map> to specifiy that the section
+belongs to itself.
+
+When loading a savegame, it works as follows:
+- You create a new XML_Helper class with the filename as argument
+- You register tags (e.g. the tag "map" in the example above)
+- You parse the savegame
+
+That's all. Now the only remaining question is how to and why to register tags.
+
+By registering tags you associate a tag with a callback function. You call
+XML_Helper::registerTag with the name of the tag and the function pointer as
+argument. Whenever the XML_Helper now encounters this tag in the savegame, it
+will first load all the data (in the example the data "size" and "tileset") and
+then call the callback function associated with this tag. In the callback
+function you can easily access the data by XML_Helper::getData. You supply the
+name of the data item and a reference to a variable of the correct type, and the
+helper will return the saved value.
+
+Of course, it is also possible to nest tags, such as in this example
+
+<stack>
+    <d_xpos>10</d_xpos>
+    <d_ypos>23</d_ypos>
+    ...
+    <army>
+        <d_type>5</d_type>
+        ...
+   </army>
+</stack>
+
+In this example, the stack callback will be raised when the helper encounters
+the nested tag. Therefore it is neccessary to save the data before saving
+sub-objects, else the data will not be accessible.
+
+
+
+3.4. Adding a new class
+
+What should you do if you want to add a new class and save its contents?
+
+The steps in this order:
+- Add a loading and a saving function to the class (the loading function is
+  often implemented in the constructor, see further below).
+- Save the data in the saving function, load it in theloading function.
+- put in one of the other classes (the uppermost is GameScenario) a reference to
+  your saving/loading function, so they are actually called when the game is
+  saved/loaded
+- Relax or debug. Or both. :)
+
+Some special notes:
+- As mentioned before, always save your data before passing the turn to other
+  (sub) classes. Else your data will be lost in the savefile.
+- Beware the order! Stacks, for example, have an owning player who they save by
+  saving his ID. So the stacks have to be saved AFTER the players, because else
+  they won't find their player during loading.
+- Another item concerns nested objects. If you have a list A, which contains
+  objects of type B, there are some specialities. When saving, A should first
+  save its data and then call the save function of each of its subclasses. When
+  loading, A should register one of its functions for both, the tags A AND B.
+  When the tag A is encountered, A loads its private data. However, when the tag
+  B is loaded, it creates a new class B, and passes this class the XML_Helper.
+  That means that B doesn't have a loading function, but instead a "loading
+  constructor". The reason is obvious: The classes B may not be allowed to know
+  of A, but somehow they have to be added to A.
+
+
+
+4. Several game lists and objects
+
+For partly historical purposes as well as practicl ones, there are several
+global lists and objects haunting the stack. I would like to give a short
+introduction to these lists and objects. This is just a brief description,
+remember: The code is the ultimate documentation.
+
+Most of the lists, such as the playerlist, are implemented as singletons. The
+reason is that many, many classes want to use it for one or the other purpose,
+so it would have to be quite publicly accessible anyway. And you want to ensure
+that there exists only one list at a time. However, a drawback is the long
+invocation as in "Playerlist::getInstance()->getPlayer(id)". But let's come to
+the classes:
+
+Configuration:  A better structure, this class holds all global configuration
+                parametres and functionality to load the configuration.
+
+File:           The only reason why this is a class and not a namespace is the
+                fact that you can hide the function for the actual loading of
+                images. This class provides the functions which are used to load
+                all "shared" data, from army descriptions to map pictures.
+
+GameMap:        This class holds all the logical information about the map, the
+                type of terrain at each position, the city locations etc.
+
+GameScenario:   This class is not publicly visible, but belongs exclusively to
+                the W_Edit class. It holds global scenario data (the turn
+                number, the name of the scenario etc.) and is the uppermost
+                object in the loading/saving hierarchy, i.e. it calls all save
+                functions of all the other objects.
+
+GraphicsCache:  This class is used by the armies to draw their pictures with the
+                colors of their players. Virtually useless for all other
+                purposes. Before I forget: It also caches these pictures,
+                because they are quite expensive to draw.
+
+Object:         A class to derive from. It can store the position and the size
+                of a map object (such as cities).
+
+Location:       An object which also knows a name. Cities et al. derive from it.
+
+MapGenerator:   The name is a bit misleading. With this class, you can set
+                several parametres, such as the number of cities, and then
+                create and dump (save) a scenario. It uses the other lists to
+                store the temporary information (such as the players).
+
+MapRenderer:    The class which BigMap relies on to draw the map. It can draw a
+                given portion of the map in natural size.
+
+ObjectList:     A list of objects (as the name proposes). Basically a simple
+                list with the addition that it can look if one of its objects is
+                at a certain location. Many other lists derive from it.
+
+Quest, Q*:      The quest classes. Quest is the base class, and several quest
+                types are derived from it. The latter start with Q. They contain
+                data for one single quest.
+
+QuestsManager:  This class contains a list of all active quests and cares for
+                the actual assignment and removal of quests, checks for
+                fulfillment etc.
+
+Tile:           The basic item of a tile set. It describes the properties of one
+                single terrain type.
+
+TileSet:        A set of tiles. I think there is nothing more to say...
+
+Action*:        Action items for storing player's actions. See the chapter about
+                players for details.
+
+AI_*:           Special AI's. See the section about players for details.
+
+Armyset_army:   The basic item of an armyset. It describes the properties of a
+                specific unit type.
+
+Army:           A specific unit in the game. It extends the Armyset_army by some
+                useful attributes.
+
+Armyset:        A collection of Armyset_armies.
+
+Armysetlist:    The list of all armysets. Includes functions to load these
+                armysets if neccessary.
+
+City:           As the name suggests, it describes a single city on the map. It
+                derives from Location.
+
+Citylist:       The list of all cities, derives from ObjectList.
+
+Counter:        A global object whose sole purpose is assigning unique ids on
+                request. With it, you can assign each object an ID and reference
+                it later on.
+
+Fight:          This class does the logical stuff for a fight. If you want to
+                understand it, don't forget to have a look at FightDialog, too.
+                The latter provides the graphical stuff, and both sort of work
+                together.
+
+Hero:           A special kind of army. Currently, the hero only has a name, but
+                in the future, it shall also get a backpack etc.
+
+Maptile:        This class describes a specific location on the map. It stores
+                the terrain type and modification etc.
+
+Path:           This class calculates and checks a unit's path. See the section
+                about path finding for details.
+
+Player:         Base class for all player classes. See the section about players
+                for details.
+
+Playerlist:     List of all players. It can also count the number of living
+                players etc, but that only as addition.
+
+RealPlayer:     A player describing a local (non-networked) player. See the
+                section about players for details.
+
+Ruin, RuinList: Nothing surprising.
+
+Stack, Stacklist:   See the section about armies and stacks to learn what a
+                    stack is.
+
+stringTokenizer:    Currently only used to determine if a savegame name has the
+                    correct ending ".sav", but should be able to handle other
+                    purposes as well.
+
+Temple, Templelist: As the name suggests.
+
+
+
+5. Players
+
+5.1. Derivation scheme
+
+The player class has to deal with several tasks. Most important of all, it has
+to deal with all actions a player can do. For example, if you code the AI, you
+want to say "move stack xyz to location x,y" instead of checking the path, doing
+the move step by step etc. On the other hand, there are different player types,
+namely a local and a network player. The network player basically does
+everything he is told to do over the network while the local player does all
+checks and calculations himself (basically).
+
+This concept is reflected in the player classes. First, there is an abstract
+class Player. It defines all functions a derived player class has to support and
+implements some basic functions as well (such ass "addGold" and so on). From
+this class, we derive the classes for the network player, who is just kind of a
+slave, and the local player. Network play is not implemented yet, so the only
+class currently available is the RealPlayer class.
+
+The RealPlayer class implements the already predefined functions, which cover
+every actions a player can do, from changing city productions over moving stacks
+to searching ruins. The RealPlayer class is already the class which is used to
+model a local human player. However, there is still another level in the
+hierarchy.
+
+The last level is the AI player. It derives from the RealPlayer (i.e. is a local
+player). The hook for the AI execution is the fact that each player's turn is
+started by calling Player::startTurn(). At this point, the AI will start to do
+its job. You can add an arbitrary AI by deriving a class from RealPlayer,
+overwriting startTurn() and adding your own functionality. The current AI's are
+a bit poor when it comes to a real game. The one just sits around and collects
+money (used for the neutral player and his cities), the other one collects a
+stack with 8 armies and marches straight to the next town.
+
+
+
+5.2. Actions
+
+As said in the section before, the RealPlayer class is responsible for
+performing all actions a player can do. However, for several purposes you want
+to keep track of what a player has done, either to send the record over the net
+or to show the player's doings to another player later on. To record the
+player's actions, each function creates a new action item, and the player object
+stores them in a private list for further use. Just a point to think of if you
+want to add new features.
+
+The action structures are all to be found in action.h, the action types are
+associated with macros, which in turn are located in defs.h.
+
+
+
+6. Army handling
+
+6.1 Armyset_army and armysets
+
+The lowest class in the army hierarchy is the armyset_army class. It contains
+all the data neccessary for a single unit type, such as strength, defense,
+movement abilities etc. That is all! It has no functionality to heal a unit or
+whatdoIknow; it is just a plain, simple container.
+
+Several Armyset_armies can be bound together to an armyset. Each armyset is
+defined by a description file (see <freelords_share_dir>/army/default.xml for an
+example) and loaded on demand by the armysetlist, which in turn collects and
+binds all armysets.
+
+Another thing to note is that Armyset_army is also the base class for the Army
+class. The latter just derives from it and extends it here and there. If a new
+army is created, an Armyset_army is basically kind of cloned, the copy becomes
+the new army.
+
+
+
+6.2. Armies and stacks
+
+Now the time has come to distinguish between armies and stacks, as I have
+already done on numerous occasions in this document. An army is a single unit,
+such as the first cavalery, or a single mage. Up to eight armies can be put
+together to form a stack. Each army is contained in a stack, but apart from the
+fact that it shares the location with other armies it is an independent object.
+
+Therefore, when you look for the location or the path, the stack is the right
+place to search. A stack also fights together. However, it can be split without
+problems (see RealPlayer::stackSplit() for details).
+
+
+
+7. Configuration
+
+The configuration items are stored in the Configuration class in a
+rather crude fashion. It has the ability to read a given config file
+(which it is assigned in the main function) and saves the data in
+publicly accessible static variables. Adding a configuration option thus
+means adding some code for the loading process and a variable.
+
+...To be continued

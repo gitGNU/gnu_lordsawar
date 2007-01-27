@@ -1,0 +1,51 @@
+The configure script should check for all these libs, but nevertheless here is
+a list of the dependencies.
+
+Requirements:
+
+- paragui = 1.1.8
+	to be found under http://www.paragui.org
+    (take the latest version due to some necessary bug fixes)
+
+- SDL >= 1.2.0	
+	to be found under http://www.libsdl.org
+
+- SDL_image >= 1.2.0
+    there should be a link on the sdl home page
+
+- SDL_mixer >= 1.2.6
+    there should be a link on the sdl home page
+
+- expat
+    an XML parser to be found under http://expat.sf.net, also comes with the
+    paragui source distribution (enable with configure --enable-internal-expat)
+
+- libsigc++ >= 1.2.0
+	to be found under libsigc.sf.net
+	don't know if libsigc++-1.0 also works, but it had some design flaws
+	according to the documentation, so take the latest. Don't use version 2.0!
+    AFAIR it is incompatible with 1.2.
+
+- pkg-config
+    Should be distributed with the Linux distribution. Required for detecting
+    the libsigc++-package and -flags
+
+- Gnu gettext 
+    Should be distributed with the Linux distribution.
+
+- Pthread library
+    Should be distributed with the Linux distribution.
+
+Optional requirements (for now):
+
+- ggz-client-libs : FL needs the 'ggzmod'  library, and the 'ggz-config' tool
+- ggz-server      : FL needs the 'ggzdmod' library, and the server config path
+- libggz          : FL needs the 'libggz'  library by itself
+    
+
+
+Requirements for freelords-autopack.sh (neccessary only for admins etc. :)):
+
+- must be outside of "freelords_sdl" ie. "/home/cvs/freelords_sdl", then the
+script must be in "/home/cvs"
+- need ncftpput, you can get ncftp at http://www.ncftp.com

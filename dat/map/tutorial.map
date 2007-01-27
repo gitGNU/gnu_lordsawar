@@ -1,0 +1,1575 @@
+<?xml version="1.0"?>
+<freelords version="0.3.8c">
+	<counter>
+		<d_curID>248</d_curID>
+	</counter>
+	<map>
+		<d_height>30</d_height>
+		<d_width>30</d_width>
+		<d_tileset>default</d_tileset>
+		<d_types>
+000000000000000000000000022000
+030000000000000000000000222000
+033300000000000000000002220000
+030000000002200000000002220000
+030010022222000000000002201000
+033011002222000000000002111002
+001001002202000000000020111100
+011111000022000000000002111020
+011140000000010000000002222022
+011444000111110000000000220222
+011444000111000000000000000220
+010444000111000000000000000020
+000000300000000000000000000000
+000000330000000000000000000000
+011003430000000000000000000000
+001003330000000000000000000000
+001100000000000000000000000000
+011000000000000000000000000000
+011000000000000000000000000000
+010000000000000000000000000000
+001000000000000000000000000000
+010000000000000000000000000000
+010000000000000000000000500550
+010000011000000000000000555500
+000000011100000000005555555055
+000011111000000000055555555555
+000001110000000005555555555555
+000001110000000055555155555115
+000001110000000055555155551115
+000000000000000005555555551511
+</d_types>
+	</map>
+	<playerlist>
+		<d_active>3</d_active>
+                <d_neutral>2</d_neutral>
+		<player>
+			<d_id>2</d_id>
+			<d_name>Neutral</d_name>
+			<d_color>150 150 150</d_color>
+			<d_armyset>3</d_armyset>
+			<d_gold>1000</d_gold>
+			<d_dead>false</d_dead>
+                        <d_immortal>false</d_immortal>
+			<d_type>2</d_type>
+			<stacklist>
+				<d_active>0</d_active>
+				<stack>
+					<d_id>199</d_id>
+					<d_player>2</d_player>
+					<d_x>14</d_x>
+					<d_y>14</d_y>
+					<d_defending>false</d_defending>
+					<path>
+						<d_size>0</d_size>
+						<d_x></d_x>
+						<d_y></d_y>
+					</path>
+					<army>
+						<d_id>238</d_id>
+						<d_armyset>1</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>10</d_hp>
+						<d_strength>2</d_strength>
+                                                <d_ranged>0</d_ranged>
+                                                <d_shots>0</d_shots>
+						<d_defense>2</d_defense>
+						<d_vitality>5</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>10</d_maxhp>
+						<d_moves>12</d_moves>
+						<d_max_moves>12</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>1</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>239</d_id>
+						<d_armyset>1</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>10</d_hp>
+						<d_strength>2</d_strength>
+                                                <d_ranged>0</d_ranged>
+                                                <d_shots>0</d_shots>
+						<d_defense>2</d_defense>
+						<d_vitality>5</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>10</d_maxhp>
+						<d_moves>12</d_moves>
+						<d_max_moves>12</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>1</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>240</d_id>
+						<d_armyset>1</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>10</d_hp>
+						<d_strength>2</d_strength>
+                                                <d_ranged>0</d_ranged>
+                                                <d_shots>0</d_shots>
+						<d_defense>2</d_defense>
+						<d_vitality>5</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>10</d_maxhp>
+						<d_moves>12</d_moves>
+						<d_max_moves>12</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>1</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>241</d_id>
+						<d_armyset>1</d_armyset>
+						<d_type>3</d_type>
+						<d_hp>15</d_hp>
+						<d_strength>3</d_strength>
+                                                <d_ranged>0</d_ranged>
+                                                <d_shots>0</d_shots>
+						<d_defense>4</d_defense>
+						<d_vitality>5</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>15</d_maxhp>
+						<d_moves>10</d_moves>
+						<d_max_moves>10</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>3</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+				</stack>
+				<stack>
+					<d_id>246</d_id>
+					<d_player>2</d_player>
+					<d_x>27</d_x>
+					<d_y>29</d_y>
+					<d_defending>false</d_defending>
+					<path>
+						<d_size>0</d_size>
+						<d_x></d_x>
+						<d_y></d_y>
+					</path>
+					<army>
+						<d_id>248</d_id>
+						<d_armyset>3</d_armyset>
+						<d_type>3</d_type>
+						<d_hp>30</d_hp>
+						<d_strength>10</d_strength>
+                                                <d_ranged>0</d_ranged>
+                                                <d_shots>0</d_shots>
+						<d_defense>10</d_defense>
+						<d_vitality>2</d_vitality>
+						<d_sight>6</d_sight>
+						<d_maxhp>30</d_maxhp>
+						<d_moves>20</d_moves>
+						<d_max_moves>20</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>20</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+				</stack>
+			</stacklist>
+			<fogmap>
+				<d_height>30</d_height>
+				<d_width>30</d_width>
+				<d_map>
+535153495351525753515349535053555351534953515257535153485351
+535353515349535152575351534953505355535153495351525653515349
+535153515351534953515257535153495350535553515349535152575351
+534853515353535153495351525753515349535053545351534953515257
+535153495351534953515349535152575351534953505355535153495351
+525753515348535153535351534953515257535153495350535553515349
+535152565351534953515351535153495351525753515349535053555351
+534953515257535153485351535253515349535152575351534953505355
+535153495351525753515349535152575351534953515257535153495350
+535553515349535152575351534853515353535153495351525753515349
+535053555351534953515256535153495351535153515349535152575351
+534953505355535153495351525753515348535153535351534953515257
+535153495350535453515349535152575351534953515349535153495351
+525753515349535053555351534953515257535153485351535353515349
+535152575351534953505355535153495351525653515349535153505351
+534953515257535153495350535553515349535152575351534853515353
+535153495351525753515349535053555351534953515257535153495350
+535553515349535152575351534953505355535153495351525753515348
+535153535351534953515257535153495350535553515349535152565351
+534953515351535153495351525753515349535053555351534953515257
+535153485351535353515349535152575351534953505354535153495351
+525753515349535153495351534953515257535153495350535553515349
+535152575351534853515353535153495351525753515349535053555351
+534953515256535153495351535153515349535152575351534953505355
+535153495351525753515348535153525351534953515257535153495350
+535553515349535152575351534953515257535153495351525753515349
+535053555351534953515257535153485351535353515349535152575351
+534953505355535153495351525653515349535153515351534953515257
+535153495350535553515349535152575351534853515353535153495351
+525753515349535053545351534953515257535153495351534853515349
+</d_map>
+			</fogmap>
+		</player>
+		<player>
+			<d_id>3</d_id>
+			<d_name>Good guy</d_name>
+			<d_color>30 30 255</d_color>
+			<d_armyset>3</d_armyset>
+			<d_gold>1000</d_gold>
+			<d_dead>false</d_dead>
+                        <d_immortal>false</d_immortal>
+			<d_type>0</d_type>
+			<stacklist>
+				<d_active>0</d_active>
+				<stack>
+					<d_id>49</d_id>
+					<d_player>3</d_player>
+					<d_x>6</d_x>
+					<d_y>6</d_y>
+					<d_defending>false</d_defending>
+					<path>
+						<d_size>0</d_size>
+						<d_x></d_x>
+						<d_y></d_y>
+					</path>
+					<hero>
+						<d_name>Ingorian</d_name>
+						<d_gender>0</d_gender>
+						<d_id>113</d_id>
+						<d_armyset>2</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>20</d_hp>
+						<d_strength>5</d_strength>
+                                                <d_ranged>0</d_ranged>
+                                                <d_shots>0</d_shots>
+						<d_defense>5</d_defense>
+						<d_vitality>5</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>20</d_maxhp>
+						<d_moves>14</d_moves>
+						<d_max_moves>14</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>10</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+						<backpack>
+						</backpack>
+						<equipment>
+						</equipment>
+					</hero>
+					<army>
+						<d_id>50</d_id>
+						<d_armyset>1</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>14</d_hp>
+						<d_strength>3</d_strength>
+                                                <d_ranged>0</d_ranged>
+                                                <d_shots>0</d_shots>
+						<d_defense>2</d_defense>
+						<d_vitality>5</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>14</d_maxhp>
+						<d_moves>12</d_moves>
+						<d_max_moves>12</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>1</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>1 1 1 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>115</d_id>
+						<d_armyset>1</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>14</d_hp>
+						<d_strength>3</d_strength>
+                                                <d_ranged>0</d_ranged>
+                                                <d_shots>0</d_shots>
+						<d_defense>2</d_defense>
+						<d_vitality>5</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>14</d_maxhp>
+						<d_moves>12</d_moves>
+						<d_max_moves>12</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>1</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>1 1 1 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>115</d_id>
+						<d_armyset>1</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>14</d_hp>
+						<d_strength>3</d_strength>
+                                                <d_ranged>0</d_ranged>
+                                                <d_shots>0</d_shots>
+						<d_defense>2</d_defense>
+						<d_vitality>5</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>14</d_maxhp>
+						<d_moves>12</d_moves>
+						<d_max_moves>12</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>1</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>1 1 1 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+				</stack>
+			</stacklist>
+			<fogmap>
+				<d_height>30</d_height>
+				<d_width>30</d_width>
+				<d_map>
+535153495351525753515349535053555351534953515257535153485351
+535353515349535152575351534953505355535153495351525653515349
+535153515351534953515257535153495350535553515349535152575351
+534853515353535153495351525753515349535053545351534953515257
+535153495351534953515349535152575351534953505355535153495351
+525753515348535153535351534953515257535153495350535553515349
+535152565351534953515351535153495351525753515349535053555351
+534953515257535153485351535253515349535152575351534953505355
+535153495351525753515349535152575351534953515257535153495350
+535553515349535152575351534853515353535153495351525753515349
+535053555351534953515256535153495351535153515349535152575351
+534953505355535153495351525753515348535153535351534953515257
+535153495350535453515349535152575351534953515349535153495351
+525753515349535053555351534953515257535153485351535353515349
+535152575351534953505355535153495351525653515349535153505351
+534953515257535153495350535553515349535152575351534853515353
+535153495351525753515349535053555351534953515257535153495350
+535553515349535152575351534953505355535153495351525753515348
+535153535351534953515257535153495350535553515349535152565351
+534953515351535153495351525753515349535053555351534953515257
+535153485351535353515349535152575351534953505354535153495351
+525753515349535153495351534953515257535153495350535553515349
+535152575351534853515353535153495351525753515349535053555351
+534953515256535153495351535153515349535152575351534953505355
+535153495351525753515348535153525351534953515257535153495350
+535553515349535152575351534953515257535153495351525753515349
+535053555351534953515257535153485351535353515349535152575351
+534953505355535153495351525653515349535153515351534953515257
+535153495350535553515349535152575351534853515353535153495351
+525753515349535053545351534953515257535153495351534853515349
+</d_map>
+			</fogmap>
+		</player>
+		<player>
+			<d_id>4</d_id>
+			<d_name>Evil Overlord</d_name>
+			<d_color>30 30 30</d_color>
+			<d_armyset>5</d_armyset>
+			<d_gold>0</d_gold>
+			<d_dead>false</d_dead>
+                        <d_immortal>false</d_immortal>
+			<d_type>4</d_type>
+			<stacklist>
+				<d_active>0</d_active>
+				<stack>
+					<d_id>55</d_id>
+					<d_player>4</d_player>
+					<d_x>23</d_x>
+					<d_y>27</d_y>
+					<d_defending>false</d_defending>
+					<path>
+						<d_size>0</d_size>
+						<d_x></d_x>
+						<d_y></d_y>
+					</path>
+					<hero>
+						<d_name>Eldaragon</d_name>
+						<d_gender>0</d_gender>
+						<d_id>139</d_id>
+						<d_armyset>2</d_armyset>
+						<d_type>4</d_type>
+						<d_hp>29</d_hp>
+						<d_strength>8</d_strength>
+                                                <d_ranged>0</d_ranged>
+                                                <d_shots>0</d_shots>
+						<d_defense>5</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>29</d_maxhp>
+						<d_moves>7</d_moves>
+						<d_max_moves>7</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>10</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>1 1 1 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+						<backpack>
+						</backpack>
+						<equipment>
+						</equipment>
+					</hero>
+					<army>
+						<d_id>56</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>20</d_hp>
+						<d_strength>2</d_strength>
+                                                <d_ranged>6</d_ranged>
+                                                <d_shots>20</d_shots>
+						<d_defense>3</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>20</d_maxhp>
+						<d_moves>7</d_moves>
+						<d_max_moves>7</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>1</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+				</stack>
+			</stacklist>
+			<fogmap>
+				<d_height>30</d_height>
+				<d_width>30</d_width>
+				<d_map>
+535153495351525753515349535053555351534953515257535153485351
+535353515349535152575351534953505355535153495351525653515349
+535153515351534953515257535153495350535553515349535152575351
+534853515353535153495351525753515349535053545351534953515257
+535153495351534953515349535152575351534953505355535153495351
+525753515348535153535351534953515257535153495350535553515349
+535152565351534953515351535153495351525753515349535053555351
+534953515257535153485351535253515349535152575351534953505355
+535153495351525753515349535152575351534953515257535153495350
+535553515349535152575351534853515353535153495351525753515349
+535053555351534953515256535153495351535153515349535152575351
+534953505355535153495351525753515348535153535351534953515257
+535153495350535453515349535152575351534953515349535153495351
+525753515349535053555351534953515257535153485351535353515349
+535152575351534953505355535153495351525653515349535153505351
+534953515257535153495350535553515349535152575351534853515353
+535153495351525753515349535053555351534953515257535153495350
+535553515349535152575351534953505355535153495351525753515348
+535153535351534953515257535153495350535553515349535152565351
+534953515351535153495351525753515349535053555351534953515257
+535153485351535353515349535152575351534953505354535153495351
+525753515349535153495351534953515257535153495350535553515349
+535152575351534853515353535153495351525753515349535053555351
+534953515256535153495351535153515349535152575351534953505355
+535153495351525753515348535153525351534953515257535153495350
+535553515349535152575351534953515257535153495351525753515349
+535053555351534953515257535153485351535353515349535152575351
+534953505355535153495351525653515349535153515351534953515257
+535153495350535553515349535152575351534853515353535153495351
+525753515349535053545351534953515257535153495351534853515349
+</d_map>
+			</fogmap>
+		</player>
+	</playerlist>
+	<citylist>
+		<d_size>4</d_size>
+		<city>
+			<d_id>11</d_id>
+			<d_name>The Shire</d_name>
+			<d_x>6</d_x>
+			<d_y>6</d_y>
+			<d_owner>3</d_owner>
+			<d_basic_prod>0 3 -1 -1 </d_basic_prod>
+			<d_adv_prod>5 -1 -1</d_adv_prod>
+			<d_defense>3</d_defense>
+			<d_production>0</d_production>
+			<d_is_adv_prod>false</d_is_adv_prod>
+			<d_duration>1</d_duration>
+			<d_gold>200</d_gold>
+			<d_burnt>false</d_burnt>
+                        <d_vectoring>-1 -1 </d_vectoring>
+			<d_capital>true</d_capital>
+		</city>
+		<city>
+			<d_id>12</d_id>
+			<d_name>Dragonbone</d_name>
+			<d_x>14</d_x>
+			<d_y>14</d_y>
+			<d_owner>2</d_owner>
+			<d_basic_prod>1 2 -1 -1 </d_basic_prod>
+			<d_adv_prod>-1 -1 -1</d_adv_prod>
+			<d_defense>1</d_defense>
+			<d_production>-1</d_production>
+			<d_is_adv_prod>false</d_is_adv_prod>
+			<d_duration>-1</d_duration>
+			<d_gold>30</d_gold>
+			<d_burnt>false</d_burnt>
+                        <d_vectoring>-1 -1 </d_vectoring>
+			<d_capital>false</d_capital>
+		</city>
+		<city>
+			<d_id>15</d_id>
+			<d_name>Old Tower</d_name>
+			<d_x>23</d_x>
+			<d_y>27</d_y>
+			<d_owner>4</d_owner>
+			<d_basic_prod>0 1 2 -1 </d_basic_prod>
+			<d_adv_prod>-1 -1 -1</d_adv_prod>
+			<d_defense>3</d_defense>
+			<d_production>-1</d_production>
+			<d_is_adv_prod>false</d_is_adv_prod>
+			<d_duration>-1</d_duration>
+			<d_gold>5</d_gold>
+			<d_burnt>false</d_burnt>
+                        <d_vectoring>-1 -1 </d_vectoring>
+			<d_capital>false</d_capital>
+		</city>
+		<city>
+			<d_id>183</d_id>
+			<d_name>Ruined City</d_name>
+			<d_x>12</d_x>
+			<d_y>26</d_y>
+			<d_owner>2</d_owner>
+			<d_basic_prod>-1 -1 -1 -1 </d_basic_prod>
+			<d_adv_prod>-1 -1 -1</d_adv_prod>
+			<d_defense>1</d_defense>
+			<d_production>-1</d_production>
+			<d_is_adv_prod>false</d_is_adv_prod>
+			<d_duration>-1</d_duration>
+			<d_gold>50</d_gold>
+			<d_burnt>true</d_burnt>
+                        <d_vectoring>-1 -1 </d_vectoring>
+			<d_capital>false</d_capital>
+		</city>
+	</citylist>
+	<templelist>
+		<d_size>1</d_size>
+		<temple>
+			<d_id>5</d_id>
+			<d_name>Tomb of the old king</d_name>
+                        <d_type>0</d_type>
+			<d_x>10</d_x>
+			<d_y>6</d_y>
+		</temple>
+	</templelist>
+	<ruinlist>
+		<d_size>3</d_size>
+		<ruin>
+			<d_id>171</d_id>
+			<d_name>Mysterious hole</d_name>
+			<d_x>4</d_x>
+			<d_y>6</d_y>
+			<d_searched>false</d_searched>
+			<stack>
+				<d_id>174</d_id>
+				<d_player>0</d_player>
+				<d_x>4</d_x>
+				<d_y>6</d_y>
+				<d_defending>false</d_defending>
+				<path>
+					<d_size>0</d_size>
+					<d_x></d_x>
+					<d_y></d_y>
+				</path>
+				<army>
+					<d_id>175</d_id>
+					<d_armyset>5</d_armyset>
+					<d_type>0</d_type>
+					<d_hp>20</d_hp>
+					<d_strength>2</d_strength>
+                    <d_ranged>4</d_ranged>
+                    <d_shots>20</d_shots>
+					<d_defense>3</d_defense>
+					<d_vitality>7</d_vitality>
+					<d_sight>3</d_sight>
+					<d_maxhp>20</d_maxhp>
+					<d_moves>20</d_moves>
+                    <d_max_moves>20</d_max_moves>
+					<d_xp>0</d_xp>
+					<d_expvalue>5</d_expvalue>
+					<d_level>1</d_level>
+					<d_blessed>false</d_blessed>
+					<d_medals>0 0 0 </d_medals>
+					<d_battlesnumber>0</d_battlesnumber>
+				</army>
+				<army>
+					<d_id>176</d_id>
+					<d_armyset>5</d_armyset>
+					<d_type>0</d_type>
+					<d_hp>20</d_hp>
+					<d_strength>2</d_strength>
+                    <d_ranged>4</d_ranged>
+                    <d_shots>20</d_shots>
+					<d_defense>3</d_defense>
+					<d_vitality>7</d_vitality>
+					<d_sight>3</d_sight>
+					<d_maxhp>20</d_maxhp>
+					<d_moves>20</d_moves>
+                    <d_max_moves>20</d_max_moves>
+					<d_xp>0</d_xp>
+					<d_expvalue>5</d_expvalue>
+					<d_level>1</d_level>
+					<d_blessed>false</d_blessed>
+					<d_medals>0 0 0 </d_medals>
+					<d_battlesnumber>0</d_battlesnumber>
+				</army>
+				<army>
+					<d_id>177</d_id>
+					<d_armyset>5</d_armyset>
+					<d_type>1</d_type>
+					<d_hp>25</d_hp>
+					<d_strength>4</d_strength>
+                    <d_ranged>0</d_ranged>
+                    <d_shots>0</d_shots>
+					<d_defense>4</d_defense>
+					<d_vitality>10</d_vitality>
+					<d_sight>3</d_sight>
+					<d_maxhp>25</d_maxhp>
+					<d_moves>20</d_moves>
+                    <d_max_moves>20</d_max_moves>
+					<d_xp>0</d_xp>
+					<d_expvalue>8</d_expvalue>
+					<d_level>1</d_level>
+					<d_blessed>false</d_blessed>
+					<d_medals>0 0 0 </d_medals>
+					<d_battlesnumber>0</d_battlesnumber>
+				</army>
+			</stack>
+		</ruin>
+		<ruin>
+			<d_id>230</d_id>
+			<d_name>Hydra's Lair</d_name>
+			<d_x>4</d_x>
+			<d_y>10</d_y>
+			<d_searched>false</d_searched>
+			<stack>
+				<d_id>231</d_id>
+				<d_player>0</d_player>
+				<d_x>4</d_x>
+				<d_y>10</d_y>
+				<d_defending>false</d_defending>
+				<path>
+					<d_size>0</d_size>
+					<d_x></d_x>
+					<d_y></d_y>
+				</path>
+				<army>
+					<d_id>232</d_id>
+					<d_armyset>4</d_armyset>
+					<d_type>4</d_type>
+					<d_hp>60</d_hp>
+					<d_strength>15</d_strength>
+                    <d_ranged>0</d_ranged>
+                    <d_shots>0</d_shots>
+					<d_defense>5</d_defense>
+					<d_vitality>5</d_vitality>
+					<d_sight>6</d_sight>
+					<d_maxhp>20</d_maxhp>
+					<d_moves>12</d_moves>
+                    <d_max_moves>12</d_max_moves>
+					<d_xp>0</d_xp>
+					<d_expvalue>20</d_expvalue>
+					<d_level>1</d_level>
+					<d_blessed>false</d_blessed>
+					<d_medals>0 0 0 </d_medals>
+					<d_battlesnumber>0</d_battlesnumber>
+				</army>
+			</stack>
+		</ruin>
+		<ruin>
+			<d_id>245</d_id>
+			<d_name>Dragon's lair</d_name>
+			<d_x>27</d_x>
+			<d_y>29</d_y>
+			<d_searched>false</d_searched>
+		</ruin>
+	</ruinlist>
+	<questlist>
+	</questlist>
+	<scenario>
+		<d_name>Tutorial and Testing</d_name>
+		<d_comment>This scenario is the Freelords testing Tutorial. Its pourpose is to demonstrate the advanced features of Freelords.</d_comment>
+		<d_turn>0</d_turn>
+		<d_turnmode>true</d_turnmode>
+		<event>
+			<d_id>180</d_id>
+			<d_active>true</d_active>
+			<d_type>8</d_type>
+			<d_comment>The introduction for the player.</d_comment>
+			<condition>
+				<d_type>0</d_type>
+				<d_player>3</d_player>
+			</condition>
+			<reaction>
+				<d_message>This is the tutorial of FreeLords. Though it is called tutorial, one of the main aims is to demonstrate some advanced abilities of FreeLords, such as events.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_message>BTW: If you like (or better: don't yet like) what you see here, we are always looking for coders, graphics artists and (new) map designers! Enough ads, let us start with the game.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_message>For ages you and your ancestors have lived peacefully in the lovely Shire. Nothing disturbed the quietness here until some months ago...</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_object>15</d_object>
+				<d_type>6</d_type>
+			</reaction>
+			<reaction>
+				<d_message>Orcs appeared.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_message>The foul creatures infested the old tower in the swamp and built up a fortress there, growing more and more powerful. And aggressive. During one of their raids, they destroyed a village close to the swamp. So you decided to drive them out.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_message>But the army under the command of your most able leader just vanished in the swamps.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_player>4</d_player>
+				<d_x>8</d_x>
+				<d_y>5</d_y>
+				<d_type>2</d_type>
+				<stack>
+					<d_id>184</d_id>
+					<d_player>0</d_player>
+					<d_x>8</d_x>
+					<d_y>5</d_y>
+					<d_defending>false</d_defending>
+					<path>
+						<d_size>0</d_size>
+						<d_x></d_x>
+						<d_y></d_y>
+					</path>
+					<army>
+						<d_id>185</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>20</d_hp>
+						<d_strength>2</d_strength>
+                        <d_ranged>6</d_ranged>
+                        <d_shots>20</d_shots>
+						<d_defense>3</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>20</d_maxhp>
+						<d_moves>20</d_moves>
+                        <d_max_moves>20</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>3</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+				</stack>
+			</reaction>
+			<reaction>
+				<d_x>8</d_x>
+				<d_y>5</d_y>
+				<d_type>5</d_type>
+			</reaction>
+			<reaction>
+				<d_message>"Huh, Where am I??"</d_message>
+				<d_type>0</d_type>
+			</reaction>
+		</event>
+		<event>
+			<d_army>185</d_army>
+			<d_id>187</d_id>
+			<d_active>true</d_active>
+			<d_type>3</d_type>
+			<d_comment>Player has killed the Orc that appeared at the introductory event.</d_comment>
+			<condition>
+				<d_type>0</d_type>
+				<d_player>3</d_player>
+			</condition>
+			<reaction>
+				<d_message>When you search the orc, you find some recently used digging tools.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+		</event>
+		<event>
+			<d_round>0</d_round>
+			<d_id>188</d_id>
+			<d_active>true</d_active>
+			<d_type>4</d_type>
+			<d_comment>After one round, an orc appears at the ruin next to the player's city and the player is warned of Orcish sappers.</d_comment>
+			<condition>
+				<d_type>0</d_type>
+				<d_player>4</d_player>
+			</condition>
+			<reaction>
+				<d_player>4</d_player>
+				<d_x>4</d_x>
+				<d_y>6</d_y>
+				<d_type>2</d_type>
+				<stack>
+					<d_id>189</d_id>
+					<d_player>0</d_player>
+					<d_x>4</d_x>
+					<d_y>6</d_y>
+					<d_defending>false</d_defending>
+					<path>
+						<d_size>0</d_size>
+						<d_x></d_x>
+						<d_y></d_y>
+					</path>
+					<army>
+						<d_id>190</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>20</d_hp>
+						<d_strength>2</d_strength>
+                        <d_ranged>6</d_ranged>
+                        <d_shots>20</d_shots>
+						<d_defense>3</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>20</d_maxhp>
+						<d_moves>10</d_moves>
+                        <d_max_moves>10</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>3</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+				</stack>
+			</reaction>
+			<reaction>
+				<d_x>4</d_x>
+				<d_y>6</d_y>
+				<d_type>5</d_type>
+			</reaction>
+			<reaction>
+				<d_message>"We have come through. Look, the Weakling's castle is there."</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_player>3</d_player>
+				<d_x>19</d_x>
+				<d_y>24</d_y>
+				<d_type>2</d_type>
+				<stack>
+					<d_id>191</d_id>
+					<d_player>0</d_player>
+					<d_x>19</d_x>
+					<d_y>24</d_y>
+					<d_defending>false</d_defending>
+					<path>
+						<d_size>0</d_size>
+						<d_x></d_x>
+						<d_y></d_y>
+					</path>
+					<army>
+						<d_id>192</d_id>
+						<d_armyset>1</d_armyset>
+						<d_type>3</d_type>
+						<d_hp>1</d_hp>
+						<d_strength>3</d_strength>
+                        <d_ranged>0</d_ranged>
+                        <d_shots>0</d_shots>
+						<d_defense>6</d_defense>
+						<d_vitality>10</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>5</d_maxhp>
+						<d_moves>12</d_moves>
+                        <d_max_moves>12</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>3</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+				</stack>
+			</reaction>
+			<reaction>
+				<d_x>19</d_x>
+				<d_y>24</d_y>
+				<d_type>5</d_type>
+			</reaction>
+			<reaction>
+				<d_message>"My Lord, the orcs have been digging a tunnel to our castle. You must destroy it!"</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_player>4</d_player>
+				<d_x>20</d_x>
+				<d_y>25</d_y>
+				<d_type>2</d_type>
+				<stack>
+					<d_id>193</d_id>
+					<d_player>0</d_player>
+					<d_x>19</d_x>
+					<d_y>0</d_y>
+					<d_defending>false</d_defending>
+					<path>
+						<d_size>0</d_size>
+						<d_x></d_x>
+						<d_y></d_y>
+					</path>
+					<army>
+						<d_id>194</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>25</d_hp>
+						<d_strength>4</d_strength>
+                        <d_ranged>8</d_ranged>
+                        <d_shots>10</d_shots>
+						<d_defense>3</d_defense>
+						<d_vitality>10</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>25</d_maxhp>
+						<d_moves>20</d_moves>
+                        <d_max_moves>20</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>7</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+				</stack>
+			</reaction>
+			<reaction>
+				<d_type>4</d_type>
+			</reaction>
+			<reaction>
+				<d_message>"Die, human!"</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_message>"Argh."</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_army>192</d_army>
+				<d_type>3</d_type>
+			</reaction>
+			<reaction>
+				<d_army>194</d_army>
+				<d_type>3</d_type>
+			</reaction>
+			<reaction>
+				<d_x>6</d_x>
+				<d_y>6</d_y>
+				<d_type>5</d_type>
+			</reaction>
+			<reaction>
+				<d_message>Your advisor informs you: "If you want to fight the Orcish hordes, it would be wise to visit the tomb of your father to the west. He had several powerful artefacts placed there."</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_event>196</d_event>
+				<d_activate>true</d_activate>
+				<d_type>11</d_type>
+			</reaction>
+		</event>
+		<event>
+			<d_temple>5</d_temple>
+			<d_id>196</d_id>
+			<d_active>false</d_active>
+			<d_type>6</d_type>
+			<d_comment>When the player searches the temple to the east, he gets some artefacts. This event is enabled by the previous one.</d_comment>
+			<reaction>
+				<d_message>The priests have heard of your task and awaited your coming. They present you some artefacts of your father.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_item>1</d_item>
+				<d_x>10</d_x>
+				<d_y>6</d_y>
+				<d_type>7</d_type>
+			</reaction>
+			<reaction>
+				<d_item>4</d_item>
+				<d_x>10</d_x>
+				<d_y>6</d_y>
+				<d_type>7</d_type>
+			</reaction>
+			<reaction>
+				<d_item>5</d_item>
+				<d_x>10</d_x>
+				<d_y>6</d_y>
+				<d_type>7</d_type>
+			</reaction>
+			<reaction>
+				<d_item>6</d_item>
+				<d_x>10</d_x>
+				<d_y>6</d_y>
+				<d_type>7</d_type>
+			</reaction>
+		</event>
+		<event>
+			<d_ruin>171</d_ruin>
+			<d_id>198</d_id>
+			<d_active>true</d_active>
+			<d_type>5</d_type>
+			<d_comment>When the ruin to the west of the city is searched, remove the appearance of orcs (foolowing events)</d_comment>
+			<reaction>
+				<d_message>You flood the tunnel with the help of the nearby lake. The danger by the orcs should be banned for now. All that is left is getting rid of the Orcish fortress.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_event>222</d_event>
+				<d_activate>false</d_activate>
+				<d_type>11</d_type>
+			</reaction>
+			<reaction>
+				<d_event>216</d_event>
+				<d_activate>false</d_activate>
+				<d_type>11</d_type>
+			</reaction>
+			<reaction>
+				<d_event>212</d_event>
+				<d_activate>false</d_activate>
+				<d_type>11</d_type>
+			</reaction>
+			<reaction>
+				<d_event>207</d_event>
+				<d_activate>false</d_activate>
+				<d_type>11</d_type>
+			</reaction>
+			<reaction>
+				<d_event>229</d_event>
+				<d_activate>true</d_activate>
+				<d_type>11</d_type>
+			</reaction>
+			<reaction>
+				<d_message>Maybe you want to search the lair to the south of your town now. It is rumored that a lot of gold can be found there.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+		</event>
+		<event>
+			<d_round>2</d_round>
+			<d_id>207</d_id>
+			<d_active>true</d_active>
+			<d_type>4</d_type>
+			<d_comment>First orcs come through the tunnel.</d_comment>
+			<condition>
+				<d_type>0</d_type>
+				<d_player>3</d_player>
+			</condition>
+			<reaction>
+				<d_player>4</d_player>
+				<d_x>4</d_x>
+				<d_y>6</d_y>
+				<d_type>2</d_type>
+				<stack>
+					<d_id>209</d_id>
+					<d_player>0</d_player>
+					<d_x>4</d_x>
+					<d_y>6</d_y>
+					<d_defending>false</d_defending>
+					<path>
+						<d_size>0</d_size>
+						<d_x></d_x>
+						<d_y></d_y>
+					</path>
+					<army>
+						<d_id>210</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>25</d_hp>
+						<d_strength>2</d_strength>
+                        <d_ranged>6</d_ranged>
+                        <d_shots>20</d_shots>
+						<d_defense>3</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>25</d_maxhp>
+						<d_moves>14</d_moves>
+                        <d_max_moves>14</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>6</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>211</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>25</d_hp>
+						<d_strength>2</d_strength>
+                        <d_ranged>6</d_ranged>
+                        <d_shots>20</d_shots>
+						<d_defense>3</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>25</d_maxhp>
+						<d_moves>14</d_moves>
+                        <d_max_moves>14</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>6</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+				</stack>
+			</reaction>
+			<reaction>
+				<d_x>4</d_x>
+				<d_y>6</d_y>
+				<d_type>5</d_type>
+			</reaction>
+			<reaction>
+				<d_message>"Where are our scouts? Humans!!"</d_message>
+				<d_type>0</d_type>
+			</reaction>
+		</event>
+		<event>
+			<d_round>4</d_round>
+			<d_id>212</d_id>
+			<d_active>true</d_active>
+			<d_type>4</d_type>
+			<d_comment>Again, orcs come through the tunnel.</d_comment>
+			<condition>
+				<d_type>0</d_type>
+				<d_player>3</d_player>
+			</condition>
+			<reaction>
+				<d_player>4</d_player>
+				<d_x>4</d_x>
+				<d_y>6</d_y>
+				<d_type>2</d_type>
+				<stack>
+					<d_id>213</d_id>
+					<d_player>0</d_player>
+					<d_x>4</d_x>
+					<d_y>0</d_y>
+					<d_defending>false</d_defending>
+					<path>
+						<d_size>0</d_size>
+						<d_x></d_x>
+						<d_y></d_y>
+					</path>
+					<army>
+						<d_id>214</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>25</d_hp>
+						<d_strength>2</d_strength>
+                        <d_ranged>6</d_ranged>
+                        <d_shots>20</d_shots>
+						<d_defense>3</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>25</d_maxhp>
+						<d_moves>14</d_moves>
+                        <d_max_moves>14</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>6</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>215</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>1</d_type>
+						<d_hp>30</d_hp>
+						<d_strength>6</d_strength>
+                        <d_ranged>0</d_ranged>
+                        <d_shots>0</d_shots>
+						<d_defense>5</d_defense>
+						<d_vitality>10</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>30</d_maxhp>
+						<d_moves>14</d_moves>
+                        <d_max_moves>14</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>10</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+				</stack>
+			</reaction>
+			<reaction>
+				<d_x>4</d_x>
+				<d_y>6</d_y>
+				<d_type>5</d_type>
+			</reaction>
+			<reaction>
+				<d_message>"Let's raze the city!!"</d_message>
+				<d_type>0</d_type>
+			</reaction>
+		</event>
+		<event>
+			<d_round>7</d_round>
+			<d_id>216</d_id>
+			<d_active>true</d_active>
+			<d_type>4</d_type>
+			<d_comment>The Orcish invasion starts.</d_comment>
+			<condition>
+				<d_type>0</d_type>
+				<d_player>3</d_player>
+			</condition>
+			<reaction>
+				<d_player>4</d_player>
+				<d_x>4</d_x>
+				<d_y>6</d_y>
+				<d_type>2</d_type>
+				<stack>
+					<d_id>218</d_id>
+					<d_player>0</d_player>
+					<d_x>4</d_x>
+					<d_y>6</d_y>
+					<d_defending>false</d_defending>
+					<path>
+						<d_size>0</d_size>
+						<d_x></d_x>
+						<d_y></d_y>
+					</path>
+					<army>
+						<d_id>219</d_id>
+						<d_armyset>2</d_armyset>
+						<d_type>4</d_type>
+						<d_hp>25</d_hp>
+						<d_strength>7</d_strength>
+                        <d_ranged>0</d_ranged>
+                        <d_shots>0</d_shots>
+						<d_defense>4</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>25</d_maxhp>
+						<d_moves>14</d_moves>
+                        <d_max_moves>14</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>10</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>220</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>25</d_hp>
+						<d_strength>2</d_strength>
+                        <d_ranged>6</d_ranged>
+                        <d_shots>20</d_shots>
+						<d_defense>3</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>25</d_maxhp>
+						<d_moves>14</d_moves>
+                        <d_max_moves>14</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>7</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>221</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>25</d_hp>
+						<d_strength>2</d_strength>
+                        <d_ranged>6</d_ranged>
+                        <d_shots>20</d_shots>
+						<d_defense>3</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>25</d_maxhp>
+						<d_moves>14</d_moves>
+                        <d_max_moves>14</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>7</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+				</stack>
+			</reaction>
+			<reaction>
+				<d_x>4</d_x>
+				<d_y>6</d_y>
+				<d_type>5</d_type>
+			</reaction>
+			<reaction>
+				<d_message>"Hunt them down!"</d_message>
+				<d_type>0</d_type>
+			</reaction>
+		</event>
+		<event>
+			<d_round>10</d_round>
+			<d_id>222</d_id>
+			<d_active>true</d_active>
+			<d_type>4</d_type>
+			<d_comment>Now many orcs come out of the tunnel.</d_comment>
+			<reaction>
+				<d_player>4</d_player>
+				<d_x>4</d_x>
+				<d_y>6</d_y>
+				<d_type>2</d_type>
+				<stack>
+					<d_id>223</d_id>
+					<d_player>0</d_player>
+					<d_x>4</d_x>
+					<d_y>0</d_y>
+					<d_defending>false</d_defending>
+					<path>
+						<d_size>0</d_size>
+						<d_x></d_x>
+						<d_y></d_y>
+					</path>
+					<army>
+						<d_id>224</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>2</d_type>
+						<d_hp>20</d_hp>
+						<d_strength>2</d_strength>
+                        <d_ranged>8</d_ranged>
+                        <d_shots>30</d_shots>
+						<d_defense>2</d_defense>
+						<d_vitality>4</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>20</d_maxhp>
+						<d_moves>12</d_moves>
+                        <d_max_moves>12</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>10</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>225</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>0</d_type>
+						<d_hp>25</d_hp>
+						<d_strength>2</d_strength>
+                        <d_ranged>6</d_ranged>
+                        <d_shots>20</d_shots>
+						<d_defense>3</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>3</d_sight>
+						<d_maxhp>25</d_maxhp>
+						<d_moves>14</d_moves>
+                        <d_max_moves>14</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>7</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>226</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>3</d_type>
+						<d_hp>30</d_hp>
+						<d_strength>8</d_strength>
+                        <d_ranged>0</d_ranged>
+                        <d_shots>0</d_shots>
+						<d_defense>7</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>4</d_sight>
+						<d_maxhp>30</d_maxhp>
+						<d_moves>18</d_moves>
+                        <d_max_moves>18</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>10</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>227</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>3</d_type>
+						<d_hp>30</d_hp>
+						<d_strength>8</d_strength>
+                        <d_ranged>0</d_ranged>
+                        <d_shots>0</d_shots>
+						<d_defense>7</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>4</d_sight>
+						<d_maxhp>30</d_maxhp>
+						<d_moves>18</d_moves>
+                        <d_max_moves>18</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>10</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+					<army>
+						<d_id>228</d_id>
+						<d_armyset>5</d_armyset>
+						<d_type>3</d_type>
+						<d_hp>30</d_hp>
+						<d_strength>8</d_strength>
+                        <d_ranged>0</d_ranged>
+                        <d_shots>0</d_shots>
+						<d_defense>7</d_defense>
+						<d_vitality>7</d_vitality>
+						<d_sight>4</d_sight>
+						<d_maxhp>30</d_maxhp>
+						<d_moves>18</d_moves>
+                        <d_max_moves>18</d_max_moves>
+						<d_xp>0</d_xp>
+						<d_expvalue>10</d_expvalue>
+						<d_level>1</d_level>
+						<d_blessed>false</d_blessed>
+						<d_medals>0 0 0 </d_medals>
+						<d_battlesnumber>0</d_battlesnumber>
+					</army>
+				</stack>
+			</reaction>
+			<reaction>
+				<d_x>4</d_x>
+				<d_y>6</d_y>
+				<d_type>5</d_type>
+			</reaction>
+			<reaction>
+				<d_message>"The humans don't stand a chance. Let's crush them!"</d_message>
+				<d_type>0</d_type>
+			</reaction>
+		</event>
+		<event>
+			<d_id>229</d_id>
+			<d_active>false</d_active>
+			<d_type>8</d_type>
+			<d_comment>After the ruin is searched (event is activated there) the neutral town offers its services.</d_comment>
+			<condition>
+				<d_type>0</d_type>
+				<d_player>3</d_player>
+			</condition>
+			<reaction>
+				<d_city>12</d_city>
+				<d_player>3</d_player>
+				<d_type>14</d_type>
+			</reaction>
+			<reaction>
+				<d_object>12</d_object>
+				<d_type>6</d_type>
+			</reaction>
+			<reaction>
+				<d_army>241</d_army>
+				<d_type>3</d_type>
+			</reaction>
+			<reaction>
+				<d_army>238</d_army>
+				<d_type>3</d_type>
+			</reaction>
+			<reaction>
+				<d_army>239</d_army>
+				<d_type>3</d_type>
+			</reaction>
+			<reaction>
+				<d_army>240</d_army>
+				<d_type>3</d_type>
+			</reaction>
+			<reaction>
+				<d_type>4</d_type>
+			</reaction>
+			<reaction>
+				<d_message>The rumours of your deeds have spread. As a result, the nearby town of Dragonbone decides to join you.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+		</event>
+		<event>
+			<d_ruin>230</d_ruin>
+			<d_id>234</d_id>
+			<d_active>true</d_active>
+			<d_type>5</d_type>
+			<d_comment>Hydra's Lair is searched, player gets some gold.</d_comment>
+			<condition>
+				<d_type>0</d_type>
+				<d_player>3</d_player>
+			</condition>
+			<reaction>
+				<d_player>3</d_player>
+				<d_gold>2000</d_gold>
+				<d_type>1</d_type>
+			</reaction>
+			<reaction>
+				<d_item>0</d_item>
+				<d_x>4</d_x>
+				<d_y>10</d_y>
+				<d_type>7</d_type>
+			</reaction>
+			<reaction>
+				<d_message>After you have slain the pair of hydras that occupied the cave, you find a valuable sword and a hidden treasure worth 2000 gold.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+		</event>
+		<event>
+			<d_player>3</d_player>
+			<d_id>235</d_id>
+			<d_active>true</d_active>
+			<d_type>1</d_type>
+			<d_comment>The player has been killed.</d_comment>
+			<reaction>
+				<d_message>Though you managed to survived the Orcish raids, you had to escape the land and find some fortune at other places. Meanwhile, the orcs devastated  the lands and ruined the towns.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_message>YOU LOST!</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_status>2</d_status>
+				<d_type>9</d_type>
+			</reaction>
+		</event>
+		<event>
+			<d_city>15</d_city>
+			<d_id>237</d_id>
+			<d_active>true</d_active>
+			<d_type>2</d_type>
+			<d_comment>The Orcish town is conquered, the game is won.</d_comment>
+			<condition>
+				<d_type>0</d_type>
+				<d_player>3</d_player>
+			</condition>
+			<reaction>
+				<d_message>You captured the fortress that was so well defended by the orcs. When their remaining troops that ravage the lands hear from this, they panic and run. The Evil is defeated here. Congratulations, the tutorial is hereby finished.</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_player>4</d_player>
+				<d_type>13</d_type>
+			</reaction>
+			<reaction>
+				<d_message>YOU WIN!</d_message>
+				<d_type>0</d_type>
+			</reaction>
+			<reaction>
+				<d_status>1</d_status>
+				<d_type>8</d_type>
+			</reaction>
+		</event>
+	</scenario>
+</freelords>

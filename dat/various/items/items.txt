@@ -1,0 +1,72 @@
+Most (all?) item pics here are stolen from wesnoth. They have not been fully
+integrated yet, mostly it is just the images that are lying around.
+This file states some ideas sent together with the items.
+Rarity has not been implemented (items are not yet handed out except if the
+scenario says so), some of the modifications are also missing (+gold for example).
+
+
+
+Item name                Mods                File                Slot        Rarity
+====================================================================================
+Moonblade                Att +1 Def +1       sword               weapon      Uncommon
+Maze of the Zealot       Att +3              mace                weapon      Very Rare
+Defender's Helmet        Def +2              helmet              helmet      Rare
+Scroll of Waterlwalking  Waterwalk           scroll              misc        Rare
+Shield of Parring        Def +1              shield              shield      Common
+Field Plate              Def +2              armour              armour      Uncommon
+Healthy Cloak            Hit +10             cloak               misc        Rare
+Ring of Endurance        End +5              magic_ring          misc        Rare
+Wayfarer's Staff         Att +1              staff               weapon      Common
+Enchanted Dagger         Att +1              dagger_simple       weapon      Common
+Enchanted Sword          Att +1              sword_simple        weapon      Common
+Enchanted Axe            Att +1              axe                 weapon      Common
+Defense Rapier           Def +1              rapier              weapon      Common
+Skull Crusher            Att +1              mace                weapon      Common
+Orcish Dagger            Att +1              orcish_dagger       weapon      Common
+Orcish Sword             Att +1              orcish_sword        weapon      Common
+Magic Spear              Att +1              spear               weapon      Common
+Enchanted Greatsword     Att +2              human_greatsword    weapon      Uncommon
+Orcish Greatsword        Att +2              orcish_greatsword   weapon      Uncommon
+Everburning Torch        Att +2              torch               weapon      Uncommon
+Dwarven Hammer           Att +2              hammer              weapon      Uncommon
+Berserker Axe            Att +3 Def -1       axe_red             weapon      Rare
+Elven Sword              Att +1 Def +1       elven_sword         weapon      Uncommon
+Power halberd            Att +2              halberd             weapon      Uncommon
+Baneblade                Att +2              baneblade           weapon      Uncommon
+Thrakil's Battleaxe      Att +2 Hits +5      battleaxe           weapon      Rare
+Trident of the Seas      Att +1 Waterwalking trident             weapon      Rare
+Flamming Death           Att +3              fire_sword          weapon      Very Rare
+Evening Star             Att +3              evening_star        weapon      Very Rare
+Avatar Sword             Att +2 Def +2       palandin_sword      weapon      Very Rare
+Studded Armour           Def +1              stud_leather        armour      Common
+Ranger Vest              Mov +2, +Forest     ranger_vest         armour      Uncommon
+Wall Aegis               Def +3              shield_rectangular  shield      Rare
+Golden Shield            Def +2 Att +1       shield_gold         shield      Very Rare
+Silver Cap               Def +1              metalcap            helmet      Common
+Ruby Ring                Hits +3             ring                misc        Common
+Golden Mask              Def +1 End +5       mask                helmet      Uncommon
+Crystal Rose             End +5              crystal_rose        misc        Uncommon
+
+
+--------NEW-----------
+Magic Pouch              +5 gold/turn        magicbag            misc        Uncommon
+
+
+                                            dagger_bone          weapon
+                                            hatchet              weapon
+                                            human_dagger_poison  weapon
+                                            lance                weapon
+                                            pike                 weapon
+                                            plaguestaff          weapon
+                                            staff_druid          weapon
+                                            staff_magic          weapon
+                                            staff_necromantic    weapon
+
+--------NEW SLOT--------
+Magic Bow                Rng 2/+1 (15/+4)    bow                 missile     Common
+Enchanted Crossbow       Rng 4/+2 (8/+3)     crossbow            missile     Common
+Bone Bow                 Rng 3/+1 (10/+3)    bow_bone            missile     Uncommon
+Elven Bow                Rng 3/+1 (15/+4)    bow_elven           missile     Uncommon
+Spike of the Assasin     Rng 1/+1 (4/+1)     throwing_dagger     missile     Uncommon
+Giantslayer              Rng 1/+1 (6/+2)     sling               missile     Uncommon
+Woods' Piercer           Rng 4/+2 (15/+4)    bow_elven_magic     missile     Rare
