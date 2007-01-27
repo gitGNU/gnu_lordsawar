@@ -2,7 +2,7 @@ SUBDIRS =
 
 MAINTAINERCLEANFILES= Makefile.in
 
-borderdir = $(datadir)/freelords/various/borders
+borderdir = $(datadir)/lordsawar/various/borders
 border_DATA = \
 	scroll0.png \
 	scroll1.png \

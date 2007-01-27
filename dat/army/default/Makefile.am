@@ -1,7 +1,7 @@
 MAINTAINERCLEANFILES= Makefile.in
 
-freelordsarmydefaultdir = $(datadir)/freelords/army/default
-freelordsarmydefault_DATA = \
+lordsawararmydefaultdir = $(datadir)/lordsawar/army/default
+lordsawararmydefault_DATA = \
 	pikeman.png \
 	soldier.png \
 	veteran.png \

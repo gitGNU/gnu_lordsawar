@@ -2,8 +2,7 @@ SUBDIRS = intl src dat po
 MAINTAINERCLEANFILES = Makefile.in
 CLEANFILES = *~
 
-freelordsconfigdir = $(FREELORDS_DATADIR)
-#freelordsconfig_DATA = freelordsrc
+lordsawarconfigdir = $(LORDSAWAR_DATADIR)
 
 ACLOCAL_AMFLAGS = -I ./m4
 

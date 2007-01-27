@@ -17,9 +17,9 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../stone.o ../stonelist.o ../sound.o ../road.o ../roadlist.o
 
 if WANT_EDITOR
-bin_PROGRAMS = freelords_editor
+bin_PROGRAMS = lordsawar_editor
 
-freelords_editor_SOURCES = main.cpp MainScreen.cpp NewMapDialog.cpp Bigmap.cpp \
+lordsawar_editor_SOURCES = main.cpp MainScreen.cpp NewMapDialog.cpp Bigmap.cpp \
                              Smallmap.cpp MapGenDialog.cpp TempleDialog.cpp \
                              ArmyDialog.cpp CityDialog.cpp StackDialog.cpp \
                              RuinDialog.cpp PlayerDialog.cpp FindDialog.cpp \
@@ -28,18 +28,18 @@ freelords_editor_SOURCES = main.cpp MainScreen.cpp NewMapDialog.cpp Bigmap.cpp \
                              SignpostDialog.cpp 
 
 if FL_RESRC
-freelords_editor_SOURCES += editor.rc
+lordsawar_editor_SOURCES += editor.rc
 endif
 .rc.o:
 	i586-mingw32msvc-windres -o $@ $<
 
-freelords_editor_LDADD = $(PARAGUI_LIBS) \
+lordsawar_editor_LDADD = $(PARAGUI_LIBS) \
 	                   $(DEPENDSON) \
                            $(LIBSIGC_LIBS) \
-                   ../events/libflevents.a \
+                   ../events/liblwevents.a \
                @LIBINTL@ -L..
 
-  freelords_editor_DEPENDENCIES = ../events/libflevents.a
+  lordsawar_editor_DEPENDENCIES = ../events/liblwevents.a
 endif
 
 

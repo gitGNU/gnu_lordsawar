@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES= Makefile.in
 
-musicdir = $(datadir)/freelords/music
+musicdir = $(datadir)/lordsawar/music
 music_DATA = \
 	music1.ogg \
 	music.xml

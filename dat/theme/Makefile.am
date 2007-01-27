@@ -1,9 +1,9 @@
-SUBDIRS = freelords generic
+SUBDIRS = lordsawar generic
 MANTAINERCLEANFILES= Makefile.in
 
-freelordsthemebasedir = $(datadir)/freelords/theme
-freelordsthemebase_DATA = \
-	freelords.theme
+lordsawarthemebasedir = $(datadir)/lordsawar/theme
+lordsawarthemebase_DATA = \
+	lordsawar.theme
 
 EXTRA_DIST = \
-	freelords.theme
+	lordsawar.theme

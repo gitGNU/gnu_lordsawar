@@ -1,7 +1,7 @@
 MAINTAINERCLEANFILES= Makefile.in
 
-freelordsarmyimperialdir = $(datadir)/freelords/army/imperial
-freelordsarmyimperial_DATA = \
+lordsawararmyimperialdir = $(datadir)/lordsawar/army/imperial
+lordsawararmyimperial_DATA = \
 	knight.png \
 	unicorn.png \
 	mage.png \

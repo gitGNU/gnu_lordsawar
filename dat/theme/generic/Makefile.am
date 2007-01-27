@@ -1,7 +1,7 @@
 MANTAINERCLEANFILES= Makefile.in
 
-freelordsthemegenericdir = $(datadir)/freelords/theme/generic
-freelordsthemegeneric_DATA = \
+lordsawarthemegenericdir = $(datadir)/lordsawar/theme/generic
+lordsawarthemegeneric_DATA = \
 	ItemDialog.xml
 
 EXTRA_DIST = \

@@ -1,27 +1,27 @@
 SUBDIRS = army tilesets various map ggz music theme
 MANTAINERCLEANFILES= Makefile.in
 
-freelordsdatadir = $(datadir)/freelords
-freelordsdata_DATA = \
+lordsawardatadir = $(datadir)/lordsawar
+lordsawardata_DATA = \
     citynames \
     heronames \
     templenames \
     ruinnames \
     signposts
 
-fldesktopdir= $(datadir)/applications
-fldesktop_DATA= freelords.desktop
+lwdesktopdir= $(datadir)/applications
+lwdesktop_DATA= lordsawar.desktop
 
-freelords64icondir=$(datadir)/icons/hicolor/64x64/apps
-freelords64icon= 
+lordsawar64icondir=$(datadir)/icons/hicolor/64x64/apps
+lordsawar64icon= 
 
-freelords32icondir=$(datadir)/icons/hicolor/32x32/apps
-freelords32icon= 
+lordsawar32icondir=$(datadir)/icons/hicolor/32x32/apps
+lordsawar32icon= 
 
 EXTRA_DIST = \
     citynames \
-    freelords.zip \
+    lordsawar.zip \
     heronames \
     templenames \
     ruinnames \
-    freelords.desktop
+    lordsawar.desktop

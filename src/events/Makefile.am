@@ -1,8 +1,8 @@
 MAINTAINERCLEANFILES= Makefile.in
 
-noinst_LIBRARIES = libflevents.a
+noinst_LIBRARIES = liblwevents.a
 
-libflevents_a_SOURCES = \
+liblwevents_a_SOURCES = \
 	Condition.cpp CPlayer.cpp CCounter.cpp CLiving.cpp CDead.cpp CArmy.cpp \
 	Reaction.cpp RMessage.cpp RAddGold.cpp RAddUnit.cpp RDelUnit.cpp \
 	RUpdate.cpp RCenter.cpp RCenterObj.cpp RCreateItem.cpp \

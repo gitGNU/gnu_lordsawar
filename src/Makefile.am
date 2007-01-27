@@ -1,9 +1,9 @@
 SUBDIRS = server events . editor utils
 MAINTAINERCLEANFILES= Makefile.in
 
-bin_PROGRAMS = freelords
+bin_PROGRAMS = lordsawar
 
-freelords_SOURCES = army.cpp hero.cpp stack.cpp GameScenario.cpp action.cpp \
+lordsawar_SOURCES = army.cpp hero.cpp stack.cpp GameScenario.cpp action.cpp \
 	player.cpp real_player.cpp ai_dummy.cpp ai_fast.cpp ai_smart.cpp \
 	Object.cpp Location.cpp city.cpp temple.cpp ruin.cpp Tile.cpp \
 	maptile.cpp Item.cpp armysetlist.cpp stacklist.cpp playerlist.cpp \
@@ -27,7 +27,7 @@ freelords_SOURCES = army.cpp hero.cpp stack.cpp GameScenario.cpp action.cpp \
 	road.cpp roadlist.cpp
 
 if FL_RESRC
-freelords_SOURCES += freelords.rc
+lordsawar_SOURCES += lordsawar.rc
 endif
 .rc.o:
 	i586-mingw32msvc-windres -o $@ $<
@@ -35,20 +35,20 @@ endif
 localedir = $(datadir)/locale
 DEFS = -DFL_VERSION=\"@VERSION@\"  -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
-freelords_LDFLAGS = $(GGZMOD_LDFLAGS) $(GGZDMOD_LDFLAGS)
-freelords_LDADD = $(PARAGUI_LIBS) \
+lordsawar_LDFLAGS = $(GGZMOD_LDFLAGS) $(GGZDMOD_LDFLAGS)
+lordsawar_LDADD = $(PARAGUI_LIBS) \
     $(LIBSIGC_LIBS) \
     $(LIB_GGZMOD) \
     $(LIB_GGZDMOD) \
-    ./server/libflserver.a \
-	./events/libflevents.a \
+    ./server/liblwserver.a \
+	./events/liblwevents.a \
     @LIBINTL@
-freelords_DEPENDENCIES = ./server/libflserver.a ./events/libflevents.a
+lordsawar_DEPENDENCIES = ./server/liblwserver.a ./events/liblwevents.a
 
 AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\"
 INCLUDES = $(PARAGUI_CFLAGS) \
     $(LIBSIGC_CFLAGS) \
     $(LIBGGZ_INCLUDES) \
     $(GGZDMOD_INCLUDES) \
-    -DFREELORDS_DATADIR='"$(FREELORDS_DATADIR)"' \
+    -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' \
     -Iserver -I..

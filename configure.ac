@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl This is useful to force using autoreconf 2.5.x
 AC_PREREQ(2.59)
-AC_INIT([Freelords], [0.3.8], [freelords-devel@lists.sourceforge.net], [freelords])
+AC_INIT([lordsawar], [0.0.1], [benasselstine@gmail.com], [lordsawar])
 AC_CONFIG_SRCDIR([config.h.in])
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
@@ -199,7 +199,7 @@ AM_CONDITIONAL([GGZSUPPORT], [test "x$enable_ggz" = "xyes"])
 
 dnl ...the standard screen resolution...
 AC_ARG_WITH(resolution,
-           [  --with-resolution=RES standard resolution for freelords [default=800x600]], 
+           [  --with-resolution=RES standard resolution for lordsawar [default=800x600]], 
             SCREEN_RESOLUTION="$withval", SCREEN_RESOLUTION="800x600")
 AC_SUBST(SCREEN_RESOLUTION)
 
@@ -243,9 +243,9 @@ fi
 
 rm -f src/main.o
 
-FREELORDS_DATADIR="$datadir/freelords"
-FREELORDS_DATADIR=${FREELORDS_DATADIR/'${prefix}'/$prefix}
-AC_SUBST(FREELORDS_DATADIR)
+LORDSAWAR_DATADIR="$datadir/lordsawar"
+LORDSAWAR_DATADIR=${LORDSAWAR_DATADIR/'${prefix}'/$prefix}
+AC_SUBST(LORDSAWAR_DATADIR)
 
 AC_CONFIG_FILES([
         dat/Makefile 
@@ -264,11 +264,11 @@ AC_CONFIG_FILES([
         dat/various/editor/Makefile
         dat/map/Makefile 
         dat/ggz/Makefile 
-        dat/ggz/freelords.dsc
-        dat/ggz/freelords-server.dsc	
+        dat/ggz/lordsawar.dsc
+        dat/ggz/lordsawar-server.dsc	
         dat/music/Makefile
         dat/theme/Makefile
-        dat/theme/freelords/Makefile
+        dat/theme/lordsawar/Makefile
         dat/theme/generic/Makefile
         intl/Makefile
         po/Makefile.in

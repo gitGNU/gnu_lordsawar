@@ -30,7 +30,7 @@ using namespace std;
 bool Configuration::s_smoothScrolling = false;
 bool Configuration::s_showNextPlayer = true;
 #ifndef __WIN32__
-string Configuration::s_dataPath = FREELORDS_DATADIR;
+string Configuration::s_dataPath = LORDSAWAR_DATADIR;
 string Configuration::s_savePath = string(getenv("HOME"))+string("/.freelords/");
 #else
 string Configuration::s_dataPath = "./data/";

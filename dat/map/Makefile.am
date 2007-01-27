@@ -1,6 +1,6 @@
 MANTAINERCLEANFILES= Makefile.in
 
-mapdir = $(datadir)/freelords/map/
+mapdir = $(datadir)/lordsawar/map/
 map_DATA = \
 	tutorial.map \
 	br802.map \

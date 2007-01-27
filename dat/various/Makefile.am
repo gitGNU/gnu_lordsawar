@@ -2,7 +2,7 @@ SUBDIRS = items borders editor
 
 MAINTAINERCLEANFILES= Makefile.in
 
-variousdir = $(datadir)/freelords/various
+variousdir = $(datadir)/lordsawar/various
 various_DATA = \
     arrows.png \
     buttons.png \

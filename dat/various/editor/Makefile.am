@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES= Makefile.in
 
-editordir = $(datadir)/freelords/various/editor
+editordir = $(datadir)/lordsawar/various/editor
 editor_DATA = button_1x1.png \
 			button_3x3.png \
 			button_castle.png \

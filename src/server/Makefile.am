@@ -1,14 +1,14 @@
 MAINTAINERCLEANFILES= Makefile.in
 
-noinst_LIBRARIES = libflserver.a
+noinst_LIBRARIES = liblwserver.a
 
 bin_PROGRAMS = freelords_server
 
-libflserver_a_SOURCES = Server.cpp Client.cpp \
+liblwserver_a_SOURCES = Server.cpp Client.cpp \
                         ggzgameserver.cpp
 
 freelords_server_SOURCES = main.cpp
-freelords_server_LDADD = libflserver.a $(LIB_GGZDMOD)
+freelords_server_LDADD = liblwserver.a $(LIB_GGZDMOD)
 freelords_server_LDFLAGS = $(GGZDMOD_LDFLAGS)
 
 INCLUDES = $(LIBSIGC_CFLAGS)  \

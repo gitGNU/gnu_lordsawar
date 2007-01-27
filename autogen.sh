@@ -1,3 +1,2 @@
 #!/bin/sh
-
-autoreconf --verbose -i --force
+autoreconf --verbose --install --force --symlink

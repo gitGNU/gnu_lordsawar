@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES= Makefile.in
 
-itemsdir = $(datadir)/freelords/various/items
+itemsdir = $(datadir)/lordsawar/various/items
 items_DATA = \
 	items.xml \
 	nobutton.png \

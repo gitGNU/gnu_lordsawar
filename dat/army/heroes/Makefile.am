@@ -1,7 +1,7 @@
 MAINTAINERCLEANFILES= Makefile.in
 
-freelordsarmyheroesdir = $(datadir)/freelords/army/heroes
-freelordsarmyheroes_DATA = \
+lordsawararmyheroesdir = $(datadir)/lordsawar/army/heroes
+lordsawararmyheroes_DATA = \
 	barbarian.png \
 	amazone.png \
 	sandman.png \

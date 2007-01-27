@@ -1,7 +1,7 @@
 MAINTAINERCLEANFILES= Makefile.in
 
-freelordsarmyorcsdir = $(datadir)/freelords/army/orcs
-freelordsarmyorcs_DATA = \
+lordsawararmyorcsdir = $(datadir)/lordsawar/army/orcs
+lordsawararmyorcs_DATA = \
 	thrower.png \
 	shaman.png \
 	catapult.png \

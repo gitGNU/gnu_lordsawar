@@ -30,7 +30,7 @@ Requirements:
     Should be distributed with the Linux distribution. Required for detecting
     the libsigc++-package and -flags
 
-- Gnu gettext 
+- GNU gettext 
     Should be distributed with the Linux distribution.
 
 - Pthread library
