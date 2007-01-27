@@ -187,7 +187,7 @@ bool GameScenario::saveGame(string filename, string extension) const
     XML_Helper helper(goodfilename, ios::out, Configuration::s_zipfiles);
 
     //start writing
-    retval &= helper.begin(FREELORDS_SAVEGAME_VERSION);
+    retval &= helper.begin(LORDSAWAR_SAVEGAME_VERSION);
     retval &= helper.openTag("freelords");
     
     //if retval is still true it propably doesn't change throughout the rest
@@ -237,10 +237,10 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
 {
     if (tag == "scenario")
     {
-        if (helper->getVersion() != FREELORDS_SAVEGAME_VERSION)
+        if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
         {
             cerr <<_("savefile has wrong version, we want ");
-            std::cerr <<FREELORDS_SAVEGAME_VERSION <<",\n";
+            std::cerr <<LORDSAWAR_SAVEGAME_VERSION <<",\n";
             cerr <<_("savefile offers ") <<helper->getVersion() <<".\n";
             return false;
         }

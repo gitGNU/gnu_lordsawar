@@ -25,7 +25,7 @@ using namespace std;
 //#define debug(x)
 
 ServerDialog::ServerDialog(PG_Widget* parent, const PG_Rect& rect)
-	:PG_Window(parent, rect, "FreeLords server 0.1", PG_Window::MODAL), server(0)
+	:PG_Window(parent, rect, "LordsAWar server 0.1", PG_Window::MODAL), server(0)
 {
     d_b_hostGame = new PG_Button(this, PG_Rect(20, 100, 100, 30), "Host game",0);
     d_b_start = new PG_Button(this, PG_Rect(20, 135, 100, 30), "Start",1);

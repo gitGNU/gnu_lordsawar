@@ -168,10 +168,10 @@ bool ScenariosDialog::scan(std::string tag, XML_Helper* helper)
 {
     if (tag == "scenario")
     {
-        if (helper->getVersion() != FREELORDS_SAVEGAME_VERSION)
+        if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
         {
             cerr <<_("savefile has wrong version, we want ");
-            std::cerr <<FREELORDS_SAVEGAME_VERSION <<",\n";
+            std::cerr <<LORDSAWAR_SAVEGAME_VERSION <<",\n";
             cerr <<_("savefile offers ") << helper->getVersion() <<".\n";
             return false;
         }

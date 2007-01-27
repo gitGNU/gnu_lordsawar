@@ -51,4 +51,4 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\"
 INCLUDES = $(PARAGUI_CFLAGS) \
     $(LIBSIGC_CFLAGS) \
-    -DFREELORDS_DATADIR='"$(FREELORDS_DATADIR)"' -I../..
+    -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' -I../..

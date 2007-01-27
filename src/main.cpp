@@ -65,7 +65,7 @@ SDL_Rect* getBestResolution(Uint32 mymode)
         }
         if ((i == 0) && (modes[i]->w == 640))
         {
-            cout << _("You need at least 800 x 600 resolution to run FreeLords!\n");
+            cout << _("You need at least 800 x 600 resolution to run LordsAWar!\n");
             exit(-1);
         }
     }
@@ -211,7 +211,7 @@ int main(int argc, char* argv[])
             if (parameter == "--help" || parameter == "-h")
             {
                 cout << endl;
-                cout << "FreeLords " << version << endl << endl;
+                cout << "LordsAWar " << version << endl << endl;
                 cout << _("Available parameters:") << endl << endl; 
                 cout << _("-h,      --help             Shows this help screen\n");
                 cout << _("-r1600                      Resolution set to 1600x1200") << endl;
@@ -307,7 +307,7 @@ int main(int argc, char* argv[])
     }
 
     char title[50];
-    sprintf(title, "FreeLords %s", version);
+    sprintf(title, "LordsAWar %s", version);
         
     SDL_WM_SetCaption(title, "");
 

@@ -230,7 +230,7 @@ bool MainWindow::file_load(PG_PopupMenu::MenuItem* item, PG_Pointer p)
 
     //if (PlayerReallyWantsToLoadGame)  (to be implemented later)
     PG_FileDialog opendialog(0, PG_FileDialog::PG_OPEN, true, Configuration::s_savePath,
-            "*.sav", _("Freelords savegames"));
+            "*.sav", _("LordsAWar savegames"));
     opendialog.Show();
     opendialog.RunModal();
 
@@ -305,7 +305,7 @@ bool MainWindow::file_saveas(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     d_w_edit->stopTimers();
 
     PG_FileDialog savedialog(0, PG_FileDialog::PG_SAVE, true, Configuration::s_savePath,
-            "*.sav", _("Freelords savegames"));
+            "*.sav", _("LordsAWar savegames"));
     savedialog.Show();
     savedialog.RunModal();
     string savefile = savedialog.getSelectedFile();

@@ -156,7 +156,7 @@ bool E_MainScreen::file_load(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     clearMap();
     
     PG_FileDialog opendialog(0, PG_FileDialog::PG_OPEN, true, Configuration::s_savePath,
-            "*.map", _("Freelords maps"));
+            "*.map", _("LordsAWar maps"));
     opendialog.Show();
     opendialog.RunModal();
 
@@ -212,7 +212,7 @@ bool E_MainScreen::file_save(PG_PopupMenu::MenuItem* item, PG_Pointer p)
 bool E_MainScreen::file_saveAs(PG_PopupMenu::MenuItem* item, PG_Pointer p)
 {
     PG_FileDialog savedialog(0, PG_FileDialog::PG_SAVE, true, Configuration::s_savePath,
-            "*.map", _("Freelords map files"));
+            "*.map", _("LordsAWar map files"));
     savedialog.Show();
     savedialog.RunModal();
     std::string savefile = savedialog.getSelectedFile();

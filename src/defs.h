@@ -21,8 +21,8 @@
 #include <libintl.h>
 #include <paragui.h>
 
-#define FREELORDS_SAVEGAME_VERSION "0.3.8c"
-#define FREELORDS_CONFIG_VERSION "0.3.7b"
+#define LORDSAWAR_SAVEGAME_VERSION "0.3.8c"
+#define LORDSAWAR_CONFIG_VERSION "0.3.7b"
 #define ENABLE_NLS 1 // Very important to activate localization
 #define _(string) gettext(string) // Macro for the gettext
 #define __(astring) std::string(gettext(astring.c_str()))

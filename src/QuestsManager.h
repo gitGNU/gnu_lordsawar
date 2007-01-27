@@ -25,7 +25,7 @@
 class Quest;
 
 /**
- * \brief The manager of the quests in the Freelords game.
+ * \brief The manager of the quests in the LordsAWar game.
  *
  * Responsibilities:
  *

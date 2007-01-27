@@ -281,7 +281,7 @@ AC_CONFIG_FILES([
         src/editor/Makefile])
 AC_OUTPUT
 echo ""
-echo "Freelords is now configured. Type 'make' to compile it."
+echo "LordsAWar is now configured. Type 'make' to compile it."
 echo ""
 echo "Configuration:"
 echo " Installation location : $prefix"

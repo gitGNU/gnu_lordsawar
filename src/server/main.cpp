@@ -10,12 +10,12 @@ int main(int argc, char **argv)
 {
 	Server *server;
 
-	std::cout << "Freelords Server: started" << std::endl;
+	std::cout << "LordsAWar Server: started" << std::endl;
 
 	server = new Server();
 	server->connect(true, false);
 
-	std::cout << "Freelords Server: stopped" << std::endl;
+	std::cout << "LordsAWar Server: stopped" << std::endl;
 
 	return 0;
 }

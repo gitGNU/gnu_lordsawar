@@ -177,7 +177,7 @@ int main(int argc, char* argv[])
             if (parameter == "--help" || parameter == "-h")
             {
                 cout << endl;
-                cout << "FreeLords " << version << endl << endl;
+                cout << "LordsAWar " << version << endl << endl;
                 cout << _("Available parameters:") << endl << endl; 
                 cout << _("-h,      --help             Shows this help screen\n");
                 cout << _("-r1280                      Resolution set to 1280x1024") << endl;
@@ -249,7 +249,7 @@ int main(int argc, char* argv[])
     }
 
     char title[51]; title[50] = '\0';
-    snprintf(title, 50, _("FreeLords Editor %s"), version);
+    snprintf(title, 50, _("LordsAWar Editor %s"), version);
         
     SDL_WM_SetCaption(title, "");
 

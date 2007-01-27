@@ -356,7 +356,7 @@ bool Splash::b_multiplayerGameClicked(PG_Button* btn)
     {
         PG_MessageBox mb(GetParent(), PG_Rect(200, 200, 200, 150),
                 _("Play on GGZ"),
-                _("Please launch Freelords from a GGZ Gaming Zone client."),
+                _("Please launch LordsAWar from a GGZ Gaming Zone client."),
                 PG_Rect(60, 100, 80, 30), _("OK"));
         mb.Show();
         mb.RunModal();
@@ -386,7 +386,7 @@ bool Splash::b_multiplayerGameClicked(PG_Button* btn)
 bool Splash::b_loadGameClicked(PG_Button* btn)
 {
     PG_FileDialog opendialog(0, PG_FileDialog::PG_OPEN, true,
-            Configuration::s_savePath, "*.sav", _("FreeLords savegames"));
+            Configuration::s_savePath, "*.sav", _("LordsAWar savegames"));
     opendialog.Show();
     opendialog.RunModal();
     std::string savegame = opendialog.getSelectedFile();

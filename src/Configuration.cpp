@@ -91,7 +91,7 @@ bool Configuration::saveConfigurationFile(string filename)
     XML_Helper helper(filename, ios::out, Configuration::s_zipfiles);
 
     //start writing
-    retval &= helper.begin(FREELORDS_CONFIG_VERSION);
+    retval &= helper.begin(LORDSAWAR_CONFIG_VERSION);
     retval &= helper.openTag("freelordsrc");
     
     //save the values 
@@ -133,10 +133,10 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     string temp;
     bool retval,zipping;
     
-    if (helper->getVersion() != FREELORDS_CONFIG_VERSION)
+    if (helper->getVersion() != LORDSAWAR_CONFIG_VERSION)
     {
             cerr <<_("Configuration file has wrong version, we want ");
-            std::cerr <<FREELORDS_SAVEGAME_VERSION <<",\n";
+            std::cerr <<LORDSAWAR_SAVEGAME_VERSION <<",\n";
             cerr <<_("Configuration file offers ") << helper->getVersion() <<".\n";
 
             string orig = s_filename;
