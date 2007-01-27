@@ -188,7 +188,7 @@ bool GameScenario::saveGame(string filename, string extension) const
 
     //start writing
     retval &= helper.begin(LORDSAWAR_SAVEGAME_VERSION);
-    retval &= helper.openTag("freelords");
+    retval &= helper.openTag("lordsawar");
     
     //if retval is still true it propably doesn't change throughout the rest
     //now save the single object's data

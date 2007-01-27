@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<freelords version="0.3.8c">
+<lordsawar version="0.3.8c">
 	<counter>
 		<d_curID>169</d_curID>
 	</counter>
@@ -3114,4 +3114,4 @@
 			</reaction>
 		</event>
 	</scenario>
-</freelords>
+</lordsawar>

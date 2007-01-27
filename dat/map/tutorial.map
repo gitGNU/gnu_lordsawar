@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<freelords version="0.3.8c">
+<lordsawar version="0.3.8c">
 	<counter>
 		<d_curID>248</d_curID>
 	</counter>
@@ -699,7 +699,7 @@
 	</questlist>
 	<scenario>
 		<d_name>Tutorial and Testing</d_name>
-		<d_comment>This scenario is the Freelords testing Tutorial. Its pourpose is to demonstrate the advanced features of Freelords.</d_comment>
+		<d_comment>This scenario is the LordsAWar testing Tutorial. Its pourpose is to demonstrate the advanced features of LordsAWar.</d_comment>
 		<d_turn>0</d_turn>
 		<d_turnmode>true</d_turnmode>
 		<event>
@@ -712,7 +712,7 @@
 				<d_player>3</d_player>
 			</condition>
 			<reaction>
-				<d_message>This is the tutorial of FreeLords. Though it is called tutorial, one of the main aims is to demonstrate some advanced abilities of FreeLords, such as events.</d_message>
+				<d_message>This is the tutorial of LordsAWar. Though it is called tutorial, one of the main aims is to demonstrate some advanced abilities of LordsAWar, such as events.</d_message>
 				<d_type>0</d_type>
 			</reaction>
 			<reaction>
@@ -1572,4 +1572,4 @@
 			</reaction>
 		</event>
 	</scenario>
-</freelords>
+</lordsawar>

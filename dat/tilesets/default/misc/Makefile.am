@@ -1,6 +1,6 @@
 MAINTAINERCLEANFILES= Makefile.in
 
-map_defaultdir = $(datadir)/freelords/tilesets/default/misc
+map_defaultdir = $(datadir)/lordsawar/tilesets/default/misc
 map_default_DATA = \
 	ruin.png \
 	temples.png \
