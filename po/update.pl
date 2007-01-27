@@ -25,7 +25,7 @@
 #  NOTICE: Please remember to change the variable $PACKAGE to reflect 
 #  the package this script is used within.
 
-$PACKAGE="freelords";
+$PACKAGE="lordsawar";
 
 use File::Basename;
 

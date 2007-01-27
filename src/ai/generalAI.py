@@ -10,7 +10,7 @@ def lastCommand():
     f = open("aicommand", "r")
     return f.read()
 
-# read the map (not yet saved by freelords)
+# read the map (not yet saved by lordsawar)
 def readMap():
     pass
 

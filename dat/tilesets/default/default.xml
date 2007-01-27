@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <tileset>
     <d_name>default</d_name>
-    <d_info>The default tileset of FreeLords</d_info>
+    <d_info>The default tileset of LordsAWar</d_info>
     <d_tilesize>64</d_tilesize>
 	<tile>
         <d_name>Grass</d_name>
