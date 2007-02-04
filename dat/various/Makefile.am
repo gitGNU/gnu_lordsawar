@@ -11,7 +11,7 @@ various_DATA = \
     items.png \
     level_mask.png \
     medals_mask.gif \
-    library.jpg \
+    ship.jpg \
     recruit_female.png \
     recruit_male.png \
     ruin_1.jpg \
@@ -25,7 +25,7 @@ various_DATA = \
     win.jpg \
     win_mask.png \
     freelords.png \
-    freelords_logo.png \
+    lordsawar_logo.png \
     freelords_editor.png \
     editor.png 
 
@@ -37,7 +37,7 @@ EXTRA_DIST = \
     items.png \
     level_mask.png \
     medals_mask.gif \
-    library.jpg \
+    ship.jpg \
     recruit_female.png \
     recruit_male.png \
     ruin_1.jpg \
@@ -51,7 +51,7 @@ EXTRA_DIST = \
     win.jpg \
     win_mask.png \
     freelords.png \
-    freelords_logo.png \
+    lordsawar_logo.png \
     freelords_editor.png \
     editor.png
     
