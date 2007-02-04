@@ -6,7 +6,7 @@
     <author value="Alexander Pipelka"/>
     <email value="pipelka@teleweb.at"/>
 
-    <font name="default" value="lordsawar/DejaVuSerif.ttf" size="16"/>
+    <font name="default" value="lordsawar/URWChanceryL-MediItal.pfb" size="20"/>
 
     <widget>
 	<type value="Background"/>
@@ -378,6 +378,7 @@
 		<object>
 			<name value="Label"/>
 			<property name="alignment" value="0"/>
+			<property color="textcolor" value="0x00000000"/>
 		</object>
 	</widget>
 
