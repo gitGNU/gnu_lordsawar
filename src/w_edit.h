@@ -236,8 +236,8 @@ class W_Edit : public PG_Widget
     SDL_Surface* d_pic_defendAndNextwithmove[2];
     SDL_Surface* d_pic_search[2];
     SDL_Surface* d_pic_nextTurn[2];
-    SDL_Surface* d_library;
-    SDL_Surface* d_pic_library;
+    SDL_Surface* d_turn_start;
+    SDL_Surface* d_pic_turn_start;
     SDL_Surface* d_pic_winGame, *d_pic_winGameMask;
     SDL_Surface* d_pic_logo;
 

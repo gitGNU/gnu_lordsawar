@@ -151,6 +151,7 @@ int AI_Allocation::allocateStacksToThreats()
     int count = 0;
     const Threatlist *threats = d_analysis->getThreatsInOrder();
     //debug("Threats to " << d_owner->getName() << " are " << threats->toString())
+    debug("We start with " <<threats->size() <<" threats.")
 
     for (Threatlist::const_iterator it = threats->begin(); it != threats->end(); ++it)
     {
@@ -314,13 +315,15 @@ int AI_Allocation::defaultStackMovements()
 {
     int count = 0;
     Citylist *allCities = Citylist::getInstance();
+    debug("Default movement for " <<d_stacks->size() <<" stacks")
+
     for (Stacklist::iterator it = d_stacks->begin(); it != d_stacks->end(); ++it)
     {
         if (Playerlist::isFinished())
             return 0;
         
         Stack* s = *it;
-        debug("thinking about stack " << s->getId())
+        debug("thinking about stack " << s->getId() <<" at ("<<s->getPos().x<<","<<s->getPos().y<<")")
         d_owner->getStacklist()->setActivestack(s);
         MoveResult *result = 0;
         if (s->size() >= 8)
@@ -328,11 +331,31 @@ int AI_Allocation::defaultStackMovements()
             City* enemyCity = allCities->getNearestEnemyCity(s->getPos());
             if (enemyCity)
             {
+                debug("let's attack " <<enemyCity->getName())
                 result = moveStack(s, enemyCity->getPos());
                 if (result && result->didSomething()) count++;
             }
+            if (!result || !result->didSomething())
+            {
+                // for some reason (islands are one bet), we could not attack the
+                // enemy city. Let's iterator through all cities and attack the first
+                // one we can lay our hands on.
+                debug("Mmmh, did not work.")
+                for (Citylist::iterator cit = allCities->begin(); cit != allCities->end(); cit++)
+                    if ((*cit).getPlayer() != d_owner)
+                    {
+                        debug("Let's try "<<(*cit).getName() <<" instead.")
+                        result = moveStack(s, (*cit).getPos());
+                        if (result && result->moveSucceeded())
+                        {
+                            debug("Worked")
+                            count++;
+                            break;
+                        }
+                    }
+            }
         }
-        if (!result)
+        else
         {
             result = stackReinforce(s);
             if (result && result->didSomething()) count++;

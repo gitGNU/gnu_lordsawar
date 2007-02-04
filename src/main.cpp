@@ -267,7 +267,7 @@ int main(int argc, char* argv[])
     // Check if armysets are in the path (otherwise exit)
     File::scanArmysets();
 
-    app.SetFontSize(14);
+    app.SetFontSize(20);
 
     // if resolution hasn't been set explicitly in the configuration file
     // or on the commandline guess the best resolution

@@ -29,8 +29,8 @@ AboutDialog::AboutDialog(PG_Widget* parent, PG_Rect rect)
     initValues();
 
     int posx=10;
-    int posy=110;
-    int viewsize=150;
+    int posy=50;
+    int viewsize=220;
 
     SetBackground(File::getMiscPicture("about_screen.jpg", false),BKMODE_STRETCH);
  
@@ -43,6 +43,7 @@ AboutDialog::AboutDialog(PG_Widget* parent, PG_Rect rect)
     label->SetFontColor(PG_Color(64, 137, 182));
     posy+=20;
     label = new PG_Label(d_s_area, PG_Rect(posx+25, posy, 130, 15),"Michael Bartl");    
+    label->SetFontColor(PG_Color(0, 0, 0));
 
     posy+=20;
     label = new PG_Label(d_s_area, PG_Rect(posx,posy,200, 20),_("Development:"));
@@ -53,6 +54,7 @@ AboutDialog::AboutDialog(PG_Widget* parent, PG_Rect rect)
     {
         posy+=15; 
         label = new PG_Label(d_s_area, PG_Rect(posx+25, posy, 130, 15),s_devel[i].c_str());    
+        label->SetFontColor(PG_Color(0, 0, 0));
     }
     posy+=20;
 
@@ -64,10 +66,11 @@ AboutDialog::AboutDialog(PG_Widget* parent, PG_Rect rect)
     {
         posy+=15;
         label = new PG_Label(d_s_area, PG_Rect(posx+25, posy, 130, 15),s_graphics[i].c_str());    
+        label->SetFontColor(PG_Color(0, 0, 0));
     }
     posy+=20;
     
-    label = new PG_Label(d_s_area, PG_Rect(posx, posy, 200, 20),_("Active Contributors:"));
+    label = new PG_Label(d_s_area, PG_Rect(posx, posy, 200, 20),_("Contributors:"));
     label->SetFontColor(PG_Color(64, 137, 182));
 
     posy+=5;
@@ -75,28 +78,31 @@ AboutDialog::AboutDialog(PG_Widget* parent, PG_Rect rect)
     {
         posy+=15;
         label = new PG_Label(d_s_area, PG_Rect(posx+25, posy, 130, 15),s_acontributors[i].c_str());    
+        label->SetFontColor(PG_Color(0, 0, 0));
     }
-    posy+=20;
+    //posy+=20;
 
-    label = new PG_Label(d_s_area, PG_Rect(posx, posy, 230, 20),_("Inactive Members/Contributors:"));
-    label->SetFontColor(PG_Color(64, 137, 182));
+    //label = new PG_Label(d_s_area, PG_Rect(posx, posy, 230, 20),_("Inactive Members/Contributors:"));
+    //label->SetFontColor(PG_Color(64, 137, 182));
 
-    posy+=5;
+    //posy+=5;
     for(unsigned int i=0;i<s_icontributors.size();i++)
     {
         posy+=15;
         label = new PG_Label(d_s_area, PG_Rect(posx+25, posy, 130, 15),s_icontributors[i].c_str());    
+        label->SetFontColor(PG_Color(0, 0, 0));
     }
-    posy+=20;
+    //posy+=20;
 
-    label = new PG_Label(d_s_area, PG_Rect(posx, posy, 200, 20),_("Ex Members:"));
-    label->SetFontColor(PG_Color(64, 137, 182));
+    //label = new PG_Label(d_s_area, PG_Rect(posx, posy, 200, 20),_("Other Contributors:"));
+    //label->SetFontColor(PG_Color(64, 137, 182));
 
-    posy+=5;
+    //posy+=5;
     for(unsigned int i=0;i<s_exmembers.size();i++)
     {
         posy+=15;
         label = new PG_Label(d_s_area, PG_Rect(posx+25, posy, 130, 15),s_exmembers[i].c_str());    
+        label->SetFontColor(PG_Color(0, 0, 0));
     }
     posy+=21;
 

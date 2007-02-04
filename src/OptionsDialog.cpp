@@ -118,11 +118,22 @@ bool OptionsDialog::okClicked(PG_Button* btn)
     Configuration::s_displaySpeedDelay = d_speeddelay->getValue();
 
     // set audio stuff
+#ifdef FL_SOUND
+    Mix_VolumeMusic(d_musicvolume->getValue());
+    if (d_musicenable->GetPressed() != Configuration::s_musicenable)
+    {
+        // stop/restart music
+        Sound::getInstance()->haltMusic();
+        Sound::getInstance()->disableBackground();
+        if (d_musicenable->GetPressed())        // music was enabled
+        {
+            Configuration::s_musicenable = d_musicenable->GetPressed();
+            Sound::getInstance()->enableBackground();
+        }
+    }
+#endif
     Configuration::s_musicenable = d_musicenable->GetPressed();
     Configuration::s_musicvolume = d_musicvolume->getValue();
-#ifdef FL_SOUND
-    Mix_VolumeMusic(Configuration::s_musicvolume);
-#endif
 
     bool thesameres=false;            
     bool thesamefs=false;            

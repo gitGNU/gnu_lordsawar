@@ -592,6 +592,9 @@ void BigMap::stackSelected()
     debug("stackSelected()");
 
     Stack* stack = Playerlist::getActiveplayer()->getActivestack();
+    if (!stack)
+        return;
+
     if (!stack->getPath()->checkPath(stack))
     {
         //error handling is required here, up to now we only barf on cerr

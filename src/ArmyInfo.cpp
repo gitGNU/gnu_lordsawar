@@ -33,6 +33,7 @@ ArmyInfo::ArmyInfo(Army* army, bool pressable, PG_Widget* parent, PG_Rect rect)
 	char buffer[80];
 	sprintf(buffer, "%i", d_army->getMoves());
 	d_l_moves = new PG_Label(this, PG_Rect(20, 57, 20, 20), buffer);
+	d_l_moves->SetFontColor (PG_Color (0, 0, 0));
 
 	Show();
 }

@@ -42,8 +42,11 @@ GamePreferencesDialog::GamePreferencesDialog(PG_Widget* parent, PG_Rect rect)
     turnmode_false = _("new round");
 
     d_l_type = new PG_Label(this, PG_Rect(40, 10, 100, 20), _("Type"));
+    d_l_type->SetFontColor (PG_Color(0, 0, 0));
     d_l_name = new PG_Label(this, PG_Rect(145, 10, 100, 20), _("Name"));
+    d_l_name->SetFontColor (PG_Color(0, 0, 0));
     d_l_armyset = new PG_Label(this, PG_Rect(255, 10, 100, 20), _("Armyset"));
+    d_l_armyset->SetFontColor (PG_Color(0, 0, 0));
 
     // predefined names
     vector<string> nameList;
@@ -67,25 +70,32 @@ GamePreferencesDialog::GamePreferencesDialog(PG_Widget* parent, PG_Rect rect)
 	}
 
     d_b_random = new PG_Button(this, PG_Rect(Width() - 310 , 10, 100, 25), _("Random"),0);
+    d_b_random->SetFontColor (PG_Color(0, 0, 0));
     d_b_random->SetToggle(true);
     d_b_load = new PG_Button(this, PG_Rect(Width() - 210, 10, 100, 25), _("Load Map"),1);
+    d_b_load->SetFontColor (PG_Color(0, 0, 0));
     d_b_load->SetToggle(true);
 
     //choose tileset and turn mode
     d_l_tiles = new PG_Label(this, PG_Rect(35, 330, 120, 20), _("Choose Tileset"));
+    d_l_tiles->SetFontColor (PG_Color(0, 0, 0));
     d_d_tiles = new PG_DropDown(this, PG_Rect(10, 360, 150, 30),3);
+    d_d_tiles->SetFontColor (PG_Color(0, 0, 0), 1);
     File::scanTilesets(d_d_tiles); 
 
     //set the turn mode
     d_l_turnmode = new PG_Label(this, PG_Rect(175, 330, 290, 20),
                                 _("Process armies at beginning of"));
+    d_l_turnmode->SetFontColor (PG_Color(0, 0, 0));
     d_d_turnmode = new PG_DropDown(this, PG_Rect(175, 360, 170, 30),4);
+    d_d_turnmode->SetFontColor (PG_Color(0, 0, 0), 1);
     d_d_turnmode->AddItem(turnmode_true.c_str());
     d_d_turnmode->AddItem(turnmode_false.c_str());
     d_d_turnmode->SetText(turnmode_true.c_str());
 
     
     d_b_browse = new PG_Button(this, PG_Rect(Width() - 100, 60, 90, 25), _("Browse"),2);
+    d_b_browse->SetFontColor (PG_Color(0, 0, 0), 1);
     d_grass = new TerrainConfig(this, PG_Rect(Width() - 310, 60, 300, 20),
                 _("Grass"), 0, 99, 78);
     d_water = new TerrainConfig(this, PG_Rect(Width() - 310, 90, 300, 20),
@@ -106,14 +116,19 @@ GamePreferencesDialog::GamePreferencesDialog(PG_Widget* parent, PG_Rect rect)
                 _("Temples"), 15, 30, 25);
 
     d_b_ok = new PG_Button(this, PG_Rect(10, Height() - 40, Width()/2 - 20, 30), _("Start Game"),3);
+    d_b_ok->SetFontColor (PG_Color(0, 0, 0));
     d_b_cancel = new PG_Button(this, PG_Rect(Width()/2+10, Height() - 40,Width()/2-20 , 30), _("Back to main menu"),3);
+    d_b_cancel->SetFontColor (PG_Color(0, 0, 0));
 
     //the buttons for the map size
     d_b_normalsize = new PG_Button(this, PG_Rect(Width() - 250, 350, 150, 30), _("Normal size"),5);
+    d_b_normalsize->SetFontColor (PG_Color(0, 0, 0));
     d_b_normalsize->SetToggle(true);
     d_b_smallsize = new PG_Button(this, PG_Rect(Width() - 250, 390, 150, 30), _("Small size"),6);
+    d_b_smallsize->SetFontColor (PG_Color(0, 0, 0));
     d_b_smallsize->SetToggle(true);
     d_b_tinysize = new PG_Button(this, PG_Rect(Width() - 250, 430, 150, 30), _("Tiny size"),7);
+    d_b_tinysize->SetFontColor (PG_Color(0, 0, 0));
     d_b_tinysize->SetToggle(true);
     d_b_normalsize->SetPressed(true);
 

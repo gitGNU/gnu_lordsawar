@@ -63,12 +63,16 @@ Splash::Splash(PG_Application* app, const PG_Rect& rect)
     {
         d_b_campaign = new PG_Button(this,
             PG_Rect(rect.w - 210, rect.h - 250, 180, 30), _("New Campaign"),0);
+	d_b_campaign->SetFontColor (PG_Color(0, 0, 0));
         d_b_singleplayer_game = new PG_Button(this,
             PG_Rect(rect.w - 210, rect.h - 215, 180, 30), _("New Game"),1);
+	d_b_singleplayer_game->SetFontColor (PG_Color(0, 0, 0));
         d_b_load_game = new PG_Button(this,
             PG_Rect(rect.w - 210, rect.h - 180, 180, 30), _("Load Game"),4);
+	d_b_load_game->SetFontColor (PG_Color(0, 0, 0));
         d_b_scenario = new PG_Button(this,
             PG_Rect(rect.w - 210, rect.h - 145, 180, 30), _("Load Scenario"),3);
+	d_b_scenario->SetFontColor (PG_Color(0, 0, 0));
     }
     else
     {
@@ -79,8 +83,10 @@ Splash::Splash(PG_Application* app, const PG_Rect& rect)
     }
     d_b_multiplayer_game = new PG_Button(this,
             PG_Rect(rect.w - 210, rect.h - 110, 180, 30), _("New Network Game"),2);
+    d_b_multiplayer_game->SetFontColor (PG_Color(0, 0, 0));
     d_b_lang = new PG_Button(this, PG_Rect(rect.w - 210, rect.h - 75, 180, 30),
             _("Language"), 4);
+    d_b_lang->SetFontColor (PG_Color(0, 0, 0));
 #ifdef __WIN32__
     d_b_lang->SetTransparency(100);
     d_b_lang->EnableReceiver(false);
@@ -88,6 +94,7 @@ Splash::Splash(PG_Application* app, const PG_Rect& rect)
 
     d_b_quit = new PG_Button(this,
             PG_Rect(rect.w - 210, rect.h - 40, 180, 30), _("Quit"),5);
+    d_b_quit->SetFontColor (PG_Color(0, 0, 0));
 
 
     if(d_b_campaign)

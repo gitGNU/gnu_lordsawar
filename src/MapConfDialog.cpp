@@ -28,9 +28,13 @@ TerrainConfig::TerrainConfig(PG_Widget* parent, PG_Rect rect, char* name,
     sprintf(buffer, "%i", pos);
 
     d_l_name = new PG_Label(parent, PG_Rect(rect.x, rect.y, 80, 20), name);
+    d_l_name->SetFontColor (PG_Color (0, 0, 0));
     d_slider = new PG_Slider(parent, PG_Rect(rect.x + 90, rect.y, rect.w - 160, 20),PG_ScrollBar::HORIZONTAL,1);
+    d_slider->SetFontColor (PG_Color (0, 0, 0));
     d_l_value = new PG_Label(parent, PG_Rect(rect.x + rect.w - 60, rect.y, 30, 20), buffer);
+    d_l_value->SetFontColor (PG_Color (0, 0, 0));
     d_button = new PG_Button(parent, PG_Rect(rect.x + rect.w - 20, rect.y, 20, 20), "?",2);
+    d_button->SetFontColor (PG_Color (0, 0, 0));
 
     d_slider->SetRange(min, max);
     d_slider->SetPosition(pos);

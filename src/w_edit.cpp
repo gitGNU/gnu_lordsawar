@@ -17,6 +17,7 @@
 #include <pgwidget.h>
 #include <pglabel.h>
 #include "w_edit.h"
+#include "sound.h"
 #include "GraphicsCache.h"
 #include "Popup.h"
 #include "RuinSearchDialog.h"
@@ -153,7 +154,7 @@ W_Edit::W_Edit(GameScenario* gameScenario, PG_Widget* parent, PG_Rect rect)
     d_stackinfo = new Stackinfo(this,PG_Rect(15, rect.my_height - 80, 360, 72));
 
     d_fllogo = new PG_Label(this, PG_Rect(rect.my_width-220,rect.my_height - 55, 220, 55),""); 
-    d_pic_logo = File::getMiscPicture("freelords_logo.png"); 
+    d_pic_logo = File::getMiscPicture("lordsawar_logo.png"); 
     d_fllogo->SetIcon(d_pic_logo);
 
     l_turns = new PG_Label(this,PG_Rect(100 + x_squares*ts, 140, 100, 20), "");
@@ -268,7 +269,7 @@ W_Edit::~W_Edit()
         SDL_FreeSurface(d_pic_centerCurrent[i]);
         SDL_FreeSurface(d_pic_nextwithmove[i]);
     }
-    SDL_FreeSurface(d_pic_library);
+    SDL_FreeSurface(d_pic_turn_start);
     SDL_FreeSurface(d_pic_winGame);
     SDL_FreeSurface(d_pic_logo);
 
@@ -530,7 +531,7 @@ void W_Edit::pictureNextPlayer()
     Popup* nextPlayer = new Popup(this, PG_Rect((my_width-300)/2,(my_height-200)/2, 300, 200));
     new PG_Label(nextPlayer, PG_Rect(10, 10, 300, 20), buf);
     
-    nextPlayer->SetIcon(d_pic_library);
+    nextPlayer->SetIcon(d_pic_turn_start);
     nextPlayer->Show();
     nextPlayer->RunModal();
     
@@ -546,11 +547,13 @@ bool W_Edit::heroJoins(Hero* hero, int gold)
     snprintf(buffer, 100, _("Hero offer for %s"),
             Playerlist::getActiveplayer()->getName().c_str());
 
+    Sound::getInstance()->playMusic("hero", 1);
     Hero_offer hero_offer(this, hero, gold);
     hero_offer.SetTitle(buffer);
     hero_offer.Show();
     hero_offer.RunModal();
     hero_offer.Hide();
+    Sound::getInstance()->haltMusic();
 
     return hero_offer.getRetval();
 }
@@ -1359,7 +1362,7 @@ void W_Edit::loadImages()
     SDL_BlitSurface(buttons2, &r, d_pic_nextTurn[1], 0);
     
     // load other pictures
-    d_pic_library = File::getMiscPicture("library.jpg", false);
+    d_pic_turn_start = File::getMiscPicture("ship.jpg", false);
     d_pic_winGame = File::getMiscPicture("win.jpg", false);
 
     // mask pics need a special format

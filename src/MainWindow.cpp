@@ -36,6 +36,7 @@ MainWindow::MainWindow(GameScenario* gameScenario, const PG_Rect& rect)
 {
     // create menus
     d_fileMenu = new PG_PopupMenu(0, 20, 0, 0);
+    d_fileMenu->SetFontColor (PG_Color (0, 0, 0), 1);
     d_fileMenu->addMenuItem(_("Load"), 0, slot(*this,&MainWindow::file_load));
     d_fileMenu->addMenuItem(_("Save"), 1, slot(*this,&MainWindow::file_save));
     d_fileMenu->addMenuItem(_("Save as"), 2, slot(*this,&MainWindow::file_saveas));
@@ -43,15 +44,18 @@ MainWindow::MainWindow(GameScenario* gameScenario, const PG_Rect& rect)
     d_fileMenu->addMenuItem(_("Quit"), 3, slot(*this,&MainWindow::file_quit));
 
     d_reportsMenu = new PG_PopupMenu(0, 170, 0, 0);
+    d_reportsMenu->SetFontColor (PG_Color (0, 0, 0), 1);
     d_reportsMenu->addMenuItem(_("Armies"), 0, slot(*this,&MainWindow::reports_armies));
     d_reportsMenu->addMenuItem(_("Cities"), 1, slot(*this,&MainWindow::reports_cities));
     d_reportsMenu->addMenuItem(_("Gold"), 2, slot(*this,&MainWindow::reports_gold));
     d_reportsMenu->addMenuItem(_("Quests"), 3, slot(*this,&MainWindow::reports_quests));
     
     d_optionsMenu = new PG_PopupMenu(0, 0, 0, 0);
+    d_optionsMenu->SetFontColor (PG_Color (0, 0, 0), 1);
     d_optionsMenu->addMenuItem(_("Game options"), 0, slot(*this,&MainWindow::options_game));
 
     d_helpMenu = new PG_PopupMenu(0, 470, 0, 0);
+    d_helpMenu->SetFontColor (PG_Color (0, 0, 0), 1);
     d_helpMenu->addMenuItem(_("About"), 1, slot(*this,&MainWindow::help_about));
     d_helpMenu->addSeparator();
     d_helpMenu->addMenuItem(_("Help"), 0, slot(*this,&MainWindow::help_help));
