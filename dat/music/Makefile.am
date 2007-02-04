@@ -2,9 +2,21 @@ MAINTAINERCLEANFILES= Makefile.in
 
 musicdir = $(datadir)/lordsawar/music
 music_DATA = \
-	music1.ogg \
+	back1.ogg \
+	defeat.ogg \
+	defeat1.ogg \
+	victory.ogg \
+	victory1.ogg \
+	hero.ogg \
+	intro.ogg \
 	music.xml
 
 EXTRA_DIST = \
-	music1.ogg \
+	back1.ogg \
+	defeat.ogg \
+	defeat1.ogg \
+	victory.ogg \
+	victory1.ogg \
+	hero.ogg \
+	intro.ogg \
 	music.xml
