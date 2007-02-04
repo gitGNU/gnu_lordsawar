@@ -2,7 +2,7 @@
 <music version="0.3.6">
     <piece>
         <d_name>intro</d_name>
-        <d_filename>music1.ogg</d_filename>
+        <d_filename>intro.ogg</d_filename>
         <d_background>false</d_background>
         <d_alias></d_alias>
     </piece>
@@ -29,5 +29,17 @@
         <d_filename>defeat1.ogg</d_filename>
         <d_background>false</d_background>
         <d_alias>defeat</d_alias>
+    </piece>
+    <piece>
+        <d_name>hero</d_name>
+        <d_filename>hero.ogg</d_filename>
+        <d_background>false</d_background>
+        <d_alias></d_alias>
+    </piece>
+    <piece>
+        <d_name>back1</d_name>
+        <d_filename>back1.ogg</d_filename>
+        <d_background>true</d_background>
+        <d_alias></d_alias>
     </piece>
 </music>
