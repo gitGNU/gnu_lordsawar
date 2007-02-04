@@ -1,0 +1,78 @@
+2007-02-04  ulf82
+
+	* fixed a bug with the ai having units stand around; added music to
+	  a hero offer; added a couple of new tracks
+
+2007-01-27  ulf82
+
+	* forgot to check in some files
+
+2007-01-23  ulf82
+
+	* hack: random victory/defeat tune is played. Added victory/defeat
+	  tunes, applied Ben Asselstine's road patch (though roads are not
+	  generated yet).
+
+2006-12-30  ulf82
+
+	* implemented background music and music when winning/loosing. Now
+	  we only have to decide on the music itself.
+
+2006-12-29  patton73
+
+	* Fixed a bug in the editor that prevented to display the citylist.
+	  Improved smart AI : now can buy and produce also advanced armies
+	  and more can upgrade cities levels
+
+2006-12-25  patton73
+
+	* Applied a lot of patches fron Ben's (stones, signposts ,
+	  mapgeneration)
+
+2006-12-22  patton73
+
+	* applied a lot of patches from Ben Asselstine
+
+2006-12-17  ulf82
+
+	* finished implementing the item dialog (it is drag and drop,
+	  though you don't see the drag because paragui's software cursor
+	  is buggy); finished implementing the equipment action as well
+
+2006-12-16  ulf82
+
+	* added scrolling through items to ItemDialog
+
+2006-12-15  ulf82
+
+	* bumped the savegame version of the scenarios; item dialog now
+	  displays statistics of the items on right-click
+
+2006-12-15  patton73
+
+	* Bumped savegame version to "0.3.8c" and fixed a bug (scenario did
+	  not save the stonelist)
+
+2006-12-15  patton73
+
+	* applied patch from Ben about stones in the map (must update the
+	  savegame documentation for new savegame version 0.3.8c)
+
+2006-12-13  patton73
+
+	* Applied Ben's patch about mixer check
+
+2006-12-12  ulf82
+
+	* applied two patches by Ben Asselstine (mountain images and show
+	  gold after pillaging), updated maps to new savegame version,
+	  ItemDialog now has capability to show item abilities on
+	  right-click (in theory, paragui makes things a bit difficult
+	  here).
+
+2006-12-11  ulf82
+
+	* applied two patches by Ben Asselstine (weird crash and stack is
+	  selected after joining) and fixed his other patch. (the wrong
+	  armies were grouped) :)
+

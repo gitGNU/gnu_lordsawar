@@ -60,7 +60,7 @@ if test $use_sound = yes; then
 
        int main()
        {
-           if (!Mix_LoadMUS("${srcdir}" "/dat/music/music1.ogg"))
+           if (!Mix_LoadMUS("${srcdir}" "/dat/music/victory.ogg"))
                return -1;
            return 0;
        }
