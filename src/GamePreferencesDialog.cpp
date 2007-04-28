@@ -58,12 +58,11 @@ GamePreferencesDialog::GamePreferencesDialog(PG_Widget* parent, PG_Rect rect)
     nameList.push_back("Horse Tribes");
     nameList.push_back("Ussyrian Orcs");
     nameList.push_back("Lich King");
-    for (int i = 0; i < 8; ++i)
+    for (int i = 0; i < 8; i++)
     {
         PG_Rect p(10, 40 + i*35, 450, 25);
         Player_preferences::Type type = Player_preferences::ANY;
-        if (i == 0) type = Player_preferences::HUMAN;
-        if (i == 1) type = Player_preferences::HUMAN_OR_COMPUTER;
+        type = Player_preferences::HUMAN;
         d_player_preferences[i] = new Player_preferences(type, nameList[i], this, p);
         d_player_preferences[i]->playerDataChanged.connect(
                 (SigC::slot(*this, &GamePreferencesDialog::slotPlayerDataChanged)));
