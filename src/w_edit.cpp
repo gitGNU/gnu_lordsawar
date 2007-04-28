@@ -715,10 +715,23 @@ bool W_Edit::b_searchClicked(PG_Button* btn)
 
     debug("search: ruin = " << ruin << ", temple = " << temple)
 
-    if (ruin)
+    if (ruin && ruin->isSearched() == false)
     {
+        char buf[101]; buf[100]='\0';
         int cur_gold = p->getGold();
+        unsigned int w1 = 240;
+        unsigned int h1 = 110;
 
+        snprintf(buf,sizeof(buf), _("%s encounters a %s..."),
+             stack->getFirstHero()->getName().c_str(), 
+             ruin->getOccupant()->getStrongestArmy()->getName().c_str());
+        PG_MessageBox mb(this, 
+                         PG_Rect((my_width-w1)/2, (my_height-h1)/2, w1, h1), 
+                         _("Searching..."), buf,
+                         PG_Rect(80, 70, 80, 30), _("OK"));
+        mb.Show();
+        mb.RunModal();
+        mb.Hide();
         if (!(p->stackSearchRuin(stack, ruin)))
         {
             stackRedraw();
