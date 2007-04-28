@@ -50,14 +50,14 @@ GamePreferencesDialog::GamePreferencesDialog(PG_Widget* parent, PG_Rect rect)
 
     // predefined names
     vector<string> nameList;
-    nameList.push_back("Michael");
-    nameList.push_back("Susi");
-    nameList.push_back("Ulf");
-    nameList.push_back("James");
-    nameList.push_back("Vibhu");
-    nameList.push_back("Tobias");
-    nameList.push_back("Linus");
-    nameList.push_back("Alan");
+    nameList.push_back("Sirians");
+    nameList.push_back("Dark Elves");
+    nameList.push_back("Stone Giants");
+    nameList.push_back("Kingdoms");
+    nameList.push_back("White Dwarves");
+    nameList.push_back("Horse Tribes");
+    nameList.push_back("Ussyrian Orcs");
+    nameList.push_back("Lich King");
     for (int i = 0; i < 8; ++i)
     {
         PG_Rect p(10, 40 + i*35, 450, 25);
@@ -415,13 +415,13 @@ bool GamePreferencesDialog::fillData(CreateScenario* creator)
 
         switch(i)
         {
-            case 0:color.r = color.g = 0; color.b = 255; break;
-            case 1:color.r = 255; color.g = color.b = 0; break;
-            case 2:color.r = 0; color.g = 255; color.b = 0; break;
-            case 3:color.r = color.g = color.b = 190; break;
-            case 4:color.r = 255; color.g = 0; color.b = 255;break;
-            case 5:color.r = color.g = 255; color.b = 0; break;
-            case 6:color.r = color.g = color.b = 255; break;
+            case 0:color.r = 252; color.b = 252; color.g = 252; break;
+            case 1:color.r = 80; color.b = 28; color.g = 172; break;
+            case 2:color.r = 252; color.b = 32; color.g = 236; break;
+            case 3:color.r = 92; color.b = 208; color.g = 92; break;
+            case 4:color.r = 252; color.b = 0; color.g = 160;break;
+            case 5:color.r = 44; color.b = 252; color.g = 184; break;
+            case 6:color.r = 196; color.b = 0; color.g = 28; break;
             case 7:color.r = color.g = color.b = 0; break;
         }
         
