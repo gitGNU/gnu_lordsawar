@@ -543,18 +543,6 @@ bool CreateScenario::setupRuins()
         s->push_back(new Army(*a));
         a = 0;
 
-        //(ii) with some chance, insert a second army
-        if ((rand() % 3) == 0)
-        {
-            while (!a || (a->getStat(Army::ARMY_BONUS) & (Army::SHIP | Army::LEADER)))
-            {
-                Uint32 chosenset = sets[rand() % sets.size()];
-                a = al->getArmy(chosenset, rand() % al->getSize(chosenset));
-            }
-            s->push_back(new Army(*a));
-            a = 0;
-        }
-
         //now mark this stack as guard
         (*it).setOccupant(s);
     }
