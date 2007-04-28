@@ -20,6 +20,7 @@
 #include <pgmessagebox.h>
 #include "citylist.h"
 #include "playerlist.h"
+#include "stacklist.h"
 #include "File.h"
 
 using namespace std;
@@ -45,7 +46,11 @@ CityOccupationDialog::CityOccupationDialog(City* city)
       case 3: s1 = "slain the foe"; break;
     }
     Playerlist::getInstance()->getActiveplayer()->cityOccupy(d_city);
-    snprintf(buf,100,_("%s you have %s"), Playerlist::getInstance()->getActiveplayer()->getName(false).c_str(), s1);
+    Army *h = Playerlist::getActiveplayer()->getStacklist()->getActivestack()->getFirstHero();
+    if (h == NULL)
+      snprintf(buf,100,_("%s you have %s"), Playerlist::getInstance()->getActiveplayer()->getName(false).c_str(), s1);
+    else
+      snprintf(buf,100,_("%s you have %s"), h->getName().c_str(), s1);
     d_l_msg = new PG_Label(this, PG_Rect(15, 60, 280, 20), buf);
     d_l_msg->SetAlignment(PG_Label::CENTER);
     snprintf(buf,100,_("in the battle of %s"), city->getName().c_str());
