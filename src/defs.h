@@ -35,6 +35,7 @@ const unsigned int TIMER_BIGMAP_SCROLLING=30;   //milliseconds
 const unsigned int TIMER_SMALLMAP_REFRESH=50;
 const unsigned int TOOLTIP_WAIT=800; // milliseconds
 const unsigned int CITY_LEVELS=4; 
+const unsigned int MAX_PLAYERS=8;
 const unsigned int TEMPLE_TYPES=2; 
 const unsigned int STONE_TYPES=9; 
 const unsigned int ROAD_TYPES=12; 
