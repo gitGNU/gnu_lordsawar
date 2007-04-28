@@ -103,7 +103,7 @@ E_CityDialog::E_CityDialog(PG_Widget* parent, PG_Rect rect, City* c)
     drop->sigSelectItem.connect(slot(*this, &E_CityDialog::statusChanged));
 
     // create a label for the captial checkbox
-    d_cb_capital = new PG_CheckButton (this, PG_Rect(210, 145, 120, 20),_("Capital City"),0);
+    d_cb_capital = new PG_CheckButton (this, PG_Rect(300, 145, 120, 20),_("Capital City"),0);
     if (d_city->isCapital())
         d_cb_capital->SetPressed();
     else
