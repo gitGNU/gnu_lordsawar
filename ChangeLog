@@ -1,6 +1,7 @@
 2007-04-28  Ben Asselstine
 	* changed players to have correct names and colours
 	* changed game preferences to have 8 players by default
+	* announcing monster name upon hero searching ruin
 
 2007-04-27  Ben Asselstine
 
