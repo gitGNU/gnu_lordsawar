@@ -2,6 +2,7 @@
 2007-04-27  Ben Asselstine
 
         * removed "multifight"
+	* remove "advanced production"
         * conditionally added hero name to city occupation dialog 
         * added ability to Sack citites.
 	* corrected Pillage behaviour.
