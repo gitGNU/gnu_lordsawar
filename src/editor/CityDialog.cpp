@@ -138,7 +138,6 @@ E_CityDialog::E_CityDialog(PG_Widget* parent, PG_Rect rect, City* c)
     d_l_upkeep = new PG_Label(this, r);
 
     // create the buttons for the production, 5 basic (including "no prod") 
-    // and three advanced ones
     d_basic.resize(5);
     for (int i = 0; i < 5; i++)
     {
@@ -147,24 +146,11 @@ E_CityDialog::E_CityDialog(PG_Widget* parent, PG_Rect rect, City* c)
         d_basic[i]->SetToggle(true);
     }
     
-    d_advanced.resize(3);
-    for (int i = 0; i < 3;i++)
-    {
-        d_advanced[i] = new PG_Button(this, PG_Rect(74+i*44, 210, 44, 44));
-        d_advanced[i]->sigClick.connect(slot(*this, &E_CityDialog::productionSet));
-        d_advanced[i]->SetToggle(true);
-    }
-
     // add a button to buy new basic production
     r.SetRect(my_width-180, my_height-180, 140, 30);
     PG_Button* btn = new PG_Button(this, r, _("Buy Basic"));
     btn->sigClick.connect(slot(*this, &E_CityDialog::buyBasic));
    
-    //! add a button to buy new advanced production
-    r.y += 40;
-    btn = new PG_Button(this, r, _("Buy Advanced"));
-    btn->sigClick.connect(slot(*this, &E_CityDialog::buyAdvanced));
-    
     // add a button to remove a production
     r.y += 40;
     btn = new PG_Button(this, r, _("Remove Production"));
@@ -227,15 +213,6 @@ bool E_CityDialog::playerChanged(PG_ListBoxBaseItem* item)
 {
     Player* p = static_cast<Player*>(item->GetUserData());
 
-    // change the city's owner; if the player has another armyset than the
-    // previous one, remove the advanced productions
-    if (d_city->getPlayer()->getArmyset() != p->getArmyset())
-    {
-        d_city->removeAdvancedProd(0);
-        d_city->removeAdvancedProd(1);
-        updatePics();
-    }
-
     d_city->setPlayer(p);
     
     return true;
@@ -261,7 +238,6 @@ bool E_CityDialog::capitalToggled()
 
 bool E_CityDialog::productionSet(PG_Button* btn)
 {
-    bool isadvanced = false;
     int selected = -1;
     
     for (unsigned int i = 0; i < d_basic.size(); i++)
@@ -271,18 +247,8 @@ bool E_CityDialog::productionSet(PG_Button* btn)
             selected = i-1;
     }
 
-    for (unsigned int i = 0; i < d_advanced.size(); i++)
-    {
-        d_advanced[i]->SetPressed(false);
-        if (d_advanced[i] == btn)
-        {
-            isadvanced = true;
-            selected = i;
-        }
-    }
-
     btn->SetPressed(true);
-    d_city->setProduction(selected, isadvanced);
+    d_city->setProduction(selected);
     updateStats();
             
     return true;
@@ -293,7 +259,7 @@ bool E_CityDialog::buyBasic(PG_Button* btn)
     // This is not the best solution for the interface, but the easiest one to
     // code. If all production slots are full, ask the user to remove one,
     // first.
-    if (d_city->getArmytype(d_city->getMaxNoOfBasicProd()-1, false) != -1)
+    if (d_city->getArmytype(d_city->getMaxNoOfBasicProd()-1) != -1)
     {
         PG_MessageBox mb(this, PG_Rect(my_width/2-150, my_height/2-75, 300, 150),
                         _("Error"), _("No free productions, maybe remove one first!"),
@@ -323,40 +289,6 @@ bool E_CityDialog::buyBasic(PG_Button* btn)
     return true;
 }
 
-bool E_CityDialog::buyAdvanced(PG_Button* btn)
-{
-    // same as buyBasic, but with advanced productions
-    if ((d_city->getArmytype(d_city->getMaxNoOfAdvancedProd()-1, true) != -1)
-        || (d_city->getMaxNoOfAdvancedProd() == 0))
-    {
-        PG_MessageBox mb(this, PG_Rect(my_width/2-150, my_height/2-75, 300, 150),
-                        _("Error"), _("No free productions, maybe remove one first!"),
-                        PG_Rect(120, 110, 60, 30), _("OK"));
-        mb.Show();
-        mb.RunModal();
-        mb.Hide();
-        return true;
-    }
-    
-    E_ArmyDialog d(this, PG_Rect(0, 0, my_width, my_height),
-                    d_city->getPlayer()->getArmyset());
-    d.Show();
-    d.RunModal();
-    d.Hide();
-
-    // add the selected production unless the selection was cancelled
-    if (!d.getSuccess())
-        return true;
-
-    d_city->addAdvancedProd(-1, d.getIndex());
-
-    updatePics();
-    updateStats();
-    checkButtons();
-    
-    return true;
-}
-
 bool E_CityDialog::removeClicked(PG_Button* btn)
 {
     if (d_city->getProductionIndex() == -1)
@@ -372,10 +304,7 @@ bool E_CityDialog::removeClicked(PG_Button* btn)
     if (mb.RunModal() == 2)
         return true;
 
-    if (d_city->getAdvancedProd())
-        d_city->removeAdvancedProd(d_city->getProductionIndex());
-    else
-        d_city->removeBasicProd(d_city->getProductionIndex());
+    d_city->removeBasicProd(d_city->getProductionIndex());
     
     updatePics();
     updateStats();
@@ -412,7 +341,6 @@ void E_CityDialog::checkButtons()
     
     // 1+2
     int selected = d_city->getProductionIndex();
-    bool advanced = d_city->getAdvancedProd();
     
     for (unsigned int i = 0; i < d_basic.size(); i++)
     {
@@ -420,29 +348,15 @@ void E_CityDialog::checkButtons()
         d_basic[i]->SetPressed(false);
         d_basic[i]->EnableReceiver(true);
     }
-    for (unsigned int i = 0; i < d_advanced.size(); i++)
-    {
-        d_advanced[i]->Hide();
-        d_advanced[i]->SetPressed(false);
-        d_advanced[i]->EnableReceiver(true);
-    }
 
     for (int i = -1; i < d_city->getMaxNoOfBasicProd(); i++)
     {
         d_basic[i+1]->Show();
-        if (!advanced && (i == selected))
+        if (i == selected)
             d_basic[i+1]->SetPressed(true);
         // make button inaccessible if it has no production
-        if (d_city->getArmytype(i, false) == -1 && i != -1)
+        if (d_city->getArmytype(i) == -1 && i != -1)
             d_basic[i+1]->EnableReceiver(false);
-    }
-    for (int i = 0; i < d_city->getMaxNoOfAdvancedProd(); i++)
-    {
-        d_advanced[i]->Show();
-        if (advanced && (i == selected))
-            d_advanced[i]->SetPressed(true);
-        if (d_city->getArmytype(i, true) == -1)
-            d_advanced[i]->EnableReceiver(false);
     }
     
     // 3
@@ -481,7 +395,7 @@ void E_CityDialog::updateStats()
     }
 
     // from here on we can assume that a valid production is set
-    a = d_city->getArmy(d_city->getProductionIndex(), d_city->getAdvancedProd());
+    a = d_city->getArmy(d_city->getProductionIndex());
     
     // fill the data, disable some updating stuff
     char buffer[51]; buffer[50] = '\0';
@@ -518,12 +432,11 @@ void E_CityDialog::updatePics()
     // assign this to the button; don't forget to store it in the cache
     // (we need the pointer for erasing lateron)
     unsigned int nbasic = d_city->getMaxNoOfBasicProd();
-    unsigned int nadvanced = d_city->getMaxNoOfAdvancedProd();
     
     d_basic[0]->SetText("N");
     for (unsigned int i = 0; i < nbasic; i++)
     {
-        int index = d_city->getArmytype(i, false);
+        int index = d_city->getArmytype(i);
         if (index == -1)
         {
             // production is not set; since this can happen because a production
@@ -540,29 +453,6 @@ void E_CityDialog::updatePics()
                             index, d_city->getPlayer(), 1, 0);
         pic = SDL_DisplayFormatAlpha(pic);
         d_basic[i+1]->SetIcon(pic);
-        d_cache.push_back(pic);
-    }
-
-    for (unsigned int i = 0; i < nadvanced; i++)
-    {
-        // the procedure is almost the same
-        int index = d_city->getArmytype(i, true);
-        if (index == -1)
-        {
-            // production is not set; since this can happen because a production
-            // is removed, it is neccessary to give the PG_Button another icon
-            // which is 100% transparent.
-            d_advanced[i]->SetIcon(d_blanksurf);
-            continue;
-        }
-
-        // copy the image for the production, assign it to the button and store
-        // it in the cache 
-        SDL_Surface* pic = GraphicsCache::getInstance()->getArmyPic(
-                            d_city->getPlayer()->getArmyset(),
-                            index, d_city->getPlayer(), 1, 0);
-        pic = SDL_DisplayFormatAlpha(pic);
-        d_advanced[i]->SetIcon(pic);
         d_cache.push_back(pic);
     }
 

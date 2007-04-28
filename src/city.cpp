@@ -31,8 +31,8 @@ using namespace std;
 
 City::City(PG_Point pos, string name, Uint32 gold)
     :Location(name, pos, 2), d_player(0), d_numbasic(2),
-     d_numadv(0), d_production(-1),
-     d_adv_prod(false), d_duration(-1), d_gold(gold),
+     d_production(-1),
+     d_duration(-1), d_gold(gold),
      d_defense_level(1), d_burnt(false), d_vectoring(false),
      d_capital(false)
 
@@ -40,9 +40,6 @@ City::City(PG_Point pos, string name, Uint32 gold)
     // Initialise armytypes
     for (int i = 0; i < 4; i++)
         d_basicprod[i] = -1; 
-
-    for (int i = 0; i < 3; i++)
-        d_advprod[i] = -1;
 
     // set the tiles to city type
     for (int i = 0; i < 2; i++)
@@ -54,7 +51,7 @@ City::City(PG_Point pos, string name, Uint32 gold)
 }
 
 City::City(XML_Helper* helper)
-    :Location(helper, 2), d_numbasic(2), d_numadv(0)
+    :Location(helper, 2), d_numbasic(2)
 {
     //initialize the city
     Uint32 ui;
@@ -63,7 +60,7 @@ City::City(XML_Helper* helper)
     d_player = Playerlist::getInstance()->getPlayer(ui);
 
     //get production types
-    istringstream sbase, sadv,svect;
+    istringstream sbase, svect;
     string s;
 
     helper->getData(s, "basic_prod");
@@ -71,32 +68,23 @@ City::City(XML_Helper* helper)
     for (int i = 0; i < 4; i++)
         sbase >>d_basicprod[i];
 
-    helper->getData(s, "adv_prod");
-    sadv.str(s);
-    for (int i = 0; i < 3; i++)
-        sadv >> d_advprod[i];
-
     helper->getData(d_defense_level, "defense");
     // Set the number of productions according to the defense level (level 1 is
     // included in the default initialization)
     if (d_defense_level == 2)
     {
         d_numbasic = 2;
-        d_numadv = 1;
     }
     if (d_defense_level == 3)
     {
         d_numbasic = 3;
-        d_numadv = 2;
     }
     if (d_defense_level == 4)
     {
         d_numbasic = 4;
-        d_numadv = 3;
     }
     
     helper->getData(d_production, "production");
-    helper->getData(d_adv_prod, "is_adv_prod");
     helper->getData(d_duration, "duration");
     helper->getData(d_gold, "gold");
     helper->getData(d_burnt, "burnt");
@@ -121,7 +109,7 @@ City::City(XML_Helper* helper)
 
 City::City(const City& c)
     :Location(c), d_player(c.d_player), d_numbasic(c.d_numbasic),
-    d_numadv(c.d_numadv), d_production(c.d_production), d_adv_prod(c.d_adv_prod),
+    d_production(c.d_production), 
     d_duration(c.d_duration), d_gold(c.d_gold), d_defense_level(c.d_defense_level),
      d_burnt(c.d_burnt),d_vectoring(c.d_vectoring),d_vector(c.d_vector),
      d_capital(c.d_capital)
@@ -129,8 +117,6 @@ City::City(const City& c)
     for (int i = 0; i < 4; i++)
         d_basicprod[i] = c.d_basicprod[i];
 
-    for (int i = 0; i < 3; i++)
-        d_advprod[i] = c.d_advprod[i];
 }
 
 City::~City()
@@ -141,11 +127,9 @@ bool City::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    stringstream sbase, sadv, svect;
+    stringstream sbase, svect;
     for (int i = 0; i < 4; i++)
         sbase << d_basicprod[i] <<" ";
-    for (int i = 0; i < 3; i++)
-        sadv << d_advprod[i] <<" ";
 
     svect << d_vector.x << " " << d_vector.y;
 
@@ -156,10 +140,8 @@ bool City::save(XML_Helper* helper) const
     retval &= helper->saveData("y", d_pos.y);
     retval &= helper->saveData("owner", d_player->getId());
     retval &= helper->saveData("basic_prod", sbase.str());
-    retval &= helper->saveData("adv_prod", sadv.str());
     retval &= helper->saveData("defense", d_defense_level);
     retval &= helper->saveData("production", d_production);
-    retval &= helper->saveData("is_adv_prod", d_adv_prod);
     retval &= helper->saveData("duration", d_duration);
     retval &= helper->saveData("gold", d_gold);
     retval &= helper->saveData("burnt", d_burnt);
@@ -174,30 +156,27 @@ int City::getNoOfBasicProd()
   int i, max = 0;
   for (i = 0; i < this->getMaxNoOfBasicProd(); i++)
     {
-      if (this->getArmy(i, false))
+      if (this->getArmy(i))
         max++;
     }
   return max;
 }
 
-void City::setProduction(int index, bool advanced)
+void City::setProduction(int index)
 {
     if (index == -1)
     {
         d_production = index;
-        d_adv_prod = false;
         d_duration = -1;
         return;
     }
 
     // return on wrong data
-    if ((!advanced && (index >= d_numbasic)) || (advanced && (index >= d_numadv))
-        || (index >= 0 && getArmytype(index, advanced) == -1))
+    if (((index >= d_numbasic)) || (index >= 0 && getArmytype(index) == -1))
         return;
 
     d_production = index;
-    d_adv_prod = advanced;
-    const Army* a = getArmy(index, advanced);
+    const Army* a = getArmy(index);
 
     // set the duration to produce this armytype
     if (a)
@@ -212,15 +191,7 @@ bool City::raiseDefense()
         return false;
     }
 
-    if (d_defense_level==1) 
-    {
-        d_numadv++;
-    }
-    else
-    {
-        d_numbasic++;
-        d_numadv++;
-    }
+    d_numbasic++;
     // increase the defense level, the income and the possible production
     d_defense_level++;
     d_gold = static_cast<Uint32>(d_gold*1.8);
@@ -236,22 +207,13 @@ bool City::reduceDefense()
         return false;
     }
 
-    if (d_defense_level == 2)
-    {
-        d_numadv--;
-    }
-    else
-    {
-        d_numbasic--;
-        d_numadv--;
-    }
+    d_numbasic--;
     // the same as raiseDefense, but the other way round
     d_defense_level--;
     d_gold = static_cast<Uint32>(d_gold*0.66);
 
     // remove obsolete productions
     removeBasicProd(d_numbasic);
-    removeAdvancedProd(d_numadv);
     
     return true;
 }
@@ -277,32 +239,11 @@ int City::getFreeBasicSlot()
      return index;
 }
 
-int City::getFreeAdvancedSlot() 
-{
-     int index=-1;
-
-     debug(d_name << " ADVANCED SLOTS=" << d_numbasic) 
-     for (int i = 0; i < d_numadv; i++)
-     {
-         debug(d_name << " Index Value=" << d_advprod[i])
-         if (d_advprod[i] == -1)
-         {
-             index=i;
-             return i;
-         }         
-     }
-
-     // TODO: here the AI should choose more wisely which production is to be replaced
-     // for now we return no index
-     return index;
-}
-
-bool City::isAlreadyBought(const Army * army, bool isadvanced)
+bool City::isAlreadyBought(const Army * army)
 {
     int max=-1;
 
-    if (isadvanced) max=d_numadv;
-    else max=d_numbasic;
+    max=d_numbasic;
  
     for (int i = 0; i < max; i++)
     {
@@ -362,57 +303,13 @@ void City::removeBasicProd(int index)
 
     d_basicprod[index] = -1;
 
-    if (!d_adv_prod && (d_production == index))
-        setProduction(-1, false);
+    if (d_production == index)
+        setProduction(-1);
 }
 
-bool City::addAdvancedProd(int index, int armytype)
-{
-    int size = (int)Armysetlist::getInstance()->getSize(d_player->getArmyset());
-    
-    if ((d_numadv == 0) || (index >= d_numadv) 
-        || (armytype >= size))
-        return false;
-
-    if (index < 0)
-    {
-        // try to find an unoccupied production slot. If this doesn't work, 
-        // overwrite the one with the highest index.
-        for (int i = 0; i < d_numadv; i++)
-            if (d_advprod[i] == -1)
-            {
-                index = i;
-                break;
-            }
-
-        if (index < 0)
-        {
-            index = d_numadv - 1;
-        }
-    }
-
-    removeAdvancedProd(index);
-    d_advprod[index] = armytype;
-    return true;
-}
-
-void City::removeAdvancedProd(int index)
-{
-    if ((index < 0) || (index > 2))
-        return;
-
-    d_advprod[index] = -1;
-    if (d_adv_prod && (d_production == index))
-        setProduction(-1, false);
-}
-            
 void City::conquer(Player* newowner)
 {
     d_player = newowner;
-
-    // remove all advanced production
-    for (int i = 0; i < 3; i++)
-        removeAdvancedProd(i);
 
     // remove vectoring info (the new player can propably not use it anyway)
     setVectoring(PG_Point(-1,-1));
@@ -434,25 +331,22 @@ void City::produceLargestArmy()
     debug("produceLargestArmy()");
 
     // We assume that the largest army is the one with the highest index
-    // with advanced productions ranking higher than normal ones.
     // This is a possible assumption as this function is solely used to
     // populate the cities during map generation.
 
     Stack* stack = getFreeStack();
     if (stack)
     {
-        for (int adv = 1; adv >= 0; adv--)
-            for (int i = 3; i >= 0; i--)
-                if (getArmytype(i, adv) != -1)
-                {
-                    int savep = d_production;
-                    bool saveadv = d_adv_prod;
+      for (int i = 3; i >= 0; i--)
+          if (getArmytype(i) != -1)
+          {
+              int savep = d_production;
                 
-                    setProduction(i, adv);
-                    produceArmy();
-                    setProduction(savep, saveadv);
-                    return;
-                }
+              setProduction(i);
+              produceArmy();
+              setProduction(savep);
+              return;
+          }
     }
 }
 
@@ -485,11 +379,6 @@ void City::nextTurn()
 
 bool City::hasProduction(int type, Uint32 set) const
 {
-    if (set == d_player->getArmyset() || set == 0)
-        for (int i = 0; i < d_numadv; i++)
-            if (d_advprod[i] == type)
-                return true;
-
     if (set == Armysetlist::getInstance()->getStandardId())
         for (int i = 0; i < d_numbasic; i++)
             if (d_basicprod[i] == type)
@@ -498,35 +387,22 @@ bool City::hasProduction(int type, Uint32 set) const
     return false;
 }
 
-int City::getArmytype(int slot, bool advanced) const
+int City::getArmytype(int slot) const
 {
     if (slot < 0)
         return -1;
     
-    if (advanced)
-    {
-        if (slot >= d_numadv)
-            return -1;
-        return d_advprod[slot];
-    }
-
-    // !advanced
     if (slot >= d_numbasic)
         return -1;
     return d_basicprod[slot];
 }
 
-const Army* City::getArmy(int slot, bool advanced) const
+const Army* City::getArmy(int slot) const
 {
-    if (getArmytype(slot, advanced) == -1)
+    if (getArmytype(slot) == -1)
         return 0;
 
     const Armysetlist* al = Armysetlist::getInstance();
-    if (advanced)
-    {
-        return al->getArmy(d_player->getArmyset(), d_advprod[slot]);
-    }
-    
     
     return al->getArmy(al->getStandardId(), d_basicprod[slot]);
 }
@@ -592,16 +468,8 @@ void City::produceArmy()
         Uint32 set;
         int index;
         
-        if (d_adv_prod)
-        {
-            set = d_player->getArmyset();
-            index = d_advprod[d_production];
-        }
-        else
-        {
-            set = al->getStandardId();
-            index = d_basicprod[d_production];
-        }
+        set = al->getStandardId();
+        index = d_basicprod[d_production];
         
         stack->push_back(new Army(*(al->getArmy(set, index)), d_player));
 
@@ -610,7 +478,7 @@ void City::produceArmy()
     }
     
     // start producing next army of same type
-    setProduction(d_production, d_adv_prod);
+    setProduction(d_production);
 }
 
 // End of file

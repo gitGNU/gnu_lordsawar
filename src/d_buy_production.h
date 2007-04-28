@@ -37,11 +37,10 @@ class D_Buy_Production : public PG_Window
         /** Default constructor
           * 
           * @param city         the city you buy production for
-          * @param advanced     whether we buy advanced production or not
           * @param parent       the parent widget
           * @param rect         the rectangle which the dialog occupies
           */
-        D_Buy_Production(City* city, bool advanced,PG_Widget* parent, PG_Rect rect);
+        D_Buy_Production(City* city, PG_Widget* parent, PG_Rect rect);
         ~D_Buy_Production();
 
         // CALLBACKS

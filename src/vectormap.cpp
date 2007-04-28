@@ -104,16 +104,8 @@ bool VectorMap::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
             int index;
             int val;
 
-            if (d_city->getAdvancedProd())
-            {
-                set = d_city->getPlayer()->getArmyset();
-                index = d_city->getArmytype(d_city->getProductionIndex(),true);
-            }
-            else
-            {
-                set = al->getStandardId();
-                index = d_city->getArmytype(d_city->getProductionIndex(),false);
-            }
+            set = al->getStandardId();
+            index = d_city->getArmytype(d_city->getProductionIndex());
         
             // The city can have no production so we calculate the path only when index != 0
             if (index != -1) 

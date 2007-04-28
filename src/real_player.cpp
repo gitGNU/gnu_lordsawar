@@ -769,9 +769,9 @@ bool RealPlayer::cityOccupy(City* c)
     c->conquer(this);
 
     //set the production to the cheapest armytype
-    c->setProduction(-1, false);
-    if (c->getArmytype(0, false) != -1)
-        c->setProduction(0, false);
+    c->setProduction(-1);
+    if (c->getArmytype(0) != -1)
+        c->setProduction(0);
 
     Action_Occupy* item = new Action_Occupy();
     item->fillData(c);
@@ -801,7 +801,7 @@ bool RealPlayer::cityPillage(City* c, int& gold)
         int i;
         for (i = 0; i < c->getNoOfBasicProd(); i++)
           {
-            const Army *a = c->getArmy(i, false);
+            const Army *a = c->getArmy(i);
             if (a != NULL)
               {
                 gold += a->getProductionCost() / 2;
@@ -834,7 +834,7 @@ bool RealPlayer::citySack(City* c, int& gold)
         int i, max = 0;
         for (i = 0; i < c->getNoOfBasicProd(); i++)
           {
-            a = c->getArmy(i, false);
+            a = c->getArmy(i);
             if (a)
               max++;
           }
@@ -842,7 +842,7 @@ bool RealPlayer::citySack(City* c, int& gold)
         i = c->getNoOfBasicProd() - 1;
         while (max > 1)
           {
-            a = c->getArmy(i, false);
+            a = c->getArmy(i);
             if (a != NULL)
               {
                 gold += a->getProductionCost() / 2;
@@ -896,15 +896,12 @@ bool RealPlayer::cityUpgradeDefense(City* c)
     return true;
 }
 
-bool RealPlayer::cityBuyProduction(City* c, int slot, int type, bool advanced)
+bool RealPlayer::cityBuyProduction(City* c, int slot, int type)
 {
     Uint32 as;
     const Armysetlist* al = Armysetlist::getInstance();
 
-    if (advanced)
-        as = getArmyset();
-    else
-        as = al->getStandardId();
+    as = al->getStandardId();
 
     // sort out unusual values (-1 is allowed and means "scrap production")
     if ((type < -1) || (type >= (int)al->getSize(as)))
@@ -918,36 +915,26 @@ bool RealPlayer::cityBuyProduction(City* c, int slot, int type, bool advanced)
     if (c->hasProduction(type, as))
         return false;
 
-    // now we assume everything is ok. Remove old production and set the new one
-    if (advanced)
-    {
-        c->removeAdvancedProd(slot);
-        if (!c->addAdvancedProd(slot, type))
-            return false;
-    }
-    else
-    {
-        c->removeBasicProd(slot);
-        if (!c->addBasicProd(slot, type))
-            return false;
-    }
+    c->removeBasicProd(slot);
+    if (!c->addBasicProd(slot, type))
+        return false;
     
     // and do the rest of the neccessary actions
     withdrawGold(al->getArmy(as, type)->getProductionCost());
 
     Action_Buy* item = new Action_Buy();
-    item->fillData(c, slot, type, advanced);
+    item->fillData(c, slot, type);
     d_actions.push_back(item);
 
     return true;
 }
 
-bool RealPlayer::cityChangeProduction(City* c, int slot, bool advanced)
+bool RealPlayer::cityChangeProduction(City* c, int slot)
 {
-    c->setProduction(slot, advanced);
+    c->setProduction(slot);
 
     Action_Production* item = new Action_Production();
-    item->fillData(c, slot, advanced);
+    item->fillData(c, slot);
     d_actions.push_back(item);
 
     return true;

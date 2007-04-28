@@ -31,26 +31,17 @@ class Hero;
   * production as well as be upgraded.
   *
   * Upgrading affects the city in several ways:
-  * - more production (basic and advanced) can be bought
+  * - more production can be bought
   * - the city produces more gold
   * - units defending the city get a defense bonus
   *
-  * Some other things to mention are basic/advanced production and the system of
+  * Some other things to mention are basic production and the system of
   * production slots.
-  *
-  * A city can have two totally different productions, basic
-  * and advanced ones. Basic productions are only relatively simple units of the
-  * default armyset which are kept if the city is taken over by another player
-  * (who can also buy basic productions only from the default armyset). Advanced
-  * productions are productions of the player armyset, usually better and more
-  * expensive. Since they are bound to a player, they are removed whenever the
-  * ownership of the city changes.
   *
   * A production slot is a production capability of a city. If a city has 4
   * different production slots, it may choose its production from a maximum of 4
   * different units. The slots are divided into basic production slots (only
-  * filled by units of the default armyset) and advanced slots (only filled by
-  * units of the owner's armyset).
+  * filled by units of the default armyset).
   */
 
 
@@ -88,9 +79,8 @@ class City : public Location
         /** Set the production of the city
           * 
           * @param index    the index of the internal production slot, -1 for none
-          * @param advanced if false, produce a basic armytype, else an advanced
           */
-        void setProduction(int index, bool advanced);
+        void setProduction(int index);
 
         
         //! Raise the defense level by one. Return true on success.
@@ -115,21 +105,6 @@ class City : public Location
         //! Clears the basic production of a given slot
         void removeBasicProd(int index);
         
-        /** Add an advanced production
-          * 
-          * Advanced productions are those of the player's armyset. Production
-          * slots are overwritten if neccessary.
-          * 
-          * @param index        the index of the production slot
-          * @param armytype     the index of the army within the armyset
-          * @return true on success, false on error
-          */
-        bool addAdvancedProd(int index, int armytype);
-
-        //! Clears the advanced production of a given slot
-        void removeAdvancedProd(int index);
-        
-        
         //! Changes the owner of the city and prepares it for takeover
         void conquer(Player* newowner);
         
@@ -151,11 +126,8 @@ class City : public Location
         //! Get the first free slot of basic production for the AI
 	int getFreeBasicSlot();
 
-        //! Get the first free slot of advanced production for the AI
-        int getFreeAdvancedSlot();
-
         //! returns true if the city already has bought this production type
-        bool isAlreadyBought(const Army * army, bool isadvanced);
+        bool isAlreadyBought(const Army * army);
 
         //! Get the defense level of the city
         int getDefenseLevel() const {return d_defense_level;}
@@ -166,9 +138,6 @@ class City : public Location
         //! Get the number of basic productions of the city
         int getNoOfBasicProd();
 
-        //! Get the maximum number of advanced productions of the city
-        int getMaxNoOfAdvancedProd() const {return d_numadv;};
-
         //! Get the player owning the city
         Player* getPlayer() const {return d_player;}
 
@@ -178,17 +147,14 @@ class City : public Location
         //! Get the index of the current internal production slot
         int getProductionIndex() const {return d_production;}
         
-        //! Do we currently produce an advanced army type?
-        bool getAdvancedProd() const {return d_adv_prod;};
-
         //! Get the income of the city per turn
         Uint32 getGold() const {return d_gold;}
 
         //! Get the index of the army in the given slot
-        int getArmytype(int slot, bool advanced) const;
+        int getArmytype(int slot) const;
 
         //! Get the army description of the given slot (what about a better name?)
-        const Army* getArmy(int slot, bool advanced) const;
+        const Army* getArmy(int slot) const;
         
         //! Returns whether city was razed (i.e. destroyed)
         bool isBurnt() const {return d_burnt;}
@@ -218,12 +184,9 @@ class City : public Location
         Player* d_player;           // Owner
         
         int d_basicprod[4];         // possible basic productions
-        int d_advprod[3];           // possible advanced productions
         int d_numbasic;             // max number of possible basic productions
-        int d_numadv;               // max number of poss. advanced productions
 
         int d_production;           // number of produced armytype
-        bool d_adv_prod;            // advanced (true) or basic production
         int d_duration;             // needed turns to finish current production
         Uint32 d_gold;                 // gold produced by city each turn
         int d_defense_level;        // defense of the city

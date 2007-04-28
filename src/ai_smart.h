@@ -88,7 +88,7 @@ class AI_Smart : public RealPlayer
 
     private:
         // Choose a new type of army to buy production for.
-        int chooseArmyTypeToBuy(City *c, bool advanced);
+        int chooseArmyTypeToBuy(City *c);
 
         // Consider buying new production for this city
         int maybeBuyProduction(City *c);
@@ -101,8 +101,6 @@ class AI_Smart : public RealPlayer
 
         // Raise a city level if possible
         bool maybeRaiseLevel(City * city);        
-        // chooses to buy basic or advanced production
-        bool chooseIfAdvanced(int freebasicslot, int freeadvancedslot);
         
         // suggest somewhere that a hero stack might like to visit
         Location *getAlternateHeroTarget(Stack *s);
@@ -117,7 +115,6 @@ class AI_Smart : public RealPlayer
         int d_mustmakemoney;  // used to avoid to buy new production 
                               // and to reinforce cities to earn more money
 
-        bool d_isadvanced;   // for now not used but it stores the production change
 };
 
 #endif // AI_SMART_H

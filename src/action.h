@@ -316,12 +316,11 @@ class Action_Buy : public Action
         std::string dump() const;
         bool save(XML_Helper* helper) const;
 
-        bool fillData(City* c, int slot, int prod, bool advanced);
+        bool fillData(City* c, int slot, int prod);
 
     private:
         Uint32 d_city;
         int d_slot, d_prod;
-        bool d_advanced;
 };
 
 //-----------------------------------------------------------------------------
@@ -336,12 +335,11 @@ class Action_Production : public Action
         std::string dump() const;
         bool save(XML_Helper* helper) const;
 
-        bool fillData(City* c, int prod, bool advanced);
+        bool fillData(City* c, int prod);
 
     private:
         Uint32 d_city;
         int d_prod;
-        bool d_advanced;
 };
 
 //-----------------------------------------------------------------------------

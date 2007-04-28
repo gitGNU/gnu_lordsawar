@@ -33,18 +33,18 @@ using namespace std;
 //#define debug(x)
 
 AI_Smart::AI_Smart(string name, unsigned int armyset, SDL_Color color)
-  :RealPlayer(name, armyset, color, Player::AI_SMART),d_mustmakemoney(0),d_isadvanced(false)
+  :RealPlayer(name, armyset, color, Player::AI_SMART),d_mustmakemoney(0)
 {
 }
 
 AI_Smart::AI_Smart(const Player& player)
-    :RealPlayer(player),d_mustmakemoney(0),d_isadvanced(false)
+    :RealPlayer(player),d_mustmakemoney(0)
 {
     d_type = AI_SMART;
 }
 
 AI_Smart::AI_Smart(XML_Helper* helper)
-    :RealPlayer(helper),d_mustmakemoney(0),d_isadvanced(false)
+    :RealPlayer(helper),d_mustmakemoney(0)
 {
 }
 
@@ -121,60 +121,32 @@ bool AI_Smart::levelArmy(Army* a)
     return true;
 }
 
-bool AI_Smart::chooseIfAdvanced(int freebasicslot, int freeadvancedslot)
-{
-    // Andrea: here obviously we can improve the decision
-    //         for now AI chooses to buy advanced only if it cannot buy basic 
-    if (freebasicslot==-1) return true;
-    if (freeadvancedslot==-1) return false;
-
-    //else we choose to buy a basic production
-    return false;   
-}
-
 int AI_Smart::maybeBuyProduction(City *c)
 {
     int freebasicslot = -1;
-    int freeadvancedslot = -1;
     int freeslot= -1;
 
-    bool advanced=false;
-   
     int armytype = -1;
 
     freebasicslot=c->getFreeBasicSlot();
-    freeadvancedslot=c->getFreeAdvancedSlot();
 
     debug("AI gold " << d_gold);
     debug("AI cityname " << c->getName());
     debug("basic slot index " << freebasicslot);
-    debug("advanced slot index " << freeadvancedslot);
 
-    // if freebasicslot == -1  and freeadvancedslot == -1 we do not have a free slot to add a new production
-    if (freebasicslot==-1 && freeadvancedslot==-1) 
+    if (freebasicslot==-1)
     {
         debug("AI cannot buy a new production no slot available."); 
         return -1;
     }
 
-    advanced=chooseIfAdvanced(freebasicslot,freeadvancedslot);
-    
-    if (advanced) 
-    {
-        freeslot=freeadvancedslot;
-        armytype=chooseArmyTypeToBuy(c,true);
-        debug("AI choosed to buy advanced."); 
-    }
-    else 
-    {
-        freeslot=freebasicslot; 
-        armytype=chooseArmyTypeToBuy(c,false);
-        debug("AI choosed to buy basic."); 
-    }
+    freeslot=freebasicslot; 
+    armytype=chooseArmyTypeToBuy(c);
+    debug("AI choosed to buy basic."); 
 
     debug("armytype i want to produce " << armytype)
 
-    bool couldbuy=cityBuyProduction(c, freeslot, armytype, advanced);
+    bool couldbuy=cityBuyProduction(c, freeslot, armytype);
 
     if (armytype >= 0 && couldbuy)
     {
@@ -187,20 +159,16 @@ int AI_Smart::maybeBuyProduction(City *c)
 int AI_Smart::setBestProduction(City *c)
 {
     int selectbasic = -1;
-    int selectadvanced = -1;
     int select = -1;
     int scorebasic = -1;
-    int scoreadvanced= -1;
-    bool actualisadvanced=c->getAdvancedProd();
-    bool produceadv= false;
 
     // we try to determine the most attractive basic production
     for (int i = 0; i < c->getMaxNoOfBasicProd(); i++)
     {
-        if (c->getArmytype(i, false) == -1)    // no production in this slot
+        if (c->getArmytype(i) == -1)    // no production in this slot
             continue;
 
-        const Army *proto = c->getArmy(i, false);
+        const Army *proto = c->getArmy(i);
         if (scoreArmyType(proto) > scorebasic)
         {
             selectbasic = i;
@@ -208,73 +176,19 @@ int AI_Smart::setBestProduction(City *c)
         }
     }
 
-    // we try to determine the most attractive advanced production
-    for (int i = 0; i < c->getMaxNoOfAdvancedProd(); i++)
-    {
-        if (c->getArmytype(i, false) == -1)    // no production in this slot
-            continue;
 
-        const Army *proto = c->getArmy(i, false);
-        if (scoreArmyType(proto) > scoreadvanced)
-        {
-            selectadvanced = i;
-            scoreadvanced = scoreArmyType(proto);
-        }
+    select=selectbasic;
+
+    if (select != c->getProductionIndex())
+    {
+        cityChangeProduction(c, select);
+        debug(getName() << " Set production to BASIC" << select << " in " << c->getName())
     }
 
-    if (scoreadvanced >= scorebasic) 
-    {
-        select=selectadvanced;
-        produceadv=true;
-    }
-    else 
-    {
-        select=selectbasic;
-        produceadv=false;
-    }
-
-    // this should work in any case; if no production exists, we set it to none
-    if (produceadv && actualisadvanced) 
-    {
-        if (select != c->getProductionIndex())
-        {
-            cityChangeProduction(c, select, true);
-            debug(getName() << " Set production to ADVANCED" << select << " in " << c->getName())
-        }
-    }
-
-    if (!produceadv && !actualisadvanced) 
-    {
-        if (select != c->getProductionIndex())
-        {
-            cityChangeProduction(c, select, false);
-            debug(getName() << " Set production to BASIC" << select << " in " << c->getName())
-        }
-    }
-
-    if (produceadv && !actualisadvanced) 
-    {
-        if (select != c->getProductionIndex())
-        {
-            cityChangeProduction(c, select, true);
-            debug(getName() << " Change production to ADVANCED" << select << " in " << c->getName())
-        }
-    }
-
-    if (!produceadv && actualisadvanced) 
-    {
-        if (select != c->getProductionIndex())
-        {
-            cityChangeProduction(c, select, false);
-            debug(getName() << " Change production to BASIC" << select << " in " << c->getName())
-        }
-    }
-
-    d_isadvanced=produceadv;
     return c->getProductionIndex();
 }
 
-int AI_Smart::chooseArmyTypeToBuy(City *c, bool advanced)
+int AI_Smart::chooseArmyTypeToBuy(City *c)
 {
     int bestScore, bestIndex;
     Uint32 size = 0;
@@ -288,10 +202,7 @@ int AI_Smart::chooseArmyTypeToBuy(City *c, bool advanced)
     
     const Armysetlist* al = Armysetlist::getInstance();
 
-    if (advanced)
-        size = al->getSize(getArmyset());
-    else 
-        size = al->getSize(al->getStandardId());
+    size = al->getSize(al->getStandardId());
         
     bestScore = -1;
     bestIndex = -1;
@@ -302,10 +213,7 @@ int AI_Smart::chooseArmyTypeToBuy(City *c, bool advanced)
     {
         const Army *proto = NULL;
 
-        if (advanced)
-            proto=al->getArmy(getArmyset(), i);
-        else 
-            proto=al->getArmy(al->getStandardId(), i);
+        proto=al->getArmy(al->getStandardId(), i);
 
         if (proto->getStat(Army::ARMY_BONUS) & Army::SHIP)
 	{ 
@@ -319,35 +227,17 @@ int AI_Smart::chooseArmyTypeToBuy(City *c, bool advanced)
             continue;
 	}
         
-        //if (c->isAlreadyBought(proto,false)==false)
-        if (advanced)
-	{
-	    if (c->hasProduction(proto->getType(), getArmyset())==false)
-	    {
-	        debug("I can buy it " << i)
-                int score = scoreArmyType(proto);
-                if (score >= bestScore)
-                {
-                    bestIndex = i;
-                    bestScore = score;
-	        }
-	    }
-            else debug("It was already bought " << i) 
-	}
-	else
-	{
-	    if (c->hasProduction(proto->getType(), al->getStandardId())==false)
-	    {
-	        debug("I can buy it " << i)
-                int score = scoreArmyType(proto);
-                if (score >= bestScore)
-                {
-                    bestIndex = i;
-                    bestScore = score;
-	        }
-	    }
-            else debug("It was already bought " << i) 
-	}
+       if (c->hasProduction(proto->getType(), al->getStandardId())==false)
+       {
+         debug("I can buy it " << i)
+         int score = scoreArmyType(proto);
+         if (score >= bestScore)
+         {
+            bestIndex = i;
+            bestScore = score;
+         }
+       }
+       else debug("It was already bought " << i) 
     }
 
     debug("BEST INDEX=" << bestIndex)

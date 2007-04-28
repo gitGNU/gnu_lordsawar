@@ -40,7 +40,6 @@ class CityInfo : public PG_Window
         bool b_upgradeClicked(PG_Button* btn);
         bool b_vectoringClicked(PG_Button* btn);
         bool b_buyBasicClicked(PG_Button* btn);
-        bool b_buyAdvancedClicked(PG_Button* btn);
         bool b_productionClicked(PG_Button* btn);
         bool b_closeClicked(PG_Button* btn);
 
@@ -55,7 +54,7 @@ class CityInfo : public PG_Window
         int neededGold();
 
         //! Return the first empty production slot of the city or -1
-        int getEmptySlot(bool advanced);
+        int getEmptySlot();
 
         
         // WIDGETS
@@ -67,14 +66,11 @@ class CityInfo : public PG_Window
         PG_Label* d_l_moves;
         PG_Label* d_l_upkeep;
         PG_Label* d_l_basic;
-        PG_Label* d_l_advanced;
         PG_Button* d_b_no_production;
         PG_Button* d_b_basic[4];
-        PG_Button* d_b_advanced[3];
         PG_Button* d_b_upgrade;
         PG_Button* d_b_vectoring;
         PG_Button* d_b_buy_basic;
-        PG_Button* d_b_buy_advanced;
         PG_Button* d_b_close;
 
         // DATA

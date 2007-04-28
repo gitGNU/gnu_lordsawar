@@ -88,8 +88,7 @@ void CityItem::readData(City* city, bool force_detail)
     if ((city->getPlayer() == Playerlist::getInstance()->getActiveplayer())
         || force_detail)
     {
-        const Army* a = city->getArmy(city->getProductionIndex(),
-                                        city->getAdvancedProd());
+        const Army* a = city->getArmy(city->getProductionIndex());
         if (a == 0)
         //i.e. no production selected
         {

@@ -467,10 +467,10 @@ bool CreateScenario::setupCities()
         (*it).setRandomArmytypes();
         (*it).produceLargestArmy();
         if ((*it).getPlayer() == Playerlist::getInstance()->getNeutral())
-            (*it).setProduction(-1, false);
+            (*it).setProduction(-1);
         else
         {
-            (*it).setProduction(0, false);
+            (*it).setProduction(0);
             //raise the city defense to the highest level
             for (; (*it).raiseDefense(););
         }

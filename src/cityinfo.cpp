@@ -71,7 +71,7 @@ CityInfo::CityInfo(City* city)
     unsigned int as = Armysetlist::getInstance()->getStandardId();
     for (int i = 0; i < 4; i++)
     {
-        int type = d_city->getArmytype(i, false);
+        int type = d_city->getArmytype(i);
 
         d_b_basic[i] = new PG_Button(this, PG_Rect(80 + i*60, 110, 60, 60),"",i+1);
         d_b_basic[i]->SetToggle(true);
@@ -93,32 +93,6 @@ CityInfo::CityInfo(City* city)
         }
     }
 
-    // set advanced production
-    d_l_advanced = new PG_Label(this, PG_Rect(20, 195, 200, 20), _("Advanced productions"));
-
-    as = d_city->getPlayer()->getArmyset();
-    for (int i = 0; i < 3; i++)
-    {
-        int type = d_city->getArmytype(i, true);
-
-        d_b_advanced[i] = new PG_Button(this, PG_Rect(64 + i*60, 215, 60, 60),"",i+10);
-        d_b_advanced[i]->SetToggle(true);
-        d_b_advanced[i]->sigClick.connect(slot(*this, &CityInfo::b_productionClicked));
-
-        if (i >= d_city->getMaxNoOfAdvancedProd())
-        {
-            d_b_advanced[i]->Hide();
-            continue;
-        }
-
-        if (type != -1)
-        {
-            SDL_Surface* armypic = GraphicsCache::getInstance()->getArmyPic(as, type,
-                                                        d_city->getPlayer(),1,NULL);
-            d_b_advanced[i]->SetIcon(armypic, 0, 0);
-        }
-    }
-    
     new PG_Label(this, PG_Rect(20, 300, 80, 20), _("Name:"));
     new PG_Label(this, PG_Rect(20, 320, 80, 20), _("Duration:"));
     new PG_Label(this, PG_Rect(20, 340, 80, 20), _("Strength:"));
@@ -136,14 +110,12 @@ CityInfo::CityInfo(City* city)
     d_b_upgrade = new PG_Button(this, PG_Rect(my_width - 140, my_height - 180, 120, 30), _("Upgrade"),1);
     d_b_vectoring = new PG_Button(this, PG_Rect(my_width - 140, my_height - 145, 120, 30), _("Vectoring"),2);
     d_b_buy_basic = new PG_Button(this, PG_Rect(my_width - 140, my_height - 110, 120, 30), _("Buy Basic"),3);
-    d_b_buy_advanced = new PG_Button(this, PG_Rect(my_width - 140, my_height - 75, 120, 30), _("Buy Advanced"),4);
     d_b_close = new PG_Button(this, PG_Rect(my_width - 140, my_height - 40, 120, 30), _("Close"),5);
 
 
     d_b_upgrade->sigClick.connect(slot(*this, &CityInfo::b_upgradeClicked));
     d_b_vectoring->sigClick.connect(slot(*this, &CityInfo::b_vectoringClicked));
     d_b_buy_basic->sigClick.connect(slot(*this, &CityInfo::b_buyBasicClicked));
-    d_b_buy_advanced->sigClick.connect(slot(*this, &CityInfo::b_buyAdvancedClicked));
     d_b_close->sigClick.connect(slot(*this, &CityInfo::b_closeClicked));
 
     // if something is produced put button to DOWN    
@@ -162,16 +134,12 @@ CityInfo::~CityInfo()
     delete d_l_moves;
     delete d_l_upkeep;
     delete d_l_basic;
-    delete d_l_advanced;
 
     delete d_b_no_production;
     for (int i = 0; i < 4; i++)
         delete d_b_basic[i];
-    for (int i = 0; i < 3; i++)
-        delete d_b_advanced[i];
     delete d_b_upgrade;
     delete d_b_buy_basic;
-    delete d_b_buy_advanced;
     delete d_b_close; 
 }
 
@@ -253,7 +221,7 @@ bool CityInfo::b_vectoringClicked(PG_Button* btn)
 
 bool CityInfo::b_buyBasicClicked(PG_Button* btn)
 {
-    D_Buy_Production dialog(d_city, false, GetParent(),
+    D_Buy_Production dialog(d_city, GetParent(),
                             PG_Rect(my_width/2-225, my_height/2-150, 450, 300));
     dialog.Show();
     dialog.RunModal();
@@ -268,13 +236,13 @@ bool CityInfo::b_buyBasicClicked(PG_Button* btn)
 
     // Now look if there are free slots in the city, else we need to ask
     // the user if he wants to replace a production.
-    int slot = getEmptySlot(false);
+    int slot = getEmptySlot();
     
     if (slot == -1)
     {
         // try to get the selected unit
         slot = d_city->getProductionIndex();
-        if ((slot == -1) || d_city->getAdvancedProd())
+        if (slot == -1)
         {
             PG_MessageBox info(GetParent(), PG_Rect(200, 200, 400, 150),
                     _("No free production"),
@@ -287,7 +255,7 @@ bool CityInfo::b_buyBasicClicked(PG_Button* btn)
         
         char buffer[101]; buffer[100]='\0';
         snprintf(buffer, 100, _("Do you really want to replace production \"%s\"?"),
-                 d_city->getArmy(slot, false)->getName().c_str());
+                 d_city->getArmy(slot)->getName().c_str());
 
         PG_MessageBox mb(GetParent(), PG_Rect(200, 200, 250, 130),
                          _("No free production slot"), buffer,
@@ -298,7 +266,7 @@ bool CityInfo::b_buyBasicClicked(PG_Button* btn)
             return true;
     }
 
-    if (!d_city->getPlayer()->cityBuyProduction(d_city, slot, chosen_army, false))
+    if (!d_city->getPlayer()->cityBuyProduction(d_city, slot, chosen_army))
         cerr <<_("Player::city_buyBasicProduction returned false where it shouldn't ");
 
     // And fill the new slots as well as update the graphics
@@ -314,20 +282,11 @@ bool CityInfo::b_buyBasicClicked(PG_Button* btn)
     return true;
 }
 
-int CityInfo::getEmptySlot(bool advanced)
+int CityInfo::getEmptySlot()
 {
-    if (advanced)
-    {
-        for (int i = 0; i < d_city->getMaxNoOfAdvancedProd(); i++)
-            if (d_city->getArmytype(i, true) == -1)
-                return i;
-    }
-    else
-    {
-        for (int i = 0; i < d_city->getMaxNoOfBasicProd(); i++)
-            if (d_city->getArmytype(i, false) == -1)
-                return i;
-    }
+    for (int i = 0; i < d_city->getMaxNoOfBasicProd(); i++)
+        if (d_city->getArmytype(i) == -1)
+            return i;
        
     return -1;
 }
@@ -339,16 +298,8 @@ bool CityInfo::b_productionClicked(PG_Button* btn)
     
     int id=btn->GetID();
 
-    if (id / 10 != 0)
-    {
-        // advanced production
-        d_city->getPlayer()->cityChangeProduction(d_city, id%10, true);
-    }
-    else
-    {
-        // basic production, the id scheme is a bit incoherent...
-        d_city->getPlayer()->cityChangeProduction(d_city, id - 1, false);
-    }
+    // basic production, the id scheme is a bit incoherent...
+    d_city->getPlayer()->cityChangeProduction(d_city, id - 1);
         
     updateProductionStats();
     
@@ -364,12 +315,9 @@ void CityInfo::updateProductionStats()
     d_b_no_production->SetPressed(false);
     for (int i = 0; i < d_city->getMaxNoOfBasicProd(); i++)
         d_b_basic[i]->SetPressed(false);
-    for (int i = 0; i < d_city->getMaxNoOfAdvancedProd(); i++)
-        d_b_advanced[i]->SetPressed(false);
 
     // shortcuts
     int slot = d_city->getProductionIndex();
-    bool advanced = d_city->getAdvancedProd();
     
     if (slot == -1)
     {
@@ -383,13 +331,10 @@ void CityInfo::updateProductionStats()
     }
     else
     {
-        const Army* a = d_city->getArmy(slot, advanced);
+        const Army* a = d_city->getArmy(slot);
 
         // press the correct buttons
-        if (advanced)
-            d_b_advanced[slot]->SetPressed(true);
-        else
-            d_b_basic[slot]->SetPressed(true);
+        d_b_basic[slot]->SetPressed(true);
 
         // update the labels
         char buffer[41]; buffer[40]='\0';
@@ -409,69 +354,6 @@ void CityInfo::updateProductionStats()
     // get everything back to normal and redraw
     PG_Application::SetBulkMode(false);
     Redraw();
-}
-
-bool CityInfo::b_buyAdvancedClicked(PG_Button* btn)
-{
-    D_Buy_Production dialog(d_city, true, GetParent(),
-                            PG_Rect(my_width/2-225, my_height/2-150, 450, 300));
-    dialog.Show();
-    dialog.RunModal();
-    dialog.Hide();
-
-    int chosen_army = dialog.getChosenArmy();
-
-    if (chosen_army == -1)
-    {
-        return true;
-    }
-
-    // Now look if there are free slots in the city, else we need to ask
-    // the user if he wants to replace a production.
-    int slot = getEmptySlot(true);
-    
-    if (slot == -1)
-    {
-        // try to get the selected unit
-        slot = d_city->getProductionIndex();
-        if ((slot == -1) || !d_city->getAdvancedProd())
-        {
-            PG_MessageBox info(GetParent(), PG_Rect(200, 200, 400, 150),
-                    _("No free production"),
-                    _("There are no free production slots available. Select the one you want to have replaced or upgrade the city first."),
-                    PG_Rect(160, 110, 80, 30), _("OK"));
-            info.Show();
-            info.RunModal();
-            return true;
-        }
-        
-        char buffer[101]; buffer[100]='\0';
-        snprintf(buffer, 100, _("Do you really want to replace production \"%s\"?"),
-                 d_city->getArmy(slot, true)->getName().c_str());
-
-        PG_MessageBox mb(GetParent(), PG_Rect(200, 200, 250, 130),
-                         _("No free production slot"), buffer,
-                         PG_Rect(40, 90, 80, 30), _("Yes"),
-                         PG_Rect(130, 90, 80, 30), _("No"));
-        mb.Show();
-        if (mb.RunModal() == 2)
-            return true;
-    }
-
-    if (!d_city->getPlayer()->cityBuyProduction(d_city, slot, chosen_army, true))
-        cerr <<_("Player::city_buyAdvancedProduction returned false where it shouldn't ");
-
-    // And fill the new slots as well as update the graphics
-    d_b_advanced[slot]->SetIcon(GraphicsCache::getInstance()->getArmyPic(
-                            d_city->getPlayer()->getArmyset(), chosen_army,
-                            d_city->getPlayer(),1,NULL), 0, 0);
-    d_b_advanced[slot]->Show();
-    d_b_advanced[slot]->EnableReceiver(true);
-    
-    checkButtons();
-    updateProductionStats();
-
-    return true;
 }
 
 int CityInfo::neededGold()
@@ -496,9 +378,6 @@ void CityInfo::checkButtons()
         if (i < d_city->getMaxNoOfBasicProd())
             d_b_basic[i]->Show();
 
-    for (int i = 0; i < 3; i++)
-        if (i < d_city->getMaxNoOfAdvancedProd())
-            d_b_advanced[i]->Show();
 }
 
 bool CityInfo::b_closeClicked(PG_Button* btn)

@@ -25,17 +25,14 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 #define debug(x)
 
-D_Buy_Production::D_Buy_Production(City* city, bool advanced, 
+D_Buy_Production::D_Buy_Production(City* city, 
                                    PG_Widget* parent, PG_Rect rect)
     :PG_Window(parent, rect, _("Buy Production"),PG_Window::MODAL),
     d_city(city), d_chosenArmy(-1)
 {
     const Armysetlist* al = Armysetlist::getInstance();
     
-    if (advanced)
-        d_armyset = city->getPlayer()->getArmyset();
-    else
-        d_armyset = al->getStandardId();
+    d_armyset = al->getStandardId();
     d_gold = city->getPlayer()->getGold();
 
     unsigned int ci;        // current index (== current index in the armyset)

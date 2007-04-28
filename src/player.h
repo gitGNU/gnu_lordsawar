@@ -392,18 +392,16 @@ class Player : public SigC::Object
           * @param c                the lucky city
           * @param slot             the production slot of the city
           * @param armytype         the index of the army type to add
-          * @param advanced         if the production we buy an advanced one
           */
-        virtual bool cityBuyProduction(City* c, int slot, int type, bool advanced) =0;
+        virtual bool cityBuyProduction(City* c, int slot, int type) =0;
 
         /** Change the production of a city
           *
           * @param c                the affected city
           * @param slot             the index of the selected production slot
-          * @param advanced         whether the new production is an advanced one
           * @return false on error, true otherwise
           */
-        virtual bool cityChangeProduction(City* c, int slot, bool advanced) =0;
+        virtual bool cityChangeProduction(City* c, int slot) =0;
 
         /** Gives the player some random reward
           *

@@ -764,8 +764,7 @@ bool Action_Upgrade::fillData(City* c)
 //Action_Buy
 
 Action_Buy::Action_Buy()
-    :Action(Action::CITY_BUY), d_city(0), d_slot(-1), d_prod(-1),
-     d_advanced(false)
+    :Action(Action::CITY_BUY), d_city(0), d_slot(-1), d_prod(-1)
 {
 }
 
@@ -775,7 +774,6 @@ Action_Buy::Action_Buy(XML_Helper* helper)
     helper->getData(d_city, "city");
     helper->getData(d_slot, "slot");
     helper->getData(d_prod, "production");
-    helper->getData(d_advanced, "advanced");
 }
 
 Action_Buy::~Action_Buy()
@@ -787,8 +785,7 @@ std::string Action_Buy::dump() const
     std::stringstream s;
 
     s <<"Production " <<d_prod <<"bought in city " <<d_city;
-    s <<"slot: " <<d_slot <<", at " <<(d_advanced?"advanced":"basic");
-    s <<"level.\n";
+    s <<"slot: " <<d_slot << "\n";
 
     return s.str();
 }
@@ -802,18 +799,16 @@ bool Action_Buy::save(XML_Helper* helper) const
     retval &= helper->saveData("city", d_city);
     retval &= helper->saveData("slot", d_slot);
     retval &= helper->saveData("production", d_prod);
-    retval &= helper->saveData("advanced", d_advanced);
     retval &= helper->closeTag();
 
     return retval;
 }
 
-bool Action_Buy::fillData(City* c, int slot, int prod, bool advanced)
+bool Action_Buy::fillData(City* c, int slot, int prod)
 {
     d_city = c->getId();
     d_slot = slot;
     d_prod = prod;
-    d_advanced = advanced;
 
     return true;
 }
@@ -822,7 +817,7 @@ bool Action_Buy::fillData(City* c, int slot, int prod, bool advanced)
 //Action_Change_Production
 
 Action_Production::Action_Production()
-    :Action(Action::CITY_PROD), d_city(0), d_prod(0), d_advanced(false)
+    :Action(Action::CITY_PROD), d_city(0), d_prod(0)
 {
 }
 
@@ -831,7 +826,6 @@ Action_Production::Action_Production(XML_Helper* helper)
 {
     helper->getData(d_city, "city");
     helper->getData(d_prod, "production");
-    helper->getData(d_advanced, "advanced");
 }
 
 Action_Production::~Action_Production()
@@ -843,7 +837,7 @@ std::string Action_Production::dump() const
     std::stringstream s;
 
     s <<"Production in city " <<d_city <<" changed to " <<d_prod;
-    s <<(d_advanced?" (advanced)":" (basic)") <<".\n";
+    s <<".\n";
 
     return s.str();
 }
@@ -856,17 +850,15 @@ bool Action_Production::save(XML_Helper* helper) const
     retval &= helper->saveData("type", Action::CITY_PROD);
     retval &= helper->saveData("city", d_city);
     retval &= helper->saveData("production", d_prod);
-    retval &= helper->saveData("advanced", d_advanced);
     retval &= helper->closeTag();
 
     return retval;
 }
 
-bool Action_Production::fillData(City* c, int prod, bool advanced)
+bool Action_Production::fillData(City* c, int prod)
 {
     d_city = c->getId();
     d_prod = prod;
-    d_advanced = advanced;
 
     return true;
 }
