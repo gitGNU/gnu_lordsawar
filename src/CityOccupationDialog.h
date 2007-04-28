@@ -43,6 +43,8 @@ class CityOccupationDialog : public PG_Window
         // CALLBACKS
         //! This function is called if the user chooses to occupy the city.
 	bool b_occupyClicked(PG_Button* btn);
+        //! This function is called if the user chooses to sack the city.
+	bool b_sackClicked(PG_Button* btn);
         //! This function is called if the user chooses to pillage the city.
 	bool b_pillageClicked(PG_Button* btn);
         //! This function is called if the user chooses to raze the city.
@@ -52,6 +54,7 @@ class CityOccupationDialog : public PG_Window
         // WIDGETS
         PG_Button* d_b_occupy;
         PG_Button* d_b_pillage;
+        PG_Button* d_b_sack;
         PG_Button* d_b_raze;
         PG_Label* d_l_msg;
         SDL_Surface* d_background;

@@ -161,10 +161,13 @@ class City : public Location
         int getDefenseLevel() const {return d_defense_level;}
 
         //! Get the maximum number of basic productions of the city
-        int getNoOfBasicProd() const {return d_numbasic;};
+        int getMaxNoOfBasicProd() const {return d_numbasic;};
+
+        //! Get the number of basic productions of the city
+        int getNoOfBasicProd();
 
         //! Get the maximum number of advanced productions of the city
-        int getNoOfAdvancedProd() const {return d_numadv;};
+        int getMaxNoOfAdvancedProd() const {return d_numadv;};
 
         //! Get the player owning the city
         Player* getPlayer() const {return d_player;}

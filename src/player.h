@@ -357,13 +357,21 @@ class Player : public SigC::Object
           */
         virtual bool cityOccupy(City* c) =0;
 
-        /** Pillage a city (reduce the defense and get some gold)
+        /** Pillage a city (trade in the best army type and get some gold)
           *
           * @param c                the city to be pillaged
           * @param gold             returns the amount of gold pillaged
           * @return false on error, true otherwise
           */
         virtual bool cityPillage(City* c, int& gold) = 0;
+
+        /** Sack a city (trade in all army types except one and get some gold)
+          *
+          * @param c                the city to be sacked 
+          * @param gold             returns the amount of gold sacked
+          * @return false on error, true otherwise
+          */
+        virtual bool citySack(City* c, int& gold) = 0;
 
         /** Raze (permanently destroy) a city
           *

@@ -293,7 +293,7 @@ bool E_CityDialog::buyBasic(PG_Button* btn)
     // This is not the best solution for the interface, but the easiest one to
     // code. If all production slots are full, ask the user to remove one,
     // first.
-    if (d_city->getArmytype(d_city->getNoOfBasicProd()-1, false) != -1)
+    if (d_city->getArmytype(d_city->getMaxNoOfBasicProd()-1, false) != -1)
     {
         PG_MessageBox mb(this, PG_Rect(my_width/2-150, my_height/2-75, 300, 150),
                         _("Error"), _("No free productions, maybe remove one first!"),
@@ -326,8 +326,8 @@ bool E_CityDialog::buyBasic(PG_Button* btn)
 bool E_CityDialog::buyAdvanced(PG_Button* btn)
 {
     // same as buyBasic, but with advanced productions
-    if ((d_city->getArmytype(d_city->getNoOfAdvancedProd()-1, true) != -1)
-        || (d_city->getNoOfAdvancedProd() == 0))
+    if ((d_city->getArmytype(d_city->getMaxNoOfAdvancedProd()-1, true) != -1)
+        || (d_city->getMaxNoOfAdvancedProd() == 0))
     {
         PG_MessageBox mb(this, PG_Rect(my_width/2-150, my_height/2-75, 300, 150),
                         _("Error"), _("No free productions, maybe remove one first!"),
@@ -427,7 +427,7 @@ void E_CityDialog::checkButtons()
         d_advanced[i]->EnableReceiver(true);
     }
 
-    for (int i = -1; i < d_city->getNoOfBasicProd(); i++)
+    for (int i = -1; i < d_city->getMaxNoOfBasicProd(); i++)
     {
         d_basic[i+1]->Show();
         if (!advanced && (i == selected))
@@ -436,7 +436,7 @@ void E_CityDialog::checkButtons()
         if (d_city->getArmytype(i, false) == -1 && i != -1)
             d_basic[i+1]->EnableReceiver(false);
     }
-    for (int i = 0; i < d_city->getNoOfAdvancedProd(); i++)
+    for (int i = 0; i < d_city->getMaxNoOfAdvancedProd(); i++)
     {
         d_advanced[i]->Show();
         if (advanced && (i == selected))
@@ -517,8 +517,8 @@ void E_CityDialog::updatePics()
     // now for each production button, create an appropriate image and
     // assign this to the button; don't forget to store it in the cache
     // (we need the pointer for erasing lateron)
-    unsigned int nbasic = d_city->getNoOfBasicProd();
-    unsigned int nadvanced = d_city->getNoOfAdvancedProd();
+    unsigned int nbasic = d_city->getMaxNoOfBasicProd();
+    unsigned int nadvanced = d_city->getMaxNoOfAdvancedProd();
     
     d_basic[0]->SetText("N");
     for (unsigned int i = 0; i < nbasic; i++)

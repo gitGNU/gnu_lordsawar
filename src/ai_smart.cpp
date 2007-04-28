@@ -195,7 +195,7 @@ int AI_Smart::setBestProduction(City *c)
     bool produceadv= false;
 
     // we try to determine the most attractive basic production
-    for (int i = 0; i < c->getNoOfBasicProd(); i++)
+    for (int i = 0; i < c->getMaxNoOfBasicProd(); i++)
     {
         if (c->getArmytype(i, false) == -1)    // no production in this slot
             continue;
@@ -209,7 +209,7 @@ int AI_Smart::setBestProduction(City *c)
     }
 
     // we try to determine the most attractive advanced production
-    for (int i = 0; i < c->getNoOfAdvancedProd(); i++)
+    for (int i = 0; i < c->getMaxNoOfAdvancedProd(); i++)
     {
         if (c->getArmytype(i, false) == -1)    // no production in this slot
             continue;

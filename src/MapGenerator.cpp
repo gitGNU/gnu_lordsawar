@@ -644,6 +644,8 @@ bool MapGenerator::walkCoast(int& x,int& y, int sea_id, int dist, int& lastwat)
         // first loop until we find the first water tile with the sea's id
         for (loop = 0, dir = lastwat; loop < 8; loop++, dir = (dir+1)%8)
         {
+            if (dir < 0)
+              continue;
             int nx = x + d_xdir[dir];
             int ny = y + d_ydir[dir];
 
@@ -666,6 +668,8 @@ bool MapGenerator::walkCoast(int& x,int& y, int sea_id, int dist, int& lastwat)
         // continue looping until we find land again
         for (loop = 0; loop < 8; loop++, dir = (dir+1)%8)
         {
+            if (dir < 0)
+              continue;
             int nx = x + d_xdir[dir];
             int ny = y + d_ydir[dir];
 

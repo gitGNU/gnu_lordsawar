@@ -59,6 +59,8 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_Occupy(helper));
         case CITY_PILLAGE:
             return (new Action_Pillage(helper));
+        case CITY_SACK:
+            return (new Action_Sack(helper));
         case CITY_RAZE:
             return (new Action_Raze(helper));
         case CITY_UPGRADE:
@@ -100,6 +102,8 @@ Action* Action::copy(const Action* a)
             return (new Action_Occupy(*dynamic_cast<const Action_Occupy*>(a)));
         case CITY_PILLAGE:
             return (new Action_Pillage(*dynamic_cast<const Action_Pillage*>(a)));
+        case CITY_SACK:
+            return (new Action_Sack(*dynamic_cast<const Action_Sack*>(a)));
         case CITY_RAZE:
             return (new Action_Raze(*dynamic_cast<const Action_Raze*>(a)));
         case CITY_UPGRADE:
@@ -618,6 +622,49 @@ bool Action_Pillage::save(XML_Helper* helper) const
 }
 
 bool Action_Pillage::fillData(City* c)
+{
+    d_city = c->getId();
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_Sack
+
+Action_Sack::Action_Sack()
+    :Action(Action::CITY_SACK), d_city(0)
+{
+}
+
+Action_Sack::Action_Sack(XML_Helper* helper)
+    :Action(Action::CITY_SACK)
+{
+    helper->getData(d_city, "city");
+}
+
+Action_Sack::~Action_Sack()
+{
+}
+
+std::string Action_Sack::dump() const
+{
+    std::stringstream s;
+    s <<"city " <<d_city <<"sacked.\n";
+    return s.str();
+}
+
+bool Action_Sack::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("action");
+    retval &= helper->saveData("type", Action::CITY_SACK);
+    retval &= helper->saveData("city", d_city);
+    retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool Action_Sack::fillData(City* c)
 {
     d_city = c->getId();
     return true;

@@ -77,7 +77,7 @@ CityInfo::CityInfo(City* city)
         d_b_basic[i]->SetToggle(true);
         d_b_basic[i]->sigClick.connect(slot(*this, &CityInfo::b_productionClicked));
 
-        if (i >= d_city->getNoOfBasicProd()) 
+        if (i >= d_city->getMaxNoOfBasicProd()) 
         {
             d_b_basic[i]->Hide();
             continue;
@@ -105,7 +105,7 @@ CityInfo::CityInfo(City* city)
         d_b_advanced[i]->SetToggle(true);
         d_b_advanced[i]->sigClick.connect(slot(*this, &CityInfo::b_productionClicked));
 
-        if (i >= d_city->getNoOfAdvancedProd())
+        if (i >= d_city->getMaxNoOfAdvancedProd())
         {
             d_b_advanced[i]->Hide();
             continue;
@@ -318,13 +318,13 @@ int CityInfo::getEmptySlot(bool advanced)
 {
     if (advanced)
     {
-        for (int i = 0; i < d_city->getNoOfAdvancedProd(); i++)
+        for (int i = 0; i < d_city->getMaxNoOfAdvancedProd(); i++)
             if (d_city->getArmytype(i, true) == -1)
                 return i;
     }
     else
     {
-        for (int i = 0; i < d_city->getNoOfBasicProd(); i++)
+        for (int i = 0; i < d_city->getMaxNoOfBasicProd(); i++)
             if (d_city->getArmytype(i, false) == -1)
                 return i;
     }
@@ -362,9 +362,9 @@ void CityInfo::updateProductionStats()
     
     // unpress all buttons
     d_b_no_production->SetPressed(false);
-    for (int i = 0; i < d_city->getNoOfBasicProd(); i++)
+    for (int i = 0; i < d_city->getMaxNoOfBasicProd(); i++)
         d_b_basic[i]->SetPressed(false);
-    for (int i = 0; i < d_city->getNoOfAdvancedProd(); i++)
+    for (int i = 0; i < d_city->getMaxNoOfAdvancedProd(); i++)
         d_b_advanced[i]->SetPressed(false);
 
     // shortcuts
@@ -493,11 +493,11 @@ void CityInfo::checkButtons()
 
     // check the production slots
     for (int i = 0; i < 4; i++)
-        if (i < d_city->getNoOfBasicProd())
+        if (i < d_city->getMaxNoOfBasicProd())
             d_b_basic[i]->Show();
 
     for (int i = 0; i < 3; i++)
-        if (i < d_city->getNoOfAdvancedProd())
+        if (i < d_city->getMaxNoOfAdvancedProd())
             d_b_advanced[i]->Show();
 }
 

@@ -792,25 +792,66 @@ bool RealPlayer::cityPillage(City* c, int& gold)
     item->fillData(c);
     d_actions.push_back(item);
     
-    // pillaging works in two steps
+    // get rid of the most expensive army type and trade it in for 
+    // half it's cost
+    // it is presumed that the last army type is the most expensive
 
-    // if the city has been upgraded, reduce the level and get some of the gold
-    if (c->reduceDefense())
-    {
-        gold = (c->getDefenseLevel()+1) * 200;
-    }
-    else
-    {
-        // if demolishing the city is not possible, remove all production (at 
-	// this level the city only has two, so this is not as hard as it seems)
-
-        for (int i = 0; i < c->getNoOfBasicProd(); i++)
-            if (c->getArmytype(i, false) != -1)
-            {
-                gold += 50;
+    if (c->getNoOfBasicProd() > 0)
+      {
+        int i;
+        for (i = 0; i < c->getNoOfBasicProd(); i++)
+          {
+            const Army *a = c->getArmy(i, false);
+            if (a != NULL)
+              {
+                gold += a->getProductionCost() / 2;
                 c->removeBasicProd(i);
-            }
-    }
+                break;
+              }
+          }
+      }
+
+    addGold(gold);
+    cityOccupy(c);
+    return true;
+}
+
+bool RealPlayer::citySack(City* c, int& gold)
+{
+    gold = 0;
+    debug("RealPlayer::citySack")
+
+    Action_Sack* item = new Action_Sack();
+    item->fillData(c);
+    d_actions.push_back(item);
+    
+    //trade in all of the army types except for one
+    //presumes that the army types are listed in order of expensiveness
+  
+    if (c->getNoOfBasicProd() > 1)
+      {
+        const Army *a;
+        int i, max = 0;
+        for (i = 0; i < c->getNoOfBasicProd(); i++)
+          {
+            a = c->getArmy(i, false);
+            if (a)
+              max++;
+          }
+
+        i = c->getNoOfBasicProd() - 1;
+        while (max > 1)
+          {
+            a = c->getArmy(i, false);
+            if (a != NULL)
+              {
+                gold += a->getProductionCost() / 2;
+                c->removeBasicProd(i);
+                max--;
+              }
+            i--;
+          }
+      }
 
     addGold(gold);
     cityOccupy(c);

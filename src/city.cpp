@@ -169,6 +169,17 @@ bool City::save(XML_Helper* helper) const
     return retval;
 }
 
+int City::getNoOfBasicProd()
+{
+  int i, max = 0;
+  for (i = 0; i < this->getMaxNoOfBasicProd(); i++)
+    {
+      if (this->getArmy(i, false))
+        max++;
+    }
+  return max;
+}
+
 void City::setProduction(int index, bool advanced)
 {
     if (index == -1)

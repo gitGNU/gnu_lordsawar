@@ -60,7 +60,8 @@ class Action
                 REWARD = 13,
                 QUEST = 14,
                 HERO_EQUIP = 15,
-                UNIT_ADVANCE = 16
+                UNIT_ADVANCE = 16,
+                CITY_SACK = 17
         };
                 
         
@@ -239,6 +240,24 @@ class Action_Pillage : public Action
         Action_Pillage();
         Action_Pillage(XML_Helper* helper);
         ~Action_Pillage();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(City* c);
+
+    private:
+        Uint32 d_city;
+};
+
+//-----------------------------------------------------------------------------
+
+class Action_Sack : public Action
+{
+    public:
+        Action_Sack();
+        Action_Sack(XML_Helper* helper);
+        ~Action_Sack();
 
         std::string dump() const;
         bool save(XML_Helper* helper) const;
