@@ -1,4 +1,5 @@
 2007-04-28  Ben Asselstine
+	* changed city pictures to have one per player, plus neutral
 	* changed players to have correct names and colours
 	* changed game preferences to have 8 players by default
 	* announcing monster name upon hero searching ruin
