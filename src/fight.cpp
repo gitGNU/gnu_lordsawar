@@ -116,42 +116,6 @@ Fight::Fight(Stack* attacker, Stack* defender, bool duel)
             if (!s)
                 continue;
             
-            if (s->getPlayer() ==  attacker->getPlayer()
-                && s != (*d_attackers.begin()))
-            {
-                // check if stack may take part in the fight
-                bool valid = true;
-                for (sit = s->begin(); sit != s->end(); sit++)
-                {
-                    if (land && sea)
-                        break;
-
-                    if ((land && (*sit)->getStat(Army::ARMY_BONUS) & Army::SHIP)
-                        || (sea && !((*sit)->getStat(Army::MOVE_BONUS) & Tile::WATER)))
-                    {
-                        valid = false;
-                        break;
-                    }
-                }
-
-                if (valid)
-                {
-                    debug("Adding stack " <<s->getId() <<" to attackers")
-                    
-                    // add all units in the stack to the list of fighters; we add
-                    // them to the ranged attack units, shuffleLines() will care for
-                    // a correct setup when the actual battle starts.
-                    d_attackers.push_back(s);
-                    for (sit = s->begin(); sit != s->end(); sit++)
-                    {
-                        Fighter* f = new Fighter((*sit), PG_Point(x,y));
-                        d_att_ranged.push_back(f);
-                    }
-                }
-                continue;
-            }
-                            
-            
             if (s->getPlayer() == defender->getPlayer()
                 && s != (*d_defenders.begin()))
             {
