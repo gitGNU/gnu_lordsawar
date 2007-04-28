@@ -113,13 +113,13 @@ GraphicsCache::~GraphicsCache()
 {
     clear();
 
-    for (int i = 0; i < 3; i++)
+    for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
     {
         if (d_citypic[i])
             SDL_FreeSurface(d_citypic[i]);
 
-        if (d_citymask[i])
-            SDL_FreeSurface(d_citymask[i]);
+        if (d_razedpic[i])
+            SDL_FreeSurface(d_razedpic[i]);
     }
 
     for (int i = 0; i < 8; i++)
@@ -128,7 +128,6 @@ GraphicsCache::~GraphicsCache()
         SDL_FreeSurface(d_flagmask[i]);
     }
 
-    SDL_FreeSurface(d_razedpic);
     SDL_FreeSurface(d_levelmask);
     SDL_FreeSurface(d_medalsmask);
 }
@@ -263,11 +262,10 @@ SDL_Surface* GraphicsCache::getCityPic(const City* city)
 {
     if (!city)
         return 0;
-
     if (city->isBurnt())
-        return d_razedpic;
-
-    return getCityPic(city->getDefenseLevel()-1, city->getPlayer());
+      return d_razedpic[city->getPlayer()->getId()];
+    else
+      return d_citypic[city->getPlayer()->getId()];
 }
 
 SDL_Surface* GraphicsCache::getCityPic(int type, const Player* p)
@@ -275,35 +273,9 @@ SDL_Surface* GraphicsCache::getCityPic(int type, const Player* p)
     debug("GraphicsCache::getCityPic " <<type <<", player " <<p->getName())
 
     if (type == -1)
-        return d_razedpic;
-        
-    if (!p)
-    {
-        std::cerr <<_("GraphicsCache: wanted to get city pic without player. Exiting...\n");
-        exit(-1);
-    }
-
-    std::list<CityCacheItem*>::iterator it;
-    CityCacheItem* myitem;
-
-    for (it = d_citylist.begin(); it != d_citylist.end(); it++)
-    {
-        if (((*it)->type == type) && ((*it)->player == p))
-        {
-            myitem = (*it);
-
-            //put the item in last place (last touched)
-            d_citylist.erase(it);
-            d_citylist.push_back(myitem);
-
-            return myitem->surface;
-        }
-    }
-
-    //no item found -> create a new one
-    myitem = addCityPic(type, p);
-
-    return myitem->surface;
+      return d_razedpic[p->getId()];
+    else
+      return d_citypic[p->getId()];
 }
 
 SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
@@ -585,20 +557,17 @@ StoneCacheItem* GraphicsCache::addStonePic(int type)
 
 CityCacheItem* GraphicsCache::addCityPic(int type, const Player* p)
 {
-    // create the city image with proper player colors etc.
-    SDL_Surface* mysurf = applyMask(d_citypic[type], d_citymask[type], p);
-        
     //now create the cache item and add the size
     CityCacheItem* myitem = new CityCacheItem();
     myitem->player = p;
     myitem->type = type;
-    myitem->surface = mysurf;
+    myitem->surface = d_citypic[p->getId()];
 
     d_citylist.push_back(myitem);
 
     //add the size
-    int size = mysurf->w * mysurf->h;
-    d_cachesize += size * mysurf->format->BytesPerPixel;
+    int size = d_citypic[p->getId()]->w * d_citypic[p->getId()]->h;
+    d_cachesize += size * d_citypic[p->getId()]->format->BytesPerPixel;
 
     //and check the size of the cache
     checkPictures();
@@ -846,12 +815,34 @@ void GraphicsCache::loadStonePics()
 
 void GraphicsCache::loadCityPics()
 {
+    SDL_Surface *tmp;
+    SDL_PixelFormat *fmt;
     // GameMap has the actual tileset stored
     std::string tileset = GameMap::getInstance()->getTileSet()->getName();
     int size = GameMap::getInstance()->getTileSet()->getTileSize() * 2;
    
     // load the image for the razed city
-    d_razedpic = File::getMapsetPicture(tileset, "misc/castle_razed.png");
+    SDL_Surface* razedpics = File::getMapsetPicture(tileset, "misc/castle_razed.png");
+    // copy alpha values, don't use them
+    SDL_SetAlpha(razedpics, 0, 0);
+
+    // temporary surface
+    fmt = razedpics->format;
+    tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, fmt->BitsPerPixel,
+                        fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+    
+    for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+    {
+        //copy the razed city image...
+
+        PG_Rect r(i*size, 0, size, size);
+        SDL_BlitSurface(razedpics, &r, tmp, 0);
+
+        d_razedpic[i] = SDL_DisplayFormatAlpha(tmp);
+    }
+
+    SDL_FreeSurface(tmp);
+    SDL_FreeSurface(razedpics);
     
     // load the city pictures
     SDL_Surface* citypics = File::getMapsetPicture(tileset, "misc/castles.png");
@@ -860,11 +851,11 @@ void GraphicsCache::loadCityPics()
     SDL_SetAlpha(citypics, 0, 0);
 
     // temporary surface
-    SDL_PixelFormat* fmt = citypics->format;
-    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, fmt->BitsPerPixel,
+    fmt = citypics->format;
+    tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, fmt->BitsPerPixel,
                         fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
     
-    for (unsigned int i = 0; i < CITY_LEVELS; i++)
+    for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
     {
         //copy the city image...
 
@@ -872,16 +863,9 @@ void GraphicsCache::loadCityPics()
         SDL_BlitSurface(citypics, &r, tmp, 0);
 
         d_citypic[i] = SDL_DisplayFormatAlpha(tmp);
-
-        //...and copy the mask image
-        d_citymask[i] = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size,
-                        32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
-
-        r.SetRect(i*size, size, size, size);
-        SDL_BlitSurface(citypics, &r, d_citymask[i], 0);
     }
 
-        SDL_FreeSurface(tmp);
+    SDL_FreeSurface(tmp);
     SDL_FreeSurface(citypics);
 }
 

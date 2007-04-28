@@ -65,7 +65,6 @@ class RealPlayer : public Player
         bool cityPillage(City* c, int& gold);
         bool citySack(City* c, int& gold);
         bool cityRaze(City* c);
-        bool cityUpgradeDefense(City* c);
         bool cityBuyProduction(City* c, int slot, int type);
         bool cityChangeProduction(City* c, int slot);
 

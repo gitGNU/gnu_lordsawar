@@ -26,7 +26,7 @@ class PG_Button;
 /** Dialog for user interaction with city parameters
   * 
   * This is the user interface for the city status. The user can change the
-  * city production, upgrade the city or choose to buy new production.
+  * city production, or choose to buy new production.
   */
 
 class CityInfo : public PG_Window
@@ -37,7 +37,6 @@ class CityInfo : public PG_Window
         ~CityInfo();
 
         // CALLBACKS
-        bool b_upgradeClicked(PG_Button* btn);
         bool b_vectoringClicked(PG_Button* btn);
         bool b_buyBasicClicked(PG_Button* btn);
         bool b_productionClicked(PG_Button* btn);
@@ -49,9 +48,6 @@ class CityInfo : public PG_Window
 
         //! Updates the production slots an some labels
         void updateProductionStats();
-
-        //! Returns the gold needed for upgrading
-        int neededGold();
 
         //! Return the first empty production slot of the city or -1
         int getEmptySlot();
@@ -68,7 +64,6 @@ class CityInfo : public PG_Window
         PG_Label* d_l_basic;
         PG_Button* d_b_no_production;
         PG_Button* d_b_basic[4];
-        PG_Button* d_b_upgrade;
         PG_Button* d_b_vectoring;
         PG_Button* d_b_buy_basic;
         PG_Button* d_b_close;

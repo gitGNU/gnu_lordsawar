@@ -100,7 +100,7 @@ class GamePreferencesDialog : public PG_ThemeWidget
         PG_Label* d_l_armyset;
         PG_Label* d_l_tiles;
         PG_Label* d_l_turnmode;
-        Player_preferences* d_player_preferences[8];
+        Player_preferences* d_player_preferences[MAX_PLAYERS];
         PG_Button* d_b_random;
         PG_Button* d_b_load;
         PG_Button* d_b_browse;

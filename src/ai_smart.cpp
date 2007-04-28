@@ -253,50 +253,6 @@ int AI_Smart::scoreArmyType(const Army *a)
     return (strength - a->getProduction());
 }
 
-bool AI_Smart::maybeRaiseLevel(City * city)
-{
-    bool upgraded=false;
-    float cityDanger = 0.0;
-    float worstDangers[3];
-
-    worstDangers[0]=0.0;
-    worstDangers[1]=0.0;
-    worstDangers[2]=0.0;
-
-    AI_Analysis *analysis = new AI_Analysis(this);
-    cityDanger = analysis->getCityDanger(city);
-    analysis->getCityWorstDangers(worstDangers);
-
-    delete(analysis);
-    
-    for (int i=0;i<3;i++)    
-        debug("worst Danger["<< i <<"]=" << worstDangers[i])
-
-    debug("City Danger=" << cityDanger)
-
-    // Here we calculate with the 3 worst dangers
-    // so that we can upgrade at maximum 3 cities per turn
-    for (int i=0;i<3;i++)    
-    {
-        if ((cityDanger == worstDangers[i]) && (worstDangers[i] > 0.0) )
-        {
-            upgraded=cityUpgradeDefense(city);
-            if (!upgraded) 
-	    {
-                debug("I could not upgrade the city -- " << city->getName() << " -- because i had no money")
-                d_mustmakemoney++;
-	    }
-	    else 
-            {
-                debug("I could upgrade the city -- " << city->getName() << " -- to level " << city->getDefenseLevel());
-                d_mustmakemoney=0;
-	    }
-            break; 
-        }
-    }
-    return upgraded;
-}
-
 void AI_Smart::examineCities()
 {
     debug("Examinating Cities to see what we can do")
@@ -306,7 +262,6 @@ void AI_Smart::examineCities()
         City *city = &(*it);
         if ((city->isFriend(this)) && (city->isBurnt()==false))
         {
-	    maybeRaiseLevel(city);
             // Here we wait to earn more money so we do not buy new productions
             if (d_mustmakemoney==0) maybeBuyProduction(city);
             setBestProduction(city);

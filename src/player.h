@@ -380,13 +380,6 @@ class Player : public SigC::Object
           */
         virtual bool cityRaze(City* c) =0;
 
-        /** Upgrade the defense level of a city
-          *
-          * @param c                the city to be upgraded
-          * @return false on error, tru otherwise
-          */
-        virtual bool cityUpgradeDefense(City* c) =0;
-
         /** Add another production to a city
           *
           * @param c                the lucky city

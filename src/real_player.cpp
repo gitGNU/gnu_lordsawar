@@ -876,26 +876,6 @@ bool RealPlayer::cityRaze(City* c)
     return true;
 }
 
-bool RealPlayer::cityUpgradeDefense(City* c)
-{
-    debug("RealPlayer::city_upgrade_defense")
-
-    int needed_gold = c->getDefenseLevel() * 1000;
-  
-    
-    if ((needed_gold >= (int) (1000*CITY_LEVELS)) || (d_gold < needed_gold))
-        return false;    //maximum level is CITY_LEVELS or not enough gold
-
-    c->raiseDefense();
-    withdrawGold(needed_gold);
-
-    Action_Upgrade* item = new Action_Upgrade();
-    item->fillData(c);
-    d_actions.push_back(item);
-
-    return true;
-}
-
 bool RealPlayer::cityBuyProduction(City* c, int slot, int type)
 {
     Uint32 as;

@@ -99,9 +99,6 @@ class AI_Smart : public RealPlayer
         // assign a score to an army type to try to figure out which is best
         int scoreArmyType(const Army *proto);
 
-        // Raise a city level if possible
-        bool maybeRaiseLevel(City * city);        
-        
         // suggest somewhere that a hero stack might like to visit
         Location *getAlternateHeroTarget(Stack *s);
         

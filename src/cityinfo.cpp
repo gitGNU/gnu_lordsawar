@@ -107,13 +107,11 @@ CityInfo::CityInfo(City* city)
     d_l_moves = new PG_Label(this, PG_Rect(120, 380, 160, 20), "0");
     d_l_upkeep = new PG_Label(this, PG_Rect(120, 400, 160, 20), "0");
 
-    d_b_upgrade = new PG_Button(this, PG_Rect(my_width - 140, my_height - 180, 120, 30), _("Upgrade"),1);
     d_b_vectoring = new PG_Button(this, PG_Rect(my_width - 140, my_height - 145, 120, 30), _("Vectoring"),2);
     d_b_buy_basic = new PG_Button(this, PG_Rect(my_width - 140, my_height - 110, 120, 30), _("Buy Basic"),3);
     d_b_close = new PG_Button(this, PG_Rect(my_width - 140, my_height - 40, 120, 30), _("Close"),5);
 
 
-    d_b_upgrade->sigClick.connect(slot(*this, &CityInfo::b_upgradeClicked));
     d_b_vectoring->sigClick.connect(slot(*this, &CityInfo::b_vectoringClicked));
     d_b_buy_basic->sigClick.connect(slot(*this, &CityInfo::b_buyBasicClicked));
     d_b_close->sigClick.connect(slot(*this, &CityInfo::b_closeClicked));
@@ -138,58 +136,8 @@ CityInfo::~CityInfo()
     delete d_b_no_production;
     for (int i = 0; i < 4; i++)
         delete d_b_basic[i];
-    delete d_b_upgrade;
     delete d_b_buy_basic;
     delete d_b_close; 
-}
-
-bool CityInfo::b_upgradeClicked(PG_Button* btn)
-{
-    int gold = neededGold();
-
-    if ((gold < 0) || (d_city->getPlayer()->getGold() < gold))
-    {
-        char tmp[2];
-        sprintf(tmp,"%d",CITY_LEVELS);
-        string tmp1= string("Not enough gold or already reached ugrade level ")+ string(tmp) + string("!");
-
-        PG_MessageBox mb(GetParent(), PG_Rect(200, 200, 200, 150),
-                _("Upgrade City"),
-                _(tmp1.c_str()),
-                PG_Rect(60, 100, 80, 30), _("OK"));
-        mb.Show();
-        mb.RunModal();
-        mb.Hide();
-        return true;
-    }
-
-    char buffer[100]; buffer[99]='\0';
-
-    snprintf(buffer, 99,
-            ngettext("Do you want to upgrade the city level for %i gold?",
-                     "Do you want to upgrade the city level for %i gold?", gold), gold);
-    
-    PG_Rect rect_1(40, 90, 80, 30);
-    PG_Rect rect_2(130, 90, 80, 30);
-    PG_MessageBox mb(GetParent(), PG_Rect(200, 200, 250, 130),
-               _("Upgrade city"), buffer,
-               rect_1, _("Yes"), rect_2, _("No"));
-    mb.Show();
-
-    if (mb.RunModal() == 1)
-    {
-        d_city->getPlayer()->cityUpgradeDefense(d_city);
-
-        snprintf(buffer, 99, _("Income: %i gold coins , Defense level : %i , Capital : %s"),
-                             d_city->getGold(), d_city->getDefenseLevel(),
-                             d_city->isCapital()?_("yes"):_("no"));
-        d_l_defense->SetText(buffer);
-    }
-    mb.Hide();
-
-    checkButtons();
-
-    return true;
 }
 
 bool CityInfo::b_vectoringClicked(PG_Button* btn)
@@ -246,7 +194,7 @@ bool CityInfo::b_buyBasicClicked(PG_Button* btn)
         {
             PG_MessageBox info(GetParent(), PG_Rect(200, 200, 400, 150),
                     _("No free production"),
-                    _("There are no free production slots available. Select the one you want to have replaced or upgrade the city first."),
+                    _("There are no free production slots available."),
                     PG_Rect(160, 110, 80, 30), _("OK"));
             info.Show();
             info.RunModal();
@@ -356,22 +304,8 @@ void CityInfo::updateProductionStats()
     Redraw();
 }
 
-int CityInfo::neededGold()
-{
-    if (d_city->getDefenseLevel() == 1) return 1000;
-    else if (d_city->getDefenseLevel() == 2) return 2000;
-    else if (d_city->getDefenseLevel() == 3) return 3000;
-    return -1;
-}
-
 void CityInfo::checkButtons()
 {
-    // Upgrade button
-    if ((d_city->getDefenseLevel() < (int)CITY_LEVELS && d_city->getPlayer()->getGold() >= neededGold()))
-    {
-        d_b_upgrade->Show();
-    }
-    else d_b_upgrade->Hide();
 
     // check the production slots
     for (int i = 0; i < 4; i++)

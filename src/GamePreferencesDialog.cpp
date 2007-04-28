@@ -58,7 +58,7 @@ GamePreferencesDialog::GamePreferencesDialog(PG_Widget* parent, PG_Rect rect)
     nameList.push_back("Horse Tribes");
     nameList.push_back("Ussyrian Orcs");
     nameList.push_back("Lich King");
-    for (int i = 0; i < 8; i++)
+    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
         PG_Rect p(10, 40 + i*35, 450, 25);
         Player_preferences::Type type = Player_preferences::ANY;
@@ -149,7 +149,7 @@ GamePreferencesDialog::GamePreferencesDialog(PG_Widget* parent, PG_Rect rect)
 
 GamePreferencesDialog::~GamePreferencesDialog()
 {
-    for (int i = 0; i < 8; i++)
+    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
         delete d_player_preferences[i];
     delete d_l_type;
     delete d_l_name;
@@ -200,7 +200,7 @@ void GamePreferencesDialog::initGUI()
         d_l_type->Hide();
         d_l_name->Hide();
         d_l_armyset->Hide();
-        for (int i = 0; i < 8; i++)
+        for (unsigned int i = 0; i < MAX_PLAYERS; i++)
             d_player_preferences[i]->Hide();
         
         d_edit->Show();
@@ -229,7 +229,7 @@ void GamePreferencesDialog::initGUI()
         d_l_type->Show();
         d_l_name->Show();
         d_l_armyset->Show();
-        for (int i = 0; i < 8; i++)
+        for (unsigned int i = 0; i < MAX_PLAYERS; i++)
             d_player_preferences[i]->Show();
         
         d_edit->Hide();
@@ -283,7 +283,7 @@ bool GamePreferencesDialog::okClicked(PG_Button* btn)
 {
     //this is a workaround for a really strange bug where you would get a
     //segfault if you had activated an edit box and pressed the start button
-    for (int i = 0; i < 8; i++)
+    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
         d_player_preferences[i]->Hide();
     d_edit->Hide();
     d_d_tiles->Hide();
@@ -347,7 +347,7 @@ void GamePreferencesDialog::restrictPlayers(int number)
 
     for (int i = 0; i < number; i++)
         d_player_preferences[i]->Show();
-    for (int i = number; i < 8; i++)
+    for (unsigned int i = number; i < MAX_PLAYERS; i++)
         d_player_preferences[i]->Hide();
 }
 
@@ -386,7 +386,7 @@ int GamePreferencesDialog::noPlayers()
 {
 	int n = 0;
 	
-	for (int i = 0; i < 8; i++)
+	for (unsigned int i = 0; i < MAX_PLAYERS; i++)
 		if (d_player_preferences[i]->isActive())
 			n++;
 	
@@ -407,7 +407,7 @@ bool GamePreferencesDialog::fillData(CreateScenario* creator)
     creator->addNeutral("Neutral", set, color, Player::AI_DUMMY);
 
     //then fill the other players
-    for (int i = 0; i < 8; i++)
+    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
         if (!d_player_preferences[i]->isActive())
             continue;

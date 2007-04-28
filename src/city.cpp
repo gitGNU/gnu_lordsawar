@@ -30,7 +30,7 @@ using namespace std;
 #define debug(x)
 
 City::City(PG_Point pos, string name, Uint32 gold)
-    :Location(name, pos, 2), d_player(0), d_numbasic(2),
+    :Location(name, pos, 2), d_player(0), d_numbasic(4),
      d_production(-1),
      d_duration(-1), d_gold(gold),
      d_defense_level(1), d_burnt(false), d_vectoring(false),
@@ -51,7 +51,7 @@ City::City(PG_Point pos, string name, Uint32 gold)
 }
 
 City::City(XML_Helper* helper)
-    :Location(helper, 2), d_numbasic(2)
+    :Location(helper, 2), d_numbasic(4)
 {
     //initialize the city
     Uint32 ui;
@@ -69,20 +69,7 @@ City::City(XML_Helper* helper)
         sbase >>d_basicprod[i];
 
     helper->getData(d_defense_level, "defense");
-    // Set the number of productions according to the defense level (level 1 is
-    // included in the default initialization)
-    if (d_defense_level == 2)
-    {
-        d_numbasic = 2;
-    }
-    if (d_defense_level == 3)
-    {
-        d_numbasic = 3;
-    }
-    if (d_defense_level == 4)
-    {
-        d_numbasic = 4;
-    }
+    d_numbasic = 4;
     
     helper->getData(d_production, "production");
     helper->getData(d_duration, "duration");
@@ -191,7 +178,6 @@ bool City::raiseDefense()
         return false;
     }
 
-    d_numbasic++;
     // increase the defense level, the income and the possible production
     d_defense_level++;
     d_gold = static_cast<Uint32>(d_gold*1.8);
@@ -207,7 +193,6 @@ bool City::reduceDefense()
         return false;
     }
 
-    d_numbasic--;
     // the same as raiseDefense, but the other way round
     d_defense_level--;
     d_gold = static_cast<Uint32>(d_gold*0.66);

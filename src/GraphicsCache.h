@@ -235,12 +235,11 @@ class GraphicsCache
         //some private surfaces
         SDL_Surface* d_levelmask;
         SDL_Surface* d_medalsmask;
-        SDL_Surface* d_citypic[CITY_LEVELS];
+        SDL_Surface* d_citypic[MAX_PLAYERS + 1]; //+1 for neutral
         SDL_Surface* d_templepic[TEMPLE_TYPES];
         SDL_Surface* d_stonepic[STONE_TYPES];
         SDL_Surface* d_roadpic[ROAD_TYPES];
-        SDL_Surface* d_citymask[CITY_LEVELS];
-        SDL_Surface* d_razedpic;
+        SDL_Surface* d_razedpic[MAX_PLAYERS + 1]; //+1 for neutral
         SDL_Surface* d_flagpic[8];
         SDL_Surface* d_flagmask[8];
 };
