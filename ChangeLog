@@ -1,3 +1,8 @@
+2007-04-27  Ben Asselstine
+
+        * added ability to Sack citites.
+	* corrected Pillage behaviour.
+
 2007-02-04  ulf82
 
 	* fixed a bug with the ai having units stand around; added music to
