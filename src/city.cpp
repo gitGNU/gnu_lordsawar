@@ -20,6 +20,7 @@
 #include "army.h"
 #include "hero.h"
 #include "stacklist.h"
+#include "stack.h"
 #include "playerlist.h"
 #include "armysetlist.h"
 #include "GameMap.h"
@@ -29,7 +30,7 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-City::City(PG_Point pos, string name, Uint32 gold)
+City::City(Vector<int> pos, string name, Uint32 gold)
     :Location(name, pos, 2), d_player(0), d_numbasic(4),
      d_production(-1),
      d_duration(-1), d_gold(gold),
@@ -297,7 +298,7 @@ void City::conquer(Player* newowner)
     d_player = newowner;
 
     // remove vectoring info (the new player can propably not use it anyway)
-    setVectoring(PG_Point(-1,-1));
+    setVectoring(Vector<int>(-1,-1));
 }
 
 void City::setRandomArmytypes()
@@ -397,6 +398,18 @@ bool City::isFriend(Player* player) const
     return (d_player == player);
 }
 
+int City::getGoldNeededForUpgrade() const
+{
+    if (d_defense_level == 1)
+	return 1000;
+    else if (d_defense_level == 2)
+	return 2000;
+    else if (d_defense_level == 3)
+	return 3000;
+    return -1;
+}
+
+
 Stack* City::getFreeStack() const
 {
     for (int i = 0; i < 2; i++)
@@ -409,7 +422,7 @@ Stack* City::getFreeStack() const
 
             if (stack == 0 || d_vectoring)
             {
-                PG_Point temp;
+                Vector<int> temp;
                 temp.x = d_pos.x + j;
                 temp.y = d_pos.y + i;
                 stack = new Stack(d_player, temp);
@@ -422,7 +435,7 @@ Stack* City::getFreeStack() const
     return 0;
 }
 
-void City::setVectoring(PG_Point p) 
+void City::setVectoring(Vector<int> p) 
 {
     d_vector.x=p.x; 
     d_vector.y=p.y;

@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "citylist.h"
 #include "city.h"
 #include "playerlist.h"
@@ -54,7 +56,7 @@ Citylist::Citylist()
 Citylist::Citylist(XML_Helper* helper)
 {
     // simply ask the helper to inform us when a city tag is opened
-    helper->registerTag("city", SigC::slot((*this), &Citylist::load));    
+    helper->registerTag("city", sigc::mem_fun(this, &Citylist::load));    
 }
 
 Citylist::~Citylist()
@@ -93,7 +95,7 @@ void Citylist::nextTurn(Player* p)
             p->addGold((*it).getGold());
 }
 
-City* Citylist::getNearestEnemyCity(const PG_Point& pos)
+City* Citylist::getNearestEnemyCity(const Vector<int>& pos)
 {
     int diff = -1;
     iterator diffit;
@@ -106,7 +108,7 @@ City* Citylist::getNearestEnemyCity(const PG_Point& pos)
 
         if ((*it).getPlayer() != p)
         {        
-            PG_Point p = (*it).getPos();
+            Vector<int> p = (*it).getPos();
             int delta = abs(p.x - pos.x);
             if (delta < abs(p.y - pos.y))
                 delta = abs(p.y - pos.y);
@@ -122,7 +124,7 @@ City* Citylist::getNearestEnemyCity(const PG_Point& pos)
     return &(*diffit);
 }
 
-City* Citylist::getNearestFriendlyCity(const PG_Point& pos)
+City* Citylist::getNearestFriendlyCity(const Vector<int>& pos)
 {
     int diff = -1;
     iterator diffit;
@@ -135,7 +137,7 @@ City* Citylist::getNearestFriendlyCity(const PG_Point& pos)
 
         if ((*it).getPlayer() == p)
         {
-            PG_Point p = (*it).getPos();
+            Vector<int> p = (*it).getPos();
             int delta = abs(p.x - pos.x);
             if (delta < abs(p.y - pos.y))
                 delta = abs(p.y - pos.y);
@@ -152,7 +154,7 @@ City* Citylist::getNearestFriendlyCity(const PG_Point& pos)
     return &(*diffit);
 }
 
-City* Citylist::getNearestCity(const PG_Point& pos)
+City* Citylist::getNearestCity(const Vector<int>& pos)
 {
     int diff = -1;
     iterator diffit;
@@ -162,7 +164,7 @@ City* Citylist::getNearestCity(const PG_Point& pos)
           if ((*it).isBurnt())
               continue;
           
-          PG_Point p = (*it).getPos();
+          Vector<int> p = (*it).getPos();
           int delta = abs(p.x - pos.x);
           if (delta < abs(p.y - pos.y))
               delta = abs(p.y - pos.y);

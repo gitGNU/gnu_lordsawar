@@ -26,12 +26,12 @@
 class CityItem : public PG_Widget
 {
     public:
-        CityItem(PG_Widget* parent, PG_Rect rect);
+        CityItem(PG_Widget* parent, Rectangle rect);
         ~CityItem();
 
         void readData(City* city, bool force_show);
 
-        SigC::Signal1<void, City*> sclicked;
+        sigc::signal<void, City*> sclicked;
 
     private:
         bool eventMouseButtonDown(const SDL_MouseButtonEvent * event);
@@ -46,18 +46,18 @@ class CityItem : public PG_Widget
         City* d_city;
 };
 
-CityItem::CityItem(PG_Widget* parent, PG_Rect rect)
+CityItem::CityItem(PG_Widget* parent, Rectangle rect)
     :PG_Widget(parent, rect)
 {
-    d_l_name = new PG_Label(this, PG_Rect(10, 10, 150, 20), "");
-    d_l_owner = new PG_Label(this, PG_Rect(10, 40, 150, 20), "");
-    d_l_gold =new PG_Label(this, PG_Rect(10, 60, 100, 20), "");
-    d_l_production = new PG_Label(this, PG_Rect(260, 20, 150, 20), "");
-    d_l_finished = new PG_Label(this, PG_Rect(260, 50, 100, 20), "");
-    d_b_production = new PG_Button(this, PG_Rect(190, 10, 50, 50), "",0);
+    d_l_name = new PG_Label(this, Rectangle(10, 10, 150, 20), "");
+    d_l_owner = new PG_Label(this, Rectangle(10, 40, 150, 20), "");
+    d_l_gold =new PG_Label(this, Rectangle(10, 60, 100, 20), "");
+    d_l_production = new PG_Label(this, Rectangle(260, 20, 150, 20), "");
+    d_l_finished = new PG_Label(this, Rectangle(260, 50, 100, 20), "");
+    d_b_production = new PG_Button(this, Rectangle(190, 10, 50, 50), "",0);
     d_b_production->EnableReceiver(false);
     d_b_production->Hide();
-    d_l_noinfo = new PG_Label(this,PG_Rect(190, 20, 200, 50), _("no information"));
+    d_l_noinfo = new PG_Label(this,Rectangle(190, 20, 200, 50), _("no information"));
     d_l_noinfo->Hide();
     d_l_noinfo->SetFontColor(PG_Color(200, 100, 100));
     d_l_noinfo->SetFontSize(16);
@@ -72,7 +72,7 @@ void CityItem::readData(City* city, bool force_detail)
     // TODO: this workaround becomes obsolete as soon as paragui supports
     // removal of a button image
     delete d_b_production;
-    d_b_production = new PG_Button(this, PG_Rect(190, 10, 50, 50), "",0);
+    d_b_production = new PG_Button(this, Rectangle(190, 10, 50, 50), "",0);
     d_b_production->EnableReceiver(false);
     
 
@@ -134,29 +134,29 @@ bool CityItem::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
 
 
 //now comes the CitiesReport class
-CitiesReport::CitiesReport(PG_Widget* parent, PG_Rect rect, bool showall)
+CitiesReport::CitiesReport(PG_Widget* parent, Rectangle rect, bool showall)
     :PG_Window(parent, rect, _("city report"), PG_Window::MODAL), d_index(0),
     d_showall(showall)
 {
     //I assume 500x400 pixels here as well
-    d_b_ok = new PG_Button(this, PG_Rect(430, 370, 90, 25), _("OK"),2);
+    d_b_ok = new PG_Button(this, Rectangle(430, 370, 90, 25), _("OK"),2);
     d_b_ok->sigClick.connect(slot(*this, &CitiesReport::b_okClicked));
 
-    d_b_up = new PG_Button(this, PG_Rect(430, 150, 90, 25), _("Prev."),0);
+    d_b_up = new PG_Button(this, Rectangle(430, 150, 90, 25), _("Prev."),0);
     d_b_up->sigClick.connect(slot(*this, &CitiesReport::b_upClicked));
 
-    d_b_down = new PG_Button(this, PG_Rect(430, 250, 90, 25), _("Next"),1);
+    d_b_down = new PG_Button(this, Rectangle(430, 250, 90, 25), _("Next"),1);
     d_b_down->sigClick.connect(slot(*this, &CitiesReport::b_downClicked));
 
-    d_l_number = new PG_Label(this, PG_Rect(430, 35, 60, 20), "");
+    d_l_number = new PG_Label(this, Rectangle(430, 35, 60, 20), "");
 
-    d_items[0] = new CityItem(this, PG_Rect(10, 30, 420, 80));
-    d_items[1] = new CityItem(this, PG_Rect(10, 120, 420, 80));
-    d_items[2] = new CityItem(this, PG_Rect(10, 210, 420, 80));
-    d_items[3] = new CityItem(this, PG_Rect(10, 300, 420, 80));
+    d_items[0] = new CityItem(this, Rectangle(10, 30, 420, 80));
+    d_items[1] = new CityItem(this, Rectangle(10, 120, 420, 80));
+    d_items[2] = new CityItem(this, Rectangle(10, 210, 420, 80));
+    d_items[3] = new CityItem(this, Rectangle(10, 300, 420, 80));
 
     for (int i = 0; i < 4; i++)
-        d_items[i]->sclicked.connect(SigC::slot(*this, &CitiesReport::citySelected));
+        d_items[i]->sclicked.connect(sigc::slot(*this, &CitiesReport::citySelected));
     
     //now get all cities sorted by player with the activeplayer first and
     //the cities of the neutral player last

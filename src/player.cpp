@@ -16,10 +16,10 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
+#include <sigc++/functors/mem_fun.h>
 
 #include "player.h"
 #include "playerlist.h"
-#include "FightDialog.h"
 #include "stacklist.h"
 #include "citylist.h"
 #include "city.h"
@@ -32,8 +32,10 @@
 #include "ai_smart.h"
 #include "counter.h"
 #include "army.h"
+#include "action.h"
 #include "AI_Analysis.h"
 #include "AI_Allocation.h"
+#include "FogMap.h"
 
 using namespace std;
 
@@ -41,7 +43,7 @@ using namespace std;
 #define debug(x)
 
 // signal
-SigC::Signal1<void, Player::Type> sendingTurn;
+sigc::signal<void, Player::Type> sendingTurn;
 
 Player::Player(string name, Uint32 armyset, SDL_Color color, Type type)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
@@ -103,9 +105,9 @@ Player::Player(XML_Helper* helper)
     helper->getData(d_armyset, "armyset");
 
     //last but not least, register the load function for actionlist
-    helper->registerTag("action", SigC::slot((*this), &Player::load));
-    helper->registerTag("stacklist", SigC::slot((*this), &Player::load));
-    helper->registerTag("fogmap", SigC::slot((*this), &Player::load));
+    helper->registerTag("action", sigc::mem_fun(this, &Player::load));
+    helper->registerTag("stacklist", sigc::mem_fun(this, &Player::load));
+    helper->registerTag("fogmap", sigc::mem_fun(this, &Player::load));
 }
 
 Player::~Player()

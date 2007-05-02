@@ -14,7 +14,7 @@
 #include "RActEvent.h"
 #include "Event.h"
 
-SigC::Signal0<std::list<Event*> > RActEvent::sgettingEvents;
+sigc::signal<std::list<Event*> > RActEvent::sgettingEvents;
 
 
 RActEvent::RActEvent(Uint32 event, bool activate)

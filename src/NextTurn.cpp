@@ -44,28 +44,23 @@ void NextTurn::start()
     if (!plist->getActiveplayer())
         plist->nextPlayer();
 
-    while(!d_stop)
+    while (!d_stop)
     {
-        if (!splayerStart.emit(plist->getActiveplayer()))
-        {
-            //something tells us we should transfer control to the 
-            //low level SDL/ParaGui event routines (e.g. if the
-            //active player is a human one)
-            startTurn();
-            supdating.emit(true);
-            return;
-        }
-
-        //do various start-up tasks
+        // do various start-up tasks
         startTurn();
         supdating.emit(true);
        
         // inform everyone about the next turn 
         snextTurn.emit(plist->getActiveplayer());
         
+	bool break_loop = splayerStart.emit(plist->getActiveplayer());
+
         //Let the player do his duties...
         plist->getActiveplayer()->startTurn();
 
+        if (break_loop)
+            return;
+	
         //Now do some cleanup at the end of the turn.
         finishTurn();
 
@@ -83,9 +78,8 @@ void NextTurn::start()
 
 void NextTurn::endTurn()
 {
-    //This function is called by W_Edit if the player has pushed the
-    //"End Turn" button. It finishes off the player and transfers the
-    //control to the start function again.
+    // Finish off the player and transfers the control to the start function
+    // again.
     finishTurn();
     Playerlist::getInstance()->nextPlayer();
 

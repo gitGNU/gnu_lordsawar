@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "signpostlist.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -50,7 +52,7 @@ Signpostlist::Signpostlist()
 
 Signpostlist::Signpostlist(XML_Helper* helper)
 {
-    helper->registerTag("signpost", SigC::slot((*this), &Signpostlist::load));
+    helper->registerTag("signpost", sigc::mem_fun(this, &Signpostlist::load));
 }
 
 bool Signpostlist::save(XML_Helper* helper) const

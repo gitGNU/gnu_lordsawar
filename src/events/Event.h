@@ -16,7 +16,7 @@
 #define EVENT_H
 
 #include <SDL_types.h>
-#include <sigc++/sigc++.h>
+#include <sigc++/trackable.h>
 #include <string>
 #include <vector>
 
@@ -54,7 +54,7 @@ class Condition;
   * it is triggered. See Condition.h for an explanation what they do.
   */
 
-class Event : public SigC::Object
+class Event : public sigc::trackable
 {
     public:
         enum Type {KILLALL=0, PLAYERDEAD=1, CITYCONQUERED=2, ARMYKILLED=3,

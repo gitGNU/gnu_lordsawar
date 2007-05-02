@@ -15,8 +15,9 @@
 #ifndef __QUEST_ENEMY_ARMIES_H
 #define __QUEST_ENEMY_ARMIES_H
 
+#include <sigc++/trackable.h>
+
 #include "Quest.h"
-#include <sigc++/sigc++.h>
 #include "army.h"
 
 /**
@@ -24,7 +25,7 @@
  *
  */
 
-class QuestEnemyArmies : public Quest, public SigC::Object
+class QuestEnemyArmies : public Quest, public sigc::trackable
 {
     public:
         /** \brief Constructor */

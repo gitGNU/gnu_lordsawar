@@ -19,7 +19,7 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-Popup::Popup(PG_Widget* parent, PG_Rect rect)
+Popup::Popup(PG_Widget* parent, Rectangle rect)
     :PG_Label(parent, rect)
 {
 }

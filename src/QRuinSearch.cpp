@@ -15,6 +15,7 @@
 #include <iostream>
 #include <sstream>
 #include <assert.h>
+#include <sigc++/functors/mem_fun.h>
 
 #include "QRuinSearch.h"
 #include "QuestsManager.h"
@@ -23,6 +24,7 @@
 #include "playerlist.h"
 #include "stack.h"
 #include "defs.h"
+#include "xmlhelper.h"
 
 using namespace std;
 
@@ -36,7 +38,8 @@ QuestRuinSearch::QuestRuinSearch(QuestsManager& mgr, Uint32 hero)
     // we want to stay informed about ruin searches
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->ssearchingRuin.connect( SigC::slot(*this, &QuestRuinSearch::ruinSearched));
+        (*it)->ssearchingRuin.connect(
+	    sigc::mem_fun(this, &QuestRuinSearch::ruinSearched));
 
     // find us a ruin
     Ruin* r = chooseToSearch();
@@ -53,7 +56,8 @@ QuestRuinSearch::QuestRuinSearch(QuestsManager& q_mgr, XML_Helper* helper)
     // let us stay in touch with the world...
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->ssearchingRuin.connect( SigC::slot(*this, &QuestRuinSearch::ruinSearched));
+        (*it)->ssearchingRuin.connect(
+	    sigc::mem_fun(this, &QuestRuinSearch::ruinSearched));
     
     helper->getData(d_ruin, "ruin");
     initDescription();

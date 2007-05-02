@@ -16,7 +16,7 @@
 #define CITYLIST_H
 
 #include "ObjectList.h"
-#include <sigc++/object_slot.h>
+#include <sigc++/trackable.h>
 
 class City;
 class Player;
@@ -29,7 +29,7 @@ class Player;
   * as a singleton.
   */
 
-class Citylist : public ObjectList<City>, public SigC::Object
+class Citylist : public ObjectList<City>, public sigc::trackable
 {
     public:
         //! Returns the singleton instance. Creates a new one if neccessary.
@@ -59,13 +59,13 @@ class Citylist : public ObjectList<City>, public SigC::Object
         int countCities(Player* p) const;
 
         //! Returns the city closest to pos that isn't owned by the ActivePlayer
-        City* getNearestEnemyCity(const PG_Point& pos);
+        City* getNearestEnemyCity(const Vector<int>& pos);
 
         //! Returns the city closest to pos that is owned by the ActivePlayer
-        City* getNearestFriendlyCity(const PG_Point& pos);
+        City* getNearestFriendlyCity(const Vector<int>& pos);
 
         //! Returns the city closest to pos
-        City* getNearestCity(const PG_Point& pos);
+        City* getNearestCity(const Vector<int>& pos);
 
         //! Returns the first (currently most upper left) city of player p
         City* getFirstCity(Player* p);

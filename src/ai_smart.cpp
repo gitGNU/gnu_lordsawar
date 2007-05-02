@@ -14,18 +14,18 @@
 
 #include <stdlib.h>
 #include <algorithm>
-#include <fstream>
 #include <map>
 
 #include "ai_smart.h"
 #include "playerlist.h"
 #include "armysetlist.h"
-#include "FightDialog.h"
 #include "stacklist.h"
 #include "citylist.h"
 #include "path.h"
 #include "AI_Analysis.h"
 #include "AI_Allocation.h"
+#include "action.h"
+#include "xmlhelper.h"
 
 using namespace std;
 

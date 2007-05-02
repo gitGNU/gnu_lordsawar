@@ -15,6 +15,7 @@
 
 #include <stdlib.h>
 #include <fstream>
+#include <sigc++/functors/mem_fun.h>
 
 #include "hero.h"
 #include "File.h"
@@ -66,9 +67,9 @@ Hero::Hero(XML_Helper* helper)
     helper->getData(i, "gender");
     d_gender = static_cast<Army::Gender>(i);
 
-    helper->registerTag("backpack", SigC::slot(*this, &Hero::loadItems));
-    helper->registerTag("equipment", SigC::slot(*this, &Hero::loadItems));
-    helper->registerTag("item", SigC::slot(*this, &Hero::loadItems));
+    helper->registerTag("backpack", sigc::mem_fun(*this, &Hero::loadItems));
+    helper->registerTag("equipment", sigc::mem_fun(*this, &Hero::loadItems));
+    helper->registerTag("item", sigc::mem_fun(*this, &Hero::loadItems));
 }
 
 

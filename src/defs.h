@@ -19,7 +19,6 @@
 #define DEFINITIONS_H
 
 #include <libintl.h>
-#include <paragui.h>
 
 #define LORDSAWAR_SAVEGAME_VERSION "0.3.8c"
 #define LORDSAWAR_CONFIG_VERSION "0.3.7b"
@@ -27,18 +26,31 @@
 #define _(string) gettext(string) // Macro for the gettext
 #define __(astring) std::string(gettext(astring.c_str()))
 
+
 //-----------------------------------------------------------------------------
 //some standard timers. They can easier be changed here than somewhere deep
 //within the code, and sometimes you have to tweak them a little bit.
 const unsigned int TIMER_BIGMAP_SELECTOR=500;
 const unsigned int TIMER_BIGMAP_SCROLLING=30;   //milliseconds
 const unsigned int TIMER_SMALLMAP_REFRESH=50;
-const unsigned int TOOLTIP_WAIT=800; // milliseconds
 const unsigned int CITY_LEVELS=4; 
 const unsigned int MAX_PLAYERS=8;
 const unsigned int TEMPLE_TYPES=2; 
 const unsigned int STONE_TYPES=9; 
 const unsigned int ROAD_TYPES=12; 
 const unsigned int SIGNPOSTS_RATIO=6; // #:1 dynamic vs static signposts
+
+// from www.boost.org - derivation from this class makes the derived class
+// noncopyable
+class noncopyable
+{
+protected:
+  noncopyable() {}
+  ~noncopyable() {}
+private:
+  noncopyable(const noncopyable&);
+  const noncopyable& operator=(const noncopyable&);
+};
+
 
 #endif // DEFINITIONS_H

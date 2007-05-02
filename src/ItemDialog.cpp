@@ -35,7 +35,7 @@ const int back_id = 200;        // same for backpack stuff
 //#define debug(x)
 
 
-ItemDialog::ItemDialog(Hero* hero, PG_Widget* parent, PG_Rect rect)
+ItemDialog::ItemDialog(Hero* hero, PG_Widget* parent, Rectangle rect)
     :PG_Window(parent, rect, hero->getName().c_str(), PG_Window::MODAL),
     d_hero(hero), d_ground(0), d_back(0), d_nground(0), d_nback(0),
     d_showdesc(false), d_location(Action_Equip::NONE), d_index(0)
@@ -53,7 +53,7 @@ ItemDialog::ItemDialog(Hero* hero, PG_Widget* parent, PG_Rect rect)
     }
 
     // this widget is used later on with actual
-    d_description = new PG_RichEdit(this, PG_Rect(0,0,0,0), true, 250, 0);
+    d_description = new PG_RichEdit(this, Rectangle(0,0,0,0), true, 250, 0);
     // bug in PG_RichEdit
     d_description->SetText("test");
     d_description->Show();
@@ -128,7 +128,7 @@ bool ItemDialog::scrollClicked(PG_Button* btn)
 
 
     // if the data is out of bounds, adjust it now.
-    PG_Point pos = Stacklist::getPosition(d_hero->getId());
+    Vector<int> pos = Stacklist::getPosition(d_hero->getId());
     int size = GameMap::getInstance()->getTile(pos.x,pos.y)->getItems().size();
     if (d_ground + d_nground > size + 1 && d_nground <= size)
         d_ground--;
@@ -187,7 +187,7 @@ void ItemDialog::drawItems()
     }
 
     // and the items on the ground
-    PG_Point pos = Stacklist::getPosition(d_hero->getId());
+    Vector<int> pos = Stacklist::getPosition(d_hero->getId());
     ilist = GameMap::getInstance()->getTile(pos.x, pos.y)->getItems();
     count = 0;
     for (iit = ilist.begin(); count < d_ground; count++, iit++);
@@ -299,7 +299,7 @@ Item* ItemDialog::getItem(Action_Equip::Slot* location, int* index)
                 *index = d_ground + (id-ground_id);
 
             // return the item (mmh, much code for little result)
-            PG_Point pos = Stacklist::getPosition(d_hero->getId());
+            Vector<int> pos = Stacklist::getPosition(d_hero->getId());
             std::list<Item*> il = GameMap::getInstance()->getTile(pos.x, pos.y)->getItems();
             std::list<Item*>::iterator it;
             int count = 0;
@@ -359,7 +359,7 @@ Item* ItemDialog::getItem(Action_Equip::Slot* location, int* index)
 
 Item* ItemDialog::getItem(Action_Equip::Slot location, int index)
 {
-    PG_Point pos = Stacklist::getPosition(d_hero->getId());
+    Vector<int> pos = Stacklist::getPosition(d_hero->getId());
     std::list<Item*> il;
     std::list<Item*>::iterator it;
 
@@ -404,7 +404,7 @@ Item* ItemDialog::getItem(Action_Equip::Slot location, int index)
 
 bool ItemDialog::removeItem(Action_Equip::Slot location, int index)
 {
-    PG_Point pos = Stacklist::getPosition(d_hero->getId());
+    Vector<int> pos = Stacklist::getPosition(d_hero->getId());
     Item* item = getItem(location, index);
     debug("removing item " <<item->getName() <<" from " <<location)
 
@@ -428,7 +428,7 @@ bool ItemDialog::removeItem(Action_Equip::Slot location, int index)
 
 bool ItemDialog::addItem(Action_Equip::Slot location, int index, Item* item)
 {
-    PG_Point pos = Stacklist::getPosition(d_hero->getId());
+    Vector<int> pos = Stacklist::getPosition(d_hero->getId());
     debug("adding item " <<item->getName() <<" to " <<location)
 
     switch(location)

@@ -39,7 +39,7 @@ template<class T> class ObjectList : public std::list<T>
     {
       for (typename ObjectList<T>::iterator it = this->begin(); it != this->end(); ++it)
 	{
-	  PG_Point p = (*it).getPos();
+	  Vector<int> p = (*it).getPos();
 	  int size = (*it).getSize() - 1;
 
 	  if (p.x >= (x - size) && p.x <= x && p.y >= (y - size) && p.y <= y)
@@ -51,7 +51,7 @@ template<class T> class ObjectList : public std::list<T>
     }
 
   //! Returns the object at position pos.  
-  T* getObjectAt(const PG_Point& pos) 
+  T* getObjectAt(const Vector<int>& pos) 
     {
       return getObjectAt(pos.x, pos.y);
     }

@@ -16,7 +16,7 @@
 #define THREAT_H
 
 #include <string>
-#include <pgpoint.h>
+#include "vector.h"
 
 class City;
 class Stacklist;
@@ -77,7 +77,7 @@ class Threat
           * @return true if both the position and the player satisfy the
           * conditions, else return false
           */
-        bool Near(PG_Point pos, Player *p) const;
+        bool Near(Vector<int> pos, Player *p) const;
 
         //! add a stack to this threat
         void addStack(Stack *stack);
@@ -94,7 +94,7 @@ class Threat
           *
           * If there are no dangers left, it returns the point (-1, -1).
           */
-        PG_Point getClosestPoint(PG_Point location) const;
+        Vector<int> getClosestPoint(Vector<int> location) const;
 
         //! Removes the stack s from the threat
         void deleteStack(Stack* s);

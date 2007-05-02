@@ -34,7 +34,7 @@ using namespace std;
 
 QuestCompletedDialog::QuestCompletedDialog(PG_Widget* parent, Quest *quest)
 	:PG_Window(parent,
-            PG_Rect((PG_Application::GetScreenWidth()-WIDTH)/2,
+            Rectangle((PG_Application::GetScreenWidth()-WIDTH)/2,
             (PG_Application::GetScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT),
             _("CONGRATULATIONS!"), PG_Window::MODAL)
 {
@@ -49,7 +49,7 @@ QuestCompletedDialog::QuestCompletedDialog(PG_Widget* parent, Quest *quest)
     snprintf(buffer, 100, _("Your Hero %s completed the quest."),
              quest->getHero()->getName().c_str());
 
-    PG_RichEdit *msg = new PG_RichEdit(this, PG_Rect(MARGIN_X, y, 
+    PG_RichEdit *msg = new PG_RichEdit(this, Rectangle(MARGIN_X, y, 
                        LINE_WIDTH, LINE_HEIGHT)); 
     msg->SetText(buffer);
     msg->SetTransparency(255);
@@ -61,7 +61,7 @@ QuestCompletedDialog::QuestCompletedDialog(PG_Widget* parent, Quest *quest)
     while (msgs.empty() == false)
     {
         s =  msgs.front();
-	    msg = new PG_RichEdit(this, PG_Rect(MARGIN_X, y, 
+	    msg = new PG_RichEdit(this, Rectangle(MARGIN_X, y, 
                            LINE_WIDTH, 2*LINE_HEIGHT)); 
         msg->SetText(s.c_str());
         msg->SetTransparency(255);
@@ -87,12 +87,12 @@ QuestCompletedDialog::QuestCompletedDialog(PG_Widget* parent, Quest *quest)
 	snprintf(buffer, 100, ngettext("You have been rewarded with %i gold piece!",
                              "You have been rewarded, with %i gold pieces!", gold),
             gold);
-	msg = new PG_RichEdit(this, PG_Rect(MARGIN_X, y, LINE_WIDTH, LINE_HEIGHT*2));
+	msg = new PG_RichEdit(this, Rectangle(MARGIN_X, y, LINE_WIDTH, LINE_HEIGHT*2));
     msg->SetText(buffer);
 	msg->SetTransparency(255);
     d_msgs.push(msg);
 
-	d_b_close = new PG_Button(this,PG_Rect(MARGIN_X, my_height - 40, 
+	d_b_close = new PG_Button(this,Rectangle(MARGIN_X, my_height - 40, 
                               LINE_WIDTH, 30), 
                               _("Close"),1);
 	d_b_close->sigClick.connect(slot(*this, &QuestCompletedDialog::b_closeClicked));

@@ -83,7 +83,7 @@ class FightDialog : public PG_ThemeWidget
         void initScreen();
        
         //! Inherited from PG_Widget
-        void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
+        void eventDraw(SDL_Surface* surface, const Rectangle& rect);
 
         /** Draw an army at a given pixel position with a hitpoints bar
           * 
@@ -104,7 +104,7 @@ class FightDialog : public PG_ThemeWidget
         
         Fight* d_fight;
         PG_Label* d_l_turn;
-        PG_Rect d_line;
+        Rectangle d_line;
 
         static const int ROUND_DELAY = 500;
 };

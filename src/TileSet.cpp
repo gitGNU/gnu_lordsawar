@@ -12,13 +12,17 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "TileSet.h"
 #include <SDL_image.h>
-#include <iostream>
+#include <sigc++/functors/mem_fun.h>
+
+#include "TileSet.h"
+
 #include "File.h"
+#include "xmlhelper.h"
 
 using namespace std;
 
+#include <iostream>
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
@@ -37,8 +41,8 @@ TileSet::TileSet(string tileName)
     d_nwpic = File::getMapsetPicture(tileName, "nw_bridge.png");
     
     XML_Helper helper(File::getMapset(tileName), ios::in, false);
-    helper.registerTag("tileset", SigC::slot((*this), &TileSet::loadTileSet));
-    helper.registerTag("tile", SigC::slot((*this), &TileSet::loadTile));
+    helper.registerTag("tileset", sigc::mem_fun((*this), &TileSet::loadTileSet));
+    helper.registerTag("tile", sigc::mem_fun((*this), &TileSet::loadTile));
     helper.parse();
 }
 
@@ -105,7 +109,7 @@ void TileSet::createTiles(Tile* tile, int row)
 
     const SDL_Surface* screen = SDL_GetVideoSurface();
     SDL_PixelFormat* fmt = screen->format;
-    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_HWSURFACE, 32, 32, 16,
+    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_HWSURFACE, 32, 32, fmt->BitsPerPixel,
                     fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
     
     for (int i=0; i < 8; i++)

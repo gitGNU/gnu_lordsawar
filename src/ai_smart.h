@@ -17,14 +17,15 @@
 
 #include <string>
 #include <list>
-#include <pgmessageobject.h>
-#include "defs.h"
+#include <SDL_types.h>
+
 #include "real_player.h"
 #include "citylist.h"
 
 class Threatlist;
 class Threat;
 class AI_Analysis;
+class XML_Helper;
 
 /** More advanced AI
   *

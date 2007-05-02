@@ -39,6 +39,7 @@
 #include "ScenariosDialog.h"
 #include "sound.h"
 #include <pthread.h>
+#include "GamePreferencesDialog.h"
 
 #ifdef __WIN32__
   // on mingw32, fd_set lives in winsock.h
@@ -52,7 +53,7 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-Splash::Splash(PG_Application* app, const PG_Rect& rect)
+Splash::Splash(PG_Application* app, const Rectangle& rect)
     :PG_ThemeWidget(0, rect), d_mainWindow(0), d_networkcancelled(false), d_networkready(false)
 {
     d_app = app;
@@ -62,16 +63,16 @@ Splash::Splash(PG_Application* app, const PG_Rect& rect)
 	if(!Configuration::s_ggz)
     {
         d_b_campaign = new PG_Button(this,
-            PG_Rect(rect.w - 210, rect.h - 250, 180, 30), _("New Campaign"),0);
+            Rectangle(rect.w - 210, rect.h - 250, 180, 30), _("New Campaign"),0);
 	d_b_campaign->SetFontColor (PG_Color(0, 0, 0));
         d_b_singleplayer_game = new PG_Button(this,
-            PG_Rect(rect.w - 210, rect.h - 215, 180, 30), _("New Game"),1);
+            Rectangle(rect.w - 210, rect.h - 215, 180, 30), _("New Game"),1);
 	d_b_singleplayer_game->SetFontColor (PG_Color(0, 0, 0));
         d_b_load_game = new PG_Button(this,
-            PG_Rect(rect.w - 210, rect.h - 180, 180, 30), _("Load Game"),4);
+            Rectangle(rect.w - 210, rect.h - 180, 180, 30), _("Load Game"),4);
 	d_b_load_game->SetFontColor (PG_Color(0, 0, 0));
         d_b_scenario = new PG_Button(this,
-            PG_Rect(rect.w - 210, rect.h - 145, 180, 30), _("Load Scenario"),3);
+            Rectangle(rect.w - 210, rect.h - 145, 180, 30), _("Load Scenario"),3);
 	d_b_scenario->SetFontColor (PG_Color(0, 0, 0));
     }
     else
@@ -82,9 +83,9 @@ Splash::Splash(PG_Application* app, const PG_Rect& rect)
         d_b_scenario = 0;
     }
     d_b_multiplayer_game = new PG_Button(this,
-            PG_Rect(rect.w - 210, rect.h - 110, 180, 30), _("New Network Game"),2);
+            Rectangle(rect.w - 210, rect.h - 110, 180, 30), _("New Network Game"),2);
     d_b_multiplayer_game->SetFontColor (PG_Color(0, 0, 0));
-    d_b_lang = new PG_Button(this, PG_Rect(rect.w - 210, rect.h - 75, 180, 30),
+    d_b_lang = new PG_Button(this, Rectangle(rect.w - 210, rect.h - 75, 180, 30),
             _("Language"), 4);
     d_b_lang->SetFontColor (PG_Color(0, 0, 0));
 #ifdef __WIN32__
@@ -93,7 +94,7 @@ Splash::Splash(PG_Application* app, const PG_Rect& rect)
 #endif
 
     d_b_quit = new PG_Button(this,
-            PG_Rect(rect.w - 210, rect.h - 40, 180, 30), _("Quit"),5);
+            Rectangle(rect.w - 210, rect.h - 40, 180, 30), _("Quit"),5);
     d_b_quit->SetFontColor (PG_Color(0, 0, 0));
 
 
@@ -142,13 +143,13 @@ bool Splash::b_resolutionChanged(bool smaller)
         SizeWidget(w,h);
     }
 
-    if (d_b_campaign) d_b_campaign->MoveWidget(PG_Rect(w - 210, h - 250, 180, 30));
-    if (d_b_singleplayer_game) d_b_singleplayer_game->MoveWidget(PG_Rect(w - 210, h - 215, 180, 30));
-    if (d_b_load_game) d_b_load_game->MoveWidget(PG_Rect(w - 210, h - 180, 180, 30));
-    if (d_b_scenario) d_b_scenario->MoveWidget(PG_Rect(w - 210,h - 145, 180, 30));
-    d_b_multiplayer_game->MoveWidget(PG_Rect(w - 210,h - 110, 180, 30));
-    d_b_lang->MoveWidget(PG_Rect(w - 210, h - 75, 180, 30));
-    d_b_quit->MoveWidget(PG_Rect(w - 210, h - 40, 180, 30));
+    if (d_b_campaign) d_b_campaign->MoveWidget(Rectangle(w - 210, h - 250, 180, 30));
+    if (d_b_singleplayer_game) d_b_singleplayer_game->MoveWidget(Rectangle(w - 210, h - 215, 180, 30));
+    if (d_b_load_game) d_b_load_game->MoveWidget(Rectangle(w - 210, h - 180, 180, 30));
+    if (d_b_scenario) d_b_scenario->MoveWidget(Rectangle(w - 210,h - 145, 180, 30));
+    d_b_multiplayer_game->MoveWidget(Rectangle(w - 210,h - 110, 180, 30));
+    d_b_lang->MoveWidget(Rectangle(w - 210, h - 75, 180, 30));
+    d_b_quit->MoveWidget(Rectangle(w - 210, h - 40, 180, 30));
 
     if (smaller) 
     {
@@ -171,7 +172,7 @@ bool Splash::b_quitClicked(PG_Button* btn)
 bool Splash::b_langClicked(PG_Button* btn)
 {
     // First, have the user choose the language
-    LangDialog dialog(this, PG_Rect(my_width/2 - 150, my_height/2 - 150, 300, 300));
+    LangDialog dialog(this, Rectangle(my_width/2 - 150, my_height/2 - 150, 300, 300));
     dialog.Show();
     dialog.RunModal();
     dialog.Hide();
@@ -211,15 +212,15 @@ bool Splash::b_singleplayerGameClicked(PG_Button* btn)
 
 bool Splash::newGame(std::string ip, int port)
 {
-    CreateScenario* creator = new CreateScenario(this);
-    GamePreferencesDialog* dialog = 0;
+    CreateScenario *creator = new CreateScenario();
+    PGamePreferencesDialog* dialog = 0;
     
     //CreateScenario requires to define a maptype
     creator->setMaptype(CreateScenario::NORMAL);
 
     //the player has to choose which player to activate etc.
     
-    dialog = new GamePreferencesDialog(0, PG_Rect(0, 0,
+    dialog = new PGamePreferencesDialog(0, Rectangle(0, 0,
             PG_Application::GetScreenWidth(),
             PG_Application::GetScreenHeight()));
 
@@ -269,13 +270,13 @@ bool Splash::newGame(std::string ip, int port)
         ggz_write_int(fd, 43);
 #endif
 
-        PG_Rect rect = PG_Rect(0, 0, Width(), Height());
+        Rectangle rect = Rectangle(0, 0, Width(), Height());
         d_network = new PG_ThemeWidget(0, rect);
         SDL_Surface* background = File::getMiscPicture("network_screen.jpg", false);
         d_network->SetBackground(background, 2);
 
         PG_Button* cancel = new PG_Button(d_network,
-                PG_Rect(rect.w - 210, rect.h - 40, 180, 30), _("Cancel"),5);
+                Rectangle(rect.w - 210, rect.h - 40, 180, 30), _("Cancel"),5);
         cancel->sigClick.connect(slot((*this), &Splash::b_cancelClicked));
 
         Hide();
@@ -316,17 +317,17 @@ bool Splash::newGame(std::string ip, int port)
     }
 
     //set up misc stuff
-    RWinGame::swinning.connect(SigC::slot((*this), &Splash::gameFinished));
-    RLoseGame::slosing.connect(SigC::slot((*this), &Splash::gameFinished));
+    RWinGame::swinning.connect(sigc::slot((*this), &Splash::gameFinished));
+    RLoseGame::slosing.connect(sigc::slot((*this), &Splash::gameFinished));
 
     Hide();
     
     if (dialog)
         delete dialog;
     
-    d_mainWindow = new MainWindow(gameScenario,
-                                    PG_Rect(0, 0, Width(), Height()));
-    d_mainWindow->squitting.connect(SigC::slot((*this),
+    d_mainWindow = new PMainWindow(gameScenario,
+                                    Rectangle(0, 0, Width(), Height()));
+    d_mainWindow->squitting.connect(sigc::slot((*this),
                                     &Splash::gameFinished));
     d_mainWindow->Show();
     d_mainWindow->startGame();
@@ -361,16 +362,16 @@ bool Splash::b_multiplayerGameClicked(PG_Button* btn)
     }
     else
     {
-        PG_MessageBox mb(GetParent(), PG_Rect(200, 200, 200, 150),
+        PG_MessageBox mb(GetParent(), Rectangle(200, 200, 200, 150),
                 _("Play on GGZ"),
                 _("Please launch LordsAWar from a GGZ Gaming Zone client."),
-                PG_Rect(60, 100, 80, 30), _("OK"));
+                Rectangle(60, 100, 80, 30), _("OK"));
         mb.Show();
         mb.RunModal();
         mb.Hide();
     }
 
-    /*MultiPlayerModeDialog dialog(this, PG_Rect(20, 20, 350, 230));
+    /*MultiPlayerModeDialog dialog(this, Rectangle(20, 20, 350, 230));
     dialog.Show();
     dialog.RunModal();
     dialog.Hide();
@@ -412,10 +413,10 @@ bool Splash::b_loadGameClicked(PG_Button* btn)
     if (broken)
     {
         std::cerr <<savegame <<_(": Could not load savegame.\n");
-        PG_MessageBox mb(this, PG_Rect(my_width/2 - 100, my_height/2 - 100, 200, 150),
+        PG_MessageBox mb(this, Rectangle(my_width/2 - 100, my_height/2 - 100, 200, 150),
                 _("Error"),
                 _("An error occured while loading the savegame."),
-                PG_Rect(60, 100, 80, 30), _("OK"));
+                Rectangle(60, 100, 80, 30), _("OK"));
         mb.Show();
         mb.RunModal();
         mb.Hide();
@@ -423,13 +424,13 @@ bool Splash::b_loadGameClicked(PG_Button* btn)
         return true;
     }
 
-    RWinGame::swinning.connect(SigC::slot((*this), &Splash::gameFinished));
-    RLoseGame::slosing.connect(SigC::slot((*this), &Splash::gameFinished));
+    RWinGame::swinning.connect(sigc::slot((*this), &Splash::gameFinished));
+    RLoseGame::slosing.connect(sigc::slot((*this), &Splash::gameFinished));
 
     Hide();
         
-    d_mainWindow = new MainWindow(gameScenario, PG_Rect(0, 0, Width(), Height()));
-    d_mainWindow->squitting.connect(SigC::slot((*this), &Splash::gameFinished));
+    d_mainWindow = new PMainWindow(gameScenario, Rectangle(0, 0, Width(), Height()));
+    d_mainWindow->squitting.connect(sigc::slot((*this), &Splash::gameFinished));
     d_mainWindow->Show();
     d_mainWindow->loadGame(savegame);
 
@@ -443,7 +444,7 @@ bool Splash::b_loadscenarioClicked(PG_Button* btn)
     clearData();
     
     string filename="";
-    ScenariosDialog scd(GetParent(), PG_Rect(200,70,500,460),&filename);
+    ScenariosDialog scd(GetParent(), Rectangle(200,70,500,460),&filename);
     scd.Show();
     scd.RunModal();
     scd.Hide();
@@ -460,10 +461,10 @@ bool Splash::b_loadscenarioClicked(PG_Button* btn)
     if (broken)
     {
         std::cerr <<savegame <<_(": Could not load scenario.\n");
-        PG_MessageBox mb(this, PG_Rect(my_width/2 - 100, my_height/2 - 100, 200, 150),
+        PG_MessageBox mb(this, Rectangle(my_width/2 - 100, my_height/2 - 100, 200, 150),
                 _("Error"),
                 _("An error occured while loading the savegame."),
-                PG_Rect(60, 100, 80, 30), _("OK"));
+                Rectangle(60, 100, 80, 30), _("OK"));
         mb.Show();
         mb.RunModal();
         mb.Hide();
@@ -471,13 +472,13 @@ bool Splash::b_loadscenarioClicked(PG_Button* btn)
         return true;
     }
 
-    RWinGame::swinning.connect(SigC::slot((*this), &Splash::gameFinished));
-    RLoseGame::slosing.connect(SigC::slot((*this), &Splash::gameFinished));
+    RWinGame::swinning.connect(sigc::slot((*this), &Splash::gameFinished));
+    RLoseGame::slosing.connect(sigc::slot((*this), &Splash::gameFinished));
 
     Hide();
         
-    d_mainWindow = new MainWindow(gameScenario, PG_Rect(0, 0, Width(), Height()));
-    d_mainWindow->squitting.connect(SigC::slot((*this), &Splash::gameFinished));
+    d_mainWindow = new PMainWindow(gameScenario, Rectangle(0, 0, Width(), Height()));
+    d_mainWindow->squitting.connect(sigc::slot((*this), &Splash::gameFinished));
     d_mainWindow->Show();
     d_mainWindow->startGame();
 
@@ -487,10 +488,10 @@ bool Splash::b_loadscenarioClicked(PG_Button* btn)
 bool Splash::b_campaignClicked(PG_Button* btn)
 {
     clearData();
-    PG_MessageBox mb(GetParent(), PG_Rect(200, 200, 200, 150),
+    PG_MessageBox mb(GetParent(), Rectangle(200, 200, 200, 150),
             _("Not implemented"),
             _("Campaigns are not implemented yet."),
-            PG_Rect(60, 100, 80, 30), _("OK"));
+            Rectangle(60, 100, 80, 30), _("OK"));
     mb.Show();
     mb.RunModal();
     mb.Hide();

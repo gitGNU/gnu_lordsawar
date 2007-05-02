@@ -1,13 +1,13 @@
 #ifndef __QUEST_RUIN_SEARCH_H
 #define __QUEST_RUIN_SEARCH_H
 
-#include <sigc++/sigc++.h>
+#include <sigc++/trackable.h>
 
 #include "Quest.h"
-#include "xmlhelper.h"
 
 
 class Ruin;
+class XML_Helper;
 
 
 /** Class describing a ruin quest
@@ -16,7 +16,7 @@ class Ruin;
   * it.
   */
 
-class QuestRuinSearch : public Quest, public SigC::Object
+class QuestRuinSearch : public Quest, public sigc::trackable
 {
     public:
         /** \brief Constructor - create a new quest */

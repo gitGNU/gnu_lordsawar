@@ -23,15 +23,15 @@
 
 
 TempleInfo::TempleInfo(Temple* t, int xpos, int ypos)
-    :PG_ThemeWidget(0, PG_Rect(xpos, ypos, 210, 70))
+    :PG_ThemeWidget(0, Rectangle(xpos, ypos, 210, 70))
 {
     char buf[101]; buf[100] = '\0';
 
-    new PG_Label(this, PG_Rect(15, 15, 180, 15), t->getName().c_str());
+    new PG_Label(this, Rectangle(15, 15, 180, 15), t->getName().c_str());
 
     snprintf(buf, 100, "(%i,%i)", t->getPos().x, t->getPos().y);
-    new PG_Label(this, PG_Rect(15, 40, 80, 15), _("Position:"));
-    new PG_Label(this, PG_Rect(95, 40, 70, 15), buf);
+    new PG_Label(this, Rectangle(15, 40, 80, 15), _("Position:"));
+    new PG_Label(this, Rectangle(95, 40, 70, 15), buf);
 
     // set a capture so we are informed when user release button
     SetCapture();

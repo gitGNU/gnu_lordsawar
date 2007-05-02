@@ -27,7 +27,7 @@ class ServerDialog : public PG_Window
 {
 	public:
 		// CREATORS
-		ServerDialog(PG_Widget* parent, const PG_Rect& rect);
+		ServerDialog(PG_Widget* parent, const Rectangle& rect);
 		~ServerDialog();
 
 		// MANIPULATORS

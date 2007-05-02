@@ -15,7 +15,8 @@
 #ifndef RCENTEROBJ_H
 #define RCENTEROBJ_H
 
-#include <pgpoint.h>
+#include <sigc++/signal.h>
+#include "../vector.h"
 
 #include "Reaction.h"
 
@@ -52,7 +53,7 @@ class RCenterObj : public Reaction
         
 
         //! The signal will be connected with the map out of scope here
-        static SigC::Signal1<void, PG_Point> scentering;
+        static sigc::signal<void, Vector<int> > scentering;
 
     private:
         Uint32 d_object;

@@ -45,7 +45,7 @@ class StackItem;    //further information in stackreport.cpp, internal data
 class StackReport : public PG_Window
 {
     public:
-        StackReport(PG_Widget* parent, PG_Rect rect);
+        StackReport(PG_Widget* parent, Rectangle rect);
         ~StackReport();
 
         //! Callback for quitting the dialog
@@ -60,7 +60,7 @@ class StackReport : public PG_Window
         void stackSelected(Stack* s);
         
         // gives the position of the selected item
-        SigC::Signal1<void, PG_Point> sselectingStack;
+        sigc::signal<void, Vector<int>> sselectingStack;
 
     private:
         //! Redraw the dialog showing the selected stacks

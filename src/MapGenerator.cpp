@@ -16,6 +16,7 @@
 #include <iostream>
 #include <math.h>  
 #include <deque>
+#include "vector.h"
 
 #include "MapGenerator.h"
 #include "File.h"
@@ -321,17 +322,17 @@ bool MapGenerator::seekPlain(int& x, int& y)
     if (d_terrain[y*d_width + x] == Tile::GRASS)
         return true;
 
-    std::deque<PG_Point> tiles;
+    std::deque<Vector<int> > tiles;
     
     // fill the list with initial values; the rand is there to avoid a bias
     // (i.e. prefer a certain direction)
     for (int dir = rand() % 8, i = 0; i < 8; i++, dir = (dir+1)%8)
-        tiles.push_back(PG_Point(x + d_xdir[dir], y + d_ydir[dir]));
+        tiles.push_back(Vector<int>(x + d_xdir[dir], y + d_ydir[dir]));
     
     // now loop until all tiles were checked (should hardly happen)
     while (!tiles.empty())
     {
-        PG_Point p = tiles.front();
+        Vector<int> p = tiles.front();
         tiles.pop_front();
 
         if (offmap(p.x, p.y))
@@ -373,20 +374,20 @@ bool MapGenerator::seekPlain(int& x, int& y)
             if (dy > 0)
                 newy = p.y + 1;
             
-            tiles.push_back(PG_Point(newx, newy));
-            tiles.push_back(PG_Point(newx, p.y));
-            tiles.push_back(PG_Point(p.x, newy));
+            tiles.push_back(Vector<int>(newx, newy));
+            tiles.push_back(Vector<int>(newx, p.y));
+            tiles.push_back(Vector<int>(p.x, newy));
         }
         else
         {
             if (abs(dx) > abs(dy) && dx > 0)        // right border
-                tiles.push_back(PG_Point(p.x + 1, p.y));
+                tiles.push_back(Vector<int>(p.x + 1, p.y));
             else if (abs(dx) > abs(dy) && dx < 0)   //left border
-                tiles.push_back(PG_Point(p.x - 1, p.y));
+                tiles.push_back(Vector<int>(p.x - 1, p.y));
             else if (abs(dx) < abs(dy) && dy > 0)   // top border
-                tiles.push_back(PG_Point(p.x, p.y + 1));
+                tiles.push_back(Vector<int>(p.x, p.y + 1));
             else if (abs(dx) < abs(dy) && dy < 0)   // lower border
-                tiles.push_back(PG_Point(p.x, p.y - 1));
+                tiles.push_back(Vector<int>(p.x, p.y - 1));
         }
     }
 
@@ -875,10 +876,10 @@ void MapGenerator::continents(int& nmrLands, int& nmrSeas)
 
         // Step 2
         // first the setup
-        std::deque<PG_Point> process;
+        std::deque<Vector<int> > process;
         bool land;
         
-        process.push_back(PG_Point(x, y));
+        process.push_back(Vector<int>(x, y));
         if (d_terrain[y*d_width + x] == Tile::WATER)
         {
             land = false;
@@ -893,7 +894,7 @@ void MapGenerator::continents(int& nmrLands, int& nmrSeas)
         // then the loop
         while (!process.empty())
         {
-            PG_Point p = process.front();
+            Vector<int> p = process.front();
             process.pop_front();
             
             // first check for validity
@@ -911,14 +912,14 @@ void MapGenerator::continents(int& nmrLands, int& nmrSeas)
                 d_l_mass[p.y*d_width + p.x] = s_id;
 
             for (int i = 0; i < 8; i++)
-                process.push_back(PG_Point(p.x + d_xdir[i], p.y + d_ydir[i]));
+                process.push_back(Vector<int>(p.x + d_xdir[i], p.y + d_ydir[i]));
         }
     }
 }
 
 void MapGenerator::findRoutes()// Lands is short for LandMasses
 {
-    /* Here, we save notifications where we have to put ports lateron. This
+    /* Here, we save notifications where we have to put ports later on. This
      * goes in two steps. First, we assign one port to do to each land/sea
      * junction. In a second run, we remove obsolete entries (lakes within one
      * continent) by demanding that a valid sea has to border at least two
@@ -943,7 +944,7 @@ void MapGenerator::findRoutes()// Lands is short for LandMasses
                 int locy = y + d_ydir[i];
                 vec = 0;
 
-                if (locx >= d_width || locx < 0 || locy > d_height || locy < 0)
+                if (locx >= d_width || locx < 0 || locy >= d_height || locy < 0)
                     continue;
 
                 // only check borders with water tiles

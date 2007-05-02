@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "ERuinSearch.h"
 #include "../ruinlist.h"
 #include "../playerlist.h"
@@ -51,7 +53,7 @@ void ERuinSearch::init()
 {
     Playerlist* plist = Playerlist::getInstance();
     for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
-        (*it)->ssearchingRuin.connect(SigC::slot((*this), &ERuinSearch::trigger));
+        (*it)->ssearchingRuin.connect(sigc::mem_fun(*this, &ERuinSearch::trigger));
 }
 
 void ERuinSearch::trigger(Ruin* r, Stack* s)

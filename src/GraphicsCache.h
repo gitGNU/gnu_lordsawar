@@ -19,6 +19,7 @@
 #include <list>
 
 #include "player.h"
+#include "defs.h"
 
 struct ArmyCacheItem;
 struct CityCacheItem;

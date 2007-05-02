@@ -26,7 +26,7 @@ using namespace std;
 #define debug(x)
 
 D_Buy_Production::D_Buy_Production(City* city, 
-                                   PG_Widget* parent, PG_Rect rect)
+                                   PG_Widget* parent, Rectangle rect)
     :PG_Window(parent, rect, _("Buy Production"),PG_Window::MODAL),
     d_city(city), d_chosenArmy(-1)
 {
@@ -48,27 +48,27 @@ D_Buy_Production::D_Buy_Production(City* city,
             
             SDL_Surface* armyPic = GraphicsCache::getInstance()->getArmyPic(
                                     d_armyset, ci, d_city->getPlayer(),1,NULL);
-            d_b_production[ci] = new PG_Button(this, PG_Rect(20 + j*60, i*60 + 30, 60, 60),"",ci);
+            d_b_production[ci] = new PG_Button(this, Rectangle(20 + j*60, i*60 + 30, 60, 60),"",ci);
             d_b_production[ci]->SetToggle(true);
             d_b_production[ci]->SetIcon(armyPic, 0, 0);
             d_b_production[ci]->sigClick.connect(slot(*this, &D_Buy_Production::b_productionClicked));
         }
     }
 
-    d_l_production = new PG_Label(this, PG_Rect(20, 180, 190, 20), _("Name:"));
-    d_l_duration = new PG_Label(this, PG_Rect(20, 200, 190, 20), _("Duration:"));
-    d_l_upkeep = new PG_Label(this, PG_Rect(20, 220, 190, 20), _("Upkeep:"));
-    d_l_moves = new PG_Label(this, PG_Rect(20, 240, 190, 20), _("Moves:"));
-    d_l_productionCost = new PG_Label(this, PG_Rect(20, 260, 180, 20), _("Production cost:"));
+    d_l_production = new PG_Label(this, Rectangle(20, 180, 190, 20), _("Name:"));
+    d_l_duration = new PG_Label(this, Rectangle(20, 200, 190, 20), _("Duration:"));
+    d_l_upkeep = new PG_Label(this, Rectangle(20, 220, 190, 20), _("Upkeep:"));
+    d_l_moves = new PG_Label(this, Rectangle(20, 240, 190, 20), _("Moves:"));
+    d_l_productionCost = new PG_Label(this, Rectangle(20, 260, 180, 20), _("Production cost:"));
     
-    d_l_strength = new PG_Label(this, PG_Rect(220, 180, 140, 20), _("Strength:"));
-    d_l_ranged = new PG_Label(this, PG_Rect(220, 200, 140, 20), _("Ranged:"));
-    d_l_shots = new PG_Label(this, PG_Rect(220, 220, 140, 20), _("Shots:"));
-    d_l_defense = new PG_Label(this, PG_Rect(220, 240, 140, 20), _("Defense:"));
-    d_l_hp = new PG_Label(this, PG_Rect(220, 260, 140, 20), _("Hitpoints:"));
+    d_l_strength = new PG_Label(this, Rectangle(220, 180, 140, 20), _("Strength:"));
+    d_l_ranged = new PG_Label(this, Rectangle(220, 200, 140, 20), _("Ranged:"));
+    d_l_shots = new PG_Label(this, Rectangle(220, 220, 140, 20), _("Shots:"));
+    d_l_defense = new PG_Label(this, Rectangle(220, 240, 140, 20), _("Defense:"));
+    d_l_hp = new PG_Label(this, Rectangle(220, 260, 140, 20), _("Hitpoints:"));
     
-    d_b_buy = new PG_Button(this, PG_Rect(350, 30, 80, 30), _("Buy"),11);
-    d_b_cancel = new PG_Button(this, PG_Rect(350, 70, 80, 30), _("Cancel"),11);
+    d_b_buy = new PG_Button(this, Rectangle(350, 30, 80, 30), _("Buy"),11);
+    d_b_cancel = new PG_Button(this, Rectangle(350, 70, 80, 30), _("Cancel"),11);
 
     d_b_buy->EnableReceiver(false);
     d_b_buy->sigClick.connect(slot(*this, &D_Buy_Production::b_buyClicked));

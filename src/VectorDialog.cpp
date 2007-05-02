@@ -29,7 +29,7 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-VectorDialog::VectorDialog(City *city,PG_Widget* parent, PG_Rect rect)
+VectorDialog::VectorDialog(City *city,PG_Widget* parent, Rectangle rect)
     :PG_Window(parent, rect, _("Vectoring"),PG_Window::MODAL), d_city(city)
 {
     debug("VectorDialog()");
@@ -52,14 +52,14 @@ VectorDialog::VectorDialog(City *city,PG_Widget* parent, PG_Rect rect)
     int width = my_width - 200;
     int height = my_height - 80;
     
-    d_vectormap = new VectorMap(city, this, PG_Rect(px, py, width, height));
-    d_vectormap->smovVectMouse.connect(SigC::slot(*this, &VectorDialog::movingMouse));
-    d_vectormap->sclickVectMouse.connect(SigC::slot(*this, &VectorDialog::clickedMouse));
+    d_vectormap = new VectorMap(city, this, Rectangle(px, py, width, height));
+    d_vectormap->smovVectMouse.connect(sigc::slot(*this, &VectorDialog::movingMouse));
+    d_vectormap->sclickVectMouse.connect(sigc::slot(*this, &VectorDialog::clickedMouse));
 
 
     // Second part: place the buttons and labels below the vectormap
 
-    PG_Rect myrect(px, Height() - 40, 0, 30);
+    Rectangle myrect(px, Height() - 40, 0, 30);
     d_b_ok = new PG_Button(this, myrect, _("OK"));
     d_b_ok->SizeWidget(d_b_ok->GetTextWidth()+40, 30, true);
 
@@ -121,7 +121,7 @@ bool VectorDialog::okClicked(PG_Button* btn)
     return true;
 }
 
-void VectorDialog::movingMouse(PG_Point pos)
+void VectorDialog::movingMouse(Vector<int> pos)
 {
     if (pos.x < 0 || pos.y < 0)
     {
@@ -135,7 +135,7 @@ void VectorDialog::movingMouse(PG_Point pos)
     d_l_tilepos->SetText(buffer);
 }
 
-void VectorDialog::clickedMouse(PG_Point pos)
+void VectorDialog::clickedMouse(Vector<int> pos)
 {
     d_vpos=pos;
     if (pos.x < 0 || pos.y < 0)

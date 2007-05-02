@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "EStackKilled.h"
 #include "../playerlist.h"
 #include "../stacklist.h"
@@ -56,7 +58,7 @@ void EStackKilled::init()
         return;
     }
 
-    s->sdying.connect(SigC::slot(*this, &EStackKilled::trigger));
+    s->sdying.connect(sigc::mem_fun(*this, &EStackKilled::trigger));
 }
 
 void EStackKilled::trigger(Stack* s)

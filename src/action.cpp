@@ -14,10 +14,15 @@
 
 #include <stdlib.h>
 #include <sstream>
+#include <sigc++/functors/mem_fun.h>
 
 #include "action.h"
 #include "stack.h"
 #include "army.h"
+#include "city.h"
+#include "ruin.h"
+#include "temple.h"
+#include "Quest.h"
 #include "QKillHero.h"
 #include "QEnemyArmies.h"
 #include "QRuinSearch.h"
@@ -174,7 +179,7 @@ bool Action_Move::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_Move::fillData(Stack* s, PG_Point dest)
+bool Action_Move::fillData(Stack* s, Vector<int> dest)
 {
     d_stack = s->getId();
     d_dest = dest;
@@ -281,7 +286,7 @@ Action_Fight::Action_Fight(XML_Helper* helper)
     std::istringstream si;
     Uint32 ui;
 
-    helper->registerTag("item", SigC::slot(*this, &Action_Fight::loadItem));
+    helper->registerTag("item", sigc::mem_fun(this, &Action_Fight::loadItem));
 
     // get attacking and defending stacks
     helper->getData(s, "attackers");

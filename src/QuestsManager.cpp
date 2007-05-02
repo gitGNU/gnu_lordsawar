@@ -12,13 +12,19 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "QuestsManager.h"
+
+#include "Quest.h"
 #include "QRuinSearch.h"
 #include "QKillHero.h"
 #include "QEnemyArmies.h"
 #include "stacklist.h"
-#include "QuestCompletedDialog.h"
-#include "QuestExpiredDialog.h"
+//#include "QuestCompletedDialog.h"
+//#include "QuestExpiredDialog.h"
+#include "army.h"
+#include "xmlhelper.h"
 
 QuestsManager* QuestsManager::s_instance = NULL;
 
@@ -61,7 +67,7 @@ QuestsManager::QuestsManager(XML_Helper* helper)
 {
     _sharedInit();
     debug("QuestsManager: registerTag!");
-    helper->registerTag("quest", SigC::slot((*this), &QuestsManager::load));
+    helper->registerTag("quest", sigc::mem_fun((*this), &QuestsManager::load));
 }
 //======================================================================
 QuestsManager::~QuestsManager()
@@ -117,10 +123,12 @@ void QuestsManager::questCompleted(Uint32 heroId)
     debug("QuestCompleted dialog");
 
     /* show the dialog window */
+#if 0
     QuestCompletedDialog dlg(NULL, d_quests[heroId]);
 	dlg.Show();
 	dlg.RunModal();
     dlg.Hide();
+#endif
     
     debug("deactivate quest");
     _deactivateQuest(heroId);
@@ -135,10 +143,12 @@ void QuestsManager::questExpired(Uint32 heroId)
         return;
     
     /* show the dialog window */
+#if 0
     QuestExpiredDialog dlg(NULL, d_quests[heroId]);
     dlg.Show();
     dlg.RunModal();
     dlg.Hide();
+#endif
     
     debug("deactivate quest");
     _deactivateQuest(heroId);
@@ -226,9 +236,9 @@ void QuestsManager::_sharedInit()
 
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->sdyingArmy.connect( SigC::slot(*this, &QuestsManager::_dyingArmy));
+        (*it)->sdyingArmy.connect( sigc::mem_fun(*this, &QuestsManager::_dyingArmy));
 
-    sendingTurn.connect( SigC::slot(*this, &QuestsManager::_cleanup));
+    sendingTurn.connect( sigc::mem_fun(*this, &QuestsManager::_cleanup));
 
     // now prepare the vector of pointers to the
     // functions (class static members) checking feasibility

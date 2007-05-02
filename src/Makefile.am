@@ -1,4 +1,4 @@
-SUBDIRS = server events . editor utils
+SUBDIRS = server events gui . utils
 MAINTAINERCLEANFILES= Makefile.in
 
 bin_PROGRAMS = lordsawar
@@ -13,18 +13,31 @@ lordsawar_SOURCES = army.cpp hero.cpp stack.cpp GameScenario.cpp action.cpp \
 	Quest.cpp QKillHero.cpp QRuinSearch.cpp QEnemyArmies.cpp File.cpp main.cpp \
 	xmlhelper.cpp string_tokenizer.cpp NextTurn.cpp FogMap.cpp \
 	counter.cpp fight.cpp CreateScenario.cpp MapGenerator.cpp Configuration.cpp \
-	sound.cpp GraphicsCache.cpp PG_FileDialog.cpp Popup.cpp scroller.cpp tooltip.cpp MapRenderer.cpp \
-	stackreport.cpp citiesreport.cpp questsreport.cpp goldreport.cpp \
-	overviewmap.cpp smallmap.cpp vectormap.cpp bigmap.cpp ruininfo.cpp TempleInfo.cpp \
-	about.cpp OptionsDialog.cpp GamePreferencesDialog.cpp player_preferences.cpp \
-	hero_offer.cpp ArmyInfo.cpp stackinfo.cpp cityinfo.cpp CityOccupationDialog.cpp \
-	RuinSearchDialog.cpp FightDialog.cpp MapCreationDialog.cpp MapConfDialog.cpp \
-	d_buy_production.cpp ServerDialog.cpp MultiPlayerModeDialog.cpp ArmyDialog.cpp \
-	QuestCompletedDialog.cpp ArmyLevelDialog.cpp ItemDialog.cpp \
-	ArmyMedalDialog.cpp QuestExpiredDialog.cpp LangDialog.cpp splash.cpp w_edit.cpp \
-	MainWindow.cpp netggz.cpp VectorDialog.cpp ScenariosDialog.cpp \
-	signpost.cpp signpostlist.cpp SignpostInfo.cpp stone.cpp stonelist.cpp \
-	road.cpp roadlist.cpp
+	sound.cpp GraphicsCache.cpp  MapRenderer.cpp \
+	 \
+	bigmap.cpp   \
+	netggz.cpp  \
+	signpost.cpp signpostlist.cpp  stone.cpp stonelist.cpp \
+	road.cpp roadlist.cpp \
+        overviewmap.cpp overviewmap.h \
+        smallmap.cpp smallmap.h \
+        game.cpp game.h \
+        timing.cpp timing.h \
+        callback-enums.h \
+        sidebar-stats.h game-parameters.h vector.h rectangle.h \
+        tmp.cpp tmp.h 
+
+# old: ArmyLevelDialog.cpp ItemDialog.cpp PG_FileDialog.cpp Popup.cpp
+# splash.cpp w_edit.cpp TempleInfo.cpp QuestCompletedDialog.cpp
+# ArmyMedalDialog.cpp VectorDialog.cpp ScenariosDialog.cpp
+# MainWindow.cpp QuestExpiredDialog.cpp LangDialog.cpp
+# CityOccupationDialog.cpp RuinSearchDialog.cpp FightDialog.cpp
+# MapCreationDialog.cpp MapConfDialog.cpp ServerDialog.cpp
+# MultiPlayerModeDialog.cpp ArmyDialog.cpp OptionsDialog.cpp
+# GamePreferencesDialog.cpp d_buy_production.cpp
+# stackreport.cpp citiesreport.cpp questsreport.cpp goldreport.cpp
+# hero_offer.cpp ArmyInfo.cpp stackinfo.cpp cityinfo.cpp
+# about.cpp scroller.cpp ruininfo.cpp SignpostInfo.cpp
 
 if FL_RESRC
 lordsawar_SOURCES += lordsawar.rc
@@ -36,17 +49,21 @@ localedir = $(datadir)/locale
 DEFS = -DFL_VERSION=\"@VERSION@\"  -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 lordsawar_LDFLAGS = $(GGZMOD_LDFLAGS) $(GGZDMOD_LDFLAGS)
-lordsawar_LDADD = $(PARAGUI_LIBS) \
+lordsawar_LDADD = $(SDL_LIBS) \
+    $(GTKMM_LIBS) \
     $(LIBSIGC_LIBS) \
     $(LIB_GGZMOD) \
     $(LIB_GGZDMOD) \
     ./server/liblwserver.a \
-	./events/liblwevents.a \
+    ./events/liblwevents.a \
+    ./gui/liblwgui.a \
     @LIBINTL@
-lordsawar_DEPENDENCIES = ./server/liblwserver.a ./events/liblwevents.a
+lordsawar_DEPENDENCIES = \
+  ./server/liblwserver.a ./events/liblwevents.a  ./gui/liblwgui.a
 
 AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\"
-INCLUDES = $(PARAGUI_CFLAGS) \
+INCLUDES = $(SDL_CFLAGS) \
+    $(GTKMM_CFLAGS) \
     $(LIBSIGC_CFLAGS) \
     $(LIBGGZ_INCLUDES) \
     $(GGZDMOD_INCLUDES) \

@@ -14,7 +14,7 @@
 #ifndef RRAISEEVENT_H
 #define RRAISEEVENT_H
 
-#include <sigc++/sigc++.h>
+#include <sigc++/signal.h>
 #include "Reaction.h"
 
 class Event;
@@ -55,7 +55,7 @@ class RRaiseEvent : public Reaction
         
         //! The signal is connected out of scope of this class with a function
         //! that returns the list of all events.
-        static SigC::Signal0<std::list<Event*> > sgettingEvents;
+        static sigc::signal<std::list<Event*> > sgettingEvents;
 
     private:
         Uint32 d_event;

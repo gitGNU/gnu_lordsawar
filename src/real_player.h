@@ -17,14 +17,15 @@
 
 #include <string>
 #include <list>
+#include <SDL_types.h>
 
-#include "defs.h"
 #include "player.h"
 
 class MoveResult;
+class XML_Helper;
 
 /** This class implements the action function from player.h in a "reasonable"
-  * manner for local players. It is suitable fo rlocal human players, AI players
+  * manner for local players. It is suitable for local human players, AI players
   * can derive from this class and overwrite the start_turn and "callback"
   * functions for their own purposes. I will not describe the single functions
   * here apart from newly introduced ones, see the detailed comments in player.h.
@@ -53,7 +54,7 @@ class RealPlayer : public Player
         bool stackJoin(Stack* receiver, Stack* joining, bool grouped);
 
         bool stackMove(Stack* s);
-        MoveResult *stackMove(Stack* s, PG_Point dest, bool follow);
+        MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow);
         bool stackSearchRuin(Stack* s, Ruin* r);
         bool stackVisitTemple(Stack* s, Temple* t);
         Quest* stackGetQuest(Stack* s, Temple*t);

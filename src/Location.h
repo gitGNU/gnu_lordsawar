@@ -18,10 +18,10 @@
 #include "Object.h"
 #include "defs.h"
 #include <string>
+#include "vector.h"
 
 class Location;
 class ::Object;
-class PG_Point;
 
 /** A Location is a map object with a name. This is the metaclass for
   * cities, ruins and temples.
@@ -29,21 +29,17 @@ class PG_Point;
 
 class Location : public ::Object
 {
-    public:
-        // CREATORS
-        Location(std::string name, PG_Point pos, Uint32 size = 1);
-        Location(const Location&);
-        Location(XML_Helper* helper, Uint32 size = 1);
-        ~Location();
+ public:
+    Location(std::string name, Vector<int> pos, Uint32 size = 1);
+    Location(const Location&);
+    Location(XML_Helper* helper, Uint32 size = 1);
+    ~Location();
+    
+    std::string getName() const {return __(d_name);}
+    void setName(std::string name) {d_name = name;}
 
-        // ACCESSORS
-        std::string getName() const {return __(d_name);}
-
-        //MANIPULATORS
-        void setName(std::string name) {d_name = name;}
-    protected:
-        std::string d_name;
-
+ protected:
+    std::string d_name;
 };
 
 #endif

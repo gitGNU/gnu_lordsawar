@@ -30,7 +30,7 @@
 class AboutDialog :  public PG_Window,public PG_TimerObject
 {
     public:
-        AboutDialog(PG_Widget* parent, PG_Rect rect);
+        AboutDialog(PG_Widget* parent, Rectangle rect);
         ~AboutDialog();
 	void initValues();
 	bool b_okClicked(PG_Button* btn);

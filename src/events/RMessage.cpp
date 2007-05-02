@@ -11,10 +11,9 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include <pgapplication.h>
-#include <pgmessagebox.h>
+#include <iostream>
+
 #include "RMessage.h"
-#include "../playerlist.h"
 
 RMessage::RMessage(std::string message)
     :Reaction(MESSAGE), d_message(message)
@@ -50,17 +49,20 @@ bool RMessage::trigger() const
         return false;
     
     //Display a message box for the beginning in the middle of the screen
+#if 0    // FIXME: port this
     int height = 200;
     int width = 400;
     int x = (PG_Application::GetScreenWidth() - width)/2;
     int y = (PG_Application::GetScreenHeight() - height)/2;
 
-    PG_MessageBox mb(0, PG_Rect(x,y,width,height), "", _(d_message.c_str()),
-                     PG_Rect(150, 170, 100, 20), _("OK"));
+    PG_MessageBox mb(0, Rectangle(x,y,width,height), "", _(d_message.c_str()),
+                     Rectangle(150, 170, 100, 20), _("OK"));
     mb.SetTransparency(150, true);
     mb.Show();
     mb.RunModal();
     mb.Hide();
+#endif
+    std::cerr << "UNPORTED MESSAGE " << _(d_message.c_str()) << std::endl;
     
     return true;
 }

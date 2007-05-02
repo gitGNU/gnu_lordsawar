@@ -19,6 +19,8 @@
 #include "xmlhelper.h"
 #include "army.h"
 
+#include "defs.h"
+
 /** This class describes an item.
   * 
   * Items are defined by three values. They have a type, which determines where

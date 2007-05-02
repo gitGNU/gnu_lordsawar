@@ -12,9 +12,11 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "playerlist.h"
-#include <pgmessagebox.h>
 #include <sstream>
+#include <sigc++/functors/mem_fun.h>
+
+#include "playerlist.h"
+
 #include "citylist.h"
 #include "defs.h"
 
@@ -71,7 +73,7 @@ Playerlist::Playerlist(XML_Helper* helper)
     load("playerlist", helper);
     s_finish = false;
 
-    helper->registerTag("player", SigC::slot((*this), &Playerlist::load));
+    helper->registerTag("player", sigc::mem_fun(this, &Playerlist::load));
 }
 
 Playerlist::~Playerlist()

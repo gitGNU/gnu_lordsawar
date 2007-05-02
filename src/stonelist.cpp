@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "stonelist.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -50,7 +52,7 @@ Stonelist::Stonelist()
 
 Stonelist::Stonelist(XML_Helper* helper)
 {
-    helper->registerTag("stone", SigC::slot((*this), &Stonelist::load));
+    helper->registerTag("stone", sigc::mem_fun(this, &Stonelist::load));
 }
 
 bool Stonelist::save(XML_Helper* helper) const

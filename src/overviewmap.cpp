@@ -12,9 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include <iostream>
-#include <pgdraw.h>
-#include <pgapplication.h>
+#include <assert.h>
+#include <math.h>
 
 #include "overviewmap.h"
 #include "stacklist.h"
@@ -27,125 +26,131 @@
 #include "playerlist.h"
 #include "player.h"
 #include "GameMap.h"
+#include "sdl-draw.h"
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
-#define debug(x)
-
-OverviewMap::OverviewMap(PG_Widget* parent, PG_Rect rect)
-    :PG_Widget(parent, rect, true), d_staticMap(0)
+OverviewMap::OverviewMap()
 {
-    createStaticMap();
+    surface = 0;
 }
 
 OverviewMap::~OverviewMap()
 {
-    SDL_FreeSurface(d_staticMap);
+    SDL_FreeSurface(surface);
 }
 
-void OverviewMap::createStaticMap(Uint16 xsize, Uint16 ysize)
+void OverviewMap::resize(Vector<int> max_dimensions)
 {
-    if (d_staticMap != 0)
-        SDL_FreeSurface(d_staticMap);
+    if (!surface)
+        SDL_FreeSurface(surface);
 
-    if (!xsize || !ysize)
-    {
-        xsize = my_width;
-        ysize = my_height;
-    }
-    
     // calculate the width and height relations between pixels and maptiles
-    d_xpixels = (xsize-2) * (1.0 / GameMap::getWidth());
-    d_ypixels = (ysize-2) * (1.0 / GameMap::getHeight());
-    
-    SDL_PixelFormat* fmt = PG_Application::GetScreen()->format;
-    d_staticMap = SDL_CreateRGBSurface(SDL_SWSURFACE, xsize-2, 
-            ysize-2, fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask,
-            fmt->Bmask, fmt->Amask);
-    
-    // Draw map
-    for(int i = 0; i < d_staticMap->w; i++)
-        for(int j = 0; j < d_staticMap->h; j++)
-        {
-            int x = int(i / d_xpixels);
-            int y = int(j / d_ypixels);
+    Vector<int> bigmap_dim = GameMap::get_dim();
+    Vector<int> d;
 
+    // first try scaling to horizontal size
+    pixels_per_tile = max_dimensions.x / double(bigmap_dim.x);
+    d.x = max_dimensions.x;
+    d.y = int(round(bigmap_dim.y * pixels_per_tile));
+    
+    if (d.y > max_dimensions.y)
+    {
+	// if to big, scale to vertical
+	pixels_per_tile = max_dimensions.y / double(bigmap_dim.y);
+	d.x = int(round(bigmap_dim.x * pixels_per_tile));
+	d.y = max_dimensions.y;
+    }
+
+    
+    static_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, d.x, d.y, 24,
+					  0xFFu, 0xFFu << 8, 0xFFu << 16, 0);
+    surface = SDL_CreateRGBSurface(SDL_SWSURFACE, d.x, d.y, 24,
+				   0xFFu, 0xFFu << 8, 0xFFu << 16, 0);
+
+    Uint32 road_color = SDL_MapRGB(static_surface->format, 255, 255, 255);
+    
+    // draw static map
+    for (int i = 0; i < static_surface->w; i++)
+        for (int j = 0; j < static_surface->h; j++)
+        {
+            int x = int(i / pixels_per_tile);
+            int y = int(j / pixels_per_tile);
 	    if (GameMap::getInstance()->getTile(x,y)->getBuilding() == Maptile::ROAD)
-                 PG_Draw::SetPixel(i, j, PG_Color(255,255,255), d_staticMap);
+		draw_pixel(static_surface, i, j, road_color);
 	    else
 	    {
-                 SDL_Color c = GameMap::getInstance()->getTile(x,y)->getColor();
-                 PG_Draw::SetPixel(i, j, PG_Color(c), d_staticMap);
+		SDL_Color c = GameMap::getInstance()->getTile(x,y)->getColor();
+		Uint32 raw = SDL_MapRGB(static_surface->format, c.r, c.g, c.b);
+		draw_pixel(static_surface, i, j, raw);
 	    }
         }
 }
 
-void OverviewMap::eventDraw(SDL_Surface* surface, const PG_Rect& rect)
+void OverviewMap::draw()
 {
-    debug("eventDraw()");
-
     // During the whole drawing stuff, ALWAYS consider that 
     // there is an offset of 1 between map coordinates and coordinates
     // of the surface when drawing. I will implcitely assume this during this
     // function.
-
-    //    SDL_mutexP(d_lock);
     
-    PG_Rect r(1, 1, d_staticMap->w, d_staticMap->h);
-    SDL_BlitSurface(d_staticMap, 0, surface, &r);
+    SDL_BlitSurface(static_surface, 0, surface, 0);
 
     // minimum size for typical features is 1
-    int size = (int(d_xpixels) > 1? int(d_xpixels) : 1);
+    int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
 
-    // Draw all cities as rectangles around the city location. They consist
-    // of an outer rectangle in black and inner ones in player colors.
+    // Draw all cities as rectangles around the city location, in the colors of
+    // the players.
     for (Citylist::iterator it = Citylist::getInstance()->begin();
         it != Citylist::getInstance()->end(); it++)
     {    
-        SDL_Color c = (*it).getPlayer()->getColor();
-        PG_Point pos = (*it).getPos();
+        SDL_Color c = it->getPlayer()->getColor();
+	Uint32 fill = SDL_MapRGB(surface->format, c.r, c.g, c.b);
+	Uint32 outline = SDL_MapRGB(surface->format, c.r / 2, c.g / 2, c.b / 2);
+    
+        Vector<int> pos = it->getPos();
         pos = mapToSurface(pos);
 
-        // Fill a rect with the player colors
-        for (int i=0; i < size; i++) 
-            DrawRectWH(pos.x + i, pos.y + i, 2*size - (i*2), 2*size - (i*2), PG_Color(c));
+        // fill a rect with the player colors
+	draw_filled_rect(surface, pos.x, pos.y,
+			 pos.x + 2 * size, pos.y + 2 * size, fill);
 
-        // if we have space, draw a black rect around the city
+        // if we have space, draw a black outline around the city
         if (size > 1)
-            DrawRectWH(pos.x, pos.y, 2*size, 2*size, PG_Color(0, 0, 0)); 
+            draw_rect_clipped(surface, pos.x, pos.y,
+			      pos.x + 2 * size, pos.y + 2 * size, outline);
     }
 
     // Draw ruins as yellow boxes
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
         it != Ruinlist::getInstance()->end(); it++)
     {
-        PG_Point pos = (*it).getPos();
-	PG_Color ruinColor;
+        Vector<int> pos = it->getPos();
         pos = mapToSurface(pos);
-	if ((*it).isSearched() == true)
-	   ruinColor = PG_Color(0xa1,0x4e,0x11);
-	else
-	   ruinColor = PG_Color(255,255,0);
-	
 
-        for (int i=0; i < size; i++) 
-            DrawRectWH(pos.x + i, pos.y + i, 2*size - (i*2), 2*size - (i*2), ruinColor);
+	Uint32 raw;
+	// FIXME: this should probably be defined in the tileset
+	if (!it->isSearched())
+	   raw = SDL_MapRGB(surface->format, 255, 230, 45);
+	else
+	   raw = SDL_MapRGB(surface->format, 161, 74, 17);
+
+	draw_filled_rect(surface, pos.x, pos.y,
+			 pos.x + size, pos.y + size, raw);
     }
 
-    // Draw temples as magenta pi's
+    // Draw temples as two poles with a crossbar
     for (Templelist::iterator it = Templelist::getInstance()->begin();
         it != Templelist::getInstance()->end(); it++)
     {
-        PG_Point pos = (*it).getPos();
+        Vector<int> pos = it->getPos();
         pos = mapToSurface(pos);
+	Uint32 outline = SDL_MapRGB(surface->format, 200, 200, 200);
 
-        // Note: The old version had a lot of bug/error checking here (when drawing
-        // outside map borders). This should not create serious problems (at least
-        // I think), but as a reminder.
-        DrawHLine(pos.x - size, pos.y - size, 3*size, PG_Color(255,0,255));
-        DrawVLine(pos.x - size, pos.y - size, 3*size, PG_Color(255,0,255));
-        DrawVLine(pos.x + size, pos.y - size, 3*size, PG_Color(255,0,255));
+	draw_hline_clipped(surface, pos.x - size, pos.x + size,
+			   pos.y - size, outline);
+	draw_vline_clipped(surface, pos.x - size,
+			   pos.y - size, pos.y + size, outline);
+	draw_vline_clipped(surface, pos.x + size,
+			   pos.y - size, pos.y + size, outline);
     }
 
     // Draw stacks as crosses using the player color
@@ -154,36 +159,37 @@ void OverviewMap::eventDraw(SDL_Surface* surface, const PG_Rect& rect)
     {
         Stacklist* mylist = (*pit)->getStacklist();
         SDL_Color c = (*pit)->getColor();
+	Uint32 outline = SDL_MapRGB(surface->format, c.r, c.g, c.b);
         
         for (Stacklist::iterator it= mylist->begin(); it != mylist->end(); it++)
         {
-            PG_Point pos = (*it)->getPos();
+            Vector<int> pos = (*it)->getPos();
 
-            //don't draw stacks in cities, they could hardly be identified
+            // don't draw stacks in cities, they could hardly be identified
             Maptile* mytile = GameMap::getInstance()->getTile(pos.x, pos.y);
             if (mytile->getBuilding() == Maptile::CITY)
                 continue;
 
             pos = mapToSurface(pos);
-            DrawHLine(pos.x - 2*size, pos.y, 4*size, PG_Color(c));
-            DrawVLine(pos.x, pos.y - 2*size, 4*size, PG_Color(c));
+            draw_hline(surface, pos.x - size, pos.x + size, pos.y, outline);
+            draw_vline(surface, pos.x, pos.y - size, pos.y + size, outline);
         }
     }
 
-    //    SDL_mutexV(d_lock);
+    // let derived classes do their job
+    after_draw();
 }
 
-void OverviewMap::eventSizeWidget(Uint16 w, Uint16 h)
+SDL_Surface *OverviewMap::get_surface()
 {
-    createStaticMap(w, h);
-    Redraw();
+    return surface;
 }
 
-PG_Point OverviewMap::mapFromScreen(PG_Point pos)
+Vector<int> OverviewMap::mapFromScreen(Vector<int> pos)
 {
     // subtract the widget's location and 1 for the border
-    int x = int((pos.x - my_xpos - 1) / d_xpixels);
-    int y = int((pos.y - my_ypos - 1) / d_ypixels);
+    int x = int(pos.x / pixels_per_tile);
+    int y = int(pos.y / pixels_per_tile);
     
     if (x >= GameMap::getWidth())
         x = GameMap::getWidth() - 1;
@@ -191,27 +197,23 @@ PG_Point OverviewMap::mapFromScreen(PG_Point pos)
     if (y >= GameMap::getHeight())
         y = GameMap::getHeight() - 1;
     
-    return PG_Point(x,y);
+    return Vector<int>(x,y);
 }
 
-PG_Point OverviewMap::mapToSurface(PG_Point pos)
+Vector<int> OverviewMap::mapToSurface(Vector<int> pos)
 {
-    if (pos.x < 0 || pos.y < 0 || pos.x > GameMap::getWidth()
-            || pos.y > GameMap::getHeight())
-    {
-        std::cerr <<"OverviewMap:: mapping to surface with invalid point\n";
-        return PG_Point(-1,-1);
-    }
-    
-    int x = 1 + int(pos.x * d_xpixels);
-    int y = 1 + int(pos.y * d_ypixels);
+    assert(pos.x >= 0 && pos.y >= 0
+	   && pos.x < GameMap::getWidth() && pos.y < GameMap::getHeight());
 
-    if (d_xpixels > 2)
+    int x = int(round(pos.x * pixels_per_tile));
+    int y = int(round(pos.y * pixels_per_tile));
+
+    if (pixels_per_tile > 2)
         // try to take the center position of the pixel
-        x += int(0.5 * d_xpixels);
+        x += int(0.5 * pixels_per_tile);
 
-    if (d_ypixels > 2)
-        y += int(0.5 * d_ypixels);
+    if (pixels_per_tile > 2)
+        y += int(0.5 * pixels_per_tile);
     
-    return PG_Point(x, y);
+    return Vector<int>(x, y);
 }

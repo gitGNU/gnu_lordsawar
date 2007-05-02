@@ -13,10 +13,10 @@
 
 #include "RCenter.h"
 
-SigC::Signal1<void, PG_Point> RCenter::scentering;
+sigc::signal<void, Vector<int> > RCenter::scentering;
 
 
-RCenter::RCenter(PG_Point pos)
+RCenter::RCenter(Vector<int> pos)
     :Reaction(CENTER), d_pos(pos)
 {
 }

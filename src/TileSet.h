@@ -18,9 +18,11 @@
 #include <string>
 #include <vector>
 #include <SDL.h>
-#include "xmlhelper.h"
+#include <sigc++/trackable.h>
+
 #include "Tile.h"
-#include <sigc++/sigc++.h>
+
+class XML_Helper;
 
 /** TileSet is basically an array of tiles (terrain info objects).
   * 
@@ -35,7 +37,7 @@
   * release. If it already exists, see there for further info.
   */
 
-class TileSet : public SigC::Object, public std::vector<Tile*>
+class TileSet : public sigc::trackable, public std::vector<Tile*>
 {
     public:
         /** The constructor.

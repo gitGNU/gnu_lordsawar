@@ -47,7 +47,7 @@ class ItemDialog : public PG_Window
           * @param parent   the parent widget (taken from paragui)
           * @param rect     the widgets drawing area (taken from paragui)
           */
-        ItemDialog(Hero* hero, PG_Widget* parent, PG_Rect rect);
+        ItemDialog(Hero* hero, PG_Widget* parent, Rectangle rect);
         ~ItemDialog();
 
     private:

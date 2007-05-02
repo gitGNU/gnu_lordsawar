@@ -19,7 +19,7 @@
 #include "../stacklist.h"
 #include "../army.h"
 
-SigC::Signal1<void, PG_Point> RCenterObj::scentering;
+sigc::signal<void, Vector<int> > RCenterObj::scentering;
 
 
 RCenterObj::RCenterObj(Uint32 id)

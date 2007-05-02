@@ -15,17 +15,12 @@
 #ifndef GAME_SCENARIO_H
 #define GAME_SCENARIO_H
 
-#include <pgmessageobject.h>
 #include <string>
-#include <sigc++/object_slot.h>
 #include <list>
+#include <sigc++/trackable.h>
 
-#include "player.h"
-#include "events/Event.h"
-
-class Server;
-class Client;
-class GamePreferencesDialog;
+class Event;
+class XML_Helper;
 
 /** Class to hold several scenario options
   * 
@@ -39,7 +34,7 @@ class GamePreferencesDialog;
   * a look at XML_Helper.
   */
 
-class GameScenario : public PG_MessageObject
+class GameScenario: public sigc::trackable
 {
     public:
 
@@ -63,7 +58,7 @@ class GameScenario : public PG_MessageObject
         ~GameScenario();
 
         //! Returns the number of the current turn.
-        Uint32 getRound() const {return d_round;}
+        unsigned int getRound() const {return d_round;}
 
         //! Returns the turn mode. See NextTurn for a description.
         bool getTurnmode() const {return d_turnmode;}
@@ -117,7 +112,7 @@ class GameScenario : public PG_MessageObject
         bool load(std::string tag, XML_Helper* helper);
 
         // DATA
-        Uint32 d_round;
+        unsigned int d_round;
         std::string d_name;
         std::string d_comment;
         bool d_turnmode; //see NextTurn for a description of this option

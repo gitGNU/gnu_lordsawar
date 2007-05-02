@@ -42,7 +42,7 @@ class CitiesReport : public PG_Window
 {
     public:
         //! paragui constructor; showall determines if enemy cities are also detailed
-        CitiesReport(PG_Widget* parent, PG_Rect rect, bool showall=false);
+        CitiesReport(PG_Widget* parent, Rectangle rect, bool showall=false);
         ~CitiesReport();
 
         //! Callback when ok button was clicked
@@ -57,7 +57,7 @@ class CitiesReport : public PG_Window
         //! Callback when one item was selected, mainly raises sselectingCity
         void citySelected(City* c);
 
-        SigC::Signal1<void, PG_Point> sselectingCity;
+        sigc::signal<void, Vector<int>> sselectingCity;
 
     private:
         //! Fills the data items beginning with the current index

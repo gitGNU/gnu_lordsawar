@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include "../sound.h"
 
-SigC::Signal1<void, Uint32> RLoseGame::slosing;
+sigc::signal<void, Uint32> RLoseGame::slosing;
 
 RLoseGame::RLoseGame(Uint32 status)
     :Reaction(LOSEGAME), d_status(status)

@@ -31,7 +31,7 @@ using namespace std;
 #define debug(x)
 
 CityInfo::CityInfo(City* city)
-    :PG_Window(0, PG_Rect((PG_Application::GetScreenWidth()-510)/2,
+    :PG_Window(0, Rectangle((PG_Application::GetScreenWidth()-510)/2,
                 (PG_Application::GetScreenHeight()-460)/2, 510, 460),
     _("City info"), PG_Window::MODAL), d_city(city)
 {
@@ -52,19 +52,19 @@ CityInfo::CityInfo(City* city)
         case 4:
             snprintf(buffer, 100, _("Fortress of %s"), d_city->getName().c_str());
     }
-    new PG_Label(this, PG_Rect(20, 25, my_width - 20, 30), buffer);
+    new PG_Label(this, Rectangle(20, 25, my_width - 20, 30), buffer);
 
     snprintf(buffer, 100, _("Income: %i gold , Defense level : %i , Capital : %s"),
              d_city->getGold(), d_city->getDefenseLevel(),
              d_city->isCapital()?_("yes"):_("no"));
-    d_l_defense= new PG_Label(this, PG_Rect(20, 55, 300, 20), buffer);
+    d_l_defense= new PG_Label(this, Rectangle(20, 55, 300, 20), buffer);
     d_l_defense->SizeWidget(d_l_defense->GetTextWidth(),20,true);
 
     // the basic production buttons
-    d_l_basic = new PG_Label(this, PG_Rect(20, 80, 210, 20), _("Basic productions"));
+    d_l_basic = new PG_Label(this, Rectangle(20, 80, 210, 20), _("Basic productions"));
     
     // add an empty button to the buttongroup for "NO PRODUCTION"
-    d_b_no_production = new PG_Button(this, PG_Rect(20, 110, 60, 60), "N",0);
+    d_b_no_production = new PG_Button(this, Rectangle(20, 110, 60, 60), "N",0);
     d_b_no_production->sigClick.connect(slot(*this, &CityInfo::b_productionClicked));
     d_b_no_production->SetToggle(true);
 
@@ -73,7 +73,7 @@ CityInfo::CityInfo(City* city)
     {
         int type = d_city->getArmytype(i);
 
-        d_b_basic[i] = new PG_Button(this, PG_Rect(80 + i*60, 110, 60, 60),"",i+1);
+        d_b_basic[i] = new PG_Button(this, Rectangle(80 + i*60, 110, 60, 60),"",i+1);
         d_b_basic[i]->SetToggle(true);
         d_b_basic[i]->sigClick.connect(slot(*this, &CityInfo::b_productionClicked));
 
@@ -93,19 +93,19 @@ CityInfo::CityInfo(City* city)
         }
     }
 
-    new PG_Label(this, PG_Rect(20, 300, 80, 20), _("Name:"));
-    new PG_Label(this, PG_Rect(20, 320, 80, 20), _("Duration:"));
-    new PG_Label(this, PG_Rect(20, 340, 80, 20), _("Strength:"));
-    new PG_Label(this, PG_Rect(20, 360, 80, 20), _("Ranged:"));
-    new PG_Label(this, PG_Rect(20, 380, 80, 20), _("Moves:"));
-    new PG_Label(this, PG_Rect(20, 400, 80, 20), _("Upkeep:"));
+    new PG_Label(this, Rectangle(20, 300, 80, 20), _("Name:"));
+    new PG_Label(this, Rectangle(20, 320, 80, 20), _("Duration:"));
+    new PG_Label(this, Rectangle(20, 340, 80, 20), _("Strength:"));
+    new PG_Label(this, Rectangle(20, 360, 80, 20), _("Ranged:"));
+    new PG_Label(this, Rectangle(20, 380, 80, 20), _("Moves:"));
+    new PG_Label(this, Rectangle(20, 400, 80, 20), _("Upkeep:"));
 
-    d_l_production = new PG_Label(this, PG_Rect(120, 300, 160, 20), "0");
-    d_l_duration = new PG_Label(this, PG_Rect(120, 320, 160, 20), "0");
-    d_l_strength = new PG_Label(this, PG_Rect(120, 340, 160, 20), "0");
-    d_l_ranged = new PG_Label(this, PG_Rect(120, 360, 160, 20), "0");
-    d_l_moves = new PG_Label(this, PG_Rect(120, 380, 160, 20), "0");
-    d_l_upkeep = new PG_Label(this, PG_Rect(120, 400, 160, 20), "0");
+    d_l_production = new PG_Label(this, Rectangle(120, 300, 160, 20), "0");
+    d_l_duration = new PG_Label(this, Rectangle(120, 320, 160, 20), "0");
+    d_l_strength = new PG_Label(this, Rectangle(120, 340, 160, 20), "0");
+    d_l_ranged = new PG_Label(this, Rectangle(120, 360, 160, 20), "0");
+    d_l_moves = new PG_Label(this, Rectangle(120, 380, 160, 20), "0");
+    d_l_upkeep = new PG_Label(this, Rectangle(120, 400, 160, 20), "0");
 
     d_b_vectoring = new PG_Button(this, PG_Rect(my_width - 140, my_height - 145, 120, 30), _("Vectoring"),2);
     d_b_buy_basic = new PG_Button(this, PG_Rect(my_width - 140, my_height - 110, 120, 30), _("Buy Basic"),3);
@@ -147,7 +147,7 @@ bool CityInfo::b_vectoringClicked(PG_Button* btn)
 
     if (d_city->getProductionIndex()!=-1) 
     {
-        PG_Rect r(0, 0, 2 * PG_Application::GetScreenWidth()/3, 2*PG_Application::GetScreenHeight()/3);
+        Rectangle r(0, 0, 2 * PG_Application::GetScreenWidth()/3, 2*PG_Application::GetScreenHeight()/3);
         r.x = r.w /4;
         r.y = r.h /4;
         VectorDialog dialog(d_city,GetParent(),r);
@@ -157,8 +157,8 @@ bool CityInfo::b_vectoringClicked(PG_Button* btn)
     }
     else 
     {
-        PG_MessageBox mb(this, PG_Rect(my_width/2-100, my_height/2-87, 200, 150), _("Vectoring"),
-                _("No production selected!"), PG_Rect(60, 110, 80, 30), _("OK"));
+        PG_MessageBox mb(this, Rectangle(my_width/2-100, my_height/2-87, 200, 150), _("Vectoring"),
+                _("No production selected!"), Rectangle(60, 110, 80, 30), _("OK"));
         mb.Show();
         mb.RunModal();
         mb.Hide();
@@ -170,7 +170,7 @@ bool CityInfo::b_vectoringClicked(PG_Button* btn)
 bool CityInfo::b_buyBasicClicked(PG_Button* btn)
 {
     D_Buy_Production dialog(d_city, GetParent(),
-                            PG_Rect(my_width/2-225, my_height/2-150, 450, 300));
+                            Rectangle(my_width/2-225, my_height/2-150, 450, 300));
     dialog.Show();
     dialog.RunModal();
     dialog.Hide();
@@ -192,10 +192,10 @@ bool CityInfo::b_buyBasicClicked(PG_Button* btn)
         slot = d_city->getProductionIndex();
         if (slot == -1)
         {
-            PG_MessageBox info(GetParent(), PG_Rect(200, 200, 400, 150),
+            PG_MessageBox info(GetParent(), Rectangle(200, 200, 400, 150),
                     _("No free production"),
                     _("There are no free production slots available."),
-                    PG_Rect(160, 110, 80, 30), _("OK"));
+                    Rectangle(160, 110, 80, 30), _("OK"));
             info.Show();
             info.RunModal();
             return true;
@@ -205,10 +205,10 @@ bool CityInfo::b_buyBasicClicked(PG_Button* btn)
         snprintf(buffer, 100, _("Do you really want to replace production \"%s\"?"),
                  d_city->getArmy(slot)->getName().c_str());
 
-        PG_MessageBox mb(GetParent(), PG_Rect(200, 200, 250, 130),
+        PG_MessageBox mb(GetParent(), Rectangle(200, 200, 250, 130),
                          _("No free production slot"), buffer,
-                         PG_Rect(40, 90, 80, 30), _("Yes"),
-                         PG_Rect(130, 90, 80, 30), _("No"));
+                         Rectangle(40, 90, 80, 30), _("Yes"),
+                         Rectangle(130, 90, 80, 30), _("No"));
         mb.Show();
         if (mb.RunModal() == 2)
             return true;
@@ -324,7 +324,7 @@ static unsigned int width  = 200;
 static unsigned int height = 120;
 
 CityInfoSmall::CityInfoSmall(City* city, int screen_x, int screen_y)
-    :PG_ThemeWidget(0, PG_Rect(screen_x, screen_y, width, height)), d_city(city)
+    :PG_ThemeWidget(0, Rectangle(screen_x, screen_y, width, height)), d_city(city)
 {
     char buf[100+1]; buf[100] = '\0';
 
@@ -336,32 +336,32 @@ CityInfoSmall::CityInfoSmall(City* city, int screen_x, int screen_y)
         snprintf(buf, 100, "%s (%s)", city->getName().c_str(), _("capital"));
     else
         snprintf(buf, 100, "%s", city->getName().c_str());
-    new PG_Label(this, PG_Rect(col1, y, 150, h), buf); 
+    new PG_Label(this, Rectangle(col1, y, 150, h), buf); 
 
     y += step_y;
-    new PG_Label(this, PG_Rect(col1, y, 90, h), _("Income:")); 
+    new PG_Label(this, Rectangle(col1, y, 90, h), _("Income:")); 
     snprintf(buf, 100, "%i", city->getGold());
-    new PG_Label(this, PG_Rect(col2, y, 100, h), buf);
+    new PG_Label(this, Rectangle(col2, y, 100, h), buf);
 
     y += step_y;
-    new PG_Label(this, PG_Rect(col1, y, 90, h), _("Defense:")); 
+    new PG_Label(this, Rectangle(col1, y, 90, h), _("Defense:")); 
     snprintf(buf, 100, "%i", city->getDefenseLevel());
-    new PG_Label(this, PG_Rect(col2, y, 100, h), buf);
+    new PG_Label(this, Rectangle(col2, y, 100, h), buf);
 
     if (city->isBurnt())
     {
         y += step_y;
-        new PG_Label(this, PG_Rect(col1, y, 90, h), _("Status:")); 
-        new PG_Label(this, PG_Rect(col2, y, 100, h), _("Razed!"));
+        new PG_Label(this, Rectangle(col1, y, 90, h), _("Status:")); 
+        new PG_Label(this, Rectangle(col2, y, 100, h), _("Razed!"));
     }
 
     snprintf(buf, 100, "%i", city->getDefenseLevel());
-    new PG_Label(this, PG_Rect(col2, y, 100, h), buf);
+    new PG_Label(this, Rectangle(col2, y, 100, h), buf);
 
     y += step_y;
-    new PG_Label(this, PG_Rect(col1, y, 80, h), _("Position:")); 
+    new PG_Label(this, Rectangle(col1, y, 80, h), _("Position:")); 
     snprintf(buf, 100, "(%i,%i)", city->getPos().x, city->getPos().y);
-    new PG_Label(this, PG_Rect(col2, y, 100, h), buf); 
+    new PG_Label(this, Rectangle(col2, y, 100, h), buf); 
 
 
     // SetCapture, so the cityinfosmall object can detect

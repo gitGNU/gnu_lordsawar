@@ -33,7 +33,7 @@ class Temple : public Location
           * @param pos          the location of the temple
           * @param name         the name of the temple (AFAIR unused)
           */
-        Temple(PG_Point pos, std::string name = "Shrine", int type=0);
+        Temple(Vector<int> pos, std::string name = "Shrine", int type=0);
 
         //! Loading constructor. See XML_Helper
         Temple(XML_Helper* helper);
@@ -47,7 +47,7 @@ class Temple : public Location
         void setType(int type) {d_type=type;};
 
         //! Dummy function. May be extended in the future.
-        bool search(){return true;}
+        bool searchable(){return true;}
 
         //! Save the temple data.
         bool save(XML_Helper* helper) const;

@@ -29,7 +29,7 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-ScenariosDialog::ScenariosDialog(PG_Widget* parent, PG_Rect rect,string * fname)
+ScenariosDialog::ScenariosDialog(PG_Widget* parent, Rectangle rect,string * fname)
   :PG_Window(parent, rect, _("Load Scenario"),PG_Window::MODAL)
 {
     debug("ScenariosDialog()");
@@ -43,26 +43,26 @@ ScenariosDialog::ScenariosDialog(PG_Widget* parent, PG_Rect rect,string * fname)
     d_comment="";
     filename=fname;
 
-    l_name = new PG_Label(this, PG_Rect(160, 32, 80, 25), _("Name:"));
-    l_desc = new PG_Label(this, PG_Rect(160, 62, 90, 25), _("Description:"));
+    l_name = new PG_Label(this, Rectangle(160, 32, 80, 25), _("Name:"));
+    l_desc = new PG_Label(this, Rectangle(160, 62, 90, 25), _("Description:"));
 
-    l_scname = new PG_Label(this, PG_Rect(160+l_name->GetTextWidth()+5, 35, 80, 25), "");
-    //l_scdesc = new PG_Label(this, PG_Rect(160+l_desc->GetTextWidth()+5, 65, 90, 25), "");
+    l_scname = new PG_Label(this, Rectangle(160+l_name->GetTextWidth()+5, 35, 80, 25), "");
+    //l_scdesc = new PG_Label(this, Rectangle(160+l_desc->GetTextWidth()+5, 65, 90, 25), "");
 	
 
-    //l_scdesc=new PG_MultiLineEdit(this,PG_Rect(160+l_desc->GetTextWidth()+5, 65, 230, 150));
-    l_scdesc=new PG_MultiLineEdit(this,PG_Rect(160, 65, 335, 150));
+    //l_scdesc=new PG_MultiLineEdit(this,Rectangle(160+l_desc->GetTextWidth()+5, 65, 230, 150));
+    l_scdesc=new PG_MultiLineEdit(this,Rectangle(160, 65, 335, 150));
     l_scdesc->SetText("Once upon a time, in a galaxy far far away...\n...\n...\n...\n...\n...\n...\nand they lived happily till once upon a time, in a galaxy far far away...\n[INSERT STORY HERE]");
     l_scdesc->Show();
     l_scdesc->SetEditable(false);
 
     d_background = File::getMiscPicture("about_screen.jpg", false);
-    PG_ThemeWidget* d_back = new PG_ThemeWidget(this, PG_Rect(160, 225, 335, 225));
+    PG_ThemeWidget* d_back = new PG_ThemeWidget(this, Rectangle(160, 225, 335, 225));
     d_back->SetBackground(d_background, BKMODE_STRETCH);
 
 
 
-    PG_Rect myrect(245, Height() - 40, 0, 30);
+    Rectangle myrect(245, Height() - 40, 0, 30);
     d_b_ok = new PG_Button(this, myrect, _("OK"));
     d_b_ok->SizeWidget(d_b_ok->GetTextWidth()+40, 30, true);
 
@@ -140,7 +140,7 @@ bool ScenariosDialog::mapSelected(PG_ListBoxBaseItem* item)
     string savegame = Configuration::s_dataPath+string("/map/")+(*filename)+string(".map");
     XML_Helper helper(savegame, ios::in, Configuration::s_zipfiles);
 
-    helper.registerTag("scenario", SigC::slot((*this), &ScenariosDialog::scan));
+    helper.registerTag("scenario", sigc::slot((*this), &ScenariosDialog::scan));
 
     //now parse the document and close the file afterwards
     if (!helper.parse())

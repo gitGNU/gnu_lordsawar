@@ -12,221 +12,133 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include <iostream>
-#include <pgdraw.h>
-#include <pgapplication.h>
+#include <config.h>
+
+#include <algorithm>
+#include <assert.h>
+
+#include "vector.h"
+
 #include "smallmap.h"
-#include "stacklist.h"
-#include "citylist.h"
-#include "ruinlist.h"
-#include "templelist.h"
-#include "city.h"
-#include "ruin.h"
-#include "temple.h"
-#include "playerlist.h"
-#include "player.h"
+#include "sdl-draw.h"
+#include "timing.h"
 #include "GameMap.h"
-#include "config.h"
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
-#define debug(x)
-
-SmallMap::SmallMap(PG_Widget* parent, PG_Rect rect, PG_Rect viewsize)
-    :OverviewMap(parent, rect), d_pressed(false), d_r(50), d_g(50), d_b(50),
-    d_add(true), d_timerID(0)
+namespace 
 {
-    d_lock = SDL_CreateMutex();
-    d_viewrect = new PG_Rect(1, 1, viewsize.w, viewsize.h);
+    int selection_timeout = 100;	// 1/10 second
+    int upper_selection_value = 220;
+    int lower_selection_value = 150;
+    int selection_change = 5;
+}
 
-    restartTimer();
+SmallMap::SmallMap()
+    : OverviewMap(), d_pressed(false), d_add(true)
+{
+    selection_value_increasing = true;
+    selection_color.r = lower_selection_value;
+    selection_color.g = lower_selection_value;
+    selection_color.b = lower_selection_value;
 }
 
 SmallMap::~SmallMap()
 {
-    interruptTimer();
-    delete d_viewrect;
-    SDL_DestroyMutex(d_lock);
 }
 
-void SmallMap::changeResolution(PG_Rect viewsize)
+void SmallMap::set_view(Rectangle new_view)
 {
-    if (d_viewrect)
-        delete(d_viewrect);
+    if (view != new_view)
+    {
+	view = new_view;
+	draw();
+    }
+
+    if (!selection_timeout_handler)
+	selection_timeout_handler = 
+	    Timing::instance().register_timer(
+		sigc::mem_fun(*this, &SmallMap::on_selection_timeout),
+		selection_timeout);
+}
+
+bool SmallMap::on_selection_timeout()
+{
+    // change selection color
+    if (selection_color.r >= upper_selection_value)
+	selection_value_increasing = false;
+
+    if (selection_color.r <= lower_selection_value)
+	selection_value_increasing = true;
+
+    draw_selection();
+    map_changed.emit(get_surface());
     
-    d_viewrect = new PG_Rect(1, 1, viewsize.w, viewsize.h);
-}
-
-void SmallMap::interruptTimer()
-{
-    if (d_timerID != 0)
-        RemoveTimer(d_timerID);
-
-    d_timerID = 0;
-}
-
-void SmallMap::restartTimer()
-{
-#ifndef FL_NO_TIMERS
-    if (d_timerID == 0)
-        d_timerID = AddTimer(TIMER_SMALLMAP_REFRESH);
-#else
-    return;
-#endif
-}
-
-Uint32 SmallMap::eventTimer(ID id, Uint32 interval)
-{
-    PG_Application::ClearOldMousePosition();
+    if (selection_value_increasing)
+    {
+	selection_color.r = std::min(selection_color.r + selection_change, 255);
+	selection_color.g = std::min(selection_color.g + selection_change, 255);
+	selection_color.b = std::min(selection_color.b + selection_change, 255);
+    }
+    else
+    {
+	selection_color.r = std::max(selection_color.r - selection_change, 0);
+	selection_color.g = std::max(selection_color.g - selection_change, 0);
+	selection_color.b = std::max(selection_color.b - selection_change, 0);
+    }
     
-    // change viewrect's color
-    if (d_r == 255) d_add = false;
-    if (d_r == 160) d_add = true;
- 
-    if (d_add) {++d_r; ++d_g; ++d_b;}
-    else {--d_r; --d_g; --d_b;} 
+    return Timing::CONTINUE;
+}
+
+void SmallMap::draw_selection()
+{
+    // FIXME: this should be translucent
     
-    if (SDL_LockMutex(d_lock))
-    {
-        std::cerr <<"Error while locking mutex!\n";
-        // uhm, let's return here
-        PG_TimerObject::eventTimer(id, interval);
-        return interval;
-    }
+    // draw the selection rectangle that shows the viewed part of the map
+    Vector<int> pos = mapToSurface(Vector<int>(view.x, view.y));
 
-    drawViewrect();
-    Update();
-    PG_TimerObject::eventTimer(id, interval);
+    // subtract 1 to account for the border
+    int w = int(view.w * pixels_per_tile) - 1;
+    int h = int(view.h * pixels_per_tile) - 1;
 
-    PG_Application::DrawCursor();
-
-    if (SDL_UnlockMutex(d_lock))
-        std::cerr <<"Error while unlocking mutex!\n";
+    assert(pos.x >= 0 && pos.x + w < surface->w &&
+	   pos.y >= 0 && pos.y + h < surface->h);
     
-    return interval;
+    Uint32 raw = SDL_MapRGB(surface->format,
+			    selection_color.r,
+			    selection_color.g,
+			    selection_color.b);
+    draw_rect(surface, pos.x, pos.y, pos.x + w, pos.y + h, raw);
 }
 
-// do some animation of the viewrect
-void SmallMap::drawViewrect()
+void SmallMap::center_view(Vector<int> p)
 {
-    DrawBorder(PG_Rect(0,0,my_width,my_height), 1);
+    p.x = int(round(p.x / pixels_per_tile));
+    p.y = int(round(p.y / pixels_per_tile));
+    
+    p -= view.dim / 2;
 
-    // Draw the rectangle that shows the viewed part of the map
-    PG_Point pos = mapToSurface(PG_Point(d_viewrect->x, d_viewrect->y));
-            
-    DrawRectWH(pos.x, pos.y, int(d_viewrect->my_width*d_xpixels),
-               int(d_viewrect->my_height*d_ypixels), PG_Color(d_r, d_g, d_b));
-    SDL_UpdateRect(GetWidgetSurface(), pos.x, pos.y,
-               int(d_viewrect->my_width*d_xpixels), int(d_viewrect->my_height*d_ypixels));
+    p = clip(Vector<int>(0, 0), p, GameMap::get_dim() - view.dim);
+    
+    set_view(Rectangle(p.x, p.y, view.w, view.h));
+    view_changed.emit(view);
 }
 
-bool SmallMap::changedViewrect(PG_Widget *widget)
+void SmallMap::after_draw()
 {
-#if 0
-    debug("changedViewrect()");
-    SDL_Rect* rect = (SDL_Rect*)clientdata;
-    d_viewrect->my_xpos = rect->x;
-    d_viewrect->my_ypos = rect->y;
-#endif
-    Redraw();
-    return true;
+    draw_selection();
+    map_changed.emit(get_surface());
 }
 
-void SmallMap::inputFunction(int arrowx, int arrowy)
+void SmallMap::mouse_button_event(MouseButtonEvent e)
 {
-    keycheck = 1;
-
-    int x = d_viewrect->my_xpos + arrowx;
-    int y = d_viewrect->my_ypos + arrowy;
-
-    setViewrect(x, y);
+    if ((e.button == MouseButtonEvent::LEFT_BUTTON ||
+	 e.button == MouseButtonEvent::RIGHT_BUTTON)
+	&& e.state == MouseButtonEvent::PRESSED)
+	center_view(e.pos);
 }
 
-void SmallMap::setViewrect(int x, int y)
+void SmallMap::mouse_motion_event(MouseMotionEvent e)
 {
-    //the x/y coordinates are absolute to the whole programm, so subtract the
-    //position of the widget and a bit more so the mouse isn't in the top left
-    //corner
-
-    // This "if" is neccessary ,because a eventKeyDown ( value == 1 ) can't handle the next lines.
-    if (keycheck == 0) // eventMouseButton ( value == 0 ).
-    {
-        PG_Point pos = mapFromScreen(PG_Point(x,y));
-        x = pos.x;
-        y = pos.y;
-    }
-
-    if (x < 0) x = 0;
-    if (y < 0) y = 0;
-    if (x > (GameMap::getWidth() - d_viewrect->my_width)) 
-        x = GameMap::getWidth() - d_viewrect->my_width;
-    if (y > (GameMap::getHeight() - d_viewrect->my_height))
-        y = GameMap::getHeight() - d_viewrect->my_height;
-
-    d_viewrect->my_xpos = x;
-    d_viewrect->my_ypos = y;
-
-    PG_Application::ClearOldMousePosition();
-    Redraw();
-    schangingViewrect.emit(true);
-    PG_Application::DrawCursor();
+    if (e.pressed[MouseMotionEvent::LEFT_BUTTON] ||
+	e.pressed[MouseMotionEvent::RIGHT_BUTTON])
+	center_view(e.pos);
 }
-
-void SmallMap::eventDraw(SDL_Surface* surface, const PG_Rect& rect)
-{
-    // the only thing that is not inherited from OverviewMap is the
-    // redrawing of the viewrect.
-    debug("eventDraw()");
-
-    if (SDL_LockMutex(d_lock))
-    {
-        std::cerr <<"Error while locking mutex!\n";
-        return;
-    }
-
-    OverviewMap::eventDraw(surface, rect);
-
-    drawViewrect();
-
-    if (SDL_UnlockMutex(d_lock))
-        std::cerr <<"Error while unlocking mutex!\n";
-}
-
-// Pressed in the drawing area to set viewrect
-
-bool SmallMap::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
-{
-    keycheck = 0;
-
-    if(event->button == SDL_BUTTON_LEFT)
-    {
-        // the mouse position should be something like the center
-        // of the new viewrect position
-        int xpos = event->x - int(d_xpixels*d_viewrect->my_width/2);
-        int ypos = event->y - int(d_ypixels*d_viewrect->my_height/2);
-
-        setViewrect(xpos, ypos);
-    }
-
-    return true;
-}
-
-// This eventhandler is called when moving the mouse with pressed button in
-// the drawing area to move viewrect
-bool SmallMap::eventMouseMotion(const SDL_MouseMotionEvent* event) 
-{ 
-    if (event->state == SDL_PRESSED)
-    {
-        keycheck = 0;
-
-        // the mouse position should be something like the center
-        // of the new viewrect position
-        int xpos = event->x - int(d_xpixels*d_viewrect->my_width/2);
-        int ypos = event->y - int(d_ypixels*d_viewrect->my_height/2);
-
-        setViewrect(xpos, ypos); 
-    }
-
-    return true; 
-} 

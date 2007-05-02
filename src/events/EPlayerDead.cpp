@@ -11,6 +11,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "EPlayerDead.h"
 #include "../playerlist.h"
 
@@ -47,7 +49,7 @@ bool EPlayerDead::save(XML_Helper* helper) const
 void EPlayerDead::init()
 {
     Playerlist::getInstance()->splayerDead.connect(
-                               SigC::slot((*this), &EPlayerDead::trigger));
+                               sigc::mem_fun(*this, &EPlayerDead::trigger));
 }
 
 void EPlayerDead::trigger(Player* dead)

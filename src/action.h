@@ -16,15 +16,18 @@
 #define ACTION_H
 
 #include <string>
+#include "vector.h"
+#include <sigc++/trackable.h>
 
-#include "defs.h"
-#include "Quest.h"
-#include "stack.h"
 #include "fight.h"
-#include "city.h"
-#include "ruin.h"
-#include "temple.h"
-#include "xmlhelper.h"
+#include "army.h"
+
+class Quest;
+class Stack;
+class City;
+class Ruin;
+class Temple;
+class XML_Helper;
 
 /** The purpose of the action classes is to keep track about what a player has
   * done. This information can e.g. then be sent over the network, so that a
@@ -106,11 +109,11 @@ class Action_Move : public Action
         std::string dump() const;
         bool save(XML_Helper* helper) const;
 
-        bool fillData(Stack* s, PG_Point dest);
+        bool fillData(Stack* s, Vector<int> dest);
     
     private:
         Uint32 d_stack;
-        PG_Point d_dest;
+        Vector<int> d_dest;
 };
 
 //-----------------------------------------------------------------------------
@@ -135,7 +138,7 @@ class Action_Split : public Action
 
 //-----------------------------------------------------------------------------
 
-class Action_Fight : public Action, public SigC::Object
+class Action_Fight : public Action, public sigc::trackable
 {
     public:
         Action_Fight();

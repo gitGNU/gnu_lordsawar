@@ -17,7 +17,10 @@
 
 #include <list>
 #include <vector>
-#include <pgpoint.h>
+#include "vector.h"
+#include <sigc++/trackable.h>
+#include <sigc++/signal.h>
+
 #include "xmlhelper.h"
 
 class Player;
@@ -33,7 +36,7 @@ class Army;
   * this is the location of the units, the movement etc.
   */
 
-class Stack : public std::list<Army*>, public SigC::Object
+class Stack : public std::list<Army*>, public sigc::trackable
 {
     public:
         /** Default constructor
@@ -41,7 +44,7 @@ class Stack : public std::list<Army*>, public SigC::Object
           * @param player       the owning player or 0 if e.g. ruin keeper
           * @param pos          the position where the stack is created
           */
-        Stack(Player* player, PG_Point pos);
+        Stack(Player* player, Vector<int> pos);
 
         //! Copy constructor, it does a deep copy of the other stack's armies!
         Stack(Stack& s);
@@ -55,7 +58,7 @@ class Stack : public std::list<Army*>, public SigC::Object
         void setPlayer(Player* p);
 
         //! ...or its position (for testing reasons)
-        void setPosition(PG_Point pos){d_pos = pos;}
+        void setPosition(Vector<int> pos){d_pos = pos;}
 
         /** Sets the defending value. Defending means that this stack is ignored
           * when a player cycles through his list of stacks with Stack::setNext().
@@ -84,6 +87,8 @@ class Stack : public std::list<Army*>, public SigC::Object
         //! Returns whether the stack has enough moves for the next step
         bool enoughMoves() const;
 
+	// returns whether the stack can move in any direction
+	bool canMove() const;
         
         //! Returns the unique id of the stack
         Uint32 getId() const {return d_id;}
@@ -92,19 +97,20 @@ class Stack : public std::list<Army*>, public SigC::Object
         Player* getPlayer() const {return d_player;}
 
         //! Returns the location of the stack
-        PG_Point getPos() const {return d_pos;}
+        Vector<int> getPos() const {return d_pos;}
 
         //! Returns the internal path object of the stack
         Path* getPath() const {return d_path;}
 
         //! Returns the minimum number of MP of all armies
-        Uint32 getGroupMoves();
+        int getGroupMoves() const;
 
-        //! Returns the minimum number of MP of all tiles around the stack 
-        Uint32 getMinTilesAroundMoves(int x, int y);
+        //! Returns the minimum number of MP of all tiles around the stack, or
+        // -1 if the stack can't move
+        int getMinTileMoves() const;
 
         //! Get the next item of the stack's path
-        PG_Point nextStep();
+        Vector<int> nextStep();
 
         //! Get the strongest army (most strength) for displaying
         Army* getStrongestArmy() const;
@@ -145,10 +151,10 @@ class Stack : public std::list<Army*>, public SigC::Object
           * In detail, it checks if there are ships, land-based units in the
           * stack and searches for the movement boni.
           */
-        Uint32 calculateMoveBonus(bool * has_ship ,bool * has_land);
+        Uint32 calculateMoveBonus(bool * has_ship ,bool * has_land) const;
 
 
-        SigC::Signal1<void, Stack*> sdying;
+        sigc::signal<void, Stack*> sdying;
 
 	void selectAll();
         
@@ -161,7 +167,7 @@ class Stack : public std::list<Army*>, public SigC::Object
         Player* d_player;
         Path* d_path;
         bool d_defending;
-        PG_Point d_pos;
+        Vector<int> d_pos;
         
         // true if the stack is currently being deleted. This is neccessary as
         // some things may happen in the destructor of the contained armies and

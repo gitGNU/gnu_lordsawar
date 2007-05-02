@@ -28,7 +28,7 @@ class Stone: public Location
           * @param pos          the location of the stone
           * @param type         the type of stone.  0=nw,3=e,4=center,5=se,7=w
           */
-        Stone(PG_Point pos, std::string name = "Stone", int type=8);
+        Stone(Vector<int> pos, std::string name = "Stone", int type=8);
 
         //! Loading constructor. See XML_Helper
         Stone(XML_Helper* helper);

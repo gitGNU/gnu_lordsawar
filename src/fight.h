@@ -15,12 +15,10 @@
 #ifndef FIGHT_H
 #define FIGHT_H
 
-#include <vector>
-#include <deque>
-#include "stack.h"
-#include "maptile.h"
+#include <SDL_types.h>
+#include <list>
 
-
+class Stack;
 class Fighter;
 
 /** This is the structure that describes the course of the fight. It is later

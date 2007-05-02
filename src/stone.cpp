@@ -15,7 +15,7 @@
 #include "stone.h"
 #include "GameMap.h"
 
-Stone::Stone(PG_Point pos, std::string name, int type)
+Stone::Stone(Vector<int> pos, std::string name, int type)
   :Location(name, pos), d_type(type)
 {
     //mark the location on the game map as occupied by a stone

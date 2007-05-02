@@ -58,9 +58,9 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 #define debug(x)
 
-SigC::Signal1<bool,bool> W_Edit::sigChangeResolution;
+sigc::signal<bool,bool> W_Edit::sigChangeResolution;
 
-W_Edit::W_Edit(GameScenario* gameScenario, PG_Widget* parent, PG_Rect rect)
+W_Edit::W_Edit(GameScenario* gameScenario, PG_Widget* parent, Rectangle rect)
         :PG_Widget(parent, rect), d_gameScenario(gameScenario), d_lock(false)
 {
     myrect=rect;
@@ -77,17 +77,17 @@ W_Edit::W_Edit(GameScenario* gameScenario, PG_Widget* parent, PG_Rect rect)
     //some graphical finetuning: place the smallmap in the middle of the piece
     //above the buttons (in the middle of x = (width - 109) -- (width -7) and
     //y = 20 -- 122
-    PG_Rect smallrect;
+    Rectangle smallrect;
 
     int displacement=(rect.my_width-(100 + x_squares*ts + GameMap::getWidth()))/2;
     smallrect.x = 100 + x_squares*ts + displacement;
     smallrect.y = 76 - (GameMap::getHeight()/2);
     smallrect.w = GameMap::getWidth() + 2;  
     smallrect.h = smallrect.w;
-    d_smallmap = new SmallMap(this, smallrect, PG_Rect(0,0,x_squares, y_squares));
+    d_smallmap = new SmallMap(this, smallrect, Rectangle(0,0,x_squares, y_squares));
 
     // Create the bigmap...
-    d_bigmap = new BigMap(this,PG_Rect(40,40, x_squares*ts, y_squares*ts));
+    d_bigmap = new BigMap(this,Rectangle(40,40, x_squares*ts, y_squares*ts));
     d_bigmap->setViewrect(d_smallmap->getViewrect());
     
     // ...and the borders around. The borders consist of 8 scrolling buttons and
@@ -95,23 +95,23 @@ W_Edit::W_Edit(GameScenario* gameScenario, PG_Widget* parent, PG_Rect rect)
     // Regard the placing and the sizes as semi-magical and ignore them unless you want
     // to actually change something here.
 
-    d_b_scroll[0] = new Scroller(this, PG_Rect(0, 0, 40, 40),10,d_smallmap,-1,-1);
-    d_b_scroll[1] = new Scroller(this, PG_Rect(20 + x_squares*ts/2, 0, 40, 40),11,d_smallmap,0,-1);
-    d_b_scroll[2] = new Scroller(this, PG_Rect(40 + x_squares*ts, 0, 40, 40),12,d_smallmap,1,-1);
-    d_b_scroll[3] = new Scroller(this, PG_Rect(40 + x_squares*ts, 20 + y_squares*ts/2, 40, 40),13,d_smallmap,1,0);
-    d_b_scroll[4] = new Scroller(this, PG_Rect(40 + x_squares*ts, 40 + y_squares*ts, 40, 40),14,d_smallmap,1,1);
-    d_b_scroll[5] = new Scroller(this, PG_Rect(20 + x_squares*ts/2, 40 + y_squares*ts, 40, 40),15,d_smallmap,0,1);
-    d_b_scroll[6] = new Scroller(this, PG_Rect(0, 40 + y_squares*ts, 40, 40),16,d_smallmap,-1,1);
-    d_b_scroll[7] = new Scroller(this, PG_Rect(0, 20 + y_squares*ts/2, 40, 40),17,d_smallmap,-1,0);
+    d_b_scroll[0] = new Scroller(this, Rectangle(0, 0, 40, 40),10,d_smallmap,-1,-1);
+    d_b_scroll[1] = new Scroller(this, Rectangle(20 + x_squares*ts/2, 0, 40, 40),11,d_smallmap,0,-1);
+    d_b_scroll[2] = new Scroller(this, Rectangle(40 + x_squares*ts, 0, 40, 40),12,d_smallmap,1,-1);
+    d_b_scroll[3] = new Scroller(this, Rectangle(40 + x_squares*ts, 20 + y_squares*ts/2, 40, 40),13,d_smallmap,1,0);
+    d_b_scroll[4] = new Scroller(this, Rectangle(40 + x_squares*ts, 40 + y_squares*ts, 40, 40),14,d_smallmap,1,1);
+    d_b_scroll[5] = new Scroller(this, Rectangle(20 + x_squares*ts/2, 40 + y_squares*ts, 40, 40),15,d_smallmap,0,1);
+    d_b_scroll[6] = new Scroller(this, Rectangle(0, 40 + y_squares*ts, 40, 40),16,d_smallmap,-1,1);
+    d_b_scroll[7] = new Scroller(this, Rectangle(0, 20 + y_squares*ts/2, 40, 40),17,d_smallmap,-1,0);
 
-    d_border[0] = new PG_ThemeWidget(this, PG_Rect(40, 5, x_squares*ts/2 - 20, 35), true);
-    d_border[1] = new PG_ThemeWidget(this, PG_Rect(60 + x_squares*ts/2, 5, x_squares*ts/2 - 20, 35), true);
-    d_border[2] = new PG_ThemeWidget(this, PG_Rect(40 + x_squares*ts, 40, 35, y_squares*ts/2 - 20), true);
-    d_border[3] = new PG_ThemeWidget(this, PG_Rect(40 + x_squares*ts, 60 + y_squares*ts/2, 35, y_squares*ts/2 - 20), true);
-    d_border[4] = new PG_ThemeWidget(this, PG_Rect(60 + x_squares*ts/2, 40 + y_squares*ts, x_squares*ts/2 - 20, 35), true);
-    d_border[5] = new PG_ThemeWidget(this, PG_Rect(40, 40 + y_squares*ts, x_squares*ts/2 - 20, 35), true);
-    d_border[6] = new PG_ThemeWidget(this, PG_Rect(5, 60 + y_squares*ts/2, 35, y_squares*ts/2 - 20), true);
-    d_border[7] = new PG_ThemeWidget(this, PG_Rect(5, 40, 35, y_squares*ts/2 - 20), true);
+    d_border[0] = new PG_ThemeWidget(this, Rectangle(40, 5, x_squares*ts/2 - 20, 35), true);
+    d_border[1] = new PG_ThemeWidget(this, Rectangle(60 + x_squares*ts/2, 5, x_squares*ts/2 - 20, 35), true);
+    d_border[2] = new PG_ThemeWidget(this, Rectangle(40 + x_squares*ts, 40, 35, y_squares*ts/2 - 20), true);
+    d_border[3] = new PG_ThemeWidget(this, Rectangle(40 + x_squares*ts, 60 + y_squares*ts/2, 35, y_squares*ts/2 - 20), true);
+    d_border[4] = new PG_ThemeWidget(this, Rectangle(60 + x_squares*ts/2, 40 + y_squares*ts, x_squares*ts/2 - 20, 35), true);
+    d_border[5] = new PG_ThemeWidget(this, Rectangle(40, 40 + y_squares*ts, x_squares*ts/2 - 20, 35), true);
+    d_border[6] = new PG_ThemeWidget(this, Rectangle(5, 60 + y_squares*ts/2, 35, y_squares*ts/2 - 20), true);
+    d_border[7] = new PG_ThemeWidget(this, Rectangle(5, 40, 35, y_squares*ts/2 - 20), true);
 
     // Load the images
     for (int i = 0; i < 8; i++)
@@ -146,45 +146,45 @@ W_Edit::W_Edit(GameScenario* gameScenario, PG_Widget* parent, PG_Rect rect)
     }
     
     // the tilepos label
-    PG_Rect buttonrect(95 + x_squares*ts, 340, 50, 50);
+    Rectangle buttonrect(95 + x_squares*ts, 340, 50, 50);
     d_l_tilepos = new PG_Label(this, buttonrect, "");
     d_l_tilepos->SetAlignment(PG_Label::CENTER);
 
     // And do the rest of the setup
-    d_stackinfo = new Stackinfo(this,PG_Rect(15, rect.my_height - 80, 360, 72));
+    d_stackinfo = new Stackinfo(this,Rectangle(15, rect.my_height - 80, 360, 72));
 
-    d_fllogo = new PG_Label(this, PG_Rect(rect.my_width-220,rect.my_height - 55, 220, 55),""); 
+    d_fllogo = new PG_Label(this, Rectangle(rect.my_width-220,rect.my_height - 55, 220, 55),""); 
     d_pic_logo = File::getMiscPicture("lordsawar_logo.png"); 
     d_fllogo->SetIcon(d_pic_logo);
 
-    l_turns = new PG_Label(this,PG_Rect(100 + x_squares*ts, 140, 100, 20), "");
-    l_gold  = new PG_Label(this,PG_Rect(100 + x_squares*ts, 160, 100, 20), "");
+    l_turns = new PG_Label(this,Rectangle(100 + x_squares*ts, 140, 100, 20), "");
+    l_gold  = new PG_Label(this,Rectangle(100 + x_squares*ts, 160, 100, 20), "");
 
-    d_tp = new ToolTip(this, PG_Rect(0,0,0,0));
+    d_tp = new ToolTip(this, Rectangle(0,0,0,0));
     d_tp->Hide();
 
-    d_b_prev = new PG_Button(this,PG_Rect(100 + x_squares*ts, 180, 40, 40),"",1);
-    d_b_next = new PG_Button(this,PG_Rect(140 + x_squares*ts, 180, 40, 40),"",2);
-    d_b_nextwithmove = new PG_Button(this,PG_Rect(180 + x_squares*ts, 180, 40, 40),"",3);
-    d_b_move = new PG_Button(this,PG_Rect(100 + x_squares*ts, 220, 40, 40),"",4);
-    d_b_moveall = new PG_Button(this,PG_Rect(140 + x_squares*ts, 220, 40, 40),"",5);
-    d_b_centerCurrent = new PG_Button(this,PG_Rect(180 + x_squares*ts, 220, 40, 40),"",6);
-    d_b_defend = new PG_Button(this,PG_Rect(100 + x_squares*ts, 260, 40, 40),"",7);
-    d_b_defendAndNext = new PG_Button(this,PG_Rect(140 + x_squares*ts, 260, 40, 40),"",8);
-    d_b_defendAndNextwithmove = new PG_Button(this,PG_Rect(180 + x_squares*ts, 260, 40, 40),"",9);
-    d_b_search = new PG_Button(this,PG_Rect(100 + x_squares*ts, 300, 40, 40),"",10);
-    d_b_nextTurn = new PG_Button(this,PG_Rect(140 + x_squares*ts, 300, 40, 40),"",11);
+    d_b_prev = new PG_Button(this,Rectangle(100 + x_squares*ts, 180, 40, 40),"",1);
+    d_b_next = new PG_Button(this,Rectangle(140 + x_squares*ts, 180, 40, 40),"",2);
+    d_b_nextwithmove = new PG_Button(this,Rectangle(180 + x_squares*ts, 180, 40, 40),"",3);
+    d_b_move = new PG_Button(this,Rectangle(100 + x_squares*ts, 220, 40, 40),"",4);
+    d_b_moveall = new PG_Button(this,Rectangle(140 + x_squares*ts, 220, 40, 40),"",5);
+    d_b_centerCurrent = new PG_Button(this,Rectangle(180 + x_squares*ts, 220, 40, 40),"",6);
+    d_b_defend = new PG_Button(this,Rectangle(100 + x_squares*ts, 260, 40, 40),"",7);
+    d_b_defendAndNext = new PG_Button(this,Rectangle(140 + x_squares*ts, 260, 40, 40),"",8);
+    d_b_defendAndNextwithmove = new PG_Button(this,Rectangle(180 + x_squares*ts, 260, 40, 40),"",9);
+    d_b_search = new PG_Button(this,Rectangle(100 + x_squares*ts, 300, 40, 40),"",10);
+    d_b_nextTurn = new PG_Button(this,Rectangle(140 + x_squares*ts, 300, 40, 40),"",11);
 
 
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
     {
-        (*it)->sdyingStack.connect(SigC::slot((*this), &W_Edit::stackDied));
+        (*it)->sdyingStack.connect(sigc::slot((*this), &W_Edit::stackDied));
 
         if ((*it)->getType() == Player::HUMAN)
         {
-            (*it)->snewLevelArmy.connect(SigC::slot((*this), &W_Edit::newLevelArmy));
-            (*it)->snewMedalArmy.connect(SigC::slot((*this), &W_Edit::newMedalArmy));
+            (*it)->snewLevelArmy.connect(sigc::slot((*this), &W_Edit::newLevelArmy));
+            (*it)->snewMedalArmy.connect(sigc::slot((*this), &W_Edit::newMedalArmy));
         }
     }
 
@@ -192,24 +192,24 @@ W_Edit::W_Edit(GameScenario* gameScenario, PG_Widget* parent, PG_Rect rect)
     for (Playerlist::iterator it = Playerlist::getInstance()->begin();
             it != Playerlist::getInstance()->end(); ++it)
     {
-        (*it)->schangingStatus.connect(SigC::slot((*this), &W_Edit::updateStatus));
-        (*it)->supdatingStack.connect(SigC::slot((*this), &W_Edit::stackUpdate));
+        (*it)->schangingStatus.connect(sigc::slot((*this), &W_Edit::updateStatus));
+        (*it)->supdatingStack.connect(sigc::slot((*this), &W_Edit::stackUpdate));
 
-        (*it)->sinvadingCity.connect(SigC::slot((*this), &W_Edit::cityOccupied));
-        (*it)->sinterruptTimers.connect(SigC::slot((*this), &W_Edit::stopTimers));
-        (*it)->scontinueTimers.connect(SigC::slot((*this), &W_Edit::startTimers));
+        (*it)->sinvadingCity.connect(sigc::slot((*this), &W_Edit::cityOccupied));
+        (*it)->sinterruptTimers.connect(sigc::slot((*this), &W_Edit::stopTimers));
+        (*it)->scontinueTimers.connect(sigc::slot((*this), &W_Edit::startTimers));
 
         //We can connect to all players, since only the human players will raise
         //the signal.
-        (*it)->srecruitingHero.connect(SigC::slot((*this), &W_Edit::heroJoins));
+        (*it)->srecruitingHero.connect(sigc::slot((*this), &W_Edit::heroJoins));
     }
 
-    d_smallmap->schangingViewrect.connect(SigC::slot(*d_bigmap, &BigMap::Redraw));
-    d_bigmap->schangingViewrect.connect(SigC::slot(*d_smallmap, &SmallMap::Redraw));
+    d_smallmap->schangingViewrect.connect(sigc::slot(*d_bigmap, &BigMap::Redraw));
+    d_bigmap->schangingViewrect.connect(sigc::slot(*d_smallmap, &SmallMap::Redraw));
     
-    d_bigmap->sselectingStack.connect(SigC::slot((*this), &W_Edit::bigmapStackSelected));
-    d_bigmap->sdeselectingStack.connect(SigC::slot((*this), &W_Edit::unselectStack));
-    d_bigmap->smovingMouse.connect(SigC::slot(*this, &W_Edit::movingMouse));
+    d_bigmap->sselectingStack.connect(sigc::slot((*this), &W_Edit::bigmapStackSelected));
+    d_bigmap->sdeselectingStack.connect(sigc::slot((*this), &W_Edit::unselectStack));
+    d_bigmap->smovingMouse.connect(sigc::slot(*this, &W_Edit::movingMouse));
 
     d_b_move->sigClick.connect(slot(*this, &W_Edit::b_moveClicked));
     d_b_moveall->sigClick.connect(slot(*this, &W_Edit::b_moveAllClicked));
@@ -225,9 +225,9 @@ W_Edit::W_Edit(GameScenario* gameScenario, PG_Widget* parent, PG_Rect rect)
 
     //set up a NextTurn object
     d_nextTurn = new NextTurn(d_gameScenario->getTurnmode());
-    d_nextTurn->splayerStart.connect(SigC::slot((*this), &W_Edit::checkPlayer));
-    d_nextTurn->snextRound.connect(SigC::slot((*d_gameScenario), &GameScenario::nextRound));
-    d_nextTurn->supdating.connect(SigC::slot(*d_bigmap, &BigMap::Redraw));
+    d_nextTurn->splayerStart.connect(sigc::slot((*this), &W_Edit::checkPlayer));
+    d_nextTurn->snextRound.connect(sigc::slot((*d_gameScenario), &GameScenario::nextRound));
+    d_nextTurn->supdating.connect(sigc::slot(*d_bigmap, &BigMap::Redraw));
             
     connectEvents();
     
@@ -303,7 +303,7 @@ W_Edit::~W_Edit()
         SDL_FreeSurface(d_bordersurf[i]);
 }
 
-void W_Edit::placeWidgets(PG_Rect rect)
+void W_Edit::placeWidgets(Rectangle rect)
 {
     // one fourth of the screen is reserved for the smallmap; subtract something
     // for spare space
@@ -315,64 +315,64 @@ void W_Edit::placeWidgets(PG_Rect rect)
     
     // Now place all the widgets
     // first smallmap (note: center it a bit)
-    PG_Rect smallrect;
+    Rectangle smallrect;
     smallrect.x = 100 + x_squares*ts;
     smallrect.y = 30;
     smallrect.w = smallrect.h = right_part;
     d_smallmap->MoveWidget(smallrect);
-    d_smallmap->changeResolution(PG_Rect(0,0,x_squares,y_squares));
+    d_smallmap->changeResolution(Rectangle(0,0,x_squares,y_squares));
 
     // then the bigmap
-    d_bigmap->MoveWidget(PG_Rect(40, 40, x_squares*ts, y_squares*ts));
+    d_bigmap->MoveWidget(Rectangle(40, 40, x_squares*ts, y_squares*ts));
     d_bigmap->setViewrect(d_smallmap->getViewrect());
     displayFirstCity();
     
     // ...and the borders around. 
 
-    d_b_scroll[0]->MoveWidget(PG_Rect(0, 0, 40, 40));
-    d_b_scroll[1]->MoveWidget(PG_Rect(20 + x_squares*ts/2, 0, 40, 40));
-    d_b_scroll[2]->MoveWidget(PG_Rect(40 + x_squares*ts, 0, 40, 40));
-    d_b_scroll[3]->MoveWidget(PG_Rect(40 + x_squares*ts, 20 + y_squares*ts/2, 40, 40));
-    d_b_scroll[4]->MoveWidget(PG_Rect(40 + x_squares*ts, 40 + y_squares*ts, 40, 40));
-    d_b_scroll[5]->MoveWidget(PG_Rect(20 + x_squares*ts/2, 40 + y_squares*ts, 40, 40));
-    d_b_scroll[6]->MoveWidget(PG_Rect(0, 40 + y_squares*ts, 40, 40));
-    d_b_scroll[7]->MoveWidget(PG_Rect(0, 20 + y_squares*ts/2, 40, 40));
+    d_b_scroll[0]->MoveWidget(Rectangle(0, 0, 40, 40));
+    d_b_scroll[1]->MoveWidget(Rectangle(20 + x_squares*ts/2, 0, 40, 40));
+    d_b_scroll[2]->MoveWidget(Rectangle(40 + x_squares*ts, 0, 40, 40));
+    d_b_scroll[3]->MoveWidget(Rectangle(40 + x_squares*ts, 20 + y_squares*ts/2, 40, 40));
+    d_b_scroll[4]->MoveWidget(Rectangle(40 + x_squares*ts, 40 + y_squares*ts, 40, 40));
+    d_b_scroll[5]->MoveWidget(Rectangle(20 + x_squares*ts/2, 40 + y_squares*ts, 40, 40));
+    d_b_scroll[6]->MoveWidget(Rectangle(0, 40 + y_squares*ts, 40, 40));
+    d_b_scroll[7]->MoveWidget(Rectangle(0, 20 + y_squares*ts/2, 40, 40));
 
-    d_border[0]->MoveWidget(PG_Rect(40, 5, x_squares*ts/2 - 20, 35));
-    d_border[1]->MoveWidget(PG_Rect(60 + x_squares*ts/2, 5, x_squares*ts/2 - 20, 35));
-    d_border[2]->MoveWidget(PG_Rect(40 + x_squares*ts, 40, 35, y_squares*ts/2 - 20));
-    d_border[3]->MoveWidget(PG_Rect(40 + x_squares*ts, 60 + y_squares*ts/2, 35, y_squares*ts/2 - 20));
-    d_border[4]->MoveWidget(PG_Rect(60 + x_squares*ts/2, 40 + y_squares*ts, x_squares*ts/2 - 20, 35));
-    d_border[5]->MoveWidget(PG_Rect(40, 40 + y_squares*ts, x_squares*ts/2 - 20, 35));
-    d_border[6]->MoveWidget(PG_Rect(5, 60 + y_squares*ts/2, 35, y_squares*ts/2 - 20));
-    d_border[7]->MoveWidget(PG_Rect(5, 40, 35, y_squares*ts/2 - 20));
+    d_border[0]->MoveWidget(Rectangle(40, 5, x_squares*ts/2 - 20, 35));
+    d_border[1]->MoveWidget(Rectangle(60 + x_squares*ts/2, 5, x_squares*ts/2 - 20, 35));
+    d_border[2]->MoveWidget(Rectangle(40 + x_squares*ts, 40, 35, y_squares*ts/2 - 20));
+    d_border[3]->MoveWidget(Rectangle(40 + x_squares*ts, 60 + y_squares*ts/2, 35, y_squares*ts/2 - 20));
+    d_border[4]->MoveWidget(Rectangle(60 + x_squares*ts/2, 40 + y_squares*ts, x_squares*ts/2 - 20, 35));
+    d_border[5]->MoveWidget(Rectangle(40, 40 + y_squares*ts, x_squares*ts/2 - 20, 35));
+    d_border[6]->MoveWidget(Rectangle(5, 60 + y_squares*ts/2, 35, y_squares*ts/2 - 20));
+    d_border[7]->MoveWidget(Rectangle(5, 40, 35, y_squares*ts/2 - 20));
 
     // the tilepos label etc.
-    d_l_tilepos->MoveWidget(PG_Rect(95 + x_squares*ts, 250+smallrect.h, 50, 50));
-    d_tp->MoveWidget(PG_Rect(0,0,0,0));
+    d_l_tilepos->MoveWidget(Rectangle(95 + x_squares*ts, 250+smallrect.h, 50, 50));
+    d_tp->MoveWidget(Rectangle(0,0,0,0));
 
     // And do the rest of the setup
-    d_stackinfo->MoveWidget(PG_Rect(15,rect.my_height - 90, 480, 86));
+    d_stackinfo->MoveWidget(Rectangle(15,rect.my_height - 90, 480, 86));
 
-    d_fllogo->MoveWidget(PG_Rect(rect.my_width-220,rect.my_height - 55,220,55));
+    d_fllogo->MoveWidget(Rectangle(rect.my_width-220,rect.my_height - 55,220,55));
 
-    l_turns->MoveWidget(PG_Rect(100 + x_squares*ts, 50+smallrect.h, 100, 20));
-    l_gold->MoveWidget(PG_Rect(100 + x_squares*ts, 70+smallrect.h, 100, 20));
+    l_turns->MoveWidget(Rectangle(100 + x_squares*ts, 50+smallrect.h, 100, 20));
+    l_gold->MoveWidget(Rectangle(100 + x_squares*ts, 70+smallrect.h, 100, 20));
 
-    d_b_prev->MoveWidget(PG_Rect(100 + x_squares*ts, 90+smallrect.h, 40, 40));
-    d_b_next->MoveWidget(PG_Rect(140 + x_squares*ts, 90+smallrect.h, 40, 40));
-    d_b_nextwithmove->MoveWidget(PG_Rect(180 + x_squares*ts, 90+smallrect.h, 40, 40));
-    d_b_move->MoveWidget(PG_Rect(100 + x_squares*ts, 130+smallrect.h, 40, 40));
-    d_b_moveall->MoveWidget(PG_Rect(140 + x_squares*ts, 130+smallrect.h, 40, 40));
-    d_b_centerCurrent->MoveWidget(PG_Rect(180 + x_squares*ts, 130+smallrect.h, 40, 40));
-    d_b_defend->MoveWidget(PG_Rect(100 + x_squares*ts, 170+smallrect.h, 40, 40));
-    d_b_defendAndNext->MoveWidget(PG_Rect(140 + x_squares*ts, 170+smallrect.h, 40, 40));
-    d_b_defendAndNextwithmove->MoveWidget(PG_Rect(180 + x_squares*ts, 170+smallrect.h, 40, 40));
-    d_b_search->MoveWidget(PG_Rect(100 + x_squares*ts, 210+smallrect.h, 40, 40));
-    d_b_nextTurn->MoveWidget(PG_Rect(140 + x_squares*ts, 210+smallrect.h, 40, 40));
+    d_b_prev->MoveWidget(Rectangle(100 + x_squares*ts, 90+smallrect.h, 40, 40));
+    d_b_next->MoveWidget(Rectangle(140 + x_squares*ts, 90+smallrect.h, 40, 40));
+    d_b_nextwithmove->MoveWidget(Rectangle(180 + x_squares*ts, 90+smallrect.h, 40, 40));
+    d_b_move->MoveWidget(Rectangle(100 + x_squares*ts, 130+smallrect.h, 40, 40));
+    d_b_moveall->MoveWidget(Rectangle(140 + x_squares*ts, 130+smallrect.h, 40, 40));
+    d_b_centerCurrent->MoveWidget(Rectangle(180 + x_squares*ts, 130+smallrect.h, 40, 40));
+    d_b_defend->MoveWidget(Rectangle(100 + x_squares*ts, 170+smallrect.h, 40, 40));
+    d_b_defendAndNext->MoveWidget(Rectangle(140 + x_squares*ts, 170+smallrect.h, 40, 40));
+    d_b_defendAndNextwithmove->MoveWidget(Rectangle(180 + x_squares*ts, 170+smallrect.h, 40, 40));
+    d_b_search->MoveWidget(Rectangle(100 + x_squares*ts, 210+smallrect.h, 40, 40));
+    d_b_nextTurn->MoveWidget(Rectangle(140 + x_squares*ts, 210+smallrect.h, 40, 40));
 }
 
-void W_Edit::changeResolution(PG_Rect rect, bool smaller)
+void W_Edit::changeResolution(Rectangle rect, bool smaller)
 {
     // Here we resize the w_edit only if we go to a greater resolution
     myrect=rect;
@@ -409,14 +409,14 @@ void W_Edit::connectEvents()
     ENextTurn* eturn;
 
     // first, connect the static signals appropriately
-    RUpdate::supdating.connect(SigC::slot(*d_bigmap, &BigMap::Redraw));
-    RCenter::scentering.connect(SigC::slot(*d_bigmap, &BigMap::centerView));
-    RCenterObj::scentering.connect(SigC::slot(*d_bigmap, &BigMap::centerView));
-    RRaiseEvent::sgettingEvents.connect(SigC::slot(*d_gameScenario,
+    RUpdate::supdating.connect(sigc::slot(*d_bigmap, &BigMap::Redraw));
+    RCenter::scentering.connect(sigc::slot(*d_bigmap, &BigMap::centerView));
+    RCenterObj::scentering.connect(sigc::slot(*d_bigmap, &BigMap::centerView));
+    RRaiseEvent::sgettingEvents.connect(sigc::slot(*d_gameScenario,
                                         &GameScenario::getEventlist));
-    RActEvent::sgettingEvents.connect(SigC::slot(*d_gameScenario,
+    RActEvent::sgettingEvents.connect(sigc::slot(*d_gameScenario,
                                         &GameScenario::getEventlist));
-    RWinGame::swinDialog.connect(SigC::slot(*this, &W_Edit::gameFinished));
+    RWinGame::swinDialog.connect(sigc::slot(*this, &W_Edit::gameFinished));
 
 
     // and connect some of the events
@@ -427,14 +427,14 @@ void W_Edit::connectEvents()
             //the round event needs rather much help with its signals
             case Event::ROUND:
                 eround = dynamic_cast<ERound*>(*it);
-                eround->sgettingRound.connect(SigC::slot(*d_gameScenario,
+                eround->sgettingRound.connect(sigc::slot(*d_gameScenario,
                                                         &GameScenario::getRound));
-                d_nextTurn->snextTurn.connect(SigC::slot(*eround, &ERound::trigger));
+                d_nextTurn->snextTurn.connect(sigc::slot(*eround, &ERound::trigger));
                 break;
 
             case Event::NEXTTURN:
                 eturn = dynamic_cast<ENextTurn*>(*it);
-                d_nextTurn->snextTurn.connect(SigC::slot(*eturn, &ENextTurn::trigger));
+                d_nextTurn->snextTurn.connect(sigc::slot(*eturn, &ENextTurn::trigger));
                 break;
                 
             default:
@@ -528,8 +528,8 @@ void W_Edit::pictureNextPlayer()
     snprintf(buf, 100, _("Next Player: %s"),
              Playerlist::getInstance()->getActiveplayer()->getName().c_str());
     
-    Popup* nextPlayer = new Popup(this, PG_Rect((my_width-300)/2,(my_height-200)/2, 300, 200));
-    new PG_Label(nextPlayer, PG_Rect(10, 10, 300, 20), buf);
+    Popup* nextPlayer = new Popup(this, Rectangle((my_width-300)/2,(my_height-200)/2, 300, 200));
+    new PG_Label(nextPlayer, Rectangle(10, 10, 300, 20), buf);
     
     nextPlayer->SetIcon(d_pic_turn_start);
     nextPlayer->Show();
@@ -755,20 +755,20 @@ bool W_Edit::b_searchClicked(PG_Button* btn)
     {
         unsigned int w1 = 240;
         unsigned int h1 = 110;
-        PG_MessageBox mb(this, PG_Rect((my_width-w1)/2, 
+        PG_MessageBox mb(this, Rectangle((my_width-w1)/2, 
                                        (my_height-h1)/2, w1, h1),
                 temple->getName().c_str(), _("Your armies have been blessed."),
-                PG_Rect(80, 70, 80, 30), _("OK"));
+                Rectangle(80, 70, 80, 30), _("OK"));
         mb.Show();
         mb.RunModal();
         mb.Hide();
         p->stackVisitTemple(stack, temple);
 
-        PG_MessageBox mb2(this, PG_Rect((my_width-w1)/2, 
+        PG_MessageBox mb2(this, Rectangle((my_width-w1)/2, 
                                        (my_height-h1)/2, w1, h1),
                 temple->getName().c_str(), _("Do you seek a quest?"),
-                PG_Rect(10, h1-40, 100, 30), _("Yes"),
-                PG_Rect(120, h1-40, 100, 30), _("No"),
+                Rectangle(10, h1-40, 100, 30), _("Yes"),
+                Rectangle(120, h1-40, 100, 30), _("No"),
                 PG_Label::CENTER
                 );
         mb2.Show();
@@ -789,9 +789,9 @@ bool W_Edit::b_searchClicked(PG_Button* btn)
             std::string title = _("Quest - ") + hero->getName();
             std::string txt = q ? q->getDescription()
                                 : _("This hero already has a quest");
-            PG_MessageBox mb(this, PG_Rect((my_width-400)/2, (my_height-160)/2, 
+            PG_MessageBox mb(this, Rectangle((my_width-400)/2, (my_height-160)/2, 
                              400, 160), title.c_str(), txt.c_str(),
-            PG_Rect((400 - 80)/2, 160 - 30 - 10, 80, 30), _("OK"));
+            Rectangle((400 - 80)/2, 160 - 30 - 10, 80, 30), _("OK"));
             mb.Show();
             mb.RunModal();
             mb.Hide();
@@ -834,7 +834,7 @@ Army::Stat W_Edit::newLevelArmy(Army* a)
         (a->getPlayer() != Playerlist::getInstance()->getActiveplayer()))
         return Army::STRENGTH;
 
-    ArmyLevelDialog dialog(a, 0, PG_Rect(200, 100, 430, 260));
+    ArmyLevelDialog dialog(a, 0, Rectangle(200, 100, 430, 260));
     dialog.Show();
     dialog.RunModal();
     dialog.Hide();
@@ -858,7 +858,7 @@ void W_Edit::newMedalArmy(Army* a)
     
     debug("NEWMedal Dialog SHOW")
     std::cerr << "NEWMedal Dialog SHOW" << std::endl;
-    ArmyMedalDialog dialog(a, 0, PG_Rect(200, 100, 230, 230));
+    ArmyMedalDialog dialog(a, 0, Rectangle(200, 100, 230, 230));
     dialog.Show();
     dialog.RunModal();
     dialog.Hide();
@@ -875,7 +875,7 @@ void W_Edit::gameFinished()
     stopTimers();
     
     // show a nice dialog in the center of the screen
-    PG_Rect r;
+    Rectangle r;
     r.w = d_pic_winGame->w;
     r.h = d_pic_winGame->h;
     r.x = my_width/2 - r.w/2;
@@ -1152,8 +1152,8 @@ void W_Edit::loadGame()
 
 	snprintf(buf, 100, _("%s, your turn continues."), 
 		Playerlist::getInstance()->getActiveplayer()->getName().c_str());
-        PG_MessageBox mb(this, PG_Rect(my_width/2-100, my_height/2-87, 200, 150), _("Load Game"),
-                buf, PG_Rect(60, 110, 80, 30), _("OK"));
+        PG_MessageBox mb(this, Rectangle(my_width/2-100, my_height/2-87, 200, 150), _("Load Game"),
+                buf, Rectangle(60, 110, 80, 30), _("OK"));
         mb.Show();
         mb.RunModal();
         mb.Hide();
@@ -1205,7 +1205,7 @@ bool W_Edit::checkPlayer(Player* p)
     return true;
 }
 
-// This function is called by MainWindow when the user presses a cursor key.
+// This function is called by PMainWindow when the user presses a cursor key.
 void W_Edit::helpSmallmap(int arrowx ,int arrowy)
 {
 	d_smallmap->inputFunction(arrowx, arrowy);
@@ -1242,11 +1242,11 @@ bool W_Edit::eventMouseMotion(const SDL_MouseMotionEvent *event)
 
 #ifndef FL_NO_TIMERS
     // some shortcuts
-    PG_Point mousepos;
+    Vector<int> mousepos;
     mousepos.x = event->x;
     mousepos.y = event->y;
 
-    PG_Rect toolrect;
+    Rectangle toolrect;
     toolrect.x = event->x;
     toolrect.y = event->y;
     toolrect.w = myrect.my_width;
@@ -1278,7 +1278,7 @@ bool W_Edit::eventMouseMotion(const SDL_MouseMotionEvent *event)
     return true;
 }
 
-void W_Edit::movingMouse(PG_Point pos)
+void W_Edit::movingMouse(Vector<int> pos)
 {
     if (pos.x < 0 || pos.y < 0)
     {
@@ -1287,7 +1287,7 @@ void W_Edit::movingMouse(PG_Point pos)
     }
     
     char buffer[31]; buffer[30]='\0';
-    PG_Rect *smallmapr = d_smallmap->getViewrect();
+    Rectangle *smallmapr = d_smallmap->getViewrect();
     snprintf(buffer, 30, "(%i,%i)", pos.x+smallmapr->my_xpos,pos.y+smallmapr->my_ypos);
     d_l_tilepos->SetText(buffer);
 

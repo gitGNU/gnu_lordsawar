@@ -12,11 +12,13 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "EStackMove.h"
 #include "../playerlist.h"
 #include "../stack.h"
 
-EStackMove::EStackMove(PG_Point pos)
+EStackMove::EStackMove(Vector<int> pos)
     :Event(STACKMOVE), d_pos(pos)
 {
 }
@@ -55,7 +57,7 @@ void EStackMove::init()
     // connect to the smovingStack signals of all players
     Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->smovingStack.connect(SigC::slot(*this, &EStackMove::trigger));
+        (*it)->smovingStack.connect(sigc::mem_fun(*this, &EStackMove::trigger));
 }
 
 void EStackMove::trigger(Stack* s)

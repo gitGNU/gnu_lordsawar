@@ -15,9 +15,9 @@
 #ifndef ESTACKMOVE_H
 #define ESTACKMOVE_H
 
-#include <pgpoint.h>
-
 #include "Event.h"
+
+#include "../vector.h"
 
 class Stack;
 
@@ -32,7 +32,7 @@ class EStackMove : public Event
 {
     public:
         //! standard constructor with a set of points
-        EStackMove(PG_Point pos);
+        EStackMove(Vector<int> pos);
 
         //! Loading constructor
         EStackMove(XML_Helper* helper);
@@ -45,13 +45,13 @@ class EStackMove : public Event
         void init();
 
         //! Returns the point this event looks for
-        const PG_Point getPos() const {return d_pos;}
+        const Vector<int> getPos() const {return d_pos;}
 
         //! Changes the point this event looks for
-        void setPos(PG_Point pos) {d_pos = pos;}
+        void setPos(Vector<int> pos) {d_pos = pos;}
 
     private:
-        PG_Point d_pos;
+        Vector<int> d_pos;
 
         //! Callback for loading
         bool loadPoint(std::string tag, XML_Helper* helper);

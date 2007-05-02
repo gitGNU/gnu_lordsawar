@@ -17,14 +17,14 @@
 
 #include "road.h"
 #include "ObjectList.h"
-#include <sigc++/object_slot.h>
+#include <sigc++/trackable.h>
 
 /** The roadlist just keeps track of the roads located on the game map. It
   * is also implemented as a singleton since many classes use it for looking up
   * roads.
   */
 
-class Roadlist : public ObjectList<Road>, public SigC::Object
+class Roadlist : public ObjectList<Road>, public sigc::trackable
 {
     public:
         //! Return the singleton instance. Create a new one if needed.
@@ -37,7 +37,7 @@ class Roadlist : public ObjectList<Road>, public SigC::Object
         static void deleteInstance();
         
         //! Returns the road closest to pos
-        Road* getNearestRoad(const PG_Point& pos);
+        Road* getNearestRoad(const Vector<int>& pos);
 
         //! Saves the game data. See XML_Helper for details.
         bool save(XML_Helper* helper) const;

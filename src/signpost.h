@@ -29,7 +29,7 @@ class Signpost: public Location
           * @param pos          the location of the signpost
           * @param name         the contents of the sign
           */
-        Signpost(PG_Point pos, std::string name = "nowhere");
+        Signpost(Vector<int> pos, std::string name = "nowhere");
 
         //! Loading constructor. See XML_Helper
         Signpost(XML_Helper* helper);

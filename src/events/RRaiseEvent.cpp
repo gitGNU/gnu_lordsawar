@@ -14,7 +14,7 @@
 #include "RRaiseEvent.h"
 #include "EDummy.h"
 
-SigC::Signal0<std::list<Event*> > RRaiseEvent::sgettingEvents;
+sigc::signal<std::list<Event*> > RRaiseEvent::sgettingEvents;
 
 RRaiseEvent::RRaiseEvent(Uint32 event)
     :Reaction(RAISEEVENT), d_event(event)

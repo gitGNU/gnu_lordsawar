@@ -16,10 +16,13 @@
 #include <expat.h>
 #include <SDL_image.h>
 #include <SDL.h>
+#include "rectangle.h"
+#include <sigc++/functors/mem_fun.h>
 
 #include "armysetlist.h"
 #include "File.h"
 #include "defs.h"
+
 
 
 using namespace std;
@@ -129,8 +132,8 @@ bool Armysetlist::loadArmyset(std::string name)
     // up d_loading (the id of the currently loaded armyset) and an entry in
     // the lists.
     XML_Helper helper(File::getArmyset(name), ios::in, false);
-    helper.registerTag("armyset", SigC::slot((*this), &Armysetlist::loadGlobalStuff));
-    helper.registerTag("army", SigC::slot((*this), &Armysetlist::loadArmy));
+    helper.registerTag("armyset", sigc::mem_fun((*this), &Armysetlist::loadGlobalStuff));
+    helper.registerTag("army", sigc::mem_fun((*this), &Armysetlist::loadArmy));
     
     if (!helper.parse())
     {
@@ -153,6 +156,8 @@ bool Armysetlist::loadGlobalStuff(std::string tag, XML_Helper* helper)
 
     // create the neccessary entry in the name list
     d_names[d_loading] = name;
+
+    file_names[d_file] = d_loading;
     
     return retval;
 }
@@ -178,7 +183,8 @@ bool Armysetlist::loadArmy(string tag, XML_Helper* helper)
     SDL_Surface* pic = File::getArmyPicture(d_file, s + ".png");
     if (!pic)
     {
-        std::cerr <<"Could not load army image: " <<s <<std::endl;
+        std::cerr <<"Could not load army image: " << s <<std::endl;
+	// FIXME: more gentle way of reporting error than just exiting?
         exit(-1);
     }
 
@@ -189,7 +195,9 @@ bool Armysetlist::loadArmy(string tag, XML_Helper* helper)
     // mask out the army image 
     SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, armysize, armysize,
                 fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-    PG_Rect r(0, 0, armysize, armysize);
+    SDL_Rect r;
+    r.x = r.y = 0;
+    r.w = r.h = armysize;
     SDL_BlitSurface(pic, &r, tmp, 0);
 
     SDL_Surface* pixmap = SDL_DisplayFormatAlpha(tmp);
@@ -202,7 +210,7 @@ bool Armysetlist::loadArmy(string tag, XML_Helper* helper)
     tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, armysize, armysize, 32,
                                0xFF000000, 0xFF0000, 0xFF00, 0xFF);
 
-    r.SetRect(armysize, 0, armysize, armysize);
+    r.x = armysize;
     SDL_BlitSurface(pic, &r, tmp, 0);
     a->setMask(tmp);
 

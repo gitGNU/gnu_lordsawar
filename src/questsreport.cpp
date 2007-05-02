@@ -29,12 +29,12 @@ using namespace std;
 class QuestItem : public PG_Widget
 {
     public:
-        QuestItem(PG_Widget* parent, PG_Rect rect);
+        QuestItem(PG_Widget* parent, Rectangle rect);
         ~QuestItem();
 
         void fillItem(Quest* quest, Hero *hero);
 
-        SigC::Signal1<void, Quest*> sclicked;
+        sigc::signal<void, Quest*> sclicked;
 
     private:
         bool eventMouseButtonDown(const SDL_MouseButtonEvent * event);
@@ -45,13 +45,13 @@ class QuestItem : public PG_Widget
         Quest* d_quest;
 };
 
-QuestItem::QuestItem(PG_Widget* parent, PG_Rect rect)
+QuestItem::QuestItem(PG_Widget* parent, Rectangle rect)
                     :PG_Widget(parent, rect)
 {
-    d_l_hero = new PG_Label(this, PG_Rect(10, 10, 150, 15), "");
-    d_l_quest = new PG_RichEdit(this, PG_Rect(10, 30, 410, 40), "");
+    d_l_hero = new PG_Label(this, Rectangle(10, 10, 150, 15), "");
+    d_l_quest = new PG_RichEdit(this, Rectangle(10, 30, 410, 40), "");
     d_l_quest->SetTransparency(255);
-    d_l_status = new PG_Label(this, PG_Rect(10, 75, 410, 15), "");
+    d_l_status = new PG_Label(this, Rectangle(10, 75, 410, 15), "");
 }
 
 QuestItem::~QuestItem()
@@ -86,26 +86,26 @@ bool QuestItem::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
 }
 
 
-QuestsReport::QuestsReport(PG_Widget* parent, PG_Rect rect)
+QuestsReport::QuestsReport(PG_Widget* parent, Rectangle rect)
     :PG_Window(parent, rect, _("Quests report"), PG_Window::MODAL), d_index(0)
 {
     //I assume 500x400 pixels here as well
-    d_b_ok = new PG_Button(this, PG_Rect(435, 370, 90, 25), _("OK"),2);
+    d_b_ok = new PG_Button(this, Rectangle(435, 370, 90, 25), _("OK"),2);
     d_b_ok->sigClick.connect(slot(*this, &QuestsReport::b_okClicked));
 
-    d_b_up = new PG_Button(this, PG_Rect(435, 150, 90, 25), _("Prev."),0);
+    d_b_up = new PG_Button(this, Rectangle(435, 150, 90, 25), _("Prev."),0);
     d_b_up->sigClick.connect(slot(*this, &QuestsReport::b_upClicked));
 
-    d_b_down = new PG_Button(this, PG_Rect(435, 250, 90, 25), _("Next"),1);
+    d_b_down = new PG_Button(this, Rectangle(435, 250, 90, 25), _("Next"),1);
     d_b_down->sigClick.connect(slot(*this, &QuestsReport::b_downClicked));
 
-    d_l_number = new PG_Label(this, PG_Rect(435, 35, 60, 20), "");
+    d_l_number = new PG_Label(this, Rectangle(435, 35, 60, 20), "");
 
-    d_items[0] = new QuestItem(this, PG_Rect(10, 30, 420, 100));
-    d_items[1] = new QuestItem(this, PG_Rect(10, 140, 420, 100));
-    d_items[2] = new QuestItem(this, PG_Rect(10, 250, 420, 100));
+    d_items[0] = new QuestItem(this, Rectangle(10, 30, 420, 100));
+    d_items[1] = new QuestItem(this, Rectangle(10, 140, 420, 100));
+    d_items[2] = new QuestItem(this, Rectangle(10, 250, 420, 100));
 
-    d_l_noquests = new PG_Label(this, PG_Rect(10, 35, 480, 40), "");
+    d_l_noquests = new PG_Label(this, Rectangle(10, 35, 480, 40), "");
 
     Player *player = Playerlist::getActiveplayer();
     // read quests for this player

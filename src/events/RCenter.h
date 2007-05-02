@@ -15,8 +15,9 @@
 #ifndef RCENTER_H
 #define RCENTER_H
 
-#include <pgpoint.h>
+#include <sigc++/signal.h>
 
+#include "../vector.h"
 #include "Reaction.h"
 
 /** Centers the game screen on a given point
@@ -32,7 +33,7 @@ class RCenter : public Reaction
 {
     public:
         //! Default constructor with centering point
-        RCenter(PG_Point pos);
+        RCenter(Vector<int> pos);
 
         //! Loading constructor
         RCenter(XML_Helper* helper);
@@ -46,17 +47,17 @@ class RCenter : public Reaction
 
 
         //! Returns the point of centering
-        PG_Point getPos() const {return d_pos;}
+        Vector<int> getPos() const {return d_pos;}
 
         //! Sets the point of centering
-        void setPos(PG_Point pos) {d_pos = pos;}
+        void setPos(Vector<int> pos) {d_pos = pos;}
 
 
         //! static signal to center the game screen
-        static SigC::Signal1<void, PG_Point> scentering;
+        static sigc::signal<void, Vector<int> > scentering;
 
     private:
-        PG_Point d_pos;
+        Vector<int> d_pos;
 };
 
 #endif //RCENTER_H

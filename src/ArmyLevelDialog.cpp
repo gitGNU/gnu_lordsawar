@@ -17,7 +17,7 @@
 #include "ArmyLevelDialog.h"
 #include "defs.h"
 
-ArmyLevelDialog::ArmyLevelDialog(Army* army, PG_Widget* parent, PG_Rect rect)
+ArmyLevelDialog::ArmyLevelDialog(Army* army, PG_Widget* parent, Rectangle rect)
     :PG_Window(parent, rect, _("Your unit advanced a level!"), PG_Window::MODAL), d_army(army),
     d_l_ranged(0), d_result(Army::STRENGTH)
 {
@@ -26,28 +26,28 @@ ArmyLevelDialog::ArmyLevelDialog(Army* army, PG_Widget* parent, PG_Rect rect)
 
     //I assume a size of 400*300 pixels here
 
-    new PG_Label(this, PG_Rect(15, 220, 270, 20),_("Choose a characteristic to raise."));
-    d_b_ok = new PG_Button(this, PG_Rect(300, 210, 115, 30),
+    new PG_Label(this, Rectangle(15, 220, 270, 20),_("Choose a characteristic to raise."));
+    d_b_ok = new PG_Button(this, Rectangle(300, 210, 115, 30),
                             _("OK"),1);
     d_b_ok->sigClick.connect(slot(*this, &ArmyLevelDialog::b_ok_clicked));
 
     //the army pic
-    d_b_pic = new PG_Button(this, PG_Rect(15, 40, 50, 50), "",2);
+    d_b_pic = new PG_Button(this, Rectangle(15, 40, 50, 50), "",2);
     d_b_pic->EnableReceiver(false);
     d_b_pic->SetIcon(d_army->getPixmap(), 0, 0);
 
     //the name of the army
-    new PG_Label(this, PG_Rect(15, 100, 200, 20), d_army->getName().c_str());
+    new PG_Label(this, Rectangle(15, 100, 200, 20), d_army->getName().c_str());
 
     snprintf(buffer, 30, _("xp: %.2f"), d_army->getXP());
-    new PG_Label(this, PG_Rect(15, 130, 95, 20), buffer);
+    new PG_Label(this, Rectangle(15, 130, 95, 20), buffer);
 
     snprintf(buffer, 30, "%i", d_army->getLevel());
-    new PG_Label(this, PG_Rect(15, 150, 45, 20),_("level: "));
-    PG_Label* l = new PG_Label(this, PG_Rect(65, 150, 30, 20), buffer);
+    new PG_Label(this, Rectangle(15, 150, 45, 20),_("level: "));
+    PG_Label* l = new PG_Label(this, Rectangle(65, 150, 30, 20), buffer);
     l->SetFontColor(PG_Color(50, 255, 50));
 
-    PG_Rect r(220, 60, 40, 20);
+    Rectangle r(220, 60, 40, 20);
     PG_RadioButton* rb1, *rb;
     
     rb1 = new PG_RadioButton(this, r, "", NULL, Army::STRENGTH);
@@ -81,7 +81,7 @@ ArmyLevelDialog::ArmyLevelDialog(Army* army, PG_Widget* parent, PG_Rect rect)
 
 
     //the head of the table for the single values
-    l = new PG_Label(this, PG_Rect(140, 40, 110, 20), _("Stats"));
+    l = new PG_Label(this, Rectangle(140, 40, 110, 20), _("Stats"));
     l->SetFontColor(PG_Color(0, 0, 0));
 
     //and the values themselves

@@ -33,7 +33,7 @@ using namespace std;
 //#define debug(x)
 
 Hero_offer::Hero_offer(PG_Widget* parent, Hero* hero, int gold)
-    :PG_Window(parent, PG_Rect(0, 0, 210, 300), _("Hero offer"), PG_Window::MODAL),
+    :PG_Window(parent, Rectangle(0, 0, 210, 300), _("Hero offer"), PG_Window::MODAL),
     d_gold(gold)
 {
     debug("Hero_offer::Hero_offer")
@@ -46,16 +46,16 @@ Hero_offer::Hero_offer(PG_Widget* parent, Hero* hero, int gold)
     else
         d_recruitpic = File::getMiscPicture("recruit_female.png");
 
-    d_l_pic = new PG_Label(this, PG_Rect(5, 30, 200, 200), "");
+    d_l_pic = new PG_Label(this, Rectangle(5, 30, 200, 200), "");
     d_l_pic->SetIcon(d_recruitpic);
 
-    d_b_accept = new PG_Button(this, PG_Rect(10, my_height - 30, 70, 20), _("Accept"),1);
+    d_b_accept = new PG_Button(this, Rectangle(10, my_height - 30, 70, 20), _("Accept"),1);
     d_b_accept->sigClick.connect(slot(*this, &Hero_offer::b_acceptClicked));
 
-    d_b_reject = new PG_Button(this, PG_Rect(my_width - 80, my_height - 30, 70, 20), _("Reject"),2);
+    d_b_reject = new PG_Button(this, Rectangle(my_width - 80, my_height - 30, 70, 20), _("Reject"),2);
     d_b_reject->sigClick.connect(slot(*this, &Hero_offer::b_rejectClicked));
 
-    d_e_name = new PG_LineEdit(this, PG_Rect(40, 240, 120, 20));
+    d_e_name = new PG_LineEdit(this, Rectangle(40, 240, 120, 20));
     d_e_name->SetText(hero->getName().c_str());
 
     char text[80], text2[80];
@@ -71,8 +71,8 @@ Hero_offer::Hero_offer(PG_Widget* parent, Hero* hero, int gold)
         strcpy(text2, "");
     }
 
-    d_l_text = new PG_Label(this, PG_Rect(10, 195, 180, 20), text);
-    d_l_text2 = new PG_Label(this, PG_Rect(10, 215, 180, 20), text2);
+    d_l_text = new PG_Label(this, Rectangle(10, 195, 180, 20), text);
+    d_l_text2 = new PG_Label(this, Rectangle(10, 215, 180, 20), text2);
 }
 
 Hero_offer::~Hero_offer()

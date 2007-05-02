@@ -15,159 +15,126 @@
 #ifndef BIGMAP_H
 #define BIGMAP_H
 
-#include <pgwidget.h>
-#include <pgtimerobject.h>
-#include "MapRenderer.h"
-#include <sigc++/sigc++.h>
-#include "stack.h"
+#include <sigc++/signal.h>
+#include <sigc++/trackable.h>
+#include <sigc++/connection.h>
+#include "rectangle.h"
+
+#include "vector.h"
+#include "input-events.h"
+#include "map-tip-position.h"
+#include "rectangle.h"
+
+class Stack;
+class MapRenderer;
+
+class City;
+class Ruin;
+class Signpost;
+class Temple;
+class Object;
 
 /** The large game map
   * 
-  * When you have started a game, you see two maps, one for the overview
-  * (smallmap) and one detailed one. The latter is the bigmap. The class cares
-  * for everything which takes place in the context of the large map, i.e. mouse
-  * clicks, army movement etc.
+  * The detailed map in which all the action takes place. Handles scrolling
+  * and mouse clicks via signals.
   *
-  * One note concerning smooth scrolling. When smooth scrolling is activated,
-  * the bigmap doesn't jump from one position to another one, but blits some
-  * steps in between ( you can try it out if you don't understand what I mean).
-  * To keep this simple, Bigmap has two surfaces. One is inherited from paragui
-  * and used to draw to, the other one is d_xscreen. This surface is exactly one
-  * tile larger than the inherited surface and all rendering operations take
-  * place with this surface. When using smooth scrolling, the d_xscreen is then
-  * simply blitted to the widget surface with some offsets.
+  * Draws everything to a buffer to simplify scrolling, the buffer is then
+  * blitted to the screen. The current view of the map is kept track of both
+  * approximately (in tiles) and more precisely in pixels.
   */
-
-class BigMap : public PG_Widget, public PG_TimerObject
-               
+class BigMap: public sigc::trackable
 {
-    public:
-        /** Constructor, form inherited from paragui
-          * 
-          * @param parent       the parent widget
-          * @param rect         the rectangle for this widget
-          */
-        BigMap(PG_Widget* parent, PG_Rect rect);
-        ~BigMap();
+ public:
+    BigMap();
+    ~BigMap();
 
-        /** The timer callback
-          * 
-          * This function is called whenever the bigmap timer is raised. It does
-          * nothing more than advance the frame around the active stack and
-          * redraw the surface.
-          */
-        Uint32 eventTimer(ID id, Uint32 interval);
+    // draw everything
+    void draw(bool redraw_buffer = true);
 
-        /** Assign a viewrect to bigmap
-          * 
-          * The viewrect determines which portion of the map is viewed and how
-          * large it is.
-          * @note The viewrect is shared between bigmap and smallmap (so if one
-          * of the two changes the viewrect, the other one sees the change
-          * immediately), so be careful with deleting it. Perhaps this should be
-          * changed and made cleaner...
-          *
-          * @param viewrect         the portion of the map displayed in bigmap
-          */
-        void setViewrect(PG_Rect* viewrect);
+    // will center the bigmap on the stack
+    void select_active_stack();
+	
+    void unselect_active_stack();
 
-        /** Callback if a stack is selected.
-          * 
-          * This sets an internal pointer to the currently active stack, centers
-          * the bigmap on the stack and starts to draw a frame around it. With a
-          * selected active stack the behaviour for mouse clicks changes from
-          * selecting a stack to selecting a target for a move.
-          */
-        void stackSelected();
+    // view the rectangle, measured in tiles
+    void set_view(Rectangle rect);
 
-        //! Callback if a stack has been deselected
-        void stackDeselected();
+    void mouse_button_event(MouseButtonEvent e);
+    void mouse_motion_event(MouseMotionEvent e);
+    
+    /** Callback if a stack has moved
+     * 
+     * This centers the bigmap around the stack.
+     */
+    void stackMoved(Stack* s);
 
-        /** Callback if a stack has moved
-          * 
-          * This centers the bigmap around the stack.
-          */
-        void stackMoved(Stack* s);
+    //! Center the bigmap around point p
+    void centerView(const Vector<int> p);
 
-        //! Center the bigmap around point p
-        void centerView(const PG_Point p);
+    //! Enable/Disable the processing of mouse clicks
+    void setEnable (bool enable){d_enable=enable;}
 
-        //! Enable/Disable the processing of mouse clicks
-        void setEnable (bool enable){d_enable=enable;}
 
-        //! Draw the frame around the currently active unit.
-        void drawSelector(bool changeFrame);
+    // emitted when the view has changed because of user interactions
+    sigc::signal<void, Rectangle> view_changed;
 
-        /** Function to kill the internal timer
-          * 
-          * On some occasions, timers which lead to redraws are ugly, e.g. if a
-          * dialog is displayed, it flickers. So each class which uses timers
-          * also provides functions to kill and restart the timer during
-          * critical parts of the code.
-          */
-        void interruptTimer();
+    // emitted when a stack is selected, a NULL parameter signifies that no
+    // stack is selected 
+    sigc::signal<void, Stack*> stack_selected;
 
-        //! Function to restart the internal timer
-        void restartTimer();
+    // emitted when a path for a stack is set
+    sigc::signal<void> path_set;
+	
+    // signals for mouse clicks
+    sigc::signal<void, City*, MapTipPosition> city_selected;
+    sigc::signal<void, Ruin*, MapTipPosition> ruin_selected;
+    sigc::signal<void, Signpost*, MapTipPosition> signpost_selected;
+    sigc::signal<void, Temple*, MapTipPosition> temple_selected;
+
+    // emitted whenever the user moves the mouse to a new tile
+    sigc::signal<void, Vector<int> > mouse_on_tile;
+
+ private:
+    MapRenderer* d_renderer;
+	
+    Rectangle view, old_view;	// approximate view of screen, in tiles
+    Vector<int> view_pos; 	// precise position of view in pixels
         
-        //! Signal which is emitted when the viewrect changes and redraws smallmap
-        SigC::Signal1<bool, bool> schangingViewrect;
-
-        //! Signal which is emitted when a stack is selected
-        SigC::Signal1<void, Stack*> sselectingStack;
-
-        //! Signal which is emitted when a stack is selected
-        SigC::Signal0<void> sdeselectingStack;
-
-        //! emitted whenever the user moves the mouse to a new tile
-        SigC::Signal1<void, PG_Point> smovingMouse;
-
-    private:
-        //! Redraws the portion defined by rect on the internal surface
-        void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
-
-        //! Event function for mouse clicks
-        bool eventMouseButtonDown(const SDL_MouseButtonEvent* event);
-
-        bool eventMouseMotion(const SDL_MouseMotionEvent* ev);
-        void eventMouseLeave();
-
-        //! Converts tile to surface coordinates of the internal surface
-        const PG_Point getRelativePos(const PG_Point& absolutePos); 
-
-        //! Converts tile to surface coordinates of d_xscreen
-        const PG_Point getRelativeXPos(const PG_Point& absolutePos);
-
-        /** Aligns the d_xscreen so that it encloses the internal surface in an
-          * optimal fashion
-          */
-        void alignXRect();
+    SDL_Surface* buffer;	// the buffer we draw things in
+    Rectangle buffer_view;	// current view of the buffer, in tiles
+	
+    bool d_enable;
+	
+    SDL_Surface* d_arrows;
+    SDL_Surface* d_ruinpic;
+    SDL_Surface* d_signpostpic;
+    SDL_Surface* d_selector[2];
+    SDL_Surface* d_itempic;
+    SDL_Surface* d_fogpic;
         
-        // DATA
-        MapRenderer* d_renderer;
-        PG_Rect* d_viewrect;
-        
-        PG_Rect d_oldrect;
-        PG_Rect d_xrect;
-        SDL_Surface* d_xscreen;
-        int d_scrollstat;
-        bool d_selupdate;
-        
-        SDL_Surface* d_arrows;
-        SDL_Surface* d_ruinpic;
-        SDL_Surface* d_signpostpic;
-        SDL_Surface* d_selector[2];
-        SDL_Surface* d_itempic;
-        SDL_Surface* d_fogpic;
-        
-        Uint32 d_timerID;
-        //SDL_mutex* d_lock;
-        bool d_enable;
+    Vector<int> current_tile;
 
-        PG_Rect  d_rect;
-        PG_Point d_pos;
+    enum {
+	NONE, DRAGGING, SHOWING_CITY, SHOWING_RUIN,
+	SHOWING_TEMPLE, SHOWING_SIGNPOST
+    } mouse_state;
+	
+
+    // for the marching ants around selected stack
+    sigc::connection selection_timeout_handler;
+    bool on_selection_timeout();
+
+    // helpers
+    Vector<int> mouse_pos_to_tile(Vector<int> pos);
+    // return a good position of the map tip given that it should be close
+    // to the tiles in tile_area without covering them
+    MapTipPosition map_tip_position(Rectangle tile_area);
+
+    const Vector<int> getRelativeXPos(const Vector<int>& absolutePos);
+    void draw_buffer();  // does the actual hard work of drawing the buffer
+     // helper for draw_buffer
+    void blit_if_inside_buffer(const Object &obj, SDL_Surface *image);
 };
 
-#endif // BIGMAP_H
-
-// End of file
+#endif

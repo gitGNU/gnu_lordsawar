@@ -16,9 +16,10 @@
 #define STACKLIST_H
 
 #include <list>
-#include <pgmessageobject.h>
-#include <sigc++/object_slot.h>
-#include <pgpoint.h>
+#include <vector>
+#include <sigc++/trackable.h>
+#include <SDL_types.h>
+#include "vector.h"
 
 class City;
 class Stack;
@@ -32,7 +33,7 @@ class XML_Helper;
   * of a city etc.
   */
 
-class Stacklist : public std::list<Stack*>, public SigC::Object
+class Stacklist : public std::list<Stack*>, public sigc::trackable
 {
     public:
         Stacklist();
@@ -45,10 +46,10 @@ class Stacklist : public std::list<Stack*>, public SigC::Object
         static Stack* getObjectAt(int x, int y);
 
         //! Return stack at position pos or 0 if there is none
-        static Stack* getObjectAt(PG_Point point);
+        static Stack* getObjectAt(Vector<int> point);
 
         //! Return position of an army
-        static PG_Point getPosition(Uint32 id);
+        static Vector<int> getPosition(Uint32 id);
 
         /** This function finds stacks which occupy the same tile.
           * For internal and logical reasons, we always assume that a tile is
@@ -92,8 +93,8 @@ class Stacklist : public std::list<Stack*>, public SigC::Object
         //! Get the next non-defending stack in the list and mark it as active.
         Stack* setNext();
 
-        //! Get the next non-defending stack and that can move in the list and mark it as active.
-        Stack* setNextWithMove(bool select=1);
+        //! Get the next non-defending stack that can move.
+        Stack* getNextMovable();
 
         //! Returns true if s and d can form one stack (esp. regarding size)
         bool canJoin(Stack* s, Stack* d) const;

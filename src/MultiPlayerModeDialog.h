@@ -27,7 +27,7 @@ class MultiPlayerModeDialog : public PG_Window
 {
 	public:
 	// CREATORS
-	MultiPlayerModeDialog(PG_Widget* parent, PG_Rect rect);
+	MultiPlayerModeDialog(PG_Widget* parent, Rectangle rect);
 	~MultiPlayerModeDialog();
 
         // MANIPULATORS

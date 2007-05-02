@@ -17,9 +17,11 @@
 
 #include <string>
 #include <list>
-#include <pgmessageobject.h>
-#include "defs.h"
+#include <SDL_types.h>
+
 #include "real_player.h"
+
+class XML_Helper;
 
 /** Dummy AI player.
   * 

@@ -33,13 +33,13 @@ class DialogItem
         Army* army;         // the army we refer to
         int hp;             // the current number of hitpoints (we can't use
                             // Army::getHP(), since it has already been modified
-        PG_Rect pos;        // Location of the image within the dialog
+        Rectangle pos;        // Location of the image within the dialog
 };
         
 
 
 FightDialog::FightDialog(Stack* attacker, Stack* defender, bool duel)
-    :PG_ThemeWidget(0, PG_Rect(), true)
+    :PG_ThemeWidget(0, Rectangle(), true)
 {
     // init the fight
     d_fight = new Fight(attacker, defender, duel);
@@ -74,7 +74,7 @@ FightDialog::FightDialog(Stack* attacker, Stack* defender, bool duel)
 
 FightDialog::FightDialog(std::list<Stack*> attackers, std::list<Stack*> defenders,
                          const std::list<FightItem>& actions)
-    :PG_ThemeWidget(0, PG_Rect()), d_actions(actions), d_fight(0)
+    :PG_ThemeWidget(0, Rectangle()), d_actions(actions), d_fight(0)
 {
     // Basically the same as the other constructor above
     std::list<Stack*>::const_iterator it;
@@ -231,7 +231,7 @@ void FightDialog::initScreen()
     if (PG_Application::GetScreenHeight() > 600)
         max_items = 8;
 
-    std::vector<PG_Rect> dim(max_items);
+    std::vector<Rectangle> dim(max_items);
     for (int i = 0; i < max_items; i++)
     {
         dim[i].w = width;
@@ -325,7 +325,7 @@ void FightDialog::initScreen()
 
 
     // Now set the Dimension we found out
-    PG_Rect r = dim[max_items-1];
+    Rectangle r = dim[max_items-1];
     r.x = (PG_Application::GetScreenWidth() - r.w)/2;
     r.y = (PG_Application::GetScreenHeight() -r.h)/2;
     MoveWidget(r, false);
@@ -487,7 +487,7 @@ void FightDialog::initScreen()
     // FINISHED!
 }
 
-void FightDialog::eventDraw(SDL_Surface* surface, const PG_Rect& r)
+void FightDialog::eventDraw(SDL_Surface* surface, const Rectangle& r)
 {
     PG_ThemeWidget::eventDraw(surface, r);
 

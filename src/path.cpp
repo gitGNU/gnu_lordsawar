@@ -17,12 +17,14 @@
 #include <queue>
 
 #include "path.h"
+#include "defs.h"
 #include "army.h"
 #include "GameMap.h"
 #include "citylist.h"
 #include "city.h"
 #include "stacklist.h"
-#include "defs.h"
+#include "xmlhelper.h"
+#include "stack.h"
 
 using namespace std;
 
@@ -46,7 +48,7 @@ Path::Path(XML_Helper* helper)
 
     for (; i > 0; i--)
     {
-        PG_Point *p = new PG_Point;
+        Vector<int> *p = new Vector<int>;
 
         sx >> p->x;
         sy >> p->y;
@@ -94,11 +96,11 @@ void Path::flClear()
     return clear();
 }
 
-bool Path::canMoveThere(Stack* s, PG_Point *dest)
+bool Path::canMoveThere(const Stack* s, Vector<int> dest)
 {
     d_bonus=s->calculateMoveBonus(&d_has_ship,&d_has_land);
-    PG_Point pos = s->getPos();
-    return  (!isBlocked(s, pos.x,pos.y, dest->x, dest->y));
+    Vector<int> pos = s->getPos();
+    return !isBlocked(s, pos.x, pos.y, dest.x, dest.y);
 }
 
 bool Path::checkPath(Stack* s)
@@ -106,7 +108,7 @@ bool Path::checkPath(Stack* s)
     if (empty())
         return true;
     
-    PG_Point dest = **(rbegin());
+    Vector<int> dest = **(rbegin());
     debug("check_path() " << dest.x << "," << dest.y)
     bool blocked = false;
     d_bonus=s->calculateMoveBonus(&d_has_ship,&d_has_land);
@@ -130,9 +132,9 @@ bool Path::checkPath(Stack* s)
     return !blocked;
 }
 
-Uint32 Path::calculate (Stack* s, PG_Point dest)
+Uint32 Path::calculate (Stack* s, Vector<int> dest)
 {
-    PG_Point start = s->getPos();
+    Vector<int> start = s->getPos();
     debug("path from "<<start.x<<","<<start.y<<" to "<<dest.x<<","<<dest.y)
         
     flClear();
@@ -165,7 +167,7 @@ Uint32 Path::calculate (Stack* s, PG_Point dest)
     // index = y*width + x    <=>    x = index % width;   y = index / width
     int length = width*height;
     int distance[length];
-    std::queue<PG_Point> process;
+    std::queue<Vector<int> > process;
 
     // initial filling of the distance vector
     for (int i = 0; i < width*height; i++)
@@ -181,10 +183,10 @@ Uint32 Path::calculate (Stack* s, PG_Point dest)
     
 
     // now the main loop
-    process.push(PG_Point(start.x, start.y));
+    process.push(Vector<int>(start.x, start.y));
     while (!process.empty())
     {
-        PG_Point pos = process.front();
+        Vector<int> pos = process.front();
         process.pop();                          // remove the first item
         
         int dxy = distance[pos.y*width+pos.x];   // always >= 0
@@ -210,7 +212,7 @@ Uint32 Path::calculate (Stack* s, PG_Point dest)
                     distance[sy*width+sx] = newDsxy;
 
                     // append the item to the queue
-                    process.push(PG_Point(sx, sy));
+                    process.push(Vector<int>(sx, sy));
                 }
             }
         }
@@ -232,7 +234,7 @@ Uint32 Path::calculate (Stack* s, PG_Point dest)
     int y = dest.y;
     while (dist > 0)
     {
-        PG_Point *p = new PG_Point(x,y);
+        Vector<int> *p = new Vector<int>(x,y);
         push_front(p);
 
         int min = dist;
@@ -264,7 +266,7 @@ Uint32 Path::calculate (Stack* s, PG_Point dest)
     return distance[dest.y * width + dest.x];
 }
 
-bool Path::isBlocked(Stack* s, int x, int y, int destx, int desty) const
+bool Path::isBlocked(const Stack* s, int x, int y, int destx, int desty) const
 {
     const Maptile* tile = GameMap::getInstance()->getTile(x,y);
 

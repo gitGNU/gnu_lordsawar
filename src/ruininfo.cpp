@@ -27,7 +27,7 @@ static unsigned int width  = 200;
 static unsigned int height = 90;
 
 RuinInfo::RuinInfo(Ruin* ruin, int screen_x, int screen_y)
-    :PG_ThemeWidget(0, PG_Rect(screen_x, screen_y, width, height)), d_ruin(ruin)
+    :PG_ThemeWidget(0, Rectangle(screen_x, screen_y, width, height)), d_ruin(ruin)
 {
     char buf[100+1]; buf[100] = '\0';
 
@@ -35,16 +35,16 @@ RuinInfo::RuinInfo(Ruin* ruin, int screen_x, int screen_y)
     const unsigned int col1 = 15, col2 = 115, h = 15;
     const unsigned int step_y = h + 4;
 
-    new PG_Label(this, PG_Rect(col1, y, 150, h), d_ruin->getName().c_str()); 
+    new PG_Label(this, Rectangle(col1, y, 150, h), d_ruin->getName().c_str()); 
 
     y += step_y;
-    new PG_Label(this, PG_Rect(col1, y, 80, h), _("Position:")); 
+    new PG_Label(this, Rectangle(col1, y, 80, h), _("Position:")); 
     snprintf(buf, 100, "(%i,%i)", ruin->getPos().x, ruin->getPos().y);
-    new PG_Label(this, PG_Rect(col2, y, 100, h), buf); 
+    new PG_Label(this, Rectangle(col2, y, 100, h), buf); 
 
     y += step_y;
-    new PG_Label(this, PG_Rect(col1, y, 90, h), _("Searched:")); 
-    new PG_Label(this, PG_Rect(col2, y, 100, h), 
+    new PG_Label(this, Rectangle(col1, y, 90, h), _("Searched:")); 
+    new PG_Label(this, Rectangle(col2, y, 100, h), 
                                ruin->isSearched() ? _("Yes") : _("No"));
 
     // SetCapture, so the ruininfo object can detect

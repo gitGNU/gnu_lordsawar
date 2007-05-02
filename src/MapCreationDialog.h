@@ -27,7 +27,7 @@ class MapCreationDialog : public PG_Window
 {
     public:
         // CREATORS
-        MapCreationDialog(PG_Widget* parent, PG_Rect rect);
+        MapCreationDialog(PG_Widget* parent, Rectangle rect);
         ~MapCreationDialog();
     
         /** Change the label and progress.

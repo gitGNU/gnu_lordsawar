@@ -15,12 +15,14 @@
 #ifndef GAMEMAP_H
 #define GAMEMAP_H
 
-#include <sigc++/sigc++.h>
-#include <pgpoint.h>
+#include <sigc++/trackable.h>
 
+#include "vector.h"
+#include "rectangle.h"
 #include "maptile.h"
-#include "xmlhelper.h"
-#include "MapGenerator.h"
+
+class MapGenerator;
+class XML_Helper;
 
 /** Class representing the map in the game
   * 
@@ -33,7 +35,7 @@
   * to get the singleton instance.
   */
 
-class GameMap : public SigC::Object
+class GameMap: public sigc::trackable
 {
     public:
         /** Singleton function to get the GameMap instance
@@ -73,6 +75,11 @@ class GameMap : public SigC::Object
         //! Returns the height of the map
         static int getHeight() {return s_height;}
 
+	static Vector<int> get_dim() { return Vector<int>(s_width, s_height); }
+	
+	static Rectangle get_boundary()
+	    { return Rectangle(0, 0, s_width, s_height); }
+
         //! Returns the tileset in use
         TileSet* getTileSet() const {return d_tileSet;}
         
@@ -80,7 +87,7 @@ class GameMap : public SigC::Object
         Maptile* getTile(int x, int y) const;
 
         //! Alternative access
-        Maptile* getTile(PG_Point p) const {return getTile(p.x, p.y);}
+        Maptile* getTile(Vector<int> p) const {return getTile(p.x, p.y);}
 
         /** Fill the map using the data supplied by a map generator
           * 

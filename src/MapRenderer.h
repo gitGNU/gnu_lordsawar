@@ -19,7 +19,7 @@
 
 /** Class which cares about rendering of the map.
   * 
-  * Thi class is initalized with the drawing surface of the BigMap class. It
+  * This class is initalized with the drawing surface of the BigMap class. It
   * cares for the actual terrain drawing. Furthermore on creation, it smoothes
   * the whole terrain so that transitions between different terrain tiles look
   * better. To prevent suddent transitions e.g. between water and grass, each

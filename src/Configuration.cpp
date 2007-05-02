@@ -12,13 +12,16 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "Configuration.h"
-#include "defs.h"
+#include <stdlib.h>
 #include <fstream>
 #include <iostream>
-#include<fstream>
-#include <stdlib.h>
+#include <sigc++/functors/mem_fun.h>
+
+#include "Configuration.h"
+
+#include "defs.h"
 #include "string_tokenizer.h"
+#include "xmlhelper.h"
 
 using namespace std;
 
@@ -36,9 +39,7 @@ string Configuration::s_savePath = string(getenv("HOME"))+string("/.lordsawar/")
 string Configuration::s_dataPath = "./data/";
 string Configuration::s_savePath = "./saves/";
 #endif
-string Configuration::s_lang = setlocale(LC_ALL, "");
-int Configuration::s_width = 800;
-int Configuration::s_height = 600;
+string Configuration::s_lang = "";
 int Configuration::s_displaySpeedDelay = 0;
 Uint32 Configuration::s_flags = 0;
 Uint32 Configuration::s_surfaceFlags = SDL_SWSURFACE;
@@ -53,7 +54,10 @@ Uint32 Configuration::s_musiccache = 10000000;
 string Configuration::s_filename = "";
 
 Configuration::Configuration()
-{ 
+{
+    char *s = setlocale(LC_ALL, "");
+    if (s)
+	Configuration::s_lang = s;
 }
 
 Configuration::~Configuration()
@@ -74,8 +78,9 @@ bool Configuration::loadConfigurationFile(string fileName)
 
         //parse the file
         XML_Helper helper(fileName.c_str(), ios::in, false);
-        helper.registerTag("lordsawarrc", SigC::slot(*this, 
-                    &Configuration::parseConfiguration));
+        helper.registerTag(
+	    "lordsawarrc",
+	    sigc::mem_fun(*this, &Configuration::parseConfiguration));
     
         return helper.parse();
     }
@@ -85,8 +90,6 @@ bool Configuration::loadConfigurationFile(string fileName)
 bool Configuration::saveConfigurationFile(string filename)
 {
     bool retval = true;
-    char stmp[10];
-    sprintf(stmp,"%dx%d",s_width,s_height);
 
     XML_Helper helper(filename, ios::out, Configuration::s_zipfiles);
 
@@ -98,7 +101,6 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("datapath",s_dataPath);
     retval &= helper.saveData("savepath", s_savePath);
     retval &= helper.saveData("lang", s_lang);
-    retval &= helper.saveData("resolution",string(stmp));
     retval &= helper.saveData("fullscreen", s_fullScreen);
     retval &= helper.saveData("cachesize", s_cacheSize);
     retval &= helper.saveData("hardware", s_hardware);
@@ -180,7 +182,7 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
 
     if (helper->getData(temp, "lang"))
         s_lang = temp;
-
+    
     //fullscreen?
     retval = helper->getData(s_fullScreen, "fullscreen");
     if (retval)
@@ -192,21 +194,6 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
         else
         {
             s_flags &= ~SDL_FULLSCREEN;
-        }
-    }
-
-    // parse resolution
-    retval = helper->getData(temp, "resolution");
-    if (retval)
-    {
-        string::size_type idx;
-        idx = temp.find("x");
-        if (idx != string::npos)
-        {
-            string width = temp.substr(0, idx);
-            s_width = atoi(width.c_str());
-            string height = temp.substr(idx+1, temp.length());
-            s_height = atoi(height.c_str());
         }
     }
 

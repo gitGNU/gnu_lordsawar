@@ -16,13 +16,17 @@
 #define __QUEST_MANAGER_H
 
 #include <queue>
-#include "Quest.h"
-#include "army.h"
+#include <map>
+#include <vector>
+#include <sigc++/trackable.h>
+
 #include "player.h"
-#include "xmlhelper.h"
 #include "hero.h"
 
 class Quest;
+class XML_Helper;
+class Army;
+
 
 /**
  * \brief The manager of the quests in the LordsAWar game.
@@ -50,7 +54,7 @@ class Quest;
  * \todo Implement more that one quest for a single hero
  *
  */
-class QuestsManager : public SigC::Object
+class QuestsManager : public sigc::trackable
 {
     public:
         /** \brief Singleton creator */

@@ -23,7 +23,7 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<std::flush;}
 #define debug(x)
 
-ArmyInfo::ArmyInfo(Army* army, bool pressable, PG_Widget* parent, PG_Rect rect)
+ArmyInfo::ArmyInfo(Army* army, bool pressable, PG_Widget* parent, Rectangle rect)
 	:PG_ThemeWidget(parent, rect, true), d_army(army), d_pressed(false),
         d_pressable(pressable)
 {
@@ -32,7 +32,7 @@ ArmyInfo::ArmyInfo(Army* army, bool pressable, PG_Widget* parent, PG_Rect rect)
 	// show number of moves
 	char buffer[80];
 	sprintf(buffer, "%i", d_army->getMoves());
-	d_l_moves = new PG_Label(this, PG_Rect(20, 57, 20, 20), buffer);
+	d_l_moves = new PG_Label(this, Rectangle(20, 57, 20, 20), buffer);
 	d_l_moves->SetFontColor (PG_Color (0, 0, 0));
 
 	Show();
@@ -43,7 +43,7 @@ ArmyInfo::~ArmyInfo()
 	delete d_l_moves;
 }
 
-void ArmyInfo::eventDraw(SDL_Surface* surface, const PG_Rect& rect)
+void ArmyInfo::eventDraw(SDL_Surface* surface, const Rectangle& rect)
 {
 	debug("eventDraw()");
 	PG_ThemeWidget::eventDraw(surface, rect);
@@ -53,7 +53,7 @@ void ArmyInfo::eventDraw(SDL_Surface* surface, const PG_Rect& rect)
 	DrawBorder(rect, 1, !d_pressed);
 
 	// show pic of army in the button
-	PG_Rect r(2, 2, 54, 54);
+	Rectangle r(2, 2, 54, 54);
 	SDL_BlitSurface(d_army->getPixmap(), NULL, surface, &r);
 
 	// draw the hitpoints-bar
@@ -75,7 +75,7 @@ bool ArmyInfo::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
     if (event->button == SDL_BUTTON_RIGHT)
     {
         //pop up an army information dialog
-        PG_Rect r(PG_Application::GetScreenWidth()/2 - 300, PG_Application::GetScreenHeight()/2 - 250,
+        Rectangle r(PG_Application::GetScreenWidth()/2 - 300, PG_Application::GetScreenHeight()/2 - 250,
                                                 600, 500);
         ArmyDialog dialog(d_army, 0, r);
 

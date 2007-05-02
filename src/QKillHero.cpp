@@ -15,6 +15,7 @@
 #include <iostream>
 #include <sstream>
 #include <assert.h>
+#include <sigc++/functors/mem_fun.h>
 
 #include "QKillHero.h"
 #include "QuestsManager.h"
@@ -34,7 +35,7 @@ QuestKillHero::QuestKillHero(QuestsManager& mgr, Uint32 hero)
     // we want to stay informed about killed armies...
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->sdyingArmy.connect( SigC::slot(*this, &QuestKillHero::dyingArmy));
+        (*it)->sdyingArmy.connect(sigc::mem_fun(*this, &QuestKillHero::dyingArmy));
     
     // find a suitable hero for us
     Hero *hunted = chooseToKill();
@@ -49,7 +50,7 @@ QuestKillHero::QuestKillHero(QuestsManager& q_mgr, XML_Helper* helper)
 {
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->sdyingArmy.connect( SigC::slot(*this, &QuestKillHero::dyingArmy));
+        (*it)->sdyingArmy.connect(sigc::mem_fun(*this, &QuestKillHero::dyingArmy));
 
     helper->getData(d_victim, "to_kill");
     debug("load: hero_to_kill = " << d_victim);

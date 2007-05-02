@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "ETempleSearch.h"
 #include "../playerlist.h"
 #include "../player.h"
@@ -51,7 +53,7 @@ void ETempleSearch::init()
 {
     Playerlist* plist = Playerlist::getInstance();
     for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
-        (*it)->svisitingTemple.connect(SigC::slot((*this), &ETempleSearch::trigger));
+        (*it)->svisitingTemple.connect(sigc::mem_fun(*this, &ETempleSearch::trigger));
 }
 
 void ETempleSearch::trigger(Temple* t, Stack* s)

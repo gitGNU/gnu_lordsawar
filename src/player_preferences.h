@@ -35,7 +35,7 @@ class Player_preferences : public PG_Widget
 
         // CREATORS
         Player_preferences(Type type, std::string name, PG_Widget* parent,
-        PG_Rect rect);
+        Rectangle rect);
         ~Player_preferences();
 
         // ACCESSORS
@@ -47,7 +47,7 @@ class Player_preferences : public PG_Widget
         void setName(std::string name){d_e_name->SetText(name.c_str());}
 
         // SIGNAL
-        SigC::Signal0<void> playerDataChanged;
+        sigc::Signal0<void> playerDataChanged;
 
         bool b_typeChanged(PG_ListBoxBaseItem * cb);
 

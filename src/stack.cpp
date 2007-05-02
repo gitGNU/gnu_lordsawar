@@ -12,9 +12,11 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "stack.h"
-#include <sstream>
+#include <sigc++/functors/mem_fun.h>
 #include <assert.h>
+#include <algorithm>
+
+#include "stack.h"
 #include "playerlist.h"
 #include "path.h"
 #include "armysetlist.h"
@@ -22,13 +24,14 @@
 #include "army.h"
 #include "hero.h"
 #include "GameMap.h"
+#include "vector.h"
 
 using namespace std;
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-Stack::Stack(Player* player, PG_Point pos)
+Stack::Stack(Player* player, Vector<int> pos)
     :d_player(player), d_defending(false), d_pos(pos), d_deleting(false)
 {
     d_path = new Path();
@@ -67,9 +70,9 @@ Stack::Stack(XML_Helper* helper)
     d_player = Playerlist::getInstance()->getPlayer(ui);
 
 
-    helper->registerTag("path", SigC::slot((*this), &Stack::load));
-    helper->registerTag("army", SigC::slot((*this), &Stack::load));
-    helper->registerTag("hero", SigC::slot((*this), &Stack::load));
+    helper->registerTag("path", sigc::mem_fun((*this), &Stack::load));
+    helper->registerTag("army", sigc::mem_fun((*this), &Stack::load));
+    helper->registerTag("hero", sigc::mem_fun((*this), &Stack::load));
 }
 
 Stack::~Stack()
@@ -95,6 +98,8 @@ bool Stack::moveOneStep()
 
     d_pos = **d_path->begin();
 
+    d_defending = false;
+    
     //now remove first point of the path
     d_path->flErase(d_path->begin());
 
@@ -103,368 +108,46 @@ bool Stack::moveOneStep()
 
 // return the maximum moves of this stack by checking the moves of each army
 
-Uint32 Stack::getGroupMoves()
+int Stack::getGroupMoves() const
 {
-    Uint32 maximum = 0;
+    int min = front()->getMoves();
 
-    for (iterator it = begin(); it != end(); it++)
-    {
-        if (((*it)->getMoves() < maximum) || (!maximum))
-        {
-            maximum = (*it)->getMoves();
-	    if (maximum == 0)
-	         break;
-        }
-    }
+    for (const_iterator it = begin(); it != end(); ++it)
+	min = std::min(min, int((*it)->getMoves()));
 
-    return maximum;
+    return min;
 }
 
-Uint32 Stack::getMinTilesAroundMoves(int x, int y)
+int Stack::getMinTileMoves() const
 {
+  GameMap *map = GameMap::getInstance();
+  Rectangle bounds = GameMap::get_boundary();
 
-  GameMap *tmp=GameMap::getInstance();
-  Uint32 tmpmove=32767;
-  int mapwidth=tmp->getWidth();
-  int mapheight=tmp->getHeight();
-  Path * tmppath =new Path();
-  PG_Point* p = new PG_Point;
+  Path p;
+  std::vector<Vector<int> > tiles;
+  tiles.push_back(Vector<int>(getPos().x + 1, getPos().y - 1));
+  tiles.push_back(Vector<int>(getPos().x,     getPos().y - 1));
+  tiles.push_back(Vector<int>(getPos().x - 1, getPos().y - 1));
+  tiles.push_back(Vector<int>(getPos().x + 1, getPos().y + 1));
+  tiles.push_back(Vector<int>(getPos().x,     getPos().y + 1));
+  tiles.push_back(Vector<int>(getPos().x - 1, getPos().y + 1));
+  tiles.push_back(Vector<int>(getPos().x + 1, getPos().y));
+  tiles.push_back(Vector<int>(getPos().x - 1, getPos().y));
 
-  tmppath->checkPath(this);
-
-  if (x>0 && x<mapwidth && y>0 && y<mapheight)
-  {
-    debug("x>0<mapsize y>0<mapsize  TMPMOVE= " << tmpmove)
-
-    p->x=x+1;
-    p->y=y+1;
-    if(tmppath->canMoveThere(this,p))
-    {
-        tmpmove=tmp->getTile(x+1,y+1)->getMoves();
-        debug("Checked Position: " << x+1 << " " << y+1 )
-    }
-    p->x=x;
-    p->y=y+1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x,y+1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x,y+1)->getMoves();
-        debug("Checked Position: " << x << " " << y+1 )
-    }
-    p->x=x+1;
-    p->y=y;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x+1,y)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x+1,y)->getMoves();
-        debug("Checked Position: " << x+1 << " " << y )
-    }
-    p->x=x;
-    p->y=y-1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x,y-1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x,y-1)->getMoves();
-        debug("Checked Position: " << x << " " << y-1 )
-    }
-    p->x=x+1;
-    p->y=y-1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x+1,y-1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x+1,y-1)->getMoves();
-        debug("Checked Position: " << x+1 << " " << y-1 )
-    }
-    p->x=x-1;
-    p->y=y;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x-1,y)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x-1,y)->getMoves();
-        debug("Checked Position: " << x-1 << " " << y )
-    }
-    p->x=x-1;
-    p->y=y-1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x-1,y-1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x-1,y-1)->getMoves();
-        debug("Checked Position: " << x-1 << " " << y-1 )
-    }
-    p->x=x-1;
-    p->y=y+1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x-1,y+1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x-1,y+1)->getMoves();
-        debug("Checked Position: " << x-1 << " " << y+1 )
-    }
-    delete tmppath;
-    delete p;
-    if (tmpmove!=32767)
-        return tmpmove;
-    else
-        return 0;
-  }
-
-
-  if (x==0 && y==0)
-  {
-    debug("x=0 y=0 TMPMOVE= " << tmpmove)
-
-    p->x=x+1;
-    p->y=y+1;
-    if(tmppath->canMoveThere(this,p))
-    {
-        tmpmove=tmp->getTile(x+1,y+1)->getMoves();
-        debug("Checked Position: " << x+1 << " " << y+1 )
-    }
-    p->x=x;
-    p->y=y+1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x,y+1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x,y+1)->getMoves();
-        debug("Checked Position: " << x << " " << y+1 )
-    }
-    p->x=x+1;
-    p->y=y;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x+1,y)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x+1,y)->getMoves();
-        debug("Checked Position: " << x+1 << " " << y )
-    }
-    delete tmppath;
-    delete p;
-    if (tmpmove!=32767)
-        return tmpmove;
-    else
-        return 0;
-  }
-
-
-  if (x==mapwidth && y==mapheight)
-  {
-    debug("x=mapwidth y=mapheight  TMPMOVE= " << tmpmove)
-
-    p->x=x-1;
-    p->y=y-1;
-    if(tmppath->canMoveThere(this,p))
-    {
-        tmpmove=tmp->getTile(x-1,y-1)->getMoves();
-        debug("Checked Position: " << x-1 << " " << y-1 )
-    }
-    p->x=x;
-    p->y=y-1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x,y-1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x,y-1)->getMoves();
-        debug("Checked Position: " << x << " " << y-1 )
-    }
-    p->x=x-1;
-    p->y=y;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x-1,y)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x-1,y)->getMoves();
-        debug("Checked Position: " << x-1 << " " << y )
-    }
-    delete tmppath;
-    delete p;
-    if (tmpmove!=32767)
-        return tmpmove;
-    else
-        return 0;
-  }
-
-
-  if (x==mapwidth && y<mapheight && y>0)
-  {
-    debug("x=mapwidth y>0<mapheight  TMPMOVE= " << tmpmove)
-
-    p->x=x-1;
-    p->y=y-1;
-    if(tmppath->canMoveThere(this,p))
-    {
-        tmpmove=tmp->getTile(x-1,y-1)->getMoves();
-        debug("Checked Position: " << x-1 << " " << y-1 )
-    }
-    p->x=x;
-    p->y=y-1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x,y-1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x,y-1)->getMoves();
-        debug("Checked Position: " << x << " " << y-1 )
-    }
-    p->x=x-1;
-    p->y=y;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x-1,y)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x-1,y)->getMoves();
-        debug("Checked Position: " << x-1 << " " << y )
-    }
-    p->x=x-1;
-    p->y=y+1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x-1,y+1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x-1,y+1)->getMoves();
-        debug("Checked Position: " << x-1 << " " << y+1 )
-    }
-    p->x=x;
-    p->y=y+1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x,y+1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x,y+1)->getMoves();
-        debug("Checked Position: " << x << " " << y+1 )
-    }
-    delete tmppath;
-    delete p;
-    if (tmpmove!=32767)
-        return tmpmove;
-    else
-        return 0;
-  }
-
-
-  if (x<mapwidth && x>0 && y==mapheight)
-  {
-    debug("x>0<mapwidth y=mapheight  TMPMOVE= " << tmpmove)
-
-    p->x=x-1;
-    p->y=y-1;
-    if(tmppath->canMoveThere(this,p))
-    {
-        tmpmove=tmp->getTile(x-1,y-1)->getMoves();
-        debug("Checked Position: " << x-1 << " " << y-1 )
-    }
-    p->x=x;
-    p->y=y-1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x,y-1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x,y-1)->getMoves();
-        debug("Checked Position: " << x << " " << y-1 )
-    }
-    p->x=x-1;
-    p->y=y;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x-1,y)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x-1,y)->getMoves();
-        debug("Checked Position: " << x-1 << " " << y )
-    }
-    p->x=x+1;
-    p->y=y-1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x+1,y-1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x+1,y-1)->getMoves();
-        debug("Checked Position: " << x+1 << " " << y-1 )
-    }
-
-    p->x=x+1;
-    p->y=y;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x+1,y)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x+1,y)->getMoves();
-        debug("Checked Position: " << x+1 << " " << y )
-    }
-    delete tmppath;
-    delete p;
-    if (tmpmove!=32767)
-        return tmpmove;
-    else
-        return 0;
-  }
-
-
-  if (x>0 && x<mapwidth && y==0)
-  {
-    debug("x>0<mapwidth y=0 TMPMOVE= " << tmpmove)
-
-    p->x=x+1;
-    p->y=y+1;
-    if(tmppath->canMoveThere(this,p))
-    {
-        tmpmove=tmp->getTile(x+1,y+1)->getMoves();
-        debug("Checked Position: " << x+1 << " " << y+1 )
-    }
-    p->x=x;
-    p->y=y+1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x,y+1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x,y+1)->getMoves();
-        debug("Checked Position: " << x << " " << y+1 )
-    }
-    p->x=x+1;
-    p->y=y;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x+1,y)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x+1,y)->getMoves();
-        debug("Checked Position: " << x+1 << " " << y )
-    }
-    p->x=x-1;
-    p->y=y+1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x-1,y+1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x-1,y+1)->getMoves();
-        debug("Checked Position: " << x-1 << " " << y+1 )
-    }
-    p->x=x-1;
-    p->y=y;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x-1,y)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x-1,y)->getMoves();
-        debug("Checked Position: " << x-1 << " " << y )
-    }
-    delete tmppath;
-    delete p;
-    if (tmpmove!=32767)
-        return tmpmove;
-    else
-        return 0;
-  }
-
-
-  if (x==0 && y>0 && y<mapheight)
-  {
-    debug("x=0 y>0<mapheight  TMPMOVE= " << tmpmove)
-
-    p->x=x+1;
-    p->y=y+1;
-    if(tmppath->canMoveThere(this,p))
-    {
-        tmpmove=tmp->getTile(x+1,y+1)->getMoves();
-        debug("Checked Position: " << x+1 << " " << y+1 )
-    }
-    p->x=x;
-    p->y=y+1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x,y+1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x,y+1)->getMoves();
-        debug("Checked Position: " << x << " " << y+1 )
-    }
-    p->x=x+1;
-    p->y=y;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x+1,y)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x+1,y)->getMoves();
-        debug("Checked Position: " << x+1 << " " << y )
-    }
-
-    p->x=x;
-    p->y=y-1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x,y-1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x,y-1)->getMoves();
-        debug("Checked Position: " << x << " " << y-1 )
-    }
-    p->x=x+1;
-    p->y=y-1;
-    if(tmppath->canMoveThere(this,p) && tmp->getTile(x+1,y-1)->getMoves()<tmpmove)
-    {
-        tmpmove=tmp->getTile(x+1,y-1)->getMoves();
-        debug("Checked Position: " << x+1 << " " << y-1 )
-    }
-    delete tmppath;
-    delete p;
-    if (tmpmove!=32767)
-        return tmpmove;
-    else
-        return 0;
-  }
-
-  delete tmppath;
-  delete p;
-  return 0;
+  int min = -1;
+  
+  for (std::vector<Vector<int> >::iterator i = tiles.begin(), end = tiles.end();
+      i != end; ++i)
+      if (is_inside(bounds, *i) && p.canMoveThere(this, *i))
+      {
+	  int v = map->getTile(i->x, i->y)->getMoves();
+	  if (min == -1)
+	      min = v;
+	  else
+	      min = std::min(min, v);
+      }
+  
+  return min;
 }
 
 // decrement each armys moves by needed moves to travel
@@ -553,7 +236,7 @@ void Stack::bless()
 
 bool Stack::enoughMoves() const
 {
-    PG_Point p = **(d_path->begin());
+    Vector<int> p = **(d_path->begin());
     Uint32 needed = 0;
 
     Maptile* tile = GameMap::getInstance()->getTile(p.x, p.y);
@@ -574,6 +257,13 @@ bool Stack::enoughMoves() const
             return false;
 
     return true;
+}
+
+bool Stack::canMove() const
+{
+    int tile_moves = getMinTileMoves(), group_moves = getGroupMoves();
+
+    return group_moves > 0 && tile_moves >= 0 && group_moves >= tile_moves;
 }
 
 Army* Stack::getFirstUngroupedArmy() const
@@ -685,7 +375,7 @@ Stack::iterator Stack::flErase(Stack::iterator object)
     return erase(object);
 }
 
-Uint32 Stack::calculateMoveBonus(bool * has_ship ,bool * has_land)
+Uint32 Stack::calculateMoveBonus(bool * has_ship ,bool * has_land) const
 {
     Uint32 d_bonus = !0;
     *has_ship= false;

@@ -1,0 +1,222 @@
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Library General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+#ifndef GAME_H
+#define GAME_H
+
+#include <memory>
+#include <sigc++/signal.h>
+#include <glibmm/ustring.h>
+#include "rectangle.h"
+
+#include "input-events.h"
+#include "rectangle.h"
+#include "sidebar-stats.h"
+#include "stack-info.h"
+#include "map-tip-position.h"
+#include "callback-enums.h"
+#include "army.h"
+
+#include "bigmap.h"
+#include "smallmap.h"
+
+class SmallMap;
+class BigMap;
+class Stackinfo;
+class NextTurn;
+class GameScenario;
+class Hero;
+class City;
+class Stack;
+class Player;
+class Ruin;
+class Fight;
+class Quest;
+
+/** Controls a game.
+  * 
+  * Manages the big and small map, the game scenario and who's turn it is, etc.
+  * It's mostly a puppeteer class that connects the various other classes with
+  * signals and callbacks. 
+  *
+  */
+class Game
+{
+ public:
+    Game(GameScenario* gameScenario);
+    ~Game();
+
+    void redraw();
+    void size_changed();
+    
+    void smallmap_mouse_button_event(MouseButtonEvent e);
+    void smallmap_mouse_motion_event(MouseMotionEvent e);
+    
+    void mouse_button_event(MouseButtonEvent e);
+    void mouse_motion_event(MouseMotionEvent e);
+    void key_press_event(KeyPressEvent e);
+
+    void select_prev_stack();
+    void select_next_stack();
+    void select_next_movable_stack();
+    void center_selected_stack();
+    void defend_selected_stack();
+    void search_selected_stack();
+    void move_selected_stack();
+    void move_all_stacks();
+    void end_turn();
+
+    void center_view(Vector<int> p);
+
+    //! Callback which redraws the map and checks if the active stack has died
+    bool stackRedraw();
+    
+
+    /** Cares for correct connecting of the events. There are enough signals to
+     * care for that a separate function seems justified.
+     */
+    void connectEvents();
+    
+    //! This function has to be called to initiate the game flow
+    void startGame();
+
+    //! Starts an already loaded and set up game (some details vary to startGame)
+    void loadGame();
+
+    //! Stops the game. This mainly stops the timers and such.
+    void stopGame();
+    
+    //! Called whenever a stack has moved, updates the map etc.
+    void stackUpdate(Stack* s);
+
+    //! Called whenever a stack has died; updates bigmap as well
+    void stackDied(Stack* s);
+
+    //! Callback when the army of a human player reaches a new level.
+    Army::Stat newLevelArmy(Army* a);
+
+    //! Callback when an army gets a new medal.
+    void newMedalArmy(Army* a);
+
+    //! Callback when the game is finished; display a dialog
+    void gameFinished();
+    
+
+    /** Locks all widgets (They don't react to user command) during computer
+     * turns.
+     */
+    void lockScreen();
+
+    //! Unlocks the widgets after a computer turn
+    void unlockScreen();
+
+    /** Stops the timers of all subwidgets (esp. bigmap and smallmap). Used when
+     * showing several dialogs, because the timers would cause a flickering
+     * otherwise.
+     */
+    void stopTimers();
+
+    //! Restarts the timers of the subwidgets when they have been stopped.
+    void startTimers();
+    
+    //! Hack to keep GameScenario invisible from PMainWindow
+#if 0
+    bool save(std::string file){return d_gameScenario->saveGame(file);}
+#endif
+
+    //! Function that puts all units on the tile into the current active stack
+    void selectAllStack();
+
+    //! Function that unselects the current active stack
+    void unselectStack();
+
+    sigc::signal<void, Vector<int> > current_map_position;
+    sigc::signal<void, SDL_Surface *> smallmap_changed;
+    sigc::signal<void, SidebarStats> sidebar_stats_changed;
+    sigc::signal<void, bool>
+	can_select_prev_stack,
+	can_select_next_stack,
+	can_select_next_movable_stack,
+	can_center_selected_stack,
+	can_defend_selected_stack,
+	can_search_selected_stack,
+	can_move_selected_stack,
+	can_move_all_stacks,
+	can_end_turn;
+    sigc::signal<void, StackInfo> stack_info_changed;
+    sigc::signal<void, Glib::ustring, MapTipPosition> map_tip_changed;
+    sigc::signal<void, Ruin*, int> ruin_searched;
+    sigc::signal<void, Fight &> fight_started;
+    sigc::signal<bool, Player *, Hero *, int> hero_offers_service;
+    sigc::signal<bool, Temple *> temple_visited;
+    sigc::signal<void, Hero *, Quest *> quest_assigned;
+    sigc::signal<CityDefeatedAction, City *> city_defeated;
+    sigc::signal<void, City *, int> city_pillaged;
+    sigc::signal<void, City *, int> city_sacked;
+    sigc::signal<void, City *> city_visited;
+    sigc::signal<void> game_over;
+    
+ private:
+    // centers the map on a city of the active player
+    void center_view_on_city();
+
+    //! Draws the announcement of the next player
+    void pictureNextPlayer();
+
+    void update_control_panel();
+    void update_sidebar_stats();
+
+    //! Loads the button images
+    void loadImages();
+
+    // bigmap callbacks
+    void on_mouse_on_tile(Vector<int> pos);
+    void on_stack_selected(Stack* s);
+    void on_city_selected(City* c, MapTipPosition pos);
+    void on_ruin_selected(Ruin* r, MapTipPosition pos);
+    void on_temple_selected(Temple* t, MapTipPosition pos);
+    void on_signpost_selected(Signpost* s, MapTipPosition pos);
+    void on_bigmap_view_changed(Rectangle view);
+
+    // smallmap callbacks
+    void on_smallmap_view_changed(Rectangle view);
+    void on_smallmap_changed(SDL_Surface *map);
+
+    // misc. callbacks
+    void invading_city(City* city);
+    // returns true if the next turn loop should stop
+    bool init_turn_for_player(Player* p);
+
+    
+    void update_stack_info();	// emit stack_info_changed
+    void clear_stack_info();
+    
+    // the part of the map that currently is visible, measured in tiles
+    Rectangle map_view;
+    
+    GameScenario* d_gameScenario;
+    NextTurn* d_nextTurn;
+    std::auto_ptr<BigMap> bigmap;
+    std::auto_ptr<SmallMap> smallmap;
+    Stackinfo* d_stackinfo;
+
+    SDL_Surface* d_turn_start;
+    SDL_Surface* d_pic_turn_start;
+    SDL_Surface* d_pic_winGame, *d_pic_winGameMask;
+    SDL_Surface* d_pic_logo;
+
+    bool d_lock;
+};
+
+#endif

@@ -15,16 +15,19 @@
 #include <stdlib.h>
 #include <algorithm>
 #include <fstream>
+
 #include "ai_fast.h"
+
 #include "playerlist.h"
 #include "armysetlist.h"
-#include "FightDialog.h"
 #include "stacklist.h"
 #include "citylist.h"
 #include "ruinlist.h"
 #include "path.h"
 #include "GameMap.h"
 #include "Threatlist.h"
+#include "action.h"
+#include "xmlhelper.h"
 
 using namespace std;
 
@@ -299,7 +302,7 @@ void AI_Fast::computerTurn()
 
             // now we need to choose. If we found a target, attack it, otherwise
             // attack the closest city.
-            PG_Point pos;
+            Vector<int> pos;
             if (target)
             {
                 pos = target->getClosestPoint(s->getPos());

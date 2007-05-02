@@ -17,6 +17,7 @@
 #endif
 
 #include <iostream>
+#include <sigc++/functors/mem_fun.h>
 #include "sound.h"
 #include "defs.h"
 #include "File.h"
@@ -100,7 +101,7 @@ Sound::Sound()
     }
     
     XML_Helper helper(File::getMusicFile("music.xml"), std::ios::in, false);
-    helper.registerTag("piece", SigC::slot(*this, &Sound::loadMusic));
+    helper.registerTag("piece", sigc::mem_fun(this, &Sound::loadMusic));
 
     if (!helper.parse())
     {

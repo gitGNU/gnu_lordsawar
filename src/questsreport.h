@@ -35,7 +35,7 @@ class QuestsReport : public PG_Window
     public:
 
         /** \brief Constructor */
-        QuestsReport(PG_Widget* parent, PG_Rect rect);
+        QuestsReport(PG_Widget* parent, Rectangle rect);
         ~QuestsReport();
 
         bool b_okClicked(PG_Button* btn);

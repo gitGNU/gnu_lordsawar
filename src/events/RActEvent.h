@@ -15,7 +15,7 @@
 #ifndef RACTEVENT_H
 #define RACTEVENT_H
 
-#include <sigc++/sigc++.h>
+#include <sigc++/signal.h>
 #include "Reaction.h"
 
 class Event;
@@ -67,7 +67,7 @@ class RActEvent : public Reaction
 
 
         //! Signal can be used to get the list of all events (connected in W_Edit)
-        static SigC::Signal0<std::list<Event*> > sgettingEvents;
+        static sigc::signal<std::list<Event*> > sgettingEvents;
 
     private:
         Uint32 d_event;

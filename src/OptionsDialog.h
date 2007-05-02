@@ -22,6 +22,7 @@
 #include <pgfilearchive.h>
 #include <pgapplication.h>
 #include <pglistbox.h>
+#include <pgdropdown.h>
 #include "MapConfDialog.h"  // describes a slider with labels
 
 
@@ -33,7 +34,7 @@ class OptionsDialog : public PG_Window
 {
     public:
         // CREATORS
-        OptionsDialog(PG_Widget* parent, PG_Rect rect);
+        OptionsDialog(PG_Widget* parent, Rectangle rect);
         ~OptionsDialog();
 
         // CALLBACK FUNCTIONS

@@ -14,7 +14,9 @@
 
 #include "Location.h"
 
-Location::Location(std::string name, PG_Point pos, Uint32 size)
+#include "xmlhelper.h"
+
+Location::Location(std::string name, Vector<int> pos, Uint32 size)
     :Object(pos, size), d_name(name)
 {
 }

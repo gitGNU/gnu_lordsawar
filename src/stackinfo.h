@@ -31,7 +31,7 @@ class Stackinfo : public PG_ThemeWidget
 {
     public:
         //! Contructor
-        Stackinfo(PG_Widget* parent, PG_Rect rect);
+        Stackinfo(PG_Widget* parent, Rectangle rect);
         ~Stackinfo();
 
         /** Update display

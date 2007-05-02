@@ -15,6 +15,7 @@
 #include "../playerlist.h"
 #include "../stacklist.h"
 #include "../army.h"
+#include "../stack.h"
 
 RDelUnit::RDelUnit(Uint32 army)
     :Reaction(DELUNIT), d_army(army)

@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "Event.h"
 #include "Reaction.h"
 #include "Condition.h"
@@ -41,8 +43,8 @@ Event::Event(XML_Helper* helper)
     helper->getData(d_id, "id");
     helper->getData(d_comment, "comment");
 
-    helper->registerTag("reaction", SigC::slot((*this), &Event::loadData));
-    helper->registerTag("condition", SigC::slot((*this), &Event::loadData));
+    helper->registerTag("reaction", sigc::mem_fun((*this), &Event::loadData));
+    helper->registerTag("condition", sigc::mem_fun((*this), &Event::loadData));
 
     // Note: When loading, the init function is called automatically by
     // GameScenario when all has been set up, so no need to call init here.

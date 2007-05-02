@@ -45,7 +45,7 @@ class ArmyDialog : public PG_ThemeWidget
         /** \brief The constructor
          * This is where the setup and arrangement of the data takes place
          */
-        ArmyDialog(Army* army, PG_Widget* parent, PG_Rect rect);
+        ArmyDialog(Army* army, PG_Widget* parent, Rectangle rect);
 
         /** \brief The destructor */
         ~ArmyDialog();
@@ -63,7 +63,7 @@ class ArmyDialog : public PG_ThemeWidget
         bool eventKeyDown(const SDL_KeyboardEvent* key);
         
         // derived to implement the icon drawing code
-        void eventDraw(SDL_Surface* surface, const PG_Rect& r);
+        void eventDraw(SDL_Surface* surface, const Rectangle& r);
 
         /** Places icons for the army's stats
           * 
@@ -77,7 +77,7 @@ class ArmyDialog : public PG_ThemeWidget
           * @param r        the rect to place the icons on
           * @param stat     the stat to use
           */
-        void placeIcons(SDL_Surface* s, const PG_Rect r, Army::Stat stat);
+        void placeIcons(SDL_Surface* s, const Rectangle r, Army::Stat stat);
         
         // load the icons
         void loadIcons();

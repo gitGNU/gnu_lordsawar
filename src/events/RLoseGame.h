@@ -48,7 +48,7 @@ class RLoseGame : public Reaction
         
 
         //! the signal is connected out of scope of this class
-        static SigC::Signal1<void, Uint32> slosing;
+        static sigc::signal<void, Uint32> slosing;
 
     private:
         Uint32 d_status;

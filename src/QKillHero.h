@@ -15,8 +15,9 @@
 #ifndef __QUEST_KILL_HERO_H
 #define __QUEST_KILL_HERO_H
 
+#include <sigc++/trackable.h>
+
 #include "Quest.h"
-#include <sigc++/sigc++.h>
 #include "hero.h"
 #include "playerlist.h"
 
@@ -25,7 +26,7 @@
   * This specific quest demands a certain hero to be killed.
   */
 
-class QuestKillHero : public Quest, public SigC::Object
+class QuestKillHero : public Quest, public sigc::trackable
 {
     public:
 

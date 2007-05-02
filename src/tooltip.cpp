@@ -21,11 +21,11 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-ToolTip::ToolTip(PG_Widget* parent, PG_Rect rect)
+ToolTip::ToolTip(PG_Widget* parent, Rectangle rect)
     :PG_ThemeWidget(parent, rect)
 {
     debug("simple tooltip constructor")
-    d_lab = new PG_Label(this, PG_Rect(2,0,0,0), "");
+    d_lab = new PG_Label(this, Rectangle(2,0,0,0), "");
     d_timer = 0;
 }
 
@@ -63,7 +63,7 @@ void ToolTip::setData(const char* text, int screen_x, int screen_y, int max_x, i
     }
     else pos_y=screen_y;
 
-    MoveWidget(PG_Rect(pos_x,pos_y,0,0));
+    MoveWidget(Rectangle(pos_x,pos_y,0,0));
     SetSizeByText(4,0,text);
     SetBorderSize(1);
 

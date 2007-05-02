@@ -21,6 +21,7 @@
 #include "GameScenario.h"
 #include "MapConfDialog.h"
 #include "player_preferences.h"
+#include "armysetlist.h"
 #include "File.h"
 #include "Configuration.h"
 #include <pgapplication.h>
@@ -33,19 +34,19 @@ using namespace std;
 std::string turnmode_true = "";
 std::string turnmode_false = "";
 
-GamePreferencesDialog::GamePreferencesDialog(PG_Widget* parent, PG_Rect rect)
+PGamePreferencesDialog::PGamePreferencesDialog(PG_Widget* parent, Rectangle rect)
 	:PG_ThemeWidget(parent, rect), d_loaded(false), d_cancelled(false)
 {
-    debug("GamePreferencesDialog()");
+    debug("PGamePreferencesDialog()");
 
     turnmode_true = _("player's turn");
     turnmode_false = _("new round");
 
-    d_l_type = new PG_Label(this, PG_Rect(40, 10, 100, 20), _("Type"));
+    d_l_type = new PG_Label(this, Rectangle(40, 10, 100, 20), _("Type"));
     d_l_type->SetFontColor (PG_Color(0, 0, 0));
-    d_l_name = new PG_Label(this, PG_Rect(145, 10, 100, 20), _("Name"));
+    d_l_name = new PG_Label(this, Rectangle(145, 10, 100, 20), _("Name"));
     d_l_name->SetFontColor (PG_Color(0, 0, 0));
-    d_l_armyset = new PG_Label(this, PG_Rect(255, 10, 100, 20), _("Armyset"));
+    d_l_armyset = new PG_Label(this, Rectangle(255, 10, 100, 20), _("Armyset"));
     d_l_armyset->SetFontColor (PG_Color(0, 0, 0));
 
     // predefined names
@@ -60,73 +61,79 @@ GamePreferencesDialog::GamePreferencesDialog(PG_Widget* parent, PG_Rect rect)
     nameList.push_back("Lich King");
     for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
-        PG_Rect p(10, 40 + i*35, 450, 25);
+        Rectangle p(10, 40 + i*35, 450, 25);
         Player_preferences::Type type = Player_preferences::ANY;
         type = Player_preferences::HUMAN;
         d_player_preferences[i] = new Player_preferences(type, nameList[i], this, p);
         d_player_preferences[i]->playerDataChanged.connect(
-                (SigC::slot(*this, &GamePreferencesDialog::slotPlayerDataChanged)));
+                (sigc::slot(*this, &PGamePreferencesDialog::slotPlayerDataChanged)));
 	}
 
-    d_b_random = new PG_Button(this, PG_Rect(Width() - 310 , 10, 100, 25), _("Random"),0);
+    d_b_random = new PG_Button(this, Rectangle(Width() - 310 , 10, 100, 25), _("Random"),0);
     d_b_random->SetFontColor (PG_Color(0, 0, 0));
     d_b_random->SetToggle(true);
-    d_b_load = new PG_Button(this, PG_Rect(Width() - 210, 10, 100, 25), _("Load Map"),1);
+    d_b_load = new PG_Button(this, Rectangle(Width() - 210, 10, 100, 25), _("Load Map"),1);
     d_b_load->SetFontColor (PG_Color(0, 0, 0));
     d_b_load->SetToggle(true);
 
     //choose tileset and turn mode
-    d_l_tiles = new PG_Label(this, PG_Rect(35, 330, 120, 20), _("Choose Tileset"));
+    d_l_tiles = new PG_Label(this, Rectangle(35, 330, 120, 20), _("Choose Tileset"));
     d_l_tiles->SetFontColor (PG_Color(0, 0, 0));
-    d_d_tiles = new PG_DropDown(this, PG_Rect(10, 360, 150, 30),3);
+    d_d_tiles = new PG_DropDown(this, Rectangle(10, 360, 150, 30),3);
     d_d_tiles->SetFontColor (PG_Color(0, 0, 0), 1);
-    File::scanTilesets(d_d_tiles); 
+
+    std::list<std::string> tilesets = File::scanTilesets();
+    for (std::list<std::string>::iterator i = tilesets.begin(),
+	     end = tilesets.end(); i != end; ++i)
+	d_d_tiles->AddItem(i->c_str());
+
+    d_d_tiles->SetText(tilesets.front().c_str());
 
     //set the turn mode
-    d_l_turnmode = new PG_Label(this, PG_Rect(175, 330, 290, 20),
+    d_l_turnmode = new PG_Label(this, Rectangle(175, 330, 290, 20),
                                 _("Process armies at beginning of"));
     d_l_turnmode->SetFontColor (PG_Color(0, 0, 0));
-    d_d_turnmode = new PG_DropDown(this, PG_Rect(175, 360, 170, 30),4);
+    d_d_turnmode = new PG_DropDown(this, Rectangle(175, 360, 170, 30),4);
     d_d_turnmode->SetFontColor (PG_Color(0, 0, 0), 1);
     d_d_turnmode->AddItem(turnmode_true.c_str());
     d_d_turnmode->AddItem(turnmode_false.c_str());
     d_d_turnmode->SetText(turnmode_true.c_str());
 
     
-    d_b_browse = new PG_Button(this, PG_Rect(Width() - 100, 60, 90, 25), _("Browse"),2);
+    d_b_browse = new PG_Button(this, Rectangle(Width() - 100, 60, 90, 25), _("Browse"),2);
     d_b_browse->SetFontColor (PG_Color(0, 0, 0), 1);
-    d_grass = new TerrainConfig(this, PG_Rect(Width() - 310, 60, 300, 20),
+    d_grass = new TerrainConfig(this, Rectangle(Width() - 310, 60, 300, 20),
                 _("Grass"), 0, 99, 78);
-    d_water = new TerrainConfig(this, PG_Rect(Width() - 310, 90, 300, 20),
+    d_water = new TerrainConfig(this, Rectangle(Width() - 310, 90, 300, 20),
                 _("Water"), 0, 99, 7);
-    d_swamp = new TerrainConfig(this, PG_Rect(Width() - 310, 120, 300, 20),
+    d_swamp = new TerrainConfig(this, Rectangle(Width() - 310, 120, 300, 20),
                 _("Swamp"), 0, 99, 2);
-    d_forest = new TerrainConfig(this, PG_Rect(Width() - 310, 150, 300, 20),
+    d_forest = new TerrainConfig(this, Rectangle(Width() - 310, 150, 300, 20),
                 _("Forest"), 0, 99, 3);
-    d_hills = new TerrainConfig(this, PG_Rect(Width() - 310, 180, 300, 20),
+    d_hills = new TerrainConfig(this, Rectangle(Width() - 310, 180, 300, 20),
                 _("Hills"), 0, 99, 5);
-    d_mountains = new TerrainConfig(this, PG_Rect(Width() - 310, 210, 300, 20),
+    d_mountains = new TerrainConfig(this, Rectangle(Width() - 310, 210, 300, 20),
                 _("Mountains"), 0, 99, 5);
-    d_cities = new TerrainConfig(this, PG_Rect(Width() - 310, 240, 300, 20),
+    d_cities = new TerrainConfig(this, Rectangle(Width() - 310, 240, 300, 20),
                 _("Cities"), 10, 40, 20);
-    d_ruins = new TerrainConfig(this, PG_Rect(Width() - 310, 270, 300, 20),
+    d_ruins = new TerrainConfig(this, Rectangle(Width() - 310, 270, 300, 20),
                 _("Ruins"), 15, 30, 25);
-    d_temples = new TerrainConfig(this, PG_Rect(Width() - 310, 300, 300, 20),
+    d_temples = new TerrainConfig(this, Rectangle(Width() - 310, 300, 300, 20),
                 _("Temples"), 15, 30, 25);
 
-    d_b_ok = new PG_Button(this, PG_Rect(10, Height() - 40, Width()/2 - 20, 30), _("Start Game"),3);
+    d_b_ok = new PG_Button(this, Rectangle(10, Height() - 40, Width()/2 - 20, 30), _("Start Game"),3);
     d_b_ok->SetFontColor (PG_Color(0, 0, 0));
-    d_b_cancel = new PG_Button(this, PG_Rect(Width()/2+10, Height() - 40,Width()/2-20 , 30), _("Back to main menu"),3);
+    d_b_cancel = new PG_Button(this, Rectangle(Width()/2+10, Height() - 40,Width()/2-20 , 30), _("Back to main menu"),3);
     d_b_cancel->SetFontColor (PG_Color(0, 0, 0));
 
     //the buttons for the map size
-    d_b_normalsize = new PG_Button(this, PG_Rect(Width() - 250, 350, 150, 30), _("Normal size"),5);
+    d_b_normalsize = new PG_Button(this, Rectangle(Width() - 250, 350, 150, 30), _("Normal size"),5);
     d_b_normalsize->SetFontColor (PG_Color(0, 0, 0));
     d_b_normalsize->SetToggle(true);
-    d_b_smallsize = new PG_Button(this, PG_Rect(Width() - 250, 390, 150, 30), _("Small size"),6);
+    d_b_smallsize = new PG_Button(this, Rectangle(Width() - 250, 390, 150, 30), _("Small size"),6);
     d_b_smallsize->SetFontColor (PG_Color(0, 0, 0));
     d_b_smallsize->SetToggle(true);
-    d_b_tinysize = new PG_Button(this, PG_Rect(Width() - 250, 430, 150, 30), _("Tiny size"),7);
+    d_b_tinysize = new PG_Button(this, Rectangle(Width() - 250, 430, 150, 30), _("Tiny size"),7);
     d_b_tinysize->SetFontColor (PG_Color(0, 0, 0));
     d_b_tinysize->SetToggle(true);
     d_b_normalsize->SetPressed(true);
@@ -134,20 +141,20 @@ GamePreferencesDialog::GamePreferencesDialog(PG_Widget* parent, PG_Rect rect)
     
     // if the previous map is still available use this it as default setting
     std::string randommap = File::getSavePath() + "random.map";
-    d_edit = new PG_LineEdit(this, PG_Rect(Width() - 310, 60, 200, 25));
+    d_edit = new PG_LineEdit(this, Rectangle(Width() - 310, 60, 200, 25));
     d_edit->SetText(randommap.c_str());
 
-    d_b_random->sigClick.connect(slot(*this, &GamePreferencesDialog::randomClicked));
-    d_b_load->sigClick.connect(slot(*this, &GamePreferencesDialog::loadClicked));
-    d_b_browse->sigClick.connect(slot(*this, &GamePreferencesDialog::browseClicked));
-    d_b_ok->sigClick.connect(slot(*this, &GamePreferencesDialog::okClicked));
-    d_b_cancel->sigClick.connect(slot(*this, &GamePreferencesDialog::cancelClicked));
-    d_b_normalsize->sigClick.connect(slot(*this, &GamePreferencesDialog::sizeClicked));
-    d_b_smallsize->sigClick.connect(slot(*this, &GamePreferencesDialog::sizeClicked));
-    d_b_tinysize->sigClick.connect(slot(*this, &GamePreferencesDialog::sizeClicked));
+    d_b_random->sigClick.connect(slot(*this, &PGamePreferencesDialog::randomClicked));
+    d_b_load->sigClick.connect(slot(*this, &PGamePreferencesDialog::loadClicked));
+    d_b_browse->sigClick.connect(slot(*this, &PGamePreferencesDialog::browseClicked));
+    d_b_ok->sigClick.connect(slot(*this, &PGamePreferencesDialog::okClicked));
+    d_b_cancel->sigClick.connect(slot(*this, &PGamePreferencesDialog::cancelClicked));
+    d_b_normalsize->sigClick.connect(slot(*this, &PGamePreferencesDialog::sizeClicked));
+    d_b_smallsize->sigClick.connect(slot(*this, &PGamePreferencesDialog::sizeClicked));
+    d_b_tinysize->sigClick.connect(slot(*this, &PGamePreferencesDialog::sizeClicked));
 }
 
-GamePreferencesDialog::~GamePreferencesDialog()
+PGamePreferencesDialog::~PGamePreferencesDialog()
 {
     for (unsigned int i = 0; i < MAX_PLAYERS; i++)
         delete d_player_preferences[i];
@@ -175,7 +182,7 @@ GamePreferencesDialog::~GamePreferencesDialog()
     delete d_temples;
 }
 
-void GamePreferencesDialog::initGUI()
+void PGamePreferencesDialog::initGUI()
 {
 
     debug("initGUI");
@@ -239,7 +246,7 @@ void GamePreferencesDialog::initGUI()
     }
 }
 
-bool GamePreferencesDialog::browseClicked(PG_Button* btn)
+bool PGamePreferencesDialog::browseClicked(PG_Button* btn)
 {
     debug("browse clicked")
     
@@ -258,28 +265,28 @@ bool GamePreferencesDialog::browseClicked(PG_Button* btn)
     return true;
 }
 
-bool GamePreferencesDialog::randomClicked(PG_Button* btn)
+bool PGamePreferencesDialog::randomClicked(PG_Button* btn)
 {
     d_loaded = false;
     initGUI();
     return true;
 }
 
-bool GamePreferencesDialog::loadClicked(PG_Button* btn)
+bool PGamePreferencesDialog::loadClicked(PG_Button* btn)
 {
     d_loaded = true;
     initGUI();
     return true;
 }
 
-bool GamePreferencesDialog::cancelClicked(PG_Button* btn)
+bool PGamePreferencesDialog::cancelClicked(PG_Button* btn)
 {
     QuitModal();
     d_cancelled = true;
     return true;
 }
 
-bool GamePreferencesDialog::okClicked(PG_Button* btn)
+bool PGamePreferencesDialog::okClicked(PG_Button* btn)
 {
     //this is a workaround for a really strange bug where you would get a
     //segfault if you had activated an edit box and pressed the start button
@@ -293,7 +300,7 @@ bool GamePreferencesDialog::okClicked(PG_Button* btn)
     return true;
 }
 
-bool GamePreferencesDialog::sizeClicked(PG_Button* widget)
+bool PGamePreferencesDialog::sizeClicked(PG_Button* widget)
 {
     //set all buttons to not pressed except the caller
     d_b_normalsize->SetPressed(false);
@@ -325,13 +332,13 @@ bool GamePreferencesDialog::sizeClicked(PG_Button* widget)
     return true;
 }
 
-void GamePreferencesDialog::slotPlayerDataChanged()
+void PGamePreferencesDialog::slotPlayerDataChanged()
 {
     debug("slotPlayerDataChanged()");
     playerDataChanged.emit();
 }
 
-void GamePreferencesDialog::setPlayerName(int player, std::string name)
+void PGamePreferencesDialog::setPlayerName(int player, std::string name)
 {
     if(player < 0) return;
     if(player > 7) return;
@@ -340,7 +347,7 @@ void GamePreferencesDialog::setPlayerName(int player, std::string name)
     p->setName(name);
 }
 
-void GamePreferencesDialog::restrictPlayers(int number)
+void PGamePreferencesDialog::restrictPlayers(int number)
 {
     if(number < 0) number = 0;
     if(number > 7) number = 7;
@@ -351,7 +358,7 @@ void GamePreferencesDialog::restrictPlayers(int number)
         d_player_preferences[i]->Hide();
 }
 
-void GamePreferencesDialog::restrictSettings()
+void PGamePreferencesDialog::restrictSettings()
 {
     // this is similar to initGUI() in load mode,
     // but it is not the same!
@@ -382,7 +389,7 @@ void GamePreferencesDialog::restrictSettings()
     d_b_random->Hide();
 }
 
-int GamePreferencesDialog::noPlayers()
+int PGamePreferencesDialog::noPlayers()
 {
 	int n = 0;
 	
@@ -393,7 +400,7 @@ int GamePreferencesDialog::noPlayers()
 	return n;
 }
 
-bool GamePreferencesDialog::fillData(CreateScenario* creator)
+bool PGamePreferencesDialog::fillData(CreateScenario* creator)
 {
     int w = 100, h = 100, noSignposts, noStones;
     //fill all player data
@@ -488,7 +495,7 @@ bool GamePreferencesDialog::fillData(CreateScenario* creator)
 }
 
 
-bool GamePreferencesDialog::eventKeyDown(const SDL_KeyboardEvent* key)
+bool PGamePreferencesDialog::eventKeyDown(const SDL_KeyboardEvent* key)
 {	
     // Check , which key was pressed
     switch (key->keysym.sym)

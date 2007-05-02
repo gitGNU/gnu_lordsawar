@@ -16,9 +16,10 @@
 #define FL_COUNTER_H
 
 #include <string>
-#include <sigc++/sigc++.h>
+#include <sigc++/trackable.h>
 #include <SDL.h>
-#include "xmlhelper.h"
+
+class XML_Helper;
 
 /** The purpose of this class is very simple. Each object (player etc.) has a
   * unique id by which it may be accessed (this isn't important for now, but
@@ -30,7 +31,7 @@
   * static functions...
   */
 
-class FL_Counter : public SigC::Object
+class FL_Counter : public sigc::trackable
 {
     public:
         //! Initialise the counter with a start value

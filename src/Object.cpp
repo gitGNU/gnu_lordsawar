@@ -14,8 +14,9 @@
 
 #include "Object.h"
 #include "counter.h"
+#include "xmlhelper.h"
 
-Object::Object(PG_Point pos, Uint32 size)
+Object::Object(Vector<int> pos, Uint32 size)
     :d_pos(pos), d_size(size)
 {
     d_id = fl_counter->getNextId();
@@ -41,7 +42,7 @@ Object::~Object()
 {
 }
 
-bool Object::contains(PG_Point pos) const
+bool Object::contains(Vector<int> pos) const
 {
     return (pos.x >= d_pos.x) && (pos.x < d_pos.x + (int) d_size) && (pos.y >= d_pos.y) && (pos.y < d_pos.y + (int) d_size);
 }

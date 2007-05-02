@@ -18,14 +18,14 @@
 #include <pgbutton.h>
 #include <sstream>
 
-GoldReport::GoldReport(PG_Widget* parent, PG_Rect rect)
+GoldReport::GoldReport(PG_Widget* parent, Rectangle rect)
     :PG_Window(parent, rect, _("Gold report"), PG_Window::MODAL)
 {
-    PG_Button* b_ok = new PG_Button(this, PG_Rect((Width()/2 - 40),
+    PG_Button* b_ok = new PG_Button(this, Rectangle((Width()/2 - 40),
                     (Height() - 35), 80, 25), _("OK"),1);
     b_ok->sigClick.connect(slot(*this, &GoldReport::b_okClicked));
 
-    PG_Label* label = new PG_Label(this, PG_Rect(50, 50, 200, 20),
+    PG_Label* label = new PG_Label(this, Rectangle(50, 50, 200, 20),
                     _("Player's gold ressources:"));
 
     int height = 80;
@@ -35,13 +35,13 @@ GoldReport::GoldReport(PG_Widget* parent, PG_Rect rect)
         if (((*it) == plist->getNeutral()) || ((*it)->isDead()))
             continue;
 
-        label = new PG_Label(this, PG_Rect(70, height, 100, 15),
+        label = new PG_Label(this, Rectangle(70, height, 100, 15),
                     (*it)->getName().c_str());
         label->SetFontColor((*it)->getColor());
 
         std::stringstream sgold;
         sgold <<(*it)->getGold();
-        label = new PG_Label(this, PG_Rect(200, height, 50, 15), sgold.str().c_str());
+        label = new PG_Label(this, Rectangle(200, height, 50, 15), sgold.str().c_str());
         label->SetFontColor((*it)->getColor());
 
         height += 20;

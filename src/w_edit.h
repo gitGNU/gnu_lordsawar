@@ -36,7 +36,7 @@ class Hero;
 /** The superclass for the main game screen
   * 
   * Two classes care for the running of the game on the graphical side. One is
-  * MainWindow, which basically only deals with reacting to menu selections, the
+  * PMainWindow, which basically only deals with reacting to menu selections, the
   * other one is W_Edit. It controls all game widgets, such as the BigMap, the
   * SmallMap, the ArmyInfo display etc. and guards e.g. the pointer to the
   * GameScenario instance of the current game. As you can see from this listing,
@@ -59,14 +59,14 @@ class W_Edit : public PG_Widget
       * @param parent           the parent widget
       * @param rect             the rectangle for the game screen
       */
-    W_Edit(GameScenario* gameScenario, PG_Widget* parent,PG_Rect rect);
+    W_Edit(GameScenario* gameScenario, PG_Widget* parent,Rectangle rect);
     ~W_Edit();
 
     //! Function to resize the w_edit according to the current Resolution.
-    void changeResolution(PG_Rect rect,bool smaller);
+    void changeResolution(Rectangle rect,bool smaller);
 
     //! Function that actually places the items according to current resolution
-    void placeWidgets(PG_Rect rect);
+    void placeWidgets(Rectangle rect);
 
     //! Callback which makes the previous stack in the player's stacklist active
     bool b_prevClicked(PG_Button* btn);
@@ -150,7 +150,7 @@ class W_Edit : public PG_Widget
     void unlockScreen();
 
     //! centers the screen, this way we don't have to make bigmap publicly accessible
-    void centerScreen(const PG_Point pos){d_bigmap->centerView(pos);}
+    void centerScreen(const Vector<int> pos){d_bigmap->centerView(pos);}
 
     /** Stops the timers of all subwidgets (esp. bigmap and smallmap). Used when
       * showing several dialogs, because the timers would cause a flickering
@@ -167,7 +167,7 @@ class W_Edit : public PG_Widget
     //! Crude Callback function for closing the player announcement
     bool eventMouseMotion(const SDL_MouseMotionEvent* event);
         
-    //! Hack to keep GameScenario invisible from MainWindow
+    //! Hack to keep GameScenario invisible from PMainWindow
     bool save(std::string file){return d_gameScenario->saveGame(file);}
 
     //! Function that puts all units on the tile into the current active stack
@@ -181,7 +181,7 @@ class W_Edit : public PG_Widget
     void initButtons() {checkButtons();} 
 
     //! This signal is connected by Splash to the correct function.
-    static SigC::Signal1<bool,bool> sigChangeResolution;
+    static sigc::signal<bool,bool> sigChangeResolution;
 
     private:
     //! Centers the map on the first city of the active player
@@ -200,7 +200,7 @@ class W_Edit : public PG_Widget
     void updateStatus();
 
     //! callback when the user moves the mouse over the bigmap to a new tile
-    void movingMouse(PG_Point pos);
+    void movingMouse(Vector<int> pos);
 
     /** Callback from the NextTurn class. This function checks whether the
       * player is human or not. In the first case, it unlocks the screen etc.
@@ -263,7 +263,7 @@ class W_Edit : public PG_Widget
     SDL_Surface* d_scrollsurfon[8];
     SDL_Surface* d_bordersurf[4];
 
-    PG_Rect myrect;
+    Rectangle myrect;
 
     bool d_allDefending;
     bool d_lock;

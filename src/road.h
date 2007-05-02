@@ -28,7 +28,7 @@ class Road: public Location
           * @param pos          the location of the road
           * @param type 	the type of road.  0=nw, 7=w
           */
-        Road(PG_Point pos, std::string name = "Road", int type = 7);
+        Road(Vector<int> pos, std::string name = "Road", int type = 7);
 
         //! Loading constructor. See XML_Helper
         Road(XML_Helper* helper);

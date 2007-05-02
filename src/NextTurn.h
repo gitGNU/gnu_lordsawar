@@ -15,7 +15,7 @@
 #ifndef NEXT_TURN_H
 #define NEXT_TURN_H
 
-#include <sigc++/object_slot.h>
+#include <sigc++/trackable.h>
 #include "playerlist.h"
 
 /**
@@ -31,7 +31,7 @@
             or each round and therefore want a central place for this code.
  */
 
-class NextTurn: public SigC::Object
+class NextTurn: public sigc::trackable
 {
     public:
         /**
@@ -71,10 +71,10 @@ class NextTurn: public SigC::Object
 
            If the splayerStart signal returns false, the main loop will quit,
            which is useful if a human player's turn starts (the control is then 
-           handed over to teh SDL/ParaGUI message queue). Don't use this signal
+           handed over to teh ParaGUI message queue). Don't use this signal
            to hook up your own events or so, use the next, snextTurn.
          */
-        SigC::Signal1<bool, Player*> splayerStart;
+        sigc::signal<bool, Player*> splayerStart;
 
         /** This signal is a bit problematic and needs some more comments. It is
             emitted whenever a new player's turn starts. However, it is sometimes
@@ -85,13 +85,13 @@ class NextTurn: public SigC::Object
             is also emitted in W_Edit after the introductory message (Player xxx's
             turn) has been shown.
           */
-        SigC::Signal1<void, Player*> snextTurn;
+        sigc::signal<void, Player*> snextTurn;
         
         //! Signal which is emitted whenever a new round starts
-        SigC::Signal0<void> snextRound;
+        sigc::signal<void> snextRound;
 
         //! Signal as a workaround for a display bug; updates the screen
-        SigC::Signal1<bool,bool> supdating;
+        sigc::signal<void, bool> supdating;
 
     private:
         /**

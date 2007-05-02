@@ -17,8 +17,8 @@
 #include "RWinGame.h"
 #include "../sound.h"
 
-SigC::Signal1<void, Uint32> RWinGame::swinning;
-SigC::Signal0<void> RWinGame::swinDialog;
+sigc::signal<void, Uint32> RWinGame::swinning;
+sigc::signal<void> RWinGame::swinDialog;
 
 RWinGame::RWinGame(Uint32 status)
     :Reaction(WINGAME), d_status(status)

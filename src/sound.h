@@ -20,7 +20,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include <sigc++/object_slot.h>
+#include <sigc++/trackable.h>
 #ifdef FL_SOUND
 #include <SDL_mixer.h>
 #endif
@@ -67,7 +67,7 @@ struct MusicItem
 };
 
 
-class Sound : public SigC::Object
+class Sound : public sigc::trackable
 {
     public:
         //! Singleton getter

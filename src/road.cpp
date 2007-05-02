@@ -15,7 +15,7 @@
 #include "road.h"
 #include "GameMap.h"
 
-Road::Road(PG_Point pos, std::string name, int type)
+Road::Road(Vector<int> pos, std::string name, int type)
   :Location(name, pos), d_type(type)
 {
     //mark the location on the game map as occupied by a road

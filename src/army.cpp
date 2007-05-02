@@ -18,11 +18,12 @@
 #include "armysetlist.h"
 #include "counter.h"
 #include "GraphicsCache.h"
+#include "xmlhelper.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-SigC::Signal1<void, Army*> Army::sdying;
+sigc::signal<void, Army*> Army::sdying;
 
 Army::Army(const Army& a, Player* p)
     :d_type(a.d_type), d_armyset(a.d_armyset), d_pixmap(0), d_portrait(0),

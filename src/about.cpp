@@ -23,7 +23,7 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-AboutDialog::AboutDialog(PG_Widget* parent, PG_Rect rect)
+AboutDialog::AboutDialog(PG_Widget* parent, Rectangle rect)
   :PG_Window(parent, rect, _("About"), PG_Window::MODAL),timer(0),pos(0)
 {
     initValues();
@@ -34,74 +34,74 @@ AboutDialog::AboutDialog(PG_Widget* parent, PG_Rect rect)
 
     SetBackground(File::getMiscPicture("about_screen.jpg", false),BKMODE_STRETCH);
  
-    d_s_area =new PG_ScrollArea(this, PG_Rect(2,posy,320,viewsize));
+    d_s_area =new PG_ScrollArea(this, Rectangle(2,posy,320,viewsize));
     d_s_area->SetAreaHeight(s_devel.size()*15+s_graphics.size()*15+s_acontributors.size()*15+s_icontributors.size()*15+s_exmembers.size()*15+viewsize+290);
 
     posy+=10;
 
-    PG_Label* label = new PG_Label(d_s_area, PG_Rect(posx,posy,200, 20),_("Creator of the project:"));
+    PG_Label* label = new PG_Label(d_s_area, Rectangle(posx,posy,200, 20),_("Creator of the project:"));
     label->SetFontColor(PG_Color(64, 137, 182));
     posy+=20;
-    label = new PG_Label(d_s_area, PG_Rect(posx+25, posy, 130, 15),"Michael Bartl");    
+    label = new PG_Label(d_s_area, Rectangle(posx+25, posy, 130, 15),"Michael Bartl");    
     label->SetFontColor(PG_Color(0, 0, 0));
 
     posy+=20;
-    label = new PG_Label(d_s_area, PG_Rect(posx,posy,200, 20),_("Development:"));
+    label = new PG_Label(d_s_area, Rectangle(posx,posy,200, 20),_("Development:"));
     label->SetFontColor(PG_Color(64, 137, 182));
     
     posy+=5;
     for(unsigned int i=0;i<s_devel.size();i++)
     {
         posy+=15; 
-        label = new PG_Label(d_s_area, PG_Rect(posx+25, posy, 130, 15),s_devel[i].c_str());    
+        label = new PG_Label(d_s_area, Rectangle(posx+25, posy, 130, 15),s_devel[i].c_str());    
         label->SetFontColor(PG_Color(0, 0, 0));
     }
     posy+=20;
 
-    label = new PG_Label(d_s_area, PG_Rect(posx, posy, 200, 20),_("Graphics:"));    
+    label = new PG_Label(d_s_area, Rectangle(posx, posy, 200, 20),_("Graphics:"));    
     label->SetFontColor(PG_Color(64, 137, 182));
 
     posy+=5;
     for(unsigned int i=0;i<s_graphics.size();i++)
     {
         posy+=15;
-        label = new PG_Label(d_s_area, PG_Rect(posx+25, posy, 130, 15),s_graphics[i].c_str());    
+        label = new PG_Label(d_s_area, Rectangle(posx+25, posy, 130, 15),s_graphics[i].c_str());    
         label->SetFontColor(PG_Color(0, 0, 0));
     }
     posy+=20;
     
-    label = new PG_Label(d_s_area, PG_Rect(posx, posy, 200, 20),_("Contributors:"));
+    label = new PG_Label(d_s_area, Rectangle(posx, posy, 200, 20),_("Contributors:"));
     label->SetFontColor(PG_Color(64, 137, 182));
 
     posy+=5;
     for(unsigned int i=0;i<s_acontributors.size();i++)
     {
         posy+=15;
-        label = new PG_Label(d_s_area, PG_Rect(posx+25, posy, 130, 15),s_acontributors[i].c_str());    
+        label = new PG_Label(d_s_area, Rectangle(posx+25, posy, 130, 15),s_acontributors[i].c_str());    
         label->SetFontColor(PG_Color(0, 0, 0));
     }
     //posy+=20;
 
-    //label = new PG_Label(d_s_area, PG_Rect(posx, posy, 230, 20),_("Inactive Members/Contributors:"));
+    //label = new PG_Label(d_s_area, Rectangle(posx, posy, 230, 20),_("Inactive Members/Contributors:"));
     //label->SetFontColor(PG_Color(64, 137, 182));
 
     //posy+=5;
     for(unsigned int i=0;i<s_icontributors.size();i++)
     {
         posy+=15;
-        label = new PG_Label(d_s_area, PG_Rect(posx+25, posy, 130, 15),s_icontributors[i].c_str());    
+        label = new PG_Label(d_s_area, Rectangle(posx+25, posy, 130, 15),s_icontributors[i].c_str());    
         label->SetFontColor(PG_Color(0, 0, 0));
     }
     //posy+=20;
 
-    //label = new PG_Label(d_s_area, PG_Rect(posx, posy, 200, 20),_("Other Contributors:"));
+    //label = new PG_Label(d_s_area, Rectangle(posx, posy, 200, 20),_("Other Contributors:"));
     //label->SetFontColor(PG_Color(64, 137, 182));
 
     //posy+=5;
     for(unsigned int i=0;i<s_exmembers.size();i++)
     {
         posy+=15;
-        label = new PG_Label(d_s_area, PG_Rect(posx+25, posy, 130, 15),s_exmembers[i].c_str());    
+        label = new PG_Label(d_s_area, Rectangle(posx+25, posy, 130, 15),s_exmembers[i].c_str());    
         label->SetFontColor(PG_Color(0, 0, 0));
     }
     posy+=21;
@@ -109,10 +109,10 @@ AboutDialog::AboutDialog(PG_Widget* parent, PG_Rect rect)
     char tmp[20]; 
     sprintf(tmp,_("Version %s"),FL_VERSION);
 
-    label = new PG_Label(d_s_area, PG_Rect(posx+35, posy, 120, 20),tmp);
+    label = new PG_Label(d_s_area, Rectangle(posx+35, posy, 120, 20),tmp);
     //label->SetFontColor(PG_Color(50, 150, 50));
 
-    PG_Button* b_ok = new PG_Button(this, PG_Rect((Width() - 45),
+    PG_Button* b_ok = new PG_Button(this, Rectangle((Width() - 45),
                     (Height() - 25), 40, 20), _("OK"),1);
 
     b_ok->sigClick.connect(slot(*this, &AboutDialog::b_okClicked));

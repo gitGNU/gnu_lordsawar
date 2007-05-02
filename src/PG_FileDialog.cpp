@@ -14,26 +14,26 @@ void PG_FileDialog::Init(Type type)
 	// label for the dir selector
 	char* text;
 	(type == PG_OPEN)?text = _("Look in:"):text=_("Save in:");
-	new PG_Label(this, PG_Rect(10, 35, 100, 20), text);
+	new PG_Label(this, Rectangle(10, 35, 100, 20), text);
 
 	// dir selector drop down
-	my_dirdrop = new PG_DropDown(this, PG_Rect(70, 32, WIDTH - 200, 22),PGDDID);
+	my_dirdrop = new PG_DropDown(this, Rectangle(70, 32, WIDTH - 200, 22),PGDDID);
 	my_dirdrop->SetEditable(false);
 	my_dirdrop->sigSelectItem.connect(slot(*this, &PG_FileDialog::dir_select_handler));
 
 	// file list box
-	my_filelistbox = new PG_ListBox(this, PG_Rect(10, 65, WIDTH-20, HEIGHT-130));
+	my_filelistbox = new PG_ListBox(this, Rectangle(10, 65, WIDTH-20, HEIGHT-130));
 	my_filelistbox->sigSelectItem.connect(slot(*this, &PG_FileDialog::file_select_handler));
 
 	// labels
-	new PG_Label(this, PG_Rect(10, HEIGHT-60, 100, 20), _("File name:"));
-	new PG_Label(this, PG_Rect(10, HEIGHT-30, 100, 20), _("File type:"));
+	new PG_Label(this, Rectangle(10, HEIGHT-60, 100, 20), _("File name:"));
+	new PG_Label(this, Rectangle(10, HEIGHT-30, 100, 20), _("File type:"));
 	
 	// edit box for filename when selected
-	my_filename = new PG_LineEdit(this, PG_Rect(100, HEIGHT-60, WIDTH - 230, 22), "LineEdit", 255);
+	my_filename = new PG_LineEdit(this, Rectangle(100, HEIGHT-60, WIDTH - 230, 22), "LineEdit", 255);
 
 	// file filter select dropdown
-	my_filterdrop = new PG_DropDown(this, PG_Rect(100, HEIGHT-30, WIDTH - 230, 22),PGDDID);
+	my_filterdrop = new PG_DropDown(this, Rectangle(100, HEIGHT-30, WIDTH - 230, 22),PGDDID);
 	my_filterdrop->SetEditable(false);
 
     // FIXME: to prevent strange bugs: disable the filterdrop
@@ -41,13 +41,13 @@ void PG_FileDialog::Init(Type type)
 
 	// ok.cancle btns
 	(type == PG_OPEN)?text = _("Open"):text=_("Save");
-	my_btn1 = new PG_Button(this, PG_Rect(310, HEIGHT-60, 100, 25), text,PG_BTN_ONE);
-	my_closebtn = new PG_Button(this, PG_Rect(310, HEIGHT-30, 100, 25), _("Cancel"), PG_BTN_TWO);
+	my_btn1 = new PG_Button(this, Rectangle(310, HEIGHT-60, 100, 25), text,PG_BTN_ONE);
+	my_closebtn = new PG_Button(this, Rectangle(310, HEIGHT-30, 100, 25), _("Cancel"), PG_BTN_TWO);
 	
 	// up a dir
-	my_updirbtn = new PG_Button(this, PG_Rect(320, 32, 25, 25), _("U"), PG_BTN_UP);
+	my_updirbtn = new PG_Button(this, Rectangle(320, 32, 25, 25), _("U"), PG_BTN_UP);
 	//new dir
-	my_newfolderbtn = new PG_Button(this, PG_Rect(350, 32, 25, 25), "*", PG_BTN_NEW);
+	my_newfolderbtn = new PG_Button(this, Rectangle(350, 32, 25, 25), "*", PG_BTN_NEW);
 
 	my_btn1->sigClick.connect(slot(*this, &PG_FileDialog::my_btn1Clicked));
 	my_closebtn->sigClick.connect(slot(*this, &PG_FileDialog::my_closebtnClicked));
@@ -58,7 +58,7 @@ void PG_FileDialog::Init(Type type)
 PG_FileDialog::PG_FileDialog(PG_Widget* parent, Type type, bool modal,
                     string dir, string filter, string filtername, 
                     const char* style)
-    :PG_Window(parent, PG_Rect(0,0, WIDTH, HEIGHT), (type == PG_OPEN)?_("Open"):_("Save"), (modal)?PG_Window::MODAL : PG_Window::DEFAULT)
+    :PG_Window(parent, Rectangle(0,0, WIDTH, HEIGHT), (type == PG_OPEN)?_("Open"):_("Save"), (modal)?PG_Window::MODAL : PG_Window::DEFAULT)
 {
 	// do the common initialisation
 	Init(type);

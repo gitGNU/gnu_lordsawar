@@ -15,6 +15,8 @@
 #ifndef EROUND_H
 #define EROUND_H
 
+#include <sigc++/signal.h>
+
 #include "Event.h"
 
 class Player;
@@ -51,7 +53,7 @@ class ERound : public Event
         /** This signal is connected elsewhere and is used by the event
           * to get the current round number.
           */
-        SigC::Signal0<Uint32> sgettingRound;
+        sigc::signal<Uint32> sgettingRound;
 
     private:
         Uint32 d_round;

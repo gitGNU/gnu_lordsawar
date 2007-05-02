@@ -17,7 +17,7 @@
 
 #include <string>
 #include <map>
-#include <pgpoint.h>
+#include "vector.h"
 
 class Threatlist;
 class Player;
@@ -73,7 +73,7 @@ class AI_Analysis
           * 
           * @param pos  the position around which the threats should be ordered
           */
-        const Threatlist* getThreatsInOrder(PG_Point pos);
+        const Threatlist* getThreatsInOrder(Vector<int> pos);
 
         // get the danger that this friendly city is in
         float getCityDanger(City *city);

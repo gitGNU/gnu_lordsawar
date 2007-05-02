@@ -35,7 +35,7 @@ class LangDialog : public PG_Window
 {
     public:
         //! Standard constructor
-        LangDialog(PG_Widget* parent, const PG_Rect r);
+        LangDialog(PG_Widget* parent, const Rectangle r);
 
     private:
         //! callback if another language is chosen

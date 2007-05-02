@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "templelist.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -50,7 +52,7 @@ Templelist::Templelist()
 
 Templelist::Templelist(XML_Helper* helper)
 {
-    helper->registerTag("temple", SigC::slot((*this), &Templelist::load));
+    helper->registerTag("temple", sigc::mem_fun(this, &Templelist::load));
 }
 
 bool Templelist::save(XML_Helper* helper) const

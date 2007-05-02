@@ -28,7 +28,7 @@ class Popup : public PG_Label
 {
     public:
         //! Constructor; the parameters are inherited from paragui
-        Popup(PG_Widget* parent, PG_Rect rect);
+        Popup(PG_Widget* parent, Rectangle rect);
         ~Popup();
 
         //! Event handler, hides the widget

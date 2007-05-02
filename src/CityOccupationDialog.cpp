@@ -29,7 +29,7 @@ using namespace std;
 //#define debug(x)
 
 CityOccupationDialog::CityOccupationDialog(City* city)
-    :PG_Window(0, PG_Rect((PG_Application::GetScreenWidth()-320)/2,
+    :PG_Window(0, Rectangle((PG_Application::GetScreenWidth()-320)/2,
                 (PG_Application::GetScreenHeight()-340)/2, 320, 340),
                 _("Victory!"), PG_Window::MODAL), d_b_pillage(0), d_city(city)
 {
@@ -128,8 +128,8 @@ bool CityOccupationDialog::b_pillageClicked(PG_Button* btn)
     Playerlist::getInstance()->getActiveplayer()->cityPillage(d_city, gold);
     snprintf(buf,100,_("You have pillaged %d gold pieces."), gold);
     QuitModal();
-    PG_MessageBox mb(this, PG_Rect(my_width/2-100, my_height/2-87, 200, 150), _("Pillage City"),
-                buf, PG_Rect(60, 110, 80, 30), _("OK"));
+    PG_MessageBox mb(this, Rectangle(my_width/2-100, my_height/2-87, 200, 150), _("Pillage City"),
+                buf, Rectangle(60, 110, 80, 30), _("OK"));
     mb.Show();
     mb.RunModal();
     mb.Hide();

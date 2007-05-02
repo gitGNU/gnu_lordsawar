@@ -15,9 +15,9 @@
 #ifndef RCREATEITEM_H
 #define RCREATEITEM_H
 
-#include <pgpoint.h>
-
 #include "Reaction.h"
+
+#include "../vector.h"
 
 class Item;
 
@@ -37,7 +37,7 @@ class RCreateItem : public Reaction
           *
           * @note Use only valid positions and indices to avoid problems!
           */
-        RCreateItem(Uint32 index, PG_Point pos);
+        RCreateItem(Uint32 index, Vector<int> pos);
         
         //! Loading constructor
         RCreateItem(XML_Helper* helper);
@@ -60,14 +60,14 @@ class RCreateItem : public Reaction
         void setItem(Uint32 item) {d_item = item;}
 
         //! Returns the position where the item appears
-        PG_Point getPos() const {return d_pos;}
+        Vector<int> getPos() const {return d_pos;}
 
         //! Sets the position where the item appears
-        void setPos(PG_Point pos) {d_pos = pos;}
+        void setPos(Vector<int> pos) {d_pos = pos;}
 
     private:
         Uint32 d_item;
-        PG_Point d_pos;
+        Vector<int> d_pos;
 };
 
 #endif //RCREATEITEM

@@ -11,6 +11,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "RAddUnit.h"
 #include "../playerlist.h"
 #include "../defs.h"
@@ -25,7 +27,7 @@ using namespace std;
 //#define debug(x)
 
 
-RAddUnit::RAddUnit(Stack* s, Uint32 player, PG_Point pos)
+RAddUnit::RAddUnit(Stack* s, Uint32 player, Vector<int> pos)
     :Reaction(ADDUNIT), d_stack(s), d_player(player), d_pos(pos)
 {
 }
@@ -42,7 +44,7 @@ RAddUnit::RAddUnit(XML_Helper* helper)
     helper->getData(i, "y");    d_pos.y = i;
 
     //we need to load the stack separately
-    helper->registerTag("stack", SigC::slot((*this), &RAddUnit::loadStack));
+    helper->registerTag("stack", sigc::mem_fun(*this, &RAddUnit::loadStack));
 }
 
 RAddUnit::~RAddUnit()
@@ -110,7 +112,7 @@ bool RAddUnit::trigger() const
             if (dx == 0 && dy == 0)
                 continue;
            
-            PG_Point newpos;
+            Vector<int> newpos;
             newpos.x = d_pos.x+dx;
             newpos.y = d_pos.y+dy;
             debug("checking position"<<newpos.x<<","<<newpos.y)

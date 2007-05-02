@@ -34,18 +34,18 @@ class VectorDialog : public PG_Window
 {
     public:
         // CREATORS
-        VectorDialog(City* city,PG_Widget* parent, PG_Rect rect);
+        VectorDialog(City* city,PG_Widget* parent, Rectangle rect);
         ~VectorDialog();
 
 
-        PG_Point getVectorPos() {return d_vpos;}
+        Vector<int> getVectorPos() {return d_vpos;}
         // CALLBACK FUNCTIONS
         bool okClicked(PG_Button* btn);
 
         //! callback when the user moves the mouse over the vectormap 
-        void movingMouse(PG_Point pos);
+        void movingMouse(Vector<int> pos);
         //! callback when the user clicks the mouse over the vectormap
-        void clickedMouse(PG_Point pos);
+        void clickedMouse(Vector<int> pos);
         //! Callback when another city is selected from the listbox
         bool citySelected(PG_ListBoxBaseItem* item);
 
@@ -55,7 +55,7 @@ class VectorDialog : public PG_Window
         PG_Label* d_l_tilepos;
         PG_Label* d_l_vectpos;
         PG_ListBox* d_cities;
-        PG_Point d_vpos;
+        Vector<int> d_vpos;
 
         City* d_city;
         

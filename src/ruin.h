@@ -16,7 +16,7 @@
 #define RUIN_H
 
 #include <string>
-#include <sigc++/object_slot.h>
+#include <sigc++/trackable.h>
 #include "Location.h"
 #include "stack.h"
 
@@ -28,7 +28,7 @@ class Stack;
   * wins, the ruin becomes search and the player gets some reward.
   */
 
-class Ruin : public Location, public SigC::Object
+class Ruin : public Location, public sigc::trackable
 {
     public:
         /** Default constructor
@@ -37,7 +37,7 @@ class Ruin : public Location, public SigC::Object
           * @param owner        the monsters occupying the ruin
           * @param searched     sets the searched flag of the ruin
           */
-        Ruin(PG_Point pos, std::string name = "", Stack* owner = 0,
+        Ruin(Vector<int> pos, std::string name = "", Stack* owner = 0,
             bool searched = false);
 
         //! Copy constructor

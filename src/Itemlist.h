@@ -15,7 +15,8 @@
 #define ITEMLIST_H
 
 #include <map>
-#include <sigc++/sigc++.h>
+#include <sigc++/trackable.h>
+
 #include "Item.h"
 
 /** The Itemlist holds all item templates (i.e. types of items) together.
@@ -28,7 +29,7 @@
   * item index as index.
   */
 
-class Itemlist : public std::map<Uint32, Item*>, public SigC::Object
+class Itemlist : public std::map<Uint32, Item*>, public sigc::trackable
 {
     public:
 

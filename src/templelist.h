@@ -15,7 +15,7 @@
 #ifndef TEMPLELIST_H
 #define TEMPLELIST_H
 
-#include <sigc++/object_slot.h>
+#include <sigc++/trackable.h>
 #include "ObjectList.h"
 #include "temple.h"
 
@@ -24,7 +24,7 @@
   * temples.
   */
 
-class Templelist : public ObjectList<Temple>, public SigC::Object
+class Templelist : public ObjectList<Temple>, public sigc::trackable
 {
     public:
         //! Return the singleton instance. Create a new one if needed.

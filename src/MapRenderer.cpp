@@ -12,22 +12,18 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <SDL.h>
+#include <string>
+
 #include "MapRenderer.h"
 #include "GameMap.h"
 #include "defs.h"
-#include <SDL.h>
-#include <string>
 
 using namespace std;
 
 MapRenderer::MapRenderer(SDL_Surface* surface)
 {
     d_surface = surface;
-
-    // UL: what was this for?
-    // doesn't seem to do anything if i comment this out. ??
-//    SDL_Surface* dummy = SDL_CreateRGBSurface(0, 64, 64, 16, 0, 0, 0, 0);
-//    SDL_FreeSurface(dummy);
 
     for (int tilex = 0; tilex < GameMap::getInstance()->getWidth(); tilex++)
         for (int tiley = 0; tiley < GameMap::getInstance()->getHeight(); tiley++)
@@ -137,58 +133,79 @@ void MapRenderer::smooth(int x, int y)
     }
 
     // set calculated corner tiles
-    GameMap::getInstance()->getTile(x,y)->setCorners(corner[0], corner[1], corner[2], corner[3]);
+    GameMap::getInstance()->getTile(x,y)
+	->setCorners(corner[0], corner[1], corner[2], corner[3]);
 }
 
 void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
-        int columns, int rows)
+			 int columns, int rows)
 {
     SDL_Rect r;
     GameMap* map = GameMap::getInstance();
-    r.w = r.h = map->getTileSet()->getTileSize() / 2;
+    int width = GameMap::getWidth();
+    int height = GameMap::getHeight();
+    int tilesize = map->getTileSet()->getTileSize();
+    r.w = r.h = tilesize / 2;
     int drawY = y;
+
+    Uint32 background_color = SDL_MapRGB(d_surface->format, 0, 0, 0);
     
-    for(int tileY = tileStartY; tileY < (tileStartY + rows); tileY++)
+    for (int tileY = tileStartY; tileY < (tileStartY + rows); tileY++)
     {
         int drawX = x;
-        for(int tileX = tileStartX; tileX < (tileStartX + columns); tileX++)
+        for (int tileX = tileStartX; tileX < (tileStartX + columns); tileX++)
         {
-            // get correct tile
-            Tile* type = (*map->getTileSet())[map->getTile(tileX,tileY)->getType()];
+	    // first check if we're out of the map bounds
+	    if (tileX >= width || tileY >= height) {
+		SDL_Rect br;
+		br.x = drawX;
+		br.y = drawY;
+		br.w = br.h = tilesize;
+		
+		SDL_FillRect(d_surface, &br, background_color);
+	    }
+	    else {
+		// get correct tile
+		Tile* type = (*map->getTileSet())[map->getTile(tileX,tileY)->getType()];
 
-            // render all 4 corners
-            r.x = drawX;
-            r.y = drawY;
-            int corner = map->getTile(tileX,tileY)->getCorner(0);
-            SDL_BlitSurface(type->getSurface(corner), 0, d_surface, &r);
+		// render all 4 corners
+		r.x = drawX;
+		r.y = drawY;
+		int corner = map->getTile(tileX,tileY)->getCorner(0);
+		SDL_BlitSurface(type->getSurface(corner), 0, d_surface, &r);
 
-            r.x = drawX+r.w;
-            r.y = drawY;
-            corner = map->getTile(tileX,tileY)->getCorner(1);
-            SDL_BlitSurface(type->getSurface(corner), 0, d_surface, &r);
+		r.x = drawX+r.w;
+		r.y = drawY;
+		corner = map->getTile(tileX,tileY)->getCorner(1);
+		SDL_BlitSurface(type->getSurface(corner), 0, d_surface, &r);
 
-            r.x = drawX;
-            r.y = drawY+r.h;
-            corner = map->getTile(tileX,tileY)->getCorner(2);
-            SDL_BlitSurface(type->getSurface(corner), 0, d_surface, &r);
+		r.x = drawX;
+		r.y = drawY+r.h;
+		corner = map->getTile(tileX,tileY)->getCorner(2);
+		SDL_BlitSurface(type->getSurface(corner), 0, d_surface, &r);
 
-            r.x = drawX + r.w;
-            r.y = drawY + r.h;
-            corner = map->getTile(tileX,tileY)->getCorner(3);
-            SDL_BlitSurface(type->getSurface(corner), 0, d_surface, &r);
-
-            drawX += map->getTileSet()->getTileSize();
+		r.x = drawX + r.w;
+		r.y = drawY + r.h;
+		corner = map->getTile(tileX,tileY)->getCorner(3);
+		SDL_BlitSurface(type->getSurface(corner), 0, d_surface, &r);
+	    }
+	    
+            drawX += tilesize;
         }
-        drawY += map->getTileSet()->getTileSize();
+        drawY += tilesize;
     }
 
     // Now, with the implementation of the diagonal tiles, we need a second run.
     // Here, we have to check if we have typical diagonal transitions and if so,
     // blit the river-with-bridge structure over the terrain. We loop over two
     // tiles more since we always check for the lower right or lower left tile.
-    int width = GameMap::getWidth();
-    int height = GameMap::getHeight();
-    r.w = r.h = map->getTileSet()->getTileSize();
+    r.w = r.h = tilesize;
+
+    // actively disregard out of bounds map tiles in this run
+    if (tileStartX + columns > width)
+	columns = width - tileStartX; 
+    if (tileStartY + rows > height)
+	rows = height - tileStartY; 
 
     // shortcut: get the index of the water tile; this saves us a lot of
     // shuffling later

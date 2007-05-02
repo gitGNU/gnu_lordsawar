@@ -34,16 +34,16 @@
 class Fighter
 {
     public:
-        Fighter(Army* a, PG_Point p);
+        Fighter(Army* a, Vector<int> p);
         
         Army* army;
-        PG_Point pos;       // location on the map (needed to calculate boni)
+        Vector<int> pos;       // location on the map (needed to calculate boni)
         int shots;          // number of shots left
         int att_bonus;
         int def_bonus;
 };
 
-Fighter::Fighter(Army* a, PG_Point p)
+Fighter::Fighter(Army* a, Vector<int> p)
     :army(a), pos(p), shots(a->getStat(Army::SHOTS)), att_bonus(0),
     def_bonus(0)
 {
@@ -90,7 +90,7 @@ Fight::Fight(Stack* attacker, Stack* defender, bool duel)
     // In the third case, Attacker and defenders throw in everything they have
 
     Maptile* tile = GameMap::getInstance()->getTile(defender->getPos());
-    PG_Point p = defender->getPos();
+    Vector<int> p = defender->getPos();
 
     bool land = false;
     bool sea = false;
@@ -142,7 +142,7 @@ Fight::Fight(Stack* attacker, Stack* defender, bool duel)
                     d_defenders.push_back(s);
                     for (sit = s->begin(); sit != s->end(); sit++)
                     {
-                        Fighter* f = new Fighter((*sit), PG_Point(x,y));
+                        Fighter* f = new Fighter((*sit), Vector<int>(x,y));
                         d_def_ranged.push_back(f);
                     }
                 }
@@ -202,7 +202,7 @@ void Fight::battle()
     // First, look if the attacker died; the attacking stack is the first
     // one in the list
     bool survivor = false;
-    Stack* s = (*d_attackers.begin());
+    Stack* s = d_attackers.front();
     for (Stack::const_iterator it = s->begin(); it != s->end(); it++)
         if ((*it)->getHP() > 0)
         {
@@ -218,7 +218,7 @@ void Fight::battle()
 
     // Now look if the defender died; also the first in the list
     survivor = false;
-    s = (*d_defenders.begin());
+    s = d_defenders.front();
     for (Stack::const_iterator it = s->begin(); it != s->end(); it++)
         if ((*it)->getHP() > 0)
         {

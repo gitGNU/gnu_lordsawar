@@ -16,7 +16,7 @@
 #define REACTION_H
 
 #include <SDL_types.h>
-#include <sigc++/sigc++.h>
+#include <sigc++/trackable.h>
 #include <vector>
 
 #include "../xmlhelper.h"
@@ -52,7 +52,7 @@
   * or not. See Condition.h for details.
   */
 
-class Reaction : public SigC::Object
+class Reaction : public sigc::trackable
 {
     public:
         enum Type {MESSAGE = 0, ADDGOLD = 1, ADDUNIT = 2, DELUNIT = 3,

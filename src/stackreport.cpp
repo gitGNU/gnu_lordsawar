@@ -25,12 +25,12 @@
 class StackItem : public PG_Widget
 {
     public:
-        StackItem(PG_Widget* parent, PG_Rect rect);
+        StackItem(PG_Widget* parent, Rectangle rect);
         ~StackItem();
 
         void readData(Stack* stack);
 
-        SigC::Signal1<void, Stack*> sclicked;
+        sigc::signal<void, Stack*> sclicked;
 
     private:
         bool eventMouseButtonDown(const SDL_MouseButtonEvent * event);
@@ -42,16 +42,16 @@ class StackItem : public PG_Widget
         Stack* d_stack;
 };
 
-StackItem::StackItem(PG_Widget* parent, PG_Rect rect)
+StackItem::StackItem(PG_Widget* parent, Rectangle rect)
     :PG_Widget(parent, rect)
 {
-    d_l_owner = new PG_Label(this, PG_Rect(10, 10, 150, 15), "");
-    d_l_xpos = new PG_Label(this, PG_Rect(200, 10, 45, 15), "");
-    d_l_ypos = new PG_Label(this, PG_Rect(250, 10, 45, 15), "");
+    d_l_owner = new PG_Label(this, Rectangle(10, 10, 150, 15), "");
+    d_l_xpos = new PG_Label(this, Rectangle(200, 10, 45, 15), "");
+    d_l_ypos = new PG_Label(this, Rectangle(250, 10, 45, 15), "");
 
     for (int i = 0; i < 8; i++)
     {
-        d_b_army[i] = new PG_Button(this, PG_Rect(10 + i*50, 30, 40, 40), "",i);
+        d_b_army[i] = new PG_Button(this, Rectangle(10 + i*50, 30, 40, 40), "",i);
         d_b_army[i]->EnableReceiver(false);
         d_b_army[i]->Hide();
     }
@@ -111,28 +111,28 @@ bool StackItem::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
 
 
 //now comes the StackReport class
-StackReport::StackReport(PG_Widget* parent, PG_Rect rect)
+StackReport::StackReport(PG_Widget* parent, Rectangle rect)
     :PG_Window(parent, rect, _("stack report"), PG_Window::MODAL), d_index(0)
 {
     //I assume 500x400 pixels here as well
-    d_b_ok = new PG_Button(this, PG_Rect(430, 365, 90, 25), _("OK"),2);
+    d_b_ok = new PG_Button(this, Rectangle(430, 365, 90, 25), _("OK"),2);
     d_b_ok->sigClick.connect(slot(*this, &StackReport::b_okClicked));
 
-    d_b_up = new PG_Button(this, PG_Rect(430, 150, 90, 25), _("Prev."),0);
+    d_b_up = new PG_Button(this, Rectangle(430, 150, 90, 25), _("Prev."),0);
     d_b_up->sigClick.connect(slot(*this, &StackReport::b_upClicked));
 
-    d_b_down = new PG_Button(this, PG_Rect(430, 250, 90, 25), _("Next"),1);
+    d_b_down = new PG_Button(this, Rectangle(430, 250, 90, 25), _("Next"),1);
     d_b_down->sigClick.connect(slot(*this, &StackReport::b_downClicked));
 
-    d_l_number = new PG_Label(this, PG_Rect(430, 35, 60, 20), "");
+    d_l_number = new PG_Label(this, Rectangle(430, 35, 60, 20), "");
 
-    d_items[0] = new StackItem(this, PG_Rect(10, 30, 420, 80));
-    d_items[1] = new StackItem(this, PG_Rect(10, 120, 420, 80));
-    d_items[2] = new StackItem(this, PG_Rect(10, 210, 420, 80));
-    d_items[3] = new StackItem(this, PG_Rect(10, 300, 420, 80));
+    d_items[0] = new StackItem(this, Rectangle(10, 30, 420, 80));
+    d_items[1] = new StackItem(this, Rectangle(10, 120, 420, 80));
+    d_items[2] = new StackItem(this, Rectangle(10, 210, 420, 80));
+    d_items[3] = new StackItem(this, Rectangle(10, 300, 420, 80));
 
     for (int i = 0; i < 4; i++)
-        d_items[i]->sclicked.connect(SigC::slot(*this, &StackReport::stackSelected));
+        d_items[i]->sclicked.connect(sigc::slot(*this, &StackReport::stackSelected));
 
     //now get all stacks sorted by player with the activeplayer first and
     //the stacks of the neutral player last

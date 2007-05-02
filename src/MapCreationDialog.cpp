@@ -21,15 +21,15 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-MapCreationDialog::MapCreationDialog(PG_Widget* parent, PG_Rect rect)
+MapCreationDialog::MapCreationDialog(PG_Widget* parent, Rectangle rect)
     :PG_Window(parent, rect, _("Creating Map"), PG_Window::MODAL)
 {
-    label = new PG_Label(this, PG_Rect(0, 35, rect.w, 20),
+    label = new PG_Label(this, Rectangle(0, 35, rect.w, 20),
                         _("Generating random map"));
 
     label->SetAlignment(PG_Label::CENTER);// middle
     
-    progressBar = new PG_ProgressBar(this, PG_Rect(10, 65, rect.w - 20, 25));
+    progressBar = new PG_ProgressBar(this, Rectangle(10, 65, rect.w - 20, 25));
 }
 
 MapCreationDialog::~MapCreationDialog()

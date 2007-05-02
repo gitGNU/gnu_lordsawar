@@ -12,7 +12,10 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <string>
+#include <sigc++/functors/mem_fun.h>
+
 #include "Reaction.h"
+
 #include "RMessage.h"
 #include "RAddGold.h"
 #include "RAddUnit.h"
@@ -36,7 +39,7 @@ Reaction::Reaction(Type type)
 
 Reaction::Reaction(XML_Helper* helper)
 {
-    helper->registerTag("condition", SigC::slot(*this, &Reaction::loadCondition));
+    helper->registerTag("condition", sigc::mem_fun(*this, &Reaction::loadCondition));
 }
 
 Reaction::~Reaction()

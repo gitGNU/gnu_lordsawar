@@ -12,8 +12,9 @@ liblwevents_a_SOURCES = \
 	ERound.cpp ERuinSearch.cpp ETempleSearch.cpp EDummy.cpp ENextTurn.cpp \
 	EStackKilled.cpp EStackMove.cpp
 
+
 INCLUDES = \
     $(LIBSIGC_CFLAGS) \
-    $(PARAGUI_CFLAGS)
+    $(SDL_CFLAGS)
 
 AM_CXXFLAGS = -Wall

@@ -31,11 +31,11 @@ class CreateScenario;
 
 /** Class for setting up player preferences
   *
-  * GamePreferencesDialog is the class where the player, or players in a
+  * PGamePreferencesDialog is the class where the player, or players in a
   * multiplayergame, decide which parameters he/they want to play with
   */
 
-class GamePreferencesDialog : public PG_ThemeWidget
+class PGamePreferencesDialog : public PG_ThemeWidget
 {
 	public:
         /** Dialog constructor
@@ -43,14 +43,14 @@ class GamePreferencesDialog : public PG_ThemeWidget
           * @param parent   the parent widget (inherited from PG_Widget)
           * @param rect     the rect for the widget (silently ignored)
           */
-        GamePreferencesDialog(PG_Widget* parent, PG_Rect rect);
-        ~GamePreferencesDialog();
+        PGamePreferencesDialog(PG_Widget* parent, Rectangle rect);
+        ~PGamePreferencesDialog();
 
         //! Switches the GUI between random map settings and loading of a map
         void initGUI();
 
         // SIGNALS
-        SigC::Signal0<void> playerDataChanged;
+        sigc::Signal0<void> playerDataChanged;
 
         // SLOTS
         void slotPlayerDataChanged();

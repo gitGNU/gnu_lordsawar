@@ -31,43 +31,43 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-MainWindow::MainWindow(GameScenario* gameScenario, const PG_Rect& rect)
+PMainWindow::PMainWindow(GameScenario* gameScenario, const Rectangle& rect)
   :PG_ThemeWidget(0, rect, true), d_lastsave(""),arrowx(0),arrowy(0)
 {
     // create menus
     d_fileMenu = new PG_PopupMenu(0, 20, 0, 0);
     d_fileMenu->SetFontColor (PG_Color (0, 0, 0), 1);
-    d_fileMenu->addMenuItem(_("Load"), 0, slot(*this,&MainWindow::file_load));
-    d_fileMenu->addMenuItem(_("Save"), 1, slot(*this,&MainWindow::file_save));
-    d_fileMenu->addMenuItem(_("Save as"), 2, slot(*this,&MainWindow::file_saveas));
+    d_fileMenu->addMenuItem(_("Load"), 0, slot(*this,&PMainWindow::file_load));
+    d_fileMenu->addMenuItem(_("Save"), 1, slot(*this,&PMainWindow::file_save));
+    d_fileMenu->addMenuItem(_("Save as"), 2, slot(*this,&PMainWindow::file_saveas));
     d_fileMenu->addSeparator();
-    d_fileMenu->addMenuItem(_("Quit"), 3, slot(*this,&MainWindow::file_quit));
+    d_fileMenu->addMenuItem(_("Quit"), 3, slot(*this,&PMainWindow::file_quit));
 
     d_reportsMenu = new PG_PopupMenu(0, 170, 0, 0);
     d_reportsMenu->SetFontColor (PG_Color (0, 0, 0), 1);
-    d_reportsMenu->addMenuItem(_("Armies"), 0, slot(*this,&MainWindow::reports_armies));
-    d_reportsMenu->addMenuItem(_("Cities"), 1, slot(*this,&MainWindow::reports_cities));
-    d_reportsMenu->addMenuItem(_("Gold"), 2, slot(*this,&MainWindow::reports_gold));
-    d_reportsMenu->addMenuItem(_("Quests"), 3, slot(*this,&MainWindow::reports_quests));
+    d_reportsMenu->addMenuItem(_("Armies"), 0, slot(*this,&PMainWindow::reports_armies));
+    d_reportsMenu->addMenuItem(_("Cities"), 1, slot(*this,&PMainWindow::reports_cities));
+    d_reportsMenu->addMenuItem(_("Gold"), 2, slot(*this,&PMainWindow::reports_gold));
+    d_reportsMenu->addMenuItem(_("Quests"), 3, slot(*this,&PMainWindow::reports_quests));
     
     d_optionsMenu = new PG_PopupMenu(0, 0, 0, 0);
     d_optionsMenu->SetFontColor (PG_Color (0, 0, 0), 1);
-    d_optionsMenu->addMenuItem(_("Game options"), 0, slot(*this,&MainWindow::options_game));
+    d_optionsMenu->addMenuItem(_("Game options"), 0, slot(*this,&PMainWindow::options_game));
 
     d_helpMenu = new PG_PopupMenu(0, 470, 0, 0);
     d_helpMenu->SetFontColor (PG_Color (0, 0, 0), 1);
-    d_helpMenu->addMenuItem(_("About"), 1, slot(*this,&MainWindow::help_about));
+    d_helpMenu->addMenuItem(_("About"), 1, slot(*this,&PMainWindow::help_about));
     d_helpMenu->addSeparator();
-    d_helpMenu->addMenuItem(_("Help"), 0, slot(*this,&MainWindow::help_help));
+    d_helpMenu->addMenuItem(_("Help"), 0, slot(*this,&PMainWindow::help_help));
 
     // create menubar
-    d_menuBar = new PG_MenuBar(this, PG_Rect(0, 0, rect.w, 25));
+    d_menuBar = new PG_MenuBar(this, Rectangle(0, 0, rect.w, 25));
     d_menuBar->Add(_("File"), d_fileMenu);
     d_menuBar->Add(_("Reports"), d_reportsMenu);
     d_menuBar->Add(_("Options"), d_optionsMenu);
     d_menuBar->Add(_("Help"), d_helpMenu);
     
-    d_w_edit = new W_Edit(gameScenario, this, PG_Rect(rect.x, rect.y + 25, rect.w, rect.h - 25));
+    d_w_edit = new W_Edit(gameScenario, this, Rectangle(rect.x, rect.y + 25, rect.w, rect.h - 25));
 
     d_fileMenu->Hide();
     d_reportsMenu->Hide();
@@ -75,7 +75,7 @@ MainWindow::MainWindow(GameScenario* gameScenario, const PG_Rect& rect)
     d_helpMenu->Hide();
 }
 
-MainWindow::~MainWindow()
+PMainWindow::~PMainWindow()
 {
     delete d_menuBar;
     delete d_fileMenu;
@@ -85,7 +85,7 @@ MainWindow::~MainWindow()
     delete d_w_edit;
 }
 
-void MainWindow::changeResolution(int w, int h)
+void PMainWindow::changeResolution(int w, int h)
 {
     if (w>my_width && h>my_height)
     {
@@ -94,14 +94,14 @@ void MainWindow::changeResolution(int w, int h)
         debug("h=" << h << " height=" << my_width)
         SizeWidget(w,h);
         d_menuBar->SizeWidget(w,25);
-        d_w_edit->changeResolution(PG_Rect(0,25,w,h - 25),false);
+        d_w_edit->changeResolution(Rectangle(0,25,w,h - 25),false);
     }
     else if (w<my_width && h<my_height)
     {
         debug("Lesser!!")
         debug("w=" << w << " width=" << my_width)
         debug("h=" << w << " height=" << my_width)
-        d_w_edit->changeResolution(PG_Rect(0,25,w,h - 25),true);
+        d_w_edit->changeResolution(Rectangle(0,25,w,h - 25),true);
         
         // This is due to a bug in paragui. We get an out of bounds drawing
         // error if we reduce the size of a widget, so pretend the widgets
@@ -118,14 +118,14 @@ void MainWindow::changeResolution(int w, int h)
 }
 
 
-void MainWindow::startGame()
+void PMainWindow::startGame()
 {
     Sound::getInstance()->haltMusic(false);
     Sound::getInstance()->enableBackground();
     d_w_edit->startGame();
 }
 
-void MainWindow::loadGame(std::string filename,bool resetfilename)
+void PMainWindow::loadGame(std::string filename,bool resetfilename)
 {
     Sound::getInstance()->haltMusic(false);
     Sound::getInstance()->enableBackground();
@@ -139,10 +139,10 @@ void MainWindow::loadGame(std::string filename,bool resetfilename)
     else d_lastsave = filename;
 }
 
-void MainWindow::stopGame()
+void PMainWindow::stopGame()
 {
     //This function stops all current game activity. The background is that
-    //MainWindow doesn't automatically know that a game has ended, so it has
+    //PMainWindow doesn't automatically know that a game has ended, so it has
     //to be told this fact.
     d_w_edit->stopGame();
     Sound::getInstance()->disableBackground();
@@ -151,7 +151,7 @@ void MainWindow::stopGame()
 // This event handler is from Thomas Plonka
 // Scrolling of the map with the keybord arrows and reports with the keyboard.
 // It is a paragui event and no't a SDL event.
-bool MainWindow::eventKeyDown(const SDL_KeyboardEvent* key)
+bool PMainWindow::eventKeyDown(const SDL_KeyboardEvent* key)
 {	
 	// Check , which key was pressed and change the variables
 	// and the position of the viewrect , or start reports	
@@ -227,7 +227,7 @@ bool MainWindow::eventKeyDown(const SDL_KeyboardEvent* key)
 	return true;	
 }
 
-bool MainWindow::file_load(PG_PopupMenu::MenuItem* item, PG_Pointer p)
+bool PMainWindow::file_load(PG_PopupMenu::MenuItem* item, Vector<int>er p)
 {
 	//to make sure no timers interfere with the graphics painting routines
     d_w_edit->stopTimers();
@@ -257,7 +257,7 @@ bool MainWindow::file_load(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     }
 
     d_w_edit = new W_Edit(gameScenario, this,
-                    PG_Rect(my_xpos, my_ypos + 25, my_width, my_height - 25));
+                    Rectangle(my_xpos, my_ypos + 25, my_width, my_height - 25));
     d_w_edit->startTimers();
     d_w_edit->Show();
     d_w_edit->loadGame();
@@ -266,7 +266,7 @@ bool MainWindow::file_load(PG_PopupMenu::MenuItem* item, PG_Pointer p)
 
     return true;
 }
-bool MainWindow::file_save(PG_PopupMenu::MenuItem* item, PG_Pointer p)
+bool PMainWindow::file_save(PG_PopupMenu::MenuItem* item, Vector<int>er p)
 {
     if (d_lastsave.empty())
     {
@@ -282,17 +282,17 @@ bool MainWindow::file_save(PG_PopupMenu::MenuItem* item, PG_Pointer p)
 
     if (success)
     {
-        PG_MessageBox mb(this, PG_Rect(my_width/2-100, my_height/2-75, 200, 150), _("Save Game"),
-                _("Game Saved."), PG_Rect(60, 110, 80, 30), _("OK"));
+        PG_MessageBox mb(this, Rectangle(my_width/2-100, my_height/2-75, 200, 150), _("Save Game"),
+                _("Game Saved."), Rectangle(60, 110, 80, 30), _("OK"));
         mb.Show();
         mb.RunModal();
         mb.Hide();
     }
     else
     {
-        PG_MessageBox mb(this,PG_Rect(my_width/2-100, my_height/2-75, 200, 150), _("Save Game"),
+        PG_MessageBox mb(this,Rectangle(my_width/2-100, my_height/2-75, 200, 150), _("Save Game"),
                 _("Error saving. Game not saved"),
-                PG_Rect(60, 110, 80, 30), _("OK"));
+                Rectangle(60, 110, 80, 30), _("OK"));
         mb.Show();
         mb.RunModal();
         mb.Hide();
@@ -303,7 +303,7 @@ bool MainWindow::file_save(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     return true;
 }
 
-bool MainWindow::file_saveas(PG_PopupMenu::MenuItem* item, PG_Pointer p)
+bool PMainWindow::file_saveas(PG_PopupMenu::MenuItem* item, Vector<int>er p)
 {
     //temporarily stop all timers
     d_w_edit->stopTimers();
@@ -322,9 +322,9 @@ bool MainWindow::file_saveas(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     
     if (success)
     {
-        PG_MessageBox mb(this, PG_Rect(my_width/2-100, my_height/2-75, 200, 150), _("Save Game"),
+        PG_MessageBox mb(this, Rectangle(my_width/2-100, my_height/2-75, 200, 150), _("Save Game"),
                 _("Game Saved."),
-                PG_Rect(60, 110, 80, 30), _("OK"));
+                Rectangle(60, 110, 80, 30), _("OK"));
         mb.Show();
         mb.RunModal();
         mb.Hide();
@@ -333,9 +333,9 @@ bool MainWindow::file_saveas(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     }
     else
     {
-        PG_MessageBox mb(this, PG_Rect(my_width/2-100, my_height/2-75, 200, 150), _("Save Game"),
+        PG_MessageBox mb(this, Rectangle(my_width/2-100, my_height/2-75, 200, 150), _("Save Game"),
                 _("Error saving. Game not saved"),
-                PG_Rect(60, 110, 80, 30), _("OK"));
+                Rectangle(60, 110, 80, 30), _("OK"));
         mb.Show();
         mb.RunModal();
         mb.Hide();
@@ -346,21 +346,21 @@ bool MainWindow::file_saveas(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     return true;
 }
 
-bool MainWindow::file_quit(PG_PopupMenu::MenuItem* item, PG_Pointer p)
+bool PMainWindow::file_quit(PG_PopupMenu::MenuItem* item, Vector<int>er p)
 {
     d_w_edit->stopTimers();
     squitting.emit(0);
     return true;
 }
 
-bool MainWindow::reports_armies(PG_PopupMenu::MenuItem* item, PG_Pointer p)
+bool PMainWindow::reports_armies(PG_PopupMenu::MenuItem* item, Vector<int>er p)
 {
     debug("Showing army report")
 
     d_w_edit->stopTimers();
 
-    StackReport report(this, PG_Rect(Width()/2 - 250, Height()/2 - 200, 530, 400));
-    report.sselectingStack.connect(SigC::slot(*d_w_edit, &W_Edit::centerScreen));
+    StackReport report(this, Rectangle(Width()/2 - 250, Height()/2 - 200, 530, 400));
+    report.sselectingStack.connect(sigc::slot(*d_w_edit, &W_Edit::centerScreen));
 
     report.Show();
      //some parts of the report which we don't want anyone to see have been
@@ -375,13 +375,13 @@ bool MainWindow::reports_armies(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     return true;
 }
 
-bool MainWindow::reports_quests(PG_PopupMenu::MenuItem* item, PG_Pointer p)
+bool PMainWindow::reports_quests(PG_PopupMenu::MenuItem* item, Vector<int>er p)
 {
     debug("Showing quests report")
 
     d_w_edit->stopTimers();
 
-    QuestsReport report(this, PG_Rect(Width()/2 - 250, Height()/2 - 200, 
+    QuestsReport report(this, Rectangle(Width()/2 - 250, Height()/2 - 200, 
                         535, 400));
     report.Show();
      //some parts of the report which we don't want anyone to see have been
@@ -395,14 +395,14 @@ bool MainWindow::reports_quests(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     return true;
 }
 
-bool MainWindow::reports_cities(PG_PopupMenu::MenuItem* item, PG_Pointer p)
+bool PMainWindow::reports_cities(PG_PopupMenu::MenuItem* item, Vector<int>er p)
 {
     debug("Showing city report")
 
     d_w_edit->stopTimers();
 
-    CitiesReport report(this, PG_Rect(Width()/2 - 250, Height()/2 - 200, 530, 400));
-    report.sselectingCity.connect(SigC::slot(*d_w_edit, &W_Edit::centerScreen));
+    CitiesReport report(this, Rectangle(Width()/2 - 250, Height()/2 - 200, 530, 400));
+    report.sselectingCity.connect(sigc::slot(*d_w_edit, &W_Edit::centerScreen));
 
     report.Show();
      //some parts of the report which we don't want anyone to see have been
@@ -417,13 +417,13 @@ bool MainWindow::reports_cities(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     return true;
 }
 
-bool MainWindow::reports_gold(PG_PopupMenu::MenuItem* item, PG_Pointer p)
+bool PMainWindow::reports_gold(PG_PopupMenu::MenuItem* item, Vector<int>er p)
 {
     debug("Showing gold report")
 
     d_w_edit->stopTimers();
 
-    GoldReport report(this, PG_Rect(Width()/2 - 150, Height()/2 - 200,
+    GoldReport report(this, Rectangle(Width()/2 - 150, Height()/2 - 200,
                     300, 300));
     report.Show();
     report.RunModal();
@@ -434,11 +434,11 @@ bool MainWindow::reports_gold(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     return true;
 }
 
-bool MainWindow::options_game(PG_PopupMenu::MenuItem* item, PG_Pointer p)
+bool PMainWindow::options_game(PG_PopupMenu::MenuItem* item, Vector<int>er p)
 {
     d_w_edit->stopTimers();
 
-    OptionsDialog opts(this, PG_Rect(Width()/2 - 250, Height()/2 - 150, 540, 300));
+    OptionsDialog opts(this, Rectangle(Width()/2 - 250, Height()/2 - 150, 540, 300));
 
     opts.Show();
     opts.RunModal();
@@ -449,13 +449,13 @@ bool MainWindow::options_game(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     return true;
 }
 
-bool MainWindow::help_help(PG_PopupMenu::MenuItem* item, PG_Pointer p)
+bool PMainWindow::help_help(PG_PopupMenu::MenuItem* item, Vector<int>er p)
 {
     std::cerr << _("not implemented yet\n");
     return true;
 }
 
-bool MainWindow::help_about(PG_PopupMenu::MenuItem* item, PG_Pointer p)
+bool PMainWindow::help_about(PG_PopupMenu::MenuItem* item, Vector<int>er p)
 {
     debug("Showing About Dialog")
 
@@ -464,7 +464,7 @@ bool MainWindow::help_about(PG_PopupMenu::MenuItem* item, PG_Pointer p)
     int x=Width()/2;
     int y=Height()/2;
     
-    AboutDialog about(this, PG_Rect(x/2-2, y/2-15,
+    AboutDialog about(this, Rectangle(x/2-2, y/2-15,
                   x+4, y+30));
     about.Show();
     about.RunModal();

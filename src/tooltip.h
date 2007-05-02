@@ -30,7 +30,7 @@ class ToolTip : public PG_ThemeWidget,public PG_TimerObject
 { 
     public:
         //! Default ParaGUI constructor
-        ToolTip(PG_Widget* parent, PG_Rect rect);
+        ToolTip(PG_Widget* parent, Rectangle rect);
         ~ToolTip();
 
         /** Initializes the tooltip
@@ -45,7 +45,7 @@ class ToolTip : public PG_ThemeWidget,public PG_TimerObject
         void setData(const char* text, int screen_x, int screen_y, int max_x, int max_y);
 
         // Shortcut to cut down the parameters a bit
-        void setData(const char* text, PG_Rect r)
+        void setData(const char* text, Rectangle r)
         {
             setData(text, r.x, r.y, r.w, r.h);
         }

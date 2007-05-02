@@ -20,20 +20,20 @@
 using namespace std;
 
 Player_preferences::Player_preferences(Type type, string name,
-        PG_Widget* parent, PG_Rect rect)
+        PG_Widget* parent, Rectangle rect)
     :PG_Widget(parent, rect)
 {   
-    d_cb_type = new PG_DropDown(this,PG_Rect(0, 0, 110, 25),1);
+    d_cb_type = new PG_DropDown(this,Rectangle(0, 0, 110, 25),1);
     d_cb_type->SetFontColor (PG_Color (0, 0, 0), 1);
     d_cb_type->AddItem(_("None"));
     d_cb_type->AddItem(_("Human"));
     d_cb_type->AddItem(_("Easy"));
     d_cb_type->AddItem(_("Smart"));
 
-    d_e_name = new PG_LineEdit(this, PG_Rect(120, 0, 100, 25));
+    d_e_name = new PG_LineEdit(this, Rectangle(120, 0, 100, 25));
     d_e_name->SetFontColor (PG_Color (0, 0, 0));
     d_e_name->SetText(name.c_str());
-    d_cb_armyset = new PG_DropDown(this, PG_Rect(230, 0, 160, 25),2);
+    d_cb_armyset = new PG_DropDown(this, Rectangle(230, 0, 160, 25),2);
     d_cb_armyset->SetFontColor (PG_Color (0, 0, 0), 1);
 
     // fill the armyset combobox with names

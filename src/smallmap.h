@@ -15,92 +15,57 @@
 #ifndef SMALLMAP_H
 #define SMALLMAP_H
 
-#include <pgtimerobject.h>
-#include <sigc++/sigc++.h>
-#include <SDL_mutex.h>
+#include <sigc++/signal.h>
+#include <sigc++/connection.h>
+
 #include "overviewmap.h"
 
-/** Display of the whole game map.
+#include "rectangle.h"
+#include "input-events.h"
+
+/** Miniature display of the whole game map.
   * 
-  * SmallMap is the widget at the top right of the game screen which provides an
+  * SmallMap is the image at the top right of the game screen which provides an
   * overview of the whole game map. It handles mouse clicks, moving of the
-  * currently visible portion and changes of the underlying map.
-  *
-  * @note: This class shares the viewrect (=which part of the map is currently
-  * visible in the main screen) with BigMap. Furthermore, it draws a rectangle
-  * with changing colors at the position of the viewrect, which is why it has to
-  * keep track of it.
+  * currently visible portion and changes of the underlying map. It draws an
+  * animation of the selection rectangle.
   */
-
-class SmallMap : public OverviewMap, public PG_TimerObject
+class SmallMap: public OverviewMap
 {
-    public:
-        /** Constructor
-          * 
-          * @param parent       the parent widget
-          * @param rect         the rectangle for the smallmap
-          * @param viewsize     a rectangle whose width and height give
-          *                     the size of the viewrect 
-          *
-          * The pixel size per terrain tile is automatically calculated.
-          */
-        SmallMap(PG_Widget* parent, PG_Rect rect, PG_Rect viewsize);
-        ~SmallMap();
+ public:
+    SmallMap();
+    ~SmallMap();
 
+    void set_view(Rectangle new_view);
         
-        /** called if resolution changes; resets the viewrect
-          * @note: No timers may be running simultanously!!!
-          */
-        void changeResolution(PG_Rect viewsize);
+    void mouse_button_event(MouseButtonEvent e);
+    void mouse_motion_event(MouseMotionEvent e);
+    
+    // emitted when the view changes because of user interactions
+    sigc::signal<void, Rectangle> view_changed;
+
+    // emitted when the map surface has changed
+    sigc::signal<void, SDL_Surface *> map_changed;
         
-        //! Interrupt the internal timer (for redrawing the viewrect)
-        void interruptTimer();
+ private:
+    Rectangle view;
+    SDL_Color selection_color;
+    bool selection_value_increasing;
+    sigc::connection selection_timeout_handler;
+    
+    void center_view(Vector<int> p);
+    void draw_selection();
+    bool on_selection_timeout();
 
-        //! Restart the internal timer
-        void restartTimer();
-
-        //! Returns the viewrect
-        PG_Rect* getViewrect(){return d_viewrect;}
-
-        //! Timer callback for redrawing the viewrect with a different color
-        Uint32 eventTimer(ID id, Uint32 interval);
-
-        //! Draws the viewrect over the (internal) display of the map
-        void drawViewrect();
+    // hook from base class
+    virtual void after_draw();
+	
+    // EVENT HANDLERS
+    bool eventMouseButtonDown(const SDL_MouseButtonEvent* event);
+    bool eventMouseMotion(const SDL_MouseMotionEvent* event);
         
-        //! Paragui callback if the viewrect changes
-        bool changedViewrect(PG_Widget *widget);
-
-        // 2 helping things for the viewrect
-        void inputFunction(int arrowx, int arrowy);
-
-        // will be connected to BigMap::Redraw()
-        SigC::Signal1<bool, bool> schangingViewrect;
-        
-    private:
-        void setViewrect(int x, int y);
-
-        // EVENT HANDLERS
-        void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
-        bool eventMouseButtonDown(const SDL_MouseButtonEvent* event);
-        bool eventMouseMotion(const SDL_MouseMotionEvent* event);
-        
-        // DATA
-        PG_Rect* d_viewrect;
-        
-        bool d_pressed;
-        int d_r;
-        int d_g;
-        int d_b;
-        bool d_add;
-        
-        // keycheck , Value changes to 1 : SDL_KeyboardEvent , Value changes to 0 : SDL_MouseButtonEvent
-        int keycheck;
-        // helping variables for the KeyboardEvent from Thomas Plonka
-        int arrowx ,arrowy; 
-
-        Uint32 d_timerID;
-        SDL_mutex* d_lock;
+    bool d_pressed;
+    bool d_add;
 };
 
-#endif // SMALLMAP_H
+#endif

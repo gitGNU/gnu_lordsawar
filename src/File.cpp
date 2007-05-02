@@ -11,13 +11,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+
+#include <config.h>
+
+#include <iostream>
+#include <glibmm/fileutils.h>
+#include <glibmm/ustring.h>
+#include <glibmm/convert.h>
 
 #include "File.h"
 #include "defs.h"
-#include <pgfilearchive.h>
 #include <SDL_image.h>
 #include "Configuration.h"
 
@@ -25,6 +28,61 @@ using namespace std;
 
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
+
+namespace
+{
+    // returns a list of full paths of the immediate subdirs of path
+    std::list<std::string> get_immediate_subdirs(std::string path)
+    {
+	Glib::Dir dir(path);
+	std::list<std::string> dirlist;
+
+	for (Glib::Dir::iterator i = dir.begin(), end = dir.end();
+	     i != end; ++i)
+	{
+	    string entry = path + *i;
+	    if (Glib::file_test(entry, Glib::FILE_TEST_IS_DIR))
+		dirlist.push_back(entry);
+	}
+
+	return dirlist;
+    }
+
+    // returns a list of the XML file names in path with the ".xml" extension
+    // stripped
+    std::list<std::string> get_xml_files(std::string path)
+    {
+	std::list<std::string> retlist;
+	Glib::Dir dir(path);
+    
+	for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
+	{
+	    string entry = *i;
+	    string::size_type idx = entry.find(".xml");
+	    if (idx != string::npos)
+	    {
+		entry.replace(idx, 4, "");  //substitute the ".xml" with ""
+		retlist.push_back(Glib::filename_to_utf8(entry));
+	    }
+	}
+	return retlist;
+    }
+    
+    // returns a list of the XML file names in the immediate subdirs of path
+    // with the ".xml" extension stripped
+    std::list<std::string> get_xml_files_in_immediate_subdirs(std::string path)
+    {
+	std::list<std::string> retlist, dirlist = get_immediate_subdirs(path);
+	for (std::list<std::string>::iterator i = dirlist.begin(),
+		 end = dirlist.end(); i != end; ++i)
+	{
+	    std::list<std::string> files = get_xml_files(*i);
+	
+	    retlist.insert(retlist.end(), files.begin(), files.end());
+	}
+	return retlist;
+    }
+}
 
 SDL_Surface* File::loadImage(string filename, bool alpha)
 {
@@ -50,22 +108,9 @@ SDL_Surface* File::loadImage(string filename, bool alpha)
 
 std::list<std::string> File::scanArmysets()
 {
-    std::list<std::string> retlist;
-    
     string path = Configuration::s_dataPath + "/army/";
-    PG_FileArchive::RemoveAllArchives();
-    PG_FileArchive::AddArchive(path.c_str());
-    char** filelist = PG_FileArchive::EnumerateFiles("");
-    for (int i = 0; filelist[i] != NULL; ++i)
-    {
-        string entry(filelist[i]);
-        string::size_type idx = entry.find(".xml");
-        if (idx != string::npos)
-        {
-            entry.replace(idx, 4, "");  //substitute the ".xml" with ""
-            retlist.push_back(entry);
-        }
-    }
+
+    std::list<std::string> retlist = get_xml_files(path);
 
     if (retlist.empty())
     {
@@ -74,13 +119,6 @@ std::list<std::string> File::scanArmysets()
         cerr << _("Exiting!") << endl;
         exit(-1);
     }
-
-    //free the filelist
-    for (int i = 0; filelist[i] != NULL; ++i)
-    {
-        free(filelist[i]);
-    }
-    free(filelist);
 
     return retlist;
 }
@@ -157,35 +195,10 @@ string File::getSavePath()
     return Configuration::s_savePath + "/";
 }
 
-list<string> File::scanTilesets(PG_DropDown* drop_down)
+list<string> File::scanTilesets()
 {
     string path = Configuration::s_dataPath + "/tilesets/";
-    std::list<std::string> retlist;
-    
-    PG_FileArchive::RemoveAllArchives();
-    PG_FileArchive::AddArchive(path.c_str());
-    char** filelist = PG_FileArchive::EnumerateFiles("");
-
-    for (int i = 0; filelist[i] != NULL; ++i) 
-    {
-        if (PG_FileArchive::IsDirectory(filelist[i]) )
-            PG_FileArchive::AddArchive((path+string(filelist[i])).c_str());
-    }
-    
-    filelist = PG_FileArchive::EnumerateFiles("");
-
-    for (int j = 0; filelist[j] != NULL; ++j)
-    {
-        string entry(filelist[j]);
-        string::size_type idx = entry.find(".xml");
-        if (idx != string::npos)
-        {
-            entry.replace(idx, 4, "");  //substitute the ".xml" with ""
-            retlist.push_back(entry);
-            drop_down->AddItem(entry.c_str());
-            cerr << "Found  TileSet \"" << entry << "\"." << endl;
-        }
-    }  
+    std::list<std::string> retlist = get_xml_files_in_immediate_subdirs(path);
     
     if (retlist.empty())
     {
@@ -194,9 +207,6 @@ list<string> File::scanTilesets(PG_DropDown* drop_down)
         cerr << _("Exiting!") << endl;
         exit(-1);
     }
-
-    drop_down->SetText(retlist.front().c_str());
-    PG_FileArchive::RemoveAllArchives();
     
     return retlist;
 }
@@ -204,31 +214,7 @@ list<string> File::scanTilesets(PG_DropDown* drop_down)
 list<string> File::scanMaps()
 {
     string path = Configuration::s_dataPath + "/map/";
-    std::list<std::string> retlist;
-    
-    PG_FileArchive::RemoveAllArchives();
-    PG_FileArchive::AddArchive(path.c_str());
-    char** filelist = PG_FileArchive::EnumerateFiles("");
-
-    for (int i = 0; filelist[i] != NULL; ++i) 
-    {
-        if (PG_FileArchive::IsDirectory(filelist[i]) )
-            PG_FileArchive::AddArchive((path+string(filelist[i])).c_str());
-    }
-    
-    filelist = PG_FileArchive::EnumerateFiles("");
-
-    for (int j = 0; filelist[j] != NULL; ++j)
-    {
-        string entry(filelist[j]);
-        string::size_type idx = entry.find(".map");
-        if (idx != string::npos)
-        {
-            entry.replace(idx, 4, "");  //substitute the ".xml" with ""
-            retlist.push_back(entry);
-            cerr << "Found Map \"" << entry << "\"." << endl;
-        }
-    }  
+    std::list<std::string> retlist = get_xml_files_in_immediate_subdirs(path);
     
     if (retlist.empty())
     {
@@ -236,8 +222,6 @@ list<string> File::scanMaps()
         cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
     }
 
-    PG_FileArchive::RemoveAllArchives();
-    
     return retlist;
 }
 

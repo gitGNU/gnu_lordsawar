@@ -15,7 +15,7 @@
 #ifndef SIGNPOSTLIST_H
 #define SIGNPOSTLIST_H
 
-#include <sigc++/object_slot.h>
+#include <sigc++/trackable.h>
 #include "ObjectList.h"
 #include "signpost.h"
 
@@ -24,7 +24,7 @@
   * signposts.
   */
 
-class Signpostlist : public ObjectList<Signpost>, public SigC::Object
+class Signpostlist : public ObjectList<Signpost>, public sigc::trackable
 {
     public:
         //! Return the singleton instance. Create a new one if needed.

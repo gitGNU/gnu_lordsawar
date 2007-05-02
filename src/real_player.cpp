@@ -20,7 +20,7 @@
 #include "real_player.h"
 #include "playerlist.h"
 #include "armysetlist.h"
-#include "FightDialog.h"
+//#include "FightDialog.h"
 #include "stacklist.h"
 #include "citylist.h"
 #include "QuestsManager.h"
@@ -28,8 +28,11 @@
 #include "GameMap.h"
 #include "army.h"
 #include "hero.h"
+#include "action.h"
 #include "MoveResult.h"
 #include "Configuration.h"
+#include "FogMap.h"
+#include "xmlhelper.h"
 
 using namespace std;
 
@@ -89,8 +92,7 @@ bool RealPlayer::invadeCity(City* c)
 bool RealPlayer::recruitHero(Hero* hero, int cost)
 {
     // for the realplayer, this function also just raises a signal and looks
-    // what to do next. The derived classes or W_Edit actually react on the
-    // signal.
+    // what to do next.
 
     return srecruitingHero.emit(hero, cost);
 }
@@ -209,7 +211,7 @@ bool RealPlayer::stackMove(Stack* s)
     return ret;
 }
 
-MoveResult *RealPlayer::stackMove(Stack* s, PG_Point dest, bool follow)
+MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
 {
     debug("player::stack_move()");
     //if follow is set to true, follow an already calculated way, else
@@ -229,7 +231,7 @@ MoveResult *RealPlayer::stackMove(Stack* s, PG_Point dest, bool follow)
     }
 
     int stepCount = 0;
-    while (s->enoughMoves() && (s->getPath()->size() > 1))
+    while (s->getPath()->size() > 1 && s->enoughMoves())
     {
         if (stackMoveOneStep(s))
             stepCount++;
@@ -239,10 +241,10 @@ MoveResult *RealPlayer::stackMove(Stack* s, PG_Point dest, bool follow)
         SDL_Delay(Configuration::s_displaySpeedDelay);
     }
 
-    if ((s->getPath()->size() == 1) && s->enoughMoves())
+    if (s->getPath()->size() == 1 && s->enoughMoves())
     //now look for fight targets, joins etc.
     {
-        PG_Point pos = **(s->getPath()->begin());
+        Vector<int> pos = **(s->getPath()->begin());
         City* city = Citylist::getInstance()->getObjectAt(pos);
         Stack* target = Stacklist::getObjectAt(pos);
 
@@ -361,41 +363,21 @@ Fight::Result RealPlayer::stackFight(Stack** attacker, Stack** defender, bool ru
     Player* pd = (*defender)->getPlayer();
 
     // I suppose, this should be always true, but one can never be sure
-    bool attacker_active = ((*attacker) == d_stacklist->getActivestack());
+    bool attacker_active = *attacker == d_stacklist->getActivestack();
+
+    Fight fight(*attacker, *defender, ruin);
+    fight_started.emit(fight);
+
+    // cleanup
     
-
-    // Fighting goes in three steps:
-    // 1. Initializing
-    // 2. Fighting
-    // 3. Cleaning up (removing dead armies and such)
-    
-    // First, initiate the stuff. Fortunately, the Fight and FightDialog
-    // class do most of it
-    FightDialog* fd = new FightDialog(*attacker, *defender, ruin);
-    fd->Show();
-
-
-    // Second, do the fighting
-
-    //the timers of bigmap and smallmap cause flickering of the screen, so
-    //we remove them for the duration of the fight
-    sinterruptTimers.emit();
-
-    fd->battle();
-    fd->Hide();
-
-    
-    // Third: cleanup
-
     // add a fight item about the combat
     Action_Fight* item = new Action_Fight();
-    item->fillData(fd->getFight());
+    item->fillData(&fight);
     d_actions.push_back(item);
 
     // get attacker and defender heroes and more...
-    const Fight* fight = fd->getFight();
-    std::list<Stack*> attackers = fight->getAttackers();
-    std::list<Stack*> defenders = fight->getDefenders();
+    std::list<Stack*> attackers = fight.getAttackers();
+    std::list<Stack*> defenders = fight.getDefenders();
     std::vector<Uint32> attackerHeroes, defenderHeroes;
     
     getHeroes(attackers, attackerHeroes);
@@ -409,10 +391,6 @@ Fight::Result RealPlayer::stackFight(Stack** attacker, Stack** defender, bool ru
     // and dead attackers
     debug("clean dead attackers");
     double attacker_xp = removeDeadArmies(attackers, defenderHeroes);
-
-    debug("restart timers");
-    //don't forget to restart the timers
-    scontinueTimers.emit();
 
     // after a fight: if the attacker's stack won - emit
     // supdatingStack signal, else emit sdyingStack
@@ -443,10 +421,19 @@ Fight::Result RealPlayer::stackFight(Stack** attacker, Stack** defender, bool ru
     // position of this stack)
 
     // First, the attacker...
+    bool exists =
+	std::find(d_stacklist->begin(), d_stacklist->end(), *attacker)
+	!= d_stacklist->end();
+#if 0
     bool exists = false;
     for (Stacklist::iterator it = d_stacklist->begin(); it != d_stacklist->end(); it++)
         if ((*it) == (*attacker))
+	{
             exists = true;
+	    break;
+	}
+#endif
+    
     if (!exists)
     {
         (*attacker) = 0;
@@ -468,11 +455,7 @@ Fight::Result RealPlayer::stackFight(Stack** attacker, Stack** defender, bool ru
     if (!exists)
         (*defender) = 0;
 
-    // remove the dialog only here (clears the fight class as well)
-    Fight::Result result = fight->getResult();
-    delete fd;
-    
-    return result;
+    return fight.getResult();
 }
 
 
@@ -944,7 +927,7 @@ bool RealPlayer::stackMoveOneStep(Stack* s)
     if (!s->enoughMoves())
         return false;
 
-    PG_Point dest = *(s->getPath()->front());
+    Vector<int> dest = *(s->getPath()->front());
 
     int needed_moves = GameMap::getInstance()->getTile(dest.x,dest.y)->getMoves();
     Uint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType();

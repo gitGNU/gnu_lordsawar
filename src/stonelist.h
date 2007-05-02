@@ -15,7 +15,7 @@
 #ifndef STONELIST_H
 #define STONELIST_H
 
-#include <sigc++/object_slot.h>
+#include <sigc++/trackable.h>
 #include "ObjectList.h"
 #include "stone.h"
 
@@ -24,7 +24,7 @@
   * stones.
   */
 
-class Stonelist : public ObjectList<Stone>, public SigC::Object
+class Stonelist : public ObjectList<Stone>, public sigc::trackable
 {
     public:
         //! Return the singleton instance. Create a new one if needed.

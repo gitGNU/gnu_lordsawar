@@ -24,12 +24,12 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-ServerDialog::ServerDialog(PG_Widget* parent, const PG_Rect& rect)
+ServerDialog::ServerDialog(PG_Widget* parent, const Rectangle& rect)
 	:PG_Window(parent, rect, "LordsAWar server 0.1", PG_Window::MODAL), server(0)
 {
-    d_b_hostGame = new PG_Button(this, PG_Rect(20, 100, 100, 30), "Host game",0);
-    d_b_start = new PG_Button(this, PG_Rect(20, 135, 100, 30), "Start",1);
-    d_b_close = new PG_Button(this, PG_Rect(20, 170, 100, 30), "Close",2);
+    d_b_hostGame = new PG_Button(this, Rectangle(20, 100, 100, 30), "Host game",0);
+    d_b_start = new PG_Button(this, Rectangle(20, 135, 100, 30), "Start",1);
+    d_b_close = new PG_Button(this, Rectangle(20, 170, 100, 30), "Close",2);
 
     d_b_hostGame->sigClick.connect(slot(*this, &ServerDialog::hostGameClicked));
     d_b_start->sigClick.connect(slot(*this, &ServerDialog::startClicked));

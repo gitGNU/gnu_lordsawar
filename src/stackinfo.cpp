@@ -23,7 +23,7 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-Stackinfo::Stackinfo(PG_Widget* parent, PG_Rect rect)
+Stackinfo::Stackinfo(PG_Widget* parent, Rectangle rect)
     :PG_ThemeWidget(parent, rect)
 {
 }
@@ -59,7 +59,7 @@ void Stackinfo::readData()
     int last_selected_army = 0;
     for (Stack::iterator it = stack->begin(); it != stack->end(); ++it, ++i)
     {
-        d_armyinfovector.push_back(new ArmyInfo(*it, true, this, PG_Rect(i*60, 0, 58, 86)));
+        d_armyinfovector.push_back(new ArmyInfo(*it, true, this, Rectangle(i*60, 0, 58, 86)));
                 if ((*it)->isGrouped())
                 {
                    last_selected_army = i;

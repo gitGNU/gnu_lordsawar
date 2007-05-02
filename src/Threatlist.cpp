@@ -5,7 +5,7 @@
 //
 //  This program is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
-// //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //  GNU Library General Public License for more details.
 //
 //  You should have received a copy of the GNU General Public License
@@ -16,6 +16,7 @@
 
 #include "Threatlist.h"
 #include "stack.h"
+#include "ruin.h"
 #include "player.h"
 #include "AICityInfo.h"
 
@@ -61,7 +62,7 @@ void Threatlist::sortByValue()
     }
 }
 
-void Threatlist::sortByDistance(PG_Point pos)
+void Threatlist::sortByDistance(Vector<int> pos)
 {
     // A simple bubble sort is propably too computationally expensive here.
     // To reduce the overhead, we first calculate all distances, store them
@@ -141,12 +142,12 @@ void Threatlist::addRuin(Ruin *ruin)
 void Threatlist::findThreats(AICityInfo *info) const
 {
     //shortcut
-    PG_Point location = info->getPos();
+    Vector<int> location = info->getPos();
 
     for (const_iterator it = begin(); it != end(); it++)
     {
         Threat *threat = *it;
-        PG_Point closestPoint = threat->getClosestPoint(location);
+        Vector<int> closestPoint = threat->getClosestPoint(location);
 
         //This happens only if a threat doesn't contain any stacks any longer.
         if (closestPoint.x == -1)

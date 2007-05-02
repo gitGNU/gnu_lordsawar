@@ -16,22 +16,12 @@
 #define CREATE_SCENARIO_H
 
 #include <string>
-#include <sigc++/sigc++.h>
+#include <vector>
 #include <SDL.h>
 
-#include "player.h"
-#include "playerlist.h"
-#include "stacklist.h"
-#include "citylist.h"
-#include "ruinlist.h"
-#include "templelist.h"
-#include "signpostlist.h"
-#include "stonelist.h"
-#include "armysetlist.h"
-#include "GamePreferencesDialog.h"
-#include "events/Event.h"
-
 class MapGenerator;
+class GameScenario;
+class Player;
 
 /** \brief Creates and dumps (i.e. saves) a scenario.
   * 
@@ -43,17 +33,17 @@ class MapGenerator;
   * e.g. to the player class have to be reflected here, too.
   */
 
-class CreateScenario : public SigC::Object
+class CreateScenario
 {
     public:
         //! This represents the class of the map (hills, islands etc.).
-        enum MapType {NORMAL};
+        enum MapType { NORMAL };
     
         /** The Constructor
           * 
           * @param uncle    the progress bar which displays the advance
           */
-        CreateScenario(PG_Widget* uncle);
+        CreateScenario();
         ~CreateScenario();
 
         // setters
@@ -108,7 +98,7 @@ class CreateScenario : public SigC::Object
           * @return a pointer to the created player
           */
         Player* addPlayer(std::string name, Uint32 armyset, SDL_Color color,
-                        Player::Type type);
+			  int type);
 
         /** Almost the same as addPlayer, but performs some additional checks
           * 
@@ -119,7 +109,7 @@ class CreateScenario : public SigC::Object
           * @return false if a neutral player already exists, true otherwise
           */
         bool addNeutral(std::string name, Uint32 armyset, SDL_Color color,
-                        Player::Type type);
+                        int type);
 
         
         //! Get the number of players already added
@@ -209,8 +199,6 @@ class CreateScenario : public SigC::Object
         int d_width;
         int d_height;
         bool d_turnmode;
-
-        PG_Widget* d_uncle;
 
         //the namelists
         std::vector<std::string> d_citynames, d_signposts;

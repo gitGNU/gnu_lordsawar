@@ -30,7 +30,7 @@ class Scroller : public PG_Button,public PG_TimerObject
 { 
     public:
         //! Default constructor and destructor
-        Scroller(PG_Widget* parent, PG_Rect rect, int id, SmallMap * smap, int x, int y);
+        Scroller(PG_Widget* parent, Rectangle rect, int id, SmallMap * smap, int x, int y);
         ~Scroller();
 
     private:

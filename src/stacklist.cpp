@@ -12,8 +12,11 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "stacklist.h"
 #include "stack.h"
+#include "city.h"
 #include "path.h"
 #include "playerlist.h"
 
@@ -38,12 +41,12 @@ Stack* Stacklist::getObjectAt(int x, int y)
 
 }
 
-Stack* Stacklist::getObjectAt(PG_Point point)
+Stack* Stacklist::getObjectAt(Vector<int> point)
 {
     return getObjectAt(point.x, point.y);
 }
 
-PG_Point Stacklist::getPosition(Uint32 id)
+Vector<int> Stacklist::getPosition(Uint32 id)
 {
     for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
         pit != Playerlist::getInstance()->end(); pit++)
@@ -55,7 +58,7 @@ PG_Point Stacklist::getPosition(Uint32 id)
                     return (*it)->getPos();
     }
 
-    return PG_Point(-1,-1);
+    return Vector<int>(-1,-1);
 }
 
 //We only expect one ambiguity at a time with stacks of the same player. This
@@ -104,7 +107,7 @@ vector<Stack*> Stacklist::defendersInCity(City *city)
     debug("defendersInCity()");
 
     vector<Stack*> stackvector;
-    PG_Point pos = city->getPos();
+    Vector<int> pos = city->getPos();
 
     for (int i = pos.x; i < pos.x + 2; i++)
     {
@@ -151,7 +154,7 @@ Stacklist::Stacklist(Stacklist *stacklist)
 Stacklist::Stacklist(XML_Helper* helper)
     :d_activestack(0)
 {
-    helper->registerTag("stack", SigC::slot((*this), &Stacklist::load));
+    helper->registerTag("stack", sigc::mem_fun((*this), &Stacklist::load));
 
     load("stacklist", helper);
 }
@@ -243,71 +246,45 @@ Stack* Stacklist::setNext()
     return d_activestack;
 }
 
-Stack* Stacklist::setNextWithMove(bool select)
+Stack* Stacklist::getNextMovable()
 {
-
-    // the select flag is used to avoid the set of the active stack (used in w_edit to check if
-    // there are units tha can move even if the active stack is not selected)
-
-    debug("setNextWithMove()");
+    Player *player = Playerlist::getInstance()->getActiveplayer();
     
     iterator it = begin();
-
+    
     //first, if we already have an active stack, loop through until we meet it
     if (d_activestack)
     {
-        for (; (*it) != d_activestack; it++);
+        for (; *it != d_activestack; it++);
         it++;   //we want to start with the next stack :)
     }
 
     //continue looping until we meet the next not defending stack of this player
-    for (; it != end(); it++)
+    for (; it != end(); ++it)
     {
-        if (((*it)->getPlayer() == Playerlist::getInstance()->getActiveplayer())
-            && (!(*it)->getDefending()))
-        {
-            Uint32 mintilemove= ((*it)->getMinTilesAroundMoves((*it)->getPos().x,(*it)->getPos().y));
-
-            if(((*it)->getGroupMoves() > 0) && (mintilemove >= 0)
-                && ((*it)->getGroupMoves() >= mintilemove))
-            {
-                if (select) 
-		{
-                     d_activestack = (*it);
-                     return d_activestack;
-		}
-		else return (*it);
-            }
-        }
+	Stack *s = *it;
+        if (s->getPlayer() == player && !s->getDefending() && s->canMove())
+	    return s;
     }
+    
     //still not found a stack? Then start looping from the beginning until we
     //meet the activestack again. If there is no activestack, we have already
     //looped through the whole list, so stop here
     if (!d_activestack)
         return 0;
 
-    for (it = begin(); (*it) != d_activestack; it++)
+    for (it = begin(); *it != d_activestack; ++it)
     {
-        if (((*it)->getPlayer() == Playerlist::getInstance()->getActiveplayer())
-            && (!(*it)->getDefending()))
-        {
-            Uint32 mintilemove= ((*it)->getMinTilesAroundMoves((*it)->getPos().x,(*it)->getPos().y));
-
-            if(((*it)->getGroupMoves() > 0) && (mintilemove >= 0)
-                && ((*it)->getGroupMoves()>=mintilemove))
-            {
-                if (select) 
-                {
-                   d_activestack = (*it);
-                   return d_activestack;
-                }
-		else return (*it);
-            }
-        }
+	Stack *s = *it;
+        if (s->getPlayer() == player && !s->getDefending() && s->canMove())
+	    return s;
     }
 
-    //still there? well, then we have only one non-defending stack left.
-    return d_activestack;
+    //still there? well, then we have only one stack left.
+    if (d_activestack->getDefending())
+	return 0;
+    else
+	return d_activestack;
 }
 
 void Stacklist::flClear()

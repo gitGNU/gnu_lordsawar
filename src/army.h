@@ -17,22 +17,23 @@
 
 #include <SDL.h>
 #include <string>
-#include <vector>
-#include <sigc++/sigc++.h>
-#include "xmlhelper.h"
+#include <sigc++/trackable.h>
+#include <sigc++/signal.h>
+
 #include "defs.h"
 
 class Player;
+class XML_Helper;
 
  /*
-  * Description of  a single army type
+  * Description of a single army type
   * 
   * This class is the atom of every army. It contains all data related to
   * a single army type of an armyset, such as strength, defense, movement points
   * and so on.
   */
 
-class Army : public SigC::Object
+class Army : public sigc::trackable
 {
     public:
 
@@ -83,7 +84,7 @@ class Army : public SigC::Object
           */
         Army(XML_Helper* helper, bool prototype = false);
         
-        ~Army();
+        virtual ~Army();
 
 
         // Set functions:
@@ -286,7 +287,7 @@ class Army : public SigC::Object
         
         //! This signal is raised when the army dies; it is static because
         //! sometimes the army doesn't exist yet when the signal is connected
-        static SigC::Signal1<void, Army*> sdying;
+        static sigc::signal<void, Army*> sdying;
         
     protected:
         //! Generic function for saving the army data. Useful for the hero class,

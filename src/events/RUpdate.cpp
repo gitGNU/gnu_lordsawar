@@ -13,7 +13,7 @@
 
 #include "RUpdate.h"
 
-SigC::Signal1<bool,bool> RUpdate::supdating;
+sigc::signal<void> RUpdate::supdating;
 
 RUpdate::RUpdate()
     :Reaction(UPDATE)
@@ -48,7 +48,7 @@ bool RUpdate::trigger() const
     
     // The bool just tells the redraw function it should also perform an
     // update (paragui internals)
-    supdating.emit(true);
+    supdating();
 
     return true;
 }

@@ -15,10 +15,9 @@
 #ifndef FOGMAP_H
 #define FOGMAP_H
 
-#include <pgpoint.h>
-#include <sigc++/sigc++.h>
+#include "vector.h"
 
-#include "xmlhelper.h"
+class XML_Helper;
 
 /** Class representing the *fog* map in the game
   * 
@@ -55,7 +54,7 @@ class FogMap
           * @param radius   the radius around the point where the fog is altered
           * @param new_type the type which the area gets
           */
-		void alterFogRadius(PG_Point pt, int radius, TYPE new_type);
+		void alterFogRadius(Vector<int> pt, int radius, TYPE new_type);
 
         /** Save the contents of the map
           * 

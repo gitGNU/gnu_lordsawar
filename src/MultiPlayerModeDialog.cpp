@@ -25,19 +25,19 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-MultiPlayerModeDialog::MultiPlayerModeDialog(PG_Widget* parent, PG_Rect rect)
+MultiPlayerModeDialog::MultiPlayerModeDialog(PG_Widget* parent, Rectangle rect)
 	:PG_Window(parent, rect, "Choose Server or Client mode",PG_Window::MODAL), d_mode(true)
 {
-	d_b_server = new PG_Button(this,PG_Rect(20, 35, 80, 25), "Server",0);
+	d_b_server = new PG_Button(this,Rectangle(20, 35, 80, 25), "Server",0);
 	d_b_server->SetToggle(true);
 	d_b_server->SetPressed(true);
-	d_b_client = new PG_Button(this, PG_Rect(110, 35, 80, 25), "Client",1);
+	d_b_client = new PG_Button(this, Rectangle(110, 35, 80, 25), "Client",1);
 	d_b_client->SetToggle(true);
-	d_b_start = new PG_Button(this, PG_Rect(20, 150, Width() - 40, 30), "Start",2);
-	d_b_close = new PG_Button(this, PG_Rect(20, 185, Width() - 40, 30), "Close",3);
-	d_edit = new PG_LineEdit(this, PG_Rect(100, 100, Width() - 140, 30));
-	d_help = new PG_Label(this, PG_Rect(20, 70, Width() - 40, 30), ""); 
-	d_label = new PG_Label(this, PG_Rect(20, 100, 60, 30), "");
+	d_b_start = new PG_Button(this, Rectangle(20, 150, Width() - 40, 30), "Start",2);
+	d_b_close = new PG_Button(this, Rectangle(20, 185, Width() - 40, 30), "Close",3);
+	d_edit = new PG_LineEdit(this, Rectangle(100, 100, Width() - 140, 30));
+	d_help = new PG_Label(this, Rectangle(20, 70, Width() - 40, 30), ""); 
+	d_label = new PG_Label(this, Rectangle(20, 100, 60, 30), "");
 
 	d_b_client->sigClick.connect(slot(*this, &MultiPlayerModeDialog::clientClicked));
 	d_b_server->sigClick.connect(slot(*this, &MultiPlayerModeDialog::serverClicked));

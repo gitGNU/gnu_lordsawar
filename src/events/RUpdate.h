@@ -15,8 +15,9 @@
 #ifndef RUPDATE_H
 #define RUPDATE_H
 
+#include <sigc++/signal.h>
+
 #include "Reaction.h"
-#include <sigc++/sigc++.h>
 
 /** This class simply raises a signal which updates the screen.
   * 
@@ -42,8 +43,7 @@ class RUpdate : public Reaction
 
         bool trigger() const;
         
-        //! This signal is connected by W_Edit to the correct function.
-        static SigC::Signal1<bool,bool> supdating;
+        static sigc::signal<void> supdating;
 };
 
 #endif //RUPDATE_H

@@ -15,7 +15,7 @@
 #ifndef RWINGAME_H
 #define RWINGAME_H
 
-#include <sigc++/sigc++.h>
+#include <sigc++/signal.h>
 #include <SDL.h>
 #include "Reaction.h"
 
@@ -50,10 +50,10 @@ class RWinGame : public Reaction
 
         //! signal to show the win game dialog. For technical reasons we cannot
         //! dur this here.
-        static SigC::Signal0<void> swinDialog;
+        static sigc::signal<void> swinDialog;
         
         //! signal is connected outside of the scope of this class
-        static SigC::Signal1<void, Uint32> swinning;
+        static sigc::signal<void, Uint32> swinning;
 
     private:
         Uint32 d_status;

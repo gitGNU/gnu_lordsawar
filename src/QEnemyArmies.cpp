@@ -13,6 +13,7 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <sstream>
+#include <sigc++/functors/mem_fun.h>
 
 #include "QEnemyArmies.h"
 #include "QuestsManager.h"
@@ -30,7 +31,7 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero)
     // have us be informed when hostilities break out
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->sdyingArmy.connect( SigC::slot(*this, &QuestEnemyArmies::dyingArmy));
+        (*it)->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmies::dyingArmy));
     
     /** we have to kill 14-20 units: 14 + rand(0..6) */
     d_to_kill = 14 + (rand() % 7);
@@ -45,7 +46,7 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper)
     // we want to be informed about fight causalties
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->sdyingArmy.connect( SigC::slot(*this, &QuestEnemyArmies::dyingArmy));
+        (*it)->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmies::dyingArmy));
     
     helper->getData(d_to_kill, "to_kill");
     helper->getData(d_killed,  "killed");

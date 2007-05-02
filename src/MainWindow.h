@@ -26,12 +26,12 @@ class W_Edit;
 
 /** The game window
   * 
-  * MainWindow is the class which describes the game window. However, most
-  * actions are done by the W_Edit class. MainWindow only cares for the menu
+  * PMainWindow is the class which describes the game window. However, most
+  * actions are done by the W_Edit class. PMainWindow only cares for the menu
   * items, the other stuff (clicking on the buttons etc.) is done by W_Edit.
   */
 
-class MainWindow : public PG_ThemeWidget
+class PMainWindow : public PG_ThemeWidget
                     
 {
     public:
@@ -40,8 +40,8 @@ class MainWindow : public PG_ThemeWidget
           * @param scenario     the instance of the played scenario
           * @param rect         the dimensions of the window
           */
-        MainWindow(GameScenario* scenario, const PG_Rect& rect);
-        ~MainWindow();
+        PMainWindow(GameScenario* scenario, const Rectangle& rect);
+        ~PMainWindow();
 
         void changeResolution(int w, int h);
 
@@ -66,23 +66,23 @@ class MainWindow : public PG_ThemeWidget
         void stopGame();
 
         // CALLBACKS
-        bool file_load(PG_PopupMenu::MenuItem* item, PG_Pointer p);
-        bool file_save(PG_PopupMenu::MenuItem* item, PG_Pointer p);
-        bool file_saveas(PG_PopupMenu::MenuItem* item, PG_Pointer p);
-        bool file_quit(PG_PopupMenu::MenuItem* item, PG_Pointer p);
-        bool reports_armies(PG_PopupMenu::MenuItem* item, PG_Pointer p);
-        bool reports_cities(PG_PopupMenu::MenuItem* item, PG_Pointer p);
-        bool reports_gold(PG_PopupMenu::MenuItem* item, PG_Pointer p);
+        bool file_load(PG_PopupMenu::MenuItem* item, Vector<int>er p);
+        bool file_save(PG_PopupMenu::MenuItem* item, Vector<int>er p);
+        bool file_saveas(PG_PopupMenu::MenuItem* item, Vector<int>er p);
+        bool file_quit(PG_PopupMenu::MenuItem* item, Vector<int>er p);
+        bool reports_armies(PG_PopupMenu::MenuItem* item, Vector<int>er p);
+        bool reports_cities(PG_PopupMenu::MenuItem* item, Vector<int>er p);
+        bool reports_gold(PG_PopupMenu::MenuItem* item, Vector<int>er p);
         /** \brief Callback invoked by the upper menu item 'Quests...' */
-        bool reports_quests(PG_PopupMenu::MenuItem* item, PG_Pointer p);
-        bool options_game(PG_PopupMenu::MenuItem* item, PG_Pointer p);
-        bool help_help(PG_PopupMenu::MenuItem* item, PG_Pointer p);
-        bool help_about(PG_PopupMenu::MenuItem* item, PG_Pointer p);
+        bool reports_quests(PG_PopupMenu::MenuItem* item, Vector<int>er p);
+        bool options_game(PG_PopupMenu::MenuItem* item, Vector<int>er p);
+        bool help_help(PG_PopupMenu::MenuItem* item, Vector<int>er p);
+        bool help_about(PG_PopupMenu::MenuItem* item, Vector<int>er p);
 
         // Event handler 
         bool eventKeyDown(const SDL_KeyboardEvent* key);
                 
-        SigC::Signal1<void, Uint32> squitting;
+        sigc::signal<void, Uint32> squitting;
         
     private:
         // DATA

@@ -17,7 +17,7 @@
 #include "QuestsManager.h"
 #include "stack.h"
 
-Temple::Temple(PG_Point pos, std::string name, int type)
+Temple::Temple(Vector<int> pos, std::string name, int type)
   :Location(name, pos),d_type(type)
 {
     //mark the location on the game map as occupied by a temple

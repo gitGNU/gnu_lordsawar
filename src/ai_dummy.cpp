@@ -17,11 +17,12 @@
 #include "ai_dummy.h"
 #include "playerlist.h"
 #include "armysetlist.h"
-#include "FightDialog.h"
 #include "stacklist.h"
 #include "citylist.h"
 #include <fstream>
 #include "path.h"
+#include "action.h"
+#include "xmlhelper.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)

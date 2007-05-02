@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include "rectangle.h"
+
 #include "GraphicsCache.h"
 #include "armysetlist.h"
 #include "army.h"
@@ -19,6 +21,8 @@
 #include "Configuration.h"
 #include "File.h"
 #include "GameMap.h"
+#include "city.h"
+#include "stack.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -426,12 +430,18 @@ ArmyCacheItem* GraphicsCache::addArmyPic(Uint32 armyset, Uint32 army,
         // a little hack while waiting for a complete level picture
         if (level<26) 
         {
-            PG_Rect r(40*(level-2), 0, 40, 40);
+	    SDL_Rect r;
+	    r.x = 40*(level-2);
+	    r.y = 0;
+	    r.w = r.h = 40;
             SDL_BlitSurface(d_levelmask, &r, mask, 0);
         }
         else 
         {
-            PG_Rect r(160, 0, 40, 40);
+	    SDL_Rect r;
+	    r.x = 160;
+	    r.y = 0;
+	    r.w = r.h = 40;
             SDL_BlitSurface(d_levelmask, &r, mask, 0);
         }
       
@@ -456,7 +466,10 @@ ArmyCacheItem* GraphicsCache::addArmyPic(Uint32 armyset, Uint32 army,
                 d_medalsmask->format->BitsPerPixel,0,0,0,0);
 
                 // a little hack while waiting for a complete medals picture
-                PG_Rect r(40*i, 0, 40, 40);
+		SDL_Rect r;
+		r.x = 40*i;
+		r.y = 0;
+		r.w = r.h = 40;
                 SDL_BlitSurface(d_medalsmask, &r, mask, 0);
       
                 //set the first pixel as alpha value
@@ -738,7 +751,10 @@ void GraphicsCache::loadTemplePics()
         tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
                             fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
 
-        PG_Rect r(i*ts, 0, ts, ts);
+	SDL_Rect r;
+	r.x = i*ts;
+	r.y = 0;
+	r.w = r.h = ts;
         SDL_BlitSurface(templepics, &r, tmp, 0);
 
         d_templepic[i] = SDL_DisplayFormatAlpha(tmp);
@@ -770,7 +786,10 @@ void GraphicsCache::loadRoadPics()
         tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
                             fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
 
-        PG_Rect r(i*ts, 0, ts, ts);
+	SDL_Rect r;
+	r.x = i*ts;
+	r.y = 0;
+	r.w = r.h = ts;
         SDL_BlitSurface(roadpics, &r, tmp, 0);
 
         d_roadpic[i] = SDL_DisplayFormatAlpha(tmp);
@@ -802,7 +821,10 @@ void GraphicsCache::loadStonePics()
         tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
                             fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
 
-        PG_Rect r(i*ts, 0, ts, ts);
+	SDL_Rect r;
+	r.x = i*ts;
+	r.y = 0;
+	r.w = r.h = ts;
         SDL_BlitSurface(stonepics, &r, tmp, 0);
 
         d_stonepic[i] = SDL_DisplayFormatAlpha(tmp);
@@ -835,7 +857,10 @@ void GraphicsCache::loadCityPics()
     {
         //copy the razed city image...
 
-        PG_Rect r(i*size, 0, size, size);
+        SDL_Rect r;
+	r.x = i * size;
+	r.y = 0;
+	r.w = r.h = size;
         SDL_BlitSurface(razedpics, &r, tmp, 0);
 
         d_razedpic[i] = SDL_DisplayFormatAlpha(tmp);
@@ -859,10 +884,22 @@ void GraphicsCache::loadCityPics()
     {
         //copy the city image...
 
-        PG_Rect r(i*size, 0, size, size);
+	SDL_Rect r;
+	r.x = i*size;
+	r.y = 0;
+	r.w = r.h = size;
         SDL_BlitSurface(citypics, &r, tmp, 0);
 
         d_citypic[i] = SDL_DisplayFormatAlpha(tmp);
+#if 0
+
+        //...and copy the mask image
+        d_citymask[i] = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size,
+                        32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
+
+	r.y = size;
+        SDL_BlitSurface(citypics, &r, d_citymask[i], 0);
+#endif
     }
 
     SDL_FreeSurface(tmp);
@@ -890,7 +927,10 @@ void GraphicsCache::loadFlags()
                                     fmt->Bmask, fmt->Amask);
         
         // blit the correct flag on the top of the image
-        PG_Rect flagrect(i*tilesize, 0, tilesize, tilesize);
+	SDL_Rect flagrect;
+	flagrect.x = i*tilesize;
+	flagrect.y = 0;
+	flagrect.w = flagrect.h = tilesize;
         SDL_BlitSurface(flag, &flagrect, tmp, 0);
 
         // convert the surface to screen resolution
@@ -903,7 +943,7 @@ void GraphicsCache::loadFlags()
         // now create the masks
         d_flagmask[i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, tilesize, tilesize,
                             32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
-        flagrect.SetRect(i*tilesize, tilesize, tilesize, tilesize);
+        flagrect.y = tilesize;
         SDL_BlitSurface(flag, &flagrect, d_flagmask[i], 0);
     }
 

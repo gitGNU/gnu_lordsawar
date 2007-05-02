@@ -48,7 +48,7 @@ class RAddUnit : public Reaction
           *                 any more)
           * @param player   the player who gets the army
           */
-        RAddUnit(Stack* unit, Uint32 player, PG_Point pos);
+        RAddUnit(Stack* unit, Uint32 player, Vector<int> pos);
 
         //! Loads the data from a savegame
         RAddUnit(XML_Helper* helper);
@@ -74,16 +74,16 @@ class RAddUnit : public Reaction
         void setPlayer(Uint32 player) {d_player = player;}
 
         //! Returns the position of the placement
-        PG_Point getPos() const {return d_pos;}
+        Vector<int> getPos() const {return d_pos;}
 
         //! Sets the position of the placement
-        void setPos(PG_Point pos) {d_pos = pos;}
+        void setPos(Vector<int> pos) {d_pos = pos;}
 
         
     private:
         Stack* d_stack;
         Uint32 d_player;
-        PG_Point d_pos;
+        Vector<int> d_pos;
 
         //! Callback for loading, useless otherwise
         bool loadStack(std::string tag, XML_Helper* helper);

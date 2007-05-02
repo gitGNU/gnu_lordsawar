@@ -21,7 +21,7 @@
 #include "Configuration.h"
 #include "defs.h"
 
-LangDialog::LangDialog(PG_Widget* parent, const PG_Rect rect)
+LangDialog::LangDialog(PG_Widget* parent, const Rectangle rect)
     :PG_Window(parent, rect), d_b_german(0), d_b_italian(0)
 {
     // save the current locale
@@ -33,15 +33,15 @@ LangDialog::LangDialog(PG_Widget* parent, const PG_Rect rect)
     strncpy(d_chosenlang, setlocale(LC_ALL, ""), 20);
 
     // Place the OK and Cancel buttons
-    d_b_ok = new PG_Button(this, PG_Rect(30, my_height - 50, 80, 30), _("OK"));
+    d_b_ok = new PG_Button(this, Rectangle(30, my_height - 50, 80, 30), _("OK"));
     d_b_ok->sigClick.connect(slot(*this, &LangDialog::okClicked));
 
-    d_b_cancel = new PG_Button(this, PG_Rect(my_width - 110, my_height - 50, 80, 30),
+    d_b_cancel = new PG_Button(this, Rectangle(my_width - 110, my_height - 50, 80, 30),
                                _("Cancel"));
     d_b_cancel->sigClick.connect(slot(*this, &LangDialog::cancelClicked));
 
     // English localisation is always possible
-    PG_Rect r(30, 30, 200, 20);
+    Rectangle r(30, 30, 200, 20);
     d_b_english = new PG_RadioButton(this, r, "English (C)");
     d_b_english->sigClick.connect(slot(*this, &LangDialog::langChosen));
 

@@ -106,7 +106,7 @@ const Threatlist* AI_Analysis::getThreatsInOrder()
     return d_threats;
 }
 
-const Threatlist* AI_Analysis::getThreatsInOrder(PG_Point pos)
+const Threatlist* AI_Analysis::getThreatsInOrder(Vector<int> pos)
 {
     d_threats->sortByDistance(pos);
     return d_threats;

@@ -73,13 +73,13 @@
 #include <fstream>
 #include <list>
 #include <map>
-#include <sigc++/sigc++.h>
+#include <sigc++/slot.h>
 #include <expat.h>
 #include <SDL.h>
     
 class XML_Helper;
 
-typedef SigC::Slot2<bool, std::string, XML_Helper*> XML_Slot;
+typedef sigc::slot<bool, std::string, XML_Helper*> XML_Slot;
 //return type (bool), parameters tag(string), this(XML_Helper)
 
 class XML_Helper

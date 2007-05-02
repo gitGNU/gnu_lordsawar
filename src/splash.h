@@ -23,7 +23,7 @@
 
 class PG_Button;
 class PG_Application;
-class MainWindow;
+class PMainWindow;
 
 /** The opening window of the game
   * 
@@ -43,7 +43,7 @@ class Splash : public PG_ThemeWidget
           * @param app      solely used to quit the game via app->Quit()
           * @param rect     the rectangle of this window
           */
-        Splash(PG_Application* app, const PG_Rect& rect);
+        Splash(PG_Application* app, const Rectangle& rect);
         ~Splash();
         
         /** Function which is called by the callbacks and starts a new game
@@ -111,7 +111,7 @@ class Splash : public PG_ThemeWidget
         void clearData();
         
         // DATA
-        MainWindow* d_mainWindow;
+        PMainWindow* d_mainWindow;
         bool d_networkcancelled;
         bool d_networkready;
 

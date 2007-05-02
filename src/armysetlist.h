@@ -18,7 +18,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include <sigc++/object_slot.h>
+#include <sigc++/trackable.h>
 
 #include "xmlhelper.h"
 #include "army.h"
@@ -39,7 +39,7 @@
   * Since several classes access this class, it is implemented as a singleton.
   */
 
-class Armysetlist : public SigC::Object
+class Armysetlist : public sigc::trackable
 {
     public:
         //! return the singleton instance of this class
@@ -92,7 +92,11 @@ class Armysetlist : public SigC::Object
           *                     the standard and the hero armyset are excluded.
           */
         std::vector<Uint32> getArmysets(bool force_all = false) const;
-    
+
+	// FIXME: quick hack
+        typedef std::map<std::string, Uint32> FileNameMap;
+	FileNameMap file_names;
+	
     private:
         //! Constructor; loads all armysets it can find
         Armysetlist();

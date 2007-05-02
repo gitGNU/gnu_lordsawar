@@ -26,7 +26,7 @@
 #include "hero.h"
 #include "File.h"
 
-ArmyDialog::ArmyDialog(Army* army, PG_Widget* parent, PG_Rect rect)
+ArmyDialog::ArmyDialog(Army* army, PG_Widget* parent, Rectangle rect)
     :PG_ThemeWidget(parent, rect, true), d_army(army)
 {
     char buffer[61];
@@ -41,7 +41,7 @@ ArmyDialog::ArmyDialog(Army* army, PG_Widget* parent, PG_Rect rect)
     // First, create the single sections. Start with the upper left...
     // The label is a poor substitute for setting the background of an inlay
     // widget, however, the latter one somehow doesn't work (image is transparent)
-    PG_Rect r(0, 30, 350, 350);
+    Rectangle r(0, 30, 350, 350);
     PG_Label* ul = new PG_Label(this, r, "");
     if (army->getPortrait())
         ul->SetIcon(army->getPortrait());
@@ -113,7 +113,7 @@ bool ArmyDialog::b_itemClicked(PG_Button* btn)
     int ypos = PG_Application::GetScreenHeight()/2 - 200;
 
     ItemDialog dialog(static_cast<Hero*>(d_army),
-                      0, PG_Rect(xpos, ypos, 500, 420));
+                      0, Rectangle(xpos, ypos, 500, 420));
 
     dialog.Show();
     dialog.RunModal();
@@ -140,19 +140,19 @@ bool ArmyDialog::eventKeyDown(const SDL_KeyboardEvent* key)
     return true;
 }
 
-void ArmyDialog::eventDraw(SDL_Surface* surface, const PG_Rect& r)
+void ArmyDialog::eventDraw(SDL_Surface* surface, const Rectangle& r)
 {
     PG_ThemeWidget::eventDraw(surface, r);
     
-    placeIcons(surface, PG_Rect(370, 105, 210, 40), Army::STRENGTH);
-    placeIcons(surface, PG_Rect(370, 155, 210, 40), Army::RANGED);
-    placeIcons(surface, PG_Rect(370, 205, 210, 40), Army::DEFENSE);
-    placeIcons(surface, PG_Rect(370, 255, 210, 40), Army::HP);
-    placeIcons(surface, PG_Rect(370, 305, 210, 40), Army::VITALITY);
-    placeIcons(surface, PG_Rect(370, 355, 210, 40), Army::MOVES);
+    placeIcons(surface, Rectangle(370, 105, 210, 40), Army::STRENGTH);
+    placeIcons(surface, Rectangle(370, 155, 210, 40), Army::RANGED);
+    placeIcons(surface, Rectangle(370, 205, 210, 40), Army::DEFENSE);
+    placeIcons(surface, Rectangle(370, 255, 210, 40), Army::HP);
+    placeIcons(surface, Rectangle(370, 305, 210, 40), Army::VITALITY);
+    placeIcons(surface, Rectangle(370, 355, 210, 40), Army::MOVES);
 }
 
-void ArmyDialog::placeIcons(SDL_Surface* s, const PG_Rect r, Army::Stat stat)
+void ArmyDialog::placeIcons(SDL_Surface* s, const Rectangle r, Army::Stat stat)
 {
     // set some basic variables depending on the stat selected
     // namely the stats and the index of the appropriate pic
@@ -262,7 +262,7 @@ void ArmyDialog::placeIcons(SDL_Surface* s, const PG_Rect r, Army::Stat stat)
     }
 
     // Now draw all the icons (puh)
-    PG_Rect target;
+    Rectangle target;
     target.x = r.x;
     target.y = r.y;
     target.w = d_icon[index][0]->w;
@@ -319,7 +319,7 @@ void ArmyDialog::loadIcons()
     // This should preserve the maximum possible quality.
     SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32,
                             0xFF000000, 0xFF0000, 0xFF00, 0xFF);
-    PG_Rect r;
+    Rectangle r;
             
     for (int i = 0; i < 6; i++)
         for (int j = 0; j < 4; j++)

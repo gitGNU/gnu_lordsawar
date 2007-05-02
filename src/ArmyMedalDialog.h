@@ -34,7 +34,7 @@ class ArmyMedalDialog : public PG_Window
           * 
           * @param army         the army that gets a medal
         */
-        ArmyMedalDialog(Army* army, PG_Widget* parent, PG_Rect rect);
+        ArmyMedalDialog(Army* army, PG_Widget* parent, Rectangle rect);
         ~ArmyMedalDialog();
 
 	//! This function is called when the user pushes the OK button.

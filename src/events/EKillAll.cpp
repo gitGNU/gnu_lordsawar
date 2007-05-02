@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "EKillAll.h"
 #include "../playerlist.h"
 
@@ -45,7 +47,7 @@ bool EKillAll::save(XML_Helper* helper) const
 void EKillAll::init()
 {
     Playerlist::getInstance()->splayerDead.connect(
-                               SigC::slot((*this), &EKillAll::trigger));
+                               sigc::mem_fun(*this, &EKillAll::trigger));
 }
 
 void EKillAll::trigger(Player* p)

@@ -41,7 +41,7 @@ class ArmyLevelDialog : public PG_Window
           * @param parent   the parent widget (derived from paragui)
           * @param rect     the rect of this widget (derived from paragui)
           */
-        ArmyLevelDialog(Army* army, PG_Widget* parent, PG_Rect rect);
+        ArmyLevelDialog(Army* army, PG_Widget* parent, Rectangle rect);
         
         ~ArmyLevelDialog();
 

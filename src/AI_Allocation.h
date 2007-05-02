@@ -16,8 +16,9 @@
 #define AI_ALLOCATION_H
 
 #include <string>
-#include <pgmessageobject.h>
+
 #include "MoveResult.h"
+
 class AI_Analysis;
 class Player;
 class Ruin;
@@ -74,17 +75,17 @@ class AI_Allocation
         MoveResult *shuffleStacksWithinCity(City *city, Stack *stack);
         
         // tell the stack to move to the point
-        MoveResult *moveStack(Stack *stack, PG_Point pos);
+        MoveResult *moveStack(Stack *stack, Vector<int> pos);
         
         // find the best attacker for the given threat
         Stack *findBestAttackerFor(Threat *threat);
         
         // find the closest stack to the given position, but 0 if none within
         // limitInMoves (estimate of a maximum number of turns for getting there) 
-        Stack *findClosestStack(PG_Point pos, int limitInMoves);
+        Stack *findClosestStack(Vector<int> pos, int limitInMoves);
         
         // find a position in the city that a stack can move to
-        PG_Point *getFreeSpotInCity(City *city, int stackSize);
+        Vector<int> *getFreeSpotInCity(City *city, int stackSize);
         
         // move stacks that we have no particular use for
         int defaultStackMovements();

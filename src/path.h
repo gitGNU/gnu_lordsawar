@@ -15,10 +15,12 @@
 #ifndef PATH_H
 #define PATH_H
 
+#include <SDL_types.h>
 #include <list>
-#include <pgpoint.h>
-#include "stack.h"
-#include "xmlhelper.h"
+#include "vector.h"
+
+class Stack;
+class XML_Helper;
 
 /** The path class cares for path storing and calculation.
   *
@@ -30,7 +32,7 @@
   *   and recalculates the path
   * - it calculates the shortest path between points on the map
   */
-class Path : public std::list<PG_Point*>
+class Path : public std::list<Vector<int>*>
 {
     public:
         //! Default constructor
@@ -59,7 +61,7 @@ class Path : public std::list<PG_Point*>
         /* This function is used to verify if the stack can move on the Tile
          * of the given destination point
          */
-        bool canMoveThere(Stack* s, PG_Point* dest);
+        bool canMoveThere(const Stack* s, Vector<int> dest);
 
         /** Validates an existing path.
           * 
@@ -83,7 +85,7 @@ class Path : public std::list<PG_Point*>
           * @return number of movement points needed to destination or 0
           * if no path is possible
           */
-        Uint32 calculate(Stack* s, PG_Point dest);
+        Uint32 calculate(Stack* s, Vector<int> dest);
 
     private:
         /** Checks if a tile is blocked for the stacked
@@ -97,7 +99,7 @@ class Path : public std::list<PG_Point*>
           * @param destx, desty     x/y position of the destination
           * @return false if unit may pass, true otherwise
           */
-        bool isBlocked(Stack* s, int x, int y, int destx, int desty) const;
+        bool isBlocked(const Stack* s, int x, int y, int destx, int desty) const;
 
         /** Checks how many movement points are needed to cross the tile
           * 

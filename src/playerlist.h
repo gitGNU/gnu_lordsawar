@@ -17,7 +17,7 @@
 
 #include <list>
 #include <string>
-#include <sigc++/object_slot.h>
+#include <sigc++/trackable.h>
 
 #include "player.h"
 
@@ -28,7 +28,7 @@
   * playerlist can check if there are more than one player remaining alive.
   */
 
-class Playerlist : public std::list<Player*>, public SigC::Object
+class Playerlist : public std::list<Player*>, public sigc::trackable
 {
     public:
 
@@ -95,7 +95,7 @@ class Playerlist : public std::list<Player*>, public SigC::Object
         iterator flErase(iterator it);
 
         //! This signal is emitted when a player has died.
-        SigC::Signal1<void, Player*> splayerDead;
+        sigc::signal<void, Player*> splayerDead;
     
     protected:
         // CREATORS

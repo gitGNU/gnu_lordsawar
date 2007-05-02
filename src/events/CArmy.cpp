@@ -15,6 +15,7 @@
 #include "../playerlist.h"
 #include "../stacklist.h"
 #include "../army.h"
+#include "../stack.h"
 
 CArmy::CArmy(Uint32 army)
     :Condition(ARMY), d_army(army)

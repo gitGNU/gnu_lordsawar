@@ -22,7 +22,7 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-Scroller::Scroller(PG_Widget* parent, PG_Rect rect, int id, SmallMap * smap, int x, int y)
+Scroller::Scroller(PG_Widget* parent, Rectangle rect, int id, SmallMap * smap, int x, int y)
     :PG_Button(parent, rect,"",id)
 {
     debug("scroller constructor")

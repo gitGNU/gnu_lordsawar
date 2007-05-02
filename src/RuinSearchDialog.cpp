@@ -24,26 +24,26 @@
 
 RuinSearchDialog::RuinSearchDialog(PG_Widget* parent, int gold)
     :PG_Window(parent,
-            PG_Rect((PG_Application::GetScreenWidth()-330)/2,
+            Rectangle((PG_Application::GetScreenWidth()-330)/2,
             (PG_Application::GetScreenHeight()-370)/2, 330, 370),
             _("Entering the ruin..."),  PG_Window::MODAL)
 {
     d_background = File::getMiscPicture("ruin_1.jpg", false);
 
     char buffer[100];
-    d_l_msg1 = new PG_Label(this, PG_Rect(10, 280, 280, 20), _("You defeated the monsters"));
+    d_l_msg1 = new PG_Label(this, Rectangle(10, 280, 280, 20), _("You defeated the monsters"));
     d_l_msg1->SetAlignment(PG_Label::CENTER);
     sprintf(buffer,
             ngettext("and found %i gold piece!", "and found %i gold pieces!", gold),
             gold);
-    d_l_msg2 = new PG_Label(this, PG_Rect(10, 300, 280, 20), buffer);
+    d_l_msg2 = new PG_Label(this, Rectangle(10, 300, 280, 20), buffer);
     d_l_msg2->SetAlignment(PG_Label::CENTER);
 
     //Ugly, hardcoded sizes...
-    d_l_pic = new PG_Label(this, PG_Rect(5, 30, 320, 240), "");
+    d_l_pic = new PG_Label(this, Rectangle(5, 30, 320, 240), "");
     d_l_pic->SetIcon(d_background);
 
-    d_b_close = new PG_Button(this, PG_Rect(20, my_height - 40, 280, 30), _("Close"),3);
+    d_b_close = new PG_Button(this, Rectangle(20, my_height - 40, 280, 30), _("Close"),3);
     d_b_close->sigClick.connect(slot(*this, &RuinSearchDialog::b_closeClicked));
 }
 

@@ -125,7 +125,7 @@ int AI_Allocation::allocateDefensiveStacks(Citylist *allCities)
             Stack *s = findClosestStack(city->getPos(), 2);
             if (!s) break;
             debug("Stack " << s->getId() << " should return to " << city->getName() << " to defend")
-            PG_Point *dest = getFreeSpotInCity(city, s->size());
+            Vector<int> *dest = getFreeSpotInCity(city, s->size());
             if (!dest) break;
             
             d_stacks->remove(s);
@@ -170,7 +170,7 @@ int AI_Allocation::allocateStacksToThreats()
             if (!attacker) break;
 
             d_owner->getStacklist()->setActivestack(attacker);
-            PG_Point dest = threat->getClosestPoint(attacker->getPos());
+            Vector<int> dest = threat->getClosestPoint(attacker->getPos());
             float myStr = d_analysis->assessStackStrength(attacker);
             float opponentStr = 0.0;
             if (threat->isCity())
@@ -215,10 +215,10 @@ int AI_Allocation::allocateStacksToThreats()
     return count;
 }
 
-PG_Point *AI_Allocation::getFreeSpotInCity(City *city, int stackSize)
+Vector<int> *AI_Allocation::getFreeSpotInCity(City *city, int stackSize)
 {
     // northwest
-    PG_Point *result = new PG_Point(city->getPos());
+    Vector<int> *result = new Vector<int>(city->getPos());
     Stack *s = Stacklist::getObjectAt(*result);
     if (!s)
         return result;
@@ -254,14 +254,14 @@ PG_Point *AI_Allocation::getFreeSpotInCity(City *city, int stackSize)
     return 0;
 }
 
-Stack *AI_Allocation::findClosestStack(PG_Point pos, int limitInMoves)
+Stack *AI_Allocation::findClosestStack(Vector<int> pos, int limitInMoves)
 {
     Stack *best = 0;
     float bestScore = 1000.0;
     for (Stacklist::iterator it = d_stacks->begin(); it != d_stacks->end(); ++it)
     {
         Stack* s = *it;
-        PG_Point spos = s->getPos();
+        Vector<int> spos = s->getPos();
         // UL: stacks can move diagonally
         int distToThreat = abs(pos.x - spos.x);
         int disty = abs(pos.y - spos.y);
@@ -286,11 +286,11 @@ Stack *AI_Allocation::findBestAttackerFor(Threat *threat)
     for (Stacklist::iterator it = d_stacks->begin(); it != d_stacks->end(); ++it)
     {
         Stack* s = *it;
-        PG_Point closestPoint = threat->getClosestPoint(s->getPos());
+        Vector<int> closestPoint = threat->getClosestPoint(s->getPos());
         // threat has been destroyed anyway
         if (closestPoint.x == -1)
             return 0;
-        PG_Point spos = s->getPos();
+        Vector<int> spos = s->getPos();
 
         // UL: consider diagonal movement of stacks
         int distToThreat = abs(closestPoint.x - spos.x);
@@ -387,8 +387,8 @@ MoveResult *AI_Allocation::stackReinforce(Stack *s)
     for (Citylist::iterator it = allCities->begin(); it != allCities->end(); ++it)
     {
         City *city = &(*it);
-        PG_Point spos = s->getPos();
-        PG_Point cpos = city->getPos();
+        Vector<int> spos = s->getPos();
+        Vector<int> cpos = city->getPos();
         // UL: stacks can move diagnonally
         int distToCity = abs(spos.x - cpos.x);
         int disty = abs(spos.y - cpos.y);
@@ -409,11 +409,11 @@ MoveResult *AI_Allocation::stackReinforce(Stack *s)
     if (cityNeeds) {
         debug("stack is sent to reinforce " << cityNeeds->getName() <<" if possible")
         // don't forget to send the stack to a free field within the city
-        PG_Point* dest = getFreeSpotInCity(cityNeeds, s->size());
+        Vector<int>* dest = getFreeSpotInCity(cityNeeds, s->size());
         if (dest)
         {
             d_analysis->reinforce(cityNeeds, s, moves);
-            PG_Point target = *dest;
+            Vector<int> target = *dest;
             delete dest;
             return moveStack(s, target);
         }
@@ -429,8 +429,8 @@ MoveResult *AI_Allocation::stackReinforce(Stack *s)
     }
     else
     {
-        PG_Point p = target->getPos();
-        PG_Point alt;
+        Vector<int> p = target->getPos();
+        Vector<int> alt;
         debug(d_owner->getName() << " has decided to retreat to " << target->getName())
         MoveResult *result = moveStack(s, p);
         if (result->moveSucceeded())
@@ -499,7 +499,7 @@ MoveResult *AI_Allocation::shuffleStacksWithinCity(City *city, Stack *stack)
     return 0;
 }
 
-MoveResult *AI_Allocation::moveStack(Stack *stack, PG_Point pos)
+MoveResult *AI_Allocation::moveStack(Stack *stack, Vector<int> pos)
 {
     return d_owner->stackMove(stack, pos, false);
 }

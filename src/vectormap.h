@@ -37,7 +37,7 @@ class VectorMap : public OverviewMap
           * @param parent       the parent widget
           * @param rect         the rectangle for the vector map
           */
-        VectorMap(City * city, PG_Widget* parent, PG_Rect rect);
+        VectorMap(City * city, PG_Widget* parent, Rectangle rect);
         ~VectorMap();
 
         /** Sets the city that we concentrate on. This city is drawn differently
@@ -49,20 +49,20 @@ class VectorMap : public OverviewMap
         City* getCity() const {return d_city;}
 
         //! emitted whenever the user moves the mouse to a new tile
-        SigC::Signal1<void, PG_Point> smovVectMouse;
+        sigc::signal<void, Vector<int>> smovVectMouse;
 
         //! emitted whenever the user click the mouse button
-        SigC::Signal1<void, PG_Point> sclickVectMouse;
+        sigc::signal<void, Vector<int>> sclickVectMouse;
         
     private:
         // EVENT HANDLERS
-        void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
+        void eventDraw(SDL_Surface* surface, const Rectangle& rect);
         bool eventMouseButtonDown(const SDL_MouseButtonEvent* event);
         bool eventMouseMotion(const SDL_MouseMotionEvent* event);
         void eventMouseLeave(); 
      
         // DATA
-        PG_Point d_pos;
+        Vector<int> d_pos;
         City * d_city;
 };
 

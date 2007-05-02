@@ -12,12 +12,14 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "FogMap.h"
-#include "GameMap.h"
 #include <iostream>
 #include <sstream>
-#include <fstream>
+
+#include "FogMap.h"
+#include "GameMap.h"
+
 #include "playerlist.h"
+#include "xmlhelper.h"
 
 using namespace std;
 
@@ -102,7 +104,7 @@ FogMap::TYPE FogMap::getFogTile(int x, int y) const
     return d_fogmap[y*d_width + x];
 }
 
-void FogMap::alterFogRadius(PG_Point pt, int radius, TYPE new_type)
+void FogMap::alterFogRadius(Vector<int> pt, int radius, TYPE new_type)
 {
     int x = pt.x - radius;
     int y = pt.y - radius;

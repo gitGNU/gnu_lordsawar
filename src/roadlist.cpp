@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "roadlist.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -48,14 +50,14 @@ Roadlist::Roadlist()
 {
 }
 
-Road* Roadlist::getNearestRoad(const PG_Point& pos)
+Road* Roadlist::getNearestRoad(const Vector<int>& pos)
 {
     int diff = -1;
     iterator diffit;
     
     for (iterator it = begin(); it != end(); ++it)
     {
-       PG_Point p = (*it).getPos();
+       Vector<int> p = (*it).getPos();
        int delta = abs(p.x - pos.x);
        if (delta < abs(p.y - pos.y))
            delta = abs(p.y - pos.y);
@@ -72,7 +74,7 @@ Road* Roadlist::getNearestRoad(const PG_Point& pos)
 
 Roadlist::Roadlist(XML_Helper* helper)
 {
-    helper->registerTag("road", SigC::slot((*this), &Roadlist::load));
+    helper->registerTag("road", sigc::mem_fun(this, &Roadlist::load));
 }
 
 bool Roadlist::save(XML_Helper* helper) const

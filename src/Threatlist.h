@@ -50,7 +50,7 @@ class Threatlist : public std::list<Threat*>
         void sortByValue();
 
         //! sort into list by closest first
-        void sortByDistance(PG_Point pos);
+        void sortByDistance(Vector<int> pos);
 
         //! return some debugging information
         string toString() const;

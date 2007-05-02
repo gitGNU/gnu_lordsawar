@@ -34,7 +34,7 @@ using namespace std;
 
 QuestExpiredDialog::QuestExpiredDialog(PG_Widget* parent, Quest *quest)
 	:PG_Window(parent,
-            PG_Rect((PG_Application::GetScreenWidth()-WIDTH)/2,
+            Rectangle((PG_Application::GetScreenWidth()-WIDTH)/2,
             (PG_Application::GetScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT),
             _("SORRY FOR YOU!"),  PG_Window::MODAL)
 {
@@ -49,7 +49,7 @@ QuestExpiredDialog::QuestExpiredDialog(PG_Widget* parent, Quest *quest)
     snprintf(buffer, 100, _("Your Hero %s did not complete the quest."),
             quest->getHero()->getName().c_str());
 
-    PG_Label *msg = new PG_Label(this, PG_Rect(MARGIN_X, y, 
+    PG_Label *msg = new PG_Label(this, Rectangle(MARGIN_X, y, 
                        LINE_WIDTH, LINE_HEIGHT), 
                        buffer);
     msg->SetAlignment(PG_Label::CENTER);
@@ -61,7 +61,7 @@ QuestExpiredDialog::QuestExpiredDialog(PG_Widget* parent, Quest *quest)
     while (msgs.empty() == false)
     {
         s =  msgs.front();
-	    msg = new PG_Label(this, PG_Rect(MARGIN_X, y, 
+	    msg = new PG_Label(this, Rectangle(MARGIN_X, y, 
                            LINE_WIDTH, LINE_HEIGHT), 
                            s.c_str());
 	    msg->SetAlignment(PG_Label::CENTER);
@@ -70,7 +70,7 @@ QuestExpiredDialog::QuestExpiredDialog(PG_Widget* parent, Quest *quest)
         y += (LINE_HEIGHT +2);
     }
 
-    d_b_close = new PG_Button(this, PG_Rect(MARGIN_X, my_height - 40,LINE_WIDTH, 30),_("Close"),1);
+    d_b_close = new PG_Button(this, Rectangle(MARGIN_X, my_height - 40,LINE_WIDTH, 30),_("Close"),1);
     d_b_close->sigClick.connect(slot(*this, &QuestExpiredDialog::b_closeClicked));
 }
 

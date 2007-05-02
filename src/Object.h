@@ -15,8 +15,11 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include <pgpoint.h>
-#include "xmlhelper.h"
+#include <SDL_types.h>
+#include "vector.h"
+#include "rectangle.h"
+
+class XML_Helper;
 
 /** Base class for map objects.
   *
@@ -27,33 +30,36 @@
 
 class Object
 {
-    public:
-        /** Constructor
-          * 
-          * @param pos      the position of the object
-          * @param size     the size of the object (we assume a square)
-          */
-        Object(PG_Point pos, Uint32 size = 1);
-        Object(const Object&);
-        Object(XML_Helper* helper, Uint32 size = 1);
-        ~Object();
+ public:
+    /** Constructor
+     * 
+     * @param pos      the position of the object
+     * @param size     the size of the object (we assume a square)
+     */
+    Object(Vector<int> pos, Uint32 size = 1);
+    Object(const Object&);
+    Object(XML_Helper* helper, Uint32 size = 1);
+    ~Object();
 
-        //! Get the position of the object
-        PG_Point getPos() const {return d_pos;}
+    //! Get the position of the object
+    Vector<int> getPos() const {return d_pos;}
 
-        //! Returns the id of the object
-        Uint32 getId() const {return d_id;}
+    //! Returns the id of the object
+    Uint32 getId() const {return d_id;}
         
-        //! Get the size of the object
-        Uint32 getSize() const {return d_size;}
+    //! Get the size of the object
+    Uint32 getSize() const {return d_size;}
 
-        //! Does the Object contain this point?
-        bool contains(PG_Point pos) const;
+    //! Does the Object contain this point?
+    bool contains(Vector<int> pos) const;
 
-    protected:
-        PG_Point d_pos;
-        Uint32 d_id;
-        Uint32 d_size;
+    Rectangle get_area() const
+	{ return Rectangle(d_pos.x, d_pos.y, d_size, d_size); }
+	
+ protected:
+    Vector<int> d_pos;
+    Uint32 d_id;
+    Uint32 d_size;
 };
 
 #endif

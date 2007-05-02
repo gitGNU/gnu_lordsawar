@@ -13,7 +13,6 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <iostream>
-#include <pgdraw.h>
 #include <pgapplication.h>
 #include "vectormap.h"
 #include "stacklist.h"
@@ -37,7 +36,7 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-VectorMap::VectorMap(City * city, PG_Widget* parent, PG_Rect rect)
+VectorMap::VectorMap(City * city, PG_Widget* parent, Rectangle rect)
   :OverviewMap(parent, rect), d_city(city)
 {
 }
@@ -46,7 +45,7 @@ VectorMap::~VectorMap()
 {
 }
 
-void VectorMap::eventDraw(SDL_Surface* surface, const PG_Rect& rect)
+void VectorMap::eventDraw(SDL_Surface* surface, const Rectangle& rect)
 {
     debug("eventDraw()");
 
@@ -57,8 +56,8 @@ void VectorMap::eventDraw(SDL_Surface* surface, const PG_Rect& rect)
     if (d_city->getVectoring().x != -1)
     {
         debug("Draw vector")
-        PG_Point start = d_city->getPos();
-        PG_Point end = d_city->getVectoring();
+        Vector<int> start = d_city->getPos();
+        Vector<int> end = d_city->getVectoring();
         
         start = mapToSurface(start);
         end = mapToSurface(end);
@@ -66,15 +65,15 @@ void VectorMap::eventDraw(SDL_Surface* surface, const PG_Rect& rect)
         DrawLine(start.x, start.y, end.x, end.y, PG_Color(0,0,0));
     }
 
-    DrawBorder(PG_Rect(0, 0, my_width, my_height), 1);
+    DrawBorder(Rectangle(0, 0, my_width, my_height), 1);
 }
 
 bool VectorMap::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
 {  
     // actualize the mouse position
-    PG_Point oldpos = d_pos;
-    PG_Point pos;
-    d_pos = mapFromScreen(PG_Point(event->x, event->y));
+    Vector<int> oldpos = d_pos;
+    Vector<int> pos;
+    d_pos = mapFromScreen(Vector<int>(event->x, event->y));
 
     Stack* st;
     const Armysetlist* al;
@@ -121,13 +120,13 @@ bool VectorMap::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
 
             if (val != 0 && index != -1)
             {
-                sclickVectMouse.emit(PG_Point(d_pos.x,d_pos.y));
+                sclickVectMouse.emit(Vector<int>(d_pos.x,d_pos.y));
                 d_city->setVectoring(d_pos);
             }
             else   
             {
-                sclickVectMouse.emit(PG_Point(-1,-1));
-                d_city->setVectoring(PG_Point(-1,-1));
+                sclickVectMouse.emit(Vector<int>(-1,-1));
+                d_city->setVectoring(Vector<int>(-1,-1));
             }
 
             delete st;
@@ -136,8 +135,8 @@ bool VectorMap::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
         case SDL_BUTTON_RIGHT:
               
             // We use the right button to unset the city vectoring 
-            sclickVectMouse.emit(PG_Point(-1,-1));
-            d_city->setVectoring(PG_Point(-1,-1));
+            sclickVectMouse.emit(Vector<int>(-1,-1));
+            d_city->setVectoring(Vector<int>(-1,-1));
             break;
 
         default:
@@ -151,8 +150,8 @@ bool VectorMap::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
 bool VectorMap::eventMouseMotion(const SDL_MouseMotionEvent* event)
 {
     // actualize the mouse position
-    PG_Point oldpos = d_pos;
-    d_pos = mapFromScreen(PG_Point(event->x, event->y));
+    Vector<int> oldpos = d_pos;
+    d_pos = mapFromScreen(Vector<int>(event->x, event->y));
 
     int diff_xtiles = d_pos.x - oldpos.x;
     int diff_ytiles = d_pos.y - oldpos.y;
@@ -160,7 +159,7 @@ bool VectorMap::eventMouseMotion(const SDL_MouseMotionEvent* event)
     if ((diff_xtiles == 0) && (diff_ytiles == 0))
         return true;
 
-    smovVectMouse.emit(PG_Point(d_pos.x,d_pos.y));
+    smovVectMouse.emit(Vector<int>(d_pos.x,d_pos.y));
     
     return true;
 }
@@ -170,5 +169,5 @@ void VectorMap::eventMouseLeave()
     //set the pos value to a negative value
     d_pos.x = -1;
     d_pos.y = -1;
-    smovVectMouse.emit(PG_Point(-1,-1));
+    smovVectMouse.emit(Vector<int>(-1,-1));
 }

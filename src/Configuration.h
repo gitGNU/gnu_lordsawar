@@ -16,9 +16,10 @@
 #define CONFIGURATION_H
 
 #include <string>
-#include <SDL.h>
-#include <sigc++/object_slot.h>
-#include "xmlhelper.h"
+#include <SDL_types.h>
+#include <sigc++/trackable.h>
+
+class XML_Helper;
 
 /** \brief The class which holds all configuration options
   * 
@@ -28,7 +29,7 @@
 
 // TODO: do we really want all this static stuff or rather do a singleton or such?
 
-class Configuration : public SigC::Object
+class Configuration : public sigc::trackable
 {
     public:
         // CREATORS
@@ -63,11 +64,9 @@ class Configuration : public SigC::Object
 
         // Language setting
         static std::string s_lang;
-        
-        // main window and resolution settings
-        static int s_width;
-        static int s_height;
-        static Uint32 s_flags;  // fullscreen mode or not
+
+	// fullscreen mode or not
+        static Uint32 s_flags;
 
         // if using hardware surfaces for pixmaps or not
         static Uint32 s_surfaceFlags;

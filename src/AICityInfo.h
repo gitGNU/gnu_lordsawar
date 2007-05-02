@@ -56,7 +56,7 @@ class AICityInfo
         Threatlist *getThreats() const { return d_threats; }
 
         //! Returns the location of the city
-        PG_Point getPos() const { return d_city->getPos(); }
+        Vector<int> getPos() const { return d_city->getPos(); }
         
     private:
         float d_danger;

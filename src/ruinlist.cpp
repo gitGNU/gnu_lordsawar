@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "ruinlist.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -50,7 +52,7 @@ Ruinlist::Ruinlist()
 
 Ruinlist::Ruinlist(XML_Helper* helper)
 {
-    helper->registerTag("ruin", SigC::slot((*this), &Ruinlist::load));
+    helper->registerTag("ruin", sigc::mem_fun(this, &Ruinlist::load));
 }
 
 bool Ruinlist::save(XML_Helper* helper) const
@@ -78,12 +80,12 @@ bool Ruinlist::load(std::string tag, XML_Helper* helper)
 
     //! since the ruin has only now been copied to its final state, we need
     //to register the callback for the occupants here.
-    helper->registerTag("stack", SigC::slot(*(begin()), &Ruin::load));
+    helper->registerTag("stack", sigc::mem_fun(*begin(), &Ruin::load));
 
     return true;
 }
 
-Ruin* Ruinlist::getNearestUnsearchedRuin(const PG_Point& pos)
+Ruin* Ruinlist::getNearestUnsearchedRuin(const Vector<int>& pos)
 {
     int diff = -1;
     iterator diffit;
@@ -91,7 +93,7 @@ Ruin* Ruinlist::getNearestUnsearchedRuin(const PG_Point& pos)
     {
         if (!(*it).isSearched())
         {
-            PG_Point p = (*it).getPos();
+            Vector<int> p = (*it).getPos();
             int delta = abs(p.x - pos.x) + abs(p.y - pos.y);
 
             if ((diff > delta) || (diff == -1))

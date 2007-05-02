@@ -29,7 +29,7 @@ class PG_Label;
   * GamePreferences dialog where you can adjust the amount of water, grass...
   */
 
-class TerrainConfig : public SigC::Object
+class TerrainConfig : public sigc::Object
 {
     public:
         /** The constructor
@@ -41,7 +41,7 @@ class TerrainConfig : public SigC::Object
           * @param max          the maximum value
           * @param pos          the initial position of the slider
           */
-        TerrainConfig(PG_Widget* parent, PG_Rect rect, char* name, int min, int max, int pos);
+        TerrainConfig(PG_Widget* parent, Rectangle rect, char* name, int min, int max, int pos);
         ~TerrainConfig();
 
         // MANIPULATORS

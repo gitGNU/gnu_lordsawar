@@ -17,10 +17,11 @@
 
 #include <string>
 #include <list>
-#include <pgmessageobject.h>
-#include "defs.h"
+
 #include "real_player.h"
 #include "AI_Analysis.h"
+
+class XML_Helper;
 
 
 /** Simple AI

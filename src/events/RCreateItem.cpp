@@ -15,7 +15,7 @@
 #include "../Itemlist.h"
 #include "../GameMap.h"
 
-RCreateItem::RCreateItem(Uint32 index, PG_Point pos)
+RCreateItem::RCreateItem(Uint32 index, Vector<int> pos)
     :Reaction(CREATEITEM), d_item(index), d_pos(pos)
 {
 }

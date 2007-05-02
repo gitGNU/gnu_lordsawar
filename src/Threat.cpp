@@ -17,6 +17,7 @@
 #include "stacklist.h"
 #include <iostream>
 #include "city.h"
+#include "ruin.h"
 #include "stack.h"
 #include "playerlist.h"
 #include "AI_Analysis.h"
@@ -65,7 +66,7 @@ std::string Threat::toString() const
     }
 }
 
-bool Threat::Near(PG_Point pos, Player *p) const
+bool Threat::Near(Vector<int> pos, Player *p) const
 {
     if (p != d_player)
         return false;
@@ -82,7 +83,7 @@ bool Threat::Near(PG_Point pos, Player *p) const
         for (Stacklist::const_iterator it = d_stacks->begin();
             it != d_stacks->end(); ++it)
         {
-            PG_Point spos = (*it)->getPos();
+            Vector<int> spos = (*it)->getPos();
             if (abs(pos.x - spos.x) <= 1 && abs(pos.y - spos.y <= 1))
                 return true;
         }
@@ -127,9 +128,9 @@ float Threat::value() const
     return score;
 }
 
-PG_Point Threat::getClosestPoint(PG_Point location) const
+Vector<int> Threat::getClosestPoint(Vector<int> location) const
 {
-    PG_Point result(-1,-1);
+    Vector<int> result(-1,-1);
     if (d_city)
     {
         result.x = d_city->getPos().x;
@@ -150,7 +151,7 @@ PG_Point Threat::getClosestPoint(PG_Point location) const
         for (Stacklist::const_iterator it = d_stacks->begin();
             it != d_stacks->end(); ++it)
         {
-            PG_Point spos = (*it)->getPos();
+            Vector<int> spos = (*it)->getPos();
             
             //UL: remember, stacks can move diagonally
             int dist = abs(spos.x - location.x);

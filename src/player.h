@@ -17,19 +17,27 @@
 
 #include <string>
 #include <list>
-#include <sigc++/sigc++.h>
+#include <vector>
+#include <sigc++/trackable.h>
+#include <sigc++/signal.h>
+#include <SDL_types.h>
 
-#include "action.h"
-#include "defs.h"
+#include "vector.h"
 #include "fight.h"
-#include "FogMap.h"
-#include "MoveResult.h"
+#include "army.h"
 
 class Stacklist;
+class XML_Helper;
 class Hero;
 class Action;
 class City;
 class Quest;
+class Army;
+class Ruin;
+class Temple;
+class MoveResult;
+class FogMap;
+class Fight;
 
 /** The abstract player class.
   *
@@ -88,7 +96,7 @@ class Quest;
   *          +--- AI_Smart (quite smart AI)
   */
 
-class Player : public SigC::Object
+class Player: public sigc::trackable
 {
     public:
         //! The available player types. Needed when loading a player.
@@ -306,7 +314,7 @@ class Player : public SigC::Object
           * @param follow           if set to false, calculate the path
           * @return false on error, true otherwise
           */
-        virtual MoveResult *stackMove(Stack* s, PG_Point dest, bool follow)=0;
+        virtual MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow)=0;
 
         /** Two stacks fight each other.
           * 
@@ -410,41 +418,48 @@ class Player : public SigC::Object
           * libsigc++ doesn't guarantee order of execution and this signal may
           * usually end the game which can have unwanted side effects).
           */
-        SigC::Signal1<void, City*> sinvadingCity;
+        sigc::signal<void, City*> sinvadingCity;
 
         //! Signal raised whenever a player has conquered a city. This is the
         //! signal you should use for further actions.
-        SigC::Signal1<void, City*> soccupyingCity;
+        sigc::signal<void, City*> soccupyingCity;
 
         
         //! Signal raised when a hero is recruited
-        SigC::Signal2<bool, Hero*, int>         srecruitingHero;
+        sigc::signal<bool, Hero*, int>         srecruitingHero;
         //! Signal raised when an army advances a level; may return stat to raise
-        SigC::Signal1<Army::Stat, Army*>        snewLevelArmy;
+        sigc::signal<Army::Stat, Army*>        snewLevelArmy;
         //! Signal raised when an army gets a new medal
-        SigC::Signal1<void, Army*>              snewMedalArmy;
+        sigc::signal<void, Army*>              snewMedalArmy;
         //! Signal raised when an army dies
-        SigC::Signal2<void, Army*, std::vector<Uint32> >    sdyingArmy;
+        sigc::signal<void, Army*, std::vector<Uint32> >    sdyingArmy;
         //! Signal raised when a stack dies
-        SigC::Signal1<void, Stack*>             sdyingStack;
+        sigc::signal<void, Stack*>             sdyingStack;
         
         //! Signal raised whenever the player successfully searched a ruin
-        SigC::Signal2<void, Ruin*, Stack*>      ssearchingRuin;
+        sigc::signal<void, Ruin*, Stack*>      ssearchingRuin;
         //! Signal raised whenever the player visits a temple
-        SigC::Signal2<void, Temple*, Stack*>    svisitingTemple;
+        sigc::signal<void, Temple*, Stack*>    svisitingTemple;
         //! Signal raised whenever the player moves a stack
-        SigC::Signal1<void, Stack*>             smovingStack;
+        sigc::signal<void, Stack*>             smovingStack;
 
         //! Signal raised whenever a player's status (e.g. gold) changes
-        SigC::Signal0<void> schangingStatus;
+        sigc::signal<void> schangingStatus;
         //! Signal raised whenever the stack's staus has changed
-        SigC::Signal1<void, Stack*> supdatingStack;
+        sigc::signal<void, Stack*> supdatingStack;
         //! Signal raised whenever the status of a city has changed
-        SigC::Signal1<void, City*> supdatingCity;
+        sigc::signal<void, City*> supdatingCity;
+
+	// emitted when a fight is started, parameters are in the fight object,
+	// so should the results be
+        sigc::signal<void, Fight &> fight_started;
+	
+#if 0
         //! Signal raised whenever the player wants to interrupt some timers
-        SigC::Signal0<void> sinterruptTimers;
+        sigc::signal<void> sinterruptTimers;
         //! Signal raised whenever the player asks to restart timers
-        SigC::Signal0<void> scontinueTimers;
+        sigc::signal<void> scontinueTimers;
+#endif
 
     protected:
         //! Move stack s one step forward on his stored path
@@ -468,7 +483,7 @@ class Player : public SigC::Object
         bool load(std::string tag, XML_Helper* helper);
 };
 
-extern SigC::Signal1<void, Player::Type>  sendingTurn;
+extern sigc::signal<void, Player::Type>  sendingTurn;
 
 #endif // PLAYER_H
 

@@ -13,6 +13,8 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <iostream>
+#include <sigc++/functors/mem_fun.h>
+
 #include "EArmyKilled.h"
 #include "../playerlist.h"
 #include "../stacklist.h"
@@ -53,7 +55,7 @@ bool EArmyKilled::save(XML_Helper* helper) const
 
 void EArmyKilled::init()
 {
-    Army::sdying.connect(SigC::slot((*this), &EArmyKilled::trigger));
+    Army::sdying.connect(sigc::mem_fun(*this, &EArmyKilled::trigger));
 }
 
 void EArmyKilled::trigger(Army* army)

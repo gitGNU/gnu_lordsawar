@@ -27,7 +27,7 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-OptionsDialog::OptionsDialog(PG_Widget* parent, PG_Rect rect)
+OptionsDialog::OptionsDialog(PG_Widget* parent, Rectangle rect)
     :PG_Window(parent, rect, _("Game settings"),PG_Window::MODAL)
 {
     debug("OptionsDialog()");
@@ -37,7 +37,7 @@ OptionsDialog::OptionsDialog(PG_Widget* parent, PG_Rect rect)
     // single buttons etc. are placed.
 
     // Left: The listbox; it takes the first 200 pixels width
-    d_submenu = new PG_ListBox(this, PG_Rect(20, 30, 180, my_height - 80));
+    d_submenu = new PG_ListBox(this, Rectangle(20, 30, 180, my_height - 80));
     d_submenu->SetMultiSelect(false);
     new PG_ListBoxItem(d_submenu, 20, _("Video"), 0, (void*)VIDEO);
     new PG_ListBoxItem(d_submenu, 20, _("Audio"), 0, (void*)AUDIO);
@@ -45,11 +45,11 @@ OptionsDialog::OptionsDialog(PG_Widget* parent, PG_Rect rect)
 
 
     // now the other items. First, the items for video mode
-    d_fullscreen = new PG_CheckButton(this, PG_Rect(220, 60, 150, 20),_("Fullscreen"),0);
+    d_fullscreen = new PG_CheckButton(this, Rectangle(220, 60, 150, 20),_("Fullscreen"),0);
     if (Configuration::s_fullScreen)
         d_fullscreen->SetPressed();
 
-    d_resolution = new PG_DropDown(this,  PG_Rect(220, 90, 150, 25),0);
+    d_resolution = new PG_DropDown(this,  Rectangle(220, 90, 150, 25),0);
     d_resolution->SetIndent(5);
     d_resolution->SetEditable(false);
     char val[11]; val[10] = '\0';
@@ -63,17 +63,17 @@ OptionsDialog::OptionsDialog(PG_Widget* parent, PG_Rect rect)
     d_resolution->AddItem("1600x1200");
 
     // next, the elements for audio setup (TBD)
-    d_musicenable = new PG_CheckButton(this, PG_Rect(230, 60, 250, 30), _("Enable music"), 0);
+    d_musicenable = new PG_CheckButton(this, Rectangle(230, 60, 250, 30), _("Enable music"), 0);
     if (Configuration::s_musicenable)
         d_musicenable->SetPressed();
 
-    d_musicvolume = new TerrainConfig(this, PG_Rect(230, 90, 250, 30), _("Volume:"),
+    d_musicvolume = new TerrainConfig(this, Rectangle(230, 90, 250, 30), _("Volume:"),
                                       0, 128, Configuration::s_musicvolume);
 
     // finally, the general things
-    d_smooth_scrolling = new PG_CheckButton(this, PG_Rect(230, 60, 250, 30), _("Smooth scrolling"),0);
-    d_show_next_player = new PG_CheckButton(this, PG_Rect(230, 90, 300, 30), _("Show next player popup"),0);
-    d_speeddelay = new TerrainConfig(this, PG_Rect(230, 120, 300, 30), _("Delay:"), 0, 1000,
+    d_smooth_scrolling = new PG_CheckButton(this, Rectangle(230, 60, 250, 30), _("Smooth scrolling"),0);
+    d_show_next_player = new PG_CheckButton(this, Rectangle(230, 90, 300, 30), _("Show next player popup"),0);
+    d_speeddelay = new TerrainConfig(this, Rectangle(230, 120, 300, 30), _("Delay:"), 0, 1000,
                                             Configuration::s_displaySpeedDelay);
 
     if(Configuration::s_smoothScrolling)
@@ -84,7 +84,7 @@ OptionsDialog::OptionsDialog(PG_Widget* parent, PG_Rect rect)
 
 
     // finally, place the buttons
-    PG_Rect myrect(5, my_height - 40, 0, 30);
+    Rectangle myrect(5, my_height - 40, 0, 30);
     d_b_ok = new PG_Button(this, myrect, _("OK"));
     d_b_ok->SizeWidget(d_b_ok->GetTextWidth()+40,30,true);
 
@@ -219,10 +219,10 @@ bool OptionsDialog::okClicked(PG_Button* btn)
     if (!thesameres || !thesamefs) 
     {    
        cerr << Configuration::s_width << " -- " <<Configuration::s_height << endl;
-       dynamic_cast<MainWindow*>(GetParent())->getWedit()->lockScreen();
+       dynamic_cast<PMainWindow*>(GetParent())->getWedit()->lockScreen();
        PG_Application::GetApp()->InitScreen(Configuration::s_width, Configuration::s_height, 16,Configuration::s_flags);       
-       dynamic_cast<MainWindow*>(GetParent())->changeResolution(Configuration::s_width, Configuration::s_height);
-       dynamic_cast<MainWindow*>(GetParent())->getWedit()->unlockScreen();
+       dynamic_cast<PMainWindow*>(GetParent())->changeResolution(Configuration::s_width, Configuration::s_height);
+       dynamic_cast<PMainWindow*>(GetParent())->getWedit()->unlockScreen();
     }
 
     QuitModal();

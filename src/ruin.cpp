@@ -16,7 +16,7 @@
 #include "GameMap.h"
 #include <stdlib.h>
 
-Ruin::Ruin(PG_Point pos, std::string name, Stack* owner, bool searched)
+Ruin::Ruin(Vector<int> pos, std::string name, Stack* owner, bool searched)
     :Location(name, pos), d_searched(searched), d_occupant(owner)
 {
     //mark the location as being occupied by a ruin on the map

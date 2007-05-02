@@ -11,7 +11,10 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <sigc++/functors/mem_fun.h>
+
 #include "Itemlist.h"
+
 #include "File.h"
 #include "defs.h"
 
@@ -48,7 +51,7 @@ void Itemlist::deleteInstance()
 
 Itemlist::Itemlist(XML_Helper* helper)
 {
-    helper->registerTag("item", SigC::slot(*this, &Itemlist::loadItem));
+    helper->registerTag("item", sigc::mem_fun(*this, &Itemlist::loadItem));
 }
 
 Itemlist::~Itemlist()

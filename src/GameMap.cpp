@@ -12,19 +12,23 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "GameMap.h"
-#include <iostream>
 #include <sstream>
-#include <fstream>
+#include <assert.h>
+#include <sigc++/functors/mem_fun.h>
+
+#include "GameMap.h"
 #include "citylist.h"
 #include "city.h"
 #include "ruin.h"
 #include "temple.h"
 #include "playerlist.h"
 #include "stacklist.h"
+#include "xmlhelper.h"
+#include "MapGenerator.h"
 
 using namespace std;
 
+//#include <iostream>
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<flush;}
 #define debug(x)
 
@@ -119,8 +123,8 @@ GameMap::GameMap(XML_Helper* helper)
     }
 
     //add some callbacks for item loading
-    helper->registerTag("itemstack", SigC::slot(*this, &GameMap::loadItems));
-    helper->registerTag("item", SigC::slot(*this, &GameMap::loadItems));
+    helper->registerTag("itemstack", sigc::mem_fun(this, &GameMap::loadItems));
+    helper->registerTag("item", sigc::mem_fun(this, &GameMap::loadItems));
 }
 
 
@@ -243,15 +247,7 @@ bool GameMap::loadItems(std::string tag, XML_Helper* helper)
 
 Maptile* GameMap::getTile(int x, int y) const
 {
-    if ((x < 0) || (x >= s_width) || (y < 0) || (y >= s_height))
-    {
-        std::cerr <<"GameMap::getTile: function tried to access tile out of bonds at (";
-        std::cerr <<x <<"," <<y <<")! Exiting\n" <<std::flush;
-
-        exit(-1);
-    }
+    assert(x >= 0 && x < s_width && y >= 0 && y < s_height);
 
     return d_map[y*s_width + x];
 }
-
-// End of file

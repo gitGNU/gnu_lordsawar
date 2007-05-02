@@ -16,9 +16,9 @@
 #include <fstream>
 #include <stdlib.h>
 #include <errno.h>
+#include <sigc++/functors/mem_fun.h>
 
 #include "GameScenario.h"
-#include "MapCreationDialog.h"
 #include "MapGenerator.h"
 #include "playerlist.h"
 #include "citylist.h"
@@ -43,6 +43,9 @@
 #include "QuestsManager.h"
 #include "Itemlist.h"
 #include "string_tokenizer.h"
+#include "events/Event.h"
+#include "player.h"
+#include "xmlhelper.h"
 
 using namespace std;
 
@@ -71,18 +74,18 @@ GameScenario::GameScenario(string savegame, bool& broken, bool events)
     broken = false;
     XML_Helper helper(savegame, ios::in, Configuration::s_zipfiles);
 
-    helper.registerTag("scenario", SigC::slot((*this), &GameScenario::load));
-    helper.registerTag("event", SigC::slot((*this), &GameScenario::load));
-    helper.registerTag("map", SigC::slot((*this), &GameScenario::load));
-    helper.registerTag("playerlist", SigC::slot((*this), &GameScenario::load));
-    helper.registerTag("citylist", SigC::slot((*this), &GameScenario::load));
-    helper.registerTag("templelist", SigC::slot((*this), &GameScenario::load));
-    helper.registerTag("ruinlist", SigC::slot((*this), &GameScenario::load));
-    helper.registerTag("signpostlist", SigC::slot((*this), &GameScenario::load));
-    helper.registerTag("stonelist", SigC::slot((*this), &GameScenario::load));
-    helper.registerTag("roadlist", SigC::slot((*this), &GameScenario::load));
-    helper.registerTag("counter", SigC::slot((*this), &GameScenario::load));
-    helper.registerTag("questlist", SigC::slot((*this), &GameScenario::load));
+    helper.registerTag("scenario", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("event", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("map", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("playerlist", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("citylist", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("templelist", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("ruinlist", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("signpostlist", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("stonelist", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("roadlist", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("counter", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("questlist", sigc::mem_fun(this, &GameScenario::load));
 
     //now parse the document and close the file afterwards
     if (!helper.parse())

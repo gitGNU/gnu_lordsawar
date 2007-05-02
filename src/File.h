@@ -18,10 +18,6 @@
 #include <string>
 #include <list>
 #include <SDL.h>
-#include <pgdropdown.h>
-#ifdef FL_SOUND
-#include <SDL_mixer.h>
-#endif
 
 /** \brief Miscellaneous functions for unified file access
   * 
@@ -124,7 +120,7 @@ class File
           * @param dropdown     the dropdown box to be filled with the information
           * @return a list of available tilesets
           */
-        static std::list<std::string> scanTilesets(PG_DropDown* drop_down);
+        static std::list<std::string> scanTilesets();
 
         /** Get the available maps and fill a listbox with these entries
           * 

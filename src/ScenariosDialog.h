@@ -31,7 +31,7 @@ class ScenariosDialog : public PG_Window
 {
     public:
         // CREATORS
-        ScenariosDialog(PG_Widget* parent, PG_Rect rect,std::string * fname);
+        ScenariosDialog(PG_Widget* parent, Rectangle rect,std::string * fname);
         ~ScenariosDialog();
 
         // CALLBACK FUNCTIONS

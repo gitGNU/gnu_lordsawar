@@ -54,7 +54,7 @@ class City : public Location
           * @param name         the name of the city
           * @param gold         the amount of gold the city produces each turn
           */
-        City(PG_Point pos, std::string name = "Noname", Uint32 gold = 20);
+        City(Vector<int> pos, std::string name = "Noname", Uint32 gold = 20);
 
         //! The loading constructor. See XML_Helper for details.
         City(XML_Helper* helper);
@@ -132,6 +132,9 @@ class City : public Location
         //! Get the defense level of the city
         int getDefenseLevel() const {return d_defense_level;}
 
+	// returns -1 if city can't be upgraded
+	int getGoldNeededForUpgrade() const; 
+	
         //! Get the maximum number of basic productions of the city
         int getMaxNoOfBasicProd() const {return d_numbasic;};
 
@@ -167,10 +170,10 @@ class City : public Location
 
         //! Set the point where the city will send the produced armies
         //(-1,-1) as argument will disable it
-        void setVectoring(PG_Point p);
+        void setVectoring(Vector<int> p);
 
         //! Get the point where the city will send the produced armies
-        PG_Point getVectoring() const {return d_vector;}
+        Vector<int> getVectoring() const {return d_vector;}
 
     private:
         //! Returns a non-full stack in the city or creates a new one
@@ -193,7 +196,7 @@ class City : public Location
         
         bool d_burnt;               // is city burnt down?
         bool d_vectoring;           // is vectoring active? 
-        PG_Point d_vector;          // where to send produced armies 
+        Vector<int> d_vector;          // where to send produced armies 
         bool d_capital;
 };
 

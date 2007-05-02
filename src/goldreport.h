@@ -23,7 +23,7 @@
 class GoldReport : public PG_Window
 {
     public:
-        GoldReport(PG_Widget* parent, PG_Rect rect);
+        GoldReport(PG_Widget* parent, Rectangle rect);
         ~GoldReport();
 	bool b_okClicked(PG_Button* btn);
 

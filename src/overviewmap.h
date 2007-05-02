@@ -15,9 +15,12 @@
 #ifndef OVERVIEWMAP_H
 #define OVERVIEWMAP_H
 
-#include <pgwidget.h>
+#include <SDL.h>
+#include "vector.h"
 
-/** Draw a map of the whole game.
+#include "vector.h"
+
+/** A smaller version of the map
   * 
   * This class actually cares for drawing a small map with colors representing
   * terrain and symbols representing cities, ruins etc.
@@ -25,41 +28,38 @@
   * It provides the basis for actual implementations, namely SmallMap and
   * VectorMap.
   */
-
-class OverviewMap : public PG_Widget
+class OverviewMap
 {
-    public:
-        /** Constructor
-          * 
-          * @param parent       the parent widget
-          * @param rect         the rectangle for the widget
-          *
-          * Other data (namely the map size) is taken from GameMap.
-          */
-        OverviewMap(PG_Widget* parent, PG_Rect rect);
-        ~OverviewMap();
+ public:
+    OverviewMap();
+    virtual ~OverviewMap();
 
-    protected:
-        /* creates the underlying map showing all the terrain. If the parameters
-         * are both != 0, use them for width and height, else take the internal
-         * coordinates.
-         */
-        void createStaticMap(Uint16 xsize = 0, Uint16 ysize = 0);
+    // the map will keep its aspect ratio and resize itself to take up at most
+    // max_dimensions space
+    void resize(Vector<int> max_dimensions);
+    
+    void draw();
 
-        // EVENT HANDLERS
-        virtual void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
-        virtual void eventSizeWidget(Uint16 w, Uint16 h);
+    // returns the drawn map
+    SDL_Surface *get_surface();
+
+ private:
+     // the background, we keep it cached so it doesn't have to be drawn all the time
+    SDL_Surface* static_surface;
+
+ protected:
+    double pixels_per_tile;
+	
+    //! Maps the given point in absolute screen coordinates to a map coordinate
+    Vector<int> mapFromScreen(Vector<int> pos);
         
-        //! Maps the given point in absolute screen coordinates to a map coordinate
-        PG_Point mapFromScreen(PG_Point pos);
-        
-        //! And (almost) the other way round. Map a map coordinate to a surface pixel.
-        PG_Point mapToSurface(PG_Point pos);
-        
-        // DATA
-        SDL_Surface* d_staticMap;
-        
-        double d_xpixels, d_ypixels;
+    //! And (almost) the other way round. Map a map coordinate to a surface pixel.
+    Vector<int> mapToSurface(Vector<int> pos);
+
+    // hook for derived classes
+    virtual void after_draw() { }
+
+    SDL_Surface* surface;
 };
 
 #endif // OVERVIEWMAP_H

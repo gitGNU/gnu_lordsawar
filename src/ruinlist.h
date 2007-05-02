@@ -17,13 +17,13 @@
 
 #include "ruin.h"
 #include "ObjectList.h"
-#include <sigc++/object_slot.h>
+#include <sigc++/trackable.h>
 
 /** An object list which keeps track of all ruins. It cannot do much more than
   * saving and loading the elements. Implemented as a singleton again.
   */
 
-class Ruinlist : public ObjectList<Ruin>, public SigC::Object
+class Ruinlist : public ObjectList<Ruin>, public sigc::trackable
 {
     public:
         //! Returns the singleton instance. Creates a new one if required.
@@ -40,7 +40,7 @@ class Ruinlist : public ObjectList<Ruin>, public SigC::Object
         bool save(XML_Helper* helper) const;
 
         // Find the nearest ruin which has not been searched
-        Ruin* getNearestUnsearchedRuin(const PG_Point& pos);
+        Ruin* getNearestUnsearchedRuin(const Vector<int>& pos);
         
     protected:
         Ruinlist();

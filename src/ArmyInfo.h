@@ -40,7 +40,7 @@ class ArmyInfo : public PG_ThemeWidget
           * @param  parent  the parent widget
           * @param  rect    the rect which we may fill out (parent's coordinates)
           */
-	ArmyInfo(Army* army, bool pressable, PG_Widget* parent, PG_Rect rect);
+	ArmyInfo(Army* army, bool pressable, PG_Widget* parent, Rectangle rect);
 
         /** \brief The destructor, nothing special here */
 	~ArmyInfo();
@@ -64,7 +64,7 @@ class ArmyInfo : public PG_ThemeWidget
           * green one indicates the relative amount of hitpoints left,
           * the red one fills the rest of the way.
           */
-		void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
+		void eventDraw(SDL_Surface* surface, const Rectangle& rect);
 
         /** \brief The event handler for the mouse button event
           * 

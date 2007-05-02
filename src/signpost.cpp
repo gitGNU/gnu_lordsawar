@@ -15,7 +15,7 @@
 #include "signpost.h"
 #include "GameMap.h"
 
-Signpost::Signpost(PG_Point pos, std::string name)
+Signpost::Signpost(Vector<int> pos, std::string name)
   :Location(name, pos)
 {
     //mark the location on the game map as occupied by a signpost
