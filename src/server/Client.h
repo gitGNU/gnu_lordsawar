@@ -18,7 +18,7 @@
 #include <string>
 #include <sigc++/sigc++.h>
 
-class Client : public SigC::Object
+class Client// : public SigC::Object
 {
 	public:
 		Client(std::string host, int port);
