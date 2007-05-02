@@ -149,23 +149,22 @@ AC_ARG_WITH(intl, [  --with-intl=<dir>      Use int from here],
                       ]
                       )
 
-dnl Finally, check for libsigc++
-PKG_CHECK_MODULES(LIBSIGC, sigc++-1.2 >= $LIBSIGC, have_sigc=yes, have_sigc=no)
+dnl Check for gtkmm
 
-if test x$have_sigc = xno; then
-    echo "*** Couldn't find pkg-config package for libsigc++."
-    echo "*** If you have installed libsigc++ from the sources, note"
-    echo "*** that a version was broken insofar that it didn't install"
-    echo "*** the pkg-config file. In this case, copy the file sigc++-1.2.pc"
-    echo "*** to the pkg-config directory (usually /usr/ib/pkgconfig or so)"
-    echo "*** manually and rerun configure."
-    AC_MSG_ERROR([*** libsigc++ not found])
-fi
+PKG_CHECK_MODULES(GTKMM, gtkmm-2.4 libglademm-2.4)
+
+AC_SUBST(GTKMM_CFLAGS)
+AC_SUBST(GTKMM_LIBS)
+			     		      
+		      
+dnl Finally, check for libsigc++
+PKG_CHECK_MODULES(LIBSIGC, sigc++-2.0)
 
 AC_SUBST(LIBSIGC_CFLAGS)
 AC_SUBST(LIBSIGC_LIBS)
 AC_SUBST(HOME)
 
+	
 dnl----------------------------------------------------------------------
 dnl Below here are options to modify default behaviour
 
@@ -278,6 +277,7 @@ AC_CONFIG_FILES([
         src/utils/Makefile 
         src/server/Makefile 
         src/events/Makefile
+        src/gui/Makefile
         src/editor/Makefile])
 AC_OUTPUT
 echo ""
