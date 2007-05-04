@@ -695,7 +695,15 @@ bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, int gold)
     Sound::getInstance()->haltMusic();
 
     if (response == 0)		// accepted
+      {
+        hero->setName(entry->get_text());
+        xml->get_widget("hero_male", radio);
+        if (radio->get_active() == true)
+          hero->setGender(Hero::MALE);
+        else
+          hero->setGender(Hero::FEMALE);
 	return true;
+      }
     else
 	return false;
 }
