@@ -23,6 +23,7 @@ AM_CXXFLAGS = -Wall
 
 glade_DATA = \
 city-defeated-dialog.glade     hero-offer-dialog.glade \
+city-sacked-dialog.glade       city-window.glade \
 city-pillaged-dialog.glade     quest-assigned-dialog.glade \
 fight-window.glade             ruin-searched-dialog.glade \
 game-preferences-dialog.glade  splash-window.glade \
