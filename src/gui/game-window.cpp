@@ -30,6 +30,8 @@
 #include <gtkmm/frame.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>
+#include <gtkmm/radiobutton.h>
+#include <gtkmm/entry.h>
 
 #include "game-window.h"
 
@@ -655,13 +657,25 @@ bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, int gold)
     dialog->set_title(String::ucompose(_("Hero offer for %1"),
 				       player->getName()));
 
+    Gtk::RadioButton *radio;
     Gtk::Image *image;
     xml->get_widget("hero_image", image);
     if (hero->getGender() == Army::MALE)
+      {
         image->property_file() = File::getMiscFile("various/recruit_male.png");
+        xml->get_widget("hero_male", radio);
+      }
     else
+      {
         image->property_file() = File::getMiscFile("various/recruit_female.png");
+        xml->get_widget("hero_female", radio);
+      }
+    radio->set_active(true);
     
+    Gtk::Entry *entry;
+    xml->get_widget("name", entry);
+    entry->set_text(hero->getName());
+
     Gtk::Label *label;
     xml->get_widget("label", label);
     
