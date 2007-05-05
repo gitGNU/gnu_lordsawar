@@ -5,6 +5,7 @@
 #include "CreateScenario.h"
 #include "player.h"
 #include "File.h"
+#include "counter.h"
 
 namespace 
 {
@@ -44,7 +45,7 @@ std::string create_and_dump_scenario(const std::string &file,
 	else if (i->type == GameParameters::Player::HARD)
 	    type = Player::AI_SMART;
 	else if (i->type == GameParameters::Player::OFF)
-            continue; 
+            fl_counter->getNextId();
 	else
 	    type = Player::HUMAN;
 
