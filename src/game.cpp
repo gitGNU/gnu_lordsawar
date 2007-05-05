@@ -719,18 +719,43 @@ void Game::on_temple_selected(Temple* t, MapTipPosition pos)
 	map_tip_changed.emit("", pos);
 }
 
+void Game::looting_city(City* city, int &gold)
+{
+    Citylist *clist = Citylist::getInstance();
+    Playerlist *plist = Playerlist::getInstance();
+    Player *attacker = plist->getActiveplayer();
+    Player *defender = city->getPlayer();
+    int amt = (defender->getGold() / (2 * clist->countCities (defender)) * 2);
+    // give (Enemy-Gold/(2Enemy-Cities)) to the attacker 
+    // and then take away twice that from the defender.
+    // the idea here is that some money is taken in the invasion
+    // and other monies are lost forever
+    defender->withdrawGold (amt);
+    amt /= 2;
+    attacker->addGold (amt);
+    gold = amt;
+    return;
+}
+
 void Game::invading_city(City* city)
 {
+    Playerlist *plist = Playerlist::getInstance();
+    Player *player = plist->getActiveplayer();
+    int gold = 0;
     // if a computer makes it's turn and occupied a city, we shouldn't
     // show a modal dialog :)
+
+    // loot the city
+    // if the attacked city isn't neutral, loot some gold
+    if (city->getPlayer() != plist->getNeutral())
+      looting_city (city, gold);
 
     if (!d_lock)
     {
         bigmap->draw();
-	CityDefeatedAction a = city_defeated.emit(city);
-	Player *player = Playerlist::getInstance()->getActiveplayer();
+	CityDefeatedAction a = city_defeated.emit(city, gold);
+        gold = 0;
 
-	int gold;
 	switch (a) {
 	case CITY_DEFEATED_OCCUPY:
 	    player->cityOccupy(city);

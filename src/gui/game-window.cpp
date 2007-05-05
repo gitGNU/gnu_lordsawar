@@ -759,10 +759,11 @@ void GameWindow::on_quest_assigned(Hero *hero, Quest *quest)
     dialog->run();
 }
 
-CityDefeatedAction GameWindow::on_city_defeated(City *city)
+CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
-    
+    if (gold)
+      on_city_looted (city, gold);
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/city-defeated-dialog.glade");
 
@@ -825,6 +826,32 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city)
     }
 }
 
+void GameWindow::on_city_looted (City *city, int gold)
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/city-looted-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+    
+    dialog->set_title(String::ucompose(_("%1 Looted"), city->getName()));
+
+    Gtk::Label *label;
+    xml->get_widget("label", label);
+    Glib::ustring s = label->get_text();
+    s += "\n\n";
+    s += String::ucompose(
+	ngettext("Your armies loot %1 gold piece.",
+		 "Your armies loot %1 gold pieces.", gold), gold);
+    label->set_text(s);
+
+    dialog->show_all();
+    dialog->run();
+}
 void GameWindow::on_city_pillaged(City *city, int gold)
 {
     std::auto_ptr<Gtk::Dialog> dialog;

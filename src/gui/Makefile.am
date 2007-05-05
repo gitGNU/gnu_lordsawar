@@ -27,7 +27,9 @@ city-sacked-dialog.glade       city-window.glade \
 city-pillaged-dialog.glade     quest-assigned-dialog.glade \
 fight-window.glade             ruin-searched-dialog.glade \
 game-preferences-dialog.glade  splash-window.glade \
-game-window.glade              temple-visit-dialog.glade
+game-window.glade              temple-visit-dialog.glade \
+city-looted-dialog.glade
+
 gladedir = $(datadir)/$(PACKAGE)/glade
 
 EXTRA_DIST = $(glade_DATA)

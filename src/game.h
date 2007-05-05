@@ -161,7 +161,7 @@ class Game
     sigc::signal<bool, Player *, Hero *, int> hero_offers_service;
     sigc::signal<bool, Temple *> temple_visited;
     sigc::signal<void, Hero *, Quest *> quest_assigned;
-    sigc::signal<CityDefeatedAction, City *> city_defeated;
+    sigc::signal<CityDefeatedAction, City *, int> city_defeated;
     sigc::signal<void, City *, int> city_pillaged;
     sigc::signal<void, City *, int> city_sacked;
     sigc::signal<void, City *> city_visited;
@@ -201,6 +201,7 @@ class Game
     
     void update_stack_info();	// emit stack_info_changed
     void clear_stack_info();
+    void looting_city(City *city, int &gold);
     
     // the part of the map that currently is visible, measured in tiles
     Rectangle map_view;

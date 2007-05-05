@@ -140,13 +140,14 @@ class GameWindow: public sigc::trackable
     bool on_hero_offers_service(Player *player, Hero *hero, int gold);
     bool on_temple_visited(Temple *temple);
     void on_quest_assigned(Hero *hero, Quest *quest);
-    CityDefeatedAction on_city_defeated(City *city);
+    CityDefeatedAction on_city_defeated(City *city, int gold);
     void on_city_pillaged(City *city, int gold);
     void on_city_sacked(City *city, int gold);
     void on_city_visited(City *city);
 
     // helpers
     void show_map_tip(Glib::ustring msg, MapTipPosition pos);
+    void on_city_looted(City *city, int gold);
     void hide_map_tip();
     
 public:
