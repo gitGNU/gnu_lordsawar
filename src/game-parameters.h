@@ -26,7 +26,6 @@ struct GameParameters
 
 	Type type;
 	std::string name;
-	std::string army;
     };
 
     std::vector<Player> players;
@@ -43,6 +42,7 @@ struct GameParameters
     // path to map file to load, empty if none
     std::string map_path;
     std::string tile_theme;
+    std::string army_theme;
 
     enum ProcessArmies {
 	PROCESS_ARMIES_AT_PLAYERS_TURN = 0,

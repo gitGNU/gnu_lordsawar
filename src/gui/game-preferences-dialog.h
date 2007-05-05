@@ -51,6 +51,7 @@ class GamePreferencesDialog
     std::auto_ptr<Gtk::Dialog> dialog;
 
     Gtk::ComboBoxText *tile_theme_combobox;
+    Gtk::ComboBoxText *army_theme_combobox;
     Gtk::ComboBox *process_armies_combobox;
     Gtk::RadioButton *random_map_radio;
     Gtk::FileChooserButton *load_map_filechooser;
@@ -74,11 +75,10 @@ class GamePreferencesDialog
     class PlayerColumns: public Gtk::TreeModelColumnRecord {
     public:
 	PlayerColumns()
-	    { add(type); add(name); add(army); }
+	    { add(type); add(name); }
 	
 	Gtk::TreeModelColumn<Glib::ustring> type;
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<Glib::ustring> army;
     };
     const PlayerColumns player_columns;
     Glib::RefPtr<Gtk::ListStore> player_list;
@@ -96,20 +96,6 @@ class GamePreferencesDialog
     const PlayerTypeColumns player_type_columns;
     Glib::RefPtr<Gtk::ListStore> player_type_list;
 
-    Gtk::CellRendererCombo army_renderer;
-    Gtk::TreeViewColumn army_column;
-    
-    class PlayerArmyColumns: public Gtk::TreeModelColumnRecord {
-    public:
-	PlayerArmyColumns()
-	    { add(name); }
-	
-	Gtk::TreeModelColumn<Glib::ustring> name;
-    };
-    const PlayerArmyColumns player_army_columns;
-    Glib::RefPtr<Gtk::ListStore> player_army_list;
-    
-    
     typedef std::vector<Glib::ustring> player_name_seq;
     player_name_seq default_player_names;
     player_name_seq::iterator current_player_name;
@@ -118,12 +104,7 @@ class GamePreferencesDialog
     void on_type_edited(const Glib::ustring &path,
 			const Glib::ustring &new_text);
 
-    void cell_data_army(Gtk::CellRenderer *renderer, const Gtk::TreeIter &i);
-    void on_army_edited(const Glib::ustring &path,
-			const Glib::ustring &new_text);
-
-    void add_player(const Glib::ustring &type, const Glib::ustring &name,
-		    const Glib::ustring &army);
+    void add_player(const Glib::ustring &type, const Glib::ustring &name);
     void on_add_player_clicked();
     void on_random_map_toggled();
     void on_map_size_changed();

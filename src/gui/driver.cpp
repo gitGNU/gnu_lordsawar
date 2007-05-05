@@ -41,11 +41,9 @@ Driver::Driver()
 	GameParameters::Player p;
 	p.type = GameParameters::Player::HUMAN;
 	p.name = "Mr. Test";
-	p.army = "imperial";
 	g.players.push_back(p);
 	p.type = GameParameters::Player::HARD;
 	p.name = "Evail";
-	p.army = "monsters";
 	g.players.push_back(p);
 	g.map.width = 75;
 	g.map.height = 100;
@@ -60,6 +58,7 @@ Driver::Driver()
 	g.map.temples = 25;
 	g.map_path = "";
 	g.tile_theme = "default";
+	g.army_theme = "monsters";
 	g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
 	
 	on_new_game_requested(g);

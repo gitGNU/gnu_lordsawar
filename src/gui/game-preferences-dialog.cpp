@@ -37,8 +37,7 @@ namespace
 #define NO_PLAYER_TYPE _("Off")
 
 GamePreferencesDialog::GamePreferencesDialog()
-    : type_column(_("Type"), type_renderer),
-      army_column(_("Army"), army_renderer)
+    : type_column(_("Type"), type_renderer)
 {
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/game-preferences-dialog.glade");
@@ -99,31 +98,6 @@ GamePreferencesDialog::GamePreferencesDialog()
     // the name column
     player_treeview->append_column_editable(_("Name"), player_columns.name);
 
-    // the army column
-    player_army_list = Gtk::ListStore::create(player_army_columns);
-    // FIXME: we show file names instead of real names
-    std::list<std::string> armysets = File::scanArmysets();
-    for (std::list<std::string>::iterator j = armysets.begin(),
-	     end = armysets.end(); j != end; ++j) {
-	if (*j == "default" || *j == "heroes")
-	    continue;
-	
-	i = player_army_list->append();
-
-	(*i)[player_army_columns.name] = Glib::filename_to_utf8(*j);
-    }
-    army_renderer.property_model() = player_army_list;
-    army_renderer.property_text_column() = 0;
-    army_renderer.property_has_entry() = false;
-    army_renderer.property_editable() = true;
-
-    army_renderer.signal_edited()
-	.connect(sigc::mem_fun(*this, &GamePreferencesDialog::on_army_edited));
-    army_column.set_cell_data_func(
-	army_renderer,
-	sigc::mem_fun(*this, &GamePreferencesDialog::cell_data_army));
-    player_treeview->append_column(army_column);
-
     // add default players
     default_player_names.push_back("The Sirians");
     default_player_names.push_back("Elvallie");
@@ -152,6 +126,23 @@ GamePreferencesDialog::GamePreferencesDialog()
     Gtk::Box *box;
     xml->get_widget("tile_theme_box", box);
     box->pack_start(*tile_theme_combobox, Gtk::PACK_SHRINK);
+
+    // fill in army themes combobox
+    army_theme_combobox = manage(new Gtk::ComboBoxText);
+    
+    std::list<std::string> army_themes = File::scanArmysets();
+    for (std::list<std::string>::iterator i = army_themes.begin(),
+	     end = army_themes.end(); i != end; ++i)
+      {
+	if (*i == "default" || *i == "heroes")
+	    continue;
+	army_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      }
+
+    army_theme_combobox->set_active(0);
+
+    xml->get_widget("army_theme_box", box);
+    box->pack_start(*army_theme_combobox, Gtk::PACK_SHRINK);
 
     // setup map settings
     random_map_radio->signal_toggled().connect(
@@ -209,28 +200,12 @@ void GamePreferencesDialog::on_type_edited(const Glib::ustring &path,
 	= new_text;
 }
 
-void GamePreferencesDialog::cell_data_army(Gtk::CellRenderer *renderer,
-					   const Gtk::TreeIter& i)
-{
-    dynamic_cast<Gtk::CellRendererText*>(renderer)->property_text()
-	= (*i)[player_columns.army];
-}
-
-void GamePreferencesDialog::on_army_edited(const Glib::ustring &path,
-					   const Glib::ustring &new_text)
-{
-    (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.army]
-	= new_text;
-}
-
 void GamePreferencesDialog::add_player(const Glib::ustring &type,
-				       const Glib::ustring &name,
-				       const Glib::ustring &army)
+				       const Glib::ustring &name)
 {
     Gtk::TreeIter i = player_list->append();
     (*i)[player_columns.type] = type;
     (*i)[player_columns.name] = name;
-    (*i)[player_columns.army] = army;
 
     player_treeview->get_selection()->select(i);
 }
@@ -238,14 +213,12 @@ void GamePreferencesDialog::add_player(const Glib::ustring &type,
 void GamePreferencesDialog::on_add_player_clicked()
 {
     // FIXME: choose a random army?
-    Gtk::TreeIter army_iter = player_army_list->children().begin();
     
     if (player_list->children().empty())
-	add_player(HUMAN_PLAYER_TYPE, *current_player_name,
-		   (*army_iter)[player_army_columns.name]);
+	add_player(HUMAN_PLAYER_TYPE, *current_player_name);
+
     else
-	add_player(EASY_PLAYER_TYPE, *current_player_name,
-		   (*army_iter)[player_army_columns.name]);
+	add_player(EASY_PLAYER_TYPE, *current_player_name);
 
     ++current_player_name;
 
@@ -345,12 +318,13 @@ void GamePreferencesDialog::on_start_game_clicked()
 	p.type = player_type_to_enum((*i)[player_columns.type]);
 	Glib::ustring name = (*i)[player_columns.name];
 	p.name = name;
-	p.army = Glib::filename_from_utf8((*i)[player_columns.army]);
 	g.players.push_back(p);
     }
     
     g.tile_theme
 	= Glib::filename_from_utf8(tile_theme_combobox->get_active_text());
+
+    g.army_theme = Glib::filename_from_utf8(army_theme_combobox->get_active_text());
     g.process_armies = GameParameters::ProcessArmies(
 	process_armies_combobox->get_active_row_number());
 

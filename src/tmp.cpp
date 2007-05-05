@@ -49,7 +49,7 @@ std::string create_and_dump_scenario(const std::string &file,
 	else
 	    type = Player::HUMAN;
 
-	creator.addPlayer(i->name, army_name_to_id(i->army), color, type);
+	creator.addPlayer(i->name, army_name_to_id(g.army_theme), color, type);
     }
 
     // first insert the neutral player
