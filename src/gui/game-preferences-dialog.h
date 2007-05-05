@@ -125,7 +125,6 @@ class GamePreferencesDialog
     void add_player(const Glib::ustring &type, const Glib::ustring &name,
 		    const Glib::ustring &army);
     void on_add_player_clicked();
-    void on_remove_player_clicked();
     void on_random_map_toggled();
     void on_map_size_changed();
     void on_start_game_clicked();

@@ -17,6 +17,7 @@
 #include <assert.h>
 #include <math.h>
 #include <algorithm>
+#include <numeric>
 #include <vector>
 #include <libglademm/xml.h>
 #include <gtkmm/box.h>

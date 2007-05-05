@@ -28,12 +28,13 @@
 
 namespace
 {
-    const int default_no_players = 2;
+    const int default_no_players = 8;
 }
 
 #define HUMAN_PLAYER_TYPE _("Human")
 #define EASY_PLAYER_TYPE _("Easy")
 #define HARD_PLAYER_TYPE _("Hard")
+#define NO_PLAYER_TYPE _("Off")
 
 GamePreferencesDialog::GamePreferencesDialog()
     : type_column(_("Type"), type_renderer),
@@ -79,6 +80,8 @@ GamePreferencesDialog::GamePreferencesDialog()
     (*i)[player_type_columns.type] = EASY_PLAYER_TYPE;
     i = player_type_list->append();
     (*i)[player_type_columns.type] = HARD_PLAYER_TYPE;
+    i = player_type_list->append();
+    (*i)[player_type_columns.type] = NO_PLAYER_TYPE;
 	
     type_renderer.property_model() = player_type_list;
     type_renderer.property_text_column() = 0;
@@ -120,14 +123,6 @@ GamePreferencesDialog::GamePreferencesDialog()
 	army_renderer,
 	sigc::mem_fun(*this, &GamePreferencesDialog::cell_data_army));
     player_treeview->append_column(army_column);
-
-    // the add and remove buttons
-    xml->connect_clicked(
-	"add_player_button",
-	sigc::mem_fun(*this, &GamePreferencesDialog::on_add_player_clicked));
-    xml->connect_clicked(
-	"remove_player_button",
-	sigc::mem_fun(*this, &GamePreferencesDialog::on_remove_player_clicked));
 
     // add default players
     default_player_names.push_back("Sirians");
@@ -258,22 +253,6 @@ void GamePreferencesDialog::on_add_player_clicked()
 	current_player_name = default_player_names.begin();
 }
 
-void GamePreferencesDialog::on_remove_player_clicked()
-{
-    Gtk::TreeIter i = player_treeview->get_selection()->get_selected();
-  
-    if (i) {
-	player_list->erase(i);
-
-	// select the last player in the list to make multiple deletes easier
-	if (!player_list->children().empty()) {
-	    i = player_list->children().end();
-	    --i;
-	    player_treeview->get_selection()->select(i);
-	}
-    }
-}
-
 void GamePreferencesDialog::on_random_map_toggled()
 {
     bool random_map = random_map_radio->get_active();
@@ -314,6 +293,8 @@ namespace
 	    return GameParameters::Player::HUMAN;
 	else if (s == EASY_PLAYER_TYPE)
 	    return GameParameters::Player::EASY;
+	else if (s == NO_PLAYER_TYPE)
+	    return GameParameters::Player::OFF;
 	else
 	    return GameParameters::Player::HARD;
     }
@@ -329,7 +310,7 @@ void GamePreferencesDialog::on_start_game_clicked()
 	switch (map_size_combobox->get_active_row_number()) {
 	case MAP_SIZE_SMALL:
 	    g.map.width = 70;
-	    g.map.height = 70;
+	    g.map.height = 105;
 	    break;
 	
 	case MAP_SIZE_TINY:
@@ -340,7 +321,7 @@ void GamePreferencesDialog::on_start_game_clicked()
 	case MAP_SIZE_NORMAL:
 	default:
 	    g.map.width = 100;
-	    g.map.height = 100;
+	    g.map.height = 150;
 	    break;
 	}
 	g.map.grass = int(grass_scale->get_value());
@@ -359,12 +340,12 @@ void GamePreferencesDialog::on_start_game_clicked()
     for (Gtk::TreeIter i = player_list->children().begin(),
 	     end = player_list->children().end(); i != end; ++i) {
 	GameParameters::Player p;
-	
+	if ((*i)[player_columns.type] == NO_PLAYER_TYPE)
+          continue;
 	p.type = player_type_to_enum((*i)[player_columns.type]);
 	Glib::ustring name = (*i)[player_columns.name];
 	p.name = name;
 	p.army = Glib::filename_from_utf8((*i)[player_columns.army]);
-	
 	g.players.push_back(p);
     }
     

@@ -22,7 +22,7 @@ struct GameParameters
 {
     struct Player 
     {
-	enum Type { HUMAN, EASY, HARD };
+	enum Type { HUMAN, EASY, HARD, OFF };
 
 	Type type;
 	std::string name;

@@ -18,25 +18,13 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "hero.h"
-#include "File.h"
 
 using namespace std;
 
-std::vector<std::string> Hero::s_namelist;
-
-Hero::Hero(const Army& a, std::string name, Player* owner)
-    :Army(a, owner)
+Hero::Hero(const Army& a, std::string name, Player *owner)
+ : Army (a, owner)
 {
     d_name = name;
-
-    if (s_namelist.empty())
-        loadNames();
-
-    if (name == "")  //set a random name
-    {
-        int entry = rand() % s_namelist.size();
-        d_name = s_namelist[entry];
-    }
 }
 
 Hero::Hero(Hero& h)
@@ -144,29 +132,6 @@ bool Hero::loadItems(std::string tag, XML_Helper* helper)
     }
     
     return true;
-}
-
-void Hero::loadNames()
-{
-    // Load hero names from a name file. This could certainly be improved
-    // (e.g. separating male/female hero names), but should work well
-    // enough for now.
-    ifstream name_file(File::getMiscFile("heronames").c_str());
-    if (name_file)
-    {
-        int entries;
-        std::string curname;
-        
-        name_file >> entries;
-
-        for (int i = 0; i < entries; i++)
-        {
-            name_file >> curname;
-            s_namelist.push_back(curname);
-        }
-
-        name_file.close();
-    }
 }
 
 Uint32 Hero::getStat(Stat stat, bool modified) const

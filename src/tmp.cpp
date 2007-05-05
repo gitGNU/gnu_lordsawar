@@ -20,13 +20,7 @@ std::string create_and_dump_scenario(const std::string &file,
     CreateScenario creator;
 
     SDL_Color color;
-
-    // first insert the neutral player
-    unsigned int set = (Armysetlist::getInstance()->getArmysets())[0];
     
-    color.r = color.g = color.b = 220; color.unused = 0;
-    creator.addNeutral("Neutral", set, color, Player::AI_DUMMY);
-
     // then fill the other players
     int c = 0;
     for (std::vector<GameParameters::Player>::const_iterator
@@ -49,11 +43,18 @@ std::string create_and_dump_scenario(const std::string &file,
 	    type = Player::AI_FAST;
 	else if (i->type == GameParameters::Player::HARD)
 	    type = Player::AI_SMART;
+	else if (i->type == GameParameters::Player::OFF)
+            continue; 
 	else
 	    type = Player::HUMAN;
 
 	creator.addPlayer(i->name, army_name_to_id(i->army), color, type);
     }
+
+    // first insert the neutral player
+    unsigned int set = (Armysetlist::getInstance()->getArmysets())[0];
+    color.r = color.g = color.b = 220; color.unused = 0;
+    creator.addNeutral("Neutral", set, color, Player::AI_DUMMY);
 
     // now fill in some map information
     creator.setMapTiles(g.tile_theme);

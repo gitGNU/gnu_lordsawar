@@ -21,6 +21,7 @@
 
 #include "army.h"
 #include "Item.h"
+#include "player.h"
 
 /** A hero is a special army, as heroes are rather special, they have names, an
   * inventory....
@@ -38,9 +39,9 @@ class Hero : public Army
     public:
         /** Standard constructor for creating a new hero
           * 
-          * Copies the prototype hero and creates a heor from it.
+          * Copies the prototype hero and creates a hero from it.
           */
-        Hero(const Army& a, std::string name, Player* p);
+        Hero(const Army& a, std::string name, Player *owner);
 
         /** Copy constructor
           * 
@@ -97,8 +98,6 @@ class Hero : public Army
         bool loadItems(std::string tag, XML_Helper* helper);
         
     private:
-        //! Loads the file with hero names from which random names are chosen
-        void loadNames();
         
         static std::vector<std::string> s_namelist;
 

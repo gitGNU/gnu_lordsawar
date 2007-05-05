@@ -35,7 +35,7 @@ class FL_Counter : public sigc::trackable
 {
     public:
         //! Initialise the counter with a start value
-        FL_Counter(Uint32 start = 1);
+        FL_Counter(Uint32 start = 0);
 
         //! Load the counter. See XML_Helper for details.
         FL_Counter(XML_Helper* helper);
