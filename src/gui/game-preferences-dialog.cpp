@@ -125,14 +125,14 @@ GamePreferencesDialog::GamePreferencesDialog()
     player_treeview->append_column(army_column);
 
     // add default players
-    default_player_names.push_back("Sirians");
-    default_player_names.push_back("Dark Elves");
-    default_player_names.push_back("Stone Giants");
-    default_player_names.push_back("Kingdoms");
-    default_player_names.push_back("White Dwarves");
-    default_player_names.push_back("Horse Tribes");
-    default_player_names.push_back("Ussyrian Orcs");
-    default_player_names.push_back("Lich King");
+    default_player_names.push_back("The Sirians");
+    default_player_names.push_back("Elvallie");
+    default_player_names.push_back("Storm Giants");
+    default_player_names.push_back("The Selentines");
+    default_player_names.push_back("Grey Dwarves");
+    default_player_names.push_back("Horse Lords");
+    default_player_names.push_back("Orcs of Kor");
+    default_player_names.push_back("Lord Bane");
 
     current_player_name = default_player_names.begin();
 
