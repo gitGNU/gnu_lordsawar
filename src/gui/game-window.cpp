@@ -60,6 +60,7 @@
 #include "../temple.h"
 #include "../city.h"
 #include "../Quest.h"
+#include "../QuestsManager.h"
 #include "../stack.h"
 
 
@@ -824,6 +825,50 @@ void GameWindow::on_quest_assigned(Hero *hero, Quest *quest)
     dialog->run();
 }
 
+static bool
+hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze)
+{
+  Player *p = Playerlist::getActiveplayer();
+  std::vector<Quest*> questlist;
+  std::vector<Hero*> heroes;
+  *sack = false;
+  *raze = false;
+
+  QuestsManager *q_mgr = QuestsManager::getInstance();
+  q_mgr->getPlayerQuests(p, questlist, heroes);
+  /* loop over all quests */
+  /* for each quest, check the quest type */
+  for (std::vector<Quest*>::iterator i = questlist.begin();
+       i != questlist.end(); ++i)
+    {
+      switch ((*i)->getType())
+        {
+        case Quest::CITYSACK:
+        case Quest::CITYRAZE:
+          /* now check if the quest's hero is in our stack */
+          for (Stack::iterator it = s->begin(); it != s->end(); ++it)
+            {
+              if ((*it)->isHero())
+                {
+                  if ((*it)->getId() == (*i)->getHeroId())
+                    {
+                      /* hey we found one, set the corresponding boolean */
+                      if ((*i)->getType() == Quest::CITYSACK)
+                        *sack = true;
+                      else if ((*i)->getType() == Quest::CITYRAZE)
+                        *raze = true;
+                    }
+                }
+            }
+          break;
+        }
+    }
+  if ((*raze) || (*sack))
+    return true;
+  else
+    return false;
+} 
+
 CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
@@ -866,7 +911,27 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
     s += "\n\n";
     s += label->get_text();
     label->set_text(s);
-    
+
+    if (h) /* if there was a hero in the stack */
+      {
+        bool sack, raze;
+        if (hero_has_quest_here (p->getStacklist()->getActivestack(), city, 
+                                 &sack, &raze))
+          {
+            Gtk::Button *button;
+            if (sack)
+              {
+                xml->get_widget("sack_button", button);
+                button->set_label(">" + button->get_label() +"<");
+              }
+            if (raze)
+              {
+                xml->get_widget("raze_button", button);
+                button->set_label(">" + button->get_label() +"<");
+              }
+          }
+      }
+
     dialog->show_all();
 
     if (city->getNoOfBasicProd() <= 0) {
