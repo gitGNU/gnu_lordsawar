@@ -644,30 +644,6 @@ bool CreateScenario::setupPlayers()
 {
     debug("CreateScenario::setupPlayers")
 
-    //Up to now, this function only assigns each player a hero.
-
-    //A player may later have more than one city, so loop over the players
-    //instead of the cities
-    /*
-    const Playerlist* pl = Playerlist::getInstance();
-    const Armysetlist* al = Armysetlist::getInstance();
-    Uint32 heroset = al->getHeroId();
-    
-    for (Playerlist::const_iterator pit = pl->begin(); pit != pl->end(); pit++)
-    {
-        if ((*pit) == pl->getNeutral())
-            continue;
-
-        //find the first city of the player
-        City* city = Citylist::getInstance()->getFirstCity(*pit);
-
-        //put a hero in the city
-        const Army* herotype = al->getArmy(heroset, rand() % al->getSize(heroset));
-        Hero* newhero = new Hero(*herotype, "", (*pit));
-        city->addHero(newhero);
-    }
-*/
-
     return true;
 }
 
