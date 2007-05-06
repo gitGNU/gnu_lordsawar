@@ -64,16 +64,26 @@ FightWindow::FightWindow(Fight &fight)
     // extract attackers and defenders
     armies_type attackers, defenders;
 
+    Player *attacker = NULL; /* for some reason attackers->getFront()->getPlayer() doesn't always yeild a player.  so we fill this variable instead */
+    Player *defender = NULL;
     std::list<Stack *> l;
     l = fight.getAttackers();
     for (std::list<Stack *>::iterator i = l.begin(); i != l.end(); ++i)
         for (Stack::const_iterator si = (*i)->begin(); si != (*i)->end(); ++si)
+          {
+            if (!attacker && (*si)->getPlayer())
+              attacker = (*si)->getPlayer();
 	    attackers.push_back(*si);
+          }
     
     l = fight.getDefenders();
     for (std::list<Stack *>::iterator i = l.begin(); i != l.end(); ++i)
         for (Stack::const_iterator si = (*i)->begin(); si != (*i)->end(); ++si)
+          {
+            if (!defender && (*si)->getPlayer())
+              defender = (*si)->getPlayer();
 	    defenders.push_back(*si);
+          }
 
     int rows = compute_max_rows(attackers, defenders);
     
@@ -114,7 +124,7 @@ FightWindow::FightWindow(Fight &fight)
     xml->get_widget("attacker_label", label);
 
     p = attackers.front()->getPlayer();
-    label->set_markup("<b>" + p->getName() + "</b>");
+    label->set_markup("<b>" + attacker->getName() + "</b>");
     //l->SetFontColor(PG_Color(p->getColor()));
 
     p = defenders.front()->getPlayer();
