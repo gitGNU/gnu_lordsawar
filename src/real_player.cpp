@@ -367,7 +367,7 @@ Fight::Result ruinfight (Stack **attacker, Stack **defender)
   int diff = (*attacker)->getFirstHero()->getStat(Army::STRENGTH, true) -
                (*defender)->getStrongestArmy()->getStat(Army::STRENGTH, false);
   if (diff < 0)
-    percent -= ((diff * -1) * 2);
+    percent -= ((diff * -1) * 7);
 
   if (rand() % 100 <= percent)
     {
