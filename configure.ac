@@ -277,8 +277,8 @@ AC_CONFIG_FILES([
         src/utils/Makefile 
         src/server/Makefile 
         src/events/Makefile
-        src/gui/Makefile
-        src/editor/Makefile])
+        src/gui/Makefile])
+dnl        src/editor/Makefile
 AC_OUTPUT
 echo ""
 echo "LordsAWar is now configured. Type 'make' to compile it."
