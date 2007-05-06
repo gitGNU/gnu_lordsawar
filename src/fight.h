@@ -55,10 +55,8 @@ class Fight
           * 
           * @param attacker         the attacking stack
           * @param defender         the defending stack
-          * @param duel             if set to true, only have these two stacks
-          *                         fight against each other (e.g. ruin search)
           */
-        Fight(Stack* attacker, Stack* defender, bool duel);
+        Fight(Stack* attacker, Stack* defender);
         ~Fight();
 
         
@@ -143,7 +141,6 @@ class Fight
         
         std::list<FightItem> d_actions;
         
-        bool d_duel;
         int d_turn;
         Result d_result;
 };

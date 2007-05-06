@@ -39,6 +39,7 @@
 #include "citylist.h"
 #include "ruinlist.h"
 #include "templelist.h"
+#include "armysetlist.h"
 #include "city.h"
 #include "ruin.h"
 #include "signpost.h"
@@ -132,6 +133,10 @@ Game::Game(GameScenario* gameScenario)
         p->sinvadingCity.connect(sigc::mem_fun(this, &Game::invading_city));
         p->fight_started.connect(
 	    sigc::mem_fun(fight_started, &sigc::signal<void, Fight &>::emit));
+        p->ruinfight_started.connect(
+	    sigc::mem_fun(ruinfight_started, &sigc::signal<void, Stack *, Stack *>::emit));
+        p->ruinfight_finished.connect(
+	    sigc::mem_fun(ruinfight_finished, &sigc::signal<void, Fight::Result>::emit));
     }
 
     //set up a NextTurn object
@@ -161,6 +166,7 @@ Game::Game(GameScenario* gameScenario)
     SDL_BlitSurface(tmp, 0, d_pic_winGameMask, 0);
     SDL_FreeSurface(tmp);
 #endif
+  loadHeroTemplates();
 }
 
 Game::~Game()
@@ -938,11 +944,107 @@ void Game::stopGame()
     Playerlist::finish();
 }
 
+void Game::recruitHero (Player *p, int gold)
+{
+  int num = rand() % d_herotemplates[p->getId()].size();
+  Hero *templateHero = d_herotemplates[p->getId()][num];
+  Hero* newhero = new Hero(*templateHero);
+
+  bool accepted = p->recruitHero(newhero, gold);
+  if (accepted)
+    {
+      // FIXME: persistent (immortal) players can exist and take heroes
+      // without owning any city => segfault
+      p->withdrawGold(gold);
+      Citylist::getInstance()->getFirstCity(p)->addHero(newhero);
+    }
+   else
+    delete newhero;
+  return;
+}
+
+int
+Game::loadHeroTemplates()
+{
+  FILE *fileptr = fopen (File::getMiscFile("heronames").c_str(), "r");
+  char *line = NULL;
+  size_t len = 0;
+  ssize_t read;
+  int retval;
+  int gender;
+  int side;
+  size_t bytesread;
+  char *tmp;
+  const Armysetlist* al = Armysetlist::getInstance();
+  Uint32 heroset = al->getHeroId();
+  const Army* herotype;
+
+
+  if (fileptr == NULL)
+    return -1;
+  while ((read = getline (&line, &len, fileptr)) != -1)
+    {
+      retval = sscanf (line, "%d%d%n", &side, &gender, &bytesread);
+      if (retval != 2)
+        {
+          free (line);
+          return -2;
+        }
+      while (isspace(line[bytesread]) && line[bytesread] != '\0')
+        bytesread++;
+      tmp = strchr (&line[bytesread], '\n');
+      if (tmp)
+        tmp[0] = '\0';
+      if (strlen (&line[bytesread]) == 0)
+        {
+          free (line);
+          return -3;
+        }
+      if (side < 0 || side > (int) MAX_PLAYERS)
+        {
+          free (line);
+          return -4;
+        }
+      herotype = al->getArmy(heroset, rand() % al->getSize (heroset));
+      Hero *newhero = new Hero (*herotype, "", NULL);
+      if (gender)
+        newhero->setGender(Hero::MALE);
+      else
+        newhero->setGender(Hero::FEMALE);
+      newhero->setName (&line[bytesread]);
+      d_herotemplates[side].push_back (newhero);
+    }
+  if (line)
+    free (line);
+  fclose (fileptr);
+  return 0;
+}
+
 bool Game::init_turn_for_player(Player* p)
 {
+  Playerlist *plist = Playerlist::getInstance();
     // FIXME: Currently this function only checks for a human player. You
     // can also have it check for e.g. escape key pressed to interrupt
     // an AI-only game to save/quit.
+
+    // if we're in the first round, then everyone gets a hero, except Neutral
+    if (d_gameScenario->getRound() == 0 && p != plist->getNeutral())
+      {
+        Game::recruitHero(p, 0);
+      }
+    else
+      {
+        //otherwise we get a hero based on chance
+        //a hero costs a random number of gold pieces
+        int gold_needed = rand() % 1000;
+    
+        //we set the chance of some hero recruitment to, ehm, 10 percent
+        if (((rand() % 10) == 0) && (gold_needed < p->getGold())
+            && (p != plist->getNeutral()))
+        {
+            Game::recruitHero (p, gold_needed);
+        }
+      }
 
     if (p->getType() == Player::HUMAN)
     {
@@ -953,6 +1055,11 @@ bool Game::init_turn_for_player(Player* p)
 	else
 	    center_view_on_city();
     
+        if (d_gameScenario->getRound() == 0)
+          {
+            Citylist *clist = Citylist::getInstance();
+	    city_visited.emit(clist->getFirstCity(p));
+          }
 	update_sidebar_stats();
 	update_stack_info();
 	update_control_panel();

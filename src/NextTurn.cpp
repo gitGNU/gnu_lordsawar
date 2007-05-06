@@ -20,7 +20,6 @@
 #include "stacklist.h"
 #include "armysetlist.h"
 #include "hero.h"
-#include "File.h"
 
 #include "path.h"
 
@@ -28,68 +27,9 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 //#define debug(x)
 
-int
-NextTurn::loadHeroTemplates()
-{
-  FILE *fileptr = fopen (File::getMiscFile("heronames").c_str(), "r");
-  char *line = NULL;
-  size_t len = 0;
-  ssize_t read;
-  int retval;
-  int gender;
-  int side;
-  size_t bytesread;
-  char *tmp;
-  const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 heroset = al->getHeroId();
-  const Army* herotype;
-
-
-  if (fileptr == NULL)
-    return -1;
-  while ((read = getline (&line, &len, fileptr)) != -1)
-    {
-      retval = sscanf (line, "%d%d%n", &side, &gender, &bytesread);
-      if (retval != 2)
-        {
-          free (line);
-          return -2;
-        }
-      while (isspace(line[bytesread]) && line[bytesread] != '\0')
-        bytesread++;
-      tmp = strchr (&line[bytesread], '\n');
-      if (tmp)
-        tmp[0] = '\0';
-      if (strlen (&line[bytesread]) == 0)
-        {
-          free (line);
-          return -3;
-        }
-      if (side < 0 || side > (int) MAX_PLAYERS)
-        {
-          free (line);
-          return -4;
-        }
-      herotype = al->getArmy(heroset, rand() % al->getSize (heroset));
-      Hero *newhero = new Hero (*herotype, "", NULL);
-      if (gender)
-        newhero->setGender(Hero::MALE);
-      else
-        newhero->setGender(Hero::FEMALE);
-      newhero->setName (&line[bytesread]);
-      d_herotemplates[side].push_back (newhero);
-    }
-  if (line)
-    free (line);
-  fclose (fileptr);
-  return 0;
-}
-
 NextTurn::NextTurn(bool turnmode)
     :d_turnmode(turnmode), d_stop(false)
 {
-  int err;
-  err = loadHeroTemplates();
 }
 
 NextTurn::~NextTurn()
@@ -104,7 +44,7 @@ void NextTurn::start()
     //set first player as active if no active player exists
     if (!plist->getActiveplayer())
         plist->nextPlayer();
-
+	
     while (!d_stop)
     {
         // do various start-up tasks
@@ -172,30 +112,6 @@ void NextTurn::startTurn()
         p->getStacklist()->nextTurn();
     }
 
-    //recruit heroes
-    //a hero costs a random number of gold pieces
-    int gold_needed = rand() % 1000;
-    
-    //we set the chance of some hero recruitment to, ehm, 10 percent
-    if (((rand() % 10) == 0) && (gold_needed < p->getGold())
-        && (p != Playerlist::getInstance()->getNeutral()))
-    {
-        int num = rand() % d_herotemplates[p->getId()].size();
-        Hero *templateHero = d_herotemplates[p->getId()][num];
-        Hero* newhero = new Hero(*templateHero);
-
-        bool accepted = p->recruitHero(newhero, gold_needed);
-        
-        if (accepted)
-        {
-            // FIXME: persistent (immortal) players can exist and take heroes
-            // without owning any city => segfault
-            p->withdrawGold(gold_needed);
-            Citylist::getInstance()->getFirstCity(p)->addHero(newhero);
-        }
-        else
-            delete newhero;
-    }
 }
 
 void NextTurn::finishTurn()

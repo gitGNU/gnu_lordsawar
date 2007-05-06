@@ -51,8 +51,8 @@ Fighter::Fighter(Army* a, Vector<int> p)
 
 
 
-Fight::Fight(Stack* attacker, Stack* defender, bool duel)
-    :d_duel(duel), d_turn(0), d_result(DRAW)
+Fight::Fight(Stack* attacker, Stack* defender)
+    : d_turn(0), d_result(DRAW)
 {
     debug("Fight between " <<attacker->getId() <<" and " <<defender->getId())
     
@@ -73,9 +73,6 @@ Fight::Fight(Stack* attacker, Stack* defender, bool duel)
         Fighter* f = new Fighter((*it), defender->getPos());
         d_def_ranged.push_back(f);
     }
-    
-    if (d_duel)
-        return;
     
     // What we do here: In the setup, we need to find out all armies that
     // participate in the fight. For this we separate three cases:
@@ -302,10 +299,7 @@ bool Fight::doRound()
 
 void Fight::calculateBonus()
 {
-    // we currently know of two different boni: 
-    // 1. If there is a hero, add a +1 strength bonus
-    // 2. If we don't have a duel situation, the defender gets a bonus
-    //    depending on the terrain
+    // If there is a hero, add a +1 strength bonus
     std::list<Stack*>::const_iterator it;
     Stack::const_iterator sit;
     std::list<Fighter*>::iterator fit;
@@ -356,10 +350,6 @@ void Fight::calculateBonus()
                 (*fit)->att_bonus = 1;
     }
 
-
-    // Second step: defender units get a defense bonus
-    if (d_duel)
-        return;
 
     for (fit = d_def_close.begin(); fit != d_def_close.end(); fit++)
     {

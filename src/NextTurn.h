@@ -101,11 +101,6 @@ class NextTurn: public sigc::trackable
           */
         void startTurn();
         
-	/**
-	  \brief The function reads in the heronames file and produces a
-	  set of hero templates to be randomly selected from
-	  */
-	int loadHeroTemplates();
         /**
            \brief The function for all actions which are taken at the end of a
            player's turn
@@ -134,8 +129,6 @@ class NextTurn: public sigc::trackable
         //! If set to true, the game is interrupted at the next occasion
         bool d_stop;
 
-	/* the contents of the heronames data file */
-        std::vector<Hero*> d_herotemplates[MAX_PLAYERS];
 };
 
 #endif //NEXT_TURN_H

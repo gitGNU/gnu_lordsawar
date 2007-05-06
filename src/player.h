@@ -330,6 +330,7 @@ class Player: public sigc::trackable
           */
         virtual Fight::Result stackFight(Stack** attacker, Stack** defender, 
                                          bool ruin) =0;
+        virtual Fight::Result stackRuinFight(Stack** attacker, Stack** defender) =0;
 
         /** A stack searches a ruin. The stack should contain a hero.
           *
@@ -454,6 +455,9 @@ class Player: public sigc::trackable
 	// so should the results be
         sigc::signal<void, Fight &> fight_started;
 	
+	// emitted when a fight in a ruin is started
+        sigc::signal<void, Stack *, Stack *> ruinfight_started;
+        sigc::signal<void, Fight::Result> ruinfight_finished;
 #if 0
         //! Signal raised whenever the player wants to interrupt some timers
         sigc::signal<void> sinterruptTimers;

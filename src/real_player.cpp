@@ -353,10 +353,47 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
     return new MoveResult(true);
 }
 
-
-Fight::Result RealPlayer::stackFight(Stack** attacker, Stack** defender, bool ruin) 
+Fight::Result ruinfight (Stack **attacker, Stack **defender)
 {
-    debug("stackFight: player = " << getName()<<" at position "
+  Stack *loser;
+  Fight::Result result;
+/*
+ * The idea here is that we have a high chance of succeeding.
+ * chances are increased if we have more units in the stack with our hero.
+ * chances are diminished if the monster has more strength than us.
+ */
+  int chances[8] = { 86, 89, 92, 94, 96, 97, 98, 99 };
+  int percent = chances[(*attacker)->size()-1];
+  int diff = (*attacker)->getFirstHero()->getStat(Army::STRENGTH, true) -
+               (*defender)->getStrongestArmy()->getStat(Army::STRENGTH, false);
+  if (diff < 0)
+    percent -= ((diff * -1) * 2);
+
+  if (rand() % 100 <= percent)
+    {
+      result = Fight::ATTACKER_WON;
+      loser = *defender;
+    }
+  else
+    {
+      result = Fight::DEFENDER_WON;
+      loser = *attacker;
+    }
+        
+  /* set the hp to == 0 on dead armies */
+  for (Stack::iterator sit = loser->begin(); sit != loser->end();)
+    {
+      (*sit)->setHP (0);
+      sit++;
+    }
+
+  return result;
+}
+
+Fight::Result RealPlayer::stackRuinFight (Stack **attacker, Stack **defender)
+{
+    Fight::Result result = Fight::DRAW;
+    debug("stackRuinFight: player = " << getName()<<" at position "
           <<(*defender)->getPos().x<<","<<(*defender)->getPos().y);
 
     // save the defender's player for future use
@@ -365,7 +402,117 @@ Fight::Result RealPlayer::stackFight(Stack** attacker, Stack** defender, bool ru
     // I suppose, this should be always true, but one can never be sure
     bool attacker_active = *attacker == d_stacklist->getActivestack();
 
-    Fight fight(*attacker, *defender, ruin);
+    ruinfight_started.emit(*attacker, *defender);
+    result = ruinfight (attacker, defender);
+    ruinfight_finished.emit(result);
+
+    // cleanup
+    
+    // add a fight item about the combat
+    //Action_Fight* item = new Action_Fight();
+    //item->fillData(&fight);
+    //d_actions.push_back(item);
+    /* FIXME: do we need an Action_RuinFight? */
+
+    // get attacker and defender heroes and more...
+    std::list<Stack*> attackers;
+    attackers.push_back(*attacker);
+    std::list<Stack*> defenders;
+    defenders.push_back(*defender);
+    std::vector<Uint32> attackerHeroes, defenderHeroes;
+    
+    getHeroes(attackers, attackerHeroes);
+    getHeroes(defenders, defenderHeroes);
+
+    // here we calculate also the total XP to add when a player have a battle
+    // clear dead defenders
+    debug("clean dead defenders");
+    double defender_xp = removeDeadArmies(defenders, attackerHeroes);
+
+    // and dead attackers
+    debug("clean dead attackers");
+    double attacker_xp = removeDeadArmies(attackers, defenderHeroes);
+
+    // after a fight: if the attacker's stack won - emit
+    // supdatingStack signal, else emit sdyingStack
+
+    debug("after fight: attackers empty? " << attackers.empty()
+          << "(" << attackers.size() << ")");
+
+
+    //only emit this signal when the defender has not won!
+    if (!attackers.empty())
+    {
+        debug("attacker won: supdatingStack");
+        supdatingStack.emit(0);
+        if (defender_xp != 0)
+            updateArmyValues(attackers, defender_xp);
+    }
+    else
+    {
+        debug("attacker lost: sdyingStack");
+        sdyingStack.emit(0);
+    }
+    if (attacker_xp != 0)
+        updateArmyValues(defenders, attacker_xp);
+
+    // Set the attacker and defender stack to 0 if neccessary. This is a great
+    // help for the functions calling stackFight (e.g. if a stack attacks
+    // another stack and destroys it without winning the battle, it may take the
+    // position of this stack)
+
+    // First, the attacker...
+    bool exists =
+	std::find(d_stacklist->begin(), d_stacklist->end(), *attacker)
+	!= d_stacklist->end();
+#if 0
+    bool exists = false;
+    for (Stacklist::iterator it = d_stacklist->begin(); it != d_stacklist->end(); it++)
+        if ((*it) == (*attacker))
+	{
+            exists = true;
+	    break;
+	}
+#endif
+    
+    if (!exists)
+    {
+        (*attacker) = 0;
+        if (attacker_active)
+            d_stacklist->setActivestack(0);
+    }
+
+    // ...then the defender.
+    exists = false;
+    if (pd)
+        for (Stacklist::iterator it = pd->getStacklist()->begin();
+             it != pd->getStacklist()->end(); it++)
+        {
+            if ((*it) == (*defender))
+                exists = true;
+        }
+    else
+        exists = true;
+    if (!exists)
+        (*defender) = 0;
+
+    return result;
+}
+
+Fight::Result RealPlayer::stackFight(Stack** attacker, Stack** defender, bool ruin) 
+{
+    debug("stackFight: player = " << getName()<<" at position "
+          <<(*defender)->getPos().x<<","<<(*defender)->getPos().y);
+    if (ruin)
+      return RealPlayer::stackRuinFight (attacker, defender);
+
+    // save the defender's player for future use
+    Player* pd = (*defender)->getPlayer();
+
+    // I suppose, this should be always true, but one can never be sure
+    bool attacker_active = *attacker == d_stacklist->getActivestack();
+
+    Fight fight(*attacker, *defender);
     fight_started.emit(fight);
 
     // cleanup

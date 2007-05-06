@@ -28,7 +28,8 @@ city-pillaged-dialog.glade     quest-assigned-dialog.glade \
 fight-window.glade             ruin-searched-dialog.glade \
 game-preferences-dialog.glade  splash-window.glade \
 game-window.glade              temple-visit-dialog.glade \
-city-looted-dialog.glade
+city-looted-dialog.glade \
+ruinfight-started-dialog.glade ruinfight-finished-dialog.glade
 
 gladedir = $(datadir)/$(PACKAGE)/glade
 

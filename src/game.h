@@ -27,6 +27,7 @@
 #include "map-tip-position.h"
 #include "callback-enums.h"
 #include "army.h"
+#include "fight.h"
 
 #include "bigmap.h"
 #include "smallmap.h"
@@ -56,6 +57,9 @@ class Game
  public:
     Game(GameScenario* gameScenario);
     ~Game();
+
+    //! Recruit a new hero at the beginning of a turn
+    void recruitHero(Player *p, int gold);
 
     void redraw();
     void size_changed();
@@ -158,6 +162,8 @@ class Game
     sigc::signal<void, Glib::ustring, MapTipPosition> map_tip_changed;
     sigc::signal<void, Ruin*, int> ruin_searched;
     sigc::signal<void, Fight &> fight_started;
+    sigc::signal<void, Stack *, Stack *> ruinfight_started;
+    sigc::signal<void, Fight::Result> ruinfight_finished;
     sigc::signal<bool, Player *, Hero *, int> hero_offers_service;
     sigc::signal<bool, Temple *> temple_visited;
     sigc::signal<void, Hero *, Quest *> quest_assigned;
@@ -168,6 +174,13 @@ class Game
     sigc::signal<void> game_over;
     
  private:
+
+    /**
+    \brief The function reads in the heronames file and produces a
+    set of hero templates to be randomly selected from
+    */
+    int loadHeroTemplates();
+
     // centers the map on a city of the active player
     void center_view_on_city();
 
@@ -216,6 +229,9 @@ class Game
     SDL_Surface* d_pic_turn_start;
     SDL_Surface* d_pic_winGame, *d_pic_winGameMask;
     SDL_Surface* d_pic_logo;
+
+    /* the contents of the heronames data file */
+    std::vector<Hero*> d_herotemplates[MAX_PLAYERS];
 
     bool d_lock;
 };

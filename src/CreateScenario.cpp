@@ -648,6 +648,7 @@ bool CreateScenario::setupPlayers()
 
     //A player may later have more than one city, so loop over the players
     //instead of the cities
+    /*
     const Playerlist* pl = Playerlist::getInstance();
     const Armysetlist* al = Armysetlist::getInstance();
     Uint32 heroset = al->getHeroId();
@@ -665,6 +666,7 @@ bool CreateScenario::setupPlayers()
         Hero* newhero = new Hero(*herotype, "", (*pit));
         city->addHero(newhero);
     }
+*/
 
     return true;
 }

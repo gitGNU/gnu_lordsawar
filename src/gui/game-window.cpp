@@ -60,6 +60,7 @@
 #include "../temple.h"
 #include "../city.h"
 #include "../Quest.h"
+#include "../stack.h"
 
 
 GameWindow::GameWindow()
@@ -194,7 +195,7 @@ void GameWindow::new_game(GameParameters g)
 	g.map_path = path;
     }
     
-    load_game(g.map_path);
+    load_game(g.map_path, true);
 }
 
 namespace 
@@ -209,7 +210,7 @@ namespace
     }
 }
 
-void GameWindow::load_game(const std::string &file_path)
+void GameWindow::load_game(const std::string &file_path, bool start)
 {
 #if 0
     clearData();
@@ -274,6 +275,10 @@ void GameWindow::load_game(const std::string &file_path)
 	sigc::mem_fun(*this, &GameWindow::on_ruin_searched));
     game->fight_started.connect(
 	sigc::mem_fun(*this, &GameWindow::on_fight_started));
+    game->ruinfight_started.connect(
+	sigc::mem_fun(*this, &GameWindow::on_ruinfight_started));
+    game->ruinfight_finished.connect(
+	sigc::mem_fun(*this, &GameWindow::on_ruinfight_finished));
     game->hero_offers_service.connect(
 	sigc::mem_fun(*this, &GameWindow::on_hero_offers_service));
     game->temple_visited.connect(
@@ -291,7 +296,10 @@ void GameWindow::load_game(const std::string &file_path)
 
     
     game->startTimers();
-    game->loadGame();
+    if (start)
+      game->startGame();
+    else
+      game->loadGame();
 }
 
 bool GameWindow::on_delete_event(GdkEventAny *e)
@@ -633,6 +641,63 @@ void GameWindow::on_ruin_searched(Ruin *ruin, int gold_found)
     dialog->run();
 }
 
+void GameWindow::on_ruinfight_started(Stack *attackers, Stack *defenders)
+{
+//so and so encounters a wolf...
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/ruinfight-started-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+    
+    dialog->set_title(_("Searching"));
+
+    Gtk::Label *label;
+    xml->get_widget("label", label);
+    Glib::ustring s = label->get_text();
+    s = "\n\n";
+    s += attackers->getFirstHero()->getName() + " encounters a ";
+    s += defenders->getStrongestArmy()->getName() + "...";
+    label->set_text(s);
+
+    dialog->show_all();
+    dialog->run();
+}
+void GameWindow::on_ruinfight_finished(Fight::Result result)
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/ruinfight-finished-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+    
+    if (result == Fight::ATTACKER_WON)
+      dialog->set_title(_("Hero Victorious"));
+    else
+      dialog->set_title(_("Hero Defeated"));
+
+    Gtk::Label *label;
+    xml->get_widget("label", label);
+    Glib::ustring s = label->get_text();
+    s = "\n\n";
+    if (result == Fight::ATTACKER_WON)
+      s += _("...and is victorious!");
+    else
+      s += _("...and is slain by it!");
+    label->set_text(s);
+
+    dialog->show_all();
+    dialog->run();
+}
+
 void GameWindow::on_fight_started(Fight &fight)
 {
     FightWindow d(fight);
@@ -686,7 +751,7 @@ bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, int gold)
 		     "A hero wants to join you for %1 gold pieces!",
 		     gold), gold);
     else
-	s = _("A hero wants to join you for free!");
+	s = _("A hero wants to join you!");
     label->set_text(s);
     
     Sound::getInstance()->playMusic("hero", 1);

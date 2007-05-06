@@ -32,6 +32,8 @@
 #include "../game-parameters.h"
 #include "../sidebar-stats.h"
 #include "../stack-info.h"
+#include "../stack.h"
+#include "../fight.h"
 #include "../map-tip-position.h"
 #include "../callback-enums.h"
 #include "../vector.h"
@@ -70,7 +72,7 @@ class GameWindow: public sigc::trackable
     void new_game(GameParameters g);
     
     // setup and use the game stored under file_path
-    void load_game(const std::string &file_path);
+    void load_game(const std::string &file_path, bool start);
     
     // emitted when the game has ended and it is time to show the splash again
     sigc::signal<void> game_ended;
@@ -137,6 +139,8 @@ class GameWindow: public sigc::trackable
     void on_map_tip_changed(Glib::ustring tip, MapTipPosition pos);
     void on_ruin_searched(Ruin *ruin, int gold_found);
     void on_fight_started(Fight &fight);
+    void on_ruinfight_started(Stack *attackers, Stack *defenders);
+    void on_ruinfight_finished(Fight::Result result);
     bool on_hero_offers_service(Player *player, Hero *hero, int gold);
     bool on_temple_visited(Temple *temple);
     void on_quest_assigned(Hero *hero, Quest *quest);
