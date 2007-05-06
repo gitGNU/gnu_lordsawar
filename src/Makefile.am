@@ -3,30 +3,46 @@ MAINTAINERCLEANFILES= Makefile.in
 
 bin_PROGRAMS = lordsawar
 
-lordsawar_SOURCES = army.cpp hero.cpp stack.cpp GameScenario.cpp action.cpp \
-	player.cpp real_player.cpp ai_dummy.cpp ai_fast.cpp ai_smart.cpp \
-	Object.cpp Location.cpp city.cpp temple.cpp ruin.cpp Tile.cpp \
-	maptile.cpp Item.cpp armysetlist.cpp stacklist.cpp playerlist.cpp \
-	citylist.cpp templelist.cpp ruinlist.cpp GameMap.cpp \
-	Itemlist.cpp TileSet.cpp Threat.cpp Threatlist.cpp MoveResult.cpp \
-	AICityInfo.cpp AI_Analysis.cpp AI_Allocation.cpp path.cpp QuestsManager.cpp \
-	Quest.cpp QKillHero.cpp QRuinSearch.cpp QEnemyArmies.cpp File.cpp main.cpp \
-        QCitySack.cpp QCityRaze.cpp \
-	xmlhelper.cpp string_tokenizer.cpp NextTurn.cpp FogMap.cpp \
-	counter.cpp fight.cpp CreateScenario.cpp MapGenerator.cpp Configuration.cpp \
-	sound.cpp GraphicsCache.cpp  MapRenderer.cpp \
+lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
+        GameScenario.cpp GameScenario.h action.cpp action.h \
+	player.cpp player.h real_player.cpp real_player.h ai_dummy.cpp \
+        ai_dummy.h ai_fast.cpp ai_fast.h ai_smart.cpp ai_smart.h \
+	Object.cpp Object.h Location.cpp Location.h city.cpp city.h \
+        temple.cpp temple.h ruin.cpp ruin.h Tile.cpp Tile.h \
+	maptile.cpp maptile.h Item.cpp Item.h armysetlist.cpp armysetlist.h \
+        stacklist.cpp stacklist.h playerlist.cpp playerlist.h \
+	citylist.cpp citylist.h templelist.cpp templelist.h \
+        ruinlist.cpp ruinlist.h GameMap.cpp GameMap.h \
+	Itemlist.cpp Itemlist.h TileSet.cpp TileSet.h Threat.cpp Threat.h \
+        Threatlist.cpp Threatlist.h MoveResult.cpp MoveResult.h \
+	AICityInfo.cpp AICityInfo.h AI_Analysis.cpp AI_Analysis.h \
+        AI_Allocation.cpp AI_Allocation.h path.cpp path.h \
+        QuestsManager.cpp QuestsManager.h Quest.cpp Quest.h \
+	QKillHero.cpp QKillHero.h QRuinSearch.cpp QRuinSearch.h \
+        QEnemyArmies.cpp QEnemyArmies.h QCitySack.cpp QCitySack.h \
+        QCityRaze.cpp QCityRaze.h File.cpp File.h main.cpp \
+	xmlhelper.cpp xmlhelper.h string_tokenizer.cpp string_tokenizer.h \
+        NextTurn.cpp NextTurn.h FogMap.cpp FogMap.h \
+	counter.cpp counter.h fight.cpp fight.h \
+        CreateScenario.cpp CreateScenario.h \
+        MapGenerator.cpp MapGenerator.h Configuration.cpp Configuration.h \
+	sound.cpp sound.h GraphicsCache.cpp GraphicsCache.h \
+        MapRenderer.cpp MapRenderer.h \
 	 \
-	bigmap.cpp   \
-	netggz.cpp  \
-	signpost.cpp signpostlist.cpp  stone.cpp stonelist.cpp \
-	road.cpp roadlist.cpp \
+	bigmap.cpp bigmap.h  \
+	netggz.cpp netggz.h \
+	signpost.cpp signpost.h signpostlist.cpp signpostlist.h \
+        stone.cpp stone.h stonelist.cpp stonelist.h \
+	road.cpp road.h roadlist.cpp roadlist.h \
         overviewmap.cpp overviewmap.h \
         smallmap.cpp smallmap.h \
         game.cpp game.h \
         timing.cpp timing.h \
         callback-enums.h \
         sidebar-stats.h game-parameters.h vector.h rectangle.h \
-        tmp.cpp tmp.h 
+        tmp.cpp tmp.h ucompose.hpp defs.h ObjectList.h \
+        stack-info.h map-tip-position.h input-events.h sdl-draw.h   
+
 
 # old: ArmyLevelDialog.cpp ItemDialog.cpp PG_FileDialog.cpp Popup.cpp
 # splash.cpp w_edit.cpp TempleInfo.cpp QuestCompletedDialog.cpp

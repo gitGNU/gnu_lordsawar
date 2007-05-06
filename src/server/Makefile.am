@@ -4,8 +4,8 @@ noinst_LIBRARIES = liblwserver.a
 
 bin_PROGRAMS = lordsawar_server
 
-liblwserver_a_SOURCES = Server.cpp Client.cpp \
-                        ggzgameserver.cpp
+liblwserver_a_SOURCES = Server.cpp Server.h Client.cpp Client.h \
+                        ggzgameserver.cpp ggzgameserver.h
 
 lordsawar_server_SOURCES = main.cpp
 lordsawar_server_LDADD = liblwserver.a $(LIB_GGZDMOD)

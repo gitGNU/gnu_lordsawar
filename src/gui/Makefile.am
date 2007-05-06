@@ -12,7 +12,8 @@ liblwgui_a_SOURCES = \
     main.cpp main.h \
     splash-window.cpp splash-window.h \
     image-helpers.cpp image-helpers.h \
-    gtksdl.c gtksdl.h
+    gtksdl.c gtksdl.h \
+    glade-helpers.h
 
 INCLUDES = \
    -DLORDSAWAR_GLADEDIR=\""$(gladedir)/"\" \
