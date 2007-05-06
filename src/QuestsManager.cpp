@@ -20,6 +20,8 @@
 #include "QRuinSearch.h"
 #include "QKillHero.h"
 #include "QEnemyArmies.h"
+#include "QCitySack.h"
+#include "QCityRaze.h"
 #include "stacklist.h"
 //#include "QuestCompletedDialog.h"
 //#include "QuestExpiredDialog.h"
@@ -88,7 +90,7 @@ Quest* QuestsManager::createNewQuest(Uint32 heroId)
     int which = 0;
     while (!which)
     {
-        which = 1 + rand() % 3;
+        which = 1 + rand() % 5;
         // if this quest is not feasible - try again with another
         // quest:
         if ((*(d_questsFeasible[which-1]))() == 0)
@@ -107,6 +109,12 @@ Quest* QuestsManager::createNewQuest(Uint32 heroId)
             break;
         case 3:
             quest = new QuestEnemyArmies(*this, heroId);
+            break;
+        case 4:
+            quest = new QuestCitySack(*this, heroId);
+            break;
+        case 5:
+            quest = new QuestCityRaze(*this, heroId);
             break;
     }
     
@@ -217,6 +225,12 @@ bool QuestsManager::load(string tag, XML_Helper* helper)
                 break;
             case Quest::KILLARMIES:
                 quest = new QuestEnemyArmies(*this, helper);
+                break;
+            case Quest::CITYSACK:
+                quest = new QuestCitySack(*this, helper);
+                break;
+            case Quest::CITYRAZE:
+                quest = new QuestCityRaze(*this, helper);
                 break;
         }
         

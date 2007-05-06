@@ -11,6 +11,7 @@ lordsawar_SOURCES = army.cpp hero.cpp stack.cpp GameScenario.cpp action.cpp \
 	Itemlist.cpp TileSet.cpp Threat.cpp Threatlist.cpp MoveResult.cpp \
 	AICityInfo.cpp AI_Analysis.cpp AI_Allocation.cpp path.cpp QuestsManager.cpp \
 	Quest.cpp QKillHero.cpp QRuinSearch.cpp QEnemyArmies.cpp File.cpp main.cpp \
+        QCitySack.cpp QCityRaze.cpp \
 	xmlhelper.cpp string_tokenizer.cpp NextTurn.cpp FogMap.cpp \
 	counter.cpp fight.cpp CreateScenario.cpp MapGenerator.cpp Configuration.cpp \
 	sound.cpp GraphicsCache.cpp  MapRenderer.cpp \

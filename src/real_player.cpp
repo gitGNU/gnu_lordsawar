@@ -984,6 +984,7 @@ bool RealPlayer::citySack(City* c, int& gold)
       }
 
     addGold(gold);
+    ssackingCity.emit(c, Playerlist::getActiveplayer()->getActivestack());
     cityOccupy(c);
     return true;
 }
@@ -1003,6 +1004,7 @@ bool RealPlayer::cityRaze(City* c)
 
     supdatingCity.emit(c);
 
+    srazingCity.emit(c, Playerlist::getActiveplayer()->getActivestack());
     return true;
 }
 

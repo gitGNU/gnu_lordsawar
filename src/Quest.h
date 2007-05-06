@@ -36,7 +36,8 @@ class Quest
 {
     public:
 
-        enum Type {RUINSEARCH = 1, KILLHERO = 2, KILLARMIES = 3};
+        enum Type {RUINSEARCH = 1, KILLHERO = 2, KILLARMIES = 3,
+	           CITYSACK = 4, CITYRAZE = 5};
 
         //! Standard constructor
         Quest(QuestsManager& q_mgr, Uint32 hero, Type type);

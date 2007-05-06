@@ -51,8 +51,6 @@ class Army;
  *       wait for someone to emit the signal sendingTurn and
  *       delete all marked quests when processing this signal.
  *
- * \todo Implement more that one quest for a single hero
- *
  */
 class QuestsManager : public sigc::trackable
 {
