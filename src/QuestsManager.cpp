@@ -260,6 +260,8 @@ void QuestsManager::_sharedInit()
     d_questsFeasible.push_back(&(QuestRuinSearch::isFeasible));
     d_questsFeasible.push_back(&(QuestKillHero::isFeasible));
     d_questsFeasible.push_back(&(QuestEnemyArmies::isFeasible));
+    d_questsFeasible.push_back(&(QuestCitySack::isFeasible));
+    d_questsFeasible.push_back(&(QuestCityRaze::isFeasible));
 }
 //========================================================================
 void QuestsManager::_dyingArmy(Army* army, std::vector<Uint32> culprits)
