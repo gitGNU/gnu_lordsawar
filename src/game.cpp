@@ -643,7 +643,7 @@ void Game::on_city_selected(City* c, MapTipPosition pos)
 {
     if (c)
     {
-	if (c->isFriend(Playerlist::getActiveplayer()) && !c->isBurnt())
+	if (c->getPlayer() == Playerlist::getActiveplayer() && !c->isBurnt())
 	{
 	    city_visited.emit(c);
 

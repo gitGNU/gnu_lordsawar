@@ -333,10 +333,18 @@ void BigMap::mouse_button_event(MouseButtonEvent e)
                 Playerlist::getActiveplayer()->getStacklist()->setActivestack(stack);
                 select_active_stack();
             }
-
+            else
+            {
+              if (City* c = Citylist::getInstance()->getObjectAt(tile.x, tile.y))
+              {
+	          if (c->getPlayer() == Playerlist::getActiveplayer() && !c->isBurnt())
+                    city_selected(c, map_tip_position(c->get_area()));
+              }
+            }
         }
     }
 
+	    
     // right mousebutton to get information about things on the map and to
     // unselect the active stack
     else if (e.button == MouseButtonEvent::RIGHT_BUTTON)
@@ -345,8 +353,11 @@ void BigMap::mouse_button_event(MouseButtonEvent e)
 	{
 	    if (City* c = Citylist::getInstance()->getObjectAt(tile.x, tile.y))
 	    {
-		city_selected(c, map_tip_position(c->get_area()));
-		mouse_state = SHOWING_CITY;
+	        if (c->getPlayer() != Playerlist::getActiveplayer() || c->isBurnt())
+                {
+		    city_selected(c, map_tip_position(c->get_area()));
+		    mouse_state = SHOWING_CITY;
+                }
 	    }
 	    else if (Ruin* r = Ruinlist::getInstance()->getObjectAt(tile.x, tile.y))
 	    {
