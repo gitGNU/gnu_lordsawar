@@ -109,7 +109,7 @@ class BigMap: public sigc::trackable
     SDL_Surface* d_arrows;
     SDL_Surface* d_ruinpic;
     SDL_Surface* d_signpostpic;
-    SDL_Surface* d_selector[2];
+    SDL_Surface* d_selector[6];
     SDL_Surface* d_itempic;
     SDL_Surface* d_fogpic;
         

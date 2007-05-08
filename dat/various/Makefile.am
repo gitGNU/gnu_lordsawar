@@ -17,6 +17,10 @@ various_DATA = \
     ruin_1.jpg \
     select0000.png \
     select0001.png \
+    select0002.png \
+    select0003.png \
+    select0004.png \
+    select0005.png \
     splash_screen.jpg \
     about_screen.jpg \
     network_screen.jpg \
@@ -43,6 +47,10 @@ EXTRA_DIST = \
     ruin_1.jpg \
     select0000.png \
     select0001.png \
+    select0002.png \
+    select0003.png \
+    select0004.png \
+    select0005.png \
     splash_screen.jpg \
     about_screen.jpg \
     network_screen.jpg \

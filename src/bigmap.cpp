@@ -75,6 +75,10 @@ BigMap::BigMap()
     d_signpostpic = File::getMapsetPicture("default", "misc/signpost.png");
     d_selector[0] = File::getMiscPicture("select0000.png");
     d_selector[1] = File::getMiscPicture("select0001.png");
+    d_selector[2] = File::getMiscPicture("select0002.png");
+    d_selector[3] = File::getMiscPicture("select0003.png");
+    d_selector[4] = File::getMiscPicture("select0004.png");
+    d_selector[5] = File::getMiscPicture("select0005.png");
     d_itempic = File::getMiscPicture("items.png");
     // not used _yet_
     d_fogpic = File::getMiscPicture("fog.png");
@@ -89,6 +93,10 @@ BigMap::~BigMap()
     SDL_FreeSurface(d_signpostpic);
     SDL_FreeSurface(d_selector[0]);
     SDL_FreeSurface(d_selector[1]);
+    SDL_FreeSurface(d_selector[2]);
+    SDL_FreeSurface(d_selector[3]);
+    SDL_FreeSurface(d_selector[4]);
+    SDL_FreeSurface(d_selector[5]);
     SDL_FreeSurface(d_itempic);
     SDL_FreeSurface(d_fogpic);
 
@@ -681,11 +689,10 @@ void BigMap::draw_buffer()
 	if (is_inside(buffer_view, Vector<int>(p.x, p.y)))
 	{
 	    // FIXME: a better idea is to use an animation class
-	    static int frame = 0;
+	    static int frame = -1;
         
-	    if (frame == 0)
-		frame = 1;
-	    else
+	    frame++;
+	    if (frame > 5)
 		frame = 0;
 	    
 	    p = getRelativeXPos(p);
