@@ -944,22 +944,36 @@ void Game::stopGame()
     Playerlist::finish();
 }
 
-void Game::recruitHero (Player *p, int gold)
+void Game::maybeRecruitHero (Player *p)
 {
-  int num = rand() % d_herotemplates[p->getId()].size();
-  Hero *templateHero = d_herotemplates[p->getId()][num];
-  Hero* newhero = new Hero(*templateHero);
-
-  bool accepted = p->recruitHero(newhero, gold);
-  if (accepted)
+  Playerlist *plist = Playerlist::getInstance();
+  int gold_needed = 0;
+  //give the player a hero if it's the first round.
+  //otherwise we get a hero based on chance
+  //a hero costs a random number of gold pieces
+  if (d_gameScenario->getRound() != 0)
+    gold_needed = (rand() % 1000) + 500;
+    
+  //we set the chance of some hero recruitment to, ehm, 10 percent
+  if (((((rand() % 10) == 0) && (gold_needed < p->getGold())) 
+       || gold_needed == 0)
+      && (p != plist->getNeutral()))
     {
-      // FIXME: persistent (immortal) players can exist and take heroes
-      // without owning any city => segfault
-      p->withdrawGold(gold);
-      Citylist::getInstance()->getFirstCity(p)->addHero(newhero);
+      int num = rand() % d_herotemplates[p->getId()].size();
+      Hero *templateHero = d_herotemplates[p->getId()][num];
+      Hero* newhero = new Hero(*templateHero);
+
+      bool accepted = p->recruitHero(newhero, gold_needed);
+      if (accepted)
+        {
+          // FIXME: persistent (immortal) players can exist and take heroes
+          // without owning any city => segfault
+          p->withdrawGold(gold_needed);
+          Citylist::getInstance()->getFirstCity(p)->addHero(newhero);
+        }
+       else
+        delete newhero;
     }
-   else
-    delete newhero;
   return;
 }
 
@@ -1022,44 +1036,20 @@ Game::loadHeroTemplates()
 
 bool Game::init_turn_for_player(Player* p)
 {
-  Playerlist *plist = Playerlist::getInstance();
     // FIXME: Currently this function only checks for a human player. You
     // can also have it check for e.g. escape key pressed to interrupt
     // an AI-only game to save/quit.
-
-    // if we're in the first round, then everyone gets a hero, except Neutral
-    if (d_gameScenario->getRound() == 0 && p != plist->getNeutral())
-      {
-        Game::recruitHero(p, 0);
-      }
-    else
-      {
-        //otherwise we get a hero based on chance
-        //a hero costs a random number of gold pieces
-        int gold_needed = rand() % 1000;
-    
-        //we set the chance of some hero recruitment to, ehm, 10 percent
-        if (((rand() % 10) == 0) && (gold_needed < p->getGold())
-            && (p != plist->getNeutral()))
-        {
-            Game::recruitHero (p, gold_needed);
-        }
-      }
 
     if (p->getType() == Player::HUMAN)
     {
 	unlockScreen();
     
-	if (Stack* stack = p->getActivestack())
+        Stack* stack = p->getActivestack();
+	if (stack != NULL)
 	    center_view(stack->getPos());
 	else
 	    center_view_on_city();
-    
-        if (d_gameScenario->getRound() == 0)
-          {
-            Citylist *clist = Citylist::getInstance();
-	    city_visited.emit(clist->getFirstCity(p));
-          }
+
 	update_sidebar_stats();
 	update_stack_info();
 	update_control_panel();
@@ -1069,13 +1059,22 @@ bool Game::init_turn_for_player(Player* p)
 	    pictureNextPlayer();
 	}
 
+        Game::maybeRecruitHero(p);
+    
+        if (d_gameScenario->getRound() == 0)
+          {
+            Citylist *clist = Citylist::getInstance();
+	    city_visited.emit(clist->getFirstCity(p));
+          }
+
+
         return true;
     }
     else
     {
 	center_view_on_city();
 	SDL_Delay(250);
-	
+        Game::maybeRecruitHero(p);
 	return false;
     }
 }

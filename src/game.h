@@ -58,8 +58,8 @@ class Game
     Game(GameScenario* gameScenario);
     ~Game();
 
-    //! Recruit a new hero at the beginning of a turn
-    void recruitHero(Player *p, int gold);
+    //! Possibly recruit a new hero at the beginning of a turn
+    void maybeRecruitHero(Player *p);
 
     void redraw();
     void size_changed();
