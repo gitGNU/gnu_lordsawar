@@ -79,6 +79,14 @@ struct FlagCacheItem
     SDL_Surface* surface;
 };
 
+// the structure to store selector images in
+struct SelectorCacheItem
+{
+    Uint32 type;
+    const Player* player;
+    SDL_Surface* surface;
+};
+
 //-----------------------------------------------------
 
 GraphicsCache* GraphicsCache::s_instance = 0;
@@ -108,6 +116,7 @@ GraphicsCache::GraphicsCache()
     loadStonePics();
     loadRoadPics();
     loadFlags();
+    loadSelector();
 
     d_levelmask = File::getMiscPicture("level_mask.png");
     d_medalsmask = File::getMiscPicture("medals_mask.gif");
@@ -130,6 +139,12 @@ GraphicsCache::~GraphicsCache()
     {
         SDL_FreeSurface(d_flagpic[i]);
         SDL_FreeSurface(d_flagmask[i]);
+    }
+
+    for (int i = 0; i < 6; i++)
+    {
+        SDL_FreeSurface(d_selector[i]);
+        SDL_FreeSurface(d_selectormask[i]);
     }
 
     SDL_FreeSurface(d_levelmask);
@@ -314,6 +329,38 @@ SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
     return myitem->surface;
 }
 
+SDL_Surface* GraphicsCache::getSelectorPic(Uint32 type, const Player *p)
+{
+    debug("GraphicsCache::getSelectorPic " <<type <<", player" <<s->getPlayer()->getName())
+
+    if (!p)
+    {
+        std::cerr <<_("GraphicsCache::getSelectorPic: no player supplied! Exiting...\n");
+        exit(-1);
+    }
+    
+    std::list<SelectorCacheItem*>::iterator it;
+    SelectorCacheItem* myitem;
+
+    for (it = d_selectorlist.begin(); it != d_selectorlist.end(); it++)
+    {
+        myitem = *it;
+        if ((myitem->type == type) && (myitem->player == p))
+        {
+            // put the item in last place (last touched)
+            d_selectorlist.erase(it);
+            d_selectorlist.push_back(myitem);
+
+            return myitem->surface;
+        }
+    }
+
+    // no item found => create a new one
+    myitem = addSelectorPic(type, p);
+
+    return myitem->surface;
+}
+
 SDL_Surface* GraphicsCache::applyMask(SDL_Surface* image, SDL_Surface* mask, const Player* p)
 {
     if (!mask || mask->w != image->w || mask->h != image->h)
@@ -393,6 +440,13 @@ void GraphicsCache::checkPictures()
     // next, kill flag pics
     while (d_flaglist.size() > 20)
         eraseLastFlagItem();
+
+    if (d_cachesize < maxcache)
+        return;
+
+    // next, kill selector pics
+    while (d_selectorlist.size() > 20)
+        eraseLastSelectorItem();
 
     if (d_cachesize < maxcache)
         return;
@@ -615,6 +669,33 @@ FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player* p)
     return myitem;
 }
 
+SelectorCacheItem* GraphicsCache::addSelectorPic(Uint32 type, const Player* p)
+{
+    debug("GraphicsCache::addSelectorPic, player="<<p->getName()<<", type="<<size)
+    
+    // Type is the frame of animation we're looking for.  starts at 0.
+    
+    SDL_Surface* mysurf = applyMask(d_selector[type], d_selectormask[type], p);
+        
+    //now create the cache item and add the size
+    SelectorCacheItem* myitem = new SelectorCacheItem();
+    myitem->player = p;
+    myitem->type = type;
+    myitem->surface = mysurf;
+
+    d_selectorlist.push_back(myitem);
+
+    //add the size
+    int picsize = mysurf->w * mysurf->h;
+    d_cachesize += picsize * mysurf->format->BytesPerPixel;
+
+    //and check the size of the cache
+    checkPictures();
+
+    return myitem;
+}
+
+
 void GraphicsCache::clear()
 {
     while (!d_armylist.empty())
@@ -722,6 +803,21 @@ void GraphicsCache::eraseLastFlagItem()
 
     FlagCacheItem* myitem = *(d_flaglist.begin());
     d_flaglist.erase(d_flaglist.begin());
+
+    int size = myitem->surface->w * myitem->surface->h;
+    d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+
+    SDL_FreeSurface(myitem->surface);
+    delete myitem;
+}
+
+void GraphicsCache::eraseLastSelectorItem()
+{
+    if (d_selectorlist.empty())
+        return;
+
+    SelectorCacheItem* myitem = *(d_selectorlist.begin());
+    d_selectorlist.erase(d_selectorlist.begin());
 
     int size = myitem->surface->w * myitem->surface->h;
     d_cachesize -= myitem->surface->format->BytesPerPixel * size;
@@ -904,6 +1000,44 @@ void GraphicsCache::loadCityPics()
 
     SDL_FreeSurface(tmp);
     SDL_FreeSurface(citypics);
+}
+
+void GraphicsCache::loadSelector()
+{
+    //load the selector pictures
+    int i;
+    //std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+    SDL_Surface* selpics = File::getMiscPicture("selector.png");
+    // copy alpha values, don't use them
+    SDL_SetAlpha(selpics, 0, 0);
+    SDL_PixelFormat* fmt = selpics->format;
+    int size = GameMap::getInstance()->getTileSet()->getTileSize();
+    for (i = 0; i < 6; i++)
+      {
+        SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
+    						fmt->BitsPerPixel, fmt->Rmask, 
+    						fmt->Gmask, fmt->Bmask, 
+						fmt->Amask);
+	SDL_Rect selrect;
+//(i*size, 0, size, size);
+	selrect.x = i*size;
+	selrect.y = 0;
+	selrect.w = selrect.h = size;
+	SDL_BlitSurface(selpics, &selrect, tmp, 0);
+	d_selector[i] = SDL_DisplayFormatAlpha(tmp);
+	SDL_FreeSurface(tmp);
+
+	d_selectormask[i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32,
+						 0xFF000000, 0xFF0000, 0xFF00, 
+						 0xFF);
+	//selrect.SetRect(i*size, size, size, size);
+	selrect.x = i*size;
+	selrect.y = 0;
+	selrect.w = selrect.h = size;
+	SDL_BlitSurface(selpics, &selrect, d_selectormask[i], 0);
+
+      }
+    SDL_FreeSurface(selpics);
 }
 
 void GraphicsCache::loadFlags()

@@ -73,12 +73,8 @@ BigMap::BigMap()
     d_arrows = File::getMiscPicture("arrows.png");
     d_ruinpic = File::getMapsetPicture("default", "misc/ruin.png");
     d_signpostpic = File::getMapsetPicture("default", "misc/signpost.png");
-    d_selector[0] = File::getMiscPicture("select0000.png");
-    d_selector[1] = File::getMiscPicture("select0001.png");
-    d_selector[2] = File::getMiscPicture("select0002.png");
-    d_selector[3] = File::getMiscPicture("select0003.png");
-    d_selector[4] = File::getMiscPicture("select0004.png");
-    d_selector[5] = File::getMiscPicture("select0005.png");
+
+
     d_itempic = File::getMiscPicture("items.png");
     // not used _yet_
     d_fogpic = File::getMiscPicture("fog.png");
@@ -91,12 +87,6 @@ BigMap::~BigMap()
     SDL_FreeSurface(d_arrows);
     SDL_FreeSurface(d_ruinpic);
     SDL_FreeSurface(d_signpostpic);
-    SDL_FreeSurface(d_selector[0]);
-    SDL_FreeSurface(d_selector[1]);
-    SDL_FreeSurface(d_selector[2]);
-    SDL_FreeSurface(d_selector[3]);
-    SDL_FreeSurface(d_selector[4]);
-    SDL_FreeSurface(d_selector[5]);
     SDL_FreeSurface(d_itempic);
     SDL_FreeSurface(d_fogpic);
 
@@ -700,7 +690,11 @@ void BigMap::draw_buffer()
 	    r.x = p.x;
 	    r.y = p.y;
 	    r.w = r.h = tilesize;
-	    SDL_BlitSurface(d_selector[frame], 0, buffer, &r);
+	    //SDL_BlitSurface(d_selector[frame], 0, buffer, &r);
+            SDL_Surface *tmp = GraphicsCache::getInstance()->getSelectorPic(
+                                              frame, 
+                                              Playerlist::getActiveplayer());
+            SDL_BlitSurface(tmp, 0, buffer, &r);
 	}
     }
 }

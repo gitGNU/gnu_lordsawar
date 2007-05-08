@@ -27,6 +27,7 @@ struct TempleCacheItem;
 struct StoneCacheItem;
 struct RoadCacheItem;
 struct FlagCacheItem;
+struct SelectorCacheItem;
 class City;
 
 /** Soliton class for caching army and map images
@@ -150,6 +151,17 @@ class GraphicsCache
           */
         SDL_Surface* getFlagPic(const Stack* s);
 
+        /** Function for getting selector pictures.
+          *
+          * As with the other functions, use solely this function to get the 
+          * selector images. And DON'T modify the images!
+          *
+          * @param type the frame of the selector
+          * @param p the player to draw it for
+          * @return image for the flag
+          */
+        SDL_Surface* getSelectorPic(Uint32 type, const Player* p);
+
         /** Modify an image with player colors.
           * 
           * Take an arbitray surface and mask image, apply the player colors such
@@ -186,6 +198,9 @@ class GraphicsCache
         //! Creates a new flag picture with the given parametres.
         FlagCacheItem* addFlagPic(int size, const Player* p);
 
+        //! Creates a new selector picture with the given parameters.
+        SelectorCacheItem* addSelectorPic(Uint32 type, const Player* p);
+
         //! Checks if the cache has exceeded the maximum size and reduce it.
         void checkPictures();
         
@@ -207,6 +222,9 @@ class GraphicsCache
         //! Erases the oldest flag cache item
         void eraseLastFlagItem();
 
+        //! Erases the oldest selector cache item
+        void eraseLastSelectorItem();
+
         //! Loads the images for the city pictures and their masks.
         void loadCityPics();
 
@@ -221,6 +239,9 @@ class GraphicsCache
 
         //! Loads the images for the flags
         void loadFlags();
+
+        //! Loads the images for the selector
+        void loadSelector();
         
         //the data
         static GraphicsCache* s_instance;
@@ -232,6 +253,7 @@ class GraphicsCache
         std::list<TempleCacheItem*> d_templelist;
         std::list<StoneCacheItem*> d_stonelist;
         std::list<RoadCacheItem*> d_roadlist;
+        std::list<SelectorCacheItem*> d_selectorlist;
 
         //some private surfaces
         SDL_Surface* d_levelmask;
@@ -243,6 +265,8 @@ class GraphicsCache
         SDL_Surface* d_razedpic[MAX_PLAYERS + 1]; //+1 for neutral
         SDL_Surface* d_flagpic[8];
         SDL_Surface* d_flagmask[8];
+	SDL_Surface* d_selector[6];
+	SDL_Surface* d_selectormask[6];
 };
 
 #endif
