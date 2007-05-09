@@ -353,23 +353,50 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
     return new MoveResult(true);
 }
 
+/*
+ *
+ * To help factor in the advantage of hero experience/strength and 
+ * ruin-monster strength as well as the stack strength, I think you'll 
+ * find it'll be easier to calculate in terms of the odds of failure [than
+ * the odds of success].  A new hero (minimum strength) with nothing in 
+ * the stack to help him might have 10-20% odds of failure at a wimpy ruin.
+ * The same novice hero facing a dragon in the ruin might have 50% odds of 
+ * failure.  So a rule of thumb would be to start with a 25% chance of
+ * failure.  The odds would be doubled by the worst monster and halved by 
+ * the easiest.  I agree that a strength-9 hero with 8 in the stack should i
+ * definitely be at 99%.  A reasonable formula might be:
+ *
+ * OddsOfFailure = BaseOdds * MonsterFactor * StackFactor * HeroFactor,
+ *
+ * with
+ *        BaseOdds = 0.25
+ * and
+ *        MonsterFactor = 2, 1 or 0.5 depending on hard vs. easy
+ * and
+ *        StackFactor = (9 - SizeOfStack)/8,
+ * and
+ *        HeroFactor = (10-StrengthOfHero)/5.
+ */
 Fight::Result ruinfight (Stack **attacker, Stack **defender)
 {
   Stack *loser;
   Fight::Result result;
-/*
- * The idea here is that we have a high chance of succeeding.
- * chances are increased if we have more units in the stack with our hero.
- * chances are diminished if the monster has more strength than us.
- */
-  int chances[8] = { 86, 89, 92, 94, 96, 97, 98, 99 };
-  int percent = chances[(*attacker)->size()-1];
-  int diff = (*attacker)->getFirstHero()->getStat(Army::STRENGTH, true) -
-               (*defender)->getStrongestArmy()->getStat(Army::STRENGTH, false);
-  if (diff < 0)
-    percent -= ((diff * -1) * 7);
+  Uint32 hero_strength, monster_strength;
+  hero_strength = (*attacker)->getFirstHero()->getStat(Army::STRENGTH, true);
+  monster_strength = (*defender)->getStrongestArmy()->getStat(Army::STRENGTH, true);
+  float base_factor = 0.25;
+  float stack_factor = (9.0 - (*attacker)->size()) / 8.0;
+  float hero_factor = (10.0 - hero_strength) / 5.0;
+  float monster_factor;
+  if (monster_strength >= 8)
+    monster_factor = 2.0;
+  else if (monster_strength >= 6)
+    monster_factor = 1.0;
+  else
+    monster_factor = 0.5;
+  float fail = base_factor * monster_factor * stack_factor * hero_factor;
 
-  if (rand() % 100 <= percent)
+  if (rand() % 100 > (int)(fail * 100.0))
     {
       result = Fight::ATTACKER_WON;
       loser = *defender;
@@ -451,50 +478,10 @@ Fight::Result RealPlayer::stackRuinFight (Stack **attacker, Stack **defender)
     else
     {
         debug("attacker lost: sdyingStack");
-        sdyingStack.emit(0);
+        //sdyingStack.emit(0);crapola
     }
     if (attacker_xp != 0)
         updateArmyValues(defenders, attacker_xp);
-
-    // Set the attacker and defender stack to 0 if neccessary. This is a great
-    // help for the functions calling stackFight (e.g. if a stack attacks
-    // another stack and destroys it without winning the battle, it may take the
-    // position of this stack)
-
-    // First, the attacker...
-    bool exists =
-	std::find(d_stacklist->begin(), d_stacklist->end(), *attacker)
-	!= d_stacklist->end();
-#if 0
-    bool exists = false;
-    for (Stacklist::iterator it = d_stacklist->begin(); it != d_stacklist->end(); it++)
-        if ((*it) == (*attacker))
-	{
-            exists = true;
-	    break;
-	}
-#endif
-    
-    if (!exists)
-    {
-        (*attacker) = 0;
-        if (attacker_active)
-            d_stacklist->setActivestack(0);
-    }
-
-    // ...then the defender.
-    exists = false;
-    if (pd)
-        for (Stacklist::iterator it = pd->getStacklist()->begin();
-             it != pd->getStacklist()->end(); it++)
-        {
-            if ((*it) == (*defender))
-                exists = true;
-        }
-    else
-        exists = true;
-    if (!exists)
-        (*defender) = 0;
 
     return result;
 }
