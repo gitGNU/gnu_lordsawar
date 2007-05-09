@@ -944,6 +944,22 @@ void Game::stopGame()
     Playerlist::finish();
 }
 
+/*
+ *
+ * what are the chances of a hero showing up?
+ *
+ * 1 in 6 if you have enough gold, where "enough gold" is...
+ *
+ * ... 1500 if the player already has a hero, then:  1500 is generally 
+ * enough to buy all the heroes.  I forget the exact distribution of 
+ * hero prices but memory says from 1000 to 1500.  (But, if you don't 
+ * have 1500 gold, and the price is less, you still get the offer...  
+ * So, calculate price, compare to available gold, then decided whether 
+ * or not to offer...)
+ *
+ * ...500 if all your heroes are dead: then prices are cut by about 
+ * a factor of 3.
+ */
 void Game::maybeRecruitHero (Player *p)
 {
   Playerlist *plist = Playerlist::getInstance();
@@ -951,11 +967,24 @@ void Game::maybeRecruitHero (Player *p)
   //give the player a hero if it's the first round.
   //otherwise we get a hero based on chance
   //a hero costs a random number of gold pieces
-  if (d_gameScenario->getRound() != 0)
-    gold_needed = (rand() % 1000) + 500;
+  if (d_gameScenario->getRound() == 0)
+    gold_needed = 0;
+  else
+    {
+      bool exists = false;
+      Stacklist *stacklist = p->getStacklist();
+      for (Stacklist::iterator it = stacklist->begin(); 
+           it != stacklist->end(); it++)
+        if ((*it)->hasHero())
+            exists = true; 
+
+      gold_needed = (rand() % 500) + 1000;
+      if (exists == false)
+        gold_needed /= 3;
+    }
     
   //we set the chance of some hero recruitment to, ehm, 10 percent
-  if (((((rand() % 10) == 0) && (gold_needed < p->getGold())) 
+  if (((((rand() % 6) == 0) && (gold_needed < p->getGold())) 
        || gold_needed == 0)
       && (p != plist->getNeutral()))
     {
