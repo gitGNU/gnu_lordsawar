@@ -83,6 +83,7 @@ struct FlagCacheItem
 struct SelectorCacheItem
 {
     Uint32 type;
+    Uint32 frame;
     const Player* player;
     SDL_Surface* surface;
 };
@@ -116,7 +117,7 @@ GraphicsCache::GraphicsCache()
     loadStonePics();
     loadRoadPics();
     loadFlags();
-    loadSelector();
+    loadSelectors();
 
     d_levelmask = File::getMiscPicture("level_mask.png");
     d_medalsmask = File::getMiscPicture("medals_mask.gif");
@@ -145,6 +146,12 @@ GraphicsCache::~GraphicsCache()
     {
         SDL_FreeSurface(d_selector[i]);
         SDL_FreeSurface(d_selectormask[i]);
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        SDL_FreeSurface(d_smallselector[i]);
+        SDL_FreeSurface(d_smallselectormask[i]);
     }
 
     SDL_FreeSurface(d_levelmask);
@@ -329,9 +336,10 @@ SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getSelectorPic(Uint32 type, const Player *p)
+SDL_Surface* GraphicsCache::getSelectorPic(Uint32 type, Uint32 frame, 
+					   const Player *p)
 {
-    debug("GraphicsCache::getSelectorPic " <<type <<", player" <<s->getPlayer()->getName())
+    debug("GraphicsCache::getSelectorPic " <<type <<", " << frame << ", player" <<s->getPlayer()->getName())
 
     if (!p)
     {
@@ -345,7 +353,8 @@ SDL_Surface* GraphicsCache::getSelectorPic(Uint32 type, const Player *p)
     for (it = d_selectorlist.begin(); it != d_selectorlist.end(); it++)
     {
         myitem = *it;
-        if ((myitem->type == type) && (myitem->player == p))
+        if ((myitem->type == type) && (myitem->player == p) 
+	    && myitem->frame == frame)
         {
             // put the item in last place (last touched)
             d_selectorlist.erase(it);
@@ -356,7 +365,7 @@ SDL_Surface* GraphicsCache::getSelectorPic(Uint32 type, const Player *p)
     }
 
     // no item found => create a new one
-    myitem = addSelectorPic(type, p);
+    myitem = addSelectorPic(type, frame, p);
 
     return myitem->surface;
 }
@@ -669,18 +678,24 @@ FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player* p)
     return myitem;
 }
 
-SelectorCacheItem* GraphicsCache::addSelectorPic(Uint32 type, const Player* p)
+SelectorCacheItem* GraphicsCache::addSelectorPic(Uint32 type, Uint32 frame, const Player* p)
 {
-    debug("GraphicsCache::addSelectorPic, player="<<p->getName()<<", type="<<size)
+    debug("GraphicsCache::addSelectorPic, player="<<p->getName()<<", type="<<size << ", " << frame)
     
-    // Type is the frame of animation we're looking for.  starts at 0.
+    // frame is the frame of animation we're looking for.  starts at 0.
+    // type is 0 for big, 1 for small
     
-    SDL_Surface* mysurf = applyMask(d_selector[type], d_selectormask[type], p);
+    SDL_Surface* mysurf;
+    if (type == 0)
+      mysurf = applyMask(d_selector[frame], d_selectormask[frame], p);
+    else
+      mysurf = applyMask(d_smallselector[frame], d_smallselectormask[frame], p);
         
     //now create the cache item and add the size
     SelectorCacheItem* myitem = new SelectorCacheItem();
     myitem->player = p;
     myitem->type = type;
+    myitem->frame = frame;
     myitem->surface = mysurf;
 
     d_selectorlist.push_back(myitem);
@@ -1002,11 +1017,11 @@ void GraphicsCache::loadCityPics()
     SDL_FreeSurface(citypics);
 }
 
-void GraphicsCache::loadSelector()
+void GraphicsCache::loadSelectors()
 {
-    //load the selector pictures
+    //load the big selector pictures
     int i;
-    //std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+    SDL_Rect selrect;
     SDL_Surface* selpics = File::getMiscPicture("selector.png");
     // copy alpha values, don't use them
     SDL_SetAlpha(selpics, 0, 0);
@@ -1018,8 +1033,6 @@ void GraphicsCache::loadSelector()
     						fmt->BitsPerPixel, fmt->Rmask, 
     						fmt->Gmask, fmt->Bmask, 
 						fmt->Amask);
-	SDL_Rect selrect;
-//(i*size, 0, size, size);
 	selrect.x = i*size;
 	selrect.y = 0;
 	selrect.w = selrect.h = size;
@@ -1031,6 +1044,34 @@ void GraphicsCache::loadSelector()
 						 0xFF000000, 0xFF0000, 0xFF00, 
 						 0xFF);
 	//selrect.SetRect(i*size, size, size, size);
+	selrect.x = i*size;
+	selrect.y = 0;
+	selrect.w = selrect.h = size;
+	SDL_BlitSurface(selpics, &selrect, d_selectormask[i], 0);
+
+      }
+    SDL_FreeSurface(selpics);
+    //load the small selector pictures
+    selpics = File::getMiscPicture("small_selector.png");
+    // copy alpha values, don't use them
+    SDL_SetAlpha(selpics, 0, 0);
+    fmt = selpics->format;
+    for (i = 0; i < 4; i++)
+      {
+        SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
+    						fmt->BitsPerPixel, fmt->Rmask, 
+    						fmt->Gmask, fmt->Bmask, 
+						fmt->Amask);
+	selrect.x = i*size;
+	selrect.y = 0;
+	selrect.w = selrect.h = size;
+	SDL_BlitSurface(selpics, &selrect, tmp, 0);
+	d_smallselector[i] = SDL_DisplayFormatAlpha(tmp);
+	SDL_FreeSurface(tmp);
+
+	d_smallselectormask[i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, size, size,
+						      32, 0xFF000000, 0xFF0000,
+						      0xFF00, 0xFF);
 	selrect.x = i*size;
 	selrect.y = 0;
 	selrect.w = selrect.h = size;

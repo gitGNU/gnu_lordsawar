@@ -160,7 +160,7 @@ class GraphicsCache
           * @param p the player to draw it for
           * @return image for the flag
           */
-        SDL_Surface* getSelectorPic(Uint32 type, const Player* p);
+        SDL_Surface* getSelectorPic(Uint32 type, Uint32 frame, const Player* p);
 
         /** Modify an image with player colors.
           * 
@@ -199,7 +199,8 @@ class GraphicsCache
         FlagCacheItem* addFlagPic(int size, const Player* p);
 
         //! Creates a new selector picture with the given parameters.
-        SelectorCacheItem* addSelectorPic(Uint32 type, const Player* p);
+        SelectorCacheItem* addSelectorPic(Uint32 type, Uint32 frame, 
+					  const Player* p);
 
         //! Checks if the cache has exceeded the maximum size and reduce it.
         void checkPictures();
@@ -240,8 +241,8 @@ class GraphicsCache
         //! Loads the images for the flags
         void loadFlags();
 
-        //! Loads the images for the selector
-        void loadSelector();
+        //! Loads the images for the two selectors
+        void loadSelectors();
         
         //the data
         static GraphicsCache* s_instance;
@@ -267,6 +268,8 @@ class GraphicsCache
         SDL_Surface* d_flagmask[8];
 	SDL_Surface* d_selector[6];
 	SDL_Surface* d_selectormask[6];
+	SDL_Surface* d_smallselector[4];
+	SDL_Surface* d_smallselectormask[4];
 };
 
 #endif

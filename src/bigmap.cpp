@@ -678,22 +678,29 @@ void BigMap::draw_buffer()
 	Vector<int> p = stack->getPos();
 	if (is_inside(buffer_view, Vector<int>(p.x, p.y)))
 	{
-	    // FIXME: a better idea is to use an animation class
-	    static int frame = -1;
+	    static int bigframe = -1;
+	    static int smallframe = -1;
         
-	    frame++;
-	    if (frame > 5)
-		frame = 0;
+	    bigframe++;
+	    if (bigframe > 5)
+		bigframe = 0;
+
+	    smallframe++;
+	    if (smallframe > 3)
+		smallframe = 0;
 	    
 	    p = getRelativeXPos(p);
 	    SDL_Rect r;
 	    r.x = p.x;
 	    r.y = p.y;
 	    r.w = r.h = tilesize;
-	    //SDL_BlitSurface(d_selector[frame], 0, buffer, &r);
-            SDL_Surface *tmp = GraphicsCache::getInstance()->getSelectorPic(
-                                              frame, 
-                                              Playerlist::getActiveplayer());
+	    GraphicsCache *gc = GraphicsCache::getInstance();
+	    Player *p = Playerlist::getActiveplayer();
+	    SDL_Surface *tmp;
+	    if (stack->size() > 1)
+	      tmp = gc->getSelectorPic(0, bigframe, p);
+	    else
+	      tmp = gc->getSelectorPic(1, smallframe, p);
             SDL_BlitSurface(tmp, 0, buffer, &r);
 	}
     }
