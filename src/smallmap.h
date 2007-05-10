@@ -17,6 +17,7 @@
 
 #include <sigc++/signal.h>
 #include <sigc++/connection.h>
+#include <sigc++/trackable.h>
 
 #include "overviewmap.h"
 
@@ -30,7 +31,7 @@
   * currently visible portion and changes of the underlying map. It draws an
   * animation of the selection rectangle.
   */
-class SmallMap: public OverviewMap
+class SmallMap: public OverviewMap, public sigc::trackable
 {
  public:
     SmallMap();

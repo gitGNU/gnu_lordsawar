@@ -99,8 +99,14 @@ void Driver::on_quit_requested()
     Main::instance().stop_main_loop();
 }
 
+#include "../GraphicsCache.h"
+
 void Driver::on_game_ended()
 {
     game_window->hide();
+    game_window.reset();
+
+    GraphicsCache::deleteInstance();
+
     splash_window->show();
 }

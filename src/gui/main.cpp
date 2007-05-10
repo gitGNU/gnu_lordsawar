@@ -40,7 +40,7 @@ struct Main::Impl: public sigc::trackable
 
 static Main *singleton;
 
-Main::Main(int argc, char *argv[])
+Main::Main(int &argc, char **&argv)
     : impl(new Impl)
 {
     singleton = this;

@@ -213,10 +213,6 @@ namespace
 
 void GameWindow::load_game(const std::string &file_path, bool start)
 {
-#if 0
-    clearData();
-#endif
-
     bool broken;
     GameScenario* game_scenario = new GameScenario(file_path, broken, true);
     
@@ -426,9 +422,14 @@ void GameWindow::on_resign_game_activated()
     bool end = true;
 
     if (end) {
-	game->stopGame();
+	if (game.get())
+	{
+	    game->stopGame();
+	    game->stopTimers();
+	    game.reset();
+	}
 	Sound::getInstance()->disableBackground();
-	game->stopTimers();
+	
 	game_ended.emit();
     }
 }

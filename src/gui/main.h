@@ -24,7 +24,7 @@
 class Main: public sigc::trackable, public noncopyable
 {
  public:
-    Main(int argc, char *argv[]);
+    Main(int &argc, char **&argv);
     ~Main();
 
     // singleton interface

@@ -117,7 +117,7 @@ static void gtk_sdl_destroy (GtkObject *object)
   
   sdl = GTK_SDL(object);
 
-  // FIXME: cleanup SDL things
+  SDL_QuitSubSystem (SDL_INIT_VIDEO);
   
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
     (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
@@ -187,14 +187,15 @@ static void gtk_sdl_attach_surface (GtkSDL *sdl)
 
   DEBUG_OUT ("before sdl surface attach");
 
+  SDL_QuitSubSystem (SDL_INIT_VIDEO);
+  
   widget = GTK_WIDGET(sdl);
 
-  snprintf (SDL_windowhack, SDL_WINDOWHACK_BUFFER_SIZE, "SDL_WINDOWID=%ld",
+  snprintf (SDL_windowhack, SDL_WINDOWHACK_BUFFER_SIZE, "%ld",
 	    GDK_WINDOW_XWINDOW (GTK_WIDGET (sdl)->window));
   DEBUG_OUT (SDL_windowhack);
-  putenv (SDL_windowhack);
+  setenv ("SDL_WINDOWID", SDL_windowhack, 1);
 
-  SDL_QuitSubSystem (SDL_INIT_VIDEO);
   if (SDL_InitSubSystem (SDL_INIT_VIDEO) < 0) {
     fprintf (stderr, "unable to init SDL: %s", SDL_GetError() );
     return;
