@@ -1,4 +1,4 @@
-SUBDIRS = army tilesets various map ggz music theme
+SUBDIRS = army tilesets various map ggz music theme glade
 MANTAINERCLEANFILES= Makefile.in
 
 lordsawardatadir = $(datadir)/lordsawar
