@@ -122,7 +122,7 @@ Game::Game(GameScenario* gameScenario)
 	    p->srecruitingHero.connect(
 		// bind the player
 		sigc::bind<0>(
-		    sigc::mem_fun(hero_offers_service, &sigc::signal<bool, Player *, Hero *, int>::emit),
+		    sigc::mem_fun(hero_offers_service, &sigc::signal<bool, Player *, Hero *, City *, int>::emit),
 		    p));
         }
 	
@@ -962,6 +962,7 @@ void Game::stopGame()
  */
 void Game::maybeRecruitHero (Player *p)
 {
+  City *city;
   Playerlist *plist = Playerlist::getInstance();
   int gold_needed = 0;
   //give the player a hero if it's the first round.
@@ -991,14 +992,27 @@ void Game::maybeRecruitHero (Player *p)
       int num = rand() % d_herotemplates[p->getId()].size();
       Hero *templateHero = d_herotemplates[p->getId()][num];
       Hero* newhero = new Hero(*templateHero);
+      if (gold_needed == 0)
+        city = Citylist::getInstance()->getFirstCity(p);
+      else
+        {
+          std::vector<City*> cities;
+          Citylist* cl = Citylist::getInstance();
+          for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+            if (!(*it).isBurnt() && (*it).getPlayer() != p)
+              cities.push_back(&(*it));
+          if (cities.empty())
+            return;
+          city = cities[rand() % cities.size()];
+        }
 
-      bool accepted = p->recruitHero(newhero, gold_needed);
+      bool accepted = p->recruitHero(newhero, city, gold_needed);
       if (accepted)
         {
           // FIXME: persistent (immortal) players can exist and take heroes
           // without owning any city => segfault
           p->withdrawGold(gold_needed);
-          Citylist::getInstance()->getFirstCity(p)->addHero(newhero);
+          city->addHero(newhero);
         }
        else
         delete newhero;

@@ -707,7 +707,7 @@ void GameWindow::on_fight_started(Fight &fight)
     d.run();
 }
 
-bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, int gold)
+bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, int gold)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
     
@@ -748,11 +748,11 @@ bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, int gold)
     Glib::ustring s;
     if (gold > 0)
 	s = String::ucompose(
-	    ngettext("A hero wants to join you for %1 gold piece!",
-		     "A hero wants to join you for %1 gold pieces!",
-		     gold), gold);
+	    ngettext("A hero wants %2 to join you for %1 gold piece!",
+		     "A hero wants %2 to join you for %1 gold pieces!",
+		     gold), gold, city->getName().c_str());
     else
-	s = _("A hero wants to join you!");
+	s = String::ucompose(_("A hero in %1 wants to join you!"), city->getName().c_str());
     label->set_text(s);
     
     Sound::getInstance()->playMusic("hero", 1);

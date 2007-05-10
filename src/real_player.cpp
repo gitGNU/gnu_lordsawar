@@ -89,12 +89,12 @@ bool RealPlayer::invadeCity(City* c)
     return true;
 }
 
-bool RealPlayer::recruitHero(Hero* hero, int cost)
+bool RealPlayer::recruitHero(Hero* hero, City *city, int cost)
 {
     // for the realplayer, this function also just raises a signal and looks
     // what to do next.
 
-    return srecruitingHero.emit(hero, cost);
+    return srecruitingHero.emit(hero, city, cost);
 }
 
 bool RealPlayer::levelArmy(Army* a)

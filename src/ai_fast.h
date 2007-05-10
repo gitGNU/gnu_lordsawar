@@ -79,7 +79,7 @@ class AI_Fast : public RealPlayer
         bool invadeCity(City* c);
 
         //! Callback when a hero offers his services
-        bool recruitHero(Hero* hero, int cost);
+        bool recruitHero(Hero* hero, City *city, int cost);
 
         //! Callback when an army of the player advances a level
         bool levelArmy(Army* a);

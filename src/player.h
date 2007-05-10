@@ -269,7 +269,7 @@ class Player: public sigc::trackable
             @note Don't touch the hero except for naming purposes etc.
                   The hero is integrated elsewhere!
           */
-        virtual bool recruitHero(Hero* hero, int cost) = 0;
+        virtual bool recruitHero(Hero* hero, City *city, int cost) = 0;
 
         /** Callback whenever a unit advances a level.
           * 
@@ -427,7 +427,7 @@ class Player: public sigc::trackable
 
         
         //! Signal raised when a hero is recruited
-        sigc::signal<bool, Hero*, int>         srecruitingHero;
+        sigc::signal<bool, Hero*, City *, int>         srecruitingHero;
         //! Signal raised when an army advances a level; may return stat to raise
         sigc::signal<Army::Stat, Army*>        snewLevelArmy;
         //! Signal raised when an army gets a new medal

@@ -98,7 +98,7 @@ bool AI_Smart::invadeCity(City* c)
     return retval;
 }
 
-bool AI_Smart::recruitHero(Hero* hero, int cost)
+bool AI_Smart::recruitHero(Hero* hero, City *city, int cost)
 {
     debug("AI_Smart: hero recruited")
     return true;    //always recruit heroes

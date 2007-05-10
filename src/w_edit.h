@@ -191,7 +191,7 @@ class W_Edit : public PG_Widget
     void pictureNextPlayer();
 
     //! Callback when a hero offers his services to a human player
-    bool heroJoins(Hero* hero, int gold);
+    bool heroJoins(Hero* hero, City *city, int gold);
 
     //! Checks the buttons below the smallmap and (de-)activates them
     void checkButtons();

@@ -538,7 +538,7 @@ void W_Edit::pictureNextPlayer()
     delete nextPlayer;
 }
 
-bool W_Edit::heroJoins(Hero* hero, int gold)
+bool W_Edit::heroJoins(Hero* hero, City *city, int gold)
 {
     debug("heroJoins()");
 

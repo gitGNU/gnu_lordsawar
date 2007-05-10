@@ -67,7 +67,7 @@ bool AI_Dummy::invadeCity(City* c)
     return retval;
 }
 
-bool AI_Dummy::recruitHero(Hero* hero, int cost)
+bool AI_Dummy::recruitHero(Hero* hero, City *city, int cost)
 {
     return false;   //never recruit a hero
 }

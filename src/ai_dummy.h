@@ -57,7 +57,7 @@ class AI_Dummy : public RealPlayer
         bool invadeCity(City* c);
 
         //! A kind of callback when a hero offers his services.
-        bool recruitHero(Hero* hero, int cost);
+        bool recruitHero(Hero* hero, City *city, int cost);
 
         //! Callback to raise the army by a level
         bool levelArmy(Army* a);

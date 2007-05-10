@@ -47,7 +47,7 @@ class RealPlayer : public Player
         //! Actions, see player.h for explanation
         virtual bool startTurn();
         virtual bool invadeCity(City* c);
-        virtual bool recruitHero(Hero* hero, int cost);
+        virtual bool recruitHero(Hero* hero, City *city, int cost);
         virtual bool levelArmy(Army* a);
 
         bool stackSplit(Stack* s);

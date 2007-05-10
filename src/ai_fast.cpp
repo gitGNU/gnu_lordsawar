@@ -115,7 +115,7 @@ bool AI_Fast::invadeCity(City* c)
     return retval;
 }
 
-bool AI_Fast::recruitHero(Hero* hero, int cost)
+bool AI_Fast::recruitHero(Hero* hero, City *city, int cost)
 {
     debug("AI_Fast: hero offers service")
 
