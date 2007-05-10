@@ -17,9 +17,11 @@
 
 #include <string>
 
+#include "../Configuration.h"
+
 inline std::string get_glade_path()
 {
-    return "gui";
+    return Configuration::s_dataPath + "/glade";
 }
 
 #endif
