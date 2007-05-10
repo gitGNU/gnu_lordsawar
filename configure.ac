@@ -15,18 +15,18 @@ dnl Checks for programs.
 AC_PROG_CXX
 AC_PROG_RANLIB
 
-dnl The minimum SDL & ParaGUI version required
+dnl The minimum SDL version required
 SDL_VERSION=1.2.0
-PARAGUI_VERSION=1.1.8
-LIBSIGC=1.2.1
 
 dnl Check for SDL
 AM_PATH_SDL($SDL_VERSION,
             :,
 	    AC_MSG_ERROR([*** SDL version $SDL_VERSION not found!])
 )
-
-
+	
+AC_SUBST(SDL_CFLAGS)
+AC_SUBST(SDL_LIBS)
+	
 dnl Now check for SDL_image
 AC_CHECK_LIB(SDL_image, IMG_Load, [],
             AC_MSG_ERROR([*** SDL_image not found!]))
@@ -79,25 +79,7 @@ else
     LIBS="$ac_save_libs"
 fi
 
-dnl Check for ParaGUI
-AM_PATH_PARAGUI($PARAGUI_VERSION,
-            :,
-	    AC_MSG_ERROR([*** ParaGUI version $PARAGUI_VERSION not found!])
-)
-
-
-dnl now check if paragui has unicode support enabled. if not, issue a warning
-AC_TRY_COMPILE([
-    #include <paragui.h>
-    #ifndef ENABLE_UNICODE
-        #error no unicode support
-    #endif
-    ], [],,
-    AC_MSG_WARN([[ParaGUI seems to be compiled without unicode support. This can
-                lead to problems with languages that use non-ASCII characters. If
-                this is a problem, recompile paragui with the --enable-unicode option.]]))
-
-
+	
 dnl Check for expat
 expat=0
 AC_ARG_WITH(expat, [  --with-expat=<dir>      Use expat from here],
@@ -269,6 +251,7 @@ AC_CONFIG_FILES([
         dat/theme/Makefile
         dat/theme/lordsawar/Makefile
         dat/theme/generic/Makefile
+        dat/glade/Makefile
         intl/Makefile
         po/Makefile.in
         po/Makefile 
