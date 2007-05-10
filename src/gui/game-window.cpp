@@ -887,9 +887,12 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
     Gtk::Image *image;
     xml->get_widget("city_image", image);
     image->property_file() = File::getMiscFile("various/city_occupied.jpg");
+    image->show();
 
     Gtk::Label *label;
     xml->get_widget("label", label);
+    Gtk::Requisition req = image->size_request();
+    label->set_size_request(req.width);
     
     Glib::ustring name;
     Player *p = Playerlist::getActiveplayer();
@@ -933,8 +936,6 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
           }
       }
 
-    dialog->show_all();
-
     if (city->getNoOfBasicProd() <= 0) {
 	Gtk::Button *b;
 	xml->get_widget("pillage_button", b);
@@ -947,6 +948,8 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 	b->hide();
     }
     
+    dialog->show();
+
     int response = dialog->run();
     switch (response) {
     default:
