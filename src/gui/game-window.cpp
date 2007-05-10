@@ -748,8 +748,8 @@ bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, 
     Glib::ustring s;
     if (gold > 0)
 	s = String::ucompose(
-	    ngettext("A hero wants %2 to join you for %1 gold piece!",
-		     "A hero wants %2 to join you for %1 gold pieces!",
+	    ngettext("A hero in %2 wants to join you for %1 gold piece!",
+		     "A hero in %2 wants to join you for %1 gold pieces!",
 		     gold), gold, city->getName().c_str());
     else
 	s = String::ucompose(_("A hero in %1 wants to join you!"), city->getName().c_str());
