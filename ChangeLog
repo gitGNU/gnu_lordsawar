@@ -1,3 +1,33 @@
+2007-05-10  Ben Asselstine
+        * changed heroes to have male/female and side in the heronames
+	  data file.
+	* now using random hero names per side.
+	* added ability to change hero name.
+	* added ability to change sex of hero.
+	* now hero shows up on first turn.
+	* added ability for heroes to show up in any non-razed city
+	  owned by the player.
+	* better hero chance.  1/6 when enough money.  if no heroes then
+	  the cost is 1/3 less.
+	* different calculation of determining a winner in a ruin fight.
+	* only certain armies may defend a ruin.
+	* added sack and raze hero quests.
+	* highlighting sack or raze in the occupation dialog if a hero
+	  can complete a quest by sacking or razing.
+	* on first turn, show the city production dialog.
+	* default map shape is a rectangle. 1/3 higher than wide.
+	* removed ability to upgrade and dowgrade city defense, there are
+	  always 4 production slots per city.
+	* remove ability to select army tileset per side in the game
+	  preferences, instead have one army tileset per game.
+	* changed default player names to better names.
+	* changed default player colours to better colours.
+	* added looting after defeating a city.
+	* left-click now brings up a city production dialog.
+	* improved selector animation.
+	* added small selector.
+	* improved flag graphics to be two tiered.
+
 2007-04-28  Ben Asselstine
 	* changed city pictures to have one per player, plus neutral
 	* changed players to have correct names and colours
