@@ -697,7 +697,13 @@ void BigMap::draw_buffer()
 	    GraphicsCache *gc = GraphicsCache::getInstance();
 	    Player *p = Playerlist::getActiveplayer();
 	    SDL_Surface *tmp;
-	    if (stack->size() > 1)
+            int num_selected = 0;
+            for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
+              {
+                if ((*it)->isGrouped())
+                  num_selected++;
+              }
+	    if (num_selected > 1)
 	      tmp = gc->getSelectorPic(0, bigframe, p);
 	    else
 	      tmp = gc->getSelectorPic(1, smallframe, p);
