@@ -59,7 +59,7 @@ using namespace std;
 
 namespace 
 {
-    int selection_timeout = 500;	// 1/2 second
+    int selection_timeout = 150;	// controls speed of selector rotation
 }
 
 
