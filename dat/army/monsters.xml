@@ -20,6 +20,7 @@
         <d_vitality>10</d_vitality>
         <d_sight>2</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>4</d_move_bonus>
         <d_army_bonus>32</d_army_bonus>
@@ -41,6 +42,7 @@
         <d_vitality>5</d_vitality>
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>72</d_army_bonus>
@@ -62,6 +64,7 @@
         <d_vitality>4</d_vitality>
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>0</d_army_bonus>
@@ -83,6 +86,7 @@
         <d_vitality>5</d_vitality>
         <d_sight>5</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>true</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>15</d_move_bonus>
         <d_army_bonus>0</d_army_bonus>
@@ -105,6 +109,7 @@
         <d_vitality>8</d_vitality>
         <d_sight>5</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>true</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>0</d_army_bonus>
@@ -126,6 +131,7 @@
         <d_vitality>5</d_vitality>
         <d_sight>6</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>true</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>15</d_move_bonus>
         <d_army_bonus>0</d_army_bonus>
@@ -147,6 +153,7 @@
         <d_vitality>10</d_vitality>
         <d_sight>2</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>1</d_move_bonus>
         <d_army_bonus>2</d_army_bonus>
@@ -168,6 +175,7 @@
         <d_vitality>6</d_vitality>
         <d_sight>2</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>1</d_move_bonus>
         <d_army_bonus>2</d_army_bonus>

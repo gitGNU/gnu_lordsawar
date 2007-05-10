@@ -27,6 +27,7 @@
 #include "templelist.h"
 #include "signpostlist.h"
 #include "stonelist.h"
+#include "roadlist.h"
 #include "armysetlist.h"
 
 #include "real_player.h"
@@ -431,6 +432,8 @@ bool CreateScenario::createMap()
 		    break;
                 case Maptile::CITY:
                     Citylist::getInstance()->push_back(City(Vector<int>(x,y)));
+                case Maptile::ROAD:
+                    Roadlist::getInstance()->push_back(Road(Vector<int>(x,y)));
                 case Maptile::NONE:
 		    break;
             }
@@ -537,6 +540,20 @@ bool CreateScenario::setupRuins()
     //The aim of this function is to put a strong stack as sentinel in all
     //ruins.
 
+    // list all the army types that can be a sentinel.
+    std::vector<const Army*> occupants;
+    Armysetlist *al = Armysetlist::getInstance();
+    std::vector<unsigned int> sets = al->getArmysets(true);
+    for (unsigned int i = 0; i < sets.size(); i++)
+      {
+        for (unsigned int j = 0; j < al->getSize(sets[i]); j++)
+          {
+            const Army *a = al->getArmy (sets[i], j);
+            if (a->getDefendsRuins())
+              occupants.push_back(a);
+          }
+      }
+
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
         it != Ruinlist::getInstance()->end(); it++)
     {
@@ -553,28 +570,18 @@ bool CreateScenario::setupRuins()
         const Army* a = 0;
         Vector<int> pos = (*it).getPos();
         
-        //create a strong stack:
-        s = new Stack(0, pos);
-
-        //(i) insert one random army first (no owning player). The army is an
-        //arbitrary army except ships and heroes (this is an infinite loop if
-        //the armyset contains only heroes and ships, but with enough impetus
-        //you can break anything). Heroes and ships are just too mighty and
-        //unusual to put them in ruins
-        const Armysetlist* al = Armysetlist::getInstance();
-        std::vector<Uint32> sets = al->getArmysets();
-
-        while (!a || (a->getStat(Army::ARMY_BONUS) & (Army::SHIP | Army::LEADER)))
-        {
-            Uint32 chosenset = sets[rand() % sets.size()];
-            a = al->getArmy(chosenset, rand() % al->getSize(chosenset));
-        }
+        if (!occupants.empty())
+          {
+            //create a stack:
+            s = new Stack(0, pos);
             
-        s->push_back(new Army(*a));
-        a = 0;
+            a = occupants[rand() % occupants.size()];
+            s->push_back(new Army(*a));
+            a = 0;
 
-        //now mark this stack as guard
-        (*it).setOccupant(s);
+            //now mark this stack as guard
+            (*it).setOccupant(s);
+          }
     }
 
     return true;

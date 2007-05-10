@@ -288,7 +288,12 @@ class Army : public sigc::trackable
         //! This signal is raised when the army dies; it is static because
         //! sometimes the army doesn't exist yet when the signal is connected
         static sigc::signal<void, Army*> sdying;
-        
+
+	//! Sets whether or not this army type can found in a ruin.
+	void setDefendsRuins(bool defends) {d_defends_ruins = defends; }
+	//! Gets whether or not this army type can found in a ruin.
+	bool getDefendsRuins() const {return d_defends_ruins; }
+
     protected:
         //! Generic function for saving the army data. Useful for the hero class,
         //  which doesn't need to repeat the save code.
@@ -346,6 +351,8 @@ class Army : public sigc::trackable
         double d_number_hashit;
         //! wighted number of times the army has been hit in a battle
         double d_number_hasbeenhit;
+	//! can defend a ruin or not
+	bool d_defends_ruins;
 };
 
 #endif // ARMY_H

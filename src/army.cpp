@@ -38,7 +38,8 @@ Army::Army(const Army& a, Player* p)
      d_id(a.d_id), d_hp(a.d_hp), d_moves(a.d_moves), d_xp(a.d_xp),
      d_level(a.d_level), d_blessed(a.d_blessed), d_grouped(a.d_grouped),
      d_battles_number(a.d_battles_number), d_number_hashit(a.d_number_hashit),
-     d_number_hasbeenhit(a.d_number_hasbeenhit)
+     d_number_hasbeenhit(a.d_number_hasbeenhit), 
+     d_defends_ruins(a.d_defends_ruins)
 {
     // if we have been copied from an army prototype, initialise several values
     if (d_id == 0)
@@ -58,7 +59,7 @@ Army::Army(XML_Helper* helper, bool prototype)
   :d_pixmap(0), d_portrait(0), d_mask(0), d_name(""), d_description(""),
    d_gender(NONE), d_player(0),
    d_id(0), d_xp(0), d_level(1), d_blessed(false), d_grouped(true),
-   d_number_hashit(0), d_number_hasbeenhit(0)
+   d_number_hashit(0), d_number_hasbeenhit(0), d_defends_ruins(false)
 {
     // first, load the data that has to be loaded anyway
     helper->getData(d_strength, "strength");
@@ -115,8 +116,12 @@ Army::Army(XML_Helper* helper, bool prototype)
         helper->getData(d_move_bonus, "move_bonus");
         helper->getData(d_army_bonus, "army_bonus");
 
+	helper->getData(d_defends_ruins,"defends_ruins");
+	fprintf (stderr, "d_defends_ruins is %d\n", d_defends_ruins);
+
         if (!helper->getData(d_gender, "gender"))
             d_gender = NONE;
+
 
         d_hp = d_max_hp;
         d_moves = d_max_moves;
@@ -406,6 +411,7 @@ void  Army::printAllDebugInfo() const
     std::cerr << "vitality = " << d_vitality << std::endl;
     std::cerr << "max_moves = " << d_max_moves << std::endl;
     std::cerr << "upkeep = " << d_upkeep << std::endl;
+    std::cerr << "defends_ruins = " << d_defends_ruins << std::endl;
     std::cerr << "production = " << d_production << std::endl;
     std::cerr << "production_cost = " << d_production_cost << std::endl;
     std::cerr << "move_bonus = " << d_move_bonus << std::endl;
@@ -437,4 +443,5 @@ void Army::copyVals(const Army* a)
     d_move_bonus = a->getStat(MOVE_BONUS);
     d_army_bonus = a->getStat(ARMY_BONUS);
     d_gender = a->getGender();
+    d_defends_ruins = a->getDefendsRuins();
 }

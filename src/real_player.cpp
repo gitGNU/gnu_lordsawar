@@ -420,6 +420,8 @@ Fight::Result ruinfight (Stack **attacker, Stack **defender)
 Fight::Result RealPlayer::stackRuinFight (Stack **attacker, Stack **defender)
 {
     Fight::Result result = Fight::DRAW;
+    if (*defender == NULL)
+      return Fight::ATTACKER_WON;
     debug("stackRuinFight: player = " << getName()<<" at position "
           <<(*defender)->getPos().x<<","<<(*defender)->getPos().y);
 

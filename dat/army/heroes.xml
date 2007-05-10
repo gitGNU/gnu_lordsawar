@@ -8,6 +8,7 @@
         <d_image>barbarian</d_image>
         <d_description></d_description>
         <d_gender>1</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>5</d_upkeep>
@@ -29,6 +30,7 @@
         <d_image>amazone</d_image>
         <d_description></d_description>
         <d_gender>2</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>5</d_upkeep>
@@ -50,6 +52,7 @@
         <d_image>sandman</d_image>
         <d_description></d_description>
         <d_gender>1</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>10</d_upkeep>
@@ -71,6 +74,7 @@
         <d_image>goblin</d_image>
         <d_description></d_description>
         <d_gender>1</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>5</d_upkeep>
@@ -92,6 +96,7 @@
         <d_image>male_orc</d_image>
         <d_description></d_description>
         <d_gender>1</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>8</d_upkeep>
@@ -113,6 +118,7 @@
         <d_image>orc_female</d_image>
         <d_description></d_description>
         <d_gender>2</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>8</d_upkeep>

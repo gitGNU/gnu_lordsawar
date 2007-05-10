@@ -20,6 +20,7 @@
         <d_vitality>5</d_vitality>
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>4</d_move_bonus>
         <d_army_bonus>16</d_army_bonus>
@@ -41,6 +42,7 @@
         <d_vitality>5</d_vitality>
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>16</d_army_bonus>
@@ -62,6 +64,7 @@
         <d_vitality>5</d_vitality>
         <d_sight>4</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>2</d_move_bonus>
         <d_army_bonus>0</d_army_bonus>
@@ -83,6 +86,7 @@
         <d_vitality>5</d_vitality>
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>0</d_army_bonus>
@@ -104,6 +108,7 @@
         <d_vitality>5</d_vitality>
         <d_sight>4</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>8</d_army_bonus>
@@ -125,6 +130,7 @@
         <d_vitality>2</d_vitality>
         <d_sight>1</d_sight>
         <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>64</d_army_bonus>
