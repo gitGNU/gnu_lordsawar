@@ -11,6 +11,7 @@ various_DATA = \
     items.png \
     level_mask.png \
     medals_mask.gif \
+    ship.jpg \
     recruit_female.png \
     recruit_male.png \
     ruin_1.jpg \
@@ -36,6 +37,7 @@ EXTRA_DIST = \
     items.png \
     level_mask.png \
     medals_mask.gif \
+    ship.jpg \
     recruit_female.png \
     recruit_male.png \
     ruin_1.jpg \

@@ -2,7 +2,7 @@ MANTAINERCLEANFILES= Makefile.in
 
 lordsawarthemedir = $(datadir)/lordsawar/theme/lordsawar
 lordsawartheme_DATA = \
-	DejaVuSerif.ttf \
+	URWChanceryL-MediItal.pfb \
 	back.bmp \
 	background.png \
 	button_apply_icon.png \
@@ -32,10 +32,8 @@ lordsawartheme_DATA = \
 	spin_up.bmp \
 	wnd_close.bmp
 
-# URWChanceryL-MediItal.pfb
-
 EXTRA_DIST = \
-	DejaVuSerif.ttf \
+	URWChanceryL-MediItal.pfb \
 	back.bmp \
 	background.png \
 	button_apply_icon.png \
