@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2007-05-03 20:53-0400\n"
+"POT-Creation-Date: 2007-05-10 20:56-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -14,13 +14,6 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-
-#: src/ArmyDialog.cpp:64
-#, c-format
-msgid "%i shot"
-msgid_plural "%i shots"
-msgstr[0] "%i Schuss:"
-msgstr[1] "%i Schüsse:"
 
 #: src/QEnemyArmies.cpp:80
 #, c-format
@@ -36,19 +29,20 @@ msgid_plural "You must destroy %i units of enemy armies"
 msgstr[0] "Du mußt %i gegnerische Einheit vernichten."
 msgstr[1] "Du mußt %i gegnerische Einheiten vernichten."
 
-#: src/QuestCompletedDialog.cpp:87
-#, c-format
-msgid "You have been rewarded with %i gold piece!"
-msgid_plural "You have been rewarded, with %i gold pieces!"
-msgstr[0] "Du wurdest mit %i Goldstück belohnt!"
-msgstr[1] "Du wurdest mit %i Goldstücken belohnt!"
+#~ msgid "%i shot"
+#~ msgid_plural "%i shots"
+#~ msgstr[0] "%i Schuss:"
+#~ msgstr[1] "%i Schüsse:"
 
-#: src/RuinSearchDialog.cpp:37
-#, c-format
-msgid "and found %i gold piece!"
-msgid_plural "and found %i gold pieces!"
-msgstr[0] "und %i Goldstück gefunden!"
-msgstr[1] "und %i Goldstücke gefunden!"
+#~ msgid "You have been rewarded with %i gold piece!"
+#~ msgid_plural "You have been rewarded, with %i gold pieces!"
+#~ msgstr[0] "Du wurdest mit %i Goldstück belohnt!"
+#~ msgstr[1] "Du wurdest mit %i Goldstücken belohnt!"
+
+#~ msgid "and found %i gold piece!"
+#~ msgid_plural "and found %i gold pieces!"
+#~ msgstr[0] "und %i Goldstück gefunden!"
+#~ msgstr[1] "und %i Goldstücke gefunden!"
 
 #~ msgid "Do you want to upgrade the city level for %i gold?"
 #~ msgid_plural "Do you want to upgrade the city level for %i gold?"

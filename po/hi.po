@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.6\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2007-05-03 20:53-0400\n"
+"POT-Creation-Date: 2007-05-10 20:56-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: विभू ॠषि <vibhu.rishi@gmail.com>\n"
 "Language-Team: Hindi <vibhu.rishi@gmail.com>\n"
@@ -14,13 +14,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-
-#: src/ArmyDialog.cpp:64
-#, c-format
-msgid "%i shot"
-msgid_plural "%i shots"
-msgstr[0] "%i गोली"
-msgstr[1] "%i गोलीयाँ"
 
 #: src/QEnemyArmies.cpp:80
 #, c-format
@@ -36,19 +29,20 @@ msgid_plural "You must destroy %i units of enemy armies"
 msgstr[0] "Devi distruggere %i unita' delle armate nemiche"
 msgstr[1] "Devi distruggere %i unita' delle armate nemiche"
 
-#: src/QuestCompletedDialog.cpp:87
-#, c-format
-msgid "You have been rewarded with %i gold piece!"
-msgid_plural "You have been rewarded, with %i gold pieces!"
-msgstr[0] "Ti hanno ricompensato con %i सोना!"
-msgstr[1] "Ti hanno ricompensato con %i सोना!"
+#~ msgid "%i shot"
+#~ msgid_plural "%i shots"
+#~ msgstr[0] "%i गोली"
+#~ msgstr[1] "%i गोलीयाँ"
 
-#: src/RuinSearchDialog.cpp:37
-#, c-format
-msgid "and found %i gold piece!"
-msgid_plural "and found %i gold pieces!"
-msgstr[0] "e hai trovato %i सोना!"
-msgstr[1] "e hai trovato %i सोना!"
+#~ msgid "You have been rewarded with %i gold piece!"
+#~ msgid_plural "You have been rewarded, with %i gold pieces!"
+#~ msgstr[0] "Ti hanno ricompensato con %i सोना!"
+#~ msgstr[1] "Ti hanno ricompensato con %i सोना!"
+
+#~ msgid "and found %i gold piece!"
+#~ msgid_plural "and found %i gold pieces!"
+#~ msgstr[0] "e hai trovato %i सोना!"
+#~ msgstr[1] "e hai trovato %i सोना!"
 
 #, fuzzy
 #~ msgid "Do you want to upgrade the city level for %i gold?"
