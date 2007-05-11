@@ -110,6 +110,12 @@ void BigMap::set_view(Rectangle new_view)
 	    
 	view = new_view;
 	view_pos = view.pos * tilesize;
+
+	// make sure we don't see a black border at the bottom and right
+	SDL_Surface *screen = SDL_GetVideoSurface();
+	Vector<int> screen_dim(screen->w, screen->h);
+	view_pos = clip(Vector<int>(0, 0), view_pos,
+			GameMap::get_dim() * tilesize - screen_dim);
 	draw();
 	return;
     }
@@ -186,29 +192,13 @@ void BigMap::draw(bool redraw_buffer)
 
 void BigMap::centerView(const Vector<int> p)
 {
-    // FIXME: check whether this is a new position
+    Rectangle new_view(
+	clip(Vector<int>(0,0), p - view.dim / 2, GameMap::get_dim() - view.dim),
+	view.dim);
     
-    // set the viewrect to the actual position
-    view.x = p.x - view.w / 2;
-    view.y = p.y - view.h / 2;
-
-    // clip it to fit
-    if (view.x < 0)
-	view.x = 0;
-    if (view.y < 0)
-	view.y = 0;
-    if (view.x > (GameMap::getWidth() - view.w))
-        view.x = GameMap::getWidth() - view.w;
-    if (view.y > (GameMap::getHeight() - view.h))
-        view.y = GameMap::getHeight() - view.h;
-
-    view_pos
-	= view.pos * GameMap::getInstance()->getTileSet()->getTileSize();
-
+    set_view(new_view);
+    
     view_changed.emit(view);
-
-    draw();
-    old_view = view;
 }
 
 void BigMap::stackMoved(Stack* s)
@@ -438,9 +428,11 @@ void BigMap::mouse_motion_event(MouseMotionEvent e)
 	// FIXME: show a drag cursor
 	
 	int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+	SDL_Surface *screen = SDL_GetVideoSurface();
+	Vector<int> screen_dim(screen->w, screen->h);
 	view_pos = clip(Vector<int>(0, 0),
 			view_pos + delta,
-			(GameMap::get_dim() - view.dim) * ts);
+			GameMap::get_dim() * ts - screen_dim);
 
 	// calculate new view position in tiles, rounding up
 	Vector<int> new_view = (view_pos + Vector<int>(ts - 1, ts - 1)) / ts;
