@@ -641,7 +641,9 @@ void Game::on_city_selected(City* c, MapTipPosition pos)
 {
     if (c)
     {
-	if (c->getPlayer() == Playerlist::getActiveplayer() && !c->isBurnt())
+	Player *player = c->getPlayer();
+	
+	if (player == Playerlist::getActiveplayer() && !c->isBurnt())
 	{
 	    city_visited.emit(c);
 
@@ -653,11 +655,15 @@ void Game::on_city_selected(City* c, MapTipPosition pos)
 	    Glib::ustring str;
 
 	    if (c->isCapital())
-		str = String::ucompose(_("%1 (capital)"), c->getName());
+		str = String::ucompose(_("%1 (home city)"), c->getName());
 	    else
 		str = c->getName();
-
 	    str += "\n";
+	    if (player != Playerlist::getInstance()->getNeutral())
+	    {
+		str += String::ucompose(_("Under rule of %1"), player->getName());
+		str += "\n";
+	    }
 	    str += String::ucompose(_("Income: %1"), c->getGold());
 	    str += "\n";
 	    str += String::ucompose(_("Defense: %1"), c->getDefenseLevel());
