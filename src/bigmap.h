@@ -124,16 +124,16 @@ class BigMap: public sigc::trackable
     sigc::connection selection_timeout_handler;
     bool on_selection_timeout();
 
+    
     // helpers
     Vector<int> mouse_pos_to_tile(Vector<int> pos);
+    Vector<int> tile_to_buffer_pos(Vector<int> tile);
+    Vector<int> get_view_pos_from_view();
+    void draw_buffer();  
+    void blit_if_inside_buffer(const Object &obj, SDL_Surface *image);
     // return a good position of the map tip given that it should be close
     // to the tiles in tile_area without covering them
     MapTipPosition map_tip_position(Rectangle tile_area);
-
-    const Vector<int> getRelativeXPos(const Vector<int>& absolutePos);
-    void draw_buffer();  // does the actual hard work of drawing the buffer
-     // helper for draw_buffer
-    void blit_if_inside_buffer(const Object &obj, SDL_Surface *image);
 };
 
 #endif

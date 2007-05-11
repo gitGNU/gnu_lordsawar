@@ -105,7 +105,7 @@ Game::Game(GameScenario* gameScenario)
 	sigc::mem_fun(smallmap_changed,
 		      &sigc::signal<void, SDL_Surface *>::emit));
     
-    // get them up and running
+    // get the maps up and running
     size_changed();
 
     // connect player callbacks
@@ -180,8 +180,6 @@ Game::~Game()
     delete d_gameScenario;
     delete d_nextTurn;
     
-    //delete d_stackinfo;
-
 #if 0
     SDL_FreeSurface(d_pic_turn_start);
     SDL_FreeSurface(d_pic_winGame);
@@ -191,10 +189,10 @@ Game::~Game()
 
 void Game::redraw()
 {
-    std::cerr << "REDRAWING" << std::endl;
-    
     if (bigmap.get())
 	bigmap->draw();
+    if (smallmap.get())
+	smallmap->draw();
 }
 
 void Game::size_changed()
@@ -204,6 +202,9 @@ void Game::size_changed()
     
     map_view.w = v->w / ts;
     map_view.h = v->h / ts;
+
+    map_view.pos = clip(Vector<int>(0,0), map_view.pos,
+			GameMap::get_dim() - map_view.dim);
 
     // inform the maps of the new size
     bigmap->set_view(map_view);
@@ -250,11 +251,8 @@ void Game::end_turn()
 
 void Game::center_view(Vector<int> p)
 {
-    p = clip(Vector<int>(0, 0), p - map_view.dim / 2,
-	     GameMap::get_dim() - map_view.dim);
-    
-    map_view.x = p.x;
-    map_view.y = p.y;
+    map_view.pos = clip(Vector<int>(0, 0), p - map_view.dim / 2,
+			GameMap::get_dim() - map_view.dim);
 
     smallmap->set_view(map_view);
     bigmap->set_view(map_view);

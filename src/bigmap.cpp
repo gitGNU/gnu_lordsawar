@@ -105,37 +105,34 @@ void BigMap::set_view(Rectangle new_view)
 	// someone wants us to move the view, not resize it, no need to
 	// construct new surfaces and all that stuff
 
-	if (view.pos == new_view.pos)
-	    return;		// short-circuit
-	    
 	view = new_view;
-	view_pos = view.pos * tilesize;
+	Vector<int> new_view_pos = get_view_pos_from_view();
 
-	// make sure we don't see a black border at the bottom and right
-	SDL_Surface *screen = SDL_GetVideoSurface();
-	Vector<int> screen_dim(screen->w, screen->h);
-	view_pos = clip(Vector<int>(0, 0), view_pos,
-			GameMap::get_dim() * tilesize - screen_dim);
-	draw();
+	if (view_pos != new_view_pos)
+	{
+	    view_pos = new_view_pos;
+	    draw();
+	}
+	
 	return;
     }
 
     view = new_view;
+    view_pos = get_view_pos_from_view();
     
     if (buffer)
         SDL_FreeSurface(buffer);
     if (d_renderer)
         delete d_renderer;
 
-    // now create an extended screen surface which is two maptiles wider and
+    // now create a buffer surface which is two maptiles wider and
     // higher than the screen you actually see. That is how smooth scrolling
     // becomes comparatively easy. You just blit from the extended screen to
     // the screen with some offset.
-    buffer_view.w = view.w + 2;
-    buffer_view.h = view.h + 2;
+    buffer_view.dim = view.dim + Vector<int>(2, 2);
 
     SDL_PixelFormat* fmt = SDL_GetVideoSurface()->format;
-    buffer = SDL_CreateRGBSurface(SDL_SWSURFACE, // FIXME: correct?
+    buffer = SDL_CreateRGBSurface(SDL_SWSURFACE,
                 buffer_view.w * tilesize, buffer_view.h * tilesize,
                 fmt->BitsPerPixel,
                 fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
@@ -154,15 +151,10 @@ void BigMap::set_view(Rectangle new_view)
 void BigMap::draw(bool redraw_buffer)
 {
     // no size and buffer yet, return
-    if (buffer == 0)
+    if (!buffer)
         return;
 
-    SDL_Surface* surface = SDL_GetVideoSurface();
-
-    SDL_Rect dest;
-    dest.x = dest.y = 0;
-    dest.w = surface->w;
-    dest.h = surface->h;
+    SDL_Surface* screen = SDL_GetVideoSurface();
     int tilesize = GameMap::getInstance()->getTileSet()->getTileSize();
 
     // align the buffer view
@@ -170,8 +162,7 @@ void BigMap::draw(bool redraw_buffer)
 	Vector<int>(0, 0),
 	view.pos - Vector<int>(1, 1),
 	GameMap::get_dim() - buffer_view.dim + Vector<int>(1, 1));
-    buffer_view.x = new_buffer_view.x;
-    buffer_view.y = new_buffer_view.y;
+    buffer_view.pos = new_buffer_view;
 
     // redraw the buffer
     if (redraw_buffer)
@@ -179,15 +170,16 @@ void BigMap::draw(bool redraw_buffer)
 
     // blit the visible part of buffer to the screen
     Vector<int> p = view_pos - buffer_view.pos * tilesize;
-    assert(p.x >= 0 && p.x + surface->w <= buffer_view.w * tilesize &&
-	   p.y >= 0 && p.y + surface->h <= buffer_view.h * tilesize);
-    SDL_Rect r;
-    r.x = p.x;
-    r.y = p.y;
-    r.w = surface->w;
-    r.h = surface->h;
-    SDL_BlitSurface(buffer, &r, surface, &dest);
-    SDL_UpdateRects(surface, 1, &dest);
+    assert(p.x >= 0 && p.x + screen->w <= buffer_view.w * tilesize &&
+	   p.y >= 0 && p.y + screen->h <= buffer_view.h * tilesize);
+    SDL_Rect src, dest;
+    src.x = p.x;
+    src.y = p.y;
+    dest.w = src.w = screen->w;
+    dest.h = src.h = screen->h;
+    dest.x = dest.y = 0;
+    SDL_BlitSurface(buffer, &src, screen, &dest);
+    SDL_UpdateRects(screen, 1, &dest);
 }
 
 void BigMap::centerView(const Vector<int> p)
@@ -239,15 +231,21 @@ void BigMap::unselect_active_stack()
     stack_selected.emit(0);
 }
 
-const Vector<int> BigMap::getRelativeXPos(const Vector<int>& absolutePos)
+Vector<int> BigMap::get_view_pos_from_view()
 {
-    Vector<int> relativePos;
+    SDL_Surface *screen = SDL_GetVideoSurface();
+    Vector<int> screen_dim(screen->w, screen->h);
     int ts = GameMap::getInstance()->getTileSet()->getTileSize();
 
-    relativePos.x = (absolutePos.x - buffer_view.x) * ts;
-    relativePos.y = (absolutePos.y - buffer_view.y) * ts;
+    // clip to make sure we don't see a black border at the bottom and right
+    return clip(Vector<int>(0, 0), view.pos * ts,
+		GameMap::get_dim() * ts - screen_dim);
+}
 
-    return relativePos;
+Vector<int> BigMap::tile_to_buffer_pos(Vector<int> tile)
+{
+    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+    return (tile - buffer_view.pos) * ts;
 }
 
 bool BigMap::on_selection_timeout()
@@ -514,7 +512,7 @@ void BigMap::blit_if_inside_buffer(const Object &obj, SDL_Surface *image)
 {
     if (is_overlapping(buffer_view, obj.get_area()))
     {
-	Vector<int> p = getRelativeXPos(obj.getPos());
+	Vector<int> p = tile_to_buffer_pos(obj.getPos());
 	    
 	SDL_Rect rect;
 	rect.x = p.x;
@@ -564,10 +562,7 @@ void BigMap::draw_buffer()
 	    if (x < GameMap::getWidth() && y < GameMap::getHeight()
 		&& !GameMap::getInstance()->getTile(x,y)->getItems().empty())
 	    {
-		Vector<int> p;
-		p.x =x;
-		p.y = y;
-		p = getRelativeXPos(p);
+		Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
 		SDL_Rect r;
 		r.x = p.x+(tilesize-15);
 		r.y = p.y+(tilesize-15);
@@ -588,7 +583,7 @@ void BigMap::draw_buffer()
             // otherwise we shouldn't draw it
             if (is_inside(buffer_view, p) && !(*it)->getDeleting())
             {
-                p = getRelativeXPos(p);
+                p = tile_to_buffer_pos(p);
 
                 // draw stack
 		SDL_Rect r;
@@ -623,8 +618,8 @@ void BigMap::draw_buffer()
 	     it != --(stack->getPath()->end());)
         {
             // peak at the next waypoint to draw the correct arrow
-            pos = getRelativeXPos(**it);
-            nextpos = getRelativeXPos(**(++it));
+            pos = tile_to_buffer_pos(**it);
+            nextpos = tile_to_buffer_pos(**(++it));
 	    SDL_Rect r1, r2;
 	    r1.y = 0;
 	    r1.w = r1.h = tilesize;
@@ -653,7 +648,7 @@ void BigMap::draw_buffer()
 
         }
 
-        pos = getRelativeXPos(*stack->getPath()->back());
+        pos = tile_to_buffer_pos(*stack->getPath()->back());
 	SDL_Rect r1, r2;
 	r1.x = 8 * tilesize;
 	r1.y = 0;
@@ -681,7 +676,7 @@ void BigMap::draw_buffer()
 	    if (smallframe > 3)
 		smallframe = 0;
 	    
-	    p = getRelativeXPos(p);
+	    p = tile_to_buffer_pos(p);
 	    SDL_Rect r;
 	    r.x = p.x;
 	    r.y = p.y;
