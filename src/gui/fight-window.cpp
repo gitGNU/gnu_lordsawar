@@ -134,7 +134,8 @@ FightWindow::FightWindow(Fight &fight)
 	p = Playerlist::getInstance()->getNeutral();
     
     xml->get_widget("defender_label", label);
-    label->set_markup("<b>" + p->getName() + "</b>");
+    if (p != Playerlist::getInstance()->getNeutral())
+	label->set_markup("<b>" + p->getName() + "</b>");
     //l->SetFontColor(PG_Color(p->getColor()));
 
     rounds_label->set_text(String::ucompose("%1", 0));
