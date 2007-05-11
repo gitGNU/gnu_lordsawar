@@ -40,7 +40,8 @@ class CityWindow: public sigc::trackable
     std::auto_ptr<Gtk::Dialog> dialog;
     Gtk::Label *city_label;
     Gtk::Label *status_label;
-    Gtk::Label *production_info_label;
+    Gtk::Label *production_info_label1;
+    Gtk::Label *production_info_label2;
     Gtk::Button *buy_button;
     Gtk::Button *on_hold_button;
 

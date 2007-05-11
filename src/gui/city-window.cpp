@@ -43,7 +43,8 @@ CityWindow::CityWindow(City *c)
     
     xml->get_widget("city_label", city_label);
     xml->get_widget("status_label", status_label);
-    xml->get_widget("production_info_label", production_info_label);
+    xml->get_widget("production_info_label1", production_info_label1);
+    xml->get_widget("production_info_label2", production_info_label2);
     xml->get_widget("buy_button", buy_button);
     xml->get_widget("on_hold_button", on_hold_button);
     on_hold_button->signal_clicked().connect(
@@ -179,38 +180,46 @@ void CityWindow::fill_in_production_info()
 {
     int slot = city->getProductionIndex();
 
-    std::cerr << "SLOT " << slot << std::endl;
-    
-    Glib::ustring s;
+    Glib::ustring s1, s2;
     
     if (slot == -1)
-	s = "";
+    {
+	s1 = _("No production");
+	s1 += "\n\n\n";
+	s2 = "\n\n\n";
+    }
     else
     {
         const Army* a = city->getArmy(slot);
 
-	s += a->getName();
-	s += "\n";
+	// fill in first column
+	s1 += a->getName();
+	s1 += "\n";
 	// note to translators: %1/%2 is the no. of steps completed out of the
 	// total no. of steps in the production
-	s += String::ucompose(_("Duration: %1/%2"),
+	s1 += String::ucompose(_("Duration: %1/%2"),
 			      city->getDuration(), a->getProduction());
-	s += "\n";
+	s1 += "\n";
 	// note to translators: %1 is melee strength, %2 is ranged strength
-	s += String::ucompose(_("Attack: %1/%2"),
+	s1 += String::ucompose(_("Attack: %1/%2"),
 			      a->getStat(Army::STRENGTH, false),
 			      a->getStat(Army::RANGED, false));
-	s += "\n";
-	s += String::ucompose(_("Defence: %1"),
+	s1 += "\n";
+	s1 += String::ucompose(_("Defence: %1"),
 			      a->getStat(Army::DEFENSE, false));
-	s += "\n";
-	s += String::ucompose(_("Moves: %1"), a->getStat(Army::MOVES, false));
-	s += "\n";
-	s += String::ucompose(_("Upkeep: %1"), a->getUpkeep());
+	
+	// fill in second column
+	s2 += "\n";
+	s2 += String::ucompose(_("Moves: %1"), a->getStat(Army::MOVES, false));
+	s2 += "\n";
+	s2 += String::ucompose(_("Hitpoints: %1"), a->getStat(Army::HP, false));
+	s2 += "\n";
+	s2 += String::ucompose(_("Upkeep: %1"), a->getUpkeep());
 	
     }
     
-    production_info_label->set_text(s);
+    production_info_label1->set_markup("<i>" + s1 + "</i>");
+    production_info_label2->set_markup("<i>" + s2 + "</i>");
 }
 
 void CityWindow::on_on_hold_clicked()
