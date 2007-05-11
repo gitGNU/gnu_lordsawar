@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.6\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2007-01-27 17:35-0500\n"
+"POT-Creation-Date: 2007-05-03 20:53-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: विभू ॠषि <vibhu.rishi@gmail.com>\n"
 "Language-Team: Hindi <vibhu.rishi@gmail.com>\n"
@@ -22,21 +22,14 @@ msgid_plural "%i shots"
 msgstr[0] "%i गोली"
 msgstr[1] "%i गोलीयाँ"
 
-#: src/cityinfo.cpp:201
-#, fuzzy, c-format
-msgid "Do you want to upgrade the city level for %i gold?"
-msgid_plural "Do you want to upgrade the city level for %i gold?"
-msgstr[0] "Vuoi fortificare la citta' per %i moneta d'oro?"
-msgstr[1] "Vuoi fortificare la citta' per %i monete d'oro?"
-
-#: src/QEnemyArmies.cpp:79
+#: src/QEnemyArmies.cpp:80
 #, c-format
 msgid "You have managed to slaughter %i army."
 msgid_plural "You have managed to slaughter %i armies."
 msgstr[0] "Sei riuscito ad uccidere %i armata."
 msgstr[1] "Sei riuscito ad uccidere %i armate."
 
-#: src/QEnemyArmies.cpp:117
+#: src/QEnemyArmies.cpp:118
 #, c-format
 msgid "You must destroy %i unit of enemy armies"
 msgid_plural "You must destroy %i units of enemy armies"
@@ -56,6 +49,12 @@ msgid "and found %i gold piece!"
 msgid_plural "and found %i gold pieces!"
 msgstr[0] "e hai trovato %i सोना!"
 msgstr[1] "e hai trovato %i सोना!"
+
+#, fuzzy
+#~ msgid "Do you want to upgrade the city level for %i gold?"
+#~ msgid_plural "Do you want to upgrade the city level for %i gold?"
+#~ msgstr[0] "Vuoi fortificare la citta' per %i moneta d'oro?"
+#~ msgstr[1] "Vuoi fortificare la citta' per %i monete d'oro?"
 
 #~ msgid "Standard Units"
 #~ msgstr "आम सेना"

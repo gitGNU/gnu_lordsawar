@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.3.7\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2007-01-27 17:35-0500\n"
+"POT-Creation-Date: 2007-05-03 20:53-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Piotr Cychowski <cycholka@wp.pl>\n"
 "Language-Team: \n"
@@ -25,15 +25,7 @@ msgstr[0] "%i strza³"
 msgstr[1] "%i strza³y"
 msgstr[2] "%i strza³ów"
 
-#: src/cityinfo.cpp:201
-#, c-format
-msgid "Do you want to upgrade the city level for %i gold?"
-msgid_plural "Do you want to upgrade the city level for %i gold?"
-msgstr[0] "Czy chcesz ulepszyæ miasto za %i szt. z³ota?"
-msgstr[1] "Czy chcesz ulepszyæ miasto za %i szt. z³ota?"
-msgstr[2] "Czy chcesz ulepszyæ miasto za %i szt. z³ota?"
-
-#: src/QEnemyArmies.cpp:79
+#: src/QEnemyArmies.cpp:80
 #, c-format
 msgid "You have managed to slaughter %i army."
 msgid_plural "You have managed to slaughter %i armies."
@@ -41,7 +33,7 @@ msgstr[0] "Zdo³a³e¶ zabiæ %i jednostkê"
 msgstr[1] "Zdo³a³e¶ zabiæ %i jednostki"
 msgstr[2] "Zdo³a³e¶ zabiæ %i jednostek"
 
-#: src/QEnemyArmies.cpp:117
+#: src/QEnemyArmies.cpp:118
 #, c-format
 msgid "You must destroy %i unit of enemy armies"
 msgid_plural "You must destroy %i units of enemy armies"
@@ -64,6 +56,12 @@ msgid_plural "and found %i gold pieces!"
 msgstr[0] "i znalaz³e¶ %i szt. z³ota"
 msgstr[1] "i znalaz³e¶ %i szt. z³ota"
 msgstr[2] "i znalaz³e¶ %i szt. z³ota"
+
+#~ msgid "Do you want to upgrade the city level for %i gold?"
+#~ msgid_plural "Do you want to upgrade the city level for %i gold?"
+#~ msgstr[0] "Czy chcesz ulepszyæ miasto za %i szt. z³ota?"
+#~ msgstr[1] "Czy chcesz ulepszyæ miasto za %i szt. z³ota?"
+#~ msgstr[2] "Czy chcesz ulepszyæ miasto za %i szt. z³ota?"
 
 #~ msgid "Standard Units"
 #~ msgstr "Jednostki Standardowe"
