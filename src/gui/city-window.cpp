@@ -29,6 +29,7 @@
 #include "../city.h"
 #include "../GraphicsCache.h"
 #include "../armysetlist.h"
+#include "buy-production-dialog.h"
 
 CityWindow::CityWindow(City *c)
 {
@@ -49,6 +50,11 @@ CityWindow::CityWindow(City *c)
     xml->get_widget("on_hold_button", on_hold_button);
     on_hold_button->signal_clicked().connect(
 	    sigc::mem_fun(this, &CityWindow::on_on_hold_clicked));
+    buy_button->signal_clicked().connect(
+	sigc::mem_fun(this, &CityWindow::on_buy_clicked));
+    xml->connect_clicked(
+	"destination_button",
+	sigc::mem_fun(this, &CityWindow::on_destination_clicked));
 
     for (int i = 1; i <= city->getMaxNoOfBasicProd(); ++i) {
 	Gtk::ToggleButton *toggle;
@@ -120,11 +126,11 @@ void CityWindow::fill_in_production_toggles()
 	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
     empty_pic->fill(0x00000000);
     
-    // loop through basic and advanced
     ignore_toggles = true;
     for (int i = 0; i < city->getMaxNoOfBasicProd(); i++)
     {
 	Gtk::ToggleButton *toggle = production_toggles[i];
+	toggle->foreach(sigc::mem_fun(toggle, &Gtk::Container::remove));
 
 	Glib::RefPtr<Gdk::Pixbuf> pic;
 	int type = city->getArmytype(i);
@@ -222,18 +228,6 @@ void CityWindow::fill_in_production_info()
     production_info_label2->set_markup("<i>" + s2 + "</i>");
 }
 
-void CityWindow::on_on_hold_clicked()
-{
-    city->getPlayer()->cityChangeProduction(city, -1);
-    on_hold_button->set_sensitive(false);
-    ignore_toggles = true;
-    for (unsigned int i = 0; i < production_toggles.size(); ++i)
-	production_toggles[i]->set_active(false);
-    ignore_toggles = false;
-    fill_in_production_info();
-    set_buy_button_state();
-}
-
 void CityWindow::set_buy_button_state()
 {
     int selected_index = -1;
@@ -268,5 +262,47 @@ void CityWindow::set_buy_button_state()
     }
 
     buy_button->set_sensitive(res);
+}
+
+void CityWindow::on_on_hold_clicked()
+{
+    city->getPlayer()->cityChangeProduction(city, -1);
+    on_hold_button->set_sensitive(false);
+    ignore_toggles = true;
+    for (unsigned int i = 0; i < production_toggles.size(); ++i)
+	production_toggles[i]->set_active(false);
+    ignore_toggles = false;
+    fill_in_production_info();
+    set_buy_button_state();
+}
+
+void CityWindow::on_buy_clicked()
+{
+    BuyProductionDialog d(city);
+    d.set_parent_window(*dialog.get());
+    d.run();
+
+    int army = d.get_selected_army();
+    if (army != BuyProductionDialog::NO_ARMY_SELECTED)
+    {
+	int slot = -1;
+	for (unsigned int i = 0; i < production_toggles.size(); ++i)
+	    if (production_toggles[i]->get_active()) {
+		slot = i;
+		break;
+	    }
+	
+	city->getPlayer()->cityBuyProduction(city, slot, army);
+	city->getPlayer()->cityChangeProduction(city, slot);
+
+	fill_in_production_toggles();
+	fill_in_production_info();
+
+	set_buy_button_state();
+    }
+}
+
+void CityWindow::on_destination_clicked()
+{
 }
 

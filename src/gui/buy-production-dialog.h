@@ -12,53 +12,49 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef CITY_WINDOW_H
-#define CITY_WINDOW_H
+#ifndef BUY_PRODUCTION_DIALOG_H
+#define BUY_PRODUCTION_DIALOG_H
 
 #include <memory>
 #include <vector>
 #include <sigc++/trackable.h>
-#include <gtkmm/button.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/label.h>
 #include <gtkmm/togglebutton.h>
+#include <gtkmm/button.h>
 
-
+class Army;
 class City;
 
-// dialog for displaying a friendly city
-class CityWindow: public sigc::trackable
+// dialog for buying a production slot for a city
+class BuyProductionDialog: public sigc::trackable
 {
  public:
-    CityWindow(City *city);
+    BuyProductionDialog(City *city);
 
     void set_parent_window(Gtk::Window &parent);
 
     void run();
+
+    enum { NO_ARMY_SELECTED = -1 };
+    int get_selected_army() { return selected_army; }
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
-    Gtk::Label *city_label;
-    Gtk::Label *status_label;
     Gtk::Label *production_info_label1;
     Gtk::Label *production_info_label2;
     Gtk::Button *buy_button;
-    Gtk::Button *on_hold_button;
 
     City *city;
+    int selected_army;
 
     std::vector<Gtk::ToggleButton *> production_toggles;
     bool ignore_toggles;
 
-    void fill_in_city_info();
-    void fill_in_production_toggles();
+    void on_production_toggled(Gtk::ToggleButton *toggle);
     void fill_in_production_info();
     void set_buy_button_state();
-
-    void on_production_toggled(Gtk::ToggleButton *toggle);
-    void on_on_hold_clicked();
-    void on_buy_clicked();
-    void on_destination_clicked();
+    const Army *army_id_to_army();
 };
 
 #endif

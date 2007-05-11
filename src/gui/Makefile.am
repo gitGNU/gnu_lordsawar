@@ -4,6 +4,7 @@ noinst_LIBRARIES = liblwgui.a
 
 liblwgui_a_SOURCES = \
     driver.cpp driver.h \
+    buy-production-dialog.cpp buy-production-dialog.h \
     city-window.cpp city-window.h \
     error-utils.cpp error-utils.h \
     fight-window.cpp fight-window.h \
