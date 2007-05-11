@@ -432,8 +432,10 @@ bool CreateScenario::createMap()
 		    break;
                 case Maptile::CITY:
                     Citylist::getInstance()->push_back(City(Vector<int>(x,y)));
+                    break;
                 case Maptile::ROAD:
                     Roadlist::getInstance()->push_back(Road(Vector<int>(x,y)));
+                    break;
                 case Maptile::NONE:
 		    break;
             }
