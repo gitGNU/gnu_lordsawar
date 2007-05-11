@@ -33,16 +33,11 @@ namespace
 }
 
 SmallMap::SmallMap()
-    : OverviewMap(), d_pressed(false), d_add(true)
 {
     selection_value_increasing = true;
     selection_color.r = lower_selection_value;
     selection_color.g = lower_selection_value;
     selection_color.b = lower_selection_value;
-}
-
-SmallMap::~SmallMap()
-{
 }
 
 void SmallMap::set_view(Rectangle new_view)
@@ -93,7 +88,7 @@ void SmallMap::draw_selection()
     // FIXME: this should be translucent
     
     // draw the selection rectangle that shows the viewed part of the map
-    Vector<int> pos = mapToSurface(Vector<int>(view.x, view.y));
+    Vector<int> pos = mapToSurface(view.pos);
 
     // subtract 1 to account for the border
     int w = int(view.w * pixels_per_tile) - 1;

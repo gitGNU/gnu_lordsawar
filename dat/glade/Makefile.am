@@ -8,6 +8,7 @@ city-looted-dialog.glade \
 city-pillaged-dialog.glade \
 city-sacked-dialog.glade \
 city-window.glade \
+destination-dialog.glade \
 fight-window.glade \
 game-preferences-dialog.glade \
 game-window.glade \

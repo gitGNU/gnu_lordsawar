@@ -28,7 +28,7 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         MapGenerator.cpp MapGenerator.h Configuration.cpp Configuration.h \
 	sound.cpp sound.h GraphicsCache.cpp GraphicsCache.h \
         MapRenderer.cpp MapRenderer.h \
-	 \
+	vectormap.cpp vectormap.h \
 	bigmap.cpp bigmap.h  \
 	netggz.cpp netggz.h \
 	signpost.cpp signpost.h signpostlist.cpp signpostlist.h \

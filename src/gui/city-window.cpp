@@ -30,6 +30,7 @@
 #include "../GraphicsCache.h"
 #include "../armysetlist.h"
 #include "buy-production-dialog.h"
+#include "destination-dialog.h"
 
 CityWindow::CityWindow(City *c)
 {
@@ -304,5 +305,8 @@ void CityWindow::on_buy_clicked()
 
 void CityWindow::on_destination_clicked()
 {
+    DestinationDialog d(city);
+    d.set_parent_window(*dialog.get());
+    d.run();
 }
 

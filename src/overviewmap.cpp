@@ -35,12 +35,13 @@ OverviewMap::OverviewMap()
 
 OverviewMap::~OverviewMap()
 {
-    SDL_FreeSurface(surface);
+    if (surface)
+	SDL_FreeSurface(surface);
 }
 
 void OverviewMap::resize(Vector<int> max_dimensions)
 {
-    if (!surface)
+    if (surface)
         SDL_FreeSurface(surface);
 
     // calculate the width and height relations between pixels and maptiles
@@ -87,6 +88,8 @@ void OverviewMap::resize(Vector<int> max_dimensions)
 
 void OverviewMap::draw()
 {
+    assert(surface);
+    
     // During the whole drawing stuff, ALWAYS consider that 
     // there is an offset of 1 between map coordinates and coordinates
     // of the surface when drawing. I will implcitely assume this during this
@@ -187,7 +190,6 @@ SDL_Surface *OverviewMap::get_surface()
 
 Vector<int> OverviewMap::mapFromScreen(Vector<int> pos)
 {
-    // subtract the widget's location and 1 for the border
     int x = int(pos.x / pixels_per_tile);
     int y = int(pos.y / pixels_per_tile);
     

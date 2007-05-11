@@ -6,6 +6,7 @@ liblwgui_a_SOURCES = \
     driver.cpp driver.h \
     buy-production-dialog.cpp buy-production-dialog.h \
     city-window.cpp city-window.h \
+    destination-dialog.cpp destination-dialog.h \
     error-utils.cpp error-utils.h \
     fight-window.cpp fight-window.h \
     game-preferences-dialog.cpp game-preferences-dialog.h \
@@ -14,7 +15,8 @@ liblwgui_a_SOURCES = \
     splash-window.cpp splash-window.h \
     image-helpers.cpp image-helpers.h \
     gtksdl.c gtksdl.h \
-    glade-helpers.h
+    glade-helpers.h \
+    input-helpers.h
 
 INCLUDES = \
    $(GTKMM_CFLAGS) \

@@ -12,41 +12,39 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef VECTORMAP_H
-#define VECTORMAP_H
+#ifndef DESTINATION_DIALOG_H
+#define DESTINATION_DIALOG_H
 
-#include <sigc++/signal.h>
+#include <memory>
+#include <vector>
+#include <sigc++/trackable.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/image.h>
 
-#include "overviewmap.h"
-#include "input-events.h"
+#include "../vectormap.h"
 
-class City;
+struct SDL_Surface;
 
-/** Display of the whole game map.
-  * 
-  * This is a map where you can select a city's vector, i.e. the position where
-  * freshly produced units automatically go to (at least the path is set, the
-  * units have to be moved manually).
-  */
-
-class VectorMap : public OverviewMap
+// dialog for choosing the destination of the production of a city
+class DestinationDialog: public sigc::trackable
 {
  public:
-    VectorMap(City *city);
+    DestinationDialog(City *city);
 
-    void mouse_button_event(MouseButtonEvent e);
+    void set_parent_window(Gtk::Window &parent);
 
-    // emits the tile chosen, (-1, -1) if tile deselected
-    sigc::signal<void, Vector<int> > destination_chosen;
-     
-    // emitted when the map surface has changed
-    sigc::signal<void, SDL_Surface *> map_changed;
+    void run();
     
  private:
+    std::auto_ptr<Gtk::Dialog> dialog;
+    std::auto_ptr<VectorMap> vectormap;
+
+    Gtk::Image *map_image;
+    
     City *city;
     
-    // hook from base class
-    virtual void after_draw();
+    void on_map_changed(SDL_Surface *map);
+    bool on_map_mouse_button_event(GdkEventButton *e);
 };
 
 #endif

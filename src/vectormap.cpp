@@ -12,74 +12,56 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include <iostream>
-#include <pgapplication.h>
 #include "vectormap.h"
-#include "stacklist.h"
-#include "citylist.h"
-#include "ruinlist.h"
-#include "templelist.h"
+
+#include "sdl-draw.h"
 #include "city.h"
-#include "stack.h"
-#include "armysetlist.h"
-#include "army.h"
-#include "GameMap.h"
-#include "path.h"
-#include "ruin.h"
-#include "temple.h"
-#include "playerlist.h"
-#include "player.h"
-#include "config.h"
 
-using namespace std;
-
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
-//#define debug(x)
-
-VectorMap::VectorMap(City * city, PG_Widget* parent, Rectangle rect)
-  :OverviewMap(parent, rect), d_city(city)
+VectorMap::VectorMap(City *c)
 {
+    city = c;
 }
 
-VectorMap::~VectorMap()
+void VectorMap::after_draw()
 {
-}
-
-void VectorMap::eventDraw(SDL_Surface* surface, const Rectangle& rect)
-{
-    debug("eventDraw()");
-
-    // most of the drawing code (the terrain, cities etc.) is done in OverviewMap
-    OverviewMap::eventDraw(surface, rect);
-
-    // Draw the vector
-    if (d_city->getVectoring().x != -1)
+    // draw line from city to destination
+    if (city->getVectoring().x != -1)
     {
-        debug("Draw vector")
-        Vector<int> start = d_city->getPos();
-        Vector<int> end = d_city->getVectoring();
+        Vector<int> start = city->getPos();
+        Vector<int> end = city->getVectoring();
         
         start = mapToSurface(start);
         end = mapToSurface(end);
-        
-        DrawLine(start.x, start.y, end.x, end.y, PG_Color(0,0,0));
+
+	start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
+	end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
+
+	Uint32 raw = SDL_MapRGBA(surface->format, 180, 180, 180, 120);
+        draw_line(surface, start.x, start.y, end.x, end.y, raw);
     }
 
-    DrawBorder(Rectangle(0, 0, my_width, my_height), 1);
+    map_changed.emit(surface);
 }
 
-bool VectorMap::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
-{  
-    // actualize the mouse position
-    Vector<int> oldpos = d_pos;
-    Vector<int> pos;
-    d_pos = mapFromScreen(Vector<int>(event->x, event->y));
+void VectorMap::mouse_button_event(MouseButtonEvent e)
+{
+    Vector<int> dest;
+    if (e.button == MouseButtonEvent::LEFT_BUTTON
+	&& e.state == MouseButtonEvent::PRESSED)
+	dest = mapFromScreen(e.pos);
+    else if (e.button == MouseButtonEvent::RIGHT_BUTTON
+	     && e.state == MouseButtonEvent::PRESSED)
+	dest = Vector<int>(-1, -1);
 
-    Stack* st;
-    const Armysetlist* al;
-
-    switch (event->button)
+    if (dest != city->getVectoring())
     {
+	destination_chosen.emit(dest);
+	city->setVectoring(dest);
+	draw();
+    }
+}
+
+#if 0
         case SDL_BUTTON_LEFT:
             // Here we must check if the army produced by the city can be sent
             // to the vector location, so we create a temporary stack and fill
@@ -93,7 +75,7 @@ bool VectorMap::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
             // (e.g. producing ships vs. producing land units etc.)
             
             // first, create the stack
-            pos = d_city->getPos();
+            pos = city->getPos();
             st = new Stack(Playerlist::getActiveplayer(),pos);
 
             debug("Vectoring from =" << pos.x << "," << pos.y)
@@ -104,14 +86,14 @@ bool VectorMap::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
             int val;
 
             set = al->getStandardId();
-            index = d_city->getArmytype(d_city->getProductionIndex());
+            index = city->getArmytype(city->getProductionIndex());
         
             // The city can have no production so we calculate the path only when index != 0
             if (index != -1) 
             { 
                 debug("Index=" << index)
 
-                st->push_back(new Army(*(al->getArmy(set, index)), d_city->getPlayer()));
+                st->push_back(new Army(*(al->getArmy(set, index)), city->getPlayer()));
                 val= st->getPath()->calculate(st, d_pos);
          
                 debug("Vectoring to   =" << d_pos.x << "," << d_pos.y)
@@ -121,53 +103,13 @@ bool VectorMap::eventMouseButtonDown(const SDL_MouseButtonEvent* event)
             if (val != 0 && index != -1)
             {
                 sclickVectMouse.emit(Vector<int>(d_pos.x,d_pos.y));
-                d_city->setVectoring(d_pos);
+                city->setVectoring(d_pos);
             }
             else   
             {
                 sclickVectMouse.emit(Vector<int>(-1,-1));
-                d_city->setVectoring(Vector<int>(-1,-1));
+                city->setVectoring(Vector<int>(-1,-1));
             }
 
             delete st;
-            break;
-
-        case SDL_BUTTON_RIGHT:
-              
-            // We use the right button to unset the city vectoring 
-            sclickVectMouse.emit(Vector<int>(-1,-1));
-            d_city->setVectoring(Vector<int>(-1,-1));
-            break;
-
-        default:
-            break;
-    }
-
-    Redraw();
-    return true;
-}
-
-bool VectorMap::eventMouseMotion(const SDL_MouseMotionEvent* event)
-{
-    // actualize the mouse position
-    Vector<int> oldpos = d_pos;
-    d_pos = mapFromScreen(Vector<int>(event->x, event->y));
-
-    int diff_xtiles = d_pos.x - oldpos.x;
-    int diff_ytiles = d_pos.y - oldpos.y;
-
-    if ((diff_xtiles == 0) && (diff_ytiles == 0))
-        return true;
-
-    smovVectMouse.emit(Vector<int>(d_pos.x,d_pos.y));
-    
-    return true;
-}
-
-void VectorMap::eventMouseLeave()
-{
-    //set the pos value to a negative value
-    d_pos.x = -1;
-    d_pos.y = -1;
-    smovVectMouse.emit(Vector<int>(-1,-1));
-}
+#endif

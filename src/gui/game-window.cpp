@@ -38,6 +38,7 @@
 #include "gtksdl.h"
 #include "glade-helpers.h"
 #include "image-helpers.h"
+#include "input-helpers.h"
 #include "error-utils.h"
 
 #include "fight-window.h"
@@ -52,7 +53,6 @@
 #include "../GameScenario.h"
 #include "../army.h"
 #include "../ruin.h"
-#include "../input-events.h"
 #include "../player.h"
 #include "../stacklist.h"
 #include "../playerlist.h"
@@ -83,7 +83,6 @@ GameWindow::GameWindow()
 
     // the map image
     xml->get_widget("map_image", map_image);
-    //map_image->property_file() = std::string("gui/example-map.png");
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
@@ -305,42 +304,6 @@ bool GameWindow::on_delete_event(GdkEventAny *e)
     
     return true;
 }
-
-namespace 
-{
-    MouseButtonEvent to_input_event(GdkEventButton *e)
-    {
-	MouseButtonEvent m;
-	m.pos = make_vector(int(e->x), int(e->y));
-
-	if (e->button == 1)
-	    m.button = MouseButtonEvent::LEFT_BUTTON;
-	else if (e->button == 3)
-	    m.button = MouseButtonEvent::RIGHT_BUTTON;
-	else
-	    m.button = MouseButtonEvent::MIDDLE_BUTTON;
-
-	if (e->type == GDK_BUTTON_PRESS)
-	    m.state = MouseButtonEvent::PRESSED;
-	else if (e->type == GDK_BUTTON_RELEASE)
-	    m.state = MouseButtonEvent::RELEASED;
-	
-	return m;
-    }
-
-    MouseMotionEvent to_input_event(GdkEventMotion *e)
-    {
-	MouseMotionEvent m;
-	m.pos = make_vector(int(e->x), int(e->y));
-	
-	m.pressed[MouseMotionEvent::LEFT_BUTTON] = e->state & GDK_BUTTON1_MASK;
-	m.pressed[MouseMotionEvent::MIDDLE_BUTTON] = e->state & GDK_BUTTON2_MASK;
-	m.pressed[MouseMotionEvent::RIGHT_BUTTON] = e->state & GDK_BUTTON3_MASK;
-	    
-	return m;
-    }
-}
-
 
 bool GameWindow::on_sdl_mouse_button_event(GdkEventButton *e)
 {

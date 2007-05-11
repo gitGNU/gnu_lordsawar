@@ -35,8 +35,7 @@ class SmallMap: public OverviewMap, public sigc::trackable
 {
  public:
     SmallMap();
-    ~SmallMap();
-
+ 
     void set_view(Rectangle new_view);
         
     void mouse_button_event(MouseButtonEvent e);
@@ -60,13 +59,6 @@ class SmallMap: public OverviewMap, public sigc::trackable
 
     // hook from base class
     virtual void after_draw();
-	
-    // EVENT HANDLERS
-    bool eventMouseButtonDown(const SDL_MouseButtonEvent* event);
-    bool eventMouseMotion(const SDL_MouseMotionEvent* event);
-        
-    bool d_pressed;
-    bool d_add;
 };
 
 #endif
