@@ -154,5 +154,114 @@ draw_filled_rect(SDL_Surface *surface, int x1, int y1, int x2, int y2, Uint32 co
     SDL_FillRect(surface, &r, color);
 }
 
+inline void
+draw_line(SDL_Surface *surface, int X1, int Y1, int X2, int Y2, Uint32 color)
+{
+    // this code is borrowed from the Allegro game programming library
+    // (alleg.sf.net)
+    
+    /* uses Bresenham algorithm to draw a line */
+    int dX, dY;                     /* vector components */
+    int row, col,
+        final,                      /* final row or column number */
+        G,                  /* used to test for new row or column */
+        inc1,           /* G increment when row or column doesn't change */
+        inc2;               /* G increment when row or column changes */
+    char pos_slope;
+
+    dX = X2 - X1;                   /* find vector components */
+    dY = Y2 - Y1;
+    pos_slope = (char)(dX > 0);                   /* is slope positive? */
+    if (dY < 0)
+	pos_slope = (char)!pos_slope;
+    if (abs (dX) > abs (dY))                /* shallow line case */
+    {
+        if (dX > 0)         /* determine start point and last column */
+        {
+            col = X1;
+            row = Y1;
+            final = X2;
+        }
+        else
+        {
+            col = X2;
+            row = Y2;
+            final = X1;
+        }
+        inc1 = 2 * abs (dY);            /* determine increments and initial G */
+        G = inc1 - abs (dX);
+        inc2 = 2 * (abs (dY) - abs (dX));
+        if (pos_slope)
+            while (col <= final)    /* step through columns checking for new row */
+            {
+                draw_pixel (surface, col, row, color);
+                col++;
+                if (G >= 0)             /* it's time to change rows */
+                {
+                    row++;      /* positive slope so increment through the rows */
+                    G += inc2;
+                }
+                else                        /* stay at the same row */
+                    G += inc1;
+            }
+        else
+            while (col <= final)    /* step through columns checking for new row */
+            {
+                draw_pixel (surface, col, row, color);
+                col++;
+                if (G > 0)              /* it's time to change rows */
+                {
+                    row--;      /* negative slope so decrement through the rows */
+                    G += inc2;
+                }
+                else                        /* stay at the same row */
+                    G += inc1;
+            }
+    }   /* if |dX| > |dY| */
+    else                            /* steep line case */
+    {
+        if (dY > 0)             /* determine start point and last row */
+        {
+            col = X1;
+            row = Y1;
+            final = Y2;
+        }
+        else
+        {
+            col = X2;
+            row = Y2;
+            final = Y1;
+        }
+        inc1 = 2 * abs (dX);            /* determine increments and initial G */
+        G = inc1 - abs (dY);
+        inc2 = 2 * (abs (dX) - abs (dY));
+        if (pos_slope)
+            while (row <= final)    /* step through rows checking for new column */
+            {
+                draw_pixel (surface, col, row, color);
+                row++;
+                if (G >= 0)                 /* it's time to change columns */
+                {
+                    col++;  /* positive slope so increment through the columns */
+                    G += inc2;
+                }
+                else                    /* stay at the same column */
+                    G += inc1;
+            }
+        else
+            while (row <= final)    /* step through rows checking for new column */
+            {
+                draw_pixel (surface, col, row, color);
+                row++;
+                if (G > 0)                  /* it's time to change columns */
+                {
+                    col--;  /* negative slope so decrement through the columns */
+                    G += inc2;
+                }
+                else                    /* stay at the same column */
+                    G += inc1;
+            }
+    }
+}
 
 #endif
