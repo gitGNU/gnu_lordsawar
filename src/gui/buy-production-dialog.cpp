@@ -65,7 +65,7 @@ BuyProductionDialog::BuyProductionDialog(City *c)
       }
 
     // fill in production options
-    const int no_columns = 3;
+    const int no_columns = 4;
     for (unsigned int i = 0; i < purchasables.size(); ++i)
     {
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
