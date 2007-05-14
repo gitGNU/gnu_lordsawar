@@ -187,9 +187,5 @@ void BuyProductionDialog::set_buy_button_state()
 
 const Army *BuyProductionDialog::army_id_to_army()
 {
-#if 0
-    const Armysetlist* al = Armysetlist::getInstance();
-    return al->getArmy(al->getStandardId(), selected_army);
-#endif
     return purchasables[selected_army];
 }

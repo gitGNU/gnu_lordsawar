@@ -2,6 +2,7 @@ MAINTAINERCLEANFILES= Makefile.in
 
 gladedir = $(datadir)/lordsawar/glade
 glade_DATA = \
+army-gains-level-dialog.glade \
 buy-production-dialog.glade \
 city-defeated-dialog.glade \
 city-looted-dialog.glade \
@@ -13,6 +14,7 @@ fight-window.glade \
 game-preferences-dialog.glade \
 game-window.glade \
 hero-offer-dialog.glade \
+medal-awarded-dialog.glade \
 quest-assigned-dialog.glade \
 ruinfight-finished-dialog.glade \
 ruinfight-started-dialog.glade \

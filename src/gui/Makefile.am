@@ -4,6 +4,7 @@ noinst_LIBRARIES = liblwgui.a
 
 liblwgui_a_SOURCES = \
     driver.cpp driver.h \
+    army-gains-level-dialog.cpp army-gains-level-dialog.h \
     destination-dialog.cpp destination-dialog.h \
     buy-production-dialog.cpp buy-production-dialog.h \
     city-window.cpp city-window.h \

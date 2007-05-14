@@ -44,6 +44,7 @@
 
 #include "fight-window.h"
 #include "city-window.h"
+#include "army-gains-level-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -296,6 +297,8 @@ void GameWindow::load_game(const std::string &file_path, bool start)
 	sigc::mem_fun(*this, &GameWindow::on_hero_brings_allies));
     game->medal_awarded_to_army.connect(
 	sigc::mem_fun(*this, &GameWindow::on_medal_awarded_to_army));
+    game->army_gains_level.connect(
+	sigc::mem_fun(*this, &GameWindow::on_army_gains_level));
 
     if (start)
       game->startGame();
@@ -1110,3 +1113,12 @@ void GameWindow::on_medal_awarded_to_army(Army *army)
     dialog->run();
 }
 
+Army::Stat GameWindow::on_army_gains_level(Army *army)
+{
+    ArmyGainsLevelDialog d(army);
+
+    d.set_parent_window(*window.get());
+    d.run();
+    
+    return d.get_selected_stat();
+}

@@ -505,27 +505,12 @@ void Game::stackDied(Stack* s)
 
 Army::Stat Game::newLevelArmy(Army* a)
 {
-    debug("NEWLEVEL Dialog SHOW")
-
-    // Don't show this dialog if computer or enemy's armies advance
+    // don't show a dialog if computer or enemy's armies advance
     if ((a->getPlayer()->getType() != Player::HUMAN) ||
         (a->getPlayer() != Playerlist::getInstance()->getActiveplayer()))
         return Army::STRENGTH;
 
-#if 0
-    ArmyLevelDialog dialog(a, 0, Rectangle(200, 100, 430, 260));
-    dialog.Show();
-    dialog.RunModal();
-    dialog.Hide();
-
-#if 0
-    d_stackinfo->Redraw();
-#endif
-    bigmap->redraw();
-
-    return dialog.getResult();
-#endif
-    return Army::STRENGTH;
+    return army_gains_level.emit(a);
 }
 
 void Game::newMedalArmy(Army* a)

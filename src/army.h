@@ -247,12 +247,14 @@ class Army : public sigc::trackable
 
         /** Increases the unit's level
           * 
-          * @return how much the stat would increase or -1 on error (e.g. because
+          * @return how much the stat increases or -1 on error (e.g. because
           *         the XP is not enough)
           * @param stat     the stat to increase, only
-          * @param dummy    if true, don't raise a level, just return the increase
           */
-        int gainLevel(Stat stat, bool dummy=false);
+        int gainLevel(Stat stat);
+
+	// return how much the stat would be boosted by gaining a level
+        int computeLevelGain(Stat stat);
 
         //! get all medal bonuses (if medals or not) at once
         bool* getMedalBonuses() const {return (bool*)&d_medal_bonus;}

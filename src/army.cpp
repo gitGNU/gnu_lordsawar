@@ -293,55 +293,15 @@ void Army::gainXp(double n)
 
 bool Army::canGainLevel() const
 {
-    int tmp=(int) getXP()/getLevel();
-
-    if (((int) tmp/10)>=1)
-        return true;
-    else
-        return false;
+    const int xp_per_level = 10;
+    return getXP() >= xp_per_level * getLevel();
 }
 
-int Army::gainLevel(Stat stat, bool dummy)
+int Army::computeLevelGain(Stat stat)
 {
-    if (!dummy && !canGainLevel())
-        return -1;
-
     if (stat == MOVE_BONUS || stat == ARMY_BONUS || stat == SHOTS)
         return -1;
     
-    if (!dummy)
-    {
-        d_level++;
-        d_xp_value *= 1.2;
-
-        switch (stat)
-        {
-            case STRENGTH:
-                d_strength++;
-                break;
-            case DEFENSE:
-                d_defense++;
-                break;
-            case VITALITY:
-                d_vitality++;
-                break;
-            case HP:
-                d_max_hp += 4;
-                break;
-            case MOVES:
-                d_max_moves +=4;
-                break;
-            case SIGHT:
-                d_sight++;
-                break;
-            case RANGED:
-                d_ranged++;
-                break;
-            default:
-                break;
-        }
-    }
-
     switch (stat)
     {
         case STRENGTH:
@@ -357,6 +317,47 @@ int Army::gainLevel(Stat stat, bool dummy)
             return -1;
     }
 }
+
+int Army::gainLevel(Stat stat)
+{
+    if (!canGainLevel())
+        return -1;
+
+    if (stat == MOVE_BONUS || stat == ARMY_BONUS || stat == SHOTS)
+        return -1;
+    
+    d_level++;
+    d_xp_value *= 1.2;
+
+    int delta = computeLevelGain(stat);
+    switch (stat)
+    {
+    case STRENGTH:
+	d_strength += delta;
+	break;
+    case DEFENSE:
+	d_defense += delta;
+	break;
+    case VITALITY:
+	d_vitality += delta;
+	break;
+    case HP:
+	d_max_hp += delta;
+	break;
+    case MOVES:
+	d_max_moves += delta;
+	break;
+    case SIGHT:
+	d_sight += delta;
+	break;
+    case RANGED:
+	d_ranged += delta;
+	break;
+    default:
+	break;
+    }
+}
+
 
 bool Army::save(XML_Helper* helper) const
 {

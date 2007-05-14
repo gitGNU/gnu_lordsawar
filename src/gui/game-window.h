@@ -37,6 +37,7 @@
 #include "../map-tip-position.h"
 #include "../callback-enums.h"
 #include "../vector.h"
+#include "../army.h"
 
 class Game;
 class SDL_Surface;
@@ -47,7 +48,6 @@ class Player;
 class Temple;
 class Quest;
 class City;
-class Army;
 
 /** The main window in which all the game action is going on.
   *
@@ -152,6 +152,7 @@ class GameWindow: public sigc::trackable
     void on_next_player_turn(Player *player);
     void on_hero_brings_allies(int alliesCount);
     void on_medal_awarded_to_army(Army *army);
+    Army::Stat on_army_gains_level(Army *army);
 
     // helpers
     void show_map_tip(Glib::ustring msg, MapTipPosition pos);
