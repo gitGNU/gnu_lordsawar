@@ -628,10 +628,10 @@ void Game::on_ruin_selected(Ruin* r, MapTipPosition pos)
 	str += "\n";
 	if (r->isSearched())
 	    // note to translators: whether a ruin has been searched
-	    str += _("Searched");
+	    str += _("Explored");
 	else
 	    // note to translators: whether a ruin has been searched
-	    str += _("Not searched");
+	    str += _("Unexplored");
 	    
 	map_tip_changed.emit(str, pos);
     }
