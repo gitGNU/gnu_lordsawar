@@ -156,6 +156,7 @@ class Game
     sigc::signal<void, City *, int> city_pillaged;
     sigc::signal<void, City *, int> city_sacked;
     sigc::signal<void, City *> city_visited;
+    sigc::signal<void, Player *> next_player_turn;
     sigc::signal<void, int> hero_arrives;
     sigc::signal<void> game_over;
     

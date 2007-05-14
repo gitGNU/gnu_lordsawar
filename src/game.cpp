@@ -1115,11 +1115,9 @@ bool Game::init_turn_for_player(Player* p)
 	update_control_panel();
     
 	if (Configuration::s_showNextPlayer)
-	{
-	    pictureNextPlayer();
-	}
+	    next_player_turn.emit(p);
 
-        Game::maybeRecruitHero(p);
+        maybeRecruitHero(p);
     
         if (d_gameScenario->getRound() == 0)
           {

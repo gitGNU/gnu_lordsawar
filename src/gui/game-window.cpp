@@ -289,6 +289,8 @@ void GameWindow::load_game(const std::string &file_path, bool start)
 	sigc::mem_fun(*this, &GameWindow::on_city_sacked));
     game->city_visited.connect(
 	sigc::mem_fun(*this, &GameWindow::on_city_visited));
+    game->next_player_turn.connect(
+	sigc::mem_fun(*this, &GameWindow::on_next_player_turn));
     game->hero_arrives.connect(
 	sigc::mem_fun(*this, &GameWindow::on_hero_brings_allies));
 
@@ -1048,5 +1050,30 @@ void GameWindow::on_city_visited(City *city)
 
     d.set_parent_window(*window.get());
     d.run();
+}
+
+void GameWindow::on_next_player_turn(Player *player)
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/next-player-turn-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+
+    Gtk::Image *image;
+    xml->get_widget("image", image);
+    image->property_file() = File::getMiscFile("various/ship.jpg");
+    
+    Gtk::Label *label;
+    xml->get_widget("label", label);
+    Glib::ustring s = String::ucompose(_("Your turn, %1..."), player->getName());
+    label->set_text(s);
+
+    dialog->show_all();
+    dialog->run();
 }
 
