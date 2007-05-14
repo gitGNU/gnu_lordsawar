@@ -65,9 +65,11 @@ Stack::Stack(XML_Helper* helper)
     d_pos.y = i;
     helper->getData(d_defending, "defending");
 
-    Uint32 ui;
-    helper->getData(ui, "player");
-    d_player = Playerlist::getInstance()->getPlayer(ui);
+    helper->getData(i, "player");
+    if (i == -1)
+	d_player = 0;
+    else
+	d_player = Playerlist::getInstance()->getPlayer(i);
 
 
     helper->registerTag("path", sigc::mem_fun((*this), &Stack::load));
@@ -318,7 +320,7 @@ bool Stack::save(XML_Helper* helper) const
     if (d_player)
         retval &= helper->saveData("player", d_player->getId());
     else
-        retval &= helper->saveData("player", 0);
+        retval &= helper->saveData("player", -1);
     retval &= helper->saveData("x", d_pos.x);
     retval &= helper->saveData("y", d_pos.y);
     retval &= helper->saveData("defending", d_defending);
