@@ -47,6 +47,7 @@ class Player;
 class Temple;
 class Quest;
 class City;
+class Army;
 
 /** The main window in which all the game action is going on.
   *
@@ -150,6 +151,7 @@ class GameWindow: public sigc::trackable
     void on_city_visited(City *city);
     void on_next_player_turn(Player *player);
     void on_hero_brings_allies(int alliesCount);
+    void on_medal_awarded_to_army(Army *army);
 
     // helpers
     void show_map_tip(Glib::ustring msg, MapTipPosition pos);

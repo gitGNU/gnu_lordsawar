@@ -153,31 +153,13 @@ Game::Game(GameScenario* gameScenario)
     center_view_on_city();
     update_control_panel();
 
-#if 0
-    // load other pictures
-    d_pic_turn_start = File::getMiscPicture("ship.jpg", false);
-    d_pic_winGame = File::getMiscPicture("win.jpg", false);
-
-    // mask pics need a special format
-    SDL_Surface* tmp = File::getMiscPicture("win_mask.png");
-    d_pic_winGameMask = SDL_CreateRGBSurface(SDL_SWSURFACE, tmp->w, tmp->h,
-                                        32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
-    SDL_SetAlpha(tmp, 0, 0);
-    SDL_BlitSurface(tmp, 0, d_pic_winGameMask, 0);
-    SDL_FreeSurface(tmp);
-#endif
-  loadHeroTemplates();
+    loadHeroTemplates();
 }
 
 Game::~Game()
 {
     delete d_gameScenario;
     delete d_nextTurn;
-    
-#if 0
-    SDL_FreeSurface(d_pic_turn_start);
-    SDL_FreeSurface(d_pic_winGame);
-#endif
 }
 
 void Game::redraw()
@@ -358,28 +340,6 @@ void Game::update_sidebar_stats()
     s.turns = d_gameScenario->getRound();
     
     sidebar_stats_changed.emit(s);
-}
-
-// pop up message window for next player
-void Game::pictureNextPlayer()
-{
-    debug("pictureNextPlayer()");
-
-#if 0
-    // create and run the next player popup
-    char buf[101]; buf[100] = '\0';
-    snprintf(buf, 100, _("Next Player: %s"),
-             Playerlist::getInstance()->getActiveplayer()->getName().c_str());
-    
-    Popup* nextPlayer = new Popup(this, Rectangle((my_width-300)/2,(my_height-200)/2, 300, 200));
-    new PG_Label(nextPlayer, Rectangle(10, 10, 300, 20), buf);
-    
-    nextPlayer->SetIcon(d_pic_turn_start);
-    nextPlayer->Show();
-    nextPlayer->RunModal();
-    
-    delete nextPlayer;
-#endif
 }
 
 void Game::select_prev_stack()
@@ -571,25 +531,28 @@ Army::Stat Game::newLevelArmy(Army* a)
 void Game::newMedalArmy(Army* a)
 {
     // We don't want to have medal awards of computer players displayed
-    if (!a->getPlayer() || (a->getPlayer()->getType() != Player::HUMAN) ||
-        (a->getPlayer() != Playerlist::getInstance()->getActiveplayer()))
+    if (!a->getPlayer()
+	|| (a->getPlayer()->getType() != Player::HUMAN)
+	|| a->getPlayer() != Playerlist::getInstance()->getActiveplayer())
         return;
-    
-    debug("NEWMedal Dialog SHOW")
-    std::cerr << "NEWMedal Dialog SHOW" << std::endl;
-#if 0
-    ArmyMedalDialog dialog(a, 0, Rectangle(200, 100, 230, 230));
-    dialog.Show();
-    dialog.RunModal();
-    dialog.Hide();
- 
-    d_stackinfo->Redraw();
-#endif
+
+    medal_awarded_to_army.emit(a);
+    update_stack_info();
 }
 
 void Game::gameFinished()
 {
 #if 0
+    SDL_Surface *d_pic_winGame = File::getMiscPicture("win.jpg", false);
+
+    // mask pics need a special format
+    SDL_Surface* tmp = File::getMiscPicture("win_mask.png");
+    d_pic_winGameMask = SDL_CreateRGBSurface(SDL_SWSURFACE, tmp->w, tmp->h,
+                                        32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
+    SDL_SetAlpha(tmp, 0, 0);
+    SDL_BlitSurface(tmp, 0, d_pic_winGameMask, 0);
+    SDL_FreeSurface(tmp);
+    
     // show a nice dialog in the center of the screen
     
     Rectangle r;

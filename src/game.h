@@ -158,6 +158,7 @@ class Game
     sigc::signal<void, City *> city_visited;
     sigc::signal<void, Player *> next_player_turn;
     sigc::signal<void, int> hero_arrives;
+    sigc::signal<void, Army *> medal_awarded_to_army;
     sigc::signal<void> game_over;
     
  private:
@@ -171,11 +172,10 @@ class Game
     // centers the map on a city of the active player
     void center_view_on_city();
 
-    //! Draws the announcement of the next player
-    void pictureNextPlayer();
-
     void update_control_panel();
     void update_sidebar_stats();
+    void update_stack_info();	// emit stack_info_changed
+    void clear_stack_info();
 
     //! Loads the button images
     void loadImages();
@@ -199,8 +199,6 @@ class Game
     bool init_turn_for_player(Player* p);
 
     
-    void update_stack_info();	// emit stack_info_changed
-    void clear_stack_info();
     void looting_city(City *city, int &gold);
     
     // the part of the map that currently is visible, measured in tiles
@@ -210,11 +208,6 @@ class Game
     NextTurn* d_nextTurn;
     std::auto_ptr<BigMap> bigmap;
     std::auto_ptr<SmallMap> smallmap;
-
-    SDL_Surface* d_turn_start;
-    SDL_Surface* d_pic_turn_start;
-    SDL_Surface* d_pic_winGame, *d_pic_winGameMask;
-    SDL_Surface* d_pic_logo;
 
     /* the contents of the heronames data file */
     std::vector<Hero*> d_herotemplates[MAX_PLAYERS];

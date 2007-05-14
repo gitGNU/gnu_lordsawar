@@ -14,6 +14,7 @@
 
 #include <config.h>
 
+#include <iomanip>
 #include <SDL_video.h>
 
 #include <sigc++/functors/mem_fun.h>
@@ -293,6 +294,8 @@ void GameWindow::load_game(const std::string &file_path, bool start)
 	sigc::mem_fun(*this, &GameWindow::on_next_player_turn));
     game->hero_arrives.connect(
 	sigc::mem_fun(*this, &GameWindow::on_hero_brings_allies));
+    game->medal_awarded_to_army.connect(
+	sigc::mem_fun(*this, &GameWindow::on_medal_awarded_to_army));
 
     if (start)
       game->startGame();
@@ -1071,6 +1074,36 @@ void GameWindow::on_next_player_turn(Player *player)
     Gtk::Label *label;
     xml->get_widget("label", label);
     Glib::ustring s = String::ucompose(_("Your turn, %1..."), player->getName());
+    label->set_text(s);
+
+    dialog->show_all();
+    dialog->run();
+}
+
+void GameWindow::on_medal_awarded_to_army(Army *army)
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/medal-awarded-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+
+    Gtk::Image *image;
+    xml->get_widget("image", image);
+    image->property_pixbuf() = to_pixbuf(army->getPixmap());
+    
+    Gtk::Label *label;
+    xml->get_widget("label", label);
+    Glib::ustring s;
+    s += String::ucompose(_("%1 is awarded a medal!"), army->getName());
+    s += "\n\n";
+    s += String::ucompose(_("Experience: %1"), std::setprecision(2), army->getXP());
+    s += "\n";
+    s += String::ucompose(_("Level: %1"), army->getLevel());
     label->set_text(s);
 
     dialog->show_all();
