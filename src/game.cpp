@@ -72,7 +72,7 @@
 #define debug(x)
 
 Game::Game(GameScenario* gameScenario)
-    : d_gameScenario(gameScenario), d_lock(false)
+    : d_gameScenario(gameScenario), input_locked(false)
 {
     map_view.x = map_view.y = 0;
     
@@ -171,19 +171,12 @@ Game::Game(GameScenario* gameScenario)
 
 Game::~Game()
 {
-    //smallmap as well as bigmap have timers running, so first stop the timers
-    //and then wait some microseconds to make sure we don't get problems with
-    //the timers
-    stopTimers();
-    SDL_Delay(1);
-
     delete d_gameScenario;
     delete d_nextTurn;
     
 #if 0
     SDL_FreeSurface(d_pic_turn_start);
     SDL_FreeSurface(d_pic_winGame);
-    SDL_FreeSurface(d_pic_logo);
 #endif
 }
 
@@ -244,7 +237,7 @@ void Game::end_turn()
     bigmap->unselect_active_stack();
     clear_stack_info();
     update_control_panel();
-    lockScreen();
+    lock_inputs();
 
     d_nextTurn->endTurn();
 }
@@ -595,9 +588,6 @@ void Game::newMedalArmy(Army* a)
 
 void Game::gameFinished()
 {
-    // timers would interfere with the dialog, so stop them
-    stopTimers();
-
 #if 0
     // show a nice dialog in the center of the screen
     
@@ -619,7 +609,6 @@ void Game::gameFinished()
     delete win;
     SDL_FreeSurface(winpic);
 #endif
-    // We don't restart the timers, the game should be over now.
 }
 
 bool Game::stackRedraw()
@@ -760,7 +749,7 @@ void Game::invading_city(City* city)
     if (city->getPlayer() != plist->getNeutral())
       looting_city (city, gold);
 
-    if (!d_lock)
+    if (!input_locked)
     {
         bigmap->draw();
 	CityDefeatedAction a = city_defeated.emit(city, gold);
@@ -796,51 +785,38 @@ void Game::invading_city(City* city)
     update_control_panel();
 }
 
-void Game::lockScreen()
+void Game::lock_inputs()
 {
-    debug("lockScreen()");
-
     //don't accept modifying user input from now on
-    bigmap->setEnable(false);
-    d_lock = true;
-    stopTimers();   //on computer turns, strange things may happen if the timers
-                    //are still active
+    bigmap->set_accept_events(false);
+    input_locked = true;
+    update_control_panel();
 }
 
-void Game::unlockScreen()
+void Game::unlock_inputs()
 {
-    debug("unlockScreen()");
-    bigmap->setEnable(true);
-    d_lock = false;
-    startTimers();
-}
-
-void Game::stopTimers()
-{
-#if 0
-    bigmap->interruptTimer();
-    d_smallmap->interruptTimer();
-#endif
-}
-
-void Game::startTimers()
-{
-    //never start timers with the computer player's turn
-    if (d_lock)
-        return;
-#if 0
-    bigmap->restartTimer();
-    d_smallmap->restartTimer();
-#endif
+    bigmap->set_accept_events(true);
+    input_locked = false;
+    update_control_panel();
 }
 
 void Game::update_control_panel()
 {
-#if 0 // FIXME
-    if (d_lock)
+    if (input_locked)
+    {
+	can_select_prev_stack.emit(false);
+	can_select_next_stack.emit(false);
+	can_select_next_movable_stack.emit(false);
+	can_center_selected_stack.emit(false);
+	can_defend_selected_stack.emit(false);
+	can_search_selected_stack.emit(false);
+	can_move_selected_stack.emit(false);
+	can_move_all_stacks.emit(false);
+	can_end_turn.emit(false);
+	
         return;
-#endif
-
+    }
+    
     Player *player = Playerlist::getActiveplayer();
     Stacklist* sl = player->getStacklist();
     
@@ -894,12 +870,14 @@ void Game::update_control_panel()
 	can_search_selected_stack.emit(false);
 	can_move_selected_stack.emit(false);
     }
+
+    can_end_turn.emit(true);
 }
 
 void Game::startGame()
 {
     debug ("start_game()");
-    lockScreen();
+    lock_inputs();
 
     d_nextTurn->start();
     update_control_panel();
@@ -913,7 +891,7 @@ void Game::loadGame()
 	char buf[101];
 	buf[100] = '\0';
         //human players want access to the controls and an info box
-        unlockScreen();
+        unlock_inputs();
         bigmap->unselect_active_stack();
 	clear_stack_info();
         center_view_on_city();
@@ -932,7 +910,7 @@ void Game::loadGame()
     }       
     else
     {
-        lockScreen();
+        lock_inputs();
         update_sidebar_stats();
         player->startTurn();
         d_nextTurn->endTurn();
@@ -942,7 +920,6 @@ void Game::loadGame()
 
 void Game::stopGame()
 {
-    stopTimers();
     d_nextTurn->stop();
     d_gameScenario->deactivateEvents();
     Playerlist::finish();
@@ -1089,7 +1066,7 @@ bool Game::init_turn_for_player(Player* p)
 
     if (p->getType() == Player::HUMAN)
     {
-	unlockScreen();
+	unlock_inputs();
     
         Stack* stack = p->getActivestack();
 	if (stack != NULL)

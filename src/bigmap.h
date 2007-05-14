@@ -70,11 +70,10 @@ class BigMap: public sigc::trackable
     void stackMoved(Stack* s);
 
     //! Center the bigmap around point p
-    void centerView(const Vector<int> p);
+    void centerView(Vector<int> p);
 
-    //! Enable/Disable the processing of mouse clicks
-    void setEnable (bool enable){d_enable=enable;}
-
+    // whether the map accepts input events
+    void set_accept_events(bool accept) { accepting_events = accept; }
 
     // emitted when the view has changed because of user interactions
     sigc::signal<void, Rectangle> view_changed;
@@ -104,7 +103,7 @@ class BigMap: public sigc::trackable
     SDL_Surface* buffer;	// the buffer we draw things in
     Rectangle buffer_view;	// current view of the buffer, in tiles
 	
-    bool d_enable;
+    bool accepting_events;
 	
     SDL_Surface* d_arrows;
     SDL_Surface* d_ruinpic;

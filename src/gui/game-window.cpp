@@ -290,8 +290,6 @@ void GameWindow::load_game(const std::string &file_path, bool start)
     game->city_visited.connect(
 	sigc::mem_fun(*this, &GameWindow::on_city_visited));
 
-    
-    game->startTimers();
     if (start)
       game->startGame();
     else
@@ -388,7 +386,6 @@ void GameWindow::on_resign_game_activated()
 	if (game.get())
 	{
 	    game->stopGame();
-	    game->stopTimers();
 	    game.reset();
 	}
 	Sound::getInstance()->disableBackground();

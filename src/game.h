@@ -34,7 +34,6 @@
 
 class SmallMap;
 class BigMap;
-class Stackinfo;
 class NextTurn;
 class GameScenario;
 class Hero;
@@ -116,24 +115,10 @@ class Game
     //! Callback when the game is finished; display a dialog
     void gameFinished();
     
+    // locks/unlocks the input widgets during computer turns
+    void lock_inputs();
+    void unlock_inputs();
 
-    /** Locks all widgets (They don't react to user command) during computer
-     * turns.
-     */
-    void lockScreen();
-
-    //! Unlocks the widgets after a computer turn
-    void unlockScreen();
-
-    /** Stops the timers of all subwidgets (esp. bigmap and smallmap). Used when
-     * showing several dialogs, because the timers would cause a flickering
-     * otherwise.
-     */
-    void stopTimers();
-
-    //! Restarts the timers of the subwidgets when they have been stopped.
-    void startTimers();
-    
     //! Hack to keep GameScenario invisible from PMainWindow
 #if 0
     bool save(std::string file){return d_gameScenario->saveGame(file);}
@@ -223,7 +208,6 @@ class Game
     NextTurn* d_nextTurn;
     std::auto_ptr<BigMap> bigmap;
     std::auto_ptr<SmallMap> smallmap;
-    Stackinfo* d_stackinfo;
 
     SDL_Surface* d_turn_start;
     SDL_Surface* d_pic_turn_start;
@@ -233,7 +217,7 @@ class Game
     /* the contents of the heronames data file */
     std::vector<Hero*> d_herotemplates[MAX_PLAYERS];
 
-    bool d_lock;
+    bool input_locked;
 };
 
 #endif

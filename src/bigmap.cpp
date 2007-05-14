@@ -67,7 +67,7 @@ BigMap::BigMap()
     : d_renderer(0), buffer(0), current_tile(0, 0)
 {
     mouse_state = NONE;
-    d_enable = true;
+    accepting_events = true;
 
     // load all pictures
     d_arrows = File::getMiscPicture("arrows.png");
@@ -260,8 +260,7 @@ bool BigMap::on_selection_timeout()
 
 void BigMap::mouse_button_event(MouseButtonEvent e)
 {
-    //ignore event, right now we're waiting for the AI or network guy
-    if (!d_enable)
+    if (!accepting_events)
 	return;
     
     Vector<int> tile = mouse_pos_to_tile(e.pos);
@@ -402,6 +401,9 @@ void BigMap::mouse_button_event(MouseButtonEvent e)
 
 void BigMap::mouse_motion_event(MouseMotionEvent e)
 {
+    if (!accepting_events)
+	return;
+    
     static Vector<int> prev_mouse_pos = Vector<int>(0, 0);
     
     Vector<int> new_tile = mouse_pos_to_tile(e.pos);
