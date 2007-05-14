@@ -620,11 +620,9 @@ bool CreateScenario::setupSignposts()
 	    char *dir = NULL;
 	    int xdir, ydir;
 	    char buf[101]; buf[100] = '\0';
-	    Stack *s;
             Vector<int> signpostPos = (*it).getPos();
 	    City *nearCity = Citylist::getInstance()->getNearestCity(signpostPos);
             Vector<int> cityPos = nearCity->getPos();
-	    s  = new Stack(Playerlist::getInstance()->getNeutral() ,cityPos);
 	    xdir = cityPos.x - signpostPos.x;
 	    ydir = cityPos.y - signpostPos.y;
 	    if (xdir >= 1 && ydir >= 1)
