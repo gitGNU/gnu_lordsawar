@@ -226,12 +226,15 @@ void Stack::getHeroes(std::vector<Uint32>& dst) const
     }
 }
 
-void Stack::bless()
+int Stack::bless()
 {
+    int count = 0;
     for (iterator it = begin(); it != end(); it++)
     {
-        (*it)->bless();
+        if ((*it)->bless())
+          count++;
     }
+    return count;
 }
 
 bool Stack::enoughMoves() const

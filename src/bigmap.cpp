@@ -296,11 +296,7 @@ void BigMap::mouse_button_event(MouseButtonEvent e)
             {
                 Playerlist::getActiveplayer()->stackMove(stack);
                 if (Playerlist::getActiveplayer()->getActivestack() == 0)
-                {
-                    Stacklist *sl = Playerlist::getActiveplayer()->getStacklist();
-                    sl->setActivestack(sl->getObjectAt(tile.x, tile.y));
-                    select_active_stack();
-                }
+                  return;
             }
             else
                 stack->getPath()->calculate(stack, p);
@@ -323,7 +319,7 @@ void BigMap::mouse_button_event(MouseButtonEvent e)
               if (City* c = Citylist::getInstance()->getObjectAt(tile.x, tile.y))
               {
 	          if (c->getPlayer() == Playerlist::getActiveplayer() && !c->isBurnt())
-                    city_selected(c, map_tip_position(c->get_area()));
+                    city_selected(c, map_tip_position(c->get_area()), false);
               }
             }
         }
@@ -338,11 +334,8 @@ void BigMap::mouse_button_event(MouseButtonEvent e)
 	{
 	    if (City* c = Citylist::getInstance()->getObjectAt(tile.x, tile.y))
 	    {
-	        if (c->getPlayer() != Playerlist::getActiveplayer() || c->isBurnt())
-                {
-		    city_selected(c, map_tip_position(c->get_area()));
-		    mouse_state = SHOWING_CITY;
-                }
+		city_selected(c, map_tip_position(c->get_area()), true);
+	        mouse_state = SHOWING_CITY;
 	    }
 	    else if (Ruin* r = Ruinlist::getInstance()->getObjectAt(tile.x, tile.y))
 	    {
@@ -368,7 +361,7 @@ void BigMap::mouse_button_event(MouseButtonEvent e)
 		break;
 
 	    case SHOWING_CITY:
-		city_selected.emit(0, MapTipPosition());
+		city_selected.emit(0, MapTipPosition(), true);
 		break;
 
 	    case SHOWING_RUIN:

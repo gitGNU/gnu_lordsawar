@@ -500,7 +500,10 @@ bool CreateScenario::setupCities()
 
         //3. set the city production
         (*it).setRandomArmytypes();
-        (*it).produceLargestArmy();
+        if ((*it).isCapital())
+          (*it).produceStrongestArmy();
+        else
+          (*it).produceWeakestArmy();
         if ((*it).getPlayer() == Playerlist::getInstance()->getNeutral())
             (*it).setProduction(-1);
         else

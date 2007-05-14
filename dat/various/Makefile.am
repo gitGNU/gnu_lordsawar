@@ -27,7 +27,9 @@ various_DATA = \
     freelords.png \
     lordsawar_logo.png \
     freelords_editor.png \
-    editor.png 
+    editor.png \
+    shieldsetsmall.png \
+    shieldsetmedium.png
 
 EXTRA_DIST = \
     arrows.png \
@@ -53,5 +55,7 @@ EXTRA_DIST = \
     freelords.png \
     lordsawar_logo.png \
     freelords_editor.png \
-    editor.png
+    editor.png \
+    shieldsetsmall.png \
+    shieldsetmedium.png
     

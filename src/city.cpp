@@ -312,31 +312,73 @@ void City::setRandomArmytypes()
         addBasicProd(1, 1 + rand() % 4);
 }
 
-void City::produceLargestArmy()
+void City::produceStrongestArmy()
 {
-    debug("produceLargestArmy()");
-
-    // We assume that the largest army is the one with the highest index
-    // This is a possible assumption as this function is solely used to
-    // populate the cities during map generation.
+    debug("produceStrongestArmy()");
 
     Stack* stack = getFreeStack();
     if (stack)
     {
-      for (int i = 3; i >= 0; i--)
-          if (getArmytype(i) != -1)
-          {
-              int savep = d_production;
-                
-              setProduction(i);
-              produceArmy();
-              setProduction(savep);
-              return;
-          }
+      int max_strength = 0;
+      int strong_idx = -1;
+      const Armysetlist* al = Armysetlist::getInstance();
+      Uint32 set = al->getStandardId();
+      for (int i = 0; i < 4; i++)
+        {
+          int j = getArmytype(i);
+          if (j == -1)
+            continue;
+          if (al->getArmy(set, j)->getStat(Army::STRENGTH,false) > max_strength)
+            {
+              strong_idx = j;
+              max_strength = al->getArmy(set, j)->getStat(Army::STRENGTH,false);
+            }
+        }
+      if (strong_idx == -1)
+        return;
+         
+      int savep = d_production;
+      setProduction(strong_idx);
+      produceArmy();
+      setProduction(savep);
+      return;
     }
 }
 
-void City::addHero(Hero* hero) const
+void City::produceWeakestArmy()
+{
+    debug("produceWeakestArmy()");
+
+    Stack* stack = getFreeStack();
+    if (stack)
+    {
+      int min_strength = 100;
+      int weak_idx = -1;
+      const Armysetlist* al = Armysetlist::getInstance();
+      Uint32 set = al->getStandardId();
+      for (int i = 0; i < 4; i++)
+        {
+          int j = getArmytype(i);
+          if (j == -1)
+            continue;
+          if (al->getArmy(set, j)->getStat(Army::STRENGTH,false) < min_strength)
+            {
+              weak_idx = i;
+              min_strength = al->getArmy(set, j)->getStat(Army::STRENGTH,false);
+            }
+        }
+      if (weak_idx == -1)
+        return;
+         
+      int savep = d_production;
+      setProduction(weak_idx);
+      produceArmy();
+      setProduction(savep);
+      return;
+    }
+}
+
+void City::addArmy(Army *a) const
 {
     Stack* stack = getFreeStack();
 
@@ -347,8 +389,8 @@ void City::addHero(Hero* hero) const
         d_player->addStack(stack);
     }
 
-    // add hero to stack
-    stack->push_front(hero);
+    // add army to stack
+    stack->push_front(a);
 }
 
 void City::nextTurn()

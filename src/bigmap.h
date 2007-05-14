@@ -86,7 +86,7 @@ class BigMap: public sigc::trackable
     sigc::signal<void> path_set;
 	
     // signals for mouse clicks
-    sigc::signal<void, City*, MapTipPosition> city_selected;
+    sigc::signal<void, City*, MapTipPosition, bool> city_selected;
     sigc::signal<void, Ruin*, MapTipPosition> ruin_selected;
     sigc::signal<void, Signpost*, MapTipPosition> signpost_selected;
     sigc::signal<void, Temple*, MapTipPosition> temple_selected;

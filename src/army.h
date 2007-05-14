@@ -205,7 +205,7 @@ class Army : public sigc::trackable
         Uint32 getLevel() const {return d_level;}
 
         //! Returns whether army is blessed (may only happen once :-))
-        bool isBlessed() const {return d_blessed;}
+        virtual bool isBlessed() const {return d_blessed;}
 
         //! Returns grouping information
         bool isGrouped() const {return d_grouped;}
@@ -236,7 +236,8 @@ class Army : public sigc::trackable
         void resetMoves();
 
         //! Blesses the unit (currently: strength+1)
-        void bless();
+	//! Returns whether or not the army was blessed.
+        bool bless();
 
         //! Increases the XP of the unit
         void gainXp(double n);
@@ -294,6 +295,18 @@ class Army : public sigc::trackable
 	//! Gets whether or not this army type can found in a ruin.
 	bool getDefendsRuins() const {return d_defends_ruins; }
 
+	//! Sets whether or not this army type can be bought.
+	void setPurchasable(bool purchasable) {d_purchasable= purchasable; }
+	//! Gets whether or not this army type can be bought.
+	bool getPurchasable() const {return d_purchasable; }
+
+	//! Sets whether or not this army can be a reward for completing a 
+	//! quest, or for having a new hero arrive.
+	void setAwardable (bool awardable) {d_awardable = awardable; }
+	//! Gets whether or not this army can be a reward for completing a 
+	//! quest, or for having a new hero arrive.
+	bool getAwardable() const {return d_awardable; }
+
     protected:
         //! Generic function for saving the army data. Useful for the hero class,
         //  which doesn't need to repeat the save code.
@@ -337,7 +350,7 @@ class Army : public sigc::trackable
         bool d_grouped;
 
         //! Medal bonuses : we have 3 medals
-        //!  0 _ medal for being extremely mercyless (gives an extra +1 to strength)
+        //!  0 _ medal for being extremely merciless (gives an extra +1 to strength)
         //!      a unit gets this medal if in a combat it scores more than 90% of hits
         //!  1 _ medal for being very good in defense (gives an extra +1 to defense)
         //!      a unit gets this medal if in a combat is never hit
@@ -349,10 +362,14 @@ class Army : public sigc::trackable
         Uint32 d_battles_number;
         //! wighted number of hits per battle
         double d_number_hashit;
-        //! wighted number of times the army has been hit in a battle
+        //! weighted number of times the army has been hit in a battle
         double d_number_hasbeenhit;
-	//! can defend a ruin or not
+	//! this army type can defend a ruin or not
 	bool d_defends_ruins;
+	//! this army type can be bought in `build production'
+	bool d_purchasable;
+	//! this army type can be a reward from quest
+	bool d_awardable;
 };
 
 #endif // ARMY_H

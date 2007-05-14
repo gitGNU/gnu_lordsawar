@@ -27,6 +27,7 @@
 #include "player.h"
 #include "GameMap.h"
 #include "sdl-draw.h"
+#include "GraphicsCache.h"
 
 OverviewMap::OverviewMap()
 {
@@ -67,7 +68,7 @@ void OverviewMap::resize(Vector<int> max_dimensions)
     surface = SDL_CreateRGBSurface(SDL_SWSURFACE, d.x, d.y, 24,
 				   0xFFu, 0xFFu << 8, 0xFFu << 16, 0);
 
-    Uint32 road_color = SDL_MapRGB(static_surface->format, 255, 255, 255);
+    Uint32 road_color = SDL_MapRGB(static_surface->format, 164, 84, 0);
     
     // draw static map
     for (int i = 0; i < static_surface->w; i++)
@@ -88,6 +89,7 @@ void OverviewMap::resize(Vector<int> max_dimensions)
 
 void OverviewMap::draw()
 {
+    GraphicsCache *gc = GraphicsCache::getInstance();
     assert(surface);
     
     // During the whole drawing stuff, ALWAYS consider that 
@@ -100,27 +102,6 @@ void OverviewMap::draw()
     // minimum size for typical features is 1
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
 
-    // Draw all cities as rectangles around the city location, in the colors of
-    // the players.
-    for (Citylist::iterator it = Citylist::getInstance()->begin();
-        it != Citylist::getInstance()->end(); it++)
-    {    
-        SDL_Color c = it->getPlayer()->getColor();
-	Uint32 fill = SDL_MapRGB(surface->format, c.r, c.g, c.b);
-	Uint32 outline = SDL_MapRGB(surface->format, c.r / 2, c.g / 2, c.b / 2);
-    
-        Vector<int> pos = it->getPos();
-        pos = mapToSurface(pos);
-
-        // fill a rect with the player colors
-	draw_filled_rect(surface, pos.x, pos.y,
-			 pos.x + 2 * size, pos.y + 2 * size, fill);
-
-        // if we have space, draw a black outline around the city
-        if (size > 1)
-            draw_rect_clipped(surface, pos.x, pos.y,
-			      pos.x + 2 * size, pos.y + 2 * size, outline);
-    }
 
     // Draw ruins as yellow boxes
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
@@ -130,30 +111,23 @@ void OverviewMap::draw()
         pos = mapToSurface(pos);
 
 	Uint32 raw;
-	// FIXME: this should probably be defined in the tileset
-	if (!it->isSearched())
-	   raw = SDL_MapRGB(surface->format, 255, 230, 45);
-	else
-	   raw = SDL_MapRGB(surface->format, 161, 74, 17);
+	raw = SDL_MapRGB(surface->format, 255, 255, 255);
 
 	draw_filled_rect(surface, pos.x, pos.y,
 			 pos.x + size, pos.y + size, raw);
     }
 
-    // Draw temples as two poles with a crossbar
+    // Draw temples as a white dot
     for (Templelist::iterator it = Templelist::getInstance()->begin();
         it != Templelist::getInstance()->end(); it++)
     {
         Vector<int> pos = it->getPos();
         pos = mapToSurface(pos);
-	Uint32 outline = SDL_MapRGB(surface->format, 200, 200, 200);
+	Uint32 raw;
+	raw = SDL_MapRGB(surface->format, 255, 255, 255);
 
-	draw_hline_clipped(surface, pos.x - size, pos.x + size,
-			   pos.y - size, outline);
-	draw_vline_clipped(surface, pos.x - size,
-			   pos.y - size, pos.y + size, outline);
-	draw_vline_clipped(surface, pos.x + size,
-			   pos.y - size, pos.y + size, outline);
+	draw_filled_rect(surface, pos.x, pos.y,
+			 pos.x + size, pos.y + size, raw);
     }
 
     // Draw stacks as crosses using the player color
@@ -177,6 +151,24 @@ void OverviewMap::draw()
             draw_hline(surface, pos.x - size, pos.x + size, pos.y, outline);
             draw_vline(surface, pos.x, pos.y - size, pos.y + size, outline);
         }
+    }
+
+    // Draw all cities as rectangles around the city location, in the colors of
+    // the players.
+    for (Citylist::iterator it = Citylist::getInstance()->begin();
+        it != Citylist::getInstance()->end(); it++)
+    {    
+        SDL_Surface *tmp = gc->getShieldPic(0, it->getPlayer());
+    
+        Vector<int> pos = it->getPos();
+        pos = mapToSurface(pos);
+	SDL_Rect r;
+	r.x = pos.x - (tmp->w/2);
+	r.y = pos.y - (tmp->h/2);
+	r.w = tmp->w;
+        r.h = tmp->h;
+        SDL_BlitSurface(tmp, 0, surface, &r);
+
     }
 
     // let derived classes do their job

@@ -284,9 +284,9 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
                 // time.
                 s->decrementMoves(2);
             }
-            
             moveResult->setStepCount(stepCount);
             supdatingStack.emit(0);
+            
             return moveResult;
         }
         
@@ -400,19 +400,20 @@ Fight::Result ruinfight (Stack **attacker, Stack **defender)
     {
       result = Fight::ATTACKER_WON;
       loser = *defender;
+      for (Stack::iterator sit = loser->begin(); sit != loser->end();)
+        {
+          (*sit)->setHP (0);
+          sit++;
+        }
     }
   else
     {
       result = Fight::DEFENDER_WON;
       loser = *attacker;
+      loser->getFirstHero()->setHP(0); /* only the hero dies */
     }
         
   /* set the hp to == 0 on dead armies */
-  for (Stack::iterator sit = loser->begin(); sit != loser->end();)
-    {
-      (*sit)->setHP (0);
-      sit++;
-    }
 
   return result;
 }
@@ -425,21 +426,15 @@ Fight::Result RealPlayer::stackRuinFight (Stack **attacker, Stack **defender)
     debug("stackRuinFight: player = " << getName()<<" at position "
           <<(*defender)->getPos().x<<","<<(*defender)->getPos().y);
 
-    // save the defender's player for future use
-    Player* pd = (*defender)->getPlayer();
-
-    // I suppose, this should be always true, but one can never be sure
-    bool attacker_active = *attacker == d_stacklist->getActivestack();
-
     ruinfight_started.emit(*attacker, *defender);
     result = ruinfight (attacker, defender);
     ruinfight_finished.emit(result);
 
     // cleanup
     
-    // add a fight item about the combat
-    //Action_Fight* item = new Action_Fight();
-    //item->fillData(&fight);
+    // add a ruin fight item about the combat
+    //Action_RuinFight* item = new Action_RuinFight();
+    //item->fillData(*attacker, *defender, result);
     //d_actions.push_back(item);
     /* FIXME: do we need an Action_RuinFight? */
 
@@ -818,8 +813,9 @@ bool RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
     return true;
 }
 
-bool RealPlayer::stackVisitTemple(Stack* s, Temple* t)
+int RealPlayer::stackVisitTemple(Stack* s, Temple* t)
 {
+    int count;
     debug("RealPlayer::stackVisitTemple")
 
     //abort in case of impossible action
@@ -831,7 +827,7 @@ bool RealPlayer::stackVisitTemple(Stack* s, Temple* t)
     }
 
     // you have your stack blessed (+1 strength)
-    s->bless();
+    count = s->bless();
 
     Action_Temple* item = new Action_Temple();
     item->fillData(t, s);
@@ -841,7 +837,7 @@ bool RealPlayer::stackVisitTemple(Stack* s, Temple* t)
     
     supdatingStack.emit(0);
 
-    return true;
+    return count;
 }
 
 Quest* RealPlayer::stackGetQuest(Stack* s, Temple* t)

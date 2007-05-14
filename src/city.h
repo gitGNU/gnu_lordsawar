@@ -112,10 +112,13 @@ class City : public Location
         void setRandomArmytypes();
 
         //! Produces the strongest army the city can produce
-        void produceLargestArmy();
+        void produceStrongestArmy();
 
-        //! Add a hero to the stacks within the city
-        void addHero(Hero* hero) const;
+        //! Produces the weakest army the city can produce
+        void produceWeakestArmy();
+
+        //! Add an army to the stacks within the city
+        void addArmy(Army* a) const;
 
         //! Do everything neccessary for a new turn
         void nextTurn();

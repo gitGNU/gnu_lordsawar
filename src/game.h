@@ -150,12 +150,13 @@ class Game
     sigc::signal<void, Stack *, Stack *> ruinfight_started;
     sigc::signal<void, Fight::Result> ruinfight_finished;
     sigc::signal<bool, Player *, Hero *, City *, int> hero_offers_service;
-    sigc::signal<bool, Temple *> temple_visited;
+    sigc::signal<bool, Temple *, int> temple_visited;
     sigc::signal<void, Hero *, Quest *> quest_assigned;
     sigc::signal<CityDefeatedAction, City *, int> city_defeated;
     sigc::signal<void, City *, int> city_pillaged;
     sigc::signal<void, City *, int> city_sacked;
     sigc::signal<void, City *> city_visited;
+    sigc::signal<void, int> hero_arrives;
     sigc::signal<void> game_over;
     
  private:
@@ -181,7 +182,7 @@ class Game
     // bigmap callbacks
     void on_mouse_on_tile(Vector<int> pos);
     void on_stack_selected(Stack* s);
-    void on_city_selected(City* c, MapTipPosition pos);
+    void on_city_selected(City* c, MapTipPosition pos, bool brief);
     void on_ruin_selected(Ruin* r, MapTipPosition pos);
     void on_temple_selected(Temple* t, MapTipPosition pos);
     void on_signpost_selected(Signpost* s, MapTipPosition pos);

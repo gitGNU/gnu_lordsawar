@@ -64,7 +64,7 @@ class Action
                 QUEST = 14,
                 HERO_EQUIP = 15,
                 UNIT_ADVANCE = 16,
-                CITY_SACK = 17
+                CITY_SACK = 17,
         };
                 
         

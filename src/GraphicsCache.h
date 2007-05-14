@@ -28,6 +28,7 @@ struct StoneCacheItem;
 struct RoadCacheItem;
 struct FlagCacheItem;
 struct SelectorCacheItem;
+struct ShieldCacheItem;
 class City;
 
 /** Soliton class for caching army and map images
@@ -162,6 +163,17 @@ class GraphicsCache
           */
         SDL_Surface* getSelectorPic(Uint32 type, Uint32 frame, const Player* p);
 
+        /** Function for getting shield pictures.
+          *
+          * As with the other functions, use solely this function to get the 
+          * shield images. And DON'T modify the images!
+          *
+          * @param type small or medium shield size
+          * @param p the player to draw it for
+          * @return image for the shield
+          */
+        SDL_Surface* getShieldPic(Uint32 type, const Player* p);
+
         /** Modify an image with player colors.
           * 
           * Take an arbitray surface and mask image, apply the player colors such
@@ -202,6 +214,9 @@ class GraphicsCache
         SelectorCacheItem* addSelectorPic(Uint32 type, Uint32 frame, 
 					  const Player* p);
 
+        //! Creates a new shield picture with the given parameters.
+        ShieldCacheItem* addShieldPic(Uint32 type, const Player* p);
+
         //! Checks if the cache has exceeded the maximum size and reduce it.
         void checkPictures();
         
@@ -226,6 +241,9 @@ class GraphicsCache
         //! Erases the oldest selector cache item
         void eraseLastSelectorItem();
 
+        //! Erases the oldest selector cache item
+        void eraseLastShieldItem();
+
         //! Loads the images for the city pictures and their masks.
         void loadCityPics();
 
@@ -244,6 +262,9 @@ class GraphicsCache
         //! Loads the images for the two selectors
         void loadSelectors();
         
+        //! Loads the images for the shieldsets 
+        void loadShields();
+        
         //the data
         static GraphicsCache* s_instance;
 
@@ -255,6 +276,7 @@ class GraphicsCache
         std::list<StoneCacheItem*> d_stonelist;
         std::list<RoadCacheItem*> d_roadlist;
         std::list<SelectorCacheItem*> d_selectorlist;
+        std::list<ShieldCacheItem*> d_shieldlist;
 
         //some private surfaces
         SDL_Surface* d_levelmask;
@@ -270,6 +292,8 @@ class GraphicsCache
 	SDL_Surface* d_selectormask[6];
 	SDL_Surface* d_smallselector[4];
 	SDL_Surface* d_smallselectormask[4];
+        SDL_Surface* d_shieldpic[2][MAX_PLAYERS + 1];
+        SDL_Surface* d_shieldmask[2][MAX_PLAYERS + 1];
 };
 
 #endif

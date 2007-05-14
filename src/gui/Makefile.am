@@ -4,9 +4,9 @@ noinst_LIBRARIES = liblwgui.a
 
 liblwgui_a_SOURCES = \
     driver.cpp driver.h \
+    destination-dialog.cpp destination-dialog.h \
     buy-production-dialog.cpp buy-production-dialog.h \
     city-window.cpp city-window.h \
-    destination-dialog.cpp destination-dialog.h \
     error-utils.cpp error-utils.h \
     fight-window.cpp fight-window.h \
     game-preferences-dialog.cpp game-preferences-dialog.h \

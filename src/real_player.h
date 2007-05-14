@@ -56,7 +56,7 @@ class RealPlayer : public Player
         bool stackMove(Stack* s);
         MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow);
         bool stackSearchRuin(Stack* s, Ruin* r);
-        bool stackVisitTemple(Stack* s, Temple* t);
+        int stackVisitTemple(Stack* s, Temple* t);
         Quest* stackGetQuest(Stack* s, Temple*t);
 
         Fight::Result stackFight(Stack** attacker, Stack** defender,

@@ -345,9 +345,9 @@ class Player: public sigc::trackable
           *
           * @param s                the stack visiting the temple
           * @param t                the visited temple
-          * @return false on error, true otherwise
+          * @return the number of blessed armies
           */
-        virtual bool stackVisitTemple(Stack* s, Temple* t) = 0;
+        virtual int stackVisitTemple(Stack* s, Temple* t) = 0;
 
         /** A stack visits a temple and receives a random quest from the
          * temple's priests. If more than one heroes are in the stack, the

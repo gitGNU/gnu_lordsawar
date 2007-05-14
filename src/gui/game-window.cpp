@@ -289,6 +289,8 @@ void GameWindow::load_game(const std::string &file_path, bool start)
 	sigc::mem_fun(*this, &GameWindow::on_city_sacked));
     game->city_visited.connect(
 	sigc::mem_fun(*this, &GameWindow::on_city_visited));
+    game->hero_arrives.connect(
+	sigc::mem_fun(*this, &GameWindow::on_hero_brings_allies));
 
     if (start)
       game->startGame();
@@ -668,6 +670,32 @@ void GameWindow::on_fight_started(Fight &fight)
     d.run();
 }
 
+void GameWindow::on_hero_brings_allies (int numAllies)
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/hero-brings-allies-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+    
+    dialog->set_title(_("Hero brings allies!"));
+
+    Gtk::Label *label;
+    xml->get_widget("label", label);
+    Glib::ustring s;
+    s = String::ucompose(
+	ngettext("The hero brings %1 ally!",
+		 "The hero brings %1 allies!", numAllies), numAllies);
+    label->set_text(s);
+
+    dialog->show_all();
+    dialog->run();
+}
+
 bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, int gold)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
@@ -736,7 +764,7 @@ bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, 
 }
 
 
-bool GameWindow::on_temple_visited(Temple *temple)
+bool GameWindow::on_temple_visited(Temple *temple, int blessCount)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
     
@@ -749,6 +777,18 @@ bool GameWindow::on_temple_visited(Temple *temple)
     dialog->set_transient_for(*window.get());
     
     dialog->set_title(temple->getName());
+
+    Gtk::Label *l;
+    xml->get_widget("label", l);
+
+    Glib::ustring s;
+    s += String::ucompose(
+	ngettext("%1 army has been blessed!",
+		 "%1 armies have been blessed!", blessCount), blessCount);
+    l->set_text(s);
+    l->set_text(l->get_text() + "\n" +
+                _("Seek more blessings in far temples!") + "\n\n" +
+                _("Do you seek a quest?"));
 
     dialog->show_all();
     int response = dialog->run();

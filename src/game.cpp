@@ -503,8 +503,9 @@ void Game::search_selected_stack()
     }
     else if (temple && temple->searchable())
     {
-        player->stackVisitTemple(stack, temple);
-	bool wants_quest = temple_visited.emit(temple);
+        int blessCount;
+        blessCount = player->stackVisitTemple(stack, temple);
+	bool wants_quest = temple_visited.emit(temple, blessCount);
         if (wants_quest)
         {
             Quest *q = player->stackGetQuest(stack, temple);
@@ -626,20 +627,13 @@ void Game::on_stack_selected(Stack* s)
     update_control_panel();
 }
 
-void Game::on_city_selected(City* c, MapTipPosition pos)
+void Game::on_city_selected(City* c, MapTipPosition pos, bool brief)
 {
     if (c)
     {
 	Player *player = c->getPlayer();
 	
-	if (player == Playerlist::getActiveplayer() && !c->isBurnt())
-	{
-	    city_visited.emit(c);
-
-	    // some visible city properties (defense level) may have changed
-	    bigmap->draw();
-	}
-	else
+	if (brief)
 	{
 	    Glib::ustring str;
 
@@ -663,6 +657,13 @@ void Game::on_city_selected(City* c, MapTipPosition pos)
 	    }
 	    
 	    map_tip_changed.emit(str, pos);
+	}
+	else if (player == Playerlist::getActiveplayer() && !c->isBurnt())
+	{
+	    city_visited.emit(c);
+
+	    // some visible city properties (razed) may have changed
+	    bigmap->draw();
 	}
     }
     else
@@ -966,7 +967,7 @@ void Game::maybeRecruitHero (Player *p)
     }
     
   //we set the chance of some hero recruitment to, ehm, 10 percent
-  if (((((rand() % 6) == 0) && (gold_needed < p->getGold())) 
+  if (((((rand() % 1) == 0) && (gold_needed < p->getGold())) 
        || gold_needed == 0)
       && (p != plist->getNeutral()))
     {
@@ -980,7 +981,7 @@ void Game::maybeRecruitHero (Player *p)
           std::vector<City*> cities;
           Citylist* cl = Citylist::getInstance();
           for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-            if (!(*it).isBurnt() && (*it).getPlayer() != p)
+            if (!(*it).isBurnt() && (*it).getPlayer() == p)
               cities.push_back(&(*it));
           if (cities.empty())
             return;
@@ -990,10 +991,45 @@ void Game::maybeRecruitHero (Player *p)
       bool accepted = p->recruitHero(newhero, city, gold_needed);
       if (accepted)
         {
-          // FIXME: persistent (immortal) players can exist and take heroes
-          // without owning any city => segfault
+          int alliesCount;
+          city->addArmy(newhero);
+          /* now maybe add a few allies */
+          if (gold_needed > 1300)
+            alliesCount = 3;
+          else if (gold_needed > 1000)
+            alliesCount = 2;
+          else if (gold_needed > 800)
+            alliesCount = 1;
+          else
+            alliesCount = 0;
+
+        // list all the army types that can be allies.
+        std::vector<const Army*> allytypes;
+        Armysetlist *al = Armysetlist::getInstance();
+        std::vector<unsigned int> sets = al->getArmysets(true);
+        for (unsigned int i = 0; i < sets.size(); i++)
+          {
+            for (unsigned int j = 0; j < al->getSize(sets[i]); j++)
+              {
+                const Army *a = al->getArmy (sets[i], j);
+                if (a->getAwardable())
+                  allytypes.push_back(a);
+              }
+          }
+
+          if (!allytypes.empty())
+            {
+              int allytypeidx = rand() % allytypes.size();
+              for (int i = 0; i < alliesCount; i++)
+                {
+                  Army* ally = new Army(*(allytypes[allytypeidx]));
+                  city->addArmy(ally);
+                }
+              if (alliesCount > 0 && p->getType() == Player::HUMAN)
+                hero_arrives.emit(alliesCount);
+            }
           p->withdrawGold(gold_needed);
-          city->addHero(newhero);
+          p->supdatingStack.emit(0);
         }
        else
         delete newhero;

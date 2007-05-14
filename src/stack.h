@@ -82,7 +82,8 @@ class Stack : public std::list<Army*>, public sigc::trackable
         void resetMoves();
 
         //! Blesses all armies of the stack (strength +1)
-        void bless();
+	//! Returns the number of blessed armies.
+        int bless();
 
         //! Returns whether the stack has enough moves for the next step
         bool enoughMoves() const;

@@ -72,6 +72,9 @@ class Hero : public Army
           */
         Uint32 getStat(Army::Stat stat, bool modified=true) const;
 
+        //! Blesses the hero (strength+1, once per temple)
+	//! Returns whether or not the hero was blessed.
+        bool bless();
 
         //! Add an item to the backpack of the hero. Returns true on success
         bool addToBackpack(Item* item, int position);
@@ -103,6 +106,7 @@ class Hero : public Army
 
         std::list<Item*> d_equipment;
         std::list<Item*> d_backpack;
+        std::list<Uint32> d_visitedTemples;
 };
 
 #endif //HERO_H

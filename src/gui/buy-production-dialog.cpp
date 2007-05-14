@@ -51,16 +51,25 @@ BuyProductionDialog::BuyProductionDialog(City *c)
     xml->get_widget("production_toggles_table", toggles_table);
     
     const Armysetlist* al = Armysetlist::getInstance();
-    unsigned int armyset = al->getStandardId();
     const int no_columns = 3;
 
-    for (unsigned int i = 0; i < al->getSize(armyset) ; ++i)
+    std::vector<const Army*> purchasables;
+    std::vector<unsigned int> sets = al->getArmysets(true);
+    for (unsigned int i = 0; i < sets.size(); i++)
+      {
+        for (unsigned int j = 0; j < al->getSize(sets[i]); j++)
+          {
+            const Army *a = al->getArmy (sets[i], j);
+            if (a->getPurchasable())
+              purchasables.push_back(a);
+          }
+      }
+    for (unsigned int i = 0; i < purchasables.size() ; ++i)
     {
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
 	
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf
-	    = to_pixbuf(GraphicsCache::getInstance()->getArmyPic(
-			    armyset, i, city->getPlayer(), 1, NULL));
+	    = to_pixbuf(purchasables[i]->getPixmap());
 	
 	toggle->add(*manage(new Gtk::Image(pixbuf)));
 	production_toggles.push_back(toggle);
