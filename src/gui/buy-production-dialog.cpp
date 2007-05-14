@@ -51,9 +51,8 @@ BuyProductionDialog::BuyProductionDialog(City *c)
     xml->get_widget("production_toggles_table", toggles_table);
     
     const Armysetlist* al = Armysetlist::getInstance();
-    const int no_columns = 3;
 
-    std::vector<const Army*> purchasables;
+    // fill in purchasable armies
     std::vector<unsigned int> sets = al->getArmysets(true);
     for (unsigned int i = 0; i < sets.size(); i++)
       {
@@ -64,7 +63,10 @@ BuyProductionDialog::BuyProductionDialog(City *c)
               purchasables.push_back(a);
           }
       }
-    for (unsigned int i = 0; i < purchasables.size() ; ++i)
+
+    // fill in production options
+    const int no_columns = 3;
+    for (unsigned int i = 0; i < purchasables.size(); ++i)
     {
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
 	
@@ -185,6 +187,9 @@ void BuyProductionDialog::set_buy_button_state()
 
 const Army *BuyProductionDialog::army_id_to_army()
 {
+#if 0
     const Armysetlist* al = Armysetlist::getInstance();
     return al->getArmy(al->getStandardId(), selected_army);
+#endif
+    return purchasables[selected_army];
 }

@@ -50,6 +50,7 @@ class BuyProductionDialog: public sigc::trackable
 
     std::vector<Gtk::ToggleButton *> production_toggles;
     bool ignore_toggles;
+    std::vector<const Army*> purchasables;
 
     void on_production_toggled(Gtk::ToggleButton *toggle);
     void fill_in_production_info();
