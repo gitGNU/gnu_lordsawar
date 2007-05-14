@@ -1,3 +1,18 @@
+2007-05-12  Ben Asselstine
+	* only certain armies may be bought in `build production'.
+	* when the hero is slain in a ruin, the rest of her stack lives on.
+	* show cities as shields on the small map.
+	* show temples and ruins as white dots on the small map.
+	* roads are now brown.
+	* refreshing bigmap after hero shows up.
+	* right-click on owned cities and razed cities gives info.
+	* capital cities start with strongest unit already created.
+	* non-capital cities start with weakest unit already created.
+
+2007-05-11  Ben Asselstine
+        * added ability to bless heroes more than once in temples,
+	  while normal armies only get blessed once.
+
 2007-05-10  Ben Asselstine
         * changed heroes to have male/female and side in the heronames
 	  data file.
