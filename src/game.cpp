@@ -1063,7 +1063,7 @@ bool Game::init_turn_for_player(Player* p)
 	update_control_panel();
     
 	if (Configuration::s_showNextPlayer)
-	    next_player_turn.emit(p);
+	    next_player_turn.emit(p, d_gameScenario->getRound() + 1);
 
         maybeRecruitHero(p);
     

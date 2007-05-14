@@ -149,7 +149,7 @@ class GameWindow: public sigc::trackable
     void on_city_pillaged(City *city, int gold);
     void on_city_sacked(City *city, int gold);
     void on_city_visited(City *city);
-    void on_next_player_turn(Player *player);
+    void on_next_player_turn(Player *player, unsigned int turn_number);
     void on_hero_brings_allies(int alliesCount);
     void on_medal_awarded_to_army(Army *army);
     Army::Stat on_army_gains_level(Army *army);

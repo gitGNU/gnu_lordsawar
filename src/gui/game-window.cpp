@@ -1058,7 +1058,7 @@ void GameWindow::on_city_visited(City *city)
     d.run();
 }
 
-void GameWindow::on_next_player_turn(Player *player)
+void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
     
@@ -1076,7 +1076,8 @@ void GameWindow::on_next_player_turn(Player *player)
     
     Gtk::Label *label;
     xml->get_widget("label", label);
-    Glib::ustring s = String::ucompose(_("Your turn, %1..."), player->getName());
+    Glib::ustring s = String::ucompose(_("%1\nTurn %2"), player->getName(), 
+                                       turn_number);
     label->set_text(s);
 
     dialog->show_all();
