@@ -337,7 +337,7 @@ SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
     for (it = d_flaglist.begin(); it != d_flaglist.end(); it++)
     {
         myitem = *it;
-        if ((myitem->size == s->size()) && (myitem->player == s->getPlayer()))
+        if (myitem->size == s->size() - 1 && myitem->player == s->getPlayer())
         {
             // put the item in last place (last touched)
             d_flaglist.erase(it);
