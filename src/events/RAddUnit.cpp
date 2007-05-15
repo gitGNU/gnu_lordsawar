@@ -147,6 +147,7 @@ bool RAddUnit::trigger() const
     
     // Stack placement didn't succeed
     debug("placement failed")
+    delete s;
     return false;
 }
 
