@@ -572,6 +572,12 @@ void BigMap::draw_buffer()
         Stacklist* mylist = (*pit)->getStacklist();
         for (Stacklist::iterator it= mylist->begin(); it != mylist->end(); it++)
         {
+	    if ((*it)->empty())
+	    {
+		std::cerr << "WARNING: empty stack found" << std::endl;
+		continue;
+	    }
+
             Vector<int> p = (*it)->getPos();
 
             // check if the object lies in the viewed part of the map
