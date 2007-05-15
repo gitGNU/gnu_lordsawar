@@ -418,6 +418,62 @@ void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
     set_army_button_tooltip(toggle);
 }
 
+bool GameWindow::on_army_button_event(GdkEventButton *e, Army *army)
+{
+    MouseButtonEvent event = to_input_event(e);
+    if (event.button == MouseButtonEvent::RIGHT_BUTTON
+	&& event.state == MouseButtonEvent::PRESSED)
+    {
+	Glib::RefPtr<Gnome::Glade::Xml> xml
+	    = Gnome::Glade::Xml::create(get_glade_path()
+					+ "/army-info-window.glade");
+
+	Gtk::Window *w = 0;
+	xml->get_widget("window", w);
+	stack_info_tip.reset(w);
+
+	Gtk::Image *army_image;
+	xml->get_widget("army_image", army_image);
+	army_image->property_pixbuf() = to_pixbuf(army->getPixmap());
+
+	// fill in terrain image
+	Gtk::Image *terrain_image;
+	xml->get_widget("terrain_image", terrain_image);
+	//terrain_image->property_pixbuf() = to_pixbuf(army->getPixmap());
+	terrain_image->hide();
+
+	// fill in info
+	Gtk::Label *info_label;
+	xml->get_widget("info_label", info_label);
+	Glib::ustring s;
+	s += army->getName();
+	s += "\n";
+	// note to translators: %1 is melee strength, %2 is ranged strength
+	s += String::ucompose(_("Attack: %1/%2"),
+			      army->getStat(Army::STRENGTH),
+			      army->getStat(Army::RANGED));
+	s += "\n";
+	// note to translators: %1 is remaining moves, %2 is total moves
+	s += String::ucompose(_("Moves: %1/%2"),
+			      army->getMoves(), army->getStat(Army::MOVES));
+	s += "\n";
+	s += String::ucompose(_("Upkeep: %1"), army->getUpkeep());
+	info_label->set_text(s);
+    
+	stack_info_tip->show();
+
+	return true;
+    }
+    else if (event.button == MouseButtonEvent::RIGHT_BUTTON
+	&& event.state == MouseButtonEvent::RELEASED)
+    {
+	stack_info_tip.reset();
+	return true;
+    }
+    
+    return false;
+}
+
 void GameWindow::on_army_button_has_size()
 {
     // fix height to prevent flickering
@@ -509,6 +565,13 @@ void GameWindow::on_stack_info_changed(StackInfo s)
 	toggle->signal_toggled().connect(
 	    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_toggled),
 		       toggle, army));
+	toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
+	toggle->signal_button_press_event().connect(
+	    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
+		       army), false);
+	toggle->signal_button_release_event().connect(
+	    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
+		       army), false);
 	toggle->signal_size_allocate().connect_notify(
 	    sigc::hide(sigc::mem_fun(*this, &GameWindow::on_army_button_has_size)));
 	
@@ -533,12 +596,12 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
 {
     // init the map tip
     map_tip.reset(new Gtk::Window(Gtk::WINDOW_POPUP));
+    Gtk::Frame *f = manage(new Gtk::Frame);
+    f->property_shadow_type() = Gtk::SHADOW_ETCHED_OUT;
+
     Gtk::Label *l = manage(new Gtk::Label);
     l->set_padding(6, 6);
     l->set_text(msg);
-
-    Gtk::Frame *f = manage(new Gtk::Frame);
-    f->property_shadow_type() = Gtk::SHADOW_ETCHED_OUT;
     f->add(*l);
 
     map_tip->add(*f);
