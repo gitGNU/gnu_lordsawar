@@ -170,6 +170,7 @@ void Stack::decrementMoves(Uint32 moves)
 
 Army* Stack::getStrongestArmy() const
 {
+    assert(!empty());
     Army *strongest = 0;
     Uint32 highest_strength = 0;
 
