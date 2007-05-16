@@ -315,9 +315,10 @@ void Fight::calculateBonus()
             army_bonus = (*sit)->getStat(Army::ARMY_BONUS);
             if (army_bonus & Army::ADD1STRINOPEN)
               {
-                /* swamp is open terrain too */
+                /* swamp and water are open terrain too */
                 if ((mtile->getType() == Tile::GRASS ||
-                     mtile->getType() == Tile::SWAMP) && 
+                     mtile->getType() == Tile::SWAMP ||
+                     mtile->getType() == Tile::WATER) && 
                     (mtile->getBuilding() != Maptile::CITY ||
                      mtile->getBuilding() != Maptile::RUIN ||
                      mtile->getBuilding() != Maptile::TEMPLE))
@@ -352,7 +353,8 @@ void Fight::calculateBonus()
             else if (army_bonus & Army::ADD2STRINOPEN)
               {
                 if ((mtile->getType() == Tile::GRASS ||
-                     mtile->getType() == Tile::SWAMP) && 
+                     mtile->getType() == Tile::SWAMP ||
+                     mtile->getType() == Tile::WATER) && 
                     (mtile->getBuilding() != Maptile::CITY ||
                      mtile->getBuilding() != Maptile::RUIN ||
                      mtile->getBuilding() != Maptile::TEMPLE))
