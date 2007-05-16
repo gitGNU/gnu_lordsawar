@@ -332,6 +332,15 @@ void Fight::calculateBonus()
                      mtile->getBuilding() != Maptile::TEMPLE))
                   ;
               }
+            else if (army_bonus & Army::ADD1STRINHILLS)
+              {
+                if ((mtile->getType() == Tile::HILLS ||
+                     mtile->getType() == Tile::MOUNTAIN) &&
+                    (mtile->getBuilding() != Maptile::CITY ||
+                     mtile->getBuilding() != Maptile::RUIN ||
+                     mtile->getBuilding() != Maptile::TEMPLE))
+                  ;
+              }
             else if (army_bonus & Army::ADD1STRINCITY)
               {
                 if (mtile->getBuilding() == Maptile::CITY)
@@ -344,7 +353,8 @@ void Fight::calculateBonus()
               }
             else if (army_bonus & Army::ADD1STACKINHILLS)
               {
-                if (mtile->getType() == Tile::HILLS && 
+                if ((mtile->getType() == Tile::HILLS ||
+                     mtile->getType() == Tile::MOUNTAIN) &&
                     (mtile->getBuilding() != Maptile::CITY ||
                      mtile->getBuilding() != Maptile::RUIN ||
                      mtile->getBuilding() != Maptile::TEMPLE))
