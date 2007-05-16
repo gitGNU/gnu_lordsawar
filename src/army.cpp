@@ -39,8 +39,7 @@ Army::Army(const Army& a, Player* p)
      d_level(a.d_level), d_blessed(a.d_blessed), d_grouped(a.d_grouped),
      d_battles_number(a.d_battles_number), d_number_hashit(a.d_number_hashit),
      d_number_hasbeenhit(a.d_number_hasbeenhit), 
-     d_defends_ruins(a.d_defends_ruins), d_purchasable(a.d_purchasable),
-     d_awardable(a.d_awardable)
+     d_defends_ruins(a.d_defends_ruins), d_awardable(a.d_awardable)
 {
     // if we have been copied from an army prototype, initialise several values
     if (d_id == 0)
@@ -61,7 +60,7 @@ Army::Army(XML_Helper* helper, bool prototype)
    d_gender(NONE), d_player(0),
    d_id(0), d_xp(0), d_level(1), d_blessed(false), d_grouped(true),
    d_number_hashit(0), d_number_hasbeenhit(0), d_defends_ruins(false),
-   d_purchasable(false), d_awardable(false)
+   d_awardable(false)
 {
     // first, load the data that has to be loaded anyway
     helper->getData(d_strength, "strength");
@@ -119,7 +118,6 @@ Army::Army(XML_Helper* helper, bool prototype)
         helper->getData(d_army_bonus, "army_bonus");
 
 	helper->getData(d_defends_ruins,"defends_ruins");
-	helper->getData(d_purchasable,"purchasable");
 	helper->getData(d_awardable,"awardable");
 
         if (!helper->getData(d_gender, "gender"))
@@ -418,7 +416,6 @@ void  Army::printAllDebugInfo() const
     std::cerr << "max_moves = " << d_max_moves << std::endl;
     std::cerr << "upkeep = " << d_upkeep << std::endl;
     std::cerr << "defends_ruins = " << d_defends_ruins << std::endl;
-    std::cerr << "purchasable = " << d_purchasable << std::endl;
     std::cerr << "awardable = " << d_awardable << std::endl;
     std::cerr << "production = " << d_production << std::endl;
     std::cerr << "production_cost = " << d_production_cost << std::endl;
@@ -452,6 +449,5 @@ void Army::copyVals(const Army* a)
     d_army_bonus = a->getStat(ARMY_BONUS);
     d_gender = a->getGender();
     d_defends_ruins = a->getDefendsRuins();
-    d_purchasable = a->getPurchasable();
     d_awardable = a->getAwardable();
 }

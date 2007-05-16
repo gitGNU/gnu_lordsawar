@@ -9,7 +9,6 @@
         <d_description></d_description>
         <d_gender>1</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>
@@ -33,7 +32,6 @@
         <d_description></d_description>
         <d_gender>2</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>
@@ -57,7 +55,6 @@
         <d_description></d_description>
         <d_gender>1</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>
@@ -81,7 +78,6 @@
         <d_description></d_description>
         <d_gender>1</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>
@@ -105,7 +101,6 @@
         <d_description></d_description>
         <d_gender>1</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>
@@ -129,7 +124,6 @@
         <d_description></d_description>
         <d_gender>2</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>

@@ -303,6 +303,149 @@ void Fight::calculateBonus()
     std::list<Stack*>::const_iterator it;
     Stack::const_iterator sit;
     std::list<Fighter*>::iterator fit;
+    GameMap *gm = GameMap::getInstance();
+    Maptile *mtile;
+    Uint32 army_bonus;
+
+    for (it = d_attackers.begin(); it != d_attackers.end(); it++)
+      {
+        mtile = gm->getTile((*it)->getPos());
+        for (sit = (*it)->begin(); sit != (*it)->end(); sit++)
+          {
+            army_bonus = (*sit)->getStat(Army::ARMY_BONUS);
+            if (army_bonus & Army::ADD1STRINOPEN)
+              {
+                if (mtile->getType() == Tile::GRASS && 
+                    (mtile->getBuilding() != Maptile::CITY ||
+                     mtile->getBuilding() != Maptile::RUIN ||
+                     mtile->getBuilding() != Maptile::TEMPLE))
+                  ;
+              }
+            else if (army_bonus & Army::ADD1STRINFOREST)
+              {
+                if (mtile->getType() == Tile::FOREST && 
+                    (mtile->getBuilding() != Maptile::CITY ||
+                     mtile->getBuilding() != Maptile::RUIN ||
+                     mtile->getBuilding() != Maptile::TEMPLE))
+                  ;
+              }
+            else if (army_bonus & Army::ADD1STRINCITY)
+              {
+                if (mtile->getBuilding() == Maptile::CITY)
+                  ;
+              }
+            else if (army_bonus & Army::ADD2STRINCITY)
+              {
+                if (mtile->getBuilding() == Maptile::CITY)
+                  ;
+              }
+            else if (army_bonus & Army::ADD1STACKINHILLS)
+              {
+                if (mtile->getType() == Tile::HILLS && 
+                    (mtile->getBuilding() != Maptile::CITY ||
+                     mtile->getBuilding() != Maptile::RUIN ||
+                     mtile->getBuilding() != Maptile::TEMPLE))
+                  ;
+              }
+            else if (army_bonus & Army::ADD2STRINOPEN)
+              {
+                if (mtile->getType() == Tile::GRASS && 
+                    (mtile->getBuilding() != Maptile::CITY ||
+                     mtile->getBuilding() != Maptile::RUIN ||
+                     mtile->getBuilding() != Maptile::TEMPLE))
+                  ;
+              }
+            else if (army_bonus & Army::SUBALLCITYBONUS)
+              {
+                if (mtile->getBuilding() == Maptile::CITY)
+                  ;
+              }
+            else if (army_bonus & Army::SUB1ENEMYSTACK)
+              ;
+            else if (army_bonus & Army::ADD1STACK)
+              ;
+            else if (army_bonus & Army::ADD1SPECIAL)
+              ;
+            else if (army_bonus & Army::SUBALLNONHEROBONUS)
+              ;
+            else if (army_bonus & Army::SUBALLHEROBONUS)
+              ;
+            else if (army_bonus & Army::ADD2SPECIAL)
+              ;
+          }
+      }
+           
+    // first, check for attacker heroes
+    bool hasHero = false;
+    for (it = d_attackers.begin(); it != d_attackers.end(); it++)
+        for (sit = (*it)->begin(); sit != (*it)->end(); sit++)
+            if (((*sit)->getStat(Army::ARMY_BONUS) & Army::LEADER)
+                && ((*sit)->getHP() > 0))
+            {
+                hasHero = true;
+                break;
+            }
+
+    if (hasHero)
+    {
+        // add a +1 strength bonus to all units; heroes don't get this bonus :)
+        for (fit = d_att_close.begin(); fit != d_att_close.end(); fit++)
+            if (!((*fit)->army->getStat(Army::ARMY_BONUS) & Army::LEADER))
+                (*fit)->att_bonus = 1;
+
+        for (fit = d_att_ranged.begin(); fit != d_att_ranged.end(); fit++)
+            if (!((*fit)->army->getStat(Army::ARMY_BONUS) & Army::LEADER))
+                (*fit)->att_bonus = 1;
+    }
+
+    // now check for defender heroes
+    bool hasLeader = false;
+    for (it = d_defenders.begin(); it != d_defenders.end(); it++)
+        for (sit = (*it)->begin(); sit != (*it)->end(); sit++)
+            if (((*sit)->getStat(Army::ARMY_BONUS) & Army::LEADER)
+                && ((*sit)->getHP() > 0))
+            {
+                hasLeader = true;
+                break;
+            }
+
+    if (hasLeader)
+    {
+        // add a +1 strength bonus to all units; heroes don't get this bonus :)
+        for (fit = d_def_close.begin(); fit != d_def_close.end(); fit++)
+            if (!((*fit)->army->getStat(Army::ARMY_BONUS) & Army::LEADER))
+                (*fit)->att_bonus = 1;
+
+        for (fit = d_def_ranged.begin(); fit != d_def_ranged.end(); fit++)
+            if (!((*fit)->army->getStat(Army::ARMY_BONUS) & Army::LEADER))
+                (*fit)->att_bonus = 1;
+    }
+
+
+    for (fit = d_def_close.begin(); fit != d_def_close.end(); fit++)
+    {
+        // the defense bonus is given in 10% steps
+        int bonus = 10 * GameMap::getInstance()->getTile((*fit)->pos)->getDefense();
+
+        (*fit)->def_bonus = (bonus * (int)(*fit)->army->getStat(Army::DEFENSE))/100;
+    }
+
+    for (fit = d_def_ranged.begin(); fit != d_def_ranged.end(); fit++)
+    {
+        // the defense bonus is given in 10% steps
+        int bonus = 10 * GameMap::getInstance()->getTile((*fit)->pos)->getDefense();
+
+        (*fit)->def_bonus = (bonus * (int)(*fit)->army->getStat(Army::DEFENSE))/100;
+    }
+}
+
+/*
+void Fight::calculateBonus()
+{
+    // If there is a hero, add a +1 strength bonus
+    std::list<Stack*>::const_iterator it;
+    Stack::const_iterator sit;
+    std::list<Fighter*>::iterator fit;
 
     // first, check for attacker heroes
     bool hasHero = false;
@@ -367,6 +510,7 @@ void Fight::calculateBonus()
         (*fit)->def_bonus = (bonus * (int)(*fit)->army->getStat(Army::DEFENSE))/100;
     }
 }
+*/
 
 void Fight::shuffleLines()
 {

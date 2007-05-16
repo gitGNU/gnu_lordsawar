@@ -8,7 +8,7 @@
         <d_image>troll</d_image>
         <d_description></d_description>
         <d_production>3</d_production>
-        <d_production_cost>800</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>8</d_upkeep>
         <d_strength>4</d_strength>
         <d_ranged>6</d_ranged>
@@ -21,7 +21,6 @@
         <d_sight>2</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>4</d_move_bonus>
@@ -32,7 +31,7 @@
         <d_image>sheep</d_image>
         <d_description></d_description>
         <d_production>3</d_production>
-        <d_production_cost>1500</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>8</d_upkeep>
         <d_strength>7</d_strength>
         <d_ranged>0</d_ranged>
@@ -45,7 +44,6 @@
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
@@ -56,7 +54,7 @@
         <d_image>woodface</d_image>
         <d_description></d_description>
         <d_production>4</d_production>
-        <d_production_cost>2000</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>12</d_upkeep>
         <d_strength>4</d_strength>
         <d_ranged>7</d_ranged>
@@ -69,7 +67,6 @@
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
@@ -80,7 +77,7 @@
         <d_image>beholder</d_image>
         <d_description></d_description>
         <d_production>6</d_production>
-        <d_production_cost>3500</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>15</d_upkeep>
         <d_strength>5</d_strength>
         <d_ranged>8</d_ranged>
@@ -93,7 +90,6 @@
         <d_sight>5</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>true</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>15</d_move_bonus>
@@ -105,7 +101,7 @@
         <d_description></d_description>
         <d_portrait>demonspawn_big</d_portrait>
         <d_production>6</d_production>
-        <d_production_cost>3500</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>15</d_upkeep>
         <d_strength>8</d_strength>
         <d_ranged>0</d_ranged>
@@ -118,7 +114,6 @@
         <d_sight>5</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>true</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
@@ -129,7 +124,7 @@
         <d_image>hydra</d_image>
         <d_description></d_description>
         <d_production>6</d_production>
-        <d_production_cost>4000</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>25</d_upkeep>
         <d_strength>15</d_strength>
         <d_ranged>0</d_ranged>
@@ -142,7 +137,6 @@
         <d_sight>6</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>true</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>15</d_move_bonus>
@@ -153,7 +147,7 @@
         <d_image>ooze</d_image>
         <d_description></d_description>
         <d_production>4</d_production>
-        <d_production_cost>1500</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>10</d_upkeep>
         <d_strength>5</d_strength>
         <d_ranged>0</d_ranged>
@@ -166,7 +160,6 @@
         <d_sight>2</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>1</d_move_bonus>
@@ -177,7 +170,7 @@
         <d_image>octopus</d_image>
         <d_description></d_description>
         <d_production>4</d_production>
-        <d_production_cost>3000</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>20</d_upkeep>
         <d_strength>15</d_strength>
         <d_ranged>0</d_ranged>
@@ -190,7 +183,6 @@
         <d_sight>2</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>1</d_move_bonus>

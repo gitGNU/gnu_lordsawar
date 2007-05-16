@@ -21,7 +21,6 @@
         <d_sight>4</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>true</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
@@ -45,7 +44,6 @@
         <d_sight>4</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>true</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>2</d_move_bonus>
@@ -56,7 +54,7 @@
         <d_image>mage</d_image>
         <d_description></d_description>
         <d_production>4</d_production>
-        <d_production_cost>2000</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>10</d_upkeep>
         <d_strength>8</d_strength>
         <d_ranged>8</d_ranged>
@@ -69,7 +67,6 @@
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>true</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
@@ -80,7 +77,7 @@
         <d_image>dragon</d_image>
         <d_description></d_description>
         <d_production>6</d_production>
-        <d_production_cost>4000</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>40</d_upkeep>
         <d_strength>10</d_strength>
         <d_ranged>0</d_ranged>
@@ -93,7 +90,6 @@
         <d_sight>6</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>true</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>15</d_move_bonus>
@@ -104,7 +100,7 @@
         <d_image>holy_warrior</d_image>
         <d_description></d_description>
         <d_production>6</d_production>
-        <d_production_cost>4000</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>20</d_upkeep>
         <d_strength>15</d_strength>
         <d_ranged>0</d_ranged>
@@ -117,7 +113,6 @@
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>true</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
@@ -128,7 +123,7 @@
         <d_image>transport</d_image>
         <d_description></d_description>
         <d_production>4</d_production>
-        <d_production_cost>1500</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>10</d_upkeep>
         <d_strength>4</d_strength>
         <d_ranged>5</d_ranged>
@@ -141,7 +136,6 @@
         <d_sight>4</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>1</d_move_bonus>
@@ -152,7 +146,7 @@
         <d_image>frigate</d_image>
         <d_description></d_description>
         <d_production>6</d_production>
-        <d_production_cost>2500</d_production_cost>
+        <d_production_cost>0</d_production_cost>
         <d_upkeep>20</d_upkeep>
         <d_strength>10</d_strength>
         <d_ranged>10</d_ranged>
@@ -165,7 +159,6 @@
         <d_sight>4</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
-        <d_purchasable>false</d_purchasable>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
         <d_move_bonus>1</d_move_bonus>

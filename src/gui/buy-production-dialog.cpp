@@ -59,7 +59,7 @@ BuyProductionDialog::BuyProductionDialog(City *c)
         for (unsigned int j = 0; j < al->getSize(sets[i]); j++)
           {
             const Army *a = al->getArmy (sets[i], j);
-            if (a->getPurchasable())
+            if (a->getProductionCost() > 0)
               purchasables.push_back(a);
           }
       }

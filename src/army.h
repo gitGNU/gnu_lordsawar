@@ -41,12 +41,34 @@ class Army : public sigc::trackable
         enum Gender {NONE = 0, MALE = 1, FEMALE = 2};
 
         enum Bonus {
-            SHIP = 2,           //!< army can only move on water
-            LEADER = 4,           //!< +1 strength for allies in combat, may search
-            CAVALRY = 8,        //!< +1 strength on open terrain
-            ANTICAVALRY = 16,   //!< *2 strength vs. cavalry
-            REGENERATE = 32,      //!< heals 1 HP per combat round and at combat end
-            CRITICAL = 64       //!< can score instant kills on hit in combat
+            //SHIP = 2,           //!< army can only move on water
+            //LEADER = 4,           //!< +1 strength for allies in combat, may search
+            //CAVALRY = 8,        //!< +1 strength on open terrain
+            //ANTICAVALRY = 16,   //!< *2 strength vs. cavalry
+            //REGENERATE = 32,      //!< heals 1 HP per combat round and at combat end
+            //CRITICAL = 64       //!< can score instant kills on hit in combat
+	      SHIP        = 0x00000002, //army can only move on water
+	      LEADER      = 0x00000004, //+1 str to stack, may search
+	      CAVALRY     = 0x00000008, //+1 str in open
+	      ANTICAVALRY = 0x00000010, //*2 str vs cavalry
+	      REGENERATE  = 0x00000020, //heals 1hp per combat round
+	      CRITICAL    = 0x00000040, //can instakill
+
+	      ADD1STRINOPEN      = 0x00000080,
+	      ADD1STRINFOREST    = 0x00000100,
+	      ADD1STRINHILLS     = 0x00000200,
+	      ADD1STRINCITY      = 0x00000400,
+	      ADD2STRINCITY      = 0x00000800,
+	      ADD1STACKINHILLS   = 0x00001000,
+	      ADD2STRINOPEN      = 0x00002000,
+	      SUBALLCITYBONUS    = 0x00004000,
+	      SUB1ENEMYSTACK     = 0x00008000,
+	      ADD1STACK          = 0x00010000,
+	      ADD1SPECIAL        = 0x00020000,
+	      SUBALLNONHEROBONUS = 0x00040000,
+	      SUBALLHEROBONUS    = 0x00080000,
+	      ADD2SPECIAL        = 0x00100000,
+
         };
         
         enum Stat {
@@ -174,6 +196,8 @@ class Army : public sigc::trackable
         Uint32 getProduction() const {return d_production;}
 
         //! Returns how much gold setting up the production costs
+	//! If this number is over zero, then the army can be
+	//! purchased.
         Uint32 getProductionCost() const {return d_production_cost;}
 
         //! Returns how much XP killing a unit of this type is worth
@@ -297,11 +321,6 @@ class Army : public sigc::trackable
 	//! Gets whether or not this army type can found in a ruin.
 	bool getDefendsRuins() const {return d_defends_ruins; }
 
-	//! Sets whether or not this army type can be bought.
-	void setPurchasable(bool purchasable) {d_purchasable= purchasable; }
-	//! Gets whether or not this army type can be bought.
-	bool getPurchasable() const {return d_purchasable; }
-
 	//! Sets whether or not this army can be a reward for completing a 
 	//! quest, or for having a new hero arrive.
 	void setAwardable (bool awardable) {d_awardable = awardable; }
@@ -368,8 +387,6 @@ class Army : public sigc::trackable
         double d_number_hasbeenhit;
 	//! this army type can defend a ruin or not
 	bool d_defends_ruins;
-	//! this army type can be bought in `build production'
-	bool d_purchasable;
 	//! this army type can be a reward from quest
 	bool d_awardable;
 };
