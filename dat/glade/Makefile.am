@@ -22,6 +22,8 @@ ruinfight-finished-dialog.glade \
 ruinfight-started-dialog.glade \
 ruin-searched-dialog.glade \
 splash-window.glade \
-temple-visit-dialog.glade
+temple-visit-dialog.glade \
+hero-brings-allies-dialog.glade \
+next-player-turn-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)
