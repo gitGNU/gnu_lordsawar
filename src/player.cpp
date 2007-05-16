@@ -222,6 +222,8 @@ void Player::addGold(int gold)
 void Player::withdrawGold(int gold)
 {
     d_gold -= gold;
+    if (d_gold < 0)
+      d_gold = 0; /* bankrupt.  should we start turning off city production? */
     schangingStatus.emit();
 }
 

@@ -599,11 +599,11 @@ void RealPlayer::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
         numberarmy += (*it)->size();
 
     for (it = stacks.begin(); it != stacks.end(); )
-    {
+      {
         debug("Stack: " << (*it))
 
         for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end();)
-        {
+          {
             debug("Army: " << (*sit))
 
             // here we adds XP
@@ -614,78 +614,93 @@ void RealPlayer::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
             (*sit)->setBattlesNumber((*sit)->getBattlesNumber()+1);
             debug("Army battles " <<  (*sit)->getBattlesNumber())
 
-            if(((*sit)->getBattlesNumber())>10 && !((*sit)->getMedalBonus(2)))
-            {
-                (*sit)->setMedalBonus(2,true);
-                // We must recalculate the XPValue of this unit since it got a medal
-                (*sit)->setXpReward((*sit)->getXpReward()+1);
-                // We get the medal bonus here
-                (*sit)->setStat(Army::HP, (*sit)->getStat(Army::HP, false)+4);
-                // Emit signal
-                snewMedalArmy.emit(*sit);
+            // medals only go to non-ally armies.
+            if ((*it)->hasHero() && (*sit)->isHero() == false && 
+                (*sit)->getAwardable() == false)
+              {
+                if(((*sit)->getBattlesNumber())>10 && 
+                   !((*sit)->getMedalBonus(2)))
+                  {
+                    (*sit)->setMedalBonus(2,true);
+                    // We must recalculate the XPValue of this unit since it 
+                    // got a medal
+                    (*sit)->setXpReward((*sit)->getXpReward()+1);
+                    // We get the medal bonus here
+                    (*sit)->setStat(Army::STRENGTH, (*sit)->getStat(Army::STRENGTH, false)+1);
+                    // Emit signal
+                    snewMedalArmy.emit(*sit);
+                  }
+
+                debug("Army hits " <<  (*sit)->getNumberHasHit())
+
+                // Only give medals if the unit has attacked often enough, else
+                // medals lose the flair of something special; a value of n 
+                // means roughly to hit an equally strong unit around n 
+                // times. (note: one hit! An attack can consist of up to 
+                // strength hits)
+                if(((*sit)->getNumberHasHit()>50) && !(*sit)->getMedalBonus(0))
+                  {
+                    (*sit)->setMedalBonus(0,true);
+                    // We must recalculate the XPValue of this unit since it
+                    // got a medal
+                    (*sit)->setXpReward((*sit)->getXpReward()+1);
+                    // We get the medal bonus here
+                    (*sit)->setStat(Army::STRENGTH, (*sit)->getStat(Army::STRENGTH, false)+1);
+                    // Emit signal
+                    snewMedalArmy.emit(*sit);
+                  }
+
+                debug("army being hit " <<  (*sit)->getNumberHasBeenHit())
+
+                // Gives the medal for good defense. The more negative the 
+                // number the more blows the unit evaded. n means roughly 
+                // avoid n hits from an equally strong unit. Since we want 
+                // to punish the case of the unit hiding among many others, 
+                // we set this value quite high.
+                if(((*sit)->getNumberHasBeenHit() < -100) && !(*sit)->getMedalBonus(1))
+                  {
+                    (*sit)->setMedalBonus(1,true);
+                    // We must recalculate the XPValue of this unit since it 
+                    // got a medal
+                    (*sit)->setXpReward((*sit)->getXpReward()+1);
+                    // We get the medal bonus here
+                    (*sit)->setStat(Army::STRENGTH, (*sit)->getStat(Army::STRENGTH, false)+1);
+                    // Emit signal
+                    snewMedalArmy.emit(*sit);
+                  }
+                debug("Army hits " <<  (*sit)->getNumberHasHit())
+
+                for(int i=0;i<3;i++)
+                  {
+                    debug("MEDAL[" << i << "]==" << (*sit)->getMedalBonus(i))
+                  }
+              }
+
+              // We reset the hit values after the battle
+              (*sit)->setNumberHasHit(0);
+              (*sit)->setNumberHasBeenHit(0);
+
+              if ((*sit)->isHero())
+                {
+                  while((*sit)->canGainLevel())
+                    {
+                      // Units not associated to a player never raise levels.
+                      if ((*sit)->getPlayer() == 
+                          Playerlist::getInstance()->getNeutral())
+                        break;
+
+                      //Here this for is to check if army must raise 2 or more 
+                      //levels per time depending on the XP and level itself
+
+                      debug("ADVANCING LEVEL "<< "CANGAINLEVEL== " << (*sit)->canGainLevel())
+                      (*sit)->getPlayer()->levelArmy(*sit);
+                    }
+                  debug("Army new XP=" << (*sit)->getXP())
+                }
+              sit++;
             }
-
-            debug("Army hits " <<  (*sit)->getNumberHasHit())
-
-            // Only give medals if the unit has attacked often enough, else
-            // medals loose the flair of something special; a value of n means
-            // roughly to hit an equally strong unit around n times. (note: one
-            // hit! An attack can consist of up to strength hits)
-            if(((*sit)->getNumberHasHit() > 50) && !(*sit)->getMedalBonus(0))
-            {
-                (*sit)->setMedalBonus(0,true);
-                // We must recalculate the XPValue of this unit since it got a medal
-                (*sit)->setXpReward((*sit)->getXpReward()+1);
-                // We get the medal bonus here
-                (*sit)->setStat(Army::STRENGTH, (*sit)->getStat(Army::STRENGTH, false)+1);
-                // Emit signal
-                snewMedalArmy.emit(*sit);
-            }
-
-            debug("army being hit " <<  (*sit)->getNumberHasBeenHit())
-
-            // Gives the medal for good defense. The more negative the number
-            // the more blows the unit evaded. n means roughly avoid n
-            // hits from an equally strong unit. Since we want to punish
-            // the case of the unit hiding among many others, we set this
-            // value quite high.
-            if(((*sit)->getNumberHasBeenHit() < -100) && !(*sit)->getMedalBonus(1))
-            {
-                (*sit)->setMedalBonus(1,true);
-                // We must recalculate the XPValue of this unit since it got a medal
-                (*sit)->setXpReward((*sit)->getXpReward()+1);
-                // We get the medal bonus here
-                (*sit)->setStat(Army::DEFENSE, (*sit)->getStat(Army::DEFENSE, false)+1);
-                // Emit signal
-                snewMedalArmy.emit(*sit);
-            }
-
-            for(int i=0;i<3;i++)
-            {
-                debug("MEDAL[" << i << "]==" << (*sit)->getMedalBonus(i))
-            }
-
-            // We reset the hit values after the battle
-            (*sit)->setNumberHasHit(0);
-            (*sit)->setNumberHasBeenHit(0);
-
-            while((*sit)->canGainLevel())
-            {
-                // Units not associated to a player never raise levels.
-                if ((*sit)->getPlayer() == 0)
-                    break;
-
-                //Here this for is to check if army must raise 2 or more levels per time
-                //depending on the XP and level itsself
-
-                debug("ADVANCING LEVEL "<< "CANGAINLEVEL== " << (*sit)->canGainLevel())
-                (*sit)->getPlayer()->levelArmy(*sit);
-            }
-            debug("Army new XP=" << (*sit)->getXP())
-            sit++;
-        }
-        it++;
-    }
+          it++;
+      }
 }
 
 void RealPlayer::getHeroes(const std::list<Stack*> stacks, std::vector<Uint32>& dst)
