@@ -22,10 +22,6 @@
 
 #include "bigmap.h"
 
-//#include "cityinfo.h"
-//#include "ruininfo.h"
-//#include "SignpostInfo.h"
-//#include "TempleInfo.h"
 #include "army.h"
 #include "path.h"
 #include "stacklist.h"
@@ -572,18 +568,18 @@ void BigMap::draw_buffer()
         Stacklist* mylist = (*pit)->getStacklist();
         for (Stacklist::iterator it= mylist->begin(); it != mylist->end(); it++)
         {
-	    if ((*it)->empty())
-	    {
-		std::cerr << "WARNING: empty stack found" << std::endl;
-		continue;
-	    }
-
             Vector<int> p = (*it)->getPos();
 
             // check if the object lies in the viewed part of the map
             // otherwise we shouldn't draw it
             if (is_inside(buffer_view, p) && !(*it)->getDeleting())
             {
+		if ((*it)->empty())
+		{
+		    std::cerr << "WARNING: empty stack found" << std::endl;
+		    continue;
+		}
+
                 p = tile_to_buffer_pos(p);
 
                 // draw stack
@@ -687,14 +683,14 @@ void BigMap::draw_buffer()
 	    SDL_Surface *tmp;
             int num_selected = 0;
             for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
-              {
+	    {
                 if ((*it)->isGrouped())
-                  num_selected++;
-              }
+		    num_selected++;
+	    }
 	    if (num_selected > 1)
-	      tmp = gc->getSelectorPic(0, bigframe, p);
+		tmp = gc->getSelectorPic(0, bigframe, p);
 	    else
-	      tmp = gc->getSelectorPic(1, smallframe, p);
+		tmp = gc->getSelectorPic(1, smallframe, p);
             SDL_BlitSurface(tmp, 0, buffer, &r);
 	}
     }

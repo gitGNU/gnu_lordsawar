@@ -23,7 +23,6 @@
 #include "input-events.h"
 #include "rectangle.h"
 #include "sidebar-stats.h"
-#include "stack-info.h"
 #include "map-tip-position.h"
 #include "callback-enums.h"
 #include "army.h"
@@ -43,6 +42,7 @@ class Player;
 class Ruin;
 class Fight;
 class Quest;
+class Stack;
 
 /** Controls a game.
   * 
@@ -143,7 +143,7 @@ class Game
 	can_move_selected_stack,
 	can_move_all_stacks,
 	can_end_turn;
-    sigc::signal<void, StackInfo> stack_info_changed;
+    sigc::signal<void, Stack *> stack_info_changed;
     sigc::signal<void, Glib::ustring, MapTipPosition> map_tip_changed;
     sigc::signal<void, Ruin*, int> ruin_searched;
     sigc::signal<void, Fight &> fight_started;

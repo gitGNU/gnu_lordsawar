@@ -31,7 +31,6 @@
 
 #include "../game-parameters.h"
 #include "../sidebar-stats.h"
-#include "../stack-info.h"
 #include "../stack.h"
 #include "../fight.h"
 #include "../map-tip-position.h"
@@ -85,7 +84,7 @@ class GameWindow: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Window> window;
     std::auto_ptr<Gtk::Window> map_tip;	// tooltip appears over the map
-    std::auto_ptr<Gtk::Window> stack_info_tip; // tooltip for stack info
+    std::auto_ptr<Gtk::Window> army_info_tip; // tooltip for stack info
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
     Gtk::Box *stack_info_box;
@@ -103,8 +102,9 @@ class GameWindow: public sigc::trackable
     Gtk::Button *move_button;
     Gtk::Button *move_all_button;
     Gtk::Button *end_turn_button;
-    
-    Gtk::Tooltips tooltips;
+
+    Stack *currently_selected_stack;
+    sigc::connection army_info_tip_connection;
     typedef std::vector<Gtk::ToggleButton *> army_buttons_type;
     army_buttons_type army_buttons;
 
@@ -130,15 +130,17 @@ class GameWindow: public sigc::trackable
     // stack info pane at the bottom
     void on_army_toggled(Gtk::ToggleButton *toggle, Army *army);
     bool on_army_button_event(GdkEventButton *e, Army *army);
+    bool on_army_mouse_event(GdkEventCrossing *e, Gtk::ToggleButton *toggle,
+			     Army *army);
+    bool on_army_info_tip_timeout();
     void on_army_button_has_size();
     void clear_army_buttons();
     void ensure_one_army_button_active();
-    void set_army_button_tooltip(Gtk::ToggleButton *toggle);
 
     // game callbacks
     void on_sidebar_stats_changed(SidebarStats s);
     void on_smallmap_changed(SDL_Surface *map);
-    void on_stack_info_changed(StackInfo s);
+    void on_stack_info_changed(Stack *s);
     void on_map_tip_changed(Glib::ustring tip, MapTipPosition pos);
     void on_ruin_searched(Ruin *ruin, int gold_found);
     void on_fight_started(Fight &fight);

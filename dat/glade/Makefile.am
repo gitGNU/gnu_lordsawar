@@ -14,6 +14,7 @@ destination-dialog.glade \
 fight-window.glade \
 game-preferences-dialog.glade \
 game-window.glade \
+hero-dialog.glade \
 hero-offer-dialog.glade \
 medal-awarded-dialog.glade \
 quest-assigned-dialog.glade \

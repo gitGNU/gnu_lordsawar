@@ -45,6 +45,7 @@
 #include "fight-window.h"
 #include "city-window.h"
 #include "army-gains-level-dialog.h"
+#include "hero-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -64,6 +65,7 @@
 #include "../Quest.h"
 #include "../QuestsManager.h"
 #include "../stack.h"
+#include "../timing.h"
 
 
 GameWindow::GameWindow()
@@ -415,14 +417,32 @@ void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
 {
     army->setGrouped(toggle->get_active());
     ensure_one_army_button_active();
-    set_army_button_tooltip(toggle);
 }
 
 bool GameWindow::on_army_button_event(GdkEventButton *e, Army *army)
 {
+    Hero *hero = dynamic_cast<Hero *>(army);
+    if (!hero)
+	return false;
+    
     MouseButtonEvent event = to_input_event(e);
     if (event.button == MouseButtonEvent::RIGHT_BUTTON
-	&& event.state == MouseButtonEvent::PRESSED)
+	&& event.state == MouseButtonEvent::PRESSED) {
+
+	HeroDialog d(hero, currently_selected_stack->getPos());
+
+	d.set_parent_window(*window.get());
+	d.run();
+	return true;
+    }
+    
+    return false;
+}
+
+bool GameWindow::on_army_mouse_event(GdkEventCrossing *e,
+				     Gtk::ToggleButton *toggle, Army *army)
+{
+    if (e->type == GDK_ENTER_NOTIFY)
     {
 	Glib::RefPtr<Gnome::Glade::Xml> xml
 	    = Gnome::Glade::Xml::create(get_glade_path()
@@ -430,7 +450,7 @@ bool GameWindow::on_army_button_event(GdkEventButton *e, Army *army)
 
 	Gtk::Window *w = 0;
 	xml->get_widget("window", w);
-	stack_info_tip.reset(w);
+	army_info_tip.reset(w);
 
 	Gtk::Image *army_image;
 	xml->get_widget("army_image", army_image);
@@ -460,19 +480,45 @@ bool GameWindow::on_army_button_event(GdkEventButton *e, Army *army)
 	s += String::ucompose(_("Upkeep: %1"), army->getUpkeep());
 	info_label->set_text(s);
     
-	stack_info_tip->show();
+	// move into correct position
+	army_info_tip->get_child()->show();
+	Vector<int> p(0, 0);
+	toggle->get_window()->get_origin(p.x, p.y);
+	if (toggle->has_no_window())
+	{
+	    Gtk::Allocation a = toggle->get_allocation();
+	    p.x += a.get_x();
+	    p.y += a.get_y();
+	}
+	Vector<int> size(0, 0);
+	army_info_tip->get_size(size.x, size.y);
+	army_info_tip->set_gravity(Gdk::GRAVITY_SOUTH);
+	p.y -= size.y + 2;
+	
+	army_info_tip->move(p.x, p.y);
 
-	return true;
+	army_info_tip_connection
+	    = Timing::instance().register_timer(
+		sigc::mem_fun(this, &GameWindow::on_army_info_tip_timeout),
+		1000);
     }
-    else if (event.button == MouseButtonEvent::RIGHT_BUTTON
-	&& event.state == MouseButtonEvent::RELEASED)
+    else
     {
-	stack_info_tip.reset();
-	return true;
+	army_info_tip_connection.disconnect();
+	army_info_tip.reset();
     }
     
     return false;
 }
+
+bool GameWindow::on_army_info_tip_timeout()
+{
+    if (army_info_tip.get())
+	army_info_tip->show();
+    
+    return Timing::STOP;
+}
+
 
 void GameWindow::on_army_button_has_size()
 {
@@ -508,18 +554,6 @@ void GameWindow::ensure_one_army_button_active()
     }
 }
 
-void GameWindow::set_army_button_tooltip(Gtk::ToggleButton *toggle)
-{
-    Glib::ustring tip;
-    
-    if (toggle->get_active())
-	tip = _("Click to prevent this army from following the stack");
-    else
-	tip = _("Click to let this army follow the stack");
-
-    tooltips.set_tip(*toggle, tip);
-}
-
 void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 {
     Glib::ustring n = String::ucompose(
@@ -533,12 +567,16 @@ void GameWindow::on_smallmap_changed(SDL_Surface *map)
     map_image->property_pixbuf() = to_pixbuf(map);
 }
 
-void GameWindow::on_stack_info_changed(StackInfo s)
+void GameWindow::on_stack_info_changed(Stack *s)
 {
     clear_army_buttons();
 
-    for (StackInfo::armies_type::iterator i = s.armies.begin(),
-	     end = s.armies.end(); i != end; ++i)
+    currently_selected_stack = s;
+
+    if (!s)
+	return;
+    
+    for (Stack::iterator i = s->begin(), end = s->end(); i != end; ++i)
     {
 	// construct a toggle button
 	Army *army = *i;
@@ -561,17 +599,23 @@ void GameWindow::on_stack_info_changed(StackInfo s)
 	Gtk::ToggleButton *toggle = new Gtk::ToggleButton;
 	toggle->add(*toggle_box);
 	toggle->set_active(army->isGrouped());
-	set_army_button_tooltip(toggle);
 	toggle->signal_toggled().connect(
 	    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_toggled),
 		       toggle, army));
-	toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
+	toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK
+	    | Gdk::ENTER_NOTIFY_MASK | Gdk::LEAVE_NOTIFY_MASK);
 	toggle->signal_button_press_event().connect(
 	    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
 		       army), false);
 	toggle->signal_button_release_event().connect(
 	    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
 		       army), false);
+	toggle->signal_enter_notify_event().connect(
+	    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_mouse_event),
+		       toggle, army), false);
+	toggle->signal_leave_notify_event().connect(
+	    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_mouse_event),
+		       toggle, army), false);
 	toggle->signal_size_allocate().connect_notify(
 	    sigc::hide(sigc::mem_fun(*this, &GameWindow::on_army_button_has_size)));
 	

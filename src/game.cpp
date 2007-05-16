@@ -79,21 +79,21 @@ Game::Game(GameScenario* gameScenario)
     // init the bigmap
     bigmap.reset(new BigMap);
     bigmap->view_changed.connect(
-	sigc::mem_fun(*this, &Game::on_bigmap_view_changed));
+	sigc::mem_fun(this, &Game::on_bigmap_view_changed));
     bigmap->stack_selected.connect(
-	sigc::mem_fun((*this), &Game::on_stack_selected));
+	sigc::mem_fun(this, &Game::on_stack_selected));
     bigmap->path_set.connect(
-	sigc::mem_fun((*this), &Game::update_control_panel));
+	sigc::mem_fun(this, &Game::update_control_panel));
     bigmap->city_selected.connect(
-	sigc::mem_fun((*this), &Game::on_city_selected));
+	sigc::mem_fun(this, &Game::on_city_selected));
     bigmap->ruin_selected.connect(
-	sigc::mem_fun((*this), &Game::on_ruin_selected));
+	sigc::mem_fun(this, &Game::on_ruin_selected));
     bigmap->signpost_selected.connect(
-	sigc::mem_fun((*this), &Game::on_signpost_selected));
+	sigc::mem_fun(this, &Game::on_signpost_selected));
     bigmap->temple_selected.connect(
-	sigc::mem_fun((*this), &Game::on_temple_selected));
+	sigc::mem_fun(this, &Game::on_temple_selected));
     bigmap->mouse_on_tile.connect(
-	sigc::mem_fun(*this, &Game::on_mouse_on_tile));
+	sigc::mem_fun(this, &Game::on_mouse_on_tile));
 
     // init the smallmap
     smallmap.reset(new SmallMap);
@@ -255,23 +255,12 @@ void Game::on_smallmap_view_changed(Rectangle view)
 void Game::update_stack_info()
 {
     Stack* stack = Playerlist::getActiveplayer()->getActivestack();
-
-    StackInfo s;
-    if (stack)
-    {
-	for (Stack::iterator i = stack->begin(), end = stack->end(); i != end; ++i)
-	{
-	    s.armies.push_back(*i);
-	}
-    }
-    
-    stack_info_changed.emit(s);
+    stack_info_changed.emit(stack);
 }
 
 void Game::clear_stack_info()
 {
-    StackInfo s;
-    stack_info_changed.emit(s);
+    stack_info_changed.emit(0);
 }
 
 
