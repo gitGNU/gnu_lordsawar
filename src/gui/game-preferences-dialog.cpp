@@ -293,8 +293,8 @@ void GamePreferencesDialog::on_start_game_clicked()
 	
 	case MAP_SIZE_NORMAL:
 	default:
-	    g.map.width = 100;
-	    g.map.height = 150;
+	    g.map.width = 112;
+	    g.map.height = 156;
 	    break;
 	}
 	g.map.grass = int(grass_scale->get_value());

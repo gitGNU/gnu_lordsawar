@@ -84,7 +84,7 @@ void Driver::on_new_game_requested(GameParameters g)
     game_window->sdl_initialized.connect(
 	sigc::bind(sigc::mem_fun(game_window.get(), &GameWindow::new_game), g));
 
-    game_window->init(800, 600);
+    game_window->init(640, 480);
     game_window->show();
 }
 
