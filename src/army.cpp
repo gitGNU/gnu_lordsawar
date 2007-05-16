@@ -148,6 +148,8 @@ void Army::setStat(Army::Stat stat, Uint32 value)
     switch (stat)
     {
         case STRENGTH:  d_strength = value;
+                        if (d_strength > 9)
+                          d_strength = 9;
                         break;
         case DEFENSE:   d_defense = value;
                         break;
@@ -332,6 +334,8 @@ int Army::gainLevel(Stat stat)
     {
     case STRENGTH:
 	d_strength += delta;
+        if (d_strength > 9)
+          d_strength = 9;
 	break;
     case DEFENSE:
 	d_defense += delta;
