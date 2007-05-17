@@ -186,7 +186,7 @@
                             <child>
                               <widget class="GtkButton" id="on_hold_button">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">_On hold</property>
+                                <property name="label" translatable="yes">_Stop</property>
                                 <property name="use_underline">True</property>
                                 <property name="tooltip" translatable="yes">Stop producing armies</property>
                               </widget>
