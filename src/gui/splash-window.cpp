@@ -19,6 +19,8 @@
 #include <gtkmm/window.h>
 #include <gtkmm/image.h>
 #include <gtkmm/table.h>
+#include <gtkmm/filechooserdialog.h>
+#include <gtkmm/stock.h>
 
 #include "splash-window.h"
 
@@ -57,6 +59,8 @@ SplashWindow::SplashWindow()
     
     xml->connect_clicked("new_game_button",
 			 sigc::mem_fun(*this, &SplashWindow::on_new_game_clicked));
+    xml->connect_clicked("load_game_button",
+			 sigc::mem_fun(*this, &SplashWindow::on_load_game_clicked));
     xml->connect_clicked("quit_button",
 			 sigc::mem_fun(*this, &SplashWindow::on_quit_clicked));
 
@@ -99,6 +103,29 @@ void SplashWindow::on_new_game_clicked()
     d.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
     
     d.run();
+}
+
+void SplashWindow::on_load_game_clicked()
+{
+    Gtk::FileChooserDialog chooser(*window.get(), _("Choose Game to Load"));
+    Gtk::FileFilter sav_filter;
+    sav_filter.add_pattern("*.sav");
+    chooser.set_filter(sav_filter);
+    chooser.set_current_folder(Configuration::s_savePath);
+
+    chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
+    chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+	
+    chooser.show_all();
+    int res = chooser.run();
+    
+    if (res == Gtk::RESPONSE_ACCEPT)
+    {
+	std::string filename = chooser.get_filename();
+	chooser.hide();	
+	load_requested.emit(filename);
+    }
 }
 
 void SplashWindow::on_game_started(GameParameters g)
@@ -270,34 +297,6 @@ bool SplashWindow::b_campaignClicked(PG_Button* btn)
     mb.RunModal();
     mb.Hide();
     return true;
-}
-
-void SplashWindow::clearData()
-{
-    if (d_mainWindow)
-    {
-        delete d_mainWindow;
-        d_mainWindow = 0;
-    }
-
-    // some of the references here use player pointers which are obsolete by now,
-    // beside it assumes some specific terrain set and such
-    GraphicsCache::deleteInstance();
-}
-
-void SplashWindow::gameFinished(Uint32 status)
-{
-    debug("gameFinished()");
-
-    //the memory for gameScenario and mainWindow is freed as soon as a
-    //new game is started
-
-    d_mainWindow->stopGame();
-    d_mainWindow->Hide();
-
-    Show();
-
-    Sound::getInstance()->playMusic("intro");
 }
 
 void *SplashWindow::networkThread(void *arg)

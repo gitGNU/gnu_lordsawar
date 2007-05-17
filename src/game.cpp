@@ -798,6 +798,12 @@ void Game::stopGame()
     Playerlist::finish();
 }
 
+bool Game::saveGame(std::string file)
+{
+    return d_gameScenario->saveGame(file);
+}
+
+
 /*
  *
  * what are the chances of a hero showing up?

@@ -40,21 +40,8 @@ class SplashWindow: public sigc::trackable
     void show();
     void hide();
         
-    /** Notification of a finished game
-     *
-     * This is called when a currently running game is finished. Since the
-     * calling function is one of the game lists or windows, we cannot clear
-     * them in an instant (this would corrupt the stack), but have to interrupt
-     * the game and clear everything when a new game is started. This is a bit
-     * crude, as the memory isn't freed while the player has not started a new
-     * game, but the alternative of using a timer is equally weird.
-     *
-     * @param  status  the game delivers a number that indicates how the
-     *                 game was won/lost, currently unused
-     */
-    void gameFinished();
-
     sigc::signal<void, GameParameters> new_game_requested;
+    sigc::signal<void, std::string> load_requested;
     sigc::signal<void> quit_requested;
 
  private:
@@ -81,9 +68,6 @@ class SplashWindow: public sigc::trackable
 
     //! Network data processing
     void networkData();
-
-    //! Clears the game data
-    void clearData();
 #endif
         
 };

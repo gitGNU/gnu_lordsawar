@@ -90,16 +90,16 @@ class Game
      * care for that a separate function seems justified.
      */
     void connectEvents();
-    
-    //! This function has to be called to initiate the game flow
+
+    // initiate game flow
     void startGame();
-
-    //! Starts an already loaded and set up game (some details vary to startGame)
     void loadGame();
-
-    //! Stops the game. This mainly stops the timers and such.
+    // stop game flow, clean up
     void stopGame();
-    
+
+    // save current game, returns true if successful
+    bool saveGame(std::string file);
+
     //! Called whenever a stack has moved, updates the map etc.
     void stackUpdate(Stack* s);
 
@@ -115,11 +115,6 @@ class Game
     // locks/unlocks the input widgets during computer turns
     void lock_inputs();
     void unlock_inputs();
-
-    //! Hack to keep GameScenario invisible from PMainWindow
-#if 0
-    bool save(std::string file){return d_gameScenario->saveGame(file);}
-#endif
 
     //! Function that puts all units on the tile into the current active stack
     void selectAllStack();

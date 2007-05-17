@@ -33,6 +33,8 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/entry.h>
+#include <gtkmm/filechooserdialog.h>
+#include <gtkmm/stock.h>
 
 #include "game-window.h"
 
@@ -203,8 +205,15 @@ void GameWindow::new_game(GameParameters g)
 	std::string path = create_and_dump_scenario("random.map", g);
 	g.map_path = path;
     }
-    
-    load_game(g.map_path, true);
+
+    setup_game(g.map_path);
+    game->startGame();
+}
+
+void GameWindow::load_game(std::string file_path)
+{
+    setup_game(file_path);
+    game->loadGame();
 }
 
 namespace 
@@ -219,12 +228,15 @@ namespace
     }
 }
 
-void GameWindow::load_game(const std::string &file_path, bool start)
+void GameWindow::setup_game(std::string file_path)
 {
+    stop_game();
+    
     bool broken;
     GameScenario* game_scenario = new GameScenario(file_path, broken, true);
     
     if (broken)
+	// FIXME: we should not die here, but simply return to the splash screen
 	show_fatal_error(_("Map was broken when re-reading. Exiting..."));
 
     Sound::getInstance()->haltMusic(false);
@@ -312,11 +324,6 @@ void GameWindow::load_game(const std::string &file_path, bool start)
 	sigc::mem_fun(this, &GameWindow::on_quest_completed));
     q->quest_expired.connect(
 	sigc::mem_fun(this, &GameWindow::on_quest_expired));
-    
-    if (start)
-      game->startGame();
-    else
-      game->loadGame();
 }
 
 bool GameWindow::on_delete_event(GdkEventAny *e)
@@ -390,14 +397,72 @@ void GameWindow::on_sdl_surface_changed()
 
 void GameWindow::on_load_game_activated()
 {
+    Gtk::FileChooserDialog chooser(*window.get(), _("Choose Game to Load"));
+    Gtk::FileFilter sav_filter;
+    sav_filter.add_pattern("*.sav");
+    chooser.set_filter(sav_filter);
+    chooser.set_current_folder(Configuration::s_savePath);
+
+    chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
+    chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+	
+    chooser.show_all();
+    int res = chooser.run();
+    
+    if (res == Gtk::RESPONSE_ACCEPT)
+    {
+	std::string filename = chooser.get_filename();
+	chooser.hide();
+	load_game(filename);
+    }
 }
 
 void GameWindow::on_save_game_activated()
 {
+    if (current_save_filename.empty())
+	on_save_game_as_activated();
+    else
+    {
+	if (game.get())
+	{
+	    bool success = game->saveGame(current_save_filename);
+	    if (!success)
+		show_error(_("Game was not saved!"));
+	}
+    }
 }
 
 void GameWindow::on_save_game_as_activated()
 {
+    Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
+				   Gtk::FILE_CHOOSER_ACTION_SAVE);
+    Gtk::FileFilter sav_filter;
+    sav_filter.add_pattern("*.sav");
+    chooser.set_filter(sav_filter);
+    chooser.set_current_folder(Configuration::s_savePath);
+
+    chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
+    chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+    
+    chooser.show_all();
+    int res = chooser.run();
+    
+    if (res == Gtk::RESPONSE_ACCEPT)
+    {
+	std::string filename = chooser.get_filename();
+	chooser.hide();
+
+	current_save_filename = filename;
+
+	if (game.get())
+	{
+	    bool success = game->saveGame(current_save_filename);
+	    if (!success)
+		show_error(_("Error saving game!"));
+	}
+    }
 }
 
 void GameWindow::on_resign_game_activated()
@@ -429,6 +494,7 @@ void GameWindow::stop_game()
     {
 	game->stopGame();
 	game.reset();
+	current_save_filename = "";
     }
 }
 

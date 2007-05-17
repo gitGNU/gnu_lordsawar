@@ -23,15 +23,15 @@
 #include "splash-window.h"
 #include "game-window.h"
 #include "../defs.h"
-//#include "../events/RWinGame.h"
-//#include "../events/RLoseGame.h"
-//#include "../w_edit.h"
+#include "../GraphicsCache.h"
 
 Driver::Driver()
 {
     splash_window.reset(new SplashWindow);
     splash_window->new_game_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_new_game_requested));
+    splash_window->load_requested.connect(
+	sigc::mem_fun(*this, &Driver::on_load_requested));
     splash_window->quit_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_quit_requested));
 
@@ -73,18 +73,20 @@ Driver::~Driver()
 
 void Driver::on_new_game_requested(GameParameters g)
 {
-    splash_window->hide();
-
-    game_window.reset(new GameWindow);
-
-    game_window->game_ended.connect(
-	sigc::mem_fun(*this, &Driver::on_game_ended));
-    game_window->quit_requested.connect(
-	sigc::mem_fun(*this, &Driver::on_quit_requested));
+    init_game_window();
+    
     game_window->sdl_initialized.connect(
 	sigc::bind(sigc::mem_fun(game_window.get(), &GameWindow::new_game), g));
+    game_window->show();
+}
 
-    game_window->init(640, 480);
+void Driver::on_load_requested(std::string filename)
+{
+    init_game_window();
+    
+    game_window->sdl_initialized.connect(
+	sigc::bind(sigc::mem_fun(game_window.get(), &GameWindow::load_game),
+		   filename));
     game_window->show();
 }
 
@@ -95,11 +97,9 @@ void Driver::on_quit_requested()
     
     if (game_window.get())
 	game_window->hide();
-    
+
     Main::instance().stop_main_loop();
 }
-
-#include "../GraphicsCache.h"
 
 void Driver::on_game_ended()
 {
@@ -110,3 +110,19 @@ void Driver::on_game_ended()
 
     splash_window->show();
 }
+
+void Driver::init_game_window()
+{
+    if (splash_window.get())
+	splash_window->hide();
+
+    game_window.reset(new GameWindow);
+
+    game_window->game_ended.connect(
+	sigc::mem_fun(*this, &Driver::on_game_ended));
+    game_window->quit_requested.connect(
+	sigc::mem_fun(*this, &Driver::on_quit_requested));
+
+    game_window->init(640, 480);
+}
+

@@ -72,7 +72,7 @@ class GameWindow: public sigc::trackable
     void new_game(GameParameters g);
     
     // setup and use the game stored under file_path
-    void load_game(const std::string &file_path, bool start);
+    void load_game(std::string file_path);
     
     // emitted when the game has ended and it is time to show the splash again
     sigc::signal<void> game_ended;
@@ -107,6 +107,8 @@ class GameWindow: public sigc::trackable
     sigc::connection army_info_tip_connection;
     typedef std::vector<Gtk::ToggleButton *> army_buttons_type;
     army_buttons_type army_buttons;
+
+    std::string current_save_filename;
 
     std::auto_ptr<Game> game;
     
@@ -170,6 +172,7 @@ class GameWindow: public sigc::trackable
     void on_city_looted(City *city, int gold);
     void hide_map_tip();
 
+    void setup_game(std::string file_path);
     void stop_game();
     
 public:

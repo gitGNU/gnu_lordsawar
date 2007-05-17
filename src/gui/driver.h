@@ -16,6 +16,7 @@
 #define GUI_DRIVER_H
 
 #include <memory>
+#include <string>
 #include <sigc++/trackable.h>
 
 #include "splash-window.h"
@@ -35,9 +36,12 @@ class Driver: public sigc::trackable
     std::auto_ptr<SplashWindow> splash_window;
 
     void on_new_game_requested(GameParameters g);
+    void on_load_requested(std::string filename);
     void on_quit_requested();
 
     void on_game_ended();
+
+    void init_game_window();
 };
 
 
