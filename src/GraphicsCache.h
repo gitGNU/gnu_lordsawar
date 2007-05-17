@@ -29,6 +29,7 @@ struct RoadCacheItem;
 struct FlagCacheItem;
 struct SelectorCacheItem;
 struct ShieldCacheItem;
+struct ProdShieldCacheItem;
 class City;
 
 /** Soliton class for caching army and map images
@@ -174,6 +175,19 @@ class GraphicsCache
           */
         SDL_Surface* getShieldPic(Uint32 type, const Player* p);
 
+        /** Function for getting production shield pictures.
+          *
+          * As with the other functions, use solely this function to get the 
+          * shield images. And DON'T modify the images!
+          *
+          * @param type home/away/destination/source.  one sees home/away
+	  * normally, but when "see all" is turned on, one sees source/dest.
+          * @param prod city production is going on, true or false
+          * @return image for the shield
+	  * note that type=source, production=false is impossible
+          */
+        SDL_Surface* getProdShieldPic(Uint32 type, bool prod);
+
         /** Modify an image with player colors.
           * 
           * Take an arbitray surface and mask image, apply the player colors such
@@ -217,6 +231,9 @@ class GraphicsCache
         //! Creates a new shield picture with the given parameters.
         ShieldCacheItem* addShieldPic(Uint32 type, const Player* p);
 
+        //! Creates a new production shield picture with the given parameters.
+        ProdShieldCacheItem* addProdShieldPic(Uint32 type, bool prod);
+
         //! Checks if the cache has exceeded the maximum size and reduce it.
         void checkPictures();
         
@@ -241,8 +258,11 @@ class GraphicsCache
         //! Erases the oldest selector cache item
         void eraseLastSelectorItem();
 
-        //! Erases the oldest selector cache item
+        //! Erases the oldest shield cache item
         void eraseLastShieldItem();
+
+        //! Erases the oldest production shield cache item
+        void eraseLastProdShieldItem();
 
         //! Loads the images for the city pictures and their masks.
         void loadCityPics();
@@ -264,6 +284,9 @@ class GraphicsCache
         
         //! Loads the images for the shieldsets 
         void loadShields();
+
+        //! Loads the images for the production shields
+        void loadProdShields();
         
         //the data
         static GraphicsCache* s_instance;
@@ -277,6 +300,7 @@ class GraphicsCache
         std::list<RoadCacheItem*> d_roadlist;
         std::list<SelectorCacheItem*> d_selectorlist;
         std::list<ShieldCacheItem*> d_shieldlist;
+        std::list<ProdShieldCacheItem*> d_prodshieldlist;
 
         //some private surfaces
         SDL_Surface* d_levelmask;
@@ -294,6 +318,7 @@ class GraphicsCache
 	SDL_Surface* d_smallselectormask[4];
         SDL_Surface* d_shieldpic[2][MAX_PLAYERS + 1];
         SDL_Surface* d_shieldmask[2][MAX_PLAYERS + 1];
+        SDL_Surface* d_prodshieldpic[7];
 };
 
 #endif

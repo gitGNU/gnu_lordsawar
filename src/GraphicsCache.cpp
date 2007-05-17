@@ -95,6 +95,14 @@ struct ShieldCacheItem
     const Player* player;
     SDL_Surface* surface;
 };
+
+// the structure to store production shield images in
+struct ProdShieldCacheItem
+{
+    Uint32 type;
+    bool prod;
+    SDL_Surface* surface;
+};
 //-----------------------------------------------------
 
 GraphicsCache* GraphicsCache::s_instance = 0;
@@ -126,6 +134,7 @@ GraphicsCache::GraphicsCache()
     loadFlags();
     loadSelectors();
     loadShields();
+    loadProdShields();
 
     d_levelmask = File::getMiscPicture("level_mask.png");
     d_medalsmask = File::getMiscPicture("medals_mask.gif");
@@ -169,6 +178,11 @@ GraphicsCache::~GraphicsCache()
           SDL_FreeSurface(d_shieldpic[i][j]);
           SDL_FreeSurface(d_shieldmask[i][j]);
 	}
+    }
+
+    for (int i = 0; i < 7; i++)
+    {
+        SDL_FreeSurface(d_prodshieldpic[i]);
     }
 
     SDL_FreeSurface(d_levelmask);
@@ -419,6 +433,32 @@ SDL_Surface* GraphicsCache::getShieldPic(Uint32 type, const Player *p)
     return myitem->surface;
 }
 
+SDL_Surface* GraphicsCache::getProdShieldPic(Uint32 type, bool prod)
+{
+    debug("GraphicsCache::getProdShieldPic " <<type <<", " << ", prod " <<prod)
+
+    std::list<ProdShieldCacheItem*>::iterator it;
+    ProdShieldCacheItem* myitem;
+
+    for (it = d_prodshieldlist.begin(); it != d_prodshieldlist.end(); it++)
+    {
+        myitem = *it;
+        if ((myitem->type == type) && (myitem->prod == prod))
+        {
+            // put the item in last place (last touched)
+            d_prodshieldlist.erase(it);
+            d_prodshieldlist.push_back(myitem);
+
+            return myitem->surface;
+        }
+    }
+
+    // no item found => create a new one
+    myitem = addProdShieldPic(type, prod);
+
+    return myitem->surface;
+}
+
 
 SDL_Surface* GraphicsCache::applyMask(SDL_Surface* image, SDL_Surface* mask, const Player* p)
 {
@@ -513,6 +553,13 @@ void GraphicsCache::checkPictures()
     // next, kill shield pics
     while (d_shieldlist.size() > 20)
         eraseLastShieldItem();
+
+    if (d_cachesize < maxcache)
+        return;
+
+    // next, kill production shield pics
+    while (d_prodshieldlist.size() > 20)
+        eraseLastProdShieldItem();
 
     if (d_cachesize < maxcache)
         return;
@@ -769,7 +816,7 @@ SelectorCacheItem* GraphicsCache::addSelectorPic(Uint32 type, Uint32 frame, cons
 
 ShieldCacheItem* GraphicsCache::addShieldPic(Uint32 type, const Player* p)
 {
-    debug("GraphicsCache::addShieldPic, player="<<p->getName()<<", type="<<size)
+    debug("GraphicsCache::addShieldPic, player="<<p->getName()<<", type="<<type)
     
     // type is 0 for small, 1 for medium
     
@@ -784,6 +831,59 @@ ShieldCacheItem* GraphicsCache::addShieldPic(Uint32 type, const Player* p)
     myitem->surface = mysurf;
 
     d_shieldlist.push_back(myitem);
+
+    //add the size
+    int picsize = mysurf->w * mysurf->h;
+    d_cachesize += picsize * mysurf->format->BytesPerPixel;
+
+    //and check the size of the cache
+    checkPictures();
+
+    return myitem;
+}
+
+ProdShieldCacheItem* GraphicsCache::addProdShieldPic(Uint32 type, bool prod)
+{
+    debug("GraphicsCache::addProdShieldPic, prod="<<prod<<", type="<<type)
+    
+    // type is 0 for home, 1 for away, 2 for destination, 3 for source
+    
+    SDL_Surface* mysurf = NULL;
+    switch (type)
+      {
+	case 0: //home city
+	  if (prod) //production
+	    mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[1]);
+	  else //no production
+	    mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[0]);
+	  break;
+	case 1: //away city
+	  if (prod) //production
+	    mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[3]);
+	  else //no production
+	    mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[2]);
+	  break;
+	case 2: //destination city
+	  if (prod) //production
+	    mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[5]);
+	  else //no production
+	    mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[4]);
+          break;
+	case 3: //source city
+	  if (prod)
+	    mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[6]);
+	  else
+	    return NULL;
+	  break;
+      }
+
+    //now create the cache item and add the size
+    ProdShieldCacheItem* myitem = new ProdShieldCacheItem();
+    myitem->prod = prod;
+    myitem->type = type;
+    myitem->surface = mysurf;
+
+    d_prodshieldlist.push_back(myitem);
 
     //add the size
     int picsize = mysurf->w * mysurf->h;
@@ -821,6 +921,9 @@ void GraphicsCache::clear()
 
     while (!d_shieldlist.empty())
         eraseLastShieldItem();
+
+    while (!d_prodshieldlist.empty())
+        eraseLastProdShieldItem();
 }
 
 void GraphicsCache::eraseLastArmyItem()
@@ -939,6 +1042,21 @@ void GraphicsCache::eraseLastShieldItem()
 
     ShieldCacheItem* myitem = *(d_shieldlist.begin());
     d_shieldlist.erase(d_shieldlist.begin());
+
+    int size = myitem->surface->w * myitem->surface->h;
+    d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+
+    SDL_FreeSurface(myitem->surface);
+    delete myitem;
+}
+
+void GraphicsCache::eraseLastProdShieldItem()
+{
+    if (d_prodshieldlist.empty())
+        return;
+
+    ProdShieldCacheItem* myitem = *(d_prodshieldlist.begin());
+    d_prodshieldlist.erase(d_prodshieldlist.begin());
 
     int size = myitem->surface->w * myitem->surface->h;
     d_cachesize -= myitem->surface->format->BytesPerPixel * size;
@@ -1252,6 +1370,33 @@ void GraphicsCache::loadShields()
 
       }
     SDL_FreeSurface(shieldpics);
+}
+
+void GraphicsCache::loadProdShields()
+{
+    //load the production shieldset
+    unsigned int i;
+    SDL_Rect prodshieldrect;
+    SDL_Surface* prodshieldpics = File::getMiscPicture("prodshieldset.png");
+    // copy alpha values, don't use them
+    SDL_SetAlpha(prodshieldpics, 0, 0);
+    SDL_PixelFormat* fmt = prodshieldpics->format;
+    int size = 10; /*FIXME hardcoded size, should be in .defs? */
+    for (i = 0; i < 7; i++)
+      {
+        SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
+    						fmt->BitsPerPixel, fmt->Rmask, 
+    						fmt->Gmask, fmt->Bmask, 
+						fmt->Amask);
+	prodshieldrect.x = i*size;
+	prodshieldrect.y = 0;
+	prodshieldrect.w = prodshieldrect.h = size;
+	SDL_BlitSurface(prodshieldpics, &prodshieldrect, tmp, 0);
+	d_prodshieldpic[i] = SDL_DisplayFormatAlpha(tmp);
+	SDL_FreeSurface(tmp);
+
+      }
+    SDL_FreeSurface(prodshieldpics);
 }
 
 void GraphicsCache::loadFlags()

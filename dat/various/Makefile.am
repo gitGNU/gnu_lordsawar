@@ -30,7 +30,8 @@ various_DATA = \
     editor.png \
     shieldsetsmall.png \
     shieldsetmedium.png \
-    hero.png
+    hero.png \
+    prodshieldset.png
 
 EXTRA_DIST = \
     arrows.png \
@@ -59,5 +60,6 @@ EXTRA_DIST = \
     editor.png \
     shieldsetsmall.png \
     shieldsetmedium.png \
-    hero.png
+    hero.png \
+    prodshieldset.png
     

@@ -18,6 +18,7 @@
 #include "city.h"
 #include "citylist.h"
 #include "playerlist.h"
+#include "GraphicsCache.h"
 
 VectorMap::VectorMap(City *c)
 {
@@ -26,11 +27,107 @@ VectorMap::VectorMap(City *c)
 
 void VectorMap::after_draw()
 {
+    bool see_all = false;
+    Uint32 type = 0;
+    bool prod = false;
+    Vector<int> start;
+    Vector<int> end;
+    GraphicsCache *gc = GraphicsCache::getInstance();
+    Citylist *cl = Citylist::getInstance();
+    
+    // draw special shield for every city that player owns.
+    for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+      {
+        if ((*it).getPlayer() == city->getPlayer())
+          {
+            if ((*it).getProductionIndex() == -1)
+              prod = false;
+            else
+              prod = true;
+            if (see_all)
+              {
+                ; //XXX how do i determine source/destination?
+              }
+            else
+              {
+                //is this the originating city?
+                if ((*it).getId() == city->getId())
+                  {
+                    //then it's a "home" city.
+                    type = 0; 
+                  }
+                //is this the city i'm vectoring to?
+                else if (city->getVectoring() != Vector<int>(-1, -1) &&
+                         cl->getObjectAt(city->getVectoring())->getId() == 
+                           (*it).getId())
+                  {
+                    // then it's a "destination" city.
+                    type = 2;
+                  }
+                //is this a city that is vectoring to me?
+                else if ((*it).getVectoring() != Vector<int>(-1, -1) &&
+                         cl->getObjectAt((*it).getVectoring())->getId() ==
+                         city->getId())
+                  type = 3;
+                //otherwise it's just another city, "away" from me
+                else
+                  type = 1; //away
+              }
+            start  = (*it).getPos();
+            start = mapToSurface(start);
+            start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
+            SDL_Surface *tmp = gc->getProdShieldPic (type, prod);
+            if (tmp)
+              {
+                SDL_Rect r;
+                r.x = start.x - (tmp->w/2);
+                r.y = start.y - (tmp->h/2);
+                r.w = tmp->w;
+                r.h = tmp->h;
+                SDL_BlitSurface(tmp, 0, surface, &r);
+              }
+          }
+      }
+
+    // draw lines from origination to city
+    for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+      {
+        if ((*it).getPlayer() == city->getPlayer())
+          {
+            if (see_all)
+              {
+                ; //XXX how do i determine source/destination?
+              }
+            else
+              {
+                //is this a city that is vectoring to me?
+                if ((*it).getVectoring() != Vector<int>(-1, -1) &&
+                     cl->getObjectAt((*it).getVectoring())->getId() ==
+                       city->getId())
+                  {
+                    start = (*it).getPos();
+                    end = city->getPos();
+        
+                    start = mapToSurface(start);
+                    end = mapToSurface(end);
+
+	            start += Vector<int>(int(pixels_per_tile/2), 
+                                             int(pixels_per_tile/2));
+	            end += Vector<int>(int(pixels_per_tile/2), 
+                                           int(pixels_per_tile/2));
+
+	            Uint32 raw = SDL_MapRGBA(surface->format, 252, 160, 0, 255);
+                    draw_line(surface, start.x, start.y, end.x, end.y, raw);
+                  }
+              }
+          }
+      }
+  
     // draw line from city to destination
     if (city->getVectoring().x != -1)
     {
-        Vector<int> start = city->getPos();
-        Vector<int> end = city->getVectoring();
+        start = city->getPos();
+        end = city->getVectoring();
         
         start = mapToSurface(start);
         end = mapToSurface(end);
@@ -38,7 +135,7 @@ void VectorMap::after_draw()
 	start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
 	end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
 
-	Uint32 raw = SDL_MapRGBA(surface->format, 180, 180, 180, 120);
+	Uint32 raw = SDL_MapRGBA(surface->format, 252, 236, 32, 255);
         draw_line(surface, start.x, start.y, end.x, end.y, raw);
     }
 
