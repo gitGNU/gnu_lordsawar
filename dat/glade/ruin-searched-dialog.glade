@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.0.2 on Tue Apr 24 16:35:16 2007 by olau@alfa-->
+<!--Generated with glade3 3.0.2 on Thu May 17 11:42:11 2007 by olau@alfa-->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">6</property>
+    <property name="resizable">False</property>
+    <property name="destroy_with_parent">True</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox">
