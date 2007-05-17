@@ -38,14 +38,12 @@ class Fighter
         
         Army* army;
         Vector<int> pos;       // location on the map (needed to calculate boni)
-        int shots;          // number of shots left
         int att_bonus;
         int def_bonus;
 };
 
 Fighter::Fighter(Army* a, Vector<int> p)
-    :army(a), pos(p), shots(a->getStat(Army::SHOTS)), att_bonus(0),
-    def_bonus(0)
+    :army(a), pos(p), att_bonus(0), def_bonus(0)
 {
 }
 
@@ -65,13 +63,13 @@ Fight::Fight(Stack* attacker, Stack* defender)
     for (Stack::iterator it = attacker->begin(); it != attacker->end(); it++)
     {
         Fighter* f = new Fighter((*it), attacker->getPos());
-        d_att_ranged.push_back(f);
+        d_att_close.push_back(f);
     }
 
     for (Stack::iterator it = defender->begin(); it != defender->end(); it++)
     {
         Fighter* f = new Fighter((*it), defender->getPos());
-        d_def_ranged.push_back(f);
+        d_def_close.push_back(f);
     }
     
     // What we do here: In the setup, we need to find out all armies that
@@ -140,7 +138,7 @@ Fight::Fight(Stack* attacker, Stack* defender)
                     for (sit = s->begin(); sit != s->end(); sit++)
                     {
                         Fighter* f = new Fighter((*sit), Vector<int>(x,y));
-                        d_def_ranged.push_back(f);
+                        d_def_close.push_back(f);
                     }
                 }
             }
@@ -176,17 +174,6 @@ Fight::~Fight()
         d_def_close.erase(d_def_close.begin());
     }
     
-    while (!d_att_ranged.empty())
-    {
-        delete (*d_att_ranged.begin());
-        d_att_ranged.erase(d_att_ranged.begin());
-    }
-    
-    while (!d_def_ranged.empty())
-    {
-        delete (*d_def_ranged.begin());
-        d_def_ranged.erase(d_def_ranged.begin());
-    }
 }
 
 void Fight::battle()
@@ -237,7 +224,6 @@ bool Fight::doRound()
     // at the beginning of the round, set the defense boni and separate fighters
     // into close and ranged combat units.
     calculateBonus();
-    shuffleLines();
 
     // Now, to give the attacker a bonus, his units attack first.
     std::list<Fighter*>::iterator it;
@@ -252,16 +238,8 @@ bool Fight::doRound()
     }
             
 
-    for (it = d_att_ranged.begin(); it != d_att_ranged.end(); it++)
-    {
-        f = findVictim(true, true);
-        fightArmies((*it), f, true);
-        if (f && f->army->getHP() <= 0)
-            remove(f);
-    }
-
     // noone left for fighting
-    if (d_def_close.empty() && d_def_ranged.empty())
+    if (d_def_close.empty())
         return false;
 
     // now the remaining defenders strike back
@@ -273,23 +251,13 @@ bool Fight::doRound()
             remove(f);
     }
 
-    for (it = d_def_ranged.begin(); it != d_def_ranged.end(); it++)
-    {
-        f = findVictim(false, true);
-        fightArmies((*it), f, true);
-        if (f && f->army->getHP() <= 0)
-            remove(f);
-    }
-
     // if attackers were defeated, signal to stop the battle
-    if (d_att_close.empty() && d_att_ranged.empty())
+    if (d_att_close.empty())
         return false;
 
     
     // last job: loop through all lists and look if there are any regenerating
     // units. If so, heal them by 1 HP.
-    healArmies(d_att_ranged);
-    healArmies(d_def_ranged);
     healArmies(d_att_close);
     healArmies(d_def_close);
 
@@ -408,9 +376,6 @@ void Fight::calculateBonus()
             if (!((*fit)->army->getStat(Army::ARMY_BONUS) & Army::LEADER))
                 (*fit)->att_bonus = 1;
 
-        for (fit = d_att_ranged.begin(); fit != d_att_ranged.end(); fit++)
-            if (!((*fit)->army->getStat(Army::ARMY_BONUS) & Army::LEADER))
-                (*fit)->att_bonus = 1;
     }
 
     // now check for defender heroes
@@ -431,9 +396,6 @@ void Fight::calculateBonus()
             if (!((*fit)->army->getStat(Army::ARMY_BONUS) & Army::LEADER))
                 (*fit)->att_bonus = 1;
 
-        for (fit = d_def_ranged.begin(); fit != d_def_ranged.end(); fit++)
-            if (!((*fit)->army->getStat(Army::ARMY_BONUS) & Army::LEADER))
-                (*fit)->att_bonus = 1;
     }
 
 
@@ -446,13 +408,6 @@ void Fight::calculateBonus()
         (*fit)->def_bonus = (bonus * (int)(*fit)->army->getStat(Army::DEFENSE))/100;
     }
 
-    for (fit = d_def_ranged.begin(); fit != d_def_ranged.end(); fit++)
-    {
-        // the defense bonus is given in 10% steps
-        int bonus = 10 * GameMap::getInstance()->getTile((*fit)->pos)->getDefense();
-
-        (*fit)->def_bonus = (bonus * (int)(*fit)->army->getStat(Army::DEFENSE))/100;
-    }
 */
 }
 
@@ -482,9 +437,6 @@ void Fight::calculateBonus()
             if (!((*fit)->army->getStat(Army::ARMY_BONUS) & Army::LEADER))
                 (*fit)->att_bonus = 1;
 
-        for (fit = d_att_ranged.begin(); fit != d_att_ranged.end(); fit++)
-            if (!((*fit)->army->getStat(Army::ARMY_BONUS) & Army::LEADER))
-                (*fit)->att_bonus = 1;
     }
 
     // now check for defender heroes
@@ -505,9 +457,6 @@ void Fight::calculateBonus()
             if (!((*fit)->army->getStat(Army::ARMY_BONUS) & Army::LEADER))
                 (*fit)->att_bonus = 1;
 
-        for (fit = d_def_ranged.begin(); fit != d_def_ranged.end(); fit++)
-            if (!((*fit)->army->getStat(Army::ARMY_BONUS) & Army::LEADER))
-                (*fit)->att_bonus = 1;
     }
 
 
@@ -519,58 +468,8 @@ void Fight::calculateBonus()
         (*fit)->def_bonus = (bonus * (int)(*fit)->army->getStat(Army::DEFENSE))/100;
     }
 
-    for (fit = d_def_ranged.begin(); fit != d_def_ranged.end(); fit++)
-    {
-        // the defense bonus is given in 10% steps
-        int bonus = 10 * GameMap::getInstance()->getTile((*fit)->pos)->getDefense();
-
-        (*fit)->def_bonus = (bonus * (int)(*fit)->army->getStat(Army::DEFENSE))/100;
-    }
 }
 */
-
-void Fight::shuffleLines()
-{
-    debug("Fight::shuffleLines")
-        
-    // the basic problem is simple: Take all ranged units that have no shots
-    // left and add them to the list of close combat units.
-
-    // first the attackers
-    std::list<Fighter*>::iterator it;
-    for (it = d_att_ranged.begin(); it != d_att_ranged.end();)
-    {
-        if ((*it)->shots == 0)
-        {
-            Fighter* f = *it;
-            it = d_att_ranged.erase(it);
-            d_att_close.push_back(f);
-            debug("Attacker "<<f->army->getId()<<" has no shots, moving to front")
-            continue;
-        }
-
-        debug("Attacker " <<(*it)->army->getId() <<" has "
-                <<(*it)->shots <<" shots left")
-        it++;
-    }
-
-    // then exactly the same for the defenders
-    for (it = d_def_ranged.begin(); it != d_def_ranged.end();)
-    {
-        if ((*it)->shots == 0)
-        {
-            Fighter* f = *it;
-            it = d_def_ranged.erase(it);
-            d_def_close.push_back(f);
-            debug("Defender "<<f->army->getId()<<" has no shots, moving to front")
-            continue;
-        }
-
-        debug("Defender " <<(*it)->army->getId() <<" has "
-                <<(*it)->shots <<" shots left")
-        it++;
-    }
-}
 
 Fighter* Fight::findVictim(bool attacker, bool ranged) const
 {
@@ -578,41 +477,26 @@ Fighter* Fight::findVictim(bool attacker, bool ranged) const
 
     // first, find the list to take the victim from, depending on the parameters
 
-    if (attacker && !ranged)
+    if (attacker)
     {
         // take close combat defender list; if it is empty, attack ranged units
         lst = &d_def_close;
-        if (d_def_close.empty())
-            lst = &d_def_ranged;
     }
 
-    if (!attacker && !ranged)
+    if (!attacker)
     {
         // the same, but the other way round
         lst = &d_att_close;
-        if (d_att_close.empty())
-            lst = &d_att_ranged;
     }
 
-    if (attacker && ranged)
+    if (attacker)
     {
-        // with a chance of 1/3, take enemy ranged units, else attack the
-        // enemy's close combat units, but only if there are any
         lst = &d_def_close;
-        if (d_def_close.empty() || (rand() % 3) == 0)
-            lst = &d_def_ranged;
-        if (d_def_ranged.empty())
-            lst = &d_def_close;
     }
     
-    if (!attacker && ranged)
+    if (!attacker)
     {
-        // the same for defenders
         lst = &d_att_close;
-        if (d_att_close.empty() || (rand() % 3) == 0)
-            lst = &d_att_ranged;
-        if (d_att_ranged.empty())
-            lst = &d_att_close;
     }
 
     // if the list is empty, there are no enemy units; return 0 and hope that
@@ -638,19 +522,13 @@ void Fight::fightArmies(Fighter* culprit, Fighter* victim, bool attack)
     // I implicitely assume here that armies with ammunition left attack from
     // the distance (should be safe).
     int strength;
-    int defense = victim->def_bonus;
-    bool melee = (culprit->shots == 0);
+    int defense = victim->def_bonus + 1;
+    bool melee = true;
 
     // factor used for some calculation regarding gaining medals
     double xp_factor = culprit->army->getXpReward() / victim->army->getXpReward();
     
-    if (melee)
-        strength = culprit->army->getStat(Army::STRENGTH) + culprit->att_bonus;
-    else
-    {
-        strength = culprit->army->getStat(Army::RANGED) + culprit->att_bonus;
-        culprit->shots--;
-    }
+    strength = culprit->army->getStat(Army::STRENGTH) + culprit->att_bonus;
     
     // cavalry gets a bonus on open terrain if it charges
     if (attack && melee && (culprit->army->getStat(Army::ARMY_BONUS) & Army::CAVALRY)
@@ -750,14 +628,6 @@ void Fight::remove(Fighter* f)
             return;
         }
     
-    for (it = d_att_ranged.begin(); it != d_att_ranged.end(); it++)
-        if ((*it) == f)
-        {
-            d_att_ranged.erase(it);
-            delete f;
-            return;
-        }
-    
     // or in the defender lists?
     for (it = d_def_close.begin(); it != d_def_close.end(); it++)
         if ((*it) == f)
@@ -767,14 +637,6 @@ void Fight::remove(Fighter* f)
             return;
         }
     
-    for (it = d_def_ranged.begin(); it != d_def_ranged.end(); it++)
-        if ((*it) == f)
-        {
-            d_def_ranged.erase(it);
-            delete f;
-            return;
-        }
-
     // if the fighter wa sin no list, we are rather careful and don't do anything
     debug("Fight: fighter without list!")
 }

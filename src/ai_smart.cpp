@@ -109,9 +109,7 @@ bool AI_Smart::levelArmy(Army* a)
     if (!a->canGainLevel())
         return false;
     
-    Army::Stat stat = Army::RANGED;
-    if (a->getStat(Army::SHOTS) == 0)
-        stat = Army::STRENGTH;
+    Army::Stat stat = Army::STRENGTH;
     a->gainLevel(stat);
 
     Action_Level* item = new Action_Level();

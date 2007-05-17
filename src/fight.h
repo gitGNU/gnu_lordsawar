@@ -95,11 +95,6 @@ class Fight
         //! Calculates the attack/defense bonus of the armies
         void calculateBonus();
 
-        /** Rearranges the close combat/ranged combat armies depending on the
-          * need to do so.
-          */
-        void shuffleLines();
-        
         /** Finds someone to fight
           * 
           * @param attacker     whether we find a victim for an attacking unit or not
@@ -135,9 +130,7 @@ class Fight
         std::list<Stack*> d_defenders;
         
         std::list<Fighter*> d_att_close;
-        std::list<Fighter*> d_att_ranged;
         std::list<Fighter*> d_def_close;
-        std::list<Fighter*> d_def_ranged;
         
         std::list<FightItem> d_actions;
         

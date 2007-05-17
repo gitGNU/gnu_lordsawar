@@ -11,8 +11,6 @@
         <d_production_cost>1000</d_production_cost>
         <d_upkeep>5</d_upkeep>
         <d_strength>6</d_strength>
-        <d_ranged>0</d_ranged>
-        <d_shots>0</d_shots>
         <d_maxhp>30</d_maxhp>
         <d_expvalue>6</d_expvalue>
         <d_max_moves>14</d_max_moves>
@@ -32,8 +30,6 @@
         <d_production_cost>1500</d_production_cost>
         <d_upkeep>8</d_upkeep>
         <d_strength>4</d_strength>
-        <d_ranged>0</d_ranged>
-        <d_shots>0</d_shots>
         <d_maxhp>25</d_maxhp>
         <d_expvalue>6</d_expvalue>
         <d_max_moves>20</d_max_moves>
@@ -53,8 +49,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>10</d_upkeep>
         <d_strength>8</d_strength>
-        <d_ranged>8</d_ranged>
-        <d_shots>30</d_shots>
         <d_maxhp>10</d_maxhp>
         <d_expvalue>8</d_expvalue>
         <d_max_moves>14</d_max_moves>
@@ -74,8 +68,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>40</d_upkeep>
         <d_strength>10</d_strength>
-        <d_ranged>0</d_ranged>
-        <d_shots>0</d_shots>
         <d_maxhp>30</d_maxhp>
         <d_expvalue>20</d_expvalue>
         <d_max_moves>20</d_max_moves>
@@ -95,8 +87,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>20</d_upkeep>
         <d_strength>15</d_strength>
-        <d_ranged>0</d_ranged>
-        <d_shots>0</d_shots>
         <d_maxhp>30</d_maxhp>
         <d_expvalue>20</d_expvalue>
         <d_max_moves>6</d_max_moves>
@@ -116,8 +106,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>10</d_upkeep>
         <d_strength>4</d_strength>
-        <d_ranged>5</d_ranged>
-        <d_shots>30</d_shots>
         <d_maxhp>15</d_maxhp>
         <d_expvalue>0</d_expvalue>
         <d_max_moves>22</d_max_moves>
@@ -137,8 +125,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>20</d_upkeep>
         <d_strength>10</d_strength>
-        <d_ranged>10</d_ranged>
-        <d_shots>3</d_shots>
         <d_maxhp>30</d_maxhp>
         <d_expvalue>7</d_expvalue>
         <d_max_moves>16</d_max_moves>

@@ -208,9 +208,8 @@ void CityWindow::fill_in_production_info()
 			      city->getDuration(), a->getProduction());
 	s1 += "\n";
 	// note to translators: %1 is melee strength, %2 is ranged strength
-	s1 += String::ucompose(_("Attack: %1/%2"),
-			      a->getStat(Army::STRENGTH, false),
-			      a->getStat(Army::RANGED, false));
+	s1 += String::ucompose(_("Attack: %1"),
+			      a->getStat(Army::STRENGTH, false));
 	
 	// fill in second column
 	s2 += "\n";

@@ -546,9 +546,8 @@ void GameWindow::show_army_info_tip(Gtk::ToggleButton *toggle, Army *army)
     s += army->getName();
     s += "\n";
     // note to translators: %1 is melee strength, %2 is ranged strength
-    s += String::ucompose(_("Attack: %1/%2"),
-			  army->getStat(Army::STRENGTH),
-			  army->getStat(Army::RANGED));
+    s += String::ucompose(_("Attack: %1"),
+			  army->getStat(Army::STRENGTH));
     s += "\n";
     // note to translators: %1 is remaining moves, %2 is total moves
     s += String::ucompose(_("Moves: %1/%2"),

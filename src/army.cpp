@@ -30,7 +30,7 @@ Army::Army(const Army& a, Player* p)
      d_mask(0), d_name(a.d_name), d_description(a.d_description), 
      d_production(a.d_production),
      d_production_cost(a.d_production_cost), d_upkeep(a.d_upkeep),
-     d_strength(a.d_strength), d_ranged(a.d_ranged), d_shots(a.d_shots),
+     d_strength(a.d_strength),
      d_max_hp(a.d_max_hp),
      d_max_moves(a.d_max_moves), d_sight(a.d_sight),
      d_xp_value(a.d_xp_value), d_move_bonus(a.d_move_bonus),
@@ -64,8 +64,6 @@ Army::Army(XML_Helper* helper, bool prototype)
 {
     // first, load the data that has to be loaded anyway
     helper->getData(d_strength, "strength");
-    helper->getData(d_ranged, "ranged");
-    helper->getData(d_shots, "shots");
     helper->getData(d_sight, "sight");
     helper->getData(d_max_hp, "maxhp");
     helper->getData(d_max_moves, "max_moves");
@@ -163,9 +161,6 @@ void Army::setStat(Army::Stat stat, Uint32 value)
                             break;
         case SIGHT:         d_sight = value;
                             break;
-        case RANGED:    d_ranged = value;
-                        break;
-        case SHOTS:     d_shots = value;
     }
 }
 
@@ -212,10 +207,6 @@ Uint32 Army::getStat(Stat stat, bool modified) const
             return d_army_bonus;
         case SIGHT:
             return d_sight;
-        case RANGED:
-            return d_ranged;
-        case SHOTS:
-            return d_shots;
     }
 
     // should never come to this
@@ -289,14 +280,13 @@ bool Army::canGainLevel() const
 
 int Army::computeLevelGain(Stat stat)
 {
-    if (stat == MOVE_BONUS || stat == ARMY_BONUS || stat == SHOTS)
+    if (stat == MOVE_BONUS || stat == ARMY_BONUS)
         return -1;
     
     switch (stat)
     {
         case STRENGTH:
         case SIGHT:
-        case RANGED:
             return 1;
         case HP:
         case MOVES:
@@ -311,7 +301,7 @@ int Army::gainLevel(Stat stat)
     if (!canGainLevel())
         return -1;
 
-    if (stat == MOVE_BONUS || stat == ARMY_BONUS || stat == SHOTS)
+    if (stat == MOVE_BONUS || stat == ARMY_BONUS)
         return -1;
     
     d_level++;
@@ -333,9 +323,6 @@ int Army::gainLevel(Stat stat)
 	break;
     case SIGHT:
 	d_sight += delta;
-	break;
-    case RANGED:
-	d_ranged += delta;
 	break;
     default:
 	break;
@@ -363,8 +350,6 @@ bool Army::saveData(XML_Helper* helper) const
     retval &= helper->saveData("type", d_type);
     retval &= helper->saveData("hp", d_hp);
     retval &= helper->saveData("strength", d_strength);
-    retval &= helper->saveData("ranged", d_ranged);
-    retval &= helper->saveData("shots", d_shots);
     retval &= helper->saveData("sight", d_sight);
     retval &= helper->saveData("maxhp", d_max_hp);
     retval &= helper->saveData("moves", d_moves);
@@ -393,8 +378,6 @@ void  Army::printAllDebugInfo() const
     std::cerr << "max_hp = " << d_max_hp << std::endl;
     std::cerr << "xp_value = " << d_xp_value << std::endl;
     std::cerr << "strength = " << d_strength << std::endl;
-    std::cerr << "ranged = " << d_ranged << std::endl;
-    std::cerr << "shots = " << d_shots << std::endl;
     std::cerr << "max_moves = " << d_max_moves << std::endl;
     std::cerr << "upkeep = " << d_upkeep << std::endl;
     std::cerr << "defends_ruins = " << d_defends_ruins << std::endl;

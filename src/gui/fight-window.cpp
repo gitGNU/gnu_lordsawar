@@ -52,12 +52,10 @@ FightWindow::FightWindow(Fight &fight)
     xml->get_widget("window", d);
     window.reset(d);
     
-    Gtk::VBox *attacker_close_vbox, *attacker_range_vbox;
-    Gtk::VBox *defender_close_vbox, *defender_range_vbox;
+    Gtk::VBox *attacker_close_vbox;
+    Gtk::VBox *defender_close_vbox;
     xml->get_widget("attacker_close_vbox", attacker_close_vbox);
-    xml->get_widget("attacker_range_vbox", attacker_range_vbox);
     xml->get_widget("defender_close_vbox", defender_close_vbox);
-    xml->get_widget("defender_range_vbox", defender_range_vbox);
 
     xml->get_widget("rounds_label", rounds_label);
 
@@ -88,34 +86,25 @@ FightWindow::FightWindow(Fight &fight)
     int rows = compute_max_rows(attackers, defenders);
     
     // add the armies
-    std::vector<Gtk::HBox *> close_hboxes, range_hboxes;
-    int close, range;
+    std::vector<Gtk::HBox *> close_hboxes;
+    int close;
 
     // ... attackers
-    close = range = 0;
+    close = 0;
     for (armies_type::iterator i = attackers.begin(); i != attackers.end(); ++i)
     {
-	if ((*i)->getStat(Army::SHOTS) == 0)
-	    add_army(*i, close_hboxes, attacker_close_vbox, close++, rows,
-		     Gtk::ALIGN_RIGHT);
-	else
-	    add_army(*i, range_hboxes, attacker_range_vbox, range++, rows,
-		     Gtk::ALIGN_RIGHT);
+      add_army(*i, close_hboxes, attacker_close_vbox, close++, rows,
+	       Gtk::ALIGN_RIGHT);
     }
 
     close_hboxes.clear();
-    range_hboxes.clear();
     
     // ... defenders
-    close = range = 0;
+    close = 0;
     for (armies_type::iterator i = defenders.begin(); i != defenders.end(); ++i)
     {
-	if ((*i)->getStat(Army::SHOTS) == 0)
-	    add_army(*i, close_hboxes, defender_close_vbox, close++, rows,
-		     Gtk::ALIGN_LEFT);
-	else
-	    add_army(*i, range_hboxes, defender_range_vbox, range++, rows,
-		     Gtk::ALIGN_LEFT);
+	add_army(*i, close_hboxes, defender_close_vbox, close++, rows,
+		 Gtk::ALIGN_LEFT);
     }
     
     // fill in labels
@@ -130,7 +119,7 @@ FightWindow::FightWindow(Fight &fight)
 
     p = defenders.front()->getPlayer();
 
-    // check whether we are searching a ruin (FIXME: set player somewhere else)
+    // XXX why isn't defenders.front()->getPlayer() sometimes not set?
     if (!p)
 	p = Playerlist::getInstance()->getNeutral();
     
@@ -182,19 +171,13 @@ int FightWindow::compute_max_rows(const armies_type &attackers,
     for (armies_type::const_iterator i = attackers.begin(), end = attackers.end();
 	 i != end; ++i)
     {
-        if ((*i)->getStat(Army::SHOTS) == 0)
-            ++counts[0];
-        else
-            ++counts[1];
+        ++counts[0];
     }
 
     for (armies_type::const_iterator i = defenders.begin(), end = defenders.end();
 	 i != end; ++i)
     {
-        if ((*i)->getStat(Army::SHOTS) == 0)
-            ++counts[2];
-        else
-            ++counts[3];
+        ++counts[2];
     }
 
     // now find the max number of rows
@@ -281,6 +264,7 @@ void FightWindow::add_army(Army *army,
 	a->add(*hbox);
 	vbox->pack_start(*a, Gtk::PACK_SHRINK);
     }
+
     Gtk::HBox *hbox = hboxes[current_row];
     hbox->pack_start(*army_box, Gtk::PACK_SHRINK);
 
@@ -307,7 +291,6 @@ bool FightWindow::do_round()
 		i->hp -= f.damage;
 		if (i->hp < 0)
 		    i->hp = 0;
-		
 		i->bar->set_fraction(double(i->hp)
 				     / i->army->getStat(Army::HP));
 		

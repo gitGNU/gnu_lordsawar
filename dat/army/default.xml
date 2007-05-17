@@ -11,8 +11,6 @@
         <d_production_cost>20</d_production_cost>
         <d_upkeep>1</d_upkeep>
         <d_strength>2</d_strength>
-        <d_ranged>0</d_ranged>
-        <d_shots>0</d_shots>
         <d_maxhp>10</d_maxhp>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>12</d_max_moves>
@@ -32,8 +30,6 @@
         <d_production_cost>50</d_production_cost>
         <d_upkeep>2</d_upkeep>
         <d_strength>2</d_strength>
-        <d_ranged>3</d_ranged>
-        <d_shots>1</d_shots>
         <d_maxhp>10</d_maxhp>
         <d_expvalue>2</d_expvalue>
         <d_max_moves>10</d_max_moves>
@@ -53,8 +49,6 @@
         <d_production_cost>50</d_production_cost>
         <d_upkeep>2</d_upkeep>
         <d_strength>1</d_strength>
-        <d_ranged>3</d_ranged>
-        <d_shots>15</d_shots>
         <d_maxhp>10</d_maxhp>
         <d_expvalue>2</d_expvalue>
         <d_max_moves>12</d_max_moves>
@@ -74,8 +68,6 @@
         <d_production_cost>100</d_production_cost>
         <d_upkeep>4</d_upkeep>
         <d_strength>3</d_strength>
-        <d_ranged>0</d_ranged>
-        <d_shots>0</d_shots>
         <d_maxhp>15</d_maxhp>
         <d_expvalue>3</d_expvalue>
         <d_max_moves>10</d_max_moves>
@@ -95,8 +87,6 @@
         <d_production_cost>300</d_production_cost>
         <d_upkeep>4</d_upkeep>
         <d_strength>3</d_strength>
-        <d_ranged>0</d_ranged>
-        <d_shots>0</d_shots>
         <d_maxhp>15</d_maxhp>
         <d_expvalue>3</d_expvalue>
         <d_max_moves>18</d_max_moves>
@@ -116,8 +106,6 @@
         <d_production_cost>500</d_production_cost>
         <d_upkeep>6</d_upkeep>
         <d_strength>1</d_strength>
-        <d_ranged>5</d_ranged>
-        <d_shots>30</d_shots>
         <d_maxhp>15</d_maxhp>
         <d_expvalue>3</d_expvalue>
         <d_max_moves>8</d_max_moves>

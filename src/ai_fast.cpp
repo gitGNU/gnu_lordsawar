@@ -134,10 +134,8 @@ bool AI_Fast::levelArmy(Army* a)
     debug("Army raised a level, id = " <<a->getId())
     
     //advancing a level
-    // increase the strength or ranged attack (uninnovative, but enough here)
-    Army::Stat stat = Army::RANGED;
-    if (a->getStat(Army::SHOTS) == 0)
-        stat = Army::STRENGTH;
+    // increase the strength attack (uninnovative, but enough here)
+    Army::Stat stat = Army::STRENGTH;
     a->gainLevel(stat);
 
     Action_Level* item = new Action_Level();

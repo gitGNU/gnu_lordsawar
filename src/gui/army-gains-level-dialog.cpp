@@ -55,8 +55,6 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a)
     xml->get_widget("stats_vbox", stats_vbox);
 
     add_item(Army::STRENGTH, _("Attack: %1"));
-    if (army->getStat(Army::RANGED, false) > 0)
-	add_item(Army::RANGED, _("Ranged: %1"));
     add_item(Army::SIGHT, _("Sight: %1"));
     add_item(Army::HP, _("Hitpoints: %1"));
     add_item(Army::MOVES, _("Moves: %1"));

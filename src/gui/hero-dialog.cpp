@@ -173,8 +173,6 @@ void HeroDialog::add_item(Item *item, bool in_backpack)
     std::vector<Glib::ustring> s;
     if (item->getBonus(Army::STRENGTH))
 	s.push_back(String::ucompose(_("Attack: +%1"), item->getValue(Army::STRENGTH)));
-    if (item->getBonus(Army::RANGED))
-	s.push_back(String::ucompose(_("Ranged: +%1"), item->getValue(Army::RANGED)));
     if (item->getBonus(Army::HP))
 	s.push_back(String::ucompose(_("Hitpoints: +%1"), item->getValue(Army::HP)));
     if (item->getBonus(Army::MOVES))
@@ -185,8 +183,6 @@ void HeroDialog::add_item(Item *item, bool in_backpack)
 	s.push_back(String::ucompose(_("Army bonus: +%1"), item->getValue(Army::ARMY_BONUS)));
     if (item->getBonus(Army::SIGHT))
 	s.push_back(String::ucompose(_("Sight: +%1"), item->getValue(Army::SIGHT)));
-    if (item->getBonus(Army::SHOTS))
-	s.push_back(String::ucompose(_("Shots: +%1"), item->getValue(Army::SHOTS)));
 
     Glib::ustring str;
     bool first = true;
@@ -227,9 +223,8 @@ void HeroDialog::fill_in_info_labels()
     // fill in second column
     s = "";
     // note to translators: %1 is melee strength, %2 is ranged strength
-    s += String::ucompose(_("Attack: %1/%2"),
-			  hero->getStat(Army::STRENGTH),
-			  hero->getStat(Army::RANGED));
+    s += String::ucompose(_("Attack: %1"),
+			  hero->getStat(Army::STRENGTH));
     s += "\n";
     // note to translators: %1 is remaining moves, %2 is total moves
     s += String::ucompose(_("Moves: %1/%2"),

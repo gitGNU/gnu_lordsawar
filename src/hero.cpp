@@ -181,12 +181,6 @@ Uint32 Hero::getStat(Stat stat, bool modified) const
         if ((*it)->getBonus(stat))
             bonus += (*it)->getValue(stat);
 
-    if (static_cast<int>(value) + bonus <= 0)
-        if (stat == Army::SHOTS || stat == Army::RANGED)
-            return 0;
-        else
-            return 1;
-
     return (value+bonus);
 }
 

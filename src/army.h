@@ -78,8 +78,6 @@ class Army : public sigc::trackable
             MOVE_BONUS=5,
             ARMY_BONUS=6,
             SIGHT=7,
-            RANGED=8,
-            SHOTS=9
         };
 
         /** Multiple-purpose constructor
@@ -346,8 +344,6 @@ class Army : public sigc::trackable
         Uint32 d_production_cost;
         Uint32 d_upkeep;
         Uint32 d_strength;
-        Uint32 d_ranged;
-        Uint32 d_shots;
         Uint32 d_max_hp;
         Uint32 d_max_moves;
         Uint32 d_sight;
