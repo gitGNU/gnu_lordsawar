@@ -129,10 +129,9 @@ class GameWindow: public sigc::trackable
 
     // stack info pane at the bottom
     void on_army_toggled(Gtk::ToggleButton *toggle, Army *army);
-    bool on_army_button_event(GdkEventButton *e, Army *army);
-    bool on_army_mouse_event(GdkEventCrossing *e, Gtk::ToggleButton *toggle,
-			     Army *army);
-    bool on_army_info_tip_timeout();
+    bool on_army_button_event(GdkEventButton *e,
+			      Gtk::ToggleButton *toggle, Army *army);
+    void show_army_info_tip(Gtk::ToggleButton *toggle, Army *army);
     void on_army_button_has_size();
     void clear_army_buttons();
     void ensure_one_army_button_active();

@@ -18,6 +18,7 @@
 #include <memory>
 #include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/label.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/treemodelcolumn.h>
 #include <gtkmm/treeview.h>
@@ -46,15 +47,17 @@ class HeroDialog: public sigc::trackable
     Gtk::TreeView *item_treeview;
     Gtk::Button *drop_button;
     Gtk::Button *pickup_button;
+    Gtk::Label *info_label1;
+    Gtk::Label *info_label2;
 
     class ItemColumns: public Gtk::TreeModelColumnRecord {
     public:
 	ItemColumns() 
-        { add(image); add(name); add(capabilities); add(status); add(item); }
+        { add(image); add(name); add(attributes); add(status); add(item); }
 	
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<Glib::ustring> capabilities;
+	Gtk::TreeModelColumn<Glib::ustring> attributes;
 	Gtk::TreeModelColumn<Glib::ustring> status;
 	Gtk::TreeModelColumn<Item *> item;
     };
@@ -66,6 +69,7 @@ class HeroDialog: public sigc::trackable
     void on_pickup_clicked();
 
     void add_item(Item *item, bool in_backpack);
+    void fill_in_info_labels();
 };
 
 #endif

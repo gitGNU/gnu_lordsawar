@@ -19,7 +19,6 @@
 #include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
 #include <gtkmm/image.h>
-#include <gtkmm/label.h>
 
 #include "hero-dialog.h"
 
@@ -29,7 +28,6 @@
 #include "../defs.h"
 #include "../hero.h"
 #include "../Item.h"
-#include "../Itemlist.h"
 #include "../GameMap.h"
 
 HeroDialog::HeroDialog(Hero *h, Vector<int> p)
@@ -54,20 +52,10 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     xml->get_widget("hero_image", hero_image);
     hero_image->property_pixbuf() = to_pixbuf(hero->getPixmap());
 
-    Gtk::Label *info_label;
-    xml->get_widget("info_label", info_label);
-    Glib::ustring s;
-    // FIXME: put in real numbers
-    s += String::ucompose(_("Battle: %1"), 0);
-    s += "\n";
-    s += String::ucompose(_("Command: %1"), 0);
-    s += "\n";
-    s += String::ucompose(_("Level: %1"), hero->getLevel());
-    s += "\n";
-    s += String::ucompose(_("Experience: %1"),
-			  std::setprecision(2), hero->getXP());
-    info_label->set_text(s);
-
+    xml->get_widget("info_label1", info_label1);
+    xml->get_widget("info_label2", info_label2);
+    fill_in_info_labels();
+	
     xml->get_widget("drop_button", drop_button);
     xml->get_widget("pickup_button", pickup_button);
 
@@ -81,7 +69,7 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     item_treeview->set_model(item_list);
     item_treeview->append_column("", item_columns.image);
     item_treeview->append_column(_("Name"), item_columns.name);
-    item_treeview->append_column(_("Capabilities"), item_columns.capabilities);
+    item_treeview->append_column(_("Attributes"), item_columns.attributes);
     item_treeview->append_column(_("Status"), item_columns.status);
 
     item_treeview->get_selection()->signal_changed()
@@ -89,13 +77,24 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 
     on_selection_changed();
 
-    Item *item = (*Itemlist::getInstance())[0];
-    hero->addToBackpack(item, 0);
-    item = (*Itemlist::getInstance())[1];
-    hero->addToBackpack(item, 0);
-    item = (*Itemlist::getInstance())[5];
-    hero->addToBackpack(item, 0);
-    // FIXME: populate the item list
+#if 0
+    // debug code
+    #include "../Itemlist.h"
+    static bool first = true;
+
+    if (first)
+    {
+	Item *item = (*Itemlist::getInstance())[0];
+	hero->addToBackpack(item, 0);
+	item = (*Itemlist::getInstance())[1];
+	hero->addToBackpack(item, 0);
+	item = (*Itemlist::getInstance())[5];
+	hero->addToBackpack(item, 0);
+	first = false;
+    }
+#endif
+    
+    // populate the item list
     std::list<Item*> backpack = hero->getBackpack();
     for (std::list<Item*>::iterator i = backpack.begin(), end = backpack.end();
 	i != end; ++i)
@@ -146,6 +145,7 @@ void HeroDialog::on_drop_clicked()
 	hero->removeFromBackpack(item);
 	(*i)[item_columns.status] = _("On the ground");
 	on_selection_changed();
+	fill_in_info_labels();
     }
 }
 
@@ -159,6 +159,7 @@ void HeroDialog::on_pickup_clicked()
 	hero->addToBackpack(item, 0);
 	(*i)[item_columns.status] = _("In backpack");
 	on_selection_changed();
+	fill_in_info_labels();
     }
 }
 
@@ -168,7 +169,7 @@ void HeroDialog::add_item(Item *item, bool in_backpack)
     (*i)[item_columns.image] = to_pixbuf(item->getPic());
     (*i)[item_columns.name] = item->getName();
 
-    // the capabilities column
+    // the attributes column
     std::vector<Glib::ustring> s;
     if (item->getBonus(Army::STRENGTH))
 	s.push_back(String::ucompose(_("Attack: +%1"), item->getValue(Army::STRENGTH)));
@@ -202,7 +203,7 @@ void HeroDialog::add_item(Item *item, bool in_backpack)
 	    str += "\n";
 	str += *i;
     }
-    (*i)[item_columns.capabilities] = str;
+    (*i)[item_columns.attributes] = str;
     
     if (in_backpack)
 	(*i)[item_columns.status] = _("In backpack");
@@ -212,3 +213,32 @@ void HeroDialog::add_item(Item *item, bool in_backpack)
     (*i)[item_columns.item] = item;
 }
 
+void HeroDialog::fill_in_info_labels()
+{
+    Glib::ustring s;
+    // fill in first column
+    // FIXME: put in real numbers
+    s += String::ucompose(_("Battle: %1"), 0);
+    s += "\n";
+    s += String::ucompose(_("Command: %1"), 0);
+    s += "\n";
+    s += String::ucompose(_("Level: %1"), hero->getLevel());
+    s += "\n";
+    s += String::ucompose(_("Experience: %1"),
+			  std::setprecision(2), hero->getXP());
+    info_label1->set_text(s);
+
+    // fill in second column
+    s = "";
+    // note to translators: %1 is melee strength, %2 is ranged strength
+    s += String::ucompose(_("Attack: %1/%2"),
+			  hero->getStat(Army::STRENGTH),
+			  hero->getStat(Army::RANGED));
+    s += "\n";
+    // note to translators: %1 is remaining moves, %2 is total moves
+    s += String::ucompose(_("Moves: %1/%2"),
+			  hero->getMoves(), hero->getStat(Army::MOVES));
+    s += "\n";
+    s += String::ucompose(_("Upkeep: %1"), hero->getUpkeep());
+    info_label2->set_text(s);
+}
