@@ -1,3 +1,13 @@
+2007-05-17  Ben Asselstine
+	* removed army vitality, defense, shots, ranged, and portrait.
+	* removed tile defense.
+
+2007-05-16  Ben Asselstine
+        * removed "Purchasable" and using ProductionCost > 0 instead for
+	  army types.
+        * starting to add better army bonuses.
+	* don't let army strength exceed 9
+
 2007-05-12  Ben Asselstine
 	* only certain armies may be bought in `build production'.
 	* when the hero is slain in a ruin, the rest of her stack lives on.
