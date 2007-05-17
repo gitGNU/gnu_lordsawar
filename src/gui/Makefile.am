@@ -13,6 +13,7 @@ liblwgui_a_SOURCES = \
     game-preferences-dialog.cpp game-preferences-dialog.h \
     game-window.cpp game-window.h \
     hero-dialog.cpp hero-dialog.h \
+    hero-offer-dialog.cpp hero-offer-dialog.h \
     main.cpp main.h \
     splash-window.cpp splash-window.h \
     image-helpers.cpp image-helpers.h \

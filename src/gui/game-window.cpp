@@ -32,7 +32,6 @@
 #include <gtkmm/frame.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>
-#include <gtkmm/radiobutton.h>
 #include <gtkmm/entry.h>
 
 #include "game-window.h"
@@ -47,6 +46,7 @@
 #include "city-window.h"
 #include "army-gains-level-dialog.h"
 #include "hero-dialog.h"
+#include "hero-offer-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -871,69 +871,9 @@ void GameWindow::on_hero_brings_allies (int numAllies)
 
 bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, int gold)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/hero-offer-dialog.glade");
-
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(String::ucompose(_("Hero offer for %1"),
-				       player->getName()));
-
-    Gtk::RadioButton *radio;
-    Gtk::Image *image;
-    xml->get_widget("hero_image", image);
-    if (hero->getGender() == Army::MALE)
-      {
-        image->property_file() = File::getMiscFile("various/recruit_male.png");
-        xml->get_widget("hero_male", radio);
-      }
-    else
-      {
-        image->property_file() = File::getMiscFile("various/recruit_female.png");
-        xml->get_widget("hero_female", radio);
-      }
-    radio->set_active(true);
-    
-    Gtk::Entry *entry;
-    xml->get_widget("name", entry);
-    entry->set_text(hero->getName());
-
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    
-    Glib::ustring s;
-    if (gold > 0)
-	s = String::ucompose(
-	    ngettext("A hero in %2 wants to join you for %1 gold piece!",
-		     "A hero in %2 wants to join you for %1 gold pieces!",
-		     gold), gold, city->getName().c_str());
-    else
-	s = String::ucompose(_("A hero in %1 wants to join you!"), city->getName().c_str());
-    label->set_text(s);
-    
-    Sound::getInstance()->playMusic("hero", 1);
-    dialog->show_all();
-    int response = dialog->run();
-    Sound::getInstance()->haltMusic();
-
-    if (response == 0)		// accepted
-      {
-        hero->setName(entry->get_text());
-        xml->get_widget("hero_male", radio);
-        if (radio->get_active() == true)
-          hero->setGender(Hero::MALE);
-        else
-          hero->setGender(Hero::FEMALE);
-	return true;
-      }
-    else
-	return false;
+    HeroOfferDialog d(player, hero, city, gold);
+    d.set_parent_window(*window.get());
+    return d.run();
 }
 
 
