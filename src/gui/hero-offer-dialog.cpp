@@ -113,6 +113,7 @@ void HeroOfferDialog::on_male_clicked()
     SDL_Surface *tmp = File::getMiscPicture("recruit_male.png");
     image->property_pixbuf() = to_pixbuf(tmp);
     dialog->show_all();
+    SDL_FreeSurface(tmp);
 }
 
 void HeroOfferDialog::on_female_clicked()
