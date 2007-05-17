@@ -248,8 +248,7 @@ int AI_Smart::scoreArmyType(const Army *a)
 {
     // UL: I have spent some minutes calculating the score of the default
     // armyset. The algorithm looks reasonable.
-    int strength = a->getStat(Army::STRENGTH) + a->getStat(Army::DEFENSE)
-                   + a->getStat(Army::HP) / 3;
+    int strength = a->getStat(Army::STRENGTH) + a->getStat(Army::HP) / 3;
     return (strength - a->getProduction());
 }
 

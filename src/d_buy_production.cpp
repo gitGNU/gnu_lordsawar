@@ -151,8 +151,6 @@ bool D_Buy_Production::b_productionClicked(PG_Button* btn)
     d_l_ranged->SetText(buffer);
     snprintf(buffer, 40, _("Shots: %i"), a->getStat(Army::SHOTS, false));
     d_l_shots->SetText(buffer);
-    snprintf(buffer, 40, _("Defense: %i"), a->getStat(Army::DEFENSE, false));
-    d_l_defense->SetText(buffer);
     snprintf(buffer, 40, _("Hitpoints: %i"), a->getStat(Army::HP, false));
     d_l_hp->SetText(buffer);
     snprintf(buffer, 40, _("Moves: %i"), a->getStat(Army::MOVES, false));

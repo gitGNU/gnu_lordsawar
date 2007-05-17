@@ -73,8 +73,6 @@ class Army : public sigc::trackable
         
         enum Stat {
             STRENGTH=0,
-            DEFENSE=1,
-            VITALITY=2,
             HP=3,
             MOVES=4,
             MOVE_BONUS=5,

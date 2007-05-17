@@ -151,10 +151,6 @@ void Army::setStat(Army::Stat stat, Uint32 value)
                         if (d_strength > 9)
                           d_strength = 9;
                         break;
-        case DEFENSE:   d_defense = value;
-                        break;
-        case VITALITY:  d_vitality = value;
-                        break;
         case HP:        d_max_hp = value;
                         if (d_hp > d_max_hp)
                             d_hp = value;
@@ -208,10 +204,6 @@ Uint32 Army::getStat(Stat stat, bool modified) const
     {
         case STRENGTH:
             return d_strength;
-        case DEFENSE:
-            return d_defense;
-        case VITALITY:
-            return d_vitality;
         case HP:
             return d_max_hp;
         case MOVES:
@@ -257,10 +249,10 @@ void Army::heal(Uint32 hp)
         // plus 1HP for each point of vitality above 5 (or one less for each
         // point below 5), heal a minimum of 1 HP per turn
         hp = getStat(HP)/10;
-        if (hp + getStat(VITALITY) <= 5)
+        if (hp <= 5)
             hp = 1;
         else
-            hp += getStat(VITALITY) - 5;
+            hp += 5;
     }
 
     d_hp += hp;
@@ -305,8 +297,6 @@ int Army::computeLevelGain(Stat stat)
     switch (stat)
     {
         case STRENGTH:
-        case DEFENSE:
-        case VITALITY:
         case SIGHT:
         case RANGED:
             return 1;
@@ -336,12 +326,6 @@ int Army::gainLevel(Stat stat)
 	d_strength += delta;
         if (d_strength > 9)
           d_strength = 9;
-	break;
-    case DEFENSE:
-	d_defense += delta;
-	break;
-    case VITALITY:
-	d_vitality += delta;
 	break;
     case HP:
 	d_max_hp += delta;

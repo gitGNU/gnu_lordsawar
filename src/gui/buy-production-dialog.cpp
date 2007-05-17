@@ -147,9 +147,6 @@ void BuyProductionDialog::fill_in_production_info()
 	s1 += String::ucompose(_("Attack: %1/%2"),
 			      a->getStat(Army::STRENGTH, false),
 			      a->getStat(Army::RANGED, false));
-	s1 += "\n";
-	s1 += String::ucompose(_("Defence: %1"),
-			      a->getStat(Army::DEFENSE, false));
 	
 	// fill in second column
 	s2 += String::ucompose(_("Cost: %1"), a->getProductionCost());

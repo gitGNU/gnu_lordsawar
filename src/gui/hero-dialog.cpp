@@ -175,10 +175,6 @@ void HeroDialog::add_item(Item *item, bool in_backpack)
 	s.push_back(String::ucompose(_("Attack: +%1"), item->getValue(Army::STRENGTH)));
     if (item->getBonus(Army::RANGED))
 	s.push_back(String::ucompose(_("Ranged: +%1"), item->getValue(Army::RANGED)));
-    if (item->getBonus(Army::DEFENSE))
-	s.push_back(String::ucompose(_("Defense: +%1"), item->getValue(Army::DEFENSE)));
-    if (item->getBonus(Army::VITALITY))
-	s.push_back(String::ucompose(_("Vitality: +%1"), item->getValue(Army::VITALITY)));
     if (item->getBonus(Army::HP))
 	s.push_back(String::ucompose(_("Hitpoints: +%1"), item->getValue(Army::HP)));
     if (item->getBonus(Army::MOVES))

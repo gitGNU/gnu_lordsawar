@@ -16,11 +16,9 @@
         <d_strength>5</d_strength>
         <d_ranged>0</d_ranged>
         <d_shots>0</d_shots>
-        <d_defense>5</d_defense>
         <d_maxhp>20</d_maxhp>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
-        <d_vitality>5</d_vitality>
         <d_sight>3</d_sight>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
@@ -39,11 +37,9 @@
         <d_strength>3</d_strength>
         <d_ranged>5</d_ranged>
         <d_shots>25</d_shots>
-        <d_defense>3</d_defense>
         <d_maxhp>20</d_maxhp>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>16</d_max_moves>
-        <d_vitality>5</d_vitality>
         <d_sight>3</d_sight>
         <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
@@ -62,11 +58,9 @@
         <d_strength>4</d_strength>
         <d_ranged>0</d_ranged>
         <d_shots>0</d_shots>
-        <d_defense>8</d_defense>
         <d_maxhp>20</d_maxhp>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
-        <d_vitality>8</d_vitality>
         <d_sight>3</d_sight>
         <d_portrait></d_portrait>
         <d_move_bonus>8</d_move_bonus>
@@ -85,11 +79,9 @@
         <d_strength>2</d_strength>
         <d_ranged>6</d_ranged>
         <d_shots>15</d_shots>
-        <d_defense>4</d_defense>
         <d_maxhp>20</d_maxhp>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
-        <d_vitality>5</d_vitality>
         <d_sight>3</d_sight>
         <d_portrait></d_portrait>
         <d_move_bonus>8</d_move_bonus>
@@ -108,11 +100,9 @@
         <d_strength>7</d_strength>
         <d_ranged>0</d_ranged>
         <d_shots>0</d_shots>
-        <d_defense>4</d_defense>
         <d_maxhp>25</d_maxhp>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
-        <d_vitality>6</d_vitality>
         <d_sight>3</d_sight>
         <d_portrait></d_portrait>
         <d_move_bonus>8</d_move_bonus>
@@ -131,11 +121,9 @@
         <d_strength>5</d_strength>
         <d_ranged>5</d_ranged>
         <d_shots>5</d_shots>
-        <d_defense>4</d_defense>
         <d_maxhp>25</d_maxhp>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
-        <d_vitality>6</d_vitality>
         <d_sight>3</d_sight>
         <d_portrait></d_portrait>
         <d_move_bonus>8</d_move_bonus>

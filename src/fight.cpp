@@ -638,7 +638,7 @@ void Fight::fightArmies(Fighter* culprit, Fighter* victim, bool attack)
     // I implicitely assume here that armies with ammunition left attack from
     // the distance (should be safe).
     int strength;
-    int defense = victim->army->getStat(Army::DEFENSE) + victim->def_bonus;
+    int defense = victim->def_bonus;
     bool melee = (culprit->shots == 0);
 
     // factor used for some calculation regarding gaining medals

@@ -13,11 +13,9 @@
         <d_strength>2</d_strength>
         <d_ranged>6</d_ranged>
         <d_shots>20</d_shots>
-        <d_defense>3</d_defense>
         <d_maxhp>20</d_maxhp>
         <d_expvalue>6</d_expvalue>
         <d_max_moves>14</d_max_moves>
-        <d_vitality>7</d_vitality>
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
@@ -36,11 +34,9 @@
         <d_strength>6</d_strength>
         <d_ranged>0</d_ranged>
         <d_shots>0</d_shots>
-        <d_defense>5</d_defense>
         <d_maxhp>30</d_maxhp>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
-        <d_vitality>10</d_vitality>
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
@@ -59,11 +55,9 @@
         <d_strength>2</d_strength>
         <d_ranged>8</d_ranged>
         <d_shots>30</d_shots>
-        <d_defense>2</d_defense>
         <d_maxhp>20</d_maxhp>
         <d_expvalue>7</d_expvalue>
         <d_max_moves>12</d_max_moves>
-        <d_vitality>4</d_vitality>
         <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
@@ -82,11 +76,9 @@
         <d_strength>8</d_strength>
         <d_ranged>0</d_ranged>
         <d_shots>0</d_shots>
-        <d_defense>7</d_defense>
         <d_maxhp>30</d_maxhp>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>18</d_max_moves>
-        <d_vitality>7</d_vitality>
         <d_sight>4</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>true</d_defends_ruins>
@@ -105,11 +97,9 @@
         <d_strength>12</d_strength>
         <d_ranged>0</d_ranged>
         <d_shots>0</d_shots>
-        <d_defense>12</d_defense>
         <d_maxhp>30</d_maxhp>
         <d_expvalue>20</d_expvalue>
         <d_max_moves>20</d_max_moves>
-        <d_vitality>8</d_vitality>
         <d_sight>6</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
@@ -128,11 +118,9 @@
         <d_strength>8</d_strength>
         <d_ranged>8</d_ranged>
         <d_shots>30</d_shots>
-        <d_defense>10</d_defense>
         <d_maxhp>30</d_maxhp>
         <d_expvalue>8</d_expvalue>
         <d_max_moves>22</d_max_moves>
-        <d_vitality>3</d_vitality>
         <d_sight>4</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
@@ -151,11 +139,9 @@
         <d_strength>12</d_strength>
         <d_ranged>15</d_ranged>
         <d_shots>5</d_shots>
-        <d_defense>12</d_defense>
         <d_maxhp>40</d_maxhp>
         <d_expvalue>20</d_expvalue>
         <d_max_moves>14</d_max_moves>
-        <d_vitality>3</d_vitality>
         <d_sight>4</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
