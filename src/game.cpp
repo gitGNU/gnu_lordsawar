@@ -904,7 +904,7 @@ void Game::maybeRecruitHero (Player *p)
     }
     
   //we set the chance of some hero recruitment to, ehm, 10 percent
-  if (((((rand() % 1) == 0) && (gold_needed < p->getGold())) 
+  if (((((rand() % 6) == 0) && (gold_needed < p->getGold())) 
        || gold_needed == 0)
       && (p != plist->getNeutral()))
     {
