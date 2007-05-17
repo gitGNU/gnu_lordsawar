@@ -261,8 +261,9 @@ void CityWindow::set_buy_button_state()
     buy_button->set_sensitive(res);
 }
 
-void CityWindow::on_on_hold_clicked()
+void CityWindow::on_on_hold_clicked() //stop button
 {
+    city->setVectoring(Vector<int>(-1,-1));
     city->getPlayer()->cityChangeProduction(city, -1);
     on_hold_button->set_sensitive(false);
     ignore_toggles = true;
