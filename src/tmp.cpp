@@ -54,7 +54,7 @@ std::string create_and_dump_scenario(const std::string &file,
 
     // first insert the neutral player
     unsigned int set = (Armysetlist::getInstance()->getArmysets())[0];
-    color.r = color.g = color.b = 220; color.unused = 0;
+    color.r = color.g = color.b = 180; color.unused = 0;
     creator.addNeutral("Neutral", set, color, Player::AI_DUMMY);
 
     // now fill in some map information
