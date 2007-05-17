@@ -160,6 +160,7 @@ class Game
     sigc::signal<void, int> hero_arrives;
     sigc::signal<void, Army *> medal_awarded_to_army;
     sigc::signal<Army::Stat, Army *> army_gains_level;
+    sigc::signal<void, Player *> game_loaded;
     sigc::signal<void> game_over;
     
  private:

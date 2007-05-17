@@ -156,6 +156,7 @@ class GameWindow: public sigc::trackable
     void on_hero_brings_allies(int alliesCount);
     void on_medal_awarded_to_army(Army *army);
     Army::Stat on_army_gains_level(Army *army);
+    void on_game_loaded(Player *player);
 
     // helpers
     void show_map_tip(Glib::ustring msg, MapTipPosition pos);

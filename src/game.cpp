@@ -426,16 +426,6 @@ void Game::search_selected_stack()
     {
         int cur_gold = player->getGold();
 
-#if 0
-        snprintf(buf,sizeof(buf), _("%s encounters a %s..."),
-             stack->getFirstHero()->getName().c_str(), 
-             ruin->getOccupant()->getStrongestArmy()->getName().c_str());
-        PG_MessageBox mb(this, 
-                         PG_Rect((my_width-w1)/2, (my_height-h1)/2, w1, h1), 
-                         _("Searching..."), buf,
-                         PG_Rect(80, 70, 80, 30), _("OK"));
-#endif
-	
         if (!(player->stackSearchRuin(stack, ruin)))
         {
             stackRedraw();
@@ -826,8 +816,6 @@ void Game::loadGame()
     Player *player = Playerlist::getActiveplayer();
     if (player->getType() == Player::HUMAN)
     {
-	char buf[101];
-	buf[100] = '\0';
         //human players want access to the controls and an info box
         unlock_inputs();
         bigmap->unselect_active_stack();
@@ -836,15 +824,7 @@ void Game::loadGame()
         update_sidebar_stats();
         update_control_panel();
 
-#if 0
-	snprintf(buf, 100, _("%s, your turn continues."), 
-		Playerlist::getInstance()->getActiveplayer()->getName().c_str());
-        PG_MessageBox mb(this, Rectangle(my_width/2-100, my_height/2-87, 200, 150), _("Load Game"),
-                buf, Rectangle(60, 110, 80, 30), _("OK"));
-        mb.Show();
-        mb.RunModal();
-        mb.Hide();
-#endif
+	game_loaded.emit(player);
     }       
     else
     {

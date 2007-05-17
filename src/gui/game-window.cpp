@@ -301,6 +301,8 @@ void GameWindow::load_game(const std::string &file_path, bool start)
 	sigc::mem_fun(*this, &GameWindow::on_medal_awarded_to_army));
     game->army_gains_level.connect(
 	sigc::mem_fun(*this, &GameWindow::on_army_gains_level));
+    game->game_loaded.connect(
+	sigc::mem_fun(*this, &GameWindow::on_game_loaded));
 
     if (start)
       game->startGame();
@@ -1211,4 +1213,26 @@ Army::Stat GameWindow::on_army_gains_level(Army *army)
     d.run();
     
     return d.get_selected_stat();
+}
+
+void GameWindow::on_game_loaded(Player *player)
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/game-loaded-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+
+    Gtk::Label *label;
+    xml->get_widget("label", label);
+    Glib::ustring s;
+    s += String::ucompose(_("%1, your turn continues."), player->getName());
+    label->set_text(s);
+
+    dialog->show_all();
+    dialog->run();
 }

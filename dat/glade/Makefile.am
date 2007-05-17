@@ -12,6 +12,7 @@ city-sacked-dialog.glade \
 city-window.glade \
 destination-dialog.glade \
 fight-window.glade \
+game-loaded-dialog.glade \
 game-preferences-dialog.glade \
 game-window.glade \
 hero-dialog.glade \
