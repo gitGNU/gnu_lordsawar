@@ -112,9 +112,6 @@ class Game
     //! Callback when an army gets a new medal.
     void newMedalArmy(Army* a);
 
-    //! Callback when the game is finished; display a dialog
-    void gameFinished();
-    
     // locks/unlocks the input widgets during computer turns
     void lock_inputs();
     void unlock_inputs();
@@ -161,7 +158,6 @@ class Game
     sigc::signal<void, Army *> medal_awarded_to_army;
     sigc::signal<Army::Stat, Army *> army_gains_level;
     sigc::signal<void, Player *> game_loaded;
-    sigc::signal<void> game_over;
     
  private:
 

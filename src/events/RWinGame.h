@@ -47,11 +47,6 @@ class RWinGame : public Reaction
         //! Sets the status for this reaction
         void setStatus(Uint32 status) {d_status = status;}
         
-
-        //! signal to show the win game dialog. For technical reasons we cannot
-        //! dur this here.
-        static sigc::signal<void> swinDialog;
-        
         //! signal is connected outside of the scope of this class
         static sigc::signal<void, Uint32> swinning;
 

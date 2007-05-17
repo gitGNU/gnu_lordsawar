@@ -18,7 +18,6 @@
 #include "../sound.h"
 
 sigc::signal<void, Uint32> RWinGame::swinning;
-sigc::signal<void> RWinGame::swinDialog;
 
 RWinGame::RWinGame(Uint32 status)
     :Reaction(WINGAME), d_status(status)
@@ -60,7 +59,6 @@ bool RWinGame::trigger() const
         Sound::getInstance()->playMusic("victory", 1);
     else
         Sound::getInstance()->playMusic("victory2",1);
-    swinDialog.emit();
     swinning.emit(d_status);
     Sound::getInstance()->haltMusic();
 

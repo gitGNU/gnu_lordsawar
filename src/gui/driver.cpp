@@ -45,6 +45,7 @@ Driver::Driver()
 	p.type = GameParameters::Player::HARD;
 	p.name = "Evail";
 	g.players.push_back(p);
+	p.type = GameParameters::Player::HARD;
 	g.map.width = 75;
 	g.map.height = 100;
 	g.map.grass = 78;
@@ -58,7 +59,7 @@ Driver::Driver()
 	g.map.temples = 25;
 	g.map_path = "";
 	g.tile_theme = "default";
-	g.army_theme = "monsters";
+	g.army_theme = "imperial";
 	g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
 	
 	on_new_game_requested(g);

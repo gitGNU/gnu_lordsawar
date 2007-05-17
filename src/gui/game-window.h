@@ -127,6 +127,9 @@ class GameWindow: public sigc::trackable
     void on_resign_game_activated();
     void on_quit_activated();
 
+    void on_game_won(Uint32 status);
+    void on_game_lost(Uint32 status);
+    
     // stack info pane at the bottom
     void on_army_toggled(Gtk::ToggleButton *toggle, Army *army);
     bool on_army_button_event(GdkEventButton *e,
@@ -162,6 +165,8 @@ class GameWindow: public sigc::trackable
     void show_map_tip(Glib::ustring msg, MapTipPosition pos);
     void on_city_looted(City *city, int gold);
     void hide_map_tip();
+
+    void stop_game();
     
 public:
     // not part of the API, but for surface_attached_helper

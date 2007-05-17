@@ -124,6 +124,7 @@ FightWindow::FightWindow(Fight &fight)
     xml->get_widget("attacker_label", label);
 
     p = attackers.front()->getPlayer();
+    assert(p);
     label->set_markup("<b>" + attacker->getName() + "</b>");
     //l->SetFontColor(PG_Color(p->getColor()));
 

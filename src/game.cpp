@@ -50,14 +50,6 @@
 #include "Configuration.h"
 #include "File.h"
 #include "Quest.h"
-//#include "RuinSearchDialog.h"
-//#include "CityOccupationDialog.h"
-//#include "FightDialog.h"
-//#include "cityinfo.h"
-//#include "hero_offer.h"
-//#include "QuestsManager.h"
-//#include "ArmyLevelDialog.h"
-//#include "ArmyMedalDialog.h"
 #include "events/ERound.h"
 #include "events/ENextTurn.h"
 #include "events/RUpdate.h"
@@ -65,7 +57,6 @@
 #include "events/RCenterObj.h"
 #include "events/RRaiseEvent.h"
 #include "events/RActEvent.h"
-#include "events/RWinGame.h"
 
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
@@ -278,7 +269,6 @@ void Game::connectEvents()
                                         &GameScenario::getEventlist));
     RActEvent::sgettingEvents.connect(sigc::mem_fun(*d_gameScenario,
                                         &GameScenario::getEventlist));
-    RWinGame::swinDialog.connect(sigc::mem_fun(*this, &Game::gameFinished));
 
 
     // and connect some of the events
@@ -502,41 +492,6 @@ void Game::newMedalArmy(Army* a)
 
     medal_awarded_to_army.emit(a);
     update_stack_info();
-}
-
-void Game::gameFinished()
-{
-#if 0
-    SDL_Surface *d_pic_winGame = File::getMiscPicture("win.jpg", false);
-
-    // mask pics need a special format
-    SDL_Surface* tmp = File::getMiscPicture("win_mask.png");
-    d_pic_winGameMask = SDL_CreateRGBSurface(SDL_SWSURFACE, tmp->w, tmp->h,
-                                        32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
-    SDL_SetAlpha(tmp, 0, 0);
-    SDL_BlitSurface(tmp, 0, d_pic_winGameMask, 0);
-    SDL_FreeSurface(tmp);
-    
-    // show a nice dialog in the center of the screen
-    
-    Rectangle r;
-    r.w = d_pic_winGame->w;
-    r.h = d_pic_winGame->h;
-    r.x = my_width/2 - r.w/2;
-    r.y = my_height/2 - r.h/2;
-    
-    Popup* win = new Popup(this, r);
-    SDL_Surface* winpic = GraphicsCache::getInstance()->applyMask(
-                                        d_pic_winGame, d_pic_winGameMask,
-                                        Playerlist::getActiveplayer());
-    win->SetIcon(winpic);
-    
-    win->Show();
-    win->RunModal();
-
-    delete win;
-    SDL_FreeSurface(winpic);
-#endif
 }
 
 bool Game::stackRedraw()
@@ -908,6 +863,8 @@ void Game::maybeRecruitHero (Player *p)
       bool accepted = p->recruitHero(newhero, city, gold_needed);
       if (accepted)
         {
+	  newhero->setPlayer(p);
+
           int alliesCount;
           city->addArmy(newhero);
           /* now maybe add a few allies */
@@ -940,6 +897,7 @@ void Game::maybeRecruitHero (Player *p)
               for (int i = 0; i < alliesCount; i++)
                 {
                   Army* ally = new Army(*(allytypes[allytypeidx]));
+		  ally->setPlayer(p);
                   city->addArmy(ally);
                 }
               if (alliesCount > 0 && p->getType() == Player::HUMAN)

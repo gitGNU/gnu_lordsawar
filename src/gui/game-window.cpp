@@ -65,7 +65,9 @@
 #include "../Quest.h"
 #include "../QuestsManager.h"
 #include "../stack.h"
-#include "../timing.h"
+#include "../GraphicsCache.h"
+#include "../events/RWinGame.h"
+#include "../events/RLoseGame.h"
 
 
 GameWindow::GameWindow()
@@ -222,11 +224,9 @@ void GameWindow::load_game(const std::string &file_path, bool start)
     if (broken)
 	show_fatal_error(_("Map was broken when re-reading. Exiting..."));
 
-    // set up misc stuff
-#if 0
-    RWinGame::swinning.connect(sigc::slot((*this), &Splash::gameFinished));
-    RLoseGame::slosing.connect(sigc::slot((*this), &Splash::gameFinished));
-#endif
+    RWinGame::swinning.connect(sigc::mem_fun(this, &GameWindow::on_game_won));
+    RLoseGame::slosing.connect(sigc::mem_fun(this, &GameWindow::on_game_lost));
+    
     Sound::getInstance()->haltMusic(false);
     Sound::getInstance()->enableBackground();
 
@@ -262,7 +262,6 @@ void GameWindow::load_game(const std::string &file_path, bool start)
 		 game->can_end_turn);
 
     // setup game callbacks
-    //game->game_over.connect(sigc::mem_fun(*this, ))
     game->sidebar_stats_changed.connect(
 	sigc::mem_fun(*this, &GameWindow::on_sidebar_stats_changed));
     game->smallmap_changed.connect(
@@ -397,22 +396,88 @@ void GameWindow::on_resign_game_activated()
     bool end = true;
 
     if (end) {
-	if (game.get())
-	{
-	    game->stopGame();
-	    game.reset();
-	}
-	Sound::getInstance()->disableBackground();
-	
+	stop_game();
 	game_ended.emit();
     }
 }
 
 void GameWindow::on_quit_activated()
 {
-    // FIXME: quick hack
-    on_resign_game_activated();
-    quit_requested.emit();
+    // FIXME: ask
+    bool end = true;
+
+    if (end) {
+	stop_game();
+	quit_requested.emit();
+    }
+}
+
+void GameWindow::stop_game()
+{
+    Sound::getInstance()->disableBackground();
+    if (game.get())
+    {
+	game->stopGame();
+	game.reset();
+    }
+}
+
+void GameWindow::on_game_won(Uint32 status)
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/game-won-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+
+    Gtk::Image *image;
+    xml->get_widget("image", image);
+    
+    SDL_Surface *win_unmasked = File::getMiscPicture("win.jpg", false);
+    // mask pics need a special format
+    SDL_Surface* tmp = File::getMiscPicture("win_mask.png");
+    SDL_Surface *mask = SDL_CreateRGBSurface(
+	SDL_SWSURFACE, tmp->w, tmp->h, 32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
+    SDL_SetAlpha(tmp, 0, 0);
+    SDL_BlitSurface(tmp, 0, mask, 0);
+    SDL_FreeSurface(tmp);
+    
+    SDL_Surface* win = GraphicsCache::getInstance()->applyMask(
+	win_unmasked, mask, Playerlist::getActiveplayer());
+
+    image->property_pixbuf() = to_pixbuf(win);
+    dialog->show_all();
+    dialog->run();
+
+    SDL_FreeSurface(win);
+    SDL_FreeSurface(win_unmasked);
+    SDL_FreeSurface(mask);
+
+    stop_game();
+    game_ended.emit();
+}
+
+void GameWindow::on_game_lost(Uint32 status)
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/game-lost-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+    
+    dialog->show_all();
+    dialog->run();
+
+    stop_game();
+    game_ended.emit();
 }
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
