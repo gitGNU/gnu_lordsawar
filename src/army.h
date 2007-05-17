@@ -116,9 +116,6 @@ class Army : public sigc::trackable
         //! Set the basic image of the unit type
         void setPixmap(SDL_Surface* pixmap){d_pixmap = pixmap;}
 
-        //! sets a "big image" for this army shown in the army dialog
-        void setPortrait(SDL_Surface* portrait) {d_portrait = portrait;}
-
         //! Set the mask of the unit type (for player colors)
         void setMask(SDL_Surface* mask){d_mask = mask;}
 
@@ -175,9 +172,6 @@ class Army : public sigc::trackable
 
         //! Get the image of the army. Internally, this refers to GraphicsCache.
         SDL_Surface* getPixmap() const;
-
-        //! Returns the "big image" of the army
-        SDL_Surface* getPortrait() const;
 
         //! Returns the mask (read-only!!) for player colors
         SDL_Surface* getMask() const {return d_mask;}
@@ -335,7 +329,6 @@ class Army : public sigc::trackable
         Uint32 d_type;
         Uint32 d_armyset;
         SDL_Surface* d_pixmap;
-        SDL_Surface* d_portrait;
         SDL_Surface* d_mask;
         
         std::string d_name;

@@ -18,7 +18,6 @@
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
         <d_sight>3</d_sight>
-        <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>4</d_army_bonus>
     </army>
@@ -37,7 +36,6 @@
         <d_expvalue>10</d_expvalue>
         <d_max_moves>16</d_max_moves>
         <d_sight>3</d_sight>
-        <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>4</d_army_bonus>
     </army>
@@ -56,7 +54,6 @@
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
         <d_sight>3</d_sight>
-        <d_portrait></d_portrait>
         <d_move_bonus>8</d_move_bonus>
         <d_army_bonus>4</d_army_bonus>
     </army>
@@ -75,7 +72,6 @@
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
         <d_sight>3</d_sight>
-        <d_portrait></d_portrait>
         <d_move_bonus>8</d_move_bonus>
         <d_army_bonus>4</d_army_bonus>
     </army>
@@ -94,7 +90,6 @@
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
         <d_sight>3</d_sight>
-        <d_portrait></d_portrait>
         <d_move_bonus>8</d_move_bonus>
         <d_army_bonus>4</d_army_bonus>
     </army>
@@ -113,7 +108,6 @@
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
         <d_sight>3</d_sight>
-        <d_portrait></d_portrait>
         <d_move_bonus>8</d_move_bonus>
         <d_army_bonus>4</d_army_bonus>
     </army>

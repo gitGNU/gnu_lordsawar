@@ -216,11 +216,6 @@ bool Armysetlist::loadArmy(string tag, XML_Helper* helper)
 
     SDL_FreeSurface(pic);
 
-    // and along the way, try to load a portrait as well
-    helper->getData(s, "portrait");
-    if (!s.empty())
-        a->setPortrait(File::getArmyPicture(d_file, s + ".jpg"));
-     
     return true;
 }
 

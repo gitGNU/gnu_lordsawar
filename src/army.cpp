@@ -26,7 +26,7 @@
 sigc::signal<void, Army*> Army::sdying;
 
 Army::Army(const Army& a, Player* p)
-    :d_type(a.d_type), d_armyset(a.d_armyset), d_pixmap(0), d_portrait(0),
+    :d_type(a.d_type), d_armyset(a.d_armyset), d_pixmap(0),
      d_mask(0), d_name(a.d_name), d_description(a.d_description), 
      d_production(a.d_production),
      d_production_cost(a.d_production_cost), d_upkeep(a.d_upkeep),
@@ -56,7 +56,7 @@ Army::Army(const Army& a, Player* p)
 }
 
 Army::Army(XML_Helper* helper, bool prototype)
-  :d_pixmap(0), d_portrait(0), d_mask(0), d_name(""), d_description(""),
+  :d_pixmap(0), d_mask(0), d_name(""), d_description(""),
    d_gender(NONE), d_player(0),
    d_id(0), d_xp(0), d_level(1), d_blessed(false), d_grouped(true),
    d_number_hashit(0), d_number_hasbeenhit(0), d_defends_ruins(false),
@@ -180,16 +180,6 @@ SDL_Surface* Army::getPixmap() const
     return GraphicsCache::getInstance()->getArmyPic(d_armyset, d_type,
                                          d_player, d_level, d_medal_bonus);
 }
-
-SDL_Surface* Army::getPortrait() const
-{
-    // only the prototypes, which also keep the images, have the portrait
-    if (!d_pixmap)
-        return Armysetlist::getInstance()->getArmy(d_armyset, d_type)->getPortrait();
-
-    return d_portrait;
-}
-
 
 Uint32 Army::getStat(Stat stat, bool modified) const
 {
