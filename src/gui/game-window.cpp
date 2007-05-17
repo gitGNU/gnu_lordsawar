@@ -15,6 +15,7 @@
 #include <config.h>
 
 #include <iomanip>
+#include <queue>
 #include <SDL_video.h>
 
 #include <sigc++/functors/mem_fun.h>
@@ -68,6 +69,8 @@
 #include "../GraphicsCache.h"
 #include "../events/RWinGame.h"
 #include "../events/RLoseGame.h"
+#include "../QuestsManager.h"
+#include "../Quest.h"
 
 
 GameWindow::GameWindow()
@@ -224,9 +227,6 @@ void GameWindow::load_game(const std::string &file_path, bool start)
     if (broken)
 	show_fatal_error(_("Map was broken when re-reading. Exiting..."));
 
-    RWinGame::swinning.connect(sigc::mem_fun(this, &GameWindow::on_game_won));
-    RLoseGame::slosing.connect(sigc::mem_fun(this, &GameWindow::on_game_lost));
-    
     Sound::getInstance()->haltMusic(false);
     Sound::getInstance()->enableBackground();
 
@@ -303,6 +303,16 @@ void GameWindow::load_game(const std::string &file_path, bool start)
     game->game_loaded.connect(
 	sigc::mem_fun(*this, &GameWindow::on_game_loaded));
 
+    // misc callbacks
+    RWinGame::swinning.connect(sigc::mem_fun(this, &GameWindow::on_game_won));
+    RLoseGame::slosing.connect(sigc::mem_fun(this, &GameWindow::on_game_lost));
+    
+    QuestsManager *q = QuestsManager::getInstance();
+    q->quest_completed.connect(
+	sigc::mem_fun(this, &GameWindow::on_quest_completed));
+    q->quest_expired.connect(
+	sigc::mem_fun(this, &GameWindow::on_quest_expired));
+    
     if (start)
       game->startGame();
     else
@@ -1300,3 +1310,80 @@ void GameWindow::on_game_loaded(Player *player)
     dialog->show_all();
     dialog->run();
 }
+
+void GameWindow::on_quest_completed(Quest *quest, int gold)
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/quest-completed-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+
+    Gtk::Label *label;
+    xml->get_widget("label", label);
+    Glib::ustring s;
+    s += String::ucompose(_("%1 completed the quest!"),
+			  quest->getHero()->getName());
+    s += "\n\n";
+
+    // add messages from the quest
+    std::queue<std::string> msgs;
+    quest->getSuccessMsg(msgs);
+    while (!msgs.empty())
+    {
+        s += msgs.front();
+        s += "\n\n";
+	msgs.pop();
+    }
+
+    s += String::ucompose(
+	ngettext("You have been rewarded with %1 gold piece.",
+		 "You have been rewarded with %1 gold pieces.",
+		 gold), gold);
+
+    label->set_text(s);
+
+    dialog->show_all();
+    dialog->run();
+}
+
+void GameWindow::on_quest_expired(Quest *quest)
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/quest-expired-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+
+    Gtk::Label *label;
+    xml->get_widget("label", label);
+    Glib::ustring s;
+    s += String::ucompose(_("%1 did not complete the quest."),
+			  quest->getHero()->getName());
+    s += "\n\n";
+
+    // add messages from the quest
+    std::queue<std::string> msgs;
+    quest->getExpiredMsg(msgs);
+    while (!msgs.empty())
+    {
+        s += msgs.front();
+	msgs.pop();
+	if (!msgs.empty())
+	    s += "\n\n";
+    }
+
+    label->set_text(s);
+
+    dialog->show_all();
+    dialog->run();
+}
+

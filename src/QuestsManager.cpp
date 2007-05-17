@@ -128,15 +128,13 @@ Quest* QuestsManager::createNewQuest(Uint32 heroId)
 //========================================================================
 void QuestsManager::questCompleted(Uint32 heroId)
 {
-    debug("QuestCompleted dialog");
-
-    /* show the dialog window */
-#if 0
-    QuestCompletedDialog dlg(NULL, d_quests[heroId]);
-	dlg.Show();
-	dlg.RunModal();
-    dlg.Hide();
-#endif
+    Quest *quest = d_quests[heroId];
+    
+    // now the reward - at the moment a very simple one (just money):
+    int gold = rand() % 1000;
+    quest->getHero()->getPlayer()->giveReward(gold);
+    
+    quest_completed.emit(quest, gold);
     
     debug("deactivate quest");
     _deactivateQuest(heroId);
@@ -145,18 +143,12 @@ void QuestsManager::questCompleted(Uint32 heroId)
 //========================================================================
 void QuestsManager::questExpired(Uint32 heroId)
 {
-    debug("QuestExpireded dialog");
+    Quest *quest = d_quests[heroId];
 
-    if (d_quests[heroId] == 0)
+    if (quest == 0)
         return;
     
-    /* show the dialog window */
-#if 0
-    QuestExpiredDialog dlg(NULL, d_quests[heroId]);
-    dlg.Show();
-    dlg.RunModal();
-    dlg.Hide();
-#endif
+    quest_expired.emit(quest);
     
     debug("deactivate quest");
     _deactivateQuest(heroId);

@@ -19,6 +19,7 @@
 #include <map>
 #include <vector>
 #include <sigc++/trackable.h>
+#include <sigc++/signal.h>
 
 #include "player.h"
 #include "hero.h"
@@ -65,6 +66,9 @@ class QuestsManager : public sigc::trackable
         /** \brief Singleton destruction method */
         static void deleteInstance();
 
+	sigc::signal<void, Quest *, int> quest_completed;
+	sigc::signal<void, Quest *> quest_expired;
+	
         /**
          * \brief Create a random quest and assign it to the hero.
          */
@@ -95,7 +99,7 @@ class QuestsManager : public sigc::trackable
          */
         bool save(XML_Helper* helper) const;
 
-	protected:
+    protected:
         /** \brief Constructor */
         QuestsManager();
 

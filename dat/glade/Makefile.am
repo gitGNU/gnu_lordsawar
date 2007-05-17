@@ -21,6 +21,8 @@ hero-dialog.glade \
 hero-offer-dialog.glade \
 medal-awarded-dialog.glade \
 quest-assigned-dialog.glade \
+quest-completed-dialog.glade \
+quest-expired-dialog.glade \
 ruinfight-finished-dialog.glade \
 ruinfight-started-dialog.glade \
 ruin-searched-dialog.glade \

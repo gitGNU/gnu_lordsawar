@@ -161,6 +161,10 @@ class GameWindow: public sigc::trackable
     Army::Stat on_army_gains_level(Army *army);
     void on_game_loaded(Player *player);
 
+    // quest manager callbacks
+    void on_quest_completed(Quest *quest, int gold);
+    void on_quest_expired(Quest *quest);
+    
     // helpers
     void show_map_tip(Glib::ustring msg, MapTipPosition pos);
     void on_city_looted(City *city, int gold);

@@ -35,7 +35,6 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero)
     
     /** we have to kill 14-20 units: 14 + rand(0..6) */
     d_to_kill = 14 + (rand() % 7);
-    debug("to kill: " << _how_many_to_kill);
     
     initDescription();
 }
