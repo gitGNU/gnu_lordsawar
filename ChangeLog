@@ -3,6 +3,7 @@
 	* removed tile defense.
 	* stop vectoring when stop button is pressed
 	* added smallmap to hero offer dialog
+	* added production shields to vectormap
 
 2007-05-16  Ben Asselstine
         * removed "Purchasable" and using ProductionCost > 0 instead for
