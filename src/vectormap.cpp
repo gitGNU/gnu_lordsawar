@@ -16,6 +16,8 @@
 
 #include "sdl-draw.h"
 #include "city.h"
+#include "citylist.h"
+#include "playerlist.h"
 
 VectorMap::VectorMap(City *c)
 {
@@ -53,12 +55,27 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	     && e.state == MouseButtonEvent::PRESSED)
 	dest = Vector<int>(-1, -1);
 
-    if (dest != city->getVectoring())
-    {
+    /* clicking on own city, makes vectoring stop */
+    if (Citylist::getInstance()->getObjectAt(dest) == city)
+      dest = Vector<int>(-1, -1);
+
+    /* only vector to cities we own */
+    if (Citylist::getInstance()->getObjectAt(dest) && 
+        Citylist::getInstance()->getObjectAt(dest)->getPlayer() ==
+          Playerlist::getInstance()->getActiveplayer() &&
+        dest != city->getVectoring())
+      {
 	destination_chosen.emit(dest);
 	city->setVectoring(dest);
 	draw();
-    }
+      }
+    else if (dest == Vector<int>(-1, -1)) //stop vectoring
+      {
+	destination_chosen.emit(dest);
+	city->setVectoring(dest);
+	draw();
+      }
+    
 }
 
 #if 0

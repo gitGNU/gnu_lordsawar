@@ -60,8 +60,7 @@ void DestinationDialog::set_parent_window(Gtk::Window &parent)
 
 void DestinationDialog::run()
 {
-    // FIXME: the overviewmap looks hideous at this scale
-    vectormap->resize(GameMap::get_dim() * 4);
+    vectormap->resize(GameMap::get_dim() * 2);
     vectormap->draw();
     dialog->show();
     dialog->run();
