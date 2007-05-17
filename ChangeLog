@@ -1,6 +1,8 @@
 2007-05-17  Ben Asselstine
 	* removed army vitality, defense, shots, ranged, and portrait.
 	* removed tile defense.
+	* stop vectoring when stop button is pressed
+	* added smallmap to hero offer dialog
 
 2007-05-16  Ben Asselstine
         * removed "Purchasable" and using ProductionCost > 0 instead for
