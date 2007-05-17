@@ -27,7 +27,6 @@ Tile::Tile(XML_Helper* helper)
 
     helper->getData(d_name, "name");
     helper->getData(d_moves, "moves");
-    helper->getData(d_defense, "defense");
     helper->getData(i, "type");
     d_type = static_cast<Tile::Type>(i);
 
@@ -49,7 +48,6 @@ void Tile::printDebugInfo() const
 {
     cout << "name = " << d_name << endl;
     cout << "moves = " << d_moves << endl;
-    cout << "defense = " << d_defense << endl;
 }
 
 // End of file

@@ -56,9 +56,6 @@ class Tile
         //! Get the number of movement points needed to cross this tile
         Uint32 getMoves() const {return d_moves;}
 
-        //! Get the defense bonus (e.g. 5 means that defense goes up by 50%)
-        Uint32 getDefense() const {return d_defense;}
-
         //! Get the color associated with this tile for the smallmap
         SDL_Color getColor() const {return d_color;}
 
@@ -70,7 +67,6 @@ class Tile
         SDL_Surface* d_surface[8*4];      // base tiles * 4 = corners
         std::string d_name;                // name    
         Uint32 d_moves;                    // moves needed to walk over maptile
-        Uint32 d_defense;                    // defense bonus
         SDL_Color d_color;                // color shown in the smallmap
         Type d_type;
 };

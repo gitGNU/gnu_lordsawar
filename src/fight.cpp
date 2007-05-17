@@ -437,6 +437,7 @@ void Fight::calculateBonus()
     }
 
 
+/*
     for (fit = d_def_close.begin(); fit != d_def_close.end(); fit++)
     {
         // the defense bonus is given in 10% steps
@@ -452,6 +453,7 @@ void Fight::calculateBonus()
 
         (*fit)->def_bonus = (bonus * (int)(*fit)->army->getStat(Army::DEFENSE))/100;
     }
+*/
 }
 
 /*

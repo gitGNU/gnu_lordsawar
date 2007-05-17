@@ -70,9 +70,6 @@ class Maptile
         //! Get the number of moves needed to cross this maptile
         Uint32 getMoves() const;
 
-        //! Get the defense bonus for this maptile (only terrain bonus)
-        int getDefense() const {return (*d_tileSet)[d_index]->getDefense();}
-        
         //! Get the smallmap color of this maptile
         SDL_Color getColor() const;
 
