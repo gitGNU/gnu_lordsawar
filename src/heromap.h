@@ -12,43 +12,36 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef HERO_OFFER_DIALOG_H
-#define HERO_OFFER_DIALOG_H
+#ifndef HEROMAP_H
+#define HEROMAP_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/image.h>
+#include <sigc++/signal.h>
 
-#include "../heromap.h"
-#include "../player.h"
-#include "../hero.h"
+#include "overviewmap.h"
+#include "input-events.h"
 
-struct SDL_Surface;
+class City;
 
-// dialog for accepting/rejecting a hero
-class HeroOfferDialog: public sigc::trackable
+/** Display of the whole game map.
+  * 
+  * This is a map where you can select a city's vector, i.e. the position where
+  * freshly produced units automatically go to (at least the path is set, the
+  * units have to be moved manually).
+  */
+
+class HeroMap : public OverviewMap
 {
  public:
-    HeroOfferDialog(Player *player, Hero *hero, City *city, int gold);
+    HeroMap(City *city);
 
-    void set_parent_window(Gtk::Window &parent);
-
-    bool run();
+    // emitted when the map surface has changed
+    sigc::signal<void, SDL_Surface *> map_changed;
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<HeroMap> heromap;
-    void on_male_clicked();
-    void on_female_clicked();
-
-    Gtk::Image *map_image;
-    
-    Hero *hero;
     City *city;
-
-    void on_map_changed(SDL_Surface *map);
+    
+    // hook from base class
+    virtual void after_draw();
 };
 
 #endif

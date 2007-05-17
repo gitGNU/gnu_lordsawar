@@ -29,7 +29,8 @@ various_DATA = \
     freelords_editor.png \
     editor.png \
     shieldsetsmall.png \
-    shieldsetmedium.png
+    shieldsetmedium.png \
+    hero.png
 
 EXTRA_DIST = \
     arrows.png \
@@ -57,5 +58,6 @@ EXTRA_DIST = \
     freelords_editor.png \
     editor.png \
     shieldsetsmall.png \
-    shieldsetmedium.png
+    shieldsetmedium.png \
+    hero.png
     

@@ -48,8 +48,8 @@ HeroOfferDialog::HeroOfferDialog(Player *player, Hero *h, City *c, int gold)
 
     xml->get_widget("map_image", map_image);
 
-    vectormap.reset(new VectorMap(city));
-    vectormap->map_changed.connect(
+    heromap.reset(new HeroMap(city));
+    heromap->map_changed.connect(
 	sigc::mem_fun(this, &HeroOfferDialog::on_map_changed));
 
     Gtk::EventBox *map_eventbox;
@@ -145,8 +145,8 @@ bool HeroOfferDialog::run()
     Gtk::RadioButton *radio;
     xml->get_widget("name", entry);
     entry->set_text(hero->getName());
-    vectormap->resize(GameMap::get_dim() * 2);
-    vectormap->draw();
+    heromap->resize(GameMap::get_dim() * 2);
+    heromap->draw();
 
     Sound::getInstance()->playMusic("hero", 1);
     dialog->show_all();
