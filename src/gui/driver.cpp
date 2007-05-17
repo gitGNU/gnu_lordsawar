@@ -45,7 +45,6 @@ Driver::Driver()
 	p.type = GameParameters::Player::HARD;
 	p.name = "Evail";
 	g.players.push_back(p);
-	p.type = GameParameters::Player::HARD;
 	g.map.width = 75;
 	g.map.height = 100;
 	g.map.grass = 78;
