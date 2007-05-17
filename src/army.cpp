@@ -31,8 +31,8 @@ Army::Army(const Army& a, Player* p)
      d_production(a.d_production),
      d_production_cost(a.d_production_cost), d_upkeep(a.d_upkeep),
      d_strength(a.d_strength), d_ranged(a.d_ranged), d_shots(a.d_shots),
-     d_defense(a.d_defense), d_max_hp(a.d_max_hp),
-     d_max_moves(a.d_max_moves), d_vitality(a.d_vitality), d_sight(a.d_sight),
+     d_max_hp(a.d_max_hp),
+     d_max_moves(a.d_max_moves), d_sight(a.d_sight),
      d_xp_value(a.d_xp_value), d_move_bonus(a.d_move_bonus),
      d_army_bonus(a.d_army_bonus), d_gender(a.d_gender), d_player(p),
      d_id(a.d_id), d_hp(a.d_hp), d_moves(a.d_moves), d_xp(a.d_xp),
@@ -66,8 +66,6 @@ Army::Army(XML_Helper* helper, bool prototype)
     helper->getData(d_strength, "strength");
     helper->getData(d_ranged, "ranged");
     helper->getData(d_shots, "shots");
-    helper->getData(d_defense, "defense");
-    helper->getData(d_vitality, "vitality");
     helper->getData(d_sight, "sight");
     helper->getData(d_max_hp, "maxhp");
     helper->getData(d_max_moves, "max_moves");
@@ -367,8 +365,6 @@ bool Army::saveData(XML_Helper* helper) const
     retval &= helper->saveData("strength", d_strength);
     retval &= helper->saveData("ranged", d_ranged);
     retval &= helper->saveData("shots", d_shots);
-    retval &= helper->saveData("defense", d_defense);
-    retval &= helper->saveData("vitality", d_vitality);
     retval &= helper->saveData("sight", d_sight);
     retval &= helper->saveData("maxhp", d_max_hp);
     retval &= helper->saveData("moves", d_moves);
@@ -399,8 +395,6 @@ void  Army::printAllDebugInfo() const
     std::cerr << "strength = " << d_strength << std::endl;
     std::cerr << "ranged = " << d_ranged << std::endl;
     std::cerr << "shots = " << d_shots << std::endl;
-    std::cerr << "defense = " << d_defense << std::endl;
-    std::cerr << "vitality = " << d_vitality << std::endl;
     std::cerr << "max_moves = " << d_max_moves << std::endl;
     std::cerr << "upkeep = " << d_upkeep << std::endl;
     std::cerr << "defends_ruins = " << d_defends_ruins << std::endl;

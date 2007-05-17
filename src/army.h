@@ -348,10 +348,8 @@ class Army : public sigc::trackable
         Uint32 d_strength;
         Uint32 d_ranged;
         Uint32 d_shots;
-        Uint32 d_defense;
         Uint32 d_max_hp;
         Uint32 d_max_moves;
-        Uint32 d_vitality;
         Uint32 d_sight;
         double d_xp_value;
         Uint32 d_move_bonus;
