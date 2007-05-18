@@ -88,10 +88,15 @@ class GameWindow: public sigc::trackable
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
     Gtk::Box *stack_info_box;
+    Gtk::Box *stats_box;
     Gtk::Image *map_image;
     Gtk::Label *stats_label;
     Glib::ustring stats_text;	// the text into which the stats are inserted
 
+    Gtk::Label *cities_stats_label;
+    Gtk::Label *gold_stats_label;
+    Gtk::Label *income_stats_label;
+    
     // the button control panel
     Gtk::Button *prev_button;
     Gtk::Button *next_button;
@@ -134,7 +139,9 @@ class GameWindow: public sigc::trackable
 
     void on_message_requested(std::string msg);
     
-    // stack info pane at the bottom
+    // info pane at the bottom
+    void show_stats();
+    void show_stack(Stack *s);
     void on_army_toggled(Gtk::ToggleButton *toggle, Army *army);
     bool on_army_button_event(GdkEventButton *e,
 			      Gtk::ToggleButton *toggle, Army *army);

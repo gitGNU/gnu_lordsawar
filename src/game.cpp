@@ -665,6 +665,7 @@ void Game::invading_city(City* city)
     Playerlist::getInstance()->checkPlayers();
     bigmap->draw();
     update_stack_info();
+    update_sidebar_stats();
     update_control_panel();
 }
 

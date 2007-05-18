@@ -93,6 +93,9 @@ GameWindow::GameWindow()
 
     xml->get_widget("sdl_container", sdl_container);
     xml->get_widget("stack_info_box", stack_info_box);
+    xml->get_widget("stats_box", stats_box);
+    stack_info_box->hide();
+    stats_box->show();
 
     // the map image
     xml->get_widget("map_image", map_image);
@@ -107,9 +110,20 @@ GameWindow::GameWindow()
     map_eventbox->signal_motion_notify_event().connect(
 	sigc::mem_fun(*this, &GameWindow::on_map_mouse_motion_event));
 
-    
+    // the stats
     xml->get_widget("stats_label", stats_label);
     stats_text = stats_label->get_text();
+    Gtk::Image *image;
+    xml->get_widget("cities_stats_image", image);
+    image->property_file() = File::getMiscFile("various/items.png");
+    xml->get_widget("gold_stats_image", image);
+    image->property_file() = File::getMiscFile("various/items.png");
+    xml->get_widget("income_stats_image", image);
+    image->property_file() = File::getMiscFile("various/items.png");
+    
+    xml->get_widget("cities_stats_label", cities_stats_label);
+    xml->get_widget("gold_stats_label", gold_stats_label);
+    xml->get_widget("income_stats_label", income_stats_label);
 
     // the control panel
     xml->get_widget("prev_button", prev_button);
@@ -134,7 +148,7 @@ GameWindow::GameWindow()
     move_button->add(*manage(new Gtk::Image(button_images[3])));
     move_all_button->add(*manage(new Gtk::Image(button_images[4])));
     end_turn_button->add(*manage(new Gtk::Image(button_images[10])));
-    
+
     // connect callbacks for the menu
     xml->connect_clicked("load_game_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_load_game_activated));
@@ -155,7 +169,18 @@ GameWindow::~GameWindow()
 
 void GameWindow::show()
 {
-    window->show_all();
+    prev_button->show_all();
+    next_button->show_all();
+    next_movable_button->show_all();
+    center_button->show_all();
+    defend_button->show_all();
+    search_button->show_all();
+    move_button->show_all();
+    move_all_button->show_all();
+    end_turn_button->show_all();
+    
+    sdl_container->show_all();
+    window->show();
 }
 
 void GameWindow::hide()
@@ -665,7 +690,9 @@ void GameWindow::show_army_info_tip(Gtk::ToggleButton *toggle, Army *army)
 void GameWindow::on_army_button_has_size()
 {
     // fix height to prevent flickering
-    stack_info_box->property_height_request() = stack_info_box->get_height();
+    int height = stack_info_box->get_height();
+    stack_info_box->property_height_request() = height;
+    stats_box->property_height_request() = height;
 }
 
 void GameWindow::clear_army_buttons()
@@ -702,6 +729,10 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 	stats_text, s.name, s.gold, s.income, s.cities, s.units, s.turns);
     
     stats_label->set_text(n);
+
+    cities_stats_label->set_text(String::ucompose("%1", s.cities));
+    gold_stats_label->set_text(String::ucompose("%1", s.gold));
+    income_stats_label->set_text(String::ucompose("%1", s.income));
 }
 
 void GameWindow::on_smallmap_changed(SDL_Surface *map)
@@ -716,8 +747,21 @@ void GameWindow::on_stack_info_changed(Stack *s)
     currently_selected_stack = s;
 
     if (!s)
-	return;
-    
+ 	show_stats();
+    else
+	show_stack(s);
+}
+
+void GameWindow::show_stats()
+{
+    stack_info_box->hide();
+    stats_box->show();
+}
+
+void GameWindow::show_stack(Stack *s)
+{
+    stats_box->hide();
+
     for (Stack::iterator i = s->begin(), end = s->end(); i != end; ++i)
     {
 	// construct a toggle button
