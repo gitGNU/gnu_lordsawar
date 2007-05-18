@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.0.2 on Fri May 18 16:03:39 2007 by olau@alfa-->
+<!--Generated with glade3 3.0.2 on Fri May 18 16:53:27 2007 by olau@alfa-->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">6</property>
-    <property name="title" translatable="yes">Stack Report</property>
+    <property name="title" translatable="yes">Armies Report</property>
     <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
