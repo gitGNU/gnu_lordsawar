@@ -155,9 +155,9 @@ void QuestsManager::questExpired(Uint32 heroId)
     debug("quest deactivated");
 }
 //=========================================================================
-void QuestsManager::getPlayerQuests(Player *player, vector<Quest*>& dst,
-                                    vector<Hero*>& heroes)
+std::vector<Quest*> QuestsManager::getPlayerQuests(Player *player)
 {
+    std::vector<Quest*> res;
     // loop through the player's units
     // for every hero check any pending quests
     const Stacklist* sl = player->getStacklist();
@@ -171,12 +171,11 @@ void QuestsManager::getPlayerQuests(Player *player, vector<Quest*>& dst,
             {
                 debug("heroId = " << heroId << " - has quest: " 
                       << d_quests[heroId]);
-                dst.push_back(d_quests[heroId]);
-                // since it IS a hero, conversion must succeed!
-                heroes.push_back(dynamic_cast<Hero*>(*sit));
+                res.push_back(d_quests[heroId]);
             }
         }
     }
+    return res;
 }
 //======================================================================
 bool QuestsManager::save(XML_Helper* helper) const

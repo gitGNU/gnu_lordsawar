@@ -91,8 +91,7 @@ class QuestsManager : public sigc::trackable
         /**
          * \brief Get quests for a specific player
          */
-        void getPlayerQuests(Player *player, std::vector<Quest*>& dst,
-                            std::vector<Hero*>& heroes);
+        std::vector<Quest*> getPlayerQuests(Player *player);
 
         /**
          * \brief Save all quests 

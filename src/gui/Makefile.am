@@ -17,6 +17,7 @@ liblwgui_a_SOURCES = \
     hero-dialog.cpp hero-dialog.h \
     hero-offer-dialog.cpp hero-offer-dialog.h \
     main.cpp main.h \
+    quests-report-dialog.cpp quests-report-dialog.h \
     splash-window.cpp splash-window.h \
     image-helpers.cpp image-helpers.h \
     gtksdl.c gtksdl.h \

@@ -144,6 +144,7 @@ class GameWindow: public sigc::trackable
     void on_message_requested(std::string msg);
     void on_stack_selected_in_report(Stack *stack);
     void on_city_selected_in_report(City *city);
+    void on_quest_selected_in_report(Quest *quest);
     
     // info pane at the bottom
     void show_stats();

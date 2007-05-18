@@ -53,6 +53,7 @@
 #include "hero-offer-dialog.h"
 #include "armies-report-dialog.h"
 #include "cities-report-dialog.h"
+#include "quests-report-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -593,6 +594,11 @@ void GameWindow::on_gold_activated()
 
 void GameWindow::on_quests_activated()
 {
+    QuestsReportDialog d(Playerlist::getActiveplayer());
+    d.set_parent_window(*window.get());
+    d.quest_selected.connect(
+	sigc::mem_fun(this, &GameWindow::on_quest_selected_in_report));
+    d.run();
 }
 
 void GameWindow::stop_game()
@@ -680,6 +686,26 @@ void GameWindow::on_stack_selected_in_report(Stack *stack)
 void GameWindow::on_city_selected_in_report(City *city)
 {
     game->center_view(city->getPos());
+}
+
+void GameWindow::on_quest_selected_in_report(Quest *quest)
+{
+    // this is a bit painful, we have to find the stack the hero is in to find
+    // the position of the hero
+    Hero *hero = quest->getHero();
+    Stack *stack = 0;
+    Stacklist *sl = Playerlist::getActiveplayer()->getStacklist();
+    for (Stacklist::iterator i = sl->begin(), end = sl->end(); i != end; ++i)
+	for (Stack::iterator j = (*i)->begin(), jend = (*i)->end();
+	     j != jend; ++j)
+	    if (hero == *j)
+	    {
+		stack = *i;
+		break;
+	    }
+
+    if (stack)
+	game->center_view(stack->getPos());
 }
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
@@ -1155,12 +1181,11 @@ hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze)
 {
   Player *p = Playerlist::getActiveplayer();
   std::vector<Quest*> questlist;
-  std::vector<Hero*> heroes;
   *sack = false;
   *raze = false;
 
   QuestsManager *q_mgr = QuestsManager::getInstance();
-  q_mgr->getPlayerQuests(p, questlist, heroes);
+  questlist = q_mgr->getPlayerQuests(p);
   /* loop over all quests */
   /* for each quest, check the quest type */
   for (std::vector<Quest*>::iterator i = questlist.begin();
