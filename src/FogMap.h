@@ -46,7 +46,7 @@ class FogMap
         bool fill(TYPE type);
 
         //! Get the tile object at position (x,y)
-        TYPE getFogTile(int x, int y) const;
+        TYPE getFogTile(Vector<int> pos) const;
 
 		/** Alter fog around a point
           * 
@@ -54,7 +54,7 @@ class FogMap
           * @param radius   the radius around the point where the fog is altered
           * @param new_type the type which the area gets
           */
-		void alterFogRadius(Vector<int> pt, int radius, TYPE new_type);
+	void alterFogRadius(Vector<int> pt, int radius, TYPE new_type);
 
         /** Save the contents of the map
           * 

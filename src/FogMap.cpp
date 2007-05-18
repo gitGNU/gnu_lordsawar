@@ -99,9 +99,9 @@ bool FogMap::save(XML_Helper* helper) const
     return retval;
 }
 
-FogMap::TYPE FogMap::getFogTile(int x, int y) const
+FogMap::TYPE FogMap::getFogTile(Vector<int> pos) const
 {
-    return d_fogmap[y*d_width + x];
+    return d_fogmap[pos.y * d_width + pos.x];
 }
 
 void FogMap::alterFogRadius(Vector<int> pt, int radius, TYPE new_type)

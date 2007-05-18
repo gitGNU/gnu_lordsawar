@@ -50,6 +50,7 @@
 #include "army-gains-level-dialog.h"
 #include "hero-dialog.h"
 #include "hero-offer-dialog.h"
+#include "armies-report-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -160,6 +161,14 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_resign_game_activated));
     xml->connect_clicked("quit_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_quit_activated));
+    xml->connect_clicked("armies_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_armies_activated));
+    xml->connect_clicked("cities_menuitem", 
+			 sigc::mem_fun(*this, &GameWindow::on_cities_activated));
+    xml->connect_clicked("gold_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_gold_activated));
+    xml->connect_clicked("quests_menuitem", 
+			 sigc::mem_fun(*this, &GameWindow::on_quests_activated));
 }
 
 GameWindow::~GameWindow()
@@ -515,6 +524,27 @@ void GameWindow::on_quit_activated()
     }
 }
 
+void GameWindow::on_armies_activated()
+{
+    ArmiesReportDialog d(Playerlist::getActiveplayer());
+    d.set_parent_window(*window.get());
+    d.stack_selected.connect(
+	sigc::mem_fun(this, &GameWindow::on_stack_selected_in_report));
+    d.run();
+}
+
+void GameWindow::on_cities_activated()
+{
+}
+
+void GameWindow::on_gold_activated()
+{
+}
+
+void GameWindow::on_quests_activated()
+{
+}
+
 void GameWindow::stop_game()
 {
     Sound::getInstance()->disableBackground();
@@ -590,6 +620,11 @@ void GameWindow::on_message_requested(std::string msg)
     Gtk::MessageDialog dialog(*window.get(), msg);
     dialog.show_all();
     dialog.run();
+}
+
+void GameWindow::on_stack_selected_in_report(Stack *stack)
+{
+    game->center_view(stack->getPos());
 }
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)

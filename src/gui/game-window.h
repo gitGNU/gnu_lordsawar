@@ -133,11 +133,16 @@ class GameWindow: public sigc::trackable
     void on_save_game_as_activated();
     void on_resign_game_activated();
     void on_quit_activated();
+    void on_armies_activated();
+    void on_cities_activated();
+    void on_gold_activated();
+    void on_quests_activated();
 
     void on_game_won(Uint32 status);
     void on_game_lost(Uint32 status);
 
     void on_message_requested(std::string msg);
+    void on_stack_selected_in_report(Stack *stack);
     
     // info pane at the bottom
     void show_stats();
