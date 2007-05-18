@@ -12,8 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef STACK_REPORT_DIALOG_H
-#define STACK_REPORT_DIALOG_H
+#ifndef ARMIES_REPORT_DIALOG_H
+#define ARMIES_REPORT_DIALOG_H
 
 #include <memory>
 #include <sigc++/trackable.h>
