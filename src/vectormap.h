@@ -47,6 +47,9 @@ class VectorMap : public OverviewMap
     
     // hook from base class
     virtual void after_draw();
+    void draw_city (City *c, Uint32 &type, bool &prod);
+    void draw_cities (std::list<City*> citylist, Uint32 type);
+    void draw_lines (std::list<City*> citylist);
 };
 
 #endif
