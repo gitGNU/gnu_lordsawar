@@ -16,6 +16,7 @@
 #define RMESSAGE_H
 
 #include <string>
+#include <sigc++/signal.h>
 #include "Reaction.h"
 #include "../defs.h"
 
@@ -47,6 +48,8 @@ class RMessage : public Reaction
         //! Sets the message
         void setMessage(std::string message) {d_message = message;}
 
+	static sigc::signal<void, std::string> message_requested;
+	
     private:
         std::string d_message;
 };

@@ -131,6 +131,8 @@ class GameWindow: public sigc::trackable
 
     void on_game_won(Uint32 status);
     void on_game_lost(Uint32 status);
+
+    void on_message_requested(std::string msg);
     
     // stack info pane at the bottom
     void on_army_toggled(Gtk::ToggleButton *toggle, Army *army);

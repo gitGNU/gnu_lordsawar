@@ -34,6 +34,7 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/filechooserdialog.h>
+#include <gtkmm/messagedialog.h>
 #include <gtkmm/stock.h>
 
 #include "game-window.h"
@@ -71,6 +72,7 @@
 #include "../GraphicsCache.h"
 #include "../events/RWinGame.h"
 #include "../events/RLoseGame.h"
+#include "../events/RMessage.h"
 #include "../QuestsManager.h"
 #include "../Quest.h"
 
@@ -318,6 +320,7 @@ void GameWindow::setup_game(std::string file_path)
     // misc callbacks
     RWinGame::swinning.connect(sigc::mem_fun(this, &GameWindow::on_game_won));
     RLoseGame::slosing.connect(sigc::mem_fun(this, &GameWindow::on_game_lost));
+    RMessage::message_requested.connect(sigc::mem_fun(this, &GameWindow::on_message_requested));
     
     QuestsManager *q = QuestsManager::getInstance();
     q->quest_completed.connect(
@@ -554,6 +557,14 @@ void GameWindow::on_game_lost(Uint32 status)
 
     stop_game();
     game_ended.emit();
+}
+
+void GameWindow::on_message_requested(std::string msg)
+{
+    // FIXME: this is a bit crude, maybe beef it up
+    Gtk::MessageDialog dialog(*window.get(), msg);
+    dialog.show_all();
+    dialog.run();
 }
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
