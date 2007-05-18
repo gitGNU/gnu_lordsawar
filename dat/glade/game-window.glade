@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.0.2 on Mon Mar 12 15:23:08 2007 by olau@alfa-->
+<!--Generated with glade3 3.0.2 on Fri May 18 13:46:54 2007 by olau@alfa-->
 <glade-interface>
   <widget class="GtkWindow" id="window">
     <child>
@@ -180,6 +180,115 @@
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkHBox" id="stats_box">
+                    <property name="visible">True</property>
+                    <property name="border_width">6</property>
+                    <child>
+                      <widget class="GtkHBox" id="cities_stats_hbox">
+                        <property name="visible">True</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <widget class="GtkImage" id="cities_stats_image">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="cities_stats_label">
+                            <property name="visible">True</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">24</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkHBox" id="gold_stats_hbox">
+                        <property name="visible">True</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <widget class="GtkImage" id="gold_stats_image">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="gold_stats_label">
+                            <property name="visible">True</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">24</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkHBox" id="income_stats_hbox">
+                        <property name="visible">True</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <widget class="GtkImage" id="income_stats_image">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="income_stats_label">
+                            <property name="visible">True</property>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="padding">24</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </widget>
