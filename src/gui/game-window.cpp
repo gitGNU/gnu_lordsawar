@@ -27,6 +27,7 @@
 #include <gtkmm/menuitem.h>
 #include <gtkmm/eventbox.h>
 #include <gtkmm/box.h>
+#include <gtkmm/table.h>
 #include <gtkmm/progressbar.h>
 //#include <gdkmm/cursor.h>
 #include <gtkmm/frame.h>
@@ -545,6 +546,49 @@ void GameWindow::on_cities_activated()
 
 void GameWindow::on_gold_activated()
 {
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/gold-report-dialog.glade");
+
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+    
+    Gtk::Table *table;
+    xml->get_widget("table", table);
+
+#if 0
+    int max_gold = 0;
+    for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
+	     end = Playerlist::getInstance()->end(); i != end; ++i)
+    {
+	Player *p = *i;
+	if (p->getGold() > max_gold)
+	    max_gold = p->getGold();
+    }
+#endif
+    
+    int row = 0;
+    for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
+	     end = Playerlist::getInstance()->end(); i != end; ++i)
+    {
+	Player *p = *i;
+	if (p == Playerlist::getInstance()->getNeutral())
+	    continue;
+	    
+	table->attach(*manage(new Gtk::Label(p->getName())),
+		      0, 1, row, row + 1);
+	Glib::ustring g = String::ucompose("%1", p->getGold());
+	table->attach(*manage(new Gtk::Label(g)),
+		      1, 2, row, row + 1);
+	++row;
+    }
+    
+    dialog->show_all();
+    dialog->run();
 }
 
 void GameWindow::on_quests_activated()
