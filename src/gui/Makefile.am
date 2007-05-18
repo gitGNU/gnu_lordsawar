@@ -7,8 +7,9 @@ liblwgui_a_SOURCES = \
     armies-report-dialog.cpp armies-report-dialog.h \
     army-gains-level-dialog.cpp army-gains-level-dialog.h \
     buy-production-dialog.cpp buy-production-dialog.h \
-    destination-dialog.cpp destination-dialog.h \
+    cities-report-dialog.cpp cities-report-dialog.h \
     city-window.cpp city-window.h \
+    destination-dialog.cpp destination-dialog.h \
     error-utils.cpp error-utils.h \
     fight-window.cpp fight-window.h \
     game-preferences-dialog.cpp game-preferences-dialog.h \

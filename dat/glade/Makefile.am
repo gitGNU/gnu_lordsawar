@@ -28,6 +28,7 @@ ruinfight-started-dialog.glade \
 ruin-searched-dialog.glade \
 splash-window.glade \
 armies-report-dialog.glade \
+cities-report-dialog.glade \
 temple-visit-dialog.glade \
 hero-brings-allies-dialog.glade \
 next-player-turn-dialog.glade

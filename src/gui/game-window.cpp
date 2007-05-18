@@ -51,6 +51,7 @@
 #include "hero-dialog.h"
 #include "hero-offer-dialog.h"
 #include "armies-report-dialog.h"
+#include "cities-report-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -535,6 +536,11 @@ void GameWindow::on_armies_activated()
 
 void GameWindow::on_cities_activated()
 {
+    CitiesReportDialog d(Playerlist::getActiveplayer());
+    d.set_parent_window(*window.get());
+    d.city_selected.connect(
+	sigc::mem_fun(this, &GameWindow::on_city_selected_in_report));
+    d.run();
 }
 
 void GameWindow::on_gold_activated()
@@ -625,6 +631,11 @@ void GameWindow::on_message_requested(std::string msg)
 void GameWindow::on_stack_selected_in_report(Stack *stack)
 {
     game->center_view(stack->getPos());
+}
+
+void GameWindow::on_city_selected_in_report(City *city)
+{
+    game->center_view(city->getPos());
 }
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
