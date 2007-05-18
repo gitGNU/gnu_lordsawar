@@ -20,6 +20,8 @@
 #include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/image.h>
+#include <gtkmm/radiobutton.h>
+#include <gtkmm/entry.h>
 
 #include "../heromap.h"
 #include "../player.h"
@@ -40,14 +42,16 @@ class HeroOfferDialog: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     std::auto_ptr<HeroMap> heromap;
-    void on_male_clicked();
-    void on_female_clicked();
 
     Gtk::Image *map_image;
+    Gtk::Image *hero_image;
+    Gtk::RadioButton *male_radiobutton;
+    Gtk::Entry *name_entry;
     
     Hero *hero;
     City *city;
 
+    void on_male_toggled();
     void on_map_changed(SDL_Surface *map);
 };
 

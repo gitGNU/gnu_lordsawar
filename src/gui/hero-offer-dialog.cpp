@@ -17,9 +17,7 @@
 #include <libglademm/xml.h>
 #include <gtkmm/eventbox.h>
 #include <sigc++/functors/mem_fun.h>
-#include <gtkmm/radiobutton.h>
 #include <gtkmm/label.h>
-#include <gtkmm/entry.h>
 
 #include "hero-offer-dialog.h"
 
@@ -58,33 +56,16 @@ HeroOfferDialog::HeroOfferDialog(Player *player, Hero *h, City *c, int gold)
     dialog->set_title(String::ucompose(_("Hero offer for %1"),
 				       player->getName()));
 
-    Gtk::RadioButton *radio;
-    Gtk::Image *image;
-    xml->get_widget("hero_image", image);
-    if (hero->getGender() == Army::MALE)
-      {
-        image->property_file() = File::getMiscFile("various/recruit_male.png");
-        xml->get_widget("hero_male", radio);
-      }
-    else
-      {
-        image->property_file() = File::getMiscFile("various/recruit_female.png");
-        xml->get_widget("hero_female", radio);
-      }
-    radio->set_active(true);
-
-    Gtk::RadioButton *male_radio_button;
-    xml->get_widget("hero_male", male_radio_button);
-    male_radio_button->signal_clicked().connect(
-	    sigc::mem_fun(this, &HeroOfferDialog::on_male_clicked));
-    Gtk::RadioButton *female_radio_button;
-    xml->get_widget("hero_female", female_radio_button);
-    male_radio_button->signal_clicked().connect(
-	    sigc::mem_fun(this, &HeroOfferDialog::on_female_clicked));
+    xml->get_widget("hero_image", hero_image);
+    xml->get_widget("hero_male", male_radiobutton);
+    male_radiobutton->signal_clicked().connect(
+	sigc::mem_fun(this, &HeroOfferDialog::on_male_toggled));
     
-    Gtk::Entry *entry;
-    xml->get_widget("name", entry);
-    entry->set_text(hero->getName());
+    male_radiobutton->set_active(hero->getGender() == Army::MALE);
+    on_male_toggled();
+    
+    xml->get_widget("name", name_entry);
+    name_entry->set_text(hero->getName());
 
     Gtk::Label *label;
     xml->get_widget("label", label);
@@ -94,41 +75,20 @@ HeroOfferDialog::HeroOfferDialog(Player *player, Hero *h, City *c, int gold)
 	s = String::ucompose(
 	    ngettext("A hero in %2 wants to join you for %1 gold piece!",
 		     "A hero in %2 wants to join you for %1 gold pieces!",
-		     gold), gold, city->getName().c_str());
+		     gold), gold, city->getName());
     else
-	s = String::ucompose(_("A hero in %1 wants to join you!"), city->getName().c_str());
+	s = String::ucompose(_("A hero in %1 wants to join you!"), city->getName());
     label->set_text(s);
-    
 }
 
-void HeroOfferDialog::on_male_clicked()
+void HeroOfferDialog::on_male_toggled()
 {
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path()
-				    + "/hero-offer-dialog.glade");
-
-    Gtk::Image *image;
-    xml->get_widget("hero_image", image);
-  
-    SDL_Surface *tmp = File::getMiscPicture("recruit_male.png");
-    image->property_pixbuf() = to_pixbuf(tmp);
-    dialog->show_all();
-    SDL_FreeSurface(tmp);
-}
-
-void HeroOfferDialog::on_female_clicked()
-{
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path()
-				    + "/hero-offer-dialog.glade");
-
-    Gtk::Image *image;
-    xml->get_widget("hero_image", image);
-  
-    SDL_Surface *tmp = File::getMiscPicture("recruit_female.png");
-    image->property_pixbuf() = to_pixbuf(tmp);
-    dialog->show_all();
-    SDL_FreeSurface(tmp);
+    if (male_radiobutton->get_active())
+	hero_image->property_file()
+	    = File::getMiscFile("various/recruit_male.png");
+    else
+	hero_image->property_file()
+	    = File::getMiscFile("various/recruit_female.png");
 }
 
 void HeroOfferDialog::set_parent_window(Gtk::Window &parent)
@@ -139,13 +99,6 @@ void HeroOfferDialog::set_parent_window(Gtk::Window &parent)
 
 bool HeroOfferDialog::run()
 {
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path()
-				    + "/hero-offer-dialog.glade");
-    Gtk::Entry *entry;
-    Gtk::RadioButton *radio;
-    xml->get_widget("name", entry);
-    entry->set_text(hero->getName());
     heromap->resize(GameMap::get_dim() * 2);
     heromap->draw();
 
@@ -156,9 +109,8 @@ bool HeroOfferDialog::run()
 
     if (response == 0)		// accepted
       {
-        hero->setName(entry->get_text());
-        xml->get_widget("hero_male", radio);
-        if (radio->get_active() == true)
+        hero->setName(name_entry->get_text());
+        if (male_radiobutton->get_active())
           hero->setGender(Hero::MALE);
         else
           hero->setGender(Hero::FEMALE);
