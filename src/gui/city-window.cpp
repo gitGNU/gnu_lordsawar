@@ -205,7 +205,8 @@ void CityWindow::fill_in_production_info()
 	// note to translators: %1/%2 is the no. of steps completed out of the
 	// total no. of steps in the production
 	s1 += String::ucompose(_("Duration: %1/%2"),
-			      city->getDuration(), a->getProduction());
+			      a->getProduction() - city->getDuration() + 1,
+			       a->getProduction());
 	s1 += "\n";
 	// note to translators: %1 is melee strength, %2 is ranged strength
 	s1 += String::ucompose(_("Attack: %1"),
