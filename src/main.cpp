@@ -20,7 +20,6 @@
 #include <time.h>
 #include <fstream>
 #include <sys/stat.h>
-#include <physfs.h>
 
 #include "Configuration.h"
 #include "File.h"
@@ -179,10 +178,6 @@ int main(int argc, char* argv[])
     }
 #endif
 
-    // FIXME: necessary?
-    SDL_Init(SDL_INIT_TIMER);
-//    SDL_InitSubSystem(SDL_INIT_TIMER);
-    
     // Check if armysets are in the path (otherwise exit)
     File::scanArmysets();
 
