@@ -1,3 +1,7 @@
+2007-05-19  Ben Asselstine
+        * added vector map to city window dialog.
+        * clicking on a vector map changes the city.
+
 2007-05-17  Ben Asselstine
 	* removed army vitality, defense, shots, ranged, and portrait.
 	* removed tile defense.
