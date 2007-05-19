@@ -36,6 +36,7 @@
 #include "destination-dialog.h"
 #include "../GameMap.h"
 #include "../citylist.h"
+#include "../playerlist.h"
 
 CityWindow::CityWindow(City *c)
 {
@@ -77,6 +78,9 @@ CityWindow::CityWindow(City *c)
     xml->connect_clicked(
 	"rename_button",
 	sigc::mem_fun(this, &CityWindow::on_rename_clicked));
+    xml->connect_clicked(
+	"raze_button",
+	sigc::mem_fun(this, &CityWindow::on_raze_clicked));
 
     for (int i = 1; i <= city->getMaxNoOfBasicProd(); ++i) {
 	Gtk::ToggleButton *toggle;
@@ -401,6 +405,43 @@ void CityWindow::on_rename_clicked ()
       {
         city->setName(e->get_text());
         fill_in_city_info();
+      }
+  return;
+}
+
+void CityWindow::on_raze_clicked ()
+{
+    std::auto_ptr<Gtk::Dialog> razedialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> razexml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/city-raze-dialog.glade");
+	
+    Gtk::Dialog *d;
+    razexml->get_widget("dialog", d);
+    razedialog.reset(d);
+    razedialog->set_transient_for(*dialog.get());
+    
+    Glib::ustring s = _("Raze City");
+
+    Gtk::Label *l;
+    razexml->get_widget("label", l);
+
+    d->set_title(s);
+    s = String::ucompose(_("Are you sure that you want to raze %1?"), 
+                           city->getName());
+    s += "\n";
+    s += _("You won't be popular!");
+    l->set_text(s);
+
+    d->show_all();
+    int response = d->run();
+
+    if (response == 0)		// burn it to the ground ralphie boy!
+      {
+        Playerlist *pl = Playerlist::getInstance();
+        Player *p = pl->getActiveplayer();
+        p->cityRaze(city);
+dialog->hide();
       }
   return;
 }
