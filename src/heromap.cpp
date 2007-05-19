@@ -27,9 +27,10 @@ HeroMap::HeroMap(City *c)
 
 void HeroMap::after_draw()
 {
+    OverviewMap::after_draw();
     // draw the hero picture over top of the host city
     Vector<int> start = city->getPos();
-        
+
     start = mapToSurface(start);
 
     start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));

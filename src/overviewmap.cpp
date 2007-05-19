@@ -87,18 +87,11 @@ void OverviewMap::resize(Vector<int> max_dimensions)
         }
 }
 
-void OverviewMap::draw()
+void OverviewMap::after_draw()
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
     assert(surface);
     
-    // During the whole drawing stuff, ALWAYS consider that 
-    // there is an offset of 1 between map coordinates and coordinates
-    // of the surface when drawing. I will implcitely assume this during this
-    // function.
-    
-    SDL_BlitSurface(static_surface, 0, surface, 0);
-
     // minimum size for typical features is 1
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
 
@@ -157,8 +150,12 @@ void OverviewMap::draw()
     // the players.
     for (Citylist::iterator it = Citylist::getInstance()->begin();
         it != Citylist::getInstance()->end(); it++)
-    {    
-        SDL_Surface *tmp = gc->getShieldPic(0, it->getPlayer());
+    {
+        SDL_Surface *tmp;
+        if (it->isBurnt() == false)
+          tmp = gc->getShieldPic(0, it->getPlayer());
+        else
+          tmp = gc->getSmallRuinedCityPic();
     
         Vector<int> pos = it->getPos();
         pos = mapToSurface(pos);
@@ -170,6 +167,19 @@ void OverviewMap::draw()
         SDL_BlitSurface(tmp, 0, surface, &r);
 
     }
+
+}
+
+void OverviewMap::draw()
+{
+    GraphicsCache *gc = GraphicsCache::getInstance();
+    assert(surface);
+    // During the whole drawing stuff, ALWAYS consider that 
+    // there is an offset of 1 between map coordinates and coordinates
+    // of the surface when drawing. I will implcitely assume this during this
+    // function.
+    
+    SDL_BlitSurface(static_surface, 0, surface, 0);
 
     // let derived classes do their job
     after_draw();

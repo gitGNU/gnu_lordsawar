@@ -57,7 +57,7 @@ class OverviewMap
     Vector<int> mapToSurface(Vector<int> pos);
 
     // hook for derived classes
-    virtual void after_draw() { }
+    virtual void after_draw();
 
     SDL_Surface* surface;
 };

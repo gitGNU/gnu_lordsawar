@@ -27,7 +27,12 @@ VectorMap::VectorMap(City *c)
 void VectorMap::draw_city (City *c, Uint32 &type, bool &prod)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  SDL_Surface *tmp = gc->getProdShieldPic (type, prod);
+  SDL_Surface *tmp;
+  if (c->isBurnt() == true || (type == 3 && prod == false))
+    tmp = gc->getSmallRuinedCityPic ();
+  else
+    tmp = gc->getProdShieldPic (type, prod);
+
   Vector<int> start;
   
   start  = c->getPos();
@@ -138,6 +143,12 @@ void VectorMap::after_draw()
                   type = 1; //away
               }
             draw_city (&(*it), type, prod);
+          }
+        else
+          {
+            type = 3;
+            prod = false;
+            draw_city (&(*it), type, prod); //an impossible combo
           }
       }
 

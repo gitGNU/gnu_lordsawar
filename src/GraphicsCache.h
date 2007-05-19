@@ -174,6 +174,7 @@ class GraphicsCache
           * @return image for the shield
           */
         SDL_Surface* getShieldPic(Uint32 type, const Player* p);
+        SDL_Surface* getSmallRuinedCityPic();
 
         /** Function for getting production shield pictures.
           *
@@ -187,6 +188,7 @@ class GraphicsCache
 	  * note that type=source, production=false is impossible
           */
         SDL_Surface* getProdShieldPic(Uint32 type, bool prod);
+
 
         /** Modify an image with player colors.
           * 
@@ -319,6 +321,7 @@ class GraphicsCache
         SDL_Surface* d_shieldpic[2][MAX_PLAYERS + 1];
         SDL_Surface* d_shieldmask[2][MAX_PLAYERS + 1];
         SDL_Surface* d_prodshieldpic[7];
+	SDL_Surface* d_smallruinedcity;
 };
 
 #endif

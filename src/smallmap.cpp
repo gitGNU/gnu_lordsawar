@@ -119,6 +119,7 @@ void SmallMap::center_view(Vector<int> p)
 
 void SmallMap::after_draw()
 {
+    OverviewMap::after_draw();
     draw_selection();
     map_changed.emit(get_surface());
 }
