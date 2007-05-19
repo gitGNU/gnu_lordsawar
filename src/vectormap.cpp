@@ -20,6 +20,11 @@
 #include "playerlist.h"
 #include "GraphicsCache.h"
 
+VectorMap::VectorMap(City *c, enum ShowVectoring v)
+{
+  show_vectoring = v;
+  city = c;
+}
 VectorMap::VectorMap(City *c)
 {
     city = c;
@@ -88,7 +93,6 @@ void VectorMap::draw_lines (std::list<City*> citylist)
 void VectorMap::after_draw()
 {
   Vector<int> start;
-  bool see_all = false;
   Uint32 type = 0;
   bool prod = false;
   Vector<int> end;
@@ -105,7 +109,7 @@ void VectorMap::after_draw()
               prod = false;
             else
               prod = true;
-            if (see_all)
+            if (show_vectoring == SHOW_ALL_VECTORING)
               {
                 // first pass, identify every city that's a source or dest
                 if ((*it).getVectoring() != Vector<int>(-1, -1))
@@ -128,7 +132,7 @@ void VectorMap::after_draw()
                 //is this the city i'm vectoring to?
                 else if (city->getVectoring() != Vector<int>(-1, -1) &&
                          cl->getObjectAt(city->getVectoring())->getId() == 
-                           (*it).getId())
+                           (*it).getId() && show_vectoring != SHOW_NO_VECTORING)
                   {
                     // then it's a "destination" city.
                     type = 2;
@@ -136,7 +140,7 @@ void VectorMap::after_draw()
                 //is this a city that is vectoring to me?
                 else if ((*it).getVectoring() != Vector<int>(-1, -1) &&
                          cl->getObjectAt((*it).getVectoring())->getId() ==
-                         city->getId())
+                         city->getId() && show_vectoring != SHOW_NO_VECTORING)
                   type = 3;
                 //otherwise it's just another city, "away" from me
                 else
@@ -153,13 +157,13 @@ void VectorMap::after_draw()
       }
 
     //second pass, identify all the destination and source cities
-    if (see_all)
+    if (show_vectoring == SHOW_ALL_VECTORING)
       {
         draw_cities (dests, 2);
         draw_cities (srcs, 3);
       }
  
-    if (see_all == false)
+    if (show_vectoring == SHOW_ORIGIN_CITY_VECTORING)
       {
         // draw lines from origination to city
         for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
@@ -204,7 +208,7 @@ void VectorMap::after_draw()
             draw_line(surface, start.x, start.y, end.x, end.y, raw);
           }
       }
-    else
+    else if (show_vectoring == SHOW_ALL_VECTORING)
       draw_lines (srcs);
 
     map_changed.emit(surface);
@@ -212,35 +216,50 @@ void VectorMap::after_draw()
 
 void VectorMap::mouse_button_event(MouseButtonEvent e)
 {
-    Vector<int> dest;
-    if (e.button == MouseButtonEvent::LEFT_BUTTON
-	&& e.state == MouseButtonEvent::PRESSED)
-	dest = mapFromScreen(e.pos);
-    else if (e.button == MouseButtonEvent::RIGHT_BUTTON
-	     && e.state == MouseButtonEvent::PRESSED)
-	dest = Vector<int>(-1, -1);
+  Vector<int> dest;
+  if (e.button == MouseButtonEvent::LEFT_BUTTON && 
+      e.state == MouseButtonEvent::PRESSED)
+    {
+        dest = mapFromScreen(e.pos);
 
-    /* clicking on own city, makes vectoring stop */
-    if (Citylist::getInstance()->getObjectAt(dest) == city)
-      dest = Vector<int>(-1, -1);
-
-    /* only vector to cities we own */
-    if (Citylist::getInstance()->getObjectAt(dest) && 
-        Citylist::getInstance()->getObjectAt(dest)->getPlayer() ==
-          Playerlist::getInstance()->getActiveplayer() &&
-        dest != city->getVectoring())
-      {
-	destination_chosen.emit(dest);
-	city->setVectoring(dest);
-	draw();
-      }
-    else if (dest == Vector<int>(-1, -1)) //stop vectoring
-      {
-	destination_chosen.emit(dest);
-	city->setVectoring(dest);
-	draw();
-      }
+      switch (show_vectoring)
+        {
+          case SHOW_ALL_VECTORING:
+          case SHOW_ORIGIN_CITY_VECTORING:
     
+            /* clicking on own city, makes vectoring stop */
+            if (Citylist::getInstance()->getObjectAt(dest) == city)
+              dest = Vector<int>(-1, -1);
+        
+            /* only vector to cities we own */
+            if (Citylist::getInstance()->getObjectAt(dest) && 
+                Citylist::getInstance()->getObjectAt(dest)->getPlayer() ==
+                  Playerlist::getInstance()->getActiveplayer() &&
+                dest != city->getVectoring())
+              {
+	        destination_chosen.emit(dest);
+	        city->setVectoring(dest);
+	        draw();
+              }
+            else if (dest == Vector<int>(-1, -1)) //stop vectoring
+              {
+	        destination_chosen.emit(dest);
+	        city->setVectoring(dest);
+	        draw();
+              }
+            break;
+          case SHOW_NO_VECTORING:
+            if (Citylist::getInstance()->getObjectAt(dest) && 
+                Citylist::getInstance()->getObjectAt(dest)->getPlayer() ==
+                  Playerlist::getInstance()->getActiveplayer())
+              {
+                city = Citylist::getInstance()->getObjectAt(dest);
+                draw();
+              }
+            break;
+        }
+    }
+        
 }
 
 #if 0

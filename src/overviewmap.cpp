@@ -96,33 +96,6 @@ void OverviewMap::after_draw()
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
 
 
-    // Draw ruins as yellow boxes
-    for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
-        it != Ruinlist::getInstance()->end(); it++)
-    {
-        Vector<int> pos = it->getPos();
-        pos = mapToSurface(pos);
-
-	Uint32 raw;
-	raw = SDL_MapRGB(surface->format, 255, 255, 255);
-
-	draw_filled_rect(surface, pos.x, pos.y,
-			 pos.x + size, pos.y + size, raw);
-    }
-
-    // Draw temples as a white dot
-    for (Templelist::iterator it = Templelist::getInstance()->begin();
-        it != Templelist::getInstance()->end(); it++)
-    {
-        Vector<int> pos = it->getPos();
-        pos = mapToSurface(pos);
-	Uint32 raw;
-	raw = SDL_MapRGB(surface->format, 255, 255, 255);
-
-	draw_filled_rect(surface, pos.x, pos.y,
-			 pos.x + size, pos.y + size, raw);
-    }
-
     // Draw stacks as crosses using the player color
     for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
         pit != Playerlist::getInstance()->end(); pit++)
@@ -146,7 +119,7 @@ void OverviewMap::after_draw()
         }
     }
 
-    // Draw all cities as rectangles around the city location, in the colors of
+    // Draw all cities as shields over the city location, in the colors of
     // the players.
     for (Citylist::iterator it = Citylist::getInstance()->begin();
         it != Citylist::getInstance()->end(); it++)
@@ -173,6 +146,7 @@ void OverviewMap::after_draw()
 void OverviewMap::draw()
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
+    int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
     assert(surface);
     // During the whole drawing stuff, ALWAYS consider that 
     // there is an offset of 1 between map coordinates and coordinates
@@ -180,6 +154,33 @@ void OverviewMap::draw()
     // function.
     
     SDL_BlitSurface(static_surface, 0, surface, 0);
+
+    // Draw ruins as yellow boxes
+    for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
+        it != Ruinlist::getInstance()->end(); it++)
+    {
+        Vector<int> pos = it->getPos();
+        pos = mapToSurface(pos);
+
+	Uint32 raw;
+	raw = SDL_MapRGB(surface->format, 255, 255, 255);
+
+	draw_filled_rect(surface, pos.x, pos.y,
+			 pos.x + size, pos.y + size, raw);
+    }
+
+    // Draw temples as a white dot
+    for (Templelist::iterator it = Templelist::getInstance()->begin();
+        it != Templelist::getInstance()->end(); it++)
+    {
+        Vector<int> pos = it->getPos();
+        pos = mapToSurface(pos);
+	Uint32 raw;
+	raw = SDL_MapRGB(surface->format, 255, 255, 255);
+
+	draw_filled_rect(surface, pos.x, pos.y,
+			 pos.x + size, pos.y + size, raw);
+    }
 
     // let derived classes do their job
     after_draw();

@@ -64,6 +64,7 @@ class CityWindow: public sigc::trackable
     void on_buy_clicked();
     void on_destination_clicked();
     void on_map_changed(SDL_Surface *map);
+    bool on_map_mouse_button_event(GdkEventButton *e);
 };
 
 #endif

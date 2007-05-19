@@ -23,6 +23,7 @@
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
+#include "input-helpers.h"
 #include "../ucompose.hpp"
 #include "../defs.h"
 #include "../army.h"
@@ -47,12 +48,15 @@ CityWindow::CityWindow(City *c)
     
     xml->get_widget("map_image", map_image);
 
-    prodmap.reset(new VectorMap(c));
+    prodmap.reset(new VectorMap(c, VectorMap::SHOW_NO_VECTORING));
     prodmap->map_changed.connect(
 	sigc::mem_fun(this, &CityWindow::on_map_changed));
 
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
+    map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
+    map_eventbox->signal_button_press_event().connect(
+	sigc::mem_fun(*this, &CityWindow::on_map_mouse_button_event));
     xml->get_widget("city_label", city_label);
     xml->get_widget("status_label", status_label);
     xml->get_widget("production_info_label1", production_info_label1);
@@ -80,6 +84,19 @@ CityWindow::CityWindow(City *c)
     fill_in_production_toggles();
 
     ignore_toggles = false;
+}
+
+bool CityWindow::on_map_mouse_button_event(GdkEventButton *e)
+{
+    if (e->type != GDK_BUTTON_PRESS)
+	return true;	// useless event
+    
+    prodmap->mouse_button_event(to_input_event(e));
+    
+    city = prodmap->getCity();
+    fill_in_city_info();
+    fill_in_production_toggles();
+    return true;
 }
 
 void CityWindow::set_parent_window(Gtk::Window &parent)

@@ -41,7 +41,7 @@ DestinationDialog::DestinationDialog(City *c)
 
     xml->get_widget("map_image", map_image);
 
-    vectormap.reset(new VectorMap(city));
+    vectormap.reset(new VectorMap(city, VectorMap::SHOW_ORIGIN_CITY_VECTORING));
     vectormap->map_changed.connect(
 	sigc::mem_fun(this, &DestinationDialog::on_map_changed));
 

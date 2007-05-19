@@ -32,6 +32,13 @@ class City;
 class VectorMap : public OverviewMap
 {
  public:
+  enum ShowVectoring
+    {
+      SHOW_NO_VECTORING,
+      SHOW_ORIGIN_CITY_VECTORING,
+      SHOW_ALL_VECTORING,
+    };
+    VectorMap(City *city, enum ShowVectoring vector);
     VectorMap(City *city);
 
     void mouse_button_event(MouseButtonEvent e);
@@ -41,9 +48,14 @@ class VectorMap : public OverviewMap
      
     // emitted when the map surface has changed
     sigc::signal<void, SDL_Surface *> map_changed;
+
+    void setShowVectoring (enum ShowVectoring v) { show_vectoring = v;}
+
+    City* getCity() {return city;}
     
  private:
     City *city;
+    enum ShowVectoring show_vectoring;
     
     // hook from base class
     virtual void after_draw();
