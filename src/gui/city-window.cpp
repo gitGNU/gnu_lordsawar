@@ -16,6 +16,7 @@
 
 #include <libglademm/xml.h>
 #include <gtkmm/image.h>
+#include <gtkmm/eventbox.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "city-window.h"
@@ -31,6 +32,7 @@
 #include "../armysetlist.h"
 #include "buy-production-dialog.h"
 #include "destination-dialog.h"
+#include "../GameMap.h"
 
 CityWindow::CityWindow(City *c)
 {
@@ -43,6 +45,14 @@ CityWindow::CityWindow(City *c)
     xml->get_widget("dialog", d);
     dialog.reset(d);
     
+    xml->get_widget("map_image", map_image);
+
+    prodmap.reset(new VectorMap(c));
+    prodmap->map_changed.connect(
+	sigc::mem_fun(this, &CityWindow::on_map_changed));
+
+    Gtk::EventBox *map_eventbox;
+    xml->get_widget("map_eventbox", map_eventbox);
     xml->get_widget("city_label", city_label);
     xml->get_widget("status_label", status_label);
     xml->get_widget("production_info_label1", production_info_label1);
@@ -80,6 +90,8 @@ void CityWindow::set_parent_window(Gtk::Window &parent)
 
 void CityWindow::run()
 {
+    prodmap->resize(GameMap::get_dim() * 2);
+    prodmap->draw();
     dialog->show();
     dialog->run();
 }
@@ -308,3 +320,7 @@ void CityWindow::on_destination_clicked()
     d.run();
 }
 
+void CityWindow::on_map_changed(SDL_Surface *map)
+{
+    map_image->property_pixbuf() = to_pixbuf(map);
+}

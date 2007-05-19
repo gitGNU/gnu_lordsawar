@@ -21,7 +21,9 @@
 #include <gtkmm/button.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/label.h>
+#include <gtkmm/image.h>
 #include <gtkmm/togglebutton.h>
+#include "../vectormap.h"
 
 
 class City;
@@ -38,6 +40,8 @@ class CityWindow: public sigc::trackable
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
+    std::auto_ptr<VectorMap> prodmap;
+    Gtk::Image *map_image;
     Gtk::Label *city_label;
     Gtk::Label *status_label;
     Gtk::Label *production_info_label1;
@@ -59,6 +63,7 @@ class CityWindow: public sigc::trackable
     void on_on_hold_clicked();
     void on_buy_clicked();
     void on_destination_clicked();
+    void on_map_changed(SDL_Surface *map);
 };
 
 #endif
