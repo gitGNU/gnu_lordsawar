@@ -216,26 +216,29 @@ void VectorMap::after_draw()
 
 void VectorMap::mouse_button_event(MouseButtonEvent e)
 {
-  Vector<int> dest;
   if (e.button == MouseButtonEvent::LEFT_BUTTON && 
       e.state == MouseButtonEvent::PRESSED)
     {
-        dest = mapFromScreen(e.pos);
+      Citylist *cl = Citylist::getInstance();
+      City *nearestCity;
+      Vector<int> dest;
+      dest = mapFromScreen(e.pos);
+
+      nearestCity = cl->getNearestFriendlyCity(dest, 4);
+      if (nearestCity == NULL)
+        return;
 
       switch (show_vectoring)
         {
           case SHOW_ALL_VECTORING:
           case SHOW_ORIGIN_CITY_VECTORING:
-    
+
             /* clicking on own city, makes vectoring stop */
-            if (Citylist::getInstance()->getObjectAt(dest) == city)
+            if (nearestCity == city)
               dest = Vector<int>(-1, -1);
-        
+
             /* only vector to cities we own */
-            if (Citylist::getInstance()->getObjectAt(dest) && 
-                Citylist::getInstance()->getObjectAt(dest)->getPlayer() ==
-                  Playerlist::getInstance()->getActiveplayer() &&
-                dest != city->getVectoring())
+            if (dest != city->getVectoring())
               {
 	        destination_chosen.emit(dest);
 	        city->setVectoring(dest);
@@ -249,13 +252,8 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
               }
             break;
           case SHOW_NO_VECTORING:
-            if (Citylist::getInstance()->getObjectAt(dest) && 
-                Citylist::getInstance()->getObjectAt(dest)->getPlayer() ==
-                  Playerlist::getInstance()->getActiveplayer())
-              {
-                city = Citylist::getInstance()->getObjectAt(dest);
-                draw();
-              }
+            city = nearestCity;
+            draw();
             break;
         }
     }

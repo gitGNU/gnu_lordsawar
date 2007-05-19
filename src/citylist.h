@@ -64,6 +64,10 @@ class Citylist : public ObjectList<City>, public sigc::trackable
         //! Returns the city closest to pos that is owned by the ActivePlayer
         City* getNearestFriendlyCity(const Vector<int>& pos);
 
+        //! Returns the city closest to pos that is owned by the ActivePlayer
+	//! but within N tiles.
+        City* getNearestFriendlyCity(const Vector<int>& pos, int dist);
+
         //! Returns the city closest to pos
         City* getNearestCity(const Vector<int>& pos);
 
