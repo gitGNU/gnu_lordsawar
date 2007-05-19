@@ -17,6 +17,7 @@
 #include <libglademm/xml.h>
 #include <gtkmm/image.h>
 #include <gtkmm/eventbox.h>
+#include <gtkmm/entry.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "city-window.h"
@@ -73,6 +74,9 @@ CityWindow::CityWindow(City *c)
     xml->connect_clicked(
 	"destination_button",
 	sigc::mem_fun(this, &CityWindow::on_destination_clicked));
+    xml->connect_clicked(
+	"rename_button",
+	sigc::mem_fun(this, &CityWindow::on_rename_clicked));
 
     for (int i = 1; i <= city->getMaxNoOfBasicProd(); ++i) {
 	Gtk::ToggleButton *toggle;
@@ -219,7 +223,6 @@ void CityWindow::fill_in_production_info()
 {
     Player *player = city->getPlayer();
     unsigned int as = Armysetlist::getInstance()->getStandardId();
-    int type;
     Glib::RefPtr<Gdk::Pixbuf> pic;
     GraphicsCache *gc = GraphicsCache::getInstance();
     int slot = city->getProductionIndex();
@@ -365,4 +368,39 @@ void CityWindow::on_destination_clicked()
 void CityWindow::on_map_changed(SDL_Surface *map)
 {
     map_image->property_pixbuf() = to_pixbuf(map);
+}
+
+void CityWindow::on_rename_clicked ()
+{
+    std::auto_ptr<Gtk::Dialog> renamedialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> renamexml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/city-rename-dialog.glade");
+	
+    Gtk::Dialog *d;
+    renamexml->get_widget("dialog", d);
+    renamedialog.reset(d);
+    renamedialog->set_transient_for(*dialog.get());
+    
+    Glib::ustring s = _("Rename City");
+
+    Gtk::Label *l;
+    renamexml->get_widget("label", l);
+    Gtk::Entry *e;
+    renamexml->get_widget("name_entry", e);
+
+    d->set_title(s);
+    s = _("Type the new name for this city:");
+    l->set_text(s);
+
+    e->set_text(city->getName());
+    d->show_all();
+    int response = d->run();
+
+    if (response == 0)		// changed city name
+      {
+        city->setName(e->get_text());
+        fill_in_city_info();
+      }
+  return;
 }
