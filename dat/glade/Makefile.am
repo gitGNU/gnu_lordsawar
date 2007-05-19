@@ -33,6 +33,8 @@ gold-report-dialog.glade \
 quests-report-dialog.glade \
 temple-visit-dialog.glade \
 hero-brings-allies-dialog.glade \
-next-player-turn-dialog.glade
+next-player-turn-dialog.glade \
+city-rename-dialog.glade \
+city-raze-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)
