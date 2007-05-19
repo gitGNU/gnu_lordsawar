@@ -34,6 +34,7 @@
 #include "buy-production-dialog.h"
 #include "destination-dialog.h"
 #include "../GameMap.h"
+#include "../citylist.h"
 
 CityWindow::CityWindow(City *c)
 {
@@ -57,8 +58,10 @@ CityWindow::CityWindow(City *c)
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
     map_eventbox->signal_button_press_event().connect(
 	sigc::mem_fun(*this, &CityWindow::on_map_mouse_button_event));
-    xml->get_widget("city_label", city_label);
     xml->get_widget("status_label", status_label);
+    xml->get_widget("turns_left_label", turns_left_label);
+    xml->get_widget("current_label", current_label);
+    xml->get_widget("current_image", current_image);
     xml->get_widget("production_info_label1", production_info_label1);
     xml->get_widget("production_info_label2", production_info_label2);
     xml->get_widget("buy_button", buy_button);
@@ -95,7 +98,7 @@ bool CityWindow::on_map_mouse_button_event(GdkEventButton *e)
     
     city = prodmap->getCity();
     fill_in_city_info();
-    fill_in_production_toggles();
+    fill_in_production_info();
     return true;
 }
 
@@ -127,7 +130,6 @@ void CityWindow::fill_in_city_info()
     title = String::ucompose(title, city->getName());
     
     dialog->set_title(title);
-    city_label->set_markup("<b>" + title + "</b>");
 
     // fill in status label
     Glib::ustring s;
@@ -149,6 +151,9 @@ void CityWindow::fill_in_production_toggles()
     Player *player = city->getPlayer();
     unsigned int as = Armysetlist::getInstance()->getStandardId();
     int production_index = city->getProductionIndex();
+    int type;
+    Glib::RefPtr<Gdk::Pixbuf> pic;
+    GraphicsCache *gc = GraphicsCache::getInstance();
 
     SDL_Surface *s
 	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
@@ -162,13 +167,11 @@ void CityWindow::fill_in_production_toggles()
 	Gtk::ToggleButton *toggle = production_toggles[i];
 	toggle->foreach(sigc::mem_fun(toggle, &Gtk::Container::remove));
 
-	Glib::RefPtr<Gdk::Pixbuf> pic;
-	int type = city->getArmytype(i);
+	type = city->getArmytype(i);
         if (type != -1)
             // use GraphicsCache to load army pics because of player-specific
             // colors
-            pic = to_pixbuf(GraphicsCache::getInstance()->getArmyPic(
-				as, type, player, 1, NULL));
+            pic = to_pixbuf(gc->getArmyPic(as, type, player, 1, NULL));
 	else
 	    pic = empty_pic;
 	
@@ -214,15 +217,30 @@ void CityWindow::on_production_toggled(Gtk::ToggleButton *toggle)
 
 void CityWindow::fill_in_production_info()
 {
+    Player *player = city->getPlayer();
+    unsigned int as = Armysetlist::getInstance()->getStandardId();
+    int type;
+    Glib::RefPtr<Gdk::Pixbuf> pic;
+    GraphicsCache *gc = GraphicsCache::getInstance();
     int slot = city->getProductionIndex();
+    SDL_Surface *s
+	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
+    Glib::RefPtr<Gdk::Pixbuf> empty_pic
+	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
+    empty_pic->fill(0x00000000);
+    
 
-    Glib::ustring s1, s2;
+
+    Glib::ustring s1, s2, s3;
+    Glib::ustring s4 = _("Current:");
     
     if (slot == -1)
     {
+        pic = empty_pic;
 	s1 = _("No production");
 	s1 += "\n\n\n";
 	s2 = "\n\n\n";
+        s3 = "";
     }
     else
     {
@@ -233,26 +251,33 @@ void CityWindow::fill_in_production_info()
 	s1 += "\n";
 	// note to translators: %1/%2 is the no. of steps completed out of the
 	// total no. of steps in the production
-	s1 += String::ucompose(_("Duration: %1/%2"),
-			      a->getProduction() - city->getDuration() + 1,
-			       a->getProduction());
+	s1 += String::ucompose(_("Time: %1"), a->getProduction());
 	s1 += "\n";
-	// note to translators: %1 is melee strength, %2 is ranged strength
-	s1 += String::ucompose(_("Attack: %1"),
+	s1 += String::ucompose(_("Strength: %1"),
 			      a->getStat(Army::STRENGTH, false));
 	
 	// fill in second column
 	s2 += "\n";
 	s2 += String::ucompose(_("Moves: %1"), a->getStat(Army::MOVES, false));
 	s2 += "\n";
-	s2 += String::ucompose(_("Hitpoints: %1"), a->getStat(Army::HP, false));
-	s2 += "\n";
-	s2 += String::ucompose(_("Upkeep: %1"), a->getUpkeep());
-	
+	s2 += String::ucompose(_("Cost: %1"), a->getUpkeep());
+
+        s3 = String::ucompose(_("%1t"), a->getProduction() - 
+                              city->getDuration() + 1);
+        if (city->getVectoring() != Vector<int>(-1, -1))
+          {
+            Citylist *cl = Citylist::getInstance();
+            City *dest = cl->getObjectAt(city->getVectoring());
+            s3 += String::ucompose(_(", then to %1"), dest->getName());
+          }
+      pic = to_pixbuf(gc->getArmyPic(as, slot, player, 1, NULL));
     }
     
-    production_info_label1->set_markup("<i>" + s1 + "</i>");
-    production_info_label2->set_markup("<i>" + s2 + "</i>");
+    current_image->set(pic);
+    production_info_label1->set_markup(s1);
+    production_info_label2->set_markup(s2);
+    turns_left_label->set_markup("<i>" + s3 + "</i>");
+    current_label->set_markup("<i>" + s4 + "</i>");
 }
 
 void CityWindow::set_buy_button_state()

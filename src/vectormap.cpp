@@ -241,7 +241,7 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
             if (dest != city->getVectoring())
               {
 	        destination_chosen.emit(dest);
-	        city->setVectoring(dest);
+	        city->setVectoring(city->getPos());
 	        draw();
               }
             else if (dest == Vector<int>(-1, -1)) //stop vectoring

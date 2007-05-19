@@ -48,6 +48,9 @@ class CityWindow: public sigc::trackable
     Gtk::Label *production_info_label2;
     Gtk::Button *buy_button;
     Gtk::Button *on_hold_button;
+    Gtk::Label *turns_left_label;
+    Gtk::Image *current_image;
+    Gtk::Label *current_label;
 
     City *city;
 
