@@ -59,10 +59,6 @@ Hero::Hero(XML_Helper* helper)
     helper->getData(i, "gender");
     d_gender = static_cast<Army::Gender>(i);
 
-    helper->registerTag("backpack", sigc::mem_fun(*this, &Hero::loadItems));
-    helper->registerTag("equipment", sigc::mem_fun(*this, &Hero::loadItems));
-    helper->registerTag("item", sigc::mem_fun(*this, &Hero::loadItems));
-
     std::string temples;
     std::stringstream stemples;
     helper->getData(temples, "visited_temples");
@@ -70,6 +66,11 @@ Hero::Hero(XML_Helper* helper)
 
     stemples >> val;
     d_visitedTemples.push_front(val);
+
+    helper->registerTag("backpack", sigc::mem_fun(*this, &Hero::loadItems));
+    helper->registerTag("equipment", sigc::mem_fun(*this, &Hero::loadItems));
+    helper->registerTag("item", sigc::mem_fun(*this, &Hero::loadItems));
+
 }
 
 
@@ -99,6 +100,13 @@ bool Hero::save(XML_Helper* helper) const
     // Save the sex as well, whatever this is good for...
     retval &= helper->saveData("gender", d_gender);
 
+    std::stringstream temples;
+    std::list<unsigned int>::const_iterator tit = d_visitedTemples.begin();
+    std::list<unsigned int>::const_iterator tend = d_visitedTemples.end();
+    for(;tit != tend;++tit)
+        temples << (*tit) << " ";
+    retval &= helper->saveData("visited_temples", temples.str());
+
     retval &= saveData(helper);
 
     // Now save the equipment and the backpack
@@ -112,12 +120,6 @@ bool Hero::save(XML_Helper* helper) const
         retval &= (*it)->save(helper);
     retval &= helper->closeTag();
     
-    std::stringstream temples;
-    std::list<unsigned int>::const_iterator tit = d_visitedTemples.begin();
-    std::list<unsigned int>::const_iterator tend = d_visitedTemples.end();
-    for(;tit != tend;++tit)
-        temples << (*tit) << " ";
-    retval &= helper->saveData("visited_temples", temples.str());
 
     retval &= helper->closeTag();
 
