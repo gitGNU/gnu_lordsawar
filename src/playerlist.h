@@ -55,8 +55,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 
         /** Checks if a player has died (==doesn't own a city). If so, it
           * marks the player as killed, so he is ignored the next time.
+	  * Returns whether or not any players were marked as dead.
           */
-        void checkPlayers();
+        bool checkPlayers();
 
         /** Sets the neutral player. Though the neutral player is located in the
           * list of existing players, it is handled in a special way. His colors

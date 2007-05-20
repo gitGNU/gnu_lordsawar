@@ -83,8 +83,9 @@ Playerlist::~Playerlist()
         it = flErase(it);
 }
 
-void Playerlist::checkPlayers()
+bool Playerlist::checkPlayers()
 {
+    bool dead = false;
     debug("checkPlayers()");
     iterator it = begin ();
     while (it != end ())
@@ -106,6 +107,7 @@ void Playerlist::checkPlayers()
 
             (*it)->kill();
             splayerDead.emit(*it);
+            dead = true;
 
             it = nextit;    // do this at the end to catch abuse of invalid it
         } else {
@@ -113,6 +115,7 @@ void Playerlist::checkPlayers()
             ++it;
         }
     }
+  return dead;
 }
 
 void Playerlist::nextPlayer()
