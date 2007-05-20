@@ -25,8 +25,8 @@ class City;
 /** Display of the whole game map.
   * 
   * This is a map where you can select a city's vector, i.e. the position where
-  * freshly produced units automatically go to (at least the path is set, the
-  * units have to be moved manually).
+  * freshly produced units automatically go to.  They show up at the destination
+  * in 2 turns.
   */
 
 class VectorMap : public OverviewMap

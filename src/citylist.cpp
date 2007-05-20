@@ -56,7 +56,7 @@ Citylist::Citylist()
 Citylist::Citylist(XML_Helper* helper)
 {
     // simply ask the helper to inform us when a city tag is opened
-    helper->registerTag("city", sigc::mem_fun(this, &Citylist::load));    
+    helper->registerTag("city", sigc::mem_fun(this, &Citylist::load));
 }
 
 Citylist::~Citylist()

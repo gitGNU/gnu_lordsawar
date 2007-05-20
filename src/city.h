@@ -178,6 +178,8 @@ class City : public Location
         //! Get the point where the city will send the produced armies
         Vector<int> getVectoring() const {return d_vector;}
 
+	bool addVectorArmytype(int armytype);
+
     private:
         //! Returns a non-full stack in the city or creates a new one
         Stack* getFreeStack() const;
@@ -201,6 +203,7 @@ class City : public Location
         bool d_vectoring;           // is vectoring active? 
         Vector<int> d_vector;          // where to send produced armies 
         bool d_capital;
+	int d_vectored[2][MAX_ARMIES_VECTORED_TO_ONE_CITY]; //turn, armytype: vectored army types on deck
 };
 
 #endif // CITY_H

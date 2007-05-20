@@ -367,6 +367,7 @@ void CityWindow::on_destination_clicked()
     DestinationDialog d(city);
     d.set_parent_window(*dialog.get());
     d.run();
+    fill_in_production_info();
 }
 
 void CityWindow::on_map_changed(SDL_Surface *map)
