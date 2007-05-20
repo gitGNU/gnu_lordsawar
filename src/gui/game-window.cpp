@@ -341,6 +341,8 @@ void GameWindow::setup_game(std::string file_path)
 	sigc::mem_fun(*this, &GameWindow::on_city_pillaged));
     game->city_sacked.connect(
 	sigc::mem_fun(*this, &GameWindow::on_city_sacked));
+    game->city_razed.connect(
+	sigc::mem_fun(*this, &GameWindow::on_city_razed));
     game->city_visited.connect(
 	sigc::mem_fun(*this, &GameWindow::on_city_visited));
     game->next_player_turn.connect(
@@ -1385,6 +1387,30 @@ void GameWindow::on_city_sacked(City *city, int gold)
 	ngettext("The loot is worth %1 gold piece.",
 		 "The loot is worth %1 gold pieces.",
 		 gold), gold);
+    label->set_text(s);
+
+    dialog->show_all();
+    dialog->run();
+}
+
+void GameWindow::on_city_razed (City *city)
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/city-razed-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+    
+    dialog->set_title(String::ucompose(_("Razed %1"), city->getName()));
+
+    Gtk::Label *label;
+    xml->get_widget("label", label);
+    Glib::ustring s;
+    s = String::ucompose(_("The city of %1 is in ruins!"), city->getName());
     label->set_text(s);
 
     dialog->show_all();

@@ -645,6 +645,7 @@ void Game::invading_city(City* city)
 	    
 	case CITY_DEFEATED_RAZE:
 	    player->cityRaze(city);
+            city_razed.emit (city);
 	    break;
 	    
 	case CITY_DEFEATED_PILLAGE:

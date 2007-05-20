@@ -172,6 +172,7 @@ class GameWindow: public sigc::trackable
     CityDefeatedAction on_city_defeated(City *city, int gold);
     void on_city_pillaged(City *city, int gold);
     void on_city_sacked(City *city, int gold);
+    void on_city_razed(City *city);
     void on_city_visited(City *city);
     void on_next_player_turn(Player *player, unsigned int turn_number);
     void on_hero_brings_allies(int alliesCount);
