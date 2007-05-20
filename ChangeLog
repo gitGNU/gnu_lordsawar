@@ -1,8 +1,12 @@
+2007-05-20  Ben Asselstine
+        * made a first crack at implementing vectoring.
+
 2007-05-19  Ben Asselstine
         * added vector map to city window dialog.
         * clicking on a vector map changes the city.
 	* beautifying the city window dialog.
-	* added rename and raze city
+	* added rename and raze city in the city window dialog.
+	* added a razed city dialog.
 
 2007-05-17  Ben Asselstine
 	* removed army vitality, defense, shots, ranged, and portrait.
