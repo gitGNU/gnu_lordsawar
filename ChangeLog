@@ -2,6 +2,7 @@
         * added vector map to city window dialog.
         * clicking on a vector map changes the city.
 	* beautifying the city window dialog.
+	* added rename and raze city
 
 2007-05-17  Ben Asselstine
 	* removed army vitality, defense, shots, ranged, and portrait.
