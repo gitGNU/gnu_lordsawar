@@ -237,11 +237,10 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
             if (nearestCity == city)
               dest = Vector<int>(-1, -1);
 
-            /* only vector to cities we own */
             if (dest != city->getVectoring())
               {
 	        destination_chosen.emit(dest);
-	        city->setVectoring(city->getPos());
+	        city->setVectoring(nearestCity->getPos());
 	        draw();
               }
             else if (dest == Vector<int>(-1, -1)) //stop vectoring
