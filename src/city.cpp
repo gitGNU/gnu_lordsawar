@@ -23,6 +23,7 @@
 #include "stack.h"
 #include "playerlist.h"
 #include "armysetlist.h"
+#include "citylist.h"
 #include "GameMap.h"
 
 using namespace std;
@@ -135,6 +136,7 @@ bool City::save(XML_Helper* helper) const
     retval &= helper->saveData("burnt", d_burnt);
     retval &= helper->saveData("capital", d_capital);
     retval &= helper->saveData("vectoring", svect.str());
+
     retval &= helper->closeTag();
     return retval;
 }
@@ -402,6 +404,13 @@ void City::nextTurn()
     if (d_production >= 0 && --d_duration == 0) 
     {
         produceArmy();
+        // vector the army to the new spot
+        if (d_vectoring)
+          {
+            //VectorProductionItem i;
+            Citylist *cl = Citylist::getInstance();
+            City *dest = cl->getObjectAt(d_vector);
+          }
     }
 }
 
@@ -459,10 +468,7 @@ Stack* City::getFreeStack() const
         {
             Stack* stack = Stacklist::getObjectAt(d_pos.x + j, d_pos.y+ i);
 
-            // No stack found or vectoring enabled so create one
-            debug("Vectoring was " << d_vectoring<< "!!!!!!!!!!!!!!!!!!!")
-
-            if (stack == 0 || d_vectoring)
+            if (stack == 0)
             {
                 Vector<int> temp;
                 temp.x = d_pos.x + j;
@@ -493,32 +499,23 @@ void City::setVectoring(Vector<int> p)
 
 void City::produceArmy()
 {
-    debug("produce_army()\n");
+  // add produced army to stack
+  const Armysetlist* al = Armysetlist::getInstance();
+  Uint32 set;
+  int index;
+        
+  set = al->getStandardId();
+  index = d_basicprod[d_production];
+  debug("produce_army()\n");
 
     // do not produce an army if the player has no gold.
-    if ((d_player->getGold() < 0) || (d_production == -1))
-        return;
+  if ((d_player->getGold() < 0) || (d_production == -1))
+    return;
 
-    Stack* stack = getFreeStack();
+  addArmy(new Army(*(al->getArmy(set, index))));
 
-    if (stack)
-    {
-        // add produced army to stack
-        const Armysetlist* al = Armysetlist::getInstance();
-        Uint32 set;
-        int index;
-        
-        set = al->getStandardId();
-        index = d_basicprod[d_production];
-        
-        stack->push_back(new Army(*(al->getArmy(set, index)), d_player));
-
-        if (d_vectoring && d_vector.x!=-1 && d_vector.y!=-1)
-            stack->getPath()->calculate(stack, d_vector);
-    }
-    
-    // start producing next army of same type
-    setProduction(d_production);
+  // start producing next army of same type
+  setProduction(d_production);
 }
 
 // End of file
