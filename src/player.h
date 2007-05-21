@@ -423,7 +423,7 @@ class Player: public sigc::trackable
 
         //! Signal raised whenever a player has conquered a city. This is the
         //! signal you should use for further actions.
-        sigc::signal<void, City*> soccupyingCity;
+        sigc::signal<void, City*, Stack*> soccupyingCity;
 
         
         //! Signal raised when a hero is recruited

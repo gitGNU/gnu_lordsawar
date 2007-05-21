@@ -16,6 +16,7 @@
 #define ECITYCONQ_H
 
 #include "Event.h"
+#include "../stack.h"
 
 class City;
 
@@ -52,7 +53,7 @@ class ECityConq : public Event
         Uint32 d_city;
         
         //! Callback which triggers the event
-        void trigger(City* city);
+        void trigger(City* city, Stack *stack);
 };
         
 

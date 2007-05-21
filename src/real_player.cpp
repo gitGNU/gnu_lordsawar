@@ -85,7 +85,7 @@ bool RealPlayer::invadeCity(City* c)
     //However, an AI player has to decide here what to do (occupy, raze,
     //pillage)
     sinvadingCity.emit(c);
-    soccupyingCity.emit(c);
+    soccupyingCity.emit(c, getActivestack());
     return true;
 }
 

@@ -20,7 +20,8 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         QuestsManager.cpp QuestsManager.h Quest.cpp Quest.h \
 	QKillHero.cpp QKillHero.h QRuinSearch.cpp QRuinSearch.h \
         QEnemyArmies.cpp QEnemyArmies.h QCitySack.cpp QCitySack.h \
-        QCityRaze.cpp QCityRaze.h File.cpp File.h main.cpp \
+        QCityRaze.cpp QCityRaze.h QCityOccupy.cpp QCityOccupy.h \
+        File.cpp File.h main.cpp \
 	xmlhelper.cpp xmlhelper.h string_tokenizer.cpp string_tokenizer.h \
         NextTurn.cpp NextTurn.h FogMap.cpp FogMap.h \
 	counter.cpp counter.h fight.cpp fight.h \

@@ -62,7 +62,7 @@ bool AI_Dummy::invadeCity(City* c)
     //make sure there is no inconsistency
     bool retval = cityOccupy(c);
     sinvadingCity.emit(c);
-    soccupyingCity.emit(c);
+    soccupyingCity.emit(c, getActivestack());
 
     return retval;
 }

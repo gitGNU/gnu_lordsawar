@@ -30,28 +30,42 @@ QuestMap::QuestMap(Quest *q)
 
 void QuestMap::after_draw()
 {
-    Playerlist *plist = Playerlist::getInstance();
-    Player *p = plist->getActiveplayer();
-    Stacklist *sl = p->getStacklist();
-    GraphicsCache *gc = GraphicsCache::getInstance();
-    OverviewMap::after_draw();
-    // draw the hero picture
-    Vector<int> start = sl->getPosition(quest->getHeroId());
+  Playerlist *plist = Playerlist::getInstance();
+  Player *p = plist->getActiveplayer();
+  Stacklist *sl = p->getStacklist();
+  GraphicsCache *gc = GraphicsCache::getInstance();
 
-    start = mapToSurface(start);
+  OverviewMap::after_draw();
 
-    start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
+  // draw the hero picture
+  Vector<int> start = sl->getPosition (quest->getHeroId ());
 
-    SDL_Surface *tmp = gc->getSmallHeroPic();
+  start = mapToSurface (start);
+
+  start += Vector<int>(int (pixels_per_tile / 2), int (pixels_per_tile / 2));
+
+  SDL_Surface *tmp = gc->getSmallHeroPic ();
     
-    SDL_Rect r;
-    r.x = start.x - (tmp->w/2);
-    r.y = start.y - (tmp->h/2);
-    r.w = tmp->w;
-    r.h = tmp->h;
-    SDL_BlitSurface(tmp, 0, surface, &r);
-    SDL_FreeSurface(tmp);
+  SDL_Rect r;
+  r.x = start.x - (tmp->w / 2);
+  r.y = start.y - (tmp->h / 2);
+  r.w = tmp->w;
+  r.h = tmp->h;
+  SDL_BlitSurface (tmp, 0, surface, &r);
+  SDL_FreeSurface (tmp);
 
+  switch (quest->getType ())
+    {
+      case Quest::KILLARMIES:
+        //draw a plus sign for every enemy army
+        break;
+      case Quest::KILLHERO:
+      case Quest::CITYSACK:
+      case Quest::CITYRAZE:
+      case Quest::RUINSEARCH:
+        //draw an orange line to the target and put a box around it.
+        break;
+    }
     map_changed.emit(surface);
 }
 

@@ -90,7 +90,7 @@ bool AI_Smart::invadeCity(City* c)
     // always occupy an enemy city
     bool retval = cityOccupy(c);
     sinvadingCity.emit(c);
-    soccupyingCity.emit(c);
+    soccupyingCity.emit(c, getActivestack());
 
     // Update its production
     maybeBuyProduction(c);

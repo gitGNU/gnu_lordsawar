@@ -57,7 +57,7 @@ void ECityConq::init()
     }
 }
 
-void ECityConq::trigger(City* city)
+void ECityConq::trigger(City* city, Stack *stack)
 {
     if (city->getId() != d_city)
         return;

@@ -1144,12 +1144,13 @@ void GameWindow::on_quest_assigned(Hero *hero, Quest *quest)
 }
 
 static bool
-hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze)
+hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze, bool *occupy)
 {
   Player *p = Playerlist::getActiveplayer();
   std::vector<Quest*> questlist;
   *sack = false;
   *raze = false;
+  *occupy = false;
 
   QuestsManager *q_mgr = QuestsManager::getInstance();
   questlist = q_mgr->getPlayerQuests(p);
@@ -1162,6 +1163,7 @@ hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze)
         {
         case Quest::CITYSACK:
         case Quest::CITYRAZE:
+        case Quest::CITYOCCUPY:
           /* now check if the quest's hero is in our stack */
           for (Stack::iterator it = s->begin(); it != s->end(); ++it)
             {
@@ -1174,6 +1176,8 @@ hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze)
                         *sack = true;
                       else if ((*i)->getType() == Quest::CITYRAZE)
                         *raze = true;
+                      else if ((*i)->getType() == Quest::CITYOCCUPY)
+                        *occupy = true;
                     }
                 }
             }
@@ -1234,9 +1238,9 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 
     if (h) /* if there was a hero in the stack */
       {
-        bool sack, raze;
+        bool sack, raze, occupy;
         if (hero_has_quest_here (p->getStacklist()->getActivestack(), city, 
-                                 &sack, &raze))
+                                 &sack, &raze, &occupy))
           {
             Gtk::Button *button;
             if (sack)
@@ -1247,6 +1251,11 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
             if (raze)
               {
                 xml->get_widget("raze_button", button);
+                button->set_label(">" + button->get_label() +"<");
+              }
+            if (occupy)
+              {
+                xml->get_widget("occupy_button", button);
                 button->set_label(">" + button->get_label() +"<");
               }
           }

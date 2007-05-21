@@ -110,7 +110,7 @@ bool AI_Fast::invadeCity(City* c)
     debug("Occupying it")
     bool retval = cityOccupy(c);
     sinvadingCity.emit(c);
-    soccupyingCity.emit(c);
+    soccupyingCity.emit(c, getActivestack());
 
     return retval;
 }
