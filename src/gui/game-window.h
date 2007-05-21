@@ -167,7 +167,7 @@ class GameWindow: public sigc::trackable
     void on_ruinfight_started(Stack *attackers, Stack *defenders);
     void on_ruinfight_finished(Fight::Result result);
     bool on_hero_offers_service(Player *player, Hero *hero, City *city, int gold);
-    bool on_temple_visited(Temple *temple, int blessCount);
+    bool on_temple_visited(bool hasHero, Temple *temple, int blessCount);
     void on_quest_assigned(Hero *hero, Quest *quest);
     CityDefeatedAction on_city_defeated(City *city, int gold);
     void on_city_pillaged(City *city, int gold);

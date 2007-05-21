@@ -218,9 +218,6 @@ class Army : public sigc::trackable
         //! Get the level of the army
         Uint32 getLevel() const {return d_level;}
 
-        //! Returns whether army is blessed (may only happen once :-))
-        virtual bool isBlessed() const {return d_blessed;}
-
         //! Returns grouping information
         bool isGrouped() const {return d_grouped;}
 
@@ -352,7 +349,6 @@ class Army : public sigc::trackable
         Uint32 d_moves;
         double d_xp;            // experience points
         Uint32 d_level;
-        bool d_blessed;         // if army is blessed then strength is +1
         bool d_grouped;
 
         //! Medal bonuses : we have 3 medals
@@ -374,6 +370,7 @@ class Army : public sigc::trackable
 	bool d_defends_ruins;
 	//! this army type can be a reward from quest
 	bool d_awardable;
+        std::list<Uint32> d_visitedTemples;
 };
 
 #endif // ARMY_H

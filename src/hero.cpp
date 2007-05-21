@@ -53,19 +53,10 @@ Hero::Hero(Hero& h)
 Hero::Hero(XML_Helper* helper)
     :Army(helper)
 {
-    int val;
     int i;
     helper->getData(d_name, "name");
     helper->getData(i, "gender");
     d_gender = static_cast<Army::Gender>(i);
-
-    std::string temples;
-    std::stringstream stemples;
-    helper->getData(temples, "visited_temples");
-    stemples.str(temples);
-
-    stemples >> val;
-    d_visitedTemples.push_front(val);
 
     helper->registerTag("backpack", sigc::mem_fun(*this, &Hero::loadItems));
     helper->registerTag("equipment", sigc::mem_fun(*this, &Hero::loadItems));
@@ -99,13 +90,6 @@ bool Hero::save(XML_Helper* helper) const
     retval &= helper->saveData("name", d_name);
     // Save the sex as well, whatever this is good for...
     retval &= helper->saveData("gender", d_gender);
-
-    std::stringstream temples;
-    std::list<unsigned int>::const_iterator tit = d_visitedTemples.begin();
-    std::list<unsigned int>::const_iterator tend = d_visitedTemples.end();
-    for(;tit != tend;++tit)
-        temples << (*tit) << " ";
-    retval &= helper->saveData("visited_temples", temples.str());
 
     retval &= saveData(helper);
 
@@ -234,32 +218,5 @@ bool Hero::removeFromEquipment(Item* item)
         }
 
     return false;
-}
-
-/* is this temple one we've already visited? */
-bool Hero::bless()
-{
-  bool visited = false;
-  Stack *stack = d_player->getStacklist()->getActivestack();
-  Temple* temple = Templelist::getInstance()->getObjectAt(stack->getPos());
-
-  if (!temple)
-    return false;
-
-  Uint32 templeId = temple->getId();
-  std::list<unsigned int>::const_iterator tit = d_visitedTemples.begin();
-  std::list<unsigned int>::const_iterator tend = d_visitedTemples.end();
-  for(;tit != tend;++tit)
-    {
-      if ((*tit) == templeId)
-        {
-          visited = true;
-          break;
-        }
-    }
-
-  if (visited == false)  /* no?  increase strength */
-    d_strength++;
-  return !visited;
 }
 

@@ -520,7 +520,7 @@ void City::produceArmy()
   if ((d_player->getGold() < 0) || (d_production == -1))
     return;
 
-  addArmy(new Army(*(al->getArmy(set, index))));
+  addArmy(new Army(*(al->getArmy(set, index)), d_player));
 
   // start producing next army of same type
   setProduction(d_production);

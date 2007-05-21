@@ -19,6 +19,8 @@
 #include "counter.h"
 #include "GraphicsCache.h"
 #include "xmlhelper.h"
+#include "stacklist.h"
+#include "templelist.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -36,10 +38,11 @@ Army::Army(const Army& a, Player* p)
      d_xp_value(a.d_xp_value), d_move_bonus(a.d_move_bonus),
      d_army_bonus(a.d_army_bonus), d_gender(a.d_gender), d_player(p),
      d_id(a.d_id), d_hp(a.d_hp), d_moves(a.d_moves), d_xp(a.d_xp),
-     d_level(a.d_level), d_blessed(a.d_blessed), d_grouped(a.d_grouped),
+     d_level(a.d_level), d_grouped(a.d_grouped),
      d_battles_number(a.d_battles_number), d_number_hashit(a.d_number_hashit),
      d_number_hasbeenhit(a.d_number_hasbeenhit), 
-     d_defends_ruins(a.d_defends_ruins), d_awardable(a.d_awardable)
+     d_defends_ruins(a.d_defends_ruins), d_awardable(a.d_awardable),
+     d_visitedTemples(a.d_visitedTemples)
 {
     // if we have been copied from an army prototype, initialise several values
     if (d_id == 0)
@@ -58,10 +61,11 @@ Army::Army(const Army& a, Player* p)
 Army::Army(XML_Helper* helper, bool prototype)
   :d_pixmap(0), d_mask(0), d_name(""), d_description(""),
    d_gender(NONE), d_player(0),
-   d_id(0), d_xp(0), d_level(1), d_blessed(false), d_grouped(true),
+   d_id(0), d_xp(0), d_level(1), d_grouped(true),
    d_number_hashit(0), d_number_hasbeenhit(0), d_defends_ruins(false),
    d_awardable(false)
 {
+    d_visitedTemples.clear();
     // first, load the data that has to be loaded anyway
     helper->getData(d_strength, "strength");
     helper->getData(d_sight, "sight");
@@ -73,6 +77,7 @@ Army::Army(XML_Helper* helper, bool prototype)
     // otherwise
     if (!prototype)
     {
+        int ival = -1;
         //get the information which army we are
         helper->getData(d_type, "type");
         helper->getData(d_armyset, "armyset");
@@ -85,7 +90,6 @@ Army::Army(XML_Helper* helper, bool prototype)
         helper->getData(d_moves, "moves");
         helper->getData(d_xp, "xp");
         helper->getData(d_level, "level");
-        helper->getData(d_blessed, "blessed");
 
         std::string medals;
         std::stringstream smedals;
@@ -102,6 +106,15 @@ Army::Army(XML_Helper* helper, bool prototype)
         }
 
         helper->getData(d_battles_number, "battlesnumber");    
+
+        std::string temples;
+        std::stringstream stemples;
+        helper->getData(temples, "visited_temples");
+        stemples.str(temples);
+
+        stemples >> ival;
+        if (ival != -1)
+          d_visitedTemples.push_front(ival);
     }
     else
     {
@@ -208,16 +221,36 @@ void Army::resetMoves()
     d_moves = getStat(MOVES);
 }
 
+/* is this temple one we've already visited? */
 bool Army::bless()
 {
-    if (!d_blessed)
-    {
-        d_blessed = true;
-        d_strength++;
-	return true;
-    }
+  bool visited = false;
+  Stack *stack = d_player->getStacklist()->getActivestack();
+  Temple* temple = Templelist::getInstance()->getObjectAt(stack->getPos());
+
+  if (!temple)
     return false;
+
+  Uint32 templeId = temple->getId();
+  std::list<unsigned int>::const_iterator tit = d_visitedTemples.begin();
+  std::list<unsigned int>::const_iterator tend = d_visitedTemples.end();
+  for(;tit != tend;++tit)
+    {
+      if ((*tit) == templeId)
+        {
+          visited = true;
+          break;
+        }
+    }
+
+  if (visited == false)  /* no?  increase strength */
+    {
+      d_visitedTemples.push_back(templeId);
+      setStat(STRENGTH, d_strength + 1);
+    }
+  return !visited;
 }
+
 
 void Army::heal(Uint32 hp)
 {
@@ -347,7 +380,6 @@ bool Army::saveData(XML_Helper* helper) const
     retval &= helper->saveData("xp", d_xp);
     retval &= helper->saveData("expvalue", getXpReward());
     retval &= helper->saveData("level", d_level);
-    retval &= helper->saveData("blessed", d_blessed);
 
     std::stringstream medals;
     for (int i=0;i<3;i++)
@@ -356,6 +388,13 @@ bool Army::saveData(XML_Helper* helper) const
     }
     retval &= helper->saveData("medals", medals.str());
     retval &= helper->saveData("battlesnumber",d_battles_number);    
+
+    std::stringstream temples;
+    std::list<unsigned int>::const_iterator tit = d_visitedTemples.begin();
+    std::list<unsigned int>::const_iterator tend = d_visitedTemples.end();
+    for(;tit != tend;++tit)
+        temples << (*tit) << " ";
+    retval &= helper->saveData("visited_temples", temples.str());
 
     return retval;
 }
@@ -380,7 +419,6 @@ void  Army::printAllDebugInfo() const
     std::cerr << "type = "    << d_type    << std::endl;
     std::cerr << "level = "   << d_level   << std::endl;
     std::cerr << "xp = "      << d_xp      << std::endl;
-    std::cerr << "blessed = " << d_blessed << std::endl;
     std::cerr << "grouped = " << d_grouped << std::endl;
 
     std::cerr << "medal[0] = " << d_medal_bonus[0] << std::endl;
@@ -390,6 +428,7 @@ void  Army::printAllDebugInfo() const
     std::cerr << "battle number = "     << d_battles_number    << std::endl;
     std::cerr << "has hit = "           << d_number_hashit     << std::endl;
     std::cerr << "has been hit = "      << d_number_hasbeenhit << std::endl;
+//XXX FIXME: show the visited temple info
 }
 
 
@@ -405,4 +444,6 @@ void Army::copyVals(const Army* a)
     d_gender = a->getGender();
     d_defends_ruins = a->getDefendsRuins();
     d_awardable = a->getAwardable();
+    d_visitedTemples = a->d_visitedTemples;
+    d_player = a->d_player;
 }

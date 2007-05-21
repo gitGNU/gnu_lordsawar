@@ -1060,7 +1060,7 @@ bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, 
 }
 
 
-bool GameWindow::on_temple_visited(Temple *temple, int blessCount)
+bool GameWindow::on_temple_visited(bool hasHero, Temple *temple, int blessCount)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
     
@@ -1075,19 +1075,40 @@ bool GameWindow::on_temple_visited(Temple *temple, int blessCount)
     dialog->set_title(temple->getName());
 
     Gtk::Label *l;
+    Gtk::Button *close_button;
+    Gtk::Button *accept_button;
     xml->get_widget("label", l);
+    xml->get_widget("close_button", close_button);
+    xml->get_widget("accept_button", accept_button);
 
     Glib::ustring s;
-    s += String::ucompose(
-	ngettext("%1 army has been blessed!",
-		 "%1 armies have been blessed!", blessCount), blessCount);
+    if (blessCount > 0)
+      s += String::ucompose(
+             ngettext("%1 army has been blessed!",
+		      "%1 armies have been blessed!", blessCount), blessCount);
+    else
+      s += _("We have already blessed thee!");
+
     l->set_text(s);
-    l->set_text(l->get_text() + "\n" +
-                _("Seek more blessings in far temples!") + "\n\n" +
-                _("Do you seek a quest?"));
+    s = l->get_text() + "\n" + _("Seek more blessings in far temples!");
+    l->set_text(s);
+    if (hasHero)
+      s = l->get_text() + "\n\n" + _("Do you seek a quest?");
+    l->set_text(s);
 
     dialog->show_all();
+
+    if (hasHero == false)
+      {
+        close_button->hide();
+        s = _("_Close");
+        accept_button->set_label(s);
+      }
+
     int response = dialog->run();
+
+    if (hasHero == false)
+      response = 1;
 
     if (response == 0)		// accepted a quest
 	return true;

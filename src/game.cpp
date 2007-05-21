@@ -412,7 +412,7 @@ void Game::search_selected_stack()
     Ruin* ruin = Ruinlist::getInstance()->getObjectAt(stack->getPos());
     Temple* temple = Templelist::getInstance()->getObjectAt(stack->getPos());
 
-    if (ruin && !ruin->isSearched())
+    if (ruin && !ruin->isSearched() && stack->getGroupMoves() > 0)
     {
         int cur_gold = player->getGold();
 
@@ -430,11 +430,11 @@ void Game::search_selected_stack()
 	
         update_sidebar_stats();
     }
-    else if (temple && temple->searchable())
+    else if (temple && temple->searchable() && stack->getGroupMoves() > 0)
     {
         int blessCount;
         blessCount = player->stackVisitTemple(stack, temple);
-	bool wants_quest = temple_visited.emit(temple, blessCount);
+	bool wants_quest = temple_visited.emit(stack->hasHero(), temple, blessCount);
         if (wants_quest)
         {
             Quest *q = player->stackGetQuest(stack, temple);
@@ -739,15 +739,22 @@ void Game::update_control_panel()
 	can_move_selected_stack.emit(stack->getPath()->size() > 0
 				     && stack->enoughMoves());
 	
-        if (stack->hasHero())
+        if (stack->getGroupMoves() > 0)
         {
-            Ruin *ruin
-		= Ruinlist::getInstance()->getObjectAt(stack->getPos());
-            Temple *temple
-		= Templelist::getInstance()->getObjectAt(stack->getPos());
+            Temple *temple;
+            temple = Templelist::getInstance()->getObjectAt(stack->getPos());
+            if (stack->hasHero())
+            {
+                Ruin *ruin
+		    = Ruinlist::getInstance()->getObjectAt(stack->getPos());
 
-	    can_search_selected_stack.emit(
-		(ruin && !ruin->isSearched()) || temple);
+	        can_search_selected_stack.emit(
+		    (ruin && !ruin->isSearched()) || temple);
+            }
+            else
+            {
+	        can_search_selected_stack.emit(temple);
+            }
         }
     }
     else
