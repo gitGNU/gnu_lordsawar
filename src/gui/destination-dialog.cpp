@@ -74,7 +74,7 @@ DestinationDialog::DestinationDialog(City *c)
       sigc::bind(sigc::mem_fun(this, &DestinationDialog::on_change_toggled),
                                change_toggle));
 
-    vectormap.reset(new VectorMap(c, VectorMap::SHOW_NO_VECTORING));
+    vectormap.reset(new VectorMap(c, VectorMap::SHOW_ORIGIN_CITY_VECTORING));
     vectormap->map_changed.connect(
 	sigc::mem_fun(this, &DestinationDialog::on_map_changed));
 
