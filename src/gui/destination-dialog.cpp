@@ -185,6 +185,7 @@ void DestinationDialog::fill_in_vectoring_info()
   empty_pic->fill(0x00000000);
 
   vector_toggle->set_sensitive(slot != -1 ? true : false);
+  change_toggle->set_sensitive(false);
 
   one_turn_away_image->set(empty_pic);
   two_turns_away_image->set(empty_pic);
