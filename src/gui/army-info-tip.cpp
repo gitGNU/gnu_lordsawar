@@ -63,7 +63,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     s += String::ucompose(_("Moves: %1/%2"),
 			  army->getMoves(), army->getStat(Army::MOVES));
     s += "\n";
-    s += String::ucompose(_("Upkeep: %1"), army->getUpkeep());
+    s += String::ucompose(_("Cost: %1"), army->getUpkeep());
     info_label->set_text(s);
     
     // move into correct position
