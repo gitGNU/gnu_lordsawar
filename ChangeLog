@@ -1,3 +1,6 @@
+2007-05-21  Ben Asselstine
+        * reimplemented vectoring
+
 2007-05-20  Ben Asselstine
         * made a first crack at implementing vectoring.
 
