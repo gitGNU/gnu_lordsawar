@@ -109,11 +109,11 @@ void NextTurn::startTurn()
     //if turnmode is set, create/heal armies at player's turn
     if (d_turnmode)
     {
-	//vector armies
-        VectoredUnitlist::getInstance()->nextTurn(p);
-
         //build armies
         Citylist::getInstance()->nextTurn(p);
+
+	//vector armies
+        VectoredUnitlist::getInstance()->nextTurn(p);
 
 
         //heal stacks

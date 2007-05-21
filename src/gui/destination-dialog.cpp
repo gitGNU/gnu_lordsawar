@@ -189,7 +189,6 @@ void DestinationDialog::fill_in_vectoring_info()
   one_turn_away_image->set(empty_pic);
   two_turns_away_image->set(empty_pic);
   next_turn_1_image->set(empty_pic);
-  next_turn_1_image->set(empty_pic);
   next_turn_2_image->set(empty_pic);
   next_turn_3_image->set(empty_pic);
   next_turn_4_image->set(empty_pic);
@@ -222,12 +221,12 @@ void DestinationDialog::fill_in_vectoring_info()
   for (it = vectored.begin(); it != vectored.end(); it++)
     {
       int armytype = (*it).getArmytype();
-      if ((*it).getDuration() == 1)
+      if ((*it).getDuration() == 2)
         {
           pic = to_pixbuf(gc->getArmyPic(as, armytype, player, 1, NULL));
           one_turn_away_image->set(pic);
         }
-      else if ((*it).getDuration() == 2)
+      else if ((*it).getDuration() == 1)
         {
           pic = to_pixbuf(gc->getArmyPic(as, armytype, player, 1, NULL));
           two_turns_away_image->set(pic);
@@ -241,7 +240,7 @@ void DestinationDialog::fill_in_vectoring_info()
   Gtk::Image *image = next_turn_1_image;
   for (it = vectored.begin(); it != vectored.end(); it++)
     {
-      if ((*it).getDuration() != 2)
+      if ((*it).getDuration() != 1)
         continue;
 
       switch (count)
@@ -258,7 +257,7 @@ void DestinationDialog::fill_in_vectoring_info()
   count = 0;
   for (it = vectored.begin(); it != vectored.end(); it++)
     {
-      if ((*it).getDuration() != 1)
+      if ((*it).getDuration() != 2)
         continue;
       switch (count)
         {
