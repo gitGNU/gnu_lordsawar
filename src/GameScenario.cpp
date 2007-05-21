@@ -45,6 +45,7 @@
 #include "string_tokenizer.h"
 #include "events/Event.h"
 #include "player.h"
+#include "vectoredunitlist.h"
 #include "xmlhelper.h"
 
 using namespace std;
@@ -86,6 +87,7 @@ GameScenario::GameScenario(string savegame, bool& broken, bool events)
     helper.registerTag("roadlist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("counter", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("questlist", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("vectoredunitlist", sigc::mem_fun(this, &GameScenario::load));
 
     //now parse the document and close the file afterwards
     if (!helper.parse())
@@ -205,6 +207,7 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= Stonelist::getInstance()->save(&helper);
     retval &= Roadlist::getInstance()->save(&helper);
     retval &= QuestsManager::getInstance()->save(&helper);
+    retval &= VectoredUnitlist::getInstance()->save(&helper);
 
     //save the private GameScenario data last due to dependencies
     retval &= helper.openTag("scenario");
@@ -336,6 +339,13 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
     {
         debug("loading quests")
         QuestsManager::getInstance(helper);
+        return true;
+    }
+
+    if (tag == "vectoredunitlist")
+    {
+        debug("loading vectored units")
+        VectoredUnitlist::getInstance(helper);
         return true;
     }
 

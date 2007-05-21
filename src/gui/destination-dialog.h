@@ -20,6 +20,8 @@
 #include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/image.h>
+#include <gtkmm/label.h>
+#include <gtkmm/togglebutton.h>
 
 #include "../vectormap.h"
 
@@ -40,11 +42,31 @@ class DestinationDialog: public sigc::trackable
     std::auto_ptr<VectorMap> vectormap;
 
     Gtk::Image *map_image;
+    Gtk::ToggleButton *see_all_toggle;
+    Gtk::ToggleButton *vector_toggle;
+    Gtk::ToggleButton *change_toggle;
+    Gtk::Label *current_label;
+    Gtk::Image *current_image;
+    Gtk::Label *turns_label;
+    Gtk::Image *one_turn_away_image;
+    Gtk::Image *two_turns_away_image;
+    Gtk::Image *next_turn_1_image;
+    Gtk::Image *next_turn_2_image;
+    Gtk::Image *next_turn_3_image;
+    Gtk::Image *next_turn_4_image;
+    Gtk::Image *turn_after_1_image;
+    Gtk::Image *turn_after_2_image;
+    Gtk::Image *turn_after_3_image;
+    Gtk::Image *turn_after_4_image;
     
     City *city;
     
     void on_map_changed(SDL_Surface *map);
     bool on_map_mouse_button_event(GdkEventButton *e);
+    void on_see_all_toggled(Gtk::ToggleButton *toggle);
+    void on_vector_toggled(Gtk::ToggleButton *toggle);
+    void on_change_toggled(Gtk::ToggleButton *toggle);
+    void fill_in_vectoring_info();
 };
 
 #endif

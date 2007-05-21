@@ -42,7 +42,8 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         callback-enums.h \
         sidebar-stats.h game-parameters.h vector.h rectangle.h \
         tmp.cpp tmp.h ucompose.hpp defs.h ObjectList.h \
-        map-tip-position.h input-events.h sdl-draw.h   
+        map-tip-position.h input-events.h sdl-draw.h  \
+        vectoredunit.cpp vectoredunit.h vectoredunitlist.cpp vectoredunitlist.h
 
 
 # old: ArmyLevelDialog.cpp ItemDialog.cpp PG_FileDialog.cpp Popup.cpp

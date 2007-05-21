@@ -35,9 +35,6 @@ void HeroMap::after_draw()
 
     start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
 
-	//Uint32 raw = SDL_MapRGBA(surface->format, 180, 180, 180, 120);
-        //draw_line(surface, start.x, start.y, end.x, end.y, raw);
-
     SDL_Surface *tmp = File::getMiscPicture("hero.png");
     
     SDL_Rect r;

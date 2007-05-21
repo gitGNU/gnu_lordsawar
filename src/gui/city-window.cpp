@@ -127,17 +127,17 @@ void CityWindow::run()
 void CityWindow::fill_in_city_info()
 {
     // fill in titles
-    Glib::ustring title;
-    switch (city->getDefenseLevel())
-    {
-    case 1: title = _("Village of %1"); break;
-    case 2: title = _("Town of %1"); break;
-    case 3: title = _("City of %1"); break;
-    case 4: title = _("Fortress of %1"); break;
-    }
-    title = String::ucompose(title, city->getName());
+    //Glib::ustring title;
+    //switch (city->getDefenseLevel())
+    //{
+    //case 1: title = _("Village of %1"); break;
+    //case 2: title = _("Town of %1"); break;
+    //case 3: title = _("City of %1"); break;
+    //case 4: title = _("Fortress of %1"); break;
+    //}
+    //title = String::ucompose(title, city->getName());
     
-    dialog->set_title(title);
+    dialog->set_title(city->getName());
 
     // fill in status label
     Glib::ustring s;

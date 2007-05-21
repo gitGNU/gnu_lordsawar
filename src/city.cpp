@@ -25,6 +25,7 @@
 #include "armysetlist.h"
 #include "citylist.h"
 #include "GameMap.h"
+#include "vectoredunitlist.h"
 
 using namespace std;
 
@@ -43,10 +44,6 @@ City::City(Vector<int> pos, string name, Uint32 gold)
     for (int i = 0; i < 4; i++)
         d_basicprod[i] = -1; 
 
-    for (int i = 0; i < 2; i++)
-      for (unsigned int j = 0; j < MAX_ARMIES_VECTORED_TO_ONE_CITY; j++)
-        d_vectored[i][j] = -1;
-
     // set the tiles to city type
     for (int i = 0; i < 2; i++)
         for (int j = 0; j < 2; j++)
@@ -59,13 +56,8 @@ City::City(Vector<int> pos, string name, Uint32 gold)
 City::City(XML_Helper* helper)
     :Location(helper, 2), d_numbasic(4)
 {
-  int val;
     //initialize the city
     Uint32 ui;
-    
-    for (int i = 0; i < 2; i++)
-      for (unsigned int j = 0; j < MAX_ARMIES_VECTORED_TO_ONE_CITY; j++)
-        d_vectored[i][j] = -1;
 
     helper->getData(ui, "owner");
     d_player = Playerlist::getInstance()->getPlayer(ui);
@@ -98,38 +90,6 @@ City::City(XML_Helper* helper)
     else 
       d_vectoring=false;
 
-    std::string armytypes;
-    std::stringstream sarmytypes;
-    helper->getData(armytypes, "vectored_armies_one_turn_away");
-    sarmytypes.str(armytypes);
-
-    for (unsigned int i = 0; i < MAX_ARMIES_VECTORED_TO_ONE_CITY; i++)
-      {
-        val = -1;
-        sarmytypes>> val;
-	if (d_vectored[0][i] == -1)
-	  d_vectored[0][i] = val;
-        for (unsigned int j = 0; j < MAX_ARMIES_VECTORED_TO_ONE_CITY; j++)
-          {
-	    if (d_vectored[0][j] == -1)
-	      d_vectored[0][j] = val;
-          }
-      }
-
-    helper->getData(armytypes, "vectored_armies_two_turns_away");
-    sarmytypes.str(armytypes);
-
-    for (unsigned int i = 0; i < MAX_ARMIES_VECTORED_TO_ONE_CITY; i++)
-      {
-        val = -1;
-        sarmytypes>> val;
-        for (unsigned int j = 0; j < MAX_ARMIES_VECTORED_TO_ONE_CITY; j++)
-          {
-	    if (d_vectored[1][j] == -1)
-	      d_vectored[1][j] = val;
-          }
-      }
-
     //mark the positions on the map as being occupied by a city
     for (int i = 0; i < 2; i++)
         for (int j = 0; j < 2; j++)
@@ -146,11 +106,6 @@ City::City(const City& c)
 {
     for (int i = 0; i < 4; i++)
         d_basicprod[i] = c.d_basicprod[i];
-
-    for (int i = 0; i < 2; i++)
-      for (unsigned int j = 0; j < MAX_ARMIES_VECTORED_TO_ONE_CITY; j++)
-        d_vectored[i][j] = c.d_vectored[i][j];
-
 }
 
 City::~City()
@@ -182,22 +137,6 @@ bool City::save(XML_Helper* helper) const
     retval &= helper->saveData("capital", d_capital);
     retval &= helper->saveData("vectoring", svect.str());
 
-    std::stringstream oneturnaway;
-    for (unsigned int i = 0; i < MAX_ARMIES_VECTORED_TO_ONE_CITY; i++)
-      {
-	if (d_vectored[0][i] == -1)
-	  break;
-        oneturnaway << d_vectored[0][i] << " ";
-      }
-    retval &= helper->saveData("vectored_armies_one_turn_away", oneturnaway.str());
-    std::stringstream twoturnsaway;
-    for (unsigned int i = 0; i < MAX_ARMIES_VECTORED_TO_ONE_CITY; i++)
-      {
-	if (d_vectored[1][i] == -1)
-	  break;
-        twoturnsaway << d_vectored[1][i] << " ";
-      }
-    retval &= helper->saveData("vectored_armies_two_turns_away", twoturnsaway.str());
     retval &= helper->closeTag();
     return retval;
 }
@@ -363,10 +302,9 @@ void City::conquer(Player* newowner)
     // remove vectoring info (the new player can propably not use it anyway)
     setVectoring(Vector<int>(-1,-1));
 
-    // remove any armies that were about to show up
-    for (int i = 0; i < 2; i++)
-      for (unsigned int j = 0; j < MAX_ARMIES_VECTORED_TO_ONE_CITY; j++)
-        d_vectored[i][j] = -1;
+    VectoredUnitlist *vul = VectoredUnitlist::getInstance();
+    vul->removeVectoredUnitsComingFrom(d_pos);
+    vul->removeVectoredUnitsGoingTo(d_pos);
 }
 
 void City::setRandomArmytypes()
@@ -464,9 +402,6 @@ void City::addArmy(Army *a) const
 
 void City::nextTurn()
 {
-  const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 set = al->getStandardId();
-
     if (d_burnt)
         return;
 
@@ -476,30 +411,15 @@ void City::nextTurn()
         // vector the army to the new spot
         if (d_vectoring)
           {
-            Citylist *cl = Citylist::getInstance();
-            City *dest = cl->getObjectAt(d_vector);
-	    dest->addVectorArmytype (getArmytype (d_production));
+	    VectoredUnitlist *vul = VectoredUnitlist::getInstance();
+	    vul->push_back(VectoredUnit (d_pos, d_vector, 
+					 getArmytype (d_production), 
+				    	 MAX_TURNS_FOR_VECTORING));
             setProduction(d_production);
           }
 	else //or make it here
           produceArmy();
     }
-    // farm the incoming vectored units
-    // bring in the new units
-    for (unsigned int i = 0; i < MAX_ARMIES_VECTORED_TO_ONE_CITY; i++)
-      {
-	if (d_vectored[0][i] > -1)
-	  {
-	    addArmy(new Army(*(al->getArmy(set, d_vectored[0][i]))));
-	    d_vectored[0][i] = -1;
-	  }
-      }
-    //advance the vectored units that are 2 turns away to be 1 turn away
-    for (unsigned int i = 0; i < MAX_ARMIES_VECTORED_TO_ONE_CITY; i++)
-      {
-        d_vectored[0][i] = d_vectored[1][i];
-        d_vectored[1][i] = -1;
-      }
 }
 
 bool City::hasProduction(int type, Uint32 set) const
@@ -606,29 +526,12 @@ void City::produceArmy()
   setProduction(d_production);
 }
 
-bool City::addVectorArmytype(int armytype)
+bool City::canAcceptVectoredUnit()
 {
-  bool found = false;
-  if (armytype > -1)
-    {
-      for (unsigned int i = 0; i < MAX_ARMIES_VECTORED_TO_ONE_CITY; i++)
-        {
-          if (d_vectored[1][i] == -1)
-            {
-	      d_vectored[1][i] = armytype;
-	      found = true;
-              break;
-	    }
-        }
-    }
-  else
-    {
-      for (int i = 0; i < 2; i++)
-        for (unsigned int j = 0; j < MAX_ARMIES_VECTORED_TO_ONE_CITY; j++)
-          d_vectored[i][j] = -1;
-      return true;
-    }
-  return found;
+  VectoredUnitlist *vul = VectoredUnitlist::getInstance();
+  if (vul->getNumberOfVectoredUnitsGoingTo(d_pos) >= 
+      MAX_ARMIES_VECTORED_TO_ONE_CITY)
+    return false;
+  return true;
 }
-
 // End of file

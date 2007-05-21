@@ -20,6 +20,7 @@
 #include "stacklist.h"
 #include "armysetlist.h"
 #include "hero.h"
+#include "vectoredunitlist.h"
 
 #include "path.h"
 
@@ -108,8 +109,12 @@ void NextTurn::startTurn()
     //if turnmode is set, create/heal armies at player's turn
     if (d_turnmode)
     {
+	//vector armies
+        VectoredUnitlist::getInstance()->nextTurn(p);
+
         //build armies
         Citylist::getInstance()->nextTurn(p);
+
 
         //heal stacks
         p->getStacklist()->nextTurn();

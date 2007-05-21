@@ -145,7 +145,6 @@ void OverviewMap::after_draw()
 
 void OverviewMap::draw()
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
     assert(surface);
     // During the whole drawing stuff, ALWAYS consider that 

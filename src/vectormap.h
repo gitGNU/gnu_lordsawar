@@ -38,6 +38,11 @@ class VectorMap : public OverviewMap
       SHOW_ORIGIN_CITY_VECTORING,
       SHOW_ALL_VECTORING,
     };
+  enum ClickAction
+    {
+      CLICK_SELECTS,
+      CLICK_VECTORS,
+    };
     VectorMap(City *city, enum ShowVectoring vector);
     VectorMap(City *city);
 
@@ -52,10 +57,14 @@ class VectorMap : public OverviewMap
     void setShowVectoring (enum ShowVectoring v) { show_vectoring = v;}
 
     City* getCity() {return city;}
+
+    void setClickAction (enum ClickAction a) { click_action = a;}
+    enum ClickAction getClickAction () { return click_action;}
     
  private:
     City *city;
     enum ShowVectoring show_vectoring;
+    enum ClickAction click_action;
     
     // hook from base class
     virtual void after_draw();

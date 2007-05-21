@@ -24,10 +24,13 @@ VectorMap::VectorMap(City *c, enum ShowVectoring v)
 {
   show_vectoring = v;
   city = c;
+  click_action = CLICK_SELECTS;
 }
 VectorMap::VectorMap(City *c)
 {
+    show_vectoring = SHOW_ORIGIN_CITY_VECTORING;
     city = c;
+    click_action = CLICK_SELECTS;
 }
 void VectorMap::draw_city (City *c, Uint32 &type, bool &prod)
 {
@@ -59,10 +62,28 @@ void VectorMap::draw_cities (std::list<City*> citylist, Uint32 type)
   std::list<City*>::iterator it;
   for (it = citylist.begin(); it != citylist.end(); it++)
     {
-      if ((*it)->getProductionIndex() == -1)
-        prod = false;
+      if (click_action == CLICK_VECTORS)
+	{
+	  if ((*it)->canAcceptVectoredUnit() == false)
+	    {
+	      prod = false; //this is a ruined city
+	      type = 3;
+	    }
+	  else
+	    {
+              if ((*it)->getProductionIndex() == -1)
+                prod = false;
+              else
+                prod = true;
+	    }
+	}
       else
-        prod = true;
+	{
+          if ((*it)->getProductionIndex() == -1)
+            prod = false;
+          else
+            prod = true;
+	}
       draw_city ((*it), type, prod);
     }
 }
@@ -100,61 +121,70 @@ void VectorMap::after_draw()
   std::list<City*> dests; //destination cities
   std::list<City*> srcs; //source cities
     
-    // draw special shield for every city that player owns.
-    for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
-      {
-        if ((*it).getPlayer() == city->getPlayer())
-          {
-            if ((*it).getProductionIndex() == -1)
-              prod = false;
-            else
-              prod = true;
-            if (show_vectoring == SHOW_ALL_VECTORING)
-              {
-                // first pass, identify every city that's a source or dest
-                if ((*it).getVectoring() != Vector<int>(-1, -1))
-                  {
-                    dests.push_back(cl->getObjectAt((*it).getVectoring()));
-                    srcs.push_back(cl->getObjectAt((*it).getPos()));
-                  }
-                //paint them all as away first, and then overwrite them
-                //later in the second pass.
-                type = 1;
-              }
-            else
-              {
-                //is this the originating city?
-                if ((*it).getId() == city->getId())
-                  {
-                    //then it's a "home" city.
-                    type = 0; 
-                  }
-                //is this the city i'm vectoring to?
-                else if (city->getVectoring() != Vector<int>(-1, -1) &&
-                         cl->getObjectAt(city->getVectoring())->getId() == 
-                           (*it).getId() && show_vectoring != SHOW_NO_VECTORING)
-                  {
-                    // then it's a "destination" city.
-                    type = 2;
-                  }
-                //is this a city that is vectoring to me?
-                else if ((*it).getVectoring() != Vector<int>(-1, -1) &&
-                         cl->getObjectAt((*it).getVectoring())->getId() ==
-                         city->getId() && show_vectoring != SHOW_NO_VECTORING)
-                  type = 3;
-                //otherwise it's just another city, "away" from me
-                else
-                  type = 1; //away
-              }
-            draw_city (&(*it), type, prod);
-          }
-        else
-          {
-            type = 3;
+  //only show cities that can accept more vectoring when
+  //the click action is vector
+  
+  // draw special shield for every city that player owns.
+  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+    {
+      if ((*it).getPlayer() == city->getPlayer())
+        {
+          if ((*it).getProductionIndex() == -1)
             prod = false;
-            draw_city (&(*it), type, prod); //an impossible combo
-          }
-      }
+          else
+            prod = true;
+          if (show_vectoring == SHOW_ALL_VECTORING)
+            {
+              // first pass, identify every city that's a source or dest
+              if ((*it).getVectoring() != Vector<int>(-1, -1))
+                {
+                  dests.push_back(cl->getObjectAt((*it).getVectoring()));
+                  srcs.push_back(cl->getObjectAt((*it).getPos()));
+                }
+              //paint them all as away first, and then overwrite them
+              //later in the second pass.
+              type = 1;
+            }
+          else
+            {
+              //is this the originating city?
+              if ((*it).getId() == city->getId())
+                {
+                  //then it's a "home" city.
+                  type = 0; 
+                }
+              //is this the city i'm vectoring to?
+              else if (city->getVectoring() != Vector<int>(-1, -1) &&
+                       cl->getObjectAt(city->getVectoring())->getId() == 
+                         (*it).getId() && show_vectoring != SHOW_NO_VECTORING)
+                {
+                  // then it's a "destination" city.
+                  type = 2;
+                }
+              //is this a city that is vectoring to me?
+              else if ((*it).getVectoring() != Vector<int>(-1, -1) &&
+                       cl->getObjectAt((*it).getVectoring())->getId() ==
+                       city->getId() && show_vectoring != SHOW_NO_VECTORING)
+                type = 3;
+              //otherwise it's just another city, "away" from me
+              else
+                type = 1; //away
+	      //show it as a ruined city if we can't vector to it.
+	      if (click_action == CLICK_VECTORS && (*it).canAcceptVectoredUnit() == false)
+		{
+		  prod = false;
+		  type = 3;
+		}
+            }
+          draw_city (&(*it), type, prod);
+        }
+      else
+        {
+          type = 3;
+          prod = false;
+          draw_city (&(*it), type, prod); //an impossible combo
+        }
+    }
 
     //second pass, identify all the destination and source cities
     if (show_vectoring == SHOW_ALL_VECTORING)
@@ -163,7 +193,7 @@ void VectorMap::after_draw()
         draw_cities (srcs, 3);
       }
  
-    if (show_vectoring == SHOW_ORIGIN_CITY_VECTORING)
+    if (show_vectoring == SHOW_ORIGIN_CITY_VECTORING && click_action == CLICK_SELECTS)
       {
         // draw lines from origination to city
         for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
@@ -208,7 +238,7 @@ void VectorMap::after_draw()
             draw_line(surface, start.x, start.y, end.x, end.y, raw);
           }
       }
-    else if (show_vectoring == SHOW_ALL_VECTORING)
+    else if (show_vectoring == SHOW_ALL_VECTORING && click_action == CLICK_SELECTS)
       draw_lines (srcs);
 
     map_changed.emit(surface);
@@ -228,10 +258,9 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
       if (nearestCity == NULL)
         return;
 
-      switch (show_vectoring)
+      switch (click_action)
         {
-          case SHOW_ALL_VECTORING:
-          case SHOW_ORIGIN_CITY_VECTORING:
+          case CLICK_VECTORS:
 
             /* clicking on own city, makes vectoring stop */
             if (nearestCity == city)
@@ -241,16 +270,18 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
               {
 	        destination_chosen.emit(dest);
 	        city->setVectoring(nearestCity->getPos());
+		setClickAction(CLICK_SELECTS);
 	        draw();
               }
             else if (dest == Vector<int>(-1, -1)) //stop vectoring
               {
 	        destination_chosen.emit(dest);
 	        city->setVectoring(dest);
+		setClickAction(CLICK_SELECTS);
 	        draw();
               }
             break;
-          case SHOW_NO_VECTORING:
+          case CLICK_SELECTS:
             city = nearestCity;
             draw();
             break;

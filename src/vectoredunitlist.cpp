@@ -1,0 +1,174 @@
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Library General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+#include <sigc++/functors/mem_fun.h>
+
+#include "vectoredunitlist.h"
+#include "citylist.h"
+#include "city.h"
+
+//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+#define debug(x)
+
+VectoredUnitlist* VectoredUnitlist::s_instance = 0;
+
+VectoredUnitlist* VectoredUnitlist::getInstance()
+{
+    if (s_instance == 0)
+        s_instance = new VectoredUnitlist();
+
+    return s_instance;
+}
+
+VectoredUnitlist* VectoredUnitlist::getInstance(XML_Helper* helper)
+{
+    if (s_instance)
+        deleteInstance();
+
+    s_instance = new VectoredUnitlist(helper);
+    return s_instance;
+}
+
+void VectoredUnitlist::deleteInstance()
+{
+    if (s_instance)
+        delete s_instance;
+
+    s_instance = 0;
+}
+
+VectoredUnitlist::VectoredUnitlist()
+{
+}
+
+VectoredUnitlist::VectoredUnitlist(XML_Helper* helper)
+{
+    helper->registerTag("vectoredunit", sigc::mem_fun(this, &VectoredUnitlist::load));
+}
+
+bool VectoredUnitlist::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("vectoredunitlist");
+
+    for (const_iterator it = begin(); it != end(); it++)
+        retval &= (*it).save(helper);
+    
+    retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool VectoredUnitlist::load(std::string tag, XML_Helper* helper)
+{
+    // Shouldn't happen, but one never knows...
+    if (tag != "vectoredunit")
+        return false;
+
+    VectoredUnit r(helper);
+    push_front(r);
+
+    return true;
+}
+
+void VectoredUnitlist::nextTurn(Player* p)
+{
+  Citylist *cl = Citylist::getInstance();
+  City *c;
+  debug("next_turn(" <<p->getName() <<")");
+
+  iterator it = begin();
+  iterator nextit = it;
+  nextit++;
+  for (; nextit != end(); it++, nextit++)
+    {
+      c = cl->getObjectAt((*it).getPos());
+      if (c->getPlayer() == p)
+        {
+          if ((*it).nextTurn() == true)
+	    {
+	      erase(it);
+	      it = nextit;
+	      nextit++;
+	    }
+        }
+    }
+
+}
+
+void VectoredUnitlist::removeVectoredUnitsGoingTo(Vector<int> pos)
+{
+  iterator it = begin();
+  iterator nextit = it;
+  nextit++;
+  for (; nextit != end(); it++, nextit++)
+    {
+      if ((*it).getDestination() == pos)
+        {
+	  erase(it);
+	  it = nextit;
+	  nextit++;
+        }
+    }
+}
+
+void VectoredUnitlist::removeVectoredUnitsComingFrom(Vector<int> pos)
+{
+  iterator it = begin();
+  iterator nextit = it;
+  nextit++;
+  for (; nextit != end(); it++, nextit++)
+    {
+      if ((*it).getPos() == pos)
+        {
+	  erase(it);
+	  it = nextit;
+	  nextit++;
+        }
+    }
+}
+void VectoredUnitlist::getVectoredUnitsGoingTo(Vector<int> pos, std::list<VectoredUnit>& vectored)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it).getDestination() == pos)
+        {
+          vectored.push_back(*it);
+        }
+    }
+}
+void VectoredUnitlist::getVectoredUnitsComingFrom(Vector<int> pos, std::list<VectoredUnit>& vectored)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it).getPos() == pos)
+        {
+          vectored.push_back(*it);
+        }
+    }
+}
+
+Uint32 VectoredUnitlist::getNumberOfVectoredUnitsGoingTo(Vector<int> pos)
+{
+  Uint32 count = 0;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it).getDestination() == pos)
+        {
+          count++;
+        }
+    }
+  return count;
+}

@@ -40,6 +40,7 @@ const unsigned int STONE_TYPES=9;
 const unsigned int ROAD_TYPES=12; 
 const unsigned int SIGNPOSTS_RATIO=6; // #:1 dynamic vs static signposts
 const unsigned int MAX_ARMIES_VECTORED_TO_ONE_CITY = 4;
+const unsigned int MAX_TURNS_FOR_VECTORING = 2;
 
 // from www.boost.org - derivation from this class makes the derived class
 // noncopyable
