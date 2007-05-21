@@ -172,7 +172,7 @@ void HeroDialog::add_item(Item *item, bool in_backpack)
     // the attributes column
     std::vector<Glib::ustring> s;
     if (item->getBonus(Army::STRENGTH))
-	s.push_back(String::ucompose(_("Attack: +%1"), item->getValue(Army::STRENGTH)));
+	s.push_back(String::ucompose(_("Strength: +%1"), item->getValue(Army::STRENGTH)));
     if (item->getBonus(Army::HP))
 	s.push_back(String::ucompose(_("Hitpoints: +%1"), item->getValue(Army::HP)));
     if (item->getBonus(Army::MOVES))
@@ -223,7 +223,7 @@ void HeroDialog::fill_in_info_labels()
     // fill in second column
     s = "";
     // note to translators: %1 is melee strength, %2 is ranged strength
-    s += String::ucompose(_("Attack: %1"),
+    s += String::ucompose(_("Strength: %1"),
 			  hero->getStat(Army::STRENGTH));
     s += "\n";
     // note to translators: %1 is remaining moves, %2 is total moves

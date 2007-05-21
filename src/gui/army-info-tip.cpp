@@ -56,7 +56,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     s += army->getName();
     s += "\n";
     // note to translators: %1 is melee strength, %2 is ranged strength
-    s += String::ucompose(_("Attack: %1"),
+    s += String::ucompose(_("Strength: %1"),
 			  army->getStat(Army::STRENGTH));
     s += "\n";
     // note to translators: %1 is remaining moves, %2 is total moves

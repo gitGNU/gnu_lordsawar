@@ -144,7 +144,7 @@ void BuyProductionDialog::fill_in_production_info()
 	s1 += String::ucompose(_("Duration: %1"), a->getProduction());
 	s1 += "\n";
 	// note to translators: %1 is melee strength, %2 is ranged strength
-	s1 += String::ucompose(_("Attack: %1"),
+	s1 += String::ucompose(_("Strength: %1"),
 			      a->getStat(Army::STRENGTH, false));
 	
 	// fill in second column
