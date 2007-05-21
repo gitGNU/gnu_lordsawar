@@ -735,7 +735,7 @@ bool GameWindow::on_army_button_event(GdkEventButton *e,
 	}
 	else
 	{
-	    show_army_info_tip(toggle, army);
+	    army_info_tip.reset(new ArmyInfoTip(toggle, army));
 	}
 	
 	return true;
@@ -747,62 +747,6 @@ bool GameWindow::on_army_button_event(GdkEventButton *e,
     }
     
     return false;
-}
-
-void GameWindow::show_army_info_tip(Gtk::ToggleButton *toggle, Army *army)
-{
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path()
-				    + "/army-info-window.glade");
-
-    Gtk::Window *w = 0;
-    xml->get_widget("window", w);
-    army_info_tip.reset(w);
-
-    Gtk::Image *army_image;
-    xml->get_widget("army_image", army_image);
-    army_image->property_pixbuf() = to_pixbuf(army->getPixmap());
-
-    // fill in terrain image
-    Gtk::Image *terrain_image;
-    xml->get_widget("terrain_image", terrain_image);
-    //terrain_image->property_pixbuf() = to_pixbuf(army->getPixmap());
-    terrain_image->hide();
-
-    // fill in info
-    Gtk::Label *info_label;
-    xml->get_widget("info_label", info_label);
-    Glib::ustring s;
-    s += army->getName();
-    s += "\n";
-    // note to translators: %1 is melee strength, %2 is ranged strength
-    s += String::ucompose(_("Attack: %1"),
-			  army->getStat(Army::STRENGTH));
-    s += "\n";
-    // note to translators: %1 is remaining moves, %2 is total moves
-    s += String::ucompose(_("Moves: %1/%2"),
-			  army->getMoves(), army->getStat(Army::MOVES));
-    s += "\n";
-    s += String::ucompose(_("Upkeep: %1"), army->getUpkeep());
-    info_label->set_text(s);
-    
-    // move into correct position
-    army_info_tip->get_child()->show();
-    Vector<int> p(0, 0);
-    toggle->get_window()->get_origin(p.x, p.y);
-    if (toggle->has_no_window())
-    {
-	Gtk::Allocation a = toggle->get_allocation();
-	p.x += a.get_x();
-	p.y += a.get_y();
-    }
-    Vector<int> size(0, 0);
-    army_info_tip->get_size(size.x, size.y);
-    army_info_tip->set_gravity(Gdk::GRAVITY_SOUTH);
-    p.y -= size.y + 2;
-	
-    army_info_tip->move(p.x, p.y);
-    army_info_tip->show();
 }
 
 void GameWindow::on_army_button_has_size()

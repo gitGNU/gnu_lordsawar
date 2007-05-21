@@ -14,6 +14,8 @@
 
 #include <config.h>
 
+#include <assert.h>
+
 #include <libglademm/xml.h>
 #include <gtkmm/image.h>
 #include <gtkmm/eventbox.h>
@@ -89,6 +91,15 @@ CityWindow::CityWindow(City *c)
 	toggle->signal_toggled().connect(
 	    sigc::bind(sigc::mem_fun(this, &CityWindow::on_production_toggled),
 		       toggle));
+	toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
+	toggle->signal_button_press_event().connect(
+	    sigc::bind(sigc::mem_fun(*this, &CityWindow::on_production_button_event),
+		       toggle), false);
+	
+	toggle->signal_button_release_event().connect(
+	    sigc::bind(sigc::mem_fun(*this, &CityWindow::on_production_button_event),
+		       toggle), false);
+	
     }
 
     fill_in_city_info();
@@ -245,8 +256,8 @@ void CityWindow::fill_in_production_info()
     {
         pic = empty_pic;
 	s1 = _("No production");
-	s1 += "\n\n\n";
-	s2 = "\n\n\n";
+	s1 += "\n\n";
+	s2 = "\n\n";
         s3 = "";
     }
     else
@@ -321,6 +332,33 @@ void CityWindow::set_buy_button_state()
     }
 
     buy_button->set_sensitive(res);
+}
+
+bool CityWindow::on_production_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle)
+{
+    MouseButtonEvent event = to_input_event(e);
+    if (event.button == MouseButtonEvent::RIGHT_BUTTON
+	&& event.state == MouseButtonEvent::PRESSED) {
+	int slot = -1;
+	for (unsigned int i = 0; i < production_toggles.size(); ++i) {
+	    if (toggle == production_toggles[i])
+		slot = i;
+	}
+	assert(slot != -1);
+
+	const Army *army = city->getArmy(slot);
+
+	if (army)
+	    army_info_tip.reset(new ArmyInfoTip(toggle, army));
+	return true;
+    }
+    else if (event.button == MouseButtonEvent::RIGHT_BUTTON
+	     && event.state == MouseButtonEvent::RELEASED) {
+	army_info_tip.reset();
+	return true;
+    }
+    
+    return false;
 }
 
 void CityWindow::on_on_hold_clicked() //stop button

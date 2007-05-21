@@ -24,7 +24,7 @@
 #include <gtkmm/image.h>
 #include <gtkmm/togglebutton.h>
 #include "../vectormap.h"
-
+#include "army-info-tip.h"
 
 class City;
 
@@ -41,6 +41,7 @@ class CityWindow: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     std::auto_ptr<VectorMap> prodmap;
+    std::auto_ptr<ArmyInfoTip> army_info_tip;
     Gtk::Image *map_image;
     Gtk::Label *city_label;
     Gtk::Label *status_label;
@@ -63,6 +64,7 @@ class CityWindow: public sigc::trackable
     void set_buy_button_state();
 
     void on_production_toggled(Gtk::ToggleButton *toggle);
+    bool on_production_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
     void on_on_hold_clicked();
     void on_buy_clicked();
     void on_destination_clicked();

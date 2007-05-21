@@ -29,6 +29,8 @@
 #include <gtkmm/box.h>
 #include <gtkmm/tooltips.h>
 
+#include "army-info-tip.h"
+
 #include "../game-parameters.h"
 #include "../sidebar-stats.h"
 #include "../stack.h"
@@ -84,7 +86,6 @@ class GameWindow: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Window> window;
     std::auto_ptr<Gtk::Window> map_tip;	// tooltip appears over the map
-    std::auto_ptr<Gtk::Window> army_info_tip; // tooltip for stack info
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
     Gtk::Box *stack_info_box;
@@ -109,7 +110,7 @@ class GameWindow: public sigc::trackable
     Gtk::Button *end_turn_button;
 
     Stack *currently_selected_stack;
-    sigc::connection army_info_tip_connection;
+    std::auto_ptr<ArmyInfoTip> army_info_tip;
     typedef std::vector<Gtk::ToggleButton *> army_buttons_type;
     army_buttons_type army_buttons;
 
@@ -152,7 +153,6 @@ class GameWindow: public sigc::trackable
     void on_army_toggled(Gtk::ToggleButton *toggle, Army *army);
     bool on_army_button_event(GdkEventButton *e,
 			      Gtk::ToggleButton *toggle, Army *army);
-    void show_army_info_tip(Gtk::ToggleButton *toggle, Army *army);
     void on_army_button_has_size();
     void clear_army_buttons();
     void ensure_one_army_button_active();
