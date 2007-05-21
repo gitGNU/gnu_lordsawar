@@ -24,9 +24,7 @@ class City;
 
 /** Display of the whole game map.
   * 
-  * This is a map where you can select a city's vector, i.e. the position where
-  * freshly produced units automatically go to (at least the path is set, the
-  * units have to be moved manually).
+  * This is a map where you can highlight a city with a hero icon.
   */
 
 class HeroMap : public OverviewMap

@@ -18,7 +18,7 @@
 #include "city.h"
 #include "citylist.h"
 #include "playerlist.h"
-#include "File.h"
+#include "GraphicsCache.h"
 
 HeroMap::HeroMap(City *c)
 {
@@ -27,6 +27,7 @@ HeroMap::HeroMap(City *c)
 
 void HeroMap::after_draw()
 {
+    GraphicsCache *gc = GraphicsCache::getInstance();
     OverviewMap::after_draw();
     // draw the hero picture over top of the host city
     Vector<int> start = city->getPos();
@@ -35,7 +36,7 @@ void HeroMap::after_draw()
 
     start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
 
-    SDL_Surface *tmp = File::getMiscPicture("hero.png");
+    SDL_Surface *tmp = gc->getSmallHeroPic();
     
     SDL_Rect r;
     r.x = start.x - (tmp->w/2);

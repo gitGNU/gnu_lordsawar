@@ -139,6 +139,7 @@ GraphicsCache::GraphicsCache()
     d_levelmask = File::getMiscPicture("level_mask.png");
     d_medalsmask = File::getMiscPicture("medals_mask.gif");
     d_smallruinedcity = File::getMiscPicture("smallruinedcity.png");
+    d_smallhero = File::getMiscPicture("hero.png");
 }
 
 GraphicsCache::~GraphicsCache()
@@ -189,11 +190,17 @@ GraphicsCache::~GraphicsCache()
     SDL_FreeSurface(d_levelmask);
     SDL_FreeSurface(d_medalsmask);
     SDL_FreeSurface(d_smallruinedcity);
+    SDL_FreeSurface(d_smallhero);
 }
 
 SDL_Surface* GraphicsCache::getSmallRuinedCityPic()
 {
   return SDL_DisplayFormatAlpha(d_smallruinedcity);
+}
+
+SDL_Surface* GraphicsCache::getSmallHeroPic()
+{
+  return SDL_DisplayFormatAlpha(d_smallhero);
 }
 
 SDL_Surface* GraphicsCache::getArmyPic(Uint32 armyset, Uint32 army, const Player* p,
