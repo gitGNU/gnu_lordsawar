@@ -36,8 +36,8 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
         QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper);
      
         
-        //! It is always possible to hand out this type of quest
-        static bool isFeasible(Uint32 heroId) { return true; }
+        //! We need an enemy player to produce this quest
+        static bool isFeasible(Uint32 heroId);
 
         //! Save the quest data
         bool save(XML_Helper* helper) const;
@@ -77,6 +77,10 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
         Uint32 d_to_kill;
         /** how many armies we already have killed */
         Uint32 d_killed;
+
+	/** the target player */
+	Player *d_victim_player;
+
 
 };
 

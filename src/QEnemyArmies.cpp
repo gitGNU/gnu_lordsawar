@@ -22,6 +22,22 @@
 
 using namespace std;
 
+//go get an existing alive player,
+//with the stipluation that player P is not taken into consideration
+Player* getVictimPlayer(Player *p)
+{
+  std::vector<Player*> players;
+  const Playerlist* pl = Playerlist::getInstance();
+  for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
+    {
+      if ((*it) != p && (*it)->isDead() == false && (*it) != pl->getNeutral())
+        players.push_back((*it));
+    }
+  if (players.size() == 0)
+    return NULL;
+  else
+    return players[rand() % players.size()];
+}
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 //=======================================================================
@@ -29,19 +45,19 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero)
     : Quest(q_mgr, hero, Quest::KILLARMIES), d_killed(0)
 {
     // have us be informed when hostilities break out
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmies::dyingArmy));
+    d_victim_player = getVictimPlayer(getHero()->getPlayer());
+    d_victim_player->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmies::dyingArmy));
     
     /** we have to kill 14-20 units: 14 + rand(0..6) */
     d_to_kill = 14 + (rand() % 7);
-    
+
     initDescription();
 }
 //=======================================================================
 QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper) 
     : Quest(q_mgr, helper)
 {
+    Uint32 ui;
     // we want to be informed about fight causalties
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
@@ -49,6 +65,9 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper)
     
     helper->getData(d_to_kill, "to_kill");
     helper->getData(d_killed,  "killed");
+    helper->getData(ui, "victim_player");
+
+    d_victim_player = Playerlist::getInstance()->getPlayer(ui);
 
     initDescription();
 }
@@ -61,6 +80,7 @@ bool QuestEnemyArmies::save(XML_Helper *helper) const
     retval &= Quest::save(helper);
     retval &= helper->saveData("to_kill", d_to_kill);
     retval &= helper->saveData("killed",  d_killed);
+    retval &= helper->saveData("victim_player", d_victim_player->getId());
     retval &= helper->closeTag();
 
     return retval;
@@ -76,8 +96,7 @@ std::string QuestEnemyArmies::getProgress() const
 void QuestEnemyArmies::getSuccessMsg(std::queue<std::string>& msgs) const
 {
     char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, ngettext("You have managed to slaughter %i army.",
-            "You have managed to slaughter %i armies.", d_killed), d_killed);
+    snprintf(buffer, 100, "You have managed to slaughter %i armies.", d_killed);
     
     msgs.push(std::string(buffer));
     msgs.push(_("Well done!"));
@@ -114,8 +133,15 @@ void QuestEnemyArmies::dyingArmy(Army *army, std::vector<Uint32> culprits)
 void QuestEnemyArmies::initDescription()
 {
     char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, ngettext("You must destroy %i unit of enemy armies",
-            "You must destroy %i units of enemy armies", d_to_kill), d_to_kill);
+    snprintf(buffer, 100, "You shall slaughter %i armies of the treacherous %s",
+	     d_to_kill, d_victim_player->getName().c_str());
 
     d_description = std::string(buffer);
+}
+
+bool QuestEnemyArmies::isFeasible(Uint32 heroId)
+{
+  if (getVictimPlayer(getHeroById(heroId)->getPlayer()))
+    return true;
+  return false;
 }
