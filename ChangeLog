@@ -1,3 +1,6 @@
+2007-05-22  Ben Asselstine
+	* modified kill-enemy-armies quest to include a target player
+
 2007-05-21  Ben Asselstine
         * reimplemented vectoring
 	* any army unit can search a temple
