@@ -2,6 +2,8 @@
         * reimplemented vectoring
 	* any army unit can search a temple
 	* started implementing a quest map object
+	* added new occupy-city quest
+	* added new kill one enemy unit of a certain army type quest
 
 2007-05-20  Ben Asselstine
         * made a first crack at implementing vectoring.
