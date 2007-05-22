@@ -57,10 +57,12 @@ void QuestMap::after_draw()
   switch (quest->getType ())
     {
       case Quest::KILLARMIES:
+      case Quest::KILLARMYTYPE:
         //draw a plus sign for every enemy army
         break;
       case Quest::KILLHERO:
       case Quest::CITYSACK:
+      case Quest::CITYOCCUPY:
       case Quest::CITYRAZE:
       case Quest::RUINSEARCH:
         //draw an orange line to the target and put a box around it.

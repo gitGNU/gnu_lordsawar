@@ -234,7 +234,7 @@ bool QuestsManager::load(string tag, XML_Helper* helper)
             case Quest::CITYOCCUPY:
                 quest = new QuestCityOccupy(*this, helper);
                 break;
-            case Quest::ENEMYARMYTYPE:
+            case Quest::KILLARMYTYPE:
                 quest = new QuestEnemyArmytype(*this, helper);
                 break;
         }
