@@ -80,8 +80,13 @@ QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, XML_Helper* helper)
 {
     // we want to be informed about fight causalties
     const Playerlist* pl = Playerlist::getInstance();
+    Player *p = getHero()->getPlayer();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
+      {
+	if ((*it) == p)
+	  continue;
         (*it)->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmytype::dyingArmy));
+      }
     
     helper->getData(d_type_to_kill, "type_to_kill");
 

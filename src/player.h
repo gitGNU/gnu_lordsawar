@@ -443,8 +443,10 @@ class Player: public sigc::trackable
         sigc::signal<void, Temple*, Stack*>    svisitingTemple;
         //! Signal raised whenever the player moves a stack
         sigc::signal<void, Stack*>             smovingStack;
+        //! Signal raised whenever the player pillages a city 
+        sigc::signal<void, City*, Stack*, int>      spillagingCity;
         //! Signal raised whenever the player sacks a city 
-        sigc::signal<void, City*, Stack*>      ssackingCity;
+        sigc::signal<void, City*, Stack*, int>      ssackingCity;
         //! Signal raised whenever the player razes a city 
         sigc::signal<void, City*, Stack*>      srazingCity;
 

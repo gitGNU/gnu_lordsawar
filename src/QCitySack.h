@@ -63,7 +63,7 @@ class QuestCitySack : public Quest, public sigc::trackable
 
     private:
          /** slot that would receive the scitySacked (signal) */
-         void citySacked (City* city, Stack* s);
+         void citySacked (City* city, Stack* s, int gold);
 
          /** \brief Make quest description from the city we'll sack */
          void initDescription();

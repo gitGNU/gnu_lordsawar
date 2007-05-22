@@ -58,16 +58,14 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper)
     : Quest(q_mgr, helper)
 {
     Uint32 ui;
-    // we want to be informed about fight causalties
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmies::dyingArmy));
     
     helper->getData(d_to_kill, "to_kill");
     helper->getData(d_killed,  "killed");
     helper->getData(ui, "victim_player");
 
     d_victim_player = Playerlist::getInstance()->getPlayer(ui);
+    // we want to be informed about fight causalties
+    d_victim_player->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmies::dyingArmy));
 
     initDescription();
 }
