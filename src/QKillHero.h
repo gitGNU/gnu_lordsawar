@@ -39,7 +39,7 @@ class QuestKillHero : public Quest, public sigc::trackable
         /**
          * \brief Return whether quest is possible at all
          */
-        static bool isFeasible();
+        static bool isFeasible(Uint32 heroId);
 
         //! Saves the data
         bool save(XML_Helper* helper) const;

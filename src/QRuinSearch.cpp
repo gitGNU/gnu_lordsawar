@@ -63,7 +63,7 @@ QuestRuinSearch::QuestRuinSearch(QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
-bool QuestRuinSearch::isFeasible()
+bool QuestRuinSearch::isFeasible(Uint32 heroId)
 {
     return (chooseToSearch() != 0);
 }

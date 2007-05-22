@@ -62,7 +62,7 @@ QuestCitySack::QuestCitySack (QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
-bool QuestCitySack::isFeasible()
+bool QuestCitySack::isFeasible(Uint32 heroId)
 {
     return true;
 }

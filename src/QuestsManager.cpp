@@ -23,6 +23,7 @@
 #include "QCitySack.h"
 #include "QCityRaze.h"
 #include "QCityOccupy.h"
+#include "QEnemyArmytype.h"
 #include "stacklist.h"
 //#include "QuestCompletedDialog.h"
 //#include "QuestExpiredDialog.h"
@@ -91,10 +92,10 @@ Quest* QuestsManager::createNewQuest(Uint32 heroId)
     int which = 0;
     while (!which)
     {
-        which = 1 + rand() % 6;
+        which = 1 + rand() % 7;
         // if this quest is not feasible - try again with another
         // quest:
-        if ((*(d_questsFeasible[which-1]))() == 0)
+        if ((*(d_questsFeasible[which-1]))(heroId) == 0)
             which = 0;
     }
     // ok - this quest can be completed
@@ -119,6 +120,9 @@ Quest* QuestsManager::createNewQuest(Uint32 heroId)
             break;
         case 6:
             quest = new QuestCityOccupy(*this, heroId);
+            break;
+        case 7:
+            quest = new QuestEnemyArmytype(*this, heroId);
             break;
     }
     
@@ -230,6 +234,9 @@ bool QuestsManager::load(string tag, XML_Helper* helper)
             case Quest::CITYOCCUPY:
                 quest = new QuestCityOccupy(*this, helper);
                 break;
+            case Quest::ENEMYARMYTYPE:
+                quest = new QuestEnemyArmytype(*this, helper);
+                break;
         }
         
         debug("quest created: q = " << quest);
@@ -261,6 +268,7 @@ void QuestsManager::_sharedInit()
     d_questsFeasible.push_back(&(QuestCitySack::isFeasible));
     d_questsFeasible.push_back(&(QuestCityRaze::isFeasible));
     d_questsFeasible.push_back(&(QuestCityOccupy::isFeasible));
+    d_questsFeasible.push_back(&(QuestEnemyArmytype::isFeasible));
 }
 //========================================================================
 void QuestsManager::_dyingArmy(Army* army, std::vector<Uint32> culprits)

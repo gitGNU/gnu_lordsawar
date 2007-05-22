@@ -62,7 +62,7 @@ QuestCityRaze::QuestCityRaze (QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
-bool QuestCityRaze::isFeasible()
+bool QuestCityRaze::isFeasible(Uint32 heroId)
 {
     return true;
 }

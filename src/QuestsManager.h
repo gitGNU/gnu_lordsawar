@@ -109,7 +109,7 @@ class QuestsManager : public sigc::trackable
 		~QuestsManager();
 
     private:
-        typedef bool (*QFeasibilityType)(void);
+        typedef bool (*QFeasibilityType)(Uint32);
 
         /**
          * \brief Load one quest from the savegame. 

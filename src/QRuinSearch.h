@@ -29,7 +29,7 @@ class QuestRuinSearch : public Quest, public sigc::trackable
          /**
           * \brief Checks if such a quest is possible at all.
           */
-         static bool isFeasible();
+         static bool isFeasible(Uint32 heroId);
 
          //! Saves the quest data.
          bool save(XML_Helper* helper) const;

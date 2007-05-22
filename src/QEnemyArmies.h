@@ -37,7 +37,7 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
      
         
         //! It is always possible to hand out this type of quest
-        static bool isFeasible() { return true; }
+        static bool isFeasible(Uint32 heroId) { return true; }
 
         //! Save the quest data
         bool save(XML_Helper* helper) const;

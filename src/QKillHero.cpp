@@ -62,7 +62,7 @@ QuestKillHero::QuestKillHero(QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
-bool QuestKillHero::isFeasible()
+bool QuestKillHero::isFeasible(Uint32 heroId)
 {
     // chooseToKill returns 0 if no enemy heroes exist
     return (chooseToKill() != 0);
