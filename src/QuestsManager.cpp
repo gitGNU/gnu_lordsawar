@@ -25,8 +25,6 @@
 #include "QCityOccupy.h"
 #include "QEnemyArmytype.h"
 #include "stacklist.h"
-//#include "QuestCompletedDialog.h"
-//#include "QuestExpiredDialog.h"
 #include "army.h"
 #include "xmlhelper.h"
 

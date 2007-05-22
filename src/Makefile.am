@@ -43,22 +43,9 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         timing.cpp timing.h \
         callback-enums.h \
         sidebar-stats.h game-parameters.h vector.h rectangle.h \
-        tmp.cpp tmp.h ucompose.hpp defs.h ObjectList.h \
+        ucompose.hpp defs.h ObjectList.h \
         map-tip-position.h input-events.h sdl-draw.h  \
         vectoredunit.cpp vectoredunit.h vectoredunitlist.cpp vectoredunitlist.h
-
-
-# old: ArmyLevelDialog.cpp ItemDialog.cpp PG_FileDialog.cpp Popup.cpp
-# splash.cpp w_edit.cpp TempleInfo.cpp QuestCompletedDialog.cpp
-# ArmyMedalDialog.cpp VectorDialog.cpp ScenariosDialog.cpp
-# MainWindow.cpp QuestExpiredDialog.cpp LangDialog.cpp
-# CityOccupationDialog.cpp RuinSearchDialog.cpp FightDialog.cpp
-# MapCreationDialog.cpp MapConfDialog.cpp ServerDialog.cpp
-# MultiPlayerModeDialog.cpp ArmyDialog.cpp OptionsDialog.cpp
-# GamePreferencesDialog.cpp d_buy_production.cpp
-# stackreport.cpp citiesreport.cpp questsreport.cpp goldreport.cpp
-# hero_offer.cpp ArmyInfo.cpp stackinfo.cpp cityinfo.cpp
-# about.cpp scroller.cpp ruininfo.cpp SignpostInfo.cpp
 
 if FL_RESRC
 lordsawar_SOURCES += lordsawar.rc
