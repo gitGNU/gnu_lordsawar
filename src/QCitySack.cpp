@@ -34,7 +34,7 @@ using namespace std;
 QuestCitySack::QuestCitySack (QuestsManager& mgr, Uint32 hero) 
     : Quest(mgr, hero, Quest::CITYSACK)
 {
-    // we want to stay informed about ruin searches
+    // we want to stay informed about city sacks
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
         (*it)->ssackingCity.connect(

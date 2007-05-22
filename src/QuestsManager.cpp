@@ -24,6 +24,7 @@
 #include "QCityRaze.h"
 #include "QCityOccupy.h"
 #include "QEnemyArmytype.h"
+#include "QPillageGold.h"
 #include "stacklist.h"
 #include "army.h"
 #include "xmlhelper.h"
@@ -235,6 +236,9 @@ bool QuestsManager::load(string tag, XML_Helper* helper)
             case Quest::KILLARMYTYPE:
                 quest = new QuestEnemyArmytype(*this, helper);
                 break;
+            case Quest::PILLAGEGOLD:
+                quest = new QuestPillageGold(*this, helper);
+                break;
         }
         
         debug("quest created: q = " << quest);
@@ -267,6 +271,7 @@ void QuestsManager::_sharedInit()
     d_questsFeasible.push_back(&(QuestCityRaze::isFeasible));
     d_questsFeasible.push_back(&(QuestCityOccupy::isFeasible));
     d_questsFeasible.push_back(&(QuestEnemyArmytype::isFeasible));
+    d_questsFeasible.push_back(&(QuestPillageGold::isFeasible));
 }
 //========================================================================
 void QuestsManager::_dyingArmy(Army* army, std::vector<Uint32> culprits)
