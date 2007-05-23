@@ -55,6 +55,7 @@
 #include "armies-report-dialog.h"
 #include "cities-report-dialog.h"
 #include "quests-report-dialog.h"
+#include "quest-assigned-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -1220,6 +1221,10 @@ bool GameWindow::on_temple_visited(bool hasHero, Temple *temple, int blessCount)
 
 void GameWindow::on_quest_assigned(Hero *hero, Quest *quest)
 {
+    QuestAssignedDialog d(hero, quest);
+    d.set_parent_window(*window.get());
+    return d.run();
+    /*
     std::auto_ptr<Gtk::Dialog> dialog;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -1243,6 +1248,7 @@ void GameWindow::on_quest_assigned(Hero *hero, Quest *quest)
 
     dialog->show_all();
     dialog->run();
+    */
 }
 
 static bool
@@ -1286,7 +1292,7 @@ hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze, bool *occupy)
           break;
         }
     }
-  if ((*raze) || (*sack))
+  if ((*raze) || (*sack) || (*occupy))
     return true;
   else
     return false;

@@ -12,38 +12,44 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef QUESTMAP_H
-#define QUESTMAP_H
+#ifndef QUEST_ASSIGNED_DIALOG_H
+#define QUEST_ASSIGNED_DIALOG_H
 
-#include <sigc++/signal.h>
+#include <memory>
+#include <vector>
+#include <sigc++/trackable.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/image.h>
+#include <gtkmm/radiobutton.h>
+#include <gtkmm/entry.h>
 
-#include "overviewmap.h"
-#include "input-events.h"
-#include "player.h"
+#include "../questmap.h"
+#include "../Quest.h"
+#include "../hero.h"
 
-class Quest;
+struct SDL_Surface;
 
-/** Display of the whole game map.
-  * 
-  * This is a map where you can see a quest.
-  */
-
-class QuestMap : public OverviewMap
+// dialog for depicting a quest
+class QuestAssignedDialog: public sigc::trackable
 {
  public:
-    QuestMap(Quest *q);
+    QuestAssignedDialog(Hero *hero, Quest *quest);
 
-    // emitted when the map surface has changed
-    sigc::signal<void, SDL_Surface *> map_changed;
+    void set_parent_window(Gtk::Window &parent);
+
+    void run();
     
  private:
-    Quest *quest;
-    void draw_stacks(Player *p, std::list< Vector<int> > targets);
-    void draw_target(Vector<int> start, Vector<int> target);
-    void draw_cities(bool all_razed);
+    std::auto_ptr<Gtk::Dialog> dialog;
+    std::auto_ptr<QuestMap> questmap;
+
+    Gtk::Image *map_image;
+    Gtk::Label *label;
     
-    // hook from base class
-    virtual void after_draw();
+    Hero *hero;
+    Quest *quest;
+
+    void on_map_changed(SDL_Surface *map);
 };
 
 #endif

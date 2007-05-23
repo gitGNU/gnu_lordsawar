@@ -17,6 +17,7 @@ liblwgui_a_SOURCES = \
     game-window.cpp game-window.h \
     hero-dialog.cpp hero-dialog.h \
     hero-offer-dialog.cpp hero-offer-dialog.h \
+    quest-assigned-dialog.cpp quest-assigned-dialog.h \
     main.cpp main.h \
     quests-report-dialog.cpp quests-report-dialog.h \
     splash-window.cpp splash-window.h \
