@@ -25,8 +25,8 @@ static guint gtk_sdl_signals[LAST_SIGNAL] = { 0 };
 
 static GtkWidgetClass *parent_class = NULL;
 
-//#define DEBUG_OUT if
-#define DEBUG_OUT puts
+#define DEBUG_OUT if
+//#define DEBUG_OUT puts
 
 GType gtk_sdl_get_type (void)
 {
@@ -230,8 +230,10 @@ typedef struct
 static gboolean sdl_update_rect (ExposeData *data)
 {
   SDL_UpdateRect (data->surface, data->x, data->y, data->w, data->h);
+#if 0
   fprintf (stderr, "expose %d, %d  %dx%d\n", data->x, data->y,
 	   data->w, data->h);
+#endif
   free (data);
   return FALSE;
 }
