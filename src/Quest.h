@@ -16,6 +16,7 @@
 #define __QUEST_H
 
 #include <string>
+#include <list>
 #include <queue>
 #include "xmlhelper.h"
 #include "stack.h"
@@ -95,6 +96,12 @@ class Quest
           */
         virtual bool save(XML_Helper* helper) const;
 
+	/** provides a list of positions that the hero is seeking.
+	 * This method is called by the questmap object to show the
+	 * quest on a map.
+	 */
+	std::list< Vector<int> > getTargets() {return d_targets;}
+
         /** \brief Get the id of the hero owning this quest */
         Uint32 getHeroId() const { return d_hero; }
 
@@ -125,6 +132,9 @@ class Quest
 
         //! If set to false, this quest is deactivated and not to be processed.
         bool d_pending;
+
+	//! list of targets to display on a questmap
+	std::list< Vector<int> > d_targets;
 };
 
 #endif

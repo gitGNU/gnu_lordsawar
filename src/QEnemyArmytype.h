@@ -17,6 +17,7 @@
 
 #include <sigc++/trackable.h>
 
+#include <list>
 #include "Quest.h"
 #include "army.h"
 
@@ -41,7 +42,6 @@ class QuestEnemyArmytype : public Quest, public sigc::trackable
 
         //! Save the quest data
         bool save(XML_Helper* helper) const;
-
 
         /**
          * \brief Get progress information 
@@ -75,7 +75,6 @@ class QuestEnemyArmytype : public Quest, public sigc::trackable
 
         /** the army type we're out to get */
         Uint32 d_type_to_kill;
-
 };
 
 #endif

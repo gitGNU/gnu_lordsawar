@@ -47,6 +47,7 @@ QuestRuinSearch::QuestRuinSearch(QuestsManager& mgr, Uint32 hero)
 
     d_ruin = r->getId();
     debug("ruin_id = " << d_ruin);
+    d_targets.push_back(r->getPos());
     initDescription();
 }
 //=======================================================================
@@ -60,6 +61,7 @@ QuestRuinSearch::QuestRuinSearch(QuestsManager& q_mgr, XML_Helper* helper)
 	    sigc::mem_fun(this, &QuestRuinSearch::ruinSearched));
     
     helper->getData(d_ruin, "ruin");
+    d_targets.push_back(getRuin()->getPos());
     initDescription();
 }
 //=======================================================================

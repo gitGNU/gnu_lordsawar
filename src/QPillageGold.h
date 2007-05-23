@@ -17,6 +17,7 @@
 
 #include <sigc++/trackable.h>
 
+#include <list>
 #include "Quest.h"
 #include "city.h"
 
@@ -41,7 +42,6 @@ class QuestPillageGold : public Quest, public sigc::trackable
 
         //! Save the quest data
         bool save(XML_Helper* helper) const;
-
 
         /**
          * \brief Get progress information 
@@ -80,7 +80,6 @@ class QuestPillageGold : public Quest, public sigc::trackable
 
 	/** the target player */
 	Player *d_victim_player;
-
 
 };
 

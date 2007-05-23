@@ -37,6 +37,24 @@ void QuestMap::after_draw()
 
   OverviewMap::after_draw();
 
+  std::list< Vector<int> > targets = quest->getTargets();
+
+  switch (quest->getType ())
+    {
+      case Quest::KILLARMIES:
+      case Quest::KILLARMYTYPE:
+        //for each target draw a plus sign
+        break;
+      case Quest::KILLHERO:
+      case Quest::CITYSACK:
+      case Quest::CITYOCCUPY:
+      case Quest::CITYRAZE:
+      case Quest::RUINSEARCH:
+        //the target list should only have one position in it
+        //draw an orange line to the target and put a box around it.
+        break;
+    }
+
   // draw the hero picture
   Vector<int> start = sl->getPosition (quest->getHeroId ());
 
@@ -53,21 +71,6 @@ void QuestMap::after_draw()
   r.h = tmp->h;
   SDL_BlitSurface (tmp, 0, surface, &r);
   SDL_FreeSurface (tmp);
-
-  switch (quest->getType ())
-    {
-      case Quest::KILLARMIES:
-      case Quest::KILLARMYTYPE:
-        //draw a plus sign for every enemy army
-        break;
-      case Quest::KILLHERO:
-      case Quest::CITYSACK:
-      case Quest::CITYOCCUPY:
-      case Quest::CITYRAZE:
-      case Quest::RUINSEARCH:
-        //draw an orange line to the target and put a box around it.
-        break;
-    }
     map_changed.emit(surface);
 }
 

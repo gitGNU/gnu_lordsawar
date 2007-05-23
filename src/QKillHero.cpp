@@ -27,6 +27,9 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
+Stack *getHeroStack(Uint32 heroId)
+{
+}
 
 //=======================================================================
 QuestKillHero::QuestKillHero(QuestsManager& mgr, Uint32 hero) 
@@ -42,6 +45,7 @@ QuestKillHero::QuestKillHero(QuestsManager& mgr, Uint32 hero)
     assert(hunted);         // should never fail, since isFeasible is checked
 
     d_victim = hunted->getId();
+    d_targets.push_back(hunted->getPlayer()->getStacklist()->getPosition(d_victim));
     initDescription();
 }
 //=======================================================================
@@ -58,6 +62,7 @@ QuestKillHero::QuestKillHero(QuestsManager& q_mgr, XML_Helper* helper)
     // double and triple check :)
     Hero *hero = Quest::getHeroById(d_victim);
     assert(hero);
+    d_targets.push_back(hero->getPlayer()->getStacklist()->getPosition(d_victim));
 
     initDescription();
 }

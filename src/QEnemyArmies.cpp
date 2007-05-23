@@ -18,6 +18,8 @@
 #include "QEnemyArmies.h"
 #include "QuestsManager.h"
 #include "playerlist.h"
+#include "stacklist.h"
+#include "citylist.h"
 #include "defs.h"
 
 using namespace std;
@@ -38,6 +40,21 @@ Player* getVictimPlayer(Player *p)
   else
     return players[rand() % players.size()];
 }
+
+void QuestEnemyArmies::update_targets()
+{
+  Stacklist::const_iterator sit ;
+  Stacklist *sl = d_victim_player->getStacklist();
+  Citylist *cl = Citylist::getInstance();
+  d_targets.clear();
+  for (sit = sl->begin(); sit != sl->end(); sit++)
+    {
+      //is this not a city location?  no?  then it's a target.
+      if (cl->getObjectAt((*sit)->getPos()) == NULL)
+        d_targets.push_back((*sit)->getPos());
+    }
+}
+
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 //=======================================================================
@@ -51,6 +68,7 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero)
     /** we have to kill 14-20 units: 14 + rand(0..6) */
     d_to_kill = 14 + (rand() % 7);
 
+    update_targets();
     initDescription();
 }
 //=======================================================================
@@ -66,6 +84,8 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper)
     d_victim_player = Playerlist::getInstance()->getPlayer(ui);
     // we want to be informed about fight causalties
     d_victim_player->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmies::dyingArmy));
+
+    update_targets();
 
     initDescription();
 }

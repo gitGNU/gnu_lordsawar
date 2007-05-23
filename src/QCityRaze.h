@@ -3,6 +3,7 @@
 
 #include <sigc++/trackable.h>
 
+#include <list>
 #include "Quest.h"
 
 
@@ -34,7 +35,6 @@ class QuestCityRaze: public Quest, public sigc::trackable
          //! Saves the quest data.
          bool save(XML_Helper* helper) const;
 
-         
         /**
          * \brief Get progress information 
          *
@@ -73,6 +73,7 @@ class QuestCityRaze: public Quest, public sigc::trackable
 
          /** city id to be razed by the hero */
          Uint32 d_city;
+
 };
 
 #endif

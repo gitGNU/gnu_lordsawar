@@ -19,6 +19,7 @@
 #include "QuestsManager.h"
 #include "playerlist.h"
 #include "stacklist.h"
+#include "citylist.h"
 #include "defs.h"
 #include "armysetlist.h"
 
@@ -26,12 +27,13 @@ using namespace std;
 
 //go get an existing army type,
 //with the stipluation that player P's armies are not taken into consideration
-int getVictimArmytype(Player *p)
+int getVictimArmytype(Player *p, std::list<Vector<int> >&targets)
 {
   std::vector<Army*> specials;
   Stacklist::const_iterator sit ;
-  Stack::const_iterator it ;
+  Stack::iterator it ;
   Stacklist *sl;
+  Citylist *cl = Citylist::getInstance();
   const Playerlist* pl = Playerlist::getInstance();
   for (Playerlist::const_iterator pit = pl->begin(); pit != pl->end(); pit++)
     {
@@ -40,10 +42,15 @@ int getVictimArmytype(Player *p)
       sl = (*pit)->getStacklist();
       for (sit = sl->begin(); sit != sl->end(); sit++)
         {
+          //is this stack not in a city?  no?  it's a target.
+          if (cl->getObjectAt((*sit)->getPos()) == NULL)
+            targets.push_back((*sit)->getPos());
           for (it = (*sit)->begin(); it != (*sit)->end(); it++)
             {
               if ((*it)->getAwardable())
-                specials.push_back((*it));
+                {
+                  specials.push_back((*it));
+                }
 	    }
         }
     }
@@ -70,7 +77,7 @@ QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, Uint32 hero)
       }
     
     // pick a victim
-    d_type_to_kill = getVictimArmytype (p);
+    d_type_to_kill = getVictimArmytype (p, d_targets);
     
     initDescription();
 }
@@ -169,7 +176,8 @@ void QuestEnemyArmytype::initDescription()
 //=======================================================================
 bool QuestEnemyArmytype::isFeasible(Uint32 heroId)
 {
-  int type = getVictimArmytype(getHeroById(heroId)->getPlayer());
+  std::list< Vector<int> >targets;
+  int type = getVictimArmytype(getHeroById(heroId)->getPlayer(), targets);
   if (type >= 0)
     return true;
   return false;

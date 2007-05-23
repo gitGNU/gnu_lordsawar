@@ -17,6 +17,7 @@
 
 #include <sigc++/trackable.h>
 
+#include <list>
 #include "Quest.h"
 #include "hero.h"
 #include "playerlist.h"
@@ -44,7 +45,6 @@ class QuestKillHero : public Quest, public sigc::trackable
         //! Saves the data
         bool save(XML_Helper* helper) const;
         
-
         /**
          * \brief Get progress information 
          *

@@ -45,6 +45,7 @@ QuestCityOccupy::QuestCityOccupy (QuestsManager& mgr, Uint32 hero)
     assert(c);      // should never fail because isFeasible is checked first
 
     d_city = c->getId();
+    d_targets.push_back(c->getPos());
     debug("city_id = " << d_ruin);
     initDescription();
 }
@@ -59,6 +60,7 @@ QuestCityOccupy::QuestCityOccupy (QuestsManager& q_mgr, XML_Helper* helper)
 	    sigc::mem_fun(this, &QuestCityOccupy::cityOccupied));
     
     helper->getData(d_city, "city");
+    d_targets.push_back(getCity()->getPos());
     initDescription();
 }
 //=======================================================================

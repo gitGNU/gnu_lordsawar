@@ -17,6 +17,7 @@
 
 #include <sigc++/trackable.h>
 
+#include <list>
 #include "Quest.h"
 #include "army.h"
 
@@ -41,7 +42,6 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
 
         //! Save the quest data
         bool save(XML_Helper* helper) const;
-
 
         /**
          * \brief Get progress information 
@@ -72,6 +72,7 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
 
         void initDescription();
 
+        void update_targets();
 
         /** how many armies we should kill */
         Uint32 d_to_kill;
@@ -80,8 +81,6 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
 
 	/** the target player */
 	Player *d_victim_player;
-
-
 };
 
 #endif
