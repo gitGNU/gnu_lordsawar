@@ -1,5 +1,10 @@
+2007-05-23  Ben Asselstine
+	* now drawing quests onto a questmap
+	* added questmap object to quest assigned dialog
+
 2007-05-22  Ben Asselstine
 	* modified kill-enemy-armies quest to include a target player
+	* added new sack-and-pillage-gold quest
 
 2007-05-21  Ben Asselstine
         * reimplemented vectoring
