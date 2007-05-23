@@ -18,6 +18,7 @@
 #include <list>
 #include <string>
 #include <sigc++/trackable.h>
+#include <sigc++/signal.h>
 
 #include "player.h"
 

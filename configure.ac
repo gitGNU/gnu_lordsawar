@@ -196,16 +196,6 @@ fi
 AC_SUBST(ZIP_FILES)
 
 
-dnl ..do we want to disable timer events? (useful only for some debugging cases)...
-AC_ARG_ENABLE(timers,
-             [  --enable-timers    enable timing stuff (disable for debugging) [default=yes]],
-             use_timers="$enableval", use_timers="yes")
-
-if test x$use_timers = xno; then
-    AC_MSG_WARN([Timers have been disabled])
-	AC_DEFINE([FL_NO_TIMERS], [1], [Usage of timers is disabled])
-fi
-
 dnl ..do we want to disable optimizations? (useful only for some debugging cases)...
 AC_ARG_ENABLE(optimizations,
              [  --enable-optimizations    enable compiler optimizations (disable for debugging) [default=yes]],
@@ -259,7 +249,6 @@ AC_CONFIG_FILES([
         src/Makefile
         src/utils/Makefile 
         src/server/Makefile 
-        src/events/Makefile
         src/gui/Makefile])
 dnl        src/editor/Makefile
 AC_OUTPUT
@@ -274,4 +263,3 @@ echo " Sound support         : $use_sound"
 echo ""
 echo "Extra Options:"
 echo " Compiler Optimizations: $use_opts"
-echo " Timer events          : $use_timers"

@@ -112,6 +112,8 @@ bool Stack::moveOneStep()
 
 int Stack::getGroupMoves() const
 {
+    assert(!empty());
+    
     int min = front()->getMoves();
 
     for (const_iterator it = begin(); it != end(); ++it)

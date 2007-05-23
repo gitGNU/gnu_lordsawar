@@ -50,13 +50,6 @@
 #include "Configuration.h"
 #include "File.h"
 #include "Quest.h"
-#include "events/ERound.h"
-#include "events/ENextTurn.h"
-#include "events/RUpdate.h"
-#include "events/RCenter.h"
-#include "events/RCenterObj.h"
-#include "events/RRaiseEvent.h"
-#include "events/RActEvent.h"
 
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
@@ -100,8 +93,8 @@ Game::Game(GameScenario* gameScenario)
     size_changed();
 
     // connect player callbacks
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator i = pl->begin(); i != pl->end(); ++i)
+    Playerlist* pl = Playerlist::getInstance();
+    for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
     {
 	Player *p = *i;
         p->sdyingStack.connect(sigc::mem_fun(this, &Game::stackDied));
@@ -129,6 +122,7 @@ Game::Game(GameScenario* gameScenario)
         p->ruinfight_finished.connect(
 	    sigc::mem_fun(ruinfight_finished, &sigc::signal<void, Fight::Result>::emit));
     }
+    pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
 
     //set up a NextTurn object
     d_nextTurn = new NextTurn(d_gameScenario->getTurnmode());
@@ -139,8 +133,6 @@ Game::Game(GameScenario* gameScenario)
     d_nextTurn->supdating.connect(
 	sigc::mem_fun(bigmap.get(), &BigMap::draw));
             
-    connectEvents();
-
     center_view_on_city();
     update_control_panel();
 
@@ -254,47 +246,6 @@ void Game::clear_stack_info()
     stack_info_changed.emit(0);
 }
 
-
-void Game::connectEvents()
-{
-    std::list<Event*> elist = d_gameScenario->getEventlist();
-    ERound* eround;
-    ENextTurn* eturn;
-
-    // first, connect the static signals appropriately
-    RUpdate::supdating.connect(sigc::mem_fun(*this, &Game::redraw));
-    RCenter::scentering.connect(sigc::mem_fun(*this, &Game::center_view));
-    RCenterObj::scentering.connect(sigc::mem_fun(*this, &Game::center_view));
-    RRaiseEvent::sgettingEvents.connect(sigc::mem_fun(*d_gameScenario,
-                                        &GameScenario::getEventlist));
-    RActEvent::sgettingEvents.connect(sigc::mem_fun(*d_gameScenario,
-                                        &GameScenario::getEventlist));
-
-
-    // and connect some of the events
-    for (std::list<Event*>::iterator it = elist.begin(); it != elist.end(); it++)
-    {
-        switch((*it)->getType())
-        {
-            //the round event needs rather much help with its signals
-            case Event::ROUND:
-                eround = dynamic_cast<ERound*>(*it);
-                eround->sgettingRound.connect(sigc::mem_fun(*d_gameScenario,
-                                                        &GameScenario::getRound));
-                d_nextTurn->snextTurn.connect(sigc::mem_fun(*eround, &ERound::trigger));
-                break;
-
-            case Event::NEXTTURN:
-                eturn = dynamic_cast<ENextTurn*>(*it);
-                d_nextTurn->snextTurn.connect(sigc::mem_fun(*eturn, &ENextTurn::trigger));
-                break;
-                
-            default:
-                continue;
-        }
-    }
-}
-
 void Game::update_sidebar_stats()
 {
     SidebarStats s;
@@ -351,8 +302,6 @@ void Game::move_selected_stack()
 
 void Game::move_all_stacks()
 {
-    std::vector<unsigned int> movedid;
-    std::vector<unsigned int>::iterator it;
     Player *player = Playerlist::getActiveplayer();
     Stacklist* sl = player->getStacklist();
     Stack *orig = sl->getActivestack();
@@ -360,7 +309,7 @@ void Game::move_all_stacks()
     for (Stacklist::iterator i = sl->begin(), end = sl->end(); i != end; ++i)
     {
 	Stack &s = **i;
-	if (s.canMove() && s.getPath()->size() > 0)
+	if (!s.empty() && !s.getPath()->empty() && s.canMove())
 	{
 	    sl->setActivestack(&s);
             bigmap->select_active_stack();
@@ -505,7 +454,6 @@ bool Game::stackRedraw()
 void Game::on_stack_selected(Stack* s)
 {
     update_stack_info();
-    
     update_control_panel();
 }
 
@@ -803,7 +751,6 @@ void Game::loadGame()
 void Game::stopGame()
 {
     d_nextTurn->stop();
-    d_gameScenario->deactivateEvents();
     Playerlist::finish();
 }
 
@@ -990,6 +937,7 @@ bool Game::init_turn_for_player(Player* p)
     // can also have it check for e.g. escape key pressed to interrupt
     // an AI-only game to save/quit.
 
+
     if (p->getType() == Player::HUMAN)
     {
 	unlock_inputs();
@@ -1025,6 +973,15 @@ bool Game::init_turn_for_player(Player* p)
         Game::maybeRecruitHero(p);
 	return false;
     }
+}
+
+void Game::on_player_died(Player *player)
+{
+    const Playerlist* pl = Playerlist::getInstance();
+    if (pl->getNoOfPlayers() <= 1)
+	game_over.emit(pl->getFirstLiving());
+    else if (player->getType() == Player::HUMAN)
+	player_died.emit(player);
 }
 
 void Game::center_view_on_city()

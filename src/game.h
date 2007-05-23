@@ -85,12 +85,6 @@ class Game
     //! Callback which redraws the map and checks if the active stack has died
     bool stackRedraw();
     
-
-    /** Cares for correct connecting of the events. There are enough signals to
-     * care for that a separate function seems justified.
-     */
-    void connectEvents();
-
     // initiate game flow
     void startGame();
     void loadGame();
@@ -154,6 +148,8 @@ class Game
     sigc::signal<void, Army *> medal_awarded_to_army;
     sigc::signal<Army::Stat, Army *> army_gains_level;
     sigc::signal<void, Player *> game_loaded;
+    sigc::signal<void, Player *> game_over;
+    sigc::signal<void, Player *> player_died;
     
  private:
 
@@ -191,6 +187,7 @@ class Game
     void invading_city(City* city);
     // returns true if the next turn loop should stop
     bool init_turn_for_player(Player* p);
+    void on_player_died(Player *p);
 
     
     void looting_city(City *city, int &gold);

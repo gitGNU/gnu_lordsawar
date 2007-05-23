@@ -139,9 +139,6 @@ class GameWindow: public sigc::trackable
     void on_gold_activated();
     void on_quests_activated();
 
-    void on_game_won(Uint32 status);
-    void on_game_lost(Uint32 status);
-
     void on_message_requested(std::string msg);
     void on_stack_selected_in_report(Stack *stack);
     void on_city_selected_in_report(City *city);
@@ -179,6 +176,8 @@ class GameWindow: public sigc::trackable
     void on_medal_awarded_to_army(Army *army);
     Army::Stat on_army_gains_level(Army *army);
     void on_game_loaded(Player *player);
+    void on_game_over(Player *winner);
+    void on_player_died(Player *player);
 
     // quest manager callbacks
     void on_quest_completed(Quest *quest, int gold);

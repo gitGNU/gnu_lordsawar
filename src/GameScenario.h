@@ -19,7 +19,6 @@
 #include <list>
 #include <sigc++/trackable.h>
 
-class Event;
 class XML_Helper;
 
 /** Class to hold several scenario options
@@ -50,11 +49,8 @@ class GameScenario: public sigc::trackable
           * 
           * @param savegame     the full name of the savegame to load
           * @param broken       set to true if something goes wrong
-          * @param events       if set to true; initialize all events after
-          *                     loading; set this to false to disable the event
-          *                     mechanism (e.g. in the map editor)
           */
-        GameScenario(std::string savegame, bool& broken, bool events);
+        GameScenario(std::string savegame, bool& broken);
         ~GameScenario();
 
         //! Returns the number of the current turn.
@@ -85,23 +81,6 @@ class GameScenario: public sigc::trackable
           * @return true if all went well, false otherwise
           */
         bool saveGame(std::string filename, std::string extension = "sav") const;
-
-        //! Adds an event to the event list
-        void addEvent(Event* event);
-
-        //! removes an event from the list (used in the editor)
-        void removeEvent(Event* ev);
-
-        /** Deactivates all events. This becomes neccessary because in certain
-          * circumstances several events may be triggered and cause the game to
-          * finish. To prevent possible bugs, we deactivate all events on a
-          * game end so that they are not triggered.
-          */
-        void deactivateEvents();
-
-        //! Returns the internal list of events
-        std::list<Event*> getEventlist() {return d_events;}
-
     private:
         /** Callback function for loading a game. See XML_Helper for details.
           *
@@ -116,8 +95,6 @@ class GameScenario: public sigc::trackable
         std::string d_name;
         std::string d_comment;
         bool d_turnmode; //see NextTurn for a description of this option
-
-        std::list<Event*> d_events;
 };
 
 #endif // GAME_SCENARIO_H

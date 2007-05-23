@@ -13,8 +13,8 @@ city-window.glade \
 destination-dialog.glade \
 fight-window.glade \
 game-loaded-dialog.glade \
-game-lost-dialog.glade \
-game-won-dialog.glade \
+player-died-dialog.glade \
+game-over-dialog.glade \
 game-preferences-dialog.glade \
 game-window.glade \
 hero-dialog.glade \

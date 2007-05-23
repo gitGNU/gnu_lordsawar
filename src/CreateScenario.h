@@ -187,9 +187,6 @@ class CreateScenario
           */
         bool loadNames(std::vector<std::string>& list, std::ifstream& namefile);
 
-        //! Sets up some basic events to satisfy victory conditions
-        bool setupEvents();
-
 
         //data
         //for map creation

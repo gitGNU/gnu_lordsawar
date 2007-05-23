@@ -17,6 +17,7 @@
 #include <iomanip>
 #include <queue>
 #include <SDL_video.h>
+#include <assert.h>
 
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
@@ -73,9 +74,6 @@
 #include "../QuestsManager.h"
 #include "../stack.h"
 #include "../GraphicsCache.h"
-#include "../events/RWinGame.h"
-#include "../events/RLoseGame.h"
-#include "../events/RMessage.h"
 #include "../QuestsManager.h"
 #include "../Quest.h"
 #include "../counter.h"
@@ -252,6 +250,13 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
     for (std::vector<GameParameters::Player>::const_iterator
 	     i = g.players.begin(), end = g.players.end();
 	 i != end; ++i, ++c) {
+	
+	if (i->type == GameParameters::Player::OFF)
+	{
+            fl_counter->getNextId();
+	    continue;
+	}
+	
 	Player::Type type;
 	
 	switch(c % 8)
@@ -269,8 +274,6 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 	    type = Player::AI_FAST;
 	else if (i->type == GameParameters::Player::HARD)
 	    type = Player::AI_SMART;
-	else if (i->type == GameParameters::Player::OFF)
-            fl_counter->getNextId();
 	else
 	    type = Player::HUMAN;
 
@@ -353,7 +356,7 @@ void GameWindow::setup_game(std::string file_path)
     stop_game();
     
     bool broken;
-    GameScenario* game_scenario = new GameScenario(file_path, broken, true);
+    GameScenario* game_scenario = new GameScenario(file_path, broken);
     
     if (broken)
 	// FIXME: we should not die here, but simply return to the splash screen
@@ -436,12 +439,12 @@ void GameWindow::setup_game(std::string file_path)
 	sigc::mem_fun(*this, &GameWindow::on_army_gains_level));
     game->game_loaded.connect(
 	sigc::mem_fun(*this, &GameWindow::on_game_loaded));
+    game->game_over.connect(
+	sigc::mem_fun(*this, &GameWindow::on_game_over));
+    game->player_died.connect(
+	sigc::mem_fun(*this, &GameWindow::on_player_died));
 
     // misc callbacks
-    RWinGame::swinning.connect(sigc::mem_fun(this, &GameWindow::on_game_won));
-    RLoseGame::slosing.connect(sigc::mem_fun(this, &GameWindow::on_game_lost));
-    RMessage::message_requested.connect(sigc::mem_fun(this, &GameWindow::on_message_requested));
-    
     QuestsManager *q = QuestsManager::getInstance();
     q->quest_completed.connect(
 	sigc::mem_fun(this, &GameWindow::on_quest_completed));
@@ -695,12 +698,12 @@ void GameWindow::stop_game()
     }
 }
 
-void GameWindow::on_game_won(Uint32 status)
+void GameWindow::on_game_over(Player *winner)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/game-won-dialog.glade");
+	= Gnome::Glade::Xml::create(get_glade_path() + "/game-over-dialog.glade");
 	
     Gtk::Dialog *d;
     xml->get_widget("dialog", d);
@@ -723,34 +726,52 @@ void GameWindow::on_game_won(Uint32 status)
 	win_unmasked, mask, Playerlist::getActiveplayer());
 
     image->property_pixbuf() = to_pixbuf(win);
-    dialog->show_all();
-    dialog->run();
 
     SDL_FreeSurface(win);
     SDL_FreeSurface(win_unmasked);
     SDL_FreeSurface(mask);
 
-    stop_game();
-    game_ended.emit();
-}
-
-void GameWindow::on_game_lost(Uint32 status)
-{
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/game-lost-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
+    Gtk::Label *label;
+    xml->get_widget("label", label);
+    Glib::ustring s;
+    s += String::ucompose(_("%1 has taken over the world!"), winner->getName());
+    if (winner->getType() == Player::HUMAN)
+    {
+	s += " ";
+	s += _("Congratulations!");
+    }
+    label->set_text(s);
     
     dialog->show_all();
     dialog->run();
 
     stop_game();
     game_ended.emit();
+}
+
+void GameWindow::on_player_died(Player *player)
+{
+    assert(player);
+    
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/player-died-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+
+    Gtk::Label *label;
+    xml->get_widget("label", label);
+    Glib::ustring s;
+    s += String::ucompose(_("The rule of %1 has permanently ended!"),
+			  player->getName());
+    label->set_text(s);
+    
+    dialog->show_all();
+    dialog->run();
 }
 
 void GameWindow::on_message_requested(std::string msg)

@@ -24,7 +24,7 @@
  
    \note    This class takes care of calling the correct players in the correct
             order. The problem is, no other class really has the scope of doing
-            this whole stuff. The playerlist and the W_Edit object aren't the
+            this whole stuff. The playerlist and the game object aren't the
             right candidates (they are busy with other things) and the former
             algorithm of each player calling the next one produces a huge
             stackload if two ai players fight each other. Plus, you want to do
@@ -70,22 +70,12 @@ class NextTurn: public sigc::trackable
         /**
            \brief signals for announcing events
 
-           If the splayerStart signal returns false, the main loop will quit,
-           which is useful if a human player's turn starts (the control is then 
-           handed over to teh ParaGUI message queue). Don't use this signal
-           to hook up your own events or so, use the next, snextTurn.
+           If the splayerStart signal returns true, the main loop will quit,
+           which is useful if a human player's turn starts.
          */
         sigc::signal<bool, Player*> splayerStart;
 
-        /** This signal is a bit problematic and needs some more comments. It is
-            emitted whenever a new player's turn starts. However, it is sometimes
-            (in case of an AI round) started by the NextTurn class. Since it was
-            introduced for events and propable reactions will be showing a message
-            and such, and since in case a human player starts his turn, W_Edit will
-            set a capture and therefore break any possible dialog boxes, this signal
-            is also emitted in W_Edit after the introductory message (Player xxx's
-            turn) has been shown.
-          */
+	// emitted whenever a new player's turn starts.
         sigc::signal<void, Player*> snextTurn;
         
         //! Signal which is emitted whenever a new round starts

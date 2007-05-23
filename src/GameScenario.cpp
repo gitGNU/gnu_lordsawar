@@ -43,7 +43,6 @@
 #include "QuestsManager.h"
 #include "Itemlist.h"
 #include "string_tokenizer.h"
-#include "events/Event.h"
 #include "player.h"
 #include "vectoredunitlist.h"
 #include "xmlhelper.h"
@@ -66,7 +65,7 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
 
 // savegame is a filename with absolute path!
 
-GameScenario::GameScenario(string savegame, bool& broken, bool events)
+GameScenario::GameScenario(string savegame, bool& broken)
     :d_turnmode(true)
 {
     Armysetlist::getInstance();
@@ -76,7 +75,6 @@ GameScenario::GameScenario(string savegame, bool& broken, bool events)
     XML_Helper helper(savegame, ios::in, Configuration::s_zipfiles);
 
     helper.registerTag("scenario", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("event", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("map", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("playerlist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("citylist", sigc::mem_fun(this, &GameScenario::load));
@@ -96,22 +94,10 @@ GameScenario::GameScenario(string savegame, bool& broken, bool events)
     }
 
     helper.close();
-
-    //Important: Initialise the events (see Event.h for an explanation)
-    if (events)
-        for (std::list<Event*>::iterator it = d_events.begin();
-                                         it != d_events.end(); it++)
-            (*it)->init();
 }
 
 GameScenario::~GameScenario()
 {
-    while (!d_events.empty())
-    {
-        delete (*d_events.begin());
-        d_events.erase(d_events.begin());
-    }
-    
     // GameMap is a Singleton so we need a function to delete it
     GameMap::deleteInstance();
     Playerlist::deleteInstance();
@@ -216,10 +202,6 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= helper.saveData("turn", d_round);
     retval &= helper.saveData("turnmode", d_turnmode);
     
-    std::list<Event*>::const_iterator it;
-    for (it = d_events.begin(); it != d_events.end(); it++)
-        (*it)->save(&helper);
-            
     retval &= helper.closeTag();
     
     if (!retval)
@@ -259,15 +241,6 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
 
         //TODO: for later when it becomes crucial: deal with loading of
         //something else than simple games
-        return true;
-    }
-
-    if (tag == "event")
-    {
-        Event* ev = Event::loadEvent(helper);
-        if (!ev)
-            return false;
-        d_events.push_back(ev);
         return true;
     }
 
@@ -350,26 +323,4 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
     }
 
     return false;
-}
-
-void GameScenario::addEvent(Event* event)
-{
-    d_events.push_back(event);
-}
-
-void GameScenario::removeEvent(Event* event)
-{
-    for (std::list<Event*>::iterator it = d_events.begin(); it != d_events.end(); it++)
-        if ((*it) == event)
-        {
-            delete event;
-            d_events.erase(it);
-            return;
-        }
-}
-
-void GameScenario::deactivateEvents()
-{
-    for (std::list<Event*>::iterator it = d_events.begin(); it != d_events.end(); it++)
-        (*it)->setActive(false);
 }

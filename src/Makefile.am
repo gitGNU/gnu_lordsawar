@@ -1,4 +1,4 @@
-SUBDIRS = server events gui . utils
+SUBDIRS = server gui . utils
 MAINTAINERCLEANFILES= Makefile.in
 
 bin_PROGRAMS = lordsawar
@@ -64,11 +64,10 @@ lordsawar_LDADD = $(SDL_LIBS) \
     $(LIB_GGZMOD) \
     $(LIB_GGZDMOD) \
     ./server/liblwserver.a \
-    ./events/liblwevents.a \
     ./gui/liblwgui.a \
     @LIBINTL@
 lordsawar_DEPENDENCIES = \
-  ./server/liblwserver.a ./events/liblwevents.a  ./gui/liblwgui.a
+  ./server/liblwserver.a ./gui/liblwgui.a
 
 AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\"
 INCLUDES = $(SDL_CFLAGS) \

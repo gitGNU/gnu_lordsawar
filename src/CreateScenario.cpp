@@ -38,16 +38,6 @@
 #include "MapGenerator.h"
 #include "QuestsManager.h"
 #include "Configuration.h"
-#include "events/Event.h"
-#include "events/EPlayerDead.h"
-#include "events/EKillAll.h"
-#include "events/ENextTurn.h"
-#include "events/RMessage.h"
-#include "events/RActEvent.h"
-#include "events/RWinGame.h"
-#include "events/RLoseGame.h"
-#include "events/CPlayer.h"
-#include "events/CLiving.h"
 
 using namespace std;
 
@@ -346,8 +336,6 @@ bool CreateScenario::create()
     if (!setupPlayers())
         return false;
 
-    if (!setupEvents())
-        return false;
 
     return true;
 }
@@ -618,153 +606,6 @@ bool CreateScenario::setupPlayers()
 {
     debug("CreateScenario::setupPlayers")
 
-    return true;
-}
-
-bool CreateScenario::setupEvents()
-{
-    debug("CreateScenario::setupEvents()")
-
-    // This is the actualized event setup. the idea is as follows:
-    //
-    // 1. We separate human and AI players (neutral player is ignored)
-    //
-    // Then, we have two cases:
-    // a) AI players only
-    //
-    // 1. Give a message and end the game in case of "last man standing"
-    //
-    // b) AI + human players
-    //
-    // 1. When a player dies, activate NextTurn events for all human players
-    //    that tell them that the player has died at the beginning of their
-    //    turn.
-    // 2. When all human players have died, the game is lost.
-    // 3. When all players except one (==human) have died, the game is won.
-
-    // for the beginning, sort all players in AI and human players
-    std::list<Player*> ailist, humanlist;
-    std::list<Player*>::iterator pit;
-    char buf[101]; buf[100] = '\0';
-    
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        switch ((*it)->getType())
-        {
-            case Player::HUMAN:
-                humanlist.push_back(*it);
-                break;
-            case Player::AI_FAST:
-            case Player::AI_DUMMY:
-            case Player::AI_SMART:
-                if ((*it) == Playerlist::getInstance()->getNeutral())
-                    continue;
-                ailist.push_back(*it);
-                break;
-        } 
-
-    // case (a)
-    if (humanlist.empty())
-    {
-        RMessage* rmsg;
-        RWinGame* rwin;
-        EKillAll* ekillall;
-
-        // when all players are dead, show a message and end the game
-        ekillall = new EKillAll();
-        rmsg = new RMessage("All players have died except one");
-        rwin = new RWinGame(1);
-        ekillall->addReaction(rmsg);
-        ekillall->addReaction(rwin);
-
-        d_scenario->addEvent(ekillall);
-    }
-    // case (b)
-    else
-    {
-        // 1. message reporting for each player
-        for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        {
-            EPlayerDead* edead;
-            ENextTurn* eturn;
-            RMessage* rmsg;
-            RActEvent* ract;
-            CPlayer* cplayer;
-
-            edead = new EPlayerDead((*it)->getId());
-            d_scenario->addEvent(edead);
-            
-            for (pit = humanlist.begin(); pit != humanlist.end(); pit++)
-            {
-                // create the nextturn event
-                eturn = new ENextTurn();
-                snprintf(buf, 100, "Player %s died.", (*it)->getName(false).c_str());
-                rmsg = new RMessage(buf);
-                cplayer = new CPlayer((*pit)->getId());
-
-                eturn->addCondition(cplayer);
-                eturn->addReaction(rmsg);
-                eturn->setActive(false);
-                d_scenario->addEvent(eturn);
-
-                // activate the next turn event when the player dies
-                ract = new RActEvent(eturn->getId(), true);
-                edead->addReaction(ract);
-            }
-        }
-
-        // 2. + 3.
-        EKillAll* ekillall = new EKillAll();
-
-        // add a message and a win game event for every human player
-        for (pit = humanlist.begin(); pit != humanlist.end(); pit++)
-        {
-            RMessage* rmsg;
-            RWinGame* rwin;
-            CLiving* clive;
-
-            snprintf(buf, 100, "Player %s has won!", (*pit)->getName(false).c_str());
-            rmsg = new RMessage(buf);
-            clive = new CLiving((*pit)->getId());
-            rmsg->addCondition(clive);
-            
-            rwin = new RWinGame((*pit)->getId());
-            clive = new CLiving((*pit)->getId());
-            rwin->addCondition(clive);
-
-            ekillall->addReaction(rmsg);
-            ekillall->addReaction(rwin);
-        }
-
-        // add a message and a lose game event for every ai player
-        for (pit = ailist.begin(); pit != ailist.end(); pit++)
-        {
-            RMessage* rmsg;
-            RLoseGame* rlose;
-            CLiving* clive;
-
-            snprintf(buf, 100, "Player %s has won!", (*pit)->getName(false).c_str());
-            rmsg = new RMessage(buf);
-            clive = new CLiving((*pit)->getId());
-            rmsg->addCondition(clive);
-            
-            rlose = new RLoseGame(2 * (*pit)->getId());
-            clive = new CLiving((*pit)->getId());
-            rlose->addCondition(clive);
-
-            ekillall->addReaction(rmsg);
-            ekillall->addReaction(rlose);
-        }
-
-        // to catch potential errors, append a general loose event
-        RLoseGame* rend = new RLoseGame(10);
-
-        ekillall->addReaction(rend);
-
-        // add the event
-        d_scenario->addEvent(ekillall);
-    }
-    
     return true;
 }
 

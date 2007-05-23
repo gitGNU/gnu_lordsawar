@@ -464,12 +464,6 @@ class Player: public sigc::trackable
 	// emitted when a fight in a ruin is started
         sigc::signal<void, Stack *, Stack *> ruinfight_started;
         sigc::signal<void, Fight::Result> ruinfight_finished;
-#if 0
-        //! Signal raised whenever the player wants to interrupt some timers
-        sigc::signal<void> sinterruptTimers;
-        //! Signal raised whenever the player asks to restart timers
-        sigc::signal<void> scontinueTimers;
-#endif
 
     protected:
         //! Move stack s one step forward on his stored path
