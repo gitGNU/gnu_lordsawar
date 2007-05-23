@@ -88,22 +88,26 @@ void VectoredUnitlist::nextTurn(Player* p)
   Citylist *cl = Citylist::getInstance();
   City *c;
   debug("next_turn(" <<p->getName() <<")");
+  bool advance;
 
   iterator it = begin();
-  iterator nextit = it;
-  nextit++;
-  for (; nextit != end(); it++, nextit++)
+  while (it != end())
     {
+      advance = true;
       c = cl->getObjectAt((*it).getPos());
       if (c->getPlayer() == p)
         {
           if ((*it).nextTurn() == true)
 	    {
+              iterator nextit = it;
+              nextit++;
 	      erase(it);
-	      it = nextit;
-	      nextit++;
+              advance = false;
+	      it = nextit; //advance here instead of down there
 	    }
         }
+      if (advance)
+        ++it;
     }
 
 }
