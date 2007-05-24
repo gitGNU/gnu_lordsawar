@@ -17,7 +17,6 @@
 #include "QuestsManager.h"
 
 #include "Quest.h"
-#include "QRuinSearch.h"
 #include "QKillHero.h"
 #include "QEnemyArmies.h"
 #include "QCitySack.h"
@@ -103,25 +102,25 @@ Quest* QuestsManager::createNewQuest(Uint32 heroId)
     switch (which)
     {
         case 1:
-            quest = new QuestRuinSearch(*this, heroId);
-            break;
-        case 2:
             quest = new QuestKillHero(*this, heroId);
             break;
-        case 3:
+        case 2:
             quest = new QuestEnemyArmies(*this, heroId);
             break;
-        case 4:
+        case 3:
             quest = new QuestCitySack(*this, heroId);
             break;
-        case 5:
+        case 4:
             quest = new QuestCityRaze(*this, heroId);
             break;
-        case 6:
+        case 5:
             quest = new QuestCityOccupy(*this, heroId);
             break;
-        case 7:
+        case 6:
             quest = new QuestEnemyArmytype(*this, heroId);
+            break;
+        case 7:
+            quest = new QuestPillageGold(*this, heroId);
             break;
     }
     
@@ -215,9 +214,6 @@ bool QuestsManager::load(string tag, XML_Helper* helper)
 
         Quest *quest=0;
         switch (static_cast<Quest::Type>(questType)) {
-            case Quest::RUINSEARCH: 
-                quest = new QuestRuinSearch(*this, helper);
-                break;
             case Quest::KILLHERO:
                 quest = new QuestKillHero(*this, helper);
                 break;
@@ -264,7 +260,6 @@ void QuestsManager::_sharedInit()
     // now prepare the vector of pointers to the
     // functions (class static members) checking feasibility
     // for every quest
-    d_questsFeasible.push_back(&(QuestRuinSearch::isFeasible));
     d_questsFeasible.push_back(&(QuestKillHero::isFeasible));
     d_questsFeasible.push_back(&(QuestEnemyArmies::isFeasible));
     d_questsFeasible.push_back(&(QuestCitySack::isFeasible));

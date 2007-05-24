@@ -25,7 +25,6 @@
 #include "Quest.h"
 #include "QKillHero.h"
 #include "QEnemyArmies.h"
-#include "QRuinSearch.h"
 
 using namespace std;
 
@@ -967,14 +966,12 @@ bool Action_Quest::fillData(Quest* q)
     // fill the data depending on the quest's type
     switch (d_questtype)
     {
-        case Quest::RUINSEARCH:
-            d_data = dynamic_cast<QuestRuinSearch*>(q)->getRuinId();
-            break;
         case Quest::KILLHERO:
             d_data = dynamic_cast<QuestKillHero*>(q)->getVictim();
             break;
         case Quest::KILLARMIES:
             d_data = dynamic_cast<QuestEnemyArmies*>(q)->getArmiesToKill();
+            break;
     }
 
     return true;

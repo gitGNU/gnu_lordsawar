@@ -56,7 +56,6 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
 {
   Vector<int> end;
   end = target;
-  int xdir, ydir;
 
   start = mapToSurface(start);
   end = mapToSurface(end);
@@ -122,7 +121,6 @@ void QuestMap::after_draw()
       case Quest::CITYSACK:
       case Quest::CITYOCCUPY:
       case Quest::CITYRAZE:
-      case Quest::RUINSEARCH:
         draw_cities(false);
         //the target list should only have one position in it
         //draw an orange line to the target and put a box around it.

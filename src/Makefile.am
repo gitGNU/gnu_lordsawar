@@ -18,7 +18,7 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	AICityInfo.cpp AICityInfo.h AI_Analysis.cpp AI_Analysis.h \
         AI_Allocation.cpp AI_Allocation.h path.cpp path.h \
         QuestsManager.cpp QuestsManager.h Quest.cpp Quest.h \
-	QKillHero.cpp QKillHero.h QRuinSearch.cpp QRuinSearch.h \
+	QKillHero.cpp QKillHero.h \
         QEnemyArmies.cpp QEnemyArmies.h QCitySack.cpp QCitySack.h \
         QCityRaze.cpp QCityRaze.h QCityOccupy.cpp QCityOccupy.h \
         QEnemyArmytype.cpp QEnemyArmytype.h QPillageGold.cpp QPillageGold.h \
