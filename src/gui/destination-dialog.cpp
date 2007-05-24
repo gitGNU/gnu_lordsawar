@@ -204,6 +204,7 @@ void DestinationDialog::fill_in_vectoring_info()
   if (slot == -1)
     {
       pic = empty_pic;
+      turns_label->set_markup("");
     }
   else
     {
