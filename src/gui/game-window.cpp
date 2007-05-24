@@ -56,6 +56,7 @@
 #include "cities-report-dialog.h"
 #include "quests-report-dialog.h"
 #include "quest-assigned-dialog.h"
+#include "preferences-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -173,6 +174,11 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_gold_activated));
     xml->connect_clicked("quests_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_quests_activated));
+    xml->connect_clicked("fullscreen_menuitem", 
+			 sigc::mem_fun(*this, &GameWindow::on_fullscreen_activated));
+    xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
+    xml->connect_clicked("preferences_menuitem", 
+			 sigc::mem_fun(*this, &GameWindow::on_preferences_activated));
 }
 
 GameWindow::~GameWindow()
@@ -685,6 +691,21 @@ void GameWindow::on_quests_activated()
     d.set_parent_window(*window.get());
     d.quest_selected.connect(
 	sigc::mem_fun(this, &GameWindow::on_quest_selected_in_report));
+    d.run();
+}
+
+void GameWindow::on_fullscreen_activated()
+{
+    if (fullscreen_menuitem->get_active())
+	window->fullscreen();
+    else
+	window->unfullscreen();
+}
+
+void GameWindow::on_preferences_activated()
+{
+    PreferencesDialog d;
+    d.set_parent_window(*window.get());
     d.run();
 }
 

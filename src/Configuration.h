@@ -53,6 +53,8 @@ class Configuration : public sigc::trackable
           */
         static bool saveConfigurationFile(std::string filename);
 
+        static std::string configuration_file_path;
+	
         // as the name implies
         static bool s_smoothScrolling;
         static bool s_showNextPlayer;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.0.2 on Fri May 18 13:46:54 2007 by olau@alfa-->
+<!--Generated with glade3 3.0.2 on Thu May 24 09:58:40 2007 by olau@alfa-->
 <glade-interface>
   <widget class="GtkWindow" id="window">
     <child>
@@ -94,6 +94,33 @@
                       <widget class="GtkMenuItem" id="quests_menuitem">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Q_uests</property>
+                        <property name="use_underline">True</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkMenuItem" id="view_menuitem">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_View</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="view_menu">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkCheckMenuItem" id="fullscreen_menuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Fullscreen</property>
+                        <property name="use_underline">True</property>
+                        <accelerator key="F11" modifiers="" signal="activate"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="preferences_menuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Preferences</property>
                         <property name="use_underline">True</property>
                       </widget>
                     </child>

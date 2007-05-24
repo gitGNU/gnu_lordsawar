@@ -33,9 +33,11 @@ using namespace std;
 bool Configuration::s_smoothScrolling = false;
 bool Configuration::s_showNextPlayer = true;
 #ifndef __WIN32__
+string Configuration::configuration_file_path = string(getenv("HOME")) + "/.lordsawarrc";
 string Configuration::s_dataPath = LORDSAWAR_DATADIR;
 string Configuration::s_savePath = string(getenv("HOME"))+string("/.lordsawar/");
 #else
+string Configuration::configuration_file_path = "/.lordsawarrc";
 string Configuration::s_dataPath = "./data/";
 string Configuration::s_savePath = "./saves/";
 #endif
