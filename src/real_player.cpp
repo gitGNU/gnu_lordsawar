@@ -85,7 +85,6 @@ bool RealPlayer::invadeCity(City* c)
     //However, an AI player has to decide here what to do (occupy, raze,
     //pillage)
     sinvadingCity.emit(c);
-    soccupyingCity.emit(c, getActivestack());
     return true;
 }
 
@@ -892,10 +891,8 @@ Quest* RealPlayer::stackGetQuest(Stack* s, Temple* t)
     return q;
 }
 
-bool RealPlayer::cityOccupy(City* c)
+bool RealPlayer::cityOccupy(City* c, bool emit)
 {
-    debug("cityOccupy")
-
     c->conquer(this);
 
     //set the production to the cheapest armytype
@@ -907,10 +904,19 @@ bool RealPlayer::cityOccupy(City* c)
     item->fillData(c);
     d_actions.push_back(item);
 
+    if (emit)
+      soccupyingCity.emit(c, getActivestack());
     //to signal that the cities have changed a bit
     supdatingCity.emit(c);
 
     return true;
+}
+
+bool RealPlayer::cityOccupy(City* c)
+{
+    debug("cityOccupy")
+
+    return cityOccupy (c, true);
 }
 
 bool RealPlayer::cityPillage(City* c, int& gold)
@@ -943,8 +949,7 @@ bool RealPlayer::cityPillage(City* c, int& gold)
 
     addGold(gold);
     spillagingCity.emit(c, Playerlist::getActiveplayer()->getActivestack(), gold);
-    cityOccupy(c);
-    return true;
+    return cityOccupy (c, false);
 }
 
 bool RealPlayer::citySack(City* c, int& gold)
@@ -986,8 +991,7 @@ bool RealPlayer::citySack(City* c, int& gold)
 
     addGold(gold);
     ssackingCity.emit(c, Playerlist::getActiveplayer()->getActivestack(), gold);
-    cityOccupy(c);
-    return true;
+    return cityOccupy (c, false);
 }
 
 bool RealPlayer::cityRaze(City* c)

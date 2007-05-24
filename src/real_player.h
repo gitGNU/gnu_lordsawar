@@ -109,6 +109,8 @@ class RealPlayer : public Player
         //if reward != 0, give this reward, else randomize
         bool giveReward (int gold);
         bool stackMoveOneStep(Stack* s);
+    private:
+        bool cityOccupy(City* c, bool emit);
 };
 
 #endif // REAL_PLAYER_H
