@@ -214,7 +214,19 @@ list<string> File::scanTilesets()
 list<string> File::scanMaps()
 {
     string path = Configuration::s_dataPath + "/map/";
-    std::list<std::string> retlist = get_xml_files_in_immediate_subdirs(path);
+    
+    std::list<std::string> retlist;
+    Glib::Dir dir(path);
+    
+    for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
+    {
+	string entry = *i;
+	string::size_type idx = entry.find(".map");
+	if (idx != string::npos)
+	{
+	    retlist.push_back(Glib::filename_to_utf8(entry));
+	}
+    }
     
     if (retlist.empty())
     {

@@ -25,6 +25,7 @@
 #include "splash-window.h"
 
 #include "game-preferences-dialog.h"
+#include "load-scenario-dialog.h"
 #include "glade-helpers.h"
 #include "../Configuration.h"
 #include "../defs.h"
@@ -61,6 +62,8 @@ SplashWindow::SplashWindow()
 			 sigc::mem_fun(*this, &SplashWindow::on_new_game_clicked));
     xml->connect_clicked("load_game_button",
 			 sigc::mem_fun(*this, &SplashWindow::on_load_game_clicked));
+    xml->connect_clicked("load_scenario_button",
+			 sigc::mem_fun(*this, &SplashWindow::on_load_scenario_clicked));
     xml->connect_clicked("quit_button",
 			 sigc::mem_fun(*this, &SplashWindow::on_quit_clicked));
 
@@ -126,6 +129,19 @@ void SplashWindow::on_load_game_clicked()
 	chooser.hide();	
 	load_requested.emit(filename);
     }
+}
+
+void SplashWindow::on_load_scenario_clicked()
+{
+    LoadScenarioDialog d;
+    
+    d.set_parent_window(*window.get());
+    
+    d.run();
+    
+    std::string filename = d.get_scenario_filename();
+    if (!filename.empty())
+	load_requested.emit(filename);
 }
 
 void SplashWindow::on_game_started(GameParameters g)

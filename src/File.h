@@ -111,22 +111,13 @@ class File
         // Returns the filename of a music file (description or actual piece)
         static std::string getMusicFile(std::string filename);
         
-
-        //get save game path
+        // get save game path
         static std::string getSavePath();
 
-        /** Get the available tilesets and fill a dropdown box with these entries
-          * 
-          * @param dropdown     the dropdown box to be filled with the information
-          * @return a list of available tilesets
-          */
+        // get the available tilesets
         static std::list<std::string> scanTilesets();
 
-        /** Get the available maps and fill a listbox with these entries
-          * 
-          * @param dropdown     the listbox to be filled with the information
-          * @return a list of available tilesets
-          */
+        // get the available maps
         static std::list<std::string> scanMaps();
 
     private:

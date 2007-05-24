@@ -19,6 +19,7 @@ game-preferences-dialog.glade \
 game-window.glade \
 hero-dialog.glade \
 hero-offer-dialog.glade \
+load-scenario-dialog.glade \
 medal-awarded-dialog.glade \
 quest-assigned-dialog.glade \
 quest-completed-dialog.glade \
