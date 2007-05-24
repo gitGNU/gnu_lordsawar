@@ -60,49 +60,15 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
 
   start = mapToSurface(start);
   end = mapToSurface(end);
-  xdir = end.x - start.x;
-  ydir = end.y - start.y;
-  if (xdir >= 1 && ydir >= 1)
-    {
-      end.x -= 4; end.y -= 4; //southeast, gets top left corner
-    }
-  else if (xdir >= 1 && ydir == 0)
-    {
-      end.x -= 4; end.y -= 4; //east, gets top left corner
-    }
-  else if (xdir >= 1 && ydir <= -1)
-    {
-      end.x += 3; end.y -= 4; //northeast, gets bottom left corner
-    }
-  else if (xdir == 0 && ydir >= 1)
-    {
-      end.x -= 4; end.y -= 4; //south, gets top left corner
-    }
-  else if (xdir == 0 && ydir <= -1)
-    {
-      end.x += 3; end.y -= 4; //north, gets bottom left corner
-    }
-  else if (xdir <= -1 && ydir >= 1)
-    {
-      end.x -= 4; end.y += 4; //southwest, gets top right corner
-    }
-  else if (xdir <= -1 && ydir == 0)
-    {
-      end.x -= 4; end.y += 4; //west, gets top right corner
-    }
-  else if (xdir <= -1 && ydir <= -1)
-    {
-      end.x += 4; end.y += 4; //northwest, gets bottom right corner
-    }
 
   start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
   end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
 
-  Uint32 raw = SDL_MapRGBA(surface->format,252, 236, 32, 255);
+  Uint32 raw = SDL_MapRGBA(surface->format,252, 160, 0, 255);
   draw_line(surface, start.x, start.y, end.x, end.y, raw);
-  //an 8 by 8 box, with a 4x4 box inside of it
+  //an 8 by 8 box, with a 6x6 box inside of it
   draw_rect(surface, end.x - 4, end.y - 4, end.x + 3, end.y + 3, raw);
-  draw_filled_rect(surface, end.x - 2, end.y - 2, end.x + 1, end.y + 1, raw);
+  draw_filled_rect(surface, end.x - 2, end.y - 2, end.x + 2, end.y + 2, raw);
   //FIXME: end should connect to the correct corner!
 }
 void QuestMap::draw_cities(bool all_razed)
