@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2007-05-10 20:56-0400\n"
+"POT-Creation-Date: 2007-05-17 12:30-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -15,14 +15,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: src/QEnemyArmies.cpp:80
+#: src/QEnemyArmies.cpp:79
 #, c-format
 msgid "You have managed to slaughter %i army."
 msgid_plural "You have managed to slaughter %i armies."
 msgstr[0] "Sei riuscito ad uccidere %i armata."
 msgstr[1] "Sei riuscito ad uccidere %i armate."
 
-#: src/QEnemyArmies.cpp:118
+#: src/QEnemyArmies.cpp:117
 #, c-format
 msgid "You must destroy %i unit of enemy armies"
 msgid_plural "You must destroy %i units of enemy armies"

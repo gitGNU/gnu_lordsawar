@@ -40,7 +40,6 @@ src/player.cpp
 src/playerlist.cpp
 src/QEnemyArmies.cpp
 src/QKillHero.cpp
-src/QRuinSearch.cpp
 src/Quest.cpp
 src/QuestsManager.cpp
 src/real_player.cpp
