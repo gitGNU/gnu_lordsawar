@@ -1,4 +1,4 @@
-SUBDIRS = server gui . utils
+SUBDIRS = server gui . utils editor
 MAINTAINERCLEANFILES= Makefile.in
 
 bin_PROGRAMS = lordsawar

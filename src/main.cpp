@@ -18,7 +18,6 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
-#include <fstream>
 
 #include "Configuration.h"
 #include "File.h"
