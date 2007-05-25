@@ -19,7 +19,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <fstream>
-#include <sys/stat.h>
 
 #include "Configuration.h"
 #include "File.h"
@@ -33,71 +32,9 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    char version[10];
-    strcpy(version,FL_VERSION);
     srand(time(NULL));         // set the random seed
 
-    Configuration conf;
-
-    // we check for ~/.lordsawarrc file
-    bool foundconf = false;
-    bool saveconf = false;
-
-    // FIXME: clean up this mess, move it somewhere else
-#ifndef __WIN32__
-    // read the environment variable HOME
-    char* home = getenv("HOME");
-    foundconf |= conf.loadConfigurationFile(std::string(home) + "/.lordsawarrc");
-
-    if (!foundconf)
-    {
-    	std::cerr <<_("Couldn't find any good configuration file...trying auto-configuration.") << std::endl;
-
-        // we did not find the configuration file so we create the default one
-        saveconf |= conf.saveConfigurationFile(std::string(home) + "/.lordsawarrc");
-        if (!saveconf) 
-	{
-            std::cerr <<_("Couldn't save the new configuration file...") << std::endl;
-            std::cerr <<_("Check permissions of your home directory....aborting!\n");
-	    exit(-1);
-	}
-
-    	std::cerr <<_("Created the standard configuration file ") << std::string(home) + "/.lordsawarrc" << std::endl;
-    }
-
-    //Check if the save game directory exists. If not, try to create it.
-    struct stat testdir;
-
-    if (stat(Configuration::s_savePath.c_str(), &testdir)
-        || !S_ISDIR(testdir.st_mode))
-    {
-        Uint32 mask = 0755; //make directory only readable for user and group
-        if (mkdir(Configuration::s_savePath.c_str(), mask))
-        {
-            std::cerr <<_("Couldn't create save game directory ");
-            std::cerr <<Configuration::s_savePath <<".\n";
-            std::cerr <<_("Check permissions and the entries in your lordsawarrc file!\n");
-            exit(-1);
-        }
-    }
-#else
-    foundconf |= conf.loadConfigurationFile("./lordsawarrc");
-
-    if (!foundconf)
-    {
-    	std::cerr <<_("Couldn't find any good configuration file...trying auto-configuration.") << std::endl;
-
-        // we did not find the configuration file so we create the default one
-        saveconf |= conf.saveConfigurationFile("./lordsawarrc");
-        if (!saveconf) 
-	{
-            std::cerr <<_("Couldn't save the new configuration file...") << std::endl;
-            std::cerr <<_("Check permissions of your home directory....aborting!\n");
-	    exit(-1);
-	}
-    	std::cerr <<_("Created the standard configuration file ") << "./lordsawarrc" << std::endl;
-    }    
-#endif
+    initialize_configuration();
 
     setlocale(LC_ALL, Configuration::s_lang.c_str());
 #ifndef __WIN32__
@@ -144,11 +81,11 @@ int main(int argc, char* argv[])
             if (parameter == "--help" || parameter == "-h")
             {
                 cout << endl;
-                cout << "LordsAWar " << version << endl << endl;
+                cout << "LordsAWar " << FL_VERSION << endl << endl;
                 cout << _("Available parameters:") << endl << endl; 
                 cout << _("-h,      --help             Shows this help screen\n");
                 cout << _("-f,      --fullscreen       Fullscreen mode") << endl;
-                cout << _("-c <size>                   set the maximum cache size") <<endl;
+                cout << _("-c <size>                   Set the maximum cache size") <<endl;
                 cout << _("-t,      --test             Starting with a test-scenario") << endl;
 #ifdef WITH_GGZ
                 // deprecated, but should stay reserved for future use
@@ -176,10 +113,6 @@ int main(int argc, char* argv[])
 
     // Check if armysets are in the path (otherwise exit)
     File::scanArmysets();
-
-    char title[50];
-    sprintf(title, "LordsAWar %s", version);
-
 
     kit.start_main_loop();
     

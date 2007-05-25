@@ -21,6 +21,9 @@
 
 class XML_Helper;
 
+// helper for making sure we got the initial configuration stuff up running
+void initialize_configuration();
+
 /** \brief The class which holds all configuration options
   * 
   * Basically, this class is more of a namespace than a real class. It
