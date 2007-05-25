@@ -35,15 +35,9 @@ int main(int argc, char* argv[])
 {
     char version[10];
     strcpy(version,FL_VERSION);
-    char theme[20];
-    strcpy(theme, "lordsawar");
     srand(time(NULL));         // set the random seed
 
     Configuration conf;
-
-#ifdef FL_NO_TIMERS
-    std::cerr << "timers??????????? =" << FL_NO_TIMERS << std::endl;
-#endif
 
     // we check for ~/.lordsawarrc file
     bool foundconf = false;
@@ -161,7 +155,9 @@ int main(int argc, char* argv[])
                 //cout << _("-g,      --ggz              Run game in GGZ mode") << endl;
 #endif
 		cout << endl << endl;
+#if 0
                 cout << _("Please send bug reports to ulf82@users.sf.net") << endl << endl;
+#endif
                 exit(0);
             }
         }
