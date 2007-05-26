@@ -1242,34 +1242,32 @@ bool GameWindow::on_temple_visited(bool hasHero, Temple *temple, int blessCount)
 
 void GameWindow::on_quest_assigned(Hero *hero, Quest *quest)
 {
-    QuestAssignedDialog d(hero, quest);
-    d.set_parent_window(*window.get());
-    return d.run();
-    /*
-    std::auto_ptr<Gtk::Dialog> dialog;
+  std::auto_ptr<Gtk::Dialog> dialog;
+  if (quest)
+    {
+      QuestAssignedDialog d(hero, quest);
+      d.set_parent_window(*window.get());
+      return d.run();
+    }
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/quest-assigned-dialog.glade");
+	= Gnome::Glade::Xml::create(get_glade_path() + "/quest-denied-dialog.glade");
 	
     Gtk::Dialog *d;
     xml->get_widget("dialog", d);
     dialog.reset(d);
     dialog->set_transient_for(*window.get());
     
-    dialog->set_title(String::ucompose(_("Quest - %1"), hero->getName()));
+    dialog->set_title(String::ucompose(_("No quest for %1"), hero->getName()));
 
     Gtk::Label *label;
     xml->get_widget("label", label);
     Glib::ustring s;
-    if (quest)
-	s = quest->getDescription();
-    else
-	s = _("This hero already has a quest.");
+    s = String::ucompose(_("%1 already has a quest!"), hero->getName());
     label->set_text(s);
 
     dialog->show_all();
     dialog->run();
-    */
 }
 
 static bool
@@ -1691,4 +1689,3 @@ void GameWindow::on_quest_expired(Quest *quest)
     dialog->show_all();
     dialog->run();
 }
-

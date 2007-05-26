@@ -25,6 +25,11 @@
 #include "Quest.h"
 #include "QKillHero.h"
 #include "QEnemyArmies.h"
+#include "QEnemyArmytype.h"
+#include "QCitySack.h"
+#include "QCityRaze.h"
+#include "QCityOccupy.h"
+#include "QPillageGold.h"
 
 using namespace std;
 
@@ -917,7 +922,7 @@ bool Action_Reward::fillData(int gold)
 // Action_Quest
 
 Action_Quest::Action_Quest()
-    :Action(Action::QUEST), d_hero(0), d_data(0)
+    :Action(Action::QUEST), d_hero(0), d_data(0), d_victim_player(0)
 {
 }
 
@@ -928,6 +933,7 @@ Action_Quest::Action_Quest(XML_Helper* helper)
     helper->getData(d_hero, "hero");
     helper->getData(d_questtype, "quest");
     helper->getData(d_data, "data");
+    helper->getData(d_victim_player, "victim_player");
 }
 
 Action_Quest::~Action_Quest()
@@ -953,6 +959,7 @@ bool Action_Quest::save(XML_Helper* helper) const
     retval &= helper->saveData("hero", d_hero);
     retval &= helper->saveData("quest", d_questtype);
     retval &= helper->saveData("data", d_data);
+    retval &= helper->saveData("victim_player", d_victim_player);
     retval &= helper->closeTag();
     
     return retval;
@@ -971,6 +978,22 @@ bool Action_Quest::fillData(Quest* q)
             break;
         case Quest::KILLARMIES:
             d_data = dynamic_cast<QuestEnemyArmies*>(q)->getArmiesToKill();
+            d_victim_player = dynamic_cast<QuestEnemyArmies*>(q)->getVictimPlayerId();
+            break;
+        case Quest::CITYSACK:
+            d_data = dynamic_cast<QuestCitySack*>(q)->getCityId();
+            break;
+        case Quest::CITYRAZE:
+            d_data = dynamic_cast<QuestCityRaze*>(q)->getCityId();
+            break;
+        case Quest::CITYOCCUPY:
+            d_data = dynamic_cast<QuestCityOccupy*>(q)->getCityId();
+            break;
+        case Quest::KILLARMYTYPE:
+            d_data = dynamic_cast<QuestEnemyArmytype*>(q)->getArmytypeToKill();
+            break;
+        case Quest::PILLAGEGOLD:
+            d_data = dynamic_cast<QuestPillageGold*>(q)->getGoldToPillage();
             break;
     }
 

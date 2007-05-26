@@ -20,6 +20,8 @@
 #include <list>
 #include "Quest.h"
 #include "army.h"
+#include "player.h"
+
 
 /**
  * \brief Quest - kill an amount of enemy armies
@@ -66,6 +68,9 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
         //! Returns the number of armies to be killed
         Uint32 getArmiesToKill() {return d_to_kill;}
          
+	//! Returns the player whose armies are to be killed
+	Uint32 getVictimPlayerId() {return d_victim_player->getId();}
+
     private:
         /** slot that would receive the sdyingArmy (signal) */
         void dyingArmy(Army *stack, std::vector<Uint32> culprits);

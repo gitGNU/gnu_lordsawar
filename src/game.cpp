@@ -390,10 +390,12 @@ void Game::search_selected_stack()
             Hero* hero = dynamic_cast<Hero*>(stack->getFirstHero());
 
             if (q)
+              {
                 for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
                     if ((*it)->getId() == q->getHeroId())
                         hero = dynamic_cast<Hero*>(*it);
 
+              }
 	    quest_assigned.emit(hero, q);
         }
     }

@@ -112,6 +112,7 @@ Army::Army(XML_Helper* helper, bool prototype)
         helper->getData(temples, "visited_temples");
         stemples.str(temples);
 
+        ival = -1;
         stemples >> ival;
         if (ival != -1)
           d_visitedTemples.push_front(ival);

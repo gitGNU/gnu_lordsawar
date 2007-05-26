@@ -866,18 +866,12 @@ Quest* RealPlayer::stackGetQuest(Stack* s, Temple* t)
         exit(-1);
     }
     
-    std::vector<Uint32> heroes;
-    s->getHeroes(heroes);
     Quest* q=0;
-    
-    // Try to assign each hero in turn a quest. If it doesn't work, we assume,
-    // he already has one.
-    for (unsigned int i = 0; i < heroes.size(); i++)
-    {
-        q = QuestsManager::getInstance()->createNewQuest(heroes[i]);
-        if (q)
-            break;
-    }
+    if (s->getFirstHero())
+      {
+        QuestsManager *qm = QuestsManager::getInstance();
+        q = qm->createNewQuest(s->getFirstHero()->getId());
+      }
 
     // couldn't assign a quest for various reasons
     if (!q)

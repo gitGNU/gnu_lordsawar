@@ -385,6 +385,7 @@ class Action_Quest : public Action
         Uint32 d_hero;
         Uint32 d_questtype;
         Uint32 d_data;
+	Uint32 d_victim_player; //victim player, only KILLARMIES uses this
 };
 
 //-----------------------------------------------------------------------------

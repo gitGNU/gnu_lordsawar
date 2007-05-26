@@ -38,6 +38,7 @@ hero-brings-allies-dialog.glade \
 next-player-turn-dialog.glade \
 city-rename-dialog.glade \
 city-raze-dialog.glade \
-city-razed-dialog.glade
+city-razed-dialog.glade \
+quest-denied-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)
