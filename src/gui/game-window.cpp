@@ -1186,6 +1186,7 @@ bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, 
 
 bool GameWindow::on_temple_visited(bool hasHero, Temple *temple, int blessCount)
 {
+    QuestsManager *qm = QuestsManager::getInstance();
     std::auto_ptr<Gtk::Dialog> dialog;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -1204,6 +1205,9 @@ bool GameWindow::on_temple_visited(bool hasHero, Temple *temple, int blessCount)
     xml->get_widget("label", l);
     xml->get_widget("close_button", close_button);
     xml->get_widget("accept_button", accept_button);
+
+    if (qm->getPlayerQuests(Playerlist::getActiveplayer()).size() > 0)
+      accept_button->set_sensitive(false);
 
     Glib::ustring s;
     if (blessCount > 0)

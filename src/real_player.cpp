@@ -856,6 +856,7 @@ int RealPlayer::stackVisitTemple(Stack* s, Temple* t)
 
 Quest* RealPlayer::stackGetQuest(Stack* s, Temple* t)
 {
+    QuestsManager *qm = QuestsManager::getInstance();
     debug("Realplayer::stackGetQuest")
 
     // bail out in case of senseless data
@@ -866,10 +867,13 @@ Quest* RealPlayer::stackGetQuest(Stack* s, Temple* t)
         exit(-1);
     }
     
+    std::vector<Quest*> quests = qm->getPlayerQuests(Playerlist::getActiveplayer());
+    if (quests.size() > 0)
+      return NULL;
+
     Quest* q=0;
     if (s->getFirstHero())
       {
-        QuestsManager *qm = QuestsManager::getInstance();
         q = qm->createNewQuest(s->getFirstHero()->getId());
       }
 
