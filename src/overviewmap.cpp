@@ -20,6 +20,7 @@
 #include "citylist.h"
 #include "ruinlist.h"
 #include "templelist.h"
+#include "playerlist.h"
 #include "city.h"
 #include "ruin.h"
 #include "temple.h"
@@ -145,6 +146,7 @@ void OverviewMap::after_draw()
 
 void OverviewMap::draw()
 {
+    Playerlist *pl = Playerlist::getInstance();
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
     assert(surface);
     // During the whole drawing stuff, ALWAYS consider that 
@@ -158,6 +160,8 @@ void OverviewMap::draw()
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
         it != Ruinlist::getInstance()->end(); it++)
     {
+        if (it->isHidden() == true && it->getOwner() != pl->getActiveplayer())
+          continue;
         Vector<int> pos = it->getPos();
         pos = mapToSurface(pos);
 

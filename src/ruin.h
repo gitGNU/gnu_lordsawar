@@ -34,11 +34,13 @@ class Ruin : public Location, public sigc::trackable
         /** Default constructor
           * @param pos          the location of the ruin
           * @param name         the name of the ruin
-          * @param owner        the monsters occupying the ruin
+          * @param occupant     the monsters occupying the ruin
           * @param searched     sets the searched flag of the ruin
+	  * @param hidden       sets the hidden flag of the ruin
+	  * @param owner        who can see this hidden ruin
           */
-        Ruin(Vector<int> pos, std::string name = "", Stack* owner = 0,
-            bool searched = false);
+        Ruin(Vector<int> pos, std::string name = "", Stack* occupant = 0, 
+	     bool searched = false, bool hidden = false, Player *owner = 0);
 
         //! Copy constructor
         Ruin(const Ruin&);
@@ -60,6 +62,11 @@ class Ruin : public Location, public sigc::trackable
         //! Returns the keeper
         Stack* getOccupant() const {return d_occupant;}
 
+	//! Returns wether or not this is a "hidden" ruin
+	bool isHidden() const {return d_hidden;}
+
+	//! Returns the player that owns this hidden ruin
+	Player *getOwner() const {return d_owner;}
 
         //! Callback for loading the ruin data
         bool load(std::string tag, XML_Helper* helper);
@@ -71,6 +78,8 @@ class Ruin : public Location, public sigc::trackable
         // DATA
         bool d_searched;    // has ruin already been searched for treasure?
         Stack* d_occupant;
+	bool d_hidden;      // is this a "hidden" ruin that can only be seen
+	Player *d_owner;    // by an "owner"?
 };
 
 #endif // RUIN_H

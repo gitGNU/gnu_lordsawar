@@ -361,7 +361,9 @@ void Game::search_selected_stack()
     Ruin* ruin = Ruinlist::getInstance()->getObjectAt(stack->getPos());
     Temple* temple = Templelist::getInstance()->getObjectAt(stack->getPos());
 
-    if (ruin && !ruin->isSearched() && stack->getGroupMoves() > 0)
+    if (ruin && !ruin->isSearched() && stack->getGroupMoves() > 0 &&
+        (ruin->isHidden() == true && ruin->getOwner() == player) ||
+         ruin->isHidden() == false)
     {
         int cur_gold = player->getGold();
 

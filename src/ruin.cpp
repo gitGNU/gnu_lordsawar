@@ -13,25 +13,37 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "ruin.h"
+#include "playerlist.h"
 #include "GameMap.h"
 #include <stdlib.h>
 
-Ruin::Ruin(Vector<int> pos, std::string name, Stack* owner, bool searched)
-    :Location(name, pos), d_searched(searched), d_occupant(owner)
+Ruin::Ruin(Vector<int> pos, std::string name, Stack* occupant, bool searched, bool hidden, Player *owner)
+    :Location(name, pos), d_searched(searched), d_occupant(occupant), d_hidden(hidden), d_owner(owner)
 {
+    d_owner = Playerlist::getInstance()->getNeutral();
     //mark the location as being occupied by a ruin on the map
     GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::RUIN);
 }
 
 Ruin::Ruin(const Ruin& ruin)
-    :Location(ruin), d_searched(ruin.d_searched), d_occupant(ruin.d_occupant)
+    :Location(ruin), d_searched(ruin.d_searched), d_occupant(ruin.d_occupant),
+    d_hidden(ruin.d_hidden), d_owner(ruin.d_owner)
 {
 }
 
 Ruin::Ruin(XML_Helper* helper)
-    :Location(helper), d_occupant(0)
+    :Location(helper), d_occupant(0), d_hidden(0), d_owner(0)
 {
+    Uint32 ui;
     helper->getData(d_searched, "searched");
+    helper->getData(d_hidden, "hidden");
+    if (d_hidden)
+      {
+        helper->getData(ui, "owner");
+        d_owner = Playerlist::getInstance()->getPlayer(ui);
+      }
+    else
+      d_owner = Playerlist::getInstance()->getNeutral();
 
     //mark the location as being occupied by a ruin on the map
     GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::RUIN);
@@ -53,6 +65,9 @@ bool Ruin::save(XML_Helper* helper) const
     retval &= helper->saveData("x", d_pos.x);
     retval &= helper->saveData("y", d_pos.y);
     retval &= helper->saveData("searched", d_searched);
+    retval &= helper->saveData("hidden", d_hidden);
+    if (d_owner != Playerlist::getInstance()->getNeutral())
+      retval &= helper->saveData("owner", d_owner->getId());
     if (d_occupant)
         retval &= d_occupant->save(helper);
     retval &= helper->closeTag();

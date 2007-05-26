@@ -335,8 +335,13 @@ void BigMap::mouse_button_event(MouseButtonEvent e)
 	    }
 	    else if (Ruin* r = Ruinlist::getInstance()->getObjectAt(tile.x, tile.y))
 	    {
-		ruin_selected(r, map_tip_position(r->get_area()));
-		mouse_state = SHOWING_RUIN;
+                if ((r->isHidden() == true && 
+                      r->getOwner() == Playerlist::getActiveplayer()) ||
+                     r->isHidden() == false)
+                  {
+		    ruin_selected(r, map_tip_position(r->get_area()));
+		    mouse_state = SHOWING_RUIN;
+                  }
 	    }
 	    else if (Signpost* s = Signpostlist::getInstance()->getObjectAt(tile.x, tile.y))
 	    {
@@ -522,7 +527,12 @@ void BigMap::draw_buffer()
 
     for (Ruinlist::iterator i = Ruinlist::getInstance()->begin();
 	 i != Ruinlist::getInstance()->end(); ++i)
-	blit_if_inside_buffer(*i, d_ruinpic);
+      {
+        if (((*i).isHidden() == true && 
+               (*i).getOwner() == Playerlist::getActiveplayer()) ||
+             (*i).isHidden() == false)
+	  blit_if_inside_buffer(*i, d_ruinpic);
+      }
 
     for (Signpostlist::iterator i = Signpostlist::getInstance()->begin();
 	 i != Signpostlist::getInstance()->end(); ++i)
