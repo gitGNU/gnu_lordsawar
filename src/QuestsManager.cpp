@@ -136,12 +136,23 @@ void QuestsManager::questCompleted(Uint32 heroId)
 {
     Quest *quest = d_quests[heroId];
     
-    // now the reward - at the moment a very simple one (just money):
-    int gold = rand() % 1000;
-    Reward_Gold reward(gold);
-    quest->getHero()->getPlayer()->giveReward(NULL, &reward);
+    if (rand() % 2 == 0)
+      {
+        int gold = rand() % 1000;
+        Reward_Gold reward(gold);
+        quest->getHero()->getPlayer()->giveReward(NULL, &reward);
+        quest_completed.emit(quest, &reward);
+      }
+    else
+      {
+        Player *p = quest->getHero()->getPlayer();
+        int num = (rand() % 8) + 1;
+        const Army *a = Reward_Allies::randomArmyAlly();
+        Reward_Allies reward(a, num);
+        p->giveReward(p->getActivestack(), &reward);
+        quest_completed.emit(quest, &reward);
+      }
     
-    quest_completed.emit(quest, gold);
     
     debug("deactivate quest");
     _deactivateQuest(heroId);

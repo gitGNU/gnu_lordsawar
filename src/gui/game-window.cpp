@@ -78,9 +78,14 @@
 #include "../GraphicsCache.h"
 #include "../QuestsManager.h"
 #include "../Quest.h"
+#include "../QCitySack.h"
+#include "../QCityRaze.h"
+#include "../QCityOccupy.h"
+#include "../QPillageGold.h"
 #include "../counter.h"
 #include "../armysetlist.h"
 #include "../CreateScenario.h"
+#include "../reward.h"
 
 
 GameWindow::GameWindow()
@@ -1295,6 +1300,21 @@ hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze, bool *occupy)
         case Quest::CITYSACK:
         case Quest::CITYRAZE:
         case Quest::CITYOCCUPY:
+          if ((*i)->getType() == Quest::CITYSACK)
+            {
+              if (dynamic_cast<QuestCitySack*>((*i))->getCity() != c)
+                continue;
+            }
+          else if ((*i)->getType() == Quest::CITYOCCUPY)
+            {
+              if (dynamic_cast<QuestCityOccupy*>((*i))->getCity() != c)
+                continue;
+            }
+          else if ((*i)->getType() == Quest::CITYRAZE)
+            {
+              if (dynamic_cast<QuestCityRaze*>((*i))->getCity() != c)
+                continue;
+            }
           /* now check if the quest's hero is in our stack */
           for (Stack::iterator it = s->begin(); it != s->end(); ++it)
             {
@@ -1313,13 +1333,16 @@ hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze, bool *occupy)
                 }
             }
           break;
+        case Quest::PILLAGEGOLD:
+          *sack = true;
+          break;
         }
     }
   if ((*raze) || (*sack) || (*occupy))
     return true;
   else
     return false;
-} 
+}
 
 CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 {
@@ -1618,7 +1641,7 @@ void GameWindow::on_game_loaded(Player *player)
     dialog->run();
 }
 
-void GameWindow::on_quest_completed(Quest *quest, int gold)
+void GameWindow::on_quest_completed(Quest *quest, Reward *reward)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
     
@@ -1647,10 +1670,23 @@ void GameWindow::on_quest_completed(Quest *quest, int gold)
 	msgs.pop();
     }
 
-    s += String::ucompose(
-	ngettext("You have been rewarded with %1 gold piece.",
-		 "You have been rewarded with %1 gold pieces.",
-		 gold), gold);
+    if (reward->getType() == Reward::GOLD)
+      {
+        Uint32 gold = dynamic_cast<Reward_Gold*>(reward)->getGold();
+        s += String::ucompose(
+	    ngettext("You have been rewarded with %1 gold piece.",
+		     "You have been rewarded with %1 gold pieces.",
+		     gold), gold);
+      }
+    else if (reward->getType() == Reward::ALLIES)
+      {
+        Uint32 num = dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies();
+        s += String::ucompose(
+	    ngettext("You have been rewarded with %1 ally.",
+		     "You have been rewarded with %1 allies.",
+		     num), num);
+      }
+
 
     label->set_text(s);
 

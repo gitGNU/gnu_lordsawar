@@ -367,6 +367,7 @@ class Action_Reward : public Action
         int d_rewardtype;
 	Uint32 d_count; //amount for gold, and for ALLIES
 	Uint32 d_gift; //armytype for ALLIES, itemtype for ITEM
+	Uint32 d_giftkind; //armyset for ALLIES
 	
 };
 

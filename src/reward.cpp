@@ -41,8 +41,8 @@ Reward_Gold::~Reward_Gold()
 {
 }
 
-Reward_Allies::Reward_Allies(Uint32 armytype, Uint32 count)
-    :Reward(Reward::ALLIES), d_armytype(armytype), d_count(count)
+Reward_Allies::Reward_Allies(const Army *army, Uint32 count)
+    :Reward(Reward::ALLIES), d_army(army), d_count(count)
 {
 }
 
@@ -58,8 +58,10 @@ Reward_Item::Reward_Item(Uint32 itemtype)
 Reward_Item::~Reward_Item()
 {
 }
-bool Reward_Allies::addRandomAllies(Player *p, Vector<int> pos, int alliesCount)
+
+const Army* Reward_Allies::randomArmyAlly()
 {
+  Uint32 allytype;
   // list all the army types that can be allies.
   std::vector<const Army*> allytypes;
   Armysetlist *al = Armysetlist::getInstance();
@@ -73,16 +75,36 @@ bool Reward_Allies::addRandomAllies(Player *p, Vector<int> pos, int alliesCount)
             allytypes.push_back(a);
         }
     }
-
   if (!allytypes.empty())
+    allytype = rand() % allytypes.size();
+  else 
+    return NULL;
+
+  return allytypes[allytype];
+}
+
+bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const Army *army, Uint32 alliesCount)
+{
+  //Armysetlist *al = Armysetlist::getInstance();
+  //std::vector<unsigned int> sets = al->getArmysets(true);
+  for (unsigned int i = 0; i < alliesCount; i++)
     {
-      int allytypeidx = rand() % allytypes.size();
-      for (int i = 0; i < alliesCount; i++)
-        {
-          Army* ally = new Army(*(allytypes[allytypeidx]), p);
-          if (GameMap::getInstance()->addArmy(pos, ally) == NULL)
-            return false;
-        }
+      Army* ally = new Army(*army, p);
+      if (GameMap::getInstance()->addArmy(pos, ally) == NULL)
+        return false;
+    }
+  return true;
+}
+
+bool Reward_Allies::addAllies(Player *p, Location *l, const Army *army, Uint32 alliesCount)
+{
+  //Armysetlist *al = Armysetlist::getInstance();
+  //std::vector<unsigned int> sets = al->getArmysets(true);
+  for (unsigned int i = 0; i < alliesCount; i++)
+    {
+      Army* ally = new Army(*army, p);
+      if (GameMap::getInstance()->addArmy(l, ally) == NULL)
+        return false;
     }
   return true;
 }

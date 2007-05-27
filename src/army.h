@@ -109,6 +109,9 @@ class Army : public sigc::trackable
         
         //! Set the armyset of the army
         void setArmyset(Uint32 armyset, Uint32 type);
+
+	//! Get the armyset of the army
+        Uint32 getArmyset() const {return d_armyset;}
         
         //! Set the name of the unit type
         void setName(std::string name){d_name = name;}

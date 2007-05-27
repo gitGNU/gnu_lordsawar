@@ -27,6 +27,7 @@
 class Quest;
 class XML_Helper;
 class Army;
+class Reward;
 
 
 /**
@@ -66,7 +67,7 @@ class QuestsManager : public sigc::trackable
         /** \brief Singleton destruction method */
         static void deleteInstance();
 
-	sigc::signal<void, Quest *, int> quest_completed;
+	sigc::signal<void, Quest *, Reward *> quest_completed;
 	sigc::signal<void, Quest *> quest_expired;
 	
         /**

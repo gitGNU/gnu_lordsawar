@@ -49,6 +49,7 @@ class Player;
 class Temple;
 class Quest;
 class City;
+class Reward;
 
 /** The main window in which all the game action is going on.
   *
@@ -184,7 +185,7 @@ class GameWindow: public sigc::trackable
     void on_player_died(Player *player);
 
     // quest manager callbacks
-    void on_quest_completed(Quest *quest, int gold);
+    void on_quest_completed(Quest *quest, Reward *reward);
     void on_quest_expired(Quest *quest);
     
     // helpers

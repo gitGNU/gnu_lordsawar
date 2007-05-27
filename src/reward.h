@@ -17,6 +17,8 @@
 #include <SDL_types.h>
 #include "vector.h"
 class Player;
+class Army;
+class Location;
 
 /** Base class for rewards
   *
@@ -57,15 +59,17 @@ class Reward_Gold : public Reward
 class Reward_Allies: public Reward
 {
     public:
-        Reward_Allies(Uint32 armytype, Uint32 count);
+        Reward_Allies(const Army *army, Uint32 count);
         ~Reward_Allies();
 
-	Uint32 getArmytype() const {return d_armytype;}
+	const Army * getArmy() const {return d_army;}
 	Uint32 getNoOfAllies() const {return d_count;}
-        static bool addRandomAllies(Player *p,Vector<int> pos, int alliesCount);
+        static const Army* randomArmyAlly();
+        static bool addAllies(Player *p, Vector<int> pos, const Army *army, Uint32 alliesCount);
+        static bool addAllies(Player *p, Location *l, const Army *army, Uint32 alliesCount);
 
     private:
-        Uint32 d_armytype;
+        const Army *d_army;
         Uint32 d_count;
 };
 
