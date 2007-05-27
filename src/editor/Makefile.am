@@ -9,7 +9,7 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../maptile.o ../real_player.o  ../player.o \
 	../MapRenderer.o ../Tile.o ../TileSet.o ../playerlist.o \
 	../GraphicsCache.o ../QuestsManager.o ../Quest.o ../QKillHero.o \
-        ../QRuinSearch.o ../QEnemyArmies.o ../QCityOccupy.o \
+        ../QEnemyArmies.o ../QCityOccupy.o \
         ../QCitySack.o ../QCityRaze.o ../QPillageGold.o ../QEnemyArmytype.o \
         ../string_tokenizer.o ../reward.o \
         ../Item.o ../Itemlist.o ../Threat.o ../Threatlist.o ../AI_Analysis.o \
