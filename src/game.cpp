@@ -832,7 +832,8 @@ void Game::maybeRecruitHero (Player *p)
 	  newhero->setPlayer(p);
 
           int alliesCount;
-          city->addArmy(newhero);
+          GameMap::getInstance()->addArmy(city, newhero);
+          //city->addArmy(newhero);
           /* now maybe add a few allies */
           if (gold_needed > 1300)
             alliesCount = 3;
@@ -863,7 +864,8 @@ void Game::maybeRecruitHero (Player *p)
               for (int i = 0; i < alliesCount; i++)
                 {
                   Army* ally = new Army(*(allytypes[allytypeidx]), p);
-                  city->addArmy(ally);
+                  //city->addArmy(ally);
+                  GameMap::getInstance()->addArmy(city, ally);
                 }
               if (alliesCount > 0 && p->getType() == Player::HUMAN)
                 hero_arrives.emit(alliesCount);
