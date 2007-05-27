@@ -93,6 +93,7 @@ class GameMap: public sigc::trackable
 
 	//! Add an army to this location on the map
 	Stack* addArmy(Location *l, Army *a);
+        Stack* addArmy(Vector<int> pos, Army *a);
 
         /** Fill the map using the data supplied by a map generator
           * 

@@ -252,18 +252,14 @@ Maptile* GameMap::getTile(int x, int y) const
     return d_map[y*s_width + x];
 }
 
-Stack* GameMap::addArmy(Location *l, Army *a)
+Stack* GameMap::addArmy(Vector<int> pos, Army *a)
 {
+  Stack *s;
   bool added_army = false;
   Uint32 i, j;
   Uint32 d;
   Uint32 max;
   int x, y;
-  Stack *s;
-  s = l->addArmy(a);
-  if (s)
-    return s;
-
   if (s_height > s_width)
     max = s_height;
   else
@@ -275,10 +271,10 @@ Stack* GameMap::addArmy(Location *l, Army *a)
   // suitable tile.
 
   bool land = true;
-  if (getTile(l->getPos().x, l->getPos().y)->getType() == Tile::WATER)
+  if (getTile(pos.x, pos.y)->getType() == Tile::WATER)
     land = false;
 
-  //d is the distance from l->getPos() where our box starts
+  //d is the distance from Pos where our box starts
   for (d = 1; d < max; d++)
     {
       for (i = 0; i < (d * 2) + 1; i++)
@@ -288,8 +284,8 @@ Stack* GameMap::addArmy(Location *l, Army *a)
               if ((i == 0 || i == (d * 2) + 1) && 
                   (j == 0 || j == (d * 2) + 1))
                 {
-                  x = l->getPos().x + (i - d);
-                  y = l->getPos().y + (j - d);
+                  x = pos.x + (i - d);
+                  y = pos.y + (j - d);
                   if (x < 0 || y < 0)
                     continue;
                   if (x > s_width || y > s_height)
@@ -332,4 +328,13 @@ Stack* GameMap::addArmy(Location *l, Army *a)
     return s;
   else
     return NULL;
+}
+
+Stack* GameMap::addArmy(Location *l, Army *a)
+{
+  Stack *s;
+  s = l->addArmy(a);
+  if (s)
+    return s;
+  return addArmy(l->getPos(), a);
 }
