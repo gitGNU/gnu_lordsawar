@@ -118,9 +118,6 @@ class City : public Location
         //! Produces the weakest army the city can produce
         void produceWeakestArmy();
 
-        //! Add an army to the stacks within the city
-        void addArmy(Army* a) const;
-
         //! Do everything neccessary for a new turn
         void nextTurn();
 
@@ -183,8 +180,6 @@ class City : public Location
 	bool canAcceptVectoredUnit();
 
     private:
-        //! Returns a non-full stack in the city or creates a new one
-        Stack* getFreeStack() const;
 
         //! Produces the currently selected army
         void produceArmy();

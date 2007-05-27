@@ -21,6 +21,7 @@
 
 #include "fight.h"
 #include "army.h"
+#include "reward.h"
 
 class Quest;
 class Stack;
@@ -360,10 +361,13 @@ class Action_Reward : public Action
         std::string dump() const;
         bool save(XML_Helper* helper) const;
 
-        bool fillData (int gold);
+        bool fillData (Reward *);
     
     private:
-        int d_gold;
+        int d_rewardtype;
+	Uint32 d_count; //amount for gold, and for ALLIES
+	Uint32 d_gift; //armytype for ALLIES, itemtype for ITEM
+	
 };
 
 //-----------------------------------------------------------------------------

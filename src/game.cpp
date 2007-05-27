@@ -862,8 +862,7 @@ void Game::maybeRecruitHero (Player *p)
               int allytypeidx = rand() % allytypes.size();
               for (int i = 0; i < alliesCount; i++)
                 {
-                  Army* ally = new Army(*(allytypes[allytypeidx]));
-		  ally->setPlayer(p);
+                  Army* ally = new Army(*(allytypes[allytypeidx]), p);
                   city->addArmy(ally);
                 }
               if (alliesCount > 0 && p->getType() == Player::HUMAN)

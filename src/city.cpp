@@ -323,7 +323,7 @@ void City::produceStrongestArmy()
 {
     debug("produceStrongestArmy()");
 
-    Stack* stack = getFreeStack();
+    Stack* stack = getFreeStack(d_player);
     if (stack)
     {
       unsigned int max_strength = 0;
@@ -356,7 +356,7 @@ void City::produceWeakestArmy()
 {
     debug("produceWeakestArmy()");
 
-    Stack* stack = getFreeStack();
+    Stack* stack = getFreeStack(d_player);
     if (stack)
     {
       unsigned int min_strength = 100;
@@ -383,21 +383,6 @@ void City::produceWeakestArmy()
       setProduction(savep);
       return;
     }
-}
-
-void City::addArmy(Army *a) const
-{
-    Stack* stack = getFreeStack();
-
-    // No stack found so create one
-    if (!stack)
-    {
-        stack = new Stack(d_player, d_pos);
-        d_player->addStack(stack);
-    }
-
-    // add army to stack
-    stack->push_front(a);
 }
 
 void City::nextTurn()
@@ -468,28 +453,6 @@ int City::getGoldNeededForUpgrade() const
     return -1;
 }
 
-
-Stack* City::getFreeStack() const
-{
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-        {
-            Stack* stack = Stacklist::getObjectAt(d_pos.x + j, d_pos.y+ i);
-
-            if (stack == 0)
-            {
-                Vector<int> temp;
-                temp.x = d_pos.x + j;
-                temp.y = d_pos.y + i;
-                stack = new Stack(d_player, temp);
-                d_player->addStack(stack);
-                return stack;
-            }
-            else if (stack->size() < 8) return stack;
-        }
-
-    return 0;
-}
 
 void City::setVectoring(Vector<int> p) 
 {

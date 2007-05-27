@@ -11,7 +11,7 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../GraphicsCache.o ../QuestsManager.o ../Quest.o ../QKillHero.o \
         ../QRuinSearch.o ../QEnemyArmies.o ../QCityOccupy.o \
         ../QCitySack.o ../QCityRaze.o ../QPillageGold.o ../QEnemyArmytype.o \
-        ../string_tokenizer.o \
+        ../string_tokenizer.o ../reward.o \
         ../Item.o ../Itemlist.o ../Threat.o ../Threatlist.o ../AI_Analysis.o \
 	../AI_Allocation.o ../MoveResult.o ../AICityInfo.o \
         ../FogMap.o ../signpostlist.o ../signpost.o\

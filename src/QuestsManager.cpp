@@ -138,7 +138,8 @@ void QuestsManager::questCompleted(Uint32 heroId)
     
     // now the reward - at the moment a very simple one (just money):
     int gold = rand() % 1000;
-    quest->getHero()->getPlayer()->giveReward(gold);
+    Reward_Gold reward(gold);
+    quest->getHero()->getPlayer()->giveReward(NULL, &reward);
     
     quest_completed.emit(quest, gold);
     

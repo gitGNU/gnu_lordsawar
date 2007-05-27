@@ -107,7 +107,7 @@ class RealPlayer : public Player
         void updateArmyValues(std::list<Stack*>& stacks, double xp_sum);
 
         //if reward != 0, give this reward, else randomize
-        bool giveReward (int gold);
+        bool giveReward (Stack *s, Reward *r);
         bool stackMoveOneStep(Stack* s);
     private:
         bool cityOccupy(City* c, bool emit);

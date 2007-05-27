@@ -876,25 +876,54 @@ bool Action_Production::fillData(City* c, int prod)
 //Action_Reward
 
 Action_Reward::Action_Reward()
-    :Action(Action::REWARD), d_gold(0)
+    :Action(Action::REWARD), d_rewardtype(0), d_count(0), d_gift(0)
 {
 }
 
 Action_Reward::Action_Reward(XML_Helper* helper)
     :Action(Action::REWARD)
 {
-    helper->getData(d_gold, "gold");
+    helper->getData(d_rewardtype, "reward");
+    helper->getData(d_count, "count");
+    helper->getData(d_gift, "gift");
 }
 
 Action_Reward::~Action_Reward()
 {
 }
 
+bool Action_Reward::fillData(Reward* r)
+{
+    d_rewardtype = r->getType();
+    
+    // fill the data depending on the quest's type
+    switch (d_rewardtype)
+    {
+        case Reward::GOLD:
+            d_count = dynamic_cast<Reward_Gold*>(r)->getGold();
+            break;
+        case Reward::ALLIES:
+            d_count = dynamic_cast<Reward_Allies*>(r)->getNoOfAllies();
+            d_gift = dynamic_cast<Reward_Allies*>(r)->getArmytype();
+            break;
+        case Reward::ITEM:
+            d_gift = dynamic_cast<Reward_Item*>(r)->getItemtype();
+            break;
+    }
+
+    return true;
+}
+
 std::string Action_Reward::dump() const
 {
     std::stringstream s;
 
-    s <<"Got a reward of " <<d_gold <<"gold.\n";
+    if (d_rewardtype == Reward::GOLD)
+      s <<"Got a reward of " <<d_count <<"gold.\n";
+    else if (d_rewardtype == Reward::ALLIES)
+      s <<"Got a reward of " <<d_count <<" allies of type " <<d_gift<<"\n";
+    else if (d_rewardtype == Reward::ITEM)
+      s <<"Got a reward of item " <<d_gift <<"\n";
     
     return s.str();
 }
@@ -905,17 +934,12 @@ bool Action_Reward::save(XML_Helper* helper) const
 
     retval &= helper->openTag("action");
     retval &= helper->saveData("type", Action::REWARD);
-    retval &= helper->saveData("gold", d_gold);
+    retval &= helper->saveData("reward", d_rewardtype);
+    retval &= helper->saveData("count", d_count);
+    retval &= helper->saveData("gift", d_gift);
     retval &= helper->closeTag();
 
     return retval;
-}
-
-bool Action_Reward::fillData(int gold)
-{
-    d_gold = gold;
-
-    return true;
 }
 
 //-----------------------------------------------------------------------------

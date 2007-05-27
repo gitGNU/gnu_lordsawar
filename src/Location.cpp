@@ -13,6 +13,9 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include "Location.h"
+#include "army.h"
+#include "player.h"
+#include "stacklist.h"
 
 #include "xmlhelper.h"
 
@@ -34,5 +37,44 @@ Location::Location(XML_Helper* helper, Uint32 size)
 
 Location::~Location()
 {
+}
+
+Stack *Location::addArmy(Army *a) const
+{
+    Stack* stack = getFreeStack(a->getPlayer());
+
+    // No stack found so create one
+    if (!stack)
+    {
+        stack = new Stack(a->getPlayer(), d_pos);
+        a->getPlayer()->addStack(stack);
+    }
+
+    // add army to stack
+    stack->push_front(a);
+    return stack;
+}
+
+Stack* Location::getFreeStack(Player *p) const
+{
+    for (unsigned int i = 0; i < d_size; i++)
+        for (unsigned int j = 0; j < d_size; j++)
+        {
+            Stack* stack = Stacklist::getObjectAt(d_pos.x + j, d_pos.y+ i);
+
+            if (stack == 0)
+            {
+                Vector<int> temp;
+                temp.x = d_pos.x + j;
+                temp.y = d_pos.y + i;
+                stack = new Stack(p, temp);
+                p->addStack(stack);
+                return stack;
+            }
+            else if (stack->size() < 8) return stack;
+        }
+
+    /*XXX FIXME: add a stack outside of the location, counterclockwise */
+    return 0;
 }
 

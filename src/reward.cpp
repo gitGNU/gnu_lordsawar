@@ -12,39 +12,45 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef LOCATION_H
-#define LOCATION_H
+#include <stdlib.h>
+#include <sstream>
+#include <sigc++/functors/mem_fun.h>
 
-#include "Object.h"
-#include "defs.h"
-#include <string>
-#include "vector.h"
-#include "stack.h"
+#include "reward.h"
+using namespace std;
 
-class Player;
-class Location;
-class ::Object;
-
-/** A Location is a map object with a name. This is the metaclass for
-  * cities, ruins and temples.
-  */
-
-class Location : public ::Object
+Reward::Reward(Type type)
+    :d_type(type)
 {
- public:
-    Location(std::string name, Vector<int> pos, Uint32 size = 1);
-    Location(const Location&);
-    Location(XML_Helper* helper, Uint32 size = 1);
-    ~Location();
-    
-    std::string getName() const {return __(d_name);}
-    void setName(std::string name) {d_name = name;}
+}
 
-    Stack *addArmy(Army *a) const;
+Reward::~Reward()
+{
+}
 
- protected:
-    Stack* getFreeStack(Player *p) const;
-    std::string d_name;
-};
+Reward_Gold::Reward_Gold(Uint32 gold)
+    :Reward(Reward::GOLD), d_gold(gold)
+{
+}
 
-#endif
+Reward_Gold::~Reward_Gold()
+{
+}
+
+Reward_Allies::Reward_Allies(Uint32 armytype, Uint32 count)
+    :Reward(Reward::ALLIES), d_armytype(armytype), d_count(count)
+{
+}
+
+Reward_Allies::~Reward_Allies()
+{
+}
+
+Reward_Item::Reward_Item(Uint32 itemtype)
+    :Reward(Reward::ITEM), d_itemtype(itemtype)
+{
+}
+
+Reward_Item::~Reward_Item()
+{
+}

@@ -25,6 +25,7 @@
 #include "vector.h"
 #include "fight.h"
 #include "army.h"
+#include "reward.h"
 
 class Stacklist;
 class XML_Helper;
@@ -412,7 +413,7 @@ class Player: public sigc::trackable
           * @param reward           a pointer for storing the type of the reward
           * @return false on error, true otherwise
           */
-        virtual bool giveReward (int gold) = 0;
+        virtual bool giveReward (Stack *stack, Reward *reward) = 0;
 
         /** Signal raised when a city is conquered. This signal is solely
           * for internal use. Don't use it, you may break stability (Background:

@@ -822,7 +822,8 @@ bool RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
     d_actions.push_back(item);
 
     // do we reward a player even when his hero died?
-    giveReward(rand() % 1000);
+    Reward_Gold reward(rand() % 1000);
+    giveReward(s, &reward);
     supdatingStack.emit(0);
     return true;
 }
@@ -1055,17 +1056,23 @@ bool RealPlayer::cityChangeProduction(City* c, int slot)
     return true;
 }
 
-bool RealPlayer::giveReward(int gold)
+bool RealPlayer::giveReward(Stack *s, Reward *reward)
 {
     debug("RealPlayer::give_reward")
 
-    //by now we don't have the infrastructure to give something different
-    //from gold, so this function isn't great
-
-    addGold(gold);
+    switch (reward->getType())
+      {
+      case Reward::GOLD:
+        addGold(dynamic_cast<Reward_Gold*>(reward)->getGold());
+	break;
+      case Reward::ALLIES:
+	break;
+      case Reward::ITEM:
+	break;
+      }
 
     Action_Reward* item = new Action_Reward();
-    item->fillData(gold);
+    item->fillData(reward);
     d_actions.push_back(item);
 
     return true;
