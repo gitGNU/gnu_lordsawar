@@ -15,6 +15,8 @@
 #ifndef __REWARD_H
 #define __REWARD_H
 #include <SDL_types.h>
+#include "vector.h"
+class Player;
 
 /** Base class for rewards
   *
@@ -60,6 +62,7 @@ class Reward_Allies: public Reward
 
 	Uint32 getArmytype() const {return d_armytype;}
 	Uint32 getNoOfAllies() const {return d_count;}
+        static bool addRandomAllies(Player *p,Vector<int> pos, int alliesCount);
 
     private:
         Uint32 d_armytype;

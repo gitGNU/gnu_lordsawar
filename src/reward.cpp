@@ -14,9 +14,13 @@
 
 #include <stdlib.h>
 #include <sstream>
+#include <vector>
 #include <sigc++/functors/mem_fun.h>
 
 #include "reward.h"
+#include "army.h"
+#include "armysetlist.h"
+#include "GameMap.h"
 using namespace std;
 
 Reward::Reward(Type type)
@@ -53,4 +57,32 @@ Reward_Item::Reward_Item(Uint32 itemtype)
 
 Reward_Item::~Reward_Item()
 {
+}
+bool Reward_Allies::addRandomAllies(Player *p, Vector<int> pos, int alliesCount)
+{
+  // list all the army types that can be allies.
+  std::vector<const Army*> allytypes;
+  Armysetlist *al = Armysetlist::getInstance();
+  std::vector<unsigned int> sets = al->getArmysets(true);
+  for (unsigned int i = 0; i < sets.size(); i++)
+    {
+      for (unsigned int j = 0; j < al->getSize(sets[i]); j++)
+        {
+          const Army *a = al->getArmy (sets[i], j);
+          if (a->getAwardable())
+            allytypes.push_back(a);
+        }
+    }
+
+  if (!allytypes.empty())
+    {
+      int allytypeidx = rand() % allytypes.size();
+      for (int i = 0; i < alliesCount; i++)
+        {
+          Army* ally = new Army(*(allytypes[allytypeidx]), p);
+          if (GameMap::getInstance()->addArmy(pos, ally) == NULL)
+            return false;
+        }
+    }
+  return true;
 }

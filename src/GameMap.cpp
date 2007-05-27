@@ -254,7 +254,7 @@ Maptile* GameMap::getTile(int x, int y) const
 
 Stack* GameMap::addArmy(Vector<int> pos, Army *a)
 {
-  Stack *s;
+  Stack *s = NULL;
   bool added_army = false;
   Uint32 i, j;
   Uint32 d;
@@ -310,7 +310,7 @@ Stack* GameMap::addArmy(Vector<int> pos, Army *a)
                         continue;
                     }
                   //hey this looks like a good place for a stack
-                  if (!s) //but there isn't a stack here
+                  else  //but there isn't a stack here
                     {
                       Vector<int> pos(x, y);
                       s = new Stack(a->getPlayer(), pos);
@@ -321,7 +321,11 @@ Stack* GameMap::addArmy(Vector<int> pos, Army *a)
                   break;
                 }
             }
+          if (added_army)
+            break;
         }
+      if (added_army)
+        break;
     }
 
   if (added_army)

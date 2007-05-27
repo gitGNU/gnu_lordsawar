@@ -50,6 +50,7 @@
 #include "Configuration.h"
 #include "File.h"
 #include "Quest.h"
+#include "reward.h"
 
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
@@ -833,7 +834,6 @@ void Game::maybeRecruitHero (Player *p)
 
           int alliesCount;
           GameMap::getInstance()->addArmy(city, newhero);
-          //city->addArmy(newhero);
           /* now maybe add a few allies */
           if (gold_needed > 1300)
             alliesCount = 3;
@@ -844,32 +844,12 @@ void Game::maybeRecruitHero (Player *p)
           else
             alliesCount = 0;
 
-        // list all the army types that can be allies.
-        std::vector<const Army*> allytypes;
-        Armysetlist *al = Armysetlist::getInstance();
-        std::vector<unsigned int> sets = al->getArmysets(true);
-        for (unsigned int i = 0; i < sets.size(); i++)
+        if (alliesCount > 0)
           {
-            for (unsigned int j = 0; j < al->getSize(sets[i]); j++)
-              {
-                const Army *a = al->getArmy (sets[i], j);
-                if (a->getAwardable())
-                  allytypes.push_back(a);
-              }
+            Reward_Allies::addRandomAllies(p, city->getPos(), alliesCount);
+            if (p->getType() == Player::HUMAN)
+              hero_arrives.emit(alliesCount);
           }
-
-          if (!allytypes.empty())
-            {
-              int allytypeidx = rand() % allytypes.size();
-              for (int i = 0; i < alliesCount; i++)
-                {
-                  Army* ally = new Army(*(allytypes[allytypeidx]), p);
-                  //city->addArmy(ally);
-                  GameMap::getInstance()->addArmy(city, ally);
-                }
-              if (alliesCount > 0 && p->getType() == Player::HUMAN)
-                hero_arrives.emit(alliesCount);
-            }
           p->withdrawGold(gold_needed);
           p->supdatingStack.emit(0);
         }
