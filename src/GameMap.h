@@ -20,6 +20,8 @@
 #include "vector.h"
 #include "rectangle.h"
 #include "maptile.h"
+#include "stack.h"
+#include "Location.h"
 
 class MapGenerator;
 class XML_Helper;
@@ -88,6 +90,9 @@ class GameMap: public sigc::trackable
 
         //! Alternative access
         Maptile* getTile(Vector<int> p) const {return getTile(p.x, p.y);}
+
+	//! Add an army to this location on the map
+	Stack* addArmy(Location *l, Army *a);
 
         /** Fill the map using the data supplied by a map generator
           * 

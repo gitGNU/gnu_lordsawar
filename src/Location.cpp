@@ -62,7 +62,7 @@ Stack* Location::getFreeStack(Player *p) const
         {
             Stack* stack = Stacklist::getObjectAt(d_pos.x + j, d_pos.y+ i);
 
-            if (stack == 0)
+            if (stack == NULL)
             {
                 Vector<int> temp;
                 temp.x = d_pos.x + j;
@@ -73,8 +73,6 @@ Stack* Location::getFreeStack(Player *p) const
             }
             else if (stack->size() < 8) return stack;
         }
-
-    /*XXX FIXME: add a stack outside of the location, counterclockwise */
-    return 0;
+    return NULL;
 }
 

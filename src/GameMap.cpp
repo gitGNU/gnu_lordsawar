@@ -251,3 +251,85 @@ Maptile* GameMap::getTile(int x, int y) const
 
     return d_map[y*s_width + x];
 }
+
+Stack* GameMap::addArmy(Location *l, Army *a)
+{
+  bool added_army = false;
+  Uint32 i, j;
+  Uint32 d;
+  Uint32 max;
+  int x, y;
+  Stack *s;
+  s = l->addArmy(a);
+  if (s)
+    return s;
+
+  if (s_height > s_width)
+    max = s_height;
+  else
+    max = s_width;
+  max--;
+
+  // we couldn't add the army to the square(s) identified by location,
+  // so the idea is to go around in ever widening boxes until we find a
+  // suitable tile.
+
+  bool land = true;
+  if (getTile(l->getPos().x, l->getPos().y)->getType() == Tile::WATER)
+    land = false;
+
+  //d is the distance from l->getPos() where our box starts
+  for (d = 1; d < max; d++)
+    {
+      for (i = 0; i < (d * 2) + 1; i++)
+        {
+          for (j = 0; j < (d * 2) + 1; j++)
+            {
+              if ((i == 0 || i == (d * 2) + 1) && 
+                  (j == 0 || j == (d * 2) + 1))
+                {
+                  x = l->getPos().x + (i - d);
+                  y = l->getPos().y + (j - d);
+                  if (x < 0 || y < 0)
+                    continue;
+                  if (x > s_width || y > s_height)
+                    continue;
+                  //is there somebody else's city here?
+                  City *c = Citylist::getInstance()->getObjectAt(x, y);
+                  if (c && c->getPlayer() != a->getPlayer())
+                    continue;
+                  //is this an unsuitable tile?
+                  if (land && getTile(x, y)->getType() == Tile::WATER)
+                    continue;
+                  if (!land && getTile(x, y)->getType() != Tile::WATER)
+                    continue;
+                  //is there somebody else's stack here?
+                  s = Stacklist::getObjectAt(x, y);
+                  if (s)
+                    { 
+                      if (s->getPlayer() != a->getPlayer())
+                        continue;
+                      //is it our stack, but too full?
+                      if (s->size() >= 8)
+                        continue;
+                    }
+                  //hey this looks like a good place for a stack
+                  if (!s) //but there isn't a stack here
+                    {
+                      Vector<int> pos(x, y);
+                      s = new Stack(a->getPlayer(), pos);
+                      a->getPlayer()->addStack(s);
+                    }
+                  s->push_front(a);
+                  added_army = true;
+                  break;
+                }
+            }
+        }
+    }
+
+  if (added_army)
+    return s;
+  else
+    return NULL;
+}
