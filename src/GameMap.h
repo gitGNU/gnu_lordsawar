@@ -128,6 +128,7 @@ class GameMap: public sigc::trackable
     private:
         //! Callback for item loading used during loading.
         bool loadItems(std::string tag, XML_Helper* helper);
+        Stack* addArmyAtPos(Vector<int> pos, Army *a);
 
         // Data
         static GameMap* s_instance;

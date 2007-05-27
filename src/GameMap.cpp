@@ -23,6 +23,8 @@
 #include "temple.h"
 #include "playerlist.h"
 #include "stacklist.h"
+#include "ruinlist.h"
+#include "templelist.h"
 #include "xmlhelper.h"
 #include "MapGenerator.h"
 
@@ -253,6 +255,20 @@ Maptile* GameMap::getTile(int x, int y) const
 }
 
 Stack* GameMap::addArmy(Vector<int> pos, Army *a)
+{
+  City *c = Citylist::getInstance()->getObjectAt(pos);
+  if (c)
+    return addArmy(c, a);
+  Temple *t = Templelist::getInstance()->getObjectAt(pos);
+  if (t)
+    return addArmy(t, a);
+  Ruin *r = Ruinlist::getInstance()->getObjectAt(pos);
+  if (r)
+    return addArmy(r, a);
+  return addArmyAtPos(pos, a);
+}
+
+Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
 {
   Stack *s = NULL;
   bool added_army = false;
