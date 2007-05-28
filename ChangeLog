@@ -1,4 +1,5 @@
 2007-05-27  Ben Asselstine
+        * added support for showing the original owner of a capital city
         * added reward of allies upon quest completion
 	* added new addArmy method in GameMap to facilitate dropping down
 	  armies.
