@@ -66,7 +66,9 @@ QuestCitySack::QuestCitySack (QuestsManager& q_mgr, XML_Helper* helper)
 //=======================================================================
 bool QuestCitySack::isFeasible(Uint32 heroId)
 {
+  if (QuestCitySack::chooseToSack(getHeroById(heroId)->getPlayer()))
     return true;
+  return false;
 }
 //=======================================================================
 bool QuestCitySack::save(XML_Helper* helper) const
@@ -148,7 +150,8 @@ City * QuestCitySack::chooseToSack(Player *p)
     // Collect all cities
     Citylist* cl = Citylist::getInstance();
     for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-        if (!(*it).isBurnt() && (*it).getPlayer() != p)
+        if (!(*it).isBurnt() && (*it).getPlayer() != p && 
+            (*it).getNoOfBasicProd() > 1)
             cities.push_back(&(*it));
 
     // Find a suitable city for us to sack
