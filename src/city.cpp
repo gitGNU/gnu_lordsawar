@@ -79,8 +79,11 @@ City::City(XML_Helper* helper)
     helper->getData(d_gold, "gold");
     helper->getData(d_burnt, "burnt");
     helper->getData(d_capital, "capital");
-    helper->getData(ui, "capital_owner");
-    d_capital_owner = Playerlist::getInstance()->getPlayer(ui);
+    if (d_capital)
+      {
+        helper->getData(ui, "capital_owner");
+        d_capital_owner = Playerlist::getInstance()->getPlayer(ui);
+      }
 
     helper->getData(s, "vectoring");
      svect.str(s);

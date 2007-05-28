@@ -419,6 +419,7 @@ bool CreateScenario::distributePlayers()
         {
             // distribute capitals for the players
             (*cit).setPlayer(*pit);
+            (*cit).setCapitalOwner(*pit);
             (*cit).setCapital(true);
             skipping = 0;
 
