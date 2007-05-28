@@ -77,6 +77,9 @@ class City : public Location
         //! Sets whether the city is a capital
         void setCapital(bool capital) {d_capital = capital;}
 
+        //! Sets whether the city is a capital
+        void setCapitalOwner(Player *p) {d_capital_owner = p;}
+
         /** Set the production of the city
           * 
           * @param index    the index of the internal production slot, -1 for none
@@ -166,6 +169,9 @@ class City : public Location
         //! Returns whether the city is a capital
         bool isCapital() const {return d_capital;}
 
+        //! Returns the original owner of this capital city
+        Player *getCapitalOwner() const {return d_capital_owner;}
+
         //! Returns whether the player is a "friend" (==owner) of the city
         bool isFriend(Player* player) const;
 
@@ -200,6 +206,7 @@ class City : public Location
         bool d_vectoring;           // is vectoring active? 
         Vector<int> d_vector;          // where to send produced armies 
         bool d_capital;
+	Player *d_capital_owner;    // the original owner of the capital city
 };
 
 #endif // CITY_H

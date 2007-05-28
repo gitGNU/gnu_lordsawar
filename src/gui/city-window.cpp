@@ -154,8 +154,8 @@ void CityWindow::fill_in_city_info()
     Glib::ustring s;
     if (city->isCapital())
     {
-	s += String::ucompose(_("Home city of %1"),
-			      city->getPlayer()->getName());
+	s += String::ucompose(_("Capital city of %1"),
+			      city->getCapitalOwner()->getName());
 	s += "\n";
     }
 

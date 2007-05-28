@@ -37,7 +37,7 @@ City::City(Vector<int> pos, string name, Uint32 gold)
      d_production(-1),
      d_duration(-1), d_gold(gold),
      d_defense_level(1), d_burnt(false), d_vectoring(false),
-     d_capital(false)
+     d_capital(false), d_capital_owner(0)
 
 {
     // Initialise armytypes
@@ -79,6 +79,8 @@ City::City(XML_Helper* helper)
     helper->getData(d_gold, "gold");
     helper->getData(d_burnt, "burnt");
     helper->getData(d_capital, "capital");
+    helper->getData(ui, "capital_owner");
+    d_capital_owner = Playerlist::getInstance()->getPlayer(ui);
 
     helper->getData(s, "vectoring");
      svect.str(s);
@@ -102,7 +104,7 @@ City::City(const City& c)
     d_production(c.d_production), 
     d_duration(c.d_duration), d_gold(c.d_gold), d_defense_level(c.d_defense_level),
      d_burnt(c.d_burnt),d_vectoring(c.d_vectoring),d_vector(c.d_vector),
-     d_capital(c.d_capital)
+     d_capital(c.d_capital), d_capital_owner(c.d_capital_owner)
 {
     for (int i = 0; i < 4; i++)
         d_basicprod[i] = c.d_basicprod[i];
@@ -135,6 +137,7 @@ bool City::save(XML_Helper* helper) const
     retval &= helper->saveData("gold", d_gold);
     retval &= helper->saveData("burnt", d_burnt);
     retval &= helper->saveData("capital", d_capital);
+    retval &= helper->saveData("capital_owner", d_capital_owner->getId());
     retval &= helper->saveData("vectoring", svect.str());
 
     retval &= helper->closeTag();
