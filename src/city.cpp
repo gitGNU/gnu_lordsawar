@@ -137,7 +137,8 @@ bool City::save(XML_Helper* helper) const
     retval &= helper->saveData("gold", d_gold);
     retval &= helper->saveData("burnt", d_burnt);
     retval &= helper->saveData("capital", d_capital);
-    retval &= helper->saveData("capital_owner", d_capital_owner->getId());
+    if (d_capital)
+      retval &= helper->saveData("capital_owner", d_capital_owner->getId());
     retval &= helper->saveData("vectoring", svect.str());
 
     retval &= helper->closeTag();
