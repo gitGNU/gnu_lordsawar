@@ -378,7 +378,7 @@ void Game::search_selected_stack()
         // this also includes the gold-only hack
         int gold_added = player->getGold() - cur_gold;
 
-	ruin_searched.emit(ruin, gold_added);
+	ruin_searched.emit(ruin, stack, gold_added);
 	
         update_sidebar_stats();
     }

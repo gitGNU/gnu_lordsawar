@@ -1057,7 +1057,7 @@ void GameWindow::hide_map_tip()
     map_tip.reset();
 }
 
-void GameWindow::on_ruin_searched(Ruin *ruin, int gold_found)
+void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, int gold_found)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
     
@@ -1081,9 +1081,8 @@ void GameWindow::on_ruin_searched(Ruin *ruin, int gold_found)
     
     Glib::ustring s = label->get_text();
     s += "\n\n";
-    s += String::ucompose(ngettext("The loot is worth %1 gold piece.",
-				   "The loot is worth %1 gold pieces.",
-				   gold_found), gold_found);
+    s += String::ucompose("%1 finds %2 gp.", stack->getFirstHero()->getName(), 
+                          gold_found);
     label->set_text(s);
     
     dialog->show_all();

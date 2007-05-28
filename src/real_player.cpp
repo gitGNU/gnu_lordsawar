@@ -797,20 +797,23 @@ bool RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
 
     Stack* keeper = r->getOccupant();
 
-    stackFight(&s, &keeper, true);
-
-    // did the explorer not win?
-    if (keeper && keeper->size())
-    {
-        item->setSearched(false);
-        d_actions.push_back(item);
-
-        return false;
-    }
-
-    r->setOccupant(0);
     if (keeper)
-        delete keeper;
+      {
+        stackFight(&s, &keeper, true);
+
+        // did the explorer not win?
+        if (keeper && keeper->size())
+          {
+            item->setSearched(false);
+            d_actions.push_back(item);
+
+            return false;
+          }
+
+        r->setOccupant(0);
+        if (keeper)
+          delete keeper;
+      }
 
     // The fight has been done or left out, now comes the reward. Up to now,
     // we only give some gold (automatically done with give_reward())

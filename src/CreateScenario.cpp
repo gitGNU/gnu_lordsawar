@@ -523,6 +523,9 @@ bool CreateScenario::setupRuins()
         d_ruinnames[randno] = d_ruinnames[d_ruinnames.size() - 1];
         d_ruinnames.pop_back();
 
+        if (rand() % 10 == 0) //one in ten doesn't have a guardian
+          continue;
+
         // and set a guardian
         Stack* s;
         const Army* a = 0;

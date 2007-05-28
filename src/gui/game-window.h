@@ -164,7 +164,7 @@ class GameWindow: public sigc::trackable
     void on_smallmap_changed(SDL_Surface *map);
     void on_stack_info_changed(Stack *s);
     void on_map_tip_changed(Glib::ustring tip, MapTipPosition pos);
-    void on_ruin_searched(Ruin *ruin, int gold_found);
+    void on_ruin_searched(Ruin *ruin, Stack *s, int gold_found);
     void on_fight_started(Fight &fight);
     void on_ruinfight_started(Stack *attackers, Stack *defenders);
     void on_ruinfight_finished(Fight::Result result);
