@@ -1,6 +1,7 @@
 2007-06-02  Ben Asselstine
         * revamped quest report
 	* quest completion dialog now shows a map
+	* added shadow for land on the small map
 
 2007-05-28  Ben Asselstine
         * ruins can now be unoccupied so the hero wins without a fight.
