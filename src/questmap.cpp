@@ -102,6 +102,14 @@ void QuestMap::after_draw()
   Player *p = plist->getActiveplayer();
   Stacklist *sl = p->getStacklist();
 
+  if (!quest)
+    {
+      draw_cities(true);
+      map_changed.emit(surface);
+      return;
+    }
+
+
   Vector<int> start = sl->getPosition (quest->getHeroId ());
 
   if (quest->isPendingDeletion() == false)

@@ -93,7 +93,7 @@
                     <child>
                       <widget class="GtkMenuItem" id="quests_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Q_uests</property>
+                        <property name="label" translatable="yes">Q_uest</property>
                         <property name="use_underline">True</property>
                       </widget>
                     </child>

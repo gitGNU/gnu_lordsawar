@@ -54,7 +54,7 @@
 #include "hero-offer-dialog.h"
 #include "armies-report-dialog.h"
 #include "cities-report-dialog.h"
-#include "quests-report-dialog.h"
+#include "quest-report-dialog.h"
 #include "quest-assigned-dialog.h"
 #include "quest-completed-dialog.h"
 #include "preferences-dialog.h"
@@ -693,11 +693,21 @@ void GameWindow::on_gold_activated()
 
 void GameWindow::on_quests_activated()
 {
-    QuestsReportDialog d(Playerlist::getActiveplayer());
-    d.set_parent_window(*window.get());
-    d.quest_selected.connect(
-	sigc::mem_fun(this, &GameWindow::on_quest_selected_in_report));
-    d.run();
+    Player *player = Playerlist::getActiveplayer();
+    std::vector<Quest*> quests
+	= QuestsManager::getInstance()->getPlayerQuests(player);
+    if (quests.size() > 0)
+      {
+        QuestReportDialog d(quests[0]);
+        d.set_parent_window(*window.get());
+        return d.run();
+      }
+    else //no quest!
+      {
+        QuestReportDialog d(NULL);
+        d.set_parent_window(*window.get());
+        return d.run();
+      }
 }
 
 void GameWindow::on_fullscreen_activated()

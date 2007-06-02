@@ -21,7 +21,7 @@ liblwgui_a_SOURCES = \
     quest-assigned-dialog.cpp quest-assigned-dialog.h \
     quest-completed-dialog.cpp quest-completed-dialog.h \
     main.cpp main.h \
-    quests-report-dialog.cpp quests-report-dialog.h \
+    quest-report-dialog.cpp quest-report-dialog.h \
     preferences-dialog.cpp preferences-dialog.h \
     splash-window.cpp splash-window.h \
     image-helpers.cpp image-helpers.h \
