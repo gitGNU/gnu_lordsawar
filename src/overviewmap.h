@@ -46,6 +46,7 @@ class OverviewMap
  private:
      // the background, we keep it cached so it doesn't have to be drawn all the time
     SDL_Surface* static_surface;
+    bool isLandShadow(int i, int j);
 
  protected:
     double pixels_per_tile;

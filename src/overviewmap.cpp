@@ -41,6 +41,46 @@ OverviewMap::~OverviewMap()
 	SDL_FreeSurface(surface);
 }
 
+bool OverviewMap::isLandShadow(int i, int j)
+{
+  GameMap *gm = GameMap::getInstance();
+  Tile *land_adjacent = NULL;
+  int x = int(i / pixels_per_tile);
+  int y = int(j / pixels_per_tile);
+  int x2;
+  int y2;
+  //what's this tile?
+  //is it water?
+  //no?  then false;
+  //if yes, then maybe
+  //if the tile above us or beside us is land then this might be a shadow pixel
+
+  if (gm->getTile(x,y)->getType() != Tile::WATER)
+    return false;
+  if (x > 0 && gm->getTile(x-1,y)->getType() != Tile::WATER)
+    {
+      x2 = int((i-1) / pixels_per_tile);
+      y2 = int(j / pixels_per_tile);
+      if (gm->getTile(x-1,y) == gm->getTile(x2,y2))
+        return true;
+    }
+  else if (y > 0 && gm->getTile(x,y-1)->getType() != Tile::WATER)
+    {
+      x2 = int(i / pixels_per_tile);
+      y2 = int((j-1) / pixels_per_tile);
+      if (gm->getTile(x,y-1) == gm->getTile(x2,y2))
+        return true;
+    }
+  else if (y > 0 && x > 0 && gm->getTile(x-1,y-1)->getType() != Tile::WATER)
+    {
+      x2 = int((i-1) / pixels_per_tile);
+      y2 = int((j-1) / pixels_per_tile);
+      if (gm->getTile(x-1,y-1) == gm->getTile(x2,y2))
+        return true;
+    }
+
+  return false;
+}
 void OverviewMap::resize(Vector<int> max_dimensions)
 {
     if (surface)
@@ -70,6 +110,7 @@ void OverviewMap::resize(Vector<int> max_dimensions)
 				   0xFFu, 0xFFu << 8, 0xFFu << 16, 0);
 
     Uint32 road_color = SDL_MapRGB(static_surface->format, 164, 84, 0);
+    Uint32 shadow_color = SDL_MapRGB(static_surface->format, 0, 92, 208);
     
     // draw static map
     for (int i = 0; i < static_surface->w; i++)
@@ -83,7 +124,10 @@ void OverviewMap::resize(Vector<int> max_dimensions)
 	    {
 		SDL_Color c = GameMap::getInstance()->getTile(x,y)->getColor();
 		Uint32 raw = SDL_MapRGB(static_surface->format, c.r, c.g, c.b);
-		draw_pixel(static_surface, i, j, raw);
+                if (isLandShadow(i, j) == false)
+		  draw_pixel(static_surface, i, j, raw);
+                else
+		  draw_pixel(static_surface, i, j, shadow_color);
 	    }
         }
 }

@@ -318,43 +318,33 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                     continue;
                   //is there somebody else's city here?
                   City *c = Citylist::getInstance()->getObjectAt(x, y);
-fprintf(stderr,"hmm, okay city is here %p\n", c);
                   if (c && c->getPlayer() != a->getPlayer())
                     {
-fprintf(stderr,"hmm, okay burnt state is %d\n", c->isBurnt());
                       if (c->isBurnt() == false)
                         continue;
                     }
                   //is this an unsuitable tile?
-fprintf(stderr,"here1\n");
                   if (land && getTile(x, y)->getType() == Tile::WATER)
                     continue;
-fprintf(stderr,"here2\n");
                   if (!land && getTile(x, y)->getType() != Tile::WATER)
                     continue;
-fprintf(stderr,"here3\n");
                   //is there somebody else's stack here?
                   s = Stacklist::getObjectAt(x, y);
                   if (s)
                     { 
-fprintf(stderr,"here4\n");
                       if (s->getPlayer() != a->getPlayer())
                         continue;
-fprintf(stderr,"here4.1\n");
                       //is it our stack, but too full?
                       if (s->size() >= 8)
                         continue;
-fprintf(stderr,"here4.2\n");
                     }
                   //hey this looks like a good place for a stack
                   else  //but there isn't a stack here
                     {
-fprintf(stderr,"here5\n");
                       Vector<int> pos(x, y);
                       s = new Stack(a->getPlayer(), pos);
                       a->getPlayer()->addStack(s);
                     }
-fprintf(stderr,"here6\n");
                   s->push_front(a);
                   added_army = true;
                   break;

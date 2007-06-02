@@ -7,18 +7,18 @@
         <d_name>Grass</d_name>
         <d_moves>2</d_moves>
         <d_defense>-1</d_defense>
-        <d_red>0</d_red>
-        <d_green>160</d_green>
-        <d_blue>0</d_blue>
+        <d_red>80</d_red>
+        <d_green>172</d_green>
+        <d_blue>28</d_blue>
         <d_type>0</d_type>
     </tile>
 	<tile>
         <d_name>Water</d_name>
         <d_moves>2</d_moves>
         <d_defense>0</d_defense>
-        <d_red>0</d_red>
-        <d_green>0</d_green>
-        <d_blue>200</d_blue>
+        <d_red>44</d_red>
+        <d_green>184</d_green>
+        <d_blue>252</d_blue>
         <d_type>1</d_type>
     </tile>
 	<tile>
@@ -34,9 +34,9 @@
         <d_name>Hills</d_name>
         <d_moves>4</d_moves>
         <d_defense>3</d_defense>
-        <d_red>150</d_red>
-        <d_green>100</d_green>
-        <d_blue>80</d_blue>
+        <d_red>0</d_red>
+        <d_green>140</d_green>
+        <d_blue>0</d_blue>
         <d_type>4</d_type>
     </tile>
     <tile>
