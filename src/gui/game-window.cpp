@@ -281,7 +281,7 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 	case 4:color.r = 252; color.b = 0; color.g = 160;break;
 	case 5:color.r = 44; color.b = 252; color.g = 184; break;
 	case 6:color.r = 196; color.b = 0; color.g = 28; break;
-	case 7: color.r = color.g = color.b = 50; break;
+	case 7: color.r = color.g = color.b = 0; break;
 	}
 	if (i->type == GameParameters::Player::EASY)
 	    type = Player::AI_FAST;
@@ -296,7 +296,7 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 
     // first insert the neutral player
     unsigned int set = (Armysetlist::getInstance()->getArmysets())[0];
-    color.r = color.g = color.b = 180; color.unused = 0;
+    color.r = color.g = color.b = 204; color.unused = 0;
     creator.addNeutral("Neutral", set, color, Player::AI_DUMMY);
 
     // now fill in some map information
