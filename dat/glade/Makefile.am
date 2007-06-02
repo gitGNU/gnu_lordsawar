@@ -22,7 +22,6 @@ hero-offer-dialog.glade \
 load-scenario-dialog.glade \
 medal-awarded-dialog.glade \
 quest-assigned-dialog.glade \
-quest-completed-dialog.glade \
 quest-expired-dialog.glade \
 preferences-dialog.glade \
 ruinfight-finished-dialog.glade \
@@ -38,7 +37,6 @@ hero-brings-allies-dialog.glade \
 next-player-turn-dialog.glade \
 city-rename-dialog.glade \
 city-raze-dialog.glade \
-city-razed-dialog.glade \
-quest-denied-dialog.glade
+city-razed-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)

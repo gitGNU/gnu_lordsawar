@@ -102,32 +102,34 @@ void QuestMap::after_draw()
   Player *p = plist->getActiveplayer();
   Stacklist *sl = p->getStacklist();
 
-
-  std::list< Vector<int> > targets = quest->getTargets();
   Vector<int> start = sl->getPosition (quest->getHeroId ());
 
-  switch (quest->getType ())
+  if (quest->isPendingDeletion() == false)
     {
-      case Quest::PILLAGEGOLD:
-        draw_cities(true);
-        break;
-      case Quest::KILLARMIES:
-      case Quest::KILLARMYTYPE:
-        draw_cities(false);
-        //for each target draw a plus sign
-        draw_stacks(quest->getHero()->getPlayer(), targets);
-        break;
-      case Quest::KILLHERO:
-      case Quest::CITYSACK:
-      case Quest::CITYOCCUPY:
-      case Quest::CITYRAZE:
-        draw_cities(false);
-        //the target list should only have one position in it
-        //draw an orange line to the target and put a box around it.
-        std::list< Vector<int> >::iterator it = targets.begin();
-        if (targets.size() > 0)
-          draw_target(start, *it);
-        break;
+      std::list< Vector<int> > targets = quest->getTargets();
+      switch (quest->getType ())
+        {
+          case Quest::PILLAGEGOLD:
+            draw_cities(true);
+            break;
+          case Quest::KILLARMIES:
+          case Quest::KILLARMYTYPE:
+            draw_cities(false);
+            //for each target draw a plus sign
+            draw_stacks(quest->getHero()->getPlayer(), targets);
+            break;
+          case Quest::KILLHERO:
+          case Quest::CITYSACK:
+          case Quest::CITYOCCUPY:
+          case Quest::CITYRAZE:
+            draw_cities(false);
+            //the target list should only have one position in it
+            //draw an orange line to the target and put a box around it.
+            std::list< Vector<int> >::iterator it = targets.begin();
+            if (targets.size() > 0)
+              draw_target(start, *it);
+            break;
+        }
     }
 
   // draw the hero picture

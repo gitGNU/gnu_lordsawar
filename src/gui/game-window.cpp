@@ -56,6 +56,7 @@
 #include "cities-report-dialog.h"
 #include "quests-report-dialog.h"
 #include "quest-assigned-dialog.h"
+#include "quest-completed-dialog.h"
 #include "preferences-dialog.h"
 
 #include "../ucompose.hpp"
@@ -1250,32 +1251,9 @@ bool GameWindow::on_temple_visited(bool hasHero, Temple *temple, int blessCount)
 
 void GameWindow::on_quest_assigned(Hero *hero, Quest *quest)
 {
-  std::auto_ptr<Gtk::Dialog> dialog;
-  if (quest)
-    {
-      QuestAssignedDialog d(hero, quest);
-      d.set_parent_window(*window.get());
-      return d.run();
-    }
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/quest-denied-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(String::ucompose(_("No quest for %1"), hero->getName()));
-
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s;
-    s = String::ucompose(_("%1 already has a quest!"), hero->getName());
-    label->set_text(s);
-
-    dialog->show_all();
-    dialog->run();
+  QuestAssignedDialog d(hero, quest);
+  d.set_parent_window(*window.get());
+  return d.run();
 }
 
 static bool
@@ -1642,55 +1620,9 @@ void GameWindow::on_game_loaded(Player *player)
 
 void GameWindow::on_quest_completed(Quest *quest, Reward *reward)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/quest-completed-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s;
-    s += String::ucompose(_("%1 completed the quest!"),
-			  quest->getHero()->getName());
-    s += "\n\n";
-
-    // add messages from the quest
-    std::queue<std::string> msgs;
-    quest->getSuccessMsg(msgs);
-    while (!msgs.empty())
-    {
-        s += msgs.front();
-        s += "\n\n";
-	msgs.pop();
-    }
-
-    if (reward->getType() == Reward::GOLD)
-      {
-        Uint32 gold = dynamic_cast<Reward_Gold*>(reward)->getGold();
-        s += String::ucompose(
-	    ngettext("You have been rewarded with %1 gold piece.",
-		     "You have been rewarded with %1 gold pieces.",
-		     gold), gold);
-      }
-    else if (reward->getType() == Reward::ALLIES)
-      {
-        Uint32 num = dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies();
-        s += String::ucompose(
-	    ngettext("You have been rewarded with %1 ally.",
-		     "You have been rewarded with %1 allies.",
-		     num), num);
-      }
-
-
-    label->set_text(s);
-
-    dialog->show_all();
-    dialog->run();
+  QuestCompletedDialog d(quest, reward);
+  d.set_parent_window(*window.get());
+  return d.run();
 }
 
 void GameWindow::on_quest_expired(Quest *quest)

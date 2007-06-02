@@ -19,18 +19,19 @@
 #include <sigc++/functors/mem_fun.h>
 #include <gtkmm/label.h>
 
-#include "quest-assigned-dialog.h"
+#include "quest-completed-dialog.h"
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
 #include "../ucompose.hpp"
+#include "../hero.h"
 #include "../defs.h"
 #include "../GameMap.h"
 
-QuestAssignedDialog::QuestAssignedDialog(Hero *h, Quest *q)
+QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
 {
-  hero = h;
+  reward = r;
   quest = q;
     
   Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -45,30 +46,55 @@ QuestAssignedDialog::QuestAssignedDialog(Hero *h, Quest *q)
 
     questmap.reset(new QuestMap(quest));
     questmap->map_changed.connect(
-	sigc::mem_fun(this, &QuestAssignedDialog::on_map_changed));
+	sigc::mem_fun(this, &QuestCompletedDialog::on_map_changed));
 
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
 
-    dialog->set_title(String::ucompose(_("Quest for %1"), hero->getName()));
+    dialog->set_title(String::ucompose(_("Quest for %1"), 
+                                       quest->getHero()->getName()));
 
     xml->get_widget("label", label);
     Glib::ustring s;
-    if (quest)
-	s = quest->getDescription();
-    else
-	s = _("This hero already has a quest.");
+    s += String::ucompose(_("%1 completed the quest!"),
+			  quest->getHero()->getName());
+    s += "\n\n";
+    // add messages from the quest
+    std::queue<std::string> msgs;
+    quest->getSuccessMsg(msgs);
+    while (!msgs.empty())
+    {
+        s += msgs.front();
+        s += "\n\n";
+	msgs.pop();
+    }
+    if (reward->getType() == Reward::GOLD)
+      {
+        Uint32 gold = dynamic_cast<Reward_Gold*>(reward)->getGold();
+        s += String::ucompose(
+	    ngettext("You have been rewarded with %1 gold piece.",
+		     "You have been rewarded with %1 gold pieces.",
+		     gold), gold);
+      }
+    else if (reward->getType() == Reward::ALLIES)
+      {
+        Uint32 num = dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies();
+        s += String::ucompose(
+	    ngettext("You have been rewarded with %1 ally.",
+		     "You have been rewarded with %1 allies.",
+		     num), num);
+      }
     label->set_text(s);
     
 }
 
-void QuestAssignedDialog::set_parent_window(Gtk::Window &parent)
+void QuestCompletedDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void QuestAssignedDialog::run()
+void QuestCompletedDialog::run()
 {
     questmap->resize(GameMap::get_dim() * 2);
     questmap->draw();
@@ -77,7 +103,7 @@ void QuestAssignedDialog::run()
     dialog->run();
 }
 
-void QuestAssignedDialog::on_map_changed(SDL_Surface *map)
+void QuestCompletedDialog::on_map_changed(SDL_Surface *map)
 {
     map_image->property_pixbuf() = to_pixbuf(map);
 }

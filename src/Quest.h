@@ -113,6 +113,7 @@ class Quest
 
         /** \brief Checks and returns if quest is still valid (hero living etc.) */
         bool isActive();
+        bool isPendingDeletion() const {return d_pending;}
 
     protected:
         /** \brief Reference to the QuestManager. */
