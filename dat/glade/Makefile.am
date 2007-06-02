@@ -31,7 +31,6 @@ splash-window.glade \
 armies-report-dialog.glade \
 cities-report-dialog.glade \
 gold-report-dialog.glade \
-quests-report-dialog.glade \
 temple-visit-dialog.glade \
 hero-brings-allies-dialog.glade \
 next-player-turn-dialog.glade \
