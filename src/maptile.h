@@ -73,6 +73,15 @@ class Maptile
         //! Get the smallmap color of this maptile
         SDL_Color getColor() const;
 
+	//! Get the pattern of this maptile on the smallmap
+        Tile::Pattern getPattern() const;
+
+	//! Get the associated colour with the pattern
+        SDL_Color getSecondColor() const;
+
+	//! Get the associated colour with the pattern
+        SDL_Color getThirdColor() const;
+
         //! Get the tile type (the type of the underlying terrain)
         Tile::Type getMaptileType() const;
 

@@ -34,6 +34,8 @@ class Tile
         //! Describe terrain types
         enum Type { NONE = 0, GRASS = NONE, WATER = 1, FOREST = 2, HILLS = 4,
                     MOUNTAIN = 8, SWAMP = 16 };
+	enum Pattern { SOLID = 0, STIPPLED = 1, RANDOMIZED = 2, SUNKEN = 3,
+	               TABLECLOTH = 4};
                     
         //! Loading constructor
         Tile(XML_Helper* helper);
@@ -62,6 +64,17 @@ class Tile
         //! Get the type (grass, hill,...) of this tile type
         Type getType() const {return d_type;}
                 
+        //! Get the pattern (solid, stippled, random) of this type
+        Pattern getPattern() const {return d_pattern;}
+
+        //! Get the alternate color associated with this tile's pattern 
+	//!This "second" colour gets stippled, or randomized, or sunken
+        SDL_Color getSecondColor() const {return d_second_color;}
+
+        //! Get another alternate color associated with this tile's pattern 
+	//!This "third" colour gets randomized, or sunken
+        SDL_Color getThirdColor() const {return d_third_color;}
+
     private:
         // DATA
         SDL_Surface* d_surface[8*4];      // base tiles * 4 = corners
@@ -69,6 +82,9 @@ class Tile
         Uint32 d_moves;                    // moves needed to walk over maptile
         SDL_Color d_color;                // color shown in the smallmap
         Type d_type;
+	Pattern d_pattern;
+        SDL_Color d_second_color;         // the extra pattern-related color
+        SDL_Color d_third_color;         // another pattern-related color
 };
 
 #endif // TILE_H

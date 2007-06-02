@@ -17,8 +17,9 @@
 
 #include <SDL.h>
 #include "vector.h"
+#include "Tile.h"
 
-#include "vector.h"
+class Maptile;
 
 /** A smaller version of the map
   * 
@@ -46,7 +47,8 @@ class OverviewMap
  private:
      // the background, we keep it cached so it doesn't have to be drawn all the time
     SDL_Surface* static_surface;
-    bool isLandShadow(int i, int j);
+    bool isShadowed(Uint32 type, int i, int j);
+    void draw_tile_pixel(Maptile *, int, int);
 
  protected:
     double pixels_per_tile;

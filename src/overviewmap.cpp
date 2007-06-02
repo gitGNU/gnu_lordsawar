@@ -41,10 +41,9 @@ OverviewMap::~OverviewMap()
 	SDL_FreeSurface(surface);
 }
 
-bool OverviewMap::isLandShadow(int i, int j)
+bool OverviewMap::isShadowed(Uint32 type, int i, int j)
 {
   GameMap *gm = GameMap::getInstance();
-  Tile *land_adjacent = NULL;
   int x = int(i / pixels_per_tile);
   int y = int(j / pixels_per_tile);
   int x2;
@@ -55,23 +54,23 @@ bool OverviewMap::isLandShadow(int i, int j)
   //if yes, then maybe
   //if the tile above us or beside us is land then this might be a shadow pixel
 
-  if (gm->getTile(x,y)->getType() != Tile::WATER)
+  if (gm->getTile(x,y)->getType() != type)
     return false;
-  if (x > 0 && gm->getTile(x-1,y)->getType() != Tile::WATER)
+  if (x > 0 && gm->getTile(x-1,y)->getType() != type)
     {
       x2 = int((i-1) / pixels_per_tile);
       y2 = int(j / pixels_per_tile);
       if (gm->getTile(x-1,y) == gm->getTile(x2,y2))
         return true;
     }
-  else if (y > 0 && gm->getTile(x,y-1)->getType() != Tile::WATER)
+  if (y > 0 && gm->getTile(x,y-1)->getType() != type)
     {
       x2 = int(i / pixels_per_tile);
       y2 = int((j-1) / pixels_per_tile);
       if (gm->getTile(x,y-1) == gm->getTile(x2,y2))
         return true;
     }
-  else if (y > 0 && x > 0 && gm->getTile(x-1,y-1)->getType() != Tile::WATER)
+  if (y > 0 && x > 0 && gm->getTile(x-1,y-1)->getType() != type)
     {
       x2 = int((i-1) / pixels_per_tile);
       y2 = int((j-1) / pixels_per_tile);
@@ -80,6 +79,95 @@ bool OverviewMap::isLandShadow(int i, int j)
     }
 
   return false;
+}
+void OverviewMap::draw_tile_pixel(Maptile *t, int i, int j)
+{
+  SDL_Color c = t->getColor();
+  Tile::Pattern p = t->getPattern();
+  Uint32 first = SDL_MapRGB(static_surface->format, c.r, c.g, c.b);
+  switch (p)
+    {
+      case Tile::SOLID:
+        draw_pixel(static_surface, i, j, first);
+        break;
+      case Tile::STIPPLED:
+        {
+          SDL_Color s = t->getSecondColor();
+          Uint32 second = SDL_MapRGB(static_surface->format, s.r, s.g, s.b);
+         
+          if ((i+j) % 2 == 0)
+            draw_pixel(static_surface, i, j, first);
+          else
+            draw_pixel(static_surface, i, j, second);
+        }
+        break;
+      case Tile::RANDOMIZED:
+        {
+          SDL_Color s = t->getSecondColor();
+          Uint32 second = SDL_MapRGB(static_surface->format, s.r, s.g, s.b);
+          SDL_Color th = t->getThirdColor();
+          Uint32 third = SDL_MapRGB(static_surface->format, th.r, th.g, th.b);
+          int num = rand() % 3;
+          if (num == 0)
+            draw_pixel(static_surface, i, j, first);
+          else if (num == 1)
+            draw_pixel(static_surface, i, j, second);
+          else
+            draw_pixel(static_surface, i, j, third);
+        }
+        break;
+      case Tile::SUNKEN:
+        if (isShadowed(t->getType(), i, j) == false)
+          draw_pixel(static_surface, i, j, first);
+        else
+          {
+            SDL_Color s = t->getSecondColor();
+            Uint32 shadow_color = SDL_MapRGB(static_surface->format, s.r, s.g, 
+                                             s.b);
+            draw_pixel(static_surface, i, j, shadow_color);
+          }
+        break;
+      case Tile::TABLECLOTH:
+          {
+            SDL_Color s = t->getSecondColor();
+            Uint32 second = SDL_MapRGB(static_surface->format, s.r, s.g, s.b);
+            SDL_Color th = t->getThirdColor();
+            Uint32 third = SDL_MapRGB(static_surface->format, th.r, th.g, th.b);
+            if (i % 4 == 0 && j % 4 == 0)
+              draw_pixel(static_surface, i, j, first);
+            else if (i % 4 == 0 && j % 4 == 1)
+              draw_pixel(static_surface, i, j, second);
+            else if (i % 4 == 0 && j % 4 == 2)
+              draw_pixel(static_surface, i, j, first);
+            else if (i % 4 == 0 && j % 4 == 3)
+              draw_pixel(static_surface, i, j, second);
+            else if (i % 4 == 1 && j % 4 == 0)
+              draw_pixel(static_surface, i, j, second);
+            else if (i % 4 == 1 && j % 4 == 1)
+              draw_pixel(static_surface, i, j, third);
+            else if (i % 4 == 1 && j % 4 == 2)
+              draw_pixel(static_surface, i, j, second);
+            else if (i % 4 == 1 && j % 4 == 3)
+              draw_pixel(static_surface, i, j, third);
+            else if (i % 4 == 2 && j % 4 == 0)
+              draw_pixel(static_surface, i, j, first);
+            else if (i % 4 == 2 && j % 4 == 1)
+              draw_pixel(static_surface, i, j, second);
+            else if (i % 4 == 2 && j % 4 == 2)
+              draw_pixel(static_surface, i, j, first);
+            else if (i % 4 == 2 && j % 4 == 3)
+              draw_pixel(static_surface, i, j, second);
+            else if (i % 4 == 3 && j % 4 == 0)
+              draw_pixel(static_surface, i, j, second);
+            else if (i % 4 == 3 && j % 4 == 1)
+              draw_pixel(static_surface, i, j, third);
+            else if (i % 4 == 3 && j % 4 == 2)
+              draw_pixel(static_surface, i, j, second);
+            else if (i % 4 == 3 && j % 4 == 3)
+              draw_pixel(static_surface, i, j, third);
+          }
+        break;
+    }
 }
 void OverviewMap::resize(Vector<int> max_dimensions)
 {
@@ -110,7 +198,6 @@ void OverviewMap::resize(Vector<int> max_dimensions)
 				   0xFFu, 0xFFu << 8, 0xFFu << 16, 0);
 
     Uint32 road_color = SDL_MapRGB(static_surface->format, 164, 84, 0);
-    Uint32 shadow_color = SDL_MapRGB(static_surface->format, 0, 92, 208);
     
     // draw static map
     for (int i = 0; i < static_surface->w; i++)
@@ -122,12 +209,7 @@ void OverviewMap::resize(Vector<int> max_dimensions)
 		draw_pixel(static_surface, i, j, road_color);
 	    else
 	    {
-		SDL_Color c = GameMap::getInstance()->getTile(x,y)->getColor();
-		Uint32 raw = SDL_MapRGB(static_surface->format, c.r, c.g, c.b);
-                if (isLandShadow(i, j) == false)
-		  draw_pixel(static_surface, i, j, raw);
-                else
-		  draw_pixel(static_surface, i, j, shadow_color);
+                draw_tile_pixel (GameMap::getInstance()->getTile(x,y), i, j);
 	    }
         }
 }

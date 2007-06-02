@@ -60,6 +60,21 @@ SDL_Color Maptile::getColor() const
     return (*d_tileSet)[d_index]->getColor();
 }
 
+Tile::Pattern Maptile::getPattern() const
+{
+    return (*d_tileSet)[d_index]->getPattern();
+}
+
+SDL_Color Maptile::getSecondColor() const
+{
+    return (*d_tileSet)[d_index]->getSecondColor();
+}
+
+SDL_Color Maptile::getThirdColor() const
+{
+    return (*d_tileSet)[d_index]->getThirdColor();
+}
+
 void Maptile::printDebugInfo() const
 {
     std::cerr << "MAPTILE: type = " << d_index << std::endl;
