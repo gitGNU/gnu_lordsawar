@@ -105,6 +105,9 @@ GameWindow::GameWindow()
 
     xml->get_widget("sdl_container", sdl_container);
     xml->get_widget("stack_info_box", stack_info_box);
+    xml->get_widget("stack_info_container", stack_info_container);
+    xml->get_widget("group_moves_label", group_moves_label);
+    xml->get_widget("terrain_image", terrain_image);
     xml->get_widget("stats_box", stats_box);
     stack_info_box->hide();
     stats_box->show();
@@ -830,30 +833,12 @@ void GameWindow::on_city_selected_in_report(City *city)
     game->center_view(city->getPos());
 }
 
-void GameWindow::on_quest_selected_in_report(Quest *quest)
-{
-    // this is a bit painful, we have to find the stack the hero is in to find
-    // the position of the hero
-    Hero *hero = quest->getHero();
-    Stack *stack = 0;
-    Stacklist *sl = Playerlist::getActiveplayer()->getStacklist();
-    for (Stacklist::iterator i = sl->begin(), end = sl->end(); i != end; ++i)
-	for (Stack::iterator j = (*i)->begin(), jend = (*i)->end();
-	     j != jend; ++j)
-	    if (hero == *j)
-	    {
-		stack = *i;
-		break;
-	    }
-
-    if (stack)
-	game->center_view(stack->getPos());
-}
-
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
 {
     army->setGrouped(toggle->get_active());
     ensure_one_army_button_active();
+    Player *p = Playerlist::getActiveplayer();
+    fill_in_group_info (p->getStacklist()->getActivestack());
 }
 
 bool GameWindow::on_army_button_event(GdkEventButton *e,
@@ -956,8 +941,20 @@ void GameWindow::on_stack_info_changed(Stack *s)
 
 void GameWindow::show_stats()
 {
-    stack_info_box->hide();
+    stack_info_container->hide();
     stats_box->show();
+}
+
+void GameWindow::fill_in_group_info (Stack *s)
+{
+    bool ship = false;
+    bool land = false;
+    Uint32 bonus = s->calculateMoveBonus(&ship, &land);
+    GraphicsCache *gc = GraphicsCache::getInstance();
+    SDL_Surface *terrain = gc->getMoveBonusPic(bonus);
+    terrain_image->property_pixbuf() = to_pixbuf(terrain);
+    group_moves_label->set_text(String::ucompose(_("Group\nMoves\n%1"),
+                                s->getGroupMoves()));
 }
 
 void GameWindow::show_stack(Stack *s)
@@ -1005,8 +1002,10 @@ void GameWindow::show_stack(Stack *s)
 	army_buttons.push_back(toggle);
 
     }
+    
+    fill_in_group_info(s);
     ensure_one_army_button_active();
-    stack_info_box->show_all();
+    stack_info_container->show_all();
 }
 
 void GameWindow::on_map_tip_changed(Glib::ustring tip, MapTipPosition pos)

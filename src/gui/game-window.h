@@ -91,6 +91,9 @@ class GameWindow: public sigc::trackable
     Gtk::Widget *sdl_widget;
     Gtk::CheckMenuItem *fullscreen_menuitem;
     Gtk::Box *stack_info_box;
+    Gtk::Box *stack_info_container;
+    Gtk::Label *group_moves_label;
+    Gtk::Image *terrain_image;
     Gtk::Box *stats_box;
     Gtk::Image *map_image;
     Gtk::Label *stats_label;
@@ -147,11 +150,11 @@ class GameWindow: public sigc::trackable
     void on_message_requested(std::string msg);
     void on_stack_selected_in_report(Stack *stack);
     void on_city_selected_in_report(City *city);
-    void on_quest_selected_in_report(Quest *quest);
     
     // info pane at the bottom
     void show_stats();
     void show_stack(Stack *s);
+    void fill_in_group_info (Stack *s);
     void on_army_toggled(Gtk::ToggleButton *toggle, Army *army);
     bool on_army_button_event(GdkEventButton *e,
 			      Gtk::ToggleButton *toggle, Army *army);

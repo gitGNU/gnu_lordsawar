@@ -117,10 +117,16 @@ int Stack::getGroupMoves() const
 
     assert(!empty());
     
-    int min = front()->getMoves();
+    int min = -1;
 
     for (const_iterator it = begin(); it != end(); ++it)
-	min = std::min(min, int((*it)->getMoves()));
+      if ((*it)->isGrouped())
+        {
+          if (min == -1)
+            min = int((*it)->getMoves());
+          else
+	    min = std::min(min, int((*it)->getMoves()));
+        }
 
     return min;
 }
@@ -388,7 +394,7 @@ Stack::iterator Stack::flErase(Stack::iterator object)
 
 Uint32 Stack::calculateMoveBonus(bool * has_ship ,bool * has_land) const
 {
-    Uint32 d_bonus = !0;
+    Uint32 d_bonus = 0;
     *has_ship= false;
     *has_land= false;
 
@@ -396,7 +402,9 @@ Uint32 Stack::calculateMoveBonus(bool * has_ship ,bool * has_land) const
     //calculate the move bonuses
     for (Stack::const_iterator it = this->begin(); it != this->end(); it++)
     {
-        d_bonus &= (*it)->getStat(Army::MOVE_BONUS);
+        if ((*it)->isGrouped() == false)
+          continue;
+        d_bonus |= (*it)->getStat(Army::MOVE_BONUS);
 
         if (((*it)->getStat(Army::ARMY_BONUS)) & Army::SHIP)
         {
