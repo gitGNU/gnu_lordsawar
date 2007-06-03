@@ -1,3 +1,6 @@
+2007-06-03  Ben Asselstine
+        * added support for Movement bonus pictures in GraphicsCache.
+
 2007-06-02  Ben Asselstine
         * revamped quest report
 	* quest completion dialog now shows a map
