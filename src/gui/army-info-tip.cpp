@@ -27,6 +27,7 @@
 #include "../vector.h"
 #include "../defs.h"
 #include "../army.h"
+#include "../GraphicsCache.h"
 
 
 ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
@@ -46,8 +47,10 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     // fill in terrain image
     Gtk::Image *terrain_image;
     xml->get_widget("terrain_image", terrain_image);
-    //terrain_image->property_pixbuf() = to_pixbuf(army->getPixmap());
-    terrain_image->hide();
+    GraphicsCache *gc = GraphicsCache::getInstance();
+    SDL_Surface *terrain = gc->getMoveBonusPic(army->getMoveBonus());
+    terrain_image->property_pixbuf() = to_pixbuf(terrain);
+    //terrain_image->hide();
 
     // fill in info
     Gtk::Label *info_label;

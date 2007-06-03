@@ -215,6 +215,9 @@ class Army : public sigc::trackable
         //! Get the current number of moves (in opposite to getMaxMoves)
         Uint32 getMoves() const {return d_moves;}
 
+        //! Get the move bonus
+        Uint32 getMoveBonus() const {return d_move_bonus;}
+
         //! Get the number of experience points of the unit
         double getXP() const {return d_xp;}
 
