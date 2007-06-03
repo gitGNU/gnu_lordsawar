@@ -1,6 +1,7 @@
 2007-06-03  Ben Asselstine
         * added support for Movement bonus pictures in GraphicsCache.
 	* added movement bonus picture to army info tip
+	* added army info tip to buy production dialog
 
 2007-06-02  Ben Asselstine
         * revamped quest report
