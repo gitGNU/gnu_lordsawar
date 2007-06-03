@@ -398,13 +398,11 @@ Uint32 Stack::calculateMoveBonus(bool * has_ship ,bool * has_land) const
     *has_ship= false;
     *has_land= false;
 
-    //check if there are ships/non-water units in the stack and
-    //calculate the move bonuses
+    //check if there are ships/non-water units in the stack
     for (Stack::const_iterator it = this->begin(); it != this->end(); it++)
     {
         if ((*it)->isGrouped() == false)
           continue;
-        d_bonus |= (*it)->getStat(Army::MOVE_BONUS);
 
         if (((*it)->getStat(Army::ARMY_BONUS)) & Army::SHIP)
         {
@@ -423,6 +421,51 @@ Uint32 Stack::calculateMoveBonus(bool * has_ship ,bool * has_land) const
         }
     }
 
+    bool landed = false;
+    Uint32 bonus;
+    // check to see if we're all flying
+    int num_landedhero = 0;
+    int num_flyer = 0;
+    int num_landedother = 0;
+    for (Stack::const_iterator it = this->begin(); it != this->end(); it++)
+    {
+        if ((*it)->isGrouped() == false)
+          continue;
+        bonus = (*it)->getStat(Army::MOVE_BONUS);
+        if ((bonus & Tile::GRASS) == 0 || (bonus & Tile::WATER) == 0 || 
+            (bonus & Tile::FOREST) == 0 || (bonus & Tile::HILLS) == 0 ||
+            (bonus & Tile::MOUNTAIN) == 0 || (bonus & Tile::SWAMP) == 0)
+          {
+            landed = true;
+            if ((*it)->isHero())
+              num_landedhero++;
+            else
+              num_landedother++;
+          }
+        else
+            num_flyer++;
+        
+    }
+    //if we're all flying or we have enough flyers to carry landbound heroes
+    if (landed == false ||
+        (num_landedother == 0 && num_landedhero <= num_flyer)) 
+      {
+        d_bonus = Tile::GRASS | Tile::WATER | Tile::FOREST | Tile::HILLS |
+            Tile::MOUNTAIN | Tile::SWAMP;
+        return d_bonus;
+      }
+
+    //calculate move bonuses for non-flying stacks
+    for (Stack::const_iterator it = this->begin(); it != this->end(); it++)
+    {
+        if ((*it)->isGrouped() == false)
+          continue;
+        bonus = (*it)->getStat(Army::MOVE_BONUS);
+
+        //only forest and hills extend to all other units in the stack
+        d_bonus |= bonus & (Tile::HILLS | Tile::FOREST);
+
+    }
     return d_bonus;
 }
 
