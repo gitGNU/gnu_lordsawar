@@ -977,7 +977,7 @@ MoveBonusCacheItem* GraphicsCache::addMoveBonusPic(Uint32 type)
     //type is 0=empty, 1=trees, 2=foothills, 3=hills+trees, 4=fly, 5=boat
     
     SDL_Surface* mysurf = NULL;
-    mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[type]);
+    mysurf = SDL_DisplayFormatAlpha(d_movebonuspic[type]);
 
     //now create the cache item and add the size
     MoveBonusCacheItem* myitem = new MoveBonusCacheItem();
