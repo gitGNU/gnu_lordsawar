@@ -112,6 +112,9 @@ bool Stack::moveOneStep()
 
 int Stack::getGroupMoves() const
 {
+  if (empty())
+    return 0;
+
     assert(!empty());
     
     int min = front()->getMoves();
