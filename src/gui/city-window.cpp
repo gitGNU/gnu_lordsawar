@@ -203,7 +203,6 @@ void CityWindow::fill_in_production_toggles()
 
     on_hold_button->set_sensitive(production_index != -1);
     fill_in_production_info();
-    set_buy_button_state();
 }
 
 void CityWindow::on_production_toggled(Gtk::ToggleButton *toggle)
@@ -231,7 +230,6 @@ void CityWindow::on_production_toggled(Gtk::ToggleButton *toggle)
     on_hold_button->set_sensitive(!is_empty);
     
     fill_in_production_info();
-    set_buy_button_state();
 }
 
 void CityWindow::fill_in_production_info()
@@ -298,42 +296,6 @@ void CityWindow::fill_in_production_info()
     current_label->set_markup("<i>" + s4 + "</i>");
 }
 
-void CityWindow::set_buy_button_state()
-{
-    int selected_index = -1;
-    bool selected_empty = false;
-    bool one_empty = false;
-    
-    // loop through toggles, we only want buy to be sensitive if a slot is
-    // selected and empty unless there are no empty slots left
-    for (int i = 0; i < int(production_toggles.size()); ++i)
-    {
-	bool is_empty = city->getArmytype(i) == -1;
-
-	if (is_empty)
-	    one_empty = true;
-
-	if (production_toggles[i]->get_active())
-	{
-	    selected_index = i;
-	    if (is_empty)
-		selected_empty = true;
-	}
-	
-    }
-
-    bool res = false;
-    if (selected_index != -1)
-    {
-	if (selected_empty)
-	    res = true;
-	else if (selected_index < city->getMaxNoOfBasicProd() && !one_empty)
-	    res = true;
-    }
-
-    buy_button->set_sensitive(res);
-}
-
 bool CityWindow::on_production_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle)
 {
     MouseButtonEvent event = to_input_event(e);
@@ -371,7 +333,6 @@ void CityWindow::on_on_hold_clicked() //stop button
 	production_toggles[i]->set_active(false);
     ignore_toggles = false;
     fill_in_production_info();
-    set_buy_button_state();
 }
 
 void CityWindow::on_buy_clicked()
@@ -396,7 +357,6 @@ void CityWindow::on_buy_clicked()
 	fill_in_production_toggles();
 	fill_in_production_info();
 
-	set_buy_button_state();
     }
 }
 

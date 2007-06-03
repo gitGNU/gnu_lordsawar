@@ -61,7 +61,6 @@ class CityWindow: public sigc::trackable
     void fill_in_city_info();
     void fill_in_production_toggles();
     void fill_in_production_info();
-    void set_buy_button_state();
 
     void on_production_toggled(Gtk::ToggleButton *toggle);
     bool on_production_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
