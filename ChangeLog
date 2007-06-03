@@ -2,6 +2,7 @@
         * added support for Movement bonus pictures in GraphicsCache.
 	* added movement bonus picture to army info tip
 	* added army info tip to buy production dialog
+	* added group moves and group terrain picture to stack info
 
 2007-06-02  Ben Asselstine
         * revamped quest report
