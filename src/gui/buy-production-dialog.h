@@ -23,6 +23,8 @@
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/button.h>
 
+#include "army-info-tip.h"
+
 class Army;
 class City;
 
@@ -41,6 +43,7 @@ class BuyProductionDialog: public sigc::trackable
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
+    std::auto_ptr<ArmyInfoTip> army_info_tip;
     Gtk::Label *production_info_label1;
     Gtk::Label *production_info_label2;
     Gtk::Button *buy_button;
@@ -53,6 +56,7 @@ class BuyProductionDialog: public sigc::trackable
     std::vector<const Army*> purchasables;
 
     void on_production_toggled(Gtk::ToggleButton *toggle);
+    bool on_production_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
     void fill_in_production_info();
     void set_buy_button_state();
     const Army *army_id_to_army();

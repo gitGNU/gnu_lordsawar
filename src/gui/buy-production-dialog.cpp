@@ -18,11 +18,13 @@
 #include <gtkmm/image.h>
 #include <gtkmm/table.h>
 #include <sigc++/functors/mem_fun.h>
+#include <assert.h>
 
 #include "buy-production-dialog.h"
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
+#include "input-helpers.h"
 #include "../ucompose.hpp"
 #include "../defs.h"
 #include "../army.h"
@@ -84,6 +86,14 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	toggle->signal_toggled().connect(
 	    sigc::bind(sigc::mem_fun(this, &BuyProductionDialog::on_production_toggled),
 		       toggle));
+	toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
+	toggle->signal_button_press_event().connect(
+	    sigc::bind(sigc::mem_fun(*this, &BuyProductionDialog::on_production_button_event),
+		       toggle), false);
+	
+	toggle->signal_button_release_event().connect(
+	    sigc::bind(sigc::mem_fun(*this, &BuyProductionDialog::on_production_button_event),
+		       toggle), false);
     }
 
     ignore_toggles = false;
@@ -185,3 +195,31 @@ const Army *BuyProductionDialog::army_id_to_army()
 {
     return purchasables[selected_army];
 }
+
+bool BuyProductionDialog::on_production_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle)
+{
+    MouseButtonEvent event = to_input_event(e);
+    if (event.button == MouseButtonEvent::RIGHT_BUTTON
+	&& event.state == MouseButtonEvent::PRESSED) {
+	int slot = -1;
+	for (unsigned int i = 0; i < production_toggles.size(); ++i) {
+	    if (toggle == production_toggles[i])
+		slot = i;
+	}
+	assert(slot != -1);
+
+	const Army *army = purchasables[slot];
+
+	if (army)
+	    army_info_tip.reset(new ArmyInfoTip(toggle, army));
+	return true;
+    }
+    else if (event.button == MouseButtonEvent::RIGHT_BUTTON
+	     && event.state == MouseButtonEvent::RELEASED) {
+	army_info_tip.reset();
+	return true;
+    }
+    
+    return false;
+}
+
