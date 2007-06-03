@@ -500,8 +500,9 @@ void MapGenerator::makeBuildings(Maptile::Building b, int building)
 
 bool MapGenerator::canPutBuilding(int x,int y)
 {
-    // if the building is on water, return false
-    if (d_terrain[y*d_width +x] == Tile::WATER)
+    // if the building is on water or mountains, return false
+    if (d_terrain[y*d_width +x] == Tile::WATER ||
+        d_terrain[y*d_width +x] == Tile::MOUNTAIN)
         return false;
         
     //if the building is close to the map boundaries, return false
