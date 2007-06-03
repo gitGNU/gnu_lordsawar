@@ -286,7 +286,7 @@ void CityWindow::fill_in_production_info()
             City *dest = cl->getObjectAt(city->getVectoring());
             s3 += String::ucompose(_(", then to %1"), dest->getName());
           }
-      pic = to_pixbuf(gc->getArmyPic(as, slot, player, 1, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, a->getType(), player, 1, NULL));
     }
     
     current_image->set(pic);
