@@ -4,6 +4,7 @@
 	* added shadow for land on the small map
 	* drawing the swamp, mountains, forest,  better on the small map
 	* preventing random cities from being put down in mountains
+	* fixed buy-production to allow buying over top of an existing slot
 
 2007-05-28  Ben Asselstine
         * ruins can now be unoccupied so the hero wins without a fight.
