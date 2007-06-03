@@ -30,6 +30,7 @@ struct FlagCacheItem;
 struct SelectorCacheItem;
 struct ShieldCacheItem;
 struct ProdShieldCacheItem;
+struct MoveBonusCacheItem;
 class City;
 
 /** Soliton class for caching army and map images
@@ -176,6 +177,7 @@ class GraphicsCache
         SDL_Surface* getShieldPic(Uint32 type, const Player* p);
         SDL_Surface* getSmallRuinedCityPic();
         SDL_Surface* getSmallHeroPic();
+        SDL_Surface* getMoveBonusPic(Uint32 bonus);
 
         /** Function for getting production shield pictures.
           *
@@ -237,6 +239,9 @@ class GraphicsCache
         //! Creates a new production shield picture with the given parameters.
         ProdShieldCacheItem* addProdShieldPic(Uint32 type, bool prod);
 
+        //! Creates a new movement bonus picture with the given parameters.
+        MoveBonusCacheItem* addMoveBonusPic(Uint32 type);
+
         //! Checks if the cache has exceeded the maximum size and reduce it.
         void checkPictures();
         
@@ -267,6 +272,9 @@ class GraphicsCache
         //! Erases the oldest production shield cache item
         void eraseLastProdShieldItem();
 
+        //! Erases the oldest movement bonus cache item
+        void eraseLastMoveBonusItem();
+
         //! Loads the images for the city pictures and their masks.
         void loadCityPics();
 
@@ -291,6 +299,9 @@ class GraphicsCache
         //! Loads the images for the production shields
         void loadProdShields();
         
+        //! Loads the images for the movement bonuses
+        void loadMoveBonusPics();
+        
         //the data
         static GraphicsCache* s_instance;
 
@@ -304,6 +315,7 @@ class GraphicsCache
         std::list<SelectorCacheItem*> d_selectorlist;
         std::list<ShieldCacheItem*> d_shieldlist;
         std::list<ProdShieldCacheItem*> d_prodshieldlist;
+        std::list<MoveBonusCacheItem*> d_movebonuslist;
 
         //some private surfaces
         SDL_Surface* d_levelmask;
@@ -324,6 +336,7 @@ class GraphicsCache
         SDL_Surface* d_prodshieldpic[7];
 	SDL_Surface* d_smallruinedcity;
 	SDL_Surface* d_smallhero;
+        SDL_Surface* d_movebonuspic[6];
 };
 
 #endif

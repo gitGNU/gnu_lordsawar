@@ -103,6 +103,13 @@ struct ProdShieldCacheItem
     bool prod;
     SDL_Surface* surface;
 };
+
+// the structure to store movement bonus images in
+struct MoveBonusCacheItem
+{
+    Uint32 type; // 0=empty, 1=trees, 2=foothills, 3=hills+trees, 4=fly, 5=boat
+    SDL_Surface* surface;
+};
 //-----------------------------------------------------
 
 GraphicsCache* GraphicsCache::s_instance = 0;
@@ -135,6 +142,7 @@ GraphicsCache::GraphicsCache()
     loadSelectors();
     loadShields();
     loadProdShields();
+    loadMoveBonusPics();
 
     d_levelmask = File::getMiscPicture("level_mask.png");
     d_medalsmask = File::getMiscPicture("medals_mask.gif");
@@ -187,6 +195,11 @@ GraphicsCache::~GraphicsCache()
         SDL_FreeSurface(d_prodshieldpic[i]);
     }
 
+    for (int i = 0; i < 6; i++)
+    {
+        SDL_FreeSurface(d_movebonuspic[i]);
+    }
+
     SDL_FreeSurface(d_levelmask);
     SDL_FreeSurface(d_medalsmask);
     SDL_FreeSurface(d_smallruinedcity);
@@ -201,6 +214,47 @@ SDL_Surface* GraphicsCache::getSmallRuinedCityPic()
 SDL_Surface* GraphicsCache::getSmallHeroPic()
 {
   return SDL_DisplayFormatAlpha(d_smallhero);
+}
+
+SDL_Surface* GraphicsCache::getMoveBonusPic(Uint32 bonus)
+{
+  Uint32 type;
+  if (bonus & Tile::FOREST && bonus & Tile::HILLS && bonus & Tile::WATER &&
+      bonus & Tile::MOUNTAIN && bonus & Tile::SWAMP) // show fly icon
+    type = 4; 
+  else if (bonus & Tile::FOREST && bonus & Tile::HILLS) // show trees and hills
+    type = 3;
+  else if (bonus & Tile::HILLS) // show foothills
+    type = 2;
+  else if (bonus & Tile::FOREST) // show trees
+    type = 1;
+  else if (bonus & Tile::WATER) // (what a) show boat
+    type = 5;
+  else // show blank
+    type = 0;
+  debug("GraphicsCache::getMoveBonusPic " <<bonus <<"," <<type)
+
+  std::list<MoveBonusCacheItem*>::iterator it;
+  MoveBonusCacheItem* myitem;
+
+  for (it = d_movebonuslist.begin(); it != d_movebonuslist.end(); it++)
+  {
+      if ((*it)->type == type)
+      {
+          myitem = (*it);
+
+          //put the item in last place (last touched)
+          d_movebonuslist.erase(it);
+          d_movebonuslist.push_back(myitem);
+
+          return myitem->surface;
+      }
+    }
+
+    //no item found -> create a new one
+    myitem = addMoveBonusPic(type);
+
+    return myitem->surface;
 }
 
 SDL_Surface* GraphicsCache::getArmyPic(Uint32 armyset, Uint32 army, const Player* p,
@@ -578,6 +632,13 @@ void GraphicsCache::checkPictures()
     if (d_cachesize < maxcache)
         return;
 
+    // next, kill movement bonus pics
+    while (d_movebonuslist.size() > 20)
+        eraseLastMoveBonusItem();
+
+    if (d_cachesize < maxcache)
+        return;
+
     // still not enough? Erase army images
     while (d_armylist.size() > 40)
         eraseLastArmyItem();
@@ -909,6 +970,32 @@ ProdShieldCacheItem* GraphicsCache::addProdShieldPic(Uint32 type, bool prod)
     return myitem;
 }
 
+MoveBonusCacheItem* GraphicsCache::addMoveBonusPic(Uint32 type)
+{
+    debug("GraphicsCache::addMoveBonusPic, type="<<type)
+    
+    //type is 0=empty, 1=trees, 2=foothills, 3=hills+trees, 4=fly, 5=boat
+    
+    SDL_Surface* mysurf = NULL;
+    mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[type]);
+
+    //now create the cache item and add the size
+    MoveBonusCacheItem* myitem = new MoveBonusCacheItem();
+    myitem->type = type;
+    myitem->surface = mysurf;
+
+    d_movebonuslist.push_back(myitem);
+
+    //add the size
+    int picsize = mysurf->w * mysurf->h;
+    d_cachesize += picsize * mysurf->format->BytesPerPixel;
+
+    //and check the size of the cache
+    checkPictures();
+
+    return myitem;
+}
+
 
 void GraphicsCache::clear()
 {
@@ -938,6 +1025,9 @@ void GraphicsCache::clear()
 
     while (!d_prodshieldlist.empty())
         eraseLastProdShieldItem();
+
+    while (!d_movebonuslist.empty())
+        eraseLastMoveBonusItem();
 }
 
 void GraphicsCache::eraseLastArmyItem()
@@ -1071,6 +1161,21 @@ void GraphicsCache::eraseLastProdShieldItem()
 
     ProdShieldCacheItem* myitem = *(d_prodshieldlist.begin());
     d_prodshieldlist.erase(d_prodshieldlist.begin());
+
+    int size = myitem->surface->w * myitem->surface->h;
+    d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+
+    SDL_FreeSurface(myitem->surface);
+    delete myitem;
+}
+
+void GraphicsCache::eraseLastMoveBonusItem()
+{
+    if (d_movebonuslist.empty())
+        return;
+
+    MoveBonusCacheItem* myitem = *(d_movebonuslist.begin());
+    d_movebonuslist.erase(d_movebonuslist.begin());
 
     int size = myitem->surface->w * myitem->surface->h;
     d_cachesize -= myitem->surface->format->BytesPerPixel * size;
@@ -1411,6 +1516,35 @@ void GraphicsCache::loadProdShields()
 
       }
     SDL_FreeSurface(prodshieldpics);
+}
+
+void GraphicsCache::loadMoveBonusPics()
+{
+    //load the movement bonus icons
+    unsigned int i;
+    SDL_Rect movebonusrect;
+    SDL_Surface* movebonuspics = File::getMiscPicture("movebonus.png");
+    // copy alpha values, don't use them
+    SDL_SetAlpha(movebonuspics, 0, 0);
+    SDL_PixelFormat* fmt = movebonuspics->format;
+    int xsize = 32; /*FIXME hardcoded size, should be in .defs? */
+    int ysize = 10; /*FIXME hardcoded size, should be in .defs? */
+    for (i = 0; i < 6; i++)
+      {
+        SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize, 
+    						fmt->BitsPerPixel, fmt->Rmask, 
+    						fmt->Gmask, fmt->Bmask, 
+						fmt->Amask);
+	movebonusrect.x = i*xsize;
+	movebonusrect.y = 0;
+	movebonusrect.w = xsize;
+	movebonusrect.h = ysize;
+	SDL_BlitSurface(movebonuspics, &movebonusrect, tmp, 0);
+	d_movebonuspic[i] = SDL_DisplayFormatAlpha(tmp);
+	SDL_FreeSurface(tmp);
+
+      }
+    SDL_FreeSurface(movebonuspics);
 }
 
 void GraphicsCache::loadFlags()
