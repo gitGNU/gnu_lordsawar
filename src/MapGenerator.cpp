@@ -181,10 +181,12 @@ void MapGenerator::makeMap(int width, int height)
     makePlains();
     cout <<_("Raining Water     ... 30%") <<endl;
     makeTerrain(Tile::WATER, d_pwater, true);  
+    makeStreamer(Tile::WATER, d_pwater/3, 2);
     cout <<_("Raising Hills     ... 20%") <<endl;
     makeTerrain(Tile::HILLS, d_phills, false);
     cout <<_("Raising Mountains ... 30%") <<endl;
     makeTerrain(Tile::MOUNTAIN, d_pmountains, false);
+    makeStreamer(Tile::MOUNTAIN, d_pmountains/3, 3);
     cout <<_("Planting Forest   ... 40%") <<endl;
     makeTerrain(Tile::FOREST, d_pforest, false);
     cout <<_("Watering Swamps   ... 50%") <<endl;
@@ -305,6 +307,103 @@ void MapGenerator::makeTerrain(Tile::Type t, int percent, bool contin)
             }
         }
     }
+}
+
+/**
+ * Makes streaming terrain features.
+ * The algorithm is as follows :
+ * 1. Find a random starting location
+ * 2. chose a random direction , if x is the starting location, the direction
+ *    can be from 0-7 as follows :
+ *    +-+-+-+
+ *    |0|1|2|
+ *    +-+-+-+
+ *    |7|x|3|
+ *    +-+-+-+
+ *    |6|5|4|
+ *    +-+-+-+
+ * 3. Drop the tile and move in the direction
+ * 4. Change the direction every so often
+ * 5. Keep doing this until we go off the map or we've dropped enough tiles
+ *
+ */
+void MapGenerator::makeStreamer(Tile::Type t, int percent, int width)
+{
+    // calculate the total number of tiles for this terrain
+    int terrain = d_width*d_height*percent / 100;
+    int placed = 0;  // total of current terrain placed so far 
+    int dir;
+    int i;
+    
+    while(placed != terrain)
+    {
+        // find a random starting position
+        int x = rand() % d_width;
+        int y = rand() % d_height;
+        seekPlain(x, y);
+        dir = rand()%8; // pick a random direction
+        // now go on until we hit a dead end
+        while (placed < terrain)
+        {
+            // if we are on grass, modify this tile first
+            if (d_terrain[y*d_width + x] == Tile::GRASS)
+            {
+                d_terrain[y*d_width + x] = t;
+                placed++;
+                continue;
+            }
+            
+            if (rand() % 2 == 0)
+              {
+                if (rand() % 2 == 0)
+                  {
+                    dir++;
+                    if (dir > 7)
+                      dir = 0;
+                  }
+                else
+                  {
+                    dir--;
+                    if (dir < 0)
+                      dir = 7;
+                  }
+            }
+
+            {
+                int tmpx = x + d_xdir[dir];
+                int tmpy = y + d_ydir[dir];
+                
+                // reject invalid data
+                if (offmap(tmpx, tmpy))// || d_terrain[tmpy*d_width + tmpx] != Tile::GRASS)
+                    break;
+
+                // else move our region of interest by one tile
+                x = tmpx;
+                y = tmpy;
+                d_terrain[y*d_width + x] = t;
+                switch (dir)
+                  {
+                    case 1: case 2: case 6: case 5:
+                      {
+                        for (i = 1; i <= width; i++)
+                          if (offmap(tmpx+i, tmpy) == false)
+                            d_terrain[y*d_width + x+i] = t;
+                      }
+                      break;
+                    case 7: case 3: case 0: case 4:
+                      {
+                        for (i = 1; i <= width; i++)
+                          if (offmap(tmpx, tmpy+i) == false)
+                            d_terrain[(y+i)*d_width + x] = t;
+                      }
+                      break;
+                  }
+                placed++;
+            }
+
+        }
+    }
+
 }
 
 bool MapGenerator::seekPlain(int& x, int& y)

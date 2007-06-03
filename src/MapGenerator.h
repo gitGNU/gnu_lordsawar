@@ -156,6 +156,7 @@ class MapGenerator
           *                 patches when it hits a dead end.
           */
         void makeTerrain(Tile::Type t, int percent, bool contin);
+        void makeStreamer(Tile::Type type, int percent, int width);
 
         /** Tries to find the nearest grass tile from a given location.
           *
