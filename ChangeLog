@@ -5,6 +5,8 @@
 	* added group moves and group terrain picture to stack info
 	* added ability for heroes to be carried on flyers
 	* only hills and forest movement bonus propogates to the rest of stack
+	* added a crappy linear terrain feature generator for rivers and
+	  mountain ranges
 
 2007-06-02  Ben Asselstine
         * revamped quest report
