@@ -3,6 +3,8 @@
 	* added movement bonus picture to army info tip
 	* added army info tip to buy production dialog
 	* added group moves and group terrain picture to stack info
+	* added ability for heroes to be carried on flyers
+	* only hills and forest movement bonus propogates to the rest of stack
 
 2007-06-02  Ben Asselstine
         * revamped quest report
