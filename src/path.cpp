@@ -228,8 +228,8 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
         return 0;
 
     // choose the order in which we process directions so as to favour
-    // straight lines over diagonals
-    int diffs[][2] = { {1, 0}, {-1, 0}, {0, -1}, {0, 1}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1} };
+    // diagonals over straight lines
+    int diffs[][2] = { {-1, -1}, {-1, 1}, {1, -1}, {1, 1}, {1, 0}, {-1, 0}, {0, -1}, {0, 1} };
     int x = dest.x;
     int y = dest.y;
     while (dist > 0)
