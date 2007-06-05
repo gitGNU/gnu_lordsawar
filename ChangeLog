@@ -1,5 +1,8 @@
+2007-06-04  Ben Asselstine
+        * prefer diagonals when calculating movement paths
+
 2007-06-03  Ben Asselstine
-        * added support for Movement bonus pictures in GraphicsCache.
+        * added support for Movement bonus pictures in GraphicsCache
 	* added movement bonus picture to army info tip
 	* added army info tip to buy production dialog
 	* added group moves and group terrain picture to stack info
