@@ -3,9 +3,7 @@ a list of the dependencies.
 
 Requirements:
 
-- paragui = 1.1.8
-	to be found under http://www.paragui.org
-    (take the latest version due to some necessary bug fixes)
+- gtkmm and libglade == 2.4
 
 - SDL >= 1.2.0	
 	to be found under http://www.libsdl.org
@@ -20,11 +18,8 @@ Requirements:
     an XML parser to be found under http://expat.sf.net, also comes with the
     paragui source distribution (enable with configure --enable-internal-expat)
 
-- libsigc++ >= 1.2.0
+- libsigc++ >= 2.0
 	to be found under libsigc.sf.net
-	don't know if libsigc++-1.0 also works, but it had some design flaws
-	according to the documentation, so take the latest. Don't use version 2.0!
-    AFAIR it is incompatible with 1.2.
 
 - pkg-config
     Should be distributed with the Linux distribution. Required for detecting
@@ -44,8 +39,3 @@ Optional requirements (for now):
     
 
 
-Requirements for freelords-autopack.sh (neccessary only for admins etc. :)):
-
-- must be outside of "freelords_sdl" ie. "/home/cvs/freelords_sdl", then the
-script must be in "/home/cvs"
-- need ncftpput, you can get ncftp at http://www.ncftp.com
