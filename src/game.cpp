@@ -473,7 +473,7 @@ void Game::on_city_selected(City* c, MapTipPosition pos, bool brief)
 	    Glib::ustring str;
 
 	    if (c->isCapital())
-		str = String::ucompose(_("%1 (home city)"), c->getName());
+		str = String::ucompose(_("%1 (capital city)"), c->getName());
 	    else
 		str = c->getName();
 	    str += "\n";
