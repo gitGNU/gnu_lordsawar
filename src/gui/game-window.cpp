@@ -947,9 +947,7 @@ void GameWindow::show_stats()
 
 void GameWindow::fill_in_group_info (Stack *s)
 {
-    bool ship = false;
-    bool land = false;
-    Uint32 bonus = s->calculateMoveBonus(&ship, &land);
+    Uint32 bonus = s->calculateMoveBonus();
     GraphicsCache *gc = GraphicsCache::getInstance();
     SDL_Surface *terrain = gc->getMoveBonusPic(bonus);
     terrain_image->property_pixbuf() = to_pixbuf(terrain);

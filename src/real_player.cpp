@@ -1088,6 +1088,7 @@ bool RealPlayer::giveReward(Stack *s, Reward *reward)
 
 bool RealPlayer::stackMoveOneStep(Stack* s)
 {
+    int needed_moves;
     if (!s)
         return false;
     
@@ -1096,14 +1097,28 @@ bool RealPlayer::stackMoveOneStep(Stack* s)
 
     Vector<int> dest = *(s->getPath()->front());
 
-    int needed_moves = GameMap::getInstance()->getTile(dest.x,dest.y)->getMoves();
     Uint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType();
-    City* c = Citylist::getInstance()->getObjectAt(dest.x, dest.y);
+    City* to_city = Citylist::getInstance()->getObjectAt(dest.x, dest.y);
+    City* on_city = Citylist::getInstance()->getObjectAt(s->getPos().x, s->getPos().y);
+    bool on_water = (GameMap::getInstance()->getTile(s->getPos().x,s->getPos().y)->getMaptileType() == Tile::WATER);
+    bool to_water = (GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType() == Tile::WATER);
+    bool ship_load_unload = false;
+    if (!s->isFlying())
+      {
+        if ((on_water && to_city) || (on_city && to_water))
+          ship_load_unload = true;
+      }
+    needed_moves = GameMap::getInstance()->getTile(dest.x,dest.y)->getMoves();
 
     for (Stack::iterator it = s->begin(); it != s->end(); it++)
     //calculate possible move boni for each army
     {
-        if (c != 0)
+        if (ship_load_unload)
+          {
+            (*it)->decrementMoves((*it)->getMoves());
+            continue;
+          }
+        if (to_city != 0)
         //cities cost one MP
         {
             (*it)->decrementMoves(1);

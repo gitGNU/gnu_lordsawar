@@ -371,3 +371,72 @@ Stack* GameMap::addArmy(Location *l, Army *a)
     return s;
   return addArmy(l->getPos(), a);
 }
+
+bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
+{
+  if (destx < 0 || destx >= s_width)
+    return true;
+  if (desty < 0 || desty >= s_height)
+    return true;
+  int diffx = destx - x;
+  int diffy = desty - y;
+  if (diffx >= -1 && diffx <= 1 && diffy >= -1 && diffy <= 1)
+    {
+      assert (Citylist::getInstance()->size());
+      bool from_city = Citylist::getInstance()->getObjectAt(x,y) != NULL;
+      bool to_city = Citylist::getInstance()->getObjectAt(destx,desty) != NULL;
+      Maptile *from = getTile(x, y);
+      Maptile *to = getTile(destx, desty);
+      if (from == to)
+        return false;
+      //am i on water going towards land that isn't a city?
+      if (from->getMaptileType() == Tile::WATER &&
+          to->getMaptileType() != Tile::WATER &&
+          !to_city)
+        return true;
+      //am i on land, going towards water from a tile that isn't a city?
+      if (from->getMaptileType() != Tile::WATER &&
+          to->getMaptileType() == Tile::WATER &&
+          !from_city)
+        return true;
+    }
+ return false;
+}
+
+void GameMap::calculateBlockedAvenues()
+{
+  int diffx = 0, diffy = 0;
+  int destx = 0, desty = 0;
+  for (int i = 0; i < s_width; i++)
+    for (int j = 0; j < s_height; j++)
+      {
+        Maptile *maptile = getTile(i, j);
+        for (int k = 0; k < 8; k++)
+          {
+            switch (k)
+              {
+                case 0: diffx = -1;  diffy = -1; break;
+                case 1: diffx = -1; diffy = 0; break;
+                case 2: diffx = -1; diffy = 1; break;
+                case 3: diffx = 0; diffy = 1; break;
+                case 4: diffx = 0; diffy = -1; break;
+                case 5: diffx = 1; diffy = -1; break;
+                case 6: diffx = 1; diffy = 0; break;
+                case 7: diffx = 1; diffy = 1; break;
+              }
+              destx = i + diffx;
+              desty = j + diffy;
+              if (destx < 0 || destx >= s_width)
+                {
+                  maptile->d_blocked[k] = true;
+                  continue;
+                }
+              if (desty < 0 || desty >= s_height)
+                {
+                  maptile->d_blocked[k] = true;
+                  continue;
+                }
+              maptile->d_blocked[k] = isBlockedAvenue(i, j, destx, desty);
+          }
+      }
+}

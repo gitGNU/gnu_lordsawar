@@ -104,7 +104,7 @@ class Stack : public std::list<Army*>, public sigc::trackable
         Path* getPath() const {return d_path;}
 
         //! Returns the minimum number of MP of all armies
-        int getGroupMoves() const;
+        Uint32 getGroupMoves() const;
 
         //! Returns the minimum number of MP of all tiles around the stack, or
         // -1 if the stack can't move
@@ -147,12 +147,11 @@ class Stack : public std::list<Army*>, public sigc::trackable
         //! The same as std::list::erase, but also frees pointers
         iterator flErase(iterator object);
 
-       /** Calculates the different move bonuses.
+       /** Calculates group move bonuses.
           *
-          * In detail, it checks if there are ships, land-based units in the
-          * stack and searches for the movement boni.
           */
-        Uint32 calculateMoveBonus(bool * has_ship ,bool * has_land) const;
+        Uint32 calculateMoveBonus() const;
+        bool isFlying () const;
 
 
         sigc::signal<void, Stack*> sdying;

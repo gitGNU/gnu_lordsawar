@@ -116,6 +116,9 @@ class GameMap: public sigc::trackable
           */
         bool save(XML_Helper* helper) const;
 
+	//! figure out where a non-flying unit can't go
+        void calculateBlockedAvenues();
+
     protected:
         //! Create the map with the given tileset
         GameMap(std::string TilesetName);
@@ -129,6 +132,7 @@ class GameMap: public sigc::trackable
         //! Callback for item loading used during loading.
         bool loadItems(std::string tag, XML_Helper* helper);
         Stack* addArmyAtPos(Vector<int> pos, Army *a);
+        bool isBlockedAvenue(int x, int y, int destx, int desty);
 
         // Data
         static GameMap* s_instance;

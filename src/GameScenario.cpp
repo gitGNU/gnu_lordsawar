@@ -94,6 +94,7 @@ GameScenario::GameScenario(string savegame, bool& broken)
     }
 
     helper.close();
+    GameMap::getInstance()->calculateBlockedAvenues();//benfix
 }
 
 GameScenario::~GameScenario()

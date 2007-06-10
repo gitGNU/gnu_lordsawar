@@ -219,6 +219,9 @@ Uint32 Army::getStat(Stat stat, bool modified) const
 
 void Army::resetMoves()
 {
+  if (d_army_bonus & Army::SHIP)
+    d_moves = MAX_BOAT_MOVES;
+  else
     d_moves = getStat(MOVES);
 }
 
@@ -447,4 +450,18 @@ void Army::copyVals(const Army* a)
     d_awardable = a->getAwardable();
     d_visitedTemples = a->d_visitedTemples;
     d_player = a->d_player;
+}
+
+void Army::setInShip (bool s)
+{
+  if (s)
+    {
+      if ((d_army_bonus & Army::SHIP) == 0)
+	d_army_bonus |= Army::SHIP;
+    }
+  else
+    {
+      if ((d_army_bonus & Army::SHIP))
+	d_army_bonus -= Army::SHIP;
+    }
 }

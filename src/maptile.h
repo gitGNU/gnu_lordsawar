@@ -98,6 +98,7 @@ class Maptile
         //prints some debug information
         void printDebugInfo() const;
                 
+	bool d_blocked[8];
     private:
         TileSet* d_tileSet;
         Uint32 d_index;

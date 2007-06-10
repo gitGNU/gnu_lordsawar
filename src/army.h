@@ -321,6 +321,9 @@ class Army : public sigc::trackable
 	//! quest, or for having a new hero arrive.
 	bool getAwardable() const {return d_awardable; }
 
+	//! Sets this army as being in a ship or not
+	void setInShip (bool s);
+
     protected:
         //! Generic function for saving the army data. Useful for the hero class,
         //  which doesn't need to repeat the save code.

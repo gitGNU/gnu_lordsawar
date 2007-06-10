@@ -98,9 +98,13 @@ void Path::flClear()
 
 bool Path::canMoveThere(const Stack* s, Vector<int> dest)
 {
-    d_bonus=s->calculateMoveBonus(&d_has_ship,&d_has_land);
-    Vector<int> pos = s->getPos();
-    return !isBlocked(s, pos.x, pos.y, dest.x, dest.y);
+  d_bonus=s->calculateMoveBonus();
+  Vector<int> pos = s->getPos();
+  if (isBlocked(s, pos.x, pos.y, dest.x, dest.y))
+    return false;
+  if (isBlockedDir(pos.x, pos.y, dest.x, dest.y))
+    return false;
+  return true;
 }
 
 bool Path::checkPath(Stack* s)
@@ -111,7 +115,7 @@ bool Path::checkPath(Stack* s)
     Vector<int> dest = **(rbegin());
     debug("check_path() " << dest.x << "," << dest.y)
     bool blocked = false;
-    d_bonus=s->calculateMoveBonus(&d_has_ship,&d_has_land);
+    d_bonus=s->calculateMoveBonus();
 
     for (iterator it = begin(); it != end(); it++)
     {
@@ -134,13 +138,14 @@ bool Path::checkPath(Stack* s)
 
 Uint32 Path::calculate (Stack* s, Vector<int> dest)
 {
+    int mp;
     Vector<int> start = s->getPos();
     debug("path from "<<start.x<<","<<start.y<<" to "<<dest.x<<","<<dest.y)
         
     flClear();
     int width = GameMap::getWidth();
     int height = GameMap::getHeight();
-    d_bonus = s->calculateMoveBonus(&d_has_ship,&d_has_land);
+    d_bonus = s->calculateMoveBonus();
     if (isBlocked(s, dest.x, dest.y, dest.x, dest.y))
         return 0;
     
@@ -168,6 +173,7 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
     int length = width*height;
     int distance[length];
     std::queue<Vector<int> > process;
+    bool flying = s->isFlying();
 
     // initial filling of the distance vector
     for (int i = 0; i < width*height; i++)
@@ -181,7 +187,6 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
     }
     distance[start.y*width+start.x] = 0;
     
-
     // now the main loop
     process.push(Vector<int>(start.x, start.y));
     while (!process.empty())
@@ -201,11 +206,21 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
                 if (sy < 0 || sy >= height)
                     continue;
                 
+                if (sx == pos.x && sy == pos.y)
+                  continue;
+
+                //am i blocked from entering sx,sy from pos?
+                if (!flying && isBlockedDir(pos.x, pos.y, sx, sy))
+                  continue;
+
                 int dsxy = distance[sy*width+sx];
                 if (dsxy < -1)
                     continue; // can't move there anyway
 
-                int newDsxy = dxy + pointsToMoveTo(sx, sy);
+                int newDsxy = dxy;
+                mp = pointsToMoveTo(s, pos.x, pos.y, sx, sy);
+                if (mp >= 0)
+                  newDsxy += mp;
                 
                 if (dsxy == -1 || dsxy > newDsxy)
                 {
@@ -247,6 +262,8 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
             int newy = y + diffs[i][1];
             if (newx < 0 || newx == width || newy < 0 || newy == height)
                 continue;
+            if (isBlockedDir(x, y, newx, newy))
+                continue;
             
             dist = distance[newy*width+newx];
             if (dist >= 0 && dist < min)
@@ -266,21 +283,44 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
     return distance[dest.y * width + dest.x];
 }
 
+//am i blocked from entering destx,desty from x,y?
+bool Path::isBlockedDir(int x, int y, int destx, int desty) const
+{
+  int diffx = destx - x;
+  int diffy = desty - y;
+  if (diffx >= -1 && diffx <= 1 && diffy >= -1 && diffy <= 1) 
+    {
+      int idx = 0;
+      if (diffx == -1 && diffy == -1)
+        idx = 0;
+      else if (diffx == -1 && diffy == 0)
+        idx = 1;
+      else if (diffx == -1 && diffy == 1)
+        idx = 2;
+      else if (diffx == 0 && diffy == 1)
+        idx = 3;
+      else if (diffx == 0 && diffy == -1)
+        idx = 4;
+      else if (diffx == 1 && diffy == -1)
+        idx = 5;
+      else if (diffx == 1 && diffy == 0)
+        idx = 6;
+      else if (diffx == 1 && diffy == 1)
+        idx = 7;
+      else
+	return false;
+      return GameMap::getInstance()->getTile(x, y)->d_blocked[idx];
+    }
+
+  return false;
+}
+
 bool Path::isBlocked(const Stack* s, int x, int y, int destx, int desty) const
 {
     const Maptile* tile = GameMap::getInstance()->getTile(x,y);
 
     // Return true on every condition which may prevent the stack from
     // entering the tile, which are...
-
-    // ...land if the stack has ships in it...
-    if (d_has_ship && (tile->getMaptileType() != Tile::WATER)
-        && (tile->getBuilding() != Maptile::CITY))
-        return true;
-
-    // ...water if some units can't fly or swim...
-    if (d_has_land && (tile->getMaptileType() == Tile::WATER))
-        return true;
 
     // TODO: you can extract quite some amount of time here with a clever
     // search algorithm for stacklist
@@ -311,10 +351,13 @@ bool Path::isBlocked(const Stack* s, int x, int y, int destx, int desty) const
     return false;
 }
 
-Uint32 Path::pointsToMoveTo(int x, int y) const
+int Path::pointsToMoveTo(const Stack *s, int x, int y, int destx, int desty) const
 {
-    const Maptile* tile = GameMap::getInstance()->getTile(x,y);
+    const Maptile* tile = GameMap::getInstance()->getTile(destx,desty);
     
+    if (x == destx && y == desty) //probably shouldn't happen
+      return 0;
+
     // A city on the next square, we _know_ that the city is nice to us
     if (tile->getBuilding() == Maptile::CITY)
         return 1;

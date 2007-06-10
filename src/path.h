@@ -88,7 +88,7 @@ class Path : public std::list<Vector<int>*>
         Uint32 calculate(Stack* s, Vector<int> dest);
 
     private:
-        /** Checks if a tile is blocked for the stacked
+        /** Checks if a tile is blocked for the stack
           * 
           * This function returns whether a unit can pass over a tile. The value
           * destx and desty is needed because some cases (e.g. enemy army/city
@@ -100,18 +100,30 @@ class Path : public std::list<Vector<int>*>
           * @return false if unit may pass, true otherwise
           */
         bool isBlocked(const Stack* s, int x, int y, int destx, int desty) const;
+        /** Checks if the way to a given tile is blocked
+          * 
+          * This function returns whether a unit can pass over a tile from
+	  * another tile.  The idea here is that the "sides" of certain tiles
+	  * are blocked from entry.  E.g. when trying to go from water to
+	  * land, without going through a city.
+          *
+          * @param x, y             x/y the position of the tile to travel from
+          * @param destx, desty     x/y the position of the tile to travel to
+          * @return false if unit may pass, true otherwise
+          */
+        bool isBlockedDir(int x, int y, int destx, int desty) const;
 
         /** Checks how many movement points are needed to cross the tile
           * 
-          * @param x,y      x/y coordinates of the tile to be checked
-          * @return costs in movement points
+          * @param x,y              coordinates of the tile to be moved from
+          * @param destx,desty      coordinates of the tile to be moved to
+	  * @param s                the stack being moved
+          * @return costs in movement points, or -1 if movement not possible
           */
-        Uint32 pointsToMoveTo(int x, int y) const;
+        int pointsToMoveTo(const Stack *s, int x, int y, int destx, int desty) const;
 
         // data
         Uint32 d_bonus;
-        bool d_has_ship;
-        bool d_has_land; //has_land refers to units who can't cross water
 };
 
 #endif // PATH_H

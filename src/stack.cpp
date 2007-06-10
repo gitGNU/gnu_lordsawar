@@ -110,7 +110,7 @@ bool Stack::moveOneStep()
 
 // return the maximum moves of this stack by checking the moves of each army
 
-int Stack::getGroupMoves() const
+Uint32 Stack::getGroupMoves() const
 {
   if (empty())
     return 0;
@@ -128,6 +128,8 @@ int Stack::getGroupMoves() const
 	    min = std::min(min, int((*it)->getMoves()));
         }
 
+    if (min <= -1)
+      return 0;
     return min;
 }
 
@@ -312,9 +314,20 @@ Uint32 Stack::getMaxSight() const
 
 void Stack::nextTurn()
 {
+    GameMap *gm = GameMap::getInstance();
     d_defending = false;
+    Maptile *maptile = gm->getTile(this->getPos());
+    bool flying = isFlying();
     for (iterator it = begin(); it != end(); it++)
     {
+        //here we mark the armies as being on or off a boat
+        if (flying) //maybe the whole stack is flying
+          (*it)->setInShip(false);
+        else if (maptile->getMaptileType() == Tile::WATER &&
+                ((*it)->getStat(Army::MOVE_BONUS) & Tile::WATER) == 0)
+          (*it)->setInShip(true);
+        else
+          (*it)->setInShip(false);
         (*it)->resetMoves();
         // TODO: should be moved in a more appropriate place => class Player
         if (d_player)
@@ -392,34 +405,9 @@ Stack::iterator Stack::flErase(Stack::iterator object)
     return erase(object);
 }
 
-Uint32 Stack::calculateMoveBonus(bool * has_ship ,bool * has_land) const
+Uint32 Stack::calculateMoveBonus() const
 {
     Uint32 d_bonus = 0;
-    *has_ship= false;
-    *has_land= false;
-
-    //check if there are ships/non-water units in the stack
-    for (Stack::const_iterator it = this->begin(); it != this->end(); it++)
-    {
-        if ((*it)->isGrouped() == false)
-          continue;
-
-        if (((*it)->getStat(Army::ARMY_BONUS)) & Army::SHIP)
-        {
-            //ship in stack
-            if (!(*has_ship)) debug("ship in stack")
-            *has_ship = true;
-            continue; 
-        }
-
-        if (!((*it)->getStat(Army::MOVE_BONUS) & Tile::WATER))
-        {
-            //unit which can't cross water
-            if (!(*has_land)) debug("land unit in stack")
-            *has_land = true;
-            continue; 
-        }
-    }
 
     bool landed = false;
     Uint32 bonus;
@@ -469,4 +457,13 @@ Uint32 Stack::calculateMoveBonus(bool * has_ship ,bool * has_land) const
     return d_bonus;
 }
 
+bool Stack::isFlying () const
+{
+  Uint32 d_bonus = calculateMoveBonus();
+  if (d_bonus == (Tile::GRASS | Tile::WATER | Tile::FOREST | Tile::HILLS |
+            Tile::MOUNTAIN | Tile::SWAMP))
+    return true;
+  else
+    return false;
+}
 // End of file
