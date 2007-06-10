@@ -1,3 +1,8 @@
+2007-06-10  Ben Asselstine
+        * made a first crack at adding boat ports to path calculation
+	* stack loses all movement points when coming into a city from a boat,
+	  or going out of a city into a boat
+
 2007-06-04  Ben Asselstine
         * prefer diagonals when calculating movement paths
 
