@@ -511,15 +511,20 @@ void MapGenerator::makeCities(int cities)
             || d_terrain[y*d_width + x+1] == Tile::WATER 
             || d_terrain[(y+1)*d_width + x] == Tile::WATER
             || d_terrain[(y+1)*d_width + x+1] == Tile::WATER)
-            && (iterations < 10))
+            && (iterations < 1000))
         {
             iterations++;
             continue;
         }
         
         // check if we can put the building
-        if(!canPutBuilding(x,y) &&
-            ((iterations < 10) || (d_terrain[y*d_width+x] != Tile::WATER)))
+        if (!canPutBuilding(x, y) && !canPutBuilding(x + 1, y) &&
+            !canPutBuilding(x, y + 1) && !canPutBuilding(x + 1,y + 1) &&
+            ((iterations < 1000) || 
+            (d_terrain[y*d_width+x] != Tile::WATER &&
+             d_terrain[(y*d_width)+x+1] != Tile::WATER &&
+             d_terrain[((y+1)*d_width)+x] != Tile::WATER &&
+             d_terrain[((y+1)*d_width)+x+1] != Tile::WATER)))
         {
             iterations++;
             continue;
