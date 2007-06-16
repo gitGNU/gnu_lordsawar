@@ -1,3 +1,12 @@
+2007-06-16  Ben Asselstine
+        * fight window now shows attacker on top and defender on bottom
+	* increased maximum cities on random map to 80
+	* don't place cities on top of cities (Reported by Alfred M.  Szmidt)
+
+2007-06-15  Ben Asselstine
+        * now showing stacks in boats on the big map and stack info
+        * now setting armies to be in and out of ships before next turn
+
 2007-06-10  Ben Asselstine
         * made a first crack at adding boat ports to path calculation
 	* stack loses all movement points when coming into a city from a boat,
