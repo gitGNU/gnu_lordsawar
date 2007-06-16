@@ -314,20 +314,9 @@ Uint32 Stack::getMaxSight() const
 
 void Stack::nextTurn()
 {
-    GameMap *gm = GameMap::getInstance();
     d_defending = false;
-    Maptile *maptile = gm->getTile(this->getPos());
-    bool flying = isFlying();
     for (iterator it = begin(); it != end(); it++)
     {
-        //here we mark the armies as being on or off a boat
-        if (flying) //maybe the whole stack is flying
-          (*it)->setInShip(false);
-        else if (maptile->getMaptileType() == Tile::WATER &&
-                ((*it)->getStat(Army::MOVE_BONUS) & Tile::WATER) == 0)
-          (*it)->setInShip(true);
-        else
-          (*it)->setInShip(false);
         (*it)->resetMoves();
         // TODO: should be moved in a more appropriate place => class Player
         if (d_player)
@@ -465,5 +454,19 @@ bool Stack::isFlying () const
     return true;
   else
     return false;
+}
+
+/*if any stack member is in a boat, then the whole stack appears to be in
+ * a boat */
+bool Stack::hasShip () const
+{
+    for (Stack::const_iterator it = this->begin(); it != this->end(); it++)
+    {
+        if ((*it)->isGrouped() == false)
+          continue;
+        if (((*it)->getStat(Army::ARMY_BONUS, false) & Army::SHIP) == Army::SHIP)
+          return true;
+    }
+  return false;
 }
 // End of file

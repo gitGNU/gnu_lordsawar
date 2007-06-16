@@ -1103,10 +1103,26 @@ bool RealPlayer::stackMoveOneStep(Stack* s)
     bool on_water = (GameMap::getInstance()->getTile(s->getPos().x,s->getPos().y)->getMaptileType() == Tile::WATER);
     bool to_water = (GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType() == Tile::WATER);
     bool ship_load_unload = false;
+    //here we mark the armies as being on or off a boat
     if (!s->isFlying())
       {
         if ((on_water && to_city) || (on_city && to_water))
-          ship_load_unload = true;
+          {
+            ship_load_unload = true;
+            for (Stack::iterator it = s->begin(); it != s->end(); it++)
+              {
+                if (to_water && 
+                     ((*it)->getStat(Army::MOVE_BONUS) & Tile::WATER) == 0)
+                  (*it)->setInShip(true);
+                else
+                  (*it)->setInShip(false);
+              }
+          }
+      }
+    else
+      {
+        for (Stack::iterator it = s->begin(); it != s->end(); it++)
+          (*it)->setInShip(false);
       }
     needed_moves = GameMap::getInstance()->getTile(dest.x,dest.y)->getMoves();
 

@@ -521,6 +521,7 @@ void BigMap::blit_if_inside_buffer(const Object &obj, SDL_Surface *image)
 
 void BigMap::draw_buffer()
 {
+    GraphicsCache *gc = GraphicsCache::getInstance();
     int tilesize = GameMap::getInstance()->getTileSet()->getTileSize();
     d_renderer->render(0, 0, buffer_view.x, buffer_view.y,
 		       buffer_view.w, buffer_view.h);
@@ -540,22 +541,19 @@ void BigMap::draw_buffer()
 
     for (Templelist::iterator i = Templelist::getInstance()->begin();
 	 i != Templelist::getInstance()->end(); ++i)
-	blit_if_inside_buffer(
-	    *i, GraphicsCache::getInstance()->getTemplePic(i->getType()));
+	blit_if_inside_buffer( *i, gc->getTemplePic(i->getType()));
 
     for (Roadlist::iterator i = Roadlist::getInstance()->begin();
 	 i != Roadlist::getInstance()->end(); ++i)
-	blit_if_inside_buffer(
-	    *i, GraphicsCache::getInstance()->getRoadPic(i->getType()));
+	blit_if_inside_buffer( *i, gc->getRoadPic(i->getType()));
 
     for (Stonelist::iterator i = Stonelist::getInstance()->begin();
 	 i != Stonelist::getInstance()->end(); ++i)
-	blit_if_inside_buffer(
-	    *i, GraphicsCache::getInstance()->getStonePic(i->getType()));
+	blit_if_inside_buffer( *i, gc->getStonePic(i->getType()));
 
     for (Citylist::iterator i = Citylist::getInstance()->begin();
 	 i != Citylist::getInstance()->end(); ++i)
-	blit_if_inside_buffer(*i, GraphicsCache::getInstance()->getCityPic(&*i));
+	blit_if_inside_buffer(*i, gc->getCityPic(&*i));
 
     // If there are any items lying around, blit the itempic as well
     for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
@@ -597,15 +595,17 @@ void BigMap::draw_buffer()
 		r.x = p.x + 6;
 		r.y = p.y + 6;
 		r.w = r.h = 54;
-                SDL_BlitSurface((*it)->getStrongestArmy()->getPixmap(), 0,
-				buffer, &r);
+                if ((*it)->hasShip())
+                  SDL_BlitSurface(gc->getShipPic(), 0, buffer, &r);
+                else
+                  SDL_BlitSurface((*it)->getStrongestArmy()->getPixmap(), 0,
+				  buffer, &r);
 
                 // draw flag
 		r.x = p.x;
 		r.y = p.y;
 		r.w = r.h = tilesize;
-                SDL_BlitSurface(GraphicsCache::getInstance()->getFlagPic(*it),
-				0, buffer, &r);
+                SDL_BlitSurface(gc->getFlagPic(*it), 0, buffer, &r);
             }
         }
     }
@@ -688,7 +688,6 @@ void BigMap::draw_buffer()
 	    r.x = p.x;
 	    r.y = p.y;
 	    r.w = r.h = tilesize;
-	    GraphicsCache *gc = GraphicsCache::getInstance();
 	    Player *p = Playerlist::getActiveplayer();
 	    SDL_Surface *tmp;
             int num_selected = 0;

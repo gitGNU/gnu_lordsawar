@@ -31,6 +31,7 @@ various_DATA = \
     shieldsetsmall.png \
     shieldsetmedium.png \
     hero.png \
+    stackship.png \
     prodshieldset.png \
     smallruinedcity.png \
     movebonus.png
@@ -63,6 +64,7 @@ EXTRA_DIST = \
     shieldsetsmall.png \
     shieldsetmedium.png \
     hero.png \
+    stackship.png \
     prodshieldset.png \
     smallruinedcity.png \
     movebonus.png

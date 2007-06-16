@@ -148,6 +148,7 @@ GraphicsCache::GraphicsCache()
     d_medalsmask = File::getMiscPicture("medals_mask.gif");
     d_smallruinedcity = File::getMiscPicture("smallruinedcity.png");
     d_smallhero = File::getMiscPicture("hero.png");
+    d_ship = File::getMiscPicture("stackship.png");
 }
 
 GraphicsCache::~GraphicsCache()
@@ -204,6 +205,7 @@ GraphicsCache::~GraphicsCache()
     SDL_FreeSurface(d_medalsmask);
     SDL_FreeSurface(d_smallruinedcity);
     SDL_FreeSurface(d_smallhero);
+    SDL_FreeSurface(d_ship);
 }
 
 SDL_Surface* GraphicsCache::getSmallRuinedCityPic()
@@ -216,7 +218,12 @@ SDL_Surface* GraphicsCache::getSmallHeroPic()
   return SDL_DisplayFormatAlpha(d_smallhero);
 }
 
-SDL_Surface* GraphicsCache::getMoveBonusPic(Uint32 bonus)
+SDL_Surface* GraphicsCache::getShipPic()
+{
+  return SDL_DisplayFormatAlpha(d_ship);
+}
+
+SDL_Surface* GraphicsCache::getMoveBonusPic(Uint32 bonus, bool has_ship)
 {
   Uint32 type;
   if (bonus & Tile::FOREST && bonus & Tile::HILLS && bonus & Tile::WATER &&
@@ -228,7 +235,7 @@ SDL_Surface* GraphicsCache::getMoveBonusPic(Uint32 bonus)
     type = 2;
   else if (bonus & Tile::FOREST) // show trees
     type = 1;
-  else if (bonus & Tile::WATER) // (what a) show boat
+  else if (has_ship) // (what a) show boat
     type = 5;
   else // show blank
     type = 0;

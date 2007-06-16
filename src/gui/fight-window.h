@@ -45,6 +45,7 @@ class FightWindow: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Window> window;
     Gtk::Label *rounds_label;
+    static const int max_cols = 4;
 
     struct ArmyItem
     {

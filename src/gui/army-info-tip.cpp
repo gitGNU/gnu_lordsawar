@@ -48,7 +48,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     Gtk::Image *terrain_image;
     xml->get_widget("terrain_image", terrain_image);
     GraphicsCache *gc = GraphicsCache::getInstance();
-    SDL_Surface *terrain = gc->getMoveBonusPic(army->getMoveBonus());
+    SDL_Surface *terrain = gc->getMoveBonusPic(army->getMoveBonus(), false);
     terrain_image->property_pixbuf() = to_pixbuf(terrain);
     //terrain_image->hide();
 

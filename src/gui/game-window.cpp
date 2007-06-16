@@ -949,7 +949,7 @@ void GameWindow::fill_in_group_info (Stack *s)
 {
     Uint32 bonus = s->calculateMoveBonus();
     GraphicsCache *gc = GraphicsCache::getInstance();
-    SDL_Surface *terrain = gc->getMoveBonusPic(bonus);
+    SDL_Surface *terrain = gc->getMoveBonusPic(bonus, s->hasShip());
     terrain_image->property_pixbuf() = to_pixbuf(terrain);
     group_moves_label->set_text(String::ucompose(_("Group\nMoves\n%1"),
                                 s->getGroupMoves()));

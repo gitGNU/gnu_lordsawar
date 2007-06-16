@@ -94,7 +94,7 @@ FightWindow::FightWindow(Fight &fight)
     for (armies_type::iterator i = attackers.begin(); i != attackers.end(); ++i)
     {
       add_army(*i, close_hboxes, attacker_close_vbox, close++, rows,
-	       Gtk::ALIGN_RIGHT);
+	       Gtk::ALIGN_LEFT);
     }
 
     close_hboxes.clear();
@@ -124,7 +124,7 @@ FightWindow::FightWindow(Fight &fight)
 	p = Playerlist::getInstance()->getNeutral();
     
     xml->get_widget("defender_label", label);
-    if (p != Playerlist::getInstance()->getNeutral())
+    //if (p != Playerlist::getInstance()->getNeutral())
 	label->set_markup("<b>" + p->getName() + "</b>");
     //l->SetFontColor(PG_Color(p->getColor()));
 
@@ -162,10 +162,16 @@ int FightWindow::compute_max_rows(const armies_type &attackers,
 {
     assert(!attackers.empty() || !defenders.empty());
     
+    if (attackers.size() > defenders.size())
+      return (attackers.size() / max_cols) + 
+              (attackers.size() % max_cols == 0 ? 0 : 1);
+    else
+      return (defenders.size() / max_cols) + 
+              (defenders.size() % max_cols == 0 ? 0 : 1);
     // Find out how to distribute the close range and long range attackers and
     // defenders, assuming that close range units are put in front.
 
-    std::vector<int> counts(4, 0);
+    std::vector<int> counts(2, 0);
 
     // count the number of melee/ranged units
     for (armies_type::const_iterator i = attackers.begin(), end = attackers.end();
@@ -177,13 +183,13 @@ int FightWindow::compute_max_rows(const armies_type &attackers,
     for (armies_type::const_iterator i = defenders.begin(), end = defenders.end();
 	 i != end; ++i)
     {
-        ++counts[2];
+        ++counts[1];
     }
 
     // now find the max number of rows
     std::vector<int> heights(counts.begin(), counts.end());
-    std::vector<int> widths(4, 0);
-    for (int i = 0; i < 4; ++i)
+    std::vector<int> widths(2, 0);
+    for (int i = 0; i < 2; ++i)
 	if (counts[i] > 0)
 	    widths[i] = 1;
 
@@ -214,7 +220,7 @@ int FightWindow::compute_max_rows(const armies_type &attackers,
 	    if (max_height < 1)
 		break;
 	    
-	    for (int i = 0; i < 4; ++i)
+	    for (int i = 0; i < 2; ++i)
 		if (heights[i] > max_height)
 		{
 		    heights[i] = max_height;
@@ -251,7 +257,7 @@ void FightWindow::add_army(Army *army,
     army_box->pack_start(*progress, Gtk::PACK_SHRINK, 4);
 
     // then add it to the right hbox
-    int current_row = current_no % max_rows;
+    int current_row = (current_no / max_cols);
     if (current_row >= int(hboxes.size()))
     {
 	// add an hbox
@@ -278,6 +284,7 @@ void FightWindow::add_army(Army *army,
 
 bool FightWindow::do_round()
 {
+//sleep(60);
     while (action_iterator != actions.end())
     {
 	FightItem &f = *action_iterator;

@@ -152,6 +152,7 @@ class Stack : public std::list<Army*>, public sigc::trackable
           */
         Uint32 calculateMoveBonus() const;
         bool isFlying () const;
+        bool hasShip () const;
 
 
         sigc::signal<void, Stack*> sdying;
