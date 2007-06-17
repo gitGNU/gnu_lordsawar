@@ -313,8 +313,6 @@ void GamePreferencesDialog::on_start_game_clicked()
     for (Gtk::TreeIter i = player_list->children().begin(),
 	     end = player_list->children().end(); i != end; ++i) {
 	GameParameters::Player p;
-	if ((*i)[player_columns.type] == NO_PLAYER_TYPE)
-          continue;
 	p.type = player_type_to_enum((*i)[player_columns.type]);
 	Glib::ustring name = (*i)[player_columns.name];
 	p.name = name;

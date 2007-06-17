@@ -102,6 +102,9 @@ class GameWindow: public sigc::trackable
     Gtk::Label *cities_stats_label;
     Gtk::Label *gold_stats_label;
     Gtk::Label *income_stats_label;
+    Gtk::Label *turn_label;
+    Gtk::HBox *turn_hbox;
+    Gtk::Image *shield_image[MAX_PLAYERS];
     
     // the button control panel
     Gtk::Button *prev_button;
@@ -161,6 +164,9 @@ class GameWindow: public sigc::trackable
     void on_army_button_has_size();
     void clear_army_buttons();
     void ensure_one_army_button_active();
+
+    // shield set on the top
+    void show_shield_turn();
 
     // game callbacks
     void on_sidebar_stats_changed(SidebarStats s);

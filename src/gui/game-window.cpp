@@ -38,6 +38,7 @@
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/stock.h>
+#include <gtkmm/alignment.h>
 
 #include "game-window.h"
 
@@ -87,6 +88,7 @@
 #include "../armysetlist.h"
 #include "../CreateScenario.h"
 #include "../reward.h"
+#include "../Configuration.h"
 
 
 GameWindow::GameWindow()
@@ -139,6 +141,16 @@ GameWindow::GameWindow()
     xml->get_widget("cities_stats_label", cities_stats_label);
     xml->get_widget("gold_stats_label", gold_stats_label);
     xml->get_widget("income_stats_label", income_stats_label);
+    xml->get_widget("turn_label", turn_label);
+    xml->get_widget("turn_hbox", turn_hbox);
+    xml->get_widget("shield_image_0", shield_image[0]);
+    xml->get_widget("shield_image_1", shield_image[1]);
+    xml->get_widget("shield_image_2", shield_image[2]);
+    xml->get_widget("shield_image_3", shield_image[3]);
+    xml->get_widget("shield_image_4", shield_image[4]);
+    xml->get_widget("shield_image_5", shield_image[5]);
+    xml->get_widget("shield_image_6", shield_image[6]);
+    xml->get_widget("shield_image_7", shield_image[7]);
 
     // the control panel
     xml->get_widget("prev_button", prev_button);
@@ -267,6 +279,7 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 	     i = g.players.begin(), end = g.players.end();
 	 i != end; ++i, ++c) {
 	
+fprintf(stderr,"player is type %d == %d\n",i->type, GameParameters::Player::OFF); 
 	if (i->type == GameParameters::Player::OFF)
 	{
             fl_counter->getNextId();
@@ -294,7 +307,8 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 	    type = Player::HUMAN;
 
 	int army_id = Armysetlist::getInstance()->file_names[g.army_theme];
-	creator.addPlayer(i->name, army_id, color, type);
+	Player *p = creator.addPlayer(i->name, army_id, color, type);
+fprintf(stderr,"the id of player %s is %d\n", i->name.c_str(), p->getId());
     }
 
     // first insert the neutral player
@@ -466,6 +480,8 @@ void GameWindow::setup_game(std::string file_path)
 	sigc::mem_fun(this, &GameWindow::on_quest_completed));
     q->quest_expired.connect(
 	sigc::mem_fun(this, &GameWindow::on_quest_expired));
+
+  show_shield_turn();
 }
 
 bool GameWindow::on_delete_event(GdkEventAny *e)
@@ -920,6 +936,7 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
     cities_stats_label->set_text(String::ucompose("%1", s.cities));
     gold_stats_label->set_text(String::ucompose("%1", s.gold));
     income_stats_label->set_text(String::ucompose("%1", s.income));
+    turn_label->set_text(String::ucompose("Turn %1", s.turns + 1));
 }
 
 void GameWindow::on_smallmap_changed(SDL_Surface *map)
@@ -1537,10 +1554,38 @@ void GameWindow::on_city_visited(City *city)
     d.run();
 }
 
+void GameWindow::show_shield_turn()
+{
+  Playerlist* pl = Playerlist::getInstance();
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  unsigned int c = 0;
+  for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
+    {
+      if (pl->getNeutral() == (*i))
+        continue;
+      if ((*i)->isDead())
+        {
+          shield_image[c]->clear();
+          continue;
+        }
+      if (*i == pl->getActiveplayer())
+        shield_image[c]->get_parent()->modify_bg(Gtk::STATE_NORMAL, shield_image[c]->get_parent()->get_style()->get_black());
+      else
+        shield_image[c]->get_parent()->modify_bg(Gtk::STATE_NORMAL, shield_image[c]->get_parent()->get_style()->get_white());
+      shield_image[c]->property_pixbuf()=to_pixbuf(gc->getShieldPic(1,(*i)));
+      c++;
+    }
+}
+
 void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
     
+    show_shield_turn();
+    if (player->getType() != Player::HUMAN)
+      return;
+    if (Configuration::s_showNextPlayer == false)
+      return;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/next-player-turn-dialog.glade");
 	

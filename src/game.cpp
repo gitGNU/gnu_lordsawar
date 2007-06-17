@@ -735,8 +735,7 @@ void Game::loadGame()
     {
         //human players want access to the controls and an info box
         unlock_inputs();
-        bigmap->unselect_active_stack();
-	clear_stack_info();
+        stack_info_changed.emit(player->getActivestack());
         center_view_on_city();
         update_sidebar_stats();
         update_control_panel();
@@ -924,6 +923,7 @@ bool Game::init_turn_for_player(Player* p)
     // an AI-only game to save/quit.
 
 
+    next_player_turn.emit(p, d_gameScenario->getRound() + 1);
     if (p->getType() == Player::HUMAN)
     {
 	unlock_inputs();
@@ -938,8 +938,6 @@ bool Game::init_turn_for_player(Player* p)
 	update_stack_info();
 	update_control_panel();
     
-	if (Configuration::s_showNextPlayer)
-	    next_player_turn.emit(p, d_gameScenario->getRound() + 1);
 
         maybeRecruitHero(p);
     
