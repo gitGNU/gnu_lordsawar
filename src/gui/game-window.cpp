@@ -279,7 +279,6 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 	     i = g.players.begin(), end = g.players.end();
 	 i != end; ++i, ++c) {
 	
-fprintf(stderr,"player is type %d == %d\n",i->type, GameParameters::Player::OFF); 
 	if (i->type == GameParameters::Player::OFF)
 	{
             fl_counter->getNextId();
@@ -308,7 +307,6 @@ fprintf(stderr,"player is type %d == %d\n",i->type, GameParameters::Player::OFF)
 
 	int army_id = Armysetlist::getInstance()->file_names[g.army_theme];
 	Player *p = creator.addPlayer(i->name, army_id, color, type);
-fprintf(stderr,"the id of player %s is %d\n", i->name.c_str(), p->getId());
     }
 
     // first insert the neutral player
