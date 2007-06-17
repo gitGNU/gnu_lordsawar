@@ -1,7 +1,14 @@
+2007-06-17  Ben Asselstine
+        * now showing stack info after a game is loaded
+	* fixed bug wrt player ids and some players being "off"
+	* made a first crack at shield set to show whose turn it is
+
 2007-06-16  Ben Asselstine
         * fight window now shows attacker on top and defender on bottom
 	* increased maximum cities on random map to 80
 	* don't place cities on top of cities (Reported by Alfred M.  Szmidt)
+	* added player shields to fight dialog
+	* added large shields to graphics cache
 
 2007-06-15  Ben Asselstine
         * now showing stacks in boats on the big map and stack info
