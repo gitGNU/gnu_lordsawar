@@ -170,7 +170,7 @@ class GraphicsCache
           * As with the other functions, use solely this function to get the 
           * shield images. And DON'T modify the images!
           *
-          * @param type small or medium shield size
+          * @param type small, medium or large shield size
           * @param p the player to draw it for
           * @return image for the shield
           */
@@ -332,8 +332,8 @@ class GraphicsCache
 	SDL_Surface* d_selectormask[6];
 	SDL_Surface* d_smallselector[4];
 	SDL_Surface* d_smallselectormask[4];
-        SDL_Surface* d_shieldpic[2][MAX_PLAYERS + 1];
-        SDL_Surface* d_shieldmask[2][MAX_PLAYERS + 1];
+        SDL_Surface* d_shieldpic[3][MAX_PLAYERS + 1];
+        SDL_Surface* d_shieldmask[3][MAX_PLAYERS + 1];
         SDL_Surface* d_prodshieldpic[7];
 	SDL_Surface* d_smallruinedcity;
 	SDL_Surface* d_smallhero;

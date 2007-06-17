@@ -900,7 +900,7 @@ ShieldCacheItem* GraphicsCache::addShieldPic(Uint32 type, const Player* p)
 {
     debug("GraphicsCache::addShieldPic, player="<<p->getName()<<", type="<<type)
     
-    // type is 0 for small, 1 for medium
+    // type is 0 for small, 1 for medium, 2 for large
     
     SDL_Surface* mysurf;
     mysurf = applyMask(d_shieldpic[type][p->getId()], 
@@ -1485,7 +1485,7 @@ void GraphicsCache::loadShields()
 	d_shieldpic[1][i] = SDL_DisplayFormatAlpha(tmp);
 	SDL_FreeSurface(tmp);
 
-	d_shieldmask[1][i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, size, size,
+	d_shieldmask[1][i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize,
 					          32, 0xFF000000, 0xFF0000,
 						  0xFF00, 0xFF);
 	shieldrect.x = i*xsize;
@@ -1493,6 +1493,38 @@ void GraphicsCache::loadShields()
 	shieldrect.w = xsize;
 	shieldrect.h = ysize;
 	SDL_BlitSurface(shieldpics, &shieldrect, d_shieldmask[1][i], 0);
+
+      }
+    SDL_FreeSurface(shieldpics);
+    //load the large shieldset
+    shieldpics = File::getMiscPicture("shieldsetlarge.png");
+    // copy alpha values, don't use them
+    SDL_SetAlpha(shieldpics, 0, 0);
+    fmt = shieldpics->format;
+    xsize = 31;
+    ysize = 36;
+    for (i = 0; i < MAX_PLAYERS + 1; i++)
+      {
+        SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize, 
+    						fmt->BitsPerPixel, fmt->Rmask, 
+    						fmt->Gmask, fmt->Bmask, 
+						fmt->Amask);
+	shieldrect.x = i*xsize;
+	shieldrect.y = 0;
+	shieldrect.w = xsize;
+	shieldrect.h = ysize;
+	SDL_BlitSurface(shieldpics, &shieldrect, tmp, 0);
+	d_shieldpic[2][i] = SDL_DisplayFormatAlpha(tmp);
+	SDL_FreeSurface(tmp);
+
+	d_shieldmask[2][i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize,
+					          32, 0xFF000000, 0xFF0000,
+						  0xFF00, 0xFF);
+	shieldrect.x = i*xsize;
+	shieldrect.y = 0;
+	shieldrect.w = xsize;
+	shieldrect.h = ysize;
+	SDL_BlitSurface(shieldpics, &shieldrect, d_shieldmask[2][i], 0);
 
       }
     SDL_FreeSurface(shieldpics);

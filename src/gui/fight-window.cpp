@@ -36,6 +36,7 @@
 #include "../playerlist.h"
 #include "../stack.h"
 #include "../army.h"
+#include "../GraphicsCache.h"
 
 namespace 
 {
@@ -107,26 +108,19 @@ FightWindow::FightWindow(Fight &fight)
 		 Gtk::ALIGN_LEFT);
     }
     
-    // fill in labels
+    // fill in shield pictures
+    GraphicsCache *gc = GraphicsCache::getInstance();
     Player* p;
-    Gtk::Label *label;
-    xml->get_widget("attacker_label", label);
 
-    p = attackers.front()->getPlayer();
-    assert(p);
-    label->set_markup("<b>" + attacker->getName() + "</b>");
-    //l->SetFontColor(PG_Color(p->getColor()));
-
+    Gtk::Image *defender_shield_image;
     p = defenders.front()->getPlayer();
+    xml->get_widget("defender_shield_image", defender_shield_image);
+    defender_shield_image->property_pixbuf()=to_pixbuf(gc->getShieldPic(2, p));
 
-    // XXX why isn't defenders.front()->getPlayer() sometimes not set?
-    if (!p)
-	p = Playerlist::getInstance()->getNeutral();
-    
-    xml->get_widget("defender_label", label);
-    //if (p != Playerlist::getInstance()->getNeutral())
-	label->set_markup("<b>" + p->getName() + "</b>");
-    //l->SetFontColor(PG_Color(p->getColor()));
+    Gtk::Image *attacker_shield_image;
+    p = attackers.front()->getPlayer();
+    xml->get_widget("attacker_shield_image", attacker_shield_image);
+    attacker_shield_image->property_pixbuf()=to_pixbuf(gc->getShieldPic(2, p));
 
     rounds_label->set_text(String::ucompose("%1", 0));
 
@@ -284,7 +278,7 @@ void FightWindow::add_army(Army *army,
 
 bool FightWindow::do_round()
 {
-//sleep(60);
+sleep(60);
     while (action_iterator != actions.end())
     {
 	FightItem &f = *action_iterator;
