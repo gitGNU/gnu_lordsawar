@@ -306,7 +306,7 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 	    type = Player::HUMAN;
 
 	int army_id = Armysetlist::getInstance()->file_names[g.army_theme];
-	Player *p = creator.addPlayer(i->name, army_id, color, type);
+	creator.addPlayer(i->name, army_id, color, type);
     }
 
     // first insert the neutral player
@@ -927,7 +927,7 @@ void GameWindow::ensure_one_army_button_active()
 void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 {
     Glib::ustring n = String::ucompose(
-	stats_text, s.name, s.gold, s.income, s.cities, s.units, s.turns);
+	stats_text, s.name, s.gold, s.income, s.cities, s.units);
     
     stats_label->set_text(n);
 
