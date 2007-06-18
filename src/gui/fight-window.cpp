@@ -278,7 +278,6 @@ void FightWindow::add_army(Army *army,
 
 bool FightWindow::do_round()
 {
-sleep(60);
     while (action_iterator != actions.end())
     {
 	FightItem &f = *action_iterator;
