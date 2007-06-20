@@ -18,7 +18,6 @@
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
 #include <sigc++/connection.h>
-#include "rectangle.h"
 
 #include "vector.h"
 #include "input-events.h"
@@ -34,7 +33,7 @@ class Signpost;
 class Temple;
 class Object;
 
-/** The large game map
+/** The large map
   * 
   * The detailed map in which all the action takes place. Handles scrolling
   * and mouse clicks via signals.
@@ -47,54 +46,24 @@ class BigMap: public sigc::trackable
 {
  public:
     BigMap();
-    ~BigMap();
+    virtual ~BigMap();
 
     // draw everything
     void draw(bool redraw_buffer = true);
 
-    // will center the bigmap on the stack
-    void select_active_stack();
-	
-    void unselect_active_stack();
-
     // view the rectangle, measured in tiles
     void set_view(Rectangle rect);
+    void center_view(Vector<int> p);
+    void screen_size_changed();
 
-    void mouse_button_event(MouseButtonEvent e);
-    void mouse_motion_event(MouseMotionEvent e);
-    
-    /** Callback if a stack has moved
-     * 
-     * This centers the bigmap around the stack.
-     */
-    void stackMoved(Stack* s);
-
-    //! Center the bigmap around point p
-    void centerView(Vector<int> p);
-
-    // whether the map accepts input events
-    void set_accept_events(bool accept) { accepting_events = accept; }
+    // return a good position of a map tip given that it should be close to the
+    // tiles in tile_area without covering them
+    MapTipPosition map_tip_position(Rectangle tile_area);
 
     // emitted when the view has changed because of user interactions
     sigc::signal<void, Rectangle> view_changed;
 
-    // emitted when a stack is selected, a NULL parameter signifies that no
-    // stack is selected 
-    sigc::signal<void, Stack*> stack_selected;
-
-    // emitted when a path for a stack is set
-    sigc::signal<void> path_set;
-	
-    // signals for mouse clicks
-    sigc::signal<void, City*, MapTipPosition, bool> city_selected;
-    sigc::signal<void, Ruin*, MapTipPosition> ruin_selected;
-    sigc::signal<void, Signpost*, MapTipPosition> signpost_selected;
-    sigc::signal<void, Temple*, MapTipPosition> temple_selected;
-
-    // emitted whenever the user moves the mouse to a new tile
-    sigc::signal<void, Vector<int> > mouse_on_tile;
-
- private:
+ protected:
     MapRenderer* d_renderer;
 	
     Rectangle view;		// approximate view of screen, in tiles
@@ -103,36 +72,23 @@ class BigMap: public sigc::trackable
     SDL_Surface* buffer;	// the buffer we draw things in
     Rectangle buffer_view;	// current view of the buffer, in tiles
 	
-    bool accepting_events;
+    bool input_locked;
 	
-    SDL_Surface* d_arrows;
     SDL_Surface* d_ruinpic;
     SDL_Surface* d_signpostpic;
     SDL_Surface* d_itempic;
     SDL_Surface* d_fogpic;
         
-    Vector<int> current_tile;
-
-    enum {
-	NONE, DRAGGING, SHOWING_CITY, SHOWING_RUIN,
-	SHOWING_TEMPLE, SHOWING_SIGNPOST
-    } mouse_state;
-	
-
-    // for the marching ants around selected stack
-    sigc::connection selection_timeout_handler;
-    bool on_selection_timeout();
-
-    
     // helpers
     Vector<int> mouse_pos_to_tile(Vector<int> pos);
+    // offset in pixels within tile
+    Vector<int> mouse_pos_to_tile_offset(Vector<int> pos); 
     Vector<int> tile_to_buffer_pos(Vector<int> tile);
     Vector<int> get_view_pos_from_view();
     void draw_buffer();  
     void blit_if_inside_buffer(const Object &obj, SDL_Surface *image);
-    // return a good position of the map tip given that it should be close
-    // to the tiles in tile_area without covering them
-    MapTipPosition map_tip_position(Rectangle tile_area);
+
+    virtual void after_draw() { }
 };
 
 #endif

@@ -82,7 +82,7 @@ class NextTurn: public sigc::trackable
         sigc::signal<void> snextRound;
 
         //! Signal as a workaround for a display bug; updates the screen
-        sigc::signal<void, bool> supdating;
+        sigc::signal<void> supdating;
 
     private:
         /**

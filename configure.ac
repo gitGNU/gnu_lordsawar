@@ -242,6 +242,7 @@ AC_CONFIG_FILES([
         dat/theme/lordsawar/Makefile
         dat/theme/generic/Makefile
         dat/glade/Makefile
+        dat/glade/editor/Makefile
         intl/Makefile
         po/Makefile.in
         po/Makefile 

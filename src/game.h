@@ -18,9 +18,7 @@
 #include <memory>
 #include <sigc++/signal.h>
 #include <glibmm/ustring.h>
-#include "rectangle.h"
 
-#include "input-events.h"
 #include "rectangle.h"
 #include "sidebar-stats.h"
 #include "map-tip-position.h"
@@ -28,18 +26,17 @@
 #include "army.h"
 #include "fight.h"
 
-#include "bigmap.h"
-#include "smallmap.h"
-
-class SmallMap;
-class BigMap;
 class NextTurn;
+class GameBigMap;
+class SmallMap;
 class GameScenario;
 class Hero;
 class City;
 class Stack;
 class Player;
+class Temple;
 class Ruin;
+class Signpost;
 class Fight;
 class Quest;
 class Stack;
@@ -57,18 +54,7 @@ class Game
     Game(GameScenario* gameScenario);
     ~Game();
 
-    //! Possibly recruit a new hero at the beginning of a turn
-    void maybeRecruitHero(Player *p);
-
     void redraw();
-    void size_changed();
-    
-    void smallmap_mouse_button_event(MouseButtonEvent e);
-    void smallmap_mouse_motion_event(MouseMotionEvent e);
-    
-    void mouse_button_event(MouseButtonEvent e);
-    void mouse_motion_event(MouseMotionEvent e);
-    void key_press_event(KeyPressEvent e);
 
     void select_prev_stack();
     void select_next_stack();
@@ -80,42 +66,16 @@ class Game
     void move_all_stacks();
     void end_turn();
 
-    void center_view(Vector<int> p);
-
-    //! Callback which redraws the map and checks if the active stack has died
-    bool stackRedraw();
-    
-    // initiate game flow
-    void startGame();
+    void startGame(); // initiate game flow
     void loadGame();
-    // stop game flow, clean up
-    void stopGame();
-
+    void stopGame(); // stop game flow, clean up
     // save current game, returns true if successful
     bool saveGame(std::string file);
 
-    //! Called whenever a stack has moved, updates the map etc.
-    void stackUpdate(Stack* s);
-
-    //! Called whenever a stack has died; updates bigmap as well
-    void stackDied(Stack* s);
-
-    //! Callback when the army of a human player reaches a new level.
-    Army::Stat newLevelArmy(Army* a);
-
-    //! Callback when an army gets a new medal.
-    void newMedalArmy(Army* a);
-
-    // locks/unlocks the input widgets during computer turns
-    void lock_inputs();
-    void unlock_inputs();
-
-    //! Function that puts all units on the tile into the current active stack
-    void selectAllStack();
-
-    //! Function that unselects the current active stack
-    void unselectStack();
-
+    GameBigMap &get_bigmap();
+    SmallMap &get_smallmap();
+    
+    // signals
     sigc::signal<void, Vector<int> > current_map_position;
     sigc::signal<void, SDL_Surface *> smallmap_changed;
     sigc::signal<void, SidebarStats> sidebar_stats_changed;
@@ -167,37 +127,43 @@ class Game
     void update_stack_info();	// emit stack_info_changed
     void clear_stack_info();
 
-    //! Loads the button images
-    void loadImages();
+    // locks/unlocks the input widgets during computer turns
+    void lock_inputs();
+    void unlock_inputs();
+
+    //! Possibly recruit a new hero at the beginning of a turn
+    void maybeRecruitHero(Player *p);
 
     // bigmap callbacks
-    void on_mouse_on_tile(Vector<int> pos);
     void on_stack_selected(Stack* s);
-    void on_city_selected(City* c, MapTipPosition pos, bool brief);
-    void on_ruin_selected(Ruin* r, MapTipPosition pos);
-    void on_temple_selected(Temple* t, MapTipPosition pos);
-    void on_signpost_selected(Signpost* s, MapTipPosition pos);
-    void on_bigmap_view_changed(Rectangle view);
+    void on_city_selected(City* c, bool brief);
+    void on_ruin_selected(Ruin* r);
+    void on_temple_selected(Temple* t);
+    void on_signpost_selected(Signpost* s);
 
     // smallmap callbacks
-    void on_smallmap_view_changed(Rectangle view);
     void on_smallmap_changed(SDL_Surface *map);
-
+    
     // misc. callbacks
     void invading_city(City* city);
     // returns true if the next turn loop should stop
     bool init_turn_for_player(Player* p);
     void on_player_died(Player *p);
+    //! Callback when the army of a human player reaches a new level.
+    Army::Stat newLevelArmy(Army* a);
+    //! Callback when an army gets a new medal.
+    void newMedalArmy(Army* a);
+    //! Called whenever a stack has moved, updates the map etc.
+    void stackUpdate(Stack* s);
+    //! Called whenever a stack has died; updates bigmap as well
+    void stackDied(Stack* s);
 
     
     void looting_city(City *city, int &gold);
-    
-    // the part of the map that currently is visible, measured in tiles
-    Rectangle map_view;
-    
+
     GameScenario* d_gameScenario;
     NextTurn* d_nextTurn;
-    std::auto_ptr<BigMap> bigmap;
+    std::auto_ptr<GameBigMap> bigmap;
     std::auto_ptr<SmallMap> smallmap;
 
     /* the contents of the heronames data file */

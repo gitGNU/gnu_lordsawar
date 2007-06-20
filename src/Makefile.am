@@ -41,6 +41,7 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	road.cpp road.h roadlist.cpp roadlist.h \
         overviewmap.cpp overviewmap.h \
         smallmap.cpp smallmap.h \
+        gamebigmap.cpp gamebigmap.h \
         game.cpp game.h \
         timing.cpp timing.h \
         callback-enums.h \
@@ -48,6 +49,7 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         ucompose.hpp defs.h ObjectList.h \
         map-tip-position.h input-events.h sdl-draw.h  \
         vectoredunit.cpp vectoredunit.h vectoredunitlist.cpp vectoredunitlist.h
+
 
 if FL_RESRC
 lordsawar_SOURCES += lordsawar.rc

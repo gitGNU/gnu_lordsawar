@@ -68,6 +68,9 @@ class File
           */
         static SDL_Surface* getMapsetPicture(std::string mapsetname, std::string picname);
 
+	// get a mapset path
+	static std::string getMapsetFile(std::string mapsetname, std::string picname);
+	
         /** Load a mask needed by various mapset images (e.g. cities)
           * 
           * @param mapsetname       the name of the mapset
@@ -103,7 +106,9 @@ class File
         //! Get the path to a border tile
         static SDL_Surface* getBorderPic(std::string filename);
 
-
+        //! Get the path to an editor image
+	static std::string getEditorFile(std::string filename);
+    
         //! Load an editor image
         static SDL_Surface* getEditorPic(std::string filename);
         

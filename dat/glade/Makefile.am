@@ -1,3 +1,4 @@
+SUBDIRS = . editor
 MAINTAINERCLEANFILES= Makefile.in
 
 gladedir = $(datadir)/lordsawar/glade

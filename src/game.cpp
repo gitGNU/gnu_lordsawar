@@ -30,7 +30,7 @@
 #include "GameScenario.h"
 #include "NextTurn.h"
 
-#include "bigmap.h"
+#include "gamebigmap.h"
 #include "smallmap.h"
 
 #include "army.h"
@@ -57,14 +57,12 @@
 #define debug(x)
 
 Game::Game(GameScenario* gameScenario)
-    : d_gameScenario(gameScenario), input_locked(false)
+    : d_gameScenario(gameScenario) 
 {
-    map_view.x = map_view.y = 0;
+    input_locked = false;
     
     // init the bigmap
-    bigmap.reset(new BigMap);
-    bigmap->view_changed.connect(
-	sigc::mem_fun(this, &Game::on_bigmap_view_changed));
+    bigmap.reset(new GameBigMap);
     bigmap->stack_selected.connect(
 	sigc::mem_fun(this, &Game::on_stack_selected));
     bigmap->path_set.connect(
@@ -77,21 +75,23 @@ Game::Game(GameScenario* gameScenario)
 	sigc::mem_fun(this, &Game::on_signpost_selected));
     bigmap->temple_selected.connect(
 	sigc::mem_fun(this, &Game::on_temple_selected));
-    bigmap->mouse_on_tile.connect(
-	sigc::mem_fun(this, &Game::on_mouse_on_tile));
 
     // init the smallmap
     smallmap.reset(new SmallMap);
-    smallmap->view_changed.connect(
-	sigc::mem_fun(*this, &Game::on_smallmap_view_changed));
-    smallmap->resize(Vector<int>(GameMap::getWidth(), GameMap::getHeight()) * 2);
     // pass map changes directly through 
     smallmap->map_changed.connect(
 	sigc::mem_fun(smallmap_changed,
 		      &sigc::signal<void, SDL_Surface *>::emit));
-    
+    smallmap->resize(GameMap::get_dim() * 2);
+
+    // connect the two maps
+    bigmap->view_changed.connect(
+	sigc::mem_fun(smallmap.get(), &SmallMap::set_view));
+    smallmap->view_changed.connect(
+	sigc::mem_fun(bigmap.get(), &GameBigMap::set_view));
+
     // get the maps up and running
-    size_changed();
+    bigmap->screen_size_changed();
 
     // connect player callbacks
     Playerlist* pl = Playerlist::getInstance();
@@ -130,9 +130,9 @@ Game::Game(GameScenario* gameScenario)
     d_nextTurn->splayerStart.connect(
 	sigc::mem_fun(this, &Game::init_turn_for_player));
     d_nextTurn->snextRound.connect(
-	sigc::mem_fun(*d_gameScenario, &GameScenario::nextRound));
+	sigc::mem_fun(d_gameScenario, &GameScenario::nextRound));
     d_nextTurn->supdating.connect(
-	sigc::mem_fun(bigmap.get(), &BigMap::draw));
+	sigc::mem_fun(this, &Game::redraw));
             
     center_view_on_city();
     update_control_panel();
@@ -146,58 +146,6 @@ Game::~Game()
     delete d_nextTurn;
 }
 
-void Game::redraw()
-{
-    if (bigmap.get())
-	bigmap->draw();
-    if (smallmap.get())
-	smallmap->draw();
-}
-
-void Game::size_changed()
-{
-    SDL_Surface *v = SDL_GetVideoSurface();
-    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
-    
-    map_view.w = v->w / ts;
-    map_view.h = v->h / ts;
-
-    map_view.pos = clip(Vector<int>(0,0), map_view.pos,
-			GameMap::get_dim() - map_view.dim);
-
-    // inform the maps of the new size
-    bigmap->set_view(map_view);
-    smallmap->set_view(map_view);
-}
-
-void Game::smallmap_mouse_button_event(MouseButtonEvent e)
-{
-    if (smallmap.get())
-	smallmap->mouse_button_event(e);
-}
-
-void Game::smallmap_mouse_motion_event(MouseMotionEvent e)
-{
-    if (smallmap.get())
-	smallmap->mouse_motion_event(e);
-}
-
-void Game::mouse_button_event(MouseButtonEvent e)
-{
-    if (bigmap.get())
-	bigmap->mouse_button_event(e);
-}
-
-void Game::mouse_motion_event(MouseMotionEvent e)
-{
-    if (bigmap.get())
-	bigmap->mouse_motion_event(e);
-}
-
-void Game::key_press_event(KeyPressEvent e)
-{
-}
-
 void Game::end_turn()
 {
     bigmap->unselect_active_stack();
@@ -206,34 +154,6 @@ void Game::end_turn()
     lock_inputs();
 
     d_nextTurn->endTurn();
-}
-
-void Game::center_view(Vector<int> p)
-{
-    map_view.pos = clip(Vector<int>(0, 0), p - map_view.dim / 2,
-			GameMap::get_dim() - map_view.dim);
-
-    smallmap->set_view(map_view);
-    bigmap->set_view(map_view);
-}
-
-void Game::on_mouse_on_tile(Vector<int> pos)
-{
-    //std::cerr << "mouse on tile " << pos.x << " " << pos.y << std::endl;
-}
-
-void Game::on_bigmap_view_changed(Rectangle view)
-{
-    map_view = view;
-    if (smallmap.get())
-	smallmap->set_view(map_view);
-}
-
-void Game::on_smallmap_view_changed(Rectangle view)
-{
-    map_view = view;
-    if (bigmap.get())
-	bigmap->set_view(map_view);
 }
 
 void Game::update_stack_info()
@@ -271,6 +191,14 @@ void Game::update_sidebar_stats()
     s.turns = d_gameScenario->getRound();
     
     sidebar_stats_changed.emit(s);
+}
+
+void Game::redraw()
+{
+    if (bigmap.get())
+	bigmap->draw();
+    if (smallmap.get())
+	smallmap->draw();
 }
 
 void Game::select_prev_stack()
@@ -368,13 +296,15 @@ void Game::search_selected_stack()
     {
         int cur_gold = player->getGold();
 
-        if (!(player->stackSearchRuin(stack, ruin)))
+	bool successful_search = player->stackSearchRuin(stack, ruin);
+        if (!successful_search)
         {
-            stackRedraw();
+	    redraw();
+	    update_stack_info();
+	    update_control_panel();
             return;
         }
 
-        stackRedraw();
         // this also includes the gold-only hack
         int gold_added = player->getGold() - cur_gold;
 
@@ -408,9 +338,13 @@ void Game::search_selected_stack()
 // descriptions later on
 void Game::stackUpdate(Stack* s)
 {
-    debug("Game: stackUpdate()");
+    if (!s)
+        s = Playerlist::getActiveplayer()->getActivestack();
 
-    bigmap->stackMoved(s);
+    if (s)
+	bigmap->center_view(s->getPos());
+
+    redraw();
 
     update_stack_info();
     update_control_panel();
@@ -419,7 +353,6 @@ void Game::stackUpdate(Stack* s)
 // s is currently unused, but can later be filled with reasonable data
 void Game::stackDied(Stack* s)
 {
-    debug("stackDied()");
     bigmap->unselect_active_stack();
     smallmap->draw();
     update_control_panel();
@@ -448,21 +381,13 @@ void Game::newMedalArmy(Army* a)
     update_stack_info();
 }
 
-bool Game::stackRedraw()
-{
-    bigmap->draw();
-    update_stack_info();
-    update_control_panel();
-    return true;
-}
-
 void Game::on_stack_selected(Stack* s)
 {
     update_stack_info();
     update_control_panel();
 }
 
-void Game::on_city_selected(City* c, MapTipPosition pos, bool brief)
+void Game::on_city_selected(City* c, bool brief)
 {
     if (c)
     {
@@ -490,22 +415,23 @@ void Game::on_city_selected(City* c, MapTipPosition pos, bool brief)
 		str += "\n";
 		str += _("Status: razed!");
 	    }
-	    
-	    map_tip_changed.emit(str, pos);
+
+	    MapTipPosition mpos = bigmap->map_tip_position(c->get_area());
+	    map_tip_changed.emit(str, mpos);
 	}
 	else if (player == Playerlist::getActiveplayer() && !c->isBurnt())
 	{
 	    city_visited.emit(c);
 
 	    // some visible city properties (razed) may have changed
-	    bigmap->draw();
+	    redraw();
 	}
     }
     else
-	map_tip_changed.emit("", pos);
+	map_tip_changed.emit("", MapTipPosition());
 }
 
-void Game::on_ruin_selected(Ruin* r, MapTipPosition pos)
+void Game::on_ruin_selected(Ruin* r)
 {
     if (r)
     {
@@ -520,13 +446,14 @@ void Game::on_ruin_selected(Ruin* r, MapTipPosition pos)
 	    // note to translators: whether a ruin has been searched
 	    str += _("Unexplored");
 	    
-	map_tip_changed.emit(str, pos);
+	MapTipPosition mpos = bigmap->map_tip_position(r->get_area());
+	map_tip_changed.emit(str, mpos);
     }
     else
-	map_tip_changed.emit("", pos);
+	map_tip_changed.emit("", MapTipPosition());
 }
 
-void Game::on_signpost_selected(Signpost* s, MapTipPosition pos)
+void Game::on_signpost_selected(Signpost* s)
 {
     if (s)
     {
@@ -534,13 +461,14 @@ void Game::on_signpost_selected(Signpost* s, MapTipPosition pos)
 
 	str = s->getName();
 	    
-	map_tip_changed.emit(str, pos);
+	MapTipPosition mpos = bigmap->map_tip_position(s->get_area());
+	map_tip_changed.emit(str, mpos);
     }
     else
-	map_tip_changed.emit("", pos);
+	map_tip_changed.emit("", MapTipPosition());
 }
 
-void Game::on_temple_selected(Temple* t, MapTipPosition pos)
+void Game::on_temple_selected(Temple* t)
 {
     if (t)
     {
@@ -548,10 +476,11 @@ void Game::on_temple_selected(Temple* t, MapTipPosition pos)
 
 	str = t->getName();
 	    
-	map_tip_changed.emit(str, pos);
+	MapTipPosition mpos = bigmap->map_tip_position(t->get_area());
+	map_tip_changed.emit(str, mpos);
     }
     else
-	map_tip_changed.emit("", pos);
+	map_tip_changed.emit("", MapTipPosition());
 }
 
 void Game::looting_city(City* city, int &gold)
@@ -587,7 +516,7 @@ void Game::invading_city(City* city)
 
     if (!input_locked)
     {
-        bigmap->draw();
+        redraw();
 	CityDefeatedAction a = city_defeated.emit(city, gold);
         gold = 0;
 
@@ -617,7 +546,7 @@ void Game::invading_city(City* city)
     }
    
     Playerlist::getInstance()->checkPlayers();
-    bigmap->draw();
+    redraw();
     update_stack_info();
     update_sidebar_stats();
     update_control_panel();
@@ -625,15 +554,17 @@ void Game::invading_city(City* city)
 
 void Game::lock_inputs()
 {
-    //don't accept modifying user input from now on
-    bigmap->set_accept_events(false);
+    // don't accept modifying user input from now on
+    bigmap->set_input_locked(true);
+    smallmap->set_input_locked(true);
     input_locked = true;
     update_control_panel();
 }
 
 void Game::unlock_inputs()
 {
-    bigmap->set_accept_events(true);
+    bigmap->set_input_locked(false);
+    smallmap->set_input_locked(false);
     input_locked = false;
     update_control_panel();
 }
@@ -717,6 +648,18 @@ void Game::update_control_panel()
     }
 
     can_end_turn.emit(true);
+}
+
+GameBigMap &Game::get_bigmap()
+{
+    assert(bigmap.get());
+    return *bigmap.get();
+}
+
+SmallMap &Game::get_smallmap()
+{
+    assert(smallmap.get());
+    return *smallmap.get();
 }
 
 void Game::startGame()
@@ -930,7 +873,7 @@ bool Game::init_turn_for_player(Player* p)
     
         Stack* stack = p->getActivestack();
 	if (stack != NULL)
-	    center_view(stack->getPos());
+	    bigmap->center_view(stack->getPos());
 	else
 	    center_view_on_city();
 
@@ -978,7 +921,7 @@ void Game::center_view_on_city()
     {
         if (i->getPlayer() == p && i->isCapital())
         {
-	    center_view(i->getPos());
+	    bigmap->center_view(i->getPos());
             return;
         }
     }
@@ -989,21 +932,8 @@ void Game::center_view_on_city()
     {
         if (i->getPlayer() == p)
         {
-	    center_view(i->getPos());
+	    bigmap->center_view(i->getPos());
             break;
         }
     }
-}
-
-// This function makes all armies part of the stack.
-void Game::selectAllStack()
-{
-    Stack *s = Playerlist::getActiveplayer()->getStacklist()->getActivestack();
-    if (s)
-    {
-    	s->selectAll();
-	update_stack_info();
-    }
-
-    return;
 }

@@ -21,13 +21,11 @@
 
 class Maptile;
 
-/** A smaller version of the map
+/** A smaller version of the map that draws on its own SDL surface
   * 
-  * This class actually cares for drawing a small map with colors representing
-  * terrain and symbols representing cities, ruins etc.
+  * This is a base class that draws the terrain, etc. Derived classes can add
+  * their own stuff by overrriding after_draw.
   *
-  * It provides the basis for actual implementations, namely SmallMap and
-  * VectorMap.
   */
 class OverviewMap
 {

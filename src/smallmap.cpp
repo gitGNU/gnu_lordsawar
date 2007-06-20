@@ -34,6 +34,8 @@ namespace
 
 SmallMap::SmallMap()
 {
+    input_locked = false;
+    
     selection_value_increasing = true;
     selection_color.r = lower_selection_value;
     selection_color.g = lower_selection_value;
@@ -126,6 +128,9 @@ void SmallMap::after_draw()
 
 void SmallMap::mouse_button_event(MouseButtonEvent e)
 {
+    if (input_locked)
+	return;
+    
     if ((e.button == MouseButtonEvent::LEFT_BUTTON ||
 	 e.button == MouseButtonEvent::RIGHT_BUTTON)
 	&& e.state == MouseButtonEvent::PRESSED)
@@ -134,6 +139,9 @@ void SmallMap::mouse_button_event(MouseButtonEvent e)
 
 void SmallMap::mouse_motion_event(MouseMotionEvent e)
 {
+    if (input_locked)
+	return;
+    
     if (e.pressed[MouseMotionEvent::LEFT_BUTTON] ||
 	e.pressed[MouseMotionEvent::RIGHT_BUTTON])
 	center_view(e.pos);

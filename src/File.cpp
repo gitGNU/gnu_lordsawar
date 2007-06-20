@@ -140,9 +140,14 @@ string File::getMapset(string mapsetname)
     return Configuration::s_dataPath + "/tilesets/" + mapsetname + "/" + mapsetname + ".xml";
 }
 
+std::string File::getMapsetFile(string mapsetname, string picname)
+{
+    return Configuration::s_dataPath + "/tilesets/" + mapsetname + "/" + picname;
+}
+
 SDL_Surface* File::getMapsetPicture(string mapsetname, string picname)
 {
-    return loadImage(Configuration::s_dataPath + "/tilesets/" + mapsetname + "/" + picname);
+    return loadImage(getMapsetFile(mapsetname, picname));
 }
 
 SDL_Surface* File::getMapsetMask(string mapsetname, string picname)
@@ -180,9 +185,14 @@ SDL_Surface* File::getBorderPic(std::string filename)
 }
 
 
+std::string File::getEditorFile(std::string filename)
+{
+    return Configuration::s_dataPath + "/various/editor/" + filename + ".png";
+}
+
 SDL_Surface* File::getEditorPic(std::string filename)
 {
-    return loadImage(Configuration::s_dataPath + "/various/editor/" + filename + ".png");
+    return loadImage(getEditorFile(filename));
 }
 
 std::string File::getMusicFile(std::string filename)

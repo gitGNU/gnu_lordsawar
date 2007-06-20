@@ -65,6 +65,8 @@
 #include "../sound.h"
 #include "../File.h"
 #include "../game.h"
+#include "../gamebigmap.h"
+#include "../smallmap.h"
 #include "../GameScenario.h"
 #include "../army.h"
 #include "../ruin.h"
@@ -394,7 +396,7 @@ void GameWindow::setup_game(std::string file_path)
     Sound::getInstance()->enableBackground();
 
     game.reset(new Game(game_scenario));
-
+	
     // connect signals to and from control panel buttons
     setup_button(prev_button,
 		 sigc::mem_fun(game.get(), &Game::select_prev_stack),
@@ -495,7 +497,7 @@ bool GameWindow::on_sdl_mouse_button_event(GdkEventButton *e)
 	return true;	// useless event
 
     if (game.get())
-	game->mouse_button_event(to_input_event(e));
+	game->get_bigmap().mouse_button_event(to_input_event(e));
     
     return true;
 }
@@ -503,18 +505,19 @@ bool GameWindow::on_sdl_mouse_button_event(GdkEventButton *e)
 bool GameWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
 {
     if (game.get())
-	game->mouse_motion_event(to_input_event(e));
+	game->get_bigmap().mouse_motion_event(to_input_event(e));
     
     return true;
 }
 
 bool GameWindow::on_sdl_key_event(GdkEventKey *e)
 {
-    if (game.get()) {
-	KeyPressEvent k;
-	// FIXME: fill in
-	game->key_press_event(k);
-    }
+#if 0
+    // keypresses are not implemented in the bigmap at this point,
+    // to_input_event must also be defined to something sensible
+    if (game.get())
+	game->get_bigmap().key_press_event(to_input_event(e));
+#endif
     
     return true;
 }
@@ -525,7 +528,7 @@ bool GameWindow::on_map_mouse_button_event(GdkEventButton *e)
 	return true;	// useless event
     
     if (game.get())
-	game->smallmap_mouse_button_event(to_input_event(e));
+	game->get_smallmap().mouse_button_event(to_input_event(e));
     
     return true;
 }
@@ -533,7 +536,7 @@ bool GameWindow::on_map_mouse_button_event(GdkEventButton *e)
 bool GameWindow::on_map_mouse_motion_event(GdkEventMotion *e)
 {
     if (game.get())
-	game->smallmap_mouse_motion_event(to_input_event(e));
+	game->get_smallmap().mouse_motion_event(to_input_event(e));
     
     return true;
 }
@@ -546,7 +549,7 @@ void GameWindow::on_sdl_surface_changed()
     }
 
     if (game.get()) {
-	game->size_changed();
+	game->get_bigmap().screen_size_changed();
 	game->redraw();
     }
 }
@@ -839,12 +842,12 @@ void GameWindow::on_message_requested(std::string msg)
 
 void GameWindow::on_stack_selected_in_report(Stack *stack)
 {
-    game->center_view(stack->getPos());
+    game->get_bigmap().center_view(stack->getPos());
 }
 
 void GameWindow::on_city_selected_in_report(City *city)
 {
-    game->center_view(city->getPos());
+    game->get_bigmap().center_view(city->getPos());
 }
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)

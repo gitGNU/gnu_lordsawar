@@ -17,8 +17,6 @@
 #include <SDL_image.h>
 #include <assert.h>
 #include <stdlib.h>
-#include <sigc++/hide.h>
-#include <sigc++/bind.h>
 
 #include "bigmap.h"
 
@@ -45,28 +43,16 @@
 #include "GraphicsCache.h"
 #include "MapRenderer.h"
 
-#include "timing.h"
-
 
 #include <iostream>
 using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-namespace 
-{
-    int selection_timeout = 150;	// controls speed of selector rotation
-}
-
-
 BigMap::BigMap()
-    : d_renderer(0), buffer(0), current_tile(0, 0)
+    : d_renderer(0), buffer(0)
 {
-    mouse_state = NONE;
-    accepting_events = true;
-
     // load all pictures
-    d_arrows = File::getMiscPicture("arrows.png");
     d_ruinpic = File::getMapsetPicture("default", "misc/ruin.png");
     d_signpostpic = File::getMapsetPicture("default", "misc/signpost.png");
 
@@ -80,7 +66,6 @@ BigMap::BigMap()
 
 BigMap::~BigMap()
 {
-    SDL_FreeSurface(d_arrows);
     SDL_FreeSurface(d_ruinpic);
     SDL_FreeSurface(d_signpostpic);
     SDL_FreeSurface(d_itempic);
@@ -135,13 +120,6 @@ void BigMap::set_view(Rectangle new_view)
 
     // now set the MapRenderer so that it draws directly on the new surface
     d_renderer = new MapRenderer(buffer);
-
-    // setup timeout
-    if (!selection_timeout_handler)
-	selection_timeout_handler = 
-	    Timing::instance().register_timer(
-		sigc::mem_fun(*this, &BigMap::on_selection_timeout),
-		selection_timeout);
 }
 
 void BigMap::draw(bool redraw_buffer)
@@ -178,53 +156,34 @@ void BigMap::draw(bool redraw_buffer)
     SDL_UpdateRects(screen, 1, &dest);
 }
 
-void BigMap::centerView(const Vector<int> p)
+void BigMap::center_view(const Vector<int> p)
 {
     Rectangle new_view(
 	clip(Vector<int>(0,0), p - view.dim / 2, GameMap::get_dim() - view.dim),
 	view.dim);
     
     set_view(new_view);
-    
     view_changed.emit(view);
 }
 
-void BigMap::stackMoved(Stack* s)
+void BigMap::screen_size_changed()
 {
-    debug("stackMoved()");
+    SDL_Surface *v = SDL_GetVideoSurface();
+    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
 
-    // s = 0 means center on the active stack
-    if (!s)
-        s = Playerlist::getActiveplayer()->getActivestack();
+    Rectangle new_view = view;
+    
+    new_view.w = v->w / ts;
+    new_view.h = v->h / ts;
 
-    if (!s)
-        draw();
-    else
-        // center the view around the new stack position
-        centerView(s->getPos());
-}
+    new_view.pos = clip(Vector<int>(0,0), new_view.pos,
+			GameMap::get_dim() - new_view.dim);
 
-void BigMap::select_active_stack()
-{
-    Stack* stack = Playerlist::getActiveplayer()->getActivestack();
-    if (!stack)
-        return;
-
-    if (!stack->getPath()->checkPath(stack))
+    if (new_view != view)
     {
-        //error handling is required here, up to now we only barf on cerr
-        cerr << _("original path of stack was blocked\n");
+	set_view(new_view);
+	view_changed.emit(view);
     }
-
-    centerView(stack->getPos());
-
-    stack_selected.emit(stack);
-}
-
-void BigMap::unselect_active_stack()
-{
-    draw();
-    stack_selected.emit(0);
 }
 
 Vector<int> BigMap::get_view_pos_from_view()
@@ -244,215 +203,18 @@ Vector<int> BigMap::tile_to_buffer_pos(Vector<int> tile)
     return (tile - buffer_view.pos) * ts;
 }
 
-bool BigMap::on_selection_timeout()
-{
-    if (!Playerlist::getActiveplayer()->getActivestack())
-        return Timing::CONTINUE;
-
-    draw();
-
-    return Timing::CONTINUE;
-}
-
-void BigMap::mouse_button_event(MouseButtonEvent e)
-{
-    if (!accepting_events)
-	return;
-    
-    Vector<int> tile = mouse_pos_to_tile(e.pos);
-    
-    if (e.button == MouseButtonEvent::LEFT_BUTTON
-	&& e.state == MouseButtonEvent::PRESSED)
-    {
-        Stack* stack = Playerlist::getActiveplayer()->getActivestack();
-
-        if (stack)
-        {
-            Vector<int> p;
-            p.x = tile.x; p.y = tile.y;
-
-            // clicked on an already active stack
-            if (stack->getPos().x == tile.x && stack->getPos().y == tile.y)
-	    {
-		// clear the path
-                stack->getPath()->flClear();
-		path_set.emit();
-		draw();
-		return;
-	    }
-
-	    // split if ungrouped
-            Playerlist::getActiveplayer()->stackSplit(stack); 
-            
-            Vector<int>* dest = 0;
-            if (!stack->getPath()->empty())
-                dest = *stack->getPath()->rbegin();
-            
-            if (dest && dest->x == tile.x && dest->y == tile.y)
-            {
-                Playerlist::getActiveplayer()->stackMove(stack);
-                if (Playerlist::getActiveplayer()->getActivestack() == 0)
-                  return;
-            }
-            else
-                stack->getPath()->calculate(stack, p);
-
-	    path_set.emit();
-	    
-            draw();
-        }
-        // Stack hasn't been active yet
-        else
-        {
-            stack = Stacklist::getObjectAt(tile.x, tile.y);
-            if (stack && stack->isFriend(Playerlist::getActiveplayer()))
-            {
-                Playerlist::getActiveplayer()->getStacklist()->setActivestack(stack);
-                select_active_stack();
-            }
-            else
-            {
-              if (City* c = Citylist::getInstance()->getObjectAt(tile.x, tile.y))
-              {
-	          if (c->getPlayer() == Playerlist::getActiveplayer() && !c->isBurnt())
-                    city_selected(c, map_tip_position(c->get_area()), false);
-              }
-            }
-        }
-    }
-
-	    
-    // right mousebutton to get information about things on the map and to
-    // unselect the active stack
-    else if (e.button == MouseButtonEvent::RIGHT_BUTTON)
-    {
-	if (e.state == MouseButtonEvent::PRESSED)
-	{
-	    if (City* c = Citylist::getInstance()->getObjectAt(tile.x, tile.y))
-	    {
-		city_selected(c, map_tip_position(c->get_area()), true);
-	        mouse_state = SHOWING_CITY;
-	    }
-	    else if (Ruin* r = Ruinlist::getInstance()->getObjectAt(tile.x, tile.y))
-	    {
-                if ((r->isHidden() == true && 
-                      r->getOwner() == Playerlist::getActiveplayer()) ||
-                     r->isHidden() == false)
-                  {
-		    ruin_selected(r, map_tip_position(r->get_area()));
-		    mouse_state = SHOWING_RUIN;
-                  }
-	    }
-	    else if (Signpost* s = Signpostlist::getInstance()->getObjectAt(tile.x, tile.y))
-	    {
-		signpost_selected(s, map_tip_position(s->get_area()));
-		mouse_state = SHOWING_SIGNPOST;
-	    }
-	    else if (Temple* t = Templelist::getInstance()->getObjectAt(tile.x, tile.y))
-	    {
-		temple_selected.emit(t, map_tip_position(t->get_area()));
-		mouse_state = SHOWING_TEMPLE;
-	    }
-	}
-	else // button released
-	{
-	    switch(mouse_state)
-	    {
-	    case DRAGGING:
-		break;
-
-	    case SHOWING_CITY:
-		city_selected.emit(0, MapTipPosition(), true);
-		break;
-
-	    case SHOWING_RUIN:
-		ruin_selected.emit(0, MapTipPosition());
-		break;
-
-	    case SHOWING_TEMPLE:
-		temple_selected.emit(0, MapTipPosition());
-		break;
-
-	    case SHOWING_SIGNPOST:
-		signpost_selected.emit(0, MapTipPosition());
-		break;
-		
-	    case NONE:
-		Stack* stack = Playerlist::getActiveplayer()->getActivestack();
-		if (stack)
-		{
-		    Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
-		    unselect_active_stack();
-		}
-		break;
-	    }
-
-	    // in any case reset mouse state
-	    mouse_state = NONE;
-	}
-    }
-}
-
-void BigMap::mouse_motion_event(MouseMotionEvent e)
-{
-    if (!accepting_events)
-	return;
-    
-    static Vector<int> prev_mouse_pos = Vector<int>(0, 0);
-    
-    Vector<int> new_tile = mouse_pos_to_tile(e.pos);
-
-    if (new_tile != current_tile)
-    {
-	current_tile = new_tile;
-	mouse_on_tile.emit(current_tile);
-    }
-
-    // drag with right mouse button
-    if (e.pressed[MouseMotionEvent::RIGHT_BUTTON]
-	&& (mouse_state == NONE || mouse_state == DRAGGING))
-    {
-	Vector<int> delta = -(e.pos - prev_mouse_pos);
-
-	// ignore very small drags to ensure that a shaking mouse does not
-	// prevent the user from making right clicks
-	if (mouse_state == NONE && length(delta) <= 2)
-	    return;
-	
-	// FIXME: show a drag cursor
-	
-	int ts = GameMap::getInstance()->getTileSet()->getTileSize();
-	SDL_Surface *screen = SDL_GetVideoSurface();
-	Vector<int> screen_dim(screen->w, screen->h);
-	view_pos = clip(Vector<int>(0, 0),
-			view_pos + delta,
-			GameMap::get_dim() * ts - screen_dim);
-
-	// calculate new view position in tiles, rounding up
-	Vector<int> new_view = (view_pos + Vector<int>(ts - 1, ts - 1)) / ts;
-
-	bool redraw_buffer = false;
-	
-	if (new_view != view.pos)
-	{
-	    view.x = new_view.x;
-	    view.y = new_view.y;
-	    view_changed.emit(view);
-	    redraw_buffer = true;
-	}
-
-	draw(redraw_buffer);
-	mouse_state = DRAGGING;
-    }
-
-    prev_mouse_pos = e.pos;
-}
-
 Vector<int> BigMap::mouse_pos_to_tile(Vector<int> pos)
 {
     int ts = GameMap::getInstance()->getTileSet()->getTileSize();
 
     return (view_pos + pos) / ts;
+}
+
+Vector<int> BigMap::mouse_pos_to_tile_offset(Vector<int> pos)
+{
+    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+
+    return (view_pos + pos) % ts;
 }
 
 MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
@@ -610,106 +372,5 @@ void BigMap::draw_buffer()
         }
     }
 
-    Stack* stack = Playerlist::getActiveplayer()->getActivestack();
-
-    // Draw Path
-    if (stack && stack->getPath()->size())
-    {
-        Vector<int> pos;
-        Vector<int> nextpos;
-        SDL_Color c;
-        c.r = c.g = c.b = 0;
-
-        // draw all waypoints except the last
-        for (list<Vector<int>*>::iterator it = stack->getPath()->begin();
-	     it != --(stack->getPath()->end());)
-        {
-            // peak at the next waypoint to draw the correct arrow
-            pos = tile_to_buffer_pos(**it);
-            nextpos = tile_to_buffer_pos(**(++it));
-	    SDL_Rect r1, r2;
-	    r1.y = 0;
-	    r1.w = r1.h = tilesize;
-	    r2.x = pos.x;
-	    r2.y = pos.y;
-	    r2.w = r2.h = tilesize;
-
-            if (nextpos.x == pos.x && nextpos.y < pos.y)
-                r1.x = 0;
-            else if (nextpos.x > pos.x && nextpos.y < pos.y)
-                r1.x = tilesize;
-            else if (nextpos.x > pos.x && nextpos.y == pos.y)
-                r1.x = 2 * tilesize;
-            else if (nextpos.x > pos.x && nextpos.y > pos.y)
-                r1.x = 3 * tilesize;
-            else if (nextpos.x == pos.x && nextpos.y > pos.y)
-                r1.x = 4 * tilesize;
-            else if (nextpos.x < pos.x && nextpos.y > pos.y)
-                r1.x = 5 * tilesize;
-            else if (nextpos.x < pos.x && nextpos.y == pos.y)
-                r1.x = 6 * tilesize;
-            else if (nextpos.x < pos.x && nextpos.y < pos.y)
-                r1.x = 7 * tilesize;
-
-            SDL_BlitSurface(d_arrows, &r1, buffer, &r2);
-
-        }
-
-        pos = tile_to_buffer_pos(*stack->getPath()->back());
-	SDL_Rect r1, r2;
-	r1.x = 8 * tilesize;
-	r1.y = 0;
-	r1.w = r1.h = tilesize;
-	r2.x = pos.x;
-	r2.y = pos.y;
-	r2.w = r2.h = tilesize;
-        SDL_BlitSurface(d_arrows, &r1, buffer, &r2);
-    }
-
-    if (stack)
-    {
-	// draw the selection
-	Vector<int> p = stack->getPos();
-	if (is_inside(buffer_view, Vector<int>(p.x, p.y)))
-	{
-	    static int bigframe = -1;
-	    static int smallframe = -1;
-        
-	    bigframe++;
-	    if (bigframe > 5)
-		bigframe = 0;
-
-	    smallframe++;
-	    if (smallframe > 3)
-		smallframe = 0;
-	    
-	    p = tile_to_buffer_pos(p);
-	    SDL_Rect r;
-	    r.x = p.x;
-	    r.y = p.y;
-	    r.w = r.h = tilesize;
-	    Player *p = Playerlist::getActiveplayer();
-	    SDL_Surface *tmp;
-            int num_selected = 0;
-            for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
-	    {
-                if ((*it)->isGrouped())
-		    num_selected++;
-	    }
-	    if (num_selected > 1)
-		tmp = gc->getSelectorPic(0, bigframe, p);
-	    else
-		tmp = gc->getSelectorPic(1, smallframe, p);
-            SDL_BlitSurface(tmp, 0, buffer, &r);
-	}
-    }
+    after_draw();
 }
-
-#if 0
-void BigMap::eventMouseLeave()
-{
-    //set the pos value to a negative value, so the status is not drawn
-    d_pos.x = -51;
-    smovingMouse.emit(Vector<int>(-1,-1));
-}
-#endif

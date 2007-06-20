@@ -16,14 +16,19 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../AI_Allocation.o ../MoveResult.o ../AICityInfo.o \
         ../FogMap.o ../signpostlist.o ../signpost.o\
 	../stone.o ../stonelist.o ../sound.o ../road.o ../roadlist.o \
-        ../vectoredunitlist.o ../vectoredunit.o
+        ../vectoredunitlist.o ../vectoredunit.o \
+        ../bigmap.o ../smallmap.o ../overviewmap.o ../timing.o \
+        ../gui/image-helpers.o ../gui/gtksdl.o
 
 
 if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor
 
 lordsawar_editor_SOURCES = \
-main.cpp #MainScreen.cpp 
+main.cpp \
+main-window.cpp main-window.h \
+editorbigmap.cpp editorbigmap.h \
+glade-helpers.h
 
 # NewMapDialog.cpp Bigmap.cpp \
 # Smallmap.cpp MapGenDialog.cpp TempleDialog.cpp \

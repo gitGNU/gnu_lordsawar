@@ -41,6 +41,9 @@ class SmallMap: public OverviewMap, public sigc::trackable
     void mouse_button_event(MouseButtonEvent e);
     void mouse_motion_event(MouseMotionEvent e);
     
+    // whether the map accepts input events
+    void set_input_locked(bool locked) { input_locked = locked; }
+    
     // emitted when the view changes because of user interactions
     sigc::signal<void, Rectangle> view_changed;
 
@@ -52,6 +55,7 @@ class SmallMap: public OverviewMap, public sigc::trackable
     SDL_Color selection_color;
     bool selection_value_increasing;
     sigc::connection selection_timeout_handler;
+    bool input_locked;
     
     void center_view(Vector<int> p);
     void draw_selection();
