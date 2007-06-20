@@ -295,6 +295,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
 void GameBigMap::after_draw()
 {
+    GraphicsCache *gc = GraphicsCache::getInstance();
     int tilesize = GameMap::getInstance()->getTileSet()->getTileSize();
     
     Stack* stack = Playerlist::getActiveplayer()->getActivestack();
@@ -375,7 +376,6 @@ void GameBigMap::after_draw()
 	    r.x = p.x;
 	    r.y = p.y;
 	    r.w = r.h = tilesize;
-	    GraphicsCache *gc = GraphicsCache::getInstance();
 	    Player *p = Playerlist::getActiveplayer();
 	    SDL_Surface *tmp;
             int num_selected = 0;
