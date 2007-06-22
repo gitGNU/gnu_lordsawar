@@ -120,6 +120,9 @@ MainWindow::MainWindow()
 			      EditorBigMap::ERASE, 1);
     on_pointer_radiobutton_toggled();
 
+
+    xml->get_widget("mouse_position_label", mouse_position_label);
+    
     
     // connect callbacks for the menu
     xml->connect_clicked("load_map_menuitem",
@@ -210,17 +213,6 @@ void MainWindow::setup_terrain_radiobuttons()
 
 void MainWindow::show()
 {
-#if 0
-    prev_button->show_all();
-    next_button->show_all();
-    next_movable_button->show_all();
-    center_button->show_all();
-    defend_button->show_all();
-    search_button->show_all();
-    move_button->show_all();
-    move_all_button->show_all();
-    end_turn_button->show_all();
-#endif
     sdl_container->show_all();
     window->show();
 }
@@ -541,18 +533,10 @@ void MainWindow::init_maps()
 {
     // init the bigmap
     bigmap.reset(new EditorBigMap);
+    bigmap->mouse_on_tile.connect(
+	sigc::mem_fun(this, &MainWindow::on_mouse_on_tile));
     bigmap->objects_selected.connect(
 	sigc::mem_fun(this, &MainWindow::on_objects_selected));
-#if 0
-    bigmap->city_selected.connect(
-	sigc::mem_fun(this, &MainWindow::on_city_selected));
-    bigmap->ruin_selected.connect(
-	sigc::mem_fun(this, &MainWindow::on_ruin_selected));
-    bigmap->signpost_selected.connect(
-	sigc::mem_fun(this, &MainWindow::on_signpost_selected));
-    bigmap->temple_selected.connect(
-	sigc::mem_fun(this, &MainWindow::on_temple_selected));
-#endif
     
     // init the smallmap
     smallmap.reset(new SmallMap);
@@ -568,6 +552,16 @@ void MainWindow::init_maps()
 	sigc::mem_fun(bigmap.get(), &EditorBigMap::set_view));
 
     smallmap->resize(GameMap::get_dim() * 2);
+}
+
+void MainWindow::on_mouse_on_tile(Vector<int> tile)
+{
+    Glib::ustring str;
+    if (tile.x > 0 && tile.y > 0)
+	// note to translators: this is a coordinate pair (x, y)
+	str = "<i>" + String::ucompose(_("(%1, %2)"), tile.x, tile.y) + "</i>";
+    
+    mouse_position_label->set_markup(str);
 }
 
 void MainWindow::on_objects_selected(std::vector<Object *> objects)

@@ -65,6 +65,7 @@ class MainWindow: public sigc::trackable
     Gtk::Image *map_image;
     std::string current_save_filename;
     Gtk::Table *terrain_type_table;
+    Gtk::Label *mouse_position_label;
     Gtk::Tooltips tooltips;
 
     std::auto_ptr<EditorBigMap> bigmap;
@@ -122,17 +123,13 @@ class MainWindow: public sigc::trackable
     void setup_terrain_radiobuttons();
 
     void init_maps();
+
+    // map callbacks
     void on_smallmap_changed(SDL_Surface *map);
-    // bigmap callback
     void on_objects_selected(std::vector<Object *> objects);
+    void on_mouse_on_tile(Vector<int> tile);
+    
     void popup_dialog_for_object(Object *object);
-#if 0
-    void on_stack_selected(Stack* s);
-    void on_city_selected(City* c);
-    void on_ruin_selected(Ruin* r);
-    void on_temple_selected(Temple* t);
-    void on_signpost_selected(Signpost* s);
-#endif
 
     
 public:

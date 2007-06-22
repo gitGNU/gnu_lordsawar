@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.0.2 on Wed Jun 20 15:13:23 2007 by olau@alfa-->
+<!--Generated with glade3 3.0.2 on Fri Jun 22 19:41:21 2007 by olau@alfa-->
 <glade-interface>
   <widget class="GtkWindow" id="window">
     <child>
@@ -285,161 +285,167 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkAlignment" id="map_things_alignment">
+                  <widget class="GtkTable" id="map_things_table">
                     <property name="visible">True</property>
-                    <property name="bottom_padding">6</property>
+                    <property name="n_rows">2</property>
+                    <property name="n_columns">4</property>
+                    <property name="column_spacing">6</property>
+                    <property name="row_spacing">6</property>
                     <child>
-                      <widget class="GtkTable" id="map_things_table">
+                      <widget class="GtkRadioButton" id="erase_radiobutton">
                         <property name="visible">True</property>
-                        <property name="n_rows">2</property>
-                        <property name="n_columns">4</property>
-                        <property name="column_spacing">6</property>
-                        <property name="row_spacing">6</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">pointer_radiobutton</property>
                         <child>
-                          <widget class="GtkRadioButton" id="draw_road_radiobutton">
+                          <widget class="GtkImage" id="erase_image">
                             <property name="visible">True</property>
-                            <property name="draw_indicator">True</property>
-                            <property name="group">pointer_radiobutton</property>
-                            <child>
-                              <widget class="GtkImage" id="draw_road_image">
-                                <property name="visible">True</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </widget>
-                            </child>
+                            <property name="stock">gtk-missing-image</property>
                           </widget>
-                          <packing>
-                            <property name="left_attach">2</property>
-                            <property name="right_attach">3</property>
-                            <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkRadioButton" id="draw_stone_radiobutton">
-                            <property name="visible">True</property>
-                            <property name="draw_indicator">True</property>
-                            <property name="group">pointer_radiobutton</property>
-                            <child>
-                              <widget class="GtkImage" id="draw_stone_image">
-                                <property name="visible">True</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </widget>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
-                            <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkRadioButton" id="draw_signpost_radiobutton">
-                            <property name="visible">True</property>
-                            <property name="draw_indicator">True</property>
-                            <property name="group">pointer_radiobutton</property>
-                            <child>
-                              <widget class="GtkImage" id="draw_signpost_image">
-                                <property name="visible">True</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </widget>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkRadioButton" id="draw_temple_radiobutton">
-                            <property name="visible">True</property>
-                            <property name="draw_indicator">True</property>
-                            <property name="group">pointer_radiobutton</property>
-                            <child>
-                              <widget class="GtkImage" id="draw_temple_image">
-                                <property name="visible">True</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </widget>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="left_attach">3</property>
-                            <property name="right_attach">4</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkRadioButton" id="draw_ruin_radiobutton">
-                            <property name="visible">True</property>
-                            <property name="draw_indicator">True</property>
-                            <property name="group">pointer_radiobutton</property>
-                            <child>
-                              <widget class="GtkImage" id="draw_ruin_image">
-                                <property name="visible">True</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </widget>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="left_attach">2</property>
-                            <property name="right_attach">3</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkRadioButton" id="draw_city_radiobutton">
-                            <property name="visible">True</property>
-                            <property name="draw_indicator">True</property>
-                            <property name="group">pointer_radiobutton</property>
-                            <child>
-                              <widget class="GtkImage" id="draw_city_image">
-                                <property name="visible">True</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </widget>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <widget class="GtkRadioButton" id="draw_stack_radiobutton">
-                            <property name="visible">True</property>
-                            <property name="draw_indicator">True</property>
-                            <property name="group">pointer_radiobutton</property>
-                            <child>
-                              <widget class="GtkImage" id="draw_stack_image">
-                                <property name="visible">True</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </widget>
-                            </child>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkRadioButton" id="erase_radiobutton">
-                            <property name="visible">True</property>
-                            <property name="draw_indicator">True</property>
-                            <property name="group">pointer_radiobutton</property>
-                            <child>
-                              <widget class="GtkImage" id="erase_image">
-                                <property name="visible">True</property>
-                                <property name="stock">gtk-missing-image</property>
-                              </widget>
-                            </child>
-                          </widget>
-                          <packing>
-                            <property name="left_attach">3</property>
-                            <property name="right_attach">4</property>
-                            <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                          </packing>
                         </child>
                       </widget>
+                      <packing>
+                        <property name="left_attach">3</property>
+                        <property name="right_attach">4</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkRadioButton" id="draw_stack_radiobutton">
+                        <property name="visible">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">pointer_radiobutton</property>
+                        <child>
+                          <widget class="GtkImage" id="draw_stack_image">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </widget>
+                        </child>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkRadioButton" id="draw_city_radiobutton">
+                        <property name="visible">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">pointer_radiobutton</property>
+                        <child>
+                          <widget class="GtkImage" id="draw_city_image">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </widget>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkRadioButton" id="draw_ruin_radiobutton">
+                        <property name="visible">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">pointer_radiobutton</property>
+                        <child>
+                          <widget class="GtkImage" id="draw_ruin_image">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </widget>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="right_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkRadioButton" id="draw_temple_radiobutton">
+                        <property name="visible">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">pointer_radiobutton</property>
+                        <child>
+                          <widget class="GtkImage" id="draw_temple_image">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </widget>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">3</property>
+                        <property name="right_attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkRadioButton" id="draw_signpost_radiobutton">
+                        <property name="visible">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">pointer_radiobutton</property>
+                        <child>
+                          <widget class="GtkImage" id="draw_signpost_image">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </widget>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkRadioButton" id="draw_stone_radiobutton">
+                        <property name="visible">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">pointer_radiobutton</property>
+                        <child>
+                          <widget class="GtkImage" id="draw_stone_image">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </widget>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkRadioButton" id="draw_road_radiobutton">
+                        <property name="visible">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">pointer_radiobutton</property>
+                        <child>
+                          <widget class="GtkImage" id="draw_road_image">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </widget>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="right_attach">3</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
                     </child>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
                     <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="mouse_position_label">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="padding">6</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
               </widget>

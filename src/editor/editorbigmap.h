@@ -57,13 +57,6 @@ class EditorBigMap: public BigMap
     // something was selected
     typedef std::vector<Object *> map_selection_seq;
     sigc::signal<void, map_selection_seq> objects_selected;
-#if 0
-    sigc::signal<void, Stack*> stack_selected;
-    sigc::signal<void, City*> city_selected;
-    sigc::signal<void, Ruin*> ruin_selected;
-    sigc::signal<void, Signpost*> signpost_selected;
-    sigc::signal<void, Temple*> temple_selected;
-#endif
 
     // emitted whenever the user moves the mouse to a new tile
     sigc::signal<void, Vector<int> > mouse_on_tile;
