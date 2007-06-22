@@ -62,6 +62,7 @@ BigMap::BigMap()
     d_fogpic = File::getMiscPicture("fog.png");
 
     // note: we are not fully initialized before set_view is called
+    view.x = view.y = 0;
 }
 
 BigMap::~BigMap()

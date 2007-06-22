@@ -378,6 +378,8 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
     return true;
   if (desty < 0 || desty >= s_height)
     return true;
+  if (Citylist::getInstance()->empty())
+      return false;
   int diffx = destx - x;
   int diffy = desty - y;
   if (diffx >= -1 && diffx <= 1 && diffy >= -1 && diffy <= 1)

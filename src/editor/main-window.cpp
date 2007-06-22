@@ -26,6 +26,7 @@
 #include <gtkmm/eventbox.h>
 #include <gtkmm/image.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/stock.h>
 #include <gtkmm/filechooserdialog.h>
 
 #include "main-window.h"
@@ -299,7 +300,6 @@ void MainWindow::show_initial_map()
     setup_terrain_radiobuttons();
 
     init_maps();
-    smallmap->resize(GameMap::get_dim() * 2);
 }
 
 bool MainWindow::on_sdl_mouse_button_event(GdkEventButton *e)
@@ -380,14 +380,14 @@ void MainWindow::on_sdl_surface_changed()
 
 void MainWindow::on_new_map_activated()
 {
+    current_save_filename = "";
 }
 
 void MainWindow::on_load_map_activated()
 {
-#if 0
-    Gtk::FileChooserDialog chooser(*window.get(), _("Choose Game to Load"));
+    Gtk::FileChooserDialog chooser(*window.get(), _("Choose Map to Load"));
     Gtk::FileFilter sav_filter;
-    sav_filter.add_pattern("*.sav");
+    sav_filter.add_pattern("*.map");
     chooser.set_filter(sav_filter);
     chooser.set_current_folder(Configuration::s_savePath);
 
@@ -400,37 +400,48 @@ void MainWindow::on_load_map_activated()
     
     if (res == Gtk::RESPONSE_ACCEPT)
     {
-	std::string filename = chooser.get_filename();
+	current_save_filename = chooser.get_filename();
 	chooser.hide();
-	load_game(filename);
+
+	bigmap.reset();
+	smallmap.reset();
+	game_scenario.reset();
+	GraphicsCache::deleteInstance();
+
+	bool broken;
+	game_scenario.reset(new GameScenario(current_save_filename, broken));
+
+	if (broken)
+	{
+	    show_error(String::ucompose(_("Could not load map %s."),
+					current_save_filename));
+	    current_save_filename = "";
+	    return;
+	}
+
+	init_maps();
+	bigmap->screen_size_changed();
     }
-#endif
 }
 
 void MainWindow::on_save_map_activated()
 {
-#if 0
     if (current_save_filename.empty())
-	on_save_game_as_activated();
+	on_save_map_as_activated();
     else
     {
-	if (game.get())
-	{
-	    bool success = game->saveGame(current_save_filename);
-	    if (!success)
-		show_error(_("Game was not saved!"));
-	}
+	bool success = game_scenario->saveGame(current_save_filename, "map");
+	if (!success)
+	    show_error(_("Map was not saved!"));
     }
-#endif
 }
 
 void MainWindow::on_save_map_as_activated()
 {
-#if 0
     Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
 				   Gtk::FILE_CHOOSER_ACTION_SAVE);
     Gtk::FileFilter sav_filter;
-    sav_filter.add_pattern("*.sav");
+    sav_filter.add_pattern("*.map");
     chooser.set_filter(sav_filter);
     chooser.set_current_folder(Configuration::s_savePath);
 
@@ -443,19 +454,13 @@ void MainWindow::on_save_map_as_activated()
     
     if (res == Gtk::RESPONSE_ACCEPT)
     {
-	std::string filename = chooser.get_filename();
+	current_save_filename = chooser.get_filename();
 	chooser.hide();
 
-	current_save_filename = filename;
-
-	if (game.get())
-	{
-	    bool success = game->saveGame(current_save_filename);
-	    if (!success)
-		show_error(_("Error saving game!"));
-	}
+	bool success = game_scenario->saveGame(current_save_filename, "map");
+	if (!success)
+	    show_error(_("Map was not saved!"));
     }
-#endif
 }
 
 void MainWindow::on_quit_activated()
@@ -465,6 +470,7 @@ void MainWindow::on_quit_activated()
 
     if (end) {
     }
+    window->hide();
 }
 
 void MainWindow::on_fullscreen_activated()
@@ -546,4 +552,6 @@ void MainWindow::init_maps()
 	sigc::mem_fun(smallmap.get(), &SmallMap::draw));
     smallmap->view_changed.connect(
 	sigc::mem_fun(bigmap.get(), &EditorBigMap::set_view));
+
+    smallmap->resize(GameMap::get_dim() * 2);
 }

@@ -18,7 +18,7 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../stone.o ../stonelist.o ../sound.o ../road.o ../roadlist.o \
         ../vectoredunitlist.o ../vectoredunit.o \
         ../bigmap.o ../smallmap.o ../overviewmap.o ../timing.o \
-        ../gui/image-helpers.o ../gui/gtksdl.o
+        ../gui/image-helpers.o ../gui/error-utils.o ../gui/gtksdl.o
 
 
 if WANT_EDITOR
