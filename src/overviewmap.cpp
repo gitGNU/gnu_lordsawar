@@ -185,7 +185,7 @@ void OverviewMap::resize(Vector<int> max_dimensions)
     
     if (d.y > max_dimensions.y)
     {
-	// if to big, scale to vertical
+	// if too big, scale to vertical
 	pixels_per_tile = max_dimensions.y / double(bigmap_dim.y);
 	d.x = int(round(bigmap_dim.x * pixels_per_tile));
 	d.y = max_dimensions.y;
