@@ -81,7 +81,7 @@ class EditorBigMap: public BigMap
     virtual void after_draw();
     int mouse_pos_to_stone_type(Vector<int> mpos);
     int tile_to_road_type(Vector<int> tile);
-    void change_map();
+    void change_map_under_cursor();
     std::vector<Vector<int> > get_cursor_tiles();
 };
 

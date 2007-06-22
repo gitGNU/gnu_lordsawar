@@ -83,7 +83,7 @@ void EditorBigMap::mouse_button_event(MouseButtonEvent e)
     if (e.button == MouseButtonEvent::LEFT_BUTTON
 	&& e.state == MouseButtonEvent::PRESSED)
     {
-	change_map();
+	change_map_under_cursor();
     }
 
 	    
@@ -175,6 +175,12 @@ void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
 	mouse_pos_to_stone_type(mouse_pos) !=
 	mouse_pos_to_stone_type(prev_mouse_pos))
 	redraw = true;
+
+    // draw with left mouse button
+    if (e.pressed[MouseMotionEvent::LEFT_BUTTON])
+    {
+	change_map_under_cursor();
+    }
     
     // drag with right mouse button
     if (e.pressed[MouseMotionEvent::RIGHT_BUTTON]
@@ -441,7 +447,7 @@ namespace
     }
 }
 
-void EditorBigMap::change_map()
+void EditorBigMap::change_map_under_cursor()
 {
     std::vector<Vector<int> > tiles = get_cursor_tiles();
     TileSet* ts = GameMap::getInstance()->getTileSet();
@@ -504,9 +510,7 @@ void EditorBigMap::change_map()
 	    break;
 
 	case STACK:
-	    if (!Stacklist::getObjectAt(tile)
-		// FIXME: currently we disallow stacks on water
-		&& maptile->getType() != Tile::WATER)
+	    if (!Stacklist::getObjectAt(tile))
 	    {
 		// Create a new dummy stack. As we don't want to have empty
 		// stacks hanging around, it's assumed that the default armyset
