@@ -73,6 +73,7 @@ class MainWindow: public sigc::trackable
     bool sdl_inited;
 
     std::auto_ptr<GameScenario> game_scenario;
+    GdkEventButton *button_event;
 
     bool on_delete_event(GdkEventAny *e);
 
@@ -122,6 +123,16 @@ class MainWindow: public sigc::trackable
 
     void init_maps();
     void on_smallmap_changed(SDL_Surface *map);
+    // bigmap callback
+    void on_objects_selected(std::vector<Object *> objects);
+    void popup_dialog_for_object(Object *object);
+#if 0
+    void on_stack_selected(Stack* s);
+    void on_city_selected(City* c);
+    void on_ruin_selected(Ruin* r);
+    void on_temple_selected(Temple* t);
+    void on_signpost_selected(Signpost* s);
+#endif
 
     
 public:

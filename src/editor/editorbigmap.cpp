@@ -87,72 +87,24 @@ void EditorBigMap::mouse_button_event(MouseButtonEvent e)
     }
 
 	    
-    else if (e.button == MouseButtonEvent::RIGHT_BUTTON)
+    else if (e.button == MouseButtonEvent::RIGHT_BUTTON
+	     && e.state == MouseButtonEvent::PRESSED)
     {
-	if (e.state == MouseButtonEvent::PRESSED)
-	{
-	    if (City* c = Citylist::getInstance()->getObjectAt(tile.x, tile.y))
-	    {
-		city_selected(c);
-	        mouse_state = SHOWING_CITY;
-	    }
-	    else if (Ruin* r = Ruinlist::getInstance()->getObjectAt(tile.x, tile.y))
-	    {
-                if ((r->isHidden() == true && 
-                      r->getOwner() == Playerlist::getActiveplayer()) ||
-                     r->isHidden() == false)
-                  {
-		    ruin_selected(r);
-		    mouse_state = SHOWING_RUIN;
-                  }
-	    }
-	    else if (Signpost* s = Signpostlist::getInstance()->getObjectAt(tile.x, tile.y))
-	    {
-		signpost_selected(s);
-		mouse_state = SHOWING_SIGNPOST;
-	    }
-	    else if (Temple* t = Templelist::getInstance()->getObjectAt(tile.x, tile.y))
-	    {
-		temple_selected.emit(t);
-		mouse_state = SHOWING_TEMPLE;
-	    }
-	}
-	else // button released
-	{
-	    switch(mouse_state)
-	    {
-	    case DRAGGING:
-		break;
+	map_selection_seq seq;
+	
+	if (Stack* s = Stacklist::getObjectAt(tile))
+	    seq.push_back(s);
+	if (City* c = Citylist::getInstance()->getObjectAt(tile))
+	    seq.push_back(c);
+	if (Ruin* r = Ruinlist::getInstance()->getObjectAt(tile))
+	    seq.push_back(r);
+	if (Signpost* s = Signpostlist::getInstance()->getObjectAt(tile))
+	    seq.push_back(s);
+	if (Temple* t = Templelist::getInstance()->getObjectAt(tile))
+	    seq.push_back(t);
 
-	    case SHOWING_CITY:
-		city_selected.emit(0);
-		break;
-
-	    case SHOWING_RUIN:
-		ruin_selected.emit(0);
-		break;
-
-	    case SHOWING_TEMPLE:
-		temple_selected.emit(0);
-		break;
-
-	    case SHOWING_SIGNPOST:
-		signpost_selected.emit(0);
-		break;
-		
-	    case NONE:
-		Stack* stack = Playerlist::getActiveplayer()->getActivestack();
-		if (stack)
-		{
-		    Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
-		    //unselect_active_stack();
-		}
-		break;
-	    }
-
-	    // in any case reset mouse state
-	    mouse_state = NONE;
-	}
+	if (!seq.empty())
+	    objects_selected.emit(seq);
     }
 }
 

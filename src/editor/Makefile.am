@@ -27,6 +27,9 @@ bin_PROGRAMS = lordsawar-editor
 lordsawar_editor_SOURCES = \
 main.cpp \
 main-window.cpp main-window.h \
+signpost-dialog.cpp signpost-dialog.h \
+temple-dialog.cpp temple-dialog.h \
+ruin-dialog.cpp ruin-dialog.h \
 editorbigmap.cpp editorbigmap.h \
 glade-helpers.h
 

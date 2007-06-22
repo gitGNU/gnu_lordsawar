@@ -28,6 +28,8 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/filechooserdialog.h>
+#include <gtkmm/menu.h>
+#include <gtkmm/menuitem.h>
 
 #include "main-window.h"
 
@@ -49,8 +51,17 @@
 #include "../playerlist.h"
 #include "../ai_dummy.h"
 
-#include "editorbigmap.h"
+#include "../stack.h"
+#include "../city.h"
+#include "../ruin.h"
+#include "../signpost.h"
+#include "../temple.h"
+
 #include "glade-helpers.h"
+#include "editorbigmap.h"
+#include "signpost-dialog.h"
+#include "temple-dialog.h"
+#include "ruin-dialog.h"
 
 
 MainWindow::MainWindow()
@@ -308,7 +319,10 @@ bool MainWindow::on_sdl_mouse_button_event(GdkEventButton *e)
 	return true;	// useless event
 
     if (bigmap.get())
+    {
+	button_event = e;	// save it for later use
 	bigmap->mouse_button_event(to_input_event(e));
+    }
     
     return true;
 }
@@ -527,17 +541,17 @@ void MainWindow::init_maps()
 {
     // init the bigmap
     bigmap.reset(new EditorBigMap);
+    bigmap->objects_selected.connect(
+	sigc::mem_fun(this, &MainWindow::on_objects_selected));
 #if 0
-    bigmap->stack_selected.connect(
-	sigc::mem_fun(this, &Game::on_stack_selected));
     bigmap->city_selected.connect(
-	sigc::mem_fun(this, &Game::on_city_selected));
+	sigc::mem_fun(this, &MainWindow::on_city_selected));
     bigmap->ruin_selected.connect(
-	sigc::mem_fun(this, &Game::on_ruin_selected));
+	sigc::mem_fun(this, &MainWindow::on_ruin_selected));
     bigmap->signpost_selected.connect(
-	sigc::mem_fun(this, &Game::on_signpost_selected));
+	sigc::mem_fun(this, &MainWindow::on_signpost_selected));
     bigmap->temple_selected.connect(
-	sigc::mem_fun(this, &Game::on_temple_selected));
+	sigc::mem_fun(this, &MainWindow::on_temple_selected));
 #endif
     
     // init the smallmap
@@ -554,4 +568,77 @@ void MainWindow::init_maps()
 	sigc::mem_fun(bigmap.get(), &EditorBigMap::set_view));
 
     smallmap->resize(GameMap::get_dim() * 2);
+}
+
+void MainWindow::on_objects_selected(std::vector<Object *> objects)
+{
+    assert(!objects.empty());
+
+    if (objects.size() == 1)
+    {
+	popup_dialog_for_object(objects.front());
+    }
+    else
+    {
+	// show a popup
+	Gtk::Menu *menu = manage(new Gtk::Menu);
+	for (std::vector<Object *>::iterator i = objects.begin(), end = objects.end();
+	     i != end; ++i)
+	{
+	    Glib::ustring s;
+	    if (dynamic_cast<Stack *>(*i))
+		s = _("Stack");
+	    else if (dynamic_cast<City *>(*i))
+		s = _("City");
+	    else if (dynamic_cast<Ruin *>(*i))
+		s = _("Ruin");
+	    else if (dynamic_cast<Signpost *>(*i))
+		s = _("Signpost");
+	    else if (dynamic_cast<Temple *>(*i))
+		s = _("Temple");
+	    
+	    Gtk::MenuItem *item = manage(new Gtk::MenuItem(s));
+	    item->signal_activate().connect(
+		sigc::bind(sigc::mem_fun(this, &MainWindow::popup_dialog_for_object), *i));
+	    item->show();
+	    menu->add(*item);
+	}
+	menu->popup(button_event->button, button_event->time);
+    }
+}
+
+void MainWindow::popup_dialog_for_object(Object *object)
+{
+    if (Stack *o = dynamic_cast<Stack *>(object))
+    {
+#if 0
+	StackDialog d(o);
+	d.set_parent_window(*window.get());
+	d.run();
+#endif
+    }
+    else if (City *o = dynamic_cast<City *>(object))
+    {
+    }
+    else if (Ruin *o = dynamic_cast<Ruin *>(object))
+    {
+	RuinDialog d(o);
+	d.set_parent_window(*window.get());
+	d.run();
+    }
+    else if (Signpost *o = dynamic_cast<Signpost *>(object))
+    {
+	SignpostDialog d(o);
+	d.set_parent_window(*window.get());
+	d.run();
+    }
+    else if (Temple *o = dynamic_cast<Temple *>(object))
+    {
+	TempleDialog d(o);
+	d.set_parent_window(*window.get());
+	d.run();
+
+	// we might have changed something visible
+	bigmap->draw();
+    }
 }

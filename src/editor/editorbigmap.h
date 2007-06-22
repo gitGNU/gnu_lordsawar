@@ -34,6 +34,7 @@ class Signpost;
 class Temple;
 class Object;
 
+
 /** Specialization of BigMap for the editor
   */
 class EditorBigMap: public BigMap
@@ -53,12 +54,16 @@ class EditorBigMap: public BigMap
     void mouse_motion_event(MouseMotionEvent e);
     void mouse_leave_event();
 
-    // signals for mouse clicks, deselect is signified with a null pointer
+    // something was selected
+    typedef std::vector<Object *> map_selection_seq;
+    sigc::signal<void, map_selection_seq> objects_selected;
+#if 0
     sigc::signal<void, Stack*> stack_selected;
     sigc::signal<void, City*> city_selected;
     sigc::signal<void, Ruin*> ruin_selected;
     sigc::signal<void, Signpost*> signpost_selected;
     sigc::signal<void, Temple*> temple_selected;
+#endif
 
     // emitted whenever the user moves the mouse to a new tile
     sigc::signal<void, Vector<int> > mouse_on_tile;
@@ -74,8 +79,7 @@ class EditorBigMap: public BigMap
     int pointer_size;
 
     enum {
-	NONE, DRAGGING, SHOWING_CITY, SHOWING_RUIN,
-	SHOWING_TEMPLE, SHOWING_SIGNPOST
+	NONE, DRAGGING
     } mouse_state;
 
     virtual void after_draw();
