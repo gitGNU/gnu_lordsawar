@@ -14,6 +14,7 @@
 
 #include <sigc++/functors/mem_fun.h>
 
+#include "xmlhelper.h"
 #include "templelist.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}

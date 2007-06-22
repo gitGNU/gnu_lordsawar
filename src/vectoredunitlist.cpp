@@ -17,6 +17,7 @@
 #include "vectoredunitlist.h"
 #include "citylist.h"
 #include "city.h"
+#include "xmlhelper.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)

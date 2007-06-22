@@ -39,7 +39,7 @@ class Object
     Object(Vector<int> pos, Uint32 size = 1);
     Object(const Object&);
     Object(XML_Helper* helper, Uint32 size = 1);
-    ~Object();
+    virtual ~Object();
 
     //! Get the position of the object
     Vector<int> getPos() const {return d_pos;}

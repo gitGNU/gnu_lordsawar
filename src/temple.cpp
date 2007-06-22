@@ -21,7 +21,7 @@ Temple::Temple(Vector<int> pos, std::string name, int type)
   :Location(name, pos),d_type(type)
 {
     //mark the location on the game map as occupied by a temple
-    GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::TEMPLE);
+    GameMap::getInstance()->getTile(d_pos)->setBuilding(Maptile::TEMPLE);
 }
 
 Temple::Temple(XML_Helper* helper)
@@ -29,7 +29,7 @@ Temple::Temple(XML_Helper* helper)
 {
     //mark the location on the game map as occupied by a temple
     helper->getData(d_type, "type");
-    GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::TEMPLE);
+    GameMap::getInstance()->getTile(d_pos)->setBuilding(Maptile::TEMPLE);
 }
 
 Temple::Temple(const Temple& t)

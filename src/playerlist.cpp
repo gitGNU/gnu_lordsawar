@@ -19,6 +19,7 @@
 
 #include "citylist.h"
 #include "defs.h"
+#include "xmlhelper.h"
 
 using namespace std;
 

@@ -21,11 +21,12 @@
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 
-#include "xmlhelper.h"
+#include "Object.h"
 
 class Player;
 class Path;
 class Army;
+class XML_Helper;
 
 /** Group of up to eight armies
   * 
@@ -36,7 +37,7 @@ class Army;
   * this is the location of the units, the movement etc.
   */
 
-class Stack : public std::list<Army*>, public sigc::trackable
+class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
 {
     public:
         /** Default constructor
@@ -91,14 +92,8 @@ class Stack : public std::list<Army*>, public sigc::trackable
 	// returns whether the stack can move in any direction
 	bool canMove() const;
         
-        //! Returns the unique id of the stack
-        Uint32 getId() const {return d_id;}
-
         //! Returns the owning player
         Player* getPlayer() const {return d_player;}
-
-        //! Returns the location of the stack
-        Vector<int> getPos() const {return d_pos;}
 
         //! Returns the internal path object of the stack
         Path* getPath() const {return d_path;}
@@ -164,11 +159,9 @@ class Stack : public std::list<Army*>, public sigc::trackable
         bool load(std::string tag, XML_Helper* helper);
     
         // DATA
-        Uint32 d_id;
         Player* d_player;
         Path* d_path;
         bool d_defending;
-        Vector<int> d_pos;
         
         // true if the stack is currently being deleted. This is neccessary as
         // some things may happen in the destructor of the contained armies and

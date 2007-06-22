@@ -19,6 +19,7 @@
 #include "city.h"
 #include "path.h"
 #include "playerlist.h"
+#include "xmlhelper.h"
 
 using namespace std;
 

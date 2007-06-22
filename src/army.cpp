@@ -354,6 +354,8 @@ int Army::gainLevel(Stat stat)
     default:
 	break;
     }
+    
+    return delta;
 }
 
 

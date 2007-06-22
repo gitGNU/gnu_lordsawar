@@ -25,6 +25,7 @@
 #include "hero.h"
 #include "GameMap.h"
 #include "vector.h"
+#include "xmlhelper.h"
 
 using namespace std;
 
@@ -32,14 +33,13 @@ using namespace std;
 #define debug(x)
 
 Stack::Stack(Player* player, Vector<int> pos)
-    :d_player(player), d_defending(false), d_pos(pos), d_deleting(false)
+    : Object(pos), d_player(player), d_defending(false), d_deleting(false)
 {
     d_path = new Path();
-    d_id = fl_counter->getNextId();
 }
 
 Stack::Stack(Stack& s)
-    :d_id(s.d_id), d_player(s.d_player), d_defending(s.d_defending), d_pos(s.d_pos),
+    : Object(s), d_player(s.d_player), d_defending(s.d_defending),
      d_deleting(false)
 {
     clear();
@@ -54,17 +54,11 @@ Stack::Stack(Stack& s)
 }
 
 Stack::Stack(XML_Helper* helper)
-    :d_deleting(false)
+    : Object(helper), d_deleting(false)
 {
-    int i;
-
-    helper->getData(d_id, "id");
-    helper->getData(i, "x");
-    d_pos.x = i;
-    helper->getData(i, "y");
-    d_pos.y = i;
     helper->getData(d_defending, "defending");
 
+    int i;
     helper->getData(i, "player");
     if (i == -1)
 	d_player = 0;
