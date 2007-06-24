@@ -283,7 +283,7 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
     return distance[dest.y * width + dest.x];
 }
 
-//am i blocked from entering destx,desty from x,y?
+//am i blocked from entering destx,desty from x,y when i'm not flying?
 bool Path::isBlockedDir(int x, int y, int destx, int desty) const
 {
   int diffx = destx - x;

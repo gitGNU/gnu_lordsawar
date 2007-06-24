@@ -401,6 +401,9 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
           to->getMaptileType() == Tile::WATER &&
           !from_city)
         return true;
+      //is the tile i'm going to a mountain?
+      if (to->getMaptileType() == Tile::MOUNTAIN)
+        return true;
     }
  return false;
 }

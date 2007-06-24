@@ -510,7 +510,11 @@ void MapGenerator::makeCities(int cities)
         if((d_terrain[y*d_width +x] == Tile::WATER
             || d_terrain[y*d_width + x+1] == Tile::WATER 
             || d_terrain[(y+1)*d_width + x] == Tile::WATER
-            || d_terrain[(y+1)*d_width + x+1] == Tile::WATER)
+            || d_terrain[(y+1)*d_width + x+1] == Tile::WATER
+            || d_terrain[y*d_width +x] == Tile::MOUNTAIN
+            || d_terrain[y*d_width + x+1] == Tile::MOUNTAIN
+            || d_terrain[(y+1)*d_width + x] == Tile::MOUNTAIN
+            || d_terrain[(y+1)*d_width + x+1] == Tile::MOUNTAIN)
             && (iterations < 1000))
         {
             iterations++;
@@ -524,7 +528,11 @@ void MapGenerator::makeCities(int cities)
             (d_terrain[y*d_width+x] != Tile::WATER &&
              d_terrain[(y*d_width)+x+1] != Tile::WATER &&
              d_terrain[((y+1)*d_width)+x] != Tile::WATER &&
-             d_terrain[((y+1)*d_width)+x+1] != Tile::WATER)))
+             d_terrain[((y+1)*d_width)+x+1] != Tile::WATER &&
+             d_terrain[y*d_width+x] != Tile::MOUNTAIN &&
+             d_terrain[(y*d_width)+x+1] != Tile::MOUNTAIN &&
+             d_terrain[((y+1)*d_width)+x] != Tile::MOUNTAIN &&
+             d_terrain[((y+1)*d_width)+x+1] != Tile::MOUNTAIN)))
         {
             iterations++;
             continue;
