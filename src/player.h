@@ -21,6 +21,7 @@
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 #include <SDL_types.h>
+#include <SDL_video.h>
 
 #include "vector.h"
 #include "fight.h"
@@ -140,6 +141,12 @@ class Player: public sigc::trackable
           */
         static Player* create(Player* orig, Type type);
 
+	// get standard color for player no
+	static SDL_Color get_color_for_no(int player_no);
+
+	// get standard color for neutral player
+	static SDL_Color get_color_for_neutral();
+
         //! Change the player's name
         void setName(std::string name){d_name = name;}
         
@@ -222,7 +229,6 @@ class Player: public sigc::trackable
 
         //! revive the player, this does not give him any cities!!!
         void revive() {d_dead = false;}
-
 
         /** Saves the player data
           *

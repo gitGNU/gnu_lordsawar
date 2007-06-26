@@ -272,9 +272,6 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 {
     CreateScenario creator;
 
-    SDL_Color color;
-    color.r = color.b = color.g = color.unused = 0;
-    
     // then fill the other players
     int c = 0;
     for (std::vector<GameParameters::Player>::const_iterator
@@ -288,18 +285,6 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 	}
 	
 	Player::Type type;
-	
-	switch(c % 8)
-	{
-	case 0:color.r = 252; color.b = 252; color.g = 252; break;
-	case 1:color.r = 80; color.b = 28; color.g = 172; break;
-	case 2:color.r = 252; color.b = 32; color.g = 236; break;
-	case 3:color.r = 92; color.b = 208; color.g = 92; break;
-	case 4:color.r = 252; color.b = 0; color.g = 160;break;
-	case 5:color.r = 44; color.b = 252; color.g = 184; break;
-	case 6:color.r = 196; color.b = 0; color.g = 28; break;
-	case 7: color.r = color.g = color.b = 0; break;
-	}
 	if (i->type == GameParameters::Player::EASY)
 	    type = Player::AI_FAST;
 	else if (i->type == GameParameters::Player::HARD)
@@ -308,13 +293,13 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 	    type = Player::HUMAN;
 
 	int army_id = Armysetlist::getInstance()->file_names[g.army_theme];
-	creator.addPlayer(i->name, army_id, color, type);
+	creator.addPlayer(i->name, army_id, Player::get_color_for_no(c), type);
     }
 
     // first insert the neutral player
     unsigned int set = (Armysetlist::getInstance()->getArmysets())[0];
-    color.r = color.g = color.b = 204; color.unused = 0;
-    creator.addNeutral("Neutral", set, color, Player::AI_DUMMY);
+    creator.addNeutral(_("Neutral"), set, Player::get_color_for_neutral(),
+		       Player::AI_DUMMY);
 
     // now fill in some map information
     creator.setMapTiles(g.tile_theme);
