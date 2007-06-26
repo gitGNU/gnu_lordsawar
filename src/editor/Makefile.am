@@ -18,7 +18,8 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../stone.o ../stonelist.o ../sound.o ../road.o ../roadlist.o \
         ../vectoredunitlist.o ../vectoredunit.o \
         ../bigmap.o ../smallmap.o ../overviewmap.o ../timing.o \
-        ../gui/image-helpers.o ../gui/error-utils.o ../gui/gtksdl.o
+        ../gui/image-helpers.o ../gui/error-utils.o ../gui/gtksdl.o \
+        ../gui/army-info-tip.o
 
 
 if WANT_EDITOR
@@ -30,6 +31,8 @@ main-window.cpp main-window.h \
 signpost-dialog.cpp signpost-dialog.h \
 temple-dialog.cpp temple-dialog.h \
 ruin-dialog.cpp ruin-dialog.h \
+stack-dialog.cpp stack-dialog.h \
+select-army-dialog.cpp select-army-dialog.h \
 editorbigmap.cpp editorbigmap.h \
 glade-helpers.h
 

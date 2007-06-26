@@ -62,6 +62,7 @@
 #include "signpost-dialog.h"
 #include "temple-dialog.h"
 #include "ruin-dialog.h"
+#include "stack-dialog.h"
 
 
 MainWindow::MainWindow()
@@ -605,11 +606,12 @@ void MainWindow::popup_dialog_for_object(Object *object)
 {
     if (Stack *o = dynamic_cast<Stack *>(object))
     {
-#if 0
 	StackDialog d(o);
 	d.set_parent_window(*window.get());
 	d.run();
-#endif
+
+	// we might have changed something visible
+	bigmap->draw();
     }
     else if (City *o = dynamic_cast<City *>(object))
     {
