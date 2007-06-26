@@ -7,6 +7,7 @@ signpost-dialog.glade \
 temple-dialog.glade \
 ruin-dialog.glade \
 stack-dialog.glade \
-select-army-dialog.glade
+select-army-dialog.glade \
+players-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)

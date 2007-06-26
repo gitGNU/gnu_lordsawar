@@ -63,6 +63,7 @@
 #include "temple-dialog.h"
 #include "ruin-dialog.h"
 #include "stack-dialog.h"
+#include "players-dialog.h"
 
 
 MainWindow::MainWindow()
@@ -127,20 +128,23 @@ MainWindow::MainWindow()
     
     // connect callbacks for the menu
     xml->connect_clicked("load_map_menuitem",
-			 sigc::mem_fun(*this, &MainWindow::on_load_map_activated));
+			 sigc::mem_fun(this, &MainWindow::on_load_map_activated));
     xml->connect_clicked("save_map_menuitem",
-			 sigc::mem_fun(*this, &MainWindow::on_save_map_activated));
+			 sigc::mem_fun(this, &MainWindow::on_save_map_activated));
     xml->connect_clicked("save_map_as_menuitem", 
-			 sigc::mem_fun(*this, &MainWindow::on_save_map_as_activated));
+			 sigc::mem_fun(this, &MainWindow::on_save_map_as_activated));
     xml->connect_clicked("quit_menuitem", 
-			 sigc::mem_fun(*this, &MainWindow::on_quit_activated));
+			 sigc::mem_fun(this, &MainWindow::on_quit_activated));
+
+    xml->connect_clicked("edit_players_menuitem", 
+			 sigc::mem_fun(this, &MainWindow::on_edit_players_activated));
     
 #if 0
     xml->connect_clicked("fullscreen_menuitem", 
-			 sigc::mem_fun(*this, &MainWindow::on_fullscreen_activated));
+			 sigc::mem_fun(this, &MainWindow::on_fullscreen_activated));
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
     xml->connect_clicked("preferences_menuitem", 
-			 sigc::mem_fun(*this, &MainWindow::on_preferences_activated));
+			 sigc::mem_fun(this, &MainWindow::on_preferences_activated));
 #endif
 }
 
@@ -277,14 +281,14 @@ void MainWindow::show_initial_map()
     GameMap::getInstance("default");
 
     // sets up the lists
-    game_scenario.reset(new GameScenario(_("Untitled"), _("No comments"), true));
+    game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
 
     // ...however we need to do some of the setup by hand. We need to create a
     // neutral player to give cities a player upon creation...
     SDL_Color c;
     c.r = c.g = c.b = 180; c.unused = 0;
     Uint32 armyset = Armysetlist::getInstance()->getArmysets()[0];
-    Player* neutral = new AI_Dummy("Neutral", armyset, c);
+    Player* neutral = new AI_Dummy(_("Neutral"), armyset, c);
     neutral->setType(Player::AI_DUMMY);
     Playerlist::getInstance()->push_back(neutral);
     Playerlist::getInstance()->setNeutral(neutral);
@@ -478,6 +482,13 @@ void MainWindow::on_quit_activated()
     if (end) {
     }
     window->hide();
+}
+
+void MainWindow::on_edit_players_activated()
+{
+    PlayersDialog d;
+    d.set_parent_window(*window.get());
+    d.run();
 }
 
 void MainWindow::on_fullscreen_activated()
