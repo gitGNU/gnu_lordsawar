@@ -25,6 +25,7 @@
 #include "../stack.h"
 #include "../army.h"
 #include "../playerlist.h"
+#include "../stacklist.h"
 
 #include "select-army-dialog.h"
 
@@ -45,12 +46,18 @@ StackDialog::StackDialog(Stack *s)
 
     // setup the player combo
     player_combobox = manage(new Gtk::ComboBoxText);
-    
-    for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
-	     end = Playerlist::getInstance()->end(); i != end; ++i)
-	player_combobox->append_text((*i)->getName());
 
-    player_combobox->set_active(0);
+    int c = 0, player_no = 0;
+    for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
+	     end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
+    {
+	Player *player = *i;
+	player_combobox->append_text(player->getName());
+	if (player == stack->getPlayer())
+	    player_no = c;
+    }
+
+    player_combobox->set_active(player_no);
 
     Gtk::Box *box;
     xml->get_widget("player_hbox", box);
@@ -135,17 +142,21 @@ void StackDialog::run()
 
 	// now set allegiance, it's important to do it after possibly new stack
 	// armies have been added
-	Glib::ustring name = player_combobox->get_active_text();
+	int c = 0, row = player_combobox->get_active_row_number();
 	Player *player = Playerlist::getInstance()->getNeutral();
 	for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
-		 end = Playerlist::getInstance()->end(); i != end; ++i)
-	    if ((*i)->getName() == name)
+		 end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
+	    if (c == row)
 	    {
 		player = *i;
 		break;
 	    }
+
+	Player *stack_player = stack->getPlayer();
+	if (stack_player)
+	    stack_player->getStacklist()->remove(stack);
 	
-	stack->setPlayer(player);
+	player->addStack(stack);
     }
 }
 
