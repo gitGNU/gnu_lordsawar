@@ -59,12 +59,14 @@
 
 #include "glade-helpers.h"
 #include "editorbigmap.h"
+
 #include "signpost-dialog.h"
 #include "temple-dialog.h"
 #include "ruin-dialog.h"
 #include "stack-dialog.h"
 #include "players-dialog.h"
 #include "city-dialog.h"
+#include "map-info-dialog.h"
 
 
 MainWindow::MainWindow()
@@ -139,6 +141,8 @@ MainWindow::MainWindow()
 
     xml->connect_clicked("edit_players_menuitem", 
 			 sigc::mem_fun(this, &MainWindow::on_edit_players_activated));
+    xml->connect_clicked("edit_map_info_menuitem", 
+			 sigc::mem_fun(this, &MainWindow::on_edit_map_info_activated));
     
 #if 0
     xml->connect_clicked("fullscreen_menuitem", 
@@ -488,6 +492,13 @@ void MainWindow::on_quit_activated()
 void MainWindow::on_edit_players_activated()
 {
     PlayersDialog d;
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void MainWindow::on_edit_map_info_activated()
+{
+    MapInfoDialog d(game_scenario.get());
     d.set_parent_window(*window.get());
     d.run();
 }

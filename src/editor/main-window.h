@@ -91,7 +91,7 @@ class MainWindow: public sigc::trackable
     void on_save_map_activated();
     void on_save_map_as_activated();
     void on_quit_activated();
-    void on_edit_info_activated();
+    void on_edit_map_info_activated();
     void on_edit_players_activated();
 
     void on_fullscreen_activated();
