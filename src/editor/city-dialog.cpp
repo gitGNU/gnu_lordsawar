@@ -16,37 +16,45 @@
 
 #include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
+#include <gtkmm/alignment.h>
 
-#include "stack-dialog.h"
+#include "city-dialog.h"
 
 #include "glade-helpers.h"
 #include "../ucompose.hpp"
 #include "../defs.h"
-#include "../stack.h"
+#include "../city.h"
 #include "../army.h"
 #include "../playerlist.h"
-#include "../stacklist.h"
+#include "../citylist.h"
 
 #include "select-army-dialog.h"
 
 
-namespace 
+CityDialog::CityDialog(City *cit)
 {
-    int const max_stack_size = 8;
-}
-
-StackDialog::StackDialog(Stack *s)
-{
-    stack = s;
+    city = cit;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
-				    + "/stack-dialog.glade");
+				    + "/city-dialog.glade");
 
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
 
+    xml->get_widget("capital_checkbutton", capital_checkbutton);
+    capital_checkbutton->set_active(city->isCapital());
+
+    xml->get_widget("name_entry", name_entry);
+    name_entry->set_text(city->getName());
+    
+    xml->get_widget("income_spinbutton", income_spinbutton);
+    income_spinbutton->set_value(city->getGold());
+
+    xml->get_widget("burned_checkbutton", burned_checkbutton);
+    burned_checkbutton->set_active(city->isBurnt());
+    
     // setup the player combo
     player_combobox = manage(new Gtk::ComboBoxText);
 
@@ -56,15 +64,15 @@ StackDialog::StackDialog(Stack *s)
     {
 	Player *player = *i;
 	player_combobox->append_text(player->getName());
-	if (player == stack->getPlayer())
+	if (player == city->getPlayer())
 	    player_no = c;
     }
 
     player_combobox->set_active(player_no);
 
-    Gtk::Box *box;
-    xml->get_widget("player_hbox", box);
-    box->pack_start(*player_combobox, Gtk::PACK_SHRINK);
+    Gtk::Alignment *alignment;
+    xml->get_widget("player_alignment", alignment);
+    alignment->add(*player_combobox);
     
     
     // setup the army list
@@ -82,69 +90,42 @@ StackDialog::StackDialog(Stack *s)
     army_treeview->append_column(_("HP"), army_columns.hitpoints);
     // note to translators: abbreviation of Upkeep
     army_treeview->append_column(_("Upk"), army_columns.upkeep);
+    // note to translators: abbreviation of Duration
+    army_treeview->append_column_editable(_("Dur"), army_columns.duration);
 
     xml->get_widget("add_button", add_button);
     xml->get_widget("remove_button", remove_button);
 
     add_button->signal_clicked().connect(
-	sigc::mem_fun(this, &StackDialog::on_add_clicked));
+	sigc::mem_fun(this, &CityDialog::on_add_clicked));
     remove_button->signal_clicked().connect(
-	sigc::mem_fun(this, &StackDialog::on_remove_clicked));
+	sigc::mem_fun(this, &CityDialog::on_remove_clicked));
 
     army_treeview->get_selection()->signal_changed()
-	.connect(sigc::mem_fun(this, &StackDialog::on_selection_changed));
-    
-    for (Stack::iterator i = stack->begin(), end = stack->end(); i != end; ++i)
-	add_army(*i);
+	.connect(sigc::mem_fun(this, &CityDialog::on_selection_changed));
+
+    for (int i = 0; i < city->getMaxNoOfBasicProd(); i++)
+    {
+	const Army* a = city->getArmy(i);
+	if (a)
+	    add_army(a);
+    }
 }
 
-void StackDialog::set_parent_window(Gtk::Window &parent)
+void CityDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void StackDialog::run()
+void CityDialog::run()
 {
     dialog->show_all();
     int response = dialog->run();
 
     if (response == 0)		// accepted
     {
-	// remove removed armies from stack
-	for (Stack::iterator i = stack->begin(), end = stack->end(); i != end;)
-	{
-	    Army *a = *i;
-	    ++i;
-	    
-	    bool found = false;
-	    for (Gtk::TreeIter j = army_list->children().begin(),
-		     jend = army_list->children().end(); j != jend; ++j)
-		if ((*j)[army_columns.army] == a)
-		{
-		    found = true;
-		    break;
-		}
-
-	    if (!found)
-	    {
-		stack->remove(a);
-		delete a;
-	    }
-	}
-
-	// add added armies to stack
-	for (Gtk::TreeIter j = army_list->children().begin(),
-		 jend = army_list->children().end(); j != jend; ++j)
-	{
-	    Army *a = (*j)[army_columns.army];
-	    
-	    if (std::find(stack->begin(), stack->end(), a) == stack->end())
-		stack->push_back(a);
-	}
-
-	// now set allegiance, it's important to do it after possibly new stack
-	// armies have been added
+	// set allegiance
 	int c = 0, row = player_combobox->get_active_row_number();
 	Player *player = Playerlist::getInstance()->getNeutral();
 	for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
@@ -154,16 +135,41 @@ void StackDialog::run()
 		player = *i;
 		break;
 	    }
-
-	Player *stack_player = stack->getPlayer();
-	if (stack_player)
-	    stack_player->getStacklist()->remove(stack);
+	city->setPlayer(player);
 	
-	player->addStack(stack);
+	// set attributes
+	bool capital = capital_checkbutton->get_active();
+	city->setCapital(capital);
+	if (capital)
+	{
+	    // make sure player doesn't have other capitals
+	    Citylist* cl = Citylist::getInstance();
+	    for (Citylist::iterator i = cl->begin(); i != cl->end(); ++i)
+		if (i->isCapital() && i->getPlayer() == city->getPlayer()
+		    && &(*i) != city)
+		    i->setCapital(false);
+	}
+	city->setName(name_entry->get_text());
+	city->setGold(income_spinbutton->get_value_as_int());
+	city->setBurnt(burned_checkbutton->get_active());
+	
+	// set production slots
+	c = 0;
+	for (Gtk::TreeIter i = army_list->children().begin(),
+		 end = army_list->children().end(); i != end; ++i, ++c)
+	{
+	    const Army *a = (*i)[army_columns.army];
+	    city->addBasicProd(c, a->getType());
+
+	    // FIXME: use (*i)[army_columns.duration] to set special city
+	    // production ability
+	}
+	for (; c < city->getMaxNoOfBasicProd(); ++c)
+	    city->removeBasicProd(c);
     }
 }
 
-void StackDialog::on_add_clicked()
+void CityDialog::on_add_clicked()
 {
     SelectArmyDialog d;
     d.set_parent_window(*dialog.get());
@@ -171,25 +177,22 @@ void StackDialog::on_add_clicked()
 
     const Army *army = d.get_selected_army();
     if (army)
-	add_army(new Army(*army));
+	add_army(army);
 }
     
 
-void StackDialog::on_remove_clicked()
+void CityDialog::on_remove_clicked()
 {
     Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
     if (i)
     {
-	Army *army = (*i)[army_columns.army];
 	army_list->erase(i);
-	if (std::find(stack->begin(), stack->end(), army) == stack->end())
-	    delete army;
     }
 
     set_button_sensitivity();
 }
 
-void StackDialog::add_army(Army *a)
+void CityDialog::add_army(const Army *a)
 {
     Gtk::TreeIter i = army_list->append();
     (*i)[army_columns.army] = a;
@@ -198,22 +201,23 @@ void StackDialog::add_army(Army *a)
     (*i)[army_columns.moves] = a->getStat(Army::MOVES, false);
     (*i)[army_columns.hitpoints] = a->getStat(Army::HP, false);
     (*i)[army_columns.upkeep] = a->getUpkeep();
+    (*i)[army_columns.duration] = a->getProduction();
 
     army_treeview->get_selection()->select(i);
     
     set_button_sensitivity();
 }
 
-void StackDialog::on_selection_changed()
+void CityDialog::on_selection_changed()
 {
     set_button_sensitivity();
 }
 
-void StackDialog::set_button_sensitivity()
+void CityDialog::set_button_sensitivity()
 {
     Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
     int armies = army_list->children().size();
-    add_button->set_sensitive(armies < max_stack_size);
-    remove_button->set_sensitive(armies > 1 && i);
+    add_button->set_sensitive(armies < city->getMaxNoOfBasicProd());
+    remove_button->set_sensitive(i);
 }
 

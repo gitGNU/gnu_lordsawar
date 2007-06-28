@@ -64,6 +64,7 @@
 #include "ruin-dialog.h"
 #include "stack-dialog.h"
 #include "players-dialog.h"
+#include "city-dialog.h"
 
 
 MainWindow::MainWindow()
@@ -623,9 +624,17 @@ void MainWindow::popup_dialog_for_object(Object *object)
 
 	// we might have changed something visible
 	bigmap->draw();
+	smallmap->draw();
     }
     else if (City *o = dynamic_cast<City *>(object))
     {
+	CityDialog d(o);
+	d.set_parent_window(*window.get());
+	d.run();
+
+	// we might have changed something visible
+	bigmap->draw();
+	smallmap->draw();
     }
     else if (Ruin *o = dynamic_cast<Ruin *>(object))
     {

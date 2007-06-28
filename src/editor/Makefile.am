@@ -34,6 +34,7 @@ ruin-dialog.cpp ruin-dialog.h \
 stack-dialog.cpp stack-dialog.h \
 select-army-dialog.cpp select-army-dialog.h \
 players-dialog.cpp players-dialog.h \
+city-dialog.cpp city-dialog.h \
 editorbigmap.cpp editorbigmap.h \
 glade-helpers.h
 
