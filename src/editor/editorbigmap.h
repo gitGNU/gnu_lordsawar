@@ -62,7 +62,7 @@ class EditorBigMap: public BigMap
     sigc::signal<void, Vector<int> > mouse_on_tile;
 
     // emitted when the map is changed by the user
-    sigc::signal<void> map_changed;
+    sigc::signal<void, Rectangle> map_changed;
 
  private:
     Vector<int> prev_mouse_pos, mouse_pos;

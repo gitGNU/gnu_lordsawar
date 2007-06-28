@@ -408,6 +408,7 @@ void EditorBigMap::change_map_under_cursor()
 	     end = tiles.end(); i != end; ++i)
     {
 	Vector<int> tile = *i;
+	Rectangle changed_tiles(tile, Vector<int>(-1, -1));
 	Maptile* maptile = GameMap::getInstance()->getTile(tile);
 	Tile::Type tiletype = (*ts)[pointer_terrain]->getType();
 	switch (pointer)
@@ -427,12 +428,16 @@ void EditorBigMap::change_map_under_cursor()
 		&& tiletype != Tile::GRASS)
 		break;
 
+	    if (Uint32(tiletype) == maptile->getType())
+		break;
+
 	    maptile->setType(pointer_terrain);
 
 	    // we expect the renderer to catch out of bound errors
 	    for (int x = tile.x - 1; x <= tile.x + 1; ++x)
 		for (int y = tile.y - 1; y <= tile.y + 1; ++y)
 		    d_renderer->smooth(x, y);
+	    changed_tiles.dim = Vector<int>(1, 1);
 	    break;
 	    
 	case ERASE:
@@ -595,12 +600,15 @@ void EditorBigMap::change_map_under_cursor()
 			}
 		    }
 		
+		changed_tiles.pos -= Vector<int>(1, 1);
+		changed_tiles.dim = Vector<int>(3, 3);
 	    }
 	    break;
 	}
+	
+	map_changed.emit(changed_tiles);
     }
 
     draw();
-    map_changed.emit();
 }
 

@@ -17,6 +17,7 @@
 
 #include <SDL.h>
 #include "vector.h"
+#include "rectangle.h"
 #include "Tile.h"
 
 class Maptile;
@@ -36,14 +37,19 @@ class OverviewMap
     // the map will keep its aspect ratio and resize itself to take up at most
     // max_dimensions space
     void resize(Vector<int> max_dimensions);
-    
+
+    // draw the nonstatic stuff, won't redraw the terrain
     void draw();
+
+    // redraw the specified tiles (also redraws the terrain)
+    void redraw_tiles(Rectangle tiles);
 
     // returns the drawn map
     SDL_Surface *get_surface();
 
  private:
-     // the background, we keep it cached so it doesn't have to be drawn all the time
+     // the background, we keep it cached so it doesn't have to be drawn all
+     // the time
     SDL_Surface* static_surface;
     bool isShadowed(Uint32 type, int i, int j);
     void draw_tile_pixel(Maptile *, int, int);
@@ -59,6 +65,9 @@ class OverviewMap
 
     // hook for derived classes
     virtual void after_draw();
+
+    // redraw the specified terrain pixels
+    void draw_terrain_pixels(Rectangle r);
 
     SDL_Surface* surface;
 };

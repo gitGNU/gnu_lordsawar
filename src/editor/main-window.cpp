@@ -571,7 +571,7 @@ void MainWindow::init_maps()
     bigmap->view_changed.connect(
 	sigc::mem_fun(smallmap.get(), &SmallMap::set_view));
     bigmap->map_changed.connect(
-	sigc::mem_fun(smallmap.get(), &SmallMap::draw));
+	sigc::mem_fun(smallmap.get(), &SmallMap::redraw_tiles));
     smallmap->view_changed.connect(
 	sigc::mem_fun(bigmap.get(), &EditorBigMap::set_view));
 

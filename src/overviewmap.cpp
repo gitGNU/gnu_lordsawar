@@ -197,11 +197,44 @@ void OverviewMap::resize(Vector<int> max_dimensions)
     surface = SDL_CreateRGBSurface(SDL_SWSURFACE, d.x, d.y, 24,
 				   0xFFu, 0xFFu << 8, 0xFFu << 16, 0);
 
+    draw_terrain_pixels(Rectangle(0, 0, static_surface->w, static_surface->h));
+}
+
+void OverviewMap::redraw_tiles(Rectangle tiles)
+{
+    if (tiles.w > 0 && tiles.h > 0)
+    {
+	tiles.pos -= Vector<int>(1, 1);
+	tiles.dim += Vector<int>(2, 2);
+	
+	// translate to pixel coordinates 
+	Vector<int> pos(int(round(tiles.x * pixels_per_tile)),
+			int(round(tiles.y * pixels_per_tile)));
+	Vector<int> dim(int(round(tiles.w * pixels_per_tile)),
+			int(round(tiles.h * pixels_per_tile)));
+
+	// ensure we're within bounds
+	pos = clip(Vector<int>(0, 0), pos,
+		   Vector<int>(static_surface->w, static_surface->h) - Vector<int>(1, 1));
+    
+	if (pos.x + dim.x >= GameMap::getWidth())
+	    dim.x = GameMap::getWidth() - pos.x;
+	
+	if (pos.y + dim.y >= GameMap::getHeight())
+	    dim.y = GameMap::getHeight() - pos.y;
+
+	draw_terrain_pixels(Rectangle(pos, dim));
+    }
+    draw();
+}
+
+void OverviewMap::draw_terrain_pixels(Rectangle r)
+{
+    // draw static map
     Uint32 road_color = SDL_MapRGB(static_surface->format, 164, 84, 0);
     
-    // draw static map
-    for (int i = 0; i < static_surface->w; i++)
-        for (int j = 0; j < static_surface->h; j++)
+    for (int i = r.x; i < r.x + r.w; ++i)
+        for (int j = r.y; j < r.y + r.h; ++j)
         {
             int x = int(i / pixels_per_tile);
             int y = int(j / pixels_per_tile);
@@ -212,6 +245,7 @@ void OverviewMap::resize(Vector<int> max_dimensions)
                 draw_tile_pixel (GameMap::getInstance()->getTile(x,y), i, j);
 	    }
         }
+    
 }
 
 void OverviewMap::after_draw()
@@ -267,7 +301,6 @@ void OverviewMap::after_draw()
         SDL_BlitSurface(tmp, 0, surface, &r);
 
     }
-
 }
 
 void OverviewMap::draw()
@@ -275,6 +308,8 @@ void OverviewMap::draw()
     Playerlist *pl = Playerlist::getInstance();
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
     assert(surface);
+
+
     // During the whole drawing stuff, ALWAYS consider that 
     // there is an offset of 1 between map coordinates and coordinates
     // of the surface when drawing. I will implcitely assume this during this
