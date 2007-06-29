@@ -4,7 +4,7 @@
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">12</property>
-    <property name="title" translatable="yes">New Game</property>
+    <property name="title" translatable="yes">New Map</property>
     <property name="modal">True</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
