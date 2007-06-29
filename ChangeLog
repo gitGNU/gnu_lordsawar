@@ -1,3 +1,7 @@
+2007-06-29  Ole Laursen
+
+	* finished porting the code to gtkmm
+
 2007-06-17  Ben Asselstine
         * now showing stack info after a game is loaded
 	* fixed bug wrt player ids and some players being "off"
