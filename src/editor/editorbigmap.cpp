@@ -410,7 +410,6 @@ void EditorBigMap::change_map_under_cursor()
 	Vector<int> tile = *i;
 	Rectangle changed_tiles(tile, Vector<int>(-1, -1));
 	Maptile* maptile = GameMap::getInstance()->getTile(tile);
-	Tile::Type tiletype = (*ts)[pointer_terrain]->getType();
 	switch (pointer)
 	{
 	case POINTER:
@@ -420,18 +419,18 @@ void EditorBigMap::change_map_under_cursor()
         
 	    // don't change terrain to water if there is a building underneath
 	    if (maptile->getBuilding() != Maptile::NONE
-		&& tiletype == Tile::WATER)
+		&& pointer_terrain == Tile::WATER)
 		break;
 	    // don't change the terrain to anything else than grass if there is
 	    // a city
 	    if (maptile->getBuilding() == Maptile::CITY
-		&& tiletype != Tile::GRASS)
+		&& pointer_terrain != Tile::GRASS)
 		break;
 
-	    if (Uint32(tiletype) == maptile->getType())
+	    if (pointer_terrain == maptile->getMaptileType())
 		break;
 
-	    maptile->setType(pointer_terrain);
+	    maptile->setType(ts->getIndex(pointer_terrain));
 
 	    // we expect the renderer to catch out of bound errors
 	    for (int x = tile.x - 1; x <= tile.x + 1; ++x)

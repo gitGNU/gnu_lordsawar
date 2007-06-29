@@ -66,6 +66,7 @@ class MainWindow: public sigc::trackable
     std::string current_save_filename;
     Gtk::Table *terrain_type_table;
     Gtk::Label *mouse_position_label;
+    Gtk::RadioButton *pointer_radiobutton;
     Gtk::Tooltips tooltips;
 
     std::auto_ptr<EditorBigMap> bigmap;
@@ -129,6 +130,9 @@ class MainWindow: public sigc::trackable
 			int hills, int mountains,
 			int cities, int ruins, int temples, int signposts,
 			int stones);
+
+    void clear_map_state();
+    void init_map_state();
 
     // map callbacks
     void on_smallmap_changed(SDL_Surface *map);

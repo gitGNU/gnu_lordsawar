@@ -176,6 +176,8 @@ void MainWindow::setup_pointer_radiobutton(Glib::RefPtr<Gnome::Glade::Xml> xml,
 {
     PointerItem item;
     xml->get_widget(prefix + "_radiobutton", item.button);
+    if (prefix == "pointer")
+	pointer_radiobutton = item.button;
     item.button->signal_toggled().connect(
 	sigc::mem_fun(this, &MainWindow::on_pointer_radiobutton_toggled));
     item.pointer = pointer;
@@ -297,11 +299,8 @@ void MainWindow::show_initial_map()
 
 void MainWindow::set_filled_map(int width, int height, int fill_style)
 {
-    bigmap.reset();
-    smallmap.reset();
-    game_scenario.reset();
-    GraphicsCache::deleteInstance();
-    
+    clear_map_state();
+
     GameMap::deleteInstance();
     GameMap::setWidth(width);
     GameMap::setHeight(height);
@@ -330,8 +329,7 @@ void MainWindow::set_filled_map(int width, int height, int fill_style)
 	}
     }
 
-    init_maps();
-    bigmap->screen_size_changed();
+    init_map_state();
 }
 
 void MainWindow::set_random_map(int width, int height,
@@ -340,16 +338,12 @@ void MainWindow::set_random_map(int width, int height,
 				int cities, int ruins, int temples,
 				int signposts, int stones)
 {
-    bigmap.reset();
-    smallmap.reset();
-    game_scenario.reset();
-    GraphicsCache::deleteInstance();
-    
+    clear_map_state();
+
     GameMap::deleteInstance();
     GameMap::setWidth(width);
     GameMap::setHeight(height);
     GameMap::getInstance("default");
-
     
     // create a random map
     MapGenerator gen;
@@ -421,7 +415,21 @@ void MainWindow::set_random_map(int width, int height,
 	    case Maptile::NONE:
 		break;
 	    }
-    
+
+    init_map_state();
+}
+
+void MainWindow::clear_map_state()
+{
+    bigmap.reset();
+    smallmap.reset();
+    game_scenario.reset();
+    GraphicsCache::deleteInstance();
+}
+
+void MainWindow::init_map_state()
+{
+    pointer_radiobutton->set_active();
     init_maps();
     bigmap->screen_size_changed();
 }
@@ -547,10 +555,7 @@ void MainWindow::on_load_map_activated()
 	current_save_filename = chooser.get_filename();
 	chooser.hide();
 
-	bigmap.reset();
-	smallmap.reset();
-	game_scenario.reset();
-	GraphicsCache::deleteInstance();
+	clear_map_state();
 
 	bool broken;
 	game_scenario.reset(new GameScenario(current_save_filename, broken));
@@ -563,8 +568,7 @@ void MainWindow::on_load_map_activated()
 	    return;
 	}
 
-	init_maps();
-	bigmap->screen_size_changed();
+	init_map_state();
     }
 }
 
@@ -672,7 +676,7 @@ Tile::Type MainWindow::get_terrain()
 	    break;
 	}
     }
-    
+
     return terrain;
 }
 
