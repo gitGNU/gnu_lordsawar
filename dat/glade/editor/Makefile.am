@@ -10,6 +10,7 @@ stack-dialog.glade \
 select-army-dialog.glade \
 players-dialog.glade \
 city-dialog.glade \
-map-info-dialog.glade
+map-info-dialog.glade \
+new-map-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)

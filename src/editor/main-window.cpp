@@ -56,6 +56,14 @@
 #include "../ruin.h"
 #include "../signpost.h"
 #include "../temple.h"
+#include "../citylist.h"
+#include "../templelist.h"
+#include "../ruinlist.h"
+#include "../signpostlist.h"
+#include "../stonelist.h"
+#include "../stone.h"
+#include "../roadlist.h"
+#include "../MapGenerator.h"
 
 #include "glade-helpers.h"
 #include "editorbigmap.h"
@@ -67,6 +75,7 @@
 #include "players-dialog.h"
 #include "city-dialog.h"
 #include "map-info-dialog.h"
+#include "new-map-dialog.h"
 
 
 MainWindow::MainWindow()
@@ -130,6 +139,8 @@ MainWindow::MainWindow()
     
     
     // connect callbacks for the menu
+    xml->connect_clicked("new_map_menuitem",
+			 sigc::mem_fun(this, &MainWindow::on_new_map_activated));
     xml->connect_clicked("load_map_menuitem",
 			 sigc::mem_fun(this, &MainWindow::on_load_map_activated));
     xml->connect_clicked("save_map_menuitem",
@@ -280,9 +291,20 @@ bool MainWindow::on_delete_event(GdkEventAny *e)
 
 void MainWindow::show_initial_map()
 {
+    set_filled_map(112, 156, Tile::GRASS);
+    setup_terrain_radiobuttons();
+}
+
+void MainWindow::set_filled_map(int width, int height, int fill_style)
+{
+    bigmap.reset();
+    smallmap.reset();
+    game_scenario.reset();
+    GraphicsCache::deleteInstance();
+    
     GameMap::deleteInstance();
-    GameMap::setWidth(112);
-    GameMap::setHeight(156);
+    GameMap::setWidth(width);
+    GameMap::setHeight(height);
     GameMap::getInstance("default");
 
     // sets up the lists
@@ -290,30 +312,120 @@ void MainWindow::show_initial_map()
 
     // ...however we need to do some of the setup by hand. We need to create a
     // neutral player to give cities a player upon creation...
-    SDL_Color c;
-    c.r = c.g = c.b = 180; c.unused = 0;
     Uint32 armyset = Armysetlist::getInstance()->getArmysets()[0];
-    Player* neutral = new AI_Dummy(_("Neutral"), armyset, c);
+    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral());
     neutral->setType(Player::AI_DUMMY);
     Playerlist::getInstance()->push_back(neutral);
     Playerlist::getInstance()->setNeutral(neutral);
     Playerlist::getInstance()->nextPlayer();
 
-    // fill the map with grass
+    // fill the map with tile type
     TileSet* tset = GameMap::getInstance()->getTileSet();
     for (unsigned int i = 0; i < tset->size(); ++i)
     {
-	if ((*tset)[i]->getType() == Tile::GRASS)
+	if ((*tset)[i]->getType() == fill_style)
 	{
 	    GameMap::getInstance()->fill(i);
 	    break;
 	}
     }
 
-    setup_terrain_radiobuttons();
-
     init_maps();
+    bigmap->screen_size_changed();
 }
+
+void MainWindow::set_random_map(int width, int height,
+				int grass, int water, int swamp, int forest,
+				int hills, int mountains,
+				int cities, int ruins, int temples,
+				int signposts, int stones)
+{
+    bigmap.reset();
+    smallmap.reset();
+    game_scenario.reset();
+    GraphicsCache::deleteInstance();
+    
+    GameMap::deleteInstance();
+    GameMap::setWidth(width);
+    GameMap::setHeight(height);
+    GameMap::getInstance("default");
+
+    
+    // create a random map
+    MapGenerator gen;
+        
+    // first, fill the generator with data
+    gen.setNoCities(cities);
+    gen.setNoRuins(ruins);
+    gen.setNoTemples(temples);
+    gen.setNoSignposts(signposts);
+    gen.setNoStones(stones);
+    
+    // if sum > 100 (percent), divide everything by a factor, the numeric error
+    // is said to be grass
+    int sum = grass + water + forest + swamp + hills + mountains;
+
+    if (sum > 100)
+    {
+        double factor = 100 / static_cast<double>(sum);
+        water = static_cast<int>(water / factor);
+        forest = static_cast<int>(forest / factor);
+        swamp = static_cast<int>(swamp / factor);
+        hills = static_cast<int>(hills / factor);
+        mountains = static_cast<int>(mountains / factor);
+    }
+    
+    gen.setPercentages(water, forest, swamp, hills, mountains);
+    
+    gen.makeMap(width, height);
+    GameMap::getInstance()->fill(&gen);
+
+    // sets up the lists
+    game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
+
+    // ...however we need to do some of the setup by hand. We need to create a
+    // neutral player to give cities a player upon creation...
+    Uint32 armyset = Armysetlist::getInstance()->getArmysets()[0];
+    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral());
+    neutral->setType(Player::AI_DUMMY);
+    Playerlist::getInstance()->push_back(neutral);
+    Playerlist::getInstance()->setNeutral(neutral);
+    Playerlist::getInstance()->nextPlayer();
+    
+    // now fill the city lists
+    const Maptile::Building* build = gen.getBuildings(width, height);
+    for (int j = 0; j < height; j++)
+	for (int i = 0; i < width; i++)
+	    switch(build[j * width + i])
+	    {
+	    case Maptile::CITY:
+		Citylist::getInstance()->push_back(City(Vector<int>(i,j)));
+		(*Citylist::getInstance()->rbegin()).setPlayer(
+		    Playerlist::getInstance()->getNeutral());
+		break;
+	    case Maptile::TEMPLE:
+		Templelist::getInstance()->push_back(Temple(Vector<int>(i,j)));
+		break;
+	    case Maptile::RUIN:
+		Ruinlist::getInstance()->push_back(Ruin(Vector<int>(i,j)));
+		break;
+	    case Maptile::SIGNPOST:
+		Signpostlist::getInstance()->push_back(Signpost(Vector<int>(i,j)));
+		break;
+	    case Maptile::STONE:
+		Stonelist::getInstance()->push_back(Stone(Vector<int>(i,j)));
+		break;
+	    case Maptile::ROAD:
+		Roadlist::getInstance()->push_back(Road(Vector<int>(i,j)));
+		break;
+	    case Maptile::NONE:
+		break;
+	    }
+    
+    init_maps();
+    bigmap->screen_size_changed();
+}
+
 
 bool MainWindow::on_sdl_mouse_button_event(GdkEventButton *e)
 {
@@ -397,6 +509,22 @@ void MainWindow::on_sdl_surface_changed()
 void MainWindow::on_new_map_activated()
 {
     current_save_filename = "";
+
+    NewMapDialog d;
+    d.set_parent_window(*window.get());
+    d.run();
+
+    if (d.map_set)
+    {
+	if (d.map.fill_style == -1)
+	    set_random_map(d.map.width, d.map.height,
+			   d.map.grass, d.map.water, d.map.swamp, d.map.forest,
+			   d.map.hills, d.map.mountains,
+			   d.map.cities, d.map.ruins, d.map.temples, d.map.signposts,
+			   d.map.stones);
+	else
+	    set_filled_map(d.map.width, d.map.height, d.map.fill_style);
+    }
 }
 
 void MainWindow::on_load_map_activated()
