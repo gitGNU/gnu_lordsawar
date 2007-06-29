@@ -26,6 +26,7 @@
 #include "../stack.h"
 #include "../army.h"
 
+#include "stack-dialog.h"
 
 RuinDialog::RuinDialog(Ruin *r)
 {
@@ -76,6 +77,12 @@ void RuinDialog::run()
 	if (occupant)
 	    delete occupant;
 
+	if (keeper->empty())
+	{
+	    delete keeper;
+	    keeper = 0;
+	}
+
 	ruin->setOccupant(keeper);
 	keeper = 0;
     }
@@ -100,6 +107,9 @@ void RuinDialog::set_keeper_name()
 void RuinDialog::on_keeper_clicked()
 {
     // FIXME: run stack dialog with keeper
+    StackDialog d(keeper, 0);
+    d.set_parent_window(*dialog.get());
+    d.run();
 
     set_keeper_name();
 }

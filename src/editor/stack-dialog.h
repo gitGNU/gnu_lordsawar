@@ -32,7 +32,7 @@ class Army;
 class StackDialog: public sigc::trackable
 {
  public:
-    StackDialog(Stack *stack);
+    StackDialog(Stack *stack, int min_size = 1);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -60,6 +60,7 @@ class StackDialog: public sigc::trackable
     Gtk::Button *remove_button;
 
     Stack *stack;
+    int min_size;
 
     void on_add_clicked();
     void on_remove_clicked();

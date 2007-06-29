@@ -35,9 +35,11 @@ namespace
     int const max_stack_size = 8;
 }
 
-StackDialog::StackDialog(Stack *s)
+StackDialog::StackDialog(Stack *s, int m)
 {
     stack = s;
+    min_size = m;
+    player_combobox = 0;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
@@ -47,25 +49,27 @@ StackDialog::StackDialog(Stack *s)
     xml->get_widget("dialog", d);
     dialog.reset(d);
 
-    // setup the player combo
-    player_combobox = manage(new Gtk::ComboBoxText);
-
-    int c = 0, player_no = 0;
-    for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
-	     end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
+    if (stack->getPlayer())
     {
-	Player *player = *i;
-	player_combobox->append_text(player->getName());
-	if (player == stack->getPlayer())
-	    player_no = c;
+	// setup the player combo
+	player_combobox = manage(new Gtk::ComboBoxText);
+
+	int c = 0, player_no = 0;
+	for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
+		 end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
+	{
+	    Player *player = *i;
+	    player_combobox->append_text(player->getName());
+	    if (player == stack->getPlayer())
+		player_no = c;
+	}
+
+	player_combobox->set_active(player_no);
+
+	Gtk::Box *box;
+	xml->get_widget("player_hbox", box);
+	box->pack_start(*player_combobox, Gtk::PACK_SHRINK);
     }
-
-    player_combobox->set_active(player_no);
-
-    Gtk::Box *box;
-    xml->get_widget("player_hbox", box);
-    box->pack_start(*player_combobox, Gtk::PACK_SHRINK);
-    
     
     // setup the army list
     army_list = Gtk::ListStore::create(army_columns);
@@ -145,21 +149,24 @@ void StackDialog::run()
 
 	// now set allegiance, it's important to do it after possibly new stack
 	// armies have been added
-	int c = 0, row = player_combobox->get_active_row_number();
-	Player *player = Playerlist::getInstance()->getNeutral();
-	for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
-		 end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
-	    if (c == row)
-	    {
-		player = *i;
-		break;
-	    }
+	if (player_combobox)
+	{
+	    int c = 0, row = player_combobox->get_active_row_number();
+	    Player *player = Playerlist::getInstance()->getNeutral();
+	    for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
+		     end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
+		if (c == row)
+		{
+		    player = *i;
+		    break;
+		}
 
-	Player *stack_player = stack->getPlayer();
-	if (stack_player)
-	    stack_player->getStacklist()->remove(stack);
+	    Player *stack_player = stack->getPlayer();
+	    if (stack_player)
+		stack_player->getStacklist()->remove(stack);
 	
-	player->addStack(stack);
+	    player->addStack(stack);
+	}
     }
 }
 
@@ -214,6 +221,6 @@ void StackDialog::set_button_sensitivity()
     Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
     int armies = army_list->children().size();
     add_button->set_sensitive(armies < max_stack_size);
-    remove_button->set_sensitive(armies > 1 && i);
+    remove_button->set_sensitive(armies > min_size && i);
 }
 
