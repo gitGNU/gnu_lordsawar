@@ -38,9 +38,11 @@ class Ruin : public Location, public sigc::trackable
           * @param searched     sets the searched flag of the ruin
 	  * @param hidden       sets the hidden flag of the ruin
 	  * @param owner        who can see this hidden ruin
+	  * @param sage         if this ruin contains a sage or not
           */
         Ruin(Vector<int> pos, std::string name = "", Stack* occupant = 0, 
-	     bool searched = false, bool hidden = false, Player *owner = 0);
+	     bool searched = false, bool hidden = false, Player *owner = 0,
+	     bool sage = false);
 
         //! Copy constructor
         Ruin(const Ruin&);
@@ -65,6 +67,9 @@ class Ruin : public Location, public sigc::trackable
 	//! Returns wether or not this is a "hidden" ruin
 	bool isHidden() const {return d_hidden;}
 
+	//! Returns wether or not this is ruin has a sage
+	bool hasSage() const {return d_sage;}
+
 	//! Returns the player that owns this hidden ruin
 	Player *getOwner() const {return d_owner;}
 
@@ -80,6 +85,7 @@ class Ruin : public Location, public sigc::trackable
         Stack* d_occupant;
 	bool d_hidden;      // is this a "hidden" ruin that can only be seen
 	Player *d_owner;    // by an "owner"?
+	bool d_sage;        // does this ruin have a sage?
 };
 
 #endif // RUIN_H
