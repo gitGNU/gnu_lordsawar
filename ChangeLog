@@ -1,3 +1,6 @@
+2007-06-30  Ben Asselstine
+        * created a ruin map object
+
 2007-06-29  Ole Laursen
 
 	* finished porting the code to gtkmm
