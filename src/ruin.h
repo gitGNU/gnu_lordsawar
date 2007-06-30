@@ -64,11 +64,14 @@ class Ruin : public Location, public sigc::trackable
         //! Returns the keeper
         Stack* getOccupant() const {return d_occupant;}
 
-	//! Returns wether or not this is a "hidden" ruin
+	//! Returns whether or not this is a "hidden" ruin
 	bool isHidden() const {return d_hidden;}
 
-	//! Returns wether or not this is ruin has a sage
+	//! Returns whether or not this ruin has a sage
 	bool hasSage() const {return d_sage;}
+
+	//! Sets wether or not this ruin has a sage
+	void setSage(bool sage) {d_sage = sage;}
 
 	//! Returns the player that owns this hidden ruin
 	Player *getOwner() const {return d_owner;}
