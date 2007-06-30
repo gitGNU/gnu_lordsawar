@@ -179,6 +179,9 @@ class GraphicsCache
         SDL_Surface* getSmallHeroPic();
         SDL_Surface* getShipPic();
         SDL_Surface* getMoveBonusPic(Uint32 bonus, bool has_ship);
+        SDL_Surface *getSmallTemplePic();
+        SDL_Surface *getSmallRuinExploredPic();
+        SDL_Surface* getSmallRuinUnexploredPic();
 
         /** Function for getting production shield pictures.
           *
@@ -339,6 +342,9 @@ class GraphicsCache
 	SDL_Surface* d_smallhero;
         SDL_Surface* d_movebonuspic[6];
 	SDL_Surface* d_ship;
+	SDL_Surface* d_small_ruin_unexplored;
+	SDL_Surface* d_small_ruin_explored;
+	SDL_Surface* d_small_temple;
 };
 
 #endif

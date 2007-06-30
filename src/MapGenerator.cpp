@@ -524,7 +524,7 @@ void MapGenerator::makeCities(int cities)
         // check if we can put the building
         if (!canPutBuilding(x, y) && !canPutBuilding(x + 1, y) &&
             !canPutBuilding(x, y + 1) && !canPutBuilding(x + 1,y + 1) &&
-            ((iterations < 1000) || 
+            ((iterations < 1000) /*|| 
             (d_terrain[y*d_width+x] != Tile::WATER &&
              d_terrain[(y*d_width)+x+1] != Tile::WATER &&
              d_terrain[((y+1)*d_width)+x] != Tile::WATER &&
@@ -532,7 +532,7 @@ void MapGenerator::makeCities(int cities)
              d_terrain[y*d_width+x] != Tile::MOUNTAIN &&
              d_terrain[(y*d_width)+x+1] != Tile::MOUNTAIN &&
              d_terrain[((y+1)*d_width)+x] != Tile::MOUNTAIN &&
-             d_terrain[((y+1)*d_width)+x+1] != Tile::MOUNTAIN)))
+             d_terrain[((y+1)*d_width)+x+1] != Tile::MOUNTAIN)*/))
         {
             iterations++;
             continue;
@@ -618,7 +618,7 @@ bool MapGenerator::canPutBuilding(int x,int y)
         return false;
         
     //if the building is close to the map boundaries, return false
-    if ((x < 1) || (x > d_width-4) || (y < 1) || (y > d_height-4))
+    if ((x < 4) || (x > d_width-4) || (y < 4) || (y > d_height-4))
         return false;
         
     //if there is another building too close, return false

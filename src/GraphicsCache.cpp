@@ -148,6 +148,9 @@ GraphicsCache::GraphicsCache()
     d_medalsmask = File::getMiscPicture("medals_mask.gif");
     d_smallruinedcity = File::getMiscPicture("smallruinedcity.png");
     d_smallhero = File::getMiscPicture("hero.png");
+    d_small_ruin_unexplored = File::getMiscPicture("smallunexploredruin.png");
+    d_small_ruin_explored = File::getMiscPicture("smallexploredruin.png");
+    d_small_temple = File::getMiscPicture("smalltemple.png");
     d_ship = File::getMiscPicture("stackship.png");
 }
 
@@ -205,6 +208,9 @@ GraphicsCache::~GraphicsCache()
     SDL_FreeSurface(d_medalsmask);
     SDL_FreeSurface(d_smallruinedcity);
     SDL_FreeSurface(d_smallhero);
+    SDL_FreeSurface(d_small_temple);
+    SDL_FreeSurface(d_small_ruin_unexplored);
+    SDL_FreeSurface(d_small_ruin_explored);
     SDL_FreeSurface(d_ship);
 }
 
@@ -218,6 +224,18 @@ SDL_Surface* GraphicsCache::getSmallHeroPic()
   return SDL_DisplayFormatAlpha(d_smallhero);
 }
 
+SDL_Surface* GraphicsCache::getSmallRuinExploredPic()
+{
+  return SDL_DisplayFormatAlpha(d_small_ruin_explored);
+}
+SDL_Surface* GraphicsCache::getSmallRuinUnexploredPic()
+{
+  return SDL_DisplayFormatAlpha(d_small_ruin_unexplored);
+}
+SDL_Surface* GraphicsCache::getSmallTemplePic()
+{
+  return SDL_DisplayFormatAlpha(d_small_temple);
+}
 SDL_Surface* GraphicsCache::getShipPic()
 {
   return SDL_DisplayFormatAlpha(d_ship);

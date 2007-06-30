@@ -35,7 +35,10 @@ various_DATA = \
     stackship.png \
     prodshieldset.png \
     smallruinedcity.png \
-    movebonus.png
+    movebonus.png \
+    smallunexploredruin.png \
+    smallexploredruin.png \
+    smalltemple.png
 
 EXTRA_DIST = \
     arrows.png \
@@ -69,5 +72,7 @@ EXTRA_DIST = \
     stackship.png \
     prodshieldset.png \
     smallruinedcity.png \
-    movebonus.png
-    
+    movebonus.png \
+    smallunexploredruin.png \
+    smallexploredruin.png \
+    smalltemple.png
