@@ -16,6 +16,7 @@
 
 #include "ruinlist.h"
 #include "xmlhelper.h"
+#include "playerlist.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -92,6 +93,9 @@ Ruin* Ruinlist::getNearestUnsearchedRuin(const Vector<int>& pos)
     iterator diffit;
     for (iterator it = begin(); it != end(); ++it)
     {
+        if (!(*it).isHidden() == true && 
+            (*it).getOwner() != Playerlist::getInstance()->getActiveplayer())
+          continue;
         if (!(*it).isSearched())
         {
             Vector<int> p = (*it).getPos();
@@ -114,6 +118,10 @@ Ruin* Ruinlist::getNearestRuin(const Vector<int>& pos)
     iterator diffit;
     for (iterator it = begin(); it != end(); ++it)
     {
+        if (!(*it).isHidden() == true && 
+            (*it).getOwner() != Playerlist::getInstance()->getActiveplayer())
+          continue;
+
         Vector<int> p = (*it).getPos();
         int delta = abs(p.x - pos.x) + abs(p.y - pos.y);
 

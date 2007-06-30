@@ -40,6 +40,9 @@ void RuinMap::draw_ruins (bool show_selected)
   for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
       it != Ruinlist::getInstance()->end(); it++)
   {
+      if (!(*it).isHidden() == true && 
+          (*it).getOwner() != Playerlist::getInstance()->getActiveplayer())
+        continue;
       SDL_Surface *tmp;
       if (it->isSearched())
         tmp = gc->getSmallRuinExploredPic();
