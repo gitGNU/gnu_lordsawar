@@ -36,6 +36,11 @@ class RuinMap : public OverviewMap
     //! change what ruin or temple is selected
     void setLocation (Location *r) {ruin = r;}
 
+    void mouse_button_event(MouseButtonEvent e);
+
+    // emits the location chosen
+    sigc::signal<void, Location *> location_changed;
+
     // emitted when the map surface has changed
     sigc::signal<void, SDL_Surface *> map_changed;
     

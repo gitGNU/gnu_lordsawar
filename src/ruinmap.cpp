@@ -104,3 +104,34 @@ void RuinMap::after_draw()
   map_changed.emit(surface);
 }
 
+void RuinMap::mouse_button_event(MouseButtonEvent e)
+{
+  if (e.button == MouseButtonEvent::LEFT_BUTTON && 
+      e.state == MouseButtonEvent::PRESSED)
+    {
+      Ruinlist *rl = Ruinlist::getInstance();
+      Ruin *nearestRuin;
+      Templelist *tl = Templelist::getInstance();
+      Temple *nearestTemple;
+      Vector<int> dest;
+      dest = mapFromScreen(e.pos);
+
+      nearestRuin = rl->getNearestRuin(dest, 4);
+      if (nearestRuin)
+	{
+	  ruin = nearestRuin;
+	  location_changed.emit (ruin);
+          draw();
+	}
+      else
+	{
+          nearestTemple = tl->getNearestTemple(dest, 4);
+          if (nearestTemple)
+	    {
+	      ruin = nearestTemple;
+	      location_changed.emit (ruin);
+              draw();
+	    }
+	}
+    }
+}

@@ -41,6 +41,9 @@ class Ruinlist : public ObjectList<Ruin>, public sigc::trackable
 
         // Find the nearest ruin which has not been searched
         Ruin* getNearestUnsearchedRuin(const Vector<int>& pos);
+        // Find the nearest ruin
+        Ruin* getNearestRuin(const Vector<int>& pos);
+        Ruin* getNearestRuin(const Vector<int>& pos, int dist);
         
     protected:
         Ruinlist();

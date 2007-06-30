@@ -40,6 +40,10 @@ class Templelist : public ObjectList<Temple>, public sigc::trackable
         //! Saves the game data. See XML_Helper for details.
         bool save(XML_Helper* helper) const;
 
+        // Find the nearest temple
+        Temple* getNearestTemple(const Vector<int>& pos);
+        Temple* getNearestTemple(const Vector<int>& pos, int dist);
+        
     protected:
         //! Default constructor
         Templelist();

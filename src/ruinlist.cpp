@@ -107,3 +107,30 @@ Ruin* Ruinlist::getNearestUnsearchedRuin(const Vector<int>& pos)
     if (diff == -1) return 0;
     return &(*diffit);
 }
+
+Ruin* Ruinlist::getNearestRuin(const Vector<int>& pos)
+{
+    int diff = -1;
+    iterator diffit;
+    for (iterator it = begin(); it != end(); ++it)
+    {
+        Vector<int> p = (*it).getPos();
+        int delta = abs(p.x - pos.x) + abs(p.y - pos.y);
+
+        if ((diff > delta) || (diff == -1))
+        {
+            diff = delta;
+            diffit = it;
+        }
+    }
+    if (diff == -1) return 0;
+    return &(*diffit);
+}
+Ruin* Ruinlist::getNearestRuin(const Vector<int>& pos, int dist)
+{
+  Ruin *r = getNearestRuin(pos);
+  if (r->getPos().x <= pos.x + dist && r->getPos().x >= pos.x - dist &&
+      r->getPos().y <= pos.y + dist && r->getPos().y >= pos.y - dist)
+    return r;
+  return NULL;
+}
