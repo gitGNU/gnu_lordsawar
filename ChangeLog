@@ -2,6 +2,7 @@
         * added non-functional sage dialog
 	* removed item pictures
 	* added "plantable" properties to items for battle standards
+	* adding a battle standard for each initial hero
 
 2007-06-30  Ben Asselstine
         * created a ruin map object
