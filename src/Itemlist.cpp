@@ -65,7 +65,7 @@ bool Itemlist::loadItem(std::string tag, XML_Helper* helper)
         return false;
 
     Item* i = new Item(helper);
-    (*this)[i->getIndex()] = i;
+    (*this)[(*this).size()] = i;
 
     return true;
 }

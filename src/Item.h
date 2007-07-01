@@ -43,7 +43,7 @@ class Item
     public:
         enum Type {WEAPON=0, SHIELD=1, ARMOUR=2, ACCESSOIRE=3, NONE=4};
 
-        /** There are only two useful constructors. This is the loading
+        /** There are only three useful constructors. This is the loading
           * constructor which loads an item description from a savegame or
           * from an item description file
           */
@@ -53,6 +53,11 @@ class Item
           * the game.
           */
         Item(const Item& orig);
+
+        /** This constructor creates an item for actual use in the game.
+	  * No template is used.
+          */
+        Item(Uint32 type, std::string name);
 
         //! In opposition to other classes, item actually needs its destructor.
         ~Item();
@@ -67,12 +72,12 @@ class Item
         
         //! Returns whether the item has a special bonus
         bool getBonus(Army::Stat bonus) const;
+
+	//! Add a bonus to the item
+	void setBonus(Army::Stat bonus, int amount);
         
         //! Returns the "size" of one of the item's boni
         int getValue(Army::Stat bonus);
-
-        //! Returns a picture of the item
-        SDL_Surface* getPic() const;
 
         //! Return the name of the item
         std::string getName() const {return __(d_name);}
@@ -80,21 +85,17 @@ class Item
         //! Return the id of the item. 0 means the item is a template.
         Uint32 getId() const {return d_id;}
 
-        /** The index should be a unique number and identifies the items in the
-          * itemlist. Each item there has an index. When an item enters the game
-          * it stores the index of it's original item and may refer e.g. to its
-          * picture anytime.
-          */
-        Uint32 getIndex() const {return d_index;}
-        
+	//! Return whether or not the item is plantable and able to be
+	//vectored to.
+        bool isPlantable() const {return d_plantable;}
+
     private:
         Uint32 d_type;
         std::map<Army::Stat, int> d_bonus;
         
         std::string d_name;
         Uint32 d_id;
-        SDL_Surface* d_pic;
-        Uint32 d_index;
+	bool d_plantable;
 };
 
 #endif //ITEM_H

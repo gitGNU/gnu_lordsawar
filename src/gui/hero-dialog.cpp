@@ -166,7 +166,7 @@ void HeroDialog::on_pickup_clicked()
 void HeroDialog::add_item(Item *item, bool in_backpack)
 {
     Gtk::TreeIter i = item_list->append();
-    (*i)[item_columns.image] = to_pixbuf(item->getPic());
+    //(*i)[item_columns.image] = to_pixbuf(item->getPic());
     (*i)[item_columns.name] = item->getName();
 
     // the attributes column
