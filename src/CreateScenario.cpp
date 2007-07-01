@@ -523,7 +523,7 @@ bool CreateScenario::setupRuins()
         d_ruinnames[randno] = d_ruinnames[d_ruinnames.size() - 1];
         d_ruinnames.pop_back();
 
-        if (rand() % 20 == 0 || 1) //one in twenty ruins is a sage
+        if (rand() % 20 == 0) //one in twenty ruins is a sage
           {
             (*it).setSage (true);
             continue;
