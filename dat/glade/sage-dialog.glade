@@ -126,8 +126,8 @@ What wouldst thou ask of me&quot;</property>
 		  <property name="selectable">False</property>
 		  <property name="xalign">0</property>
 		  <property name="yalign">0.5</property>
-		  <property name="xpad">0</property>
-		  <property name="ypad">0</property>
+		  <property name="xpad">10</property>
+		  <property name="ypad">10</property>
 		  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
 		  <property name="width_chars">-1</property>
 		  <property name="single_line_mode">False</property>
@@ -142,6 +142,7 @@ What wouldst thou ask of me&quot;</property>
 
 	      <child>
 		<widget class="GtkScrolledWindow" id="scrolledwindow1">
+		  <property name="border_width">10</property>
 		  <property name="visible">True</property>
 		  <property name="can_focus">True</property>
 		  <property name="hscrollbar_policy">GTK_POLICY_ALWAYS</property>
@@ -166,7 +167,7 @@ What wouldst thou ask of me&quot;</property>
 		<packing>
 		  <property name="padding">0</property>
 		  <property name="expand">False</property>
-		  <property name="fill">True</property>
+		  <property name="fill">False</property>
 		</packing>
 	      </child>
 	    </widget>
