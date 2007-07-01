@@ -786,13 +786,21 @@ void Game::maybeRecruitHero (Player *p)
           else
             alliesCount = 0;
 
-        if (alliesCount > 0)
-          {
-            const Army *army = Reward_Allies::randomArmyAlly();
-            Reward_Allies::addAllies(p, city->getPos(), army, alliesCount);
-            if (p->getType() == Player::HUMAN)
-              hero_arrives.emit(alliesCount);
-          }
+          if (alliesCount > 0)
+            {
+              const Army *army = Reward_Allies::randomArmyAlly();
+              Reward_Allies::addAllies(p, city->getPos(), army, alliesCount);
+              if (p->getType() == Player::HUMAN)
+                hero_arrives.emit(alliesCount);
+            }
+          if (gold_needed == 0)
+            {
+              //FIXME: add a battle standard to the hero's bag of stuff
+              std::string name = p->getName() + " " + _("Standard");
+              Item *battle_standard= new Item (Item::NONE, name, true, p);
+              battle_standard->setBonus(Army::STRENGTH, 1);
+              newhero->addToBackpack(battle_standard, 0);
+            }
           p->withdrawGold(gold_needed);
           p->supdatingStack.emit(0);
         }
