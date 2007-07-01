@@ -248,7 +248,7 @@ void OverviewMap::draw_terrain_pixels(Rectangle r)
     
 }
 
-void OverviewMap::after_draw()
+void OverviewMap::draw_stacks()
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
     assert(surface);
@@ -279,6 +279,13 @@ void OverviewMap::after_draw()
             draw_vline(surface, pos.x, pos.y - size, pos.y + size, outline);
         }
     }
+}
+
+void OverviewMap::after_draw()
+{
+    GraphicsCache *gc = GraphicsCache::getInstance();
+    assert(surface);
+    draw_stacks();
 }
 
 void OverviewMap::draw()
