@@ -115,8 +115,20 @@ void HeroDialog::set_parent_window(Gtk::Window &parent)
 
 void HeroDialog::run()
 {
+    GameMap *gm = GameMap::getInstance();
     dialog->show();
     dialog->run();
+    if (gm->getTile(pos)->getItems().size() > 0 && 
+        gm->getTile(pos)->getMaptileType() == Tile::WATER)
+      {
+        // splash, items lost forever
+        while (gm->getTile(pos)->getItems().size())
+          {
+            std::list<Item*>::iterator i = gm->getTile(pos)->getItems().begin();
+            gm->getTile(pos)->removeItem(*i);
+          }
+      }
+    
 }
 
 void HeroDialog::on_selection_changed()
