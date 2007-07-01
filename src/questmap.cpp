@@ -70,31 +70,6 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
   draw_filled_rect(surface, end.x - 2, end.y - 2, end.x + 2, end.y + 2, raw);
   //FIXME: end should connect to the correct corner!
 }
-void QuestMap::draw_cities(bool all_razed)
-{
-  GraphicsCache *gc = GraphicsCache::getInstance();
-
-  // Draw all cities as shields over the city location, in the colors of
-  // the players.
-  for (Citylist::iterator it = Citylist::getInstance()->begin();
-      it != Citylist::getInstance()->end(); it++)
-  {
-      SDL_Surface *tmp;
-      if (it->isBurnt() == true || all_razed == true)
-        tmp = gc->getSmallRuinedCityPic();
-      else
-        tmp = gc->getShieldPic(0, it->getPlayer());
-  
-      Vector<int> pos = it->getPos();
-      pos = mapToSurface(pos);
-      SDL_Rect r;
-      r.x = pos.x - (tmp->w/2);
-      r.y = pos.y - (tmp->h/2);
-      r.w = tmp->w;
-      r.h = tmp->h;
-      SDL_BlitSurface(tmp, 0, surface, &r);
-  }
-}
 void QuestMap::after_draw()
 {
   GraphicsCache *gc = GraphicsCache::getInstance();

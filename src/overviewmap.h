@@ -66,6 +66,9 @@ class OverviewMap
     // hook for derived classes
     virtual void after_draw();
 
+    //! draw cities on the map
+    void draw_cities(bool all_razed);
+
     // redraw the specified terrain pixels
     void draw_terrain_pixels(Rectangle r);
 

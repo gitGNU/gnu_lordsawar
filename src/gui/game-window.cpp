@@ -52,6 +52,7 @@
 #include "city-window.h"
 #include "army-gains-level-dialog.h"
 #include "hero-dialog.h"
+#include "sage-dialog.h"
 #include "hero-offer-dialog.h"
 #include "armies-report-dialog.h"
 #include "cities-report-dialog.h"
@@ -1068,9 +1069,19 @@ void GameWindow::hide_map_tip()
     map_tip.reset();
 }
 
+void GameWindow::on_sage_visited (Ruin *ruin, Stack *stack)
+{
+    SageDialog d(stack->getFirstHero()->getPlayer(), 
+                 static_cast<Hero*>(stack->getFirstHero()), ruin);
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
 void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, int gold_found)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
+    if (ruin->hasSage())
+      return on_sage_visited (ruin, stack);
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/ruin-searched-dialog.glade");

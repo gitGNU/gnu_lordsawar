@@ -279,28 +279,6 @@ void OverviewMap::after_draw()
             draw_vline(surface, pos.x, pos.y - size, pos.y + size, outline);
         }
     }
-
-    // Draw all cities as shields over the city location, in the colors of
-    // the players.
-    for (Citylist::iterator it = Citylist::getInstance()->begin();
-        it != Citylist::getInstance()->end(); it++)
-    {
-        SDL_Surface *tmp;
-        if (it->isBurnt() == false)
-          tmp = gc->getShieldPic(0, it->getPlayer());
-        else
-          tmp = gc->getSmallRuinedCityPic();
-    
-        Vector<int> pos = it->getPos();
-        pos = mapToSurface(pos);
-	SDL_Rect r;
-	r.x = pos.x - (tmp->w/2);
-	r.y = pos.y - (tmp->h/2);
-	r.w = tmp->w;
-        r.h = tmp->h;
-        SDL_BlitSurface(tmp, 0, surface, &r);
-
-    }
 }
 
 void OverviewMap::draw()
@@ -385,4 +363,30 @@ Vector<int> OverviewMap::mapToSurface(Vector<int> pos)
         y += int(0.5 * pixels_per_tile);
     
     return Vector<int>(x, y);
+}
+
+void OverviewMap::draw_cities (bool all_razed)
+{
+  GraphicsCache *gc = GraphicsCache::getInstance();
+
+  // Draw all cities as shields over the city location, in the colors of
+  // the players.
+  for (Citylist::iterator it = Citylist::getInstance()->begin();
+      it != Citylist::getInstance()->end(); it++)
+  {
+      SDL_Surface *tmp;
+      if (it->isBurnt() == true || all_razed == true)
+        tmp = gc->getSmallRuinedCityPic();
+      else
+        tmp = gc->getShieldPic(0, it->getPlayer());
+  
+      Vector<int> pos = it->getPos();
+      pos = mapToSurface(pos);
+      SDL_Rect r;
+      r.x = pos.x - (tmp->w/2);
+      r.y = pos.y - (tmp->h/2);
+      r.w = tmp->w;
+      r.h = tmp->h;
+      SDL_BlitSurface(tmp, 0, surface, &r);
+  }
 }

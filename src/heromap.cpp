@@ -29,6 +29,7 @@ void HeroMap::after_draw()
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
     OverviewMap::after_draw();
+    draw_cities(false);
     // draw the hero picture over top of the host city
     Vector<int> start = city->getPos();
 

@@ -813,20 +813,24 @@ bool RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
         r->setOccupant(0);
         if (keeper)
           delete keeper;
+        // The fight has been done or left out, now comes the reward. Up to now,
+        // we only give some gold (automatically done with give_reward())
+        Reward_Gold reward(rand() % 1000);
+        giveReward(s, &reward);
+      }
+   else if (r->hasSage())
+      {
+        //what do i do here?
       }
 
-    // The fight has been done or left out, now comes the reward. Up to now,
-    // we only give some gold (automatically done with give_reward())
-    r->setSearched(true);
     ssearchingRuin.emit(r, s);
+
+    r->setSearched(true);
 
     // actualize the actionlist
     item->setSearched(true);
     d_actions.push_back(item);
 
-    // do we reward a player even when his hero died?
-    Reward_Gold reward(rand() % 1000);
-    giveReward(s, &reward);
     supdatingStack.emit(0);
     return true;
 }

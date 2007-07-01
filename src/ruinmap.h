@@ -48,6 +48,7 @@ class RuinMap : public OverviewMap
     Location *ruin;
     void draw_ruins (bool show_selected);
     void draw_temples (bool show_selected);
+    //void draw_cities(bool all_razed);
     
     // hook from base class
     virtual void after_draw();

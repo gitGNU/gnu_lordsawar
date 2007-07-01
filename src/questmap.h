@@ -40,7 +40,7 @@ class QuestMap : public OverviewMap
     Quest *quest;
     void draw_stacks(Player *p, std::list< Vector<int> > targets);
     void draw_target(Vector<int> start, Vector<int> target);
-    void draw_cities(bool all_razed);
+//    void draw_cities(bool all_razed);
     
     // hook from base class
     virtual void after_draw();

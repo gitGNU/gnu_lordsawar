@@ -23,6 +23,7 @@
 #include "maptile.h"
 #include "ruinlist.h"
 #include "templelist.h"
+#include "citylist.h"
 #include "GameMap.h"
 
 RuinMap::RuinMap(Location *r)
@@ -40,7 +41,7 @@ void RuinMap::draw_ruins (bool show_selected)
   for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
       it != Ruinlist::getInstance()->end(); it++)
   {
-      if (!(*it).isHidden() == true && 
+      if ((*it).isHidden() == true && 
           (*it).getOwner() != Playerlist::getInstance()->getActiveplayer())
         continue;
       SDL_Surface *tmp;
@@ -99,6 +100,7 @@ void RuinMap::draw_temples (bool show_selected)
 }
 void RuinMap::after_draw()
 {
+  draw_cities(true);
   bool show_selected = true;
   if (ruin == NULL)
     show_selected = false;

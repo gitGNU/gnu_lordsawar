@@ -93,7 +93,7 @@ Ruin* Ruinlist::getNearestUnsearchedRuin(const Vector<int>& pos)
     iterator diffit;
     for (iterator it = begin(); it != end(); ++it)
     {
-        if (!(*it).isHidden() == true && 
+        if ((*it).isHidden() == true && 
             (*it).getOwner() != Playerlist::getInstance()->getActiveplayer())
           continue;
         if (!(*it).isSearched())
@@ -118,7 +118,7 @@ Ruin* Ruinlist::getNearestRuin(const Vector<int>& pos)
     iterator diffit;
     for (iterator it = begin(); it != end(); ++it)
     {
-        if (!(*it).isHidden() == true && 
+        if ((*it).isHidden() == true && 
             (*it).getOwner() != Playerlist::getInstance()->getActiveplayer())
           continue;
 
