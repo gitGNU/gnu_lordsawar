@@ -17,6 +17,7 @@
 #include "Itemlist.h"
 #include "File.h"
 #include "counter.h"
+#include "playerlist.h"
 
 using namespace std;
 
@@ -55,6 +56,14 @@ Item::Item(XML_Helper* helper)
     
     helper->getData(d_name, "name");
     helper->getData(d_plantable, "plantable");
+    if (d_plantable)
+      {
+        Uint32 ui;
+        helper->getData(ui, "plantable_owner");
+        d_plantable_owner = Playerlist::getInstance()->getPlayer(ui);
+      }
+    else
+      d_plantable_owner = NULL;
 
     // Now come the differences. Items in the game have an id, other items
     // just the dummy id "0"
@@ -62,17 +71,19 @@ Item::Item(XML_Helper* helper)
 
 }
 
-Item::Item(Uint32 type, std::string name, bool plantable)
+Item::Item(Uint32 type, std::string name, bool plantable, Player *plantable_owner)
 {
   d_type = type;
   d_name = name;
   d_plantable = plantable;
+  d_plantable_owner = plantable_owner;
   d_id = fl_counter->getNextId();
 }
 
 Item::Item(const Item& orig)
     :d_type(orig.d_type), d_bonus(orig.d_bonus),
-    d_name(orig.d_name), d_plantable(orig.d_plantable)
+    d_name(orig.d_name), d_plantable(orig.d_plantable),
+    d_plantable_owner(orig.d_plantable_owner)
 {
     // Some things we don't copy from the template; we rather get an own ID
     d_id = fl_counter->getNextId();
@@ -91,8 +102,9 @@ bool Item::save(XML_Helper* helper) const
     retval &= helper->saveData("type", d_type);
     retval &= helper->saveData("name", d_name);
     retval &= helper->saveData("plantable", d_plantable);
+    if (d_plantable && d_plantable_owner)
+      retval &= helper->saveData("plantable_owner", d_plantable_owner->getId());
     retval &= helper->saveData("id", d_id);
-    retval &= helper->saveData("image", std::string(""));
 
     // Last, save the boni of the item. We put all of them in a string separated
     // by spaces

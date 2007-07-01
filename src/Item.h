@@ -20,6 +20,7 @@
 #include "army.h"
 
 #include "defs.h"
+#include "player.h"
 
 /** This class describes an item.
   * 
@@ -57,7 +58,7 @@ class Item
         /** This constructor creates an item for actual use in the game.
 	  * No template is used.
           */
-        Item(Uint32 type, std::string name, bool plantable);
+        Item(Uint32 type, std::string name, bool plantable, Player *plantable_owner);
 
         //! In opposition to other classes, item actually needs its destructor.
         ~Item();
@@ -89,6 +90,9 @@ class Item
 	//vectored to.
         bool isPlantable() const {return d_plantable;}
 
+	//! Return the player that can plant this item.
+	Player *getPlantableOwner() const {return d_plantable_owner;}
+
     private:
         Uint32 d_type;
         std::map<Army::Stat, int> d_bonus;
@@ -96,6 +100,7 @@ class Item
         std::string d_name;
         Uint32 d_id;
 	bool d_plantable;
+	Player *d_plantable_owner;
 };
 
 #endif //ITEM_H
