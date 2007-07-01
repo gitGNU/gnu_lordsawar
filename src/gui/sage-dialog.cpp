@@ -55,6 +55,7 @@ SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
 
     dialog->set_title(_("A Sage!"));
 
+    //FIXME: add gold/items/allies/maps to the listbox
 }
 
 void SageDialog::set_parent_window(Gtk::Window &parent)
