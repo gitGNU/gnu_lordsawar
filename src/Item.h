@@ -57,7 +57,7 @@ class Item
         /** This constructor creates an item for actual use in the game.
 	  * No template is used.
           */
-        Item(Uint32 type, std::string name);
+        Item(Uint32 type, std::string name, bool plantable);
 
         //! In opposition to other classes, item actually needs its destructor.
         ~Item();
