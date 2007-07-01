@@ -3,6 +3,7 @@
 	* removed item pictures
 	* added "plantable" properties to items for battle standards
 	* adding a battle standard for each initial hero
+	* items dropped in water are lost
 
 2007-06-30  Ben Asselstine
         * created a ruin map object
