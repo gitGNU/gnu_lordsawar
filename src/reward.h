@@ -32,7 +32,7 @@ class Reward
         enum Type {GOLD = 1, ALLIES= 2, ITEM = 3};
 
         //! Standard constructor
-        Reward(Type type);
+        Reward(Type type, std::string name = "");
 	//! XML constructor
         Reward(XML_Helper* helper);
         
@@ -40,6 +40,9 @@ class Reward
 
         //! Get the type of the reward
         Type getType() const { return d_type; }
+
+        //! Returns the name of the reward
+        std::string getName() const {return d_name;}
 
         /** Saves the reward data
           * 
@@ -63,6 +66,7 @@ class Reward
 
         //! Type of the reward
         Type d_type;
+	std::string d_name;
 
 };
 

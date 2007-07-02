@@ -23,8 +23,8 @@
 #include "GameMap.h"
 using namespace std;
 
-Reward::Reward(Type type)
-    :d_type(type)
+Reward::Reward(Type type, std::string name)
+    :d_type(type), d_name(name)
 {
 }
 
@@ -32,12 +32,14 @@ Reward::Reward(XML_Helper *helper)
 {
   Uint32 t;
   helper->getData(t, "type");
+  helper->getData(d_name, "name");
 }
 
 bool Reward::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("name", d_name);
   return retval;
 }
 
