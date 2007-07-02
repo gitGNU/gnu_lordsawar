@@ -23,7 +23,10 @@
 
 class XML_Helper;
 
-/** List of rewards in the game
+/** List of unique rewards in the game.
+  * Some rewards like gold, and allies can be created whenever they're needed,
+  * but other rewards are unique in nature.  This list is for those unique
+  * rewards -- namely item rewards.
   *
   */
 
