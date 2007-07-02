@@ -1,5 +1,7 @@
 2007-07-02  Ben Asselstine
         * added a reward list object to be used by quests, ruins and sages
+	* an item or allies are now given after searching a ruin
+	* an item can now be given as a reward for a quest completion
 
 2007-07-01  Ben Asselstine
         * added non-functional sage dialog
