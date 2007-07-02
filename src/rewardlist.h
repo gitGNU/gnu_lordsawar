@@ -30,11 +30,15 @@ class XML_Helper;
 class Rewardlist : public std::list<Reward*>, public sigc::trackable
 {
     public:
-        Rewardlist();
-        Rewardlist(Rewardlist *rewardlist);
-        Rewardlist(XML_Helper* helper);
-        ~Rewardlist();
+        //! Returns the singleton instance. Creates a new one if required.
+        static Rewardlist* getInstance();
 
+        //! Loads the singleton instance with a savegame.
+        static Rewardlist* getInstance(XML_Helper* helper);
+
+        //! Explicitely deletes the singleton instance.
+        static void deleteInstance();
+        
         //! Searches through the player's lists and deletes the reward
         void deleteReward(Reward* s);
 
@@ -50,10 +54,17 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
         //! Behaves like std::list::remove(), but frees pointers as well
         bool flRemove(Reward* object);
 
+    protected:    
+        Rewardlist();
+        Rewardlist(Rewardlist *rewardlist);
+        Rewardlist(XML_Helper* helper);
+        ~Rewardlist();
+
     private:
         //! Callback function for loading
         bool load(std::string tag, XML_Helper* helper);
 
+        static Rewardlist* s_instance;
 };
 
 #endif // REWARDLIST_H

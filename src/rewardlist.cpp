@@ -23,6 +23,33 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
+Rewardlist* Rewardlist::s_instance = 0;
+
+Rewardlist* Rewardlist::getInstance()
+{
+    if (s_instance == 0)
+        s_instance = new Rewardlist();
+
+    return s_instance;
+}
+
+Rewardlist* Rewardlist::getInstance(XML_Helper* helper)
+{
+    if (s_instance)
+        deleteInstance();
+
+    s_instance = new Rewardlist(helper);
+    return s_instance;
+}
+
+void Rewardlist::deleteInstance()
+{
+    if (s_instance)
+        delete s_instance;
+
+    s_instance = 0;
+}
+
 void Rewardlist::deleteReward(Reward* s)
 {
   for (const_iterator it = this->begin(); it != this->end(); it++)
