@@ -32,6 +32,7 @@ Reward::Reward(XML_Helper *helper)
 {
   Uint32 t;
   helper->getData(t, "type");
+  d_type = static_cast<Reward::Type>(t);
   helper->getData(d_name, "name");
 }
 

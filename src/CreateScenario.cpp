@@ -25,6 +25,7 @@
 #include "citylist.h"
 #include "ruinlist.h"
 #include "rewardlist.h"
+#include "Itemlist.h"
 #include "templelist.h"
 #include "signpostlist.h"
 #include "stonelist.h"
@@ -338,6 +339,9 @@ bool CreateScenario::create()
     if (!setupPlayers())
         return false;
 
+    if (!setupRewards())
+        return false;
+
 
     return true;
 }
@@ -555,6 +559,24 @@ bool CreateScenario::setupRuins()
           }
     }
 
+    return true;
+}
+
+bool CreateScenario::setupRewards()
+{
+    debug("CreateScenario::setupRewards")
+    Itemlist::createInstance();
+    Itemlist *il = Itemlist::getInstance();
+    Itemlist::iterator iter;
+    for (iter = il->begin(); iter != il->end(); iter++)
+      {
+        Item templateItem = *iter->second;
+        Item *newItem = new Item(templateItem); //instantiate it
+        Reward_Item *newReward = new Reward_Item(newItem); //make a reward
+        Rewardlist::getInstance()->push_back(newReward); //add it
+      }
+
+    Itemlist::deleteInstance();
     return true;
 }
 

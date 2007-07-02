@@ -174,6 +174,9 @@ class CreateScenario
         //! Set up ruin names and keepers
         bool setupRuins();
 
+        //! Set up rewards to be given out for quests, ruins and sages
+        bool setupRewards();
+
         //! Set up signposts
         bool setupSignposts();
 

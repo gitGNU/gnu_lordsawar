@@ -19,8 +19,8 @@
 #include <vector>
 #include <sigc++/trackable.h>
 #include <SDL_types.h>
+#include "reward.h"
 
-class Reward;
 class XML_Helper;
 
 /** List of rewards in the game
