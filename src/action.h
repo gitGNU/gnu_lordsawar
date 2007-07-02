@@ -364,10 +364,7 @@ class Action_Reward : public Action
         bool fillData (Reward *);
     
     private:
-        int d_rewardtype;
-	Uint32 d_count; //amount for gold, and for ALLIES
-	Uint32 d_gift; //armytype for ALLIES, itemtype for ITEM
-	Uint32 d_giftkind; //armyset for ALLIES
+	Reward *d_reward;
 	
 };
 

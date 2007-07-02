@@ -28,8 +28,39 @@ Reward::Reward(Type type)
 {
 }
 
+Reward::Reward(XML_Helper *helper)
+{
+  Uint32 t;
+  helper->getData(t, "type");
+}
+
+bool Reward::save(XML_Helper* helper) const
+{
+  bool retval = true;
+  retval &= helper->saveData("type", d_type);
+  return retval;
+}
+
 Reward::~Reward()
 {
+}
+
+Reward* Reward::handle_load(XML_Helper* helper)
+{
+    Uint32 t;
+    helper->getData(t, "type");
+
+    switch (t)
+    {
+        case Reward::GOLD:
+            return (new Reward_Gold(helper));
+        case Reward::ALLIES:
+            return (new Reward_Allies(helper));
+        case Reward::ITEM:
+            return (new Reward_Item(helper));
+    }
+
+    return 0;
 }
 
 Reward_Gold::Reward_Gold(Uint32 gold)
@@ -37,28 +68,65 @@ Reward_Gold::Reward_Gold(Uint32 gold)
 {
 }
 
+Reward_Gold::Reward_Gold(XML_Helper* helper)
+    :Reward(helper)
+{
+  helper->getData(d_gold, "gold");
+}
+
+bool Reward_Gold::save(XML_Helper* helper) const
+{
+  bool retval = true;
+  retval &= helper->openTag("reward");
+  retval &= Reward::save(helper);
+  retval &= helper->saveData("gold", d_gold);
+  retval &= helper->closeTag();
+  return retval;
+}
+
 Reward_Gold::~Reward_Gold()
 {
 }
 
+
+Reward_Allies::Reward_Allies(Uint32 army_type, Uint32 army_set, Uint32 count)
+    :Reward(Reward::ALLIES), d_count(count)
+{
+  Armysetlist *al = Armysetlist::getInstance();
+  d_army_type = army_type;
+  d_army_set = army_set;
+  d_army  = al->getArmy (army_set, army_type);
+}
+
 Reward_Allies::Reward_Allies(const Army *army, Uint32 count)
-    :Reward(Reward::ALLIES), d_army(army), d_count(count)
+    :Reward(Reward::ALLIES), d_count(count)
 {
+  d_army_type = army->getType();
+  d_army_set = army->getArmyset();
+  d_army = army;
 }
 
-Reward_Allies::~Reward_Allies()
+Reward_Allies::Reward_Allies(XML_Helper* helper)
+    :Reward(helper)
 {
+  Armysetlist *al = Armysetlist::getInstance();
+  helper->getData(d_count, "num_allies");
+  helper->getData(d_army_type, "ally_type");
+  helper->getData(d_army_set, "ally_armyset");
+  d_army = al->getArmy (d_army_set, d_army_type);
 }
 
-Reward_Item::Reward_Item(Uint32 itemtype)
-    :Reward(Reward::ITEM), d_itemtype(itemtype)
+bool Reward_Allies::save(XML_Helper* helper) const
 {
+  bool retval = true;
+  retval &= helper->openTag("reward");
+  retval &= Reward::save(helper);
+  retval &= helper->saveData("num_allies", d_count);
+  retval &= helper->saveData("ally_type", d_army_type);
+  retval &= helper->saveData("ally_armyset", d_army_set);
+  retval &= helper->closeTag();
+  return retval;
 }
-
-Reward_Item::~Reward_Item()
-{
-}
-
 const Army* Reward_Allies::randomArmyAlly()
 {
   Uint32 allytype;
@@ -108,3 +176,43 @@ bool Reward_Allies::addAllies(Player *p, Location *l, const Army *army, Uint32 a
     }
   return true;
 }
+
+
+Reward_Allies::~Reward_Allies()
+{
+}
+
+Reward_Item::Reward_Item(Item *item)
+    :Reward(Reward::ITEM), d_item(item)
+{
+}
+
+bool Reward_Item::loadItem(std::string tag, XML_Helper* helper)
+{
+  if (tag == "item")
+    d_item = new Item(helper);
+    
+  return true;
+}
+
+Reward_Item::Reward_Item(XML_Helper* helper)
+    :Reward(helper)
+{
+  helper->registerTag("item", sigc::mem_fun(this, &Reward_Item::loadItem));
+}
+
+bool Reward_Item::save(XML_Helper* helper) const
+{
+  bool retval = true;
+  retval &= helper->openTag("reward");
+  retval &= Reward::save(helper);
+  retval &= d_item->save(helper);
+  retval &= helper->closeTag();
+  return retval;
+}
+
+
+Reward_Item::~Reward_Item()
+{
+}
+

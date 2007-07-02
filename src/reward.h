@@ -19,6 +19,8 @@
 class Player;
 class Army;
 class Location;
+class Item;
+class XML_Helper;
 
 /** Base class for rewards
   *
@@ -31,11 +33,31 @@ class Reward
 
         //! Standard constructor
         Reward(Type type);
+	//! XML constructor
+        Reward(XML_Helper* helper);
         
         virtual ~Reward();
 
         //! Get the type of the reward
         Type getType() const { return d_type; }
+
+        /** Saves the reward data
+          * 
+          * @note This function is called by the actual reward and only saves
+          * the common data. It does NOT open/close tags etc. This has to be
+          * done by the derived classes.
+          */
+        virtual bool save(XML_Helper* helper) const;
+
+        /** static load function (see XML_Helper)
+          * 
+          * Whenever an reward item is loaded, this function is called. It
+          * examines the stored id and calls the constructor of the appropriate
+          * reward class.
+          *
+          * @param helper       the XML_Helper instance for the savegame
+          */
+        static Reward* handle_load(XML_Helper* helper);
 
     protected:
 
@@ -48,8 +70,10 @@ class Reward_Gold : public Reward
 {
     public:
         Reward_Gold(Uint32 gold);
+	Reward_Gold(XML_Helper *helper);
         ~Reward_Gold();
 
+        bool save(XML_Helper* helper) const;
 	Uint32 getGold() const {return d_gold;}
 
     private:
@@ -60,8 +84,11 @@ class Reward_Allies: public Reward
 {
     public:
         Reward_Allies(const Army *army, Uint32 count);
+        Reward_Allies(Uint32 army_type, Uint32 army_set, Uint32 count);
+	Reward_Allies(XML_Helper *helper);
         ~Reward_Allies();
 
+        bool save(XML_Helper* helper) const;
 	const Army * getArmy() const {return d_army;}
 	Uint32 getNoOfAllies() const {return d_count;}
         static const Army* randomArmyAlly();
@@ -70,18 +97,23 @@ class Reward_Allies: public Reward
 
     private:
         const Army *d_army;
+	Uint32 d_army_type;
+	Uint32 d_army_set;
         Uint32 d_count;
 };
 
 class Reward_Item: public Reward
 {
     public:
-        Reward_Item (Uint32 itemtype);
+        Reward_Item (Item *item);
+	Reward_Item(XML_Helper *helper);
         ~Reward_Item();
 
-	Uint32 getItemtype() const {return d_itemtype;}
+        bool save(XML_Helper* helper) const;
+	Item *getItem() const {return d_item;}
 
     private:
-        Uint32 d_itemtype;
+        bool loadItem(std::string tag, XML_Helper* helper);
+        Item *d_item;
 };
 #endif
