@@ -39,7 +39,7 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
         //! Explicitely deletes the singleton instance.
         static void deleteInstance();
         
-        //! Searches through the player's lists and deletes the reward
+        //! deletes a reward from the list
         void deleteReward(Reward* s);
 
         //! Save the data. See XML_Helper for details
