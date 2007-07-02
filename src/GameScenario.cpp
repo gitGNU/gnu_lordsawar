@@ -23,6 +23,7 @@
 #include "playerlist.h"
 #include "citylist.h"
 #include "ruinlist.h"
+#include "rewardlist.h"
 #include "templelist.h"
 #include "stonelist.h"
 #include "roadlist.h"
@@ -42,6 +43,7 @@
 #include "army.h"
 #include "QuestsManager.h"
 #include "Itemlist.h"
+#include "rewardlist.h"
 #include "string_tokenizer.h"
 #include "player.h"
 #include "vectoredunitlist.h"
@@ -80,6 +82,7 @@ GameScenario::GameScenario(string savegame, bool& broken)
     helper.registerTag("citylist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("templelist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("ruinlist", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("rewardlist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("signpostlist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("stonelist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("roadlist", sigc::mem_fun(this, &GameScenario::load));
@@ -105,6 +108,7 @@ GameScenario::~GameScenario()
     Citylist::deleteInstance();
     Templelist::deleteInstance();
     Ruinlist::deleteInstance();
+    Rewardlist::deleteInstance();
     Signpostlist::deleteInstance();
     Stonelist::deleteInstance();
     QuestsManager::deleteInstance();
@@ -190,6 +194,7 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= Citylist::getInstance()->save(&helper);
     retval &= Templelist::getInstance()->save(&helper);
     retval &= Ruinlist::getInstance()->save(&helper);
+    retval &= Rewardlist::getInstance()->save(&helper);
     retval &= Signpostlist::getInstance()->save(&helper);
     retval &= Stonelist::getInstance()->save(&helper);
     retval &= Roadlist::getInstance()->save(&helper);
@@ -285,6 +290,13 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
     {
         debug("loading ruins")
         Ruinlist::getInstance(helper);
+        return true;
+    }
+
+    if (tag == "rewardlist")
+    {
+        debug("loading rewards")
+        Rewardlist::getInstance(helper);
         return true;
     }
 

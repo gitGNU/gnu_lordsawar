@@ -24,6 +24,7 @@
 #include "stacklist.h"
 #include "citylist.h"
 #include "ruinlist.h"
+#include "rewardlist.h"
 #include "templelist.h"
 #include "signpostlist.h"
 #include "stonelist.h"
@@ -58,6 +59,7 @@ CreateScenario::CreateScenario()
     Playerlist::deleteInstance();
     Templelist::deleteInstance();
     Ruinlist::deleteInstance();
+    Rewardlist::deleteInstance();
     Citylist::deleteInstance();
 
     QuestsManager::deleteInstance();
@@ -356,6 +358,8 @@ bool CreateScenario::createMap()
 
     const Maptile::Building* map;
     
+    Rewardlist::getInstance();
+
     //have the generator make the map...
     d_generator->makeMap(d_width, d_height);
     
