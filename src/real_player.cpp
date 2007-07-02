@@ -23,6 +23,7 @@
 //#include "FightDialog.h"
 #include "stacklist.h"
 #include "citylist.h"
+#include "rewardlist.h"
 #include "QuestsManager.h"
 #include "path.h"
 #include "GameMap.h"
@@ -776,8 +777,9 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
     return total;
 }
 
-bool RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
+Reward* RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
 {
+    Reward *retReward;
     debug("RealPlayer::stack_search_ruin")
 
     //throw out impossible actions
@@ -789,7 +791,7 @@ bool RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
     }
 
     if (r->isSearched())
-        return false;
+        return NULL;
 
     // start the action item
     Action_Ruin* item = new Action_Ruin();
@@ -807,23 +809,52 @@ bool RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
             item->setSearched(false);
             d_actions.push_back(item);
 
-            return false;
+            return NULL;
           }
 
         r->setOccupant(0);
         if (keeper)
           delete keeper;
         // The fight has been done or left out, now comes the reward. Up to now,
-        // we only give some gold (automatically done with give_reward())
-        Reward_Gold reward(rand() % 1000);
-        giveReward(s, &reward);
+        int num = rand() % 3;
+        if (num == 0)
+          {
+            int gold = rand() % 1000;
+            Reward_Gold *reward = new Reward_Gold(gold);
+            giveReward(NULL, reward);
+	    retReward = reward;
+          }
+        else if (num == 1)
+          {
+            int num = (rand() % 8) + 1;
+            const Army *a = Reward_Allies::randomArmyAlly();
+            Reward_Allies *reward = new Reward_Allies(a, num);
+            giveReward(getActivestack(), reward);
+	    retReward = reward;
+          }
+        else if (num == 2)
+          {
+            Reward *itemReward = Rewardlist::getInstance()->popRandomItemReward();
+            if (itemReward)
+              {
+                giveReward(getActivestack(), itemReward);
+	        retReward = itemReward;
+              }
+            else //no items left to give!
+              {
+                int gold = rand() % 1000;
+                Reward_Gold *reward = new Reward_Gold(gold);
+                giveReward(NULL, reward);
+	        retReward = reward;
+              }
+          }
       }
    else if (r->hasSage())
       {
         //what do i do here?
       }
 
-    ssearchingRuin.emit(r, s);
+    ssearchingRuin.emit(r, s, retReward);
 
     r->setSearched(true);
 
@@ -832,7 +863,7 @@ bool RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
     d_actions.push_back(item);
 
     supdatingStack.emit(0);
-    return true;
+    return retReward;
 }
 
 int RealPlayer::stackVisitTemple(Stack* s, Temple* t)
@@ -1080,12 +1111,15 @@ bool RealPlayer::giveReward(Stack *s, Reward *reward)
         }
 	break;
       case Reward::ITEM:
+        static_cast<Hero*>(s->getFirstHero())->addToBackpack(
+          dynamic_cast<Reward_Item*>(reward)->getItem());
 	break;
       }
 
     Action_Reward* item = new Action_Reward();
     item->fillData(reward);
     d_actions.push_back(item);
+    //FIXME: get rid of this reward now that we're done with it
 
     return true;
 }

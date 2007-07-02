@@ -1077,7 +1077,7 @@ void GameWindow::on_sage_visited (Ruin *ruin, Stack *stack)
     d.run();
 }
 
-void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, int gold_found)
+void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
     if (ruin->hasSage())
@@ -1103,8 +1103,16 @@ void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, int gold_found)
     
     Glib::ustring s = label->get_text();
     s += "\n\n";
+    if (reward->getType() == Reward::GOLD)
     s += String::ucompose("%1 finds %2 gp.", stack->getFirstHero()->getName(), 
-                          gold_found);
+                          dynamic_cast<Reward_Gold*>(reward)->getGold());
+    else if (reward->getType() == Reward::ALLIES)
+      s += String::ucompose("%1 gets %2 allies.", stack->getFirstHero()->getName(), 
+                          dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies());
+    else if (reward->getType() == Reward::ITEM)
+      s += String::ucompose("%1 gets the %2.", stack->getFirstHero()->getName(), 
+                          dynamic_cast<Reward_Item*>(reward)->getItem()->getName());
+
     label->set_text(s);
     
     dialog->show_all();

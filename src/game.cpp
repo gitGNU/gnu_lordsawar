@@ -294,10 +294,10 @@ void Game::search_selected_stack()
         ((ruin->isHidden() == true && ruin->getOwner() == player) ||
          ruin->isHidden() == false))
     {
-        int cur_gold = player->getGold();
+        Reward *reward;
 
-	bool successful_search = player->stackSearchRuin(stack, ruin);
-        if (!successful_search)
+	reward = player->stackSearchRuin(stack, ruin);
+        if (!reward)
         {
 	    redraw();
 	    update_stack_info();
@@ -305,10 +305,7 @@ void Game::search_selected_stack()
             return;
         }
 
-        // this also includes the gold-only hack
-        int gold_added = player->getGold() - cur_gold;
-
-	ruin_searched.emit(ruin, stack, gold_added);
+	ruin_searched.emit(ruin, stack, reward);
 	
         update_sidebar_stats();
     }

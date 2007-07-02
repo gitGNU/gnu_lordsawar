@@ -25,6 +25,7 @@
 #include "QEnemyArmytype.h"
 #include "QPillageGold.h"
 #include "stacklist.h"
+#include "rewardlist.h"
 #include "army.h"
 #include "xmlhelper.h"
 
@@ -135,23 +136,41 @@ Quest* QuestsManager::createNewQuest(Uint32 heroId)
 void QuestsManager::questCompleted(Uint32 heroId)
 {
     Quest *quest = d_quests[heroId];
+    Player *p = quest->getHero()->getPlayer();
     
-    if (rand() % 2 == 0)
+    int num = rand() % 3;
+    if (num == 0)
       {
         int gold = rand() % 1000;
         Reward_Gold reward(gold);
-        quest->getHero()->getPlayer()->giveReward(NULL, &reward);
+        p->giveReward(NULL, &reward);
         quest_completed.emit(quest, &reward);
       }
-    else
+    else if (num == 1)
       {
-        Player *p = quest->getHero()->getPlayer();
         int num = (rand() % 8) + 1;
         const Army *a = Reward_Allies::randomArmyAlly();
         Reward_Allies reward(a, num);
         p->giveReward(p->getActivestack(), &reward);
         quest_completed.emit(quest, &reward);
       }
+    else if (num == 2)
+      {
+        Reward *itemReward = Rewardlist::getInstance()->popRandomItemReward();
+        if (itemReward)
+          {
+            p->giveReward(p->getActivestack(), itemReward);
+            quest_completed.emit(quest, itemReward);
+          }
+        else //no items left to give!
+          {
+            int gold = rand() % 1000;
+            Reward_Gold reward(gold);
+            p->giveReward(NULL, &reward);
+            quest_completed.emit(quest, &reward);
+          }
+      }
+
     
     
     debug("deactivate quest");

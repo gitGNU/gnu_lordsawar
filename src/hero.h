@@ -78,6 +78,7 @@ class Hero : public Army
 
         //! Add an item to the backpack of the hero. Returns true on success
         bool addToBackpack(Item* item, int position);
+        bool addToBackpack(Item* item);
 
         //! Add an item to the list of equipped items. Returns true on success
         bool addToEquipment(Item* item);

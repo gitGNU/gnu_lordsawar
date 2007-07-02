@@ -145,4 +145,21 @@ bool Rewardlist::load(string tag, XML_Helper* helper)
     return false;
 }
 
+Reward *Rewardlist::popRandomItemReward()
+{
+  Rewardlist::iterator iter;
+  std::vector<Reward*> item_rewards;
+  for (iter = begin(); iter != end(); iter++)
+    {
+      item_rewards.push_back(*iter);
+    }
+  if (item_rewards.size())
+    {
+      Reward *newItemReward = item_rewards[rand() % item_rewards.size()];
+      remove(newItemReward);
+      return newItemReward;
+    }
+  else
+    return NULL;
+}
 // End of file

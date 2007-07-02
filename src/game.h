@@ -40,6 +40,7 @@ class Signpost;
 class Fight;
 class Quest;
 class Stack;
+class Reward;
 
 /** Controls a game.
   * 
@@ -91,7 +92,7 @@ class Game
 	can_end_turn;
     sigc::signal<void, Stack *> stack_info_changed;
     sigc::signal<void, Glib::ustring, MapTipPosition> map_tip_changed;
-    sigc::signal<void, Ruin*, Stack*, int> ruin_searched;
+    sigc::signal<void, Ruin*, Stack*, Reward*> ruin_searched;
     sigc::signal<void, Fight &> fight_started;
     sigc::signal<void, Stack *, Stack *> ruinfight_started;
     sigc::signal<void, Fight::Result> ruinfight_finished;

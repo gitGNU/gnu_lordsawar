@@ -42,6 +42,9 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
         //! deletes a reward from the list
         void deleteReward(Reward* s);
 
+	//! remove one item reward from the list and return it
+	Reward *popRandomItemReward();
+
         //! Save the data. See XML_Helper for details
         bool save(XML_Helper* helper) const;
 

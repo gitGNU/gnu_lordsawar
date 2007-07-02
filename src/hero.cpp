@@ -179,6 +179,13 @@ bool Hero::addToBackpack(Item* item, int position)
     return true;
 }
 
+bool Hero::addToBackpack(Item* item)
+{
+    std::list<Item*>::iterator it = d_backpack.end();
+    d_backpack.insert(it, item);
+    return true;
+}
+
 bool Hero::addToEquipment(Item* item)
 {
     //First, check if it is allowed to take the item at all

@@ -40,6 +40,7 @@ class Temple;
 class MoveResult;
 class FogMap;
 class Fight;
+class Reward;
 
 /** The abstract player class.
   *
@@ -343,9 +344,10 @@ class Player: public sigc::trackable
           *
           * @param s                the stack which searches the ruin
           * @param r                the ruin to be searched
+          * @param reward           a pointer to the received reward
           * @return true if the ruin was searched (keeper defeated)
           */
-        virtual bool stackSearchRuin(Stack* s, Ruin* r) =0;
+        virtual Reward* stackSearchRuin(Stack* s, Ruin* r) =0;
 
         /** A stack visits a temple and becomes blessed. By blessing, the attack
           * strength of all armies rises by 1.
@@ -445,7 +447,7 @@ class Player: public sigc::trackable
         sigc::signal<void, Stack*>             sdyingStack;
         
         //! Signal raised whenever the player successfully searched a ruin
-        sigc::signal<void, Ruin*, Stack*>      ssearchingRuin;
+        sigc::signal<void, Ruin*, Stack*, Reward*>      ssearchingRuin;
         //! Signal raised whenever the player visits a temple
         sigc::signal<void, Temple*, Stack*>    svisitingTemple;
         //! Signal raised whenever the player moves a stack
