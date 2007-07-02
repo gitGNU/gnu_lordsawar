@@ -16,6 +16,7 @@
 #define __REWARD_H
 #include <SDL_types.h>
 #include "vector.h"
+#include <string>
 class Player;
 class Army;
 class Location;
