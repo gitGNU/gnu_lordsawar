@@ -1,3 +1,6 @@
+2007-07-06  Ben Asselstine
+        * made the selector box on the small map stop pulsating
+
 2007-07-02  Ben Asselstine
         * added a reward list object to be used by quests, ruins and sages
 	* an item or allies are now given after searching a ruin
