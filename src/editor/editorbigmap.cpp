@@ -28,6 +28,8 @@
 #include "../signpostlist.h"
 #include "../templelist.h"
 #include "../stonelist.h"
+#include "../bridgelist.h"
+#include "../portlist.h"
 #include "../roadlist.h"
 #include "../ruin.h"
 #include "../signpost.h"
@@ -455,10 +457,14 @@ void EditorBigMap::change_map_under_cursor()
 	    remove_from_map(Templelist::getInstance(), tile);
 	    // ... or a stone ...
 	    remove_from_map(Stonelist::getInstance(), tile);
+	    // ... or a port ...
+	    remove_from_map(Portlist::getInstance(), tile);
 	    // ... or a ruin ...
 	    remove_from_map(Ruinlist::getInstance(), tile);
 	    // ... or a road ...
 	    remove_from_map(Roadlist::getInstance(), tile);
+	    // ... or a bridge...
+	    remove_from_map(Bridgelist::getInstance(), tile);
 	    // ... or a signpost ...
 	    remove_from_map(Signpostlist::getInstance(), tile);
 	    // ... or a city

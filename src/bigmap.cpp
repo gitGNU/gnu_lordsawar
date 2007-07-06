@@ -29,6 +29,8 @@
 #include "signpostlist.h"
 #include "templelist.h"
 #include "stonelist.h"
+#include "portlist.h"
+#include "bridgelist.h"
 #include "roadlist.h"
 #include "ruin.h"
 #include "signpost.h"
@@ -313,6 +315,14 @@ void BigMap::draw_buffer()
     for (Stonelist::iterator i = Stonelist::getInstance()->begin();
 	 i != Stonelist::getInstance()->end(); ++i)
 	blit_if_inside_buffer( *i, gc->getStonePic(i->getType()));
+
+    for (Bridgelist::iterator i = Bridgelist::getInstance()->begin();
+	 i != Bridgelist::getInstance()->end(); ++i)
+	blit_if_inside_buffer( *i, gc->getBridgePic(i->getType()));
+
+    for (Portlist::iterator i = Portlist::getInstance()->begin();
+	 i != Portlist::getInstance()->end(); ++i)
+	blit_if_inside_buffer( *i, gc->getPortPic());
 
     for (Citylist::iterator i = Citylist::getInstance()->begin();
 	 i != Citylist::getInstance()->end(); ++i)

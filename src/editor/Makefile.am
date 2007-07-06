@@ -16,6 +16,7 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../AI_Allocation.o ../MoveResult.o ../AICityInfo.o \
         ../FogMap.o ../signpostlist.o ../signpost.o\
 	../stone.o ../stonelist.o ../sound.o ../road.o ../roadlist.o \
+        ../bridge.o ../bridgelist.o ../port.o ../portlist.o \
         ../vectoredunitlist.o ../vectoredunit.o \
         ../bigmap.o ../smallmap.o ../overviewmap.o ../timing.o \
         ../gui/image-helpers.o ../gui/error-utils.o ../gui/gtksdl.o \

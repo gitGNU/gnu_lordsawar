@@ -29,6 +29,8 @@
 #include "templelist.h"
 #include "signpostlist.h"
 #include "stonelist.h"
+#include "portlist.h"
+#include "bridgelist.h"
 #include "roadlist.h"
 #include "armysetlist.h"
 
@@ -61,6 +63,9 @@ CreateScenario::CreateScenario()
     Templelist::deleteInstance();
     Ruinlist::deleteInstance();
     Rewardlist::deleteInstance();
+    Stonelist::deleteInstance();
+    Portlist::deleteInstance();
+    Bridgelist::deleteInstance();
     Citylist::deleteInstance();
 
     QuestsManager::deleteInstance();
@@ -395,6 +400,12 @@ bool CreateScenario::createMap()
                     break;
                 case Maptile::ROAD:
                     Roadlist::getInstance()->push_back(Road(Vector<int>(x,y)));
+                    break;
+                case Maptile::PORT:
+                    Portlist::getInstance()->push_back(Port(Vector<int>(x,y)));
+                    break;
+                case Maptile::BRIDGE:
+                    Bridgelist::getInstance()->push_back(Bridge(Vector<int>(x,y)));
                     break;
                 case Maptile::NONE:
 		    break;

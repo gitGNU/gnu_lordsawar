@@ -36,7 +36,7 @@ class Maptile
 {
     public:
         //! Enum of possible buldings on the tile
-        enum Building {NONE=0, CITY=1, RUIN=2, TEMPLE=3, SIGNPOST=4, STONE=5, ROAD=6};
+        enum Building {NONE=0, CITY=1, RUIN=2, TEMPLE=3, SIGNPOST=4, STONE=5, ROAD=6, PORT=7, BRIDGE=8};
 
         /** Default constructor
           * 

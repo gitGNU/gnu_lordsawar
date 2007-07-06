@@ -56,6 +56,13 @@ struct RoadCacheItem
     SDL_Surface* surface;
 };
 
+//the structure to store bridges in
+struct BridgeCacheItem
+{
+    int type;
+    SDL_Surface* surface;
+};
+
 //the structure to store stones in
 struct StoneCacheItem
 {
@@ -138,6 +145,7 @@ GraphicsCache::GraphicsCache()
     loadTemplePics();
     loadStonePics();
     loadRoadPics();
+    loadBridgePics();
     loadFlags();
     loadSelectors();
     loadShields();
@@ -152,6 +160,8 @@ GraphicsCache::GraphicsCache()
     d_small_ruin_explored = File::getMiscPicture("smallexploredruin.png");
     d_small_temple = File::getMiscPicture("smalltemple.png");
     d_ship = File::getMiscPicture("stackship.png");
+    std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+    d_port = File::getMapsetPicture(tileset, "misc/bridges.png");
 }
 
 GraphicsCache::~GraphicsCache()
@@ -212,6 +222,7 @@ GraphicsCache::~GraphicsCache()
     SDL_FreeSurface(d_small_ruin_unexplored);
     SDL_FreeSurface(d_small_ruin_explored);
     SDL_FreeSurface(d_ship);
+    SDL_FreeSurface(d_port);
 }
 
 SDL_Surface* GraphicsCache::getSmallRuinedCityPic()
@@ -239,6 +250,11 @@ SDL_Surface* GraphicsCache::getSmallTemplePic()
 SDL_Surface* GraphicsCache::getShipPic()
 {
   return SDL_DisplayFormatAlpha(d_ship);
+}
+
+SDL_Surface* GraphicsCache::getPortPic()
+{
+  return SDL_DisplayFormatAlpha(d_port);
 }
 
 SDL_Surface* GraphicsCache::getMoveBonusPic(Uint32 bonus, bool has_ship)
@@ -376,6 +392,33 @@ SDL_Surface* GraphicsCache::getRoadPic(int type)
 
     //no item found -> create a new one
     myitem = addRoadPic(type);
+
+    return myitem->surface;
+}
+
+SDL_Surface* GraphicsCache::getBridgePic(int type)
+{
+    debug("GraphicsCache::getBridgePic " <<type)
+
+    std::list<BridgeCacheItem*>::iterator it;
+    BridgeCacheItem* myitem;
+
+    for (it = d_bridgelist.begin(); it != d_bridgelist.end(); it++)
+    {
+        if ((*it)->type == type)
+        {
+            myitem = (*it);
+
+            //put the item in last place (last touched)
+            d_bridgelist.erase(it);
+            d_bridgelist.push_back(myitem);
+
+            return myitem->surface;
+        }
+    }
+
+    //no item found -> create a new one
+    myitem = addBridgePic(type);
 
     return myitem->surface;
 }
@@ -625,6 +668,9 @@ void GraphicsCache::checkPictures()
     while (d_roadlist.size() > 10)
         eraseLastRoadItem();
 
+    while (d_bridgelist.size() > 10)
+        eraseLastBridgeItem();
+
     // was this enough?
     if (d_cachesize < maxcache)
         return;
@@ -801,6 +847,29 @@ RoadCacheItem* GraphicsCache::addRoadPic(int type)
     myitem->surface = mysurf;
 
     d_roadlist.push_back(myitem);
+
+    //add the size
+    int size = mysurf->w * mysurf->h;
+    d_cachesize += size * mysurf->format->BytesPerPixel;
+
+    //and check the size of the cache
+    checkPictures();
+
+    return myitem;
+}
+
+BridgeCacheItem* GraphicsCache::addBridgePic(int type)
+{
+    //    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+    
+    SDL_Surface* mysurf = SDL_DisplayFormatAlpha(d_bridgepic[type]);
+
+    //now create the cache item and add the size
+    BridgeCacheItem* myitem = new BridgeCacheItem();
+    myitem->type = type;
+    myitem->surface = mysurf;
+
+    d_bridgelist.push_back(myitem);
 
     //add the size
     int size = mysurf->w * mysurf->h;
@@ -1036,6 +1105,9 @@ void GraphicsCache::clear()
     while (!d_roadlist.empty())
         eraseLastRoadItem();
 
+    while (!d_bridgelist.empty())
+        eraseLastBridgeItem();
+
     while (!d_citylist.empty())
         eraseLastCityItem();
 
@@ -1096,6 +1168,21 @@ void GraphicsCache::eraseLastRoadItem()
 
     RoadCacheItem* myitem = *(d_roadlist.begin());
     d_roadlist.erase(d_roadlist.begin());
+
+    int size = myitem->surface->w * myitem->surface->h;
+    d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+
+    SDL_FreeSurface(myitem->surface);
+    delete myitem;
+}
+
+void GraphicsCache::eraseLastBridgeItem()
+{
+    if (d_bridgelist.empty())
+        return;
+
+    BridgeCacheItem* myitem = *(d_bridgelist.begin());
+    d_bridgelist.erase(d_bridgelist.begin());
 
     int size = myitem->surface->w * myitem->surface->h;
     d_cachesize -= myitem->surface->format->BytesPerPixel * size;
@@ -1277,6 +1364,41 @@ void GraphicsCache::loadRoadPics()
     }
 
     SDL_FreeSurface(roadpics);
+}
+
+void GraphicsCache::loadBridgePics()
+{
+    // GameMap has the actual tileset stored
+    std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+   
+    // load the bridge pictures
+    SDL_Surface* bridgepics = File::getMapsetPicture(tileset, "misc/bridges.png");
+
+    // copy alpha values, don't use them
+    SDL_SetAlpha(bridgepics, 0, 0);
+    
+    for (unsigned int i = 0; i < BRIDGE_TYPES ; i++)
+    {
+        //copy the bridge image...
+        SDL_Surface* tmp;
+        SDL_PixelFormat* fmt = bridgepics->format;
+        
+        tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
+                            fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+
+	SDL_Rect r;
+	r.x = i*ts;
+	r.y = 0;
+	r.w = r.h = ts;
+        SDL_BlitSurface(bridgepics, &r, tmp, 0);
+
+        d_bridgepic[i] = SDL_DisplayFormatAlpha(tmp);
+
+        SDL_FreeSurface(tmp);
+    }
+
+    SDL_FreeSurface(bridgepics);
 }
 
 void GraphicsCache::loadStonePics()

@@ -26,6 +26,8 @@
 #include "rewardlist.h"
 #include "templelist.h"
 #include "stonelist.h"
+#include "bridgelist.h"
+#include "portlist.h"
 #include "roadlist.h"
 #include "signpostlist.h"
 #include "city.h"
@@ -111,6 +113,8 @@ GameScenario::~GameScenario()
     Rewardlist::deleteInstance();
     Signpostlist::deleteInstance();
     Stonelist::deleteInstance();
+    Portlist::deleteInstance();
+    Bridgelist::deleteInstance();
     QuestsManager::deleteInstance();
     Itemlist::deleteInstance();
 
@@ -198,6 +202,8 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= Signpostlist::getInstance()->save(&helper);
     retval &= Stonelist::getInstance()->save(&helper);
     retval &= Roadlist::getInstance()->save(&helper);
+    retval &= Portlist::getInstance()->save(&helper);
+    retval &= Bridgelist::getInstance()->save(&helper);
     retval &= QuestsManager::getInstance()->save(&helper);
     retval &= VectoredUnitlist::getInstance()->save(&helper);
 
@@ -332,6 +338,20 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
     {
         debug("loading vectored units")
         VectoredUnitlist::getInstance(helper);
+        return true;
+    }
+
+    if (tag == "portlist")
+    {
+        debug("loading ports")
+        Portlist::getInstance(helper);
+        return true;
+    }
+
+    if (tag == "bridgelist")
+    {
+        debug("loading bridges")
+        Bridgelist::getInstance(helper);
         return true;
     }
 

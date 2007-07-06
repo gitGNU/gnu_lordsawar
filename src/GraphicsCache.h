@@ -26,6 +26,7 @@ struct CityCacheItem;
 struct TempleCacheItem;
 struct StoneCacheItem;
 struct RoadCacheItem;
+struct BridgeCacheItem;
 struct FlagCacheItem;
 struct SelectorCacheItem;
 struct ShieldCacheItem;
@@ -122,6 +123,12 @@ class GraphicsCache
           * @param type         the type of the road
           * @return image of the road
           */
+        SDL_Surface* getBridgePic(int type);
+        /** Function for getting a bridge picture
+          *
+          * @param type         the type of the bridge 0=e/w 1=n/s
+          * @return image of the bridge
+          */
         SDL_Surface* getStonePic(int type);
         /** Function for getting a stone picture
           *
@@ -178,6 +185,7 @@ class GraphicsCache
         SDL_Surface* getSmallRuinedCityPic();
         SDL_Surface* getSmallHeroPic();
         SDL_Surface* getShipPic();
+        SDL_Surface* getPortPic();
         SDL_Surface* getMoveBonusPic(Uint32 bonus, bool has_ship);
         SDL_Surface *getSmallTemplePic();
         SDL_Surface *getSmallRuinExploredPic();
@@ -223,6 +231,9 @@ class GraphicsCache
         //! Creates a new road picture with the given parametres.
         RoadCacheItem* addRoadPic(int type);
 
+        //! Creates a new bridge picture with the given parametres.
+        BridgeCacheItem* addBridgePic(int type);
+
         //! Creates a new army picture with the given parametres.
         ArmyCacheItem* addArmyPic(Uint32 armyset, Uint32 army, const Player* p,
                                   int level, const bool* medalsbonus);
@@ -261,6 +272,9 @@ class GraphicsCache
         //! Erases the oldest (least recently requested) road cache item.
         void eraseLastRoadItem();
 
+        //! Erases the oldest (least recently requested) bridge cache item.
+        void eraseLastBridgeItem();
+
         //! Erases the oldest (least recently requested) city cache item.
         void eraseLastCityItem();
 
@@ -282,14 +296,17 @@ class GraphicsCache
         //! Loads the images for the city pictures and their masks.
         void loadCityPics();
 
-        //! Loads the images for the city pictures and their masks.
+        //! Loads the images for the city pictures.
         void loadTemplePics();
 
-        //! Loads the images for the stone pictures and their masks.
+        //! Loads the images for the stone pictures.
         void loadStonePics();
 
-        //! Loads the images for the stone pictures and their masks.
+        //! Loads the images for the road pictures.
         void loadRoadPics();
+
+        //! Loads the images for the bridge pictures.
+        void loadBridgePics();
 
         //! Loads the images for the flags
         void loadFlags();
@@ -316,6 +333,7 @@ class GraphicsCache
         std::list<TempleCacheItem*> d_templelist;
         std::list<StoneCacheItem*> d_stonelist;
         std::list<RoadCacheItem*> d_roadlist;
+        std::list<BridgeCacheItem*> d_bridgelist;
         std::list<SelectorCacheItem*> d_selectorlist;
         std::list<ShieldCacheItem*> d_shieldlist;
         std::list<ProdShieldCacheItem*> d_prodshieldlist;
@@ -328,6 +346,7 @@ class GraphicsCache
         SDL_Surface* d_templepic[TEMPLE_TYPES];
         SDL_Surface* d_stonepic[STONE_TYPES];
         SDL_Surface* d_roadpic[ROAD_TYPES];
+        SDL_Surface* d_bridgepic[BRIDGE_TYPES];
         SDL_Surface* d_razedpic[MAX_PLAYERS + 1]; //+1 for neutral
         SDL_Surface* d_flagpic[8];
         SDL_Surface* d_flagmask[8];
@@ -342,6 +361,7 @@ class GraphicsCache
 	SDL_Surface* d_smallhero;
         SDL_Surface* d_movebonuspic[6];
 	SDL_Surface* d_ship;
+	SDL_Surface* d_port;
 	SDL_Surface* d_small_ruin_unexplored;
 	SDL_Surface* d_small_ruin_explored;
 	SDL_Surface* d_small_temple;
