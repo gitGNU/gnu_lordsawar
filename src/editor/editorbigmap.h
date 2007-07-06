@@ -45,7 +45,7 @@ class EditorBigMap: public BigMap
 
     enum Pointer {
 	POINTER, TERRAIN, STACK, CITY, RUIN, TEMPLE, SIGNPOST,
-	STONE, ROAD, ERASE
+	STONE, ROAD, ERASE, PORT, BRIDGE
     };
 
     void set_pointer(Pointer pointer, int size, Tile::Type terrain);

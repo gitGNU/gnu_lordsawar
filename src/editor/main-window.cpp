@@ -134,6 +134,10 @@ MainWindow::MainWindow()
 			      EditorBigMap::CITY, 1);
     setup_pointer_radiobutton(xml, "erase", "button_erase",
 			      EditorBigMap::ERASE, 1);
+    setup_pointer_radiobutton(xml, "draw_port", "button_port",
+			      EditorBigMap::PORT, 1);
+    setup_pointer_radiobutton(xml, "draw_bridge", "button_bridge",
+			      EditorBigMap::BRIDGE, 1);
     on_pointer_radiobutton_toggled();
 
 
