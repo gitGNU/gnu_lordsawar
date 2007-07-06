@@ -26,10 +26,10 @@
 
 namespace 
 {
-    int selection_timeout = 100;	// 1/10 second
-    int upper_selection_value = 220;
-    int lower_selection_value = 150;
-    int selection_change = 5;
+    int selection_timeout = 1000;	// 1 second
+    int upper_selection_value = 255;
+    int lower_selection_value = 255;
+    int selection_change = 0;
 }
 
 SmallMap::SmallMap()
@@ -104,6 +104,7 @@ void SmallMap::draw_selection()
 			    selection_color.g,
 			    selection_color.b);
     draw_rect(surface, pos.x, pos.y, pos.x + w, pos.y + h, raw);
+    draw_rect(surface, pos.x+1, pos.y+1, pos.x + w-1, pos.y + h-1, raw);
 }
 
 void SmallMap::center_view(Vector<int> p)
