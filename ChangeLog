@@ -1,5 +1,7 @@
 2007-07-06  Ben Asselstine
         * made the selector box on the small map stop pulsating
+	* added support for bridges and ports
+	* starting to add support for bridges and ports in the editor
 
 2007-07-02  Ben Asselstine
         * added a reward list object to be used by quests, ruins and sages
