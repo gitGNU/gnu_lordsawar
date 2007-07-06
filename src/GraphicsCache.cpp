@@ -161,7 +161,7 @@ GraphicsCache::GraphicsCache()
     d_small_temple = File::getMiscPicture("smalltemple.png");
     d_ship = File::getMiscPicture("stackship.png");
     std::string tileset = GameMap::getInstance()->getTileSet()->getName();
-    d_port = File::getMapsetPicture(tileset, "misc/bridges.png");
+    d_port = File::getMapsetPicture(tileset, "misc/port.png");
 }
 
 GraphicsCache::~GraphicsCache()

@@ -230,6 +230,7 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
 
 void OverviewMap::draw_terrain_pixels(Rectangle r)
 {
+    GameMap *gm = GameMap::getInstance();
     // draw static map
     Uint32 road_color = SDL_MapRGB(static_surface->format, 164, 84, 0);
     
@@ -238,7 +239,8 @@ void OverviewMap::draw_terrain_pixels(Rectangle r)
         {
             int x = int(i / pixels_per_tile);
             int y = int(j / pixels_per_tile);
-	    if (GameMap::getInstance()->getTile(x,y)->getBuilding() == Maptile::ROAD)
+	    if (gm->getTile(x,y)->getBuilding() == Maptile::ROAD ||
+                gm->getTile(x,y)->getBuilding() == Maptile::BRIDGE)
 		draw_pixel(static_surface, i, j, road_color);
 	    else
 	    {

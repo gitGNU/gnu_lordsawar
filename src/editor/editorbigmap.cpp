@@ -294,6 +294,14 @@ void EditorBigMap::after_draw()
 	    pic = GraphicsCache::getInstance()->getRoadPic(tile_to_road_type(*i));
 	    SDL_BlitSurface(pic, 0, buffer, &r);
 	    break;
+	case PORT:
+	    pic = GraphicsCache::getInstance()->getPortPic();
+	    SDL_BlitSurface(pic, 0, buffer, &r);
+	    break;
+	case BRIDGE:
+	    pic = GraphicsCache::getInstance()->getBridgePic(tile_to_bridge_type(*i));
+	    SDL_BlitSurface(pic, 0, buffer, &r);
+	    break;
 	}
     }
 }
@@ -332,6 +340,52 @@ int EditorBigMap::mouse_pos_to_stone_type(Vector<int> mpos)
     
     return type;
 }
+
+int EditorBigMap::tile_to_bridge_type(Vector<int> t)
+{
+    // examine neighbour tiles to discover whether there's a road on them
+    bool u = Roadlist::getInstance()->getObjectAt(t + Vector<int>(0, -1));
+    bool b = Roadlist::getInstance()->getObjectAt(t + Vector<int>(0, 1));
+    bool l = Roadlist::getInstance()->getObjectAt(t + Vector<int>(-1, 0));
+    bool r = Roadlist::getInstance()->getObjectAt(t + Vector<int>(1, 0));
+
+    // then translate this to the type
+    int type = 7;
+    if (!u && !b && !l && !r)
+	type = 0;
+    else if (u && b && l && r)
+	type = 0;
+    else if (!u && b && l && r)
+	type = 0;
+    else if (u && !b && l && r)
+	type = 0;
+    else if (u && b && !l && r)
+	type = 1;
+    else if (u && b && l && !r)
+	type = 1;
+    else if (u && b && !l && !r)
+	type = 1;
+    else if (!u && !b && l && r)
+	type = 0;
+    else if (u && !b && l && !r)
+	type = 0;
+    else if (u && !b && !l && r)
+	type = 0;
+    else if (!u && b && l && !r)
+	type = 0;
+    else if (!u && b && !l && r)
+	type = 1;
+    else if (u && !b && !l && !r)
+	type = 1;
+    else if (!u && b && !l && !r)
+	type = 1;
+    else if (!u && !b && l && !r)
+	type = 0;
+    else if (!u && !b && !l && r)
+	type = 0;
+    return type;
+}
+
 
 int EditorBigMap::tile_to_road_type(Vector<int> t)
 {
@@ -574,6 +628,32 @@ void EditorBigMap::change_map_under_cursor()
 		    maptile->setBuilding(Maptile::STONE);
 		    Stonelist::getInstance()->push_back(Stone(tile, "", type));
 		}
+	    }
+	    break;
+	    
+	case PORT:
+	    if (maptile->getBuilding() == Maptile::NONE 
+		&& maptile->getMaptileType() != Tile::WATER)
+	    {
+		maptile->setBuilding(Maptile::PORT);
+		Portlist::getInstance()->push_back(Port(tile));
+	    }
+	    break;
+	    
+	case BRIDGE:
+	    if ((maptile->getBuilding() == Maptile::NONE
+		 || maptile->getBuilding() == Maptile::BRIDGE)
+		&& maptile->getMaptileType() == Tile::WATER)
+	    {
+		int type = tile_to_bridge_type (tile);
+		if (maptile->getBuilding() == Maptile::BRIDGE)
+		    Bridgelist::getInstance()->getObjectAt(tile)->setType(type);
+		else
+		{
+		    maptile->setBuilding(Maptile::BRIDGE);
+		    Bridgelist::getInstance()->push_back(Bridge(tile, "", type));
+		}
+	        changed_tiles.dim = Vector<int>(1, 1);
 	    }
 	    break;
 	    
