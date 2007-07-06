@@ -24,7 +24,7 @@
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
-#define offmap(x,y) (y<0)||(y>=d_height)||(x<0)||(x>=d_width)
+#define offmap(bx,by) (by<0)||(by>=d_height)||(bx<0)||(bx>=d_width)
 
 const int maxlink = 300;
 
@@ -262,7 +262,8 @@ void MapGenerator::makeTerrain(Tile::Type t, int percent, bool contin)
         // find a random starting position
         int x = rand() % d_width;
         int y = rand() % d_height;
-        seekPlain(x, y);
+        if (seekPlain(x, y) == false)
+          continue;
 
 
         // now go on until we hit a dead end
@@ -301,7 +302,10 @@ void MapGenerator::makeTerrain(Tile::Type t, int percent, bool contin)
             if (loop == 8)
             {
                 if (contin)
-                    seekPlain(x, y);
+                  {
+                    if (seekPlain(x, y) == false)
+                      continue;
+                  }
                 else
                     break;
             }
@@ -327,7 +331,7 @@ void MapGenerator::makeTerrain(Tile::Type t, int percent, bool contin)
  * 5. Keep doing this until we go off the map or we've dropped enough tiles
  *
  */
-void MapGenerator::makeStreamer(Tile::Type t, int percent, int width)
+void MapGenerator::makeStreamer(Tile::Type t, int percent, int thick)
 {
     // calculate the total number of tiles for this terrain
     int terrain = d_width*d_height*percent / 100;
@@ -335,12 +339,13 @@ void MapGenerator::makeStreamer(Tile::Type t, int percent, int width)
     int dir;
     int i;
     
-    while(placed != terrain)
+    while(placed < terrain)
     {
         // find a random starting position
         int x = rand() % d_width;
         int y = rand() % d_height;
-        seekPlain(x, y);
+        if (seekPlain(x, y) == false)
+          continue;
         dir = rand()%8; // pick a random direction
         // now go on until we hit a dead end
         while (placed < terrain)
@@ -381,24 +386,32 @@ void MapGenerator::makeStreamer(Tile::Type t, int percent, int width)
                 x = tmpx;
                 y = tmpy;
                 d_terrain[y*d_width + x] = t;
+                placed++;
                 switch (dir)
                   {
                     case 1: case 2: case 6: case 5:
                       {
-                        for (i = 1; i <= width; i++)
-                          if (offmap(tmpx+i, tmpy) == false)
+                        for (i = 1; i <= thick ; i++)
+                          {
+                            if (offmap(x+i, y))
+                              continue;
                             d_terrain[y*d_width + x+i] = t;
+                            placed++;
+                          }
                       }
                       break;
                     case 7: case 3: case 0: case 4:
                       {
-                        for (i = 1; i <= width; i++)
-                          if (offmap(tmpx, tmpy+i) == false)
+                        for (i = 1; i <= thick; i++)
+                          {
+                            if (offmap(x, y+i))
+                              continue;
                             d_terrain[(y+i)*d_width + x] = t;
+                            placed++;
+                          }
                       }
                       break;
                   }
-                placed++;
             }
 
         }
@@ -408,6 +421,8 @@ void MapGenerator::makeStreamer(Tile::Type t, int percent, int width)
 
 bool MapGenerator::seekPlain(int& x, int& y)
 {
+    int orig_x = x;
+    int orig_y = y;
     /* The algorithm here uses a large list of tiles to be checked.
      * In the beginning, it is filled with the tiles surrounding the starting
      * tile. Each tile is then checked if it contains grass. If not, all
@@ -492,6 +507,8 @@ bool MapGenerator::seekPlain(int& x, int& y)
 
     // if this line is ever reached, we haven't found a free grass tile
     // (should only happen under really exceptional circumstances)
+    x = orig_x;
+    y = orig_y;
     return false;
 }
 
@@ -522,17 +539,9 @@ void MapGenerator::makeCities(int cities)
         }
         
         // check if we can put the building
-        if (!canPutBuilding(x, y) && !canPutBuilding(x + 1, y) &&
-            !canPutBuilding(x, y + 1) && !canPutBuilding(x + 1,y + 1) &&
-            ((iterations < 1000) /*|| 
-            (d_terrain[y*d_width+x] != Tile::WATER &&
-             d_terrain[(y*d_width)+x+1] != Tile::WATER &&
-             d_terrain[((y+1)*d_width)+x] != Tile::WATER &&
-             d_terrain[((y+1)*d_width)+x+1] != Tile::WATER &&
-             d_terrain[y*d_width+x] != Tile::MOUNTAIN &&
-             d_terrain[(y*d_width)+x+1] != Tile::MOUNTAIN &&
-             d_terrain[((y+1)*d_width)+x] != Tile::MOUNTAIN &&
-             d_terrain[((y+1)*d_width)+x+1] != Tile::MOUNTAIN)*/))
+        if ((!canPutBuilding(x, y) || !canPutBuilding(x + 1, y) ||
+            !canPutBuilding(x, y + 1) || !canPutBuilding(x + 1,y + 1)) &&
+            ((iterations < 1000)))
         {
             iterations++;
             continue;
@@ -618,12 +627,12 @@ bool MapGenerator::canPutBuilding(int x,int y)
         return false;
         
     //if the building is close to the map boundaries, return false
-    if ((x < 4) || (x > d_width-4) || (y < 4) || (y > d_height-4))
+    if ((x < 4) || (x > (d_width-4)) || (y < 4) || (y > (d_height-4)))
         return false;
         
     //if there is another building too close, return false
-    for (int locx = x-3; locx <= x+3; locx++)
-        for (int locy = y-3; locy <= y+3; locy++)
+    for (int locx = x-4; locx <= x+4; locx++)
+        for (int locy = y-4; locy <= y+4; locy++)
         {
             if (offmap(locx, locy))
                 continue;
