@@ -207,6 +207,7 @@ class MapGenerator
           * @param city_count   increased if the city is placed
           */
         bool tryToPlaceCity(int px, int py, int& city_count);
+        bool tryToPlacePort(int px, int py);
         
         /** Tries to place an arbitrary port at the landmass at (x,y)
           *

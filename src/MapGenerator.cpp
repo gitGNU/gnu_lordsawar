@@ -627,12 +627,12 @@ bool MapGenerator::canPutBuilding(int x,int y)
         return false;
         
     //if the building is close to the map boundaries, return false
-    if ((x < 4) || (x > (d_width-4)) || (y < 4) || (y > (d_height-4)))
+    if ((x < 3) || (x > (d_width-3)) || (y < 3) || (y > (d_height-3)))
         return false;
         
     //if there is another building too close, return false
-    for (int locx = x-4; locx <= x+4; locx++)
-        for (int locy = y-4; locy <= y+4; locy++)
+    for (int locx = x-3; locx <= x+3; locx++)
+        for (int locy = y-3; locy <= y+3; locy++)
         {
             if (offmap(locx, locy))
                 continue;
@@ -658,6 +658,28 @@ bool MapGenerator::tryToPlaceCity(int px,int py ,int& city_count)
         if (canPutCity(px + d_xdir[dir], py + d_ydir[dir]))
         {
             putCity(px + d_xdir[dir], py + d_ydir[dir], city_count);
+            return true;
+        }
+
+    return false;                   
+}
+
+bool MapGenerator::tryToPlacePort(int px,int py)
+{
+    // first, try to place the city at the given location
+    if (canPutBuilding(px, py))
+    { 
+        d_building[py*d_width + px] = Maptile::PORT;
+        d_terrain[py*d_width + px] = Tile::GRASS;
+        return true;
+    } 
+    
+    // else try all surrounding squares
+    for (int dir = 0; dir < 8; dir++)
+        if (canPutBuilding(px + d_xdir[dir], py + d_ydir[dir]))
+        {
+            d_building[(py+d_ydir[dir])*d_width+d_xdir[dir] + px] = Maptile::PORT;
+            d_terrain[(py+d_ydir[dir])*d_width + px+d_xdir[dir]] = Tile::GRASS;
             return true;
         }
 
@@ -700,7 +722,7 @@ void MapGenerator::placePorts(int x,int y, int& city_count)
     
     int lastwat = 0;
     walkCoast(x, y, pn.seaid, rand() % 40, lastwat);
-    pn.hasPort = tryToPlaceCity(x, y, city_count);
+    pn.hasPort = tryToPlacePort(x, y);
     if (pn.hasPort)
         return;
 
@@ -708,7 +730,7 @@ void MapGenerator::placePorts(int x,int y, int& city_count)
     x = pn.x;
     y = pn.y;
     walkCoastAntiClock(x, y, pn.seaid, rand() % 40, lastwat);
-    pn.hasPort = tryToPlaceCity(x, y, city_count);
+    pn.hasPort = tryToPlacePort(x, y);
     if (pn.hasPort)
         return;
 
@@ -718,7 +740,7 @@ void MapGenerator::placePorts(int x,int y, int& city_count)
     for (int i = 0; (i < 5) && (!pn.hasPort); i++)
     {
         walkCoast(x, y, pn.seaid, 1, lastwat);
-        pn.hasPort = tryToPlaceCity(x, y, city_count);
+        pn.hasPort = tryToPlacePort(x, y);
     }
     if (pn.hasPort)
         return;
@@ -727,7 +749,7 @@ void MapGenerator::placePorts(int x,int y, int& city_count)
     for (int i = 0; (i < 5) && (!pn.hasPort); i++)
     {
         walkCoastAntiClock(x, y, pn.seaid, 1, lastwat);
-        pn.hasPort = tryToPlaceCity(x, y, city_count);
+        pn.hasPort = tryToPlacePort(x, y);
     }
 
     // give up

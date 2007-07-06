@@ -90,6 +90,8 @@ GameScenario::GameScenario(string savegame, bool& broken)
     helper.registerTag("roadlist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("counter", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("questlist", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("bridgelist", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("portlist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("vectoredunitlist", sigc::mem_fun(this, &GameScenario::load));
 
     //now parse the document and close the file afterwards
