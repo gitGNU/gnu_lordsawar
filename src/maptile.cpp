@@ -51,6 +51,8 @@ Uint32 Maptile::getMoves() const
         return 1;
     else if (d_building == Maptile::ROAD)
         return 1;
+    else if (d_building == Maptile::BRIDGE)
+        return 1;
 
     return (*d_tileSet)[d_index]->getMoves();
 }

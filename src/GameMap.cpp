@@ -18,6 +18,8 @@
 
 #include "GameMap.h"
 #include "citylist.h"
+#include "bridgelist.h"
+#include "portlist.h"
 #include "city.h"
 #include "ruin.h"
 #include "temple.h"
@@ -372,6 +374,17 @@ Stack* GameMap::addArmy(Location *l, Army *a)
   return addArmy(l->getPos(), a);
 }
 
+bool GameMap::isDock(int x, int y)
+{
+  if (Citylist::getInstance()->getObjectAt(x,y))
+    return true;
+  if (Portlist::getInstance()->getObjectAt(x,y))
+    return true;
+  if (Bridgelist::getInstance()->getObjectAt(x,y))
+    return true;
+  return false;
+}
+
 bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
 {
   if (destx < 0 || destx >= s_width)
@@ -385,8 +398,8 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
   if (diffx >= -1 && diffx <= 1 && diffy >= -1 && diffy <= 1)
     {
       assert (Citylist::getInstance()->size());
-      bool from_city = Citylist::getInstance()->getObjectAt(x,y) != NULL;
-      bool to_city = Citylist::getInstance()->getObjectAt(destx,desty) != NULL;
+      bool from_dock = isDock(x,y);
+      bool to_dock = isDock(destx,desty);
       Maptile *from = getTile(x, y);
       Maptile *to = getTile(destx, desty);
       if (from == to)
@@ -394,12 +407,12 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
       //am i on water going towards land that isn't a city?
       if (from->getMaptileType() == Tile::WATER &&
           to->getMaptileType() != Tile::WATER &&
-          !to_city)
+          !to_dock)
         return true;
       //am i on land, going towards water from a tile that isn't a city?
       if (from->getMaptileType() != Tile::WATER &&
           to->getMaptileType() == Tile::WATER &&
-          !from_city)
+          !from_dock)
         return true;
       //is the tile i'm going to a mountain?
       if (to->getMaptileType() == Tile::MOUNTAIN)

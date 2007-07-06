@@ -63,6 +63,8 @@
 #include "../stonelist.h"
 #include "../stone.h"
 #include "../roadlist.h"
+#include "../bridgelist.h"
+#include "../portlist.h"
 #include "../MapGenerator.h"
 
 #include "glade-helpers.h"
@@ -411,6 +413,12 @@ void MainWindow::set_random_map(int width, int height,
 		break;
 	    case Maptile::ROAD:
 		Roadlist::getInstance()->push_back(Road(Vector<int>(i,j)));
+		break;
+	    case Maptile::BRIDGE:
+		Bridgelist::getInstance()->push_back(Bridge(Vector<int>(i,j)));
+		break;
+	    case Maptile::PORT:
+		Portlist::getInstance()->push_back(Port(Vector<int>(i,j)));
 		break;
 	    case Maptile::NONE:
 		break;

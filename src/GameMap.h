@@ -133,6 +133,7 @@ class GameMap: public sigc::trackable
         bool loadItems(std::string tag, XML_Helper* helper);
         Stack* addArmyAtPos(Vector<int> pos, Army *a);
         bool isBlockedAvenue(int x, int y, int destx, int desty);
+        bool isDock(int x, int y);
 
         // Data
         static GameMap* s_instance;
