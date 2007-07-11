@@ -133,3 +133,12 @@ void QuestMap::after_draw()
     map_changed.emit(surface);
 }
 
+void QuestMap::set_target(Vector<int>target)
+{
+  Playerlist *plist = Playerlist::getInstance();
+  Player *p = plist->getActiveplayer();
+  Stacklist *sl = p->getStacklist();
+  Vector<int> start = sl->getPosition (quest->getHeroId ());
+  draw_target(start, target);
+  map_changed.emit(surface);
+}

@@ -36,11 +36,12 @@ class QuestMap : public OverviewMap
     // emitted when the map surface has changed
     sigc::signal<void, SDL_Surface *> map_changed;
     
+    void set_target(Vector<int>target);
+
  private:
     Quest *quest;
     void draw_stacks(Player *p, std::list< Vector<int> > targets);
     void draw_target(Vector<int> start, Vector<int> target);
-//    void draw_cities(bool all_razed);
     
     // hook from base class
     virtual void after_draw();

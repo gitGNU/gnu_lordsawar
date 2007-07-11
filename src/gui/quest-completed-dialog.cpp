@@ -92,7 +92,7 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
       {
         s += String::ucompose("You are shown the site of %1.", 
                    dynamic_cast<Reward_Ruin*>(reward)->getRuin()->getName());
-        //FIXME XXX trigger the questmap to show it somehow.
+        questmap->set_target(dynamic_cast<Reward_Ruin*>(reward)->getRuin()->getPos());
       }
 
     label->set_text(s);
