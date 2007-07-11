@@ -1,3 +1,7 @@
+2007-07-11  Ben Asselstine
+	* now hidden ruins are randomly instantiated at game start
+        * now ruins are a reward for quests
+
 2007-07-06  Ben Asselstine
         * made the selector box on the small map stop pulsating
 	* added support for bridges and ports
