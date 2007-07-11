@@ -344,10 +344,6 @@ bool CreateScenario::create()
     if (!setupPlayers())
         return false;
 
-    if (!setupRewards())
-        return false;
-
-
     return true;
 }
 
@@ -575,48 +571,6 @@ bool CreateScenario::setupRuins()
           }
     }
 
-    return true;
-}
-
-bool CreateScenario::setupRewards()
-{
-  debug("CreateScenario::setupRewards")
-  setupItemRewards();
-  setupRuinRewards();
-  return true;
-}
-
-bool CreateScenario::setupRuinRewards()
-{
-    debug("CreateScenario::setupRuinRewards")
-    for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
-        it != Ruinlist::getInstance()->end(); it++)
-    {
-      if ((*it).isHidden() == true)
-        {
-          //add it to the reward list
-          Reward_Ruin *newReward = new Reward_Ruin(&(*it)); //make a reward
-          Rewardlist::getInstance()->push_back(newReward); //add it
-        }
-    }
-  return true;
-}
-
-bool CreateScenario::setupItemRewards()
-{
-    debug("CreateScenario::setupItemRewards")
-    Itemlist::createInstance();
-    Itemlist *il = Itemlist::getInstance();
-    Itemlist::iterator iter;
-    for (iter = il->begin(); iter != il->end(); iter++)
-      {
-        Item templateItem = *iter->second;
-        Item *newItem = new Item(templateItem); //instantiate it
-        Reward_Item *newReward = new Reward_Item(newItem); //make a reward
-        Rewardlist::getInstance()->push_back(newReward); //add it
-      }
-
-    Itemlist::deleteInstance();
     return true;
 }
 

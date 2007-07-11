@@ -1129,6 +1129,7 @@ bool RealPlayer::giveReward(Stack *s, Reward *reward)
       case Reward::ALLIES:
         {
           const Army *a = dynamic_cast<Reward_Allies*>(reward)->getArmy();
+
           Reward_Allies::addAllies(s->getPlayer(), s->getPos(), a,
                        dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies());
         }

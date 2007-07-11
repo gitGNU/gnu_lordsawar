@@ -20,6 +20,8 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/button.h>
+#include <gtkmm/checkbutton.h>
+#include <gtkmm/comboboxtext.h>
 
 class Ruin;
 class Stack;
@@ -37,12 +39,16 @@ class RuinDialog: public sigc::trackable
     std::auto_ptr<Gtk::Dialog> dialog;
     Gtk::Entry *name_entry;
     Gtk::Button *keeper_button;
+    Gtk::CheckButton *sage_button;
+    Gtk::CheckButton *hidden_button;
+    Gtk::ComboBoxText *player_combobox;
     Ruin *ruin;
     Stack *keeper;
 
     void set_keeper_name();
 
     void on_keeper_clicked();
+    void on_hidden_toggled();
 };
 
 #endif

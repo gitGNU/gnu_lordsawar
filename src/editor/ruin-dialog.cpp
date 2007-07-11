@@ -16,11 +16,13 @@
 
 #include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
+#include <gtkmm/alignment.h>
 
 #include "ruin-dialog.h"
 
 #include "glade-helpers.h"
 #include "../ucompose.hpp"
+#include "../playerlist.h"
 #include "../defs.h"
 #include "../ruin.h"
 #include "../stack.h"
@@ -55,6 +57,32 @@ RuinDialog::RuinDialog(Ruin *r)
 	sigc::mem_fun(this, &RuinDialog::on_keeper_clicked));
 
     set_keeper_name();
+    xml->get_widget("sage_checkbutton", sage_button);
+    sage_button->set_active(ruin->hasSage());
+   
+    xml->get_widget("hidden_checkbutton", hidden_button);
+    hidden_button->set_active(ruin->isHidden());
+    hidden_button->signal_toggled().connect(
+	    sigc::mem_fun(this, &RuinDialog::on_hidden_toggled));
+    // setup the player combo
+    player_combobox = manage(new Gtk::ComboBoxText);
+
+    int c = 0, player_no = 0;
+    for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
+	     end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
+    {
+	Player *player = *i;
+	player_combobox->append_text(player->getName());
+	if (player == ruin->getOwner())
+	    player_no = c;
+    }
+
+    player_combobox->set_active(player_no);
+
+    Gtk::Alignment *alignment;
+    xml->get_widget("player_alignment", alignment);
+    alignment->add(*player_combobox);
+    on_hidden_toggled();
 }
 
 void RuinDialog::set_parent_window(Gtk::Window &parent)
@@ -84,6 +112,24 @@ void RuinDialog::run()
 	}
 
 	ruin->setOccupant(keeper);
+        ruin->setSage(sage_button->get_active());
+        ruin->setHidden(hidden_button->get_active());
+        if (hidden_button->get_active())
+          {
+	    // set owner
+	    int c = 0, row = player_combobox->get_active_row_number();
+	    Player *player = Playerlist::getInstance()->getNeutral();
+	    for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
+		     end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
+	        if (c == row)
+	        {
+		    player = *i;
+		    break;
+	        }
+	    ruin->setOwner(player);
+          }
+        else
+          ruin->setOwner(NULL);
 	keeper = 0;
     }
     else
@@ -102,6 +148,14 @@ void RuinDialog::set_keeper_name()
 	name = _("No keeper");
     
     keeper_button->set_label(name);
+}
+
+void RuinDialog::on_hidden_toggled()
+{
+  if (hidden_button->get_active())
+    player_combobox->set_sensitive (true);
+  else
+    player_combobox->set_sensitive (false);
 }
 
 void RuinDialog::on_keeper_clicked()

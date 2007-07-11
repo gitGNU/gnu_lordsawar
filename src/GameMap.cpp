@@ -271,7 +271,7 @@ Stack* GameMap::addArmy(Vector<int> pos, Army *a)
     return addArmy(t, a);
   Ruin *r = Ruinlist::getInstance()->getObjectAt(pos);
   if (r)
-    return addArmy(t, a);
+    return addArmy(r, a);
   return addArmyAtPos(pos, a);
 }
 
