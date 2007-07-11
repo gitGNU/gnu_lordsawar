@@ -20,7 +20,7 @@
 Ruin::Ruin(Vector<int> pos, std::string name, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
     :Location(name, pos), d_searched(searched), d_occupant(occupant), d_hidden(hidden), d_owner(owner), d_sage(sage)
 {
-    d_owner = Playerlist::getInstance()->getNeutral();
+    d_owner = NULL;
     //mark the location as being occupied by a ruin on the map
     GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::RUIN);
 }
@@ -41,10 +41,13 @@ Ruin::Ruin(XML_Helper* helper)
     if (d_hidden)
       {
         helper->getData(ui, "owner");
-        d_owner = Playerlist::getInstance()->getPlayer(ui);
+	if (ui != MAX_PLAYERS)
+          d_owner = Playerlist::getInstance()->getPlayer(ui);
+	else
+	  d_owner = NULL;
       }
     else
-      d_owner = Playerlist::getInstance()->getNeutral();
+      d_owner = NULL;
 
     //mark the location as being occupied by a ruin on the map
     GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::RUIN);
@@ -68,8 +71,10 @@ bool Ruin::save(XML_Helper* helper) const
     retval &= helper->saveData("searched", d_searched);
     retval &= helper->saveData("sage", d_sage);
     retval &= helper->saveData("hidden", d_hidden);
-    if (d_owner != Playerlist::getInstance()->getNeutral())
+    if (d_owner != NULL)
       retval &= helper->saveData("owner", d_owner->getId());
+    else
+      retval &= helper->saveData("owner", MAX_PLAYERS);
     if (d_occupant)
         retval &= d_occupant->save(helper);
     retval &= helper->closeTag();

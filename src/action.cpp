@@ -918,6 +918,8 @@ bool Action_Reward::save(XML_Helper* helper) const
       static_cast<Reward_Allies*>(d_reward)->save(helper);
     else if (d_reward->getType() == Reward::ITEM)
       static_cast<Reward_Item*>(d_reward)->save(helper);
+    else if (d_reward->getType() == Reward::RUIN)
+      static_cast<Reward_Ruin*>(d_reward)->save(helper);
     retval &= helper->closeTag();
 
     return retval;

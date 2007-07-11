@@ -26,7 +26,7 @@ class XML_Helper;
 /** List of unique rewards in the game.
   * Some rewards like gold, and allies can be created whenever they're needed,
   * but other rewards are unique in nature.  This list is for those unique
-  * rewards -- namely item rewards.
+  * rewards -- namely item rewards, and hidden ruins.
   *
   */
 
@@ -47,6 +47,9 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
 
 	//! remove one item reward from the list and return it
 	Reward *popRandomItemReward();
+
+	//! remove one ruin reward from the list and return it
+	Reward *popRandomRuinReward();
 
         //! Save the data. See XML_Helper for details
         bool save(XML_Helper* helper) const;
@@ -69,6 +72,7 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
     private:
         //! Callback function for loading
         bool load(std::string tag, XML_Helper* helper);
+        Reward *popRandomReward(Reward::Type type);
 
         static Rewardlist* s_instance;
 };

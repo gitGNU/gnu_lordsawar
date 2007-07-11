@@ -27,6 +27,7 @@
 #include "../ucompose.hpp"
 #include "../hero.h"
 #include "../defs.h"
+#include "../ruin.h"
 #include "../GameMap.h"
 
 QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
@@ -84,6 +85,16 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
 		     "You have been rewarded with %1 allies.",
 		     num), num);
       }
+    else if (reward->getType() == Reward::ITEM)
+      s += String::ucompose("You have been rewarded with the %1.", 
+                          dynamic_cast<Reward_Item*>(reward)->getItem()->getName());
+    else if (reward->getType() == Reward::RUIN)
+      {
+        s += String::ucompose("You are shown the site of %1.", 
+                   dynamic_cast<Reward_Ruin*>(reward)->getRuin()->getName());
+        //FIXME XXX trigger the questmap to show it somehow.
+      }
+
     label->set_text(s);
     
 }

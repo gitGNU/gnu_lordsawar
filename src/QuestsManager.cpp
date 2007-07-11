@@ -138,7 +138,7 @@ void QuestsManager::questCompleted(Uint32 heroId)
     Quest *quest = d_quests[heroId];
     Player *p = quest->getHero()->getPlayer();
     
-    int num = rand() % 3;
+    int num = rand() % 4;
     if (num == 0)
       {
         int gold = rand() % 1000;
@@ -170,9 +170,23 @@ void QuestsManager::questCompleted(Uint32 heroId)
             quest_completed.emit(quest, &reward);
           }
       }
+    else if (num == 3)
+      {
+        Reward *ruinReward = Rewardlist::getInstance()->popRandomRuinReward();
+        if (ruinReward)
+          {
+            p->giveReward(p->getActivestack(), ruinReward);
+            quest_completed.emit(quest, ruinReward);
+          }
+        else //no ruins left to give!
+          {
+            int gold = rand() % 1000;
+            Reward_Gold reward(gold);
+            p->giveReward(NULL, &reward);
+            quest_completed.emit(quest, &reward);
+          }
+      }
 
-    
-    
     debug("deactivate quest");
     _deactivateQuest(heroId);
     debug("quest deactivated");

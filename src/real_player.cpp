@@ -34,6 +34,7 @@
 #include "Configuration.h"
 #include "FogMap.h"
 #include "xmlhelper.h"
+#include "ruinlist.h"
 
 using namespace std;
 
@@ -848,6 +849,28 @@ Reward* RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
 	        retReward = reward;
               }
           }
+/*
+ * we can't give a ruin for searching a ruin
+ * mostly because there's no map to show where the new ruin is
+ * but also because if we just searched a ruin, we shouldn't be asked
+ * to search another ruin.
+        else if (num == 3)
+          {
+            Reward *ruinReward = Rewardlist::getInstance()->popRandomRuinReward();
+            if (ruinReward)
+              {
+                giveReward(getActivestack(), ruinReward);
+	        retReward = ruinReward;
+              }
+            else //no ruins left to give!
+              {
+                int gold = rand() % 1000;
+                Reward_Gold *reward = new Reward_Gold(gold);
+                giveReward(NULL, reward);
+	        retReward = reward;
+              }
+          }
+*/
       }
    else if (r->hasSage())
       {
@@ -1113,6 +1136,13 @@ bool RealPlayer::giveReward(Stack *s, Reward *reward)
       case Reward::ITEM:
         static_cast<Hero*>(s->getFirstHero())->addToBackpack(
           dynamic_cast<Reward_Item*>(reward)->getItem());
+	break;
+      case Reward::RUIN:
+        //assign the hidden ruin to this player
+        Ruin *r = dynamic_cast<Reward_Ruin*>(reward)->getRuin();
+        r->setHidden(true);
+        r->setOwner(this);
+
 	break;
       }
 

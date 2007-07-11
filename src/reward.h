@@ -22,6 +22,7 @@ class Army;
 class Location;
 class Item;
 class XML_Helper;
+class Ruin;
 
 /** Base class for rewards
   *
@@ -30,7 +31,7 @@ class Reward
 {
     public:
 
-        enum Type {GOLD = 1, ALLIES= 2, ITEM = 3};
+        enum Type {GOLD = 1, ALLIES= 2, ITEM = 3, RUIN = 4};
 
         //! Standard constructor
         Reward(Type type, std::string name = "");
@@ -121,4 +122,19 @@ class Reward_Item: public Reward
         bool loadItem(std::string tag, XML_Helper* helper);
         Item *d_item;
 };
+
+class Reward_Ruin: public Reward
+{
+    public:
+        Reward_Ruin(Ruin *ruin);
+	Reward_Ruin(XML_Helper *helper);
+        ~Reward_Ruin();
+
+        bool save(XML_Helper* helper) const;
+	Ruin* getRuin() const {return d_ruin;}
+
+    private:
+        Ruin *d_ruin;
+};
+
 #endif

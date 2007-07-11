@@ -21,6 +21,7 @@
 #include "army.h"
 #include "armysetlist.h"
 #include "GameMap.h"
+#include "ruin.h"
 using namespace std;
 
 Reward::Reward(Type type, std::string name)
@@ -61,6 +62,8 @@ Reward* Reward::handle_load(XML_Helper* helper)
             return (new Reward_Allies(helper));
         case Reward::ITEM:
             return (new Reward_Item(helper));
+        case Reward::RUIN:
+            return (new Reward_Ruin(helper));
     }
 
     return 0;
@@ -216,6 +219,31 @@ bool Reward_Item::save(XML_Helper* helper) const
 
 
 Reward_Item::~Reward_Item()
+{
+}
+
+Reward_Ruin::Reward_Ruin(Ruin *ruin)
+    :Reward(Reward::RUIN), d_ruin(ruin)
+{
+}
+
+Reward_Ruin::Reward_Ruin(XML_Helper* helper)
+    :Reward(helper)
+{
+  d_ruin->load("ruin", helper);
+}
+
+bool Reward_Ruin::save(XML_Helper* helper) const
+{
+  bool retval = true;
+  retval &= helper->openTag("reward");
+  retval &= Reward::save(helper);
+  retval &= d_ruin->save(helper);
+  retval &= helper->closeTag();
+  return retval;
+}
+
+Reward_Ruin::~Reward_Ruin()
 {
 }
 

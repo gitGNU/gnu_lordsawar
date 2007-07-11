@@ -568,6 +568,11 @@ bool CreateScenario::setupRuins()
             //now mark this stack as guard
             (*it).setOccupant(s);
           }
+        if (rand() % 10 == 0) //one in ten is a hidden ruin
+          {
+            (*it).setHidden(true);
+            (*it).setOwner(NULL);
+          }
     }
 
     return true;
@@ -575,7 +580,31 @@ bool CreateScenario::setupRuins()
 
 bool CreateScenario::setupRewards()
 {
-    debug("CreateScenario::setupRewards")
+  debug("CreateScenario::setupRewards")
+  setupItemRewards();
+  setupRuinRewards();
+  return true;
+}
+
+bool CreateScenario::setupRuinRewards()
+{
+    debug("CreateScenario::setupRuinRewards")
+    for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
+        it != Ruinlist::getInstance()->end(); it++)
+    {
+      if ((*it).isHidden() == true)
+        {
+          //add it to the reward list
+          Reward_Ruin *newReward = new Reward_Ruin(&(*it)); //make a reward
+          Rewardlist::getInstance()->push_back(newReward); //add it
+        }
+    }
+  return true;
+}
+
+bool CreateScenario::setupItemRewards()
+{
+    debug("CreateScenario::setupItemRewards")
     Itemlist::createInstance();
     Itemlist *il = Itemlist::getInstance();
     Itemlist::iterator iter;
