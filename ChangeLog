@@ -1,6 +1,10 @@
 2007-07-11  Ben Asselstine
 	* now hidden ruins are randomly instantiated at game start
         * now ruins are a reward for quests
+	* moved reward list instantiation into GameScenario object
+	* fixed bug wrt giving out allies at a ruin
+	* added better support for ruins in the editor
+	* added visual pointer to ruin upon quest completion
 
 2007-07-06  Ben Asselstine
         * made the selector box on the small map stop pulsating
