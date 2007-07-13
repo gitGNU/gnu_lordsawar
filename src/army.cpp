@@ -42,7 +42,7 @@ Army::Army(const Army& a, Player* p)
      d_battles_number(a.d_battles_number), d_number_hashit(a.d_number_hashit),
      d_number_hasbeenhit(a.d_number_hasbeenhit), 
      d_defends_ruins(a.d_defends_ruins), d_awardable(a.d_awardable),
-     d_visitedTemples(a.d_visitedTemples)
+     d_visitedTemples(a.d_visitedTemples), d_ship(a.d_ship)
 {
     // if we have been copied from an army prototype, initialise several values
     if (d_id == 0)
@@ -63,7 +63,7 @@ Army::Army(XML_Helper* helper, bool prototype)
    d_gender(NONE), d_player(0),
    d_id(0), d_xp(0), d_level(1), d_grouped(true),
    d_number_hashit(0), d_number_hasbeenhit(0), d_defends_ruins(false),
-   d_awardable(false)
+   d_awardable(false), d_ship(false)
 {
     d_visitedTemples.clear();
     // first, load the data that has to be loaded anyway
@@ -175,6 +175,8 @@ void Army::setStat(Army::Stat stat, Uint32 value)
                             break;
         case SIGHT:         d_sight = value;
                             break;
+	case SHIP:          value == 0 ? d_ship = false : d_ship = true;
+                            break;
     }
 }
 
@@ -211,6 +213,8 @@ Uint32 Army::getStat(Stat stat, bool modified) const
             return d_army_bonus;
         case SIGHT:
             return d_sight;
+        case SHIP:
+            return d_ship;
     }
 
     // should never come to this
@@ -219,7 +223,7 @@ Uint32 Army::getStat(Stat stat, bool modified) const
 
 void Army::resetMoves()
 {
-  if (d_army_bonus & Army::SHIP)
+  if (d_army_bonus & d_ship)
     d_moves = MAX_BOAT_MOVES;
   else
     d_moves = getStat(MOVES);
@@ -307,7 +311,7 @@ bool Army::canGainLevel() const
 
 int Army::computeLevelGain(Stat stat)
 {
-    if (stat == MOVE_BONUS || stat == ARMY_BONUS)
+    if (stat == MOVE_BONUS || stat == ARMY_BONUS || stat == SHIP)
         return -1;
     
     switch (stat)
@@ -328,7 +332,7 @@ int Army::gainLevel(Stat stat)
     if (!canGainLevel())
         return -1;
 
-    if (stat == MOVE_BONUS || stat == ARMY_BONUS)
+    if (stat == MOVE_BONUS || stat == ARMY_BONUS || stat == SHIP)
         return -1;
     
     d_level++;
@@ -382,6 +386,7 @@ bool Army::saveData(XML_Helper* helper) const
     retval &= helper->saveData("sight", d_sight);
     retval &= helper->saveData("maxhp", d_max_hp);
     retval &= helper->saveData("moves", d_moves);
+    retval &= helper->saveData("ship", d_ship);
     retval &= helper->saveData("max_moves", d_max_moves);
     retval &= helper->saveData("xp", d_xp);
     retval &= helper->saveData("expvalue", getXpReward());
@@ -420,6 +425,7 @@ void  Army::printAllDebugInfo() const
     std::cerr << "production = " << d_production << std::endl;
     std::cerr << "production_cost = " << d_production_cost << std::endl;
     std::cerr << "move_bonus = " << d_move_bonus << std::endl;
+    std::cerr << "ship = " << d_ship << std::endl;
     std::cerr << "army_bonus = " << d_army_bonus << std::endl;
 
     std::cerr << "type = "    << d_type    << std::endl;
@@ -447,6 +453,7 @@ void Army::copyVals(const Army* a)
     d_upkeep = a->getUpkeep();
     d_move_bonus = a->getStat(MOVE_BONUS);
     d_army_bonus = a->getStat(ARMY_BONUS);
+    d_ship = a->getStat(SHIP);
     d_gender = a->getGender();
     d_defends_ruins = a->getDefendsRuins();
     d_awardable = a->getAwardable();
@@ -456,14 +463,5 @@ void Army::copyVals(const Army* a)
 
 void Army::setInShip (bool s)
 {
-  if (s)
-    {
-      if ((d_army_bonus & Army::SHIP) == 0)
-	d_army_bonus |= Army::SHIP;
-    }
-  else
-    {
-      if ((d_army_bonus & Army::SHIP))
-	d_army_bonus -= Army::SHIP;
-    }
+  d_ship = s;
 }

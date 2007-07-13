@@ -121,7 +121,7 @@ Fight::Fight(Stack* attacker, Stack* defender)
                     if (land && sea)
                         break;
 
-                    if ((land && (*sit)->getStat(Army::ARMY_BONUS) & Army::SHIP)
+                    if ((land && (*sit)->getStat(Army::SHIP))
                         || (sea && !((*sit)->getStat(Army::MOVE_BONUS) & Tile::WATER)))
                     {
                         valid = false;
@@ -541,7 +541,7 @@ void Fight::fightArmies(Fighter* culprit, Fighter* victim, bool attack)
         strength *= 2;
 
     // ships in cities have their strength halved
-    if ((culprit->army->getStat(Army::ARMY_BONUS) & Army::SHIP)
+    if ((culprit->army->getStat(Army::SHIP))
             && (GameMap::getInstance()->getTile(culprit->pos)->getBuilding() == Maptile::CITY))
         strength /= 2;
     

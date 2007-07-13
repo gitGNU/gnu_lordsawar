@@ -47,7 +47,7 @@ class Army : public sigc::trackable
             //ANTICAVALRY = 16,   //!< *2 strength vs. cavalry
             //REGENERATE = 32,      //!< heals 1 HP per combat round and at combat end
             //CRITICAL = 64       //!< can score instant kills on hit in combat
-	      SHIP        = 0x00000002, //army can only move on water
+	      //SHIP        = 0x00000002, //army can only move on water
 	      LEADER      = 0x00000004, //+1 str to stack, may search
 	      CAVALRY     = 0x00000008, //+1 str in open
 	      ANTICAVALRY = 0x00000010, //*2 str vs cavalry
@@ -78,6 +78,7 @@ class Army : public sigc::trackable
             MOVE_BONUS=5,
             ARMY_BONUS=6,
             SIGHT=7,
+	    SHIP=8
         };
 
         /** Multiple-purpose constructor
@@ -349,6 +350,7 @@ class Army : public sigc::trackable
         double d_xp_value;
         Uint32 d_move_bonus;
         Uint32 d_army_bonus;
+	bool d_ship;
 
         Uint32 d_gender;
 

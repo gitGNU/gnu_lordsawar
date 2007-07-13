@@ -458,7 +458,7 @@ bool Stack::hasShip () const
     {
         if ((*it)->isGrouped() == false)
           continue;
-        if (((*it)->getStat(Army::ARMY_BONUS, false) & Army::SHIP) == Army::SHIP)
+        if ((*it)->getStat(Army::SHIP))
           return true;
     }
   return false;
