@@ -44,7 +44,6 @@ class Army : public sigc::trackable
 	      LEADER      = 0x00000004, //+1 str to stack, may search
 	      CAVALRY     = 0x00000008, //+1 str in open
 	      ANTICAVALRY = 0x00000010, //*2 str vs cavalry
-	      CRITICAL    = 0x00000040, //can instakill
 
 	      ADD1STRINOPEN      = 0x00000080,
 	      ADD2STRINOPEN      = 0x00000100,

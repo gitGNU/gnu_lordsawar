@@ -570,16 +570,6 @@ void Fight::fightArmies(Fighter* culprit, Fighter* victim, bool attack)
         victim->army->setNumberHasBeenHit(victim->army->getNumberHasBeenHit()
                                         + (1/xp_factor));
 
-        // hit, check for instant death
-        if ((culprit->army->getStat(Army::ARMY_BONUS) & Army::CRITICAL)
-            && (rand() % 100 == 0))
-        {
-            debug ("Instant kill!")
-            
-            victim->army->damage(victim->army->getHP());
-            break;
-        }
-
         // else the defender looses just one hitpoint
         victim->army->damage(1);
         if (victim->army->getHP() <= 0)

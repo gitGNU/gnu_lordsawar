@@ -23,16 +23,12 @@ using namespace std;
 
 Item::Item(XML_Helper* helper)
 {
-    int i;
     
     // Loading of items is a bit complicated, so i'd better loose some words.
     // In general, items can be loaded from the items description file or
     // from a savegame. They both differ a bit, more on that when we encounter
     // such a situation. First, let us deal with the common things.
 
-    // Loading the bonus and the values is a bit tricky
-    int num = 0;
-    
     helper->getData(d_bonus, "bonus");
     
     helper->getData(d_name, "name");
