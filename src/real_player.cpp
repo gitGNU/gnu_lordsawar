@@ -748,9 +748,8 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
                 continue;
             }
 
-            if ((*sit)->getStat(Army::ARMY_BONUS) & Army::REGENERATE)
-                // heal this army to full hitpoints
-                (*sit)->heal((*sit)->getStat(Army::HP));
+            // heal this army to full hitpoints
+            (*sit)->heal((*sit)->getStat(Army::HP));
 
             sit++;
         }

@@ -255,13 +255,6 @@ bool Fight::doRound()
     if (d_att_close.empty())
         return false;
 
-    
-    // last job: loop through all lists and look if there are any regenerating
-    // units. If so, heal them by 1 HP.
-    healArmies(d_att_close);
-    healArmies(d_def_close);
-
-    
     return true;
 }
 
@@ -597,22 +590,6 @@ void Fight::fightArmies(Fighter* culprit, Fighter* victim, bool attack)
     // continue documenting the engagement
     item.damage = hp - victim->army->getHP();
     d_actions.push_back(item);
-}
-
-void Fight::healArmies(std::list<Fighter*>& list)
-{
-    std::list<Fighter*>::iterator it;
-    for (it = list.begin(); it != list.end(); it++)
-        if ((*it)->army->getStat(Army::ARMY_BONUS) & Army::REGENERATE)
-        {
-            debug ("Healing army" <<(*it)->army->getId())
-            (*it)->army->heal(1);
-            FightItem item;
-            item.turn = d_turn;
-            item.id = (*it)->army->getId();
-            item.damage = -1;
-            d_actions.push_back(item);
-        }
 }
 
 void Fight::remove(Fighter* f)

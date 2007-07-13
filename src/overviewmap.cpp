@@ -252,7 +252,6 @@ void OverviewMap::draw_terrain_pixels(Rectangle r)
 
 void OverviewMap::draw_stacks()
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
     assert(surface);
     
     // minimum size for typical features is 1
@@ -285,7 +284,6 @@ void OverviewMap::draw_stacks()
 
 void OverviewMap::after_draw()
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
     assert(surface);
     draw_stacks();
 }

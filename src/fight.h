@@ -113,14 +113,6 @@ class Fight
           */
         void fightArmies(Fighter* culprit, Fighter* victim, bool attack);
 
-        /** Heal all armies in a given list if they posess the regenerate ability.
-          * Furthermore, we construct a dummy fight event so that the graphical
-          * classes don't need to deal with regeneration as well.
-          *
-          * @param list     the list o fighters which we check for healing
-          */
-        void healArmies(std::list<Fighter*>& list);
-
         //! removes a fighter from the fighting lists (d_att_close etc.)
         void remove(Fighter* f);
 
