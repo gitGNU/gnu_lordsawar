@@ -80,19 +80,9 @@ class Hero : public Army
         bool addToBackpack(Item* item, int position);
         bool addToBackpack(Item* item);
 
-        //! Add an item to the list of equipped items. Returns true on success
-        bool addToEquipment(Item* item);
-
         //! Remove an item from the backpack of the hero (don't delete it!)
         //! Returns true on success.
         bool removeFromBackpack(Item* item);
-
-        //! Remove item from list of equipped items (don't delete it!)
-        //! Returns true on success.
-        bool removeFromEquipment(Item* item);
-
-        //! Returns the equipment of the hero
-        std::list<Item*> getEquipment() {return d_equipment;}
 
         //! Returns the backpack of the hero
         std::list<Item*> getBackpack() {return d_backpack;}
@@ -105,7 +95,6 @@ class Hero : public Army
         
         static std::vector<std::string> s_namelist;
 
-        std::list<Item*> d_equipment;
         std::list<Item*> d_backpack;
 };
 

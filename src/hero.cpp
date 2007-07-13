@@ -41,13 +41,6 @@ Hero::Hero(Hero& h)
         Item* item = new Item(**it);
         d_backpack.push_back(item);
     }
-
-    // copy the equipment of the other hero
-    for (it = h.d_equipment.begin(); it != h.d_equipment.end(); it++)
-    {
-        Item* item = new Item(**it);
-        d_equipment.push_back(item);
-    }
 }
 
 Hero::Hero(XML_Helper* helper)
@@ -59,7 +52,6 @@ Hero::Hero(XML_Helper* helper)
     d_gender = static_cast<Army::Gender>(i);
 
     helper->registerTag("backpack", sigc::mem_fun(*this, &Hero::loadItems));
-    helper->registerTag("equipment", sigc::mem_fun(*this, &Hero::loadItems));
     helper->registerTag("item", sigc::mem_fun(*this, &Hero::loadItems));
 
 }
@@ -67,17 +59,11 @@ Hero::Hero(XML_Helper* helper)
 
 Hero::~Hero()
 {
-    //clear the backpack and the equipment
+    //clear the backpack
     while (!d_backpack.empty())
     {
         delete (*d_backpack.begin());
         d_backpack.erase(d_backpack.begin());
-    }
-
-    while (!d_equipment.empty())
-    {
-        delete (*d_equipment.begin());
-        d_equipment.erase(d_equipment.begin());
     }
 }
 
@@ -93,17 +79,11 @@ bool Hero::save(XML_Helper* helper) const
 
     retval &= saveData(helper);
 
-    // Now save the equipment and the backpack
+    // Now save the backpack
     retval &= helper->openTag("backpack");
     for (it = d_backpack.begin(); it != d_backpack.end(); it++)
         retval &= (*it)->save(helper);
     retval &= helper->closeTag();
-
-    retval &= helper->openTag("equipment");
-    for (it = d_equipment.begin(); it != d_equipment.end(); it++)
-        retval &= (*it)->save(helper);
-    retval &= helper->closeTag();
-    
 
     retval &= helper->closeTag();
 
@@ -112,28 +92,13 @@ bool Hero::save(XML_Helper* helper) const
 
 bool Hero::loadItems(std::string tag, XML_Helper* helper)
 {
-    // determines whether an item is put in the backpack or to the equipment
-    static bool equipment = false;
-
     if (tag == "backpack")
-    {
-        equipment = false;
-        return true;
-    }
-
-    if (tag == "equipment")
-    {
-        equipment = true;
-        return true;
-    }
+      return true;
 
     if (tag == "item")
     {
         Item* item = new Item(helper);
-        if (equipment)
-            d_equipment.push_back(item);
-        else
-            d_backpack.push_back(item);
+        d_backpack.push_back(item);
     }
     
     return true;
@@ -154,7 +119,7 @@ Uint32 Hero::getStat(Stat stat, bool modified) const
         Uint32 bonus = 0;
         
         std::list<Item*>::const_iterator it;
-        for (it = d_equipment.begin(); it != d_equipment.end(); it++)
+        for (it = d_backpack.begin(); it != d_backpack.end(); it++)
             if ((*it)->getBonus(stat))
                 bonus |= (*it)->getValue(Army::STRENGTH);
 
@@ -163,7 +128,7 @@ Uint32 Hero::getStat(Stat stat, bool modified) const
 
     int bonus = 0;
     std::list<Item*>::const_iterator it;
-    for (it = d_equipment.begin(); it != d_equipment.end(); it++)
+    for (it = d_backpack.begin(); it != d_backpack.end(); it++)
         if ((*it)->getBonus(stat))
             bonus += (*it)->getValue(stat);
 
@@ -186,21 +151,6 @@ bool Hero::addToBackpack(Item* item)
     return true;
 }
 
-bool Hero::addToEquipment(Item* item)
-{
-    //First, check if it is allowed to take the item at all
-    Uint32 newtype = item->getType();
-
-    std::list<Item*>::iterator it;
-    for (it = d_equipment.begin(); it != d_equipment.end(); it++)
-        if ((*it)->getType() == newtype)
-            return false;
-    
-    //! OK, we don't have such an item already, so equip it
-    d_equipment.push_back(item);
-    return true;
-}
-
 bool Hero::removeFromBackpack(Item* item)
 {
     std::list<Item*>::iterator it;
@@ -208,19 +158,6 @@ bool Hero::removeFromBackpack(Item* item)
         if ((*it) == item)
         {
             d_backpack.erase(it);
-            return true;
-        }
-
-    return false;
-}
-
-bool Hero::removeFromEquipment(Item* item)
-{
-    std::list<Item*>::iterator it;
-    for (it = d_equipment.begin(); it != d_equipment.end(); it++)
-        if ((*it) == item)
-        {
-            d_equipment.erase(it);
             return true;
         }
 

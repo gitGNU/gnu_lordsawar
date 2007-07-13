@@ -30,8 +30,6 @@ Item::Item(XML_Helper* helper)
     // from a savegame. They both differ a bit, more on that when we encounter
     // such a situation. First, let us deal with the common things.
 
-    helper->getData(d_type, "type");
-    
     // Loading the bonus and the values is a bit tricky
     int num = 0;
     Army::Stat bonus;
@@ -71,9 +69,8 @@ Item::Item(XML_Helper* helper)
 
 }
 
-Item::Item(Uint32 type, std::string name, bool plantable, Player *plantable_owner)
+Item::Item(std::string name, bool plantable, Player *plantable_owner)
 {
-  d_type = type;
   d_name = name;
   d_plantable = plantable;
   d_plantable_owner = plantable_owner;
@@ -81,7 +78,7 @@ Item::Item(Uint32 type, std::string name, bool plantable, Player *plantable_owne
 }
 
 Item::Item(const Item& orig)
-    :d_type(orig.d_type), d_bonus(orig.d_bonus),
+    :d_bonus(orig.d_bonus),
     d_name(orig.d_name), d_plantable(orig.d_plantable),
     d_plantable_owner(orig.d_plantable_owner)
 {
@@ -99,7 +96,6 @@ bool Item::save(XML_Helper* helper) const
     
     // A template is never saved, so we assume this class is a real-life item
     retval &= helper->openTag("item");
-    retval &= helper->saveData("type", d_type);
     retval &= helper->saveData("name", d_name);
     retval &= helper->saveData("plantable", d_plantable);
     if (d_plantable && d_plantable_owner)

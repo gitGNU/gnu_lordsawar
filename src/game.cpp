@@ -794,7 +794,7 @@ void Game::maybeRecruitHero (Player *p)
             {
               //FIXME: add a battle standard to the hero's bag of stuff
               std::string name = p->getName() + " " + _("Standard");
-              Item *battle_standard= new Item (Item::NONE, name, true, p);
+              Item *battle_standard= new Item (name, true, p);
               battle_standard->setBonus(Army::STRENGTH, 1);
               newhero->addToBackpack(battle_standard, 0);
             }

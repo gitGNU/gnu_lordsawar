@@ -42,8 +42,24 @@
 class Item
 {
     public:
-        enum Type {WEAPON=0, SHIELD=1, ARMOUR=2, ACCESSOIRE=3, NONE=4};
 
+        enum Bonus {
+
+	      ADD1STR         = 0x00000001, //+1 battle
+	      ADD2STR         = 0x00000002, //+2 battle
+	      ADD3STR         = 0x00000004, //+3 battle
+	      ADD1STACK       = 0x00000008, //+1 command
+	      ADD2STACK       = 0x00000010, //+2 command
+	      ADD3STACK       = 0x00000020, //+3 command
+	      FLYSTACK        = 0x00000040, // add flight to stack
+	      DOUBLEMOVESTACK = 0x00000080, // double movement
+	      ADD2GOLDPERCITY = 0x00000100, // +2 gold per city
+	      ADD3GOLDPERCITY = 0x00000200, // +3 gold per city
+	      ADD4GOLDPERCITY = 0x00000400, // +4 gold per city
+	      ADD5GOLDPERCITY = 0x00000800, // +5 gold per city
+
+        };
+        
         /** There are only three useful constructors. This is the loading
           * constructor which loads an item description from a savegame or
           * from an item description file
@@ -58,7 +74,7 @@ class Item
         /** This constructor creates an item for actual use in the game.
 	  * No template is used.
           */
-        Item(Uint32 type, std::string name, bool plantable, Player *plantable_owner);
+        Item(std::string name, bool plantable, Player *plantable_owner);
 
         //! In opposition to other classes, item actually needs its destructor.
         ~Item();
@@ -67,10 +83,6 @@ class Item
         //! Saves the item data
         bool save(XML_Helper* helper) const;
 
-        
-        //! Returns the type of the item (weapon, shield etc.)
-        Uint32 getType() const {return d_type;}
-        
         //! Returns whether the item has a special bonus
         bool getBonus(Army::Stat bonus) const;
 
@@ -94,7 +106,6 @@ class Item
 	Player *getPlantableOwner() const {return d_plantable_owner;}
 
     private:
-        Uint32 d_type;
         std::map<Army::Stat, int> d_bonus;
         
         std::string d_name;
