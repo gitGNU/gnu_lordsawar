@@ -41,13 +41,6 @@ class Army : public sigc::trackable
         enum Gender {NONE = 0, MALE = 1, FEMALE = 2};
 
         enum Bonus {
-            //SHIP = 2,           //!< army can only move on water
-            //LEADER = 4,           //!< +1 strength for allies in combat, may search
-            //CAVALRY = 8,        //!< +1 strength on open terrain
-            //ANTICAVALRY = 16,   //!< *2 strength vs. cavalry
-            //REGENERATE = 32,      //!< heals 1 HP per combat round and at combat end
-            //CRITICAL = 64       //!< can score instant kills on hit in combat
-	      //SHIP        = 0x00000002, //army can only move on water
 	      LEADER      = 0x00000004, //+1 str to stack, may search
 	      CAVALRY     = 0x00000008, //+1 str in open
 	      ANTICAVALRY = 0x00000010, //*2 str vs cavalry
