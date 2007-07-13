@@ -84,14 +84,11 @@ class Item
         bool save(XML_Helper* helper) const;
 
         //! Returns whether the item has a special bonus
-        bool getBonus(Army::Stat bonus) const;
+        bool getBonus(Item::Bonus bonus) const;
 
 	//! Add a bonus to the item
-	void setBonus(Army::Stat bonus, int amount);
+	void setBonus(Item::Bonus bonus);
         
-        //! Returns the "size" of one of the item's boni
-        int getValue(Army::Stat bonus);
-
         //! Return the name of the item
         std::string getName() const {return __(d_name);}
 
@@ -106,7 +103,7 @@ class Item
 	Player *getPlantableOwner() const {return d_plantable_owner;}
 
     private:
-        std::map<Army::Stat, int> d_bonus;
+        Uint32 d_bonus;
         
         std::string d_name;
         Uint32 d_id;

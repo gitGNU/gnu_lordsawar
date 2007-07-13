@@ -106,33 +106,28 @@ bool Hero::loadItems(std::string tag, XML_Helper* helper)
 
 Uint32 Hero::getStat(Stat stat, bool modified) const
 {
+    Uint32 bonus = 0;
     Uint32 value = Army::getStat(stat, modified);
 
     if (!modified)
         return value;
 
-    // Add item boni
-    // since (move|army) boni are unsigned integers to be or'ed, deal with
-    // them separately
-    if (stat == Army::MOVE_BONUS || stat == Army::ARMY_BONUS)
+    // Add item bonuses that affect only this hero
+    if (stat == Army::STRENGTH)
     {
-        Uint32 bonus = 0;
-        
         std::list<Item*>::const_iterator it;
         for (it = d_backpack.begin(); it != d_backpack.end(); it++)
-            if ((*it)->getBonus(stat))
-                bonus |= (*it)->getValue(Army::STRENGTH);
-
-        return (value | bonus);
+          {
+            if ((*it)->getBonus(Item::ADD1STR))
+             bonus = 1;
+            if ((*it)->getBonus(Item::ADD2STR))
+             bonus = 2;
+            if ((*it)->getBonus(Item::ADD3STR))
+             bonus = 3;
+          }
     }
 
-    int bonus = 0;
-    std::list<Item*>::const_iterator it;
-    for (it = d_backpack.begin(); it != d_backpack.end(); it++)
-        if ((*it)->getBonus(stat))
-            bonus += (*it)->getValue(stat);
-
-    return (value+bonus);
+    return value + bonus;
 }
 
 bool Hero::addToBackpack(Item* item, int position)

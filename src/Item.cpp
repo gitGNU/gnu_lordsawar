@@ -32,25 +32,8 @@ Item::Item(XML_Helper* helper)
 
     // Loading the bonus and the values is a bit tricky
     int num = 0;
-    Army::Stat bonus;
-    std::string sbonus, svalue;
-    std::stringstream isbonus, isvalue;
     
-    helper->getData(num, "num_bonus");
-    helper->getData(sbonus, "bonus");
-    helper->getData(svalue, "value");
-    
-    isbonus.str(sbonus);
-    isvalue.str(svalue);
-
-    for (int pos = 0; pos < num; pos++)
-    {
-        isbonus >> i;
-        bonus = static_cast<Army::Stat>(i);
-        isvalue >> i;
-        d_bonus[bonus] = i;
-    }
-        
+    helper->getData(d_bonus, "bonus");
     
     helper->getData(d_name, "name");
     helper->getData(d_plantable, "plantable");
@@ -71,6 +54,7 @@ Item::Item(XML_Helper* helper)
 
 Item::Item(std::string name, bool plantable, Player *plantable_owner)
 {
+  d_bonus = 0;
   d_name = name;
   d_plantable = plantable;
   d_plantable_owner = plantable_owner;
@@ -102,42 +86,19 @@ bool Item::save(XML_Helper* helper) const
       retval &= helper->saveData("plantable_owner", d_plantable_owner->getId());
     retval &= helper->saveData("id", d_id);
 
-    // Last, save the boni of the item. We put all of them in a string separated
-    // by spaces
-    std::stringstream sbonus, svalue;
-    for (map<Army::Stat,int>::const_iterator it = d_bonus.begin(); it != d_bonus.end(); it++)
-    {
-        sbonus << (*it).first << " ";
-        svalue << (*it).second << " ";
-    }
-    retval &= helper->saveData("num_bonus", d_bonus.size());
-    retval &= helper->saveData("bonus", sbonus.str());
-    retval &= helper->saveData("value", svalue.str());
+    retval &= helper->saveData("bonus", d_bonus);
     
     retval &= helper->closeTag();
     
     return retval;
 }
 
-bool Item::getBonus(Army::Stat bonus) const
+bool Item::getBonus(Item::Bonus bonus) const
 {
-    map<Army::Stat,int>::const_iterator it;
-    for (it = d_bonus.begin(); it != d_bonus.end(); it++)
-        if ((*it).first == bonus)
-            return true;
-
-    return false;
+  return (d_bonus & bonus) == 0 ? false : true;
 }
 
-int Item::getValue(Army::Stat bonus)
+void Item::setBonus(Item::Bonus bonus)
 {
-    if (getBonus(bonus))
-        return d_bonus[bonus];
-
-    return 0;
-}
-
-void Item::setBonus(Army::Stat bonus, int amount)
-{
-  d_bonus[bonus] = amount;
+  d_bonus |= bonus;
 }

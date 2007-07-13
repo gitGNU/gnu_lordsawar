@@ -183,18 +183,30 @@ void HeroDialog::add_item(Item *item, bool in_backpack)
 
     // the attributes column
     std::vector<Glib::ustring> s;
-    if (item->getBonus(Army::STRENGTH))
-	s.push_back(String::ucompose(_("Strength: +%1"), item->getValue(Army::STRENGTH)));
-    if (item->getBonus(Army::HP))
-	s.push_back(String::ucompose(_("Hitpoints: +%1"), item->getValue(Army::HP)));
-    if (item->getBonus(Army::MOVES))
-	s.push_back(String::ucompose(_("Moves: +%1"), item->getValue(Army::MOVES)));
-    if (item->getBonus(Army::MOVE_BONUS))
-	s.push_back(String::ucompose(_("Move bonus: +%1"), item->getValue(Army::MOVE_BONUS)));
-    if (item->getBonus(Army::ARMY_BONUS))
-	s.push_back(String::ucompose(_("Army bonus: +%1"), item->getValue(Army::ARMY_BONUS)));
-    if (item->getBonus(Army::SIGHT))
-	s.push_back(String::ucompose(_("Sight: +%1"), item->getValue(Army::SIGHT)));
+    if (item->getBonus(Item::ADD1STR))
+	s.push_back(_("+1 Battle"));
+    if (item->getBonus(Item::ADD2STR))
+	s.push_back(_("+2 Battle"));
+    if (item->getBonus(Item::ADD3STR))
+	s.push_back(_("+3 Battle"));
+    if (item->getBonus(Item::ADD1STACK))
+	s.push_back(_("+1 Command"));
+    if (item->getBonus(Item::ADD2STACK))
+	s.push_back(_("+2 Command"));
+    if (item->getBonus(Item::ADD3STACK))
+	s.push_back(_("+3 Command"));
+    if (item->getBonus(Item::FLYSTACK))
+	s.push_back(_("Allows Flight"));
+    if (item->getBonus(Item::DOUBLEMOVESTACK))
+	s.push_back(_("Doubles Movement"));
+    if (item->getBonus(Item::ADD2GOLDPERCITY))
+	s.push_back(_("+2 gold per city"));
+    if (item->getBonus(Item::ADD3GOLDPERCITY))
+	s.push_back(_("+3 gold per city"));
+    if (item->getBonus(Item::ADD4GOLDPERCITY))
+	s.push_back(_("+4 gold per city"));
+    if (item->getBonus(Item::ADD5GOLDPERCITY))
+	s.push_back(_("+5 gold per city"));
 
     Glib::ustring str;
     bool first = true;

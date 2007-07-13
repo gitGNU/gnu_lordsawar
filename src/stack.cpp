@@ -22,6 +22,7 @@
 #include "armysetlist.h"
 #include "counter.h"
 #include "army.h"
+#include "citylist.h"
 #include "hero.h"
 #include "GameMap.h"
 #include "vector.h"
@@ -317,6 +318,27 @@ void Stack::nextTurn()
             d_player->withdrawGold((*it)->getUpkeep());
         (*it)->heal();
     }
+
+    for (const_iterator it = begin(); it != end(); it++)
+      if ((*it)->isHero())
+        {
+          std::list<Item*> backpack = dynamic_cast<Hero*>((*it))->getBackpack();
+          std::list<Item*>::const_iterator item;
+          for (item = backpack.begin(); item != backpack.end(); item++)
+	    {
+	      Player *p = d_player;
+	      if ((*item)->getBonus(Item::DOUBLEMOVESTACK))
+	        (*it)->setStat(Army::MOVES, (*it)->getMoves() * 2);
+	      if ((*item)->getBonus(Item::ADD2GOLDPERCITY))
+		p->addGold(2 * Citylist::getInstance()->countCities(p));
+	      if ((*item)->getBonus(Item::ADD3GOLDPERCITY))
+		p->addGold(3 * Citylist::getInstance()->countCities(p));
+	      if ((*item)->getBonus(Item::ADD4GOLDPERCITY))
+		p->addGold(4 * Citylist::getInstance()->countCities(p));
+	      if ((*item)->getBonus(Item::ADD5GOLDPERCITY))
+		p->addGold(5 * Citylist::getInstance()->countCities(p));
+	    }
+        }
 }
 
 bool Stack::save(XML_Helper* helper) const
@@ -425,6 +447,23 @@ Uint32 Stack::calculateMoveBonus() const
             Tile::MOUNTAIN | Tile::SWAMP;
         return d_bonus;
       }
+
+    //or maybe we have an item that lets us all fly
+    for (const_iterator it = begin(); it != end(); it++)
+      if ((*it)->isHero())
+        {
+          std::list<Item*> backpack = dynamic_cast<Hero*>((*it))->getBackpack();
+          std::list<Item*>::const_iterator item;
+          for (item = backpack.begin(); item != backpack.end(); item++)
+	    {
+	      if ((*item)->getBonus(Item::FLYSTACK))
+		{
+                  d_bonus = Tile::GRASS | Tile::WATER | Tile::FOREST | 
+		                  Tile::HILLS | Tile::MOUNTAIN | Tile::SWAMP;
+                  return d_bonus;
+		}
+	    }
+        }
 
     //calculate move bonuses for non-flying stacks
     for (Stack::const_iterator it = this->begin(); it != this->end(); it++)
