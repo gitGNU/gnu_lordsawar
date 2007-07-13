@@ -1,3 +1,8 @@
+2007-07-13  Ben Asselstine
+        * removed equipment object from hero
+	* removed type member from item
+	* handling item bonuses: flight, double movement, and battle.
+
 2007-07-11  Ben Asselstine
 	* now hidden ruins are randomly instantiated at game start
         * now ruins are a reward for quests
