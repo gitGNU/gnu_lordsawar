@@ -159,3 +159,16 @@ bool Hero::removeFromBackpack(Item* item)
     return false;
 }
 
+Uint32 Hero::calculateNaturalCommand()
+{
+  Uint32 command = 0;
+  Uint32 strength = getStat(Army::STRENGTH, true);
+  if (strength == 9)
+    command += 3;
+  else if (strength > 6)
+    command += 2;
+  else if (strength > 3)
+    command += 1;
+  return command;
+}
+

@@ -91,6 +91,11 @@ class Hero : public Army
         //! Callback needed during loading of the hero (see xmlhelper.h)
         bool loadItems(std::string tag, XML_Helper* helper);
         
+	//! natural command is used for bonus calculations during battle
+	//! Returns a number that is added to the strength to everyone
+	//! in the stack.
+	Uint32 calculateNaturalCommand();
+
     private:
         
         static std::vector<std::string> s_namelist;

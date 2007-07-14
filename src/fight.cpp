@@ -369,13 +369,7 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
   //now add on the hero's natural command
   if (strongestHero)
     {
-      Uint32 hero_strength = strongestHero->getStat(Army::STRENGTH, true);
-      if (hero_strength == 9)
-        hero_bonus += 3;
-      else  if (hero_strength > 6)
-        hero_bonus += 2;
-      else  if (hero_strength > 3)
-        hero_bonus += 1;
+      hero_bonus += strongestHero->calculateNaturalCommand();
     }
 
   // does the defender cancel our hero bonus?

@@ -231,12 +231,40 @@ void HeroDialog::add_item(Item *item, bool in_backpack)
 
 void HeroDialog::fill_in_info_labels()
 {
+    Uint32 bonus = 0;
     Glib::ustring s;
     // fill in first column
     // FIXME: put in real numbers
-    s += String::ucompose(_("Battle: %1"), 0);
+    std::list<Item*> backpack = hero->getBackpack();
+    for (std::list<Item*>::iterator i = backpack.begin(), end = backpack.end();
+	i != end; ++i)
+      {
+        if ((*i)->getBonus(Item::ADD1STR))
+          bonus += 1;
+        if ((*i)->getBonus(Item::ADD2STR))
+          bonus += 2;
+        if ((*i)->getBonus(Item::ADD3STR))
+          bonus += 3;
+      }
+    s += String::ucompose(_("Battle: %1"), bonus);
     s += "\n";
-    s += String::ucompose(_("Command: %1"), 0);
+
+    bonus = 0;
+    for (std::list<Item*>::iterator i = backpack.begin(), end = backpack.end();
+	i != end; ++i)
+      {
+        if ((*i)->getBonus(Item::ADD1STACK))
+          bonus += 1;
+        if ((*i)->getBonus(Item::ADD2STACK))
+          bonus += 2;
+        if ((*i)->getBonus(Item::ADD3STACK))
+          bonus += 3;
+      }
+
+    //now add natural command
+    bonus += hero->calculateNaturalCommand ();
+
+    s += String::ucompose(_("Command: %1"), bonus);
     s += "\n";
     s += String::ucompose(_("Level: %1"), hero->getLevel());
     s += "\n";
