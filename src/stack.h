@@ -111,6 +111,10 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
         //! Get the strongest army (most strength) for displaying
         Army* getStrongestArmy() const;
 
+        //! Get the strongest hero (most strength) for bonus calculations
+        Army* getStrongestHero() const;
+	// FIXME: reconcile these "strongest" functions into one
+
         //! Used for splitting stacks. See Player::stackSplit how it works.
         Army* getFirstUngroupedArmy() const;
 

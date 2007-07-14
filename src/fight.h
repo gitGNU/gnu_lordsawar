@@ -20,6 +20,7 @@
 
 class Stack;
 class Fighter;
+class Hero;
 
 /** This is the structure that describes the course of the fight. It is later
   * read by a fight dialog to reconstruct what happened.
@@ -79,9 +80,11 @@ class Fight
 
         // CONSTANTS
         //! number of rounds the fight lasts
-        static const int MAX_ROUNDS = 30;
+	//! if this is 0, then there is no maximum.
+        static const int MAX_ROUNDS = 0;
 
         //! number of movement points needed to do a fight (TODO: needs to be used)
+	//FIXME: use this constant
         static const int MOVES_FOR_FIGHT = 3;
 
     private:
@@ -94,29 +97,27 @@ class Fight
 
         //! Calculates the attack/defense bonus of the armies
         void calculateBonus();
+        void calculateBaseStrength(std::list<Fighter*> fighters);
+        void calculateTerrainModifiers(std::list<Fighter*> fighters);
+        void calculateModifiedStrengths (std::list<Fighter*>friendly, 
+                                         std::list<Fighter*>enemy, 
+                                         bool friendlyIsDefending,
+                                         Hero *strongestHero);
+        void calculateFinalStrengths (std::list<Fighter*> friendly, 
+				      std::list<Fighter*> enemy);
 
-        /** Finds someone to fight
-          * 
-          * @param attacker     whether we find a victim for an attacking unit or not
-          * @param ranged       whether the unit is a ranged combat one
-          * @return a suitable opponent or 0 if none could be found
-          */
-        Fighter* findVictim(bool attacker, bool ranged) const;
-        
         /** This function just has two armies fight against each other. It
           * applies the boni and several special boni to attacker and defender
           * and calculates (rather rolls) the result.
           *
-          * @param culprit      the attacking army
-          * @param victim       the defending army
-          * @param attack       if culprit is an attacker. Used for several boni
+          * @param attacker     the attacking army
+          * @param defender     the defending army
           */
-        void fightArmies(Fighter* culprit, Fighter* victim, bool attack);
+        void fightArmies(Fighter* attacker, Fighter* defender);
 
         //! removes a fighter from the fighting lists (d_att_close etc.)
         void remove(Fighter* f);
 
-        
         // DATA
         std::list<Stack*> d_attackers;
         std::list<Stack*> d_defenders;

@@ -94,6 +94,17 @@ class Maptile
         //! Get the items located at this maptile
         std::list<Item*> getItems() const;
         
+	//! is this map tile considered to be "open terrain".
+	//! this is used for bonus calculations
+	bool isOpenTerrain();
+
+	//! is this map tile considered to be "hilly terrain".
+	//! this is used for bonus calculations
+        bool isHillyTerrain();
+
+	//! is this map tile considered to be "city terrain".
+	//! this is used for bonus calculations
+        bool isCityTerrain();
 
         //prints some debug information
         void printDebugInfo() const;

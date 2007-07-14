@@ -198,6 +198,26 @@ Army* Stack::getStrongestArmy() const
     return strongest;
 }
 
+Army* Stack::getStrongestHero() const
+{
+    Army *strongest = 0;
+    Uint32 highest_strength = 0;
+
+    for (const_iterator it = begin(); it != end(); ++it)
+    {
+      // if hero
+      if ((*it)->isHero())
+        {
+          if ((*it)->getStat(Army::STRENGTH) > highest_strength)
+            {
+              highest_strength = (*it)->getStat(Army::STRENGTH);
+              strongest = *it;
+            }
+        }
+    }
+    return strongest;
+}
+
 void Stack::selectAll()
 {
     for (const_iterator it = begin(); it != end(); ++it)

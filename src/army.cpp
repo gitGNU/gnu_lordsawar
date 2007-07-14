@@ -60,7 +60,7 @@ Army::Army(const Army& a, Player* p)
 
 Army::Army(XML_Helper* helper, bool prototype)
   :d_pixmap(0), d_mask(0), d_name(""), d_description(""), d_ship(false),
-   d_gender(NONE), d_player(0),
+   d_gender(NONE), d_player(0), d_max_hp(2),
    d_id(0), d_xp(0), d_level(1), d_grouped(true),
    d_number_hashit(0), d_number_hasbeenhit(0), d_defends_ruins(false),
    d_awardable(false)
@@ -69,7 +69,6 @@ Army::Army(XML_Helper* helper, bool prototype)
     // first, load the data that has to be loaded anyway
     helper->getData(d_strength, "strength");
     helper->getData(d_sight, "sight");
-    helper->getData(d_max_hp, "maxhp");
     helper->getData(d_max_moves, "max_moves");
     helper->getData(d_xp_value,"expvalue");
     
@@ -384,7 +383,6 @@ bool Army::saveData(XML_Helper* helper) const
     retval &= helper->saveData("hp", d_hp);
     retval &= helper->saveData("strength", d_strength);
     retval &= helper->saveData("sight", d_sight);
-    retval &= helper->saveData("maxhp", d_max_hp);
     retval &= helper->saveData("moves", d_moves);
     retval &= helper->saveData("ship", d_ship);
     retval &= helper->saveData("max_moves", d_max_moves);

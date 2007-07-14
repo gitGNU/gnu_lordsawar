@@ -11,7 +11,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>8</d_upkeep>
         <d_strength>4</d_strength>
-        <d_maxhp>25</d_maxhp>
         <d_expvalue>5</d_expvalue>
         <d_max_moves>16</d_max_moves>
         <d_sight>2</d_sight>
@@ -29,7 +28,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>8</d_upkeep>
         <d_strength>7</d_strength>
-        <d_maxhp>25</d_maxhp>
         <d_expvalue>5</d_expvalue>
         <d_max_moves>18</d_max_moves>
         <d_sight>3</d_sight>
@@ -47,7 +45,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>12</d_upkeep>
         <d_strength>4</d_strength>
-        <d_maxhp>25</d_maxhp>
         <d_expvalue>6</d_expvalue>
         <d_max_moves>16</d_max_moves>
         <d_sight>3</d_sight>
@@ -65,7 +62,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>15</d_upkeep>
         <d_strength>5</d_strength>
-        <d_maxhp>20</d_maxhp>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
         <d_sight>5</d_sight>
@@ -83,7 +79,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>15</d_upkeep>
         <d_strength>8</d_strength>
-        <d_maxhp>30</d_maxhp>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>18</d_max_moves>
         <d_sight>5</d_sight>
@@ -101,7 +96,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>25</d_upkeep>
         <d_strength>15</d_strength>
-        <d_maxhp>60</d_maxhp>
         <d_expvalue>20</d_expvalue>
         <d_max_moves>14</d_max_moves>
         <d_sight>6</d_sight>
@@ -119,7 +113,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>10</d_upkeep>
         <d_strength>5</d_strength>
-        <d_maxhp>30</d_maxhp>
         <d_expvalue>0</d_expvalue>
         <d_max_moves>16</d_max_moves>
         <d_sight>2</d_sight>
@@ -137,7 +130,6 @@
         <d_production_cost>0</d_production_cost>
         <d_upkeep>20</d_upkeep>
         <d_strength>15</d_strength>
-        <d_maxhp>50</d_maxhp>
         <d_expvalue>7</d_expvalue>
         <d_max_moves>12</d_max_moves>
         <d_sight>2</d_sight>

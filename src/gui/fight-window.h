@@ -22,7 +22,6 @@
 #include <glibmm/main.h>
 #include <gtkmm/window.h>
 #include <gtkmm/progressbar.h>
-#include <gtkmm/label.h>
 #include <gtkmm/alignment.h>
 
 #include "../game-parameters.h"
@@ -44,7 +43,6 @@ class FightWindow: public sigc::trackable
     
  private:
     std::auto_ptr<Gtk::Window> window;
-    Gtk::Label *rounds_label;
     static const int max_cols = 8;
 
     struct ArmyItem

@@ -112,5 +112,31 @@ std::list<Item*> Maptile::getItems() const
     return d_items;
 }
 
+bool Maptile::isCityTerrain()
+{
+  if (getBuilding() != Maptile::CITY || getBuilding() != Maptile::RUIN ||
+       getBuilding() != Maptile::TEMPLE)
+    return true;
+  return false;
+}
 
+bool Maptile::isOpenTerrain()
+{
+  if (isCityTerrain())
+    return false;
+  /* swamp and water are open terrain too */
+  if ((getType() == Tile::GRASS || getType() == Tile::SWAMP ||
+       getType() == Tile::WATER) || getBuilding() != Maptile::BRIDGE)
+    return true;
+  return false;
+}
+
+bool Maptile::isHillyTerrain()
+{
+  if (isCityTerrain())
+    return false;
+  if ((getType() == Tile::HILLS || getType() == Tile::MOUNTAIN))
+    return true;
+  return false;
+}
 // End of file

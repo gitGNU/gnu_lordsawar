@@ -58,8 +58,6 @@ FightWindow::FightWindow(Fight &fight)
     xml->get_widget("attacker_close_vbox", attacker_close_vbox);
     xml->get_widget("defender_close_vbox", defender_close_vbox);
 
-    xml->get_widget("rounds_label", rounds_label);
-
     // extract attackers and defenders
     armies_type attackers, defenders;
 
@@ -121,8 +119,6 @@ FightWindow::FightWindow(Fight &fight)
     p = attackers.front()->getPlayer();
     xml->get_widget("attacker_shield_image", attacker_shield_image);
     attacker_shield_image->property_pixbuf()=to_pixbuf(gc->getShieldPic(2, p));
-
-    rounds_label->set_text(String::ucompose("%1", 0));
 
     fight.battle();
     actions = fight.getCourseOfEvents();
@@ -300,7 +296,6 @@ bool FightWindow::do_round()
 	if (f.turn > round)
 	{
 	    ++round;
-	    rounds_label->set_text(String::ucompose("%1", round));
 
 	    return Timing::CONTINUE;
 	}
