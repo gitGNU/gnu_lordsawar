@@ -1077,7 +1077,7 @@ bool RealPlayer::cityBuyProduction(City* c, int slot, int type)
     Uint32 as;
     const Armysetlist* al = Armysetlist::getInstance();
 
-    as = al->getStandardId();
+    as = c->getPlayer()->getArmyset();
 
     // sort out unusual values (-1 is allowed and means "scrap production")
     if ((type < -1) || (type >= (int)al->getSize(as)))

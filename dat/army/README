@@ -10,13 +10,6 @@ and have to be .png files.
 
 The currently used indexes are:
 
-1 - standard armies (available for all players)
-2 - Heroes (_not_ to be assigned to any player); they are handled specially
-3 - Imperial troops
-4 - Monsters
-5 - Orcs
+1 - default 
 
-All indexes above 5 are free as of now.
-
-Note that the indexes 1 and two should always stay the same; we identify the
-standard armyset by index 1 and the heroes by index 2.
+All indexes above 1 are free as of now.

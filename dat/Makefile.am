@@ -24,4 +24,5 @@ EXTRA_DIST = \
     heronames \
     templenames \
     ruinnames \
+    signposts \
     lordsawar.desktop

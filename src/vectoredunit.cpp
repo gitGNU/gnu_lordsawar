@@ -19,6 +19,7 @@
 
 #include "citylist.h"
 #include "armysetlist.h"
+#include "playerlist.h"
 #include "army.h"
 #include "city.h"
 
@@ -69,7 +70,7 @@ bool VectoredUnit::save(XML_Helper* helper) const
 bool VectoredUnit::nextTurn()
 {
   const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 set = al->getStandardId();
+  Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
   Citylist *cl = Citylist::getInstance();
   d_duration--;
   if (d_duration == 0)

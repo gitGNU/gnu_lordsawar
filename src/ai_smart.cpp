@@ -200,7 +200,7 @@ int AI_Smart::chooseArmyTypeToBuy(City *c)
     
     const Armysetlist* al = Armysetlist::getInstance();
 
-    size = al->getSize(al->getStandardId());
+    size = al->getSize(getArmyset());
         
     bestScore = -1;
     bestIndex = -1;
@@ -211,7 +211,7 @@ int AI_Smart::chooseArmyTypeToBuy(City *c)
     {
         const Army *proto = NULL;
 
-        proto=al->getArmy(al->getStandardId(), i);
+        proto=al->getArmy(getArmyset(), i);
 
         if (proto->getStat(Army::ARMY_BONUS) & Army::SHIP)
 	{ 
@@ -225,7 +225,7 @@ int AI_Smart::chooseArmyTypeToBuy(City *c)
             continue;
 	}
         
-       if (c->hasProduction(proto->getType(), al->getStandardId())==false)
+       if (c->hasProduction(proto->getType(), getArmyset())==false)
        {
          debug("I can buy it " << i)
          int score = scoreArmyType(proto);

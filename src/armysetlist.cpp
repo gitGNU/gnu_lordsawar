@@ -49,7 +49,7 @@ void Armysetlist::deleteInstance()
 }
 
 Armysetlist::Armysetlist()
-    :d_standard(1), d_heroes(2), d_loading(0)
+    : d_loading(0)
 {
     // load all armysets
     std::list<std::string> armysets = File::scanArmysets();
@@ -107,15 +107,13 @@ std::string Armysetlist::getName(Uint32 id) const
     return (*it).second;
 }
 
-std::vector<Uint32> Armysetlist::getArmysets(bool force_all) const
+std::vector<Uint32> Armysetlist::getArmysets() const
 {
     std::vector<Uint32> retlist;
     
     NameMap::const_iterator it;
     for (it = d_names.begin(); it != d_names.end(); it++)
     {
-        if (!force_all && ((*it).first == d_standard || (*it).first == d_heroes))
-            continue;
         retlist.push_back((*it).first);
     }
 

@@ -222,10 +222,6 @@ AC_CONFIG_FILES([
         dat/Makefile 
         dat/army/Makefile 
         dat/army/default/Makefile 
-        dat/army/imperial/Makefile 
-        dat/army/orcs/Makefile 
-        dat/army/heroes/Makefile 
-        dat/army/monsters/Makefile 
         dat/tilesets/Makefile
         dat/tilesets/default/Makefile
         dat/tilesets/default/misc/Makefile

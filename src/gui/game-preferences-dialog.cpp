@@ -134,8 +134,6 @@ GamePreferencesDialog::GamePreferencesDialog()
     for (std::list<std::string>::iterator i = army_themes.begin(),
 	     end = army_themes.end(); i != end; ++i)
       {
-	if (*i == "default" || *i == "heroes")
-	    continue;
 	army_theme_combobox->append_text(Glib::filename_to_utf8(*i));
       }
 

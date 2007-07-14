@@ -1,108 +1,423 @@
 <?xml version="1.0"?>
 <armyset version="0.2">
-    <d_size>6</d_size>
-    <d_name>Standard Units</d_name>
-    <d_id>1</d_id>
+    <d_size>20</d_size>
+    <d_name>Default</d_name>
+    <d_id>6</d_id>
     <army>
-        <d_name>Pikeman</d_name>
-        <d_image>pikeman</d_image>
-        <d_description>A peasant equipped with a simple pike. This is not a serious enemy, but can nevertheless be fairly effective against cavalry.</d_description>
+        <d_name>Scouts</d_name>
+        <d_image>scouts</d_image>
+        <d_description></d_description>
         <d_production>1</d_production>
-        <d_production_cost>20</d_production_cost>
-        <d_upkeep>1</d_upkeep>
+        <d_production_cost>10</d_production_cost>
+        <d_upkeep>2</d_upkeep>
+        <d_strength>1</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>16</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>6</d_move_bonus>
+        <d_army_bonus>0</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Giant Bats</d_name>
+        <d_image>giantbats</d_image>
+        <d_description></d_description>
+        <d_production>1</d_production>
+        <d_production_cost>30</d_production_cost>
+        <d_upkeep>5</d_upkeep>
+        <d_strength>1</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>16</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>31</d_move_bonus>
+        <d_army_bonus>0</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Light Inf.</d_name>
+        <d_image>lightinf</d_image>
+        <d_description></d_description>
+        <d_production>1</d_production>
+        <d_production_cost>50</d_production_cost>
+        <d_upkeep>3</d_upkeep>
         <d_strength>2</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>12</d_max_moves>
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
-        <d_move_bonus>4</d_move_bonus>
-        <d_army_bonus>16</d_army_bonus>
-    </army>
-    <army>
-        <d_name>Soldier</d_name>
-        <d_image>soldier</d_image>
-        <d_description></d_description>
-        <d_production>1</d_production>
-        <d_production_cost>50</d_production_cost>
-        <d_upkeep>2</d_upkeep>
-        <d_strength>2</d_strength>
-        <d_expvalue>2</d_expvalue>
-        <d_max_moves>10</d_max_moves>
-        <d_sight>3</d_sight>
-        <d_gender>0</d_gender>
-        <d_defends_ruins>false</d_defends_ruins>
-        <d_awardable>false</d_awardable>
-        <d_move_bonus>0</d_move_bonus>
-        <d_army_bonus>16</d_army_bonus>
-    </army>
-    <army>
-        <d_name>Archer</d_name>
-        <d_image>archer</d_image>
-        <d_description></d_description>
-        <d_production>1</d_production>
-        <d_production_cost>50</d_production_cost>
-        <d_upkeep>2</d_upkeep>
-        <d_strength>1</d_strength>
-        <d_expvalue>2</d_expvalue>
-        <d_max_moves>12</d_max_moves>
-        <d_sight>4</d_sight>
-        <d_gender>0</d_gender>
-        <d_defends_ruins>false</d_defends_ruins>
-        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
         <d_move_bonus>2</d_move_bonus>
         <d_army_bonus>0</d_army_bonus>
+        <d_hero>false</d_hero>
     </army>
     <army>
-        <d_name>Veteran</d_name>
-        <d_image>veteran</d_image>
+        <d_name>Orcish Mob</d_name>
+        <d_image>orcishmob</d_image>
         <d_description></d_description>
         <d_production>2</d_production>
         <d_production_cost>100</d_production_cost>
         <d_upkeep>4</d_upkeep>
-        <d_strength>3</d_strength>
-        <d_expvalue>3</d_expvalue>
-        <d_max_moves>10</d_max_moves>
+        <d_strength>2</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>12</d_max_moves>
         <d_sight>3</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
-        <d_move_bonus>0</d_move_bonus>
+        <d_portrait></d_portrait>
+        <d_move_bonus>6</d_move_bonus>
         <d_army_bonus>0</d_army_bonus>
+        <d_hero>false</d_hero>
     </army>
     <army>
-        <d_name>Cavalry</d_name>
+        <d_name>Light Cav.</d_name>
         <d_image>cavalry</d_image>
         <d_description></d_description>
         <d_production>2</d_production>
         <d_production_cost>300</d_production_cost>
-        <d_upkeep>4</d_upkeep>
-        <d_strength>3</d_strength>
-        <d_expvalue>3</d_expvalue>
-        <d_max_moves>18</d_max_moves>
-        <d_sight>4</d_sight>
+        <d_upkeep>6</d_upkeep>
+        <d_strength>2</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>20</d_max_moves>
+        <d_sight>3</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>8</d_army_bonus>
+        <d_hero>false</d_hero>
     </army>
     <army>
-        <d_name>Catapult</d_name>
-        <d_image>catapult</d_image>
+        <d_name>Catapults</d_name>
+        <d_image>catapults</d_image>
+        <d_description></d_description>
+        <d_production>4</d_production>
+        <d_production_cost>500</d_production_cost>
+        <d_upkeep>16</d_upkeep>
+        <d_strength>2</d_strength>
+        <d_ranged>5</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>16</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>0</d_move_bonus>
+        <d_army_bonus>64</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Heavy Inf.</d_name>
+        <d_image>heavyinf</d_image>
+        <d_description></d_description>
+        <d_production>2</d_production>
+        <d_production_cost>300</d_production_cost>
+        <d_upkeep>5</d_upkeep>
+        <d_strength>3</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>8</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>2</d_move_bonus>
+        <d_army_bonus>0</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Archers</d_name>
+        <d_image>archers</d_image>
+        <d_description></d_description>
+        <d_production>2</d_production>
+        <d_production_cost>400</d_production_cost>
+        <d_upkeep>7</d_upkeep>
+        <d_strength>3</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>12</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>2</d_move_bonus>
+        <d_army_bonus>0</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Dwarves</d_name>
+        <d_image>dwarves</d_image>
+        <d_description></d_description>
+        <d_production>2</d_production>
+        <d_production_cost>400</d_production_cost>
+        <d_upkeep>7</d_upkeep>
+        <d_strength>3</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>8</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>8</d_move_bonus>
+        <d_army_bonus>0</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Pikeman</d_name>
+        <d_image>pikeman</d_image>
+        <d_description></d_description>
+        <d_production>3</d_production>
+        <d_production_cost>400</d_production_cost>
+        <d_upkeep>5</d_upkeep>
+        <d_strength>4</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>8</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>0</d_move_bonus>
+        <d_army_bonus>8</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Heavy Cav.</d_name>
+        <d_image>heavycav</d_image>
         <d_description></d_description>
         <d_production>3</d_production>
         <d_production_cost>500</d_production_cost>
-        <d_upkeep>6</d_upkeep>
-        <d_strength>1</d_strength>
-        <d_expvalue>3</d_expvalue>
-        <d_max_moves>8</d_max_moves>
-        <d_sight>1</d_sight>
+        <d_upkeep>8</d_upkeep>
+        <d_strength>4</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>16</d_max_moves>
+        <d_sight>3</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
         <d_move_bonus>0</d_move_bonus>
-        <d_army_bonus>64</d_army_bonus>
+        <d_army_bonus>8</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Wolf Riders</d_name>
+        <d_image>wolfriders</d_image>
+        <d_description></d_description>
+        <d_production>2</d_production>
+        <d_production_cost>500</d_production_cost>
+        <d_upkeep>8</d_upkeep>
+        <d_strength>4</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>16</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>0</d_move_bonus>
+        <d_army_bonus>0</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Giants</d_name>
+        <d_image>giants</d_image>
+        <d_description></d_description>
+        <d_production>2</d_production>
+        <d_production_cost>800</d_production_cost>
+        <d_upkeep>10</d_upkeep>
+        <d_strength>5</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>16</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>8</d_move_bonus>
+        <d_army_bonus>0</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Minotaurs</d_name>
+        <d_image>minotaurs</d_image>
+        <d_description></d_description>
+        <d_production>2</d_production>
+        <d_production_cost>800</d_production_cost>
+        <d_upkeep>10</d_upkeep>
+        <d_strength>5</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>12</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>0</d_move_bonus>
+        <d_army_bonus>0</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Spiders</d_name>
+        <d_image>spiders</d_image>
+        <d_description></d_description>
+        <d_production>2</d_production>
+        <d_production_cost>1000</d_production_cost>
+        <d_upkeep>12</d_upkeep>
+        <d_strength>5</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>12</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>0</d_move_bonus>
+        <d_army_bonus>0</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Pegasi</d_name>
+        <d_image>pegasi</d_image>
+        <d_description></d_description>
+        <d_production>3</d_production>
+        <d_production_cost>1000</d_production_cost>
+        <d_upkeep>12</d_upkeep>
+        <d_strength>5</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>20</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>31</d_move_bonus>
+        <d_army_bonus>4</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Griffins</d_name>
+        <d_image>griffins</d_image>
+        <d_description></d_description>
+        <d_production>3</d_production>
+        <d_production_cost>1500</d_production_cost>
+        <d_upkeep>15</d_upkeep>
+        <d_strength>5</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>20</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>31</d_move_bonus>
+        <d_army_bonus>4</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Unicorns</d_name>
+        <d_image>unicorns</d_image>
+        <d_description></d_description>
+        <d_production>4</d_production>
+        <d_production_cost>1500</d_production_cost>
+        <d_upkeep>15</d_upkeep>
+        <d_strength>7</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>16</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>0</d_move_bonus>
+        <d_army_bonus>4</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>Elephants</d_name>
+        <d_image>elephants</d_image>
+        <d_description></d_description>
+        <d_production>4</d_production>
+        <d_production_cost>1500</d_production_cost>
+        <d_upkeep>15</d_upkeep>
+        <d_strength>8</d_strength>
+        <d_ranged>0</d_ranged>
+        <d_shots>0</d_shots>
+        <d_expvalue>1</d_expvalue>
+        <d_max_moves>16</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_gender>0</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_portrait></d_portrait>
+        <d_move_bonus>0</d_move_bonus>
+        <d_army_bonus>0</d_army_bonus>
+        <d_hero>false</d_hero>
+    </army>
+    <army>
+        <d_name>hero</d_name>
+        <d_image>hero</d_image>
+        <d_description></d_description>
+        <d_gender>1</d_gender>
+        <d_defends_ruins>false</d_defends_ruins>
+        <d_awardable>false</d_awardable>
+        <d_production>0</d_production>
+        <d_production_cost>0</d_production_cost>
+        <d_upkeep>5</d_upkeep>
+        <d_strength>5</d_strength>
+        <d_expvalue>10</d_expvalue>
+        <d_max_moves>14</d_max_moves>
+        <d_sight>3</d_sight>
+        <d_move_bonus>0</d_move_bonus>
+        <d_army_bonus>4</d_army_bonus>
+        <d_hero>true</d_hero>
     </army>
 </armyset>

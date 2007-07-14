@@ -1,17 +1,9 @@
-SUBDIRS = default heroes imperial monsters orcs
+SUBDIRS = default 
 MAINTAINERCLEANFILES= Makefile.in
 
 lordsawararmydatadir = $(datadir)/lordsawar/army
 lordsawararmydata_DATA = \
-    default.xml \
-	imperial.xml \
-    monsters.xml \
-	orcs.xml \
-	heroes.xml
+    default.xml 
 
 EXTRA_DIST = \
-    default.xml \
-	imperial.xml \
-    monsters.xml \
-	orcs.xml \
-	heroes.xml
+    default.xml 

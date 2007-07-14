@@ -60,9 +60,6 @@ class Hero : public Army
 
         //! Saves the hero data
         bool save(XML_Helper* helper) const;
-
-        bool isHero() const {return true;}
-
         
         /** Returns a stat of the hero. See also army.h
           * 

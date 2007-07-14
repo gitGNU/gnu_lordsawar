@@ -31,6 +31,7 @@
 #include "../city.h"
 #include "../GraphicsCache.h"
 #include "../armysetlist.h"
+#include "../playerlist.h"
 
 BuyProductionDialog::BuyProductionDialog(City *c)
 {
@@ -54,16 +55,13 @@ BuyProductionDialog::BuyProductionDialog(City *c)
     
     const Armysetlist* al = Armysetlist::getInstance();
 
+    Player *p = Playerlist::getInstance()->getActiveplayer();
     // fill in purchasable armies
-    std::vector<unsigned int> sets = al->getArmysets(true);
-    for (unsigned int i = 0; i < sets.size(); i++)
+    for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
       {
-        for (unsigned int j = 0; j < al->getSize(sets[i]); j++)
-          {
-            const Army *a = al->getArmy (sets[i], j);
-            if (a->getProductionCost() > 0)
-              purchasables.push_back(a);
-          }
+        const Army *a = al->getArmy (p->getArmyset(), j);
+        if (a->getProductionCost() > 0)
+          purchasables.push_back(a);
       }
 
     // fill in production options
@@ -183,8 +181,7 @@ void BuyProductionDialog::set_buy_button_state()
 	const Army *a = army_id_to_army();
 	
 	if (int(a->getProductionCost()) > gold ||
-	    city->hasProduction(selected_army,
-				Armysetlist::getInstance()->getStandardId()))
+	    city->hasProduction(selected_army, city->getPlayer()->getArmyset()))
 	    can_buy = false;
     }
     

@@ -42,6 +42,9 @@ class Fighter
         Army* army;
         Vector<int> pos;       // location on the map (needed to calculate boni)
         int terrain_strength;
+	//! needed for sorting
+        //bool operator() ( const Fighter* f1, const Fighter* f2 );
+
 };
 
 Fighter::Fighter(Army* a, Vector<int> p)
@@ -49,11 +52,40 @@ Fighter::Fighter(Army* a, Vector<int> p)
 {
 }
 
+class Armylist
+{
+  public:
+    bool operator() (const Army *lhs, const Army *rhs)  
+      { 
+        Player *p = lhs->getPlayer();
+        //lookup value for left hand side according to type
+        //lookup value for right hand side according to type
+        //compare values
+        return lhs->getType() < rhs->getType(); 
+      }
+};
+
+//take a list of stacks and create an ordered list of armies
+std::list<Army*> Fight::orderArmies(std::list<Stack*> stacks)
+{
+  std::list<Army*> armies;
+  std::list<Stack*>::iterator it;
+  for (it = stacks.begin(); it != stacks.end(); it++)
+    for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
+      armies.push_back((*sit));
+
+  //okay now sort the army list according to the player's fight order
+  Armylist al;
+  armies.sort(al);
+
+  return armies;
+}
 
 
 Fight::Fight(Stack* attacker, Stack* defender)
     : d_turn(0), d_result(DRAW)
 {
+
     debug("Fight between " <<attacker->getId() <<" and " <<defender->getId())
     
     // Duel case: two stacks fight each other; Nothing further to be done
@@ -65,13 +97,13 @@ Fight::Fight(Stack* attacker, Stack* defender)
     for (Stack::iterator it = attacker->begin(); it != attacker->end(); it++)
     {
         Fighter* f = new Fighter((*it), attacker->getPos());
-        d_att_close.push_back(f);
+        d_att_close.push_back (f);
     }
 
     for (Stack::iterator it = defender->begin(); it != defender->end(); it++)
     {
         Fighter* f = new Fighter((*it), defender->getPos());
-        d_def_close.push_back(f);
+        d_def_close.push_back (f);
     }
     
     // What we do here: In the setup, we need to find out all armies that
@@ -182,6 +214,10 @@ void Fight::battle()
 {
     // at the beginning of the battle, calculate the bonuses
     // bonuses remain even if the unit providing a stackwide bonus dies
+
+    //d_att_close.sort();
+    //d_def_close.sort();
+
     calculateBonus();
 
     // first, fight until the fight is over

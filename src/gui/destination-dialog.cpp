@@ -174,7 +174,7 @@ void DestinationDialog::fill_in_vectoring_info()
   dialog->set_title(city->getName());
 
   Player *player = city->getPlayer();
-  unsigned int as = Armysetlist::getInstance()->getStandardId();
+  unsigned int as = player->getArmyset();
   Glib::RefPtr<Gdk::Pixbuf> pic;
   GraphicsCache *gc = GraphicsCache::getInstance();
   int slot = city->getProductionIndex();

@@ -53,7 +53,7 @@ SelectArmyDialog::SelectArmyDialog()
     // setup the armyset combo
     armyset_combobox = manage(new Gtk::ComboBoxText);
 
-    armysets = Armysetlist::getInstance()->getArmysets(true);
+    armysets = Armysetlist::getInstance()->getArmysets();
     for (std::vector<Uint32>::iterator i = armysets.begin(),
 	     end = armysets.end(); i != end; ++i)
 	armyset_combobox->append_text(Armysetlist::getInstance()->getName(*i));

@@ -82,6 +82,8 @@ FightWindow::FightWindow(Fight &fight)
 	    defenders.push_back(*si);
           }
 
+    //FIXME: sort attackers and defenders by player fight order
+  
     int rows = compute_max_rows(attackers, defenders);
     
     // add the armies

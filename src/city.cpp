@@ -247,8 +247,8 @@ bool City::isAlreadyBought(const Army * army)
         if (d_basicprod[i]!=-1)
 	{
 	    int type1=army->getType();
-	    int type2=(Armysetlist::getInstance()->getArmy(Armysetlist::getInstance()->getStandardId(), d_basicprod[i]))->getType();
-	    string name=(Armysetlist::getInstance()->getArmy(Armysetlist::getInstance()->getStandardId(), d_basicprod[i]))->getName();
+	    int type2=(Armysetlist::getInstance()->getArmy(getPlayer()->getArmyset(), d_basicprod[i]))->getType();
+	    string name=(Armysetlist::getInstance()->getArmy(getPlayer()->getArmyset(), d_basicprod[i]))->getName();
            
             debug("army in list " << type2 << " - " << name)          
 	    debug("army in city " << type1 << " - " << army->getName())          
@@ -264,7 +264,7 @@ bool City::isAlreadyBought(const Army * army)
 bool City::addBasicProd(int index, int armytype)
 {
     const Armysetlist* al = Armysetlist::getInstance();
-    int size = al->getSize(al->getStandardId());
+    int size = al->getSize(getPlayer()->getArmyset());
     
     if ((index >= d_numbasic) || (armytype >= size))
         return false;
@@ -336,7 +336,7 @@ void City::produceStrongestArmy()
       unsigned int max_strength = 0;
       int strong_idx = -1;
       const Armysetlist* al = Armysetlist::getInstance();
-      Uint32 set = al->getStandardId();
+      Uint32 set = getPlayer()->getArmyset();
       for (int i = 0; i < 4; i++)
         {
           int j = getArmytype(i);
@@ -369,7 +369,7 @@ void City::produceWeakestArmy()
       unsigned int min_strength = 100;
       int weak_idx = -1;
       const Armysetlist* al = Armysetlist::getInstance();
-      Uint32 set = al->getStandardId();
+      Uint32 set = getPlayer()->getArmyset();
       for (int i = 0; i < 4; i++)
         {
           int j = getArmytype(i);
@@ -416,7 +416,7 @@ void City::nextTurn()
 
 bool City::hasProduction(int type, Uint32 set) const
 {
-    if (set == Armysetlist::getInstance()->getStandardId())
+    if (set == getPlayer()->getArmyset())
         for (int i = 0; i < d_numbasic; i++)
             if (d_basicprod[i] == type)
                 return true;
@@ -441,7 +441,7 @@ const Army* City::getArmy(int slot) const
 
     const Armysetlist* al = Armysetlist::getInstance();
     
-    return al->getArmy(al->getStandardId(), d_basicprod[slot]);
+    return al->getArmy(getPlayer()->getArmyset(), d_basicprod[slot]);
 }
 
 bool City::isFriend(Player* player) const
@@ -482,7 +482,7 @@ void City::produceArmy()
   Uint32 set;
   int index;
         
-  set = al->getStandardId();
+  set = getPlayer()->getArmyset();
   index = d_basicprod[d_production];
   debug("produce_army()\n");
 

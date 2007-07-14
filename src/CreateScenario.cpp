@@ -516,15 +516,12 @@ bool CreateScenario::setupRuins()
     // list all the army types that can be a sentinel.
     std::vector<const Army*> occupants;
     Armysetlist *al = Armysetlist::getInstance();
-    std::vector<unsigned int> sets = al->getArmysets(true);
-    for (unsigned int i = 0; i < sets.size(); i++)
+    Player *p = Playerlist::getInstance()->getNeutral();
+    for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
       {
-        for (unsigned int j = 0; j < al->getSize(sets[i]); j++)
-          {
-            const Army *a = al->getArmy (sets[i], j);
-            if (a->getDefendsRuins())
-              occupants.push_back(a);
-          }
+        const Army *a = al->getArmy (p->getArmyset(), j);
+        if (a->getDefendsRuins())
+          occupants.push_back(a);
       }
 
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();

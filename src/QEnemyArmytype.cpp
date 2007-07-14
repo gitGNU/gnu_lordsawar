@@ -115,7 +115,8 @@ bool QuestEnemyArmytype::save(XML_Helper *helper) const
 std::string QuestEnemyArmytype::getProgress() const
 {
     Armysetlist *al = Armysetlist::getInstance();
-    Uint32 set = al->getStandardId();
+    //FIXME: we're picking a type that *we* own, not what our enemy owns
+    Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
     const Army *a = al->getArmy(set, d_type_to_kill);
     char buffer[101]; buffer[100]='\0';
     snprintf(buffer, 100, _("You have not killed a unit of enemy %s yet."), 
@@ -126,7 +127,7 @@ std::string QuestEnemyArmytype::getProgress() const
 void QuestEnemyArmytype::getSuccessMsg(std::queue<std::string>& msgs) const
 {
     Armysetlist *al = Armysetlist::getInstance();
-    Uint32 set = al->getStandardId();
+    Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
     const Army *a = al->getArmy(set, d_type_to_kill);
     char buffer[101]; buffer[100]='\0';
     snprintf(buffer, 100, _("You have killed a unit of enemy %s."), a->getName().c_str());
@@ -165,7 +166,7 @@ void QuestEnemyArmytype::dyingArmy(Army *army, std::vector<Uint32> culprits)
 void QuestEnemyArmytype::initDescription()
 {
     Armysetlist *al = Armysetlist::getInstance();
-    Uint32 set = al->getStandardId();
+    Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
     const Army *a = al->getArmy(set, d_type_to_kill);
     char buffer[101]; buffer[100]='\0';
     snprintf(buffer, 100, _("You must destroy a unit of enemy %s."), 

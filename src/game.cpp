@@ -792,7 +792,6 @@ void Game::maybeRecruitHero (Player *p)
             }
           if (gold_needed == 0)
             {
-              //FIXME: add a battle standard to the hero's bag of stuff
               std::string name = p->getName() + " " + _("Standard");
               Item *battle_standard = new Item (name, true, p);
               battle_standard->setBonus(Item::ADD1STACK);
@@ -820,9 +819,17 @@ Game::loadHeroTemplates()
   size_t bytesread;
   char *tmp;
   const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 heroset = al->getHeroId();
   const Army* herotype;
 
+  // list all the army types that are heroes.
+  std::vector<const Army*> heroes;
+  Player *p = Playerlist::getInstance()->getNeutral();
+  for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
+    {
+      const Army *a = al->getArmy (p->getArmyset(), j);
+      if (a->isHero())
+        heroes.push_back(a);
+    }
 
   if (fileptr == NULL)
     return -1;
@@ -849,7 +856,8 @@ Game::loadHeroTemplates()
           free (line);
           return -4;
         }
-      herotype = al->getArmy(heroset, rand() % al->getSize (heroset));
+
+      herotype = heroes[rand() % heroes.size()];
       Hero *newhero = new Hero (*herotype, "", NULL);
       if (gender)
         newhero->setGender(Hero::MALE);

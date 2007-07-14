@@ -275,6 +275,7 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 
     // then fill the other players
     int c = 0;
+    int army_id = Armysetlist::getInstance()->file_names[g.army_theme];
     for (std::vector<GameParameters::Player>::const_iterator
 	     i = g.players.begin(), end = g.players.end();
 	 i != end; ++i, ++c) {
@@ -293,13 +294,11 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 	else
 	    type = Player::HUMAN;
 
-	int army_id = Armysetlist::getInstance()->file_names[g.army_theme];
 	creator.addPlayer(i->name, army_id, Player::get_color_for_no(c), type);
     }
 
     // first insert the neutral player
-    unsigned int set = (Armysetlist::getInstance()->getArmysets())[0];
-    creator.addNeutral(_("Neutral"), set, Player::get_color_for_neutral(),
+    creator.addNeutral(_("Neutral"), army_id, Player::get_color_for_neutral(),
 		       Player::AI_DUMMY);
 
     // now fill in some map information

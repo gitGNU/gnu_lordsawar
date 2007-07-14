@@ -72,26 +72,9 @@ class Armysetlist : public sigc::trackable
           */
         std::string getName(Uint32 id) const;
 
-        /** Returns the index of the standard armyset
-          * 
-          * Since the standard armyset is special, we try to avoid access to it.
-          * You have to call this function explicitely to get to know its id.
+        /** Returns a list of all existing army sets
           */
-        Uint32 getStandardId() const {return d_standard;}
-
-        /** Returns the index of the heroes
-          * 
-          * The same as for the standar armyset applies here.
-          */
-        Uint32 getHeroId() const {return d_heroes;}
-
-
-        /** Returns a list of all existing armies
-          * 
-          * @param force_all    if set to true, all armysets are returned, else
-          *                     the standard and the hero armyset are excluded.
-          */
-        std::vector<Uint32> getArmysets(bool force_all = false) const;
+        std::vector<Uint32> getArmysets() const;
 
 	// FIXME: quick hack
         typedef std::map<std::string, Uint32> FileNameMap;
@@ -120,9 +103,6 @@ class Armysetlist : public sigc::trackable
         
         ArmyMap d_armies;
         NameMap d_names;
-
-        Uint32 d_standard;
-        Uint32 d_heroes;
 
         // temporary variables for game loading
         Uint32 d_loading;

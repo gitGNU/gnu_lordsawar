@@ -42,7 +42,7 @@ Army::Army(const Army& a, Player* p)
      d_battles_number(a.d_battles_number), d_number_hashit(a.d_number_hashit),
      d_number_hasbeenhit(a.d_number_hasbeenhit), 
      d_defends_ruins(a.d_defends_ruins), d_awardable(a.d_awardable),
-     d_visitedTemples(a.d_visitedTemples)
+     d_visitedTemples(a.d_visitedTemples), d_hero(a.d_hero)
 {
     // if we have been copied from an army prototype, initialise several values
     if (d_id == 0)
@@ -60,11 +60,12 @@ Army::Army(const Army& a, Player* p)
 
 Army::Army(XML_Helper* helper, bool prototype)
   :d_pixmap(0), d_mask(0), d_name(""), d_description(""), d_ship(false),
-   d_gender(NONE), d_player(0), d_max_hp(2),
+   d_gender(NONE), d_player(0), 
    d_id(0), d_xp(0), d_level(1), d_grouped(true),
    d_number_hashit(0), d_number_hasbeenhit(0), d_defends_ruins(false),
-   d_awardable(false)
+   d_awardable(false), d_hero(false)
 {
+    d_max_hp = 2;
     d_visitedTemples.clear();
     // first, load the data that has to be loaded anyway
     helper->getData(d_strength, "strength");
@@ -139,6 +140,7 @@ Army::Army(XML_Helper* helper, bool prototype)
 
         for(int i = 0; i < 3; i++)
             d_medal_bonus[i] = false;
+      helper->getData(d_hero,"hero");
     }
 }
 
@@ -380,6 +382,7 @@ bool Army::saveData(XML_Helper* helper) const
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("armyset", d_armyset);
     retval &= helper->saveData("type", d_type);
+    retval &= helper->saveData("hero", d_hero);
     retval &= helper->saveData("hp", d_hp);
     retval &= helper->saveData("strength", d_strength);
     retval &= helper->saveData("sight", d_sight);
@@ -427,6 +430,7 @@ void  Army::printAllDebugInfo() const
     std::cerr << "army_bonus = " << d_army_bonus << std::endl;
 
     std::cerr << "type = "    << d_type    << std::endl;
+    std::cerr << "hero = "    << d_hero    << std::endl;
     std::cerr << "level = "   << d_level   << std::endl;
     std::cerr << "xp = "      << d_xp      << std::endl;
     std::cerr << "grouped = " << d_grouped << std::endl;
@@ -457,6 +461,7 @@ void Army::copyVals(const Army* a)
     d_awardable = a->getAwardable();
     d_visitedTemples = a->d_visitedTemples;
     d_player = a->d_player;
+    d_hero = a->d_hero;
 }
 
 void Army::setInShip (bool s)

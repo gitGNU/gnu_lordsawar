@@ -21,6 +21,7 @@
 class Stack;
 class Fighter;
 class Hero;
+class Army;
 
 /** This is the structure that describes the course of the fight. It is later
   * read by a fight dialog to reconstruct what happened.
@@ -87,6 +88,10 @@ class Fight
 	//FIXME: use this constant
         static const int MOVES_FOR_FIGHT = 3;
 
+	//! turn a list of stacks into an ordered list of armies
+	//! this is used for calculation and display purposes
+        static std::list<Army*> orderArmies(std::list<Stack*> stacks);
+
     private:
         /** Does one fight round.
           *
@@ -117,7 +122,6 @@ class Fight
 
         //! removes a fighter from the fighting lists (d_att_close etc.)
         void remove(Fighter* f);
-
         // DATA
         std::list<Stack*> d_attackers;
         std::list<Stack*> d_defenders;

@@ -217,7 +217,7 @@ class Army : public sigc::trackable
         bool isGrouped() const {return d_grouped;}
 
         //! Returns whether the army is a hero
-        virtual bool isHero() const {return false;}
+        bool isHero() const {return d_hero;}
 
         /** Heal the unit
           * 
@@ -369,7 +369,11 @@ class Army : public sigc::trackable
 	bool d_defends_ruins;
 	//! this army type can be a reward from quest
 	bool d_awardable;
+	//! which temples have we visited
         std::list<Uint32> d_visitedTemples;
+
+	//!is this army a hero?
+	bool d_hero;
 };
 
 #endif // ARMY_H

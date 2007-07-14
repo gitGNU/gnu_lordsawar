@@ -310,11 +310,10 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
             debug("Vectoring from =" << pos.x << "," << pos.y)
 
             al = Armysetlist::getInstance();
-            Uint32 set;
+            Uint32 set = Playerlist::getActiveplayer()->getArmyset();
             int index;
             int val;
 
-            set = al->getStandardId();
             index = city->getArmytype(city->getProductionIndex());
         
             // The city can have no production so we calculate the path only when index != 0

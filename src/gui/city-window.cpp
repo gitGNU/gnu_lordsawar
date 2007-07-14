@@ -168,7 +168,7 @@ void CityWindow::fill_in_city_info()
 void CityWindow::fill_in_production_toggles()
 {
     Player *player = city->getPlayer();
-    unsigned int as = Armysetlist::getInstance()->getStandardId();
+    unsigned int as = player->getArmyset();
     int production_index = city->getProductionIndex();
     int type;
     Glib::RefPtr<Gdk::Pixbuf> pic;
@@ -235,7 +235,7 @@ void CityWindow::on_production_toggled(Gtk::ToggleButton *toggle)
 void CityWindow::fill_in_production_info()
 {
     Player *player = city->getPlayer();
-    unsigned int as = Armysetlist::getInstance()->getStandardId();
+    unsigned int as = player->getArmyset();
     Glib::RefPtr<Gdk::Pixbuf> pic;
     GraphicsCache *gc = GraphicsCache::getInstance();
     int slot = city->getProductionIndex();

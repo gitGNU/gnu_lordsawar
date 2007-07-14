@@ -254,7 +254,7 @@ void EditorBigMap::after_draw()
 
 	case STACK:
 	    pic = GraphicsCache::getInstance()->getArmyPic(
-		Armysetlist::getInstance()->getStandardId(), 0,
+		Playerlist::getInstance()->getNeutral()->getArmyset(), 0,
 		Playerlist::getInstance()->getNeutral(), 1, NULL);
 	    SDL_BlitSurface(pic, 0, buffer, &r);
 	    break;
@@ -534,7 +534,7 @@ void EditorBigMap::change_map_under_cursor()
 		Player* p = Playerlist::getInstance()->getNeutral();
 		Stack* s = new Stack(p, tile);
 		const Armysetlist* al = Armysetlist::getInstance();
-		Army* a = new Army(*al->getArmy(al->getStandardId(), 0), p);
+		Army* a = new Army(*al->getArmy(p->getArmyset(), 0), p);
 		s->push_back(a);
 		p->addStack(s);
 	    }

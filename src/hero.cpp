@@ -28,6 +28,7 @@ Hero::Hero(const Army& a, std::string name, Player *owner)
  : Army (a, owner)
 {
     d_name = name;
+    d_hero = true;
 }
 
 Hero::Hero(Hero& h)
@@ -35,6 +36,7 @@ Hero::Hero(Hero& h)
 {
     std::list<Item*>::iterator it;
 
+    d_hero = true;
     // copy the backpack of the other hero
     for (it = h.d_backpack.begin(); it != h.d_backpack.end(); it++)
     {
@@ -47,6 +49,7 @@ Hero::Hero(XML_Helper* helper)
     :Army(helper)
 {
     int i;
+    d_hero = true;
     helper->getData(d_name, "name");
     helper->getData(i, "gender");
     d_gender = static_cast<Army::Gender>(i);

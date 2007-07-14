@@ -20,6 +20,7 @@
 #include "reward.h"
 #include "army.h"
 #include "armysetlist.h"
+#include "playerlist.h"
 #include "GameMap.h"
 #include "ruin.h"
 using namespace std;
@@ -139,15 +140,12 @@ const Army* Reward_Allies::randomArmyAlly()
   // list all the army types that can be allies.
   std::vector<const Army*> allytypes;
   Armysetlist *al = Armysetlist::getInstance();
-  std::vector<unsigned int> sets = al->getArmysets(true);
-  for (unsigned int i = 0; i < sets.size(); i++)
+  Player *p = Playerlist::getInstance()->getActiveplayer();
+  for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
     {
-      for (unsigned int j = 0; j < al->getSize(sets[i]); j++)
-        {
-          const Army *a = al->getArmy (sets[i], j);
-          if (a->getAwardable())
-            allytypes.push_back(a);
-        }
+      const Army *a = al->getArmy (p->getArmyset(), j);
+      if (a->getAwardable())
+        allytypes.push_back(a);
     }
   if (!allytypes.empty())
     allytype = rand() % allytypes.size();
@@ -159,8 +157,6 @@ const Army* Reward_Allies::randomArmyAlly()
 
 bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const Army *army, Uint32 alliesCount)
 {
-  //Armysetlist *al = Armysetlist::getInstance();
-  //std::vector<unsigned int> sets = al->getArmysets(true);
   for (unsigned int i = 0; i < alliesCount; i++)
     {
       Army* ally = new Army(*army, p);
@@ -172,8 +168,6 @@ bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const Army *army, Uint
 
 bool Reward_Allies::addAllies(Player *p, Location *l, const Army *army, Uint32 alliesCount)
 {
-  //Armysetlist *al = Armysetlist::getInstance();
-  //std::vector<unsigned int> sets = al->getArmysets(true);
   for (unsigned int i = 0; i < alliesCount; i++)
     {
       Army* ally = new Army(*army, p);
