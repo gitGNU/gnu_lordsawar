@@ -9,6 +9,10 @@
 	* removed rounds label from fight dialog
 	* removed att_bonus and def_bonus from Fighter in favour of
 	  terrain_strength
+	* filling out command and battle stats in the hero dialog
+	* changed hero's standard to provide +1 command instead of +1 battle
+	* changed armyset to have all armies in one single armyset
+	* changed army templates to have a hero attribute
 
 2007-07-13  Ben Asselstine
         * removed equipment object from hero
