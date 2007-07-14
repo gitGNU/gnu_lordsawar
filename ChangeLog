@@ -1,7 +1,25 @@
+2007-07-14  Ben Asselstine
+        * now the maxhp attribute of army is always 2
+	* removed findVictim method in fight -- the top two armies always fight
+	* changed doRound method in fight to have the top two armies fight
+	* changed fightArmies so that each army has to roll a 20 sided dice
+	  under it's terrain_strength -- if both armies do, then the round is
+	  a draw -- otherwise it's a hit
+	* now nullifying MAX_ROUNDS in fight
+	* removed rounds label from fight dialog
+	* removed att_bonus and def_bonus from Fighter in favour of
+	  terrain_strength
+
 2007-07-13  Ben Asselstine
         * removed equipment object from hero
 	* removed type member from item
-	* handling item bonuses: flight, double movement, and battle.
+	* handling item bonuses: flight, double movement, and battle
+	* removed regenerating capability for armies
+	* added auto regeneration after fights
+	* removed instakill capability from armies
+	* removed leader capability from armies
+	* removed cavalry/anti-cavalry capability from armies
+	* now handling army bonuses during fight
 
 2007-07-11  Ben Asselstine
 	* now hidden ruins are randomly instantiated at game start
