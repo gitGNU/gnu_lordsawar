@@ -89,7 +89,7 @@
     </army>
     <army>
         <d_name>Light Cav.</d_name>
-        <d_image>cavalry</d_image>
+        <d_image>lightcav</d_image>
         <d_description></d_description>
         <d_production>2</d_production>
         <d_production_cost>300</d_production_cost>
