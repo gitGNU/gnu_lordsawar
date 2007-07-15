@@ -170,7 +170,7 @@
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
-        <d_move_bonus>8</d_move_bonus>
+        <d_move_bonus>4</d_move_bonus>
         <d_army_bonus>8</d_army_bonus>
         <d_hero>false</d_hero>
     </army>
@@ -246,7 +246,7 @@
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
         <d_portrait></d_portrait>
-        <d_move_bonus>8</d_move_bonus>
+        <d_move_bonus>4</d_move_bonus>
         <d_army_bonus>0</d_army_bonus>
         <d_hero>false</d_hero>
     </army>
