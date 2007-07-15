@@ -2,6 +2,7 @@
         * fixed bonus calculation to include command items from all heroes,
 	  not just the strongest one
 	* now sorting on player-specific fight order for battles
+	* ships now sport a player's colour
 
 2007-07-14  Ben Asselstine
         * now the maxhp attribute of army is always 2
