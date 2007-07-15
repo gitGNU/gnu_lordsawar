@@ -786,9 +786,12 @@ void Game::maybeRecruitHero (Player *p)
           if (alliesCount > 0)
             {
               const Army *army = Reward_Allies::randomArmyAlly();
-              Reward_Allies::addAllies(p, city->getPos(), army, alliesCount);
-              if (p->getType() == Player::HUMAN)
-                hero_arrives.emit(alliesCount);
+              if (army)
+                {
+                  Reward_Allies::addAllies(p, city->getPos(), army,alliesCount);
+                  if (p->getType() == Player::HUMAN)
+                    hero_arrives.emit(alliesCount);
+                }
             }
           if (gold_needed == 0)
             {
