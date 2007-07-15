@@ -94,18 +94,6 @@ Fight::Fight(Stack* attacker, Stack* defender)
     d_attackers.push_back(attacker);
     d_defenders.push_back(defender);
 
-    //for (Stack::iterator it = attacker->begin(); it != attacker->end(); it++)
-    //{
-        //Fighter* f = new Fighter((*it), attacker->getPos());
-        //d_att_close.push_back (f);
-    //}
-
-    //for (Stack::iterator it = defender->begin(); it != defender->end(); it++)
-    //{
-        //Fighter* f = new Fighter((*it), defender->getPos());
-        //d_def_close.push_back (f);
-    //}
-    
     // What we do here: In the setup, we need to find out all armies that
     // participate in the fight.  If a city is being attacked then the
     // defender gets any other stacks in the cities.
@@ -147,13 +135,7 @@ Fight::Fight(Stack* attacker, Stack* defender)
                 {
                     debug("Adding stack " <<s->getId() <<" to defenders")
                         
-                    // add units to list of fighters
                     d_defenders.push_back(s);
-                    //for (sit = s->begin(); sit != s->end(); sit++)
-                    //{
-                        //Fighter* f = new Fighter((*sit), Vector<int>(x,y));
-                        //d_def_close.push_back(f);
-                    //}
                 }
             }
         }
@@ -212,9 +194,6 @@ void Fight::battle()
 {
     // at the beginning of the battle, calculate the bonuses
     // bonuses remain even if the unit providing a stackwide bonus dies
-
-    //d_att_close.sort();
-    //d_def_close.sort();
 
     calculateBonus();
 
