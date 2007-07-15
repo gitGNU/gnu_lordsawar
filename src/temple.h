@@ -57,7 +57,6 @@ class Temple : public Location
 
     protected:
         int d_type;
-        Uint32 d_id;
 };
 
 #endif // TEMPLE_H
