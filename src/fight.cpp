@@ -360,23 +360,27 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
   Uint32 hero_bonus = 0;
   if (strongestHero)
     {
-      std::list<Item*> backpack = strongestHero->getBackpack();
-      std::list<Item*>::const_iterator item;
-      // count up the bonuses from command items
-      for (item = backpack.begin(); item != backpack.end(); item++)
+      // first get command items from ALL heroes in the stack
+      for (fit = friendly.begin(); fit != friendly.end(); fit++)
         {
-          if ((*item)->getBonus(Item::ADD1STACK))
-            hero_bonus += 1;
-          if ((*item)->getBonus(Item::ADD2STACK))
-            hero_bonus += 2;
-          if ((*item)->getBonus(Item::ADD3STACK))
-            hero_bonus += 3;
+          if ((*fit)->army->isHero())
+            {
+              Hero *h = dynamic_cast<Hero*>((*fit)->army);
+              std::list<Item*> backpack = h->getBackpack();
+              std::list<Item*>::const_iterator item;
+              // count up the bonuses from command items
+              for (item = backpack.begin(); item != backpack.end(); item++)
+                {
+                  if ((*item)->getBonus(Item::ADD1STACK))
+                    hero_bonus += 1;
+                  if ((*item)->getBonus(Item::ADD2STACK))
+                    hero_bonus += 2;
+                  if ((*item)->getBonus(Item::ADD3STACK))
+                    hero_bonus += 3;
+                }
+            }
         }
     }
-
-   //FIXME: confirm that we only add the strongest hero's command items.
-   //(and not all items from every hero in the stack)
-   //yes, we need to go grab ALL command items
 
   //now add on the hero's natural command
   if (strongestHero)
