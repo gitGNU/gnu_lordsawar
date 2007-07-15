@@ -94,40 +94,30 @@ Fight::Fight(Stack* attacker, Stack* defender)
     d_attackers.push_back(attacker);
     d_defenders.push_back(defender);
 
-    for (Stack::iterator it = attacker->begin(); it != attacker->end(); it++)
-    {
-        Fighter* f = new Fighter((*it), attacker->getPos());
-        d_att_close.push_back (f);
-    }
+    //for (Stack::iterator it = attacker->begin(); it != attacker->end(); it++)
+    //{
+        //Fighter* f = new Fighter((*it), attacker->getPos());
+        //d_att_close.push_back (f);
+    //}
 
-    for (Stack::iterator it = defender->begin(); it != defender->end(); it++)
-    {
-        Fighter* f = new Fighter((*it), defender->getPos());
-        d_def_close.push_back (f);
-    }
+    //for (Stack::iterator it = defender->begin(); it != defender->end(); it++)
+    //{
+        //Fighter* f = new Fighter((*it), defender->getPos());
+        //d_def_close.push_back (f);
+    //}
     
     // What we do here: In the setup, we need to find out all armies that
-    // participate in the fight. For this we separate three cases:
+    // participate in the fight.  If a city is being attacked then the
+    // defender gets any other stacks in the cities.
     //
-    // 1. Land unit is attacked
-    // 2. Sea unit is attacked
-    // 3. City is attacked
-    //
-    // In the first and second case, we take all stacks around the 
-    // attacked unit that can move on (water/non-water), i.e.
-    // exclude ships from land-fights and land-units from sea battles.
-    // In the third case, Attacker and defenders throw in everything they have
 
     Maptile* tile = GameMap::getInstance()->getTile(defender->getPos());
     Vector<int> p = defender->getPos();
 
-    bool land = false;
-    bool sea = false;
+    bool city = false;
     
-    if (tile->getBuilding() == Maptile::CITY || tile->getMaptileType() == Tile::WATER)
-        sea = true;
-    if (tile->getBuilding() == Maptile::CITY || tile->getMaptileType() != Tile::WATER)
-        land = true;
+    if (tile->getBuilding() == Maptile::CITY)
+        city = true;
 
     for (int x = p.x - 1; x <= p.x + 1; x++)
         for (int y = p.y - 1; y <= p.y + 1; y++)
@@ -149,19 +139,9 @@ Fight::Fight(Stack* attacker, Stack* defender)
                 && s != (*d_defenders.begin()))
             {
                 // check if stack may participate
-                bool valid = true;
-                for (sit = s->begin(); sit != s->end(); sit++)
-                {
-                    if (land && sea)
-                        break;
-
-                    if ((land && (*sit)->getStat(Army::SHIP))
-                        || (sea && !((*sit)->getStat(Army::MOVE_BONUS) & Tile::WATER)))
-                    {
-                        valid = false;
-                        break;
-                    }
-                }
+                bool valid = false;
+                if (city && tile->getBuilding() == Maptile::CITY)
+                  valid = true;
 
                 if (valid)
                 {
@@ -169,11 +149,11 @@ Fight::Fight(Stack* attacker, Stack* defender)
                         
                     // add units to list of fighters
                     d_defenders.push_back(s);
-                    for (sit = s->begin(); sit != s->end(); sit++)
-                    {
-                        Fighter* f = new Fighter((*sit), Vector<int>(x,y));
-                        d_def_close.push_back(f);
-                    }
+                    //for (sit = s->begin(); sit != s->end(); sit++)
+                    //{
+                        //Fighter* f = new Fighter((*sit), Vector<int>(x,y));
+                        //d_def_close.push_back(f);
+                    //}
                 }
             }
         }
@@ -188,6 +168,24 @@ Fight::Fight(Stack* attacker, Stack* defender)
     for (it = d_defenders.begin(); it != d_defenders.end(); it++)
         for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
             (*sit)->setBattlesNumber((*sit)->getBattlesNumber() + 1);
+
+  //setup fighters
+  it = d_defenders.begin();
+  std::list<Army*> def = orderArmies (d_defenders);
+  for (std::list<Army*>::iterator ait = def.begin(); ait != def.end(); ait++)
+    {
+      Fighter* f = new Fighter((*ait), (*it)->getPos());
+      d_def_close.push_back(f);
+    }
+
+  it = d_attackers.begin();
+  std::list<Army*> att = orderArmies (d_attackers);
+  for (std::list<Army*>::iterator ait = att.begin(); ait != att.end(); ait++)
+    {
+      Fighter* f = new Fighter((*ait), (*it)->getPos());
+      d_att_close.push_back(f);
+    }
+
 }                
 
 Fight::~Fight()
