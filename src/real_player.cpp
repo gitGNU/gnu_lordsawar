@@ -1062,9 +1062,6 @@ bool RealPlayer::cityRaze(City* c)
     d_actions.push_back(item);
 
     c->setBurnt(true);
-    //make sure there are no side effects e.g. when counting the cities of
-    //a player
-    c->conquer(Playerlist::getInstance()->getNeutral());
 
     supdatingCity.emit(c);
 

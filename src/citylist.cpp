@@ -70,6 +70,8 @@ int Citylist::countCities(Player* player) const
     
     for (const_iterator it = begin(); it != end(); it++)
     {
+        if ((*it).isBurnt())
+          continue;
         if ((*it).getPlayer() == player) cities++;
     }
     
