@@ -61,26 +61,23 @@ FightWindow::FightWindow(Fight &fight)
     // extract attackers and defenders
     armies_type attackers, defenders;
 
-    Player *attacker = NULL; /* for some reason attackers->getFront()->getPlayer() doesn't always yeild a player.  so we fill this variable instead */
-    Player *defender = NULL;
-    std::list<Stack *> l;
-    l = fight.getAttackers();
-    for (std::list<Stack *>::iterator i = l.begin(); i != l.end(); ++i)
-        for (Stack::const_iterator si = (*i)->begin(); si != (*i)->end(); ++si)
-          {
-            if (!attacker && (*si)->getPlayer())
-              attacker = (*si)->getPlayer();
-	    attackers.push_back(*si);
-          }
+    Fight::orderArmies (fight.getAttackers(), attackers);
+    Fight::orderArmies (fight.getDefenders(), defenders);
+
+    //std::list<Stack *> l;
+    //l = fight.getAttackers();
+    //for (std::list<Stack *>::iterator i = l.begin(); i != l.end(); ++i)
+        //for (Stack::const_iterator si = (*i)->begin(); si != (*i)->end(); ++si)
+          //{
+	    //attackers.push_back(*si);
+          //}
     
-    l = fight.getDefenders();
-    for (std::list<Stack *>::iterator i = l.begin(); i != l.end(); ++i)
-        for (Stack::const_iterator si = (*i)->begin(); si != (*i)->end(); ++si)
-          {
-            if (!defender && (*si)->getPlayer())
-              defender = (*si)->getPlayer();
-	    defenders.push_back(*si);
-          }
+    //l = fight.getDefenders();
+    //for (std::list<Stack *>::iterator i = l.begin(); i != l.end(); ++i)
+        //for (Stack::const_iterator si = (*i)->begin(); si != (*i)->end(); ++si)
+          //{
+	    //defenders.push_back(*si);
+          //}
 
     //FIXME: sort attackers and defenders by player fight order
   

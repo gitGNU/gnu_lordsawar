@@ -52,33 +52,30 @@ Fighter::Fighter(Army* a, Vector<int> p)
 {
 }
 
-class Armylist
-{
-  public:
-    bool operator() (const Army *lhs, const Army *rhs)  
-      { 
-        Player *p = lhs->getPlayer();
+bool armyCompare (const Army *lhs, const Army *rhs)  
+{ 
+        //Player *p = lhs->getPlayer();
         //lookup value for left hand side according to type
         //lookup value for right hand side according to type
         //compare values
         return lhs->getType() < rhs->getType(); 
-      }
-};
+}
+
 
 //take a list of stacks and create an ordered list of armies
-std::list<Army*> Fight::orderArmies(std::list<Stack*> stacks)
+void Fight::orderArmies(std::list<Stack*> stacks, std::vector<Army*> &armies)
 {
-  std::list<Army*> armies;
   std::list<Stack*>::iterator it;
+  if (stacks.empty())
+    return;
   for (it = stacks.begin(); it != stacks.end(); it++)
     for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
       armies.push_back((*sit));
 
   //okay now sort the army list according to the player's fight order
-  Armylist al;
-  armies.sort(al);
+  std::sort(armies.begin(), armies.end(), armyCompare);
 
-  return armies;
+  return;
 }
 
 
@@ -153,16 +150,18 @@ Fight::Fight(Stack* attacker, Stack* defender)
 
   //setup fighters
   it = d_defenders.begin();
-  std::list<Army*> def = orderArmies (d_defenders);
-  for (std::list<Army*>::iterator ait = def.begin(); ait != def.end(); ait++)
+  std::vector<Army*> def;
+  orderArmies (d_defenders, def);
+  for (std::vector<Army*>::iterator ait = def.begin(); ait != def.end(); ait++)
     {
       Fighter* f = new Fighter((*ait), (*it)->getPos());
       d_def_close.push_back(f);
     }
 
   it = d_attackers.begin();
-  std::list<Army*> att = orderArmies (d_attackers);
-  for (std::list<Army*>::iterator ait = att.begin(); ait != att.end(); ait++)
+  std::vector<Army*> att;
+  orderArmies (d_attackers, att);
+  for (std::vector<Army*>::iterator ait = att.begin(); ait != att.end(); ait++)
     {
       Fighter* f = new Fighter((*ait), (*it)->getPos());
       d_att_close.push_back(f);

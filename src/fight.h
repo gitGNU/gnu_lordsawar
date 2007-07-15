@@ -17,6 +17,7 @@
 
 #include <SDL_types.h>
 #include <list>
+#include <vector>
 
 class Stack;
 class Fighter;
@@ -90,7 +91,7 @@ class Fight
 
 	//! turn a list of stacks into an ordered list of armies
 	//! this is used for calculation and display purposes
-        static std::list<Army*> orderArmies(std::list<Stack*> stacks);
+        static void orderArmies(std::list<Stack*> stacks, std::vector<Army*> &armies);
 
     private:
         /** Does one fight round.
