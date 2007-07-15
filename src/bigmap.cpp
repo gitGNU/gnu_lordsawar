@@ -369,7 +369,7 @@ void BigMap::draw_buffer()
 		r.y = p.y + 6;
 		r.w = r.h = 54;
                 if ((*it)->hasShip())
-                  SDL_BlitSurface(gc->getShipPic(), 0, buffer, &r);
+                  SDL_BlitSurface(gc->getShipPic((*pit)), 0, buffer, &r);
                 else
                   SDL_BlitSurface((*it)->getStrongestArmy()->getPixmap(), 0,
 				  buffer, &r);

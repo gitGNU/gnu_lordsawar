@@ -22,6 +22,7 @@
 #include "defs.h"
 
 struct ArmyCacheItem;
+struct ShipCacheItem;
 struct CityCacheItem;
 struct TempleCacheItem;
 struct StoneCacheItem;
@@ -139,8 +140,9 @@ class GraphicsCache
           * @return image of the stone
           */
 
-        SDL_Surface* getCityPic(int type, const Player* p);
+        SDL_Surface* getShipPic(const Player* p);
 
+        SDL_Surface* getCityPic(int type, const Player* p);
         /** Another function for getting a city picture
           *
           * Most often, we don't need such a sophisticated function. So just
@@ -184,7 +186,6 @@ class GraphicsCache
         SDL_Surface* getShieldPic(Uint32 type, const Player* p);
         SDL_Surface* getSmallRuinedCityPic();
         SDL_Surface* getSmallHeroPic();
-        SDL_Surface* getShipPic();
         SDL_Surface* getPortPic();
         SDL_Surface* getMoveBonusPic(Uint32 bonus, bool has_ship);
         SDL_Surface *getSmallTemplePic();
@@ -241,6 +242,9 @@ class GraphicsCache
         //! Creates a new city picture with the given parametres.
         CityCacheItem* addCityPic(int type, const Player* p);
 
+        //! Creates a new ship picture with the given parametres.
+        ShipCacheItem* addShipPic(const Player* p);
+
         //! Creates a new flag picture with the given parametres.
         FlagCacheItem* addFlagPic(int size, const Player* p);
 
@@ -278,6 +282,9 @@ class GraphicsCache
         //! Erases the oldest (least recently requested) city cache item.
         void eraseLastCityItem();
 
+        //! Erases the oldest (least recently requested) ship cache item.
+        void eraseLastShipItem();
+
         //! Erases the oldest flag cache item
         void eraseLastFlagItem();
 
@@ -295,6 +302,9 @@ class GraphicsCache
 
         //! Loads the images for the city pictures and their masks.
         void loadCityPics();
+
+        //! Loads the images for the ship picture and it's mask.
+        void loadShipPic();
 
         //! Loads the images for the city pictures.
         void loadTemplePics();
@@ -338,6 +348,7 @@ class GraphicsCache
         std::list<ShieldCacheItem*> d_shieldlist;
         std::list<ProdShieldCacheItem*> d_prodshieldlist;
         std::list<MoveBonusCacheItem*> d_movebonuslist;
+        std::list<ShipCacheItem*> d_shiplist;
 
         //some private surfaces
         SDL_Surface* d_levelmask;
@@ -361,6 +372,7 @@ class GraphicsCache
 	SDL_Surface* d_smallhero;
         SDL_Surface* d_movebonuspic[6];
 	SDL_Surface* d_ship;
+	SDL_Surface* d_shipmask;
 	SDL_Surface* d_port;
 	SDL_Surface* d_small_ruin_unexplored;
 	SDL_Surface* d_small_ruin_explored;

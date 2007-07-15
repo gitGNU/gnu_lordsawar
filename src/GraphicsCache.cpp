@@ -42,6 +42,13 @@ struct ArmyCacheItem
     SDL_Surface* surface;
 };
 
+//the structure to store ships in
+struct ShipCacheItem
+{
+    const Player* player;
+    SDL_Surface* surface;
+};
+
 //the structure to store temples in
 struct TempleCacheItem
 {
@@ -142,6 +149,7 @@ GraphicsCache::GraphicsCache()
     :d_cachesize(0)
 {
     loadCityPics();
+    loadShipPic();
     loadTemplePics();
     loadStonePics();
     loadRoadPics();
@@ -159,7 +167,6 @@ GraphicsCache::GraphicsCache()
     d_small_ruin_unexplored = File::getMiscPicture("smallunexploredruin.png");
     d_small_ruin_explored = File::getMiscPicture("smallexploredruin.png");
     d_small_temple = File::getMiscPicture("smalltemple.png");
-    d_ship = File::getMiscPicture("stackship.png");
     std::string tileset = GameMap::getInstance()->getTileSet()->getName();
     d_port = File::getMapsetPicture(tileset, "misc/port.png");
 }
@@ -222,6 +229,7 @@ GraphicsCache::~GraphicsCache()
     SDL_FreeSurface(d_small_ruin_unexplored);
     SDL_FreeSurface(d_small_ruin_explored);
     SDL_FreeSurface(d_ship);
+    SDL_FreeSurface(d_shipmask);
     SDL_FreeSurface(d_port);
 }
 
@@ -246,10 +254,6 @@ SDL_Surface* GraphicsCache::getSmallRuinUnexploredPic()
 SDL_Surface* GraphicsCache::getSmallTemplePic()
 {
   return SDL_DisplayFormatAlpha(d_small_temple);
-}
-SDL_Surface* GraphicsCache::getShipPic()
-{
-  return SDL_DisplayFormatAlpha(d_ship);
 }
 
 SDL_Surface* GraphicsCache::getPortPic()
@@ -294,6 +298,31 @@ SDL_Surface* GraphicsCache::getMoveBonusPic(Uint32 bonus, bool has_ship)
 
     //no item found -> create a new one
     myitem = addMoveBonusPic(type);
+
+    return myitem->surface;
+}
+
+SDL_Surface* GraphicsCache::getShipPic(const Player* p)
+{
+    debug("getting ship pic " <<p->getName())
+    std::list<ShipCacheItem*>::iterator it;
+    ShipCacheItem* myitem;
+    for (it = d_shiplist.begin(); it != d_shiplist.end(); it++)
+    {
+        if ((*it)->player == p)
+        {
+            myitem = (*it);
+            
+            // put the item on the last place (==last touched)
+            d_shiplist.erase(it);
+            d_shiplist.push_back(myitem);
+            
+            return myitem->surface;
+        }
+    }
+    // We are still here, so the graphic is not in the cache. addShipPic calls
+    // checkPictures on its own, so we can simply return the surface
+    myitem = addShipPic(p);
 
     return myitem->surface;
 }
@@ -659,6 +688,9 @@ void GraphicsCache::checkPictures()
     while (d_citylist.size() > 10)
         eraseLastCityItem();
 
+    while (d_shiplist.size() > 10)
+        eraseLastShipItem();
+
     while (d_templelist.size() > 10)
         eraseLastTempleItem();
 
@@ -811,6 +843,35 @@ ArmyCacheItem* GraphicsCache::addArmyPic(Uint32 armyset, Uint32 army,
     //we are finished, so return the pic
     return myitem;
 }
+
+ShipCacheItem* GraphicsCache::addShipPic(const Player* p)
+{
+    debug("ADD ship pic: " <<p->getName())
+
+    ShipCacheItem* myitem = new ShipCacheItem();
+    myitem->player = p;
+
+    //Now the most important part: load the ship picture
+    //First, copy the ship picture and change it to the display format
+    
+    // copy the pixmap including player colors
+    myitem->surface = applyMask(d_ship, d_shipmask, p);
+
+    //now the final preparation steps:
+    //a) add the size
+    int size = myitem->surface->w * myitem->surface->h;
+    d_cachesize += myitem->surface->format->BytesPerPixel * size;
+
+    //b) add the entry to the list
+    d_shiplist.push_back(myitem);
+
+    //c) check if the cache size is too large
+    checkPictures();
+
+    //we are finished, so return the pic
+    return myitem;
+}
+
 
 TempleCacheItem* GraphicsCache::addTemplePic(int type)
 {
@@ -1111,6 +1172,9 @@ void GraphicsCache::clear()
     while (!d_citylist.empty())
         eraseLastCityItem();
 
+    while (!d_shiplist.empty())
+        eraseLastShipItem();
+
     while (!d_flaglist.empty())
         eraseLastFlagItem();
 
@@ -1213,6 +1277,21 @@ void GraphicsCache::eraseLastCityItem()
 
     CityCacheItem* myitem = *(d_citylist.begin());
     d_citylist.erase(d_citylist.begin());
+
+    int size = myitem->surface->w * myitem->surface->h;
+    d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+
+    SDL_FreeSurface(myitem->surface);
+    delete myitem;
+}
+
+void GraphicsCache::eraseLastShipItem()
+{
+    if (d_shiplist.empty())
+        return;
+
+    ShipCacheItem* myitem = *(d_shiplist.begin());
+    d_shiplist.erase(d_shiplist.begin());
 
     int size = myitem->surface->w * myitem->surface->h;
     d_cachesize -= myitem->surface->format->BytesPerPixel * size;
@@ -1505,6 +1584,37 @@ void GraphicsCache::loadCityPics()
 
     SDL_FreeSurface(tmp);
     SDL_FreeSurface(citypics);
+}
+
+void GraphicsCache::loadShipPic()
+{
+    //load the ship picture and it's mask
+    SDL_Rect shiprect;
+    SDL_Surface* shippic = File::getMiscPicture("stackship.png");
+    // copy alpha values, don't use them
+    SDL_SetAlpha(shippic, 0, 0);
+    SDL_PixelFormat* fmt = shippic->format;
+    int size = 54;
+    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
+                                            fmt->BitsPerPixel, fmt->Rmask, 
+                                            fmt->Gmask, fmt->Bmask, 
+                                            fmt->Amask);
+    shiprect.x = 0;
+    shiprect.y = 0;
+    shiprect.w = shiprect.h = size;
+    SDL_BlitSurface(shippic, &shiprect, tmp, 0);
+    d_ship = SDL_DisplayFormatAlpha(tmp);
+    SDL_FreeSurface(tmp);
+
+    d_shipmask =  SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32,
+                                       0xFF000000, 0xFF0000, 0xFF00, 
+                                       0xFF);
+    shiprect.x = size;
+    shiprect.y = 0;
+    shiprect.w = shiprect.h = size;
+    SDL_BlitSurface(shippic, &shiprect, d_shipmask, 0);
+
+    SDL_FreeSurface(shippic);
 }
 
 void GraphicsCache::loadSelectors()
