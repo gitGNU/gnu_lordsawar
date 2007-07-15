@@ -81,12 +81,21 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, Type type)
     debug("type of " << d_name << " is " << type)
         
     d_fogmap = new FogMap();
+
+    //initial fight order is the order in which the armies appear
+    //in the default.xml file.
+    Uint32 size = Armysetlist::getInstance()->getSize(d_armyset);
+    for (unsigned int i = 0; i < size; i++)
+    {
+      d_fight_order.push_back(i);
+    }
 }
 
 Player::Player(const Player& player)
     :d_color(player.d_color), d_name(player.d_name), d_armyset(player.d_armyset),
     d_gold(player.d_gold), d_dead(player.d_dead), d_immortal(player.d_immortal),
-    d_type(player.d_type), d_id(player.d_id), d_fogmap(player.d_fogmap)
+    d_type(player.d_type), d_id(player.d_id), d_fogmap(player.d_fogmap),
+    d_fight_order(player.d_fight_order)
 {
     // as the other player is propably dumped somehow, we need to deep copy
     // everything. This costs a lot, but the only useful situation for this
@@ -131,10 +140,23 @@ Player::Player(XML_Helper* helper)
 
     helper->getData(d_armyset, "armyset");
 
+    std::string fight_order;
+    std::stringstream sfight_order;
+    Uint32 val;
+    helper->getData(fight_order, "fight_order");
+    sfight_order.str(fight_order);
+    Uint32 size = Armysetlist::getInstance()->getSize(d_armyset);
+    for (unsigned int i = 0; i < size; i++)
+    {
+            sfight_order >> val;
+            d_fight_order.push_back(val);
+    }
+
     //last but not least, register the load function for actionlist
     helper->registerTag("action", sigc::mem_fun(this, &Player::load));
     helper->registerTag("stacklist", sigc::mem_fun(this, &Player::load));
     helper->registerTag("fogmap", sigc::mem_fun(this, &Player::load));
+
 }
 
 Player::~Player()
@@ -149,6 +171,7 @@ Player::~Player()
 
     for (std::list<Action*>::iterator it = d_actions.begin(); it != d_actions.end(); it++)
         delete (*it);
+    d_fight_order.clear();
 }
 
 Player* Player::create(std::string name, Uint32 armyset, SDL_Color color, Type type)
@@ -337,6 +360,14 @@ bool Player::save(XML_Helper* helper) const
     retval &= helper->saveData("immortal", d_immortal);
     retval &= helper->saveData("type", d_type);
     debug("type of " << d_name << " is " << d_type)
+
+    std::stringstream fight_order;
+    for (std::list<Uint32>::const_iterator it = d_fight_order.begin();
+         it != d_fight_order.end(); it++)
+      {
+        fight_order << (*it) << " ";
+      }
+    retval &= helper->saveData("fight_order", fight_order.str());
 
     //save the actionlist
     for (list<Action*>::const_iterator it = d_actions.begin();

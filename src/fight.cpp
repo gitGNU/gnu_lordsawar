@@ -54,11 +54,34 @@ Fighter::Fighter(Army* a, Vector<int> p)
 
 bool armyCompare (const Army *lhs, const Army *rhs)  
 { 
-        //Player *p = lhs->getPlayer();
-        //lookup value for left hand side according to type
-        //lookup value for right hand side according to type
+  unsigned int count = 0;
+  std::list<Uint32> lhs_fight_order = lhs->getPlayer()->getFightOrder();
+  std::list<Uint32> rhs_fight_order = rhs->getPlayer()->getFightOrder();
+  Uint32 lhs_rank = 0;
+  for (std::list<Uint32>::const_iterator it = lhs_fight_order.begin();
+       it != lhs_fight_order.end(); it++)
+    {
+      count++;
+      if (count == lhs->getType())
+        {
+          lhs_rank = (*it);
+          break;
+        }
+    }
+  count = 0;
+  Uint32 rhs_rank = 0;
+  for (std::list<Uint32>::const_iterator it = rhs_fight_order.begin();
+       it != rhs_fight_order.end(); it++)
+    {
+      count++;
+      if (count == rhs->getType())
+        {
+          rhs_rank = (*it);
+          break;
+        }
+    }
         //compare values
-        return lhs->getType() < rhs->getType(); 
+  return lhs_rank < rhs_rank; 
 }
 
 

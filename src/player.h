@@ -222,6 +222,9 @@ class Player: public sigc::trackable
         //! get the fog map of the player
         FogMap* getFogMap() const {return d_fogmap;}
 
+        //! get the fight order of the player
+	std::list<Uint32> getFightOrder() const {return d_fight_order;}
+
         //! Dumps the items in the actionlist on stderr
         void dumpActionlist() const;
 
@@ -490,6 +493,7 @@ class Player: public sigc::trackable
         std::list<Action*> d_actions; //list of actions done by the player
         Stacklist* d_stacklist;
         FogMap* d_fogmap;
+	std::list<Uint32> d_fight_order; //for each army in armyset, a number
 
     private:
         //! Loads the subdata of a player (actions and stacklist)
