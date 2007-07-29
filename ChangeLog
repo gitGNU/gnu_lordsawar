@@ -1,6 +1,7 @@
 2007-07-29  Ben Asselstine
         * fixed pillaging to choose most costly army
 	* fixed pillaging to display the pillaged army type
+	* fixed sacking to display the sacked army types
 
 2007-07-15  Ben Asselstine
         * fixed bonus calculation to include command items from all heroes,
