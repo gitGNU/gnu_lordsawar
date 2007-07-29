@@ -528,8 +528,9 @@ void Game::invading_city(City* city)
 	    break;
 	    
 	case CITY_DEFEATED_PILLAGE:
-	    player->cityPillage(city, gold);
-	    city_pillaged.emit(city, gold);
+            int pillaged_army_type;
+	    player->cityPillage(city, gold, pillaged_army_type);
+	    city_pillaged.emit(city, gold, pillaged_army_type);
 	    break;
 
 	case CITY_DEFEATED_SACK:

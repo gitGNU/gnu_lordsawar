@@ -42,20 +42,20 @@ class Army : public sigc::trackable
 
         enum Bonus {
 
-	      ADD1STRINOPEN      = 0x00000080, //+1 str when in open
-	      ADD2STRINOPEN      = 0x00000100, //+2 str when in open
-	      ADD1STRINFOREST    = 0x00000200, //+1 str when in forest
-	      ADD1STRINHILLS     = 0x00000400, //+1 str when in hills
-	      ADD1STRINCITY      = 0x00000800, //+1 str when in city
-	      ADD2STRINCITY      = 0x00001000, //+2 str when in city
-	      ADD1STACKINHILLS   = 0x00002000, //+1 str to stack when in hills
-	      SUBALLCITYBONUS    = 0x00004000, //0 city-bonus from enemy stack
-	      SUB1ENEMYSTACK     = 0x00008000, //-1 str from enemy stack
-	      ADD1STACK          = 0x00010000, //+1 strength to stack
-	      ADD2STACK          = 0x00020000, //+2 strength to stack
-	      SUBALLNONHEROBONUS = 0x00040000, //0 enemy non-hero bonus
-	      SUBALLHEROBONUS    = 0x00080000, //0 enemy hero bonus
-	      FORTIFY            = 0x00100000, //+1 to stack
+	      ADD1STRINOPEN      = 0x00000001, //+1 str when in open
+	      ADD2STRINOPEN      = 0x00000002, //+2 str when in open
+	      ADD1STRINFOREST    = 0x00000004, //+1 str when in forest
+	      ADD1STRINHILLS     = 0x00000008, //+1 str when in hills
+	      ADD1STRINCITY      = 0x00000010, //+1 str when in city
+	      ADD2STRINCITY      = 0x00000020, //+2 str when in city
+	      ADD1STACKINHILLS   = 0x00000040, //+1 str to stack when in hills
+	      SUBALLCITYBONUS    = 0x00000080, //0 city-bonus from enemy stack
+	      SUB1ENEMYSTACK     = 0x00000100, //-1 str from enemy stack
+	      ADD1STACK          = 0x00000200, //+1 strength to stack
+	      ADD2STACK          = 0x00000400, //+2 strength to stack
+	      SUBALLNONHEROBONUS = 0x00000800, //0 enemy non-hero bonus
+	      SUBALLHEROBONUS    = 0x00001000, //0 enemy hero bonus
+	      FORTIFY            = 0x00002000, //+1 to stack
 
         };
         

@@ -1470,20 +1470,44 @@ void GameWindow::on_city_looted (City *city, int gold)
     dialog->show_all();
     dialog->run();
 }
-void GameWindow::on_city_pillaged(City *city, int gold)
+void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
 {
+    GraphicsCache *gc = GraphicsCache::getInstance();
     std::auto_ptr<Gtk::Dialog> dialog;
+    Player *player = city->getPlayer();
+    unsigned int as = player->getArmyset();
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/city-pillaged-dialog.glade");
 	
     Gtk::Dialog *d;
+    Gtk::Image *pillaged_army_type_image;
     xml->get_widget("dialog", d);
     dialog.reset(d);
     dialog->set_transient_for(*window.get());
     
     dialog->set_title(String::ucompose(_("Pillaged %1"), city->getName()));
 
+    Gtk::Label *pillaged_army_type_cost_label;
+    xml->get_widget("pillaged_army_type_cost_label", pillaged_army_type_cost_label);
+    xml->get_widget("pillaged_army_type_image", pillaged_army_type_image);
+    if (gold == 0)
+      {
+        SDL_Surface *s
+	  = GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
+        Glib::RefPtr<Gdk::Pixbuf> empty_pic
+	  = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
+        empty_pic->fill(0x00000000);
+        pillaged_army_type_image->set(empty_pic);
+        pillaged_army_type_cost_label->set_text("");
+      }
+    else
+      {
+        Glib::RefPtr<Gdk::Pixbuf> pic;
+        pic = to_pixbuf(gc->getArmyPic(as, pillaged_army_type, player, 1, NULL));
+        pillaged_army_type_image->set(pic);
+        pillaged_army_type_cost_label->set_text(String::ucompose("%1 gp", gold));
+      }
     Gtk::Label *label;
     xml->get_widget("label", label);
     Glib::ustring s = label->get_text();

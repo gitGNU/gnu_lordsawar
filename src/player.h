@@ -382,9 +382,10 @@ class Player: public sigc::trackable
           *
           * @param c                the city to be pillaged
           * @param gold             returns the amount of gold pillaged
+	  * @param pillaged_army_type the army type that is cashed in for gold
           * @return false on error, true otherwise
           */
-        virtual bool cityPillage(City* c, int& gold) = 0;
+        virtual bool cityPillage(City* c, int& gold, int& pillaged_army_type)=0;
 
         /** Sack a city (trade in all army types except one and get some gold)
           *

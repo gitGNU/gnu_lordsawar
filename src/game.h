@@ -100,7 +100,7 @@ class Game
     sigc::signal<bool, bool, Temple *, int> temple_visited;
     sigc::signal<void, Hero *, Quest *> quest_assigned;
     sigc::signal<CityDefeatedAction, City *, int> city_defeated;
-    sigc::signal<void, City *, int> city_pillaged;
+    sigc::signal<void, City *, int, unsigned int> city_pillaged;
     sigc::signal<void, City *, int> city_sacked;
     sigc::signal<void, City *> city_razed;
     sigc::signal<void, City *> city_visited;
