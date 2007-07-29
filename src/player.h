@@ -391,9 +391,10 @@ class Player: public sigc::trackable
           *
           * @param c                the city to be sacked 
           * @param gold             returns the amount of gold sacked
+	  * @param sacked_types     the army types that were cashed in for gold
           * @return false on error, true otherwise
           */
-        virtual bool citySack(City* c, int& gold) = 0;
+        virtual bool citySack(City* c, int& gold, std::list<Uint32> *sacked_types) = 0;
 
         /** Raze (permanently destroy) a city
           *
@@ -457,9 +458,9 @@ class Player: public sigc::trackable
         //! Signal raised whenever the player moves a stack
         sigc::signal<void, Stack*>             smovingStack;
         //! Signal raised whenever the player pillages a city 
-        sigc::signal<void, City*, Stack*, int>      spillagingCity;
+        sigc::signal<void, City*, Stack*, int, std::list<Uint32> >      spillagingCity;
         //! Signal raised whenever the player sacks a city 
-        sigc::signal<void, City*, Stack*, int>      ssackingCity;
+        sigc::signal<void, City*, Stack*, int, std::list<Uint32> >      ssackingCity;
         //! Signal raised whenever the player razes a city 
         sigc::signal<void, City*, Stack*>      srazingCity;
 

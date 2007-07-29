@@ -1522,8 +1522,11 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
     dialog->run();
 }
 
-void GameWindow::on_city_sacked(City *city, int gold)
+void GameWindow::on_city_sacked(City *city, int gold, std::list<Uint32> sacked_types)
 {
+    GraphicsCache *gc = GraphicsCache::getInstance();
+    Player *player = city->getPlayer();
+    unsigned int as = player->getArmyset();
     std::auto_ptr<Gtk::Dialog> dialog;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -1539,13 +1542,82 @@ void GameWindow::on_city_sacked(City *city, int gold)
     Gtk::Label *label;
     xml->get_widget("label", label);
     Glib::ustring s = label->get_text();
-    s += "\n\n";
+    s = String::ucompose("The city of %1 is sacked\nfor %2 gold!\n\n",
+                         city->getName(), gold);
     s += String::ucompose(
-	ngettext("The loot is worth %1 gold piece.",
-		 "The loot is worth %1 gold pieces.",
-		 gold), gold);
+	ngettext("Ability to produce %1 unit has been lost",
+                 "Ability to produce %1 units has been lost",
+		 sacked_types.size()), sacked_types.size());
+    s += "\nand only 1 unit remains";
     label->set_text(s);
 
+    Gtk::Image *sacked_army_1_image;
+    Gtk::Image *sacked_army_2_image;
+    Gtk::Image *sacked_army_3_image;
+    Gtk::Label *sacked_army_1_cost_label;
+    Gtk::Label *sacked_army_2_cost_label;
+    Gtk::Label *sacked_army_3_cost_label;
+    xml->get_widget("sacked_army_1_image", sacked_army_1_image);
+    xml->get_widget("sacked_army_2_image", sacked_army_2_image);
+    xml->get_widget("sacked_army_3_image", sacked_army_3_image);
+    xml->get_widget("sacked_army_1_cost_label", sacked_army_1_cost_label);
+    xml->get_widget("sacked_army_2_cost_label", sacked_army_2_cost_label);
+    xml->get_widget("sacked_army_3_cost_label", sacked_army_3_cost_label);
+
+    Glib::RefPtr<Gdk::Pixbuf> pic;
+    SDL_Surface *surf
+      = GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
+    Glib::RefPtr<Gdk::Pixbuf> empty_pic
+      = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, surf->w, surf->h);
+    empty_pic->fill(0x00000000);
+    int i = 0;
+    Gtk::Label *sack_label = NULL;
+    Gtk::Image *sack_image = NULL;
+    for (std::list<Uint32>::iterator it = sacked_types.begin(); it != sacked_types.end(); it++)
+      {
+        switch (i)
+          {
+          case 0:
+            sack_label = sacked_army_1_cost_label;
+            sack_image = sacked_army_1_image;
+            break;
+          case 1:
+            sack_label = sacked_army_2_cost_label;
+            sack_image = sacked_army_2_image;
+            break;
+          case 2:
+            sack_label = sacked_army_3_cost_label;
+            sack_image = sacked_army_3_image;
+            break;
+          }
+        pic = to_pixbuf(gc->getArmyPic(as, *it, player, 1, NULL));
+        sack_image->set(pic);
+        const Army *a = 
+          Armysetlist::getInstance()->getArmy (player->getArmyset(), *it);
+        s = String::ucompose("%1 gp", a->getProductionCost() / 2);
+        sack_label->set_text(s);
+        i++;
+      }
+    for (i = sacked_types.size(); i < 3; i++)
+      {
+        switch (i)
+          {
+          case 0:
+            sack_label = sacked_army_1_cost_label;
+            sack_image = sacked_army_1_image;
+            break;
+          case 1:
+            sack_label = sacked_army_2_cost_label;
+            sack_image = sacked_army_2_image;
+            break;
+          case 2:
+            sack_label = sacked_army_3_cost_label;
+            sack_image = sacked_army_3_image;
+            break;
+          }
+        sack_image->set(empty_pic);
+        sack_label->set_text("");
+      }
     dialog->show_all();
     dialog->run();
 }

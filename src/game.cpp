@@ -534,8 +534,9 @@ void Game::invading_city(City* city)
 	    break;
 
 	case CITY_DEFEATED_SACK:
-	    player->citySack(city, gold);
-	    city_sacked.emit(city, gold);
+            std::list<Uint32> sacked_types;
+	    player->citySack(city, gold, &sacked_types);
+	    city_sacked.emit(city, gold, sacked_types);
 	    break;
 	}
 	

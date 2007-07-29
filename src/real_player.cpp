@@ -1022,11 +1022,14 @@ bool RealPlayer::cityPillage(City* c, int& gold, int& pillaged_army_type)
       }
 
     addGold(gold);
-    spillagingCity.emit(c, Playerlist::getActiveplayer()->getActivestack(), gold);
+    std::list<Uint32> sacked_types;
+    sacked_types.push_back (pillaged_army_type);
+    spillagingCity.emit(c, Playerlist::getActiveplayer()->getActivestack(), 
+                        gold, sacked_types);
     return cityOccupy (c, false);
 }
 
-bool RealPlayer::citySack(City* c, int& gold)
+bool RealPlayer::citySack(City* c, int& gold, std::list<Uint32> *sacked_types)
 {
     gold = 0;
     debug("RealPlayer::citySack")
@@ -1055,6 +1058,7 @@ bool RealPlayer::citySack(City* c, int& gold)
             a = c->getArmy(i);
             if (a != NULL)
               {
+                sacked_types->push_back(a->getType());
                 gold += a->getProductionCost() / 2;
                 c->removeBasicProd(i);
                 max--;
@@ -1064,7 +1068,8 @@ bool RealPlayer::citySack(City* c, int& gold)
       }
 
     addGold(gold);
-    ssackingCity.emit(c, Playerlist::getActiveplayer()->getActivestack(), gold);
+    ssackingCity.emit(c, Playerlist::getActiveplayer()->getActivestack(), gold,
+                      *sacked_types);
     return cityOccupy (c, false);
 }
 

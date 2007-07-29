@@ -90,7 +90,8 @@ void QuestPillageGold::getExpiredMsg(std::queue<std::string>& msgs) const
     // This quest should never expire, so this is just a dummy function
 }
 //=======================================================================
-void QuestPillageGold::citySackedOrPillaged (City* city, Stack* s, int gold)
+void QuestPillageGold::citySackedOrPillaged (City* city, Stack* s, int gold,
+                                             std::list<Uint32> sacked_types)
 {
   if (!isActive())
     return;

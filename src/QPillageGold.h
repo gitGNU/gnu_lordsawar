@@ -68,7 +68,7 @@ class QuestPillageGold : public Quest, public sigc::trackable
          
     private:
          /** slot that receives the ssackingCity and spillagingCity (signal) */
-         void citySackedOrPillaged (City* city, Stack* s, int gold);
+         void citySackedOrPillaged (City* city, Stack* s, int gold, std::list<Uint32> sacked_types);
 
         void initDescription();
 

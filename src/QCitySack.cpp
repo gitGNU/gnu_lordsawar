@@ -112,7 +112,7 @@ City* QuestCitySack::getCity() const
     return 0;
 }
 //=======================================================================
-void QuestCitySack::citySacked(City* city, Stack* s, int gold)
+void QuestCitySack::citySacked(City* city, Stack* s, int gold, std::list<Uint32> sacked_types)
 {
     // some basic considerations have to be done
     if ((city->getId() != d_city) || !isActive())

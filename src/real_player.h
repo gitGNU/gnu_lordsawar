@@ -65,7 +65,7 @@ class RealPlayer : public Player
         Fight::Result stackRuinFight (Stack **attacker, Stack **defender);
         bool cityOccupy(City* c);
         bool cityPillage(City* c, int& gold, int& pillaged_army_type);
-        bool citySack(City* c, int& gold);
+        bool citySack(City* c, int& gold, std::list<Uint32> *sacked_types);
         bool cityRaze(City* c);
         bool cityBuyProduction(City* c, int slot, int type);
         bool cityChangeProduction(City* c, int slot);
