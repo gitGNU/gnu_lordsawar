@@ -690,8 +690,9 @@ void EditorBigMap::change_map_under_cursor()
 	    }
 	    break;
 	}
-	
-	map_changed.emit(changed_tiles);
+
+	if (changed_tiles.w > 0 && changed_tiles.h > 0)
+	    map_changed.emit(changed_tiles);
     }
 
     draw();

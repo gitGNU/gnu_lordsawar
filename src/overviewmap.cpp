@@ -216,12 +216,12 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
 	// ensure we're within bounds
 	pos = clip(Vector<int>(0, 0), pos,
 		   Vector<int>(static_surface->w, static_surface->h) - Vector<int>(1, 1));
-    
-	if (pos.x + dim.x >= GameMap::getWidth())
-	    dim.x = GameMap::getWidth() - pos.x;
+
+	if (pos.x + dim.x >= int(GameMap::getWidth() * pixels_per_tile))
+	    dim.x = int(GameMap::getWidth() * pixels_per_tile) - pos.x;
 	
-	if (pos.y + dim.y >= GameMap::getHeight())
-	    dim.y = GameMap::getHeight() - pos.y;
+	if (pos.y + dim.y >= int(GameMap::getHeight() * pixels_per_tile))
+	    dim.y = int(GameMap::getHeight() * pixels_per_tile) - pos.y;
 
 	draw_terrain_pixels(Rectangle(pos, dim));
     }
