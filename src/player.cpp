@@ -72,11 +72,15 @@ SDL_Color Player::get_color_for_neutral()
 // signal
 sigc::signal<void, Player::Type> sendingTurn;
 
-Player::Player(string name, Uint32 armyset, SDL_Color color, Type type)
+Player::Player(string name, Uint32 armyset, SDL_Color color, Type type,
+	       int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
     d_dead(false), d_immortal(false), d_type(type)
 {
-    d_id= fl_counter->getNextId();
+    if (player_no != -1)
+	d_id = player_no;
+    else
+	d_id = fl_counter->getNextId();
     d_stacklist = new Stacklist();
     debug("type of " << d_name << " is " << type)
         

@@ -42,8 +42,8 @@ using namespace std;
 #define debug(x)
 
 RealPlayer::RealPlayer(string name, Uint32 armyset, SDL_Color color,
-            Player::Type type)
-    :Player(name, armyset, color, type)
+		       Player::Type type, int player_no)
+    :Player(name, armyset, color, type, player_no)
 {
 }
 

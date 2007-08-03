@@ -38,7 +38,7 @@ class AI_Dummy : public RealPlayer
           * @param armyset      the armyset of the player
           * @param color        the color of the player
           */
-        AI_Dummy (std::string name, Uint32 armyset, SDL_Color color);
+        AI_Dummy (std::string name, Uint32 armyset, SDL_Color color, int player_no = -1);
 
         /** Copy constructor
           * 

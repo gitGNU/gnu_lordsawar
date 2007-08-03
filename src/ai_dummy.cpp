@@ -27,8 +27,8 @@
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-AI_Dummy::AI_Dummy(std::string name, Uint32 armyset, SDL_Color color)
-    :RealPlayer(name, armyset, color, Player::AI_DUMMY)
+AI_Dummy::AI_Dummy(std::string name, Uint32 armyset, SDL_Color color, int player_no)
+    :RealPlayer(name, armyset, color, Player::AI_DUMMY, player_no)
 {
 }
 

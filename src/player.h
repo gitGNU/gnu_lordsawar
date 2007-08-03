@@ -111,7 +111,8 @@ class Player: public sigc::trackable
           * @param armyset      the player's armyset
           * @param color        the player's main color
           */
-        Player (std::string name, Uint32 armyset, SDL_Color color, Type type);
+        Player (std::string name, Uint32 armyset, SDL_Color color, Type type,
+		int player_no = -1);
 
         //! Copy constructor
         Player(const Player&);

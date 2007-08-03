@@ -30,6 +30,8 @@
 #include "../citylist.h"
 #include "../player.h"
 #include "../real_player.h"
+#include "../ai_fast.h"
+#include "../ai_smart.h"
 
 
 #define HUMAN_PLAYER_TYPE _("Human")
@@ -211,9 +213,23 @@ void PlayersDialog::run()
 	    }
 	    else if (!player && type != NO_PLAYER_TYPE) // player was added
 	    {
-		Player *new_player = 
-		    new RealPlayer(name, default_armyset,
-				   Player::get_color_for_no(c), type_as_enum);
+		Player *new_player = 0;
+		if (type == HUMAN_PLAYER_TYPE)
+		    new_player = 
+			new RealPlayer(name, default_armyset,
+				       Player::get_color_for_no(c),
+				       type_as_enum, c + 1);
+		else if (type == EASY_PLAYER_TYPE)
+		    new_player = 
+			new AI_Fast(name, default_armyset,
+				    Player::get_color_for_no(c),
+				    c + 1);
+		else if (type == HARD_PLAYER_TYPE)
+		    new_player = 
+			new AI_Smart(name, default_armyset,
+				     Player::get_color_for_no(c),
+				     c + 1);
+		    
 		new_player->setGold(gold);
 
 		// find the right position
@@ -230,14 +246,29 @@ void PlayersDialog::run()
 		    if (j == pl->end())
 			break;
 		}
-		
+
 		pl->insert(j, new_player);
 	    }
 	    else if (player && type != NO_PLAYER_TYPE) // player was modified
 	    {
-		player->setType(type_as_enum);
-		player->setName(name);
-		player->setGold(gold);
+		Player *new_player = 0;
+		if (type == HUMAN_PLAYER_TYPE)
+		    new_player = new RealPlayer(*player);
+		else if (type == EASY_PLAYER_TYPE)
+		    new_player = new AI_Fast(*player);
+		else if (type == HARD_PLAYER_TYPE)
+		    new_player = new AI_Smart(*player);
+		    
+		new_player->setName(name);
+		new_player->setGold(gold);
+
+		Playerlist::iterator pos
+		    = std::find(pl->begin(), pl->end(), player);
+
+		(*pos) = new_player;
+		
+		pl->remove(player);
+		delete player;
 	    }
 	}
     }

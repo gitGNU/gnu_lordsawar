@@ -12,6 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+#include <assert.h>
+
 #include "rectangle.h"
 
 #include "GraphicsCache.h"
@@ -1046,9 +1048,10 @@ SelectorCacheItem* GraphicsCache::addSelectorPic(Uint32 type, Uint32 frame, cons
 
 ShieldCacheItem* GraphicsCache::addShieldPic(Uint32 type, const Player* p)
 {
-    debug("GraphicsCache::addShieldPic, player="<<p->getName()<<", type="<<type)
-    
+    debug("GraphicsCache::addShieldPic, player="<<p->getName()<<", type="<<type);
     // type is 0 for small, 1 for medium, 2 for large
+    
+    assert(type < 3 && p->getId() <= MAX_PLAYERS);
     
     SDL_Surface* mysurf;
     mysurf = applyMask(d_shieldpic[type][p->getId()], 

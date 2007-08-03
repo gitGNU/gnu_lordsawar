@@ -1,5 +1,6 @@
-2007-08-03  Ole Laursen  <olau@alfa>
+2007-08-03  Ole Laursen
 
+	* fixed random map generation and load/save map problems 
 	* fixed redrawing bug in smallmap in editor
 	* fixed radio buttons in game preferencesw dialog
 

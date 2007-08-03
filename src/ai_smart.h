@@ -64,7 +64,7 @@ class AI_Smart : public RealPlayer
           * @param armyset      the armyset of the player
           * @param color        the player's color
           */
-        AI_Smart(std::string name, Uint32 armyset, SDL_Color color);
+        AI_Smart(std::string name, Uint32 armyset, SDL_Color color, int player_no = -1);
 
         //! Copy constructor
         AI_Smart(const Player&);

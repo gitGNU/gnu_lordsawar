@@ -66,6 +66,7 @@
 #include "../bridgelist.h"
 #include "../portlist.h"
 #include "../MapGenerator.h"
+#include "../counter.h"
 
 #include "glade-helpers.h"
 #include "editorbigmap.h"
@@ -350,6 +351,19 @@ void MainWindow::set_random_map(int width, int height,
     GameMap::setWidth(width);
     GameMap::setHeight(height);
     GameMap::getInstance("default");
+
+    if (fl_counter)
+	delete fl_counter;
+    fl_counter = new FL_Counter(MAX_PLAYERS + 1);
+    
+    // We need to create a neutral player to give cities a player upon
+    // creation...
+    Uint32 armyset = Armysetlist::getInstance()->getArmysets()[0];
+    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral(), 0);
+    neutral->setType(Player::AI_DUMMY);
+    Playerlist::getInstance()->push_back(neutral);
+    Playerlist::getInstance()->setNeutral(neutral);
+    Playerlist::getInstance()->nextPlayer();
     
     // create a random map
     MapGenerator gen;
@@ -382,17 +396,8 @@ void MainWindow::set_random_map(int width, int height,
 
     // sets up the lists
     game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
-
-    // ...however we need to do some of the setup by hand. We need to create a
-    // neutral player to give cities a player upon creation...
-    Uint32 armyset = Armysetlist::getInstance()->getArmysets()[0];
-    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral());
-    neutral->setType(Player::AI_DUMMY);
-    Playerlist::getInstance()->push_back(neutral);
-    Playerlist::getInstance()->setNeutral(neutral);
-    Playerlist::getInstance()->nextPlayer();
     
-    // now fill the city lists
+    // now fill the lists
     const Maptile::Building* build = gen.getBuildings(width, height);
     for (int j = 0; j < height; j++)
 	for (int i = 0; i < width; i++)
@@ -574,7 +579,7 @@ void MainWindow::on_load_map_activated()
 
 	if (broken)
 	{
-	    show_error(String::ucompose(_("Could not load map %s."),
+	    show_error(String::ucompose(_("Could not load map %1."),
 					current_save_filename));
 	    current_save_filename = "";
 	    return;

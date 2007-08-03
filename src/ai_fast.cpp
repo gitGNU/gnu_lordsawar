@@ -34,8 +34,8 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 //#define debug(x)
 
-AI_Fast::AI_Fast(string name, Uint32 armyset, SDL_Color color)
-    :RealPlayer(name, armyset, color, Player::AI_FAST), d_join(true),
+AI_Fast::AI_Fast(string name, Uint32 armyset, SDL_Color color, int player_no)
+    :RealPlayer(name, armyset, color, Player::AI_FAST, player_no), d_join(true),
     d_maniac(false), d_analysis(0)
 {
 }

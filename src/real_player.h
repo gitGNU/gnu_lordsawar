@@ -36,7 +36,7 @@ class RealPlayer : public Player
     public:
         // CREATORS
         RealPlayer(std::string name, Uint32 armyset, SDL_Color color,
-                   Player::Type type = Player::HUMAN);
+                   Player::Type type = Player::HUMAN, int player_no = -1);
         RealPlayer(const Player&);
         RealPlayer(XML_Helper* helper);
         ~RealPlayer();
