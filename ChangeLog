@@ -1,6 +1,7 @@
-2007-08-03  Ole Laursen
+2007-08-03  Ole Laursen  <olau@alfa>
 
 	* fixed redrawing bug in smallmap in editor
+	* fixed radio buttons in game preferencesw dialog
 
 2007-07-29  Ben Asselstine
         * fixed pillaging to choose most costly army
