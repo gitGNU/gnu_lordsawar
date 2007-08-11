@@ -137,10 +137,10 @@ class Game
 
     // bigmap callbacks
     void on_stack_selected(Stack* s);
-    void on_city_selected(City* c, bool brief);
-    void on_ruin_selected(Ruin* r);
-    void on_temple_selected(Temple* t);
-    void on_signpost_selected(Signpost* s);
+    void on_city_queried (City* c, bool brief);
+    void on_ruin_queried (Ruin* r);
+    void on_temple_queried (Temple* t);
+    void on_signpost_queried (Signpost* s);
 
     // smallmap callbacks
     void on_smallmap_changed(SDL_Surface *map);

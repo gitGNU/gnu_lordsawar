@@ -170,7 +170,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
               if (City* c = Citylist::getInstance()->getObjectAt(tile.x, tile.y))
               {
 	          if (c->getPlayer() == Playerlist::getActiveplayer() && !c->isBurnt())
-                    city_selected(c, false);
+                    city_queried (c, false);
               }
             }
         }
@@ -185,7 +185,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	{
 	    if (City* c = Citylist::getInstance()->getObjectAt(tile.x, tile.y))
 	    {
-		city_selected(c, true);
+		city_queried (c, true);
 	        mouse_state = SHOWING_CITY;
 	    }
 	    else if (Ruin* r = Ruinlist::getInstance()->getObjectAt(tile.x, tile.y))
@@ -194,18 +194,18 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
                       r->getOwner() == Playerlist::getActiveplayer()) ||
                      r->isHidden() == false)
                   {
-		    ruin_selected(r);
+		    ruin_queried (r);
 		    mouse_state = SHOWING_RUIN;
                   }
 	    }
 	    else if (Signpost* s = Signpostlist::getInstance()->getObjectAt(tile.x, tile.y))
 	    {
-		signpost_selected(s);
+		signpost_queried (s);
 		mouse_state = SHOWING_SIGNPOST;
 	    }
 	    else if (Temple* t = Templelist::getInstance()->getObjectAt(tile.x, tile.y))
 	    {
-		temple_selected.emit(t);
+		temple_queried.emit(t);
 		mouse_state = SHOWING_TEMPLE;
 	    }
 	}
@@ -217,19 +217,19 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		break;
 
 	    case SHOWING_CITY:
-		city_selected.emit(0, true);
+		city_queried.emit(0, true);
 		break;
 
 	    case SHOWING_RUIN:
-		ruin_selected.emit(0);
+		ruin_queried.emit(0);
 		break;
 
 	    case SHOWING_TEMPLE:
-		temple_selected.emit(0);
+		temple_queried.emit(0);
 		break;
 
 	    case SHOWING_SIGNPOST:
-		signpost_selected.emit(0);
+		signpost_queried.emit(0);
 		break;
 		
 	    case NONE:

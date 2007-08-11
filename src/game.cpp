@@ -67,14 +67,14 @@ Game::Game(GameScenario* gameScenario)
 	sigc::mem_fun(this, &Game::on_stack_selected));
     bigmap->path_set.connect(
 	sigc::mem_fun(this, &Game::update_control_panel));
-    bigmap->city_selected.connect(
-	sigc::mem_fun(this, &Game::on_city_selected));
-    bigmap->ruin_selected.connect(
-	sigc::mem_fun(this, &Game::on_ruin_selected));
-    bigmap->signpost_selected.connect(
-	sigc::mem_fun(this, &Game::on_signpost_selected));
-    bigmap->temple_selected.connect(
-	sigc::mem_fun(this, &Game::on_temple_selected));
+    bigmap->city_queried.connect(
+	sigc::mem_fun(this, &Game::on_city_queried));
+    bigmap->ruin_queried.connect(
+	sigc::mem_fun(this, &Game::on_ruin_queried));
+    bigmap->signpost_queried.connect(
+	sigc::mem_fun(this, &Game::on_signpost_queried));
+    bigmap->temple_queried.connect(
+	sigc::mem_fun(this, &Game::on_temple_queried));
 
     // init the smallmap
     smallmap.reset(new SmallMap);
@@ -384,7 +384,7 @@ void Game::on_stack_selected(Stack* s)
     update_control_panel();
 }
 
-void Game::on_city_selected(City* c, bool brief)
+void Game::on_city_queried (City* c, bool brief)
 {
     if (c)
     {
@@ -428,7 +428,7 @@ void Game::on_city_selected(City* c, bool brief)
 	map_tip_changed.emit("", MapTipPosition());
 }
 
-void Game::on_ruin_selected(Ruin* r)
+void Game::on_ruin_queried (Ruin* r)
 {
     if (r)
     {
@@ -450,7 +450,7 @@ void Game::on_ruin_selected(Ruin* r)
 	map_tip_changed.emit("", MapTipPosition());
 }
 
-void Game::on_signpost_selected(Signpost* s)
+void Game::on_signpost_queried (Signpost* s)
 {
     if (s)
     {
@@ -465,7 +465,7 @@ void Game::on_signpost_selected(Signpost* s)
 	map_tip_changed.emit("", MapTipPosition());
 }
 
-void Game::on_temple_selected(Temple* t)
+void Game::on_temple_queried (Temple* t)
 {
     if (t)
     {
