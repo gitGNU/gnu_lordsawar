@@ -75,6 +75,8 @@ Game::Game(GameScenario* gameScenario)
 	sigc::mem_fun(this, &Game::on_signpost_queried));
     bigmap->temple_queried.connect(
 	sigc::mem_fun(this, &Game::on_temple_queried));
+    bigmap->stack_queried.connect(
+	sigc::mem_fun(this, &Game::on_stack_queried));
 
     // init the smallmap
     smallmap.reset(new SmallMap);
@@ -463,6 +465,19 @@ void Game::on_signpost_queried (Signpost* s)
     }
     else
 	map_tip_changed.emit("", MapTipPosition());
+}
+
+void Game::on_stack_queried (Stack* s)
+{
+    if (s)
+    {
+        Rectangle r = s->get_area();
+        //r.w *= s->size();
+	MapTipPosition mpos = bigmap->map_tip_position(r);
+	stack_tip_changed.emit(s, mpos);
+    }
+    else
+	stack_tip_changed.emit(NULL, MapTipPosition());
 }
 
 void Game::on_temple_queried (Temple* t)

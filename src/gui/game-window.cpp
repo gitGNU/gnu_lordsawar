@@ -92,6 +92,7 @@
 #include "../CreateScenario.h"
 #include "../reward.h"
 #include "../Configuration.h"
+#include "../GameMap.h"
 
 
 GameWindow::GameWindow()
@@ -420,6 +421,8 @@ void GameWindow::setup_game(std::string file_path)
 	sigc::mem_fun(*this, &GameWindow::on_stack_info_changed));
     game->map_tip_changed.connect(
 	sigc::mem_fun(*this, &GameWindow::on_map_tip_changed));
+    game->stack_tip_changed.connect(
+	sigc::mem_fun(*this, &GameWindow::on_stack_tip_changed));
     game->ruin_searched.connect(
 	sigc::mem_fun(*this, &GameWindow::on_ruin_searched));
     game->fight_started.connect(
@@ -1007,6 +1010,17 @@ void GameWindow::show_stack(Stack *s)
     fill_in_group_info(s);
     ensure_one_army_button_active();
     stack_info_container->show_all();
+}
+
+void GameWindow::on_stack_tip_changed(Stack *stack, MapTipPosition mpos)
+{
+    if (stack == NULL)
+      stack_info_tip.reset();
+    else
+      {
+	//_crapola
+	stack_info_tip.reset(new StackInfoTip(sdl_widget, mpos, stack));
+      }
 }
 
 void GameWindow::on_map_tip_changed(Glib::ustring tip, MapTipPosition pos)

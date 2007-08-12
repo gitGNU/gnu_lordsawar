@@ -52,6 +52,7 @@ class GameBigMap: public BigMap
     sigc::signal<void, City*, bool> city_queried; // true => show brief info
     sigc::signal<void, Ruin*> ruin_queried;
     sigc::signal<void, Signpost*> signpost_queried;
+    sigc::signal<void, Stack*> stack_queried;
     sigc::signal<void, Temple*> temple_queried;
 
     // emitted when a path for a stack is set
@@ -65,7 +66,7 @@ class GameBigMap: public BigMap
 	
     enum {
 	NONE, DRAGGING, SHOWING_CITY, SHOWING_RUIN,
-	SHOWING_TEMPLE, SHOWING_SIGNPOST
+	SHOWING_TEMPLE, SHOWING_SIGNPOST, SHOWING_STACK
     } mouse_state;
 	
 

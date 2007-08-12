@@ -1,3 +1,7 @@
+2007-08-12  Ben Asselstine
+
+	* added ability to right-click and see stack on bigmap
+
 2007-08-03  Ole Laursen
 
 	* fixed random map generation and load/save map problems 
@@ -5,11 +9,13 @@
 	* fixed radio buttons in game preferencesw dialog
 
 2007-07-29  Ben Asselstine
+
         * fixed pillaging to choose most costly army
 	* fixed pillaging to display the pillaged army type
 	* fixed sacking to display the sacked army types
 
 2007-07-15  Ben Asselstine
+
         * fixed bonus calculation to include command items from all heroes,
 	  not just the strongest one
 	* now sorting on player-specific fight order for battles
@@ -18,6 +24,7 @@
 	* fixed bug with bad temple ids
 
 2007-07-14  Ben Asselstine
+
         * now the maxhp attribute of army is always 2
 	* removed findVictim method in fight -- the top two armies always fight
 	* changed doRound method in fight to have the top two armies fight
@@ -38,6 +45,7 @@
 	  fight order.
 
 2007-07-13  Ben Asselstine
+
         * removed equipment object from hero
 	* removed type member from item
 	* handling item bonuses: flight, double movement, and battle
@@ -49,6 +57,7 @@
 	* now handling army bonuses during fight
 
 2007-07-11  Ben Asselstine
+
 	* now hidden ruins are randomly instantiated at game start
         * now ruins are a reward for quests
 	* moved reward list instantiation into GameScenario object
@@ -57,16 +66,19 @@
 	* added visual pointer to ruin upon quest completion
 
 2007-07-06  Ben Asselstine
+
         * made the selector box on the small map stop pulsating
 	* added support for bridges and ports
 	* starting to add support for bridges and ports in the editor
 
 2007-07-02  Ben Asselstine
+
         * added a reward list object to be used by quests, ruins and sages
 	* an item or allies are now given after searching a ruin
 	* an item can now be given as a reward for a quest completion
 
 2007-07-01  Ben Asselstine
+
         * added non-functional sage dialog
 	* removed item pictures
 	* added "plantable" properties to items for battle standards
@@ -74,6 +86,7 @@
 	* items dropped in water are lost
 
 2007-06-30  Ben Asselstine
+
         * created a ruin map object
 
 2007-06-29  Ole Laursen
@@ -81,11 +94,13 @@
 	* finished porting the code to gtkmm
 
 2007-06-17  Ben Asselstine
+
         * now showing stack info after a game is loaded
 	* fixed bug wrt player ids and some players being "off"
 	* made a first crack at shield set to show whose turn it is
 
 2007-06-16  Ben Asselstine
+
         * fight window now shows attacker on top and defender on bottom
 	* increased maximum cities on random map to 80
 	* don't place cities on top of cities (Reported by Alfred M.  Szmidt)
@@ -93,18 +108,22 @@
 	* added large shields to graphics cache
 
 2007-06-15  Ben Asselstine
+
         * now showing stacks in boats on the big map and stack info
         * now setting armies to be in and out of ships before next turn
 
 2007-06-10  Ben Asselstine
+
         * made a first crack at adding boat ports to path calculation
 	* stack loses all movement points when coming into a city from a boat,
 	  or going out of a city into a boat
 
 2007-06-04  Ben Asselstine
+
         * prefer diagonals when calculating movement paths
 
 2007-06-03  Ben Asselstine
+
         * added support for Movement bonus pictures in GraphicsCache
 	* added movement bonus picture to army info tip
 	* added army info tip to buy production dialog
@@ -115,6 +134,7 @@
 	  mountain ranges
 
 2007-06-02  Ben Asselstine
+
         * revamped quest report
 	* quest completion dialog now shows a map
 	* added shadow for land on the small map
@@ -123,23 +143,28 @@
 	* fixed buy-production to allow buying over top of an existing slot
 
 2007-05-28  Ben Asselstine
+
         * ruins can now be unoccupied so the hero wins without a fight.
 
 2007-05-27  Ben Asselstine
+
         * added support for showing the original owner of a capital city
         * added reward of allies upon quest completion
 	* added new addArmy method in GameMap to facilitate dropping down
 	  armies.
 
 2007-05-23  Ben Asselstine
+
 	* now drawing quests onto a questmap
 	* added questmap object to quest assigned dialog
 
 2007-05-22  Ben Asselstine
+
 	* modified kill-enemy-armies quest to include a target player
 	* added new sack-and-pillage-gold quest
 
 2007-05-21  Ben Asselstine
+
         * reimplemented vectoring
 	* any army unit can search a temple
 	* started implementing a quest map object
@@ -147,9 +172,11 @@
 	* added new kill one enemy unit of a certain army type quest
 
 2007-05-20  Ben Asselstine
+
         * made a first crack at implementing vectoring.
 
 2007-05-19  Ben Asselstine
+
         * added vector map to city window dialog.
         * clicking on a vector map changes the city.
 	* beautifying the city window dialog.
@@ -157,6 +184,7 @@
 	* added a razed city dialog.
 
 2007-05-17  Ben Asselstine
+
 	* removed army vitality, defense, shots, ranged, and portrait.
 	* removed tile defense.
 	* stop vectoring when stop button is pressed
@@ -164,12 +192,14 @@
 	* added production shields to vectormap
 
 2007-05-16  Ben Asselstine
+
         * removed "Purchasable" and using ProductionCost > 0 instead for
 	  army types.
         * starting to add better army bonuses.
 	* don't let army strength exceed 9
 
 2007-05-12  Ben Asselstine
+
 	* only certain armies may be bought in `build production'.
 	* when the hero is slain in a ruin, the rest of her stack lives on.
 	* show cities as shields on the small map.
@@ -181,10 +211,12 @@
 	* non-capital cities start with weakest unit already created.
 
 2007-05-11  Ben Asselstine
+
         * added ability to bless heroes more than once in temples,
 	  while normal armies only get blessed once.
 
 2007-05-10  Ben Asselstine
+
         * changed heroes to have male/female and side in the heronames
 	  data file.
 	* now using random hero names per side.
@@ -215,6 +247,7 @@
 	* improved flag graphics to be two tiered.
 
 2007-04-28  Ben Asselstine
+
 	* changed city pictures to have one per player, plus neutral
 	* changed players to have correct names and colours
 	* changed game preferences to have 8 players by default

@@ -113,6 +113,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 {
     if (input_locked)
 	return;
+    bool see_opponents_stacks = false; //fixme, add to configuration
     
     Vector<int> tile = mouse_pos_to_tile(e.pos);
     
@@ -208,6 +209,21 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		temple_queried.emit(t);
 		mouse_state = SHOWING_TEMPLE;
 	    }
+            else if (Stack *st = Stacklist::getObjectAt(tile.x, tile.y))
+            {
+                if (st->getPlayer() != Playerlist::getActiveplayer() && 
+                    see_opponents_stacks == true)
+                {
+                    stack_queried.emit(st);
+		    mouse_state = SHOWING_STACK;
+                }
+                else if (st->getPlayer() == Playerlist::getActiveplayer() && 
+                         see_opponents_stacks == false)
+                {
+                    stack_queried.emit(st);
+		    mouse_state = SHOWING_STACK;
+                }
+            }
 	}
 	else // button released
 	{
@@ -230,6 +246,10 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
 	    case SHOWING_SIGNPOST:
 		signpost_queried.emit(0);
+		break;
+		
+	    case SHOWING_STACK:
+		stack_queried.emit(0);
 		break;
 		
 	    case NONE:

@@ -30,6 +30,7 @@
 #include <gtkmm/checkmenuitem.h>
 
 #include "army-info-tip.h"
+#include "stack-info-tip.h"
 
 #include "../game-parameters.h"
 #include "../sidebar-stats.h"
@@ -87,6 +88,7 @@ class GameWindow: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Window> window;
     std::auto_ptr<Gtk::Window> map_tip;	// tooltip appears over the map
+    std::auto_ptr<Gtk::Window> stack_tip;// tooltip appears over the map
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
     Gtk::CheckMenuItem *fullscreen_menuitem;
@@ -119,6 +121,7 @@ class GameWindow: public sigc::trackable
 
     Stack *currently_selected_stack;
     std::auto_ptr<ArmyInfoTip> army_info_tip;
+    std::auto_ptr<StackInfoTip> stack_info_tip;
     typedef std::vector<Gtk::ToggleButton *> army_buttons_type;
     army_buttons_type army_buttons;
 
@@ -173,6 +176,7 @@ class GameWindow: public sigc::trackable
     void on_smallmap_changed(SDL_Surface *map);
     void on_stack_info_changed(Stack *s);
     void on_map_tip_changed(Glib::ustring tip, MapTipPosition pos);
+    void on_stack_tip_changed(Stack *s, MapTipPosition pos);
     void on_ruin_searched(Ruin *ruin, Stack *s, Reward *reward);
     void on_sage_visited(Ruin *ruin, Stack *s);
     void on_fight_started(Fight &fight);

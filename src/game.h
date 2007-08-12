@@ -92,6 +92,7 @@ class Game
 	can_end_turn;
     sigc::signal<void, Stack *> stack_info_changed;
     sigc::signal<void, Glib::ustring, MapTipPosition> map_tip_changed;
+    sigc::signal<void, Stack *, MapTipPosition> stack_tip_changed;
     sigc::signal<void, Ruin*, Stack*, Reward*> ruin_searched;
     sigc::signal<void, Fight &> fight_started;
     sigc::signal<void, Stack *, Stack *> ruinfight_started;
@@ -141,6 +142,7 @@ class Game
     void on_ruin_queried (Ruin* r);
     void on_temple_queried (Temple* t);
     void on_signpost_queried (Signpost* s);
+    void on_stack_queried (Stack* s);
 
     // smallmap callbacks
     void on_smallmap_changed(SDL_Surface *map);
