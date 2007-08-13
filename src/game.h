@@ -115,7 +115,7 @@ class Game
     
     static const bool see_opponents_stacks = false; //fixme, add to configuration
     static const bool see_opponents_production = false; //fixme, add to configuration
-    static const bool play_with_quests = false; //fixme, add to configuration
+    static const bool play_with_quests = true; //fixme, add to configuration
 
  private:
 
