@@ -36,6 +36,8 @@ VectorMap::VectorMap(City *c)
 }
 void VectorMap::draw_city (City *c, Uint32 &type, bool &prod)
 {
+  if (c->isFogged())
+    return;
   GraphicsCache *gc = GraphicsCache::getInstance();
   SDL_Surface *tmp;
   if (c->isBurnt() == true || (type == 3 && prod == false))
@@ -89,6 +91,7 @@ void VectorMap::draw_cities (std::list<City*> citylist, Uint32 type)
       draw_city ((*it), type, prod);
     }
 }
+
 void VectorMap::draw_lines (std::list<City*> citylist)
 {
   Citylist *cl = Citylist::getInstance();
@@ -97,6 +100,8 @@ void VectorMap::draw_lines (std::list<City*> citylist)
   std::list<City*>::iterator it;
   for (it = citylist.begin(); it != citylist.end(); it++)
     {
+      if ((*it)->isFogged() == true)
+        continue;
       start = (*it)->getPos();
       end = cl->getObjectAt((*it)->getVectoring())->getPos();
 
@@ -200,6 +205,8 @@ void VectorMap::after_draw()
         // draw lines from origination to city
         for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
           {
+            if ((*it).isFogged() == true)
+              continue;
             if ((*it).getPlayer() == city->getPlayer())
               {
                 //is this a city that is vectoring to me?
@@ -257,9 +264,9 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
       dest = mapFromScreen(e.pos);
 
       if (GameScenario::s_see_opponents_production == true)
-        nearestCity = cl->getNearestCity(dest, 4);
+        nearestCity = cl->getNearestVisibleCity(dest, 4);
       else
-        nearestCity = cl->getNearestFriendlyCity(dest, 4);
+        nearestCity = cl->getNearestVisibleFriendlyCity(dest, 4);
       if (nearestCity == NULL)
         return;
 

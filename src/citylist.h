@@ -74,6 +74,21 @@ class Citylist : public ObjectList<City>, public sigc::trackable
         //! Returns the city closest to pos
         City* getNearestCity(const Vector<int>& pos);
 
+        //! Returns the city closest to pos that isn't obscured by fog of war
+        City* getNearestVisibleCity(const Vector<int>& pos);
+
+        //! Returns the city closest to pos but within N tiles and isn't
+	//! obscured by the fog of war
+        City* getNearestVisibleCity(const Vector<int>& pos, int dist);
+
+        //! Returns the city closest to pos that is owned by the ActivePlayer
+	//! and isn't obscured by the fog of war
+        City* getNearestVisibleFriendlyCity(const Vector<int>& pos);
+
+        //! Returns the city closest to pos that is owned by the ActivePlayer
+	//! but within N tiles, and isn't obscured by the fog of war.
+        City* getNearestVisibleFriendlyCity(const Vector<int>& pos, int dist);
+
         //! Returns the first (currently most upper left) city of player p
         City* getFirstCity(Player* p);
 

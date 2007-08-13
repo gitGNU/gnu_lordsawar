@@ -29,6 +29,7 @@
 #include "GameMap.h"
 #include "sdl-draw.h"
 #include "GraphicsCache.h"
+#include "FogMap.h"
 
 OverviewMap::OverviewMap()
 {
@@ -80,10 +81,12 @@ bool OverviewMap::isShadowed(Uint32 type, int i, int j)
 
   return false;
 }
+
 void OverviewMap::draw_tile_pixel(Maptile *t, int i, int j)
 {
   SDL_Color c = t->getColor();
   Tile::Pattern p = t->getPattern();
+  
   Uint32 first = SDL_MapRGB(static_surface->format, c.r, c.g, c.b);
   switch (p)
     {
@@ -228,20 +231,36 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
     draw();
 }
 
+bool OverviewMap::isFogged(Vector<int> pos)
+{
+  //is this tile visible, or not?
+  FogMap *fogmap = Playerlist::getActiveplayer()->getFogMap();
+  if (fogmap->getFogTile(pos) == FogMap::CLOSED)
+    return true;
+  return false;
+}
+
 void OverviewMap::draw_terrain_pixels(Rectangle r)
 {
     GameMap *gm = GameMap::getInstance();
     // draw static map
     Uint32 road_color = SDL_MapRGB(static_surface->format, 164, 84, 0);
+    Uint32 fog_color = SDL_MapRGB(static_surface->format, 0, 0, 0);
     
     for (int i = r.x; i < r.x + r.w; ++i)
         for (int j = r.y; j < r.y + r.h; ++j)
         {
             int x = int(i / pixels_per_tile);
             int y = int(j / pixels_per_tile);
-	    if (gm->getTile(x,y)->getBuilding() == Maptile::ROAD ||
-                gm->getTile(x,y)->getBuilding() == Maptile::BRIDGE)
-		draw_pixel(static_surface, i, j, road_color);
+
+            Vector <int> pos;
+            pos.x = x;
+            pos.y = j;
+            if (isFogged(pos) == true)
+                draw_pixel(static_surface, x, y, fog_color);
+	    else if (gm->getTile(x,y)->getBuilding() == Maptile::ROAD ||
+                     gm->getTile(x,y)->getBuilding() == Maptile::BRIDGE)
+		         draw_pixel(static_surface, i, j, road_color);
 	    else
 	    {
                 draw_tile_pixel (GameMap::getInstance()->getTile(x,y), i, j);
@@ -273,6 +292,10 @@ void OverviewMap::draw_stacks()
             // don't draw stacks in cities, they could hardly be identified
             Maptile* mytile = GameMap::getInstance()->getTile(pos.x, pos.y);
             if (mytile->getBuilding() == Maptile::CITY)
+                continue;
+
+            // don't draw stacks on tiles we can't see
+            if (isFogged (pos) == true)
                 continue;
 
             pos = mapToSurface(pos);
@@ -308,6 +331,8 @@ void OverviewMap::draw()
     {
         if (it->isHidden() == true && it->getOwner() != pl->getActiveplayer())
           continue;
+        if (it->isFogged())
+          continue;
         Vector<int> pos = it->getPos();
         pos = mapToSurface(pos);
 
@@ -322,6 +347,8 @@ void OverviewMap::draw()
     for (Templelist::iterator it = Templelist::getInstance()->begin();
         it != Templelist::getInstance()->end(); it++)
     {
+        if (it->isFogged())
+          continue;
         Vector<int> pos = it->getPos();
         pos = mapToSurface(pos);
 	Uint32 raw;
@@ -382,6 +409,8 @@ void OverviewMap::draw_cities (bool all_razed)
       it != Citylist::getInstance()->end(); it++)
   {
       SDL_Surface *tmp;
+      if (it->isFogged())
+        continue;
       if (it->isBurnt() == true || all_razed == true)
         tmp = gc->getSmallRuinedCityPic();
       else

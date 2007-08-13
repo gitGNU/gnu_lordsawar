@@ -44,6 +44,8 @@ void RuinMap::draw_ruins (bool show_selected)
       if ((*it).isHidden() == true && 
           (*it).getOwner() != Playerlist::getInstance()->getActiveplayer())
         continue;
+      if ((*it).isFogged() == true)
+        continue;
       SDL_Surface *tmp;
       if (it->isSearched())
         tmp = gc->getSmallRuinExploredPic();
@@ -77,6 +79,8 @@ void RuinMap::draw_temples (bool show_selected)
   for (Templelist::iterator it = Templelist::getInstance()->begin();
       it != Templelist::getInstance()->end(); it++)
   {
+      if ((*it).isFogged() == true)
+        continue;
       SDL_Surface *tmp;
       tmp = gc->getSmallTemplePic();
   
@@ -121,7 +125,7 @@ void RuinMap::mouse_button_event(MouseButtonEvent e)
       Vector<int> dest;
       dest = mapFromScreen(e.pos);
 
-      nearestRuin = rl->getNearestRuin(dest, 4);
+      nearestRuin = rl->getNearestVisibleRuin(dest, 4);
       if (nearestRuin)
 	{
 	  ruin = nearestRuin;
@@ -130,7 +134,7 @@ void RuinMap::mouse_button_event(MouseButtonEvent e)
 	}
       else
 	{
-          nearestTemple = tl->getNearestTemple(dest, 4);
+          nearestTemple = tl->getNearestVisibleTemple(dest, 4);
           if (nearestTemple)
 	    {
 	      ruin = nearestTemple;

@@ -43,6 +43,8 @@ class Templelist : public ObjectList<Temple>, public sigc::trackable
         // Find the nearest temple
         Temple* getNearestTemple(const Vector<int>& pos);
         Temple* getNearestTemple(const Vector<int>& pos, int dist);
+        Temple* getNearestVisibleTemple(const Vector<int>& pos);
+        Temple* getNearestVisibleTemple(const Vector<int>& pos, int dist);
         
     protected:
         //! Default constructor

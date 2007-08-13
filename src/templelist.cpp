@@ -108,3 +108,32 @@ Temple* Templelist::getNearestTemple(const Vector<int>& pos, int dist)
     return t;
   return NULL;
 }
+
+Temple * Templelist::getNearestVisibleTemple(const Vector<int>& pos)
+{
+    int diff = -1;
+    iterator diffit;
+    for (iterator it = begin(); it != end(); ++it)
+    {
+        Vector<int> p = (*it).getPos();
+        int delta = abs(p.x - pos.x) + abs(p.y - pos.y);
+        if (it->isFogged())
+          continue;
+
+        if ((diff > delta) || (diff == -1))
+        {
+            diff = delta;
+            diffit = it;
+        }
+    }
+    if (diff == -1) return 0;
+    return &(*diffit);
+}
+Temple* Templelist::getNearestVisibleTemple(const Vector<int>& pos, int dist)
+{
+  Temple *t = getNearestVisibleTemple(pos);
+  if (t->getPos().x <= pos.x + dist && t->getPos().x >= pos.x - dist &&
+      t->getPos().y <= pos.y + dist && t->getPos().y >= pos.y - dist)
+    return t;
+  return NULL;
+}

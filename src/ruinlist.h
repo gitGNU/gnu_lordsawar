@@ -44,6 +44,8 @@ class Ruinlist : public ObjectList<Ruin>, public sigc::trackable
         // Find the nearest ruin
         Ruin* getNearestRuin(const Vector<int>& pos);
         Ruin* getNearestRuin(const Vector<int>& pos, int dist);
+        Ruin* getNearestVisibleRuin(const Vector<int>& pos);
+        Ruin* getNearestVisibleRuin(const Vector<int>& pos, int dist);
         
     protected:
         Ruinlist();

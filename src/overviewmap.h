@@ -47,6 +47,9 @@ class OverviewMap
     // returns the drawn map
     SDL_Surface *get_surface();
 
+    //is this tile visible? (convenience function)
+    bool isFogged(Vector<int> pos);
+
  private:
      // the background, we keep it cached so it doesn't have to be drawn all
      // the time

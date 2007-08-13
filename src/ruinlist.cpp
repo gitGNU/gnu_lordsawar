@@ -142,3 +142,36 @@ Ruin* Ruinlist::getNearestRuin(const Vector<int>& pos, int dist)
     return r;
   return NULL;
 }
+
+Ruin* Ruinlist::getNearestVisibleRuin(const Vector<int>& pos)
+{
+    int diff = -1;
+    iterator diffit;
+    for (iterator it = begin(); it != end(); ++it)
+    {
+        if ((*it).isHidden() == true && 
+            (*it).getOwner() != Playerlist::getInstance()->getActiveplayer())
+          continue;
+        if ((*it).isFogged() == true)
+          continue;
+
+        Vector<int> p = (*it).getPos();
+        int delta = abs(p.x - pos.x) + abs(p.y - pos.y);
+
+        if ((diff > delta) || (diff == -1))
+        {
+            diff = delta;
+            diffit = it;
+        }
+    }
+    if (diff == -1) return 0;
+    return &(*diffit);
+}
+Ruin* Ruinlist::getNearestVisibleRuin(const Vector<int>& pos, int dist)
+{
+  Ruin *r = getNearestVisibleRuin(pos);
+  if (r->getPos().x <= pos.x + dist && r->getPos().x >= pos.x - dist &&
+      r->getPos().y <= pos.y + dist && r->getPos().y >= pos.y - dist)
+    return r;
+  return NULL;
+}
