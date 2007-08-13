@@ -113,7 +113,6 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 {
     if (input_locked)
 	return;
-    bool see_opponents_stacks = false; //fixme, add to configuration
     
     Vector<int> tile = mouse_pos_to_tile(e.pos);
     
@@ -170,8 +169,16 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
             {
               if (City* c = Citylist::getInstance()->getObjectAt(tile.x, tile.y))
               {
-	          if (c->getPlayer() == Playerlist::getActiveplayer() && !c->isBurnt())
-                    city_queried (c, false);
+                  if (!c->isBurnt())
+                  {
+                      if (see_opponents_production == true)
+                          city_queried (c, false);
+                      else
+                      {
+	                  if (c->getPlayer() == Playerlist::getActiveplayer())
+                              city_queried (c, false);
+                      }
+                  }
               }
             }
         }

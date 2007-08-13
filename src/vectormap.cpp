@@ -19,6 +19,7 @@
 #include "citylist.h"
 #include "playerlist.h"
 #include "GraphicsCache.h"
+#include "gamebigmap.h" //remove me
 
 VectorMap::VectorMap(City *c, enum ShowVectoring v)
 {
@@ -127,7 +128,7 @@ void VectorMap::after_draw()
   // draw special shield for every city that player owns.
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
-      if ((*it).getPlayer() == city->getPlayer())
+      if ((*it).getPlayer() == Playerlist::getActiveplayer())
         {
           if ((*it).getProductionIndex() == -1)
             prod = false;
@@ -254,7 +255,10 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
       Vector<int> dest;
       dest = mapFromScreen(e.pos);
 
-      nearestCity = cl->getNearestFriendlyCity(dest, 4);
+      if (GameBigMap::see_opponents_production == true)
+        nearestCity = cl->getNearestCity(dest, 4);
+      else
+        nearestCity = cl->getNearestFriendlyCity(dest, 4);
       if (nearestCity == NULL)
         return;
 
@@ -289,55 +293,3 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
     }
         
 }
-
-#if 0
-        case SDL_BUTTON_LEFT:
-            // Here we must check if the army produced by the city can be sent
-            // to the vector location, so we create a temporary stack and fill
-            // it with an army that is the current production of the city.
-            // We calculate if there exists a path that brings it from the city
-            // to the vector location. If the path exists, we set the city
-            // vectoring, otherwise we unset the vectoring.
-
-            // UL: Do we really want to do all this or shouldn't we rather trust
-            // the user's sanity? There areenough cases to break this algorithm
-            // (e.g. producing ships vs. producing land units etc.)
-            
-            // first, create the stack
-            pos = city->getPos();
-            st = new Stack(Playerlist::getActiveplayer(),pos);
-
-            debug("Vectoring from =" << pos.x << "," << pos.y)
-
-            al = Armysetlist::getInstance();
-            Uint32 set = Playerlist::getActiveplayer()->getArmyset();
-            int index;
-            int val;
-
-            index = city->getArmytype(city->getProductionIndex());
-        
-            // The city can have no production so we calculate the path only when index != 0
-            if (index != -1) 
-            { 
-                debug("Index=" << index)
-
-                st->push_back(new Army(*(al->getArmy(set, index)), city->getPlayer()));
-                val= st->getPath()->calculate(st, d_pos);
-         
-                debug("Vectoring to   =" << d_pos.x << "," << d_pos.y)
-                debug("Path Value=" << val)
-            }
-
-            if (val != 0 && index != -1)
-            {
-                sclickVectMouse.emit(Vector<int>(d_pos.x,d_pos.y));
-                city->setVectoring(d_pos);
-            }
-            else   
-            {
-                sclickVectMouse.emit(Vector<int>(-1,-1));
-                city->setVectoring(Vector<int>(-1,-1));
-            }
-
-            delete st;
-#endif

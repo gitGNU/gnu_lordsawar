@@ -418,7 +418,7 @@ void Game::on_city_queried (City* c, bool brief)
 	    MapTipPosition mpos = bigmap->map_tip_position(c->get_area());
 	    map_tip_changed.emit(str, mpos);
 	}
-	else if (player == Playerlist::getActiveplayer() && !c->isBurnt())
+	else
 	{
 	    city_visited.emit(c);
 

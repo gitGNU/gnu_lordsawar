@@ -127,6 +127,15 @@ City* Citylist::getNearestEnemyCity(const Vector<int>& pos)
     return &(*diffit);
 }
 
+City* Citylist::getNearestCity(const Vector<int>& pos, int dist)
+{
+  City *c = getNearestCity(pos);
+  if (c->getPos().x <= pos.x + dist && c->getPos().x >= pos.x - dist &&
+      c->getPos().y <= pos.y + dist && c->getPos().y >= pos.y - dist)
+    return c;
+  return NULL;
+}
+
 City* Citylist::getNearestFriendlyCity(const Vector<int>& pos, int dist)
 {
   City *c = getNearestFriendlyCity(pos);

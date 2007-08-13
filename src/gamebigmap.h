@@ -58,6 +58,9 @@ class GameBigMap: public BigMap
     // emitted when a path for a stack is set
     sigc::signal<void> path_set;
 
+    static const bool see_opponents_stacks = false; //fixme, add to configuration
+    static const bool see_opponents_production = false; //fixme, add to configuration
+
  private:
     SDL_Surface* d_arrows;
     Vector<int> current_tile, prev_mouse_pos;

@@ -74,14 +74,14 @@ CityWindow::CityWindow(City *c)
 	    sigc::mem_fun(this, &CityWindow::on_on_hold_clicked));
     buy_button->signal_clicked().connect(
 	sigc::mem_fun(this, &CityWindow::on_buy_clicked));
-    xml->connect_clicked(
-	"destination_button",
+    xml->get_widget("destination_button", destination_button);
+    destination_button->signal_clicked().connect(
 	sigc::mem_fun(this, &CityWindow::on_destination_clicked));
-    xml->connect_clicked(
-	"rename_button",
+    xml->get_widget("rename_button", rename_button);
+    rename_button->signal_clicked().connect(
 	sigc::mem_fun(this, &CityWindow::on_rename_clicked));
-    xml->connect_clicked(
-	"raze_button",
+    xml->get_widget("raze_button", raze_button);
+    raze_button->signal_clicked().connect(
 	sigc::mem_fun(this, &CityWindow::on_raze_clicked));
 
     for (int i = 1; i <= city->getMaxNoOfBasicProd(); ++i) {
@@ -203,10 +203,16 @@ void CityWindow::fill_in_production_toggles()
 
     on_hold_button->set_sensitive(production_index != -1);
     fill_in_production_info();
+
 }
 
 void CityWindow::on_production_toggled(Gtk::ToggleButton *toggle)
 {
+    if (city->getPlayer() != Playerlist::getActiveplayer())
+    {
+        toggle->set_active(false);
+        return;
+    }
     if (ignore_toggles)
 	return;
     
@@ -294,6 +300,40 @@ void CityWindow::fill_in_production_info()
     production_info_label2->set_markup(s2);
     turns_left_label->set_markup("<i>" + s3 + "</i>");
     current_label->set_markup("<i>" + s4 + "</i>");
+
+    if (city->getPlayer () != Playerlist::getActiveplayer())
+      {
+        turns_left_label->hide();
+        current_label->hide();
+        current_image->hide();
+        buy_button->set_sensitive(false);
+        raze_button->set_sensitive(false);
+        rename_button->set_sensitive(false);
+        destination_button->set_sensitive(false);
+        on_hold_button->set_sensitive(false);
+        for (unsigned int i = 0; i < production_toggles.size(); ++i) 
+          {
+           // production_toggles[i]->set_sensitive(false);
+	    production_toggles[i]->set_active(false);
+          }
+        production_info_label1->hide();
+        production_info_label2->hide();
+      }
+    else
+      {
+        turns_left_label->show();
+        current_label->show();
+        current_image->show();
+        buy_button->set_sensitive(true);
+        raze_button->set_sensitive(true);
+        rename_button->set_sensitive(true);
+        destination_button->set_sensitive(true);
+        on_hold_button->set_sensitive(true);
+        //for (unsigned int i = 0; i < production_toggles.size(); ++i) 
+          //production_toggles[i]->set_sensitive(true);
+        production_info_label1->show();
+        production_info_label2->show();
+      }
 }
 
 bool CityWindow::on_production_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle)
