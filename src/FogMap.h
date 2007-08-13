@@ -27,8 +27,10 @@ class XML_Helper;
 class FogMap
 {
     public:
-        //! The three fog types: in sight range, once discovered, undiscovered
-        enum TYPE {OPEN=0, UNCOVERED=1, COVERED=2};
+        //! The two fog types: discovered, undiscovered
+	//! open to view, or closed to view.
+	//! closed to view can be partially obscured.
+        enum FogType {OPEN=0, CLOSED=2};
         
         //! Standard constructor: create a given map
         FogMap();
@@ -43,10 +45,10 @@ class FogMap
           * @param type             the status to use
           * @return true on success, false on error
           */
-        bool fill(TYPE type);
+        bool fill(FogType type);
 
         //! Get the tile object at position (x,y)
-        TYPE getFogTile(Vector<int> pos) const;
+        FogType getFogTile(Vector<int> pos) const;
 
 		/** Alter fog around a point
           * 
@@ -54,7 +56,7 @@ class FogMap
           * @param radius   the radius around the point where the fog is altered
           * @param new_type the type which the area gets
           */
-	void alterFogRadius(Vector<int> pt, int radius, TYPE new_type);
+	void alterFogRadius(Vector<int> pt, int radius, FogType new_type);
 
         /** Save the contents of the map
           * 
@@ -68,7 +70,7 @@ class FogMap
         int d_width;
         int d_height;
 
-        TYPE* d_fogmap;
+        FogType * d_fogmap;
 };
 
 #endif

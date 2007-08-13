@@ -41,6 +41,8 @@ class Location : public ::Object
     void setName(std::string name) {d_name = name;}
 
     Stack *addArmy(Army *a) const;
+    bool isFogged();
+    void deFog();
 
  protected:
     Stack* getFreeStack(Player *p) const;

@@ -15,7 +15,9 @@
 #include "Location.h"
 #include "army.h"
 #include "player.h"
+#include "playerlist.h"
 #include "stacklist.h"
+#include "FogMap.h"
 
 #include "xmlhelper.h"
 
@@ -76,3 +78,30 @@ Stack* Location::getFreeStack(Player *p) const
     return NULL;
 }
 
+bool Location::isFogged()
+{
+  FogMap *fogmap = Playerlist::getActiveplayer()->getFogMap();
+  for (unsigned int i = 0; i < d_size; i++)
+    for (unsigned int j = 0; j < d_size; j++)
+      {
+        Vector<int> pos;
+        pos.x = d_pos.x + j;
+        pos.y = d_pos.y + i;
+        if (fogmap->getFogTile(pos) == FogMap::OPEN)
+          return true;
+      }
+  return false;
+}
+
+void Location::deFog()
+{
+  FogMap *fogmap = Playerlist::getActiveplayer()->getFogMap();
+  for (unsigned int i = 0; i < d_size; i++)
+    for (unsigned int j = 0; j < d_size; j++)
+      {
+        Vector<int> pos;
+        pos.x = d_pos.x + j;
+        pos.y = d_pos.y + i;
+        fogmap->alterFogRadius (pos, 2, FogMap::OPEN);
+      }
+}

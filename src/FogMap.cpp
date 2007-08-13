@@ -33,9 +33,9 @@ FogMap::FogMap()
     d_width = GameMap::getInstance()->getWidth();
     d_height = GameMap::getInstance()->getHeight();
 
-    d_fogmap = new TYPE[d_width*d_height];
+    d_fogmap = new FogType[d_width*d_height];
 
-    fill(COVERED);
+    fill(OPEN);
 }
 
 FogMap::FogMap(XML_Helper* helper)
@@ -47,7 +47,7 @@ FogMap::FogMap(XML_Helper* helper)
     helper->getData(types, "map");
 
     //create the map
-    d_fogmap = new TYPE[d_width*d_height];
+    d_fogmap = new FogType[d_width*d_height];
 
     for (int y = 0; y < d_height; y++)
     {
@@ -55,7 +55,7 @@ FogMap::FogMap(XML_Helper* helper)
         {
             //due to the circumstances, types is a long stream of
             //numbers, so read it character for character (no \n's or so)
-            d_fogmap[y*d_width + x] = static_cast<TYPE>(types[y*d_width + x]);
+            d_fogmap[y*d_width + x] = static_cast<FogType>(types[y*d_width + x]);
         }
     }
 }
@@ -66,7 +66,7 @@ FogMap::~FogMap()
     delete[] d_fogmap;
 }
 
-bool FogMap::fill(TYPE type)
+bool FogMap::fill(FogType type)
 {
     for (int i = 0; i < d_width*d_height; i++)
         d_fogmap[i] = type;
@@ -99,12 +99,12 @@ bool FogMap::save(XML_Helper* helper) const
     return retval;
 }
 
-FogMap::TYPE FogMap::getFogTile(Vector<int> pos) const
+FogMap::FogType FogMap::getFogTile(Vector<int> pos) const
 {
     return d_fogmap[pos.y * d_width + pos.x];
 }
 
-void FogMap::alterFogRadius(Vector<int> pt, int radius, TYPE new_type)
+void FogMap::alterFogRadius(Vector<int> pt, int radius, FogType new_type)
 {
     int x = pt.x - radius;
     int y = pt.y - radius;
