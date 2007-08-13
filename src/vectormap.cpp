@@ -19,7 +19,7 @@
 #include "citylist.h"
 #include "playerlist.h"
 #include "GraphicsCache.h"
-#include "gamebigmap.h" //remove me
+#include "game.h" //remove me
 
 VectorMap::VectorMap(City *c, enum ShowVectoring v)
 {
@@ -255,7 +255,7 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
       Vector<int> dest;
       dest = mapFromScreen(e.pos);
 
-      if (GameBigMap::see_opponents_production == true)
+      if (Game::see_opponents_production == true)
         nearestCity = cl->getNearestCity(dest, 4);
       else
         nearestCity = cl->getNearestFriendlyCity(dest, 4);

@@ -1267,13 +1267,16 @@ bool GameWindow::on_temple_visited(bool hasHero, Temple *temple, int blessCount)
     l->set_text(s);
     s = l->get_text() + "\n" + _("Seek more blessings in far temples!");
     l->set_text(s);
-    if (hasHero)
-      s = l->get_text() + "\n\n" + _("Do you seek a quest?");
-    l->set_text(s);
+    if (Game::play_with_quests == true)
+      {
+        if (hasHero)
+          s = l->get_text() + "\n\n" + _("Do you seek a quest?");
+        l->set_text(s);
+      }
 
     dialog->show_all();
 
-    if (hasHero == false)
+    if (hasHero == false || Game::play_with_quests == false)
       {
         close_button->hide();
         s = _("_Close");
@@ -1282,7 +1285,7 @@ bool GameWindow::on_temple_visited(bool hasHero, Temple *temple, int blessCount)
 
     int response = dialog->run();
 
-    if (hasHero == false)
+    if (hasHero == false || Game::play_with_quests == false)
       response = 1;
 
     if (response == 0)		// accepted a quest

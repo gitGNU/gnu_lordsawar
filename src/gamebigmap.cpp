@@ -41,6 +41,7 @@
 #include "GameMap.h"
 #include "Configuration.h"
 #include "GraphicsCache.h"
+#include "game.h"
 
 #include "timing.h"
 
@@ -171,7 +172,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
               {
                   if (!c->isBurnt())
                   {
-                      if (see_opponents_production == true)
+                      if (Game::see_opponents_production == true)
                           city_queried (c, false);
                       else
                       {
@@ -219,13 +220,13 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
             else if (Stack *st = Stacklist::getObjectAt(tile.x, tile.y))
             {
                 if (st->getPlayer() != Playerlist::getActiveplayer() && 
-                    see_opponents_stacks == true)
+                    Game::see_opponents_stacks == true)
                 {
                     stack_queried.emit(st);
 		    mouse_state = SHOWING_STACK;
                 }
                 else if (st->getPlayer() == Playerlist::getActiveplayer() && 
-                         see_opponents_stacks == false)
+                         Game::see_opponents_stacks == false)
                 {
                     stack_queried.emit(st);
 		    mouse_state = SHOWING_STACK;
