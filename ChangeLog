@@ -4,6 +4,7 @@
 	* added ability to turn off quest play
 	* changed game preferences to account for these new options
 	* adding fog related methods to location class
+	* checking for fog in vectormap, ruinmap, overviewmap
 
 2007-08-12  Ben Asselstine
 
