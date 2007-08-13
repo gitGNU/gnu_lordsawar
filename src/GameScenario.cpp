@@ -56,6 +56,10 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
+bool GameScenario::s_see_opponents_stacks = false;
+bool GameScenario::s_see_opponents_production = false;
+bool GameScenario::s_play_with_quests = true;
+
 
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
     :d_round(0), d_name(name),d_comment(comment), d_turnmode(turnmode)
@@ -217,6 +221,9 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= helper.saveData("comment", d_comment);
     retval &= helper.saveData("turn", d_round);
     retval &= helper.saveData("turnmode", d_turnmode);
+    retval &= helper.saveData("view_enemies", s_see_opponents_stacks);
+    retval &= helper.saveData("view_production", s_see_opponents_production);
+    retval &= helper.saveData("quests", s_play_with_quests);
     
     retval &= helper.closeTag();
     
@@ -254,6 +261,9 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
         helper->getData(d_turnmode, "turnmode");
         helper->getData(d_name, "name");
         helper->getData(d_comment, "comment");
+        helper->getData(s_see_opponents_stacks, "view_enemies");
+        helper->getData(s_see_opponents_production, "view_production");
+        helper->getData(s_play_with_quests, "quests");
 
         //TODO: for later when it becomes crucial: deal with loading of
         //something else than simple games

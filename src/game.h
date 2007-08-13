@@ -25,6 +25,7 @@
 #include "callback-enums.h"
 #include "army.h"
 #include "fight.h"
+#include "game-parameters.h"
 
 class NextTurn;
 class GameBigMap;
@@ -67,7 +68,7 @@ class Game
     void move_all_stacks();
     void end_turn();
 
-    void startGame(); // initiate game flow
+    void startGame(GameParameters &g); // initiate game flow
     void loadGame();
     void stopGame(); // stop game flow, clean up
     // save current game, returns true if successful
@@ -113,9 +114,6 @@ class Game
     sigc::signal<void, Player *> game_over;
     sigc::signal<void, Player *> player_died;
     
-    static const bool see_opponents_stacks = false; //fixme, add to configuration
-    static const bool see_opponents_production = false; //fixme, add to configuration
-    static const bool play_with_quests = true; //fixme, add to configuration
 
  private:
 
@@ -177,6 +175,7 @@ class Game
     std::vector<Hero*> d_herotemplates[MAX_PLAYERS];
 
     bool input_locked;
+
 };
 
 #endif

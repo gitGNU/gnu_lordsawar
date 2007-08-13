@@ -50,6 +50,10 @@ struct GameParameters
     };
 
     ProcessArmies process_armies;
+
+    bool see_opponents_stacks;
+    bool see_opponents_production;
+    bool play_with_quests;
 };
 
 #endif

@@ -60,6 +60,9 @@ GamePreferencesDialog::GamePreferencesDialog()
     xml->get_widget("ruins_scale", ruins_scale);
     xml->get_widget("temples_scale", temples_scale);
     xml->get_widget("map_size_combobox", map_size_combobox);
+    xml->get_widget("view_enemies_checkbutton", view_enemies_checkbutton);
+    xml->get_widget("view_production_checkbutton", view_production_checkbutton);
+    xml->get_widget("quests_checkbutton", quests_checkbutton);
 
     process_armies_combobox->set_active(
 	GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN);
@@ -323,6 +326,10 @@ void GamePreferencesDialog::on_start_game_clicked()
     g.army_theme = Glib::filename_from_utf8(army_theme_combobox->get_active_text());
     g.process_armies = GameParameters::ProcessArmies(
 	process_armies_combobox->get_active_row_number());
+
+    g.see_opponents_stacks = view_enemies_checkbutton->get_active();
+    g.see_opponents_production = view_production_checkbutton->get_active();
+    g.play_with_quests = quests_checkbutton->get_active();
 
     // and call callback
     game_started(g);

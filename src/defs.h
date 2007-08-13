@@ -20,9 +20,9 @@
 
 #include <libintl.h>
 
-#define LORDSAWAR_SAVEGAME_VERSION "0.3.8c"
-#define LORDSAWAR_CONFIG_VERSION "0.3.7b"
-#define ENABLE_NLS 1 // Very important to activate localization
+#define LORDSAWAR_SAVEGAME_VERSION "0.0.2"
+#define LORDSAWAR_CONFIG_VERSION "0.0.2"
+#define ENABLE_NLS 1 // Very important toactivate localization
 #define _(string) gettext(string) // Macro for the gettext
 #define __(astring) std::string(gettext(astring.c_str()))
 

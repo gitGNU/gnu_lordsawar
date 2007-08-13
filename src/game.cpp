@@ -676,8 +676,12 @@ SmallMap &Game::get_smallmap()
     return *smallmap.get();
 }
 
-void Game::startGame()
+void Game::startGame(GameParameters &g)
 {
+    GameScenario::s_see_opponents_stacks = g.see_opponents_stacks;
+    GameScenario::s_see_opponents_production = g.see_opponents_production;
+    GameScenario::s_play_with_quests = g.play_with_quests;
+
     debug ("start_game()");
     lock_inputs();
 

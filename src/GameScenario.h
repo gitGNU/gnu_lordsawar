@@ -81,6 +81,10 @@ class GameScenario: public sigc::trackable
           * @return true if all went well, false otherwise
           */
         bool saveGame(std::string filename, std::string extension = "sav") const;
+        static bool s_see_opponents_stacks;
+        static bool s_see_opponents_production;
+        static bool s_play_with_quests;
+
     private:
         /** Callback function for loading a game. See XML_Helper for details.
           *

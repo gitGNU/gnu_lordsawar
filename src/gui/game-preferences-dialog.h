@@ -26,6 +26,7 @@
 #include <gtkmm/treemodelcolumn.h>
 #include <gtkmm/cellrenderercombo.h>
 #include <gtkmm/radiobutton.h>
+#include <gtkmm/checkbutton.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/filechooserbutton.h>
 #include <gtkmm/widget.h>
@@ -95,6 +96,9 @@ class GamePreferencesDialog
     };
     const PlayerTypeColumns player_type_columns;
     Glib::RefPtr<Gtk::ListStore> player_type_list;
+    Gtk::CheckButton *quests_checkbutton;
+    Gtk::CheckButton *view_enemies_checkbutton;
+    Gtk::CheckButton *view_production_checkbutton;
 
     typedef std::vector<Glib::ustring> player_name_seq;
     player_name_seq default_player_names;
