@@ -1,3 +1,9 @@
+2007-08-17  Ben Asselstine
+
+	* added new fog pictures
+	* removed fog graphics from BigMap
+	* added fog to GraphicsCache
+
 2007-08-13  Ben Asselstine
 
 	* added ability to see production of opponent's cities
