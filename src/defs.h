@@ -38,6 +38,7 @@ const unsigned int MAX_PLAYERS=8;
 const unsigned int TEMPLE_TYPES=2; 
 const unsigned int STONE_TYPES=9; 
 const unsigned int ROAD_TYPES=12; 
+const unsigned int FOG_TYPES=9; 
 const unsigned int BRIDGE_TYPES=2; 
 const unsigned int SIGNPOSTS_RATIO=6; // #:1 dynamic vs static signposts
 const unsigned int MAX_ARMIES_VECTORED_TO_ONE_CITY = 4;

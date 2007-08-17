@@ -65,6 +65,13 @@ struct RoadCacheItem
     SDL_Surface* surface;
 };
 
+//the structure to store fog patterns in
+struct FogCacheItem
+{
+    int type;
+    SDL_Surface* surface;
+};
+
 //the structure to store bridges in
 struct BridgeCacheItem
 {
@@ -155,6 +162,7 @@ GraphicsCache::GraphicsCache()
     loadTemplePics();
     loadStonePics();
     loadRoadPics();
+    loadFogPics();
     loadBridgePics();
     loadFlags();
     loadSelectors();
@@ -423,6 +431,33 @@ SDL_Surface* GraphicsCache::getRoadPic(int type)
 
     //no item found -> create a new one
     myitem = addRoadPic(type);
+
+    return myitem->surface;
+}
+
+SDL_Surface* GraphicsCache::getFogPic(int type)
+{
+    debug("GraphicsCache::getFogPic " <<type)
+
+    std::list<FogCacheItem*>::iterator it;
+    FogCacheItem* myitem;
+
+    for (it = d_foglist.begin(); it != d_foglist.end(); it++)
+    {
+        if ((*it)->type == type)
+        {
+            myitem = (*it);
+
+            //put the item in last place (last touched)
+            d_foglist.erase(it);
+            d_foglist.push_back(myitem);
+
+            return myitem->surface;
+        }
+    }
+
+    //no item found -> create a new one
+    myitem = addFogPic(type);
 
     return myitem->surface;
 }
@@ -702,6 +737,9 @@ void GraphicsCache::checkPictures()
     while (d_roadlist.size() > 10)
         eraseLastRoadItem();
 
+    while (d_foglist.size() > 10)
+        eraseLastFogItem();
+
     while (d_bridgelist.size() > 10)
         eraseLastBridgeItem();
 
@@ -910,6 +948,28 @@ RoadCacheItem* GraphicsCache::addRoadPic(int type)
     myitem->surface = mysurf;
 
     d_roadlist.push_back(myitem);
+
+    //add the size
+    int size = mysurf->w * mysurf->h;
+    d_cachesize += size * mysurf->format->BytesPerPixel;
+
+    //and check the size of the cache
+    checkPictures();
+
+    return myitem;
+}
+
+FogCacheItem* GraphicsCache::addFogPic(int type)
+{
+    
+    SDL_Surface* mysurf = SDL_DisplayFormatAlpha(d_fogpic[type]);
+
+    //now create the cache item and add the size
+    FogCacheItem* myitem = new FogCacheItem();
+    myitem->type = type;
+    myitem->surface = mysurf;
+
+    d_foglist.push_back(myitem);
 
     //add the size
     int size = mysurf->w * mysurf->h;
@@ -1169,6 +1229,9 @@ void GraphicsCache::clear()
     while (!d_roadlist.empty())
         eraseLastRoadItem();
 
+    while (!d_foglist.empty())
+        eraseLastFogItem();
+
     while (!d_bridgelist.empty())
         eraseLastBridgeItem();
 
@@ -1235,6 +1298,21 @@ void GraphicsCache::eraseLastRoadItem()
 
     RoadCacheItem* myitem = *(d_roadlist.begin());
     d_roadlist.erase(d_roadlist.begin());
+
+    int size = myitem->surface->w * myitem->surface->h;
+    d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+
+    SDL_FreeSurface(myitem->surface);
+    delete myitem;
+}
+
+void GraphicsCache::eraseLastFogItem()
+{
+    if (d_foglist.empty())
+        return;
+
+    FogCacheItem* myitem = *(d_foglist.begin());
+    d_foglist.erase(d_foglist.begin());
 
     int size = myitem->surface->w * myitem->surface->h;
     d_cachesize -= myitem->surface->format->BytesPerPixel * size;
@@ -1446,6 +1524,40 @@ void GraphicsCache::loadRoadPics()
     }
 
     SDL_FreeSurface(roadpics);
+}
+
+void GraphicsCache::loadFogPics()
+{
+    // GameMap has the actual tileset stored
+    int ts = GameMap::getInstance()->getTileSet()->getTileSize() / 2;
+   
+    // load the fog pictures
+    SDL_Surface* fogpics = File::getMiscPicture("fog.png");
+
+    // copy alpha values, don't use them
+    SDL_SetAlpha(fogpics, 0, 0);
+    
+    for (unsigned int i = 0; i < FOG_TYPES; i++)
+    {
+        //copy the fog image...
+        SDL_Surface* tmp;
+        SDL_PixelFormat* fmt = fogpics->format;
+        
+        tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
+                            fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+
+	SDL_Rect r;
+	r.x = i*ts;
+	r.y = 0;
+	r.w = r.h = ts;
+        SDL_BlitSurface(fogpics, &r, tmp, 0);
+
+        d_fogpic[i] = SDL_DisplayFormatAlpha(tmp);
+
+        SDL_FreeSurface(tmp);
+    }
+
+    SDL_FreeSurface(fogpics);
 }
 
 void GraphicsCache::loadBridgePics()

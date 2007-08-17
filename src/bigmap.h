@@ -77,7 +77,6 @@ class BigMap: public sigc::trackable
     SDL_Surface* d_ruinpic;
     SDL_Surface* d_signpostpic;
     SDL_Surface* d_itempic;
-    SDL_Surface* d_fogpic;
         
     // helpers
     Vector<int> mouse_pos_to_tile(Vector<int> pos);

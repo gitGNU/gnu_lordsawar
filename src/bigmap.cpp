@@ -60,8 +60,6 @@ BigMap::BigMap()
 
 
     d_itempic = File::getMiscPicture("items.png");
-    // not used _yet_
-    d_fogpic = File::getMiscPicture("fog.png");
 
     // note: we are not fully initialized before set_view is called
     view.x = view.y = 0;
@@ -72,7 +70,6 @@ BigMap::~BigMap()
     SDL_FreeSurface(d_ruinpic);
     SDL_FreeSurface(d_signpostpic);
     SDL_FreeSurface(d_itempic);
-    SDL_FreeSurface(d_fogpic);
 
     if (buffer)
         SDL_FreeSurface(buffer);

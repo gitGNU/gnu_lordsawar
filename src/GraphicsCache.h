@@ -33,6 +33,7 @@ struct SelectorCacheItem;
 struct ShieldCacheItem;
 struct ProdShieldCacheItem;
 struct MoveBonusCacheItem;
+struct FogCacheItem;
 class City;
 
 /** Soliton class for caching army and map images
@@ -123,6 +124,12 @@ class GraphicsCache
           *
           * @param type         the type of the road
           * @return image of the road
+          */
+        SDL_Surface* getFogPic(int type);
+        /** Function for getting a fog picture
+          *
+          * @param type         the type of the fog
+          * @return image of the fog
           */
         SDL_Surface* getBridgePic(int type);
         /** Function for getting a bridge picture
@@ -223,29 +230,32 @@ class GraphicsCache
         GraphicsCache();
         ~GraphicsCache();
 
-        //! Creates a new temple picture with the given parametres.
+        //! Creates a new temple picture with the given parameters.
         TempleCacheItem* addTemplePic(int type);
 
-        //! Creates a new stone picture with the given parametres.
+        //! Creates a new stone picture with the given parameters.
         StoneCacheItem* addStonePic(int type);
 
-        //! Creates a new road picture with the given parametres.
+        //! Creates a new road picture with the given parameters.
         RoadCacheItem* addRoadPic(int type);
 
-        //! Creates a new bridge picture with the given parametres.
+        //! Creates a new fog picture with the given parameters.
+        FogCacheItem* addFogPic(int type);
+
+        //! Creates a new bridge picture with the given parameters.
         BridgeCacheItem* addBridgePic(int type);
 
-        //! Creates a new army picture with the given parametres.
+        //! Creates a new army picture with the given parameters.
         ArmyCacheItem* addArmyPic(Uint32 armyset, Uint32 army, const Player* p,
                                   int level, const bool* medalsbonus);
 
-        //! Creates a new city picture with the given parametres.
+        //! Creates a new city picture with the given parameters.
         CityCacheItem* addCityPic(int type, const Player* p);
 
-        //! Creates a new ship picture with the given parametres.
+        //! Creates a new ship picture with the given parameters.
         ShipCacheItem* addShipPic(const Player* p);
 
-        //! Creates a new flag picture with the given parametres.
+        //! Creates a new flag picture with the given parameters.
         FlagCacheItem* addFlagPic(int size, const Player* p);
 
         //! Creates a new selector picture with the given parameters.
@@ -275,6 +285,9 @@ class GraphicsCache
 
         //! Erases the oldest (least recently requested) road cache item.
         void eraseLastRoadItem();
+
+        //! Erases the oldest (least recently requested) fog cache item.
+        void eraseLastFogItem();
 
         //! Erases the oldest (least recently requested) bridge cache item.
         void eraseLastBridgeItem();
@@ -315,6 +328,9 @@ class GraphicsCache
         //! Loads the images for the road pictures.
         void loadRoadPics();
 
+        //! Loads the images for the fog pictures.
+        void loadFogPics();
+
         //! Loads the images for the bridge pictures.
         void loadBridgePics();
 
@@ -343,6 +359,7 @@ class GraphicsCache
         std::list<TempleCacheItem*> d_templelist;
         std::list<StoneCacheItem*> d_stonelist;
         std::list<RoadCacheItem*> d_roadlist;
+        std::list<FogCacheItem*> d_foglist;
         std::list<BridgeCacheItem*> d_bridgelist;
         std::list<SelectorCacheItem*> d_selectorlist;
         std::list<ShieldCacheItem*> d_shieldlist;
@@ -377,6 +394,7 @@ class GraphicsCache
 	SDL_Surface* d_small_ruin_unexplored;
 	SDL_Surface* d_small_ruin_explored;
 	SDL_Surface* d_small_temple;
+	SDL_Surface *d_fogpic[FOG_TYPES];
 };
 
 #endif
