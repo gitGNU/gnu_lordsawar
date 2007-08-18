@@ -51,6 +51,7 @@
 #include "File.h"
 #include "Quest.h"
 #include "reward.h"
+#include "FogMap.h"
 
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
@@ -687,6 +688,12 @@ void Game::startGame(GameParameters &g)
     GameScenario::s_see_opponents_production = g.see_opponents_production;
     GameScenario::s_play_with_quests = g.play_with_quests;
     GameScenario::s_hidden_map = g.hidden_map;
+    if (g.hidden_map)
+      {
+        Playerlist::iterator pit = Playerlist::getInstance()->begin();
+        for (; pit != Playerlist::getInstance()->end(); pit++)
+          (*pit)->getFogMap()->fill(FogMap::CLOSED);
+      }
 
     debug ("start_game()");
     lock_inputs();

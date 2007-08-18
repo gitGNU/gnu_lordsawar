@@ -231,9 +231,12 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
     draw();
 }
 
-bool OverviewMap::isFogged(Vector<int> pos)
+bool OverviewMap::isFogged(int i, int j)
 {
   //is this tile visible, or not?
+  Vector <int>pos;
+  pos.x = i;
+  pos.y = j;
   FogMap *fogmap = Playerlist::getActiveplayer()->getFogMap();
   if (fogmap->getFogTile(pos) == FogMap::CLOSED)
     return true;
@@ -245,7 +248,6 @@ void OverviewMap::draw_terrain_pixels(Rectangle r)
     GameMap *gm = GameMap::getInstance();
     // draw static map
     Uint32 road_color = SDL_MapRGB(static_surface->format, 164, 84, 0);
-    Uint32 fog_color = SDL_MapRGB(static_surface->format, 0, 0, 0);
     
     for (int i = r.x; i < r.x + r.w; ++i)
         for (int j = r.y; j < r.y + r.h; ++j)
@@ -253,12 +255,7 @@ void OverviewMap::draw_terrain_pixels(Rectangle r)
             int x = int(i / pixels_per_tile);
             int y = int(j / pixels_per_tile);
 
-            Vector <int> pos;
-            pos.x = x;
-            pos.y = j;
-            if (isFogged(pos) == true)
-                draw_pixel(static_surface, x, y, fog_color);
-	    else if (gm->getTile(x,y)->getBuilding() == Maptile::ROAD ||
+	    if (gm->getTile(x,y)->getBuilding() == Maptile::ROAD ||
                      gm->getTile(x,y)->getBuilding() == Maptile::BRIDGE)
 		         draw_pixel(static_surface, i, j, road_color);
 	    else
@@ -295,7 +292,7 @@ void OverviewMap::draw_stacks()
                 continue;
 
             // don't draw stacks on tiles we can't see
-            if (isFogged (pos) == true)
+            if (isFogged (pos.x, pos.y) == true)
                 continue;
 
             pos = mapToSurface(pos);
@@ -313,6 +310,7 @@ void OverviewMap::after_draw()
 
 void OverviewMap::draw()
 {
+    Uint32 fog_color = SDL_MapRGB(surface->format, 0, 0, 0);
     Playerlist *pl = Playerlist::getInstance();
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
     assert(surface);
@@ -357,6 +355,19 @@ void OverviewMap::draw()
 	draw_filled_rect(surface, pos.x, pos.y,
 			 pos.x + size, pos.y + size, raw);
     }
+
+    //fog it up
+    for (int i = 0; i < GameMap::getWidth(); i++)
+        for (int j = 0; j < GameMap::getHeight(); j++)
+        {
+          Vector <int> pos;
+          pos.x = i;
+          pos.y = j;
+          pos = mapToSurface(pos);
+          if (isFogged(i, j) == true)
+            draw_filled_rect(surface, pos.x, pos.y,
+                             pos.x + size, pos.y + size, fog_color);
+        }
 
     // let derived classes do their job
     after_draw();

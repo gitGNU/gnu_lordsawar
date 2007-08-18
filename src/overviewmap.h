@@ -48,7 +48,7 @@ class OverviewMap
     SDL_Surface *get_surface();
 
     //is this tile visible? (convenience function)
-    bool isFogged(Vector<int> pos);
+    bool isFogged(int i, int j);
 
  private:
      // the background, we keep it cached so it doesn't have to be drawn all
