@@ -162,6 +162,9 @@ class Game
     void stackUpdate(Stack* s);
     //! Called whenever a stack has died; updates bigmap as well
     void stackDied(Stack* s);
+    //! Called whenever players fight
+    void on_fight_started(Fight &fight);
+
 
     
     void looting_city(City *city, int &gold);

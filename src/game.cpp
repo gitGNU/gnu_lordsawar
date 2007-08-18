@@ -119,7 +119,7 @@ Game::Game(GameScenario* gameScenario)
 	
         p->sinvadingCity.connect(sigc::mem_fun(this, &Game::invading_city));
         p->fight_started.connect(
-	    sigc::mem_fun(fight_started, &sigc::signal<void, Fight &>::emit));
+	    sigc::mem_fun(*this, &Game::on_fight_started));
         p->ruinfight_started.connect(
 	    sigc::mem_fun(ruinfight_started, &sigc::signal<void, Stack *, Stack *>::emit));
         p->ruinfight_finished.connect(
@@ -161,6 +161,10 @@ void Game::end_turn()
 void Game::update_stack_info()
 {
     Stack* stack = Playerlist::getActiveplayer()->getActivestack();
+
+    if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+        GameScenario::s_hidden_map == true)
+      return;
     stack_info_changed.emit(stack);
 }
 
@@ -948,6 +952,14 @@ void Game::on_player_died(Player *player)
 	game_over.emit(pl->getFirstLiving());
     else if (player->getType() == Player::HUMAN)
 	player_died.emit(player);
+}
+
+void Game::on_fight_started(Fight &fight)
+{
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+      GameScenario::s_hidden_map == true)
+    return;
+  fight_started.emit(fight);
 }
 
 void Game::center_view_on_city()
