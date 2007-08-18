@@ -1,7 +1,9 @@
 2007-08-18  Ben Asselstine
 
 	* now sweeping the hidden map for lone fogged tiles, and removing
-	  them at the start of a turn.
+	  them at the start of a turn
+	* not showing computer player movement/fights when hidden map is
+	  enabled
 
 2007-08-17  Ben Asselstine
 
