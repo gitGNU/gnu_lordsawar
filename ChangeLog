@@ -4,6 +4,9 @@
 	  them at the start of a turn
 	* not showing computer player movement/fights when hidden map is
 	  enabled
+	* now correctly fogging up the smallmap (except for one drawing
+	  glitch)
+	* now correctly detecting foggedness in Location
 
 2007-08-17  Ben Asselstine
 
