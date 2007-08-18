@@ -1,3 +1,8 @@
+2007-08-18  Ben Asselstine
+
+	* now sweeping the hidden map for lone fogged tiles, and removing
+	  them at the start of a turn.
+
 2007-08-17  Ben Asselstine
 
 	* added new fog pictures
