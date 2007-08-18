@@ -54,6 +54,7 @@ struct GameParameters
     bool see_opponents_stacks;
     bool see_opponents_production;
     bool play_with_quests;
+    bool hidden_map;
 };
 
 #endif

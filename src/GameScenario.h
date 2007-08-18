@@ -84,6 +84,7 @@ class GameScenario: public sigc::trackable
         static bool s_see_opponents_stacks;
         static bool s_see_opponents_production;
         static bool s_play_with_quests;
+        static bool s_hidden_map;
 
     private:
         /** Callback function for loading a game. See XML_Helper for details.

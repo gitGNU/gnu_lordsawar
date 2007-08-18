@@ -59,6 +59,7 @@ using namespace std;
 bool GameScenario::s_see_opponents_stacks = false;
 bool GameScenario::s_see_opponents_production = false;
 bool GameScenario::s_play_with_quests = true;
+bool GameScenario::s_hidden_map = false;
 
 
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
@@ -224,6 +225,7 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= helper.saveData("view_enemies", s_see_opponents_stacks);
     retval &= helper.saveData("view_production", s_see_opponents_production);
     retval &= helper.saveData("quests", s_play_with_quests);
+    retval &= helper.saveData("hidden_map", s_hidden_map);
     
     retval &= helper.closeTag();
     
@@ -264,6 +266,7 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
         helper->getData(s_see_opponents_stacks, "view_enemies");
         helper->getData(s_see_opponents_production, "view_production");
         helper->getData(s_play_with_quests, "quests");
+        helper->getData(s_hidden_map, "hidden_map");
 
         //TODO: for later when it becomes crucial: deal with loading of
         //something else than simple games
