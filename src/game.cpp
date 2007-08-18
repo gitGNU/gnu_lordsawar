@@ -921,6 +921,12 @@ bool Game::init_turn_for_player(Player* p)
     {
 	unlock_inputs();
     
+        if (d_gameScenario->getRound() == 0)
+          {
+            Citylist *clist = Citylist::getInstance();
+            clist->getFirstCity(p)->deFog();
+          }
+
         Stack* stack = p->getActivestack();
 	if (stack != NULL)
 	    bigmap->center_view(stack->getPos());

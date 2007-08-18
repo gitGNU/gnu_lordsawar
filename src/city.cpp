@@ -309,6 +309,8 @@ void City::conquer(Player* newowner)
     // remove vectoring info (the new player can propably not use it anyway)
     setVectoring(Vector<int>(-1,-1));
 
+    deFog();
+
     VectoredUnitlist *vul = VectoredUnitlist::getInstance();
     vul->removeVectoredUnitsComingFrom(d_pos);
     vul->removeVectoredUnitsGoingTo(d_pos);
