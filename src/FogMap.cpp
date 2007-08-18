@@ -119,4 +119,34 @@ void FogMap::alterFogRadius(Vector<int> pt, int radius, FogType new_type)
     }
 }
 
+void FogMap::nextTurn()
+{
+    for (int y = 0; y < d_height; y++)
+    {
+        for (int x = 0; x < d_width; x++)
+        {
+            if (d_fogmap[y*d_width + x] == CLOSED)
+              {
+                bool west_open = false;
+                bool east_open = false;
+                //are east-west adjacent squares open?
+                if (x + 1 >= d_width || d_fogmap[y*d_width + x + 1] == OPEN)
+                  west_open = true;
+                if (x - 1 < 0 || d_fogmap[y*d_width + x - 1] == OPEN)
+                  east_open = true;
+                if (east_open && west_open)
+                  d_fogmap[y*d_width + x] = OPEN;
+                bool north_open = false;
+                bool south_open = false;
+                //are north-south adjacent squares open?
+                if (y + 1 >= d_height || d_fogmap[(y+1)*d_width + x] == OPEN)
+                  south_open = true;
+                if (y - 1 < 0 || d_fogmap[(y-1)*d_width + x] == OPEN)
+                  north_open = true;
+                if (north_open && south_open)
+                  d_fogmap[y*d_width + x] = OPEN;
+              }
+        }
+    }
+}
 // End of file

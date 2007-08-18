@@ -21,6 +21,7 @@
 #include "armysetlist.h"
 #include "hero.h"
 #include "vectoredunitlist.h"
+#include "FogMap.h"
 
 #include "path.h"
 
@@ -105,6 +106,8 @@ void NextTurn::startTurn()
 
     //a shortcut
     Player* p = Playerlist::getActiveplayer();
+
+    p->getFogMap()->nextTurn();
 
     //if turnmode is set, create/heal armies at player's turn
     if (d_turnmode)

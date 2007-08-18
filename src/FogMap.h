@@ -58,6 +58,11 @@ class FogMap
           */
 	void alterFogRadius(Vector<int> pt, int radius, FogType new_type);
 
+	/** Sweep the fog map for squares that are fogged that are
+          * surrounded by defogged squres, and remove them.
+          */
+	void nextTurn ();
+
         /** Save the contents of the map
           * 
           * @param helper           see XML_Helper for more information

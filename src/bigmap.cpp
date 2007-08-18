@@ -281,6 +281,12 @@ void BigMap::blit_if_inside_buffer(const Object &obj, SDL_Surface *image)
     }
 }
 
+void fog (int x, int y)
+{
+ //we have to handle the following fog cases:
+  return;
+}
+
 void BigMap::draw_buffer()
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
@@ -380,5 +386,18 @@ void BigMap::draw_buffer()
         }
     }
 
+    // Fog it up
+    for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
+      {
+        for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
+          {
+            if (x < GameMap::getWidth() && y < GameMap::getHeight())
+	      {
+                fog (x, y);
+	      }
+           }
+        }
+
     after_draw();
+
 }

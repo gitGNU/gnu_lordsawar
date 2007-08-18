@@ -41,6 +41,7 @@ class MoveResult;
 class FogMap;
 class Fight;
 class Reward;
+class FogMap;
 
 /** The abstract player class.
   *
