@@ -38,8 +38,8 @@ using namespace std;
 
 GameMap* GameMap::s_instance = 0;
 
-int GameMap::s_width = 100;
-int GameMap::s_height = 100;
+int GameMap::s_width = 112;
+int GameMap::s_height = 156;
 
 GameMap* GameMap::getInstance()
 {

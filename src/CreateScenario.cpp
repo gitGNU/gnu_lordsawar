@@ -54,8 +54,8 @@ CreateScenario::CreateScenario()
     debug("CreateScenario::CreateScenario")
    
    //default value
-    setWidth(100);
-    setHeight(100);
+    setWidth(112);
+    setHeight(156);
     
     //make sure that objects are deleted
     GameMap::deleteInstance();

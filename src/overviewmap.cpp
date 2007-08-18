@@ -231,12 +231,9 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
     draw();
 }
 
-bool OverviewMap::isFogged(int i, int j)
+bool OverviewMap::isFogged(Vector <int> pos)
 {
   //is this tile visible, or not?
-  Vector <int>pos;
-  pos.x = i;
-  pos.y = j;
   FogMap *fogmap = Playerlist::getActiveplayer()->getFogMap();
   if (fogmap->getFogTile(pos) == FogMap::CLOSED)
     return true;
@@ -292,7 +289,7 @@ void OverviewMap::draw_stacks()
                 continue;
 
             // don't draw stacks on tiles we can't see
-            if (isFogged (pos.x, pos.y) == true)
+            if (isFogged (pos) == true)
                 continue;
 
             pos = mapToSurface(pos);
@@ -363,10 +360,12 @@ void OverviewMap::draw()
           Vector <int> pos;
           pos.x = i;
           pos.y = j;
-          pos = mapToSurface(pos);
-          if (isFogged(i, j) == true)
-            draw_filled_rect(surface, pos.x, pos.y,
-                             pos.x + size, pos.y + size, fog_color);
+          if (isFogged(pos) == true)
+            {
+              pos = mapToSurface(pos);
+              draw_filled_rect(surface, pos.x, pos.y,
+                               pos.x + size, pos.y + size, fog_color);
+            }
         }
 
     // let derived classes do their job

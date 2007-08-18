@@ -108,9 +108,10 @@ void FogMap::alterFogRadius(Vector<int> pt, int radius, FogType new_type)
 {
     int x = pt.x - radius;
     int y = pt.y - radius;
-    for (int i = 0; i < 2*radius; i++)
+    int size = 2 * radius + 1;
+    for (int i = 0; i < size; i++)
     {
-        for (int j = 0; y < 2*radius; y++)
+        for (int j = 0; j < size; j++)
         {
             if ((x+i) < 0 || (y+j) < 0 || (x+i) >= d_width || (y+j) >= d_height)
                 continue;

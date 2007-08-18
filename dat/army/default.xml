@@ -13,7 +13,7 @@
         <d_strength>1</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>16</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -32,7 +32,7 @@
         <d_strength>2</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>12</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -51,7 +51,7 @@
         <d_strength>2</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>12</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -70,7 +70,7 @@
         <d_strength>3</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>8</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -89,7 +89,7 @@
         <d_strength>4</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>8</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -108,7 +108,7 @@
         <d_strength>3</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>12</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -127,7 +127,7 @@
         <d_strength>3</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>8</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -146,7 +146,7 @@
         <d_strength>5</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>12</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -165,7 +165,7 @@
         <d_strength>5</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>16</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -184,7 +184,7 @@
         <d_strength>5</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>12</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -203,7 +203,7 @@
         <d_strength>2</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>20</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -222,7 +222,7 @@
         <d_strength>4</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>16</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -241,7 +241,7 @@
         <d_strength>4</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>16</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -260,7 +260,7 @@
         <d_strength>2</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>16</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -279,7 +279,7 @@
         <d_strength>8</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>16</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -298,7 +298,7 @@
         <d_strength>1</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>16</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -317,7 +317,7 @@
         <d_strength>5</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>20</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -336,7 +336,7 @@
         <d_strength>6</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>20</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -358,7 +358,7 @@
         <d_strength>7</d_strength>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>12</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>512</d_army_bonus>
         <d_hero>false</d_hero>
@@ -376,7 +376,7 @@
         <d_strength>7</d_strength>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>16</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>512</d_army_bonus>
         <d_hero>false</d_hero>
@@ -394,7 +394,7 @@
         <d_strength>6</d_strength>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>50</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>512</d_army_bonus>
         <d_hero>false</d_hero>
@@ -409,7 +409,7 @@
         <d_strength>7</d_strength>
         <d_expvalue>1</d_expvalue>
         <d_max_moves>16</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_gender>0</d_gender>
         <d_defends_ruins>false</d_defends_ruins>
         <d_awardable>false</d_awardable>
@@ -431,7 +431,7 @@
         <d_strength>8</d_strength>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>12</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>512</d_army_bonus>
         <d_hero>false</d_hero>
@@ -449,7 +449,7 @@
         <d_strength>8</d_strength>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>16</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>4608</d_army_bonus>
         <d_hero>false</d_hero>
@@ -467,7 +467,7 @@
         <d_strength>7</d_strength>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>20</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>512</d_army_bonus>
         <d_hero>false</d_hero>
@@ -485,7 +485,7 @@
         <d_strength>8</d_strength>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>16</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_move_bonus>31</d_move_bonus>
         <d_army_bonus>8704</d_army_bonus>
         <d_hero>false</d_hero>
@@ -503,7 +503,7 @@
         <d_strength>9</d_strength>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>22</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_move_bonus>31</d_move_bonus>
         <d_army_bonus>2048</d_army_bonus>
         <d_hero>false</d_hero>
@@ -521,7 +521,7 @@
         <d_strength>5</d_strength>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>
-        <d_sight>3</d_sight>
+        <d_sight>1</d_sight>
         <d_move_bonus>0</d_move_bonus>
         <d_army_bonus>4</d_army_bonus>
         <d_hero>true</d_hero>
