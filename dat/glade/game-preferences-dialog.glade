@@ -604,7 +604,6 @@ Active</property>
 			      <child>
 				<widget class="GtkCheckButton" id="quick_start_checkbutton">
 				  <property name="visible">True</property>
-				  <property name="sensitive">False</property>
 				  <property name="can_focus">True</property>
 				  <property name="label" translatable="yes">Quick Start</property>
 				  <property name="use_underline">True</property>

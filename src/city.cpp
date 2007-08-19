@@ -306,7 +306,7 @@ void City::conquer(Player* newowner)
 {
     d_player = newowner;
 
-    // remove vectoring info (the new player can propably not use it anyway)
+    // remove vectoring info 
     setVectoring(Vector<int>(-1,-1));
 
     deFog();

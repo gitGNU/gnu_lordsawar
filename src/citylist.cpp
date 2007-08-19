@@ -281,6 +281,35 @@ City* Citylist::getNearestVisibleFriendlyCity(const Vector<int>& pos)
     return &(*diffit);
 }
 
+City* Citylist::getNearestNeutralCity(const Vector<int>& pos)
+{
+    int diff = -1;
+    iterator diffit;
+    
+    for (iterator it = begin(); it != end(); ++it)
+    {
+        if ((*it).isBurnt())
+            continue;
+
+        if ((*it).getPlayer() == Playerlist::getInstance()->getNeutral())
+        {
+            Vector<int> p = (*it).getPos();
+            int delta = abs(p.x - pos.x);
+            if (delta < abs(p.y - pos.y))
+                delta = abs(p.y - pos.y);
+            
+            if ((diff > delta) || (diff == -1))
+            {
+                diff = delta;
+                diffit = it;
+            }
+        }
+    }
+    
+    if (diff == -1) return 0;
+    return &(*diffit);
+}
+
 
 City* Citylist::getFirstCity(Player* p)
 {

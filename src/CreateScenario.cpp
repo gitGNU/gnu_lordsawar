@@ -463,7 +463,24 @@ bool CreateScenario::setupCities(bool quick_start)
 {
     debug("CreateScenario::setupCities")
 
-    //FIXME: handle quick_start
+    if (quick_start)
+      {
+        Vector <int> pos;
+        // no neutral cities
+        // divvy up the neutral cities among other non-neutral players
+        Playerlist::iterator pit = Playerlist::getInstance()->begin();
+        for (; pit != Playerlist::getInstance()->end(); pit++)
+          {
+            if (*pit == Playerlist::getInstance()->getNeutral())
+              pit = Playerlist::getInstance()->begin();
+            pos = Citylist::getInstance()->getFirstCity(*pit)->getPos();
+	    City *c = Citylist::getInstance()->getNearestNeutralCity(pos);
+            if (!c) //we're done when there are no more neutral cities
+              break;
+            c->setPlayer(*pit);
+          }
+      }
+
     for (Citylist::iterator it = Citylist::getInstance()->begin();
         it != Citylist::getInstance()->end(); it++)
     {

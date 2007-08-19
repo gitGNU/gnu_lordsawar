@@ -74,6 +74,9 @@ class Citylist : public ObjectList<City>, public sigc::trackable
         //! Returns the city closest to pos
         City* getNearestCity(const Vector<int>& pos);
 
+        //! Returns the city closest to pos and is owned by the Neutrals
+        City* getNearestNeutralCity(const Vector<int>& pos);
+
         //! Returns the city closest to pos that isn't obscured by fog of war
         City* getNearestVisibleCity(const Vector<int>& pos);
 
