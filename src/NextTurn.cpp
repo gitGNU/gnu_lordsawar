@@ -107,8 +107,6 @@ void NextTurn::startTurn()
     //a shortcut
     Player* p = Playerlist::getActiveplayer();
 
-    p->getFogMap()->nextTurn();
-
     //if turnmode is set, create/heal armies at player's turn
     if (d_turnmode)
     {
@@ -129,6 +127,7 @@ void NextTurn::finishTurn()
 {
     //Put everything that has to be done before the next player starts
     //his turn here. E.g. one could clear some caches.
+    Playerlist::getActiveplayer()->getFogMap()->smooth();
 }
 
 void NextTurn::finishRound()

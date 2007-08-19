@@ -120,7 +120,7 @@ void FogMap::alterFogRadius(Vector<int> pt, int radius, FogType new_type)
     }
 }
 
-void FogMap::nextTurn()
+void FogMap::smooth()
 {
     for (int y = 0; y < d_height; y++)
     {

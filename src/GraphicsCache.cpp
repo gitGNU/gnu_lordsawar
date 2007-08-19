@@ -1529,7 +1529,7 @@ void GraphicsCache::loadRoadPics()
 void GraphicsCache::loadFogPics()
 {
     // GameMap has the actual tileset stored
-    int ts = GameMap::getInstance()->getTileSet()->getTileSize() / 2;
+    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
    
     // load the fog pictures
     SDL_Surface* fogpics = File::getMiscPicture("fog.png");

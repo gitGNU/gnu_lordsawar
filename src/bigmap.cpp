@@ -45,6 +45,7 @@
 #include "GraphicsCache.h"
 #include "MapRenderer.h"
 #include "GameScenario.h"
+#include "FogMap.h"
 
 
 #include <iostream>
@@ -286,9 +287,104 @@ void BigMap::blit_if_inside_buffer(const Object &obj, SDL_Surface *image)
     }
 }
 
-void fog (int x, int y)
+void BigMap::drawFogTile (int x, int y)
 {
- //we have to handle the following fog cases:
+  FogMap *fogmap = Playerlist::getActiveplayer()->getFogMap();
+  int idx = 0;
+  int count = 0;
+  bool foggyTile;
+  for (int i = x - 1; i <= x + 1; i++)
+    for (int j = y - 1; j <= y + 1; j++)
+      {
+        foggyTile = false;
+        if (i == x && j == y)
+          continue;
+        if (i < 0 || j < 0 || 
+            i >= GameMap::getWidth() || j >= GameMap::getHeight())
+          foggyTile = true;
+        else
+          {
+            Vector<int> pos;
+            pos.x = i;
+            pos.y = j;
+            foggyTile = fogmap->getFogTile(pos) == FogMap::CLOSED;
+          }
+        if (foggyTile)
+          {
+            switch (count)
+              {
+              case 0: idx += 1; break;
+              case 1: idx += 2; break;
+              case 2: idx += 4; break;
+              case 3: idx += 8; break;
+              case 4: idx += 16; break;
+              case 5: idx += 32; break;
+              case 6: idx += 64; break;
+              case 7: idx += 128; break;
+              }
+          }
+
+        count++;
+      }
+  //now idx points to an index in an array somewhere
+  int type = 0;
+  switch (idx)
+    {
+    case 208: type = 1; break;
+    case 104: type = 2; break;
+    case  11: type = 3; break;
+    case  22: type = 4; break;
+    case 127: type = 5; break;
+    case 223: type = 6; break;
+    case 254: type = 7; break;
+    case 251: type = 8; break;
+    case 248: type = 9; break;
+    case  31: type = 10; break;
+    case 214: type = 11; break;
+    case 107: type = 12; break;
+    case 252: type = 9; break;
+    case 159: type = 10; break;
+    case 249: type = 9; break;
+    case  63: type = 10; break;
+    case 246: type = 11; break;
+    case 215: type = 11; break;
+    case 235: type = 12; break;
+    case 111: type = 12; break;
+    case 255: type = 13; break;
+    case 244: type = 1; break;
+    case 151: type = 4; break;
+    case 233: type = 2; break;
+    case  47: type = 3; break;
+    case 240: type = 1; break;
+    case 150: type = 4; break;
+    case 232: type = 2; break;
+    case  15: type = 3; break;
+    case 105: type = 2; break;
+    case  43: type = 3; break;
+    case 212: type = 1; break;
+    case  23: type = 4; break;
+    }
+  if (type)
+    {
+  switch (type)
+    {
+    case 12: type = 10; break;
+    case 10: type = 12; break;
+    case 9: type = 11; break;
+    case 11: type = 9; break;
+    case 6: type = 8; break;
+    case 8: type = 6; break;
+    case 2: type = 4; break;
+    case 4: type = 2; break;
+    }
+      Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
+      SDL_Rect r;
+      r.x = p.x;
+      r.y = p.y;
+      r.w = GameMap::getInstance()->getTileSet()->getTileSize();
+      SDL_BlitSurface(GraphicsCache::getInstance()->getFogPic(type - 1), 0, 
+                      buffer, &r);
+    }
   return;
 }
 
@@ -391,16 +487,21 @@ void BigMap::draw_buffer()
         }
     }
 
-    // Fog it up
+    // fog it up
     for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
       {
         for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
           {
-            if (x < GameMap::getWidth() && y < GameMap::getHeight())
-	      {
-                fog (x, y);
-	      }
-           }
+	    if (x < GameMap::getWidth() && y < GameMap::getHeight())
+              {
+                Player *p = Playerlist::getActiveplayer();
+                Vector<int> pos;
+                pos.x = x;
+                pos.y = y;
+                if (p->getFogMap()->getFogTile(pos) == FogMap::CLOSED)
+                  drawFogTile (x, y);
+              }
+          }
         }
 
     after_draw();

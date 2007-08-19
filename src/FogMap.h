@@ -61,7 +61,7 @@ class FogMap
 	/** Sweep the fog map for squares that are fogged that are
           * surrounded by defogged squres, and remove them.
           */
-	void nextTurn ();
+	void smooth();
 
         /** Save the contents of the map
           * 
