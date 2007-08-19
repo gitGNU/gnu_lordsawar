@@ -64,7 +64,10 @@ GamePreferencesDialog::GamePreferencesDialog()
     xml->get_widget("view_production_checkbutton", view_production_checkbutton);
     xml->get_widget("quests_checkbutton", quests_checkbutton);
     xml->get_widget("hidden_map_checkbutton", hidden_map_checkbutton);
+    xml->get_widget("neutral_combobox", neutral_cities_combobox);
+    xml->get_widget("diplomacy_checkbutton", diplomacy_checkbutton);
 
+    neutral_cities_combobox->set_active(GameParameters::AVERAGE);
     process_armies_combobox->set_active(
 	GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN);
 
@@ -332,6 +335,11 @@ void GamePreferencesDialog::on_start_game_clicked()
     g.see_opponents_production = view_production_checkbutton->get_active();
     g.play_with_quests = quests_checkbutton->get_active();
     g.hidden_map = hidden_map_checkbutton->get_active();
+
+    g.neutral_cities = GameParameters::NeutralCities (
+	neutral_cities_combobox->get_active_row_number());
+
+    g.diplomacy = diplomacy_checkbutton->get_active();
 
     // and call callback
     game_started(g);

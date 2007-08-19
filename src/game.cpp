@@ -52,6 +52,7 @@
 #include "Quest.h"
 #include "reward.h"
 #include "FogMap.h"
+#include "game-parameters.h"
 
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
@@ -681,14 +682,9 @@ SmallMap &Game::get_smallmap()
     return *smallmap.get();
 }
 
-void Game::startGame(GameParameters &g)
+void Game::startGame()
 {
-    //this could probably be moved elsewhere
-    GameScenario::s_see_opponents_stacks = g.see_opponents_stacks;
-    GameScenario::s_see_opponents_production = g.see_opponents_production;
-    GameScenario::s_play_with_quests = g.play_with_quests;
-    GameScenario::s_hidden_map = g.hidden_map;
-    if (g.hidden_map)
+    if (GameScenario::s_hidden_map)
       {
         Playerlist::iterator pit = Playerlist::getInstance()->begin();
         for (; pit != Playerlist::getInstance()->end(); pit++)

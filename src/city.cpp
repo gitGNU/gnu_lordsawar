@@ -346,7 +346,7 @@ void City::produceStrongestArmy()
             continue;
           if (al->getArmy(set, j)->getStat(Army::STRENGTH,false) > max_strength)
             {
-              strong_idx = j;
+              strong_idx = i;
               max_strength = al->getArmy(set, j)->getStat(Army::STRENGTH,false);
             }
         }
@@ -481,21 +481,38 @@ void City::produceArmy()
 {
   // add produced army to stack
   const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 set;
+  Uint32 set = getPlayer()->getArmyset();
   int index;
         
-  set = getPlayer()->getArmyset();
+  if (d_production == -1)
+    return;
+
   index = d_basicprod[d_production];
   debug("produce_army()\n");
 
-    // do not produce an army if the player has no gold.
-  if ((d_player->getGold() < 0) || (d_production == -1))
+  // do not produce an army if the player has no gold.
+  // unless it's the neutrals
+  if (d_player != Playerlist::getInstance()->getNeutral() && 
+      d_player->getGold() < 0) 
     return;
 
   GameMap::getInstance()->addArmy(this, new Army(*(al->getArmy(set, index)), d_player));
 
-  // start producing next army of same type
-  setProduction(d_production);
+  if (d_player == Playerlist::getInstance()->getNeutral()) 
+    {
+      //we're an active neutral city
+      //check to see if we've made 5 or not.
+      //stop producing if we've made 5 armies in our neutral city
+      Stack *s = d_player->getStacklist()->getObjectAt(d_pos);
+      if (!s)
+        setProduction(d_production);
+      else if (s->size() < 5)
+        setProduction(d_production);
+      else
+        setProduction(-1);
+    }
+  else // start producing next army of same type
+    setProduction(d_production);
 }
 
 bool City::canAcceptVectoredUnit()

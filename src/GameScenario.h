@@ -18,6 +18,7 @@
 #include <string>
 #include <list>
 #include <sigc++/trackable.h>
+#include "game-parameters.h"
 
 class XML_Helper;
 
@@ -85,6 +86,8 @@ class GameScenario: public sigc::trackable
         static bool s_see_opponents_production;
         static bool s_play_with_quests;
         static bool s_hidden_map;
+        static bool s_diplomacy;
+        static GameParameters::NeutralCities s_neutral_cities;
 
     private:
         /** Callback function for loading a game. See XML_Helper for details.

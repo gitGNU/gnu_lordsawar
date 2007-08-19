@@ -35,6 +35,8 @@
 #include "FogMap.h"
 #include "xmlhelper.h"
 #include "ruinlist.h"
+#include "GameScenario.h"
+#include "game-parameters.h"
 
 using namespace std;
 
@@ -284,6 +286,32 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
                 // stack has survived. Subtract some MP because fighting takes
                 // time.
                 s->decrementMoves(2);
+                //if this is a neutral city, and we're playing with 
+                //active neutral cities, AND it hasn't already been attacked
+                //then it's production gets turned on
+                Player *neu = city->getPlayer(); //neutral player
+                if (GameScenario::s_neutral_cities == GameParameters::ACTIVE &&
+                    neu == Playerlist::getInstance()->getNeutral() &&
+                    city->getProductionIndex() == -1)
+                {
+                  //great, then let's turn on the production.
+                  //well, we already made a unit, and we want to produce more
+                  //of it.
+                  Stack *o = neu->getStacklist()->getObjectAt(city->getPos());
+                  if (o)
+                    {
+                      int army_type = o->getStrongestArmy()->getType();
+                      for (int i = 0; i < 4; i++)
+                        {
+                          if (city->getArmytype(i) == army_type)
+                            {
+                              // hey, we found the droid we were looking for
+                              city->setProduction(i);
+                              break;
+                            }
+                        }
+                    }
+                }
             }
             moveResult->setStepCount(stepCount);
             supdatingStack.emit(0);

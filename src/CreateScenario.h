@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 #include <SDL.h>
+#include "game-parameters.h"
 
 class MapGenerator;
 class GameScenario;
@@ -147,7 +148,7 @@ class CreateScenario
           * map can be either saved or used further (all lists etc. have already
           * been filled)
           */
-        bool create();
+        bool create(const GameParameters &g);
 
         /** Dumps (Saves) the map
           * 

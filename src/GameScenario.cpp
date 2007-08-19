@@ -60,6 +60,8 @@ bool GameScenario::s_see_opponents_stacks = false;
 bool GameScenario::s_see_opponents_production = false;
 bool GameScenario::s_play_with_quests = true;
 bool GameScenario::s_hidden_map = false;
+bool GameScenario::s_diplomacy = false;
+GameParameters::NeutralCities GameScenario::s_neutral_cities = GameParameters::AVERAGE;
 
 
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
@@ -226,6 +228,8 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= helper.saveData("view_production", s_see_opponents_production);
     retval &= helper.saveData("quests", s_play_with_quests);
     retval &= helper.saveData("hidden_map", s_hidden_map);
+    retval &= helper.saveData("diplomacy", s_diplomacy);
+    retval &= helper.saveData("neutral_cities", (int) s_neutral_cities);
     
     retval &= helper.closeTag();
     
@@ -267,6 +271,10 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
         helper->getData(s_see_opponents_production, "view_production");
         helper->getData(s_play_with_quests, "quests");
         helper->getData(s_hidden_map, "hidden_map");
+        helper->getData(s_diplomacy, "diplomacy");
+        int val = -1;
+        helper->getData(val, "neutral_cities");
+        s_neutral_cities = GameParameters::NeutralCities (val);
 
         //TODO: for later when it becomes crucial: deal with loading of
         //something else than simple games

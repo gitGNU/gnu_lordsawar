@@ -331,7 +331,7 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
     std::string path = File::getSavePath();
     path += file;
     
-    creator.create();
+    creator.create(g);
     creator.dump(path);
     
     return path;
@@ -346,7 +346,7 @@ void GameWindow::new_game(GameParameters g)
     }
 
     setup_game(g.map_path);
-    game->startGame(g);
+    game->startGame();
 }
 
 void GameWindow::load_game(std::string file_path)

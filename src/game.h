@@ -68,7 +68,7 @@ class Game
     void move_all_stacks();
     void end_turn();
 
-    void startGame(GameParameters &g); // initiate game flow
+    void startGame(); // initiate game flow
     void loadGame();
     void stopGame(); // stop game flow, clean up
     // save current game, returns true if successful

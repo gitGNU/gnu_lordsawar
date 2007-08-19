@@ -48,13 +48,18 @@ struct GameParameters
 	PROCESS_ARMIES_AT_PLAYERS_TURN = 0,
 	PROCESS_ARMIES_WHEN_ROUND_BEGINS
     };
-
     ProcessArmies process_armies;
 
     bool see_opponents_stacks;
     bool see_opponents_production;
     bool play_with_quests;
     bool hidden_map;
+    bool diplomacy;
+
+    enum NeutralCities {
+        AVERAGE = 0, STRONG, ACTIVE
+    };
+    NeutralCities neutral_cities;
 };
 
 #endif
