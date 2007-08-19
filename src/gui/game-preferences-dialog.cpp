@@ -66,6 +66,11 @@ GamePreferencesDialog::GamePreferencesDialog()
     xml->get_widget("hidden_map_checkbutton", hidden_map_checkbutton);
     xml->get_widget("neutral_combobox", neutral_cities_combobox);
     xml->get_widget("diplomacy_checkbutton", diplomacy_checkbutton);
+    xml->get_widget("military_advisor_checkbutton", 
+                    military_advisor_checkbutton);
+    xml->get_widget("quick_start_checkbutton", quick_start_checkbutton);
+    xml->get_widget("intense_combat_checkbutton", intense_combat_checkbutton);
+    xml->get_widget("random_turns_checkbutton", random_turns_checkbutton);
 
     neutral_cities_combobox->set_active(GameParameters::AVERAGE);
     process_armies_combobox->set_active(
@@ -340,6 +345,10 @@ void GamePreferencesDialog::on_start_game_clicked()
 	neutral_cities_combobox->get_active_row_number());
 
     g.diplomacy = diplomacy_checkbutton->get_active();
+    g.random_turns = random_turns_checkbutton->get_active();
+    g.quick_start = quick_start_checkbutton->get_active();
+    g.intense_combat = intense_combat_checkbutton->get_active();
+    g.military_advisor = military_advisor_checkbutton->get_active();
 
     // and call callback
     game_started(g);

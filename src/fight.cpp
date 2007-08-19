@@ -27,6 +27,7 @@
 #include "city.h"
 #include "stack.h"
 #include "defs.h"
+#include "GameScenario.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -563,7 +564,6 @@ void Fight::calculateBonus()
 void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 {
   static int misses_in_a_row;
-  bool intense_combat = false;
   Uint32 sides = 0;
 
   if (!attacker || !defender)
@@ -574,7 +574,7 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 
   debug("Army " << a->getId() << " attacks " << d->getId())
 
-  if (intense_combat)
+  if (GameScenario::s_intense_combat == true)
     sides = 24;
   else
     sides = 20;

@@ -102,6 +102,10 @@ class GamePreferencesDialog
     Gtk::CheckButton *hidden_map_checkbutton;
     Gtk::ComboBox *neutral_cities_combobox;
     Gtk::CheckButton *diplomacy_checkbutton;
+    Gtk::CheckButton *intense_combat_checkbutton;
+    Gtk::CheckButton *military_advisor_checkbutton;
+    Gtk::CheckButton *random_turns_checkbutton;
+    Gtk::CheckButton *quick_start_checkbutton;
 
     typedef std::vector<Glib::ustring> player_name_seq;
     player_name_seq default_player_names;

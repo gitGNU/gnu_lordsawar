@@ -167,7 +167,7 @@ class CreateScenario
         bool distributePlayers();
 
         //! Setup city names and production
-        bool setupCities();
+        bool setupCities(bool quick_start);
 
         //! Setup temple names
         bool setupTemples();

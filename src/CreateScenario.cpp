@@ -329,6 +329,9 @@ bool CreateScenario::create(const GameParameters &g)
     GameScenario::s_hidden_map = g.hidden_map;
     GameScenario::s_diplomacy = g.diplomacy;
     GameScenario::s_neutral_cities = g.neutral_cities;
+    GameScenario::s_military_advisor= g.military_advisor;
+    GameScenario::s_random_turns = g.random_turns;
+    GameScenario::s_intense_combat= g.intense_combat;
 
     if (!createMap())
         return false;
@@ -336,7 +339,7 @@ bool CreateScenario::create(const GameParameters &g)
     if (!distributePlayers())
         return false;
 
-    if (!setupCities())
+    if (!setupCities(g.quick_start))
         return false;
 
     if (!setupTemples())
@@ -456,10 +459,11 @@ bool CreateScenario::distributePlayers()
     return true;
 }
 
-bool CreateScenario::setupCities()
+bool CreateScenario::setupCities(bool quick_start)
 {
     debug("CreateScenario::setupCities")
 
+    //FIXME: handle quick_start
     for (Citylist::iterator it = Citylist::getInstance()->begin();
         it != Citylist::getInstance()->end(); it++)
     {

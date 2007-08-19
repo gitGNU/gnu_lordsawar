@@ -62,7 +62,9 @@ bool GameScenario::s_play_with_quests = true;
 bool GameScenario::s_hidden_map = false;
 bool GameScenario::s_diplomacy = false;
 GameParameters::NeutralCities GameScenario::s_neutral_cities = GameParameters::AVERAGE;
-
+bool GameScenario::s_intense_combat = false;
+bool GameScenario::s_military_advisor = false;
+bool GameScenario::s_random_turns = false;
 
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
     :d_round(0), d_name(name),d_comment(comment), d_turnmode(turnmode)
@@ -230,6 +232,9 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= helper.saveData("hidden_map", s_hidden_map);
     retval &= helper.saveData("diplomacy", s_diplomacy);
     retval &= helper.saveData("neutral_cities", (int) s_neutral_cities);
+    retval &= helper.saveData("intense_combat", s_intense_combat);
+    retval &= helper.saveData("military_advisor", s_military_advisor);
+    retval &= helper.saveData("random_turns", s_random_turns);
     
     retval &= helper.closeTag();
     
@@ -275,6 +280,9 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
         int val = -1;
         helper->getData(val, "neutral_cities");
         s_neutral_cities = GameParameters::NeutralCities (val);
+        helper->getData(s_intense_combat, "intense_combat");
+        helper->getData(s_military_advisor, "military_advisor");
+        helper->getData(s_random_turns, "random_turns");
 
         //TODO: for later when it becomes crucial: deal with loading of
         //something else than simple games

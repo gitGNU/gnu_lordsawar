@@ -60,6 +60,11 @@ struct GameParameters
         AVERAGE = 0, STRONG, ACTIVE
     };
     NeutralCities neutral_cities;
+
+    bool quick_start;
+    bool intense_combat;
+    bool military_advisor;
+    bool random_turns;
 };
 
 #endif
