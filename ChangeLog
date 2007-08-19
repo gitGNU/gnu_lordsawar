@@ -1,3 +1,11 @@
+2007-08-19  Ben Asselstine
+
+	* finished a first crack at hidden map
+	* added the strong/active/average neutral cities game option
+	* now neutrals produce armies even if they're out of money
+	* fixed produceStrongestArmy to use correct slot index
+	* added intense combat option
+
 2007-08-18  Ben Asselstine
 
 	* now sweeping the hidden map for lone fogged tiles, and removing
@@ -7,6 +15,7 @@
 	* now correctly fogging up the smallmap
 	* now correctly detecting foggedness in Location
 	* now correctly altering fog on smallmap as players move
+	* now defogging cities when conquered
 
 2007-08-17  Ben Asselstine
 
