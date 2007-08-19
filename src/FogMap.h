@@ -63,6 +63,10 @@ class FogMap
           */
 	void smooth();
 
+	/** For bigmap purposes, it helps to know when a given tile 
+          * shouldn't be rendered.
+          */
+        bool isLoneFogTile(Vector<int> pos);
         /** Save the contents of the map
           * 
           * @param helper           see XML_Helper for more information

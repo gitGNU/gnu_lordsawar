@@ -120,6 +120,29 @@ void FogMap::alterFogRadius(Vector<int> pt, int radius, FogType new_type)
     }
 }
 
+bool FogMap::isLoneFogTile(Vector<int> pos)
+{
+  bool west_open = false;
+  bool east_open = false;
+  //are east-west adjacent squares open?
+  if (pos.x + 1 >= d_width || d_fogmap[pos.y*d_width + pos.x + 1] == OPEN)
+    west_open = true;
+  if (pos.x - 1 < 0 || d_fogmap[pos.y*d_width + pos.x - 1] == OPEN)
+    east_open = true;
+  bool north_open = false;
+  bool south_open = false;
+  //are north-south adjacent squares open?
+  if (pos.y + 1 >= d_height || d_fogmap[(pos.y+1)*d_width + pos.x] == OPEN)
+    south_open = true;
+  if (pos.y - 1 < 0 || d_fogmap[(pos.y-1)*d_width + pos.x] == OPEN)
+    north_open = true;
+  if (east_open && west_open)
+    return true;
+  if (north_open && south_open)
+    return true;
+  return false;
+}
+
 void FogMap::smooth()
 {
     for (int y = 0; y < d_height; y++)
@@ -128,23 +151,10 @@ void FogMap::smooth()
         {
             if (d_fogmap[y*d_width + x] == CLOSED)
               {
-                bool west_open = false;
-                bool east_open = false;
-                //are east-west adjacent squares open?
-                if (x + 1 >= d_width || d_fogmap[y*d_width + x + 1] == OPEN)
-                  west_open = true;
-                if (x - 1 < 0 || d_fogmap[y*d_width + x - 1] == OPEN)
-                  east_open = true;
-                if (east_open && west_open)
-                  d_fogmap[y*d_width + x] = OPEN;
-                bool north_open = false;
-                bool south_open = false;
-                //are north-south adjacent squares open?
-                if (y + 1 >= d_height || d_fogmap[(y+1)*d_width + x] == OPEN)
-                  south_open = true;
-                if (y - 1 < 0 || d_fogmap[(y-1)*d_width + x] == OPEN)
-                  north_open = true;
-                if (north_open && south_open)
+		Vector<int> pos;
+		pos.x = x;
+		pos.y = y;
+                if (isLoneFogTile (pos))
                   d_fogmap[y*d_width + x] = OPEN;
               }
         }
