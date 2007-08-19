@@ -5,6 +5,7 @@
 	* now neutrals produce armies even if they're out of money
 	* fixed produceStrongestArmy to use correct slot index
 	* added intense combat option
+	* added quick start option
 
 2007-08-18  Ben Asselstine
 
