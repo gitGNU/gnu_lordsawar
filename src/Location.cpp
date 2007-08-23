@@ -95,6 +95,18 @@ bool Location::isFogged()
 
 void Location::deFog()
 {
-  FogMap *fogmap = Playerlist::getActiveplayer()->getFogMap();
+  Player *p = Playerlist::getActiveplayer();
+  if (!p)
+    return;
+  FogMap *fogmap = p->getFogMap();
+  fogmap->alterFogRadius (d_pos, 3, FogMap::OPEN);
+}
+void Location::deFog(Player *p)
+{
+  if (!p)
+    return;
+  FogMap *fogmap = p->getFogMap();
+  if (!fogmap)
+    return;
   fogmap->alterFogRadius (d_pos, 3, FogMap::OPEN);
 }

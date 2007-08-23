@@ -30,7 +30,7 @@ class FogMap
         //! The two fog types: discovered, undiscovered
 	//! open to view, or closed to view.
 	//! closed to view can be partially obscured.
-        enum FogType {OPEN=0, CLOSED=2};
+        enum FogType {OPEN=0, CLOSED=1};
         
         //! Standard constructor: create a given map
         FogMap();

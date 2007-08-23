@@ -43,6 +43,7 @@ class Location : public ::Object
     Stack *addArmy(Army *a) const;
     bool isFogged();
     void deFog();
+    void deFog(Player *p);
 
  protected:
     Stack* getFreeStack(Player *p) const;

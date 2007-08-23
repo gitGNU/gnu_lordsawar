@@ -42,6 +42,7 @@
 #include "MapGenerator.h"
 #include "QuestsManager.h"
 #include "Configuration.h"
+#include "FogMap.h"
 
 using namespace std;
 
@@ -331,10 +332,18 @@ bool CreateScenario::create(const GameParameters &g)
     GameScenario::s_neutral_cities = g.neutral_cities;
     GameScenario::s_military_advisor= g.military_advisor;
     GameScenario::s_random_turns = g.random_turns;
-    GameScenario::s_intense_combat= g.intense_combat;
+    GameScenario::s_intense_combat = g.intense_combat;
 
     if (!createMap())
         return false;
+
+    // fog it up
+    if (GameScenario::s_hidden_map)
+      {
+        Playerlist::iterator pit = Playerlist::getInstance()->begin();
+        for (; pit != Playerlist::getInstance()->end(); pit++)
+          (*pit)->getFogMap()->fill(FogMap::CLOSED);
+      }
 
     if (!distributePlayers())
         return false;
@@ -446,6 +455,7 @@ bool CreateScenario::distributePlayers()
             (*cit).setPlayer(*pit);
             (*cit).setCapitalOwner(*pit);
             (*cit).setCapital(true);
+            (*cit).deFog(*pit);
             skipping = 0;
 
             pit++;
@@ -478,6 +488,7 @@ bool CreateScenario::setupCities(bool quick_start)
             if (!c) //we're done when there are no more neutral cities
               break;
             c->setPlayer(*pit);
+            c->deFog(*pit);
           }
       }
 

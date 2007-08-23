@@ -55,7 +55,7 @@ FogMap::FogMap(XML_Helper* helper)
         {
             //due to the circumstances, types is a long stream of
             //numbers, so read it character for character (no \n's or so)
-            d_fogmap[y*d_width + x] = static_cast<FogType>(types[y*d_width + x]);
+            d_fogmap[y*d_width + x] = FogType(types[y*d_width + x] - '0');
         }
     }
 }
@@ -78,8 +78,11 @@ bool FogMap::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    std::stringstream types;
+    retval &= helper->openTag("fogmap");
+    retval &= helper->saveData("width", d_width);
+    retval &= helper->saveData("height", d_height);
 
+    std::stringstream types;
     types << std::endl;
     for (int y = 0; y < d_height; y++)
     {
@@ -90,9 +93,6 @@ bool FogMap::save(XML_Helper* helper) const
         types << std::endl;
     }
 
-    retval &= helper->openTag("fogmap");
-    retval &= helper->saveData("width", d_width);
-    retval &= helper->saveData("height", d_height);
     retval &= helper->saveData("map", types.str());
     retval &= helper->closeTag();
 

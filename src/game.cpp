@@ -51,8 +51,8 @@
 #include "File.h"
 #include "Quest.h"
 #include "reward.h"
-#include "FogMap.h"
 #include "game-parameters.h"
+#include "FogMap.h"
 
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
@@ -684,12 +684,6 @@ SmallMap &Game::get_smallmap()
 
 void Game::startGame()
 {
-    if (GameScenario::s_hidden_map)
-      {
-        Playerlist::iterator pit = Playerlist::getInstance()->begin();
-        for (; pit != Playerlist::getInstance()->end(); pit++)
-          (*pit)->getFogMap()->fill(FogMap::CLOSED);
-      }
 
     debug ("start_game()");
     lock_inputs();
@@ -917,12 +911,6 @@ bool Game::init_turn_for_player(Player* p)
     {
 	unlock_inputs();
     
-        if (d_gameScenario->getRound() == 0)
-          {
-            Citylist *clist = Citylist::getInstance();
-            clist->getFirstCity(p)->deFog();
-          }
-
         Stack* stack = p->getActivestack();
 	if (stack != NULL)
 	    bigmap->center_view(stack->getPos());
