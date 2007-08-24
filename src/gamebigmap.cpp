@@ -219,8 +219,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    }
             else if (Stack *st = Stacklist::getObjectAt(tile.x, tile.y))
             {
-                if (st->getPlayer() != Playerlist::getActiveplayer() && 
-                    GameScenario::s_see_opponents_stacks == true)
+                if (GameScenario::s_see_opponents_stacks == true)
                 {
                     stack_queried.emit(st);
 		    mouse_state = SHOWING_STACK;
