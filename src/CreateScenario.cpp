@@ -452,10 +452,9 @@ bool CreateScenario::distributePlayers()
         if ((skipping >= cityskip) && (pit != pl->end()))
         {
             // distribute capitals for the players
-            (*cit).setPlayer(*pit);
+            (*cit).conquer(*pit);
             (*cit).setCapitalOwner(*pit);
             (*cit).setCapital(true);
-            (*cit).deFog(*pit);
             skipping = 0;
 
             pit++;
@@ -475,20 +474,33 @@ bool CreateScenario::setupCities(bool quick_start)
 
     if (quick_start)
       {
+        Playerlist *plist = Playerlist::getInstance();
+        Citylist *clist = Citylist::getInstance();
         Vector <int> pos;
         // no neutral cities
         // divvy up the neutral cities among other non-neutral players
-        Playerlist::iterator pit = Playerlist::getInstance()->begin();
-        for (; pit != Playerlist::getInstance()->end(); pit++)
+        int cities_left = clist->size() - plist->size() + 1;
+        int citycount[MAX_PLAYERS];
+	memset (citycount, 0, sizeof (citycount));
+        Playerlist::iterator pit = plist->begin();
+        for (; pit != plist->end(); pit++)
           {
-            if (*pit == Playerlist::getInstance()->getNeutral())
-              pit = Playerlist::getInstance()->begin();
-            pos = Citylist::getInstance()->getFirstCity(*pit)->getPos();
-	    City *c = Citylist::getInstance()->getNearestNeutralCity(pos);
-            if (!c) //we're done when there are no more neutral cities
+            if (*pit == plist->getNeutral())
+              pit = plist->begin();
+            citycount[(*pit)->getId()]++;
+            cities_left--;
+            if (cities_left == 0)
               break;
-            c->setPlayer(*pit);
-            c->deFog(*pit);
+          }
+        for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+          {
+            for (unsigned int j = 0; j < citycount[i]; j++)
+              {
+                Player *p = plist->getPlayer(i);
+                pos = clist->getFirstCity(p)->getPos();
+	        City *c = clist->getNearestNeutralCity(pos);
+                c->conquer(p);
+              }
           }
       }
 

@@ -309,7 +309,7 @@ void City::conquer(Player* newowner)
     // remove vectoring info 
     setVectoring(Vector<int>(-1,-1));
 
-    deFog();
+    deFog(newowner);
 
     VectoredUnitlist *vul = VectoredUnitlist::getInstance();
     vul->removeVectoredUnitsComingFrom(d_pos);

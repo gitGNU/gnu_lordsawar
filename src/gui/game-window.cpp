@@ -204,6 +204,8 @@ GameWindow::GameWindow()
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
     xml->connect_clicked("preferences_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_preferences_activated));
+    xml->connect_clicked("end_turn_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_end_turn));
 }
 
 GameWindow::~GameWindow()
@@ -724,6 +726,12 @@ void GameWindow::on_fullscreen_activated()
 	window->fullscreen();
     else
 	window->unfullscreen();
+}
+
+void GameWindow::on_end_turn()
+{
+  //if (game->can_end_turn)
+    game->end_turn();
 }
 
 void GameWindow::on_preferences_activated()
