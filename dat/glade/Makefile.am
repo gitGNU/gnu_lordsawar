@@ -35,6 +35,7 @@ armies-report-dialog.glade \
 cities-report-dialog.glade \
 gold-report-dialog.glade \
 temple-visit-dialog.glade \
+disband-stack-dialog.glade \
 hero-brings-allies-dialog.glade \
 next-player-turn-dialog.glade \
 city-rename-dialog.glade \

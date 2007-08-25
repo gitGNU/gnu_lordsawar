@@ -207,6 +207,7 @@ GameWindow::GameWindow()
 
     xml->get_widget("end_turn_menuitem", end_turn_menuitem);
     xml->get_widget("move_all_menuitem", move_all_menuitem);
+    xml->get_widget("disband_menuitem", disband_menuitem);
 
 }
 
@@ -429,6 +430,9 @@ void GameWindow::setup_game(std::string file_path)
     setup_menuitem(end_turn_menuitem,
 		   sigc::mem_fun(game.get(), &Game::end_turn),
 		   game->can_end_turn);
+    setup_menuitem(disband_menuitem,
+	           sigc::mem_fun(*this, &GameWindow::on_disband_activated),
+		   game->can_disband_stack);
 
     // setup game callbacks
     game->sidebar_stats_changed.connect(
@@ -742,6 +746,33 @@ void GameWindow::on_fullscreen_activated()
 	window->fullscreen();
     else
 	window->unfullscreen();
+}
+
+void GameWindow::on_disband_activated()
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/disband-stack-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+    
+    dialog->set_title(_("Disband"));
+
+    Gtk::Label *l;
+    xml->get_widget("label", l);
+
+    l->set_text(_("Are you sure you want to disband this group?"));
+    dialog->show_all();
+    int response = dialog->run();
+
+  if (response == 0)
+    game->disband_selected_stack();
+
+  return;
 }
 
 void GameWindow::on_preferences_activated()
