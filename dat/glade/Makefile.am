@@ -42,6 +42,7 @@ city-rename-dialog.glade \
 city-raze-dialog.glade \
 city-razed-dialog.glade \
 signpost-change-dialog.glade \
-fight-order-dialog.glade
+fight-order-dialog.glade \
+player-resign-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)

@@ -72,6 +72,7 @@ class Action
                 CITY_RENAME = 20,
                 CITY_VECTOR = 21,
                 FIGHT_ORDER = 22,
+		RESIGN = 23
         };
                 
         
@@ -527,6 +528,20 @@ class Action_FightOrder: public Action
     
     private:
 	std::list<Uint32> d_order;
+};
+
+//-----------------------------------------------------------------------------
+class Action_Resign: public Action
+{
+    public:
+        Action_Resign();
+        Action_Resign(XML_Helper* helper);
+        ~Action_Resign();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData();
 };
 
         

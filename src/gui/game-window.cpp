@@ -214,6 +214,8 @@ GameWindow::GameWindow()
 
     xml->connect_clicked("fight_order_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_fight_order_activated));
+    xml->connect_clicked("resign_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_resign_activated));
 }
 
 GameWindow::~GameWindow()
@@ -814,6 +816,33 @@ void GameWindow::on_disband_activated()
 
   if (response == 0) //disband the active stack
     Playerlist::getActiveplayer()->stackDisband(NULL);
+
+  return;
+}
+
+void GameWindow::on_resign_activated()
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/player-resign-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+    
+    dialog->set_title(_("Resign"));
+
+    Gtk::Label *l;
+    xml->get_widget("label", l);
+
+    l->set_text(_("Are you sure you want to resign?"));
+    dialog->show_all();
+    int response = dialog->run();
+
+  if (response == 0) //disband all stacks, raze all cities
+    Playerlist::getActiveplayer()->resign();
 
   return;
 }

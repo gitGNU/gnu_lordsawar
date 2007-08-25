@@ -106,6 +106,15 @@
 		    <widget class="GtkMenu" id="order_menuitem_menu">
 
 		      <child>
+			<widget class="GtkMenuItem" id="fight_order_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Fight Order</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_fight_order_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 19:13:09 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
 			<widget class="GtkMenuItem" id="move_all_menuitem">
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">_Move All</property>
@@ -133,11 +142,17 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkMenuItem" id="fight_order_menuitem">
+			<widget class="GtkSeparatorMenuItem" id="separator1">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Fight Order</property>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="resign_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Resign</property>
 			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_fight_order_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 19:13:09 GMT"/>
+			  <signal name="activate" handler="on_resign_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 22:30:37 GMT"/>
 			</widget>
 		      </child>
 		    </widget>

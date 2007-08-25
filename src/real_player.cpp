@@ -1323,7 +1323,7 @@ bool RealPlayer::vectorFromCity(City * c, Vector<int> dest)
   d_actions.push_back(item);
   return true;
 }
-// End of file
+
 void RealPlayer::setFightOrder(std::list<Uint32> order) 
 {
   d_fight_order = order;
@@ -1331,3 +1331,26 @@ void RealPlayer::setFightOrder(std::list<Uint32> order)
   item->fillData(order);
   d_actions.push_back(item);
 }
+
+void RealPlayer::resign() 
+{
+  //disband all stacks
+  getStacklist()->flClear();
+
+  //raze all cities
+  Citylist *cl = Citylist::getInstance();
+  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+    {
+      if ((*it).getPlayer() == this)
+        (*it).setBurnt(true);
+    }
+
+  Action_Resign* item = new Action_Resign();
+  item->fillData();
+  d_actions.push_back(item);
+    
+  getStacklist()->setActivestack(0);
+  supdatingStack.emit(0);
+}
+
+// End of file

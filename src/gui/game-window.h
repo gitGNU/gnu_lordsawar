@@ -154,6 +154,7 @@ class GameWindow: public sigc::trackable
     void on_gold_activated();
     void on_quests_activated();
     void on_disband_activated();
+    void on_resign_activated();
     void on_signpost_activated();
 
     void on_fullscreen_activated();

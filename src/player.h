@@ -437,6 +437,9 @@ class Player: public sigc::trackable
         //! Disband a player's stack
         virtual bool stackDisband(Stack* s) =0;
 
+        //! Disband all the player's stacks and raze all cities.
+        virtual void resign() =0;
+
         //! Change the text on the signpost of the square we're sitting on
         virtual bool signpostChange(Signpost * s, std::string message) =0;
 

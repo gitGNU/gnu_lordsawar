@@ -99,6 +99,8 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_Vector(helper));
         case FIGHT_ORDER:
             return (new Action_FightOrder(helper));
+        case RESIGN:
+            return (new Action_Resign(helper));
     }
 
     return 0;
@@ -152,6 +154,8 @@ Action* Action::copy(const Action* a)
             return (new Action_Vector(*dynamic_cast<const Action_Vector*>(a)));
         case FIGHT_ORDER:
             return (new Action_FightOrder(*dynamic_cast<const Action_FightOrder*>(a)));
+        case RESIGN:
+            return (new Action_Resign(*dynamic_cast<const Action_Resign*>(a)));
     }
 
     return 0;
@@ -1394,6 +1398,47 @@ bool Action_FightOrder::save(XML_Helper* helper) const
 bool Action_FightOrder::fillData(std::list<Uint32> order)
 {
     d_order = order;
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_Resign
+
+Action_Resign::Action_Resign()
+    :Action(Action::RESIGN)
+{
+}
+
+Action_Resign::Action_Resign(XML_Helper* helper)
+    :Action(Action::RESIGN)
+{
+}
+
+Action_Resign::~Action_Resign()
+{
+}
+
+std::string Action_Resign::dump() const
+{
+    std::stringstream s;
+    s << "this player resigns\n";
+    
+    return s.str();
+}
+
+bool Action_Resign::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("action");
+    retval &= helper->saveData("type", d_type);
+    retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool Action_Resign::fillData()
+{
     return true;
 }
 
