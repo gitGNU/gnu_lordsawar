@@ -159,6 +159,8 @@ class GameWindow: public sigc::trackable
     void on_fullscreen_activated();
     void on_preferences_activated();
     
+    void on_fight_order_activated();
+
     void on_message_requested(std::string msg);
     void on_stack_selected_in_report(Stack *stack);
     void on_city_selected_in_report(City *city);

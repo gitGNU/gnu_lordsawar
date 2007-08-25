@@ -68,8 +68,7 @@ ArmiesReportDialog::ArmiesReportDialog(Player *theplayer)
 	     j != jend; ++j)
 	{
 	    Stack *s = *j;
-	    // FIXME: fog map is not working properly
-	    //if (player->getFogMap()->getFogTile(s->getPos()) == FogMap::OPEN)
+	    if (player->getFogMap()->getFogTile(s->getPos()) == FogMap::OPEN)
 		add_stack(s);
 	}
     }

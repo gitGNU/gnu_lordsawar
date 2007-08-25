@@ -60,6 +60,7 @@
 #include "quest-assigned-dialog.h"
 #include "quest-completed-dialog.h"
 #include "preferences-dialog.h"
+#include "fight-order-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -211,6 +212,8 @@ GameWindow::GameWindow()
     xml->get_widget("disband_menuitem", disband_menuitem);
     xml->get_widget("signpost_menuitem", signpost_menuitem);
 
+    xml->connect_clicked("fight_order_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_fight_order_activated));
 }
 
 GameWindow::~GameWindow()
@@ -818,6 +821,13 @@ void GameWindow::on_disband_activated()
 void GameWindow::on_preferences_activated()
 {
     PreferencesDialog d;
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_fight_order_activated()
+{
+    FightOrderDialog d(Playerlist::getActiveplayer());
     d.set_parent_window(*window.get());
     d.run();
 }
