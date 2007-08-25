@@ -161,6 +161,38 @@
 	      </child>
 
 	      <child>
+		<widget class="GtkMenuItem" id="hero_menuitem">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">_Hero</property>
+		  <property name="use_underline">True</property>
+		  <signal name="activate" handler="on_hero_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 23:29:12 GMT"/>
+
+		  <child>
+		    <widget class="GtkMenu" id="hero_menuitem_menu">
+
+		      <child>
+			<widget class="GtkMenuItem" id="inspect_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Inspect</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_inspect_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 23:29:12 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="search_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Search</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_search_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 23:29:57 GMT"/>
+			</widget>
+		      </child>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
+
+	      <child>
 		<widget class="GtkMenuItem" id="reports_menuitem">
 		  <property name="visible">True</property>
 		  <property name="label" translatable="yes">_Reports</property>

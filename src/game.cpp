@@ -600,6 +600,7 @@ void Game::update_control_panel()
 	can_center_selected_stack.emit(false);
 	can_defend_selected_stack.emit(false);
 	can_search_selected_stack.emit(false);
+	can_inspect_selected_stack.emit(false);
 	can_move_selected_stack.emit(false);
 	can_move_all_stacks.emit(false);
 	can_end_turn.emit(false);
@@ -664,6 +665,9 @@ void Game::update_control_panel()
             }
         }
 
+        if (stack->hasHero())
+          can_inspect_selected_stack.emit(true);
+
         if (Signpostlist::getInstance()->getObjectAt(stack->getPos()))
           can_change_signpost.emit(true);
 
@@ -674,6 +678,7 @@ void Game::update_control_panel()
 	can_search_selected_stack.emit(false);
 	can_move_selected_stack.emit(false);
 	can_disband_stack.emit(false);
+	can_inspect_selected_stack.emit(false);
     }
 
     can_end_turn.emit(true);
