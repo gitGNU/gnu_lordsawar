@@ -96,6 +96,29 @@
 	      </child>
 
 	      <child>
+		<widget class="GtkMenuItem" id="order_menuitem">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">_Order</property>
+		  <property name="use_underline">True</property>
+		  <signal name="activate" handler="on_order_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 14:10:04 GMT"/>
+
+		  <child>
+		    <widget class="GtkMenu" id="order_menuitem_menu">
+
+		      <child>
+			<widget class="GtkMenuItem" id="move_all_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Move All</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_move_all_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 14:10:04 GMT"/>
+			</widget>
+		      </child>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
+
+	      <child>
 		<widget class="GtkMenuItem" id="reports_menuitem">
 		  <property name="visible">True</property>
 		  <property name="label" translatable="yes">_Reports</property>

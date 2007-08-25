@@ -204,8 +204,10 @@ GameWindow::GameWindow()
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
     xml->connect_clicked("preferences_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_preferences_activated));
-    xml->connect_clicked("end_turn_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_end_turn));
+
+    xml->get_widget("end_turn_menuitem", end_turn_menuitem);
+    xml->get_widget("move_all_menuitem", move_all_menuitem);
+
 }
 
 GameWindow::~GameWindow()
@@ -359,13 +361,21 @@ void GameWindow::load_game(std::string file_path)
 
 namespace 
 {
-    // helper for connecting control panel buttons
+    // helpers for connecting control panel buttons and corresponding
+    // menu items.
     void setup_button(Gtk::Button *button,
 		      sigc::slot<void> slot,
 		      sigc::signal<void, bool> &game_signal)
     {
 	button->signal_clicked().connect(slot);
 	game_signal.connect(sigc::mem_fun(button, &Gtk::Widget::set_sensitive));
+    }
+    void setup_menuitem(Gtk::MenuItem *item,
+		      sigc::slot<void> slot,
+		      sigc::signal<void, bool> &game_signal)
+    {
+	item->signal_activate().connect(slot);
+	game_signal.connect(sigc::mem_fun(item, &Gtk::Widget::set_sensitive));
     }
 }
 
@@ -410,9 +420,15 @@ void GameWindow::setup_game(std::string file_path)
     setup_button(move_all_button,
 		 sigc::mem_fun(game.get(), &Game::move_all_stacks),
 		 game->can_move_all_stacks);
+    setup_menuitem(move_all_menuitem,
+		   sigc::mem_fun(game.get(), &Game::move_all_stacks),
+		   game->can_move_all_stacks);
     setup_button(end_turn_button,
 		 sigc::mem_fun(game.get(), &Game::end_turn),
 		 game->can_end_turn);
+    setup_menuitem(end_turn_menuitem,
+		   sigc::mem_fun(game.get(), &Game::end_turn),
+		   game->can_end_turn);
 
     // setup game callbacks
     game->sidebar_stats_changed.connect(
@@ -726,12 +742,6 @@ void GameWindow::on_fullscreen_activated()
 	window->fullscreen();
     else
 	window->unfullscreen();
-}
-
-void GameWindow::on_end_turn()
-{
-  //if (game->can_end_turn)
-    game->end_turn();
 }
 
 void GameWindow::on_preferences_activated()

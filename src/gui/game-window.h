@@ -92,6 +92,8 @@ class GameWindow: public sigc::trackable
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
     Gtk::CheckMenuItem *fullscreen_menuitem;
+    Gtk::MenuItem *end_turn_menuitem;
+    Gtk::MenuItem *move_all_menuitem;
     Gtk::Box *stack_info_box;
     Gtk::Box *stack_info_container;
     Gtk::Label *group_moves_label;
@@ -152,7 +154,6 @@ class GameWindow: public sigc::trackable
 
     void on_fullscreen_activated();
     void on_preferences_activated();
-    void on_end_turn();
     
     void on_message_requested(std::string msg);
     void on_stack_selected_in_report(Stack *stack);
