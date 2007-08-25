@@ -1,11 +1,13 @@
 2007-08-25  Ben Asselstine
 
 	* added move-all menu item
-	* added disband-stack menu item
-	* added change-signpost menu item
+	* added disband-stack menu item, and action for it.
+	* added change-signpost menu item, and action for it.
 	* added action for renaming a city
 	* added action for vectoring
-	* added a read-only fight-order dialog, and menu item
+	* added a fight-order dialog, and menu item, and action for it.
+	* fixed army image in army info tip to have the player's colour
+	* fixed army image in buy production dialog to have the player's colour
 
 2007-08-24  Ben Asselstine
 
