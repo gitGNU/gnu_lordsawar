@@ -208,11 +208,23 @@ bool RealPlayer::signpostChange(Signpost *s, std::string message)
   return true;
 }
 
+bool RealPlayer::cityRename(City *c, std::string name)
+{
+  if (!c)
+    return false;
+  c->setName(name);
+  Action_RenameCity* item = new Action_RenameCity();
+  item->fillData(c, name);
+  d_actions.push_back(item);
+  return true;
+}
+
 bool RealPlayer::stackDisband(Stack* s)
 {
     debug("player::stackDisband(Stack*)")
     if (!s)
-      return false;
+      s = getActivestack();
+    getStacklist()->setActivestack(0);
     Action_Disband* item = new Action_Disband();
     item->fillData(s);
     d_actions.push_back(item);

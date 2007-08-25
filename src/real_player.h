@@ -54,6 +54,7 @@ class RealPlayer : public Player
         bool stackJoin(Stack* receiver, Stack* joining, bool grouped);
         bool stackDisband(Stack* s);
         bool signpostChange(Signpost *s, std::string message);
+        bool cityRename(City *c, std::string name);
 
         bool stackMove(Stack* s);
         MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow);

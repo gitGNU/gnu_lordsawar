@@ -442,7 +442,7 @@ void CityWindow::on_rename_clicked ()
 
     if (response == 0)		// changed city name
       {
-        city->setName(e->get_text());
+        Playerlist::getActiveplayer()->cityRename(city, e->get_text());
         fill_in_city_info();
       }
   return;

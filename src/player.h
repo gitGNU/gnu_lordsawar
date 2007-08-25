@@ -437,6 +437,9 @@ class Player: public sigc::trackable
         //! Change the text on the signpost of the square we're sitting on
         virtual bool signpostChange(Signpost * s, std::string message) =0;
 
+        //! Rename a city
+        virtual bool cityRename(City *c, std::string name) =0;
+
         /** Signal raised when a city is conquered. This signal is solely
           * for internal use. Don't use it, you may break stability (Background:
           * libsigc++ doesn't guarantee order of execution and this signal may

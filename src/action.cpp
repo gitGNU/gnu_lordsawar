@@ -91,6 +91,8 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_Disband(helper));
         case MODIFY_SIGNPOST:
             return (new Action_ModifySignpost(helper));
+        case CITY_RENAME:
+            return (new Action_RenameCity(helper));
     }
 
     return 0;
@@ -138,6 +140,8 @@ Action* Action::copy(const Action* a)
             return (new Action_Disband(*dynamic_cast<const Action_Disband*>(a)));
         case MODIFY_SIGNPOST:
             return (new Action_ModifySignpost(*dynamic_cast<const Action_ModifySignpost*>(a)));
+        case CITY_RENAME:
+            return (new Action_RenameCity(*dynamic_cast<const Action_RenameCity*>(a)));
     }
 
     return 0;
@@ -1207,10 +1211,58 @@ bool Action_ModifySignpost::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_ModifySignpost::fillData(Signpost * s, string message)
+bool Action_ModifySignpost::fillData(Signpost * s, std::string message)
 {
     d_signpost = s->getId();
     d_message = message; 
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_RenameCity
+
+Action_RenameCity::Action_RenameCity()
+    :Action(Action::CITY_RENAME), d_city(0), d_name("")
+{
+}
+
+Action_RenameCity::Action_RenameCity(XML_Helper* helper)
+    :Action(Action::CITY_RENAME)
+{
+    helper->getData(d_city, "city");
+    helper->getData(d_name, "name");
+}
+
+Action_RenameCity::~Action_RenameCity()
+{
+}
+
+std::string Action_RenameCity::dump() const
+{
+    std::stringstream s;
+
+    s <<"City " <<d_city <<" renamed to " << d_name<<".\n";
+    
+    return s.str();
+}
+
+bool Action_RenameCity::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("action");
+    retval &= helper->saveData("type", d_type);
+    retval &= helper->saveData("city", d_city);
+    retval &= helper->saveData("name", d_name);
+    retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool Action_RenameCity::fillData(City* c, std::string name)
+{
+    d_city = c->getId();
+    d_name = name; 
     return true;
 }
 

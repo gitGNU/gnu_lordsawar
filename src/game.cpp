@@ -284,14 +284,6 @@ void Game::defend_selected_stack()
 	bigmap->unselect_active_stack();
 }
 
-void Game::disband_selected_stack()
-{
-    Player *p = Playerlist::getActiveplayer();
-    Stack *stack = p->getActivestack();
-    p->getStacklist()->setActivestack(0);
-    p->stackDisband(stack);
-}
-
 void Game::center_selected_stack()
 {
     Stack *stack = Playerlist::getActiveplayer()->getActivestack();

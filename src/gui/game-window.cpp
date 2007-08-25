@@ -809,8 +809,8 @@ void GameWindow::on_disband_activated()
     dialog->show_all();
     int response = dialog->run();
 
-  if (response == 0)
-    game->disband_selected_stack();
+  if (response == 0) //disband the active stack
+    Playerlist::getActiveplayer()->stackDisband(NULL);
 
   return;
 }

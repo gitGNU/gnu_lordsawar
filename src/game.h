@@ -66,7 +66,6 @@ class Game
     void search_selected_stack();
     void move_selected_stack();
     void move_all_stacks();
-    void disband_selected_stack();
     void end_turn();
 
     void startGame(); // initiate game flow

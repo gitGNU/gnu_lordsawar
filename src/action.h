@@ -69,6 +69,7 @@ class Action
                 CITY_SACK = 17,
                 STACK_DISBAND = 18,
                 MODIFY_SIGNPOST = 19,
+                CITY_RENAME = 20,
         };
                 
         
@@ -471,6 +472,24 @@ class Action_ModifySignpost: public Action
     private:
         Uint32 d_signpost;
 	std::string d_message;
+};
+
+//-----------------------------------------------------------------------------
+class Action_RenameCity: public Action
+{
+    public:
+        Action_RenameCity();
+        Action_RenameCity(XML_Helper* helper);
+        ~Action_RenameCity();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(City *c, std::string name);
+    
+    private:
+        Uint32 d_city;
+	std::string d_name;
 };
 
         
