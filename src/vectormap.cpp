@@ -281,14 +281,14 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
             if (dest != city->getVectoring())
               {
 	        destination_chosen.emit(dest);
-	        city->setVectoring(nearestCity->getPos());
+                Playerlist::getActiveplayer()->vectorFromCity(city, dest);
 		setClickAction(CLICK_SELECTS);
 	        draw();
               }
             else if (dest == Vector<int>(-1, -1)) //stop vectoring
               {
 	        destination_chosen.emit(dest);
-	        city->setVectoring(dest);
+                Playerlist::getActiveplayer()->vectorFromCity(city, dest);
 		setClickAction(CLICK_SELECTS);
 	        draw();
               }

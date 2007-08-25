@@ -440,6 +440,13 @@ class Player: public sigc::trackable
         //! Rename a city
         virtual bool cityRename(City *c, std::string name) =0;
 
+        /** Vector new units from a player's city to a destination.
+            @return always returns true
+            @param  city   the city to vector from
+            @param  dest   the place on the map to vector to
+          */
+        virtual bool vectorFromCity(City* c, Vector<int> dest) = 0;
+
         /** Signal raised when a city is conquered. This signal is solely
           * for internal use. Don't use it, you may break stability (Background:
           * libsigc++ doesn't guarantee order of execution and this signal may

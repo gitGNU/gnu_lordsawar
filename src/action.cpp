@@ -93,6 +93,8 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_ModifySignpost(helper));
         case CITY_RENAME:
             return (new Action_RenameCity(helper));
+        case CITY_VECTOR:
+            return (new Action_Vector(helper));
     }
 
     return 0;
@@ -142,6 +144,8 @@ Action* Action::copy(const Action* a)
             return (new Action_ModifySignpost(*dynamic_cast<const Action_ModifySignpost*>(a)));
         case CITY_RENAME:
             return (new Action_RenameCity(*dynamic_cast<const Action_RenameCity*>(a)));
+        case CITY_VECTOR:
+            return (new Action_Vector(*dynamic_cast<const Action_Vector*>(a)));
     }
 
     return 0;
@@ -1263,6 +1267,60 @@ bool Action_RenameCity::fillData(City* c, std::string name)
 {
     d_city = c->getId();
     d_name = name; 
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_Vector
+
+Action_Vector::Action_Vector()
+    :Action(Action::CITY_VECTOR)
+{
+}
+
+Action_Vector::Action_Vector(XML_Helper* helper)
+    :Action(Action::CITY_VECTOR)
+{
+    helper->getData(d_city, "city");
+    int i;
+    helper->getData(i, "x");
+    d_dest.x = i;
+    helper->getData(i, "y");
+    d_dest.y = i;
+}
+
+Action_Vector::~Action_Vector()
+{
+}
+
+std::string Action_Vector::dump() const
+{
+    std::stringstream s;
+
+    s <<"Vectoring new units from city " <<d_city <<" to ";
+    s <<d_dest.x <<"," <<d_dest.y <<")\n";
+    
+    return s.str();
+}
+
+bool Action_Vector::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("action");
+    retval &= helper->saveData("type", d_type);
+    retval &= helper->saveData("city", d_city);
+    retval &= helper->saveData("x", d_dest.x);
+    retval &= helper->saveData("y", d_dest.y);
+    retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool Action_Vector::fillData(City* src, Vector <int> dest)
+{
+    d_city = src->getId();
+    d_dest = dest;
     return true;
 }
 

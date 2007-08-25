@@ -1315,4 +1315,12 @@ bool RealPlayer::stackMoveOneStep(Stack* s)
     return true;
 }
 
+bool RealPlayer::vectorFromCity(City * c, Vector<int> dest)
+{
+  c->setVectoring(dest);
+  Action_Vector* item = new Action_Vector();
+  item->fillData(c, dest);
+  d_actions.push_back(item);
+  return true;
+}
 // End of file

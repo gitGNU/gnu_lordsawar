@@ -70,6 +70,7 @@ class Action
                 STACK_DISBAND = 18,
                 MODIFY_SIGNPOST = 19,
                 CITY_RENAME = 20,
+                CITY_VECTOR = 21,
         };
                 
         
@@ -490,6 +491,24 @@ class Action_RenameCity: public Action
     private:
         Uint32 d_city;
 	std::string d_name;
+};
+
+//-----------------------------------------------------------------------------
+class Action_Vector: public Action
+{
+    public:
+        Action_Vector();
+        Action_Vector(XML_Helper* helper);
+        ~Action_Vector();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(City* src, Vector <int> dest);
+    
+    private:
+        Uint32 d_city;
+        Vector<int> d_dest;
 };
 
         
