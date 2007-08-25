@@ -71,6 +71,7 @@ class Action
                 MODIFY_SIGNPOST = 19,
                 CITY_RENAME = 20,
                 CITY_VECTOR = 21,
+                FIGHT_ORDER = 22,
         };
                 
         
@@ -509,6 +510,23 @@ class Action_Vector: public Action
     private:
         Uint32 d_city;
         Vector<int> d_dest;
+};
+
+//-----------------------------------------------------------------------------
+class Action_FightOrder: public Action
+{
+    public:
+        Action_FightOrder();
+        Action_FightOrder(XML_Helper* helper);
+        ~Action_FightOrder();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(std::list<Uint32> order);
+    
+    private:
+	std::list<Uint32> d_order;
 };
 
         

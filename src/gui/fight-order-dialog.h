@@ -48,17 +48,16 @@ class FightOrderDialog: public sigc::trackable
     class ArmiesColumns: public Gtk::TreeModelColumnRecord {
     public:
 	ArmiesColumns() 
-        { add(image); add(name); }
+        { add(image); add(name); add(army_type);}
 	
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
 	Gtk::TreeModelColumn<Glib::ustring> name;
+	Gtk::TreeModelColumn<Uint32> army_type;
     };
     const ArmiesColumns armies_columns;
     Glib::RefPtr<Gtk::ListStore> armies_list;
-
-    void on_selection_changed();
+ private:
     void addArmyType(Uint32 army_type);
-
 };
 
 #endif

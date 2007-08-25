@@ -56,6 +56,7 @@ class RealPlayer : public Player
         bool signpostChange(Signpost *s, std::string message);
         bool cityRename(City *c, std::string name);
         bool vectorFromCity(City* c, Vector<int> dest);
+	void setFightOrder(std::list<Uint32> order);
 
         bool stackMove(Stack* s);
         MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow);

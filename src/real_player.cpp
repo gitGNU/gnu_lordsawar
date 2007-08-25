@@ -1324,3 +1324,10 @@ bool RealPlayer::vectorFromCity(City * c, Vector<int> dest)
   return true;
 }
 // End of file
+void RealPlayer::setFightOrder(std::list<Uint32> order) 
+{
+  d_fight_order = order;
+  Action_FightOrder * item = new Action_FightOrder();
+  item->fillData(order);
+  d_actions.push_back(item);
+}

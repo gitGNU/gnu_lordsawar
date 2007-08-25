@@ -31,6 +31,8 @@
 #include "QCityRaze.h"
 #include "QCityOccupy.h"
 #include "QPillageGold.h"
+#include "armysetlist.h"
+#include "playerlist.h"
 
 using namespace std;
 
@@ -95,6 +97,8 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_RenameCity(helper));
         case CITY_VECTOR:
             return (new Action_Vector(helper));
+        case FIGHT_ORDER:
+            return (new Action_FightOrder(helper));
     }
 
     return 0;
@@ -146,6 +150,8 @@ Action* Action::copy(const Action* a)
             return (new Action_RenameCity(*dynamic_cast<const Action_RenameCity*>(a)));
         case CITY_VECTOR:
             return (new Action_Vector(*dynamic_cast<const Action_Vector*>(a)));
+        case FIGHT_ORDER:
+            return (new Action_FightOrder(*dynamic_cast<const Action_FightOrder*>(a)));
     }
 
     return 0;
@@ -1321,6 +1327,73 @@ bool Action_Vector::fillData(City* src, Vector <int> dest)
 {
     d_city = src->getId();
     d_dest = dest;
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_FightOrder
+
+Action_FightOrder::Action_FightOrder()
+    :Action(Action::FIGHT_ORDER)
+{
+}
+
+Action_FightOrder::Action_FightOrder(XML_Helper* helper)
+    :Action(Action::FIGHT_ORDER)
+{
+    std::string fight_order;
+    std::stringstream sfight_order;
+    Uint32 val;
+    helper->getData(fight_order, "order");
+    sfight_order.str(fight_order);
+    Uint32 size = Armysetlist::getInstance()->getSize(Playerlist::getInstance()->getFirstLiving()->getArmyset());
+    for (unsigned int i = 0; i < size; i++)
+    {
+            sfight_order >> val;
+            d_order.push_back(val);
+    }
+}
+
+Action_FightOrder::~Action_FightOrder()
+{
+}
+
+std::string Action_FightOrder::dump() const
+{
+    std::stringstream s;
+
+    s <<"changed fight order to:" ;
+    std::list<Uint32>::const_iterator it = d_order.begin();
+    for ( ;it != d_order.end(); it++)
+      {
+        s <<" " << (*it);
+      }
+      s << "\n";
+    
+    return s.str();
+}
+
+bool Action_FightOrder::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("action");
+    retval &= helper->saveData("type", d_type);
+    std::stringstream fight_order;
+    for (std::list<Uint32>::const_iterator it = d_order.begin();
+         it != d_order.end(); it++)
+      {
+        fight_order << (*it) << " ";
+      }
+    retval &= helper->saveData("order", fight_order.str());
+    retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool Action_FightOrder::fillData(std::list<Uint32> order)
+{
+    d_order = order;
     return true;
 }
 

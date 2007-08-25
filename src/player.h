@@ -228,6 +228,9 @@ class Player: public sigc::trackable
         //! get the fight order of the player
 	std::list<Uint32> getFightOrder() const {return d_fight_order;}
 
+        //! set the fight order of the player
+	virtual void setFightOrder(std::list<Uint32> order)=0;
+
         //! Dumps the items in the actionlist on stderr
         void dumpActionlist() const;
 

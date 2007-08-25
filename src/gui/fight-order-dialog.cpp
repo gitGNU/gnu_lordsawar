@@ -46,15 +46,13 @@ FightOrderDialog::FightOrderDialog(Player *theplayer)
     armies_treeview->append_column("", armies_columns.image);
     armies_treeview->append_column("", armies_columns.name);
 
-    armies_treeview->get_selection()->signal_changed()
-	.connect(sigc::mem_fun(this, &FightOrderDialog::on_selection_changed));
-
     std::list<Uint32> fight_order = theplayer->getFightOrder();
     std::list<Uint32>::iterator it = fight_order.begin();
     for (; it != fight_order.end(); it++)
       {
         addArmyType(*it);
       }
+    armies_treeview->set_reorderable(true);
 }
 
 void FightOrderDialog::set_parent_window(Gtk::Window &parent)
@@ -72,13 +70,19 @@ void FightOrderDialog::run()
 	dialog->set_default_size(width, height);
     
     dialog->show();
-    dialog->run();
+    int response = dialog->run();
 
     dialog->get_size(width, height);
-}
 
-void FightOrderDialog::on_selection_changed()
-{
+    if (response == 0)
+      {
+        std::list<Uint32> fight_order;
+        for (Gtk::TreeIter i = armies_list->children().begin(),
+	     end = armies_list->children().end(); i != end; ++i) 
+          fight_order.push_back((*i)[armies_columns.army_type]);
+        player->setFightOrder(fight_order);
+
+      }
 }
 
 void FightOrderDialog::addArmyType(Uint32 army_type)
@@ -88,4 +92,5 @@ void FightOrderDialog::addArmyType(Uint32 army_type)
     const Army *a = alist->getArmy(player->getArmyset(), army_type);
     (*i)[armies_columns.name] = a->getName();
     (*i)[armies_columns.image] = to_pixbuf(a->getPixmap());
+    (*i)[armies_columns.army_type] = a->getType();
 }
