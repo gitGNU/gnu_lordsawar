@@ -1,7 +1,9 @@
 2007-08-25  Ben Asselstine
 
-	* added move all menu item
-	* added disband stack menu item
+	* added move-all menu item
+	* added disband-stack menu item
+	* added change-signpost menu item
+	* added action for renaming a city
 
 2007-08-24  Ben Asselstine
 
