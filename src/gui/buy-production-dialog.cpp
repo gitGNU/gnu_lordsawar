@@ -35,6 +35,7 @@
 
 BuyProductionDialog::BuyProductionDialog(City *c)
 {
+    GraphicsCache *gc = GraphicsCache::getInstance();
     city = c;
     selected_army = NO_ARMY_SELECTED;
     
@@ -71,7 +72,9 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
 	
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf
-	    = to_pixbuf(purchasables[i]->getPixmap());
+	    = to_pixbuf(gc->getArmyPic(p->getArmyset(),
+                                       purchasables[i]->getType(),
+                                       p, 1, NULL));
 	
 	toggle->add(*manage(new Gtk::Image(pixbuf)));
 	production_toggles.push_back(toggle);

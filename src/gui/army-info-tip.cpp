@@ -28,6 +28,7 @@
 #include "../defs.h"
 #include "../army.h"
 #include "../GraphicsCache.h"
+#include "../playerlist.h"
 
 
 ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
@@ -42,12 +43,15 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
 
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
-    army_image->property_pixbuf() = to_pixbuf(army->getPixmap());
+    Player *p = Playerlist::getActiveplayer();
+    GraphicsCache *gc = GraphicsCache::getInstance();
+    army_image->property_pixbuf() = to_pixbuf(gc->getArmyPic(p->getArmyset(), 
+                                                             army->getType(), 
+                                                             p, 1, NULL));
 
     // fill in terrain image
     Gtk::Image *terrain_image;
     xml->get_widget("terrain_image", terrain_image);
-    GraphicsCache *gc = GraphicsCache::getInstance();
     SDL_Surface *terrain = gc->getMoveBonusPic(army->getMoveBonus(), false);
     terrain_image->property_pixbuf() = to_pixbuf(terrain);
     //terrain_image->hide();
@@ -71,19 +75,19 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     
     // move into correct position
     window->get_child()->show();
-    Vector<int> p(0, 0);
-    target->get_window()->get_origin(p.x, p.y);
+    Vector<int> pos(0, 0);
+    target->get_window()->get_origin(pos.x, pos.y);
     if (target->has_no_window())
     {
 	Gtk::Allocation a = target->get_allocation();
-	p.x += a.get_x();
-	p.y += a.get_y();
+	pos.x += a.get_x();
+	pos.y += a.get_y();
     }
     Vector<int> size(0, 0);
     window->get_size(size.x, size.y);
     window->set_gravity(Gdk::GRAVITY_SOUTH);
-    p.y -= size.y + 2;
+    pos.y -= size.y + 2;
 	
-    window->move(p.x, p.y);
+    window->move(pos.x, pos.y);
     window->show();
 }
