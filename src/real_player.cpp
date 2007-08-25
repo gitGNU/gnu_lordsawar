@@ -205,7 +205,7 @@ bool RealPlayer::stackDisband(Stack* s)
     item->fillData(s);
     d_actions.push_back(item);
     sdyingStack.emit(s);
-    s->flClear();
+    s->getPlayer()->getStacklist()->deleteStack(s);
     return true;
 }
 
