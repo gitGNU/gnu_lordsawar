@@ -196,6 +196,19 @@ bool RealPlayer::stackJoin(Stack* receiver, Stack* joining, bool grouped)
 }
 
 
+bool RealPlayer::stackDisband(Stack* s)
+{
+    debug("player::stackDisband(Stack*)")
+    if (!s)
+      return false;
+    Action_Disband* item = new Action_Disband();
+    item->fillData(s);
+    d_actions.push_back(item);
+    sdyingStack.emit(s);
+    s->flClear();
+    return true;
+}
+
 bool RealPlayer::stackMove(Stack* s)
 {
     debug("player::stackMove(Stack*)")

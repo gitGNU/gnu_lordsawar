@@ -66,6 +66,7 @@ class Action
                 HERO_EQUIP = 15,
                 UNIT_ADVANCE = 16,
                 CITY_SACK = 17,
+                STACK_DISBAND = 18,
         };
                 
         
@@ -115,6 +116,22 @@ class Action_Move : public Action
     private:
         Uint32 d_stack;
         Vector<int> d_dest;
+};
+
+class Action_Disband: public Action
+{
+    public:
+        Action_Disband();
+        Action_Disband(XML_Helper* helper);
+        ~Action_Disband();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Stack* s);
+    
+    private:
+        Uint32 d_stack;
 };
 
 //-----------------------------------------------------------------------------

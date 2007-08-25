@@ -86,6 +86,8 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_Equip(helper));
         case UNIT_ADVANCE:
             return (new Action_Level(helper));
+        case STACK_DISBAND:
+            return (new Action_Disband(helper));
     }
 
     return 0;
@@ -129,6 +131,8 @@ Action* Action::copy(const Action* a)
             return (new Action_Equip(*dynamic_cast<const Action_Equip*>(a)));
         case UNIT_ADVANCE:
             return (new Action_Level(*dynamic_cast<const Action_Level*>(a)));
+        case STACK_DISBAND:
+            return (new Action_Disband(*dynamic_cast<const Action_Disband*>(a)));
     }
 
     return 0;
@@ -1109,6 +1113,51 @@ bool Action_Level::fillData(Uint32 unit, Army::Stat raised)
     d_army = unit;
     d_stat = raised;
 
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_Disband
+
+Action_Disband::Action_Disband()
+    :Action(Action::STACK_DISBAND), d_stack(0)
+{
+}
+
+Action_Disband::Action_Disband(XML_Helper* helper)
+    :Action(Action::STACK_DISBAND)
+{
+    helper->getData(d_stack, "stack");
+}
+
+Action_Disband::~Action_Disband()
+{
+}
+
+std::string Action_Disband::dump() const
+{
+    std::stringstream s;
+
+    s <<"Stack " <<d_stack <<" disbanded\n";
+    
+    return s.str();
+}
+
+bool Action_Disband::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("action");
+    retval &= helper->saveData("type", d_type);
+    retval &= helper->saveData("stack", d_stack);
+    retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool Action_Disband::fillData(Stack* s)
+{
+    d_stack = s->getId();
     return true;
 }
 

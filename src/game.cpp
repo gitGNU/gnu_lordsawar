@@ -285,12 +285,10 @@ void Game::defend_selected_stack()
 
 void Game::disband_selected_stack()
 {
-    Stack *stack = Playerlist::getActiveplayer()->getActivestack();
-    bigmap->unselect_active_stack();
-    Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
-    clear_stack_info();
-    update_control_panel();
-    stack->flClear();
+    Player *p = Playerlist::getActiveplayer();
+    Stack *stack = p->getActivestack();
+    p->getStacklist()->setActivestack(0);
+    p->stackDisband(stack);
 }
 
 void Game::center_selected_stack()

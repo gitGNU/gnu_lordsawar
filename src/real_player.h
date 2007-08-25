@@ -52,6 +52,7 @@ class RealPlayer : public Player
 
         bool stackSplit(Stack* s);
         bool stackJoin(Stack* receiver, Stack* joining, bool grouped);
+        bool stackDisband(Stack* s);
 
         bool stackMove(Stack* s);
         MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow);
