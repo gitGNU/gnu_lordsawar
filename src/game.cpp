@@ -39,6 +39,7 @@
 #include "citylist.h"
 #include "ruinlist.h"
 #include "templelist.h"
+#include "signpostlist.h"
 #include "armysetlist.h"
 #include "city.h"
 #include "ruin.h"
@@ -611,6 +612,7 @@ void Game::update_control_panel()
 	can_move_all_stacks.emit(false);
 	can_end_turn.emit(false);
 	can_disband_stack.emit(false);
+	can_change_signpost.emit(false);
 	
         return;
     }
@@ -669,7 +671,11 @@ void Game::update_control_panel()
 	        can_search_selected_stack.emit(temple);
             }
         }
-	can_disband_stack.emit(true);
+
+        if (Signpostlist::getInstance()->getObjectAt(stack->getPos()))
+          can_change_signpost.emit(true);
+
+        can_disband_stack.emit(true);
     }
     else
     {

@@ -122,6 +122,15 @@
 			  <signal name="activate" handler="on_disband_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 14:16:22 GMT"/>
 			</widget>
 		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="signpost_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Signpost</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_signpost_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 15:55:37 GMT"/>
+			</widget>
+		      </child>
 		    </widget>
 		  </child>
 		</widget>

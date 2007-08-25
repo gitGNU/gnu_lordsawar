@@ -92,6 +92,7 @@ class Game
 	can_move_selected_stack,
 	can_move_all_stacks,
 	can_disband_stack,
+	can_change_signpost,
 	can_end_turn;
     sigc::signal<void, Stack *> stack_info_changed;
     sigc::signal<void, Glib::ustring, MapTipPosition> map_tip_changed;

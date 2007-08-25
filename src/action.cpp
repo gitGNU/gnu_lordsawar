@@ -20,6 +20,7 @@
 #include "stack.h"
 #include "army.h"
 #include "city.h"
+#include "signpost.h"
 #include "ruin.h"
 #include "temple.h"
 #include "Quest.h"
@@ -88,6 +89,8 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_Level(helper));
         case STACK_DISBAND:
             return (new Action_Disband(helper));
+        case MODIFY_SIGNPOST:
+            return (new Action_ModifySignpost(helper));
     }
 
     return 0;
@@ -133,6 +136,8 @@ Action* Action::copy(const Action* a)
             return (new Action_Level(*dynamic_cast<const Action_Level*>(a)));
         case STACK_DISBAND:
             return (new Action_Disband(*dynamic_cast<const Action_Disband*>(a)));
+        case MODIFY_SIGNPOST:
+            return (new Action_ModifySignpost(*dynamic_cast<const Action_ModifySignpost*>(a)));
     }
 
     return 0;
@@ -1158,6 +1163,54 @@ bool Action_Disband::save(XML_Helper* helper) const
 bool Action_Disband::fillData(Stack* s)
 {
     d_stack = s->getId();
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_ModifySignpost
+
+Action_ModifySignpost::Action_ModifySignpost()
+    :Action(Action::MODIFY_SIGNPOST), d_signpost(0), d_message("")
+{
+}
+
+Action_ModifySignpost::Action_ModifySignpost(XML_Helper* helper)
+    :Action(Action::MODIFY_SIGNPOST)
+{
+    helper->getData(d_signpost, "signpost");
+    helper->getData(d_message, "message");
+}
+
+Action_ModifySignpost::~Action_ModifySignpost()
+{
+}
+
+std::string Action_ModifySignpost::dump() const
+{
+    std::stringstream s;
+
+    s <<"Signpost " <<d_signpost <<" modified to read" << d_message <<".\n";
+    
+    return s.str();
+}
+
+bool Action_ModifySignpost::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("action");
+    retval &= helper->saveData("type", d_type);
+    retval &= helper->saveData("signpost", d_signpost);
+    retval &= helper->saveData("message", d_message);
+    retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool Action_ModifySignpost::fillData(Signpost * s, string message)
+{
+    d_signpost = s->getId();
+    d_message = message; 
     return true;
 }
 

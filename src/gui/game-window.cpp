@@ -73,6 +73,7 @@
 #include "../ruin.h"
 #include "../player.h"
 #include "../stacklist.h"
+#include "../signpostlist.h"
 #include "../playerlist.h"
 #include "../hero.h"
 #include "../temple.h"
@@ -208,6 +209,7 @@ GameWindow::GameWindow()
     xml->get_widget("end_turn_menuitem", end_turn_menuitem);
     xml->get_widget("move_all_menuitem", move_all_menuitem);
     xml->get_widget("disband_menuitem", disband_menuitem);
+    xml->get_widget("signpost_menuitem", signpost_menuitem);
 
 }
 
@@ -433,6 +435,9 @@ void GameWindow::setup_game(std::string file_path)
     setup_menuitem(disband_menuitem,
 	           sigc::mem_fun(*this, &GameWindow::on_disband_activated),
 		   game->can_disband_stack);
+    setup_menuitem(signpost_menuitem,
+	           sigc::mem_fun(*this, &GameWindow::on_signpost_activated),
+		   game->can_change_signpost);
 
     // setup game callbacks
     game->sidebar_stats_changed.connect(
@@ -746,6 +751,41 @@ void GameWindow::on_fullscreen_activated()
 	window->fullscreen();
     else
 	window->unfullscreen();
+}
+
+void GameWindow::on_signpost_activated()
+{
+    std::auto_ptr<Gtk::Dialog> dialog;
+    
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + "/signpost-change-dialog.glade");
+	
+    Gtk::Dialog *d;
+    xml->get_widget("dialog", d);
+    dialog.reset(d);
+    dialog->set_transient_for(*window.get());
+    
+    dialog->set_title(_("Signpost"));
+
+    Stack *stack = Playerlist::getActiveplayer()->getActivestack();
+    if (!stack)
+      return;
+    Signpost *s = Signpostlist::getInstance()->getObjectAt(stack->getPos());
+    if (!s)
+      return;
+    Gtk::Label *l;
+    xml->get_widget("label", l);
+    l->set_text(_("Change the message on this sign:"));
+    Gtk::Entry *e;
+    xml->get_widget("message_entry", e);
+    e->set_text(s->getName());
+    dialog->show_all();
+    int response = dialog->run();
+
+    if (response == 0)
+      Playerlist::getActiveplayer()->signpostChange(s, e->get_text());
+
+  return;
 }
 
 void GameWindow::on_disband_activated()

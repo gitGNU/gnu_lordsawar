@@ -37,6 +37,7 @@
 #include "ruinlist.h"
 #include "GameScenario.h"
 #include "game-parameters.h"
+#include "signpost.h"
 
 using namespace std;
 
@@ -195,6 +196,17 @@ bool RealPlayer::stackJoin(Stack* receiver, Stack* joining, bool grouped)
     return true;
 }
 
+
+bool RealPlayer::signpostChange(Signpost *s, std::string message)
+{
+  if (!s)
+    return false;
+  s->setName(message);
+  Action_ModifySignpost* item = new Action_ModifySignpost();
+  item->fillData(s, message);
+  d_actions.push_back(item);
+  return true;
+}
 
 bool RealPlayer::stackDisband(Stack* s)
 {

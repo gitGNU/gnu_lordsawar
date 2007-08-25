@@ -42,6 +42,7 @@ class FogMap;
 class Fight;
 class Reward;
 class FogMap;
+class Signpost;
 
 /** The abstract player class.
   *
@@ -432,6 +433,9 @@ class Player: public sigc::trackable
 
         //! Disband a player's stack
         virtual bool stackDisband(Stack* s) =0;
+
+        //! Change the text on the signpost of the square we're sitting on
+        virtual bool signpostChange(Signpost * s, std::string message) =0;
 
         /** Signal raised when a city is conquered. This signal is solely
           * for internal use. Don't use it, you may break stability (Background:

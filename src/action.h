@@ -26,6 +26,7 @@
 class Quest;
 class Stack;
 class City;
+class Signpost;
 class Ruin;
 class Temple;
 class XML_Helper;
@@ -67,6 +68,7 @@ class Action
                 UNIT_ADVANCE = 16,
                 CITY_SACK = 17,
                 STACK_DISBAND = 18,
+                MODIFY_SIGNPOST = 19,
         };
                 
         
@@ -452,5 +454,24 @@ class Action_Level : public Action
         Uint32 d_army;
         Uint32 d_stat;
 };
+
+//-----------------------------------------------------------------------------
+class Action_ModifySignpost: public Action
+{
+    public:
+        Action_ModifySignpost();
+        Action_ModifySignpost(XML_Helper* helper);
+        ~Action_ModifySignpost();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Signpost * s, std::string message);
+    
+    private:
+        Uint32 d_signpost;
+	std::string d_message;
+};
+
         
 #endif //ACTION_H
