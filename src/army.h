@@ -313,6 +313,9 @@ class Army : public sigc::trackable
 	//! Sets this army as being in a ship or not
 	void setInShip (bool s);
 
+	//! Returns how many experience points the next level requires
+        Uint32 getXpNeededForNextLevel() const;
+
     protected:
         //! Generic function for saving the army data. Useful for the hero class,
         //  which doesn't need to repeat the save code.
@@ -374,6 +377,9 @@ class Army : public sigc::trackable
 
 	//!is this army a hero?
 	bool d_hero;
+
+	//!how many xp points per level?
+        static const int xp_per_level = 10;
 };
 
 #endif // ARMY_H

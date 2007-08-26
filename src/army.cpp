@@ -306,8 +306,12 @@ void Army::gainXp(double n)
 
 bool Army::canGainLevel() const
 {
-    const int xp_per_level = 10;
-    return getXP() >= xp_per_level * getLevel();
+    return getXP() >= getXpNeededForNextLevel();
+}
+
+Uint32 Army::getXpNeededForNextLevel() const
+{
+    return xp_per_level * getLevel();
 }
 
 int Army::computeLevelGain(Stat stat)

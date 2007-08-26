@@ -43,6 +43,7 @@ city-raze-dialog.glade \
 city-razed-dialog.glade \
 signpost-change-dialog.glade \
 fight-order-dialog.glade \
+hero-levels-dialog.glade \
 player-resign-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)

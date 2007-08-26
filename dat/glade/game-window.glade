@@ -179,6 +179,15 @@
 			  <signal name="activate" handler="on_search_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 23:29:57 GMT"/>
 			</widget>
 		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="levels_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Levels</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_levels_menuitem_activate" last_modification_time="Sun, 26 Aug 2007 13:19:11 GMT"/>
+			</widget>
+		      </child>
 		    </widget>
 		  </child>
 		</widget>

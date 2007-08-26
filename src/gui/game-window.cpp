@@ -61,6 +61,7 @@
 #include "quest-completed-dialog.h"
 #include "preferences-dialog.h"
 #include "fight-order-dialog.h"
+#include "hero-levels-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -216,6 +217,8 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_fight_order_activated));
     xml->connect_clicked("resign_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_resign_activated));
+    xml->connect_clicked("levels_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_levels_activated));
 }
 
 GameWindow::~GameWindow()
@@ -852,6 +855,13 @@ void GameWindow::on_preferences_activated()
 void GameWindow::on_fight_order_activated()
 {
     FightOrderDialog d(Playerlist::getActiveplayer());
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_levels_activated()
+{
+    HeroLevelsDialog d(Playerlist::getActiveplayer());
     d.set_parent_window(*window.get());
     d.run();
 }
