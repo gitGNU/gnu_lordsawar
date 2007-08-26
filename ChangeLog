@@ -1,3 +1,8 @@
+2007-08-26  Ben Asselstine
+
+	* changed fight order dialog to show armies in player's own colour
+	* added hero-levels dialog and menu item
+
 2007-08-25  Ben Asselstine
 
 	* added move-all menu item
