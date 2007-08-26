@@ -10,6 +10,7 @@
 	* fixed army image in buy production dialog to have the player's colour
 	* added resign menuitem, and action for it
 	* added hero menu with search, and inspect menu items
+	* removed the "resign game" menu item from the game menu
 
 2007-08-24  Ben Asselstine
 
