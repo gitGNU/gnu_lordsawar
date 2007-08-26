@@ -530,18 +530,47 @@ void BigMap::draw_buffer()
 	 i != Citylist::getInstance()->end(); ++i)
 	blit_if_inside_buffer(*i, gc->getCityPic(&*i));
 
+    GameMap *gm = GameMap::getInstance();
     // If there are any items lying around, blit the itempic as well
     for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
         for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
 	    if (x < GameMap::getWidth() && y < GameMap::getHeight()
-		&& !GameMap::getInstance()->getTile(x,y)->getItems().empty())
+		&& !gm->getTile(x,y)->getItems().empty())
 	    {
+	        std::list<Item*> items = gm->getTile(x, y)->getItems();
+                bool standard_planted = false;
+                Item *flag = NULL;
+                for (std::list<Item*>::iterator it = items.begin(); 
+                     it != items.end(); it++)
+                {
+                     if ((*it)->getPlanted() == true)
+                     {
+                           standard_planted = true;
+                           flag = *it;
+                           break;
+                     }
+                }
+
+                //only show one of the bag or the flag
 		Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
-		SDL_Rect r;
-		r.x = p.x+(tilesize-15);
-		r.y = p.y+(tilesize-15);
-		r.w = r.h = 10;
-		SDL_BlitSurface(d_itempic, 0, buffer,&r);
+                if (standard_planted && flag)
+                {
+		    SDL_Rect r;
+		    r.x = p.x+(tilesize-54);
+		    r.y = p.y+(tilesize-54);
+		    r.w = r.h = 54;
+                    SDL_Surface *surf;
+                    surf = gc->getPlantedStandardPic(flag->getPlantableOwner());
+		    SDL_BlitSurface(surf, 0, buffer,&r);
+                }
+                else
+                {
+		    SDL_Rect r;
+		    r.x = p.x+(tilesize-15);
+		    r.y = p.y+(tilesize-15);
+		    r.w = r.h = 10;
+		    SDL_BlitSurface(d_itempic, 0, buffer,&r);
+                }
 	    }
 
     // Draw stacks

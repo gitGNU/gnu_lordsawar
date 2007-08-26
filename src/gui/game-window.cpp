@@ -212,6 +212,7 @@ GameWindow::GameWindow()
     xml->get_widget("signpost_menuitem", signpost_menuitem);
     xml->get_widget("search_menuitem", search_menuitem);
     xml->get_widget("inspect_menuitem", inspect_menuitem);
+    xml->get_widget("plant_standard_menuitem", plant_standard_menuitem);
 
     xml->connect_clicked("fight_order_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_fight_order_activated));
@@ -452,6 +453,10 @@ void GameWindow::setup_game(std::string file_path)
     setup_menuitem(inspect_menuitem,
 	           sigc::mem_fun(*this, &GameWindow::on_inspect_activated),
 		   game->can_inspect_selected_stack);
+    setup_menuitem(plant_standard_menuitem,
+	           sigc::mem_fun(*this, 
+                                 &GameWindow::on_plant_standard_activated),
+		   game->can_plant_standard_selected_stack);
 
     // setup game callbacks
     game->sidebar_stats_changed.connect(
@@ -1969,4 +1974,8 @@ void GameWindow::on_inspect_activated ()
                currently_selected_stack->getPos());
   d.set_parent_window(*window.get());
   d.run();
+}
+void GameWindow::on_plant_standard_activated ()
+{
+  Playerlist::getActiveplayer()->plantStandard(NULL);
 }

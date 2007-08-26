@@ -34,6 +34,7 @@ struct ShieldCacheItem;
 struct ProdShieldCacheItem;
 struct MoveBonusCacheItem;
 struct FogCacheItem;
+struct PlantedStandardCacheItem;
 class City;
 
 /** Soliton class for caching army and map images
@@ -148,6 +149,7 @@ class GraphicsCache
           */
 
         SDL_Surface* getShipPic(const Player* p);
+        SDL_Surface* getPlantedStandardPic(const Player* p);
 
         SDL_Surface* getCityPic(int type, const Player* p);
         /** Another function for getting a city picture
@@ -255,6 +257,9 @@ class GraphicsCache
         //! Creates a new ship picture with the given parameters.
         ShipCacheItem* addShipPic(const Player* p);
 
+        //! Creates a new planted standard picture with the given parameters.
+        PlantedStandardCacheItem* addPlantedStandardPic(const Player* p);
+
         //! Creates a new flag picture with the given parameters.
         FlagCacheItem* addFlagPic(int size, const Player* p);
 
@@ -298,6 +303,9 @@ class GraphicsCache
         //! Erases the oldest (least recently requested) ship cache item.
         void eraseLastShipItem();
 
+        //! Erases the oldest planted standard cache item.
+        void eraseLastPlantedStandardItem();
+
         //! Erases the oldest flag cache item
         void eraseLastFlagItem();
 
@@ -318,6 +326,9 @@ class GraphicsCache
 
         //! Loads the images for the ship picture and it's mask.
         void loadShipPic();
+
+        //! Loads the images for the planted standard picture and it's mask.
+        void loadPlantedStandardPic();
 
         //! Loads the images for the city pictures.
         void loadTemplePics();
@@ -366,6 +377,7 @@ class GraphicsCache
         std::list<ProdShieldCacheItem*> d_prodshieldlist;
         std::list<MoveBonusCacheItem*> d_movebonuslist;
         std::list<ShipCacheItem*> d_shiplist;
+        std::list<PlantedStandardCacheItem*> d_plantedstandardlist;
 
         //some private surfaces
         SDL_Surface* d_levelmask;
@@ -390,6 +402,8 @@ class GraphicsCache
         SDL_Surface* d_movebonuspic[6];
 	SDL_Surface* d_ship;
 	SDL_Surface* d_shipmask;
+	SDL_Surface* d_planted_standard;
+	SDL_Surface* d_planted_standard_mask;
 	SDL_Surface* d_port;
 	SDL_Surface* d_small_ruin_unexplored;
 	SDL_Surface* d_small_ruin_explored;

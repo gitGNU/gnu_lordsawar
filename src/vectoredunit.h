@@ -34,7 +34,7 @@ class VectoredUnit: public Location, public sigc::trackable
           * @param duration     how many turns it takes for the armytype to
 	  *                     show up at dest.
           */
-        VectoredUnit(Vector<int> pos, Vector<int> dest, int armytype, int duration);
+        VectoredUnit(Vector<int> pos, Vector<int> dest, int armytype, int duration, Player *p);
 
         //! Copy constructor
         VectoredUnit(const VectoredUnit&);
@@ -78,6 +78,7 @@ inline bool operator==(const VectoredUnit &rhs)
 	Vector<int> d_destination;
 	int d_armytype;
 	int d_duration;
+	Player *d_player;
 };
 
 #endif // VECTOREDUNIT_H

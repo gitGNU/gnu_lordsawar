@@ -453,6 +453,9 @@ class Player: public sigc::trackable
           */
         virtual bool vectorFromCity(City* c, Vector<int> dest) = 0;
 
+        //! Plant a standard
+        virtual bool plantStandard(Stack *s) =0;
+
         /** Signal raised when a city is conquered. This signal is solely
           * for internal use. Don't use it, you may break stability (Background:
           * libsigc++ doesn't guarantee order of execution and this signal may

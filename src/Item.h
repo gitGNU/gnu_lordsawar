@@ -99,6 +99,12 @@ class Item
 	//vectored to.
         bool isPlantable() const {return d_plantable;}
 
+	//!Set the item as planted or not.
+        void setPlanted(bool planted) {d_planted = planted;}
+
+	//!Set the item as planted or not.
+        bool getPlanted() const {return d_planted;}
+
 	//! Return the player that can plant this item.
 	Player *getPlantableOwner() const {return d_plantable_owner;}
 
@@ -109,6 +115,7 @@ class Item
         Uint32 d_id;
 	bool d_plantable;
 	Player *d_plantable_owner;
+	bool d_planted;
 };
 
 #endif //ITEM_H

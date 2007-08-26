@@ -38,6 +38,7 @@ Item::Item(XML_Helper* helper)
         Uint32 ui;
         helper->getData(ui, "plantable_owner");
         d_plantable_owner = Playerlist::getInstance()->getPlayer(ui);
+        helper->getData(d_planted, "planted");
       }
     else
       d_plantable_owner = NULL;
@@ -54,6 +55,7 @@ Item::Item(std::string name, bool plantable, Player *plantable_owner)
   d_name = name;
   d_plantable = plantable;
   d_plantable_owner = plantable_owner;
+  d_planted = false;
   d_id = fl_counter->getNextId();
 }
 
@@ -79,7 +81,11 @@ bool Item::save(XML_Helper* helper) const
     retval &= helper->saveData("name", d_name);
     retval &= helper->saveData("plantable", d_plantable);
     if (d_plantable && d_plantable_owner)
-      retval &= helper->saveData("plantable_owner", d_plantable_owner->getId());
+      {
+        retval &= helper->saveData("plantable_owner", 
+                                   d_plantable_owner->getId());
+        retval &= helper->saveData("planted", d_planted);
+      }
     retval &= helper->saveData("id", d_id);
 
     retval &= helper->saveData("bonus", d_bonus);

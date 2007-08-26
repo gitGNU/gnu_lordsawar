@@ -458,3 +458,32 @@ void GameMap::calculateBlockedAvenues()
           }
       }
 }
+
+Vector<int> GameMap::findPlantedStandard(Player *p)
+{
+    bool found = false;
+    Vector<int> pos;
+    pos.x = -1;
+    pos.y = -1;
+    for (int x = 0; x < getWidth(); x++)
+      {
+        for (int y = 0; y < getHeight(); y++)
+          {
+            std::list<Item*> items = getTile(x, y)->getItems();
+            for (std::list<Item*>::iterator it = items.begin(); 
+                 it != items.end(); it++)
+              {
+                if ((*it)->isPlantable() && (*it)->getPlantableOwner() == p)
+                  {
+                    pos.x = x;
+                    pos.y = y;
+                    found = true;
+                    break;
+                  }
+              }
+            if (found)
+              break;
+          }
+      }
+  return pos;
+}

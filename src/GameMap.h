@@ -95,6 +95,9 @@ class GameMap: public sigc::trackable
 	Stack* addArmy(Location *l, Army *a);
         Stack* addArmy(Vector<int> pos, Army *a);
 
+	//! Go find a player's planted standard on the map
+        Vector<int> findPlantedStandard(Player *p);
+
         /** Fill the map using the data supplied by a map generator
           * 
           * @param generator        the generator which supplies the data

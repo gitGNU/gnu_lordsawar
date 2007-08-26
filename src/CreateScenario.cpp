@@ -480,7 +480,7 @@ bool CreateScenario::setupCities(bool quick_start)
         // no neutral cities
         // divvy up the neutral cities among other non-neutral players
         int cities_left = clist->size() - plist->size() + 1;
-        int citycount[MAX_PLAYERS];
+        unsigned int citycount[MAX_PLAYERS];
 	memset (citycount, 0, sizeof (citycount));
         Playerlist::iterator pit = plist->begin();
         for (; pit != plist->end(); pit++)

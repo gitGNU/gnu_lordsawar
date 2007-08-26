@@ -167,6 +167,8 @@ void HeroDialog::on_pickup_clicked()
     if (i)
     {
 	Item *item = (*i)[item_columns.item];
+        if (item->getPlanted() == true)
+          item->setPlanted(false);
 	GameMap::getInstance()->getTile(pos)->removeItem(item);
 	hero->addToBackpack(item, 0);
 	(*i)[item_columns.status] = _("In backpack");

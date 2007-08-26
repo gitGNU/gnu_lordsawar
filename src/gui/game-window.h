@@ -98,6 +98,7 @@ class GameWindow: public sigc::trackable
     Gtk::MenuItem *inspect_menuitem;
     Gtk::MenuItem *disband_menuitem;
     Gtk::MenuItem *signpost_menuitem;
+    Gtk::MenuItem *plant_standard_menuitem;
     Gtk::Box *stack_info_box;
     Gtk::Box *stack_info_container;
     Gtk::Label *group_moves_label;
@@ -158,6 +159,7 @@ class GameWindow: public sigc::trackable
     void on_resign_activated();
     void on_signpost_activated();
     void on_inspect_activated();
+    void on_plant_standard_activated();
 
     void on_fullscreen_activated();
     void on_preferences_activated();

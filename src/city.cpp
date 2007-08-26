@@ -408,7 +408,8 @@ void City::nextTurn()
 	    VectoredUnitlist *vul = VectoredUnitlist::getInstance();
 	    vul->push_back(VectoredUnit (d_pos, d_vector, 
 					 getArmytype (d_production), 
-				    	 MAX_TURNS_FOR_VECTORING));
+				    	 MAX_TURNS_FOR_VECTORING,
+                                         getPlayer()));
             setProduction(d_production);
           }
 	else //or make it here

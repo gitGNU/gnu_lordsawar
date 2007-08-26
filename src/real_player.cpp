@@ -23,6 +23,9 @@
 //#include "FightDialog.h"
 #include "stacklist.h"
 #include "citylist.h"
+#include "templelist.h"
+#include "ruinlist.h"
+#include "signpostlist.h"
 #include "rewardlist.h"
 #include "QuestsManager.h"
 #include "path.h"
@@ -1351,6 +1354,35 @@ void RealPlayer::resign()
     
   getStacklist()->setActivestack(0);
   supdatingStack.emit(0);
+}
+
+bool RealPlayer::plantStandard(Stack* s)
+{
+    debug("player::plantStandard(Stack*)")
+    if (!s)
+      s = getActivestack();
+    for (Stack::iterator it = s->begin(); it != s->end(); it++)
+      {
+        if ((*it)->isHero())
+	  {
+	    Hero *hero = dynamic_cast<Hero*>((*it));
+            std::list<Item*> backpack = hero->getBackpack();
+            for (std::list<Item*>::iterator i = backpack.begin(), 
+	         end = backpack.end(); i != end; ++i)
+	      {
+		if ((*i)->isPlantable() && (*i)->getPlantableOwner() == this)
+		  {
+		    //drop the item, and plant it
+		    (*i)->setPlanted(true);
+                    GameMap *gm = GameMap::getInstance();
+	            gm->getTile(s->getPos())->addItem(*i);
+	            hero->removeFromBackpack(*i);
+                    break;
+		  }
+	      }
+	  }
+      }
+    return true;
 }
 
 // End of file

@@ -280,7 +280,8 @@ void CityWindow::fill_in_production_info()
           {
             Citylist *cl = Citylist::getInstance();
             City *dest = cl->getObjectAt(city->getVectoring());
-            s3 += String::ucompose(_(", then to %1"), dest->getName());
+            s3 += String::ucompose(_(", then to %1"), 
+                                   dest ? dest->getName() : "Standard");
           }
       pic = to_pixbuf(gc->getArmyPic(as, a->getType(), player, 1, NULL));
     }

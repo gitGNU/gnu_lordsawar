@@ -54,6 +54,7 @@
 #include "reward.h"
 #include "game-parameters.h"
 #include "FogMap.h"
+#include "GameMap.h"
 
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
@@ -601,6 +602,7 @@ void Game::update_control_panel()
 	can_defend_selected_stack.emit(false);
 	can_search_selected_stack.emit(false);
 	can_inspect_selected_stack.emit(false);
+	can_plant_standard_selected_stack.emit(false);
 	can_move_selected_stack.emit(false);
 	can_move_all_stacks.emit(false);
 	can_end_turn.emit(false);
@@ -666,7 +668,53 @@ void Game::update_control_panel()
         }
 
         if (stack->hasHero())
-          can_inspect_selected_stack.emit(true);
+	  {
+            can_inspect_selected_stack.emit(true);
+	    //does the hero have the player's standard?
+            for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
+	      {
+                if ((*it)->isHero())
+		  {
+		    Hero *hero = dynamic_cast<Hero*>((*it));
+                    std::list<Item*> backpack = hero->getBackpack();
+                    for (std::list<Item*>::iterator i = backpack.begin(), 
+			 end = backpack.end(); i != end; ++i)
+		      {
+			if ((*i)->isPlantable() && 
+			    (*i)->getPlantableOwner() == player)
+			  {
+			    //can't plant on city/ruin/temple/signpost
+			    Citylist *cl = Citylist::getInstance();
+			    City *city = cl->getObjectAt(stack->getPos());
+			    Templelist *tl = Templelist::getInstance();
+			    Temple *temple = tl->getObjectAt(stack->getPos());
+			    Ruinlist *rl = Ruinlist::getInstance();
+			    Ruin *ruin = rl->getObjectAt(stack->getPos());
+			    Signpostlist *spl = Signpostlist::getInstance();
+			    Signpost *sign = spl->getObjectAt(stack->getPos());
+			    if (!city && !temple && !ruin && !sign)
+                              {
+                                GameMap *gm = GameMap::getInstance();
+	                        std::list<Item*> items;
+                                Vector<int> pos = stack->getPos();
+                                items = gm->getTile(pos)->getItems();
+                                std::list<Item*>::iterator iit;
+                                bool standard_already_planted = false;
+                                for (iit = items.begin(); iit != items.end();
+                                     iit++)
+                                  {
+                                    if ((*iit)->getPlanted())
+                                      standard_already_planted = true;
+                                  }
+                                //are there any other standards here?
+                                if (standard_already_planted == false)
+	                          can_plant_standard_selected_stack.emit(true);
+                              }
+			  }
+		      }
+		  }
+	      }
+	  }
 
         if (Signpostlist::getInstance()->getObjectAt(stack->getPos()))
           can_change_signpost.emit(true);
@@ -679,6 +727,7 @@ void Game::update_control_panel()
 	can_move_selected_stack.emit(false);
 	can_disband_stack.emit(false);
 	can_inspect_selected_stack.emit(false);
+	can_plant_standard_selected_stack.emit(false);
     }
 
     can_end_turn.emit(true);

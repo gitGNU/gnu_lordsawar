@@ -63,6 +63,7 @@ class VectorMap : public OverviewMap
     
  private:
     City *city;
+    Vector<int> planted_standard;
     enum ShowVectoring show_vectoring;
     enum ClickAction click_action;
     
@@ -71,6 +72,7 @@ class VectorMap : public OverviewMap
     void draw_city (City *c, Uint32 &type, bool &prod);
     void draw_cities (std::list<City*> citylist, Uint32 type);
     void draw_lines (std::list<City*> citylist);
+    void draw_planted_standard(Vector<int> pos);
 };
 
 #endif

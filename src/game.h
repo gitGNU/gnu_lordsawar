@@ -89,6 +89,7 @@ class Game
 	can_defend_selected_stack,
 	can_search_selected_stack,
 	can_inspect_selected_stack,
+	can_plant_standard_selected_stack,
 	can_move_selected_stack,
 	can_move_all_stacks,
 	can_disband_stack,

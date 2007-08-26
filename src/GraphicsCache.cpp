@@ -51,6 +51,13 @@ struct ShipCacheItem
     SDL_Surface* surface;
 };
 
+//the structure to store planted standard in
+struct PlantedStandardCacheItem
+{
+    const Player* player;
+    SDL_Surface* surface;
+};
+
 //the structure to store temples in
 struct TempleCacheItem
 {
@@ -159,6 +166,7 @@ GraphicsCache::GraphicsCache()
 {
     loadCityPics();
     loadShipPic();
+    loadPlantedStandardPic();
     loadTemplePics();
     loadStonePics();
     loadRoadPics();
@@ -240,6 +248,8 @@ GraphicsCache::~GraphicsCache()
     SDL_FreeSurface(d_small_ruin_explored);
     SDL_FreeSurface(d_ship);
     SDL_FreeSurface(d_shipmask);
+    SDL_FreeSurface(d_planted_standard);
+    SDL_FreeSurface(d_planted_standard_mask);
     SDL_FreeSurface(d_port);
 }
 
@@ -333,6 +343,32 @@ SDL_Surface* GraphicsCache::getShipPic(const Player* p)
     // We are still here, so the graphic is not in the cache. addShipPic calls
     // checkPictures on its own, so we can simply return the surface
     myitem = addShipPic(p);
+
+    return myitem->surface;
+}
+
+SDL_Surface* GraphicsCache::getPlantedStandardPic(const Player* p)
+{
+    debug("getting planted standard pic " <<p->getName())
+    std::list<PlantedStandardCacheItem*>::iterator it;
+    PlantedStandardCacheItem* myitem;
+    for (it = d_plantedstandardlist.begin(); it != d_plantedstandardlist.end(); it++)
+    {
+        if ((*it)->player == p)
+        {
+            myitem = (*it);
+            
+            // put the item on the last place (==last touched)
+            d_plantedstandardlist.erase(it);
+            d_plantedstandardlist.push_back(myitem);
+            
+            return myitem->surface;
+        }
+    }
+    // We are still here, so the graphic is not in the cache. 
+    // addPlantedStandardPic calls checkPictures on its own, so we can 
+    // simply return the surface
+    myitem = addPlantedStandardPic(p);
 
     return myitem->surface;
 }
@@ -728,6 +764,9 @@ void GraphicsCache::checkPictures()
     while (d_shiplist.size() > 10)
         eraseLastShipItem();
 
+    while (d_plantedstandardlist.size() > 10)
+        eraseLastPlantedStandardItem();
+
     while (d_templelist.size() > 10)
         eraseLastTempleItem();
 
@@ -904,6 +943,34 @@ ShipCacheItem* GraphicsCache::addShipPic(const Player* p)
 
     //b) add the entry to the list
     d_shiplist.push_back(myitem);
+
+    //c) check if the cache size is too large
+    checkPictures();
+
+    //we are finished, so return the pic
+    return myitem;
+}
+
+PlantedStandardCacheItem* GraphicsCache::addPlantedStandardPic(const Player* p)
+{
+    debug("ADD planted standard pic: " <<p->getName())
+
+    PlantedStandardCacheItem* myitem = new PlantedStandardCacheItem();
+    myitem->player = p;
+
+    //Now the most important part: load the planted standard picture
+    //First, copy the picture and change it to the display format
+    
+    // copy the pixmap including player colors
+    myitem->surface = applyMask(d_planted_standard, d_planted_standard_mask, p);
+
+    //now the final preparation steps:
+    //a) add the size
+    int size = myitem->surface->w * myitem->surface->h;
+    d_cachesize += myitem->surface->format->BytesPerPixel * size;
+
+    //b) add the entry to the list
+    d_plantedstandardlist.push_back(myitem);
 
     //c) check if the cache size is too large
     checkPictures();
@@ -1241,6 +1308,9 @@ void GraphicsCache::clear()
     while (!d_shiplist.empty())
         eraseLastShipItem();
 
+    while (!d_plantedstandardlist.empty())
+        eraseLastPlantedStandardItem();
+
     while (!d_flaglist.empty())
         eraseLastFlagItem();
 
@@ -1373,6 +1443,21 @@ void GraphicsCache::eraseLastShipItem()
 
     ShipCacheItem* myitem = *(d_shiplist.begin());
     d_shiplist.erase(d_shiplist.begin());
+
+    int size = myitem->surface->w * myitem->surface->h;
+    d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+
+    SDL_FreeSurface(myitem->surface);
+    delete myitem;
+}
+
+void GraphicsCache::eraseLastPlantedStandardItem()
+{
+    if (d_plantedstandardlist.empty())
+        return;
+
+    PlantedStandardCacheItem* myitem = *(d_plantedstandardlist.begin());
+    d_plantedstandardlist.erase(d_plantedstandardlist.begin());
 
     int size = myitem->surface->w * myitem->surface->h;
     d_cachesize -= myitem->surface->format->BytesPerPixel * size;
@@ -1730,6 +1815,37 @@ void GraphicsCache::loadShipPic()
     SDL_BlitSurface(shippic, &shiprect, d_shipmask, 0);
 
     SDL_FreeSurface(shippic);
+}
+
+void GraphicsCache::loadPlantedStandardPic()
+{
+    //load the planted standard picture and it's mask
+    SDL_Rect psrect;
+    SDL_Surface* pspic = File::getMiscPicture("plantedstandard.png");
+    // copy alpha values, don't use them
+    SDL_SetAlpha(pspic, 0, 0);
+    SDL_PixelFormat* fmt = pspic->format;
+    int size = 54;
+    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
+                                            fmt->BitsPerPixel, fmt->Rmask, 
+                                            fmt->Gmask, fmt->Bmask, 
+                                            fmt->Amask);
+    psrect.x = 0;
+    psrect.y = 0;
+    psrect.w = psrect.h = size;
+    SDL_BlitSurface(pspic, &psrect, tmp, 0);
+    d_planted_standard = SDL_DisplayFormatAlpha(tmp);
+    SDL_FreeSurface(tmp);
+
+    d_planted_standard_mask = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
+                                                   32, 0xFF000000, 0xFF0000, 
+                                                   0xFF00, 0xFF);
+    psrect.x = size;
+    psrect.y = 0;
+    psrect.w = psrect.h = size;
+    SDL_BlitSurface(pspic, &psrect, d_planted_standard_mask, 0);
+
+    SDL_FreeSurface(pspic);
 }
 
 void GraphicsCache::loadSelectors()

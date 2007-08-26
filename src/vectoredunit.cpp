@@ -22,16 +22,18 @@
 #include "playerlist.h"
 #include "army.h"
 #include "city.h"
+#include "GameMap.h"
 
-VectoredUnit::VectoredUnit(Vector<int> pos, Vector<int> dest, int armytype, int duration)
+VectoredUnit::VectoredUnit(Vector<int> pos, Vector<int> dest, int armytype, int duration, Player *player)
     :Location("", pos), d_destination(dest), d_armytype(armytype), 
      d_duration(duration)
 {
+  d_player = player;
 }
 
 VectoredUnit::VectoredUnit(const VectoredUnit& v)
     :Location(v), d_destination(v.d_destination), d_armytype(v.d_armytype), 
-     d_duration(v.d_duration)
+     d_duration(v.d_duration), d_player(v.d_player)
 {
 }
 
@@ -42,6 +44,12 @@ VectoredUnit::VectoredUnit(XML_Helper* helper)
     helper->getData(d_duration, "duration");
     helper->getData(d_destination.x, "dest_x");
     helper->getData(d_destination.y, "dest_y");
+    int i;
+    helper->getData(i, "player");
+    if (i == -1)
+	d_player = 0;
+    else
+	d_player = Playerlist::getInstance()->getPlayer(i);
 }
 
 VectoredUnit::~VectoredUnit()
@@ -62,6 +70,10 @@ bool VectoredUnit::save(XML_Helper* helper) const
     retval &= helper->saveData("duration", d_duration);
     retval &= helper->saveData("dest_x", d_destination.x);
     retval &= helper->saveData("dest_y", d_destination.y);
+    if (d_player)
+        retval &= helper->saveData("player", d_player->getId());
+    else
+        retval &= helper->saveData("player", -1);
     retval &= helper->closeTag();
 
     return retval;
@@ -78,7 +90,28 @@ bool VectoredUnit::nextTurn()
       City *dest;
       // drop it in the destination city!
       dest = cl->getObjectAt(d_destination);
-      dest->addArmy(new Army(*(al->getArmy(set, d_armytype))));
+      if (!dest)
+        {
+          std::list<Item*> items;
+          items = GameMap::getInstance()->getTile(d_destination)->getItems();
+          for (std::list<Item*>::iterator it = items.begin(); 
+               it != items.end(); it++)
+            {
+              if ((*it)->getPlanted() == true &&
+                  (*it)->getPlantableOwner() == d_player)
+                {
+                  Location loc = Location("planted standard", d_destination, 1);
+                  loc.addArmy(new Army(*(al->getArmy(set, d_armytype))));
+                  break;
+                }
+             
+            }
+        }
+      else
+        {
+          if (!dest->isBurnt() && dest->getPlayer() == d_player)
+            dest->addArmy(new Army(*(al->getArmy(set, d_armytype))));
+        }
       return true;
     }
   return false;

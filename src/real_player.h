@@ -58,6 +58,7 @@ class RealPlayer : public Player
         bool vectorFromCity(City* c, Vector<int> dest);
 	void setFightOrder(std::list<Uint32> order);
         void resign();
+        bool plantStandard(Stack *s);
 
         bool stackMove(Stack* s);
         MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow);

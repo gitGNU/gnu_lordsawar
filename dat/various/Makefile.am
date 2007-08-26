@@ -38,7 +38,8 @@ various_DATA = \
     movebonus.png \
     smallunexploredruin.png \
     smallexploredruin.png \
-    smalltemple.png
+    smalltemple.png \
+    plantedstandard.png
 
 EXTRA_DIST = \
     arrows.png \
@@ -75,4 +76,5 @@ EXTRA_DIST = \
     movebonus.png \
     smallunexploredruin.png \
     smallexploredruin.png \
-    smalltemple.png
+    smalltemple.png \
+    plantedstandard.png
