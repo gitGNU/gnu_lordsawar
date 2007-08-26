@@ -149,7 +149,6 @@ class GameWindow: public sigc::trackable
     void on_load_game_activated();
     void on_save_game_activated();
     void on_save_game_as_activated();
-    void on_resign_game_activated();
     void on_quit_activated();
     void on_armies_activated();
     void on_cities_activated();

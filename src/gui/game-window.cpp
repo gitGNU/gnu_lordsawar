@@ -189,8 +189,6 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_save_game_activated));
     xml->connect_clicked("save_game_as_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_save_game_as_activated));
-    xml->connect_clicked("resign_game_menuitem", 
-			 sigc::mem_fun(*this, &GameWindow::on_resign_game_activated));
     xml->connect_clicked("quit_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_quit_activated));
     xml->connect_clicked("armies_menuitem",
@@ -514,7 +512,7 @@ void GameWindow::setup_game(std::string file_path)
 
 bool GameWindow::on_delete_event(GdkEventAny *e)
 {
-    on_resign_game_activated();
+    on_quit_activated();
     
     return true;
 }
@@ -649,17 +647,6 @@ void GameWindow::on_save_game_as_activated()
 	    if (!success)
 		show_error(_("Error saving game!"));
 	}
-    }
-}
-
-void GameWindow::on_resign_game_activated()
-{
-    // FIXME: ask
-    bool end = true;
-
-    if (end) {
-	stop_game();
-	game_ended.emit();
     }
 }
 
