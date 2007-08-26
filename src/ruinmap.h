@@ -36,6 +36,8 @@ class RuinMap : public OverviewMap
     //! change what ruin or temple is selected
     void setLocation (Location *r) {ruin = r;}
 
+    Location * getLocation () const {return ruin;}
+
     void mouse_button_event(MouseButtonEvent e);
 
     // emits the location chosen

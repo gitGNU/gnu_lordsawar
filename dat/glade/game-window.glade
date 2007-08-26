@@ -273,6 +273,15 @@
 			  <property name="use_underline">True</property>
 			</widget>
 		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="ruin_report_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Ruins</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_ruin_report_menuitem_activate" last_modification_time="Sun, 26 Aug 2007 21:30:51 GMT"/>
+			</widget>
+		      </child>
 		    </widget>
 		  </child>
 		</widget>

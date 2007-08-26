@@ -62,6 +62,7 @@
 #include "preferences-dialog.h"
 #include "fight-order-dialog.h"
 #include "hero-levels-dialog.h"
+#include "ruin-report-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -220,6 +221,8 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_resign_activated));
     xml->connect_clicked("levels_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_levels_activated));
+    xml->connect_clicked("ruin_report_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_ruin_report_activated));
 }
 
 GameWindow::~GameWindow()
@@ -867,6 +870,19 @@ void GameWindow::on_fight_order_activated()
 void GameWindow::on_levels_activated()
 {
     HeroLevelsDialog d(Playerlist::getActiveplayer());
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_ruin_report_activated()
+{
+    Vector<int> pos;
+    pos.x = 0;
+    pos.y = 0;
+    if (currently_selected_stack)
+      pos = currently_selected_stack->getPos();
+    
+    RuinReportDialog d(pos);
     d.set_parent_window(*window.get());
     d.run();
 }

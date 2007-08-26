@@ -21,6 +21,7 @@ liblwgui_a_SOURCES = \
     hero-dialog.cpp hero-dialog.h \
     hero-offer-dialog.cpp hero-offer-dialog.h \
     sage-dialog.cpp sage-dialog.h \
+    ruin-report-dialog.cpp ruin-report-dialog.h \
     load-scenario-dialog.cpp load-scenario-dialog.h \
     quest-assigned-dialog.cpp quest-assigned-dialog.h \
     quest-completed-dialog.cpp quest-completed-dialog.h \
