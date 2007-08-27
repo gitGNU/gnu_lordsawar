@@ -1,3 +1,11 @@
+2007-08-27  Ben Asselstine
+
+	* added army bonus menuitem and dialog
+	* removed stack drawing functionality from OverviewMap
+	* added ArmyMap to draw an OverviewMap with stacks
+	* added plant standard action
+	* now using equip action for picking up and dropping items
+
 2007-08-26  Ben Asselstine
 
 	* changed fight order dialog to show armies in player's own colour
