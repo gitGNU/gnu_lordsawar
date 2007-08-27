@@ -63,6 +63,7 @@
 #include "fight-order-dialog.h"
 #include "hero-levels-dialog.h"
 #include "ruin-report-dialog.h"
+#include "army-bonus-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -223,6 +224,8 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_levels_activated));
     xml->connect_clicked("ruin_report_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_ruin_report_activated));
+    xml->connect_clicked("army_bonus_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_army_bonus_activated));
 }
 
 GameWindow::~GameWindow()
@@ -883,6 +886,13 @@ void GameWindow::on_ruin_report_activated()
       pos = currently_selected_stack->getPos();
     
     RuinReportDialog d(pos);
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_army_bonus_activated()
+{
+    ArmyBonusDialog d(Playerlist::getActiveplayer());
     d.set_parent_window(*window.get());
     d.run();
 }

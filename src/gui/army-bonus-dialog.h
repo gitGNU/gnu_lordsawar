@@ -12,8 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef HERO_LEVELS_DIALOG_H
-#define HERO_LEVELS_DIALOG_H
+#ifndef ARMY_BONUS_DIALOG_H
+#define ARMY_BONUS_DIALOG_H
 
 #include <memory>
 #include <sigc++/trackable.h>
@@ -24,15 +24,13 @@
 #include <gtkmm/treeview.h>
 #include <list>
 #include <SDL.h>
-
 class Player;
-class Hero;
 
-// dialog for showing hero information
-class HeroLevelsDialog: public sigc::trackable
+// dialog for showing the bonuses that armies have
+class ArmyBonusDialog: public sigc::trackable
 {
  public:
-    HeroLevelsDialog(Player *player);
+    ArmyBonusDialog(Player *p);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -41,27 +39,26 @@ class HeroLevelsDialog: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
 
-    Player *player;
-    Gtk::TreeView *heroes_treeview;
+    Gtk::TreeView *armies_treeview;
 
-    class HeroesColumns: public Gtk::TreeModelColumnRecord {
+    class ArmiesColumns: public Gtk::TreeModelColumnRecord {
     public:
-	HeroesColumns() 
-        { add(image); add(name); add(level);
-	  add(exp); add(needs); add(str); add(move);}
+	ArmiesColumns() 
+        { add(image); add(name); add(str);
+	  add(move); add(move_image); add(bonus);}
 	
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<Glib::ustring> level;
-	Gtk::TreeModelColumn<Uint32> exp;
-	Gtk::TreeModelColumn<Uint32> needs;
 	Gtk::TreeModelColumn<Uint32> str;
 	Gtk::TreeModelColumn<Uint32> move;
+	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > move_image;
+	Gtk::TreeModelColumn<Glib::ustring> bonus;
     };
-    const HeroesColumns heroes_columns;
-    Glib::RefPtr<Gtk::ListStore> heroes_list;
+    const ArmiesColumns armies_columns;
+    Glib::RefPtr<Gtk::ListStore> armies_list;
  private:
-    void addHero(Hero *h);
+    void addArmyType(Uint32 army_type);
+    Player *d_player; //show armies in this player's colour
 };
 
 #endif
