@@ -101,6 +101,8 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_FightOrder(helper));
         case RESIGN:
             return (new Action_Resign(helper));
+        case ITEM_PLANT:
+            return (new Action_Plant(helper));
     }
 
     return 0;
@@ -156,6 +158,8 @@ Action* Action::copy(const Action* a)
             return (new Action_FightOrder(*dynamic_cast<const Action_FightOrder*>(a)));
         case RESIGN:
             return (new Action_Resign(*dynamic_cast<const Action_Resign*>(a)));
+        case ITEM_PLANT:
+            return (new Action_Plant(*dynamic_cast<const Action_Plant*>(a)));
     }
 
     return 0;
@@ -1048,7 +1052,6 @@ Action_Equip::Action_Equip(XML_Helper* helper)
     helper->getData(d_hero, "hero");
     helper->getData(d_item, "item");
     helper->getData(d_slot, "dest");
-    helper->getData(d_index, "index");
 }
 
 Action_Equip::~Action_Equip()
@@ -1060,7 +1063,7 @@ std::string Action_Equip::dump() const
     std::stringstream ss;
 
     ss <<"Hero " <<d_hero <<" moved item " <<d_item <<"to slot " <<d_slot;
-    ss <<", index " <<d_index <<std::endl;
+    ss <<std::endl;
     
     return ss.str();
 }
@@ -1074,18 +1077,16 @@ bool Action_Equip::save(XML_Helper* helper) const
     retval &= helper->saveData("hero", d_hero);
     retval &= helper->saveData("item", d_item);
     retval &= helper->saveData("dest", d_slot);
-    retval &= helper->saveData("index", d_index);
     retval &= helper->closeTag();
     
     return retval;
 }
 
-bool Action_Equip::fillData(Uint32 hero, Uint32 item, Action_Equip::Slot slot, int index)
+bool Action_Equip::fillData(Uint32 hero, Uint32 item, Action_Equip::Slot slot)
 {
     d_hero = hero;
     d_item = item;
     d_slot = slot;
-    d_index = index;
     
     return true;
 }
@@ -1440,5 +1441,50 @@ bool Action_Resign::save(XML_Helper* helper) const
 bool Action_Resign::fillData()
 {
     return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_Plant
+
+Action_Plant::Action_Plant()
+    :Action(Action::ITEM_PLANT)
+{
+}
+
+Action_Plant::Action_Plant(XML_Helper* helper)
+    :Action(Action::ITEM_PLANT)
+{
+}
+
+Action_Plant::~Action_Plant()
+{
+}
+
+std::string Action_Plant::dump() const
+{
+    std::stringstream s;
+    s << "hero " << d_hero << " plants item " << d_item;
+    
+    return s.str();
+}
+
+bool Action_Plant::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("action");
+    retval &= helper->saveData("type", d_type);
+    retval &= helper->saveData("hero", d_hero);
+    retval &= helper->saveData("item", d_item);
+    retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool Action_Plant::fillData(Uint32 hero, Uint32 item)
+{
+  d_hero = hero;
+  d_item = item;
+  return true;
 }
 

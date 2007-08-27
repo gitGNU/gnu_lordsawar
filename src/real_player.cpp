@@ -1356,9 +1356,9 @@ void RealPlayer::resign()
   supdatingStack.emit(0);
 }
 
-bool RealPlayer::plantStandard(Stack* s)
+bool RealPlayer::heroPlantStandard(Stack* s)
 {
-    debug("player::plantStandard(Stack*)")
+    debug("player::heroPlantStandard(Stack*)")
     if (!s)
       s = getActivestack();
     for (Stack::iterator it = s->begin(); it != s->end(); it++)
@@ -1377,12 +1377,35 @@ bool RealPlayer::plantStandard(Stack* s)
                     GameMap *gm = GameMap::getInstance();
 	            gm->getTile(s->getPos())->addItem(*i);
 	            hero->removeFromBackpack(*i);
+                    Action_Plant * item = new Action_Plant();
+                    item->fillData(hero->getId(), (*i)->getId());
+                    d_actions.push_back(item);
                     break;
 		  }
 	      }
 	  }
       }
     return true;
+}
+
+bool RealPlayer::heroDropItem(Hero *h, Item *i, Vector<int> pos)
+{
+  GameMap::getInstance()->getTile(pos)->addItem(i);
+  h->removeFromBackpack(i);
+  Action_Equip* item = new Action_Equip();
+  item->fillData(h->getId(), i->getId(), Action_Equip::BACKPACK);
+  d_actions.push_back(item);
+  return true;
+}
+
+bool RealPlayer::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
+{
+  GameMap::getInstance()->getTile(pos)->removeItem(i);
+  h->addToBackpack(i, 0);
+  Action_Equip* item = new Action_Equip();
+  item->fillData(h->getId(), i->getId(), Action_Equip::GROUND);
+  d_actions.push_back(item);
+  return true;
 }
 
 // End of file

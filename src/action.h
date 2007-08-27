@@ -72,7 +72,8 @@ class Action
                 CITY_RENAME = 20,
                 CITY_VECTOR = 21,
                 FIGHT_ORDER = 22,
-		RESIGN = 23
+		RESIGN = 23,
+		ITEM_PLANT = 24
         };
                 
         
@@ -421,8 +422,7 @@ class Action_Equip : public Action
         enum Slot {
             NONE = 0,
             BACKPACK = 1,
-            GROUND = 2,
-            BODY = 3};
+            GROUND = 2};
         
         Action_Equip();
         Action_Equip(XML_Helper* helper);
@@ -431,13 +431,12 @@ class Action_Equip : public Action
         std::string dump() const;
         bool save(XML_Helper* helper) const;
 
-        bool fillData(Uint32 hero, Uint32 item, Slot slot, int index);
+        bool fillData(Uint32 hero, Uint32 item, Slot slot);
 
     private:
         Uint32 d_hero;
         Uint32 d_item;
         Uint32 d_slot;
-        int d_index;
 };
 
 //-----------------------------------------------------------------------------
@@ -542,6 +541,24 @@ class Action_Resign: public Action
         bool save(XML_Helper* helper) const;
 
         bool fillData();
+};
+
+//-----------------------------------------------------------------------------
+class Action_Plant: public Action
+{
+    public:
+        Action_Plant();
+        Action_Plant(XML_Helper* helper);
+        ~Action_Plant();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Uint32 hero, Uint32 item);
+
+    private:
+        Uint32 d_hero;
+        Uint32 d_item;
 };
 
         

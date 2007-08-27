@@ -58,7 +58,10 @@ class RealPlayer : public Player
         bool vectorFromCity(City* c, Vector<int> dest);
 	void setFightOrder(std::list<Uint32> order);
         void resign();
-        bool plantStandard(Stack *s);
+        bool heroPlantStandard(Stack *s);
+        bool heroDropItem(Hero *h, Item *item, Vector<int> pos);
+        bool heroPickupItem(Hero *h, Item *item, Vector<int> pos);
+
 
         bool stackMove(Stack* s);
         MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow);

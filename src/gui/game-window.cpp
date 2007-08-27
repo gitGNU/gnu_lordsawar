@@ -2003,5 +2003,5 @@ void GameWindow::on_inspect_activated ()
 }
 void GameWindow::on_plant_standard_activated ()
 {
-  Playerlist::getActiveplayer()->plantStandard(NULL);
+  Playerlist::getActiveplayer()->heroPlantStandard(NULL);
 }

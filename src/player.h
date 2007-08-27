@@ -437,6 +437,12 @@ class Player: public sigc::trackable
         //! Disband a player's stack
         virtual bool stackDisband(Stack* s) =0;
 
+        //! Player's hero drop an item
+        virtual bool heroDropItem(Hero *h, Item *item, Vector<int> pos) =0;
+
+        //! Player's hero picks up an item
+        virtual bool heroPickupItem(Hero *h, Item *item, Vector<int> pos) =0;
+
         //! Disband all the player's stacks and raze all cities.
         virtual void resign() =0;
 
@@ -454,7 +460,7 @@ class Player: public sigc::trackable
         virtual bool vectorFromCity(City* c, Vector<int> dest) = 0;
 
         //! Plant a standard
-        virtual bool plantStandard(Stack *s) =0;
+        virtual bool heroPlantStandard(Stack *s) =0;
 
         /** Signal raised when a city is conquered. This signal is solely
           * for internal use. Don't use it, you may break stability (Background:
