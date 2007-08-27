@@ -72,9 +72,6 @@ class OverviewMap
     //! draw cities on the map
     void draw_cities(bool all_razed);
 
-    //! draw stacks on the map
-    void draw_stacks();
-
     // redraw the specified terrain pixels
     void draw_terrain_pixels(Rectangle r);
 
