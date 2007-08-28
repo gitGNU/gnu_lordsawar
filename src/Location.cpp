@@ -45,12 +45,13 @@ Stack *Location::addArmy(Army *a) const
 {
     Stack* stack = getFreeStack(a->getPlayer());
 
-    // No stack found so create one
+    // No stack found in the entire location
     if (!stack)
-    {
-        stack = new Stack(a->getPlayer(), d_pos);
-        a->getPlayer()->addStack(stack);
-    }
+      return NULL;
+    //{
+        //stack = new Stack(a->getPlayer(), d_pos);
+        //a->getPlayer()->addStack(stack);
+    //}
 
     // add army to stack
     stack->push_front(a);

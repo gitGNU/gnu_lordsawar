@@ -1106,7 +1106,12 @@ void GameWindow::on_stack_info_changed(Stack *s)
     if (!s)
  	show_stats();
     else
-	show_stack(s);
+    {
+        if (s->getPlayer()->getType() == Player::HUMAN)
+	    show_stack(s);
+        else
+ 	    show_stats();
+    }
 }
 
 void GameWindow::show_stats()
@@ -1847,6 +1852,8 @@ void GameWindow::show_shield_turn()
       if ((*i)->isDead())
         {
           shield_image[c]->clear();
+          turn_hbox->remove(dynamic_cast<Gtk::Widget&>(*shield_image[c]));
+          turn_hbox->resize_children();
           continue;
         }
       if (*i == pl->getActiveplayer())
@@ -1856,6 +1863,8 @@ void GameWindow::show_shield_turn()
       shield_image[c]->property_pixbuf()=to_pixbuf(gc->getShieldPic(1,(*i)));
       c++;
     }
+  for (unsigned int i = c; i < MAX_PLAYERS; i++)
+    shield_image[i]->clear();
 }
 
 void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)

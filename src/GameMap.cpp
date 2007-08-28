@@ -371,7 +371,8 @@ Stack* GameMap::addArmy(Location *l, Army *a)
   s = l->addArmy(a);
   if (s)
     return s;
-  return addArmy(l->getPos(), a);
+fprintf(stderr,"whojo hooo!\n");
+  return addArmyAtPos(l->getPos(), a);
 }
 
 bool GameMap::isDock(int x, int y)
