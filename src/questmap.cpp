@@ -90,7 +90,6 @@ void QuestMap::after_draw()
   if (quest->isPendingDeletion() == false)
     {
       std::list< Vector<int> > targets = quest->getTargets();
-printf("quest->getTYpe() = %d\n", quest->getType());
       switch (quest->getType ())
         {
           case Quest::PILLAGEGOLD:
