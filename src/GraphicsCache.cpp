@@ -183,6 +183,8 @@ GraphicsCache::GraphicsCache()
     d_smallruinedcity = File::getMiscPicture("smallruinedcity.png");
     d_smallhero = File::getMiscPicture("hero.png");
     d_small_ruin_unexplored = File::getMiscPicture("smallunexploredruin.png");
+    d_small_stronghold_unexplored = 
+      File::getMiscPicture("smallunexploredstronghold.png");
     d_small_ruin_explored = File::getMiscPicture("smallexploredruin.png");
     d_small_temple = File::getMiscPicture("smalltemple.png");
     std::string tileset = GameMap::getInstance()->getTileSet()->getName();
@@ -245,6 +247,7 @@ GraphicsCache::~GraphicsCache()
     SDL_FreeSurface(d_smallhero);
     SDL_FreeSurface(d_small_temple);
     SDL_FreeSurface(d_small_ruin_unexplored);
+    SDL_FreeSurface(d_small_stronghold_unexplored);
     SDL_FreeSurface(d_small_ruin_explored);
     SDL_FreeSurface(d_ship);
     SDL_FreeSurface(d_shipmask);
@@ -270,6 +273,10 @@ SDL_Surface* GraphicsCache::getSmallRuinExploredPic()
 SDL_Surface* GraphicsCache::getSmallRuinUnexploredPic()
 {
   return SDL_DisplayFormatAlpha(d_small_ruin_unexplored);
+}
+SDL_Surface* GraphicsCache::getSmallStrongholdUnexploredPic()
+{
+  return SDL_DisplayFormatAlpha(d_small_stronghold_unexplored);
 }
 SDL_Surface* GraphicsCache::getSmallTemplePic()
 {

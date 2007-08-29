@@ -600,6 +600,10 @@ bool CreateScenario::setupRuins()
         int randno = rand() % d_ruinnames.size();
         (*it).setName(d_ruinnames[randno]);
 
+        // set a random temple type
+        int type= (int) ((RUIN_TYPES*1.0) * (rand() / (RAND_MAX + 1.0)));
+        (*it).setType(type);
+
         //remove the used name
         d_ruinnames[randno] = d_ruinnames[d_ruinnames.size() - 1];
         d_ruinnames.pop_back();

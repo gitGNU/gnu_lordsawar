@@ -37,6 +37,7 @@ various_DATA = \
     smallruinedcity.png \
     movebonus.png \
     smallunexploredruin.png \
+    smallunexploredstronghold.png \
     smallexploredruin.png \
     smalltemple.png \
     plantedstandard.png
@@ -75,6 +76,7 @@ EXTRA_DIST = \
     smallruinedcity.png \
     movebonus.png \
     smallunexploredruin.png \
+    smallunexploredstronghold.png \
     smallexploredruin.png \
     smalltemple.png \
     plantedstandard.png

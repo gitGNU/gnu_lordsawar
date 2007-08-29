@@ -200,6 +200,7 @@ class GraphicsCache
         SDL_Surface *getSmallTemplePic();
         SDL_Surface *getSmallRuinExploredPic();
         SDL_Surface* getSmallRuinUnexploredPic();
+        SDL_Surface* getSmallStrongholdUnexploredPic();
 
         /** Function for getting production shield pictures.
           *
@@ -406,6 +407,7 @@ class GraphicsCache
 	SDL_Surface* d_planted_standard_mask;
 	SDL_Surface* d_port;
 	SDL_Surface* d_small_ruin_unexplored;
+	SDL_Surface* d_small_stronghold_unexplored;
 	SDL_Surface* d_small_ruin_explored;
 	SDL_Surface* d_small_temple;
 	SDL_Surface *d_fogpic[FOG_TYPES];

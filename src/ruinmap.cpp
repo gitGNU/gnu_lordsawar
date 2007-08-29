@@ -50,7 +50,12 @@ void RuinMap::draw_ruins (bool show_selected)
       if (it->isSearched())
         tmp = gc->getSmallRuinExploredPic();
       else
-        tmp = gc->getSmallRuinUnexploredPic();
+        {
+          if (it->getType() == Ruin::STRONGHOLD)
+            tmp = gc->getSmallStrongholdUnexploredPic();
+          else
+            tmp = gc->getSmallRuinUnexploredPic();
+        }
   
       Vector<int> pos = it->getPos();
       pos = mapToSurface(pos);

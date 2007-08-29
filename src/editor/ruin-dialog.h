@@ -22,6 +22,7 @@
 #include <gtkmm/button.h>
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/comboboxtext.h>
+#include <gtkmm/spinbutton.h>
 
 class Ruin;
 class Stack;
@@ -38,6 +39,7 @@ class RuinDialog: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     Gtk::Entry *name_entry;
+    Gtk::SpinButton *type_entry;
     Gtk::Button *keeper_button;
     Gtk::CheckButton *sage_button;
     Gtk::CheckButton *hidden_button;

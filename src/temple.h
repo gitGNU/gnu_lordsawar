@@ -40,9 +40,6 @@ class Temple : public Location
         Temple(const Temple&);
         ~Temple();
 
-        //! Get the unique id of this temple
-        Uint32 getId() const {return d_id;}
-
         //! Returns the type of the temple
         int getType() {return d_type;};
 

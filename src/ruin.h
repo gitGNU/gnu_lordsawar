@@ -31,6 +31,7 @@ class Stack;
 class Ruin : public Location, public sigc::trackable
 {
     public:
+        enum Type {RUIN = 0, STRONGHOLD = 1};
         /** Default constructor
           * @param pos          the location of the ruin
           * @param name         the name of the ruin
@@ -40,9 +41,9 @@ class Ruin : public Location, public sigc::trackable
 	  * @param owner        who can see this hidden ruin
 	  * @param sage         if this ruin contains a sage or not
           */
-        Ruin(Vector<int> pos, std::string name = "", Stack* occupant = 0, 
-	     bool searched = false, bool hidden = false, Player *owner = 0,
-	     bool sage = false);
+        Ruin(Vector<int> pos, std::string name = "", int type = Ruin::RUIN,
+	     Stack* occupant = 0, bool searched = false, bool hidden = false, 
+	     Player *owner = 0, bool sage = false);
 
         //! Copy constructor
         Ruin(const Ruin&);
@@ -50,6 +51,12 @@ class Ruin : public Location, public sigc::trackable
         //! Loading constructor. See XML_Helper for a detailed description.
         Ruin(XML_Helper* helper);
         ~Ruin();
+
+        //! Returns the type of the ruin
+        int getType() {return d_type;};
+
+        //! Returns the type of the ruin
+        void setType(int type) {d_type=type;};
 
         //! Change the "searched" flag of the ruin
         void setSearched(bool searched) {d_searched = searched;}
@@ -91,6 +98,7 @@ class Ruin : public Location, public sigc::trackable
     private:
         // DATA
         bool d_searched;    // has ruin already been searched for treasure?
+        bool d_type;        // type of ruin
         Stack* d_occupant;
 	bool d_hidden;      // is this a "hidden" ruin that can only be seen
 	Player *d_owner;    // by an "owner"?

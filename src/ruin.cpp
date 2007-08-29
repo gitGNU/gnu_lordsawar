@@ -17,8 +17,9 @@
 #include "GameMap.h"
 #include <stdlib.h>
 
-Ruin::Ruin(Vector<int> pos, std::string name, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
-    :Location(name, pos), d_searched(searched), d_occupant(occupant), d_hidden(hidden), d_owner(owner), d_sage(sage)
+Ruin::Ruin(Vector<int> pos, std::string name, int type, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
+    :Location(name, pos), d_searched(searched), d_type(type),
+    d_occupant(occupant), d_hidden(hidden), d_owner(owner), d_sage(sage)
 {
     d_owner = NULL;
     //mark the location as being occupied by a ruin on the map
@@ -26,15 +27,17 @@ Ruin::Ruin(Vector<int> pos, std::string name, Stack* occupant, bool searched, bo
 }
 
 Ruin::Ruin(const Ruin& ruin)
-    :Location(ruin), d_searched(ruin.d_searched), d_occupant(ruin.d_occupant),
-    d_hidden(ruin.d_hidden), d_owner(ruin.d_owner), d_sage(ruin.d_sage)
+    :Location(ruin), d_searched(ruin.d_searched), d_type(ruin.d_type),
+    d_occupant(ruin.d_occupant), d_hidden(ruin.d_hidden), 
+    d_owner(ruin.d_owner), d_sage(ruin.d_sage)
 {
 }
 
 Ruin::Ruin(XML_Helper* helper)
-    :Location(helper), d_occupant(0), d_hidden(0), d_owner(0), d_sage(0)
+    :Location(helper), d_type(0), d_occupant(0), d_hidden(0), d_owner(0), d_sage(0)
 {
     Uint32 ui;
+    helper->getData(d_type, "type");
     helper->getData(d_searched, "searched");
     helper->getData(d_sage, "sage");
     helper->getData(d_hidden, "hidden");
@@ -66,6 +69,7 @@ bool Ruin::save(XML_Helper* helper) const
     retval &= helper->openTag("ruin");
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("name", d_name);
+    retval &= helper->saveData("type", d_type);
     retval &= helper->saveData("x", d_pos.x);
     retval &= helper->saveData("y", d_pos.y);
     retval &= helper->saveData("searched", d_searched);

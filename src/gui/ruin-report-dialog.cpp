@@ -106,7 +106,11 @@ void RuinReportDialog::fill_in_ruin_info()
   Temple *temple = Templelist::getInstance()->getObjectAt(l->getPos());
   if (ruin)
     {
-      type_label->set_text(_("Ruin"));
+      if (ruin->getType() == Ruin::RUIN)
+        type_label->set_text(_("Ruin"));
+      else if (ruin->getType() == Ruin::STRONGHOLD)
+        type_label->set_text(_("Stronghold"));
+
       if (ruin->isSearched())
         explored_label->set_text(_("Yes"));
       else

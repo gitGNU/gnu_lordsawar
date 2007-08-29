@@ -52,6 +52,9 @@ RuinDialog::RuinDialog(Ruin *r)
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(ruin->getName());
 
+    xml->get_widget("type_entry", type_entry);
+    type_entry->set_value(ruin->getType());
+
     xml->get_widget("keeper_button", keeper_button);
     keeper_button->signal_clicked().connect(
 	sigc::mem_fun(this, &RuinDialog::on_keeper_clicked));
@@ -99,6 +102,7 @@ void RuinDialog::run()
     if (response == 0)		// accepted
     {
         ruin->setName(name_entry->get_text());
+	ruin->setType(type_entry->get_value_as_int());
 
 	// get rid of old occupant and insert new
 	Stack *occupant = ruin->getOccupant();
