@@ -354,7 +354,7 @@ bool CreateScenario::create(const GameParameters &g)
     if (!setupTemples())
         return false;
     
-    if (!setupRuins())
+    if (!setupRuins(GameScenario::s_play_with_quests))
         return false;
 
     if (!setupSignposts())
@@ -575,7 +575,7 @@ bool CreateScenario::setupTemples()
     return true;
 }
 
-bool CreateScenario::setupRuins()
+bool CreateScenario::setupRuins(bool strongholds_invisible)
 {
     debug("CreateScenario::setupRuins")
 
@@ -601,20 +601,31 @@ bool CreateScenario::setupRuins()
         (*it).setName(d_ruinnames[randno]);
 
         // set a random temple type
-        int type= (int) ((RUIN_TYPES*1.0) * (rand() / (RAND_MAX + 1.0)));
-        (*it).setType(type);
+        if (rand() % 6 == 0) //one in six ruins is a stronghold
+          {
+            (*it).setType(Ruin::STRONGHOLD);
+            if (strongholds_invisible == true)
+              {
+                (*it).setHidden(true);
+                (*it).setOwner(NULL);
+              }
+          }
+        else
+          (*it).setType(Ruin::RUIN);
 
         //remove the used name
         d_ruinnames[randno] = d_ruinnames[d_ruinnames.size() - 1];
         d_ruinnames.pop_back();
 
-        if (rand() % 20 == 0) //one in twenty ruins is a sage
+        //one in twenty ruins is a sage
+        if (rand() % 20 == 0 && (*it).getType() == Ruin::RUIN) 
           {
             (*it).setSage (true);
             continue;
           }
 
-        if (rand() % 10 == 0) //one in ten doesn't have a guardian
+        //one in ten ruins doesn't have a guardian
+        if (rand() % 10 == 0 && (*it).getType() == Ruin::RUIN) 
           continue;
 
         // and set a guardian
@@ -633,11 +644,6 @@ bool CreateScenario::setupRuins()
 
             //now mark this stack as guard
             (*it).setOccupant(s);
-          }
-        if (rand() % 10 == 0) //one in ten is a hidden ruin
-          {
-            (*it).setHidden(true);
-            (*it).setOwner(NULL);
           }
     }
 

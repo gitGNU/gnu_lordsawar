@@ -173,7 +173,7 @@ class CreateScenario
         bool setupTemples();
         
         //! Set up ruin names and keepers
-        bool setupRuins();
+        bool setupRuins(bool strongholds_invisible);
 
         //! Set up signposts
         bool setupSignposts();
