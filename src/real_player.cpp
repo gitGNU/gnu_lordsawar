@@ -85,8 +85,12 @@ bool RealPlayer::startTurn()
 {
     clearActionlist();
 
-    History_StartTurn* item = new History_StartTurn();
-    d_history.push_back(item);
+    History_StartTurn* start = new History_StartTurn();
+    d_history.push_back(start);
+
+    History_GoldTotal* gold = new History_GoldTotal();
+    gold->fillData(getGold());
+    d_history.push_back(gold);
     return true;
 }
 
@@ -103,6 +107,10 @@ bool RealPlayer::recruitHero(Hero* hero, City *city, int cost)
 {
     // for the realplayer, this function also just raises a signal and looks
     // what to do next.
+
+    History_HeroEmerges *item = new History_HeroEmerges();
+    item->fillData(hero, city);
+    d_history.push_back(item);
 
     return srecruitingHero.emit(hero, city, cost);
 }
@@ -313,6 +321,13 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
             }
             else
                 result = Fight::ATTACKER_WON;
+
+            if (result == Fight::ATTACKER_WON)
+            {
+                History_CityWon *item = new History_CityWon();
+                item->fillData(city, dynamic_cast<Hero *>(s->getFirstHero()));
+                d_history.push_back(item);
+            }
 
             moveResult->setFightResult(result);
 
@@ -944,7 +959,9 @@ Reward* RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
       }
    else if (r->hasSage())
       {
-        //what do i do here?
+        History_FoundSage* item = new History_FoundSage();
+        item->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
+        d_history.push_back(item);
       }
 
     ssearchingRuin.emit(r, s, retReward);
@@ -1014,10 +1031,14 @@ Quest* RealPlayer::stackGetQuest(Stack* s, Temple* t)
         return 0;
 
     // Now fill the action item
-    Action_Quest* item = new Action_Quest();
-    item->fillData(q);
-    d_actions.push_back(item);
+    Action_Quest* action = new Action_Quest();
+    action->fillData(q);
+    d_actions.push_back(action);
 
+    // and record it for posterity
+    History_HeroQuest * history = new History_HeroQuest();
+    history->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
+    d_history.push_back(history);
     return q;
 }
 
@@ -1148,9 +1169,14 @@ bool RealPlayer::cityRaze(City* c)
 {
     debug("RealPlayer::cityRaze")
 
-    Action_Raze* item = new Action_Raze();
-    item->fillData(c);
-    d_actions.push_back(item);
+    Action_Raze* action = new Action_Raze();
+    action->fillData(c);
+    d_actions.push_back(action);
+
+    //ugh
+    History_CityRazed* history = new History_CityRazed();
+    history->fillData(c);
+    d_history.push_back(history);
 
     c->setBurnt(true);
 

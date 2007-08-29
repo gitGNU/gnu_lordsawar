@@ -26,12 +26,12 @@ using namespace std;
 
 
 Quest::Quest(QuestsManager& q_mgr, Uint32 hero, Type type)
-    :d_q_mgr(q_mgr), d_hero(hero), d_type(type), d_pending(true)
+    :d_q_mgr(q_mgr), d_hero(hero), d_type(type), d_pending(false)
 {
 }
 
 Quest::Quest(QuestsManager& q_mgr, XML_Helper* helper)
-    :d_q_mgr(q_mgr), d_pending(true)
+    :d_q_mgr(q_mgr), d_pending(false)
 {
     helper->getData(d_type, "type");
     helper->getData(d_hero, "hero");
@@ -73,7 +73,7 @@ bool Quest::save(XML_Helper* helper) const
 
 bool Quest::isActive()
 {
-    if (!d_pending)
+    if (d_pending)
         return false;
 
     Hero* h = getHero();

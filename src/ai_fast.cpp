@@ -79,9 +79,7 @@ bool AI_Fast::startTurn()
     debug("being in " <<(d_maniac?"maniac":"normal") <<" mode")
     debug((d_join?"":"not ") <<"joining armies")
 
-    clearActionlist();
-    History_StartTurn* item = new History_StartTurn();
-    d_history.push_back(item);
+    RealPlayer::startTurn();
 
     d_analysis = new AI_Analysis(this);
     

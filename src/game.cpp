@@ -762,11 +762,11 @@ void Game::loadGame()
     {
         //human players want access to the controls and an info box
         unlock_inputs();
-        stack_info_changed.emit(player->getActivestack());
+        player->getStacklist()->setActivestack(0);
         center_view_on_city();
         update_sidebar_stats();
         update_control_panel();
-
+	update_stack_info();
 	game_loaded.emit(player);
     }       
     else

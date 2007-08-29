@@ -57,9 +57,7 @@ AI_Smart::~AI_Smart()
 bool AI_Smart::startTurn()
 {
     debug(getName() << " start_turn")
-    clearActionlist();
-    History_StartTurn* item = new History_StartTurn();
-    d_history.push_back(item);
+    RealPlayer::startTurn();
 
     // the real stuff
     examineCities();

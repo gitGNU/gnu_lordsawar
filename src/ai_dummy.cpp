@@ -52,9 +52,7 @@ bool AI_Dummy::startTurn()
 {
     //this is a dummy AI (neutral player) so there is not much point in
     //doing anything
-    clearActionlist();
-    History_StartTurn* item = new History_StartTurn();
-    d_history.push_back(item);
+    RealPlayer::startTurn();
 
     return true;
 }
