@@ -33,6 +33,7 @@
 #include "counter.h"
 #include "army.h"
 #include "action.h"
+#include "history.h"
 #include "AI_Analysis.h"
 #include "AI_Allocation.h"
 #include "FogMap.h"
@@ -119,6 +120,11 @@ Player::Player(const Player& player)
     for (ait = player.d_actions.begin(); ait != player.d_actions.end(); ait++)
         d_actions.push_back(Action::copy(*ait));
 
+    // copy events
+    std::list<History*>::const_iterator pit;
+    for (pit = player.d_history.begin(); pit != player.d_history.end(); ait++)
+        d_history.push_back(History::copy(*pit));
+
     // copy fogmap; TBD
     d_fogmap = new FogMap();
 }
@@ -158,6 +164,7 @@ Player::Player(XML_Helper* helper)
 
     //last but not least, register the load function for actionlist
     helper->registerTag("action", sigc::mem_fun(this, &Player::load));
+    helper->registerTag("history", sigc::mem_fun(this, &Player::load));
     helper->registerTag("stacklist", sigc::mem_fun(this, &Player::load));
     helper->registerTag("fogmap", sigc::mem_fun(this, &Player::load));
 
@@ -176,6 +183,9 @@ Player::~Player()
     for (std::list<Action*>::iterator it = d_actions.begin(); it != d_actions.end(); it++)
         delete (*it);
     d_fight_order.clear();
+    for (std::list<History*>::iterator it = d_history.begin(); 
+         it != d_history.end(); it++)
+        delete (*it);
 }
 
 Player* Player::create(std::string name, Uint32 armyset, SDL_Color color, Type type)
@@ -303,6 +313,15 @@ void Player::dumpActionlist() const
     }    
 }
 
+void Player::dumpHistorylist() const
+{
+    for (list<History*>::const_iterator it = d_history.begin();
+        it != d_history.end(); it++)
+    {
+        cerr <<(*it)->dump() << endl;
+    }    
+}
+
 void Player::clearActionlist()
 {
     for (list<Action*>::iterator it = d_actions.begin();
@@ -311,6 +330,16 @@ void Player::clearActionlist()
         delete (*it);
     }
     d_actions.clear();
+}
+
+void Player::clearHistorylist()
+{
+    for (list<History*>::iterator it = d_history.begin();
+        it != d_history.end(); it++)
+    {
+        delete (*it);
+    }
+    d_history.clear();
 }
 
 void Player::addStack(Stack* stack)
@@ -378,6 +407,11 @@ bool Player::save(XML_Helper* helper) const
             it != d_actions.end(); it++)
         retval &= (*it)->save(helper);
 
+    //save the pasteventlist
+    for (list<History*>::const_iterator it = d_history.begin();
+            it != d_history.end(); it++)
+        retval &= (*it)->save(helper);
+
     retval &= d_stacklist->save(helper);
     retval &= d_fogmap->save(helper);
 
@@ -414,6 +448,13 @@ bool Player::load(string tag, XML_Helper* helper)
         Action* action;
         action = Action::handle_load(helper);
         d_actions.push_back(action);
+    }
+
+    if (tag == "history")
+    {
+        History* history;
+        history = History::handle_load(helper);
+        d_history.push_back(history);
     }
 
     if (tag == "stacklist")

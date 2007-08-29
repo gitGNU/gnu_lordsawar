@@ -32,6 +32,7 @@ class Stacklist;
 class XML_Helper;
 class Hero;
 class Action;
+class History;
 class City;
 class Quest;
 class Army;
@@ -179,6 +180,9 @@ class Player: public sigc::trackable
         //! Remove all items from the list of player's actions
         void clearActionlist();
 
+        //! Remove all items from the list of player's events
+        void clearHistorylist();
+
         //! Add a stack to the player's list of stacks
         void addStack(Stack* stack);
 
@@ -191,6 +195,9 @@ class Player: public sigc::trackable
 
         //! Returns the list of player's actions. 
         std::list<Action*>* getActionlist() {return &d_actions;}
+
+        //! Returns the list of player's events. 
+        std::list<History*>* getHistorylist() {return &d_history;}
 
         //! Return the player's armyset
         Uint32 getArmyset() const {return d_armyset;}
@@ -233,6 +240,9 @@ class Player: public sigc::trackable
 
         //! Dumps the items in the actionlist on stderr
         void dumpActionlist() const;
+
+        //! Dumps the items in the eventlist on stderr
+        void dumpHistorylist() const;
 
         //! Mark the player as dead; this kills all his armies etc.
         void kill();
@@ -527,6 +537,7 @@ class Player: public sigc::trackable
         Uint32 d_type;
         Uint32 d_id;
         std::list<Action*> d_actions; //list of actions done by the player
+        std::list<History*> d_history; //player's history
         Stacklist* d_stacklist;
         FogMap* d_fogmap;
 	std::list<Uint32> d_fight_order; //for each army in armyset, a number

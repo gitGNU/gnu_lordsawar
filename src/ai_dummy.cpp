@@ -23,6 +23,7 @@
 #include "path.h"
 #include "action.h"
 #include "xmlhelper.h"
+#include "history.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
@@ -52,6 +53,8 @@ bool AI_Dummy::startTurn()
     //this is a dummy AI (neutral player) so there is not much point in
     //doing anything
     clearActionlist();
+    History_StartTurn* item = new History_StartTurn();
+    d_history.push_back(item);
 
     return true;
 }

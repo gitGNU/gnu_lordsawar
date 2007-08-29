@@ -28,6 +28,7 @@
 #include "Threatlist.h"
 #include "action.h"
 #include "xmlhelper.h"
+#include "history.h"
 
 using namespace std;
 
@@ -79,6 +80,8 @@ bool AI_Fast::startTurn()
     debug((d_join?"":"not ") <<"joining armies")
 
     clearActionlist();
+    History_StartTurn* item = new History_StartTurn();
+    d_history.push_back(item);
 
     d_analysis = new AI_Analysis(this);
     

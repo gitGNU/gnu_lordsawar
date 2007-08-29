@@ -41,6 +41,7 @@
 #include "GameScenario.h"
 #include "game-parameters.h"
 #include "signpost.h"
+#include "history.h"
 
 using namespace std;
 
@@ -84,6 +85,8 @@ bool RealPlayer::startTurn()
 {
     clearActionlist();
 
+    History_StartTurn* item = new History_StartTurn();
+    d_history.push_back(item);
     return true;
 }
 
@@ -1352,6 +1355,8 @@ void RealPlayer::resign()
   item->fillData();
   d_actions.push_back(item);
     
+  withdrawGold(getGold()); //empty the coffers!
+
   getStacklist()->setActivestack(0);
   supdatingStack.emit(0);
 }

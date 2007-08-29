@@ -26,6 +26,7 @@
 #include "AI_Allocation.h"
 #include "action.h"
 #include "xmlhelper.h"
+#include "history.h"
 
 using namespace std;
 
@@ -57,6 +58,8 @@ bool AI_Smart::startTurn()
 {
     debug(getName() << " start_turn")
     clearActionlist();
+    History_StartTurn* item = new History_StartTurn();
+    d_history.push_back(item);
 
     // the real stuff
     examineCities();
