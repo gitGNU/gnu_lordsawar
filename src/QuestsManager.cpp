@@ -137,7 +137,9 @@ void QuestsManager::questCompleted(Uint32 heroId)
 {
     Quest *quest = d_quests[heroId];
     Player *p = quest->getHero()->getPlayer();
-    
+
+    p->heroCompletesQuest(quest->getHero());
+
     int num = rand() % 4;
     if (num == 0)
       {

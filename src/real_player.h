@@ -62,6 +62,7 @@ class RealPlayer : public Player
         bool heroDropItem(Hero *h, Item *item, Vector<int> pos);
         bool heroDropAllItems(Hero *h, Vector<int> pos);
         bool heroPickupItem(Hero *h, Item *item, Vector<int> pos);
+        bool heroCompletesQuest(Hero *h);
 
 
         bool stackMove(Stack* s);

@@ -456,6 +456,9 @@ class Player: public sigc::trackable
         //! Player's hero picks up an item
         virtual bool heroPickupItem(Hero *h, Item *item, Vector<int> pos) =0;
 
+        //! Player's hero completes a quest
+        virtual bool heroCompletesQuest(Hero *h) =0;
+
         //! Disband all the player's stacks and raze all cities.
         virtual void resign() =0;
 

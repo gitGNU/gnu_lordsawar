@@ -827,9 +827,8 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
                 if ((*sit)->getPlayer() == this && (*sit)->isHero())
                 {
                     //one of our heroes died
-                    //drop his stuff
-                    heroDropAllItems (dynamic_cast<Hero *>(*sit), 
-                                      (*it)->getPos());
+                    //drop hero's stuff
+                    Hero *h = dynamic_cast<Hero *>(*sit);
                     //now record the details of the death
                     GameMap *gm = GameMap::getInstance();
                     Citylist *clist = Citylist::getInstance();
@@ -841,30 +840,34 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
                     {
                         History_HeroKilledSearching* item;
                         item = new History_HeroKilledSearching();
-                        item->fillData(dynamic_cast<Hero *>(*sit));
+                        item->fillData(h);
                         d_history.push_back(item);
+                        heroDropAllItems (h, (*it)->getPos());
                     }
                     else if (tile->getBuilding() == Maptile::CITY)
                     {
                         City* c = clist->getObjectAt((*it)->getPos());
                         History_HeroKilledInCity* item;
                         item = new History_HeroKilledInCity();
-                        item->fillData(dynamic_cast<Hero *>(*sit), c);
+                        item->fillData(h, c);
                         d_history.push_back(item);
+                        heroDropAllItems (h, (*it)->getPos());
                     }
                     else if (target_city)
                     {
                         History_HeroKilledInCity* item;
                         item = new History_HeroKilledInCity();
-                        item->fillData(dynamic_cast<Hero *>(*sit), target_city);
+                        item->fillData(h, target_city);
                         d_history.push_back(item);
+                        heroDropAllItems (h, target_city->getPos());
                     }
                     else //somewhere else
                     {
-                      History_HeroKilledInBattle* item;
-                      item = new History_HeroKilledInBattle();
-                      item->fillData(dynamic_cast<Hero *>(*sit));
-                      d_history.push_back(item);
+                        History_HeroKilledInBattle* item;
+                        item = new History_HeroKilledInBattle();
+                        item->fillData(h);
+                        d_history.push_back(item);
+                        heroDropAllItems (h, (*it)->getPos());
                     }
                   //now let's drop his stuff.
                 }
@@ -1496,4 +1499,11 @@ bool RealPlayer::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
   return true;
 }
 
+bool RealPlayer::heroCompletesQuest(Hero *h)
+{
+    // record it for posterity
+    History_HeroQuestCompleted* item = new History_HeroQuestCompleted();
+    item->fillData(h);
+    d_history.push_back(item);
+}
 // End of file
