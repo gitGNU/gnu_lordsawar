@@ -53,8 +53,16 @@ History* History::handle_load(XML_Helper* helper)
       return (new History_CityWon(helper));
     case CITY_RAZED:
       return (new History_CityRazed(helper));
-    case HERO_QUEST:
-      return (new History_HeroQuest(helper));
+    case HERO_QUEST_STARTED:
+      return (new History_HeroQuestStarted(helper));
+    case HERO_QUEST_COMPLETED:
+      return (new History_HeroQuestCompleted(helper));
+    case HERO_KILLED_IN_CITY:
+      return (new History_HeroKilledInCity(helper));
+    case HERO_KILLED_IN_BATTLE:
+      return (new History_HeroKilledInBattle(helper));
+    case HERO_KILLED_SEARCHING:
+      return (new History_HeroKilledSearching(helper));
     }
 
   return 0;
@@ -82,9 +90,26 @@ History* History::copy(const History* a)
     case CITY_RAZED:
       return 
 	(new History_CityRazed(*dynamic_cast<const History_CityRazed*>(a)));
-    case HERO_QUEST:
+    case HERO_QUEST_STARTED:
       return 
-	(new History_HeroQuest(*dynamic_cast<const History_HeroQuest*>(a)));
+	(new History_HeroQuestStarted
+          (*dynamic_cast<const History_HeroQuestStarted*>(a)));
+    case HERO_QUEST_COMPLETED:
+      return 
+	(new History_HeroQuestCompleted
+          (*dynamic_cast<const History_HeroQuestCompleted*>(a)));
+    case HERO_KILLED_IN_CITY:
+      return 
+	(new History_HeroKilledInCity
+          (*dynamic_cast<const History_HeroKilledInCity*>(a)));
+    case HERO_KILLED_IN_BATTLE:
+      return 
+	(new History_HeroKilledInBattle
+          (*dynamic_cast<const History_HeroKilledInBattle*>(a)));
+    case HERO_KILLED_SEARCHING:
+      return 
+	(new History_HeroKilledSearching
+          (*dynamic_cast<const History_HeroKilledSearching*>(a)));
     }
 
   return 0;
@@ -223,7 +248,7 @@ bool History_GoldTotal::fillData(int gold)
 }
 
 //-----------------------------------------------------------------------------
-//History_HeroEmerg
+//History_HeroEmerges
 
 History_HeroEmerges::History_HeroEmerges()
 :History(History::HERO_EMERGES), d_hero(0), d_city(0)
@@ -368,24 +393,24 @@ bool History_CityRazed::fillData(City *city)
 }
 
 //-----------------------------------------------------------------------------
-//History_HeroQuest
+//History_HeroQuestStarted
 
-History_HeroQuest::History_HeroQuest()
-:History(History::HERO_QUEST), d_hero(0)
+History_HeroQuestStarted::History_HeroQuestStarted()
+:History(History::HERO_QUEST_STARTED), d_hero(0)
 {
 }
 
-History_HeroQuest::History_HeroQuest(XML_Helper* helper)
-:History(History::HERO_QUEST)
+History_HeroQuestStarted::History_HeroQuestStarted(XML_Helper* helper)
+:History(History::HERO_QUEST_STARTED)
 {
   helper->getData(d_hero, "hero");
 }
 
-History_HeroQuest::~History_HeroQuest()
+History_HeroQuestStarted::~History_HeroQuestStarted()
 {
 }
 
-std::string History_HeroQuest::dump() const
+std::string History_HeroQuestStarted::dump() const
 {
   std::stringstream s;
 
@@ -394,7 +419,7 @@ std::string History_HeroQuest::dump() const
   return s.str();
 }
 
-bool History_HeroQuest::save(XML_Helper* helper) const
+bool History_HeroQuestStarted::save(XML_Helper* helper) const
 {
   bool retval = true;
 
@@ -406,7 +431,190 @@ bool History_HeroQuest::save(XML_Helper* helper) const
   return retval;
 }
 
-bool History_HeroQuest::fillData(Hero *hero)
+bool History_HeroQuestStarted::fillData(Hero *hero)
+{
+  d_hero = hero->getId();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+//History_HeroQuestCompleted
+
+History_HeroQuestCompleted::History_HeroQuestCompleted()
+:History(History::HERO_QUEST_COMPLETED), d_hero(0)
+{
+}
+
+History_HeroQuestCompleted::History_HeroQuestCompleted(XML_Helper* helper)
+:History(History::HERO_QUEST_COMPLETED)
+{
+  helper->getData(d_hero, "hero");
+}
+
+History_HeroQuestCompleted::~History_HeroQuestCompleted()
+{
+}
+
+std::string History_HeroQuestCompleted::dump() const
+{
+  std::stringstream s;
+
+  s <<"hero " << d_hero<< " gets a quest\n";
+
+  return s.str();
+}
+
+bool History_HeroQuestCompleted::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("history");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("hero", d_hero);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+
+bool History_HeroQuestCompleted::fillData(Hero *hero)
+{
+  d_hero = hero->getId();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+//History_HeroKilledInCity
+
+History_HeroKilledInCity::History_HeroKilledInCity()
+:History(History::HERO_KILLED_IN_CITY), d_hero(0), d_city(0)
+{
+}
+
+History_HeroKilledInCity::History_HeroKilledInCity(XML_Helper* helper)
+:History(History::HERO_KILLED_IN_CITY)
+{
+  helper->getData(d_hero, "hero");
+  helper->getData(d_city, "city");
+}
+
+History_HeroKilledInCity::~History_HeroKilledInCity()
+{
+}
+
+std::string History_HeroKilledInCity::dump() const
+{
+  std::stringstream s;
+
+  s <<"hero " << d_hero << " died in city " << d_city << "\n";
+
+  return s.str();
+}
+
+bool History_HeroKilledInCity::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("history");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("hero", d_hero);
+  retval &= helper->saveData("city", d_city);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+
+bool History_HeroKilledInCity::fillData(Hero *hero, City *city)
+{
+  d_hero = hero->getId();
+  d_city = city->getId();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+//History_HeroKilledInBattle
+
+History_HeroKilledInBattle::History_HeroKilledInBattle()
+:History(History::HERO_KILLED_IN_BATTLE), d_hero(0)
+{
+}
+
+History_HeroKilledInBattle::History_HeroKilledInBattle(XML_Helper* helper)
+:History(History::HERO_KILLED_IN_BATTLE)
+{
+  helper->getData(d_hero, "hero");
+}
+
+History_HeroKilledInBattle::~History_HeroKilledInBattle()
+{
+}
+
+std::string History_HeroKilledInBattle::dump() const
+{
+  std::stringstream s;
+
+  s <<"hero " << d_hero<< " was killed in battle\n";
+
+  return s.str();
+}
+
+bool History_HeroKilledInBattle::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("history");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("hero", d_hero);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+
+bool History_HeroKilledInBattle::fillData(Hero *hero)
+{
+  d_hero = hero->getId();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+//History_Hero KilledSearching
+
+History_HeroKilledSearching::History_HeroKilledSearching()
+:History(History::HERO_KILLED_SEARCHING), d_hero(0)
+{
+}
+
+History_HeroKilledSearching::History_HeroKilledSearching(XML_Helper* helper)
+:History(History::HERO_KILLED_SEARCHING)
+{
+  helper->getData(d_hero, "hero");
+}
+
+History_HeroKilledSearching::~History_HeroKilledSearching()
+{
+}
+
+std::string History_HeroKilledSearching::dump() const
+{
+  std::stringstream s;
+
+  s <<"hero " << d_hero<< " killed searching a ruin\n";
+
+  return s.str();
+}
+
+bool History_HeroKilledSearching::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("history");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("hero", d_hero);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+
+bool History_HeroKilledSearching::fillData(Hero *hero)
 {
   d_hero = hero->getId();
   return true;

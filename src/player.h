@@ -447,8 +447,11 @@ class Player: public sigc::trackable
         //! Disband a player's stack
         virtual bool stackDisband(Stack* s) =0;
 
-        //! Player's hero drop an item
+        //! Player's hero drop an item at pos
         virtual bool heroDropItem(Hero *h, Item *item, Vector<int> pos) =0;
+
+        //! Player's hero drops all items at pos
+        virtual bool heroDropAllItems(Hero *h, Vector<int> pos) =0;
 
         //! Player's hero picks up an item
         virtual bool heroPickupItem(Hero *h, Item *item, Vector<int> pos) =0;

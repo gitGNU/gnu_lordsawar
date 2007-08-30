@@ -60,6 +60,7 @@ class RealPlayer : public Player
         void resign();
         bool heroPlantStandard(Stack *s);
         bool heroDropItem(Hero *h, Item *item, Vector<int> pos);
+        bool heroDropAllItems(Hero *h, Vector<int> pos);
         bool heroPickupItem(Hero *h, Item *item, Vector<int> pos);
 
 

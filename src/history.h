@@ -25,9 +25,10 @@ class Hero;
 class City;
 #include "army.h"
 /** The purpose of the past event classes is to keep track about what a 
-  *  player has accomplished.
+  *  player has accomplished.  This list is retained for the duration of 
+  *  the game.
   * 
-  * Each action item is derived from the abstract History class. It has to
+  * Each history item is derived from the abstract History class. It has to
   * contain three functions:
   *
   * - A loading constructor (which takes an XML_Helper parameter)
@@ -47,7 +48,11 @@ class History
 		HERO_EMERGES = 4,
 		CITY_WON = 5,
 		CITY_RAZED = 6,
-		HERO_QUEST = 7,
+		HERO_QUEST_STARTED = 7,
+		HERO_QUEST_COMPLETED = 8,
+		HERO_KILLED_IN_CITY = 9,
+		HERO_KILLED_IN_BATTLE = 10,
+		HERO_KILLED_SEARCHING = 11,
                 //WINNING_RANK = 5,
 		//NEW_UNIT = 6 (army type, city)
 		//DIPLOMATIC_PEACE (player)
@@ -201,12 +206,12 @@ class History_CityRazed : public History
 
 //-----------------------------------------------------------------------------
 
-class History_HeroQuest : public History
+class History_HeroQuestStarted : public History
 {
     public:
-        History_HeroQuest();
-        History_HeroQuest(XML_Helper* helper);
-        ~History_HeroQuest();
+        History_HeroQuestStarted();
+        History_HeroQuestStarted(XML_Helper* helper);
+        ~History_HeroQuestStarted();
 
         std::string dump() const;
         bool save(XML_Helper* helper) const;
@@ -216,5 +221,79 @@ class History_HeroQuest : public History
     private:
         Uint32 d_hero;
 };
+
+//-----------------------------------------------------------------------------
+
+class History_HeroQuestCompleted: public History
+{
+    public:
+        History_HeroQuestCompleted();
+        History_HeroQuestCompleted(XML_Helper* helper);
+        ~History_HeroQuestCompleted();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Hero *hero);
+    
+    private:
+        Uint32 d_hero;
+};
+
+//-----------------------------------------------------------------------------
+
+class History_HeroKilledInCity : public History
+{
+    public:
+        History_HeroKilledInCity();
+        History_HeroKilledInCity(XML_Helper* helper);
+        ~History_HeroKilledInCity();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Hero *hero, City *city);
+    
+    private:
+        Uint32 d_hero;
+	Uint32 d_city;
+};
+
+//-----------------------------------------------------------------------------
+
+class History_HeroKilledInBattle: public History
+{
+    public:
+        History_HeroKilledInBattle();
+        History_HeroKilledInBattle(XML_Helper* helper);
+        ~History_HeroKilledInBattle();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Hero *hero);
+    
+    private:
+        Uint32 d_hero;
+};
+
+//-----------------------------------------------------------------------------
+
+class History_HeroKilledSearching: public History
+{
+    public:
+        History_HeroKilledSearching();
+        History_HeroKilledSearching(XML_Helper* helper);
+        ~History_HeroKilledSearching();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Hero *hero);
+    
+    private:
+        Uint32 d_hero;
+};
+
 
 #endif //HISTORY_H
