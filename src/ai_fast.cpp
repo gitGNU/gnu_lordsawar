@@ -120,6 +120,10 @@ bool AI_Fast::recruitHero(Hero* hero, City *city, int cost)
 {
     debug("AI_Fast: hero offers service")
 
+    History_HeroEmerges *item = new History_HeroEmerges();
+    item->fillData(hero, city);
+    d_history.push_back(item);
+
     // maniac AI's never recruit heroes, otherwise take everything we can get
     if (d_maniac)
         return false;

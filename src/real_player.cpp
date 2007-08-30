@@ -85,9 +85,6 @@ bool RealPlayer::startTurn()
 {
     clearActionlist();
 
-    History_StartTurn* start = new History_StartTurn();
-    d_history.push_back(start);
-
     History_GoldTotal* gold = new History_GoldTotal();
     gold->fillData(getGold());
     d_history.push_back(gold);
@@ -1505,5 +1502,6 @@ bool RealPlayer::heroCompletesQuest(Hero *h)
     History_HeroQuestCompleted* item = new History_HeroQuestCompleted();
     item->fillData(h);
     d_history.push_back(item);
+    return true;
 }
 // End of file

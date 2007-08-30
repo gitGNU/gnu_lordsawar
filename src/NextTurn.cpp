@@ -22,6 +22,7 @@
 #include "hero.h"
 #include "vectoredunitlist.h"
 #include "FogMap.h"
+#include "history.h"
 
 #include "path.h"
 
@@ -106,6 +107,15 @@ void NextTurn::startTurn()
 
     //a shortcut
     Player* p = Playerlist::getActiveplayer();
+
+    // FIXME:
+    // this has to go here so that it goes into the history prior
+    // to a hero showing up.  
+    // a cookie goes to the person who can figure out how to put this
+    // into realplayer's startTurn, and have it appear before a hero-emerge
+    // history event.
+    History_StartTurn* item = new History_StartTurn();
+    p->getHistorylist()->push_back(item);
 
     //if turnmode is set, create/heal armies at player's turn
     if (d_turnmode)

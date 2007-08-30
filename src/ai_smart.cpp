@@ -103,6 +103,10 @@ bool AI_Smart::invadeCity(City* c)
 bool AI_Smart::recruitHero(Hero* hero, City *city, int cost)
 {
     debug("AI_Smart: hero recruited")
+    History_HeroEmerges *item = new History_HeroEmerges();
+    item->fillData(hero, city);
+    d_history.push_back(item);
+
     return true;    //always recruit heroes
 }
 

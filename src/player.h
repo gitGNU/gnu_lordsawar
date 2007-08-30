@@ -273,7 +273,7 @@ class Player: public sigc::trackable
         /** This function is called when a player's turn starts. For AI players,
           * this function should start the algorithm.
           *
-          * @return true if wverything went well
+          * @return true if everything went well
           */
         virtual bool startTurn() = 0;
 

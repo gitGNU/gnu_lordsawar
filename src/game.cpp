@@ -968,7 +968,6 @@ bool Game::init_turn_for_player(Player* p)
     // can also have it check for e.g. escape key pressed to interrupt
     // an AI-only game to save/quit.
 
-
     next_player_turn.emit(p, d_gameScenario->getRound() + 1);
     if (p->getType() == Player::HUMAN)
     {
@@ -1000,7 +999,7 @@ bool Game::init_turn_for_player(Player* p)
     {
 	center_view_on_city();
 	SDL_Delay(250);
-        Game::maybeRecruitHero(p);
+        maybeRecruitHero(p);
 	return false;
     }
 }

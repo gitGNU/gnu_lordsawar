@@ -54,15 +54,12 @@ class History
 		HERO_KILLED_IN_BATTLE = 10,
 		HERO_KILLED_SEARCHING = 11,
                 //WINNING_RANK = 5,
-		//NEW_UNIT = 6 (army type, city)
 		//DIPLOMATIC_PEACE (player)
 		//DIPLOMATIC_WAR (player)
 		//HERO_COMPLETE_QUEST
-		//HERO_KILLED (place name) (battle) (searching)
 		//HERO_GETS_REWARD (reward)
 		//DIPLOMATIC_TREACHERY (player)
 		//PLAYER_VANQUISHED
-		//CONQUERED_CITY
         };
                 
         
