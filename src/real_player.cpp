@@ -945,8 +945,18 @@ Reward* RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
         r->setOccupant(0);
         if (keeper)
           delete keeper;
-        // The fight has been done or left out, now comes the reward. Up to now,
-        int num = rand() % 3;
+      }
+
+     if (r->hasSage())
+      {
+        History_FoundSage* item = new History_FoundSage();
+        item->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
+        d_history.push_back(item);
+      }
+     else
+      {
+       // The fight has been done or left out, now comes the reward. Up to now,
+       int num = rand() % 3;
         if (num == 0)
           {
             int gold = rand() % 1000;
@@ -1000,12 +1010,6 @@ Reward* RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
               }
           }
 */
-      }
-   else if (r->hasSage())
-      {
-        History_FoundSage* item = new History_FoundSage();
-        item->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
-        d_history.push_back(item);
       }
 
     ssearchingRuin.emit(r, s, retReward);
