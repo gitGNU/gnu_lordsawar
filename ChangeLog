@@ -1,3 +1,25 @@
+2007-08-30  Ben Asselstine
+
+	* added hero killed, and quest start/finish to the history
+	* now dropping all items when a hero dies
+	* fixed giving reward at ruins without an occupant
+
+2007-08-29  Ben Asselstine
+
+	* started to implement a player's history object
+	* added ruin strongholds
+	* added found sage, hero emerges, gold total and city conquerings to 
+	  the player's history 
+	* fixed questmap to show quests properly
+	* deselecting active stack at the start of a turn
+
+2007-08-28  Ben Asselstine
+
+	* fixed crash when city is full, and produces one more unit
+	* fixed turn shield display error when players die
+	* now not showing the stack info for computer players
+	* setting player's gold to 0 upon resignation
+
 2007-08-27  Ben Asselstine
 
 	* added army bonus menuitem and dialog
