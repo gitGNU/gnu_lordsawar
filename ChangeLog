@@ -1,8 +1,13 @@
 2007-08-30  Ben Asselstine
 
 	* added hero killed, and quest start/finish to the history
-	* now dropping all items when a hero dies
+	* now dropping all items when a hero dies, and dropping items
+	  into the city if the hero was attacking one
 	* fixed giving reward at ruins without an occupant
+	* fixed ai hero emergence to show up in history
+	* now start-turn history event shows up before initial hero emergence
+	* added produce unit, and produce vectored unit action
+	* made occupy/sack/raze the default button if a quest can be completed
 
 2007-08-29  Ben Asselstine
 
