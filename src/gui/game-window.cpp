@@ -1591,17 +1591,20 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
             if (sack)
               {
                 xml->get_widget("sack_button", button);
-                button->set_label(">" + button->get_label() +"<");
+                button->grab_default();
+                //button->set_label(">" + button->get_label() +"<");
               }
             if (raze)
               {
                 xml->get_widget("raze_button", button);
-                button->set_label(">" + button->get_label() +"<");
+                //button->set_label(">" + button->get_label() +"<");
+                button->grab_default();
               }
             if (occupy)
               {
                 xml->get_widget("occupy_button", button);
-                button->set_label(">" + button->get_label() +"<");
+                //button->set_label(">" + button->get_label() +"<");
+                button->grab_default();
               }
           }
       }

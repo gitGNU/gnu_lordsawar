@@ -23,6 +23,7 @@
 #include "army.h"
 #include "city.h"
 #include "GameMap.h"
+#include "action.h"
 
 VectoredUnit::VectoredUnit(Vector<int> pos, Vector<int> dest, int armytype, int duration, Player *player)
     :Location("", pos), d_destination(dest), d_armytype(armytype), 
@@ -82,8 +83,14 @@ bool VectoredUnit::save(XML_Helper* helper) const
 bool VectoredUnit::nextTurn()
 {
   const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
+  Uint32 set = d_player->getArmyset();
   Citylist *cl = Citylist::getInstance();
+  Army *a = new Army(*(al->getArmy(set, d_armytype)), d_player);
+  //FIXME: this should be in player somehow
+  Action_ProduceVectored *item = new Action_ProduceVectored();
+  item->fillData(a->getType(), d_destination);
+  d_player->getActionlist()->push_back(item);
+
   d_duration--;
   if (d_duration == 0)
     {
@@ -101,7 +108,7 @@ bool VectoredUnit::nextTurn()
                   (*it)->getPlantableOwner() == d_player)
                 {
                   Location loc = Location("planted standard", d_destination, 1);
-                  loc.addArmy(new Army(*(al->getArmy(set, d_armytype))));
+                  loc.addArmy(a);
                   break;
                 }
              

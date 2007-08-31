@@ -81,10 +81,15 @@ bool RealPlayer::save(XML_Helper* helper) const
     return retval;
 }
 
-bool RealPlayer::startTurn()
+bool RealPlayer::initTurn()
 {
     clearActionlist();
+    History_StartTurn* item = new History_StartTurn();
+    d_history.push_back(item);
+}
 
+bool RealPlayer::startTurn()
+{
     History_GoldTotal* gold = new History_GoldTotal();
     gold->fillData(getGold());
     d_history.push_back(gold);

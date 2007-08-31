@@ -26,6 +26,7 @@
 #include "citylist.h"
 #include "GameMap.h"
 #include "vectoredunitlist.h"
+#include "action.h"
 
 using namespace std;
 
@@ -402,18 +403,26 @@ void City::nextTurn()
     // check if an army should be produced
     if (d_production >= 0 && --d_duration == 0) 
     {
+        Action_Produce *item = new Action_Produce();
         // vector the army to the new spot
         if (d_vectoring)
           {
+            int army_type = getArmytype (d_production);
 	    VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-	    vul->push_back(VectoredUnit (d_pos, d_vector, 
-					 getArmytype (d_production), 
+	    vul->push_back(VectoredUnit (d_pos, d_vector, army_type,
 				    	 MAX_TURNS_FOR_VECTORING,
                                          getPlayer()));
             setProduction(d_production);
+            item->fillData(army_type, this, true);
           }
 	else //or make it here
-          produceArmy();
+          {
+            Army *a = produceArmy();
+            item->fillData(a->getType(), this, false);
+          }
+        //FIXME: a cookie goes to the person who can figure out how
+        //to get this action into the realplayer class.
+        getPlayer()->getActionlist()->push_back(item);
     }
 }
 
@@ -478,7 +487,7 @@ void City::setVectoring(Vector<int> p)
     }
 }
 
-void City::produceArmy()
+Army *City::produceArmy()
 {
   // add produced army to stack
   const Armysetlist* al = Armysetlist::getInstance();
@@ -486,7 +495,7 @@ void City::produceArmy()
   int index;
         
   if (d_production == -1)
-    return;
+    return NULL;
 
   index = d_basicprod[d_production];
   debug("produce_army()\n");
@@ -495,9 +504,10 @@ void City::produceArmy()
   // unless it's the neutrals
   if (d_player != Playerlist::getInstance()->getNeutral() && 
       d_player->getGold() < 0) 
-    return;
+    return NULL;
 
-  GameMap::getInstance()->addArmy(this, new Army(*(al->getArmy(set, index)), d_player));
+  Army *a = new Army(*(al->getArmy(set, index)), d_player);
+  GameMap::getInstance()->addArmy(this, a);
 
   if (d_player == Playerlist::getInstance()->getNeutral()) 
     {
@@ -514,6 +524,7 @@ void City::produceArmy()
     }
   else // start producing next army of same type
     setProduction(d_production);
+  return a;
 }
 
 bool City::canAcceptVectoredUnit()

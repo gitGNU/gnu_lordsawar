@@ -188,7 +188,7 @@ class City : public Location
     private:
 
         //! Produces the currently selected army
-        void produceArmy();
+        Army * produceArmy();
 
 
         // DATA

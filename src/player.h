@@ -277,6 +277,13 @@ class Player: public sigc::trackable
           */
         virtual bool startTurn() = 0;
 
+        /** This function is called before a player's turn starts.
+          * The idea here is that it happens before heroes are recruited,
+          * and before new army units show up in cities
+          * @return true if everything went well
+          */
+        virtual bool initTurn() = 0;
+
         /** Called so that the player can decide what to do with an
             occupied city as soon as he has occupied it (mainly for AI)
 

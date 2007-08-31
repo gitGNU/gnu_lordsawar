@@ -73,7 +73,9 @@ class Action
                 CITY_VECTOR = 21,
                 FIGHT_ORDER = 22,
 		RESIGN = 23,
-		ITEM_PLANT = 24
+		ITEM_PLANT = 24,
+		PRODUCE_UNIT = 25,
+		PRODUCE_VECTORED_UNIT = 26
         };
                 
         
@@ -561,5 +563,42 @@ class Action_Plant: public Action
         Uint32 d_item;
 };
 
+//-----------------------------------------------------------------------------
+class Action_Produce: public Action
+{
+    public:
+        Action_Produce();
+        Action_Produce(XML_Helper* helper);
+        ~Action_Produce();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Uint32 army_type, City *city, bool vectored);
+
+    private:
+        Uint32 d_army_type;
+        Uint32 d_city;
+        bool d_vectored;
+};
+
         
+//-----------------------------------------------------------------------------
+class Action_ProduceVectored: public Action
+{
+    public:
+        Action_ProduceVectored();
+        Action_ProduceVectored(XML_Helper* helper);
+        ~Action_ProduceVectored();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Uint32 army_type, Vector <int>dest);
+
+    private:
+        Uint32 d_army_type;
+        Vector<int> d_dest;
+};
+
 #endif //ACTION_H
