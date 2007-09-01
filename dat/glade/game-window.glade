@@ -212,26 +212,47 @@
 		    <widget class="GtkMenu" id="reports_menuitem_menu">
 
 		      <child>
-			<widget class="GtkMenuItem" id="armies_menuitem">
+			<widget class="GtkMenuItem" id="army_report_menuitem">
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">_Armies</property>
 			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_army_report_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 15:12:36 GMT"/>
 			</widget>
 		      </child>
 
 		      <child>
-			<widget class="GtkMenuItem" id="cities_menuitem">
+			<widget class="GtkMenuItem" id="city_report_menuitem">
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">_Cities</property>
 			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_city_report_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 15:12:36 GMT"/>
 			</widget>
 		      </child>
 
 		      <child>
-			<widget class="GtkMenuItem" id="gold_menuitem">
+			<widget class="GtkMenuItem" id="gold_report_menuitem">
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">_Gold</property>
 			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_gold_report_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 15:12:36 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="production_report_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Production</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_production_report_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 14:39:18 GMT"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="winning_report_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">_Winning</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_winning_report_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 15:12:36 GMT"/>
 			</widget>
 		      </child>
 

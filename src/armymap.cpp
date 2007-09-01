@@ -66,6 +66,8 @@ void ArmyMap::draw_stacks()
 void ArmyMap::after_draw()
 {
     assert(surface);
+    draw_cities(false);
     draw_stacks();
+    map_changed.emit(surface);
 }
 

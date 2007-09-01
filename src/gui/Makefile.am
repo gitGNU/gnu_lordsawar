@@ -4,7 +4,6 @@ noinst_LIBRARIES = liblwgui.a
 
 liblwgui_a_SOURCES = \
     driver.cpp driver.h \
-    armies-report-dialog.cpp armies-report-dialog.h \
     fight-order-dialog.cpp fight-order-dialog.h \
     hero-levels-dialog.cpp hero-levels-dialog.h \
     army-bonus-dialog.cpp army-bonus-dialog.h \
@@ -13,7 +12,6 @@ liblwgui_a_SOURCES = \
     stack-info-tip.cpp stack-info-tip.h \
     army-gains-level-dialog.cpp army-gains-level-dialog.h \
     buy-production-dialog.cpp buy-production-dialog.h \
-    cities-report-dialog.cpp cities-report-dialog.h \
     city-window.cpp city-window.h \
     destination-dialog.cpp destination-dialog.h \
     error-utils.cpp error-utils.h \
@@ -25,6 +23,7 @@ liblwgui_a_SOURCES = \
     sage-dialog.cpp sage-dialog.h \
     ruin-report-dialog.cpp ruin-report-dialog.h \
     history-report-dialog.cpp history-report-dialog.h \
+    report-dialog.cpp report-dialog.h \
     load-scenario-dialog.cpp load-scenario-dialog.h \
     quest-assigned-dialog.cpp quest-assigned-dialog.h \
     quest-completed-dialog.cpp quest-completed-dialog.h \

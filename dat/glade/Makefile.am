@@ -24,6 +24,7 @@ hero-offer-dialog.glade \
 sage-dialog.glade \
 ruin-report-dialog.glade \
 history-report-dialog.glade \
+report-dialog.glade \
 load-scenario-dialog.glade \
 medal-awarded-dialog.glade \
 quest-assigned-dialog.glade \
@@ -33,9 +34,6 @@ ruinfight-finished-dialog.glade \
 ruinfight-started-dialog.glade \
 ruin-searched-dialog.glade \
 splash-window.glade \
-armies-report-dialog.glade \
-cities-report-dialog.glade \
-gold-report-dialog.glade \
 temple-visit-dialog.glade \
 disband-stack-dialog.glade \
 hero-brings-allies-dialog.glade \

@@ -54,8 +54,6 @@
 #include "hero-dialog.h"
 #include "sage-dialog.h"
 #include "hero-offer-dialog.h"
-#include "armies-report-dialog.h"
-#include "cities-report-dialog.h"
 #include "quest-report-dialog.h"
 #include "quest-assigned-dialog.h"
 #include "quest-completed-dialog.h"
@@ -66,6 +64,7 @@
 #include "army-bonus-dialog.h"
 #include "item-bonus-dialog.h"
 #include "history-report-dialog.h"
+#include "report-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -196,12 +195,14 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_save_game_as_activated));
     xml->connect_clicked("quit_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_quit_activated));
-    xml->connect_clicked("armies_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_armies_activated));
-    xml->connect_clicked("cities_menuitem", 
-			 sigc::mem_fun(*this, &GameWindow::on_cities_activated));
-    xml->connect_clicked("gold_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_gold_activated));
+    xml->connect_clicked("army_report_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_army_report_activated));
+    xml->connect_clicked("city_report_menuitem", 
+			 sigc::mem_fun(*this, &GameWindow::on_city_report_activated));
+    xml->connect_clicked("gold_report_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_gold_report_activated));
+    xml->connect_clicked("winning_report_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_winning_report_activated));
     xml->connect_clicked("quests_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_quests_activated));
     xml->connect_clicked("fullscreen_menuitem", 
@@ -231,6 +232,8 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_army_bonus_activated));
     xml->connect_clicked("item_bonus_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_item_bonus_activated));
+    xml->connect_clicked("production_report_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_production_report_activated));
 }
 
 GameWindow::~GameWindow()
@@ -683,71 +686,6 @@ void GameWindow::on_quit_activated()
     }
 }
 
-void GameWindow::on_armies_activated()
-{
-    ArmiesReportDialog d(Playerlist::getActiveplayer());
-    d.set_parent_window(*window.get());
-    d.stack_selected.connect(
-	sigc::mem_fun(this, &GameWindow::on_stack_selected_in_report));
-    d.run();
-}
-
-void GameWindow::on_cities_activated()
-{
-    CitiesReportDialog d(Playerlist::getActiveplayer());
-    d.set_parent_window(*window.get());
-    d.city_selected.connect(
-	sigc::mem_fun(this, &GameWindow::on_city_selected_in_report));
-    d.run();
-}
-
-void GameWindow::on_gold_activated()
-{
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/gold-report-dialog.glade");
-
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    Gtk::Table *table;
-    xml->get_widget("table", table);
-
-#if 0
-    int max_gold = 0;
-    for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
-	     end = Playerlist::getInstance()->end(); i != end; ++i)
-    {
-	Player *p = *i;
-	if (p->getGold() > max_gold)
-	    max_gold = p->getGold();
-    }
-#endif
-    
-    int row = 0;
-    for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
-	     end = Playerlist::getInstance()->end(); i != end; ++i)
-    {
-	Player *p = *i;
-	if (p == Playerlist::getInstance()->getNeutral())
-	    continue;
-	    
-	table->attach(*manage(new Gtk::Label(p->getName())),
-		      0, 1, row, row + 1);
-	Glib::ustring g = String::ucompose("%1", p->getGold());
-	table->attach(*manage(new Gtk::Label(g)),
-		      1, 2, row, row + 1);
-	++row;
-    }
-    
-    dialog->show_all();
-    dialog->run();
-}
-
 void GameWindow::on_quests_activated()
 {
     Player *player = Playerlist::getActiveplayer();
@@ -912,6 +850,40 @@ void GameWindow::on_item_bonus_activated()
     d.run();
 }
 
+void GameWindow::on_army_report_activated()
+{
+    ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::ARMY);
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_city_report_activated()
+{
+    ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::CITY);
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_gold_report_activated()
+{
+    ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::GOLD);
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_production_report_activated()
+{
+    ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::PRODUCTION);
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_winning_report_activated()
+{
+    ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::WINNING);
+    d.set_parent_window(*window.get());
+    d.run();
+}
 void GameWindow::on_city_history_activated()
 {
     HistoryReportDialog d;
@@ -1012,16 +984,6 @@ void GameWindow::on_message_requested(std::string msg)
     Gtk::MessageDialog dialog(*window.get(), msg);
     dialog.show_all();
     dialog.run();
-}
-
-void GameWindow::on_stack_selected_in_report(Stack *stack)
-{
-    game->get_bigmap().center_view(stack->getPos());
-}
-
-void GameWindow::on_city_selected_in_report(City *city)
-{
-    game->get_bigmap().center_view(city->getPos());
 }
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)

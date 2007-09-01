@@ -576,6 +576,9 @@ class Action_Produce: public Action
 
         bool fillData(Uint32 army_type, City *city, bool vectored);
 
+	Uint32 getArmyType() const {return d_army_type;}
+	Uint32 getCityId() const {return d_city;}
+	bool getVectored() const {return d_vectored;}
     private:
         Uint32 d_army_type;
         Uint32 d_city;
@@ -596,6 +599,8 @@ class Action_ProduceVectored: public Action
 
         bool fillData(Uint32 army_type, Vector <int>dest);
 
+	Uint32 getArmyType() const {return d_army_type;}
+	Vector<int> getDestination() const {return d_dest;}
     private:
         Uint32 d_army_type;
         Vector<int> d_dest;

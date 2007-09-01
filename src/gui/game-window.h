@@ -152,9 +152,6 @@ class GameWindow: public sigc::trackable
     void on_save_game_activated();
     void on_save_game_as_activated();
     void on_quit_activated();
-    void on_armies_activated();
-    void on_cities_activated();
-    void on_gold_activated();
     void on_quests_activated();
     void on_disband_activated();
     void on_resign_activated();
@@ -162,6 +159,11 @@ class GameWindow: public sigc::trackable
     void on_inspect_activated();
     void on_plant_standard_activated();
     void on_item_bonus_activated();
+    void on_army_report_activated();
+    void on_city_report_activated();
+    void on_gold_report_activated();
+    void on_production_report_activated();
+    void on_winning_report_activated();
 
     void on_fullscreen_activated();
     void on_preferences_activated();
@@ -173,8 +175,6 @@ class GameWindow: public sigc::trackable
     void on_city_history_activated();
 
     void on_message_requested(std::string msg);
-    void on_stack_selected_in_report(Stack *stack);
-    void on_city_selected_in_report(City *city);
     
     // info pane at the bottom
     void show_stats();

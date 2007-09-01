@@ -34,6 +34,7 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	vectormap.cpp vectormap.h \
 	heromap.cpp heromap.h \
 	armymap.cpp armymap.h \
+	citymap.cpp citymap.h \
 	questmap.cpp questmap.h \
 	ruinmap.cpp ruinmap.h \
 	historymap.cpp historymap.h \
