@@ -23,6 +23,7 @@ hero-dialog.glade \
 hero-offer-dialog.glade \
 sage-dialog.glade \
 ruin-report-dialog.glade \
+history-report-dialog.glade \
 load-scenario-dialog.glade \
 medal-awarded-dialog.glade \
 quest-assigned-dialog.glade \

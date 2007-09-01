@@ -56,7 +56,6 @@ class History
                 //WINNING_RANK = 5,
 		//DIPLOMATIC_PEACE (player)
 		//DIPLOMATIC_WAR (player)
-		//HERO_COMPLETE_QUEST
 		//HERO_GETS_REWARD (reward)
 		//DIPLOMATIC_TREACHERY (player)
 		//PLAYER_VANQUISHED
@@ -175,6 +174,8 @@ class History_CityWon : public History
 
         std::string dump() const;
         bool save(XML_Helper* helper) const;
+
+	Uint32 getCityId() const {return d_city;}
 
         bool fillData(City *city, Hero *hero = NULL);
     

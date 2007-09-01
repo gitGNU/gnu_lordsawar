@@ -297,6 +297,29 @@
 	      </child>
 
 	      <child>
+		<widget class="GtkMenuItem" id="history_menuitem">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">_History</property>
+		  <property name="use_underline">True</property>
+		  <signal name="activate" handler="on_history_menuitem_activate" last_modification_time="Fri, 31 Aug 2007 23:40:33 GMT"/>
+
+		  <child>
+		    <widget class="GtkMenu" id="history_menuitem_menu">
+
+		      <child>
+			<widget class="GtkMenuItem" id="city_history_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Cities</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_city_history_menuitem_activate" last_modification_time="Fri, 31 Aug 2007 23:40:33 GMT"/>
+			</widget>
+		      </child>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
+
+	      <child>
 		<widget class="GtkMenuItem" id="help_menuitem">
 		  <property name="visible">True</property>
 		  <property name="label" translatable="yes">_Help</property>

@@ -64,6 +64,7 @@
 #include "hero-levels-dialog.h"
 #include "ruin-report-dialog.h"
 #include "army-bonus-dialog.h"
+#include "history-report-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -215,6 +216,7 @@ GameWindow::GameWindow()
     xml->get_widget("search_menuitem", search_menuitem);
     xml->get_widget("inspect_menuitem", inspect_menuitem);
     xml->get_widget("plant_standard_menuitem", plant_standard_menuitem);
+    xml->get_widget("city_history_menuitem", city_history_menuitem);
 
     xml->connect_clicked("fight_order_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_fight_order_activated));
@@ -463,6 +465,9 @@ void GameWindow::setup_game(std::string file_path)
 	           sigc::mem_fun(*this, 
                                  &GameWindow::on_plant_standard_activated),
 		   game->can_plant_standard_selected_stack);
+    setup_menuitem(city_history_menuitem,
+	           sigc::mem_fun(*this, &GameWindow::on_city_history_activated),
+		   game->can_see_history);
 
     // setup game callbacks
     game->sidebar_stats_changed.connect(
@@ -893,6 +898,13 @@ void GameWindow::on_ruin_report_activated()
 void GameWindow::on_army_bonus_activated()
 {
     ArmyBonusDialog d(Playerlist::getActiveplayer());
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_city_history_activated()
+{
+    HistoryReportDialog d;
     d.set_parent_window(*window.get());
     d.run();
 }

@@ -608,6 +608,7 @@ void Game::update_control_panel()
 	can_end_turn.emit(false);
 	can_disband_stack.emit(false);
 	can_change_signpost.emit(false);
+	can_see_history.emit(false);
 	
         return;
     }
@@ -729,6 +730,11 @@ void Game::update_control_panel()
 	can_inspect_selected_stack.emit(false);
 	can_plant_standard_selected_stack.emit(false);
     }
+
+    if (d_gameScenario->getRound() > 0)
+      can_see_history.emit(true);
+    else
+      can_see_history.emit(false);
 
     can_end_turn.emit(true);
 }

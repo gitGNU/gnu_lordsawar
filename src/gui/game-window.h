@@ -98,6 +98,7 @@ class GameWindow: public sigc::trackable
     Gtk::MenuItem *inspect_menuitem;
     Gtk::MenuItem *disband_menuitem;
     Gtk::MenuItem *signpost_menuitem;
+    Gtk::MenuItem *city_history_menuitem;
     Gtk::MenuItem *plant_standard_menuitem;
     Gtk::Box *stack_info_box;
     Gtk::Box *stack_info_container;
@@ -168,6 +169,7 @@ class GameWindow: public sigc::trackable
     void on_levels_activated();
     void on_ruin_report_activated();
     void on_army_bonus_activated();
+    void on_city_history_activated();
 
     void on_message_requested(std::string msg);
     void on_stack_selected_in_report(Stack *stack);

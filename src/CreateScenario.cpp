@@ -43,6 +43,7 @@
 #include "QuestsManager.h"
 #include "Configuration.h"
 #include "FogMap.h"
+#include "history.h"
 
 using namespace std;
 
@@ -457,12 +458,17 @@ bool CreateScenario::distributePlayers()
             (*cit).setCapital(true);
             skipping = 0;
 
+            History_CityWon *item = new History_CityWon();
+            item->fillData(&*cit, NULL);
+            (*pit)->getHistorylist()->push_back(item);
+
             pit++;
             if ((*pit) == pl->getNeutral())
                 pit++;
         }
         else
             (*cit).setPlayer(pl->getNeutral());
+
     }
 
     return true;
@@ -500,6 +506,9 @@ bool CreateScenario::setupCities(bool quick_start)
                 pos = clist->getFirstCity(p)->getPos();
 	        City *c = clist->getNearestNeutralCity(pos);
                 c->conquer(p);
+                History_CityWon *item = new History_CityWon();
+                item->fillData(c, NULL);
+                p->getHistorylist()->push_back(item);
               }
           }
       }

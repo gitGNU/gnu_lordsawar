@@ -86,6 +86,7 @@ bool RealPlayer::initTurn()
     clearActionlist();
     History_StartTurn* item = new History_StartTurn();
     d_history.push_back(item);
+    return true;
 }
 
 bool RealPlayer::startTurn()
