@@ -1,3 +1,12 @@
+2007-09-01  Ben Asselstine
+
+	* added item bonus dialog
+
+2007-08-31  Ben Asselstine
+
+	* added citywon history entries for quickstart
+	* added first crack at city history report
+
 2007-08-30  Ben Asselstine
 
 	* added hero killed, and quest start/finish to the history
