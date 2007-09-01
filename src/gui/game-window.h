@@ -161,6 +161,7 @@ class GameWindow: public sigc::trackable
     void on_signpost_activated();
     void on_inspect_activated();
     void on_plant_standard_activated();
+    void on_item_bonus_activated();
 
     void on_fullscreen_activated();
     void on_preferences_activated();

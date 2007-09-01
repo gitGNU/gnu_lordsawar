@@ -64,6 +64,7 @@
 #include "hero-levels-dialog.h"
 #include "ruin-report-dialog.h"
 #include "army-bonus-dialog.h"
+#include "item-bonus-dialog.h"
 #include "history-report-dialog.h"
 
 #include "../ucompose.hpp"
@@ -228,6 +229,8 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_ruin_report_activated));
     xml->connect_clicked("army_bonus_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_army_bonus_activated));
+    xml->connect_clicked("item_bonus_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_item_bonus_activated));
 }
 
 GameWindow::~GameWindow()
@@ -898,6 +901,13 @@ void GameWindow::on_ruin_report_activated()
 void GameWindow::on_army_bonus_activated()
 {
     ArmyBonusDialog d(Playerlist::getActiveplayer());
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_item_bonus_activated()
+{
+    ItemBonusDialog d;
     d.set_parent_window(*window.get());
     d.run();
 }

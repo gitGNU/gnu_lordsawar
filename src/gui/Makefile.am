@@ -8,6 +8,7 @@ liblwgui_a_SOURCES = \
     fight-order-dialog.cpp fight-order-dialog.h \
     hero-levels-dialog.cpp hero-levels-dialog.h \
     army-bonus-dialog.cpp army-bonus-dialog.h \
+    item-bonus-dialog.cpp item-bonus-dialog.h \
     army-info-tip.cpp army-info-tip.h \
     stack-info-tip.cpp stack-info-tip.h \
     army-gains-level-dialog.cpp army-gains-level-dialog.h \

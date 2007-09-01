@@ -18,6 +18,7 @@
 #include "File.h"
 #include "counter.h"
 #include "playerlist.h"
+#include "ucompose.hpp"
 
 using namespace std;
 
@@ -103,4 +104,47 @@ bool Item::getBonus(Item::Bonus bonus) const
 void Item::setBonus(Item::Bonus bonus)
 {
   d_bonus |= bonus;
+}
+
+std::string Item::getBonusDescription()
+{
+    // the attributes column
+    std::vector<Glib::ustring> s;
+    if (getBonus(Item::ADD1STR))
+	s.push_back(_("+1 Battle"));
+    if (getBonus(Item::ADD2STR))
+	s.push_back(_("+2 Battle"));
+    if (getBonus(Item::ADD3STR))
+	s.push_back(_("+3 Battle"));
+    if (getBonus(Item::ADD1STACK))
+	s.push_back(_("+1 Command"));
+    if (getBonus(Item::ADD2STACK))
+	s.push_back(_("+2 Command"));
+    if (getBonus(Item::ADD3STACK))
+	s.push_back(_("+3 Command"));
+    if (getBonus(Item::FLYSTACK))
+	s.push_back(_("Allows Flight"));
+    if (getBonus(Item::DOUBLEMOVESTACK))
+	s.push_back(_("Doubles Movement"));
+    if (getBonus(Item::ADD2GOLDPERCITY))
+	s.push_back(_("+2 gold per city"));
+    if (getBonus(Item::ADD3GOLDPERCITY))
+	s.push_back(_("+3 gold per city"));
+    if (getBonus(Item::ADD4GOLDPERCITY))
+	s.push_back(_("+4 gold per city"));
+    if (getBonus(Item::ADD5GOLDPERCITY))
+	s.push_back(_("+5 gold per city"));
+
+    Glib::ustring str;
+    bool first = true;
+    for (std::vector<Glib::ustring>::iterator i = s.begin(), end = s.end();
+	 i != end; ++i)
+    {
+	if (first)
+	    first = false;
+	else
+	    str += "\n";
+	str += *i;
+    }
+    return str;
 }

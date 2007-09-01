@@ -178,48 +178,9 @@ void HeroDialog::on_pickup_clicked()
 void HeroDialog::add_item(Item *item, bool in_backpack)
 {
     Gtk::TreeIter i = item_list->append();
-    //(*i)[item_columns.image] = to_pixbuf(item->getPic());
     (*i)[item_columns.name] = item->getName();
 
-    // the attributes column
-    std::vector<Glib::ustring> s;
-    if (item->getBonus(Item::ADD1STR))
-	s.push_back(_("+1 Battle"));
-    if (item->getBonus(Item::ADD2STR))
-	s.push_back(_("+2 Battle"));
-    if (item->getBonus(Item::ADD3STR))
-	s.push_back(_("+3 Battle"));
-    if (item->getBonus(Item::ADD1STACK))
-	s.push_back(_("+1 Command"));
-    if (item->getBonus(Item::ADD2STACK))
-	s.push_back(_("+2 Command"));
-    if (item->getBonus(Item::ADD3STACK))
-	s.push_back(_("+3 Command"));
-    if (item->getBonus(Item::FLYSTACK))
-	s.push_back(_("Allows Flight"));
-    if (item->getBonus(Item::DOUBLEMOVESTACK))
-	s.push_back(_("Doubles Movement"));
-    if (item->getBonus(Item::ADD2GOLDPERCITY))
-	s.push_back(_("+2 gold per city"));
-    if (item->getBonus(Item::ADD3GOLDPERCITY))
-	s.push_back(_("+3 gold per city"));
-    if (item->getBonus(Item::ADD4GOLDPERCITY))
-	s.push_back(_("+4 gold per city"));
-    if (item->getBonus(Item::ADD5GOLDPERCITY))
-	s.push_back(_("+5 gold per city"));
-
-    Glib::ustring str;
-    bool first = true;
-    for (std::vector<Glib::ustring>::iterator i = s.begin(), end = s.end();
-	 i != end; ++i)
-    {
-	if (first)
-	    first = false;
-	else
-	    str += "\n";
-	str += *i;
-    }
-    (*i)[item_columns.attributes] = str;
+    (*i)[item_columns.attributes] = item->getBonusDescription();
     
     if (in_backpack)
 	(*i)[item_columns.status] = _("In backpack");

@@ -108,6 +108,9 @@ class Item
 	//! Return the player that can plant this item.
 	Player *getPlantableOwner() const {return d_plantable_owner;}
 
+	//! Return some text describing the item's abilities
+        std::string getBonusDescription();
+
     private:
         Uint32 d_bonus;
         
