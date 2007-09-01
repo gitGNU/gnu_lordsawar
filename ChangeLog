@@ -1,6 +1,11 @@
 2007-09-01  Ben Asselstine
 
 	* added item bonus dialog
+	* removed old cities, armies, and gold reports
+	* added a general report dialog for army, gold, production, and
+	  winning.
+	* added a citymap object
+	* fixed armymap object
 
 2007-08-31  Ben Asselstine
 
