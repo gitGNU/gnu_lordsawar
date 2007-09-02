@@ -27,6 +27,7 @@
 #include "../defs.h"
 #include "../File.h"
 #include "../GameMap.h"
+#include "../playerlist.h"
 #include "../citylist.h"
 #include "../stacklist.h"
 #include "../action.h"
@@ -61,27 +62,6 @@ ReportDialog::ReportDialog(Player *player, ReportType type)
   xml->get_widget("production_label", production_label);
   xml->get_widget("winning_label", winning_label);
 
-  Uint32 total = 0;
-  Stacklist *slist = player->getStacklist();
-  for (Stacklist::iterator it = slist->begin(); it != slist->end(); it++)
-      total += (*it)->size();
-
-  Glib::ustring s = String::ucompose(ngettext("You have %1 army!",
-					      "You have %1 armies!",
-					      total), total);
-  army_label->set_text(s);
-
-  total = Citylist::getInstance()->countCities(player);
-  s = String::ucompose(ngettext("You have %1 city!",
-				"You have %1 cities!",
-		  		total), total);
-  city_label->set_text(s);
-
-  total = player->getGold();
-  s = String::ucompose(ngettext("You have %1 gold piece!",
-				"You have %1 gold pieces!",
-		  		total), total);
-  gold_label->set_text(s);
 
   xml->get_widget("report_notebook", report_notebook);
   report_notebook->set_current_page(type);
@@ -95,7 +75,7 @@ ReportDialog::ReportDialog(Player *player, ReportType type)
   armies_treeview->append_column("", armies_columns.desc);
 
   //loop through the action list looking for production actions
-  total = 0;
+  Uint32 total = 0;
   std::list<Action*> *actions = player->getActionlist();
   std::list<Action*>::const_iterator it;
   for (it = actions->begin(); it != actions->end(); it++)
@@ -105,6 +85,7 @@ ReportDialog::ReportDialog(Player *player, ReportType type)
        addProduction(*it);
        total++;
      }
+  Glib::ustring s;
   s = String::ucompose(ngettext("You produced %1 army this turn!",
 				"You produced %1 armies this turn!",
 		  		total), total);
@@ -114,6 +95,14 @@ ReportDialog::ReportDialog(Player *player, ReportType type)
   xml->get_widget("close_button", close_button);
   close_button->signal_clicked().connect
     (sigc::mem_fun(*this, &ReportDialog::on_close_button));
+  xml->get_widget("army_alignment", army_alignment);
+  xml->get_widget("city_alignment", city_alignment);
+  xml->get_widget("gold_alignment", gold_alignment);
+  xml->get_widget("winning_alignment", winning_alignment);
+  updateArmyChart();
+  updateGoldChart();
+  updateCityChart();
+  updateWinningChart();
   fill_in_info();
   closing = false;
 }
@@ -206,6 +195,99 @@ void ReportDialog::fill_in_info()
     }
 }
 
+void ReportDialog::updateArmyChart()
+{
+  Glib::ustring s;
+  Uint32 total;
+  Playerlist::iterator pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      total = 0;
+      total = (*pit)->getStacklist()->countArmies();
+      fprintf (stderr,"player %s has %d armies\n", (*pit)->getName().c_str(), total);
+      if (*pit == d_player)
+	{
+	  s = String::ucompose(ngettext("You have %1 army!",
+					"You have %1 armies!",
+					total), total);
+	  army_label->set_text(s);
+	}
+    }
+
+
+}
+void ReportDialog::updateCityChart()
+{
+  Glib::ustring s;
+  Uint32 total;
+  Playerlist::iterator pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      total = Citylist::getInstance()->countCities(*pit);
+	fprintf (stderr,"player %s has %d cities\n", (*pit)->getName().c_str(), 
+		 total);
+
+      if (*pit == d_player)
+	{
+	  s = String::ucompose(ngettext("You have %1 city!",
+					"You have %1 cities!",
+					total), total);
+	  city_label->set_text(s);
+	}
+
+    }
+}
+void ReportDialog::updateGoldChart()
+{
+  Glib::ustring s;
+  Uint32 total;
+  Playerlist::iterator pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      total = (*pit)->getGold();
+      fprintf (stderr,"player %s has %d gold\n", (*pit)->getName().c_str(), 
+	       total);
+      if (*pit == d_player)
+	{
+	  s = String::ucompose(ngettext("You have %1 gold piece!",
+					"You have %1 gold pieces!",
+					total), total);
+	  gold_label->set_text(s);
+	}
+    }
+}
+
+void ReportDialog::updateWinningChart()
+{
+  Glib::ustring s;
+  char* rank_strings[MAX_PLAYERS] =
+    {
+      _("first"), _("second"), _("third"), _("fourth"), _("fifth"),
+      _("sixth"), _("seventh"), _("eighth"),
+    };
+  Playerlist::iterator pit = Playerlist::getInstance()->begin();
+  Uint32 player_score = d_player->getScore();
+  Uint32 rank = 0;
+  Uint32 score;
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      score = (*pit)->getScore();
+      fprintf (stderr,"player %s has a score of %d\n", (*pit)->getName().c_str(), 
+	       score);
+      if (player_score < score)
+	rank++;
+    }
+  s = String::ucompose(_("You are coming %1"), rank_strings[rank]);
+  winning_label->set_text(s);
+}
 void ReportDialog::addProduction(const Action *action)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();

@@ -138,6 +138,16 @@ unsigned int Stacklist::getNoOfStacks()
     return mysize;
 }
 
+unsigned int Stacklist::countArmies()
+{
+    unsigned int mysize = 0;
+
+    for (iterator it = begin(); it != end(); it++)
+      mysize += (*it)->size();
+
+    return mysize;
+}
+
 Stacklist::Stacklist()
     :d_activestack(0)
 {

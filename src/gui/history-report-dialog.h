@@ -44,7 +44,9 @@ class HistoryReportDialog: public sigc::trackable
     HistoryReportDialog(Player *p, HistoryReportType type);
 
     void generatePastCitylists();
+    void generatePastGoldlists();
     void generatePastEventlists();
+    void generatePastWinninglists();
     void set_parent_window(Gtk::Window &parent);
 
     void run();
@@ -61,17 +63,14 @@ class HistoryReportDialog: public sigc::trackable
     Gtk::Label *winner_label;
 
     std::vector<ObjectList<City>* > past_citylists;
+    std::vector<std::list<History *> > past_eventlists;
+    std::vector<std::list<History *> > past_goldlists;
+    std::vector<std::list<History *> > past_ranklists;
 
     Gtk::Image *map_image;
     
-    void on_map_changed(SDL_Surface *map);
-    void on_turn_changed(Gtk::Scale *scale);
-    void fill_in_turn_info(Uint32 turn);
-    void on_switch_page(GtkNotebookPage *page, guint number);
-
     Gtk::TreeView *events_treeview;
 
-    std::vector<std::list<History *> > past_eventlists;
 
     class EventsColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -85,6 +84,11 @@ class HistoryReportDialog: public sigc::trackable
     Glib::RefPtr<Gtk::ListStore> events_list;
     void addHistoryEvent(History *event);
     void on_close_button();
+    void on_map_changed(SDL_Surface *map);
+    void on_turn_changed(Gtk::Scale *scale);
+    void fill_in_turn_info(Uint32 turn);
+    void on_switch_page(GtkNotebookPage *page, guint number);
+
     bool closing;
 };
 

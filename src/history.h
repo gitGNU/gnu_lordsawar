@@ -54,7 +54,7 @@ class History
 		HERO_KILLED_IN_BATTLE = 10,
 		HERO_KILLED_SEARCHING = 11,
 		HERO_CITY_WON = 12,
-                //WINNING_RANK = 5,
+                SCORE = 13,
 		//DIPLOMATIC_PEACE (player)
 		//DIPLOMATIC_WAR (player)
 		//HERO_GETS_REWARD (reward)
@@ -327,6 +327,25 @@ class History_HeroKilledSearching: public History
     
     private:
 	std::string d_hero;
+};
+
+//-----------------------------------------------------------------------------
+
+class History_Score: public History
+{
+    public:
+        History_Score();
+        History_Score(XML_Helper* helper);
+        ~History_Score();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Uint32 score);
+	Uint32 getScore() const {return d_score;}
+    
+    private:
+        int d_score;
 };
 
 

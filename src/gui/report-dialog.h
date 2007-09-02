@@ -26,6 +26,7 @@
 #include <gtkmm/liststore.h>
 #include <gtkmm/treemodelcolumn.h>
 #include <gtkmm/treeview.h>
+#include <gtkmm/alignment.h>
 
 #include "../ObjectList.h"
 #include "../vectormap.h"
@@ -63,6 +64,10 @@ class ReportDialog: public sigc::trackable
     Gtk::Label *production_label;
     Gtk::Label *winning_label;
     Gtk::Notebook *report_notebook;
+    Gtk::Alignment *army_alignment;
+    Gtk::Alignment *city_alignment;
+    Gtk::Alignment *gold_alignment;
+    Gtk::Alignment *winning_alignment;
 
     Player *d_player;
     void on_army_map_changed(SDL_Surface *map);
@@ -86,6 +91,10 @@ class ReportDialog: public sigc::trackable
     void on_close_button();
     bool closing;
     void fill_in_info();
+    void updateArmyChart();
+    void updateCityChart();
+    void updateGoldChart();
+    void updateWinningChart();
 };
 
 #endif

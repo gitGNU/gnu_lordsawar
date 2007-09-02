@@ -44,6 +44,7 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
   dialog.reset(d);
 
   generatePastCitylists();
+  generatePastGoldlists();
   generatePastEventlists();
   xml->get_widget("map_image", map_image);
   historymap.reset(new HistoryMap(past_citylists[past_citylists.size()-1]));
@@ -139,6 +140,108 @@ void HistoryReportDialog::generatePastEventlists()
       past_eventlists.push_back(*elist);
       std::list<History*> *new_elist = new std::list<History*>();
       elist = new_elist;
+      if (last_turn == true)
+	break;
+
+    }
+}
+
+void HistoryReportDialog::generatePastGoldlists()
+{
+  bool last_turn = false;
+  std::list<History *> *glist = new std::list<History *>();
+
+  //keep a set of pointers to remember how far we are into each player's history
+  std::list<History*> *hist[MAX_PLAYERS];
+  Playerlist::iterator pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    hist[(*pit)->getId()] = (*pit)->getHistorylist();
+  std::list<History*>::iterator hit[MAX_PLAYERS];
+  pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    hit[(*pit)->getId()] = hist[(*pit)->getId()]->begin();
+
+  while (1)
+    {
+      //now we see how much gold we were at this turn
+      pit = Playerlist::getInstance()->begin();
+      for (; pit != Playerlist::getInstance()->end(); ++pit)
+	{
+	  if (*pit == Playerlist::getInstance()->getNeutral())
+	    continue;
+	  //dump everything up to the next turn
+	  Uint32 id = (*pit)->getId();
+	  for (; hit[id] != hist[id]->end(); ++hit[id])
+	    {
+	      if ((*hit[id])->getType() == History::START_TURN)
+		{
+		  hit[id]++;
+		  break;
+		}
+	      if ((*hit[id])->getType() == History::GOLD_TOTAL)
+		{
+		  glist->push_back(*hit[id]);
+		  (*hit[id])->setPlayer(*pit);
+		}
+	    }
+	  if (hit[id] == hist[id]->end())
+	    last_turn = true;
+	}
+      //and add it to the list
+      past_goldlists.push_back(*glist);
+      std::list<History *> *new_glist = new std::list<History *>();
+      glist = new_glist;
+      if (last_turn == true)
+	break;
+
+    }
+}
+
+void HistoryReportDialog::generatePastWinninglists()
+{
+  bool last_turn = false;
+  std::list<History *> *glist = new std::list<History *>();
+
+  //keep a set of pointers to remember how far we are into each player's history
+  std::list<History*> *hist[MAX_PLAYERS];
+  Playerlist::iterator pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    hist[(*pit)->getId()] = (*pit)->getHistorylist();
+  std::list<History*>::iterator hit[MAX_PLAYERS];
+  pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    hit[(*pit)->getId()] = hist[(*pit)->getId()]->begin();
+
+  while (1)
+    {
+      //now we see how what rank we were at this turn
+      pit = Playerlist::getInstance()->begin();
+      for (; pit != Playerlist::getInstance()->end(); ++pit)
+	{
+	  if (*pit == Playerlist::getInstance()->getNeutral())
+	    continue;
+	  //dump everything up to the next turn
+	  Uint32 id = (*pit)->getId();
+	  for (; hit[id] != hist[id]->end(); ++hit[id])
+	    {
+	      if ((*hit[id])->getType() == History::START_TURN)
+		{
+		  hit[id]++;
+		  break;
+		}
+	      if ((*hit[id])->getType() == History::SCORE)
+		{
+		  glist->push_back(*hit[id]);
+		  (*hit[id])->setPlayer(*pit);
+		}
+	    }
+	  if (hit[id] == hist[id]->end())
+	    last_turn = true;
+	}
+      //and add it to the list
+      past_ranklists.push_back(*glist);
+      std::list<History *> *new_glist = new std::list<History *>();
+      glist = new_glist;
       if (last_turn == true)
 	break;
 

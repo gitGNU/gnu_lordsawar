@@ -20,6 +20,9 @@
 #include "citylist.h"
 #include "defs.h"
 #include "xmlhelper.h"
+#include "history.h"
+#include "citylist.h"
+#include "stacklist.h"
 
 using namespace std;
 
@@ -259,3 +262,43 @@ Playerlist::iterator Playerlist::flErase(Playerlist::iterator it)
     delete (*it);
     return erase (it);
 }
+
+void Playerlist::calculateWinners()
+{
+    Uint32 score;
+    Uint32 total_gold = 0;
+    Uint32 total_armies = 0;
+    Uint32 total_cities = 0;
+    for (const_iterator it = begin(); it != end(); it++)
+      {
+	if ((*it) != d_neutral)
+	  continue;
+	if ((*it)->isDead() == true)
+	  continue;
+	total_gold += (*it)->getGold();
+	total_armies += (*it)->getStacklist()->countArmies();
+      }
+    total_cities = Citylist::getInstance()->size();
+
+    for (const_iterator it = begin(); it != end(); it++)
+      {
+	if ((*it) == d_neutral)
+	  continue;
+	if ((*it)->isDead() == true)
+	  continue;
+
+	Citylist *clist = Citylist::getInstance();
+	score = (Uint32)
+	  ((float)((float) clist->countCities(*it)/ (float)total_cities) * 70) +
+	  ((float)((float) (*it)->getGold() / (float)total_gold) * 10) +
+	  ((float)((float) (*it)->getStacklist()->countArmies() / 
+	    (float)total_armies) * 20);
+
+	History_Score *item = new History_Score();
+	item->fillData(score);
+	(*it)->getHistorylist()->push_back(item);
+      }
+
+    return;
+}
+

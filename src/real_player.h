@@ -82,6 +82,7 @@ class RealPlayer : public Player
         bool cityRaze(City* c);
         bool cityBuyProduction(City* c, int slot, int type);
         bool cityChangeProduction(City* c, int slot);
+        Uint32 getScore();
 
     protected:
         /**

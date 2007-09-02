@@ -78,6 +78,9 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         //! Returns the number of stacks owned by all players
         static unsigned int getNoOfStacks();
 
+        //! Returns the number of armies in the list
+        unsigned int countArmies();
+
         /** Sets the activestack. The purpose of this pointer is that the
           * activestack is assumed to be one the player is currently "touching".
           * Several functions use this feature for internal purposes, so don't

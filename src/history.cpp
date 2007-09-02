@@ -65,6 +65,8 @@ History* History::handle_load(XML_Helper* helper)
       return (new History_HeroKilledInBattle(helper));
     case HERO_KILLED_SEARCHING:
       return (new History_HeroKilledSearching(helper));
+    case SCORE:
+      return (new History_Score(helper));
     }
 
   return 0;
@@ -115,6 +117,9 @@ History* History::copy(const History* a)
       return 
 	(new History_HeroKilledSearching
           (*dynamic_cast<const History_HeroKilledSearching*>(a)));
+    case SCORE:
+      return 
+	(new History_Score(*dynamic_cast<const History_Score*>(a)));
     }
 
   return 0;
@@ -350,7 +355,7 @@ bool History_CityWon::fillData(City *city)
 //History_HeroCityWon
 
 History_HeroCityWon::History_HeroCityWon()
-:History(History::HERO_CITY_WON), d_city(""), d_hero("")
+:History(History::HERO_CITY_WON), d_hero(""), d_city("")
 {
 }
 
@@ -666,6 +671,51 @@ bool History_HeroKilledSearching::save(XML_Helper* helper) const
 bool History_HeroKilledSearching::fillData(Hero *hero)
 {
   d_hero = hero->getName();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+//History_Score
+
+History_Score::History_Score()
+:History(History::SCORE), d_score(0)
+{
+}
+
+History_Score::History_Score(XML_Helper* helper)
+:History(History::SCORE)
+{
+  helper->getData(d_score, "score");
+}
+
+History_Score::~History_Score()
+{
+}
+
+std::string History_Score::dump() const
+{
+  std::stringstream s;
+
+  s <<"player has a score of " << d_score<< "\n";
+
+  return s.str();
+}
+
+bool History_Score::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("history");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("score", d_score);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+
+bool History_Score::fillData(Uint32 score)
+{
+  d_score = score;
   return true;
 }
 

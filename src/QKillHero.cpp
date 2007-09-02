@@ -27,10 +27,6 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-Stack *getHeroStack(Uint32 heroId)
-{
-}
-
 //=======================================================================
 QuestKillHero::QuestKillHero(QuestsManager& mgr, Uint32 hero) 
     : Quest(mgr, hero, Quest::KILLHERO)

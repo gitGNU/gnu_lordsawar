@@ -152,8 +152,11 @@ void NextTurn::finishRound()
 
             //heal armies
             (*pit)->getStacklist()->nextTurn();
+
         }
     }
+	
+    Playerlist::getInstance()->calculateWinners();
 
     // heal the stacks in the ruins
     Ruinlist* rl = Ruinlist::getInstance();

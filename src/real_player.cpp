@@ -1517,4 +1517,17 @@ bool RealPlayer::heroCompletesQuest(Hero *h)
     d_history.push_back(item);
     return true;
 }
+
+Uint32 RealPlayer::getScore()
+{
+  //go get our last published score in the history
+  Uint32 score = 0;
+  std::list<History*>::iterator it = d_history.begin();
+  for (; it != d_history.end(); it++)
+    {
+      if ((*it)->getType() == History::SCORE)
+	score = static_cast<History_Score*>(*it)->getScore();
+    }
+  return score;
+}
 // End of file

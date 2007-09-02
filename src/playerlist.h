@@ -99,6 +99,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         //! This signal is emitted when a player has died.
         sigc::signal<void, Player*> splayerDead;
     
+        void calculateWinners();
+
     protected:
         // CREATORS
         Playerlist();
