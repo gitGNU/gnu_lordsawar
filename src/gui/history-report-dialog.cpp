@@ -198,6 +198,20 @@ void HistoryReportDialog::generatePastCitylists()
 			break;
 		      }
 		}
+	      else if ((*hit[id])->getType() == History::CITY_RAZED)
+		{
+		  Uint32 city_id;
+		  city_id = dynamic_cast<History_CityRazed*>(*hit[id])->getCityId();
+		  //find city with this city id in clist
+		  ObjectList<City>::iterator cit = clist->begin();
+		  for (; cit != clist->end(); ++cit)
+		    if ((*cit).getId() == city_id)
+		      {
+			//change the owner to *pit
+			(*cit).setBurnt(true);
+			break;
+		      }
+		}
 	    }
 	  if (hit[id] == hist[id]->end())
 	    last_turn = true;
