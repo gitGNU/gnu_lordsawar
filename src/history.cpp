@@ -51,6 +51,8 @@ History* History::handle_load(XML_Helper* helper)
       return (new History_HeroEmerges(helper));
     case CITY_WON:
       return (new History_CityWon(helper));
+    case HERO_CITY_WON:
+      return (new History_HeroCityWon(helper));
     case CITY_RAZED:
       return (new History_CityRazed(helper));
     case HERO_QUEST_STARTED:
@@ -87,6 +89,9 @@ History* History::copy(const History* a)
     case CITY_WON:
       return 
 	(new History_CityWon(*dynamic_cast<const History_CityWon*>(a)));
+    case HERO_CITY_WON:
+      return 
+	(new History_HeroCityWon(*dynamic_cast<const History_HeroCityWon*>(a)));
     case CITY_RAZED:
       return 
 	(new History_CityRazed(*dynamic_cast<const History_CityRazed*>(a)));
@@ -198,7 +203,7 @@ bool History_FoundSage::save(XML_Helper* helper) const
 
 bool History_FoundSage::fillData(Hero *hero)
 {
-  d_hero = hero->getId();
+  d_hero = hero->getName();
   return true;
 }
 
@@ -251,7 +256,7 @@ bool History_GoldTotal::fillData(int gold)
 //History_HeroEmerges
 
 History_HeroEmerges::History_HeroEmerges()
-:History(History::HERO_EMERGES), d_hero(0), d_city(0)
+:History(History::HERO_EMERGES), d_hero(""), d_city("")
 {
 }
 
@@ -290,8 +295,8 @@ bool History_HeroEmerges::save(XML_Helper* helper) const
 
 bool History_HeroEmerges::fillData(Hero *hero, City *city)
 {
-  d_hero = hero->getId();
-  d_city = city->getId();
+  d_hero = hero->getName();
+  d_city = city->getName();
   return true;
 }
 
@@ -299,7 +304,7 @@ bool History_HeroEmerges::fillData(Hero *hero, City *city)
 //History_CityWon
 
 History_CityWon::History_CityWon()
-:History(History::CITY_WON), d_city(0), d_hero(0)
+:History(History::CITY_WON), d_city(0)
 {
 }
 
@@ -307,7 +312,6 @@ History_CityWon::History_CityWon(XML_Helper* helper)
 :History(History::CITY_WON)
 {
   helper->getData(d_city, "city");
-  helper->getData(d_hero, "hero");
 }
 
 History_CityWon::~History_CityWon()
@@ -319,8 +323,6 @@ std::string History_CityWon::dump() const
   std::stringstream s;
 
   s <<"city " << d_city << " has been won";
-  if (d_hero)
-    s <<"  by " << d_hero;
   s <<"\n";
 
   return s.str();
@@ -333,17 +335,64 @@ bool History_CityWon::save(XML_Helper* helper) const
   retval &= helper->openTag("history");
   retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("city", d_city);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+
+bool History_CityWon::fillData(City *city)
+{
+  d_city = city->getId();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+//History_HeroCityWon
+
+History_HeroCityWon::History_HeroCityWon()
+:History(History::HERO_CITY_WON), d_city(""), d_hero("")
+{
+}
+
+History_HeroCityWon::History_HeroCityWon(XML_Helper* helper)
+:History(History::HERO_CITY_WON)
+{
+  helper->getData(d_city, "city");
+  helper->getData(d_hero, "hero");
+}
+
+History_HeroCityWon::~History_HeroCityWon()
+{
+}
+
+std::string History_HeroCityWon::dump() const
+{
+  std::stringstream s;
+
+  s <<"city " << d_city << " has been won";
+  s <<"  by " << d_hero;
+  s <<"\n";
+
+  return s.str();
+}
+
+bool History_HeroCityWon::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("history");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("city", d_city);
   retval &= helper->saveData("hero", d_hero);
   retval &= helper->closeTag();
 
   return retval;
 }
 
-bool History_CityWon::fillData(City *city, Hero *hero)
+bool History_HeroCityWon::fillData(Hero *hero, City *city)
 {
-  d_city = city->getId();
-  if (hero)
-    d_hero = hero->getId();
+  d_city = city->getName();
+  d_hero = hero->getName();
   return true;
 }
 
@@ -396,7 +445,7 @@ bool History_CityRazed::fillData(City *city)
 //History_HeroQuestStarted
 
 History_HeroQuestStarted::History_HeroQuestStarted()
-:History(History::HERO_QUEST_STARTED), d_hero(0)
+:History(History::HERO_QUEST_STARTED), d_hero("")
 {
 }
 
@@ -433,7 +482,7 @@ bool History_HeroQuestStarted::save(XML_Helper* helper) const
 
 bool History_HeroQuestStarted::fillData(Hero *hero)
 {
-  d_hero = hero->getId();
+  d_hero = hero->getName();
   return true;
 }
 
@@ -441,7 +490,7 @@ bool History_HeroQuestStarted::fillData(Hero *hero)
 //History_HeroQuestCompleted
 
 History_HeroQuestCompleted::History_HeroQuestCompleted()
-:History(History::HERO_QUEST_COMPLETED), d_hero(0)
+:History(History::HERO_QUEST_COMPLETED), d_hero("")
 {
 }
 
@@ -478,7 +527,7 @@ bool History_HeroQuestCompleted::save(XML_Helper* helper) const
 
 bool History_HeroQuestCompleted::fillData(Hero *hero)
 {
-  d_hero = hero->getId();
+  d_hero = hero->getName();
   return true;
 }
 
@@ -486,7 +535,7 @@ bool History_HeroQuestCompleted::fillData(Hero *hero)
 //History_HeroKilledInCity
 
 History_HeroKilledInCity::History_HeroKilledInCity()
-:History(History::HERO_KILLED_IN_CITY), d_hero(0), d_city(0)
+:History(History::HERO_KILLED_IN_CITY), d_hero(""), d_city("")
 {
 }
 
@@ -525,8 +574,8 @@ bool History_HeroKilledInCity::save(XML_Helper* helper) const
 
 bool History_HeroKilledInCity::fillData(Hero *hero, City *city)
 {
-  d_hero = hero->getId();
-  d_city = city->getId();
+  d_hero = hero->getName();
+  d_city = city->getName();
   return true;
 }
 
@@ -534,7 +583,7 @@ bool History_HeroKilledInCity::fillData(Hero *hero, City *city)
 //History_HeroKilledInBattle
 
 History_HeroKilledInBattle::History_HeroKilledInBattle()
-:History(History::HERO_KILLED_IN_BATTLE), d_hero(0)
+:History(History::HERO_KILLED_IN_BATTLE), d_hero("")
 {
 }
 
@@ -571,7 +620,7 @@ bool History_HeroKilledInBattle::save(XML_Helper* helper) const
 
 bool History_HeroKilledInBattle::fillData(Hero *hero)
 {
-  d_hero = hero->getId();
+  d_hero = hero->getName();
   return true;
 }
 
@@ -579,7 +628,7 @@ bool History_HeroKilledInBattle::fillData(Hero *hero)
 //History_Hero KilledSearching
 
 History_HeroKilledSearching::History_HeroKilledSearching()
-:History(History::HERO_KILLED_SEARCHING), d_hero(0)
+:History(History::HERO_KILLED_SEARCHING), d_hero("")
 {
 }
 
@@ -616,7 +665,7 @@ bool History_HeroKilledSearching::save(XML_Helper* helper) const
 
 bool History_HeroKilledSearching::fillData(Hero *hero)
 {
-  d_hero = hero->getId();
+  d_hero = hero->getName();
   return true;
 }
 

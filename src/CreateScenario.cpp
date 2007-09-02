@@ -459,7 +459,7 @@ bool CreateScenario::distributePlayers()
             skipping = 0;
 
             History_CityWon *item = new History_CityWon();
-            item->fillData(&*cit, NULL);
+            item->fillData(&*cit);
             (*pit)->getHistorylist()->push_back(item);
 
             pit++;
@@ -507,7 +507,7 @@ bool CreateScenario::setupCities(bool quick_start)
 	        City *c = clist->getNearestNeutralCity(pos);
                 c->conquer(p);
                 History_CityWon *item = new History_CityWon();
-                item->fillData(c, NULL);
+                item->fillData(c);
                 p->getHistorylist()->push_back(item);
               }
           }

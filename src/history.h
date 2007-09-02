@@ -53,6 +53,7 @@ class History
 		HERO_KILLED_IN_CITY = 9,
 		HERO_KILLED_IN_BATTLE = 10,
 		HERO_KILLED_SEARCHING = 11,
+		HERO_CITY_WON = 12,
                 //WINNING_RANK = 5,
 		//DIPLOMATIC_PEACE (player)
 		//DIPLOMATIC_WAR (player)
@@ -87,8 +88,12 @@ class History
         //! Returns the id which identifies the type of past event
         Type getType() const {return d_type;}
         
+	Player * getPlayer() const {return d_player;}
+	void setPlayer(Player *player) {d_player = player;}
+
     protected:
         Type d_type;
+	Player *d_player; //this doesn't get saved on purpose!
 };
 
 //-----------------------------------------------------------------------------
@@ -121,9 +126,10 @@ class History_FoundSage : public History
         bool save(XML_Helper* helper) const;
 
         bool fillData(Hero *hero);
+	std::string getHeroName() const {return d_hero;}
     
     private:
-        Uint32 d_hero;
+	std::string d_hero;
 };
 
 //-----------------------------------------------------------------------------
@@ -139,6 +145,7 @@ class History_GoldTotal : public History
         bool save(XML_Helper* helper) const;
 
         bool fillData(int gold);
+	int getGold() const {return d_gold;}
     
     private:
         int d_gold;
@@ -157,10 +164,12 @@ class History_HeroEmerges : public History
         bool save(XML_Helper* helper) const;
 
         bool fillData(Hero *hero, City *city);
+	std::string getHeroName() const {return d_hero;}
+	std::string getCityName() const {return d_city;}
     
     private:
-        Uint32 d_hero;
-        Uint32 d_city;
+	std::string d_hero;
+	std::string d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -175,13 +184,33 @@ class History_CityWon : public History
         std::string dump() const;
         bool save(XML_Helper* helper) const;
 
-	Uint32 getCityId() const {return d_city;}
 
-        bool fillData(City *city, Hero *hero = NULL);
+        bool fillData(City *city);
+	Uint32 getCityId() const {return d_city;}
     
     private:
-        Uint32 d_city;
-        Uint32 d_hero;
+	Uint32 d_city;
+};
+
+//-----------------------------------------------------------------------------
+
+class History_HeroCityWon: public History
+{
+    public:
+        History_HeroCityWon();
+        History_HeroCityWon(XML_Helper* helper);
+        ~History_HeroCityWon();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Hero *hero, City *city);
+	std::string getHeroName() const {return d_hero;}
+	std::string getCityName() const {return d_city;}
+    
+    private:
+	std::string d_hero;
+	std::string d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -197,6 +226,7 @@ class History_CityRazed : public History
         bool save(XML_Helper* helper) const;
 
         bool fillData(City *city);
+	Uint32 getCityId() const {return d_city;}
     
     private:
         Uint32 d_city;
@@ -215,9 +245,10 @@ class History_HeroQuestStarted : public History
         bool save(XML_Helper* helper) const;
 
         bool fillData(Hero *hero);
+	std::string getHeroName() const {return d_hero;}
     
     private:
-        Uint32 d_hero;
+	std::string d_hero;
 };
 
 //-----------------------------------------------------------------------------
@@ -233,9 +264,10 @@ class History_HeroQuestCompleted: public History
         bool save(XML_Helper* helper) const;
 
         bool fillData(Hero *hero);
+	std::string getHeroName() const {return d_hero;}
     
     private:
-        Uint32 d_hero;
+	std::string d_hero;
 };
 
 //-----------------------------------------------------------------------------
@@ -251,10 +283,12 @@ class History_HeroKilledInCity : public History
         bool save(XML_Helper* helper) const;
 
         bool fillData(Hero *hero, City *city);
+	std::string getHeroName() const {return d_hero;}
+	std::string getCityName() const {return d_city;}
     
     private:
-        Uint32 d_hero;
-	Uint32 d_city;
+	std::string d_hero;
+	std::string d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -270,9 +304,10 @@ class History_HeroKilledInBattle: public History
         bool save(XML_Helper* helper) const;
 
         bool fillData(Hero *hero);
+	std::string getHeroName() const {return d_hero;}
     
     private:
-        Uint32 d_hero;
+	std::string d_hero;
 };
 
 //-----------------------------------------------------------------------------
@@ -288,9 +323,10 @@ class History_HeroKilledSearching: public History
         bool save(XML_Helper* helper) const;
 
         bool fillData(Hero *hero);
+	std::string getHeroName() const {return d_hero;}
     
     private:
-        Uint32 d_hero;
+	std::string d_hero;
 };
 
 

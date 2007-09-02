@@ -219,6 +219,9 @@ GameWindow::GameWindow()
     xml->get_widget("inspect_menuitem", inspect_menuitem);
     xml->get_widget("plant_standard_menuitem", plant_standard_menuitem);
     xml->get_widget("city_history_menuitem", city_history_menuitem);
+    xml->get_widget("event_history_menuitem", event_history_menuitem);
+    xml->get_widget("gold_history_menuitem", gold_history_menuitem);
+    xml->get_widget("winner_history_menuitem", winner_history_menuitem);
 
     xml->connect_clicked("fight_order_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_fight_order_activated));
@@ -473,6 +476,15 @@ void GameWindow::setup_game(std::string file_path)
 		   game->can_plant_standard_selected_stack);
     setup_menuitem(city_history_menuitem,
 	           sigc::mem_fun(*this, &GameWindow::on_city_history_activated),
+		   game->can_see_history);
+    setup_menuitem(gold_history_menuitem,
+	           sigc::mem_fun(*this, &GameWindow::on_gold_history_activated),
+		   game->can_see_history);
+    setup_menuitem(event_history_menuitem,
+	           sigc::mem_fun(*this, &GameWindow::on_event_history_activated),
+		   game->can_see_history);
+    setup_menuitem(winner_history_menuitem,
+	           sigc::mem_fun(*this, &GameWindow::on_winner_history_activated),
 		   game->can_see_history);
 
     // setup game callbacks
@@ -886,7 +898,32 @@ void GameWindow::on_winning_report_activated()
 }
 void GameWindow::on_city_history_activated()
 {
-    HistoryReportDialog d;
+    HistoryReportDialog d(Playerlist::getActiveplayer(), 
+			  HistoryReportDialog::CITY);
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_event_history_activated()
+{
+    HistoryReportDialog d(Playerlist::getActiveplayer(),
+			  HistoryReportDialog::EVENTS);
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_gold_history_activated()
+{
+    HistoryReportDialog d(Playerlist::getActiveplayer(),
+			  HistoryReportDialog::GOLD);
+    d.set_parent_window(*window.get());
+    d.run();
+}
+
+void GameWindow::on_winner_history_activated()
+{
+    HistoryReportDialog d(Playerlist::getActiveplayer(),
+			  HistoryReportDialog::WINNING);
     d.set_parent_window(*window.get());
     d.run();
 }

@@ -328,8 +328,15 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
             if (result == Fight::ATTACKER_WON)
             {
                 History_CityWon *item = new History_CityWon();
-                item->fillData(city, dynamic_cast<Hero *>(s->getFirstHero()));
+                item->fillData(city);
                 d_history.push_back(item);
+		if (s->hasHero())
+		  {
+		    History_HeroCityWon *another = new History_HeroCityWon();
+		    Hero *hero = dynamic_cast<Hero *>(s->getFirstHero());
+		    another->fillData(hero, city);
+		    d_history.push_back(another);
+		  }
             }
 
             moveResult->setFightResult(result);

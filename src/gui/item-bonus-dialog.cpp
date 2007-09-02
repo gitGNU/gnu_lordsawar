@@ -36,7 +36,6 @@ ItemBonusDialog::ItemBonusDialog()
     xml->get_widget("dialog", d);
     dialog.reset(d);
 
-    printf ("here!\n");
     items_list = Gtk::ListStore::create(items_columns);
     xml->get_widget("treeview", items_treeview);
     items_treeview->set_model(items_list);

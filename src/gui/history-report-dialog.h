@@ -22,22 +22,29 @@
 #include <gtkmm/image.h>
 #include <gtkmm/label.h>
 #include <gtkmm/scale.h>
+#include <gtkmm/notebook.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treemodelcolumn.h>
+#include <gtkmm/treeview.h>
 
 #include "../ObjectList.h"
 #include "../historymap.h"
+#include "../history.h"
 #include "../player.h"
 class Citylist;
 
 struct SDL_Surface;
-
+class Player;
 // dialog for showing all ruins and temples
 // the stack parameter is used as a starting position for showing ruins
 class HistoryReportDialog: public sigc::trackable
 {
  public:
-    HistoryReportDialog();
+    enum HistoryReportType {CITY = 0, EVENTS, GOLD, WINNING};
+    HistoryReportDialog(Player *p, HistoryReportType type);
 
     void generatePastCitylists();
+    void generatePastEventlists();
     void set_parent_window(Gtk::Window &parent);
 
     void run();
@@ -46,13 +53,39 @@ class HistoryReportDialog: public sigc::trackable
     std::auto_ptr<Gtk::Dialog> dialog;
     std::auto_ptr<HistoryMap> historymap;
 
+    Player *d_player;
     Gtk::Scale *turn_scale;
+    Gtk::Notebook *history_notebook;
+    Gtk::Label *city_label;
+    Gtk::Label *gold_label;
+    Gtk::Label *winner_label;
 
     std::vector<ObjectList<City>* > past_citylists;
+
     Gtk::Image *map_image;
     
     void on_map_changed(SDL_Surface *map);
     void on_turn_changed(Gtk::Scale *scale);
+    void fill_in_turn_info(Uint32 turn);
+    void on_switch_page(GtkNotebookPage *page, guint number);
+
+    Gtk::TreeView *events_treeview;
+
+    std::vector<std::list<History *> > past_eventlists;
+
+    class EventsColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	EventsColumns() 
+        { add(image); add(desc);}
+	
+	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
+	Gtk::TreeModelColumn<Glib::ustring> desc;
+    };
+    const EventsColumns events_columns;
+    Glib::RefPtr<Gtk::ListStore> events_list;
+    void addHistoryEvent(History *event);
+    void on_close_button();
+    bool closing;
 };
 
 #endif
