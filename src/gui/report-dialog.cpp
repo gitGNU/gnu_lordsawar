@@ -223,7 +223,7 @@ void ReportDialog::updateArmyChart()
 	}
     }
 
-  army_chart = new BarChart(bars, colours);
+  army_chart = new BarChart(bars, colours, 0);
   army_alignment->add(*manage(army_chart));
 
 }
@@ -254,7 +254,7 @@ void ReportDialog::updateCityChart()
 	}
 
     }
-  city_chart = new BarChart(bars, colours);
+  city_chart = new BarChart(bars, colours, Citylist::getInstance()->size());
   city_alignment->add(*manage(city_chart));
 }
 
@@ -283,7 +283,7 @@ void ReportDialog::updateGoldChart()
 	  gold_label->set_text(s);
 	}
     }
-  gold_chart = new BarChart(bars, colours);
+  gold_chart = new BarChart(bars, colours, 0);
   gold_alignment->add(*manage(gold_chart));
 }
 
@@ -325,7 +325,7 @@ void ReportDialog::updateWinningChart()
     }
   s = String::ucompose(_("You are coming %1"), calculateRank(bars, d_player->getScore()));
   winning_label->set_text(s);
-  winning_chart = new BarChart(bars, colours);
+  winning_chart = new BarChart(bars, colours, 100);
   winning_alignment->add(*manage(winning_chart));
 }
 

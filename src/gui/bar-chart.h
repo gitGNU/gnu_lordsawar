@@ -7,7 +7,8 @@
 class BarChart: public Gtk::DrawingArea
 {
 public:
-    BarChart(std::list<unsigned int> bars, std::list<Gdk::Color> colours);
+    BarChart(std::list<unsigned int> bars, std::list<Gdk::Color> colours,
+	     unsigned int max_value);
     virtual ~BarChart();
 
 protected:
@@ -16,6 +17,7 @@ protected:
 private:
     std::list<unsigned int> d_bars;
     std::list<Gdk::Color> d_colours;
+    unsigned int d_max_value;
 };
 
 #endif

@@ -1,10 +1,12 @@
 #include "bar-chart.h"
 #include <cairomm/context.h>
 
-BarChart::BarChart(std::list<unsigned int> bars, std::list<Gdk::Color> colours)
+BarChart::BarChart(std::list<unsigned int> bars, std::list<Gdk::Color> colours,
+		   unsigned int max_value)
 {
   d_bars = bars;
   d_colours = colours;
+  d_max_value = max_value;
 }
 
 BarChart::~BarChart()
@@ -43,11 +45,17 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
 
     unsigned int max = 0;
     std::list<unsigned int>::iterator bit = d_bars.begin();
-    for (; bit != d_bars.end(); bit++)
+    if (d_max_value == 0)
       {
-	if (*bit > max)
-	  max = *bit;
+	for (; bit != d_bars.end(); bit++)
+	  {
+	    if (*bit > max)
+	      max = *bit;
+	  }
       }
+    else
+      max = d_max_value;
+
 
     unsigned int offs = 15;
     unsigned int d = 10;
@@ -57,7 +65,7 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
     unsigned int i = 0;
     for (; bit != d_bars.end(), cit != d_colours.end(); bit++, cit++, i+=(lw+d))
       {
-        cr->move_to(0, i + lw + offs);
+	cr->move_to(0, i + lw + offs);
 	double red = (double)(*cit).get_red() /65535.0;
 	double green = (double)(*cit).get_green() /65535.0;
 	double blue = (double)(*cit).get_blue() /65535.0;
