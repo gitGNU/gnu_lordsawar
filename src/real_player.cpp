@@ -1211,7 +1211,7 @@ bool RealPlayer::cityRaze(City* c)
     action->fillData(c);
     d_actions.push_back(action);
 
-    //ugh
+    //ugh, put a similar history event to the action on the history list
     History_CityRazed* history = new History_CityRazed();
     history->fillData(c);
     d_history.push_back(history);

@@ -187,7 +187,10 @@ void HistoryReportDialog::generatePastCitylists()
   for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
     clist->push_back(*it);
   for (ObjectList<City>::iterator it = clist->begin(); it != clist->end(); ++it)
-    (*it).setPlayer(Playerlist::getInstance()->getNeutral());
+    {
+      (*it).setPlayer(Playerlist::getInstance()->getNeutral());
+      (*it).setBurnt(false);
+    }
 
   while (1)
     {
@@ -215,7 +218,6 @@ void HistoryReportDialog::generatePastCitylists()
 		  for (; cit != clist->end(); ++cit)
 		    if ((*cit).getId() == city_id)
 		      {
-			//change the owner to *pit
 			(*cit).setPlayer(*pit);
 			break;
 		      }
@@ -229,7 +231,8 @@ void HistoryReportDialog::generatePastCitylists()
 		  for (; cit != clist->end(); ++cit)
 		    if ((*cit).getId() == city_id)
 		      {
-			//change the owner to *pit
+			//change the owner to neutral 
+			(*cit).setPlayer(Playerlist::getInstance()->getNeutral());
 			(*cit).setBurnt(true);
 			break;
 		      }

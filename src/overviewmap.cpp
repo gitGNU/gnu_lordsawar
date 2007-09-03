@@ -282,7 +282,7 @@ void OverviewMap::draw()
     
     SDL_BlitSurface(static_surface, 0, surface, 0);
 
-    // Draw ruins as yellow boxes
+    // Draw ruins as a white dot
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
         it != Ruinlist::getInstance()->end(); it++)
     {

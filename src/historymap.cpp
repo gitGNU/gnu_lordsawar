@@ -46,14 +46,14 @@ void HistoryMap::drawCities()
   for (; it != d_clist->end(); it++)
   {
       SDL_Surface *tmp;
-      if (it->isFogged())
+      if ((*it).isFogged())
         continue;
-      if (it->isBurnt() == true)
+      if ((*it).isBurnt() == true)
         tmp = gc->getSmallRuinedCityPic();
       else
-        tmp = gc->getShieldPic(0, it->getPlayer());
+        tmp = gc->getShieldPic(0, (*it).getPlayer());
   
-      Vector<int> pos = it->getPos();
+      Vector<int> pos = (*it).getPos();
       pos = mapToSurface(pos);
       SDL_Rect r;
       r.x = pos.x - (tmp->w/2);
@@ -67,5 +67,6 @@ void HistoryMap::drawCities()
 void HistoryMap::updateCities (ObjectList<City> *clist)
 {
   d_clist = clist;
+  draw();
   after_draw();
 }
