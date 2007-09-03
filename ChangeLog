@@ -1,3 +1,14 @@
+2007-09-03  Ben Asselstine
+
+	* added bar and line charts to history report
+	* players now start with a slightly random amount of gold
+	* changed city-attack semantics to have the attacking stack step 
+	  into the city upon fight (makes history reporting easier)
+	* fixed crash when hero is slain at a ruin
+	* now remembering filename from loaded game, so save-game works
+	  without prompting for a name
+	* games can now be loaded from within games
+
 2007-09-02  Ben Asselstine
 
 	* added new score event to the history
