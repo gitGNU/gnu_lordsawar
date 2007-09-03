@@ -1906,6 +1906,8 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 {
     std::auto_ptr<Gtk::Dialog> dialog;
     
+    while (g_main_context_iteration(NULL, FALSE));
+
     show_shield_turn();
     if (player->getType() != Player::HUMAN)
       return;
