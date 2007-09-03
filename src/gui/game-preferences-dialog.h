@@ -96,6 +96,7 @@ class GamePreferencesDialog
     };
     const PlayerTypeColumns player_type_columns;
     Glib::RefPtr<Gtk::ListStore> player_type_list;
+
     Gtk::CheckButton *quests_checkbutton;
     Gtk::CheckButton *view_enemies_checkbutton;
     Gtk::CheckButton *view_production_checkbutton;
