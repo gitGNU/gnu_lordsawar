@@ -35,6 +35,7 @@
 #include "../player.h"
 
 class Action;
+class BarChart;
 struct SDL_Surface;
 
 //
@@ -65,9 +66,13 @@ class ReportDialog: public sigc::trackable
     Gtk::Label *winning_label;
     Gtk::Notebook *report_notebook;
     Gtk::Alignment *army_alignment;
+    BarChart *army_chart;
     Gtk::Alignment *city_alignment;
+    BarChart *city_chart;
     Gtk::Alignment *gold_alignment;
+    BarChart *gold_chart;
     Gtk::Alignment *winning_alignment;
+    BarChart *winning_chart;
 
     Player *d_player;
     void on_army_map_changed(SDL_Surface *map);

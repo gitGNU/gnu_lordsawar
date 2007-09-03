@@ -721,6 +721,12 @@ bool CreateScenario::setupPlayers()
 {
     debug("CreateScenario::setupPlayers")
 
+    Playerlist *plist = Playerlist::getInstance();
+    Playerlist::iterator pit = plist->begin();
+    for (; pit != plist->end(); pit++)
+      {
+	(*pit)->setGold(1000 + ((rand() % 8) * 50));
+      }
     return true;
 }
 

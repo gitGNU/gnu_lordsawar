@@ -91,9 +91,6 @@ bool RealPlayer::initTurn()
 
 bool RealPlayer::startTurn()
 {
-    History_GoldTotal* gold = new History_GoldTotal();
-    gold->fillData(getGold());
-    d_history.push_back(gold);
     return true;
 }
 
@@ -310,6 +307,8 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
         {
             Fight::Result result;
             MoveResult *moveResult = new MoveResult(true);
+	    if (stackMoveOneStep(s))
+	      stepCount++;
             vector<Stack*> def_in_city = Stacklist::defendersInCity(city);
             if (!def_in_city.empty())
             {
@@ -325,8 +324,13 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
             else
                 result = Fight::ATTACKER_WON;
 
+            moveResult->setFightResult(result);
+
+            // We may only take the city if we have defeated all defenders
             if (result == Fight::ATTACKER_WON)
             {
+                invadeCity(city); //determine what to do with city
+
                 History_CityWon *item = new History_CityWon();
                 item->fillData(city);
                 d_history.push_back(item);
@@ -338,22 +342,9 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
 		    d_history.push_back(another);
 		  }
             }
-
-            moveResult->setFightResult(result);
-
-            // We may only take the city if we have defeated all defenders
-            if (Stacklist::defendersInCity(city).empty())
+            else
             {
-                if (stackMoveOneStep(s))
-                    stepCount++;
-                invadeCity(city); //determine what to do with city
-            }
-            else if (s)
-            {
-                // we didn't suceed in defeating the defenders, but at least our
-                // stack has survived. Subtract some MP because fighting takes
-                // time.
-                s->decrementMoves(2);
+                // we didn't suceed in defeating the defenders
                 //if this is a neutral city, and we're playing with 
                 //active neutral cities, AND it hasn't already been attacked
                 //then it's production gets turned on
@@ -510,8 +501,6 @@ Fight::Result ruinfight (Stack **attacker, Stack **defender)
       loser->getFirstHero()->setHP(0); /* only the hero dies */
     }
         
-  /* set the hp to == 0 on dead armies */
-
   return result;
 }
 
@@ -834,52 +823,40 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
             {
                 debug("Army: " << (*sit)->getName())
                 debug("Army: " << (*sit)->getXpReward())
-                if ((*sit)->getPlayer() == this && (*sit)->isHero())
+                if ((*sit)->isHero())
                 {
                     //one of our heroes died
                     //drop hero's stuff
-                    Hero *h = dynamic_cast<Hero *>(*sit);
+                    Hero *h = static_cast<Hero *>(*sit);
                     //now record the details of the death
                     GameMap *gm = GameMap::getInstance();
-                    Citylist *clist = Citylist::getInstance();
-                    Stacklist *slist = (*sit)->getPlayer()->getStacklist();
-                    Vector<int> pos = slist->getPosition(culprits[0]);
                     Maptile *tile = gm->getTile((*it)->getPos());
-                    City* target_city = clist->getObjectAt(pos);
                     if (tile->getBuilding() == Maptile::RUIN)
                     {
                         History_HeroKilledSearching* item;
                         item = new History_HeroKilledSearching();
                         item->fillData(h);
-                        d_history.push_back(item);
+                        h->getPlayer()->getHistorylist()->push_back(item);
                         heroDropAllItems (h, (*it)->getPos());
                     }
                     else if (tile->getBuilding() == Maptile::CITY)
                     {
+		        Citylist *clist = Citylist::getInstance();
                         City* c = clist->getObjectAt((*it)->getPos());
                         History_HeroKilledInCity* item;
                         item = new History_HeroKilledInCity();
                         item->fillData(h, c);
-                        d_history.push_back(item);
+                        h->getPlayer()->getHistorylist()->push_back(item);
                         heroDropAllItems (h, (*it)->getPos());
-                    }
-                    else if (target_city)
-                    {
-                        History_HeroKilledInCity* item;
-                        item = new History_HeroKilledInCity();
-                        item->fillData(h, target_city);
-                        d_history.push_back(item);
-                        heroDropAllItems (h, target_city->getPos());
                     }
                     else //somewhere else
                     {
                         History_HeroKilledInBattle* item;
                         item = new History_HeroKilledInBattle();
                         item->fillData(h);
-                        d_history.push_back(item);
+                        h->getPlayer()->getHistorylist()->push_back(item);
                         heroDropAllItems (h, (*it)->getPos());
                     }
-                  //now let's drop his stuff.
                 }
                 //Add the XP bonus to the total of the battle;
                 total+=(*sit)->getXpReward();

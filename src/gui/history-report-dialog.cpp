@@ -23,6 +23,7 @@
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
+#include "line-chart.h"
 #include "../ucompose.hpp"
 #include "../defs.h"
 #include "../File.h"
@@ -44,10 +45,10 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
   dialog.reset(d);
 
   generatePastCitylists();
-  generatePastGoldlists();
   generatePastEventlists();
+
   xml->get_widget("map_image", map_image);
-  historymap.reset(new HistoryMap(past_citylists[past_citylists.size()-1]));
+  historymap.reset(new HistoryMap(Citylist::getInstance()));
   historymap->map_changed.connect
     (sigc::mem_fun(this, &HistoryReportDialog::on_map_changed));
 
@@ -80,6 +81,26 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
   close_button->signal_clicked().connect
     (sigc::mem_fun(*this, &HistoryReportDialog::on_close_button));
   closing = false;
+
+  xml->get_widget("city_alignment", city_alignment);
+  xml->get_widget("gold_alignment", gold_alignment);
+  xml->get_widget("winner_alignment", winner_alignment);
+
+  Playerlist::iterator pit = Playerlist::getInstance()->begin();
+  Gdk::Color colour;
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      SDL_Color sdl = (*pit)->getColor();
+      colour.set_red(sdl.r * 255); 
+      colour.set_green(sdl.g * 255); 
+      colour.set_blue(sdl.b * 255);
+      d_colours.push_back(colour);
+    }
+  updateCityChart();
+  updateGoldChart();
+  updateWinningChart();
 
   fill_in_turn_info((Uint32)turn_scale->get_value());
 }
@@ -140,108 +161,6 @@ void HistoryReportDialog::generatePastEventlists()
       past_eventlists.push_back(*elist);
       std::list<History*> *new_elist = new std::list<History*>();
       elist = new_elist;
-      if (last_turn == true)
-	break;
-
-    }
-}
-
-void HistoryReportDialog::generatePastGoldlists()
-{
-  bool last_turn = false;
-  std::list<History *> *glist = new std::list<History *>();
-
-  //keep a set of pointers to remember how far we are into each player's history
-  std::list<History*> *hist[MAX_PLAYERS];
-  Playerlist::iterator pit = Playerlist::getInstance()->begin();
-  for (; pit != Playerlist::getInstance()->end(); ++pit)
-    hist[(*pit)->getId()] = (*pit)->getHistorylist();
-  std::list<History*>::iterator hit[MAX_PLAYERS];
-  pit = Playerlist::getInstance()->begin();
-  for (; pit != Playerlist::getInstance()->end(); ++pit)
-    hit[(*pit)->getId()] = hist[(*pit)->getId()]->begin();
-
-  while (1)
-    {
-      //now we see how much gold we were at this turn
-      pit = Playerlist::getInstance()->begin();
-      for (; pit != Playerlist::getInstance()->end(); ++pit)
-	{
-	  if (*pit == Playerlist::getInstance()->getNeutral())
-	    continue;
-	  //dump everything up to the next turn
-	  Uint32 id = (*pit)->getId();
-	  for (; hit[id] != hist[id]->end(); ++hit[id])
-	    {
-	      if ((*hit[id])->getType() == History::START_TURN)
-		{
-		  hit[id]++;
-		  break;
-		}
-	      if ((*hit[id])->getType() == History::GOLD_TOTAL)
-		{
-		  glist->push_back(*hit[id]);
-		  (*hit[id])->setPlayer(*pit);
-		}
-	    }
-	  if (hit[id] == hist[id]->end())
-	    last_turn = true;
-	}
-      //and add it to the list
-      past_goldlists.push_back(*glist);
-      std::list<History *> *new_glist = new std::list<History *>();
-      glist = new_glist;
-      if (last_turn == true)
-	break;
-
-    }
-}
-
-void HistoryReportDialog::generatePastWinninglists()
-{
-  bool last_turn = false;
-  std::list<History *> *glist = new std::list<History *>();
-
-  //keep a set of pointers to remember how far we are into each player's history
-  std::list<History*> *hist[MAX_PLAYERS];
-  Playerlist::iterator pit = Playerlist::getInstance()->begin();
-  for (; pit != Playerlist::getInstance()->end(); ++pit)
-    hist[(*pit)->getId()] = (*pit)->getHistorylist();
-  std::list<History*>::iterator hit[MAX_PLAYERS];
-  pit = Playerlist::getInstance()->begin();
-  for (; pit != Playerlist::getInstance()->end(); ++pit)
-    hit[(*pit)->getId()] = hist[(*pit)->getId()]->begin();
-
-  while (1)
-    {
-      //now we see how what rank we were at this turn
-      pit = Playerlist::getInstance()->begin();
-      for (; pit != Playerlist::getInstance()->end(); ++pit)
-	{
-	  if (*pit == Playerlist::getInstance()->getNeutral())
-	    continue;
-	  //dump everything up to the next turn
-	  Uint32 id = (*pit)->getId();
-	  for (; hit[id] != hist[id]->end(); ++hit[id])
-	    {
-	      if ((*hit[id])->getType() == History::START_TURN)
-		{
-		  hit[id]++;
-		  break;
-		}
-	      if ((*hit[id])->getType() == History::SCORE)
-		{
-		  glist->push_back(*hit[id]);
-		  (*hit[id])->setPlayer(*pit);
-		}
-	    }
-	  if (hit[id] == hist[id]->end())
-	    last_turn = true;
-	}
-      //and add it to the list
-      past_ranklists.push_back(*glist);
-      std::list<History *> *new_glist = new std::list<History *>();
-      glist = new_glist;
       if (last_turn == true)
 	break;
 
@@ -483,3 +402,98 @@ void HistoryReportDialog::on_close_button()
   //and then remove this function, and the closing variable too.
 }
 
+void HistoryReportDialog::updateCityChart()
+{
+  std::list<std::list<Uint32> >lines;
+  // go through the past city list
+  Playerlist::iterator pit = Playerlist::getInstance()->begin();
+  Gdk::Color colour;
+  pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      //go through the past city lists, searching for cities owned by this
+      //player
+  
+      std::list<Uint32> line;
+      for (unsigned int i = 0; i < past_citylists.size(); i++)
+	{
+	  Uint32 total_cities = 0;
+	  ObjectList<City>::iterator it = past_citylists[i]->begin();
+	  for (; it != past_citylists[i]->end(); it++)
+	    {
+	      if ((*it).getPlayer() == *pit)
+		total_cities++;
+	    }
+	  line.push_back(total_cities);
+	}
+
+      line.push_back(Citylist::getInstance()->countCities(*pit));
+      lines.push_back(line);
+
+    }
+  city_chart = new LineChart(lines, d_colours, Citylist::getInstance()->size());
+  city_alignment->add(*manage(city_chart));
+}
+
+void HistoryReportDialog::updateGoldChart()
+{
+  std::list<std::list<Uint32> >lines;
+  //go through the history list looking for gold events, per player
+  Playerlist::iterator pit = Playerlist::getInstance()->begin();
+  Gdk::Color colour;
+  pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      std::list<History*> *hist = (*pit)->getHistorylist();
+      std::list<History*>::iterator hit = hist->begin();
+      std::list<Uint32> line;
+      for (; hit != hist->end(); hit++)
+	{
+	  if ((*hit)->getType() == History::GOLD_TOTAL)
+	    {
+	      History_GoldTotal *event = static_cast<History_GoldTotal*>(*hit);
+	      line.push_back (event->getGold());
+	    }
+	}
+      line.push_back ((Uint32)(*pit)->getGold());
+      if (line.size() > 0)
+	lines.push_back(line);
+    }
+
+  gold_chart = new LineChart(lines, d_colours, 0);
+  gold_alignment->add(*manage(gold_chart));
+}
+
+void HistoryReportDialog::updateWinningChart()
+{
+  std::list<std::list<Uint32> >lines;
+  //go through the history list looking for score events, per player
+  Playerlist::iterator pit = Playerlist::getInstance()->begin();
+  Gdk::Color colour;
+  pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      std::list<History*> *hist = (*pit)->getHistorylist();
+      std::list<History*>::iterator hit = hist->begin();
+      std::list<Uint32> line;
+      for (; hit != hist->end(); hit++)
+	{
+	  if ((*hit)->getType() == History::SCORE)
+	    {
+	      History_Score *event = static_cast<History_Score*>(*hit);
+	      line.push_back (event->getScore());
+	    }
+	}
+      line.push_back ((Uint32)(*pit)->getScore());
+      if (line.size() > 0)
+	lines.push_back(line);
+    }
+  rank_chart = new LineChart(lines, d_colours, 100);
+  winner_alignment->add(*manage(rank_chart));
+}

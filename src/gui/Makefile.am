@@ -27,6 +27,8 @@ liblwgui_a_SOURCES = \
     load-scenario-dialog.cpp load-scenario-dialog.h \
     quest-assigned-dialog.cpp quest-assigned-dialog.h \
     quest-completed-dialog.cpp quest-completed-dialog.h \
+    bar-chart.cpp bar-chart.h \
+    line-chart.cpp line-chart.h \
     main.cpp main.h \
     quest-report-dialog.cpp quest-report-dialog.h \
     preferences-dialog.cpp preferences-dialog.h \

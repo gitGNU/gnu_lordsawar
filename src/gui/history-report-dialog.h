@@ -26,6 +26,9 @@
 #include <gtkmm/liststore.h>
 #include <gtkmm/treemodelcolumn.h>
 #include <gtkmm/treeview.h>
+#include <gtkmm/alignment.h>
+
+#include "line-chart.h"
 
 #include "../ObjectList.h"
 #include "../historymap.h"
@@ -44,9 +47,7 @@ class HistoryReportDialog: public sigc::trackable
     HistoryReportDialog(Player *p, HistoryReportType type);
 
     void generatePastCitylists();
-    void generatePastGoldlists();
     void generatePastEventlists();
-    void generatePastWinninglists();
     void set_parent_window(Gtk::Window &parent);
 
     void run();
@@ -61,13 +62,21 @@ class HistoryReportDialog: public sigc::trackable
     Gtk::Label *city_label;
     Gtk::Label *gold_label;
     Gtk::Label *winner_label;
+    Gtk::Alignment *city_alignment;
+    Gtk::Alignment *gold_alignment;
+    Gtk::Alignment *winner_alignment;
 
     std::vector<ObjectList<City>* > past_citylists;
+    LineChart *city_chart;
     std::vector<std::list<History *> > past_eventlists;
     std::vector<std::list<History *> > past_goldlists;
+    LineChart *gold_chart;
     std::vector<std::list<History *> > past_ranklists;
+    LineChart *rank_chart;
 
     Gtk::Image *map_image;
+  
+    std::list<Gdk::Color> d_colours; //player colours
     
     Gtk::TreeView *events_treeview;
 
@@ -88,6 +97,9 @@ class HistoryReportDialog: public sigc::trackable
     void on_turn_changed(Gtk::Scale *scale);
     void fill_in_turn_info(Uint32 turn);
     void on_switch_page(GtkNotebookPage *page, guint number);
+    void updateCityChart();
+    void updateGoldChart();
+    void updateWinningChart();
 
     bool closing;
 };

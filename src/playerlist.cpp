@@ -292,11 +292,15 @@ void Playerlist::calculateWinners()
 	  ((float)((float) clist->countCities(*it)/ (float)total_cities) * 70) +
 	  ((float)((float) (*it)->getGold() / (float)total_gold) * 10) +
 	  ((float)((float) (*it)->getStacklist()->countArmies() / 
-	    (float)total_armies) * 20);
+		   (float)total_armies) * 20);
 
 	History_Score *item = new History_Score();
 	item->fillData(score);
 	(*it)->getHistorylist()->push_back(item);
+
+	History_GoldTotal* gold = new History_GoldTotal();
+	gold->fillData((*it)->getGold());
+	(*it)->getHistorylist()->push_back(gold);
       }
 
     return;

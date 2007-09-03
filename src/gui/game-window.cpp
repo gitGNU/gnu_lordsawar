@@ -384,6 +384,7 @@ void GameWindow::new_game(GameParameters g)
 
 void GameWindow::load_game(std::string file_path)
 {
+    current_save_filename = file_path;
     setup_game(file_path);
     game->loadGame();
 }
@@ -1341,7 +1342,7 @@ void GameWindow::on_ruinfight_started(Stack *attackers, Stack *defenders)
     xml->get_widget("label", label);
     Glib::ustring s = label->get_text();
     s = "\n\n";
-    s += attackers->getFirstHero()->getName() + " encounters a ";
+    s += attackers->getFirstHero()->getName() + " encounters some ";
     s += defenders->getStrongestArmy()->getName() + "...";
     label->set_text(s);
 

@@ -23,6 +23,7 @@
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
+#include "bar-chart.h"
 #include "../ucompose.hpp"
 #include "../defs.h"
 #include "../File.h"
@@ -197,6 +198,9 @@ void ReportDialog::fill_in_info()
 
 void ReportDialog::updateArmyChart()
 {
+  std::list<Uint32> bars;
+  std::list<Gdk::Color> colours;
+  Gdk::Color colour;
   Glib::ustring s;
   Uint32 total;
   Playerlist::iterator pit = Playerlist::getInstance()->begin();
@@ -207,6 +211,10 @@ void ReportDialog::updateArmyChart()
       total = 0;
       total = (*pit)->getStacklist()->countArmies();
       fprintf (stderr,"player %s has %d armies\n", (*pit)->getName().c_str(), total);
+      bars.push_back(total);
+      SDL_Color sdl = (*pit)->getColor();
+      colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
+      colours.push_back(colour);
       if (*pit == d_player)
 	{
 	  s = String::ucompose(ngettext("You have %1 army!",
@@ -216,10 +224,15 @@ void ReportDialog::updateArmyChart()
 	}
     }
 
+  army_chart = new BarChart(bars, colours);
+  army_alignment->add(*manage(army_chart));
 
 }
 void ReportDialog::updateCityChart()
 {
+  std::list<Uint32> bars;
+  std::list<Gdk::Color> colours;
+  Gdk::Color colour;
   Glib::ustring s;
   Uint32 total;
   Playerlist::iterator pit = Playerlist::getInstance()->begin();
@@ -231,6 +244,10 @@ void ReportDialog::updateCityChart()
 	fprintf (stderr,"player %s has %d cities\n", (*pit)->getName().c_str(), 
 		 total);
 
+      bars.push_back(total);
+      SDL_Color sdl = (*pit)->getColor();
+      colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
+      colours.push_back(colour);
       if (*pit == d_player)
 	{
 	  s = String::ucompose(ngettext("You have %1 city!",
@@ -240,9 +257,15 @@ void ReportDialog::updateCityChart()
 	}
 
     }
+  city_chart = new BarChart(bars, colours);
+  city_alignment->add(*manage(city_chart));
 }
+
 void ReportDialog::updateGoldChart()
 {
+  std::list<Uint32> bars;
+  std::list<Gdk::Color> colours;
+  Gdk::Color colour;
   Glib::ustring s;
   Uint32 total;
   Playerlist::iterator pit = Playerlist::getInstance()->begin();
@@ -253,6 +276,10 @@ void ReportDialog::updateGoldChart()
       total = (*pit)->getGold();
       fprintf (stderr,"player %s has %d gold\n", (*pit)->getName().c_str(), 
 	       total);
+      bars.push_back(total);
+      SDL_Color sdl = (*pit)->getColor();
+      colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
+      colours.push_back(colour);
       if (*pit == d_player)
 	{
 	  s = String::ucompose(ngettext("You have %1 gold piece!",
@@ -261,10 +288,15 @@ void ReportDialog::updateGoldChart()
 	  gold_label->set_text(s);
 	}
     }
+  gold_chart = new BarChart(bars, colours);
+  gold_alignment->add(*manage(gold_chart));
 }
 
 void ReportDialog::updateWinningChart()
 {
+  std::list<Uint32> bars;
+  std::list<Gdk::Color> colours;
+  Gdk::Color colour;
   Glib::ustring s;
   char* rank_strings[MAX_PLAYERS] =
     {
@@ -280,6 +312,10 @@ void ReportDialog::updateWinningChart()
       if (*pit == Playerlist::getInstance()->getNeutral())
 	continue;
       score = (*pit)->getScore();
+      bars.push_back(score);
+      SDL_Color sdl = (*pit)->getColor();
+      colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
+      colours.push_back(colour);
       fprintf (stderr,"player %s has a score of %d\n", (*pit)->getName().c_str(), 
 	       score);
       if (player_score < score)
@@ -287,7 +323,10 @@ void ReportDialog::updateWinningChart()
     }
   s = String::ucompose(_("You are coming %1"), rank_strings[rank]);
   winning_label->set_text(s);
+  winning_chart = new BarChart(bars, colours);
+  winning_alignment->add(*manage(winning_chart));
 }
+
 void ReportDialog::addProduction(const Action *action)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();

@@ -105,7 +105,6 @@
 
 	  <child>
 	    <widget class="GtkVBox" id="right_vbox">
-	      <property name="width_request">252</property>
 	      <property name="visible">True</property>
 	      <property name="homogeneous">False</property>
 	      <property name="spacing">12</property>
@@ -160,15 +159,15 @@
 			  <property name="yscale">1</property>
 			  <property name="top_padding">0</property>
 			  <property name="bottom_padding">0</property>
-			  <property name="left_padding">0</property>
-			  <property name="right_padding">0</property>
+			  <property name="left_padding">10</property>
+			  <property name="right_padding">10</property>
 
 			  <child>
 			    <placeholder/>
 			  </child>
 			</widget>
 			<packing>
-			  <property name="padding">0</property>
+			  <property name="padding">5</property>
 			  <property name="expand">True</property>
 			  <property name="fill">True</property>
 			</packing>
@@ -268,15 +267,15 @@
 			  <property name="yscale">1</property>
 			  <property name="top_padding">0</property>
 			  <property name="bottom_padding">0</property>
-			  <property name="left_padding">0</property>
-			  <property name="right_padding">0</property>
+			  <property name="left_padding">10</property>
+			  <property name="right_padding">10</property>
 
 			  <child>
 			    <placeholder/>
 			  </child>
 			</widget>
 			<packing>
-			  <property name="padding">0</property>
+			  <property name="padding">5</property>
 			  <property name="expand">True</property>
 			  <property name="fill">True</property>
 			</packing>
@@ -376,15 +375,15 @@
 			  <property name="yscale">1</property>
 			  <property name="top_padding">0</property>
 			  <property name="bottom_padding">0</property>
-			  <property name="left_padding">0</property>
-			  <property name="right_padding">0</property>
+			  <property name="left_padding">10</property>
+			  <property name="right_padding">10</property>
 
 			  <child>
 			    <placeholder/>
 			  </child>
 			</widget>
 			<packing>
-			  <property name="padding">0</property>
+			  <property name="padding">5</property>
 			  <property name="expand">True</property>
 			  <property name="fill">True</property>
 			</packing>
@@ -599,15 +598,15 @@
 			  <property name="yscale">1</property>
 			  <property name="top_padding">0</property>
 			  <property name="bottom_padding">0</property>
-			  <property name="left_padding">0</property>
-			  <property name="right_padding">0</property>
+			  <property name="left_padding">10</property>
+			  <property name="right_padding">10</property>
 
 			  <child>
 			    <placeholder/>
 			  </child>
 			</widget>
 			<packing>
-			  <property name="padding">0</property>
+			  <property name="padding">5</property>
 			  <property name="expand">True</property>
 			  <property name="fill">True</property>
 			</packing>

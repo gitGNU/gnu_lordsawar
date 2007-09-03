@@ -163,6 +163,7 @@ class CreateScenario
         //! Creates the map and distributes cities, temples and ruins
         bool createMap();
 
+
         //! Distributes the players over the map
         bool distributePlayers();
 
@@ -178,7 +179,7 @@ class CreateScenario
         //! Set up signposts
         bool setupSignposts();
 
-        //! Do some setup concerning the players (grant each a hero etc.)
+        //! Do some setup concerning the players (give them money)
         bool setupPlayers();
 
         /** Loads a list of possible city, ruin or temple names
