@@ -28,13 +28,18 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
 
     unsigned int lw = 10;
     Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
-    cr->set_line_width((double)lw);
 
     // clip to the area indicated by the expose event so that we only redraw
     // the portion of the window that needs to be redrawn
     cr->rectangle(event->area.x, event->area.y,
             event->area.width, event->area.height);
     cr->clip();
+    cr->set_source_rgb (0.8, 0.8, 0.8);
+    cr->set_line_width(1000.0);
+    cr->move_to(0,0);
+    cr->line_to(width,height);
+    cr->stroke();
+    cr->set_line_width((double)lw);
 
     unsigned int max = 0;
     std::list<unsigned int>::iterator bit = d_bars.begin();

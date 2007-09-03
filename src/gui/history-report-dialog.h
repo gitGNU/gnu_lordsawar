@@ -46,8 +46,11 @@ class HistoryReportDialog: public sigc::trackable
     enum HistoryReportType {CITY = 0, EVENTS, GOLD, WINNING};
     HistoryReportDialog(Player *p, HistoryReportType type);
 
-    void generatePastCitylists();
-    void generatePastEventlists();
+    void generatePastCitylists(); //data for map
+    void generatePastCityCounts(); //data for chart
+    void generatePastGoldCounts(); //data for chart
+    void generatePastWinningCounts(); //data for chart
+    void generatePastEventlists(); //data for treeview
     void set_parent_window(Gtk::Window &parent);
 
     void run();
@@ -69,9 +72,10 @@ class HistoryReportDialog: public sigc::trackable
     std::vector<ObjectList<City>* > past_citylists;
     LineChart *city_chart;
     std::vector<std::list<History *> > past_eventlists;
-    std::vector<std::list<History *> > past_goldlists;
+    std::list<std::list<Uint32> > past_citycounts;
+    std::list<std::list<Uint32> > past_goldcounts;
     LineChart *gold_chart;
-    std::vector<std::list<History *> > past_ranklists;
+    std::list<std::list<Uint32> > past_rankcounts;
     LineChart *rank_chart;
 
     Gtk::Image *map_image;
@@ -97,9 +101,6 @@ class HistoryReportDialog: public sigc::trackable
     void on_turn_changed(Gtk::Scale *scale);
     void fill_in_turn_info(Uint32 turn);
     void on_switch_page(GtkNotebookPage *page, guint number);
-    void updateCityChart();
-    void updateGoldChart();
-    void updateWinningChart();
 
     bool closing;
 };

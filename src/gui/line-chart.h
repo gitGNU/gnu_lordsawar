@@ -14,6 +14,8 @@ public:
     LineChart(std::list<std::list<unsigned int> > lines, std::list<Gdk::Color> colours, unsigned int max_height_value);
     virtual ~LineChart();
 
+    void set_x_indicator(int x);
+
 protected:
     //Override default signal handler:
     virtual bool on_expose_event(GdkEventExpose* event);
@@ -21,6 +23,7 @@ private:
     std::list<std::list<unsigned int> > d_lines;
     std::list<Gdk::Color> d_colours;
     unsigned int d_max_height_value;
+    int d_x_indicator;
 };
 
 #endif

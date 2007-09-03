@@ -6,6 +6,7 @@ LineChart::LineChart(std::list<std::list<unsigned int> > lines, std::list<Gdk::C
   d_lines = lines;
   d_colours = colours;
   d_max_height_value = max_height_value;
+  d_x_indicator = -1;
 }
 
 LineChart::~LineChart()
@@ -30,13 +31,21 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     int origin_y = height;
 
     Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
-    cr->set_line_width(1.0);
+      
+
 
     // clip to the area indicated by the expose event so that we only redraw
     // the portion of the window that needs to be redrawn
     cr->rectangle(event->area.x, event->area.y,
             event->area.width, event->area.height);
     cr->clip();
+    cr->set_source_rgb (0.8, 0.8, 0.8);
+    cr->set_line_width(1000.0);
+    cr->move_to(0,0);
+    cr->line_to(width,height);
+    cr->stroke();
+
+    cr->set_line_width(1.0);
     //loop through the outer list, and operate on the inner lists
     unsigned int max_turn = 0;
     std::list<std::list<unsigned int> >::iterator line = d_lines.begin();
@@ -80,9 +89,35 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
 	cr->stroke();
       }
 
+    if (d_x_indicator > -1 && d_x_indicator <= max_turn)
+      {
+	//draw a line at turn x
+	cr->set_source_rgb(0.0, 0.0, 0.0);
+	cr->move_to(((float)d_x_indicator/ (float)max_turn) * width, 0);
+	cr->line_to(((float)d_x_indicator/ (float)max_turn) * width, height);
+	cr->stroke();
+      }
   }
 
   //FIXME: add a horizontal axis, put some ticks on it, and label it.
   //FIXME: add a vertical axis, put some ticks on it, and label it.
   return true;
+}
+
+void LineChart::set_x_indicator(int x)
+{
+  d_x_indicator = x;
+  Glib::RefPtr<Gdk::Window> window = get_window();
+  if(window)
+    {
+      Gtk::Allocation allocation = get_allocation();
+      const int width = allocation.get_width();
+      const int height = allocation.get_height();
+      GdkEventExpose event;
+      event.area.x = 0;
+      event.area.y = 0;
+      event.area.height = height;
+      event.area.width = width;
+      on_expose_event(&event);
+    }
 }

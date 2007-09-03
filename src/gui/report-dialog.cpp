@@ -210,7 +210,6 @@ void ReportDialog::updateArmyChart()
 	continue;
       total = 0;
       total = (*pit)->getStacklist()->countArmies();
-      fprintf (stderr,"player %s has %d armies\n", (*pit)->getName().c_str(), total);
       bars.push_back(total);
       SDL_Color sdl = (*pit)->getColor();
       colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
@@ -241,8 +240,6 @@ void ReportDialog::updateCityChart()
       if (*pit == Playerlist::getInstance()->getNeutral())
 	continue;
       total = Citylist::getInstance()->countCities(*pit);
-	fprintf (stderr,"player %s has %d cities\n", (*pit)->getName().c_str(), 
-		 total);
 
       bars.push_back(total);
       SDL_Color sdl = (*pit)->getColor();
@@ -274,8 +271,6 @@ void ReportDialog::updateGoldChart()
       if (*pit == Playerlist::getInstance()->getNeutral())
 	continue;
       total = (*pit)->getGold();
-      fprintf (stderr,"player %s has %d gold\n", (*pit)->getName().c_str(), 
-	       total);
       bars.push_back(total);
       SDL_Color sdl = (*pit)->getColor();
       colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
@@ -292,20 +287,31 @@ void ReportDialog::updateGoldChart()
   gold_alignment->add(*manage(gold_chart));
 }
 
+std::string ReportDialog::calculateRank(std::list<Uint32> scores, Uint32 score)
+{
+  char* rank_strings[MAX_PLAYERS] =
+    {
+      _("first"), _("second"), _("third"), _("fourth"), _("fifth"),
+      _("sixth"), _("seventh"), _("eighth"),
+    };
+  Uint32 rank = 0;
+  std::list<Uint32>::iterator it = scores.begin();
+  for (; it != scores.end(); it++)
+    {
+      if (score < *it)
+	rank++;
+    }
+  Glib::ustring s = String::ucompose(_("%1"), rank_strings[rank]);
+  return s;
+}
+
 void ReportDialog::updateWinningChart()
 {
   std::list<Uint32> bars;
   std::list<Gdk::Color> colours;
   Gdk::Color colour;
   Glib::ustring s;
-  char* rank_strings[MAX_PLAYERS] =
-    {
-      _("first"), _("second"), _("third"), _("fourth"), _("fifth"),
-      _("sixth"), _("seventh"), _("eighth"),
-    };
   Playerlist::iterator pit = Playerlist::getInstance()->begin();
-  Uint32 player_score = d_player->getScore();
-  Uint32 rank = 0;
   Uint32 score;
   for (; pit != Playerlist::getInstance()->end(); ++pit)
     {
@@ -316,12 +322,8 @@ void ReportDialog::updateWinningChart()
       SDL_Color sdl = (*pit)->getColor();
       colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
       colours.push_back(colour);
-      fprintf (stderr,"player %s has a score of %d\n", (*pit)->getName().c_str(), 
-	       score);
-      if (player_score < score)
-	rank++;
     }
-  s = String::ucompose(_("You are coming %1"), rank_strings[rank]);
+  s = String::ucompose(_("You are coming %1"), calculateRank(bars, d_player->getScore()));
   winning_label->set_text(s);
   winning_chart = new BarChart(bars, colours);
   winning_alignment->add(*manage(winning_chart));
