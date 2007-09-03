@@ -379,6 +379,7 @@ void GameWindow::new_game(GameParameters g)
     }
 
     setup_game(g.map_path);
+    setup_signals();
     game->startGame();
 }
 
@@ -386,6 +387,7 @@ void GameWindow::load_game(std::string file_path)
 {
     current_save_filename = file_path;
     setup_game(file_path);
+    setup_signals();
     game->loadGame();
 }
 
@@ -409,22 +411,11 @@ namespace
     }
 }
 
-void GameWindow::setup_game(std::string file_path)
+void GameWindow::setup_signals()
 {
-    stop_game();
-    
-    bool broken;
-    GameScenario* game_scenario = new GameScenario(file_path, broken);
-    
-    if (broken)
-	// FIXME: we should not die here, but simply return to the splash screen
-	show_fatal_error(_("Map was broken when re-reading. Exiting..."));
-
-    Sound::getInstance()->haltMusic(false);
-    Sound::getInstance()->enableBackground();
-
-    game.reset(new Game(game_scenario));
-	
+  static bool setup = false;
+  if (setup == true)
+    return;
     // connect signals to and from control panel buttons
     setup_button(prev_button,
 		 sigc::mem_fun(game.get(), &Game::select_prev_stack),
@@ -545,6 +536,25 @@ void GameWindow::setup_game(std::string file_path)
     q->quest_expired.connect(
 	sigc::mem_fun(this, &GameWindow::on_quest_expired));
 
+    setup=true;
+}
+
+void GameWindow::setup_game(std::string file_path)
+{
+    stop_game();
+    
+    bool broken;
+    GameScenario* game_scenario = new GameScenario(file_path, broken);
+    
+    if (broken)
+	// FIXME: we should not die here, but simply return to the splash screen
+	show_fatal_error(_("Map was broken when re-reading. Exiting..."));
+
+    Sound::getInstance()->haltMusic(false);
+    Sound::getInstance()->enableBackground();
+
+    game.reset(new Game(game_scenario));
+	
   show_shield_turn();
 }
 

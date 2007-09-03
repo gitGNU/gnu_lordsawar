@@ -233,6 +233,7 @@ class GameWindow: public sigc::trackable
     void hide_map_tip();
 
     void setup_game(std::string file_path);
+    void setup_signals();
     void stop_game();
     
 public:
