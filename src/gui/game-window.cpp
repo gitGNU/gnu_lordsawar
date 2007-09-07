@@ -391,406 +391,431 @@ void GameWindow::load_game(std::string file_path)
     game->loadGame();
 }
 
-namespace 
+void GameWindow::setup_button(Gtk::Button *button,
+			      sigc::slot<void> slot,
+			      sigc::signal<void, bool> &game_signal)
 {
-    // helpers for connecting control panel buttons and corresponding
-    // menu items.
-    void setup_button(Gtk::Button *button,
-		      sigc::slot<void> slot,
-		      sigc::signal<void, bool> &game_signal)
-    {
-	button->signal_clicked().connect(slot);
-	game_signal.connect(sigc::mem_fun(button, &Gtk::Widget::set_sensitive));
-    }
-    void setup_menuitem(Gtk::MenuItem *item,
-		      sigc::slot<void> slot,
-		      sigc::signal<void, bool> &game_signal)
-    {
-	item->signal_activate().connect(slot);
-	game_signal.connect(sigc::mem_fun(item, &Gtk::Widget::set_sensitive));
-    }
+  connections.push_back (button->signal_clicked().connect(slot));
+  connections.push_back 
+    (game_signal.connect(sigc::mem_fun(button, &Gtk::Widget::set_sensitive)));
+}
+
+void GameWindow::setup_menuitem(Gtk::MenuItem *item,
+				sigc::slot<void> slot,
+				sigc::signal<void, bool> &game_signal)
+{
+  connections.push_back (item->signal_activate().connect(slot));
+  connections.push_back 
+    (game_signal.connect(sigc::mem_fun(item, &Gtk::Widget::set_sensitive)));
 }
 
 void GameWindow::setup_signals()
 {
-  static bool setup = false;
-  if (setup == true)
-    return;
-    // connect signals to and from control panel buttons
-    setup_button(prev_button,
-		 sigc::mem_fun(game.get(), &Game::select_prev_stack),
-		 game->can_select_prev_stack);
-    setup_button(next_button,
-		 sigc::mem_fun(game.get(), &Game::select_next_stack),
-		 game->can_select_next_stack);
-    setup_button(next_movable_button,
-		 sigc::mem_fun(game.get(), &Game::select_next_movable_stack),
-		 game->can_select_next_movable_stack);
-    setup_button(center_button,
-		 sigc::mem_fun(game.get(), &Game::center_selected_stack),
-		 game->can_center_selected_stack);
-    setup_button(defend_button,
-		 sigc::mem_fun(game.get(), &Game::defend_selected_stack),
-		 game->can_defend_selected_stack);
-    setup_button(search_button,
-		 sigc::mem_fun(game.get(), &Game::search_selected_stack),
-		 game->can_search_selected_stack);
-    setup_button(move_button,
-		 sigc::mem_fun(game.get(), &Game::move_selected_stack),
-		 game->can_move_selected_stack);
-    setup_button(move_all_button,
+  // get rid of the connections that might be still around from last time
+  std::list<sigc::connection>::iterator it = connections.begin();
+  for (; it != connections.end(); it++) 
+    (*it).disconnect();
+  connections.clear();
+
+  setup_button(prev_button,
+	       sigc::mem_fun(game.get(), &Game::select_prev_stack),
+	       game->can_select_prev_stack);
+  setup_button(next_button,
+	       sigc::mem_fun(game.get(), &Game::select_next_stack),
+	       game->can_select_next_stack);
+  setup_button(next_movable_button,
+	       sigc::mem_fun(game.get(), &Game::select_next_movable_stack),
+	       game->can_select_next_movable_stack);
+  setup_button(center_button,
+	       sigc::mem_fun(game.get(), &Game::center_selected_stack),
+	       game->can_center_selected_stack);
+  setup_button(defend_button,
+	       sigc::mem_fun(game.get(), &Game::defend_selected_stack),
+	       game->can_defend_selected_stack);
+  setup_button(search_button,
+	       sigc::mem_fun(game.get(), &Game::search_selected_stack),
+	       game->can_search_selected_stack);
+  setup_button(move_button,
+	       sigc::mem_fun(game.get(), &Game::move_selected_stack),
+	       game->can_move_selected_stack);
+  setup_button(move_all_button,
+	       sigc::mem_fun(game.get(), &Game::move_all_stacks),
+	       game->can_move_all_stacks);
+  setup_menuitem(move_all_menuitem,
 		 sigc::mem_fun(game.get(), &Game::move_all_stacks),
 		 game->can_move_all_stacks);
-    setup_menuitem(move_all_menuitem,
-		   sigc::mem_fun(game.get(), &Game::move_all_stacks),
-		   game->can_move_all_stacks);
-    setup_button(end_turn_button,
+  setup_button(end_turn_button,
+	       sigc::mem_fun(game.get(), &Game::end_turn),
+	       game->can_end_turn);
+  setup_menuitem(end_turn_menuitem,
 		 sigc::mem_fun(game.get(), &Game::end_turn),
 		 game->can_end_turn);
-    setup_menuitem(end_turn_menuitem,
-		   sigc::mem_fun(game.get(), &Game::end_turn),
-		   game->can_end_turn);
-    setup_menuitem(disband_menuitem,
-	           sigc::mem_fun(*this, &GameWindow::on_disband_activated),
-		   game->can_disband_stack);
-    setup_menuitem(signpost_menuitem,
-	           sigc::mem_fun(*this, &GameWindow::on_signpost_activated),
-		   game->can_change_signpost);
-    setup_menuitem(search_menuitem,
-		   sigc::mem_fun(game.get(), &Game::search_selected_stack),
-		   game->can_search_selected_stack);
-    setup_menuitem(inspect_menuitem,
-	           sigc::mem_fun(*this, &GameWindow::on_inspect_activated),
-		   game->can_inspect_selected_stack);
-    setup_menuitem(plant_standard_menuitem,
-	           sigc::mem_fun(*this, 
-                                 &GameWindow::on_plant_standard_activated),
-		   game->can_plant_standard_selected_stack);
-    setup_menuitem(city_history_menuitem,
-	           sigc::mem_fun(*this, &GameWindow::on_city_history_activated),
-		   game->can_see_history);
-    setup_menuitem(gold_history_menuitem,
-	           sigc::mem_fun(*this, &GameWindow::on_gold_history_activated),
-		   game->can_see_history);
-    setup_menuitem(event_history_menuitem,
-	           sigc::mem_fun(*this, &GameWindow::on_event_history_activated),
-		   game->can_see_history);
-    setup_menuitem(winner_history_menuitem,
-	           sigc::mem_fun(*this, &GameWindow::on_winner_history_activated),
-		   game->can_see_history);
+  setup_menuitem(disband_menuitem,
+		 sigc::mem_fun(*this, &GameWindow::on_disband_activated),
+		 game->can_disband_stack);
+  setup_menuitem(signpost_menuitem,
+		 sigc::mem_fun(*this, &GameWindow::on_signpost_activated),
+		 game->can_change_signpost);
+  setup_menuitem(search_menuitem,
+		 sigc::mem_fun(game.get(), &Game::search_selected_stack),
+		 game->can_search_selected_stack);
+  setup_menuitem(inspect_menuitem,
+		 sigc::mem_fun(*this, &GameWindow::on_inspect_activated),
+		 game->can_inspect_selected_stack);
+  setup_menuitem(plant_standard_menuitem,
+		 sigc::mem_fun(*this, 
+			       &GameWindow::on_plant_standard_activated),
+		 game->can_plant_standard_selected_stack);
+  setup_menuitem(city_history_menuitem,
+		 sigc::mem_fun(*this, &GameWindow::on_city_history_activated),
+		 game->can_see_history);
+  setup_menuitem(gold_history_menuitem,
+		 sigc::mem_fun(*this, &GameWindow::on_gold_history_activated),
+		 game->can_see_history);
+  setup_menuitem(event_history_menuitem,
+		 sigc::mem_fun(*this, &GameWindow::on_event_history_activated),
+		 game->can_see_history);
+  setup_menuitem(winner_history_menuitem,
+		 sigc::mem_fun(*this, &GameWindow::on_winner_history_activated),
+		 game->can_see_history);
 
-    // setup game callbacks
-    game->sidebar_stats_changed.connect(
-	sigc::mem_fun(*this, &GameWindow::on_sidebar_stats_changed));
-    game->smallmap_changed.connect(
-	sigc::mem_fun(*this, &GameWindow::on_smallmap_changed));
-    game->stack_info_changed.connect(
-	sigc::mem_fun(*this, &GameWindow::on_stack_info_changed));
-    game->map_tip_changed.connect(
-	sigc::mem_fun(*this, &GameWindow::on_map_tip_changed));
-    game->stack_tip_changed.connect(
-	sigc::mem_fun(*this, &GameWindow::on_stack_tip_changed));
-    game->ruin_searched.connect(
-	sigc::mem_fun(*this, &GameWindow::on_ruin_searched));
-    game->fight_started.connect(
-	sigc::mem_fun(*this, &GameWindow::on_fight_started));
-    game->ruinfight_started.connect(
-	sigc::mem_fun(*this, &GameWindow::on_ruinfight_started));
-    game->ruinfight_finished.connect(
-	sigc::mem_fun(*this, &GameWindow::on_ruinfight_finished));
-    game->hero_offers_service.connect(
-	sigc::mem_fun(*this, &GameWindow::on_hero_offers_service));
-    game->temple_visited.connect(
-	sigc::mem_fun(*this, &GameWindow::on_temple_visited));
-    game->quest_assigned.connect(
-	sigc::mem_fun(*this, &GameWindow::on_quest_assigned));
-    game->city_defeated.connect(
-	sigc::mem_fun(*this, &GameWindow::on_city_defeated));
-    game->city_pillaged.connect(
-	sigc::mem_fun(*this, &GameWindow::on_city_pillaged));
-    game->city_sacked.connect(
-	sigc::mem_fun(*this, &GameWindow::on_city_sacked));
-    game->city_razed.connect(
-	sigc::mem_fun(*this, &GameWindow::on_city_razed));
-    game->city_visited.connect(
-	sigc::mem_fun(*this, &GameWindow::on_city_visited));
-    game->next_player_turn.connect(
-	sigc::mem_fun(*this, &GameWindow::on_next_player_turn));
-    game->hero_arrives.connect(
-	sigc::mem_fun(*this, &GameWindow::on_hero_brings_allies));
-    game->medal_awarded_to_army.connect(
-	sigc::mem_fun(*this, &GameWindow::on_medal_awarded_to_army));
-    game->army_gains_level.connect(
-	sigc::mem_fun(*this, &GameWindow::on_army_gains_level));
-    game->game_loaded.connect(
-	sigc::mem_fun(*this, &GameWindow::on_game_loaded));
-    game->game_over.connect(
-	sigc::mem_fun(*this, &GameWindow::on_game_over));
-    game->player_died.connect(
-	sigc::mem_fun(*this, &GameWindow::on_player_died));
+  // setup game callbacks
+  connections.push_back 
+    (game->sidebar_stats_changed.connect
+     (sigc::mem_fun(*this, &GameWindow::on_sidebar_stats_changed)));
+  connections.push_back
+    (game->smallmap_changed.connect
+     (sigc::mem_fun(*this, &GameWindow::on_smallmap_changed)));
+  connections.push_back
+    (game->stack_info_changed.connect
+     (sigc::mem_fun(*this, &GameWindow::on_stack_info_changed)));
+  connections.push_back
+    (game->map_tip_changed.connect
+     (sigc::mem_fun(*this, &GameWindow::on_map_tip_changed)));
+  connections.push_back
+    (game->stack_tip_changed.connect
+     (sigc::mem_fun(*this, &GameWindow::on_stack_tip_changed)));
+  connections.push_back
+    (game->ruin_searched.connect
+     (sigc::mem_fun(*this, &GameWindow::on_ruin_searched)));
+  connections.push_back
+    (game->fight_started.connect
+     (sigc::mem_fun(*this, &GameWindow::on_fight_started)));
+  connections.push_back
+    (game->ruinfight_started.connect
+     (sigc::mem_fun(*this, &GameWindow::on_ruinfight_started)));
+  connections.push_back
+    (game->ruinfight_finished.connect
+     (sigc::mem_fun(*this, &GameWindow::on_ruinfight_finished)));
+  connections.push_back
+    (game->hero_offers_service.connect
+     (sigc::mem_fun(*this, &GameWindow::on_hero_offers_service)));
+  connections.push_back
+    (game->temple_visited.connect
+     (sigc::mem_fun(*this, &GameWindow::on_temple_visited)));
+  connections.push_back
+    (game->quest_assigned.connect
+     (sigc::mem_fun(*this, &GameWindow::on_quest_assigned)));
+  connections.push_back
+    (game->city_defeated.connect
+     (sigc::mem_fun(*this, &GameWindow::on_city_defeated)));
+  connections.push_back
+    (game->city_pillaged.connect
+     (sigc::mem_fun(*this, &GameWindow::on_city_pillaged)));
+  connections.push_back
+    (game->city_sacked.connect
+     (sigc::mem_fun(*this, &GameWindow::on_city_sacked)));
+  connections.push_back
+    (game->city_razed.connect
+     (sigc::mem_fun(*this, &GameWindow::on_city_razed)));
+  connections.push_back
+    (game->city_visited.connect
+     (sigc::mem_fun(*this, &GameWindow::on_city_visited)));
+  connections.push_back
+    (game->next_player_turn.connect
+     (sigc::mem_fun(*this, &GameWindow::on_next_player_turn)));
+  connections.push_back
+    (game->hero_arrives.connect
+     (sigc::mem_fun(*this, &GameWindow::on_hero_brings_allies)));
+  connections.push_back
+    (game->medal_awarded_to_army.connect
+     (sigc::mem_fun(*this, &GameWindow::on_medal_awarded_to_army)));
+  connections.push_back
+    (game->army_gains_level.connect
+     (sigc::mem_fun(*this, &GameWindow::on_army_gains_level)));
+  connections.push_back
+    (game->game_loaded.connect
+     (sigc::mem_fun(*this, &GameWindow::on_game_loaded)));
+  connections.push_back
+    (game->game_over.connect
+     (sigc::mem_fun(*this, &GameWindow::on_game_over)));
+  connections.push_back
+    (game->player_died.connect
+     (sigc::mem_fun(*this, &GameWindow::on_player_died)));
 
-    // misc callbacks
-    QuestsManager *q = QuestsManager::getInstance();
-    q->quest_completed.connect(
-	sigc::mem_fun(this, &GameWindow::on_quest_completed));
-    q->quest_expired.connect(
-	sigc::mem_fun(this, &GameWindow::on_quest_expired));
+  // misc callbacks
+  QuestsManager *q = QuestsManager::getInstance();
+  connections.push_back
+    (q->quest_completed.connect
+     (sigc::mem_fun(this, &GameWindow::on_quest_completed)));
+  connections.push_back
+    (q->quest_expired.connect
+     (sigc::mem_fun(this, &GameWindow::on_quest_expired)));
 
-    setup=true;
 }
 
 void GameWindow::setup_game(std::string file_path)
 {
-    stop_game();
-    
-    bool broken;
-    GameScenario* game_scenario = new GameScenario(file_path, broken);
-    
-    if (broken)
-	// FIXME: we should not die here, but simply return to the splash screen
-	show_fatal_error(_("Map was broken when re-reading. Exiting..."));
+  stop_game();
 
-    Sound::getInstance()->haltMusic(false);
-    Sound::getInstance()->enableBackground();
+  bool broken;
+  GameScenario* game_scenario = new GameScenario(file_path, broken);
 
-    game.reset(new Game(game_scenario));
-	
+  if (broken)
+    // FIXME: we should not die here, but simply return to the splash screen
+    show_fatal_error(_("Map was broken when re-reading. Exiting..."));
+
+  Sound::getInstance()->haltMusic(false);
+  Sound::getInstance()->enableBackground();
+
+  game.reset(new Game(game_scenario));
+
   show_shield_turn();
 }
 
 bool GameWindow::on_delete_event(GdkEventAny *e)
 {
-    on_quit_activated();
-    
-    return true;
+  on_quit_activated();
+
+  return true;
 }
 
 bool GameWindow::on_sdl_mouse_button_event(GdkEventButton *e)
 {
-    if (e->type != GDK_BUTTON_PRESS && e->type != GDK_BUTTON_RELEASE)
-	return true;	// useless event
+  if (e->type != GDK_BUTTON_PRESS && e->type != GDK_BUTTON_RELEASE)
+    return true;	// useless event
 
-    if (game.get())
-	game->get_bigmap().mouse_button_event(to_input_event(e));
-    
-    return true;
+  if (game.get())
+    game->get_bigmap().mouse_button_event(to_input_event(e));
+
+  return true;
 }
 
 bool GameWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
 {
-    if (game.get())
-	game->get_bigmap().mouse_motion_event(to_input_event(e));
-    
-    return true;
+  if (game.get())
+    game->get_bigmap().mouse_motion_event(to_input_event(e));
+
+  return true;
 }
 
 bool GameWindow::on_sdl_key_event(GdkEventKey *e)
 {
 #if 0
-    // keypresses are not implemented in the bigmap at this point,
-    // to_input_event must also be defined to something sensible
-    if (game.get())
-	game->get_bigmap().key_press_event(to_input_event(e));
+  // keypresses are not implemented in the bigmap at this point,
+  // to_input_event must also be defined to something sensible
+  if (game.get())
+    game->get_bigmap().key_press_event(to_input_event(e));
 #endif
-    
-    return true;
+
+  return true;
 }
 
 bool GameWindow::on_map_mouse_button_event(GdkEventButton *e)
 {
-    if (e->type != GDK_BUTTON_PRESS && e->type != GDK_BUTTON_RELEASE)
-	return true;	// useless event
-    
-    if (game.get())
-	game->get_smallmap().mouse_button_event(to_input_event(e));
-    
-    return true;
+  if (e->type != GDK_BUTTON_PRESS && e->type != GDK_BUTTON_RELEASE)
+    return true;	// useless event
+
+  if (game.get())
+    game->get_smallmap().mouse_button_event(to_input_event(e));
+
+  return true;
 }
 
 bool GameWindow::on_map_mouse_motion_event(GdkEventMotion *e)
 {
-    if (game.get())
-	game->get_smallmap().mouse_motion_event(to_input_event(e));
-    
-    return true;
+  if (game.get())
+    game->get_smallmap().mouse_motion_event(to_input_event(e));
+
+  return true;
 }
 
 void GameWindow::on_sdl_surface_changed()
 {
-    if (!sdl_inited) {
-	sdl_inited = true;
-	sdl_initialized.emit();
-    }
+  if (!sdl_inited) {
+    sdl_inited = true;
+    sdl_initialized.emit();
+  }
 
-    if (game.get()) {
-	game->get_bigmap().screen_size_changed();
-	game->redraw();
-    }
+  if (game.get()) {
+    game->get_bigmap().screen_size_changed();
+    game->redraw();
+  }
 }
 
 void GameWindow::on_load_game_activated()
 {
-    Gtk::FileChooserDialog chooser(*window.get(), _("Choose Game to Load"));
-    Gtk::FileFilter sav_filter;
-    sav_filter.add_pattern("*.sav");
-    chooser.set_filter(sav_filter);
-    chooser.set_current_folder(Configuration::s_savePath);
+  Gtk::FileChooserDialog chooser(*window.get(), _("Choose Game to Load"));
+  Gtk::FileFilter sav_filter;
+  sav_filter.add_pattern("*.sav");
+  chooser.set_filter(sav_filter);
+  chooser.set_current_folder(Configuration::s_savePath);
 
-    chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
-    chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
-	
-    chooser.show_all();
-    int res = chooser.run();
-    
-    if (res == Gtk::RESPONSE_ACCEPT)
+  chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
+  chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+
+  chooser.show_all();
+  int res = chooser.run();
+
+  if (res == Gtk::RESPONSE_ACCEPT)
     {
-	std::string filename = chooser.get_filename();
-	chooser.hide();
-	load_game(filename);
+      std::string filename = chooser.get_filename();
+      chooser.hide();
+      load_game(filename);
     }
 }
 
 void GameWindow::on_save_game_activated()
 {
-    if (current_save_filename.empty())
-	on_save_game_as_activated();
-    else
+  if (current_save_filename.empty())
+    on_save_game_as_activated();
+  else
     {
-	if (game.get())
+      if (game.get())
 	{
-	    bool success = game->saveGame(current_save_filename);
-	    if (!success)
-		show_error(_("Game was not saved!"));
+	  bool success = game->saveGame(current_save_filename);
+	  if (!success)
+	    show_error(_("Game was not saved!"));
 	}
     }
 }
 
 void GameWindow::on_save_game_as_activated()
 {
-    Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
-				   Gtk::FILE_CHOOSER_ACTION_SAVE);
-    Gtk::FileFilter sav_filter;
-    sav_filter.add_pattern("*.sav");
-    chooser.set_filter(sav_filter);
-    chooser.set_current_folder(Configuration::s_savePath);
+  Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
+				 Gtk::FILE_CHOOSER_ACTION_SAVE);
+  Gtk::FileFilter sav_filter;
+  sav_filter.add_pattern("*.sav");
+  chooser.set_filter(sav_filter);
+  chooser.set_current_folder(Configuration::s_savePath);
 
-    chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
-    chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
-    
-    chooser.show_all();
-    int res = chooser.run();
-    
-    if (res == Gtk::RESPONSE_ACCEPT)
+  chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
+  chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+
+  chooser.show_all();
+  int res = chooser.run();
+
+  if (res == Gtk::RESPONSE_ACCEPT)
     {
-	std::string filename = chooser.get_filename();
-	chooser.hide();
+      std::string filename = chooser.get_filename();
+      chooser.hide();
 
-	current_save_filename = filename;
+      current_save_filename = filename;
 
-	if (game.get())
+      if (game.get())
 	{
-	    bool success = game->saveGame(current_save_filename);
-	    if (!success)
-		show_error(_("Error saving game!"));
+	  bool success = game->saveGame(current_save_filename);
+	  if (!success)
+	    show_error(_("Error saving game!"));
 	}
     }
 }
 
 void GameWindow::on_quit_activated()
 {
-    // FIXME: ask
-    bool end = true;
+  // FIXME: ask
+  bool end = true;
 
-    if (end) {
-	stop_game();
-	quit_requested.emit();
-    }
+  if (end) {
+    stop_game();
+    quit_requested.emit();
+  }
 }
 
 void GameWindow::on_quests_activated()
 {
-    Player *player = Playerlist::getActiveplayer();
-    std::vector<Quest*> quests
-	= QuestsManager::getInstance()->getPlayerQuests(player);
-    if (quests.size() > 0)
-      {
-        QuestReportDialog d(quests[0]);
-        d.set_parent_window(*window.get());
-        return d.run();
-      }
-    else //no quest!
-      {
-        QuestReportDialog d(NULL);
-        d.set_parent_window(*window.get());
-        return d.run();
-      }
+  Player *player = Playerlist::getActiveplayer();
+  std::vector<Quest*> quests
+    = QuestsManager::getInstance()->getPlayerQuests(player);
+  if (quests.size() > 0)
+    {
+      QuestReportDialog d(quests[0]);
+      d.set_parent_window(*window.get());
+      return d.run();
+    }
+  else //no quest!
+    {
+      QuestReportDialog d(NULL);
+      d.set_parent_window(*window.get());
+      return d.run();
+    }
 }
 
 void GameWindow::on_fullscreen_activated()
 {
-    if (fullscreen_menuitem->get_active())
-	window->fullscreen();
-    else
-	window->unfullscreen();
+  if (fullscreen_menuitem->get_active())
+    window->fullscreen();
+  else
+    window->unfullscreen();
 }
 
 void GameWindow::on_signpost_activated()
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/signpost-change-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(_("Signpost"));
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Stack *stack = Playerlist::getActiveplayer()->getActivestack();
-    if (!stack)
-      return;
-    Signpost *s = Signpostlist::getInstance()->getObjectAt(stack->getPos());
-    if (!s)
-      return;
-    Gtk::Label *l;
-    xml->get_widget("label", l);
-    l->set_text(_("Change the message on this sign:"));
-    Gtk::Entry *e;
-    xml->get_widget("message_entry", e);
-    e->set_text(s->getName());
-    dialog->show_all();
-    int response = dialog->run();
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/signpost-change-dialog.glade");
 
-    if (response == 0)
-      Playerlist::getActiveplayer()->signpostChange(s, e->get_text());
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_title(_("Signpost"));
+
+  Stack *stack = Playerlist::getActiveplayer()->getActivestack();
+  if (!stack)
+    return;
+  Signpost *s = Signpostlist::getInstance()->getObjectAt(stack->getPos());
+  if (!s)
+    return;
+  Gtk::Label *l;
+  xml->get_widget("label", l);
+  l->set_text(_("Change the message on this sign:"));
+  Gtk::Entry *e;
+  xml->get_widget("message_entry", e);
+  e->set_text(s->getName());
+  dialog->show_all();
+  int response = dialog->run();
+
+  if (response == 0)
+    Playerlist::getActiveplayer()->signpostChange(s, e->get_text());
 
   return;
 }
 
 void GameWindow::on_disband_activated()
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/disband-stack-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(_("Disband"));
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Label *l;
-    xml->get_widget("label", l);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/disband-stack-dialog.glade");
 
-    l->set_text(_("Are you sure you want to disband this group?"));
-    dialog->show_all();
-    int response = dialog->run();
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_title(_("Disband"));
+
+  Gtk::Label *l;
+  xml->get_widget("label", l);
+
+  l->set_text(_("Are you sure you want to disband this group?"));
+  dialog->show_all();
+  int response = dialog->run();
 
   if (response == 0) //disband the active stack
     Playerlist::getActiveplayer()->stackDisband(NULL);
@@ -800,24 +825,24 @@ void GameWindow::on_disband_activated()
 
 void GameWindow::on_resign_activated()
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/player-resign-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(_("Resign"));
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Label *l;
-    xml->get_widget("label", l);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/player-resign-dialog.glade");
 
-    l->set_text(_("Are you sure you want to resign?"));
-    dialog->show_all();
-    int response = dialog->run();
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_title(_("Resign"));
+
+  Gtk::Label *l;
+  xml->get_widget("label", l);
+
+  l->set_text(_("Are you sure you want to resign?"));
+  dialog->show_all();
+  int response = dialog->run();
 
   if (response == 0) //disband all stacks, raze all cities
     Playerlist::getActiveplayer()->resign();
@@ -827,672 +852,672 @@ void GameWindow::on_resign_activated()
 
 void GameWindow::on_preferences_activated()
 {
-    PreferencesDialog d;
-    d.set_parent_window(*window.get());
-    d.run();
+  PreferencesDialog d;
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_fight_order_activated()
 {
-    FightOrderDialog d(Playerlist::getActiveplayer());
-    d.set_parent_window(*window.get());
-    d.run();
+  FightOrderDialog d(Playerlist::getActiveplayer());
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_levels_activated()
 {
-    HeroLevelsDialog d(Playerlist::getActiveplayer());
-    d.set_parent_window(*window.get());
-    d.run();
+  HeroLevelsDialog d(Playerlist::getActiveplayer());
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_ruin_report_activated()
 {
-    Vector<int> pos;
-    pos.x = 0;
-    pos.y = 0;
-    if (currently_selected_stack)
-      pos = currently_selected_stack->getPos();
-    
-    RuinReportDialog d(pos);
-    d.set_parent_window(*window.get());
-    d.run();
+  Vector<int> pos;
+  pos.x = 0;
+  pos.y = 0;
+  if (currently_selected_stack)
+    pos = currently_selected_stack->getPos();
+
+  RuinReportDialog d(pos);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_army_bonus_activated()
 {
-    ArmyBonusDialog d(Playerlist::getActiveplayer());
-    d.set_parent_window(*window.get());
-    d.run();
+  ArmyBonusDialog d(Playerlist::getActiveplayer());
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_item_bonus_activated()
 {
-    ItemBonusDialog d;
-    d.set_parent_window(*window.get());
-    d.run();
+  ItemBonusDialog d;
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_army_report_activated()
 {
-    ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::ARMY);
-    d.set_parent_window(*window.get());
-    d.run();
+  ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::ARMY);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_city_report_activated()
 {
-    ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::CITY);
-    d.set_parent_window(*window.get());
-    d.run();
+  ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::CITY);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_gold_report_activated()
 {
-    ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::GOLD);
-    d.set_parent_window(*window.get());
-    d.run();
+  ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::GOLD);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_production_report_activated()
 {
-    ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::PRODUCTION);
-    d.set_parent_window(*window.get());
-    d.run();
+  ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::PRODUCTION);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_winning_report_activated()
 {
-    ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::WINNING);
-    d.set_parent_window(*window.get());
-    d.run();
+  ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::WINNING);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 void GameWindow::on_city_history_activated()
 {
-    HistoryReportDialog d(Playerlist::getActiveplayer(), 
-			  HistoryReportDialog::CITY);
-    d.set_parent_window(*window.get());
-    d.run();
+  HistoryReportDialog d(Playerlist::getActiveplayer(), 
+			HistoryReportDialog::CITY);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_event_history_activated()
 {
-    HistoryReportDialog d(Playerlist::getActiveplayer(),
-			  HistoryReportDialog::EVENTS);
-    d.set_parent_window(*window.get());
-    d.run();
+  HistoryReportDialog d(Playerlist::getActiveplayer(),
+			HistoryReportDialog::EVENTS);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_gold_history_activated()
 {
-    HistoryReportDialog d(Playerlist::getActiveplayer(),
-			  HistoryReportDialog::GOLD);
-    d.set_parent_window(*window.get());
-    d.run();
+  HistoryReportDialog d(Playerlist::getActiveplayer(),
+			HistoryReportDialog::GOLD);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_winner_history_activated()
 {
-    HistoryReportDialog d(Playerlist::getActiveplayer(),
-			  HistoryReportDialog::WINNING);
-    d.set_parent_window(*window.get());
-    d.run();
+  HistoryReportDialog d(Playerlist::getActiveplayer(),
+			HistoryReportDialog::WINNING);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::stop_game()
 {
-    Sound::getInstance()->disableBackground();
-    if (game.get())
+  Sound::getInstance()->disableBackground();
+  if (game.get())
     {
-	game->stopGame();
-	game.reset();
-	current_save_filename = "";
+      game->stopGame();
+      game.reset();
+      current_save_filename = "";
     }
 }
 
 void GameWindow::on_game_over(Player *winner)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/game-over-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Image *image;
-    xml->get_widget("image", image);
-    
-    SDL_Surface *win_unmasked = File::getMiscPicture("win.jpg", false);
-    // mask pics need a special format
-    SDL_Surface* tmp = File::getMiscPicture("win_mask.png");
-    SDL_Surface *mask = SDL_CreateRGBSurface(
-	SDL_SWSURFACE, tmp->w, tmp->h, 32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
-    SDL_SetAlpha(tmp, 0, 0);
-    SDL_BlitSurface(tmp, 0, mask, 0);
-    SDL_FreeSurface(tmp);
-    
-    SDL_Surface* win = GraphicsCache::getInstance()->applyMask(
-	win_unmasked, mask, Playerlist::getActiveplayer());
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/game-over-dialog.glade");
 
-    image->property_pixbuf() = to_pixbuf(win);
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
 
-    SDL_FreeSurface(win);
-    SDL_FreeSurface(win_unmasked);
-    SDL_FreeSurface(mask);
+  Gtk::Image *image;
+  xml->get_widget("image", image);
 
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s;
-    s += String::ucompose(_("%1 has taken over the world!"), winner->getName());
-    if (winner->getType() == Player::HUMAN)
+  SDL_Surface *win_unmasked = File::getMiscPicture("win.jpg", false);
+  // mask pics need a special format
+  SDL_Surface* tmp = File::getMiscPicture("win_mask.png");
+  SDL_Surface *mask = SDL_CreateRGBSurface(
+					   SDL_SWSURFACE, tmp->w, tmp->h, 32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
+  SDL_SetAlpha(tmp, 0, 0);
+  SDL_BlitSurface(tmp, 0, mask, 0);
+  SDL_FreeSurface(tmp);
+
+  SDL_Surface* win = GraphicsCache::getInstance()->applyMask(
+							     win_unmasked, mask, Playerlist::getActiveplayer());
+
+  image->property_pixbuf() = to_pixbuf(win);
+
+  SDL_FreeSurface(win);
+  SDL_FreeSurface(win_unmasked);
+  SDL_FreeSurface(mask);
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s;
+  s += String::ucompose(_("%1 has taken over the world!"), winner->getName());
+  if (winner->getType() == Player::HUMAN)
     {
-	s += " ";
-	s += _("Congratulations!");
+      s += " ";
+      s += _("Congratulations!");
     }
-    label->set_text(s);
-    
-    dialog->show_all();
-    dialog->run();
+  label->set_text(s);
 
-    stop_game();
-    game_ended.emit();
+  dialog->show_all();
+  dialog->run();
+
+  stop_game();
+  game_ended.emit();
 }
 
 void GameWindow::on_player_died(Player *player)
 {
-    assert(player);
-    
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/player-died-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
+  assert(player);
 
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s;
-    s += String::ucompose(_("The rule of %1 has permanently ended!"),
-			  player->getName());
-    label->set_text(s);
-    
-    dialog->show_all();
-    dialog->run();
+  std::auto_ptr<Gtk::Dialog> dialog;
+
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/player-died-dialog.glade");
+
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s;
+  s += String::ucompose(_("The rule of %1 has permanently ended!"),
+			player->getName());
+  label->set_text(s);
+
+  dialog->show_all();
+  dialog->run();
 }
 
 void GameWindow::on_message_requested(std::string msg)
 {
-    // FIXME: this is a bit crude, maybe beef it up
-    Gtk::MessageDialog dialog(*window.get(), msg);
-    dialog.show_all();
-    dialog.run();
+  // FIXME: this is a bit crude, maybe beef it up
+  Gtk::MessageDialog dialog(*window.get(), msg);
+  dialog.show_all();
+  dialog.run();
 }
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
 {
-    army->setGrouped(toggle->get_active());
-    ensure_one_army_button_active();
-    Player *p = Playerlist::getActiveplayer();
-    fill_in_group_info (p->getStacklist()->getActivestack());
+  army->setGrouped(toggle->get_active());
+  ensure_one_army_button_active();
+  Player *p = Playerlist::getActiveplayer();
+  fill_in_group_info (p->getStacklist()->getActivestack());
 }
 
 bool GameWindow::on_army_button_event(GdkEventButton *e,
 				      Gtk::ToggleButton *toggle, Army *army)
 {
-    // if a hero is right-clicked, pop up the hero dialog, otherwise show the
-    // army info tip
-    MouseButtonEvent event = to_input_event(e);
-    if (event.button == MouseButtonEvent::RIGHT_BUTTON
-	&& event.state == MouseButtonEvent::PRESSED) {
+  // if a hero is right-clicked, pop up the hero dialog, otherwise show the
+  // army info tip
+  MouseButtonEvent event = to_input_event(e);
+  if (event.button == MouseButtonEvent::RIGHT_BUTTON
+      && event.state == MouseButtonEvent::PRESSED) {
 
-	Hero *hero = dynamic_cast<Hero *>(army);
-	if (hero)
-	{
-	    HeroDialog d(hero, currently_selected_stack->getPos());
+    Hero *hero = dynamic_cast<Hero *>(army);
+    if (hero)
+      {
+	HeroDialog d(hero, currently_selected_stack->getPos());
 
-	    d.set_parent_window(*window.get());
-	    d.run();
-	}
-	else
-	{
-	    army_info_tip.reset(new ArmyInfoTip(toggle, army));
-	}
-	
-	return true;
-    }
-    else if (event.button == MouseButtonEvent::RIGHT_BUTTON
-	     && event.state == MouseButtonEvent::RELEASED) {
-	army_info_tip.reset();
-	return true;
-    }
-    
-    return false;
+	d.set_parent_window(*window.get());
+	d.run();
+      }
+    else
+      {
+	army_info_tip.reset(new ArmyInfoTip(toggle, army));
+      }
+
+    return true;
+  }
+  else if (event.button == MouseButtonEvent::RIGHT_BUTTON
+	   && event.state == MouseButtonEvent::RELEASED) {
+    army_info_tip.reset();
+    return true;
+  }
+
+  return false;
 }
 
 void GameWindow::on_army_button_has_size()
 {
-    // fix height to prevent flickering
-    int height = stack_info_box->get_height();
-    stack_info_box->property_height_request() = height;
-    stats_box->property_height_request() = height;
+  // fix height to prevent flickering
+  int height = stack_info_box->get_height();
+  stack_info_box->property_height_request() = height;
+  stats_box->property_height_request() = height;
 }
 
 void GameWindow::clear_army_buttons()
 {
-    for (army_buttons_type::iterator i = army_buttons.begin(),
-	     end = army_buttons.end(); i != end; ++i)
-	delete *i;
-    army_buttons.clear();
+  for (army_buttons_type::iterator i = army_buttons.begin(),
+       end = army_buttons.end(); i != end; ++i)
+    delete *i;
+  army_buttons.clear();
 }
 
 void GameWindow::ensure_one_army_button_active()
 {
-    if (army_buttons.empty())
-	return;
-    
-    // determine number of active buttons
-    int sum = 0;
-    for (army_buttons_type::iterator i = army_buttons.begin(),
-	     end = army_buttons.end(); i != end; ++i)
-	if ((*i)->get_active())
-	    ++sum;
+  if (army_buttons.empty())
+    return;
 
-    if (sum == 0)
+  // determine number of active buttons
+  int sum = 0;
+  for (army_buttons_type::iterator i = army_buttons.begin(),
+       end = army_buttons.end(); i != end; ++i)
+    if ((*i)->get_active())
+      ++sum;
+
+  if (sum == 0)
     {
-	// must have at least one active, so pick the first
-	army_buttons.front()->set_active();
-	sum = 1;
+      // must have at least one active, so pick the first
+      army_buttons.front()->set_active();
+      sum = 1;
     }
 }
 
 void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 {
-    Glib::ustring n = String::ucompose(
-	stats_text, s.name, s.gold, s.income, s.cities, s.units);
-    
-    stats_label->set_text(n);
+  Glib::ustring n = String::ucompose(
+				     stats_text, s.name, s.gold, s.income, s.cities, s.units);
 
-    cities_stats_label->set_text(String::ucompose("%1", s.cities));
-    gold_stats_label->set_text(String::ucompose("%1", s.gold));
-    income_stats_label->set_text(String::ucompose("%1", s.income));
-    turn_label->set_text(String::ucompose("Turn %1", s.turns + 1));
+  stats_label->set_text(n);
+
+  cities_stats_label->set_text(String::ucompose("%1", s.cities));
+  gold_stats_label->set_text(String::ucompose("%1", s.gold));
+  income_stats_label->set_text(String::ucompose("%1", s.income));
+  turn_label->set_text(String::ucompose("Turn %1", s.turns + 1));
 }
 
 void GameWindow::on_smallmap_changed(SDL_Surface *map)
 {
-    map_image->property_pixbuf() = to_pixbuf(map);
+  map_image->property_pixbuf() = to_pixbuf(map);
 }
 
 void GameWindow::on_stack_info_changed(Stack *s)
 {
-    clear_army_buttons();
+  clear_army_buttons();
 
-    currently_selected_stack = s;
+  currently_selected_stack = s;
 
-    if (!s)
- 	show_stats();
-    else
+  if (!s)
+    show_stats();
+  else
     {
-        if (s->getPlayer()->getType() == Player::HUMAN)
-	    show_stack(s);
-        else
- 	    show_stats();
+      if (s->getPlayer()->getType() == Player::HUMAN)
+	show_stack(s);
+      else
+	show_stats();
     }
 }
 
 void GameWindow::show_stats()
 {
-    stack_info_container->hide();
-    stats_box->show();
+  stack_info_container->hide();
+  stats_box->show();
 }
 
 void GameWindow::fill_in_group_info (Stack *s)
 {
-    Uint32 bonus = s->calculateMoveBonus();
-    GraphicsCache *gc = GraphicsCache::getInstance();
-    SDL_Surface *terrain = gc->getMoveBonusPic(bonus, s->hasShip());
-    terrain_image->property_pixbuf() = to_pixbuf(terrain);
-    group_moves_label->set_text(String::ucompose(_("Group\nMoves\n%1"),
-                                s->getGroupMoves()));
+  Uint32 bonus = s->calculateMoveBonus();
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  SDL_Surface *terrain = gc->getMoveBonusPic(bonus, s->hasShip());
+  terrain_image->property_pixbuf() = to_pixbuf(terrain);
+  group_moves_label->set_text(String::ucompose(_("Group\nMoves\n%1"),
+					       s->getGroupMoves()));
 }
 
 void GameWindow::show_stack(Stack *s)
 {
-    stats_box->hide();
+  stats_box->hide();
 
-    for (Stack::iterator i = s->begin(), end = s->end(); i != end; ++i)
+  for (Stack::iterator i = s->begin(), end = s->end(); i != end; ++i)
     {
-	// construct a toggle button
-	Army *army = *i;
-	Gtk::VBox *toggle_box = manage(new Gtk::VBox);
-	
-	// image
-	toggle_box->add(*manage(new Gtk::Image(to_pixbuf(army->getPixmap()))));
-	// hit points graph
-	Gtk::ProgressBar *progress = manage(new Gtk::ProgressBar);
-	progress->set_fraction(double(army->getHP()) / army->getStat(Army::HP));
-	progress->property_width_request() = army->getPixmap()->w;
-	progress->property_height_request() = 12;
-	toggle_box->pack_start(*progress, Gtk::PACK_SHRINK, 4);
-	// number of moves
-	Glib::ustring moves_str = String::ucompose("%1", army->getMoves());
-	toggle_box->add(*manage(new Gtk::Label(moves_str,
-					       Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP)));
+      // construct a toggle button
+      Army *army = *i;
+      Gtk::VBox *toggle_box = manage(new Gtk::VBox);
 
-	// the button itself
-	Gtk::ToggleButton *toggle = new Gtk::ToggleButton;
-	toggle->add(*toggle_box);
-	toggle->set_active(army->isGrouped());
-	toggle->signal_toggled().connect(
-	    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_toggled),
-		       toggle, army));
-	toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
-	toggle->signal_button_press_event().connect(
-	    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
-		       toggle, army), false);
-	toggle->signal_button_release_event().connect(
-	    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
-		       toggle, army), false);
-	toggle->signal_size_allocate().connect_notify(
-	    sigc::hide(sigc::mem_fun(*this, &GameWindow::on_army_button_has_size)));
-	
-	// add it
-	stack_info_box->pack_start(*toggle, Gtk::PACK_SHRINK);
-	army_buttons.push_back(toggle);
+      // image
+      toggle_box->add(*manage(new Gtk::Image(to_pixbuf(army->getPixmap()))));
+      // hit points graph
+      Gtk::ProgressBar *progress = manage(new Gtk::ProgressBar);
+      progress->set_fraction(double(army->getHP()) / army->getStat(Army::HP));
+      progress->property_width_request() = army->getPixmap()->w;
+      progress->property_height_request() = 12;
+      toggle_box->pack_start(*progress, Gtk::PACK_SHRINK, 4);
+      // number of moves
+      Glib::ustring moves_str = String::ucompose("%1", army->getMoves());
+      toggle_box->add(*manage(new Gtk::Label(moves_str,
+					     Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP)));
+
+      // the button itself
+      Gtk::ToggleButton *toggle = new Gtk::ToggleButton;
+      toggle->add(*toggle_box);
+      toggle->set_active(army->isGrouped());
+      toggle->signal_toggled().connect(
+				       sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_toggled),
+						  toggle, army));
+      toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
+      toggle->signal_button_press_event().connect(
+						  sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
+							     toggle, army), false);
+      toggle->signal_button_release_event().connect(
+						    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
+							       toggle, army), false);
+      toggle->signal_size_allocate().connect_notify(
+						    sigc::hide(sigc::mem_fun(*this, &GameWindow::on_army_button_has_size)));
+
+      // add it
+      stack_info_box->pack_start(*toggle, Gtk::PACK_SHRINK);
+      army_buttons.push_back(toggle);
 
     }
-    
-    fill_in_group_info(s);
-    ensure_one_army_button_active();
-    stack_info_container->show_all();
+
+  fill_in_group_info(s);
+  ensure_one_army_button_active();
+  stack_info_container->show_all();
 }
 
 void GameWindow::on_stack_tip_changed(Stack *stack, MapTipPosition mpos)
 {
-    if (stack == NULL)
-      stack_info_tip.reset();
-    else
-      {
-	//_crapola
-	stack_info_tip.reset(new StackInfoTip(sdl_widget, mpos, stack));
-      }
+  if (stack == NULL)
+    stack_info_tip.reset();
+  else
+    {
+      //_crapola
+      stack_info_tip.reset(new StackInfoTip(sdl_widget, mpos, stack));
+    }
 }
 
 void GameWindow::on_map_tip_changed(Glib::ustring tip, MapTipPosition pos)
 {
-    if (tip.empty())
-	hide_map_tip();
-    else
-	show_map_tip(tip, pos);
+  if (tip.empty())
+    hide_map_tip();
+  else
+    show_map_tip(tip, pos);
 }
 
 void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
 {
-    // init the map tip
-    map_tip.reset(new Gtk::Window(Gtk::WINDOW_POPUP));
-    Gtk::Frame *f = manage(new Gtk::Frame);
-    f->property_shadow_type() = Gtk::SHADOW_ETCHED_OUT;
+  // init the map tip
+  map_tip.reset(new Gtk::Window(Gtk::WINDOW_POPUP));
+  Gtk::Frame *f = manage(new Gtk::Frame);
+  f->property_shadow_type() = Gtk::SHADOW_ETCHED_OUT;
 
-    Gtk::Label *l = manage(new Gtk::Label);
-    l->set_padding(6, 6);
-    l->set_text(msg);
-    f->add(*l);
+  Gtk::Label *l = manage(new Gtk::Label);
+  l->set_padding(6, 6);
+  l->set_text(msg);
+  f->add(*l);
 
-    map_tip->add(*f);
-    f->show_all();
-    
-    // get screen position
-    Vector<int> p;
-    sdl_widget->get_window()->get_origin(p.x, p.y);
-    p += pos.pos;
+  map_tip->add(*f);
+  f->show_all();
 
-    Vector<int> size(0, 0);
-    map_tip->get_size(size.x, size.y);
-    
-    switch (pos.justification)
+  // get screen position
+  Vector<int> p;
+  sdl_widget->get_window()->get_origin(p.x, p.y);
+  p += pos.pos;
+
+  Vector<int> size(0, 0);
+  map_tip->get_size(size.x, size.y);
+
+  switch (pos.justification)
     {
     case MapTipPosition::LEFT:
-	map_tip->set_gravity(Gdk::GRAVITY_NORTH_WEST);
-	break;
+      map_tip->set_gravity(Gdk::GRAVITY_NORTH_WEST);
+      break;
     case MapTipPosition::RIGHT:
-	map_tip->set_gravity(Gdk::GRAVITY_NORTH_EAST);
-	p.x -= size.x;
-	break;
+      map_tip->set_gravity(Gdk::GRAVITY_NORTH_EAST);
+      p.x -= size.x;
+      break;
     case MapTipPosition::TOP:
-	map_tip->set_gravity(Gdk::GRAVITY_NORTH_WEST);
-	break;
+      map_tip->set_gravity(Gdk::GRAVITY_NORTH_WEST);
+      break;
     case MapTipPosition::BOTTOM:
-	map_tip->set_gravity(Gdk::GRAVITY_SOUTH_WEST);
-	p.y -= size.y;
-	break;
+      map_tip->set_gravity(Gdk::GRAVITY_SOUTH_WEST);
+      p.y -= size.y;
+      break;
     }
 
-    // and action
-    map_tip->move(p.x, p.y);
-    map_tip->show();
+  // and action
+  map_tip->move(p.x, p.y);
+  map_tip->show();
 }
 
 void GameWindow::hide_map_tip()
 {
-    map_tip.reset();
+  map_tip.reset();
 }
 
 void GameWindow::on_sage_visited (Ruin *ruin, Stack *stack)
 {
-    SageDialog d(stack->getFirstHero()->getPlayer(), 
-                 static_cast<Hero*>(stack->getFirstHero()), ruin);
-    d.set_parent_window(*window.get());
-    d.run();
+  SageDialog d(stack->getFirstHero()->getPlayer(), 
+	       static_cast<Hero*>(stack->getFirstHero()), ruin);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    if (ruin->hasSage())
-      return on_sage_visited (ruin, stack);
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/ruin-searched-dialog.glade");
+  std::auto_ptr<Gtk::Dialog> dialog;
+  if (ruin->hasSage())
+    return on_sage_visited (ruin, stack);
 
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(ruin->getName());
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/ruin-searched-dialog.glade");
 
-    Gtk::Image *image;
-    xml->get_widget("ruin_image", image);
-    image->property_file() = File::getMiscFile("various/ruin_1.jpg");
 
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    
-    Glib::ustring s = label->get_text();
-    s += "\n\n";
-    if (reward->getType() == Reward::GOLD)
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_title(ruin->getName());
+
+  Gtk::Image *image;
+  xml->get_widget("ruin_image", image);
+  image->property_file() = File::getMiscFile("various/ruin_1.jpg");
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+
+  Glib::ustring s = label->get_text();
+  s += "\n\n";
+  if (reward->getType() == Reward::GOLD)
     s += String::ucompose("%1 finds %2 gp.", stack->getFirstHero()->getName(), 
-                          dynamic_cast<Reward_Gold*>(reward)->getGold());
-    else if (reward->getType() == Reward::ALLIES)
-      s += String::ucompose("%1 gets %2 allies.", stack->getFirstHero()->getName(), 
-                          dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies());
-    else if (reward->getType() == Reward::ITEM)
-      s += String::ucompose("%1 gets the %2.", stack->getFirstHero()->getName(), 
-                          dynamic_cast<Reward_Item*>(reward)->getItem()->getName());
+			  dynamic_cast<Reward_Gold*>(reward)->getGold());
+  else if (reward->getType() == Reward::ALLIES)
+    s += String::ucompose("%1 gets %2 allies.", stack->getFirstHero()->getName(), 
+			  dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies());
+  else if (reward->getType() == Reward::ITEM)
+    s += String::ucompose("%1 gets the %2.", stack->getFirstHero()->getName(), 
+			  dynamic_cast<Reward_Item*>(reward)->getItem()->getName());
 
-    label->set_text(s);
-    
-    dialog->show_all();
-    dialog->run();
+  label->set_text(s);
+
+  dialog->show_all();
+  dialog->run();
 }
 
 void GameWindow::on_ruinfight_started(Stack *attackers, Stack *defenders)
 {
-//so and so encounters a wolf...
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/ruinfight-started-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(_("Searching"));
+  //so and so encounters a wolf...
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s = label->get_text();
-    s = "\n\n";
-    s += attackers->getFirstHero()->getName() + " encounters some ";
-    s += defenders->getStrongestArmy()->getName() + "...";
-    label->set_text(s);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/ruinfight-started-dialog.glade");
 
-    dialog->show_all();
-    dialog->run();
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_title(_("Searching"));
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s = label->get_text();
+  s = "\n\n";
+  s += attackers->getFirstHero()->getName() + " encounters some ";
+  s += defenders->getStrongestArmy()->getName() + "...";
+  label->set_text(s);
+
+  dialog->show_all();
+  dialog->run();
 }
 void GameWindow::on_ruinfight_finished(Fight::Result result)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/ruinfight-finished-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    if (result == Fight::ATTACKER_WON)
-      dialog->set_title(_("Hero Victorious"));
-    else
-      dialog->set_title(_("Hero Defeated"));
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s = label->get_text();
-    s = "\n\n";
-    if (result == Fight::ATTACKER_WON)
-      s += _("...and is victorious!");
-    else
-      s += _("...and is slain by it!");
-    label->set_text(s);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/ruinfight-finished-dialog.glade");
 
-    dialog->show_all();
-    dialog->run();
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  if (result == Fight::ATTACKER_WON)
+    dialog->set_title(_("Hero Victorious"));
+  else
+    dialog->set_title(_("Hero Defeated"));
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s = label->get_text();
+  s = "\n\n";
+  if (result == Fight::ATTACKER_WON)
+    s += _("...and is victorious!");
+  else
+    s += _("...and is slain by it!");
+  label->set_text(s);
+
+  dialog->show_all();
+  dialog->run();
 }
 
 void GameWindow::on_fight_started(Fight &fight)
 {
-    FightWindow d(fight);
+  FightWindow d(fight);
 
-    d.set_parent_window(*window.get());
-    d.run();
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_hero_brings_allies (int numAllies)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/hero-brings-allies-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(_("Hero brings allies!"));
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s;
-    s = String::ucompose(
-	ngettext("The hero brings %1 ally!",
-		 "The hero brings %1 allies!", numAllies), numAllies);
-    label->set_text(s);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/hero-brings-allies-dialog.glade");
 
-    dialog->show_all();
-    dialog->run();
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_title(_("Hero brings allies!"));
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s;
+  s = String::ucompose(
+		       ngettext("The hero brings %1 ally!",
+				"The hero brings %1 allies!", numAllies), numAllies);
+  label->set_text(s);
+
+  dialog->show_all();
+  dialog->run();
 }
 
 bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, int gold)
 {
-    HeroOfferDialog d(player, hero, city, gold);
-    d.set_parent_window(*window.get());
-    return d.run();
+  HeroOfferDialog d(player, hero, city, gold);
+  d.set_parent_window(*window.get());
+  return d.run();
 }
 
 
 bool GameWindow::on_temple_visited(bool hasHero, Temple *temple, int blessCount)
 {
-    QuestsManager *qm = QuestsManager::getInstance();
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/temple-visit-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(temple->getName());
+  QuestsManager *qm = QuestsManager::getInstance();
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Label *l;
-    Gtk::Button *close_button;
-    Gtk::Button *accept_button;
-    xml->get_widget("label", l);
-    xml->get_widget("close_button", close_button);
-    xml->get_widget("accept_button", accept_button);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/temple-visit-dialog.glade");
 
-    if (qm->getPlayerQuests(Playerlist::getActiveplayer()).size() > 0)
-      accept_button->set_sensitive(false);
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
 
-    Glib::ustring s;
-    if (blessCount > 0)
-      s += String::ucompose(
-             ngettext("%1 army has been blessed!",
-		      "%1 armies have been blessed!", blessCount), blessCount);
-    else
-      s += _("We have already blessed thee!");
+  dialog->set_title(temple->getName());
 
-    l->set_text(s);
-    s = l->get_text() + "\n" + _("Seek more blessings in far temples!");
-    l->set_text(s);
-    if (GameScenario::s_play_with_quests == true)
-      {
-        if (hasHero)
-          s = l->get_text() + "\n\n" + _("Do you seek a quest?");
-        l->set_text(s);
-      }
+  Gtk::Label *l;
+  Gtk::Button *close_button;
+  Gtk::Button *accept_button;
+  xml->get_widget("label", l);
+  xml->get_widget("close_button", close_button);
+  xml->get_widget("accept_button", accept_button);
 
-    dialog->show_all();
+  if (qm->getPlayerQuests(Playerlist::getActiveplayer()).size() > 0)
+    accept_button->set_sensitive(false);
 
-    if (hasHero == false || GameScenario::s_play_with_quests == false)
-      {
-        close_button->hide();
-        s = _("_Close");
-        accept_button->set_label(s);
-      }
+  Glib::ustring s;
+  if (blessCount > 0)
+    s += String::ucompose(
+			  ngettext("%1 army has been blessed!",
+				   "%1 armies have been blessed!", blessCount), blessCount);
+  else
+    s += _("We have already blessed thee!");
 
-    int response = dialog->run();
+  l->set_text(s);
+  s = l->get_text() + "\n" + _("Seek more blessings in far temples!");
+  l->set_text(s);
+  if (GameScenario::s_play_with_quests == true)
+    {
+      if (hasHero)
+	s = l->get_text() + "\n\n" + _("Do you seek a quest?");
+      l->set_text(s);
+    }
 
-    if (hasHero == false || GameScenario::s_play_with_quests == false)
-      response = 1;
+  dialog->show_all();
 
-    if (response == 0)		// accepted a quest
-	return true;
-    else
-	return false;
+  if (hasHero == false || GameScenario::s_play_with_quests == false)
+    {
+      close_button->hide();
+      s = _("_Close");
+      accept_button->set_label(s);
+    }
+
+  int response = dialog->run();
+
+  if (hasHero == false || GameScenario::s_play_with_quests == false)
+    response = 1;
+
+  if (response == 0)		// accepted a quest
+    return true;
+  else
+    return false;
 }
 
 void GameWindow::on_quest_assigned(Hero *hero, Quest *quest)
@@ -1519,47 +1544,47 @@ hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze, bool *occupy)
        i != questlist.end(); ++i)
     {
       switch ((*i)->getType())
-        {
-        case Quest::CITYSACK:
-        case Quest::CITYRAZE:
-        case Quest::CITYOCCUPY:
-          if ((*i)->getType() == Quest::CITYSACK)
-            {
-              if (dynamic_cast<QuestCitySack*>((*i))->getCity() != c)
-                continue;
-            }
-          else if ((*i)->getType() == Quest::CITYOCCUPY)
-            {
-              if (dynamic_cast<QuestCityOccupy*>((*i))->getCity() != c)
-                continue;
-            }
-          else if ((*i)->getType() == Quest::CITYRAZE)
-            {
-              if (dynamic_cast<QuestCityRaze*>((*i))->getCity() != c)
-                continue;
-            }
-          /* now check if the quest's hero is in our stack */
-          for (Stack::iterator it = s->begin(); it != s->end(); ++it)
-            {
-              if ((*it)->isHero())
-                {
-                  if ((*it)->getId() == (*i)->getHeroId())
-                    {
-                      /* hey we found one, set the corresponding boolean */
-                      if ((*i)->getType() == Quest::CITYSACK)
-                        *sack = true;
-                      else if ((*i)->getType() == Quest::CITYRAZE)
-                        *raze = true;
-                      else if ((*i)->getType() == Quest::CITYOCCUPY)
-                        *occupy = true;
-                    }
-                }
-            }
-          break;
-        case Quest::PILLAGEGOLD:
-          *sack = true;
-          break;
-        }
+	{
+	case Quest::CITYSACK:
+	case Quest::CITYRAZE:
+	case Quest::CITYOCCUPY:
+	  if ((*i)->getType() == Quest::CITYSACK)
+	    {
+	      if (dynamic_cast<QuestCitySack*>((*i))->getCity() != c)
+		continue;
+	    }
+	  else if ((*i)->getType() == Quest::CITYOCCUPY)
+	    {
+	      if (dynamic_cast<QuestCityOccupy*>((*i))->getCity() != c)
+		continue;
+	    }
+	  else if ((*i)->getType() == Quest::CITYRAZE)
+	    {
+	      if (dynamic_cast<QuestCityRaze*>((*i))->getCity() != c)
+		continue;
+	    }
+	  /* now check if the quest's hero is in our stack */
+	  for (Stack::iterator it = s->begin(); it != s->end(); ++it)
+	    {
+	      if ((*it)->isHero())
+		{
+		  if ((*it)->getId() == (*i)->getHeroId())
+		    {
+		      /* hey we found one, set the corresponding boolean */
+		      if ((*i)->getType() == Quest::CITYSACK)
+			*sack = true;
+		      else if ((*i)->getType() == Quest::CITYRAZE)
+			*raze = true;
+		      else if ((*i)->getType() == Quest::CITYOCCUPY)
+			*occupy = true;
+		    }
+		}
+	    }
+	  break;
+	case Quest::PILLAGEGOLD:
+	  *sack = true;
+	  break;
+	}
     }
   if ((*raze) || (*sack) || (*occupy))
     return true;
@@ -1569,310 +1594,310 @@ hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze, bool *occupy)
 
 CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    if (gold)
-      on_city_looted (city, gold);
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/city-defeated-dialog.glade");
+  std::auto_ptr<Gtk::Dialog> dialog;
+  if (gold)
+    on_city_looted (city, gold);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/city-defeated-dialog.glade");
 
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    Gtk::Image *image;
-    xml->get_widget("city_image", image);
-    image->property_file() = File::getMiscFile("various/city_occupied.jpg");
-    image->show();
 
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Gtk::Requisition req = image->size_request();
-    label->set_size_request(req.width);
-    
-    Glib::ustring name;
-    Player *p = Playerlist::getActiveplayer();
-    Army *h = p->getStacklist()->getActivestack()->getFirstHero();
-    if (h)
-	name = h->getName();
-    else
-	name = p->getName(false);
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
 
-    Glib::ustring s;
-    switch (rand() % 4)
+  Gtk::Image *image;
+  xml->get_widget("city_image", image);
+  image->property_file() = File::getMiscFile("various/city_occupied.jpg");
+  image->show();
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Gtk::Requisition req = image->size_request();
+  label->set_size_request(req.width);
+
+  Glib::ustring name;
+  Player *p = Playerlist::getActiveplayer();
+  Army *h = p->getStacklist()->getActivestack()->getFirstHero();
+  if (h)
+    name = h->getName();
+  else
+    name = p->getName(false);
+
+  Glib::ustring s;
+  switch (rand() % 4)
     {
-      case 0: s = _("%1, you have triumphed in the battle of %2."); break;
-      case 1: s = _("%1, you have claimed victory in the battle of %2."); break;
-      case 2: s = _("%1, you have shown no mercy in the battle of %2."); break;
-      case 3: s = _("%1, you have slain the foe in the battle of %2."); break;
+    case 0: s = _("%1, you have triumphed in the battle of %2."); break;
+    case 1: s = _("%1, you have claimed victory in the battle of %2."); break;
+    case 2: s = _("%1, you have shown no mercy in the battle of %2."); break;
+    case 3: s = _("%1, you have slain the foe in the battle of %2."); break;
     }
 
-    s = String::ucompose(s, name, city->getName());
-    s += "\n\n";
-    s += label->get_text();
-    label->set_text(s);
+  s = String::ucompose(s, name, city->getName());
+  s += "\n\n";
+  s += label->get_text();
+  label->set_text(s);
 
-    if (h) /* if there was a hero in the stack */
-      {
-        bool sack, raze, occupy;
-        if (hero_has_quest_here (p->getStacklist()->getActivestack(), city, 
-                                 &sack, &raze, &occupy))
-          {
-            Gtk::Button *button;
-            if (sack)
-              {
-                xml->get_widget("sack_button", button);
-                button->grab_default();
-                //button->set_label(">" + button->get_label() +"<");
-              }
-            if (raze)
-              {
-                xml->get_widget("raze_button", button);
-                //button->set_label(">" + button->get_label() +"<");
-                button->grab_default();
-              }
-            if (occupy)
-              {
-                xml->get_widget("occupy_button", button);
-                //button->set_label(">" + button->get_label() +"<");
-                button->grab_default();
-              }
-          }
-      }
-
-    if (city->getNoOfBasicProd() <= 0) {
-	Gtk::Button *b;
-	xml->get_widget("pillage_button", b);
-	b->hide();
+  if (h) /* if there was a hero in the stack */
+    {
+      bool sack, raze, occupy;
+      if (hero_has_quest_here (p->getStacklist()->getActivestack(), city, 
+			       &sack, &raze, &occupy))
+	{
+	  Gtk::Button *button;
+	  if (sack)
+	    {
+	      xml->get_widget("sack_button", button);
+	      button->grab_default();
+	      //button->set_label(">" + button->get_label() +"<");
+	    }
+	  if (raze)
+	    {
+	      xml->get_widget("raze_button", button);
+	      //button->set_label(">" + button->get_label() +"<");
+	      button->grab_default();
+	    }
+	  if (occupy)
+	    {
+	      xml->get_widget("occupy_button", button);
+	      //button->set_label(">" + button->get_label() +"<");
+	      button->grab_default();
+	    }
+	}
     }
 
-    if (city->getNoOfBasicProd() <= 1) {
-	Gtk::Button *b;
-	xml->get_widget("sack_button", b);
-	b->hide();
-    }
-    
-    dialog->show();
+  if (city->getNoOfBasicProd() <= 0) {
+    Gtk::Button *b;
+    xml->get_widget("pillage_button", b);
+    b->hide();
+  }
 
-    int response = dialog->run();
-    switch (response) {
-    default:
-    case 0: return CITY_DEFEATED_OCCUPY;
-    case 1: return CITY_DEFEATED_RAZE;
-    case 2: return CITY_DEFEATED_PILLAGE;
-    case 3: return CITY_DEFEATED_SACK;
-    }
+  if (city->getNoOfBasicProd() <= 1) {
+    Gtk::Button *b;
+    xml->get_widget("sack_button", b);
+    b->hide();
+  }
+
+  dialog->show();
+
+  int response = dialog->run();
+  switch (response) {
+  default:
+  case 0: return CITY_DEFEATED_OCCUPY;
+  case 1: return CITY_DEFEATED_RAZE;
+  case 2: return CITY_DEFEATED_PILLAGE;
+  case 3: return CITY_DEFEATED_SACK;
+  }
 }
 
 void GameWindow::on_city_looted (City *city, int gold)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/city-looted-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(String::ucompose(_("%1 Looted"), city->getName()));
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s = label->get_text();
-    s += "\n\n";
-    s += String::ucompose(
-	ngettext("Your armies loot %1 gold piece.",
-		 "Your armies loot %1 gold pieces.", gold), gold);
-    label->set_text(s);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/city-looted-dialog.glade");
 
-    dialog->show_all();
-    dialog->run();
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_title(String::ucompose(_("%1 Looted"), city->getName()));
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s = label->get_text();
+  s += "\n\n";
+  s += String::ucompose(
+			ngettext("Your armies loot %1 gold piece.",
+				 "Your armies loot %1 gold pieces.", gold), gold);
+  label->set_text(s);
+
+  dialog->show_all();
+  dialog->run();
 }
 void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
-    std::auto_ptr<Gtk::Dialog> dialog;
-    Player *player = city->getPlayer();
-    unsigned int as = player->getArmyset();
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/city-pillaged-dialog.glade");
-	
-    Gtk::Dialog *d;
-    Gtk::Image *pillaged_army_type_image;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(String::ucompose(_("Pillaged %1"), city->getName()));
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  std::auto_ptr<Gtk::Dialog> dialog;
+  Player *player = city->getPlayer();
+  unsigned int as = player->getArmyset();
 
-    Gtk::Label *pillaged_army_type_cost_label;
-    xml->get_widget("pillaged_army_type_cost_label", pillaged_army_type_cost_label);
-    xml->get_widget("pillaged_army_type_image", pillaged_army_type_image);
-    if (gold == 0)
-      {
-        SDL_Surface *s
-	  = GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
-        Glib::RefPtr<Gdk::Pixbuf> empty_pic
-	  = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
-        empty_pic->fill(0x00000000);
-        pillaged_army_type_image->set(empty_pic);
-        pillaged_army_type_cost_label->set_text("");
-      }
-    else
-      {
-        Glib::RefPtr<Gdk::Pixbuf> pic;
-        pic = to_pixbuf(gc->getArmyPic(as, pillaged_army_type, player, 1, NULL));
-        pillaged_army_type_image->set(pic);
-        pillaged_army_type_cost_label->set_text(String::ucompose("%1 gp", gold));
-      }
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s = label->get_text();
-    s += "\n\n";
-    s += String::ucompose(
-	ngettext("The loot is worth %1 gold piece.",
-		 "The loot is worth %1 gold pieces.",
-		 gold), gold);
-    label->set_text(s);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/city-pillaged-dialog.glade");
 
-    dialog->show_all();
-    dialog->run();
+  Gtk::Dialog *d;
+  Gtk::Image *pillaged_army_type_image;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_title(String::ucompose(_("Pillaged %1"), city->getName()));
+
+  Gtk::Label *pillaged_army_type_cost_label;
+  xml->get_widget("pillaged_army_type_cost_label", pillaged_army_type_cost_label);
+  xml->get_widget("pillaged_army_type_image", pillaged_army_type_image);
+  if (gold == 0)
+    {
+      SDL_Surface *s
+	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
+      Glib::RefPtr<Gdk::Pixbuf> empty_pic
+	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
+      empty_pic->fill(0x00000000);
+      pillaged_army_type_image->set(empty_pic);
+      pillaged_army_type_cost_label->set_text("");
+    }
+  else
+    {
+      Glib::RefPtr<Gdk::Pixbuf> pic;
+      pic = to_pixbuf(gc->getArmyPic(as, pillaged_army_type, player, 1, NULL));
+      pillaged_army_type_image->set(pic);
+      pillaged_army_type_cost_label->set_text(String::ucompose("%1 gp", gold));
+    }
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s = label->get_text();
+  s += "\n\n";
+  s += String::ucompose(
+			ngettext("The loot is worth %1 gold piece.",
+				 "The loot is worth %1 gold pieces.",
+				 gold), gold);
+  label->set_text(s);
+
+  dialog->show_all();
+  dialog->run();
 }
 
 void GameWindow::on_city_sacked(City *city, int gold, std::list<Uint32> sacked_types)
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
-    Player *player = city->getPlayer();
-    unsigned int as = player->getArmyset();
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/city-sacked-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(String::ucompose(_("Sacked %1"), city->getName()));
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  Player *player = city->getPlayer();
+  unsigned int as = player->getArmyset();
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s = label->get_text();
-    s = String::ucompose("The city of %1 is sacked\nfor %2 gold!\n\n",
-                         city->getName(), gold);
-    s += String::ucompose(
-	ngettext("Ability to produce %1 unit has been lost",
-                 "Ability to produce %1 units has been lost",
-		 sacked_types.size()), sacked_types.size());
-    s += "\nand only 1 unit remains";
-    label->set_text(s);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/city-sacked-dialog.glade");
 
-    Gtk::Image *sacked_army_1_image;
-    Gtk::Image *sacked_army_2_image;
-    Gtk::Image *sacked_army_3_image;
-    Gtk::Label *sacked_army_1_cost_label;
-    Gtk::Label *sacked_army_2_cost_label;
-    Gtk::Label *sacked_army_3_cost_label;
-    xml->get_widget("sacked_army_1_image", sacked_army_1_image);
-    xml->get_widget("sacked_army_2_image", sacked_army_2_image);
-    xml->get_widget("sacked_army_3_image", sacked_army_3_image);
-    xml->get_widget("sacked_army_1_cost_label", sacked_army_1_cost_label);
-    xml->get_widget("sacked_army_2_cost_label", sacked_army_2_cost_label);
-    xml->get_widget("sacked_army_3_cost_label", sacked_army_3_cost_label);
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
 
-    Glib::RefPtr<Gdk::Pixbuf> pic;
-    SDL_Surface *surf
-      = GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
-    Glib::RefPtr<Gdk::Pixbuf> empty_pic
-      = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, surf->w, surf->h);
-    empty_pic->fill(0x00000000);
-    int i = 0;
-    Gtk::Label *sack_label = NULL;
-    Gtk::Image *sack_image = NULL;
-    for (std::list<Uint32>::iterator it = sacked_types.begin(); it != sacked_types.end(); it++)
-      {
-        switch (i)
-          {
-          case 0:
-            sack_label = sacked_army_1_cost_label;
-            sack_image = sacked_army_1_image;
-            break;
-          case 1:
-            sack_label = sacked_army_2_cost_label;
-            sack_image = sacked_army_2_image;
-            break;
-          case 2:
-            sack_label = sacked_army_3_cost_label;
-            sack_image = sacked_army_3_image;
-            break;
-          }
-        pic = to_pixbuf(gc->getArmyPic(as, *it, player, 1, NULL));
-        sack_image->set(pic);
-        const Army *a = 
-          Armysetlist::getInstance()->getArmy (player->getArmyset(), *it);
-        s = String::ucompose("%1 gp", a->getProductionCost() / 2);
-        sack_label->set_text(s);
-        i++;
-      }
-    for (i = sacked_types.size(); i < 3; i++)
-      {
-        switch (i)
-          {
-          case 0:
-            sack_label = sacked_army_1_cost_label;
-            sack_image = sacked_army_1_image;
-            break;
-          case 1:
-            sack_label = sacked_army_2_cost_label;
-            sack_image = sacked_army_2_image;
-            break;
-          case 2:
-            sack_label = sacked_army_3_cost_label;
-            sack_image = sacked_army_3_image;
-            break;
-          }
-        sack_image->set(empty_pic);
-        sack_label->set_text("");
-      }
-    dialog->show_all();
-    dialog->run();
+  dialog->set_title(String::ucompose(_("Sacked %1"), city->getName()));
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s = label->get_text();
+  s = String::ucompose("The city of %1 is sacked\nfor %2 gold!\n\n",
+		       city->getName(), gold);
+  s += String::ucompose(
+			ngettext("Ability to produce %1 unit has been lost",
+				 "Ability to produce %1 units has been lost",
+				 sacked_types.size()), sacked_types.size());
+  s += "\nand only 1 unit remains";
+  label->set_text(s);
+
+  Gtk::Image *sacked_army_1_image;
+  Gtk::Image *sacked_army_2_image;
+  Gtk::Image *sacked_army_3_image;
+  Gtk::Label *sacked_army_1_cost_label;
+  Gtk::Label *sacked_army_2_cost_label;
+  Gtk::Label *sacked_army_3_cost_label;
+  xml->get_widget("sacked_army_1_image", sacked_army_1_image);
+  xml->get_widget("sacked_army_2_image", sacked_army_2_image);
+  xml->get_widget("sacked_army_3_image", sacked_army_3_image);
+  xml->get_widget("sacked_army_1_cost_label", sacked_army_1_cost_label);
+  xml->get_widget("sacked_army_2_cost_label", sacked_army_2_cost_label);
+  xml->get_widget("sacked_army_3_cost_label", sacked_army_3_cost_label);
+
+  Glib::RefPtr<Gdk::Pixbuf> pic;
+  SDL_Surface *surf
+    = GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
+  Glib::RefPtr<Gdk::Pixbuf> empty_pic
+    = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, surf->w, surf->h);
+  empty_pic->fill(0x00000000);
+  int i = 0;
+  Gtk::Label *sack_label = NULL;
+  Gtk::Image *sack_image = NULL;
+  for (std::list<Uint32>::iterator it = sacked_types.begin(); it != sacked_types.end(); it++)
+    {
+      switch (i)
+	{
+	case 0:
+	  sack_label = sacked_army_1_cost_label;
+	  sack_image = sacked_army_1_image;
+	  break;
+	case 1:
+	  sack_label = sacked_army_2_cost_label;
+	  sack_image = sacked_army_2_image;
+	  break;
+	case 2:
+	  sack_label = sacked_army_3_cost_label;
+	  sack_image = sacked_army_3_image;
+	  break;
+	}
+      pic = to_pixbuf(gc->getArmyPic(as, *it, player, 1, NULL));
+      sack_image->set(pic);
+      const Army *a = 
+	Armysetlist::getInstance()->getArmy (player->getArmyset(), *it);
+      s = String::ucompose("%1 gp", a->getProductionCost() / 2);
+      sack_label->set_text(s);
+      i++;
+    }
+  for (i = sacked_types.size(); i < 3; i++)
+    {
+      switch (i)
+	{
+	case 0:
+	  sack_label = sacked_army_1_cost_label;
+	  sack_image = sacked_army_1_image;
+	  break;
+	case 1:
+	  sack_label = sacked_army_2_cost_label;
+	  sack_image = sacked_army_2_image;
+	  break;
+	case 2:
+	  sack_label = sacked_army_3_cost_label;
+	  sack_image = sacked_army_3_image;
+	  break;
+	}
+      sack_image->set(empty_pic);
+      sack_label->set_text("");
+    }
+  dialog->show_all();
+  dialog->run();
 }
 
 void GameWindow::on_city_razed (City *city)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/city-razed-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
-    
-    dialog->set_title(String::ucompose(_("Razed %1"), city->getName()));
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s;
-    s = String::ucompose(_("The city of %1 is in ruins!"), city->getName());
-    label->set_text(s);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/city-razed-dialog.glade");
 
-    dialog->show_all();
-    dialog->run();
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_title(String::ucompose(_("Razed %1"), city->getName()));
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s;
+  s = String::ucompose(_("The city of %1 is in ruins!"), city->getName());
+  label->set_text(s);
+
+  dialog->show_all();
+  dialog->run();
 }
 
 void GameWindow::on_city_visited(City *city)
 {
-    CityWindow d(city);
+  CityWindow d(city);
 
-    d.set_parent_window(*window.get());
-    d.run();
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::show_shield_turn()
@@ -1883,18 +1908,18 @@ void GameWindow::show_shield_turn()
   for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
     {
       if (pl->getNeutral() == (*i))
-        continue;
+	continue;
       if ((*i)->isDead())
-        {
-          shield_image[c]->clear();
-          turn_hbox->remove(dynamic_cast<Gtk::Widget&>(*shield_image[c]));
-          turn_hbox->resize_children();
-          continue;
-        }
+	{
+	  shield_image[c]->clear();
+	  turn_hbox->remove(dynamic_cast<Gtk::Widget&>(*shield_image[c]));
+	  turn_hbox->resize_children();
+	  continue;
+	}
       if (*i == pl->getActiveplayer())
-        shield_image[c]->get_parent()->modify_bg(Gtk::STATE_NORMAL, shield_image[c]->get_parent()->get_style()->get_black());
+	shield_image[c]->get_parent()->modify_bg(Gtk::STATE_NORMAL, shield_image[c]->get_parent()->get_style()->get_black());
       else
-        shield_image[c]->get_parent()->modify_bg(Gtk::STATE_NORMAL, shield_image[c]->get_parent()->get_style()->get_white());
+	shield_image[c]->get_parent()->modify_bg(Gtk::STATE_NORMAL, shield_image[c]->get_parent()->get_style()->get_white());
       shield_image[c]->property_pixbuf()=to_pixbuf(gc->getShieldPic(1,(*i)));
       c++;
     }
@@ -1904,97 +1929,97 @@ void GameWindow::show_shield_turn()
 
 void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    while (g_main_context_iteration(NULL, FALSE));
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    show_shield_turn();
-    if (player->getType() != Player::HUMAN)
-      return;
-    if (Configuration::s_showNextPlayer == false)
-      return;
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/next-player-turn-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
+  while (g_main_context_iteration(NULL, FALSE));
 
-    Gtk::Image *image;
-    xml->get_widget("image", image);
-    image->property_file() = File::getMiscFile("various/ship.jpg");
-    
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s = String::ucompose(_("%1\nTurn %2"), player->getName(), 
-                                       turn_number);
-    label->set_text(s);
+  show_shield_turn();
+  if (player->getType() != Player::HUMAN)
+    return;
+  if (Configuration::s_showNextPlayer == false)
+    return;
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/next-player-turn-dialog.glade");
 
-    dialog->show_all();
-    dialog->run();
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  Gtk::Image *image;
+  xml->get_widget("image", image);
+  image->property_file() = File::getMiscFile("various/ship.jpg");
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s = String::ucompose(_("%1\nTurn %2"), player->getName(), 
+				     turn_number);
+  label->set_text(s);
+
+  dialog->show_all();
+  dialog->run();
 }
 
 void GameWindow::on_medal_awarded_to_army(Army *army)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/medal-awarded-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Image *image;
-    xml->get_widget("image", image);
-    image->property_pixbuf() = to_pixbuf(army->getPixmap());
-    
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s;
-    s += String::ucompose(_("%1 is awarded a medal!"), army->getName());
-    s += "\n\n";
-    s += String::ucompose(_("Experience: %1"), std::setprecision(2), army->getXP());
-    s += "\n";
-    s += String::ucompose(_("Level: %1"), army->getLevel());
-    label->set_text(s);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/medal-awarded-dialog.glade");
 
-    dialog->show_all();
-    dialog->run();
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  Gtk::Image *image;
+  xml->get_widget("image", image);
+  image->property_pixbuf() = to_pixbuf(army->getPixmap());
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s;
+  s += String::ucompose(_("%1 is awarded a medal!"), army->getName());
+  s += "\n\n";
+  s += String::ucompose(_("Experience: %1"), std::setprecision(2), army->getXP());
+  s += "\n";
+  s += String::ucompose(_("Level: %1"), army->getLevel());
+  label->set_text(s);
+
+  dialog->show_all();
+  dialog->run();
 }
 
 Army::Stat GameWindow::on_army_gains_level(Army *army)
 {
-    ArmyGainsLevelDialog d(army);
+  ArmyGainsLevelDialog d(army);
 
-    d.set_parent_window(*window.get());
-    d.run();
-    
-    return d.get_selected_stat();
+  d.set_parent_window(*window.get());
+  d.run();
+
+  return d.get_selected_stat();
 }
 
 void GameWindow::on_game_loaded(Player *player)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/game-loaded-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s;
-    s += String::ucompose(_("%1, your turn continues."), player->getName());
-    label->set_text(s);
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/game-loaded-dialog.glade");
 
-    dialog->show_all();
-    dialog->run();
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s;
+  s += String::ucompose(_("%1, your turn continues."), player->getName());
+  label->set_text(s);
+
+  dialog->show_all();
+  dialog->run();
 }
 
 void GameWindow::on_quest_completed(Quest *quest, Reward *reward)
@@ -2006,44 +2031,44 @@ void GameWindow::on_quest_completed(Quest *quest, Reward *reward)
 
 void GameWindow::on_quest_expired(Quest *quest)
 {
-    std::auto_ptr<Gtk::Dialog> dialog;
-    
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/quest-expired-dialog.glade");
-	
-    Gtk::Dialog *d;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    dialog->set_transient_for(*window.get());
+  std::auto_ptr<Gtk::Dialog> dialog;
 
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s;
-    s += String::ucompose(_("%1 did not complete the quest."),
-			  quest->getHero()->getName());
-    s += "\n\n";
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/quest-expired-dialog.glade");
 
-    // add messages from the quest
-    std::queue<std::string> msgs;
-    quest->getExpiredMsg(msgs);
-    while (!msgs.empty())
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s;
+  s += String::ucompose(_("%1 did not complete the quest."),
+			quest->getHero()->getName());
+  s += "\n\n";
+
+  // add messages from the quest
+  std::queue<std::string> msgs;
+  quest->getExpiredMsg(msgs);
+  while (!msgs.empty())
     {
-        s += msgs.front();
-	msgs.pop();
-	if (!msgs.empty())
-	    s += "\n\n";
+      s += msgs.front();
+      msgs.pop();
+      if (!msgs.empty())
+	s += "\n\n";
     }
 
-    label->set_text(s);
+  label->set_text(s);
 
-    dialog->show_all();
-    dialog->run();
+  dialog->show_all();
+  dialog->run();
 }
 
 void GameWindow::on_inspect_activated ()
 {
   HeroDialog d(dynamic_cast<Hero*>(currently_selected_stack->getFirstHero()), 
-               currently_selected_stack->getPos());
+	       currently_selected_stack->getPos());
   d.set_parent_window(*window.get());
   d.run();
 }

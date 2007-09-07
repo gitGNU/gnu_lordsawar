@@ -235,7 +235,10 @@ class GameWindow: public sigc::trackable
     void setup_game(std::string file_path);
     void setup_signals();
     void stop_game();
+    std::list<sigc::connection> connections;
     
+    void setup_menuitem(Gtk::MenuItem*, sigc::slot<void> , sigc::signal<void, bool> &);
+    void setup_button(Gtk::Button *, sigc::slot<void> slot, sigc::signal<void, bool> &);
 public:
     // not part of the API, but for surface_attached_helper
     void on_sdl_surface_changed();
