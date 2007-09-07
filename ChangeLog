@@ -1,3 +1,6 @@
+2007-09-07  Ben Asselstine
+	* now disconnecting signals in the game window before re-loading a game
+
 2007-09-03  Ben Asselstine
 
 	* added bar and line charts to history report
