@@ -403,7 +403,6 @@ void GameBigMap::after_draw()
 	    r.x = p.x;
 	    r.y = p.y;
 	    r.w = r.h = tilesize;
-	    Player *p = Playerlist::getActiveplayer();
 	    SDL_Surface *tmp;
             int num_selected = 0;
             for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
@@ -412,9 +411,9 @@ void GameBigMap::after_draw()
 		    num_selected++;
 	    }
 	    if (num_selected > 1)
-		tmp = gc->getSelectorPic(0, bigframe, p);
+		tmp = gc->getSelectorPic(0, bigframe, stack->getPlayer());
 	    else
-		tmp = gc->getSelectorPic(1, smallframe, p);
+		tmp = gc->getSelectorPic(1, smallframe, stack->getPlayer());
             SDL_BlitSurface(tmp, 0, buffer, &r);
 	}
     }

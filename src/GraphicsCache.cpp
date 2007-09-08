@@ -1150,7 +1150,7 @@ FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player* p)
 
 SelectorCacheItem* GraphicsCache::addSelectorPic(Uint32 type, Uint32 frame, const Player* p)
 {
-    debug("GraphicsCache::addSelectorPic, player="<<p->getName()<<", type="<<size << ", " << frame)
+    debug("GraphicsCache::addSelectorPic, player="<<p->getName()<<", type="<<type<< ", " << frame)
     
     // frame is the frame of animation we're looking for.  starts at 0.
     // type is 0 for big, 1 for small
@@ -1859,18 +1859,19 @@ void GraphicsCache::loadSelectors()
 {
     //load the big selector pictures
     int i;
-    SDL_Rect selrect;
     SDL_Surface* selpics = File::getMiscPicture("selector.png");
-    // copy alpha values, don't use them
-    SDL_SetAlpha(selpics, 0, 0);
     SDL_PixelFormat* fmt = selpics->format;
     int size = GameMap::getInstance()->getTileSet()->getTileSize();
+
+    // copy alpha values, don't use them
+    SDL_SetAlpha(selpics, 0, 0);
     for (i = 0; i < 6; i++)
       {
         SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
     						fmt->BitsPerPixel, fmt->Rmask, 
     						fmt->Gmask, fmt->Bmask, 
 						fmt->Amask);
+	SDL_Rect selrect;
 	selrect.x = i*size;
 	selrect.y = 0;
 	selrect.w = selrect.h = size;
@@ -1881,39 +1882,40 @@ void GraphicsCache::loadSelectors()
 	d_selectormask[i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32,
 						 0xFF000000, 0xFF0000, 0xFF00, 
 						 0xFF);
-	//selrect.SetRect(i*size, size, size, size);
-	selrect.x = i*size;
-	selrect.y = 0;
-	selrect.w = selrect.h = size;
+	selrect.y = size;
 	SDL_BlitSurface(selpics, &selrect, d_selectormask[i], 0);
 
       }
     SDL_FreeSurface(selpics);
+
     //load the small selector pictures
     selpics = File::getMiscPicture("small_selector.png");
+    fmt = selpics->format;
     // copy alpha values, don't use them
     SDL_SetAlpha(selpics, 0, 0);
-    fmt = selpics->format;
     for (i = 0; i < 4; i++)
       {
         SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
     						fmt->BitsPerPixel, fmt->Rmask, 
     						fmt->Gmask, fmt->Bmask, 
 						fmt->Amask);
+	SDL_Rect selrect;
 	selrect.x = i*size;
 	selrect.y = 0;
 	selrect.w = selrect.h = size;
 	SDL_BlitSurface(selpics, &selrect, tmp, 0);
+
+	// convert the surface to screen resolution
 	d_smallselector[i] = SDL_DisplayFormatAlpha(tmp);
+
+	// free the temporary surface
 	SDL_FreeSurface(tmp);
 
 	d_smallselectormask[i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, size, size,
 						      32, 0xFF000000, 0xFF0000,
 						      0xFF00, 0xFF);
-	selrect.x = i*size;
-	selrect.y = 0;
-	selrect.w = selrect.h = size;
-	SDL_BlitSurface(selpics, &selrect, d_selectormask[i], 0);
+	selrect.y = size;
+	SDL_BlitSurface(selpics, &selrect, d_smallselectormask[i], 0);
 
       }
     SDL_FreeSurface(selpics);
@@ -1946,7 +1948,7 @@ void GraphicsCache::loadShields()
 						  0xFF000000, 0xFF0000, 0xFF00, 
 						  0xFF);
 	shieldrect.x = i*size;
-	shieldrect.y = 0;
+	shieldrect.y = size;
 	shieldrect.w = shieldrect.h = size;
 	SDL_BlitSurface(shieldpics, &shieldrect, d_shieldmask[0][i], 0);
 
@@ -1977,7 +1979,7 @@ void GraphicsCache::loadShields()
 					          32, 0xFF000000, 0xFF0000,
 						  0xFF00, 0xFF);
 	shieldrect.x = i*xsize;
-	shieldrect.y = 0;
+	shieldrect.y = ysize;
 	shieldrect.w = xsize;
 	shieldrect.h = ysize;
 	SDL_BlitSurface(shieldpics, &shieldrect, d_shieldmask[1][i], 0);
@@ -2009,7 +2011,7 @@ void GraphicsCache::loadShields()
 					          32, 0xFF000000, 0xFF0000,
 						  0xFF00, 0xFF);
 	shieldrect.x = i*xsize;
-	shieldrect.y = 0;
+	shieldrect.y = ysize;
 	shieldrect.w = xsize;
 	shieldrect.h = ysize;
 	SDL_BlitSurface(shieldpics, &shieldrect, d_shieldmask[2][i], 0);
