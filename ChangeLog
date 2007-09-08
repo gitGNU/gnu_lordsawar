@@ -1,3 +1,6 @@
+2007-09-08  Ben Asselstine
+	* now the selectors appear to be the correct colour for all sides
+
 2007-09-07  Ben Asselstine
 	* now disconnecting signals in the game window before re-loading a game
 
