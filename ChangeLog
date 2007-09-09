@@ -6,6 +6,8 @@
 	* dragging map now happens with the left mouse button
 	* now sacking/pillaging "special" army units is always worth 1500 gp
 	* pressing a key in the fight window now speeds it up
+	* increased number of cities in default random game
+	* decreased number of temples in default random game
 
 2007-09-08  Ben Asselstine
 
