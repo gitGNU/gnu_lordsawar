@@ -2,7 +2,7 @@
 
 	* now neutral citie/armies/flags appear to be the correct colour
 	* added magnifying glass cursor for smallmap
-	* added some machinery for cursors on the bigmap
+	* now bigmap shows different mouse cursors
 
 2007-09-08  Ben Asselstine
 
