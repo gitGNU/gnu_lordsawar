@@ -1,8 +1,11 @@
 2007-09-09  Ben Asselstine
 
-	* now neutral citie/armies/flags appear to be the correct colour
+	* now neutral cities/armies/flags appear to be the correct colour
 	* added magnifying glass cursor for smallmap
 	* now bigmap shows different mouse cursors
+	* dragging map now happens with the left mouse button
+	* now sacking/pillaging "special" army units is always worth 1500 gp
+	* pressing a key in the fight window now speeds it up
 
 2007-09-08  Ben Asselstine
 
