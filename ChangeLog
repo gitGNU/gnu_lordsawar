@@ -1,7 +1,15 @@
+2007-09-09  Ben Asselstine
+
+	* now neutral citie/armies/flags appear to be the correct colour
+	* added magnifying glass cursor for smallmap
+	* added some machinery for cursors on the bigmap
+
 2007-09-08  Ben Asselstine
+
 	* now the selectors appear to be the correct colour for all sides
 
 2007-09-07  Ben Asselstine
+
 	* now disconnecting signals in the game window before re-loading a game
 
 2007-09-03  Ben Asselstine
