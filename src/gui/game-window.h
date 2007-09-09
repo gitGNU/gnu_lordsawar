@@ -21,6 +21,7 @@
 #include <sigc++/trackable.h>
 #include <gtkmm/window.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/eventbox.h>
 #include <gtkmm/container.h>
 #include <gtkmm/image.h>
 #include <gtkmm/button.h>
@@ -135,6 +136,7 @@ class GameWindow: public sigc::trackable
     std::auto_ptr<StackInfoTip> stack_info_tip;
     typedef std::vector<Gtk::ToggleButton *> army_buttons_type;
     army_buttons_type army_buttons;
+    Gtk::EventBox *map_eventbox;
 
     std::string current_save_filename;
 

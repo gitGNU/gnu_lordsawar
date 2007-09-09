@@ -40,7 +40,8 @@ various_DATA = \
     smallunexploredstronghold.png \
     smallexploredruin.png \
     smalltemple.png \
-    plantedstandard.png
+    plantedstandard.png \
+    cursors.png
 
 EXTRA_DIST = \
     arrows.png \
@@ -79,4 +80,5 @@ EXTRA_DIST = \
     smallunexploredstronghold.png \
     smallexploredruin.png \
     smalltemple.png \
-    plantedstandard.png
+    plantedstandard.png \
+    cursors.png

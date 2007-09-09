@@ -28,6 +28,7 @@ struct TempleCacheItem;
 struct StoneCacheItem;
 struct RoadCacheItem;
 struct BridgeCacheItem;
+struct CursorCacheItem;
 struct FlagCacheItem;
 struct SelectorCacheItem;
 struct ShieldCacheItem;
@@ -68,6 +69,21 @@ class City;
 class GraphicsCache
 {
     public:
+  enum CursorType
+    {
+      POINTER = 0,
+      MAGNIFYING_GLASS,
+      SHIP,
+      ROOK,
+      HAND,
+      TARGET,
+      FEET,
+      RUIN,
+      SWORD,
+      QUESTION,
+      HEART,
+      GOTO_ARROW
+    };
         //! Function for getting/creating the soliton instance.
         static GraphicsCache* getInstance();
 
@@ -137,6 +153,12 @@ class GraphicsCache
           *
           * @param type         the type of the bridge 0=e/w 1=n/s
           * @return image of the bridge
+          */
+        SDL_Surface* getCursorPic(int type);
+        /** Function for getting a cursor picture
+          *
+          * @param type         the type of the cursor 
+          * @return image of the cursor
           */
         SDL_Surface* getStonePic(int type);
         /** Function for getting a stone picture
@@ -248,6 +270,9 @@ class GraphicsCache
         //! Creates a new bridge picture with the given parameters.
         BridgeCacheItem* addBridgePic(int type);
 
+        //! Creates a new cursor picture with the given parameters.
+        CursorCacheItem* addCursorPic(int type);
+
         //! Creates a new army picture with the given parameters.
         ArmyCacheItem* addArmyPic(Uint32 armyset, Uint32 army, const Player* p,
                                   int level, const bool* medalsbonus);
@@ -298,6 +323,9 @@ class GraphicsCache
         //! Erases the oldest (least recently requested) bridge cache item.
         void eraseLastBridgeItem();
 
+        //! Erases the oldest (least recently requested) cursor cache item.
+        void eraseLastCursorItem();
+
         //! Erases the oldest (least recently requested) city cache item.
         void eraseLastCityItem();
 
@@ -346,6 +374,9 @@ class GraphicsCache
         //! Loads the images for the bridge pictures.
         void loadBridgePics();
 
+        //! Loads the images for the cursor pictures.
+        void loadCursorPics();
+
         //! Loads the images for the flags
         void loadFlags();
 
@@ -373,6 +404,7 @@ class GraphicsCache
         std::list<RoadCacheItem*> d_roadlist;
         std::list<FogCacheItem*> d_foglist;
         std::list<BridgeCacheItem*> d_bridgelist;
+        std::list<CursorCacheItem*> d_cursorlist;
         std::list<SelectorCacheItem*> d_selectorlist;
         std::list<ShieldCacheItem*> d_shieldlist;
         std::list<ProdShieldCacheItem*> d_prodshieldlist;
@@ -388,6 +420,7 @@ class GraphicsCache
         SDL_Surface* d_stonepic[STONE_TYPES];
         SDL_Surface* d_roadpic[ROAD_TYPES];
         SDL_Surface* d_bridgepic[BRIDGE_TYPES];
+        SDL_Surface* d_cursorpic[CURSOR_TYPES];
         SDL_Surface* d_razedpic[MAX_PLAYERS + 1]; //+1 for neutral
         SDL_Surface* d_flagpic[8];
         SDL_Surface* d_flagmask[8];

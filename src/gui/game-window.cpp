@@ -26,11 +26,10 @@
 #include <libglademm/xml.h>
 #include <gtkmm/widget.h>
 #include <gtkmm/menuitem.h>
-#include <gtkmm/eventbox.h>
 #include <gtkmm/box.h>
 #include <gtkmm/table.h>
 #include <gtkmm/progressbar.h>
-//#include <gdkmm/cursor.h>
+#include <gdkmm/cursor.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>
@@ -126,7 +125,6 @@ GameWindow::GameWindow()
 
     // the map image
     xml->get_widget("map_image", map_image);
-    Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
 			     Gdk::POINTER_MOTION_MASK);
@@ -605,7 +603,6 @@ bool GameWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
 {
   if (game.get())
     game->get_bigmap().mouse_motion_event(to_input_event(e));
-
   return true;
 }
 
@@ -635,7 +632,14 @@ bool GameWindow::on_map_mouse_button_event(GdkEventButton *e)
 bool GameWindow::on_map_mouse_motion_event(GdkEventMotion *e)
 {
   if (game.get())
-    game->get_smallmap().mouse_motion_event(to_input_event(e));
+    {
+      game->get_smallmap().mouse_motion_event(to_input_event(e));
+  
+      map_eventbox->get_window()->set_cursor 
+	(Gdk::Cursor(Gdk::Display::get_default(), to_pixbuf
+      		     (GraphicsCache::getInstance()->getCursorPic
+      		      (GraphicsCache::MAGNIFYING_GLASS)), 0, 0));
+    }
 
   return true;
 }

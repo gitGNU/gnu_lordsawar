@@ -62,6 +62,14 @@ class GameBigMap: public BigMap
     SDL_Surface* d_arrows;
     Vector<int> current_tile, prev_mouse_pos;
     
+    SDL_Cursor* rook_cursor;
+    SDL_Cursor* target_cursor;
+    SDL_Cursor* ruin_cursor;
+    SDL_Cursor* hand_cursor;
+    SDL_Cursor* sword_cursor;
+    SDL_Cursor* heart_cursor;
+    SDL_Cursor* feet_cursor;
+    SDL_Cursor* ship_cursor;
     bool input_locked;
 	
     enum {
