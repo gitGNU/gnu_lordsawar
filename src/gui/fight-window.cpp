@@ -38,12 +38,6 @@
 #include "../army.h"
 #include "../GraphicsCache.h"
 
-namespace 
-{
-    int const FIGHT_ROUND_INTERVAL = 500; // milliseconds
-}
-
-
 FightWindow::FightWindow(Fight &fight)
 {
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -53,6 +47,8 @@ FightWindow::FightWindow(Fight &fight)
     xml->get_widget("window", d);
     window.reset(d);
     
+    window->signal_key_release_event().connect_notify(sigc::mem_fun(*this, &FightWindow::on_key_release_event));
+
     Gtk::VBox *attacker_close_vbox;
     Gtk::VBox *defender_close_vbox;
     xml->get_widget("attacker_close_vbox", attacker_close_vbox);
@@ -64,23 +60,6 @@ FightWindow::FightWindow(Fight &fight)
     Fight::orderArmies (fight.getAttackers(), attackers);
     Fight::orderArmies (fight.getDefenders(), defenders);
 
-    //std::list<Stack *> l;
-    //l = fight.getAttackers();
-    //for (std::list<Stack *>::iterator i = l.begin(); i != l.end(); ++i)
-        //for (Stack::const_iterator si = (*i)->begin(); si != (*i)->end(); ++si)
-          //{
-	    //attackers.push_back(*si);
-          //}
-    
-    //l = fight.getDefenders();
-    //for (std::list<Stack *>::iterator i = l.begin(); i != l.end(); ++i)
-        //for (Stack::const_iterator si = (*i)->begin(); si != (*i)->end(); ++si)
-          //{
-	    //defenders.push_back(*si);
-          //}
-
-    //FIXME: sort attackers and defenders by player fight order
-  
     int rows = compute_max_rows(attackers, defenders);
     
     // add the armies
@@ -118,7 +97,7 @@ FightWindow::FightWindow(Fight &fight)
     p = attackers.front()->getPlayer();
     xml->get_widget("attacker_shield_image", attacker_shield_image);
     attacker_shield_image->property_pixbuf()=to_pixbuf(gc->getShieldPic(2, p));
-
+  
     fight.battle();
     actions = fight.getCourseOfEvents();
 }
@@ -139,7 +118,7 @@ void FightWindow::run()
     action_iterator = actions.begin();
     
     Timing::instance().register_timer(
-	sigc::mem_fun(this, &FightWindow::do_round), FIGHT_ROUND_INTERVAL);
+	sigc::mem_fun(this, &FightWindow::do_round), normal_round_speed);
     
     window->show_all();
     main_loop = Glib::MainLoop::create();
@@ -304,4 +283,9 @@ bool FightWindow::do_round()
     main_loop->quit();
     
     return Timing::STOP;
+}
+void FightWindow::on_key_release_event(GdkEventKey* event)
+{
+    Timing::instance().register_timer(
+	sigc::mem_fun(this, &FightWindow::do_round), fast_round_speed);
 }
