@@ -280,8 +280,8 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
   if (input_locked)
     return;
 
-  // drag with right mouse button
-  if (e.pressed[MouseMotionEvent::RIGHT_BUTTON]
+  // drag with left mouse button
+  if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
       && (mouse_state == NONE || mouse_state == DRAGGING))
     {
       Vector<int> delta = -(e.pos - prev_mouse_pos);
@@ -346,9 +346,9 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 		    {
 		      bool friendly = false;
 		      if (friendly)
-			  d_cursor = GraphicsCache::SWORD;
-		      else
 			  d_cursor = GraphicsCache::HEART;
+		      else
+			  d_cursor = GraphicsCache::SWORD;
 		    }
 		  else
 		    {
@@ -388,9 +388,9 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 		    {
 		      bool friendly = false;
 		      if (friendly)
-			  d_cursor = GraphicsCache::SWORD;
-		      else
 			  d_cursor = GraphicsCache::HEART;
+		      else
+			  d_cursor = GraphicsCache::SWORD;
 		    }
 		  else
 		      d_cursor = GraphicsCache::HAND;

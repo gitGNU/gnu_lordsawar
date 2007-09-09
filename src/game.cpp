@@ -912,7 +912,7 @@ Game::loadHeroTemplates()
   int retval;
   int gender;
   int side;
-  size_t bytesread;
+  size_t bytesread = 0;
   char *tmp;
   const Armysetlist* al = Armysetlist::getInstance();
   const Army* herotype;
@@ -937,6 +937,7 @@ Game::loadHeroTemplates()
           free (line);
           return -2;
         }
+      bytesread = 0;
       while (isspace(line[bytesread]) && line[bytesread] != '\0')
         bytesread++;
       tmp = strchr (&line[bytesread], '\n');

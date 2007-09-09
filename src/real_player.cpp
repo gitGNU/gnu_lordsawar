@@ -1132,6 +1132,11 @@ bool RealPlayer::cityPillage(City* c, int& gold, int& pillaged_army_type)
             const Army *a = c->getArmy(i);
             if (a != NULL)
               {
+		if (a->getProductionCost() == 0)
+		  {
+                    slot = i;
+		    break;
+		  }
                 if (a->getProductionCost() > max_cost)
                   {
                     max_cost = a->getProductionCost();
@@ -1143,11 +1148,11 @@ bool RealPlayer::cityPillage(City* c, int& gold, int& pillaged_army_type)
           {
             const Army *a = c->getArmy(slot);
             pillaged_army_type = a->getType();
-            gold += a->getProductionCost() / 2;
+	    if (a->getProductionCost() == 0)
+	      gold += 1500;
+	    else
+	      gold += a->getProductionCost() / 2;
             c->removeBasicProd(slot);
-            // FIXME: if we have ghosts being produced in a city,
-            // they will be pillaged last.  this is bad because
-            // they're strong and should be pillaged earler.
           }
       }
 
@@ -1189,7 +1194,10 @@ bool RealPlayer::citySack(City* c, int& gold, std::list<Uint32> *sacked_types)
             if (a != NULL)
               {
                 sacked_types->push_back(a->getType());
-                gold += a->getProductionCost() / 2;
+		if (a->getProductionCost() == 0)
+		  gold += 1500;
+		else
+		  gold += a->getProductionCost() / 2;
                 c->removeBasicProd(i);
                 max--;
               }
