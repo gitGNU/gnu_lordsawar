@@ -261,9 +261,9 @@ void GamePreferencesDialog::on_map_size_changed()
 
     case MAP_SIZE_NORMAL:
     default:
-	cities_scale->set_value(20);
+	cities_scale->set_value(40);
 	ruins_scale->set_value(25);
-	temples_scale->set_value(25);
+	temples_scale->set_value(10);
 	break;
     }
 }
