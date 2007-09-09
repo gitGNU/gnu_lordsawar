@@ -56,101 +56,6 @@ namespace
     int selection_timeout = 150;	// controls speed of selector rotation
 }
 
-inline void lock_surf(SDL_Surface *sur)
-{
-      if (SDL_MUSTLOCK(sur))
-	        SDL_LockSurface(sur);
-}
-
-inline void unlock_surf(SDL_Surface *sur)
-{
-      if (SDL_MUSTLOCK(sur))
-	        SDL_UnlockSurface(sur);
-}
-/**************************************************************************
- *   get pixel
- *     Return the pixel value at (x, y)
- *       NOTE: The surface must be locked before calling this!
- *       **************************************************************************/
-Uint32 getpixel(SDL_Surface * pSurface, Sint16 x, Sint16 y)
-{
-  if (!pSurface) return 0x0;
-  switch (pSurface->format->BytesPerPixel) {
-  case 1:
-    return *(Uint8 *) ((Uint8 *) pSurface->pixels + y * pSurface->pitch + x);
-
-  case 2:
-    return *(Uint16 *) ((Uint8 *) pSurface->pixels + y * pSurface->pitch +
-			(x << 1));
-
-  case 3:
-      {
-	/* Here ptr is the address to the pixel we want to retrieve */
-	Uint8 *ptr =
-	  (Uint8 *) pSurface->pixels + y * pSurface->pitch + x * 3;
-	if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-	  return ptr[0] << 16 | ptr[1] << 8 | ptr[2];
-	} else {
-	  return ptr[0] | ptr[1] << 8 | ptr[2] << 16;
-	}
-      }
-  case 4:
-    return *(Uint32 *) ((Uint8 *) pSurface->pixels + y * pSurface->pitch +
-			(x << 2));
-
-  default:
-    return 0;			/* shouldn't happen, but avoids warnings */
-  }
-}
-/**************************************************************************
- *   convert SDL surface to SDL cursor format (code from SDL-dev mailing list)
- ***************************************************************************/
-static SDL_Cursor *SurfaceToCursor(SDL_Surface *image, int hx, int hy) 
-{
-  int w, x, y;
-  Uint8 *data, *mask, *d, *m, r, g, b, a;
-  Uint32 color;
-  SDL_Cursor *cursor;
-
-  w = (image->w + 7) / 8;
-  data = (Uint8 *)calloc (w * image->h * 2, 1);
-  if (data == NULL) 
-    return NULL;
-
-  mask = data + w * image->h;
-  lock_surf (image);
-  for (y = 0; y < image->h; y++) 
-    {
-      d = data + y * w;
-      m = mask + y * w;
-      for (x = 0; x < image->w; x++) 
-	{
-	  color = getpixel (image, x, y);
-	  //SDL_GetRGBA (color, image->format, &r, &g, &b, &a);
-	  //if (a != 0) 
-	    //{
-	      //color = (r + g + b) / 3;
-	      //m[x / 8] |= 128 >> (x & 7);
-	      //if (color < 128) {
-		//d[x / 8] |= 128 >> (x & 7);
-	      //}
-	    //}
-	  if ((image->flags & SDL_SRCCOLORKEY) == 0 || color != image->format->colorkey) {
-	    SDL_GetRGB(color, image->format, &r, &g, &b);
-	    color = (r + g + b) / 3;
-	    m[x / 8] |= 128 >> (x & 7);
-	    if (color < 128)
-	      d[x / 8] |= 128 >> (x & 7);
-	  }
-	}
-    }
-  unlock_surf (image);
-  cursor = SDL_CreateCursor (data, mask, w, image->h, hx, hy);
-
-  free (data);
-  return cursor;
-}
-
 GameBigMap::GameBigMap()
 {
   current_tile.x = current_tile.y = 0;
@@ -165,25 +70,6 @@ GameBigMap::GameBigMap()
     Timing::instance().register_timer(
 				      sigc::mem_fun(*this, &GameBigMap::on_selection_timeout),
 				      selection_timeout);
-  SDL_Surface *s;
-  s = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::ROOK);
-  rook_cursor = SurfaceToCursor (s, 0, 0);
-  s = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::TARGET);
-  target_cursor = SurfaceToCursor (s, 0, 0);
-  s = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::RUIN);
-  ruin_cursor = SurfaceToCursor (s, 0, 0);
-  s = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::HAND);
-  hand_cursor = SurfaceToCursor (s, 0, 0);
-  s = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::SWORD);
-  sword_cursor = SurfaceToCursor (s, 0, 0);
-  s = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::FEET);
-  feet_cursor = SurfaceToCursor (s, 0, 0);
-  s = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::HEART);
-  heart_cursor = SurfaceToCursor (s, 0, 0);
-  s = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::HAND);
-  hand_cursor = SurfaceToCursor (s, 0, 0);
-  s = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::SHIP);
-  ship_cursor = SurfaceToCursor (s, 0, 0);
 }
 
 GameBigMap::~GameBigMap()
@@ -439,23 +325,18 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       prev_mouse_pos = e.pos;
       return;
     }
-  SDL_Cursor *cursor;
   if (stack)
     {
-      cursor = feet_cursor;
+      d_cursor = GraphicsCache::FEET;
       if (stack->getPos() == tile)
-	{
-	  cursor = target_cursor;
-	}
+	  d_cursor = GraphicsCache::TARGET;
       else
 	{
 	  City *c = Citylist::getInstance()->getObjectAt(tile);
 	  if (c)
 	    {
 	      if (c->getPlayer() == Playerlist::getActiveplayer())
-		{
-		  cursor = feet_cursor;
-		}
+		  d_cursor = GraphicsCache::FEET;
 	      else
 		{
 		  int delta = abs(c->getPos().x - stack->getPos().x);
@@ -465,25 +346,17 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 		    {
 		      bool friendly = false;
 		      if (friendly)
-			{
-			  cursor = sword_cursor;
-			}
+			  d_cursor = GraphicsCache::SWORD;
 		      else
-			{
-			  cursor = heart_cursor;
-			}
+			  d_cursor = GraphicsCache::HEART;
 		    }
 		  else
 		    {
 		      //can i see other ppl's cities?
 		      if (GameScenario::s_see_opponents_production == true)
-			{
-			  cursor = rook_cursor;
-			}
+			  d_cursor = GraphicsCache::ROOK;
 		      else
-			{
-			  cursor = hand_cursor;
-			}
+			  d_cursor = GraphicsCache::HAND;
 		    }
 		}
 	    }
@@ -496,19 +369,13 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 		{
 		  Stack *empty = new Stack (*stack);
 		  if (empty->getPath()->calculate(empty, tile) == 0)
-		    {
-		      cursor = hand_cursor;
-		    }
+		      d_cursor = GraphicsCache::HAND;
 		  else
 		    {
 		      if (t->getMaptileType() == Tile::WATER)
-			{
-			  cursor = ship_cursor;
-			}
+			  d_cursor = GraphicsCache::SHIP;
 		      else
-			{
-			  cursor = feet_cursor;
-			}
+			  d_cursor = GraphicsCache::FEET;
 		    }
 		  delete empty;
 		}
@@ -521,18 +388,12 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 		    {
 		      bool friendly = false;
 		      if (friendly)
-			{
-			  cursor = sword_cursor;
-			}
+			  d_cursor = GraphicsCache::SWORD;
 		      else
-			{
-			  cursor = heart_cursor;
-			}
+			  d_cursor = GraphicsCache::HEART;
 		    }
 		  else
-		    {
-		      cursor = hand_cursor;
-		    }
+		      d_cursor = GraphicsCache::HAND;
 
 		}
 
@@ -541,33 +402,25 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
     }
   else
     {
-      cursor = hand_cursor;
+      d_cursor = GraphicsCache::HAND;
       Stack *st;
 
       st = Playerlist::getActiveplayer()->getStacklist()->getObjectAt(tile);
       if (st)
-	{
-	  cursor = target_cursor;
-	}
+	d_cursor = GraphicsCache::TARGET;
       else
 	{
 	  Maptile *t = GameMap::getInstance()->getTile(tile);
 	  if (t->getBuilding() == Maptile::CITY)
-	    {
-	      cursor = rook_cursor;
-	    }
+	    d_cursor = GraphicsCache::ROOK;
 	  else if (t->getBuilding() == Maptile::RUIN)
-	    {
-	      cursor = ruin_cursor;
-	    }
+	    d_cursor = GraphicsCache::RUIN;
 	  else if (t->getBuilding() == Maptile::TEMPLE)
-	    {
-	      cursor = ruin_cursor;
-	    }
+      	    d_cursor = GraphicsCache::RUIN;
 	}
 
-      //SDL_SetCursor (cursor); //disabled because it crashes X
     }
+  cursor_changed.emit(d_cursor);
 
   prev_mouse_pos = e.pos;
   last_tile = tile;

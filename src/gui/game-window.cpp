@@ -559,6 +559,14 @@ void GameWindow::setup_signals()
   connections.push_back
     (q->quest_expired.connect
      (sigc::mem_fun(this, &GameWindow::on_quest_expired)));
+  if (game.get())
+    {
+      connections.push_back
+	(game->get_bigmap().cursor_changed.connect
+	 (sigc::mem_fun(*this, &GameWindow::on_bigmap_cursor_changed)));
+    }
+  else
+    printf("couldn't setup cursor changed event\n");
 
 }
 
@@ -606,6 +614,14 @@ bool GameWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
   return true;
 }
 
+void GameWindow::on_bigmap_cursor_changed(GraphicsCache::CursorType cursor)
+{
+  sdl_widget->get_window()->set_cursor 
+    (Gdk::Cursor(Gdk::Display::get_default(), to_pixbuf
+		 (GraphicsCache::getInstance()->getCursorPic
+		  (cursor)), 4, 4));
+}
+
 bool GameWindow::on_sdl_key_event(GdkEventKey *e)
 {
 #if 0
@@ -634,11 +650,11 @@ bool GameWindow::on_map_mouse_motion_event(GdkEventMotion *e)
   if (game.get())
     {
       game->get_smallmap().mouse_motion_event(to_input_event(e));
-  
+
       map_eventbox->get_window()->set_cursor 
 	(Gdk::Cursor(Gdk::Display::get_default(), to_pixbuf
-      		     (GraphicsCache::getInstance()->getCursorPic
-      		      (GraphicsCache::MAGNIFYING_GLASS)), 0, 0));
+		     (GraphicsCache::getInstance()->getCursorPic
+		      (GraphicsCache::MAGNIFYING_GLASS)), 3, 3));
     }
 
   return true;

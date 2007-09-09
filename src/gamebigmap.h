@@ -21,6 +21,7 @@
 
 #include "vector.h"
 #include "input-events.h"
+#include "GraphicsCache.h"
 #include "bigmap.h"
 
 class Stack;
@@ -57,19 +58,13 @@ class GameBigMap: public BigMap
 
     // emitted when a path for a stack is set
     sigc::signal<void> path_set;
+    // emitted when the cursor changes
+    sigc::signal<void, GraphicsCache::CursorType> cursor_changed;
 
  private:
     SDL_Surface* d_arrows;
     Vector<int> current_tile, prev_mouse_pos;
     
-    SDL_Cursor* rook_cursor;
-    SDL_Cursor* target_cursor;
-    SDL_Cursor* ruin_cursor;
-    SDL_Cursor* hand_cursor;
-    SDL_Cursor* sword_cursor;
-    SDL_Cursor* heart_cursor;
-    SDL_Cursor* feet_cursor;
-    SDL_Cursor* ship_cursor;
     bool input_locked;
 	
     enum {
@@ -77,6 +72,7 @@ class GameBigMap: public BigMap
 	SHOWING_TEMPLE, SHOWING_SIGNPOST, SHOWING_STACK
     } mouse_state;
 	
+    GraphicsCache::CursorType d_cursor;
 
     // for the marching ants around selected stack
     sigc::connection selection_timeout_handler;
