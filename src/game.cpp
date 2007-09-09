@@ -931,13 +931,13 @@ Game::loadHeroTemplates()
     return -1;
   while ((read = getline (&line, &len, fileptr)) != -1)
     {
+      bytesread = 0;
       retval = sscanf (line, "%d%d%n", &side, &gender, &bytesread);
       if (retval != 2)
         {
           free (line);
           return -2;
         }
-      bytesread = 0;
       while (isspace(line[bytesread]) && line[bytesread] != '\0')
         bytesread++;
       tmp = strchr (&line[bytesread], '\n');

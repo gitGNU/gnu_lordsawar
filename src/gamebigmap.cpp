@@ -339,10 +339,10 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 		  d_cursor = GraphicsCache::FEET;
 	      else
 		{
-		  int delta = abs(c->getPos().x - stack->getPos().x);
-		  if (delta < abs(c->getPos().y - stack->getPos().y))
-		    delta = abs(c->getPos().y - stack->getPos().y);
-		  if (delta == 1)
+		  int delta = abs(tile.x - stack->getPos().x);
+		  if (delta <= 1)
+		    delta = abs(tile.y - stack->getPos().y);
+		  if (delta <= 1)
 		    {
 		      bool friendly = false;
 		      if (friendly)
@@ -382,9 +382,9 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	      else
 		{
 		  int delta = abs(stack->getPos().x - st->getPos().x);
-		  if (delta < abs(stack->getPos().y - st->getPos().y))
+		  if (delta <= 1)
 		    delta = abs(stack->getPos().y - st->getPos().y);
-		  if (delta == 1)
+		  if (delta <= 1)
 		    {
 		      bool friendly = false;
 		      if (friendly)
