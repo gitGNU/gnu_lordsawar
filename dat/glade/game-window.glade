@@ -39,7 +39,7 @@
 	      <child>
 		<widget class="GtkMenuItem" id="game_menuitem">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">_Game</property>
+		  <property name="label" translatable="yes">Game</property>
 		  <property name="use_underline">True</property>
 
 		  <child>
@@ -48,23 +48,25 @@
 		      <child>
 			<widget class="GtkMenuItem" id="load_game_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Load Game</property>
+			  <property name="label" translatable="yes">Load Game</property>
 			  <property name="use_underline">True</property>
+			  <accelerator key="L" modifiers="GDK_MOD1_MASK" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="save_game_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Save Game</property>
+			  <property name="label" translatable="yes">Save Game</property>
 			  <property name="use_underline">True</property>
+			  <accelerator key="S" modifiers="GDK_MOD1_MASK" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="save_game_as_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Save Game _As...</property>
+			  <property name="label" translatable="yes">Save Game As...</property>
 			  <property name="use_underline">True</property>
 			</widget>
 		      </child>
@@ -78,7 +80,7 @@
 		      <child>
 			<widget class="GtkMenuItem" id="quit_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Quit</property>
+			  <property name="label" translatable="yes">Quit</property>
 			  <property name="use_underline">True</property>
 			</widget>
 		      </child>
@@ -90,7 +92,7 @@
 	      <child>
 		<widget class="GtkMenuItem" id="order_menuitem">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">_Order</property>
+		  <property name="label" translatable="yes">Order</property>
 		  <property name="use_underline">True</property>
 		  <signal name="activate" handler="on_order_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 14:10:04 GMT"/>
 
@@ -100,36 +102,40 @@
 		      <child>
 			<widget class="GtkMenuItem" id="fight_order_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Fight Order</property>
+			  <property name="label" translatable="yes">Fight Order</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_fight_order_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 19:13:09 GMT"/>
+			  <accelerator key="i" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="move_all_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Move All</property>
+			  <property name="label" translatable="yes">Move All</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_move_all_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 14:10:04 GMT"/>
+			  <accelerator key="m" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="disband_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Disband</property>
+			  <property name="label" translatable="yes">Disband</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_disband_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 14:16:22 GMT"/>
+			  <accelerator key="q" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="signpost_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Signpost</property>
+			  <property name="label" translatable="yes">Signpost</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_signpost_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 15:55:37 GMT"/>
+			  <accelerator key="x" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
@@ -142,59 +148,10 @@
 		      <child>
 			<widget class="GtkMenuItem" id="resign_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Resign</property>
+			  <property name="label" translatable="yes">Resign</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_resign_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 22:30:37 GMT"/>
-			</widget>
-		      </child>
-		    </widget>
-		  </child>
-		</widget>
-	      </child>
-
-	      <child>
-		<widget class="GtkMenuItem" id="hero_menuitem">
-		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">_Hero</property>
-		  <property name="use_underline">True</property>
-		  <signal name="activate" handler="on_hero_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 23:29:12 GMT"/>
-
-		  <child>
-		    <widget class="GtkMenu" id="hero_menuitem_menu">
-
-		      <child>
-			<widget class="GtkMenuItem" id="inspect_menuitem">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Inspect</property>
-			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_inspect_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 23:29:12 GMT"/>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkMenuItem" id="plant_standard_menuitem">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Plant Flag</property>
-			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_plant_standard_menuitem_activate" last_modification_time="Sun, 26 Aug 2007 15:50:59 GMT"/>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkMenuItem" id="search_menuitem">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Search</property>
-			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_search_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 23:29:57 GMT"/>
-			</widget>
-		      </child>
-
-		      <child>
-			<widget class="GtkMenuItem" id="levels_menuitem">
-			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Levels</property>
-			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_levels_menuitem_activate" last_modification_time="Sun, 26 Aug 2007 13:19:11 GMT"/>
+			  <accelerator key="g" modifiers="GDK_SHIFT_MASK" signal="activate"/>
 			</widget>
 		      </child>
 		    </widget>
@@ -205,7 +162,7 @@
 	      <child>
 		<widget class="GtkMenuItem" id="reports_menuitem">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">_Reports</property>
+		  <property name="label" translatable="yes">Reports</property>
 		  <property name="use_underline">True</property>
 
 		  <child>
@@ -214,53 +171,113 @@
 		      <child>
 			<widget class="GtkMenuItem" id="army_report_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Armies</property>
+			  <property name="label" translatable="yes">Army</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_army_report_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 15:12:36 GMT"/>
+			  <accelerator key="a" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="city_report_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Cities</property>
+			  <property name="label" translatable="yes">City</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_city_report_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 15:12:36 GMT"/>
+			  <accelerator key="k" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="gold_report_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Gold</property>
+			  <property name="label" translatable="yes">Gold</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_gold_report_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 15:12:36 GMT"/>
+			  <accelerator key="g" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="production_report_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Production</property>
+			  <property name="label" translatable="yes">Production</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_production_report_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 14:39:18 GMT"/>
+			  <accelerator key="n" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="winning_report_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Winning</property>
+			  <property name="label" translatable="yes">Winning</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_winning_report_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 15:12:36 GMT"/>
+			  <accelerator key="w" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="quests_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Q_uest</property>
+			  <property name="label" translatable="yes">Quest</property>
 			  <property name="use_underline">True</property>
+			  <accelerator key="e" modifiers="0" signal="activate"/>
+			</widget>
+		      </child>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
+
+	      <child>
+		<widget class="GtkMenuItem" id="hero_menuitem">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes">Hero</property>
+		  <property name="use_underline">True</property>
+		  <signal name="activate" handler="on_hero_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 23:29:12 GMT"/>
+
+		  <child>
+		    <widget class="GtkMenu" id="hero_menuitem_menu">
+
+		      <child>
+			<widget class="GtkMenuItem" id="inspect_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Inspect</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_inspect_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 23:29:12 GMT"/>
+			  <accelerator key="i" modifiers="0" signal="activate"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="plant_standard_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Plant Flag</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_plant_standard_menuitem_activate" last_modification_time="Sun, 26 Aug 2007 15:50:59 GMT"/>
+			  <accelerator key="f" modifiers="0" signal="activate"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="levels_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Levels</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_levels_menuitem_activate" last_modification_time="Sun, 26 Aug 2007 13:19:11 GMT"/>
+			  <accelerator key="u" modifiers="0" signal="activate"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="search_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Search</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_search_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 23:29:57 GMT"/>
+			  <accelerator key="z" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 		    </widget>
@@ -271,7 +288,7 @@
 	      <child>
 		<widget class="GtkMenuItem" id="view_menuitem">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">_View</property>
+		  <property name="label" translatable="yes">View</property>
 		  <property name="use_underline">True</property>
 
 		  <child>
@@ -298,27 +315,30 @@
 		      <child>
 			<widget class="GtkMenuItem" id="ruin_report_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Ruins</property>
+			  <property name="label" translatable="yes">Ruins</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_ruin_report_menuitem_activate" last_modification_time="Sun, 26 Aug 2007 21:30:51 GMT"/>
+			  <accelerator key="r" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="army_bonus_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Army Bonus</property>
+			  <property name="label" translatable="yes">Army Bonus</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_army_bonus_menuitem_activate" last_modification_time="Mon, 27 Aug 2007 20:24:15 GMT"/>
+			  <accelerator key="o" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="item_bonus_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Item Bonus</property>
+			  <property name="label" translatable="yes">Items</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_item_bonus_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 12:46:26 GMT"/>
+			  <accelerator key="t" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 		    </widget>
@@ -329,7 +349,7 @@
 	      <child>
 		<widget class="GtkMenuItem" id="history_menuitem">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">_History</property>
+		  <property name="label" translatable="yes">History</property>
 		  <property name="use_underline">True</property>
 		  <signal name="activate" handler="on_history_menuitem_activate" last_modification_time="Fri, 31 Aug 2007 23:40:33 GMT"/>
 
@@ -339,36 +359,40 @@
 		      <child>
 			<widget class="GtkMenuItem" id="city_history_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Cities</property>
+			  <property name="label" translatable="yes">City</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_city_history_menuitem_activate" last_modification_time="Fri, 31 Aug 2007 23:40:33 GMT"/>
+			  <accelerator key="h" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="event_history_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Events</property>
+			  <property name="label" translatable="yes">Events</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_event_history_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 18:30:52 GMT"/>
+			  <accelerator key="e" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="gold_history_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Gold</property>
+			  <property name="label" translatable="yes">Gold</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_gold_history_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 18:30:52 GMT"/>
+			  <accelerator key="j" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="winner_history_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_Winners</property>
+			  <property name="label" translatable="yes">Winners</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_winner_history_menuitem_activate" last_modification_time="Sat, 01 Sep 2007 18:34:19 GMT"/>
+			  <accelerator key="y" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 		    </widget>
@@ -379,7 +403,7 @@
 	      <child>
 		<widget class="GtkMenuItem" id="help_menuitem">
 		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">_Help</property>
+		  <property name="label" translatable="yes">Help</property>
 		  <property name="use_underline">True</property>
 
 		  <child>
@@ -410,9 +434,10 @@
 		      <child>
 			<widget class="GtkMenuItem" id="end_turn_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">_End Turn</property>
+			  <property name="label" translatable="yes">End Turn</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_end_turn_menuitem_activate" last_modification_time="Fri, 24 Aug 2007 21:15:21 GMT"/>
+			  <accelerator key="E" modifiers="GDK_MOD1_MASK" signal="activate"/>
 			</widget>
 		      </child>
 		    </widget>
