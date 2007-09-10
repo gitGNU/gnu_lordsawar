@@ -1219,12 +1219,6 @@ void GameWindow::show_stack(Stack *s)
 
       // image
       toggle_box->add(*manage(new Gtk::Image(to_pixbuf(army->getPixmap()))));
-      // hit points graph
-      Gtk::ProgressBar *progress = manage(new Gtk::ProgressBar);
-      progress->set_fraction(double(army->getHP()) / army->getStat(Army::HP));
-      progress->property_width_request() = army->getPixmap()->w;
-      progress->property_height_request() = 12;
-      toggle_box->pack_start(*progress, Gtk::PACK_SHRINK, 4);
       // number of moves
       Glib::ustring moves_str = String::ucompose("%1", army->getMoves());
       toggle_box->add(*manage(new Gtk::Label(moves_str,
