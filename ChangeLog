@@ -1,3 +1,13 @@
+
+2007-09-10  Ben Asselstine
+	
+	* now restricting moving into enemy cities from far away
+	* now restricting the showing of the smallmap of computer players
+	  when on a hidden map (Thanks to Gunnar Lindholm)
+	* now buying an army in a city doesn't replace an active production
+	  slot if it doesn't have to (Thanks to Gunnar Lindholm)
+	* removed hit point progress bar in army unit in the stack info
+
 2007-09-09  Ben Asselstine
 
 	* now neutral cities/armies/flags appear to be the correct colour
