@@ -239,8 +239,8 @@ void Game::select_next_movable_stack()
 
 void Game::move_selected_stack()
 {
-  Player *p = Playerlist::getActiveplayer();
-  p->stackMove(p->getActivestack());
+  Stack *stack = Playerlist::getActiveplayer()->getActivestack();
+  Playerlist::getActiveplayer()->stackMove(stack);
 }
 
 void Game::move_all_stacks()
@@ -359,6 +359,15 @@ void Game::stackUpdate(Stack* s)
 
   update_stack_info();
   update_control_panel();
+  if (s)
+    {
+      //check to see if we can't move any more
+      if (s->canMove() == false)
+	{
+	  Playerlist::getActiveplayer()->getStacklist()->setActivestack(NULL);
+	  bigmap->unselect_active_stack();
+	}
+    }
 }
 
 // s is currently unused, but can later be filled with reasonable data
