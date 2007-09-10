@@ -8,6 +8,7 @@
 	  slot if it doesn't have to (Thanks to Gunnar Lindholm)
 	* removed hit point progress bar in army unit in the stack info
 	* now automatically deselecting a stack when we're out of moves
+	* fixed the black blinking on the bigmap upon select/deselect
 
 2007-09-09  Ben Asselstine
 
