@@ -377,11 +377,19 @@ void CityWindow::on_buy_clicked()
     {
 	int slot = -1;
 	for (unsigned int i = 0; i < production_toggles.size(); ++i)
-	    if (production_toggles[i]->get_active()) {
-		slot = i;
-		break;
+	  if (production_toggles[i]->get_active() == false) 
+	    {
+	      slot = i;
+	      break;
 	    }
 	
+	if  (slot == -1)
+	  {
+	    //no free slots available.  change the one we're on.
+	    slot = city->getProductionIndex();
+	    if (slot == -1) 
+	      slot = 0;
+	  }
 	city->getPlayer()->cityBuyProduction(city, slot, army);
 	city->getPlayer()->cityChangeProduction(city, slot);
 

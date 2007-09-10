@@ -208,136 +208,140 @@ void Game::redraw()
     if (bigmap.get())
 	bigmap->draw();
     if (smallmap.get())
-	smallmap->draw();
+      {
+	if (Playerlist::getActiveplayer()->getType() == Player::HUMAN ||
+	    GameScenario::s_hidden_map == false)
+	  smallmap->draw();
+      }
 }
 
 void Game::select_prev_stack()
 {
-    Stack* stack = Playerlist::getActiveplayer()->getStacklist()->setPrev();
-    if (stack)
-        bigmap->select_active_stack();
+  Stack* stack = Playerlist::getActiveplayer()->getStacklist()->setPrev();
+  if (stack)
+    bigmap->select_active_stack();
 }
 
 void Game::select_next_stack()
 {
-    Stack* stack = Playerlist::getActiveplayer()->getStacklist()->setNext();
-    if (stack)
-        bigmap->select_active_stack();
+  Stack* stack = Playerlist::getActiveplayer()->getStacklist()->setNext();
+  if (stack)
+    bigmap->select_active_stack();
 }
 
 void Game::select_next_movable_stack()
 {
-    Stacklist *sl = Playerlist::getActiveplayer()->getStacklist();
-    Stack* stack = sl->getNextMovable();
-    sl->setActivestack(stack);
-    bigmap->select_active_stack();
+  Stacklist *sl = Playerlist::getActiveplayer()->getStacklist();
+  Stack* stack = sl->getNextMovable();
+  sl->setActivestack(stack);
+  bigmap->select_active_stack();
 }
 
 void Game::move_selected_stack()
 {
-    Player *p = Playerlist::getActiveplayer();
-    p->stackMove(p->getActivestack());
+  Player *p = Playerlist::getActiveplayer();
+  p->stackMove(p->getActivestack());
 }
 
 void Game::move_all_stacks()
 {
-    Player *player = Playerlist::getActiveplayer();
-    Stacklist* sl = player->getStacklist();
-    Stack *orig = sl->getActivestack();
+  Player *player = Playerlist::getActiveplayer();
+  Stacklist* sl = player->getStacklist();
+  Stack *orig = sl->getActivestack();
 
-    for (Stacklist::iterator i = sl->begin(), end = sl->end(); i != end; ++i)
+  for (Stacklist::iterator i = sl->begin(), end = sl->end(); i != end; ++i)
     {
-	Stack &s = **i;
-	if (!s.empty() && !s.getPath()->empty() && s.canMove())
+      Stack &s = **i;
+      if (!s.empty() && !s.getPath()->empty() && s.canMove())
 	{
-	    sl->setActivestack(&s);
-            bigmap->select_active_stack();
-            player->stackMove(player->getActivestack());
+	  sl->setActivestack(&s);
+	  bigmap->select_active_stack();
+	  player->stackMove(player->getActivestack());
 	}
     }
-    
-    // if the stack still exists, set the active stack to the old one, else to 0
-    if (find(sl->begin(), sl->end(), orig) != sl->end())
+
+  // if the stack still exists, set the active stack to the old one, else to 0
+  if (find(sl->begin(), sl->end(), orig) != sl->end())
     {
-        sl->setActivestack(orig);
-	bigmap->select_active_stack();
+      sl->setActivestack(orig);
+      bigmap->select_active_stack();
     }
-    else
+  else
     {
-        sl->setActivestack(0);
-	bigmap->unselect_active_stack();
+      sl->setActivestack(0);
+      bigmap->unselect_active_stack();
     }
 }
 
 void Game::defend_selected_stack()
 {
-    Player *player = Playerlist::getActiveplayer();
-    Stack *stack = player->getActivestack();
-    assert(stack);
-    stack->setDefending(true);
+  Player *player = Playerlist::getActiveplayer();
+  Stack *stack = player->getActivestack();
+  assert(stack);
+  stack->setDefending(true);
 
-    stack = player->getStacklist()->getNextMovable();
-    player->getStacklist()->setActivestack(stack);
-    
-    if (stack)
-        bigmap->select_active_stack();
-    else
-	bigmap->unselect_active_stack();
+  stack = player->getStacklist()->getNextMovable();
+  player->getStacklist()->setActivestack(stack);
+
+  if (stack)
+    bigmap->select_active_stack();
+  else
+    bigmap->unselect_active_stack();
 }
 
 void Game::center_selected_stack()
 {
-    Stack *stack = Playerlist::getActiveplayer()->getActivestack();
-    if (stack) 
-        bigmap->select_active_stack();
+  Stack *stack = Playerlist::getActiveplayer()->getActivestack();
+  if (stack) 
+    bigmap->select_active_stack();
 }
 
 void Game::search_selected_stack()
 {
-    Player *player = Playerlist::getActiveplayer();
-    Stack* stack = player->getActivestack();
+  Player *player = Playerlist::getActiveplayer();
+  Stack* stack = player->getActivestack();
 
-    Ruin* ruin = Ruinlist::getInstance()->getObjectAt(stack->getPos());
-    Temple* temple = Templelist::getInstance()->getObjectAt(stack->getPos());
+  Ruin* ruin = Ruinlist::getInstance()->getObjectAt(stack->getPos());
+  Temple* temple = Templelist::getInstance()->getObjectAt(stack->getPos());
 
-    if (ruin && !ruin->isSearched() && stack->getGroupMoves() > 0 &&
-        ((ruin->isHidden() == true && ruin->getOwner() == player) ||
-         ruin->isHidden() == false))
+  if (ruin && !ruin->isSearched() && stack->getGroupMoves() > 0 &&
+      ((ruin->isHidden() == true && ruin->getOwner() == player) ||
+       ruin->isHidden() == false))
     {
-        Reward *reward;
+      Reward *reward;
 
-	reward = player->stackSearchRuin(stack, ruin);
-        if (!reward)
-        {
-	    redraw();
-	    update_stack_info();
-	    update_control_panel();
-            return;
-        }
+      reward = player->stackSearchRuin(stack, ruin);
+      if (!reward)
+	{
+	  redraw();
+	  update_stack_info();
+	  update_control_panel();
+	  return;
+	}
 
-	ruin_searched.emit(ruin, stack, reward);
-	
-        update_sidebar_stats();
+      ruin_searched.emit(ruin, stack, reward);
+
+      update_sidebar_stats();
     }
-    else if (temple && temple->searchable() && stack->getGroupMoves() > 0)
+  else if (temple && temple->searchable() && stack->getGroupMoves() > 0)
     {
-        int blessCount;
-        blessCount = player->stackVisitTemple(stack, temple);
-	bool wants_quest = temple_visited.emit(stack->hasHero(), temple, blessCount);
-        if (wants_quest)
-        {
-            Quest *q = player->stackGetQuest(stack, temple);
-            Hero* hero = dynamic_cast<Hero*>(stack->getFirstHero());
+      int blessCount;
+      blessCount = player->stackVisitTemple(stack, temple);
+      bool wants_quest = temple_visited.emit(stack->hasHero(), temple, blessCount);
+      if (wants_quest)
+	{
+	  Quest *q = player->stackGetQuest(stack, temple);
+	  Hero* hero = dynamic_cast<Hero*>(stack->getFirstHero());
 
-            if (q)
-              {
-                for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
-                    if ((*it)->getId() == q->getHeroId())
-                        hero = dynamic_cast<Hero*>(*it);
+	  if (q)
+	    {
+	      for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
+		if ((*it)->getId() == q->getHeroId())
+		  hero = dynamic_cast<Hero*>(*it);
 
-              }
-	    quest_assigned.emit(hero, q);
-        }
+	    }
+	  quest_assigned.emit(hero, q);
+	}
     }
 }
 
@@ -345,455 +349,455 @@ void Game::search_selected_stack()
 // descriptions later on
 void Game::stackUpdate(Stack* s)
 {
-    if (!s)
-        s = Playerlist::getActiveplayer()->getActivestack();
+  if (!s)
+    s = Playerlist::getActiveplayer()->getActivestack();
 
-    if (s)
-	bigmap->center_view(s->getPos());
+  if (s)
+    bigmap->center_view(s->getPos());
 
-    redraw();
+  redraw();
 
-    update_stack_info();
-    update_control_panel();
+  update_stack_info();
+  update_control_panel();
 }
 
 // s is currently unused, but can later be filled with reasonable data
 void Game::stackDied(Stack* s)
 {
-    bigmap->unselect_active_stack();
-    smallmap->draw();
-    update_control_panel();
+  bigmap->unselect_active_stack();
+  redraw();
+  update_control_panel();
 }
 
 
 Army::Stat Game::newLevelArmy(Army* a)
 {
-    // don't show a dialog if computer or enemy's armies advance
-    if ((a->getPlayer()->getType() != Player::HUMAN) ||
-        (a->getPlayer() != Playerlist::getInstance()->getActiveplayer()))
-        return Army::STRENGTH;
+  // don't show a dialog if computer or enemy's armies advance
+  if ((a->getPlayer()->getType() != Player::HUMAN) ||
+      (a->getPlayer() != Playerlist::getInstance()->getActiveplayer()))
+    return Army::STRENGTH;
 
-    return army_gains_level.emit(a);
+  return army_gains_level.emit(a);
 }
 
 void Game::newMedalArmy(Army* a)
 {
-    // We don't want to have medal awards of computer players displayed
-    if (!a->getPlayer()
-	|| (a->getPlayer()->getType() != Player::HUMAN)
-	|| a->getPlayer() != Playerlist::getInstance()->getActiveplayer())
-        return;
+  // We don't want to have medal awards of computer players displayed
+  if (!a->getPlayer()
+      || (a->getPlayer()->getType() != Player::HUMAN)
+      || a->getPlayer() != Playerlist::getInstance()->getActiveplayer())
+    return;
 
-    medal_awarded_to_army.emit(a);
-    update_stack_info();
+  medal_awarded_to_army.emit(a);
+  update_stack_info();
 }
 
 void Game::on_stack_selected(Stack* s)
 {
-    update_stack_info();
-    update_control_panel();
+  update_stack_info();
+  update_control_panel();
 }
 
 void Game::on_city_queried (City* c, bool brief)
 {
-    if (c)
+  if (c)
     {
-	Player *player = c->getPlayer();
-	
-	if (brief)
+      Player *player = c->getPlayer();
+
+      if (brief)
 	{
-	    Glib::ustring str;
+	  Glib::ustring str;
 
-	    if (c->isCapital())
-		str = String::ucompose(_("%1 (capital city)"), c->getName());
-	    else
-		str = c->getName();
-	    str += "\n";
-	    if (player != Playerlist::getInstance()->getNeutral())
+	  if (c->isCapital())
+	    str = String::ucompose(_("%1 (capital city)"), c->getName());
+	  else
+	    str = c->getName();
+	  str += "\n";
+	  if (player != Playerlist::getInstance()->getNeutral())
 	    {
-		str += String::ucompose(_("Under rule of %1"), player->getName());
-		str += "\n";
+	      str += String::ucompose(_("Under rule of %1"), player->getName());
+	      str += "\n";
 	    }
-	    str += String::ucompose(_("Income: %1"), c->getGold());
-	    str += "\n";
-	    str += String::ucompose(_("Defense: %1"), c->getDefenseLevel());
-	    if (c->isBurnt())
+	  str += String::ucompose(_("Income: %1"), c->getGold());
+	  str += "\n";
+	  str += String::ucompose(_("Defense: %1"), c->getDefenseLevel());
+	  if (c->isBurnt())
 	    {
-		str += "\n";
-		str += _("Status: razed!");
+	      str += "\n";
+	      str += _("Status: razed!");
 	    }
 
-	    MapTipPosition mpos = bigmap->map_tip_position(c->get_area());
-	    map_tip_changed.emit(str, mpos);
+	  MapTipPosition mpos = bigmap->map_tip_position(c->get_area());
+	  map_tip_changed.emit(str, mpos);
 	}
-	else
+      else
 	{
-	    city_visited.emit(c);
+	  city_visited.emit(c);
 
-	    // some visible city properties (razed) may have changed
-	    redraw();
+	  // some visible city properties (razed) may have changed
+	  redraw();
 	}
     }
-    else
-	map_tip_changed.emit("", MapTipPosition());
+  else
+    map_tip_changed.emit("", MapTipPosition());
 }
 
 void Game::on_ruin_queried (Ruin* r)
 {
-    if (r)
+  if (r)
     {
-	Glib::ustring str;
+      Glib::ustring str;
 
-	str = r->getName();
-	str += "\n";
-	if (r->isSearched())
-	    // note to translators: whether a ruin has been searched
-	    str += _("Explored");
-	else
-	    // note to translators: whether a ruin has been searched
-	    str += _("Unexplored");
-	    
-	MapTipPosition mpos = bigmap->map_tip_position(r->get_area());
-	map_tip_changed.emit(str, mpos);
+      str = r->getName();
+      str += "\n";
+      if (r->isSearched())
+	// note to translators: whether a ruin has been searched
+	str += _("Explored");
+      else
+	// note to translators: whether a ruin has been searched
+	str += _("Unexplored");
+
+      MapTipPosition mpos = bigmap->map_tip_position(r->get_area());
+      map_tip_changed.emit(str, mpos);
     }
-    else
-	map_tip_changed.emit("", MapTipPosition());
+  else
+    map_tip_changed.emit("", MapTipPosition());
 }
 
 void Game::on_signpost_queried (Signpost* s)
 {
-    if (s)
+  if (s)
     {
-	Glib::ustring str;
+      Glib::ustring str;
 
-	str = s->getName();
-	    
-	MapTipPosition mpos = bigmap->map_tip_position(s->get_area());
-	map_tip_changed.emit(str, mpos);
+      str = s->getName();
+
+      MapTipPosition mpos = bigmap->map_tip_position(s->get_area());
+      map_tip_changed.emit(str, mpos);
     }
-    else
-	map_tip_changed.emit("", MapTipPosition());
+  else
+    map_tip_changed.emit("", MapTipPosition());
 }
 
 void Game::on_stack_queried (Stack* s)
 {
-    if (s)
+  if (s)
     {
-        Rectangle r = s->get_area();
-        //r.w *= s->size();
-	MapTipPosition mpos = bigmap->map_tip_position(r);
-	stack_tip_changed.emit(s, mpos);
+      Rectangle r = s->get_area();
+      //r.w *= s->size();
+      MapTipPosition mpos = bigmap->map_tip_position(r);
+      stack_tip_changed.emit(s, mpos);
     }
-    else
-	stack_tip_changed.emit(NULL, MapTipPosition());
+  else
+    stack_tip_changed.emit(NULL, MapTipPosition());
 }
 
 void Game::on_temple_queried (Temple* t)
 {
-    if (t)
+  if (t)
     {
-	Glib::ustring str;
+      Glib::ustring str;
 
-	str = t->getName();
-	    
-	MapTipPosition mpos = bigmap->map_tip_position(t->get_area());
-	map_tip_changed.emit(str, mpos);
+      str = t->getName();
+
+      MapTipPosition mpos = bigmap->map_tip_position(t->get_area());
+      map_tip_changed.emit(str, mpos);
     }
-    else
-	map_tip_changed.emit("", MapTipPosition());
+  else
+    map_tip_changed.emit("", MapTipPosition());
 }
 
 void Game::looting_city(City* city, int &gold)
 {
-    Citylist *clist = Citylist::getInstance();
-    Playerlist *plist = Playerlist::getInstance();
-    Player *attacker = plist->getActiveplayer();
-    Player *defender = city->getPlayer();
-    int amt = (defender->getGold() / (2 * clist->countCities (defender)) * 2);
-    // give (Enemy-Gold/(2Enemy-Cities)) to the attacker 
-    // and then take away twice that from the defender.
-    // the idea here is that some money is taken in the invasion
-    // and other monies are lost forever
-    defender->withdrawGold (amt);
-    amt /= 2;
-    attacker->addGold (amt);
-    gold = amt;
-    return;
+  Citylist *clist = Citylist::getInstance();
+  Playerlist *plist = Playerlist::getInstance();
+  Player *attacker = plist->getActiveplayer();
+  Player *defender = city->getPlayer();
+  int amt = (defender->getGold() / (2 * clist->countCities (defender)) * 2);
+  // give (Enemy-Gold/(2Enemy-Cities)) to the attacker 
+  // and then take away twice that from the defender.
+  // the idea here is that some money is taken in the invasion
+  // and other monies are lost forever
+  defender->withdrawGold (amt);
+  amt /= 2;
+  attacker->addGold (amt);
+  gold = amt;
+  return;
 }
 
 void Game::invading_city(City* city)
 {
-    Playerlist *plist = Playerlist::getInstance();
-    Player *player = plist->getActiveplayer();
-    int gold = 0;
-    // if a computer makes it's turn and occupied a city, we shouldn't
-    // show a modal dialog :)
+  Playerlist *plist = Playerlist::getInstance();
+  Player *player = plist->getActiveplayer();
+  int gold = 0;
+  // if a computer makes it's turn and occupied a city, we shouldn't
+  // show a modal dialog :)
 
-    // loot the city
-    // if the attacked city isn't neutral, loot some gold
-    if (city->getPlayer() != plist->getNeutral())
-      looting_city (city, gold);
+  // loot the city
+  // if the attacked city isn't neutral, loot some gold
+  if (city->getPlayer() != plist->getNeutral())
+    looting_city (city, gold);
 
-    if (!input_locked)
+  if (!input_locked)
     {
-        redraw();
-	CityDefeatedAction a = city_defeated.emit(city, gold);
-        gold = 0;
+      redraw();
+      CityDefeatedAction a = city_defeated.emit(city, gold);
+      gold = 0;
 
-	switch (a) {
-	case CITY_DEFEATED_OCCUPY:
-	    player->cityOccupy(city);
-	    break;
-	    
-	case CITY_DEFEATED_RAZE:
-	    player->cityRaze(city);
-            city_razed.emit (city);
-	    break;
-	    
-	case CITY_DEFEATED_PILLAGE:
-            int pillaged_army_type;
-	    player->cityPillage(city, gold, pillaged_army_type);
-	    city_pillaged.emit(city, gold, pillaged_army_type);
-	    break;
+      switch (a) {
+      case CITY_DEFEATED_OCCUPY:
+	player->cityOccupy(city);
+	break;
 
-	case CITY_DEFEATED_SACK:
-            std::list<Uint32> sacked_types;
-	    player->citySack(city, gold, &sacked_types);
-	    city_sacked.emit(city, gold, sacked_types);
-	    break;
-	}
-	
-	if (!city->isBurnt())
-	    city_visited.emit(city);
+      case CITY_DEFEATED_RAZE:
+	player->cityRaze(city);
+	city_razed.emit (city);
+	break;
+
+      case CITY_DEFEATED_PILLAGE:
+	int pillaged_army_type;
+	player->cityPillage(city, gold, pillaged_army_type);
+	city_pillaged.emit(city, gold, pillaged_army_type);
+	break;
+
+      case CITY_DEFEATED_SACK:
+	std::list<Uint32> sacked_types;
+	player->citySack(city, gold, &sacked_types);
+	city_sacked.emit(city, gold, sacked_types);
+	break;
+      }
+
+      if (!city->isBurnt())
+	city_visited.emit(city);
     }
-   
-    Playerlist::getInstance()->checkPlayers();
-    redraw();
-    update_stack_info();
-    update_sidebar_stats();
-    update_control_panel();
+
+  Playerlist::getInstance()->checkPlayers();
+  redraw();
+  update_stack_info();
+  update_sidebar_stats();
+  update_control_panel();
 }
 
 void Game::lock_inputs()
 {
-    // don't accept modifying user input from now on
-    bigmap->set_input_locked(true);
-    smallmap->set_input_locked(true);
-    input_locked = true;
-    update_control_panel();
+  // don't accept modifying user input from now on
+  bigmap->set_input_locked(true);
+  smallmap->set_input_locked(true);
+  input_locked = true;
+  update_control_panel();
 }
 
 void Game::unlock_inputs()
 {
-    bigmap->set_input_locked(false);
-    smallmap->set_input_locked(false);
-    input_locked = false;
-    update_control_panel();
+  bigmap->set_input_locked(false);
+  smallmap->set_input_locked(false);
+  input_locked = false;
+  update_control_panel();
 }
 
 void Game::update_control_panel()
 {
-    if (input_locked)
+  if (input_locked)
     {
-	can_select_prev_stack.emit(false);
-	can_select_next_stack.emit(false);
-	can_select_next_movable_stack.emit(false);
-	can_center_selected_stack.emit(false);
-	can_defend_selected_stack.emit(false);
-	can_search_selected_stack.emit(false);
-	can_inspect_selected_stack.emit(false);
-	can_plant_standard_selected_stack.emit(false);
-	can_move_selected_stack.emit(false);
-	can_move_all_stacks.emit(false);
-	can_end_turn.emit(false);
-	can_disband_stack.emit(false);
-	can_change_signpost.emit(false);
-	can_see_history.emit(false);
-	
-        return;
-    }
-    
-    Player *player = Playerlist::getActiveplayer();
-    Stacklist* sl = player->getStacklist();
-    
-    bool all_defending = true;
-    for (Stacklist::iterator i = sl->begin(); i != sl->end(); ++i)
-        if (!(*i)->getDefending() && *i != sl->getActivestack())
-        {
-            all_defending = false;
-            break;
-        }
-    
-    can_select_prev_stack.emit(!all_defending);
-    can_select_next_stack.emit(!all_defending);
-
-    bool all_immobile = true;
-    for (Stacklist::iterator i = sl->begin(); i != sl->end(); ++i)
-        if (!(*i)->getDefending() && (*i)->canMove()
-	    && *i != sl->getActivestack())
-	{
-	    all_immobile = false;
-	    break;
-	}
-    can_select_next_movable_stack.emit(!all_defending && !all_immobile);
-
-    // if any stack can move, enable the moveall button
-    can_move_all_stacks.emit(sl->enoughMoves());
-
-    Stack *stack = player->getActivestack();
-
-    can_defend_selected_stack.emit(stack != 0);
-    can_center_selected_stack.emit(stack != 0);
-    
-    if (stack)
-    {
-	can_move_selected_stack.emit(stack->getPath()->size() > 0
-				     && stack->enoughMoves());
-	
-        if (stack->getGroupMoves() > 0)
-        {
-            Temple *temple;
-            temple = Templelist::getInstance()->getObjectAt(stack->getPos());
-            if (stack->hasHero())
-            {
-                Ruin *ruin
-		    = Ruinlist::getInstance()->getObjectAt(stack->getPos());
-
-	        can_search_selected_stack.emit(
-		    (ruin && !ruin->isSearched()) || temple);
-            }
-            else
-            {
-	        can_search_selected_stack.emit(temple);
-            }
-        }
-
-        if (stack->hasHero())
-	  {
-            can_inspect_selected_stack.emit(true);
-	    //does the hero have the player's standard?
-            for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
-	      {
-                if ((*it)->isHero())
-		  {
-		    Hero *hero = dynamic_cast<Hero*>((*it));
-                    std::list<Item*> backpack = hero->getBackpack();
-                    for (std::list<Item*>::iterator i = backpack.begin(), 
-			 end = backpack.end(); i != end; ++i)
-		      {
-			if ((*i)->isPlantable() && 
-			    (*i)->getPlantableOwner() == player)
-			  {
-			    //can't plant on city/ruin/temple/signpost
-			    Citylist *cl = Citylist::getInstance();
-			    City *city = cl->getObjectAt(stack->getPos());
-			    Templelist *tl = Templelist::getInstance();
-			    Temple *temple = tl->getObjectAt(stack->getPos());
-			    Ruinlist *rl = Ruinlist::getInstance();
-			    Ruin *ruin = rl->getObjectAt(stack->getPos());
-			    Signpostlist *spl = Signpostlist::getInstance();
-			    Signpost *sign = spl->getObjectAt(stack->getPos());
-			    if (!city && !temple && !ruin && !sign)
-                              {
-                                GameMap *gm = GameMap::getInstance();
-	                        std::list<Item*> items;
-                                Vector<int> pos = stack->getPos();
-                                items = gm->getTile(pos)->getItems();
-                                std::list<Item*>::iterator iit;
-                                bool standard_already_planted = false;
-                                for (iit = items.begin(); iit != items.end();
-                                     iit++)
-                                  {
-                                    if ((*iit)->getPlanted())
-                                      standard_already_planted = true;
-                                  }
-                                //are there any other standards here?
-                                if (standard_already_planted == false)
-	                          can_plant_standard_selected_stack.emit(true);
-                              }
-			  }
-		      }
-		  }
-	      }
-	  }
-
-        if (Signpostlist::getInstance()->getObjectAt(stack->getPos()))
-          can_change_signpost.emit(true);
-
-        can_disband_stack.emit(true);
-    }
-    else
-    {
-	can_search_selected_stack.emit(false);
-	can_move_selected_stack.emit(false);
-	can_disband_stack.emit(false);
-	can_inspect_selected_stack.emit(false);
-	can_plant_standard_selected_stack.emit(false);
-    }
-
-    if (d_gameScenario->getRound() > 0)
-      can_see_history.emit(true);
-    else
+      can_select_prev_stack.emit(false);
+      can_select_next_stack.emit(false);
+      can_select_next_movable_stack.emit(false);
+      can_center_selected_stack.emit(false);
+      can_defend_selected_stack.emit(false);
+      can_search_selected_stack.emit(false);
+      can_inspect_selected_stack.emit(false);
+      can_plant_standard_selected_stack.emit(false);
+      can_move_selected_stack.emit(false);
+      can_move_all_stacks.emit(false);
+      can_end_turn.emit(false);
+      can_disband_stack.emit(false);
+      can_change_signpost.emit(false);
       can_see_history.emit(false);
 
-    can_end_turn.emit(true);
+      return;
+    }
+
+  Player *player = Playerlist::getActiveplayer();
+  Stacklist* sl = player->getStacklist();
+
+  bool all_defending = true;
+  for (Stacklist::iterator i = sl->begin(); i != sl->end(); ++i)
+    if (!(*i)->getDefending() && *i != sl->getActivestack())
+      {
+	all_defending = false;
+	break;
+      }
+
+  can_select_prev_stack.emit(!all_defending);
+  can_select_next_stack.emit(!all_defending);
+
+  bool all_immobile = true;
+  for (Stacklist::iterator i = sl->begin(); i != sl->end(); ++i)
+    if (!(*i)->getDefending() && (*i)->canMove()
+	&& *i != sl->getActivestack())
+      {
+	all_immobile = false;
+	break;
+      }
+  can_select_next_movable_stack.emit(!all_defending && !all_immobile);
+
+  // if any stack can move, enable the moveall button
+  can_move_all_stacks.emit(sl->enoughMoves());
+
+  Stack *stack = player->getActivestack();
+
+  can_defend_selected_stack.emit(stack != 0);
+  can_center_selected_stack.emit(stack != 0);
+
+  if (stack)
+    {
+      can_move_selected_stack.emit(stack->getPath()->size() > 0
+				   && stack->enoughMoves());
+
+      if (stack->getGroupMoves() > 0)
+	{
+	  Temple *temple;
+	  temple = Templelist::getInstance()->getObjectAt(stack->getPos());
+	  if (stack->hasHero())
+	    {
+	      Ruin *ruin
+		= Ruinlist::getInstance()->getObjectAt(stack->getPos());
+
+	      can_search_selected_stack.emit(
+					     (ruin && !ruin->isSearched()) || temple);
+	    }
+	  else
+	    {
+	      can_search_selected_stack.emit(temple);
+	    }
+	}
+
+      if (stack->hasHero())
+	{
+	  can_inspect_selected_stack.emit(true);
+	  //does the hero have the player's standard?
+	  for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
+	    {
+	      if ((*it)->isHero())
+		{
+		  Hero *hero = dynamic_cast<Hero*>((*it));
+		  std::list<Item*> backpack = hero->getBackpack();
+		  for (std::list<Item*>::iterator i = backpack.begin(), 
+		       end = backpack.end(); i != end; ++i)
+		    {
+		      if ((*i)->isPlantable() && 
+			  (*i)->getPlantableOwner() == player)
+			{
+			  //can't plant on city/ruin/temple/signpost
+			  Citylist *cl = Citylist::getInstance();
+			  City *city = cl->getObjectAt(stack->getPos());
+			  Templelist *tl = Templelist::getInstance();
+			  Temple *temple = tl->getObjectAt(stack->getPos());
+			  Ruinlist *rl = Ruinlist::getInstance();
+			  Ruin *ruin = rl->getObjectAt(stack->getPos());
+			  Signpostlist *spl = Signpostlist::getInstance();
+			  Signpost *sign = spl->getObjectAt(stack->getPos());
+			  if (!city && !temple && !ruin && !sign)
+			    {
+			      GameMap *gm = GameMap::getInstance();
+			      std::list<Item*> items;
+			      Vector<int> pos = stack->getPos();
+			      items = gm->getTile(pos)->getItems();
+			      std::list<Item*>::iterator iit;
+			      bool standard_already_planted = false;
+			      for (iit = items.begin(); iit != items.end();
+				   iit++)
+				{
+				  if ((*iit)->getPlanted())
+				    standard_already_planted = true;
+				}
+			      //are there any other standards here?
+			      if (standard_already_planted == false)
+				can_plant_standard_selected_stack.emit(true);
+			    }
+			}
+		    }
+		}
+	    }
+	}
+
+      if (Signpostlist::getInstance()->getObjectAt(stack->getPos()))
+	can_change_signpost.emit(true);
+
+      can_disband_stack.emit(true);
+    }
+  else
+    {
+      can_search_selected_stack.emit(false);
+      can_move_selected_stack.emit(false);
+      can_disband_stack.emit(false);
+      can_inspect_selected_stack.emit(false);
+      can_plant_standard_selected_stack.emit(false);
+    }
+
+  if (d_gameScenario->getRound() > 0)
+    can_see_history.emit(true);
+  else
+    can_see_history.emit(false);
+
+  can_end_turn.emit(true);
 }
 
 GameBigMap &Game::get_bigmap()
 {
-    assert(bigmap.get());
-    return *bigmap.get();
+  assert(bigmap.get());
+  return *bigmap.get();
 }
 
 SmallMap &Game::get_smallmap()
 {
-    assert(smallmap.get());
-    return *smallmap.get();
+  assert(smallmap.get());
+  return *smallmap.get();
 }
 
 void Game::startGame()
 {
 
-    debug ("start_game()");
-    lock_inputs();
+  debug ("start_game()");
+  lock_inputs();
 
-    d_nextTurn->start();
-    update_control_panel();
+  d_nextTurn->start();
+  update_control_panel();
 }
 
 void Game::loadGame()
 {
-    Player *player = Playerlist::getActiveplayer();
-    if (player->getType() == Player::HUMAN)
+  Player *player = Playerlist::getActiveplayer();
+  if (player->getType() == Player::HUMAN)
     {
-        //human players want access to the controls and an info box
-        unlock_inputs();
-        player->getStacklist()->setActivestack(0);
-        center_view_on_city();
-        update_sidebar_stats();
-        update_control_panel();
-	update_stack_info();
-	game_loaded.emit(player);
+      //human players want access to the controls and an info box
+      unlock_inputs();
+      player->getStacklist()->setActivestack(0);
+      center_view_on_city();
+      update_sidebar_stats();
+      update_control_panel();
+      update_stack_info();
+      game_loaded.emit(player);
     }       
-    else
+  else
     {
-        lock_inputs();
-        update_sidebar_stats();
-        player->startTurn();
-        d_nextTurn->endTurn();
-        update_control_panel();
+      lock_inputs();
+      update_sidebar_stats();
+      player->startTurn();
+      d_nextTurn->endTurn();
+      update_control_panel();
     }
 }
 
 void Game::stopGame()
 {
-    d_nextTurn->stop();
-    Playerlist::finish();
+  d_nextTurn->stop();
+  Playerlist::finish();
 }
 
 bool Game::saveGame(std::string file)
 {
-    return d_gameScenario->saveGame(file);
+  return d_gameScenario->saveGame(file);
 }
 
 
@@ -828,15 +832,15 @@ void Game::maybeRecruitHero (Player *p)
       bool exists = false;
       Stacklist *stacklist = p->getStacklist();
       for (Stacklist::iterator it = stacklist->begin(); 
-           it != stacklist->end(); it++)
-        if ((*it)->hasHero())
-            exists = true; 
+	   it != stacklist->end(); it++)
+	if ((*it)->hasHero())
+	  exists = true; 
 
       gold_needed = (rand() % 500) + 1000;
       if (exists == false)
-        gold_needed /= 3;
+	gold_needed /= 3;
     }
-    
+
   //we set the chance of some hero recruitment to, ehm, 10 percent
   if (((((rand() % 6) == 0) && (gold_needed < p->getGold())) 
        || gold_needed == 0)
@@ -846,58 +850,58 @@ void Game::maybeRecruitHero (Player *p)
       Hero *templateHero = d_herotemplates[p->getId()][num];
       Hero* newhero = new Hero(*templateHero);
       if (gold_needed == 0)
-        city = Citylist::getInstance()->getFirstCity(p);
+	city = Citylist::getInstance()->getFirstCity(p);
       else
-        {
-          std::vector<City*> cities;
-          Citylist* cl = Citylist::getInstance();
-          for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-            if (!(*it).isBurnt() && (*it).getPlayer() == p)
-              cities.push_back(&(*it));
-          if (cities.empty())
-            return;
-          city = cities[rand() % cities.size()];
-        }
+	{
+	  std::vector<City*> cities;
+	  Citylist* cl = Citylist::getInstance();
+	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+	    if (!(*it).isBurnt() && (*it).getPlayer() == p)
+	      cities.push_back(&(*it));
+	  if (cities.empty())
+	    return;
+	  city = cities[rand() % cities.size()];
+	}
 
       bool accepted = p->recruitHero(newhero, city, gold_needed);
       if (accepted)
-        {
+	{
 	  newhero->setPlayer(p);
 
-          int alliesCount;
-          GameMap::getInstance()->addArmy(city, newhero);
-          /* now maybe add a few allies */
-          if (gold_needed > 1300)
-            alliesCount = 3;
-          else if (gold_needed > 1000)
-            alliesCount = 2;
-          else if (gold_needed > 800)
-            alliesCount = 1;
-          else
-            alliesCount = 0;
+	  int alliesCount;
+	  GameMap::getInstance()->addArmy(city, newhero);
+	  /* now maybe add a few allies */
+	  if (gold_needed > 1300)
+	    alliesCount = 3;
+	  else if (gold_needed > 1000)
+	    alliesCount = 2;
+	  else if (gold_needed > 800)
+	    alliesCount = 1;
+	  else
+	    alliesCount = 0;
 
-          if (alliesCount > 0)
-            {
-              const Army *army = Reward_Allies::randomArmyAlly();
-              if (army)
-                {
-                  Reward_Allies::addAllies(p, city->getPos(), army,alliesCount);
-                  if (p->getType() == Player::HUMAN)
-                    hero_arrives.emit(alliesCount);
-                }
-            }
-          if (gold_needed == 0)
-            {
-              std::string name = p->getName() + " " + _("Standard");
-              Item *battle_standard = new Item (name, true, p);
-              battle_standard->setBonus(Item::ADD1STACK);
-              newhero->addToBackpack(battle_standard, 0);
-            }
-          p->withdrawGold(gold_needed);
-          p->supdatingStack.emit(0);
-        }
-       else
-        delete newhero;
+	  if (alliesCount > 0)
+	    {
+	      const Army *army = Reward_Allies::randomArmyAlly();
+	      if (army)
+		{
+		  Reward_Allies::addAllies(p, city->getPos(), army,alliesCount);
+		  if (p->getType() == Player::HUMAN)
+		    hero_arrives.emit(alliesCount);
+		}
+	    }
+	  if (gold_needed == 0)
+	    {
+	      std::string name = p->getName() + " " + _("Standard");
+	      Item *battle_standard = new Item (name, true, p);
+	      battle_standard->setBonus(Item::ADD1STACK);
+	      newhero->addToBackpack(battle_standard, 0);
+	    }
+	  p->withdrawGold(gold_needed);
+	  p->supdatingStack.emit(0);
+	}
+      else
+	delete newhero;
     }
   return;
 }
@@ -924,7 +928,7 @@ Game::loadHeroTemplates()
     {
       const Army *a = al->getArmy (p->getArmyset(), j);
       if (a->isHero())
-        heroes.push_back(a);
+	heroes.push_back(a);
     }
 
   if (fileptr == NULL)
@@ -934,32 +938,32 @@ Game::loadHeroTemplates()
       bytesread = 0;
       retval = sscanf (line, "%d%d%n", &side, &gender, &bytesread);
       if (retval != 2)
-        {
-          free (line);
-          return -2;
-        }
+	{
+	  free (line);
+	  return -2;
+	}
       while (isspace(line[bytesread]) && line[bytesread] != '\0')
-        bytesread++;
+	bytesread++;
       tmp = strchr (&line[bytesread], '\n');
       if (tmp)
-        tmp[0] = '\0';
+	tmp[0] = '\0';
       if (strlen (&line[bytesread]) == 0)
-        {
-          free (line);
-          return -3;
-        }
+	{
+	  free (line);
+	  return -3;
+	}
       if (side < 0 || side > (int) MAX_PLAYERS)
-        {
-          free (line);
-          return -4;
-        }
+	{
+	  free (line);
+	  return -4;
+	}
 
       herotype = heroes[rand() % heroes.size()];
       Hero *newhero = new Hero (*herotype, "", NULL);
       if (gender)
-        newhero->setGender(Hero::MALE);
+	newhero->setGender(Hero::MALE);
       else
-        newhero->setGender(Hero::FEMALE);
+	newhero->setGender(Hero::FEMALE);
       newhero->setName (&line[bytesread]);
       d_herotemplates[side].push_back (newhero);
     }
@@ -971,53 +975,53 @@ Game::loadHeroTemplates()
 
 bool Game::init_turn_for_player(Player* p)
 {
-    // FIXME: Currently this function only checks for a human player. You
-    // can also have it check for e.g. escape key pressed to interrupt
-    // an AI-only game to save/quit.
+  // FIXME: Currently this function only checks for a human player. You
+  // can also have it check for e.g. escape key pressed to interrupt
+  // an AI-only game to save/quit.
 
-    next_player_turn.emit(p, d_gameScenario->getRound() + 1);
-    if (p->getType() == Player::HUMAN)
+  next_player_turn.emit(p, d_gameScenario->getRound() + 1);
+  if (p->getType() == Player::HUMAN)
     {
-	unlock_inputs();
-    
-        Stack* stack = p->getActivestack();
-	if (stack != NULL)
-	    bigmap->center_view(stack->getPos());
-	else
-	    center_view_on_city();
+      unlock_inputs();
 
-	update_sidebar_stats();
-	update_stack_info();
-	update_control_panel();
-    
-
-        maybeRecruitHero(p);
-    
-        if (d_gameScenario->getRound() == 0)
-          {
-            Citylist *clist = Citylist::getInstance();
-	    city_visited.emit(clist->getFirstCity(p));
-          }
-
-
-        return true;
-    }
-    else
-    {
+      Stack* stack = p->getActivestack();
+      if (stack != NULL)
+	bigmap->center_view(stack->getPos());
+      else
 	center_view_on_city();
-	SDL_Delay(250);
-        maybeRecruitHero(p);
-	return false;
+
+      update_sidebar_stats();
+      update_stack_info();
+      update_control_panel();
+
+
+      maybeRecruitHero(p);
+
+      if (d_gameScenario->getRound() == 0)
+	{
+	  Citylist *clist = Citylist::getInstance();
+	  city_visited.emit(clist->getFirstCity(p));
+	}
+
+
+      return true;
+    }
+  else
+    {
+      center_view_on_city();
+      SDL_Delay(250);
+      maybeRecruitHero(p);
+      return false;
     }
 }
 
 void Game::on_player_died(Player *player)
 {
-    const Playerlist* pl = Playerlist::getInstance();
-    if (pl->getNoOfPlayers() <= 1)
-	game_over.emit(pl->getFirstLiving());
-    else if (player->getType() == Player::HUMAN)
-	player_died.emit(player);
+  const Playerlist* pl = Playerlist::getInstance();
+  if (pl->getNoOfPlayers() <= 1)
+    game_over.emit(pl->getFirstLiving());
+  else if (player->getType() == Player::HUMAN)
+    player_died.emit(player);
 }
 
 void Game::on_fight_started(Fight &fight)
@@ -1030,27 +1034,27 @@ void Game::on_fight_started(Fight &fight)
 
 void Game::center_view_on_city()
 {
-    const Player* p = Playerlist::getInstance()->getActiveplayer();
-    
-    // preferred city is a capital city that belongs to the player 
-    for (Citylist::iterator i = Citylist::getInstance()->begin();
-            i != Citylist::getInstance()->end(); i++)
+  const Player* p = Playerlist::getInstance()->getActiveplayer();
+
+  // preferred city is a capital city that belongs to the player 
+  for (Citylist::iterator i = Citylist::getInstance()->begin();
+       i != Citylist::getInstance()->end(); i++)
     {
-        if (i->getPlayer() == p && i->isCapital())
-        {
-	    bigmap->center_view(i->getPos());
-            return;
-        }
+      if (i->getPlayer() == p && i->isCapital())
+	{
+	  bigmap->center_view(i->getPos());
+	  return;
+	}
     }
 
-    // okay, then find any city that belongs to the player and center on it
-    for (Citylist::iterator i = Citylist::getInstance()->begin();
-        i != Citylist::getInstance()->end(); i++)
+  // okay, then find any city that belongs to the player and center on it
+  for (Citylist::iterator i = Citylist::getInstance()->begin();
+       i != Citylist::getInstance()->end(); i++)
     {
-        if (i->getPlayer() == p)
-        {
-	    bigmap->center_view(i->getPos());
-            break;
-        }
+      if (i->getPlayer() == p)
+	{
+	  bigmap->center_view(i->getPos());
+	  break;
+	}
     }
 }

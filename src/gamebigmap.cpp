@@ -126,7 +126,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	  Vector<int> p;
 	  p.x = tile.x; p.y = tile.y;
 
-	  // clicked on an already active stack
+	  // clicked on the already active stack
 	  if (stack->getPos().x == tile.x && stack->getPos().y == tile.y)
 	    {
 	      // clear the path
@@ -134,6 +134,22 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      path_set.emit();
 	      draw();
 	      return;
+	    }
+
+	  //clicked on an enemy city that is too far away
+	  City *c = Citylist::getInstance()->getObjectAt(tile);
+	  if (c)
+	    {
+	      //restrict going into eneny cities unless they're only
+	      //one square away
+	      if (c->getPlayer() != Playerlist::getActiveplayer())
+		{
+		  int delta = abs(tile.x - stack->getPos().x);
+		  if (delta <= 1)
+		    delta = abs(tile.y - stack->getPos().y);
+		  if (delta > 1)
+		    return;
+		}
 	    }
 
 	  // split if ungrouped
@@ -329,14 +345,14 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
     {
       d_cursor = GraphicsCache::FEET;
       if (stack->getPos() == tile)
-	  d_cursor = GraphicsCache::TARGET;
+	d_cursor = GraphicsCache::TARGET;
       else
 	{
 	  City *c = Citylist::getInstance()->getObjectAt(tile);
 	  if (c)
 	    {
 	      if (c->getPlayer() == Playerlist::getActiveplayer())
-		  d_cursor = GraphicsCache::FEET;
+		d_cursor = GraphicsCache::FEET;
 	      else
 		{
 		  int delta = abs(tile.x - stack->getPos().x);
@@ -346,17 +362,17 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 		    {
 		      bool friendly = false;
 		      if (friendly)
-			  d_cursor = GraphicsCache::HEART;
+			d_cursor = GraphicsCache::HEART;
 		      else
-			  d_cursor = GraphicsCache::SWORD;
+			d_cursor = GraphicsCache::SWORD;
 		    }
 		  else
 		    {
 		      //can i see other ppl's cities?
 		      if (GameScenario::s_see_opponents_production == true)
-			  d_cursor = GraphicsCache::ROOK;
+			d_cursor = GraphicsCache::ROOK;
 		      else
-			  d_cursor = GraphicsCache::HAND;
+			d_cursor = GraphicsCache::HAND;
 		    }
 		}
 	    }
@@ -369,13 +385,13 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 		{
 		  Stack *empty = new Stack (*stack);
 		  if (empty->getPath()->calculate(empty, tile) == 0)
-		      d_cursor = GraphicsCache::HAND;
+		    d_cursor = GraphicsCache::HAND;
 		  else
 		    {
 		      if (t->getMaptileType() == Tile::WATER)
-			  d_cursor = GraphicsCache::SHIP;
+			d_cursor = GraphicsCache::SHIP;
 		      else
-			  d_cursor = GraphicsCache::FEET;
+			d_cursor = GraphicsCache::FEET;
 		    }
 		  delete empty;
 		}
@@ -388,12 +404,12 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 		    {
 		      bool friendly = false;
 		      if (friendly)
-			  d_cursor = GraphicsCache::HEART;
+			d_cursor = GraphicsCache::HEART;
 		      else
-			  d_cursor = GraphicsCache::SWORD;
+			d_cursor = GraphicsCache::SWORD;
 		    }
 		  else
-		      d_cursor = GraphicsCache::HAND;
+		    d_cursor = GraphicsCache::HAND;
 
 		}
 
@@ -407,7 +423,12 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
       st = Playerlist::getActiveplayer()->getStacklist()->getObjectAt(tile);
       if (st)
-	d_cursor = GraphicsCache::TARGET;
+	{
+	  if (st->getPlayer() == Playerlist::getActiveplayer())
+	    d_cursor = GraphicsCache::TARGET;
+	  else
+	    d_cursor = GraphicsCache::HAND;
+	}
       else
 	{
 	  Maptile *t = GameMap::getInstance()->getTile(tile);
@@ -416,7 +437,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	  else if (t->getBuilding() == Maptile::RUIN)
 	    d_cursor = GraphicsCache::RUIN;
 	  else if (t->getBuilding() == Maptile::TEMPLE)
-      	    d_cursor = GraphicsCache::RUIN;
+	    d_cursor = GraphicsCache::RUIN;
 	}
 
     }
