@@ -397,20 +397,22 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 		}
 	      else
 		{
-		  int delta = abs(stack->getPos().x - st->getPos().x);
-		  if (delta <= 1)
-		    delta = abs(stack->getPos().y - st->getPos().y);
-		  if (delta <= 1)
+		  if (st->getPlayer() != Playerlist::getActiveplayer())
 		    {
-		      bool friendly = false;
-		      if (friendly)
-			d_cursor = GraphicsCache::HEART;
+		      int delta = abs(stack->getPos().x - st->getPos().x);
+		      if (delta <= 1)
+			delta = abs(stack->getPos().y - st->getPos().y);
+		      if (delta <= 1)
+			{
+			  bool friendly = false;
+			  if (friendly)
+			    d_cursor = GraphicsCache::HEART;
+			  else
+			    d_cursor = GraphicsCache::SWORD;
+			}
 		      else
-			d_cursor = GraphicsCache::SWORD;
+			d_cursor = GraphicsCache::HAND;
 		    }
-		  else
-		    d_cursor = GraphicsCache::HAND;
-
 		}
 
 	    }
