@@ -161,7 +161,7 @@
 			  <property name="label" translatable="yes">Resign</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_resign_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 22:30:37 GMT"/>
-			  <accelerator key="g" modifiers="GDK_SHIFT_MASK" signal="activate"/>
+			  <accelerator key="r" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 		    </widget>
@@ -233,7 +233,7 @@
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">Quest</property>
 			  <property name="use_underline">True</property>
-			  <accelerator key="e" modifiers="0" signal="activate"/>
+			  <accelerator key="equal" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 		    </widget>
@@ -257,7 +257,7 @@
 			  <property name="label" translatable="yes">Inspect</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_inspect_menuitem_activate" last_modification_time="Sat, 25 Aug 2007 23:29:12 GMT"/>
-			  <accelerator key="i" modifiers="0" signal="activate"/>
+			  <accelerator key="comma" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
@@ -328,7 +328,7 @@
 			  <property name="label" translatable="yes">Ruins</property>
 			  <property name="use_underline">True</property>
 			  <signal name="activate" handler="on_ruin_report_menuitem_activate" last_modification_time="Sun, 26 Aug 2007 21:30:51 GMT"/>
-			  <accelerator key="r" modifiers="0" signal="activate"/>
+			  <accelerator key="period" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
