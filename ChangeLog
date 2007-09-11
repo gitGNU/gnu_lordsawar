@@ -1,3 +1,8 @@
+2007-09-11  Ben Asselstine
+
+	* added auto-deselect when stack is out of moves
+	* hitting space now groups the stack
+	* fixed up menuitem shortcuts for ruin, inspect, and quest
 
 2007-09-10  Ben Asselstine
 	
