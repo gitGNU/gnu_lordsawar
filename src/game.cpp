@@ -241,6 +241,12 @@ void Game::move_selected_stack()
 {
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
   Playerlist::getActiveplayer()->stackMove(stack);
+		  
+  if (stack->canMove() == 0)
+    {
+      Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
+      bigmap->unselect_active_stack();
+    }
 }
 
 void Game::move_all_stacks()
