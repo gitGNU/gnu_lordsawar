@@ -112,8 +112,20 @@ bool Stack::moveOneStep()
   return true;
 }
 
-// return the maximum moves of this stack by checking the moves of each army
 
+bool Stack::isGrouped()
+{
+  if (empty())
+    return false;
+
+  for (const_iterator it = begin(); it != end(); ++it)
+    if ((*it)->isGrouped() == false)
+      return false;
+
+  return true;
+}
+
+// return the maximum moves of this stack by checking the moves of each army
 Uint32 Stack::getGroupMoves() const
 {
   if (empty())
@@ -227,12 +239,23 @@ Army* Stack::getStrongestHero() const
   return strongest;
 }
 
-void Stack::selectAll()
+void Stack::group()
 {
+  if (empty())
+    return;
   for (const_iterator it = begin(); it != end(); ++it)
-    {
-      (*it)->setGrouped(true);
-    }
+    (*it)->setGrouped(true);
+  return;
+}
+
+void Stack::ungroup()
+{
+  if (empty())
+    return;
+  for (const_iterator it = begin(); it != end(); ++it)
+    (*it)->setGrouped(false);
+  //set first army to be in the group
+  (*(begin()))->setGrouped(true);
   return;
 }
 

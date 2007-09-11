@@ -118,6 +118,10 @@ GameWindow::GameWindow()
     xml->get_widget("stack_info_box", stack_info_box);
     xml->get_widget("stack_info_container", stack_info_container);
     xml->get_widget("group_moves_label", group_moves_label);
+    xml->get_widget("group_togglebutton", group_ungroup_toggle);
+    group_ungroup_toggle->signal_toggled().connect
+      (sigc::bind(sigc::mem_fun(*this, &GameWindow::on_group_toggled),
+		  group_ungroup_toggle));
     xml->get_widget("terrain_image", terrain_image);
     xml->get_widget("stats_box", stats_box);
     stack_info_box->hide();
@@ -220,6 +224,7 @@ GameWindow::GameWindow()
     xml->get_widget("event_history_menuitem", event_history_menuitem);
     xml->get_widget("gold_history_menuitem", gold_history_menuitem);
     xml->get_widget("winner_history_menuitem", winner_history_menuitem);
+    xml->get_widget("group_ungroup_menuitem", group_ungroup_menuitem);
 
     xml->connect_clicked("fight_order_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_fight_order_activated));
@@ -476,6 +481,9 @@ void GameWindow::setup_signals()
   setup_menuitem(winner_history_menuitem,
 		 sigc::mem_fun(*this, &GameWindow::on_winner_history_activated),
 		 game->can_see_history);
+  setup_menuitem(group_ungroup_menuitem,
+		 sigc::mem_fun(*this, &GameWindow::on_group_ungroup_activated),
+		 game->can_group_ungroup_selected_stack);
 
   // setup game callbacks
   connections.push_back 
@@ -877,6 +885,11 @@ void GameWindow::on_preferences_activated()
   d.run();
 }
 
+void GameWindow::on_group_ungroup_activated()
+{
+  group_ungroup_toggle->set_active(!group_ungroup_toggle->get_active());
+}
+
 void GameWindow::on_fight_order_activated()
 {
   FightOrderDialog d(Playerlist::getActiveplayer());
@@ -1087,6 +1100,15 @@ void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
   fill_in_group_info (p->getStacklist()->getActivestack());
 }
 
+void GameWindow::on_group_toggled(Gtk::ToggleButton *toggle)
+{
+  if (toggle->get_active() == false)
+    currently_selected_stack->ungroup();
+  else
+    currently_selected_stack->group();
+  update_army_buttons();
+}
+
 bool GameWindow::on_army_button_event(GdkEventButton *e,
 				      Gtk::ToggleButton *toggle, Army *army)
 {
@@ -1134,6 +1156,16 @@ void GameWindow::clear_army_buttons()
        end = army_buttons.end(); i != end; ++i)
     delete *i;
   army_buttons.clear();
+}
+
+void GameWindow::update_army_buttons()
+{
+  Stack::iterator j = currently_selected_stack->begin();
+  for (army_buttons_type::iterator i = army_buttons.begin(),
+       end = army_buttons.end(); i != end; ++i, j++)
+    {
+      (*i)->set_active((*j)->isGrouped());
+    }
 }
 
 void GameWindow::ensure_one_army_button_active()
@@ -1205,6 +1237,7 @@ void GameWindow::fill_in_group_info (Stack *s)
   terrain_image->property_pixbuf() = to_pixbuf(terrain);
   group_moves_label->set_text(String::ucompose(_("Group\nMoves\n%1"),
 					       s->getGroupMoves()));
+  group_ungroup_toggle->set_active(s->isGrouped());
 }
 
 void GameWindow::show_stack(Stack *s)

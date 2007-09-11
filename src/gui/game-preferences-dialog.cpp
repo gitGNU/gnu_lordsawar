@@ -166,7 +166,7 @@ GamePreferencesDialog::GamePreferencesDialog()
 
     Gtk::FileFilter map_filter;
     map_filter.add_pattern("*.map");
-    //map_filter.set_name(_("Maps (*.map)"));
+    map_filter.set_name(_("LordsAWar map files (*.map)"));
     load_map_filechooser->set_filter(map_filter);
 
     xml->connect_clicked(

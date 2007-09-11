@@ -615,6 +615,7 @@ void Game::update_control_panel()
       can_plant_standard_selected_stack.emit(false);
       can_move_selected_stack.emit(false);
       can_move_all_stacks.emit(false);
+      can_group_ungroup_selected_stack.emit(false);
       can_end_turn.emit(false);
       can_disband_stack.emit(false);
       can_change_signpost.emit(false);
@@ -731,12 +732,14 @@ void Game::update_control_panel()
 	can_change_signpost.emit(true);
 
       can_disband_stack.emit(true);
+      can_group_ungroup_selected_stack.emit(true);
     }
   else
     {
       can_search_selected_stack.emit(false);
       can_move_selected_stack.emit(false);
       can_disband_stack.emit(false);
+      can_group_ungroup_selected_stack.emit(false);
       can_inspect_selected_stack.emit(false);
       can_plant_standard_selected_stack.emit(false);
     }

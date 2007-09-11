@@ -101,6 +101,9 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
         //! Returns the minimum number of MP of all armies
         Uint32 getGroupMoves() const;
 
+	//! Returns true if all armies in the stack are grouped
+	bool isGrouped();
+
         //! Returns the minimum number of MP of all tiles around the stack, or
         // -1 if the stack can't move
         int getMinTileMoves() const;
@@ -156,7 +159,8 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
 
         sigc::signal<void, Stack*> sdying;
 
-	void selectAll();
+	void group();
+	void ungroup();
         
     private:    
         //! Callback for loading the stack

@@ -105,6 +105,7 @@ class GameWindow: public sigc::trackable
     Gtk::MenuItem *gold_history_menuitem;
     Gtk::MenuItem *winner_history_menuitem;
     Gtk::MenuItem *plant_standard_menuitem;
+    Gtk::MenuItem *group_ungroup_menuitem;
     Gtk::Box *stack_info_box;
     Gtk::Box *stack_info_container;
     Gtk::Label *group_moves_label;
@@ -138,6 +139,7 @@ class GameWindow: public sigc::trackable
     typedef std::vector<Gtk::ToggleButton *> army_buttons_type;
     army_buttons_type army_buttons;
     Gtk::EventBox *map_eventbox;
+    Gtk::ToggleButton *group_ungroup_toggle;
 
     std::string current_save_filename;
 
@@ -173,6 +175,7 @@ class GameWindow: public sigc::trackable
 
     void on_fullscreen_activated();
     void on_preferences_activated();
+    void on_group_ungroup_activated();
     
     void on_fight_order_activated();
     void on_levels_activated();
@@ -190,10 +193,12 @@ class GameWindow: public sigc::trackable
     void show_stack(Stack *s);
     void fill_in_group_info (Stack *s);
     void on_army_toggled(Gtk::ToggleButton *toggle, Army *army);
+    void on_group_toggled(Gtk::ToggleButton *toggle);
     bool on_army_button_event(GdkEventButton *e,
 			      Gtk::ToggleButton *toggle, Army *army);
     void on_army_button_has_size();
     void clear_army_buttons();
+    void update_army_buttons();
     void ensure_one_army_button_active();
 
     // shield set on the top
