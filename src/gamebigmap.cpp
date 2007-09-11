@@ -140,7 +140,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	  City *c = Citylist::getInstance()->getObjectAt(tile);
 	  if (c)
 	    {
-	      //restrict going into eneny cities unless they're only
+	      //restrict going into enemy cities unless they're only
 	      //one square away
 	      if (c->getPlayer() != Playerlist::getActiveplayer())
 		{

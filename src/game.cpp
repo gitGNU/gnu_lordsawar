@@ -359,15 +359,6 @@ void Game::stackUpdate(Stack* s)
 
   update_stack_info();
   update_control_panel();
-  if (s)
-    {
-      //check to see if we can't move any more
-      if (s->canMove() == false)
-	{
-	  Playerlist::getActiveplayer()->getStacklist()->setActivestack(NULL);
-	  bigmap->unselect_active_stack();
-	}
-    }
 }
 
 // s is currently unused, but can later be filled with reasonable data
