@@ -1124,19 +1124,8 @@ bool GameWindow::on_army_button_event(GdkEventButton *e,
   if (event.button == MouseButtonEvent::RIGHT_BUTTON
       && event.state == MouseButtonEvent::PRESSED) {
 
-    Hero *hero = dynamic_cast<Hero *>(army);
-    if (hero)
-      {
-	HeroDialog d(hero, currently_selected_stack->getPos());
-
-	d.set_parent_window(*window.get());
-	d.run();
-      }
-    else
-      {
-	army_info_tip.reset(new ArmyInfoTip(toggle, army, 
-					    ArmyInfoTip::ARMY_INSTANCE));
-      }
+    army_info_tip.reset(new ArmyInfoTip(toggle, army, 
+					ArmyInfoTip::ARMY_INSTANCE));
 
     return true;
   }
