@@ -333,7 +333,7 @@ void Game::search_selected_stack()
     {
       int blessCount;
       blessCount = player->stackVisitTemple(stack, temple);
-      bool wants_quest = temple_visited.emit(stack->hasHero(), temple, blessCount);
+      bool wants_quest = temple_searched.emit(stack->hasHero(), temple, blessCount);
       if (wants_quest)
 	{
 	  Quest *q = player->stackGetQuest(stack, temple);
@@ -448,23 +448,30 @@ void Game::on_city_queried (City* c, bool brief)
     map_tip_changed.emit("", MapTipPosition());
 }
 
-void Game::on_ruin_queried (Ruin* r)
+void Game::on_ruin_queried (Ruin* r, bool brief)
 {
   if (r)
     {
-      Glib::ustring str;
+      if (brief)
+	{
+	  Glib::ustring str;
 
-      str = r->getName();
-      str += "\n";
-      if (r->isSearched())
-	// note to translators: whether a ruin has been searched
-	str += _("Explored");
+	  str = r->getName();
+	  str += "\n";
+	  if (r->isSearched())
+	    // note to translators: whether a ruin has been searched
+	    str += _("Explored");
+	  else
+	    // note to translators: whether a ruin has been searched
+	    str += _("Unexplored");
+
+	  MapTipPosition mpos = bigmap->map_tip_position(r->get_area());
+	  map_tip_changed.emit(str, mpos);
+	}
       else
-	// note to translators: whether a ruin has been searched
-	str += _("Unexplored");
-
-      MapTipPosition mpos = bigmap->map_tip_position(r->get_area());
-      map_tip_changed.emit(str, mpos);
+	{
+	  ruin_visited.emit(r);
+	}
     }
   else
     map_tip_changed.emit("", MapTipPosition());
@@ -498,16 +505,23 @@ void Game::on_stack_queried (Stack* s)
     stack_tip_changed.emit(NULL, MapTipPosition());
 }
 
-void Game::on_temple_queried (Temple* t)
+void Game::on_temple_queried (Temple* t, bool brief)
 {
   if (t)
     {
-      Glib::ustring str;
+      if (brief)
+	{
+	  Glib::ustring str;
 
-      str = t->getName();
+	  str = t->getName();
 
-      MapTipPosition mpos = bigmap->map_tip_position(t->get_area());
-      map_tip_changed.emit(str, mpos);
+	  MapTipPosition mpos = bigmap->map_tip_position(t->get_area());
+	  map_tip_changed.emit(str, mpos);
+	}
+      else
+	{
+	  temple_visited.emit(t);
+	}
     }
   else
     map_tip_changed.emit("", MapTipPosition());

@@ -517,8 +517,8 @@ void GameWindow::setup_signals()
     (game->hero_offers_service.connect
      (sigc::mem_fun(*this, &GameWindow::on_hero_offers_service)));
   connections.push_back
-    (game->temple_visited.connect
-     (sigc::mem_fun(*this, &GameWindow::on_temple_visited)));
+    (game->temple_searched.connect
+     (sigc::mem_fun(*this, &GameWindow::on_temple_searched)));
   connections.push_back
     (game->quest_assigned.connect
      (sigc::mem_fun(*this, &GameWindow::on_quest_assigned)));
@@ -537,6 +537,12 @@ void GameWindow::setup_signals()
   connections.push_back
     (game->city_visited.connect
      (sigc::mem_fun(*this, &GameWindow::on_city_visited)));
+  connections.push_back
+    (game->ruin_visited.connect
+     (sigc::mem_fun(*this, &GameWindow::on_ruin_visited)));
+  connections.push_back
+    (game->temple_visited.connect
+     (sigc::mem_fun(*this, &GameWindow::on_temple_visited)));
   connections.push_back
     (game->next_player_turn.connect
      (sigc::mem_fun(*this, &GameWindow::on_next_player_turn)));
@@ -1505,7 +1511,14 @@ bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, 
 }
 
 
-bool GameWindow::on_temple_visited(bool hasHero, Temple *temple, int blessCount)
+void GameWindow::on_temple_visited(Temple *temple)
+{
+  RuinReportDialog d(temple->getPos());
+  d.set_parent_window(*window.get());
+  d.run();
+}
+
+bool GameWindow::on_temple_searched(bool hasHero, Temple *temple, int blessCount)
 {
   QuestsManager *qm = QuestsManager::getInstance();
   std::auto_ptr<Gtk::Dialog> dialog;
@@ -1944,6 +1957,13 @@ void GameWindow::on_city_visited(City *city)
 {
   CityWindow d(city);
 
+  d.set_parent_window(*window.get());
+  d.run();
+}
+
+void GameWindow::on_ruin_visited(Ruin *ruin)
+{
+  RuinReportDialog d(ruin->getPos());
   d.set_parent_window(*window.get());
   d.run();
 }

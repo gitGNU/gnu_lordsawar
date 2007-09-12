@@ -45,8 +45,23 @@ RuinReportDialog::RuinReportDialog(Vector<int> pos)
 
   xml->get_widget("map_image", map_image);
 
+  Location *l = NULL;
   Ruin *ruin = Ruinlist::getInstance()->getNearestRuin(pos);
-  ruinmap.reset(new RuinMap(ruin));
+  Temple *temple = Templelist::getInstance()->getNearestTemple(pos);
+  if (temple && !ruin)
+    l = temple;
+  else if (ruin && !temple)
+    l = ruin;
+  else if (!temple && !ruin)
+    return;
+  else if (ruin->getPos() == pos)
+    l = ruin;
+  else if (temple->getPos() == pos)
+    l = temple;
+  else
+    l = ruin;
+
+  ruinmap.reset(new RuinMap(l));
   ruinmap->map_changed.connect(
     sigc::mem_fun(this, &RuinReportDialog::on_map_changed));
 

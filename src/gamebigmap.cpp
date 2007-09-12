@@ -205,6 +205,14 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 			}
 		    }
 		}
+	      else if (Ruin *r = Ruinlist::getInstance()->getObjectAt(tile))
+		{
+		  ruin_queried (r, false);
+		}
+	      else if (Temple *t = Templelist::getInstance()->getObjectAt(tile))
+		{
+		  temple_queried (t, false);
+		}
 	    }
 	}
     }
@@ -227,7 +235,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		   r->getOwner() == Playerlist::getActiveplayer()) ||
 		  r->isHidden() == false)
 		{
-		  ruin_queried (r);
+		  ruin_queried (r, true);
 		  mouse_state = SHOWING_RUIN;
 		}
 	    }
@@ -238,7 +246,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    }
 	  else if (Temple* t = Templelist::getInstance()->getObjectAt(tile.x, tile.y))
 	    {
-	      temple_queried.emit(t);
+	      temple_queried.emit(t, true);
 	      mouse_state = SHOWING_TEMPLE;
 	    }
 	  else if (Stack *st = Stacklist::getObjectAt(tile.x, tile.y))
@@ -268,11 +276,11 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      break;
 
 	    case SHOWING_RUIN:
-	      ruin_queried.emit(0);
+	      ruin_queried.emit(0, true);
 	      break;
 
 	    case SHOWING_TEMPLE:
-	      temple_queried.emit(0);
+	      temple_queried.emit(0, true);
 	      break;
 
 	    case SHOWING_SIGNPOST:

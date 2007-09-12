@@ -105,13 +105,15 @@ class Game
     sigc::signal<void, Stack *, Stack *> ruinfight_started;
     sigc::signal<void, Fight::Result> ruinfight_finished;
     sigc::signal<bool, Player *, Hero *, City *, int> hero_offers_service;
-    sigc::signal<bool, bool, Temple *, int> temple_visited;
+    sigc::signal<bool, bool, Temple *, int> temple_searched;
     sigc::signal<void, Hero *, Quest *> quest_assigned;
     sigc::signal<CityDefeatedAction, City *, int> city_defeated;
     sigc::signal<void, City *, int, unsigned int> city_pillaged;
     sigc::signal<void, City *, int, std::list<Uint32> > city_sacked;
     sigc::signal<void, City *> city_razed;
     sigc::signal<void, City *> city_visited;
+    sigc::signal<void, Ruin *> ruin_visited;
+    sigc::signal<void, Temple *> temple_visited;
     sigc::signal<void, Player *, unsigned int> next_player_turn;
     sigc::signal<void, int> hero_arrives;
     sigc::signal<void, Army *> medal_awarded_to_army;
@@ -147,8 +149,8 @@ class Game
     // bigmap callbacks
     void on_stack_selected(Stack* s);
     void on_city_queried (City* c, bool brief);
-    void on_ruin_queried (Ruin* r);
-    void on_temple_queried (Temple* t);
+    void on_ruin_queried (Ruin* r, bool brief);
+    void on_temple_queried (Temple* t, bool brief);
     void on_signpost_queried (Signpost* s);
     void on_stack_queried (Stack* s);
 
