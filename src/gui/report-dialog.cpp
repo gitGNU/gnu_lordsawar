@@ -143,6 +143,7 @@ void ReportDialog::on_army_map_changed(SDL_Surface *map)
 void ReportDialog::on_city_map_changed(SDL_Surface *map)
 {
   if (report_notebook->get_current_page() == CITY ||
+      report_notebook->get_current_page() == GOLD ||
       report_notebook->get_current_page() == WINNING)
     map_image->property_pixbuf() = to_pixbuf(map);
 }
@@ -265,6 +266,7 @@ void ReportDialog::updateGoldChart()
   Gdk::Color colour;
   Glib::ustring s;
   Uint32 total;
+  bars.clear();
   Playerlist::iterator pit = Playerlist::getInstance()->begin();
   for (; pit != Playerlist::getInstance()->end(); ++pit)
     {
