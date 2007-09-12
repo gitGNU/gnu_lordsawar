@@ -609,7 +609,7 @@ bool CreateScenario::setupRuins(bool strongholds_invisible)
         int randno = rand() % d_ruinnames.size();
         (*it).setName(d_ruinnames[randno]);
 
-        // set a random temple type
+        // set a random ruin type
         if (rand() % 6 == 0) //one in six ruins is a stronghold
           {
             (*it).setType(Ruin::STRONGHOLD);

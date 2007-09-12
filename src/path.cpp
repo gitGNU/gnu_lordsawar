@@ -324,7 +324,8 @@ bool Path::isBlocked(const Stack* s, int x, int y, int destx, int desty) const
 
     // TODO: you can extract quite some amount of time here with a clever
     // search algorithm for stacklist
-    if (Stack* target = Stacklist::getObjectAt(x,y))
+    Stack* target = Stacklist::getObjectAt(x,y);
+    if (target)
     {
         // ...enemy stacks which stand in the way...
         if ((s->getPlayer() != target->getPlayer())

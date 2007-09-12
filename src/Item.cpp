@@ -12,6 +12,7 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <sstream>
+#include <assert.h>
 #include <map>
 #include "Item.h"
 #include "Itemlist.h"
@@ -36,13 +37,17 @@ Item::Item(XML_Helper* helper)
     helper->getData(d_plantable, "plantable");
     if (d_plantable)
       {
-        Uint32 ui;
+        Uint32 ui = MAX_PLAYERS + 2;
         helper->getData(ui, "plantable_owner");
         d_plantable_owner = Playerlist::getInstance()->getPlayer(ui);
+	assert (d_plantable_owner);
         helper->getData(d_planted, "planted");
       }
     else
-      d_plantable_owner = NULL;
+      {
+	d_plantable_owner = NULL;
+	d_planted = false;
+      }
 
     // Now come the differences. Items in the game have an id, other items
     // just the dummy id "0"
@@ -61,12 +66,12 @@ Item::Item(std::string name, bool plantable, Player *plantable_owner)
 }
 
 Item::Item(const Item& orig)
-    :d_bonus(orig.d_bonus),
+:d_bonus(orig.d_bonus),
     d_name(orig.d_name), d_plantable(orig.d_plantable),
-    d_plantable_owner(orig.d_plantable_owner)
+    d_plantable_owner(orig.d_plantable_owner), d_planted(orig.d_planted)
 {
-    // Some things we don't copy from the template; we rather get an own ID
-    d_id = fl_counter->getNextId();
+  // Some things we don't copy from the template; we rather get an own ID
+  d_id = fl_counter->getNextId();
 }
 
 Item::~Item()
@@ -75,25 +80,25 @@ Item::~Item()
 
 bool Item::save(XML_Helper* helper) const
 {
-    bool retval = true;
-    
-    // A template is never saved, so we assume this class is a real-life item
-    retval &= helper->openTag("item");
-    retval &= helper->saveData("name", d_name);
-    retval &= helper->saveData("plantable", d_plantable);
-    if (d_plantable && d_plantable_owner)
-      {
-        retval &= helper->saveData("plantable_owner", 
-                                   d_plantable_owner->getId());
-        retval &= helper->saveData("planted", d_planted);
-      }
-    retval &= helper->saveData("id", d_id);
+  bool retval = true;
 
-    retval &= helper->saveData("bonus", d_bonus);
-    
-    retval &= helper->closeTag();
-    
-    return retval;
+  // A template is never saved, so we assume this class is a real-life item
+  retval &= helper->openTag("item");
+  retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("plantable", d_plantable);
+  if (d_plantable)
+    {
+      retval &= helper->saveData("plantable_owner", 
+				 d_plantable_owner->getId());
+      retval &= helper->saveData("planted", d_planted);
+    }
+  retval &= helper->saveData("id", d_id);
+
+  retval &= helper->saveData("bonus", d_bonus);
+
+  retval &= helper->closeTag();
+
+  return retval;
 }
 
 bool Item::getBonus(Item::Bonus bonus) const
@@ -108,43 +113,43 @@ void Item::setBonus(Item::Bonus bonus)
 
 std::string Item::getBonusDescription()
 {
-    // the attributes column
-    std::vector<Glib::ustring> s;
-    if (getBonus(Item::ADD1STR))
-	s.push_back(_("+1 Battle"));
-    if (getBonus(Item::ADD2STR))
-	s.push_back(_("+2 Battle"));
-    if (getBonus(Item::ADD3STR))
-	s.push_back(_("+3 Battle"));
-    if (getBonus(Item::ADD1STACK))
-	s.push_back(_("+1 Command"));
-    if (getBonus(Item::ADD2STACK))
-	s.push_back(_("+2 Command"));
-    if (getBonus(Item::ADD3STACK))
-	s.push_back(_("+3 Command"));
-    if (getBonus(Item::FLYSTACK))
-	s.push_back(_("Allows Flight"));
-    if (getBonus(Item::DOUBLEMOVESTACK))
-	s.push_back(_("Doubles Movement"));
-    if (getBonus(Item::ADD2GOLDPERCITY))
-	s.push_back(_("+2 gold per city"));
-    if (getBonus(Item::ADD3GOLDPERCITY))
-	s.push_back(_("+3 gold per city"));
-    if (getBonus(Item::ADD4GOLDPERCITY))
-	s.push_back(_("+4 gold per city"));
-    if (getBonus(Item::ADD5GOLDPERCITY))
-	s.push_back(_("+5 gold per city"));
+  // the attributes column
+  std::vector<Glib::ustring> s;
+  if (getBonus(Item::ADD1STR))
+    s.push_back(_("+1 Battle"));
+  if (getBonus(Item::ADD2STR))
+    s.push_back(_("+2 Battle"));
+  if (getBonus(Item::ADD3STR))
+    s.push_back(_("+3 Battle"));
+  if (getBonus(Item::ADD1STACK))
+    s.push_back(_("+1 Command"));
+  if (getBonus(Item::ADD2STACK))
+    s.push_back(_("+2 Command"));
+  if (getBonus(Item::ADD3STACK))
+    s.push_back(_("+3 Command"));
+  if (getBonus(Item::FLYSTACK))
+    s.push_back(_("Allows Flight"));
+  if (getBonus(Item::DOUBLEMOVESTACK))
+    s.push_back(_("Doubles Movement"));
+  if (getBonus(Item::ADD2GOLDPERCITY))
+    s.push_back(_("+2 gold per city"));
+  if (getBonus(Item::ADD3GOLDPERCITY))
+    s.push_back(_("+3 gold per city"));
+  if (getBonus(Item::ADD4GOLDPERCITY))
+    s.push_back(_("+4 gold per city"));
+  if (getBonus(Item::ADD5GOLDPERCITY))
+    s.push_back(_("+5 gold per city"));
 
-    Glib::ustring str;
-    bool first = true;
-    for (std::vector<Glib::ustring>::iterator i = s.begin(), end = s.end();
-	 i != end; ++i)
+  Glib::ustring str;
+  bool first = true;
+  for (std::vector<Glib::ustring>::iterator i = s.begin(), end = s.end();
+       i != end; ++i)
     {
-	if (first)
-	    first = false;
-	else
-	    str += "\n";
-	str += *i;
+      if (first)
+	first = false;
+      else
+	str += "\n";
+      str += *i;
     }
-    return str;
+  return str;
 }

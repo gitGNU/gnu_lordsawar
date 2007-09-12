@@ -166,7 +166,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		return;
 	      else
 		{
-		  if (stack->canMove() == 0)
+		  if (stack->canMove() == false)
 		    {
 		      Player *player = Playerlist::getActiveplayer();
 		      player->getStacklist()->setActivestack(0);
