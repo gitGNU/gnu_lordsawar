@@ -3,6 +3,7 @@
 	* added auto-deselect when stack is out of moves
 	* hitting space now groups the stack
 	* fixed up menuitem shortcuts for ruin, inspect, and quest
+	* fixed gold report to show city map
 
 2007-09-10  Ben Asselstine
 	
