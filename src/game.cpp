@@ -787,7 +787,7 @@ void Game::loadGame()
       update_control_panel();
       update_stack_info();
       game_loaded.emit(player);
-    }       
+    }
   else
     {
       lock_inputs();

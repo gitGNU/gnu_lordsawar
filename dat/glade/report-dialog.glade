@@ -152,6 +152,7 @@
 
 		      <child>
 			<widget class="GtkAlignment" id="army_alignment">
+			  <property name="height_request">175</property>
 			  <property name="visible">True</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>
@@ -260,6 +261,7 @@
 
 		      <child>
 			<widget class="GtkAlignment" id="city_alignment">
+			  <property name="height_request">175</property>
 			  <property name="visible">True</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>
@@ -368,6 +370,7 @@
 
 		      <child>
 			<widget class="GtkAlignment" id="gold_alignment">
+			  <property name="height_request">175</property>
 			  <property name="visible">True</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>
@@ -591,6 +594,7 @@
 
 		      <child>
 			<widget class="GtkAlignment" id="winning_alignment">
+			  <property name="height_request">175</property>
 			  <property name="visible">True</property>
 			  <property name="xalign">0.5</property>
 			  <property name="yalign">0.5</property>

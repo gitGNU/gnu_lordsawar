@@ -117,6 +117,7 @@ vector<Stack*> Stacklist::defendersInCity(City *city)
             Stack* stack = getObjectAt(i, j);
             if (stack)
             {
+	      if (city->getPlayer() == stack->getPlayer())
                 stackvector.push_back(stack);
             }
         }

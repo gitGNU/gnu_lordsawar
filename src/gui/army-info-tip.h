@@ -26,8 +26,9 @@ class Army;
 class ArmyInfoTip: public sigc::trackable
 {
  public:
+     enum ArmyInfoTipType {ARMY_TYPE, ARMY_INSTANCE};
     // the tip is shown above target, simply delete the object to hide it again
-    ArmyInfoTip(Gtk::Widget *target, const Army *army);
+    ArmyInfoTip(Gtk::Widget *target, const Army *army, ArmyInfoTipType type = ARMY_TYPE);
 
  private:
     std::auto_ptr<Gtk::Window> window;

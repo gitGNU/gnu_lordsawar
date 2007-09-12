@@ -1128,7 +1128,8 @@ bool GameWindow::on_army_button_event(GdkEventButton *e,
       }
     else
       {
-	army_info_tip.reset(new ArmyInfoTip(toggle, army));
+	army_info_tip.reset(new ArmyInfoTip(toggle, army, 
+					    ArmyInfoTip::ARMY_INSTANCE));
       }
 
     return true;

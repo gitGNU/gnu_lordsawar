@@ -31,7 +31,7 @@
 #include "../playerlist.h"
 
 
-ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
+ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army, ArmyInfoTipType type)
 {
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
@@ -66,28 +66,40 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     s += String::ucompose(_("Strength: %1"),
 			  army->getStat(Army::STRENGTH));
     s += "\n";
-    // note to translators: %1 is remaining moves, %2 is total moves
-    s += String::ucompose(_("Moves: %1/%2"),
-			  army->getMoves(), army->getStat(Army::MOVES));
-    s += "\n";
-    s += String::ucompose(_("Cost: %1"), army->getUpkeep());
+    if (type == ARMY_TYPE)
+      {
+	// note to translators: %1 is remaining moves, %2 is total moves
+	s += String::ucompose(_("Movement: %1"), army->getStat(Army::MOVES));
+	s += "\n";
+	s += String::ucompose(_("Time: %1"), army->getProduction());
+	s += "\n";
+	s += String::ucompose(_("Cost: %1"), army->getUpkeep());
+      }
+    else if (type == ARMY_INSTANCE)
+      {
+	// note to translators: %1 is remaining moves, %2 is total moves
+	s += String::ucompose(_("Moves: %1/%2"),
+			      army->getMoves(), army->getStat(Army::MOVES));
+	s += "\n";
+	s += String::ucompose(_("Upkeep: %1"), army->getUpkeep());
+      }
     info_label->set_text(s);
-    
+
     // move into correct position
     window->get_child()->show();
     Vector<int> pos(0, 0);
     target->get_window()->get_origin(pos.x, pos.y);
     if (target->has_no_window())
-    {
+      {
 	Gtk::Allocation a = target->get_allocation();
 	pos.x += a.get_x();
 	pos.y += a.get_y();
-    }
+      }
     Vector<int> size(0, 0);
     window->get_size(size.x, size.y);
     window->set_gravity(Gdk::GRAVITY_SOUTH);
     pos.y -= size.y + 2;
-	
+
     window->move(pos.x, pos.y);
     window->show();
 }
