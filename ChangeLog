@@ -3,8 +3,12 @@
 	* made bar and line graphs a static size
 	* now army info tips are different when viewed on the stack info, 
 	  or in a city
-	* fixed bug wrt attacking empty city
+	* fixed bug wrt attacking empty city (Thanks to Gunnar Lindholm)
 	* now showing ruins and temples on left click
+	* map now depends on playerlist because some items are usable only
+	  by certain players -- so load and save playerlist before map.
+	  (Thanks to Gunnar Lindholm)
+	* updated the 2nd punic war map to 0.0.3 (Thanks to Daivid Pekovich)
 
 2007-09-11  Ben Asselstine
 
