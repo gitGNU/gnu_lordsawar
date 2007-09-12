@@ -12,7 +12,6 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <sstream>
-#include <assert.h>
 #include <map>
 #include "Item.h"
 #include "Itemlist.h"
@@ -40,7 +39,6 @@ Item::Item(XML_Helper* helper)
         Uint32 ui = MAX_PLAYERS + 2;
         helper->getData(ui, "plantable_owner");
         d_plantable_owner = Playerlist::getInstance()->getPlayer(ui);
-	assert (d_plantable_owner);
         helper->getData(d_planted, "planted");
       }
     else

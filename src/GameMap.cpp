@@ -371,7 +371,6 @@ Stack* GameMap::addArmy(Location *l, Army *a)
   s = l->addArmy(a);
   if (s)
     return s;
-fprintf(stderr,"whojo hooo!\n");
   return addArmyAtPos(l->getPos(), a);
 }
 

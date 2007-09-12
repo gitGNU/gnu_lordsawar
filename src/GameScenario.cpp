@@ -89,8 +89,8 @@ GameScenario::GameScenario(string savegame, bool& broken)
     XML_Helper helper(savegame, ios::in, Configuration::s_zipfiles);
 
     helper.registerTag("scenario", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("map", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("playerlist", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("map", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("citylist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("templelist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("ruinlist", sigc::mem_fun(this, &GameScenario::load));
@@ -206,8 +206,8 @@ bool GameScenario::saveGame(string filename, string extension) const
     //if retval is still true it propably doesn't change throughout the rest
     //now save the single object's data
     retval &= fl_counter->save(&helper);
-    retval &= GameMap::getInstance()->save(&helper);
     retval &= Playerlist::getInstance()->save(&helper);
+    retval &= GameMap::getInstance()->save(&helper);
     retval &= Citylist::getInstance()->save(&helper);
     retval &= Templelist::getInstance()->save(&helper);
     retval &= Ruinlist::getInstance()->save(&helper);
@@ -296,17 +296,17 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
         return true;
     }
 
-    if (tag == "map")
-    {
-        debug("loading map")
-        GameMap::getInstance(helper);
-        return true;
-    }
-
     if (tag == "playerlist")
     {
         debug("loading players");
         Playerlist::getInstance(helper);
+        return true;
+    }
+
+    if (tag == "map")
+    {
+        debug("loading map")
+        GameMap::getInstance(helper);
         return true;
     }
 
