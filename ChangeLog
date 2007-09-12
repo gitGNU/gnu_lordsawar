@@ -1,3 +1,11 @@
+2007-09-12  Ben Asselstine
+
+	* made bar and line graphs a static size
+	* now army info tips are different when viewed on the stack info, 
+	  or in a city
+	* fixed bug wrt attacking empty city
+	* now showing ruins and temples on left click
+
 2007-09-11  Ben Asselstine
 
 	* added auto-deselect when stack is out of moves
