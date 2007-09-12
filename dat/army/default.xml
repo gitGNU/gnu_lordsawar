@@ -352,7 +352,7 @@
         <d_gender>1</d_gender>
         <d_defends_ruins>true</d_defends_ruins>
         <d_awardable>true</d_awardable>
-        <d_production>0</d_production>
+        <d_production>4</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>5</d_upkeep>
         <d_strength>7</d_strength>
@@ -370,7 +370,7 @@
         <d_gender>1</d_gender>
         <d_defends_ruins>true</d_defends_ruins>
         <d_awardable>true</d_awardable>
-        <d_production>0</d_production>
+        <d_production>4</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>5</d_upkeep>
         <d_strength>7</d_strength>
@@ -388,7 +388,7 @@
         <d_gender>1</d_gender>
         <d_defends_ruins>true</d_defends_ruins>
         <d_awardable>true</d_awardable>
-        <d_production>0</d_production>
+        <d_production>4</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>5</d_upkeep>
         <d_strength>6</d_strength>
@@ -425,7 +425,7 @@
         <d_gender>1</d_gender>
         <d_defends_ruins>true</d_defends_ruins>
         <d_awardable>true</d_awardable>
-        <d_production>0</d_production>
+        <d_production>4</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>5</d_upkeep>
         <d_strength>8</d_strength>
@@ -443,7 +443,7 @@
         <d_gender>1</d_gender>
         <d_defends_ruins>true</d_defends_ruins>
         <d_awardable>true</d_awardable>
-        <d_production>0</d_production>
+        <d_production>4</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>5</d_upkeep>
         <d_strength>8</d_strength>
@@ -461,7 +461,7 @@
         <d_gender>1</d_gender>
         <d_defends_ruins>true</d_defends_ruins>
         <d_awardable>true</d_awardable>
-        <d_production>0</d_production>
+        <d_production>4</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>5</d_upkeep>
         <d_strength>7</d_strength>
@@ -479,7 +479,7 @@
         <d_gender>1</d_gender>
         <d_defends_ruins>true</d_defends_ruins>
         <d_awardable>true</d_awardable>
-        <d_production>0</d_production>
+        <d_production>4</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>5</d_upkeep>
         <d_strength>8</d_strength>
@@ -497,7 +497,7 @@
         <d_gender>1</d_gender>
         <d_defends_ruins>true</d_defends_ruins>
         <d_awardable>true</d_awardable>
-        <d_production>0</d_production>
+        <d_production>4</d_production>
         <d_production_cost>0</d_production_cost>
         <d_upkeep>5</d_upkeep>
         <d_strength>9</d_strength>
