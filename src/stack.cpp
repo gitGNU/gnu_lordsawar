@@ -479,7 +479,7 @@ Uint32 Stack::calculateMoveBonus() const
       if ((*it)->isGrouped() == false)
 	continue;
       bonus = (*it)->getStat(Army::MOVE_BONUS);
-      if ((bonus & Tile::GRASS) == 0 || (bonus & Tile::WATER) == 0 || 
+      if (bonus == Tile::GRASS || (bonus & Tile::WATER) == 0 || 
 	  (bonus & Tile::FOREST) == 0 || (bonus & Tile::HILLS) == 0 ||
 	  (bonus & Tile::MOUNTAIN) == 0 || (bonus & Tile::SWAMP) == 0)
 	{
