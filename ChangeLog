@@ -9,6 +9,11 @@
 	  by certain players -- so load and save playerlist before map.
 	  (Thanks to Gunnar Lindholm)
 	* updated the 2nd punic war map to 0.0.3 (Thanks to Daivid Pekovich)
+	* right-clicking on hero in stack info now shows army-tip instead of
+	  hero dialog
+	* now buying an army in a city doesn't replace an active production
+	  slot if it doesn't have to 
+	* fixed bug wrt heroes riding on flyers
 
 2007-09-11  Ben Asselstine
 
@@ -22,8 +27,6 @@
 	* now restricting moving into enemy cities from far away
 	* now restricting the showing of the smallmap of computer players
 	  when on a hidden map (Thanks to Gunnar Lindholm)
-	* now buying an army in a city doesn't replace an active production
-	  slot if it doesn't have to (Thanks to Gunnar Lindholm)
 	* removed hit point progress bar in army unit in the stack info
 	* fixed the black blinking on the bigmap upon select/deselect
 
