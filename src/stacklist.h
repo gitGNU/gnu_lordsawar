@@ -124,6 +124,10 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         //! Behaves like std::list::remove(), but frees pointers as well
         bool flRemove(Stack* object);
 
+        //! Return the stack at position (x,y) or 0 if there is none
+	//! only operates on this stacklist, and not all players stacklists.
+        Stack* getOwnObjectAt(int x, int y);
+
     private:
         //! Callback function for loading
         bool load(std::string tag, XML_Helper* helper);

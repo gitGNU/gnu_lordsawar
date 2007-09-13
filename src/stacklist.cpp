@@ -114,7 +114,8 @@ vector<Stack*> Stacklist::defendersInCity(City *city)
     {
         for (int j = pos.y; j < pos.y + 2; j++)
         {
-	    Stack *stack = city->getPlayer()->getStacklist()->getObjectAt(i, j);
+	    Stack *stack;
+	    stack = city->getPlayer()->getStacklist()->getOwnObjectAt(i, j);
             if (stack)
             {
 	      stackvector.push_back(stack);
@@ -391,6 +392,14 @@ bool Stacklist::load(string tag, XML_Helper* helper)
     }
 
     return false;
+}
+
+Stack* Stacklist::getOwnObjectAt(int x, int y)
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    if (((*it)->getPos().x == x) && ((*it)->getPos().y == y))
+      return *it;
+  return 0;
 }
 
 // End of file
