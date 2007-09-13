@@ -1100,14 +1100,18 @@ void GameWindow::on_message_requested(std::string msg)
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
 {
+  inhibit_group_ungroup_toggle = true;
   army->setGrouped(toggle->get_active());
   ensure_one_army_button_active();
   Player *p = Playerlist::getActiveplayer();
   fill_in_group_info (p->getStacklist()->getActivestack());
+  inhibit_group_ungroup_toggle = false;
 }
 
 void GameWindow::on_group_toggled(Gtk::ToggleButton *toggle)
 {
+  if (inhibit_group_ungroup_toggle == true)
+    return;
   if (toggle->get_active() == false)
     currently_selected_stack->ungroup();
   else
@@ -1238,6 +1242,7 @@ void GameWindow::fill_in_group_info (Stack *s)
 
 void GameWindow::show_stack(Stack *s)
 {
+  inhibit_group_ungroup_toggle = false;
   stats_box->hide();
 
   for (Stack::iterator i = s->begin(), end = s->end(); i != end; ++i)

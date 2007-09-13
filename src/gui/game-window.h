@@ -140,6 +140,7 @@ class GameWindow: public sigc::trackable
     army_buttons_type army_buttons;
     Gtk::EventBox *map_eventbox;
     Gtk::ToggleButton *group_ungroup_toggle;
+    bool inhibit_group_ungroup_toggle; //fixme: remove this hack
 
     std::string current_save_filename;
 
