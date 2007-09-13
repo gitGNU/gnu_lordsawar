@@ -274,8 +274,7 @@ void CityWindow::fill_in_production_info()
 	s2 += "\n";
 	s2 += String::ucompose(_("Cost: %1"), a->getUpkeep());
 
-        s3 = String::ucompose(_("%1t"), a->getProduction() - 
-                              city->getDuration() + 1);
+        s3 = String::ucompose(_("%1t"), city->getDuration());
         if (city->getVectoring() != Vector<int>(-1, -1))
           {
             Citylist *cl = Citylist::getInstance();
@@ -386,7 +385,6 @@ void CityWindow::on_buy_clicked()
 	      slot = 0;
 	  }
 	city->getPlayer()->cityBuyProduction(city, slot, army);
-	city->getPlayer()->cityChangeProduction(city, -1);
 	city->getPlayer()->cityChangeProduction(city, slot);
 
 	fill_in_production_toggles();
