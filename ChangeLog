@@ -1,3 +1,11 @@
+2007-09-13  Ben Asselstine
+
+	* fixed bug that prevented cities from being attacked
+	* worked around auto-deselect bug
+	* fixed bug wrt attacking empty cities
+	* now disallowing the building of new army units when the city
+	  already produces armies of that type
+
 2007-09-12  Ben Asselstine
 
 	* made bar and line graphs a static size
