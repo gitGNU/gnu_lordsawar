@@ -95,6 +95,7 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	toggle->signal_button_release_event().connect(
 	    sigc::bind(sigc::mem_fun(*this, &BuyProductionDialog::on_production_button_event),
 		       toggle), false);
+	toggle->set_sensitive(city->isAlreadyBought(purchasables[i]) == false);
     }
 
     ignore_toggles = false;
