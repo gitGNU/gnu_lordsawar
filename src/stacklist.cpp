@@ -114,11 +114,10 @@ vector<Stack*> Stacklist::defendersInCity(City *city)
     {
         for (int j = pos.y; j < pos.y + 2; j++)
         {
-            Stack* stack = getObjectAt(i, j);
+	    Stack *stack = city->getPlayer()->getStacklist()->getObjectAt(i, j);
             if (stack)
             {
-	      if (city->getPlayer() == stack->getPlayer())
-                stackvector.push_back(stack);
+	      stackvector.push_back(stack);
             }
         }
     }
