@@ -376,12 +376,7 @@ void CityWindow::on_buy_clicked()
     if (army != BuyProductionDialog::NO_ARMY_SELECTED)
     {
 	int slot = -1;
-	for (unsigned int i = 0; i < production_toggles.size(); ++i)
-	  if (production_toggles[i]->get_active() == false) 
-	    {
-	      slot = i;
-	      break;
-	    }
+	slot = city->getFreeBasicSlot();
 	
 	if  (slot == -1)
 	  {
@@ -391,6 +386,7 @@ void CityWindow::on_buy_clicked()
 	      slot = 0;
 	  }
 	city->getPlayer()->cityBuyProduction(city, slot, army);
+	city->getPlayer()->cityChangeProduction(city, -1);
 	city->getPlayer()->cityChangeProduction(city, slot);
 
 	fill_in_production_toggles();

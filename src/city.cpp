@@ -230,8 +230,6 @@ int City::getFreeBasicSlot()
          }         
      }
 
-     // TODO: here the AI should choose more wisely which production is to be replaced
-     // for now we return no index
      return index;
 }
 
