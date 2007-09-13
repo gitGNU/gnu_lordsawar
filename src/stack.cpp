@@ -57,7 +57,7 @@ Stack::Stack(Stack& s)
 	  }
 	else
 	  {
-	    a = new Army((**sit));
+	    a = new Army((**sit), (*sit)->getPlayer());
 	    push_back(a);
 	  }
     }
@@ -169,7 +169,7 @@ int Stack::getMinTileMoves() const
 
   for (std::vector<Vector<int> >::iterator i = tiles.begin(), end = tiles.end();
        i != end; ++i)
-    if (is_inside(bounds, *i) && p.canMoveThere(this, *i))
+    if (is_inside(bounds, *i)) // && p.canMoveThere(this, *i))
       {
 	int v = map->getTile(i->x, i->y)->getMoves();
 	if (min == -1)

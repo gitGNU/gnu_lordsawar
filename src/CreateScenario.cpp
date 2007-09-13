@@ -648,7 +648,7 @@ bool CreateScenario::setupRuins(bool strongholds_invisible)
             s = new Stack(0, pos);
             
             a = occupants[rand() % occupants.size()];
-            s->push_back(new Army(*a));
+            s->push_back(new Army(*a, p));
             a = 0;
 
             //now mark this stack as guard

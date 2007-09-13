@@ -117,7 +117,7 @@ bool VectoredUnit::nextTurn()
       else
         {
           if (!dest->isBurnt() && dest->getPlayer() == d_player)
-            dest->addArmy(new Army(*(al->getArmy(set, d_armytype))));
+            dest->addArmy(new Army(*(al->getArmy(set, d_armytype)), d_player));
         }
       return true;
     }
