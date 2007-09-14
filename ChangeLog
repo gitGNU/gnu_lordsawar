@@ -5,6 +5,9 @@
 	* fixed bug wrt attacking empty cities
 	* now disallowing the building of new army units when the city
 	  already produces armies of that type
+	* speeding up fights with spacebar now persists for the whole turn of
+	  computer turns.
+	* now ordering stacks to be in reverse fight order
 
 2007-09-12  Ben Asselstine
 
