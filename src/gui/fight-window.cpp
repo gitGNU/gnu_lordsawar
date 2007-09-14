@@ -100,6 +100,7 @@ FightWindow::FightWindow(Fight &fight)
   
     fight.battle();
     actions = fight.getCourseOfEvents();
+    d_quick = false;
 }
 
 FightWindow::~FightWindow()
@@ -112,17 +113,20 @@ void FightWindow::set_parent_window(Gtk::Window &parent)
     window->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void FightWindow::run()
+void FightWindow::run(bool *quick)
 {
     round = 0;
     action_iterator = actions.begin();
     
     Timing::instance().register_timer(
-	sigc::mem_fun(this, &FightWindow::do_round), normal_round_speed);
+	sigc::mem_fun(this, &FightWindow::do_round), 
+	*quick == true ? fast_round_speed : normal_round_speed);
     
     window->show_all();
     main_loop = Glib::MainLoop::create();
     main_loop->run();
+    if (quick && *quick == false)
+      *quick = d_quick;
 }
 
 int FightWindow::compute_max_rows(const armies_type &attackers,
@@ -288,4 +292,6 @@ void FightWindow::on_key_release_event(GdkEventKey* event)
 {
     Timing::instance().register_timer(
 	sigc::mem_fun(this, &FightWindow::do_round), fast_round_speed);
+    printf("setting quick!\n");
+    d_quick = true;
 }

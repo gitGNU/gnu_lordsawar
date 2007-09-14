@@ -254,6 +254,7 @@ class GameWindow: public sigc::trackable
 public:
     // not part of the API, but for surface_attached_helper
     void on_sdl_surface_changed();
+    bool d_quick_fights; //do we speed up fights for this player's turn?
 };
 
 #endif

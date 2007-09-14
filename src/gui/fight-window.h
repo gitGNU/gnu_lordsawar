@@ -39,12 +39,12 @@ class FightWindow: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
-    void run();
+    void run(bool *quick);
     
  private:
     std::auto_ptr<Gtk::Window> window;
-    static const int max_cols = 8;
     static const int normal_round_speed = 500; //milliseconds
+    static const int max_cols = 8;
     static const int fast_round_speed = 250; //after a key is pressed
 
     struct ArmyItem
@@ -79,6 +79,7 @@ class FightWindow: public sigc::trackable
     void on_key_release_event(GdkEventKey* event);
 
     bool do_round();
+    bool d_quick;
 };
 
 #endif

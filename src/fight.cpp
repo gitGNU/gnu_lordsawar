@@ -102,6 +102,12 @@ void Fight::orderArmies(std::list<Stack*> stacks, std::vector<Army*> &armies)
   return;
 }
 
+void Fight::orderStack(Stack *stack)
+{
+  stack->sort(armyCompare);
+  std::reverse(stack->begin(), stack->end());
+}
+
 
 Fight::Fight(Stack* attacker, Stack* defender)
     : d_turn(0), d_result(DRAW)

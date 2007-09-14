@@ -98,6 +98,7 @@
 #include "../reward.h"
 #include "../Configuration.h"
 #include "../GameMap.h"
+#include "../fight.h"
 
 
 GameWindow::GameWindow()
@@ -240,6 +241,7 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_item_bonus_activated));
     xml->connect_clicked("production_report_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_production_report_activated));
+    d_quick_fights = false;
 }
 
 GameWindow::~GameWindow()
@@ -1242,6 +1244,7 @@ void GameWindow::fill_in_group_info (Stack *s)
 
 void GameWindow::show_stack(Stack *s)
 {
+  Fight::orderStack(s);
   inhibit_group_ungroup_toggle = false;
   stats_box->hide();
 
@@ -1468,7 +1471,9 @@ void GameWindow::on_fight_started(Fight &fight)
   FightWindow d(fight);
 
   d.set_parent_window(*window.get());
-  d.run();
+  d.run(&d_quick_fights);
+  if (Playerlist::getActiveplayer()->getType() == Player::HUMAN)
+    d_quick_fights = false;
 }
 
 void GameWindow::on_hero_brings_allies (int numAllies)
@@ -1995,6 +2000,7 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 
   while (g_main_context_iteration(NULL, FALSE));
 
+  d_quick_fights = false;
   show_shield_turn();
   if (player->getType() != Player::HUMAN)
     return;
