@@ -53,8 +53,8 @@ Fighter::Fighter(Army* a, Vector<int> p)
 {
 }
 
-bool armyCompare (const Army *lhs, const Army *rhs)  
-{ 
+bool armyCompareFightOrder (const Army *lhs, const Army *rhs)  
+{
   unsigned int count = 0;
   std::list<Uint32> lhs_fight_order = lhs->getPlayer()->getFightOrder();
   std::list<Uint32> rhs_fight_order = rhs->getPlayer()->getFightOrder();
@@ -97,17 +97,10 @@ void Fight::orderArmies(std::list<Stack*> stacks, std::vector<Army*> &armies)
       armies.push_back((*sit));
 
   //okay now sort the army list according to the player's fight order
-  std::sort(armies.begin(), armies.end(), armyCompare);
+  std::sort(armies.begin(), armies.end(), armyCompareFightOrder);
 
   return;
 }
-
-void Fight::orderStack(Stack *stack)
-{
-  stack->sort(armyCompare);
-  std::reverse(stack->begin(), stack->end());
-}
-
 
 Fight::Fight(Stack* attacker, Stack* defender)
     : d_turn(0), d_result(DRAW)

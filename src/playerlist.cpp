@@ -271,7 +271,7 @@ void Playerlist::calculateWinners()
     Uint32 total_cities = 0;
     for (const_iterator it = begin(); it != end(); it++)
       {
-	if ((*it) != d_neutral)
+	if ((*it) == d_neutral)
 	  continue;
 	if ((*it)->isDead() == true)
 	  continue;
@@ -288,12 +288,14 @@ void Playerlist::calculateWinners()
 	  continue;
 
 	Citylist *clist = Citylist::getInstance();
-	score = (Uint32)
-	  ((float)((float) clist->countCities(*it)/ (float)total_cities) * 70) +
-	  ((float)((float) (*it)->getGold() / (float)total_gold) * 10) +
-	  ((float)((float) (*it)->getStacklist()->countArmies() / 
-		   (float)total_armies) * 20);
-
+	float city_component = (float)
+	  ((float) clist->countCities(*it)/ (float)total_cities) * 70.0;
+	float gold_component = (float)
+	  ((float) (*it)->getGold() / (float)total_gold) * 10.0;
+	float army_component = (float)
+	  ((float) (*it)->getStacklist()->countArmies() / 
+	   (float)total_armies) * 20.0;
+	score = (Uint32) (city_component + gold_component + army_component);
 	History_Score *item = new History_Score();
 	item->fillData(score);
 	(*it)->getHistorylist()->push_back(item);

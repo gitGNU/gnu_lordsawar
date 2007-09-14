@@ -921,10 +921,31 @@ Action_Reward::Action_Reward()
 {
 }
 
-Action_Reward::Action_Reward(XML_Helper* helper)
-    :Action(Action::REWARD)
+bool Action_Reward::load(std::string tag, XML_Helper *helper)
 {
-  d_reward = new Reward(helper);
+    if (tag == "reward")
+      {
+	Reward *reward = new Reward(helper);
+	if (reward->getType() == Reward::GOLD)
+	  d_reward = new Reward_Gold(helper);
+	else if (reward->getType() == Reward::ALLIES)
+	  d_reward = new Reward_Allies(helper);
+	else if (reward->getType() == Reward::ITEM)
+	  d_reward = new Reward_Item(helper);
+	else if (reward->getType() == Reward::RUIN)
+	  d_reward = new Reward_Ruin(helper);
+	  
+	delete reward;
+
+	return true;
+      }
+    return false;
+}
+
+Action_Reward::Action_Reward(XML_Helper* helper)
+:Action(Action::REWARD)
+{
+  helper->registerTag("reward", sigc::mem_fun((*this), &Action_Reward::load));
 }
 
 Action_Reward::~Action_Reward()
@@ -943,45 +964,45 @@ std::string Action_Reward::dump() const
 
   if (d_reward)
     s <<"Got a reward of " <<d_reward->getType() <<"\n";
-    
+
   return s.str();
 }
 
 bool Action_Reward::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("type", Action::REWARD);
-    if (d_reward->getType() == Reward::GOLD)
-      static_cast<Reward_Gold*>(d_reward)->save(helper);
-    else if (d_reward->getType() == Reward::ALLIES)
-      static_cast<Reward_Allies*>(d_reward)->save(helper);
-    else if (d_reward->getType() == Reward::ITEM)
-      static_cast<Reward_Item*>(d_reward)->save(helper);
-    else if (d_reward->getType() == Reward::RUIN)
-      static_cast<Reward_Ruin*>(d_reward)->save(helper);
-    retval &= helper->closeTag();
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", Action::REWARD);
+  if (d_reward->getType() == Reward::GOLD)
+    static_cast<Reward_Gold*>(d_reward)->save(helper);
+  else if (d_reward->getType() == Reward::ALLIES)
+    static_cast<Reward_Allies*>(d_reward)->save(helper);
+  else if (d_reward->getType() == Reward::ITEM)
+    static_cast<Reward_Item*>(d_reward)->save(helper);
+  else if (d_reward->getType() == Reward::RUIN)
+    static_cast<Reward_Ruin*>(d_reward)->save(helper);
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
 
 //-----------------------------------------------------------------------------
 // Action_Quest
 
 Action_Quest::Action_Quest()
-    :Action(Action::QUEST), d_hero(0), d_data(0), d_victim_player(0)
+:Action(Action::QUEST), d_hero(0), d_data(0), d_victim_player(0)
 {
 }
 
 Action_Quest::Action_Quest(XML_Helper* helper)
-    :Action(Action::QUEST)
+:Action(Action::QUEST)
 {
-    
-    helper->getData(d_hero, "hero");
-    helper->getData(d_questtype, "quest");
-    helper->getData(d_data, "data");
-    helper->getData(d_victim_player, "victim_player");
+
+  helper->getData(d_hero, "hero");
+  helper->getData(d_questtype, "quest");
+  helper->getData(d_data, "data");
+  helper->getData(d_victim_player, "victim_player");
 }
 
 Action_Quest::~Action_Quest()
@@ -990,78 +1011,78 @@ Action_Quest::~Action_Quest()
 
 std::string Action_Quest::dump() const
 {
-    std::stringstream ss;
+  std::stringstream ss;
 
-    ss <<"Hero " <<d_hero <<"has got quest of type " <<d_questtype;
-    ss <<" with data " <<d_data <<" to fulfill\n";
-    
-    return ss.str();
+  ss <<"Hero " <<d_hero <<"has got quest of type " <<d_questtype;
+  ss <<" with data " <<d_data <<" to fulfill\n";
+
+  return ss.str();
 }
 
 bool Action_Quest::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("hero", d_hero);
-    retval &= helper->saveData("quest", d_questtype);
-    retval &= helper->saveData("data", d_data);
-    retval &= helper->saveData("victim_player", d_victim_player);
-    retval &= helper->closeTag();
-    
-    return retval;
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("hero", d_hero);
+  retval &= helper->saveData("quest", d_questtype);
+  retval &= helper->saveData("data", d_data);
+  retval &= helper->saveData("victim_player", d_victim_player);
+  retval &= helper->closeTag();
+
+  return retval;
 }
 
 bool Action_Quest::fillData(Quest* q)
 {
-    d_hero = q->getHeroId();
-    d_questtype = q->getType();
-    
-    // fill the data depending on the quest's type
-    switch (d_questtype)
+  d_hero = q->getHeroId();
+  d_questtype = q->getType();
+
+  // fill the data depending on the quest's type
+  switch (d_questtype)
     {
-        case Quest::KILLHERO:
-            d_data = dynamic_cast<QuestKillHero*>(q)->getVictim();
-            break;
-        case Quest::KILLARMIES:
-            d_data = dynamic_cast<QuestEnemyArmies*>(q)->getArmiesToKill();
-            d_victim_player = dynamic_cast<QuestEnemyArmies*>(q)->getVictimPlayerId();
-            break;
-        case Quest::CITYSACK:
-            d_data = dynamic_cast<QuestCitySack*>(q)->getCityId();
-            break;
-        case Quest::CITYRAZE:
-            d_data = dynamic_cast<QuestCityRaze*>(q)->getCityId();
-            break;
-        case Quest::CITYOCCUPY:
-            d_data = dynamic_cast<QuestCityOccupy*>(q)->getCityId();
-            break;
-        case Quest::KILLARMYTYPE:
-            d_data = dynamic_cast<QuestEnemyArmytype*>(q)->getArmytypeToKill();
-            break;
-        case Quest::PILLAGEGOLD:
-            d_data = dynamic_cast<QuestPillageGold*>(q)->getGoldToPillage();
-            break;
+    case Quest::KILLHERO:
+      d_data = dynamic_cast<QuestKillHero*>(q)->getVictim();
+      break;
+    case Quest::KILLARMIES:
+      d_data = dynamic_cast<QuestEnemyArmies*>(q)->getArmiesToKill();
+      d_victim_player = dynamic_cast<QuestEnemyArmies*>(q)->getVictimPlayerId();
+      break;
+    case Quest::CITYSACK:
+      d_data = dynamic_cast<QuestCitySack*>(q)->getCityId();
+      break;
+    case Quest::CITYRAZE:
+      d_data = dynamic_cast<QuestCityRaze*>(q)->getCityId();
+      break;
+    case Quest::CITYOCCUPY:
+      d_data = dynamic_cast<QuestCityOccupy*>(q)->getCityId();
+      break;
+    case Quest::KILLARMYTYPE:
+      d_data = dynamic_cast<QuestEnemyArmytype*>(q)->getArmytypeToKill();
+      break;
+    case Quest::PILLAGEGOLD:
+      d_data = dynamic_cast<QuestPillageGold*>(q)->getGoldToPillage();
+      break;
     }
 
-    return true;
+  return true;
 }
 
 //-----------------------------------------------------------------------------
 // Action_Equip
 
 Action_Equip::Action_Equip()
-    :Action(Action::HERO_EQUIP), d_hero(0), d_item(0)
+:Action(Action::HERO_EQUIP), d_hero(0), d_item(0)
 {
 }
 
 Action_Equip::Action_Equip(XML_Helper* helper)
-    :Action(Action::HERO_EQUIP)
+:Action(Action::HERO_EQUIP)
 {
-    helper->getData(d_hero, "hero");
-    helper->getData(d_item, "item");
-    helper->getData(d_slot, "dest");
+  helper->getData(d_hero, "hero");
+  helper->getData(d_item, "item");
+  helper->getData(d_slot, "dest");
 }
 
 Action_Equip::~Action_Equip()
@@ -1070,50 +1091,50 @@ Action_Equip::~Action_Equip()
 
 std::string Action_Equip::dump() const
 {
-    std::stringstream ss;
+  std::stringstream ss;
 
-    ss <<"Hero " <<d_hero <<" moved item " <<d_item <<"to slot " <<d_slot;
-    ss <<std::endl;
-    
-    return ss.str();
+  ss <<"Hero " <<d_hero <<" moved item " <<d_item <<"to slot " <<d_slot;
+  ss <<std::endl;
+
+  return ss.str();
 }
 
 bool Action_Equip::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("hero", d_hero);
-    retval &= helper->saveData("item", d_item);
-    retval &= helper->saveData("dest", d_slot);
-    retval &= helper->closeTag();
-    
-    return retval;
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("hero", d_hero);
+  retval &= helper->saveData("item", d_item);
+  retval &= helper->saveData("dest", d_slot);
+  retval &= helper->closeTag();
+
+  return retval;
 }
 
 bool Action_Equip::fillData(Uint32 hero, Uint32 item, Action_Equip::Slot slot)
 {
-    d_hero = hero;
-    d_item = item;
-    d_slot = slot;
-    
-    return true;
+  d_hero = hero;
+  d_item = item;
+  d_slot = slot;
+
+  return true;
 }
 
 //-----------------------------------------------------------------------------
 // Action_Level
 
 Action_Level::Action_Level()
-    :Action(Action::UNIT_ADVANCE), d_army(0)
+:Action(Action::UNIT_ADVANCE), d_army(0)
 {
 }
 
 Action_Level::Action_Level(XML_Helper* helper)
-    :Action(Action::UNIT_ADVANCE)
+:Action(Action::UNIT_ADVANCE)
 {
-    helper->getData(d_army, "army");
-    helper->getData(d_stat, "stat");
+  helper->getData(d_army, "army");
+  helper->getData(d_stat, "stat");
 }
 
 Action_Level::~Action_Level()
@@ -1122,46 +1143,46 @@ Action_Level::~Action_Level()
 
 std::string Action_Level::dump() const
 {
-    std::stringstream ss;
+  std::stringstream ss;
 
-    ss <<"Unit " <<d_army <<" advanced level and increased stat " <<d_stat;
-    ss <<std::endl;
-    
-    return ss.str();
+  ss <<"Unit " <<d_army <<" advanced level and increased stat " <<d_stat;
+  ss <<std::endl;
+
+  return ss.str();
 }
 
 bool Action_Level::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("army", d_army);
-    retval &= helper->saveData("stat", d_stat);
-    retval &= helper->closeTag();
-    
-    return retval;
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("army", d_army);
+  retval &= helper->saveData("stat", d_stat);
+  retval &= helper->closeTag();
+
+  return retval;
 }
 
 bool Action_Level::fillData(Uint32 unit, Army::Stat raised)
 {
-    d_army = unit;
-    d_stat = raised;
+  d_army = unit;
+  d_stat = raised;
 
-    return true;
+  return true;
 }
 
 //-----------------------------------------------------------------------------
 //Action_Disband
 
 Action_Disband::Action_Disband()
-    :Action(Action::STACK_DISBAND), d_stack(0)
+:Action(Action::STACK_DISBAND), d_stack(0)
 {
 }
 
 Action_Disband::Action_Disband(XML_Helper* helper)
-    :Action(Action::STACK_DISBAND)
+:Action(Action::STACK_DISBAND)
 {
-    helper->getData(d_stack, "stack");
+  helper->getData(d_stack, "stack");
 }
 
 Action_Disband::~Action_Disband()
@@ -1170,44 +1191,44 @@ Action_Disband::~Action_Disband()
 
 std::string Action_Disband::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
-    s <<"Stack " <<d_stack <<" disbanded\n";
-    
-    return s.str();
+  s <<"Stack " <<d_stack <<" disbanded\n";
+
+  return s.str();
 }
 
 bool Action_Disband::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("stack", d_stack);
-    retval &= helper->closeTag();
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("stack", d_stack);
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
 
 bool Action_Disband::fillData(Stack* s)
 {
-    d_stack = s->getId();
-    return true;
+  d_stack = s->getId();
+  return true;
 }
 
 //-----------------------------------------------------------------------------
 //Action_ModifySignpost
 
 Action_ModifySignpost::Action_ModifySignpost()
-    :Action(Action::MODIFY_SIGNPOST), d_signpost(0), d_message("")
+	:Action(Action::MODIFY_SIGNPOST), d_signpost(0), d_message("")
 {
 }
 
 Action_ModifySignpost::Action_ModifySignpost(XML_Helper* helper)
-    :Action(Action::MODIFY_SIGNPOST)
+:Action(Action::MODIFY_SIGNPOST)
 {
-    helper->getData(d_signpost, "signpost");
-    helper->getData(d_message, "message");
+  helper->getData(d_signpost, "signpost");
+  helper->getData(d_message, "message");
 }
 
 Action_ModifySignpost::~Action_ModifySignpost()
@@ -1216,46 +1237,46 @@ Action_ModifySignpost::~Action_ModifySignpost()
 
 std::string Action_ModifySignpost::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
-    s <<"Signpost " <<d_signpost <<" modified to read" << d_message <<".\n";
-    
-    return s.str();
+  s <<"Signpost " <<d_signpost <<" modified to read" << d_message <<".\n";
+
+  return s.str();
 }
 
 bool Action_ModifySignpost::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("signpost", d_signpost);
-    retval &= helper->saveData("message", d_message);
-    retval &= helper->closeTag();
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("signpost", d_signpost);
+  retval &= helper->saveData("message", d_message);
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
 
 bool Action_ModifySignpost::fillData(Signpost * s, std::string message)
 {
-    d_signpost = s->getId();
-    d_message = message; 
-    return true;
+  d_signpost = s->getId();
+  d_message = message; 
+  return true;
 }
 
 //-----------------------------------------------------------------------------
 //Action_RenameCity
 
 Action_RenameCity::Action_RenameCity()
-    :Action(Action::CITY_RENAME), d_city(0), d_name("")
+	:Action(Action::CITY_RENAME), d_city(0), d_name("")
 {
 }
 
 Action_RenameCity::Action_RenameCity(XML_Helper* helper)
-    :Action(Action::CITY_RENAME)
+:Action(Action::CITY_RENAME)
 {
-    helper->getData(d_city, "city");
-    helper->getData(d_name, "name");
+  helper->getData(d_city, "city");
+  helper->getData(d_name, "name");
 }
 
 Action_RenameCity::~Action_RenameCity()
@@ -1264,50 +1285,50 @@ Action_RenameCity::~Action_RenameCity()
 
 std::string Action_RenameCity::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
-    s <<"City " <<d_city <<" renamed to " << d_name<<".\n";
-    
-    return s.str();
+  s <<"City " <<d_city <<" renamed to " << d_name<<".\n";
+
+  return s.str();
 }
 
 bool Action_RenameCity::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("city", d_city);
-    retval &= helper->saveData("name", d_name);
-    retval &= helper->closeTag();
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("city", d_city);
+  retval &= helper->saveData("name", d_name);
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
 
 bool Action_RenameCity::fillData(City* c, std::string name)
 {
-    d_city = c->getId();
-    d_name = name; 
-    return true;
+  d_city = c->getId();
+  d_name = name; 
+  return true;
 }
 
 //-----------------------------------------------------------------------------
 //Action_Vector
 
 Action_Vector::Action_Vector()
-    :Action(Action::CITY_VECTOR)
+:Action(Action::CITY_VECTOR)
 {
 }
 
 Action_Vector::Action_Vector(XML_Helper* helper)
-    :Action(Action::CITY_VECTOR)
+:Action(Action::CITY_VECTOR)
 {
-    helper->getData(d_city, "city");
-    int i;
-    helper->getData(i, "x");
-    d_dest.x = i;
-    helper->getData(i, "y");
-    d_dest.y = i;
+  helper->getData(d_city, "city");
+  int i;
+  helper->getData(i, "x");
+  d_dest.x = i;
+  helper->getData(i, "y");
+  d_dest.y = i;
 }
 
 Action_Vector::~Action_Vector()
@@ -1316,56 +1337,56 @@ Action_Vector::~Action_Vector()
 
 std::string Action_Vector::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
-    s <<"Vectoring new units from city " <<d_city <<" to ";
-    s <<d_dest.x <<"," <<d_dest.y <<")\n";
-    
-    return s.str();
+  s <<"Vectoring new units from city " <<d_city <<" to ";
+  s <<d_dest.x <<"," <<d_dest.y <<")\n";
+
+  return s.str();
 }
 
 bool Action_Vector::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("city", d_city);
-    retval &= helper->saveData("x", d_dest.x);
-    retval &= helper->saveData("y", d_dest.y);
-    retval &= helper->closeTag();
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("city", d_city);
+  retval &= helper->saveData("x", d_dest.x);
+  retval &= helper->saveData("y", d_dest.y);
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
 
 bool Action_Vector::fillData(City* src, Vector <int> dest)
 {
-    d_city = src->getId();
-    d_dest = dest;
-    return true;
+  d_city = src->getId();
+  d_dest = dest;
+  return true;
 }
 
 //-----------------------------------------------------------------------------
 //Action_FightOrder
 
 Action_FightOrder::Action_FightOrder()
-    :Action(Action::FIGHT_ORDER)
+:Action(Action::FIGHT_ORDER)
 {
 }
 
 Action_FightOrder::Action_FightOrder(XML_Helper* helper)
-    :Action(Action::FIGHT_ORDER)
+:Action(Action::FIGHT_ORDER)
 {
-    std::string fight_order;
-    std::stringstream sfight_order;
-    Uint32 val;
-    helper->getData(fight_order, "order");
-    sfight_order.str(fight_order);
-    Uint32 size = Armysetlist::getInstance()->getSize(Playerlist::getInstance()->getFirstLiving()->getArmyset());
-    for (unsigned int i = 0; i < size; i++)
+  std::string fight_order;
+  std::stringstream sfight_order;
+  Uint32 val;
+  helper->getData(fight_order, "order");
+  sfight_order.str(fight_order);
+  Uint32 size = Armysetlist::getInstance()->getSize(Playerlist::getInstance()->getFirstLiving()->getArmyset());
+  for (unsigned int i = 0; i < size; i++)
     {
-            sfight_order >> val;
-            d_order.push_back(val);
+      sfight_order >> val;
+      d_order.push_back(val);
     }
 }
 
@@ -1375,53 +1396,53 @@ Action_FightOrder::~Action_FightOrder()
 
 std::string Action_FightOrder::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
-    s <<"changed fight order to:" ;
-    std::list<Uint32>::const_iterator it = d_order.begin();
-    for ( ;it != d_order.end(); it++)
-      {
-        s <<" " << (*it);
-      }
-      s << "\n";
-    
-    return s.str();
+  s <<"changed fight order to:" ;
+  std::list<Uint32>::const_iterator it = d_order.begin();
+  for ( ;it != d_order.end(); it++)
+    {
+      s <<" " << (*it);
+    }
+  s << "\n";
+
+  return s.str();
 }
 
 bool Action_FightOrder::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("type", d_type);
-    std::stringstream fight_order;
-    for (std::list<Uint32>::const_iterator it = d_order.begin();
-         it != d_order.end(); it++)
-      {
-        fight_order << (*it) << " ";
-      }
-    retval &= helper->saveData("order", fight_order.str());
-    retval &= helper->closeTag();
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  std::stringstream fight_order;
+  for (std::list<Uint32>::const_iterator it = d_order.begin();
+       it != d_order.end(); it++)
+    {
+      fight_order << (*it) << " ";
+    }
+  retval &= helper->saveData("order", fight_order.str());
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
 
 bool Action_FightOrder::fillData(std::list<Uint32> order)
 {
-    d_order = order;
-    return true;
+  d_order = order;
+  return true;
 }
 
 //-----------------------------------------------------------------------------
 //Action_Resign
 
 Action_Resign::Action_Resign()
-    :Action(Action::RESIGN)
+:Action(Action::RESIGN)
 {
 }
 
 Action_Resign::Action_Resign(XML_Helper* helper)
-    :Action(Action::RESIGN)
+:Action(Action::RESIGN)
 {
 }
 
@@ -1431,41 +1452,41 @@ Action_Resign::~Action_Resign()
 
 std::string Action_Resign::dump() const
 {
-    std::stringstream s;
-    s << "this player resigns\n";
-    
-    return s.str();
+  std::stringstream s;
+  s << "this player resigns\n";
+
+  return s.str();
 }
 
 bool Action_Resign::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->closeTag();
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
 
 bool Action_Resign::fillData()
 {
-    return true;
+  return true;
 }
 
 //-----------------------------------------------------------------------------
 //Action_Plant
 
 Action_Plant::Action_Plant()
-    :Action(Action::ITEM_PLANT)
+:Action(Action::ITEM_PLANT)
 {
 }
 
 Action_Plant::Action_Plant(XML_Helper* helper)
-    :Action(Action::ITEM_PLANT)
+:Action(Action::ITEM_PLANT)
 {
-    helper->getData(d_hero, "hero");
-    helper->getData(d_item, "item");
+  helper->getData(d_hero, "hero");
+  helper->getData(d_item, "item");
 }
 
 Action_Plant::~Action_Plant()
@@ -1474,23 +1495,23 @@ Action_Plant::~Action_Plant()
 
 std::string Action_Plant::dump() const
 {
-    std::stringstream s;
-    s << "hero " << d_hero << " plants item " << d_item;
-    
-    return s.str();
+  std::stringstream s;
+  s << "hero " << d_hero << " plants item " << d_item;
+
+  return s.str();
 }
 
 bool Action_Plant::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("hero", d_hero);
-    retval &= helper->saveData("item", d_item);
-    retval &= helper->closeTag();
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("hero", d_hero);
+  retval &= helper->saveData("item", d_item);
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
 
 bool Action_Plant::fillData(Uint32 hero, Uint32 item)
@@ -1504,16 +1525,16 @@ bool Action_Plant::fillData(Uint32 hero, Uint32 item)
 //Action_Produce
 
 Action_Produce::Action_Produce()
-    :Action(Action::PRODUCE_UNIT)
+:Action(Action::PRODUCE_UNIT)
 {
 }
 
 Action_Produce::Action_Produce(XML_Helper* helper)
-    :Action(Action::PRODUCE_UNIT)
+:Action(Action::PRODUCE_UNIT)
 {
-    helper->getData(d_army_type, "army_type");
-    helper->getData(d_city, "city");
-    helper->getData(d_vectored, "vectored");
+  helper->getData(d_army_type, "army_type");
+  helper->getData(d_city, "city");
+  helper->getData(d_vectored, "vectored");
 }
 
 Action_Produce::~Action_Produce()
@@ -1522,27 +1543,27 @@ Action_Produce::~Action_Produce()
 
 std::string Action_Produce::dump() const
 {
-    std::stringstream s;
-    s << "armytype " << d_army_type << " shows up at city " << d_city;
-    if (d_vectored)
-      s <<" but it is vectored to another city";
-    s <<"\n";
-    
-    return s.str();
+  std::stringstream s;
+  s << "armytype " << d_army_type << " shows up at city " << d_city;
+  if (d_vectored)
+    s <<" but it is vectored to another city";
+  s <<"\n";
+
+  return s.str();
 }
 
 bool Action_Produce::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("army_type", d_army_type);
-    retval &= helper->saveData("city", d_city);
-    retval &= helper->saveData("vectored", d_vectored);
-    retval &= helper->closeTag();
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("army_type", d_army_type);
+  retval &= helper->saveData("city", d_city);
+  retval &= helper->saveData("vectored", d_vectored);
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
 
 bool Action_Produce::fillData(Uint32 army_type, City *city, bool vectored)
@@ -1557,19 +1578,19 @@ bool Action_Produce::fillData(Uint32 army_type, City *city, bool vectored)
 //Action_ProduceVectored
 
 Action_ProduceVectored::Action_ProduceVectored()
-    :Action(Action::PRODUCE_VECTORED_UNIT)
+:Action(Action::PRODUCE_VECTORED_UNIT)
 {
 }
 
 Action_ProduceVectored::Action_ProduceVectored(XML_Helper* helper)
-    :Action(Action::PRODUCE_VECTORED_UNIT)
+:Action(Action::PRODUCE_VECTORED_UNIT)
 {
-    helper->getData(d_army_type, "army_type");
-    int i;
-    helper->getData(i, "x");
-    d_dest.x = i;
-    helper->getData(i, "y");
-    d_dest.y = i;
+  helper->getData(d_army_type, "army_type");
+  int i;
+  helper->getData(i, "x");
+  d_dest.x = i;
+  helper->getData(i, "y");
+  d_dest.y = i;
 }
 
 Action_ProduceVectored::~Action_ProduceVectored()
@@ -1578,25 +1599,25 @@ Action_ProduceVectored::~Action_ProduceVectored()
 
 std::string Action_ProduceVectored::dump() const
 {
-    std::stringstream s;
-    s << "armytype " << d_army_type << " shows up at ";
-    s <<d_dest.x <<"," <<d_dest.y <<")\n";
-    
-    return s.str();
+  std::stringstream s;
+  s << "armytype " << d_army_type << " shows up at ";
+  s <<d_dest.x <<"," <<d_dest.y <<")\n";
+
+  return s.str();
 }
 
 bool Action_ProduceVectored::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("action");
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("army_type", d_army_type);
-    retval &= helper->saveData("x", d_dest.x);
-    retval &= helper->saveData("y", d_dest.y);
-    retval &= helper->closeTag();
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("army_type", d_army_type);
+  retval &= helper->saveData("x", d_dest.x);
+  retval &= helper->saveData("y", d_dest.y);
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
 
 bool Action_ProduceVectored::fillData(Uint32 army_type, Vector<int> dest)

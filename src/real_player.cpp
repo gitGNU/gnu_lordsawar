@@ -899,7 +899,7 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
 
 Reward* RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
 {
-    Reward *retReward;
+    Reward *retReward = NULL;
     debug("RealPlayer::stack_search_ruin")
 
     //throw out impossible actions
@@ -939,9 +939,9 @@ Reward* RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
 
      if (r->hasSage())
       {
-        History_FoundSage* item = new History_FoundSage();
-        item->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
-        d_history.push_back(item);
+        History_FoundSage* history = new History_FoundSage();
+        history->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
+        d_history.push_back(history);
       }
      else
       {
@@ -1002,7 +1002,7 @@ Reward* RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
 */
       }
 
-    ssearchingRuin.emit(r, s, retReward);
+    ssearchingRuin.emit(r, s, retReward); //nobody's listening for this
 
     r->setSearched(true);
 

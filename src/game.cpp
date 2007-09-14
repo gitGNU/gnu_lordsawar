@@ -317,7 +317,7 @@ void Game::search_selected_stack()
       Reward *reward;
 
       reward = player->stackSearchRuin(stack, ruin);
-      if (!reward)
+      if (!reward && ruin->hasSage() == false)
 	{
 	  redraw();
 	  update_stack_info();

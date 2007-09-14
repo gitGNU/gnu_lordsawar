@@ -171,7 +171,7 @@ bool History_StartTurn::fillData()
 //History_FoundSage
 
 History_FoundSage::History_FoundSage()
-:History(History::FOUND_SAGE), d_hero(0)
+:History(History::FOUND_SAGE), d_hero("")
 {
 }
 

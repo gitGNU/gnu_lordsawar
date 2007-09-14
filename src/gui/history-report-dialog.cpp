@@ -131,6 +131,7 @@ void HistoryReportDialog::generatePastEventlists()
   for (; pit != Playerlist::getInstance()->end(); ++pit)
     hit[(*pit)->getId()] = hist[(*pit)->getId()]->begin();
 
+  unsigned int count = 0;
   while (1)
     {
       //now we see what cities we took this turn
@@ -141,6 +142,8 @@ void HistoryReportDialog::generatePastEventlists()
 	    continue;
 	  //dump everything up to the next turn
 	  Uint32 id = (*pit)->getId();
+	  if (hit[id] == hist[id]->end())
+	    continue;
 	  for (; hit[id] != hist[id]->end(); ++hit[id])
 	    {
 	      if ((*hit[id])->getType() == History::START_TURN)
@@ -166,7 +169,11 @@ void HistoryReportDialog::generatePastEventlists()
 		}
 	    }
 	  if (hit[id] == hist[id]->end())
-	    last_turn = true;
+	    {
+	      count++;
+	      if (count == Playerlist::getInstance()->size() - 2)
+		last_turn = true;
+	    }
 	}
       //and add it to the list
       past_eventlists.push_back(*elist);
@@ -203,6 +210,7 @@ void HistoryReportDialog::generatePastCitylists()
       (*it).setBurnt(false);
     }
 
+  unsigned int count = 0;
   while (1)
     {
       //now we see what cities we took this turn
@@ -213,7 +221,9 @@ void HistoryReportDialog::generatePastCitylists()
 	    continue;
 	  //dump everything up to the next turn
 	  Uint32 id = (*pit)->getId();
-	  for (; hit[id] != hist[id]->end(); ++hit[id])
+	  if (hit[id] == hist[id]->end())
+	    continue;
+	  for (; hit[id] != hist[id]->end(); hit[id]++)
 	    {
 	      if ((*hit[id])->getType() == History::START_TURN)
 		{
@@ -250,7 +260,11 @@ void HistoryReportDialog::generatePastCitylists()
 		}
 	    }
 	  if (hit[id] == hist[id]->end())
-	    last_turn = true;
+	    {
+	      count++;
+	      if (count == Playerlist::getInstance()->size() - 2)
+		last_turn = true;
+	    }
 	}
       //and add it to the list
       past_citylists.push_back(clist);
@@ -342,8 +356,8 @@ void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
   s = String::ucompose(_("On turn %1 you %2 "), turn, 
 		       turn == past_citylists.size() ? "have" : "had");
   s += String::ucompose(ngettext("%1 gold piece!",
- 				 "%1 gold pieces!",
- 				 count), count);
+				 "%1 gold pieces!",
+				 count), count);
   gold_label->set_text(s);
 
   //update the city chart
@@ -361,8 +375,8 @@ void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
   s = String::ucompose(_("On turn %1 you %2 "), turn,
 		       turn == past_citylists.size() ? "have" : "had");
   s += String::ucompose(ngettext("%1 city!",
- 				 "%1 cities!",
- 				 count), count);
+				 "%1 cities!",
+				 count), count);
   city_label->set_text(s);
 
   //on turn # you were coming #

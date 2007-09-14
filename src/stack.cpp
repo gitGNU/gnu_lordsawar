@@ -558,4 +558,22 @@ bool Stack::hasShip () const
     }
   return false;
 }
+
+bool armyCompareStrengths (const Army *lhs, const Army *rhs)  
+{
+  Uint32 lhs_strength = lhs->getStat(Army::STRENGTH, true);
+  Uint32 rhs_strength = rhs->getStat(Army::STRENGTH, true);
+  if (lhs->isHero())
+    lhs_strength += 10; //a hack to make heroes show up first
+  if (rhs->isHero())
+    rhs_strength += 10;
+  return lhs_strength < rhs_strength; 
+}
+
+void Stack::sortByStrength (bool reverse)
+{
+  sort(armyCompareStrengths);
+  if (reverse)
+    std::reverse(begin(), end());
+}
 // End of file

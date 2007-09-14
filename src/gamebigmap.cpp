@@ -370,6 +370,8 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	    {
 	      if (c->getPlayer() == Playerlist::getActiveplayer())
 		d_cursor = GraphicsCache::FEET;
+	      else if (c->isBurnt() == true)
+		d_cursor = GraphicsCache::FEET;
 	      else
 		{
 		  int delta = abs(tile.x - stack->getPos().x);
@@ -452,7 +454,10 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	{
 	  Maptile *t = GameMap::getInstance()->getTile(tile);
 	  if (t->getBuilding() == Maptile::CITY)
-	    d_cursor = GraphicsCache::ROOK;
+	    {
+	      if (GameScenario::s_see_opponents_production == true)
+		d_cursor = GraphicsCache::ROOK;
+	    }
 	  else if (t->getBuilding() == Maptile::RUIN)
 	    d_cursor = GraphicsCache::RUIN;
 	  else if (t->getBuilding() == Maptile::TEMPLE)

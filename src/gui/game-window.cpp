@@ -98,7 +98,6 @@
 #include "../reward.h"
 #include "../Configuration.h"
 #include "../GameMap.h"
-#include "../fight.h"
 
 
 GameWindow::GameWindow()
@@ -1244,7 +1243,8 @@ void GameWindow::fill_in_group_info (Stack *s)
 
 void GameWindow::show_stack(Stack *s)
 {
-  Fight::orderStack(s);
+  s->sortByStrength(true);
+
   inhibit_group_ungroup_toggle = false;
   stats_box->hide();
 

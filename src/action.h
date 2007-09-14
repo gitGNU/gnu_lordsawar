@@ -390,6 +390,7 @@ class Action_Reward : public Action
         bool fillData (Reward *);
     
     private:
+        bool load(std::string tag, XML_Helper *helper);
 	Reward *d_reward;
 	
 };

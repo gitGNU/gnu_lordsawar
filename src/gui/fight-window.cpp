@@ -292,6 +292,5 @@ void FightWindow::on_key_release_event(GdkEventKey* event)
 {
     Timing::instance().register_timer(
 	sigc::mem_fun(this, &FightWindow::do_round), fast_round_speed);
-    printf("setting quick!\n");
     d_quick = true;
 }

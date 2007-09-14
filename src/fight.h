@@ -93,10 +93,6 @@ class Fight
 	//! this is used for calculation and display purposes
         static void orderArmies(std::list<Stack*> stacks, std::vector<Army*> &armies);
 
-	//! take a stack and order it in reverse fight-order.
-	//! this isn't used for fighting.
-        static void orderStack(Stack *stack);
-
     private:
         /** Does one fight round.
           *
