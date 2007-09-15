@@ -596,9 +596,7 @@ void MapGenerator::makeBuildings(Maptile::Building b, int building)
 		 break;
              }
 	}
-	if ((found_place == false) && 
-			((b == Maptile::TEMPLE) || (b == Maptile::RUIN)))
-		found_place = true;
+
 	if (found_place == true)
 	{
              d_terrain[y*d_width + x] = Tile::GRASS;
