@@ -37,8 +37,12 @@ QuestCityOccupy::QuestCityOccupy (QuestsManager& mgr, Uint32 hero)
     // we want to stay informed about city occupations
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
+      {
         (*it)->soccupyingCity.connect(
 	    sigc::mem_fun(this, &QuestCityOccupy::cityOccupied));
+        (*it)->srazingCity.connect(
+	    sigc::mem_fun(this, &QuestCityOccupy::cityOccupied));
+      }
 
     // find us a victim
     City* c = chooseToOccupy(getHero()->getPlayer());
@@ -56,8 +60,12 @@ QuestCityOccupy::QuestCityOccupy (QuestsManager& q_mgr, XML_Helper* helper)
     // let us stay in touch with the world...
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
+      {
         (*it)->soccupyingCity.connect(
 	    sigc::mem_fun(this, &QuestCityOccupy::cityOccupied));
+        (*it)->srazingCity.connect(
+	    sigc::mem_fun(this, &QuestCityOccupy::cityOccupied));
+      }
     
     helper->getData(d_city, "city");
     d_targets.push_back(getCity()->getPos());
@@ -116,44 +124,50 @@ void QuestCityOccupy::cityOccupied(City* city, Stack* s)
     if ((city->getId() != d_city) || !isActive())
         return;
     
-    // look if our hero is in the list of (surviving) explorers
-    for (Stack::const_iterator it = s->begin(); it != s->end(); it++)
-        if ((*it)->isHero() && ((*it)->getId() == d_hero))
-        {
-            debug("CONGRATULATIONS: QUEST 'CITY OCCUPY' IS COMPLETED!");
-            d_q_mgr.questCompleted(d_hero);
-            return;
-        }
-
-    // looks like we died trying to accomplish this quest
-    debug("WHAT A PITY: QUEST 'CITY OCCUPY' CANNOT BE COMPLETED!");
-    d_q_mgr.questExpired(d_hero);
+    //somebody's stack has occupied this city or has razed it
+    if (city->isBurnt() == false)
+      {
+	// look if our hero is in the list of occupiers
+	for (Stack::const_iterator it = s->begin(); it != s->end(); it++)
+	  if ((*it)->isHero() && ((*it)->getId() == d_hero))
+	    {
+	      debug("CONGRATULATIONS: QUEST 'CITY OCCUPY' IS COMPLETED!");
+	      d_q_mgr.questCompleted(d_hero);
+	      return;
+	    }
+      }
+    else
+      {
+	// looks like we razed this city, or someone else did
+	debug("WHAT A PITY: QUEST 'CITY OCCUPY' CANNOT BE COMPLETED!");
+	d_q_mgr.questExpired(d_hero);
+      }
 }
 //=======================================================================
 void QuestCityOccupy::initDescription()
 {
-    const City* c = getCity();
-    char buffer[121]; buffer[120]='\0';
-    
-    snprintf(buffer, 100, _("You must occupy the city \"%s\" located at (%i,%i)."),
-            c->getName().c_str(), c->getPos().x, c->getPos().y);
+  const City* c = getCity();
+  char buffer[121]; buffer[120]='\0';
 
-    d_description = std::string(buffer);
+  snprintf(buffer, 100, _("You must occupy the city \"%s\" located at (%i,%i)."),
+	   c->getName().c_str(), c->getPos().x, c->getPos().y);
+
+  d_description = std::string(buffer);
 }
 //=======================================================================
 City * QuestCityOccupy::chooseToOccupy(Player *p)
 {
-    std::vector<City*> cities;
+  std::vector<City*> cities;
 
-    // Collect all cities
-    Citylist* cl = Citylist::getInstance();
-    for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-        if (!(*it).isBurnt() && (*it).getPlayer() != p)
-            cities.push_back(&(*it));
+  // Collect all cities
+  Citylist* cl = Citylist::getInstance();
+  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+    if (!(*it).isBurnt() && (*it).getPlayer() != p)
+      cities.push_back(&(*it));
 
-    // Find a suitable city for us to occupy
-    if (cities.empty())
-        return 0;
+  // Find a suitable city for us to occupy
+  if (cities.empty())
+    return 0;
 
-    return cities[rand() % cities.size()];
+  return cities[rand() % cities.size()];
 }

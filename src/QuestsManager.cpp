@@ -240,7 +240,10 @@ bool QuestsManager::save(XML_Helper* helper) const
     
     std::map<Uint32,Quest*>::const_iterator it;
     for (it = d_quests.begin(); it != d_quests.end(); it++) 
-        retval &= ((*it).second)->save(helper);
+      {
+	if (((*it).second)->isPendingDeletion() == false)
+	  retval &= ((*it).second)->save(helper);
+      }
 
     debug("Quests saved\n");
 	retval &= helper->closeTag();

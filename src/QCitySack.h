@@ -64,6 +64,7 @@ class QuestCitySack : public Quest, public sigc::trackable
     private:
          /** slot that would receive the scitySacked (signal) */
          void citySacked (City* city, Stack* s, int gold, std::list<Uint32> sacked_types);
+         void cityRazed (City* city, Stack* s);
 
          /** \brief Make quest description from the city we'll sack */
          void initDescription();

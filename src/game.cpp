@@ -253,7 +253,6 @@ void Game::move_all_stacks()
 {
   Player *player = Playerlist::getActiveplayer();
   Stacklist* sl = player->getStacklist();
-  Stack *orig = sl->getActivestack();
 
   for (Stacklist::iterator i = sl->begin(), end = sl->end(); i != end; ++i)
     {
@@ -267,15 +266,9 @@ void Game::move_all_stacks()
 	}
     }
 
-  // if the stack still exists, set the active stack to the old one, else to 0
-  if (find(sl->begin(), sl->end(), orig) != sl->end())
+  if (sl->getActivestack()->canMove() == false)
     {
-      sl->setActivestack(orig);
-      bigmap->select_active_stack();
-    }
-  else
-    {
-      sl->setActivestack(0);
+      Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
       bigmap->unselect_active_stack();
     }
 }

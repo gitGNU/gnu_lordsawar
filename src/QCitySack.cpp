@@ -37,8 +37,12 @@ QuestCitySack::QuestCitySack (QuestsManager& mgr, Uint32 hero)
     // we want to stay informed about city sacks
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
+      {
         (*it)->ssackingCity.connect(
 	    sigc::mem_fun(this, &QuestCitySack::citySacked));
+        (*it)->srazingCity.connect(
+	    sigc::mem_fun(this, &QuestCitySack::cityRazed));
+      }
 
     // find us a victim
     City* c = chooseToSack(getHero()->getPlayer());
@@ -56,8 +60,12 @@ QuestCitySack::QuestCitySack (QuestsManager& q_mgr, XML_Helper* helper)
     // let us stay in touch with the world...
     const Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
+      {
         (*it)->ssackingCity.connect(
 	    sigc::mem_fun(this, &QuestCitySack::citySacked));
+        (*it)->srazingCity.connect(
+	    sigc::mem_fun(this, &QuestCitySack::cityRazed));
+      }
     
     helper->getData(d_city, "city");
     d_targets.push_back(getCity()->getPos());
@@ -118,7 +126,7 @@ void QuestCitySack::citySacked(City* city, Stack* s, int gold, std::list<Uint32>
     if ((city->getId() != d_city) || !isActive())
         return;
     
-    // look if our hero is in the list of (surviving) explorers
+    // look if our hero is in the list of sackers
     for (Stack::const_iterator it = s->begin(); it != s->end(); it++)
         if ((*it)->isHero() && ((*it)->getId() == d_hero))
         {
@@ -127,7 +135,10 @@ void QuestCitySack::citySacked(City* city, Stack* s, int gold, std::list<Uint32>
             return;
         }
 
-    // looks like we died trying to accomplish this quest
+}
+void QuestCitySack::cityRazed(City* city, Stack* s)
+{
+    // looks like someone else razed it
     debug("WHAT A PITY: QUEST 'CITY SACK' CANNOT BE COMPLETED!");
     d_q_mgr.questExpired(d_hero);
 }
