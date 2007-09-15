@@ -1,3 +1,25 @@
+2007-09-15  Ben Asselstine
+
+	* fixed bug wrt moving all stacks (Thanks to Gunnar Lindholm)
+	* fixed mouse cursor over own city and enemy cities
+	* now not saving a quest if it's scheduled for deletion
+	* moving all stacks now leaves the last stack selected if it has
+	  moves left
+	* an occupy-city quest now expires if that city is razed (Thanks to
+	  Gunnar Lindholm)
+	* a sack-city quest now expires if that city is razed (Thanks to
+	  Gunnar Lindholm)
+	* now restricting the randomly putting of ruins under cities (Thanks 
+	  to Gunnar Lindholm)
+
+2007-09-14  Ben Asselstine
+
+	* fixed crash when visiting a sage (Thanks to Gunnar Lindholm)
+	* fixed loading and saving of action reward
+	* now ordering stacks by strength -- but with heroes first
+	* history now shows beyond death of first player
+	* fixed scores so they don't spontaneously go to 0
+
 2007-09-13  Ben Asselstine
 
 	* fixed bug that prevented cities from being attacked
