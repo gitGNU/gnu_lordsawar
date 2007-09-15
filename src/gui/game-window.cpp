@@ -1204,6 +1204,7 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 
 void GameWindow::on_smallmap_changed(SDL_Surface *map)
 {
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
   map_image->property_pixbuf() = to_pixbuf(map);
 }
 
@@ -1998,7 +1999,7 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 {
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  while (g_main_context_iteration(NULL, FALSE));
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
   d_quick_fights = false;
   show_shield_turn();

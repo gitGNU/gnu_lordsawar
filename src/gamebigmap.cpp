@@ -455,7 +455,10 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	  Maptile *t = GameMap::getInstance()->getTile(tile);
 	  if (t->getBuilding() == Maptile::CITY)
 	    {
-	      if (GameScenario::s_see_opponents_production == true)
+	      City *c = Citylist::getInstance()->getObjectAt(tile);
+	      if (c->getPlayer() == Playerlist::getActiveplayer())
+		d_cursor = GraphicsCache::ROOK;
+	      else if (GameScenario::s_see_opponents_production == true)
 		d_cursor = GraphicsCache::ROOK;
 	    }
 	  else if (t->getBuilding() == Maptile::RUIN)
