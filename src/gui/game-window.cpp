@@ -223,6 +223,7 @@ GameWindow::GameWindow()
     xml->get_widget("gold_history_menuitem", gold_history_menuitem);
     xml->get_widget("winner_history_menuitem", winner_history_menuitem);
     xml->get_widget("group_ungroup_menuitem", group_ungroup_menuitem);
+    xml->get_widget("leave_menuitem", leave_menuitem);
 
     xml->connect_clicked("fight_order_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_fight_order_activated));
@@ -479,6 +480,9 @@ void GameWindow::setup_signals()
   setup_menuitem(group_ungroup_menuitem,
 		 sigc::mem_fun(*this, &GameWindow::on_group_ungroup_activated),
 		 game->can_group_ungroup_selected_stack);
+  setup_menuitem(leave_menuitem,
+		 sigc::mem_fun(game.get(), &Game::park_selected_stack),
+		 game->can_park_selected_stack);
 
   // setup game callbacks
   connections.push_back 
