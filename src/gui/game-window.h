@@ -107,6 +107,7 @@ class GameWindow: public sigc::trackable
     Gtk::MenuItem *plant_standard_menuitem;
     Gtk::MenuItem *group_ungroup_menuitem;
     Gtk::MenuItem *leave_menuitem;
+    Gtk::MenuItem *next_menuitem;
     Gtk::Box *stack_info_box;
     Gtk::Box *stack_info_container;
     Gtk::Label *group_moves_label;
