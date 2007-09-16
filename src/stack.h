@@ -175,6 +175,7 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
 	void setFortified(bool fortified);
 	bool getFortified();
         
+	static bool armyCompareFightOrder (const Army *lhs, const Army *rhs);
     private:    
         //! Callback for loading the stack
         bool load(std::string tag, XML_Helper* helper);

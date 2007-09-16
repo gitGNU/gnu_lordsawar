@@ -566,28 +566,46 @@ bool Stack::hasShip () const
   return false;
 }
 
-bool armyCompare (const Army *lhs, const Army *rhs)  
+bool Stack::armyCompareFightOrder (const Army *lhs, const Army *rhs)  
 {
-  Uint32 lhs_strength = lhs->getStat(Army::STRENGTH, true);
-  Uint32 rhs_strength = rhs->getStat(Army::STRENGTH, true);
-  if (lhs->isGrouped()) //to keep the grouped armies seperate
+  unsigned int count = 0;
+  std::list<Uint32> lhs_fight_order = lhs->getPlayer()->getFightOrder();
+  std::list<Uint32> rhs_fight_order = rhs->getPlayer()->getFightOrder();
+  Uint32 lhs_rank = 0;
+  for (std::list<Uint32>::const_iterator it = lhs_fight_order.begin();
+       it != lhs_fight_order.end(); it++)
     {
-      if (lhs->isHero())
-	lhs_strength += 10; //to make heroes show up first
-      lhs_strength += 10;
+      count++;
+      if (count == lhs->getType())
+        {
+          lhs_rank = (*it);
+          break;
+        }
     }
-  if (rhs->isGrouped())
+  if (lhs->isGrouped())
+    lhs_rank+=100;
+  count = 0;
+  Uint32 rhs_rank = 0;
+  for (std::list<Uint32>::const_iterator it = rhs_fight_order.begin();
+       it != rhs_fight_order.end(); it++)
     {
-      if (rhs->isHero())
-	rhs_strength += 10;
-      rhs_strength += 10;
+      count++;
+      if (count == rhs->getType())
+        {
+          rhs_rank = (*it);
+          break;
+        }
     }
-  return lhs_strength < rhs_strength; 
+  if (rhs->isGrouped()) //a hack
+    rhs_rank+=100;
+        //compare values
+  return lhs_rank < rhs_rank; 
 }
+
 
 void Stack::sortForViewing (bool reverse)
 {
-  sort(armyCompare);
+  sort(armyCompareFightOrder);
   if (reverse)
     std::reverse(begin(), end());
 }

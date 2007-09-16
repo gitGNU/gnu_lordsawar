@@ -53,38 +53,6 @@ Fighter::Fighter(Army* a, Vector<int> p)
 {
 }
 
-bool armyCompareFightOrder (const Army *lhs, const Army *rhs)  
-{
-  unsigned int count = 0;
-  std::list<Uint32> lhs_fight_order = lhs->getPlayer()->getFightOrder();
-  std::list<Uint32> rhs_fight_order = rhs->getPlayer()->getFightOrder();
-  Uint32 lhs_rank = 0;
-  for (std::list<Uint32>::const_iterator it = lhs_fight_order.begin();
-       it != lhs_fight_order.end(); it++)
-    {
-      count++;
-      if (count == lhs->getType())
-        {
-          lhs_rank = (*it);
-          break;
-        }
-    }
-  count = 0;
-  Uint32 rhs_rank = 0;
-  for (std::list<Uint32>::const_iterator it = rhs_fight_order.begin();
-       it != rhs_fight_order.end(); it++)
-    {
-      count++;
-      if (count == rhs->getType())
-        {
-          rhs_rank = (*it);
-          break;
-        }
-    }
-        //compare values
-  return lhs_rank < rhs_rank; 
-}
-
 
 //take a list of stacks and create an ordered list of armies
 void Fight::orderArmies(std::list<Stack*> stacks, std::vector<Army*> &armies)
@@ -97,7 +65,7 @@ void Fight::orderArmies(std::list<Stack*> stacks, std::vector<Army*> &armies)
       armies.push_back((*sit));
 
   //okay now sort the army list according to the player's fight order
-  std::sort(armies.begin(), armies.end(), armyCompareFightOrder);
+  std::sort(armies.begin(), armies.end(), Stack::armyCompareFightOrder);
 
   return;
 }
