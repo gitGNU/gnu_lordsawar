@@ -1103,17 +1103,17 @@ void GameWindow::on_message_requested(std::string msg)
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
 {
-  inhibit_group_ungroup_toggle = true;
+  group_ungroup_toggle->set_sensitive(false);
   army->setGrouped(toggle->get_active());
   ensure_one_army_button_active();
   Player *p = Playerlist::getActiveplayer();
-  fill_in_group_info (p->getStacklist()->getActivestack());
-  inhibit_group_ungroup_toggle = false;
+  on_stack_info_changed(p->getStacklist()->getActivestack());
+  group_ungroup_toggle->set_sensitive(true);
 }
 
 void GameWindow::on_group_toggled(Gtk::ToggleButton *toggle)
 {
-  if (inhibit_group_ungroup_toggle == true)
+  if (toggle->sensitive() == false)
     return;
   if (toggle->get_active() == false)
     currently_selected_stack->ungroup();
@@ -1167,6 +1167,8 @@ void GameWindow::update_army_buttons()
   for (army_buttons_type::iterator i = army_buttons.begin(),
        end = army_buttons.end(); i != end; ++i, j++)
     {
+      if (!*j || !*i)
+	continue; //fixme: why is this required?
       (*i)->set_active((*j)->isGrouped());
     }
 }
@@ -1246,11 +1248,10 @@ void GameWindow::fill_in_group_info (Stack *s)
 
 void GameWindow::show_stack(Stack *s)
 {
-  s->sortByStrength(true);
-
-  inhibit_group_ungroup_toggle = false;
+  s->sortForViewing (true);
   stats_box->hide();
 
+  army_buttons.clear(); 
   for (Stack::iterator i = s->begin(), end = s->end(); i != end; ++i)
     {
       // construct a toggle button

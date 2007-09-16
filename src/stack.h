@@ -171,7 +171,7 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
 
 	void group();
 	void ungroup();
-	void sortByStrength(bool reverse);
+	void sortForViewing(bool reverse);
 	void setFortified(bool fortified);
 	bool getFortified();
         

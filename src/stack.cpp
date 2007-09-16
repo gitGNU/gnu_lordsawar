@@ -566,20 +566,28 @@ bool Stack::hasShip () const
   return false;
 }
 
-bool armyCompareStrengths (const Army *lhs, const Army *rhs)  
+bool armyCompare (const Army *lhs, const Army *rhs)  
 {
   Uint32 lhs_strength = lhs->getStat(Army::STRENGTH, true);
   Uint32 rhs_strength = rhs->getStat(Army::STRENGTH, true);
-  if (lhs->isHero())
-    lhs_strength += 10; //a hack to make heroes show up first
-  if (rhs->isHero())
-    rhs_strength += 10;
+  if (lhs->isGrouped()) //to keep the grouped armies seperate
+    {
+      if (lhs->isHero())
+	lhs_strength += 10; //to make heroes show up first
+      lhs_strength += 10;
+    }
+  if (rhs->isGrouped())
+    {
+      if (rhs->isHero())
+	rhs_strength += 10;
+      rhs_strength += 10;
+    }
   return lhs_strength < rhs_strength; 
 }
 
-void Stack::sortByStrength (bool reverse)
+void Stack::sortForViewing (bool reverse)
 {
-  sort(armyCompareStrengths);
+  sort(armyCompare);
   if (reverse)
     std::reverse(begin(), end());
 }
@@ -590,7 +598,7 @@ void Stack::setFortified(bool fortified)
     return;
   for (iterator it = begin(); it != end(); it++)
     (*it)->setFortified(false);
-      
+
   (*begin())->setFortified(fortified);
 }
 
