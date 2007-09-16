@@ -594,43 +594,68 @@ void BigMap::draw_buffer()
 
                 p = tile_to_buffer_pos(p);
 
+		// are we fortified?
+
                 // draw stack
 		SDL_Rect r;
 		r.x = p.x + 6;
 		r.y = p.y + 6;
 		r.w = r.h = 54;
+
+		bool show_army = true;
                 if ((*it)->hasShip())
                   SDL_BlitSurface(gc->getShipPic((*pit)), 0, buffer, &r);
                 else
-                  SDL_BlitSurface((*it)->getStrongestArmy()->getPixmap(), 0,
-				  buffer, &r);
+		  {
+		    if ((*it)->getFortified() == true)
+		      {
+			if ((*pit)->getStacklist()->getActivestack() != *it &&
+			    *pit == Playerlist::getActiveplayer())
+			  show_army = false;
+			Maptile *tile = gm->getTile((*it)->getPos());
+			if (tile->getBuilding() != Maptile::CITY &&
+			    tile->getBuilding() != Maptile::RUIN &&
+			    tile->getBuilding() != Maptile::TEMPLE)
+			  SDL_BlitSurface(gc->getTowerPic((*pit)), 0, 
+					  buffer, &r);
+			else
+			  show_army = true;
+		      }
+		      
+		    if (show_army == true)
+		      SDL_BlitSurface((*it)->getStrongestArmy()->getPixmap(), 0,
+				      buffer, &r);
+		  }
 
-                // draw flag
-		r.x = p.x;
-		r.y = p.y;
-		r.w = r.h = tilesize;
-                SDL_BlitSurface(gc->getFlagPic(*it), 0, buffer, &r);
-            }
-        }
+		if (show_army)
+		  {
+		    // draw flag
+		    r.x = p.x;
+		    r.y = p.y;
+		    r.w = r.h = tilesize;
+		    SDL_BlitSurface(gc->getFlagPic(*it), 0, buffer, &r);
+		  }
+	    }
+	}
     }
 
     // fog it up
     for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
       {
-        for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
-          {
+	for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
+	  {
 	    if (x < GameMap::getWidth() && y < GameMap::getHeight())
-              {
-                Player *p = Playerlist::getActiveplayer();
-                Vector<int> pos;
-                pos.x = x;
-                pos.y = y;
-                if (p->getFogMap()->getFogTile(pos) == FogMap::CLOSED &&
-                    p->getFogMap()->isLoneFogTile(pos) == false)
-                  drawFogTile (x, y);
-              }
-          }
-        }
+	      {
+		Player *p = Playerlist::getActiveplayer();
+		Vector<int> pos;
+		pos.x = x;
+		pos.y = y;
+		if (p->getFogMap()->getFogTile(pos) == FogMap::CLOSED &&
+		    p->getFogMap()->isLoneFogTile(pos) == false)
+		  drawFogTile (x, y);
+	      }
+	  }
+      }
 
     after_draw();
 

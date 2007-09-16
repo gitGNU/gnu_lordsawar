@@ -264,6 +264,7 @@ void Game::defend_selected_stack()
   Player *player = Playerlist::getActiveplayer();
   Stack *stack = player->getActivestack();
   assert(stack);
+
   stack->setDefending(true);
 
   stack = player->getStacklist()->getNextMovable();

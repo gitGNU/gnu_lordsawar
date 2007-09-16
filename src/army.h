@@ -313,6 +313,12 @@ class Army : public sigc::trackable
 	//! Sets this army as being in a ship or not
 	void setInShip (bool s);
 
+	//! Sets this army as being fortified (+1 to stack)
+	void setFortified (bool f);
+
+	//! get the fortify flag for this army
+	bool getFortified ();
+
 	//! Returns how many experience points the next level requires
         Uint32 getXpNeededForNextLevel() const;
 

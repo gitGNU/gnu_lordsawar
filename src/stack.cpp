@@ -106,6 +106,7 @@ bool Stack::moveOneStep()
 
   d_pos = **d_path->begin();
 
+  setFortified(false);
   setDefending(false);
   setParked(false);
 
@@ -364,7 +365,6 @@ Uint32 Stack::getMaxSight() const
 
 void Stack::nextTurn()
 {
-  setDefending(false);
   setParked(false);
   for (iterator it = begin(); it != end(); it++)
     {
@@ -395,6 +395,8 @@ void Stack::nextTurn()
 	      p->addGold(5 * Citylist::getInstance()->countCities(p));
 	  }
       }
+  if (d_defending == true)
+    setFortified(true);
 }
 
 bool Stack::save(XML_Helper* helper) const
@@ -581,4 +583,27 @@ void Stack::sortByStrength (bool reverse)
   if (reverse)
     std::reverse(begin(), end());
 }
+
+void Stack::setFortified(bool fortified)
+{
+  if (empty())
+    return;
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->setFortified(false);
+      
+  (*begin())->setFortified(fortified);
+}
+
+bool Stack::getFortified()
+{
+  if (empty())
+    return false;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getFortified())
+	return true;
+    }
+  return false;
+}
+
 // End of file

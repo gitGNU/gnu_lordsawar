@@ -24,6 +24,7 @@
 struct ArmyCacheItem;
 struct ShipCacheItem;
 struct CityCacheItem;
+struct TowerCacheItem;
 struct TempleCacheItem;
 struct StoneCacheItem;
 struct RoadCacheItem;
@@ -115,18 +116,6 @@ class GraphicsCache
         SDL_Surface* getArmyPic(Uint32 armyset, Uint32 army, const Player* p,
                                 int level, const bool* medals);
 
-        /** Function for getting a city picture
-          * 
-          * For simplicity we have extended the basic_image/mask style to
-          * cities as well, since it greatly reduces the number of images.
-          * Use this function solely to get city images, and don't touch the
-          * images!
-          *
-          * @param type         the level of the city; -1 returns the pic for
-          *                     the razed city
-          * @param player       the player owning the city
-          * @return image of the described city
-          */
         SDL_Surface* getTemplePic(int type);
         /** Function for getting a temple picture
           *
@@ -173,6 +162,18 @@ class GraphicsCache
         SDL_Surface* getShipPic(const Player* p);
         SDL_Surface* getPlantedStandardPic(const Player* p);
 
+        /** Function for getting a city picture
+          * 
+          * For simplicity we have extended the basic_image/mask style to
+          * cities as well, since it greatly reduces the number of images.
+          * Use this function solely to get city images, and don't touch the
+          * images!
+          *
+          * @param type         the level of the city; -1 returns the pic for
+          *                     the razed city
+          * @param player       the player owning the city
+          * @return image of the described city
+          */
         SDL_Surface* getCityPic(int type, const Player* p);
         /** Another function for getting a city picture
           *
@@ -183,6 +184,16 @@ class GraphicsCache
           * @return image of the city
           */
         SDL_Surface* getCityPic(const City* city);
+
+        /** Function for getting tower pictures.
+          *
+          * As with the other functions, use solely this function to get the tower 
+          * images. And DON'T modify the images!
+          *
+          * @param p the player for which we want to get the tower
+          * @return image for the tower
+          */
+        SDL_Surface* getTowerPic(const Player *p);
 
         /** Function for getting flag pictures.
           *
@@ -280,6 +291,9 @@ class GraphicsCache
         //! Creates a new city picture with the given parameters.
         CityCacheItem* addCityPic(int type, const Player* p);
 
+        //! Creates a new tower picture with the given parameters.
+        TowerCacheItem* addTowerPic(const Player* p);
+
         //! Creates a new ship picture with the given parameters.
         ShipCacheItem* addShipPic(const Player* p);
 
@@ -329,6 +343,9 @@ class GraphicsCache
         //! Erases the oldest (least recently requested) city cache item.
         void eraseLastCityItem();
 
+        //! Erases the oldest (least recently requested) tower cache item.
+        void eraseLastTowerItem();
+
         //! Erases the oldest (least recently requested) ship cache item.
         void eraseLastShipItem();
 
@@ -350,8 +367,11 @@ class GraphicsCache
         //! Erases the oldest movement bonus cache item
         void eraseLastMoveBonusItem();
 
-        //! Loads the images for the city pictures and their masks.
+        //! Loads the images for the city pictures
         void loadCityPics();
+
+        //! Loads the images for the tower pictures
+        void loadTowerPics();
 
         //! Loads the images for the ship picture and it's mask.
         void loadShipPic();
@@ -398,6 +418,7 @@ class GraphicsCache
         Uint32 d_cachesize;
         std::list<ArmyCacheItem*> d_armylist;
         std::list<CityCacheItem*> d_citylist;
+        std::list<TowerCacheItem*> d_towerlist;
         std::list<FlagCacheItem*> d_flaglist;
         std::list<TempleCacheItem*> d_templelist;
         std::list<StoneCacheItem*> d_stonelist;
@@ -416,6 +437,7 @@ class GraphicsCache
         SDL_Surface* d_levelmask;
         SDL_Surface* d_medalsmask;
         SDL_Surface* d_citypic[MAX_PLAYERS + 1]; //+1 for neutral
+        SDL_Surface* d_towerpic[MAX_PLAYERS];
         SDL_Surface* d_templepic[TEMPLE_TYPES];
         SDL_Surface* d_stonepic[STONE_TYPES];
         SDL_Surface* d_roadpic[ROAD_TYPES];

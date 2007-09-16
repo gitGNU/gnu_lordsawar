@@ -108,6 +108,13 @@ struct CityCacheItem
     SDL_Surface* surface;
 };
 
+//the structure to store towers in
+struct TowerCacheItem
+{
+    const Player* player;
+    SDL_Surface* surface;
+};
+
 // the structure to store flags in
 struct FlagCacheItem
 {
@@ -172,6 +179,7 @@ GraphicsCache::GraphicsCache()
     :d_cachesize(0)
 {
     loadCityPics();
+    loadTowerPics();
     loadShipPic();
     loadPlantedStandardPic();
     loadTemplePics();
@@ -210,6 +218,12 @@ GraphicsCache::~GraphicsCache()
 
         if (d_razedpic[i])
             SDL_FreeSurface(d_razedpic[i]);
+    }
+
+    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+        if (d_towerpic[i])
+            SDL_FreeSurface(d_towerpic[i]);
     }
 
     for (int i = 0; i < 8; i++)
@@ -616,6 +630,12 @@ SDL_Surface* GraphicsCache::getCityPic(int type, const Player* p)
       return d_citypic[p->getId()];
 }
 
+SDL_Surface* GraphicsCache::getTowerPic(const Player* p)
+{
+    debug("GraphicsCache::getTowerPic player " <<p->getName())
+    return d_towerpic[p->getId()];
+}
+
 SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
 {
     debug("GraphicsCache::getFlagPic " <<s->getId() <<", player" <<s->getPlayer()->getName())
@@ -806,6 +826,9 @@ void GraphicsCache::checkPictures()
 
   while (d_citylist.size() > 10)
     eraseLastCityItem();
+
+  while (d_towerlist.size() > 10)
+    eraseLastTowerItem();
 
   while (d_shiplist.size() > 10)
     eraseLastShipItem();
@@ -1184,6 +1207,25 @@ CityCacheItem* GraphicsCache::addCityPic(int type, const Player* p)
   return myitem;
 }
 
+TowerCacheItem* GraphicsCache::addTowerPic(const Player* p)
+{
+  //now create the cache item and add the size
+  TowerCacheItem* myitem = new TowerCacheItem();
+  myitem->player = p;
+  myitem->surface = d_towerpic[p->getId()];
+
+  d_towerlist.push_back(myitem);
+
+  //add the size
+  int size = d_towerpic[p->getId()]->w * d_towerpic[p->getId()]->h;
+  d_cachesize += size * d_towerpic[p->getId()]->format->BytesPerPixel;
+
+  //and check the size of the cache
+  checkPictures();
+
+  return myitem;
+}
+
 FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player* p)
 {
   debug("GraphicsCache::addFlagPic, player="<<p->getName()<<", size="<<size)
@@ -1378,6 +1420,9 @@ void GraphicsCache::clear()
   while (!d_citylist.empty())
     eraseLastCityItem();
 
+  while (!d_towerlist.empty())
+    eraseLastTowerItem();
+
   while (!d_shiplist.empty())
     eraseLastShipItem();
 
@@ -1524,6 +1569,21 @@ void GraphicsCache::eraseLastCityItem()
   delete myitem;
 }
 
+void GraphicsCache::eraseLastTowerItem()
+{
+  if (d_towerlist.empty())
+    return;
+
+  TowerCacheItem* myitem = *(d_towerlist.begin());
+  d_towerlist.erase(d_towerlist.begin());
+
+  int size = myitem->surface->w * myitem->surface->h;
+  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+
+  SDL_FreeSurface(myitem->surface);
+  delete myitem;
+}
+
 void GraphicsCache::eraseLastShipItem()
 {
   if (d_shiplist.empty())
@@ -1635,7 +1695,7 @@ void GraphicsCache::loadTemplePics()
   std::string tileset = GameMap::getInstance()->getTileSet()->getName();
   int ts = GameMap::getInstance()->getTileSet()->getTileSize();
 
-  // load the city pictures
+  // load the temple pictures
   SDL_Surface* templepics = File::getMapsetPicture(tileset, "misc/temples.png");
 
   // copy alpha values, don't use them
@@ -1643,7 +1703,7 @@ void GraphicsCache::loadTemplePics()
 
   for (unsigned int i = 0; i < TEMPLE_TYPES ; i++)
     {
-      //copy the city image...
+      //copy the temple image...
       SDL_Surface* tmp;
       SDL_PixelFormat* fmt = templepics->format;
 
@@ -1808,7 +1868,7 @@ void GraphicsCache::loadStonePics()
   std::string tileset = GameMap::getInstance()->getTileSet()->getName();
   int ts = GameMap::getInstance()->getTileSet()->getTileSize();
 
-  // load the city pictures
+  // load the stone pictures
   SDL_Surface* stonepics = File::getMapsetPicture(tileset, "misc/stones.png");
 
   // copy alpha values, don't use them
@@ -1816,7 +1876,7 @@ void GraphicsCache::loadStonePics()
 
   for (unsigned int i = 0; i < STONE_TYPES ; i++)
     {
-      //copy the city image...
+      //copy the stone image...
       SDL_Surface* tmp;
       SDL_PixelFormat* fmt = stonepics->format;
 
@@ -1906,6 +1966,42 @@ void GraphicsCache::loadCityPics()
 
   SDL_FreeSurface(tmp);
   SDL_FreeSurface(citypics);
+}
+
+void GraphicsCache::loadTowerPics()
+{
+  SDL_Surface *tmp;
+  SDL_PixelFormat *fmt;
+  // GameMap has the actual tileset stored
+  std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+  int size = GameMap::getInstance()->getTileSet()->getTileSize();
+
+  // load the image for the towers
+  SDL_Surface* towerpics = File::getMapsetPicture(tileset, "misc/towers.png");
+  // copy alpha values, don't use them
+  SDL_SetAlpha(towerpics, 0, 0);
+
+  // temporary surface
+  fmt = towerpics->format;
+  tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, fmt->BitsPerPixel,
+			     fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+      //copy the tower image...
+
+      SDL_Rect r;
+      r.x = i * size;
+      r.y = 0;
+      r.w = r.h = size;
+      SDL_BlitSurface(towerpics, &r, tmp, 0);
+
+      d_towerpic[i] = SDL_DisplayFormatAlpha(tmp);
+    }
+
+  SDL_FreeSurface(tmp);
+  SDL_FreeSurface(towerpics);
+
 }
 
 void GraphicsCache::loadShipPic()

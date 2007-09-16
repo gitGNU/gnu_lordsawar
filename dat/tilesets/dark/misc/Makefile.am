@@ -9,6 +9,7 @@ map_default_DATA = \
 	flags.png \
 	signpost.png \
 	stones.png \
+	towers.png \
 	roads.png \
 	bridges.png \
 	port.png
@@ -21,6 +22,7 @@ EXTRA_DIST = \
 	flags.png \
 	signpost.png \
 	stones.png \
+	towers.png \
 	roads.png \
 	bridges.png \
 	port.png
