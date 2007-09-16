@@ -1208,27 +1208,9 @@ Armies: %5</property>
 		      <property name="spacing">6</property>
 
 		      <child>
-			<widget class="GtkButton" id="prev_button">
+			<widget class="GtkButton" id="move_button">
 			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">Select previous stack</property>
-			  <property name="relief">GTK_RELIEF_NORMAL</property>
-			  <property name="focus_on_click">True</property>
-
-			  <child>
-			    <placeholder/>
-			  </child>
-			</widget>
-			<packing>
-			  <property name="padding">0</property>
-			  <property name="expand">False</property>
-			  <property name="fill">False</property>
-			</packing>
-		      </child>
-
-		      <child>
-			<widget class="GtkButton" id="next_button">
-			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">Select next stack</property>
+			  <property name="tooltip" translatable="yes">Move to the destination</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
 			  <property name="focus_on_click">True</property>
 
@@ -1247,6 +1229,24 @@ Armies: %5</property>
 			<widget class="GtkButton" id="next_movable_button">
 			  <property name="visible">True</property>
 			  <property name="tooltip" translatable="yes">Select next stack that can move</property>
+			  <property name="relief">GTK_RELIEF_NORMAL</property>
+			  <property name="focus_on_click">True</property>
+
+			  <child>
+			    <placeholder/>
+			  </child>
+			</widget>
+			<packing>
+			  <property name="padding">0</property>
+			  <property name="expand">False</property>
+			  <property name="fill">False</property>
+			</packing>
+		      </child>
+
+		      <child>
+			<widget class="GtkButton" id="park_button">
+			  <property name="visible">True</property>
+			  <property name="tooltip" translatable="yes">Let the stack defend</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
 			  <property name="focus_on_click">True</property>
 
@@ -1293,21 +1293,7 @@ Armies: %5</property>
 		      </child>
 
 		      <child>
-			<widget class="GtkButton" id="move_button">
-			  <property name="visible">True</property>
-			  <property name="tooltip" translatable="yes">Move to the destination</property>
-			  <property name="relief">GTK_RELIEF_NORMAL</property>
-			  <property name="focus_on_click">True</property>
-
-			  <child>
-			    <placeholder/>
-			  </child>
-			</widget>
-			<packing>
-			  <property name="padding">0</property>
-			  <property name="expand">False</property>
-			  <property name="fill">False</property>
-			</packing>
+			<placeholder/>
 		      </child>
 
 		      <child>

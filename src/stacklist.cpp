@@ -175,89 +175,6 @@ Stacklist::~Stacklist()
 {
 }
 
-Stack* Stacklist::setPrev()
-{
-    debug("setPrev()");
-
-    reverse_iterator it = rbegin();
-
-    //first, if we already have an active stack, loop through until we meet it
-    if (d_activestack)
-    {
-        for (; (*it) != d_activestack; it++);
-        it++;   //we want to start with the previous stack :)
-    }
-
-    //continue looping until we meet the previous not defending stack of this player
-    for (; it != rend(); it++)
-        if (((*it)->getPlayer() == Playerlist::getInstance()->getActiveplayer())
-            && (!(*it)->getDefending()))
-        {
-            d_activestack = (*it);
-            return d_activestack;
-        }
-    //still not found a stack? Then start looping from the beginning until we
-    //meet the activestack again. If there is no activestack, we have already
-    //looped through the whole list, so stop here
-    if (!d_activestack)
-        return 0;
-
-    for (it = rbegin(); (*it) != d_activestack; it++)
-    {
-        if (((*it)->getPlayer() == Playerlist::getInstance()->getActiveplayer())
-            && (!(*it)->getDefending()))
-        {
-            d_activestack = (*it);
-            return d_activestack;
-        }
-    }
-
-    //still there? well, then we have only one non-defending stack left.
-    return d_activestack;
-}
-
-Stack* Stacklist::setNext()
-{
-    debug("setNext()");
-
-    iterator it = begin();
-
-    //first, if we already have an active stack, loop through until we meet it
-    if (d_activestack)
-    {
-        for (; (*it) != d_activestack; it++);
-        it++;   //we want to start with the next stack :)
-    }
-
-    //continue looping until we meet the next not defending stack of this player
-    for (; it != end(); it++)
-        if (((*it)->getPlayer() == Playerlist::getInstance()->getActiveplayer())
-            && (!(*it)->getDefending()))
-        {
-            d_activestack = (*it);
-            return d_activestack;
-        }
-
-    //still not found a stack? Then start looping from the beginning until we
-    //meet the activestack again. If there is no activestack, we have already
-    //looped through the whole list, so stop here
-    if (!d_activestack)
-        return 0;
-
-    for (it = begin(); (*it) != d_activestack; it++)
-    {
-        if (((*it)->getPlayer() == Playerlist::getInstance()->getActiveplayer())
-            && (!(*it)->getDefending()))
-        {
-            d_activestack = (*it);
-            return d_activestack;
-        }
-    }
-
-    //still there? well, then we have only one non-defending stack left.
-    return d_activestack;
-}
-
 Stack* Stacklist::getNextMovable()
 {
     Player *player = Playerlist::getInstance()->getActiveplayer();
@@ -275,7 +192,8 @@ Stack* Stacklist::getNextMovable()
     for (; it != end(); ++it)
     {
 	Stack *s = *it;
-        if (s->getPlayer() == player && !s->getDefending() && s->canMove())
+        if (s->getPlayer() == player && !s->getDefending() && 
+	    !s->getParked() && s->canMove())
 	    return s;
     }
     
@@ -288,12 +206,13 @@ Stack* Stacklist::getNextMovable()
     for (it = begin(); *it != d_activestack; ++it)
     {
 	Stack *s = *it;
-        if (s->getPlayer() == player && !s->getDefending() && s->canMove())
+        if (s->getPlayer() == player && !s->getDefending() &&
+	    !s->getParked() && s->canMove())
 	    return s;
     }
 
     //still there? well, then we have only one stack left.
-    if (d_activestack->getDefending())
+    if (d_activestack->getDefending() || d_activestack->getParked())
 	return 0;
     else
 	return d_activestack;

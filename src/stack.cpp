@@ -34,14 +34,15 @@ using namespace std;
 #define debug(x)
 
 Stack::Stack(Player* player, Vector<int> pos)
-    : Object(pos), d_player(player), d_defending(false), d_deleting(false)
+    : Object(pos), d_player(player), d_defending(false), d_parked(false),
+    d_deleting(false)
 {
     d_path = new Path();
 }
 
 Stack::Stack(Stack& s)
     : Object(s), d_player(s.d_player), d_defending(s.d_defending),
-     d_deleting(false)
+     d_parked(s.d_parked), d_deleting(false)
 {
     clear();
     d_path = new Path();
@@ -67,6 +68,7 @@ Stack::Stack(XML_Helper* helper)
 : Object(helper), d_deleting(false)
 {
   helper->getData(d_defending, "defending");
+  helper->getData(d_parked, "parked");
 
   int i;
   helper->getData(i, "player");
@@ -104,7 +106,8 @@ bool Stack::moveOneStep()
 
   d_pos = **d_path->begin();
 
-  d_defending = false;
+  setDefending(false);
+  setParked(false);
 
   //now remove first point of the path
   d_path->flErase(d_path->begin());
@@ -361,7 +364,8 @@ Uint32 Stack::getMaxSight() const
 
 void Stack::nextTurn()
 {
-  d_defending = false;
+  setDefending(false);
+  setParked(false);
   for (iterator it = begin(); it != end(); it++)
     {
       (*it)->resetMoves();
@@ -406,6 +410,7 @@ bool Stack::save(XML_Helper* helper) const
   retval &= helper->saveData("x", d_pos.x);
   retval &= helper->saveData("y", d_pos.y);
   retval &= helper->saveData("defending", d_defending);
+  retval &= helper->saveData("parked", d_parked);
 
   //save path
   retval &= d_path->save(helper);

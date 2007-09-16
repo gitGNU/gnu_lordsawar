@@ -123,11 +123,10 @@ class GameWindow: public sigc::trackable
     Gtk::Image *shield_image[MAX_PLAYERS];
     
     // the button control panel
-    Gtk::Button *prev_button;
-    Gtk::Button *next_button;
     Gtk::Button *next_movable_button;
     Gtk::Button *center_button;
     Gtk::Button *defend_button;
+    Gtk::Button *park_button;
     Gtk::Button *search_button;
     Gtk::Button *move_button;
     Gtk::Button *move_all_button;

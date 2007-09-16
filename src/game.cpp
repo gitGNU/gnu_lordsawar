@@ -215,20 +215,6 @@ void Game::redraw()
       }
 }
 
-void Game::select_prev_stack()
-{
-  Stack* stack = Playerlist::getActiveplayer()->getStacklist()->setPrev();
-  if (stack)
-    bigmap->select_active_stack();
-}
-
-void Game::select_next_stack()
-{
-  Stack* stack = Playerlist::getActiveplayer()->getStacklist()->setNext();
-  if (stack)
-    bigmap->select_active_stack();
-}
-
 void Game::select_next_movable_stack()
 {
   Stacklist *sl = Playerlist::getActiveplayer()->getStacklist();
@@ -279,6 +265,22 @@ void Game::defend_selected_stack()
   Stack *stack = player->getActivestack();
   assert(stack);
   stack->setDefending(true);
+
+  stack = player->getStacklist()->getNextMovable();
+  player->getStacklist()->setActivestack(stack);
+
+  if (stack)
+    bigmap->select_active_stack();
+  else
+    bigmap->unselect_active_stack();
+}
+
+void Game::park_selected_stack()
+{
+  Player *player = Playerlist::getActiveplayer();
+  Stack *stack = player->getActivestack();
+  assert(stack);
+  stack->setParked(true);
 
   stack = player->getStacklist()->getNextMovable();
   player->getStacklist()->setActivestack(stack);
@@ -613,11 +615,10 @@ void Game::update_control_panel()
 {
   if (input_locked)
     {
-      can_select_prev_stack.emit(false);
-      can_select_next_stack.emit(false);
       can_select_next_movable_stack.emit(false);
       can_center_selected_stack.emit(false);
       can_defend_selected_stack.emit(false);
+      can_park_selected_stack.emit(false);
       can_search_selected_stack.emit(false);
       can_inspect_selected_stack.emit(false);
       can_plant_standard_selected_stack.emit(false);
@@ -635,26 +636,24 @@ void Game::update_control_panel()
   Player *player = Playerlist::getActiveplayer();
   Stacklist* sl = player->getStacklist();
 
-  bool all_defending = true;
+  bool all_defending_or_parked = true;
   for (Stacklist::iterator i = sl->begin(); i != sl->end(); ++i)
-    if (!(*i)->getDefending() && *i != sl->getActivestack())
+    if (!(*i)->getDefending() && !(*i)->getParked() 
+	&& *i != sl->getActivestack())
       {
-	all_defending = false;
+	all_defending_or_parked = false;
 	break;
       }
 
-  can_select_prev_stack.emit(!all_defending);
-  can_select_next_stack.emit(!all_defending);
-
   bool all_immobile = true;
   for (Stacklist::iterator i = sl->begin(); i != sl->end(); ++i)
-    if (!(*i)->getDefending() && (*i)->canMove()
+    if (!(*i)->getDefending() && !(*i)->getParked() && (*i)->canMove()
 	&& *i != sl->getActivestack())
       {
 	all_immobile = false;
 	break;
       }
-  can_select_next_movable_stack.emit(!all_defending && !all_immobile);
+  can_select_next_movable_stack.emit(!all_defending_or_parked && !all_immobile);
 
   // if any stack can move, enable the moveall button
   can_move_all_stacks.emit(sl->enoughMoves());
@@ -662,6 +661,7 @@ void Game::update_control_panel()
   Stack *stack = player->getActivestack();
 
   can_defend_selected_stack.emit(stack != 0);
+  can_park_selected_stack.emit(stack != 0);
   can_center_selected_stack.emit(stack != 0);
 
   if (stack)

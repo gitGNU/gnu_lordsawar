@@ -63,8 +63,16 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
 
         /** Sets the defending value. Defending means that this stack is ignored
           * when a player cycles through his list of stacks with Stack::setNext().
+	  * If a stack stays defending, it gets a fortify bonus.
+	  * (this isn't implemented yet) fixme
           */
         void setDefending(bool defending){d_defending = defending;}
+        /** Sets the parked value. Parked means that this stack is ignored
+          * when a player cycles through his list of stacks with Stack::setNext().
+	  * this is just like defending, but there's no bonus conferred if 
+	  * a stack remains in this state.
+          */
+        void setParked(bool parked){d_parked = parked;}
 
 
         //! Save the stack's data. See XML_Helper for more details.
@@ -135,6 +143,8 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
 
         //! Return the defending status of the stack (see setDefending)
         bool getDefending() const {return d_defending;}
+        //! Return the parked status of the stack (see setParked)
+        bool getParked() const {return d_parked;}
 
         //! Returns whether the stack is being deleted (set to true in the destructor)
         bool getDeleting() const {return d_deleting;}
@@ -171,6 +181,7 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
         Player* d_player;
         Path* d_path;
         bool d_defending;
+        bool d_parked;
         
         // true if the stack is currently being deleted. This is neccessary as
         // some things may happen in the destructor of the contained armies and

@@ -165,11 +165,10 @@ GameWindow::GameWindow()
     xml->get_widget("shield_image_7", shield_image[7]);
 
     // the control panel
-    xml->get_widget("prev_button", prev_button);
-    xml->get_widget("next_button", next_button);
     xml->get_widget("next_movable_button", next_movable_button);
     xml->get_widget("center_button", center_button);
     xml->get_widget("defend_button", defend_button);
+    xml->get_widget("park_button", park_button);
     xml->get_widget("search_button", search_button);
     xml->get_widget("move_button", move_button);
     xml->get_widget("move_all_button", move_all_button);
@@ -178,11 +177,10 @@ GameWindow::GameWindow()
     // fill in imagery
     std::vector<Glib::RefPtr<Gdk::Pixbuf> > button_images
 	= disassemble_row(File::getMiscFile("various/buttons.png"), 11);
-    prev_button->add(*manage(new Gtk::Image(button_images[0])));
-    next_button->add(*manage(new Gtk::Image(button_images[1])));
     next_movable_button->add(*manage(new Gtk::Image(button_images[2])));
     center_button->add(*manage(new Gtk::Image(button_images[5])));
     defend_button->add(*manage(new Gtk::Image(button_images[6])));
+    park_button->add(*manage(new Gtk::Image(button_images[1])));
     search_button->add(*manage(new Gtk::Image(button_images[9])));
     move_button->add(*manage(new Gtk::Image(button_images[3])));
     move_all_button->add(*manage(new Gtk::Image(button_images[4])));
@@ -250,11 +248,10 @@ GameWindow::~GameWindow()
 
 void GameWindow::show()
 {
-    prev_button->show_all();
-    next_button->show_all();
     next_movable_button->show_all();
     center_button->show_all();
     defend_button->show_all();
+    park_button->show_all();
     search_button->show_all();
     move_button->show_all();
     move_all_button->show_all();
@@ -421,12 +418,6 @@ void GameWindow::setup_signals()
     (*it).disconnect();
   connections.clear();
 
-  setup_button(prev_button,
-	       sigc::mem_fun(game.get(), &Game::select_prev_stack),
-	       game->can_select_prev_stack);
-  setup_button(next_button,
-	       sigc::mem_fun(game.get(), &Game::select_next_stack),
-	       game->can_select_next_stack);
   setup_button(next_movable_button,
 	       sigc::mem_fun(game.get(), &Game::select_next_movable_stack),
 	       game->can_select_next_movable_stack);
@@ -436,6 +427,9 @@ void GameWindow::setup_signals()
   setup_button(defend_button,
 	       sigc::mem_fun(game.get(), &Game::defend_selected_stack),
 	       game->can_defend_selected_stack);
+  setup_button(park_button,
+	       sigc::mem_fun(game.get(), &Game::park_selected_stack),
+	       game->can_park_selected_stack);
   setup_button(search_button,
 	       sigc::mem_fun(game.get(), &Game::search_selected_stack),
 	       game->can_search_selected_stack);

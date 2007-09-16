@@ -90,12 +90,6 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
           */
         void setActivestack(Stack* activestack) {d_activestack = activestack;}
 
-        //! Get the previous non-defending stack in the list and mark it as active.
-        Stack* setPrev();
-
-        //! Get the next non-defending stack in the list and mark it as active.
-        Stack* setNext();
-
         //! Get the next non-defending stack that can move.
         Stack* getNextMovable();
 

@@ -135,6 +135,7 @@
 					<d_x>68</d_x>
 					<d_y>57</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -183,6 +184,7 @@
 					<d_x>29</d_x>
 					<d_y>53</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -359,6 +361,7 @@
 					<d_x>76</d_x>
 					<d_y>91</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -389,6 +392,7 @@
 					<d_x>86</d_x>
 					<d_y>38</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -437,6 +441,7 @@
 					<d_x>73</d_x>
 					<d_y>29</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -467,6 +472,7 @@
 					<d_x>75</d_x>
 					<d_y>34</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -533,6 +539,7 @@
 					<d_x>70</d_x>
 					<d_y>24</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -755,6 +762,7 @@
 					<d_x>69</d_x>
 					<d_y>62</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -785,6 +793,7 @@
 					<d_x>80</d_x>
 					<d_y>76</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -815,6 +824,7 @@
 					<d_x>14</d_x>
 					<d_y>65</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -845,6 +855,7 @@
 					<d_x>13</d_x>
 					<d_y>57</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -875,6 +886,7 @@
 					<d_x>50</d_x>
 					<d_y>28</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -905,6 +917,7 @@
 					<d_x>62</d_x>
 					<d_y>21</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -935,6 +948,7 @@
 					<d_x>46</d_x>
 					<d_y>20</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -983,6 +997,7 @@
 					<d_x>76</d_x>
 					<d_y>53</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1031,6 +1046,7 @@
 					<d_x>84</d_x>
 					<d_y>56</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1079,6 +1095,7 @@
 					<d_x>84</d_x>
 					<d_y>52</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1109,6 +1126,7 @@
 					<d_x>90</d_x>
 					<d_y>47</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1139,6 +1157,7 @@
 					<d_x>92</d_x>
 					<d_y>41</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1169,6 +1188,7 @@
 					<d_x>82</d_x>
 					<d_y>39</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1199,6 +1219,7 @@
 					<d_x>25</d_x>
 					<d_y>39</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1265,6 +1286,7 @@
 					<d_x>36</d_x>
 					<d_y>40</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1295,6 +1317,7 @@
 					<d_x>32</d_x>
 					<d_y>46</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1379,6 +1402,7 @@
 					<d_x>4</d_x>
 					<d_y>49</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1409,6 +1433,7 @@
 					<d_x>64</d_x>
 					<d_y>46</d_y>
 					<d_defending>false</d_defending>
+					<d_parked>false</d_parked>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1938,6 +1963,7 @@
 				<d_x>50</d_x>
 				<d_y>24</d_y>
 				<d_defending>false</d_defending>
+                                <d_parked>false</d_parked>
 				<path>
 					<d_size>0</d_size>
 					<d_x></d_x>
@@ -1979,6 +2005,7 @@
 				<d_x>36</d_x>
 				<d_y>59</d_y>
 				<d_defending>false</d_defending>
+                                <d_parked>false</d_parked>
 				<path>
 					<d_size>0</d_size>
 					<d_x></d_x>
@@ -2020,6 +2047,7 @@
 				<d_x>42</d_x>
 				<d_y>82</d_y>
 				<d_defending>false</d_defending>
+                                <d_parked>false</d_parked>
 				<path>
 					<d_size>0</d_size>
 					<d_x></d_x>

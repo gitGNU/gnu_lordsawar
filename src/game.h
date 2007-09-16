@@ -58,11 +58,10 @@ class Game
 
     void redraw();
 
-    void select_prev_stack();
-    void select_next_stack();
     void select_next_movable_stack();
     void center_selected_stack();
     void defend_selected_stack();
+    void park_selected_stack();
     void search_selected_stack();
     void move_selected_stack();
     void move_all_stacks();
@@ -82,11 +81,10 @@ class Game
     sigc::signal<void, SDL_Surface *> smallmap_changed;
     sigc::signal<void, SidebarStats> sidebar_stats_changed;
     sigc::signal<void, bool>
-	can_select_prev_stack,
-	can_select_next_stack,
 	can_select_next_movable_stack,
 	can_center_selected_stack,
 	can_defend_selected_stack,
+	can_park_selected_stack,
 	can_search_selected_stack,
 	can_inspect_selected_stack,
 	can_plant_standard_selected_stack,
