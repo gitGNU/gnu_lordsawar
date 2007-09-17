@@ -1038,7 +1038,7 @@ void Game::on_player_died(Player *player)
   const Playerlist* pl = Playerlist::getInstance();
   if (pl->getNoOfPlayers() <= 1)
     game_over.emit(pl->getFirstLiving());
-  else if (player->getType() == Player::HUMAN)
+  else
     player_died.emit(player);
 }
 

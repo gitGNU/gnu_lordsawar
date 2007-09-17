@@ -205,8 +205,8 @@ bool RealPlayer::stackJoin(Stack* receiver, Stack* joining, bool grouped)
 
     joining->clear();    //clear only erases the pointers not the armies
     d_stacklist->flRemove(joining);
-    supdatingStack.emit(0);
 
+    d_stacklist->setActivestack(receiver);
     return true;
 }
 

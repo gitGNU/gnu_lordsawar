@@ -181,7 +181,6 @@ void AI_Fast::computerTurn()
         d_stacklist->setActivestack(*it);
         Stack* s = *it;
         
-
         debug(">>>> What to do with stack " <<s->getId() <<" at (" <<s->getPos().x
 	       <<"," <<s->getPos().y <<")?")
 
@@ -211,6 +210,7 @@ void AI_Fast::computerTurn()
                       <<"," <<target->getPos().y <<")")
                 s->getPath()->calculate(s, target->getPos());
                 stackMove(s);
+		continue;
             }
         }
         

@@ -166,6 +166,8 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		return;
 	      else
 		{
+		  //grab our stack again because maybe we joined another stack
+		  stack = Playerlist::getActiveplayer()->getActivestack();
 		  if (stack->canMove() == false)
 		    {
 		      Player *player = Playerlist::getActiveplayer();
