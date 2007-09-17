@@ -225,6 +225,8 @@ AC_CONFIG_FILES([
         dat/tilesets/Makefile
         dat/tilesets/default/Makefile
         dat/tilesets/default/misc/Makefile
+        dat/tilesets/dark/Makefile
+        dat/tilesets/dark/misc/Makefile
         dat/various/Makefile 
         dat/various/items/Makefile
         dat/various/borders/Makefile
