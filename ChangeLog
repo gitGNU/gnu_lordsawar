@@ -8,6 +8,9 @@
 	* added better items
 	* added new "park" button, with menu item
 	* added new "get next stack" menu item
+	* added "fortify" bonus to defended stacks
+	* now sorting the stack info by reverse fight order
+	* now retaining active stack when joining stacks
 
 2007-09-15  Ben Asselstine
 
