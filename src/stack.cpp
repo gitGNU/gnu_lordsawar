@@ -566,36 +566,25 @@ bool Stack::hasShip () const
   return false;
 }
 
+Uint32 getFightOrder(std::list<Uint32> values, Uint32 value)
+{
+  Uint32 count = 0;
+  for (std::list<Uint32>::const_iterator it = values.begin(); 
+       it != values.end(); it++)
+    {
+      count++;
+      if (count == value)
+	return (*it);
+    }
+  return 0;
+}
+
 bool Stack::armyCompareFightOrder (const Army *lhs, const Army *rhs)  
 {
-  unsigned int count = 0;
   std::list<Uint32> lhs_fight_order = lhs->getPlayer()->getFightOrder();
   std::list<Uint32> rhs_fight_order = rhs->getPlayer()->getFightOrder();
-  Uint32 lhs_rank = 0;
-  for (std::list<Uint32>::const_iterator it = lhs_fight_order.begin();
-       it != lhs_fight_order.end(); it++)
-    {
-      count++;
-      if (count == lhs->getType())
-        {
-          lhs_rank = (*it);
-          break;
-        }
-    }
-
-  count = 0;
-  Uint32 rhs_rank = 0;
-  for (std::list<Uint32>::const_iterator it = rhs_fight_order.begin();
-       it != rhs_fight_order.end(); it++)
-    {
-      count++;
-      if (count == rhs->getType())
-        {
-          rhs_rank = (*it);
-          break;
-        }
-    }
-        //compare values
+  Uint32 lhs_rank = getFightOrder (lhs_fight_order, lhs->getType());
+  Uint32 rhs_rank = getFightOrder (rhs_fight_order, rhs->getType());
   return lhs_rank < rhs_rank; 
 }
 
