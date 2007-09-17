@@ -458,7 +458,9 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	  if (t->getBuilding() == Maptile::CITY)
 	    {
 	      City *c = Citylist::getInstance()->getObjectAt(tile);
-	      if (c->getPlayer() == Playerlist::getActiveplayer())
+	      if (c->isBurnt() == true)
+		d_cursor = GraphicsCache::FEET;
+	      else if (c->getPlayer() == Playerlist::getActiveplayer())
 		d_cursor = GraphicsCache::ROOK;
 	      else if (GameScenario::s_see_opponents_production == true)
 		d_cursor = GraphicsCache::ROOK;
