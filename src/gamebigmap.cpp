@@ -568,6 +568,8 @@ void GameBigMap::after_draw()
 	      if ((*it)->isGrouped())
 		num_selected++;
 	    }
+			
+	  draw_stack (stack);
 	  if (num_selected > 1)
 	    tmp = gc->getSelectorPic(0, bigframe, stack->getPlayer());
 	  else

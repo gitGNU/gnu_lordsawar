@@ -486,6 +486,71 @@ void BigMap::drawFogTile (int x, int y)
   return;
 }
 
+void BigMap::draw_stack(Stack *s)
+{
+  GameMap *gm = GameMap::getInstance();
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  int tilesize = GameMap::getInstance()->getTileSet()->getTileSize();
+  Vector<int> p = s->getPos();
+  Player *player = s->getPlayer();
+
+  // check if the object lies in the viewed part of the map
+  // otherwise we shouldn't draw it
+  if (is_inside(buffer_view, p) && !s->getDeleting())
+    {
+      if (s->empty())
+	{
+	  std::cerr << "WARNING: empty stack found" << std::endl;
+	  return;
+	}
+
+      p = tile_to_buffer_pos(p);
+
+      // draw stack
+		
+      SDL_Rect r;
+      r.x = p.x + 6;
+      r.y = p.y + 6;
+      r.w = r.h = 54;
+
+      bool show_army = true;
+      if (s->hasShip())
+	SDL_BlitSurface(gc->getShipPic(player), 0, buffer, &r);
+      else
+	{
+	  if (s->getFortified() == true)
+	    {
+	      if (player->getStacklist()->getActivestack() != s &&
+		  player == Playerlist::getActiveplayer())
+		show_army = false;
+	      Maptile *tile = gm->getTile(s->getPos());
+	      if (tile->getBuilding() != Maptile::CITY &&
+		  tile->getBuilding() != Maptile::RUIN &&
+		  tile->getBuilding() != Maptile::TEMPLE)
+		SDL_BlitSurface(gc->getTowerPic(player), 0, buffer, &r);
+	      else
+		show_army = true;
+	    }
+		      
+	  if (show_army == true)
+	    {
+	      Army *a = *s->begin();
+	      SDL_BlitSurface(a->getPixmap(), 0, buffer, &r);
+	    }
+	}
+
+		
+      if (show_army)
+	{
+	  // draw flag
+	  r.x = p.x;
+	  r.y = p.y;
+	  r.w = r.h = tilesize;
+	  SDL_BlitSurface(gc->getFlagPic(s), 0, buffer, &r);
+	}
+    }
+}
+
 void BigMap::draw_buffer()
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
@@ -580,62 +645,11 @@ void BigMap::draw_buffer()
         Stacklist* mylist = (*pit)->getStacklist();
         for (Stacklist::iterator it= mylist->begin(); it != mylist->end(); it++)
         {
-            Vector<int> p = (*it)->getPos();
-
-            // check if the object lies in the viewed part of the map
-            // otherwise we shouldn't draw it
-            if (is_inside(buffer_view, p) && !(*it)->getDeleting())
-            {
-		if ((*it)->empty())
-		{
-		    std::cerr << "WARNING: empty stack found" << std::endl;
-		    continue;
-		}
-
-                p = tile_to_buffer_pos(p);
-
-		// are we fortified?
-
-                // draw stack
-		SDL_Rect r;
-		r.x = p.x + 6;
-		r.y = p.y + 6;
-		r.w = r.h = 54;
-
-		bool show_army = true;
-                if ((*it)->hasShip())
-                  SDL_BlitSurface(gc->getShipPic((*pit)), 0, buffer, &r);
-                else
-		  {
-		    if ((*it)->getFortified() == true)
-		      {
-			if ((*pit)->getStacklist()->getActivestack() != *it &&
-			    *pit == Playerlist::getActiveplayer())
-			  show_army = false;
-			Maptile *tile = gm->getTile((*it)->getPos());
-			if (tile->getBuilding() != Maptile::CITY &&
-			    tile->getBuilding() != Maptile::RUIN &&
-			    tile->getBuilding() != Maptile::TEMPLE)
-			  SDL_BlitSurface(gc->getTowerPic((*pit)), 0, 
-					  buffer, &r);
-			else
-			  show_army = true;
-		      }
-		      
-		    if (show_army == true)
-		      SDL_BlitSurface((*it)->getStrongestArmy()->getPixmap(), 0,
-				      buffer, &r);
-		  }
-
-		if (show_army)
-		  {
-		    // draw flag
-		    r.x = p.x;
-		    r.y = p.y;
-		    r.w = r.h = tilesize;
-		    SDL_BlitSurface(gc->getFlagPic(*it), 0, buffer, &r);
-		  }
-	    }
+	  if (*pit == Playerlist::getInstance()->getActiveplayer() &&
+	      *it == (*pit)->getStacklist()->getActivestack())
+	    ; //skip it.  the selected stack gets drawn in gamebigmap.
+	  else
+	    draw_stack (*it);
 	}
     }
 

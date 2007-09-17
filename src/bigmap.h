@@ -88,6 +88,8 @@ class BigMap: public sigc::trackable
     void blit_if_inside_buffer(const Object &obj, SDL_Surface *image);
 
     virtual void after_draw() { }
+ protected:
+    void draw_stack(Stack *s);
  private:
     void drawFogTile(int x, int y);
 };
