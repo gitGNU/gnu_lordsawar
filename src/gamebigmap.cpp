@@ -154,9 +154,8 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
 	  // split if ungrouped
 	  Playerlist::getActiveplayer()->stackSplit(stack); 
-	  printf("split\n");
 
-	    stack->getPath()->calculate(stack, p);
+	  stack->getPath()->calculate(stack, p);
 
 	  Vector<int>* dest = 0;
 	  if (!stack->getPath()->empty())
@@ -164,7 +163,6 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
 	  if (dest && dest->x == tile.x && dest->y == tile.y)
 	    {
-	      printf("now\n");
 	      Playerlist::getActiveplayer()->stackMove(stack);
 	      if (!Playerlist::getActiveplayer()->getActivestack())
 		return;
