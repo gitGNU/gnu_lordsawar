@@ -582,8 +582,7 @@ bool Stack::armyCompareFightOrder (const Army *lhs, const Army *rhs)
           break;
         }
     }
-  if (lhs->isGrouped())
-    lhs_rank+=100;
+
   count = 0;
   Uint32 rhs_rank = 0;
   for (std::list<Uint32>::const_iterator it = rhs_fight_order.begin();
@@ -596,16 +595,20 @@ bool Stack::armyCompareFightOrder (const Army *lhs, const Army *rhs)
           break;
         }
     }
-  if (rhs->isGrouped()) //a hack
-    rhs_rank+=100;
         //compare values
   return lhs_rank < rhs_rank; 
+}
+
+bool armyCompareGrouped (const Army *lhs, const Army *rhs)  
+{
+  return lhs->isGrouped() < rhs->isGrouped(); 
 }
 
 
 void Stack::sortForViewing (bool reverse)
 {
   sort(armyCompareFightOrder);
+  sort(armyCompareGrouped);
   if (reverse)
     std::reverse(begin(), end());
 }
