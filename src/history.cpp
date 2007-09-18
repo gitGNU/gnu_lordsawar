@@ -67,6 +67,8 @@ History* History::handle_load(XML_Helper* helper)
       return (new History_HeroKilledSearching(helper));
     case SCORE:
       return (new History_Score(helper));
+    case PLAYER_VANQUISHED:
+      return (new History_PlayerVanquished(helper));
     }
 
   return 0;
@@ -120,6 +122,10 @@ History* History::copy(const History* a)
     case SCORE:
       return 
 	(new History_Score(*dynamic_cast<const History_Score*>(a)));
+    case PLAYER_VANQUISHED:
+      return 
+	(new History_PlayerVanquished
+	 (*dynamic_cast<const History_PlayerVanquished*>(a)));
     }
 
   return 0;
@@ -719,3 +725,39 @@ bool History_Score::fillData(Uint32 score)
   return true;
 }
 
+//-----------------------------------------------------------------------------
+//History_PlayerVanquished
+
+History_PlayerVanquished::History_PlayerVanquished()
+:History(History::PLAYER_VANQUISHED)
+{
+}
+
+History_PlayerVanquished::History_PlayerVanquished(XML_Helper* helper)
+:History(History::PLAYER_VANQUISHED)
+{
+}
+
+History_PlayerVanquished::~History_PlayerVanquished()
+{
+}
+
+std::string History_PlayerVanquished::dump() const
+{
+  std::stringstream s;
+
+  s <<"player has been vanquished!\n";
+
+  return s.str();
+}
+
+bool History_PlayerVanquished::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("history");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->closeTag();
+
+  return retval;
+}

@@ -55,11 +55,11 @@ class History
 		HERO_KILLED_SEARCHING = 11,
 		HERO_CITY_WON = 12,
                 SCORE = 13,
+		PLAYER_VANQUISHED = 14,
 		//DIPLOMATIC_PEACE (player)
 		//DIPLOMATIC_WAR (player)
 		//HERO_GETS_REWARD (reward)
 		//DIPLOMATIC_TREACHERY (player)
-		//PLAYER_VANQUISHED
         };
                 
         
@@ -346,6 +346,20 @@ class History_Score: public History
     
     private:
         int d_score;
+};
+
+//-----------------------------------------------------------------------------
+
+class History_PlayerVanquished: public History
+{
+    public:
+        History_PlayerVanquished();
+        History_PlayerVanquished(XML_Helper* helper);
+        ~History_PlayerVanquished();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
 };
 
 

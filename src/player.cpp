@@ -361,6 +361,11 @@ void Player::kill()
         // ignore it
         return;
     
+                        
+    History_PlayerVanquished* item;
+    item = new History_PlayerVanquished();
+    d_history.push_back(item);
+
     d_dead = true;
     d_stacklist->flClear();
 

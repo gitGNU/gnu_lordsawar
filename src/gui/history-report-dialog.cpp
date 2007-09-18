@@ -128,11 +128,19 @@ void HistoryReportDialog::generatePastEventlists()
   std::list<History*> *hist[MAX_PLAYERS];
   Playerlist::iterator pit = Playerlist::getInstance()->begin();
   for (; pit != Playerlist::getInstance()->end(); ++pit)
-    hist[(*pit)->getId()] = (*pit)->getHistorylist();
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      hist[(*pit)->getId()] = (*pit)->getHistorylist();
+    }
   std::list<History*>::iterator hit[MAX_PLAYERS];
   pit = Playerlist::getInstance()->begin();
   for (; pit != Playerlist::getInstance()->end(); ++pit)
-    hit[(*pit)->getId()] = hist[(*pit)->getId()]->begin();
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      hit[(*pit)->getId()] = hist[(*pit)->getId()]->begin();
+    }
 
   unsigned int count = 0;
   while (1)
@@ -159,7 +167,7 @@ void HistoryReportDialog::generatePastEventlists()
 		case History::FOUND_SAGE: 
 		case History::HERO_EMERGES:
 		case History::HERO_QUEST_STARTED:
-	       	case History::HERO_QUEST_COMPLETED:
+		case History::HERO_QUEST_COMPLETED:
 		case History::HERO_KILLED_IN_CITY:
 		case History::HERO_KILLED_IN_BATTLE:
 		case History::HERO_KILLED_SEARCHING:
@@ -196,11 +204,19 @@ void HistoryReportDialog::generatePastCitylists()
   std::list<History*> *hist[MAX_PLAYERS];
   Playerlist::iterator pit = Playerlist::getInstance()->begin();
   for (; pit != Playerlist::getInstance()->end(); ++pit)
-    hist[(*pit)->getId()] = (*pit)->getHistorylist();
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      hist[(*pit)->getId()] = (*pit)->getHistorylist();
+    }
   std::list<History*>::iterator hit[MAX_PLAYERS];
   pit = Playerlist::getInstance()->begin();
   for (; pit != Playerlist::getInstance()->end(); ++pit)
-    hit[(*pit)->getId()] = hist[(*pit)->getId()]->begin();
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      hit[(*pit)->getId()] = hist[(*pit)->getId()]->begin();
+    }
 
   //start off with an initial city list where all cities are neutral owned
   ObjectList<City> *clist = new ObjectList<City>();
@@ -228,7 +244,8 @@ void HistoryReportDialog::generatePastCitylists()
 	    continue;
 	  for (; hit[id] != hist[id]->end(); hit[id]++)
 	    {
-	      if ((*hit[id])->getType() == History::START_TURN)
+	      if ((*hit[id])->getType() == History::START_TURN ||
+		  (*hit[id])->getType() == History::PLAYER_VANQUISHED)
 		{
 		  hit[id]++;
 		  break;

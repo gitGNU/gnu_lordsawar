@@ -1420,7 +1420,12 @@ void RealPlayer::resign()
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
       if ((*it).getPlayer() == this)
-        (*it).setBurnt(true);
+	{
+	  (*it).setBurnt(true);
+	  History_CityRazed* history = new History_CityRazed();
+	  history->fillData(&(*it));
+	  d_history.push_back(history);
+	}
     }
 
   Action_Resign* item = new Action_Resign();
