@@ -3,6 +3,7 @@
 	* fixed crashing bug wrt vectoring to lower right corner of a city
 	* fixed faulty "unit advance" action that was causing some saved
 	  games that couldn't be loaded
+	* fixed lines having the wrong colour in some history reports
 
 2007-09-16  Ben Asselstine
 
