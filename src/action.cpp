@@ -1156,6 +1156,7 @@ bool Action_Level::save(XML_Helper* helper) const
   bool retval = true;
 
   retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("army", d_army);
   retval &= helper->saveData("stat", d_stat);
   retval &= helper->closeTag();
