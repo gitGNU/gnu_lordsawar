@@ -128,7 +128,7 @@ void VectorMap::draw_lines (std::list<City*> citylist)
       if ((*it)->isFogged() == true)
         continue;
       start = (*it)->getPos();
-      City *c = cl->getObjectAt((*it)->getVectoring());
+      City *c = cl->getNearestCity((*it)->getVectoring(), 2);
       if (c)
         end = c->getPos();
       else
@@ -178,10 +178,10 @@ void VectorMap::after_draw()
               // first pass, identify every city that's a source or dest
               if ((*it).getVectoring() != Vector<int>(-1, -1))
                 {
-                  City *c = cl->getObjectAt((*it).getVectoring());
+                  City *c = cl->getNearestCity((*it).getVectoring(), 2);
                   if (c)
                     dests.push_back(c);
-                  srcs.push_back(cl->getObjectAt((*it).getPos()));
+                  srcs.push_back(&(*it));
                 }
               //paint them all as away first, and then overwrite them
               //later in the second pass.
@@ -197,7 +197,7 @@ void VectorMap::after_draw()
                 }
               //is this the city i'm vectoring to?
               else if (city->getVectoring() != Vector<int>(-1, -1) &&
-                       cl->getObjectAt(city->getVectoring())->getId() == 
+                       cl->getNearestCity(city->getVectoring(), 2)->getId() == 
                          (*it).getId() && show_vectoring != SHOW_NO_VECTORING)
                 {
                   // then it's a "destination" city.
@@ -205,7 +205,7 @@ void VectorMap::after_draw()
                 }
               //is this a city that is vectoring to me?
               else if ((*it).getVectoring() != Vector<int>(-1, -1) &&
-                       cl->getObjectAt((*it).getVectoring())->getId() ==
+                       cl->getNearestCity((*it).getVectoring(), 2)->getId() ==
                        city->getId() && show_vectoring != SHOW_NO_VECTORING)
                 type = 3;
               //otherwise it's just another city, "away" from me
@@ -251,7 +251,7 @@ void VectorMap::after_draw()
 
                 //is this a city that is vectoring to me?
               if ((*it).getVectoring() != Vector<int>(-1, -1) &&
-                       cl->getObjectAt((*it).getVectoring())->getId() ==
+                       cl->getNearestCity((*it).getVectoring(), 2)->getId() ==
                        city->getId())
                 {
                   start = (*it).getPos();
