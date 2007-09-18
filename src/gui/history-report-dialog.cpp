@@ -97,7 +97,10 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
       colour.set_red(sdl.r * 255); 
       colour.set_green(sdl.g * 255); 
       colour.set_blue(sdl.b * 255);
-      d_colours.push_back(colour);
+      if (*pit == d_player)
+	d_colours.push_front(colour);
+      else
+	d_colours.push_back(colour);
     }
 
   generatePastCityCounts();
