@@ -244,8 +244,7 @@ void HistoryReportDialog::generatePastCitylists()
 	    continue;
 	  for (; hit[id] != hist[id]->end(); hit[id]++)
 	    {
-	      if ((*hit[id])->getType() == History::START_TURN ||
-		  (*hit[id])->getType() == History::PLAYER_VANQUISHED)
+	      if ((*hit[id])->getType() == History::START_TURN)
 		{
 		  hit[id]++;
 		  break;
