@@ -1,6 +1,8 @@
 2007-09-18  Ben Asselstine
 
 	* fixed crashing bug wrt vectoring to lower right corner of a city
+	* fixed faulty "unit advance" action that was causing some saved
+	  games that couldn't be loaded
 
 2007-09-16  Ben Asselstine
 
