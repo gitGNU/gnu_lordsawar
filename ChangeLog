@@ -1,3 +1,7 @@
+2007-09-21  Ben Asselstine
+	
+	* magnifying small and tiny maps for city/vectoring/overview purposes
+
 2007-09-18  Ben Asselstine
 
 	* fixed crashing bug wrt vectoring to lower right corner of a city
