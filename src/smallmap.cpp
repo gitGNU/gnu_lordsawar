@@ -92,9 +92,9 @@ void SmallMap::draw_selection()
     // draw the selection rectangle that shows the viewed part of the map
     Vector<int> pos = mapToSurface(view.pos);
 
-    // subtract 1 to account for the border
-    int w = int(view.w * pixels_per_tile) - 1;
-    int h = int(view.h * pixels_per_tile) - 1;
+    // subtract 2 to account for the border on both sides
+    int w = int(view.w * pixels_per_tile) - 2;
+    int h = int(view.h * pixels_per_tile) - 2;
 
     assert(pos.x >= 0 && pos.x + w < surface->w &&
 	   pos.y >= 0 && pos.y + h < surface->h);
