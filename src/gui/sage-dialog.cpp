@@ -66,7 +66,7 @@ void SageDialog::set_parent_window(Gtk::Window &parent)
 
 void SageDialog::run()
 {
-    ruinmap->resize(GameMap::get_dim() * 2);
+    ruinmap->resize();
     ruinmap->draw();
 
     Sound::getInstance()->playMusic("hero", 1);

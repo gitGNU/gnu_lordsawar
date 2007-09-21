@@ -88,7 +88,7 @@ void RuinReportDialog::set_parent_window(Gtk::Window &parent)
 
 void RuinReportDialog::run()
 {
-  ruinmap->resize(GameMap::get_dim() * 2);
+  ruinmap->resize();
   ruinmap->draw();
 
   Sound::getInstance()->playMusic("hero", 1);

@@ -92,7 +92,7 @@ void QuestReportDialog::set_parent_window(Gtk::Window &parent)
 
 void QuestReportDialog::run()
 {
-    questmap->resize(GameMap::get_dim() * 2);
+    questmap->resize();
     questmap->draw();
 
     dialog->show_all();

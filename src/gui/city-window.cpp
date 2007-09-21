@@ -129,7 +129,7 @@ void CityWindow::set_parent_window(Gtk::Window &parent)
 
 void CityWindow::run()
 {
-    prodmap->resize(GameMap::get_dim() * 2);
+    prodmap->resize();
     prodmap->draw();
     dialog->show();
     dialog->run();

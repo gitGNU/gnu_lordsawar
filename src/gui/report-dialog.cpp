@@ -123,11 +123,11 @@ void ReportDialog::set_parent_window(Gtk::Window &parent)
 
 void ReportDialog::run()
 {
-  citymap->resize(GameMap::get_dim() * 2);
+  citymap->resize();
   citymap->draw();
-  vectormap->resize(GameMap::get_dim() * 2);
+  vectormap->resize();
   vectormap->draw();
-  armymap->resize(GameMap::get_dim() * 2);
+  armymap->resize();
   armymap->draw();
 
   dialog->show_all();

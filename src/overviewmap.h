@@ -38,6 +38,9 @@ class OverviewMap
     // max_dimensions space
     void resize(Vector<int> max_dimensions);
 
+    // picks the best dimensions to resize to
+    void resize();
+
     // draw the nonstatic stuff, won't redraw the terrain
     void draw();
 

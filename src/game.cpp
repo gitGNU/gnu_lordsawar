@@ -85,10 +85,10 @@ Game::Game(GameScenario* gameScenario)
     // init the smallmap
     smallmap.reset(new SmallMap);
     // pass map changes directly through 
+    smallmap->resize();
     smallmap->map_changed.connect(
 	sigc::mem_fun(smallmap_changed,
 		      &sigc::signal<void, SDL_Surface *>::emit));
-    smallmap->resize(GameMap::get_dim() * 2);
 
     // connect the two maps
     bigmap->view_changed.connect(

@@ -303,7 +303,7 @@ void HistoryReportDialog::set_parent_window(Gtk::Window &parent)
 
 void HistoryReportDialog::run()
 {
-  historymap->resize(GameMap::get_dim() * 2);
+  historymap->resize();
   historymap->draw();
 
   dialog->show_all();

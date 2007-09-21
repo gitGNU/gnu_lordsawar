@@ -99,7 +99,7 @@ void HeroOfferDialog::set_parent_window(Gtk::Window &parent)
 
 bool HeroOfferDialog::run()
 {
-    heromap->resize(GameMap::get_dim() * 2);
+    heromap->resize();
     heromap->draw();
 
     Sound::getInstance()->playMusic("hero", 1);

@@ -94,7 +94,7 @@ void DestinationDialog::set_parent_window(Gtk::Window &parent)
 
 void DestinationDialog::run()
 {
-    vectormap->resize(GameMap::get_dim() * 2);
+    vectormap->resize();
     vectormap->draw();
     dialog->show();
     dialog->run();
