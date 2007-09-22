@@ -156,7 +156,6 @@ class GameWindow: public sigc::trackable
 
     bool on_map_mouse_button_event(GdkEventButton *e);
     bool on_map_mouse_motion_event(GdkEventMotion *e);
-    void on_window_resize (GdkEventWindowState *event);
     
     void on_load_game_activated();
     void on_save_game_activated();
