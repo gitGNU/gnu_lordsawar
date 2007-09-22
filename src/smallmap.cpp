@@ -44,6 +44,7 @@ SmallMap::SmallMap()
 
 void SmallMap::set_view(Rectangle new_view)
 {
+    printf ("setting view to pos %d,%d, size %d,%d\n", new_view.x, new_view.y, new_view.w, new_view.h);
     if (view != new_view)
     {
 	view = new_view;
@@ -117,7 +118,7 @@ void SmallMap::center_view(Vector<int> p)
 
     p = clip(Vector<int>(0, 0), p, GameMap::get_dim() - view.dim);
     
-    printf ("setting view to pos %d,%d, size %d,%d\n", p.x, p.y, view.w, view.h);
+    printf ("centering view to pos %d,%d, size %d,%d\n", p.x, p.y, view.w, view.h);
     set_view(Rectangle(p.x, p.y, view.w, view.h));
     view_changed.emit(view);
 }
