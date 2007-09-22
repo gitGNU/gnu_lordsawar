@@ -997,6 +997,7 @@ bool Game::init_turn_for_player(Player* p)
   // can also have it check for e.g. escape key pressed to interrupt
   // an AI-only game to save/quit.
 
+  center_view_on_city();
   next_player_turn.emit(p, d_gameScenario->getRound() + 1);
   if (p->getType() == Player::HUMAN)
     {
@@ -1005,8 +1006,6 @@ bool Game::init_turn_for_player(Player* p)
       Stack* stack = p->getActivestack();
       if (stack != NULL)
 	bigmap->center_view(stack->getPos());
-      else
-	center_view_on_city();
 
       update_sidebar_stats();
       update_stack_info();
@@ -1026,7 +1025,6 @@ bool Game::init_turn_for_player(Player* p)
     }
   else
     {
-      center_view_on_city();
       SDL_Delay(250);
       maybeRecruitHero(p);
       return false;
@@ -1054,6 +1052,8 @@ void Game::center_view_on_city()
 {
   const Player* p = Playerlist::getInstance()->getActiveplayer();
 
+  if (p == Playerlist::getInstance()->getNeutral())
+    return;
   // preferred city is a capital city that belongs to the player 
   for (Citylist::iterator i = Citylist::getInstance()->begin();
        i != Citylist::getInstance()->end(); i++)

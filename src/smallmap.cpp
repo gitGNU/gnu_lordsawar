@@ -44,7 +44,6 @@ SmallMap::SmallMap()
 
 void SmallMap::set_view(Rectangle new_view)
 {
-    printf ("setting view to pos %d,%d, size %d,%d\n", new_view.x, new_view.y, new_view.w, new_view.h);
     if (view != new_view)
     {
 	view = new_view;
@@ -93,11 +92,16 @@ void SmallMap::draw_selection()
     // draw the selection rectangle that shows the viewed part of the map
     Vector<int> pos = mapToSurface(view.pos);
 
-    // subtract 2 to account for the border on both sides
-    int w = int(view.w * pixels_per_tile) - 2;
-    int h = int(view.h * pixels_per_tile) - 2;
+    int w = int(view.w * pixels_per_tile);
+    int h = int(view.h * pixels_per_tile);
 
-    printf ("pos is %d,%d, size is %d,%d, max is %d,%d\n", pos.x, pos.y, w, h, surface->w, surface->h);
+    // this is a bit unfortunate.  we require this catch-all
+    // so that our selector box isn't too big for the smallmap
+    if (pos.x + w >= surface->w)
+      pos.x = surface->w - w - 1;
+    if (pos.y + h >= surface->h)
+      pos.y = surface->h - h - 1;
+
     assert(pos.x >= 0 && pos.x + w < surface->w &&
 	   pos.y >= 0 && pos.y + h < surface->h);
     
@@ -118,7 +122,6 @@ void SmallMap::center_view(Vector<int> p)
 
     p = clip(Vector<int>(0, 0), p, GameMap::get_dim() - view.dim);
     
-    printf ("centering view to pos %d,%d, size %d,%d\n", p.x, p.y, view.w, view.h);
     set_view(Rectangle(p.x, p.y, view.w, view.h));
     view_changed.emit(view);
 }
