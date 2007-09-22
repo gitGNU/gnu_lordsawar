@@ -240,6 +240,8 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_item_bonus_activated));
     xml->connect_clicked("production_report_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_production_report_activated));
+    window->signal_window_state_event ().connect
+      (sigc::bind_return (sigc::mem_fun (*this, &GameWindow::on_window_resize), false));
     d_quick_fights = false;
 }
 
@@ -2147,4 +2149,13 @@ void GameWindow::on_inspect_activated ()
 void GameWindow::on_plant_standard_activated ()
 {
   Playerlist::getActiveplayer()->heroPlantStandard(NULL);
+}
+void GameWindow::on_window_resize (GdkEventWindowState *event)
+{
+  if (event->changed_mask & GDK_WINDOW_STATE_MAXIMIZED)
+    {
+      window->present();
+      show();
+      while (g_main_context_iteration(NULL, FALSE)); //doEvents
+    }
 }

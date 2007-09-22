@@ -96,6 +96,7 @@ void SmallMap::draw_selection()
     int w = int(view.w * pixels_per_tile) - 2;
     int h = int(view.h * pixels_per_tile) - 2;
 
+    printf ("pos is %d,%d, size is %d,%d, max is %d,%d\n", pos.x, pos.y, w, h, surface->w, surface->h);
     assert(pos.x >= 0 && pos.x + w < surface->w &&
 	   pos.y >= 0 && pos.y + h < surface->h);
     
@@ -116,6 +117,7 @@ void SmallMap::center_view(Vector<int> p)
 
     p = clip(Vector<int>(0, 0), p, GameMap::get_dim() - view.dim);
     
+    printf ("setting view to pos %d,%d, size %d,%d\n", p.x, p.y, view.w, view.h);
     set_view(Rectangle(p.x, p.y, view.w, view.h));
     view_changed.emit(view);
 }
