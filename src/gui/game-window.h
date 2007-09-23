@@ -208,6 +208,7 @@ class GameWindow: public sigc::trackable
     // game callbacks
     void on_sidebar_stats_changed(SidebarStats s);
     void on_smallmap_changed(SDL_Surface *map);
+    void on_smallmap_slid(Rectangle view);
     void on_bigmap_cursor_changed(GraphicsCache::CursorType cursor);
     void on_stack_info_changed(Stack *s);
     void on_map_tip_changed(Glib::ustring tip, MapTipPosition pos);

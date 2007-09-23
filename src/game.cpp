@@ -154,7 +154,7 @@ Game::~Game()
 
 void Game::end_turn()
 {
-    bigmap->unselect_active_stack();
+    unselect_active_stack();
     clear_stack_info();
     update_control_panel();
     lock_inputs();
@@ -220,7 +220,7 @@ void Game::select_next_movable_stack()
   Stacklist *sl = Playerlist::getActiveplayer()->getStacklist();
   Stack* stack = sl->getNextMovable();
   sl->setActivestack(stack);
-  bigmap->select_active_stack();
+  select_active_stack();
 }
 
 void Game::move_selected_stack()
@@ -231,7 +231,7 @@ void Game::move_selected_stack()
   if (stack->canMove() == false)
     {
       Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
-      bigmap->unselect_active_stack();
+      unselect_active_stack();
     }
 }
 
@@ -246,7 +246,7 @@ void Game::move_all_stacks()
       if (!(s.empty()) && !(s.getPath()->empty()) && s.canMove())
 	{
 	  sl->setActivestack(&s);
-	  bigmap->select_active_stack();
+	  select_active_stack();
 	  player->stackMove(player->getActivestack());
 	  i = sl->begin();
 	}
@@ -255,7 +255,7 @@ void Game::move_all_stacks()
   if (sl->getActivestack()->canMove() == false)
     {
       Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
-      bigmap->unselect_active_stack();
+      unselect_active_stack();
     }
 }
 
@@ -271,9 +271,9 @@ void Game::defend_selected_stack()
   player->getStacklist()->setActivestack(stack);
 
   if (stack)
-    bigmap->select_active_stack();
+    select_active_stack();
   else
-    bigmap->unselect_active_stack();
+    unselect_active_stack();
 }
 
 void Game::park_selected_stack()
@@ -287,16 +287,16 @@ void Game::park_selected_stack()
   player->getStacklist()->setActivestack(stack);
 
   if (stack)
-    bigmap->select_active_stack();
+    select_active_stack();
   else
-    bigmap->unselect_active_stack();
+    unselect_active_stack();
 }
 
 void Game::center_selected_stack()
 {
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
   if (stack) 
-    bigmap->select_active_stack();
+    select_active_stack();
 }
 
 void Game::search_selected_stack()
@@ -356,7 +356,7 @@ void Game::stackUpdate(Stack* s)
     s = Playerlist::getActiveplayer()->getActivestack();
 
   if (s)
-    bigmap->center_view(s->getPos());
+    smallmap->center_view(s->getPos(), true);
 
   redraw();
 
@@ -367,7 +367,7 @@ void Game::stackUpdate(Stack* s)
 // s is currently unused, but can later be filled with reasonable data
 void Game::stackDied(Stack* s)
 {
-  bigmap->unselect_active_stack();
+  unselect_active_stack();
   redraw();
   update_control_panel();
 }
@@ -588,7 +588,7 @@ void Game::invading_city(City* city)
 	city_visited.emit(city);
     }
 
-  Playerlist::getInstance()->checkPlayers();
+  //fixme: check for end of game here
   redraw();
   update_stack_info();
   update_sidebar_stats();
@@ -1003,10 +1003,6 @@ bool Game::init_turn_for_player(Player* p)
     {
       unlock_inputs();
 
-      Stack* stack = p->getActivestack();
-      if (stack != NULL)
-	bigmap->center_view(stack->getPos());
-
       update_sidebar_stats();
       update_stack_info();
       update_control_panel();
@@ -1060,7 +1056,7 @@ void Game::center_view_on_city()
     {
       if (i->getPlayer() == p && i->isCapital())
 	{
-	  bigmap->center_view(i->getPos());
+	  smallmap->center_view(i->getPos(), true);
 	  return;
 	}
     }
@@ -1071,8 +1067,18 @@ void Game::center_view_on_city()
     {
       if (i->getPlayer() == p)
 	{
-	  bigmap->center_view(i->getPos());
+	  smallmap->center_view(i->getPos(), true);
 	  break;
 	}
     }
+}
+void Game::select_active_stack()
+{
+  Player *p = Playerlist::getInstance()->getActiveplayer();
+  smallmap->center_view(p->getActivestack()->getPos(), true);
+  bigmap->select_active_stack();
+}
+void Game::unselect_active_stack()
+{
+  bigmap->unselect_active_stack();
 }

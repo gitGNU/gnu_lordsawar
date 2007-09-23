@@ -496,6 +496,9 @@ void GameWindow::setup_signals()
     (game->smallmap_changed.connect
      (sigc::mem_fun(*this, &GameWindow::on_smallmap_changed)));
   connections.push_back
+    (game->get_smallmap().view_slid.connect
+     (sigc::mem_fun(*this, &GameWindow::on_smallmap_slid)));
+  connections.push_back
     (game->stack_info_changed.connect
      (sigc::mem_fun(*this, &GameWindow::on_stack_info_changed)));
   connections.push_back
@@ -1210,6 +1213,13 @@ void GameWindow::on_smallmap_changed(SDL_Surface *map)
 {
   //while (g_main_context_iteration(NULL, FALSE)); //doEvents
   map_image->property_pixbuf() = to_pixbuf(map);
+}
+
+void GameWindow::on_smallmap_slid(Rectangle view)
+{
+  map_image->property_pixbuf() = to_pixbuf(game->get_smallmap().get_surface());
+  map_image->show();
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
 }
 
 void GameWindow::on_stack_info_changed(Stack *s)

@@ -89,8 +89,6 @@ void GameBigMap::select_active_stack()
       cerr << _("original path of stack was blocked\n");
     }
 
-  center_view(stack->getPos());
-
   stack_selected.emit(stack);
 }
 
@@ -327,8 +325,6 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       // prevent the user from making right clicks
       if (mouse_state == NONE && length(delta) <= 2)
 	return;
-
-      // FIXME: show a drag cursor
 
       int ts = GameMap::getInstance()->getTileSet()->getTileSize();
       SDL_Surface *screen = SDL_GetVideoSurface();

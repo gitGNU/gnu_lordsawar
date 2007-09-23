@@ -61,44 +61,92 @@ void SmallMap::draw_selection()
     draw_rect(surface, pos.x+1, pos.y+1, pos.x + w-1, pos.y + h-1, raw);
 }
 
-void SmallMap::center_view(Vector<int> p)
+void SmallMap::center_view(Vector<int> p, bool slide, bool from_tile)
 {
-    p.x = int(round(p.x / pixels_per_tile));
-    p.y = int(round(p.y / pixels_per_tile));
-    
-    p -= view.dim / 2;
+  if (from_tile == false)
+    {
+      p.x = int(round(p.x / pixels_per_tile));
+      p.y = int(round(p.y / pixels_per_tile));
 
-    p = clip(Vector<int>(0, 0), p, GameMap::get_dim() - view.dim);
-    
+      p -= view.dim / 2;
+
+      p = clip(Vector<int>(0, 0), p, GameMap::get_dim() - view.dim);
+    }
+  else
+      
+    p = clip(Vector<int>(0,0), p - view.dim / 2, GameMap::get_dim() - view.dim);
+
+  if (slide)
+    slide_view(Rectangle(p.x, p.y, view.w, view.h));
+  else
     set_view(Rectangle(p.x, p.y, view.w, view.h));
-    view_changed.emit(view);
+  view_changed.emit(view);
 }
 
 void SmallMap::after_draw()
 {
-    OverviewMap::after_draw();
-    draw_cities(false);
-    draw_selection();
-    map_changed.emit(get_surface());
+  OverviewMap::after_draw();
+  draw_cities(false);
+  draw_selection();
+  map_changed.emit(get_surface());
 }
 
 void SmallMap::mouse_button_event(MouseButtonEvent e)
 {
-    if (input_locked)
-	return;
-    
-    if ((e.button == MouseButtonEvent::LEFT_BUTTON ||
-	 e.button == MouseButtonEvent::RIGHT_BUTTON)
-	&& e.state == MouseButtonEvent::PRESSED)
-	center_view(e.pos);
+  if (input_locked)
+    return;
+
+  if ((e.button == MouseButtonEvent::LEFT_BUTTON ||
+       e.button == MouseButtonEvent::RIGHT_BUTTON)
+      && e.state == MouseButtonEvent::PRESSED)
+    center_view(e.pos, true, false);
 }
 
 void SmallMap::mouse_motion_event(MouseMotionEvent e)
 {
-    if (input_locked)
-	return;
-    
-    if (e.pressed[MouseMotionEvent::LEFT_BUTTON] ||
-	e.pressed[MouseMotionEvent::RIGHT_BUTTON])
-	center_view(e.pos);
+  if (input_locked)
+    return;
+
+  if (e.pressed[MouseMotionEvent::LEFT_BUTTON] ||
+      e.pressed[MouseMotionEvent::RIGHT_BUTTON])
+    center_view(e.pos, false, false);
+}
+int slide (int x, int y)
+{
+  int skip = 2;
+  if (x < y)
+    {
+      if (x + skip < y)
+	x += skip;
+      else
+	x++;
+    }
+  else if (x > y)
+    {
+      if (x - skip > y)
+	x -= skip;
+      else
+	x--;
+    }
+  return x;
+}
+
+void SmallMap::slide_view(Rectangle new_view)
+{
+  if (view != new_view)
+    {
+      while (1)
+	{
+	  Rectangle tmp_view(view);
+	  tmp_view.x = slide(tmp_view.x, new_view.x);
+	  tmp_view.y = slide(tmp_view.y, new_view.y);
+
+	  view = tmp_view;
+	  draw();
+	  view_slid.emit(view);
+
+	  if (tmp_view.x == new_view.x && tmp_view.y == new_view.y)
+	    break;
+	}
+    }
 }

@@ -37,6 +37,7 @@ class SmallMap: public OverviewMap, public sigc::trackable
     SmallMap();
  
     void set_view(Rectangle new_view);
+    void slide_view(Rectangle new_view);
         
     void mouse_button_event(MouseButtonEvent e);
     void mouse_motion_event(MouseMotionEvent e);
@@ -46,15 +47,16 @@ class SmallMap: public OverviewMap, public sigc::trackable
     
     // emitted when the view changes because of user interactions
     sigc::signal<void, Rectangle> view_changed;
+    sigc::signal<void, Rectangle> view_slid;
 
     // emitted when the map surface has changed
     sigc::signal<void, SDL_Surface *> map_changed;
         
+    void center_view(Vector<int> p, bool slide, bool from_tile = true);
  private:
     Rectangle view;
     bool input_locked;
     
-    void center_view(Vector<int> p);
     void draw_selection();
 
     // hook from base class

@@ -158,20 +158,6 @@ void BigMap::draw(bool redraw_buffer)
     SDL_UpdateRects(screen, 1, &dest);
 }
 
-void BigMap::center_view(const Vector<int> p)
-{
-    if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
-        GameScenario::s_hidden_map == true)
-        return;
-
-    Rectangle new_view(
-	clip(Vector<int>(0,0), p - view.dim / 2, GameMap::get_dim() - view.dim),
-	view.dim);
-    
-    set_view(new_view);
-    view_changed.emit(view);
-}
-
 void BigMap::screen_size_changed()
 {
     SDL_Surface *v = SDL_GetVideoSurface();
