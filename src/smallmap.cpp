@@ -40,13 +40,10 @@ void SmallMap::set_view(Rectangle new_view)
 	view = new_view;
 	draw();
     }
-
 }
 
 void SmallMap::draw_selection()
 {
-    // FIXME: this should be translucent
-    
     // draw the selection rectangle that shows the viewed part of the map
     Vector<int> pos = mapToSurface(view.pos);
 
