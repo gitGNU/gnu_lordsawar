@@ -1211,14 +1211,12 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 
 void GameWindow::on_smallmap_changed(SDL_Surface *map)
 {
-  //while (g_main_context_iteration(NULL, FALSE)); //doEvents
   map_image->property_pixbuf() = to_pixbuf(map);
 }
 
 void GameWindow::on_smallmap_slid(Rectangle view)
 {
-  map_image->property_pixbuf() = to_pixbuf(game->get_smallmap().get_surface());
-  map_image->show();
+  on_smallmap_changed(game->get_smallmap().get_surface());
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 }
 
