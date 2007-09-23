@@ -52,7 +52,6 @@ class SmallMap: public OverviewMap, public sigc::trackable
         
  private:
     Rectangle view;
-    SDL_Color selection_color;
     bool input_locked;
     
     void center_view(Vector<int> p);

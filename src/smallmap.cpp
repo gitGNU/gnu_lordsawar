@@ -27,10 +27,6 @@
 SmallMap::SmallMap()
 {
     input_locked = false;
-    
-    selection_color.r = 255;
-    selection_color.g = 255;
-    selection_color.b = 255;
 }
 
 void SmallMap::set_view(Rectangle new_view)
@@ -60,10 +56,7 @@ void SmallMap::draw_selection()
     assert(pos.x >= 0 && pos.x + w < surface->w &&
 	   pos.y >= 0 && pos.y + h < surface->h);
     
-    Uint32 raw = SDL_MapRGB(surface->format,
-			    selection_color.r,
-			    selection_color.g,
-			    selection_color.b);
+    Uint32 raw = SDL_MapRGB(surface->format, 255, 255, 255);
     draw_rect(surface, pos.x, pos.y, pos.x + w, pos.y + h, raw);
     draw_rect(surface, pos.x+1, pos.y+1, pos.x + w-1, pos.y + h-1, raw);
 }
