@@ -53,13 +53,10 @@ class SmallMap: public OverviewMap, public sigc::trackable
  private:
     Rectangle view;
     SDL_Color selection_color;
-    bool selection_value_increasing;
-    sigc::connection selection_timeout_handler;
     bool input_locked;
     
     void center_view(Vector<int> p);
     void draw_selection();
-    bool on_selection_timeout();
 
     // hook from base class
     virtual void after_draw();

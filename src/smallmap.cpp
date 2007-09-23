@@ -24,22 +24,13 @@
 #include "timing.h"
 #include "GameMap.h"
 
-namespace 
-{
-    int selection_timeout = 1000;	// 1 second
-    int upper_selection_value = 255;
-    int lower_selection_value = 255;
-    int selection_change = 0;
-}
-
 SmallMap::SmallMap()
 {
     input_locked = false;
     
-    selection_value_increasing = true;
-    selection_color.r = lower_selection_value;
-    selection_color.g = lower_selection_value;
-    selection_color.b = lower_selection_value;
+    selection_color.r = 255;
+    selection_color.g = 255;
+    selection_color.b = 255;
 }
 
 void SmallMap::set_view(Rectangle new_view)
@@ -50,39 +41,6 @@ void SmallMap::set_view(Rectangle new_view)
 	draw();
     }
 
-    if (!selection_timeout_handler)
-	selection_timeout_handler = 
-	    Timing::instance().register_timer(
-		sigc::mem_fun(*this, &SmallMap::on_selection_timeout),
-		selection_timeout);
-}
-
-bool SmallMap::on_selection_timeout()
-{
-    // change selection color
-    if (selection_color.r >= upper_selection_value)
-	selection_value_increasing = false;
-
-    if (selection_color.r <= lower_selection_value)
-	selection_value_increasing = true;
-
-    draw_selection();
-    map_changed.emit(get_surface());
-    
-    if (selection_value_increasing)
-    {
-	selection_color.r = std::min(selection_color.r + selection_change, 255);
-	selection_color.g = std::min(selection_color.g + selection_change, 255);
-	selection_color.b = std::min(selection_color.b + selection_change, 255);
-    }
-    else
-    {
-	selection_color.r = std::max(selection_color.r - selection_change, 0);
-	selection_color.g = std::max(selection_color.g - selection_change, 0);
-	selection_color.b = std::max(selection_color.b - selection_change, 0);
-    }
-    
-    return Timing::CONTINUE;
 }
 
 void SmallMap::draw_selection()
