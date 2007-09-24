@@ -120,6 +120,21 @@ void FogMap::alterFogRadius(Vector<int> pt, int radius, FogType new_type)
     }
 }
 
+void FogMap::alterFogRectangle(Vector<int> pt, int height, int width, FogType new_type)
+{
+    int x = pt.x;
+    int y = pt.y;
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            if ((x+i) < 0 || (y+j) < 0 || (x+i) >= d_width || (y+j) >= d_height)
+                continue;
+            d_fogmap[(y+j)*d_width + (x+i)] = new_type;
+        }
+    }
+}
+
 bool FogMap::isLoneFogTile(Vector<int> pos)
 {
   bool west_open = false;

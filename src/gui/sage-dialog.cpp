@@ -30,6 +30,7 @@
 #include "../File.h"
 #include "../sound.h"
 #include "../ruin.h"
+#include "../rewardlist.h"
 
 SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
 {
@@ -44,6 +45,11 @@ SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
     xml->get_widget("dialog", d);
     dialog.reset(d);
 
+    rewards_list = Gtk::ListStore::create(rewards_columns);
+    xml->get_widget("rewardtreeview", rewards_treeview);
+    rewards_treeview->set_model(rewards_list);
+    rewards_treeview->append_column("", rewards_columns.name);
+
     xml->get_widget("map_image", map_image);
 
     ruinmap.reset(new RuinMap(ruin));
@@ -55,7 +61,27 @@ SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
 
     dialog->set_title(_("A Sage!"));
 
-    //FIXME: add gold/items/allies/maps to the listbox
+    Rewardlist::iterator iter = Rewardlist::getInstance()->begin();
+    for (;iter != Rewardlist::getInstance()->end(); iter++)
+      {
+	if ((*iter)->getType() == Reward::ITEM)
+	  continue;
+	// we don't want items here, but we do want locations
+	// of items, within hidden ruins.
+
+	addReward(*iter);
+      }
+    //this covers, the one-time rewards of items and maps
+    //but now we put in gold too
+    Reward_Gold *gold = new Reward_Gold(500 + rand() % 1000);
+    common_rewards.push_back(gold);
+    //we don't add allies here because we don't want to give
+    //allies right away.  instead, we want to point the hero to a hidden
+    //ruin where allies can be found
+    std::list<Reward*>::iterator it = common_rewards.begin();
+    for (;it != common_rewards.end(); it++)
+      addReward((*it));
+
 }
 
 void SageDialog::set_parent_window(Gtk::Window &parent)
@@ -64,7 +90,16 @@ void SageDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void SageDialog::run()
+Reward *SageDialog::grabSelectedReward()
+{
+    Glib::RefPtr<Gtk::TreeView::Selection> sel;
+    sel = rewards_treeview->get_selection();
+    Gtk::TreeModel::iterator it = sel->get_selected();
+    Gtk::TreeModel::Row row = *it;
+    return row[rewards_columns.reward];
+}
+
+Reward *SageDialog::run()
 {
     ruinmap->resize();
     ruinmap->draw();
@@ -73,10 +108,58 @@ void SageDialog::run()
     dialog->show_all();
     dialog->run();
     Sound::getInstance()->haltMusic();
+    //okay, we have a reward selected
+   //now we return it (somehow)
+  
+    Reward *reward = grabSelectedReward();
+    //is this in our one-time list anywhere?
+
+    Rewardlist *rlist = Rewardlist::getInstance();
+    Rewardlist::iterator it = 
+      std::find (rlist->begin(), rlist->end(), reward);
+    if (it != rlist->end())
+      {
+	//yes, it's something on our one-time reward list!
+	//take if off our list, so we can't award it again
+	rlist->erase(it);
+      }
+
+    // fixme: remove all common rewards that isn't the one we selected
+    // the contents of the common rewards are a memory leak
+
+    return reward;
 }
 
 void SageDialog::on_map_changed(SDL_Surface *map)
 {
-    map_image->property_pixbuf() = to_pixbuf(map);
+  map_image->property_pixbuf() = to_pixbuf(map);
 }
 
+void SageDialog::addReward(Reward *reward)
+{
+  Gtk::TreeIter i = rewards_list->append();
+  switch (reward->getType())
+    {
+    case Reward::GOLD:
+      (*i)[rewards_columns.name] = _("Gold");
+      break;
+    case Reward::ITEM:
+    case Reward::ALLIES:
+      break;
+    case Reward::MAP:
+      (*i)[rewards_columns.name] = 
+	static_cast<Reward_Map*>(reward)->getLocation()->getName();
+      break;
+    case Reward::RUIN:
+	{
+	  Ruin *r = static_cast<Reward_Ruin*>(reward)->getRuin();
+	  if (r->getReward()->getType() == Reward::ITEM)
+	    (*i)[rewards_columns.name] = 
+	      static_cast<Reward_Item*>(r->getReward())->getItem()->getName();
+	  else if (r->getReward()->getType() == Reward::ALLIES)
+	    (*i)[rewards_columns.name] = _("Allies");
+	}
+      break;
+    }
+  (*i)[rewards_columns.reward] = reward;
+}

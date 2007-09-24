@@ -21,6 +21,7 @@
 #include "stack.h"
 
 class Stack;
+class Reward;
 
 /** A ruin is a simple object on the map which contains an id, a flag whether it
   * has already been searched and optionally an occupant (called "keeper").
@@ -92,8 +93,16 @@ class Ruin : public Location, public sigc::trackable
         //! Callback for loading the ruin data
         bool load(std::string tag, XML_Helper* helper);
 
+	//! Returns the reward for this ruin
+	Reward *getReward() const {return d_reward;}
+
+	//! Sets the reward for this ruin
+	void setReward(Reward *r) {d_reward = r;}
+
         //! Saves the ruin data
         bool save(XML_Helper* helper) const;
+
+	void populateWithRandomReward();
 
     private:
         // DATA
@@ -103,6 +112,7 @@ class Ruin : public Location, public sigc::trackable
 	bool d_hidden;      // is this a "hidden" ruin that can only be seen
 	Player *d_owner;    // by an "owner"?
 	bool d_sage;        // does this ruin have a sage?
+	Reward *d_reward;   // the ruin contains this reward
 };
 
 #endif // RUIN_H

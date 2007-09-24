@@ -101,11 +101,6 @@ class GameScenario: public sigc::trackable
           */
         bool load(std::string tag, XML_Helper* helper);
 
-        //! Set up rewards to be given out for quests, ruins and sages
-        bool setupRewards();
-        bool setupItemRewards();
-        bool setupRuinRewards();
-
         // DATA
         unsigned int d_round;
         std::string d_name;

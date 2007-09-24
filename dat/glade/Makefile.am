@@ -22,6 +22,7 @@ game-window.glade \
 hero-dialog.glade \
 hero-offer-dialog.glade \
 sage-dialog.glade \
+ruin-rewarded-dialog.glade \
 ruin-report-dialog.glade \
 history-report-dialog.glade \
 report-dialog.glade \

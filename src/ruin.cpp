@@ -15,6 +15,7 @@
 #include "ruin.h"
 #include "playerlist.h"
 #include "GameMap.h"
+#include "rewardlist.h"
 #include <stdlib.h>
 
 Ruin::Ruin(Vector<int> pos, std::string name, int type, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
@@ -22,6 +23,7 @@ Ruin::Ruin(Vector<int> pos, std::string name, int type, Stack* occupant, bool se
     d_occupant(occupant), d_hidden(hidden), d_owner(owner), d_sage(sage)
 {
     d_owner = NULL;
+    d_reward = NULL;
     //mark the location as being occupied by a ruin on the map
     GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::RUIN);
 }
@@ -29,12 +31,12 @@ Ruin::Ruin(Vector<int> pos, std::string name, int type, Stack* occupant, bool se
 Ruin::Ruin(const Ruin& ruin)
     :Location(ruin), d_searched(ruin.d_searched), d_type(ruin.d_type),
     d_occupant(ruin.d_occupant), d_hidden(ruin.d_hidden), 
-    d_owner(ruin.d_owner), d_sage(ruin.d_sage)
+    d_owner(ruin.d_owner), d_sage(ruin.d_sage), d_reward(ruin.d_reward)
 {
 }
 
 Ruin::Ruin(XML_Helper* helper)
-    :Location(helper), d_type(0), d_occupant(0), d_hidden(0), d_owner(0), d_sage(0)
+    :Location(helper), d_type(0), d_occupant(0), d_hidden(0), d_owner(0), d_sage(0), d_reward(0)
 {
     Uint32 ui;
     helper->getData(d_type, "type");
@@ -64,37 +66,93 @@ Ruin::~Ruin()
 
 bool Ruin::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag("ruin");
-    retval &= helper->saveData("id", d_id);
-    retval &= helper->saveData("name", d_name);
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("x", d_pos.x);
-    retval &= helper->saveData("y", d_pos.y);
-    retval &= helper->saveData("searched", d_searched);
-    retval &= helper->saveData("sage", d_sage);
-    retval &= helper->saveData("hidden", d_hidden);
-    if (d_owner != NULL)
-      retval &= helper->saveData("owner", d_owner->getId());
-    else
-      retval &= helper->saveData("owner", MAX_PLAYERS);
-    if (d_occupant)
-        retval &= d_occupant->save(helper);
-    retval &= helper->closeTag();
+  retval &= helper->openTag("ruin");
+  retval &= helper->saveData("id", d_id);
+  retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("x", d_pos.x);
+  retval &= helper->saveData("y", d_pos.y);
+  retval &= helper->saveData("searched", d_searched);
+  retval &= helper->saveData("sage", d_sage);
+  retval &= helper->saveData("hidden", d_hidden);
+  if (d_owner != NULL)
+    retval &= helper->saveData("owner", d_owner->getId());
+  else
+    retval &= helper->saveData("owner", MAX_PLAYERS);
+  if (d_occupant)
+    retval &= d_occupant->save(helper);
+  if (d_sage == false && d_reward)
+    {
+      if (d_reward->getType() == Reward::GOLD)
+	static_cast<Reward_Gold*>(d_reward)->save(helper);
+      else if (d_reward->getType() == Reward::ALLIES)
+	static_cast<Reward_Allies*>(d_reward)->save(helper);
+      else if (d_reward->getType() == Reward::ITEM)
+	static_cast<Reward_Item*>(d_reward)->save(helper);
+      else if (d_reward->getType() == Reward::RUIN)
+	static_cast<Reward_Ruin*>(d_reward)->save(helper);
+      else if (d_reward->getType() == Reward::MAP)
+	static_cast<Reward_Map*>(d_reward)->save(helper);
+    }
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
 
 bool Ruin::load(std::string tag, XML_Helper* helper)
 {
-    if (tag != "stack")
-        return false;
-    
-    Stack* s = new Stack(helper);
-    d_occupant = s;
+  if (tag == "reward")
+    {
+      Reward *reward = new Reward(helper);
+      if (reward->getType() == Reward::GOLD)
+	d_reward = new Reward_Gold(helper);
+      else if (reward->getType() == Reward::ALLIES)
+	d_reward = new Reward_Allies(helper);
+      else if (reward->getType() == Reward::ITEM)
+	d_reward = new Reward_Item(helper);
+      else if (reward->getType() == Reward::RUIN)
+	d_reward = new Reward_Ruin(helper);
+      else if (reward->getType() == Reward::MAP)
+	d_reward = new Reward_Map(helper);
 
-    return true;
+      delete reward;
+
+      return true;
+    }
+
+  if (tag == "stack")
+    {
+      Stack* s = new Stack(helper);
+      d_occupant = s;
+      return true;
+    }
+
+  return false;
 }
 
+void Ruin::populateWithRandomReward()
+{
+  int num;
+  if (getType() == Ruin::STRONGHOLD)
+    num = 1 + (rand() % 2);
+  else
+    num = rand() % 3;
+  if (num == 0)
+    setReward(new Reward_Gold(300 + (rand() % 1000)));
+  else if (num == 1)
+    {
+      const Army *a = Reward_Allies::randomArmyAlly();
+      setReward(new Reward_Allies(a, (rand() % 8) + 1));
+    }
+  else if (num == 2)
+    {
+      Reward *reward = Rewardlist::getInstance()->popRandomItemReward();
+      if (reward)
+	setReward(reward);
+      else //no items left to give!
+	setReward(new Reward_Gold(300 + (rand() % 1000)));
+    }
+}
 // End of file

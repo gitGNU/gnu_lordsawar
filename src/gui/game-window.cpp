@@ -52,6 +52,7 @@
 #include "army-gains-level-dialog.h"
 #include "hero-dialog.h"
 #include "sage-dialog.h"
+#include "ruin-rewarded-dialog.h"
 #include "hero-offer-dialog.h"
 #include "quest-report-dialog.h"
 #include "quest-assigned-dialog.h"
@@ -98,6 +99,7 @@
 #include "../reward.h"
 #include "../Configuration.h"
 #include "../GameMap.h"
+#include "../Item.h"
 
 
 GameWindow::GameWindow()
@@ -510,6 +512,9 @@ void GameWindow::setup_signals()
   connections.push_back
     (game->ruin_searched.connect
      (sigc::mem_fun(*this, &GameWindow::on_ruin_searched)));
+  connections.push_back
+    (game->sage_visited.connect
+     (sigc::mem_fun(*this, &GameWindow::on_sage_visited)));
   connections.push_back
     (game->fight_started.connect
      (sigc::mem_fun(*this, &GameWindow::on_fight_started)));
@@ -1376,6 +1381,14 @@ void GameWindow::on_sage_visited (Ruin *ruin, Stack *stack)
   SageDialog d(stack->getFirstHero()->getPlayer(), 
 	       static_cast<Hero*>(stack->getFirstHero()), ruin);
   d.set_parent_window(*window.get());
+  Reward *reward = d.run();
+  ruin->setReward(reward);
+}
+
+void GameWindow::on_ruin_rewarded (Reward_Ruin *reward)
+{
+  RuinRewardedDialog d(reward);
+  d.set_parent_window(*window.get());
   d.run();
 }
 
@@ -1383,7 +1396,10 @@ void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
 {
   std::auto_ptr<Gtk::Dialog> dialog;
   if (ruin->hasSage())
-    return on_sage_visited (ruin, stack);
+    {
+      if (reward->getType() == Reward::RUIN)
+	return on_ruin_rewarded(static_cast<Reward_Ruin*>(reward));
+    }
 
   Glib::RefPtr<Gnome::Glade::Xml> xml
     = Gnome::Glade::Xml::create(get_glade_path() + "/ruin-searched-dialog.glade");
@@ -1405,15 +1421,27 @@ void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
 
   Glib::ustring s = label->get_text();
   s += "\n\n";
+  s += String::ucompose("%1 finds ", stack->getFirstHero()->getName());
   if (reward->getType() == Reward::GOLD)
-    s += String::ucompose("%1 finds %2 gp.", stack->getFirstHero()->getName(), 
-			  dynamic_cast<Reward_Gold*>(reward)->getGold());
+    {
+      Reward_Gold *gold = dynamic_cast<Reward_Gold*>(reward);
+      s += String::ucompose("%1 gold pieces.", gold->getGold());
+    }
   else if (reward->getType() == Reward::ALLIES)
-    s += String::ucompose("%1 gets %2 allies.", stack->getFirstHero()->getName(), 
-			  dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies());
+    {
+      Reward_Allies *allies = dynamic_cast<Reward_Allies*>(reward);
+      s += String::ucompose("%1 allies.", allies->getNoOfAllies());
+    }
   else if (reward->getType() == Reward::ITEM)
-    s += String::ucompose("%1 gets the %2.", stack->getFirstHero()->getName(), 
-			  dynamic_cast<Reward_Item*>(reward)->getItem()->getName());
+    {
+      Reward_Item *item = dynamic_cast<Reward_Item*>(reward);
+      s += String::ucompose("the %1.", item->getItem()->getName());
+    }
+  else if (reward->getType() == Reward::MAP)
+    {
+      Reward_Map *map = dynamic_cast<Reward_Map*>(reward);
+      s += String::ucompose("the %2.", map->getLocation()->getName());
+    }
 
   label->set_text(s);
 

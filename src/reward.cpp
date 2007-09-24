@@ -21,6 +21,7 @@
 #include "army.h"
 #include "armysetlist.h"
 #include "playerlist.h"
+#include "ruinlist.h"
 #include "GameMap.h"
 #include "ruin.h"
 using namespace std;
@@ -65,6 +66,8 @@ Reward* Reward::handle_load(XML_Helper* helper)
             return (new Reward_Item(helper));
         case Reward::RUIN:
             return (new Reward_Ruin(helper));
+        case Reward::MAP:
+            return (new Reward_Map(helper));
     }
 
     return 0;
@@ -141,6 +144,8 @@ const Army* Reward_Allies::randomArmyAlly()
   std::vector<const Army*> allytypes;
   Armysetlist *al = Armysetlist::getInstance();
   Player *p = Playerlist::getInstance()->getActiveplayer();
+  if (!p)
+    p = Playerlist::getInstance()->getNeutral();
   for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
     {
       const Army *a = al->getArmy (p->getArmyset(), j);
@@ -190,9 +195,12 @@ Reward_Item::Reward_Item(Item *item)
 bool Reward_Item::loadItem(std::string tag, XML_Helper* helper)
 {
   if (tag == "item")
-    d_item = new Item(helper);
+    {
+      d_item = new Item(helper);
+      return true;
+    }
     
-  return true;
+  return false;
 }
 
 Reward_Item::Reward_Item(XML_Helper* helper)
@@ -224,7 +232,11 @@ Reward_Ruin::Reward_Ruin(Ruin *ruin)
 Reward_Ruin::Reward_Ruin(XML_Helper* helper)
     :Reward(helper)
 {
-  d_ruin->load("ruin", helper);
+  Uint32 x;
+  Uint32 y;
+  helper->getData(x, "x");
+  helper->getData(y, "y");
+  d_ruin = Ruinlist::getInstance()->getObjectAt(x, y);
 }
 
 bool Reward_Ruin::save(XML_Helper* helper) const
@@ -232,12 +244,61 @@ bool Reward_Ruin::save(XML_Helper* helper) const
   bool retval = true;
   retval &= helper->openTag("reward");
   retval &= Reward::save(helper);
-  retval &= d_ruin->save(helper);
+  retval &= helper->saveData("x", d_ruin->getPos().x);
+  retval &= helper->saveData("y", d_ruin->getPos().y);
   retval &= helper->closeTag();
   return retval;
 }
 
 Reward_Ruin::~Reward_Ruin()
+{
+}
+
+Reward_Map::Reward_Map(Location *loc, Uint32 height, Uint32 width)
+    :Reward(Reward::MAP), d_loc(loc), d_height(height), d_width(width)
+{
+}
+
+bool Reward_Map::loadLocation(std::string tag, XML_Helper* helper)
+{
+  if (tag == "location")
+    {
+      d_loc = new Location(helper);
+      return true;
+    }
+    
+  return false;
+}
+
+Reward_Map::Reward_Map(XML_Helper* helper)
+    :Reward(helper)
+{
+  helper->registerTag("location", sigc::mem_fun(this, 
+						&Reward_Map::loadLocation));
+  helper->getData(d_height, "height");
+  helper->getData(d_width, "width");
+}
+
+bool Reward_Map::save(XML_Helper* helper) const
+{
+  bool retval = true;
+  retval &= helper->openTag("reward");
+  retval &= Reward::save(helper);
+  retval &= helper->openTag("location");
+  retval &= helper->saveData("id", d_loc->getId());
+  retval &= helper->saveData("name", d_loc->getName());
+  Vector<int> pos = d_loc->getPos();
+  retval &= helper->saveData("x", pos.x);
+  retval &= helper->saveData("y", pos.y);
+  retval &= helper->closeTag();
+  retval &= helper->saveData("height", d_height);
+  retval &= helper->saveData("width", d_width);
+  retval &= helper->closeTag();
+  return retval;
+}
+
+
+Reward_Map::~Reward_Map()
 {
 }
 

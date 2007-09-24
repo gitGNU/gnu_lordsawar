@@ -126,6 +126,10 @@ bool Rewardlist::save(XML_Helper* helper) const
         static_cast<Reward_Allies*>(*it)->save(helper);
       else if ((*it)->getType() == Reward::ITEM)
         static_cast<Reward_Item*>(*it)->save(helper);
+      else if ((*it)->getType() == Reward::RUIN)
+        static_cast<Reward_Ruin*>(*it)->save(helper);
+      else if ((*it)->getType() == Reward::MAP)
+        static_cast<Reward_Map*>(*it)->save(helper);
     }
 
   retval &= helper->closeTag();

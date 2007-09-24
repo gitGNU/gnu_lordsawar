@@ -31,7 +31,7 @@ class Reward
 {
     public:
 
-        enum Type {GOLD = 1, ALLIES= 2, ITEM = 3, RUIN = 4};
+        enum Type {GOLD = 1, ALLIES= 2, ITEM = 3, RUIN = 4, MAP = 5};
 
         //! Standard constructor
         Reward(Type type, std::string name = "");
@@ -135,6 +135,25 @@ class Reward_Ruin: public Reward
 
     private:
         Ruin *d_ruin;
+};
+
+class Reward_Map: public Reward
+{
+    public:
+        Reward_Map(Location *l, Uint32 height, Uint32 width);
+	Reward_Map(XML_Helper *helper);
+        ~Reward_Map();
+
+        bool save(XML_Helper* helper) const;
+	Location* getLocation() const {return d_loc;}
+	Uint32 getHeight() const {return d_height;}
+	Uint32 getWidth() const {return d_width;}
+
+    private:
+        bool loadLocation(std::string tag, XML_Helper* helper);
+        Location *d_loc;
+	Uint32 d_height;
+	Uint32 d_width;
 };
 
 #endif

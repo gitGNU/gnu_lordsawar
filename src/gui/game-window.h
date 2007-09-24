@@ -215,6 +215,7 @@ class GameWindow: public sigc::trackable
     void on_stack_tip_changed(Stack *s, MapTipPosition pos);
     void on_ruin_searched(Ruin *ruin, Stack *s, Reward *reward);
     void on_sage_visited(Ruin *ruin, Stack *s);
+    void on_ruin_rewarded(Reward_Ruin *reward);
     void on_fight_started(Fight &fight);
     void on_ruinfight_started(Stack *attackers, Stack *defenders);
     void on_ruinfight_finished(Fight::Result result);

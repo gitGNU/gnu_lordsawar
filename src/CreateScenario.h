@@ -189,6 +189,12 @@ class CreateScenario
           */
         bool loadNames(std::vector<std::string>& list, std::ifstream& namefile);
 
+        //! Set up rewards to be given out for quests, ruins and sages
+        bool setupRewards();
+        bool setupItemRewards();
+        bool setupRuinRewards();
+	bool setupMapRewards();
+
 
         //data
         //for map creation

@@ -944,453 +944,411 @@ Reward* RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
         d_history.push_back(history);
       }
      else
-      {
-       // The fight has been done or left out, now comes the reward. Up to now,
-       int num = rand() % 3;
-        if (num == 0)
-          {
-            int gold = rand() % 1000;
-            Reward_Gold *reward = new Reward_Gold(gold);
-            giveReward(NULL, reward);
-	    retReward = reward;
-          }
-        else if (num == 1)
-          {
-            int num = (rand() % 8) + 1;
-            const Army *a = Reward_Allies::randomArmyAlly();
-            Reward_Allies *reward = new Reward_Allies(a, num);
-            giveReward(getActivestack(), reward);
-	    retReward = reward;
-          }
-        else if (num == 2)
-          {
-            Reward *itemReward = Rewardlist::getInstance()->popRandomItemReward();
-            if (itemReward)
-              {
-                giveReward(getActivestack(), itemReward);
-	        retReward = itemReward;
-              }
-            else //no items left to give!
-              {
-                int gold = rand() % 1000;
-                Reward_Gold *reward = new Reward_Gold(gold);
-                giveReward(NULL, reward);
-	        retReward = reward;
-              }
-          }
-/*
- * we can't give a ruin for searching a ruin
- * mostly because there's no map to show where the new ruin is
- * but also because if we just searched a ruin, we shouldn't be asked
- * to search another ruin.
-        else if (num == 3)
-          {
-            Reward *ruinReward = Rewardlist::getInstance()->popRandomRuinReward();
-            if (ruinReward)
-              {
-                giveReward(getActivestack(), ruinReward);
-	        retReward = ruinReward;
-              }
-            else //no ruins left to give!
-              {
-                int gold = rand() % 1000;
-                Reward_Gold *reward = new Reward_Gold(gold);
-                giveReward(NULL, reward);
-	        retReward = reward;
-              }
-          }
-*/
-      }
+       {
+	 if (r->getReward() == NULL)
+	   r->populateWithRandomReward();
 
-    ssearchingRuin.emit(r, s, retReward); //nobody's listening for this
+	 giveReward(getActivestack(), r->getReward());
+       }
 
-    r->setSearched(true);
+     ssearchingRuin.emit(r, s, retReward);
 
-    // actualize the actionlist
-    item->setSearched(true);
-    d_actions.push_back(item);
+     r->setSearched(true);
 
-    supdatingStack.emit(0);
-    return retReward;
+     // actualize the actionlist
+     item->setSearched(true);
+     d_actions.push_back(item);
+
+     supdatingStack.emit(0);
+     return r->getReward();
 }
 
 int RealPlayer::stackVisitTemple(Stack* s, Temple* t)
 {
-    int count;
-    debug("RealPlayer::stackVisitTemple")
+  int count;
+  debug("RealPlayer::stackVisitTemple")
 
     //abort in case of impossible action
     if (!s || (t->getPos().x != s->getPos().x)
-        || (t->getPos().y != s->getPos().y))
-    {
-        cerr <<_("Stack tried to visit temple at wrong location\n");
-        exit(-1);
-    }
+	|| (t->getPos().y != s->getPos().y))
+      {
+	cerr <<_("Stack tried to visit temple at wrong location\n");
+	exit(-1);
+      }
 
-    // you have your stack blessed (+1 strength)
-    count = s->bless();
+  // you have your stack blessed (+1 strength)
+  count = s->bless();
 
-    Action_Temple* item = new Action_Temple();
-    item->fillData(t, s);
-    d_actions.push_back(item);
+  Action_Temple* item = new Action_Temple();
+  item->fillData(t, s);
+  d_actions.push_back(item);
 
-    svisitingTemple.emit(t, s);
-    
-    supdatingStack.emit(0);
+  svisitingTemple.emit(t, s);
 
-    return count;
+  supdatingStack.emit(0);
+
+  return count;
 }
 
 Quest* RealPlayer::stackGetQuest(Stack* s, Temple* t)
 {
-    QuestsManager *qm = QuestsManager::getInstance();
-    debug("Realplayer::stackGetQuest")
+  QuestsManager *qm = QuestsManager::getInstance();
+  debug("Realplayer::stackGetQuest")
 
     // bail out in case of senseless data
     if (!s || !t || (s->getPos().x != t->getPos().x) 
-        || (s->getPos().y != t->getPos().y))
-    {
-        cerr <<_("Stack tried to visit temple at wrong location\n");
-        exit(-1);
-    }
-    
-    std::vector<Quest*> quests = qm->getPlayerQuests(Playerlist::getActiveplayer());
-    if (quests.size() > 0)
-      return NULL;
-
-    Quest* q=0;
-    if (s->getFirstHero())
+	|| (s->getPos().y != t->getPos().y))
       {
-        q = qm->createNewQuest(s->getFirstHero()->getId());
+	cerr <<_("Stack tried to visit temple at wrong location\n");
+	exit(-1);
       }
 
-    // couldn't assign a quest for various reasons
-    if (!q)
-        return 0;
+  std::vector<Quest*> quests = qm->getPlayerQuests(Playerlist::getActiveplayer());
+  if (quests.size() > 0)
+    return NULL;
 
-    // Now fill the action item
-    Action_Quest* action = new Action_Quest();
-    action->fillData(q);
-    d_actions.push_back(action);
+  Quest* q=0;
+  if (s->getFirstHero())
+    {
+      q = qm->createNewQuest(s->getFirstHero()->getId());
+    }
 
-    // and record it for posterity
-    History_HeroQuestStarted * history = new History_HeroQuestStarted();
-    history->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
-    d_history.push_back(history);
-    return q;
+  // couldn't assign a quest for various reasons
+  if (!q)
+    return 0;
+
+  // Now fill the action item
+  Action_Quest* action = new Action_Quest();
+  action->fillData(q);
+  d_actions.push_back(action);
+
+  // and record it for posterity
+  History_HeroQuestStarted * history = new History_HeroQuestStarted();
+  history->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
+  d_history.push_back(history);
+  return q;
 }
 
 bool RealPlayer::cityOccupy(City* c, bool emit)
 {
-    c->conquer(this);
+  c->conquer(this);
 
-    //set the production to the cheapest armytype
-    c->setProduction(-1);
-    if (c->getArmytype(0) != -1)
-        c->setProduction(0);
+  //set the production to the cheapest armytype
+  c->setProduction(-1);
+  if (c->getArmytype(0) != -1)
+    c->setProduction(0);
 
-    Action_Occupy* item = new Action_Occupy();
-    item->fillData(c);
-    d_actions.push_back(item);
+  Action_Occupy* item = new Action_Occupy();
+  item->fillData(c);
+  d_actions.push_back(item);
 
-    if (emit)
-      soccupyingCity.emit(c, getActivestack());
-    //to signal that the cities have changed a bit
-    supdatingCity.emit(c);
+  if (emit)
+    soccupyingCity.emit(c, getActivestack());
+  //to signal that the cities have changed a bit
+  supdatingCity.emit(c);
 
-    return true;
+  return true;
 }
 
 bool RealPlayer::cityOccupy(City* c)
 {
-    debug("cityOccupy")
+  debug("cityOccupy")
 
     return cityOccupy (c, true);
 }
 
 bool RealPlayer::cityPillage(City* c, int& gold, int& pillaged_army_type)
 {
-    gold = 0;
-    pillaged_army_type = -1;
-    debug("RealPlayer::cityPillage")
+  gold = 0;
+  pillaged_army_type = -1;
+  debug("RealPlayer::cityPillage")
 
     Action_Pillage* item = new Action_Pillage();
-    item->fillData(c);
-    d_actions.push_back(item);
-    
-    // get rid of the most expensive army type and trade it in for 
-    // half it's cost
-    // it is presumed that the last army type is the most expensive
+  item->fillData(c);
+  d_actions.push_back(item);
 
-    if (c->getNoOfBasicProd() > 0)
-      {
-        int i;
-        unsigned int max_cost = 0;
-        int slot = -1;
-        for (i = 0; i < c->getNoOfBasicProd(); i++)
-          {
-            const Army *a = c->getArmy(i);
-            if (a != NULL)
-              {
-		if (a->getProductionCost() == 0)
-		  {
-                    slot = i;
-		    break;
-		  }
-                if (a->getProductionCost() > max_cost)
-                  {
-                    max_cost = a->getProductionCost();
-                    slot = i;
-                  }
-              }
-          }
-        if (slot > -1)
-          {
-            const Army *a = c->getArmy(slot);
-            pillaged_army_type = a->getType();
-	    if (a->getProductionCost() == 0)
-	      gold += 1500;
-	    else
-	      gold += a->getProductionCost() / 2;
-            c->removeBasicProd(slot);
-          }
-      }
+  // get rid of the most expensive army type and trade it in for 
+  // half it's cost
+  // it is presumed that the last army type is the most expensive
 
-    addGold(gold);
-    std::list<Uint32> sacked_types;
-    sacked_types.push_back (pillaged_army_type);
-    spillagingCity.emit(c, Playerlist::getActiveplayer()->getActivestack(), 
-                        gold, sacked_types);
-    return cityOccupy (c, false);
+  if (c->getNoOfBasicProd() > 0)
+    {
+      int i;
+      unsigned int max_cost = 0;
+      int slot = -1;
+      for (i = 0; i < c->getNoOfBasicProd(); i++)
+	{
+	  const Army *a = c->getArmy(i);
+	  if (a != NULL)
+	    {
+	      if (a->getProductionCost() == 0)
+		{
+		  slot = i;
+		  break;
+		}
+	      if (a->getProductionCost() > max_cost)
+		{
+		  max_cost = a->getProductionCost();
+		  slot = i;
+		}
+	    }
+	}
+      if (slot > -1)
+	{
+	  const Army *a = c->getArmy(slot);
+	  pillaged_army_type = a->getType();
+	  if (a->getProductionCost() == 0)
+	    gold += 1500;
+	  else
+	    gold += a->getProductionCost() / 2;
+	  c->removeBasicProd(slot);
+	}
+    }
+
+  addGold(gold);
+  std::list<Uint32> sacked_types;
+  sacked_types.push_back (pillaged_army_type);
+  spillagingCity.emit(c, Playerlist::getActiveplayer()->getActivestack(), 
+		      gold, sacked_types);
+  return cityOccupy (c, false);
 }
 
 bool RealPlayer::citySack(City* c, int& gold, std::list<Uint32> *sacked_types)
 {
-    gold = 0;
-    debug("RealPlayer::citySack")
+  gold = 0;
+  debug("RealPlayer::citySack")
 
     Action_Sack* item = new Action_Sack();
-    item->fillData(c);
-    d_actions.push_back(item);
-    
-    //trade in all of the army types except for one
-    //presumes that the army types are listed in order of expensiveness
-  
-    if (c->getNoOfBasicProd() > 1)
-      {
-        const Army *a;
-        int i, max = 0;
-        for (i = 0; i < c->getNoOfBasicProd(); i++)
-          {
-            a = c->getArmy(i);
-            if (a)
-              max++;
-          }
+  item->fillData(c);
+  d_actions.push_back(item);
 
-        i = c->getNoOfBasicProd() - 1;
-        while (max > 1)
-          {
-            a = c->getArmy(i);
-            if (a != NULL)
-              {
-                sacked_types->push_back(a->getType());
-		if (a->getProductionCost() == 0)
-		  gold += 1500;
-		else
-		  gold += a->getProductionCost() / 2;
-                c->removeBasicProd(i);
-                max--;
-              }
-            i--;
-          }
-      }
+  //trade in all of the army types except for one
+  //presumes that the army types are listed in order of expensiveness
 
-    addGold(gold);
-    ssackingCity.emit(c, Playerlist::getActiveplayer()->getActivestack(), gold,
-                      *sacked_types);
-    return cityOccupy (c, false);
+  if (c->getNoOfBasicProd() > 1)
+    {
+      const Army *a;
+      int i, max = 0;
+      for (i = 0; i < c->getNoOfBasicProd(); i++)
+	{
+	  a = c->getArmy(i);
+	  if (a)
+	    max++;
+	}
+
+      i = c->getNoOfBasicProd() - 1;
+      while (max > 1)
+	{
+	  a = c->getArmy(i);
+	  if (a != NULL)
+	    {
+	      sacked_types->push_back(a->getType());
+	      if (a->getProductionCost() == 0)
+		gold += 1500;
+	      else
+		gold += a->getProductionCost() / 2;
+	      c->removeBasicProd(i);
+	      max--;
+	    }
+	  i--;
+	}
+    }
+
+  addGold(gold);
+  ssackingCity.emit(c, Playerlist::getActiveplayer()->getActivestack(), gold,
+		    *sacked_types);
+  return cityOccupy (c, false);
 }
 
 bool RealPlayer::cityRaze(City* c)
 {
-    debug("RealPlayer::cityRaze")
+  debug("RealPlayer::cityRaze")
 
     Action_Raze* action = new Action_Raze();
-    action->fillData(c);
-    d_actions.push_back(action);
+  action->fillData(c);
+  d_actions.push_back(action);
 
-    //ugh, put a similar history event to the action on the history list
-    History_CityRazed* history = new History_CityRazed();
-    history->fillData(c);
-    d_history.push_back(history);
+  //ugh, put a similar history event to the action on the history list
+  History_CityRazed* history = new History_CityRazed();
+  history->fillData(c);
+  d_history.push_back(history);
 
-    c->setBurnt(true);
+  c->setBurnt(true);
 
-    supdatingCity.emit(c);
+  supdatingCity.emit(c);
 
-    srazingCity.emit(c, Playerlist::getActiveplayer()->getActivestack());
-    return true;
+  srazingCity.emit(c, Playerlist::getActiveplayer()->getActivestack());
+  return true;
 }
 
 bool RealPlayer::cityBuyProduction(City* c, int slot, int type)
 {
-    Uint32 as;
-    const Armysetlist* al = Armysetlist::getInstance();
+  Uint32 as;
+  const Armysetlist* al = Armysetlist::getInstance();
 
-    as = c->getPlayer()->getArmyset();
+  as = c->getPlayer()->getArmyset();
 
-    // sort out unusual values (-1 is allowed and means "scrap production")
-    if ((type < -1) || (type >= (int)al->getSize(as)))
-        return false;
-    
-    // return if we don't have enough money
-    if ((type != -1) && ((int)al->getArmy(as, type)->getProductionCost() > d_gold))
-        return false;
+  // sort out unusual values (-1 is allowed and means "scrap production")
+  if ((type < -1) || (type >= (int)al->getSize(as)))
+    return false;
 
-    // return if the city already has the production
-    if (c->hasProduction(type, as))
-        return false;
+  // return if we don't have enough money
+  if ((type != -1) && ((int)al->getArmy(as, type)->getProductionCost() > d_gold))
+    return false;
 
-    c->removeBasicProd(slot);
-    if (!c->addBasicProd(slot, type))
-        return false;
-    
-    // and do the rest of the neccessary actions
-    withdrawGold(al->getArmy(as, type)->getProductionCost());
+  // return if the city already has the production
+  if (c->hasProduction(type, as))
+    return false;
 
-    Action_Buy* item = new Action_Buy();
-    item->fillData(c, slot, type);
-    d_actions.push_back(item);
+  c->removeBasicProd(slot);
+  if (!c->addBasicProd(slot, type))
+    return false;
 
-    return true;
+  // and do the rest of the neccessary actions
+  withdrawGold(al->getArmy(as, type)->getProductionCost());
+
+  Action_Buy* item = new Action_Buy();
+  item->fillData(c, slot, type);
+  d_actions.push_back(item);
+
+  return true;
 }
 
 bool RealPlayer::cityChangeProduction(City* c, int slot)
 {
-    c->setProduction(slot);
+  c->setProduction(slot);
 
-    Action_Production* item = new Action_Production();
-    item->fillData(c, slot);
-    d_actions.push_back(item);
+  Action_Production* item = new Action_Production();
+  item->fillData(c, slot);
+  d_actions.push_back(item);
 
-    return true;
+  return true;
 }
 
 bool RealPlayer::giveReward(Stack *s, Reward *reward)
 {
-    debug("RealPlayer::give_reward")
+  debug("RealPlayer::give_reward")
 
     switch (reward->getType())
       {
       case Reward::GOLD:
-        addGold(dynamic_cast<Reward_Gold*>(reward)->getGold());
+	addGold(dynamic_cast<Reward_Gold*>(reward)->getGold());
 	break;
       case Reward::ALLIES:
-        {
-          const Army *a = dynamic_cast<Reward_Allies*>(reward)->getArmy();
+	  {
+	    const Army *a = dynamic_cast<Reward_Allies*>(reward)->getArmy();
 
-          Reward_Allies::addAllies(s->getPlayer(), s->getPos(), a,
-                       dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies());
-        }
+	    Reward_Allies::addAllies(s->getPlayer(), s->getPos(), a,
+				     dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies());
+	  }
 	break;
       case Reward::ITEM:
-        static_cast<Hero*>(s->getFirstHero())->addToBackpack(
-          dynamic_cast<Reward_Item*>(reward)->getItem());
+	static_cast<Hero*>(s->getFirstHero())->addToBackpack(
+							     dynamic_cast<Reward_Item*>(reward)->getItem());
 	break;
       case Reward::RUIN:
-        //assign the hidden ruin to this player
-        Ruin *r = dynamic_cast<Reward_Ruin*>(reward)->getRuin();
-        r->setHidden(true);
-        r->setOwner(this);
-
+	  {
+	    //assign the hidden ruin to this player
+	    Ruin *r = dynamic_cast<Reward_Ruin*>(reward)->getRuin();
+	    r->setHidden(true);
+	    r->setOwner(this);
+	  }
+	break;
+      case Reward::MAP:
+	  {
+	    Reward_Map *map = dynamic_cast<Reward_Map*>(reward);
+	    d_fogmap->alterFogRectangle(map->getLocation()->getPos(), 
+					map->getHeight(), map->getWidth(), 
+					FogMap::OPEN);
+	  }
 	break;
       }
 
-    Action_Reward* item = new Action_Reward();
-    item->fillData(reward);
-    d_actions.push_back(item);
-    //FIXME: get rid of this reward now that we're done with it
+  Action_Reward* item = new Action_Reward();
+  item->fillData(reward);
+  d_actions.push_back(item);
+  //FIXME: get rid of this reward now that we're done with it
 
-    return true;
+  return true;
 }
 
 bool RealPlayer::stackMoveOneStep(Stack* s)
 {
-    int needed_moves;
-    if (!s)
-        return false;
-    
-    if (!s->enoughMoves())
-        return false;
+  int needed_moves;
+  if (!s)
+    return false;
 
-    Vector<int> dest = *(s->getPath()->front());
+  if (!s->enoughMoves())
+    return false;
 
-    Uint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType();
-    City* to_city = Citylist::getInstance()->getObjectAt(dest.x, dest.y);
-    City* on_city = Citylist::getInstance()->getObjectAt(s->getPos().x, s->getPos().y);
-    bool on_water = (GameMap::getInstance()->getTile(s->getPos().x,s->getPos().y)->getMaptileType() == Tile::WATER);
-    bool to_water = (GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType() == Tile::WATER);
-    bool ship_load_unload = false;
-    //here we mark the armies as being on or off a boat
-    if (!s->isFlying())
-      {
-        if ((on_water && to_city) || (on_city && to_water))
-          {
-            ship_load_unload = true;
-            for (Stack::iterator it = s->begin(); it != s->end(); it++)
-              {
-                if (to_water && 
-                     ((*it)->getStat(Army::MOVE_BONUS) & Tile::WATER) == 0)
-                  (*it)->setInShip(true);
-                else
-                  (*it)->setInShip(false);
-              }
-          }
-      }
-    else
-      {
-        for (Stack::iterator it = s->begin(); it != s->end(); it++)
-          (*it)->setInShip(false);
-      }
-    needed_moves = GameMap::getInstance()->getTile(dest.x,dest.y)->getMoves();
+  Vector<int> dest = *(s->getPath()->front());
 
-    for (Stack::iterator it = s->begin(); it != s->end(); it++)
+  Uint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType();
+  City* to_city = Citylist::getInstance()->getObjectAt(dest.x, dest.y);
+  City* on_city = Citylist::getInstance()->getObjectAt(s->getPos().x, s->getPos().y);
+  bool on_water = (GameMap::getInstance()->getTile(s->getPos().x,s->getPos().y)->getMaptileType() == Tile::WATER);
+  bool to_water = (GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType() == Tile::WATER);
+  bool ship_load_unload = false;
+  //here we mark the armies as being on or off a boat
+  if (!s->isFlying())
+    {
+      if ((on_water && to_city) || (on_city && to_water))
+	{
+	  ship_load_unload = true;
+	  for (Stack::iterator it = s->begin(); it != s->end(); it++)
+	    {
+	      if (to_water && 
+		  ((*it)->getStat(Army::MOVE_BONUS) & Tile::WATER) == 0)
+		(*it)->setInShip(true);
+	      else
+		(*it)->setInShip(false);
+	    }
+	}
+    }
+  else
+    {
+      for (Stack::iterator it = s->begin(); it != s->end(); it++)
+	(*it)->setInShip(false);
+    }
+  needed_moves = GameMap::getInstance()->getTile(dest.x,dest.y)->getMoves();
+
+  for (Stack::iterator it = s->begin(); it != s->end(); it++)
     //calculate possible move boni for each army
     {
-        if (ship_load_unload)
-          {
-            (*it)->decrementMoves((*it)->getMoves());
-            continue;
-          }
-        if (to_city != 0)
-        //cities cost one MP
-        {
-            (*it)->decrementMoves(1);
-            continue;
-        }
+      if (ship_load_unload)
+	{
+	  (*it)->decrementMoves((*it)->getMoves());
+	  continue;
+	}
+      if (to_city != 0)
+	//cities cost one MP
+	{
+	  (*it)->decrementMoves(1);
+	  continue;
+	}
 
-        if ((*it)->getStat(Army::MOVE_BONUS) == maptype)
-        //if army has move bonus, it takes only 2 move points...
-        {
-            (*it)->decrementMoves(2);
-            continue;
-        }
-        //else the whole
-        (*it)->decrementMoves(needed_moves);
+      if ((*it)->getStat(Army::MOVE_BONUS) == maptype)
+	//if army has move bonus, it takes only 2 move points...
+	{
+	  (*it)->decrementMoves(2);
+	  continue;
+	}
+      //else the whole
+      (*it)->decrementMoves(needed_moves);
     }
 
-    s->moveOneStep();    //this is only for updating positions etc.
+  s->moveOneStep();    //this is only for updating positions etc.
 
-    d_fogmap->alterFogRadius(dest, s->getMaxSight(), FogMap::OPEN);
+  d_fogmap->alterFogRadius(dest, s->getMaxSight(), FogMap::OPEN);
 
-    //! signal that we have moved the stack
-    smovingStack.emit(s);
+  //! signal that we have moved the stack
+  smovingStack.emit(s);
 
-    Action_Move* item = new Action_Move();
-    item->fillData(s, dest);
-    d_actions.push_back(item);
+  Action_Move* item = new Action_Move();
+  item->fillData(s, dest);
+  d_actions.push_back(item);
 
-    return true;
+  return true;
 }
 
 bool RealPlayer::vectorFromCity(City * c, Vector<int> dest)
@@ -1431,7 +1389,7 @@ void RealPlayer::resign()
   Action_Resign* item = new Action_Resign();
   item->fillData();
   d_actions.push_back(item);
-    
+
   withdrawGold(getGold()); //empty the coffers!
 
   getStacklist()->setActivestack(0);
@@ -1440,41 +1398,41 @@ void RealPlayer::resign()
 
 bool RealPlayer::heroPlantStandard(Stack* s)
 {
-    debug("player::heroPlantStandard(Stack*)")
+  debug("player::heroPlantStandard(Stack*)")
     if (!s)
       s = getActivestack();
-    for (Stack::iterator it = s->begin(); it != s->end(); it++)
-      {
-        if ((*it)->isHero())
-	  {
-	    Hero *hero = dynamic_cast<Hero*>((*it));
-            std::list<Item*> backpack = hero->getBackpack();
-            for (std::list<Item*>::iterator i = backpack.begin(), 
-	         end = backpack.end(); i != end; ++i)
-	      {
-		if ((*i)->isPlantable() && (*i)->getPlantableOwner() == this)
-		  {
-		    //drop the item, and plant it
-		    (*i)->setPlanted(true);
-                    GameMap *gm = GameMap::getInstance();
-	            gm->getTile(s->getPos())->addItem(*i);
-	            hero->removeFromBackpack(*i);
-                    Action_Plant * item = new Action_Plant();
-                    item->fillData(hero->getId(), (*i)->getId());
-                    d_actions.push_back(item);
-                    break;
-		  }
-	      }
-	  }
-      }
-    return true;
+  for (Stack::iterator it = s->begin(); it != s->end(); it++)
+    {
+      if ((*it)->isHero())
+	{
+	  Hero *hero = dynamic_cast<Hero*>((*it));
+	  std::list<Item*> backpack = hero->getBackpack();
+	  for (std::list<Item*>::iterator i = backpack.begin(), 
+	       end = backpack.end(); i != end; ++i)
+	    {
+	      if ((*i)->isPlantable() && (*i)->getPlantableOwner() == this)
+		{
+		  //drop the item, and plant it
+		  (*i)->setPlanted(true);
+		  GameMap *gm = GameMap::getInstance();
+		  gm->getTile(s->getPos())->addItem(*i);
+		  hero->removeFromBackpack(*i);
+		  Action_Plant * item = new Action_Plant();
+		  item->fillData(hero->getId(), (*i)->getId());
+		  d_actions.push_back(item);
+		  break;
+		}
+	    }
+	}
+    }
+  return true;
 }
 
 bool RealPlayer::heroDropAllItems(Hero *h, Vector<int> pos)
 {
   std::list<Item*> backpack = h->getBackpack();
   for (std::list<Item*>::iterator i = backpack.begin(), end = backpack.end();
-    i != end; ++i)
+       i != end; ++i)
     heroDropItem(h, *i, pos);
   return true;
 }
@@ -1501,11 +1459,11 @@ bool RealPlayer::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
 
 bool RealPlayer::heroCompletesQuest(Hero *h)
 {
-    // record it for posterity
-    History_HeroQuestCompleted* item = new History_HeroQuestCompleted();
-    item->fillData(h);
-    d_history.push_back(item);
-    return true;
+  // record it for posterity
+  History_HeroQuestCompleted* item = new History_HeroQuestCompleted();
+  item->fillData(h);
+  d_history.push_back(item);
+  return true;
 }
 
 Uint32 RealPlayer::getScore()

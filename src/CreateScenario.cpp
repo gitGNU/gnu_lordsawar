@@ -364,6 +364,9 @@ bool CreateScenario::create(const GameParameters &g)
     if (!setupPlayers())
         return false;
 
+    if (!setupRewards())
+        return false;
+
     return true;
 }
 
@@ -633,6 +636,7 @@ bool CreateScenario::setupRuins(bool strongholds_invisible)
             continue;
           }
 
+
         //one in ten ruins doesn't have a guardian
         if (rand() % 10 == 0 && (*it).getType() == Ruin::RUIN) 
           continue;
@@ -759,3 +763,95 @@ bool CreateScenario::loadNames(std::vector<std::string>& list, std::ifstream& na
 
     return true;
 }
+
+bool CreateScenario::setupRewards()
+{
+  debug("CreateScenario::setupRewards")
+  setupItemRewards();
+  setupRuinRewards();
+  setupMapRewards();
+  return true;
+}
+
+bool CreateScenario::setupMapRewards()
+{
+  if (GameScenario::s_hidden_map == false)
+    return true;
+  //okay, let's make some maps
+  //split the terrain into a 3x3 grid
+  Uint32 h_count = 0;
+  Uint32 w_count = 0;
+  for (int i = 0; i < GameMap::getHeight(); i += (GameMap::getHeight() / 3))
+    {
+      for (int j = 0; j < GameMap::getWidth(); j += (GameMap::getWidth() / 3))
+	{
+	  char *name;
+	  if (h_count == 0 && j == 0)
+	    name = _("northwestern map");
+	  else if (h_count == 0 && w_count == 1)
+	    name = _("northern map");
+	  else if (h_count == 0 && w_count == 2)
+	    name = _("northeastern map");
+	  else if (h_count == 1 && w_count == 0)
+	    name = _("western map");
+	  else if (h_count == 1 && w_count == 1)
+	    name = _("central map");
+	  else if (h_count == 1 && w_count == 2)
+	    name = _("eastern map");
+	  else if (h_count == 2 && w_count == 0)
+	    name = _("southwestern map");
+	  else if (h_count == 2 && w_count == 1)
+	    name = _("southern map");
+	  else if (h_count == 2 && w_count == 2)
+	    name = _("southeastern map");
+	  Vector<int> pos;
+	  pos.x = i;
+	  pos.y = j;
+	  Location *loc = new Location(name, pos);
+	  Reward_Map *reward = new Reward_Map(loc, 
+					      GameMap::getHeight() / 3, 
+					      GameMap::getWidth() / 3);
+	  Rewardlist::getInstance()->push_back(reward); //add it
+	  w_count++;
+	}
+      w_count = 0;
+      h_count++;
+    }
+  return true;
+}
+bool CreateScenario::setupRuinRewards()
+{
+  debug("CreateScenario::setupRuinRewards")
+    for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
+	 it != Ruinlist::getInstance()->end(); it++)
+      {
+	if ((*it).isHidden() == true)
+	  {
+	    //add it to the reward list
+	    Reward_Ruin *newReward = new Reward_Ruin(&(*it)); //make a reward
+	    Rewardlist::getInstance()->push_back(newReward); //add it
+	  }
+	if ((*it).hasSage() == false)
+	  (*it).populateWithRandomReward();
+      }
+  return true;
+}
+
+bool CreateScenario::setupItemRewards()
+{
+  debug("CreateScenario::setupItemRewards")
+    Itemlist::createInstance();
+  Itemlist *il = Itemlist::getInstance();
+  Itemlist::iterator iter;
+  for (iter = il->begin(); iter != il->end(); iter++)
+    {
+      Item templateItem = *iter->second;
+      Item *newItem = new Item(templateItem); //instantiate it
+      Reward_Item *newReward = new Reward_Item(newItem); //make a reward
+      Rewardlist::getInstance()->push_back(newReward); //add it
+    }
+
+  Itemlist::deleteInstance();
+  return true;
+}
+

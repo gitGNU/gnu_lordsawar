@@ -83,6 +83,8 @@ bool Ruinlist::load(std::string tag, XML_Helper* helper)
     //! since the ruin has only now been copied to its final state, we need
     //to register the callback for the occupants here.
     helper->registerTag("stack", sigc::mem_fun(*begin(), &Ruin::load));
+    // same with rewards in ruins
+    helper->registerTag("reward", sigc::mem_fun(*begin(), &Ruin::load));
 
     return true;
 }

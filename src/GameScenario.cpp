@@ -74,7 +74,6 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
 
     if (fl_counter == 0)
         fl_counter = new FL_Counter();
-    setupRewards();
 }
 
 // savegame is a filename with absolute path!
@@ -112,7 +111,6 @@ GameScenario::GameScenario(string savegame, bool& broken)
 
     helper.close();
     GameMap::getInstance()->calculateBlockedAvenues();
-    setupRewards();
 }
 
 GameScenario::~GameScenario()
@@ -389,47 +387,5 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
     }
 
     return false;
-}
-
-bool GameScenario::setupRewards()
-{
-  debug("GameScenario::setupRewards")
-  setupItemRewards();
-  setupRuinRewards();
-  return true;
-}
-
-bool GameScenario::setupRuinRewards()
-{
-    debug("GameScenario::setupRuinRewards")
-    for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
-        it != Ruinlist::getInstance()->end(); it++)
-    {
-      if ((*it).isHidden() == true)
-        {
-          //add it to the reward list
-          Reward_Ruin *newReward = new Reward_Ruin(&(*it)); //make a reward
-          Rewardlist::getInstance()->push_back(newReward); //add it
-        }
-    }
-  return true;
-}
-
-bool GameScenario::setupItemRewards()
-{
-    debug("GameScenario::setupItemRewards")
-    Itemlist::createInstance();
-    Itemlist *il = Itemlist::getInstance();
-    Itemlist::iterator iter;
-    for (iter = il->begin(); iter != il->end(); iter++)
-      {
-        Item templateItem = *iter->second;
-        Item *newItem = new Item(templateItem); //instantiate it
-        Reward_Item *newReward = new Reward_Item(newItem); //make a reward
-        Rewardlist::getInstance()->push_back(newReward); //add it
-      }
-
-    Itemlist::deleteInstance();
-    return true;
 }
 

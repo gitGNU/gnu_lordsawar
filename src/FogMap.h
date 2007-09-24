@@ -50,13 +50,21 @@ class FogMap
         //! Get the tile object at position (x,y)
         FogType getFogTile(Vector<int> pos) const;
 
-		/** Alter fog around a point
+	/** Alter fog around a point
           * 
           * @param pt       the point around which status is altered
           * @param radius   the radius around the point where the fog is altered
           * @param new_type the type which the area gets
           */
 	void alterFogRadius(Vector<int> pt, int radius, FogType new_type);
+	/** Alter fog in a rectangle
+          * 
+          * @param pt       the upper left point of the rectangle
+          * @param width    the width of the rectangle
+          * @param height   the height of the rectangle
+          * @param new_type the type which the area gets
+          */
+        void alterFogRectangle(Vector<int> pt, int height, int width, FogType new_type);
 
 	/** Sweep the fog map for squares that are fogged that are
           * surrounded by defogged squres, and remove them.

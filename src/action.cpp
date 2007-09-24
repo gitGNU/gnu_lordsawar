@@ -934,6 +934,8 @@ bool Action_Reward::load(std::string tag, XML_Helper *helper)
 	  d_reward = new Reward_Item(helper);
 	else if (reward->getType() == Reward::RUIN)
 	  d_reward = new Reward_Ruin(helper);
+	else if (reward->getType() == Reward::MAP)
+	  d_reward = new Reward_Map(helper);
 	  
 	delete reward;
 
@@ -982,6 +984,8 @@ bool Action_Reward::save(XML_Helper* helper) const
     static_cast<Reward_Item*>(d_reward)->save(helper);
   else if (d_reward->getType() == Reward::RUIN)
     static_cast<Reward_Ruin*>(d_reward)->save(helper);
+  else if (d_reward->getType() == Reward::MAP)
+    static_cast<Reward_Map*>(d_reward)->save(helper);
   retval &= helper->closeTag();
 
   return retval;

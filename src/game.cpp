@@ -314,15 +314,29 @@ void Game::search_selected_stack()
       Reward *reward;
 
       reward = player->stackSearchRuin(stack, ruin);
-      if (!reward && ruin->hasSage() == false)
+      if (ruin->hasSage() == true)
+	{
+	  sage_visited.emit(ruin, stack);
+	  reward = ruin->getReward();
+	}
+	  
+      if (reward)
+	{
+	  player->giveReward(Playerlist::getActiveplayer()->getActivestack(),
+			     reward);
+	  redraw();
+	  update_stack_info();
+	  update_control_panel();
+	  ruin_searched.emit(ruin, stack, reward);
+	}
+      else
 	{
 	  redraw();
 	  update_stack_info();
 	  update_control_panel();
-	  return;
 	}
 
-      ruin_searched.emit(ruin, stack, reward);
+
 
       update_sidebar_stats();
     }

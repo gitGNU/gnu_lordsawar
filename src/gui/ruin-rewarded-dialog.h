@@ -12,60 +12,41 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef SAGE_DIALOG_H
-#define SAGE_DIALOG_H
+#ifndef RUIN_REWARDED_DIALOG_H
+#define RUIN_REWARDED_DIALOG_H
 
 #include <memory>
 #include <vector>
 #include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/image.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treemodelcolumn.h>
+#include <gtkmm/label.h>
 
 #include "../ruinmap.h"
 #include "../player.h"
-#include "../hero.h"
 
 struct SDL_Surface;
 
 // dialog for visiting a sage
-class SageDialog: public sigc::trackable
+class RuinRewardedDialog: public sigc::trackable
 {
  public:
-    SageDialog(Player *player, Hero *hero, Ruin *r);
+    RuinRewardedDialog(Reward_Ruin *reward);
 
     void set_parent_window(Gtk::Window &parent);
 
-    Reward *run();
+    void run();
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     std::auto_ptr<RuinMap> ruinmap;
 
-    Gtk::TreeView *rewards_treeview;
-
-    class RewardsColumns: public Gtk::TreeModelColumnRecord {
-    public:
-	RewardsColumns() 
-        { add(name); add(reward);}
-	
-	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<Reward *> reward;
-    };
-    const RewardsColumns rewards_columns;
-    Glib::RefPtr<Gtk::ListStore> rewards_list;
-
     Gtk::Image *map_image;
+    Gtk::Label *label;
     
-    Hero *hero;
-    Ruin *ruin;
+    Reward_Ruin *d_reward;
 
-    std::list<Reward*> common_rewards;
     void on_map_changed(SDL_Surface *map);
-    void addReward(Reward *reward);
-    Reward *grabSelectedReward();
 };
 
 #endif
