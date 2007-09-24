@@ -86,36 +86,57 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
 		     num), num);
       }
     else if (reward->getType() == Reward::ITEM)
-      s += String::ucompose("You have been rewarded with the %1.", 
-                          dynamic_cast<Reward_Item*>(reward)->getItem()->getName());
+      {
+	Item *item = dynamic_cast<Reward_Item*>(reward)->getItem();
+	s += String::ucompose("You have been rewarded with the %1.", 
+			      item->getName());
+      }
     else if (reward->getType() == Reward::RUIN)
       {
-        s += String::ucompose("You are shown the site of %1.", 
-                   dynamic_cast<Reward_Ruin*>(reward)->getRuin()->getName());
-        questmap->set_target(dynamic_cast<Reward_Ruin*>(reward)->getRuin()->getPos());
+	Ruin *ruin =dynamic_cast<Reward_Ruin*>(reward)->getRuin() ;
+	s += String::ucompose("You are shown the site of %1\n", 
+			      ruin->getName());
+	questmap->set_target(ruin->getPos());
+	Reward_Ruin *ruin_reward = static_cast<Reward_Ruin*>(ruin->getReward());
+	if (ruin_reward->getType() == Reward::ALLIES)
+	  s += _("where powerful allies can be found!");
+	else if (ruin_reward->getType() == Reward::ITEM)
+	  {
+	    Item *item = static_cast<Reward_Item*>(reward)->getItem();
+	    s += String::ucompose(_("where the %1 can be found!"), 
+				  item->getName());
+	  }
+	else if (ruin_reward->getType() == Reward::MAP)
+	  s += _("where a map can be found!");
+	else if (ruin_reward->getType() == Reward::RUIN)
+	  s += _("where crapola can be found!");
+	else if (ruin_reward->getType() == Reward::GOLD)
+	  s += _("where gold can be found!");
+	else //this one shouldn't happen
+	  s += _("where something important can be found!");
       }
 
     label->set_text(s);
-    
+
 }
 
 void QuestCompletedDialog::set_parent_window(Gtk::Window &parent)
 {
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
+  dialog->set_transient_for(parent);
+  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void QuestCompletedDialog::run()
 {
-    questmap->resize(GameMap::get_dim() * 2);
-    questmap->draw();
+  questmap->resize(GameMap::get_dim() * 2);
+  questmap->draw();
 
-    dialog->show_all();
-    dialog->run();
+  dialog->show_all();
+  dialog->run();
 }
 
 void QuestCompletedDialog::on_map_changed(SDL_Surface *map)
 {
-    map_image->property_pixbuf() = to_pixbuf(map);
+  map_image->property_pixbuf() = to_pixbuf(map);
 }
 
