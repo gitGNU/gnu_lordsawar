@@ -821,10 +821,26 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
             debug("Army: " << (*sit))
             if ((*sit)->getHP() <= 0)
             {
+		//Tally up the triumphs
+		if ((*sit)->getAwardable()) //hey a special died
+		  tallyTriumph((*sit)->getPlayer(), TALLY_SPECIAL);
+		else if ((*sit)->isHero() == false)
+		  tallyTriumph((*sit)->getPlayer(), TALLY_NORMAL);
+		if ((*sit)->getStat(Army::SHIP, false)) //hey it was on a boat
+		  tallyTriumph((*sit)->getPlayer(), TALLY_SHIP);
                 debug("Army: " << (*sit)->getName())
                 debug("Army: " << (*sit)->getXpReward())
                 if ((*sit)->isHero())
                 {
+		  tallyTriumph((*sit)->getPlayer(), TALLY_HERO);
+		  Hero *hero = dynamic_cast<Hero*>((*sit));
+		  std::list<Item*> backpack = hero->getBackpack();
+		  for (std::list<Item*>::iterator i = backpack.begin(), 
+		       end = backpack.end(); i != end; ++i)
+		    {
+		      if ((*i)->isPlantable())
+			tallyTriumph((*sit)->getPlayer(), TALLY_FLAG);
+		    }
                     //one of our heroes died
                     //drop hero's stuff
                     Hero *h = static_cast<Hero *>(*sit);
@@ -1477,5 +1493,18 @@ Uint32 RealPlayer::getScore()
 	score = static_cast<History_Score*>(*it)->getScore();
     }
   return score;
+}
+
+void RealPlayer::tallyTriumph(Player *p, TriumphType type)
+{
+  Uint32 id = p->getId();
+  //let's not tally fratricide
+  if (p == this) 
+    return;
+  //let's not tally neutrals
+  if (p == Playerlist::getInstance()->getNeutral()) 
+    return;
+  //we (this player) have killed P's army. it was of type TYPE.
+  d_triumph[id][type]++;
 }
 // End of file

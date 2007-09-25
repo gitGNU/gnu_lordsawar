@@ -125,6 +125,7 @@ class RealPlayer : public Player
         bool stackMoveOneStep(Stack* s);
     private:
         bool cityOccupy(City* c, bool emit);
+	void tallyTriumph(Player *p, TriumphType type);
 };
 
 #endif // REAL_PLAYER_H

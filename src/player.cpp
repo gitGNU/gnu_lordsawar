@@ -94,6 +94,7 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, Type type,
     {
       d_fight_order.push_back(i);
     }
+    memset(d_triumph, 0, sizeof(d_triumph));
 }
 
 Player::Player(const Player& player)
@@ -167,6 +168,7 @@ Player::Player(XML_Helper* helper)
     helper->registerTag("history", sigc::mem_fun(this, &Player::load));
     helper->registerTag("stacklist", sigc::mem_fun(this, &Player::load));
     helper->registerTag("fogmap", sigc::mem_fun(this, &Player::load));
+    helper->registerTag("triumphs", sigc::mem_fun(this, &Player::load));
 
 }
 
@@ -420,6 +422,35 @@ bool Player::save(XML_Helper* helper) const
     retval &= d_stacklist->save(helper);
     retval &= d_fogmap->save(helper);
 
+    //save the triumphs
+	    
+    helper->openTag("triumphs");
+    for (unsigned int i = 0; i < 5; i++)
+      {
+	std::stringstream tally;
+	for (unsigned int j = 0; j < MAX_PLAYERS; j++)
+	    tally << d_triumph[j][i] << " ";
+	switch (TriumphType(i))
+	  {
+	  case TALLY_HERO:
+	    retval &= helper->saveData("hero", tally.str());
+	    break;
+	  case TALLY_NORMAL:
+	    retval &= helper->saveData("normal", tally.str());
+	    break;
+	  case TALLY_SPECIAL:
+	    retval &= helper->saveData("special", tally.str());
+	    break;
+	  case TALLY_SHIP:
+	    retval &= helper->saveData("ship", tally.str());
+	    break;
+	  case TALLY_FLAG:
+	    retval &= helper->saveData("flag", tally.str());
+	    break;
+	  }
+      }
+    helper->closeTag();
+
     return retval;
 }
 
@@ -467,6 +498,40 @@ bool Player::load(string tag, XML_Helper* helper)
 
     if (tag == "fogmap")
         d_fogmap = new FogMap(helper);
+
+    if (tag == "triumphs")
+      {
+	for (unsigned int i = 0; i < 5; i++)
+	  {
+	    std::string tally;
+	    std::stringstream stally;
+	    Uint32 val;
+	    switch (TriumphType(i))
+	      {
+	      case TALLY_HERO:
+		helper->getData(tally, "hero");
+		break;
+	      case TALLY_NORMAL:
+		helper->getData(tally, "normal");
+		break;
+	      case TALLY_SPECIAL:
+		helper->getData(tally, "special");
+		break;
+	      case TALLY_SHIP:
+		helper->getData(tally, "ship");
+		break;
+	      case TALLY_FLAG:
+		helper->getData(tally, "flag");
+		break;
+	      }
+	    stally.str(tally);
+	    for (unsigned int j = 0; j < MAX_PLAYERS; j++)
+	      {
+		stally >> val;
+		d_triumph[j][i] = val;
+	      }
+	  }
+      }
 
     return true;
 }
