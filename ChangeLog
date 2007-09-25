@@ -2,6 +2,7 @@
 
 	* sages now give out rewards
 	* added maps as rewards when playing with hidden map
+	* added triumph stat-keeping to player object
 
 2007-09-23  Ben Asselstine
 
