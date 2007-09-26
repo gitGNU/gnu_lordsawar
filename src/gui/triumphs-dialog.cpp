@@ -121,8 +121,8 @@ void TriumphsDialog::fill_in_page(Player *p)
   Gtk::Image *hero_image = new Gtk::Image
     (to_pixbuf(gc->getArmyPic(p->getArmyset(), hero->getType(), p, 1, NULL)));
   Gtk::HBox *hero_hbox = new Gtk::HBox();
-  hero_hbox->pack_start(*manage(hero_image), Gtk::PACK_SHRINK);
-  hero_hbox->pack_start(*manage(hero_label), Gtk::PACK_SHRINK);
+  hero_hbox->pack_start(*manage(hero_image), Gtk::PACK_SHRINK, 10);
+  hero_hbox->pack_start(*manage(hero_label), Gtk::PACK_SHRINK, 10);
 
   count = tally(p, Player::TALLY_SHIP);
   if (p == d_player)
@@ -136,8 +136,8 @@ void TriumphsDialog::fill_in_page(Player *p)
   Gtk::Label *ship_label = new Gtk::Label(s);
   Gtk::Image *ship_image = new Gtk::Image (to_pixbuf(gc->getShipPic(p)));
   Gtk::HBox *ship_hbox = new Gtk::HBox();
-  ship_hbox->pack_start(*manage(ship_image), Gtk::PACK_SHRINK);
-  ship_hbox->pack_start(*manage(ship_label), Gtk::PACK_SHRINK);
+  ship_hbox->pack_start(*manage(ship_image), Gtk::PACK_SHRINK, 10);
+  ship_hbox->pack_start(*manage(ship_label), Gtk::PACK_SHRINK, 10);
 
   count = tally(p, Player::TALLY_NORMAL);
   if (p == d_player)
@@ -152,8 +152,8 @@ void TriumphsDialog::fill_in_page(Player *p)
   Gtk::Image *normal_image = new Gtk::Image
     (to_pixbuf(gc->getArmyPic(p->getArmyset(), 0, p, 1, NULL)));
   Gtk::HBox *normal_hbox = new Gtk::HBox();
-  normal_hbox->pack_start(*manage(normal_image), Gtk::PACK_SHRINK);
-  normal_hbox->pack_start(*manage(normal_label), Gtk::PACK_SHRINK);
+  normal_hbox->pack_start(*manage(normal_image), Gtk::PACK_SHRINK, 10);
+  normal_hbox->pack_start(*manage(normal_label), Gtk::PACK_SHRINK, 10);
 
   count = tally(p, Player::TALLY_SPECIAL);
   if (p == d_player)
@@ -181,8 +181,8 @@ void TriumphsDialog::fill_in_page(Player *p)
     (to_pixbuf(gc->getArmyPic(p->getArmyset(), 
 			      special->getType(), p, 1, NULL)));
   Gtk::HBox *special_hbox = new Gtk::HBox();
-  special_hbox->pack_start(*manage(special_image), Gtk::PACK_SHRINK);
-  special_hbox->pack_start(*manage(special_label), Gtk::PACK_SHRINK);
+  special_hbox->pack_start(*manage(special_image), Gtk::PACK_SHRINK, 10);
+  special_hbox->pack_start(*manage(special_label), Gtk::PACK_SHRINK, 10);
 
   count = tally(p, Player::TALLY_FLAG);
   if (p == d_player)
@@ -198,8 +198,8 @@ void TriumphsDialog::fill_in_page(Player *p)
   Gtk::Image *flag_image = new Gtk::Image 
     (to_pixbuf(gc->getPlantedStandardPic(p)));
   Gtk::HBox *flag_hbox = new Gtk::HBox();
-  flag_hbox->pack_start(*manage(flag_image), Gtk::PACK_SHRINK);
-  flag_hbox->pack_start(*manage(flag_label), Gtk::PACK_SHRINK);
+  flag_hbox->pack_start(*manage(flag_image), Gtk::PACK_SHRINK, 10);
+  flag_hbox->pack_start(*manage(flag_label), Gtk::PACK_SHRINK, 10);
 
   Gtk::VBox *contents = new Gtk::VBox();
   contents->add(*manage(normal_hbox));
