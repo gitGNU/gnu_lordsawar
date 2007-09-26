@@ -538,6 +538,10 @@ class Player: public sigc::trackable
 	// emitted when a fight in a ruin is started
         sigc::signal<void, Stack *, Stack *> ruinfight_started;
         sigc::signal<void, Fight::Result> ruinfight_finished;
+        enum TriumphType {TALLY_HERO = 0, TALLY_SPECIAL = 1, TALLY_NORMAL = 2, 
+	  TALLY_SHIP = 3, TALLY_FLAG = 4};
+	Uint32 getTriumphTally(Player *p, TriumphType type) const
+	  {return d_triumph[p->getId()][type];}
 
     protected:
         //! Move stack s one step forward on his stored path
@@ -557,8 +561,6 @@ class Player: public sigc::trackable
         Stacklist* d_stacklist;
         FogMap* d_fogmap;
 	std::list<Uint32> d_fight_order; //for each army in armyset, a number
-        enum TriumphType {TALLY_HERO = 0, TALLY_SPECIAL = 1, TALLY_NORMAL = 2, 
-	  TALLY_SHIP = 3, TALLY_FLAG = 4};
 	Uint32 d_triumph[MAX_PLAYERS][5];
 
     private:

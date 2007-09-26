@@ -425,6 +425,22 @@
 			  <accelerator key="y" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
+
+		      <child>
+			<widget class="GtkSeparatorMenuItem" id="separator2">
+			  <property name="visible">True</property>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="triumphs_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Triumphs</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_triumphs_menuitem_activate" last_modification_time="Tue, 25 Sep 2007 21:41:13 GMT"/>
+			  <accelerator key="l" modifiers="0" signal="activate"/>
+			</widget>
+		      </child>
 		    </widget>
 		  </child>
 		</widget>

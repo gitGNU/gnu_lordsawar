@@ -186,6 +186,7 @@ class GameWindow: public sigc::trackable
     void on_event_history_activated();
     void on_gold_history_activated();
     void on_winner_history_activated();
+    void on_triumphs_activated();
 
     void on_message_requested(std::string msg);
     

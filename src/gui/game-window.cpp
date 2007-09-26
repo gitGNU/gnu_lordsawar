@@ -65,6 +65,7 @@
 #include "item-bonus-dialog.h"
 #include "history-report-dialog.h"
 #include "report-dialog.h"
+#include "triumphs-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -242,6 +243,8 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_item_bonus_activated));
     xml->connect_clicked("production_report_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_production_report_activated));
+    xml->connect_clicked("triumphs_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_triumphs_activated));
     d_quick_fights = false;
 }
 
@@ -1010,6 +1013,13 @@ void GameWindow::on_winner_history_activated()
 {
   HistoryReportDialog d(Playerlist::getActiveplayer(),
 			HistoryReportDialog::WINNING);
+  d.set_parent_window(*window.get());
+  d.run();
+}
+
+void GameWindow::on_triumphs_activated()
+{
+  TriumphsDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
 }

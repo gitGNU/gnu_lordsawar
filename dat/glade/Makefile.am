@@ -48,6 +48,7 @@ hero-levels-dialog.glade \
 player-resign-dialog.glade \
 army-bonus-dialog.glade \
 item-bonus-dialog.glade \
-game-options-dialog.glade
+game-options-dialog.glade \
+triumphs-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)

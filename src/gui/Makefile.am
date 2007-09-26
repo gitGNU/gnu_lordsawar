@@ -25,6 +25,7 @@ liblwgui_a_SOURCES = \
     ruin-report-dialog.cpp ruin-report-dialog.h \
     history-report-dialog.cpp history-report-dialog.h \
     report-dialog.cpp report-dialog.h \
+    triumphs-dialog.cpp triumphs-dialog.h \
     load-scenario-dialog.cpp load-scenario-dialog.h \
     quest-assigned-dialog.cpp quest-assigned-dialog.h \
     quest-completed-dialog.cpp quest-completed-dialog.h \
