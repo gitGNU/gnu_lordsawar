@@ -275,7 +275,9 @@ Reward_Map::Reward_Map(XML_Helper* helper)
 {
   helper->registerTag("location", sigc::mem_fun(this, 
 						&Reward_Map::loadLocation));
+  printf("uhhh\n");
   helper->getData(d_height, "height");
+  printf("hmmm\n");
   helper->getData(d_width, "width");
 }
 
@@ -284,6 +286,8 @@ bool Reward_Map::save(XML_Helper* helper) const
   bool retval = true;
   retval &= helper->openTag("reward");
   retval &= Reward::save(helper);
+  retval &= helper->saveData("height", d_height);
+  retval &= helper->saveData("width", d_width);
   retval &= helper->openTag("location");
   retval &= helper->saveData("id", d_loc->getId());
   retval &= helper->saveData("name", d_loc->getName());
@@ -291,8 +295,6 @@ bool Reward_Map::save(XML_Helper* helper) const
   retval &= helper->saveData("x", pos.x);
   retval &= helper->saveData("y", pos.y);
   retval &= helper->closeTag();
-  retval &= helper->saveData("height", d_height);
-  retval &= helper->saveData("width", d_width);
   retval &= helper->closeTag();
   return retval;
 }

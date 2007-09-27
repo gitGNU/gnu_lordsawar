@@ -21,15 +21,11 @@
 #include <gtkmm/filefilter.h>
 
 #include "game-preferences-dialog.h"
+#include "game-options-dialog.h"
 
 #include "glade-helpers.h"
 #include "../defs.h"
 #include "../File.h"
-
-namespace
-{
-    const int default_no_players = 8;
-}
 
 #define HUMAN_PLAYER_TYPE _("Human")
 #define EASY_PLAYER_TYPE _("Easy")
@@ -37,7 +33,6 @@ namespace
 #define NO_PLAYER_TYPE _("Off")
 
 GamePreferencesDialog::GamePreferencesDialog()
-    : type_column(_("Type"), type_renderer)
 {
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/game-preferences-dialog.glade");
@@ -60,55 +55,11 @@ GamePreferencesDialog::GamePreferencesDialog()
     xml->get_widget("ruins_scale", ruins_scale);
     xml->get_widget("temples_scale", temples_scale);
     xml->get_widget("map_size_combobox", map_size_combobox);
-    xml->get_widget("view_enemies_checkbutton", view_enemies_checkbutton);
-    xml->get_widget("view_production_checkbutton", view_production_checkbutton);
-    xml->get_widget("quests_checkbutton", quests_checkbutton);
-    xml->get_widget("hidden_map_checkbutton", hidden_map_checkbutton);
-    xml->get_widget("neutral_combobox", neutral_cities_combobox);
-    xml->get_widget("diplomacy_checkbutton", diplomacy_checkbutton);
-    xml->get_widget("military_advisor_checkbutton", 
-                    military_advisor_checkbutton);
-    xml->get_widget("quick_start_checkbutton", quick_start_checkbutton);
-    xml->get_widget("intense_combat_checkbutton", intense_combat_checkbutton);
-    xml->get_widget("random_turns_checkbutton", random_turns_checkbutton);
 
-    neutral_cities_combobox->set_active(GameParameters::AVERAGE);
+    xml->get_widget("players_vbox", players_vbox);
+
     process_armies_combobox->set_active(
 	GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN);
-
-    // setup the player settings
-    player_list = Gtk::ListStore::create(player_columns);
-
-    xml->get_widget("player_treeview", player_treeview);
-    player_treeview->set_model(player_list);
-
-    // the type column
-    player_type_list = Gtk::ListStore::create(player_type_columns);
-    Gtk::TreeModel::iterator i;
-    i = player_type_list->append();
-    (*i)[player_type_columns.type] = HUMAN_PLAYER_TYPE;
-    i = player_type_list->append();
-    (*i)[player_type_columns.type] = EASY_PLAYER_TYPE;
-    i = player_type_list->append();
-    (*i)[player_type_columns.type] = HARD_PLAYER_TYPE;
-    i = player_type_list->append();
-    (*i)[player_type_columns.type] = NO_PLAYER_TYPE;
-	
-    type_renderer.property_model() = player_type_list;
-    type_renderer.property_text_column() = 0;
-    type_renderer.property_has_entry() = false;
-    type_renderer.property_editable() = true;
-
-    type_renderer.signal_edited()
-	.connect(sigc::mem_fun(*this, &GamePreferencesDialog::on_type_edited));
-    type_column.set_cell_data_func(
-	type_renderer,
-	sigc::mem_fun(*this, &GamePreferencesDialog::cell_data_type));
-    player_treeview->append_column(type_column);
-
-
-    // the name column
-    player_treeview->append_column_editable(_("Name"), player_columns.name);
 
     // add default players
     default_player_names.push_back("The Sirians");
@@ -122,8 +73,24 @@ GamePreferencesDialog::GamePreferencesDialog()
 
     current_player_name = default_player_names.begin();
 
-    for (int j = 0; j < default_no_players; ++j)
+    for (unsigned int j = 0; j < default_player_names.size(); ++j)
 	on_add_player_clicked();
+
+    // setup map settings
+    random_map_radio->signal_toggled().connect(
+	sigc::mem_fun(*this, &GamePreferencesDialog::on_random_map_toggled));
+    on_random_map_toggled();
+    
+    map_size_combobox->set_active(MAP_SIZE_NORMAL);
+    map_size_combobox->signal_changed().connect(
+	sigc::mem_fun(*this, &GamePreferencesDialog::on_map_size_changed));
+    on_map_size_changed();
+
+    Gtk::FileFilter map_filter;
+    map_filter.add_pattern("*.map");
+    map_filter.set_name(_("LordsAWar map files (*.map)"));
+    load_map_filechooser->set_filter(map_filter);
+
 
     // fill in tile themes combobox
     tile_theme_combobox = manage(new Gtk::ComboBoxText);
@@ -153,32 +120,14 @@ GamePreferencesDialog::GamePreferencesDialog()
 
     xml->get_widget("army_theme_box", box);
     box->pack_start(*army_theme_combobox, Gtk::PACK_SHRINK);
-
-    // setup map settings
-    random_map_radio->signal_toggled().connect(
-	sigc::mem_fun(*this, &GamePreferencesDialog::on_random_map_toggled));
-    on_random_map_toggled();
-    
-    map_size_combobox->set_active(MAP_SIZE_NORMAL);
-    map_size_combobox->signal_changed().connect(
-	sigc::mem_fun(*this, &GamePreferencesDialog::on_map_size_changed));
-    on_map_size_changed();
-
-    Gtk::FileFilter map_filter;
-    map_filter.add_pattern("*.map");
-    map_filter.set_name(_("LordsAWar map files (*.map)"));
-    load_map_filechooser->set_filter(map_filter);
-
     xml->connect_clicked(
 	"start_game_button",
 	sigc::mem_fun(*this, &GamePreferencesDialog::on_start_game_clicked));
 
-    // FIXME:
-    // if the previous map is still available use this it as default setting
-#if 0
-    std::string randommap = get_conf_save_path() + "/random.map";
-    d_edit->SetText(randommap.c_str());
-#endif
+    xml->connect_clicked(
+	"edit_options_button",
+	sigc::mem_fun(*this, &GamePreferencesDialog::on_edit_options_clicked));
+
 }
 
 GamePreferencesDialog::~GamePreferencesDialog()
@@ -196,35 +145,39 @@ void GamePreferencesDialog::run()
     dialog->run();
 }
 
-void GamePreferencesDialog::cell_data_type(Gtk::CellRenderer *renderer,
-					   const Gtk::TreeIter& i)
-{
-    dynamic_cast<Gtk::CellRendererText*>(renderer)->property_text()
-	= (*i)[player_columns.type];
-}
-
-void GamePreferencesDialog::on_type_edited(const Glib::ustring &path,
-					   const Glib::ustring &new_text)
-{
-    (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.type]
-	= new_text;
-}
-
 void GamePreferencesDialog::add_player(const Glib::ustring &type,
 				       const Glib::ustring &name)
 {
-    Gtk::TreeIter i = player_list->append();
-    (*i)[player_columns.type] = type;
-    (*i)[player_columns.name] = name;
+  //okay, add a new hbox, with a combo and an entry in it
+  //add it to players_vbox
+  Gtk::HBox *player_hbox = new Gtk::HBox();
+  Gtk::ComboBoxText *player_type = new Gtk::ComboBoxText();
+  Gtk::Entry *player_name = new Gtk::Entry();
+  player_name->set_text(name);
+  player_type->append_text(HUMAN_PLAYER_TYPE);
+  player_type->append_text(EASY_PLAYER_TYPE);
+  player_type->append_text(HARD_PLAYER_TYPE);
+  player_type->append_text(NO_PLAYER_TYPE);
 
-    player_treeview->get_selection()->select(i);
+  if (type == HUMAN_PLAYER_TYPE)
+    player_type->set_active(0);
+  else if (type == EASY_PLAYER_TYPE)
+    player_type->set_active(1);
+  else if (type == HARD_PLAYER_TYPE)
+    player_type->set_active(2);
+  else if (type== NO_PLAYER_TYPE)
+    player_type->set_active(3);
+
+  player_types.push_back(player_type);
+  player_names.push_back(player_name);
+  player_hbox->add(*manage(player_name));
+  player_hbox->add(*manage(player_type));
+  players_vbox->add(*manage(player_hbox));
 }
 
 void GamePreferencesDialog::on_add_player_clicked()
 {
-    // FIXME: choose a random army?
-    
-    if (player_list->children().empty())
+    if (player_names.empty())
 	add_player(HUMAN_PLAYER_TYPE, *current_player_name);
 
     else
@@ -283,6 +236,13 @@ namespace
     }
 }
 
+void GamePreferencesDialog::on_edit_options_clicked()
+{
+  GameOptionsDialog d;
+  d.set_parent_window(*dialog.get());
+  d.run();
+}
+
 void GamePreferencesDialog::on_start_game_clicked()
 {
     // read out the values in the widgets
@@ -320,35 +280,35 @@ void GamePreferencesDialog::on_start_game_clicked()
     else
 	g.map_path = load_map_filechooser->get_filename();
 
-    for (Gtk::TreeIter i = player_list->children().begin(),
-	     end = player_list->children().end(); i != end; ++i) {
+    std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
+    std::list<Gtk::Entry *>::iterator e = player_names.begin();
+    for (; c != player_types.end(); c++, e++)
+      {
 	GameParameters::Player p;
-	p.type = player_type_to_enum((*i)[player_columns.type]);
-	Glib::ustring name = (*i)[player_columns.name];
+	p.type = player_type_to_enum((*c)->get_active_text());
+	Glib::ustring name = (*e)->get_text();
 	p.name = name;
 	g.players.push_back(p);
-    }
-    
+      }
+
     g.tile_theme
 	= Glib::filename_from_utf8(tile_theme_combobox->get_active_text());
 
     g.army_theme = Glib::filename_from_utf8(army_theme_combobox->get_active_text());
+
     g.process_armies = GameParameters::ProcessArmies(
 	process_armies_combobox->get_active_row_number());
 
-    g.see_opponents_stacks = view_enemies_checkbutton->get_active();
-    g.see_opponents_production = view_production_checkbutton->get_active();
-    g.play_with_quests = quests_checkbutton->get_active();
-    g.hidden_map = hidden_map_checkbutton->get_active();
-
-    g.neutral_cities = GameParameters::NeutralCities (
-	neutral_cities_combobox->get_active_row_number());
-
-    g.diplomacy = diplomacy_checkbutton->get_active();
-    g.random_turns = random_turns_checkbutton->get_active();
-    g.quick_start = quick_start_checkbutton->get_active();
-    g.intense_combat = intense_combat_checkbutton->get_active();
-    g.military_advisor = military_advisor_checkbutton->get_active();
+    g.see_opponents_stacks = Configuration::s_see_opponents_stacks;
+    g.see_opponents_production = Configuration::s_see_opponents_production;
+    g.play_with_quests = Configuration::s_play_with_quests;
+    g.hidden_map = Configuration::s_hidden_map;
+    g.neutral_cities = Configuration::s_neutral_cities;
+    g.diplomacy = Configuration::s_diplomacy;
+    g.random_turns = Configuration::s_random_turns;
+    g.quick_start = Configuration::s_quick_start;
+    g.intense_combat = Configuration::s_intense_combat;
+    g.military_advisor = Configuration::s_military_advisor;
 
     // and call callback
     game_started(g);

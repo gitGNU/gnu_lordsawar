@@ -17,6 +17,7 @@ liblwgui_a_SOURCES = \
     error-utils.cpp error-utils.h \
     fight-window.cpp fight-window.h \
     game-preferences-dialog.cpp game-preferences-dialog.h \
+    game-options-dialog.cpp game-options-dialog.h \
     game-window.cpp game-window.h \
     hero-dialog.cpp hero-dialog.h \
     hero-offer-dialog.cpp hero-offer-dialog.h \

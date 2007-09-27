@@ -21,6 +21,8 @@
 
 class XML_Helper;
 
+#include "game-parameters.h"
+
 // helper for making sure we got the initial configuration stuff up running
 void initialize_configuration();
 
@@ -93,6 +95,18 @@ class Configuration : public sigc::trackable
         static bool s_musicenable;
         static Uint32 s_musicvolume;
         static Uint32 s_musiccache;
+
+	// various default game settings
+        static bool s_see_opponents_stacks;
+        static bool s_see_opponents_production;
+        static bool s_play_with_quests;
+        static bool s_hidden_map;
+        static bool s_diplomacy;
+        static GameParameters::NeutralCities s_neutral_cities;
+        static bool s_intense_combat;
+        static bool s_military_advisor;
+        static bool s_random_turns;
+        static bool s_quick_start;
 
     private:
         /** \brief The callback for the XML_Helper

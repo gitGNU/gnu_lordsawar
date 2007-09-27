@@ -22,12 +22,8 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/combobox.h>
 #include <gtkmm/comboboxtext.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treemodelcolumn.h>
-#include <gtkmm/cellrenderercombo.h>
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/checkbutton.h>
-#include <gtkmm/treeview.h>
 #include <gtkmm/filechooserbutton.h>
 #include <gtkmm/widget.h>
 #include <gtkmm/scale.h>
@@ -70,57 +66,21 @@ class GamePreferencesDialog
 
     enum { MAP_SIZE_NORMAL = 0, MAP_SIZE_SMALL, MAP_SIZE_TINY };
 
-    // player settings stuff
-    Gtk::TreeView *player_treeview;
-    
-    class PlayerColumns: public Gtk::TreeModelColumnRecord {
-    public:
-	PlayerColumns()
-	    { add(type); add(name); }
-	
-	Gtk::TreeModelColumn<Glib::ustring> type;
-	Gtk::TreeModelColumn<Glib::ustring> name;
-    };
-    const PlayerColumns player_columns;
-    Glib::RefPtr<Gtk::ListStore> player_list;
-    
-    Gtk::CellRendererCombo type_renderer;
-    Gtk::TreeViewColumn type_column;
-    
-    class PlayerTypeColumns: public Gtk::TreeModelColumnRecord {
-    public:
-	PlayerTypeColumns()
-	    { add(type); }
-	
-	Gtk::TreeModelColumn<Glib::ustring> type;
-    };
-    const PlayerTypeColumns player_type_columns;
-    Glib::RefPtr<Gtk::ListStore> player_type_list;
-
-    Gtk::CheckButton *quests_checkbutton;
-    Gtk::CheckButton *view_enemies_checkbutton;
-    Gtk::CheckButton *view_production_checkbutton;
-    Gtk::CheckButton *hidden_map_checkbutton;
-    Gtk::ComboBox *neutral_cities_combobox;
-    Gtk::CheckButton *diplomacy_checkbutton;
-    Gtk::CheckButton *intense_combat_checkbutton;
-    Gtk::CheckButton *military_advisor_checkbutton;
-    Gtk::CheckButton *random_turns_checkbutton;
-    Gtk::CheckButton *quick_start_checkbutton;
+    Gtk::VBox *players_vbox;
 
     typedef std::vector<Glib::ustring> player_name_seq;
     player_name_seq default_player_names;
     player_name_seq::iterator current_player_name;
     
-    void cell_data_type(Gtk::CellRenderer *renderer, const Gtk::TreeIter &i);
-    void on_type_edited(const Glib::ustring &path,
-			const Glib::ustring &new_text);
+    std::list<Gtk::ComboBoxText *> player_types;
+    std::list<Gtk::Entry *> player_names;
 
     void add_player(const Glib::ustring &type, const Glib::ustring &name);
     void on_add_player_clicked();
     void on_random_map_toggled();
     void on_map_size_changed();
     void on_start_game_clicked();
+    void on_edit_options_clicked();
 };
 
 #endif

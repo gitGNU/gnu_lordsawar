@@ -45,7 +45,6 @@
 #include "army.h"
 #include "QuestsManager.h"
 #include "Itemlist.h"
-#include "rewardlist.h"
 #include "string_tokenizer.h"
 #include "player.h"
 #include "vectoredunitlist.h"

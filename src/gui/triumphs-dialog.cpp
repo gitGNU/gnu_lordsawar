@@ -167,7 +167,7 @@ void TriumphsDialog::fill_in_page(Player *p)
 				    count), count);
   Gtk::Label *special_label = new Gtk::Label(s);
   //let's go find a special army
-  const Army *special;
+  const Army *special = NULL;
   for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
     {
       const Army *a = al->getArmy (p->getArmyset(), j);

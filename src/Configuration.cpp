@@ -55,6 +55,16 @@ bool Configuration::s_musicenable = true;
 Uint32 Configuration::s_musicvolume = 64;
 Uint32 Configuration::s_musiccache = 10000000;
 string Configuration::s_filename = "";
+bool Configuration::s_see_opponents_stacks = false;
+bool Configuration::s_see_opponents_production = false;
+bool Configuration::s_play_with_quests = true;
+bool Configuration::s_hidden_map = false;
+bool Configuration::s_diplomacy = false;
+GameParameters::NeutralCities Configuration::s_neutral_cities = GameParameters::AVERAGE;
+bool Configuration::s_intense_combat = false;
+bool Configuration::s_military_advisor = false;
+bool Configuration::s_random_turns = false;
+bool Configuration::s_quick_start = false;
 
 Configuration::Configuration()
 {
@@ -114,7 +124,16 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("musicenable", s_musicenable);
     retval &= helper.saveData("musicvolume", s_musicvolume);
     retval &= helper.saveData("musiccache", s_musiccache);
-    
+    retval &= helper.saveData("view_enemies", s_see_opponents_stacks);
+    retval &= helper.saveData("view_production", s_see_opponents_production);
+    retval &= helper.saveData("quests", s_play_with_quests);
+    retval &= helper.saveData("hidden_map", s_hidden_map);
+    retval &= helper.saveData("diplomacy", s_diplomacy);
+    retval &= helper.saveData("neutral_cities", (int) s_neutral_cities);
+    retval &= helper.saveData("intense_combat", s_intense_combat);
+    retval &= helper.saveData("military_advisor", s_military_advisor);
+    retval &= helper.saveData("random_turns", s_random_turns);
+    retval &= helper.saveData("quick_start", s_quick_start);
     retval &= helper.closeTag();
     
     if (!retval)
@@ -238,6 +257,18 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     helper->getData(s_musicvolume, "musicvolume");
     helper->getData(s_musiccache, "musiccache");
     
+    helper->getData(s_see_opponents_stacks, "view_enemies");
+    helper->getData(s_see_opponents_production, "view_production");
+    helper->getData(s_play_with_quests, "quests");
+    helper->getData(s_hidden_map, "hidden_map");
+    helper->getData(s_diplomacy, "diplomacy");
+    int val = -1;
+    helper->getData(val, "neutral_cities");
+    s_neutral_cities = GameParameters::NeutralCities (val);
+    helper->getData(s_intense_combat, "intense_combat");
+    helper->getData(s_military_advisor, "military_advisor");
+    helper->getData(s_random_turns, "random_turns");
+    helper->getData(s_quick_start, "quick_start");
     return true;
 }
 
