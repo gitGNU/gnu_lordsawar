@@ -275,9 +275,7 @@ Reward_Map::Reward_Map(XML_Helper* helper)
 {
   helper->registerTag("location", sigc::mem_fun(this, 
 						&Reward_Map::loadLocation));
-  printf("uhhh\n");
   helper->getData(d_height, "height");
-  printf("hmmm\n");
   helper->getData(d_width, "width");
 }
 
