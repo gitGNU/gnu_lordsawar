@@ -20,6 +20,7 @@
 #include <sigc++/signal.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/checkbutton.h>
+#include <gtkmm/comboboxtext.h>
 #include <gtkmm/scale.h>
 #include <gtkmm/box.h>
 
@@ -41,10 +42,12 @@ class PreferencesDialog: public sigc::trackable
     Gtk::CheckButton *play_music_checkbutton;
     Gtk::Scale *music_volume_scale;
     Gtk::Box *music_volume_hbox;
+    Gtk::VBox *players_vbox;
 
     void on_show_turn_popup_toggled();
     void on_play_music_toggled();
     void on_music_volume_changed();
+    std::list<Gtk::ComboBoxText *> player_types;
 };
 
 #endif

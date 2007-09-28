@@ -24,6 +24,7 @@
 #include "../defs.h"
 #include "../Configuration.h"
 #include "../sound.h"
+#include "../playerlist.h"
 
 
 PreferencesDialog::PreferencesDialog()
@@ -40,7 +41,30 @@ PreferencesDialog::PreferencesDialog()
     xml->get_widget("play_music_checkbutton", play_music_checkbutton);
     xml->get_widget("music_volume_scale", music_volume_scale);
     xml->get_widget("music_volume_hbox", music_volume_hbox);
+    xml->get_widget("players_vbox", players_vbox);
     
+    Playerlist* pl = Playerlist::getInstance();
+    for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
+      {
+	if (*i == Playerlist::getInstance()->getNeutral())
+	  continue;
+	Gtk::HBox *player_hbox = new Gtk::HBox();
+	Gtk::ComboBoxText *type = new Gtk::ComboBoxText();
+	type->append_text(_("Human"));
+	type->append_text(_("Computer"));
+	if ((*i)->getType() == Player::HUMAN)
+	  type->set_active(0);
+	else
+	  type->set_active(1);
+	if ((*i)->isDead())
+	  type->set_sensitive(false);
+	player_hbox->pack_start(*manage(type), Gtk::PACK_SHRINK, 10);
+	player_types.push_back(type);
+	Gtk::Label *player_name = new Gtk::Label((*i)->getName());
+	player_hbox->pack_start(*manage(player_name), Gtk::PACK_SHRINK, 10);
+	players_vbox->pack_start(*manage(player_hbox));
+      }
+    players_vbox->show_all_children();
     show_turn_popup_checkbutton->signal_toggled().connect(
 	sigc::mem_fun(this, &PreferencesDialog::on_show_turn_popup_toggled));
     play_music_checkbutton->signal_toggled().connect(
@@ -52,6 +76,7 @@ PreferencesDialog::PreferencesDialog()
     play_music_checkbutton->set_active(Configuration::s_musicenable);
     music_volume_hbox->set_sensitive(Configuration::s_musicenable);
     music_volume_scale->set_value(Configuration::s_musicvolume * 100.0 / 128);
+    
 }
 
 void PreferencesDialog::set_parent_window(Gtk::Window &parent)
@@ -73,6 +98,28 @@ void PreferencesDialog::run()
     
     dialog->get_size(width, height);
     Configuration::saveConfigurationFile(Configuration::configuration_file_path);
+    Playerlist* pl = Playerlist::getInstance();
+    std::list<Gtk::ComboBoxText *>::iterator j = player_types.begin();
+    Playerlist::iterator i = pl->begin();
+    for (; j != player_types.end(); ++i, ++j)
+      {
+	if ((*i) == Playerlist::getInstance()->getNeutral())
+	  i++;
+	if ((*i)->getType() == Player::HUMAN) //changing human to:
+	  {
+	    if ((*j)->get_active_text() == _("Human")) //human, no change
+	      ;
+	    else //computer, change to easy
+	      (*i)->setType (Player::AI_FAST);
+	  }
+	else //changing computer to:
+	  {
+	    if ((*j)->get_active_text() == _("Human")) //human, change it
+	      (*i)->setType (Player::HUMAN);
+	    else //computer, no change
+	      ;
+	  }
+      }
 }
 
 void PreferencesDialog::on_show_turn_popup_toggled()
