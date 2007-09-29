@@ -1,6 +1,16 @@
+2007-09-29  Ben Asselstine
+
+	* added military advisor
+	* enabled beginner/intermediate/advanced buttons in game options
+	  dialog
+	* added extra message when last human player dies and there are
+	  only computer players left
+
 2007-09-27  Ben Asselstine
 
 	* added separate game options dialog off of game preferences dialog
+	* changed preferences dialog to change computer players to human 
+	  ones on the fly
 
 2007-09-26  Ben Asselstine
 
