@@ -70,6 +70,7 @@ GameBigMap::GameBigMap()
     Timing::instance().register_timer(
 				      sigc::mem_fun(*this, &GameBigMap::on_selection_timeout),
 				      selection_timeout);
+  shift_key_is_down = false;
 }
 
 GameBigMap::~GameBigMap()
@@ -121,6 +122,13 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
       if (stack)
 	{
+	  // ask for military advice
+	  if (d_cursor == GraphicsCache::QUESTION)
+	    {
+	      Playerlist::getActiveplayer()->stackFightAdvise(stack, tile); 
+	      set_shift_key_down (false);
+	      return;
+	    }
 	  Vector<int> p;
 	  p.x = tile.x; p.y = tile.y;
 
@@ -309,6 +317,133 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
     }
 }
 
+void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
+{
+  if (stack)
+    {
+      d_cursor = GraphicsCache::FEET;
+      if (stack->getPos() == tile)
+	d_cursor = GraphicsCache::TARGET;
+      else
+	{
+	  City *c = Citylist::getInstance()->getObjectAt(tile);
+	  if (c)
+	    {
+	      if (c->getPlayer() == Playerlist::getActiveplayer())
+		d_cursor = GraphicsCache::FEET;
+	      else if (c->isBurnt() == true)
+		d_cursor = GraphicsCache::FEET;
+	      else
+		{
+		  int delta = abs(tile.x - stack->getPos().x);
+		  if (delta <= 1)
+		    delta = abs(tile.y - stack->getPos().y);
+		  if (delta <= 1)
+		    {
+		      if (is_shift_key_down())
+			d_cursor = GraphicsCache::QUESTION;
+		      else
+			{
+			  bool friendly = false;
+			  if (friendly)
+			    d_cursor = GraphicsCache::HEART;
+			  else
+			    d_cursor = GraphicsCache::SWORD;
+			}
+		    }
+		  else
+		    {
+		      //can i see other ppl's cities?
+		      if (GameScenario::s_see_opponents_production == true)
+			d_cursor = GraphicsCache::ROOK;
+		      else
+			d_cursor = GraphicsCache::HAND;
+		    }
+		}
+	    }
+	  else
+	    {
+	      Maptile *t = GameMap::getInstance()->getTile(tile);
+	      Stack *st;
+	      st = Stacklist::getObjectAt(tile);
+	      if (!st)
+		{
+		  Stack *empty = new Stack (*stack);
+		  if (empty->getPath()->calculate(empty, tile) == 0)
+		    d_cursor = GraphicsCache::HAND;
+		  else
+		    {
+		      if (t->getMaptileType() == Tile::WATER)
+			d_cursor = GraphicsCache::SHIP;
+		      else
+			d_cursor = GraphicsCache::FEET;
+		    }
+		  delete empty;
+		}
+	      else
+		{
+		  if (st->getPlayer() != Playerlist::getActiveplayer())
+		    {
+		      int delta = abs(stack->getPos().x - st->getPos().x);
+		      if (delta <= 1)
+			delta = abs(stack->getPos().y - st->getPos().y);
+		      if (delta <= 1)
+			{
+			  if (is_shift_key_down())
+		    	    d_cursor = GraphicsCache::QUESTION;
+			  else
+			    {
+			      bool friendly = false;
+			      if (friendly)
+				d_cursor = GraphicsCache::HEART;
+			      else
+				d_cursor = GraphicsCache::SWORD;
+			    }
+			}
+		      else
+			d_cursor = GraphicsCache::HAND;
+		    }
+		}
+
+	    }
+	}
+    }
+  else
+    {
+      d_cursor = GraphicsCache::HAND;
+      Stack *st;
+
+      st = Playerlist::getActiveplayer()->getStacklist()->getObjectAt(tile);
+      if (st)
+	{
+	  if (st->getPlayer() == Playerlist::getActiveplayer())
+	    d_cursor = GraphicsCache::TARGET;
+	  else
+	    d_cursor = GraphicsCache::HAND;
+	}
+      else
+	{
+	  Maptile *t = GameMap::getInstance()->getTile(tile);
+	  if (t->getBuilding() == Maptile::CITY)
+	    {
+	      City *c = Citylist::getInstance()->getObjectAt(tile);
+	      if (c->isBurnt() == true)
+		d_cursor = GraphicsCache::FEET;
+	      else if (c->getPlayer() == Playerlist::getActiveplayer())
+		d_cursor = GraphicsCache::ROOK;
+	      else if (GameScenario::s_see_opponents_production == true)
+		d_cursor = GraphicsCache::ROOK;
+	    }
+	  else if (t->getBuilding() == Maptile::RUIN)
+	    d_cursor = GraphicsCache::RUIN;
+	  else if (t->getBuilding() == Maptile::TEMPLE)
+	    d_cursor = GraphicsCache::RUIN;
+	}
+
+    }
+  cursor_changed.emit(d_cursor);
+}
+
 void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 {
   static Vector<int> last_tile;
@@ -358,119 +493,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       prev_mouse_pos = e.pos;
       return;
     }
-  if (stack)
-    {
-      d_cursor = GraphicsCache::FEET;
-      if (stack->getPos() == tile)
-	d_cursor = GraphicsCache::TARGET;
-      else
-	{
-	  City *c = Citylist::getInstance()->getObjectAt(tile);
-	  if (c)
-	    {
-	      if (c->getPlayer() == Playerlist::getActiveplayer())
-		d_cursor = GraphicsCache::FEET;
-	      else if (c->isBurnt() == true)
-		d_cursor = GraphicsCache::FEET;
-	      else
-		{
-		  int delta = abs(tile.x - stack->getPos().x);
-		  if (delta <= 1)
-		    delta = abs(tile.y - stack->getPos().y);
-		  if (delta <= 1)
-		    {
-		      bool friendly = false;
-		      if (friendly)
-			d_cursor = GraphicsCache::HEART;
-		      else
-			d_cursor = GraphicsCache::SWORD;
-		    }
-		  else
-		    {
-		      //can i see other ppl's cities?
-		      if (GameScenario::s_see_opponents_production == true)
-			d_cursor = GraphicsCache::ROOK;
-		      else
-			d_cursor = GraphicsCache::HAND;
-		    }
-		}
-	    }
-	  else
-	    {
-	      Maptile *t = GameMap::getInstance()->getTile(tile);
-	      Stack *st;
-	      st = Stacklist::getObjectAt(tile);
-	      if (!st)
-		{
-		  Stack *empty = new Stack (*stack);
-		  if (empty->getPath()->calculate(empty, tile) == 0)
-		    d_cursor = GraphicsCache::HAND;
-		  else
-		    {
-		      if (t->getMaptileType() == Tile::WATER)
-			d_cursor = GraphicsCache::SHIP;
-		      else
-			d_cursor = GraphicsCache::FEET;
-		    }
-		  delete empty;
-		}
-	      else
-		{
-		  if (st->getPlayer() != Playerlist::getActiveplayer())
-		    {
-		      int delta = abs(stack->getPos().x - st->getPos().x);
-		      if (delta <= 1)
-			delta = abs(stack->getPos().y - st->getPos().y);
-		      if (delta <= 1)
-			{
-			  bool friendly = false;
-			  if (friendly)
-			    d_cursor = GraphicsCache::HEART;
-			  else
-			    d_cursor = GraphicsCache::SWORD;
-			}
-		      else
-			d_cursor = GraphicsCache::HAND;
-		    }
-		}
-
-	    }
-	}
-    }
-  else
-    {
-      d_cursor = GraphicsCache::HAND;
-      Stack *st;
-
-      st = Playerlist::getActiveplayer()->getStacklist()->getObjectAt(tile);
-      if (st)
-	{
-	  if (st->getPlayer() == Playerlist::getActiveplayer())
-	    d_cursor = GraphicsCache::TARGET;
-	  else
-	    d_cursor = GraphicsCache::HAND;
-	}
-      else
-	{
-	  Maptile *t = GameMap::getInstance()->getTile(tile);
-	  if (t->getBuilding() == Maptile::CITY)
-	    {
-	      City *c = Citylist::getInstance()->getObjectAt(tile);
-	      if (c->isBurnt() == true)
-		d_cursor = GraphicsCache::FEET;
-	      else if (c->getPlayer() == Playerlist::getActiveplayer())
-		d_cursor = GraphicsCache::ROOK;
-	      else if (GameScenario::s_see_opponents_production == true)
-		d_cursor = GraphicsCache::ROOK;
-	    }
-	  else if (t->getBuilding() == Maptile::RUIN)
-	    d_cursor = GraphicsCache::RUIN;
-	  else if (t->getBuilding() == Maptile::TEMPLE)
-	    d_cursor = GraphicsCache::RUIN;
-	}
-
-    }
-  cursor_changed.emit(d_cursor);
+  determine_mouse_cursor (stack, tile);
 
   prev_mouse_pos = e.pos;
   last_tile = tile;
@@ -566,7 +589,7 @@ void GameBigMap::after_draw()
 	      if ((*it)->isGrouped())
 		num_selected++;
 	    }
-			
+
 	  draw_stack (stack);
 	  if (num_selected > 1)
 	    tmp = gc->getSelectorPic(0, bigframe, stack->getPlayer());
@@ -576,3 +599,38 @@ void GameBigMap::after_draw()
 	}
     }
 }
+
+void GameBigMap::set_shift_key_down (bool down)
+{
+  if (GameScenario::s_military_advisor == false)
+    return;
+  static GraphicsCache::CursorType prev_cursor = GraphicsCache::HEART;
+
+  Stack* stack = Playerlist::getActiveplayer()->getActivestack();
+  if (!stack)
+    return;
+
+  if (d_cursor == GraphicsCache::HEART ||
+      d_cursor == GraphicsCache::SWORD)
+    {
+      if (shift_key_is_down == false)
+	{
+	  shift_key_is_down = down;
+	  prev_cursor = d_cursor;
+	  d_cursor = GraphicsCache::QUESTION;
+	  cursor_changed.emit(d_cursor);
+	}
+    }
+  else if (d_cursor == GraphicsCache::QUESTION)
+    {
+      if (shift_key_is_down == true)
+	{
+	  shift_key_is_down = down;
+	  d_cursor = prev_cursor;
+	  cursor_changed.emit(d_cursor);
+	}
+    }
+  else
+    shift_key_is_down = down;
+}
+

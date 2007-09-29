@@ -70,8 +70,8 @@ void Fight::orderArmies(std::list<Stack*> stacks, std::vector<Army*> &armies)
   return;
 }
 
-Fight::Fight(Stack* attacker, Stack* defender)
-    : d_turn(0), d_result(DRAW)
+Fight::Fight(Stack* attacker, Stack* defender, FightType type)
+    : d_turn(0), d_result(DRAW), d_type(type)
 {
 
     debug("Fight between " <<attacker->getId() <<" and " <<defender->getId())
@@ -128,128 +128,143 @@ Fight::Fight(Stack* attacker, Stack* defender)
             }
         }
 
-    // Now some last initializing. Each unit has its battle number increased.
+	
     std::list<Stack*>::iterator it;
-    
-    for (it = d_attackers.begin(); it != d_attackers.end(); it++)
-        for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
-            (*sit)->setBattlesNumber((*sit)->getBattlesNumber() + 1);
-    
-    for (it = d_defenders.begin(); it != d_defenders.end(); it++)
-        for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
-            (*sit)->setBattlesNumber((*sit)->getBattlesNumber() + 1);
+    if (d_type == FOR_KEEPS)
+      {
+	// Now some last initializing. Each unit has its battle number 
+	// increased.
 
-  //setup fighters
-  it = d_defenders.begin();
-  std::vector<Army*> def;
-  orderArmies (d_defenders, def);
-  for (std::vector<Army*>::iterator ait = def.begin(); ait != def.end(); ait++)
-    {
-      Fighter* f = new Fighter((*ait), (*it)->getPos());
-      d_def_close.push_back(f);
-    }
+	for (it = d_attackers.begin(); it != d_attackers.end(); it++)
+	  for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
+	    (*sit)->setBattlesNumber((*sit)->getBattlesNumber() + 1);
 
-  it = d_attackers.begin();
-  std::vector<Army*> att;
-  orderArmies (d_attackers, att);
-  for (std::vector<Army*>::iterator ait = att.begin(); ait != att.end(); ait++)
-    {
-      Fighter* f = new Fighter((*ait), (*it)->getPos());
-      d_att_close.push_back(f);
-    }
+	for (it = d_defenders.begin(); it != d_defenders.end(); it++)
+	  for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
+	    (*sit)->setBattlesNumber((*sit)->getBattlesNumber() + 1);
+      }
+
+    //setup fighters
+    it = d_defenders.begin();
+    std::vector<Army*> def;
+    orderArmies (d_defenders, def);
+    for (std::vector<Army*>::iterator ait = def.begin(); ait != def.end(); ait++)
+      {
+	Fighter* f = new Fighter((*ait), (*it)->getPos());
+	d_def_close.push_back(f);
+      }
+
+    it = d_attackers.begin();
+    std::vector<Army*> att;
+    orderArmies (d_attackers, att);
+    for (std::vector<Army*>::iterator ait = att.begin(); ait != att.end(); ait++)
+      {
+	Fighter* f = new Fighter((*ait), (*it)->getPos());
+	d_att_close.push_back(f);
+      }
 
 }                
 
 Fight::~Fight()
 {
-    d_attackers.clear();
-    d_defenders.clear();
+      
+  d_attackers.clear();
+  d_defenders.clear();
 
-    // clear all fighter items in all lists
-    while (!d_att_close.empty())
+  // clear all fighter items in all lists
+  while (!d_att_close.empty())
     {
-        delete (*d_att_close.begin());
-        d_att_close.erase(d_att_close.begin());
+      delete (*d_att_close.begin());
+      d_att_close.erase(d_att_close.begin());
     }
-    
-    while (!d_def_close.empty())
+
+  while (!d_def_close.empty())
     {
-        delete (*d_def_close.begin());
-        d_def_close.erase(d_def_close.begin());
+      delete (*d_def_close.begin());
+      d_def_close.erase(d_def_close.begin());
     }
-    
+
 }
 
 void Fight::battle()
 {
-    // at the beginning of the battle, calculate the bonuses
-    // bonuses remain even if the unit providing a stackwide bonus dies
+  // at the beginning of the battle, calculate the bonuses
+  // bonuses remain even if the unit providing a stackwide bonus dies
 
-    calculateBonus();
+  calculateBonus();
 
-    // first, fight until the fight is over
-    for (d_turn = 0; doRound(); d_turn++);
+  // first, fight until the fight is over
+  for (d_turn = 0; doRound(); d_turn++);
 
-    // Now we have to set the fight result.
-    
-    // First, look if the attacker died; the attacking stack is the first
-    // one in the list
-    bool survivor = false;
-    Stack* s = d_attackers.front();
-    for (Stack::const_iterator it = s->begin(); it != s->end(); it++)
-        if ((*it)->getHP() > 0)
-        {
-            survivor = true;
-            break;
-        }
+  // Now we have to set the fight result.
 
-    if (!survivor)
+  // First, look if the attacker died; the attacking stack is the first
+  // one in the list
+  bool survivor = false;
+  Stack* s = d_attackers.front();
+  for (Stack::const_iterator it = s->begin(); it != s->end(); it++)
+    if ((*it)->getHP() > 0)
+      {
+	survivor = true;
+	break;
+      }
+
+  if (!survivor)
+      d_result = DEFENDER_WON;
+  else
     {
-        d_result = DEFENDER_WON;
-        return;
+      // Now look if the defender died; also the first in the list
+      survivor = false;
+      s = d_defenders.front();
+      for (Stack::const_iterator it = s->begin(); it != s->end(); it++)
+	if ((*it)->getHP() > 0)
+	  {
+	    survivor = true;
+	    break;
+	  }
+
+      if (!survivor)
+	d_result = ATTACKER_WON;
     }
 
-    // Now look if the defender died; also the first in the list
-    survivor = false;
-    s = d_defenders.front();
-    for (Stack::const_iterator it = s->begin(); it != s->end(); it++)
-        if ((*it)->getHP() > 0)
-        {
-            survivor = true;
-            break;
-        }
+  if (d_type == FOR_KICKS)
+    {
+      std::list<Stack*>::iterator it;
+      //heal the attackers and defenders to full hit points
+      for (it = d_attackers.begin(); it != d_attackers.end(); it++)
+	for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
+	  (*sit)->heal((*sit)->getStat(Army::HP));
 
-    if (!survivor)
-        d_result = ATTACKER_WON;
+      for (it = d_defenders.begin(); it != d_defenders.end(); it++)
+	for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
+	  (*sit)->heal((*sit)->getStat(Army::HP));
+    }
 }
 
 bool Fight::doRound()
 {
-    if (MAX_ROUNDS && d_turn >= MAX_ROUNDS)
-        return false;
-    
-    debug ("Fight round #" <<d_turn)
-    
-    // Now, to give the attacker a bonus, his units attack first.
-    std::list<Fighter*>::iterator it;
-    
+  if (MAX_ROUNDS && d_turn >= MAX_ROUNDS)
+    return false;
+
+  debug ("Fight round #" <<d_turn)
+
     //fight the first one in attackers with the first one in defenders
     std::list<Fighter*>::iterator ffit = d_att_close.begin();
-    std::list<Fighter*>::iterator efit = d_def_close.begin();
+  std::list<Fighter*>::iterator efit = d_def_close.begin();
 
-    //have the attacker and defender try to hit each other
-    fightArmies(*ffit, *efit);
+  //have the attacker and defender try to hit each other
+  fightArmies(*ffit, *efit);
 
-    if (*efit && (*efit)->army->getHP() <= 0)
-      remove((*efit));
+  if (*efit && (*efit)->army->getHP() <= 0)
+    remove((*efit));
 
-    if (*ffit && (*ffit)->army->getHP() <= 0)
-      remove((*ffit));
+  if (*ffit && (*ffit)->army->getHP() <= 0)
+    remove((*ffit));
 
-    if (d_def_close.empty() || d_att_close.empty())
-        return false;
-    
-    return true;
+  if (d_def_close.empty() || d_att_close.empty())
+    return false;
+
+  return true;
 }
 
 void Fight::calculateBaseStrength(std::list<Fighter*> fighters)
@@ -258,9 +273,9 @@ void Fight::calculateBaseStrength(std::list<Fighter*> fighters)
   for (fit = fighters.begin(); fit != fighters.end(); fit++)
     {
       if ((*fit)->army->getStat(Army::SHIP))
-        (*fit)->terrain_strength = 4;
+	(*fit)->terrain_strength = 4;
       else
-        (*fit)->terrain_strength = (*fit)->army->getStat(Army::STRENGTH);
+	(*fit)->terrain_strength = (*fit)->army->getStat(Army::STRENGTH);
     }
 }
 
@@ -273,40 +288,40 @@ void Fight::calculateTerrainModifiers(std::list<Fighter*> fighters)
   for (fit = d_att_close.begin(); fit != d_att_close.end(); fit++)
     {
       if ((*fit)->army->getStat(Army::SHIP))
-        continue;
+	continue;
 
       mtile = gm->getTile((*fit)->pos);
       army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
 
       if (army_bonus & Army::ADD1STRINOPEN && mtile->isOpenTerrain())
-        (*fit)->terrain_strength += 1;
+	(*fit)->terrain_strength += 1;
 
       if (army_bonus & Army::ADD1STRINFOREST && 
-          mtile->getType() == Tile::FOREST && !mtile->isCityTerrain())
-        (*fit)->terrain_strength += 1;
+	  mtile->getType() == Tile::FOREST && !mtile->isCityTerrain())
+	(*fit)->terrain_strength += 1;
 
       if (army_bonus & Army::ADD1STRINHILLS && mtile->isHillyTerrain())
-        (*fit)->terrain_strength += 1;
+	(*fit)->terrain_strength += 1;
 
       if (army_bonus & Army::ADD1STRINCITY && mtile->isCityTerrain())
-        (*fit)->terrain_strength += 1;
+	(*fit)->terrain_strength += 1;
 
       if (army_bonus & Army::ADD2STRINCITY && mtile->isCityTerrain())
-        (*fit)->terrain_strength += 2;
+	(*fit)->terrain_strength += 2;
 
       if (army_bonus & Army::ADD2STRINOPEN && mtile->isOpenTerrain())
-        (*fit)->terrain_strength += 2;
+	(*fit)->terrain_strength += 2;
 
       if ((*fit)->terrain_strength > 9) //terrain strength can't ever exceed 9
-        (*fit)->terrain_strength = 9;
+	(*fit)->terrain_strength = 9;
 
     }
 }
 
 void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly, 
-                                        std::list<Fighter*>enemy, 
-                                        bool friendlyIsDefending,
-                                        Hero *strongestHero)
+					std::list<Fighter*>enemy, 
+					bool friendlyIsDefending,
+					Hero *strongestHero)
 {
   Uint32 army_bonus;
   GameMap *gm = GameMap::getInstance();
@@ -319,21 +334,21 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
     {
       Uint32 non_hero_bonus = 0;
       if ((*fit)->army->isHero())
-        continue;
+	continue;
       mtile = gm->getTile((*fit)->pos);
       army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
 
       if (army_bonus & Army::ADD1STACKINHILLS && mtile->isHillyTerrain())
-        non_hero_bonus += 1;
+	non_hero_bonus += 1;
 
       if (army_bonus & Army::ADD1STACK)
-        non_hero_bonus += 1;
+	non_hero_bonus += 1;
 
       if (army_bonus & Army::ADD2STACK)
-        non_hero_bonus += 2;
+	non_hero_bonus += 2;
 
       if (non_hero_bonus > highest_non_hero_bonus)
-        highest_non_hero_bonus = non_hero_bonus;
+	highest_non_hero_bonus = non_hero_bonus;
     }
 
   // does the defender cancel our non hero bonus?
@@ -341,10 +356,10 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
     {
       army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
       if (army_bonus & Army::SUBALLNONHEROBONUS)
-        {
-          highest_non_hero_bonus = 0; //yes
-          break;
-        }
+	{
+	  highest_non_hero_bonus = 0; //yes
+	  break;
+	}
     }
 
   //find hero bonus of strongest hero
@@ -353,24 +368,24 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
     {
       // first get command items from ALL heroes in the stack
       for (fit = friendly.begin(); fit != friendly.end(); fit++)
-        {
-          if ((*fit)->army->isHero())
-            {
-              Hero *h = dynamic_cast<Hero*>((*fit)->army);
-              std::list<Item*> backpack = h->getBackpack();
-              std::list<Item*>::const_iterator item;
-              // count up the bonuses from command items
-              for (item = backpack.begin(); item != backpack.end(); item++)
-                {
-                  if ((*item)->getBonus(Item::ADD1STACK))
-                    hero_bonus += 1;
-                  if ((*item)->getBonus(Item::ADD2STACK))
-                    hero_bonus += 2;
-                  if ((*item)->getBonus(Item::ADD3STACK))
-                    hero_bonus += 3;
-                }
-            }
-        }
+	{
+	  if ((*fit)->army->isHero())
+	    {
+	      Hero *h = dynamic_cast<Hero*>((*fit)->army);
+	      std::list<Item*> backpack = h->getBackpack();
+	      std::list<Item*>::const_iterator item;
+	      // count up the bonuses from command items
+	      for (item = backpack.begin(); item != backpack.end(); item++)
+		{
+		  if ((*item)->getBonus(Item::ADD1STACK))
+		    hero_bonus += 1;
+		  if ((*item)->getBonus(Item::ADD2STACK))
+		    hero_bonus += 2;
+		  if ((*item)->getBonus(Item::ADD3STACK))
+		    hero_bonus += 3;
+		}
+	    }
+	}
     }
 
   //now add on the hero's natural command
@@ -384,10 +399,10 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
     {
       army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
       if (army_bonus & Army::SUBALLHEROBONUS)
-        {
-          hero_bonus = 0; //yep
-          break;
-        }
+	{
+	  hero_bonus = 0; //yep
+	  break;
+	}
     }
 
   Uint32 fortify_bonus = 0;
@@ -395,10 +410,10 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
     {
       army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
       if (army_bonus & Army::FORTIFY)
-        {
-          fortify_bonus = 1;
-          break;
-        }
+	{
+	  fortify_bonus = 1;
+	  break;
+	}
     }
 
   Uint32 city_bonus = 0;
@@ -409,46 +424,46 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
       mtile = gm->getTile((*fit)->pos);
       City *c = Citylist::getInstance()->getNearestCity((*fit)->pos);
       if (c && mtile->getBuilding() == Maptile::CITY)
-        {
-          if (c->isBurnt()) 
-            city_bonus = 0;
-          else if (c->getNoOfBasicProd() <= 2 && c->getPlayer() ==
-                   Playerlist::getInstance()->getNeutral())
-            city_bonus = 0;
-          else if (c->getNoOfBasicProd() <= 2 && c->getPlayer() ==
-                               Playerlist::getInstance()->getActiveplayer())
-            city_bonus = 1;
-          else if (c->getNoOfBasicProd() > 2 && c->getPlayer() ==
-                   Playerlist::getInstance()->getNeutral())
-            city_bonus = 1;
-          else if (c->getNoOfBasicProd() > 2 && c->getPlayer() ==
-                   Playerlist::getInstance()->getActiveplayer())
-            city_bonus = 2;
-        }
+	{
+	  if (c->isBurnt()) 
+	    city_bonus = 0;
+	  else if (c->getNoOfBasicProd() <= 2 && c->getPlayer() ==
+		   Playerlist::getInstance()->getNeutral())
+	    city_bonus = 0;
+	  else if (c->getNoOfBasicProd() <= 2 && c->getPlayer() ==
+		   Playerlist::getInstance()->getActiveplayer())
+	    city_bonus = 1;
+	  else if (c->getNoOfBasicProd() > 2 && c->getPlayer() ==
+		   Playerlist::getInstance()->getNeutral())
+	    city_bonus = 1;
+	  else if (c->getNoOfBasicProd() > 2 && c->getPlayer() ==
+		   Playerlist::getInstance()->getActiveplayer())
+	    city_bonus = 2;
+	}
       else
-        {
-          if (mtile->getBuilding() == Maptile::TEMPLE)
-            city_bonus = 2;
-          else if (mtile->getBuilding() == Maptile::RUIN)
-            city_bonus = 2;
-        }
+	{
+	  if (mtile->getBuilding() == Maptile::TEMPLE)
+	    city_bonus = 2;
+	  else if (mtile->getBuilding() == Maptile::RUIN)
+	    city_bonus = 2;
+	}
 
       // FIXME: implement towers.  they get a city bonus
 
       // does the attacker cancel our city bonus?
       for (fit = enemy.begin(); fit != enemy.end(); fit++)
-        {
-          army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
-          if (army_bonus & Army::SUBALLCITYBONUS)
-            {
-              city_bonus = 0; //yep
-              break;
-            }
-        }
+	{
+	  army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
+	  if (army_bonus & Army::SUBALLCITYBONUS)
+	    {
+	      city_bonus = 0; //yep
+	      break;
+	    }
+	}
     }
 
   Uint32 total_bonus = highest_non_hero_bonus + hero_bonus + fortify_bonus + 
-                       city_bonus;
+    city_bonus;
 
   if (total_bonus > 5) //total bonus can't exceed 5
     total_bonus = 5;
@@ -468,63 +483,63 @@ void Fight::calculateFinalStrengths (std::list<Fighter*> friendly, std::list<Fig
   for (efit = enemy.begin(); efit != enemy.end(); efit++)
     {
       if ((*efit)->army->getStat(Army::SHIP))
-        continue;
+	continue;
       army_bonus = (*efit)->army->getStat(Army::ARMY_BONUS);
       if (army_bonus & Army::SUB1ENEMYSTACK)
-        {
-          for (ffit = friendly.begin(); ffit != friendly.end(); ffit++)
-            {
-              (*ffit)->terrain_strength -= 1;
-              if ((*ffit)->terrain_strength <= 0)
-                (*ffit)->terrain_strength = 1;
-            }
-          break;
-        }
+	{
+	  for (ffit = friendly.begin(); ffit != friendly.end(); ffit++)
+	    {
+	      (*ffit)->terrain_strength -= 1;
+	      if ((*ffit)->terrain_strength <= 0)
+		(*ffit)->terrain_strength = 1;
+	    }
+	  break;
+	}
     }
 }
 
 void Fight::calculateBonus()
 {
-    // If there is a hero, add a +1 strength bonus
-    std::list<Stack*>::const_iterator it;
-    Stack::const_iterator sit;
-    std::list<Fighter*>::iterator fit;
+  // If there is a hero, add a +1 strength bonus
+  std::list<Stack*>::const_iterator it;
+  Stack::const_iterator sit;
+  std::list<Fighter*>::iterator fit;
 
-    // go get the base strengths of all attackers
-    // this includes items with battle bonuses for the hero
-    // naval units always have strength = 4
-    calculateBaseStrength (d_att_close);
-    calculateBaseStrength (d_def_close);
+  // go get the base strengths of all attackers
+  // this includes items with battle bonuses for the hero
+  // naval units always have strength = 4
+  calculateBaseStrength (d_att_close);
+  calculateBaseStrength (d_def_close);
 
-    // now determine the terrain strength by adding the terrain modifiers 
-    // to the base strength
-    // naval units always have a strength of 4
-    calculateTerrainModifiers (d_att_close);
-    calculateTerrainModifiers (d_def_close);
+  // now determine the terrain strength by adding the terrain modifiers 
+  // to the base strength
+  // naval units always have a strength of 4
+  calculateTerrainModifiers (d_att_close);
+  calculateTerrainModifiers (d_def_close);
 
-    //calculate hero, non-hero, city, and fortify bonuses
-    it = d_attackers.begin();
-    Army *a = (*it)->getStrongestHero();
-    Hero *h = dynamic_cast<Hero*>(a);
-    calculateModifiedStrengths (d_att_close, d_def_close, false, h);
-    Hero *strongestHero = 0;
-    Uint32 highest_strength = 0;
-    for (it = d_defenders.begin(); it != d_defenders.end(); it++)
-      {
-        a = (*it)->getStrongestHero();
-        if (!a)
-          continue;
-        h = dynamic_cast<Hero*>(a);
-        if (h->getStat(Army::STRENGTH) > highest_strength)
-          {
-            highest_strength = h->getStat(Army::STRENGTH);
-            strongestHero = h;
-          }
-      }
-    calculateModifiedStrengths (d_def_close, d_att_close, true, strongestHero);
+  //calculate hero, non-hero, city, and fortify bonuses
+  it = d_attackers.begin();
+  Army *a = (*it)->getStrongestHero();
+  Hero *h = dynamic_cast<Hero*>(a);
+  calculateModifiedStrengths (d_att_close, d_def_close, false, h);
+  Hero *strongestHero = 0;
+  Uint32 highest_strength = 0;
+  for (it = d_defenders.begin(); it != d_defenders.end(); it++)
+    {
+      a = (*it)->getStrongestHero();
+      if (!a)
+	continue;
+      h = dynamic_cast<Hero*>(a);
+      if (h->getStat(Army::STRENGTH) > highest_strength)
+	{
+	  highest_strength = h->getStat(Army::STRENGTH);
+	  strongestHero = h;
+	}
+    }
+  calculateModifiedStrengths (d_def_close, d_att_close, true, strongestHero);
 
-    calculateFinalStrengths (d_att_close, d_def_close);
-    calculateFinalStrengths (d_def_close, d_att_close);
+  calculateFinalStrengths (d_att_close, d_def_close);
+  calculateFinalStrengths (d_def_close, d_att_close);
 
 }
 
@@ -541,16 +556,16 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 
   debug("Army " << a->getId() << " attacks " << d->getId())
 
-  if (GameScenario::s_intense_combat == true)
-    sides = 24;
-  else
-    sides = 20;
+    if (GameScenario::s_intense_combat == true)
+      sides = 24;
+    else
+      sides = 20;
 
   // factor used for some calculation regarding gaining medals
   double xp_factor = a->getXpReward() / d->getXpReward();
 
   // the clash has to be documented for later use in the fight dialog
-    
+
   // make a swing at the opponent
   // take one hit point off, per hit.
 
@@ -565,42 +580,52 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
       int defender_roll = rand() % sides;
 
       if (attacker_roll <= attacker->terrain_strength &&
-          defender_roll > defender->terrain_strength)
-        {
-          //hit defender
-          a->setNumberHasHit(a->getNumberHasHit() + (1/xp_factor));
-          d->setNumberHasBeenHit(d->getNumberHasBeenHit() + (1/xp_factor));
-          d->damage(1);
-          damage = 1;
-          item.id = d->getId();
-          misses_in_a_row = 0;
-        }
+	  defender_roll > defender->terrain_strength)
+	{
+	  //hit defender
+	  if (d_type == FOR_KEEPS)
+	    {
+	      a->setNumberHasHit(a->getNumberHasHit() + (1/xp_factor));
+	      d->setNumberHasBeenHit(d->getNumberHasBeenHit() + (1/xp_factor));
+	    }
+	  d->damage(1);
+	  damage = 1;
+	  item.id = d->getId();
+	  misses_in_a_row = 0;
+	}
       else if (defender_roll <= defender->terrain_strength &&
-               attacker_roll > attacker->terrain_strength)
-        {
-          //hit attacker
-          d->setNumberHasHit(d->getNumberHasHit() + (1/xp_factor));
-          a->setNumberHasBeenHit(a->getNumberHasBeenHit() + (1/xp_factor));
-          a->damage(1);
-          damage = 1;
-          item.id = a->getId();
-          misses_in_a_row = 0;
-        }
+	       attacker_roll > attacker->terrain_strength)
+	{
+	  //hit attacker
+	  if (d_type == FOR_KEEPS)
+	    {
+	      d->setNumberHasHit(d->getNumberHasHit() + (1/xp_factor));
+	      a->setNumberHasBeenHit(a->getNumberHasBeenHit() + (1/xp_factor));
+	    }
+	  a->damage(1);
+	  damage = 1;
+	  item.id = a->getId();
+	  misses_in_a_row = 0;
+	}
       else
-        {
-          misses_in_a_row++;
-          if (misses_in_a_row >= 10000)
-            {
-              //defender automatically wins
-              //hit attacker for however much it takes
-              d->setNumberHasHit(d->getNumberHasHit() + (1/xp_factor));
-              a->setNumberHasBeenHit(a->getNumberHasBeenHit() + (1/xp_factor));
-              item.id = a->getId();
-              damage = a->getHP();
-              a->damage (damage);
-              misses_in_a_row = 0;
-            }
-        }
+	{
+	  misses_in_a_row++;
+	  if (misses_in_a_row >= 10000)
+	    {
+	      //defender automatically wins
+	      //hit attacker for however much it takes
+	      if (d_type == FOR_KEEPS)
+		{
+		  d->setNumberHasHit(d->getNumberHasHit() + (1/xp_factor));
+		  a->setNumberHasBeenHit(a->getNumberHasBeenHit() + 
+					 (1/xp_factor));
+		}
+	      item.id = a->getId();
+	      damage = a->getHP();
+	      a->damage (damage);
+	      misses_in_a_row = 0;
+	    }
+	}
     }
   // continue documenting the engagement
   item.damage = damage;
@@ -610,26 +635,26 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 
 void Fight::remove(Fighter* f)
 {
-    std::list<Fighter*>::iterator it;
+  std::list<Fighter*>::iterator it;
 
-    // is the fighter in the attacker lists?
-    for (it = d_att_close.begin(); it != d_att_close.end(); it++)
-        if ((*it) == f)
-        {
-            d_att_close.erase(it);
-            delete f;
-            return;
-        }
-    
-    // or in the defender lists?
-    for (it = d_def_close.begin(); it != d_def_close.end(); it++)
-        if ((*it) == f)
-        {
-            d_def_close.erase(it);
-            delete f;
-            return;
-        }
-    
-    // if the fighter wa sin no list, we are rather careful and don't do anything
-    debug("Fight: fighter without list!")
+  // is the fighter in the attacker lists?
+  for (it = d_att_close.begin(); it != d_att_close.end(); it++)
+    if ((*it) == f)
+      {
+	d_att_close.erase(it);
+	delete f;
+	return;
+      }
+
+  // or in the defender lists?
+  for (it = d_def_close.begin(); it != d_def_close.end(); it++)
+    if ((*it) == f)
+      {
+	d_def_close.erase(it);
+	delete f;
+	return;
+      }
+
+  // if the fighter wa sin no list, we are rather careful and don't do anything
+  debug("Fight: fighter without list!")
 }

@@ -1507,4 +1507,28 @@ void RealPlayer::tallyTriumph(Player *p, TriumphType type)
   //we (this player) have killed P's army. it was of type TYPE.
   d_triumph[id][type]++;
 }
+
+float RealPlayer::stackFightAdvise(Stack* s, Vector<int> tile)
+{
+  float percent = 0.0;//(rand() % 100) * 1.0;
+        
+  City* city = Citylist::getInstance()->getObjectAt(tile);
+  Stack* target = Stacklist::getObjectAt(tile);
+                
+  if (!target && city)
+    target = new Stack(city->getPlayer(), tile);
+
+  //what chance is there that stack will defeat defenders?
+    
+  for (unsigned int i = 0; i < 100; i++)
+    {
+      Fight fight(s, target, Fight::FOR_KICKS);
+      fight.battle();
+      if (fight.getResult() == Fight::ATTACKER_WON)
+	percent += 1.0;
+    }
+
+  advice_asked.emit(percent);
+  return percent;
+}
 // End of file

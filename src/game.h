@@ -102,6 +102,7 @@ class Game
     sigc::signal<void, Ruin*, Stack*> sage_visited;
     sigc::signal<void, Fight &> fight_started;
     sigc::signal<void, Stack *, Stack *> ruinfight_started;
+    sigc::signal<void, float> advice_asked;
     sigc::signal<void, Fight::Result> ruinfight_finished;
     sigc::signal<bool, Player *, Hero *, City *, int> hero_offers_service;
     sigc::signal<bool, bool, Temple *, int> temple_searched;

@@ -128,6 +128,8 @@ Game::Game(GameScenario* gameScenario)
 	    sigc::mem_fun(ruinfight_started, &sigc::signal<void, Stack *, Stack *>::emit));
         p->ruinfight_finished.connect(
 	    sigc::mem_fun(ruinfight_finished, &sigc::signal<void, Fight::Result>::emit));
+        p->advice_asked.connect(
+	    sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit));
     }
     pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
 

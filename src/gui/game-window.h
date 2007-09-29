@@ -237,6 +237,7 @@ class GameWindow: public sigc::trackable
     void on_game_loaded(Player *player);
     void on_game_over(Player *winner);
     void on_player_died(Player *player);
+    void on_advice_asked(float percent);
 
     // quest manager callbacks
     void on_quest_completed(Quest *quest, Reward *reward);

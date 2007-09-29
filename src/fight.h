@@ -53,13 +53,15 @@ class Fight
     public:
         //! The three possibilities how a fight can end
         enum Result {DRAW = 0, ATTACKER_WON = 1, DEFENDER_WON = 2};
+        enum FightType {FOR_KICKS = 0, FOR_KEEPS = 1};
 
         /** Initializes a fight between two stacks
           * 
           * @param attacker         the attacking stack
           * @param defender         the defending stack
+	  * @param type             optionally heal all stacks afterwards
           */
-        Fight(Stack* attacker, Stack* defender);
+        Fight(Stack* attacker, Stack* defender, FightType type = FOR_KEEPS);
         ~Fight();
 
         
@@ -134,6 +136,7 @@ class Fight
         
         int d_turn;
         Result d_result;
+	FightType d_type;
 };
 
 #endif // FIGHT_H

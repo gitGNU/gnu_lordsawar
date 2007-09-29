@@ -289,18 +289,20 @@ void GameWindow::init(int width, int height)
     sdl_widget->set_flags(Gtk::CAN_FOCUS);
 
     sdl_widget->grab_focus();
-    sdl_widget->add_events(Gdk::KEY_PRESS_MASK |
+    sdl_widget->add_events(Gdk::KEY_PRESS_MASK | 
 		  Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
 	          Gdk::POINTER_MOTION_MASK);
 
+    sdl_widget->signal_key_press_event().connect(
+	sigc::mem_fun(*this, &GameWindow::on_sdl_key_event));
+    sdl_widget->signal_key_release_event().connect(
+	sigc::mem_fun(*this, &GameWindow::on_sdl_key_event));
     sdl_widget->signal_button_press_event().connect(
 	sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_button_event));
     sdl_widget->signal_button_release_event().connect(
 	sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_button_event));
     sdl_widget->signal_motion_notify_event().connect(
 	sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_motion_event));
-    sdl_widget->signal_key_press_event().connect(
-	sigc::mem_fun(*this, &GameWindow::on_sdl_key_event));
     
     // connect to the special signal that signifies that a new surface has been
     // generated and attached to the widget
@@ -578,6 +580,9 @@ void GameWindow::setup_signals()
   connections.push_back
     (game->player_died.connect
      (sigc::mem_fun(*this, &GameWindow::on_player_died)));
+  connections.push_back
+    (game->advice_asked.connect
+     (sigc::mem_fun(*this, &GameWindow::on_advice_asked)));
 
   // misc callbacks
   QuestsManager *q = QuestsManager::getInstance();
@@ -593,8 +598,6 @@ void GameWindow::setup_signals()
 	(game->get_bigmap().cursor_changed.connect
 	 (sigc::mem_fun(*this, &GameWindow::on_bigmap_cursor_changed)));
     }
-  else
-    printf("couldn't setup cursor changed event\n");
 
 }
 
@@ -638,7 +641,10 @@ bool GameWindow::on_sdl_mouse_button_event(GdkEventButton *e)
 bool GameWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
 {
   if (game.get())
-    game->get_bigmap().mouse_motion_event(to_input_event(e));
+    {
+      game->get_bigmap().mouse_motion_event(to_input_event(e));
+      sdl_widget->grab_focus();
+    }
   return true;
 }
 
@@ -652,12 +658,15 @@ void GameWindow::on_bigmap_cursor_changed(GraphicsCache::CursorType cursor)
 
 bool GameWindow::on_sdl_key_event(GdkEventKey *e)
 {
-#if 0
-  // keypresses are not implemented in the bigmap at this point,
-  // to_input_event must also be defined to something sensible
-  if (game.get())
-    game->get_bigmap().key_press_event(to_input_event(e));
-#endif
+  static int left_shift_down = 0;
+  static int right_shift_down = 0;
+  if (e->keyval == GDK_Shift_L) 
+    left_shift_down = !left_shift_down;
+  else if (e->keyval == GDK_Shift_R)
+    right_shift_down = !right_shift_down;
+
+  if (e->keyval == GDK_Shift_L || e->keyval == GDK_Shift_R)
+    game->get_bigmap().set_shift_key_down (right_shift_down || left_shift_down);
 
   return true;
 }
@@ -2193,4 +2202,82 @@ void GameWindow::on_inspect_activated ()
 void GameWindow::on_plant_standard_activated ()
 {
   Playerlist::getActiveplayer()->heroPlantStandard(NULL);
+}
+    
+void GameWindow::on_advice_asked(float percent)
+{
+  //we asked for advice on a fight, and we're being told that we 
+  //have a PERCENT chance of winning the fight
+  std::auto_ptr<Gtk::Dialog> dialog;
+
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/military-advisor-dialog.glade");
+
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_title(_("Advisor!"));
+
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s;
+
+  int num = rand() % 5;
+  if (num == 0)
+    s += _("My Good Lord!");
+  else if (num == 1)
+    s += _("Great and Worthy Lord!");
+  else if (num == 2)
+    s += _("O Champion of Justice!");
+  else if (num == 3)
+    s += _("O Mighty Leader!");
+  else if (num == 4)
+    s += _("O Great Warlord!");
+  s += "\n";
+
+  num = rand() % 7;
+  if (num == 0)
+    s += _("This battle will surely be");
+  else if (num == 1)
+    s += _("A battle here would be");
+  else if (num == 2)
+    s += _("I believe this battle will surely be");
+  else if (num == 3)
+    s += _("This battle would be");
+  else if (num == 4)
+    s += _("A battle here would be");
+  else if (num == 5)
+    s += _("I believe this battle will be");
+  else if (num == 6)
+    s += _("This battle shall be");
+  s += "\n";
+
+
+  if (percent >= 90.0)
+    s += _("as simple as butchering sleeping cattle!");
+  else if (percent >= 80.0)
+    s += _("an easy victory!  We cannot lose!");
+  else if (percent >= 70.0)
+    s += _("a comfortable victory");
+  else if (percent >= 60.0)
+    s += _("a hard fought victory! But we shall win!");
+  else if (percent >= 50.0)
+    s += _("very evenly matched!");
+  else if (percent >= 40.0)
+    s += _("difficult but not impossible to win!");
+  else if (percent >= 30.0)
+    s += _("a brave choice! I leave it to thee!");
+  else if (percent >= 20.0)
+    s += _("a foolish decision!");
+  else if (percent >= 10.0)
+    s += _("sheerest folly!  Thou shouldst not attack!");
+  else
+    s += _("complete and utter suicide!");
+  label->set_text(s);
+
+  dialog->show_all();
+  dialog->run();
+  return;
 }

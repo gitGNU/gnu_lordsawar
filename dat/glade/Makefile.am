@@ -38,6 +38,7 @@ splash-window.glade \
 temple-visit-dialog.glade \
 disband-stack-dialog.glade \
 hero-brings-allies-dialog.glade \
+military-advisor-dialog.glade \
 next-player-turn-dialog.glade \
 city-rename-dialog.glade \
 city-raze-dialog.glade \

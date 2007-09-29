@@ -390,10 +390,19 @@ class Player: public sigc::trackable
          *
          * @param s                 the visiting stack
          * @param t                 the visited temple
-         * @return teh quest we got or 0 on error
+         * @return the quest we got or 0 on error
          */
         virtual Quest* stackGetQuest(Stack* s, Temple* t) = 0;
         
+        /** Called to ask the military advisor about what would happen 
+	  * if the stack attacked the tile.
+          *
+          * @param s        the stack to attack with
+	  * @param tile     the tile to attack (could be a city, or a stack)
+          * @return percent chance to win
+          */
+        virtual float stackFightAdvise(Stack* s, Vector<int> tile) =0;
+
         /** Occupy a city (i.e. change the owner to yourself)
           *
           * @param c                the occupied city
@@ -538,6 +547,8 @@ class Player: public sigc::trackable
 	// emitted when a fight in a ruin is started
         sigc::signal<void, Stack *, Stack *> ruinfight_started;
         sigc::signal<void, Fight::Result> ruinfight_finished;
+	// emitted when a player asks for help from a military advisor
+        sigc::signal<void, float> advice_asked;
         enum TriumphType {TALLY_HERO = 0, TALLY_SPECIAL = 1, TALLY_NORMAL = 2, 
 	  TALLY_SHIP = 3, TALLY_FLAG = 4};
 	Uint32 getTriumphTally(Player *p, TriumphType type) const
@@ -561,7 +572,7 @@ class Player: public sigc::trackable
         Stacklist* d_stacklist;
         FogMap* d_fogmap;
 	std::list<Uint32> d_fight_order; //for each army in armyset, a number
-	Uint32 d_triumph[MAX_PLAYERS][5];
+	Uint32 d_triumph[MAX_PLAYERS][5]; // 5 is max TriumphType + 1
 
     private:
         //! Loads the subdata of a player (actions and stacklist)
