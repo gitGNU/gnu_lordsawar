@@ -21,11 +21,9 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/combobox.h>
 #include <gtkmm/comboboxtext.h>
-#include <gtkmm/radiobutton.h>
+#include <gtkmm/togglebutton.h>
 #include <gtkmm/checkbutton.h>
-#include <gtkmm/filechooserbutton.h>
 #include <gtkmm/widget.h>
-#include <gtkmm/scale.h>
 
 #include "../game-parameters.h"
 
@@ -51,6 +49,14 @@ class GameOptionsDialog: public sigc::trackable
     Gtk::CheckButton *military_advisor_checkbutton;
     Gtk::CheckButton *random_turns_checkbutton;
     Gtk::CheckButton *quick_start_checkbutton;
+    Gtk::ToggleButton *beginner_toggle;
+    Gtk::ToggleButton *intermediate_toggle;
+    Gtk::ToggleButton *advanced_toggle;
+    void on_beginner_toggled(Gtk::ToggleButton *toggle);
+    void on_intermediate_toggled(Gtk::ToggleButton *toggle);
+    void on_advanced_toggled(Gtk::ToggleButton *toggle);
+    void on_option_clicked();
+    void fill_in_options();
 
 };
 

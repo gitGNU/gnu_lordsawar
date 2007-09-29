@@ -47,7 +47,40 @@ GameOptionsDialog::GameOptionsDialog()
     xml->get_widget("quick_start_checkbutton", quick_start_checkbutton);
     xml->get_widget("intense_combat_checkbutton", intense_combat_checkbutton);
     xml->get_widget("random_turns_checkbutton", random_turns_checkbutton);
+    xml->get_widget("beginner_toggle", beginner_toggle);
+    xml->get_widget("intermediate_toggle", intermediate_toggle);
+    xml->get_widget("advanced_toggle", advanced_toggle);
+	
+    view_enemies_checkbutton->signal_clicked().connect
+      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
+    view_production_checkbutton->signal_clicked().connect
+      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
+    quests_checkbutton->signal_clicked().connect
+      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
+    hidden_map_checkbutton->signal_clicked().connect
+      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
+    neutral_cities_combobox->signal_changed().connect
+      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
+    diplomacy_checkbutton->signal_clicked().connect
+      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
 
+    beginner_toggle->signal_toggled().connect
+      (sigc::bind(sigc::mem_fun(this, &GameOptionsDialog::on_beginner_toggled),
+		  beginner_toggle));
+    intermediate_toggle->signal_toggled().connect
+      (sigc::bind(sigc::mem_fun(this, 
+				&GameOptionsDialog::on_intermediate_toggled),
+		  intermediate_toggle));
+    advanced_toggle->signal_toggled().connect
+      (sigc::bind(sigc::mem_fun(this, &GameOptionsDialog::on_advanced_toggled),
+		  advanced_toggle));
+
+
+    fill_in_options();
+}
+
+void GameOptionsDialog::fill_in_options()
+{
     neutral_cities_combobox->set_active(GameParameters::AVERAGE);
 
     view_enemies_checkbutton->set_active(Configuration::s_see_opponents_stacks);
@@ -61,7 +94,6 @@ GameOptionsDialog::GameOptionsDialog()
     intense_combat_checkbutton->set_active(Configuration::s_intense_combat);
     random_turns_checkbutton->set_active(Configuration::s_random_turns);
 }
-
 void GameOptionsDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
@@ -99,4 +131,58 @@ bool GameOptionsDialog::run()
     //save it all to Configuration
     Configuration::saveConfigurationFile(Configuration::configuration_file_path);
     return true;
+}
+    
+void GameOptionsDialog::on_beginner_toggled(Gtk::ToggleButton *toggle)
+{
+  if (toggle->get_active())
+    {
+      intermediate_toggle->set_active(false);
+      advanced_toggle->set_active(false);
+      Configuration::s_see_opponents_stacks = true;
+      Configuration::s_see_opponents_production = true;
+      Configuration::s_play_with_quests = false;
+      Configuration::s_hidden_map = false;
+      Configuration::s_neutral_cities = GameParameters::AVERAGE;
+      Configuration::s_diplomacy = false;
+      fill_in_options();
+    }
+}
+
+void GameOptionsDialog::on_intermediate_toggled(Gtk::ToggleButton *toggle)
+{
+  if (toggle->get_active())
+    {
+      beginner_toggle->set_active(false);
+      advanced_toggle->set_active(false);
+      Configuration::s_see_opponents_stacks = false;
+      Configuration::s_see_opponents_production = true;
+      Configuration::s_play_with_quests = true;
+      Configuration::s_hidden_map = false;
+      Configuration::s_neutral_cities = GameParameters::STRONG;
+      Configuration::s_diplomacy = true;
+      fill_in_options();
+    }
+}
+
+void GameOptionsDialog::on_advanced_toggled(Gtk::ToggleButton *toggle)
+{
+  if (toggle->get_active())
+    {
+      beginner_toggle->set_active(false);
+      intermediate_toggle->set_active(false);
+      Configuration::s_see_opponents_stacks = false;
+      Configuration::s_see_opponents_production = false;
+      Configuration::s_play_with_quests = true;
+      Configuration::s_hidden_map = true;
+      Configuration::s_neutral_cities = GameParameters::ACTIVE;
+      Configuration::s_diplomacy = true;
+      fill_in_options();
+    }
+}
+void GameOptionsDialog::on_option_clicked()
+{
+  beginner_toggle->set_active(false);
+  intermediate_toggle->set_active(false);
+  advanced_toggle->set_active(false);
 }

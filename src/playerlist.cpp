@@ -308,3 +308,11 @@ void Playerlist::calculateWinners()
     return;
 }
 
+Uint32 Playerlist::countHumanPlayersAlive()
+{
+  Uint32 retval = 0;
+  for (const_iterator it = begin(); it != end(); it++)
+    if ((*it)->isDead() == false && (*it)->getType() == Player::HUMAN)
+      retval++;
+  return retval;
+}

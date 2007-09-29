@@ -101,6 +101,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
     
         void calculateWinners();
 
+	Uint32 countHumanPlayersAlive();
+
     protected:
         // CREATORS
         Playerlist();

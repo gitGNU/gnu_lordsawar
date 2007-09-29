@@ -1114,6 +1114,17 @@ void GameWindow::on_player_died(Player *player)
   Glib::ustring s;
   s += String::ucompose(_("The rule of %1 has permanently ended!"),
 			player->getName());
+  if (Playerlist::getInstance()->countHumanPlayersAlive() == 0)
+    {
+      s += "\n";
+      s += _("No further human resistance is possible");
+      s += "\n";
+      s += _("but the battle will continue!");
+      s += "\n";
+      s += _("Press `CTRL-P' to stop the war");
+      s += "\n";
+      s += _("and visit the sites of thy old battles.");
+    }
   label->set_text(s);
 
   dialog->show_all();
