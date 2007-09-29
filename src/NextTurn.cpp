@@ -74,96 +74,100 @@ void NextTurn::start()
         if (plist->getActiveplayer() == plist->getFirstLiving())
         {
           if (Playerlist::getInstance()->checkPlayers() == true)
-            if (plist->getActiveplayer()->isDead())
-              plist->nextPlayer();
-            finishRound();
-            snextRound.emit();
-        }
+	    {
+	      if (d_stop)
+		break;
+	      if (plist->getActiveplayer()->isDead())
+		plist->nextPlayer();
+	    }
+	  finishRound();
+	  snextRound.emit();
+	}
     }
 }
 
 void NextTurn::endTurn()
 {
-    // Finish off the player and transfers the control to the start function
-    // again.
-    finishTurn();
-    Playerlist::getInstance()->nextPlayer();
+  // Finish off the player and transfers the control to the start function
+  // again.
+  finishTurn();
+  Playerlist::getInstance()->nextPlayer();
 
-    if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getFirstLiving())
+  if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getFirstLiving())
     {
-        finishRound();
-        snextRound.emit();
+      finishRound();
+      snextRound.emit();
     }
 
-    start();
+  start();
 }
 
 void NextTurn::startTurn()
 {
-    //this function is called before a player starts his turn. Some
-    //items you could imagine to be placed here: healing/building
-    //units, check for joining heroes...
+  //this function is called before a player starts his turn. Some
+  //items you could imagine to be placed here: healing/building
+  //units, check for joining heroes...
 
-    //a shortcut
-    Player* p = Playerlist::getActiveplayer();
+  //a shortcut
+  Player* p = Playerlist::getActiveplayer();
 
-    p->initTurn();
+  p->initTurn();
 
-    //if turnmode is set, create/heal armies at player's turn
-    if (d_turnmode)
+  //if turnmode is set, create/heal armies at player's turn
+  if (d_turnmode)
     {
-	//vector armies
-        VectoredUnitlist::getInstance()->nextTurn(p);
+      //vector armies
+      VectoredUnitlist::getInstance()->nextTurn(p);
 
-        //build armies
-        Citylist::getInstance()->nextTurn(p);
+      //build armies
+      Citylist::getInstance()->nextTurn(p);
 
 
-        //heal stacks
-        p->getStacklist()->nextTurn();
+      //heal stacks
+      p->getStacklist()->nextTurn();
     }
 
 }
 
 void NextTurn::finishTurn()
 {
-    //Put everything that has to be done before the next player starts
-    //his turn here. E.g. one could clear some caches.
-    Playerlist::getActiveplayer()->getFogMap()->smooth();
+  //Put everything that has to be done before the next player starts
+  //his turn here. E.g. one could clear some caches.
+  Playerlist::getActiveplayer()->getFogMap()->smooth();
 }
 
 void NextTurn::finishRound()
 {
-    //Put everything that has to be done when a new round starts in here.
-    //E.g. increase the round number in GameScenario. (this is done with
-    //the snextRound signal, but useful for an example).
-    
-    if (!d_turnmode)
+  //Put everything that has to be done when a new round starts in here.
+  //E.g. increase the round number in GameScenario. (this is done with
+  //the snextRound signal, but useful for an example).
+
+  if (!d_turnmode)
     {
-        //do this for all players at once
-        Playerlist::iterator pit = Playerlist::getInstance()->begin();
-        for (; pit != Playerlist::getInstance()->end(); pit++)
-        {
-            if ((*pit)->isDead())
-                continue;
+      //do this for all players at once
+      Playerlist::iterator pit = Playerlist::getInstance()->begin();
+      for (; pit != Playerlist::getInstance()->end(); pit++)
+	{
+	  if ((*pit)->isDead())
+	    continue;
 
-            //produce armies
-            Citylist::getInstance()->nextTurn(*pit);
+	  //produce armies
+	  Citylist::getInstance()->nextTurn(*pit);
 
-            //heal armies
-            (*pit)->getStacklist()->nextTurn();
+	  //heal armies
+	  (*pit)->getStacklist()->nextTurn();
 
-        }
+	}
     }
-	
-    Playerlist::getInstance()->calculateWinners();
 
-    // heal the stacks in the ruins
-    Ruinlist* rl = Ruinlist::getInstance();
-    for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
+  Playerlist::getInstance()->calculateWinners();
+
+  // heal the stacks in the ruins
+  Ruinlist* rl = Ruinlist::getInstance();
+  for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
     {
-        Stack* keeper = (*it).getOccupant();
-        if (keeper)
-            keeper->nextTurn();
+      Stack* keeper = (*it).getOccupant();
+      if (keeper)
+	keeper->nextTurn();
     }
 }

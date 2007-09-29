@@ -250,6 +250,10 @@ GameWindow::GameWindow()
 
 GameWindow::~GameWindow()
 {
+  std::list<sigc::connection>::iterator it = connections.begin();
+  for (; it != connections.end(); it++) 
+    (*it).disconnect();
+  connections.clear();
     clear_army_buttons();
 }
 
@@ -1046,6 +1050,7 @@ void GameWindow::stop_game()
 
 void GameWindow::on_game_over(Player *winner)
 {
+
   std::auto_ptr<Gtk::Dialog> dialog;
 
   Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -1080,12 +1085,8 @@ void GameWindow::on_game_over(Player *winner)
   Gtk::Label *label;
   xml->get_widget("label", label);
   Glib::ustring s;
-  s += String::ucompose(_("%1 has taken over the world!"), winner->getName());
-  if (winner->getType() == Player::HUMAN)
-    {
-      s += " ";
-      s += _("Congratulations!");
-    }
+  s += String::ucompose(_("Congratulations to %1 for conquering the world!"), 
+	winner->getName());
   label->set_text(s);
 
   dialog->show_all();
@@ -1114,7 +1115,8 @@ void GameWindow::on_player_died(Player *player)
   Glib::ustring s;
   s += String::ucompose(_("The rule of %1 has permanently ended!"),
 			player->getName());
-  if (Playerlist::getInstance()->countHumanPlayersAlive() == 0)
+  if (Playerlist::getInstance()->countHumanPlayersAlive() == 0 &&
+      player->getType() == Player::HUMAN)
     {
       s += "\n";
       s += _("No further human resistance is possible");

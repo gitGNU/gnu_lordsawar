@@ -89,14 +89,16 @@ Playerlist::~Playerlist()
 
 bool Playerlist::checkPlayers()
 {
+    bool last = false;
     bool dead = false;
     debug("checkPlayers()");
     iterator it = begin ();
+	  
     while (it != end ())
     {
         debug("checkPlayers() iter");
         //ignore the neutral player as well as dead and immortal ones
-        if (((*it) == d_neutral) || ((*it)->isDead()) || ((*it)->isImmortal()))
+        if ((*it) == d_neutral || (*it)->isDead() || (*it)->isImmortal())
         {
             debug("checkPlayers() dead?");
             it++;
@@ -110,8 +112,12 @@ bool Playerlist::checkPlayers()
             nextit++;
 
             (*it)->kill();
+	    if (getNoOfPlayers() == 1)
+	      last = true;
             splayerDead.emit(*it);
             dead = true;
+	    if (last)
+	      break;
 
             it = nextit;    // do this at the end to catch abuse of invalid it
         } else {
