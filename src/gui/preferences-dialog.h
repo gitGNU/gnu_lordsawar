@@ -26,6 +26,7 @@
 
 #include "../vector.h"
 
+class Game;
 // dialog for showing sound and game preferences
 class PreferencesDialog: public sigc::trackable
 {
@@ -34,7 +35,7 @@ class PreferencesDialog: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
-    void run();
+    void run(Game *game);
 
  private:
     std::auto_ptr<Gtk::Dialog> dialog;

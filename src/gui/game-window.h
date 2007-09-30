@@ -19,6 +19,7 @@
 #include <vector>
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
+#include <sigc++/connection.h>
 #include <gtkmm/window.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/eventbox.h>

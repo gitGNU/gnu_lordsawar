@@ -95,6 +95,10 @@ class Citylist : public ObjectList<City>, public sigc::trackable
         //! Returns the first (currently most upper left) city of player p
         City* getFirstCity(Player* p);
 
+	//! Changes all cities owned by old owner, to be owned by the new
+	//! owner.
+	void changeOwnership(Player *old_owner, Player *new_owner);
+
     protected:
         // CREATORS
         Citylist();

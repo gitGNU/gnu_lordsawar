@@ -24,7 +24,11 @@
 #include "../defs.h"
 #include "../Configuration.h"
 #include "../sound.h"
+#include "../game.h"
 #include "../playerlist.h"
+#include "../citylist.h"
+#include "../ruinlist.h"
+#include "../ai_fast.h"
 
 
 PreferencesDialog::PreferencesDialog()
@@ -85,7 +89,7 @@ void PreferencesDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void PreferencesDialog::run()
+void PreferencesDialog::run(Game *game)
 {
     static int width = -1;
     static int height = -1;
@@ -110,12 +114,45 @@ void PreferencesDialog::run()
 	    if ((*j)->get_active_text() == _("Human")) //human, no change
 	      ;
 	    else //computer, change to easy
-	      (*i)->setType (Player::AI_FAST);
+	      {
+		AI_Fast *new_player = new AI_Fast(**i);
+		Player *old_player = *i;
+		std::replace(Playerlist::getInstance()->begin(),
+			     Playerlist::getInstance()->end(),
+			     old_player, dynamic_cast<Player*>(new_player));
+		//point cities to the new owner
+		Citylist *clist = Citylist::getInstance();
+		clist->changeOwnership (old_player, 
+					dynamic_cast<Player*>(new_player));
+		Ruinlist *rlist = Ruinlist::getInstance();
+		rlist->changeOwnership (old_player, 
+					dynamic_cast<Player*>(new_player));
+		//disconnect and connect game signals
+		game->addPlayer(new_player);
+	      }
 	  }
 	else //changing computer to:
 	  {
 	    if ((*j)->get_active_text() == _("Human")) //human, change it
-	      (*i)->setType (Player::HUMAN);
+	      {
+		RealPlayer *new_player = new RealPlayer(**i);
+		Player *old_player = *i;
+		//now how do i replace it in the playerlist?
+		std::replace(Playerlist::getInstance()->begin(),
+			     Playerlist::getInstance()->end(),
+			     old_player, dynamic_cast<Player*>(new_player));
+		//point cities to the new owner
+		Citylist *clist = Citylist::getInstance();
+		clist->changeOwnership (old_player, 
+					dynamic_cast<Player*>(new_player));
+		//point ruins to the new owner (for hidden ruins)
+		Ruinlist *rlist = Ruinlist::getInstance();
+		rlist->changeOwnership (old_player, 
+					dynamic_cast<Player*>(new_player));
+		//disconnect and connect game signals
+		game->addPlayer(new_player);
+		
+	      }
 	    else //computer, no change
 	      ;
 	  }

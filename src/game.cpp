@@ -59,6 +59,56 @@
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 #define debug(x)
+void Game::addPlayer(Player *p)
+{
+
+  //disconnect prior players' connections
+  for (std::list<sigc::connection>::iterator it = 
+       connections[p->getId()].begin(); 
+       it != connections[p->getId()].end(); it++) 
+    (*it).disconnect();
+  connections[p->getId()].clear();
+
+  connections[p->getId()].push_back
+    (p->sdyingStack.connect(sigc::mem_fun(this, &Game::stackDied)));
+
+  if (p->getType() == Player::HUMAN)
+    {
+      connections[p->getId()].push_back
+	(p->snewLevelArmy.connect(sigc::mem_fun(this, &Game::newLevelArmy)));
+      connections[p->getId()].push_back
+	(p->snewMedalArmy.connect(sigc::mem_fun(this, &Game::newMedalArmy)));
+      connections[p->getId()].push_back
+	(p->srecruitingHero.connect
+	 (sigc::bind<0>
+	  (sigc::mem_fun
+	   (hero_offers_service, &sigc::signal<bool, Player *, 
+	    Hero *, City *, int>::emit), p)));
+    }
+	
+      
+  connections[p->getId()].push_back
+    (p->schangingStatus.connect 
+     (sigc::mem_fun(this, &Game::update_sidebar_stats)));
+        
+  connections[p->getId()].push_back
+    (p->supdatingStack.connect (sigc::mem_fun(this, &Game::stackUpdate)));
+  connections[p->getId()].push_back
+    (p->sinvadingCity.connect(sigc::mem_fun(this, &Game::invading_city)));
+  connections[p->getId()].push_back
+    (p->fight_started.connect (sigc::mem_fun(*this, &Game::on_fight_started)));
+  connections[p->getId()].push_back
+    (p->ruinfight_started.connect
+     (sigc::mem_fun
+      (ruinfight_started, &sigc::signal<void, Stack *, Stack *>::emit)));
+  connections[p->getId()].push_back
+    (p->ruinfight_finished.connect
+     (sigc::mem_fun
+      (ruinfight_finished, &sigc::signal<void, Fight::Result>::emit)));
+  connections[p->getId()].push_back
+    (p->advice_asked.connect
+     (sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit)));
+}
 
 Game::Game(GameScenario* gameScenario)
     : d_gameScenario(gameScenario) 
@@ -104,32 +154,7 @@ Game::Game(GameScenario* gameScenario)
     for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
     {
 	Player *p = *i;
-        p->sdyingStack.connect(sigc::mem_fun(this, &Game::stackDied));
-
-        if (p->getType() == Player::HUMAN)
-        {
-            p->snewLevelArmy.connect(sigc::mem_fun(this, &Game::newLevelArmy));
-            p->snewMedalArmy.connect(sigc::mem_fun(this, &Game::newMedalArmy));
-	    p->srecruitingHero.connect(
-		// bind the player
-		sigc::bind<0>(
-		    sigc::mem_fun(hero_offers_service, &sigc::signal<bool, Player *, Hero *, City *, int>::emit),
-		    p));
-        }
-	
-        p->schangingStatus.connect(
-	    sigc::mem_fun(this, &Game::update_sidebar_stats));
-        p->supdatingStack.connect(sigc::mem_fun(this, &Game::stackUpdate));
-	
-        p->sinvadingCity.connect(sigc::mem_fun(this, &Game::invading_city));
-        p->fight_started.connect(
-	    sigc::mem_fun(*this, &Game::on_fight_started));
-        p->ruinfight_started.connect(
-	    sigc::mem_fun(ruinfight_started, &sigc::signal<void, Stack *, Stack *>::emit));
-        p->ruinfight_finished.connect(
-	    sigc::mem_fun(ruinfight_finished, &sigc::signal<void, Fight::Result>::emit));
-        p->advice_asked.connect(
-	    sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit));
+	addPlayer(p);
     }
     pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
 
@@ -150,6 +175,13 @@ Game::Game(GameScenario* gameScenario)
 
 Game::~Game()
 {
+  for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+    {
+      for (std::list<sigc::connection>::iterator it = connections[i].begin(); 
+	   it != connections[i].end(); it++) 
+	(*it).disconnect();
+      connections[i].clear();
+    }
     delete d_gameScenario;
     delete d_nextTurn;
 }

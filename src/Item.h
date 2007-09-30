@@ -21,6 +21,7 @@
 
 #include "defs.h"
 #include "player.h"
+#include "playerlist.h"
 
 /** This class describes an item.
   * 
@@ -106,7 +107,8 @@ class Item
         bool getPlanted() const {return d_planted;}
 
 	//! Return the player that can plant this item.
-	Player *getPlantableOwner() const {return d_plantable_owner;}
+	Player *getPlantableOwner() const 
+	  {return Playerlist::getInstance()->getPlayer(d_plantable_owner_id);}
 
 	//! Return some text describing the item's abilities
         std::string getBonusDescription();
@@ -117,7 +119,7 @@ class Item
         std::string d_name;
         Uint32 d_id;
 	bool d_plantable;
-	Player *d_plantable_owner;
+	Uint32 d_plantable_owner_id;
 	bool d_planted;
 };
 

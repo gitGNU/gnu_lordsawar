@@ -47,6 +47,7 @@ class GamePreferencesDialog
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
 
+    Gtk::Button *start_game_button;
     Gtk::ComboBoxText *tile_theme_combobox;
     Gtk::ComboBoxText *army_theme_combobox;
     Gtk::ComboBox *process_armies_combobox;
@@ -81,6 +82,7 @@ class GamePreferencesDialog
     void on_map_size_changed();
     void on_start_game_clicked();
     void on_edit_options_clicked();
+    void on_player_type_changed();
 };
 
 #endif

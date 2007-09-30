@@ -345,4 +345,11 @@ bool Citylist::load(std::string tag, XML_Helper* helper)
     return true;
 }
 
+void Citylist::changeOwnership(Player *old_owner, Player *new_owner)
+{
+  for (iterator it = begin(); it != end(); it++)
+    if ((*it).getPlayer() == old_owner)
+      (*it).setPlayer(new_owner);
+}
+
 // End of file

@@ -36,14 +36,12 @@ Item::Item(XML_Helper* helper)
     helper->getData(d_plantable, "plantable");
     if (d_plantable)
       {
-        Uint32 ui = MAX_PLAYERS + 2;
-        helper->getData(ui, "plantable_owner");
-        d_plantable_owner = Playerlist::getInstance()->getPlayer(ui);
+        helper->getData(d_plantable_owner_id, "plantable_owner");
         helper->getData(d_planted, "planted");
       }
     else
       {
-	d_plantable_owner = NULL;
+	d_plantable_owner_id = MAX_PLAYERS;
 	d_planted = false;
       }
 
@@ -58,7 +56,7 @@ Item::Item(std::string name, bool plantable, Player *plantable_owner)
   d_bonus = 0;
   d_name = name;
   d_plantable = plantable;
-  d_plantable_owner = plantable_owner;
+  d_plantable_owner_id = plantable_owner->getId();
   d_planted = false;
   d_id = fl_counter->getNextId();
 }
@@ -66,7 +64,7 @@ Item::Item(std::string name, bool plantable, Player *plantable_owner)
 Item::Item(const Item& orig)
 :d_bonus(orig.d_bonus),
     d_name(orig.d_name), d_plantable(orig.d_plantable),
-    d_plantable_owner(orig.d_plantable_owner), d_planted(orig.d_planted)
+    d_plantable_owner_id(orig.d_plantable_owner_id), d_planted(orig.d_planted)
 {
   // Some things we don't copy from the template; we rather get an own ID
   d_id = fl_counter->getNextId();
@@ -86,8 +84,7 @@ bool Item::save(XML_Helper* helper) const
   retval &= helper->saveData("plantable", d_plantable);
   if (d_plantable)
     {
-      retval &= helper->saveData("plantable_owner", 
-				 d_plantable_owner->getId());
+      retval &= helper->saveData("plantable_owner", d_plantable_owner_id);
       retval &= helper->saveData("planted", d_planted);
     }
   retval &= helper->saveData("id", d_id);

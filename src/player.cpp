@@ -106,9 +106,9 @@ Player::Player(const Player& player)
     // as the other player is propably dumped somehow, we need to deep copy
     // everything. This costs a lot, but the only useful situation for this
     // I can think of is a change of the player type, as occurs in the editor.
-    Stacklist::iterator it;
     d_stacklist = new Stacklist();
-    for (it = player.d_stacklist->begin(); it != player.d_stacklist->end(); it++)
+    for (Stacklist::iterator it = player.d_stacklist->begin(); 
+	 it != player.d_stacklist->end(); it++)
     {
         Stack* mine = new Stack(**it);
         // change the stack's loyalty
@@ -123,7 +123,7 @@ Player::Player(const Player& player)
 
     // copy events
     std::list<History*>::const_iterator pit;
-    for (pit = player.d_history.begin(); pit != player.d_history.end(); ait++)
+    for (pit = player.d_history.begin(); pit != player.d_history.end(); pit++)
         d_history.push_back(History::copy(*pit));
 
     // copy fogmap; TBD

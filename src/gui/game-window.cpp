@@ -114,8 +114,8 @@ GameWindow::GameWindow()
     xml->get_widget("window", w);
     window.reset(w);
 
-    w->signal_delete_event().connect(
-	sigc::mem_fun(*this, &GameWindow::on_delete_event));
+      w->signal_delete_event().connect
+       (sigc::mem_fun(*this, &GameWindow::on_delete_event));
 
     xml->get_widget("sdl_container", sdl_container);
     xml->get_widget("stack_info_box", stack_info_box);
@@ -135,12 +135,12 @@ GameWindow::GameWindow()
     xml->get_widget("map_eventbox", map_eventbox);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
 			     Gdk::POINTER_MOTION_MASK);
-    map_eventbox->signal_button_press_event().connect(
-	sigc::mem_fun(*this, &GameWindow::on_map_mouse_button_event));
-    map_eventbox->signal_button_release_event().connect(
-	sigc::mem_fun(*this, &GameWindow::on_map_mouse_button_event));
-    map_eventbox->signal_motion_notify_event().connect(
-	sigc::mem_fun(*this, &GameWindow::on_map_mouse_motion_event));
+      map_eventbox->signal_button_press_event().connect
+       (sigc::mem_fun(*this, &GameWindow::on_map_mouse_button_event));
+      map_eventbox->signal_button_release_event().connect
+       (sigc::mem_fun(*this, &GameWindow::on_map_mouse_button_event));
+      map_eventbox->signal_motion_notify_event().connect
+       (sigc::mem_fun(*this, &GameWindow::on_map_mouse_motion_event));
 
     // the stats
     xml->get_widget("stats_label", stats_label);
@@ -403,6 +403,7 @@ void GameWindow::load_game(std::string file_path)
     setup_game(file_path);
     setup_signals();
     game->loadGame();
+    game->redraw();
 }
 
 void GameWindow::setup_button(Gtk::Button *button,
@@ -609,7 +610,7 @@ void GameWindow::setup_game(std::string file_path)
 {
   stop_game();
 
-  bool broken;
+  bool broken = false;
   GameScenario* game_scenario = new GameScenario(file_path, broken);
 
   if (broken)
@@ -716,6 +717,7 @@ void GameWindow::on_sdl_surface_changed()
 
 void GameWindow::on_load_game_activated()
 {
+  return;
   Gtk::FileChooserDialog chooser(*window.get(), _("Choose Game to Load"));
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*.sav");
@@ -791,7 +793,7 @@ void GameWindow::on_quit_activated()
 
   if (end) {
     stop_game();
-    quit_requested.emit();
+    game_ended.emit();
   }
 }
 
@@ -915,7 +917,7 @@ void GameWindow::on_preferences_activated()
 {
   PreferencesDialog d;
   d.set_parent_window(*window.get());
-  d.run();
+  d.run(game.get());
 }
 
 void GameWindow::on_group_ungroup_activated()

@@ -91,7 +91,7 @@ bool QuestCityOccupy::save(XML_Helper* helper) const
 //=======================================================================
 std::string QuestCityOccupy::getProgress() const
 {
-    return _("You aren't afraid of doing it, do you?");
+    return _("You aren't afraid of doing it, are you?");
 }
 //=======================================================================
 void QuestCityOccupy::getSuccessMsg(std::queue<std::string>& msgs) const

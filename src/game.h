@@ -15,9 +15,11 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <memory>
 #include <sigc++/signal.h>
 #include <glibmm/ustring.h>
+#include <sigc++/connection.h>
+#include <memory>
+#include <list>
 
 #include "rectangle.h"
 #include "sidebar-stats.h"
@@ -122,6 +124,7 @@ class Game
     sigc::signal<void, Player *> game_over;
     sigc::signal<void, Player *> player_died;
     
+    void addPlayer(Player *p);
 
  private:
 
@@ -189,6 +192,7 @@ class Game
 
     bool input_locked;
 
+    std::list<sigc::connection> connections[MAX_PLAYERS + 1];
 };
 
 #endif

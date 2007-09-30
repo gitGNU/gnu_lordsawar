@@ -83,7 +83,7 @@ bool QuestCityRaze::save(XML_Helper* helper) const
 //=======================================================================
 std::string QuestCityRaze::getProgress() const
 {
-    return _("You aren't afraid of doing it, do you?");
+    return _("You aren't afraid of doing it, are you?");
 }
 //=======================================================================
 void QuestCityRaze::getSuccessMsg(std::queue<std::string>& msgs) const

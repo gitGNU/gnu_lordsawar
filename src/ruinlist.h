@@ -46,7 +46,11 @@ class Ruinlist : public ObjectList<Ruin>, public sigc::trackable
         Ruin* getNearestRuin(const Vector<int>& pos, int dist);
         Ruin* getNearestVisibleRuin(const Vector<int>& pos);
         Ruin* getNearestVisibleRuin(const Vector<int>& pos, int dist);
-        
+
+	//! Changes all ruins owned by old owner, to be owned by the new
+	//! owner.
+	void changeOwnership(Player *old_owner, Player *new_owner);
+
     protected:
         Ruinlist();
         Ruinlist(XML_Helper* helper);

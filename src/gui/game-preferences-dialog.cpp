@@ -41,6 +41,7 @@ GamePreferencesDialog::GamePreferencesDialog()
     xml->get_widget("dialog", d);
     dialog.reset(d);
 
+    xml->get_widget("start_game_button", start_game_button);
     xml->get_widget("process_armies_combobox", process_armies_combobox);
     xml->get_widget("random_map_radio", random_map_radio);
     xml->get_widget("load_map_filechooser", load_map_filechooser);
@@ -120,9 +121,8 @@ GamePreferencesDialog::GamePreferencesDialog()
 
     xml->get_widget("army_theme_box", box);
     box->pack_start(*army_theme_combobox, Gtk::PACK_SHRINK);
-    xml->connect_clicked(
-	"start_game_button",
-	sigc::mem_fun(*this, &GamePreferencesDialog::on_start_game_clicked));
+    start_game_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &GamePreferencesDialog::on_start_game_clicked));
 
     xml->connect_clicked(
 	"edit_options_button",
@@ -152,6 +152,8 @@ void GamePreferencesDialog::add_player(const Glib::ustring &type,
   //add it to players_vbox
   Gtk::HBox *player_hbox = new Gtk::HBox();
   Gtk::ComboBoxText *player_type = new Gtk::ComboBoxText();
+  player_type->signal_changed().connect
+      (sigc::mem_fun(this, &GamePreferencesDialog::on_player_type_changed));
   Gtk::Entry *player_name = new Gtk::Entry();
   player_name->set_text(name);
   player_type->append_text(HUMAN_PLAYER_TYPE);
@@ -243,6 +245,21 @@ void GamePreferencesDialog::on_edit_options_clicked()
   d.run();
 }
 
+void GamePreferencesDialog::on_player_type_changed()
+{
+  Uint32 offcount = 0;
+    std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
+    for (; c != player_types.end(); c++)
+      {
+	if (player_type_to_enum((*c)->get_active_text()) ==
+	    GameParameters::Player::OFF)
+	  offcount++;
+      }
+    if (offcount > player_types.size() - 2)
+      start_game_button->set_sensitive(false);
+    else
+      start_game_button->set_sensitive(true);
+}
 void GamePreferencesDialog::on_start_game_clicked()
 {
     // read out the values in the widgets

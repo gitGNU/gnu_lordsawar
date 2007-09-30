@@ -177,3 +177,11 @@ Ruin* Ruinlist::getNearestVisibleRuin(const Vector<int>& pos, int dist)
     return r;
   return NULL;
 }
+
+void Ruinlist::changeOwnership(Player *old_owner, Player *new_owner)
+{
+  for (iterator it = begin(); it != end(); it++)
+    if ((*it).getOwner() == old_owner)
+      (*it).setOwner(new_owner);
+}
+
