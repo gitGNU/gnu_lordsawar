@@ -963,8 +963,6 @@ Reward* RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
        {
 	 if (r->getReward() == NULL)
 	   r->populateWithRandomReward();
-
-	 giveReward(getActivestack(), r->getReward());
        }
 
      ssearchingRuin.emit(r, s, retReward);
@@ -1497,6 +1495,9 @@ Uint32 RealPlayer::getScore()
 
 void RealPlayer::tallyTriumph(Player *p, TriumphType type)
 {
+  //ignore monsters in a ruin who aren't owned by a player
+  if (!p) 
+    return;
   Uint32 id = p->getId();
   //let's not tally fratricide
   if (p == this) 
