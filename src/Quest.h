@@ -20,6 +20,8 @@
 #include <queue>
 #include "xmlhelper.h"
 #include "stack.h"
+#include "callback-enums.h"
+#include "city.h"
 
 class QuestsManager;
 class Hero;
@@ -50,7 +52,7 @@ class Quest
         
         /** \brief Notification that the quest is to be deleted.
          */
-        void deactivate() {d_pending = false;}
+        void deactivate() {d_pending = true;}
 
         /** \brief Auxiliary function
          *
@@ -95,6 +97,19 @@ class Quest
           * done by the derived classes.
           */
         virtual bool save(XML_Helper* helper) const;
+
+	/* Callback when an army dies.
+	 * it tells us what army died, and if the hero responsible for
+	 * this quest killed it
+	 */
+	virtual void armyDied(Army *a, bool heroIsCulprit)=0;
+
+	/* Callback when a city is taken
+	 * it tells us what city, the action, if the hero did it, and how much
+	 * gold was taken
+	 */
+	virtual void cityAction(City *c, CityDefeatedAction action, 
+				bool heroIsCulprit, int gold)=0;
 
 	/** provides a list of positions that the hero is seeking.
 	 * This method is called by the questmap object to show the

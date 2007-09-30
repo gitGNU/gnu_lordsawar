@@ -66,9 +66,10 @@ class QuestPillageGold : public Quest, public sigc::trackable
         //! Returns the amount of gold to be pillaged
         Uint32 getGoldToPillage() {return d_to_pillage;}
          
+	void armyDied(Army *a, bool heroIsCulprit);
+	void cityAction(City *c, CityDefeatedAction action, 
+			bool heroIsCulprit, int gold);
     private:
-         /** slot that receives the ssackingCity and spillagingCity (signal) */
-         void citySackedOrPillaged (City* city, Stack* s, int gold, std::list<Uint32> sacked_types);
 
         void initDescription();
 

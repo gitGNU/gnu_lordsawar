@@ -71,6 +71,10 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
 	//! Returns the player whose armies are to be killed
 	Uint32 getVictimPlayerId() {return d_victim_player->getId();}
 
+	void armyDied(Army *a, bool heroIsCulprit);
+
+	void cityAction(City *c, CityDefeatedAction action, 
+			bool heroIsCulprit, int gold);
     private:
         /** slot that would receive the sdyingArmy (signal) */
         void dyingArmy(Army *stack, std::vector<Uint32> culprits);

@@ -20,6 +20,7 @@
 #include <vector>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
+#include "callback-enums.h"
 
 #include "player.h"
 #include "hero.h"
@@ -89,6 +90,23 @@ class QuestsManager : public sigc::trackable
          */
         void questExpired(Uint32 heroId);
 
+        /** \brief callback when an army dies
+         *
+         *  Here we account for a dead army.   maybe it's our hero,
+	 *  maybe it's a target hero, maybe we're somebody else's target hero
+	 *  or maybe we're some other army we're suppsed to kill.
+         */
+	void armyDied(Army *a, std::vector<Uint32>& culprits);
+
+
+	/* \brief callbacks when cities get conquered
+	 * Here we account for actions on a city
+	 */
+	void cityRazed(City *c, Stack *s);
+	void citySacked(City *c, Stack *s, int gold);
+	void cityPillaged(City *c, Stack *s, int gold);
+	void cityOccupied(City *c, Stack *s);
+
         /**
          * \brief Get quests for a specific player
          */
@@ -120,19 +138,13 @@ class QuestsManager : public sigc::trackable
         //! Does some setup that has to be done on loading as well as creation.
         void _sharedInit();
 
-        /** \brief our slot to the sdyingArmy signal. 
-         *
-         * Here we detect when a hero dies and deactivate his quests
-         * accordingly.
-         */
-        void _dyingArmy(Army *army, std::vector<Uint32> culprits);
-
         //! this method deactivates a quest, i.e. marks it as 'to-delete'
         void _deactivateQuest(Uint32 heroId);
 
         //! this method performs cleanup of the marked quests
         void _cleanup(Player::Type type = Player::HUMAN);
 
+	void cityAction(City *c, Stack *s, CityDefeatedAction action, int gold);
 
         // Data
         

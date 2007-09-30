@@ -66,10 +66,10 @@ class QuestEnemyArmytype : public Quest, public sigc::trackable
         //! Returns the number of armies to be killed
         Uint32 getArmytypeToKill() {return d_type_to_kill;}
          
+	void armyDied(Army *a, bool heroIsCulprit);
+	void cityAction(City *c, CityDefeatedAction action, 
+			bool heroIsCulprit, int gold);
     private:
-        /** slot that would receive the sdyingArmy (signal) */
-        void dyingArmy(Army *stack, std::vector<Uint32> culprits);
-
         void initDescription();
 
 

@@ -241,6 +241,8 @@ bool QuestsManager::save(XML_Helper* helper) const
     std::map<Uint32,Quest*>::const_iterator it;
     for (it = d_quests.begin(); it != d_quests.end(); it++) 
       {
+	if ((*it).second == NULL)
+	  continue;
 	if (((*it).second)->isPendingDeletion() == false)
 	  retval &= ((*it).second)->save(helper);
       }
@@ -301,10 +303,6 @@ void QuestsManager::_sharedInit()
 {
     debug("QuestsManager constructor: connecting to the signals")
 
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->sdyingArmy.connect( sigc::mem_fun(*this, &QuestsManager::_dyingArmy));
-
     sendingTurn.connect( sigc::mem_fun(*this, &QuestsManager::_cleanup));
 
     // now prepare the vector of pointers to the
@@ -317,18 +315,6 @@ void QuestsManager::_sharedInit()
     d_questsFeasible.push_back(&(QuestCityOccupy::isFeasible));
     d_questsFeasible.push_back(&(QuestEnemyArmytype::isFeasible));
     d_questsFeasible.push_back(&(QuestPillageGold::isFeasible));
-}
-//========================================================================
-void QuestsManager::_dyingArmy(Army* army, std::vector<Uint32> culprits)
-{
-    if (!army->isHero())
-        return;
-
-    if (d_quests.count(army->getId()))
-    {
-        debug("QuestsManager: the hero is dead, clearing his quests...");
-        _deactivateQuest(army->getId());
-    }
 }
 //========================================================================
 void QuestsManager::_deactivateQuest(Uint32 heroId)
@@ -349,4 +335,111 @@ void QuestsManager::_cleanup(Player::Type type)
         delete d_inactive_quests.front();
         d_inactive_quests.pop();
     }
+}
+        
+void QuestsManager::armyDied(Army *a, std::vector<Uint32>& culprits)
+{
+  //tell all quests that an army died
+  //each quest takes care of what happens when an army dies
+  std::map<Uint32,Quest*>::iterator it;
+  for (it = d_quests.begin(); it != d_quests.end(); it++) 
+    {
+      if ((*it).second == NULL)
+	continue;
+      if ((*it).second->isPendingDeletion() == true)
+	continue;
+      //was this hero a perpetrator?
+      bool heroIsCulprit = false;
+      for (unsigned int i = 0; i <culprits.size(); i++)
+	{
+	  if (culprits[i] == (*it).second->getHeroId())
+	    {
+	      heroIsCulprit = true;
+	      break;
+	    }
+	}
+      (*it).second->armyDied(a, heroIsCulprit);
+    }
+
+  //is it a hero that has an outstanding quest?
+  //this is what deactivates a quest upon hero death
+  Quest *quest = d_quests[a->getId()];
+  if (quest && quest->isPendingDeletion() == false)
+    questExpired(a->getId());
+
+}
+
+void QuestsManager::cityAction(City *c, Stack *s, 
+			       CityDefeatedAction action, int gold)
+{
+  std::map<Uint32,Quest*>::iterator it;
+  //did any of the heroes who have outstanding quests do this?
+  for (it = d_quests.begin(); it != d_quests.end(); it++) 
+    {
+      if ((*it).second == NULL)
+	continue;
+      if ((*it).second->isPendingDeletion() == true)
+	continue;
+      if (!s)
+	(*it).second->cityAction(c, action, false, gold);
+      else
+	{
+	  for (Stack::iterator sit = s->begin(); sit != s->end(); sit++)
+	    if ((*sit)->getId() == (*it).second->getHeroId())
+	      (*it).second->cityAction(c, action, true, gold);
+	    else
+	      (*it).second->cityAction(c, action, false, gold);
+	}
+    }
+  //is it a city that is part of an outstanding quest?
+  //this is what deactivates a quest upon raze
+  if (action == CITY_DEFEATED_RAZE)
+    {
+      for (it = d_quests.begin(); it != d_quests.end(); it++) 
+	{
+	  bool target_city = false;
+	  if ((*it).second == NULL)
+	    continue;
+	  if ((*it).second->isPendingDeletion() == true)
+	    continue;
+	  if ((*it).second->getType() == Quest::CITYSACK)
+	    {
+	      QuestCitySack *q = dynamic_cast<QuestCitySack *>((*it).second);
+	      if (q->getCityId() == c->getId())
+		target_city = true;
+	    }
+	  if ((*it).second->getType() == Quest::CITYRAZE)
+	    {
+	      QuestCityRaze *q = dynamic_cast<QuestCityRaze *>((*it).second);
+	      if (q->getCityId() == c->getId())
+		target_city = true;
+	    }
+	  if ((*it).second->getType() == Quest::CITYOCCUPY)
+	    {
+	      QuestCityOccupy *q = dynamic_cast<QuestCityOccupy*>((*it).second);
+	      if (q->getCityId() == c->getId())
+		target_city = true;
+	    }
+	  if (target_city)
+	    questExpired((*it).second->getHeroId());
+	}
+    }
+}
+
+void QuestsManager::cityRazed(City *c, Stack *s)
+{
+  cityAction(c, s, CITY_DEFEATED_RAZE, 0);
+  //did we raze a city we care about in another quest?
+}
+void QuestsManager::citySacked(City *c, Stack *s, int gold)
+{
+  cityAction(c, s, CITY_DEFEATED_SACK, gold);
+}
+void QuestsManager::cityPillaged(City *c, Stack *s, int gold)
+{
+  cityAction(c, s, CITY_DEFEATED_PILLAGE, gold);
+}
+void QuestsManager::cityOccupied(City *c, Stack *s)
+{
+  cityAction(c, s, CITY_DEFEATED_OCCUPY, 0);
 }

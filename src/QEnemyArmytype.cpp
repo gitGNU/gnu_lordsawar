@@ -68,13 +68,6 @@ QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, Uint32 hero)
 {
     // have us be informed when hostilities break out
     Player *p = getHero()->getPlayer();
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-      {
-	if ((*it) == p)
-	  continue;
-        (*it)->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmytype::dyingArmy));
-      }
     
     // pick a victim
     d_type_to_kill = getVictimArmytype (p, d_targets);
@@ -85,16 +78,6 @@ QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, Uint32 hero)
 QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, XML_Helper* helper) 
     : Quest(q_mgr, helper)
 {
-    // we want to be informed about fight causalties
-    const Playerlist* pl = Playerlist::getInstance();
-    Player *p = getHero()->getPlayer();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-      {
-	if ((*it) == p)
-	  continue;
-        (*it)->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmytype::dyingArmy));
-      }
-    
     helper->getData(d_type_to_kill, "type_to_kill");
 
     initDescription();
@@ -141,28 +124,6 @@ void QuestEnemyArmytype::getExpiredMsg(std::queue<std::string>& msgs) const
     // This quest should never expire, so this is just a dummy function
 }
 //=======================================================================
-void QuestEnemyArmytype::dyingArmy(Army *army, std::vector<Uint32> culprits)
-{
-    debug("QuestEnemyArmytype: dyingArmy - pending = " << (int)d_pending);
-
-    if (!isActive())
-        return;
-    
-    // did our hero kill them?
-    for (unsigned int i = 0; i < culprits.size(); i++)
-    {
-        if (culprits[i] == d_hero)
-        {
-	    if (army->getType() == d_type_to_kill)
-            {
-                debug("CONGRATULATIONS: QUEST 'KILL ENEMY ARMYTYPE' IS COMPLETED!");
-                d_q_mgr.questCompleted(d_hero);
-            }
-            break;
-        }
-    }
-}
-//=======================================================================
 void QuestEnemyArmytype::initDescription()
 {
     Armysetlist *al = Armysetlist::getInstance();
@@ -182,4 +143,32 @@ bool QuestEnemyArmytype::isFeasible(Uint32 heroId)
   if (type >= 0)
     return true;
   return false;
+}
+void QuestEnemyArmytype::armyDied(Army *a, bool heroIsCulprit)
+{
+  //was it the army type we were after?
+    
+  debug("QuestEnemyArmytype: armyDied - pending = " << (int)d_pending);
+    
+  if (!isActive())
+    return;
+    
+  if (a->getType() == d_type_to_kill)
+    {
+      if (heroIsCulprit)
+	{
+	  debug("CONGRATULATIONS: QUEST 'KILL ENEMY ARMYTYPE' IS COMPLETED!");
+	  d_q_mgr.questCompleted(d_hero);
+	}
+      else
+	{
+	  ; 
+	  //hopefully there are more armies of this type for hero to kill
+	}
+    }
+}
+void QuestEnemyArmytype::cityAction(City *c, CityDefeatedAction action, 
+				    bool heroIsCulprit, int gold)
+{
+  ;//this quest doesn't care what happens to cities
 }

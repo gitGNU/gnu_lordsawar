@@ -22,6 +22,7 @@
 #include "hero.h"
 #include "playerlist.h"
 
+
 /** Kill hero quest
   * 
   * This specific quest demands a certain hero to be killed.
@@ -67,9 +68,11 @@ class QuestKillHero : public Quest, public sigc::trackable
          //! Returns the hunted hero
          Uint32 getVictim() const {return d_victim;}
 
+	void armyDied(Army *a, bool heroIsCulprit);
+
+	void cityAction(City *c, CityDefeatedAction action, 
+			bool heroIsCulprit, int gold);
     private:
-        /** slot that would receive the sdyingArmy (signal) */
-        void dyingArmy(Army *stack, std::vector<Uint32> culprits);
 
         //! Initializes the description string
         void initDescription();

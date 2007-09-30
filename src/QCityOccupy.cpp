@@ -34,16 +34,6 @@ using namespace std;
 QuestCityOccupy::QuestCityOccupy (QuestsManager& mgr, Uint32 hero) 
     : Quest(mgr, hero, Quest::CITYOCCUPY)
 {
-    // we want to stay informed about city occupations
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-      {
-        (*it)->soccupyingCity.connect(
-	    sigc::mem_fun(this, &QuestCityOccupy::cityOccupied));
-        (*it)->srazingCity.connect(
-	    sigc::mem_fun(this, &QuestCityOccupy::cityOccupied));
-      }
-
     // find us a victim
     City* c = chooseToOccupy(getHero()->getPlayer());
     assert(c);      // should never fail because isFeasible is checked first
@@ -57,16 +47,6 @@ QuestCityOccupy::QuestCityOccupy (QuestsManager& mgr, Uint32 hero)
 QuestCityOccupy::QuestCityOccupy (QuestsManager& q_mgr, XML_Helper* helper) 
      : Quest(q_mgr, helper)
 {
-    // let us stay in touch with the world...
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-      {
-        (*it)->soccupyingCity.connect(
-	    sigc::mem_fun(this, &QuestCityOccupy::cityOccupied));
-        (*it)->srazingCity.connect(
-	    sigc::mem_fun(this, &QuestCityOccupy::cityOccupied));
-      }
-    
     helper->getData(d_city, "city");
     d_targets.push_back(getCity()->getPos());
     initDescription();
@@ -118,32 +98,6 @@ City* QuestCityOccupy::getCity() const
     return 0;
 }
 //=======================================================================
-void QuestCityOccupy::cityOccupied(City* city, Stack* s)
-{
-    // some basic considerations have to be done
-    if ((city->getId() != d_city) || !isActive())
-        return;
-    
-    //somebody's stack has occupied this city or has razed it
-    if (city->isBurnt() == false)
-      {
-	// look if our hero is in the list of occupiers
-	for (Stack::const_iterator it = s->begin(); it != s->end(); it++)
-	  if ((*it)->isHero() && ((*it)->getId() == d_hero))
-	    {
-	      debug("CONGRATULATIONS: QUEST 'CITY OCCUPY' IS COMPLETED!");
-	      d_q_mgr.questCompleted(d_hero);
-	      return;
-	    }
-      }
-    else
-      {
-	// looks like we razed this city, or someone else did
-	debug("WHAT A PITY: QUEST 'CITY OCCUPY' CANNOT BE COMPLETED!");
-	d_q_mgr.questExpired(d_hero);
-      }
-}
-//=======================================================================
 void QuestCityOccupy::initDescription()
 {
   const City* c = getCity();
@@ -170,4 +124,23 @@ City * QuestCityOccupy::chooseToOccupy(Player *p)
     return 0;
 
   return cities[rand() % cities.size()];
+}
+	 
+void QuestCityOccupy::armyDied(Army *a, bool heroIsCulprit)
+{
+  ;
+  //this quest does nothing when an army dies
+}
+
+void QuestCityOccupy::cityAction(City *c, CityDefeatedAction action, 
+				 bool heroIsCulprit, int gold)
+{
+  if (!isActive())
+    return;
+  if (action == CITY_DEFEATED_OCCUPY && heroIsCulprit && c &&
+      c->getId() == d_city)
+    {
+      debug("CONGRATULATIONS: QUEST 'CITY OCCUPY' IS COMPLETED!");
+      d_q_mgr.questCompleted(d_hero);
+    }
 }

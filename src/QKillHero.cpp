@@ -31,11 +31,6 @@ using namespace std;
 QuestKillHero::QuestKillHero(QuestsManager& mgr, Uint32 hero) 
     : Quest(mgr, hero, Quest::KILLHERO)
 {
-    // we want to stay informed about killed armies...
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->sdyingArmy.connect(sigc::mem_fun(*this, &QuestKillHero::dyingArmy));
-    
     // find a suitable hero for us
     Hero *hunted = chooseToKill();
     assert(hunted);         // should never fail, since isFeasible is checked
@@ -48,10 +43,6 @@ QuestKillHero::QuestKillHero(QuestsManager& mgr, Uint32 hero)
 QuestKillHero::QuestKillHero(QuestsManager& q_mgr, XML_Helper* helper) 
     : Quest(q_mgr, helper)
 {
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->sdyingArmy.connect(sigc::mem_fun(*this, &QuestKillHero::dyingArmy));
-
     helper->getData(d_victim, "to_kill");
     debug("load: hero_to_kill = " << d_victim);
 
@@ -113,36 +104,6 @@ void QuestKillHero::getExpiredMsg(std::queue<std::string>& msgs) const
     msgs.push(_("He was slain by other fellows!"));
 }
 //=======================================================================
-void QuestKillHero::dyingArmy(Army *army, std::vector<Uint32> culprits)
-{
-    if (!isActive())
-        return;
-        
-    // is it a hero we were hunting for?
-    if (army->getId() != d_victim)
-        return;
-
-    // Answer: yes; now check if he was killed by our hero
-    if (culprits.size()==0) 
-    {
-        /*The Hero was killed by a stack without heroes so the quest expires*/
-        debug("SORRY: YOUR QUEST 'KILL HERO' HS EXPIRED BECAUSE THE HERO TO KILL WAS KILLED BY ANOTHER ONE");
-        d_q_mgr.questExpired(d_hero);
-        return;
-    }
-
-    for (unsigned int i = 0; i < culprits.size(); i++)
-        if (culprits[i] == d_hero)
-        {
-            debug("CONGRATULATIONS: QUEST 'KILL HERO' IS COMPLETED!");
-            d_q_mgr.questCompleted(d_hero);
-            return;
-        }
-
-    debug("SORRY: YOUR QUEST 'KILL HERO' EXPIRED BECAUSE THE HERO TO KILL WAS KILLED BY ANOTHER ONE");
-    d_q_mgr.questExpired(d_hero);
-}
-//=======================================================================
 void QuestKillHero::initDescription()
 {
     char buffer[101]; buffer[100]='\0';
@@ -180,4 +141,38 @@ Hero* QuestKillHero::chooseToKill()
     
     // Now pick a hero:
     return heroes[rand() % heroes.size()];
+}
+	
+void QuestKillHero::armyDied(Army *a, bool heroIsCulprit)
+{
+  if (!isActive())
+    return;
+
+  // is it a hero we were hunting for?
+  if (a->getId() != d_victim)
+    return;
+
+  // Answer: yes; now check if he was killed by our hero
+  if (heroIsCulprit == false)
+    {
+      /*The Hero was killed by a stack without heroes so the quest expires*/
+      //debug("SORRY: YOUR QUEST 'KILL HERO' HS EXPIRED BECAUSE THE HERO TO KILL WAS KILLED BY ANOTHER ONE");
+      //d_q_mgr.questExpired(d_hero);
+      //hopefully this is handled by questsmanager, and not here!
+      return;
+    }
+  else
+    {
+      debug("CONGRATULATIONS: QUEST 'KILL HERO' IS COMPLETED!");
+      d_q_mgr.questCompleted(d_hero);
+      return;
+    }
+
+  return;
+}
+	
+void QuestKillHero::cityAction(City *c, CityDefeatedAction action, 
+			       bool heroIsCulprit, int gold)
+{
+  ;//this quest doesn't care what happens to cities
 }

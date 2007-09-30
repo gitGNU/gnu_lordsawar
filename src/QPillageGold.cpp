@@ -28,13 +28,6 @@ using namespace std;
 QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, Uint32 hero)
     : Quest(q_mgr, hero, Quest::PILLAGEGOLD), d_pillaged(0)
 {
-    // have us be informed when we sack or pillage a city
-    Player *p= getHero()->getPlayer();
-    p->ssackingCity.connect(
-                 sigc::mem_fun(this, &QuestPillageGold::citySackedOrPillaged));
-    p->spillagingCity.connect(
-                 sigc::mem_fun(this, &QuestPillageGold::citySackedOrPillaged));
-   
     //pick an amount of gold to sack and pillage
     d_to_pillage = 850 + (rand() % 630);
 
@@ -46,12 +39,6 @@ QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, XML_Helper* helper)
 {
     helper->getData(d_to_pillage, "to_pillage");
     helper->getData(d_pillaged,  "pillaged");
-
-    Player *p= getHero()->getPlayer();
-    p->ssackingCity.connect(
-                 sigc::mem_fun(this, &QuestPillageGold::citySackedOrPillaged));
-    p->spillagingCity.connect(
-                 sigc::mem_fun(this, &QuestPillageGold::citySackedOrPillaged));
 
     initDescription();
 }
@@ -90,23 +77,35 @@ void QuestPillageGold::getExpiredMsg(std::queue<std::string>& msgs) const
     // This quest should never expire, so this is just a dummy function
 }
 //=======================================================================
-void QuestPillageGold::citySackedOrPillaged (City* city, Stack* s, int gold,
-                                             std::list<Uint32> sacked_types)
-{
-  if (!isActive())
-    return;
-  d_pillaged += gold;
-  if (d_pillaged > d_to_pillage)
-    {
-      d_pillaged = d_to_pillage;
-      d_q_mgr.questCompleted(d_hero);
-    }
-}
-//=======================================================================
 void QuestPillageGold::initDescription()
 {
     char buffer[101]; buffer[100]='\0';
     snprintf(buffer, 100, "You shall sack and pillage %i gold from thy mighty foes", d_to_pillage);
 
     d_description = std::string(buffer);
+}
+	
+void QuestPillageGold::armyDied(Army *a, bool heroIsCulprit)
+{
+  ;
+  //this quest does nothing when an army dies
+}
+
+void QuestPillageGold::cityAction(City *c, CityDefeatedAction action, 
+				  bool heroIsCulprit, int gold)
+{
+  if (!isActive())
+    return;
+  if (action == CITY_DEFEATED_SACK || action == CITY_DEFEATED_PILLAGE)
+    {
+      if (heroIsCulprit)
+	{
+	  d_pillaged += gold;
+	  if (d_pillaged > d_to_pillage)
+	    {
+	      d_pillaged = d_to_pillage;
+	      d_q_mgr.questCompleted(d_hero);
+	    }
+	}
+    }
 }

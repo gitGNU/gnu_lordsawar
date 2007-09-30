@@ -61,9 +61,10 @@ class QuestCityRaze: public Quest, public sigc::trackable
          //! Returns the city to be razed
          City* getCity() const;
 
+	 void armyDied(Army *a, bool heroIsCulprit);
+	 void cityAction(City *c, CityDefeatedAction action, 
+			 bool heroIsCulprit, int gold);
     private:
-         /** slot that would receive the scityRazed (signal) */
-         void cityRazed (City* city, Stack* s);
 
          /** \brief Make quest description from the city we'll raze */
          void initDescription();

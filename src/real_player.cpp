@@ -876,6 +876,9 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
                 }
                 //Add the XP bonus to the total of the battle;
                 total+=(*sit)->getXpReward();
+		//tell the quest manager that someone died
+		//(maybe it was a hero, or a target that's an army)
+		QuestsManager::getInstance()->armyDied(*sit, culprits);
                 // here we destroy the army, so we send
                 // the signal containing the fight data
                 debug("sending sdyingArmy!")
@@ -1057,7 +1060,10 @@ bool RealPlayer::cityOccupy(City* c, bool emit)
   d_actions.push_back(item);
 
   if (emit)
-    soccupyingCity.emit(c, getActivestack());
+    {
+      soccupyingCity.emit(c, getActivestack());
+      QuestsManager::getInstance()->cityOccupied(c, getActivestack());
+    }
   //to signal that the cities have changed a bit
   supdatingCity.emit(c);
 
@@ -1122,8 +1128,9 @@ bool RealPlayer::cityPillage(City* c, int& gold, int& pillaged_army_type)
   addGold(gold);
   std::list<Uint32> sacked_types;
   sacked_types.push_back (pillaged_army_type);
-  spillagingCity.emit(c, Playerlist::getActiveplayer()->getActivestack(), 
-		      gold, sacked_types);
+  Stack *s = Playerlist::getActiveplayer()->getActivestack();
+  spillagingCity.emit(c, s, gold, sacked_types);
+  QuestsManager::getInstance()->cityPillaged(c, s, gold);
   return cityOccupy (c, false);
 }
 
@@ -1169,8 +1176,9 @@ bool RealPlayer::citySack(City* c, int& gold, std::list<Uint32> *sacked_types)
     }
 
   addGold(gold);
-  ssackingCity.emit(c, Playerlist::getActiveplayer()->getActivestack(), gold,
-		    *sacked_types);
+  Stack *s = Playerlist::getActiveplayer()->getActivestack();
+  ssackingCity.emit(c, s, gold, *sacked_types);
+  QuestsManager::getInstance()->citySacked(c, s, gold);
   return cityOccupy (c, false);
 }
 
@@ -1191,7 +1199,8 @@ bool RealPlayer::cityRaze(City* c)
 
   supdatingCity.emit(c);
 
-  srazingCity.emit(c, Playerlist::getActiveplayer()->getActivestack());
+  srazingCity.emit(c, getActivestack());
+  QuestsManager::getInstance()->cityRazed(c, getActivestack());
   return true;
 }
 

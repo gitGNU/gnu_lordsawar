@@ -163,3 +163,24 @@ bool QuestEnemyArmies::isFeasible(Uint32 heroId)
     return true;
   return false;
 }
+void QuestEnemyArmies::armyDied(Army *a, bool heroIsCulprit)
+{
+  if (!isActive())
+    return;
+
+  if (heroIsCulprit == true && a->getPlayer() == d_victim_player)
+    {
+      d_killed++;
+      if (d_killed >= d_to_kill)
+	{
+	  debug("CONGRATULATIONS: QUEST 'ENEMY ARMIES' IS COMPLETED!");
+	  d_q_mgr.questCompleted(d_hero);
+	}
+    }
+}
+
+void QuestEnemyArmies::cityAction(City *c, CityDefeatedAction action, 
+				  bool heroIsCulprit, int gold)
+{
+  ;//this quest doesn't care what happens to cities
+}

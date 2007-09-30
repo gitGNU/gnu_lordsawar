@@ -61,9 +61,10 @@ class QuestCityOccupy : public Quest, public sigc::trackable
          //! Returns the city to be occupied
          City* getCity() const;
 
+	 void armyDied(Army *a, bool heroIsCulprit);
+	 void cityAction(City *c, CityDefeatedAction action, 
+			 bool heroIsCulprit, int gold);
     private:
-         /** slot that would receive the scityOccupied (signal) */
-         void cityOccupied (City* city, Stack* s);
 
          /** \brief Make quest description from the city we'll occupy */
          void initDescription();

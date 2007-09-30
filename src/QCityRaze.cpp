@@ -34,12 +34,6 @@ using namespace std;
 QuestCityRaze::QuestCityRaze (QuestsManager& mgr, Uint32 hero) 
     : Quest(mgr, hero, Quest::CITYRAZE)
 {
-    // we want to stay informed about ruin searches
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->srazingCity.connect(
-	    sigc::mem_fun(this, &QuestCityRaze::cityRazed));
-
     // find us a victim
     City* c = chooseToRaze(getHero()->getPlayer());
     assert(c);      // should never fail because isFeasible is checked first
@@ -53,12 +47,6 @@ QuestCityRaze::QuestCityRaze (QuestsManager& mgr, Uint32 hero)
 QuestCityRaze::QuestCityRaze (QuestsManager& q_mgr, XML_Helper* helper) 
      : Quest(q_mgr, helper)
 {
-    // let us stay in touch with the world...
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-        (*it)->srazingCity.connect(
-	    sigc::mem_fun(this, &QuestCityRaze::cityRazed));
-    
     helper->getData(d_city, "city");
     d_targets.push_back(getCity()->getPos());
     initDescription();
@@ -110,26 +98,6 @@ City* QuestCityRaze::getCity() const
     return 0;
 }
 //=======================================================================
-void QuestCityRaze::cityRazed(City* city, Stack* s)
-{
-    // some basic considerations have to be done
-    if ((city->getId() != d_city) || !isActive())
-        return;
-    
-    // look if our hero is in the list of (surviving) explorers
-    for (Stack::const_iterator it = s->begin(); it != s->end(); it++)
-        if ((*it)->isHero() && ((*it)->getId() == d_hero))
-        {
-            debug("CONGRATULATIONS: QUEST 'CITY RAZE' IS COMPLETED!");
-            d_q_mgr.questCompleted(d_hero);
-            return;
-        }
-
-    // looks like we died instead of accomplishing this quest
-    debug("WHAT A PITY: QUEST 'CITY RAZE' CANNOT BE COMPLETED!");
-    d_q_mgr.questExpired(d_hero);
-}
-//=======================================================================
 void QuestCityRaze::initDescription()
 {
     const City* c = getCity();
@@ -156,4 +124,20 @@ City* QuestCityRaze::chooseToRaze(Player *p)
         return 0;
 
     return cities[rand() % cities.size()];
+}
+
+void QuestCityRaze::armyDied(Army *a, bool heroIsCulprit)
+{
+  ;
+  //this quest does nothing when an army dies
+}
+void QuestCityRaze::cityAction(City *c, CityDefeatedAction action, 
+			       bool heroIsCulprit, int gold)
+{
+  if ((c->getId() == d_city) && isActive() && heroIsCulprit)
+    {
+      debug("CONGRATULATIONS: QUEST 'CITY RAZE' IS COMPLETED!");
+      d_q_mgr.questCompleted(d_hero);
+      return;
+    }
 }

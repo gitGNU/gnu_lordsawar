@@ -128,7 +128,7 @@ void QuestCompletedDialog::set_parent_window(Gtk::Window &parent)
 
 void QuestCompletedDialog::run()
 {
-  questmap->resize(GameMap::get_dim() * 2);
+  questmap->resize();
   questmap->draw();
 
   dialog->show_all();

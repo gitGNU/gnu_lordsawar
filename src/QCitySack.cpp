@@ -34,16 +34,6 @@ using namespace std;
 QuestCitySack::QuestCitySack (QuestsManager& mgr, Uint32 hero) 
     : Quest(mgr, hero, Quest::CITYSACK)
 {
-    // we want to stay informed about city sacks
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-      {
-        (*it)->ssackingCity.connect(
-	    sigc::mem_fun(this, &QuestCitySack::citySacked));
-        (*it)->srazingCity.connect(
-	    sigc::mem_fun(this, &QuestCitySack::cityRazed));
-      }
-
     // find us a victim
     City* c = chooseToSack(getHero()->getPlayer());
     assert(c);      // should never fail because isFeasible is checked first
@@ -58,15 +48,6 @@ QuestCitySack::QuestCitySack (QuestsManager& q_mgr, XML_Helper* helper)
      : Quest(q_mgr, helper)
 {
     // let us stay in touch with the world...
-    const Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-      {
-        (*it)->ssackingCity.connect(
-	    sigc::mem_fun(this, &QuestCitySack::citySacked));
-        (*it)->srazingCity.connect(
-	    sigc::mem_fun(this, &QuestCitySack::cityRazed));
-      }
-    
     helper->getData(d_city, "city");
     d_targets.push_back(getCity()->getPos());
     initDescription();
@@ -120,29 +101,6 @@ City* QuestCitySack::getCity() const
     return 0;
 }
 //=======================================================================
-void QuestCitySack::citySacked(City* city, Stack* s, int gold, std::list<Uint32> sacked_types)
-{
-    // some basic considerations have to be done
-    if ((city->getId() != d_city) || !isActive())
-        return;
-    
-    // look if our hero is in the list of sackers
-    for (Stack::const_iterator it = s->begin(); it != s->end(); it++)
-        if ((*it)->isHero() && ((*it)->getId() == d_hero))
-        {
-            debug("CONGRATULATIONS: QUEST 'CITY SACK' IS COMPLETED!");
-            d_q_mgr.questCompleted(d_hero);
-            return;
-        }
-
-}
-void QuestCitySack::cityRazed(City* city, Stack* s)
-{
-    // looks like someone else razed it
-    debug("WHAT A PITY: QUEST 'CITY SACK' CANNOT BE COMPLETED!");
-    d_q_mgr.questExpired(d_hero);
-}
-//=======================================================================
 void QuestCitySack::initDescription()
 {
     const City* c = getCity();
@@ -170,4 +128,23 @@ City * QuestCitySack::chooseToSack(Player *p)
         return 0;
 
     return cities[rand() % cities.size()];
+}
+	 
+void QuestCitySack::armyDied(Army *a, bool heroIsCulprit)
+{
+  ;
+  //this quest does nothing when an army dies
+}
+
+void QuestCitySack::cityAction(City *c, CityDefeatedAction action, 
+			       bool heroIsCulprit, int gold)
+{
+  if (!isActive())
+    return;
+  if (action == CITY_DEFEATED_SACK && heroIsCulprit && c &&
+      c->getId() == d_city)
+    {
+      debug("CONGRATULATIONS: QUEST 'CITY SACK' IS COMPLETED!");
+      d_q_mgr.questCompleted(d_hero);
+    }
 }
