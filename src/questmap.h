@@ -42,7 +42,9 @@ class QuestMap : public OverviewMap
     Quest *quest;
     void draw_stacks(Player *p, std::list< Vector<int> > targets);
     void draw_target(Vector<int> start, Vector<int> target);
+    void draw_target();
     
+    Vector<int> d_target;
     // hook from base class
     virtual void after_draw();
 };

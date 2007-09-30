@@ -189,9 +189,10 @@ void QuestsManager::questCompleted(Uint32 heroId)
           }
       }
 
-    debug("deactivate quest");
-    _deactivateQuest(heroId);
-    debug("quest deactivated");
+    //debug("deactivate quest");
+    //_deactivateQuest(heroId);
+    d_quests.erase(heroId);
+    //debug("quest deactivated");
 }
 //========================================================================
 void QuestsManager::questExpired(Uint32 heroId)
@@ -201,7 +202,7 @@ void QuestsManager::questExpired(Uint32 heroId)
     if (quest == 0)
         return;
     
-    quest_expired.emit(quest);
+    //quest_expired.emit(quest);
     
     debug("deactivate quest");
     _deactivateQuest(heroId);
@@ -238,14 +239,16 @@ bool QuestsManager::save(XML_Helper* helper) const
 	bool retval = true;
 	retval &= helper->openTag("questlist");
     
-    std::map<Uint32,Quest*>::const_iterator it;
-    for (it = d_quests.begin(); it != d_quests.end(); it++) 
+    for (std::map<Uint32,Quest*>::const_iterator it = d_quests.begin(); 
+	 it != d_quests.end(); it++) 
       {
 	if ((*it).second == NULL)
 	  continue;
-	if (((*it).second)->isPendingDeletion() == false)
-	  retval &= ((*it).second)->save(helper);
+	retval &= ((*it).second)->save(helper);
       }
+    for (std::list<Quest *>::const_iterator it = d_inactive_quests.begin();
+	 it != d_inactive_quests.end(); it++)
+      retval &= (*it)->save(helper);
 
     debug("Quests saved\n");
 	retval &= helper->closeTag();
@@ -291,7 +294,12 @@ bool QuestsManager::load(string tag, XML_Helper* helper)
         
         debug("quest created: q = " << quest);
         if (quest)
-            d_quests[hero] = quest;
+	  {
+	    if (quest->isPendingDeletion())
+	      d_inactive_quests.push_back(quest);
+	    else
+	      d_quests[hero] = quest;
+	  }
         
         return true;
     }
@@ -301,9 +309,7 @@ bool QuestsManager::load(string tag, XML_Helper* helper)
 //======================================================================
 void QuestsManager::_sharedInit()
 {
-    debug("QuestsManager constructor: connecting to the signals")
-
-    sendingTurn.connect( sigc::mem_fun(*this, &QuestsManager::_cleanup));
+    debug("QuestsManager constructor")
 
     // now prepare the vector of pointers to the
     // functions (class static members) checking feasibility
@@ -321,7 +327,7 @@ void QuestsManager::_deactivateQuest(Uint32 heroId)
 {
     Quest *q = d_quests[heroId];
     q->deactivate();
-    d_inactive_quests.push(q);
+    d_inactive_quests.push_back(q);
     // delete it from hash of active quests
     d_quests.erase(heroId);
 }
@@ -330,13 +336,16 @@ void QuestsManager::_cleanup(Player::Type type)
 {
     debug("QuestsManager: _cleanup!");
 
-    while (d_inactive_quests.empty() == false)
-    {
-        delete d_inactive_quests.front();
-        d_inactive_quests.pop();
-    }
+    std::list<Quest *>::iterator it = d_inactive_quests.begin();
+    while(it != d_inactive_quests.end())
+      {
+	Quest *q =(*it);
+	it = d_inactive_quests.erase(it);
+	if (q)
+	  delete q;
+      }
 }
-        
+
 void QuestsManager::armyDied(Army *a, std::vector<Uint32>& culprits)
 {
   //tell all quests that an army died
@@ -442,4 +451,20 @@ void QuestsManager::cityPillaged(City *c, Stack *s, int gold)
 void QuestsManager::cityOccupied(City *c, Stack *s)
 {
   cityAction(c, s, CITY_DEFEATED_OCCUPY, 0);
+}
+void QuestsManager::nextTurn(Player *p)
+{
+  // go through our inactive list and remove quests belonging to us
+  for (std::list<Quest*>::iterator it = d_inactive_quests.begin();
+       it != d_inactive_quests.end(); it++)
+    {
+      if ((*it)->getPlayer() == p)
+	{
+	  quest_expired.emit(*it);
+	  Quest *q = *it;
+	  it = d_inactive_quests.erase(it);
+	  if (q)
+	    delete q;
+	}
+    }
 }

@@ -28,6 +28,7 @@
 #include "sound.h"
 #include "GraphicsCache.h"
 #include "GameScenario.h"
+#include "QuestsManager.h"
 #include "NextTurn.h"
 
 #include "gamebigmap.h"
@@ -1051,10 +1052,12 @@ bool Game::init_turn_for_player(Player* p)
     {
       unlock_inputs();
 
+
       update_sidebar_stats();
       update_stack_info();
       update_control_panel();
 
+      QuestsManager::getInstance()->nextTurn(p);
 
       maybeRecruitHero(p);
 
@@ -1070,6 +1073,7 @@ bool Game::init_turn_for_player(Player* p)
   else
     {
       SDL_Delay(250);
+      QuestsManager::getInstance()->nextTurn(p);
       maybeRecruitHero(p);
       return false;
     }

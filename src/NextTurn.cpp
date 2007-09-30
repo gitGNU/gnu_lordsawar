@@ -122,7 +122,6 @@ void NextTurn::startTurn()
       //build armies
       Citylist::getInstance()->nextTurn(p);
 
-
       //heal stacks
       p->getStacklist()->nextTurn();
     }

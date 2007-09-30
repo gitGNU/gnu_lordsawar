@@ -84,7 +84,8 @@ void QuestCityRaze::getExpiredMsg(std::queue<std::string>& msgs) const
     char buf[101]; buf[100] = '\0';
     const City* c = getCity();
 
-    snprintf(buf, 100, _("You failed to raze the city \"%s\"."), c->getName().c_str());
+    snprintf(buf, 100, _("The razing of city \"%s\" could not be "
+			 "accomplished."), c->getName().c_str());
     msgs.push(buf);
 }
 //=======================================================================

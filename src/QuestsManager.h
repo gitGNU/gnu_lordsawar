@@ -107,6 +107,9 @@ class QuestsManager : public sigc::trackable
 	void cityPillaged(City *c, Stack *s, int gold);
 	void cityOccupied(City *c, Stack *s);
 
+
+	void nextTurn(Player *p);
+
         /**
          * \brief Get quests for a specific player
          */
@@ -152,7 +155,7 @@ class QuestsManager : public sigc::trackable
         std::map<Uint32,Quest*> d_quests;
 
         /** quests that have been marked as 'to-delete' */
-        std::queue<Quest*> d_inactive_quests;
+        std::list<Quest*> d_inactive_quests;
 
         /** \brief Vector of pointers to code (class static members)
          *         checking if a particular question makes sense

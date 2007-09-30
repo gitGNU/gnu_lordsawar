@@ -93,16 +93,16 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
       }
     else if (reward->getType() == Reward::RUIN)
       {
-	Ruin *ruin =dynamic_cast<Reward_Ruin*>(reward)->getRuin() ;
+	Ruin *ruin = dynamic_cast<Reward_Ruin*>(reward)->getRuin();
 	s += String::ucompose("You are shown the site of %1\n", 
 			      ruin->getName());
 	questmap->set_target(ruin->getPos());
-	Reward_Ruin *ruin_reward = static_cast<Reward_Ruin*>(ruin->getReward());
+	Reward *ruin_reward = ruin->getReward();
 	if (ruin_reward->getType() == Reward::ALLIES)
 	  s += _("where powerful allies can be found!");
 	else if (ruin_reward->getType() == Reward::ITEM)
 	  {
-	    Item *item = static_cast<Reward_Item*>(reward)->getItem();
+	    Item *item = dynamic_cast<Reward_Item*>(ruin_reward)->getItem();
 	    s += String::ucompose(_("where the %1 can be found!"), 
 				  item->getName());
 	  }

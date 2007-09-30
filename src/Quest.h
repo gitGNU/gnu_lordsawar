@@ -22,6 +22,7 @@
 #include "stack.h"
 #include "callback-enums.h"
 #include "city.h"
+#include "playerlist.h"
 
 class QuestsManager;
 class Hero;
@@ -123,8 +124,14 @@ class Quest
         //! Shortcut: Directly returns a pointer to the quest's hero.
         Hero* getHero() const { return getHeroById(d_hero); }
 
+        //! Returns the name of the hero
+        std::string getHeroName() const {return d_hero_name;}
+
         //! Get the type of the quest
         Uint32 getType() const { return d_type; }
+
+        //! Get the player of the quest
+        Player *getPlayer() const { return Playerlist::getInstance()->getPlayer(d_player_id); }
 
         /** \brief Checks and returns if quest is still valid (hero living etc.) */
         bool isActive();
@@ -143,11 +150,16 @@ class Quest
         /** \brief id of the hero owning this quest */
         Uint32 d_hero;
 
+	/* \brief id of the player owning the hero */
+	Uint32 d_player_id;
+
         //! Type of the quest
         Uint32 d_type;
 
         //! If set to false, this quest is deactivated and not to be processed.
         bool d_pending;
+
+        std::string d_hero_name;
 
 	//! list of targets to display on a questmap
 	std::list< Vector<int> > d_targets;

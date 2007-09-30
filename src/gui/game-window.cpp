@@ -2187,7 +2187,7 @@ void GameWindow::on_quest_expired(Quest *quest)
   xml->get_widget("label", label);
   Glib::ustring s;
   s += String::ucompose(_("%1 did not complete the quest."),
-			quest->getHero()->getName());
+			quest->getHeroName());
   s += "\n\n";
 
   // add messages from the quest

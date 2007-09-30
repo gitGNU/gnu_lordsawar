@@ -84,7 +84,9 @@ void QuestCityOccupy::getExpiredMsg(std::queue<std::string>& msgs) const
     char buf[101]; buf[100] = '\0';
     const City* c = getCity();
 
-    snprintf(buf, 100, _("You failed to occupy the city \"%s\"."), c->getName().c_str());
+    snprintf(buf, 100, _("The occupation of city \"%s\" could not be "
+			 "accomplished."), 
+	     c->getName().c_str());
     msgs.push(buf);
 }
 //=======================================================================

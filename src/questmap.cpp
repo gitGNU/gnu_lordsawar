@@ -29,6 +29,8 @@
 QuestMap::QuestMap(Quest *q)
 {
     quest = q;
+    d_target.x = -1;
+    d_target.y = -1;
 }
 
 
@@ -115,6 +117,8 @@ void QuestMap::after_draw()
         }
     }
 
+  draw_target();
+
   // draw the hero picture
 
   start = mapToSurface (start);
@@ -135,10 +139,17 @@ void QuestMap::after_draw()
 
 void QuestMap::set_target(Vector<int>target)
 {
+  d_target = target;
+}
+
+void QuestMap::draw_target()
+{
+  if (d_target.x == -1 && d_target.y == -1)
+    return;
   Playerlist *plist = Playerlist::getInstance();
   Player *p = plist->getActiveplayer();
   Stacklist *sl = p->getStacklist();
   Vector<int> start = sl->getPosition (quest->getHeroId ());
-  draw_target(start, target);
+  draw_target(start, d_target);
   map_changed.emit(surface);
 }
