@@ -1,6 +1,16 @@
+2007-10-01  Ben Asselstine
+
+	* fixed editor to update the smallmap when something is put on the
+	  map
+	* the army selector now shows armies in the colour of the player
+	* rejiggered the player ids so that the players alwyas have ids
+	  0 through 7, while the neutral gets 8.  other objects start at 9.
+
 2007-09-30  Ben Asselstine
 
 	* changed quests manager to not use signals
+	* changed quest expiry to show up on the start of that player's
+	  next turn
 
 2007-09-29  Ben Asselstine
 
