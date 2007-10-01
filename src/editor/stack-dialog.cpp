@@ -166,6 +166,9 @@ void StackDialog::run()
 		stack_player->getStacklist()->remove(stack);
 	
 	    player->addStack(stack);
+	    stack->setPlayer(player);
+	    for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
+	      (*it)->setPlayer(player);
 	}
     }
 }
