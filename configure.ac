@@ -236,9 +236,6 @@ AC_CONFIG_FILES([
         dat/ggz/lordsawar.dsc
         dat/ggz/lordsawar-server.dsc	
         dat/music/Makefile
-        dat/theme/Makefile
-        dat/theme/lordsawar/Makefile
-        dat/theme/generic/Makefile
         dat/glade/Makefile
         dat/glade/editor/Makefile
         intl/Makefile

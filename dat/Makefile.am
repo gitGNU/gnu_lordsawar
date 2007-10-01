@@ -1,4 +1,4 @@
-SUBDIRS = army tilesets various map ggz music theme glade
+SUBDIRS = army tilesets various map ggz music glade
 MANTAINERCLEANFILES= Makefile.in
 
 lordsawardatadir = $(datadir)/lordsawar
@@ -20,7 +20,6 @@ lordsawar32icon=
 
 EXTRA_DIST = \
     citynames \
-    lordsawar.zip \
     heronames \
     templenames \
     ruinnames \
