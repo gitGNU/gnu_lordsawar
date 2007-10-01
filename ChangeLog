@@ -5,6 +5,8 @@
 	* the army selector now shows armies in the colour of the player
 	* rejiggered the player ids so that the players alwyas have ids
 	  0 through 7, while the neutral gets 8.  other objects start at 9.
+	* the stack dialog now sets the owner on all armies in the stack,
+	  when the owner of the stack is changed
 
 2007-09-30  Ben Asselstine
 
