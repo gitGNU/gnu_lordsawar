@@ -477,6 +477,10 @@ void EditorBigMap::change_map_under_cursor()
 	    if (maptile->getBuilding() != Maptile::NONE
 		&& pointer_terrain == Tile::WATER)
 		break;
+	    // stones don't go on non grass tiles
+	    if (maptile->getBuilding() == Maptile::STONE
+		&& pointer_terrain != Tile::GRASS)
+		break;
 	    // don't change the terrain to anything else than grass if there is
 	    // a city
 	    if (maptile->getBuilding() == Maptile::CITY

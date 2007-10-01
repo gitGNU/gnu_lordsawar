@@ -315,11 +315,15 @@ void MainWindow::set_filled_map(int width, int height, int fill_style)
 
     // sets up the lists
     game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
+    //zip past the player IDs (+1 for neutral)
+    for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+      fl_counter->getNextId();
+
 
     // ...however we need to do some of the setup by hand. We need to create a
     // neutral player to give cities a player upon creation...
     Uint32 armyset = Armysetlist::getInstance()->getArmysets()[0];
-    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral());
+    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral(), MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
     Playerlist::getInstance()->push_back(neutral);
     Playerlist::getInstance()->setNeutral(neutral);
@@ -461,6 +465,8 @@ bool MainWindow::on_sdl_mouse_button_event(GdkEventButton *e)
     {
 	button_event = e;	// save it for later use
 	bigmap->mouse_button_event(to_input_event(e));
+	if (smallmap.get())
+	  smallmap->draw();
     }
     
     return true;

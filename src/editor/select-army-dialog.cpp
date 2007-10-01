@@ -32,8 +32,9 @@
 #include "../GraphicsCache.h"
 #include "../armysetlist.h"
 
-SelectArmyDialog::SelectArmyDialog()
+SelectArmyDialog::SelectArmyDialog(Player *p)
 {
+    player = p;
     selected_army = 0;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -125,7 +126,9 @@ void SelectArmyDialog::fill_in_army_toggles()
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
 	
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf
-	    = to_pixbuf(selectable[i]->getPixmap());
+	    = to_pixbuf(GraphicsCache::getInstance()->getArmyPic(armyset,
+                                       selectable[i]->getType(),
+                                       player, 1, NULL));
 	
 	toggle->add(*manage(new Gtk::Image(pixbuf)));
 	army_toggles.push_back(toggle);

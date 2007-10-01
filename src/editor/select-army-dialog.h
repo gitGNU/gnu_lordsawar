@@ -30,12 +30,13 @@
 
 class Army;
 class City;
+class Player;
 
 // dialog for buying a production slot for a city
 class SelectArmyDialog: public sigc::trackable
 {
  public:
-    SelectArmyDialog();
+    SelectArmyDialog(Player *p);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -54,6 +55,7 @@ class SelectArmyDialog: public sigc::trackable
     std::vector<Uint32> armysets;
 
     const Army *selected_army;
+    Player *player;
 
     std::vector<Gtk::ToggleButton *> army_toggles;
     bool ignore_toggles;

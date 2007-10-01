@@ -172,7 +172,7 @@ void StackDialog::run()
 
 void StackDialog::on_add_clicked()
 {
-    SelectArmyDialog d;
+    SelectArmyDialog d(stack->getPlayer());
     d.set_parent_window(*dialog.get());
     d.run();
 

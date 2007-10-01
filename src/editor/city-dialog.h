@@ -70,6 +70,7 @@ class CityDialog: public sigc::trackable
     void on_add_clicked();
     void on_remove_clicked();
     void on_selection_changed();
+    void on_player_changed();
 
     void add_army(const Army *a);
     void set_button_sensitivity();

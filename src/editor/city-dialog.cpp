@@ -26,6 +26,7 @@
 #include "../city.h"
 #include "../army.h"
 #include "../playerlist.h"
+#include "../stacklist.h"
 #include "../citylist.h"
 
 #include "select-army-dialog.h"
@@ -68,8 +69,9 @@ CityDialog::CityDialog(City *cit)
 	    player_no = c;
     }
 
+    player_combobox->signal_changed().connect
+      (sigc::mem_fun(this, &CityDialog::on_player_changed));
     player_combobox->set_active(player_no);
-
     Gtk::Alignment *alignment;
     xml->get_widget("player_alignment", alignment);
     alignment->add(*player_combobox);
@@ -118,106 +120,134 @@ void CityDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void CityDialog::on_player_changed()
+{
+  // set allegiance
+  int c = 0, row = player_combobox->get_active_row_number();
+  Player *player = Playerlist::getInstance()->getNeutral();
+  for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
+       end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
+    if (c == row)
+      {
+	player = *i;
+	break;
+      }
+  city->setPlayer(player);
+  //look for stacks in the city, and set them to this player
+  for (unsigned int x = 0; x < city->getSize(); x++)
+    {
+      for (unsigned int y = 0; y < city->getSize(); y++)
+	{
+	  Stack *s = Stacklist::getObjectAt(city->getPos().x + x, 
+					    city->getPos().y + y);
+	  if (s)
+	    {
+	      if (s->getPlayer() != player)
+		{
+		  //remove it from the old player's list of stacks
+		  s->getPlayer()->getStacklist()->remove(s);
+		  //and give it to the new player list of stacks
+		  player->getStacklist()->push_back(s);
+		  //change the ownership of the stack
+		  s->setPlayer(player);
+		  //and all of it's armies
+		  for (Stack::iterator it = s->begin(); it != s->end(); it++)
+		    (*it)->setPlayer(player);
+		}
+	    }
+	}
+    }
+}
+
 void CityDialog::run()
 {
-    dialog->show_all();
-    int response = dialog->run();
+  dialog->show_all();
+  int response = dialog->run();
 
-    if (response == 0)		// accepted
+  if (response == 0)		// accepted
     {
-	// set allegiance
-	int c = 0, row = player_combobox->get_active_row_number();
-	Player *player = Playerlist::getInstance()->getNeutral();
-	for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
-		 end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
-	    if (c == row)
-	    {
-		player = *i;
-		break;
-	    }
-	city->setPlayer(player);
-	
-	// set attributes
-	bool capital = capital_checkbutton->get_active();
-	city->setCapital(capital);
-	if (capital)
+      int c = 0;
+      // set attributes
+      bool capital = capital_checkbutton->get_active();
+      city->setCapital(capital);
+      if (capital)
 	{
-	    // make sure player doesn't have other capitals
-	    Citylist* cl = Citylist::getInstance();
-	    for (Citylist::iterator i = cl->begin(); i != cl->end(); ++i)
-		if (i->isCapital() && i->getPlayer() == city->getPlayer()
-		    && &(*i) != city)
-		    i->setCapital(false);
+	  // make sure player doesn't have other capitals
+	  Citylist* cl = Citylist::getInstance();
+	  for (Citylist::iterator i = cl->begin(); i != cl->end(); ++i)
+	    if (i->isCapital() && i->getPlayer() == city->getPlayer()
+		&& &(*i) != city)
+	      i->setCapital(false);
 	}
-	city->setName(name_entry->get_text());
-	city->setGold(income_spinbutton->get_value_as_int());
-	city->setBurnt(burned_checkbutton->get_active());
-	
-	// set production slots
-	c = 0;
-	for (Gtk::TreeIter i = army_list->children().begin(),
-		 end = army_list->children().end(); i != end; ++i, ++c)
-	{
-	    const Army *a = (*i)[army_columns.army];
-	    city->addBasicProd(c, a->getType());
+      city->setName(name_entry->get_text());
+      city->setGold(income_spinbutton->get_value_as_int());
+      city->setBurnt(burned_checkbutton->get_active());
 
-	    // FIXME: use (*i)[army_columns.duration] to set special city
-	    // production ability
+      // set production slots
+      c = 0;
+      for (Gtk::TreeIter i = army_list->children().begin(),
+	   end = army_list->children().end(); i != end; ++i, ++c)
+	{
+	  const Army *a = (*i)[army_columns.army];
+	  city->addBasicProd(c, a->getType());
+
+	  // FIXME: use (*i)[army_columns.duration] to set special city
+	  // production ability
 	}
-	for (; c < city->getMaxNoOfBasicProd(); ++c)
-	    city->removeBasicProd(c);
+      for (; c < city->getMaxNoOfBasicProd(); ++c)
+	city->removeBasicProd(c);
     }
 }
 
 void CityDialog::on_add_clicked()
 {
-    SelectArmyDialog d;
-    d.set_parent_window(*dialog.get());
-    d.run();
+  SelectArmyDialog d(city->getPlayer());
+  d.set_parent_window(*dialog.get());
+  d.run();
 
-    const Army *army = d.get_selected_army();
-    if (army)
-	add_army(army);
+  const Army *army = d.get_selected_army();
+  if (army)
+    add_army(army);
 }
-    
+
 
 void CityDialog::on_remove_clicked()
 {
-    Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
-    if (i)
+  Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
+  if (i)
     {
-	army_list->erase(i);
+      army_list->erase(i);
     }
 
-    set_button_sensitivity();
+  set_button_sensitivity();
 }
 
 void CityDialog::add_army(const Army *a)
 {
-    Gtk::TreeIter i = army_list->append();
-    (*i)[army_columns.army] = a;
-    (*i)[army_columns.name] = a->getName();
-    (*i)[army_columns.strength] = a->getStat(Army::STRENGTH, false);
-    (*i)[army_columns.moves] = a->getStat(Army::MOVES, false);
-    (*i)[army_columns.hitpoints] = a->getStat(Army::HP, false);
-    (*i)[army_columns.upkeep] = a->getUpkeep();
-    (*i)[army_columns.duration] = a->getProduction();
+  Gtk::TreeIter i = army_list->append();
+  (*i)[army_columns.army] = a;
+  (*i)[army_columns.name] = a->getName();
+  (*i)[army_columns.strength] = a->getStat(Army::STRENGTH, false);
+  (*i)[army_columns.moves] = a->getStat(Army::MOVES, false);
+  (*i)[army_columns.hitpoints] = a->getStat(Army::HP, false);
+  (*i)[army_columns.upkeep] = a->getUpkeep();
+  (*i)[army_columns.duration] = a->getProduction();
 
-    army_treeview->get_selection()->select(i);
-    
-    set_button_sensitivity();
+  army_treeview->get_selection()->select(i);
+
+  set_button_sensitivity();
 }
 
 void CityDialog::on_selection_changed()
 {
-    set_button_sensitivity();
+  set_button_sensitivity();
 }
 
 void CityDialog::set_button_sensitivity()
 {
-    Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
-    int armies = army_list->children().size();
-    add_button->set_sensitive(armies < city->getMaxNoOfBasicProd());
-    remove_button->set_sensitive(i);
+  Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
+  int armies = army_list->children().size();
+  add_button->set_sensitive(armies < city->getMaxNoOfBasicProd());
+  remove_button->set_sensitive(i);
 }
 

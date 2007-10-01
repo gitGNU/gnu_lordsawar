@@ -32,6 +32,7 @@
 #include "../real_player.h"
 #include "../ai_fast.h"
 #include "../ai_smart.h"
+#include "../ai_dummy.h"
 
 
 #define HUMAN_PLAYER_TYPE _("Human")
@@ -148,6 +149,7 @@ PlayersDialog::PlayersDialog()
 	}
 	else
 	{
+	    //make the neutral player
 	    add_player(NO_PLAYER_TYPE, *current_name, default_gold, 0);
 	    ++current_name;
 	}
@@ -218,34 +220,23 @@ void PlayersDialog::run()
 		    new_player = 
 			new RealPlayer(name, default_armyset,
 				       Player::get_color_for_no(c),
-				       type_as_enum, c + 1);
+				       type_as_enum, c);
 		else if (type == EASY_PLAYER_TYPE)
 		    new_player = 
 			new AI_Fast(name, default_armyset,
-				    Player::get_color_for_no(c),
-				    c + 1);
+				    Player::get_color_for_no(c), c);
 		else if (type == HARD_PLAYER_TYPE)
 		    new_player = 
 			new AI_Smart(name, default_armyset,
-				     Player::get_color_for_no(c),
-				     c + 1);
+				     Player::get_color_for_no(c), c);
 		    
 		new_player->setGold(gold);
 
-		// find the right position
+		//ideally this new player should be at position c in the 
+		//playerlist, but it doesn't really matter
 		Playerlist::iterator j = pl->begin();
-		if (*j == pl->getNeutral())
-		    ++j;
-		
-		int k = 0;
-		while (k < c)
-		{
-		    if (*j != pl->getNeutral())
-			++k;
-		    ++j;
-		    if (j == pl->end())
-			break;
-		}
+		for (int k = 0; k < c; k++)
+		    j++;
 
 		pl->insert(j, new_player);
 	    }
