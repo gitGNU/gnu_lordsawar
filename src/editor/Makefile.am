@@ -27,8 +27,8 @@ if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor lordsawar-army-editor
 
 lordsawar_army_editor_SOURCES = \
-armylist-main.cpp \
-armylist-window.cpp armylist-window.h  \
+armyset-main.cpp \
+armyset-window.cpp armyset-window.h  \
 glade-helpers.h
 
 

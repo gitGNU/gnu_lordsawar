@@ -25,7 +25,7 @@
 #include "../GraphicsCache.h"
 #include "../timing.h"
 
-#include "armylist-window.h"
+#include "armyset-window.h"
 
 
 int main(int argc, char* argv[])
@@ -46,17 +46,17 @@ int main(int argc, char* argv[])
     File::scanArmysets();
 
     // init GUI stuff
-    g_set_application_name(_("LordsAWar! Army List Editor"));
+    g_set_application_name(_("LordsAWar! Armyset Editor"));
 
     try
     {
 	Gtk::Main kit(argc, argv);
 
-	std::auto_ptr<ArmyListWindow> armylist_window(new ArmyListWindow);
-	armylist_window->init(64, 64);
-	armylist_window->show();
+	std::auto_ptr<ArmySetWindow> armyset_window(new ArmySetWindow);
+	armyset_window->init(64, 64);
+	armyset_window->show();
 	
-	kit.run(armylist_window->get_window());
+	kit.run(armyset_window->get_window());
     }
     catch (const Glib::Error &ex) {
 	std::cerr << ex.what() << std::endl;

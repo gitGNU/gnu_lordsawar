@@ -4,7 +4,7 @@
 <glade-interface>
 
 <widget class="GtkWindow" id="window">
-  <property name="title" translatable="yes"></property>
+  <property name="title" translatable="yes">LordsAWar! Armyset Editor</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
@@ -40,33 +40,33 @@
 		<widget class="GtkMenu" id="file_menuitem_menu">
 
 		  <child>
-		    <widget class="GtkMenuItem" id="new_armylist_menuitem">
+		    <widget class="GtkMenuItem" id="new_armyset_menuitem">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">_New Armylist</property>
+		      <property name="label" translatable="yes">_New Armyset</property>
 		      <property name="use_underline">True</property>
 		    </widget>
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="load_armylist_menuitem">
+		    <widget class="GtkMenuItem" id="load_armyset_menuitem">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">_Load Armylist</property>
+		      <property name="label" translatable="yes">_Load Armyset</property>
 		      <property name="use_underline">True</property>
 		    </widget>
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="save_armylist_menuitem">
+		    <widget class="GtkMenuItem" id="save_armyset_menuitem">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">_Save Armylist</property>
+		      <property name="label" translatable="yes">_Save Armyset</property>
 		      <property name="use_underline">True</property>
 		    </widget>
 		  </child>
 
 		  <child>
-		    <widget class="GtkMenuItem" id="save_armylist_as_menuitem">
+		    <widget class="GtkMenuItem" id="save_armyset_as_menuitem">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Save Armylist _As...</property>
+		      <property name="label" translatable="yes">Save Armyset _As...</property>
 		      <property name="use_underline">True</property>
 		    </widget>
 		  </child>
@@ -100,9 +100,9 @@
 		<widget class="GtkMenu" id="edit_menuitem_menu">
 
 		  <child>
-		    <widget class="GtkMenuItem" id="edit_armylist_info_menuitem">
+		    <widget class="GtkMenuItem" id="edit_armyset_info_menuitem">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Armylist info</property>
+		      <property name="label" translatable="yes">Armyset info</property>
 		      <property name="use_underline">True</property>
 		    </widget>
 		  </child>

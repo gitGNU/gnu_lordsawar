@@ -38,11 +38,11 @@
 
 #include "../army.h"
 
-class ArmyListWindow: public sigc::trackable
+class ArmySetWindow: public sigc::trackable
 {
  public:
-    ArmyListWindow();
-    ~ArmyListWindow();
+    ArmySetWindow();
+    ~ArmySetWindow();
 
     void show();
     void hide();
@@ -114,13 +114,13 @@ class ArmyListWindow: public sigc::trackable
 
     void addArmyType(Uint32 army_type);
     void update_army_panel();
-    void update_armylist_buttons();
+    void update_armyset_buttons();
 
-    void on_load_armylist_activated();
-    void on_save_armylist_activated();
-    void on_save_armylist_as_activated();
+    void on_load_armyset_activated();
+    void on_save_armyset_activated();
+    void on_save_armyset_as_activated();
     void on_quit_activated();
-    void on_edit_armylist_info_activated();
+    void on_edit_armyset_info_activated();
     void on_army_selected();
     void fill_army_info(const Army *army);
 
