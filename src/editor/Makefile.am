@@ -24,7 +24,14 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 
 
 if WANT_EDITOR
-bin_PROGRAMS = lordsawar-editor
+bin_PROGRAMS = lordsawar-editor lordsawar-army-editor
+
+lordsawar_army_editor_SOURCES = \
+armylist-main.cpp \
+armylist-window.cpp armylist-window.h  \
+glade-helpers.h
+
+
 
 lordsawar_editor_SOURCES = \
 main.cpp \
@@ -58,6 +65,10 @@ endif
 lordsawar_editor_LDADD = $(GTKMM_LIBS) \
 	                   $(DEPENDSON) \
                            $(SDL_LIBS) \
+               @LIBINTL@ -L..
+lordsawar_army_editor_LDADD = $(GTKMM_LIBS) \
+	                      $(DEPENDSON) \
+                              $(SDL_LIBS) \
                @LIBINTL@ -L..
 endif
 

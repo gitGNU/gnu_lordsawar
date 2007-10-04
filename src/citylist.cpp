@@ -349,7 +349,12 @@ void Citylist::changeOwnership(Player *old_owner, Player *new_owner)
 {
   for (iterator it = begin(); it != end(); it++)
     if ((*it).getPlayer() == old_owner)
-      (*it).setPlayer(new_owner);
+      {
+	(*it).setPlayer(new_owner);
+	if ((*it).isCapital())
+	  if ((*it).getCapitalOwner() == old_owner)
+	    (*it).setCapitalOwner(new_owner);
+      }
 }
 
 // End of file

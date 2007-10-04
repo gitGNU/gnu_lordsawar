@@ -169,16 +169,25 @@ void CityDialog::run()
       int c = 0;
       // set attributes
       bool capital = capital_checkbutton->get_active();
-      city->setCapital(capital);
       if (capital)
 	{
 	  // make sure player doesn't have other capitals
 	  Citylist* cl = Citylist::getInstance();
 	  for (Citylist::iterator i = cl->begin(); i != cl->end(); ++i)
-	    if (i->isCapital() && i->getPlayer() == city->getPlayer()
-		&& &(*i) != city)
-	      i->setCapital(false);
+	    if ((*i).isCapital() && (*i).getPlayer() == city->getPlayer())
+	      {
+		(*i).setCapital(false);
+		(*i).setCapitalOwner(NULL);
+	      }
+	  city->setCapital(true);
+	  city->setCapitalOwner(city->getPlayer());
 	}
+      else
+	{
+	  city->setCapital(false);
+	  city->setCapitalOwner(NULL);
+	}
+
       city->setName(name_entry->get_text());
       city->setGold(income_spinbutton->get_value_as_int());
       city->setBurnt(burned_checkbutton->get_active());

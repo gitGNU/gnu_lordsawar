@@ -345,7 +345,7 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 	creator.addPlayer(i->name, army_id, Player::get_color_for_no(c), type);
     }
 
-    // first insert the neutral player
+    // the neutral player must come last so it has the highest id among players
     creator.addNeutral(_("Neutral"), army_id, Player::get_color_for_neutral(),
 		       Player::AI_DUMMY);
 

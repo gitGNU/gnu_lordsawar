@@ -541,6 +541,27 @@ void EditorBigMap::change_map_under_cursor()
 		Army* a = new Army(*al->getArmy(p->getArmyset(), 0), p);
 		s->push_back(a);
 		p->addStack(s);
+		//if we're on a city, change the allegiance of the stack
+		//and it's armies to that of the city
+		GameMap *gm = GameMap::getInstance();
+		if (gm->getTile(s->getPos())->getBuilding() == Maptile::CITY)
+		  {
+		    Citylist *clist = Citylist::getInstance();
+		    City *c = clist->getNearestCity(s->getPos());
+			if (s->getPlayer() != c->getPlayer())
+			  {
+			    //remove it from the old player's list of stacks
+			    s->getPlayer()->getStacklist()->remove(s);
+			    //and give it to the new player list of stacks
+			    c->getPlayer()->getStacklist()->push_back(s);
+			    //change the ownership of the stack
+			    s->setPlayer(c->getPlayer());
+			    //and all of it's armies
+			    for (Stack::iterator it = s->begin(); 
+				 it != s->end(); it++)
+			      (*it)->setPlayer(c->getPlayer());
+			  }
+	          }
 	    }
 
 	    break;
@@ -557,10 +578,11 @@ void EditorBigMap::change_map_under_cursor()
 			|| GameMap::getInstance()->getTile(Vector<int>(x, y))->getBuilding() != Maptile::NONE)
 		    {
 			city_placeable = false;
-			goto after_for;
+			break;
 		    }
+		    if (city_placeable == false)
+		      break;
 		}
-	after_for:
 	    if (!city_placeable)
 		break;
 	    
@@ -584,6 +606,33 @@ void EditorBigMap::change_map_under_cursor()
 		    t->setBuilding(Maptile::CITY);
 		    t->setType(index);
 		}
+
+	    //change allegiance of stacks under this city
+	    for (unsigned int x = 0; x < c.getSize(); x++)
+	      {
+		for (unsigned int y = 0; y < c.getSize(); y++)
+		  {
+		    Stack *s = Stacklist::getObjectAt(c.getPos().x + x, 
+						      c.getPos().y + y);
+		    if (s)
+		      {
+			if (s->getPlayer() != c.getPlayer())
+			  {
+			    //remove it from the old player's list of stacks
+			    s->getPlayer()->getStacklist()->remove(s);
+			    //and give it to the new player list of stacks
+			    c.getPlayer()->getStacklist()->push_back(s);
+			    //change the ownership of the stack
+			    s->setPlayer(c.getPlayer());
+			    //and all of it's armies
+			    for (Stack::iterator it = s->begin(); 
+				 it != s->end(); it++)
+			      (*it)->setPlayer(c.getPlayer());
+			  }
+		      }
+		  }
+    
+	      }
 
 	    // finally, smooth the surrounding map
 	    for (int x = r.x - 1; x < r.x + r.w + 1; ++x)

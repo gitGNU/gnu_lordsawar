@@ -236,7 +236,11 @@ void PlayersDialog::run()
 		//playerlist, but it doesn't really matter
 		Playerlist::iterator j = pl->begin();
 		for (int k = 0; k < c; k++)
+		  {
 		    j++;
+		    if (j == pl->end())
+		      break;
+		  }
 
 		pl->insert(j, new_player);
 	    }

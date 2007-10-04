@@ -356,6 +356,7 @@ void MainWindow::set_random_map(int width, int height,
     GameMap::setHeight(height);
     GameMap::getInstance("default");
 
+    //zip past the player IDs
     if (fl_counter)
 	delete fl_counter;
     fl_counter = new FL_Counter(MAX_PLAYERS + 1);
@@ -363,7 +364,7 @@ void MainWindow::set_random_map(int width, int height,
     // We need to create a neutral player to give cities a player upon
     // creation...
     Uint32 armyset = Armysetlist::getInstance()->getArmysets()[0];
-    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral(), 0);
+    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral(), MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
     Playerlist::getInstance()->push_back(neutral);
     Playerlist::getInstance()->setNeutral(neutral);
