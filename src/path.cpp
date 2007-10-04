@@ -262,7 +262,8 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
             int newy = y + diffs[i][1];
             if (newx < 0 || newx == width || newy < 0 || newy == height)
                 continue;
-            if (isBlockedDir(x, y, newx, newy))
+//isBlockedDir is needed to catch crossings from land to sea when not thru a port/city
+            if (!flying && isBlockedDir(x, y, newx, newy))
                 continue;
             
             dist = distance[newy*width+newx];
