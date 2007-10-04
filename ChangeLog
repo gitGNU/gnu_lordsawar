@@ -1,3 +1,14 @@
+2007-10-04  Ben Asselstine
+
+	* fixed bug wrt saving capital cities in the editor
+	* dropping a city on a stack in the editor now changes the stack 
+	  owner and all armies in the stack
+	* dropping a stack on a city in the editor now changes the owner of 
+	  the stack to be the owner of the city
+	* neutral cities now appear to be neutral cities when making a
+	  random map in the editor
+	* added non-functional armyset editor
+
 2007-10-01  Ben Asselstine
 
 	* fixed editor to update the smallmap when something is put on the
