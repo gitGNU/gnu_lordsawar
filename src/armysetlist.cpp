@@ -20,6 +20,7 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "armysetlist.h"
+#include "armyset.h"
 #include "File.h"
 #include "defs.h"
 
@@ -43,27 +44,38 @@ Armysetlist* Armysetlist::getInstance()
 void Armysetlist::deleteInstance()
 {
     if (s_instance)
-        delete s_instance;
+      delete s_instance;
 
     s_instance = 0;
 }
 
 Armysetlist::Armysetlist()
-    : d_loading(0)
 {
     // load all armysets
     std::list<std::string> armysets = File::scanArmysets();
 
-    std::list<std::string>::const_iterator it;
-    for (it = armysets.begin(); it != armysets.end(); it++)
-        loadArmyset(*it);
+    for (std::list<std::string>::const_iterator i = armysets.begin(); 
+	 i != armysets.end(); i++)
+      {
+        loadArmyset(*i);
+	iterator it = end();
+	it--;
+	for (Armyset::iterator ait = (*it)->begin(); ait != (*it)->end(); ait++)
+	  d_armies[(*it)->getId()].push_back(*ait);
+	d_names[(*it)->getId()] = (*it)->getName();
+	file_names[(*i)] = (*it)->getId();
+	(*it)->setSubDir(*i);
+	(*it)->instantiatePixmaps();
+      }
 }
 
 Armysetlist::~Armysetlist()
 {
+  for (iterator it = begin(); it != end(); it++)
+    delete (*it);
+
     // remove all army entries
-    ArmyMap::iterator it;
-    for (it = d_armies.begin(); it != d_armies.end(); it++)
+    for (ArmyMap::iterator it = d_armies.begin(); it != d_armies.end(); it++)
         while (!(*it).second.empty())
             delete ((*it).second)[0];
 }
@@ -120,100 +132,30 @@ std::vector<Uint32> Armysetlist::getArmysets() const
     return retlist;
 }
 
+bool Armysetlist::load(std::string tag, XML_Helper *helper)
+{
+  if (tag == "armyset")
+    {
+      Armyset *armyset = new Armyset(helper);
+      push_back(armyset); 
+    }
+  return true;
+}
+
 bool Armysetlist::loadArmyset(std::string name)
 {
-    debug("Loading armyset " <<name)
+  debug("Loading armyset " <<name);
 
-    d_file = name;
-    
-    // first, load the description file; loadGlobalStuff will care for setting
-    // up d_loading (the id of the currently loaded armyset) and an entry in
-    // the lists.
-    XML_Helper helper(File::getArmyset(name), ios::in, false);
-    helper.registerTag("armyset", sigc::mem_fun((*this), &Armysetlist::loadGlobalStuff));
-    helper.registerTag("army", sigc::mem_fun((*this), &Armysetlist::loadArmy));
-    
-    if (!helper.parse())
+  XML_Helper helper(File::getArmyset(name), ios::in, false);
+
+  helper.registerTag("armyset", sigc::mem_fun((*this), &Armysetlist::load));
+
+  if (!helper.parse())
     {
-        std::cerr <<_("Error, while loading an armyset. Armyset Name: ");
-        std::cerr <<name <<std::endl <<std::flush;
-        exit(-1);
+      std::cerr <<_("Error, while loading an armyset. Armyset Name: ");
+      std::cerr <<name <<std::endl <<std::flush;
+      exit(-1);
     }
 
-    return true;
+  return true;
 }
-
-bool Armysetlist::loadGlobalStuff(std::string tag, XML_Helper* helper)
-{
-    bool retval = true;
-    std::string name;
-    
-    // load the data
-    retval &= helper->getData(d_loading, "id");
-    retval &= helper->getData(name, "name");
-
-    // create the neccessary entry in the name list
-    d_names[d_loading] = name;
-
-    file_names[d_file] = d_loading;
-    
-    return retval;
-}
-
-bool Armysetlist::loadArmy(string tag, XML_Helper* helper)
-{
-    std::string s;
-    static int armysize = 54;   // army pic has this size
-    
-    // First step: Load the army data
-    Army* a = new Army(helper, true);
-    a->setArmyset(d_loading, d_armies[d_loading].size());
-
-    d_armies[d_loading].push_back(a);
-
-
-    // Second step: load the army picture. This is done here to avoid confusion
-    // since the armies are used as prototypes as well as actual units in the
-    // game.
-    // The army image consists of two halves. On the left is the army image, on the
-    // right the mask.
-    helper->getData(s, "image");
-    SDL_Surface* pic = File::getArmyPicture(d_file, s + ".png");
-    if (!pic)
-    {
-        std::cerr <<"Could not load army image: " << s <<std::endl;
-	// FIXME: more gentle way of reporting error than just exiting?
-        exit(-1);
-    }
-
-    // don't use alpha information, just copy the channel! very important
-    SDL_SetAlpha(pic, 0, 0);
-    SDL_PixelFormat* fmt = pic->format;
-
-    // mask out the army image 
-    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, armysize, armysize,
-                fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-    SDL_Rect r;
-    r.x = r.y = 0;
-    r.w = r.h = armysize;
-    SDL_BlitSurface(pic, &r, tmp, 0);
-
-    SDL_Surface* pixmap = SDL_DisplayFormatAlpha(tmp);
-    a->setPixmap(pixmap);
-
-    SDL_FreeSurface(tmp);
-
-    // now extract the mask; it should have a certain data format since the player
-    // colors are applied by modifying the RGB shifts
-    tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, armysize, armysize, 32,
-                               0xFF000000, 0xFF0000, 0xFF00, 0xFF);
-
-    r.x = armysize;
-    SDL_BlitSurface(pic, &r, tmp, 0);
-    a->setMask(tmp);
-
-    SDL_FreeSurface(pic);
-
-    return true;
-}
-

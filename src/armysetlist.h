@@ -22,6 +22,7 @@
 
 #include "xmlhelper.h"
 #include "army.h"
+#include "armyset.h"
 
 
 /** List of all available armysets
@@ -39,7 +40,7 @@
   * Since several classes access this class, it is implemented as a singleton.
   */
 
-class Armysetlist : public sigc::trackable
+class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 {
     public:
         //! return the singleton instance of this class
@@ -87,6 +88,8 @@ class Armysetlist : public sigc::trackable
         //! Destructor; mainly clears the lists
         ~Armysetlist();
 
+        //! Callback for loading. See XML_Helper for details.
+	bool load(std::string tag, XML_Helper *helper);
 
         //! Loads a specific armyset
         bool loadArmyset (std::string name);
@@ -103,10 +106,6 @@ class Armysetlist : public sigc::trackable
         
         ArmyMap d_armies;
         NameMap d_names;
-
-        // temporary variables for game loading
-        Uint32 d_loading;
-        std::string d_file;
 
         static Armysetlist* s_instance;
 };
