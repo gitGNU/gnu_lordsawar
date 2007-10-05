@@ -59,7 +59,8 @@ class ArmySetWindow: public sigc::trackable
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
     std::string current_save_filename;
-    Armyset *d_armyset;
+    Armyset *d_armyset; //current armyset
+    Army *d_army; //current army
     Gtk::Image *army_image;
     Gtk::Entry *name_entry;
     Gtk::TreeView *armies_treeview;
@@ -104,7 +105,7 @@ class ArmySetWindow: public sigc::trackable
         { add(name); add(army);}
 	
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<const Army *> army;
+	Gtk::TreeModelColumn<Army *> army;
     };
     const ArmiesColumns armies_columns;
     Glib::RefPtr<Gtk::ListStore> armies_list;
@@ -121,9 +122,40 @@ class ArmySetWindow: public sigc::trackable
     void on_quit_activated();
     void on_edit_armyset_info_activated();
     void on_army_selected();
-    void fill_army_info(const Army *army);
+    void fill_army_info(Army *army);
 
     bool load(std::string tag, XML_Helper *helper);
+
+    //callbacks
+    void on_production_changed();
+    void on_cost_changed();
+    void on_upkeep_changed();
+    void on_strength_changed();
+    void on_moves_changed();
+    void on_exp_changed();
+    void on_sight_changed();
+    void on_hero_toggled();
+    void on_awardable_toggled();
+    void on_defends_ruins_toggled();
+
+    void on_move_forests_toggled();
+    void on_move_marshes_toggled();
+    void on_move_hills_toggled();
+    void on_move_mountains_toggled();
+    void on_can_fly_toggled();
+    void on_add1strinopen_toggled();
+    void on_add2strinopen_toggled();
+    void on_add1strinforest_toggled();
+    void on_add1strinhills_toggled();
+    void on_add1strincity_toggled();
+    void on_add2strincity_toggled();
+    void on_add1stackinhills_toggled();
+    void on_suballcitybonus_toggled();
+    void on_sub1enemystack_toggled();
+    void on_add1stack_toggled();
+    void on_add2stack_toggled();
+    void on_suballnonherobonus_toggled();
+    void on_suballherobonus_toggled();
 public:
     // not part of the API, but for surface_attached_helper
     void on_sdl_surface_changed();
