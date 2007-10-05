@@ -95,8 +95,6 @@ ArmySetWindow::ArmySetWindow()
     xml->get_widget("suballherobonus_checkbutton", suballherobonus_checkbutton);
     xml->get_widget("add_army_button", add_army_button);
     xml->get_widget("remove_army_button", remove_army_button);
-    xml->get_widget("male_radiobutton", male_radiobutton);
-    xml->get_widget("female_radiobutton", female_radiobutton);
     xml->get_widget("army_vbox", army_vbox);
     // connect callbacks for the menu
     xml->connect_clicked
@@ -344,10 +342,6 @@ void ArmySetWindow::fill_army_info(const Army *army)
   hero_checkbutton->set_active(army->isHero());
   awardable_checkbutton->set_active(army->getAwardable());
   defends_ruins_checkbutton->set_active(army->getDefendsRuins());
-  if (army->getGender() == Army::FEMALE)
-    female_radiobutton->set_active(true);
-  else
-    male_radiobutton->set_active(true);
   sight_spinbutton->set_value(army->getStat(Army::SIGHT, false));
 
   Uint32 bonus = army->getMoveBonus();

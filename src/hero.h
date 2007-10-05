@@ -59,7 +59,7 @@ class Hero : public Army
         ~Hero();
 
         //! Saves the hero data
-        bool save(XML_Helper* helper) const;
+        bool save(XML_Helper* helper, bool prototype = false) const;
         
         /** Returns a stat of the hero. See also army.h
           * 

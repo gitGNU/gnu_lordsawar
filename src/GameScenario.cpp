@@ -69,6 +69,7 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
     :d_round(0), d_name(name),d_comment(comment), d_turnmode(turnmode)
 {
     Armysetlist::getInstance();
+    Armysetlist::getInstance()->instantiatePixmaps();
     Itemlist::createInstance();
 
     if (fl_counter == 0)
@@ -81,6 +82,7 @@ GameScenario::GameScenario(string savegame, bool& broken)
     :d_turnmode(true)
 {
     Armysetlist::getInstance();
+    Armysetlist::getInstance()->instantiatePixmaps();
     Itemlist::createInstance();
 
     broken = false;

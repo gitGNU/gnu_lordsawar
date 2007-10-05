@@ -94,8 +94,6 @@ class ArmySetWindow: public sigc::trackable
     Gtk::CheckButton *suballherobonus_checkbutton;
     Gtk::Button *add_army_button;
     Gtk::Button *remove_army_button;
-    Gtk::RadioButton *male_radiobutton;
-    Gtk::RadioButton *female_radiobutton;
     Gtk::VBox *army_vbox;
     bool sdl_inited;
 

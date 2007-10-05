@@ -26,6 +26,7 @@
 #include "glade-helpers.h"
 #include "../defs.h"
 #include "../File.h"
+#include "../armysetlist.h"
 
 #define HUMAN_PLAYER_TYPE _("Human")
 #define EASY_PLAYER_TYPE _("Easy")
@@ -110,7 +111,8 @@ GamePreferencesDialog::GamePreferencesDialog()
     // fill in army themes combobox
     army_theme_combobox = manage(new Gtk::ComboBoxText);
     
-    std::list<std::string> army_themes = File::scanArmysets();
+    Armysetlist *al = Armysetlist::getInstance();
+    std::list<std::string> army_themes = al->getNames();
     for (std::list<std::string>::iterator i = army_themes.begin(),
 	     end = army_themes.end(); i != end; ++i)
       {

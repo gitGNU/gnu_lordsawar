@@ -120,6 +120,7 @@ Army::Army(XML_Helper* helper, bool prototype)
     else
     {
         helper->getData(d_name, "name");
+        helper->getData(d_image, "image");
         helper->getData(d_description, "description");
         helper->getData(d_production, "production");
         helper->getData(d_production_cost, "production_cost");
@@ -368,34 +369,54 @@ int Army::gainLevel(Stat stat)
 }
 
 
-bool Army::save(XML_Helper* helper) const
+bool Army::save(XML_Helper* helper, bool prototype) const
 {
     bool retval = true;
 
     retval &= helper->openTag("army");
-    retval &= saveData(helper);
+    retval &= saveData(helper, prototype);
     retval &= helper->closeTag();
 
     return retval;
 }
 
-bool Army::saveData(XML_Helper* helper) const
+bool Army::saveData(XML_Helper* helper, bool prototype) const
 {
     bool retval = true;
     
-    retval &= helper->saveData("id", d_id);
-    retval &= helper->saveData("armyset", d_armyset);
-    retval &= helper->saveData("type", d_type);
+    if (prototype)
+      {
+	retval &= helper->saveData("name", d_name);
+	retval &= helper->saveData("description", d_description);
+	retval &= helper->saveData("production", d_production);
+	retval &= helper->saveData("production_cost", d_production_cost);
+	retval &= helper->saveData("upkeep", d_upkeep);
+	retval &= helper->saveData("gender", d_gender);
+	retval &= helper->saveData("awardable", d_awardable);
+	retval &= helper->saveData("defends_ruins", d_defends_ruins);
+	retval &= helper->saveData("move_bonus", d_move_bonus);
+	retval &= helper->saveData("army_bonus", d_army_bonus);
+      }
+    else
+      {
+	retval &= helper->saveData("id", d_id);
+	retval &= helper->saveData("armyset", d_armyset);
+	retval &= helper->saveData("type", d_type);
+	retval &= helper->saveData("hp", d_hp);
+	retval &= helper->saveData("ship", d_ship);
+	retval &= helper->saveData("moves", d_moves);
+	retval &= helper->saveData("xp", d_xp);
+      }
+
+    retval &= helper->saveData("max_moves", d_max_moves);
     retval &= helper->saveData("hero", d_hero);
-    retval &= helper->saveData("hp", d_hp);
     retval &= helper->saveData("strength", d_strength);
     retval &= helper->saveData("sight", d_sight);
-    retval &= helper->saveData("moves", d_moves);
-    retval &= helper->saveData("ship", d_ship);
-    retval &= helper->saveData("max_moves", d_max_moves);
-    retval &= helper->saveData("xp", d_xp);
     retval &= helper->saveData("expvalue", getXpReward());
     retval &= helper->saveData("level", d_level);
+
+    if (prototype)
+      return retval;
 
     std::stringstream medals;
     for (int i=0;i<3;i++)

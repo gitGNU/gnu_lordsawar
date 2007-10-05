@@ -168,6 +168,9 @@ class Army : public sigc::trackable
         //! Returns the mask (read-only!!) for player colors
         SDL_Surface* getMask() const {return d_mask;}
 
+	//! Returns the basename of the picture's filename
+	std::string getImageName() const {return d_image;}
+
         //! Returns the descriptive text of this army
         std::string getDescription() const {return d_description;}
 
@@ -292,7 +295,7 @@ class Army : public sigc::trackable
         void printAllDebugInfo() const;
 
         //! Saves the unit information (see XML_Helper for further info)
-        virtual bool save(XML_Helper* helper) const;
+        virtual bool save(XML_Helper* helper, bool prototype = false) const;
         
         //! This signal is raised when the army dies; it is static because
         //! sometimes the army doesn't exist yet when the signal is connected
@@ -325,7 +328,7 @@ class Army : public sigc::trackable
     protected:
         //! Generic function for saving the army data. Useful for the hero class,
         //  which doesn't need to repeat the save code.
-        bool saveData(XML_Helper* helper) const;
+        bool saveData(XML_Helper* helper, bool prototype) const;
 
         //! Copies the generic data from the original prototype army (used for loading)
         void copyVals(const Army* a);
@@ -386,6 +389,8 @@ class Army : public sigc::trackable
 
 	//!how many xp points per level?
         static const int xp_per_level = 10;
+
+	std::string d_image;
 };
 
 #endif // ARMY_H

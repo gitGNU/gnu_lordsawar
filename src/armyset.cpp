@@ -31,9 +31,8 @@ using namespace std;
 void Armyset::instantiatePixmaps()
 {
   iterator a = begin();
-  for (std::list<std::string>::iterator it = image_names.begin();
-       it != image_names.end(); it++, a++)
-    instantiatePixmap(*a, *it);
+  for (iterator it = begin(); it != end(); it++)
+    instantiatePixmap(*it);
 }
 Armyset::Armyset(XML_Helper *helper)
     : d_id(0), d_name(""), d_dir("")
@@ -56,7 +55,7 @@ Armyset::~Armyset()
     }
 }
 
-bool Armyset::instantiatePixmap(Army *a, std::string image)
+bool Armyset::instantiatePixmap(Army *a)
 {
     static int armysize = 54;   // army pic has this size
     std::string s;
@@ -66,7 +65,7 @@ bool Armyset::instantiatePixmap(Army *a, std::string image)
     // game.
     // The army image consists of two halves. On the left is the army image, on the
     // right the mask.
-    SDL_Surface* pic = File::getArmyPicture(d_dir, image + ".png");
+    SDL_Surface* pic = File::getArmyPicture(d_dir, a->getImageName() + ".png");
     if (!pic)
     {
         std::cerr <<"Could not load army image: " << s <<std::endl;
@@ -114,11 +113,25 @@ bool Armyset::loadArmyTemplate(string tag, XML_Helper* helper)
 	Army* a = new Army(helper, true);
 	a->setArmyset(d_id, size());
 	push_back(a);
-
-	// Second step: remember the image name for later
-	helper->getData(s, "image");
-	image_names.push_back(s);
       }
     return true;
+}
+
+bool Armyset::save(XML_Helper* helper)
+{
+    bool retval = true;
+
+    retval &= helper->openTag("armyset");
+
+    retval &= helper->saveData("id", d_id);
+    retval &= helper->saveData("name", d_name);
+    retval &= helper->saveData("size", size());
+
+    for (const_iterator it = begin(); it != end(); it++)
+        (*it)->save(helper, true);
+    
+    retval &= helper->closeTag();
+
+    return retval;
 }
 

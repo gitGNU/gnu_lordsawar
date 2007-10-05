@@ -64,8 +64,8 @@ Armysetlist::Armysetlist()
 	  d_armies[(*it)->getId()].push_back(*ait);
 	d_names[(*it)->getId()] = (*it)->getName();
 	file_names[(*i)] = (*it)->getId();
+	d_ids[(*it)->getName()] = (*it)->getId();
 	(*it)->setSubDir(*i);
-	(*it)->instantiatePixmaps();
       }
 }
 
@@ -108,6 +108,14 @@ Uint32 Armysetlist::getSize(Uint32 id) const
     return (*it).second.size();
 }
 
+std::list<std::string> Armysetlist::getNames()
+{
+  std::list<std::string> names;
+  for (iterator it = begin(); it != end(); it++)
+    names.push_back((*it)->getName());
+  return names;
+}
+
 std::string Armysetlist::getName(Uint32 id) const
 {
     NameMap::const_iterator it = d_names.find(id);
@@ -142,6 +150,7 @@ bool Armysetlist::load(std::string tag, XML_Helper *helper)
   return true;
 }
 
+
 bool Armysetlist::loadArmyset(std::string name)
 {
   debug("Loading armyset " <<name);
@@ -158,4 +167,10 @@ bool Armysetlist::loadArmyset(std::string name)
     }
 
   return true;
+}
+        
+void Armysetlist::instantiatePixmaps()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->instantiatePixmaps();
 }

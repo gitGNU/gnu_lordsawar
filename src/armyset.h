@@ -29,6 +29,7 @@ class Armyset: public std::list<Army *>, public sigc::trackable
     public:
 
         Armyset(XML_Helper* helper);
+	bool save(XML_Helper* helper);
         ~Armyset();
 
         /** Returns the size of this armyset
@@ -54,12 +55,11 @@ class Armyset: public std::list<Army *>, public sigc::trackable
         //! Callback function for the army tag (see XML_Helper)
         bool loadArmyTemplate(std::string tag, XML_Helper* helper);
 
-	bool instantiatePixmap(Army *a, std::string image);
+	bool instantiatePixmap(Army *a);
         
         Uint32 d_id;
         std::string d_name;
         std::string d_dir;
-	std::list<std::string> image_names;
 };
 
 #endif // ARMYSETLIST_H

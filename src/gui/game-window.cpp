@@ -323,7 +323,7 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 
     // then fill the other players
     int c = 0;
-    int army_id = Armysetlist::getInstance()->file_names[g.army_theme];
+    int army_id = Armysetlist::getInstance()->getArmysetId(g.army_theme);
     for (std::vector<GameParameters::Player>::const_iterator
 	     i = g.players.begin(), end = g.players.end();
 	 i != end; ++i, ++c) {

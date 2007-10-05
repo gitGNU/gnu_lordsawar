@@ -46,9 +46,8 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         //! return the singleton instance of this class
         static Armysetlist* getInstance();
 
-        //! Explicitely delete the singleton instance of this class
+        //! Explicitly delete the singleton instance of this class
         static void deleteInstance();
-
 
         /** Returns an army prototype
           *
@@ -72,7 +71,9 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
           * @return the name or an empty string on error
           */
         std::string getName(Uint32 id) const;
+	std::list<std::string> getNames();
 
+	Uint32 getArmysetId(std::string armyset) {return d_ids[armyset];}
         /** Returns a list of all existing army sets
           */
         std::vector<Uint32> getArmysets() const;
@@ -81,6 +82,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         typedef std::map<std::string, Uint32> FileNameMap;
 	FileNameMap file_names;
 	
+	void instantiatePixmaps();
     private:
         //! Constructor; loads all armysets it can find
         Armysetlist();
@@ -103,9 +105,11 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         
         typedef std::map<Uint32, std::vector<Army*> > ArmyMap;
         typedef std::map<Uint32, std::string> NameMap;
+        typedef std::map<std::string, Uint32> IdMap;
         
         ArmyMap d_armies;
         NameMap d_names;
+        IdMap d_ids;
 
         static Armysetlist* s_instance;
 };
