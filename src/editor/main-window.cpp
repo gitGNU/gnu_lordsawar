@@ -39,7 +39,7 @@
 #include "../gui/error-utils.h"
 
 #include "../ucompose.hpp"
-#include "../TileSet.h"
+#include "../tileset.h"
 #include "../GameMap.h"
 #include "../defs.h"
 #include "../sound.h"

@@ -42,14 +42,12 @@ class TileSet : public sigc::trackable, public std::vector<Tile*>
     public:
         /** The constructor.
           * 
-          * When loaded, a TileSet object will always load the contents of a
-          * description file and the corresponding image file.
-          *
-          * @param fileName     the name of the tileset (e.g. "default")
           */
-        TileSet(std::string tileName);
+        TileSet(XML_Helper* helper);
         ~TileSet();
 
+        std::string getSubDir() const {return d_dir;}
+        void setSubDir(std::string dir) {d_dir = dir;}
         //! Returns the name of the tileset
         std::string getName() const {return d_name;}
 
@@ -65,12 +63,11 @@ class TileSet : public sigc::trackable, public std::vector<Tile*>
         //! Return special pics; don't change them! pic == 0 for nw, 1 for ne.
         SDL_Surface* getDiagPic(int pic) const;
 
+	void instantiatePixmaps();
+
     private:
         //! Callback when the parser finds a tile tag. See XML_Helper for info.
         bool loadTile(std::string, XML_Helper* helper);
-
-        //! Callback for the tileset tag. See XML_Helper for further info.
-        bool loadTileSet(std::string, XML_Helper* helper);
 
         /** Fills the surfaces of a tile with data
           * 
@@ -85,6 +82,7 @@ class TileSet : public sigc::trackable, public std::vector<Tile*>
         int d_tileSize;
         SDL_Surface* d_surface;
         SDL_Surface* d_nepic, *d_nwpic;
+        std::string d_dir;
 };
 
 #endif // TILESET_H

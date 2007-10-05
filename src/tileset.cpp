@@ -15,7 +15,7 @@
 #include <SDL_image.h>
 #include <sigc++/functors/mem_fun.h>
 
-#include "TileSet.h"
+#include "tileset.h"
 
 #include "File.h"
 #include "xmlhelper.h"
@@ -26,24 +26,12 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-// used for loading purposes
-static int my_counter = 0;
-
-TileSet::TileSet(string tileName)
+TileSet::TileSet(XML_Helper *helper)
 {
-    debug("TileSet(): " << fileName)
-
-    my_counter = 0;
-                           
-    //Get mapset picture
-    d_surface = File::getMapsetPicture(tileName, tileName + ".png");
-    d_nepic = File::getMapsetPicture(tileName, "ne_bridge.png");
-    d_nwpic = File::getMapsetPicture(tileName, "nw_bridge.png");
-    
-    XML_Helper helper(File::getMapset(tileName), ios::in, false);
-    helper.registerTag("tileset", sigc::mem_fun((*this), &TileSet::loadTileSet));
-    helper.registerTag("tile", sigc::mem_fun((*this), &TileSet::loadTile));
-    helper.parse();
+    helper->getData(d_name, "name"); 
+    helper->getData(d_info, "info");
+    helper->getData(d_tileSize, "tilesize");
+    helper->registerTag("tile", sigc::mem_fun((*this), &TileSet::loadTile));
 }
 
 TileSet::~TileSet()
@@ -58,6 +46,16 @@ TileSet::~TileSet()
         delete (*this)[i];
 }
 
+void TileSet::instantiatePixmaps()
+{
+  //Get mapset picture
+  d_surface = File::getMapsetPicture(d_dir, d_dir + ".png");
+  d_nepic = File::getMapsetPicture(d_dir, "ne_bridge.png");
+  d_nwpic = File::getMapsetPicture(d_dir, "nw_bridge.png");
+  for (unsigned int i = 0; i < size(); i++)
+    createTiles((*this)[i], i);
+}
+
 Uint32 TileSet::getIndex(Tile::Type type) const
 {
     for (Uint32 i = 0; i < size(); i++)
@@ -67,7 +65,6 @@ Uint32 TileSet::getIndex(Tile::Type type) const
     // catch errors?
     return 0;
 }
-
 
 SDL_Surface* TileSet::getDiagPic(int pic) const
 {
@@ -84,18 +81,8 @@ bool TileSet::loadTile(string, XML_Helper* helper)
 
     // create a new tile with the information we got
     Tile* tile = new Tile(helper);
-    createTiles(tile, my_counter);
     this->push_back(tile);
 
-    my_counter++;
-    return true;
-}
-
-bool TileSet::loadTileSet(string, XML_Helper* helper)
-{
-    helper->getData(d_name, "name"); 
-    helper->getData(d_info, "info");
-    helper->getData(d_tileSize, "tilesize");
     return true;
 }
 

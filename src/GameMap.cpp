@@ -29,6 +29,7 @@
 #include "templelist.h"
 #include "xmlhelper.h"
 #include "MapGenerator.h"
+#include "tilesetlist.h"
 
 using namespace std;
 
@@ -78,7 +79,7 @@ void GameMap::deleteInstance()
 
 GameMap::GameMap(std::string TilesetName)
 {
-    d_tileSet = new TileSet(TilesetName);
+    d_tileSet = Tilesetlist::getInstance()->getTileset(TilesetName);
 
     d_map = new Maptile*[s_width*s_height];
     for (int j = 0; j < s_height; j++)
@@ -90,14 +91,14 @@ GameMap::GameMap(std::string TilesetName)
 GameMap::GameMap(XML_Helper* helper)
 {
     std::string types;
-    std::string t_name;
+    std::string t_dir;
 
     helper->getData(s_width, "width");
     helper->getData(s_height, "height");
-    helper->getData(t_name,"tileset");
+    helper->getData(t_dir,"tileset");
     helper->getData(types, "types");
 
-    d_tileSet = new TileSet(t_name);
+    d_tileSet = Tilesetlist::getInstance()->getTileset(t_dir);
 
     //create the map
     d_map = new Maptile*[s_width*s_height];
@@ -134,7 +135,7 @@ GameMap::GameMap(XML_Helper* helper)
 
 GameMap::~GameMap()
 {
-    delete d_tileSet;
+    //delete d_tileSet;
 
     for (int i = 0; i < s_width; i++)
     {
@@ -204,7 +205,7 @@ bool GameMap::save(XML_Helper* helper) const
     retval &= helper->openTag("map");
     retval &= helper->saveData("width", s_width);
     retval &= helper->saveData("height", s_height);
-    retval &= helper->saveData("tileset", d_tileSet->getName());
+    retval &= helper->saveData("tileset", d_tileSet->getSubDir());
     retval &= helper->saveData("types", types.str());
 
     // last, save all items lying around somewhere

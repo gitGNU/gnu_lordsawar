@@ -203,7 +203,7 @@ GraphicsCache::GraphicsCache()
       File::getMiscPicture("smallunexploredstronghold.png");
     d_small_ruin_explored = File::getMiscPicture("smallexploredruin.png");
     d_small_temple = File::getMiscPicture("smalltemple.png");
-    std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+    std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
     d_port = File::getMapsetPicture(tileset, "misc/port.png");
 }
 
@@ -1692,7 +1692,7 @@ void GraphicsCache::eraseLastMoveBonusItem()
 void GraphicsCache::loadTemplePics()
 {
   // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
   int ts = GameMap::getInstance()->getTileSet()->getTileSize();
 
   // load the temple pictures
@@ -1727,7 +1727,7 @@ void GraphicsCache::loadTemplePics()
 void GraphicsCache::loadRoadPics()
 {
   // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
   int ts = GameMap::getInstance()->getTileSet()->getTileSize();
 
   // load the road pictures
@@ -1796,7 +1796,7 @@ void GraphicsCache::loadFogPics()
 void GraphicsCache::loadBridgePics()
 {
   // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
   int ts = GameMap::getInstance()->getTileSet()->getTileSize();
 
   // load the bridge pictures
@@ -1865,7 +1865,7 @@ void GraphicsCache::loadCursorPics()
 void GraphicsCache::loadStonePics()
 {
   // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
   int ts = GameMap::getInstance()->getTileSet()->getTileSize();
 
   // load the stone pictures
@@ -1902,7 +1902,7 @@ void GraphicsCache::loadCityPics()
   SDL_Surface *tmp;
   SDL_PixelFormat *fmt;
   // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
   int size = GameMap::getInstance()->getTileSet()->getTileSize() * 2;
 
   // load the image for the razed city
@@ -1973,7 +1973,7 @@ void GraphicsCache::loadTowerPics()
   SDL_Surface *tmp;
   SDL_PixelFormat *fmt;
   // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
   int size = GameMap::getInstance()->getTileSet()->getTileSize();
 
   // load the image for the towers
@@ -2290,7 +2290,7 @@ void GraphicsCache::loadMoveBonusPics()
 void GraphicsCache::loadFlags()
 {
   //GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileSet()->getName();
+  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
 
   // to build flags, we need these three images as basic blocks
   SDL_Surface* flag = File::getMapsetPicture(tileset, "misc/flags.png");

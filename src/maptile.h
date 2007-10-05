@@ -17,7 +17,7 @@
 
 #include <list>
 #include "Tile.h"
-#include "TileSet.h"
+#include "tileset.h"
 #include "Item.h"
 
 /** A single tile on the map

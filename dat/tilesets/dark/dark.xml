@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tileset>
-    <d_name>dark</d_name>
+    <d_name>Dark</d_name>
     <d_info>The dark tileset of LordsAWar</d_info>
     <d_tilesize>64</d_tilesize>
 	<tile>

@@ -24,7 +24,7 @@
 #include "glade-helpers.h"
 #include "../defs.h"
 #include "../File.h"
-#include "../TileSet.h"
+#include "../tileset.h"
 #include "../GameMap.h"
 
 

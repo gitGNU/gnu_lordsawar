@@ -71,18 +71,26 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
           * @return the name or an empty string on error
           */
         std::string getName(Uint32 id) const;
+
+        //! Returns the names of all armysets
 	std::list<std::string> getNames();
 
+        /** Returns the Id of a specific armyset by name
+          * 
+          * @param armyset       the name of the armyset
+          * @return the id of the armyset (0 on error)
+          */
 	Uint32 getArmysetId(std::string armyset) {return d_ids[armyset];}
+
         /** Returns a list of all existing army sets
           */
         std::vector<Uint32> getArmysets() const;
 
-	// FIXME: quick hack
-        typedef std::map<std::string, Uint32> FileNameMap;
-	FileNameMap file_names;
-	
+	/* Reads in the pixmap and mask for every army of every armyset.
+	 * This can only be done after SDL is initialized.
+	 */
 	void instantiatePixmaps();
+
     private:
         //! Constructor; loads all armysets it can find
         Armysetlist();
@@ -95,13 +103,6 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 
         //! Loads a specific armyset
         bool loadArmyset (std::string name);
-        
-        //! Callback function for the armyset tag (see XML_Helper)
-        bool loadGlobalStuff(std::string tag, XML_Helper* helper);
-
-        //! Callback function for the army tag (see XML_Helper)
-        bool loadArmy(std::string tag, XML_Helper* helper);
-
         
         typedef std::map<Uint32, std::vector<Army*> > ArmyMap;
         typedef std::map<Uint32, std::string> NameMap;

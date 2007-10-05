@@ -10,11 +10,11 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	Object.cpp Object.h Location.cpp Location.h city.cpp city.h \
         temple.cpp temple.h ruin.cpp ruin.h Tile.cpp Tile.h \
 	maptile.cpp maptile.h Item.cpp Item.h armysetlist.cpp armysetlist.h \
-        armyset.cpp armyset.h \
+        armyset.cpp armyset.h tilesetlist.cpp tilesetlist.h \
         stacklist.cpp stacklist.h playerlist.cpp playerlist.h \
 	citylist.cpp citylist.h templelist.cpp templelist.h \
         ruinlist.cpp ruinlist.h GameMap.cpp GameMap.h \
-	Itemlist.cpp Itemlist.h TileSet.cpp TileSet.h Threat.cpp Threat.h \
+	Itemlist.cpp Itemlist.h tileset.cpp tileset.h Threat.cpp Threat.h \
         Threatlist.cpp Threatlist.h MoveResult.cpp MoveResult.h \
 	AICityInfo.cpp AICityInfo.h AI_Analysis.cpp AI_Analysis.h \
         AI_Allocation.cpp AI_Allocation.h path.cpp path.h \

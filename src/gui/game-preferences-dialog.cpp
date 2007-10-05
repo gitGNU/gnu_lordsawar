@@ -27,6 +27,7 @@
 #include "../defs.h"
 #include "../File.h"
 #include "../armysetlist.h"
+#include "../tilesetlist.h"
 
 #define HUMAN_PLAYER_TYPE _("Human")
 #define EASY_PLAYER_TYPE _("Easy")
@@ -97,7 +98,8 @@ GamePreferencesDialog::GamePreferencesDialog()
     // fill in tile themes combobox
     tile_theme_combobox = manage(new Gtk::ComboBoxText);
     
-    std::list<std::string> tile_themes = File::scanTilesets();
+    Tilesetlist *tl = Tilesetlist::getInstance();
+    std::list<std::string> tile_themes = tl->getNames();
     for (std::list<std::string>::iterator i = tile_themes.begin(),
 	     end = tile_themes.end(); i != end; ++i)
 	tile_theme_combobox->append_text(Glib::filename_to_utf8(*i));
@@ -310,8 +312,8 @@ void GamePreferencesDialog::on_start_game_clicked()
 	g.players.push_back(p);
       }
 
-    g.tile_theme
-	= Glib::filename_from_utf8(tile_theme_combobox->get_active_text());
+    g.tile_theme = Tilesetlist::getInstance()->getTilesetDir
+	(Glib::filename_from_utf8(tile_theme_combobox->get_active_text()));
 
     g.army_theme = Glib::filename_from_utf8(army_theme_combobox->get_active_text());
 

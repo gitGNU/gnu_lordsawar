@@ -63,7 +63,6 @@ Armysetlist::Armysetlist()
 	for (Armyset::iterator ait = (*it)->begin(); ait != (*it)->end(); ait++)
 	  d_armies[(*it)->getId()].push_back(*ait);
 	d_names[(*it)->getId()] = (*it)->getName();
-	file_names[(*i)] = (*it)->getId();
 	d_ids[(*it)->getName()] = (*it)->getId();
 	(*it)->setSubDir(*i);
       }

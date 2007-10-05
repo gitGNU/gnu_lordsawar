@@ -6,8 +6,8 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../city.o ../path.o ../action.o ../Configuration.o ../MapGenerator.o \
 	../ai_dummy.o ../ai_fast.o ../ai_smart.o ../xmlhelper.o ../counter.o \
         ../CreateScenario.o ../history.o ../armyset.o \
-	../maptile.o ../real_player.o  ../player.o \
-	../MapRenderer.o ../Tile.o ../TileSet.o ../playerlist.o \
+	../maptile.o ../real_player.o  ../player.o ../tilesetlist.o \
+	../MapRenderer.o ../Tile.o ../tileset.o ../playerlist.o \
 	../GraphicsCache.o ../QuestsManager.o ../Quest.o ../QKillHero.o \
         ../QEnemyArmies.o ../QCityOccupy.o \
         ../QCitySack.o ../QCityRaze.o ../QPillageGold.o ../QEnemyArmytype.o \
