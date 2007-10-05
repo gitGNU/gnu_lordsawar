@@ -55,7 +55,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
           * @param index    the index of the army within the set
           * @return the requested army or 0 on error
           */
-        const Army* getArmy(Uint32 id, Uint32 index) const;
+        Army* getArmy(Uint32 id, Uint32 index) const;
 
         /** Returns the size of a specific armyset
           * 

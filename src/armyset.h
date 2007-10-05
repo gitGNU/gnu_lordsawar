@@ -50,6 +50,9 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 
         void instantiatePixmaps();
 
+	//! this is only used for the editor.
+	//try to use Armysetlist::getArmyType instead
+	Army * lookupArmyByType(Uint32 army_type);
     private:
 
         //! Callback function for the army tag (see XML_Helper)

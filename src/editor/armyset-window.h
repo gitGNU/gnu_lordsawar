@@ -37,6 +37,7 @@
 #include <gtkmm/tooltips.h>
 
 #include "../army.h"
+#include "../armyset.h"
 
 class ArmySetWindow: public sigc::trackable
 {
@@ -58,7 +59,7 @@ class ArmySetWindow: public sigc::trackable
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
     std::string current_save_filename;
-    Uint32 armyset;
+    Armyset *d_armyset;
     Gtk::Image *army_image;
     Gtk::Entry *name_entry;
     Gtk::TreeView *armies_treeview;
@@ -122,6 +123,7 @@ class ArmySetWindow: public sigc::trackable
     void on_army_selected();
     void fill_army_info(const Army *army);
 
+    bool load(std::string tag, XML_Helper *helper);
 public:
     // not part of the API, but for surface_attached_helper
     void on_sdl_surface_changed();

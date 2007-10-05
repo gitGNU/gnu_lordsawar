@@ -14,8 +14,10 @@
 
 #include <config.h>
 
+#include <iostream>
 #include <iomanip>
 #include <assert.h>
+#include <libgen.h>
 
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
@@ -124,7 +126,6 @@ ArmySetWindow::ArmySetWindow()
       (sigc::mem_fun(*this, &ArmySetWindow::on_army_selected));
     armies_treeview->set_reorderable(true);
 
-    armyset = 0;
     update_army_panel();
     update_armyset_buttons();
 
@@ -203,6 +204,13 @@ bool ArmySetWindow::on_delete_event(GdkEventAny *e)
 }
 
 
+bool ArmySetWindow::load(std::string tag, XML_Helper *helper)
+{
+  if (tag == "armyset")
+    d_armyset = new Armyset(helper);
+  return true;
+}
+
 void ArmySetWindow::on_load_armyset_activated()
 {
     Gtk::FileChooserDialog chooser(*window.get(), 
@@ -224,10 +232,27 @@ void ArmySetWindow::on_load_armyset_activated()
 	current_save_filename = chooser.get_filename();
 	chooser.hide();
 
-	//fixme: load it
-	armyset = 1;
-	Armysetlist::getInstance();
-	Uint32 max = Armysetlist::getInstance()->getSize(armyset);
+	XML_Helper helper(current_save_filename, std::ios::in, false);
+
+	helper.registerTag("armyset", 
+			   sigc::mem_fun((*this), &ArmySetWindow::load));
+
+  
+	if (!helper.parse())
+	  {
+	    std::cerr <<_("Error, while loading an armyset. Armyset Name: ");
+	    std::cerr <<current_save_filename <<std::endl <<std::flush;
+	    exit(-1);
+	  }
+
+	char *dir = strdup(current_save_filename.c_str());
+	dir = basename (dir);
+	char *tmp = strchr (dir, '.');
+	if (tmp)
+	  tmp[0] = '\0';
+	d_armyset->setSubDir(dir);
+	d_armyset->instantiatePixmaps();
+	Uint32 max = d_armyset->getSize();
 	for (unsigned int i = 0; i < max; i++)
 	  addArmyType(i);
 	if (max)
@@ -248,10 +273,11 @@ void ArmySetWindow::on_save_armyset_activated()
     on_save_armyset_as_activated();
   else
     {
-      //fixme: save it as current_save_filename
-      //bool success = game_scenario->saveGame(current_save_filename, "map");
-      //if (!success)
-      //show_error(_("Map was not saved!"));
+      XML_Helper helper(current_save_filename, std::ios::out, false);
+      helper.openTag("armyset");
+      d_armyset->save(&helper);
+      helper.closeTag();
+      helper.close();
     }
 }
 
@@ -275,8 +301,7 @@ void ArmySetWindow::on_save_armyset_as_activated()
     {
       current_save_filename = chooser.get_filename();
       chooser.hide();
-
-      //fixme: save it as current_save_filename
+      on_save_armyset_activated();
     }
 }
 
@@ -297,8 +322,9 @@ void ArmySetWindow::on_edit_armyset_info_activated()
 }
 void ArmySetWindow::addArmyType(Uint32 army_type)
 {
-  const Army *a;
-  a = Armysetlist::getInstance()->getArmy(armyset, army_type);
+  Army *a;
+  //go get army_type in d_armyset
+  a = d_armyset->lookupArmyByType(army_type);
   Gtk::TreeIter i = armies_list->append();
   (*i)[armies_columns.name] = a->getName();
   (*i)[armies_columns.army] = a;

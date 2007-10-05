@@ -135,3 +135,12 @@ bool Armyset::save(XML_Helper* helper)
     return retval;
 }
 
+Army * Armyset::lookupArmyByType(Uint32 army_type)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getType() == army_type)
+	return *it;
+    }
+  return NULL;
+}

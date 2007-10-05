@@ -79,7 +79,7 @@ Armysetlist::~Armysetlist()
             delete ((*it).second)[0];
 }
 
-const Army* Armysetlist::getArmy(Uint32 id, Uint32 index) const
+Army* Armysetlist::getArmy(Uint32 id, Uint32 index) const
 {
     // always use ArmyMap::find for searching, else a default entry is created,
     // which can produce really bad results!!
