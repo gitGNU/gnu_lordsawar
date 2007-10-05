@@ -98,6 +98,11 @@ class ArmySetWindow: public sigc::trackable
     Gtk::Button *remove_army_button;
     Gtk::VBox *army_vbox;
     bool sdl_inited;
+    Gtk::MenuItem *new_armyset_menuitem;
+    Gtk::MenuItem *load_armyset_menuitem;
+    Gtk::MenuItem *save_armyset_menuitem;
+    Gtk::MenuItem *save_armyset_as_menuitem;
+    Gtk::MenuItem *edit_armyset_info_menuitem;
 
     class ArmiesColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -115,7 +120,9 @@ class ArmySetWindow: public sigc::trackable
     void addArmyType(Uint32 army_type);
     void update_army_panel();
     void update_armyset_buttons();
+    void update_armyset_menuitems();
 
+    void on_new_armyset_activated();
     void on_load_armyset_activated();
     void on_save_armyset_activated();
     void on_save_armyset_as_activated();

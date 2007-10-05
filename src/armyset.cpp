@@ -28,12 +28,10 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-void Armyset::instantiatePixmaps()
+Armyset::Armyset()
 {
-  iterator a = begin();
-  for (iterator it = begin(); it != end(); it++)
-    instantiatePixmap(*it);
 }
+
 Armyset::Armyset(XML_Helper *helper)
     : d_id(0), d_name(""), d_dir("")
 {
@@ -46,13 +44,14 @@ Armyset::Armyset(XML_Helper *helper)
 Armyset::~Armyset()
 {
   for (iterator it = begin(); it != end(); it++)
-    {
-      //fixme: is freeing the surfaces here necessary, or is it done in
-      //graphicscache?
-      SDL_FreeSurface((*it)->getPixmap());
-      SDL_FreeSurface((*it)->getMask());
       delete *it;
-    }
+}
+
+void Armyset::instantiatePixmaps()
+{
+  iterator a = begin();
+  for (iterator it = begin(); it != end(); it++)
+    instantiatePixmap(*it);
 }
 
 bool Armyset::instantiatePixmap(Army *a)

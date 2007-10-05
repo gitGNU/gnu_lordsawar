@@ -28,6 +28,7 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 {
     public:
 
+	Armyset();
         Armyset(XML_Helper* helper);
 	bool save(XML_Helper* helper);
         ~Armyset();

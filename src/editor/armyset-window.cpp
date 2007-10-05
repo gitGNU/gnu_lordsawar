@@ -155,21 +155,24 @@ ArmySetWindow::ArmySetWindow()
     xml->get_widget("remove_army_button", remove_army_button);
     xml->get_widget("army_vbox", army_vbox);
     // connect callbacks for the menu
-    xml->connect_clicked
-      ("load_armyset_menuitem",
-       sigc::mem_fun(this, &ArmySetWindow::on_load_armyset_activated));
-    xml->connect_clicked
-      ("save_armyset_menuitem",
-       sigc::mem_fun(this, &ArmySetWindow::on_save_armyset_activated));
-    xml->connect_clicked
-      ("save_armyset_as_menuitem", 
-       sigc::mem_fun(this, &ArmySetWindow::on_save_armyset_as_activated));
+    xml->get_widget("new_armyset_menuitem", new_armyset_menuitem);
+    new_armyset_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_new_armyset_activated));
+    xml->get_widget("load_armyset_menuitem", load_armyset_menuitem);
+    load_armyset_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_load_armyset_activated));
+    xml->get_widget("save_armyset_menuitem", save_armyset_menuitem);
+    save_armyset_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_save_armyset_activated));
+    xml->get_widget("save_armyset_as_menuitem", save_armyset_as_menuitem);
+    save_armyset_as_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_save_armyset_as_activated));
     xml->connect_clicked 
       ("quit_menuitem", 
        sigc::mem_fun(this, &ArmySetWindow::on_quit_activated));
-    xml->connect_clicked
-      ("edit_armyset_info_menuitem", 
-       sigc::mem_fun(this, &ArmySetWindow::on_edit_armyset_info_activated));
+    xml->get_widget("edit_armyset_info_menuitem", edit_armyset_info_menuitem);
+    edit_armyset_info_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_edit_armyset_info_activated));
 
     w->signal_delete_event().connect(
 	sigc::mem_fun(*this, &ArmySetWindow::on_delete_event));
@@ -186,6 +189,23 @@ ArmySetWindow::ArmySetWindow()
     update_armyset_buttons();
 
     xml->get_widget("sdl_container", sdl_container);
+    update_armyset_buttons();
+    update_armyset_menuitems();
+}
+
+void
+ArmySetWindow::update_armyset_menuitems()
+{
+  if (d_armyset == NULL)
+    {
+      save_armyset_as_menuitem->set_sensitive(false);
+      save_armyset_menuitem->set_sensitive(false);
+    }
+  else
+    {
+      save_armyset_as_menuitem->set_sensitive(true);
+      save_armyset_menuitem->set_sensitive(true);
+    }
 }
 
 void
@@ -195,6 +215,10 @@ ArmySetWindow::update_armyset_buttons()
     remove_army_button->set_sensitive(false);
   else
     remove_army_button->set_sensitive(true);
+  if (d_armyset == NULL)
+    add_army_button->set_sensitive(false);
+  else
+    add_army_button->set_sensitive(true);
 }
 
 void
@@ -204,10 +228,53 @@ ArmySetWindow::update_army_panel()
   //the army panel
   if (armies_treeview->get_selection()->get_selected() == 0)
     {
+      //clear all values
+      name_entry->set_text("");
+      description_textview->get_buffer()->set_text("");
+      production_spinbutton->set_value(0);
+      cost_spinbutton->set_value(0);
+      upkeep_spinbutton->set_value(0);
+      strength_spinbutton->set_value(0);
+      moves_spinbutton->set_value(0);
+      exp_spinbutton->set_value(0);
+      hero_checkbutton->set_active(false);
+      awardable_checkbutton->set_active(false);
+      defends_ruins_checkbutton->set_active(false);
+      sight_spinbutton->set_value(0);
+      move_forests_checkbutton->set_active(false);
+      move_marshes_checkbutton->set_active(false);
+      move_hills_checkbutton->set_active(false);
+      move_mountains_checkbutton->set_active(false);
+      can_fly_checkbutton->set_active(false);
+      add1strinopen_checkbutton->set_active(false);
+      add2strinopen_checkbutton->set_active(false);
+      add1strinforest_checkbutton->set_active(false);
+      add1strinhills_checkbutton->set_active(false);
+      add1strincity_checkbutton->set_active(false);
+      add2strincity_checkbutton->set_active(false);
+      add1stackinhills_checkbutton->set_active(false);
+      suballcitybonus_checkbutton->set_active(false);
+      sub1enemystack_checkbutton->set_active(false);
+      add1stack_checkbutton->set_active(false);
+      add2stack_checkbutton->set_active(false);
+      suballnonherobonus_checkbutton->set_active(false);
+      suballherobonus_checkbutton->set_active(false);
+      army_image->clear();
       army_vbox->set_sensitive(false);
       return;
     }
   army_vbox->set_sensitive(true);
+  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+
+  if (iterrow) 
+    {
+      // Row selected
+      Gtk::TreeModel::Row row = *iterrow;
+
+      Army *a = row[armies_columns.army];
+      fill_army_info(a);
+    }
 }
 ArmySetWindow::~ArmySetWindow()
 {
@@ -215,48 +282,48 @@ ArmySetWindow::~ArmySetWindow()
 
 void ArmySetWindow::show()
 {
-    sdl_container->show_all();
-    window->show();
+  sdl_container->show_all();
+  window->show();
 }
 
 void ArmySetWindow::hide()
 {
-    window->hide();
+  window->hide();
 }
 
 namespace 
 {
-    void surface_attached_helper(GtkSDL *gtksdl, gpointer data)
+  void surface_attached_helper(GtkSDL *gtksdl, gpointer data)
     {
-	static_cast<ArmySetWindow *>(data)->on_sdl_surface_changed();
+      static_cast<ArmySetWindow *>(data)->on_sdl_surface_changed();
     }
 }
 
 void ArmySetWindow::init(int width, int height)
 {
-    sdl_widget
-	= Gtk::manage(Glib::wrap(gtk_sdl_new(width, height, 0, SDL_SWSURFACE)));
+  sdl_widget
+    = Gtk::manage(Glib::wrap(gtk_sdl_new(width, height, 0, SDL_SWSURFACE)));
 
-    sdl_widget->set_flags(Gtk::CAN_FOCUS);
+  sdl_widget->set_flags(Gtk::CAN_FOCUS);
 
-    sdl_widget->grab_focus();
-    sdl_widget->add_events(Gdk::KEY_PRESS_MASK |
-		  Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-	          Gdk::POINTER_MOTION_MASK | Gdk::LEAVE_NOTIFY_MASK);
+  sdl_widget->grab_focus();
+  sdl_widget->add_events(Gdk::KEY_PRESS_MASK |
+			 Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
+			 Gdk::POINTER_MOTION_MASK | Gdk::LEAVE_NOTIFY_MASK);
 
-    // connect to the special signal that signifies that a new surface has been
-    // generated and attached to the widget
-    g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached",
-		     G_CALLBACK(surface_attached_helper), this);
-    
-    sdl_container->add(*sdl_widget);
+  // connect to the special signal that signifies that a new surface has been
+  // generated and attached to the widget
+  g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached",
+		   G_CALLBACK(surface_attached_helper), this);
+
+  sdl_container->add(*sdl_widget);
 }
 
 bool ArmySetWindow::on_delete_event(GdkEventAny *e)
 {
-    hide();
-    
-    return true;
+  hide();
+
+  return true;
 }
 
 
@@ -267,60 +334,74 @@ bool ArmySetWindow::load(std::string tag, XML_Helper *helper)
   return true;
 }
 
+void ArmySetWindow::on_new_armyset_activated()
+{
+  current_save_filename.clear();
+  if (d_armyset)
+    {
+      armies_list->clear();
+      delete d_armyset;
+      d_armyset = new Armyset();
+    }
+
+  update_armyset_buttons();
+  update_armyset_menuitems();
+}
 void ArmySetWindow::on_load_armyset_activated()
 {
-    Gtk::FileChooserDialog chooser(*window.get(), 
-				   _("Choose an Armyset to Load"));
-    Gtk::FileFilter sav_filter;
-    sav_filter.add_pattern("*.xml");
-    chooser.set_filter(sav_filter);
-    chooser.set_current_folder(Configuration::s_savePath);
+  Gtk::FileChooserDialog chooser(*window.get(), 
+				 _("Choose an Armyset to Load"));
+  Gtk::FileFilter sav_filter;
+  sav_filter.add_pattern("*.xml");
+  chooser.set_filter(sav_filter);
+  chooser.set_current_folder(Configuration::s_savePath);
 
-    chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
-    chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
-	
-    chooser.show_all();
-    int res = chooser.run();
-    
-    if (res == Gtk::RESPONSE_ACCEPT)
-      {
-	current_save_filename = chooser.get_filename();
-	chooser.hide();
+  chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
+  chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
 
-	XML_Helper helper(current_save_filename, std::ios::in, false);
+  chooser.show_all();
+  int res = chooser.run();
 
-	helper.registerTag("armyset", 
-			   sigc::mem_fun((*this), &ArmySetWindow::load));
+  if (res == Gtk::RESPONSE_ACCEPT)
+    {
+      current_save_filename = chooser.get_filename();
+      chooser.hide();
 
-  
-	if (!helper.parse())
-	  {
-	    std::cerr <<_("Error, while loading an armyset. Armyset Name: ");
-	    std::cerr <<current_save_filename <<std::endl <<std::flush;
-	    exit(-1);
-	  }
+      XML_Helper helper(current_save_filename, std::ios::in, false);
 
-	char *dir = strdup(current_save_filename.c_str());
-	dir = basename (dir);
-	char *tmp = strchr (dir, '.');
-	if (tmp)
-	  tmp[0] = '\0';
-	d_armyset->setSubDir(dir);
-	d_armyset->instantiatePixmaps();
-	Uint32 max = d_armyset->getSize();
-	for (unsigned int i = 0; i < max; i++)
-	  addArmyType(i);
-	if (max)
-	  {
-	    Gtk::TreeModel::Row row;
-	    row = armies_treeview->get_model()->children()[0];
-	    if(row)
-	      armies_treeview->get_selection()->select(row);
-	  }
-      }
-    update_armyset_buttons();
-    update_army_panel();
+      helper.registerTag("armyset", 
+			 sigc::mem_fun((*this), &ArmySetWindow::load));
+
+
+      if (!helper.parse())
+	{
+	  std::cerr <<_("Error, while loading an armyset. Armyset Name: ");
+	  std::cerr <<current_save_filename <<std::endl <<std::flush;
+	  exit(-1);
+	}
+
+      char *dir = strdup(current_save_filename.c_str());
+      dir = basename (dir);
+      char *tmp = strchr (dir, '.');
+      if (tmp)
+	tmp[0] = '\0';
+      d_armyset->setSubDir(dir);
+      d_armyset->instantiatePixmaps();
+      Uint32 max = d_armyset->getSize();
+      for (unsigned int i = 0; i < max; i++)
+	addArmyType(i);
+      if (max)
+	{
+	  Gtk::TreeModel::Row row;
+	  row = armies_treeview->get_model()->children()[0];
+	  if(row)
+	    armies_treeview->get_selection()->select(row);
+	}
+    }
+  update_armyset_buttons();
+  update_armyset_menuitems();
+  update_army_panel();
 }
 
 void ArmySetWindow::on_save_armyset_activated()
@@ -396,16 +477,6 @@ void ArmySetWindow::on_sdl_surface_changed()
 
 void ArmySetWindow::on_army_selected()
 {
-  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
-  Gtk::TreeModel::iterator iterrow = selection->get_selected();
-
-  if (iterrow) {
-    // Row selected
-    Gtk::TreeModel::Row row = *iterrow;
-
-    Army *a = row[armies_columns.army];
-    fill_army_info(a);
-  }
   update_army_panel();
   update_armyset_buttons();
 }
@@ -611,7 +682,7 @@ void ArmySetWindow::on_move_forests_toggled()
       if (move_forests_checkbutton->get_active() == true)
 	{
 	  //if (can_fly_checkbutton->get_active())
-	    //can_fly_checkbutton->set_active(false);
+	  //can_fly_checkbutton->set_active(false);
 	  bonus |= Tile::FOREST;
 	}
       else
@@ -635,7 +706,7 @@ void ArmySetWindow::on_move_marshes_toggled()
       if (move_marshes_checkbutton->get_active() == true)
 	{
 	  //if (can_fly_checkbutton->get_active())
-	    //can_fly_checkbutton->set_active(false);
+	  //can_fly_checkbutton->set_active(false);
 	  bonus |= Tile::SWAMP;
 	}
       else
@@ -659,7 +730,7 @@ void ArmySetWindow::on_move_hills_toggled()
       if (move_hills_checkbutton->get_active() == true)
 	{
 	  //if (can_fly_checkbutton->get_active())
-	    //can_fly_checkbutton->set_active(false);
+	  //can_fly_checkbutton->set_active(false);
 	  bonus |= Tile::HILLS;
 	}
       else
@@ -683,7 +754,7 @@ void ArmySetWindow::on_move_mountains_toggled()
       if (move_mountains_checkbutton->get_active() == true)
 	{
 	  //if (can_fly_checkbutton->get_active())
-	    //can_fly_checkbutton->set_active(false);
+	  //can_fly_checkbutton->set_active(false);
 	  bonus |= Tile::MOUNTAIN;
 	}
       else
