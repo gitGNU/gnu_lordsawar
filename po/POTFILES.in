@@ -12,6 +12,7 @@ src/ai_dummy.cpp
 src/ai_fast.cpp
 src/ai_smart.cpp
 src/army.cpp
+src/armyset.cpp
 src/armysetlist.cpp
 src/bigmap.cpp
 src/city.cpp
@@ -54,6 +55,7 @@ src/templelist.cpp
 src/Threat.cpp
 src/Threatlist.cpp
 src/Tile.cpp
-src/TileSet.cpp
+src/tileset.cpp
+src/tilesetlist.cpp
 src/xmlhelper.cpp
 
