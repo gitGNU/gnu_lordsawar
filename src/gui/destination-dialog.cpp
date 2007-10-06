@@ -209,7 +209,7 @@ void DestinationDialog::fill_in_vectoring_info()
   else
     {
       const Army* a = city->getArmy(slot);
-      pic = to_pixbuf(gc->getArmyPic(as, slot, player, 1, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, a->getType(), player, 1, NULL));
       s1 = String::ucompose(_("%1t"), a->getProduction() - 
                             city->getDuration() + 1);
       turns_label->set_markup("<i>" + s1 + "</i>");
