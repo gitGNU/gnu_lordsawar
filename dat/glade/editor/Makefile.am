@@ -12,6 +12,7 @@ players-dialog.glade \
 city-dialog.glade \
 map-info-dialog.glade \
 new-map-dialog.glade \
-armyset-window.glade
+armyset-window.glade \
+armyset-info-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)
