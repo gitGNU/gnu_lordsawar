@@ -1,3 +1,7 @@
+2007-10-05  Ben Asselstine
+
+	* finished minimally functional armyset editor
+
 2007-10-04  Ben Asselstine
 
 	* fixed bug wrt saving capital cities in the editor
@@ -8,6 +12,7 @@
 	* neutral cities now appear to be neutral cities when making a
 	  random map in the editor
 	* added non-functional armyset editor
+	* created separate armyset object to be used in armysetlist object
 
 2007-10-01  Ben Asselstine
 
