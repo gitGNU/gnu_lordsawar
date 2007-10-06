@@ -444,6 +444,11 @@ void ArmySetWindow::on_save_armyset_activated()
     on_save_armyset_as_activated();
   else
     {
+      //fixme: reorder the armyset according to the treeview
+      d_armyset->clear();
+      for (Gtk::TreeIter i = armies_list->children().begin(),
+	   end = armies_list->children().end(); i != end; ++i) 
+	d_armyset->push_back((*i)[armies_columns.army]);
       XML_Helper helper(current_save_filename, std::ios::out, false);
       helper.openTag("armyset");
       d_armyset->save(&helper);
