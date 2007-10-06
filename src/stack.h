@@ -174,6 +174,7 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
 	void sortForViewing(bool reverse);
 	void setFortified(bool fortified);
 	bool getFortified();
+	Uint32 getUpkeep();
         
 	static bool armyCompareFightOrder (const Army *, const Army *);
     private:    

@@ -76,7 +76,7 @@ sigc::signal<void, Player::Type> sendingTurn;
 Player::Player(string name, Uint32 armyset, SDL_Color color, Type type,
 	       int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
-    d_dead(false), d_immortal(false), d_type(type)
+    d_dead(false), d_immortal(false), d_type(type), d_upkeep(0)
 {
     if (player_no != -1)
 	d_id = player_no;
@@ -101,7 +101,7 @@ Player::Player(const Player& player)
     :d_color(player.d_color), d_name(player.d_name), d_armyset(player.d_armyset),
     d_gold(player.d_gold), d_dead(player.d_dead), d_immortal(player.d_immortal),
     d_type(player.d_type), d_id(player.d_id), d_fogmap(player.d_fogmap),
-    d_fight_order(player.d_fight_order)
+    d_fight_order(player.d_fight_order), d_upkeep(player.d_upkeep)
 {
     // as the other player is propably dumped somehow, we need to deep copy
     // everything. This costs a lot, but the only useful situation for this
@@ -139,6 +139,7 @@ Player::Player(XML_Helper* helper)
     helper->getData(d_dead, "dead");
     helper->getData(d_immortal, "immortal");
     helper->getData(d_type, "type");
+    helper->getData(d_upkeep, "upkeep");
 
     string s;
     helper->getData(s, "color");
@@ -400,6 +401,7 @@ bool Player::save(XML_Helper* helper) const
     retval &= helper->saveData("immortal", d_immortal);
     retval &= helper->saveData("type", d_type);
     debug("type of " << d_name << " is " << d_type)
+    retval &= helper->saveData("upkeep", d_upkeep);
 
     std::stringstream fight_order;
     for (std::list<Uint32>::const_iterator it = d_fight_order.begin();
@@ -536,4 +538,11 @@ bool Player::load(string tag, XML_Helper* helper)
     return true;
 }
 
+void Player::calculateUpkeep()
+{
+    d_upkeep = 0;
+    Stacklist *sl = getStacklist();
+    for (Stacklist::iterator i = sl->begin(), iend = sl->end(); i != iend; ++i)
+      d_upkeep += (*i)->getUpkeep();
+}
 // End of file

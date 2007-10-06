@@ -112,7 +112,7 @@ void NextTurn::startTurn()
   Player* p = Playerlist::getActiveplayer();
 
   p->initTurn();
-
+      
   //if turnmode is set, create/heal armies at player's turn
   if (d_turnmode)
     {
@@ -124,7 +124,11 @@ void NextTurn::startTurn()
 
       //heal stacks
       p->getStacklist()->nextTurn();
+
     }
+
+  //calculate upkeep
+  p->calculateUpkeep();
 
 }
 

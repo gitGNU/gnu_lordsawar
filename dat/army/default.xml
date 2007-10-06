@@ -517,7 +517,7 @@
         <d_awardable>false</d_awardable>
         <d_production>0</d_production>
         <d_production_cost>0</d_production_cost>
-        <d_upkeep>5</d_upkeep>
+        <d_upkeep>0</d_upkeep>
         <d_strength>5</d_strength>
         <d_expvalue>10</d_expvalue>
         <d_max_moves>14</d_max_moves>

@@ -121,6 +121,7 @@ class GameWindow: public sigc::trackable
     Gtk::Label *cities_stats_label;
     Gtk::Label *gold_stats_label;
     Gtk::Label *income_stats_label;
+    Gtk::Label *upkeep_stats_label;
     Gtk::Label *turn_label;
     Gtk::HBox *turn_hbox;
     Gtk::Image *shield_image[MAX_PLAYERS];

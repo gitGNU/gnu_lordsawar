@@ -20,7 +20,7 @@
 struct SidebarStats
 {
     std::string name;
-    int gold, income, cities, units, turns;
+    int gold, income, cities, units, turns, upkeep;
 };
 
 #endif

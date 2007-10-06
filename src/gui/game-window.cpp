@@ -152,10 +152,13 @@ GameWindow::GameWindow()
     image->property_file() = File::getMiscFile("various/items.png");
     xml->get_widget("income_stats_image", image);
     image->property_file() = File::getMiscFile("various/items.png");
+    xml->get_widget("upkeep_stats_image", image);
+    image->property_file() = File::getMiscFile("various/items.png");
     
     xml->get_widget("cities_stats_label", cities_stats_label);
     xml->get_widget("gold_stats_label", gold_stats_label);
     xml->get_widget("income_stats_label", income_stats_label);
+    xml->get_widget("upkeep_stats_label", upkeep_stats_label);
     xml->get_widget("turn_label", turn_label);
     xml->get_widget("turn_hbox", turn_hbox);
     xml->get_widget("shield_image_0", shield_image[0]);
@@ -1237,14 +1240,15 @@ void GameWindow::ensure_one_army_button_active()
 
 void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 {
-  Glib::ustring n = String::ucompose(
-				     stats_text, s.name, s.gold, s.income, s.cities, s.units);
+  Glib::ustring n = String::ucompose(stats_text, s.name, s.gold, s.income, 
+				     s.cities, s.units, s.upkeep);
 
   stats_label->set_text(n);
 
   cities_stats_label->set_text(String::ucompose("%1", s.cities));
   gold_stats_label->set_text(String::ucompose("%1", s.gold));
   income_stats_label->set_text(String::ucompose("%1", s.income));
+  upkeep_stats_label->set_text(String::ucompose("%1", s.upkeep));
   turn_label->set_text(String::ucompose("Turn %1", s.turns + 1));
 }
 

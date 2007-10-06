@@ -624,4 +624,11 @@ bool Stack::getFortified()
   return false;
 }
 
+Uint32 Stack::getUpkeep()
+{
+  Uint32 upkeep = 0;
+  for (iterator it = begin(); it != end(); it++)
+    upkeep += (*it)->getUpkeep();
+  return upkeep;
+}
 // End of file

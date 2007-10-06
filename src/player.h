@@ -211,6 +211,12 @@ class Player: public sigc::trackable
         //! Return the type of the player
         Uint32 getType() {return d_type;}
 
+        //! Return the upkeep the player spend last turn 
+        Uint32 getUpkeep() {return d_upkeep;}
+
+	//! Calculates the upkeep
+	void calculateUpkeep();
+
         //! Returns the main color of the player
         SDL_Color getColor() const {return d_color;}
 
@@ -573,6 +579,8 @@ class Player: public sigc::trackable
         FogMap* d_fogmap;
 	std::list<Uint32> d_fight_order; //for each army in armyset, a number
 	Uint32 d_triumph[MAX_PLAYERS][5]; // 5 is max TriumphType + 1
+	Uint32 d_upkeep; //how much we paid out last turn
+
 
     private:
         //! Loads the subdata of a player (actions and stacklist)

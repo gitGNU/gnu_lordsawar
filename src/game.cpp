@@ -229,9 +229,10 @@ void Game::update_sidebar_stats()
 	}
 
     s.units = 0;
+    s.upkeep = player->getUpkeep();
     Stacklist *sl = player->getStacklist();
     for (Stacklist::iterator i = sl->begin(), iend = sl->end(); i != iend; ++i)
-	s.units += (*i)->size();
+      s.units += (*i)->size();
     
     s.turns = d_gameScenario->getRound();
     
