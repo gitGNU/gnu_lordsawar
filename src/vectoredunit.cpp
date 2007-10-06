@@ -82,18 +82,24 @@ bool VectoredUnit::save(XML_Helper* helper) const
 
 bool VectoredUnit::nextTurn()
 {
-  const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 set = d_player->getArmyset();
-  Citylist *cl = Citylist::getInstance();
-  Army *a = new Army(*(al->getArmy(set, d_armytype)), d_player);
-  //FIXME: this should be in player somehow
-  Action_ProduceVectored *item = new Action_ProduceVectored();
-  item->fillData(a->getType(), d_destination);
-  d_player->getActionlist()->push_back(item);
-
   d_duration--;
   if (d_duration == 0)
     {
+      if (d_player->getGold() <= 0)
+	{
+	  //don't bring this army in because we can't afford it
+	  return false;
+	}
+
+      const Armysetlist* al = Armysetlist::getInstance();
+      Uint32 set = d_player->getArmyset();
+      Citylist *cl = Citylist::getInstance();
+      Army *a = new Army(*(al->getArmy(set, d_armytype)), d_player);
+      //FIXME: this should be in player somehow
+      Action_ProduceVectored *item = new Action_ProduceVectored();
+      item->fillData(a->getType(), d_destination);
+      d_player->getActionlist()->push_back(item);
+
       City *dest;
       // drop it in the destination city!
       dest = cl->getObjectAt(d_destination);

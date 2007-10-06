@@ -401,6 +401,17 @@ void City::nextTurn()
     // check if an army should be produced
     if (d_production >= 0 && --d_duration == 0) 
     {
+      if (d_player->getGold() <= 0)
+	{
+	  //dont make or vector the unit
+	  //and also stop production
+	  setProduction(-1);
+	  d_vectoring = false;
+	  d_vector.x = -1;
+	  d_vector.y = -1;
+	  return;
+	}
+
         Action_Produce *item = new Action_Produce();
         // vector the army to the new spot
         if (d_vectoring)

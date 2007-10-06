@@ -134,6 +134,7 @@ GameScenario::~GameScenario()
     Bridgelist::deleteInstance();
     QuestsManager::deleteInstance();
     Itemlist::deleteInstance();
+    VectoredUnitlist::deleteInstance();
 
     if (fl_counter)
     {
