@@ -34,6 +34,7 @@
 #include <gtkmm/menuitem.h>
 
 #include "armyset-window.h"
+#include "armyset-info-dialog.h"
 
 #include "../gui/gtksdl.h"
 #include "../gui/image-helpers.h"
@@ -41,6 +42,7 @@
 #include "../gui/error-utils.h"
 
 #include "../defs.h"
+#include "../Configuration.h"
 #include "../armysetlist.h"
 #include "../Tile.h"
 
@@ -62,9 +64,15 @@ ArmySetWindow::ArmySetWindow()
 
     xml->get_widget("army_image", army_image);
     xml->get_widget("name_entry", name_entry);
+    name_entry->signal_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_name_changed));
     xml->get_widget("armies_treeview", armies_treeview);
     xml->get_widget("description_textview", description_textview);
+    description_textview->get_buffer()->signal_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_description_changed));
     xml->get_widget("image_filechooserbutton", image_filechooserbutton);
+    image_filechooserbutton->signal_selection_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_image_changed));
     xml->get_widget("production_spinbutton", production_spinbutton);
     production_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_production_changed));
@@ -152,7 +160,11 @@ ArmySetWindow::ArmySetWindow()
     suballherobonus_checkbutton->signal_toggled().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_suballherobonus_toggled));
     xml->get_widget("add_army_button", add_army_button);
+    add_army_button->signal_clicked().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_add_army_clicked));
     xml->get_widget("remove_army_button", remove_army_button);
+    remove_army_button->signal_clicked().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_remove_army_clicked));
     xml->get_widget("army_vbox", army_vbox);
     // connect callbacks for the menu
     xml->get_widget("new_armyset_menuitem", new_armyset_menuitem);
@@ -336,12 +348,23 @@ bool ArmySetWindow::load(std::string tag, XML_Helper *helper)
 
 void ArmySetWindow::on_new_armyset_activated()
 {
+  bool retval;
   current_save_filename.clear();
   if (d_armyset)
     {
       armies_list->clear();
       delete d_armyset;
-      d_armyset = new Armyset();
+    }
+  std::string name = "";
+  Uint32 id = 0;
+  d_armyset = new Armyset(id, name);
+  ArmySetInfoDialog d(d_armyset);
+  d.set_parent_window(*window.get());
+  retval = d.run();
+  if (retval == false)
+    {
+      delete d_armyset;
+      d_armyset = NULL;
     }
 
   update_armyset_buttons();
@@ -368,6 +391,9 @@ void ArmySetWindow::on_load_armyset_activated()
       current_save_filename = chooser.get_filename();
       chooser.hide();
 
+      armies_list->clear();
+      if (d_armyset)
+	delete d_armyset;
       XML_Helper helper(current_save_filename, std::ios::in, false);
 
       helper.registerTag("armyset", 
@@ -453,9 +479,9 @@ void ArmySetWindow::on_quit_activated()
 }
 void ArmySetWindow::on_edit_armyset_info_activated()
 {
-  //ArmySetInfoDialog d;
-  //d.set_parent_window(*window.get());
-  //d.run();
+  ArmySetInfoDialog d(d_armyset);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 void ArmySetWindow::addArmyType(Uint32 army_type)
 {
@@ -483,7 +509,16 @@ void ArmySetWindow::on_army_selected()
 
 void ArmySetWindow::fill_army_info(Army *army)
 {
-  army_image->property_pixbuf() = to_pixbuf(army->getPixmap());
+  if (army->getImageName() != "")
+    {
+      army_image->property_pixbuf() = to_pixbuf(army->getPixmap());
+    
+      std::string path = Configuration::s_dataPath + "/army/" +  
+	d_armyset->getSubDir() + "/" + army->getImageName() + ".png";
+      image_filechooserbutton->set_filename(path);
+    }
+  else
+    army_image->clear();
   name_entry->set_text(army->getName());
   description_textview->get_buffer()->set_text(army->getDescription());
   production_spinbutton->set_value(army->getProduction());
@@ -549,6 +584,58 @@ void ArmySetWindow::fill_army_info(Army *army)
     ((bonus & Army::SUBALLHEROBONUS) == Army::SUBALLHEROBONUS);
 }
 
+void ArmySetWindow::on_name_changed()
+{
+  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+
+  if (iterrow) 
+    {
+      Gtk::TreeModel::Row row = *iterrow;
+      Army *a = row[armies_columns.army];
+      a->setName(name_entry->get_text());
+      row[armies_columns.name] = name_entry->get_text();
+    }
+}
+void ArmySetWindow::on_description_changed()
+{
+  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+
+  if (iterrow) 
+    {
+      Gtk::TreeModel::Row row = *iterrow;
+      Army *a = row[armies_columns.army];
+      a->setDescription(description_textview->get_buffer()->get_text());
+    }
+}
+void ArmySetWindow::on_image_changed()
+{
+  if (image_filechooserbutton->get_filename().empty())
+    return;
+
+  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+
+  if (iterrow) 
+    {
+      Gtk::TreeModel::Row row = *iterrow;
+      Army *a = row[armies_columns.army];
+      char *dir = strdup(image_filechooserbutton->get_filename().c_str());
+      dir = basename (dir);
+      char *tmp = strchr (dir, '.');
+      if (tmp)
+	tmp[0] = '\0';
+      std::string path = Configuration::s_dataPath + "/army/" +  
+	d_armyset->getSubDir() +"/";
+      if (image_filechooserbutton->get_filename().substr(0, path.size()) !=path)
+	return;
+      a->setImageName(dir);
+      d_armyset->instantiatePixmaps();
+      army_image->property_pixbuf() = to_pixbuf(a->getPixmap());
+    }
+  return;
+}
 void ArmySetWindow::on_production_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -642,7 +729,7 @@ void ArmySetWindow::on_hero_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       Army *a = row[armies_columns.army];
-      //a->setHero(hero_checkbutton->get_active());
+      a->setHero(hero_checkbutton->get_active());
     }
 }
 void ArmySetWindow::on_awardable_toggled()
@@ -1045,5 +1132,31 @@ void ArmySetWindow::on_suballherobonus_toggled()
 	    bonus ^= Army::SUBALLHEROBONUS;
 	}
       a->setStat(Army::ARMY_BONUS, bonus);
+    }
+}
+void ArmySetWindow::on_add_army_clicked()
+{
+  //add a new empty army to the armyset
+  Army *a = new Army();
+  //add it to the treeview
+  Gtk::TreeIter i = armies_list->append();
+  a->setName("Untitled");
+  (*i)[armies_columns.name] = a->getName();
+  (*i)[armies_columns.army] = a;
+
+}
+void ArmySetWindow::on_remove_army_clicked()
+{
+  //erase the selected row from the treeview
+  //remove the army from the armyset
+  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+
+  if (iterrow) 
+    {
+      Gtk::TreeModel::Row row = *iterrow;
+      Army *a = row[armies_columns.army];
+      armies_list->erase(iterrow);
+      d_armyset->remove(a);
     }
 }

@@ -58,6 +58,14 @@ Army::Army(const Army& a, Player* p)
     }  
 }
 
+Army::Army()
+  :d_pixmap(0), d_mask(0), d_name("Untitled"), d_description(""),
+    d_production(0), d_production_cost(0), d_upkeep(0), d_strength(0),
+    d_max_hp(0), d_max_moves(0), d_sight(0), d_gender(NONE), d_level(1), 
+   d_defends_ruins(false), d_awardable(false), d_hero(false), d_image("")
+{
+}
+
 Army::Army(XML_Helper* helper, bool prototype)
   :d_pixmap(0), d_mask(0), d_name(""), d_description(""), d_ship(false),
    d_gender(NONE), d_player(0), 
@@ -514,3 +522,16 @@ bool Army::getFortified ()
   return (d_army_bonus & Army::FORTIFY) == Army::FORTIFY;
 }
 
+void Army::setPixmap(SDL_Surface* pixmap)
+{
+  if (d_pixmap)
+    SDL_FreeSurface(d_pixmap);
+  d_pixmap = pixmap;
+}
+        
+void Army::setMask(SDL_Surface* mask)
+{
+  if (d_mask)
+    SDL_FreeSurface(d_mask);
+  d_mask = mask;
+}

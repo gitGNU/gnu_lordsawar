@@ -134,6 +134,9 @@ class ArmySetWindow: public sigc::trackable
     bool load(std::string tag, XML_Helper *helper);
 
     //callbacks
+    void on_name_changed();
+    void on_description_changed();
+    void on_image_changed();
     void on_production_changed();
     void on_cost_changed();
     void on_upkeep_changed();
@@ -163,6 +166,8 @@ class ArmySetWindow: public sigc::trackable
     void on_add2stack_toggled();
     void on_suballnonherobonus_toggled();
     void on_suballherobonus_toggled();
+    void on_add_army_clicked();
+    void on_remove_army_clicked();
 public:
     // not part of the API, but for surface_attached_helper
     void on_sdl_surface_changed();

@@ -28,7 +28,8 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-Armyset::Armyset()
+Armyset::Armyset(Uint32 id, std::string name)
+	: d_id(id), d_name(name), d_dir("")
 {
 }
 
@@ -59,6 +60,8 @@ bool Armyset::instantiatePixmap(Army *a)
     static int armysize = 54;   // army pic has this size
     std::string s;
 
+    if (a->getImageName() == "")
+      return false;
     // load the army picture. This is done here to avoid confusion
     // since the armies are used as prototypes as well as actual units in the
     // game.

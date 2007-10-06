@@ -28,7 +28,7 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 {
     public:
 
-	Armyset();
+	Armyset(Uint32 id, std::string name);
         Armyset(XML_Helper* helper);
 	bool save(XML_Helper* helper);
         ~Armyset();
@@ -40,12 +40,14 @@ class Armyset: public std::list<Army *>, public sigc::trackable
           */
         Uint32 getSize() const {return size();}
         Uint32 getId() const {return d_id;}
+        void setId(Uint32 id) {d_id = id;} //for editor only
 
         /** Returns the name of this armyset
           * 
           * @return the name or an empty string on error
           */
         std::string getName() const {return d_name;}
+        void setName(std::string name) {d_name = name;}
         std::string getSubDir() const {return d_dir;}
         void setSubDir(std::string dir) {d_dir = dir;}
 

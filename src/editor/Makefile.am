@@ -29,6 +29,7 @@ bin_PROGRAMS = lordsawar-editor lordsawar-army-editor
 lordsawar_army_editor_SOURCES = \
 armyset-main.cpp \
 armyset-window.cpp armyset-window.h  \
+armyset-info-dialog.cpp armyset-info-dialog.h \
 glade-helpers.h
 
 

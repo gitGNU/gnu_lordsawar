@@ -91,6 +91,10 @@ class Army : public sigc::trackable
           */
         Army(XML_Helper* helper, bool prototype = false);
         
+	/**  creates a new prototype army
+	 */
+	Army();
+
         virtual ~Army();
 
 
@@ -106,10 +110,10 @@ class Army : public sigc::trackable
         void setName(std::string name){d_name = name;}
 
         //! Set the basic image of the unit type
-        void setPixmap(SDL_Surface* pixmap){d_pixmap = pixmap;}
+        void setPixmap(SDL_Surface* pixmap);
 
         //! Set the mask of the unit type (for player colors)
-        void setMask(SDL_Surface* mask){d_mask = mask;}
+        void setMask(SDL_Surface* mask);
 
         //! Set how much XP this unit is worth when killed
         void setXpReward(double xp_value){d_xp_value = xp_value;}
@@ -170,6 +174,7 @@ class Army : public sigc::trackable
 
 	//! Returns the basename of the picture's filename
 	std::string getImageName() const {return d_image;}
+	void setImageName(std::string image) {d_image = image;}
 
         //! Returns the descriptive text of this army
         std::string getDescription() const {return d_description;}
@@ -221,6 +226,7 @@ class Army : public sigc::trackable
 
         //! Returns whether the army is a hero
         bool isHero() const {return d_hero;}
+	void setHero(bool hero) {d_hero = hero;}
 
         /** Heal the unit
           * 
