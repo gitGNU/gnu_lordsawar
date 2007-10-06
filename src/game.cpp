@@ -278,7 +278,7 @@ void Game::move_all_stacks()
   for (Stacklist::iterator i = sl->begin(), end = sl->end(); i != end; ++i)
     {
       Stack &s = **i;
-      if (!(s.empty()) && !(s.getPath()->empty()) && s.canMove())
+      if (!(s.empty()) && !(s.getPath()->empty()) && s.enoughMoves())
 	{
 	  sl->setActivestack(&s);
 	  select_active_stack();
