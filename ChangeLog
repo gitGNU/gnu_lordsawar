@@ -3,6 +3,7 @@
 	* fixed bug related to a stack having enough movement to move
 	  somewhere, but not enough to move along it's path
 	  (Thanks to Daivid Pekovich)
+	* now calculating and showing upkeep per turn
 
 2007-10-05  Ben Asselstine
 
