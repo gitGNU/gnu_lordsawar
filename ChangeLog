@@ -4,6 +4,9 @@
 	  somewhere, but not enough to move along it's path
 	  (Thanks to Daivid Pekovich)
 	* now calculating and showing upkeep per turn
+	* now preventing armies from being produced if the player is all
+	  out of money
+	* fixed crashing bug wrt vectoredunitlist not being destroyed
 
 2007-10-05  Ben Asselstine
 
