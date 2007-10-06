@@ -367,6 +367,10 @@ void ArmySetWindow::on_new_armyset_activated()
       d_armyset = NULL;
     }
 
+      
+  std::string imgpath = Configuration::s_dataPath + "/army/";
+  image_filechooserbutton->set_current_folder(imgpath);
+
   update_armyset_buttons();
   update_armyset_menuitems();
 }
@@ -382,6 +386,8 @@ void ArmySetWindow::on_load_armyset_activated()
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
   chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+      
+  chooser.set_current_folder(Configuration::s_dataPath + "/army/");
 
   chooser.show_all();
   int res = chooser.run();
@@ -424,6 +430,8 @@ void ArmySetWindow::on_load_armyset_activated()
 	  if(row)
 	    armies_treeview->get_selection()->select(row);
 	}
+      std::string imgpath = Configuration::s_dataPath + "/army/" + dir + "/";
+      image_filechooserbutton->set_current_folder(imgpath);
     }
   update_armyset_buttons();
   update_armyset_menuitems();
@@ -451,7 +459,7 @@ void ArmySetWindow::on_save_armyset_as_activated()
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*.xml");
   chooser.set_filter(sav_filter);
-  chooser.set_current_folder(Configuration::s_savePath);
+  chooser.set_current_folder(Configuration::s_dataPath + "/army/");
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
