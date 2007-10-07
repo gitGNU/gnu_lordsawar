@@ -1,13 +1,11 @@
 [Desktop Entry]
-Encoding=UTF-8
 
 Name=LordsAWar
 GenericName=Turn-based strategy game
-Comment=A clone of Warlords II
+Comment=Play a clone of Warlords II
 
 Type=Application
 Exec=lordsawar
 Icon=lordsawar
 Terminal=false
-Categories=StrategyGame;X-SDL;
-
+Categories=Game;StrategyGame;
