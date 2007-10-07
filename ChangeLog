@@ -1,3 +1,7 @@
+2007-10-07  Ben Asselstine
+
+	* updated lordsawar.desktop file (Thanks Barry deFreese)
+
 2007-10-06  Ben Asselstine
 
 	* fixed bug related to a stack having enough movement to move
@@ -7,6 +11,8 @@
 	* now preventing armies from being produced if the player is all
 	  out of money
 	* fixed crashing bug wrt vectoredunitlist not being destroyed
+	* fixed bug that showed wrong army picture in vectoring window
+	* renamed "destination" button to "vector" button in city window
 
 2007-10-05  Ben Asselstine
 
