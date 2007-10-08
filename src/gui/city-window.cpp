@@ -117,6 +117,7 @@ bool CityWindow::on_map_mouse_button_event(GdkEventButton *e)
     
     city = prodmap->getCity();
     fill_in_city_info();
+    fill_in_production_toggles();
     fill_in_production_info();
     return true;
 }
