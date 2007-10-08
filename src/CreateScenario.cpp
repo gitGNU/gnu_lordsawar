@@ -536,7 +536,7 @@ bool CreateScenario::setupCities(bool quick_start)
             switch (GameScenario::s_neutral_cities)
               {
               case GameParameters::AVERAGE:
-                (*it).produceWeakestArmy();
+                (*it).produceScout();
                 break;
               case GameParameters::STRONG:
                 (*it).produceStrongestArmy();
@@ -558,9 +558,14 @@ bool CreateScenario::setupCities(bool quick_start)
             (*it).produceWeakestArmy();
 
             (*it).setProduction(0);
-            //raise the city defense to the highest level
-            for (; (*it).raiseDefense(););
         }
+
+	if (rand() % 2 == 0)
+	  (*it).raiseDefense();
+	if ((*it).isCapital())
+	  (*it).setGold(33 + (rand() % 8));
+	else
+	  (*it).setGold(15 + (rand() % 12));
     }
 
     return true;

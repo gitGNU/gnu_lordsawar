@@ -121,6 +121,11 @@ class City : public Location
         //! Produces the weakest army the city can produce
         void produceWeakestArmy();
 
+        //! Produces a weak army for exploring (used when neutral cities are
+	// "average".  The scout army doesn't have to be a buildable army
+	// by the city for this method to operate.
+        void produceScout();
+
         //! Do everything neccessary for a new turn
         void nextTurn();
 
@@ -190,6 +195,7 @@ class City : public Location
         //! Produces the currently selected army
         Army * produceArmy();
 
+	void randomlyImproveOrDegradeArmy(Army *army);
 
         // DATA
         Player* d_player;           // Owner

@@ -202,7 +202,6 @@ bool City::raiseDefense()
 
     // increase the defense level, the income and the possible production
     d_defense_level++;
-    d_gold = static_cast<Uint32>(d_gold*1.8);
 
     return true;
 }
@@ -217,7 +216,6 @@ bool City::reduceDefense()
 
     // the same as raiseDefense, but the other way round
     d_defense_level--;
-    d_gold = static_cast<Uint32>(d_gold*0.66);
 
     return true;
 }
@@ -327,65 +325,115 @@ void City::conquer(Player* newowner)
     vul->removeVectoredUnitsGoingTo(d_pos);
 }
 
+
+void City::randomlyImproveOrDegradeArmy(Army *army)
+{
+  if (rand() % 30 == 0) //random chance of improving strength
+    {
+      army->setStat(Army::STRENGTH, 
+		    army->getStat(Army::STRENGTH, false) + 1);
+    }
+  if (rand() % 25 == 0) //random chance of improving turns
+    {
+      if (army->getProduction() > 1)
+	army->setProduction(army->getProduction() - 1);
+    }
+  if (rand() % 50 == 0) //random chance of degrading strength
+    {
+      if (army->getStat(Army::STRENGTH, false) > 1)
+	army->setStat(Army::STRENGTH, 
+		      army->getStat(Army::STRENGTH, false) - 1);
+    }
+  if (rand() % 45 == 0) //random chance of improving turns
+    {
+      if (army->getProduction() < 5)
+	army->setProduction(army->getProduction() + 1);
+    }
+}
+
 void City::setRandomArmytypes()
 {
-	
+
   const Armysetlist* al = Armysetlist::getInstance();
   Uint32 set = getPlayer()->getArmyset();
-    //always set the lowest armytype
-    addBasicProd(0, new Army (*(al->getArmy(set, 0))));
-    //add another armytype if the dice are lucky
-    int random_nr = rand() % 3;
-    if (random_nr == 1) 
-      {
-	Army *army = new Army (*(al->getArmy(set,1 + rand() % 8 )));
-	if (rand() % 30 == 0) //random chance of improving strength
-	  {
-	    army->setStat(Army::STRENGTH, 
-			  army->getStat(Army::STRENGTH, false) + 1);
-	  }
-	if (rand() % 25 == 0) //random chance of improving turns
-	  {
-	    if (army->getProduction() > 1)
-		army->setProduction(army->getProduction() - 1);
-	  }
-	if (rand() % 50 == 0) //random chance of degrading strength
-	  {
-	    if (army->getStat(Army::STRENGTH, false) > 1)
-	      army->setStat(Army::STRENGTH, 
-			    army->getStat(Army::STRENGTH, false) - 1);
-	  }
-	if (rand() % 45 == 0) //random chance of improving turns
-	  {
-	    if (army->getProduction() < 5)
-		army->setProduction(army->getProduction() + 1);
-	  }
-        addBasicProd(1, army);
-      }
+  int army_type;
+  int num = rand() % 10;
+  if (num < 7)
+    army_type = 1;
+  else if (num < 9)
+    army_type = 0;
+  else
+    army_type = 1 + (rand () % 11);
+  Army *template_army = al->getArmy(set, army_type);
+  if (!template_army)
+    {
+      produceScout();
+      return;
+    }
+  Army *army = new Army (*template_army);
+  randomlyImproveOrDegradeArmy(army);
+  addBasicProd(0, army);
+
+  if ((rand() % 10) < 3 && !isCapital())
+    return;
+
+  army_type += 1 + (rand() % 2);
+  template_army = al->getArmy(set, army_type);
+  if (!template_army)
+    return;
+  army = new Army (*template_army);
+  randomlyImproveOrDegradeArmy(army);
+  addBasicProd(1, army);
+
+  if ((rand() % 10) < 4 && !isCapital())
+    return;
+
+  if (army_type < 5)
+    army_type += 1 + (rand() % 7);
+  else
+    army_type += 1 + (rand() % 2);
+  template_army = al->getArmy(set, army_type);
+  if (!template_army)
+    return;
+  army = new Army (*template_army);
+  randomlyImproveOrDegradeArmy(army);
+  addBasicProd(2, army);
+
+  if ((rand() % 10) < 6 && !isCapital())
+    return;
+
+  army_type += 1 + (rand() % 3);
+  template_army = al->getArmy(set, army_type);
+  if (!template_army)
+    return;
+  army = new Army (*template_army);
+  randomlyImproveOrDegradeArmy(army);
+  addBasicProd(3, army);
+
 }
 
 void City::produceStrongestArmy()
 {
-    debug("produceStrongestArmy()");
+  debug("produceStrongestArmy()");
 
-    Stack* stack = getFreeStack(d_player);
-    if (stack)
+  Stack* stack = getFreeStack(d_player);
+  if (stack)
     {
       unsigned int max_strength = 0;
       int strong_idx = -1;
       for (int i = 0; i < 4; i++)
-        {
+	{
 	  if (d_basicprod[i] == NULL)
 	    continue;
-          if (getArmy(i)->getStat(Army::STRENGTH,false) > max_strength)
-            {
-              strong_idx = i;
-              max_strength = getArmy(i)->getStat(Army::STRENGTH,false);
-            }
-        }
+	  if (getArmy(i)->getStat(Army::STRENGTH,false) > max_strength)
+	    {
+	      strong_idx = i;
+	      max_strength = getArmy(i)->getStat(Army::STRENGTH,false);
+	    }
+	}
       if (strong_idx == -1)
-        return;
-         
+	return;
+
       int savep = d_production;
       setProduction(strong_idx);
       produceArmy();
@@ -394,28 +442,38 @@ void City::produceStrongestArmy()
     }
 }
 
+void City::produceScout()
+{
+  const Armysetlist* al = Armysetlist::getInstance();
+  Uint32 set = getPlayer()->getArmyset();
+  Army *scout = al->getArmy(set, 0);
+  Army *a = new Army(*scout, d_player);
+  GameMap::getInstance()->addArmy(this, a);
+
+}
+
 void City::produceWeakestArmy()
 {
-    debug("produceWeakestArmy()");
+  debug("produceWeakestArmy()");
 
-    Stack* stack = getFreeStack(d_player);
-    if (stack)
+  Stack* stack = getFreeStack(d_player);
+  if (stack)
     {
       unsigned int min_strength = 100;
       int weak_idx = -1;
       for (int i = 0; i < 4; i++)
-        {
+	{
 	  if (d_basicprod[i] == NULL)
 	    continue;
-          if (getArmy(i)->getStat(Army::STRENGTH,false) < min_strength)
-            {
-              weak_idx = i;
-              min_strength = getArmy(i)->getStat(Army::STRENGTH,false);
-            }
-        }
+	  if (getArmy(i)->getStat(Army::STRENGTH,false) < min_strength)
+	    {
+	      weak_idx = i;
+	      min_strength = getArmy(i)->getStat(Army::STRENGTH,false);
+	    }
+	}
       if (weak_idx == -1)
-        return;
-         
+	return;
+
       int savep = d_production;
       setProduction(weak_idx);
       produceArmy();
@@ -426,11 +484,11 @@ void City::produceWeakestArmy()
 
 void City::nextTurn()
 {
-    if (d_burnt)
-        return;
+  if (d_burnt)
+    return;
 
-    // check if an army should be produced
-    if (d_production >= 0 && --d_duration == 0) 
+  // check if an army should be produced
+  if (d_production >= 0 && --d_duration == 0) 
     {
       if (d_player->getGold() <= 0)
 	{
@@ -443,26 +501,26 @@ void City::nextTurn()
 	  return;
 	}
 
-        Action_Produce *item = new Action_Produce();
-        // vector the army to the new spot
-        if (d_vectoring)
-          {
-	    VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-	    VectoredUnit *v = new VectoredUnit(d_pos, d_vector, 
-			   new Army(*(d_basicprod[d_production])),
-			   MAX_TURNS_FOR_VECTORING, getPlayer());
-	    vul->push_back(v);
-            setProduction(d_production);
-            item->fillData(getArmytype(d_production), this, true);
-          }
-	else //or make it here
-          {
-            Army *a = produceArmy();
-            item->fillData(a->getType(), this, false);
-          }
-        //FIXME: a cookie goes to the person who can figure out how
-        //to get this action into the realplayer class.
-        getPlayer()->getActionlist()->push_back(item);
+      Action_Produce *item = new Action_Produce();
+      // vector the army to the new spot
+      if (d_vectoring)
+	{
+	  VectoredUnitlist *vul = VectoredUnitlist::getInstance();
+	  VectoredUnit *v = new VectoredUnit(d_pos, d_vector, 
+					     new Army(*(d_basicprod[d_production])),
+					     MAX_TURNS_FOR_VECTORING, getPlayer());
+	  vul->push_back(v);
+	  setProduction(d_production);
+	  item->fillData(getArmytype(d_production), this, true);
+	}
+      else //or make it here
+	{
+	  Army *a = produceArmy();
+	  item->fillData(a->getType(), this, false);
+	}
+      //FIXME: a cookie goes to the person who can figure out how
+      //to get this action into the realplayer class.
+      getPlayer()->getActionlist()->push_back(item);
     }
 }
 
@@ -478,56 +536,56 @@ bool City::hasProduction(int type, Uint32 set) const
 	return true;
     }
 
-    return false;
+  return false;
 }
 
 int City::getArmytype(int slot) const
 {
-    if (slot < 0)
-        return -1;
-    
-    if (slot >= d_numbasic)
-        return -1;
-    if (d_basicprod[slot] == NULL)
-      return -1;
-    return d_basicprod[slot]->getType();
+  if (slot < 0)
+    return -1;
+
+  if (slot >= d_numbasic)
+    return -1;
+  if (d_basicprod[slot] == NULL)
+    return -1;
+  return d_basicprod[slot]->getType();
 }
 
 const Army* City::getArmy(int slot) const
 {
-    if (getArmytype(slot) == -1)
-        return 0;
-    return d_basicprod[slot];
+  if (getArmytype(slot) == -1)
+    return 0;
+  return d_basicprod[slot];
 }
 
 bool City::isFriend(Player* player) const
 {
-    return (d_player == player);
+  return (d_player == player);
 }
 
 int City::getGoldNeededForUpgrade() const
 {
-    if (d_defense_level == 1)
-	return 1000;
-    else if (d_defense_level == 2)
-	return 2000;
-    else if (d_defense_level == 3)
-	return 3000;
-    return -1;
+  if (d_defense_level == 1)
+    return 1000;
+  else if (d_defense_level == 2)
+    return 2000;
+  else if (d_defense_level == 3)
+    return 3000;
+  return -1;
 }
 
 
 void City::setVectoring(Vector<int> p) 
 {
-    d_vector.x=p.x; 
-    d_vector.y=p.y;
-    d_vectoring=true; 
+  d_vector.x=p.x; 
+  d_vector.y=p.y;
+  d_vectoring=true; 
 
-    if (p.x == -1 || p.y == -1)
+  if (p.x == -1 || p.y == -1)
     {
-        d_vectoring=false;
-        d_vector.x = -1;
-        d_vector.y = -1;
+      d_vectoring=false;
+      d_vector.x = -1;
+      d_vector.y = -1;
     }
 }
 
@@ -555,11 +613,11 @@ Army *City::produceArmy()
       //stop producing if we've made 5 armies in our neutral city
       Stack *s = d_player->getStacklist()->getObjectAt(d_pos);
       if (!s)
-        setProduction(d_production);
+	setProduction(d_production);
       else if (s->size() < 5)
-        setProduction(d_production);
+	setProduction(d_production);
       else
-        setProduction(-1);
+	setProduction(-1);
     }
   else // start producing next army of same type
     setProduction(d_production);
