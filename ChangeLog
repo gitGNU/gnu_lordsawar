@@ -2,6 +2,8 @@
 
 	* updated lordsawar.desktop file (Thanks Barry deFreese)
 	* cities now create new units from city-specific army templates
+	* editor now creates city-specific army templates with differing
+	  strength and duration
 
 2007-10-06  Ben Asselstine
 
