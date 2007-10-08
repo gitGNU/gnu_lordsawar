@@ -1,3 +1,15 @@
+2007-10-08  Ben Asselstine
+
+	* added differing income in random cities
+	* randomly created cities now produce more kinds of armies, instead of
+	  only two
+	* neutral cities that are "average" now get populated with a scout,
+	  even if it can't produce scouts
+	* added new cities-can-produce-allies button on game preferences
+	  dialog
+	* added new random grass button, random water button, etc in the 
+	  game preferences dialog
+
 2007-10-07  Ben Asselstine
 
 	* updated lordsawar.desktop file (Thanks Barry deFreese)
