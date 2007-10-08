@@ -84,16 +84,10 @@ CityDialog::CityDialog(City *cit)
     army_treeview->set_model(army_list);
     
     army_treeview->append_column(_("Name"), army_columns.name);
-    // note to translators: abbreviation of Strength
-    army_treeview->append_column(_("Str"), army_columns.strength);
-    // note to translators: abbreviation of Moves
-    army_treeview->append_column(_("Mov"), army_columns.moves);
-    // note to translators: abbreviation of Hitpoints
-    army_treeview->append_column(_("HP"), army_columns.hitpoints);
-    // note to translators: abbreviation of Upkeep
-    army_treeview->append_column(_("Upk"), army_columns.upkeep);
-    // note to translators: abbreviation of Duration
-    army_treeview->append_column_editable(_("Dur"), army_columns.duration);
+    army_treeview->append_column_editable(_("Strength"), army_columns.strength);
+    army_treeview->append_column(_("Max Moves"), army_columns.moves);
+    army_treeview->append_column(_("Upkeep"), army_columns.upkeep);
+    army_treeview->append_column_editable(_("Turns"), army_columns.duration);
 
     xml->get_widget("add_button", add_button);
     xml->get_widget("remove_button", remove_button);
@@ -198,7 +192,10 @@ void CityDialog::run()
 	   end = army_list->children().end(); i != end; ++i, ++c)
 	{
 	  const Army *a = (*i)[army_columns.army];
-	  city->addBasicProd(c, new Army (*a));
+	  Army *army = new Army(*a);
+	  army->setStat(Army::STRENGTH, (*i)[army_columns.strength]);
+	  army->setProduction((*i)[army_columns.duration]);
+	  city->addBasicProd(c, army);
 
 	  // FIXME: use (*i)[army_columns.duration] to set special city
 	  // production ability
@@ -238,7 +235,6 @@ void CityDialog::add_army(const Army *a)
   (*i)[army_columns.name] = a->getName();
   (*i)[army_columns.strength] = a->getStat(Army::STRENGTH, false);
   (*i)[army_columns.moves] = a->getStat(Army::MOVES, false);
-  (*i)[army_columns.hitpoints] = a->getStat(Army::HP, false);
   (*i)[army_columns.upkeep] = a->getUpkeep();
   (*i)[army_columns.duration] = a->getProduction();
 

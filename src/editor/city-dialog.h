@@ -53,12 +53,11 @@ class CityDialog: public sigc::trackable
     public:
 	ArmyColumns()
 	    { add(army); add(name);
-	      add(strength); add(moves); add(hitpoints); add(upkeep);
-	      add(duration); }
+	      add(strength); add(moves); add(upkeep); add(duration); }
 
 	Gtk::TreeModelColumn<const Army *> army;
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<int> strength, moves, hitpoints, upkeep, duration;
+	Gtk::TreeModelColumn<int> strength, moves, upkeep, duration;
     };
     const ArmyColumns army_columns;
     Glib::RefPtr<Gtk::ListStore> army_list;
