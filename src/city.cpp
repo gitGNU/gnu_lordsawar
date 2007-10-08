@@ -338,7 +338,28 @@ void City::setRandomArmytypes()
     int random_nr = rand() % 3;
     if (random_nr == 1) 
       {
-	Army *army = new Army (*(al->getArmy(set,1 + rand() % 4 )));
+	Army *army = new Army (*(al->getArmy(set,1 + rand() % 8 )));
+	if (rand() % 30 == 0) //random chance of improving strength
+	  {
+	    army->setStat(Army::STRENGTH, 
+			  army->getStat(Army::STRENGTH, false) + 1);
+	  }
+	if (rand() % 25 == 0) //random chance of improving turns
+	  {
+	    if (army->getProduction() > 1)
+		army->setProduction(army->getProduction() - 1);
+	  }
+	if (rand() % 50 == 0) //random chance of degrading strength
+	  {
+	    if (army->getStat(Army::STRENGTH, false) > 1)
+	      army->setStat(Army::STRENGTH, 
+			    army->getStat(Army::STRENGTH, false) - 1);
+	  }
+	if (rand() % 45 == 0) //random chance of improving turns
+	  {
+	    if (army->getProduction() < 5)
+		army->setProduction(army->getProduction() + 1);
+	  }
         addBasicProd(1, army);
       }
 }
