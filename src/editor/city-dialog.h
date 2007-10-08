@@ -63,11 +63,13 @@ class CityDialog: public sigc::trackable
     Glib::RefPtr<Gtk::ListStore> army_list;
     Gtk::Button *add_button;
     Gtk::Button *remove_button;
+    Gtk::Button *randomize_button;
 
     City *city;
 
     void on_add_clicked();
     void on_remove_clicked();
+    void on_randomize_clicked();
     void on_selection_changed();
     void on_player_changed();
 

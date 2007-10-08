@@ -91,11 +91,14 @@ CityDialog::CityDialog(City *cit)
 
     xml->get_widget("add_button", add_button);
     xml->get_widget("remove_button", remove_button);
+    xml->get_widget("randomize_button", randomize_button);
 
     add_button->signal_clicked().connect(
 	sigc::mem_fun(this, &CityDialog::on_add_clicked));
     remove_button->signal_clicked().connect(
 	sigc::mem_fun(this, &CityDialog::on_remove_clicked));
+    randomize_button->signal_clicked().connect(
+	sigc::mem_fun(this, &CityDialog::on_randomize_clicked));
 
     army_treeview->get_selection()->signal_changed()
 	.connect(sigc::mem_fun(this, &CityDialog::on_selection_changed));
@@ -225,6 +228,21 @@ void CityDialog::on_remove_clicked()
       army_list->erase(i);
     }
 
+  set_button_sensitivity();
+}
+
+void CityDialog::on_randomize_clicked()
+{
+  const Army *army;
+  army_list->clear();
+  //crapola
+  city->setRandomArmytypes(true);
+  for (int i = 0; i < city->getMaxNoOfBasicProd(); i++)
+    {
+      army = city->getArmy(i);
+      if (army)
+	add_army(army);
+    }
   set_button_sensitivity();
 }
 

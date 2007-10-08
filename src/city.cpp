@@ -355,6 +355,9 @@ void City::randomlyImproveOrDegradeArmy(Army *army)
 
 void City::setRandomArmytypes(bool produce_allies)
 {
+  //remove armies any that happen to be being produced
+  for (int i = 0; i < getMaxNoOfBasicProd(); i++)
+    removeBasicProd(i);
 
   const Armysetlist* al = Armysetlist::getInstance();
   Uint32 set = getPlayer()->getArmyset();
