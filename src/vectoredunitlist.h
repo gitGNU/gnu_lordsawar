@@ -23,7 +23,7 @@
   * saving and loading the elements. Implemented as a singleton again.
   */
 
-class VectoredUnitlist : public ObjectList<VectoredUnit>, public sigc::trackable
+class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 {
     public:
         //! Returns the singleton instance. Creates a new one if required.
@@ -51,11 +51,11 @@ class VectoredUnitlist : public ObjectList<VectoredUnit>, public sigc::trackable
 
 	//! When showing info we need to know who's going to where.
 	//! vectored is filled up with the results.
-        void getVectoredUnitsGoingTo(Vector<int> pos, std::list<VectoredUnit>& vectored);
+        void getVectoredUnitsGoingTo(Vector<int> pos, std::list<VectoredUnit*>& vectored);
 
 	//! When showing info we need to know who's coming from where.
 	//! vectored is filled up with the results.
-        void getVectoredUnitsComingFrom(Vector<int> pos, std::list<VectoredUnit>& vectored);
+        void getVectoredUnitsComingFrom(Vector<int> pos, std::list<VectoredUnit*>& vectored);
 
 	//! Instead of returning the the vector, just return how many units
 	//! are going to a particular destination.
@@ -63,6 +63,7 @@ class VectoredUnitlist : public ObjectList<VectoredUnit>, public sigc::trackable
 
     protected:
         VectoredUnitlist();
+        ~VectoredUnitlist();
         VectoredUnitlist(XML_Helper* helper);
 
     private:

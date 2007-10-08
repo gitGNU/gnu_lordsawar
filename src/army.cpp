@@ -66,7 +66,7 @@ Army::Army()
 {
 }
 
-Army::Army(XML_Helper* helper, bool prototype)
+Army::Army(XML_Helper* helper, enum ArmyContents contents)
   :d_pixmap(0), d_mask(0), d_name(""), d_description(""), d_ship(false),
    d_gender(NONE), d_player(0), 
    d_id(0), d_xp(0), d_level(1), d_grouped(true),
@@ -83,7 +83,7 @@ Army::Army(XML_Helper* helper, bool prototype)
     
     // now if we are a prototype, we have to load different data than
     // otherwise
-    if (!prototype)
+    if (contents == INSTANCE)
     {
         int ival = -1;
         //get the information which army we are
@@ -125,7 +125,7 @@ Army::Army(XML_Helper* helper, bool prototype)
         if (ival != -1)
           d_visitedTemples.push_front(ival);
     }
-    else
+    else if (contents == TYPE || contents == PRODUCTION_BASE)
     {
         helper->getData(d_name, "name");
         helper->getData(d_image, "image");
@@ -151,6 +151,11 @@ Army::Army(XML_Helper* helper, bool prototype)
             d_medal_bonus[i] = false;
       helper->getData(d_hero,"hero");
     }
+    if (contents == PRODUCTION_BASE)
+      {
+	helper->getData(d_type, "type");
+	helper->getData(d_armyset, "armyset");
+      }
 }
 
 Army::~Army()
@@ -377,22 +382,22 @@ int Army::gainLevel(Stat stat)
 }
 
 
-bool Army::save(XML_Helper* helper, bool prototype) const
+bool Army::save(XML_Helper* helper, enum ArmyContents contents) const
 {
     bool retval = true;
 
     retval &= helper->openTag("army");
-    retval &= saveData(helper, prototype);
+    retval &= saveData(helper, contents);
     retval &= helper->closeTag();
 
     return retval;
 }
 
-bool Army::saveData(XML_Helper* helper, bool prototype) const
+bool Army::saveData(XML_Helper* helper, enum ArmyContents contents) const
 {
     bool retval = true;
     
-    if (prototype)
+    if (contents == TYPE || contents == PRODUCTION_BASE)
       {
 	retval &= helper->saveData("name", d_name);
 	retval &= helper->saveData("description", d_description);
@@ -406,7 +411,7 @@ bool Army::saveData(XML_Helper* helper, bool prototype) const
 	retval &= helper->saveData("move_bonus", d_move_bonus);
 	retval &= helper->saveData("army_bonus", d_army_bonus);
       }
-    else
+    else if (contents == INSTANCE)
       {
 	retval &= helper->saveData("id", d_id);
 	retval &= helper->saveData("armyset", d_armyset);
@@ -417,6 +422,12 @@ bool Army::saveData(XML_Helper* helper, bool prototype) const
 	retval &= helper->saveData("xp", d_xp);
       }
 
+    if (contents == PRODUCTION_BASE)
+      {
+	retval &= helper->saveData("type", d_type);
+	retval &= helper->saveData("armyset", d_armyset);
+      }
+
     retval &= helper->saveData("max_moves", d_max_moves);
     retval &= helper->saveData("hero", d_hero);
     retval &= helper->saveData("strength", d_strength);
@@ -424,7 +435,7 @@ bool Army::saveData(XML_Helper* helper, bool prototype) const
     retval &= helper->saveData("expvalue", getXpReward());
     retval &= helper->saveData("level", d_level);
 
-    if (prototype)
+    if (contents == PRODUCTION_BASE || contents == TYPE)
       return retval;
 
     std::stringstream medals;

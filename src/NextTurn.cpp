@@ -119,7 +119,7 @@ void NextTurn::startTurn()
       //pay upkeep for stacks, reset moves, and heal stacks
       p->getStacklist()->nextTurn();
 
-      //vector armies
+      //vector armies (needs to preceed city's next turn)
       VectoredUnitlist::getInstance()->nextTurn(p);
 
       //build armies

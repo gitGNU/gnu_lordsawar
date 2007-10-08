@@ -1224,7 +1224,7 @@ bool RealPlayer::cityBuyProduction(City* c, int slot, int type)
     return false;
 
   c->removeBasicProd(slot);
-  if (!c->addBasicProd(slot, type))
+  if (!c->addBasicProd(slot, new Army(*al->getArmy(as, type))))
     return false;
 
   // and do the rest of the neccessary actions

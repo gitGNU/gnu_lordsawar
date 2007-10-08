@@ -198,7 +198,7 @@ void CityDialog::run()
 	   end = army_list->children().end(); i != end; ++i, ++c)
 	{
 	  const Army *a = (*i)[army_columns.army];
-	  city->addBasicProd(c, a->getType());
+	  city->addBasicProd(c, new Army (*a));
 
 	  // FIXME: use (*i)[army_columns.duration] to set special city
 	  // production ability

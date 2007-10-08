@@ -17,6 +17,7 @@
 
 #include <string>
 #include <sigc++/trackable.h>
+#include "army.h"
 #include "Location.h"
 
 /*
@@ -30,11 +31,11 @@ class VectoredUnit: public Location, public sigc::trackable
         /** Default constructor
           * @param pos          the position of the source of the vectored unit
           * @param dest         destination location for the unit
-          * @param armytype     the kind of army that is being vectored
+	  * @param army		the kind of army that is being vectored
           * @param duration     how many turns it takes for the armytype to
 	  *                     show up at dest.
           */
-        VectoredUnit(Vector<int> pos, Vector<int> dest, int armytype, int duration, Player *p);
+        VectoredUnit(Vector<int> pos, Vector<int> dest, Army *army, int duration, Player *p);
 
         //! Copy constructor
         VectoredUnit(const VectoredUnit&);
@@ -59,7 +60,10 @@ class VectoredUnit: public Location, public sigc::trackable
 	void setDuration(int duration) {d_duration = duration;};
 
 	//! Get the armytype that is being vectored
-	int getArmytype() const { return d_armytype; };
+	Army *getArmy() const { return d_army; };
+
+	//! Set the armytype that is being vectored
+	void setArmy(Army *army) {d_army = army;}
 
         //! Saves the vectored unit data
         bool save(XML_Helper* helper) const;
@@ -70,13 +74,14 @@ class VectoredUnit: public Location, public sigc::trackable
 inline bool operator==(const VectoredUnit &rhs)
 {
     return d_pos == rhs.d_pos && d_destination == rhs.d_destination &&
-      d_armytype == rhs.d_armytype && d_duration == rhs.d_duration;
+      d_army->getType() == rhs.d_army->getType() && d_duration == rhs.d_duration;
 };
 
     private:
+
         // DATA
 	Vector<int> d_destination;
-	int d_armytype;
+	Army *d_army; //army prototype to vector
 	int d_duration;
 	Player *d_player;
 };

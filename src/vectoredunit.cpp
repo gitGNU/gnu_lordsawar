@@ -25,23 +25,22 @@
 #include "GameMap.h"
 #include "action.h"
 
-VectoredUnit::VectoredUnit(Vector<int> pos, Vector<int> dest, int armytype, int duration, Player *player)
-    :Location("", pos), d_destination(dest), d_armytype(armytype), 
+VectoredUnit::VectoredUnit(Vector<int> pos, Vector<int> dest, Army *army, int duration, Player *player)
+    :Location("", pos), d_destination(dest), d_army(army), 
      d_duration(duration)
 {
   d_player = player;
 }
 
 VectoredUnit::VectoredUnit(const VectoredUnit& v)
-    :Location(v), d_destination(v.d_destination), d_armytype(v.d_armytype), 
+    :Location(v), d_destination(v.d_destination), d_army(v.d_army), 
      d_duration(v.d_duration), d_player(v.d_player)
 {
 }
 
 VectoredUnit::VectoredUnit(XML_Helper* helper)
-    :Location(helper), d_armytype(-1), d_duration(0)
+    :Location(helper), d_army(NULL), d_duration(0)
 {
-    helper->getData(d_armytype, "armytype");
     helper->getData(d_duration, "duration");
     helper->getData(d_destination.x, "dest_x");
     helper->getData(d_destination.y, "dest_y");
@@ -51,10 +50,13 @@ VectoredUnit::VectoredUnit(XML_Helper* helper)
 	d_player = 0;
     else
 	d_player = Playerlist::getInstance()->getPlayer(i);
+    //army is loaded via callback in vectoredunitlist
 }
 
 VectoredUnit::~VectoredUnit()
 {
+  if (d_army)
+    delete d_army;
 }
 
 bool VectoredUnit::save(XML_Helper* helper) const
@@ -67,7 +69,6 @@ bool VectoredUnit::save(XML_Helper* helper) const
     retval &= helper->saveData("name", name);
     retval &= helper->saveData("x", d_pos.x);
     retval &= helper->saveData("y", d_pos.y);
-    retval &= helper->saveData("armytype", d_armytype);
     retval &= helper->saveData("duration", d_duration);
     retval &= helper->saveData("dest_x", d_destination.x);
     retval &= helper->saveData("dest_y", d_destination.y);
@@ -75,6 +76,7 @@ bool VectoredUnit::save(XML_Helper* helper) const
         retval &= helper->saveData("player", d_player->getId());
     else
         retval &= helper->saveData("player", -1);
+    retval &= d_army->save(helper, Army::PRODUCTION_BASE);
     retval &= helper->closeTag();
 
     return retval;
@@ -91,11 +93,9 @@ bool VectoredUnit::nextTurn()
 	  return false;
 	}
 
-      const Armysetlist* al = Armysetlist::getInstance();
-      Uint32 set = d_player->getArmyset();
       Citylist *cl = Citylist::getInstance();
-      Army *a = new Army(*(al->getArmy(set, d_armytype)), d_player);
-      //FIXME: this should be in player somehow
+      Army *a = new Army(*d_army, d_player);
+      //FIXME: this action should be in player somehow
       Action_ProduceVectored *item = new Action_ProduceVectored();
       item->fillData(a->getType(), d_destination);
       d_player->getActionlist()->push_back(item);
@@ -123,7 +123,7 @@ bool VectoredUnit::nextTurn()
       else
         {
           if (!dest->isBurnt() && dest->getPlayer() == d_player)
-            dest->addArmy(new Army(*(al->getArmy(set, d_armytype)), d_player));
+            dest->addArmy(a);
         }
       return true;
     }

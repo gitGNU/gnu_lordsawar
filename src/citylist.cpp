@@ -58,6 +58,7 @@ Citylist::Citylist(XML_Helper* helper)
 {
     // simply ask the helper to inform us when a city tag is opened
     helper->registerTag("city", sigc::mem_fun(this, &Citylist::load));
+    helper->registerTag("army", sigc::mem_fun(this, &Citylist::load));
 }
 
 Citylist::~Citylist()
@@ -336,13 +337,23 @@ bool Citylist::save(XML_Helper* helper) const
 
 bool Citylist::load(std::string tag, XML_Helper* helper)
 {
-    if (tag != "city")
-        return false;
-    
-    City c(helper);
-    push_back(c);
-
-    return true;
+    if (tag == "army")
+      {
+	//add it to the right city
+	Citylist::iterator it = end();
+	it--;
+	City *city = &*it;
+	Army *a = new Army (helper, Army::PRODUCTION_BASE);
+	city->addBasicProd(-1, a);
+	return true;
+      }
+    if (tag == "city")
+      {
+	City c(helper);
+	push_back(c);
+	return true;
+      }
+    return false;
 }
 
 void Citylist::changeOwnership(Player *old_owner, Player *new_owner)

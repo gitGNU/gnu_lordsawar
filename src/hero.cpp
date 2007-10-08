@@ -70,7 +70,7 @@ Hero::~Hero()
     }
 }
 
-bool Hero::save(XML_Helper* helper, bool prototype) const
+bool Hero::save(XML_Helper* helper, enum ArmyContents contents) const
 {
     bool retval = true;
     std::list<Item*>::const_iterator it;
@@ -80,7 +80,7 @@ bool Hero::save(XML_Helper* helper, bool prototype) const
     // Save the sex as well, whatever this is good for...
     retval &= helper->saveData("gender", d_gender);
 
-    retval &= saveData(helper, prototype);
+    retval &= saveData(helper, Army::INSTANCE);
 
     // Now save the backpack
     retval &= helper->openTag("backpack");

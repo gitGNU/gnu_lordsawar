@@ -53,9 +53,16 @@ VectoredUnitlist::VectoredUnitlist()
 {
 }
 
+VectoredUnitlist::~VectoredUnitlist()
+{
+    for (iterator it = begin(); it != end(); it++)
+      delete *it;
+}
+
 VectoredUnitlist::VectoredUnitlist(XML_Helper* helper)
 {
     helper->registerTag("vectoredunit", sigc::mem_fun(this, &VectoredUnitlist::load));
+    helper->registerTag("army", sigc::mem_fun(this, &VectoredUnitlist::load));
 }
 
 bool VectoredUnitlist::save(XML_Helper* helper) const
@@ -65,7 +72,7 @@ bool VectoredUnitlist::save(XML_Helper* helper) const
     retval &= helper->openTag("vectoredunitlist");
 
     for (const_iterator it = begin(); it != end(); it++)
-        retval &= (*it).save(helper);
+        retval &= (*it)->save(helper);
     
     retval &= helper->closeTag();
 
@@ -74,14 +81,23 @@ bool VectoredUnitlist::save(XML_Helper* helper) const
 
 bool VectoredUnitlist::load(std::string tag, XML_Helper* helper)
 {
-    // Shouldn't happen, but one never knows...
-    if (tag != "vectoredunit")
-        return false;
+  if (tag == "army")
+    {
+      VectoredUnitlist::iterator it = end();
+      it--;
+      VectoredUnit *vectoredunit = *it;
+      vectoredunit->setArmy(new Army (helper, Army::PRODUCTION_BASE));
+      return true;
+    }
+    
+  if (tag == "vectoredunit")
+    {
+      VectoredUnit *r = new VectoredUnit(helper);
+      push_back(r);
+      return true;
+    }
 
-    VectoredUnit r(helper);
-    push_front(r);
-
-    return true;
+    return false;
 }
 
 void VectoredUnitlist::nextTurn(Player* p)
@@ -95,20 +111,34 @@ void VectoredUnitlist::nextTurn(Player* p)
   while (it != end())
     {
       advance = true;
-      c = cl->getObjectAt((*it).getPos());
-      if (c->getPlayer() == p)
-        {
-          if ((*it).nextTurn() == true)
+      c = cl->getObjectAt((*it)->getPos());
+      if (c)
+	{
+	  if (c->getPlayer() == p)
 	    {
-              iterator nextit = it;
-              nextit++;
-	      erase(it);
-              advance = false;
-	      it = nextit; //advance here instead of down there
+	      if ((*it)->nextTurn() == true)
+		{
+		  iterator nextit = it;
+		  nextit++;
+		  erase(it);
+		  advance = false;
+		  it = nextit; //advance here instead of down there
+		}
 	    }
-        }
+	}
+      else //must be a standard
+	{
+	      if ((*it)->nextTurn() == true)
+		{
+		  iterator nextit = it;
+		  nextit++;
+		  erase(it);
+		  advance = false;
+		  it = nextit; //advance here instead of down there
+		}
+	}
       if (advance)
-        ++it;
+	++it;
     }
 
 }
@@ -120,12 +150,12 @@ void VectoredUnitlist::removeVectoredUnitsGoingTo(Vector<int> pos)
   nextit++;
   for (; nextit != end(); it++, nextit++)
     {
-      if ((*it).getDestination() == pos)
-        {
+      if ((*it)->getDestination() == pos)
+	{
 	  erase(it);
 	  it = nextit;
 	  nextit++;
-        }
+	}
     }
 }
 
@@ -136,32 +166,32 @@ void VectoredUnitlist::removeVectoredUnitsComingFrom(Vector<int> pos)
   nextit++;
   for (; nextit != end(); it++, nextit++)
     {
-      if ((*it).getPos() == pos)
-        {
+      if ((*it)->getPos() == pos)
+	{
 	  erase(it);
 	  it = nextit;
 	  nextit++;
-        }
+	}
     }
 }
-void VectoredUnitlist::getVectoredUnitsGoingTo(Vector<int> pos, std::list<VectoredUnit>& vectored)
+void VectoredUnitlist::getVectoredUnitsGoingTo(Vector<int> pos, std::list<VectoredUnit*>& vectored)
 {
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it).getDestination() == pos)
-        {
-          vectored.push_back(*it);
-        }
+      if ((*it)->getDestination() == pos)
+	{
+	  vectored.push_back(*it);
+	}
     }
 }
-void VectoredUnitlist::getVectoredUnitsComingFrom(Vector<int> pos, std::list<VectoredUnit>& vectored)
+void VectoredUnitlist::getVectoredUnitsComingFrom(Vector<int> pos, std::list<VectoredUnit*>& vectored)
 {
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it).getPos() == pos)
-        {
-          vectored.push_back(*it);
-        }
+      if ((*it)->getPos() == pos)
+	{
+	  vectored.push_back(*it);
+	}
     }
 }
 
@@ -170,10 +200,10 @@ Uint32 VectoredUnitlist::getNumberOfVectoredUnitsGoingTo(Vector<int> pos)
   Uint32 count = 0;
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it).getDestination() == pos)
-        {
-          count++;
-        }
+      if ((*it)->getDestination() == pos)
+	{
+	  count++;
+	}
     }
   return count;
 }

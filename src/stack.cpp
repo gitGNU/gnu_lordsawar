@@ -366,7 +366,7 @@ Uint32 Stack::getMaxSight() const
 void Stack::nextTurn()
 {
   setParked(false);
-  for (iterator it = begin(); it != end(); it++)
+  for (iterator it = begin(); it != end(); ++it)
     {
       (*it)->resetMoves();
       // TODO: should be moved in a more appropriate place => class Player
@@ -481,7 +481,7 @@ Uint32 Stack::calculateMoveBonus() const
   int num_landedother = 0;
   if (size() == 0)
     return 0;
-  for (Stack::const_iterator it = this->begin(); it != this->end(); it++)
+  for (const_iterator it = this->begin(); it != this->end(); it++)
     {
       if ((*it)->isGrouped() == false)
 	continue;
@@ -514,7 +514,8 @@ Uint32 Stack::calculateMoveBonus() const
     {
       if ((*it)->isHero())
 	{
-	  std::list<Item*> backpack = dynamic_cast<Hero*>((*it))->getBackpack();
+	  Hero *h = dynamic_cast<Hero*>(*it);
+	  std::list<Item*> backpack = h->getBackpack();
 	  std::list<Item*>::const_iterator item;
 	  for (item = backpack.begin(); item != backpack.end(); item++)
 	    {

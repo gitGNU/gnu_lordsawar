@@ -59,7 +59,7 @@ class Hero : public Army
         ~Hero();
 
         //! Saves the hero data
-        bool save(XML_Helper* helper, bool prototype = false) const;
+        bool save(XML_Helper* helper, enum ArmyContents contents = Army::INSTANCE) const;
         
         /** Returns a stat of the hero. See also army.h
           * 
@@ -95,8 +95,6 @@ class Hero : public Army
 
     private:
         
-        static std::vector<std::string> s_namelist;
-
         std::list<Item*> d_backpack;
 };
 

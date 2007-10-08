@@ -168,8 +168,8 @@ void DestinationDialog::on_change_toggled(Gtk::ToggleButton *toggle)
 
 void DestinationDialog::fill_in_vectoring_info()
 {
-  std::list<VectoredUnit> vectored;
-  std::list<VectoredUnit>::const_iterator it;
+  std::list<VectoredUnit*> vectored;
+  std::list<VectoredUnit*>::const_iterator it;
   VectoredUnitlist *vul = VectoredUnitlist::getInstance();
   dialog->set_title(city->getName());
 
@@ -210,8 +210,7 @@ void DestinationDialog::fill_in_vectoring_info()
     {
       const Army* a = city->getArmy(slot);
       pic = to_pixbuf(gc->getArmyPic(as, a->getType(), player, 1, NULL));
-      s1 = String::ucompose(_("%1t"), a->getProduction() - 
-                            city->getDuration() + 1);
+      s1 = String::ucompose(_("%1t"), city->getDuration());
       turns_label->set_markup("<i>" + s1 + "</i>");
     }
     
@@ -222,13 +221,13 @@ void DestinationDialog::fill_in_vectoring_info()
   vul->getVectoredUnitsComingFrom(city->getPos(), vectored);
   for (it = vectored.begin(); it != vectored.end(); it++)
     {
-      int armytype = (*it).getArmytype();
-      if ((*it).getDuration() == 2)
+      int armytype = (*it)->getArmy()->getType();
+      if ((*it)->getDuration() == 2)
         {
           pic = to_pixbuf(gc->getArmyPic(as, armytype, player, 1, NULL));
           one_turn_away_image->set(pic);
         }
-      else if ((*it).getDuration() == 1)
+      else if ((*it)->getDuration() == 1)
         {
           pic = to_pixbuf(gc->getArmyPic(as, armytype, player, 1, NULL));
           two_turns_away_image->set(pic);
@@ -242,7 +241,7 @@ void DestinationDialog::fill_in_vectoring_info()
   Gtk::Image *image = next_turn_1_image;
   for (it = vectored.begin(); it != vectored.end(); it++)
     {
-      if ((*it).getDuration() != 1)
+      if ((*it)->getDuration() != 1)
         continue;
 
       switch (count)
@@ -252,14 +251,14 @@ void DestinationDialog::fill_in_vectoring_info()
           case 2: image = next_turn_3_image; break;
           case 3: image = next_turn_4_image; break;
         }
-      pic = to_pixbuf(gc->getArmyPic(as, (*it).getArmytype(), player, 1, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, (*it)->getArmy()->getType(), player, 1, NULL));
       image->set(pic);
       count++;
     }
   count = 0;
   for (it = vectored.begin(); it != vectored.end(); it++)
     {
-      if ((*it).getDuration() != 2)
+      if ((*it)->getDuration() != 2)
         continue;
       switch (count)
         {
@@ -268,7 +267,7 @@ void DestinationDialog::fill_in_vectoring_info()
           case 2: image = turn_after_3_image; break;
           case 3: image = turn_after_4_image; break;
         }
-      pic = to_pixbuf(gc->getArmyPic(as, (*it).getArmytype(), player, 1, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, (*it)->getArmy()->getType(), player, 1, NULL));
       image->set(pic);
       count++;
     }

@@ -112,7 +112,7 @@ bool Armyset::loadArmyTemplate(string tag, XML_Helper* helper)
       {
 	std::string s;
 	// First step: Load the army data
-	Army* a = new Army(helper, true);
+	Army* a = new Army(helper, Army::TYPE);
 	a->setArmyset(d_id, size());
 	push_back(a);
       }
@@ -130,7 +130,7 @@ bool Armyset::save(XML_Helper* helper)
     retval &= helper->saveData("size", size());
 
     for (const_iterator it = begin(); it != end(); it++)
-        (*it)->save(helper, true);
+        (*it)->save(helper, Army::TYPE);
     
     retval &= helper->closeTag();
 

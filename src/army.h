@@ -31,12 +31,17 @@ class XML_Helper;
   * This class is the atom of every army. It contains all data related to
   * a single army type of an armyset, such as strength, defense, movement points
   * and so on.
+  *
+  * type is what is in the xml file
+  * production base is what a city has to make other armies from
+  * instance is what moves around the map
   */
 
 class Army : public sigc::trackable
 {
     public:
 
+	enum ArmyContents {TYPE = 0, PRODUCTION_BASE = 1, INSTANCE = 2};
         //! used only for heroes (e.g. to decide about the recruitment image)
         enum Gender {NONE = 0, MALE = 1, FEMALE = 2};
 
@@ -89,7 +94,7 @@ class Army : public sigc::trackable
           * @param prototype    if set to false, load some additional values
           *                     instead of setting defaults (e.g. id, level)
           */
-        Army(XML_Helper* helper, bool prototype = false);
+        Army(XML_Helper* helper, enum ArmyContents contents = INSTANCE);
         
 	/**  creates a new prototype army
 	 */
@@ -301,7 +306,7 @@ class Army : public sigc::trackable
         void printAllDebugInfo() const;
 
         //! Saves the unit information (see XML_Helper for further info)
-        virtual bool save(XML_Helper* helper, bool prototype = false) const;
+        virtual bool save(XML_Helper* helper, enum ArmyContents contents = INSTANCE) const;
         
         //! This signal is raised when the army dies; it is static because
         //! sometimes the army doesn't exist yet when the signal is connected
@@ -334,7 +339,7 @@ class Army : public sigc::trackable
     protected:
         //! Generic function for saving the army data. Useful for the hero class,
         //  which doesn't need to repeat the save code.
-        bool saveData(XML_Helper* helper, bool prototype) const;
+        bool saveData(XML_Helper* helper, enum ArmyContents contents = INSTANCE) const;
 
         //! Copies the generic data from the original prototype army (used for loading)
         void copyVals(const Army* a);

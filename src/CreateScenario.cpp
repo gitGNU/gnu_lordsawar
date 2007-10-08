@@ -785,7 +785,7 @@ bool CreateScenario::setupMapRewards()
     {
       for (int j = 0; j < GameMap::getWidth(); j += (GameMap::getWidth() / 3))
 	{
-	  char *name;
+	  char *name = NULL;
 	  if (h_count == 0 && j == 0)
 	    name = _("northwestern map");
 	  else if (h_count == 0 && w_count == 1)

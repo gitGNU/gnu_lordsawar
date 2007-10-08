@@ -101,10 +101,10 @@ class City : public Location
           * @param index        the index of the production slot; if set to -1,
           *                     the city will try to find a free production slot
           *                     and overwrite an existing one if neccessary.
-          * @param armytype     the index of the army within the armyset
+	  * @param army         the army to add
           * @return true on success, false on error
           */
-        bool addBasicProd(int index, int armytype);
+        bool addBasicProd(int index, Army *army);
 
         //! Clears the basic production of a given slot
         void removeBasicProd(int index);
@@ -194,7 +194,8 @@ class City : public Location
         // DATA
         Player* d_player;           // Owner
         
-        int d_basicprod[4];         // possible basic productions
+        Army* d_basicprod[4];         // possible basic productions
+	//std::vector<Army*> d_basicprod;
         int d_numbasic;             // max number of possible basic productions
 
         int d_production;           // number of produced armytype

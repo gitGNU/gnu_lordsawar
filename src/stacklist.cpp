@@ -100,7 +100,9 @@ void Stacklist::nextTurn()
 {
     debug("nextTurn()");
     for (iterator it = begin(); it != end(); it++)
+      {
         (*it)->nextTurn();
+      }
 }
 
 vector<Stack*> Stacklist::defendersInCity(City *city)
