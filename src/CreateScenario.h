@@ -168,7 +168,7 @@ class CreateScenario
         bool distributePlayers();
 
         //! Setup city names and production
-        bool setupCities(bool quick_start);
+        bool setupCities(bool quick_start, bool cities_can_produce_allies);
 
         //! Setup temple names
         bool setupTemples();

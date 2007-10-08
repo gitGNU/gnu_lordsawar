@@ -49,14 +49,43 @@ GamePreferencesDialog::GamePreferencesDialog()
     xml->get_widget("load_map_filechooser", load_map_filechooser);
     xml->get_widget("random_map_container", random_map_container);
     xml->get_widget("grass_scale", grass_scale);
+    xml->get_widget("grass_random_togglebutton", grass_random_togglebutton);
+    grass_random_togglebutton->signal_toggled().connect
+      (sigc::mem_fun(*this, &GamePreferencesDialog::on_grass_random_toggled));
     xml->get_widget("water_scale", water_scale);
+    xml->get_widget("water_random_togglebutton", water_random_togglebutton);
+    water_random_togglebutton->signal_toggled().connect
+      (sigc::mem_fun(*this, &GamePreferencesDialog::on_water_random_toggled));
     xml->get_widget("swamp_scale", swamp_scale);
+    xml->get_widget("swamp_random_togglebutton", swamp_random_togglebutton);
+    swamp_random_togglebutton->signal_toggled().connect
+      (sigc::mem_fun(*this, &GamePreferencesDialog::on_swamp_random_toggled));
     xml->get_widget("forest_scale", forest_scale);
+    xml->get_widget("forest_random_togglebutton", forest_random_togglebutton);
+    forest_random_togglebutton->signal_toggled().connect
+      (sigc::mem_fun(*this, &GamePreferencesDialog::on_forest_random_toggled));
     xml->get_widget("hills_scale", hills_scale);
+    xml->get_widget("hills_random_togglebutton", hills_random_togglebutton);
+    hills_random_togglebutton->signal_toggled().connect
+      (sigc::mem_fun(*this, &GamePreferencesDialog::on_hills_random_toggled));
     xml->get_widget("mountains_scale", mountains_scale);
+    xml->get_widget("mountains_random_togglebutton", 
+		    mountains_random_togglebutton);
+    mountains_random_togglebutton->signal_toggled().connect
+      (sigc::mem_fun(*this, 
+		     &GamePreferencesDialog::on_mountains_random_toggled));
     xml->get_widget("cities_scale", cities_scale);
+    xml->get_widget("cities_random_togglebutton", cities_random_togglebutton);
+    cities_random_togglebutton->signal_toggled().connect
+      (sigc::mem_fun(*this, &GamePreferencesDialog::on_cities_random_toggled));
     xml->get_widget("ruins_scale", ruins_scale);
+    xml->get_widget("ruins_random_togglebutton", ruins_random_togglebutton);
+    ruins_random_togglebutton->signal_toggled().connect
+      (sigc::mem_fun(*this, &GamePreferencesDialog::on_ruins_random_toggled));
     xml->get_widget("temples_scale", temples_scale);
+    xml->get_widget("temples_random_togglebutton", temples_random_togglebutton);
+    temples_random_togglebutton->signal_toggled().connect
+      (sigc::mem_fun(*this, &GamePreferencesDialog::on_temples_random_toggled));
     xml->get_widget("map_size_combobox", map_size_combobox);
 
     xml->get_widget("players_vbox", players_vbox);
@@ -132,6 +161,8 @@ GamePreferencesDialog::GamePreferencesDialog()
 	"edit_options_button",
 	sigc::mem_fun(*this, &GamePreferencesDialog::on_edit_options_clicked));
 
+    xml->get_widget("cities_can_produce_allies_checkbutton", 
+		    cities_can_produce_allies_checkbutton);
 }
 
 GamePreferencesDialog::~GamePreferencesDialog()
@@ -288,15 +319,79 @@ void GamePreferencesDialog::on_start_game_clicked()
 	    g.map.height = 156;
 	    break;
 	}
-	g.map.grass = int(grass_scale->get_value());
-	g.map.water = int(water_scale->get_value());
-	g.map.swamp = int(swamp_scale->get_value());
-	g.map.forest = int(forest_scale->get_value());
-	g.map.hills = int(hills_scale->get_value());
-	g.map.mountains = int(mountains_scale->get_value());
-	g.map.cities = int(cities_scale->get_value());
-	g.map.ruins = int(ruins_scale->get_value());
-	g.map.temples = int(temples_scale->get_value());
+
+	if (grass_random_togglebutton->get_active())
+	  g.map.grass =  
+	    int(grass_scale->get_adjustment()->get_lower()) + 
+	    (rand() % (int(grass_scale->get_adjustment()->get_upper()) -
+		       int(grass_scale->get_adjustment()->get_lower()) + 1));
+	else
+	  g.map.grass = int(grass_scale->get_value());
+
+	if (water_random_togglebutton->get_active())
+	  g.map.water =  
+	    int(water_scale->get_adjustment()->get_lower()) + 
+	    (rand() % (int(water_scale->get_adjustment()->get_upper()) -
+		       int(water_scale->get_adjustment()->get_lower()) + 1));
+	else
+	  g.map.water = int(water_scale->get_value());
+
+	if (swamp_random_togglebutton->get_active())
+	  g.map.swamp =  
+	    int(swamp_scale->get_adjustment()->get_lower()) + 
+	    (rand() % (int(swamp_scale->get_adjustment()->get_upper()) -
+		       int(swamp_scale->get_adjustment()->get_lower()) + 1));
+	else
+	  g.map.swamp = int(swamp_scale->get_value());
+
+	if (forest_random_togglebutton->get_active())
+	  g.map.forest =  
+	    int(forest_scale->get_adjustment()->get_lower()) + 
+	    (rand() % (int(forest_scale->get_adjustment()->get_upper()) -
+		       int(forest_scale->get_adjustment()->get_lower()) + 1));
+	else
+	  g.map.forest = int(forest_scale->get_value());
+
+	if (hills_random_togglebutton->get_active())
+	  g.map.hills =  
+	    int(hills_scale->get_adjustment()->get_lower()) + 
+	    (rand() % (int(hills_scale->get_adjustment()->get_upper()) -
+		       int(hills_scale->get_adjustment()->get_lower()) + 1));
+	else
+	  g.map.hills = int(hills_scale->get_value());
+
+	if (mountains_random_togglebutton->get_active())
+	  g.map.mountains =  
+	    int(mountains_scale->get_adjustment()->get_lower()) + 
+	    (rand() % (int(mountains_scale->get_adjustment()->get_upper()) -
+		       int(mountains_scale->get_adjustment()->get_lower()) 
+		       + 1));
+	else
+	  g.map.mountains = int(mountains_scale->get_value());
+
+	if (cities_random_togglebutton->get_active())
+	  g.map.cities =  
+	    int(cities_scale->get_adjustment()->get_lower()) + 
+	    (rand() % (int(cities_scale->get_adjustment()->get_upper()) -
+		       int(cities_scale->get_adjustment()->get_lower()) + 1));
+	else
+	  g.map.cities = int(cities_scale->get_value());
+
+	if (ruins_random_togglebutton->get_active())
+	  g.map.ruins =  
+	    int(ruins_scale->get_adjustment()->get_lower()) + 
+	    (rand() % (int(ruins_scale->get_adjustment()->get_upper()) -
+		       int(ruins_scale->get_adjustment()->get_lower()) + 1));
+	else
+	  g.map.ruins = int(ruins_scale->get_value());
+
+	if (temples_random_togglebutton->get_active())
+	  g.map.temples =  
+	    int(temples_scale->get_adjustment()->get_lower()) + 
+	    (rand() % (int(temples_scale->get_adjustment()->get_upper()) -
+		       int(temples_scale->get_adjustment()->get_lower()) + 1));
+	else
+	  g.map.temples = int(temples_scale->get_value());
     }
     else
 	g.map_path = load_map_filechooser->get_filename();
@@ -330,7 +425,46 @@ void GamePreferencesDialog::on_start_game_clicked()
     g.quick_start = Configuration::s_quick_start;
     g.intense_combat = Configuration::s_intense_combat;
     g.military_advisor = Configuration::s_military_advisor;
+    g.cities_can_produce_allies = 
+      cities_can_produce_allies_checkbutton->get_active();
 
     // and call callback
     game_started(g);
+}
+    
+void GamePreferencesDialog::on_grass_random_toggled()
+{
+  grass_scale->set_sensitive(!grass_random_togglebutton->get_active());
+}
+void GamePreferencesDialog::on_water_random_toggled()
+{
+  water_scale->set_sensitive(!water_random_togglebutton->get_active());
+}
+void GamePreferencesDialog::on_swamp_random_toggled()
+{
+  swamp_scale->set_sensitive(!swamp_random_togglebutton->get_active());
+}
+void GamePreferencesDialog::on_forest_random_toggled()
+{
+  forest_scale->set_sensitive(!forest_random_togglebutton->get_active());
+}
+void GamePreferencesDialog::on_hills_random_toggled()
+{
+  hills_scale->set_sensitive(!hills_random_togglebutton->get_active());
+}
+void GamePreferencesDialog::on_mountains_random_toggled()
+{
+  mountains_scale->set_sensitive(!mountains_random_togglebutton->get_active());
+}
+void GamePreferencesDialog::on_cities_random_toggled()
+{
+  cities_scale->set_sensitive(!cities_random_togglebutton->get_active());
+}
+void GamePreferencesDialog::on_ruins_random_toggled()
+{
+  ruins_scale->set_sensitive(!ruins_random_togglebutton->get_active());
+}
+void GamePreferencesDialog::on_temples_random_toggled()
+{
+  temples_scale->set_sensitive(!temples_random_togglebutton->get_active());
 }

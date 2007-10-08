@@ -349,7 +349,7 @@ bool CreateScenario::create(const GameParameters &g)
     if (!distributePlayers())
         return false;
 
-    if (!setupCities(g.quick_start))
+    if (!setupCities(g.quick_start, g.cities_can_produce_allies))
         return false;
 
     if (!setupTemples())
@@ -477,7 +477,8 @@ bool CreateScenario::distributePlayers()
     return true;
 }
 
-bool CreateScenario::setupCities(bool quick_start)
+bool CreateScenario::setupCities(bool quick_start, 
+				 bool cities_can_produce_allies)
 {
     debug("CreateScenario::setupCities")
 
@@ -530,7 +531,7 @@ bool CreateScenario::setupCities(bool quick_start)
         //2. distribute the income a bit (TBD)
 
         //3. set the city production
-        (*it).setRandomArmytypes();
+        (*it).setRandomArmytypes(cities_can_produce_allies);
         if ((*it).getPlayer() == Playerlist::getInstance()->getNeutral())
         {
             switch (GameScenario::s_neutral_cities)

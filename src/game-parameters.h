@@ -65,6 +65,7 @@ struct GameParameters
     bool intense_combat;
     bool military_advisor;
     bool random_turns;
+    bool cities_can_produce_allies;
 };
 
 #endif

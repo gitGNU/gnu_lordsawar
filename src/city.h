@@ -113,7 +113,7 @@ class City : public Location
         void conquer(Player* newowner);
         
         //! Sets the production to random starting values
-        void setRandomArmytypes();
+        void setRandomArmytypes(bool produce_allies);
 
         //! Produces the strongest army the city can produce
         void produceStrongestArmy();

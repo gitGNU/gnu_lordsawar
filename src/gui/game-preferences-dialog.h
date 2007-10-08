@@ -23,6 +23,7 @@
 #include <gtkmm/combobox.h>
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/radiobutton.h>
+#include <gtkmm/togglebutton.h>
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/filechooserbutton.h>
 #include <gtkmm/widget.h>
@@ -56,14 +57,24 @@ class GamePreferencesDialog
     Gtk::Widget *random_map_container;
     Gtk::ComboBox *map_size_combobox;
     Gtk::Scale *grass_scale;
+    Gtk::ToggleButton *grass_random_togglebutton;
     Gtk::Scale *water_scale;
+    Gtk::ToggleButton *water_random_togglebutton;
     Gtk::Scale *swamp_scale;
+    Gtk::ToggleButton *swamp_random_togglebutton;
     Gtk::Scale *forest_scale;
+    Gtk::ToggleButton *forest_random_togglebutton;
     Gtk::Scale *hills_scale;
+    Gtk::ToggleButton *hills_random_togglebutton;
     Gtk::Scale *mountains_scale;
+    Gtk::ToggleButton *mountains_random_togglebutton;
     Gtk::Scale *cities_scale;
+    Gtk::ToggleButton *cities_random_togglebutton;
     Gtk::Scale *ruins_scale;
+    Gtk::ToggleButton *ruins_random_togglebutton;
     Gtk::Scale *temples_scale;
+    Gtk::ToggleButton *temples_random_togglebutton;
+    Gtk::CheckButton *cities_can_produce_allies_checkbutton;
 
     enum { MAP_SIZE_NORMAL = 0, MAP_SIZE_SMALL, MAP_SIZE_TINY };
 
@@ -83,6 +94,15 @@ class GamePreferencesDialog
     void on_start_game_clicked();
     void on_edit_options_clicked();
     void on_player_type_changed();
+    void on_grass_random_toggled();
+    void on_water_random_toggled();
+    void on_swamp_random_toggled();
+    void on_forest_random_toggled();
+    void on_hills_random_toggled();
+    void on_mountains_random_toggled();
+    void on_cities_random_toggled();
+    void on_ruins_random_toggled();
+    void on_temples_random_toggled();
 };
 
 #endif
