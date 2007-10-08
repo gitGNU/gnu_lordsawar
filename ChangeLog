@@ -4,6 +4,8 @@
 	* cities now create new units from city-specific army templates
 	* editor now creates city-specific army templates with differing
 	  strength and duration
+	* random map now has randomly degraded/improved units in cities
+	  that can be produced
 
 2007-10-06  Ben Asselstine
 
