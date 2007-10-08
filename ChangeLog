@@ -1,6 +1,7 @@
 2007-10-07  Ben Asselstine
 
 	* updated lordsawar.desktop file (Thanks Barry deFreese)
+	* cities now create new units from city-specific army templates
 
 2007-10-06  Ben Asselstine
 
