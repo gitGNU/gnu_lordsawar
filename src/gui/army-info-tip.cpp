@@ -43,11 +43,22 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army, ArmyInfoTipType 
 
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
-    Player *p = Playerlist::getActiveplayer();
+    Player *p;
+    int armyset;
+    if (army->getImageName() != "")
+      {
+	p = Playerlist::getActiveplayer();
+	armyset = p->getArmyset();
+      }
+    else
+      {
+	p = army->getPlayer();
+	armyset = army->getArmyset();
+      }
     GraphicsCache *gc = GraphicsCache::getInstance();
-    army_image->property_pixbuf() = to_pixbuf(gc->getArmyPic(p->getArmyset(), 
-                                                             army->getType(), 
-                                                             p, 1, NULL));
+    army_image->property_pixbuf() = to_pixbuf (gc->getArmyPic(armyset, 
+							      army->getType(), 
+							      p, 1, NULL));
 
     // fill in terrain image
     Gtk::Image *terrain_image;
