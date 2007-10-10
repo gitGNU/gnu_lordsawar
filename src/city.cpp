@@ -13,6 +13,7 @@
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #include <stdio.h>
+#include <algorithm>
 #include <stdlib.h>
 #include <sstream>
 #include "city.h"
@@ -353,6 +354,13 @@ void City::randomlyImproveOrDegradeArmy(Army *army)
     }
 }
 
+bool armyCompareStrength (const Army *lhs, const Army *rhs)
+{
+  Uint32 lhs_strength = lhs->getStat(Army::STRENGTH, false);
+  Uint32 rhs_strength = rhs->getStat(Army::STRENGTH, false);
+  return lhs_strength < rhs_strength; 
+}
+
 void City::setRandomArmytypes(bool produce_allies)
 {
   //remove armies any that happen to be being produced
@@ -361,6 +369,7 @@ void City::setRandomArmytypes(bool produce_allies)
 
   const Armysetlist* al = Armysetlist::getInstance();
   Uint32 set = getPlayer()->getArmyset();
+
   int army_type;
   int num = rand() % 10;
   if (num < 7)
@@ -423,6 +432,19 @@ void City::setRandomArmytypes(bool produce_allies)
   randomlyImproveOrDegradeArmy(army);
   addBasicProd(3, army);
 
+  //sort them by strength
+  if (getNoOfBasicProd() > 1)
+    {
+      std::list<Army*> productibles;
+      int j;
+      for (j = 0; j < getNoOfBasicProd(); j++)
+        productibles.push_back(d_basicprod[j]);
+      productibles.sort(armyCompareStrength);
+      j = 0;
+      for (std::list<Army*>::iterator it = productibles.begin();
+	   it != productibles.end(); it++, j++)
+       	d_basicprod[j] = *it;
+    }
 }
 
 void City::produceStrongestArmy()
