@@ -51,7 +51,6 @@ NewMapDialog::NewMapDialog()
     xml->get_widget("ruins_scale", ruins_scale);
     xml->get_widget("temples_scale", temples_scale);
     xml->get_widget("signposts_scale", signposts_scale);
-    xml->get_widget("stones_scale", stones_scale);
 
     // create fill style combobox
     fill_style_combobox = manage(new Gtk::ComboBoxText);
@@ -130,7 +129,6 @@ void NewMapDialog::run()
 	    map.ruins = int(ruins_scale->get_value());
 	    map.temples = int(temples_scale->get_value());
 	    map.signposts = int(signposts_scale->get_value());
-	    map.stones = int(stones_scale->get_value());
 	}
 
 	map_set = true;

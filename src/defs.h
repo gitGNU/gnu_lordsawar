@@ -37,7 +37,6 @@ const unsigned int CITY_LEVELS=4;
 const unsigned int MAX_PLAYERS=8;
 const unsigned int TEMPLE_TYPES=2; 
 const unsigned int RUIN_TYPES=2; 
-const unsigned int STONE_TYPES=9; 
 const unsigned int ROAD_TYPES=12; 
 const unsigned int FOG_TYPES=13; 
 const unsigned int BRIDGE_TYPES=2; 

@@ -25,7 +25,6 @@
 #include "ruinlist.h"
 #include "rewardlist.h"
 #include "templelist.h"
-#include "stonelist.h"
 #include "bridgelist.h"
 #include "portlist.h"
 #include "roadlist.h"
@@ -101,7 +100,6 @@ GameScenario::GameScenario(string savegame, bool& broken)
     helper.registerTag("ruinlist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("rewardlist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("signpostlist", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("stonelist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("roadlist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("counter", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("questlist", sigc::mem_fun(this, &GameScenario::load));
@@ -129,7 +127,6 @@ GameScenario::~GameScenario()
     Ruinlist::deleteInstance();
     Rewardlist::deleteInstance();
     Signpostlist::deleteInstance();
-    Stonelist::deleteInstance();
     Portlist::deleteInstance();
     Bridgelist::deleteInstance();
     QuestsManager::deleteInstance();
@@ -218,7 +215,6 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= Ruinlist::getInstance()->save(&helper);
     retval &= Rewardlist::getInstance()->save(&helper);
     retval &= Signpostlist::getInstance()->save(&helper);
-    retval &= Stonelist::getInstance()->save(&helper);
     retval &= Roadlist::getInstance()->save(&helper);
     retval &= Portlist::getInstance()->save(&helper);
     retval &= Bridgelist::getInstance()->save(&helper);
@@ -348,13 +344,6 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
     {
         debug("loading signposts")
             Signpostlist::getInstance(helper);
-        return true;
-    }
-
-    if (tag == "stonelist")
-    {
-        debug("loading stones")
-        Stonelist::getInstance(helper);
         return true;
     }
 

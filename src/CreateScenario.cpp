@@ -28,7 +28,6 @@
 #include "Itemlist.h"
 #include "templelist.h"
 #include "signpostlist.h"
-#include "stonelist.h"
 #include "portlist.h"
 #include "bridgelist.h"
 #include "roadlist.h"
@@ -65,7 +64,6 @@ CreateScenario::CreateScenario()
     Templelist::deleteInstance();
     Ruinlist::deleteInstance();
     Rewardlist::deleteInstance();
-    Stonelist::deleteInstance();
     Portlist::deleteInstance();
     Bridgelist::deleteInstance();
     Citylist::deleteInstance();
@@ -188,16 +186,6 @@ void CreateScenario::setNoSignposts (int nosignposts)
     d_generator->setNoSignposts(nosignposts);
 }
 
-void CreateScenario::setNoStones(int nostones)
-{
-    debug("CreateScenario::setNoStones")
-
-    if (!d_generator)
-        setMaptype(NORMAL);
-
-    d_generator->setNoStones(nostones);
-}
-
 void CreateScenario::setNoTemples(int notemples)
 {
     debug("CreateScenario::setNoTemples")
@@ -297,14 +285,6 @@ int CreateScenario::getNoRuins() const
     return d_generator->getNoRuins();
 }
 
-int CreateScenario::getNoStones() const
-{
-    if (!d_generator)
-        return -1;
-
-    return d_generator->getNoStones();
-}
-
 int CreateScenario::getNoTemples() const
 {
     if (!d_generator)
@@ -394,7 +374,7 @@ bool CreateScenario::createMap()
     //...fill the terrain...
     GameMap::getInstance(d_tilesname)->fill(d_generator);
 
-    //...and create cities, temples, ruins ,signposts, and stones
+    //...and create cities, temples, ruins ,signposts
     map = d_generator->getBuildings(d_width, d_height);
     
     for (int y = 0; y < d_height; y++)
@@ -402,9 +382,6 @@ bool CreateScenario::createMap()
         {
             switch (map[y*d_width + x])
             {
-                case Maptile::STONE:
-                    Stonelist::getInstance()->push_back(Stone(Vector<int>(x,y)));
-                    break;
                 case Maptile::SIGNPOST:
                     Signpostlist::getInstance()->push_back(Signpost(Vector<int>(x,y)));
                     break;

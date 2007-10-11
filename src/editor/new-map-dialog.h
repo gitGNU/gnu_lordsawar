@@ -44,7 +44,7 @@ class NewMapDialog
 	int width, height;
 	int grass, water, swamp, forest, hills, mountains;
 	int cities, ruins, temples;
-	int signposts, stones;
+	int signposts;
     };
 
     Map map;
@@ -67,7 +67,6 @@ class NewMapDialog
     Gtk::Scale *ruins_scale;
     Gtk::Scale *temples_scale;
     Gtk::Scale *signposts_scale;
-    Gtk::Scale *stones_scale;
 
     enum { MAP_SIZE_NORMAL = 0, MAP_SIZE_SMALL, MAP_SIZE_TINY };
 

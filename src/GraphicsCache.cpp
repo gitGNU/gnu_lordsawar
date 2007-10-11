@@ -93,13 +93,6 @@ struct CursorCacheItem
     SDL_Surface* surface;
 };
 
-//the structure to store stones in
-struct StoneCacheItem
-{
-    int type;
-    SDL_Surface* surface;
-};
-
 //the structure to store buildings in
 struct CityCacheItem
 {
@@ -183,7 +176,6 @@ GraphicsCache::GraphicsCache()
     loadShipPic();
     loadPlantedStandardPic();
     loadTemplePics();
-    loadStonePics();
     loadRoadPics();
     loadFogPics();
     loadBridgePics();
@@ -582,34 +574,6 @@ SDL_Surface* GraphicsCache::getCursorPic(int type)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getStonePic(int type)
-{
-    debug("GraphicsCache::getStonePic " <<type)
-
-    std::list<StoneCacheItem*>::iterator it;
-    StoneCacheItem* myitem;
-
-    for (it = d_stonelist.begin(); it != d_stonelist.end(); it++)
-    {
-        if ((*it)->type == type)
-        {
-            myitem = (*it);
-
-            //put the item in last place (last touched)
-            d_stonelist.erase(it);
-            d_stonelist.push_back(myitem);
-
-            return myitem->surface;
-        }
-    }
-
-    //no item found -> create a new one
-    myitem = addStonePic(type);
-
-    return myitem->surface;
-}
-
-
 SDL_Surface* GraphicsCache::getCityPic(const City* city)
 {
     if (!city)
@@ -838,9 +802,6 @@ void GraphicsCache::checkPictures()
 
   while (d_templelist.size() > 10)
     eraseLastTempleItem();
-
-  while (d_stonelist.size() > 10)
-    eraseLastStoneItem();
 
   while (d_roadlist.size() > 10)
     eraseLastRoadItem();
@@ -1164,29 +1125,6 @@ CursorCacheItem* GraphicsCache::addCursorPic(int type)
   return myitem;
 }
 
-StoneCacheItem* GraphicsCache::addStonePic(int type)
-{
-  //    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
-
-  SDL_Surface* mysurf = SDL_DisplayFormatAlpha(d_stonepic[type]);
-
-  //now create the cache item and add the size
-  StoneCacheItem* myitem = new StoneCacheItem();
-  myitem->type = type;
-  myitem->surface = mysurf;
-
-  d_stonelist.push_back(myitem);
-
-  //add the size
-  int size = mysurf->w * mysurf->h;
-  d_cachesize += size * mysurf->format->BytesPerPixel;
-
-  //and check the size of the cache
-  checkPictures();
-
-  return myitem;
-}
-
 CityCacheItem* GraphicsCache::addCityPic(int type, const Player* p)
 {
   //now create the cache item and add the size
@@ -1402,9 +1340,6 @@ void GraphicsCache::clear()
   while (!d_templelist.empty())
     eraseLastTempleItem();
 
-  while (!d_stonelist.empty())
-    eraseLastStoneItem();
-
   while (!d_roadlist.empty())
     eraseLastRoadItem();
 
@@ -1531,21 +1466,6 @@ void GraphicsCache::eraseLastCursorItem()
 
   CursorCacheItem* myitem = *(d_cursorlist.begin());
   d_cursorlist.erase(d_cursorlist.begin());
-
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
-
-  SDL_FreeSurface(myitem->surface);
-  delete myitem;
-}
-
-void GraphicsCache::eraseLastStoneItem()
-{
-  if (d_stonelist.empty())
-    return;
-
-  StoneCacheItem* myitem = *(d_stonelist.begin());
-  d_stonelist.erase(d_stonelist.begin());
 
   int size = myitem->surface->w * myitem->surface->h;
   d_cachesize -= myitem->surface->format->BytesPerPixel * size;
@@ -1860,41 +1780,6 @@ void GraphicsCache::loadCursorPics()
     }
 
   SDL_FreeSurface(cursorpics);
-}
-
-void GraphicsCache::loadStonePics()
-{
-  // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
-  int ts = GameMap::getInstance()->getTileSet()->getTileSize();
-
-  // load the stone pictures
-  SDL_Surface* stonepics = File::getMapsetPicture(tileset, "misc/stones.png");
-
-  // copy alpha values, don't use them
-  SDL_SetAlpha(stonepics, 0, 0);
-
-  for (unsigned int i = 0; i < STONE_TYPES ; i++)
-    {
-      //copy the stone image...
-      SDL_Surface* tmp;
-      SDL_PixelFormat* fmt = stonepics->format;
-
-      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
-				 fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-
-      SDL_Rect r;
-      r.x = i*ts;
-      r.y = 0;
-      r.w = r.h = ts;
-      SDL_BlitSurface(stonepics, &r, tmp, 0);
-
-      d_stonepic[i] = SDL_DisplayFormatAlpha(tmp);
-
-      SDL_FreeSurface(tmp);
-    }
-
-  SDL_FreeSurface(stonepics);
 }
 
 void GraphicsCache::loadCityPics()

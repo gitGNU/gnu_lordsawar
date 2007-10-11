@@ -8,7 +8,6 @@ map_default_DATA = \
 	castle_razed.png \
 	flags.png \
 	signpost.png \
-	stones.png \
 	towers.png \
 	roads.png \
 	bridges.png \
@@ -21,7 +20,6 @@ EXTRA_DIST = \
 	castle_razed.png \
 	flags.png \
 	signpost.png \
-	stones.png \
 	roads.png \
 	towers.png \
 	bridges.png \

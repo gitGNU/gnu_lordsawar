@@ -60,8 +60,6 @@
 #include "../templelist.h"
 #include "../ruinlist.h"
 #include "../signpostlist.h"
-#include "../stonelist.h"
-#include "../stone.h"
 #include "../roadlist.h"
 #include "../bridgelist.h"
 #include "../portlist.h"
@@ -125,8 +123,6 @@ MainWindow::MainWindow()
 			      EditorBigMap::RUIN, 1);
     setup_pointer_radiobutton(xml, "draw_signpost", "button_signpost",
 			      EditorBigMap::SIGNPOST, 1);
-    setup_pointer_radiobutton(xml, "draw_stone", "button_stone",
-			      EditorBigMap::STONE, 1);
     setup_pointer_radiobutton(xml, "draw_temple", "button_temple",
 			      EditorBigMap::TEMPLE, 1);
     setup_pointer_radiobutton(xml, "draw_road", "button_road",
@@ -347,7 +343,7 @@ void MainWindow::set_random_map(int width, int height,
 				int grass, int water, int swamp, int forest,
 				int hills, int mountains,
 				int cities, int ruins, int temples,
-				int signposts, int stones)
+				int signposts)
 {
     clear_map_state();
 
@@ -378,7 +374,6 @@ void MainWindow::set_random_map(int width, int height,
     gen.setNoRuins(ruins);
     gen.setNoTemples(temples);
     gen.setNoSignposts(signposts);
-    gen.setNoStones(stones);
     
     // if sum > 100 (percent), divide everything by a factor, the numeric error
     // is said to be grass
@@ -421,9 +416,6 @@ void MainWindow::set_random_map(int width, int height,
 		break;
 	    case Maptile::SIGNPOST:
 		Signpostlist::getInstance()->push_back(Signpost(Vector<int>(i,j)));
-		break;
-	    case Maptile::STONE:
-		Stonelist::getInstance()->push_back(Stone(Vector<int>(i,j)));
 		break;
 	    case Maptile::ROAD:
 		Roadlist::getInstance()->push_back(Road(Vector<int>(i,j)));
@@ -552,8 +544,7 @@ void MainWindow::on_new_map_activated()
 	    set_random_map(d.map.width, d.map.height,
 			   d.map.grass, d.map.water, d.map.swamp, d.map.forest,
 			   d.map.hills, d.map.mountains,
-			   d.map.cities, d.map.ruins, d.map.temples, d.map.signposts,
-			   d.map.stones);
+			   d.map.cities, d.map.ruins, d.map.temples, d.map.signposts);
 	else
 	    set_filled_map(d.map.width, d.map.height, d.map.fill_style);
     }

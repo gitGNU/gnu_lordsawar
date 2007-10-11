@@ -28,14 +28,12 @@
 #include "ruinlist.h"
 #include "signpostlist.h"
 #include "templelist.h"
-#include "stonelist.h"
 #include "portlist.h"
 #include "bridgelist.h"
 #include "roadlist.h"
 #include "ruin.h"
 #include "signpost.h"
 #include "temple.h"
-#include "stone.h"
 #include "road.h"
 #include "playerlist.h"
 #include "defs.h"
@@ -564,10 +562,6 @@ void BigMap::draw_buffer()
     for (Roadlist::iterator i = Roadlist::getInstance()->begin();
 	 i != Roadlist::getInstance()->end(); ++i)
 	blit_if_inside_buffer( *i, gc->getRoadPic(i->getType()));
-
-    for (Stonelist::iterator i = Stonelist::getInstance()->begin();
-	 i != Stonelist::getInstance()->end(); ++i)
-	blit_if_inside_buffer( *i, gc->getStonePic(i->getType()));
 
     for (Bridgelist::iterator i = Bridgelist::getInstance()->begin();
 	 i != Bridgelist::getInstance()->end(); ++i)

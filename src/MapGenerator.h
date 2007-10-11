@@ -82,9 +82,6 @@ class MapGenerator
         //! Set the number of ruins
         int setNoSignposts(int nosignposts);
 
-        //! Set the number of stones
-        int setNoStones (int nostones);
-
         //! Set the number of temples
         int setNoTemples(int notemples);
 
@@ -103,9 +100,6 @@ class MapGenerator
 
         //! Get number of signposts
         int getNoSignposts() const {return d_nosignposts;}
-
-        //! Get number of stones
-        int getNoStones() const {return d_nostones;}
 
         //! Get number of temples
         int getNoTemples() const {return d_notemples;}
@@ -282,8 +276,7 @@ class MapGenerator
         int d_width;
         int d_height;
         int d_pswamp, d_pwater, d_pforest, d_phills, d_pmountains;
-        unsigned int d_nocities, d_notemples, d_noruins, d_nosignposts,
-		     d_nostones;
+        unsigned int d_nocities, d_notemples, d_noruins, d_nosignposts;
         vecs2d d_portneed;//the seas a landmass needs to have a port on
 };
 

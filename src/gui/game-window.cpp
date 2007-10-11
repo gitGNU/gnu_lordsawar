@@ -365,7 +365,6 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 
     int area = g.map.width * g.map.height;
     creator.setNoSignposts(int(area * (g.map.grass / 100.0) * 0.0030));
-    creator.setNoStones(int(area * (g.map.grass / 100.0) * 0.0022));
 
     // tell it the dimensions
     creator.setWidth(g.map.width);

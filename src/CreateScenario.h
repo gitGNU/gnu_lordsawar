@@ -68,9 +68,6 @@ class CreateScenario
         //! Set the number of signposts on the map
         void setNoSignposts(int number);
 
-        //! Set the number of stones on the map
-        void setNoStones (int number);
-
         //! Set the number of temples
         void setNoTemples(int number);
 
@@ -130,9 +127,6 @@ class CreateScenario
 
         //! Get the number of signposts on the map
         int getNoSignposts() const;
-
-        //! Get the number of stones on the map
-        int getNoStones () const;
 
         //! Get the number of temples
         int getNoTemples() const;

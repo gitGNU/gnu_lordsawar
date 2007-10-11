@@ -128,8 +128,7 @@ class MainWindow: public sigc::trackable
     void set_random_map(int width, int height,
 			int grass, int water, int swamp, int forest,
 			int hills, int mountains,
-			int cities, int ruins, int temples, int signposts,
-			int stones);
+			int cities, int ruins, int temples, int signposts);
 
     void clear_map_state();
     void init_map_state();

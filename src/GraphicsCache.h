@@ -149,15 +149,6 @@ class GraphicsCache
           * @param type         the type of the cursor 
           * @return image of the cursor
           */
-        SDL_Surface* getStonePic(int type);
-        /** Function for getting a stone picture
-          *
-          * Most often, we don't need such a sophisticated function. So just
-          * supply the stone type and be happy. :)
-          *
-          * @param type         the type of the stone
-          * @return image of the stone
-          */
 
         SDL_Surface* getShipPic(const Player* p);
         SDL_Surface* getPlantedStandardPic(const Player* p);
@@ -269,9 +260,6 @@ class GraphicsCache
         //! Creates a new temple picture with the given parameters.
         TempleCacheItem* addTemplePic(int type);
 
-        //! Creates a new stone picture with the given parameters.
-        StoneCacheItem* addStonePic(int type);
-
         //! Creates a new road picture with the given parameters.
         RoadCacheItem* addRoadPic(int type);
 
@@ -324,9 +312,6 @@ class GraphicsCache
 
         //! Erases the oldest (least recently requested) temple cache item.
         void eraseLastTempleItem();
-
-        //! Erases the oldest (least recently requested) stone cache item.
-        void eraseLastStoneItem();
 
         //! Erases the oldest (least recently requested) road cache item.
         void eraseLastRoadItem();
@@ -382,9 +367,6 @@ class GraphicsCache
         //! Loads the images for the city pictures.
         void loadTemplePics();
 
-        //! Loads the images for the stone pictures.
-        void loadStonePics();
-
         //! Loads the images for the road pictures.
         void loadRoadPics();
 
@@ -421,7 +403,6 @@ class GraphicsCache
         std::list<TowerCacheItem*> d_towerlist;
         std::list<FlagCacheItem*> d_flaglist;
         std::list<TempleCacheItem*> d_templelist;
-        std::list<StoneCacheItem*> d_stonelist;
         std::list<RoadCacheItem*> d_roadlist;
         std::list<FogCacheItem*> d_foglist;
         std::list<BridgeCacheItem*> d_bridgelist;
@@ -439,7 +420,6 @@ class GraphicsCache
         SDL_Surface* d_citypic[MAX_PLAYERS + 1]; //+1 for neutral
         SDL_Surface* d_towerpic[MAX_PLAYERS];
         SDL_Surface* d_templepic[TEMPLE_TYPES];
-        SDL_Surface* d_stonepic[STONE_TYPES];
         SDL_Surface* d_roadpic[ROAD_TYPES];
         SDL_Surface* d_bridgepic[BRIDGE_TYPES];
         SDL_Surface* d_cursorpic[CURSOR_TYPES];

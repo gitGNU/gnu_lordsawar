@@ -357,6 +357,18 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
             city = nearestCity;
             draw();
             break;
+	  /*
+	   * case CLICK_CHANGES_VECTOR_DESTINATION:
+	   * remember source city
+	   * find destination city/standard
+	   * loop for all vectored units from source city
+	   *   call canAcceptedVectoredUnit on destination city 
+	   *   if true then
+	   *     call vectorFromCity
+	   *     redraw
+	   *   endif
+	   *
+	   */
         }
     }
         

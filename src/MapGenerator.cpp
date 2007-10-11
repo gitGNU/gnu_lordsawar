@@ -61,7 +61,7 @@ MapGenerator::MapGenerator()
     //set reasonable default values
     :d_terrain(0), d_building(0), d_l_mass(0), d_pswamp(2), d_pwater(25), d_pforest(3),
     d_phills(5), d_pmountains(5), d_nocities(11), d_notemples(9), d_noruins(20),
-    d_nosignposts(30), d_nostones(30)
+    d_nosignposts(30)
 
 {
     d_xdir[0]=0;d_xdir[1]=-1;d_xdir[2]=-1;d_xdir[3]=-1;d_xdir[4]=0;d_xdir[5]=1;d_xdir[6]=1;d_xdir[7]=1;
@@ -105,16 +105,6 @@ int MapGenerator::setNoSignposts(int nosignposts)
 
     int tmp = d_nosignposts;
     d_nosignposts = nosignposts;
-    return tmp;
-}
-
-int MapGenerator::setNoStones (int nostones)
-{
-    if (nostones < 0)
-        return -1;
-
-    int tmp = d_nostones;
-    d_nostones = nostones;
     return tmp;
 }
 
@@ -206,8 +196,6 @@ void MapGenerator::makeMap(int width, int height)
     makeBuildings(Maptile::RUIN,d_noruins);
     cout <<_("Raising Signs     ... 88%") <<endl;
     makeBuildings(Maptile::SIGNPOST,d_nosignposts);
-    cout <<_("Placing Stones    ... 89%") <<endl;
-    makeBuildings(Maptile::STONE,d_nostones);
     cout <<_("Spawning temples  ... 90%") <<endl;
     makeBuildings(Maptile::TEMPLE,d_notemples);
     cout <<_("Done making map   ... 100%") <<endl;

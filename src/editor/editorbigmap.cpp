@@ -27,14 +27,12 @@
 #include "../ruinlist.h"
 #include "../signpostlist.h"
 #include "../templelist.h"
-#include "../stonelist.h"
 #include "../bridgelist.h"
 #include "../portlist.h"
 #include "../roadlist.h"
 #include "../ruin.h"
 #include "../signpost.h"
 #include "../temple.h"
-#include "../stone.h"
 #include "../road.h"
 #include "../playerlist.h"
 #include "../defs.h"
@@ -124,11 +122,6 @@ void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
 	mouse_on_tile.emit(new_tile);
 	redraw = true;
     }
-
-    if (mouse_pos != prev_mouse_pos && pointer == STONE &&
-	mouse_pos_to_stone_type(mouse_pos) !=
-	mouse_pos_to_stone_type(prev_mouse_pos))
-	redraw = true;
 
     // draw with left mouse button
     if (e.pressed[MouseMotionEvent::LEFT_BUTTON])
@@ -281,15 +274,6 @@ void EditorBigMap::after_draw()
 	    SDL_BlitSurface(pic, 0, buffer, &r);
 	    break;
 	    
-	case STONE:
-	    pic = GraphicsCache::getInstance()->getStonePic(
-		mouse_pos_to_stone_type(mouse_pos));
-	    SDL_BlitSurface(pic, 0, buffer, &r);
-	    draw_rect_clipped(buffer, pos.x + 1, pos.y + 1,
-			      pos.x + tilesize - 2, pos.y + tilesize - 2,
-			      outline);
-	    break;
-	    
 	case ROAD:
 	    pic = GraphicsCache::getInstance()->getRoadPic(tile_to_road_type(*i));
 	    SDL_BlitSurface(pic, 0, buffer, &r);
@@ -304,41 +288,6 @@ void EditorBigMap::after_draw()
 	    break;
 	}
     }
-}
-
-int EditorBigMap::mouse_pos_to_stone_type(Vector<int> mpos)
-{
-    Vector<int> p = mouse_pos_to_tile_offset(mpos);
-    int type = 0;
-    if (p.x > 43)
-    {
-	if (p.y > 43)
-	    type = 5;
-	else if (p.y > 21)
-	    type = 3;
-	else
-	    type = 2;
-    }
-    else if (p.x > 21)
-    {
-	if (p.y > 43)
-	    type = 6;
-	else if (p.y > 21)
-	    type = 4;
-	else
-	    type = 1;
-    }
-    else
-    {
-	if (p.y > 43)
-	    type = 7; 
-	else if (p.y > 21)
-	    type = 8;
-	else
-	    type = 0;
-    }
-    
-    return type;
 }
 
 int EditorBigMap::tile_to_bridge_type(Vector<int> t)
@@ -477,10 +426,6 @@ void EditorBigMap::change_map_under_cursor()
 	    if (maptile->getBuilding() != Maptile::NONE
 		&& pointer_terrain == Tile::WATER)
 		break;
-	    // stones don't go on non grass tiles
-	    if (maptile->getBuilding() == Maptile::STONE
-		&& pointer_terrain != Tile::GRASS)
-		break;
 	    // don't change the terrain to anything else than grass if there is
 	    // a city
 	    if (maptile->getBuilding() == Maptile::CITY
@@ -513,8 +458,6 @@ void EditorBigMap::change_map_under_cursor()
 	    
 	    // ... or a temple ...
 	    remove_from_map(Templelist::getInstance(), tile);
-	    // ... or a stone ...
-	    remove_from_map(Stonelist::getInstance(), tile);
 	    // ... or a port ...
 	    remove_from_map(Portlist::getInstance(), tile);
 	    // ... or a ruin ...
@@ -665,22 +608,6 @@ void EditorBigMap::change_map_under_cursor()
 	    {
 		maptile->setBuilding(Maptile::SIGNPOST);
 		Signpostlist::getInstance()->push_back(Signpost(tile));
-	    }
-	    break;
-	    
-	case STONE:
-	    if ((maptile->getBuilding() == Maptile::NONE
-		 || maptile->getBuilding() == Maptile::STONE)
-		&& maptile->getMaptileType() == Tile::GRASS)
-	    {
-		int type = mouse_pos_to_stone_type(mouse_pos);
-		if (maptile->getBuilding() == Maptile::STONE)
-		    Stonelist::getInstance()->getObjectAt(tile)->setType(type);
-		else
-		{
-		    maptile->setBuilding(Maptile::STONE);
-		    Stonelist::getInstance()->push_back(Stone(tile, "", type));
-		}
 	    }
 	    break;
 	    
