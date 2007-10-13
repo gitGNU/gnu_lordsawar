@@ -1189,14 +1189,6 @@ bool GameWindow::on_army_button_event(GdkEventButton *e,
   return false;
 }
 
-void GameWindow::on_army_button_has_size()
-{
-  // fix height to prevent flickering
-  int height = stack_info_box->get_height();
-  stack_info_box->property_height_request() = height;
-  stats_box->property_height_request() = height;
-}
-
 void GameWindow::clear_army_buttons()
 {
   for (army_buttons_type::iterator i = army_buttons.begin(),
@@ -1281,6 +1273,12 @@ void GameWindow::on_stack_info_changed(Stack *s)
 
 void GameWindow::show_stats()
 {
+  Armysetlist *al = Armysetlist::getInstance();
+  int height = al->getTileSize(Playerlist::getActiveplayer()->getArmyset());
+  height += turn_label->get_height();
+  height += 20;
+  stack_info_box->get_parent()->property_height_request() = height;
+  stats_box->get_parent()->property_height_request() = height;
   stack_info_container->hide();
   stats_box->show();
 }
@@ -1329,9 +1327,6 @@ void GameWindow::show_stack(Stack *s)
       toggle->signal_button_release_event().connect(
 						    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
 							       toggle, army), false);
-      toggle->signal_size_allocate().connect_notify(
-						    sigc::hide(sigc::mem_fun(*this, &GameWindow::on_army_button_has_size)));
-
       // add it
       stack_info_box->pack_start(*toggle, Gtk::PACK_SHRINK);
       army_buttons.push_back(toggle);

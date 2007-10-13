@@ -1,11 +1,11 @@
-SUBDIRS = default  smalldefault
+SUBDIRS = default bigdefault
 MAINTAINERCLEANFILES= Makefile.in
 
 lordsawararmydatadir = $(datadir)/lordsawar/army
 lordsawararmydata_DATA = \
     default.xml \
-    smalldefault.xml 
+    bigdefault.xml 
 
 EXTRA_DIST = \
     default.xml \
-    smalldefault.xml 
+    bigdefault.xml 

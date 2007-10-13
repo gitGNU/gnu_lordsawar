@@ -200,7 +200,6 @@ class GameWindow: public sigc::trackable
     void on_group_toggled(Gtk::ToggleButton *toggle);
     bool on_army_button_event(GdkEventButton *e,
 			      Gtk::ToggleButton *toggle, Army *army);
-    void on_army_button_has_size();
     void clear_army_buttons();
     void update_army_buttons();
     void ensure_one_army_button_active();
