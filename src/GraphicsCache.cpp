@@ -1860,7 +1860,10 @@ void GraphicsCache::loadSelectors()
 {
   //load the big selector pictures
   int i;
-  SDL_Surface* selpics = File::getMiscPicture("selector.png");
+  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
+
+  // to build flags, we need these three images as basic blocks
+  SDL_Surface* selpics = File::getMapsetPicture(tileset, "misc/selector.png");
   SDL_PixelFormat* fmt = selpics->format;
   int size = GameMap::getInstance()->getTileSet()->getTileSize();
 
@@ -1890,7 +1893,7 @@ void GraphicsCache::loadSelectors()
   SDL_FreeSurface(selpics);
 
   //load the small selector pictures
-  selpics = File::getMiscPicture("small_selector.png");
+  selpics = File::getMapsetPicture(tileset, "misc/small_selector.png");
   fmt = selpics->format;
   // copy alpha values, don't use them
   SDL_SetAlpha(selpics, 0, 0);

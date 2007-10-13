@@ -14,8 +14,6 @@ various_DATA = \
     recruit_female.png \
     recruit_male.png \
     ruin_1.jpg \
-    selector.png \
-    small_selector.png \
     splash_screen.jpg \
     about_screen.jpg \
     network_screen.jpg \
@@ -55,8 +53,6 @@ EXTRA_DIST = \
     recruit_female.png \
     recruit_male.png \
     ruin_1.jpg \
-    selector.png \
-    small_selector.png \
     splash_screen.jpg \
     about_screen.jpg \
     network_screen.jpg \
