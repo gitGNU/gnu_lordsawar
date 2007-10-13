@@ -1,3 +1,18 @@
+2007-10-13  Ben Asselstine
+
+	* resized army tiles
+	* removed "level mask" from army instance picture
+	* added "bigdefault" tile set and army set
+	* stack ship picture, and planted standard picture are now 
+	  included in the armyset object
+	* added new pictures for income/treasury/upkeep and city count
+	* stack selector images are now included in the tileset object
+	* now autosizing the height of the stat box and stack info box
+
+2007-10-11  Ben Asselstine
+
+	* removed "stones"
+
 2007-10-08  Ben Asselstine
 
 	* added differing income in random cities
