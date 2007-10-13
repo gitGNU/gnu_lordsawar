@@ -222,9 +222,12 @@ AC_CONFIG_FILES([
         dat/Makefile 
         dat/army/Makefile 
         dat/army/default/Makefile 
+        dat/army/bigdefault/Makefile 
         dat/tilesets/Makefile
         dat/tilesets/default/Makefile
         dat/tilesets/default/misc/Makefile
+        dat/tilesets/bigdefault/Makefile
+        dat/tilesets/bigdefault/misc/Makefile
         dat/tilesets/dark/Makefile
         dat/tilesets/dark/misc/Makefile
         dat/various/Makefile 
