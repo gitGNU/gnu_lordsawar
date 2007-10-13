@@ -172,7 +172,6 @@ GraphicsCache::GraphicsCache()
 {
     loadCityPics();
     loadTowerPics();
-    loadShipPic();
     loadPlantedStandardPic();
     loadTemplePics();
     loadRoadPics();
@@ -260,8 +259,6 @@ GraphicsCache::~GraphicsCache()
     SDL_FreeSurface(d_small_ruin_unexplored);
     SDL_FreeSurface(d_small_stronghold_unexplored);
     SDL_FreeSurface(d_small_ruin_explored);
-    SDL_FreeSurface(d_ship);
-    SDL_FreeSurface(d_shipmask);
     SDL_FreeSurface(d_planted_standard);
     SDL_FreeSurface(d_planted_standard_mask);
     SDL_FreeSurface(d_port);
@@ -925,14 +922,17 @@ ShipCacheItem* GraphicsCache::addShipPic(const Player* p)
 {
   debug("ADD ship pic: " <<p->getName())
 
-    ShipCacheItem* myitem = new ShipCacheItem();
+  ShipCacheItem* myitem = new ShipCacheItem();
   myitem->player = p;
 
   //Now the most important part: load the ship picture
   //First, copy the ship picture and change it to the display format
 
+  Armysetlist *al = Armysetlist::getInstance();
+  SDL_Surface *ship = al->getShipPic(p->getArmyset());
+  SDL_Surface *shipmask = al->getShipMask(p->getArmyset());
   // copy the pixmap including player colors
-  myitem->surface = applyMask(d_ship, d_shipmask, p);
+  myitem->surface = applyMask(ship, shipmask, p);
 
   //now the final preparation steps:
   //a) add the size
@@ -1853,37 +1853,6 @@ void GraphicsCache::loadTowerPics()
   SDL_FreeSurface(tmp);
   SDL_FreeSurface(towerpics);
 
-}
-
-void GraphicsCache::loadShipPic()
-{
-  //load the ship picture and it's mask
-  SDL_Rect shiprect;
-  SDL_Surface* shippic = File::getMiscPicture("stackship.png");
-  // copy alpha values, don't use them
-  SDL_SetAlpha(shippic, 0, 0);
-  SDL_PixelFormat* fmt = shippic->format;
-  int size = 54;
-  SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
-					  fmt->BitsPerPixel, fmt->Rmask, 
-					  fmt->Gmask, fmt->Bmask, 
-					  fmt->Amask);
-  shiprect.x = 0;
-  shiprect.y = 0;
-  shiprect.w = shiprect.h = size;
-  SDL_BlitSurface(shippic, &shiprect, tmp, 0);
-  d_ship = SDL_DisplayFormatAlpha(tmp);
-  SDL_FreeSurface(tmp);
-
-  d_shipmask =  SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32,
-				     0xFF000000, 0xFF0000, 0xFF00, 
-				     0xFF);
-  shiprect.x = size;
-  shiprect.y = 0;
-  shiprect.w = shiprect.h = size;
-  SDL_BlitSurface(shippic, &shiprect, d_shipmask, 0);
-
-  SDL_FreeSurface(shippic);
 }
 
 void GraphicsCache::loadPlantedStandardPic()

@@ -357,9 +357,6 @@ class GraphicsCache
         //! Loads the images for the tower pictures
         void loadTowerPics();
 
-        //! Loads the images for the ship picture and it's mask.
-        void loadShipPic();
-
         //! Loads the images for the planted standard picture and it's mask.
         void loadPlantedStandardPic();
 
@@ -434,8 +431,6 @@ class GraphicsCache
 	SDL_Surface* d_smallruinedcity;
 	SDL_Surface* d_smallhero;
         SDL_Surface* d_movebonuspic[6];
-	SDL_Surface* d_ship;
-	SDL_Surface* d_shipmask;
 	SDL_Surface* d_planted_standard;
 	SDL_Surface* d_planted_standard_mask;
 	SDL_Surface* d_port;

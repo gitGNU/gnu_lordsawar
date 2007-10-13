@@ -173,3 +173,22 @@ void Armysetlist::instantiatePixmaps()
   for (iterator it = begin(); it != end(); it++)
     (*it)->instantiatePixmaps();
 }
+	
+SDL_Surface * Armysetlist::getShipPic (Uint32 id)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getId() == id)
+	return (*it)->getShipPic();
+    }
+}
+
+SDL_Surface * Armysetlist::getShipMask (Uint32 id)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getId() == id)
+	return (*it)->getShipMask();
+    }
+}
+

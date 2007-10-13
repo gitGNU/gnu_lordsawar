@@ -32,11 +32,15 @@ using namespace std;
 Armyset::Armyset(Uint32 id, std::string name)
 	: d_id(id), d_name(name), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE)
 {
+  d_ship = NULL;
+  d_shipmask = NULL;
 }
 
 Armyset::Armyset(XML_Helper *helper)
     : d_id(0), d_name(""), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE)
 {
+  d_ship = NULL;
+  d_shipmask = NULL;
   helper->getData(d_id, "id");
   helper->getData(d_name, "name");
   helper->getData(d_tilesize, "tilesize");
@@ -55,6 +59,7 @@ void Armyset::instantiatePixmaps()
   iterator a = begin();
   for (iterator it = begin(); it != end(); it++)
     instantiatePixmap(*it);
+  loadShipPic();
 }
 
 bool Armyset::instantiatePixmap(Army *a)
@@ -149,3 +154,40 @@ Army * Armyset::lookupArmyByType(Uint32 army_type)
     }
   return NULL;
 }
+
+void Armyset::loadShipPic()
+{
+  //load the ship picture and it's mask
+  SDL_Rect shiprect;
+    
+  SDL_Surface* shippic = File::getArmyPicture(d_dir, "stackship.png");
+  // copy alpha values, don't use them
+  SDL_SetAlpha(shippic, 0, 0);
+  SDL_PixelFormat* fmt = shippic->format;
+  SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, 
+					  d_tilesize, d_tilesize, 
+					  fmt->BitsPerPixel, fmt->Rmask, 
+					  fmt->Gmask, fmt->Bmask, 
+					  fmt->Amask);
+  shiprect.x = 0;
+  shiprect.y = 0;
+  shiprect.w = shiprect.h = d_tilesize;
+  SDL_BlitSurface(shippic, &shiprect, tmp, 0);
+  if (d_ship)
+    SDL_FreeSurface(d_ship);
+  d_ship = SDL_DisplayFormatAlpha(tmp);
+  SDL_FreeSurface(tmp);
+
+  if (d_shipmask)
+    SDL_FreeSurface(d_shipmask);
+  d_shipmask =  SDL_CreateRGBSurface(SDL_SWSURFACE, d_tilesize, d_tilesize, 32,
+				     0xFF000000, 0xFF0000, 0xFF00, 
+				     0xFF);
+  shiprect.x = d_tilesize;
+  shiprect.y = 0;
+  shiprect.w = shiprect.h = d_tilesize;
+  SDL_BlitSurface(shippic, &shiprect, d_shipmask, 0);
+
+  SDL_FreeSurface(shippic);
+}
+
