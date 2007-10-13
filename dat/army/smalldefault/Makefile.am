@@ -30,7 +30,8 @@ lordsawararmydefault_DATA = \
 	unicorns.png \
 	wizards.png \
 	wolfriders.png \
-	stackship.png
+	stackship.png \
+	plantedstandard.png
 
 EXTRA_DIST = \
 	archers.png \
@@ -61,4 +62,5 @@ EXTRA_DIST = \
 	unicorns.png \
 	wizards.png \
 	wolfriders.png \
-	stackship.png
+	stackship.png \
+	plantedstandard.png

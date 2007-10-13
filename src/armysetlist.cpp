@@ -181,6 +181,7 @@ SDL_Surface * Armysetlist::getShipPic (Uint32 id)
       if ((*it)->getId() == id)
 	return (*it)->getShipPic();
     }
+  return NULL;
 }
 
 SDL_Surface * Armysetlist::getShipMask (Uint32 id)
@@ -190,5 +191,36 @@ SDL_Surface * Armysetlist::getShipMask (Uint32 id)
       if ((*it)->getId() == id)
 	return (*it)->getShipMask();
     }
+  return NULL;
+}
+
+Uint32 Armysetlist::getTileSize(Uint32 id)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getId() == id)
+	return (*it)->getTileSize();
+    }
+  return 0;
+}
+
+SDL_Surface * Armysetlist::getStandardPic (Uint32 id)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getId() == id)
+	return (*it)->getStandardPic();
+    }
+  return NULL;
+}
+
+SDL_Surface * Armysetlist::getStandardMask (Uint32 id)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getId() == id)
+	return (*it)->getStandardMask();
+    }
+  return NULL;
 }
 

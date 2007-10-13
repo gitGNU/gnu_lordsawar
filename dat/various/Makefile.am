@@ -38,7 +38,6 @@ various_DATA = \
     smallunexploredstronghold.png \
     smallexploredruin.png \
     smalltemple.png \
-    plantedstandard.png \
     cursors.png \
     smallupkeep.png \
     smallincome.png \
@@ -80,7 +79,6 @@ EXTRA_DIST = \
     smallunexploredstronghold.png \
     smallexploredruin.png \
     smalltemple.png \
-    plantedstandard.png \
     cursors.png \
     smallupkeep.png \
     smallincome.png \

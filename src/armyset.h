@@ -57,6 +57,9 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 	SDL_Surface *getShipPic() const {return d_ship;}
 	SDL_Surface *getShipMask() const {return d_shipmask;}
 
+	SDL_Surface *getStandardPic() const {return d_standard;}
+	SDL_Surface *getStandardMask() const {return d_standard_mask;}
+
 	//! this is only used for the editor.
 	//try to use Armysetlist::getArmyType instead
 	Army * lookupArmyByType(Uint32 army_type);
@@ -67,6 +70,7 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 
 	bool instantiatePixmap(Army *a);
 	void loadShipPic();
+	void loadStandardPic();
         
         Uint32 d_id;
         std::string d_name;
@@ -74,6 +78,8 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 	Uint32 d_tilesize;
 	SDL_Surface *d_ship; //what the stack looks like when in the water
 	SDL_Surface *d_shipmask;
+	SDL_Surface *d_standard; //what the standard looks like when planted
+	SDL_Surface *d_standard_mask;
 };
 
 #endif // ARMYSETLIST_H

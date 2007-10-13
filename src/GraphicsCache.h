@@ -357,9 +357,6 @@ class GraphicsCache
         //! Loads the images for the tower pictures
         void loadTowerPics();
 
-        //! Loads the images for the planted standard picture and it's mask.
-        void loadPlantedStandardPic();
-
         //! Loads the images for the city pictures.
         void loadTemplePics();
 
@@ -431,8 +428,6 @@ class GraphicsCache
 	SDL_Surface* d_smallruinedcity;
 	SDL_Surface* d_smallhero;
         SDL_Surface* d_movebonuspic[6];
-	SDL_Surface* d_planted_standard;
-	SDL_Surface* d_planted_standard_mask;
 	SDL_Surface* d_port;
 	SDL_Surface* d_small_ruin_unexplored;
 	SDL_Surface* d_small_stronghold_unexplored;

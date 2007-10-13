@@ -172,7 +172,6 @@ GraphicsCache::GraphicsCache()
 {
     loadCityPics();
     loadTowerPics();
-    loadPlantedStandardPic();
     loadTemplePics();
     loadRoadPics();
     loadFogPics();
@@ -259,8 +258,6 @@ GraphicsCache::~GraphicsCache()
     SDL_FreeSurface(d_small_ruin_unexplored);
     SDL_FreeSurface(d_small_stronghold_unexplored);
     SDL_FreeSurface(d_small_ruin_explored);
-    SDL_FreeSurface(d_planted_standard);
-    SDL_FreeSurface(d_planted_standard_mask);
     SDL_FreeSurface(d_port);
 }
 
@@ -959,8 +956,12 @@ PlantedStandardCacheItem* GraphicsCache::addPlantedStandardPic(const Player* p)
   //Now the most important part: load the planted standard picture
   //First, copy the picture and change it to the display format
 
+  Armysetlist *al = Armysetlist::getInstance();
+  SDL_Surface *standard = al->getStandardPic(p->getArmyset());
+  SDL_Surface *standard_mask = al->getStandardMask(p->getArmyset());
+
   // copy the pixmap including player colors
-  myitem->surface = applyMask(d_planted_standard, d_planted_standard_mask, p);
+  myitem->surface = applyMask(standard, standard_mask, p);
 
   //now the final preparation steps:
   //a) add the size
@@ -1853,37 +1854,6 @@ void GraphicsCache::loadTowerPics()
   SDL_FreeSurface(tmp);
   SDL_FreeSurface(towerpics);
 
-}
-
-void GraphicsCache::loadPlantedStandardPic()
-{
-  //load the planted standard picture and it's mask
-  SDL_Rect psrect;
-  SDL_Surface* pspic = File::getMiscPicture("plantedstandard.png");
-  // copy alpha values, don't use them
-  SDL_SetAlpha(pspic, 0, 0);
-  SDL_PixelFormat* fmt = pspic->format;
-  int size = 54;
-  SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
-					  fmt->BitsPerPixel, fmt->Rmask, 
-					  fmt->Gmask, fmt->Bmask, 
-					  fmt->Amask);
-  psrect.x = 0;
-  psrect.y = 0;
-  psrect.w = psrect.h = size;
-  SDL_BlitSurface(pspic, &psrect, tmp, 0);
-  d_planted_standard = SDL_DisplayFormatAlpha(tmp);
-  SDL_FreeSurface(tmp);
-
-  d_planted_standard_mask = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
-						 32, 0xFF000000, 0xFF0000, 
-						 0xFF00, 0xFF);
-  psrect.x = size;
-  psrect.y = 0;
-  psrect.w = psrect.h = size;
-  SDL_BlitSurface(pspic, &psrect, d_planted_standard_mask, 0);
-
-  SDL_FreeSurface(pspic);
 }
 
 void GraphicsCache::loadSelectors()

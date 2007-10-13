@@ -60,6 +60,7 @@ void Armyset::instantiatePixmaps()
   for (iterator it = begin(); it != end(); it++)
     instantiatePixmap(*it);
   loadShipPic();
+  loadStandardPic();
 }
 
 bool Armyset::instantiatePixmap(Army *a)
@@ -191,3 +192,32 @@ void Armyset::loadShipPic()
   SDL_FreeSurface(shippic);
 }
 
+void Armyset::loadStandardPic()
+{
+  //load the planted standard picture and it's mask
+  SDL_Rect standrect;
+  SDL_Surface* standpic = File::getArmyPicture(d_dir, "plantedstandard.png");
+  // copy alpha values, don't use them
+  SDL_SetAlpha(standpic, 0, 0);
+  SDL_PixelFormat* fmt = standpic->format;
+  int size = d_tilesize;
+  SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
+					  fmt->BitsPerPixel, fmt->Rmask, 
+					  fmt->Gmask, fmt->Bmask, 
+					  fmt->Amask);
+  standrect.x = 0;
+  standrect.y = 0;
+  standrect.w = standrect.h = size;
+  SDL_BlitSurface(standpic, &standrect, tmp, 0);
+  d_standard = SDL_DisplayFormatAlpha(tmp);
+  SDL_FreeSurface(tmp);
+
+  d_standard_mask = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32, 
+					 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
+  standrect.x = size;
+  standrect.y = 0;
+  standrect.w = standrect.h = size;
+  SDL_BlitSurface(standpic, &standrect, d_standard_mask, 0);
+
+  SDL_FreeSurface(standpic);
+}

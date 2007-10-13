@@ -59,6 +59,9 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 
 	SDL_Surface * getShipPic (Uint32 id);
 	SDL_Surface * getShipMask (Uint32 id);
+	SDL_Surface * getStandardPic (Uint32 id);
+	SDL_Surface * getStandardMask (Uint32 id);
+        Uint32 getTileSize(Uint32 id);
 
         /** Returns the size of a specific armyset
           * 

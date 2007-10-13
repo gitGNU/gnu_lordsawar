@@ -28,6 +28,7 @@
 #include "ruinlist.h"
 #include "signpostlist.h"
 #include "templelist.h"
+#include "armysetlist.h"
 #include "portlist.h"
 #include "bridgelist.h"
 #include "roadlist.h"
@@ -477,11 +478,14 @@ void BigMap::draw_stack(Stack *s)
   int tilesize = GameMap::getInstance()->getTileSet()->getTileSize();
   Vector<int> p = s->getPos();
   Player *player = s->getPlayer();
+  int army_tilesize;
 
   // check if the object lies in the viewed part of the map
   // otherwise we shouldn't draw it
   if (is_inside(buffer_view, p) && !s->getDeleting())
     {
+      Armysetlist *al = Armysetlist::getInstance();
+      army_tilesize = al->getTileSize(player->getArmyset());
       if (s->empty())
 	{
 	  std::cerr << "WARNING: empty stack found" << std::endl;
@@ -493,17 +497,20 @@ void BigMap::draw_stack(Stack *s)
       // draw stack
 		
       SDL_Rect r;
-      r.x = p.x + 6;
+      r.x = p.x + 6; //ensure we leave room for the flag
       r.y = p.y + 6;
-      r.w = r.h = 54;
 
       bool show_army = true;
       if (s->hasShip())
-	SDL_BlitSurface(gc->getShipPic(player), 0, buffer, &r);
+	{
+	  r.w = r.h = army_tilesize;
+	  SDL_BlitSurface(gc->getShipPic(player), 0, buffer, &r);
+	}
       else
 	{
 	  if (s->getFortified() == true)
 	    {
+	      r.w = r.h = tilesize;
 	      if (player->getStacklist()->getActivestack() != s &&
 		  player == Playerlist::getActiveplayer())
 		show_army = false;
@@ -518,6 +525,7 @@ void BigMap::draw_stack(Stack *s)
 		      
 	  if (show_army == true)
 	    {
+	      r.w = r.h = army_tilesize;
 	      Army *a = *s->begin();
 	      SDL_BlitSurface(a->getPixmap(), 0, buffer, &r);
 	    }
@@ -600,12 +608,15 @@ void BigMap::draw_buffer()
 		Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
                 if (standard_planted && flag)
                 {
+		    Armysetlist *al = Armysetlist::getInstance();
+		    Player *player = flag->getPlantableOwner();
+		    int army_tilesize = al->getTileSize(player->getArmyset());
 		    SDL_Rect r;
-		    r.x = p.x+(tilesize-54);
-		    r.y = p.y+(tilesize-54);
-		    r.w = r.h = 54;
+		    r.x = p.x+((tilesize/2)-(army_tilesize/2));
+		    r.y = p.y+((tilesize/2)-(army_tilesize/2));
+		    r.w = r.h = army_tilesize;
                     SDL_Surface *surf;
-                    surf = gc->getPlantedStandardPic(flag->getPlantableOwner());
+                    surf = gc->getPlantedStandardPic(player);
 		    SDL_BlitSurface(surf, 0, buffer,&r);
                 }
                 else
