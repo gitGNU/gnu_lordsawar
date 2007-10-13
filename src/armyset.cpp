@@ -34,6 +34,8 @@ Armyset::Armyset(Uint32 id, std::string name)
 {
   d_ship = NULL;
   d_shipmask = NULL;
+  d_standard = NULL;
+  d_standard_mask = NULL;
 }
 
 Armyset::Armyset(XML_Helper *helper)
@@ -41,6 +43,8 @@ Armyset::Armyset(XML_Helper *helper)
 {
   d_ship = NULL;
   d_shipmask = NULL;
+  d_standard = NULL;
+  d_standard_mask = NULL;
   helper->getData(d_id, "id");
   helper->getData(d_name, "name");
   helper->getData(d_tilesize, "tilesize");
@@ -209,9 +213,13 @@ void Armyset::loadStandardPic()
   standrect.y = 0;
   standrect.w = standrect.h = size;
   SDL_BlitSurface(standpic, &standrect, tmp, 0);
+  if (d_standard)
+    SDL_FreeSurface(d_standard);
   d_standard = SDL_DisplayFormatAlpha(tmp);
   SDL_FreeSurface(tmp);
 
+  if (d_standard_mask)
+    SDL_FreeSurface(d_standard_mask);
   d_standard_mask = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32, 
 					 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
   standrect.x = size;
