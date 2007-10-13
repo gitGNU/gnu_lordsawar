@@ -1877,7 +1877,7 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
   if (gold == 0)
     {
       SDL_Surface *s
-	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
+	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
       Glib::RefPtr<Gdk::Pixbuf> empty_pic
 	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
       empty_pic->fill(0x00000000);
@@ -1887,7 +1887,7 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
   else
     {
       Glib::RefPtr<Gdk::Pixbuf> pic;
-      pic = to_pixbuf(gc->getArmyPic(as, pillaged_army_type, player, 1, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, pillaged_army_type, player, NULL));
       pillaged_army_type_image->set(pic);
       pillaged_army_type_cost_label->set_text(String::ucompose("%1 gp", gold));
     }
@@ -1949,7 +1949,7 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<Uint32> sacked_t
 
   Glib::RefPtr<Gdk::Pixbuf> pic;
   SDL_Surface *surf
-    = GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
+    = GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
   Glib::RefPtr<Gdk::Pixbuf> empty_pic
     = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, surf->w, surf->h);
   empty_pic->fill(0x00000000);
@@ -1973,7 +1973,7 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<Uint32> sacked_t
 	  sack_image = sacked_army_3_image;
 	  break;
 	}
-      pic = to_pixbuf(gc->getArmyPic(as, *it, player, 1, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, *it, player, NULL));
       sack_image->set(pic);
       const Army *a = 
 	Armysetlist::getInstance()->getArmy (player->getArmyset(), *it);

@@ -45,8 +45,8 @@ class City;
   * images has popped up. The player colors are implemented by taking an army
   * picture and a mask, with the mask being a 16 color image, substituting
   * the colors in the mask and blitting the mask over the army (or e.g. city)
-  * image. This takes several blits (>3, there are also things like medals and
-  * level of the unit to be considered) and is therefore costly.
+  * image. This takes several blits (>3, there are also things like medals 
+  * to be considered) and is therefore costly.
   *
   * This class approaches this problem by caching formatted images. You get
   * e.g. an army image by querying the cache, which either gives you the cached
@@ -110,11 +110,10 @@ class GraphicsCache
           * @param armyset      the armyset to be used
           * @param army         the index of the army to be used
           * @param player       the player owning the army
-          * @param level        the level of the unit
           * @return the image of the unit
           */
         SDL_Surface* getArmyPic(Uint32 armyset, Uint32 army, const Player* p,
-                                int level, const bool* medals);
+                                const bool* medals);
 
         SDL_Surface* getTemplePic(int type);
         /** Function for getting a temple picture
@@ -274,7 +273,7 @@ class GraphicsCache
 
         //! Creates a new army picture with the given parameters.
         ArmyCacheItem* addArmyPic(Uint32 armyset, Uint32 army, const Player* p,
-                                  int level, const bool* medalsbonus);
+                                  const bool* medalsbonus);
 
         //! Creates a new city picture with the given parameters.
         CityCacheItem* addCityPic(int type, const Player* p);
@@ -415,7 +414,6 @@ class GraphicsCache
         std::list<PlantedStandardCacheItem*> d_plantedstandardlist;
 
         //some private surfaces
-        SDL_Surface* d_levelmask;
         SDL_Surface* d_medalsmask;
         SDL_Surface* d_citypic[MAX_PLAYERS + 1]; //+1 for neutral
         SDL_Surface* d_towerpic[MAX_PLAYERS];

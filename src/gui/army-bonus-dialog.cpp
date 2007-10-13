@@ -88,7 +88,7 @@ void ArmyBonusDialog::addArmyType(Uint32 army_type)
     (*i)[armies_columns.name] = a->getName();
     (*i)[armies_columns.image] = to_pixbuf(gc->getArmyPic(p->getArmyset(),
                                            army_type,
-                                           p, 1, NULL));
+                                           p, NULL));
     (*i)[armies_columns.str] = a->getStat(Army::STRENGTH, false);
     (*i)[armies_columns.move] = a->getStat(Army::MOVES, false);
     Uint32 b = a->getStat(Army::MOVE_BONUS, false);

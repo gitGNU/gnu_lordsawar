@@ -248,7 +248,7 @@ void EditorBigMap::after_draw()
 	case STACK:
 	    pic = GraphicsCache::getInstance()->getArmyPic(
 		Playerlist::getInstance()->getNeutral()->getArmyset(), 0,
-		Playerlist::getInstance()->getNeutral(), 1, NULL);
+		Playerlist::getInstance()->getNeutral(), NULL);
 	    SDL_BlitSurface(pic, 0, buffer, &r);
 	    break;
 	    

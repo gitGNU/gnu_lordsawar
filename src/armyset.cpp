@@ -28,16 +28,18 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
+#define DEFAULT_ARMY_TILE_SIZE 40
 Armyset::Armyset(Uint32 id, std::string name)
-	: d_id(id), d_name(name), d_dir("")
+	: d_id(id), d_name(name), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE)
 {
 }
 
 Armyset::Armyset(XML_Helper *helper)
-    : d_id(0), d_name(""), d_dir("")
+    : d_id(0), d_name(""), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE)
 {
   helper->getData(d_id, "id");
   helper->getData(d_name, "name");
+  helper->getData(d_tilesize, "tilesize");
   helper->registerTag("army", sigc::mem_fun((*this), 
 					      &Armyset::loadArmyTemplate));
 }
@@ -57,7 +59,6 @@ void Armyset::instantiatePixmaps()
 
 bool Armyset::instantiatePixmap(Army *a)
 {
-    static int armysize = 54;   // army pic has this size
     std::string s;
 
     if (a->getImageName() == "")
@@ -80,11 +81,13 @@ bool Armyset::instantiatePixmap(Army *a)
     SDL_PixelFormat* fmt = pic->format;
 
     // mask out the army image 
-    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, armysize, armysize,
-                fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, 
+					    d_tilesize, d_tilesize,
+					    fmt->BitsPerPixel, fmt->Rmask, 
+					    fmt->Gmask, fmt->Bmask, fmt->Amask);
     SDL_Rect r;
     r.x = r.y = 0;
-    r.w = r.h = armysize;
+    r.w = r.h = d_tilesize;
     SDL_BlitSurface(pic, &r, tmp, 0);
 
     SDL_Surface* pixmap = SDL_DisplayFormatAlpha(tmp);
@@ -92,12 +95,12 @@ bool Armyset::instantiatePixmap(Army *a)
 
     SDL_FreeSurface(tmp);
 
-    // now extract the mask; it should have a certain data format since the player
-    // colors are applied by modifying the RGB shifts
-    tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, armysize, armysize, 32,
+    // now extract the mask; it should have a certain data format since the 
+    // player colors are applied by modifying the RGB shifts
+    tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, d_tilesize, d_tilesize, 32,
                                0xFF000000, 0xFF0000, 0xFF00, 0xFF);
 
-    r.x = armysize;
+    r.x = d_tilesize;
     SDL_BlitSurface(pic, &r, tmp, 0);
     a->setMask(tmp);
 
@@ -127,7 +130,7 @@ bool Armyset::save(XML_Helper* helper)
 
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("name", d_name);
-    retval &= helper->saveData("size", size());
+    retval &= helper->saveData("tilesize", d_tilesize);
 
     for (const_iterator it = begin(); it != end(); it++)
         (*it)->save(helper, Army::TYPE);

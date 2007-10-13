@@ -39,7 +39,6 @@ struct ArmyCacheItem
     Uint32 armyset;
     Uint32 index;
     const Player* player;
-    int level;
     bool medals[3];
     SDL_Surface* surface;
 };
@@ -186,7 +185,6 @@ GraphicsCache::GraphicsCache()
     loadProdShields();
     loadMoveBonusPics();
 
-    d_levelmask = File::getMiscPicture("level_mask.png");
     d_medalsmask = File::getMiscPicture("medals_mask.gif");
     d_smallruinedcity = File::getMiscPicture("smallruinedcity.png");
     d_smallhero = File::getMiscPicture("hero.png");
@@ -255,7 +253,6 @@ GraphicsCache::~GraphicsCache()
         SDL_FreeSurface(d_movebonuspic[i]);
     }
 
-    SDL_FreeSurface(d_levelmask);
     SDL_FreeSurface(d_medalsmask);
     SDL_FreeSurface(d_smallruinedcity);
     SDL_FreeSurface(d_smallhero);
@@ -395,7 +392,7 @@ SDL_Surface* GraphicsCache::getPlantedStandardPic(const Player* p)
 }
 
 SDL_Surface* GraphicsCache::getArmyPic(Uint32 armyset, Uint32 army, const Player* p,
-                                       int level, const bool *medals)
+                                       const bool *medals)
 {
     debug("getting army pic " <<armyset <<" " <<army <<" " <<p->getName())
 
@@ -416,7 +413,7 @@ SDL_Surface* GraphicsCache::getArmyPic(Uint32 armyset, Uint32 army, const Player
     for (it =d_armylist.begin(); it != d_armylist.end(); it++)
     {
         if (((*it)->armyset == armyset) && ((*it)->index == army)
-            && ((*it)->player ==p) && ((*it)->level==level) 
+            && ((*it)->player ==p)
             && ((*it)->medals[0]==my_medals[0])
             && ((*it)->medals[1]==my_medals[1])
             && ((*it)->medals[2]==my_medals[2]))
@@ -434,7 +431,7 @@ SDL_Surface* GraphicsCache::getArmyPic(Uint32 armyset, Uint32 army, const Player
     // We are still here, so the graphic is not in the cache. addArmyPic calls
     // checkPictures on its own, so we can simply return the surface
     debug("getarmypic============= " << my_medals) 
-    myitem = addArmyPic(armyset, army, p, level, my_medals);
+    myitem = addArmyPic(armyset, army, p, my_medals);
 
     return myitem->surface;
 }
@@ -860,7 +857,8 @@ void GraphicsCache::checkPictures()
 }
 
 ArmyCacheItem* GraphicsCache::addArmyPic(Uint32 armyset, Uint32 army,
-					 const Player* p, int level, const bool *medalsbonus)
+					 const Player* p, 
+					 const bool *medalsbonus)
 {
   debug("ADD army pic: " <<armyset <<"," <<army)
 
@@ -868,7 +866,6 @@ ArmyCacheItem* GraphicsCache::addArmyPic(Uint32 armyset, Uint32 army,
   myitem->armyset = armyset;
   myitem->index = army;
   myitem->player = p;
-  myitem->level = level;
   myitem->medals[0] = medalsbonus[0];
   myitem->medals[1] = medalsbonus[1];
   myitem->medals[2] = medalsbonus[2];
@@ -879,38 +876,6 @@ ArmyCacheItem* GraphicsCache::addArmyPic(Uint32 armyset, Uint32 army,
 
   // copy the pixmap including player colors
   myitem->surface = applyMask(basearmy->getPixmap(), basearmy->getMask(), p);
-
-  if (level > 1 && d_levelmask)
-    {
-      SDL_Surface* mask = SDL_CreateRGBSurface(SDL_SWSURFACE, 40, 40,
-					       d_levelmask->format->BitsPerPixel,0,0,0,0);
-      // a little hack while waiting for a complete level picture
-      if (level<26) 
-	{
-	  SDL_Rect r;
-	  r.x = 40*(level-2);
-	  r.y = 0;
-	  r.w = r.h = 40;
-	  SDL_BlitSurface(d_levelmask, &r, mask, 0);
-	}
-      else 
-	{
-	  SDL_Rect r;
-	  r.x = 160;
-	  r.y = 0;
-	  r.w = r.h = 40;
-	  SDL_BlitSurface(d_levelmask, &r, mask, 0);
-	}
-
-      //set the first pixel as alpha value
-      SDL_SetColorKey(mask, SDL_SRCCOLORKEY, 0);
-
-      //blit mask over the army pic
-      SDL_BlitSurface(mask,0, myitem->surface, 0);
-
-      //free the temporary surface
-      SDL_FreeSurface(mask);
-    }
 
   if (d_medalsmask && medalsbonus != NULL)
     {
@@ -1628,13 +1593,14 @@ void GraphicsCache::loadTemplePics()
       SDL_PixelFormat* fmt = templepics->format;
 
       tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
-				 fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+				 fmt->Rmask, fmt->Gmask, 
+				 fmt->Bmask, fmt->Amask);
 
       SDL_Rect r;
       r.x = i*ts;
       r.y = 0;
       r.w = r.h = ts;
-      SDL_BlitSurface(templepics, &r, tmp, 0);
+      SDL_BlitSurface(templepics, &r, tmp, NULL);
 
       d_templepic[i] = SDL_DisplayFormatAlpha(tmp);
 

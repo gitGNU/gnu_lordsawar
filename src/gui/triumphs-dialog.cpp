@@ -119,7 +119,7 @@ void TriumphsDialog::fill_in_page(Player *p)
 	}
     }
   Gtk::Image *hero_image = new Gtk::Image
-    (to_pixbuf(gc->getArmyPic(p->getArmyset(), hero->getType(), p, 1, NULL)));
+    (to_pixbuf(gc->getArmyPic(p->getArmyset(), hero->getType(), p, NULL)));
   Gtk::HBox *hero_hbox = new Gtk::HBox();
   hero_hbox->pack_start(*manage(hero_image), Gtk::PACK_SHRINK, 10);
   hero_hbox->pack_start(*manage(hero_label), Gtk::PACK_SHRINK, 10);
@@ -150,7 +150,7 @@ void TriumphsDialog::fill_in_page(Player *p)
 				   count), count);
   Gtk::Label *normal_label = new Gtk::Label(s);
   Gtk::Image *normal_image = new Gtk::Image
-    (to_pixbuf(gc->getArmyPic(p->getArmyset(), 0, p, 1, NULL)));
+    (to_pixbuf(gc->getArmyPic(p->getArmyset(), 0, p, NULL)));
   Gtk::HBox *normal_hbox = new Gtk::HBox();
   normal_hbox->pack_start(*manage(normal_image), Gtk::PACK_SHRINK, 10);
   normal_hbox->pack_start(*manage(normal_label), Gtk::PACK_SHRINK, 10);
@@ -179,7 +179,7 @@ void TriumphsDialog::fill_in_page(Player *p)
     }
   Gtk::Image *special_image = new Gtk::Image
     (to_pixbuf(gc->getArmyPic(p->getArmyset(), 
-			      special->getType(), p, 1, NULL)));
+			      special->getType(), p, NULL)));
   Gtk::HBox *special_hbox = new Gtk::HBox();
   special_hbox->pack_start(*manage(special_image), Gtk::PACK_SHRINK, 10);
   special_hbox->pack_start(*manage(special_label), Gtk::PACK_SHRINK, 10);

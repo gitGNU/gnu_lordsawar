@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <armyset version="0.2">
-    <d_size>28</d_size>
     <d_name>Default</d_name>
     <d_id>1</d_id>
+    <d_tilesize>54</d_tilesize>
     <army>
         <d_name>Scouts</d_name>
         <d_image>scouts</d_image>

@@ -9,7 +9,6 @@ various_DATA = \
     buttons_inactive.png \
     city_occupied.jpg \
     items.png \
-    level_mask.png \
     medals_mask.gif \
     ship.jpg \
     recruit_female.png \
@@ -49,7 +48,6 @@ EXTRA_DIST = \
     buttons_inactive.png \
     city_occupied.jpg \
     items.png \
-    level_mask.png \
     medals_mask.gif \
     ship.jpg \
     recruit_female.png \

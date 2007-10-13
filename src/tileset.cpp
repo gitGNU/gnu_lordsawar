@@ -96,8 +96,10 @@ void TileSet::createTiles(Tile* tile, int row)
 
     const SDL_Surface* screen = SDL_GetVideoSurface();
     SDL_PixelFormat* fmt = screen->format;
-    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_HWSURFACE, 32, 32, fmt->BitsPerPixel,
-                    fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_HWSURFACE, d_tileSize / 2, 
+					    d_tileSize / 2, fmt->BitsPerPixel,
+					    fmt->Rmask, fmt->Gmask, 
+					    fmt->Bmask, fmt->Amask);
     
     for (int i=0; i < 8; i++)
     {

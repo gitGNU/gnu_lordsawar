@@ -209,7 +209,7 @@ SDL_Surface* Army::getPixmap() const
     
     //use the GraphicsCache to get a picture of the army's armyset_army
     return GraphicsCache::getInstance()->getArmyPic(d_armyset, d_type,
-                                         d_player, d_level, d_medal_bonus);
+                                         d_player, d_medal_bonus);
 }
 
 Uint32 Army::getStat(Stat stat, bool modified) const

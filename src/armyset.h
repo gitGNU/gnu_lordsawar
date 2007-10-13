@@ -39,6 +39,7 @@ class Armyset: public std::list<Army *>, public sigc::trackable
           *         have a size of 0)
           */
         Uint32 getSize() const {return size();}
+        Uint32 getTileSize() const {return d_tilesize;}
         Uint32 getId() const {return d_id;}
         void setId(Uint32 id) {d_id = id;} //for editor only
 
@@ -64,6 +65,7 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 	bool instantiatePixmap(Army *a);
         
         Uint32 d_id;
+	Uint32 d_tilesize;
         std::string d_name;
         std::string d_dir;
 };

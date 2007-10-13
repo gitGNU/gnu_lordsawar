@@ -179,7 +179,7 @@ void DestinationDialog::fill_in_vectoring_info()
   GraphicsCache *gc = GraphicsCache::getInstance();
   int slot = city->getProductionIndex();
   SDL_Surface *s
-    = GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
+    = GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
   Glib::RefPtr<Gdk::Pixbuf> empty_pic
     = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
   empty_pic->fill(0x00000000);
@@ -209,7 +209,7 @@ void DestinationDialog::fill_in_vectoring_info()
   else
     {
       const Army* a = city->getArmy(slot);
-      pic = to_pixbuf(gc->getArmyPic(as, a->getType(), player, 1, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, a->getType(), player, NULL));
       s1 = String::ucompose(_("%1t"), city->getDuration());
       turns_label->set_markup("<i>" + s1 + "</i>");
     }
@@ -224,12 +224,12 @@ void DestinationDialog::fill_in_vectoring_info()
       int armytype = (*it)->getArmy()->getType();
       if ((*it)->getDuration() == 2)
         {
-          pic = to_pixbuf(gc->getArmyPic(as, armytype, player, 1, NULL));
+          pic = to_pixbuf(gc->getArmyPic(as, armytype, player, NULL));
           one_turn_away_image->set(pic);
         }
       else if ((*it)->getDuration() == 1)
         {
-          pic = to_pixbuf(gc->getArmyPic(as, armytype, player, 1, NULL));
+          pic = to_pixbuf(gc->getArmyPic(as, armytype, player, NULL));
           two_turns_away_image->set(pic);
         }
     }
@@ -251,7 +251,7 @@ void DestinationDialog::fill_in_vectoring_info()
           case 2: image = next_turn_3_image; break;
           case 3: image = next_turn_4_image; break;
         }
-      pic = to_pixbuf(gc->getArmyPic(as, (*it)->getArmy()->getType(), player, 1, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, (*it)->getArmy()->getType(), player, NULL));
       image->set(pic);
       count++;
     }
@@ -267,7 +267,7 @@ void DestinationDialog::fill_in_vectoring_info()
           case 2: image = turn_after_3_image; break;
           case 3: image = turn_after_4_image; break;
         }
-      pic = to_pixbuf(gc->getArmyPic(as, (*it)->getArmy()->getType(), player, 1, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, (*it)->getArmy()->getType(), player, NULL));
       image->set(pic);
       count++;
     }

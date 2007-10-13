@@ -166,7 +166,7 @@ void CityWindow::fill_in_production_toggles()
     GraphicsCache *gc = GraphicsCache::getInstance();
 
     SDL_Surface *s
-	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
+	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
     Glib::RefPtr<Gdk::Pixbuf> empty_pic
 	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
     empty_pic->fill(0x00000000);
@@ -181,7 +181,7 @@ void CityWindow::fill_in_production_toggles()
         if (type != -1)
             // use GraphicsCache to load army pics because of player-specific
             // colors
-            pic = to_pixbuf(gc->getArmyPic(as, type, player, 1, NULL));
+            pic = to_pixbuf(gc->getArmyPic(as, type, player, NULL));
 	else
 	    pic = empty_pic;
 	
@@ -237,7 +237,7 @@ void CityWindow::fill_in_production_info()
     GraphicsCache *gc = GraphicsCache::getInstance();
     int slot = city->getProductionIndex();
     SDL_Surface *s
-	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, 1, NULL);
+	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
     Glib::RefPtr<Gdk::Pixbuf> empty_pic
 	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
     empty_pic->fill(0x00000000);
@@ -283,7 +283,7 @@ void CityWindow::fill_in_production_info()
             s3 += String::ucompose(_(", then to %1"), 
                                    dest ? dest->getName() : "Standard");
           }
-      pic = to_pixbuf(gc->getArmyPic(as, a->getType(), player, 1, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, a->getType(), player, NULL));
     }
     
     current_image->set(pic);

@@ -73,8 +73,7 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf
 	    = to_pixbuf(gc->getArmyPic(p->getArmyset(),
-                                       purchasables[i]->getType(),
-                                       p, 1, NULL));
+                                       purchasables[i]->getType(), p, NULL));
 	
 	toggle->add(*manage(new Gtk::Image(pixbuf)));
 	production_toggles.push_back(toggle);
