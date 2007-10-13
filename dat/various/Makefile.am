@@ -39,7 +39,11 @@ various_DATA = \
     smallexploredruin.png \
     smalltemple.png \
     plantedstandard.png \
-    cursors.png
+    cursors.png \
+    smallupkeep.png \
+    smallincome.png \
+    smalltreasury.png \
+    smallcity.png
 
 EXTRA_DIST = \
     arrows.png \
@@ -77,4 +81,8 @@ EXTRA_DIST = \
     smallexploredruin.png \
     smalltemple.png \
     plantedstandard.png \
-    cursors.png
+    cursors.png \
+    smallupkeep.png \
+    smallincome.png \
+    smalltreasury.png \
+    smallcity.png

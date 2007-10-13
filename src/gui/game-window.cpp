@@ -147,13 +147,13 @@ GameWindow::GameWindow()
     stats_text = stats_label->get_text();
     Gtk::Image *image;
     xml->get_widget("cities_stats_image", image);
-    image->property_file() = File::getMiscFile("various/items.png");
+    image->property_file() = File::getMiscFile("various/smallcity.png");
     xml->get_widget("gold_stats_image", image);
-    image->property_file() = File::getMiscFile("various/items.png");
+    image->property_file() = File::getMiscFile("various/smalltreasury.png");
     xml->get_widget("income_stats_image", image);
-    image->property_file() = File::getMiscFile("various/items.png");
+    image->property_file() = File::getMiscFile("various/smallincome.png");
     xml->get_widget("upkeep_stats_image", image);
-    image->property_file() = File::getMiscFile("various/items.png");
+    image->property_file() = File::getMiscFile("various/smallupkeep.png");
     
     xml->get_widget("cities_stats_label", cities_stats_label);
     xml->get_widget("gold_stats_label", gold_stats_label);
