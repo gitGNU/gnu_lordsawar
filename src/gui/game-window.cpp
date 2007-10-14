@@ -1288,7 +1288,7 @@ void GameWindow::fill_in_group_info (Stack *s)
   GraphicsCache *gc = GraphicsCache::getInstance();
   SDL_Surface *terrain = gc->getMoveBonusPic(bonus, s->hasShip());
   terrain_image->property_pixbuf() = to_pixbuf(terrain);
-  group_moves_label->set_text(String::ucompose(_("Group\nMoves\n%1"),
+  group_moves_label->set_text(String::ucompose("%1",
 					       s->getGroupMoves()));
   group_ungroup_toggle->set_active(s->isGrouped());
 }
