@@ -328,6 +328,13 @@ void Game::park_selected_stack()
     unselect_active_stack();
 }
 
+void Game::deselect_selected_stack()
+{
+  Player *player = Playerlist::getActiveplayer();
+  player->getStacklist()->setActivestack(0);
+  unselect_active_stack();
+}
+
 void Game::center_selected_stack()
 {
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
@@ -670,6 +677,7 @@ void Game::update_control_panel()
       can_center_selected_stack.emit(false);
       can_defend_selected_stack.emit(false);
       can_park_selected_stack.emit(false);
+      can_deselect_selected_stack.emit(false);
       can_search_selected_stack.emit(false);
       can_inspect_selected_stack.emit(false);
       can_plant_standard_selected_stack.emit(false);
@@ -713,6 +721,7 @@ void Game::update_control_panel()
 
   can_defend_selected_stack.emit(stack != 0);
   can_park_selected_stack.emit(stack != 0);
+  can_deselect_selected_stack.emit(stack != 0);
   can_center_selected_stack.emit(stack != 0);
 
   if (stack)

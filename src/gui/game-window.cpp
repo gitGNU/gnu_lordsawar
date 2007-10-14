@@ -173,6 +173,7 @@ GameWindow::GameWindow()
     xml->get_widget("center_button", center_button);
     xml->get_widget("defend_button", defend_button);
     xml->get_widget("park_button", park_button);
+    xml->get_widget("deselect_button", deselect_button);
     xml->get_widget("search_button", search_button);
     xml->get_widget("move_button", move_button);
     xml->get_widget("move_all_button", move_all_button);
@@ -185,6 +186,7 @@ GameWindow::GameWindow()
     center_button->add(*manage(new Gtk::Image(button_images[5])));
     defend_button->add(*manage(new Gtk::Image(button_images[6])));
     park_button->add(*manage(new Gtk::Image(button_images[1])));
+    deselect_button->add(*manage(new Gtk::Image(button_images[7])));
     search_button->add(*manage(new Gtk::Image(button_images[9])));
     move_button->add(*manage(new Gtk::Image(button_images[3])));
     move_all_button->add(*manage(new Gtk::Image(button_images[4])));
@@ -264,6 +266,7 @@ void GameWindow::show()
     center_button->show_all();
     defend_button->show_all();
     park_button->show_all();
+    deselect_button->show_all();
     search_button->show_all();
     move_button->show_all();
     move_all_button->show_all();
@@ -444,6 +447,9 @@ void GameWindow::setup_signals()
   setup_button(park_button,
 	       sigc::mem_fun(game.get(), &Game::park_selected_stack),
 	       game->can_park_selected_stack);
+  setup_button(deselect_button,
+	       sigc::mem_fun(game.get(), &Game::deselect_selected_stack),
+	       game->can_deselect_selected_stack);
   setup_button(search_button,
 	       sigc::mem_fun(game.get(), &Game::search_selected_stack),
 	       game->can_search_selected_stack);

@@ -129,6 +129,7 @@ class GameWindow: public sigc::trackable
     Gtk::Button *center_button;
     Gtk::Button *defend_button;
     Gtk::Button *park_button;
+    Gtk::Button *deselect_button;
     Gtk::Button *search_button;
     Gtk::Button *move_button;
     Gtk::Button *move_all_button;

@@ -64,6 +64,7 @@ class Game
     void center_selected_stack();
     void defend_selected_stack();
     void park_selected_stack();
+    void deselect_selected_stack();
     void search_selected_stack();
     void move_selected_stack();
     void move_all_stacks();
@@ -87,6 +88,7 @@ class Game
 	can_center_selected_stack,
 	can_defend_selected_stack,
 	can_park_selected_stack,
+	can_deselect_selected_stack,
 	can_search_selected_stack,
 	can_inspect_selected_stack,
 	can_plant_standard_selected_stack,
