@@ -45,6 +45,7 @@ class NewMapDialog
 	int grass, water, swamp, forest, hills, mountains;
 	int cities, ruins, temples;
 	int signposts;
+	std::string tileset;
     };
 
     Map map;
@@ -57,6 +58,7 @@ class NewMapDialog
     Gtk::ComboBox *map_size_combobox;
     Gtk::ComboBoxText *fill_style_combobox;
     Gtk::Widget *random_map_container;
+    Gtk::ComboBoxText *tile_theme_combobox;
     Gtk::Scale *grass_scale;
     Gtk::Scale *water_scale;
     Gtk::Scale *swamp_scale;

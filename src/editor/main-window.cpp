@@ -296,18 +296,18 @@ bool MainWindow::on_delete_event(GdkEventAny *e)
 
 void MainWindow::show_initial_map()
 {
-    set_filled_map(112, 156, Tile::GRASS);
+    set_filled_map(112, 156, Tile::GRASS, "default");
     setup_terrain_radiobuttons();
 }
 
-void MainWindow::set_filled_map(int width, int height, int fill_style)
+void MainWindow::set_filled_map(int width, int height, int fill_style, std::string tileset)
 {
     clear_map_state();
 
     GameMap::deleteInstance();
     GameMap::setWidth(width);
     GameMap::setHeight(height);
-    GameMap::getInstance("default");
+    GameMap::getInstance(tileset);
 
     // sets up the lists
     game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
@@ -343,14 +343,14 @@ void MainWindow::set_random_map(int width, int height,
 				int grass, int water, int swamp, int forest,
 				int hills, int mountains,
 				int cities, int ruins, int temples,
-				int signposts)
+				int signposts, std::string tileset)
 {
     clear_map_state();
 
     GameMap::deleteInstance();
     GameMap::setWidth(width);
     GameMap::setHeight(height);
-    GameMap::getInstance("default");
+    GameMap::getInstance(tileset);
 
     //zip past the player IDs
     if (fl_counter)
@@ -544,9 +544,11 @@ void MainWindow::on_new_map_activated()
 	    set_random_map(d.map.width, d.map.height,
 			   d.map.grass, d.map.water, d.map.swamp, d.map.forest,
 			   d.map.hills, d.map.mountains,
-			   d.map.cities, d.map.ruins, d.map.temples, d.map.signposts);
+			   d.map.cities, d.map.ruins, d.map.temples, 
+			   d.map.signposts, d.map.tileset);
 	else
-	    set_filled_map(d.map.width, d.map.height, d.map.fill_style);
+	    set_filled_map(d.map.width, d.map.height, d.map.fill_style, 
+			   d.map.tileset);
     }
 }
 

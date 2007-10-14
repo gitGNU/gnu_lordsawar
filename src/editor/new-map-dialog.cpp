@@ -25,6 +25,7 @@
 #include "../defs.h"
 #include "../File.h"
 #include "../tileset.h"
+#include "../tilesetlist.h"
 #include "../GameMap.h"
 
 
@@ -51,6 +52,21 @@ NewMapDialog::NewMapDialog()
     xml->get_widget("ruins_scale", ruins_scale);
     xml->get_widget("temples_scale", temples_scale);
     xml->get_widget("signposts_scale", signposts_scale);
+    // fill in tile themes combobox
+    tile_theme_combobox = manage(new Gtk::ComboBoxText);
+    
+    Tilesetlist *tl = Tilesetlist::getInstance();
+    std::list<std::string> tile_themes = tl->getNames();
+    for (std::list<std::string>::iterator i = tile_themes.begin(),
+	     end = tile_themes.end(); i != end; ++i)
+	tile_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+
+    tile_theme_combobox->set_active(0);
+
+    Gtk::Box *tile_set_box;
+    xml->get_widget("tile_set_box", tile_set_box);
+    tile_set_box->pack_start(*tile_theme_combobox, Gtk::PACK_SHRINK);
+
 
     // create fill style combobox
     fill_style_combobox = manage(new Gtk::ComboBoxText);
@@ -116,6 +132,9 @@ void NewMapDialog::run()
 	int row = fill_style_combobox->get_active_row_number();
 	assert(row >= 0 && row < int(fill_style.size()));
 	map.fill_style = fill_style[row];
+
+	map.tileset = Tilesetlist::getInstance()->getTilesetDir
+	  (Glib::filename_from_utf8(tile_theme_combobox->get_active_text()));
 
 	if (map.fill_style == -1)
 	{
