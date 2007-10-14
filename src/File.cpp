@@ -110,11 +110,11 @@ std::list<std::string> File::scanArmysets()
 {
     string path = Configuration::s_dataPath + "/army/";
 
-    std::list<std::string> retlist = get_xml_files(path);
+    std::list<std::string> retlist = get_xml_files_in_immediate_subdirs(path);
 
     if (retlist.empty())
     {
-        cerr << _("Couldn't find a single armyset!") << endl;
+        cerr << _("Couldn't find any armysets!") << endl;
         cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
         cerr << _("Exiting!") << endl;
         exit(-1);
@@ -126,7 +126,8 @@ std::list<std::string> File::scanArmysets()
 
 string File::getArmyset(string armysetname)
 {
-    return Configuration::s_dataPath + "/army/" + armysetname + ".xml";
+    return Configuration::s_dataPath + "/army/" + armysetname + "/" + 
+      armysetname + ".xml";
 }
 
 SDL_Surface* File::getArmyPicture(string armysetname, string pic)
@@ -212,7 +213,7 @@ list<string> File::scanTilesets()
     
     if (retlist.empty())
     {
-        cerr << _("Couldn't find a single tileset!") << endl;
+        cerr << _("Couldn't find any tilesets!") << endl;
         cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
         cerr << _("Exiting!") << endl;
         exit(-1);

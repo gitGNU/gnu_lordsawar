@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <armyset version="0.2">
-    <d_name>Small Default</d_name>
+    <d_name>Default</d_name>
     <d_id>2</d_id>
     <d_tilesize>40</d_tilesize>
     <army>
