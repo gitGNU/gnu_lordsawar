@@ -1,6 +1,8 @@
 2007-10-14  Ben Asselstine
 
 	* the editor can now change the scenario's tile theme
+	* tile object now contains a smallmap appearance component 
+	* moved army set xml files into the army set dir
 
 2007-10-13  Ben Asselstine
 
