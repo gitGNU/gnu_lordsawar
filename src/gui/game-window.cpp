@@ -143,8 +143,6 @@ GameWindow::GameWindow()
        (sigc::mem_fun(*this, &GameWindow::on_map_mouse_motion_event));
 
     // the stats
-    xml->get_widget("stats_label", stats_label);
-    stats_text = stats_label->get_text();
     Gtk::Image *image;
     xml->get_widget("cities_stats_image", image);
     image->property_file() = File::getMiscFile("various/smallcity.png");
@@ -1231,11 +1229,6 @@ void GameWindow::ensure_one_army_button_active()
 
 void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 {
-  Glib::ustring n = String::ucompose(stats_text, s.name, s.gold, s.income, 
-				     s.cities, s.units, s.upkeep);
-
-  stats_label->set_text(n);
-
   cities_stats_label->set_text(String::ucompose("%1", s.cities));
   gold_stats_label->set_text(String::ucompose("%1", s.gold));
   income_stats_label->set_text(String::ucompose("%1", s.income));

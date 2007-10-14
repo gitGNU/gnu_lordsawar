@@ -115,8 +115,6 @@ class GameWindow: public sigc::trackable
     Gtk::Image *terrain_image;
     Gtk::Box *stats_box;
     Gtk::Image *map_image;
-    Gtk::Label *stats_label;
-    Glib::ustring stats_text;	// the text into which the stats are inserted
 
     Gtk::Label *cities_stats_label;
     Gtk::Label *gold_stats_label;
