@@ -30,25 +30,6 @@ Tile::Tile(XML_Helper* helper)
     helper->getData(i, "type");
     d_type = static_cast<Tile::Type>(i);
 
-    helper->getData(i, "red");      d_color.r = i;
-    helper->getData(i, "green");    d_color.g = i;
-    helper->getData(i, "blue");     d_color.b = i;
-
-    helper->getData(i, "pattern");
-    d_pattern = static_cast<Tile::Pattern>(i);
-    
-    if (d_pattern != Tile::SOLID)
-      {
-        helper->getData(i, "2nd_red");      d_second_color.r = i;
-        helper->getData(i, "2nd_green");    d_second_color.g = i;
-        helper->getData(i, "2nd_blue");     d_second_color.b = i;
-        if (d_pattern != Tile::STIPPLED && d_pattern != Tile::SUNKEN)
-          {
-            helper->getData(i, "3rd_red");      d_third_color.r = i;
-            helper->getData(i, "3rd_green");    d_third_color.g = i;
-            helper->getData(i, "3rd_blue");     d_third_color.b = i;
-          }
-      }
 }
     
 Tile::~Tile()

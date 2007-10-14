@@ -32,6 +32,7 @@ TileSet::TileSet(XML_Helper *helper)
     helper->getData(d_info, "info");
     helper->getData(d_tileSize, "tilesize");
     helper->registerTag("tile", sigc::mem_fun((*this), &TileSet::loadTile));
+    helper->registerTag("smallmap", sigc::mem_fun((*this), &TileSet::loadTile));
 }
 
 TileSet::~TileSet()
@@ -75,15 +76,52 @@ SDL_Surface* TileSet::getDiagPic(int pic) const
     return 0;
 }
 
-bool TileSet::loadTile(string, XML_Helper* helper)
+bool TileSet::loadTile(string tag, XML_Helper* helper)
 {
     debug("loadTile()")
 
-    // create a new tile with the information we got
-    Tile* tile = new Tile(helper);
-    this->push_back(tile);
+    if (tag == "tile")
+      {
+	// create a new tile with the information we got
+	Tile* tile = new Tile(helper);
+	this->push_back(tile);
 
-    return true;
+	return true;
+      }
+
+    if (tag == "smallmap")
+      {
+	Uint32 i;
+	SDL_Color color;
+	color.unused = 0;
+	Tile *tile = this->back();
+	helper->getData(i, "red");      color.r = i;
+	helper->getData(i, "green");    color.g = i;
+	helper->getData(i, "blue");     color.b = i;
+	tile->setColor(color);
+
+	helper->getData(i, "pattern");
+	Tile::Pattern pattern = static_cast<Tile::Pattern>(i);
+	tile->setPattern(pattern);
+    
+	if (pattern != Tile::SOLID)
+	  {
+	    helper->getData(i, "2nd_red");      color.r = i;
+	    helper->getData(i, "2nd_green");    color.g = i;
+	    helper->getData(i, "2nd_blue");     color.b = i;
+	    tile->setSecondColor(color);
+	    if (pattern != Tile::STIPPLED && pattern != Tile::SUNKEN)
+	      {
+		helper->getData(i, "3rd_red");      color.r = i;
+		helper->getData(i, "3rd_green");    color.g = i;
+		helper->getData(i, "3rd_blue");     color.b = i;
+		tile->setThirdColor(color);
+	      }
+	  }
+	return true;
+      }
+
+    return false;
 }
 
 // createTiles creates all corners out of the 8 given tiles

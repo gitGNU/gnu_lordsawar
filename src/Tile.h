@@ -60,20 +60,28 @@ class Tile
 
         //! Get the color associated with this tile for the smallmap
         SDL_Color getColor() const {return d_color;}
+        //! Set the color associated with this tile for the smallmap
+	void setColor(SDL_Color clr) {d_color = clr;}
 
         //! Get the type (grass, hill,...) of this tile type
         Type getType() const {return d_type;}
                 
         //! Get the pattern (solid, stippled, random) of this type
         Pattern getPattern() const {return d_pattern;}
+        //! set the pattern (solid, stippled, random) of this type
+	void setPattern(Pattern pattern) {d_pattern = pattern;}
 
         //! Get the alternate color associated with this tile's pattern 
 	//!This "second" colour gets stippled, or randomized, or sunken
         SDL_Color getSecondColor() const {return d_second_color;}
+        //! set the alternate color associated with this tile's pattern 
+        void setSecondColor(SDL_Color color) {d_second_color = color;}
 
         //! Get another alternate color associated with this tile's pattern 
 	//!This "third" colour gets randomized, or sunken
         SDL_Color getThirdColor() const {return d_third_color;}
+        //! set another alternate color associated with this tile's pattern 
+        void setThirdColor(SDL_Color color) {d_third_color = color;}
 
     private:
         // DATA
