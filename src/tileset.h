@@ -74,7 +74,7 @@ class TileSet : public sigc::trackable, public std::vector<Tile*>
           * @param tile     the tile to be processed
           * @param row      the row for the tile images in the image file
           */
-        void createTiles(Tile* tile, int row);
+        void createCorners(Tile* tile, int row);
 
         // DATA
         std::string d_name;

@@ -54,7 +54,7 @@ void TileSet::instantiatePixmaps()
   d_nepic = File::getMapsetPicture(d_dir, "ne_bridge.png");
   d_nwpic = File::getMapsetPicture(d_dir, "nw_bridge.png");
   for (unsigned int i = 0; i < size(); i++)
-    createTiles((*this)[i], i);
+    createCorners((*this)[i], i);
 }
 
 Uint32 TileSet::getIndex(Tile::Type type) const
@@ -124,9 +124,9 @@ bool TileSet::loadTile(string tag, XML_Helper* helper)
     return false;
 }
 
-// createTiles creates all corners out of the 8 given tiles
+// createCorners creates all corners out of the 8 given tiles
 
-void TileSet::createTiles(Tile* tile, int row)
+void TileSet::createCorners(Tile* tile, int row)
 {
     SDL_Rect src;
     src.w = d_tileSize/2;

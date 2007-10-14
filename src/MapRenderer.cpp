@@ -166,28 +166,29 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 	    }
 	    else {
 		// get correct tile
-		Tile* type = (*map->getTileSet())[map->getTile(tileX,tileY)->getType()];
+		Maptile *mtile = map->getTile(tileX,tileY);
+		Tile* type = (*map->getTileSet())[mtile->getType()];
 
 		// render all 4 corners
 		r.x = drawX;
 		r.y = drawY;
-		int corner = map->getTile(tileX,tileY)->getCorner(0);
-		SDL_BlitSurface(type->getSurface(corner), 0, d_surface, &r);
+		int tlcorner = mtile->getCorner(0);
+		SDL_BlitSurface(type->getSurface(tlcorner), 0, d_surface, &r);
 
 		r.x = drawX+r.w;
 		r.y = drawY;
-		corner = map->getTile(tileX,tileY)->getCorner(1);
-		SDL_BlitSurface(type->getSurface(corner), 0, d_surface, &r);
+		int trcorner = mtile->getCorner(1);
+		SDL_BlitSurface(type->getSurface(trcorner), 0, d_surface, &r);
 
 		r.x = drawX;
 		r.y = drawY+r.h;
-		corner = map->getTile(tileX,tileY)->getCorner(2);
-		SDL_BlitSurface(type->getSurface(corner), 0, d_surface, &r);
+		int blcorner = mtile->getCorner(2);
+		SDL_BlitSurface(type->getSurface(blcorner), 0, d_surface, &r);
 
 		r.x = drawX + r.w;
 		r.y = drawY + r.h;
-		corner = map->getTile(tileX,tileY)->getCorner(3);
-		SDL_BlitSurface(type->getSurface(corner), 0, d_surface, &r);
+		int brcorner = mtile->getCorner(3);
+		SDL_BlitSurface(type->getSurface(brcorner), 0, d_surface, &r);
 	    }
 	    
             drawX += tilesize;
