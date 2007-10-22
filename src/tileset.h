@@ -60,29 +60,25 @@ class TileSet : public sigc::trackable, public std::vector<Tile*>
         //! Returns the index to standard terrain type
         Uint32 getIndex(Tile::Type type) const;
 
-        //! Return special pics; don't change them! pic == 0 for nw, 1 for ne.
-        SDL_Surface* getDiagPic(int pic) const;
-
 	void instantiatePixmaps();
+
+	//! Lookup tilestyle by it's id in this tileset
+	TileStyle *getTileStyle(Uint32 id) {return d_tilestyles[id];}
+
+	//! Lookup a random tile style
+	TileStyle *getRandomTileStyle(Uint32 index, TileStyle::Type style);
 
     private:
         //! Callback when the parser finds a tile tag. See XML_Helper for info.
         bool loadTile(std::string, XML_Helper* helper);
 
-        /** Fills the surfaces of a tile with data
-          * 
-          * @param tile     the tile to be processed
-          * @param row      the row for the tile images in the image file
-          */
-        void createCorners(Tile* tile, int row);
-
         // DATA
         std::string d_name;
         std::string d_info;
         int d_tileSize;
-        SDL_Surface* d_surface;
-        SDL_Surface* d_nepic, *d_nwpic;
         std::string d_dir;
+        typedef std::map<Uint32, TileStyle*> TileStyleIdMap;
+        TileStyleIdMap d_tilestyles;
 };
 
 #endif // TILESET_H

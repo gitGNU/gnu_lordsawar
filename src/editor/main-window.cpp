@@ -115,6 +115,8 @@ MainWindow::MainWindow()
 			      EditorBigMap::POINTER, 1);
     setup_pointer_radiobutton(xml, "draw_1", "button_1x1",
 			      EditorBigMap::TERRAIN, 1);
+    setup_pointer_radiobutton(xml, "draw_2", "button_2x2",
+			      EditorBigMap::TERRAIN, 2);
     setup_pointer_radiobutton(xml, "draw_3", "button_3x3",
 			      EditorBigMap::TERRAIN, 3);
     setup_pointer_radiobutton(xml, "draw_stack", "button_stack",
@@ -203,7 +205,7 @@ void MainWindow::setup_terrain_radiobuttons()
     TileSet *tset = GameMap::getInstance()->getTileSet();
     Gtk::RadioButton::Group group;
     bool group_set = false;
-    const int no_columns = 3;
+    const int no_columns = 6;
     for (unsigned int i = 0; i < tset->size(); ++i)
     {
 	Tile *tile = (*tset)[i];
@@ -225,10 +227,9 @@ void MainWindow::setup_terrain_radiobuttons()
 	item.button->signal_toggled().connect(
 	    sigc::mem_fun(this, &MainWindow::on_pointer_radiobutton_toggled));
 
-	Glib::RefPtr<Gdk::Pixbuf> pic = to_pixbuf(tile->getSurface(0));
+	SDL_Surface *surf = (*(*tile)[0])[0]->getPixmap();
+	Glib::RefPtr<Gdk::Pixbuf> pic = to_pixbuf(surf)->scale_simple(20, 20, Gdk::INTERP_NEAREST);
 	item.button->add(*manage(new Gtk::Image(pic)));
-
-	tooltips.set_tip(*item.button, tile->getName());
 
 	item.terrain = tile->getType();
 	terrain_items.push_back(item);
@@ -296,7 +297,7 @@ bool MainWindow::on_delete_event(GdkEventAny *e)
 
 void MainWindow::show_initial_map()
 {
-    set_filled_map(112, 156, Tile::GRASS, "default");
+    set_filled_map(112, 156, Tile::WATER, "default");
     setup_terrain_radiobuttons();
 }
 

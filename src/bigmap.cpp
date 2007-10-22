@@ -497,8 +497,8 @@ void BigMap::draw_stack(Stack *s)
       // draw stack
 		
       SDL_Rect r;
-      r.x = p.x + 6; //ensure we leave room for the flag
-      r.y = p.y + 6;
+      r.x = p.x;
+      r.y = p.y;
 
       bool show_army = true;
       if (s->hasShip())

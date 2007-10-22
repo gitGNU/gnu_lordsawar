@@ -91,12 +91,14 @@ GameMap::GameMap(std::string TilesetName)
 GameMap::GameMap(XML_Helper* helper)
 {
     std::string types;
+    std::string styles;
     std::string t_dir;
 
     helper->getData(s_width, "width");
     helper->getData(s_height, "height");
     helper->getData(t_dir,"tileset");
     helper->getData(types, "types");
+    helper->getData(styles, "styles");
 
     d_tileSet = Tilesetlist::getInstance()->getTileset(t_dir);
 
@@ -123,7 +125,38 @@ GameMap::GameMap(XML_Helper* helper)
             //the chars now hold the ascii representation of the numbers, which
             //we don't want
             type -= '0';
-            d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, type);
+            d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, type, NULL);
+        }
+    }
+
+    offset = 0;
+    for (int j = 0; j < s_height; j++)
+    {
+        // remove newline and carriage return lines
+        char test = styles[j*s_width*2 + offset];
+        while (test == '\n' || test == '\r')
+        {
+            offset++;
+            test = styles[j*s_width*2 + offset];
+        }
+
+        for (int i = 0; i < s_width; i++)
+        {
+	    char hexstr[5];
+            //due to the circumstances, styles is a long stream of
+            //hex digit pairs, so read it character for character
+	    hexstr[0] = '0';
+	    hexstr[1] = 'x';
+	    hexstr[2] = styles[j*s_width*2 + (i * 2) + offset];  
+	    hexstr[3] = styles[j*s_width*2 + (i * 2) + offset + 1];
+	    hexstr[4] = '\0';
+
+	    unsigned long int val = 0;
+	    char *end = NULL;
+	    val = strtoul (hexstr, &end, 16);
+	    Uint32 id = (Uint32) val;
+	    TileStyle *style = d_tileSet->getTileStyle(id);
+	    d_map[j*s_width + i]->setTileStyle(style);
         }
     }
 
@@ -172,9 +205,10 @@ bool GameMap::fill(MapGenerator* generator)
         for (int i = 0; i < width; i++)
         {
             Uint32 index = d_tileSet->getIndex(terrain[j*width + i]);
-            d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, index);
+            d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, index, NULL);
         }
 
+    applyTileStyles(0, 0, height, width);
     return true;
 }
 
@@ -182,8 +216,11 @@ bool GameMap::fill(Uint32 type)
 {
     for (int i = 0; i < s_width; i++)
         for (int j = 0; j < s_height; j++)
-            d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, type);
+	  {
+            d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, type, NULL);
+	  }
 
+    applyTileStyles(0, 0, s_height, s_width);
     return true;
 }
 
@@ -201,12 +238,28 @@ bool GameMap::save(XML_Helper* helper) const
         types <<endl;
     }
 
+    std::stringstream styles;
+    styles <<endl;
+    for (int i = 0; i < s_height; i++)
+    {
+        for (int j = 0; j < s_width; j++)
+	  {
+	    char *hexstr = NULL;
+	    TileStyle *style = getTile(j, i)->getTileStyle();
+	    asprintf (&hexstr, "%02x", style->getId());
+            styles << hexstr;
+	    free (hexstr);
+	  }
+        styles <<endl;
+    }
+
 
     retval &= helper->openTag("map");
     retval &= helper->saveData("width", s_width);
     retval &= helper->saveData("height", s_height);
     retval &= helper->saveData("tileset", d_tileSet->getSubDir());
     retval &= helper->saveData("types", types.str());
+    retval &= helper->saveData("styles", styles.str());
 
     // last, save all items lying around somewhere
     for (int i = 0; i < s_width; i++)
@@ -487,4 +540,193 @@ Vector<int> GameMap::findPlantedStandard(Player *p)
           }
       }
   return pos;
+}
+
+TileStyle *GameMap::calculatePreferredStyle(int i, int j)
+{
+  TileSet *tileset = getTileSet();
+  Maptile *mtile = getTile(j, i);
+  int box[3][3];
+  for (int k = -1; k <= +1; k++)
+    for (int l = -1; l <= +1; l++)
+      {
+	box[k+1][l+1] = 1;
+	if (i+k >= s_height || i+k < 0)
+	  continue;
+	if (j+l >= s_width || j+l < 0)
+	  continue;
+	box[k+1][l+1] = (getTile(j+l, i+k)->getType() == mtile->getType());
+      }
+  if (box[0][0] && box[0][1] && box[0][2] &&
+      box[1][0] && box[1][1] && box[1][2] &&
+      box[2][0] && box[2][1] && box[2][2])
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::INNERMIDDLECENTER);
+  else if (box[0][0] && box[0][1] && !box[0][2] && 
+	   box[1][0] && box[1][1] && box[1][2] &&
+	   !box[2][0] && box[2][1] && box[2][2])
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::TOPLEFTTOBOTTOMRIGHTDIAGONAL);
+  else if (!box[0][0] && box[0][1] && box[0][2] && 
+	   box[1][0] && box[1][1] && box[1][2] &&
+	   box[2][0] && box[2][1] && !box[2][2])
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::BOTTOMLEFTTOTOPRIGHTDIAGONAL);
+  else if (/*box[0][0] &&*/ !box[0][1] && /*box[0][2] &&*/
+	   !box[1][0] && box[1][1] && box[1][2] &&
+	   /*!box[2][0] &&*/ box[2][1] && box[2][2])
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::OUTERTOPLEFT);
+  else if (/*box[0][0] &&*/ !box[0][1] && /*box[0][2] &&*/
+	   box[1][0] && box[1][1] && !box[1][2] &&
+	   box[2][0] && box[2][1] /*&& !box[2][2] */)
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::OUTERTOPRIGHT);
+  else if (/*box[0][0] &&*/ box[0][1] && box[0][2] &&
+	   !box[1][0] && box[1][1] && box[1][2] &&
+	   /*box[2][0] &&*/ !box[2][1] /*&& box[2][2]*/)
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::OUTERBOTTOMLEFT);
+  else if (box[0][0] && box[0][1] && /*!box[0][2] &&*/
+	   box[1][0] && box[1][1] && !box[1][2] && 
+	   /*box[2][0] &&*/ !box[2][1] /*&& box[2][2]*/)
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::OUTERBOTTOMRIGHT);
+  else if (/*box[0][0] &&*/ box[0][1] && /*box[0][2] && */
+	   !box[1][0] && box[1][1] && box[1][2] &&
+	   /*box[2][0] &&*/ box[2][1] /*&& box[2][2]*/)
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::OUTERMIDDLELEFT);
+  else if (/*box[0][0] &&*/ box[0][1] && /*box[0][2] && */
+	   box[1][0] && box[1][1] && !box[1][2] &&
+	   /*box[2][0] &&*/ box[2][1] /*&& box[2][2] */)
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::OUTERMIDDLERIGHT);
+  else if (box[0][0] && box[0][1] && /*box[0][2] && */
+	   box[1][0] && box[1][1] && box[1][2] &&
+	   box[2][0] && box[2][1] && !box[2][2])
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::INNERTOPLEFT);
+  else if (/*box[0][0] &&*/ box[0][1] && box[0][2] && 
+	   box[1][0] && box[1][1] && box[1][2] &&
+	   !box[2][0] && box[2][1] && box[2][2])
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::INNERTOPRIGHT);
+  else if (box[0][0] && box[0][1] && !box[0][2] && 
+	   box[1][0] && box[1][1] && box[1][2] &&
+	   box[2][0] && box[2][1] /*&& box[2][2]*/)
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::INNERBOTTOMLEFT);
+  else if (!box[0][0] && box[0][1] && box[0][2] && 
+	   box[1][0] && box[1][1] && box[1][2] &&
+	   /*box[2][0] &&*/ box[2][1] && box[2][2])
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::INNERBOTTOMRIGHT);
+  else if (/*!box[0][0] &&*/ !box[0][1] && /*!box[0][2] &&*/
+	   box[1][0] && box[1][1] && box[1][2] &&
+	   /*!box[2][0] &&*/ box[2][1] /*&& box[2][2]*/)
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::OUTERTOPCENTER);
+  else if (/*box[0][0] &&*/ box[0][1] && /*box[0][2] &&*/
+	   box[1][0] && box[1][1] && box[1][2] &&
+	   /*!box[2][0] &&*/ !box[2][1] /*&& !box[2][2]*/)
+    return tileset->getRandomTileStyle(mtile->getType(), 
+				       TileStyle::OUTERBOTTOMCENTER);
+  return NULL;
+}
+
+void GameMap::close_circles (int minx, int miny, int maxx, int maxy)
+{
+  TileSet *tileset = getTileSet();
+  for (int i = minx; i < maxx; i++)
+    {
+      for (int j = miny; j < maxy; j++)
+	{
+	  if (i < 0 || i > s_height)
+	    continue;
+	  if (j < 0 || j > s_width)
+	    continue;
+	  Maptile *tile = getTile(j, i);
+	  TileStyle *tilestyle = tile->getTileStyle();
+	  if (j + 1 < s_width)
+	    {
+	      Maptile *nexttile = getTile(j + 1, i);
+	      TileStyle *nextstyle = nexttile->getTileStyle();
+	      if (tilestyle->getType() == TileStyle::OUTERTOPCENTER &&
+		  nextstyle->getType() == TileStyle::OUTERBOTTOMCENTER)
+		{
+		  TileStyle *style;
+		  style = tileset->getRandomTileStyle(tile->getType(),
+						      TileStyle::OUTERTOPRIGHT);
+		  tile->setTileStyle(style);
+		  style = tileset->getRandomTileStyle(nexttile->getType(),
+						      TileStyle::OUTERBOTTOMLEFT);
+		  nexttile->setTileStyle(style);
+		}
+	      if (tilestyle->getType() == TileStyle::OUTERBOTTOMCENTER &&
+		  nextstyle->getType() == TileStyle::OUTERTOPCENTER)
+		{
+		  TileStyle *style;
+		  style = tileset->getRandomTileStyle(tile->getType(),
+						      TileStyle::OUTERBOTTOMRIGHT);
+		  tile->setTileStyle(style);
+		  style = tileset->getRandomTileStyle(nexttile->getType(),
+						      TileStyle::OUTERTOPLEFT);
+		  nexttile->setTileStyle(style);
+		}
+	      }
+	  if (i + 1 < s_height)
+	    {
+	      Maptile *nexttile = getTile(j, i + 1);
+	      TileStyle *nextstyle = nexttile->getTileStyle();
+	      if (tilestyle->getType() == TileStyle::OUTERMIDDLERIGHT&&
+		  nextstyle->getType() == TileStyle::OUTERMIDDLELEFT)
+		{
+		  TileStyle *style;
+		  style = tileset->getRandomTileStyle(tile->getType(),
+						      TileStyle::OUTERBOTTOMRIGHT);
+		  tile->setTileStyle(style);
+		  style = tileset->getRandomTileStyle(nexttile->getType(),
+						      TileStyle::OUTERTOPLEFT);
+		  nexttile->setTileStyle(style);
+		}
+	      if (tilestyle->getType() == TileStyle::OUTERMIDDLELEFT&&
+		  nextstyle->getType() == TileStyle::OUTERMIDDLERIGHT)
+		{
+		  TileStyle *style;
+		  style = tileset->getRandomTileStyle(tile->getType(),
+						      TileStyle::OUTERBOTTOMLEFT);
+		  tile->setTileStyle(style);
+		  style = tileset->getRandomTileStyle(nexttile->getType(),
+						      TileStyle::OUTERTOPRIGHT);
+		  nexttile->setTileStyle(style);
+		}
+	      }
+	}
+    }
+}
+
+void GameMap::applyTileStyles (int minx, int miny, int maxx, int maxy)
+{
+  for (int i = minx; i < maxx; i++)
+    {
+      for (int j = miny; j < maxy; j++)
+	{
+	  if (i < 0 || i > s_height)
+	    continue;
+	  if (j < 0 || j > s_width)
+	    continue;
+	  Maptile *mtile = getTile(j, i);
+	  TileSet *tileset = getTileSet();
+	  TileStyle *style = calculatePreferredStyle(i, j);
+	  if (!style)
+	    style = tileset->getRandomTileStyle(mtile->getType(), 
+						TileStyle::LONE);
+	  if (!style)
+	    style = tileset->getRandomTileStyle(mtile->getType(), 
+						TileStyle::INNERMIDDLECENTER);
+	  mtile->setTileStyle(style);
+	}
+    }
+  close_circles(minx, miny, maxx, maxy);
 }

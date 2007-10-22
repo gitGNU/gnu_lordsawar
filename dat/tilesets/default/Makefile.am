@@ -4,12 +4,18 @@ MAINTAINERCLEANFILES= Makefile.in
 map_defaultdir = $(datadir)/lordsawar/tilesets/default
 map_default_DATA = \
     default.xml \
-    default.png \
-	nw_bridge.png \
-	ne_bridge.png
+    grass.png \
+    water.png \
+    forest.png \
+    hills.png \
+    mountains.png \
+    swamp.png 
 
 EXTRA_DIST = \
     default.xml \
-    default.png \
-	nw_bridge.png \
-	ne_bridge.png
+    grass.png \
+    water.png \
+    forest.png \
+    hills.png \
+    mountains.png \
+    swamp.png 

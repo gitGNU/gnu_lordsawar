@@ -21,6 +21,8 @@
 #include "xmlhelper.h"
 #include "defs.h"
 
+#include "tilestyleset.h"
+
 /** Class which describes the terrain
   * 
   * Many tiles are put together to form a tileset. Thus, a tile describes a
@@ -28,7 +30,7 @@
   * etc.) as well as the images together.
   */
 
-class Tile
+class Tile : public std::vector<TileStyleSet*>
 {
     public:
         //! Describe terrain types
@@ -41,19 +43,6 @@ class Tile
         Tile(XML_Helper* helper);
 
         ~Tile();
-
-        //! Set the images of the terrain. See MapRenderer how they are used.
-        void setSurface(int t, SDL_Surface* surface){d_surface[t] = surface;}
-
-        //! Prints some debug information
-        void printDebugInfo() const;
-
-        
-        //! Get a surface . See MapRenderer how they are used.
-        SDL_Surface* getSurface(int t) const {return d_surface[t];}
-
-        //! Get the name of the terrain
-        std::string getName() const {return __(d_name);}
 
         //! Get the number of movement points needed to cross this tile
         Uint32 getMoves() const {return d_moves;}
@@ -71,6 +60,8 @@ class Tile
         //! set the pattern (solid, stippled, random) of this type
 	void setPattern(Pattern pattern) {d_pattern = pattern;}
 
+	std::string getName() const {return d_name;}
+
         //! Get the alternate color associated with this tile's pattern 
 	//!This "second" colour gets stippled, or randomized, or sunken
         SDL_Color getSecondColor() const {return d_second_color;}
@@ -83,16 +74,18 @@ class Tile
         //! set another alternate color associated with this tile's pattern 
         void setThirdColor(SDL_Color color) {d_third_color = color;}
 
+	void instantiatePixmaps(std::string tileset, Uint32 tilesize);
+
     private:
         // DATA
-        SDL_Surface* d_surface[8*4];      // base tiles * 4 = corners
-        std::string d_name;                // name    
+	std::string d_name;
         Uint32 d_moves;                    // moves needed to walk over maptile
         SDL_Color d_color;                // color shown in the smallmap
         Type d_type;
 	Pattern d_pattern;
         SDL_Color d_second_color;         // the extra pattern-related color
         SDL_Color d_third_color;         // another pattern-related color
+
 };
 
 #endif // TILE_H

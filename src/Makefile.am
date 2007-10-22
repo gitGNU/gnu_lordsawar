@@ -9,9 +9,11 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         ai_dummy.h ai_fast.cpp ai_fast.h ai_smart.cpp ai_smart.h \
 	Object.cpp Object.h Location.cpp Location.h city.cpp city.h \
         temple.cpp temple.h ruin.cpp ruin.h Tile.cpp Tile.h \
+	tilestyle.cpp tilestyle.h tilestyleset.cpp tilestyleset.h \
 	maptile.cpp maptile.h Item.cpp Item.h armysetlist.cpp armysetlist.h \
         armyset.cpp armyset.h tilesetlist.cpp tilesetlist.h \
         stacklist.cpp stacklist.h playerlist.cpp playerlist.h \
+	MapRenderer.cpp MapRenderer.h \
 	citylist.cpp citylist.h templelist.cpp templelist.h \
         ruinlist.cpp ruinlist.h GameMap.cpp GameMap.h \
 	Itemlist.cpp Itemlist.h tileset.cpp tileset.h Threat.cpp Threat.h \
@@ -31,7 +33,6 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         CreateScenario.cpp CreateScenario.h \
         MapGenerator.cpp MapGenerator.h Configuration.cpp Configuration.h \
 	sound.cpp sound.h GraphicsCache.cpp GraphicsCache.h \
-        MapRenderer.cpp MapRenderer.h \
 	vectormap.cpp vectormap.h \
 	heromap.cpp heromap.h \
 	armymap.cpp armymap.h \

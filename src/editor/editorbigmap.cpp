@@ -409,6 +409,12 @@ void EditorBigMap::change_map_under_cursor()
     std::vector<Vector<int> > tiles = get_cursor_tiles();
     TileSet* ts = GameMap::getInstance()->getTileSet();
     
+    // find the index of the "grass" tile
+    unsigned int grass_index;
+    for (grass_index = 0; grass_index < ts->size(); ++grass_index)
+      if ((*ts)[grass_index]->getType() == Tile::GRASS)
+	break;
+        
     for (std::vector<Vector<int> >::iterator i = tiles.begin(),
 	     end = tiles.end(); i != end; ++i)
     {
@@ -437,10 +443,9 @@ void EditorBigMap::change_map_under_cursor()
 
 	    maptile->setType(ts->getIndex(pointer_terrain));
 
-	    // we expect the renderer to catch out of bound errors
-	    for (int x = tile.x - 1; x <= tile.x + 1; ++x)
-		for (int y = tile.y - 1; y <= tile.y + 1; ++y)
-		    d_renderer->smooth(x, y);
+	    //fixme: clean up the dang tiles.  demote, etc
+	    GameMap::getInstance()->applyTileStyles(tile.y-1, tile.x-1, 
+						    tile.y+2, tile.x+2);
 	    changed_tiles.dim = Vector<int>(1, 1);
 	    break;
 	    
@@ -534,12 +539,6 @@ void EditorBigMap::change_map_under_cursor()
 	    c.setPlayer(Playerlist::getInstance()->getNeutral());
 	    Citylist::getInstance()->push_back(c);
 
-	    // find the index of the "grass" tile
-	    unsigned int index;
-	    for (index = 0; index < ts->size(); ++index)
-		if ((*ts)[index]->getType() == Tile::GRASS)
-		    break;
-        
 	    // notify the maptiles that a city has been placed here
 	    Rectangle r = c.get_area();
 	    for (int x = r.x; x < r.x + r.w; ++x)
@@ -547,7 +546,7 @@ void EditorBigMap::change_map_under_cursor()
 		{
 		    Maptile* t = GameMap::getInstance()->getTile(Vector<int>(x, y));
 		    t->setBuilding(Maptile::CITY);
-		    t->setType(index);
+		    t->setType(grass_index);
 		}
 
 	    //change allegiance of stacks under this city
@@ -578,9 +577,10 @@ void EditorBigMap::change_map_under_cursor()
 	      }
 
 	    // finally, smooth the surrounding map
-	    for (int x = r.x - 1; x < r.x + r.w + 1; ++x)
-		for (int y = r.y - 1; y < r.y + r.h + 1; ++y)
-		    d_renderer->smooth(x, y);
+	    // fixme, demote lone tiles, etc
+	    GameMap::getInstance()->applyTileStyles(r.y - 1, r.x - 1, 
+						    r.y + r.h + 1, 
+						    r.x + r.w + 1);
 	}
 	break;
 	    
@@ -589,7 +589,13 @@ void EditorBigMap::change_map_under_cursor()
 		&& maptile->getMaptileType() != Tile::WATER)
 	    {
 		maptile->setBuilding(Maptile::RUIN);
+		maptile->setType(grass_index);
 		Ruinlist::getInstance()->push_back(Ruin(tile));
+		Rectangle r = Ruinlist::getInstance()->back().get_area();
+		// fixme, demote lone tiles, etc
+		GameMap::getInstance()->applyTileStyles(r.y - 1, r.x - 1, 
+							r.y + r.h + 1, 
+							r.x + r.w + 1);
 	    }
 	    break;
 	    
@@ -598,13 +604,19 @@ void EditorBigMap::change_map_under_cursor()
 		&& maptile->getMaptileType() != Tile::WATER)
 	    {
 		maptile->setBuilding(Maptile::TEMPLE);
+		maptile->setType(grass_index);
 		Templelist::getInstance()->push_back(Temple(tile));
+		Rectangle r = Templelist::getInstance()->back().get_area();
+		// fixme, demote lone tiles, etc
+		GameMap::getInstance()->applyTileStyles(r.y - 1, r.x - 1, 
+							r.y + r.h + 1, 
+							r.x + r.w + 1);
 	    }
 	    break;
 	    
 	case SIGNPOST:
 	    if (maptile->getBuilding() == Maptile::NONE 
-		&& maptile->getMaptileType() != Tile::WATER)
+		&& maptile->getMaptileType() == Tile::GRASS)
 	    {
 		maptile->setBuilding(Maptile::SIGNPOST);
 		Signpostlist::getInstance()->push_back(Signpost(tile));

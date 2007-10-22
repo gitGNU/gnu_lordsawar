@@ -1,2 +1,2 @@
-SUBDIRS = default dark bigdefault
+SUBDIRS = default 
 MAINTAINERCLEANFILES= Makefile.in

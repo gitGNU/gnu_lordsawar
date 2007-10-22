@@ -26,7 +26,7 @@ class Bridge: public Location
         /** Default constructor
           * 
           * @param pos          the location of the bridge
-          * @param type         the type of bridge.  0=e/w,1 n/s
+          * @param type         the type of bridge.  0=e,1 n, 2 w, 3 s
           */
         Bridge(Vector<int> pos, std::string name = "Bridge", int type=0);
 

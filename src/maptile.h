@@ -44,15 +44,13 @@ class Maptile
           * @param x                the x position of the tile
           * @param y                the y position of the tile
           * @param type             the terrain type (index in the tileset)
+	  * @param tileStyle        the look of this tile to use
           */
-        Maptile(TileSet* tileSet, int x, int y, Uint32 type);
+        Maptile(TileSet* tileSet, int x, int y, Uint32 type, TileStyle *tileStyle);
         ~Maptile();
 
         //! Set the type of the terrain (type is an index in the tileset)
         void setType(Uint32 index){d_index = index;}
-
-        //! Set which images to use for the corners (see MapRenderer.cpp)
-        void setCorners(int c1, int c2, int c3, int c4);
 
         //! Set which building is on this maptile
         void setBuilding(Building building){d_building = building;}
@@ -60,9 +58,6 @@ class Maptile
         
         //! Get the index of the tile type in the tileset
         Uint32 getType() const {return d_index;}
-
-        //! Get the image for a corner of the maptile
-        int getCorner(int c) const {return d_corner[c];}
 
         //! Get which building is on the maptile
         Building getBuilding() const {return d_building;}
@@ -110,10 +105,15 @@ class Maptile
         void printDebugInfo() const;
                 
 	bool d_blocked[8];
+
+	TileStyle * getTileStyle() const {return d_tileStyle;}
+
+	void setTileStyle(TileStyle *style) {d_tileStyle = style;}
+
     private:
         TileSet* d_tileSet;
         Uint32 d_index;
-        int d_corner[4];        // transition
+	TileStyle *d_tileStyle;
         Building d_building;    // which building is on this maptile
         std::list<Item*> d_items;
 };

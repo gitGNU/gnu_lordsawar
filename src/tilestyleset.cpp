@@ -12,32 +12,35 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#include "Tile.h"
-#include "defs.h"
-#include <iostream>
+#include <SDL_image.h>
+#include <sigc++/functors/mem_fun.h>
+
+#include "tilestyleset.h"
+
+#include "File.h"
+#include "xmlhelper.h"
 
 using namespace std;
 
-Tile::Tile(XML_Helper* helper)
-{
-    int i;
-    
-    helper->getData(d_name, "name");
-    helper->getData(d_moves, "moves");
-    helper->getData(i, "type");
-    d_type = static_cast<Tile::Type>(i);
+#include <iostream>
 
-}
-    
-Tile::~Tile()
+TileStyleSet::TileStyleSet(XML_Helper *helper)
 {
-    for (unsigned int i=0; i < size(); i++)
-        delete (*this)[i];
+  helper->getData(d_name, "name"); 
 }
 
-void Tile::instantiatePixmaps(std::string tileset, Uint32 tilesize)
+TileStyleSet::~TileStyleSet()
 {
   for (unsigned int i=0; i < size(); i++)
-    (*this)[i]->instantiatePixmaps(tileset, tilesize);
+    delete (*this)[i];
 }
+
+void TileStyleSet::instantiatePixmaps(std::string tileset, Uint32 tilesize)
+{
+  SDL_Surface* pixmaps = File::getMapsetPicture(tileset, d_name + ".png");
+  for (unsigned int i=0; i < size(); i++)
+    (*this)[i]->instantiatePixmap(pixmaps, tilesize);
+  SDL_FreeSurface (pixmaps);
+}
+
 // End of file

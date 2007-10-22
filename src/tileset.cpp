@@ -33,28 +33,20 @@ TileSet::TileSet(XML_Helper *helper)
     helper->getData(d_tileSize, "tilesize");
     helper->registerTag("tile", sigc::mem_fun((*this), &TileSet::loadTile));
     helper->registerTag("smallmap", sigc::mem_fun((*this), &TileSet::loadTile));
+    helper->registerTag("tilestyle", sigc::mem_fun((*this), &TileSet::loadTile));
+    helper->registerTag("tilestyleset", sigc::mem_fun((*this), &TileSet::loadTile));
 }
 
 TileSet::~TileSet()
 {
-    if (d_surface)
-        SDL_FreeSurface(d_surface);
-    if (d_nepic)
-        SDL_FreeSurface(d_nepic);
-    if (d_nwpic)
-        SDL_FreeSurface(d_nwpic);
     for (unsigned int i=0; i < size(); i++)
         delete (*this)[i];
 }
 
 void TileSet::instantiatePixmaps()
 {
-  //Get mapset picture
-  d_surface = File::getMapsetPicture(d_dir, d_dir + ".png");
-  d_nepic = File::getMapsetPicture(d_dir, "ne_bridge.png");
-  d_nwpic = File::getMapsetPicture(d_dir, "nw_bridge.png");
-  for (unsigned int i = 0; i < size(); i++)
-    createCorners((*this)[i], i);
+    for (Uint32 i = 0; i < size(); i++)
+      (*this)[i]->instantiatePixmaps(d_dir, d_tileSize);
 }
 
 Uint32 TileSet::getIndex(Tile::Type type) const
@@ -64,15 +56,6 @@ Uint32 TileSet::getIndex(Tile::Type type) const
             return i;
 
     // catch errors?
-    return 0;
-}
-
-SDL_Surface* TileSet::getDiagPic(int pic) const
-{
-    if (pic == 0)
-        return d_nwpic;
-    if (pic == 1)
-        return d_nepic;
     return 0;
 }
 
@@ -121,52 +104,50 @@ bool TileSet::loadTile(string tag, XML_Helper* helper)
 	return true;
       }
 
+    if (tag == "tilestyle")
+      {
+	Tile *tile = this->back();
+	TileStyleSet *tilestyleset = tile->back();
+	// create a new tile style with the information we got
+	// put it on the latest tilestyleset
+	TileStyle* tilestyle = new TileStyle(helper);
+	tilestyle->setIndex(tilestyleset->size());
+	tilestyleset->push_back(tilestyle);
+	d_tilestyles[tilestyle->getId()] = tilestyle;
+
+	return true;
+      }
+
+    if (tag == "tilestyleset")
+      {
+	Tile *tile = this->back();
+	// create a new tile style set with the information we got
+	// put it on the latest tile
+	TileStyleSet* tilestyleset = new TileStyleSet(helper);
+	tile->push_back(tilestyleset);
+	return true;
+      }
+
     return false;
 }
 
-// createCorners creates all corners out of the 8 given tiles
-
-void TileSet::createCorners(Tile* tile, int row)
+TileStyle *TileSet::getRandomTileStyle(Uint32 index, TileStyle::Type style)
 {
-    SDL_Rect src;
-    src.w = d_tileSize/2;
-    src.h = d_tileSize/2;
-
-    const SDL_Surface* screen = SDL_GetVideoSurface();
-    SDL_PixelFormat* fmt = screen->format;
-    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_HWSURFACE, d_tileSize / 2, 
-					    d_tileSize / 2, fmt->BitsPerPixel,
-					    fmt->Rmask, fmt->Gmask, 
-					    fmt->Bmask, fmt->Amask);
-    
-    for (int i=0; i < 8; i++)
+  Tile *tile = (*this)[index];
+  std::vector<TileStyle*> tilestyles;
+  for (Uint32 j = 0; j < tile->size(); j++)
     {
-        // corner 1
-        src.x = i*d_tileSize;
-        src.y = row*d_tileSize;
-        SDL_BlitSurface(d_surface, &src, tmp, 0);
-        tile->setSurface(i*4, SDL_DisplayFormat(tmp));
-
-        // corner 2
-        src.x = i*d_tileSize + d_tileSize/2;
-        src.y = row*d_tileSize;
-        SDL_BlitSurface(d_surface, &src, tmp, 0);
-        tile->setSurface(i*4+1, SDL_DisplayFormat(tmp));
-
-        // corner 3
-        src.x = i*d_tileSize;
-        src.y = row*d_tileSize + d_tileSize/2;
-        SDL_BlitSurface(d_surface, &src, tmp, 0);
-        tile->setSurface(i*4+2, SDL_DisplayFormat(tmp));
-
-        // corner 4
-        src.x = i*d_tileSize + d_tileSize/2;
-        src.y = row*d_tileSize + d_tileSize/2;
-        SDL_BlitSurface(d_surface, &src, tmp, 0);
-        tile->setSurface(i*4+3, SDL_DisplayFormat(tmp));
+      TileStyleSet *tilestyleset = (*tile)[j];
+      for (Uint32 k = 0; k < tilestyleset->size(); k++)
+	{
+	  TileStyle *tilestyle = (*tilestyleset)[k];
+	  if (tilestyle->getType() == style)
+	    tilestyles.push_back(tilestyle);
+	}
     }
 
-    SDL_FreeSurface(tmp);
+  if (tilestyles.empty() == true)
+    return NULL;
+  return tilestyles[rand() % tilestyles.size()];
 }
-
 // End of file

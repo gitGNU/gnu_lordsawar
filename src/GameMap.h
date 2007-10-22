@@ -122,6 +122,13 @@ class GameMap: public sigc::trackable
 	//! figure out where a non-flying unit can't go
         void calculateBlockedAvenues();
 
+	/** Smooth a portion of the map.
+	 *
+	 * Give each tile in the prescribed area the preferred picture for 
+	 * the underlying terrain tile.
+	 */
+	void applyTileStyles (int minx, int miny, int maxx, int maxy);
+
     protected:
         //! Create the map with the given tileset
         GameMap(std::string TilesetName);
@@ -137,6 +144,9 @@ class GameMap: public sigc::trackable
         Stack* addArmyAtPos(Vector<int> pos, Army *a);
         bool isBlockedAvenue(int x, int y, int destx, int desty);
         bool isDock(int x, int y);
+	void close_circles (int minx, int miny, int maxx, int maxy);
+
+	TileStyle *calculatePreferredStyle(int i, int j);
 
         // Data
         static GameMap* s_instance;

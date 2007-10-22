@@ -20,14 +20,7 @@
 /** Class which cares about rendering of the map.
   * 
   * This class is initalized with the drawing surface of the BigMap class. It
-  * cares for the actual terrain drawing. Furthermore on creation, it smoothes
-  * the whole terrain so that transitions between different terrain tiles look
-  * better. To prevent suddent transitions e.g. between water and grass, each
-  * map tile is divided into four corners, upper left(ul), ur, dl, dr. For each
-  * corner the tile type of the adjacent tiles is examined. Depending on the
-  * result, a different image is used for this corner. This way, you have e.g.
-  * a smooth edge when a sea has an edge instead of a blue tile with green tiles
-  * around.
+  * cares for the actual terrain drawing. 
   */
 
 class MapRenderer
@@ -50,22 +43,7 @@ class MapRenderer
           */
         void render(int x, int y, int tileX, int tileY, int columns, int rows);
 
-        //! Smooth the tile at position (x,y)
-        void smooth(int x, int y);
-
     private:
-        //! Smoothes the upper left corner
-        int smoothCorner1(bool lt, bool rt, bool lb);
-
-        //! Smoothes the upper right corner
-        int smoothCorner2(bool lt, bool rt, bool rb);
-
-        //! Smoothes the lower left corner
-        int smoothCorner3(bool lt, bool lb, bool rb);
-
-        //! Smoothes the lower right corner
-        int smoothCorner4(bool rt, bool lb, bool rb);
-
         //Data
         SDL_Surface* d_surface;
 };

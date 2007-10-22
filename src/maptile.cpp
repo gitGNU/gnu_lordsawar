@@ -17,10 +17,11 @@
 #include <iostream>
 #include "tileset.h"
 
-Maptile::Maptile(TileSet* tileSet, int x, int y, Uint32 type)
+Maptile::Maptile(TileSet* tileSet, int x, int y, Uint32 type, TileStyle *tileStyle)
     :d_index(type), d_building(NONE) 
 {
     d_tileSet = tileSet;
+    d_tileStyle = tileStyle;
 }
 
 Maptile::~Maptile()
@@ -30,14 +31,6 @@ Maptile::~Maptile()
         delete (*d_items.begin());
         d_items.erase(d_items.begin());
     }
-}
-
-void Maptile::setCorners(int c1, int c2, int c3, int c4)
-{
-    d_corner[0] = c1;
-    d_corner[1] = c2;
-    d_corner[2] = c3;
-    d_corner[3] = c4;
 }
 
 Tile::Type Maptile::getMaptileType() const

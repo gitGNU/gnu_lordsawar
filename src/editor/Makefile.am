@@ -7,7 +7,8 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../ai_dummy.o ../ai_fast.o ../ai_smart.o ../xmlhelper.o ../counter.o \
         ../CreateScenario.o ../history.o ../armyset.o \
 	../maptile.o ../real_player.o  ../player.o ../tilesetlist.o \
-	../MapRenderer.o ../Tile.o ../tileset.o ../playerlist.o \
+	../Tile.o ../tileset.o ../playerlist.o \
+	../tilestyle.o ../tilestyleset.o \
 	../GraphicsCache.o ../QuestsManager.o ../Quest.o ../QKillHero.o \
         ../QEnemyArmies.o ../QCityOccupy.o \
         ../QCitySack.o ../QCityRaze.o ../QPillageGold.o ../QEnemyArmytype.o \
@@ -20,8 +21,7 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
         ../vectoredunitlist.o ../vectoredunit.o \
         ../bigmap.o ../smallmap.o ../overviewmap.o ../timing.o \
         ../gui/image-helpers.o ../gui/error-utils.o ../gui/gtksdl.o \
-        ../gui/army-info-tip.o
-
+        ../gui/army-info-tip.o ../MapRenderer.o
 
 if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor lordsawar-army-editor
