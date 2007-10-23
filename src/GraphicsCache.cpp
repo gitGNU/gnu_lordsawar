@@ -1650,9 +1650,10 @@ void GraphicsCache::loadFogPics()
 {
   // GameMap has the actual tileset stored
   int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
 
   // load the fog pictures
-  SDL_Surface* fogpics = File::getMiscPicture("fog.png");
+  SDL_Surface* fogpics = File::getMapsetPicture(tileset, "misc/fog.png");
 
   // copy alpha values, don't use them
   SDL_SetAlpha(fogpics, 0, 0);

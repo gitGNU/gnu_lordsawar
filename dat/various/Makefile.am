@@ -17,7 +17,6 @@ various_DATA = \
     splash_screen.jpg \
     about_screen.jpg \
     network_screen.jpg \
-    fog.png \
     stats.png \
     win.jpg \
     win_mask.png \
@@ -56,7 +55,6 @@ EXTRA_DIST = \
     splash_screen.jpg \
     about_screen.jpg \
     network_screen.jpg \
-    fog.png \
     stats.png \
     win.jpg \
     win_mask.png \

@@ -12,6 +12,7 @@ map_default_DATA = \
 	roads.png \
 	bridges.png \
 	port.png \
+	fog.png \
 	selector.png \
 	small_selector.png
 
@@ -26,5 +27,6 @@ EXTRA_DIST = \
 	towers.png \
 	bridges.png \
 	port.png \
+	fog.png \
 	selector.png \
 	small_selector.png
