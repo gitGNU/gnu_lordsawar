@@ -1,4 +1,4 @@
-SUBDIRS = items borders editor
+SUBDIRS = items editor
 
 MAINTAINERCLEANFILES= Makefile.in
 

@@ -180,12 +180,6 @@ string File::getItemDescription()
 }
 
 
-SDL_Surface* File::getBorderPic(std::string filename)
-{
-    return loadImage(Configuration::s_dataPath + "/various/borders/" + filename + ".png");
-}
-
-
 std::string File::getEditorFile(std::string filename)
 {
     return Configuration::s_dataPath + "/various/editor/" + filename + ".png";

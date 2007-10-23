@@ -102,10 +102,6 @@ class File
         //! Load the xml file describing the items
         static std::string getItemDescription();
         
-
-        //! Get the path to a border tile
-        static SDL_Surface* getBorderPic(std::string filename);
-
         //! Get the path to an editor image
 	static std::string getEditorFile(std::string filename);
     
