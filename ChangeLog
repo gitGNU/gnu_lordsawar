@@ -2,6 +2,7 @@
 
 	* removed obsolete border graphics
 	* path waypoint graphics now show if the stack can go to that tile
+	* moved fog graphic into terrain tileset
 
 2007-10-22  Ben Asselstine
 
