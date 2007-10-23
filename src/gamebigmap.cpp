@@ -516,32 +516,35 @@ void GameBigMap::after_draw()
       for (list<Vector<int>*>::iterator it = stack->getPath()->begin();
 	   it != --(stack->getPath()->end());)
 	{
-	  // peak at the next waypoint to draw the correct arrow
+	  size_t arrowsize = 40; //arrows are always 40x40
+	  // peek at the next waypoint to draw the correct arrow
 	  pos = tile_to_buffer_pos(**it);
 	  nextpos = tile_to_buffer_pos(**(++it));
 	  SDL_Rect r1, r2;
 	  r1.y = 0;
-	  r1.w = r1.h = tilesize;
-	  r2.x = pos.x;
-	  r2.y = pos.y;
-	  r2.w = r2.h = tilesize;
+	  r1.w = r1.h = arrowsize; 
+	  int offset = (tilesize - arrowsize) / 2;
+	  if (offset < 0)
+	    offset = 0;
+	  r2.x = pos.x + offset;
+	  r2.y = pos.y + offset;
+	  r2.w = r2.h = arrowsize;
 
-	  if (nextpos.x == pos.x && nextpos.y < pos.y)
+	  //check to see if we can move to this tile
+	  bool canMoveThere;
+	  Stack *empty = new Stack (*stack);
+	  Uint32 moves = empty->getPath()->calculate(empty, **it);
+	  if (moves == 0)
+	    canMoveThere = false;
+	  else if (moves > stack->getGroupMoves())
+	    canMoveThere = false;
+	  else
+	    canMoveThere = true;
+	  if (canMoveThere)
 	    r1.x = 0;
-	  else if (nextpos.x > pos.x && nextpos.y < pos.y)
-	    r1.x = tilesize;
-	  else if (nextpos.x > pos.x && nextpos.y == pos.y)
-	    r1.x = 2 * tilesize;
-	  else if (nextpos.x > pos.x && nextpos.y > pos.y)
-	    r1.x = 3 * tilesize;
-	  else if (nextpos.x == pos.x && nextpos.y > pos.y)
-	    r1.x = 4 * tilesize;
-	  else if (nextpos.x < pos.x && nextpos.y > pos.y)
-	    r1.x = 5 * tilesize;
-	  else if (nextpos.x < pos.x && nextpos.y == pos.y)
-	    r1.x = 6 * tilesize;
-	  else if (nextpos.x < pos.x && nextpos.y < pos.y)
-	    r1.x = 7 * tilesize;
+	  else
+	    r1.x = arrowsize;
+	  delete empty;
 
 	  SDL_BlitSurface(d_arrows, &r1, buffer, &r2);
 
