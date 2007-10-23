@@ -129,6 +129,7 @@ GameScenario::~GameScenario()
     Signpostlist::deleteInstance();
     Portlist::deleteInstance();
     Bridgelist::deleteInstance();
+    Roadlist::deleteInstance();
     QuestsManager::deleteInstance();
     Itemlist::deleteInstance();
     VectoredUnitlist::deleteInstance();
