@@ -758,6 +758,7 @@ bool CreateScenario::setupRewards()
 
 bool CreateScenario::setupMapRewards()
 {
+  debug("CreateScenario::setupMapRewards")
   if (GameScenario::s_hidden_map == false)
     return true;
   //okay, let's make some maps
@@ -787,6 +788,9 @@ bool CreateScenario::setupMapRewards()
 	    name = _("southern map");
 	  else if (h_count == 2 && w_count == 2)
 	    name = _("southeastern map");
+	  else
+	    continue;
+
 	  Vector<int> pos;
 	  pos.x = i;
 	  pos.y = j;
