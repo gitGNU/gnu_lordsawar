@@ -5,6 +5,7 @@
 	* moved fog graphic into terrain tileset
 	* roadlist now being properly destroyed in the gamescenario object
 	* improved road and bridge support in the editor
+	* added stronghold ruin image
 
 2007-10-22  Ben Asselstine
 
