@@ -64,6 +64,13 @@ struct TempleCacheItem
     SDL_Surface* surface;
 };
 
+//the structure to store ruins in
+struct RuinCacheItem
+{
+    int type;
+    SDL_Surface* surface;
+};
+
 //the structure to store roads in
 struct RoadCacheItem
 {
@@ -173,6 +180,7 @@ GraphicsCache::GraphicsCache()
     loadCityPics();
     loadTowerPics();
     loadTemplePics();
+    loadRuinPics();
     loadRoadPics();
     loadFogPics();
     loadBridgePics();
@@ -453,6 +461,33 @@ SDL_Surface* GraphicsCache::getTemplePic(int type)
 
     //no item found -> create a new one
     myitem = addTemplePic(type);
+
+    return myitem->surface;
+}
+
+SDL_Surface* GraphicsCache::getRuinPic(int type)
+{
+    debug("GraphicsCache::getRuinPic " <<type)
+
+    std::list<RuinCacheItem*>::iterator it;
+    RuinCacheItem* myitem;
+
+    for (it = d_ruinlist.begin(); it != d_ruinlist.end(); it++)
+    {
+        if ((*it)->type == type)
+        {
+            myitem = (*it);
+
+            //put the item in last place (last touched)
+            d_ruinlist.erase(it);
+            d_ruinlist.push_back(myitem);
+
+            return myitem->surface;
+        }
+    }
+
+    //no item found -> create a new one
+    myitem = addRuinPic(type);
 
     return myitem->surface;
 }
@@ -794,6 +829,9 @@ void GraphicsCache::checkPictures()
   while (d_templelist.size() > 10)
     eraseLastTempleItem();
 
+  while (d_ruinlist.size() > 10)
+    eraseLastRuinItem();
+
   while (d_roadlist.size() > 10)
     eraseLastRoadItem();
 
@@ -991,6 +1029,27 @@ TempleCacheItem* GraphicsCache::addTemplePic(int type)
   myitem->surface = mysurf;
 
   d_templelist.push_back(myitem);
+
+  //add the size
+  int size = mysurf->w * mysurf->h;
+  d_cachesize += size * mysurf->format->BytesPerPixel;
+
+  //and check the size of the cache
+  checkPictures();
+
+  return myitem;
+}
+
+RuinCacheItem* GraphicsCache::addRuinPic(int type)
+{
+  SDL_Surface* mysurf = SDL_DisplayFormatAlpha(d_ruinpic[type]);
+
+  //now create the cache item and add the size
+  RuinCacheItem* myitem = new RuinCacheItem();
+  myitem->type = type;
+  myitem->surface = mysurf;
+
+  d_ruinlist.push_back(myitem);
 
   //add the size
   int size = mysurf->w * mysurf->h;
@@ -1306,6 +1365,9 @@ void GraphicsCache::clear()
   while (!d_templelist.empty())
     eraseLastTempleItem();
 
+  while (!d_ruinlist.empty())
+    eraseLastRuinItem();
+
   while (!d_roadlist.empty())
     eraseLastRoadItem();
 
@@ -1372,6 +1434,21 @@ void GraphicsCache::eraseLastTempleItem()
 
   TempleCacheItem* myitem = *(d_templelist.begin());
   d_templelist.erase(d_templelist.begin());
+
+  int size = myitem->surface->w * myitem->surface->h;
+  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+
+  SDL_FreeSurface(myitem->surface);
+  delete myitem;
+}
+
+void GraphicsCache::eraseLastRuinItem()
+{
+  if (d_ruinlist.empty())
+    return;
+
+  RuinCacheItem* myitem = *(d_ruinlist.begin());
+  d_ruinlist.erase(d_ruinlist.begin());
 
   int size = myitem->surface->w * myitem->surface->h;
   d_cachesize -= myitem->surface->format->BytesPerPixel * size;
@@ -1609,6 +1686,42 @@ void GraphicsCache::loadTemplePics()
     }
 
   SDL_FreeSurface(templepics);
+}
+
+void GraphicsCache::loadRuinPics()
+{
+  // GameMap has the actual tileset stored
+  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
+  int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+
+  // load the temple pictures
+  SDL_Surface* ruinpics = File::getMapsetPicture(tileset, "misc/ruin.png");
+
+  // copy alpha values, don't use them
+  SDL_SetAlpha(ruinpics, 0, 0);
+
+  for (unsigned int i = 0; i < RUIN_TYPES ; i++)
+    {
+      //copy the ruin image...
+      SDL_Surface* tmp;
+      SDL_PixelFormat* fmt = ruinpics->format;
+
+      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
+				 fmt->Rmask, fmt->Gmask, 
+				 fmt->Bmask, fmt->Amask);
+
+      SDL_Rect r;
+      r.x = i*ts;
+      r.y = 0;
+      r.w = r.h = ts;
+      SDL_BlitSurface(ruinpics, &r, tmp, NULL);
+
+      d_ruinpic[i] = SDL_DisplayFormatAlpha(tmp);
+
+      SDL_FreeSurface(tmp);
+    }
+
+  SDL_FreeSurface(ruinpics);
 }
 
 void GraphicsCache::loadRoadPics()

@@ -26,6 +26,7 @@ struct ShipCacheItem;
 struct CityCacheItem;
 struct TowerCacheItem;
 struct TempleCacheItem;
+struct RuinCacheItem;
 struct StoneCacheItem;
 struct RoadCacheItem;
 struct BridgeCacheItem;
@@ -115,11 +116,14 @@ class GraphicsCache
         SDL_Surface* getArmyPic(Uint32 armyset, Uint32 army, const Player* p,
                                 const bool* medals);
 
+        SDL_Surface* getRuinPic(int type);
+        /** Function for getting a ruin picture
+          *
+          * @param type         the type of the ruin
+          * @return image of the ruin 
+          */
         SDL_Surface* getTemplePic(int type);
         /** Function for getting a temple picture
-          *
-          * Most often, we don't need such a sophisticated function. So just
-          * supply the city instance and be happy. :)
           *
           * @param type         the type of the temple
           * @return image of the temple
@@ -259,6 +263,9 @@ class GraphicsCache
         //! Creates a new temple picture with the given parameters.
         TempleCacheItem* addTemplePic(int type);
 
+        //! Creates a new ruin picture with the given parameters.
+        RuinCacheItem* addRuinPic(int type);
+
         //! Creates a new road picture with the given parameters.
         RoadCacheItem* addRoadPic(int type);
 
@@ -312,6 +319,9 @@ class GraphicsCache
         //! Erases the oldest (least recently requested) temple cache item.
         void eraseLastTempleItem();
 
+        //! Erases the oldest (least recently requested) ruin cache item.
+        void eraseLastRuinItem();
+
         //! Erases the oldest (least recently requested) road cache item.
         void eraseLastRoadItem();
 
@@ -357,8 +367,11 @@ class GraphicsCache
         //! Loads the images for the tower pictures
         void loadTowerPics();
 
-        //! Loads the images for the city pictures.
+        //! Loads the images for the temple pictures.
         void loadTemplePics();
+
+        //! Loads the images for the ruin pictures.
+        void loadRuinPics();
 
         //! Loads the images for the road pictures.
         void loadRoadPics();
@@ -396,6 +409,7 @@ class GraphicsCache
         std::list<TowerCacheItem*> d_towerlist;
         std::list<FlagCacheItem*> d_flaglist;
         std::list<TempleCacheItem*> d_templelist;
+        std::list<RuinCacheItem*> d_ruinlist;
         std::list<RoadCacheItem*> d_roadlist;
         std::list<FogCacheItem*> d_foglist;
         std::list<BridgeCacheItem*> d_bridgelist;
@@ -412,6 +426,7 @@ class GraphicsCache
         SDL_Surface* d_citypic[MAX_PLAYERS + 1]; //+1 for neutral
         SDL_Surface* d_towerpic[MAX_PLAYERS];
         SDL_Surface* d_templepic[TEMPLE_TYPES];
+        SDL_Surface* d_ruinpic[RUIN_TYPES];
         SDL_Surface* d_roadpic[ROAD_TYPES];
         SDL_Surface* d_bridgepic[BRIDGE_TYPES];
         SDL_Surface* d_cursorpic[CURSOR_TYPES];

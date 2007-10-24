@@ -48,7 +48,8 @@ class EditorBigMap: public BigMap
 	ROAD, ERASE, PORT, BRIDGE
     };
 
-    void set_pointer(Pointer pointer, int size, Tile::Type terrain);
+    void set_pointer(Pointer pointer, int size, Tile::Type terrain, 
+		     int tile_style_id);
 
     void mouse_button_event(MouseButtonEvent e);
     void mouse_motion_event(MouseMotionEvent e);
@@ -70,6 +71,7 @@ class EditorBigMap: public BigMap
     Pointer pointer;
     Tile::Type pointer_terrain;
     int pointer_size;
+    int pointer_tile_style_id;
 
     enum {
 	NONE, DRAGGING

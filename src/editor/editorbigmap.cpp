@@ -54,23 +54,27 @@ EditorBigMap::EditorBigMap()
     pointer = EditorBigMap::POINTER;
     pointer_size = 1;
     pointer_terrain = Tile::GRASS;
+    pointer_tile_style_id = -1;
 }
 
 EditorBigMap::~EditorBigMap()
 {
 }
 
-void EditorBigMap::set_pointer(Pointer p, int size, Tile::Type t)
+void EditorBigMap::set_pointer(Pointer p, int size, Tile::Type t, 
+			       int tile_style_id)
 {
     bool redraw = false;
-    if (pointer != p || pointer_size != size)
-	redraw = true;
+    if (pointer != p || pointer_size != size || 
+	pointer_tile_style_id != tile_style_id)
+      redraw = true;
     pointer = p;
     pointer_terrain = t;
     pointer_size = size;
+    pointer_tile_style_id = tile_style_id;
 
     if (redraw)
-	draw();
+      draw();
 }
 
 void EditorBigMap::mouse_button_event(MouseButtonEvent e)
@@ -260,7 +264,7 @@ void EditorBigMap::after_draw()
 	    break;
 	    
 	case RUIN:
-	    pic = d_ruinpic;
+	    pic = GraphicsCache::getInstance()->getRuinPic(0);
 	    SDL_BlitSurface(pic, 0, buffer, &r);
 	    break;
 	    
@@ -448,14 +452,24 @@ void EditorBigMap::change_map_under_cursor()
 		&& pointer_terrain != Tile::GRASS)
 		break;
 
-	    if (pointer_terrain == maptile->getMaptileType())
-		break;
+	    if (pointer_terrain == maptile->getMaptileType() &&
+		pointer_tile_style_id == -1)
+	      break;
 
 	    maptile->setType(ts->getIndex(pointer_terrain));
-
-	    //fixme: clean up the dang tiles.  demote, etc
-	    GameMap::getInstance()->applyTileStyles(tile.y-1, tile.x-1, 
-						    tile.y+2, tile.x+2);
+	    if (pointer_tile_style_id == -1)
+	      {
+		//fixme: clean up the dang tiles.  demote, etc
+		GameMap::getInstance()->applyTileStyles(tile.y-1, tile.x-1, 
+							tile.y+2, tile.x+2);
+	      }
+	    else
+	      {
+		TileSet *tileset = GameMap::getInstance()->getTileSet();
+		TileStyle *tile_style;
+		tile_style = tileset->getTileStyle(pointer_tile_style_id);
+		maptile->setTileStyle (tile_style);
+	      }
 	    changed_tiles.dim = Vector<int>(1, 1);
 	    break;
 	    

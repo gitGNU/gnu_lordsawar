@@ -56,7 +56,6 @@ BigMap::BigMap()
     : d_renderer(0), buffer(0)
 {
     // load all pictures
-    d_ruinpic = File::getMapsetPicture("default", "misc/ruin.png");
     d_signpostpic = File::getMapsetPicture("default", "misc/signpost.png");
 
 
@@ -68,7 +67,6 @@ BigMap::BigMap()
 
 BigMap::~BigMap()
 {
-    SDL_FreeSurface(d_ruinpic);
     SDL_FreeSurface(d_signpostpic);
     SDL_FreeSurface(d_itempic);
 
@@ -556,7 +554,7 @@ void BigMap::draw_buffer()
         if (((*i).isHidden() == true && 
                (*i).getOwner() == Playerlist::getActiveplayer()) ||
              (*i).isHidden() == false)
-	  blit_if_inside_buffer(*i, d_ruinpic);
+	  blit_if_inside_buffer(*i, gc->getRuinPic((*i).getType()));
       }
 
     for (Signpostlist::iterator i = Signpostlist::getInstance()->begin();

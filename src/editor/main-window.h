@@ -62,6 +62,7 @@ class MainWindow: public sigc::trackable
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
     Gtk::CheckMenuItem *fullscreen_menuitem;
+    Gtk::HBox *terrain_tile_style_hbox;
     Gtk::Image *map_image;
     std::string current_save_filename;
     Gtk::Table *terrain_type_table;
@@ -113,11 +114,21 @@ class MainWindow: public sigc::trackable
 	Tile::Type terrain;
     };
 
+    struct TileStyleItem
+    {
+	Gtk::RadioButton *button;
+	int tile_style_id;
+    };
+
     std::vector<TerrainItem> terrain_items;
+    std::vector<TileStyleItem> tile_style_items;
     
     void on_pointer_radiobutton_toggled();
+    void on_terrain_radiobutton_toggled();
+    void on_tile_style_radiobutton_toggled();
     
     Tile::Type get_terrain();
+    int get_tile_style_id();
     void setup_pointer_radiobutton(Glib::RefPtr<Gnome::Glade::Xml> xml,
 	std::string prefix, std::string image_file,
 	EditorBigMap::Pointer pointer, int size);
@@ -133,6 +144,8 @@ class MainWindow: public sigc::trackable
 
     void clear_map_state();
     void init_map_state();
+    void remove_tile_style_buttons();
+    void setup_tile_style_buttons(Tile::Type terrain);
 
     // map callbacks
     void on_smallmap_changed(SDL_Surface *map);

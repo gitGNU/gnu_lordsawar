@@ -108,6 +108,8 @@ MainWindow::MainWindow()
     map_eventbox->signal_motion_notify_event().connect(
 	sigc::mem_fun(*this, &MainWindow::on_map_mouse_motion_event));
 
+    xml->get_widget("terrain_tile_style_hbox", terrain_tile_style_hbox);
+
     // setup pointer radiobuttons
     xml->get_widget("terrain_type_table", terrain_type_table);
 
@@ -160,13 +162,9 @@ MainWindow::MainWindow()
     xml->connect_clicked("edit_map_info_menuitem", 
 			 sigc::mem_fun(this, &MainWindow::on_edit_map_info_activated));
     
-#if 0
     xml->connect_clicked("fullscreen_menuitem", 
 			 sigc::mem_fun(this, &MainWindow::on_fullscreen_activated));
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
-    xml->connect_clicked("preferences_menuitem", 
-			 sigc::mem_fun(this, &MainWindow::on_preferences_activated));
-#endif
 }
 
 MainWindow::~MainWindow()
@@ -225,7 +223,7 @@ void MainWindow::setup_terrain_radiobuttons()
 	terrain_type_table->attach(*item.button, column, column + 1,
 				   row, row + 1, Gtk::SHRINK);
 	item.button->signal_toggled().connect(
-	    sigc::mem_fun(this, &MainWindow::on_pointer_radiobutton_toggled));
+	    sigc::mem_fun(this, &MainWindow::on_terrain_radiobutton_toggled));
 
 	SDL_Surface *surf = (*(*tile)[0])[0]->getPixmap();
 	Glib::RefPtr<Gdk::Pixbuf> pic = to_pixbuf(surf)->scale_simple(20, 20, Gdk::INTERP_NEAREST);
@@ -299,6 +297,8 @@ void MainWindow::show_initial_map()
 {
     set_filled_map(112, 156, Tile::WATER, "default");
     setup_terrain_radiobuttons();
+    remove_tile_style_buttons();
+    setup_tile_style_buttons(Tile::GRASS);
 }
 
 void MainWindow::set_filled_map(int width, int height, int fill_style, std::string tileset)
@@ -660,6 +660,84 @@ void MainWindow::on_fullscreen_activated()
     else
 	window->unfullscreen();
 }
+void MainWindow::remove_tile_style_buttons()
+{
+  Glib::ListHandle<Gtk::Widget*> children = 
+    terrain_tile_style_hbox->get_children();
+  if (!children.empty()) 
+    {
+      Glib::ListHandle<Gtk::Widget*>::iterator child = children.begin();
+      for (; child != children.end(); child++)
+	terrain_tile_style_hbox->remove(**child);
+    }
+  tile_style_items.clear();
+}
+void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
+{
+  Gtk::RadioButton::Group group;
+  //iterate through tilestyles of a certain TERRAIN tile
+  TileSet *tileset = GameMap::getInstance()->getTileSet();
+  Uint32 index = tileset->getIndex(terrain);
+  Tile *tile = (*tileset)[index];
+  if (tile == NULL)
+    return;
+	  
+  TileStyleItem auto_item;
+  auto_item.button = manage(new Gtk::RadioButton);
+  terrain_tile_style_hbox->pack_start(*manage(auto_item.button), 
+				      Gtk::PACK_SHRINK, 0, 0);
+  auto_item.button->set_label(_("Auto"));
+  auto_item.button->property_draw_indicator() = false;
+	  
+  auto_item.button->signal_toggled().connect
+    (sigc::mem_fun(this, &MainWindow::on_tile_style_radiobutton_toggled));
+
+  auto_item.tile_style_id = -1;
+  group = auto_item.button->get_group();
+  tile_style_items.push_back(auto_item);
+
+  for (unsigned int i = 0; i < tile->size(); i++)
+    {
+      TileStyleSet *tilestyleset = (*tile)[i];
+      //loop through tile style sets
+      for (unsigned int j = 0; j < tilestyleset->size(); j++)
+	{
+	  //now loop through the tile styles
+	  TileStyle *tilestyle = (*tilestyleset)[j];
+
+	  //let's make a button
+	  TileStyleItem item;
+	  item.button = manage(new Gtk::RadioButton);
+	  item.button->set_group(group);
+	  item.button->property_draw_indicator() = false;
+
+	  terrain_tile_style_hbox->pack_start(*manage(item.button), 
+					      Gtk::PACK_SHRINK, 0, 0);
+	  item.button->signal_toggled().connect
+	    (sigc::mem_fun(this, 
+			   &MainWindow::on_tile_style_radiobutton_toggled));
+
+	  SDL_Surface *surf = tilestyle->getPixmap();
+	  Glib::RefPtr<Gdk::Pixbuf> pic = to_pixbuf(surf);
+	  item.button->add(*manage(new Gtk::Image(pic)));
+	  item.tile_style_id = tilestyle->getId();
+
+	  tile_style_items.push_back(item);
+	}
+    }
+
+  terrain_tile_style_hbox->show_all();
+}
+void MainWindow::on_tile_style_radiobutton_toggled()
+{
+  on_pointer_radiobutton_toggled();
+}
+void MainWindow::on_terrain_radiobutton_toggled()
+{
+  remove_tile_style_buttons();
+  setup_tile_style_buttons(get_terrain());
+  on_pointer_radiobutton_toggled();
+}
 
 void MainWindow::on_pointer_radiobutton_toggled()
 {
@@ -678,8 +756,10 @@ void MainWindow::on_pointer_radiobutton_toggled()
     }
     
     if (bigmap.get())
-	bigmap->set_pointer(pointer, size, get_terrain());
+	bigmap->set_pointer(pointer, size, get_terrain(),
+			    get_tile_style_id());
     terrain_type_table->set_sensitive(pointer == EditorBigMap::TERRAIN);
+    terrain_tile_style_hbox->set_sensitive(pointer == EditorBigMap::TERRAIN);
 }
 
 Tile::Type MainWindow::get_terrain()
@@ -696,6 +776,22 @@ Tile::Type MainWindow::get_terrain()
     }
 
     return terrain;
+}
+
+int MainWindow::get_tile_style_id()
+{
+  int tile_style_id = -1;
+  for (std::vector<TileStyleItem>::iterator i = tile_style_items.begin(),
+       end = tile_style_items.end(); i != end; ++i)
+    {
+	if (i->button->get_active())
+	  {
+	    tile_style_id = i->tile_style_id;
+	    break;
+	  }
+    }
+
+    return tile_style_id;
 }
 
 void MainWindow::on_smallmap_changed(SDL_Surface *map)

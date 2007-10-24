@@ -54,7 +54,7 @@ class TileSet : public sigc::trackable, public std::vector<Tile*>
         //! Returns the info string of the tileset
         std::string getInfo() const {return __(d_info);}
 
-        //! Returns the tilesize of the tileset. This feature is yet unused.
+        //! Returns the tilesize of the tileset.
         int getTileSize() const {return d_tileSize;}
 
         //! Returns the index to standard terrain type
