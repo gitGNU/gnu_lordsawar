@@ -226,13 +226,8 @@ AC_CONFIG_FILES([
         dat/tilesets/Makefile
         dat/tilesets/default/Makefile
         dat/tilesets/default/misc/Makefile
-        dat/tilesets/bigdefault/Makefile
-        dat/tilesets/bigdefault/misc/Makefile
-        dat/tilesets/dark/Makefile
-        dat/tilesets/dark/misc/Makefile
         dat/various/Makefile 
         dat/various/items/Makefile
-        dat/various/borders/Makefile
         dat/various/editor/Makefile
         dat/map/Makefile 
         dat/ggz/Makefile 
