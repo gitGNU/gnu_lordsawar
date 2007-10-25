@@ -508,18 +508,17 @@ void GameBigMap::after_draw()
   if (stack && stack->getPath()->size())
     {
       Vector<int> pos;
-      Vector<int> nextpos;
       SDL_Color c;
       c.r = c.g = c.b = 0;
 
       // draw all waypoints except the last
+      Uint32 pathcount = 0;
+      bool canMoveThere = true;
       for (list<Vector<int>*>::iterator it = stack->getPath()->begin();
-	   it != --(stack->getPath()->end());)
+	   it != stack->getPath()->end(); it++)
 	{
 	  size_t arrowsize = 40; //arrows are always 40x40
-	  // peek at the next waypoint to draw the correct arrow
 	  pos = tile_to_buffer_pos(**it);
-	  nextpos = tile_to_buffer_pos(**(++it));
 	  SDL_Rect r1, r2;
 	  r1.y = 0;
 	  r1.w = r1.h = arrowsize; 
@@ -530,35 +529,17 @@ void GameBigMap::after_draw()
 	  r2.y = pos.y + offset;
 	  r2.w = r2.h = arrowsize;
 
-	  //check to see if we can move to this tile
-	  bool canMoveThere;
-	  Stack *empty = new Stack (*stack);
-	  Uint32 moves = empty->getPath()->calculate(empty, **it);
-	  if (moves == 0)
-	    canMoveThere = false;
-	  else if (moves > stack->getGroupMoves())
-	    canMoveThere = false;
-	  else
-	    canMoveThere = true;
+	  //fixme: check to see if we can move here
 	  if (canMoveThere)
 	    r1.x = 0;
 	  else
 	    r1.x = arrowsize;
-	  delete empty;
 
 	  SDL_BlitSurface(d_arrows, &r1, buffer, &r2);
+	  pathcount++;
 
 	}
 
-      pos = tile_to_buffer_pos(*stack->getPath()->back());
-      SDL_Rect r1, r2;
-      r1.x = 8 * tilesize;
-      r1.y = 0;
-      r1.w = r1.h = tilesize;
-      r2.x = pos.x;
-      r2.y = pos.y;
-      r2.w = r2.h = tilesize;
-      SDL_BlitSurface(d_arrows, &r1, buffer, &r2);
     }
 
   if (stack)
