@@ -60,7 +60,7 @@ GameBigMap::GameBigMap()
   mouse_state = NONE;
   input_locked = false;
 
-  d_arrows = File::getMiscPicture("arrows.png");
+  d_waypoints = File::getMiscPicture("waypoints.png");
   prev_mouse_pos = Vector<int>(0, 0);
 
   // setup timeout
@@ -73,7 +73,7 @@ GameBigMap::GameBigMap()
 
 GameBigMap::~GameBigMap()
 {
-  SDL_FreeSurface(d_arrows);
+  SDL_FreeSurface(d_waypoints);
 }
 
 void GameBigMap::select_active_stack()
@@ -517,25 +517,25 @@ void GameBigMap::after_draw()
       for (list<Vector<int>*>::iterator it = stack->getPath()->begin();
 	   it != stack->getPath()->end(); it++)
 	{
-	  size_t arrowsize = 40; //arrows are always 40x40
+	  size_t wpsize = 40; //waypoint images are always 40x40
 	  pos = tile_to_buffer_pos(**it);
 	  SDL_Rect r1, r2;
 	  r1.y = 0;
-	  r1.w = r1.h = arrowsize; 
-	  int offset = (tilesize - arrowsize) / 2;
+	  r1.w = r1.h = wpsize; 
+	  int offset = (tilesize - wpsize) / 2;
 	  if (offset < 0)
 	    offset = 0;
 	  r2.x = pos.x + offset;
 	  r2.y = pos.y + offset;
-	  r2.w = r2.h = arrowsize;
+	  r2.w = r2.h = wpsize;
 
 	  //fixme: check to see if we can move here
 	  if (canMoveThere)
 	    r1.x = 0;
 	  else
-	    r1.x = arrowsize;
+	    r1.x = wpsize;
 
-	  SDL_BlitSurface(d_arrows, &r1, buffer, &r2);
+	  SDL_BlitSurface(d_waypoints, &r1, buffer, &r2);
 	  pathcount++;
 
 	}

@@ -64,7 +64,7 @@ class GameBigMap: public BigMap
     sigc::signal<void, GraphicsCache::CursorType> cursor_changed;
 
  private:
-    SDL_Surface* d_arrows;
+    SDL_Surface* d_waypoints;
     Vector<int> current_tile, prev_mouse_pos;
     
     bool input_locked;
