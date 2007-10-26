@@ -1,3 +1,12 @@
+2007-10-26  Ben Asselstine
+
+	* renaming arrows to waypoints in gamebigmap object
+
+2007-10-24  Ben Asselstine
+
+	* the editor can now drop particular tiles onto the map
+	* final waypoint now gets a picture
+
 2007-10-23  Ben Asselstine
 
 	* removed obsolete border graphics
