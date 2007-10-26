@@ -278,11 +278,6 @@ class MapGenerator
         int d_pswamp, d_pwater, d_pforest, d_phills, d_pmountains;
         unsigned int d_nocities, d_notemples, d_noruins, d_nosignposts;
         vecs2d d_portneed;//the seas a landmass needs to have a port on
-    private:
-
-	bool isLonetile(Tile::Type tile, int i, int j);
-	int tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, int j);
-	void demote_lone_tile(int minx, int miny, int maxx, int maxy, Tile::Type intype, Tile::Type outtype);
 };
 
 #endif

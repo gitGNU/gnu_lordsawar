@@ -706,8 +706,71 @@ void GameMap::close_circles (int minx, int miny, int maxx, int maxy)
     }
 }
 
+int GameMap::tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, int j)
+{
+  int box[3][3];
+  memset (box, 0, sizeof (box));
+  for (int k = -1; k <= +1; k++)
+    for (int l = -1; l <= +1; l++)
+      {
+	if (i+k >= s_height || i+k < 0)
+	  continue;
+	if (j+l >= s_width || j+l < 0)
+	  continue;
+	box[k+1][l+1] = 
+	  (d_map[(i+k)*s_width + (j+l)]->getMaptileType() == tile);
+      }
+  if (box[0][0] && box[0][1] && box[1][0] && box[1][1])
+    return 1;
+  if (box[0][1] && box[0][2] && box[1][1] && box[1][2])
+    return 1;
+  if (box[1][0] && box[1][1] && box[2][0] && box[2][1])
+    return 1;
+  if (box[1][1] && box[1][2] && box[2][1] && box[2][2])
+    return 1;
+  return 0;
+}
+
+void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy, 
+			       Tile::Type intype, Tile::Type outtype)
+{
+  int i;
+  int j;
+  for (i = minx; i < maxx; i++)
+    for (j = miny; j < maxy; j++)
+      {
+	Tile::Type tile = d_map[i*s_width + j]->getMaptileType();
+	if (tile == intype)
+	  {
+	    //if we're not connected in a square of
+	    //same types, then we're a lone tile.
+	    if (tile_is_connected_to_other_like_tiles(tile, i, j) == 0)
+	      {
+		//okay, this is a lone tile.
+		//downgrade it
+		delete d_map[i*s_width + j];
+
+		d_map[i*s_width + j] = 
+		  new Maptile(d_tileSet, j, i, d_tileSet->getIndex(outtype), 
+			      NULL);
+	      }
+	  }
+      }
+
+}
+
 void GameMap::applyTileStyles (int minx, int miny, int maxx, int maxy)
 {
+  bool smooth_terrain = true;
+
+  if (smooth_terrain)
+    {
+      demote_lone_tile(0, 0, s_height, s_width, Tile::FOREST, Tile::GRASS);
+      demote_lone_tile(0, 0, s_height, s_width, Tile::MOUNTAIN, Tile::HILLS);
+      demote_lone_tile(0, 0, s_height, s_width, Tile::HILLS, Tile::GRASS);
+      demote_lone_tile(0, 0, s_height, s_width, Tile::WATER, Tile::SWAMP);
+    }
+
   for (int i = minx; i < maxx; i++)
     {
       for (int j = miny; j < maxy; j++)

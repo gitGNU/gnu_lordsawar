@@ -113,6 +113,23 @@
 		      <property name="use_underline">True</property>
 		    </widget>
 		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="smooth_screen_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">_Smooth Screen</property>
+		      <property name="use_underline">True</property>
+		      <accelerator key="s" modifiers="0" signal="activate"/>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="smooth_map_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Smooth _Entire Map</property>
+		      <property name="use_underline">True</property>
+		    </widget>
+		  </child>
 		</widget>
 	      </child>
 	    </widget>

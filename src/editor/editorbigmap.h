@@ -65,6 +65,8 @@ class EditorBigMap: public BigMap
     // emitted when the map is changed by the user
     sigc::signal<void, Rectangle> map_changed;
 
+    void smooth_view();
+
  private:
     Vector<int> prev_mouse_pos, mouse_pos;
 

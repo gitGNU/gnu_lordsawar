@@ -714,3 +714,9 @@ void EditorBigMap::change_map_under_cursor()
     draw();
 }
 
+void EditorBigMap::smooth_view()
+{
+  GameMap::getInstance()->applyTileStyles(view.y, view.x, view.y+view.h, 
+					  view.x+view.w);
+  draw();
+}

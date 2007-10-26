@@ -900,93 +900,6 @@ bool MapGenerator::walkCoastAntiClock(int& x,int& y, int sea_id, int dist, int& 
     return true;
 }
 
-bool MapGenerator::isLonetile(Tile::Type tile, int i, int j)
-{
-  bool west_open = false;
-  bool east_open = false;
-  //are east-west adjacent squares open?
-  if (j + 1 >= d_width || d_terrain[i*d_width + j + 1] != tile)
-    west_open = true;
-  if (j - 1 < 0 || d_terrain[i*d_width + j - 1] != tile)
-    east_open = true;
-  bool north_open = false;
-  bool south_open = false;
-  //are north-south adjacent squares open?
-  if (i + 1 >= d_height || d_terrain[(i+1)*d_width + j] != tile)
-    south_open = true;
-  if (i - 1 < 0 || d_terrain[(i-1)*d_width + j] != tile)
-    north_open = true;
-  //are northwestern-southwestern adjacent squares open?
-  bool northwest_open = false;
-  bool southwest_open = false;
-  if (i + 1 >= d_height || j - 1 < 0 || 
-       d_terrain[(i+1)*d_width + j - 1] != tile)
-    southwest_open = true;
-  if (i - 1 < 0 || j - 1 < 0 ||
-      d_terrain[(i-1)*d_width + j - 1] != tile)
-    northwest_open = true;
-  //are northeastern-southeastern adjacent squares open?
-  bool northeast_open = false;
-  bool southeast_open = false;
-  if (j + 1 >= d_width || i - 1 < 0 ||
-      d_terrain[(i-1)*d_width + j + 1] != tile)
-    northeast_open = true;
-  if (j + 1 >= d_width || i + 1 >= d_height ||
-      d_terrain[(i+1)*d_width + j + 1] != tile)
-    southeast_open = true;
-
-  if (east_open && west_open)
-    return true;
-  if (north_open && south_open)
-    return true;
-  return false;
-}
-int MapGenerator::tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, int j)
-{
-  int box[3][3];
-  memset (box, 0, sizeof (box));
-  for (int k = -1; k <= +1; k++)
-    for (int l = -1; l <= +1; l++)
-      {
-	if (i+k >= d_height || i+k < 0)
-	  continue;
-	if (j+l >= d_width || j+l < 0)
-	  continue;
-	box[k+1][l+1] = (d_terrain[(i+k)*d_width + (j+l)] == tile);
-      }
-  if (box[0][0] && box[0][1] && box[1][0] && box[1][1])
-    return 1;
-  if (box[0][1] && box[0][2] && box[1][1] && box[1][2])
-    return 1;
-  if (box[1][0] && box[1][1] && box[2][0] && box[2][1])
-    return 1;
-  if (box[1][1] && box[1][2] && box[2][1] && box[2][2])
-    return 1;
-  return 0;
-}
-
-void MapGenerator::demote_lone_tile(int minx, int miny, int maxx, int maxy, Tile::Type intype, Tile::Type outtype)
-{
-  int i;
-  int j;
-  for (i = minx; i < maxx; i++)
-    for (j = miny; j < maxy; j++)
-      {
-	Tile::Type tile =  d_terrain[i*d_width + j];
-	if (tile == intype)
-	  {
-	    //if we're not connected in a square of
-	    //same types, then we're a lone tile.
-	    if (tile_is_connected_to_other_like_tiles(tile, i, j) == 0)
-	      {
-		//okay, this is a lone tile.
-		//downgrade it
-		d_terrain[i*d_width + j] = outtype;
-	      }
-	  }
-      }
-}
-
 void MapGenerator::normalize()
 {
     std::map<Uint32,Uint32> ajacentTer;
@@ -1038,10 +951,6 @@ void MapGenerator::normalize()
                     d_terrain[globy*d_width +globx] = Tile::WATER;
              }
         }
-    demote_lone_tile(0, 0, d_height, d_width, Tile::FOREST, Tile::GRASS);
-    demote_lone_tile(0, 0, d_height, d_width, Tile::MOUNTAIN, Tile::HILLS);
-    demote_lone_tile(0, 0, d_height, d_width, Tile::HILLS, Tile::GRASS);
-    demote_lone_tile(0, 0, d_height, d_width, Tile::WATER, Tile::SWAMP);
 }
 
 void MapGenerator::continents(int& nmrLands, int& nmrSeas)

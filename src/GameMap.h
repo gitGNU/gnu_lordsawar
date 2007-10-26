@@ -147,6 +147,10 @@ class GameMap: public sigc::trackable
 	void close_circles (int minx, int miny, int maxx, int maxy);
 
 	TileStyle *calculatePreferredStyle(int i, int j);
+	void demote_lone_tile(int minx, int miny, int minx, int miny, 
+			      Tile::Type intype, Tile::Type outtype);
+	int tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, 
+						   int j);
 
         // Data
         static GameMap* s_instance;

@@ -165,6 +165,11 @@ MainWindow::MainWindow()
     xml->connect_clicked("fullscreen_menuitem", 
 			 sigc::mem_fun(this, &MainWindow::on_fullscreen_activated));
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
+    xml->connect_clicked("smooth_map_menuitem", 
+			 sigc::mem_fun(this, 
+				       &MainWindow::on_smooth_map_activated));
+    xml->connect_clicked("smooth_screen_menuitem", sigc::mem_fun
+			 (this, &MainWindow::on_smooth_screen_activated));
 }
 
 MainWindow::~MainWindow()
@@ -914,4 +919,14 @@ void MainWindow::popup_dialog_for_object(Object *object)
 	// we might have changed something visible
 	bigmap->draw();
     }
+}
+void MainWindow::on_smooth_map_activated()
+{
+  GameMap::getInstance()->applyTileStyles(0, 0, GameMap::getHeight(), 
+					  GameMap::getWidth());
+  bigmap->draw();
+}
+void MainWindow::on_smooth_screen_activated()
+{
+  bigmap->smooth_view();
 }
