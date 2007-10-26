@@ -1,6 +1,7 @@
 2007-10-26  Ben Asselstine
 
 	* renaming arrows to waypoints in gamebigmap object
+	* added map-smoothing functionality to the editor
 
 2007-10-24  Ben Asselstine
 
