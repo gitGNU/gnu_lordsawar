@@ -1,7 +1,13 @@
+2007-10-28  Ben Asselstine
+
+	* updated 2ndpunic scenario to work
+
 2007-10-26  Ben Asselstine
 
 	* renaming arrows to waypoints in gamebigmap object
 	* added map-smoothing functionality to the editor
+	* now calculating when a path is exhausted and showing it
+	  with waypoint graphics
 
 2007-10-24  Ben Asselstine
 
