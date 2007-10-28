@@ -35,14 +35,15 @@ using namespace std;
 
 Stack::Stack(Player* player, Vector<int> pos)
     : Object(pos), d_player(player), d_defending(false), d_parked(false),
-    d_deleting(false)
+    d_deleting(false), d_moves_exhausted_at_point(0)
 {
     d_path = new Path();
 }
 
 Stack::Stack(Stack& s)
     : Object(s), d_player(s.d_player), d_defending(s.d_defending),
-     d_parked(s.d_parked), d_deleting(false)
+     d_parked(s.d_parked), d_deleting(false),
+     d_moves_exhausted_at_point(s.d_moves_exhausted_at_point)
 {
     clear();
     d_path = new Path();
@@ -77,6 +78,7 @@ Stack::Stack(XML_Helper* helper)
   else
     d_player = Playerlist::getInstance()->getPlayer(i);
 
+  helper->getData(d_moves_exhausted_at_point, "moves_exhausted_at_point");
 
   helper->registerTag("path", sigc::mem_fun((*this), &Stack::load));
   helper->registerTag("army", sigc::mem_fun((*this), &Stack::load));
@@ -113,6 +115,9 @@ bool Stack::moveOneStep()
   //now remove first point of the path
   d_path->flErase(d_path->begin());
 
+  //and decrement the point at which we exhaust our path
+  if (getMovesExhaustedAtPoint())
+    setMovesExhaustedAtPoint(getMovesExhaustedAtPoint()-1);
   return true;
 }
 
@@ -397,6 +402,8 @@ void Stack::nextTurn()
       }
   if (d_defending == true)
     setFortified(true);
+  //recalculate paths
+  getPath()->recalculate(this);
 }
 
 bool Stack::save(XML_Helper* helper) const
@@ -413,6 +420,9 @@ bool Stack::save(XML_Helper* helper) const
   retval &= helper->saveData("y", d_pos.y);
   retval &= helper->saveData("defending", d_defending);
   retval &= helper->saveData("parked", d_parked);
+
+  retval &= helper->saveData("moves_exhausted_at_point", 
+			     d_moves_exhausted_at_point);
 
   //save path
   retval &= d_path->save(helper);

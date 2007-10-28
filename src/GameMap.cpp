@@ -208,7 +208,7 @@ bool GameMap::fill(MapGenerator* generator)
             d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, index, NULL);
         }
 
-    applyTileStyles(0, 0, height, width);
+    applyTileStyles(0, 0, height, width, true);
     return true;
 }
 
@@ -220,7 +220,7 @@ bool GameMap::fill(Uint32 type)
             d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, type, NULL);
 	  }
 
-    applyTileStyles(0, 0, s_height, s_width);
+    applyTileStyles(0, 0, s_height, s_width, false);
     return true;
 }
 
@@ -759,9 +759,9 @@ void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy,
 
 }
 
-void GameMap::applyTileStyles (int minx, int miny, int maxx, int maxy)
+void GameMap::applyTileStyles (int minx, int miny, int maxx, int maxy, 
+			       bool smooth_terrain)
 {
-  bool smooth_terrain = true;
 
   if (smooth_terrain)
     {

@@ -459,9 +459,9 @@ void EditorBigMap::change_map_under_cursor()
 	    maptile->setType(ts->getIndex(pointer_terrain));
 	    if (pointer_tile_style_id == -1)
 	      {
-		//fixme: clean up the dang tiles.  demote, etc
 		GameMap::getInstance()->applyTileStyles(tile.y-1, tile.x-1, 
-							tile.y+2, tile.x+2);
+							tile.y+2, tile.x+2,
+							false);
 	      }
 	    else
 	      {
@@ -601,10 +601,9 @@ void EditorBigMap::change_map_under_cursor()
 	      }
 
 	    // finally, smooth the surrounding map
-	    // fixme, demote lone tiles, etc
 	    GameMap::getInstance()->applyTileStyles(r.y - 1, r.x - 1, 
 						    r.y + r.h + 1, 
-						    r.x + r.w + 1);
+						    r.x + r.w + 1, true);
 	}
 	break;
 	    
@@ -619,7 +618,8 @@ void EditorBigMap::change_map_under_cursor()
 		// fixme, demote lone tiles, etc
 		GameMap::getInstance()->applyTileStyles(r.y - 1, r.x - 1, 
 							r.y + r.h + 1, 
-							r.x + r.w + 1);
+							r.x + r.w + 1, 
+							true);
 	    }
 	    break;
 	    
@@ -631,10 +631,10 @@ void EditorBigMap::change_map_under_cursor()
 		maptile->setType(grass_index);
 		Templelist::getInstance()->push_back(Temple(tile));
 		Rectangle r = Templelist::getInstance()->back().get_area();
-		// fixme, demote lone tiles, etc
 		GameMap::getInstance()->applyTileStyles(r.y - 1, r.x - 1, 
 							r.y + r.h + 1, 
-							r.x + r.w + 1);
+							r.x + r.w + 1,
+							true);
 	    }
 	    break;
 	    
@@ -717,6 +717,6 @@ void EditorBigMap::change_map_under_cursor()
 void EditorBigMap::smooth_view()
 {
   GameMap::getInstance()->applyTileStyles(view.y, view.x, view.y+view.h, 
-					  view.x+view.w);
+					  view.x+view.w, true);
   draw();
 }

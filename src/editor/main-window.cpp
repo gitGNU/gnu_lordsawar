@@ -923,7 +923,7 @@ void MainWindow::popup_dialog_for_object(Object *object)
 void MainWindow::on_smooth_map_activated()
 {
   GameMap::getInstance()->applyTileStyles(0, 0, GameMap::getHeight(), 
-					  GameMap::getWidth());
+					  GameMap::getWidth(), true);
   bigmap->draw();
 }
 void MainWindow::on_smooth_screen_activated()

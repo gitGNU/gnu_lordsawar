@@ -511,7 +511,7 @@ void GameBigMap::after_draw()
       SDL_Color c;
       c.r = c.g = c.b = 0;
 
-      // draw all waypoints except the last
+      // draw all waypoints
       Uint32 pathcount = 0;
       bool canMoveThere = true;
       for (list<Vector<int>*>::iterator it = stack->getPath()->begin();
@@ -530,6 +530,7 @@ void GameBigMap::after_draw()
 	  r2.w = r2.h = wpsize;
 
 	  //fixme: check to see if we can move here
+	  canMoveThere = (pathcount < stack->getMovesExhaustedAtPoint());
 	  if (canMoveThere)
 	    r1.x = 0;
 	  else

@@ -136,6 +136,16 @@ bool Path::checkPath(Stack* s)
     return !blocked;
 }
 
+//this is used to update the moves_exhausted_at_point variable
+void Path::recalculate (Stack* s)
+{
+  if (size() == 0)
+    return;
+  Vector<int> *dest = back();
+  calculate(s, *dest);
+  return;
+}
+
 Uint32 Path::calculate (Stack* s, Vector<int> dest)
 {
     int mp;
@@ -147,7 +157,10 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
     int height = GameMap::getHeight();
     d_bonus = s->calculateMoveBonus();
     if (isBlocked(s, dest.x, dest.y, dest.x, dest.y))
+      {
+	s->setMovesExhaustedAtPoint(0);
         return 0;
+      }
     
     // Some notes concerning the path finding algorithm. The algorithm
     // uses two different lists. There is a distance array, which contains how
@@ -240,7 +253,10 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
 
     int dist = distance[dest.y * width + dest.x];
     if (dist < 0)
+      {
+	s->setMovesExhaustedAtPoint(0);
         return 0;
+      }
 
     // choose the order in which we process directions so as to favour
     // diagonals over straight lines
@@ -279,6 +295,15 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
         y = ry;
         dist = min;
     }
+
+    Uint32 pathcount = 0;
+    for (iterator it = begin(); it != end(); it++)
+      {
+	if (s->getGroupMoves() < (Uint32) distance[(*it)->y * width + (*it)->x])
+	  break;
+	pathcount++;
+      }
+    s->setMovesExhaustedAtPoint(pathcount);
 
     debug("...done")
     return distance[dest.y * width + dest.x];

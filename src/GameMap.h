@@ -127,7 +127,8 @@ class GameMap: public sigc::trackable
 	 * Give each tile in the prescribed area the preferred picture for 
 	 * the underlying terrain tile.
 	 */
-	void applyTileStyles (int minx, int miny, int maxx, int maxy);
+	void applyTileStyles (int minx, int miny, int maxx, int maxy,
+			      bool smooth_terrain);
 
     protected:
         //! Create the map with the given tileset

@@ -87,6 +87,8 @@ class Path : public std::list<Vector<int>*>
           */
         Uint32 calculate(Stack* s, Vector<int> dest);
 
+	void recalculate (Stack* s);
+
     private:
         /** Checks if a tile is blocked for the stack
           * 

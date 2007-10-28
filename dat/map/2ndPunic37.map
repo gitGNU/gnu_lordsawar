@@ -3,113 +3,6 @@
 	<counter>
 		<d_curID>1438</d_curID>
 	</counter>
-	<map>
-		<d_width>100</d_width>
-		<d_height>100</d_height>
-		<d_tileset>default</d_tileset>
-		<d_types>
-1111111111100011111111111111111111111111100000000000000000000000000000000000000000000000000000000000
-1111111111110111111111111111111111111111000000000000000000000000000000000000000000000000000000000000
-1111111111111111111111111111001111111000000000000000000000000000000000000000000000000000000000000000
-1111111111111111111111111110110011110000000000000000000000000000000000000000000000000000000000000000
-1111111111111111111111111111010000000000000000000000000000000000000000000000000000000000000000000000
-1111111111111111111111111111110000000000000000000000000000000000000000000000000000000000000000000000
-1111111111111111111111110011111000000000000000000000000000000000000000000000000000000000000000000000
-1111111111111111111100000000000000000000000000000000000000000000000000000000000000000000000000000000
-1111111111111111111100000000000000000000000000000000000000000000000330000000000000000000000000000000
-1111111111111111111110000000000000000000000000000000000000000000333333330000000000000000000000000000
-1111111111111111111110000000000000000000000000000000000000000003333332333000000000000000000000000000
-1111111111111111111111111000000000000000000000000000000000003303333432222200000000000000000000000000
-1111111111111111111111111110000000000000000000000000000000002223334343223230033003000000000000000000
-1111111111111111111111111111000000000000000000000000000000333334433444443233333333000000000000000000
-1111111111111111111111111111100000000000000000000000000003334433444444334344344443000000000000000000
-1111111111111111111111111111100000000000000000000000000033344333344343333334443343333000000000000000
-1111111111111111111111111111100000000000002000000000000333443333332333033333333334333000000000000000
-1111111111111111111111111111110000000202222020000000003344433003333300003333300334430000000000000000
-1111111111111111111111111111110000002202222220000000023333330000300000000033000033430000000000000000
-1111111111111111111111111111110000002222222220000000023443330000000000000333000033330000000022220000
-1111111111111111111111111111111000002222222222000000233343330000000000000000001103303300022200002000
-1111111111111111111111111111110000000222202222000000233444330000000000000000111103003330002022222000
-1111111111111111111111111111110000002222222222000000333443300000000000000000111100100330222202220000
-1111111111111111111111111111110000002222222222200000003344300000000000000000111110110033330220000000
-1111111111111111111111111111110000000222222222200000003333333222220000000000111111011000333332220000
-1111111111111111111111111111110000000022222220000000002333444333332200000000111111111000003333330000
-1111111111111111111111111111110000000222222200000000002223334321111333330000111111110100000333333000
-1111111111111111111111111111110000000200222200000000000022233311111110023333301111111000000033300000
-1111111111111111111111111111110000000222222200000000000000011111111110000003330111111111000333300000
-1111111111001000000110001011103300002202220000001000000000111111111110000000030011111111010000000000
-1111001110000000000000000000003333302022200000011111100001111111111111000000033001111111101100000000
-1111000000003333333333200020030333333332000001111111111011111111110111000000003001111111010000000000
-1111000000000333323333222000200003343333330001111111111111111111110100100000003000111111111110000000
-1111100000003330002220022233030000333343333331111111111111111111200111110000003300111111111111110000
-1111100000003000000022230323330000033333333330111111111111111110222111111100000330011111111111111000
-1111100000000000000333333222000000000000000000111111111111111111222111111100000033000111111111111110
-1111100000000000003333233032200000000000000001111111111111111111201111111110000333300000011111111111
-1111100000000000003333333330200000000000000011111111111111111111001111111111000330330000111111111111
-1111100000000000022333300033222000000000001111111111111111111111101111111111113300033000011111111111
-1111110000000000222333002003302200000000111111111111111111111111100111111111111110003300000011111111
-1111110000000222233030222000332200000011111111111111111111111111000111111111111110000330000001111110
-1111110000022223333333222230030000000011111111111111111111111100000111111111111111100033000000011110
-1111100003333333333200022232233300001111111111111111111111111110002211111111111111111033000100001110
-1111100003333333222002022022332300001111111111111111111111111110222111111111111111111003300111100111
-1111100033000300000002220022322300011111111110110111111111111110220111111111111111111110301111101111
-1111100000000000000000000022323300111111111000111111111111111110000111111111111111111110331111111111
-1111000000000200000000000003330000111111111000111111111111111110000111111111111111111111030011111111
-1111000000200000000000200003300000111111111111111111111111111110000111111111111111111111030011111111
-1110000002220000002000000223300000111101111111111111111111111110011111111111111111111111130011111111
-1110000000002000022000002203300000111101111111111111111111111111111111111111111111111111131111111111
-1111000000020000020000022223300000011111111111111111111111111111111111111111111111101111301111111111
-1111100000000000000000002033000000111111111111111111111111111111111111111111111111111153001111111111
-1111100000000000000000022033200001111111111111111111111111111111111111111111100011110010011111111111
-1111100000000000000222333332000011111111111111111111111111111111111111111111000000030011111111111111
-1111100000020000002233333332000001111111111111111111111111111111111111111111000022033011111111111111
-1111100000000000022333302222001111111111111111111111111111111111111111111111111000000111111111111111
-1111100000000000023330000000011111111111111111111111111111111111100001111111111100000011111111111111
-1111111101111000033000000000011111111111111111111111111100101111000000101111111111100011111111111111
-1111111111111000000111000010111111111111111100100000100000000000000000011111111111110111111111111111
-1111111111111100001111111111111111111100000000003330000000000000000000011111111111111111111111111111
-1111111111111100011111111111111111110000000000033333300000000000000000111111111111111111111111111111
-1111111111111151111111111111111111100000000000030033333333333000000000111111111111111111111111111111
-1111111111111110011111111111111110000000000003330003333334330300000000001111111111111111111111111111
-1111111111111110011111111111111000000000000033300000033434433330000000001111111111111111111111111111
-1111111111111100011111111111110000000000000333000000000333443343000000001111111111111111111111111111
-1111111111111100000000000000000000000000030300000000000033043333030000001111111111111111111111111111
-1111111111111100033033000000000000000333330000000000000000333343000000011111111111111111111111111111
-1111111111111000033330000000000000003330000000000000000000003333300000101111111111111111111111111111
-1111111111111000000000000000000000333000000000000000000000000333300000111111111111111111111111111111
-1111111111110000000000000000333433330000000000000000000000000033000011111111111111111111111111111111
-1111111111110000000030000003343330000000000000000000000000000003000011111111111111111111111111111111
-1111111111000000000034333333000000000000000000000000000000000003000501001111111111111111111111111111
-1111111100000000000033330000000000000000000000000000000000055555555500001111111111111111111111111111
-1111111000000000000343300000000000000000000000000000000000000505555000000111111111111111111111111111
-1111110000000000003333000000000000000000000000000000000000000000000000000001111111111111111111111111
-1111100000000000033330000000000000000000000000000000000000000000000000000000000001111111111111111111
-1111000000000000033300000000000000000000000000000000000000000000000000000000000000011111111111111111
-1111000000000003333000000000000000000000000000000000000000000000000000000000000000000011111111111111
-1111000000000333330000000000000000000000000000000000000000000000000000000000000000000011111111111111
-1110000000003344330000000000000000000000000000000000000000000000000000000000000000000011111111111111
-1100000000033333300000000000000000000000000000000000000000000000000000000000000000000001111111111111
-1100000033333330000000000000000000000000000000000000000000000000000000000000000000000000111111111111
-1100000333300000000000000000000000000000000000000000000000000000000000000000000000000000000011111111
-1100003333000000000000000000000000000000000000000000000000000000000000000000000000000000000000011111
-1100333300000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111
-1110300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000111
-1110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-1100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-1100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-</d_types>
-	</map>
 	<playerlist>
 		<d_active>0</d_active>
 		<d_neutral>8</d_neutral>
@@ -137,6 +30,7 @@
 					<d_y>57</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -146,14 +40,14 @@
 						<d_id>651</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -164,14 +58,14 @@
 						<d_id>652</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>4</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>4</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -186,6 +80,7 @@
 					<d_y>53</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -195,14 +90,14 @@
 						<d_id>870</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -215,14 +110,14 @@
 						<d_id>1436</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>27</d_type>
-						<d_hero>true</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>14</d_moves>
+						<d_xp>0.5</d_xp>
+						<d_max_moves>14</d_max_moves>
+						<d_hero>true</d_hero>
 						<d_strength>5</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>14</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>14</d_max_moves>
-						<d_xp>0.5</d_xp>
 						<d_expvalue>10</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -339,6 +234,13 @@
 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 </d_map>
 			</fogmap>
+			<triumphs>
+				<d_hero>808464432 808464432 808464432 808464432 808464432 808464432 808464432 808464432 </d_hero>
+				<d_special>808464432 808464432 808464432 808464432 808464432 808464432 808464432 808464432 </d_special>
+				<d_normal>808464432 808464432 808464432 808464432 808464432 808464432 808464432 808464432 </d_normal>
+				<d_ship>808464432 808464432 808464432 808464432 808464432 808464432 808464432 808464432 </d_ship>
+				<d_flag>808464432 808464432 808464432 808464432 808464432 808464432 808464432 808464432 </d_flag>
+			</triumphs>
 		</player>
 		<player>
 			<d_id>1</d_id>
@@ -364,6 +266,7 @@
 					<d_y>91</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -373,14 +276,14 @@
 						<d_id>210</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -395,6 +298,7 @@
 					<d_y>38</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -404,14 +308,14 @@
 						<d_id>830</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -422,14 +326,14 @@
 						<d_id>831</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>3</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -444,6 +348,7 @@
 					<d_y>29</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -453,14 +358,14 @@
 						<d_id>839</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>3</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -475,6 +380,7 @@
 					<d_y>34</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -484,14 +390,14 @@
 						<d_id>841</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -502,14 +408,14 @@
 						<d_id>842</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>3</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -520,14 +426,14 @@
 						<d_id>843</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>3</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -542,6 +448,7 @@
 					<d_y>24</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -551,14 +458,14 @@
 						<d_id>833</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -569,14 +476,14 @@
 						<d_id>834</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>3</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -587,14 +494,14 @@
 						<d_id>835</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>3</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -605,14 +512,14 @@
 						<d_id>836</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>3</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -623,14 +530,14 @@
 						<d_id>1437</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>22</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>12</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>12</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>8</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>12</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>12</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>10</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -745,6 +652,13 @@
 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 </d_map>
 			</fogmap>
+			<triumphs>
+				<d_hero>808464432 808464432 808464432 808464432 808464432 808464432 808464432 808464432 </d_hero>
+				<d_special>808464432 808464432 808464432 808464432 808464432 808464432 808464432 808464432 </d_special>
+				<d_normal>808464432 808464432 808464432 808464432 808464432 808464432 808464432 808464432 </d_normal>
+				<d_ship>808464432 808464432 808464432 808464432 808464432 808464432 808464432 808464432 </d_ship>
+				<d_flag>808464432 808464432 808464432 808464432 808464432 808464432 808464432 808464432 </d_flag>
+			</triumphs>
 		</player>
 		<player>
 			<d_id>8</d_id>
@@ -766,6 +680,7 @@
 					<d_y>62</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -775,14 +690,14 @@
 						<d_id>654</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -797,6 +712,7 @@
 					<d_y>76</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -806,14 +722,14 @@
 						<d_id>656</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -828,6 +744,7 @@
 					<d_y>65</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -837,14 +754,14 @@
 						<d_id>658</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -859,6 +776,7 @@
 					<d_y>57</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -868,14 +786,14 @@
 						<d_id>660</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -890,6 +808,7 @@
 					<d_y>28</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -899,14 +818,14 @@
 						<d_id>672</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -921,6 +840,7 @@
 					<d_y>21</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -930,14 +850,14 @@
 						<d_id>674</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -952,6 +872,7 @@
 					<d_y>20</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -961,14 +882,14 @@
 						<d_id>827</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>2</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>12</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>12</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>2</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>12</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>12</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -979,14 +900,14 @@
 						<d_id>828</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>2</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>12</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>12</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>2</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>12</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>12</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1001,6 +922,7 @@
 					<d_y>53</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1010,14 +932,14 @@
 						<d_id>845</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1028,14 +950,14 @@
 						<d_id>846</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>6</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>3</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1050,6 +972,7 @@
 					<d_y>56</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1059,14 +982,14 @@
 						<d_id>849</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>4</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>4</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1077,14 +1000,14 @@
 						<d_id>850</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>13</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>2</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1099,6 +1022,7 @@
 					<d_y>52</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1108,14 +1032,14 @@
 						<d_id>852</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1130,6 +1054,7 @@
 					<d_y>47</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1139,14 +1064,14 @@
 						<d_id>854</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1161,6 +1086,7 @@
 					<d_y>41</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1170,14 +1096,14 @@
 						<d_id>857</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>4</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>4</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1192,6 +1118,7 @@
 					<d_y>39</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1201,14 +1128,14 @@
 						<d_id>860</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>1</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>12</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>12</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>2</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>12</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>12</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1223,6 +1150,7 @@
 					<d_y>39</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1232,14 +1160,14 @@
 						<d_id>664</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1250,14 +1178,14 @@
 						<d_id>861</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>2</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>12</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>12</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>2</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>12</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>12</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1268,14 +1196,14 @@
 						<d_id>862</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>2</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>12</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>12</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>2</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>12</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>12</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1290,6 +1218,7 @@
 					<d_y>40</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1299,14 +1228,14 @@
 						<d_id>668</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1321,6 +1250,7 @@
 					<d_y>46</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1330,14 +1260,14 @@
 						<d_id>865</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>4</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>4</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1348,14 +1278,14 @@
 						<d_id>866</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>4</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>4</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1366,14 +1296,14 @@
 						<d_id>867</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>4</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>8</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>8</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>4</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>8</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>8</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1384,14 +1314,14 @@
 						<d_id>868</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>1</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>12</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>12</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>2</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>12</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>12</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1406,6 +1336,7 @@
 					<d_y>49</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1415,14 +1346,14 @@
 						<d_id>871</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>5</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>12</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>12</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>3</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>12</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>12</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1437,6 +1368,7 @@
 					<d_y>46</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
 						<d_size>0</d_size>
 						<d_x></d_x>
@@ -1446,14 +1378,14 @@
 						<d_id>1283</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
-						<d_hero>false</d_hero>
 						<d_hp>2</d_hp>
+						<d_ship>false</d_ship>
+						<d_moves>16</d_moves>
+						<d_xp>0</d_xp>
+						<d_max_moves>16</d_max_moves>
+						<d_hero>false</d_hero>
 						<d_strength>1</d_strength>
 						<d_sight>1</d_sight>
-						<d_moves>16</d_moves>
-						<d_ship>false</d_ship>
-						<d_max_moves>16</d_max_moves>
-						<d_xp>0</d_xp>
 						<d_expvalue>1</d_expvalue>
 						<d_level>1</d_level>
 						<d_medals>0 0 0 </d_medals>
@@ -1568,8 +1500,224 @@
 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 </d_map>
 			</fogmap>
+			<triumphs>
+				<d_hero>808464432 808464432 224 808464432 808464432 808464432 808464432 808464432 </d_hero>
+				<d_special>808464432 808464432 200 808464432 808464432 808464432 808464432 808464432 </d_special>
+				<d_normal>808464432 808464432 200 808464432 808464432 808464432 808464432 808464432 </d_normal>
+				<d_ship>808464432 808464432 4294967295 808464432 808464432 808464432 808464432 808464432 </d_ship>
+				<d_flag>808464432 120 808464432 808464432 808464432 808464432 808464432 808464432 </d_flag>
+			</triumphs>
 		</player>
 	</playerlist>
+	<map>
+		<d_width>100</d_width>
+		<d_height>100</d_height>
+		<d_tileset>default</d_tileset>
+		<d_types>
+1111111111100011111111111111111111111111500000000000000000000000000000000000000000000000000000000000
+1111111111110111111111111111111111111111000000000000000000000000000000000000000000000000000000000000
+1111111111111111111111111111001111111000000000000000000000000000000000000000000000000000000000000000
+1111111111111111111111111110550011110000000000000000000000000000000000000000000000000000000000000000
+1111111111111111111111111111050000000000000000000000000000000000000000000000000000000000000000000000
+1111111111111111111111111111110000000000000000000000000000000000000000000000000000000000000000000000
+1111111111111111111111110011115000000000000000000000000000000000000000000000000000000000000000000000
+1111111111111111111100000000000000000000000000000000000000000000000000000000000000000000000000000000
+1111111111111111111100000000000000000000000000000000000000000000000330000000000000000000000000000000
+1111111111111111111110000000000000000000000000000000000000000000333330330000000000000000000000000000
+1111111111111111111110000000000000000000000000000000000000000003333330330000000000000000000000000000
+1111111111111111111111111000000000000000000000000000000000000003333330220000000000000000000000000000
+1111111111111111111111111110000000000000000000000000000000000003333330220000033000000000000000000000
+1111111111111111111111111111000000000000000000000000000000333333333444333033333333000000000000000000
+1111111111111111111111111111100000000000000000000000000003333333344444333333333333000000000000000000
+1111111111111111111111111111100000000000000000000000000033333333344333333333333333333000000000000000
+1111111111111111111111111111100000000000000000000000000333333333330333033333333333333000000000000000
+1111111111111111111111111111110000000002222000000000003333333003330000003333300333330000000000000000
+1111111111111111111111111111110000002202222220000000003333330000000000000033000033330000000000000000
+1111111111111111111111111111110000002222222220000000003333330000000000000033000033330000000000000000
+1111111111111111111111111111115000002222222222000000033333330000000000000000001103303300000000000000
+1111111111111111111111111111110000000222202222000000033443330000000000000000111100003330000002220000
+1111111111111111111111111111110000002222222222000000033443300000000000000000111100500330000002220000
+1111111111111111111111111111110000002222222222200000003333300000000000000000111110550000330000000000
+1111111111111111111111111111110000000222222222200000003333333000000000000000111111011000333330000000
+1111111111111111111111111111110000000022222220000000000333333300000000000000111111111000003333330000
+1111111111111111111111111111110000000022222200000000000003333301111000000000111111110500000333330000
+1111111111111111111111111111110000000000222200000000000000033311111110000003301111111000000033300000
+1111111111111111111111111111110000000002222200000000000000011111111110000003300111111111000033300000
+1111111111005000000110005011103300000002220000005000000000111111111110000000000011111111050000000000
+1111001110000000000000000000003333300002200000011111100001111111111111000000000001111111505500000000
+1111000000000333303333000000000333333330000001111111111011111111110111000000000001111111050000000000
+1111000000000333303333022000000003333333330001111111111111111111110500500000000000111111111110000000
+1111100000000330000000022000000000333333333331111111111111111111000111110000000000111111111111110000
+1111100000000000000000000000000000033333333330111111111111111110222111111100000000011111111111111000
+1111100000000000000333033000000000000000000000111111111111111111222111111100000033000111111111111110
+1111100000000000003333033000000000000000000001111111111111111111001111111110000333000000011111111111
+1111100000000000003333333000000000000000000011111111111111111111001111111111000330000000511111111111
+1111100000000000022333300000000000000000001111111111111111111111101111111111110000000000011111111111
+1111110000000000022333000000002200000000111111111111111111111111100111111111111110000000000011111111
+1111110000000220033000222000002200000011111111111111111111111111000111111111111110000000000001111110
+1111110000000223333000222200000000000011111111111111111111111100000111111111111111100033000000011110
+1111100003333333333000022200000000001111111111111111111111111110000011111111111111111033000500001110
+1111100003333333000000022022000000001111111111111111111111111110220111111111111111111000000111100111
+1111100000000000000000000022000000011111111110110111111111111110220111111111111111111110001111101111
+1111100000000000000000000022000000111111111000111111111111111110000111111111111111111110001111111111
+1111000000000000000000000003300000111111111000111111111111111110000111111111111111111111000011111111
+1111000000000000000000000003300000111111111111111111111111111110000111111111111111111111000011111111
+1110000000000000000000000003300000111101111111111111111111111110011111111111111111111111100011111111
+1110000000000000000000002203300000111101111111111111111111111111111111111111111111111111101111111111
+1111000000000000000000002203300000011111111111111111111111111111111111111111111111101111001111111111
+1111100000000000000000000033000000111111111111111111111111111111111111111111111111111150001111111111
+1111100000000000000000000033000001111111111111111111111111111111111111111111100011110050011111111111
+1111100000000000000000333330000051111111111111111111111111111111111111111111000000000011111111111111
+1111100000000000000033333330000001111111111111111111111111111111111111111111000000000011111111111111
+1111100000000000000333300000001111111111111111111111111111111111111111111111111000000511111111111111
+1111100000000000000330000000011111111111111111111111111111111111100001111111111100000011111111111111
+1111111101111000000000000000011111111111111111111111111100501111000000501111111111100011111111111111
+1111111111111000000111000050111111111111111100500000500000000000000000011111111111110111111111111111
+1111111111111100001111111111111111111100000000003330000000000000000000011111111111111111111111111111
+1111111111111100011111111111111111110000000000003333300000000000000000111111111111111111111111111111
+1111111111111155511111111111111111100000000000000033333333330000000000111111111111111111111111111111
+1111111111111110011111111111111110000000000003300003333333330000000000001111111111111111111111111111
+1111111111111110011111111111111000000000000033300000033333333330000000001111111111111111111111111111
+1111111111111100011111111111110000000000000033000000000333333333000000001111111111111111111111111111
+1111111111111100000000000000000000000000000000000000000033033333000000001111111111111111111111111111
+1111111111111100033000000000000000000330000000000000000000033333000000051111111111111111111111111111
+1111111111111000033000000000000000000330000000000000000000003333300000501111111111111111111111111111
+1111111111111000000000000000000000330000000000000000000000000333300000111111111111111111111111111111
+1111111111110000000000000000333330330000000000000000000000000033000011111111111111111111111111111111
+1111111111110000000000000000333330000000000000000000000000000000000011111111111111111111111111111111
+1111111111000000000033330000000000000000000000000000000000000000000505001111111111111111111111111111
+1111111100000000000033330000000000000000000000000000000000055555555500001111111111111111111111111111
+1111111000000000000333300000000000000000000000000000000000000505555000000111111111111111111111111111
+1111110000000000003333000000000000000000000000000000000000000000000000000001111111111111111111111111
+1111100000000000033330000000000000000000000000000000000000000000000000000000000001111111111111111111
+1111000000000000033300000000000000000000000000000000000000000000000000000000000000011111111111111111
+1111000000000003333000000000000000000000000000000000000000000000000000000000000000000011111111111111
+1111000000000333330000000000000000000000000000000000000000000000000000000000000000000011111111111111
+1110000000003333330000000000000000000000000000000000000000000000000000000000000000000011111111111111
+1100000000033333300000000000000000000000000000000000000000000000000000000000000000000001111111111111
+1100000033333330000000000000000000000000000000000000000000000000000000000000000000000000111111111111
+1100000333300000000000000000000000000000000000000000000000000000000000000000000000000000000011111111
+1100003333000000000000000000000000000000000000000000000000000000000000000000000000000000000000011111
+1100003300000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111
+1110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000111
+1110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+1100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+1100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+</d_types>
+		<d_styles>
+0a0a0a0a0a0a0a0a0a0a130303001e0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a13650408040205050009000503020304040909020907060209070506000905040208090500050708040603060503070809050806090407080802040609
+0a0a0a0a0a0a0a0a0a0a0e1500201d0a0a0a0a0a0a0a0a0a0a0a0a0b0c0c0d0a0a0a0a0a0b191917050207030805030202000902050605060805040203020207040402090808030008090306050405040404060609080905030404050306000607020406
+0a0a0a0a0a0a0a0a0a0a0a0e1c1d0a0a0a0a0a0a0a0a0a0a0a0a1817060622190d0a0a1817090007080006090302000405000608050305050705000308000307050408040208000906070807060608080704070204020508060508040309080803060204
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f0869660304220c192309000603070307070604020805030406090300070809050700050002060705030502030204000908040804090808030708030204030500000908000304050608
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1b15086804040202090804030004000900050805060008040304090408030606000409040609030507060607070604080802000500060800090504070700040502000807090800060406
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0b0c0c0d0e0f1504050905070402000804090600000303040402050705080805080804060504090803020506000302020207030207050408040603080400020909030502060209060004090906
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0b190c0c17060516190c1769090507040602030809090300090506080809030205090002040307020402000307070400060608030308040003070800040802080809000902070805090807040400040904
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a130005030909060008090709080706040800050703020702090505070408070906090203060503040408040905070202080608080503070407000900060407020306050800070002050209080800090404
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f0802050900000700090202020209060608050205050206000208020606000604020003090807090706080605050202464800060909090902070805030800040808060706040500070306030805040909
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1b2108060402080205090802080007080009060907000600030705020504090005050608040208080806090605464747514d02464805080803000805020705060909020308090207040003080505000503
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f03000604080806060009050005080607030907000402020205090902060606060609090205060706030946514545454d07494b02090500040309030805070400060202090706050705060200040205
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0e1c0f0f2106070707060306030004060403040908020808040209020508070403060609020005070707034c454545454d073b3d06050307060008080603090809060508060905000408080903020607
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1b0f150305090900060009080905000207020602030705060304040508030200060500020209024c45454e4a4b02382d04020204064648060802020604000509040500030300080902090605
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1b150002070903000202050707020908060208050606050006000208080408044647474747514e4a4b546356464748084647475150474748060302030400040904080707030508070607
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0e1505040403040007000704070204040209040406060403060608030404465145454545454d54565758594c455047514545454545454d030205050606040400080405040600030703
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1308050008090907040006030503070708060309080404030506090846514545454545454d5759464748494f45454545454545454550474748050407050602090204000605090205
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f080202030805030408090202020008000403020303070300000546514545454e4a4a4f504803494a4b09494f4545454e4a4a4f4545454e4b080808090504080306070605070307
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1b210804070708020204033b29292a060902000706020606050846514545454e4b0905494a4b020703050309494a4f4e4b0403494f45454d04000808000900060805080404000907
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f0805000304053b2a092e3f2743293d0300020505050500004c454545454d05080203080507050807080208054c4d060305004c45454d07060603020509040002070804020203
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a130300020403022e433c333f273f3f2f0503020600030306084c454545454d0202030004050309020900030005494b07030603494f4e4b07090605080607090707090809020802
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a136a00050507052b31273f41393127323d0709020905060846524a4a4f454d070504020700050208070900050900060605142104494b0946480006080308060502050300090406
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a13090706040504083e273f40003e27272f030004000305064c4d54564c4e4b07000202040703020407040405080308141c101f06020000495248030700050502283c2a09060303
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f0705040007063b442727323c4427274005070800080902494b57594c4d0309080500070206020006070808060408110a0a130708670809494b0706070703042b2c2d09080909
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f0808020005082b4227272727272727323d09030307040606464747514d0505090406000603070404040707070300110a0a1b2107696803040608464802070805000808030303
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f0508020307020938423f2727273f412c3a04020204020406494f4545504748060302080703070306000507070003110a0a0a1b21091421020003494b46474807030403030205
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1304070300000806002e3f3f3f3f302d02040304000006020604494a4f4545504800090900050309030006000806051e0a0a0a0a0e0f26230805040502494f5047474806060905
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a130500020406070404382c42273f2f03080506020303050402060909494a4f454d02141c1c2103080405030202040516191a0a0a0a0a1303660009090200494f454e4b05000702
+0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f050802070700000705003e3f272f040706070704080503050009050804494a4b14100a0a0e1c21030805060809464805221a0a0a0a1b21000700060809064c454d0507050307
+0a0a0a0a0a0a0a0a0a0b0c0c19190c0c1919191a0b190c0c0c0c1a0a0b170000060000030907023b33302c3a000007000602050206040003070306201c0f100a0a0a0a0a13020900000608494b0609160d0a0a0a0e1c0f2109070704494a4b0604020506
+0a0a0a0b19190d0a182307036505020602020322170009076600160c23054648090806050308042e302d0207040000036902090802080304090420100a0a0a0a0a0a0a0a1f0204000903060003060203221a0a0a0a0a0a13046504030504050500050802
+0a0a0a1f0306160c230506070304000004000606080908000000060005044952474748070800002b2d060205070305201c1c1c0f150209080020100a0a0a0a0a0a180c1a0e2102030603070305090206081e0a0a0a0a0a1f680768690308020906050306
+0a0a0a13070004090003050808464747480246474748030608040504060808494a4f5047474748000708060504200f1d0a0a0a0a1b1c210414100a0a0a0a0a0a0a13081619170500080003090505070702220d0a0a0a0a13076604000802050402030806
+0a0a0a130207020402060202024c4e4a4b04494a4a4b023b2a0408020705050906494f454545504747480403071e0a0a0a0a0a0a0a0a1b1c1d0a0a0a0a0a0a18192309660900650000040005020406030604110a0a0a0a1b0f0f0f0f1507000308090806
+0a0a0a1b150309080603080207494b0806070407080402383a020506090009040602494f454545454550474748161a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1817050704200f1c1c1508020005050305040409161a0a0a0a0a0a0a0a0a1b0f1c1506080906
+0a0a0a0a1f060005060308070905030404000206070505040609080208050708070004494a4a4a4a4a4a4a4a4b06110a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f003b3c3d110a0a0a0e0f2108000509030903020816191a0a0a0a0a0a0a0a0a0a1b21060800
+0a0a0a0a1f0400060404030405090306000006464748004648090507050207050504040605040206050209070000110a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1b152b2c3a1e0a0a0a0a0a1f030409040906464804060422190c191a0a0a0a0a0a0a0e0f1508
+0a0a0a0a1f050206060009050202000305064651454d004c4d090207040703080405080009090505080409070314100a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a130600201d0a0a0a0a0a1b150402070946524b020507030609031e0a0a0a0a0a0a0a0a1b0f
+0a0a0a0a1304040800020007060902000205494f455048494b03050902090900040608090700050802040305141d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a130808110a0a0a0a0a0a0a1b21040702494b04060804070502681e0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a1f0204080605080206040907083b2a4c454e4b04090002060803090004090305080503050700201c1d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1b2105220d0a0a0a0a0a0a0a0e0f150008030806060408000008220c0c0d0a0a0a0a0a0a0a
+0a0a0a0a0e1507070307030306080809052b2d494a4b0206000606040306283d0005040402000804140f1d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0b230906110a0a0a0a0a0a0a0a0a0e0f1c150202090505070400080303161a0a0a0a0a1819
+0a0a0a0a0a1303050204080005283d0702464800020928292a03080200032b3a060503090905201c1d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0b1923030803110a0a0a0a0a0a0a0a0a0a0a0a1f090406040002000508070005160c0d0a0a1300
+0a0a0a0a1817050902070204062b2d4647514d0704052b31432a0203090602040709020400041e0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f0805060707220d0a0a0a0a0a0a0a0a0a0a0a0e0f21050406464804050202040707160d0a1305
+0a0a0a0a1300040702464747474747524a4a4b070702062e412d06000207030002060003140f100a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1b210307080502110a0a0a0a0a0a0a0a0a0a0a0a0a0e0f1506494b0002086505060302220d1300
+0a0a0a0a1f06080606494a4a4a4a4a4b02080002090802382d03283d0503050702000309110a0a0a0a0a0a0a180c1a18190d0a0a0a0a0a0a0a0a0a0a0a0a13003b3d0720100a0a0a0a0a0a0a0a0a0a0a0a0a0a0a13000207070702200f1c2103031e0e1c
+0a0a0a0a130802050302000009000906080003050602000903042e2f0502080205020214100a0a0a0a0a181923051e1f041e0a0a0a0a0a0a0a0a0a0a0a0a1308383a001e0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1b0f2104090520100a0a130820100a0a
+0a0a0a0b17060605070809000403090709030808050908050307382d040404030609141d0a0a0a0a0a0a1f020007110e1c1d0a0a0a0a0a0a0a0a0a0a0a0a13030407071e0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f000205220c1a0a0e1c1d0a0a0a
+0a0a0a130702000407000804040305080907090209050906040706464805020206081e0a0a0a0a0a0a0a130606081e0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f000604081e0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0e21050000081e0a0a0a0a0a0a0a
+0a0a182302040705090903000309080803070205070903050707034c4d0407040707110a0a0b0c1a0a0a1b1c1c1c100a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f09060703110a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1f000407031e0a0a0a0a0a0a0a
+0a0a1f0704070603060600090902080603080500020200030009004c4d04050609091e0a0a1302110a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a130609200f1d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0e210509041e0a0a0a0a0a0a0a
+0a0a1f0009090407070205030805050507090005040907023b3d064c4d0303000005160d0a1304110a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1b1c1c100a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a18191a0a0a0b2305140f100a0a0a0a0a0a0a
+0a0a0e1502000507050405040408080007050003000700022b3a04494b0907090703031e0a1b0f1d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a13041e18191705081e0a0a0a0a0a0a0a0a0a
+0a0a0a1b21090304090205080503020208040900020200090704464809020707090720100a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0b1919190d0a1b1516176a0509091e0a0a0a0a0a0a0a0a0a
+0a0a0a0a13090809040505070709050505000702070505050300494b020402000814100a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0b2304070716190c17020569000720100a0a0a0a0a0a0a0a0a
+0a0a0a0a1f03080005050706070900080200080708064647474748080807020966110a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1305090005020800060407201c0f1d0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a1f0509080200020006020708070906004647524a4a4a4b000406070304110a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1307040508080205000206110a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a1f060309090808060900060006000346524a4b06090908070403200f0f1d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a18190c190c1a0a0a0a0a0a0e0f1c15000606070603691e0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a1f0800080809080405040006090403494b040404070509060320100a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a180c190c0c0d0a0a18170707000522190c1a0a0a0a0a0a1b21060909030207110a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0e0f1c1506141c0f15070307020903060400090609020005081e0a0a0a0a0a0a0a0a0a0a0a0a0a180c0c0c0c0c1919190c0c0c230808660616190c170704070903096509110a0a0a0a0a0a0e1c1c210603001e0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0e1c100a0a13060305040804200f1500050707660220100a0a0a0a0a0a0a0b190c190c192305066709040707096a07040902090909060408030200060208050814100a0a0a0a0a0a0a0a0a1b2109201d0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0a0a0a0a0a0e1509030302141d0a1b0f1c1c1c0f0f1d0a0a0a0a0a0a180c230409080000020209020446474809090604090403040204090408020605090008081e0a0a0a0a0a0a0a0a0a0a0a0e0f100a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0a0a0a0a0a0a13060400141d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a1817080703090500070409030707494a5247480406090309090507040003070405040805141d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0a0a0a0a0a0a13656665110a0a0a0a0a0a0a0a0a0a0a0a0a0a0b1917050604080203070908060607000504494f504747474747474807020302030407090503220c0d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0a0a0a0a0a0a1b1509071e0a0a0a0a0a0a0a0a0a0a0a0a180c17090305020402050204060609464806070404494a4f45454545454d020407070007090000020309110a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0a0a0a0a0a0a0b170506110a0a0a0a0a0a0a0a0a0a0a18230909090302070900080005050246524b080207020706494a4f45454550474748030307030705030305110a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0a0a0a0a0a0a13000407220c0c190c190c0c0c19190c230804000809090609000406030007494b090600080604090703494f4e4a4f454550480904080503080607110a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0a0a0a0a0a0a13040408030309070200030602070302070704020007090306000409070207060500020703090403090608494b084c4545454d0308050403050509110a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0a0a0a0a0a1817060807464808090906040500080707040006040206020746480904030600070908050803000700060805060402494f45454d020800080504066a1e0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0a0a0a0a0a1306070404494b070807040200020505090608060008080600494b050303080906030309050805000508020500040709494f455048020409000366001e0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0a0a0a0a1817020503040802020808060209060208090308030408464805040503050307090200090508020406090805060406030206494f4e4b0303000707141c1d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0a0a0a0a1f02030305060307000204040902040202464747474806494b0002050407080006020400050407060308090209000402030608494b04000302201c1d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0a0a0b191709090806070500080406050707000305494a4a4a4b0007090007040604050403020906080504060800080307070509000409070000020700220c190c1a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0a0b0c2305040907090805080404464747480806080803000507070905070403000207030506090205030906060504020603050400070403040902070465076503041e0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a0a0b230808070409030409050504094c454e4b06090805090409000808070803080202040803040006000502050304070800030808066966666a686768676503070507221a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a0a182300050508050302030703020646514e4b020200000003000002050800040309030505000705000802030906050204060003060002080066076a65696909030702070522190d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0a181707080403020002040606050546514e4b0505030700090303060207090608040406060407060309000602050006080800000006000706020307080202050403000906060307220c191919190d0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a0b1708030309040909040306030746514e4b020300060207020607090804000804070806060905030206090203000502060604040905020000080708000804040309090809020000050702070704220c1a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a13070702040609090905070707094c4e4b0804030005020208030200090807060504060609050508090304040204030302070502090403070403050200020703030008020504000304020603050905061619191a0a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a0a1f03070804000206070409004647524b02070707070203070308000203050609050308060207020800000702040802040509080908020700070509090706090206050707090804070600090706000800070707110a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0a1817060709060407020305464751454d0500000806000009040700020809040805090305050509040702030202080204060002000009070306070204040509090400020605080909090900080500030900020908110a0a0a0a0a0a0a0a0a0a0a0a0a
+0a0b17070903040002090802465145454e4b0803090402080604040508000307000802000204080003060908020903050208050802070408000700060704000809030608060408060705040805060006020602030005221a0a0a0a0a0a0a0a0a0a0a0a0a
+0a130402070709090007034651454e4a4b00060509000707050704090007070509000604050303050805040808050504050006020004080308000907070602040406070808090006020203090707000207050406060906160d0a0a0a0a0a0a0a0a0a0a0a
+0a1f080309080906464748494a4a4b0806070206030800090806000209000300060803030402070609030402090409050809080007060803030802090802090208090502090206080207080008050307040205080703080722190c0c0d0a0a0a0a0a0a0a
+0a13080208060946514e4b030306090807070508050903040209000508060508080007060706000608020608080506050009000508000609000602060204050705090409060403020608090204040404030206080202060905050604160c0c0d0a0a0a0a
+0a130909080746524a4b03000006080007040709070304040803050405000208000206060802060602060609030209070407070007080406000607050608000607060203080506070202060404060007000505050308080004050509020403160d0a0a0a
+0a1302080306494b09070009030504030003040405060006090000070207020609020209070003060803030805040005060406090004050904030404090607070509060207090503090500030802050305090203030400050704060607000002220d0a0a
+0a0e1500070803060906080205070305000009070403020904020800060705070900080508080005040604060304020004080806020705030803000307060907040509020407040503070203020003030808080705030702040804080200050506161919
+0a182300020800000802040509020203030704040505020605050808060203070803050900040807050202040300040307070602090805030303080604020309020607090905060406070506080709050203050200090200000907020807020900060907
+0a1f0002080407060004080907000005080204080908090705080704020400090609080400040700070407020208050907080706060504080008020009030705020607020902090403060605020002070809000202020909090909080207020003060909
+19170308090800090602060208040307060007050904020800000600060509000803060508060403080702060203040703080909020807030800000203000300000805060307080004080403000707030505090503040709040708060508060307080907
+67050705030807030603030807020307050704060303020700050005020702040206080305040308040604000507050802090404090609090007030202040400080903030306000609040404080702080406090309080907030207040600050409070400
+00020409050602020303090606080605050500070707090005040204080502070604060809070709080603020308050703050209020809060900070803070306000605070202060906060006040503060702040800030209020705020405080202030603
+02020905070900080300040900070608080505070200080303060204060704060603000000020803090309090703070308030907000800030409050807080403020404020302020302000909020509090709040507020508020906080609000702040804
+04070405050202060602030000070305080703070507050006040707070309080700040202030805020003020505040203070805020205070509030909090806070907070203020402050306070505090202040003060707050704040402070208050808
+07070908090203070407060508080308020003070507080906060805080603050309020308020903080305050808030006040500000007060405080208080502070402060508080008030505000603060905050705020307050906030700040502030806
+08060705060909050302080906030608030705070402090009020302020005000409030009020309030007080200060205090608000309090402080400040204030402090504070503040302040603090306070308040003060804040205070308090200
+00080500090502040802000207050206090206030809060702030907090907000702080706000804020603070005000706040902000509020608080507050303040207070903080808020506040304090603020606080502060004020305040604080300
+00090806000202040405000806090202070700020702030006040407090507090404030405040506070302030004020700090605000603050907090602070505080706030908060600080600090506090402020406050603090609000004030809080806
+06040204090503080908050307050403090006080405060406080903040708090807000602030400080700060205060803090406020907060506080800050708020504040806020600030902070409070303030309090804030602030806000000030206
+06030006030705070002040204060400030204050503070406060206060300020308050605090304000705020006090205000609030200080502020002090905070200000800040605060706020405040400000409020902000809030808050307030305
+03060008020502000806040904050302040203040803040608080806000908020507070502080508020707030200040509050607050800030607060506050400020005000608080505040704020906080202060607040602000306060507050407070400
+</d_styles>
+	</map>
 	<citylist>
 		<city>
 			<d_id>102</d_id>
@@ -1587,45 +1735,45 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Scouts</d_name>
-				<d_image>scouts</d_image>
 				<d_description></d_description>
+				<d_image>scouts</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>10</d_production_cost>
 				<d_upkeep>2</d_upkeep>
-				<d_type>0</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>1</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>0</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>1</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 			<army>
 				<d_name>Heavy Inf.</d_name>
-				<d_image>heavyinf</d_image>
 				<d_description></d_description>
+				<d_image>heavyinf</d_image>
 				<d_production>2</d_production>
 				<d_production_cost>300</d_production_cost>
 				<d_upkeep>5</d_upkeep>
-				<d_type>3</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>3</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>8</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>3</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>8</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>3</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -1643,45 +1791,45 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Scouts</d_name>
-				<d_image>scouts</d_image>
 				<d_description></d_description>
+				<d_image>scouts</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>10</d_production_cost>
 				<d_upkeep>2</d_upkeep>
-				<d_type>0</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>1</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>0</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>1</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 			<army>
 				<d_name>Pikemen</d_name>
-				<d_image>pikeman</d_image>
 				<d_description></d_description>
+				<d_image>pikeman</d_image>
 				<d_production>3</d_production>
 				<d_production_cost>400</d_production_cost>
 				<d_upkeep>5</d_upkeep>
-				<d_type>4</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>4</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>8</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>1</d_army_bonus>
+				<d_type>4</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>8</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>4</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -1699,24 +1847,24 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Scouts</d_name>
-				<d_image>scouts</d_image>
 				<d_description></d_description>
+				<d_image>scouts</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>10</d_production_cost>
 				<d_upkeep>2</d_upkeep>
-				<d_type>0</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>1</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>0</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>1</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -1734,24 +1882,24 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Scouts</d_name>
-				<d_image>scouts</d_image>
 				<d_description></d_description>
+				<d_image>scouts</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>10</d_production_cost>
 				<d_upkeep>2</d_upkeep>
-				<d_type>0</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>1</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>0</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>1</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -1770,45 +1918,45 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Scouts</d_name>
-				<d_image>scouts</d_image>
 				<d_description></d_description>
+				<d_image>scouts</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>10</d_production_cost>
 				<d_upkeep>2</d_upkeep>
-				<d_type>0</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>1</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>0</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>1</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 			<army>
 				<d_name>Pikemen</d_name>
-				<d_image>pikeman</d_image>
 				<d_description></d_description>
+				<d_image>pikeman</d_image>
 				<d_production>3</d_production>
 				<d_production_cost>400</d_production_cost>
 				<d_upkeep>5</d_upkeep>
-				<d_type>4</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>4</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>8</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>1</d_army_bonus>
+				<d_type>4</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>8</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>4</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -1826,45 +1974,45 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Orcish Mob</d_name>
-				<d_image>orcishmob</d_image>
 				<d_description></d_description>
+				<d_image>orcishmob</d_image>
 				<d_production>2</d_production>
 				<d_production_cost>100</d_production_cost>
 				<d_upkeep>4</d_upkeep>
-				<d_type>2</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>2</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>12</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>2</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>12</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>2</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 			<army>
 				<d_name>Scouts</d_name>
-				<d_image>scouts</d_image>
 				<d_description></d_description>
+				<d_image>scouts</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>10</d_production_cost>
 				<d_upkeep>2</d_upkeep>
-				<d_type>0</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>1</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>0</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>1</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -1882,45 +2030,45 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Pikemen</d_name>
-				<d_image>pikeman</d_image>
 				<d_description></d_description>
+				<d_image>pikeman</d_image>
 				<d_production>3</d_production>
 				<d_production_cost>400</d_production_cost>
 				<d_upkeep>5</d_upkeep>
-				<d_type>4</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>4</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>8</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>1</d_army_bonus>
+				<d_type>4</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>8</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>4</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 			<army>
 				<d_name>Light Inf.</d_name>
-				<d_image>lightinf</d_image>
 				<d_description></d_description>
+				<d_image>lightinf</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>50</d_production_cost>
 				<d_upkeep>3</d_upkeep>
-				<d_type>1</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>2</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>12</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>1</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>12</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>2</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -1938,45 +2086,45 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Heavy Inf.</d_name>
-				<d_image>heavyinf</d_image>
 				<d_description></d_description>
+				<d_image>heavyinf</d_image>
 				<d_production>2</d_production>
 				<d_production_cost>300</d_production_cost>
 				<d_upkeep>5</d_upkeep>
-				<d_type>3</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>3</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>8</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>3</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>8</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>3</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 			<army>
 				<d_name>Light Inf.</d_name>
-				<d_image>lightinf</d_image>
 				<d_description></d_description>
+				<d_image>lightinf</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>50</d_production_cost>
 				<d_upkeep>3</d_upkeep>
-				<d_type>1</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>2</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>12</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>1</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>12</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>2</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -1994,45 +2142,45 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Pikemen</d_name>
-				<d_image>pikeman</d_image>
 				<d_description></d_description>
+				<d_image>pikeman</d_image>
 				<d_production>3</d_production>
 				<d_production_cost>400</d_production_cost>
 				<d_upkeep>5</d_upkeep>
-				<d_type>4</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>4</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>8</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>1</d_army_bonus>
+				<d_type>4</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>8</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>4</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 			<army>
 				<d_name>Light Inf.</d_name>
-				<d_image>lightinf</d_image>
 				<d_description></d_description>
+				<d_image>lightinf</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>50</d_production_cost>
 				<d_upkeep>3</d_upkeep>
-				<d_type>1</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>2</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>12</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>1</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>12</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>2</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2050,45 +2198,45 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Scouts</d_name>
-				<d_image>scouts</d_image>
 				<d_description></d_description>
+				<d_image>scouts</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>10</d_production_cost>
 				<d_upkeep>2</d_upkeep>
-				<d_type>0</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>1</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>0</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>1</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 			<army>
 				<d_name>Heavy Inf.</d_name>
-				<d_image>heavyinf</d_image>
 				<d_description></d_description>
+				<d_image>heavyinf</d_image>
 				<d_production>2</d_production>
 				<d_production_cost>300</d_production_cost>
 				<d_upkeep>5</d_upkeep>
-				<d_type>3</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>3</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>8</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>3</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>8</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>3</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2106,24 +2254,24 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Scouts</d_name>
-				<d_image>scouts</d_image>
 				<d_description></d_description>
+				<d_image>scouts</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>10</d_production_cost>
 				<d_upkeep>2</d_upkeep>
-				<d_type>0</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>1</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>0</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>1</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2134,31 +2282,31 @@
 			<d_owner>1</d_owner>
 			<d_defense>1</d_defense>
 			<d_production>0</d_production>
-			<d_duration>1</d_duration>
+			<d_duration>2</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Heavy Inf.</d_name>
-				<d_image>heavyinf</d_image>
 				<d_description></d_description>
+				<d_image>heavyinf</d_image>
 				<d_production>2</d_production>
 				<d_production_cost>300</d_production_cost>
 				<d_upkeep>5</d_upkeep>
-				<d_type>3</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>3</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>8</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>3</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>8</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>3</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2176,24 +2324,24 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Dwarves</d_name>
-				<d_image>dwarves</d_image>
 				<d_description></d_description>
+				<d_image>dwarves</d_image>
 				<d_production>2</d_production>
 				<d_production_cost>400</d_production_cost>
 				<d_upkeep>7</d_upkeep>
-				<d_type>6</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>3</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>8</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>4</d_move_bonus>
 				<d_army_bonus>8</d_army_bonus>
+				<d_type>6</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>8</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>3</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2211,45 +2359,45 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Light Cav.</d_name>
-				<d_image>lightcav</d_image>
 				<d_description></d_description>
+				<d_image>lightcav</d_image>
 				<d_production>2</d_production>
 				<d_production_cost>300</d_production_cost>
 				<d_upkeep>6</d_upkeep>
-				<d_type>10</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>2</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>20</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>1</d_army_bonus>
+				<d_type>10</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>20</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>2</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 			<army>
 				<d_name>Scouts</d_name>
-				<d_image>scouts</d_image>
 				<d_description></d_description>
+				<d_image>scouts</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>10</d_production_cost>
 				<d_upkeep>2</d_upkeep>
-				<d_type>0</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>1</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>0</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>1</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2267,24 +2415,24 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Scouts</d_name>
-				<d_image>scouts</d_image>
 				<d_description></d_description>
+				<d_image>scouts</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>10</d_production_cost>
 				<d_upkeep>2</d_upkeep>
-				<d_type>0</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>1</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>0</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>1</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2302,24 +2450,24 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Archers</d_name>
-				<d_image>archers</d_image>
 				<d_description></d_description>
+				<d_image>archers</d_image>
 				<d_production>2</d_production>
 				<d_production_cost>400</d_production_cost>
 				<d_upkeep>7</d_upkeep>
-				<d_type>5</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>3</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>12</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>2</d_move_bonus>
 				<d_army_bonus>4</d_army_bonus>
+				<d_type>5</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>12</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>3</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2337,45 +2485,45 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Orcish Mob</d_name>
-				<d_image>orcishmob</d_image>
 				<d_description></d_description>
+				<d_image>orcishmob</d_image>
 				<d_production>2</d_production>
 				<d_production_cost>100</d_production_cost>
 				<d_upkeep>4</d_upkeep>
-				<d_type>2</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>2</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>12</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>2</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>12</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>2</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 			<army>
 				<d_name>Heavy Cav.</d_name>
-				<d_image>heavycav</d_image>
 				<d_description></d_description>
+				<d_image>heavycav</d_image>
 				<d_production>3</d_production>
 				<d_production_cost>500</d_production_cost>
 				<d_upkeep>8</d_upkeep>
-				<d_type>12</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>4</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>2</d_army_bonus>
+				<d_type>12</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>4</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2393,24 +2541,24 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Pikemen</d_name>
-				<d_image>pikeman</d_image>
 				<d_description></d_description>
+				<d_image>pikeman</d_image>
 				<d_production>3</d_production>
 				<d_production_cost>400</d_production_cost>
 				<d_upkeep>5</d_upkeep>
-				<d_type>4</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>4</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>8</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>1</d_army_bonus>
+				<d_type>4</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>8</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>4</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2428,24 +2576,24 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Light Cav.</d_name>
-				<d_image>lightcav</d_image>
 				<d_description></d_description>
+				<d_image>lightcav</d_image>
 				<d_production>2</d_production>
 				<d_production_cost>300</d_production_cost>
 				<d_upkeep>6</d_upkeep>
-				<d_type>10</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>2</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>20</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>1</d_army_bonus>
+				<d_type>10</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>20</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>2</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2463,45 +2611,45 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Light Inf.</d_name>
-				<d_image>lightinf</d_image>
 				<d_description></d_description>
+				<d_image>lightinf</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>50</d_production_cost>
 				<d_upkeep>3</d_upkeep>
-				<d_type>1</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>2</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>12</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>1</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>12</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>2</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 			<army>
 				<d_name>Scouts</d_name>
-				<d_image>scouts</d_image>
 				<d_description></d_description>
+				<d_image>scouts</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>10</d_production_cost>
 				<d_upkeep>2</d_upkeep>
-				<d_type>0</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>1</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>0</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>1</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2519,24 +2667,24 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Scouts</d_name>
-				<d_image>scouts</d_image>
 				<d_description></d_description>
+				<d_image>scouts</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>10</d_production_cost>
 				<d_upkeep>2</d_upkeep>
-				<d_type>0</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>1</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>16</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>0</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>16</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>1</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2554,45 +2702,45 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Orcish Mob</d_name>
-				<d_image>orcishmob</d_image>
 				<d_description></d_description>
+				<d_image>orcishmob</d_image>
 				<d_production>2</d_production>
 				<d_production_cost>100</d_production_cost>
 				<d_upkeep>4</d_upkeep>
-				<d_type>2</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>2</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>12</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>6</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>2</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>12</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>2</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 			<army>
 				<d_name>Light Inf.</d_name>
-				<d_image>lightinf</d_image>
 				<d_description></d_description>
+				<d_image>lightinf</d_image>
 				<d_production>1</d_production>
 				<d_production_cost>50</d_production_cost>
 				<d_upkeep>3</d_upkeep>
-				<d_type>1</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>2</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>12</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>0</d_move_bonus>
 				<d_army_bonus>0</d_army_bonus>
+				<d_type>1</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>12</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>2</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 		<city>
@@ -2610,24 +2758,24 @@
 			<d_vectoring>-1 -1</d_vectoring>
 			<army>
 				<d_name>Archers</d_name>
-				<d_image>archers</d_image>
 				<d_description></d_description>
+				<d_image>archers</d_image>
 				<d_production>2</d_production>
 				<d_production_cost>400</d_production_cost>
 				<d_upkeep>7</d_upkeep>
-				<d_type>5</d_type>
-				<d_armyset>1</d_armyset>
-				<d_strength>3</d_strength>
-				<d_expvalue>1</d_expvalue>
-				<d_max_moves>12</d_max_moves>
-				<d_sight>1</d_sight>
 				<d_gender>0</d_gender>
-				<d_defends_ruins>false</d_defends_ruins>
 				<d_awardable>false</d_awardable>
-				<d_portrait></d_portrait>
+				<d_defends_ruins>false</d_defends_ruins>
 				<d_move_bonus>2</d_move_bonus>
 				<d_army_bonus>4</d_army_bonus>
+				<d_type>5</d_type>
+				<d_armyset>1</d_armyset>
+				<d_max_moves>12</d_max_moves>
 				<d_hero>false</d_hero>
+				<d_strength>3</d_strength>
+				<d_sight>1</d_sight>
+				<d_expvalue>1</d_expvalue>
+				<d_level>1</d_level>
 			</army>
 		</city>
 	</citylist>
@@ -2663,39 +2811,40 @@
 	</templelist>
 	<ruinlist>
 		<ruin>
-			<d_id>104</d_id>
-			<d_name>Dark Tower</d_name>
-			<d_type>false</d_type>
-			<d_x>50</d_x>
-			<d_y>24</d_y>
+			<d_id>149</d_id>
+			<d_name>The Sibyl's Cave</d_name>
+			<d_type>true</d_type>
+			<d_x>80</d_x>
+			<d_y>35</d_y>
 			<d_searched>false</d_searched>
-			<d_sage>false</d_sage>
-			<d_hidden>false</d_hidden>
-			<d_owner>8</d_owner>
+			<d_sage>true</d_sage>
+			<d_hidden>true</d_hidden>
+			<d_owner>0</d_owner>
 			<stack>
-				<d_id>217</d_id>
+				<d_id>229</d_id>
 				<d_player>-1</d_player>
-				<d_x>50</d_x>
-				<d_y>24</d_y>
+				<d_x>42</d_x>
+				<d_y>82</d_y>
 				<d_defending>false</d_defending>
-                                <d_parked>false</d_parked>
+				<d_parked>false</d_parked>
+				<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 				<path>
 					<d_size>0</d_size>
 					<d_x></d_x>
 					<d_y></d_y>
 				</path>
 				<army>
-					<d_id>218</d_id>
+					<d_id>230</d_id>
 					<d_armyset>1</d_armyset>
-					<d_type>24</d_type>
-					<d_hero>false</d_hero>
+					<d_type>23</d_type>
 					<d_hp>2</d_hp>
-					<d_strength>7</d_strength>
-					<d_sight>1</d_sight>
-					<d_moves>20</d_moves>
 					<d_ship>false</d_ship>
-					<d_max_moves>20</d_max_moves>
+					<d_moves>16</d_moves>
 					<d_xp>0</d_xp>
+					<d_max_moves>16</d_max_moves>
+					<d_hero>false</d_hero>
+					<d_strength>8</d_strength>
+					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
 					<d_level>1</d_level>
 					<d_medals>0 0 0 </d_medals>
@@ -2720,7 +2869,8 @@
 				<d_x>36</d_x>
 				<d_y>59</d_y>
 				<d_defending>false</d_defending>
-                                <d_parked>false</d_parked>
+				<d_parked>false</d_parked>
+				<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 				<path>
 					<d_size>0</d_size>
 					<d_x></d_x>
@@ -2730,14 +2880,14 @@
 					<d_id>228</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>26</d_type>
-					<d_hero>false</d_hero>
 					<d_hp>2</d_hp>
+					<d_ship>false</d_ship>
+					<d_moves>22</d_moves>
+					<d_xp>0</d_xp>
+					<d_max_moves>22</d_max_moves>
+					<d_hero>false</d_hero>
 					<d_strength>9</d_strength>
 					<d_sight>1</d_sight>
-					<d_moves>22</d_moves>
-					<d_ship>false</d_ship>
-					<d_max_moves>22</d_max_moves>
-					<d_xp>0</d_xp>
 					<d_expvalue>10</d_expvalue>
 					<d_level>1</d_level>
 					<d_medals>0 0 0 </d_medals>
@@ -2747,39 +2897,40 @@
 			</stack>
 		</ruin>
 		<ruin>
-			<d_id>149</d_id>
-			<d_name>The Sibyl's Cave</d_name>
-			<d_type>true</d_type>
-			<d_x>80</d_x>
-			<d_y>35</d_y>
+			<d_id>104</d_id>
+			<d_name>Dark Tower</d_name>
+			<d_type>false</d_type>
+			<d_x>50</d_x>
+			<d_y>24</d_y>
 			<d_searched>false</d_searched>
-			<d_sage>true</d_sage>
-			<d_hidden>true</d_hidden>
-			<d_owner>0</d_owner>
+			<d_sage>false</d_sage>
+			<d_hidden>false</d_hidden>
+			<d_owner>8</d_owner>
 			<stack>
-				<d_id>229</d_id>
+				<d_id>217</d_id>
 				<d_player>-1</d_player>
-				<d_x>42</d_x>
-				<d_y>82</d_y>
+				<d_x>50</d_x>
+				<d_y>24</d_y>
 				<d_defending>false</d_defending>
-                                <d_parked>false</d_parked>
+				<d_parked>false</d_parked>
+				<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 				<path>
 					<d_size>0</d_size>
 					<d_x></d_x>
 					<d_y></d_y>
 				</path>
 				<army>
-					<d_id>230</d_id>
+					<d_id>218</d_id>
 					<d_armyset>1</d_armyset>
-					<d_type>23</d_type>
-					<d_hero>false</d_hero>
+					<d_type>24</d_type>
 					<d_hp>2</d_hp>
-					<d_strength>8</d_strength>
-					<d_sight>1</d_sight>
-					<d_moves>16</d_moves>
 					<d_ship>false</d_ship>
-					<d_max_moves>16</d_max_moves>
+					<d_moves>20</d_moves>
 					<d_xp>0</d_xp>
+					<d_max_moves>20</d_max_moves>
+					<d_hero>false</d_hero>
+					<d_strength>7</d_strength>
+					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
 					<d_level>1</d_level>
 					<d_medals>0 0 0 </d_medals>

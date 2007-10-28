@@ -177,6 +177,8 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
 	Uint32 getUpkeep();
         
 	static bool armyCompareFightOrder (const Army *, const Army *);
+	Uint32 getMovesExhaustedAtPoint() {return d_moves_exhausted_at_point;}
+	void setMovesExhaustedAtPoint(Uint32 index) {d_moves_exhausted_at_point = index;}
     private:    
         //! Callback for loading the stack
         bool load(std::string tag, XML_Helper* helper);
@@ -191,6 +193,7 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
         // some things may happen in the destructor of the contained armies and
         // we don't want bigmap to draw the stack when it is being removed.
         bool d_deleting;
+	Uint32 d_moves_exhausted_at_point;
 };
 
 #endif // STACK_H
