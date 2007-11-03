@@ -77,7 +77,7 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
                             These Ids line up with order of armies in
                             the armyset.                </d_fight_order>
             <history>
-                The only tag common to all action types is the tag "type".
+                The only tag common to all history types is the tag "type".
                 Everything else depends on the type of the history event. 
                 The whole historylist of a player comes here with as many 
                 tags as necessary.  For example purposes, one history tag
@@ -383,8 +383,8 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
             <action>
                 <d_type>13</d_type> (.. a reward is given ..)
                 <reward>
-                  fixme: describe the rewards somewhere
-                </d_reward>
+                  Look at lordsawar.rewardlist for a description of a reward.
+                </reward>
             </action>
 
             <action>
@@ -583,7 +583,7 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
                            ruin is visible by all.
             </d_owner>
             <reward>
-              the reward this ruin will provide (if not a sage)
+              Look at lordsawar.rewardlist for a description of a reward.
             </reward>
             <stack>
                 ....
@@ -601,6 +601,58 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
     <rewardlist>
         the one-time reward list, where random rewards are chosen from
         <reward>
+            The only tags common to all reward types is the tag "type",
+            and "name".
+            Everything else depends on the type of the reward. 
+            For example purposes, one reward tag will be shown for 
+            each kind of reward.
+        </reward>
+        <reward>
+            <d_type>1</d_type> (..give gold..)
+            <d_name></d_name>
+
+            <d_gold>amount of gold</d_gold>
+        </reward>
+        <reward>
+            <d_type>2</d_type> (..give allies..)
+            <d_name></d_name>
+
+            <d_num_allies> give this many allies
+            </d_num_allies>
+            <d_ally_type> the allies have this army type id 
+            </d_ally_type>
+            <d_ally_armyset> the id of the armyset for this army type
+            </d_ally_armyset>
+        </reward>
+        <reward>
+            <d_type>3</d_type> (..give item..)
+            <d_name></d_name>
+
+            <item>
+                the item to give
+                See lordsawar.playerlist.player.stacklist.stack.hero.backpack
+                for a description of an item.
+            </item>
+        </reward>
+        <reward>
+            <d_type>4</d_type> (..show a hidden ruin..)
+            <d_name></d_name>
+
+            <d_x> the x position of the hidden ruin </d_x>
+            <d_y> the y position of the hidden ruin </d_y>
+        </reward>
+        <reward>
+            <d_type>5</d_type> (..show a part of a hidden map..)
+            <d_name></d_name>
+
+            <d_height> the map is this many tiles high</d_height>
+            <d_width> the map is this many tiles wide</d_width>
+            <location>
+                <d_id>id of the map</d_id>
+                <d_name>name of the map</d_name>
+                <d_x> the upper left corner of the map, x position </d_x>
+                <d_y> the upper left corner of the map, y position </d_y>
+            </location>
         </reward>
         ...more rewards...
     </rewardlist>
@@ -743,20 +795,14 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
     <vectoredunitlist>
         the list of vectored units that are "in the air"
         <vectoredunit>
-          <d_id> the Id of the vectored unit
-          </d_id>
-          <d_name> the name of the vectored unit (unused)
-          </d_name>
-          <d_x> the source x position of the unit on the map
-          </d_x>
-          <d_y> the source y position on the map
-          </d_y>
+          <d_id> the Id of the vectored unit </d_id>
+          <d_name> the name of the vectored unit (unused) </d_name>
+          <d_x> the source x position of the unit on the map </d_x>
+          <d_y> the source y position on the map </d_y>
           <d_duration> how many more turns before the vectored unit shows up
           </d_duration>
-          <d_dest_x> the destination x position on the map
-          </d_dest_x>
-          <d_dest_y> the destination y position on the map
-          </d_dest_y>
+          <d_dest_x> the destination x position on the map </d_dest_x>
+          <d_dest_y> the destination y position on the map </d_dest_y>
           <d_player> the id of the player who is vectoring the unit
           </d_player>
           <army>
