@@ -1,0 +1,61 @@
+This document describes the format of the lordsawarrc file.
+It should be placed in ~/.lordsawarrc or /etc/lordsawarrc.
+First, /etc/lordsawarrc is read, then ~/.lordsawarrc. The last one can override
+the data from the first one.
+
+d_datapath: absolute path (needed)
+d_savepath: absolute path (needed)
+d_lang: actual chosen language (default is C=the current locale)
+d_fullscreen: start in fullscreen mode. (true/false)
+d_hardware: put surfaces in graphics card memory for speed. (true/false) 
+d_cachesize: maximum size of the graphics cache in bytes.
+d_zipfiles: zip save files or not. (true/false)
+d_smoothscrolling: enable the smooth scrolling. (true/false)
+d_shownextplayer: shows the Next player dialog at the end of turn. (true/false)
+d_speeddelay: time to pause (in ms) after each stack movement.
+d_musicenable: play music during gameplay. (true/false)
+d_musicvolume: between 1 and 100 representing loudness.
+d_musiccache: the number of bytes of audio to cache
+d_view_enemies: see enemy stack's contents.  (true/false)
+d_view_production: see enemy production. (true/false)
+d_quests: heroes can go on quests. (true/false)
+d_hidden_map: fog of war. (true/false)
+d_diplomacy: declare war before attacking. (true/false)
+d_neutral_cities: a number between 0 and 2.
+    0 = Average
+    1 = Strong
+    2 = Active
+d_intense_combat: make fights more difficult. (true/false)
+d_military_advisor: make battle advice available. (true/false)
+d_random_turns: switch-up player turns. (true/false)
+d_quick_start: give players starting cities. (true/false)
+
+Example configuration:
+
+<?xml version="1.0"?>
+<lordsawarrc version="0.0.5">
+        <d_datapath>/usr/local/share/lordsawar</d_datapath>
+        <d_savepath>/home/ben/.lordsawar/</d_savepath>
+        <d_lang>en_CA.UTF-8</d_lang>
+        <d_fullscreen>false</d_fullscreen>
+        <d_cachesize>1000000</d_cachesize>
+        <d_hardware>false</d_hardware>
+        <d_zipfiles>false</d_zipfiles>
+        <d_smoothscrolling>false</d_smoothscrolling>
+        <d_speeddelay>0</d_speeddelay>
+        <d_shownextplayer>true</d_shownextplayer>
+        <d_musicenable>false</d_musicenable>
+        <d_musicvolume>64</d_musicvolume>
+        <d_musiccache>10000000</d_musiccache>
+        <d_view_enemies>false</d_view_enemies>
+        <d_view_production>true</d_view_production>
+        <d_quests>true</d_quests>
+        <d_hidden_map>false</d_hidden_map>
+        <d_diplomacy>true</d_diplomacy>
+        <d_neutral_cities>2</d_neutral_cities>
+        <d_intense_combat>false</d_intense_combat>
+        <d_military_advisor>true</d_military_advisor>
+        <d_random_turns>false</d_random_turns>
+        <d_quick_start>false</d_quick_start>
+</lordsawarrc>
+

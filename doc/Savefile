@@ -1,45 +1,16 @@
-Author		: Ulf Lorenz 
-First version	: 0.1.7  (2004-07-01)
-Current version	: 0.3.7b (2006-06-19)
+This document describes the format of a lordsawar save game. 
 
-This document describes the format of a freelords save game. The idea is to 
-store this information, so that later on you can easily write and implement a
-converter for save games.
-Though savegames were originally introduced in version 0.1.7, I have merged the
-descriptions up to the latest version together for simplicity. I suppose there 
-are only very few historians among the readers. :)
 
--------------------------------------------------------------------------------
-Version 0.3.7b
-
-Added a an advanced production to the city for defense level 4.
--------------------------------------------------------------------------------
-
-Introduced the tag <d_type>integer value between 0 and 1 </d_type>
-to handle the temple icon type.
-
--------------------------------------------------------------------------------
-
-Introduced the tag <d_commen>comment </d_comment>
-to handle the scenario descriptio's  comment.
-
--------------------------------------------------------------------------------
-
-Introduced the tag <d_vectoring>x y </d_vectoring>
-to handle the vectoring of produced armies.
-
--------------------------------------------------------------------------------
-
-The format is xml style. The tags are displayed here as they appear in the
-save game. The text in between the tags are comments. There are two kinds of
-tags:
+The save game files are in XML. The tags are displayed here as they appear 
+in the save game.  The text in between the tags are comments.  There are 
+two kinds of tags:
 
 - tags to structure the savefile
 - data tags
 
-The first kind of tags defines a structure for the savegames, which is important
-when loading it. The latter tags actually store the data. As an example, here is
-a draft of the list of players:
+The first kind of tags defines a structure for the savegames, which is 
+important when loading it. The latter tags actually store the data. As 
+an example, here is a draft of the list of players:
 
 <playerlist>
     <player>
@@ -53,155 +24,463 @@ a draft of the list of players:
     ...
 </playerlist>
 
-The player tags here enclose the definition of a single player. The actual name
-etc. of these players are stored within data tags. Data tags always start with a
-"d_".
+The player tags here enclose the definition of a single player. The 
+actual name etc. of these players are stored within data tags. Data 
+tags always start with a "d_".
 
-Order of the data tags does not matter, but due to a necessary limitation in the
-parser all data has to stand before the first sub tag, i.e. in the above example
-the data that belongs to the player _list_ (not to the single players; stuff like
-e.g. whose turn it is) has to be stored _before_ the first player subtag starts.
+Order of the data tags does not matter, but the order of the sections
+does matter.
 
-The version of the savegame is encoded in the first opening tag (usually called
-freelords). You have to change this one if the savegame version changes.
-
+The version of the savegame is encoded in the first opening "lordsawar" tag.
 
 <?xml version="1.0"?>
 
-<freelords version="xxx">
-    <scenario>
-        <d_name> name of the scenario  </d_name>
-        <d_turn> the current turn number of the scenario  </d_turn>
-        <d_turnmode> boolean value used to set the armies healing at the beginning 
-                     of the player's turn or at the beginning of the new round
-        </d_turnmode>
-
-        <event>
-            <d_type>   
-            0  (.. EKILLALL ..)
-            1  (.. EPLAYERDEAD ..)
-            2  (.. ECITYCONQUERED ..)
-            3  (.. EARMYKILLED ..)
-            4  (.. EROUND ..)
-            5  (.. ERUINSEARCH ..)
-            6  (.. ETEMPLESEARCH ..)
-            7  (.. EDUMMY ..)
-            8  (.. ENEXTTURN ..)
-            9  (.. ESTACKKILLED ..)
-            10 (.. ESTACKMOVE ..)
-
-            the ultimate reference is in Event.h
-            </d_type>
-            <d_id>      Id of the event 		     </d_id>
-            <d_active>  whether the event is finished or not </d_active>
-            <d_comment> a brief description for the event    </d_comment>
-
-           <condition>
-                <d_type> 
-                0 (.. CPLAYER ..)
-                1 (.. CCOUNTER ..)
-                2 (.. CLIVING ..)
-                3 (.. CDEAD ..)
-                4 (.. CARMY ..)
-
-                the ultimate reference is in Condition.h
-                </d_type>
-           </condition>
-
-           <reaction>
-                 <d_type>    
-                 0  (.. RMESSAGE ..)
-                 1  (.. RADDGOLD ..)
-                 2  (.. RADDUNIT ..)
-                 3  (.. RDELUNIT ..)
-                 4  (.. RUPDATE ..)
-                 5  (.. RCENTER ..)
-                 6  (.. RCENTEROBJ ..)
-                 7  (.. RCREATEITEM ..)
-                 8  (.. RWINGAME ..)
-                 9  (.. RLOSEGAME ..)
-                 10 (.. RRAISEEVENT ..)
-                 11 (.. RACTEVENT ..)
-                 12 (.. RREVIVEPLAYER ..)
-                 13 (.. RKILLPLAYER ..)
-                 14 (.. RTRANSFERCITY ..)
-
-                 the ultimate reference is in Reaction.h
-                 </d_type>
-           </reaction>
-
-           ... more reactions if needed ...
-
-        </event>
-    
-        ... more events ... 
-
-        --------------------------------------------------------------------------------
-
-        - events have the following additional data tags according to their type:
-          EKILLALL      : none
-          EDUMMY        : none
-          ENEXTTURN     : none
-          EPLAYERDEAD   : <d_player> the Id of the player                 </d_player>
-          ECITYCONQUERED: <d_city>   the Id of the city                   </d_city>
-          EARMYKILLED   : <d_army>   the Id of the army we watch          </d_army>
-          EROUND        : <d_round>  the round the event waits for        </d_round>
-          ERUINSEARCH   : <d_ruin>   the Id of the ruin to be searched    </d_ruin>
-          ESTACKKILLED  : <d_stack>  Id of the stack whose death we await </d_stack>
-          ETEMPLESEARCH : <d_temple> Id of the temple to be searched      </d_temple>
-          ESTACKMOVE    : subtags like this:
-                          <point>
-                              <d_x> x position </d_x>
-                              <d_y> y position </d_y>
-                          </point>
-
-        - conditions have the following additional data tags according to the type:
-          CPLAYER : <d_player>  Id of the player the condition looks for </d_player>
-          CCOUNTER: <d_counter> current value of the counter             </d_counter>
-          CLIVING : <d_player>  Id of the player that should still live  </d_player> 
-          CDEAD   : <d_player>  Id of the player that should be dead     </d_player> 
-          CARMY   : <d_stack>   Id of the stack that should be active    </d_stack>
-
-        - reactions have the following additional data tags according to the type:
-          RMESSAGE     : <d_message>  The message string to be displayed                 </d_message>
-          RADDGOLD     : <d_player>   The player who gets the gold                       </d_player> 
-                         <d_gold>     how much gold the player gets                      </d_gold>
-          RADDUNIT     : <d_player>   the player who gets the new units                  </d_player>
-                         <d_x>        x coordinate for the placing                       </d_x>
-                         <d_y>        y coordinate for the placing                       </d_y>
-                         <d_stack>    a complete subtag describing the stack to be added </d_stack>
-          RUPDATE      : none
-          RDELUNIT     : <d_army>     the Id of the army which is to be removed          </d_army>
-          RCENTER      : <d_x>        x position where to center                         </d_x>
-                         <d_y>        y position where to center                         </d_y>
-          RCENTEROBJ   : <d_object>   the Id of the object to center on                  </d_object>
-          RCREATEITEM  : <d_item>     index of the item                                  </d_item>
-                         <d_x>        x position where item is to be created             </d_x>
-                         <d_y>        y position where item is to be created             </d_y> 
-          RGAMEWIN     : <d_status>   arbitrary number for future use                    </d_status>
-          RGAMELOSE    : <d_status>   arbitrary number for future use                    </d_status>
-          RKILLPLAYER  : <d_player>   Id of the player to be killed                      </d_player> 
-          RREVIVEPLAYER: <d_player>   Id of the player to be revived                     </d_player> 
-          RTRANSFERCITY: <d_city>     Id of the city to be transferred                   </d_city>
-                         <d_player>   Id of the player that gets the city                </d_player> 
-          RRAISEEVENT  : <d_event>    Id of the event to be triggered                    </d_event>
-          RACTEVENT    : <d_event>    Id of the event to be activated/deacticated        </d_event>
-                         <d_activate> if true, target event is activated, else disabled  </d_activate>
-
-        -------------------------------------------------------------------------------
-
-    </scenario>
-    
+<lordsawar version="xxx">
     <counter>
         <d_curID>   This value should be always higher than the largest Id that
                     has been assigned since new Id's will be assigned from this
-                    value on
+                    value on.
+                    Unique successive Ids are given to newly created game 
+                    objects, and this value holds the next Id to assign.
         </d_curID>
     </counter>
     
+    <playerlist>
+        <d_active> the Id of the active player </d_active>
+        <d_neutral> the Id of the neutral player </d_neutral>
+        <player>
+            <d_id>      the Id of the player      	        </d_id>
+            <d_name>    the name of the player                  </d_name>
+            <d_immortal> (boolean) player lives on after losing all cities</d_immortal>
+            <d_color>   the rgb values for the player separated 
+                        by spaces; e.g. "255 0 152"                       
+            </d_color>
+            <d_armyset> Id of the player's armyset
+                        Lines up with <d_id> in army/<name>/<name>.xml
+                                                                </d_armyset>
+            <d_gold>    the gold owned by the player            </d_gold>
+            <d_dead>    true, if player is dead, false if not   </d_dead>
+            <d_type>    the type of the player
+                        0   human player
+                        1   ai player of type AI_Fast
+                        2   ai player of type AI_Dummy
+                        4   ai player of type AI_Smart
+            </d_type>
+ 
+            <d_join>    if d_type=1 (boolean) the ai merges stacks together         </d_join>
+            <d_maniac>  if d_type=1 (boolean) the ai razes all cities it occupies   </d_maniac>
+            <d_upkeep>  number of gold pieces paid this turn for upkeep
+                                                                </d_upkeep>
+            <d_fight_order> a space separated list of army type Ids that
+                            determine the order in which armies fight
+                            in battle.                          
+                            These Ids line up with order of armies in
+                            the armyset.                </d_fight_order>
+            <history>
+                The only tag common to all action types is the tag "type".
+                Everything else depends on the type of the history event. 
+                The whole historylist of a player comes here with as many 
+                tags as necessary.  For example purposes, one history tag
+                will be shown for each kind of history event.  This data is
+                used to populate the history reports.
+            </history>
+            <history>
+                <d_type>1</d_type> (player starts a turn)
+            </history>
+            <history>
+                <d_type>2</d_type> (player's hero finds a sage)
+                <d_hero> the hero's name </d_name>
+            </history>
+            <history>
+                <d_type>3</d_type> (player gold report)
+                <d_gold> how much gold the player has </d_gold>
+            </history>
+            <history>
+                <d_type>4</d_type> (player has a hero emerge somewhere)
+                <d_hero> the hero's name </d_name>
+                <d_city> the name of the city </d_name>
+            </history>
+            <history>
+                <d_type>5</d_type> (player took over a city)
+                <d_city> the Id of the city the player took over </d_city>
+            </history>
+            <history>
+                <d_type>6</d_type> (player razed a city)
+                <d_city> the Id of the city the player razed </d_city>
+            </history>
+            <history>
+                <d_type>7</d_type> (player's hero starts a quest)
+                <d_hero> the hero's name </d_name>
+            </history>
+            <history>
+                <d_type>8</d_type> (player's hero completes a quest)
+                <d_hero> the hero's name </d_name>
+            </history>
+            <history>
+                <d_type>9</d_type> (player's hero killed in a city)
+                <d_hero> the hero's name </d_name>
+                <d_city> the name of the city </d_name>
+            </history>
+            <history>
+                <d_type>10</d_type> (hero killed in battle outside of a city)
+                <d_hero> the hero's name </d_name>
+            </history>
+            <history>
+                <d_type>11</d_type> (hero killed while searching a ruin)
+                <d_hero> the hero's name </d_name>
+            </history>
+            <history>
+                <d_type>12</d_type> (hero takes over a city)
+                <d_hero> the hero's name </d_name>
+            </history>
+            <history>
+                <d_type>13</d_type> (player total score report)
+                <d_score> an integer between 0 and 100 representing
+                          how well the player is doing </d_score>
+            </history>
+            <history>
+                <d_type>14</d_type> (player is vanquished)
+            </history>
+
+            <stacklist>
+                This list contains all stacks of the player.
+            
+                <d_active> the Id of the current activestack   </d_active>
+
+                <stack>
+                    <d_id>         the Id of the stack         </d_id>
+                    <d_player>     the Id of the stack's player</d_player>
+                    <d_x>          x position of the stack on the map </d_x>
+                    <d_y>          y position of the stack on the map </d_y>
+                    <d_defending>  is the stack defending? (defending stacks 
+                                   will be ignored if the player clicks 
+                                   on "next stack")
+                    </d_defending>
+                    <d_parked>  is the stack parked?  This just means the 
+                                player doesn't want to deal with this 
+                                stack again this turn.
+                    </d_parked>
+                    <d_moves_exhausted_at_point>
+                        Which point in the path we stop moving at because 
+                        we will run out of movement points.
+                        This value is an index, starting at 0.
+                    </d_moves_exhausted_at_point>
+                    
+                    <path>
+                        <d_size> how many items does the path contain </d_size>
+                        <d_x>   a space separated list of all x coordinates 
+                                (in order) of the path's items
+                        </d_x>
+                        <d_y>   the same for the y coordinates   </d_y>
+                    </path>
+
+                    Up to eight army tags follow.  Order of armies is the
+                    order within the stack.
+                    
+                    <army>
+                        <d_id>     the Id of the army            
+                        </d_id>
+                        <d_type>   the type of the army (0 means first 
+                                   army type of the armyset, 1 second etc.)
+                        </d_type>
+                        <d_armyset>  Id of the army's armyset   
+                        </d_armyset>
+                        <d_hp>       how many hitpoints the army has 
+                        </d_hp>
+                        <d_moves>    how many movement points the 
+                                     army has left                   
+                        </d_moves>
+                        <d_max_moves> maximum number of movement 
+                                      points the army can move   
+                        </d_max_moves>
+                        <d_strength>  the strength of the army   
+                        </d_strength>
+                        <d_xp>        the experience points of the army </d_xp>
+                        <d_medals>   the value data tags are three boolean 
+                                     values separated by spaces one foreach 
+                                     medal type; 0 means no medal 1 means medal
+                        </d_medals>
+                        <d_numberbattles> how many battles this army has fought
+                        </d_numberbattles> 
+                        <d_sight>  the view radius on hidden map 
+                        </d_sight>
+	                <d_expvalue>  how many xp this army is worth if killed  
+                        </d_expvalue>
+                        <d_ship> whether or not this army is in a ship
+                        </d_ship>
+                        <d_hero> whether or not this army is a hero
+                        </d_hero>
+                        <d_visited_temples>
+                            a space separated list of temple Ids that the
+                            army has been blessed at
+                        </d_visited_temples>
+                    </army>
+
+                    <hero>
+                        <d_name>      the name of the hero     
+                        </d_name>
+                        <d_gender >      the gender of the hero     
+                        </d_gender>
+                        <backpack>
+                              <item>
+                                  <d_name> the name of the item              
+                                  </d_name>
+                                  <d_plantable> can this item be planted>
+                                  </d_plantable>
+                                  <d_plantable_owner>  this id of player who
+                                                       can plant this item
+                                  </d_plantable_owner>
+                                  <d_id>        a unique Id of the item 
+                                  </d_id>
+                                  <d_bonus>  type of the bonus for the item
+                                             See Item.h for a listing.
+                                  </d_bonus>
+                              </item>
+
+                              ...
+
+                        </backpack>
+
+                        ... the rest is the same as the army tag
+
+                    </hero>
+
+                    ...more armies or heroes...
+                </stack>
+
+                ...more stacks...
+
+            </stacklist>
+
+            <fogmap>
+                <d_width> width of the map	        </d_width>
+                <d_height> height of the map	        </d_height>
+                <d_map>  fog of war information
+                         each line contains WIDTH numbers, and a new line
+                         there are a total of HEIGHT lines
+                         if a number is 0, then that tile is hidden
+                         if a number is 1, then that tile is exposed
+                                                        </d_map>
+            </fogmap>
+            <triumphs>
+                The following data is used to fill out the triumphs report:
+                <d_hero> a space separated list of the number of heroes
+                         we have killed, per player
+                </d_hero>
+                <d_special> a space separated list of the number of special
+                            armies (dragons, etc) that we have killed, per
+                            player
+                </d_special>
+                <d_normal>a space separated list of the number of normal
+                          armies we have killed per player
+                </d_normal>
+                <d_ship>a space separated list of the number of ships we have
+                        killed per player
+                </d_ship>
+                <d_flag>a space separated list of the number of times we have
+                        captured an enemy's standard, per player
+                </d_flag>
+            </triumphs>
+
+            <action>
+                The only tag common to all action types is the "d_type" tag.
+                Everything else depends on the type of the action. The whole
+                actionlist of a player comes here with as many tags as
+                necessary.  For example purposes, one action tag
+                will be shown for each kind of action event.
+            </action>
+
+            <action>
+                <d_type>1</d_type> (.. stack moved ..)
+                <d_stack>  the Id of the stack             </d_stack>
+                <d_x>      x position of the destination   </d_x>
+                <d_y>      y position of the destination   </d_y>
+            </action>
+
+            <action>
+                <d_type>2</d_type> (.. stack split ..)
+                <d_orig_stack> the Id of the original stack         </d_orig_army>
+                <d_new_stack>  the Id of the freshly created stack  </d_new_army>
+                <d_moved>      a space-separated list of the 8 figures.
+                               They describe the Id's of the armies which have
+                               been added to stack new_army. If <8 armies
+                               have moved, the rest of the fields are filled
+                               with zeros
+                </d_moved>
+            </action>
+            
+            <action>
+               <d_type>3</d_tag> (.. stack fight ..)
+               <d_attackers> list of attacking stack's Ids separated by spaces </d_attackers>
+               <d_defenders> list of defending stack's Ids separated by spaces </d_defenders>
+
+               it can also have an arbitrary number of subtags built like this:
+
+               <item>
+                   <d_turn>   combat round           </d_turn>
+                   <d_id>     id of the damaged unit </d_id>
+                   <d_damage> amount of damage done  </d_damage>
+               </item>
+            </action>
+            
+            <action>
+                <d_type>4</d_type> (.. stack joined ..)
+                <d_receiver>  the Id of the army which survives the joining
+                </d_receiver>
+                <d_joining>   the Id of the army which is destroyd after the
+                              joining
+                </d_joining>
+            </action>
+
+            <action>
+                <d_type>5</d_type> (.. ruin searched ..)
+                <d_ruin>     the Id of the searched ruin     </d_ruin>
+                <d_seeker>   the Id of the searching stack   </d_seeker>
+                <d_searched> has the keeper been defeated and the ruin
+                             successfully searched?
+                </d_searched>
+            </action>
+
+            <action>
+                <d_type>6</d_type> (.. temple searched ..)
+                <d_temple> the Id of the visited temple    </d_temple>
+                <d_stack>  the Id of the visiting stack    </d_stack>
+            </action>
+
+            <action>
+                <d_type>7</d_type> (.. city occupied ..)
+                <d_city> the Id of the occupied city </d_city>
+            </action>
+
+            <action>
+                <d_type>8</d_type> (.. city pillaged ..)
+                <d_city> the Id of the pillaged city </d_city>
+            </action>
+
+            <action>
+                <d_type>9</d_type> (.. city razed ..)
+                <d_city> the Id of the burnt down city </d_city>
+            </action>
+
+            <action>
+                <d_type>10</d_type> (.. city upgraded defense ..)
+                <d_city> the Id of the affected city </d_city>
+            </action>
+
+            <action>
+                <d_type>11</d_type> (.. city buy production ..)
+                <d_city>     the city Id we bought production for    	       </d_city>
+                <d_slot>     the slot that got replaced                        </d_slot>
+                <d_type>     the index of the army to be produced              </d_type>
+            </action>
+
+            <action>
+                <d_type>12</d_type> (.. city change production ..)
+                <d_city>     the city Id whose production is changed         </d_city>
+                <d_prod>     selected slot index                             </d_prod>
+            </action>
+
+            <action>
+                <d_type>13</d_type> (.. a reward is given ..)
+                <reward>
+                  fixme: describe the rewards somewhere
+                </d_reward>
+            </action>
+
+            <action>
+                <d_type>14</d_type> (.. hero gets a quest ..)
+                <d_hero>  the hero that has got the quest             </d_hero>
+                <d_quest> 1,2,3, depends on the quest type            </d_quest>
+                <d_data>  the Id of the object, depends on quest type </d_data>
+            </action>
+
+            <action>
+                <d_type>15</d_type> (.. hero picks up/drops an item ..)
+                <d_hero> the hero that equips the item </d_hero>
+                <d_item> item that is equipped         </d_item>
+                <d_dest> where the item is equipped    </d_dest>
+            </action>
+
+            <action>
+                <d_type>16</d_type> (.. army level-up ..)
+                <d_army> the army that has advanced a level </d_army>
+                <d_stat> the stat that was raised           </d_stat>
+            </action>
+
+            <action>
+                <d_type>17</d_type> (.. city sacked ..)
+                <d_city> the Id of the sacked city </d_city>
+            </action>
+
+            <action>
+                <d_type>18</d_type> (.. stack disbanded ..)
+                <d_stack> the Id of the stack disbanded </d_stack>
+            </action>
+
+            <action>
+                <d_type>19</d_type> (.. signpost changed ..)
+                <d_signpost> the Id of the signpost changed </d_signpost>
+                <d_message> the new message on the sign </d_message>
+            </action>
+
+            <action>
+                <d_type>20</d_type> (.. city rename ..)
+                <d_city> the Id of the city that was renamed </d_city>
+                <d_name> the new name of the city </d_name>
+            </action>
+
+            <action>
+                <d_type>21</d_type> (.. city vector ..)
+                <d_city> the Id of the city being vectored from </d_city>
+		<d_x> the x position being vectored to </d_x>
+                <d_y> the y position being vectored to </d_y>
+            </action>
+
+            <action>
+                <d_type>22</d_type> (.. fight order changed ..)
+                <d_order > a space separated list of army type Ids that
+                           represent the order in which they will fight in 
+                           battle
+                </d_order>
+		<d_x> the x position being vectored to </d_x>
+                <d_y> the y position being vectored to </d_y>
+            </action>
+
+            <action>
+                <d_type>23</d_type> (.. player resigns ..)
+            </action>
+
+            <action>
+                <d_type>24</d_type> (.. player plants an item ..)
+                <d_hero> the id of the hero </d_hero>
+                <d_item> the id of the item </d_item>
+            </action>
+
+            <action>
+                <d_type>25</d_type> (.. city produces army ..) 
+                <d_army_type > the id of the army type </d_army_type>
+                <d_city > the id of the destination city </d_city>
+                <d_vectored> was it vectored here? </d_vectored>
+            </action>
+
+            <action>
+                <d_type>25</d_type> (.. vector army ..) 
+                <d_army_type > the id of the army type </d_army_type>
+		<d_x> the x position being vectored to </d_x>
+                <d_y> the y position being vectored to </d_y>
+            </action>
+
+               
+        </player>
+
+        ...more players...
+        
+    </playerlist>
+    
     <map>
-        <d_size>    the map size in tiles (map is always quadratic) </d_size>
-        <d_tileset> name of the tileset used                        </d_tileset>
+        <d_width>    the width of the map </d_width>
+        <d_height >    the height of the map </d_height >
+        <d_tileset> name of the tileset used   </d_tileset>
         <d_types>
             First, there is a newline sign at the end of the string.
             Following this is a long long row of numbers indicating the type of
@@ -216,301 +495,60 @@ freelords). You have to change this one if the savegame version changes.
                 5   swamp
             each column ends with a newline
         </d_types>
-        <d_variations>
-            Work exactly like the types field, but the variation number is
-            stored here. Some tile types have more than one image, which one is
-            saved in this tag
-        <d_variations>
+        <d_styles>
+            an array of tilestyles.  Each tilestyle is stored as a 2 digit
+            hexadecimal number.
+            It is space separated like the d_types tag.
+        <d_styles>
 
         <itemstack>
-           <d_x> the x location of the stack </d_x>
-           <d_y> the y location of the stack </d_y>
-
-           ...one or more item subtags
-
+           <d_x> the x location of the item </d_x>
+           <d_y> the y location of the item </d_y>
+           <item>
+               See lordsawar.playerlist.player.stacklist.stack.hero.backpack 
+               for a description of an "item".
+           </item>
         </itemstack>
+        ... more itemstacks ...
     </map>
 
-    <playerlist>
-        <d_active> the Id of the active player </d_active>
-        <player>
-            <d_id>      the Id of the player      	        </d_id>
-            <d_name>    the name of the player; the neutal 
-                        player has the name "Neutral"   
-	    </d_name>
-            <d_immortal> (boolean) player lives on after loosing all cities</d_immortal>
-            <d_color>   the rgb values for the player separated 
-                        by spaces; e.g. "255 0 152"                       
-            </d_color>
-            <d_armyset> Id of the player's armyset              </d_armyset>
-            <d_gold>    the gold owned by the player            </d_gold>
-            <d_dead>    true, if player is dead, false if not   </d_dead>
-            <d_type>    the type of the player
-                        0   human player
-                        1   ai player of type AI_Fast
-                        2   ai player of type AI_Dummy
-                        4   ai player of type AI_Smart
-            </d_type>
- 
-            <d_join>    if d_type=1 (boolean) the ai merges stacks together         </d_join>
-            <d_maniac>  if d_type=1 (boolean) the ai razes all cities it occupies   </d_maniac>
-            <d_neutral> if player is neutral the id of the neutral player is stored <d_neutral>
-   
-            <fogmap>
-                <d_size> basically size of the map		       </d_size>
-                <d_map>  FoW information string as in the GameMap data </d_map>
-            </fogmap>
-
-            <action>
-                The only tag equal to all action types is the tag "type".
-                Everything else depends on the type of the action. The whole
-                actionlist of a player comes here with as many tags as
-                necessary. I'll write an action tag for each type here as a
-                sample. BTW, the type is always a string.
-            </action>
-
-            <action>
-                <d_type>1</d_type> (.. ACTION_STACK_MOVED_ONE_STEP ..)
-                <d_stack>  the Id of the stack             </d_stack>
-                <d_x>      x position of the destination   </d_x>
-                <d_y>      y position of the destination   </d_y>
-            </action>
-
-            <action>
-                <d_type>2</d_type> (.. ACTION_STACK_SPLIT ..)
-                <d_orig_stack> the Id of the original stack         </d_orig_army>
-                <d_new_stack>  the Id of the freshly created stack  </d_new_army>
-                <d_moved>      a space-separated list of the 8 figures.
-                               They describe the Id's of the armies which have
-                               been added to stack new_army. If <8 armies
-                               have moved, the rest of the fields are filled
-                               with zeros
-                </d_moved>
-            </action>
-            
-            <action>
-                <d_type>3</d_tag> (.. ACTION_STACK_FIGHT ..)
-               <d_attackers> list of attacking stack's Ids separated by spaces </d_attackers>
-               <d_defenders> list of defending stack's Ids separated by spaces </d_defenders>
-
-               it can also have an arbitrary number of subtags built like this:
-
-               <item>
-                   <d_turn>   combat round           </d_turn>
-                   <d_id>     id of the damaged unit </d_id>
-                   <d_damage> amount of damage done  </d_damage>
-               </item>
-            </action>
-            
-            <action>
-                <d_type>4</d_type> (.. ACTION_STACK_JOIN ..)
-                <d_receiver>  the Id of the army which survives the joining
-                </d_receiver>
-                <d_joining>   the Id of the army which is destroyd after the
-                              joining
-                </d_joining>
-            </action>
-
-            <action>
-                <d_type>5</d_type> (.. ACTION_STACK_SEARCH_RUIN ..)
-                <d_ruin>     the Id of the searched ruin     </d_ruin>
-                <d_seeker>   the Id of the searching stack   </d_seeker>
-                <d_searched> has the keeper been defeated and the ruin
-                             successfully searched?
-                </d_searched>
-            </action>
-
-            <action>
-                <d_type>6</d_type> (.. ACTION_STACK_VISIT_TEMPLE ..)
-                <d_temple> the Id of the visited temple    </d_temple>
-                <d_stack>  the Id of the visiting stack    </d_stack>
-            </action>
-
-            <action>
-                <d_type>7</d_type> (.. ACTION_CITY_OCCUPY ..)
-                <d_city> the Id of the occupied city </d_city>
-            </action>
-
-            <action>
-                <d_type>8</d_type> (.. ACTION_CITY_PILLAGE ..)
-                <d_city> the Id of the pillaged city </d_city>
-            </action>
-
-            <action>
-                <d_type>9</d_type> (.. ACTION_CITY_RAZE ..)
-                <d_city> the Id of the burnt down city </d_city>
-            </action>
-
-            <action>
-                <d_type>10</d_type> (.. ACTION_CITY_UPGRADE_DEFENSE ..)
-                <d_city> the Id of the affected city </d_city>
-            </action>
-
-            <action>
-                <d_type>11</d_type> (.. ACTION_CITY_BUY_PRODUCTION ..)
-                <d_city>     the city Id we bought production for    	       </d_city>
-                <d_slot>     the slot that got replaced                        </d_slot>
-                <d_type>     the index of the army to be produced              </d_type>
-                <d_advanced> whether basic or advanced production was affected </d_advanced>
-            </action>
-
-            <action>
-                <d_type>12</d_type> (.. ACTION_CITY_CHANGE_PRODUCTION ..)
-                <d_city>     the city Id whose production is changed         </d_city>
-                <d_prod>     selected slot index                             </d_prod>
-                <d_advanced> whether advanced production was selected or not </d_advanced>
-            </action>
-
-            <action>
-                <d_type>13</d_type> (.. ACTION_REWARD ..)
-                <d_gold> the amount of the reward </d_gold>
-            </action>
-
-            <action>
-                <d_type>14</d_type> (.. ACTION_GET_QUEST ..)
-                <d_hero>  the hero that has got the quest             </d_hero>
-                <d_quest> 1,2,3, depends on the quest type            </d_quest>
-                <d_data>  the Id of the object, depends on quest type </d_data>
-            </action>
-
-            <action>
-                <d_type>15</d_type> (.. ACTION_HERO_EQUIP ..)
-                <d_hero> the hero that equips the item </d_hero>
-                <d_item> item that is equipped         </d_item>
-                <d_dest> where the item is equipped    </d_dest>
-            </action>
-
-            <action>
-                <d_type>16</d_type> (.. ACTION_UNIT_ADVANCE ..)
-                <d_army> the army that has advanced a level </d_army>
-                <d_stat> the stat that was raised           </d_stat>
-            </action>
-               
-            <stacklist>
-                This list contains all stacks of the player.
-            
-                <d_active> the Id of the current activestack   </d_active>
-
-                <stack>
-                    <d_id>         the Id of the stack         </d_id>
-                    <d_player>     the Id of the stack's player, 0 means no player
-                                    (if the stack e.g guards a ruin)
-                    </d_player>
-                    <d_x>          x position of the stack     </d_x>
-                    <d_y>          y position of the stack     </d_y>
-                    <d_defending>  is the stack defending? (defending stacks will be
-                                    ignored if the player clicks on "next stack")
-                    </d_defending>
-                    
-                    <path>
-                        <d_size>   how many items does the path contain    </d_size>
-                        <d_x>      a space separated list of all x coordinates (in
-                                   order) of the path's items
-                        </d_x>
-                        <d_y>      the same for the y coordinates          </d_y>
-                    </path>
-
-                    The following tags describe the armies the stack consists of. Order
-                    counts here, i.e. the first tag actually represents the first army
-                    in the stack.
-                    
-                    <army>
-                        <d_id>            the Id of the army                     </d_id>
-                        <d_type>          the type of the army (0 means first 
-                                          army type of the armyset, 1 second etc.)
-                        </d_type>
-                        <d_armyset>       Id of the army's armyset               </d_armyset>
-                        <vitality>        the vitality value of the army         </d_vitality>
-                        <d_hp>            how many hp the army has left          </d_hp>
-                        <d_maxhp>         the maximum hp value of this unit      </d_maxhp>
-                        <d_moves>         how many moves the army has left       </d_moves>
-                        <d_max_moves>     the maximum number of movement points  </d_max_moves>
-
-                        <d_strength>      the attack strength of the army        </d_strength>
-                        <d_defense>       the defense value of the army          </d_defense>
-                        <d_xp>            the experience points of the army      </d_xp>
-                        <d_level>         the experience level of the army       </d_level>
-                        <d_blessed>       is the army already blessed?           </d_blessed>
-                        <d_medals>        the value data tags are three boolean 
-                                          values separated by spaces one foreach 
-                                          medal type; 0 means no medal 1 means medal   
-                        </d_medals>
-                        <d_numberbattles> the number of army's fought battles    </d_numberbattles> 
-                        <d_sight>         the view radius                        </d_sight>
-	                <d_expvalue>      the value of the army in xp if killed  
-                                          used to add xp to the killer unit
-                        </d_expvalue>
-                        <d_ranged>        strength of the ranged attack          </d_ranged>
-                        <d_shots>         number of shots                        </d_shots>
-                    </army>
-
-                    <hero>
-                        <d_name>      the name of the hero     </d_name>
-                        <equipment>
-                              <item>
-                                  <d_type>      the type of the item(weapon etc.) </d_type>
-                                  <d_name>      the name of the item              </d_name>
-                                  <d_id>        a unique Id of the item           </d_id>
-                                  <d_index>     a unique Id of the item type      </d_index>
-                                  <d_num_bonus> number of bonuses of the item     </d_num_bonus>
-                                  <d_bonus>     list of values that tells the 
-                                                  type of the bonus of the weapon
-                                                  (e.g. add_strength)
-                                  </d_bonus>
-                                  <d_value>     list of values that tells the size
-                                                  of the bonus             
-                                    </d_value>
-                              </item>
-
-                              ...
-
-                        <equipment>
-                        <backpack>
-                                <item>
-
-                                     ...
-        
-                                </item> 
-                                 
-                                ...
-
-                        </backpack>
-
-                        ... the rest is the same as the army tag
-
-                    </hero>
-
-                    ...more armies...
-                </stack>
-
-                ...more stacks...
-
-            </stacklist>
-        </player>
-
-        ...more players...
-        
-    </playerlist>
-
     <citylist>
-        <d_size>   the number of cities in this list   </d_size>
         <city>
-            <d_id>          the Id of the city                                    </d_id>
-            <d_name>        the name of the city                                  </d_name>
-            <d_x>           x position of the city                                </d_x>
-            <d_y>           y position of the city                                </d_y>
-            <d_owner>       Id of the city's owning player                        </d_owner>
-            <d_basic_prod>  4 numbers with the indices of the basic productions   
-                            "-1" if the production slot is empty
-            </d_basic_prod>
-            <d_adv_prod>    3 numbers with the same for the advanced productions 
-                            "-1" if the production slot is empty
-            </d_adv_prod>
-            <d_production>  The index of the current production slot             </d_production>
-            <d_is_adv_prod> True if the current production is an advanced one    </d_adv_prod>
-            <d_gold>        the amount of gold the city provides each turn       </d_gold>
-            <d_burnt>       true if the city has been razed                      </d_burnt>
-            <d_defense>     defense level of the city                            </d_defense>
+            <d_id>          the Id of the city
+            </d_id>
+            <d_name>        the name of the city
+            </d_name>
+            <d_x>           x position of the city on the map
+            </d_x>
+            <d_y>           y position of the city on the map
+            </d_y> 
+            <d_owner>       Id of the city's owning player
+            </d_owner>
+            <d_production>  The index of the current production slot
+            </d_production>
+            <d_gold>        the amount of gold the city provides each turn
+            </d_gold>
+            <d_burnt>       true if the city has been razed
+            </d_burnt>
+            <d_defense>     defense level of the city
+            </d_defense>
+            <d_capital>     true if this is a capital city
+            </d_capital>
+            <d_capital_owner> the Id of the player who's capital this is.
+                              only present if d_capital is true.
+            </d_capital_owner>
+            <d_vectoring>
+              space separated position of where this city is vectoring to.
+              x comes first, then y.
+              if the city is not vectoring, then the value is "-1, -1".
+            </d_vectoring>
+
+            Now up to 4 armies appear.  These aren't armies like they appear
+            in stacks.  These are army *templates* to be used to produce
+            new armies in cities.
+            <army>
+            </army>
+            ...more armies...
         </city>
 
         ...more cities...
@@ -518,11 +556,10 @@ freelords). You have to change this one if the savegame version changes.
     </citylist>
 
     <templelist>
-        <d_size>   the number of temples   </d_size>
-
         <temple>
             <d_id>     the Id of the temple        </d_id>
             <d_name>   the name of the temple      </d_name>
+            <d_type>   the type of the temple      </d_type>
             <d_x>      x position of the temple    </d_x>
             <d_y>      y position of the temple    </d_y>
         </temple>
@@ -532,20 +569,27 @@ freelords). You have to change this one if the savegame version changes.
     </templelist>
 
     <ruinlist>
-        <d_size>   the number of ruins    </d_size>
-
         <ruin>
             <d_id>         the Id of the ruin              </d_id>
             <d_name>       the name of the ruin            </d_name>
+            <d_type>       the type of the ruin            </d_type>
             <d_x>          x position of the ruin          </d_x>
             <d_y>          y position of the ruin          </d_y>
             <d_searched>   has the uin been searched yet?  </d_searched>
+            <d_sage>       is this ruin a sage? (boolean)  </d_sage>
+            <d_hidden>     is this ruin hidden? (boolean)  </d_hidden>
+            <d_owner>      player id of player who can see this ruin
+                           this value is the neutral player's id if the
+                           ruin is visible by all.
+            </d_owner>
+            <reward>
+              the reward this ruin will provide (if not a sage)
+            </reward>
             <stack>
                 ....
+                The stack the hero will fight (if not a sage)
                 Here follows a complete description of the stack which guards
-                the ruin. Since this is exactly the same as in the stacklist,
-                look there to find out how the description goes. The armyset
-                for these stacks is "0" that means default army
+                the ruin.
                 ....
             </stack>
         </ruin>
@@ -554,10 +598,101 @@ freelords). You have to change this one if the savegame version changes.
 
     </ruinlist>
 
-    <questlist>
+    <rewardlist>
+        the one-time reward list, where random rewards are chosen from
+        <reward>
+        </reward>
+        ...more rewards...
+    </rewardlist>
 
-     ...
+    <signpostlist>
+        the list of signs on the map
+        <signpost>
+            <d_id>the id of the signpost</d_id>
+            <d_name>the message on the sign <d_name>
+            <d_x>the x position on the map<d_x>
+            <d_y>the y position on the map<d_y>
+        </signpost>
+        ...more signposts...
+    </signpostlist>
+
+    <roadlist>
+        the list of road tiles on the map
+        <road>
+            <d_id>the id of the road tile</d_id>
+            <d_name>the name of the road (unused) <d_name>
+            <d_type>the style of road<d_type>
+            <d_x>the x position on the map<d_x>
+            <d_y>the y position on the map<d_y>
+        </road>
+        ...more road tiles...
+    </roadlist>
+    <portlist>
+        the list of port tiles on the map
+        <port>
+            <d_id>the id of the port tile</d_id>
+            <d_name>the name of the port (unused) <d_name>
+            <d_x>the x position on the map<d_x>
+            <d_y>the y position on the map<d_y>
+        </port>
+        ...more port tiles...
+    </portlist>
+    <bridgelist>
+        the list of bridge tiles on the map
+        <bridge>
+            <d_id>the id of the bridge tile</d_id>
+            <d_name>the name of the bridge (unused) <d_name>
+            <d_type>the style of bridge <d_type>
+            <d_x>the x position on the map<d_x>
+            <d_y>the y position on the map<d_y>
+        </bridge>
+        ...more bridge tiles...
+    </bridgelist>
+    <questlist>
+        the list of active quests
+        <quest>
+          fixme: describe quests
+        </quest>
+        ...more quests...
 
     </questlist>
 
-</freelords>
+    <vectoredunitlist>
+        the list of vectored units that are "in the air"
+        <vectoredunit>
+          fixme: describe vectored units
+        </vectoredunit>
+        ...more vectored units...
+    </vectoredunitlist>
+    <scenario>
+        <d_name> name of the scenario  </d_name>
+        <d_comment> more info about the scenario </d_comment>
+        <d_turn> the current turn number of the scenario  </d_turn>
+        <d_turnmode> boolean value used to set the armies healing at 
+                     the beginning of the player's turn or at the 
+                     beginning of the new round
+        </d_turnmode>
+        <d_view_enemies> see enemy stack's contents.  (boolean)
+        </d_view_enemies>
+        <d_view_production> see enemy production. (boolean)
+        </d_view_enemies>
+        <d_quests> heroes can go on quests. (boolean)
+        </d_quests>
+        <d_hidden_map> fog of war. (boolean)
+        </d_hidden_map>
+        <d_diplomacy> declare war before attacking. (boolean)
+        </d_diplomacy>
+        <d_neutral_cities> a number between 0 and 2.
+            0 = Average
+            1 = Strong
+            2 = Active
+        </d_neutral_cities>
+        <d_intense_combat> make fights more difficult. (boolean)
+        </d_intense_combat>
+        <d_military_advisor> make battle advice available. (boolean)
+        </d_military_advisor>
+        <d_random_turns> switch-up player turns. (boolean)
+        </d_random_turns>
+
+    </scenario>
+</lordsawar>
