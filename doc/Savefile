@@ -649,9 +649,92 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
         ...more bridge tiles...
     </bridgelist>
     <questlist>
-        the list of active quests
+        the list of outstanding quests
         <quest>
-          fixme: describe quests
+            Every quest contains a common section, and then a specific 
+            section that depends on that quest type.
+            The common section:
+            <d_type> Quest type.  For example purposes, one quest per type
+                     will follow.
+            </d_type>
+            <d_hero> the id of the hero
+            </d_hero>
+            <d_hero_name> the name of the hero
+            </d_hero_name>
+            <d_pending> whether or not this quest is pending deletion at the
+                        end of the round (boolean)
+            </d_pending>
+            <d_player> the id of the player owning the hero
+            </d_player>
+        </quest>
+        <quest>
+            <d_type>1</d_type> (..go kill a hero..)
+            <d_hero></d_hero>
+            <d_hero_name></d_hero_name>
+            <d_pending></d_pending>
+            <d_player></d_player>
+
+            <d_to_kill> id of hero to kill </d_to_kill>
+        </quest>
+        <quest>
+            <d_type>2</d_type> (..go kill some of a player's armies..)
+            <d_hero></d_hero>
+            <d_hero_name></d_hero_name>
+            <d_pending></d_pending>
+            <d_player></d_player>
+
+            <d_to_kill> kill this many armies </d_to_kill>
+            <d_killed> this many killed so far </d_killed>
+            <d_victim_player> only count killed armies from 
+                              th player with this id
+            </d_victim_player>
+        </quest>
+        <quest>
+            <d_type>3</d_type> (..go sack a city..)
+            <d_hero></d_hero>
+            <d_hero_name></d_hero_name>
+            <d_pending></d_pending>
+            <d_player></d_player>
+
+            <d_city> the id of the city to sack </d_city>
+        </quest>
+        <quest>
+            <d_type>4</d_type> (..go raze a city..)
+            <d_hero></d_hero>
+            <d_hero_name></d_hero_name>
+            <d_pending></d_pending>
+            <d_player></d_player>
+
+            <d_city> the id of the city to raze </d_city>
+        </quest>
+        <quest>
+            <d_type>5</d_type> (..go occupy a city..)
+            <d_hero></d_hero>
+            <d_hero_name></d_hero_name>
+            <d_pending></d_pending>
+            <d_player></d_player>
+
+            <d_city> the id of the city to occupy </d_city>
+        </quest>
+        <quest>
+            <d_type>6</d_type> (..go kill a particular kind of army..)
+            <d_hero></d_hero>
+            <d_hero_name></d_hero_name>
+            <d_pending></d_pending>
+            <d_player></d_player>
+
+            <d_type_to_kill> the army type id of the army to kill
+            </d_type_to_kill>
+        </quest>
+        <quest>
+            <d_type>7</d_type> (..go pillage a certain amount of gold..)
+            <d_hero></d_hero>
+            <d_hero_name></d_hero_name>
+            <d_pending></d_pending>
+            <d_player></d_player>
+
+            <d_to_pillage> the amount of gold to pillage</d_to_pillage>
+            <d_pillaged> the amount pillaged so far</d_pillaged>
         </quest>
         ...more quests...
 
@@ -660,7 +743,26 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
     <vectoredunitlist>
         the list of vectored units that are "in the air"
         <vectoredunit>
-          fixme: describe vectored units
+          <d_id> the Id of the vectored unit
+          </d_id>
+          <d_name> the name of the vectored unit (unused)
+          </d_name>
+          <d_x> the source x position of the unit on the map
+          </d_x>
+          <d_y> the source y position on the map
+          </d_y>
+          <d_duration> how many more turns before the vectored unit shows up
+          </d_duration>
+          <d_dest_x> the destination x position on the map
+          </d_dest_x>
+          <d_dest_y> the destination y position on the map
+          </d_dest_y>
+          <d_player> the id of the player who is vectoring the unit
+          </d_player>
+          <army>
+              the army template to be vectored
+              this army layout is the same as the one in a city
+          </army>
         </vectoredunit>
         ...more vectored units...
     </vectoredunitlist>
