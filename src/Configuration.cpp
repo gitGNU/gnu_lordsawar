@@ -31,7 +31,6 @@ using namespace std;
 
 // define static variables
 
-bool Configuration::s_smoothScrolling = false;
 bool Configuration::s_showNextPlayer = true;
 #ifndef __WIN32__
 string Configuration::configuration_file_path = string(getenv("HOME")) + "/.lordsawarrc";
@@ -118,7 +117,6 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("cachesize", s_cacheSize);
     retval &= helper.saveData("hardware", s_hardware);
     retval &= helper.saveData("zipfiles", s_zipfiles);
-    retval &= helper.saveData("smoothscrolling", s_smoothScrolling);
     retval &= helper.saveData("speeddelay", s_displaySpeedDelay);
     retval &= helper.saveData("shownextplayer", s_showNextPlayer);
     retval &= helper.saveData("musicenable", s_musicenable);
@@ -245,8 +243,7 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     if (retval)
         s_zipfiles = zipping;
 
-    //parse if smoothscrolling should be enabled and the speed delay
-    helper->getData(s_smoothScrolling, "smoothscrolling");
+    //parse the speed delay
     helper->getData(s_displaySpeedDelay, "speeddelay");
 
     //parse if nextplayer dialog should be enabled

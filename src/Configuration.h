@@ -61,7 +61,6 @@ class Configuration : public sigc::trackable
         static std::string configuration_file_path;
 	
         // as the name implies
-        static bool s_smoothScrolling;
         static bool s_showNextPlayer;
         static int s_displaySpeedDelay;
         

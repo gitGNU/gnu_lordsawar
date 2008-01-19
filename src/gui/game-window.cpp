@@ -2087,7 +2087,7 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 
   Gtk::Image *image;
   xml->get_widget("image", image);
-  image->property_file() = File::getMiscFile("various/ship.jpg");
+  image->property_file() = File::getMiscFile("various/ship.png");
 
   Gtk::Label *label;
   xml->get_widget("label", label);
