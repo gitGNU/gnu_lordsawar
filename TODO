@@ -1,0 +1,14 @@
+
+flying stack couldn't fly to a particular spot (endless loop)
+
+waypoint graphics should show when moves are exhausted along the path
+	must update when we select armies in a stack
+	what happens when the turn ends?
+		the value needs to be recalculated
+
+ports go on shore
+	fix the boatplay
+
+buildings can be put on tiles that get turned into water
+	or turned into forest
+		true or false?

@@ -1,31 +1,22 @@
 HACKERS HOWTO
 -------------
 
-If you want to hack around the game we would suggest you to mail us,
-so that we can channel our efforts to create one of the best
-non-commercial strategy games for Linux.
-
-Enough commercials :)
-
-I am afraid, the documentation is currently a bit loose and being updated.
-If you want to understand something of the game, have a look at the manual
-(explains some concepts) and at the header files. They should be
-documented quite well by now.
-If you want to balance the armysets or something like this, there is currently
-no documentation available. However, freelords uses plain xml for all data
-files, so have a look at the current files, they should be quite
-self-explaining. If you have any questions, mail one of the authors. Usually,
-we _do_ answer _any_ questions, it is not as if we had no time. :)
-
-Appendix: Some documentation can now also be found on our wiki.
+Here are the basics.
 
 Directories:
 
-freelords		
+lordsawar
     - po           // contains localization files      			
     - dat	   // contains various data-files
     - doc	   // contains some documentation on the game
     - src   	   // Game sources
-    - src/server   // Client & Server code
+    - src/server   // Client & Server code (not used)
+    - src/gui      // Graphical Interface sources
+    - src/editor   // contains various editors
     
-Have fun!!
+
+Important files for beginners:
+
+    - lordsawar/doc/Internals
+    - lordsawar/doc/Savefile
+    - And all of the header files

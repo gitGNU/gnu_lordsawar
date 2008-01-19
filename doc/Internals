@@ -273,40 +273,6 @@ reactivates the timers via W_Edit.
 
 2.8. Reports and other widgets
 
-There are several other widgets which I haven't dealt with so far. I won't
-describe them in detail because their scope is very limited (they don't interact
-with each other or have important specialities in opposite to e.g. bigmap), but
-simply list them here. These widgets include:
-
-* ArmyDialog: If you select a stack and right-click on an ArmyInfo button, the
-              ArmyDialog will pop up. It displays all details about the army
-              you have just selected.
-              
-* MapCreationDialog: When the random map is generated, a progress bar is
-                     displayed. The MapCreationDialog is the widget to this
-                     progress bar. It is very, very simple...
-                     
-* NextPlayerPopup: When the next human player starts his/her turn, by default a
-                   popup is displayed with the name of the next player. It is
-                   defined in this class
-
-* CitiesReport, StackReport, GoldReport, QuestsReport:
-        In the menu, you can select several reports. They are implemented in
-        these classes.
-
-* cityinfo: When you right-click on the city, you can modify the city parameters
-            (defense level, production etc.). This class provides the graphical
-            interface to these actions.
-
-* d_buy_production: When, in the cityinfo dialog, you select to purchase another
-                    production, this dialog pops up.
-
-* hero_offer:   Sometimes, a new hero decides to join you. Then this dialog
-                offers  the possibility of editing the hero's name and
-                accepting/rejecting him/her.
-
-* RuinInfo: right-clicking on a ruin displays its location and id. This dialog
-            implements that display.
 
 
 
