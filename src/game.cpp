@@ -262,6 +262,9 @@ void Game::select_next_movable_stack()
 void Game::move_selected_stack()
 {
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
+  if (stack->isGrouped() == false)
+    Playerlist::getActiveplayer()->stackSplit(stack);
+
   Playerlist::getActiveplayer()->stackMove(stack);
 		  
   if (stack->canMove() == false)
@@ -283,6 +286,8 @@ void Game::move_all_stacks()
 	{
 	  sl->setActivestack(&s);
 	  select_active_stack();
+	  if (player->getActivestack()->isGrouped() == false)
+	    player->stackSplit(player->getActivestack());
 	  player->stackMove(player->getActivestack());
 	  i = sl->begin();
 	}
