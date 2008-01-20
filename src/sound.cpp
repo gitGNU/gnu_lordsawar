@@ -81,22 +81,11 @@ Sound::Sound()
 #ifdef FL_SOUND
     d_music = 0;
 
-    // before we do anything else, initialise everything. On errors, we just
-    // shut down the audio subsystem
-    if (SDL_InitSubSystem(SDL_INIT_AUDIO) == -1)
-    {
-        std::cerr <<_("Couldn't initialize audio subsystem\n");
-        std::cerr <<SDL_GetError() <<std::endl;
-        d_broken = true;
-        return;
-    }
-
     if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
     {
         std::cerr <<_("Couldn't initialize SDL-mixer\n");
         std::cerr <<Mix_GetError() <<std::endl;
         d_broken = true;
-        SDL_QuitSubSystem(SDL_INIT_AUDIO);
         return;
     }
     
@@ -108,7 +97,7 @@ Sound::Sound()
         std::cerr<<_("Error loading music descriptions; disable music\n");
         d_broken = true;
         Mix_CloseAudio();
-        SDL_QuitSubSystem(SDL_INIT_AUDIO);
+	return;
     }
 
     Mix_HookMusicFinished(_startNext);
@@ -130,13 +119,13 @@ Sound::~Sound()
         delete (*it).second;
             
     if (d_music)
+      {
         Mix_FreeMusic(d_music);
+	d_music = NULL;
+      }
     
     if (!d_broken)
-    {
         Mix_CloseAudio();
-        SDL_QuitSubSystem(SDL_INIT_AUDIO);
-    }
 #endif
 }
 
@@ -278,7 +267,10 @@ void Sound::nextPiece()
 
     // remove the old music
     if (d_music)
+      {
         Mix_FreeMusic(d_music);
+	d_music = NULL;
+      }
 
     // select a random music piece from the list of background pieces
     while (!d_music && !d_bgMap.empty())
