@@ -40,6 +40,8 @@ OverviewMap::~OverviewMap()
 {
     if (surface)
 	SDL_FreeSurface(surface);
+    if (static_surface)
+	SDL_FreeSurface(static_surface);
 }
 
 bool OverviewMap::isShadowed(Uint32 type, int i, int j)
