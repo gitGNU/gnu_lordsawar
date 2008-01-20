@@ -50,7 +50,8 @@ SDL_Color Player::get_color_for_no(int player_no)
     switch (player_no % 8)
     {
     case 0: color.r = 252; color.b = 252; color.g = 252; break;
-    case 1: color.r = 80; color.b = 28; color.g = 172; break;
+    //case 1: color.r = 80; color.b = 28; color.g = 172; break;
+    case 1: color.r = 80; color.b = 28; color.g = 193; break;
     case 2: color.r = 252; color.b = 32; color.g = 236; break;
     case 3: color.r = 92; color.b = 208; color.g = 92; break;
     case 4: color.r = 252; color.b = 0; color.g = 160;break;
