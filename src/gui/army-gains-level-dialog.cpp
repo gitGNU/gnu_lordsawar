@@ -26,7 +26,7 @@
 #include "../ucompose.hpp"
 #include "../defs.h"
 #include "../army.h"
-
+#include "../GameScenario.h"
 
 ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a)
 {
@@ -54,10 +54,10 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a)
 
     xml->get_widget("stats_vbox", stats_vbox);
 
-    add_item(Army::STRENGTH, _("Strength: %1"));
-    add_item(Army::SIGHT, _("Sight: %1"));
-    add_item(Army::HP, _("Hitpoints: %1"));
     add_item(Army::MOVES, _("Moves: %1"));
+    if (GameScenario::s_hidden_map == true)
+      add_item(Army::SIGHT, _("Sight: %1"));
+    add_item(Army::STRENGTH, _("Strength: %1"));
 
     stat_items[0].radio->set_active(true);
     fill_in_descriptions();
