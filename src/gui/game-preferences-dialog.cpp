@@ -309,6 +309,8 @@ void GamePreferencesDialog::on_player_type_changed()
 }
 void GamePreferencesDialog::on_start_game_clicked()
 {
+  Armysetlist *al = Armysetlist::getInstance();
+  Tilesetlist *tl = Tilesetlist::getInstance();
     // read out the values in the widgets
     GameParameters g;
 
@@ -419,8 +421,8 @@ void GamePreferencesDialog::on_start_game_clicked()
 	g.players.push_back(p);
       }
 
-    g.tile_theme = Tilesetlist::getInstance()->getTilesetDir
-	(Glib::filename_from_utf8(tile_theme_combobox->get_active_text()));
+    g.tile_theme = tl->getTilesetDir 
+      (Glib::filename_from_utf8(tile_theme_combobox->get_active_text()));
 
     g.army_theme = Glib::filename_from_utf8(army_theme_combobox->get_active_text());
 
@@ -440,8 +442,16 @@ void GamePreferencesDialog::on_start_game_clicked()
     g.cities_can_produce_allies = 
       cities_can_produce_allies_checkbutton->get_active();
 
-    // and call callback
-    game_started(g);
+    //don't start if the armyset size differs from the terrain set size.
+    Uint32 army_tilesize = al->getTileSize(al->getArmysetId(g.army_theme));
+    int terrain_size = tl->getTileset(g.tile_theme)->getTileSize();
+    if (army_tilesize != (Uint32) terrain_size)
+      fprintf (stderr, "army tile size doesn't match terrain tile size!\n");
+    else
+      {
+	// and call callback
+	game_started(g);
+      }
 }
     
 void GamePreferencesDialog::on_grass_random_toggled()
