@@ -11,5 +11,6 @@ and have to be .png files.
 The currently used indexes are:
 
 1 - default 
+2 - big default 
 
-All indexes above 1 are free as of now.
+All indexes above 2 are free as of now.
