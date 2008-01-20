@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl This is useful to force using autoreconf 2.5.x
 AC_PREREQ(2.59)
-AC_INIT([lordsawar], [0.0.6], [benasselstine@gmail.com], [lordsawar])
+AC_INIT([lordsawar], [0.0.7], [benasselstine@gmail.com], [lordsawar])
 AC_CONFIG_SRCDIR([config.h.in])
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
@@ -222,9 +222,12 @@ AC_CONFIG_FILES([
         dat/Makefile 
         dat/army/Makefile 
         dat/army/default/Makefile 
+        dat/army/bigdefault/Makefile 
         dat/tilesets/Makefile
         dat/tilesets/default/Makefile
         dat/tilesets/default/misc/Makefile
+        dat/tilesets/bigdefault/Makefile
+        dat/tilesets/bigdefault/misc/Makefile
         dat/various/Makefile 
         dat/various/items/Makefile
         dat/various/editor/Makefile
