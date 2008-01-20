@@ -372,14 +372,6 @@ void Stack::nextTurn()
 {
   Uint32 movement_multiplier = 1;
   setParked(false);
-  for (iterator it = begin(); it != end(); ++it)
-    {
-      (*it)->resetMoves();
-      // TODO: should be moved in a more appropriate place => class Player
-      if (d_player)
-	d_player->withdrawGold((*it)->getUpkeep());
-      (*it)->heal();
-    }
 
   //count the number of items that double the movement in the stack.
   for (const_iterator it = begin(); it != end(); it++)
@@ -419,8 +411,19 @@ void Stack::nextTurn()
       }
   if (d_defending == true)
     setFortified(true);
+
+  for (iterator it = begin(); it != end(); ++it)
+    {
+      (*it)->resetMoves();
+      // TODO: should be moved in a more appropriate place => class Player
+      if (d_player)
+	d_player->withdrawGold((*it)->getUpkeep());
+      (*it)->heal();
+    }
+
   //recalculate paths
   getPath()->recalculate(this);
+
 }
 
 bool Stack::save(XML_Helper* helper) const

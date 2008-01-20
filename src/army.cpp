@@ -230,7 +230,12 @@ Uint32 Army::getStat(Stat stat, bool modified) const
         case HP:
             return d_max_hp;
         case MOVES:
+	{
+	  if (modified)
             return d_max_moves * d_max_moves_multiplier;
+	  else
+            return d_max_moves;
+	}
         case MOVE_BONUS:
             return d_move_bonus;
         case ARMY_BONUS:
