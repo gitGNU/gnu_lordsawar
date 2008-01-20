@@ -77,6 +77,7 @@
 #include "../GameScenario.h"
 #include "../army.h"
 #include "../ruin.h"
+#include "../path.h"
 #include "../player.h"
 #include "../stacklist.h"
 #include "../signpostlist.h"
@@ -1151,12 +1152,14 @@ void GameWindow::on_message_requested(std::string msg)
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
 {
+  Player *p = Playerlist::getActiveplayer();
+  Stack *s = p->getStacklist()->getActivestack();
   group_ungroup_toggle->set_sensitive(false);
   army->setGrouped(toggle->get_active());
   ensure_one_army_button_active();
-  Player *p = Playerlist::getActiveplayer();
-  on_stack_info_changed(p->getStacklist()->getActivestack());
+  on_stack_info_changed(s);
   group_ungroup_toggle->set_sensitive(true);
+  s->getPath()->recalculate(s);
 }
 
 void GameWindow::on_group_toggled(Gtk::ToggleButton *toggle)
@@ -1167,6 +1170,7 @@ void GameWindow::on_group_toggled(Gtk::ToggleButton *toggle)
     currently_selected_stack->ungroup();
   else
     currently_selected_stack->group();
+  currently_selected_stack->getPath()->recalculate(currently_selected_stack);
   update_army_buttons();
 }
 
