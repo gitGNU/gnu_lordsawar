@@ -71,7 +71,8 @@ class Army : public sigc::trackable
             MOVE_BONUS=5,
             ARMY_BONUS=6,
             SIGHT=7,
-	    SHIP=8
+	    SHIP=8,
+            MOVES_MULTIPLIER=9,
         };
 
         /** Multiple-purpose constructor
@@ -214,7 +215,7 @@ class Army : public sigc::trackable
         //! Get the current number of hitpoints (in opposite to getMaxHp)
         Uint32 getHP() const {return d_hp;}
 
-        //! Get the current number of moves (in opposite to getMaxMoves)
+        //! Get the current number of moves
         Uint32 getMoves() const {return d_moves;}
 
         //! Get the move bonus
@@ -357,6 +358,7 @@ class Army : public sigc::trackable
         Uint32 d_strength;
         Uint32 d_max_hp;
         Uint32 d_max_moves;
+	Uint32 d_max_moves_multiplier;
         Uint32 d_sight;
         double d_xp_value;
         Uint32 d_move_bonus;

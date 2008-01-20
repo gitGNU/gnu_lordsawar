@@ -34,7 +34,9 @@ Army::Army(const Army& a, Player* p)
      d_production_cost(a.d_production_cost), d_upkeep(a.d_upkeep),
      d_strength(a.d_strength),
      d_max_hp(a.d_max_hp),
-     d_max_moves(a.d_max_moves), d_sight(a.d_sight),
+     d_max_moves(a.d_max_moves), 
+     d_max_moves_multiplier(a.d_max_moves_multiplier),
+     d_sight(a.d_sight),
      d_xp_value(a.d_xp_value), d_move_bonus(a.d_move_bonus),
      d_army_bonus(a.d_army_bonus), d_ship(a.d_ship), d_gender(a.d_gender), 
      d_player(p), d_id(a.d_id), d_hp(a.d_hp), d_moves(a.d_moves), d_xp(a.d_xp),
@@ -50,6 +52,7 @@ Army::Army(const Army& a, Player* p)
         d_id = fl_counter->getNextId();
         d_hp = d_max_hp;
         d_moves = d_max_moves;
+	d_max_moves_multiplier = 1;
     }
         
     for(int i=0;i<3;i++)
@@ -61,8 +64,9 @@ Army::Army(const Army& a, Player* p)
 Army::Army()
   :d_pixmap(0), d_mask(0), d_name("Untitled"), d_description(""),
     d_production(0), d_production_cost(0), d_upkeep(0), d_strength(0),
-    d_max_hp(0), d_max_moves(0), d_sight(0), d_gender(NONE), d_level(1), 
-   d_defends_ruins(false), d_awardable(false), d_hero(false), d_image("")
+    d_max_hp(0), d_max_moves(0), d_max_moves_multiplier(1), d_sight(0), 
+    d_gender(NONE), d_level(1), d_defends_ruins(false), d_awardable(false), 
+    d_hero(false), d_image("")
 {
 }
 
@@ -79,6 +83,7 @@ Army::Army(XML_Helper* helper, enum ArmyContents contents)
     helper->getData(d_strength, "strength");
     helper->getData(d_sight, "sight");
     helper->getData(d_max_moves, "max_moves");
+    d_max_moves_multiplier = 1;
     helper->getData(d_xp_value,"expvalue");
     
     // now if we are a prototype, we have to load different data than
@@ -96,6 +101,7 @@ Army::Army(XML_Helper* helper, enum ArmyContents contents)
         helper->getData(d_id, "id");
         helper->getData(d_hp, "hp");
         helper->getData(d_moves, "moves");
+	helper->getData(d_max_moves_multiplier, "max_moves_multiplier");
         helper->getData(d_xp, "xp");
         helper->getData(d_level, "level");
 
@@ -184,6 +190,9 @@ void Army::setStat(Army::Stat stat, Uint32 value)
                         if (d_moves > d_max_moves)
                             d_moves = value;
                         break;
+	case MOVES_MULTIPLIER:
+			    d_max_moves_multiplier = value;
+			    break;
         case MOVE_BONUS:    d_move_bonus = value;
                             break;
         case ARMY_BONUS:    d_army_bonus = value;
@@ -221,7 +230,7 @@ Uint32 Army::getStat(Stat stat, bool modified) const
         case HP:
             return d_max_hp;
         case MOVES:
-            return d_max_moves;
+            return d_max_moves * d_max_moves_multiplier;
         case MOVE_BONUS:
             return d_move_bonus;
         case ARMY_BONUS:
@@ -230,6 +239,8 @@ Uint32 Army::getStat(Stat stat, bool modified) const
             return d_sight;
         case SHIP:
             return d_ship;
+        case MOVES_MULTIPLIER:
+            return d_max_moves_multiplier;
     }
 
     // should never come to this
@@ -351,7 +362,8 @@ int Army::gainLevel(Stat stat)
     if (!canGainLevel())
         return -1;
 
-    if (stat == MOVE_BONUS || stat == ARMY_BONUS || stat == SHIP)
+    if (stat == MOVE_BONUS || stat == ARMY_BONUS || stat == SHIP ||
+	stat == MOVES_MULTIPLIER)
         return -1;
     
     d_level++;
@@ -420,6 +432,8 @@ bool Army::saveData(XML_Helper* helper, enum ArmyContents contents) const
 	retval &= helper->saveData("ship", d_ship);
 	retval &= helper->saveData("moves", d_moves);
 	retval &= helper->saveData("xp", d_xp);
+	retval &= helper->saveData("max_moves_multiplier", 
+				   d_max_moves_multiplier);
       }
 
     if (contents == PRODUCTION_BASE)
@@ -465,6 +479,8 @@ void  Army::printAllDebugInfo() const
     std::cerr << "xp_value = " << d_xp_value << std::endl;
     std::cerr << "strength = " << d_strength << std::endl;
     std::cerr << "max_moves = " << d_max_moves << std::endl;
+    std::cerr << "max_moves_multiplier = " 
+      << d_max_moves_multiplier << std::endl;
     std::cerr << "upkeep = " << d_upkeep << std::endl;
     std::cerr << "defends_ruins = " << d_defends_ruins << std::endl;
     std::cerr << "awardable = " << d_awardable << std::endl;

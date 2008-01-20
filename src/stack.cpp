@@ -370,6 +370,7 @@ Uint32 Stack::getMaxSight() const
 
 void Stack::nextTurn()
 {
+  Uint32 movement_multiplier = 1;
   setParked(false);
   for (iterator it = begin(); it != end(); ++it)
     {
@@ -380,6 +381,24 @@ void Stack::nextTurn()
       (*it)->heal();
     }
 
+  //count the number of items that double the movement in the stack.
+  for (const_iterator it = begin(); it != end(); it++)
+    if ((*it)->isHero())
+      {
+	std::list<Item*> backpack = dynamic_cast<Hero*>((*it))->getBackpack();
+	std::list<Item*>::const_iterator item;
+	for (item = backpack.begin(); item != backpack.end(); item++)
+	  {
+	    if ((*item)->getBonus(Item::DOUBLEMOVESTACK))
+	      movement_multiplier++;
+	  }
+      }
+
+  //set the multipler on all armies in the stack
+  for (const_iterator it = begin(); it != end(); it++)
+    (*it)->setStat(Army::MOVES_MULTIPLIER, movement_multiplier);
+
+  //now let's see if we have any items that give us gold per city
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->isHero())
       {
@@ -388,8 +407,6 @@ void Stack::nextTurn()
 	for (item = backpack.begin(); item != backpack.end(); item++)
 	  {
 	    Player *p = d_player;
-	    if ((*item)->getBonus(Item::DOUBLEMOVESTACK))
-	      (*it)->setStat(Army::MOVES, (*it)->getMoves() * 2);
 	    if ((*item)->getBonus(Item::ADD2GOLDPERCITY))
 	      p->addGold(2 * Citylist::getInstance()->countCities(p));
 	    if ((*item)->getBonus(Item::ADD3GOLDPERCITY))
