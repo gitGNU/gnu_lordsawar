@@ -425,6 +425,14 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
         moveResult->setStepCount(stepCount);
         return moveResult;
     }
+    else if (s->getPath()->size() == 1 && s->enoughMoves() == false)
+    {
+      /* if we can't attack a city, don't remember it in the stack's path. */
+        Vector<int> pos = **(s->getPath()->begin());
+        City* city = Citylist::getInstance()->getObjectAt(pos);
+	if (city)
+	  s->getPath()->flClear();
+    }
 
     //If there is another stack where we landed, join it. We can't have two
     //stacks share the same maptile
