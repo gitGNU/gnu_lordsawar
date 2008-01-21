@@ -73,15 +73,23 @@ void NextTurn::start()
         //if it is the first player's turn now, a new round has started
         if (plist->getActiveplayer() == plist->getFirstLiving())
         {
-          if (Playerlist::getInstance()->checkPlayers() == true)
+          if (plist->checkPlayers() == true)
 	    {
-	      if (d_stop)
+	      if (plist->getNoOfPlayers() <= 1)
 		break;
 	      if (plist->getActiveplayer()->isDead())
 		plist->nextPlayer();
 	    }
 	  finishRound();
 	  snextRound.emit();
+	}
+	else
+	{
+          if (plist->checkPlayers() == true)
+	    {
+	      if (plist->getNoOfPlayers() <= 1)
+		break;
+	    }
 	}
     }
 }
