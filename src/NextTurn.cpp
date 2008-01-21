@@ -83,7 +83,7 @@ void NextTurn::start()
 	  finishRound();
 	  snextRound.emit();
 	}
-	else
+	else if (plist->getNoOfPlayers() == 2)
 	{
           if (plist->checkPlayers() == true)
 	    {
