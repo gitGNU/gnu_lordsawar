@@ -56,6 +56,15 @@ void NextTurn::start()
         // inform everyone about the next turn 
         snextTurn.emit(plist->getActiveplayer());
         
+	if (plist->getNoOfPlayers() <= 2)
+	{
+          if (plist->checkPlayers() == true)
+	    {
+	      if (plist->getNoOfPlayers() <= 1)
+		return;
+	    }
+	}
+
 	bool break_loop = splayerStart.emit(plist->getActiveplayer());
 
         //Let the player do his duties...
@@ -83,14 +92,7 @@ void NextTurn::start()
 	  finishRound();
 	  snextRound.emit();
 	}
-	else if (plist->getNoOfPlayers() == 2)
-	{
-          if (plist->checkPlayers() == true)
-	    {
-	      if (plist->getNoOfPlayers() <= 1)
-		break;
-	    }
-	}
+	  
     }
 }
 
