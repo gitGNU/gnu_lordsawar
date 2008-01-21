@@ -47,7 +47,9 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a)
     Gtk::Label *label;
     xml->get_widget("label", label);
     Glib::ustring s;
-    s += _("Your army has advanced a level!");
+    s = String::ucompose(_("%1 has advanced to level %2!"), a->getName(),
+			 a->getLevel());
+    dialog->set_title(s);
     s += "\n\n";
     s += _("Choose an attribute to improve:");
     label->set_text(s);
