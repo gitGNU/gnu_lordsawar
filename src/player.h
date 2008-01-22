@@ -108,6 +108,9 @@ class Player: public sigc::trackable
         //! The available player types. Needed when loading a player.
         enum Type {HUMAN = 0, AI_FAST = 1, AI_DUMMY = 2, AI_SMART = 4 };
 
+	//! Every player has a diplomatic state with every other player.
+	enum DiplomaticState {AT_PEACE = 0, AT_WAR_IN_FIELD = 1, AT_WAR = 2};
+
         /** Default constructor
           *
           * @param name         the name of the player
@@ -216,6 +219,18 @@ class Player: public sigc::trackable
 
 	//! Calculates the upkeep
 	void calculateUpkeep();
+
+	//! Declare a new diplomatic state wrt another player
+	void declare(DiplomaticState state, Player *player);
+
+	//! Query the diplomatic state wrt another player
+	DiplomaticState getDiplomaticState (Player *player) {return d_diplomatic_state[player->getId()];};
+
+	//! Is the another player friendly to us?
+	bool isFriendly (Player *player) {return (getDiplomaticState (player) == AT_PEACE) ? true : false; };
+
+	//! Is the another player an enemy to us?
+	bool isEnemy (Player *player) {return !isFriendly (player);}
 
         //! Returns the main color of the player
         SDL_Color getColor() const {return d_color;}
@@ -580,6 +595,7 @@ class Player: public sigc::trackable
 	std::list<Uint32> d_fight_order; //for each army in armyset, a number
 	Uint32 d_triumph[MAX_PLAYERS][5]; // 5 is max TriumphType + 1
 	Uint32 d_upkeep; //how much we paid out last turn
+	DiplomaticState d_diplomatic_state[MAX_PLAYERS];
 
 
     private:

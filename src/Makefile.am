@@ -56,7 +56,8 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         sidebar-stats.h game-parameters.h vector.h rectangle.h \
         ucompose.hpp defs.h ObjectList.h \
         map-tip-position.h input-events.h sdl-draw.h  \
-        vectoredunit.cpp vectoredunit.h vectoredunitlist.cpp vectoredunitlist.h
+        vectoredunit.cpp vectoredunit.h \
+        vectoredunitlist.cpp vectoredunitlist.h
 
 
 if FL_RESRC

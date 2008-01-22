@@ -95,7 +95,15 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, Type type,
     {
       d_fight_order.push_back(i);
     }
+
     memset(d_triumph, 0, sizeof(d_triumph));
+
+    //everyone's at war with everyone else.
+    //FIXME: turn this to AT_PEACE, and then have computer players declare war
+    for (unsigned int i = 0 ; i < MAX_PLAYERS; i++)
+    {
+      d_diplomatic_state[i] = AT_WAR;
+    }
 }
 
 Player::Player(const Player& player)
@@ -129,6 +137,12 @@ Player::Player(const Player& player)
 
     // copy fogmap; TBD
     d_fogmap = new FogMap();
+
+    // copy diplomatic states
+    for (unsigned int i = 0 ; i < MAX_PLAYERS; i++)
+      {
+	d_diplomatic_state[i] = player.d_diplomatic_state[i];
+      }
 }
 
 Player::Player(XML_Helper* helper)
@@ -153,6 +167,7 @@ Player::Player(XML_Helper* helper)
 
     helper->getData(d_armyset, "armyset");
 
+    // Read in Fight Order.  One ranking per army type.
     std::string fight_order;
     std::stringstream sfight_order;
     Uint32 val;
@@ -163,6 +178,17 @@ Player::Player(XML_Helper* helper)
     {
             sfight_order >> val;
             d_fight_order.push_back(val);
+    }
+
+    // Read in Diplomatic States.  One state per player.
+    std::string diplomatic_states;
+    std::stringstream sdiplomatic_states;
+    helper->getData(diplomatic_states, "diplomatic_states");
+    sdiplomatic_states.str(diplomatic_states);
+    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+            sdiplomatic_states >> val;
+	    d_diplomatic_state[i] = DiplomaticState(val);
     }
 
     //last but not least, register the load function for actionlist
@@ -404,6 +430,7 @@ bool Player::save(XML_Helper* helper) const
     debug("type of " << d_name << " is " << d_type)
     retval &= helper->saveData("upkeep", d_upkeep);
 
+    // save the fight order, one ranking per army type
     std::stringstream fight_order;
     for (std::list<Uint32>::const_iterator it = d_fight_order.begin();
          it != d_fight_order.end(); it++)
@@ -411,6 +438,14 @@ bool Player::save(XML_Helper* helper) const
         fight_order << (*it) << " ";
       }
     retval &= helper->saveData("fight_order", fight_order.str());
+
+    // save the diplomatic states, one state per player
+    std::stringstream diplomatic_states;
+    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+      {
+	diplomatic_states << d_diplomatic_state[i] << " ";
+      }
+    retval &= helper->saveData("diplomatic_states", diplomatic_states.str());
 
     //save the actionlist
     for (list<Action*>::const_iterator it = d_actions.begin();
@@ -545,5 +580,11 @@ void Player::calculateUpkeep()
     Stacklist *sl = getStacklist();
     for (Stacklist::iterator i = sl->begin(), iend = sl->end(); i != iend; ++i)
       d_upkeep += (*i)->getUpkeep();
+}
+	
+void Player::declare(DiplomaticState state, Player *player)
+{
+  d_diplomatic_state[player->getId()] = state;
+  // FIXME: update diplomatic scores? 
 }
 // End of file
