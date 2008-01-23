@@ -50,6 +50,7 @@ player-resign-dialog.glade \
 army-bonus-dialog.glade \
 item-bonus-dialog.glade \
 game-options-dialog.glade \
-triumphs-dialog.glade
+triumphs-dialog.glade \
+diplomacy-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)
