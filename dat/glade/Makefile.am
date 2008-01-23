@@ -51,6 +51,7 @@ army-bonus-dialog.glade \
 item-bonus-dialog.glade \
 game-options-dialog.glade \
 triumphs-dialog.glade \
+diplomacy-report-dialog.glade \
 diplomacy-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)

@@ -71,6 +71,14 @@ struct RuinCacheItem
     SDL_Surface* surface;
 };
 
+//the structure to store diplomacy icons in
+struct DiplomacyCacheItem
+{
+    int type;
+    Player::DiplomaticState state;
+    SDL_Surface* surface;
+};
+
 //the structure to store roads in
 struct RoadCacheItem
 {
@@ -181,6 +189,7 @@ GraphicsCache::GraphicsCache()
     loadTowerPics();
     loadTemplePics();
     loadRuinPics();
+    loadDiplomacyPics();
     loadRoadPics();
     loadFogPics();
     loadBridgePics();
@@ -488,6 +497,33 @@ SDL_Surface* GraphicsCache::getRuinPic(int type)
 
     //no item found -> create a new one
     myitem = addRuinPic(type);
+
+    return myitem->surface;
+}
+
+SDL_Surface* GraphicsCache::getDiplomacyPic(int type, Player::DiplomaticState state)
+{
+    debug("GraphicsCache::getDiplomaticPic " <<type << ", " << state)
+
+    std::list<DiplomacyCacheItem*>::iterator it;
+    DiplomacyCacheItem* myitem;
+
+    for (it = d_diplomacylist.begin(); it != d_diplomacylist.end(); it++)
+    {
+        if ((*it)->type == type && (*it)->state == state)
+        {
+            myitem = (*it);
+
+            //put the item in last place (last touched)
+            d_diplomacylist.erase(it);
+            d_diplomacylist.push_back(myitem);
+
+            return myitem->surface;
+        }
+    }
+
+    //no item found -> create a new one
+    myitem = addDiplomacyPic(type, state);
 
     return myitem->surface;
 }
@@ -832,6 +868,9 @@ void GraphicsCache::checkPictures()
   while (d_ruinlist.size() > 10)
     eraseLastRuinItem();
 
+  while (d_diplomacylist.size() > 10)
+    eraseLastDiplomacyItem();
+
   while (d_roadlist.size() > 10)
     eraseLastRoadItem();
 
@@ -1050,6 +1089,29 @@ RuinCacheItem* GraphicsCache::addRuinPic(int type)
   myitem->surface = mysurf;
 
   d_ruinlist.push_back(myitem);
+
+  //add the size
+  int size = mysurf->w * mysurf->h;
+  d_cachesize += size * mysurf->format->BytesPerPixel;
+
+  //and check the size of the cache
+  checkPictures();
+
+  return myitem;
+}
+
+DiplomacyCacheItem* GraphicsCache::addDiplomacyPic(int type, Player::DiplomaticState state)
+{
+  SDL_Surface* mysurf = 
+    SDL_DisplayFormatAlpha(d_diplomacypic[type][state - Player::AT_PEACE]);
+
+  //now create the cache item and add the size
+  DiplomacyCacheItem* myitem = new DiplomacyCacheItem();
+  myitem->type = type;
+  myitem->state = state;
+  myitem->surface = mysurf;
+
+  d_diplomacylist.push_back(myitem);
 
   //add the size
   int size = mysurf->w * mysurf->h;
@@ -1368,6 +1430,9 @@ void GraphicsCache::clear()
   while (!d_ruinlist.empty())
     eraseLastRuinItem();
 
+  while (!d_diplomacylist.empty())
+    eraseLastDiplomacyItem();
+
   while (!d_roadlist.empty())
     eraseLastRoadItem();
 
@@ -1449,6 +1514,21 @@ void GraphicsCache::eraseLastRuinItem()
 
   RuinCacheItem* myitem = *(d_ruinlist.begin());
   d_ruinlist.erase(d_ruinlist.begin());
+
+  int size = myitem->surface->w * myitem->surface->h;
+  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+
+  SDL_FreeSurface(myitem->surface);
+  delete myitem;
+}
+
+void GraphicsCache::eraseLastDiplomacyItem()
+{
+  if (d_diplomacylist.empty())
+    return;
+
+  DiplomacyCacheItem* myitem = *(d_diplomacylist.begin());
+  d_diplomacylist.erase(d_diplomacylist.begin());
 
   int size = myitem->surface->w * myitem->surface->h;
   d_cachesize -= myitem->surface->format->BytesPerPixel * size;
@@ -1694,7 +1774,7 @@ void GraphicsCache::loadRuinPics()
   std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
   int ts = GameMap::getInstance()->getTileSet()->getTileSize();
 
-  // load the temple pictures
+  // load the ruin pictures
   SDL_Surface* ruinpics = File::getMapsetPicture(tileset, "misc/ruin.png");
 
   // copy alpha values, don't use them
@@ -1722,6 +1802,68 @@ void GraphicsCache::loadRuinPics()
     }
 
   SDL_FreeSurface(ruinpics);
+}
+
+void GraphicsCache::loadDiplomacyPics()
+{
+  // load the diplomacy pictures
+  // crapola
+  Uint32 ts;
+  SDL_Surface* diplomacypics = File::getMiscPicture("diplomacy-small.png");
+  ts = 30;
+
+  // copy alpha values, don't use them
+  SDL_SetAlpha(diplomacypics, 0, 0);
+
+  for (unsigned int i = 0; i < DIPLOMACY_TYPES ; i++)
+    {
+      //copy the ruin image...
+      SDL_Surface* tmp;
+      SDL_PixelFormat* fmt = diplomacypics->format;
+
+      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
+				 fmt->Rmask, fmt->Gmask, 
+				 fmt->Bmask, fmt->Amask);
+
+      SDL_Rect r;
+      r.x = i*ts;
+      r.y = 0;
+      r.w = r.h = ts;
+      SDL_BlitSurface(diplomacypics, &r, tmp, NULL);
+
+      d_diplomacypic[0][i] = SDL_DisplayFormatAlpha(tmp);
+
+      SDL_FreeSurface(tmp);
+    }
+
+  SDL_FreeSurface(diplomacypics);
+  ts = 50;
+  diplomacypics = File::getMiscPicture("diplomacy-large.png");
+  // copy alpha values, don't use them
+  SDL_SetAlpha(diplomacypics, 0, 0);
+
+  for (unsigned int i = 0; i < DIPLOMACY_TYPES ; i++)
+    {
+      //copy the ruin image...
+      SDL_Surface* tmp;
+      SDL_PixelFormat* fmt = diplomacypics->format;
+
+      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
+				 fmt->Rmask, fmt->Gmask, 
+				 fmt->Bmask, fmt->Amask);
+
+      SDL_Rect r;
+      r.x = i*ts;
+      r.y = 0;
+      r.w = r.h = ts;
+      SDL_BlitSurface(diplomacypics, &r, tmp, NULL);
+
+      d_diplomacypic[1][i] = SDL_DisplayFormatAlpha(tmp);
+
+      SDL_FreeSurface(tmp);
+    }
+
+  SDL_FreeSurface(diplomacypics);
 }
 
 void GraphicsCache::loadRoadPics()

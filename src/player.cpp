@@ -103,7 +103,9 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, Type type,
     for (unsigned int i = 0 ; i < MAX_PLAYERS; i++)
     {
       d_diplomatic_state[i] = AT_WAR;
+      d_diplomatic_proposal[i] = NO_PROPOSAL;
     }
+    d_diplomatic_rank = 0;
 }
 
 Player::Player(const Player& player)
@@ -142,7 +144,9 @@ Player::Player(const Player& player)
     for (unsigned int i = 0 ; i < MAX_PLAYERS; i++)
       {
 	d_diplomatic_state[i] = player.d_diplomatic_state[i];
+	d_diplomatic_proposal[i] = player.d_diplomatic_proposal[i];
       }
+    d_diplomatic_rank = player.d_diplomatic_rank;
 }
 
 Player::Player(XML_Helper* helper)
@@ -189,6 +193,19 @@ Player::Player(XML_Helper* helper)
     {
             sdiplomatic_states >> val;
 	    d_diplomatic_state[i] = DiplomaticState(val);
+    }
+
+    helper->getData(d_diplomatic_rank, "diplomatic_rank");
+
+    // Read in Diplomatic Proposals.  One proposal per player.
+    std::string diplomatic_proposals;
+    std::stringstream sdiplomatic_proposals;
+    helper->getData(diplomatic_proposals, "diplomatic_proposals");
+    sdiplomatic_proposals.str(diplomatic_proposals);
+    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+            sdiplomatic_proposals>> val;
+	    d_diplomatic_proposal[i] = DiplomaticProposal(val);
     }
 
     //last but not least, register the load function for actionlist
@@ -447,6 +464,17 @@ bool Player::save(XML_Helper* helper) const
       }
     retval &= helper->saveData("diplomatic_states", diplomatic_states.str());
 
+    retval &= helper->saveData("diplomatic_rank", d_diplomatic_rank);
+
+    // save the diplomatic proposals, one proposal per player
+    std::stringstream diplomatic_proposals;
+    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+      {
+	diplomatic_proposals << d_diplomatic_proposal[i] << " ";
+      }
+    retval &= helper->saveData("diplomatic_proposals", 
+			       diplomatic_proposals.str());
+
     //save the actionlist
     for (list<Action*>::const_iterator it = d_actions.begin();
             it != d_actions.end(); it++)
@@ -586,5 +614,30 @@ void Player::declare(DiplomaticState state, Player *player)
 {
   d_diplomatic_state[player->getId()] = state;
   // FIXME: update diplomatic scores? 
+}
+
+void Player::propose(DiplomaticProposal proposal, Player *player)
+{
+  d_diplomatic_proposal[player->getId()] = proposal;
+  // FIXME: update diplomatic scores? 
+}
+Uint32 Player::getDiplomaticRank()
+{
+  return MAX_PLAYERS - d_id + 1 - 1;
+}
+	
+std::string Player::getDiplomaticTitle()
+{
+  char* titles[MAX_PLAYERS] = {
+    "Statesman",
+    "Diplomat",
+    "Pragmatist",
+    "Politician",
+    "Deceiver",
+    "Scoundrel",
+    "Turncoat",
+    "Running Dog",
+  };
+  return std::string(titles[getDiplomaticRank()-1]);
 }
 // End of file

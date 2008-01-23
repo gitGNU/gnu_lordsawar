@@ -109,7 +109,9 @@ class Player: public sigc::trackable
         enum Type {HUMAN = 0, AI_FAST = 1, AI_DUMMY = 2, AI_SMART = 4 };
 
 	//! Every player has a diplomatic state with every other player.
-	enum DiplomaticState {AT_PEACE = 0, AT_WAR_IN_FIELD = 1, AT_WAR = 2};
+	enum DiplomaticState {AT_PEACE = 1, AT_WAR_IN_FIELD = 2, AT_WAR = 3};
+	enum DiplomaticProposal {NO_PROPOSAL = 0, PROPOSE_PEACE = 1, 
+	  PROPOSE_WAR_IN_FIELD = 2, PROPOSE_WAR = 3 };
 
         /** Default constructor
           *
@@ -226,11 +228,27 @@ class Player: public sigc::trackable
 	//! Query the diplomatic state wrt another player
 	DiplomaticState getDiplomaticState (Player *player) {return d_diplomatic_state[player->getId()];};
 
+	//! Query the diplomatic proposal we're making wrt another player
+	DiplomaticProposal getDiplomaticProposal (Player *player) {return d_diplomatic_proposal[player->getId()];};
+
+	//! Propose a new diplomatic state wrt another player
+	void propose (DiplomaticProposal proposal, Player *player);
+
 	//! Is the another player friendly to us?
 	bool isFriendly (Player *player) {return (getDiplomaticState (player) == AT_PEACE) ? true : false; };
 
 	//! Is the another player an enemy to us?
 	bool isEnemy (Player *player) {return !isFriendly (player);}
+
+	//! Set this player's rank in diplomatic matters.  Starts at 1.
+	void setDiplomaticRank (Uint32 rank) {d_diplomatic_rank = rank;};
+
+	//! What diplomatic rank does this player have? As a number.
+	//! Starts at 1.
+	Uint32 getDiplomaticRank ();
+
+	//! What rank do we have? As a name.
+	std::string getDiplomaticTitle();
 
         //! Returns the main color of the player
         SDL_Color getColor() const {return d_color;}
@@ -596,6 +614,8 @@ class Player: public sigc::trackable
 	Uint32 d_triumph[MAX_PLAYERS][5]; // 5 is max TriumphType + 1
 	Uint32 d_upkeep; //how much we paid out last turn
 	DiplomaticState d_diplomatic_state[MAX_PLAYERS];
+	Uint32 d_diplomatic_rank;
+	DiplomaticProposal d_diplomatic_proposal[MAX_PLAYERS];
 
 
     private:

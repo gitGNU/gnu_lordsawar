@@ -27,6 +27,7 @@ struct CityCacheItem;
 struct TowerCacheItem;
 struct TempleCacheItem;
 struct RuinCacheItem;
+struct DiplomacyCacheItem;
 struct StoneCacheItem;
 struct RoadCacheItem;
 struct BridgeCacheItem;
@@ -116,44 +117,70 @@ class GraphicsCache
         SDL_Surface* getArmyPic(Uint32 armyset, Uint32 army, const Player* p,
                                 const bool* medals);
 
-        SDL_Surface* getRuinPic(int type);
         /** Function for getting a ruin picture
           *
           * @param type         the type of the ruin
           * @return image of the ruin 
           */
-        SDL_Surface* getTemplePic(int type);
+        SDL_Surface* getRuinPic(int type);
+
+        /** Function for getting a diplomacy icon
+          *
+          * @param type         o = small, or 1 = large.
+          * @param state        the diplomatic state.  e.g. peace, war, etc
+          * @return image of the icon
+          */
+        SDL_Surface* getDiplomacyPic(int type, Player::DiplomaticState state);
+
         /** Function for getting a temple picture
           *
           * @param type         the type of the temple
           * @return image of the temple
           */
-        SDL_Surface* getRoadPic(int type);
+        SDL_Surface* getTemplePic(int type);
+
         /** Function for getting a road picture
           *
           * @param type         the type of the road
           * @return image of the road
           */
-        SDL_Surface* getFogPic(int type);
+        SDL_Surface* getRoadPic(int type);
+
         /** Function for getting a fog picture
           *
           * @param type         the type of the fog
           * @return image of the fog
           */
-        SDL_Surface* getBridgePic(int type);
+        SDL_Surface* getFogPic(int type);
+
         /** Function for getting a bridge picture
           *
           * @param type         the type of the bridge 0=e/w 1=n/s
           * @return image of the bridge
           */
-        SDL_Surface* getCursorPic(int type);
+        SDL_Surface* getBridgePic(int type);
+
         /** Function for getting a cursor picture
           *
           * @param type         the type of the cursor 
           * @return image of the cursor
           */
+        SDL_Surface* getCursorPic(int type);
 
+        /** Function for getting a ship picture.  This is the picture
+	  * that appears when the stack goes into the water.
+          *
+          * @param p            the player to colour the ship as
+          * @return image of the ship
+          */
         SDL_Surface* getShipPic(const Player* p);
+
+        /** Function for getting a standard picture.  This is the picture
+	  * that appears when the hero plants a flag..
+          *
+          * @param p            the player to colour the flag as
+          * @return image of the standard
+          */
         SDL_Surface* getPlantedStandardPic(const Player* p);
 
         /** Function for getting a city picture
@@ -266,6 +293,9 @@ class GraphicsCache
         //! Creates a new ruin picture with the given parameters.
         RuinCacheItem* addRuinPic(int type);
 
+        //! Creates a new diplomacy icon with the given parameters.
+        DiplomacyCacheItem* addDiplomacyPic(int type, Player::DiplomaticState state);
+
         //! Creates a new road picture with the given parameters.
         RoadCacheItem* addRoadPic(int type);
 
@@ -322,6 +352,9 @@ class GraphicsCache
         //! Erases the oldest (least recently requested) ruin cache item.
         void eraseLastRuinItem();
 
+        //! Erases the oldest (least recently requested) diplomacy cache item.
+        void eraseLastDiplomacyItem();
+
         //! Erases the oldest (least recently requested) road cache item.
         void eraseLastRoadItem();
 
@@ -373,6 +406,9 @@ class GraphicsCache
         //! Loads the images for the ruin pictures.
         void loadRuinPics();
 
+        //! Loads the images for the diplomacy pictures.
+        void loadDiplomacyPics();
+
         //! Loads the images for the road pictures.
         void loadRoadPics();
 
@@ -410,6 +446,7 @@ class GraphicsCache
         std::list<FlagCacheItem*> d_flaglist;
         std::list<TempleCacheItem*> d_templelist;
         std::list<RuinCacheItem*> d_ruinlist;
+        std::list<DiplomacyCacheItem*> d_diplomacylist;
         std::list<RoadCacheItem*> d_roadlist;
         std::list<FogCacheItem*> d_foglist;
         std::list<BridgeCacheItem*> d_bridgelist;
@@ -427,6 +464,7 @@ class GraphicsCache
         SDL_Surface* d_towerpic[MAX_PLAYERS];
         SDL_Surface* d_templepic[TEMPLE_TYPES];
         SDL_Surface* d_ruinpic[RUIN_TYPES];
+        SDL_Surface* d_diplomacypic[2][DIPLOMACY_TYPES];
         SDL_Surface* d_roadpic[ROAD_TYPES];
         SDL_Surface* d_bridgepic[BRIDGE_TYPES];
         SDL_Surface* d_cursorpic[CURSOR_TYPES];

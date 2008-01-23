@@ -127,6 +127,7 @@ class GameWindow: public sigc::trackable
     // the button control panel
     Gtk::Button *next_movable_button;
     Gtk::Button *center_button;
+    Gtk::Button *diplomacy_button;
     Gtk::Button *defend_button;
     Gtk::Button *park_button;
     Gtk::Button *deselect_button;
@@ -174,6 +175,8 @@ class GameWindow: public sigc::trackable
     void on_gold_report_activated();
     void on_production_report_activated();
     void on_winning_report_activated();
+    void on_diplomacy_report_activated();
+    void on_diplomacy_button_clicked();
 
     void on_fullscreen_activated();
     void on_preferences_activated();

@@ -249,6 +249,16 @@
 		      </child>
 
 		      <child>
+			<widget class="GtkMenuItem" id="diplomacy_report_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Diplomacy</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_diplomacy_report_menuitem_activate" last_modification_time="Wed, 23 Jan 2008 13:52:05 GMT"/>
+			  <accelerator key="d" modifiers="0" signal="activate"/>
+			</widget>
+		      </child>
+
+		      <child>
 			<widget class="GtkMenuItem" id="quests_menuitem">
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">Quest</property>

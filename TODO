@@ -9,14 +9,10 @@ buildings can be put on tiles that get turned into water
 		true or false?
 
 hook in citylist, to the player's new isFriendly function.
+make proposals take effect next turn
 
 replace the following images:
 	roads (x8)
 	bridges (x4)
-	small hero picture (x1)
-	small ruin picture (x1)
-	small temple picture (x1)
-	movement bonus pictures (x5)
 	cursors (x12)
-	small stats pictures (x4)
-	small ruined city picture (x1)
+	waypoints (x2)

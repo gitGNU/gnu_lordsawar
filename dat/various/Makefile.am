@@ -39,7 +39,9 @@ various_DATA = \
     smallupkeep.png \
     smallincome.png \
     smalltreasury.png \
-    smallcity.png
+    smallcity.png \
+    diplomacy-small.png \
+    diplomacy-large.png
 
 EXTRA_DIST = \
     waypoints.png \
@@ -77,4 +79,6 @@ EXTRA_DIST = \
     smallupkeep.png \
     smallincome.png \
     smalltreasury.png \
-    smallcity.png
+    smallcity.png \
+    diplomacy-small.png \
+    diplomacy-large.png

@@ -66,6 +66,8 @@
 #include "history-report-dialog.h"
 #include "report-dialog.h"
 #include "triumphs-dialog.h"
+#include "diplomacy-report-dialog.h"
+#include "diplomacy-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -172,6 +174,7 @@ GameWindow::GameWindow()
     // the control panel
     xml->get_widget("next_movable_button", next_movable_button);
     xml->get_widget("center_button", center_button);
+    xml->get_widget("diplomacy_button", diplomacy_button);
     xml->get_widget("defend_button", defend_button);
     xml->get_widget("park_button", park_button);
     xml->get_widget("deselect_button", deselect_button);
@@ -185,6 +188,7 @@ GameWindow::GameWindow()
 	= disassemble_row(File::getMiscFile("various/buttons.png"), 11);
     next_movable_button->add(*manage(new Gtk::Image(button_images[2])));
     center_button->add(*manage(new Gtk::Image(button_images[5])));
+    diplomacy_button->add(*manage(new Gtk::Image(button_images[8])));
     defend_button->add(*manage(new Gtk::Image(button_images[6])));
     park_button->add(*manage(new Gtk::Image(button_images[1])));
     deselect_button->add(*manage(new Gtk::Image(button_images[7])));
@@ -210,6 +214,8 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_gold_report_activated));
     xml->connect_clicked("winning_report_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_winning_report_activated));
+    xml->connect_clicked("diplomacy_report_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_diplomacy_report_activated));
     xml->connect_clicked("quests_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_quests_activated));
     xml->connect_clicked("fullscreen_menuitem", 
@@ -249,6 +255,9 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_production_report_activated));
     xml->connect_clicked("triumphs_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_triumphs_activated));
+    xml->connect_clicked
+      ("diplomacy_button", sigc::mem_fun
+       (*this, &GameWindow::on_diplomacy_button_clicked));
     d_quick_fights = false;
 }
 
@@ -265,6 +274,7 @@ void GameWindow::show()
 {
     next_movable_button->show_all();
     center_button->show_all();
+    diplomacy_button->show_all();
     defend_button->show_all();
     park_button->show_all();
     deselect_button->show_all();
@@ -1042,6 +1052,20 @@ void GameWindow::on_winner_history_activated()
 void GameWindow::on_triumphs_activated()
 {
   TriumphsDialog d(Playerlist::getActiveplayer());
+  d.set_parent_window(*window.get());
+  d.run();
+}
+
+void GameWindow::on_diplomacy_report_activated()
+{
+  DiplomacyReportDialog d(Playerlist::getActiveplayer());
+  d.set_parent_window(*window.get());
+  d.run();
+}
+
+void GameWindow::on_diplomacy_button_clicked()
+{
+  DiplomacyDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
 }
