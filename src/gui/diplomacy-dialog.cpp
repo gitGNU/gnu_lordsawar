@@ -148,8 +148,8 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       if ((*it)->isDead())
 	radio1->set_sensitive(false);
       else
-	radio1->set_active (d_player->getDiplomaticState(*it) == 
-			    Player::AT_PEACE);
+	radio1->set_active (d_player->getDiplomaticProposal(*it) == 
+			    Player::PROPOSE_PEACE);
       radio1->signal_toggled().connect(
 	    sigc::bind(sigc::mem_fun
 		       (this, &DiplomacyDialog::on_proposal_toggled),
@@ -167,8 +167,8 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       if ((*it)->isDead())
 	radio2->set_sensitive(false);
       else
-	radio2->set_active (d_player->getDiplomaticState(*it) == 
-			    Player::AT_WAR_IN_FIELD);
+	radio2->set_active (d_player->getDiplomaticProposal(*it) == 
+			    Player::PROPOSE_WAR_IN_FIELD);
       radio2->signal_toggled().connect(
 	    sigc::bind(sigc::mem_fun(this, 
 				     &DiplomacyDialog::on_proposal_toggled),
@@ -177,7 +177,6 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
 			     Gtk::SHRINK, Gtk::SHRINK);
 
       j = 2;
-      //FIXME: don't use port picture.  use a diplomacy picture.
       Gtk::RadioButton *radio3= manage(new Gtk::RadioButton);
       Glib::RefPtr<Gdk::Pixbuf> pixbuf3 = 
 	to_pixbuf(gc->getDiplomacyPic(1, Player::AT_WAR));
@@ -187,8 +186,8 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       if ((*it)->isDead())
 	radio3->set_sensitive(false);
       else
-	radio3->set_active (d_player->getDiplomaticState(*it) == 
-			    Player::AT_WAR);
+	radio3->set_active (d_player->getDiplomaticProposal(*it) == 
+			    Player::PROPOSE_WAR);
       radio3->signal_toggled().connect(
 	    sigc::bind(sigc::mem_fun(this, 
 				     &DiplomacyDialog::on_proposal_toggled),
@@ -199,10 +198,10 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
     }
 }
 
-void DiplomacyDialog::on_proposal_toggled (Player *player, 
+void DiplomacyDialog::on_proposal_toggled ( Player *player, 
 					   Player::DiplomaticProposal proposal)
 {
-  d_player->propose (proposal, player);
+    d_player->propose (proposal, player);
 }
 
 void DiplomacyDialog::set_parent_window(Gtk::Window &parent)

@@ -20,7 +20,6 @@
 #include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/table.h>
-#include <gtkmm/togglebutton.h>
 
 #include "../player.h"
 
