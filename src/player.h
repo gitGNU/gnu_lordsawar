@@ -223,7 +223,7 @@ class Player: public sigc::trackable
 	void calculateUpkeep();
 
 	//! Declare a new diplomatic state wrt another player
-	void declare(DiplomaticState state, Player *player);
+	void declareDiplomacy(DiplomaticState state, Player *player);
 
 	//! Query the diplomatic state wrt another player
 	DiplomaticState getDiplomaticState (Player *player) {return d_diplomatic_state[player->getId()];};
@@ -232,7 +232,7 @@ class Player: public sigc::trackable
 	DiplomaticProposal getDiplomaticProposal (Player *player) {return d_diplomatic_proposal[player->getId()];};
 
 	//! Propose a new diplomatic state wrt another player
-	void propose (DiplomaticProposal proposal, Player *player);
+	void proposeDiplomacy (DiplomaticProposal proposal, Player *player);
 
 	//! Is the another player friendly to us?
 	bool isFriendly (Player *player) {return (getDiplomaticState (player) == AT_PEACE) ? true : false; };
@@ -249,6 +249,9 @@ class Player: public sigc::trackable
 
 	//! What rank do we have? As a name.
 	std::string getDiplomaticTitle();
+
+	//! Negotiate diplomatic talks.
+	DiplomaticState negotiateDiplomacy (Player *player);
 
         //! Returns the main color of the player
         SDL_Color getColor() const {return d_color;}

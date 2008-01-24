@@ -610,13 +610,13 @@ void Player::calculateUpkeep()
       d_upkeep += (*i)->getUpkeep();
 }
 	
-void Player::declare(DiplomaticState state, Player *player)
+void Player::declareDiplomacy (DiplomaticState state, Player *player)
 {
   d_diplomatic_state[player->getId()] = state;
   // FIXME: update diplomatic scores? 
 }
 
-void Player::propose(DiplomaticProposal proposal, Player *player)
+void Player::proposeDiplomacy (DiplomaticProposal proposal, Player *player)
 {
   d_diplomatic_proposal[player->getId()] = proposal;
   // FIXME: update diplomatic scores? 
@@ -639,5 +639,65 @@ std::string Player::getDiplomaticTitle()
     "Running Dog",
   };
   return std::string(titles[getDiplomaticRank()-1]);
+}
+
+Player::DiplomaticState Player::negotiateDiplomacy (Player *player)
+{
+  DiplomaticState state = getDiplomaticState(player);
+  DiplomaticProposal them = player->getDiplomaticProposal(this);
+  DiplomaticProposal me = getDiplomaticProposal(player);
+  DiplomaticProposal winning_proposal;
+
+  /* Check if we both want the status quo. */
+  if (me == them == NO_PROPOSAL)
+    return state;
+
+  /* Okay, we both want a change from the status quo. */
+
+  /* In the absense of a new proposal, the status quo is the proposal. */
+  if (me == NO_PROPOSAL)
+    {
+      switch (state)
+	{
+	case AT_PEACE: me = PROPOSE_PEACE; break;
+	case AT_WAR_IN_FIELD: me = PROPOSE_WAR_IN_FIELD; break;
+	case AT_WAR: me = PROPOSE_WAR; break;
+	}
+    }
+  if (them == NO_PROPOSAL)
+    {
+      switch (state)
+	{
+	case AT_PEACE: them = PROPOSE_PEACE; break;
+	case AT_WAR_IN_FIELD: them = PROPOSE_WAR_IN_FIELD; break;
+	case AT_WAR: them = PROPOSE_WAR; break;
+	}
+    }
+
+  /* Check if we have agreement. */
+  if (me == them == PROPOSE_PEACE)
+    return AT_PEACE;
+  else if (me == them == PROPOSE_WAR_IN_FIELD)
+    return AT_WAR_IN_FIELD;
+  else if (me == them == PROPOSE_WAR)
+    return AT_WAR;
+
+  /* Still we don't have an agreement.  
+     Unfortunately the greater violence is the new diplomatic state. 
+     Because there are two different proposals and the proposal with
+     greater violence will be the new status quo, there can't 
+     possibly be peace at this juncture.  */
+
+  winning_proposal = me;
+  if (them > me)
+    winning_proposal = them;
+
+  switch (winning_proposal)
+    {
+    case PROPOSE_WAR_IN_FIELD: return AT_WAR_IN_FIELD; break;
+    case PROPOSE_WAR: return AT_WAR; break;
+    default: return AT_PEACE; break; //impossible
+    }
+
 }
 // End of file

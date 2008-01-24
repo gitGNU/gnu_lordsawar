@@ -201,7 +201,7 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
 void DiplomacyDialog::on_proposal_toggled ( Player *player, 
 					   Player::DiplomaticProposal proposal)
 {
-    d_player->propose (proposal, player);
+    d_player->proposeDiplomacy (proposal, player);
 }
 
 void DiplomacyDialog::set_parent_window(Gtk::Window &parent)
