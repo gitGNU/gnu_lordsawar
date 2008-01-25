@@ -342,7 +342,10 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 			d_cursor = GraphicsCache::QUESTION;
 		      else
 			{
-			  bool friendly = false;
+			  Player *me = stack->getPlayer();
+			  Player *them = c->getPlayer();
+			  bool friendly = (me->getDiplomaticState(them) == 
+					   Player::AT_PEACE);
 			  if (friendly)
 			    d_cursor = GraphicsCache::HEART;
 			  else
@@ -391,7 +394,10 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 		    	    d_cursor = GraphicsCache::QUESTION;
 			  else
 			    {
-			      bool friendly = false;
+			      Player *me = stack->getPlayer();
+			      Player *them = st->getPlayer();
+			      bool friendly = (me->getDiplomaticState(them) == 
+					       Player::AT_PEACE);
 			      if (friendly)
 				d_cursor = GraphicsCache::HEART;
 			      else

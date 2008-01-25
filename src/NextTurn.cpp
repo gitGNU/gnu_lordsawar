@@ -151,6 +151,7 @@ void NextTurn::finishTurn()
 
 void NextTurn::finishRound()
 {
+  Playerlist *plist = Playerlist::getInstance();
   //Put everything that has to be done when a new round starts in here.
   //E.g. increase the round number in GameScenario. (this is done with
   //the snextRound signal, but useful for an example).
@@ -158,18 +159,46 @@ void NextTurn::finishRound()
   if (!d_turnmode)
     {
       //do this for all players at once
-      Playerlist::iterator pit = Playerlist::getInstance()->begin();
-      for (; pit != Playerlist::getInstance()->end(); pit++)
+      
+      for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
 	{
-	  if ((*pit)->isDead())
+	  if ((*it)->isDead())
 	    continue;
 
 	  //produce armies
-	  Citylist::getInstance()->nextTurn(*pit);
+	  Citylist::getInstance()->nextTurn(*it);
 
 	  //heal armies
-	  (*pit)->getStacklist()->nextTurn();
+	  (*it)->getStacklist()->nextTurn();
 
+	}
+    }
+
+      
+  // hold diplomatic talks, and determine diplomatic outcomes
+  for (Playerlist::iterator pit = plist->begin(); pit != plist->end(); pit++)
+    {
+      if ((*pit)->isDead())
+	continue;
+
+      if ((*pit) == plist->getNeutral())
+	continue;
+  
+      for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
+	{
+      
+	  if ((*it)->isDead())
+	    continue;
+
+	  if ((*it) == plist->getNeutral())
+	    continue;
+
+	  if ((*it) == (*pit))
+	    break;
+  
+	  Player::DiplomaticState new_state = (*pit)->negotiateDiplomacy (*it);
+	  (*pit)->declareDiplomacy (new_state, (*it));
+	  (*it)->declareDiplomacy (new_state, (*pit));
 	}
     }
 

@@ -70,10 +70,6 @@ bool AI_Dummy::invadeCity(City* c)
 
 bool AI_Dummy::recruitHero(Hero* hero, City *city, int cost)
 {
-    History_HeroEmerges *item = new History_HeroEmerges();
-    item->fillData(hero, city);
-    d_history.push_back(item);
-
     return false;   //never recruit a hero
 }
 

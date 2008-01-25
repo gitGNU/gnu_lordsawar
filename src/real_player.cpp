@@ -108,10 +108,6 @@ bool RealPlayer::recruitHero(Hero* hero, City *city, int cost)
     // for the realplayer, this function also just raises a signal and looks
     // what to do next.
 
-    History_HeroEmerges *item = new History_HeroEmerges();
-    item->fillData(hero, city);
-    d_history.push_back(item);
-
     return srecruitingHero.emit(hero, city, cost);
 }
 
@@ -305,6 +301,16 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
         //first fight_city to avoid ambiguity with fight_army
         if (city && (city->getPlayer() != this) && (!city->isBurnt()))
         {
+	    if (this->getDiplomaticState (city->getPlayer()) != AT_WAR)
+	      {
+		if (streacheryStack.emit (s, city->getPlayer(), 
+					  city->getPos()) == false)
+		  {
+		    s->getPath()->flClear();
+		    MoveResult *moveResult = new MoveResult(false);
+		    return moveResult;
+		  }
+	      }
             Fight::Result result;
             MoveResult *moveResult = new MoveResult(true);
 	    if (stackMoveOneStep(s))
@@ -317,6 +323,7 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
                 // and start a fight with this dummy stack.
                 if (!target)
                     target = new Stack(city->getPlayer(), pos);
+ 
                 result = stackFight(&s, &target, false);
                 if (target && target->empty())
                     delete target;
@@ -397,6 +404,16 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
         //enemy stack => fight
         else if (target)
         {
+	  if (this->getDiplomaticState (target->getPlayer()) == AT_PEACE)
+	    {
+	      if (streacheryStack.emit (s, target->getPlayer(), 
+					target->getPos()) == false)
+		{
+		  s->getPath()->flClear();
+		  MoveResult *moveResult = new MoveResult(false);
+		  return moveResult;
+		}
+	    }
             MoveResult *moveResult = new MoveResult(true);
         
             Fight::Result result = stackFight(&s, &target, false);
@@ -575,6 +592,11 @@ Fight::Result RealPlayer::stackRuinFight (Stack **attacker, Stack **defender)
         updateArmyValues(defenders, attacker_xp);
 
     return result;
+}
+
+bool RealPlayer::treachery (Stack *stack, Player *player, Vector <int> pos)
+{
+  return streachery.emit(stack, player, pos);
 }
 
 Fight::Result RealPlayer::stackFight(Stack** attacker, Stack** defender, bool ruin) 

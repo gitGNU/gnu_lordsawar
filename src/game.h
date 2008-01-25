@@ -28,6 +28,7 @@
 #include "army.h"
 #include "fight.h"
 #include "game-parameters.h"
+#include "player.h"
 
 class NextTurn;
 class GameBigMap;
@@ -98,6 +99,7 @@ class Game
 	can_disband_stack,
 	can_change_signpost,
 	can_see_history,
+	received_diplomatic_proposal,
 	can_end_turn;
     sigc::signal<void, Stack *> stack_info_changed;
     sigc::signal<void, Glib::ustring, MapTipPosition> map_tip_changed;
@@ -109,6 +111,7 @@ class Game
     sigc::signal<void, float> advice_asked;
     sigc::signal<void, Fight::Result> ruinfight_finished;
     sigc::signal<bool, Player *, Hero *, City *, int> hero_offers_service;
+    sigc::signal<bool, Player *, Stack *, Player *, Vector<int> > stack_considers_treachery;
     sigc::signal<bool, bool, Temple *, int> temple_searched;
     sigc::signal<void, Hero *, Quest *> quest_assigned;
     sigc::signal<CityDefeatedAction, City *, int> city_defeated;
@@ -150,6 +153,9 @@ class Game
 
     //! Possibly recruit a new hero at the beginning of a turn
     void maybeRecruitHero(Player *p);
+
+    //! Maybe peform treachery
+    bool maybeTreachery(Stack *stack, Player *them, Vector<int> pos);
 
     // bigmap callbacks
     void on_stack_selected(Stack* s);

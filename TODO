@@ -8,11 +8,15 @@ buildings can be put on tiles that get turned into water
 	or turned into forest
 		true or false?
 
-hook in citylist, to the player's new isFriendly function.
-make proposals take effect next turn
+diplomacy:
+	have computer players declare war
+		hook in citylist, to the player's new isFriendly function.
+	rejigger the ranks according to various actions
+	hook in diplomacy into history/action list?
 
 replace the following images:
 	roads (x8)
 	bridges (x4)
 	cursors (x12)
 	waypoints (x2)
+	flags (x8)

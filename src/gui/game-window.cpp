@@ -184,18 +184,17 @@ GameWindow::GameWindow()
     xml->get_widget("end_turn_button", end_turn_button);
 
     // fill in imagery
-    std::vector<Glib::RefPtr<Gdk::Pixbuf> > button_images
-	= disassemble_row(File::getMiscFile("various/buttons.png"), 11);
-    next_movable_button->add(*manage(new Gtk::Image(button_images[2])));
-    center_button->add(*manage(new Gtk::Image(button_images[5])));
-    diplomacy_button->add(*manage(new Gtk::Image(button_images[8])));
-    defend_button->add(*manage(new Gtk::Image(button_images[6])));
-    park_button->add(*manage(new Gtk::Image(button_images[1])));
-    deselect_button->add(*manage(new Gtk::Image(button_images[7])));
-    search_button->add(*manage(new Gtk::Image(button_images[9])));
-    move_button->add(*manage(new Gtk::Image(button_images[3])));
-    move_all_button->add(*manage(new Gtk::Image(button_images[4])));
-    end_turn_button->add(*manage(new Gtk::Image(button_images[10])));
+    d_button_images = disassemble_row(File::getMiscFile("various/buttons.png"), 11);
+    next_movable_button->add(*manage(new Gtk::Image(d_button_images[2])));
+    center_button->add(*manage(new Gtk::Image(d_button_images[5])));
+    diplomacy_button->add(*manage(new Gtk::Image(d_button_images[0])));
+    defend_button->add(*manage(new Gtk::Image(d_button_images[6])));
+    park_button->add(*manage(new Gtk::Image(d_button_images[1])));
+    deselect_button->add(*manage(new Gtk::Image(d_button_images[7])));
+    search_button->add(*manage(new Gtk::Image(d_button_images[9])));
+    move_button->add(*manage(new Gtk::Image(d_button_images[3])));
+    move_all_button->add(*manage(new Gtk::Image(d_button_images[4])));
+    end_turn_button->add(*manage(new Gtk::Image(d_button_images[10])));
 
     // connect callbacks for the menu
     xml->connect_clicked("load_game_menuitem",
@@ -255,9 +254,10 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_production_report_activated));
     xml->connect_clicked("triumphs_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_triumphs_activated));
-    xml->connect_clicked
-      ("diplomacy_button", sigc::mem_fun
-       (*this, &GameWindow::on_diplomacy_button_clicked));
+    //remove me
+    //xml->connect_clicked
+      //("diplomacy_button", sigc::mem_fun
+       //(*this, &GameWindow::on_diplomacy_button_clicked));
     d_quick_fights = false;
 }
 
@@ -452,6 +452,13 @@ void GameWindow::setup_signals()
   setup_button(center_button,
 	       sigc::mem_fun(game.get(), &Game::center_selected_stack),
 	       game->can_center_selected_stack);
+	       
+  connections.push_back (diplomacy_button->signal_clicked().connect
+   (sigc::mem_fun (*this, &GameWindow::on_diplomacy_button_clicked)));
+  connections.push_back 
+    (game->received_diplomatic_proposal.connect 
+     (sigc::mem_fun(*this, &GameWindow::update_diplomacy_button)));
+
   setup_button(defend_button,
 	       sigc::mem_fun(game.get(), &Game::defend_selected_stack),
 	       game->can_defend_selected_stack);
@@ -555,6 +562,9 @@ void GameWindow::setup_signals()
     (game->hero_offers_service.connect
      (sigc::mem_fun(*this, &GameWindow::on_hero_offers_service)));
   connections.push_back
+    (game->stack_considers_treachery.connect
+     (sigc::mem_fun(*this, &GameWindow::on_stack_considers_treachery)));
+  connections.push_back
     (game->temple_searched.connect
      (sigc::mem_fun(*this, &GameWindow::on_temple_searched)));
   connections.push_back
@@ -621,6 +631,15 @@ void GameWindow::setup_signals()
 	 (sigc::mem_fun(*this, &GameWindow::on_bigmap_cursor_changed)));
     }
 
+}
+
+void GameWindow::update_diplomacy_button (bool proposals_present)
+{
+  /* switch up the image. */
+  if (proposals_present)
+    diplomacy_button->property_image() = new Gtk::Image(d_button_images[8]);
+  else
+    diplomacy_button->property_image() = new Gtk::Image(d_button_images[0]);
 }
 
 void GameWindow::setup_game(std::string file_path)
@@ -1606,6 +1625,36 @@ bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, 
   HeroOfferDialog d(player, hero, city, gold);
   d.set_parent_window(*window.get());
   return d.run();
+}
+
+bool GameWindow::on_stack_considers_treachery (Player *me, Stack *stack, 
+					       Player *them, Vector<int> pos)
+{
+  std::auto_ptr<Gtk::Dialog> dialog;
+
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/treachery-dialog.glade");
+
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s;
+  s = String::ucompose(_("Are you sure you want to attack %1?"), 
+		       them->getName());
+  s += "\n";
+  s += _("Other players may not like this!");
+  label->set_text(s);
+  dialog->show_all();
+  int retval = dialog->run();
+  if (retval == Gtk::RESPONSE_DELETE_EVENT)
+    return false;
+  else if (retval)
+    return true;
+  else
+    return false;
 }
 
 

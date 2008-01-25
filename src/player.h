@@ -226,10 +226,10 @@ class Player: public sigc::trackable
 	void declareDiplomacy(DiplomaticState state, Player *player);
 
 	//! Query the diplomatic state wrt another player
-	DiplomaticState getDiplomaticState (Player *player) {return d_diplomatic_state[player->getId()];};
+	DiplomaticState getDiplomaticState (Player *player);
 
 	//! Query the diplomatic proposal we're making wrt another player
-	DiplomaticProposal getDiplomaticProposal (Player *player) {return d_diplomatic_proposal[player->getId()];};
+	DiplomaticProposal getDiplomaticProposal (Player *player);
 
 	//! Propose a new diplomatic state wrt another player
 	void proposeDiplomacy (DiplomaticProposal proposal, Player *player);
@@ -408,6 +408,17 @@ class Player: public sigc::trackable
                                          bool ruin) =0;
         virtual Fight::Result stackRuinFight(Stack** attacker, Stack** defender) =0;
 
+	/** Decide if we perform treachery on a friendly player.
+	 *
+	 * @param stack             my stack considering the treachery
+	 * @param player            the friendly player.
+	 * @param pos               the place on the map being targetted.
+	 * @param state             the state we end up in if we decide yes.
+	 *
+	 * @return true if we decided to be treacherous.  false otherwise.
+	 */
+	virtual bool treachery (Stack *stack, Player *player, Vector <int> pos) =0;
+
         /** A stack searches a ruin. The stack should contain a hero.
           *
           * @param s                the stack which searches the ruin
@@ -546,12 +557,20 @@ class Player: public sigc::trackable
           */
         sigc::signal<void, City*> sinvadingCity;
 
+	/** Signal raised when a stack is considering an act of treachery.
+	 */
+        sigc::signal<bool, Stack *, Player *, Vector<int> > streacheryStack;
+
+	/** Signal raised when a human player is deciding.
+	 */
+        sigc::signal<bool, Stack *, Player *, Vector<int> > streachery;
+
         //! Signal raised whenever a player has conquered a city. This is the
         //! signal you should use for further actions.
         sigc::signal<void, City*, Stack*> soccupyingCity;
 
         
-        //! Signal raised when a hero is recruited
+        //! Signal raised when a hero is recruited.  Human players only.
         sigc::signal<bool, Hero*, City *, int>         srecruitingHero;
         //! Signal raised when an army advances a level; may return stat to raise
         sigc::signal<Army::Stat, Army*>        snewLevelArmy;

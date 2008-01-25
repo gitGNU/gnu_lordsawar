@@ -72,6 +72,8 @@ class RealPlayer : public Player
         int stackVisitTemple(Stack* s, Temple* t);
         Quest* stackGetQuest(Stack* s, Temple*t);
 
+	bool treachery (Stack *stack, Player *player, Vector <int> pos);
+
         Fight::Result stackFight(Stack** attacker, Stack** defender,
                                  bool ruin=false);
 

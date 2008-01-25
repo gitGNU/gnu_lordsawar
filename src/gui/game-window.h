@@ -224,6 +224,7 @@ class GameWindow: public sigc::trackable
     void on_ruinfight_started(Stack *attackers, Stack *defenders);
     void on_ruinfight_finished(Fight::Result result);
     bool on_hero_offers_service(Player *player, Hero *hero, City *city, int gold);
+    bool on_stack_considers_treachery (Player *me, Stack *stack, Player *them, Vector<int> pos);
     bool on_temple_searched(bool hasHero, Temple *temple, int blessCount);
     void on_quest_assigned(Hero *hero, Quest *quest);
     CityDefeatedAction on_city_defeated(City *city, int gold);
@@ -250,6 +251,7 @@ class GameWindow: public sigc::trackable
     void show_map_tip(Glib::ustring msg, MapTipPosition pos);
     void on_city_looted(City *city, int gold);
     void hide_map_tip();
+    void update_diplomacy_button (bool proposals_present);
 
     void setup_game(std::string file_path);
     void setup_signals();
@@ -261,6 +263,7 @@ class GameWindow: public sigc::trackable
 public:
     // not part of the API, but for surface_attached_helper
     void on_sdl_surface_changed();
+    std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_button_images;
     bool d_quick_fights; //do we speed up fights for this player's turn?
 };
 

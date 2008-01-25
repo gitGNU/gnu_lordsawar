@@ -28,7 +28,6 @@
 #include "Threatlist.h"
 #include "action.h"
 #include "xmlhelper.h"
-#include "history.h"
 
 using namespace std;
 
@@ -119,10 +118,6 @@ bool AI_Fast::invadeCity(City* c)
 bool AI_Fast::recruitHero(Hero* hero, City *city, int cost)
 {
     debug("AI_Fast: hero offers service")
-
-    History_HeroEmerges *item = new History_HeroEmerges();
-    item->fillData(hero, city);
-    d_history.push_back(item);
 
     // maniac AI's never recruit heroes, otherwise take everything we can get
     if (d_maniac)
@@ -329,4 +324,9 @@ void AI_Fast::computerTurn()
     }
 }
 
+bool AI_Fast::treachery (Stack *stack, Player *player, Vector <int> pos, DiplomaticState state)
+{
+  bool performTreachery = true;
+  return performTreachery;
+}
 // End of file

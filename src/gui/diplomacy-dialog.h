@@ -20,6 +20,7 @@
 #include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/table.h>
+#include <gtkmm/togglebutton.h>
 
 #include "../player.h"
 
@@ -39,7 +40,7 @@ class DiplomacyDialog: public sigc::trackable
 
 				     
     void on_report_clicked();
-    void on_proposal_toggled (Player *p, Player::DiplomaticProposal proposal);
+    void on_proposal_toggled (Gtk::ToggleButton *toggle, Player *p, Player::DiplomaticProposal proposal);
 
     Player *d_player;
 

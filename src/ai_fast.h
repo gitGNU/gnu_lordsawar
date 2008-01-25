@@ -84,6 +84,8 @@ class AI_Fast : public RealPlayer
         //! Callback when an army of the player advances a level
         bool levelArmy(Army* a);
 
+	//! Callback when we decide to perform treachery on another player
+	bool treachery (Stack *stack, Player *player, Vector <int> pos, DiplomaticState state);
     private:
         //! The actual core function of the ai's logic.
         void computerTurn(); 

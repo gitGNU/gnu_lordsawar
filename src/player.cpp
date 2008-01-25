@@ -98,11 +98,9 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, Type type,
 
     memset(d_triumph, 0, sizeof(d_triumph));
 
-    //everyone's at war with everyone else.
-    //FIXME: turn this to AT_PEACE, and then have computer players declare war
     for (unsigned int i = 0 ; i < MAX_PLAYERS; i++)
     {
-      d_diplomatic_state[i] = AT_WAR;
+      d_diplomatic_state[i] = AT_PEACE;
       d_diplomatic_proposal[i] = NO_PROPOSAL;
     }
     d_diplomatic_rank = 0;
@@ -649,7 +647,7 @@ Player::DiplomaticState Player::negotiateDiplomacy (Player *player)
   DiplomaticProposal winning_proposal;
 
   /* Check if we both want the status quo. */
-  if (me == them == NO_PROPOSAL)
+  if (me == NO_PROPOSAL && them == NO_PROPOSAL)
     return state;
 
   /* Okay, we both want a change from the status quo. */
@@ -675,11 +673,11 @@ Player::DiplomaticState Player::negotiateDiplomacy (Player *player)
     }
 
   /* Check if we have agreement. */
-  if (me == them == PROPOSE_PEACE)
+  if (me == PROPOSE_PEACE && them == PROPOSE_PEACE)
     return AT_PEACE;
-  else if (me == them == PROPOSE_WAR_IN_FIELD)
+  else if (me == PROPOSE_WAR_IN_FIELD && them == PROPOSE_WAR_IN_FIELD)
     return AT_WAR_IN_FIELD;
-  else if (me == them == PROPOSE_WAR)
+  else if (me == PROPOSE_WAR && them == PROPOSE_WAR)
     return AT_WAR;
 
   /* Still we don't have an agreement.  
@@ -699,5 +697,19 @@ Player::DiplomaticState Player::negotiateDiplomacy (Player *player)
     default: return AT_PEACE; break; //impossible
     }
 
+}
+	
+Player::DiplomaticState Player::getDiplomaticState (Player *player)
+{
+  if (player == Playerlist::getInstance()->getNeutral())
+    return AT_WAR;
+  return d_diplomatic_state[player->getId()];
+}
+	
+Player::DiplomaticProposal Player::getDiplomaticProposal (Player *player)
+{
+  if (player == Playerlist::getInstance()->getNeutral())
+    return PROPOSE_WAR;
+  return d_diplomatic_proposal[player->getId()];
 }
 // End of file

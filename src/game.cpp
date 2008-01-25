@@ -56,6 +56,7 @@
 #include "game-parameters.h"
 #include "FogMap.h"
 #include "GameMap.h"
+#include "history.h"
 
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
@@ -85,6 +86,12 @@ void Game::addPlayer(Player *p)
 	  (sigc::mem_fun
 	   (hero_offers_service, &sigc::signal<bool, Player *, 
 	    Hero *, City *, int>::emit), p)));
+      connections[p->getId()].push_back
+	(p->streachery.connect
+	 (sigc::bind<0>
+	  (sigc::mem_fun
+	   (stack_considers_treachery, 
+	    &sigc::signal<bool, Player *, Stack *, Player *, Vector<int> >::emit), p)));
     }
 	
       
@@ -96,6 +103,8 @@ void Game::addPlayer(Player *p)
     (p->supdatingStack.connect (sigc::mem_fun(this, &Game::stackUpdate)));
   connections[p->getId()].push_back
     (p->sinvadingCity.connect(sigc::mem_fun(this, &Game::invading_city)));
+  connections[p->getId()].push_back
+    (p->streacheryStack.connect(sigc::mem_fun(this, &Game::maybeTreachery)));
   connections[p->getId()].push_back
     (p->fight_started.connect (sigc::mem_fun(*this, &Game::on_fight_started)));
   connections[p->getId()].push_back
@@ -948,6 +957,10 @@ void Game::maybeRecruitHero (Player *p)
       bool accepted = p->recruitHero(newhero, city, gold_needed);
       if (accepted)
 	{
+	  History_HeroEmerges *item = new History_HeroEmerges();
+	  item->fillData(newhero, city);
+	  p->getHistorylist()->push_back(item);
+
 	  newhero->setPlayer(p);
 
 	  int alliesCount;
@@ -1083,6 +1096,24 @@ bool Game::init_turn_for_player(Player* p)
 	  city_visited.emit(clist->getFirstCity(p));
 	}
 
+      // update the diplomacy icon if we've received a proposal
+      bool proposal_received = false;
+      Playerlist* pl = Playerlist::getInstance();
+      for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+	{
+	  if ((*it) == pl->getNeutral())
+	    continue;
+	  if ((*it) == p)
+	    continue;
+	  if((*it)->isDead())
+	    continue;
+	  if ((*it)->getDiplomaticProposal(p) != Player::NO_PROPOSAL)
+	    {
+	      proposal_received = true;
+	      break;
+	    }
+	}
+      received_diplomatic_proposal.emit(proposal_received);
 
       return true;
     }
@@ -1149,4 +1180,17 @@ void Game::select_active_stack()
 void Game::unselect_active_stack()
 {
   bigmap->unselect_active_stack();
+}
+
+bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
+{
+  Player *me = stack->getPlayer();
+  bool treachery = me->treachery (stack, them, pos);
+  if (treachery == false)
+    return false;
+  me->proposeDiplomacy (Player::PROPOSE_WAR, them);
+  me->declareDiplomacy (Player::AT_WAR, them);
+  them->proposeDiplomacy (Player::PROPOSE_WAR, me);
+  them->declareDiplomacy (Player::AT_WAR, me);
+  return true;
 }
