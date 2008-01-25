@@ -434,7 +434,6 @@ void HistoryReportDialog::addHistoryEvent(History *event)
 
   Glib::ustring s = "";
   Gtk::TreeIter i = events_list->append();
-  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
 
   switch (event->getType())
     {
@@ -443,6 +442,7 @@ void HistoryReportDialog::addHistoryEvent(History *event)
 	  History_FoundSage *ev;
 	  ev = static_cast<History_FoundSage *>(event);
 	  s = String::ucompose(_("%1 finds a sage!"), ev->getHeroName());
+	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
 	  break;
 	}
     case History::HERO_EMERGES:
@@ -451,6 +451,7 @@ void HistoryReportDialog::addHistoryEvent(History *event)
 	  ev = static_cast<History_HeroEmerges *>(event);
 	  s = String::ucompose(_("%1 emerges in %2!"), ev->getHeroName(),
 			       ev->getCityName());
+	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
 	  break;
 	}
     case History::HERO_QUEST_STARTED:
@@ -458,6 +459,7 @@ void HistoryReportDialog::addHistoryEvent(History *event)
 	  History_HeroQuestStarted *ev;
 	  ev = static_cast<History_HeroQuestStarted*>(event);
 	  s = String::ucompose(_("%1 begins a quest!"), ev->getHeroName());
+	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
 	  break;
 	}
     case History::HERO_QUEST_COMPLETED:
@@ -465,6 +467,7 @@ void HistoryReportDialog::addHistoryEvent(History *event)
 	  History_HeroQuestCompleted *ev;
 	  ev = static_cast<History_HeroQuestCompleted *>(event);
 	  s = String::ucompose(_("%1 finishes a quest!"), ev->getHeroName());
+	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
 	  break;
 	}
     case History::HERO_KILLED_IN_CITY:
@@ -473,6 +476,7 @@ void HistoryReportDialog::addHistoryEvent(History *event)
 	  ev = static_cast<History_HeroKilledInCity *>(event);
 	  s = String::ucompose(_("%1 is killed in %2!"), ev->getHeroName(),
 			       ev->getCityName());
+	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
 	  break;
 	}
     case History::HERO_KILLED_IN_BATTLE:
@@ -480,6 +484,7 @@ void HistoryReportDialog::addHistoryEvent(History *event)
 	  History_HeroKilledInBattle *ev;
 	  ev = static_cast<History_HeroKilledInBattle *>(event);
 	  s = String::ucompose(_("%1 is killed in battle!"), ev->getHeroName());
+	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
 	  break;
 	}
     case History::HERO_KILLED_SEARCHING:
@@ -488,6 +493,7 @@ void HistoryReportDialog::addHistoryEvent(History *event)
 	  ev = static_cast<History_HeroKilledSearching *>(event);
 	  s = String::ucompose(_("%1 is killed while searching!"), 
 			       ev->getHeroName());
+	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
 	  break;
 	}
     case History::HERO_CITY_WON:
@@ -496,6 +502,40 @@ void HistoryReportDialog::addHistoryEvent(History *event)
 	  ev = static_cast<History_HeroCityWon *>(event);
 	  s = String::ucompose(_("%1 conquers %2!"), ev->getHeroName(), 
 			       ev->getCityName());
+	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
+	  break;
+	}
+    case History::PLAYER_VANQUISHED:
+	{
+	  History_PlayerVanquished *ev;
+	  ev = static_cast<History_PlayerVanquished*>(event);
+	  s = String::ucompose(_("%1 is vanquished!"), p->getName());
+	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
+	  break;
+	}
+    case History::DIPLOMATIC_PEACE:
+	{
+	  History_DiplomacyPeace *ev;
+	  ev = static_cast<History_DiplomacyPeace*>(event);
+	  s = String::ucompose(_("%1 at peace with %2!"), p->getName(), 
+			       ev->getOpponent()->getName());
+	  break;
+	}
+    case History::DIPLOMATIC_WAR:
+	{
+	  History_DiplomacyWar *ev;
+	  ev = static_cast<History_DiplomacyWar*>(event);
+	  s = String::ucompose(_("%1 at war with %2!"), p->getName(), 
+			       ev->getOpponent()->getName());
+	  break;
+	}
+    case History::DIPLOMATIC_TREACHERY:
+	{
+	  History_DiplomacyTreachery *ev;
+	  ev = static_cast<History_DiplomacyTreachery*>(event);
+	  s = String::ucompose(_("Treachery by %1 on %2!"), p->getName(),
+			       ev->getOpponent()->getName());
+	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
 	  break;
 	}
     default:

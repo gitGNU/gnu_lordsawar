@@ -22,6 +22,7 @@
 #include "hero.h"
 #include "vectoredunitlist.h"
 #include "FogMap.h"
+#include "history.h"
 
 #include "path.h"
 
@@ -198,9 +199,25 @@ void NextTurn::finishRound()
 	  if ((*it) == (*pit))
 	    break;
   
+	  Player::DiplomaticState old_state = (*pit)->getDiplomaticState(*it);
 	  Player::DiplomaticState new_state = (*pit)->negotiateDiplomacy (*it);
 	  (*pit)->declareDiplomacy (new_state, (*it));
 	  (*it)->declareDiplomacy (new_state, (*pit));
+	  if (old_state != new_state)
+	    {
+	      if (new_state == Player::AT_PEACE)
+		{
+		  History_DiplomacyPeace *item = new History_DiplomacyPeace();
+		  item->fillData(*it);
+		  (*pit)->getHistorylist()->push_back(item);
+		}
+	      else if (new_state == Player::AT_WAR)
+		{
+		  History_DiplomacyWar *item = new History_DiplomacyWar();
+		  item->fillData(*it);
+		  (*pit)->getHistorylist()->push_back(item);
+		}
+	    }
 	}
     }
 

@@ -8,11 +8,17 @@ buildings can be put on tiles that get turned into water
 	or turned into forest
 		true or false?
 
+history: heroes not showing reward?  should they?
+
 diplomacy:
 	have computer players declare war
 		hook in citylist, to the player's new isFriendly function.
 	rejigger the ranks according to various actions
-	hook in diplomacy into history/action list?
+	hook in diplomacy into action list?
+		treachery by x and on y
+		x at z with y
+			where z is at war, or at peace
+		
 	calculates the ranks
 
 replace the following images:

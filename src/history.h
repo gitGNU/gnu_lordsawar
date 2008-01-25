@@ -56,10 +56,10 @@ class History
 		HERO_CITY_WON = 12,
                 SCORE = 13,
 		PLAYER_VANQUISHED = 14,
-		//DIPLOMATIC_PEACE (player)
-		//DIPLOMATIC_WAR (player)
+		DIPLOMATIC_PEACE = 15,
+		DIPLOMATIC_WAR = 16,
+		DIPLOMATIC_TREACHERY = 17
 		//HERO_GETS_REWARD (reward)
-		//DIPLOMATIC_TREACHERY (player)
         };
                 
         
@@ -362,5 +362,60 @@ class History_PlayerVanquished: public History
 
 };
 
+//-----------------------------------------------------------------------------
 
+class History_DiplomacyPeace : public History
+{
+    public:
+        History_DiplomacyPeace();
+        History_DiplomacyPeace(XML_Helper* helper);
+        ~History_DiplomacyPeace();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Player *opponent);
+	Player *getOpponent() const {return d_opponent;}
+    
+    private:
+	Player *d_opponent;
+};
+
+//-----------------------------------------------------------------------------
+
+class History_DiplomacyWar: public History
+{
+    public:
+        History_DiplomacyWar();
+        History_DiplomacyWar(XML_Helper* helper);
+        ~History_DiplomacyWar();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Player *opponent);
+	Player *getOpponent() const {return d_opponent;}
+    
+    private:
+	Player *d_opponent;
+};
+
+//-----------------------------------------------------------------------------
+
+class History_DiplomacyTreachery: public History
+{
+    public:
+        History_DiplomacyTreachery();
+        History_DiplomacyTreachery(XML_Helper* helper);
+        ~History_DiplomacyTreachery();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Player *opponent);
+	Player *getOpponent() const {return d_opponent;}
+    
+    private:
+	Player *d_opponent;
+};
 #endif //HISTORY_H
