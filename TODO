@@ -8,8 +8,6 @@ buildings can be put on tiles that get turned into water
 	or turned into forest
 		true or false?
 
-history: heroes not showing reward?  should they?
-
 diplomacy:
 	have computer players declare war
 		hook in citylist, to the player's new isFriendly function.
