@@ -1128,6 +1128,8 @@ bool Game::init_turn_for_player(Player* p)
 	  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
 	    if ((*it)->getType() == Player::HUMAN)
 	      {
+		if ((*it)->isDead())
+		  continue;
 		if (p->getDiplomaticState(*it) != Player::AT_WAR)
 		  {
 		    p->proposeDiplomacy (Player::PROPOSE_WAR, *it);
