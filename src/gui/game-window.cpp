@@ -635,6 +635,8 @@ void GameWindow::setup_signals()
 
 void GameWindow::update_diplomacy_button (bool proposals_present)
 {
+  if (GameScenario::s_diplomacy == false)
+    return;
   /* switch up the image. */
   if (proposals_present)
     diplomacy_button->property_image() = new Gtk::Image(d_button_images[8]);

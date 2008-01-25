@@ -310,6 +310,7 @@ bool CreateScenario::create(const GameParameters &g)
     GameScenario::s_play_with_quests = g.play_with_quests;
     GameScenario::s_hidden_map = g.hidden_map;
     GameScenario::s_diplomacy = g.diplomacy;
+    GameScenario::s_cusp_of_war = g.cusp_of_war;
     GameScenario::s_neutral_cities = g.neutral_cities;
     GameScenario::s_military_advisor= g.military_advisor;
     GameScenario::s_random_turns = g.random_turns;

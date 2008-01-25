@@ -62,6 +62,7 @@ struct GameParameters
     NeutralCities neutral_cities;
 
     bool quick_start;
+    bool cusp_of_war;
     bool intense_combat;
     bool military_advisor;
     bool random_turns;

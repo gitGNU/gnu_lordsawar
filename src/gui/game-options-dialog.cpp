@@ -45,11 +45,13 @@ GameOptionsDialog::GameOptionsDialog()
     xml->get_widget("military_advisor_checkbutton", 
                     military_advisor_checkbutton);
     xml->get_widget("quick_start_checkbutton", quick_start_checkbutton);
+    xml->get_widget("cusp_of_war_checkbutton", cusp_of_war_checkbutton);
     xml->get_widget("intense_combat_checkbutton", intense_combat_checkbutton);
     xml->get_widget("random_turns_checkbutton", random_turns_checkbutton);
     xml->get_widget("beginner_toggle", beginner_toggle);
     xml->get_widget("intermediate_toggle", intermediate_toggle);
     xml->get_widget("advanced_toggle", advanced_toggle);
+    xml->get_widget("greatest_toggle", greatest_toggle);
 	
     view_enemies_checkbutton->signal_clicked().connect
       (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
@@ -62,6 +64,8 @@ GameOptionsDialog::GameOptionsDialog()
     neutral_cities_combobox->signal_changed().connect
       (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
     diplomacy_checkbutton->signal_clicked().connect
+      (sigc::mem_fun(this, &GameOptionsDialog::on_diplomacy_clicked));
+    cusp_of_war_checkbutton->signal_clicked().connect
       (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
 
     beginner_toggle->signal_toggled().connect
@@ -75,8 +79,12 @@ GameOptionsDialog::GameOptionsDialog()
       (sigc::bind(sigc::mem_fun(this, &GameOptionsDialog::on_advanced_toggled),
 		  advanced_toggle));
 
+    greatest_toggle->signal_toggled().connect
+      (sigc::bind(sigc::mem_fun(this, &GameOptionsDialog::on_greatest_toggled),
+		  greatest_toggle));
 
     fill_in_options();
+    on_diplomacy_clicked();
 }
 
 void GameOptionsDialog::fill_in_options()
@@ -91,6 +99,7 @@ void GameOptionsDialog::fill_in_options()
     diplomacy_checkbutton->set_active(Configuration::s_diplomacy);
     military_advisor_checkbutton->set_active(Configuration::s_military_advisor);
     quick_start_checkbutton->set_active(Configuration::s_quick_start);
+    cusp_of_war_checkbutton->set_active(Configuration::s_cusp_of_war);
     intense_combat_checkbutton->set_active(Configuration::s_intense_combat);
     random_turns_checkbutton->set_active(Configuration::s_random_turns);
 }
@@ -124,6 +133,8 @@ bool GameOptionsDialog::run()
     Configuration::s_random_turns = g.random_turns;
     g.quick_start = quick_start_checkbutton->get_active();
     Configuration::s_quick_start = g.quick_start;
+    g.cusp_of_war = cusp_of_war_checkbutton->get_active();
+    Configuration::s_cusp_of_war = g.cusp_of_war;
     g.intense_combat = intense_combat_checkbutton->get_active();
     Configuration::s_intense_combat = g.intense_combat;
     g.military_advisor = military_advisor_checkbutton->get_active();
@@ -145,6 +156,7 @@ void GameOptionsDialog::on_beginner_toggled(Gtk::ToggleButton *toggle)
       Configuration::s_hidden_map = false;
       Configuration::s_neutral_cities = GameParameters::AVERAGE;
       Configuration::s_diplomacy = false;
+      Configuration::s_cusp_of_war = false;
       fill_in_options();
     }
 }
@@ -161,6 +173,7 @@ void GameOptionsDialog::on_intermediate_toggled(Gtk::ToggleButton *toggle)
       Configuration::s_hidden_map = false;
       Configuration::s_neutral_cities = GameParameters::STRONG;
       Configuration::s_diplomacy = true;
+      Configuration::s_cusp_of_war = false;
       fill_in_options();
     }
 }
@@ -177,12 +190,41 @@ void GameOptionsDialog::on_advanced_toggled(Gtk::ToggleButton *toggle)
       Configuration::s_hidden_map = true;
       Configuration::s_neutral_cities = GameParameters::ACTIVE;
       Configuration::s_diplomacy = true;
+      Configuration::s_cusp_of_war = false;
       fill_in_options();
     }
+}
+void GameOptionsDialog::on_greatest_toggled(Gtk::ToggleButton *toggle)
+{
+  if (toggle->get_active())
+    {
+      beginner_toggle->set_active(false);
+      intermediate_toggle->set_active(false);
+      Configuration::s_see_opponents_stacks = false;
+      Configuration::s_see_opponents_production = false;
+      Configuration::s_play_with_quests = true;
+      Configuration::s_hidden_map = true;
+      Configuration::s_neutral_cities = GameParameters::ACTIVE;
+      Configuration::s_diplomacy = true;
+      Configuration::s_cusp_of_war = true;
+      fill_in_options();
+    }
+}
+void GameOptionsDialog::on_diplomacy_clicked()
+{
+  if (diplomacy_checkbutton->get_active() == true)
+    cusp_of_war_checkbutton->set_sensitive(true);
+  else
+    {
+      cusp_of_war_checkbutton->set_active(false);
+      cusp_of_war_checkbutton->set_sensitive(false);
+    }
+  on_option_clicked();
 }
 void GameOptionsDialog::on_option_clicked()
 {
   beginner_toggle->set_active(false);
   intermediate_toggle->set_active(false);
   advanced_toggle->set_active(false);
+  greatest_toggle->set_active(false);
 }

@@ -46,6 +46,7 @@ const unsigned int SIGNPOSTS_RATIO=6; // #:1 dynamic vs static signposts
 const unsigned int MAX_ARMIES_VECTORED_TO_ONE_CITY = 4;
 const unsigned int MAX_TURNS_FOR_VECTORING = 2;
 const unsigned int MAX_BOAT_MOVES = 18;
+const unsigned int CUSP_OF_WAR_ROUND = 9;
 
 // from www.boost.org - derivation from this class makes the derived class
 // noncopyable

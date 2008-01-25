@@ -87,6 +87,7 @@ class GameScenario: public sigc::trackable
         static bool s_play_with_quests;
         static bool s_hidden_map;
         static bool s_diplomacy;
+        static bool s_cusp_of_war;
         static GameParameters::NeutralCities s_neutral_cities;
         static bool s_intense_combat;
         static bool s_military_advisor;

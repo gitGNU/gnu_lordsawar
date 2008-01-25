@@ -617,13 +617,27 @@ void Player::calculateUpkeep()
 	
 void Player::declareDiplomacy (DiplomaticState state, Player *player)
 {
+  if (state == d_diplomatic_state[player->getId()])
+    return;
   d_diplomatic_state[player->getId()] = state;
+    
+  Action_DiplomacyState * item = new Action_DiplomacyState();
+  item->fillData(player, state);
+  d_actions.push_back(item);
+
   // FIXME: update diplomatic scores? 
 }
 
 void Player::proposeDiplomacy (DiplomaticProposal proposal, Player *player)
 {
+  if (proposal == d_diplomatic_proposal[player->getId()])
+    return;
   d_diplomatic_proposal[player->getId()] = proposal;
+
+  Action_DiplomacyProposal * item = new Action_DiplomacyProposal();
+  item->fillData(player, proposal);
+  d_actions.push_back(item);
+
   // FIXME: update diplomatic scores? 
 }
 

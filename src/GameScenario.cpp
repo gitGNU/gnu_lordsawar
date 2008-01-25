@@ -60,6 +60,7 @@ bool GameScenario::s_see_opponents_production = false;
 bool GameScenario::s_play_with_quests = true;
 bool GameScenario::s_hidden_map = false;
 bool GameScenario::s_diplomacy = false;
+bool GameScenario::s_cusp_of_war = false;
 GameParameters::NeutralCities GameScenario::s_neutral_cities = GameParameters::AVERAGE;
 bool GameScenario::s_intense_combat = false;
 bool GameScenario::s_military_advisor = false;
@@ -233,6 +234,7 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= helper.saveData("quests", s_play_with_quests);
     retval &= helper.saveData("hidden_map", s_hidden_map);
     retval &= helper.saveData("diplomacy", s_diplomacy);
+    retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
     retval &= helper.saveData("neutral_cities", (int) s_neutral_cities);
     retval &= helper.saveData("intense_combat", s_intense_combat);
     retval &= helper.saveData("military_advisor", s_military_advisor);
@@ -279,6 +281,7 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
         helper->getData(s_play_with_quests, "quests");
         helper->getData(s_hidden_map, "hidden_map");
         helper->getData(s_diplomacy, "diplomacy");
+        helper->getData(s_cusp_of_war, "cusp_of_war");
         int val = -1;
         helper->getData(val, "neutral_cities");
         s_neutral_cities = GameParameters::NeutralCities (val);

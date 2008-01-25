@@ -22,6 +22,7 @@
 #include "fight.h"
 #include "army.h"
 #include "reward.h"
+#include "player.h"
 
 class Quest;
 class Stack;
@@ -75,7 +76,9 @@ class Action
 		RESIGN = 23,
 		ITEM_PLANT = 24,
 		PRODUCE_UNIT = 25,
-		PRODUCE_VECTORED_UNIT = 26
+		PRODUCE_VECTORED_UNIT = 26,
+		DIPLOMATIC_STATE = 27,
+		DIPLOMATIC_PROPOSAL = 28,
         };
                 
         
@@ -605,6 +608,46 @@ class Action_ProduceVectored: public Action
     private:
         Uint32 d_army_type;
         Vector<int> d_dest;
+};
+
+//-----------------------------------------------------------------------------
+class Action_DiplomacyState: public Action
+{
+    public:
+        Action_DiplomacyState();
+        Action_DiplomacyState(XML_Helper* helper);
+        ~Action_DiplomacyState();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Player *player, Player::DiplomaticState state);
+
+	Player *getOpponent() const {return d_opponent;}
+	Player::DiplomaticState getDiplomaticState() {return d_diplomatic_state;};
+    private:
+	Player *d_opponent;
+	Player::DiplomaticState d_diplomatic_state;
+};
+
+//-----------------------------------------------------------------------------
+class Action_DiplomacyProposal: public Action
+{
+    public:
+        Action_DiplomacyProposal();
+        Action_DiplomacyProposal(XML_Helper* helper);
+        ~Action_DiplomacyProposal();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Player *player, Player::DiplomaticProposal proposal);
+
+	Player *getOpponent() const {return d_opponent;}
+	Player::DiplomaticProposal getDiplomaticProposal() {return d_diplomatic_proposal;};
+    private:
+	Player *d_opponent;
+	Player::DiplomaticProposal d_diplomatic_proposal;
 };
 
 #endif //ACTION_H

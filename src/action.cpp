@@ -33,6 +33,7 @@
 #include "QPillageGold.h"
 #include "armysetlist.h"
 #include "playerlist.h"
+#include "player.h"
 
 using namespace std;
 
@@ -107,6 +108,10 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_Produce(helper));
         case PRODUCE_VECTORED_UNIT:
             return (new Action_ProduceVectored(helper));
+        case DIPLOMATIC_STATE:
+            return (new Action_DiplomacyState(helper));
+        case DIPLOMATIC_PROPOSAL:
+            return (new Action_DiplomacyProposal(helper));
     }
 
     return 0;
@@ -170,6 +175,14 @@ Action* Action::copy(const Action* a)
             return 
               (new Action_ProduceVectored
                 (*dynamic_cast<const Action_ProduceVectored*>(a)));
+        case DIPLOMATIC_STATE:
+            return 
+              (new Action_DiplomacyState
+                (*dynamic_cast<const Action_DiplomacyState*>(a)));
+        case DIPLOMATIC_PROPOSAL:
+            return 
+              (new Action_DiplomacyProposal
+                (*dynamic_cast<const Action_DiplomacyProposal*>(a)));
     }
 
     return 0;
@@ -1629,5 +1642,124 @@ bool Action_ProduceVectored::fillData(Uint32 army_type, Vector<int> dest)
 {
   d_army_type = army_type;
   d_dest = dest;
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_DiplomacyState
+
+Action_DiplomacyState::Action_DiplomacyState()
+:Action(Action::DIPLOMATIC_STATE)
+{
+}
+
+Action_DiplomacyState::Action_DiplomacyState(XML_Helper* helper)
+:Action(Action::DIPLOMATIC_STATE)
+{
+  Uint32 diplomatic_state;
+  Uint32 opponent_id;
+  helper->getData(opponent_id, "opponent");
+  d_opponent = Playerlist::getInstance()->getPlayer(opponent_id);
+  helper->getData(diplomatic_state, "state");
+  d_diplomatic_state = Player::DiplomaticState(diplomatic_state);
+}
+
+Action_DiplomacyState::~Action_DiplomacyState()
+{
+}
+
+std::string Action_DiplomacyState::dump() const
+{
+  std::stringstream s;
+  s << "declaring ";
+  switch (d_diplomatic_state)
+    {
+    case Player::AT_WAR: s <<"war"; break;
+    case Player::AT_WAR_IN_FIELD: s <<"war in the field"; break;
+    case Player::AT_PEACE: s <<"peace"; break;
+    }
+  s << " with " << d_opponent->getName() <<".\n";
+
+  return s.str();
+}
+
+bool Action_DiplomacyState::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("opponent", d_opponent->getId());
+  retval &= helper->saveData("state", (Uint32)d_diplomatic_state);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+
+bool Action_DiplomacyState::fillData(Player *opponent, 
+				      Player::DiplomaticState state)
+{
+  d_opponent = opponent;
+  d_diplomatic_state = state;
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_DiplomacyProposal
+
+Action_DiplomacyProposal::Action_DiplomacyProposal()
+:Action(Action::DIPLOMATIC_PROPOSAL)
+{
+}
+
+Action_DiplomacyProposal::Action_DiplomacyProposal(XML_Helper* helper)
+:Action(Action::DIPLOMATIC_PROPOSAL)
+{
+  Uint32 diplomatic_proposal;
+  Uint32 opponent_id;
+  helper->getData(opponent_id, "opponent");
+  d_opponent = Playerlist::getInstance()->getPlayer(opponent_id);
+  helper->getData(diplomatic_proposal, "proposal");
+  d_diplomatic_proposal = Player::DiplomaticProposal(diplomatic_proposal);
+}
+
+Action_DiplomacyProposal::~Action_DiplomacyProposal()
+{
+}
+
+std::string Action_DiplomacyProposal::dump() const
+{
+  std::stringstream s;
+  s << "proposing ";
+  switch (d_diplomatic_proposal)
+    {
+    case Player::NO_PROPOSAL: s <<"nothing"; break;
+    case Player::PROPOSE_WAR: s <<"war"; break;
+    case Player::PROPOSE_WAR_IN_FIELD: s <<"war in the field"; break;
+    case Player::PROPOSE_PEACE: s <<"peace"; break;
+    }
+  s << " with " << d_opponent->getName() << ".\n";
+
+  return s.str();
+}
+
+bool Action_DiplomacyProposal::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("opponent", d_opponent->getId());
+  retval &= helper->saveData("proposal", (Uint32)d_diplomatic_proposal);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+
+bool Action_DiplomacyProposal::fillData(Player *opponent, 
+					 Player::DiplomaticProposal proposal)
+{
+  d_opponent = opponent;
+  d_diplomatic_proposal = proposal;
   return true;
 }

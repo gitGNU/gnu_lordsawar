@@ -1071,6 +1071,7 @@ Game::loadHeroTemplates()
 
 bool Game::init_turn_for_player(Player* p)
 {
+  Playerlist* pl = Playerlist::getInstance();
   // FIXME: Currently this function only checks for a human player. You
   // can also have it check for e.g. escape key pressed to interrupt
   // an AI-only game to save/quit.
@@ -1098,7 +1099,6 @@ bool Game::init_turn_for_player(Player* p)
 
       // update the diplomacy icon if we've received a proposal
       bool proposal_received = false;
-      Playerlist* pl = Playerlist::getInstance();
       for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
 	{
 	  if ((*it) == pl->getNeutral())
@@ -1122,7 +1122,21 @@ bool Game::init_turn_for_player(Player* p)
       SDL_Delay(250);
       QuestsManager::getInstance()->nextTurn(p);
       maybeRecruitHero(p);
-      return false;
+      if (d_gameScenario->s_cusp_of_war == true &&
+	  d_gameScenario->getRound() == CUSP_OF_WAR_ROUND)
+	{
+	  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+	    if ((*it)->getType() == Player::HUMAN)
+	      {
+		if (p->getDiplomaticState(*it) != Player::AT_WAR)
+		  {
+		    p->proposeDiplomacy (Player::PROPOSE_WAR, *it);
+		    (*it)->proposeDiplomacy (Player::PROPOSE_WAR, p);
+		    p->declareDiplomacy (Player::AT_WAR, *it);
+		  }
+	      }
+	}
+	  return false;
     }
 }
 

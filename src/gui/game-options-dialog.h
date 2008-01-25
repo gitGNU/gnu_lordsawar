@@ -49,13 +49,17 @@ class GameOptionsDialog: public sigc::trackable
     Gtk::CheckButton *military_advisor_checkbutton;
     Gtk::CheckButton *random_turns_checkbutton;
     Gtk::CheckButton *quick_start_checkbutton;
+    Gtk::CheckButton *cusp_of_war_checkbutton;
     Gtk::ToggleButton *beginner_toggle;
     Gtk::ToggleButton *intermediate_toggle;
     Gtk::ToggleButton *advanced_toggle;
+    Gtk::ToggleButton *greatest_toggle;
     void on_beginner_toggled(Gtk::ToggleButton *toggle);
     void on_intermediate_toggled(Gtk::ToggleButton *toggle);
     void on_advanced_toggled(Gtk::ToggleButton *toggle);
+    void on_greatest_toggled(Gtk::ToggleButton *toggle);
     void on_option_clicked();
+    void on_diplomacy_clicked();
     void fill_in_options();
 
 };

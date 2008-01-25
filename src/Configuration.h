@@ -106,6 +106,7 @@ class Configuration : public sigc::trackable
         static bool s_military_advisor;
         static bool s_random_turns;
         static bool s_quick_start;
+        static bool s_cusp_of_war;
 
     private:
         /** \brief The callback for the XML_Helper

@@ -14,12 +14,12 @@ diplomacy:
 	have computer players declare war
 		hook in citylist, to the player's new isFriendly function.
 	rejigger the ranks according to various actions
-	hook in diplomacy into action list?
-		treachery by x and on y
-		x at z with y
-			where z is at war, or at peace
-		
 	calculates the ranks
+
+we're always showing fights. but warlords doesn't always do that.
+neutral battles aren't shown
+
+add a razing cities game option
 
 replace the following images:
 	roads (x8)
