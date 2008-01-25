@@ -100,8 +100,10 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         sigc::signal<void, Player*> splayerDead;
     
         void calculateWinners();
+        void calculateDiplomaticRankings();
 
 	Uint32 countHumanPlayersAlive();
+	Uint32 countPlayersAlive();
 
     protected:
         // CREATORS

@@ -47,6 +47,8 @@ void NextTurn::start()
     if (!plist->getActiveplayer())
         plist->nextPlayer();
 	
+    plist->calculateDiplomaticRankings();
+
     while (!d_stop)
     {
         // do various start-up tasks
@@ -202,6 +204,7 @@ void NextTurn::finishRound()
 	}
     }
 
+  Playerlist::getInstance()->calculateDiplomaticRankings();
   Playerlist::getInstance()->calculateWinners();
 
   // heal the stacks in the ruins

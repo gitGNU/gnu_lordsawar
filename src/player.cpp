@@ -104,6 +104,7 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, Type type,
       d_diplomatic_proposal[i] = NO_PROPOSAL;
     }
     d_diplomatic_rank = 0;
+    d_diplomatic_title = std::string("");
 }
 
 Player::Player(const Player& player)
@@ -145,6 +146,7 @@ Player::Player(const Player& player)
 	d_diplomatic_proposal[i] = player.d_diplomatic_proposal[i];
       }
     d_diplomatic_rank = player.d_diplomatic_rank;
+    d_diplomatic_title = player.d_diplomatic_title;
 }
 
 Player::Player(XML_Helper* helper)
@@ -194,6 +196,7 @@ Player::Player(XML_Helper* helper)
     }
 
     helper->getData(d_diplomatic_rank, "diplomatic_rank");
+    helper->getData(d_diplomatic_title, "diplomatic_title");
 
     // Read in Diplomatic Proposals.  One proposal per player.
     std::string diplomatic_proposals;
@@ -421,6 +424,9 @@ void Player::kill()
     for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
         if ((*it).getPlayer() == this)
             (*it).setPlayer(Playerlist::getInstance()->getNeutral());
+
+    d_diplomatic_rank = 0;
+    d_diplomatic_title = std::string("");
 }
 
 bool Player::save(XML_Helper* helper) const
@@ -463,6 +469,7 @@ bool Player::save(XML_Helper* helper) const
     retval &= helper->saveData("diplomatic_states", diplomatic_states.str());
 
     retval &= helper->saveData("diplomatic_rank", d_diplomatic_rank);
+    retval &= helper->saveData("diplomatic_title", d_diplomatic_title);
 
     // save the diplomatic proposals, one proposal per player
     std::stringstream diplomatic_proposals;
@@ -618,25 +625,6 @@ void Player::proposeDiplomacy (DiplomaticProposal proposal, Player *player)
 {
   d_diplomatic_proposal[player->getId()] = proposal;
   // FIXME: update diplomatic scores? 
-}
-Uint32 Player::getDiplomaticRank()
-{
-  return MAX_PLAYERS - d_id + 1 - 1;
-}
-	
-std::string Player::getDiplomaticTitle()
-{
-  char* titles[MAX_PLAYERS] = {
-    "Statesman",
-    "Diplomat",
-    "Pragmatist",
-    "Politician",
-    "Deceiver",
-    "Scoundrel",
-    "Turncoat",
-    "Running Dog",
-  };
-  return std::string(titles[getDiplomaticRank()-1]);
 }
 
 Player::DiplomaticState Player::negotiateDiplomacy (Player *player)

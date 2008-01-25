@@ -269,6 +269,65 @@ Playerlist::iterator Playerlist::flErase(Playerlist::iterator it)
     return erase (it);
 }
 
+void Playerlist::calculateDiplomaticRankings()
+{
+  unsigned int i = 0;
+  char* titles[MAX_PLAYERS] = 
+    {
+      "Statesman",
+      "Diplomat",
+      "Pragmatist",
+      "Politician",
+      "Deciever",
+      "Scoundrel",
+      "Turncoat",
+      "Running Dog",
+    };
+
+  //determine the rank for each player
+  //FIXME: provide a better ranking algorithm
+  for (const_iterator it = begin (); it != end (); it++)
+    {
+      if ((*it) == d_neutral)
+	continue;
+      if ((*it)->isDead () == true)
+	continue;
+      (*it)->setDiplomaticRank (i + 1);
+      i++;
+    }
+
+  // given the rankings, what are the titles?
+  // the titles are depleted from the middle as players die.
+  // 7 means deplete first, 0 means deplete last.
+  unsigned int deplete[MAX_PLAYERS] = { 0, 2, 4, 6, 7, 5, 3, 1 };
+
+  unsigned int numAlive = countPlayersAlive ();
+  // okay, we take the first numAlive titles
+
+  std::vector<std::string> available_titles;
+  for (i = 0; i < numAlive; i++)
+    {
+      for (unsigned int j = 0; j < MAX_PLAYERS; j++)
+	{
+	  if (deplete[j] == i)
+	    available_titles.push_back (std::string(titles[deplete[j]]));
+	}
+    }
+
+  for (const_iterator it = begin (); it != end (); it++)
+    {
+      if ((*it) == d_neutral)
+	continue;
+      if ((*it)->isDead () == true)
+	continue;
+      Uint32 rank = (*it)->getDiplomaticRank();
+      // recall that the first rank is 1, and not 0.
+      (*it)->setDiplomaticTitle (available_titles[rank - 1]);
+    }
+
+  return;
+}
+
 void Playerlist::calculateWinners()
 {
     Uint32 score;
@@ -321,4 +380,19 @@ Uint32 Playerlist::countHumanPlayersAlive()
     if ((*it)->isDead() == false && (*it)->getType() == Player::HUMAN)
       retval++;
   return retval;
+}
+
+Uint32 Playerlist::countPlayersAlive ()
+{
+  Uint32 numAlive = 0; 
+
+  for (const_iterator it = begin (); it != end (); it++)
+    {
+      if ((*it) == d_neutral)
+	continue;
+      if ((*it)->isDead () == true)
+	continue;
+      numAlive++;
+    }
+  return numAlive;
 }

@@ -245,11 +245,13 @@ class Player: public sigc::trackable
 
 	//! What diplomatic rank does this player have? As a number.
 	//! Starts at 1.
-	Uint32 getDiplomaticRank ();
+	Uint32 getDiplomaticRank () {return d_diplomatic_rank;};
 
 	//! What rank do we have? As a name.
-	std::string getDiplomaticTitle();
+	std::string getDiplomaticTitle() {return d_diplomatic_title;};
 
+	//! Set the rank as a name.
+	void setDiplomaticTitle (std::string title) {d_diplomatic_title = title;};
 	//! Negotiate diplomatic talks.
 	DiplomaticState negotiateDiplomacy (Player *player);
 
@@ -637,6 +639,7 @@ class Player: public sigc::trackable
 	Uint32 d_upkeep; //how much we paid out last turn
 	DiplomaticState d_diplomatic_state[MAX_PLAYERS];
 	Uint32 d_diplomatic_rank;
+	std::string d_diplomatic_title;
 	DiplomaticProposal d_diplomatic_proposal[MAX_PLAYERS];
 
 

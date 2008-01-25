@@ -13,6 +13,7 @@ diplomacy:
 		hook in citylist, to the player's new isFriendly function.
 	rejigger the ranks according to various actions
 	hook in diplomacy into history/action list?
+	calculates the ranks
 
 replace the following images:
 	roads (x8)
