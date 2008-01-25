@@ -62,6 +62,7 @@ bool GameScenario::s_hidden_map = false;
 bool GameScenario::s_diplomacy = false;
 bool GameScenario::s_cusp_of_war = false;
 GameParameters::NeutralCities GameScenario::s_neutral_cities = GameParameters::AVERAGE;
+GameParameters::RazingCities GameScenario::s_razing_cities = GameParameters::ALWAYS;
 bool GameScenario::s_intense_combat = false;
 bool GameScenario::s_military_advisor = false;
 bool GameScenario::s_random_turns = false;
@@ -236,6 +237,7 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= helper.saveData("diplomacy", s_diplomacy);
     retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
     retval &= helper.saveData("neutral_cities", (int) s_neutral_cities);
+    retval &= helper.saveData("razing_cities", (int) s_razing_cities);
     retval &= helper.saveData("intense_combat", s_intense_combat);
     retval &= helper.saveData("military_advisor", s_military_advisor);
     retval &= helper.saveData("random_turns", s_random_turns);
@@ -285,6 +287,10 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
         int val = -1;
         helper->getData(val, "neutral_cities");
         s_neutral_cities = GameParameters::NeutralCities (val);
+        val = -1;
+        helper->getData(val, "razing_cities");
+        s_razing_cities = GameParameters::RazingCities (val);
+	printf ("loaded razing cities as %d\n", s_razing_cities);
         helper->getData(s_intense_combat, "intense_combat");
         helper->getData(s_military_advisor, "military_advisor");
         helper->getData(s_random_turns, "random_turns");

@@ -39,8 +39,9 @@
 #include "../GameMap.h"
 #include "../citylist.h"
 #include "../playerlist.h"
+#include "../GameScenario.h"
 
-CityWindow::CityWindow(City *c)
+CityWindow::CityWindow(City *c, bool razing_possible)
 {
     city = c;
     
@@ -106,6 +107,7 @@ CityWindow::CityWindow(City *c)
     fill_in_production_toggles();
 
     ignore_toggles = false;
+    d_razing_possible = razing_possible;
 }
 
 bool CityWindow::on_map_mouse_button_event(GdkEventButton *e)
@@ -316,7 +318,7 @@ void CityWindow::fill_in_production_info()
         current_label->show();
         current_image->show();
         buy_button->set_sensitive(true);
-        raze_button->set_sensitive(true);
+        raze_button->set_sensitive (d_razing_possible == false);
         rename_button->set_sensitive(true);
         destination_button->set_sensitive(true);
         on_hold_button->set_sensitive(true);

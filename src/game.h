@@ -77,6 +77,7 @@ class Game
     // save current game, returns true if successful
     bool saveGame(std::string file);
 
+    GameScenario *getScenario() {return d_gameScenario;};
     GameBigMap &get_bigmap();
     SmallMap &get_smallmap();
     

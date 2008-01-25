@@ -1804,6 +1804,7 @@ hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze, bool *occupy)
 
 CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 {
+  Gtk::Button *raze_button;
   std::auto_ptr<Gtk::Dialog> dialog;
   if (gold)
     on_city_looted (city, gold);
@@ -1848,6 +1849,12 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
   s += label->get_text();
   label->set_text(s);
 
+  xml->get_widget("raze_button", raze_button);
+
+  raze_button->set_sensitive
+    (game->getScenario()->s_razing_cities == GameParameters::ON_CAPTURE || 
+     game->getScenario()->s_razing_cities == GameParameters::ALWAYS);
+
   if (h) /* if there was a hero in the stack */
     {
       bool sack, raze, occupy;
@@ -1863,7 +1870,6 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 	    }
 	  if (raze)
 	    {
-	      xml->get_widget("raze_button", button);
 	      //button->set_label(">" + button->get_label() +"<");
 	      button->grab_default();
 	    }
@@ -2104,7 +2110,8 @@ void GameWindow::on_city_razed (City *city)
 
 void GameWindow::on_city_visited(City *city)
 {
-  CityWindow d(city);
+  CityWindow d(city, 
+	       game->getScenario()->s_razing_cities == GameParameters::ALWAYS);
 
   d.set_parent_window(*window.get());
   d.run();

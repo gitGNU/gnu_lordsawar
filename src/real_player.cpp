@@ -1064,7 +1064,9 @@ Quest* RealPlayer::stackGetQuest(Stack* s, Temple* t)
   Quest* q=0;
   if (s->getFirstHero())
     {
-      q = qm->createNewQuest(s->getFirstHero()->getId());
+      q = qm->createNewQuest
+	(s->getFirstHero()->getId(), 
+	 GameScenario::s_razing_cities != GameParameters::NEVER);
     }
 
   // couldn't assign a quest for various reasons

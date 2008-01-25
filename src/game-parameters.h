@@ -60,6 +60,10 @@ struct GameParameters
         AVERAGE = 0, STRONG, ACTIVE
     };
     NeutralCities neutral_cities;
+    enum RazingCities {
+        NEVER = 0, ON_CAPTURE, ALWAYS
+    };
+    RazingCities razing_cities;
 
     bool quick_start;
     bool cusp_of_war;

@@ -41,6 +41,7 @@ GameOptionsDialog::GameOptionsDialog()
     xml->get_widget("quests_checkbutton", quests_checkbutton);
     xml->get_widget("hidden_map_checkbutton", hidden_map_checkbutton);
     xml->get_widget("neutral_combobox", neutral_cities_combobox);
+    xml->get_widget("razing_combobox", razing_cities_combobox);
     xml->get_widget("diplomacy_checkbutton", diplomacy_checkbutton);
     xml->get_widget("military_advisor_checkbutton", 
                     military_advisor_checkbutton);
@@ -62,6 +63,8 @@ GameOptionsDialog::GameOptionsDialog()
     hidden_map_checkbutton->signal_clicked().connect
       (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
     neutral_cities_combobox->signal_changed().connect
+      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
+    razing_cities_combobox->signal_changed().connect
       (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
     diplomacy_checkbutton->signal_clicked().connect
       (sigc::mem_fun(this, &GameOptionsDialog::on_diplomacy_clicked));
@@ -90,12 +93,14 @@ GameOptionsDialog::GameOptionsDialog()
 void GameOptionsDialog::fill_in_options()
 {
     neutral_cities_combobox->set_active(GameParameters::AVERAGE);
+    razing_cities_combobox->set_active(GameParameters::ALWAYS);
 
     view_enemies_checkbutton->set_active(Configuration::s_see_opponents_stacks);
     view_production_checkbutton->set_active(Configuration::s_see_opponents_production);
     quests_checkbutton->set_active(Configuration::s_play_with_quests);
     hidden_map_checkbutton->set_active(Configuration::s_hidden_map);
     neutral_cities_combobox->set_active(int(Configuration::s_neutral_cities));
+    razing_cities_combobox->set_active(int(Configuration::s_razing_cities));
     diplomacy_checkbutton->set_active(Configuration::s_diplomacy);
     military_advisor_checkbutton->set_active(Configuration::s_military_advisor);
     quick_start_checkbutton->set_active(Configuration::s_quick_start);
@@ -126,6 +131,10 @@ bool GameOptionsDialog::run()
     g.neutral_cities = GameParameters::NeutralCities (
 	neutral_cities_combobox->get_active_row_number());
     Configuration::s_neutral_cities = g.neutral_cities;
+    g.razing_cities = GameParameters::RazingCities (
+	razing_cities_combobox->get_active_row_number());
+    Configuration::s_razing_cities = g.razing_cities;
+    printf ("saving configuration razing cities as %d\n", g.razing_cities);
 
     g.diplomacy = diplomacy_checkbutton->get_active();
     Configuration::s_diplomacy = g.diplomacy;
@@ -155,6 +164,7 @@ void GameOptionsDialog::on_beginner_toggled(Gtk::ToggleButton *toggle)
       Configuration::s_play_with_quests = false;
       Configuration::s_hidden_map = false;
       Configuration::s_neutral_cities = GameParameters::AVERAGE;
+      Configuration::s_razing_cities = GameParameters::ALWAYS;
       Configuration::s_diplomacy = false;
       Configuration::s_cusp_of_war = false;
       fill_in_options();
@@ -172,6 +182,7 @@ void GameOptionsDialog::on_intermediate_toggled(Gtk::ToggleButton *toggle)
       Configuration::s_play_with_quests = true;
       Configuration::s_hidden_map = false;
       Configuration::s_neutral_cities = GameParameters::STRONG;
+      Configuration::s_razing_cities = GameParameters::ALWAYS;
       Configuration::s_diplomacy = true;
       Configuration::s_cusp_of_war = false;
       fill_in_options();
@@ -189,6 +200,7 @@ void GameOptionsDialog::on_advanced_toggled(Gtk::ToggleButton *toggle)
       Configuration::s_play_with_quests = true;
       Configuration::s_hidden_map = true;
       Configuration::s_neutral_cities = GameParameters::ACTIVE;
+      Configuration::s_razing_cities = GameParameters::ON_CAPTURE;
       Configuration::s_diplomacy = true;
       Configuration::s_cusp_of_war = false;
       fill_in_options();
@@ -205,6 +217,7 @@ void GameOptionsDialog::on_greatest_toggled(Gtk::ToggleButton *toggle)
       Configuration::s_play_with_quests = true;
       Configuration::s_hidden_map = true;
       Configuration::s_neutral_cities = GameParameters::ACTIVE;
+      Configuration::s_razing_cities = GameParameters::NEVER;
       Configuration::s_diplomacy = true;
       Configuration::s_cusp_of_war = true;
       fill_in_options();

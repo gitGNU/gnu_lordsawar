@@ -434,6 +434,7 @@ void GamePreferencesDialog::on_start_game_clicked()
     g.play_with_quests = Configuration::s_play_with_quests;
     g.hidden_map = Configuration::s_hidden_map;
     g.neutral_cities = Configuration::s_neutral_cities;
+    g.razing_cities = Configuration::s_razing_cities;
     g.diplomacy = Configuration::s_diplomacy;
     g.random_turns = Configuration::s_random_turns;
     g.quick_start = Configuration::s_quick_start;

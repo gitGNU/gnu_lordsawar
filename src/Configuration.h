@@ -102,6 +102,7 @@ class Configuration : public sigc::trackable
         static bool s_hidden_map;
         static bool s_diplomacy;
         static GameParameters::NeutralCities s_neutral_cities;
+        static GameParameters::RazingCities s_razing_cities;
         static bool s_intense_combat;
         static bool s_military_advisor;
         static bool s_random_turns;

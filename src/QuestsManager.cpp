@@ -82,7 +82,7 @@ QuestsManager::~QuestsManager()
     _cleanup();
 }
 //======================================================================
-Quest* QuestsManager::createNewQuest(Uint32 heroId)
+Quest* QuestsManager::createNewQuest(Uint32 heroId, bool razing_possible)
 {
     // don't let a hero have more than one quest
     if (d_quests.count(heroId))
@@ -112,7 +112,10 @@ Quest* QuestsManager::createNewQuest(Uint32 heroId)
             quest = new QuestCitySack(*this, heroId);
             break;
         case 4:
-            quest = new QuestCityRaze(*this, heroId);
+	    if (razing_possible)
+	      quest = new QuestCityRaze(*this, heroId);
+	    else
+	      quest = new QuestCitySack(*this, heroId);
             break;
         case 5:
             quest = new QuestCityOccupy(*this, heroId);

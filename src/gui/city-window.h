@@ -32,7 +32,7 @@ class City;
 class CityWindow: public sigc::trackable
 {
  public:
-    CityWindow(City *city);
+    CityWindow(City *city, bool razing_possible);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -57,6 +57,9 @@ class CityWindow: public sigc::trackable
     Gtk::Label *current_label;
 
     City *city;
+
+    bool d_razing_possible;
+
 
     std::vector<Gtk::ToggleButton *> production_toggles;
     bool ignore_toggles;

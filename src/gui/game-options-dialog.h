@@ -44,6 +44,7 @@ class GameOptionsDialog: public sigc::trackable
     Gtk::CheckButton *view_production_checkbutton;
     Gtk::CheckButton *hidden_map_checkbutton;
     Gtk::ComboBox *neutral_cities_combobox;
+    Gtk::ComboBox *razing_cities_combobox;
     Gtk::CheckButton *diplomacy_checkbutton;
     Gtk::CheckButton *intense_combat_checkbutton;
     Gtk::CheckButton *military_advisor_checkbutton;

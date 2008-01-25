@@ -74,7 +74,7 @@ class QuestsManager : public sigc::trackable
         /**
          * \brief Create a random quest and assign it to the hero.
          */
-        Quest* createNewQuest(Uint32 heroId);
+        Quest* createNewQuest(Uint32 heroId, bool razing_possible);
 
         /** \brief Quest completion - called by the particular Quest.
          *

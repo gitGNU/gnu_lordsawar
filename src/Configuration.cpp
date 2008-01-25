@@ -60,6 +60,7 @@ bool Configuration::s_play_with_quests = true;
 bool Configuration::s_hidden_map = false;
 bool Configuration::s_diplomacy = false;
 GameParameters::NeutralCities Configuration::s_neutral_cities = GameParameters::AVERAGE;
+GameParameters::RazingCities Configuration::s_razing_cities = GameParameters::ALWAYS;
 bool Configuration::s_intense_combat = false;
 bool Configuration::s_military_advisor = false;
 bool Configuration::s_random_turns = false;
@@ -129,6 +130,7 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("hidden_map", s_hidden_map);
     retval &= helper.saveData("diplomacy", s_diplomacy);
     retval &= helper.saveData("neutral_cities", (int) s_neutral_cities);
+    retval &= helper.saveData("razing_cities", (int) s_razing_cities);
     retval &= helper.saveData("intense_combat", s_intense_combat);
     retval &= helper.saveData("military_advisor", s_military_advisor);
     retval &= helper.saveData("random_turns", s_random_turns);
@@ -264,6 +266,9 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     int val = -1;
     helper->getData(val, "neutral_cities");
     s_neutral_cities = GameParameters::NeutralCities (val);
+    val = -1;
+    helper->getData(val, "razing_cities");
+    s_razing_cities = GameParameters::RazingCities (val);
     helper->getData(s_intense_combat, "intense_combat");
     helper->getData(s_military_advisor, "military_advisor");
     helper->getData(s_random_turns, "random_turns");
