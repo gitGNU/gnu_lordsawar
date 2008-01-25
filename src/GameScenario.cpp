@@ -290,7 +290,6 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
         val = -1;
         helper->getData(val, "razing_cities");
         s_razing_cities = GameParameters::RazingCities (val);
-	printf ("loaded razing cities as %d\n", s_razing_cities);
         helper->getData(s_intense_combat, "intense_combat");
         helper->getData(s_military_advisor, "military_advisor");
         helper->getData(s_random_turns, "random_turns");

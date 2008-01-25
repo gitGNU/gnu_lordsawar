@@ -28,6 +28,7 @@
 #include "rewardlist.h"
 #include "army.h"
 #include "xmlhelper.h"
+#include "history.h"
 
 QuestsManager* QuestsManager::s_instance = NULL;
 
@@ -158,6 +159,10 @@ void QuestsManager::questCompleted(Uint32 heroId)
         Reward_Allies reward(a, num);
         p->giveReward(p->getActivestack(), &reward);
         quest_completed.emit(quest, &reward);
+	    
+	History_HeroFindsAllies* item = new History_HeroFindsAllies();
+	item->fillData(quest->getHero());
+	p->getHistorylist()->push_back(item);
       }
     else if (num == 2)
       {

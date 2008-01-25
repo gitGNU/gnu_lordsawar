@@ -172,10 +172,19 @@ void HistoryReportDialog::generatePastEventlists()
 		case History::HERO_KILLED_IN_BATTLE:
 		case History::HERO_KILLED_SEARCHING:
 		case History::HERO_CITY_WON:
+		case History::HERO_FINDS_ALLIES:
+		case History::PLAYER_VANQUISHED:
+		case History::DIPLOMATIC_TREACHERY:
+		case History::DIPLOMATIC_WAR:
+		case History::DIPLOMATIC_PEACE:
 		  (*hit[id])->setPlayer(*pit);
 		  elist->push_back(*hit[id]);
 		  break;
-		default:
+		case History::START_TURN:
+		case History::GOLD_TOTAL:
+		case History::CITY_WON:
+		case History::CITY_RAZED:
+		case History::SCORE:
 		  break;
 		}
 	    }
@@ -535,6 +544,14 @@ void HistoryReportDialog::addHistoryEvent(History *event)
 	  ev = static_cast<History_DiplomacyTreachery*>(event);
 	  s = String::ucompose(_("Treachery by %1 on %2!"), p->getName(),
 			       ev->getOpponent()->getName());
+	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
+	  break;
+	}
+    case History::HERO_FINDS_ALLIES:
+	{
+	  History_HeroFindsAllies *ev;
+	  ev = static_cast<History_HeroFindsAllies*>(event);
+	  s = String::ucompose(_("%1 finds allies!"), ev->getHeroName());
 	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
 	  break;
 	}

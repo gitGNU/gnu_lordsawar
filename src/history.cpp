@@ -75,6 +75,8 @@ History* History::handle_load(XML_Helper* helper)
       return (new History_DiplomacyWar(helper));
     case DIPLOMATIC_TREACHERY:
       return (new History_DiplomacyTreachery(helper));
+    case HERO_FINDS_ALLIES:
+      return (new History_HeroFindsAllies(helper));
     }
 
   return 0;
@@ -144,6 +146,10 @@ History* History::copy(const History* a)
       return 
 	(new History_DiplomacyTreachery
 	 (*dynamic_cast<const History_DiplomacyTreachery*>(a)));
+    case HERO_FINDS_ALLIES:
+      return 
+	(new History_HeroFindsAllies
+          (*dynamic_cast<const History_HeroFindsAllies*>(a)));
     }
 
   return 0;
@@ -923,3 +929,49 @@ bool History_DiplomacyTreachery::fillData(Player *opponent)
   d_opponent = opponent;
   return true;
 }
+
+//-----------------------------------------------------------------------------
+//History_HeroFindsAllies
+
+History_HeroFindsAllies::History_HeroFindsAllies()
+:History(History::HERO_FINDS_ALLIES), d_hero("")
+{
+}
+
+History_HeroFindsAllies::History_HeroFindsAllies(XML_Helper* helper)
+:History(History::HERO_FINDS_ALLIES)
+{
+  helper->getData(d_hero, "hero");
+}
+
+History_HeroFindsAllies::~History_HeroFindsAllies()
+{
+}
+
+std::string History_HeroFindsAllies::dump() const
+{
+  std::stringstream s;
+
+  s <<"hero " << d_hero<< " finds some allies\n";
+
+  return s.str();
+}
+
+bool History_HeroFindsAllies::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("history");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("hero", d_hero);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+
+bool History_HeroFindsAllies::fillData(Hero *hero)
+{
+  d_hero = hero->getName();
+  return true;
+}
+

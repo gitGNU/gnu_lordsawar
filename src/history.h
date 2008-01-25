@@ -58,8 +58,8 @@ class History
 		PLAYER_VANQUISHED = 14,
 		DIPLOMATIC_PEACE = 15,
 		DIPLOMATIC_WAR = 16,
-		DIPLOMATIC_TREACHERY = 17
-		//HERO_GETS_REWARD (reward)
+		DIPLOMATIC_TREACHERY = 17,
+		HERO_FINDS_ALLIES = 18
         };
                 
         
@@ -418,4 +418,24 @@ class History_DiplomacyTreachery: public History
     private:
 	Player *d_opponent;
 };
+
+//-----------------------------------------------------------------------------
+
+class History_HeroFindsAllies : public History
+{
+    public:
+        History_HeroFindsAllies();
+        History_HeroFindsAllies(XML_Helper* helper);
+        ~History_HeroFindsAllies();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Hero *hero);
+	std::string getHeroName() const {return d_hero;}
+    
+    private:
+	std::string d_hero;
+};
+
 #endif //HISTORY_H
