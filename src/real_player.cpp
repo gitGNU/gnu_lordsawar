@@ -611,9 +611,16 @@ Fight::Result RealPlayer::stackFight(Stack** attacker, Stack** defender, bool ru
 
     // I suppose, this should be always true, but one can never be sure
     bool attacker_active = *attacker == d_stacklist->getActivestack();
+    Player* pa = (*attacker)->getPlayer();
 
     Fight fight(*attacker, *defender);
-    fight_started.emit(fight);
+
+    if ((pa->getType() == Player::HUMAN || pd->getType() == Player::HUMAN) ||
+	(pa->getType() != Player::HUMAN && pd->getType() != Player::HUMAN 
+	 && pd != Playerlist::getInstance()->getNeutral()))
+      fight_started.emit(fight);
+    else
+      fight.battle();
 
     // cleanup
     
