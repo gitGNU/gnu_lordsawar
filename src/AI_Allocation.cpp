@@ -335,6 +335,19 @@ int AI_Allocation::defaultStackMovements()
                 result = moveStack(s, enemyCity->getPos());
                 if (result && result->didSomething()) count++;
             }
+	    else
+	    {
+	      enemyCity = allCities->getNearestForeignCity(s->getPos());
+	      if (enemyCity)
+		{
+		  s->getPlayer()->proposeDiplomacy(Player::PROPOSE_WAR,
+						   enemyCity->getPlayer());
+		  debug("let's attack " <<enemyCity->getName())
+		  result = moveStack(s, enemyCity->getPos());
+		  if (result && result->didSomething()) count++;
+		}
+	    }
+
             if (!result || !result->didSomething())
             {
                 // for some reason (islands are one bet), we could not attack the

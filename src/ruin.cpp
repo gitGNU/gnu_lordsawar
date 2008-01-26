@@ -60,6 +60,8 @@ Ruin::Ruin(XML_Helper* helper)
 
 Ruin::~Ruin()
 {
+    //if (d_reward)
+        //delete d_reward;
     if (d_occupant)
         delete d_occupant;
 }

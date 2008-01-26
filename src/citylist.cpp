@@ -110,6 +110,36 @@ City* Citylist::getNearestEnemyCity(const Vector<int>& pos)
         if ((*it).isBurnt())
             continue;
 
+        if ((*it).getPlayer() != p &&
+	    p->getDiplomaticState((*it).getPlayer()) == Player::AT_WAR)
+        {        
+            Vector<int> p = (*it).getPos();
+            int delta = abs(p.x - pos.x);
+            if (delta < abs(p.y - pos.y))
+                delta = abs(p.y - pos.y);
+            if ((diff > delta) || (diff == -1))
+            {
+                diff = delta;
+                diffit = it;
+            }
+        }
+    }
+
+    if (diff == -1) return 0;
+    return &(*diffit);
+}
+
+City* Citylist::getNearestForeignCity(const Vector<int>& pos)
+{
+    int diff = -1;
+    iterator diffit;
+    Player* p = Playerlist::getInstance()->getActiveplayer();
+    
+    for (iterator it = begin(); it != end(); ++it)
+    {
+        if ((*it).isBurnt())
+            continue;
+
         if ((*it).getPlayer() != p)
         {        
             Vector<int> p = (*it).getPos();

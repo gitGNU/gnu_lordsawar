@@ -90,6 +90,27 @@ bool AI_Fast::startTurn()
 
     d_stacklist->setActivestack(0);
 
+    // Declare war with enemies, make peace with friends
+    Playerlist *pl = Playerlist::getInstance();
+    for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+      {
+	if (pl->getNeutral() == (*it))
+	  continue;
+	if ((*it)->isDead())
+	  continue;
+	if ((*it) == this)
+	  continue;
+	if (getDiplomaticState(*it) != AT_WAR)
+	  {
+	    if (getDiplomaticScore (*it) > DIPLOMACY_MIN_SCORE + 2)
+	      proposeDiplomacy (PROPOSE_WAR , *it);
+	  }
+	else if (getDiplomaticState(*it) != AT_PEACE)
+	  {
+	    if (getDiplomaticScore (*it) > DIPLOMACY_MAX_SCORE - 2)
+	      proposeDiplomacy (PROPOSE_PEACE, *it);
+	  }
+      }
     return true;
 }
 
@@ -246,7 +267,14 @@ void AI_Fast::computerTurn()
             // third step: non-maniac players attack only enemy cities
             else
             {
-                target = Citylist::getInstance()->getNearestEnemyCity(s->getPos());
+	        Citylist *cl = Citylist::getInstance();
+                target = cl->getNearestEnemyCity(s->getPos());
+                if (!target)
+		  {
+		    target = cl->getNearestForeignCity(s->getPos());
+		    s->getPlayer()->proposeDiplomacy(Player::PROPOSE_WAR,
+						     target->getPlayer());
+		  }
                 if (!target)    // strange situation
                     return;
 
@@ -308,7 +336,7 @@ void AI_Fast::computerTurn()
             }
             else
             {
-                pos  = Citylist::getInstance()->getNearestEnemyCity(s->getPos())->getPos();
+                pos  = Citylist::getInstance()->getNearestForeignCity(s->getPos())->getPos();
                 debug("Maniac, found no targets, attacking city at (" <<pos.x <<"," <<pos.y <<")")
             }
 

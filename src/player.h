@@ -234,12 +234,6 @@ class Player: public sigc::trackable
 	//! Propose a new diplomatic state wrt another player
 	void proposeDiplomacy (DiplomaticProposal proposal, Player *player);
 
-	//! Is the another player friendly to us?
-	bool isFriendly (Player *player) {return (getDiplomaticState (player) == AT_PEACE) ? true : false; };
-
-	//! Is the another player an enemy to us?
-	bool isEnemy (Player *player) {return !isFriendly (player);}
-
 	//! Set this player's rank in diplomatic matters.  Starts at 1.
 	void setDiplomaticRank (Uint32 rank) {d_diplomatic_rank = rank;};
 

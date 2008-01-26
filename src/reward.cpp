@@ -222,6 +222,7 @@ bool Reward_Item::save(XML_Helper* helper) const
 
 Reward_Item::~Reward_Item()
 {
+  /*FIXME: delete d_item somehow */
 }
 
 Reward_Ruin::Reward_Ruin(Ruin *ruin)

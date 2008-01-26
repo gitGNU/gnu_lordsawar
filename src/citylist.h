@@ -58,8 +58,12 @@ class Citylist : public ObjectList<City>, public sigc::trackable
         //! Count the number of cities of player p.
         int countCities(Player* p) const;
 
-        //! Returns the city closest to pos that isn't owned by the ActivePlayer
+        //! Returns the city closest to pos that is owned by a player that
+	//! Activeplayer is at war with.
         City* getNearestEnemyCity(const Vector<int>& pos);
+
+        //! Returns the city closest to pos that isn't owned by the ActivePlayer
+	City* getNearestForeignCity(const Vector<int>& pos);
 
         //! Returns the city closest to pos that is owned by the ActivePlayer
         City* getNearestFriendlyCity(const Vector<int>& pos);
