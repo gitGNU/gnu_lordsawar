@@ -13,6 +13,7 @@ diplomacy:
 		hook in citylist, to the player's new isFriendly function.
 	rejigger the ranks according to various actions
 	calculates the ranks
+	disabling diplomacy should make everyone at war with everyone, and not show any diplomacy events in the history
 
 shields should be part of the army set.
 
