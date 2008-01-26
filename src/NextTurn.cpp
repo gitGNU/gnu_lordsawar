@@ -23,6 +23,7 @@
 #include "vectoredunitlist.h"
 #include "FogMap.h"
 #include "history.h"
+#include "GameScenario.h"
 
 #include "path.h"
 
@@ -48,8 +49,6 @@ void NextTurn::start()
     if (!plist->getActiveplayer())
         plist->nextPlayer();
 	
-    plist->calculateDiplomaticRankings();
-
     while (!d_stop)
     {
         // do various start-up tasks
@@ -177,51 +176,11 @@ void NextTurn::finishRound()
 	}
     }
 
-      
-  // hold diplomatic talks, and determine diplomatic outcomes
-  for (Playerlist::iterator pit = plist->begin(); pit != plist->end(); pit++)
+  if (GameScenario::s_diplomacy)
     {
-      if ((*pit)->isDead())
-	continue;
-
-      if ((*pit) == plist->getNeutral())
-	continue;
-  
-      for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
-	{
-      
-	  if ((*it)->isDead())
-	    continue;
-
-	  if ((*it) == plist->getNeutral())
-	    continue;
-
-	  if ((*it) == (*pit))
-	    break;
-  
-	  Player::DiplomaticState old_state = (*pit)->getDiplomaticState(*it);
-	  Player::DiplomaticState new_state = (*pit)->negotiateDiplomacy (*it);
-	  (*pit)->declareDiplomacy (new_state, (*it));
-	  (*it)->declareDiplomacy (new_state, (*pit));
-	  if (old_state != new_state)
-	    {
-	      if (new_state == Player::AT_PEACE)
-		{
-		  History_DiplomacyPeace *item = new History_DiplomacyPeace();
-		  item->fillData(*it);
-		  (*pit)->getHistorylist()->push_back(item);
-		}
-	      else if (new_state == Player::AT_WAR)
-		{
-		  History_DiplomacyWar *item = new History_DiplomacyWar();
-		  item->fillData(*it);
-		  (*pit)->getHistorylist()->push_back(item);
-		}
-	    }
-	}
+      Playerlist::getInstance()->negotiateDiplomacy();
+      Playerlist::getInstance()->calculateDiplomaticRankings();
     }
-
-  Playerlist::getInstance()->calculateDiplomaticRankings();
   Playerlist::getInstance()->calculateWinners();
 
   // heal the stacks in the ruins

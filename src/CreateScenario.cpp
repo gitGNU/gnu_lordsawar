@@ -343,7 +343,7 @@ bool CreateScenario::create(const GameParameters &g)
     if (!setupSignposts())
         return false;
 
-    if (!setupPlayers())
+    if (!setupPlayers(g.diplomacy))
         return false;
 
     if (!setupRewards())
@@ -706,16 +706,35 @@ bool CreateScenario::setupSignposts()
     return true;
 }
 
-bool CreateScenario::setupPlayers()
+bool CreateScenario::setupPlayers(bool diplomacy)
 {
     debug("CreateScenario::setupPlayers")
 
-    Playerlist *plist = Playerlist::getInstance();
-    Playerlist::iterator pit = plist->begin();
-    for (; pit != plist->end(); pit++)
+    Playerlist *pl = Playerlist::getInstance();
+
+    // Give players some gold to start with
+    for (Playerlist::iterator pit = pl->begin(); pit != pl->end(); pit++)
+      (*pit)->setGold(1000 + ((rand() % 8) * 50));
+
+    // Set up diplomacy
+    for (Playerlist::iterator pit = pl->begin(); pit != pl->end(); pit++)
       {
-	(*pit)->setGold(1000 + ((rand() % 8) * 50));
+	for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+	  {
+	    if (pl->getNeutral() == (*pit) || diplomacy == false)
+	      {
+		(*pit)->proposeDiplomacy(Player::PROPOSE_WAR, *it);
+		(*pit)->declareDiplomacy(Player::AT_WAR, *it);
+	      }
+	    else 
+	      {
+		(*pit)->proposeDiplomacy(Player::NO_PROPOSAL, *it);
+		(*pit)->declareDiplomacy(Player::AT_PEACE, *it);
+	      }
+	  }
       }
+    if (diplomacy)
+      pl->calculateDiplomaticRankings();
     return true;
 }
 

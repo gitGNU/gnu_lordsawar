@@ -396,3 +396,49 @@ Uint32 Playerlist::countPlayersAlive ()
     }
   return numAlive;
 }
+
+void Playerlist::negotiateDiplomacy()
+{
+  // hold diplomatic talks, and determine diplomatic outcomes
+  for (iterator pit = begin(); pit != end(); pit++)
+    {
+      if ((*pit)->isDead())
+	continue;
+
+      if ((*pit) == getNeutral())
+	continue;
+  
+      for (iterator it = begin(); it != end(); it++)
+	{
+      
+	  if ((*it)->isDead())
+	    continue;
+
+	  if ((*it) == getNeutral())
+	    continue;
+
+	  if ((*it) == (*pit))
+	    break;
+  
+	  Player::DiplomaticState old_state = (*pit)->getDiplomaticState(*it);
+	  Player::DiplomaticState new_state = (*pit)->negotiateDiplomacy(*it);
+	  (*pit)->declareDiplomacy (new_state, (*it));
+	  (*it)->declareDiplomacy (new_state, (*pit));
+	  if (old_state != new_state)
+	    {
+	      if (new_state == Player::AT_PEACE)
+		{
+		  History_DiplomacyPeace *item = new History_DiplomacyPeace();
+		  item->fillData(*it);
+		  (*pit)->getHistorylist()->push_back(item);
+		}
+	      else if (new_state == Player::AT_WAR)
+		{
+		  History_DiplomacyWar *item = new History_DiplomacyWar();
+		  item->fillData(*it);
+		  (*pit)->getHistorylist()->push_back(item);
+		}
+	    }
+	}
+    }
+}

@@ -101,6 +101,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
     
         void calculateWinners();
         void calculateDiplomaticRankings();
+	void negotiateDiplomacy();
 
 	Uint32 countHumanPlayersAlive();
 	Uint32 countPlayersAlive();

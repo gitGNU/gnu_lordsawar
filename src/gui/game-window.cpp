@@ -258,6 +258,7 @@ GameWindow::GameWindow()
     //xml->connect_clicked
       //("diplomacy_button", sigc::mem_fun
        //(*this, &GameWindow::on_diplomacy_button_clicked));
+  
     d_quick_fights = false;
 }
 
@@ -636,7 +637,10 @@ void GameWindow::setup_signals()
 void GameWindow::update_diplomacy_button (bool proposals_present)
 {
   if (GameScenario::s_diplomacy == false)
-    return;
+    {
+      diplomacy_button->set_sensitive (false);
+      return;
+    }
   /* switch up the image. */
   if (proposals_present)
     diplomacy_button->property_image() = new Gtk::Image(d_button_images[8]);
@@ -1871,6 +1875,7 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 	  if (raze)
 	    {
 	      //button->set_label(">" + button->get_label() +"<");
+	      xml->get_widget("raze_button", button);
 	      button->grab_default();
 	    }
 	  if (occupy)

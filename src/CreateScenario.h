@@ -174,7 +174,9 @@ class CreateScenario
         bool setupSignposts();
 
         //! Do some setup concerning the players (give them money)
-        bool setupPlayers();
+	//! If we're playing with diplomacy then we start out at peace,
+	//! and if we're not playing with diplomacy we start out at war.
+        bool setupPlayers(bool dimplomacy);
 
         /** Loads a list of possible city, ruin or temple names
           * 
