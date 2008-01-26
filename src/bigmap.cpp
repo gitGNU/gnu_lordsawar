@@ -58,7 +58,6 @@ BigMap::BigMap()
     // load all pictures
     d_signpostpic = File::getMapsetPicture("default", "misc/signpost.png");
 
-
     d_itempic = File::getMiscPicture("items.png");
 
     // note: we are not fully initialized before set_view is called
@@ -548,7 +547,6 @@ void BigMap::draw_buffer()
     d_renderer->render(0, 0, buffer_view.x, buffer_view.y,
 		       buffer_view.w, buffer_view.h);
 
-    /*
     for (Ruinlist::iterator i = Ruinlist::getInstance()->begin();
 	 i != Ruinlist::getInstance()->end(); ++i)
       {
@@ -628,7 +626,6 @@ void BigMap::draw_buffer()
                 }
 	    }
 
-*/
     // Draw stacks
     for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
 	 pit != Playerlist::getInstance()->end(); pit++)
