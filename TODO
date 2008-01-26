@@ -11,8 +11,7 @@ buildings can be put on tiles that get turned into water
 diplomacy:
 	have computer players declare war
 		hook in citylist, to the player's new isFriendly function.
-	rejigger the ranks according to various actions
-	calculates the ranks
+	rejigger the scores according to various actions
 
 shields should be part of the army set.
 

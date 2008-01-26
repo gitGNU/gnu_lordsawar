@@ -255,6 +255,15 @@ class Player: public sigc::trackable
 	//! Negotiate diplomatic talks.
 	DiplomaticState negotiateDiplomacy (Player *player);
 
+	//! Get the diplomatic score wrt another player
+	Uint32 getDiplomaticScore (Player *p);
+
+	//! Make your diplomatic view of another player increase
+	void improveDiplomaticRelationship (Player *p, Uint32 amount);
+
+	//! Make your diplomatic view of another player decrease
+	void deteriorateDiplomaticRelationship (Player *, Uint32 amount);
+
         //! Returns the main color of the player
         SDL_Color getColor() const {return d_color;}
 
@@ -641,11 +650,15 @@ class Player: public sigc::trackable
 	Uint32 d_diplomatic_rank;
 	std::string d_diplomatic_title;
 	DiplomaticProposal d_diplomatic_proposal[MAX_PLAYERS];
+	Uint32 d_diplomatic_score[MAX_PLAYERS];
 
 
     private:
         //! Loads the subdata of a player (actions and stacklist)
         bool load(std::string tag, XML_Helper* helper);
+
+	//! assists in scorekeeping for diplomacy
+	void alterDiplomaticRelationshipScore (Player *player, int amount);
 };
 
 extern sigc::signal<void, Player::Type>  sendingTurn;

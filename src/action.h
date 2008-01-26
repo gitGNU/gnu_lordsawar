@@ -79,6 +79,7 @@ class Action
 		PRODUCE_VECTORED_UNIT = 26,
 		DIPLOMATIC_STATE = 27,
 		DIPLOMATIC_PROPOSAL = 28,
+		DIPLOMATIC_SCORE = 29,
         };
                 
         
@@ -623,10 +624,10 @@ class Action_DiplomacyState: public Action
 
         bool fillData(Player *player, Player::DiplomaticState state);
 
-	Player *getOpponent() const {return d_opponent;}
+	Uint32 getOpponentId() const {return d_opponent_id;}
 	Player::DiplomaticState getDiplomaticState() {return d_diplomatic_state;};
     private:
-	Player *d_opponent;
+	Uint32 d_opponent_id;
 	Player::DiplomaticState d_diplomatic_state;
 };
 
@@ -643,11 +644,31 @@ class Action_DiplomacyProposal: public Action
 
         bool fillData(Player *player, Player::DiplomaticProposal proposal);
 
-	Player *getOpponent() const {return d_opponent;}
+	Uint32 getOpponentId() const {return d_opponent_id;}
 	Player::DiplomaticProposal getDiplomaticProposal() {return d_diplomatic_proposal;};
     private:
-	Player *d_opponent;
+	Uint32 d_opponent_id;
 	Player::DiplomaticProposal d_diplomatic_proposal;
+};
+
+//-----------------------------------------------------------------------------
+class Action_DiplomacyScore: public Action
+{
+    public:
+        Action_DiplomacyScore();
+        Action_DiplomacyScore(XML_Helper* helper);
+        ~Action_DiplomacyScore();
+
+        std::string dump() const;
+        bool save(XML_Helper* helper) const;
+
+        bool fillData(Player *player, int amount);
+
+	Uint32 getOpponentId() const {return d_opponent_id;}
+	int getAmountChange() {return d_amount;};
+    private:
+	Uint32 d_opponent_id;
+	int d_amount;
 };
 
 #endif //ACTION_H

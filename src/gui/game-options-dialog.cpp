@@ -134,7 +134,6 @@ bool GameOptionsDialog::run()
     g.razing_cities = GameParameters::RazingCities (
 	razing_cities_combobox->get_active_row_number());
     Configuration::s_razing_cities = g.razing_cities;
-    printf ("saving configuration razing cities as %d\n", g.razing_cities);
 
     g.diplomacy = diplomacy_checkbutton->get_active();
     Configuration::s_diplomacy = g.diplomacy;

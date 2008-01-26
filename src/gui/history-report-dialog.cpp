@@ -526,24 +526,30 @@ void HistoryReportDialog::addHistoryEvent(History *event)
 	{
 	  History_DiplomacyPeace *ev;
 	  ev = static_cast<History_DiplomacyPeace*>(event);
+	  Playerlist *pl = Playerlist::getInstance();
+	  Player *opponent = pl->getPlayer(ev->getOpponentId());
 	  s = String::ucompose(_("%1 at peace with %2!"), p->getName(), 
-			       ev->getOpponent()->getName());
+			       opponent->getName());
 	  break;
 	}
     case History::DIPLOMATIC_WAR:
 	{
 	  History_DiplomacyWar *ev;
 	  ev = static_cast<History_DiplomacyWar*>(event);
+	  Playerlist *pl = Playerlist::getInstance();
+	  Player *opponent = pl->getPlayer(ev->getOpponentId());
 	  s = String::ucompose(_("%1 at war with %2!"), p->getName(), 
-			       ev->getOpponent()->getName());
+			       opponent->getName());
 	  break;
 	}
     case History::DIPLOMATIC_TREACHERY:
 	{
 	  History_DiplomacyTreachery *ev;
 	  ev = static_cast<History_DiplomacyTreachery*>(event);
+	  Playerlist *pl = Playerlist::getInstance();
+	  Player *opponent = pl->getPlayer(ev->getOpponentId());
 	  s = String::ucompose(_("Treachery by %1 on %2!"), p->getName(),
-			       ev->getOpponent()->getName());
+			       opponent->getName());
 	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
 	  break;
 	}

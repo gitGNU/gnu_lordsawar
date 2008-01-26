@@ -112,6 +112,8 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_DiplomacyState(helper));
         case DIPLOMATIC_PROPOSAL:
             return (new Action_DiplomacyProposal(helper));
+	case DIPLOMATIC_SCORE:
+            return (new Action_DiplomacyScore(helper));
     }
 
     return 0;
@@ -183,6 +185,10 @@ Action* Action::copy(const Action* a)
             return 
               (new Action_DiplomacyProposal
                 (*dynamic_cast<const Action_DiplomacyProposal*>(a)));
+        case DIPLOMATIC_SCORE:
+            return 
+              (new Action_DiplomacyScore
+                (*dynamic_cast<const Action_DiplomacyScore*>(a)));
     }
 
     return 0;
@@ -1657,9 +1663,7 @@ Action_DiplomacyState::Action_DiplomacyState(XML_Helper* helper)
 :Action(Action::DIPLOMATIC_STATE)
 {
   Uint32 diplomatic_state;
-  Uint32 opponent_id;
-  helper->getData(opponent_id, "opponent");
-  d_opponent = Playerlist::getInstance()->getPlayer(opponent_id);
+  helper->getData(d_opponent_id, "opponent_id");
   helper->getData(diplomatic_state, "state");
   d_diplomatic_state = Player::DiplomaticState(diplomatic_state);
 }
@@ -1678,7 +1682,7 @@ std::string Action_DiplomacyState::dump() const
     case Player::AT_WAR_IN_FIELD: s <<"war in the field"; break;
     case Player::AT_PEACE: s <<"peace"; break;
     }
-  s << " with " << d_opponent->getName() <<".\n";
+  s << " with player " << d_opponent_id <<".\n";
 
   return s.str();
 }
@@ -1689,7 +1693,7 @@ bool Action_DiplomacyState::save(XML_Helper* helper) const
 
   retval &= helper->openTag("action");
   retval &= helper->saveData("type", d_type);
-  retval &= helper->saveData("opponent", d_opponent->getId());
+  retval &= helper->saveData("opponent_id", d_opponent_id);
   retval &= helper->saveData("state", (Uint32)d_diplomatic_state);
   retval &= helper->closeTag();
 
@@ -1699,7 +1703,7 @@ bool Action_DiplomacyState::save(XML_Helper* helper) const
 bool Action_DiplomacyState::fillData(Player *opponent, 
 				      Player::DiplomaticState state)
 {
-  d_opponent = opponent;
+  d_opponent_id = opponent->getId();
   d_diplomatic_state = state;
   return true;
 }
@@ -1716,9 +1720,7 @@ Action_DiplomacyProposal::Action_DiplomacyProposal(XML_Helper* helper)
 :Action(Action::DIPLOMATIC_PROPOSAL)
 {
   Uint32 diplomatic_proposal;
-  Uint32 opponent_id;
-  helper->getData(opponent_id, "opponent");
-  d_opponent = Playerlist::getInstance()->getPlayer(opponent_id);
+  helper->getData(d_opponent_id, "opponent_id");
   helper->getData(diplomatic_proposal, "proposal");
   d_diplomatic_proposal = Player::DiplomaticProposal(diplomatic_proposal);
 }
@@ -1738,7 +1740,7 @@ std::string Action_DiplomacyProposal::dump() const
     case Player::PROPOSE_WAR_IN_FIELD: s <<"war in the field"; break;
     case Player::PROPOSE_PEACE: s <<"peace"; break;
     }
-  s << " with " << d_opponent->getName() << ".\n";
+  s << " with player " << d_opponent_id << ".\n";
 
   return s.str();
 }
@@ -1749,7 +1751,7 @@ bool Action_DiplomacyProposal::save(XML_Helper* helper) const
 
   retval &= helper->openTag("action");
   retval &= helper->saveData("type", d_type);
-  retval &= helper->saveData("opponent", d_opponent->getId());
+  retval &= helper->saveData("opponent_id", d_opponent_id);
   retval &= helper->saveData("proposal", (Uint32)d_diplomatic_proposal);
   retval &= helper->closeTag();
 
@@ -1759,7 +1761,58 @@ bool Action_DiplomacyProposal::save(XML_Helper* helper) const
 bool Action_DiplomacyProposal::fillData(Player *opponent, 
 					 Player::DiplomaticProposal proposal)
 {
-  d_opponent = opponent;
+  d_opponent_id = opponent->getId();
   d_diplomatic_proposal = proposal;
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_DiplomacyScore
+
+Action_DiplomacyScore::Action_DiplomacyScore()
+:Action(Action::DIPLOMATIC_SCORE)
+{
+}
+
+Action_DiplomacyScore::Action_DiplomacyScore(XML_Helper* helper)
+:Action(Action::DIPLOMATIC_SCORE)
+{
+  helper->getData(d_opponent_id, "opponent_id");
+  helper->getData(d_amount, "amount");
+}
+
+Action_DiplomacyScore::~Action_DiplomacyScore()
+{
+}
+
+std::string Action_DiplomacyScore::dump() const
+{
+  std::stringstream s;
+  if(d_amount > 0)
+    s << "adding " << d_amount << " to " ;
+  else
+    s << "subtracting " << d_amount << " from "; 
+  s << "player " << d_opponent_id << ".\n";
+
+  return s.str();
+}
+
+bool Action_DiplomacyScore::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("opponent_id", d_opponent_id);
+  retval &= helper->saveData("amount", d_amount);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+
+bool Action_DiplomacyScore::fillData(Player *opponent, int amount)
+{
+  d_opponent_id = opponent->getId();
+  d_amount = amount;
   return true;
 }

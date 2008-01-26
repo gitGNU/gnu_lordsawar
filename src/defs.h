@@ -47,6 +47,9 @@ const unsigned int MAX_ARMIES_VECTORED_TO_ONE_CITY = 4;
 const unsigned int MAX_TURNS_FOR_VECTORING = 2;
 const unsigned int MAX_BOAT_MOVES = 18;
 const unsigned int CUSP_OF_WAR_ROUND = 9;
+const unsigned int DIPLOMACY_STARTING_SCORE = 8;
+const unsigned int DIPLOMACY_MAX_SCORE = 15;
+const unsigned int DIPLOMACY_MIN_SCORE = 0;
 
 // from www.boost.org - derivation from this class makes the derived class
 // noncopyable

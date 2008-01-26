@@ -719,9 +719,15 @@ bool CreateScenario::setupPlayers(bool diplomacy)
     // Set up diplomacy
     for (Playerlist::iterator pit = pl->begin(); pit != pl->end(); pit++)
       {
+	if (pl->getNeutral() == (*pit))
+	  continue;
 	for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
 	  {
-	    if (pl->getNeutral() == (*pit) || diplomacy == false)
+	    if (pl->getNeutral() == (*it))
+	      continue;
+	    if (*pit == *it)
+	      continue;
+	    if (diplomacy == false)
 	      {
 		(*pit)->proposeDiplomacy(Player::PROPOSE_WAR, *it);
 		(*pit)->declareDiplomacy(Player::AT_WAR, *it);

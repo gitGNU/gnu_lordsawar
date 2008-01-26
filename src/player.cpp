@@ -102,6 +102,7 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, Type type,
     {
       d_diplomatic_state[i] = AT_PEACE;
       d_diplomatic_proposal[i] = NO_PROPOSAL;
+      d_diplomatic_score[i] = DIPLOMACY_STARTING_SCORE;
     }
     d_diplomatic_rank = 0;
     d_diplomatic_title = std::string("");
@@ -144,6 +145,7 @@ Player::Player(const Player& player)
       {
 	d_diplomatic_state[i] = player.d_diplomatic_state[i];
 	d_diplomatic_proposal[i] = player.d_diplomatic_proposal[i];
+	d_diplomatic_score[i] = player.d_diplomatic_score[i];
       }
     d_diplomatic_rank = player.d_diplomatic_rank;
     d_diplomatic_title = player.d_diplomatic_title;
@@ -207,6 +209,17 @@ Player::Player(XML_Helper* helper)
     {
             sdiplomatic_proposals>> val;
 	    d_diplomatic_proposal[i] = DiplomaticProposal(val);
+    }
+
+    // Read in Diplomatic Scores.  One score per player.
+    std::string diplomatic_scores;
+    std::stringstream sdiplomatic_scores;
+    helper->getData(diplomatic_scores, "diplomatic_scores");
+    sdiplomatic_scores.str(diplomatic_scores);
+    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+            sdiplomatic_scores >> val;
+	    d_diplomatic_score[i] = val;
     }
 
     //last but not least, register the load function for actionlist
@@ -480,6 +493,14 @@ bool Player::save(XML_Helper* helper) const
     retval &= helper->saveData("diplomatic_proposals", 
 			       diplomatic_proposals.str());
 
+    // save the diplomatic scores, one score per player
+    std::stringstream diplomatic_scores;
+    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+      {
+	diplomatic_scores << d_diplomatic_score[i] << " ";
+      }
+    retval &= helper->saveData("diplomatic_scores", diplomatic_scores.str());
+
     //save the actionlist
     for (list<Action*>::const_iterator it = d_actions.begin();
             it != d_actions.end(); it++)
@@ -617,6 +638,9 @@ void Player::calculateUpkeep()
 	
 void Player::declareDiplomacy (DiplomaticState state, Player *player)
 {
+  Playerlist *pl = Playerlist::getInstance();
+  if (pl->getNeutral() == player)
+    return;
   if (state == d_diplomatic_state[player->getId()])
     return;
   d_diplomatic_state[player->getId()] = state;
@@ -630,6 +654,9 @@ void Player::declareDiplomacy (DiplomaticState state, Player *player)
 
 void Player::proposeDiplomacy (DiplomaticProposal proposal, Player *player)
 {
+  Playerlist *pl = Playerlist::getInstance();
+  if (pl->getNeutral() == player)
+    return;
   if (proposal == d_diplomatic_proposal[player->getId()])
     return;
   d_diplomatic_proposal[player->getId()] = proposal;
@@ -713,5 +740,54 @@ Player::DiplomaticProposal Player::getDiplomaticProposal (Player *player)
   if (player == Playerlist::getInstance()->getNeutral())
     return PROPOSE_WAR;
   return d_diplomatic_proposal[player->getId()];
+}
+
+Uint32 Player::getDiplomaticScore (Player *player)
+{
+  Playerlist *pl = Playerlist::getInstance();
+  if (pl->getNeutral() == player)
+    return 8;
+  return d_diplomatic_score[player->getId()];
+}
+
+void Player::alterDiplomaticRelationshipScore (Player *player, int amount)
+{
+  if (amount > 0)
+    {
+      if (d_diplomatic_score[player->getId()] + amount > DIPLOMACY_MAX_SCORE)
+	d_diplomatic_score[player->getId()] = DIPLOMACY_MAX_SCORE;
+      else
+	d_diplomatic_score[player->getId()] += amount;
+    }
+  else if (amount < 0)
+    {
+      if ((Uint32) (amount * -1) > d_diplomatic_score[player->getId()])
+	d_diplomatic_score[player->getId()] = DIPLOMACY_MIN_SCORE;
+      else
+	d_diplomatic_score[player->getId()] += amount;
+    }
+}
+
+void Player::improveDiplomaticRelationship (Player *player, Uint32 amount)
+{
+  Playerlist *pl = Playerlist::getInstance();
+  if (pl->getNeutral() == player)
+    return;
+  alterDiplomaticRelationshipScore (player, amount);
+  Action_DiplomacyScore* item = new Action_DiplomacyScore();
+  item->fillData(player, amount);
+  d_actions.push_back(item);
+}
+
+void Player::deteriorateDiplomaticRelationship (Player *player, Uint32 amount)
+{
+  Playerlist *pl = Playerlist::getInstance();
+  if (pl->getNeutral() == player)
+    return;
+  alterDiplomaticRelationshipScore (player, -amount);
+  Action_DiplomacyScore* item = new Action_DiplomacyScore();
+  item->fillData(player, -amount);
+  d_actions.push_back(item);
+
 }
 // End of file

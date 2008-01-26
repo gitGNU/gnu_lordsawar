@@ -790,16 +790,14 @@ bool History_PlayerVanquished::save(XML_Helper* helper) const
 //History_DiplomacyPeace
 
 History_DiplomacyPeace::History_DiplomacyPeace()
-:History(History::DIPLOMATIC_PEACE), d_opponent(NULL)
+:History(History::DIPLOMATIC_PEACE), d_opponent_id(0)
 {
 }
 
 History_DiplomacyPeace::History_DiplomacyPeace(XML_Helper* helper)
 :History(History::DIPLOMATIC_PEACE)
 {
-  Uint32 opponent_id;
-  helper->getData(opponent_id, "opponent");
-  d_opponent = Playerlist::getInstance()->getPlayer(opponent_id);
+  helper->getData(d_opponent_id, "opponent_id");
 }
 
 History_DiplomacyPeace::~History_DiplomacyPeace()
@@ -810,7 +808,7 @@ std::string History_DiplomacyPeace::dump() const
 {
   std::stringstream s;
 
-  s <<"peace has been won with " << d_opponent->getName();
+  s <<"peace has been won with player " << d_opponent_id;
   s <<"\n";
 
   return s.str();
@@ -822,7 +820,7 @@ bool History_DiplomacyPeace::save(XML_Helper* helper) const
 
   retval &= helper->openTag("history");
   retval &= helper->saveData("type", d_type);
-  retval &= helper->saveData("opponent", d_opponent->getId());
+  retval &= helper->saveData("opponent_id", d_opponent_id);
   retval &= helper->closeTag();
 
   return retval;
@@ -830,7 +828,7 @@ bool History_DiplomacyPeace::save(XML_Helper* helper) const
 
 bool History_DiplomacyPeace::fillData(Player *opponent)
 {
-  d_opponent = opponent;
+  d_opponent_id = opponent->getId();
   return true;
 }
 
@@ -838,16 +836,14 @@ bool History_DiplomacyPeace::fillData(Player *opponent)
 //History_DiplomacyWar
 
 History_DiplomacyWar::History_DiplomacyWar()
-:History(History::DIPLOMATIC_WAR), d_opponent(NULL)
+:History(History::DIPLOMATIC_WAR), d_opponent_id(0)
 {
 }
 
 History_DiplomacyWar::History_DiplomacyWar(XML_Helper* helper)
 :History(History::DIPLOMATIC_WAR)
 {
-  Uint32 opponent_id;
-  helper->getData(opponent_id, "opponent");
-  d_opponent = Playerlist::getInstance()->getPlayer(opponent_id);
+  helper->getData(d_opponent_id, "opponent_id");
 }
 
 History_DiplomacyWar::~History_DiplomacyWar()
@@ -858,7 +854,7 @@ std::string History_DiplomacyWar::dump() const
 {
   std::stringstream s;
 
-  s <<"war has been declared with " << d_opponent->getName();
+  s <<"war has been declared with player " << d_opponent_id;
   s <<"\n";
 
   return s.str();
@@ -870,7 +866,7 @@ bool History_DiplomacyWar::save(XML_Helper* helper) const
 
   retval &= helper->openTag("history");
   retval &= helper->saveData("type", d_type);
-  retval &= helper->saveData("opponent", d_opponent->getId());
+  retval &= helper->saveData("opponent_id", d_opponent_id);
   retval &= helper->closeTag();
 
   return retval;
@@ -878,7 +874,7 @@ bool History_DiplomacyWar::save(XML_Helper* helper) const
 
 bool History_DiplomacyWar::fillData(Player *opponent)
 {
-  d_opponent = opponent;
+  d_opponent_id = opponent->getId();
   return true;
 }
 
@@ -886,16 +882,14 @@ bool History_DiplomacyWar::fillData(Player *opponent)
 //History_DiplomacyTreachery
 
 History_DiplomacyTreachery::History_DiplomacyTreachery()
-:History(History::DIPLOMATIC_TREACHERY), d_opponent(NULL)
+:History(History::DIPLOMATIC_TREACHERY), d_opponent_id(0)
 {
 }
 
 History_DiplomacyTreachery::History_DiplomacyTreachery(XML_Helper* helper)
 :History(History::DIPLOMATIC_TREACHERY)
 {
-  Uint32 opponent_id;
-  helper->getData(opponent_id, "opponent");
-  d_opponent = Playerlist::getInstance()->getPlayer(opponent_id);
+  helper->getData(d_opponent_id, "opponent_id");
 }
 
 History_DiplomacyTreachery::~History_DiplomacyTreachery()
@@ -906,7 +900,7 @@ std::string History_DiplomacyTreachery::dump() const
 {
   std::stringstream s;
 
-  s <<"treachery on " << d_opponent->getName();
+  s <<"treachery on player " << d_opponent_id;
   s <<"\n";
 
   return s.str();
@@ -918,7 +912,7 @@ bool History_DiplomacyTreachery::save(XML_Helper* helper) const
 
   retval &= helper->openTag("history");
   retval &= helper->saveData("type", d_type);
-  retval &= helper->saveData("opponent", d_opponent->getId());
+  retval &= helper->saveData("opponent_id", d_opponent_id);
   retval &= helper->closeTag();
 
   return retval;
@@ -926,7 +920,7 @@ bool History_DiplomacyTreachery::save(XML_Helper* helper) const
 
 bool History_DiplomacyTreachery::fillData(Player *opponent)
 {
-  d_opponent = opponent;
+  d_opponent_id = opponent->getId();
   return true;
 }
 

@@ -1135,6 +1135,10 @@ bool Game::init_turn_for_player(Player* p)
 		    p->proposeDiplomacy (Player::PROPOSE_WAR, *it);
 		    (*it)->proposeDiplomacy (Player::PROPOSE_WAR, p);
 		    p->declareDiplomacy (Player::AT_WAR, *it);
+  
+		    History_DiplomacyWar *item1 = new History_DiplomacyWar();
+		    item1->fillData(*it);
+		    p->getHistorylist()->push_back(item1);
 		  }
 	      }
 	}

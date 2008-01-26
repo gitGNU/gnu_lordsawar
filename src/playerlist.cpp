@@ -269,6 +269,21 @@ Playerlist::iterator Playerlist::flErase(Playerlist::iterator it)
     return erase (it);
 }
 
+struct rankable_t
+{
+  Uint32 score;
+  Player *player;
+};
+
+bool compareDiplomaticScores (const struct rankable_t lhs,
+			      const struct rankable_t rhs)
+{
+  /* make ties prefer normal player order */
+  if (lhs.score == rhs.score) 
+    return lhs.player->getId() > rhs.player->getId();
+  else
+    return lhs.score < rhs.score;
+}
 void Playerlist::calculateDiplomaticRankings()
 {
   unsigned int i = 0;
@@ -285,14 +300,37 @@ void Playerlist::calculateDiplomaticRankings()
     };
 
   //determine the rank for each player
-  //FIXME: provide a better ranking algorithm
-  for (const_iterator it = begin (); it != end (); it++)
+  //add up the scores for all living players, and sort
+  std::list<struct rankable_t> rankables;
+  for (iterator pit = begin (); pit != end (); pit++)
     {
-      if ((*it) == d_neutral)
+      if ((*pit) == d_neutral)
 	continue;
-      if ((*it)->isDead () == true)
+      if ((*pit)->isDead () == true)
 	continue;
-      (*it)->setDiplomaticRank (i + 1);
+      struct rankable_t rankable;
+      rankable.score = 0;
+      for (iterator it = begin (); it != end (); it++)
+	{
+	  if ((*it) == d_neutral)
+	    continue;
+	  if ((*it)->isDead () == true)
+	    continue;
+	  if (*pit == *it)
+	    continue;
+	  rankable.score += (*pit)->getDiplomaticScore(*it);
+	}
+      rankable.player = *pit;
+      rankables.push_back(rankable);
+    }
+  rankables.sort (compareDiplomaticScores);
+  std::reverse (rankables.begin (), rankables.end ());
+
+  i = 1;
+  for (std::list<struct rankable_t>::iterator rit = rankables.begin (); 
+       rit != rankables.end (); rit++)
+    {
+      (*rit).player->setDiplomaticRank(i);
       i++;
     }
 

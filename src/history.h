@@ -375,10 +375,10 @@ class History_DiplomacyPeace : public History
         bool save(XML_Helper* helper) const;
 
         bool fillData(Player *opponent);
-	Player *getOpponent() const {return d_opponent;}
+	Uint32 getOpponentId() const {return d_opponent_id;}
     
     private:
-	Player *d_opponent;
+	Uint32 d_opponent_id;
 };
 
 //-----------------------------------------------------------------------------
@@ -394,10 +394,10 @@ class History_DiplomacyWar: public History
         bool save(XML_Helper* helper) const;
 
         bool fillData(Player *opponent);
-	Player *getOpponent() const {return d_opponent;}
+	Uint32 getOpponentId() const {return d_opponent_id;}
     
     private:
-	Player *d_opponent;
+	Uint32 d_opponent_id;
 };
 
 //-----------------------------------------------------------------------------
@@ -413,10 +413,10 @@ class History_DiplomacyTreachery: public History
         bool save(XML_Helper* helper) const;
 
         bool fillData(Player *opponent);
-	Player *getOpponent() const {return d_opponent;}
+	Uint32 getOpponentId() const {return d_opponent_id;}
     
     private:
-	Player *d_opponent;
+	Uint32 d_opponent_id;
 };
 
 //-----------------------------------------------------------------------------
