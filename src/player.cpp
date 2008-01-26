@@ -641,6 +641,8 @@ void Player::declareDiplomacy (DiplomaticState state, Player *player)
   Playerlist *pl = Playerlist::getInstance();
   if (pl->getNeutral() == player)
     return;
+  if (player == this)
+    return;
   if (state == d_diplomatic_state[player->getId()])
     return;
   d_diplomatic_state[player->getId()] = state;
@@ -656,6 +658,8 @@ void Player::proposeDiplomacy (DiplomaticProposal proposal, Player *player)
 {
   Playerlist *pl = Playerlist::getInstance();
   if (pl->getNeutral() == player)
+    return;
+  if (player == this)
     return;
   if (proposal == d_diplomatic_proposal[player->getId()])
     return;
@@ -732,6 +736,8 @@ Player::DiplomaticState Player::getDiplomaticState (Player *player)
 {
   if (player == Playerlist::getInstance()->getNeutral())
     return AT_WAR;
+  if (player == this)
+    return AT_PEACE;
   return d_diplomatic_state[player->getId()];
 }
 	
@@ -739,6 +745,8 @@ Player::DiplomaticProposal Player::getDiplomaticProposal (Player *player)
 {
   if (player == Playerlist::getInstance()->getNeutral())
     return PROPOSE_WAR;
+  if (player == this)
+    return NO_PROPOSAL;
   return d_diplomatic_proposal[player->getId()];
 }
 
@@ -773,6 +781,8 @@ void Player::improveDiplomaticRelationship (Player *player, Uint32 amount)
   Playerlist *pl = Playerlist::getInstance();
   if (pl->getNeutral() == player)
     return;
+  if (player == this)
+    return;
   alterDiplomaticRelationshipScore (player, amount);
   Action_DiplomacyScore* item = new Action_DiplomacyScore();
   item->fillData(player, amount);
@@ -784,10 +794,79 @@ void Player::deteriorateDiplomaticRelationship (Player *player, Uint32 amount)
   Playerlist *pl = Playerlist::getInstance();
   if (pl->getNeutral() == player)
     return;
+  if (player == this)
+    return;
   alterDiplomaticRelationshipScore (player, -amount);
   Action_DiplomacyScore* item = new Action_DiplomacyScore();
   item->fillData(player, -amount);
   d_actions.push_back(item);
 
 }
+
+void Player::deteriorateDiplomaticRelationship (Uint32 amount)
+{
+  Playerlist *pl = Playerlist::getInstance();
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+    {
+      if ((*it)->isDead())
+	continue;
+      if (pl->getNeutral() == (*it))
+	continue;
+      if (*it == this)
+	continue;
+      (*it)->deteriorateDiplomaticRelationship (this, 5);
+    }
+}
+
+void Player::improveDiplomaticRelationship (Uint32 amount, Player *except)
+{
+  Playerlist *pl = Playerlist::getInstance();
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+    {
+      if ((*it)->isDead())
+	continue;
+      if (pl->getNeutral() == (*it))
+	continue;
+      if (*it == this)
+	continue;
+      if (except && *it == except)
+	continue;
+      (*it)->improveDiplomaticRelationship (this, 5);
+    }
+}
+		  
+void Player::deteriorateAlliesRelationship(Player *player, Uint32 amount,
+					   Player::DiplomaticState state)
+{
+  Playerlist *pl = Playerlist::getInstance();
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+    {
+      if ((*it)->isDead())
+	continue;
+      if (pl->getNeutral() == (*it))
+	continue;
+      if (*it == this)
+	continue;
+      if (getDiplomaticState(*it) == state)
+	(*it)->deteriorateDiplomaticRelationship (player, amount);
+    }
+}
+
+void Player::improveAlliesRelationship(Player *player, Uint32 amount,
+				       Player::DiplomaticState state)
+{
+  Playerlist *pl = Playerlist::getInstance();
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+    {
+      if ((*it)->isDead())
+	continue;
+      if (pl->getNeutral() == (*it))
+	continue;
+      if (*it == this)
+	continue;
+      if (player->getDiplomaticState(*it) == state)
+	(*it)->improveDiplomaticRelationship (this, amount);
+    }
+}
+
 // End of file

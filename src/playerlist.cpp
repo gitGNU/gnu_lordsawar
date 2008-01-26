@@ -464,17 +464,33 @@ void Playerlist::negotiateDiplomacy()
 	  (*it)->declareDiplomacy (new_state, (*pit));
 	  if (old_state != new_state)
 	    {
+	      Player *me = *pit;
+	      Player *them = *it;
 	      if (new_state == Player::AT_PEACE)
 		{
+		  //their view of me goes up
+		  them->improveDiplomaticRelationship(me, 1);
+		  //their allies think better of me
+		  me->improveAlliesRelationship (them, 1, Player::AT_PEACE);
+		  //their enemies think less of me
+		  them->deteriorateAlliesRelationship (me, 1, Player::AT_WAR);
+
 		  History_DiplomacyPeace *item = new History_DiplomacyPeace();
 		  item->fillData(*it);
 		  (*pit)->getHistorylist()->push_back(item);
 		}
 	      else if (new_state == Player::AT_WAR)
 		{
+		  //their view of me goes down
+		  them->deteriorateDiplomaticRelationship(me, 1);
+		  //their allies view of me goes down
+		  them->deteriorateAlliesRelationship(me, 1, Player::AT_PEACE);
+		  //their enemies view of me goes up
+		  me->improveAlliesRelationship(them, 1, Player::AT_WAR);
+
 		  History_DiplomacyWar *item = new History_DiplomacyWar();
-		  item->fillData(*it);
-		  (*pit)->getHistorylist()->push_back(item);
+		  item->fillData(them);
+		  me->getHistorylist()->push_back(item);
 		}
 	    }
 	}

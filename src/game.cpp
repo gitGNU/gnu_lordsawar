@@ -618,8 +618,18 @@ void Game::invading_city(City* city)
   Playerlist *plist = Playerlist::getInstance();
   Player *player = plist->getActiveplayer();
   int gold = 0;
-  // if a computer makes it's turn and occupied a city, we shouldn't
-  // show a modal dialog :)
+
+  // See if this is the last city for that player, and alter the 
+  // diplomatic scores.
+  if (Citylist::getInstance()->countCities(city->getPlayer()) == 1)
+    {
+      if (city->getPlayer()->getDiplomaticRank() < 
+	  player->getDiplomaticRank())
+	player->deteriorateDiplomaticRelationship (2);
+      else if (city->getPlayer()->getDiplomaticRank() > 
+	  player->getDiplomaticRank())
+	player->improveDiplomaticRelationship (2, city->getPlayer());
+    }
 
   // loot the city
   // if the attacked city isn't neutral, loot some gold
@@ -640,6 +650,7 @@ void Game::invading_city(City* city)
       case CITY_DEFEATED_RAZE:
 	player->cityRaze(city);
 	city_razed.emit (city);
+	player->deteriorateDiplomaticRelationship (5);
 	break;
 
       case CITY_DEFEATED_PILLAGE:
@@ -1215,5 +1226,9 @@ bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
   History_DiplomacyTreachery *item = new History_DiplomacyTreachery();
   item->fillData(them);
   me->getHistorylist()->push_back(item);
+
+  me->deteriorateDiplomaticRelationship (5);
+  them->improveDiplomaticRelationship (2, me);
+
   return true;
 }

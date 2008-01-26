@@ -261,8 +261,21 @@ class Player: public sigc::trackable
 	//! Make your diplomatic view of another player increase
 	void improveDiplomaticRelationship (Player *p, Uint32 amount);
 
+	//! Make all other players diplomatic view of you increase,
+	//! excepting one player (if not null).
+	void improveDiplomaticRelationship (Uint32 amount, Player *except);
+
 	//! Make your diplomatic view of another player decrease
 	void deteriorateDiplomaticRelationship (Player *, Uint32 amount);
+
+	//! Make all other players diplomatic view of you worsen
+	void deteriorateDiplomaticRelationship (Uint32 amount);
+
+	//! Make players you are at STATE with you think less of PLAYER.
+	void deteriorateAlliesRelationship(Player *player, Uint32 amount, Player::DiplomaticState state);
+
+	//! Make players who are at STATE with PLAYER think better of you.
+	void improveAlliesRelationship(Player *player, Uint32 amount, Player::DiplomaticState state);
 
         //! Returns the main color of the player
         SDL_Color getColor() const {return d_color;}

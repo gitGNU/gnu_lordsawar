@@ -11,7 +11,10 @@ buildings can be put on tiles that get turned into water
 diplomacy:
 	have computer players declare war
 		hook in citylist, to the player's new isFriendly function.
-	rejigger the scores according to various actions
+		e.g. don't target friendlies
+		and decide to declare war if the score is low enough
+		decide to declare peace if the score is high enough
+
 
 shields should be part of the army set.
 

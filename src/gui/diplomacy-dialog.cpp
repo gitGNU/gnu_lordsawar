@@ -88,7 +88,10 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       if ((*it) == d_player)
 	continue;
       if ((*it)->isDead())
-	continue;
+	{
+	  i++;
+	  continue;
+	}
       j = 0;
       Player::DiplomaticState state = d_player->getDiplomaticState (*it);
       Glib::RefPtr<Gdk::Pixbuf> pixbuf = to_pixbuf(gc->getDiplomacyPic(1, 
