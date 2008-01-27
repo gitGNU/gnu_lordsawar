@@ -14,7 +14,7 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
         ../QCitySack.o ../QCityRaze.o ../QPillageGold.o ../QEnemyArmytype.o \
         ../string_tokenizer.o ../reward.o ../rewardlist.o \
         ../Item.o ../Itemlist.o ../Threat.o ../Threatlist.o ../AI_Analysis.o \
-	../AI_Allocation.o ../MoveResult.o ../AICityInfo.o \
+	../AI_Allocation.o ../AI_Diplomacy.o ../MoveResult.o ../AICityInfo.o \
         ../FogMap.o ../signpostlist.o ../signpost.o\
 	../sound.o ../road.o ../roadlist.o \
         ../bridge.o ../bridgelist.o ../port.o ../portlist.o \

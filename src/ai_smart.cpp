@@ -24,6 +24,7 @@
 #include "path.h"
 #include "AI_Analysis.h"
 #include "AI_Allocation.h"
+#include "AI_Diplomacy.h"
 #include "action.h"
 #include "xmlhelper.h"
 #include "history.h"
@@ -84,27 +85,10 @@ bool AI_Smart::startTurn()
             break;
     }
     d_stacklist->setActivestack(0);
-    // Declare war with enemies, make peace with friends
-    Playerlist *pl = Playerlist::getInstance();
-    for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-      {
-	if (pl->getNeutral() == (*it))
-	  continue;
-	if ((*it)->isDead())
-	  continue;
-	if ((*it) == this)
-	  continue;
-	if (getDiplomaticState(*it) != AT_WAR)
-	  {
-	    if (getDiplomaticScore (*it) > DIPLOMACY_MIN_SCORE + 2)
-	      proposeDiplomacy (PROPOSE_WAR , *it);
-	  }
-	else if (getDiplomaticState(*it) != AT_PEACE)
-	  {
-	    if (getDiplomaticScore (*it) > DIPLOMACY_MAX_SCORE - 2)
-	      proposeDiplomacy (PROPOSE_PEACE, *it);
-	  }
-      }
+
+    AI_Diplomacy *diplomacy = new AI_Diplomacy (this);
+    diplomacy->makeProposals();
+    delete diplomacy;
     return true;
 }
 

@@ -28,6 +28,7 @@
 #include "Threatlist.h"
 #include "action.h"
 #include "xmlhelper.h"
+#include "AI_Diplomacy.h"
 
 using namespace std;
 
@@ -91,26 +92,9 @@ bool AI_Fast::startTurn()
     d_stacklist->setActivestack(0);
 
     // Declare war with enemies, make peace with friends
-    Playerlist *pl = Playerlist::getInstance();
-    for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-      {
-	if (pl->getNeutral() == (*it))
-	  continue;
-	if ((*it)->isDead())
-	  continue;
-	if ((*it) == this)
-	  continue;
-	if (getDiplomaticState(*it) != AT_WAR)
-	  {
-	    if (getDiplomaticScore (*it) > DIPLOMACY_MIN_SCORE + 2)
-	      proposeDiplomacy (PROPOSE_WAR , *it);
-	  }
-	else if (getDiplomaticState(*it) != AT_PEACE)
-	  {
-	    if (getDiplomaticScore (*it) > DIPLOMACY_MAX_SCORE - 2)
-	      proposeDiplomacy (PROPOSE_PEACE, *it);
-	  }
-      }
+    AI_Diplomacy *diplomacy = new AI_Diplomacy (this);
+    diplomacy->makeProposals();
+    delete diplomacy;
     return true;
 }
 
@@ -185,7 +169,7 @@ void AI_Fast::computerTurn()
     //      attack
     //
 
-    // we are usign reversed order because new stacks come behind old stacks
+    // we are using reversed order because new stacks come behind old stacks
     // and we want the freshly created stacks join the veterans and not the other
     // way round.
     for (Stacklist::reverse_iterator it = d_stacklist->rbegin(); it != d_stacklist->rend(); it++)
@@ -224,7 +208,7 @@ void AI_Fast::computerTurn()
             {
                 debug("Joining with stack " <<target->getId() <<" at (" <<target->getPos().x
                       <<"," <<target->getPos().y <<")")
-                s->getPath()->calculate(s, target->getPos());
+		s->getPath()->calculate(s, target->getPos());
                 stackMove(s);
 		continue;
             }
@@ -280,7 +264,18 @@ void AI_Fast::computerTurn()
 
                 debug("Attacking " <<target->getName())
                 s->getPath()->calculate(s, target->getPos());
-                stackMove(s);
+		if (s->getPath()->checkPath(s) == true)
+		  stackMove(s);
+		else
+		  {
+		    Citylist *cl = Citylist::getInstance();
+		    City *friendly_city = 
+		      cl->getNearestFriendlyCity(s->getPos());
+		    s->getPath()->calculate(s, friendly_city->getPos());
+		    stackMove(s);
+		    //we should *always* be able to reach a target city!
+		    //this is an error in map generation.
+		  }
 
                 // a stack has died ->restart
                 if (!d_stacklist->getActivestack())
@@ -341,7 +336,18 @@ void AI_Fast::computerTurn()
             }
 
             s->getPath()->calculate(s, pos);
-            stackMove(s);
+	    if (s->getPath()->checkPath(s) == true)
+	      stackMove(s);
+	    else
+	      {
+		Citylist *cl = Citylist::getInstance();
+		City *friendly_city = cl->getNearestFriendlyCity(s->getPos());
+		s->getPath()->calculate(s, friendly_city->getPos());
+		stackMove(s);
+		//FIXME: again, we should be able to reach any city,
+		//but we can't reach this one.  just go to the nearest city
+		//instead.  this is an error in map generation
+	      }
 
             if (!d_stacklist->getActivestack())
             {
