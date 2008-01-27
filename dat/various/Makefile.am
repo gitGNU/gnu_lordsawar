@@ -7,7 +7,6 @@ various_DATA = \
     arrows.png \
     waypoints.png \
     buttons.png \
-    buttons_inactive.png \
     city_occupied.jpg \
     items.png \
     medals_mask.gif \
@@ -48,7 +47,6 @@ EXTRA_DIST = \
     arrows.png \
     waypoints.png \
     buttons.png \
-    buttons_inactive.png \
     city_occupied.jpg \
     items.png \
     medals_mask.gif \
