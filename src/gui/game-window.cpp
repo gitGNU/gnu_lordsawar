@@ -273,11 +273,6 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_production_report_activated));
     xml->connect_clicked("triumphs_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_triumphs_activated));
-    //remove me
-    //xml->connect_clicked
-      //("diplomacy_button", sigc::mem_fun
-       //(*this, &GameWindow::on_diplomacy_button_clicked));
-  
     d_quick_fights = false;
 }
 

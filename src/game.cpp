@@ -225,6 +225,8 @@ void Game::update_sidebar_stats()
 {
     SidebarStats s;
     Player *player = Playerlist::getActiveplayer();
+    if (player == Playerlist::getInstance()->getNeutral())
+      return;
 
     s.name = player->getName();
     s.gold = player->getGold();

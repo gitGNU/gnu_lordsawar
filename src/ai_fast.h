@@ -20,6 +20,7 @@
 
 #include "real_player.h"
 #include "AI_Analysis.h"
+#include "AI_Diplomacy.h"
 
 class XML_Helper;
 
@@ -95,6 +96,7 @@ class AI_Fast : public RealPlayer
         bool d_join;        //!< determines whether to join units or move them separately
         bool d_maniac;      //!< maniac mode: kill and raze everything you encounter
         AI_Analysis* d_analysis;
+        AI_Diplomacy* d_diplomacy;
 };
 
 #endif // AI_FAST_H

@@ -37,18 +37,19 @@ using namespace std;
 
 AI_Fast::AI_Fast(string name, Uint32 armyset, SDL_Color color, int player_no)
     :RealPlayer(name, armyset, color, Player::AI_FAST, player_no), d_join(true),
-    d_maniac(false), d_analysis(0)
+    d_maniac(false), d_analysis(0), d_diplomacy(0)
 {
 }
 
 AI_Fast::AI_Fast(const Player& player)
-    :RealPlayer(player), d_join(true), d_maniac(false), d_analysis(0)
+    :RealPlayer(player), d_join(true), d_maniac(false), d_analysis(0), 
+    d_diplomacy(0)
 {
     d_type = AI_FAST;
 }
 
 AI_Fast::AI_Fast(XML_Helper* helper)
-    :RealPlayer(helper), d_analysis(0)
+    :RealPlayer(helper), d_analysis(0), d_diplomacy(0)
 {
     helper->getData(d_join, "join");
     helper->getData(d_maniac, "maniac");
@@ -58,6 +59,8 @@ AI_Fast::~AI_Fast()
 {
     if (d_analysis)
         delete d_analysis;
+    if (d_diplomacy)
+        delete d_diplomacy;
 }
 
 bool AI_Fast::save(XML_Helper* helper) const
@@ -82,6 +85,7 @@ bool AI_Fast::startTurn()
     RealPlayer::startTurn();
 
     d_analysis = new AI_Analysis(this);
+    d_diplomacy = new AI_Diplomacy(this);
     
     // this is a recursively-programmed quite staightforward AI,we just call:
     computerTurn();
@@ -92,9 +96,7 @@ bool AI_Fast::startTurn()
     d_stacklist->setActivestack(0);
 
     // Declare war with enemies, make peace with friends
-    AI_Diplomacy *diplomacy = new AI_Diplomacy (this);
-    diplomacy->makeProposals();
-    delete diplomacy;
+    d_diplomacy->makeProposals();
     return true;
 }
 
@@ -251,14 +253,31 @@ void AI_Fast::computerTurn()
             // third step: non-maniac players attack only enemy cities
             else
             {
+	        City *target1;
+	        City *target2;
+		Path *target1_path = new Path();
+		Path *target2_path = new Path();
 	        Citylist *cl = Citylist::getInstance();
-                target = cl->getNearestEnemyCity(s->getPos());
-                if (!target)
+                target1 = cl->getNearestEnemyCity(s->getPos());
+		target2 = cl->getNearestForeignCity(s->getPos());
+		if (target1)
+		  target1_path->calculate (s, target1->getPos());
+		target2_path->calculate (s, target2->getPos());
+		if (!target1)
+		  target = target2;
+		else if (target1_path->size() / 13 > target2_path->size())
+		  target = target2;
+		else
+		  target = target1;
+
+		if (target == target2)
 		  {
-		    target = cl->getNearestForeignCity(s->getPos());
-		    s->getPlayer()->proposeDiplomacy(Player::PROPOSE_WAR,
-						     target->getPlayer());
+		    d_diplomacy->needNewEnemy(target->getPlayer());
+		    // try to wait a turn until we're at war
+		    if (target1)
+		      target = target1;
 		  }
+
                 if (!target)    // strange situation
                     return;
 

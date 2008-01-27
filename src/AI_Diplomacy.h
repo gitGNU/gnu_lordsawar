@@ -16,7 +16,7 @@
 #define AI_DIPLOMACY_H
 
 #include <string>
-#include <map>
+#include <list>
 
 class Player;
 
@@ -28,14 +28,21 @@ class AI_Diplomacy
         // Initializes the object 
         AI_Diplomacy(Player *owner);
 	void makeProposals();
+	void needNewEnemy(Player *player);
         ~AI_Diplomacy();
 
     private:
         // the analysis currently in use
         static AI_Diplomacy *instance;
+
+        void makeFriendsAndEnemies();
+        void makeRequiredEnemies();
+        void neutralsDwindlingNeedFirstEnemy();
+        void gangUpOnTheBully();
        
         // DATA
         Player *d_owner;
+	std::list<Player *> new_enemies;
 };
 
 #endif // AI_DIPLOMACY_H
