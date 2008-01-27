@@ -268,7 +268,70 @@ void Game::select_next_movable_stack()
   select_active_stack();
 }
 
-void Game::move_selected_stack()
+void Game::move_selected_stack_dir(int diffx, int diffy)
+{
+  Stack *stack = Playerlist::getActiveplayer()->getActivestack();
+  // Get rid of the old path if there is one
+  if (stack->getPath()->size())
+    stack->getPath()->flClear();
+  //See if we can move there
+  Vector<int> dest = stack->getPos();
+  dest.x += diffx;
+  dest.y += diffy;
+  if (stack->getPath()->canMoveThere(stack, dest))
+    {
+      // Set in a new path
+      stack->getPath()->calculate(stack, dest);
+      move_selected_stack_along_path();
+    }
+  else
+    {
+      Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
+      unselect_active_stack();
+    }
+}
+
+void Game::move_selected_stack_northwest()
+{
+  move_selected_stack_dir(-1, -1);
+}
+
+void Game::move_selected_stack_north()
+{
+  move_selected_stack_dir(0, -1);
+}
+
+void Game::move_selected_stack_northeast()
+{
+  move_selected_stack_dir(1, -1);
+}
+
+void Game::move_selected_stack_east()
+{
+  move_selected_stack_dir(1, 0);
+}
+
+void Game::move_selected_stack_west()
+{
+  move_selected_stack_dir(-1, 0);
+}
+
+void Game::move_selected_stack_southwest()
+{
+  move_selected_stack_dir(-1, 1);
+}
+
+void Game::move_selected_stack_south()
+{
+  move_selected_stack_dir(0, 1);
+}
+
+void Game::move_selected_stack_southeast()
+{
+  move_selected_stack_dir(1, 1);
+}
+
+void Game::move_selected_stack_along_path()
 {
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
   if (stack->isGrouped() == false)
@@ -707,6 +770,7 @@ void Game::update_control_panel()
       can_inspect_selected_stack.emit(false);
       can_plant_standard_selected_stack.emit(false);
       can_move_selected_stack.emit(false);
+      can_move_selected_stack_along_path.emit(false);
       can_move_all_stacks.emit(false);
       can_group_ungroup_selected_stack.emit(false);
       can_end_turn.emit(false);
@@ -751,8 +815,8 @@ void Game::update_control_panel()
 
   if (stack)
     {
-      can_move_selected_stack.emit(stack->getPath()->size() > 0
-				   && stack->enoughMoves());
+      can_move_selected_stack_along_path.emit(stack->getPath()->size() > 0
+					      && stack->enoughMoves());
 
       if (stack->getGroupMoves() > 0)
 	{
@@ -770,6 +834,7 @@ void Game::update_control_panel()
 	    {
 	      can_search_selected_stack.emit(temple);
 	    }
+	  can_move_selected_stack.emit(true);
 	}
 
       if (stack->hasHero())

@@ -1,20 +1,18 @@
 
 flying stack couldn't fly to a particular spot (endless loop)
 
-ports go on shore
-	fix the boatplay
-
 buildings can be put on tiles that get turned into water
 	or turned into forest
 		true or false?
 
 diplomacy:
-	have computer players declare war
-		hook in citylist, to the player's new isFriendly function.
-		e.g. don't target friendlies
-		and decide to declare war if the score is low enough
-		decide to declare peace if the score is high enough
+	don't go for an enemy city if it's too far away
+	after successful negotiations, say no proposal.
 
+we don't need disabled images at all
+
+have the computer players offer surrender after you have 50% of the cities.
+	but only if you're the only human player left
 
 shields should be part of the army set.
 

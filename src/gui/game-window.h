@@ -135,6 +135,14 @@ class GameWindow: public sigc::trackable
     Gtk::Button *move_button;
     Gtk::Button *move_all_button;
     Gtk::Button *end_turn_button;
+    Gtk::Button *nw_keypad_button;
+    Gtk::Button *n_keypad_button;
+    Gtk::Button *ne_keypad_button;
+    Gtk::Button *e_keypad_button;
+    Gtk::Button *w_keypad_button;
+    Gtk::Button *sw_keypad_button;
+    Gtk::Button *s_keypad_button;
+    Gtk::Button *se_keypad_button;
 
     Stack *currently_selected_stack;
     std::auto_ptr<ArmyInfoTip> army_info_tip;
@@ -264,6 +272,7 @@ public:
     // not part of the API, but for surface_attached_helper
     void on_sdl_surface_changed();
     std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_button_images;
+    std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_arrow_images;
     bool d_quick_fights; //do we speed up fights for this player's turn?
 };
 

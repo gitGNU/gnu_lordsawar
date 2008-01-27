@@ -182,6 +182,14 @@ GameWindow::GameWindow()
     xml->get_widget("move_button", move_button);
     xml->get_widget("move_all_button", move_all_button);
     xml->get_widget("end_turn_button", end_turn_button);
+    xml->get_widget("nw_keypad_button", nw_keypad_button);
+    xml->get_widget("n_keypad_button", n_keypad_button);
+    xml->get_widget("ne_keypad_button", ne_keypad_button);
+    xml->get_widget("e_keypad_button", e_keypad_button);
+    xml->get_widget("w_keypad_button", w_keypad_button);
+    xml->get_widget("sw_keypad_button", sw_keypad_button);
+    xml->get_widget("s_keypad_button", s_keypad_button);
+    xml->get_widget("se_keypad_button", se_keypad_button);
 
     // fill in imagery
     d_button_images = disassemble_row(File::getMiscFile("various/buttons.png"), 11);
@@ -195,6 +203,17 @@ GameWindow::GameWindow()
     move_button->add(*manage(new Gtk::Image(d_button_images[3])));
     move_all_button->add(*manage(new Gtk::Image(d_button_images[4])));
     end_turn_button->add(*manage(new Gtk::Image(d_button_images[10])));
+    
+    d_arrow_images = disassemble_row(File::getMiscFile("various/arrows.png"), 
+				     8);
+    nw_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[0])));
+    n_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[1])));
+    ne_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[2])));
+    e_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[3])));
+    w_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[4])));
+    sw_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[5])));
+    s_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[6])));
+    se_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[7])));
 
     // connect callbacks for the menu
     xml->connect_clicked("load_game_menuitem",
@@ -283,6 +302,14 @@ void GameWindow::show()
     move_button->show_all();
     move_all_button->show_all();
     end_turn_button->show_all();
+    nw_keypad_button->show_all();
+    n_keypad_button->show_all();
+    ne_keypad_button->show_all();
+    e_keypad_button->show_all();
+    w_keypad_button->show_all();
+    sw_keypad_button->show_all();
+    s_keypad_button->show_all();
+    se_keypad_button->show_all();
     
     sdl_container->show_all();
     window->show();
@@ -473,11 +500,35 @@ void GameWindow::setup_signals()
 	       sigc::mem_fun(game.get(), &Game::search_selected_stack),
 	       game->can_search_selected_stack);
   setup_button(move_button,
-	       sigc::mem_fun(game.get(), &Game::move_selected_stack),
-	       game->can_move_selected_stack);
+	       sigc::mem_fun(game.get(), &Game::move_selected_stack_along_path),
+	       game->can_move_selected_stack_along_path);
   setup_button(move_all_button,
 	       sigc::mem_fun(game.get(), &Game::move_all_stacks),
 	       game->can_move_all_stacks);
+  setup_button(nw_keypad_button,
+	       sigc::mem_fun(game.get(), &Game::move_selected_stack_northwest),
+	       game->can_move_selected_stack);
+  setup_button(n_keypad_button,
+	       sigc::mem_fun(game.get(), &Game::move_selected_stack_north),
+	       game->can_move_selected_stack);
+  setup_button(ne_keypad_button,
+	       sigc::mem_fun(game.get(), &Game::move_selected_stack_northeast),
+	       game->can_move_selected_stack);
+  setup_button(e_keypad_button,
+	       sigc::mem_fun(game.get(), &Game::move_selected_stack_east),
+	       game->can_move_selected_stack);
+  setup_button(w_keypad_button,
+	       sigc::mem_fun(game.get(), &Game::move_selected_stack_west),
+	       game->can_move_selected_stack);
+  setup_button(sw_keypad_button,
+	       sigc::mem_fun(game.get(), &Game::move_selected_stack_southwest),
+	       game->can_move_selected_stack);
+  setup_button(s_keypad_button,
+	       sigc::mem_fun(game.get(), &Game::move_selected_stack_south),
+	       game->can_move_selected_stack);
+  setup_button(se_keypad_button,
+	       sigc::mem_fun(game.get(), &Game::move_selected_stack_southeast),
+	       game->can_move_selected_stack);
   setup_menuitem(move_all_menuitem,
 		 sigc::mem_fun(game.get(), &Game::move_all_stacks),
 		 game->can_move_all_stacks);

@@ -67,7 +67,15 @@ class Game
     void park_selected_stack();
     void deselect_selected_stack();
     void search_selected_stack();
-    void move_selected_stack();
+    void move_selected_stack_along_path();
+    void move_selected_stack_northwest();
+    void move_selected_stack_north();
+    void move_selected_stack_northeast();
+    void move_selected_stack_east();
+    void move_selected_stack_west();
+    void move_selected_stack_southwest();
+    void move_selected_stack_south();
+    void move_selected_stack_southeast();
     void move_all_stacks();
     void end_turn();
 
@@ -94,6 +102,7 @@ class Game
 	can_search_selected_stack,
 	can_inspect_selected_stack,
 	can_plant_standard_selected_stack,
+	can_move_selected_stack_along_path,
 	can_move_selected_stack,
 	can_group_ungroup_selected_stack,
 	can_move_all_stacks,
@@ -140,6 +149,9 @@ class Game
     */
     int loadHeroTemplates();
 
+    // move the selected stack one tile in a given direction
+    void move_selected_stack_dir(int diffx, int diffy);
+
     // centers the map on a city of the active player
     void center_view_on_city();
 
@@ -184,6 +196,7 @@ class Game
     void stackDied(Stack* s);
     //! Called whenever players fight
     void on_fight_started(Fight &fight);
+
 
 
     
