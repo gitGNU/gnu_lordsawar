@@ -60,11 +60,8 @@ void NextTurn::start()
         
 	if (plist->getNoOfPlayers() <= 2)
 	{
-          if (plist->checkPlayers() == true)
-	    {
-	      if (plist->getNoOfPlayers() <= 1)
-		return;
-	    }
+          if (plist->checkPlayers() == true) //end of game detected
+	      return;
 	}
 
 	bool break_loop = splayerStart.emit(plist->getActiveplayer());
@@ -111,7 +108,7 @@ void NextTurn::endTurn()
       snextRound.emit();
     }
 
-  start();
+    start();
 }
 
 void NextTurn::startTurn()
