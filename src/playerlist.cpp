@@ -461,7 +461,9 @@ void Playerlist::negotiateDiplomacy()
 	  Player::DiplomaticState old_state = (*pit)->getDiplomaticState(*it);
 	  Player::DiplomaticState new_state = (*pit)->negotiateDiplomacy(*it);
 	  (*pit)->declareDiplomacy (new_state, (*it));
+	  (*pit)->proposeDiplomacy (Player::NO_PROPOSAL, (*it));
 	  (*it)->declareDiplomacy (new_state, (*pit));
+	  (*it)->proposeDiplomacy (Player::NO_PROPOSAL, (*pit));
 	  if (old_state != new_state)
 	    {
 	      Player *me = *pit;
