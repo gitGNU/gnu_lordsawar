@@ -5,9 +5,9 @@ buildings can be put on tiles that get turned into water
 	or turned into forest
 		true or false?
 
-
 army tooltips don't show up right for black.
 	happens when we switch computer player to human player
+	not reproducable
 
 diplomacy:
 have the computer players offer surrender after you have 50% of the cities.

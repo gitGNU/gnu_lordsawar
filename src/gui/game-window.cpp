@@ -805,7 +805,7 @@ void GameWindow::on_sdl_surface_changed()
 
 void GameWindow::on_load_game_activated()
 {
-  return;
+  //return;
   Gtk::FileChooserDialog chooser(*window.get(), _("Choose Game to Load"));
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*.sav");
@@ -1003,9 +1003,12 @@ void GameWindow::on_resign_activated()
 
 void GameWindow::on_preferences_activated()
 {
+  Player *current = Playerlist::getInstance()->getActiveplayer();
   PreferencesDialog d;
   d.set_parent_window(*window.get());
   d.run(game.get());
+  if (current != Playerlist::getInstance()->getActiveplayer())
+    game->end_turn();
 }
 
 void GameWindow::on_group_ungroup_activated()

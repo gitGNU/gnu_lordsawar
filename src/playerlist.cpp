@@ -18,6 +18,8 @@
 #include "playerlist.h"
 
 #include "citylist.h"
+#include "ruinlist.h"
+#include "stacklist.h"
 #include "defs.h"
 #include "xmlhelper.h"
 #include "history.h"
@@ -496,5 +498,20 @@ void Playerlist::negotiateDiplomacy()
 		}
 	    }
 	}
+    }
+}
+
+void Playerlist::swap(Player *old_player, Player *new_player)
+{
+  std::replace(begin(), end(), old_player, new_player);
+  //point cities to the new owner
+  Citylist *clist = Citylist::getInstance();
+  clist->changeOwnership (old_player, new_player);
+  Ruinlist *rlist = Ruinlist::getInstance();
+  rlist->changeOwnership (old_player, new_player);
+  if (old_player == d_activeplayer)
+    {
+      d_activeplayer = new_player;
+      d_activeplayer->getStacklist()->setActivestack(0);
     }
 }

@@ -87,6 +87,10 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
           */
         Player* getFirstLiving() const;
         
+
+	/** Replace old_player with new_player everywhere.
+	 */
+	void swap(Player *old_player, Player *new_player);
         
         //! Saves the playerlist. See XML_Helper for further docu.
         bool save(XML_Helper* helper) const;
