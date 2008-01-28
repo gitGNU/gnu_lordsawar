@@ -185,6 +185,8 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		  //   as we can on our path.
 		  //2. we've set in a second path and we've gone as far as
 		  //   we can on our path.
+		  //3. we're next to an enemy city, out of moves, and we 
+		  //   try to attack the city.
 		  //note that special care is taken to not deselect when
 		  //we've proceeded along our path and ran out of nodes
 		  //to follow, but we still have moves to make.
@@ -194,13 +196,17 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		      if (stack->getPath()->size() > 0 && 
 			  stack->enoughMoves() == false)
 			deselect = true;
-		      else if (stack->getMovesExhaustedAtPoint() == 0)
+		      else if (stack->getPath()->size() > 0 &&
+			       stack->getMovesExhaustedAtPoint() == 0)
 			deselect = true;
 		    }
 		  else
 		    {
 		      if (stack->getPath()->size() > 0 && 
 			  stack->getMovesExhaustedAtPoint() == 0)
+			deselect = true;
+		      if (d_cursor == GraphicsCache::SWORD &&
+			  stack->canMove() == false)
 			deselect = true;
 		    }
 
