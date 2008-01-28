@@ -48,13 +48,10 @@ Stack *Location::addArmy(Army *a) const
     // No stack found in the entire location
     if (!stack)
       return NULL;
-    //{
-        //stack = new Stack(a->getPlayer(), d_pos);
-        //a->getPlayer()->addStack(stack);
-    //}
 
     // add army to stack
-    stack->push_front(a);
+    stack->push_back(a);
+    stack->sortForViewing(true);
     return stack;
 }
 
