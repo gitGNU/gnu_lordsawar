@@ -321,6 +321,9 @@ void City::conquer(Player* newowner)
     // remove vectoring info 
     setVectoring(Vector<int>(-1,-1));
 
+    for (int j = 0; j < getNoOfBasicProd(); j++)
+      d_basicprod[j]->setPlayer(newowner);
+
     deFog(newowner);
 
     VectoredUnitlist *vul = VectoredUnitlist::getInstance();
