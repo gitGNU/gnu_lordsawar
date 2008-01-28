@@ -169,7 +169,11 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    {
 	      Playerlist::getActiveplayer()->stackMove(stack);
 	      if (!Playerlist::getActiveplayer()->getActivestack())
-		return;
+		{
+		  if (stack->canMove() == false)
+		    unselect_active_stack();
+		  return;
+		}
 	      else
 		{
 		  //grab our stack again because maybe we joined another stack
@@ -182,8 +186,6 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		    }
 		}
 	    }
-	  //else
-	    //stack->getPath()->calculate(stack, p);
 
 	  path_set.emit();
 
