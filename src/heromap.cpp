@@ -41,7 +41,11 @@ void HeroMap::after_draw()
     
     SDL_Rect r;
     r.x = start.x - (tmp->w/2);
+    if (r.x < 0)
+      r.x = 0;
     r.y = start.y - (tmp->h/2);
+    if (r.y < 0)
+      r.y = 0;
     r.w = tmp->w;
     r.h = tmp->h;
     SDL_BlitSurface(tmp, 0, surface, &r);
