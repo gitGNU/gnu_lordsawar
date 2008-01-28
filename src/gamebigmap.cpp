@@ -120,6 +120,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
       if (stack)
 	{
+	  bool path_already_set = stack->getPath()->size() > 0;
 	  // ask for military advice
 	  if (d_cursor == GraphicsCache::QUESTION)
 	    {
@@ -178,7 +179,32 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		{
 		  //grab our stack again because maybe we joined another stack
 		  stack = Playerlist::getActiveplayer()->getActivestack();
-		  if (stack->canMove() == false)
+
+		  //deslect when:
+		  //1. we've moved our stack too far and we've gone as far
+		  //   as we can on our path.
+		  //2. we've set in a second path and we've gone as far as
+		  //   we can on our path.
+		  //note that special care is taken to not deselect when
+		  //we've proceeded along our path and ran out of nodes
+		  //to follow, but we still have moves to make.
+		  bool deselect = false;
+		  if (path_already_set)
+		    {
+		      if (stack->getPath()->size() > 0 && 
+			  stack->enoughMoves() == false)
+			deselect = true;
+		      else if (stack->getMovesExhaustedAtPoint() == 0)
+			deselect = true;
+		    }
+		  else
+		    {
+		      if (stack->getPath()->size() > 0 && 
+			  stack->getMovesExhaustedAtPoint() == 0)
+			deselect = true;
+		    }
+
+		  if (deselect)
 		    {
 		      Player *player = Playerlist::getActiveplayer();
 		      player->getStacklist()->setActivestack(0);
