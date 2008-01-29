@@ -133,7 +133,6 @@ void QuestMap::after_draw()
   r.w = tmp->w;
   r.h = tmp->h;
   SDL_BlitSurface (tmp, 0, surface, &r);
-  SDL_FreeSurface (tmp);
     map_changed.emit(surface);
 }
 
