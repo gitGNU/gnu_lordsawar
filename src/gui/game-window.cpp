@@ -2211,6 +2211,8 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
+  if (Playerlist::isFinished()) //closed window while ai player moves
+    return;
   d_quick_fights = false;
   show_shield_turn();
   if (player->getType() != Player::HUMAN)

@@ -80,6 +80,9 @@ void SmallMap::center_view(Vector<int> p, bool slide, bool from_tile)
     slide_view(Rectangle(p.x, p.y, view.w, view.h));
   else
     set_view(Rectangle(p.x, p.y, view.w, view.h));
+	  
+  if (Playerlist::isFinished()) //window closed while computer player moves
+      return;
   view_changed.emit(view);
 }
 
@@ -137,6 +140,8 @@ void SmallMap::slide_view(Rectangle new_view)
     {
       while (1)
 	{
+	  if (Playerlist::isFinished()) //window closed while ai player moves
+	      return;
 	  Rectangle tmp_view(view);
 	  tmp_view.x = slide(tmp_view.x, new_view.x);
 	  tmp_view.y = slide(tmp_view.y, new_view.y);

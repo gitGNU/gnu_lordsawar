@@ -1155,6 +1155,9 @@ bool Game::init_turn_for_player(Player* p)
   // an AI-only game to save/quit.
 
   center_view_on_city();
+  if (Playerlist::isFinished())
+    return true; //closing game window while the computer is moving
+
   next_player_turn.emit(p, d_gameScenario->getRound() + 1);
   if (p->getType() == Player::HUMAN)
     {
@@ -1264,6 +1267,8 @@ void Game::center_view_on_city()
     {
       if (i->getPlayer() == p)
 	{
+	  if (Playerlist::isFinished())
+	    return;
 	  smallmap->center_view(i->getPos(), true);
 	  break;
 	}

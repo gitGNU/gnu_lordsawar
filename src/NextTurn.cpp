@@ -66,6 +66,8 @@ void NextTurn::start()
 
 	bool break_loop = splayerStart.emit(plist->getActiveplayer());
 
+	if (break_loop)
+	  return;
         //Let the player do his duties...
         plist->getActiveplayer()->startTurn();
 
