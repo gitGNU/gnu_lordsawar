@@ -24,7 +24,6 @@
 #include "game-window.h"
 #include "../defs.h"
 #include "../GraphicsCache.h"
-
 Driver::Driver()
 {
     splash_window.reset(new SplashWindow);
@@ -42,7 +41,7 @@ Driver::Driver()
 	p.type = GameParameters::Player::HUMAN;
 	p.name = "Mr. Test";
 	g.players.push_back(p);
-	p.type = GameParameters::Player::HARD;
+	p.type = GameParameters::Player::EASY;
 	p.name = "Evail";
 	g.players.push_back(p);
 	g.map.width = 75;
@@ -57,8 +56,17 @@ Driver::Driver()
 	g.map.ruins = 25;
 	g.map.temples = 25;
 	g.map_path = "";
+	g.play_with_quests = false;
+	g.hidden_map = false;
+	g.neutral_cities = GameParameters::STRONG;
+	g.razing_cities = GameParameters::ALWAYS;
+	g.diplomacy = false;
+	g.random_turns = false;
+	g.quick_start = false;
+	g.intense_combat = false;
+	g.military_advisor = false;
 	g.tile_theme = "default";
-	g.army_theme = "imperial";
+	g.army_theme = "Default";
 	g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
 	
 	on_new_game_requested(g);
