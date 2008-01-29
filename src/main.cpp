@@ -63,10 +63,6 @@ int main(int argc, char* argv[])
                 }
                 Configuration::s_cacheSize = size;
             }
-            if (parameter == "--fullscreen" || parameter == "-f")
-            {
-                Configuration::s_flags |= SDL_FULLSCREEN;
-            }
             if (parameter == "--test" || parameter == "-t")
             {
                 kit.start_test_scenario = true;
@@ -83,7 +79,6 @@ int main(int argc, char* argv[])
                 cout << "LordsAWar " << FL_VERSION << endl << endl;
                 cout << _("Available parameters:") << endl << endl; 
                 cout << _("-h,      --help             Shows this help screen\n");
-                cout << _("-f,      --fullscreen       Fullscreen mode") << endl;
                 cout << _("-c <size>                   Set the maximum cache size") <<endl;
                 cout << _("-t,      --test             Starting with a test-scenario") << endl;
 #ifdef WITH_GGZ

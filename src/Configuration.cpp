@@ -43,13 +43,11 @@ string Configuration::s_savePath = "./saves/";
 #endif
 string Configuration::s_lang = "";
 int Configuration::s_displaySpeedDelay = 0;
-Uint32 Configuration::s_flags = 0;
 Uint32 Configuration::s_surfaceFlags = SDL_SWSURFACE;
 Uint32 Configuration::s_cacheSize = 1000000;
 bool Configuration::s_zipfiles = false;
 bool Configuration::s_hardware = false;
 bool Configuration::s_ggz = false;
-bool Configuration::s_fullScreen = false;
 bool Configuration::s_musicenable = true;
 Uint32 Configuration::s_musicvolume = 64;
 Uint32 Configuration::s_musiccache = 10000000;
@@ -115,7 +113,6 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("datapath",s_dataPath);
     retval &= helper.saveData("savepath", s_savePath);
     retval &= helper.saveData("lang", s_lang);
-    retval &= helper.saveData("fullscreen", s_fullScreen);
     retval &= helper.saveData("cachesize", s_cacheSize);
     retval &= helper.saveData("hardware", s_hardware);
     retval &= helper.saveData("zipfiles", s_zipfiles);
@@ -207,20 +204,6 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     if (helper->getData(temp, "lang"))
         s_lang = temp;
     
-    //fullscreen?
-    retval = helper->getData(s_fullScreen, "fullscreen");
-    if (retval)
-    {
-        if (s_fullScreen)
-        {
-            s_flags |= SDL_FULLSCREEN;
-        }
-        else
-        {
-            s_flags &= ~SDL_FULLSCREEN;
-        }
-    }
-
     //parse cache size
     retval = helper->getData(temp, "cachesize");
     if (retval)

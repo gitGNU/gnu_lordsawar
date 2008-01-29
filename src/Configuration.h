@@ -71,9 +71,6 @@ class Configuration : public sigc::trackable
         // Language setting
         static std::string s_lang;
 
-	// fullscreen mode or not
-        static Uint32 s_flags;
-
         // if using hardware surfaces for pixmaps or not
         static Uint32 s_surfaceFlags;
         static bool s_hardware;
@@ -86,9 +83,6 @@ class Configuration : public sigc::trackable
 
         //run game in GGZ mode
         static bool s_ggz;
-
-        // if fullscreen is set  
-        static bool s_fullScreen;
 
         // music settings; the cache size is given in pieces instead of memory
         static bool s_musicenable;
