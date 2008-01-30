@@ -429,7 +429,8 @@ void Game::search_selected_stack()
   Ruin* ruin = Ruinlist::getInstance()->getObjectAt(stack->getPos());
   Temple* temple = Templelist::getInstance()->getObjectAt(stack->getPos());
 
-  if (ruin && !ruin->isSearched() && stack->getGroupMoves() > 0 &&
+  if (ruin && !ruin->isSearched() && stack->hasHero() &&
+      stack->getFirstHero()->getMoves() > 0 &&
       ((ruin->isHidden() == true && ruin->getOwner() == player) ||
        ruin->isHidden() == false))
     {
@@ -824,23 +825,16 @@ void Game::update_control_panel()
 	{
 	  Temple *temple;
 	  temple = Templelist::getInstance()->getObjectAt(stack->getPos());
-	  if (stack->hasHero())
-	    {
-	      Ruin *ruin
-		= Ruinlist::getInstance()->getObjectAt(stack->getPos());
-
-	      can_search_selected_stack.emit(
-					     (ruin && !ruin->isSearched()) || temple);
-	    }
-	  else
-	    {
-	      can_search_selected_stack.emit(temple);
-	    }
+	  can_search_selected_stack.emit(temple);
 	  can_move_selected_stack.emit(true);
 	}
 
       if (stack->hasHero())
 	{
+	  Ruin *ruin = Ruinlist::getInstance()->getObjectAt(stack->getPos());
+	  if (stack->getFirstHero()->getMoves() > 0)
+	    can_search_selected_stack.emit((ruin && !ruin->isSearched()));
+
 	  can_inspect_selected_stack.emit(true);
 	  //does the hero have the player's standard?
 	  for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
