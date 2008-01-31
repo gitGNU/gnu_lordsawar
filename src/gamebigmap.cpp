@@ -205,7 +205,8 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		      if (stack->getPath()->size() > 0 && 
 			  stack->getMovesExhaustedAtPoint() == 0)
 			deselect = true;
-		      if (d_cursor == GraphicsCache::SWORD &&
+		      if ((d_cursor == GraphicsCache::SWORD ||
+			   d_cursor == GraphicsCache::HEART) &&
 			  stack->canMove() == false)
 			deselect = true;
 		    }

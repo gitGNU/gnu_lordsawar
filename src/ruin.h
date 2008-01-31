@@ -60,7 +60,8 @@ class Ruin : public Location, public sigc::trackable
         void setType(int type) {d_type=type;};
 
         //! Change the "searched" flag of the ruin
-        void setSearched(bool searched) {d_searched = searched;}
+        void setSearched(bool searched) {d_searched = searched; 
+	d_reward = NULL;}
         
         //! Set the keeper of the ruin
         void setOccupant(Stack* occupant) {d_occupant = occupant;}

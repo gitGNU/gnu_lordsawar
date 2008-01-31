@@ -447,7 +447,7 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
       /* if we can't attack a city, don't remember it in the stack's path. */
         Vector<int> pos = **(s->getPath()->begin());
         City* city = Citylist::getInstance()->getObjectAt(pos);
-	if (city)
+	if (city && city->getPlayer() != this)
 	  s->getPath()->flClear();
     }
 
@@ -1005,6 +1005,7 @@ Reward* RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
 	   r->populateWithRandomReward();
        }
 
+     retReward = r->getReward();
      ssearchingRuin.emit(r, s, retReward);
 
      r->setSearched(true);
@@ -1014,7 +1015,7 @@ Reward* RealPlayer::stackSearchRuin(Stack* s, Ruin* r)
      d_actions.push_back(item);
 
      supdatingStack.emit(0);
-     return r->getReward();
+     return retReward;
 }
 
 int RealPlayer::stackVisitTemple(Stack* s, Temple* t)

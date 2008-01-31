@@ -447,6 +447,7 @@ void Game::search_selected_stack()
 	{
 	  player->giveReward(Playerlist::getActiveplayer()->getActivestack(),
 			     reward);
+	  //FIXME: delete this reward, but don't delete the item, or map
 	  redraw();
 	  update_stack_info();
 	  update_control_panel();
@@ -821,6 +822,13 @@ void Game::update_control_panel()
       can_move_selected_stack_along_path.emit(stack->getPath()->size() > 0
 					      && stack->enoughMoves());
 
+      /*
+       * a note about searching.
+       * ruins can be searched by stacks that have a hero, and when the
+       * hero has moves left.  also the ruin must be unexplored.
+       * temples can be searched by any stack, when the stack has 
+       * movement left.
+       */
       if (stack->getGroupMoves() > 0)
 	{
 	  Temple *temple;
@@ -832,8 +840,8 @@ void Game::update_control_panel()
       if (stack->hasHero())
 	{
 	  Ruin *ruin = Ruinlist::getInstance()->getObjectAt(stack->getPos());
-	  if (stack->getFirstHero()->getMoves() > 0)
-	    can_search_selected_stack.emit((ruin && !ruin->isSearched()));
+	  if (stack->getFirstHero()->getMoves() > 0 && ruin)
+	    can_search_selected_stack.emit(!ruin->isSearched());
 
 	  can_inspect_selected_stack.emit(true);
 	  //does the hero have the player's standard?
@@ -881,6 +889,11 @@ void Game::update_control_panel()
 		}
 	    }
 	}
+      else
+	{
+	  can_inspect_selected_stack.emit(false);
+	  can_plant_standard_selected_stack.emit(false);
+	}
 
       if (Signpostlist::getInstance()->getObjectAt(stack->getPos()))
 	can_change_signpost.emit(true);
@@ -892,6 +905,7 @@ void Game::update_control_panel()
     {
       can_search_selected_stack.emit(false);
       can_move_selected_stack.emit(false);
+      can_move_selected_stack_along_path.emit(false);
       can_disband_stack.emit(false);
       can_group_ungroup_selected_stack.emit(false);
       can_inspect_selected_stack.emit(false);

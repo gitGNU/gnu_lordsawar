@@ -54,7 +54,10 @@ QuestCityOccupy::QuestCityOccupy (QuestsManager& q_mgr, XML_Helper* helper)
 //=======================================================================
 bool QuestCityOccupy::isFeasible(Uint32 heroId)
 {
+  if (QuestCityOccupy::chooseToOccupy(getHeroById(heroId)->getPlayer()))
     return true;
+
+  return false;
 }
 //=======================================================================
 bool QuestCityOccupy::save(XML_Helper* helper) const
@@ -118,7 +121,8 @@ City * QuestCityOccupy::chooseToOccupy(Player *p)
   // Collect all cities
   Citylist* cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-    if (!(*it).isBurnt() && (*it).getPlayer() != p)
+    if (!(*it).isBurnt() && (*it).getPlayer() != p &&
+	(*it).getPlayer() != Playerlist::getInstance()->getNeutral())
       cities.push_back(&(*it));
 
   // Find a suitable city for us to occupy

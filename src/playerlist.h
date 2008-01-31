@@ -108,7 +108,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	void negotiateDiplomacy();
 
 	Uint32 countHumanPlayersAlive();
-	Uint32 countPlayersAlive();
+	Uint32 countPlayersAlive(); //does not include neutral player
 
     protected:
         // CREATORS

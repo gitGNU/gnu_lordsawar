@@ -320,7 +320,7 @@ void Playerlist::calculateDiplomaticRankings()
 	    continue;
 	  if (*pit == *it)
 	    continue;
-	  rankable.score += (*pit)->getDiplomaticScore(*it);
+	  rankable.score += (*it)->getDiplomaticScore(*pit);
 	}
       rankable.player = *pit;
       rankables.push_back(rankable);
@@ -345,13 +345,18 @@ void Playerlist::calculateDiplomaticRankings()
   // okay, we take the first numAlive titles
 
   std::vector<std::string> available_titles;
-  for (i = 0; i < numAlive; i++)
+  for (i = numAlive; i < MAX_PLAYERS ; i++)
     {
       for (unsigned int j = 0; j < MAX_PLAYERS; j++)
 	{
 	  if (deplete[j] == i)
-	    available_titles.push_back (std::string(titles[deplete[j]]));
+	    titles[j]="";
 	}
+    }
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+      if (titles[i][0] != '\0')
+	available_titles.push_back (std::string(titles[i]));
     }
 
   for (const_iterator it = begin (); it != end (); it++)

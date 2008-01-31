@@ -281,7 +281,7 @@ void CityWindow::fill_in_production_info()
         if (city->getVectoring() != Vector<int>(-1, -1))
           {
             Citylist *cl = Citylist::getInstance();
-            City *dest = cl->getObjectAt(city->getVectoring());
+            City *dest = cl->getNearestFriendlyCity(city->getVectoring(), 4);
             s3 += String::ucompose(_(", then to %1"), 
                                    dest ? dest->getName() : "Standard");
           }

@@ -814,7 +814,7 @@ void Player::deteriorateDiplomaticRelationship (Uint32 amount)
 	continue;
       if (*it == this)
 	continue;
-      (*it)->deteriorateDiplomaticRelationship (this, 5);
+      (*it)->deteriorateDiplomaticRelationship (this, amount);
     }
 }
 
@@ -831,7 +831,7 @@ void Player::improveDiplomaticRelationship (Uint32 amount, Player *except)
 	continue;
       if (except && *it == except)
 	continue;
-      (*it)->improveDiplomaticRelationship (this, 5);
+      (*it)->improveDiplomaticRelationship (this, amount);
     }
 }
 		  
