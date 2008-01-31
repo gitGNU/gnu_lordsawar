@@ -219,7 +219,8 @@ void FightWindow::add_army(Army *army,
     Gtk::VBox *army_box = manage(new Gtk::VBox);
 	
     // image
-    army_box->add(*manage(new Gtk::Image(to_pixbuf(army->getPixmap()))));
+    Gtk::Image *image = new Gtk::Image(to_pixbuf(army->getPixmap()));
+    army_box->add(*manage(image));
     
     // hit points graph
     Gtk::ProgressBar *progress = manage(new Gtk::ProgressBar);
@@ -251,6 +252,7 @@ void FightWindow::add_army(Army *army,
     item.army = army;
     item.hp = army->getHP();
     item.bar = progress;
+    item.image = image;
     army_items.push_back(item);
 }
 
@@ -269,8 +271,13 @@ bool FightWindow::do_round()
 		i->hp -= f.damage;
 		if (i->hp < 0)
 		    i->hp = 0;
-		i->bar->set_fraction(double(i->hp)
-				     / i->army->getStat(Army::HP));
+		double fraction = double(i->hp) / i->army->getStat(Army::HP);
+		i->bar->set_fraction(fraction);
+		if (fraction == 0.0)
+		  {
+		    i->bar->hide();
+		    //i->image->get_pixbuf()->fill(0x00000000);
+		  }
 		
 		break;
 	    }

@@ -52,6 +52,7 @@ class FightWindow: public sigc::trackable
 	Army *army;
 	int hp;
 	Gtk::ProgressBar *bar;
+	Gtk::Image *image;
     };
     
     typedef std::vector<ArmyItem> army_items_type;
