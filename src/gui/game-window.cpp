@@ -1769,7 +1769,8 @@ bool GameWindow::on_temple_searched(bool hasHero, Temple *temple, int blessCount
   xml->get_widget("close_button", close_button);
   xml->get_widget("accept_button", accept_button);
 
-  if (qm->getPlayerQuests(Playerlist::getActiveplayer()).size() > 0)
+  if (qm->getPlayerQuests(Playerlist::getActiveplayer()).size() > 0 &&
+      hasHero)
     accept_button->set_sensitive(false);
 
   Glib::ustring s;

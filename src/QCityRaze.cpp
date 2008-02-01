@@ -107,8 +107,9 @@ void QuestCityRaze::initDescription()
     const City* c = getCity();
     char buffer[121]; buffer[120]='\0';
     
-    snprintf(buffer, 100, _("You must raze the city \"%s\" located at (%i,%i)."),
-            c->getName().c_str(), c->getPos().x, c->getPos().y);
+    snprintf(buffer, 100, 
+	     _("You must conquer the city \"%s\" and burn it to the ground."),
+            c->getName().c_str());
 
     d_description = std::string(buffer);
 }

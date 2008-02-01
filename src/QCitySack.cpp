@@ -107,8 +107,8 @@ void QuestCitySack::initDescription()
     const City* c = getCity();
     char buffer[121]; buffer[120]='\0';
     
-    snprintf(buffer, 100, _("You must sack the city \"%s\" located at (%i,%i)."),
-            c->getName().c_str(), c->getPos().x, c->getPos().y);
+    snprintf(buffer, 100, _("You must take over and sack the city of \"%s\"."),
+            c->getName().c_str());
 
     d_description = std::string(buffer);
 }

@@ -108,7 +108,7 @@ void QuestCityOccupy::initDescription()
   const City* c = getCity();
   char buffer[121]; buffer[120]='\0';
 
-  snprintf(buffer, 100, _("You must occupy the city \"%s\" located at (%i,%i)."),
+  snprintf(buffer, 100, _("You must take over the city \"%s\" and occupy it."),
 	   c->getName().c_str(), c->getPos().x, c->getPos().y);
 
   d_description = std::string(buffer);
