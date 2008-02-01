@@ -327,10 +327,9 @@ void City::conquer(Player* newowner)
     deFog(newowner);
 
     VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-    vul->removeVectoredUnitsComingFrom(d_pos);
-    vul->removeVectoredUnitsGoingTo(d_pos);
+    vul->removeVectoredUnitsComingFrom(this);
+    vul->removeVectoredUnitsGoingTo(this);
 }
-
 
 void City::randomlyImproveOrDegradeArmy(Army *army)
 {

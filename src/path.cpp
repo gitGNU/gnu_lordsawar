@@ -141,8 +141,29 @@ void Path::recalculate (Stack* s)
 {
   if (size() == 0)
     return;
-  Vector<int> *dest = back();
-  calculate(s, *dest);
+
+  // be careful to not go into cities that are now owned by the enemy
+  reverse_iterator it = rbegin();
+  for (; it != rend(); it++)
+    {
+      Vector<int> dest = **it;
+      City *c = Citylist::getInstance()->getObjectAt(dest.x, dest.y);
+      if (c && c->getPlayer() != s->getPlayer())
+	continue;
+      else
+	break;
+    }
+  if (it == rend())
+    {
+      //well, it looks like all of our points were in enemy cities
+      s->setMovesExhaustedAtPoint(0);
+      flClear();
+    }
+  else
+    {
+      Vector<int> dest = **it;
+      calculate(s, dest);
+    }
   return;
 }
 

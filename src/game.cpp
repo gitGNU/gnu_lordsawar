@@ -821,8 +821,9 @@ void Game::update_control_panel()
 
   if (stack)
     {
-      can_move_selected_stack_along_path.emit(stack->getPath()->size() > 0
-					      && stack->enoughMoves());
+      can_move_selected_stack_along_path.emit
+	(stack->getPath()->size() > 0 && stack->enoughMoves() ||
+	 (stack->getPath()->size() && stack->getMovesExhaustedAtPoint() > 0));
 
       /*
        * a note about searching.
@@ -1341,7 +1342,7 @@ void Game::nextRound()
 	      if (cl->countCities(*it) > target_level)
 		{
 		  GameScenario::s_surrender_already_offered = 1;
-		  if (enemy_offers_surrender(plist->countPlayersAlive() - 1))
+		  if (enemy_offers_surrender.emit(plist->countPlayersAlive() - 1))
 		    {
 		      surrender_answered.emit(true);
 		      game_over.emit(*it);
@@ -1352,5 +1353,16 @@ void Game::nextRound()
 	    }
 	}
     }
-
+}
+    
+void Game::recalculate_moves_for_stack(Stack *s)
+{
+  if (!s)
+    s = Playerlist::getActiveplayer()->getActivestack();
+  if (s)
+    {
+      s->getPath()->recalculate(s);
+      redraw();
+      update_control_panel();
+    }
 }

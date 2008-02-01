@@ -527,7 +527,8 @@ Vector<int> GameMap::findPlantedStandard(Player *p)
             for (std::list<Item*>::iterator it = items.begin(); 
                  it != items.end(); it++)
               {
-                if ((*it)->isPlantable() && (*it)->getPlantableOwner() == p)
+                if ((*it)->isPlantable() && (*it)->getPlantableOwner() == p &&
+		    (*it)->getPlanted() == true)
                   {
                     pos.x = x;
                     pos.y = y;

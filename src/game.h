@@ -78,6 +78,7 @@ class Game
     void move_selected_stack_southeast();
     void move_all_stacks();
     void end_turn();
+    void recalculate_moves_for_stack(Stack *s);
 
     void startGame(); // initiate game flow
     void loadGame();

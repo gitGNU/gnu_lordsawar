@@ -236,7 +236,7 @@ void DestinationDialog::fill_in_vectoring_info()
 
   //show the units that are arriving into this city
   vectored.clear();
-  vul->getVectoredUnitsGoingTo(city->getPos(), vectored);
+  vul->getVectoredUnitsGoingTo(city, vectored);
   int count = 0;
   Gtk::Image *image = next_turn_1_image;
   for (it = vectored.begin(); it != vectored.end(); it++)

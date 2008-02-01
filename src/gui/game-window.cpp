@@ -1264,7 +1264,7 @@ void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
   ensure_one_army_button_active();
   on_stack_info_changed(s);
   group_ungroup_toggle->set_sensitive(true);
-  s->getPath()->recalculate(s);
+  game->recalculate_moves_for_stack(s);
 }
 
 void GameWindow::on_group_toggled(Gtk::ToggleButton *toggle)
@@ -1275,7 +1275,7 @@ void GameWindow::on_group_toggled(Gtk::ToggleButton *toggle)
     currently_selected_stack->ungroup();
   else
     currently_selected_stack->group();
-  currently_selected_stack->getPath()->recalculate(currently_selected_stack);
+  game->recalculate_moves_for_stack(currently_selected_stack);
   update_army_buttons();
 }
 

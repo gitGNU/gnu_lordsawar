@@ -19,6 +19,7 @@
 #include "ObjectList.h"
 #include <sigc++/trackable.h>
 
+class City;
 /** An object list which keeps track of all vectoredunits. It cannot do much more than
   * saving and loading the elements. Implemented as a singleton again.
   */
@@ -44,14 +45,17 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	//! When destination cities get conquered, this list needs to be 
 	//! cleaned up.
         void removeVectoredUnitsGoingTo(Vector<int> pos);
+        void removeVectoredUnitsGoingTo(City *c);
 
 	//! When source cities get conquered, this list needs to be 
 	//! cleaned up.
         void removeVectoredUnitsComingFrom(Vector<int> pos);
+        void removeVectoredUnitsComingFrom(City *c);
 
 	//! When showing info we need to know who's going to where.
 	//! vectored is filled up with the results.
         void getVectoredUnitsGoingTo(Vector<int> pos, std::list<VectoredUnit*>& vectored);
+	void getVectoredUnitsGoingTo(City *c, std::list<VectoredUnit*>& vectored);
 
 	//! When showing info we need to know who's coming from where.
 	//! vectored is filled up with the results.

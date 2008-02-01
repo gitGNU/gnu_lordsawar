@@ -174,6 +174,47 @@ void VectoredUnitlist::removeVectoredUnitsComingFrom(Vector<int> pos)
 	}
     }
 }
+void VectoredUnitlist::removeVectoredUnitsGoingTo(City *c)
+{
+  iterator it = begin();
+  iterator nextit = it;
+  nextit++;
+  for (; nextit != end(); it++, nextit++)
+    {
+      if (c->contains((*it)->getDestination()))
+	{
+	  erase(it);
+	  it = nextit;
+	  nextit++;
+	}
+    }
+}
+
+void VectoredUnitlist::removeVectoredUnitsComingFrom(City *c)
+{
+  iterator it = begin();
+  iterator nextit = it;
+  nextit++;
+  for (; nextit != end(); it++, nextit++)
+    {
+      if (c->contains((*it)->getPos()))
+	{
+	  erase(it);
+	  it = nextit;
+	  nextit++;
+	}
+    }
+}
+void VectoredUnitlist::getVectoredUnitsGoingTo(City *c, std::list<VectoredUnit*>& vectored)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if (c->contains((*it)->getDestination()))
+	{
+	  vectored.push_back(*it);
+	}
+    }
+}
 void VectoredUnitlist::getVectoredUnitsGoingTo(Vector<int> pos, std::list<VectoredUnit*>& vectored)
 {
   for (iterator it = begin(); it != end(); it++)
