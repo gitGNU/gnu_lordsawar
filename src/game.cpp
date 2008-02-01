@@ -174,6 +174,8 @@ Game::Game(GameScenario* gameScenario)
 	sigc::mem_fun(this, &Game::init_turn_for_player));
     d_nextTurn->snextRound.connect(
 	sigc::mem_fun(d_gameScenario, &GameScenario::nextRound));
+    d_nextTurn->snextRound.connect(
+	sigc::mem_fun(this, &Game::nextRound));
     d_nextTurn->supdating.connect(
 	sigc::mem_fun(this, &Game::redraw));
             
@@ -1311,4 +1313,44 @@ bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
   them->improveDiplomaticRelationship (2, me);
 
   return true;
+}
+
+void Game::nextRound()
+{
+  // update diplomacy
+  if (GameScenario::s_diplomacy)
+    {
+      Playerlist::getInstance()->negotiateDiplomacy();
+      Playerlist::getInstance()->calculateDiplomaticRankings();
+    }
+
+  // update winners
+  Playerlist::getInstance()->calculateWinners();
+
+  // offer surrender
+  if (Playerlist::getInstance()->countHumanPlayersAlive() == 1 &&
+      GameScenario::s_surrender_already_offered == 0)
+    {
+      Playerlist *plist = Playerlist::getInstance();
+      for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
+	{
+	  if ((*it)->getType() == Player::HUMAN)
+	    {
+	      Citylist *cl = Citylist::getInstance();
+	      int target_level = cl->size() / 2;
+	      if (cl->countCities(*it) > target_level)
+		{
+		  GameScenario::s_surrender_already_offered = 1;
+		  if (enemy_offers_surrender(plist->countPlayersAlive() - 1))
+		    {
+		      surrender_answered.emit(true);
+		      game_over.emit(*it);
+		    }
+		  else
+		    surrender_answered.emit(false);
+		}
+	    }
+	}
+    }
+
 }

@@ -232,6 +232,8 @@ class GameWindow: public sigc::trackable
     void on_ruinfight_started(Stack *attackers, Stack *defenders);
     void on_ruinfight_finished(Fight::Result result);
     bool on_hero_offers_service(Player *player, Hero *hero, City *city, int gold);
+    bool on_enemy_offers_surrender(int numEnemies);
+    void on_surrender_answered (bool accepted);
     bool on_stack_considers_treachery (Player *me, Stack *stack, Player *them, Vector<int> pos);
     bool on_temple_searched(bool hasHero, Temple *temple, int blessCount);
     void on_quest_assigned(Hero *hero, Quest *quest);

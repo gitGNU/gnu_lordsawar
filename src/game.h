@@ -121,6 +121,8 @@ class Game
     sigc::signal<void, float> advice_asked;
     sigc::signal<void, Fight::Result> ruinfight_finished;
     sigc::signal<bool, Player *, Hero *, City *, int> hero_offers_service;
+    sigc::signal<bool, int > enemy_offers_surrender;
+    sigc::signal<void, bool> surrender_answered;
     sigc::signal<bool, Player *, Stack *, Player *, Vector<int> > stack_considers_treachery;
     sigc::signal<bool, bool, Temple *, int> temple_searched;
     sigc::signal<void, Hero *, Quest *> quest_assigned;
@@ -197,6 +199,7 @@ class Game
     //! Called whenever players fight
     void on_fight_started(Fight &fight);
 
+    void nextRound();
 
 
     

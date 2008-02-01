@@ -21,6 +21,7 @@ game-preferences-dialog.glade \
 game-window.glade \
 hero-dialog.glade \
 hero-offer-dialog.glade \
+surrender-dialog.glade \
 sage-dialog.glade \
 ruin-rewarded-dialog.glade \
 ruin-report-dialog.glade \

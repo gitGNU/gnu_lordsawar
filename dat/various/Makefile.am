@@ -7,13 +7,14 @@ various_DATA = \
     arrows.png \
     waypoints.png \
     buttons.png \
-    city_occupied.jpg \
+    city_occupied.png \
     items.png \
     medals_mask.gif \
     ship.png \
     recruit_female.png \
     recruit_male.png \
-    ruin_1.jpg \
+    ruin_1.png \
+    ruin_2.png \
     splash_screen.jpg \
     about_screen.jpg \
     network_screen.jpg \
@@ -47,13 +48,14 @@ EXTRA_DIST = \
     arrows.png \
     waypoints.png \
     buttons.png \
-    city_occupied.jpg \
+    city_occupied.png \
     items.png \
     medals_mask.gif \
     ship.png \
     recruit_female.png \
     recruit_male.png \
-    ruin_1.jpg \
+    ruin_1.png \
+    ruin_2.png \
     splash_screen.jpg \
     about_screen.jpg \
     network_screen.jpg \

@@ -5,14 +5,6 @@ buildings can be put on tiles that get turned into water
 	or turned into forest
 		true or false?
 
-army tooltips don't show up right for black.
-	happens when we switch computer player to human player
-	not reproducable
-
-diplomacy:
-have the computer players offer surrender after you have 50% of the cities.
-	but only if you're the only human player left
-
 shields should be part of the army set.
 
 replace the following images:
@@ -21,3 +13,4 @@ replace the following images:
 	cursors (x12)
 	waypoints (x2)
 	flags (x8)
+

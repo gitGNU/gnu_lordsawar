@@ -175,13 +175,6 @@ void NextTurn::finishRound()
 	}
     }
 
-  if (GameScenario::s_diplomacy)
-    {
-      Playerlist::getInstance()->negotiateDiplomacy();
-      Playerlist::getInstance()->calculateDiplomaticRankings();
-    }
-  Playerlist::getInstance()->calculateWinners();
-
   // heal the stacks in the ruins
   Ruinlist* rl = Ruinlist::getInstance();
   for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
@@ -190,4 +183,5 @@ void NextTurn::finishRound()
       if (keeper)
 	keeper->nextTurn();
     }
+
 }

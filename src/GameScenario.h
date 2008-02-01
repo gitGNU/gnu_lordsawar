@@ -93,6 +93,7 @@ class GameScenario: public sigc::trackable
         static bool s_intense_combat;
         static bool s_military_advisor;
         static bool s_random_turns;
+	static bool s_surrender_already_offered;
 
     private:
         /** Callback function for loading a game. See XML_Helper for details.

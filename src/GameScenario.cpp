@@ -66,6 +66,7 @@ GameParameters::RazingCities GameScenario::s_razing_cities = GameParameters::ALW
 bool GameScenario::s_intense_combat = false;
 bool GameScenario::s_military_advisor = false;
 bool GameScenario::s_random_turns = false;
+bool GameScenario::s_surrender_already_offered = false;
 
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
     :d_round(0), d_name(name),d_comment(comment), d_turnmode(turnmode)
@@ -241,6 +242,8 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= helper.saveData("intense_combat", s_intense_combat);
     retval &= helper.saveData("military_advisor", s_military_advisor);
     retval &= helper.saveData("random_turns", s_random_turns);
+    retval &= helper.saveData("surrender_already_offered", 
+			      s_surrender_already_offered);
     
     retval &= helper.closeTag();
     
@@ -293,6 +296,8 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
         helper->getData(s_intense_combat, "intense_combat");
         helper->getData(s_military_advisor, "military_advisor");
         helper->getData(s_random_turns, "random_turns");
+        helper->getData(s_surrender_already_offered, 
+			"surrender_already_offered");
 
         //TODO: for later when it becomes crucial: deal with loading of
         //something else than simple games

@@ -54,6 +54,7 @@
 #include "sage-dialog.h"
 #include "ruin-rewarded-dialog.h"
 #include "hero-offer-dialog.h"
+#include "surrender-dialog.h"
 #include "quest-report-dialog.h"
 #include "quest-assigned-dialog.h"
 #include "quest-completed-dialog.h"
@@ -608,6 +609,12 @@ void GameWindow::setup_signals()
   connections.push_back
     (game->hero_offers_service.connect
      (sigc::mem_fun(*this, &GameWindow::on_hero_offers_service)));
+  connections.push_back
+    (game->enemy_offers_surrender.connect
+     (sigc::mem_fun(*this, &GameWindow::on_enemy_offers_surrender)));
+  connections.push_back
+    (game->surrender_answered.connect
+     (sigc::mem_fun(*this, &GameWindow::on_surrender_answered)));
   connections.push_back
     (game->stack_considers_treachery.connect
      (sigc::mem_fun(*this, &GameWindow::on_stack_considers_treachery)));
@@ -1545,10 +1552,6 @@ void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
 
   dialog->set_title(ruin->getName());
 
-  Gtk::Image *image;
-  xml->get_widget("ruin_image", image);
-  image->property_file() = File::getMiscFile("various/ruin_1.jpg");
-
   Gtk::Label *label;
   xml->get_widget("label", label);
 
@@ -1635,6 +1638,13 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
     s += _("...and is slain by it!");
   label->set_text(s);
 
+  Gtk::Image *image;
+  xml->get_widget("image", image);
+  if (result == Fight::ATTACKER_WON)
+    image->property_file() = File::getMiscFile("various/ruin_2.png");
+  else
+    image->property_file() = File::getMiscFile("various/ruin_1.png");
+
   dialog->show_all();
   dialog->run();
 }
@@ -1680,6 +1690,23 @@ bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, 
   HeroOfferDialog d(player, hero, city, gold);
   d.set_parent_window(*window.get());
   return d.run();
+}
+
+bool GameWindow::on_enemy_offers_surrender(int numPlayers)
+{
+  SurrenderDialog d(numPlayers);
+  d.set_parent_window(*window.get());
+  return d.run();
+}
+
+void GameWindow::on_surrender_answered (bool accepted)
+{
+  if (accepted)
+    on_message_requested
+      (_("You graciously and benevolently accept their offer."));
+  else
+    on_message_requested
+      (_("Off with their heads!  I want it ALL!"));
 }
 
 bool GameWindow::on_stack_considers_treachery (Player *me, Stack *stack, 
@@ -1872,7 +1899,7 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 
   Gtk::Image *image;
   xml->get_widget("city_image", image);
-  image->property_file() = File::getMiscFile("various/city_occupied.jpg");
+  image->property_file() = File::getMiscFile("various/city_occupied.png");
   image->show();
 
   Gtk::Label *label;
