@@ -103,6 +103,9 @@ class Citylist : public ObjectList<City>, public sigc::trackable
 	//! owner.
 	void changeOwnership(Player *old_owner, Player *new_owner);
 
+	//! stops vectoring from any city to the specified city.
+	void stopVectoringTo(City *c);
+
     protected:
         // CREATORS
         Citylist();

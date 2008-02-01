@@ -398,4 +398,21 @@ void Citylist::changeOwnership(Player *old_owner, Player *new_owner)
       }
 }
 
+void Citylist::stopVectoringTo(City *c)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it).isBurnt() == true)
+	continue;
+      if ((*it).getPlayer() != c->getPlayer())
+	continue;
+      if ((*it).getVectoring() == Vector<int>(-1,-1))
+	continue;
+      if (c->contains((*it).getVectoring()))
+	{
+	  (*it).setVectoring(Vector<int>(-1,-1));
+	}
+      return;
+    }
+}
 // End of file

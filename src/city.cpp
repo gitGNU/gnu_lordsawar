@@ -316,6 +316,7 @@ void City::removeBasicProd(int index)
 
 void City::conquer(Player* newowner)
 {
+  Citylist::getInstance()->stopVectoringTo(this);
     d_player = newowner;
 
     // remove vectoring info 
@@ -327,8 +328,8 @@ void City::conquer(Player* newowner)
     deFog(newowner);
 
     VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-    vul->removeVectoredUnitsComingFrom(this);
     vul->removeVectoredUnitsGoingTo(this);
+    vul->removeVectoredUnitsComingFrom(this);
 }
 
 void City::randomlyImproveOrDegradeArmy(Army *army)

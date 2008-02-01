@@ -1002,6 +1002,8 @@ void Game::maybeRecruitHero (Player *p)
   City *city;
   Playerlist *plist = Playerlist::getInstance();
   int gold_needed = 0;
+  if (Citylist::getInstance()->countCities(p) == 0)
+    return;
   //give the player a hero if it's the first round.
   //otherwise we get a hero based on chance
   //a hero costs a random number of gold pieces

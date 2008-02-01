@@ -179,6 +179,7 @@ void VectoredUnitlist::removeVectoredUnitsGoingTo(City *c)
   iterator it = begin();
   iterator nextit = it;
   nextit++;
+	  
   for (; nextit != end(); it++, nextit++)
     {
       if (c->contains((*it)->getDestination()))
