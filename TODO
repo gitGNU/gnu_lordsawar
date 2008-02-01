@@ -14,29 +14,4 @@ replace the following images:
 	waypoints (x2)
 	flags (x8)
 
-standard shows up on map, even though it's not planted!
-fixed
-
-another player conquering my city doesn't stop the vectoring!
-	fixed
-
-vectoring not working very well
-	units showing up, but not in the next-turn image, etc
-	fixed
-
-when city conquered, our path can still be going to it.
-	or through it
-hmm, but strangely enough razing is okay
-	listen for pillage/sack/occupy
-		fixup paths going through or to that city
-	we're already recalculating paths every turn
-	fixed
-
-walk button doesn't highlight again when we have moves
-	fixed
-
-accepting surrender didn't work
-	it said off with their heads
-	fixed
-
 computer player can sit around and do nothing.
