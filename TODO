@@ -15,3 +15,7 @@ replace the following images:
 	flags (x8)
 
 computer player can sit around and do nothing.
+
+hero in flying stack w/ dragons
+has zero moves left, but the stack shows the next square as possibly reached
+hitting space twice fixes it
