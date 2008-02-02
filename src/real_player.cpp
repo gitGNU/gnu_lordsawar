@@ -38,7 +38,6 @@
 #include "FogMap.h"
 #include "xmlhelper.h"
 #include "ruinlist.h"
-#include "GameScenario.h"
 #include "game-parameters.h"
 #include "signpost.h"
 #include "history.h"
@@ -48,9 +47,9 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-RealPlayer::RealPlayer(string name, Uint32 armyset, SDL_Color color,
-		       Player::Type type, int player_no)
-    :Player(name, armyset, color, type, player_no)
+RealPlayer::RealPlayer(string name, Uint32 armyset, SDL_Color color, int width,
+		       int height, Player::Type type, int player_no)
+    :Player(name, armyset, color, width, height, type, player_no)
 {
 }
 
@@ -351,34 +350,8 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
             }
             else
             {
-                // we didn't suceed in defeating the defenders
-                //if this is a neutral city, and we're playing with 
-                //active neutral cities, AND it hasn't already been attacked
-                //then it's production gets turned on
-                Player *neu = city->getPlayer(); //neutral player
-                if (GameScenario::s_neutral_cities == GameParameters::ACTIVE &&
-                    neu == Playerlist::getInstance()->getNeutral() &&
-                    city->getProductionIndex() == -1)
-                {
-                  //great, then let's turn on the production.
-                  //well, we already made a unit, and we want to produce more
-                  //of it.
-                  Stack *o = neu->getStacklist()->getObjectAt(city->getPos());
-                  if (o)
-                    {
-                      int army_type = o->getStrongestArmy()->getType();
-                      for (int i = 0; i < 4; i++)
-                        {
-                          if (city->getArmytype(i) == army_type)
-                            {
-                              // hey, we found the droid we were looking for
-                              city->setProduction(i);
-                              break;
-                            }
-                        }
-                    }
-                }
             }
+	    cityfight_finished(city, result);
             moveResult->setStepCount(stepCount);
             supdatingStack.emit(0);
             
@@ -615,13 +588,7 @@ Fight::Result RealPlayer::stackFight(Stack** attacker, Stack** defender, bool ru
 
     Fight fight(*attacker, *defender);
 
-    if ((pa->getType() == Player::HUMAN || pd->getType() == Player::HUMAN) ||
-	(pa->getType() != Player::HUMAN && pd->getType() != Player::HUMAN 
-	 && pd != Playerlist::getInstance()->getNeutral()))
-      fight_started.emit(fight);
-    else
-      fight.battle();
-
+    fight_started.emit(fight);
     // cleanup
     
     // add a fight item about the combat
@@ -1045,7 +1012,7 @@ int RealPlayer::stackVisitTemple(Stack* s, Temple* t)
   return count;
 }
 
-Quest* RealPlayer::stackGetQuest(Stack* s, Temple* t)
+Quest* RealPlayer::stackGetQuest(Stack* s, Temple* t, bool except_raze)
 {
   QuestsManager *qm = QuestsManager::getInstance();
   debug("Realplayer::stackGetQuest")
@@ -1066,8 +1033,7 @@ Quest* RealPlayer::stackGetQuest(Stack* s, Temple* t)
   if (s->getFirstHero())
     {
       q = qm->createNewQuest
-	(s->getFirstHero()->getId(), 
-	 GameScenario::s_razing_cities != GameParameters::NEVER);
+	(s->getFirstHero()->getId(), except_raze);
     }
 
   // couldn't assign a quest for various reasons
@@ -1560,9 +1526,10 @@ void RealPlayer::tallyTriumph(Player *p, TriumphType type)
   d_triumph[id][type]++;
 }
 
-float RealPlayer::stackFightAdvise(Stack* s, Vector<int> tile)
+float RealPlayer::stackFightAdvise(Stack* s, Vector<int> tile, 
+				   bool intense_combat)
 {
-  float percent = 0.0;//(rand() % 100) * 1.0;
+  float percent = 0.0;
         
   City* city = Citylist::getInstance()->getObjectAt(tile);
   Stack* target = Stacklist::getObjectAt(tile);
@@ -1575,7 +1542,7 @@ float RealPlayer::stackFightAdvise(Stack* s, Vector<int> tile)
   for (unsigned int i = 0; i < 100; i++)
     {
       Fight fight(s, target, Fight::FOR_KICKS);
-      fight.battle();
+      fight.battle(intense_combat);
       if (fight.getResult() == Fight::ATTACKER_WON)
 	percent += 1.0;
     }

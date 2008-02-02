@@ -42,9 +42,10 @@ class CreateScenario
     
         /** The Constructor
           * 
-          * @param uncle    the progress bar which displays the advance
+          * @param width    the width of the map in the new scenario
+          * @param height   the heightof the map in the new scenario
           */
-        CreateScenario();
+        CreateScenario(int width = 112, int height = 156);
         ~CreateScenario();
 
         // setters
@@ -190,6 +191,7 @@ class CreateScenario
         bool setupItemRewards();
         bool setupRuinRewards();
 	bool setupMapRewards();
+	void quickStart();
 
 
         //data

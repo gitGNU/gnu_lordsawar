@@ -66,7 +66,7 @@ class Fight
 
         
         //! Does the actual fight
-        void battle();
+        void battle(bool intense);
 
 
         //! Returns the result of the fight
@@ -137,6 +137,7 @@ class Fight
         int d_turn;
         Result d_result;
 	FightType d_type;
+	bool d_intense_combat;
 };
 
 #endif // FIGHT_H

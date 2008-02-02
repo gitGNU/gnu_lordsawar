@@ -33,7 +33,7 @@ class FogMap
         enum FogType {OPEN=0, CLOSED=1};
         
         //! Standard constructor: create a given map
-        FogMap();
+        FogMap(int width, int height);
 
         //! Load the map using the given XML_Helper. See xml_helper.h for details.
         FogMap(XML_Helper* helper);

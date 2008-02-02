@@ -103,14 +103,17 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         //! This signal is emitted when a player has died.
         sigc::signal<void, Player*> splayerDead;
     
-        void calculateWinners();
-        void calculateDiplomaticRankings();
-	void negotiateDiplomacy();
+        //! This signal is emitted when a surrender is offered
+        sigc::signal<void, Player*> ssurrender;
+    
+	void nextRound(bool diplomacy, bool *surrender_already_offered);
 
 	Uint32 countHumanPlayersAlive();
 	Uint32 countPlayersAlive(); //does not include neutral player
 
 	void randomizeOrder();
+
+        void calculateDiplomaticRankings();
 
     protected:
         // CREATORS
@@ -123,6 +126,10 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         bool load(std::string, XML_Helper* helper);
 
 	static bool randomly(const Player *lhs, const Player *rhs);
+
+	//! end of round stuff
+        void calculateWinners();
+	void negotiateDiplomacy();
 
         //static pointers for the singleton
         static Playerlist* s_instance;

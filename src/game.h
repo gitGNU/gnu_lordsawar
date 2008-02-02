@@ -117,7 +117,7 @@ class Game
     sigc::signal<void, Stack *, MapTipPosition> stack_tip_changed;
     sigc::signal<void, Ruin*, Stack*, Reward*> ruin_searched;
     sigc::signal<void, Ruin*, Stack*> sage_visited;
-    sigc::signal<void, Fight &> fight_started;
+    sigc::signal<void, Fight &, bool> fight_started;
     sigc::signal<void, Stack *, Stack *> ruinfight_started;
     sigc::signal<void, float> advice_asked;
     sigc::signal<void, Fight::Result> ruinfight_finished;
@@ -199,8 +199,11 @@ class Game
     void stackDied(Stack* s);
     //! Called whenever players fight
     void on_fight_started(Fight &fight);
-
+    //! Called whenever a player receives an offer of surrender
+    void on_surrender_offered(Player *recipient);
     void nextRound();
+    //! Called after a player's stack attacks a city
+    void on_city_fight_finished(City *city, Fight::Result result);
 
 
     

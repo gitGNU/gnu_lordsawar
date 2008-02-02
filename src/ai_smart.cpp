@@ -34,8 +34,8 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 //#define debug(x)
 
-AI_Smart::AI_Smart(string name, unsigned int armyset, SDL_Color color, int player_no)
-  :RealPlayer(name, armyset, color, Player::AI_SMART, player_no),
+AI_Smart::AI_Smart(string name, unsigned int armyset, SDL_Color color, int width, int height, int player_no)
+  :RealPlayer(name, armyset, color, width, height, Player::AI_SMART, player_no),
    d_mustmakemoney(0)
 {
 }

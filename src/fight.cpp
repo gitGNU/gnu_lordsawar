@@ -27,7 +27,6 @@
 #include "city.h"
 #include "stack.h"
 #include "defs.h"
-#include "GameScenario.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -186,8 +185,9 @@ Fight::~Fight()
 
 }
 
-void Fight::battle()
+void Fight::battle(bool intense)
 {
+  d_intense_combat = intense;
   // at the beginning of the battle, calculate the bonuses
   // bonuses remain even if the unit providing a stackwide bonus dies
 
@@ -556,7 +556,7 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 
   debug("Army " << a->getId() << " attacks " << d->getId())
 
-    if (GameScenario::s_intense_combat == true)
+    if (d_intense_combat == true)
       sides = 24;
     else
       sides = 20;

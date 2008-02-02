@@ -22,3 +22,18 @@ hitting space twice fixes it
 
 sack quest should end if i occupy the city
 	asked bob
+
+make nextRound in playerlist
+	have game emit it automatically
+
+stop GameScenario pollution
+	fogmap
+	vectormap
+	fight
+	realplayer:
+	gamebigmap
+	gui/city-window
+	gui/army-gains-level-dialog
+
+removed unused constructor for vectormap
+	fixed

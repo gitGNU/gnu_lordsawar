@@ -358,7 +358,7 @@ void GameWindow::init(int width, int height)
 std::string
 create_and_dump_scenario(const std::string &file, const GameParameters &g)
 {
-    CreateScenario creator;
+    CreateScenario creator (g.map.width, g.map.height);
 
     // then fill the other players
     int c = 0;
@@ -401,10 +401,6 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 
     int area = g.map.width * g.map.height;
     creator.setNoSignposts(int(area * (g.map.grass / 100.0) * 0.0030));
-
-    // tell it the dimensions
-    creator.setWidth(g.map.width);
-    creator.setHeight(g.map.height);
 
     // and tell it the turn mode
     if (g.process_armies == GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN)
@@ -1649,9 +1645,9 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
   dialog->run();
 }
 
-void GameWindow::on_fight_started(Fight &fight)
+void GameWindow::on_fight_started(Fight &fight, bool intense_combat)
 {
-  FightWindow d(fight);
+  FightWindow d(fight, intense_combat);
 
   d.set_parent_window(*window.get());
   d.run(&d_quick_fights);
@@ -2197,7 +2193,8 @@ void GameWindow::on_city_razed (City *city)
 void GameWindow::on_city_visited(City *city)
 {
   CityWindow d(city, 
-	       game->getScenario()->s_razing_cities == GameParameters::ALWAYS);
+	       game->getScenario()->s_razing_cities == GameParameters::ALWAYS,
+	       GameScenario::s_see_opponents_production);
 
   d.set_parent_window(*window.get());
   d.run();
@@ -2305,7 +2302,7 @@ void GameWindow::on_medal_awarded_to_army(Army *army)
 
 Army::Stat GameWindow::on_army_gains_level(Army *army)
 {
-  ArmyGainsLevelDialog d(army);
+  ArmyGainsLevelDialog d(army, GameScenario::s_hidden_map);
 
   d.set_parent_window(*window.get());
   d.run();

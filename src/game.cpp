@@ -35,6 +35,7 @@
 #include "smallmap.h"
 
 #include "army.h"
+#include "fight.h"
 #include "hero.h"
 #include "stacklist.h"
 #include "citylist.h"
@@ -116,6 +117,8 @@ void Game::addPlayer(Player *p)
      (sigc::mem_fun
       (ruinfight_finished, &sigc::signal<void, Fight::Result>::emit)));
   connections[p->getId()].push_back
+    (p->cityfight_finished.connect (sigc::mem_fun(*this, &Game::on_city_fight_finished))); 
+  connections[p->getId()].push_back
     (p->advice_asked.connect
      (sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit)));
 }
@@ -126,7 +129,11 @@ Game::Game(GameScenario* gameScenario)
     input_locked = false;
     
     // init the bigmap
-    bigmap.reset(new GameBigMap);
+    bigmap.reset(new GameBigMap
+		 (GameScenario::s_intense_combat, 
+		  GameScenario::s_see_opponents_production, 
+		  GameScenario::s_see_opponents_stacks, 
+		  GameScenario::s_military_advisor));
     bigmap->stack_selected.connect(
 	sigc::mem_fun(this, &Game::on_stack_selected));
     bigmap->path_set.connect(
@@ -167,6 +174,7 @@ Game::Game(GameScenario* gameScenario)
 	addPlayer(p);
     }
     pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
+    pl->ssurrender.connect(sigc::mem_fun(this, &Game::on_surrender_offered));
 
     //set up a NextTurn object
     d_nextTurn = new NextTurn(d_gameScenario->getTurnmode(),
@@ -474,7 +482,9 @@ void Game::search_selected_stack()
       bool wants_quest = temple_searched.emit(stack->hasHero(), temple, blessCount);
       if (wants_quest)
 	{
-	  Quest *q = player->stackGetQuest(stack, temple);
+	  Quest *q = player->stackGetQuest
+	    (stack, temple, 
+	     GameScenario::s_razing_cities != GameParameters::NEVER);
 	  Hero* hero = dynamic_cast<Hero*>(stack->getFirstHero());
 
 	  if (q)
@@ -1252,10 +1262,24 @@ void Game::on_player_died(Player *player)
 
 void Game::on_fight_started(Fight &fight)
 {
-  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
-      GameScenario::s_hidden_map == true)
-    return;
-  fight_started.emit(fight);
+  Player* pd = (*(fight.getDefenders().begin()))->getPlayer();
+  Player* pa = (*(fight.getAttackers().begin()))->getPlayer();
+  if ((pa->getType() == Player::HUMAN || pd->getType() == Player::HUMAN) ||
+      (pa->getType() != Player::HUMAN && pd->getType() != Player::HUMAN 
+       && pd != Playerlist::getInstance()->getNeutral()))
+    {
+
+      if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+	  GameScenario::s_hidden_map == true)
+	return;
+    }
+  else
+    {
+      //short circuit the battle sequence
+      fight.battle(GameScenario::s_intense_combat);
+      return;
+    }
+  fight_started.emit(fight, GameScenario::s_intense_combat);
 }
 
 void Game::center_view_on_city()
@@ -1321,44 +1345,22 @@ bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
 
 void Game::nextRound()
 {
-  // update diplomacy
-  if (GameScenario::s_diplomacy)
-    {
-      Playerlist::getInstance()->negotiateDiplomacy();
-      Playerlist::getInstance()->calculateDiplomaticRankings();
-    }
-
-  // update winners
-  Playerlist::getInstance()->calculateWinners();
-
-  // offer surrender
-  if (Playerlist::getInstance()->countHumanPlayersAlive() == 1 &&
-      GameScenario::s_surrender_already_offered == 0)
-    {
-      Playerlist *plist = Playerlist::getInstance();
-      for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
-	{
-	  if ((*it)->getType() == Player::HUMAN)
-	    {
-	      Citylist *cl = Citylist::getInstance();
-	      int target_level = cl->size() / 2;
-	      if (cl->countCities(*it) > target_level)
-		{
-		  GameScenario::s_surrender_already_offered = 1;
-		  if (enemy_offers_surrender.emit(plist->countPlayersAlive() - 1))
-		    {
-		      surrender_answered.emit(true);
-		      game_over.emit(*it);
-		    }
-		  else
-		    surrender_answered.emit(false);
-		  break;
-		}
-	    }
-	}
-    }
+  Playerlist::getInstance()->nextRound
+    (GameScenario::s_diplomacy, &GameScenario::s_surrender_already_offered);
 }
     
+void Game::on_surrender_offered(Player *recipient)
+{
+  Playerlist *plist = Playerlist::getInstance();
+  if (enemy_offers_surrender.emit(plist->countPlayersAlive() - 1))
+    {
+      surrender_answered.emit(true);
+      game_over.emit(recipient);
+    }
+  else
+    surrender_answered.emit(false);
+}
+
 void Game::recalculate_moves_for_stack(Stack *s)
 {
   if (!s)
@@ -1369,4 +1371,39 @@ void Game::recalculate_moves_for_stack(Stack *s)
       redraw();
       update_control_panel();
     }
+}
+    
+void Game::on_city_fight_finished(City *city, Fight::Result result)
+{
+  if (result != Fight::ATTACKER_WON)
+    {
+      // we didn't suceed in defeating the defenders
+      //if this is a neutral city, and we're playing with 
+      //active neutral cities, AND it hasn't already been attacked
+      //then it's production gets turned on
+      Player *neu = city->getPlayer(); //neutral player
+      if (GameScenario::s_neutral_cities == GameParameters::ACTIVE &&
+	  neu == Playerlist::getInstance()->getNeutral() &&
+	  city->getProductionIndex() == -1)
+	{
+	  //great, then let's turn on the production.
+	  //well, we already made a unit, and we want to produce more
+	  //of it.
+	  Stack *o = neu->getStacklist()->getObjectAt(city->getPos());
+	  if (o)
+	    {
+	      int army_type = o->getStrongestArmy()->getType();
+	      for (int i = 0; i < 4; i++)
+		{
+		  if (city->getArmytype(i) == army_type)
+		    {
+		      // hey, we found the droid we were looking for
+		      city->setProduction(i);
+		      break;
+		    }
+		}
+	    }
+	}
+    }
+  return;
 }

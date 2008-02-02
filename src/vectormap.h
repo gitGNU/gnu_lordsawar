@@ -43,9 +43,7 @@ class VectorMap : public OverviewMap
       CLICK_SELECTS,
       CLICK_VECTORS,
     };
-    VectorMap(City *city, enum ShowVectoring vector);
-    VectorMap(City *city);
-
+    VectorMap(City *city, enum ShowVectoring vector, bool see_opponents_production);
     void mouse_button_event(MouseButtonEvent e);
 
     // emits the tile chosen, (-1, -1) if tile deselected
@@ -73,6 +71,7 @@ class VectorMap : public OverviewMap
     void draw_cities (std::list<City*> citylist, Uint32 type);
     void draw_lines (std::list<City*> citylist);
     void draw_planted_standard(Vector<int> pos);
+    bool d_see_opponents_production;
 };
 
 #endif

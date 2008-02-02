@@ -39,9 +39,9 @@
 #include "../GameMap.h"
 #include "../citylist.h"
 #include "../playerlist.h"
-#include "../GameScenario.h"
 
-CityWindow::CityWindow(City *c, bool razing_possible)
+CityWindow::CityWindow(City *c, bool razing_possible, 
+		       bool see_opponents_production)
 {
     city = c;
     
@@ -54,7 +54,8 @@ CityWindow::CityWindow(City *c, bool razing_possible)
     
     xml->get_widget("map_image", map_image);
 
-    prodmap.reset(new VectorMap(c, VectorMap::SHOW_NO_VECTORING));
+    prodmap.reset(new VectorMap(c, VectorMap::SHOW_NO_VECTORING,
+		  see_opponents_production));
     prodmap->map_changed.connect(
 	sigc::mem_fun(this, &CityWindow::on_map_changed));
 

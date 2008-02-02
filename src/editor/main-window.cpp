@@ -309,6 +309,8 @@ void MainWindow::show_initial_map()
 void MainWindow::set_filled_map(int width, int height, int fill_style, std::string tileset)
 {
     clear_map_state();
+    d_width = width;
+    d_height = height;
 
     GameMap::deleteInstance();
     GameMap::setWidth(width);
@@ -325,7 +327,7 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
     // ...however we need to do some of the setup by hand. We need to create a
     // neutral player to give cities a player upon creation...
     Uint32 armyset = Armysetlist::getInstance()->getArmysets()[0];
-    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral(), MAX_PLAYERS);
+    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral(), width, height, MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
     Playerlist::getInstance()->push_back(neutral);
     Playerlist::getInstance()->setNeutral(neutral);
@@ -366,7 +368,7 @@ void MainWindow::set_random_map(int width, int height,
     // We need to create a neutral player to give cities a player upon
     // creation...
     Uint32 armyset = Armysetlist::getInstance()->getArmysets()[0];
-    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral(), MAX_PLAYERS);
+    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral(), width, height, MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
     Playerlist::getInstance()->push_back(neutral);
     Playerlist::getInstance()->setNeutral(neutral);
@@ -646,7 +648,7 @@ void MainWindow::on_quit_activated()
 
 void MainWindow::on_edit_players_activated()
 {
-    PlayersDialog d;
+    PlayersDialog d(d_width, d_height);
     d.set_parent_window(*window.get());
     d.run();
 }

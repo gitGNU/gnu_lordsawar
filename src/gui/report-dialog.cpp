@@ -53,7 +53,7 @@ ReportDialog::ReportDialog(Player *player, ReportType type)
   armymap->map_changed.connect
     (sigc::mem_fun(this, &ReportDialog::on_army_map_changed));
   City *c = Citylist::getInstance()->getFirstCity(d_player);
-  vectormap.reset(new VectorMap(c, VectorMap::SHOW_ALL_VECTORING));
+  vectormap.reset(new VectorMap(c, VectorMap::SHOW_ALL_VECTORING, false));
   vectormap->map_changed.connect
     (sigc::mem_fun(this, &ReportDialog::on_vector_map_changed));
 

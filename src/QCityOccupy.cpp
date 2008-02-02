@@ -109,7 +109,7 @@ void QuestCityOccupy::initDescription()
   char buffer[121]; buffer[120]='\0';
 
   snprintf(buffer, 100, _("You must take over the city \"%s\" and occupy it."),
-	   c->getName().c_str(), c->getPos().x, c->getPos().y);
+	   c->getName().c_str());
 
   d_description = std::string(buffer);
 }

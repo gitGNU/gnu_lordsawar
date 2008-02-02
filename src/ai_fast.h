@@ -45,7 +45,7 @@ class AI_Fast : public RealPlayer
           * @param armyset      the armyset of the player
           * @param color        the player's color
           */
-        AI_Fast(std::string name, Uint32 armyset, SDL_Color color, int player_no = -1);
+        AI_Fast(std::string name, Uint32 armyset, SDL_Color color, int width, int height, int player_no = -1);
 
         //! Copy constructor
         AI_Fast(const Player&);

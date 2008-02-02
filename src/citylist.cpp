@@ -17,6 +17,7 @@
 #include "citylist.h"
 #include "city.h"
 #include "playerlist.h"
+#include <limits.h>
 #include "xmlhelper.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -178,9 +179,14 @@ City* Citylist::getNearestFriendlyCity(const Vector<int>& pos, int dist)
 
 City* Citylist::getNearestFriendlyCity(const Vector<int>& pos)
 {
+    Player* p = Playerlist::getInstance()->getActiveplayer();
+    return getNearestCity (pos, p);
+}
+
+City* Citylist::getNearestCity(const Vector<int>& pos, Player *p)
+{
     int diff = -1;
     iterator diffit;
-    Player* p = Playerlist::getInstance()->getActiveplayer();
     
     for (iterator it = begin(); it != end(); ++it)
     {
@@ -414,5 +420,30 @@ void Citylist::stopVectoringTo(City *c)
 	}
       return;
     }
+}
+
+Vector<int> Citylist::calculateCenterOfTerritory (Player *p)
+{
+  int n = INT_MAX;
+  int s = 0;
+  int w = INT_MAX;
+  int e = 0;
+  int count = 0;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      Vector<int> pos = (*it).getPos();
+      count++;
+      if (pos.x > e)
+	e = pos.x;
+      if (pos.x < w)
+	w = pos.x;
+      if (pos.y > s)
+	s = pos.y;
+      if (pos.y < n)
+	n = pos.y;
+    }
+  if (count == 0)
+    return Vector<int>(-1, -1);
+  return Vector<int>((s-n)/2, (e-w)/2);
 }
 // End of file

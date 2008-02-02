@@ -16,7 +16,6 @@
 #include <sstream>
 
 #include "FogMap.h"
-#include "GameMap.h"
 
 #include "playerlist.h"
 #include "xmlhelper.h"
@@ -27,11 +26,11 @@ using namespace std;
 #define debug(x)
 
 
-FogMap::FogMap()
+FogMap::FogMap(int width, int height)
 {
     debug("FogMap()");
-    d_width = GameMap::getInstance()->getWidth();
-    d_height = GameMap::getInstance()->getHeight();
+    d_width = width;
+    d_height = height;
 
     d_fogmap = new FogType[d_width*d_height];
 

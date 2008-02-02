@@ -38,8 +38,9 @@
 #include "../army.h"
 #include "../GraphicsCache.h"
 
-FightWindow::FightWindow(Fight &fight)
+FightWindow::FightWindow(Fight &fight, bool intense_combat)
 {
+  bool d_intense_combat = intense_combat;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/fight-window.glade");
 
@@ -98,7 +99,7 @@ FightWindow::FightWindow(Fight &fight)
     xml->get_widget("attacker_shield_image", attacker_shield_image);
     attacker_shield_image->property_pixbuf()=to_pixbuf(gc->getShieldPic(2, p));
   
-    fight.battle();
+    fight.battle(d_intense_combat);
     actions = fight.getCourseOfEvents();
     d_quick = false;
 }

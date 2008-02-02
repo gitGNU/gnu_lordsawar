@@ -78,6 +78,9 @@ class Citylist : public ObjectList<City>, public sigc::trackable
         //! Returns the city closest to pos
         City* getNearestCity(const Vector<int>& pos);
 
+	//! returns the city closest to pos that is owned by P
+	City* getNearestCity(const Vector<int>& pos, Player *p);
+
         //! Returns the city closest to pos and is owned by the Neutrals
         City* getNearestNeutralCity(const Vector<int>& pos);
 
@@ -105,6 +108,9 @@ class Citylist : public ObjectList<City>, public sigc::trackable
 
 	//! stops vectoring from any city to the specified city.
 	void stopVectoringTo(City *c);
+
+	//! find the center point for all of the given player's cities
+	Vector<int> calculateCenterOfTerritory (Player *p);
 
     protected:
         // CREATORS

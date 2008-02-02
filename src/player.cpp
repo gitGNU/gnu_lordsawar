@@ -24,7 +24,6 @@
 #include "citylist.h"
 #include "city.h"
 #include "path.h"
-#include "GameMap.h"
 #include "armysetlist.h"
 #include "real_player.h"
 #include "ai_dummy.h"
@@ -74,8 +73,8 @@ SDL_Color Player::get_color_for_neutral()
 // signal
 sigc::signal<void, Player::Type> sendingTurn;
 
-Player::Player(string name, Uint32 armyset, SDL_Color color, Type type,
-	       int player_no)
+Player::Player(string name, Uint32 armyset, SDL_Color color, int width,
+	       int height, Type type, int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
     d_dead(false), d_immortal(false), d_type(type), d_upkeep(0)
 {
@@ -86,7 +85,7 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, Type type,
     d_stacklist = new Stacklist();
     debug("type of " << d_name << " is " << type)
         
-    d_fogmap = new FogMap();
+    d_fogmap = new FogMap(width, height);
 
     //initial fight order is the order in which the armies appear
     //in the default.xml file.
@@ -138,7 +137,7 @@ Player::Player(const Player& player)
         d_history.push_back(History::copy(*pit));
 
     // copy fogmap; TBD
-    d_fogmap = new FogMap();
+    //d_fogmap = new FogMap(*player.getFogMap());
 
     // copy diplomatic states
     for (unsigned int i = 0 ; i < MAX_PLAYERS; i++)
@@ -249,18 +248,18 @@ Player::~Player()
         delete (*it);
 }
 
-Player* Player::create(std::string name, Uint32 armyset, SDL_Color color, Type type)
+Player* Player::create(std::string name, Uint32 armyset, SDL_Color color, int width, int height, Type type)
 {
     switch(type)
     {
         case HUMAN:
-            return new RealPlayer(name, armyset, color);
+            return new RealPlayer(name, armyset, color, width, height);
         case AI_FAST:
-            return new AI_Fast(name, armyset, color);
+            return new AI_Fast(name, armyset, color, width, height);
         case AI_DUMMY:
-            return new AI_Dummy(name, armyset, color);
+            return new AI_Dummy(name, armyset, color, width, height);
         case AI_SMART:
-            return new AI_Smart(name, armyset, color);
+            return new AI_Smart(name, armyset, color, width, height);
     }
 
     return 0;

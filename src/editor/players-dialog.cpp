@@ -56,9 +56,11 @@ namespace
     }
 }
 
-PlayersDialog::PlayersDialog()
+PlayersDialog::PlayersDialog(int width, int height)
     : type_column(_("Type"), type_renderer)
 {
+  d_width = width;
+  d_height = height;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/players-dialog.glade");
 
@@ -219,16 +221,18 @@ void PlayersDialog::run()
 		if (type == HUMAN_PLAYER_TYPE)
 		    new_player = 
 			new RealPlayer(name, default_armyset,
-				       Player::get_color_for_no(c),
-				       type_as_enum, c);
+				       Player::get_color_for_no(c), d_width,
+				       d_height, type_as_enum, c);
 		else if (type == EASY_PLAYER_TYPE)
 		    new_player = 
 			new AI_Fast(name, default_armyset,
-				    Player::get_color_for_no(c), c);
+				    Player::get_color_for_no(c), 
+				    d_width, d_height, c);
 		else if (type == HARD_PLAYER_TYPE)
 		    new_player = 
 			new AI_Smart(name, default_armyset,
-				     Player::get_color_for_no(c), c);
+				     Player::get_color_for_no(c), d_width,
+				     d_height, c);
 		    
 		new_player->setGold(gold);
 

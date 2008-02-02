@@ -49,15 +49,11 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-CreateScenario::CreateScenario()
-    :d_scenario(0), d_generator(0)
+CreateScenario::CreateScenario(int width, int height)
+    :d_scenario(0), d_generator(0), d_width(width), d_height(height)
 {
     debug("CreateScenario::CreateScenario")
    
-   //default value
-    setWidth(112);
-    setHeight(156);
-    
     //make sure that objects are deleted
     GameMap::deleteInstance();
     Playerlist::deleteInstance();
@@ -232,7 +228,8 @@ Player* CreateScenario::addPlayer(std::string name, Uint32 armyset,
 {
     debug("CreateScenario::addPlayer")
 
-    Player* p = Player::create(name, armyset, color, Player::Type(type));
+    Player* p = Player::create(name, armyset, color, d_width, d_height,
+			       Player::Type(type));
     Playerlist::getInstance()->push_back(p);
 
     return p;
@@ -440,9 +437,9 @@ bool CreateScenario::distributePlayers()
             (*cit).setCapital(true);
             skipping = 0;
 
-            History_CityWon *item = new History_CityWon();
-            item->fillData(&*cit);
-            (*pit)->getHistorylist()->push_back(item);
+	    History_CityWon *item = new History_CityWon();
+	    item->fillData(&*cit);
+	    (*pit)->getHistorylist()->push_back(item);
 
             pit++;
             if ((*pit) == pl->getNeutral())
@@ -462,39 +459,7 @@ bool CreateScenario::setupCities(bool quick_start,
     debug("CreateScenario::setupCities")
 
     if (quick_start)
-      {
-        Playerlist *plist = Playerlist::getInstance();
-        Citylist *clist = Citylist::getInstance();
-        Vector <int> pos;
-        // no neutral cities
-        // divvy up the neutral cities among other non-neutral players
-        int cities_left = clist->size() - plist->size() + 1;
-        unsigned int citycount[MAX_PLAYERS];
-	memset (citycount, 0, sizeof (citycount));
-        Playerlist::iterator pit = plist->begin();
-        for (; pit != plist->end(); pit++)
-          {
-            if (*pit == plist->getNeutral())
-              pit = plist->begin();
-            citycount[(*pit)->getId()]++;
-            cities_left--;
-            if (cities_left == 0)
-              break;
-          }
-        for (unsigned int i = 0; i < MAX_PLAYERS; i++)
-          {
-            for (unsigned int j = 0; j < citycount[i]; j++)
-              {
-                Player *p = plist->getPlayer(i);
-                pos = clist->getFirstCity(p)->getPos();
-	        City *c = clist->getNearestNeutralCity(pos);
-                c->conquer(p);
-                History_CityWon *item = new History_CityWon();
-                item->fillData(c);
-                p->getHistorylist()->push_back(item);
-              }
-          }
-      }
+      quickStart();
 
     for (Citylist::iterator it = Citylist::getInstance()->begin();
         it != Citylist::getInstance()->end(); it++)
@@ -872,3 +837,37 @@ bool CreateScenario::setupItemRewards()
   return true;
 }
 
+void CreateScenario::quickStart()
+{
+  Playerlist *plist = Playerlist::getInstance();
+  Citylist *clist = Citylist::getInstance();
+  Vector <int> pos;
+  // no neutral cities
+  // divvy up the neutral cities among other non-neutral players
+  int cities_left = clist->size() - plist->size() + 1;
+  unsigned int citycount[MAX_PLAYERS];
+  memset (citycount, 0, sizeof (citycount));
+  Playerlist::iterator pit = plist->begin();
+  for (; pit != plist->end(); pit++)
+    {
+      if (*pit == plist->getNeutral())
+	pit = plist->begin();
+      citycount[(*pit)->getId()]++;
+      cities_left--;
+      if (cities_left == 0)
+	break;
+    }
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+      for (unsigned int j = 0; j < citycount[i]; j++)
+	{
+	  Player *p = plist->getPlayer(i);
+	  pos = clist->getFirstCity(p)->getPos();
+	  City *c = clist->getNearestNeutralCity(pos);
+	  c->conquer(p);
+	  History_CityWon *item = new History_CityWon();
+	  item->fillData(c);
+	  p->getHistorylist()->push_back(item);
+	}
+    }
+}

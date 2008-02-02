@@ -37,7 +37,6 @@
 #include "defs.h"
 #include "File.h"
 #include "GameMap.h"
-#include "GameScenario.h"
 #include "GraphicsCache.h"
 #include "game.h"
 
@@ -54,8 +53,14 @@ namespace
     int selection_timeout = 150;	// controls speed of selector rotation
 }
 
-GameBigMap::GameBigMap()
+GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
+		       bool see_opponents_stacks, bool military_advisor)
 {
+  d_intense_combat = intense_combat;
+  d_see_opponents_production = see_opponents_production;
+  d_see_opponents_stacks = see_opponents_stacks;
+  d_military_advisor = military_advisor;
+
   current_tile.x = current_tile.y = 0;
   mouse_state = NONE;
   input_locked = false;
@@ -124,7 +129,8 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	  // ask for military advice
 	  if (d_cursor == GraphicsCache::QUESTION)
 	    {
-	      Playerlist::getActiveplayer()->stackFightAdvise(stack, tile); 
+	      Playerlist::getActiveplayer()->stackFightAdvise
+		(stack, tile, d_intense_combat); 
 	      set_shift_key_down (false);
 	      return;
 	    }
@@ -239,7 +245,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		{
 		  if (!c->isBurnt())
 		    {
-		      if (GameScenario::s_see_opponents_production == true)
+		      if (d_see_opponents_production == true)
 			city_queried (c, false);
 		      else
 			{
@@ -294,13 +300,13 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    }
 	  else if (Stack *st = Stacklist::getObjectAt(tile.x, tile.y))
 	    {
-	      if (GameScenario::s_see_opponents_stacks == true)
+	      if (d_see_opponents_stacks == true)
 		{
 		  stack_queried.emit(st);
 		  mouse_state = SHOWING_STACK;
 		}
 	      else if (st->getPlayer() == Playerlist::getActiveplayer() && 
-		       GameScenario::s_see_opponents_stacks == false)
+		       d_see_opponents_stacks == false)
 		{
 		  stack_queried.emit(st);
 		  mouse_state = SHOWING_STACK;
@@ -390,7 +396,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 		  else
 		    {
 		      //can i see other ppl's cities?
-		      if (GameScenario::s_see_opponents_production == true)
+		      if (d_see_opponents_production == true)
 			d_cursor = GraphicsCache::ROOK;
 		      else
 			d_cursor = GraphicsCache::HAND;
@@ -470,7 +476,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 		d_cursor = GraphicsCache::FEET;
 	      else if (c->getPlayer() == Playerlist::getActiveplayer())
 		d_cursor = GraphicsCache::ROOK;
-	      else if (GameScenario::s_see_opponents_production == true)
+	      else if (d_see_opponents_production == true)
 		d_cursor = GraphicsCache::ROOK;
 	    }
 	  else if (t->getBuilding() == Maptile::RUIN)
@@ -626,7 +632,7 @@ void GameBigMap::after_draw()
 
 void GameBigMap::set_shift_key_down (bool down)
 {
-  if (GameScenario::s_military_advisor == false)
+  if (d_military_advisor == false)
     return;
   static GraphicsCache::CursorType prev_cursor = GraphicsCache::HEART;
 

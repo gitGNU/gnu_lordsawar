@@ -28,7 +28,7 @@
 class ArmyGainsLevelDialog: public sigc::trackable
 {
  public:
-    ArmyGainsLevelDialog(Army *army);
+    ArmyGainsLevelDialog(Army *army, bool show_sight_stat);
 
     void set_parent_window(Gtk::Window &parent);
 

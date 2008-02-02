@@ -32,7 +32,7 @@ class Player;
 class PlayersDialog
 {
  public:
-    PlayersDialog();
+    PlayersDialog(int width, int height);
     ~PlayersDialog();
 
     void set_parent_window(Gtk::Window &parent);
@@ -79,6 +79,8 @@ class PlayersDialog
     void increment_current_player_name();
     void add_player(const Glib::ustring &type, const Glib::ustring &name,
 		    int gold, Player *player);
+    int d_width;
+    int d_height;
 };
 
 #endif

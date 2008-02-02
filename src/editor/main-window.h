@@ -156,6 +156,8 @@ class MainWindow: public sigc::trackable
     
     void popup_dialog_for_object(Object *object);
 
+    int d_width;
+    int d_height;
     
 public:
     // not part of the API, but for surface_attached_helper

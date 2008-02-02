@@ -35,7 +35,7 @@ class Temple;
 class GameBigMap: public BigMap
 {
  public:
-    GameBigMap();
+    GameBigMap(bool intense_combat, bool see_opponents_production, bool see_opponents_stacks, bool military_advisor);
     virtual ~GameBigMap();
 
     // will center the bigmap on the stack
@@ -83,6 +83,10 @@ class GameBigMap: public BigMap
     bool on_selection_timeout();
 
     virtual void after_draw();
+    bool d_intense_combat; 
+    bool d_see_opponents_production;
+    bool d_see_opponents_stacks;
+    bool d_military_advisor;
 };
 
 #endif

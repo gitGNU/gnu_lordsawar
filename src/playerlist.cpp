@@ -540,3 +540,36 @@ void Playerlist::randomizeOrder()
   sort(randomly);
   d_activeplayer = getFirstLiving();
 }
+
+void Playerlist::nextRound(bool diplomacy, bool *surrender_already_offered)
+{
+  // update diplomacy
+  if (diplomacy)
+    {
+      negotiateDiplomacy();
+      calculateDiplomaticRankings();
+    }
+
+  // update winners
+  calculateWinners();
+
+  // offer surrender
+  if (countHumanPlayersAlive() == 1 &&
+      *surrender_already_offered == 0)
+    {
+      for (iterator it = begin(); it != end(); it++)
+	{
+	  if ((*it)->getType() == Player::HUMAN)
+	    {
+	      Citylist *cl = Citylist::getInstance();
+	      int target_level = cl->size() / 2;
+	      if (cl->countCities(*it) > target_level)
+		{
+		  *surrender_already_offered = 1;
+		  ssurrender.emit(*it);
+		  break;
+		}
+	    }
+	}
+    }
+}

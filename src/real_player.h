@@ -35,7 +35,7 @@ class RealPlayer : public Player
 {
     public:
         // CREATORS
-        RealPlayer(std::string name, Uint32 armyset, SDL_Color color,
+        RealPlayer(std::string name, Uint32 armyset, SDL_Color color, int width, int height,
                    Player::Type type = Player::HUMAN, int player_no = -1);
         RealPlayer(const Player&);
         RealPlayer(XML_Helper* helper);
@@ -70,7 +70,7 @@ class RealPlayer : public Player
         MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow);
         Reward* stackSearchRuin(Stack* s, Ruin* r);
         int stackVisitTemple(Stack* s, Temple* t);
-        Quest* stackGetQuest(Stack* s, Temple*t);
+        Quest* stackGetQuest(Stack* s, Temple*t, bool except_raze);
 
 	bool treachery (Stack *stack, Player *player, Vector <int> pos);
 
@@ -78,7 +78,7 @@ class RealPlayer : public Player
                                  bool ruin=false);
 
         Fight::Result stackRuinFight (Stack **attacker, Stack **defender);
-	float stackFightAdvise(Stack* s, Vector<int> tile);
+	float stackFightAdvise(Stack* s, Vector<int> tile, bool intense_combat);
         bool cityOccupy(City* c);
         bool cityPillage(City* c, int& gold, int& pillaged_army_type);
         bool citySack(City* c, int& gold, std::list<Uint32> *sacked_types);

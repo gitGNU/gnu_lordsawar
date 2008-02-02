@@ -119,8 +119,8 @@ class Player: public sigc::trackable
           * @param armyset      the player's armyset
           * @param color        the player's main color
           */
-        Player (std::string name, Uint32 armyset, SDL_Color color, Type type,
-		int player_no = -1);
+        Player (std::string name, Uint32 armyset, SDL_Color color, int width,
+		int height, Type type, int player_no = -1);
 
         //! Copy constructor
         Player(const Player&);
@@ -138,8 +138,10 @@ class Player: public sigc::trackable
           * @param armyset  the armyset of the player
           * @param color    the color of the player
           * @param type     the player's type
+          * @param width    the width of the player's fogmap
+          * @param height   the height of the player's fogmap
           */
-        static Player* create(std::string name, Uint32, SDL_Color color, Type type);
+        static Player* create(std::string name, Uint32, SDL_Color color, int width, int height, Type type);
         
         /** copies a player to a different type
           * 
@@ -461,9 +463,10 @@ class Player: public sigc::trackable
          *
          * @param s                 the visiting stack
          * @param t                 the visited temple
+         * @param except_raze       don't give out a raze quest
          * @return the quest we got or 0 on error
          */
-        virtual Quest* stackGetQuest(Stack* s, Temple* t) = 0;
+        virtual Quest* stackGetQuest(Stack* s, Temple* t, bool except_raze) = 0;
         
         /** Called to ask the military advisor about what would happen 
 	  * if the stack attacked the tile.
@@ -472,7 +475,8 @@ class Player: public sigc::trackable
 	  * @param tile     the tile to attack (could be a city, or a stack)
           * @return percent chance to win
           */
-        virtual float stackFightAdvise(Stack* s, Vector<int> tile) =0;
+        virtual float stackFightAdvise(Stack* s, Vector<int> tile,
+				       bool intense_combat) =0;
 
         /** Occupy a city (i.e. change the owner to yourself)
           *
@@ -622,6 +626,9 @@ class Player: public sigc::trackable
 	// emitted when a fight is started, parameters are in the fight object,
 	// so should the results be
         sigc::signal<void, Fight &> fight_started;
+
+	//emitted after we attack a city
+        sigc::signal<void, City *, Fight::Result> cityfight_finished;
 	
 	// emitted when a fight in a ruin is started
         sigc::signal<void, Stack *, Stack *> ruinfight_started;

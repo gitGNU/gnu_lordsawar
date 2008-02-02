@@ -23,7 +23,6 @@
 #include "vectoredunitlist.h"
 #include "FogMap.h"
 #include "history.h"
-#include "GameScenario.h"
 
 #include "path.h"
 

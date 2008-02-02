@@ -19,21 +19,14 @@
 #include "citylist.h"
 #include "playerlist.h"
 #include "GraphicsCache.h"
-#include "GameScenario.h"
 #include "GameMap.h"
 
-VectorMap::VectorMap(City *c, enum ShowVectoring v)
+VectorMap::VectorMap(City *c, enum ShowVectoring v, bool see_opponents_production)
 {
+  d_see_opponents_production = see_opponents_production;
   show_vectoring = v;
   city = c;
   click_action = CLICK_SELECTS;
-}
-
-VectorMap::VectorMap(City *c)
-{
-    show_vectoring = SHOW_ORIGIN_CITY_VECTORING;
-    city = c;
-    click_action = CLICK_SELECTS;
 }
 
 void VectorMap::draw_planted_standard(Vector<int> flag)
@@ -348,7 +341,7 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
               }
             break;
           case CLICK_SELECTS:
-            if (GameScenario::s_see_opponents_production == true)
+            if (d_see_opponents_production == true)
               nearestCity = cl->getNearestVisibleCity(dest, 4);
             else
               nearestCity = cl->getNearestVisibleFriendlyCity(dest, 4);
