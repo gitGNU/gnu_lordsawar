@@ -1235,6 +1235,7 @@ bool RealPlayer::cityRaze(City* c)
   history->fillData(c);
   d_history.push_back(history);
 
+  c->conquer(this);
   c->setBurnt(true);
 
   supdatingCity.emit(c);

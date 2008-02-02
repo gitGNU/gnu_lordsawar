@@ -1351,6 +1351,7 @@ void Game::nextRound()
 		    }
 		  else
 		    surrender_answered.emit(false);
+		  break;
 		}
 	    }
 	}
