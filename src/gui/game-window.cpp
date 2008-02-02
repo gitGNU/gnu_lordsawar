@@ -1823,6 +1823,7 @@ hero_has_quest_here (Stack *s, City *c, bool *pillage, bool *sack, bool *raze, b
 {
   Player *p = Playerlist::getActiveplayer();
   std::vector<Quest*> questlist;
+  *pillage = false;
   *sack = false;
   *raze = false;
   *occupy = false;
