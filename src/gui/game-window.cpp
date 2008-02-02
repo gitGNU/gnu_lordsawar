@@ -1819,7 +1819,7 @@ void GameWindow::on_quest_assigned(Hero *hero, Quest *quest)
 }
 
 static bool
-hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze, bool *occupy)
+hero_has_quest_here (Stack *s, City *c, bool *pillage, bool *sack, bool *raze, bool *occupy)
 {
   Player *p = Playerlist::getActiveplayer();
   std::vector<Quest*> questlist;
@@ -1873,6 +1873,7 @@ hero_has_quest_here (Stack *s, City *c, bool *sack, bool *raze, bool *occupy)
 	    }
 	  break;
 	case Quest::PILLAGEGOLD:
+	  *pillage = true;
 	  *sack = true;
 	  break;
 	}
@@ -1938,27 +1939,29 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 
   if (h) /* if there was a hero in the stack */
     {
-      bool sack, raze, occupy;
+      bool pillage, sack, raze, occupy;
       if (hero_has_quest_here (p->getStacklist()->getActivestack(), city, 
-			       &sack, &raze, &occupy))
+			       &pillage, &sack, &raze, &occupy))
 	{
 	  Gtk::Button *button;
+	  if (pillage)
+	    {
+	      xml->get_widget("pillage_button", button);
+	      button->grab_default();
+	    }
 	  if (sack)
 	    {
 	      xml->get_widget("sack_button", button);
 	      button->grab_default();
-	      //button->set_label(">" + button->get_label() +"<");
 	    }
 	  if (raze)
 	    {
-	      //button->set_label(">" + button->get_label() +"<");
 	      xml->get_widget("raze_button", button);
 	      button->grab_default();
 	    }
 	  if (occupy)
 	    {
 	      xml->get_widget("occupy_button", button);
-	      //button->set_label(">" + button->get_label() +"<");
 	      button->grab_default();
 	    }
 	}
