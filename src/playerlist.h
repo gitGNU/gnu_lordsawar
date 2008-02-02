@@ -110,6 +110,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	Uint32 countHumanPlayersAlive();
 	Uint32 countPlayersAlive(); //does not include neutral player
 
+	void randomizeOrder();
+
     protected:
         // CREATORS
         Playerlist();
@@ -119,6 +121,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
     private:
         //! Callback for loading the playerlist.
         bool load(std::string, XML_Helper* helper);
+
+	static bool randomly(const Player *lhs, const Player *rhs);
 
         //static pointers for the singleton
         static Playerlist* s_instance;

@@ -519,4 +519,24 @@ void Playerlist::swap(Player *old_player, Player *new_player)
       d_activeplayer = new_player;
       d_activeplayer->getStacklist()->setActivestack(0);
     }
+  /* note, we don't have to change the player associate with flags
+     because it's stored as an id. */
+}
+
+bool Playerlist::randomly(const Player *lhs, const Player *rhs)  
+{
+  Playerlist *pl = Playerlist::getInstance();
+  if (lhs == pl->getNeutral())
+    return true;
+  if (rand() % 2 == 0)
+    return true;
+  else
+    return false;
+}
+
+//randomly reorder the player list, but keeping neutral last.
+void Playerlist::randomizeOrder()
+{
+  sort(randomly);
+  d_activeplayer = getFirstLiving();
 }

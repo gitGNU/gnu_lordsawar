@@ -176,7 +176,7 @@ class CreateScenario
         //! Do some setup concerning the players (give them money)
 	//! If we're playing with diplomacy then we start out at peace,
 	//! and if we're not playing with diplomacy we start out at war.
-        bool setupPlayers(bool dimplomacy);
+        bool setupPlayers(bool dimplomacy, bool random_turns);
 
         /** Loads a list of possible city, ruin or temple names
           * 

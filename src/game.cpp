@@ -169,7 +169,8 @@ Game::Game(GameScenario* gameScenario)
     pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
 
     //set up a NextTurn object
-    d_nextTurn = new NextTurn(d_gameScenario->getTurnmode());
+    d_nextTurn = new NextTurn(d_gameScenario->getTurnmode(),
+			      d_gameScenario->s_random_turns);
     d_nextTurn->splayerStart.connect(
 	sigc::mem_fun(this, &Game::init_turn_for_player));
     d_nextTurn->snextRound.connect(

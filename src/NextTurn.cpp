@@ -31,8 +31,8 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 //#define debug(x)
 
-NextTurn::NextTurn(bool turnmode)
-    :d_turnmode(turnmode), d_stop(false)
+NextTurn::NextTurn(bool turnmode, bool random_turns)
+    :d_turnmode(turnmode), d_random_turns (random_turns), d_stop(false)
 {
 }
 
@@ -81,7 +81,8 @@ void NextTurn::start()
         plist->nextPlayer();
         
         //if it is the first player's turn now, a new round has started
-        if (plist->getActiveplayer() == plist->getFirstLiving())
+        if (Playerlist::getInstance()->getActiveplayer() == 
+	    Playerlist::getInstance()->getFirstLiving())
         {
           if (plist->checkPlayers() == true)
 	    {
@@ -183,5 +184,8 @@ void NextTurn::finishRound()
       if (keeper)
 	keeper->nextTurn();
     }
+    
+  if (d_random_turns)
+    plist->randomizeOrder();
 
 }

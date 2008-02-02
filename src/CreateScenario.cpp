@@ -343,7 +343,7 @@ bool CreateScenario::create(const GameParameters &g)
     if (!setupSignposts())
         return false;
 
-    if (!setupPlayers(g.diplomacy))
+    if (!setupPlayers(g.diplomacy, g.random_turns))
         return false;
 
     if (!setupRewards())
@@ -706,7 +706,7 @@ bool CreateScenario::setupSignposts()
     return true;
 }
 
-bool CreateScenario::setupPlayers(bool diplomacy)
+bool CreateScenario::setupPlayers(bool diplomacy, bool random_turns)
 {
     debug("CreateScenario::setupPlayers")
 
@@ -741,6 +741,9 @@ bool CreateScenario::setupPlayers(bool diplomacy)
       }
     if (diplomacy)
       pl->calculateDiplomaticRankings();
+
+    if (random_turns)
+      pl->randomizeOrder();
     return true;
 }
 

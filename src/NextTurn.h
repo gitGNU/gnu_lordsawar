@@ -39,8 +39,9 @@ class NextTurn: public sigc::trackable
            \brief constructor
 
            @param   turnmode    setting for the private variable d_turnmode
+           @param   random_turns change the order every round
          */
-        NextTurn(bool turnmode);
+        NextTurn(bool turnmode, bool random_turns);
 
         /**
            \brief destructor
@@ -115,6 +116,8 @@ class NextTurn: public sigc::trackable
           * but it may be useful in some circumstances.
           */
         bool d_turnmode;
+
+        bool d_random_turns;
 
         //! If set to true, the game is interrupted at the next occasion
         bool d_stop;
