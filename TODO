@@ -5,8 +5,6 @@ buildings can be put on tiles that get turned into water
 	or turned into forest
 		true or false?
 
-shields should be part of the army set.
-
 replace the following images:
 	roads (x8)
 	bridges (x4)
@@ -14,26 +12,16 @@ replace the following images:
 	waypoints (x2)
 	flags (x8)
 
-computer player can sit around and do nothing.
-
 hero in flying stack w/ dragons
 has zero moves left, but the stack shows the next square as possibly reached
 hitting space twice fixes it
 
-sack quest should end if i occupy the city
-	asked bob
+fight bug:
+	armies fight out of order somehow
+	properties: 8 attackers fighting with 13 defenders
+		both have heroes
+		both have special units
+		defender has 2 heroes
+	error happened on attacker
 
-make nextRound in playerlist
-	have game emit it automatically
-
-stop GameScenario pollution
-	fogmap
-	vectormap
-	fight
-	realplayer:
-	gamebigmap
-	gui/city-window
-	gui/army-gains-level-dialog
-
-removed unused constructor for vectormap
-	fixed
+change set gold back to 1000 in createscenario
