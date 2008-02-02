@@ -473,7 +473,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	    {
 	      City *c = Citylist::getInstance()->getObjectAt(tile);
 	      if (c->isBurnt() == true)
-		d_cursor = GraphicsCache::FEET;
+		d_cursor = GraphicsCache::HAND;
 	      else if (c->getPlayer() == Playerlist::getActiveplayer())
 		d_cursor = GraphicsCache::ROOK;
 	      else if (d_see_opponents_production == true)

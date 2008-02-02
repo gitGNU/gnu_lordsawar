@@ -50,7 +50,7 @@ using namespace std;
 //#define debug(x)
 
 CreateScenario::CreateScenario(int width, int height)
-    :d_scenario(0), d_generator(0), d_width(width), d_height(height)
+    :d_scenario(0), d_generator(0)
 {
     debug("CreateScenario::CreateScenario")
    
@@ -92,6 +92,8 @@ CreateScenario::CreateScenario(int width, int height)
         std::cerr <<"CreateScenario: Didn't succeed in reading object names. Aborting!\n";
         exit(-1);
     }
+    setWidth(width);
+    setHeight(height);
 }
 
 CreateScenario::~CreateScenario()

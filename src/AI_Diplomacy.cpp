@@ -95,9 +95,14 @@ void AI_Diplomacy::neutralsDwindlingNeedFirstEnemy()
       if (at_war == false)
 	{
 	  // not at war?  great.  let's pick a player to attack.
-	  City *c;
-	  c = cl->getNearestForeignCity(cl->getFirstCity(d_owner)->getPos());
-	  d_owner->proposeDiplomacy(Player::PROPOSE_WAR, c->getPlayer());
+	  City *first_city = cl->getFirstCity(d_owner);
+	  if (first_city)
+	    {
+	      City *c;
+	      c = cl->getNearestForeignCity(first_city->getPos());
+	      if (c)
+		d_owner->proposeDiplomacy(Player::PROPOSE_WAR, c->getPlayer());
+	    }
 	}
     }
 }
