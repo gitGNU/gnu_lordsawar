@@ -32,6 +32,7 @@ fight bug:
 		defender has 3 heroes
 		attacker has 2 heroes
 		attacked from water
+		heroes had same id.  this was fixed.
 
 ai boats not showing up as in the water
 	or maybe because one of them could fly

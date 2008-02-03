@@ -315,7 +315,6 @@ bool CreateScenario::create(const GameParameters &g)
     GameScenario::s_military_advisor= g.military_advisor;
     GameScenario::s_random_turns = g.random_turns;
     GameScenario::s_intense_combat = g.intense_combat;
-    GameScenario::s_difficulty = g.difficulty;
 
     if (!createMap())
         return false;
@@ -331,19 +330,32 @@ bool CreateScenario::create(const GameParameters &g)
     if (!distributePlayers())
         return false;
 
-    if (!setupCities(g.quick_start, g.cities_can_produce_allies))
+    int number_of_armies_factor;
+    getCityDifficulty(g.difficulty, &number_of_armies_factor);
+    if (!setupCities(g.quick_start, g.cities_can_produce_allies,
+		     number_of_armies_factor))
         return false;
 
     if (!setupTemples())
         return false;
     
-    if (!setupRuins(GameScenario::s_play_with_quests))
+    int sage_factor;
+    int no_guardian_factor;
+    int stronghold_factor;
+
+    getRuinDifficulty (g.difficulty, &sage_factor, &no_guardian_factor,
+		       &stronghold_factor);
+    if (!setupRuins(GameScenario::s_play_with_quests, 20, 10, 6))
         return false;
 
-    if (!setupSignposts())
+    int signpost_ratio;
+    getSignpostDifficulty (g.difficulty, g.hidden_map, &signpost_ratio);
+    if (!setupSignposts(signpost_ratio))
         return false;
 
-    if (!setupPlayers(g.diplomacy, g.random_turns))
+    int base_gold;
+    getBaseGold (g.difficulty, &base_gold);
+    if (!setupPlayers(g.diplomacy, g.random_turns, base_gold))
         return false;
 
     if (!setupRewards())
@@ -457,7 +469,8 @@ bool CreateScenario::distributePlayers()
 }
 
 bool CreateScenario::setupCities(bool quick_start, 
-				 bool cities_can_produce_allies)
+				 bool cities_can_produce_allies,
+				 int number_of_armies_factor)
 {
     debug("CreateScenario::setupCities")
 
@@ -478,7 +491,8 @@ bool CreateScenario::setupCities(bool quick_start,
         //2. distribute the income a bit (TBD)
 
         //3. set the city production
-        (*it).setRandomArmytypes(cities_can_produce_allies);
+        (*it).setRandomArmytypes(cities_can_produce_allies, 
+				 number_of_armies_factor);
         if ((*it).getPlayer() == Playerlist::getInstance()->getNeutral())
         {
             switch (GameScenario::s_neutral_cities)
@@ -539,8 +553,8 @@ bool CreateScenario::setupTemples()
 
     return true;
 }
-
-bool CreateScenario::setupRuins(bool strongholds_invisible)
+bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
+				int no_guardian_factor, int stronghold_factor)
 {
     debug("CreateScenario::setupRuins")
 
@@ -566,7 +580,7 @@ bool CreateScenario::setupRuins(bool strongholds_invisible)
         (*it).setName(d_ruinnames[randno]);
 
         // set a random ruin type
-        if (rand() % 6 == 0) //one in six ruins is a stronghold
+        if (rand() % stronghold_factor == 0) //one in six ruins is a stronghold
           {
             (*it).setType(Ruin::STRONGHOLD);
             if (strongholds_invisible == true)
@@ -583,7 +597,7 @@ bool CreateScenario::setupRuins(bool strongholds_invisible)
         d_ruinnames.pop_back();
 
         //one in twenty ruins is a sage
-        if (rand() % 20 == 0 && (*it).getType() == Ruin::RUIN) 
+        if (rand() % sage_factor == 0 && (*it).getType() == Ruin::RUIN) 
           {
             (*it).setSage (true);
             continue;
@@ -591,7 +605,7 @@ bool CreateScenario::setupRuins(bool strongholds_invisible)
 
 
         //one in ten ruins doesn't have a guardian
-        if (rand() % 10 == 0 && (*it).getType() == Ruin::RUIN) 
+        if (rand() % no_guardian_factor == 0 && (*it).getType() == Ruin::RUIN) 
           continue;
 
         // and set a guardian
@@ -616,10 +630,10 @@ bool CreateScenario::setupRuins(bool strongholds_invisible)
     return true;
 }
 
-bool CreateScenario::setupSignposts()
+bool CreateScenario::setupSignposts(int ratio)
 {
     int randno;
-    int dynamicPercent = static_cast<int>(1.0 / SIGNPOSTS_RATIO * 100);
+    int dynamicPercent = static_cast<int>(1.0 / ratio * 100);
     debug("CreateScenario::setupSignposts")
 
     for (Signpostlist::iterator it = Signpostlist::getInstance()->begin();
@@ -674,7 +688,8 @@ bool CreateScenario::setupSignposts()
     return true;
 }
 
-bool CreateScenario::setupPlayers(bool diplomacy, bool random_turns)
+bool CreateScenario::setupPlayers(bool diplomacy, bool random_turns, 
+				  int base_gold)
 {
     debug("CreateScenario::setupPlayers")
 
@@ -682,7 +697,7 @@ bool CreateScenario::setupPlayers(bool diplomacy, bool random_turns)
 
     // Give players some gold to start with
     for (Playerlist::iterator pit = pl->begin(); pit != pl->end(); pit++)
-      (*pit)->setGold(1000 + ((rand() % 8) * 50));
+      (*pit)->setGold(base_gold + ((rand() % 8) * 50));
 
     // Set up diplomacy
     for (Playerlist::iterator pit = pl->begin(); pit != pl->end(); pit++)
@@ -873,4 +888,97 @@ void CreateScenario::quickStart()
 	  p->getHistorylist()->push_back(item);
 	}
     }
+}
+void CreateScenario::getRuinDifficulty (int difficulty, int *sage_factor, 
+					int *no_guardian_factor, 
+					int *stronghold_factor)
+{
+  if (difficulty < 50)
+    {
+      *sage_factor = 3;
+      *no_guardian_factor = 5;
+      *stronghold_factor = 12;
+    }
+  else if (difficulty < 60)
+    {
+      *sage_factor = 9;
+      *no_guardian_factor = 6;
+      *stronghold_factor = 10;
+    }
+  else if (difficulty < 70)
+    {
+      *sage_factor = 14;
+      *no_guardian_factor = 8;
+      *stronghold_factor = 9;
+    }
+  else if (difficulty < 80)
+    {
+      *sage_factor = 20;
+      *no_guardian_factor = 10;
+      *stronghold_factor = 6;
+    }
+  else if (difficulty < 90)
+    {
+      *sage_factor = 22;
+      *no_guardian_factor = 12;
+      *stronghold_factor = 4;
+    }
+  else 
+    {
+      *sage_factor = 24;
+      *no_guardian_factor = 15;
+      *stronghold_factor = 3;
+    }
+}
+    
+void CreateScenario::getSignpostDifficulty (int difficulty, bool hidden_map, 
+					    int *signpost_ratio)
+{
+  //the idea here is that we're on a hidden map, and if it's harder
+  //difficulty, then we don't get as many signs directing us to cities.
+  if (hidden_map)
+    {
+      if (difficulty < 60)
+	*signpost_ratio = 2; //50% of signs point to cities
+      else if (difficulty < 70)
+	*signpost_ratio = 3; //33% of signs point to cities
+      else if (difficulty < 80)
+	*signpost_ratio = 6; //16% of signs point to cities
+      else if (difficulty < 90)
+	*signpost_ratio = 9; //11% of signs point to cities
+      else
+	*signpost_ratio = 15; //6% of signs point to cities
+    }
+  else
+    *signpost_ratio = 6;
+}
+
+    
+void CreateScenario::getCityDifficulty(int difficulty, 
+				       int *number_of_armies_factor)
+{
+  if (difficulty < 50)
+    *number_of_armies_factor = 3;
+  else if (difficulty < 60)
+    *number_of_armies_factor = 2;
+  else if (difficulty < 70)
+    *number_of_armies_factor = 1;
+  else 
+    *number_of_armies_factor = 0;
+}
+    
+void CreateScenario::getBaseGold (int difficulty, int *base_gold)
+{
+  if (difficulty < 50)
+    *base_gold = 1600;
+  else if (difficulty < 60)
+    *base_gold = 1200;
+  else if (difficulty < 70)
+    *base_gold = 1000;
+  else if (difficulty < 80)
+    *base_gold = 900;
+  else if (difficulty < 90)
+    *base_gold = 800;
+  else
+    *base_gold = 700;
 }

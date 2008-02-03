@@ -163,21 +163,25 @@ class CreateScenario
         bool distributePlayers();
 
         //! Setup city names and production
-        bool setupCities(bool quick_start, bool cities_can_produce_allies);
+        bool setupCities(bool quick_start, bool cities_can_produce_allies,
+			 int number_of_armies_factor);
 
         //! Setup temple names
         bool setupTemples();
         
         //! Set up ruin names and keepers
-        bool setupRuins(bool strongholds_invisible);
+	bool setupRuins(bool strongholds_invisible, int sage_factor, 
+			int no_guardian_factor, int stronghold_factor);
 
         //! Set up signposts
-        bool setupSignposts();
+	//! @param ratio - how many signposts reference nearby cities vs
+	//                 signposts that don't.
+        bool setupSignposts(int ratio);
 
         //! Do some setup concerning the players (give them money)
 	//! If we're playing with diplomacy then we start out at peace,
 	//! and if we're not playing with diplomacy we start out at war.
-        bool setupPlayers(bool dimplomacy, bool random_turns);
+        bool setupPlayers(bool dimplomacy, bool random_turns, int base_gold);
 
         /** Loads a list of possible city, ruin or temple names
           * 
@@ -193,6 +197,25 @@ class CreateScenario
 	bool setupMapRewards();
 	void quickStart();
 
+	//! Given the difficulty, get some characteristics of ruins
+	void getRuinDifficulty (int difficulty, int *sage_factor, 
+				int *no_guardian_factor, 
+				int *stronghold_factor);
+
+	//! Given the difficulty, and whether we're doing a hidden map,
+	//see how many signposts should point to cities vs how many
+	//do not.
+	void getSignpostDifficulty (int difficulty, bool hidden_map, 
+				    int *signpost_ratio);
+
+	//! Given the difficulty, see how many army units every city
+	//produces by default.  it is thought that more is easier because
+	//players do not have to pay for more armies.
+	void getCityDifficulty (int difficulty, int *number_of_armies_factor);
+
+	//! Based on the difficulty, get how much gold each player should
+	//start with.
+	void getBaseGold (int difficulty, int *base_gold);
 
         //data
         //for map creation

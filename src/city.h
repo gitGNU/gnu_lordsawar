@@ -113,7 +113,8 @@ class City : public Location
         void conquer(Player* newowner);
         
         //! Sets the production to random starting values
-        void setRandomArmytypes(bool produce_allies);
+	//! @param likely = 0, 1, 2, 3.  3 is more armies, more powerful.
+	void setRandomArmytypes(bool produce_allies, int likely);
 
         //! Produces the strongest army the city can produce
         void produceStrongestArmy();
@@ -196,6 +197,10 @@ class City : public Location
         Army * produceArmy();
 
 	void randomlyImproveOrDegradeArmy(Army *army);
+
+	//! sort the armies that this city produces by strength
+	//! Note: only use this prior to the start of game.
+	void sortProduction();
 
         // DATA
         Player* d_player;           // Owner

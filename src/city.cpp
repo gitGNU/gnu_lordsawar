@@ -364,77 +364,8 @@ bool armyCompareStrength (const Army *lhs, const Army *rhs)
   return lhs_strength < rhs_strength; 
 }
 
-void City::setRandomArmytypes(bool produce_allies)
+void City::sortProduction()
 {
-  //remove armies any that happen to be being produced
-  for (int i = 0; i < getMaxNoOfBasicProd(); i++)
-    removeBasicProd(i);
-
-  const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 set = getPlayer()->getArmyset();
-
-  int army_type;
-  int num = rand() % 10;
-  if (num < 7)
-    army_type = 1;
-  else if (num < 9)
-    army_type = 0;
-  else
-    army_type = 1 + (rand () % 11);
-  Army *template_army = al->getArmy(set, army_type);
-  if (!template_army || 
-      (template_army->getAwardable() == true && produce_allies == false) ||
-      template_army->isHero())
-    {
-      produceScout();
-      return;
-    }
-  Army *army = new Army (*template_army);
-  randomlyImproveOrDegradeArmy(army);
-  addBasicProd(0, army);
-
-  if ((rand() % 10) < 3 && !isCapital())
-    return;
-
-  army_type += 1 + (rand() % (2 + (produce_allies ? 2 : 0)));
-  template_army = al->getArmy(set, army_type);
-  if (!template_army ||
-      (template_army->getAwardable() == true && produce_allies == false) ||
-      template_army->isHero())
-    return;
-  army = new Army (*template_army);
-  randomlyImproveOrDegradeArmy(army);
-  addBasicProd(1, army);
-
-  if ((rand() % 10) < 4 && !isCapital())
-    return;
-
-  if (army_type < 5)
-    army_type += 1 + (rand() % (7 + (produce_allies ? 2 : 0)));
-  else
-    army_type += 1 + (rand() % (2 + (produce_allies ? 2 : 0)));
-  template_army = al->getArmy(set, army_type);
-  if (!template_army ||
-      (template_army->getAwardable() == true && produce_allies == false) ||
-      template_army->isHero())
-    return;
-  army = new Army (*template_army);
-  randomlyImproveOrDegradeArmy(army);
-  addBasicProd(2, army);
-
-  if ((rand() % 10) < 6 && !isCapital())
-    return;
-
-  army_type += 1 + (rand() % (3 + (produce_allies ? 2 : 0)));
-  template_army = al->getArmy(set, army_type);
-  if (!template_army ||
-      (template_army->getAwardable() == true && produce_allies == false) ||
-      template_army->isHero())
-    return;
-  army = new Army (*template_army);
-  randomlyImproveOrDegradeArmy(army);
-  addBasicProd(3, army);
-
   //sort them by strength
   if (getNoOfBasicProd() > 1)
     {
@@ -448,6 +379,98 @@ void City::setRandomArmytypes(bool produce_allies)
 	   it != productibles.end(); it++, j++)
        	d_basicprod[j] = *it;
     }
+  return;
+}
+
+void City::setRandomArmytypes(bool produce_allies, int likely)
+{
+  //remove armies any that happen to be being produced
+  for (int i = 0; i < getMaxNoOfBasicProd(); i++)
+    removeBasicProd(i);
+
+  const Armysetlist* al = Armysetlist::getInstance();
+  Uint32 set = getPlayer()->getArmyset();
+
+  int army_type;
+  int num = rand() % 10;
+  if (num < 7)
+    army_type = 1;
+  else if (num < 9 && likely == 0)
+    army_type = 0;
+  else
+    army_type = 1 + likely + (rand () % 11);
+  Army *template_army = al->getArmy(set, army_type);
+  if (!template_army || 
+      (template_army->getAwardable() == true && produce_allies == false) ||
+      template_army->isHero())
+    {
+      produceScout();
+      return;
+    }
+  Army *army = new Army (*template_army);
+  randomlyImproveOrDegradeArmy(army);
+  addBasicProd(0, army);
+
+  if ((rand() % 10) < 3 && !isCapital() && likely < 1 )
+    {
+      sortProduction();
+      return;
+    }
+
+  army_type += 1 + (rand() % (2 + (produce_allies ? 2 : 0)));
+  template_army = al->getArmy(set, army_type);
+  if (!template_army ||
+      (template_army->getAwardable() == true && produce_allies == false) ||
+      template_army->isHero())
+    {
+      sortProduction();
+      return;
+    }
+  army = new Army (*template_army);
+  randomlyImproveOrDegradeArmy(army);
+  addBasicProd(1, army);
+
+  if ((rand() % 10) < 4 && !isCapital() && likely < 2)
+    {
+      sortProduction();
+      return;
+    }
+
+  if (army_type < 5)
+    army_type += 1 + (rand() % (7 + (produce_allies ? 2 : 0)));
+  else
+    army_type += 1 + (rand() % (2 + (produce_allies ? 2 : 0)));
+  template_army = al->getArmy(set, army_type);
+  if (!template_army ||
+      (template_army->getAwardable() == true && produce_allies == false) ||
+      template_army->isHero())
+    {
+      sortProduction();
+      return;
+    }
+  army = new Army (*template_army);
+  randomlyImproveOrDegradeArmy(army);
+  addBasicProd(2, army);
+
+  if ((rand() % 10) < 6 && !isCapital() && likely < 3)
+    {
+      sortProduction();
+      return;
+    }
+
+  army_type += 1 + (rand() % (3 + (produce_allies ? 2 : 0)));
+  template_army = al->getArmy(set, army_type);
+  if (!template_army ||
+      (template_army->getAwardable() == true && produce_allies == false) ||
+      template_army->isHero())
+    {
+      sortProduction();
+      return;
+    }
+  army = new Army (*template_army);
+  randomlyImproveOrDegradeArmy(army);
+  addBasicProd(3, army);
+  sortProduction();
 }
 
 void City::produceStrongestArmy()

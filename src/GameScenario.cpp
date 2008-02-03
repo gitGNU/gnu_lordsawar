@@ -67,7 +67,6 @@ bool GameScenario::s_intense_combat = false;
 bool GameScenario::s_military_advisor = false;
 bool GameScenario::s_random_turns = false;
 bool GameScenario::s_surrender_already_offered = false;
-int GameScenario::s_difficulty = 50;
 
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
     :d_round(0), d_name(name),d_comment(comment), d_turnmode(turnmode)
@@ -245,7 +244,6 @@ bool GameScenario::saveGame(string filename, string extension) const
     retval &= helper.saveData("random_turns", s_random_turns);
     retval &= helper.saveData("surrender_already_offered", 
 			      s_surrender_already_offered);
-    retval &= helper.saveData("difficulty", s_difficulty);
     
     retval &= helper.closeTag();
     
@@ -300,7 +298,6 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
         helper->getData(s_random_turns, "random_turns");
         helper->getData(s_surrender_already_offered, 
 			"surrender_already_offered");
-        helper->getData(s_difficulty, "difficulty");
 
         return true;
     }
@@ -428,7 +425,9 @@ int GameScenario::calculate_difficulty_rating(GameParameters g)
 	  ((*i).type == GameParameters::Player::HARD))
 	total_difficulty += player_difficulty;
       else if ((*i).type == GameParameters::Player::EASY)
-	total_difficulty += (player_difficulty * 0.325);
+	total_difficulty += player_difficulty;
+      //FIXME: when the hard player gets better, switch this.
+	//total_difficulty += (player_difficulty * 0.325);
       //else if ((*i).type == GameParameters::Player::EASIER)
 	//total_difficulty += (player_difficulty * 0.655);
     }

@@ -236,7 +236,7 @@ void CityDialog::on_randomize_clicked()
   const Army *army;
   army_list->clear();
   //crapola
-  city->setRandomArmytypes(true);
+  city->setRandomArmytypes(true, 1);
   for (int i = 0; i < city->getMaxNoOfBasicProd(); i++)
     {
       army = city->getArmy(i);

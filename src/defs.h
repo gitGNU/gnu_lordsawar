@@ -42,7 +42,6 @@ const unsigned int ROAD_TYPES=12;
 const unsigned int FOG_TYPES=13; 
 const unsigned int BRIDGE_TYPES=4; 
 const unsigned int CURSOR_TYPES=12; 
-const unsigned int SIGNPOSTS_RATIO=6; // #:1 dynamic vs static signposts
 const unsigned int MAX_ARMIES_VECTORED_TO_ONE_CITY = 4;
 const unsigned int MAX_TURNS_FOR_VECTORING = 2;
 const unsigned int MAX_BOAT_MOVES = 18;
