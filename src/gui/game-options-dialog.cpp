@@ -26,8 +26,9 @@
 #include "../File.h"
 #include "../Configuration.h"
 
-GameOptionsDialog::GameOptionsDialog()
+GameOptionsDialog::GameOptionsDialog(std::list<Gtk::ComboBoxText *> player_types)
 {
+    d_player_types = player_types;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
 				    + "/game-options-dialog.glade");
@@ -166,6 +167,9 @@ void GameOptionsDialog::on_beginner_toggled(Gtk::ToggleButton *toggle)
       Configuration::s_razing_cities = GameParameters::ALWAYS;
       Configuration::s_diplomacy = false;
       Configuration::s_cusp_of_war = false;
+      std::list<Gtk::ComboBoxText *>::iterator c = d_player_types.begin();
+      for (; c != d_player_types.end(); c++)
+	(*c)->set_active(1); //EASY
       fill_in_options();
     }
 }
@@ -184,6 +188,9 @@ void GameOptionsDialog::on_intermediate_toggled(Gtk::ToggleButton *toggle)
       Configuration::s_razing_cities = GameParameters::ALWAYS;
       Configuration::s_diplomacy = true;
       Configuration::s_cusp_of_war = false;
+      std::list<Gtk::ComboBoxText *>::iterator c = d_player_types.begin();
+      for (; c != d_player_types.end(); c++)
+	(*c)->set_active(1); //EASY
       fill_in_options();
     }
 }
@@ -202,6 +209,9 @@ void GameOptionsDialog::on_advanced_toggled(Gtk::ToggleButton *toggle)
       Configuration::s_razing_cities = GameParameters::ON_CAPTURE;
       Configuration::s_diplomacy = true;
       Configuration::s_cusp_of_war = false;
+      std::list<Gtk::ComboBoxText *>::iterator c = d_player_types.begin();
+      for (; c != d_player_types.end(); c++)
+	(*c)->set_active(2); //HARD
       fill_in_options();
     }
 }
@@ -219,6 +229,10 @@ void GameOptionsDialog::on_greatest_toggled(Gtk::ToggleButton *toggle)
       Configuration::s_razing_cities = GameParameters::NEVER;
       Configuration::s_diplomacy = true;
       Configuration::s_cusp_of_war = true;
+    
+      std::list<Gtk::ComboBoxText *>::iterator c = d_player_types.begin();
+      for (; c != d_player_types.end(); c++)
+	(*c)->set_active(2); //HARD
       fill_in_options();
     }
 }

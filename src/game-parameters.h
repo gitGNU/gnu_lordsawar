@@ -71,6 +71,7 @@ struct GameParameters
     bool military_advisor;
     bool random_turns;
     bool cities_can_produce_allies;
+    int difficulty;
 };
 
 #endif

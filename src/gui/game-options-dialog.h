@@ -31,7 +31,7 @@
 class GameOptionsDialog: public sigc::trackable
 {
  public:
-    GameOptionsDialog();
+    GameOptionsDialog(std::list<Gtk::ComboBoxText *> player_types);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -62,7 +62,7 @@ class GameOptionsDialog: public sigc::trackable
     void on_option_clicked();
     void on_diplomacy_clicked();
     void fill_in_options();
-
+    std::list<Gtk::ComboBoxText *> d_player_types;
 };
 
 #endif

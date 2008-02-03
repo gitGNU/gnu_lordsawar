@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<lordsawar version="0.0.7">
+<lordsawar version="0.0.8">
 	<counter>
 		<d_curID>1438</d_curID>
 	</counter>
@@ -8881,5 +8881,6 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 		<d_military_advisor>false</d_military_advisor>
 		<d_random_turns>false</d_random_turns>
 		<d_surrender_already_offered>false</d_surrender_already_offered>
+		<d_difficulty>67</d_difficulty>
 	</scenario>
 </lordsawar>

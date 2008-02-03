@@ -27,6 +27,7 @@
 #include "../defs.h"
 #include "../File.h"
 #include "../armysetlist.h"
+#include "../GameScenario.h"
 #include "../tilesetlist.h"
 
 #define HUMAN_PLAYER_TYPE _("Human")
@@ -287,7 +288,7 @@ namespace
 
 void GamePreferencesDialog::on_edit_options_clicked()
 {
-  GameOptionsDialog d;
+  GameOptionsDialog d(player_types);
   d.set_parent_window(*dialog.get());
   d.run();
 }
@@ -443,6 +444,8 @@ void GamePreferencesDialog::on_start_game_clicked()
     g.cities_can_produce_allies = 
       cities_can_produce_allies_checkbutton->get_active();
 
+    g.difficulty = GameScenario::calculate_difficulty_rating(g);
+
     //don't start if the armyset size differs from the terrain set size.
     Uint32 army_tilesize = al->getTileSize(al->getArmysetId(g.army_theme));
     int terrain_size = tl->getTileset(g.tile_theme)->getTileSize();
@@ -491,3 +494,4 @@ void GamePreferencesDialog::on_temples_random_toggled()
 {
   temples_scale->set_sensitive(!temples_random_togglebutton->get_active());
 }
+    

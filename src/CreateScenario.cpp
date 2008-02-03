@@ -315,6 +315,7 @@ bool CreateScenario::create(const GameParameters &g)
     GameScenario::s_military_advisor= g.military_advisor;
     GameScenario::s_random_turns = g.random_turns;
     GameScenario::s_intense_combat = g.intense_combat;
+    GameScenario::s_difficulty = g.difficulty;
 
     if (!createMap())
         return false;

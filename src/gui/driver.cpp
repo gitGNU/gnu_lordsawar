@@ -24,6 +24,7 @@
 #include "game-window.h"
 #include "../defs.h"
 #include "../GraphicsCache.h"
+#include "../GameScenario.h"
 Driver::Driver()
 {
     splash_window.reset(new SplashWindow);
@@ -69,6 +70,7 @@ Driver::Driver()
 	g.army_theme = "Default";
 	g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
 	
+	g.difficulty = GameScenario::calculate_difficulty_rating(g);
 	on_new_game_requested(g);
     }
     else

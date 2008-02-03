@@ -94,6 +94,9 @@ class GameScenario: public sigc::trackable
         static bool s_military_advisor;
         static bool s_random_turns;
 	static bool s_surrender_already_offered;
+	static int s_difficulty;
+
+	static int calculate_difficulty_rating(GameParameters g);
 
     private:
         /** Callback function for loading a game. See XML_Helper for details.
