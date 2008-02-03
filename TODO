@@ -18,10 +18,20 @@ hitting space twice fixes it
 
 fight bug:
 	armies fight out of order somehow
+	sighting 1:
 	properties: 8 attackers fighting with 13 defenders
 		both have heroes
 		both have special units
 		defender has 2 heroes
+		attacker has 1 hero
 	error happened on attacker
+	sighting 2:
+		8 attackers fighting with 7 defenders
+		both have heroes
+		both have special units
+		defender has 3 heroes
+		attacker has 2 heroes
+		attacked from water
 
-change set gold back to 1000 in createscenario
+boats not showing up in water
+heroes are out of order
