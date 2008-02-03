@@ -143,10 +143,43 @@ void QuestCitySack::cityAction(City *c, CityDefeatedAction action,
 {
   if (!isActive())
     return;
-  if (action == CITY_DEFEATED_SACK && heroIsCulprit && c &&
-      c->getId() == d_city)
+  if (!c)
+    return;
+  if (c->getId() != d_city)
+    return;
+  //did our hero sack the city? success.
+  //did our hero do something else with the city?  expire.
+  //did another of our stacks take the city?  expire.
+  //did another player take the city? do nothing
+  switch (action)
     {
-      debug("CONGRATULATIONS: QUEST 'CITY SACK' IS COMPLETED!");
-      d_q_mgr.questCompleted(d_hero);
+    case CITY_DEFEATED_OCCUPY: //somebody occupied
+      if (heroIsCulprit) //quest hero did
+	d_q_mgr.questExpired(d_hero);
+      else if (c->getPlayer() == getHero()->getPlayer()) //our stack did
+	d_q_mgr.questExpired(d_hero);
+      break;
+    case CITY_DEFEATED_RAZE: //somebody razed
+      if (heroIsCulprit) // quest hero
+	d_q_mgr.questExpired(d_hero);
+      else if (c->getPlayer() == getHero()->getPlayer()) // our stack razed
+	d_q_mgr.questExpired(d_hero);
+      else // their stack did
+	d_q_mgr.questExpired(d_hero);
+      break;
+    case CITY_DEFEATED_SACK: //somebody sacked
+      if (heroIsCulprit) // quest hero did
+	d_q_mgr.questCompleted(d_hero);
+      else if (c->getPlayer() == getHero()->getPlayer()) // our stack did
+	d_q_mgr.questExpired(d_hero);
+      else // their stack did
+	d_q_mgr.questExpired(d_hero);
+      break;
+    case CITY_DEFEATED_PILLAGE: //somebody pillaged
+      if (heroIsCulprit) // quest hero did
+	d_q_mgr.questExpired(d_hero);
+      else if (c->getPlayer() == getHero()->getPlayer()) // our stack did
+	d_q_mgr.questExpired(d_hero);
+      break;
     }
 }

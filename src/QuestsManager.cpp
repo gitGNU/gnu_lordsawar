@@ -408,39 +408,6 @@ void QuestsManager::cityAction(City *c, Stack *s,
 	      (*it).second->cityAction(c, action, false, gold);
 	}
     }
-  //is it a city that is part of an outstanding quest?
-  //this is what deactivates a quest upon raze
-  if (action == CITY_DEFEATED_RAZE)
-    {
-      for (it = d_quests.begin(); it != d_quests.end(); it++) 
-	{
-	  bool target_city = false;
-	  if ((*it).second == NULL)
-	    continue;
-	  if ((*it).second->isPendingDeletion() == true)
-	    continue;
-	  if ((*it).second->getType() == Quest::CITYSACK)
-	    {
-	      QuestCitySack *q = dynamic_cast<QuestCitySack *>((*it).second);
-	      if (q->getCityId() == c->getId())
-		target_city = true;
-	    }
-	  if ((*it).second->getType() == Quest::CITYRAZE)
-	    {
-	      QuestCityRaze *q = dynamic_cast<QuestCityRaze *>((*it).second);
-	      if (q->getCityId() == c->getId())
-		target_city = true;
-	    }
-	  if ((*it).second->getType() == Quest::CITYOCCUPY)
-	    {
-	      QuestCityOccupy *q = dynamic_cast<QuestCityOccupy*>((*it).second);
-	      if (q->getCityId() == c->getId())
-		target_city = true;
-	    }
-	  if (target_city)
-	    questExpired((*it).second->getHeroId());
-	}
-    }
 }
 
 void QuestsManager::cityRazed(City *c, Stack *s)
