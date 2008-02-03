@@ -1039,9 +1039,13 @@ void Game::maybeRecruitHero (Player *p)
        || gold_needed == 0)
       && (p != plist->getNeutral()))
     {
+      const Armysetlist* al = Armysetlist::getInstance();
       int num = rand() % d_herotemplates[p->getId()].size();
       Hero *templateHero = d_herotemplates[p->getId()][num];
-      Hero* newhero = new Hero(*templateHero);
+      const Army *heroType = al->getArmy (p->getArmyset(), 
+					  templateHero->getType());
+      Hero* newhero = new Hero(*heroType, templateHero->getName(), p);
+      newhero->setGender(Army::Gender(templateHero->getGender()));
       if (gold_needed == 0)
 	city = Citylist::getInstance()->getFirstCity(p);
       else
