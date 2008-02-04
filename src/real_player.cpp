@@ -1381,6 +1381,17 @@ bool RealPlayer::stackMoveOneStep(Stack* s)
   return true;
 }
 
+bool RealPlayer::changeVectorDestination(City *c, Vector<int> dest)
+{
+  bool retval = true;
+  Citylist *cl = Citylist::getInstance();
+  std::list<City*> sources = cl->getCitiesVectoringTo(c);
+  std::list<City*>::iterator it = sources.begin();
+  for (; it != sources.end(); it++)
+    retval &= (*it)->changeVectorDestination(dest);
+  return retval;
+}
+
 bool RealPlayer::vectorFromCity(City * c, Vector<int> dest)
 {
   c->setVectoring(dest);

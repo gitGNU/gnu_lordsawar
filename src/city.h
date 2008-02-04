@@ -191,6 +191,13 @@ class City : public Location
 	//! Returns true if the city isn't accepting too many vectored armies
 	bool canAcceptVectoredUnit();
 
+	//! Returns true if the city can accept a number of vectored armies 
+	bool canAcceptVectoredUnits(Uint32 number_of_units);
+
+	//! sets the point where the city will send the produced armies to.
+	//Also changes the vectored units that are "en route" from this city.
+	bool changeVectorDestination(Vector<int> dest);
+
     private:
 
         //! Produces the currently selected army

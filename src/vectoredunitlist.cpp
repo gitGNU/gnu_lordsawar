@@ -249,3 +249,13 @@ Uint32 VectoredUnitlist::getNumberOfVectoredUnitsGoingTo(Vector<int> pos)
     }
   return count;
 }
+
+void VectoredUnitlist::changeDestination(City *c, Vector<int> new_dest)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if (c->contains((*it)->getDestination()))
+	(*it)->setDestination(new_dest);
+    }
+}
+

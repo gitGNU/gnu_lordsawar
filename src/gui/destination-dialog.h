@@ -31,7 +31,7 @@ struct SDL_Surface;
 class DestinationDialog: public sigc::trackable
 {
  public:
-    DestinationDialog(City *city);
+    DestinationDialog(City *city, bool *see_all);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -67,6 +67,7 @@ class DestinationDialog: public sigc::trackable
     void on_vector_toggled(Gtk::ToggleButton *toggle);
     void on_change_toggled(Gtk::ToggleButton *toggle);
     void fill_in_vectoring_info();
+    bool *d_see_all;
 };
 
 #endif

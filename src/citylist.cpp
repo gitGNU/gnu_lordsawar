@@ -446,4 +446,29 @@ Vector<int> Citylist::calculateCenterOfTerritory (Player *p)
     return Vector<int>(-1, -1);
   return Vector<int>((s-n)/2, (e-w)/2);
 }
+
+bool Citylist::isVectoringTarget(City *target)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it).getPlayer() != target->getPlayer())
+	continue;
+      if (target->contains((*it).getVectoring()))
+	return true;
+    }
+  return false;
+}
+
+std::list<City*> Citylist::getCitiesVectoringTo(City *target)
+{
+  std::list<City*> cities;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it).getPlayer() != target->getPlayer())
+	continue;
+      if (target->contains((*it).getVectoring()))
+	cities.push_back(&(*it));
+    }
+  return cities;
+}
 // End of file

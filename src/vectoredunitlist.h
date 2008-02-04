@@ -65,6 +65,9 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	//! are going to a particular destination.
         Uint32 getNumberOfVectoredUnitsGoingTo(Vector<int> pos);
 
+	//! Change the destination of vectored units as they are "in the air".
+	void changeDestination(City *c, Vector<int> new_dest);
+
     protected:
         VectoredUnitlist();
         ~VectoredUnitlist();

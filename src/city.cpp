@@ -687,10 +687,23 @@ Army *City::produceArmy()
 
 bool City::canAcceptVectoredUnit()
 {
+  return canAcceptVectoredUnits(0);
+}
+bool City::canAcceptVectoredUnits(Uint32 number_of_units)
+{
   VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-  if (vul->getNumberOfVectoredUnitsGoingTo(d_pos) >= 
+  if (vul->getNumberOfVectoredUnitsGoingTo(d_pos) + number_of_units >= 
       MAX_ARMIES_VECTORED_TO_ONE_CITY)
     return false;
   return true;
 }
+
+bool City::changeVectorDestination(Vector<int> dest)
+{
+  VectoredUnitlist *vul = VectoredUnitlist::getInstance();
+  setVectoring(dest);
+  vul->changeDestination(this, dest);
+  return true;
+}
+
 // End of file

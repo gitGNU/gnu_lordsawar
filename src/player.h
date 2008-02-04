@@ -565,6 +565,12 @@ class Player: public sigc::trackable
             @param  dest   the place on the map to vector to
           */
         virtual bool vectorFromCity(City* c, Vector<int> dest) = 0;
+        /** Vector units going to a player's city to a new destination.
+            @return always returns true
+            @param  city   the city being vectored to
+            @param  dest   the place on the map to vector to
+          */
+	virtual bool changeVectorDestination(City *c, Vector<int> dest) =0;
 
         //! Plant a standard
         virtual bool heroPlantStandard(Stack *s) =0;

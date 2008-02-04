@@ -59,6 +59,7 @@ class CityWindow: public sigc::trackable
     City *city;
 
     bool d_razing_possible;
+    bool d_see_all;
 
 
     std::vector<Gtk::ToggleButton *> production_toggles;

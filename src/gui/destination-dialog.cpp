@@ -31,11 +31,13 @@
 #include "../GameMap.h"
 #include "../city.h"
 #include "../armysetlist.h"
+#include "../citylist.h"
 #include "../GraphicsCache.h"
 #include "../vectoredunitlist.h"
 
-DestinationDialog::DestinationDialog(City *c)
+DestinationDialog::DestinationDialog(City *c, bool *see_all)
 {
+  d_see_all = see_all;
     city = c;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -97,6 +99,7 @@ void DestinationDialog::run()
 {
     vectormap->resize();
     vectormap->draw();
+    see_all_toggle->set_active(*d_see_all);
     dialog->show();
     dialog->run();
 }
@@ -122,15 +125,16 @@ bool DestinationDialog::on_map_mouse_button_event(GdkEventButton *e)
 	return true;	// useless event
     
     vectormap->mouse_button_event(to_input_event(e));
+    city = vectormap->getCity();
+    fill_in_vectoring_info();
     
     return true;
 }
 
 void DestinationDialog::on_see_all_toggled(Gtk::ToggleButton *toggle)
 {
-  bool see_all;
-  see_all = toggle->get_active();
-  if (see_all)
+  *d_see_all = toggle->get_active();
+  if (*d_see_all)
     vectormap->setShowVectoring(VectorMap::SHOW_ALL_VECTORING);
   else
     vectormap->setShowVectoring(VectorMap::SHOW_ORIGIN_CITY_VECTORING);
@@ -162,8 +166,14 @@ void DestinationDialog::on_change_toggled(Gtk::ToggleButton *toggle)
 // we act when it's untoggled.
   if (toggle->get_active() == false)
     {
+      vectormap->setClickAction(VectorMap::CLICK_SELECTS);
       vectormap->draw();
       fill_in_vectoring_info();
+    }
+  else
+    {
+      vectormap->setClickAction(VectorMap::CLICK_CHANGES_DESTINATION);
+      vectormap->draw();
     }
 }
 
@@ -186,7 +196,10 @@ void DestinationDialog::fill_in_vectoring_info()
   empty_pic->fill(0x00000000);
 
   vector_toggle->set_sensitive(slot != -1 ? true : false);
-  change_toggle->set_sensitive(false);
+
+  Citylist *cl = Citylist::getInstance();
+  bool target = cl->isVectoringTarget(city);
+  change_toggle->set_sensitive(target);
 
   one_turn_away_image->set(empty_pic);
   two_turns_away_image->set(empty_pic);

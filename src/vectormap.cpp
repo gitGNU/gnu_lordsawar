@@ -81,11 +81,14 @@ void VectorMap::draw_city (City *c, Uint32 &type, bool &prod)
 void VectorMap::draw_cities (std::list<City*> citylist, Uint32 type)
 {
   bool prod;
+
   std::list<City*>::iterator it;
   for (it = citylist.begin(); it != citylist.end(); it++)
     {
-      if (click_action == CLICK_VECTORS)
+      switch (click_action)
 	{
+	case CLICK_VECTORS:
+	case CLICK_CHANGES_DESTINATION:
 	  if ((*it)->canAcceptVectoredUnit() == false)
 	    {
 	      prod = false; //this is a ruined city
@@ -98,45 +101,72 @@ void VectorMap::draw_cities (std::list<City*> citylist, Uint32 type)
               else
                 prod = true;
 	    }
-	}
-      else
-	{
+	  break;
+	case CLICK_SELECTS:
           if ((*it)->getProductionIndex() == -1)
             prod = false;
           else
             prod = true;
+	  break;
 	}
       draw_city ((*it), type, prod);
     }
 }
 
-void VectorMap::draw_lines (std::list<City*> citylist)
+void VectorMap::draw_vectoring_line(Vector<int> src, Vector<int> dest, bool to)
+{
+  Uint32 color;
+  Vector<int> start = src;
+  Vector <int> end = dest;
+  start = mapToSurface(start);
+  end = mapToSurface(end);
+  start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
+  end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
+  if (to) //yellow
+    color = SDL_MapRGBA(surface->format, 252, 236, 32, 255);
+  else //orange
+    color = SDL_MapRGBA(surface->format, 252, 160, 0, 255);
+  draw_line(surface, start.x, start.y, end.x, end.y, color);
+}
+void VectorMap::draw_vectoring_line_from_here_to (Vector<int> dest)
+{
+  draw_vectoring_line (city->getPos(), dest, true);
+}
+
+void VectorMap::draw_vectoring_line_to_here_from (Vector<int> src)
+{
+  draw_vectoring_line (src, city->getPos(), false);
+}
+
+void VectorMap::draw_lines (std::list<City*> srcs, std::list<City*> dests)
 {
   Citylist *cl = Citylist::getInstance();
-  Vector<int> start;
   Vector<int> end;
   std::list<City*>::iterator it;
-  for (it = citylist.begin(); it != citylist.end(); it++)
+  std::list<City*>::iterator cit;
+  //yellow lines first.  cities vectoring units to their destinations.
+  for (it = srcs.begin(); it != srcs.end(); it++)
     {
+      if ((*it)->getVectoring() == Vector<int>(-1, -1))
+	continue;
       if ((*it)->isFogged() == true)
         continue;
-      start = (*it)->getPos();
-      City *c = cl->getNearestCity((*it)->getVectoring(), 2);
+      City *c = cl->getObjectAt((*it)->getVectoring());
       if (c)
         end = c->getPos();
       else
         end = planted_standard;
 
-      start = mapToSurface(start);
-      end = mapToSurface(end);
-
-      start += Vector<int>(int(pixels_per_tile/2), 
-                           int(pixels_per_tile/2));
-      end += Vector<int>(int(pixels_per_tile/2), 
-                         int(pixels_per_tile/2));
-
-      Uint32 raw = SDL_MapRGBA(surface->format,252, 236, 32, 255);
-      draw_line(surface, start.x, start.y, end.x, end.y, raw);
+      Vector<int> pos = (*it)->getVectoring();
+      draw_vectoring_line ((*it)->getPos(), end, true);
+    }
+  //orange lines next.  cities receiving units from their sources.
+  for (it = dests.begin(); it != dests.end(); it++)
+    {
+      //who is vectoring to this (*it) city?
+      std::list<City*> sources = cl->getCitiesVectoringTo(*it);
+      for (cit = sources.begin(); cit != sources.end(); cit++)
+	draw_vectoring_line ((*it)->getPos(), (*cit)->getPos(), false);
     }
 }
 
@@ -157,11 +187,17 @@ void VectorMap::after_draw()
   //only show cities that can accept more vectoring when
   //the click action is vector
   
+  std::list<City*> sources;
+
+  if (click_action == CLICK_CHANGES_DESTINATION)
+    sources = cl->getCitiesVectoringTo(city);
+
   // draw special shield for every city that player owns.
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
       if ((*it).getPlayer() == Playerlist::getActiveplayer())
         {
+      
           if ((*it).getProductionIndex() == -1)
             prod = false;
           else
@@ -210,82 +246,61 @@ void VectorMap::after_draw()
 		  prod = false;
 		  type = 3;
 		}
-            }
-          draw_city (&(*it), type, prod);
-        }
+	      if (click_action == CLICK_CHANGES_DESTINATION)
+		{
+		  if ((*it).canAcceptVectoredUnits (sources.size()) == false)
+		    {
+		      prod = false; //this is a ruined city
+		      type = 3;
+		    }
+		}
+	    }
+	  draw_city (&(*it), type, prod);
+	}
       else
-        {
-          type = 3;
-          prod = false;
-          draw_city (&(*it), type, prod); //an impossible combo
-        }
+	{
+	  type = 3;
+	  prod = false;
+	  draw_city (&(*it), type, prod); //an impossible combo
+	}
     }
 
-    //second pass, identify all the destination and source cities
-    if (show_vectoring == SHOW_ALL_VECTORING)
-      {
-        draw_cities (dests, 2);
-        draw_cities (srcs, 3);
-      }
- 
-    if (show_vectoring == SHOW_ORIGIN_CITY_VECTORING && click_action == CLICK_SELECTS)
-      {
-        // draw lines from origination to city/planted standard
-        for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
-          {
-            if ((*it).isFogged() == true)
-              continue;
-            if ((*it).getPlayer() != city->getPlayer())
-              continue;
-            if ((*it).getVectoring() != Vector<int>(-1, -1))
-              continue;
-            if ((*it).getVectoring() == planted_standard)
-              continue;
+  //second pass, identify all the destination and source cities
+  if (show_vectoring == SHOW_ALL_VECTORING)
+    {
+      draw_cities (dests, 2);
+      draw_cities (srcs, 3);
+    }
 
-                //is this a city that is vectoring to me?
-              if ((*it).getVectoring() != Vector<int>(-1, -1) &&
-                       cl->getNearestCity((*it).getVectoring(), 2)->getId() ==
-                       city->getId())
-                {
-                  start = (*it).getPos();
-                  end = city->getPos();
+  if (show_vectoring == SHOW_ORIGIN_CITY_VECTORING && click_action == CLICK_SELECTS)
+    {
+      // draw lines from origination to city/planted standard
+      for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+	{
+	  if ((*it).isFogged() == true)
+	    continue;
+	  if ((*it).getPlayer() != city->getPlayer())
+	    continue;
+	  if ((*it).getVectoring() == Vector<int>(-1, -1))
+	    continue;
+	  if ((*it).getVectoring() == planted_standard)
+	    continue;
 
-                  start = mapToSurface(start);
-                  end = mapToSurface(end);
+	  //is this a city that is vectoring to me?
+	  if (city->contains((*it).getVectoring()))
+	    draw_vectoring_line_to_here_from((*it).getPos());
+	}
+      // draw line from city to destination
+      if (city->getVectoring().x != -1)
+	draw_vectoring_line_from_here_to(city->getVectoring());
+    }
+  else if (show_vectoring == SHOW_ALL_VECTORING && click_action == CLICK_SELECTS)
+    draw_lines (srcs, dests);
 
-                  start += Vector<int>(int(pixels_per_tile/2), 
-                                       int(pixels_per_tile/2));
-	          end += Vector<int>(int(pixels_per_tile/2), 
-                                     int(pixels_per_tile/2));
+  if (flag.x != -1 && flag.y != -1)
+    draw_planted_standard(flag);
 
-	          Uint32 raw = SDL_MapRGBA(surface->format,252, 236, 32, 255);
-                  draw_line(surface, start.x, start.y, end.x, end.y, raw);
-                }
-          }
-  
-        // draw line from city to destination
-        if (city->getVectoring().x != -1)
-          {
-            start = city->getPos();
-            end = city->getVectoring();
-        
-            start = mapToSurface(start);
-            end = mapToSurface(end);
-
-	    start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
-	    end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
-
-	    Uint32 raw = SDL_MapRGBA(surface->format, 252, 236, 32, 255);
-            draw_line(surface, start.x, start.y, end.x, end.y, raw);
-          }
-      }
-    else if (show_vectoring == SHOW_ALL_VECTORING && click_action == CLICK_SELECTS)
-      draw_lines (srcs);
-
-    if (flag.x != -1 && flag.y != -1)
-      draw_planted_standard(flag);
-
-    map_changed.emit(surface);
+  map_changed.emit(surface);
 }
 
 void VectorMap::mouse_button_event(MouseButtonEvent e)
@@ -299,70 +314,112 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
       dest = mapFromScreen(e.pos);
 
       switch (click_action)
-        {
-          case CLICK_VECTORS:
+	{
+	case CLICK_VECTORS:
 
-            nearestCity = cl->getNearestVisibleFriendlyCity(dest, 4);
-            if (nearestCity == NULL)
-              {
-                //no city near there.  are we close to the planted standard?
-                Vector<int>flag = planted_standard;
-                if (planted_standard.x != -1 && planted_standard.y != -1)
-                  {
-                    int dist = 4;
-                    if (flag.x <= dest.x + dist && dest.x >= dest.x - dist &&
-                        flag.y <= dest.y + dist && flag.y >= dest.y - dist)
-                      {
-                        dest = planted_standard;
-                      }
-                    else
-                      return; //no cities, no planted flag
-                  }
-                else
-                  return; //no cities, no planted flag
-              }
-            else if (nearestCity == city)
-              /* clicking on own city, makes vectoring stop */
-              dest = Vector<int>(-1, -1);
+	  nearestCity = cl->getNearestVisibleFriendlyCity(dest, 4);
+	  if (nearestCity == NULL)
+	    {
+	      //no city near there.  are we close to the planted standard?
+	      Vector<int>flag = planted_standard;
+	      if (planted_standard.x != -1 && planted_standard.y != -1)
+		{
+		  int dist = 4;
+		  if (flag.x <= dest.x + dist && dest.x >= dest.x - dist &&
+		      flag.y <= dest.y + dist && flag.y >= dest.y - dist)
+		    {
+		      dest = planted_standard;
+		    }
+		  else
+		    return; //no cities, no planted flag
+		}
+	      else
+		return; //no cities, no planted flag
+	    }
+	  else if (nearestCity == city)
+	    /* clicking on own city, makes vectoring stop */
+	    dest = Vector<int>(-1, -1);
 
-            if (dest != city->getVectoring())
-              {
-	        destination_chosen.emit(dest);
-                Playerlist::getActiveplayer()->vectorFromCity(city, dest);
-		setClickAction(CLICK_SELECTS);
-	        draw();
-              }
-            else if (dest == Vector<int>(-1, -1)) //stop vectoring
-              {
-	        destination_chosen.emit(dest);
-                Playerlist::getActiveplayer()->vectorFromCity(city, dest);
-		setClickAction(CLICK_SELECTS);
-	        draw();
-              }
-            break;
-          case CLICK_SELECTS:
-            if (d_see_opponents_production == true)
-              nearestCity = cl->getNearestVisibleCity(dest, 4);
-            else
-              nearestCity = cl->getNearestVisibleFriendlyCity(dest, 4);
-            if (nearestCity == NULL)
-              return;
-            city = nearestCity;
-            draw();
-            break;
-	  /*
-	   * case CLICK_CHANGES_VECTOR_DESTINATION:
-	   * remember source city
-	   * find destination city/standard
-	   * loop for all vectored units from source city
-	   *   call canAcceptedVectoredUnit on destination city 
-	   *   if true then
-	   *     call vectorFromCity
-	   *     redraw
-	   *   endif
-	   *
-	   */
-        }
+	  if (dest != city->getVectoring())
+	    {
+	      destination_chosen.emit(dest);
+	      Playerlist::getActiveplayer()->vectorFromCity(city, dest);
+	      setClickAction(CLICK_SELECTS);
+	      draw();
+	    }
+	  else if (dest == Vector<int>(-1, -1)) //stop vectoring
+	    {
+	      destination_chosen.emit(dest);
+	      Playerlist::getActiveplayer()->vectorFromCity(city, dest);
+	      setClickAction(CLICK_SELECTS);
+	      draw();
+	    }
+	  break;
+	case CLICK_SELECTS:
+	  if (d_see_opponents_production == true)
+	    nearestCity = cl->getNearestVisibleCity(dest, 4);
+	  else
+	    nearestCity = cl->getNearestVisibleFriendlyCity(dest, 4);
+	  if (nearestCity == NULL)
+	    return;
+	  city = nearestCity;
+	  draw();
+	  break;
+	case CLICK_CHANGES_DESTINATION:
+	  nearestCity = cl->getNearestVisibleFriendlyCity(dest, 4);
+	  if (nearestCity == NULL)
+	    {
+	      //no city near there.  are we close to the planted standard?
+	      Vector<int>flag = planted_standard;
+	      if (planted_standard.x != -1 && planted_standard.y != -1)
+		{
+		  int dist = 4;
+		  if (flag.x <= dest.x + dist && dest.x >= dest.x - dist &&
+		      flag.y <= dest.y + dist && flag.y >= dest.y - dist)
+		    {
+		      dest = planted_standard;
+		    }
+		  else
+		    return; //no cities, no planted flag
+		}
+	      else
+		return; //no cities, no planted flag
+	    }
+	  else if (nearestCity == city)
+	    /* clicking on own city, makes vectoring stop */
+	    dest = Vector<int>(-1, -1);
+
+	  if (dest == Vector<int>(-1, -1)) //stop vectoring
+	    {
+	      destination_chosen.emit(dest);
+	      setClickAction(CLICK_SELECTS);
+	      draw();
+	    }
+	  bool is_source_city = false;
+	  std::list<City*> sources = cl->getCitiesVectoringTo(city);
+	  std::list<City*>::iterator cit = sources.begin();
+	  for (;cit != sources.end(); cit++)
+	    {
+	      if ((*cit)->contains(dest))
+		{
+		  is_source_city = true;
+		  break;
+		}
+	    }
+	  //if it's not one of our sources, then select it
+	  if (is_source_city == false)
+	    {
+	      destination_chosen.emit(dest);
+	      Playerlist::getActiveplayer()->changeVectorDestination(city, 
+								     dest);
+	      setClickAction(CLICK_SELECTS);
+	      draw();
+	      if (dest != planted_standard)
+		city = nearestCity;
+	      draw();
+	    }
+	  break;
+	}
     }
-        
+
 }

@@ -42,6 +42,7 @@ class VectorMap : public OverviewMap
     {
       CLICK_SELECTS,
       CLICK_VECTORS,
+      CLICK_CHANGES_DESTINATION,
     };
     VectorMap(City *city, enum ShowVectoring vector, bool see_opponents_production);
     void mouse_button_event(MouseButtonEvent e);
@@ -69,9 +70,12 @@ class VectorMap : public OverviewMap
     virtual void after_draw();
     void draw_city (City *c, Uint32 &type, bool &prod);
     void draw_cities (std::list<City*> citylist, Uint32 type);
-    void draw_lines (std::list<City*> citylist);
+    void draw_lines (std::list<City*> srcs, std::list<City*> dests);
     void draw_planted_standard(Vector<int> pos);
     bool d_see_opponents_production;
+    void draw_vectoring_line_from_here_to (Vector<int> dest);
+    void draw_vectoring_line_to_here_from (Vector<int> src);
+    void draw_vectoring_line(Vector<int> src, Vector<int> dest, bool to);
 };
 
 #endif

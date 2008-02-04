@@ -112,6 +112,12 @@ class Citylist : public ObjectList<City>, public sigc::trackable
 	//! find the center point for all of the given player's cities
 	Vector<int> calculateCenterOfTerritory (Player *p);
 
+	//! are any other cities vectoring to here?
+	bool isVectoringTarget(City *target);
+
+	//! get the set of cities vectoring to here.
+	std::list<City*> getCitiesVectoringTo(City *target);
+
     protected:
         // CREATORS
         Citylist();

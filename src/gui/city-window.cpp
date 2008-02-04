@@ -54,7 +54,7 @@ CityWindow::CityWindow(City *c, bool razing_possible,
     
     xml->get_widget("map_image", map_image);
 
-    prodmap.reset(new VectorMap(c, VectorMap::SHOW_NO_VECTORING,
+    prodmap.reset(new VectorMap(c, VectorMap::SHOW_ORIGIN_CITY_VECTORING,
 		  see_opponents_production));
     prodmap->map_changed.connect(
 	sigc::mem_fun(this, &CityWindow::on_map_changed));
@@ -367,6 +367,7 @@ void CityWindow::on_on_hold_clicked() //stop button
 	production_toggles[i]->set_active(false);
     ignore_toggles = false;
     fill_in_production_info();
+    prodmap->draw();
 }
 
 void CityWindow::on_buy_clicked()
@@ -399,10 +400,11 @@ void CityWindow::on_buy_clicked()
 
 void CityWindow::on_destination_clicked()
 {
-    DestinationDialog d(city);
+    DestinationDialog d(city, &d_see_all);
     d.set_parent_window(*dialog.get());
     d.run();
     fill_in_production_info();
+    prodmap->draw();
 }
 
 void CityWindow::on_map_changed(SDL_Surface *map)
