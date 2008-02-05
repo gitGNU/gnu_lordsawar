@@ -14,7 +14,10 @@ map_default_DATA = \
 	port.png \
 	fog.png \
 	selector.png \
-	small_selector.png
+	small_selector.png \
+	shieldsetsmall.png \
+	shieldsetmedium.png \
+	shieldsetlarge.png
 
 EXTRA_DIST = \
 	ruin.png \
@@ -29,4 +32,7 @@ EXTRA_DIST = \
 	port.png \
 	fog.png \
 	selector.png \
-	small_selector.png
+	small_selector.png \
+	shieldsetsmall.png \
+	shieldsetmedium.png \
+	shieldsetlarge.png

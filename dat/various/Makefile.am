@@ -25,9 +25,6 @@ various_DATA = \
     lordsawar_logo.png \
     freelords_editor.png \
     editor.png \
-    shieldsetsmall.png \
-    shieldsetmedium.png \
-    shieldsetlarge.png \
     hero.png \
     prodshieldset.png \
     smallruinedcity.png \
@@ -66,9 +63,6 @@ EXTRA_DIST = \
     lordsawar_logo.png \
     freelords_editor.png \
     editor.png \
-    shieldsetsmall.png \
-    shieldsetmedium.png \
-    shieldsetlarge.png \
     hero.png \
     prodshieldset.png \
     smallruinedcity.png \

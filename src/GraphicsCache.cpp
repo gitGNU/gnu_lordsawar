@@ -1812,10 +1812,8 @@ void GraphicsCache::loadRuinPics()
 void GraphicsCache::loadDiplomacyPics()
 {
   // load the diplomacy pictures
-  // crapola
-  Uint32 ts;
   SDL_Surface* diplomacypics = File::getMiscPicture("diplomacy-small.png");
-  ts = 30;
+  Uint32 ts = 30;
 
   // copy alpha values, don't use them
   SDL_SetAlpha(diplomacypics, 0, 0);
@@ -2191,7 +2189,9 @@ void GraphicsCache::loadShields()
   //load the small shieldset
   unsigned int i;
   SDL_Rect shieldrect;
-  SDL_Surface* shieldpics = File::getMiscPicture("shieldsetsmall.png");
+  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
+  SDL_Surface* shieldpics = File::getMapsetPicture(tileset, 
+						   "misc/shieldsetsmall.png");
   // copy alpha values, don't use them
   SDL_SetAlpha(shieldpics, 0, 0);
   SDL_PixelFormat* fmt = shieldpics->format;
