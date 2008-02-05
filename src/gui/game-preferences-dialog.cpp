@@ -21,9 +21,9 @@
 #include <gtkmm/filefilter.h>
 
 #include "game-preferences-dialog.h"
-#include "game-options-dialog.h"
 
 #include "glade-helpers.h"
+#include "../ucompose.hpp"
 #include "../defs.h"
 #include "../File.h"
 #include "../armysetlist.h"
@@ -35,6 +35,8 @@
 #define HARD_PLAYER_TYPE _("Hard")
 #define NO_PLAYER_TYPE _("Off")
 
+static bool inhibit_difficulty_combobox = false;
+
 GamePreferencesDialog::GamePreferencesDialog()
 {
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -45,7 +47,7 @@ GamePreferencesDialog::GamePreferencesDialog()
     dialog.reset(d);
 
     xml->get_widget("start_game_button", start_game_button);
-    xml->get_widget("process_armies_combobox", process_armies_combobox);
+    xml->get_widget("difficulty_label", difficulty_label);
     xml->get_widget("random_map_radio", random_map_radio);
     xml->get_widget("load_map_filechooser", load_map_filechooser);
     xml->get_widget("random_map_container", random_map_container);
@@ -88,11 +90,9 @@ GamePreferencesDialog::GamePreferencesDialog()
     temples_random_togglebutton->signal_toggled().connect
       (sigc::mem_fun(*this, &GamePreferencesDialog::on_temples_random_toggled));
     xml->get_widget("map_size_combobox", map_size_combobox);
+    xml->get_widget("difficulty_combobox", difficulty_combobox);
 
     xml->get_widget("players_vbox", players_vbox);
-
-    process_armies_combobox->set_active(
-	GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN);
 
     // add default players
     default_player_names.push_back("The Sirians");
@@ -117,6 +117,9 @@ GamePreferencesDialog::GamePreferencesDialog()
     map_size_combobox->set_active(MAP_SIZE_NORMAL);
     map_size_combobox->signal_changed().connect(
 	sigc::mem_fun(*this, &GamePreferencesDialog::on_map_size_changed));
+    difficulty_combobox->set_active(CUSTOM);
+    difficulty_combobox->signal_changed().connect(
+	sigc::mem_fun(*this, &GamePreferencesDialog::on_difficulty_changed));
     on_map_size_changed();
 
     Gtk::FileFilter map_filter;
@@ -176,10 +179,15 @@ GamePreferencesDialog::GamePreferencesDialog()
 
     xml->get_widget("cities_can_produce_allies_checkbutton", 
 		    cities_can_produce_allies_checkbutton);
+  game_options_dialog = new GameOptionsDialog();
+  game_options_dialog->difficulty_option_changed.connect(
+	sigc::mem_fun(*this, 
+		      &GamePreferencesDialog::update_difficulty_rating));
 }
 
 GamePreferencesDialog::~GamePreferencesDialog()
 {
+  delete game_options_dialog;
 }
 
 void GamePreferencesDialog::set_parent_window(Gtk::Window &parent)
@@ -227,11 +235,7 @@ void GamePreferencesDialog::add_player(const Glib::ustring &type,
 
 void GamePreferencesDialog::on_add_player_clicked()
 {
-    if (player_names.empty())
-	add_player(HUMAN_PLAYER_TYPE, *current_player_name);
-
-    else
-	add_player(EASY_PLAYER_TYPE, *current_player_name);
+  add_player(HUMAN_PLAYER_TYPE, *current_player_name);
 
     ++current_player_name;
 
@@ -270,7 +274,6 @@ void GamePreferencesDialog::on_map_size_changed()
 	break;
     }
 }
-
 namespace 
 {
     GameParameters::Player::Type player_type_to_enum(const Glib::ustring &s)
@@ -288,11 +291,28 @@ namespace
 
 void GamePreferencesDialog::on_edit_options_clicked()
 {
-  GameOptionsDialog d(player_types);
-  d.set_parent_window(*dialog.get());
-  d.run();
+  inhibit_difficulty_combobox = true;
+  game_options_dialog->set_parent_window(*dialog.get());
+  game_options_dialog->run();
+  
+  update_difficulty_rating();
+  update_difficulty_combobox();
+  inhibit_difficulty_combobox = false;
 }
 
+void GamePreferencesDialog::update_difficulty_combobox()
+{
+  if (is_greatest())
+    difficulty_combobox->set_active(I_AM_THE_GREATEST);
+  else if (is_advanced())
+    difficulty_combobox->set_active(ADVANCED);
+  else if (is_intermediate())
+    difficulty_combobox->set_active(INTERMEDIATE);
+  else if (is_beginner())
+    difficulty_combobox->set_active(BEGINNER);
+  else
+    difficulty_combobox->set_active(CUSTOM);
+}
 void GamePreferencesDialog::on_player_type_changed()
 {
   Uint32 offcount = 0;
@@ -307,6 +327,37 @@ void GamePreferencesDialog::on_player_type_changed()
       start_game_button->set_sensitive(false);
     else
       start_game_button->set_sensitive(true);
+    update_difficulty_rating();
+}
+
+void GamePreferencesDialog::update_difficulty_rating()
+{
+    GameParameters g;
+    std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
+    for (; c != player_types.end(); c++)
+      {
+	GameParameters::Player p;
+	p.type = player_type_to_enum((*c)->get_active_text());
+	g.players.push_back(p);
+      }
+
+    g.see_opponents_stacks = Configuration::s_see_opponents_stacks;
+    g.see_opponents_production = Configuration::s_see_opponents_production;
+    g.play_with_quests = Configuration::s_play_with_quests;
+    g.hidden_map = Configuration::s_hidden_map;
+    g.neutral_cities = Configuration::s_neutral_cities;
+    g.razing_cities = Configuration::s_razing_cities;
+    g.diplomacy = Configuration::s_diplomacy;
+    g.cusp_of_war = Configuration::s_cusp_of_war;
+    g.random_turns = Configuration::s_random_turns;
+    g.quick_start = Configuration::s_quick_start;
+    g.intense_combat = Configuration::s_intense_combat;
+    g.military_advisor = Configuration::s_military_advisor;
+
+    int difficulty = GameScenario::calculate_difficulty_rating(g);
+    g.players.clear();
+
+    difficulty_label->set_markup(String::ucompose("<b>%1%%</b>", difficulty));
 }
 void GamePreferencesDialog::on_start_game_clicked()
 {
@@ -427,8 +478,7 @@ void GamePreferencesDialog::on_start_game_clicked()
 
     g.army_theme = Glib::filename_from_utf8(army_theme_combobox->get_active_text());
 
-    g.process_armies = GameParameters::ProcessArmies(
-	process_armies_combobox->get_active_row_number());
+    g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
 
     g.see_opponents_stacks = Configuration::s_see_opponents_stacks;
     g.see_opponents_production = Configuration::s_see_opponents_production;
@@ -494,4 +544,114 @@ void GamePreferencesDialog::on_temples_random_toggled()
 {
   temples_scale->set_sensitive(!temples_random_togglebutton->get_active());
 }
-    
+
+void GamePreferencesDialog::on_difficulty_changed()
+{
+  int type_num = 0;
+  switch (difficulty_combobox->get_active_row_number()) 
+    {
+    case BEGINNER:
+      Configuration::s_see_opponents_stacks = true;
+      Configuration::s_see_opponents_production = true;
+      Configuration::s_play_with_quests = false;
+      Configuration::s_hidden_map = false;
+      Configuration::s_neutral_cities = GameParameters::AVERAGE;
+      Configuration::s_razing_cities = GameParameters::ALWAYS;
+      Configuration::s_diplomacy = false;
+      Configuration::s_cusp_of_war = false;
+      type_num = 1; break;
+
+    case INTERMEDIATE:
+      Configuration::s_see_opponents_stacks = false;
+      Configuration::s_see_opponents_production = true;
+      Configuration::s_play_with_quests = true;
+      Configuration::s_hidden_map = false;
+      Configuration::s_neutral_cities = GameParameters::STRONG;
+      Configuration::s_razing_cities = GameParameters::ALWAYS;
+      Configuration::s_diplomacy = true;
+      Configuration::s_cusp_of_war = false;
+      type_num = 1; break;
+
+    case ADVANCED:
+      Configuration::s_see_opponents_stacks = false;
+      Configuration::s_see_opponents_production = false;
+      Configuration::s_play_with_quests = true;
+      Configuration::s_hidden_map = true;
+      Configuration::s_neutral_cities = GameParameters::ACTIVE;
+      Configuration::s_razing_cities = GameParameters::ON_CAPTURE;
+      Configuration::s_diplomacy = true;
+      Configuration::s_cusp_of_war = false;
+      type_num = 2; break;
+
+    case I_AM_THE_GREATEST:
+      Configuration::s_see_opponents_stacks = false;
+      Configuration::s_see_opponents_production = false;
+      Configuration::s_play_with_quests = true;
+      Configuration::s_hidden_map = true;
+      Configuration::s_neutral_cities = GameParameters::ACTIVE;
+      Configuration::s_razing_cities = GameParameters::NEVER;
+      Configuration::s_diplomacy = true;
+      Configuration::s_cusp_of_war = true;
+      type_num = 2; break;
+
+    case CUSTOM:
+      break;
+    }
+
+  if (inhibit_difficulty_combobox == false)
+    {
+      if (type_num)
+	{
+	  std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
+	  for (; c != player_types.end(); c++)
+	    (*c)->set_active (type_num);
+	}
+      update_difficulty_rating();
+    }
+}
+
+bool GamePreferencesDialog::is_beginner()
+{
+  return (Configuration::s_see_opponents_stacks == true &&
+	  Configuration::s_see_opponents_production == true &&
+	  Configuration::s_play_with_quests == false &&
+	  Configuration::s_hidden_map == false &&
+	  Configuration::s_neutral_cities == GameParameters::AVERAGE &&
+	  Configuration::s_razing_cities == GameParameters::ALWAYS &&
+	  Configuration::s_diplomacy == false &&
+	  Configuration::s_cusp_of_war == false);
+}
+bool GamePreferencesDialog::is_intermediate()
+{
+  return (
+	  Configuration::s_see_opponents_stacks == false &&
+	  Configuration::s_see_opponents_production == true &&
+	  Configuration::s_play_with_quests == true &&
+	  Configuration::s_hidden_map == false &&
+	  Configuration::s_neutral_cities == GameParameters::STRONG &&
+	  Configuration::s_razing_cities == GameParameters::ALWAYS &&
+	  Configuration::s_diplomacy == true &&
+	  Configuration::s_cusp_of_war == false);
+}
+bool GamePreferencesDialog::is_advanced()
+{
+  return (Configuration::s_see_opponents_stacks == false &&
+	  Configuration::s_see_opponents_production == false &&
+	  Configuration::s_play_with_quests == true &&
+	  Configuration::s_hidden_map == true &&
+	  Configuration::s_neutral_cities == GameParameters::ACTIVE &&
+	  Configuration::s_razing_cities == GameParameters::ON_CAPTURE &&
+	  Configuration::s_diplomacy == true &&
+	  Configuration::s_cusp_of_war == false);
+}
+bool GamePreferencesDialog::is_greatest()
+{
+  return (Configuration::s_see_opponents_stacks == false &&
+	  Configuration::s_see_opponents_production == false &&
+	  Configuration::s_play_with_quests == true &&
+	  Configuration::s_hidden_map == true &&
+	  Configuration::s_neutral_cities == GameParameters::ACTIVE &&
+	  Configuration::s_razing_cities == GameParameters::NEVER &&
+	  Configuration::s_diplomacy == true &&
+	  Configuration::s_cusp_of_war == true);
+}

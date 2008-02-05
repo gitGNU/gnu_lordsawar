@@ -24,6 +24,8 @@
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/widget.h>
+#include <gtkmm/label.h>
+#include <sigc++/signal.h>
 
 #include "../game-parameters.h"
 
@@ -31,12 +33,14 @@
 class GameOptionsDialog: public sigc::trackable
 {
  public:
-    GameOptionsDialog(std::list<Gtk::ComboBoxText *> player_types);
+    GameOptionsDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
     bool run();
     
+    sigc::signal<void> difficulty_option_changed;
+
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     Gtk::CheckButton *quests_checkbutton;
@@ -51,18 +55,19 @@ class GameOptionsDialog: public sigc::trackable
     Gtk::CheckButton *random_turns_checkbutton;
     Gtk::CheckButton *quick_start_checkbutton;
     Gtk::CheckButton *cusp_of_war_checkbutton;
-    Gtk::ToggleButton *beginner_toggle;
-    Gtk::ToggleButton *intermediate_toggle;
-    Gtk::ToggleButton *advanced_toggle;
-    Gtk::ToggleButton *greatest_toggle;
-    void on_beginner_toggled(Gtk::ToggleButton *toggle);
-    void on_intermediate_toggled(Gtk::ToggleButton *toggle);
-    void on_advanced_toggled(Gtk::ToggleButton *toggle);
-    void on_greatest_toggled(Gtk::ToggleButton *toggle);
-    void on_option_clicked();
-    void on_diplomacy_clicked();
     void fill_in_options();
-    std::list<Gtk::ComboBoxText *> d_player_types;
+    void on_view_enemies_checkbutton_clicked();
+    void on_view_production_checkbutton_clicked();
+    void on_quests_checkbutton_clicked();
+    void on_hidden_map_checkbutton_clicked();
+    void on_neutral_cities_combobox_changed();
+    void on_razing_cities_combobox_changed();
+    void on_diplomacy_checkbutton_clicked();
+    void on_cusp_of_war_checkbutton_clicked();
+    void on_random_turns_checkbutton_clicked();
+    void on_quick_start_checkbutton_clicked();
+    void on_intense_combat_checkbutton_clicked();
+    void on_military_advisor_checkbutton_clicked();
 };
 
 #endif

@@ -30,6 +30,7 @@
 #include <gtkmm/scale.h>
 
 #include "../game-parameters.h"
+#include "game-options-dialog.h"
 
 
 // dialog for choosing parameters for starting a new game
@@ -51,7 +52,7 @@ class GamePreferencesDialog
     Gtk::Button *start_game_button;
     Gtk::ComboBoxText *tile_theme_combobox;
     Gtk::ComboBoxText *army_theme_combobox;
-    Gtk::ComboBox *process_armies_combobox;
+    Gtk::Label *difficulty_label;
     Gtk::RadioButton *random_map_radio;
     Gtk::FileChooserButton *load_map_filechooser;
     Gtk::Widget *random_map_container;
@@ -75,8 +76,10 @@ class GamePreferencesDialog
     Gtk::Scale *temples_scale;
     Gtk::ToggleButton *temples_random_togglebutton;
     Gtk::CheckButton *cities_can_produce_allies_checkbutton;
+    Gtk::ComboBox *difficulty_combobox;
 
     enum { MAP_SIZE_NORMAL = 0, MAP_SIZE_SMALL, MAP_SIZE_TINY };
+    enum { BEGINNER = 0, INTERMEDIATE, ADVANCED, I_AM_THE_GREATEST, CUSTOM};
 
     Gtk::VBox *players_vbox;
 
@@ -87,10 +90,13 @@ class GamePreferencesDialog
     std::list<Gtk::ComboBoxText *> player_types;
     std::list<Gtk::Entry *> player_names;
 
+    GameOptionsDialog *game_options_dialog;
+
     void add_player(const Glib::ustring &type, const Glib::ustring &name);
     void on_add_player_clicked();
     void on_random_map_toggled();
     void on_map_size_changed();
+    void on_difficulty_changed();
     void on_start_game_clicked();
     void on_edit_options_clicked();
     void on_player_type_changed();
@@ -103,6 +109,13 @@ class GamePreferencesDialog
     void on_cities_random_toggled();
     void on_ruins_random_toggled();
     void on_temples_random_toggled();
+    bool is_beginner();
+    bool is_intermediate();
+    bool is_advanced();
+    bool is_greatest();
+    void update_difficulty_combobox();
+    void update_difficulty_rating();
+
 };
 
 #endif

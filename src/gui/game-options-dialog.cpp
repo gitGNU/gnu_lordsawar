@@ -26,9 +26,8 @@
 #include "../File.h"
 #include "../Configuration.h"
 
-GameOptionsDialog::GameOptionsDialog(std::list<Gtk::ComboBoxText *> player_types)
+GameOptionsDialog::GameOptionsDialog()
 {
-    d_player_types = player_types;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
 				    + "/game-options-dialog.glade");
@@ -50,45 +49,7 @@ GameOptionsDialog::GameOptionsDialog(std::list<Gtk::ComboBoxText *> player_types
     xml->get_widget("cusp_of_war_checkbutton", cusp_of_war_checkbutton);
     xml->get_widget("intense_combat_checkbutton", intense_combat_checkbutton);
     xml->get_widget("random_turns_checkbutton", random_turns_checkbutton);
-    xml->get_widget("beginner_toggle", beginner_toggle);
-    xml->get_widget("intermediate_toggle", intermediate_toggle);
-    xml->get_widget("advanced_toggle", advanced_toggle);
-    xml->get_widget("greatest_toggle", greatest_toggle);
 	
-    view_enemies_checkbutton->signal_clicked().connect
-      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
-    view_production_checkbutton->signal_clicked().connect
-      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
-    quests_checkbutton->signal_clicked().connect
-      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
-    hidden_map_checkbutton->signal_clicked().connect
-      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
-    neutral_cities_combobox->signal_changed().connect
-      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
-    razing_cities_combobox->signal_changed().connect
-      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
-    diplomacy_checkbutton->signal_clicked().connect
-      (sigc::mem_fun(this, &GameOptionsDialog::on_diplomacy_clicked));
-    cusp_of_war_checkbutton->signal_clicked().connect
-      (sigc::mem_fun(this, &GameOptionsDialog::on_option_clicked));
-
-    beginner_toggle->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun(this, &GameOptionsDialog::on_beginner_toggled),
-		  beginner_toggle));
-    intermediate_toggle->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun(this, 
-				&GameOptionsDialog::on_intermediate_toggled),
-		  intermediate_toggle));
-    advanced_toggle->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun(this, &GameOptionsDialog::on_advanced_toggled),
-		  advanced_toggle));
-
-    greatest_toggle->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun(this, &GameOptionsDialog::on_greatest_toggled),
-		  greatest_toggle));
-
-    fill_in_options();
-    on_diplomacy_clicked();
 }
 
 void GameOptionsDialog::fill_in_options()
@@ -106,6 +67,7 @@ void GameOptionsDialog::fill_in_options()
     military_advisor_checkbutton->set_active(Configuration::s_military_advisor);
     quick_start_checkbutton->set_active(Configuration::s_quick_start);
     cusp_of_war_checkbutton->set_active(Configuration::s_cusp_of_war);
+    cusp_of_war_checkbutton->set_sensitive(diplomacy_checkbutton->get_active());
     intense_combat_checkbutton->set_active(Configuration::s_intense_combat);
     random_turns_checkbutton->set_active(Configuration::s_random_turns);
 }
@@ -117,8 +79,64 @@ void GameOptionsDialog::set_parent_window(Gtk::Window &parent)
 
 bool GameOptionsDialog::run()
 {
+  std::list<sigc::connection> connections;
     GameParameters g;
+    fill_in_options();
+    connections.push_back
+      (view_enemies_checkbutton->signal_clicked().connect
+       (sigc::mem_fun
+	(this, &GameOptionsDialog::on_view_enemies_checkbutton_clicked)));
+    connections.push_back
+      (view_production_checkbutton->signal_clicked().connect
+       (sigc::mem_fun
+	(this, &GameOptionsDialog::on_view_production_checkbutton_clicked)));
+    connections.push_back
+      (quests_checkbutton->signal_clicked().connect
+       (sigc::mem_fun
+	(this, &GameOptionsDialog::on_quests_checkbutton_clicked)));
+    connections.push_back
+      (hidden_map_checkbutton->signal_clicked().connect
+       (sigc::mem_fun
+	(this, &GameOptionsDialog::on_hidden_map_checkbutton_clicked)));
+    connections.push_back
+      (neutral_cities_combobox->signal_changed().connect
+       (sigc::mem_fun
+	(this, &GameOptionsDialog::on_neutral_cities_combobox_changed)));
+    connections.push_back
+      (razing_cities_combobox->signal_changed().connect
+       (sigc::mem_fun
+	(this, &GameOptionsDialog::on_razing_cities_combobox_changed)));
+    connections.push_back
+      (diplomacy_checkbutton->signal_clicked().connect
+       (sigc::mem_fun
+	(this, &GameOptionsDialog::on_diplomacy_checkbutton_clicked)));
+    connections.push_back
+      (cusp_of_war_checkbutton->signal_clicked().connect
+       (sigc::mem_fun
+	(this, &GameOptionsDialog::on_cusp_of_war_checkbutton_clicked)));
+    connections.push_back
+      (random_turns_checkbutton->signal_clicked().connect
+       (sigc::mem_fun
+	(this, &GameOptionsDialog::on_random_turns_checkbutton_clicked)));
+    connections.push_back
+      (quick_start_checkbutton->signal_clicked().connect
+       (sigc::mem_fun
+	(this, &GameOptionsDialog::on_quick_start_checkbutton_clicked)));
+    connections.push_back
+      (intense_combat_checkbutton->signal_clicked().connect
+       (sigc::mem_fun
+	(this, &GameOptionsDialog::on_intense_combat_checkbutton_clicked)));
+    connections.push_back
+      (military_advisor_checkbutton->signal_clicked().connect
+       (sigc::mem_fun
+	(this, &GameOptionsDialog::on_military_advisor_checkbutton_clicked)));
+
     dialog->run();
+  
+    std::list<sigc::connection>::iterator it = connections.begin();
+    for (; it != connections.end(); it++) 
+      (*it).disconnect();
+    connections.clear();
     
     g.see_opponents_stacks = view_enemies_checkbutton->get_active();
     Configuration::s_see_opponents_stacks = g.see_opponents_stacks;
@@ -150,107 +168,72 @@ bool GameOptionsDialog::run()
     Configuration::s_military_advisor = g.military_advisor;
     //save it all to Configuration
     Configuration::saveConfigurationFile(Configuration::configuration_file_path);
+    dialog->hide();
     return true;
 }
-    
-void GameOptionsDialog::on_beginner_toggled(Gtk::ToggleButton *toggle)
-{
-  if (toggle->get_active())
-    {
-      intermediate_toggle->set_active(false);
-      advanced_toggle->set_active(false);
-      Configuration::s_see_opponents_stacks = true;
-      Configuration::s_see_opponents_production = true;
-      Configuration::s_play_with_quests = false;
-      Configuration::s_hidden_map = false;
-      Configuration::s_neutral_cities = GameParameters::AVERAGE;
-      Configuration::s_razing_cities = GameParameters::ALWAYS;
-      Configuration::s_diplomacy = false;
-      Configuration::s_cusp_of_war = false;
-      std::list<Gtk::ComboBoxText *>::iterator c = d_player_types.begin();
-      for (; c != d_player_types.end(); c++)
-	(*c)->set_active(1); //EASY
-      fill_in_options();
-    }
-}
 
-void GameOptionsDialog::on_intermediate_toggled(Gtk::ToggleButton *toggle)
+void GameOptionsDialog::on_view_enemies_checkbutton_clicked()
 {
-  if (toggle->get_active())
-    {
-      beginner_toggle->set_active(false);
-      advanced_toggle->set_active(false);
-      Configuration::s_see_opponents_stacks = false;
-      Configuration::s_see_opponents_production = true;
-      Configuration::s_play_with_quests = true;
-      Configuration::s_hidden_map = false;
-      Configuration::s_neutral_cities = GameParameters::STRONG;
-      Configuration::s_razing_cities = GameParameters::ALWAYS;
-      Configuration::s_diplomacy = true;
-      Configuration::s_cusp_of_war = false;
-      std::list<Gtk::ComboBoxText *>::iterator c = d_player_types.begin();
-      for (; c != d_player_types.end(); c++)
-	(*c)->set_active(1); //EASY
-      fill_in_options();
-    }
+  Configuration::s_see_opponents_stacks = 
+    view_enemies_checkbutton->get_active();
+  difficulty_option_changed.emit();
 }
-
-void GameOptionsDialog::on_advanced_toggled(Gtk::ToggleButton *toggle)
+void GameOptionsDialog::on_view_production_checkbutton_clicked()
 {
-  if (toggle->get_active())
-    {
-      beginner_toggle->set_active(false);
-      intermediate_toggle->set_active(false);
-      Configuration::s_see_opponents_stacks = false;
-      Configuration::s_see_opponents_production = false;
-      Configuration::s_play_with_quests = true;
-      Configuration::s_hidden_map = true;
-      Configuration::s_neutral_cities = GameParameters::ACTIVE;
-      Configuration::s_razing_cities = GameParameters::ON_CAPTURE;
-      Configuration::s_diplomacy = true;
-      Configuration::s_cusp_of_war = false;
-      std::list<Gtk::ComboBoxText *>::iterator c = d_player_types.begin();
-      for (; c != d_player_types.end(); c++)
-	(*c)->set_active(2); //HARD
-      fill_in_options();
-    }
+  Configuration::s_see_opponents_production = 
+    view_production_checkbutton->get_active();
+  difficulty_option_changed.emit();
 }
-void GameOptionsDialog::on_greatest_toggled(Gtk::ToggleButton *toggle)
+void GameOptionsDialog::on_quests_checkbutton_clicked()
 {
-  if (toggle->get_active())
-    {
-      beginner_toggle->set_active(false);
-      intermediate_toggle->set_active(false);
-      Configuration::s_see_opponents_stacks = false;
-      Configuration::s_see_opponents_production = false;
-      Configuration::s_play_with_quests = true;
-      Configuration::s_hidden_map = true;
-      Configuration::s_neutral_cities = GameParameters::ACTIVE;
-      Configuration::s_razing_cities = GameParameters::NEVER;
-      Configuration::s_diplomacy = true;
-      Configuration::s_cusp_of_war = true;
-    
-      std::list<Gtk::ComboBoxText *>::iterator c = d_player_types.begin();
-      for (; c != d_player_types.end(); c++)
-	(*c)->set_active(2); //HARD
-      fill_in_options();
-    }
+  Configuration::s_play_with_quests = quests_checkbutton->get_active();
+  difficulty_option_changed.emit();
 }
-void GameOptionsDialog::on_diplomacy_clicked()
+void GameOptionsDialog::on_hidden_map_checkbutton_clicked()
+{
+  Configuration::s_hidden_map = hidden_map_checkbutton->get_active();
+  difficulty_option_changed.emit();
+}
+void GameOptionsDialog::on_neutral_cities_combobox_changed()
+{
+  Configuration::s_neutral_cities = GameParameters::NeutralCities 
+    (neutral_cities_combobox->get_active_row_number());
+  difficulty_option_changed.emit();
+}
+void GameOptionsDialog::on_razing_cities_combobox_changed()
+{
+  Configuration::s_razing_cities = GameParameters::RazingCities 
+    (razing_cities_combobox->get_active_row_number());
+  difficulty_option_changed.emit();
+}
+void GameOptionsDialog::on_diplomacy_checkbutton_clicked()
 {
   if (diplomacy_checkbutton->get_active() == true)
     cusp_of_war_checkbutton->set_sensitive(true);
   else
-    {
-      cusp_of_war_checkbutton->set_active(false);
-      cusp_of_war_checkbutton->set_sensitive(false);
-    }
-  on_option_clicked();
+    cusp_of_war_checkbutton->set_sensitive(false);
+  Configuration::s_diplomacy = diplomacy_checkbutton->get_active();
+  difficulty_option_changed.emit();
 }
-void GameOptionsDialog::on_option_clicked()
+void GameOptionsDialog::on_cusp_of_war_checkbutton_clicked()
 {
-  beginner_toggle->set_active(false);
-  intermediate_toggle->set_active(false);
-  advanced_toggle->set_active(false);
-  greatest_toggle->set_active(false);
+  Configuration::s_cusp_of_war = cusp_of_war_checkbutton->get_active();
+  difficulty_option_changed.emit();
+}
+void GameOptionsDialog::on_random_turns_checkbutton_clicked()
+{
+  Configuration::s_random_turns = random_turns_checkbutton->get_active();
+}
+void GameOptionsDialog::on_quick_start_checkbutton_clicked()
+{
+  Configuration::s_quick_start = quick_start_checkbutton->get_active();
+}
+void GameOptionsDialog::on_intense_combat_checkbutton_clicked()
+{
+  Configuration::s_intense_combat = intense_combat_checkbutton->get_active();
+}
+void GameOptionsDialog::on_military_advisor_checkbutton_clicked()
+{
+  Configuration::s_military_advisor = 
+    military_advisor_checkbutton->get_active();
 }

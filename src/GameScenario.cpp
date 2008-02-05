@@ -400,7 +400,7 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
 int GameScenario::calculate_difficulty_rating(GameParameters g)
 {
   float total_difficulty = 0;
-  int max_player_difficulty = 75;
+  int max_player_difficulty = 73;
   int players_on = 0;
   for (std::vector<GameParameters::Player>::iterator it = g.players.begin(); 
        it != g.players.end(); it++)
@@ -449,7 +449,7 @@ int GameScenario::calculate_difficulty_rating(GameParameters g)
     total_difficulty += (float) 3.0;
   else if (g.razing_cities == GameParameters::NEVER)
     total_difficulty += (float) 6.0;
-  if (g.cusp_of_war == false)
+  if (g.cusp_of_war == true)
     total_difficulty += (float) 2.0;
   return (int) total_difficulty;
 }
