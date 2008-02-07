@@ -55,13 +55,20 @@ NewMapDialog::NewMapDialog()
     // fill in tile themes combobox
     tile_theme_combobox = manage(new Gtk::ComboBoxText);
     
+    Uint32 counter = 0;
+    Uint32 default_id = 0;
     Tilesetlist *tl = Tilesetlist::getInstance();
     std::list<std::string> tile_themes = tl->getNames();
     for (std::list<std::string>::iterator i = tile_themes.begin(),
 	     end = tile_themes.end(); i != end; ++i)
+      {
+	if (*i == "Default")
+	  default_id = counter;
 	tile_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+	counter++;
+      }
 
-    tile_theme_combobox->set_active(0);
+    tile_theme_combobox->set_active(default_id);
 
     Gtk::Box *tile_set_box;
     xml->get_widget("tile_set_box", tile_set_box);
