@@ -399,7 +399,7 @@ void MainWindow::set_random_map(int width, int height,
     
     gen.setPercentages(water, forest, swamp, hills, mountains);
     
-    gen.makeMap(width, height);
+    gen.makeMap(width, height, false);
     GameMap::getInstance()->fill(&gen);
 
     // sets up the lists

@@ -183,6 +183,7 @@ class CreateScenario
 	//! and if we're not playing with diplomacy we start out at war.
         bool setupPlayers(bool dimplomacy, bool random_turns, int base_gold);
 
+	bool setupRoads();
         /** Loads a list of possible city, ruin or temple names
           * 
           * @param list     the list to be filled with the names

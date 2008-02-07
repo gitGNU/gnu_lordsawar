@@ -167,7 +167,7 @@ void Path::recalculate (Stack* s)
   return;
 }
 
-Uint32 Path::calculate (Stack* s, Vector<int> dest)
+Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
 {
     int mp;
     Vector<int> start = s->getPos();
@@ -251,6 +251,12 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
                 if (dsxy < -1)
                     continue; // can't move there anyway
 
+		if (zigzag == false)
+		  {
+		    Vector<int> diff = pos - Vector<int>(sx, sy);
+		    if (diff.x && diff.y)
+		      continue;
+		  }
                 int newDsxy = dxy;
                 mp = pointsToMoveTo(s, pos.x, pos.y, sx, sy);
                 if (mp >= 0)
@@ -281,9 +287,29 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
 
     // choose the order in which we process directions so as to favour
     // diagonals over straight lines
-    int diffs[][2] = { {-1, -1}, {-1, 1}, {1, -1}, {1, 1}, {1, 0}, {-1, 0}, {0, -1}, {0, 1} };
+    std::list<Vector<int> > diffs;
+    if (zigzag)
+      {
+	diffs.push_back(Vector<int>(-1, -1));
+	diffs.push_back(Vector<int>(-1, 1));
+	diffs.push_back(Vector<int>(1, -1));
+	diffs.push_back(Vector<int>(1, 1));
+	diffs.push_back(Vector<int>(1, 0));
+	diffs.push_back(Vector<int>(-1, 0));
+	diffs.push_back(Vector<int>(0, -1));
+	diffs.push_back(Vector<int>(0, 1));
+      }
+    else
+      {
+	diffs.push_back(Vector<int>(1, 0));
+	diffs.push_back(Vector<int>(-1, 0));
+	diffs.push_back(Vector<int>(0, -1));
+	diffs.push_back(Vector<int>(0, 1));
+      }
+
     int x = dest.x;
     int y = dest.y;
+
     while (dist > 0)
     {
         Vector<int> *p = new Vector<int>(x,y);
@@ -292,11 +318,11 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest)
         int min = dist;
         int rx = x;
         int ry = y;
-
-        for (int i=0; i<8; i++)
+	for (std::list<Vector<int> >::iterator it = diffs.begin();
+	     it != diffs.end(); it++)
         {
-            int newx = x + diffs[i][0];
-            int newy = y + diffs[i][1];
+            int newx = x + (*it).x;//diffs[i][0];
+            int newy = y + (*it).y;//diffs[i][1];
             if (newx < 0 || newx == width || newy < 0 || newy == height)
                 continue;
 //isBlockedDir is needed to catch crossings from land to sea when not thru a port/city

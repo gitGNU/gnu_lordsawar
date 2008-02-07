@@ -162,6 +162,8 @@ City* Citylist::getNearestForeignCity(const Vector<int>& pos)
 City* Citylist::getNearestCity(const Vector<int>& pos, int dist)
 {
   City *c = getNearestCity(pos);
+  if (!c)
+    return c;
   if (c->getPos().x <= pos.x + dist && c->getPos().x >= pos.x - dist &&
       c->getPos().y <= pos.y + dist && c->getPos().y >= pos.y - dist)
     return c;
@@ -171,6 +173,8 @@ City* Citylist::getNearestCity(const Vector<int>& pos, int dist)
 City* Citylist::getNearestFriendlyCity(const Vector<int>& pos, int dist)
 {
   City *c = getNearestFriendlyCity(pos);
+  if (!c)
+    return c;
   if (c->getPos().x <= pos.x + dist && c->getPos().x >= pos.x - dist &&
       c->getPos().y <= pos.y + dist && c->getPos().y >= pos.y - dist)
     return c;
@@ -270,6 +274,8 @@ City* Citylist::getNearestVisibleCity(const Vector<int>& pos)
 City* Citylist::getNearestVisibleCity(const Vector<int>& pos, int dist)
 {
   City *c = getNearestVisibleCity(pos);
+  if (!c)
+    return c;
   if (c->getPos().x <= pos.x + dist && c->getPos().x >= pos.x - dist &&
       c->getPos().y <= pos.y + dist && c->getPos().y >= pos.y - dist)
     return c;
@@ -279,6 +285,8 @@ City* Citylist::getNearestVisibleCity(const Vector<int>& pos, int dist)
 City* Citylist::getNearestVisibleFriendlyCity(const Vector<int>& pos, int dist)
 {
   City *c = getNearestFriendlyCity(pos);
+  if (!c)
+    return c;
   if (c->getPos().x <= pos.x + dist && c->getPos().x >= pos.x - dist &&
       c->getPos().y <= pos.y + dist && c->getPos().y >= pos.y - dist)
     return c;
@@ -471,4 +479,31 @@ std::list<City*> Citylist::getCitiesVectoringTo(City *target)
     }
   return cities;
 }
+City* Citylist::getNearestCity(City *city)
+{
+    int diff = -1;
+    iterator diffit;
+
+    for (iterator it = begin(); it != end(); ++it)
+    {
+          if ((*it).isBurnt())
+              continue;
+          
+	  Vector<int> pos = city->getPos();
+          Vector<int> p = (*it).getPos();
+          int delta = abs(p.x - pos.x);
+          if (delta < abs(p.y - pos.y))
+              delta = abs(p.y - pos.y);
+          
+          if ((diff > delta && delta != 0) || (diff == -1))
+          {
+              diff = delta;
+              diffit = it;
+          }
+    }
+    
+    if (diff == -1) return 0;
+    return &(*diffit);
+}
+
 // End of file

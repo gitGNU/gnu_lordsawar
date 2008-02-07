@@ -361,6 +361,9 @@ bool CreateScenario::create(const GameParameters &g)
     if (!setupRewards())
         return false;
 
+    if (!setupRoads())
+        return false;
+    
     return true;
 }
 
@@ -383,7 +386,7 @@ bool CreateScenario::createMap()
     Rewardlist::getInstance();
 
     //have the generator make the map...
-    d_generator->makeMap(d_width, d_height);
+    d_generator->makeMap(d_width, d_height, true);
     
     //...fill the terrain...
     GameMap::getInstance(d_tilesname)->fill(d_generator);
@@ -531,6 +534,14 @@ bool CreateScenario::setupCities(bool quick_start,
     }
 
     return true;
+}
+
+bool CreateScenario::setupRoads()
+{
+  Roadlist* rl = Roadlist::getInstance();
+  for (Roadlist::iterator it = rl->begin(); it != rl->end(); it++)
+    (*it).setType(Roadlist::getInstance()->calculateType((*it).getPos()));
+  return true;
 }
 
 bool CreateScenario::setupTemples()

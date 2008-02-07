@@ -19,8 +19,13 @@
 #include "vector.h"
 
 #include "MapGenerator.h"
+#include "GameMap.h"
+#include "stack.h"
+#include "path.h"
 #include "File.h"
 #include "defs.h"
+#include "citylist.h"
+#include "roadlist.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -151,7 +156,7 @@ void MapGenerator::setPercentages(int pwater, int pforest, int pswamp,
  * c = part of city/castle
  * See the TileMapTypes enum at the beginning of the class definition.
  */
-void MapGenerator::makeMap(int width, int height)
+void MapGenerator::makeMap(int width, int height, bool roads)
 {
     d_width = width;
     d_height = height;
@@ -192,6 +197,13 @@ void MapGenerator::makeMap(int width, int height)
     // place buildings
     cout <<_("Building Cities   ... 70%") <<endl;
     makeCities(d_nocities);
+
+    if (roads)
+      {
+	cout <<_("Paving Roads ... 75%") <<endl;
+	makeRoads();
+      }
+
     cout <<_("Ruining Ruins     ... 80%") <<endl;
     makeBuildings(Maptile::RUIN,d_noruins);
     cout <<_("Raising Signs     ... 88%") <<endl;
@@ -1125,4 +1137,71 @@ void MapGenerator::findRoutes()// Lands is short for LandMasses
                 break;
         }
 
+}
+
+void MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
+{
+  Vector<int> src(src_x, src_y);
+  Vector<int> dest(dest_x, dest_y);
+
+  Path *p = new Path();
+  Stack s(NULL, src);
+  Uint32 moves = p->calculate(&s, dest, false);
+  if (moves != 0)
+    {
+      for (Path::iterator it = p->begin(); it != p->end(); it++)
+	{
+	  Citylist *cl = Citylist::getInstance();
+	  if (cl->getObjectAt((**it).x, (**it).y) == NULL)
+	    {
+	      if (d_terrain[(**it).y*d_width + (**it).x] == Tile::WATER)
+		d_terrain[(**it).y*d_width + (**it).x] = Tile::GRASS;
+	      d_building[(**it).y*d_width + (**it).x] = Maptile::ROAD;
+	      Roadlist::getInstance()->push_back(Road(Vector<int>((**it).x,(**it).y)));
+	    }
+	}
+
+    }
+  delete p;
+
+}
+	
+void MapGenerator::makeRoads()
+{
+  GameMap::deleteInstance();
+  Citylist::deleteInstance();
+  Roadlist::deleteInstance();
+
+  GameMap::setWidth(d_width);
+  GameMap::setHeight(d_height);
+  GameMap::getInstance("default")->fill(this);
+  GameMap::getInstance()->calculateBlockedAvenues();
+  Roadlist::getInstance();
+
+  for (int y = 0; y < d_height; y++)
+    for (int x = 0; x < d_width; x++)
+      {
+	if (d_building[y*d_width + x] == Maptile::CITY)
+	  Citylist::getInstance()->push_back(City(Vector<int>(x,y)));
+      }
+
+  Citylist *cl = Citylist::getInstance();
+  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+    {
+      if (rand() % 2 == 0)
+	  continue;
+      City *c = cl->getNearestCity(&*it);
+      Vector<int> dest = c->getPos();
+      Vector<int> src = (*it).getPos();
+      //does it already have a road going to it?
+      Road *r = Roadlist::getInstance()->getNearestRoad(dest, c->getSize() + 1);
+      if (r)
+	continue;
+
+      makeRoad(src.x, src.y, dest.x, dest.y);
+    }
+
+  Roadlist::deleteInstance();
+  GameMap::deleteInstance();
+  Citylist::deleteInstance();
 }

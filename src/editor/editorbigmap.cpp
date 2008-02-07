@@ -279,7 +279,7 @@ void EditorBigMap::after_draw()
 	    break;
 	    
 	case ROAD:
-	    pic = GraphicsCache::getInstance()->getRoadPic(tile_to_road_type(*i));
+	    pic = GraphicsCache::getInstance()->getRoadPic(Roadlist::getInstance()->calculateType(*i));
 	    SDL_BlitSurface(pic, 0, buffer, &r);
 	    break;
 	case PORT:
@@ -339,61 +339,6 @@ int EditorBigMap::tile_to_bridge_type(Vector<int> t)
     return type;
 }
 
-
-int EditorBigMap::tile_to_road_type(Vector<int> t)
-{
-    // examine neighbour tiles to discover whether there's a road on them
-    bool u = false; //up
-    bool b = false; //bottom
-    bool l = false; //left
-    bool r = false; //right
-
-    if (t.y > 0)
-      u = Roadlist::getInstance()->getObjectAt(t + Vector<int>(0, -1));
-    if (t.y < GameMap::getHeight() - 1)
-      b = Roadlist::getInstance()->getObjectAt(t + Vector<int>(0, 1));
-    if (t.x > 0)
-      l = Roadlist::getInstance()->getObjectAt(t + Vector<int>(-1, 0));
-    if (t.x < GameMap::getWidth() - 1)
-    r = Roadlist::getInstance()->getObjectAt(t + Vector<int>(1, 0));
-
-    // then translate this to the type
-    int type = 2; 
-    //show road type 2 when no other road tiles are around
-    if (!u && !b && !l && !r)
-	type = 2;
-    else if (u && b && l && r)
-	type = 2;
-    else if (!u && b && l && r)
-	type = 9;
-    else if (u && !b && l && r)
-	type = 8;
-    else if (u && b && !l && r)
-	type = 7;
-    else if (u && b && l && !r)
-	type = 10;
-    else if (u && b && !l && !r)
-	type = 1;
-    else if (!u && !b && l && r)
-	type = 0;
-    else if (u && !b && l && !r)
-	type = 3;
-    else if (u && !b && !l && r)
-	type = 4;
-    else if (!u && b && l && !r)
-	type = 6;
-    else if (!u && b && !l && r)
-	type = 5;
-    else if (u && !b && !l && !r)
-	type = 1;
-    else if (!u && b && !l && !r)
-	type = 1;
-    else if (!u && !b && l && !r)
-	type = 0;
-    else if (!u && !b && !l && r)
-	type = 0;
-    return type;
-}
 
 
 namespace
@@ -678,7 +623,7 @@ void EditorBigMap::change_map_under_cursor()
 		 || maptile->getBuilding() == Maptile::ROAD)
 		&& maptile->getMaptileType() != Tile::WATER)
 	    {
-		int type = tile_to_road_type(tile);
+		int type = Roadlist::getInstance()->calculateType(tile);
 		if (maptile->getBuilding() == Maptile::NONE)
 		{
 		    maptile->setBuilding(Maptile::ROAD);
@@ -696,7 +641,7 @@ void EditorBigMap::change_map_under_cursor()
 			Vector<int> pos(x, y);
 			if (Road *r = Roadlist::getInstance()->getObjectAt(pos))
 			{
-			    int newtype = tile_to_road_type(pos);
+			    int newtype = Roadlist::getInstance()->calculateType(pos);
 			    r->setType(newtype);
 			}
 		    }

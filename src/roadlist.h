@@ -38,9 +38,11 @@ class Roadlist : public ObjectList<Road>, public sigc::trackable
         
         //! Returns the road closest to pos
         Road* getNearestRoad(const Vector<int>& pos);
-
+	Road* getNearestRoad(const Vector<int>& pos, int dist);
         //! Saves the game data. See XML_Helper for details.
         bool save(XML_Helper* helper) const;
+
+	int calculateType (Vector<int> t);
 
     protected:
         //! Default constructor

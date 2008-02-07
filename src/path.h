@@ -82,10 +82,12 @@ class Path : public std::list<Vector<int>*>
           *
           * @param s            the stack whose path we calculate
           * @param dest         the destination of the calculation
+	  * @param zigzag       whether we're using the normal way to
+	  * calculate paths or not.  false means we never go diagonally.
           * @return number of movement points needed to destination or 0
           * if no path is possible
           */
-        Uint32 calculate(Stack* s, Vector<int> dest);
+        Uint32 calculate(Stack* s, Vector<int> dest, bool zigzag = true);
 
 	void recalculate (Stack* s);
 

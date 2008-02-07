@@ -114,7 +114,7 @@ class MapGenerator
           * @param width        the width of the map to be generated
           * @param height       the height of the map to be generated
           */
-        void makeMap(int width, int height);
+        void makeMap(int width, int height, bool roads);
 
         /** Get the array for the terrain map (shallow copy)
           * 
@@ -266,6 +266,10 @@ class MapGenerator
           * where. This is saved in the d_portneed vector and specified here.
           */
         void findRoutes();
+
+
+	void makeRoad(int src_x, int src_y, int dest_x, int dest_y);
+	void makeRoads();
 
         //Data
         int d_xdir[8];
