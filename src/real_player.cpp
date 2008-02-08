@@ -23,6 +23,7 @@
 //#include "FightDialog.h"
 #include "stacklist.h"
 #include "citylist.h"
+#include "portlist.h"
 #include "templelist.h"
 #include "ruinlist.h"
 #include "signpostlist.h"
@@ -1315,14 +1316,18 @@ bool RealPlayer::stackMoveOneStep(Stack* s)
 
   Uint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType();
   City* to_city = Citylist::getInstance()->getObjectAt(dest.x, dest.y);
+  Port* to_port = Portlist::getInstance()->getObjectAt(dest.x, dest.y);
   City* on_city = Citylist::getInstance()->getObjectAt(s->getPos().x, s->getPos().y);
+  Port* on_port = Portlist::getInstance()->getObjectAt(s->getPos().x, s->getPos().y);
   bool on_water = (GameMap::getInstance()->getTile(s->getPos().x,s->getPos().y)->getMaptileType() == Tile::WATER);
   bool to_water = (GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType() == Tile::WATER);
   bool ship_load_unload = false;
   //here we mark the armies as being on or off a boat
   if (!s->isFlying())
     {
-      if ((on_water && to_city) || (on_city && to_water))
+      if ((on_water && to_city) || 
+	  (on_water && on_port && !to_water) ||
+	  ((on_city || on_port) && to_water))
 	{
 	  ship_load_unload = true;
 	  for (Stack::iterator it = s->begin(); it != s->end(); it++)

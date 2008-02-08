@@ -121,6 +121,9 @@ class Citylist : public ObjectList<City>, public sigc::trackable
 	//! get the set of cities vectoring to here.
 	std::list<City*> getCitiesVectoringTo(City *target);
 
+	//! get the nearest city to POS, but is farther than DIST tiles
+	City* getNearestCityPast(const Vector<int>& pos, int dist);
+
     protected:
         // CREATORS
         Citylist();

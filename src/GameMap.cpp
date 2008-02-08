@@ -458,12 +458,24 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
       Maptile *to = getTile(destx, desty);
       if (from == to)
         return false;
-      //am i on water going towards land that isn't a city?
+      //am i on land, going towards water that has a port on it?
+      if (from->getMaptileType() != Tile::WATER &&
+          to->getMaptileType() == Tile::WATER &&
+          to_dock)
+        return false;
+      //am i on water going towards land from a port?
+      if (from->getMaptileType() == Tile::WATER &&
+          to->getMaptileType() != Tile::WATER &&
+          from_dock)
+        return false;
+
+      //am i on water going towards land that isn't a city or a port?
       if (from->getMaptileType() == Tile::WATER &&
           to->getMaptileType() != Tile::WATER &&
           !to_dock)
         return true;
-      //am i on land, going towards water from a tile that isn't a city?
+      //am i on land, going towards water from a tile that isn't a
+      //city, or a port?
       if (from->getMaptileType() != Tile::WATER &&
           to->getMaptileType() == Tile::WATER &&
           !from_dock)

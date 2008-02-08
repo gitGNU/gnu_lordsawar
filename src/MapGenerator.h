@@ -52,18 +52,6 @@ typedef  std::vector<vecports> vecs2d;
   * that connect with other land masses and islands. In doing so, it
   * creates two data structures that may be useful elsewhere.
   * 
-  * First, it makes a map of all the separate land areas and seas.
-  * This is stored in the "array d_l_mass" which has a 
-  * similar format to the terain map.  Each location has the id of
-  * land/sea to which the tile is part of.  All seas have an
-  * id less than zero and all land masses have an id greater than
-  * zero.
-  * 
-  * The other potentially useful structure contains all the 
-  * routes between landmasses to each other including the id
-  * of the sea that must be crossed to get to the land mass 
-  * with the destination id.  This is currently stored in a
-  * vector.
   */
 
 
@@ -201,40 +189,7 @@ class MapGenerator
           * @param city_count   increased if the city is placed
           */
         bool tryToPlaceCity(int px, int py, int& city_count);
-        bool tryToPlacePort(int px, int py);
-        
-        /** Tries to place an arbitrary port at the landmass at (x,y)
-          *
-          * This function checks which seas bordering the continent don't
-          * have a port yet and tries to put one at one of the seas. Its work
-          * is derived from the continent function (to find out which continent
-          * we are) and findRoutes (to find out which seas exist)
-          *
-          * @param x            x coordinate of continent
-          * @param y            y coordinate of the continent
-          * @param city_count   reference which is increased with each placed city
-          */
-        void placePorts(int x,int y, int& city_count);
 
-        /** Moves along a coast in a clock wise direction
-          *
-          * This function assumes that it is initially located at a coast with
-          * the sea of the appropriate id. It then walks a given number of steps
-          * along the coast of that sea. All the time, (x,y) always points to the
-          * land part of the coast.
-          *
-          * @param x            x coordinate; modified as we move along
-          * @param y            y coordinate; the same
-          * @param sea_id       the id of the sea we move around
-          * @param dist         the number of steps to take
-          * @param lastwat      indicates the direction of the "last" water tile
-          *                     only neccessary to supply for strange cases
-          * @return false if we had to abort (e.g. because the map border was met)
-          */
-        bool walkCoast(int& x,int& y, int sea_id, int dist, int& lastwat);
-        
-        //! The same as walkCoast, but goes anticlockwise.
-        bool walkCoastAntiClock(int& x,int& y, int sea_id, int dist, int& lastwat);
         
         /** Normalizes the terrain
           * 
@@ -247,41 +202,19 @@ class MapGenerator
           */
         void normalize();
 
-        /** Populates the d_l_mass array
-          *
-          * To ensure that all continents are connected by ports, we first need
-          * to find out where the continents/seas actually are. This function
-          * assigns a positive id to separate continents and a negative to
-          * separate seas.
-          *
-          * @param nmrLands     set to the number of continents found
-          * @param nmrSeas      set to the number of seas found
-          */
-        void continents(int& nmrLands, int&  nmrSeas);
-        
-        /** Populates the d_portneed vector
-          * 
-          * To ensure that each continent has at least one port at each sea,
-          * we need to specify which continents have to have ports approximately
-          * where. This is saved in the d_portneed vector and specified here.
-          */
-        void findRoutes();
-
-
 	void makeRoad(int src_x, int src_y, int dest_x, int dest_y);
 	void makeRoads();
+	void placePort(int x, int y);
 
         //Data
         int d_xdir[8];
         int d_ydir[8];
         Tile::Type* d_terrain; // the map of the terrain
         Maptile::Building* d_building;
-        int* d_l_mass;//  this maps out seperate seas and land areas
         int d_width;
         int d_height;
         int d_pswamp, d_pwater, d_pforest, d_phills, d_pmountains;
         unsigned int d_nocities, d_notemples, d_noruins, d_nosignposts;
-        vecs2d d_portneed;//the seas a landmass needs to have a port on
 };
 
 #endif

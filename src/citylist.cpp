@@ -506,4 +506,30 @@ City* Citylist::getNearestCity(City *city)
     return &(*diffit);
 }
 
+City* Citylist::getNearestCityPast(const Vector<int>& pos, int dist)
+{
+    int diff = -1;
+    iterator diffit;
+
+    for (iterator it = begin(); it != end(); ++it)
+    {
+          if ((*it).isBurnt())
+              continue;
+          
+          Vector<int> p = (*it).getPos();
+          int delta = abs(p.x - pos.x);
+          if (delta < abs(p.y - pos.y))
+              delta = abs(p.y - pos.y);
+          
+          if ((diff > delta && delta >= dist) || (diff == -1))
+          {
+              diff = delta;
+              diffit = it;
+          }
+    }
+    
+    if (diff == -1) return 0;
+    return &(*diffit);
+}
+
 // End of file

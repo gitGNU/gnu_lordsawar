@@ -26,45 +26,20 @@
 #include "defs.h"
 #include "citylist.h"
 #include "roadlist.h"
+#include "armysetlist.h"
+#include "army.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 #define offmap(bx,by) (by<0)||(by>=d_height)||(bx<0)||(bx>=d_width)
 
-const int maxlink = 300;
-
 using namespace std;
-
-
-/* This struct saves data about ports to be placed. The data it contains
- * are the id of the land or sea which the port belongs to, if the port has
- * already been placed and a possible location for the port.
- */
-
-struct portneeded
-{
-    portneeded();
-    ~portneeded();
-
-    int landid;
-    int seaid;
-    bool hasPort;
-    int x,y;
-};
-
-portneeded::portneeded()
-    :landid(0), seaid(0), hasPort(false), x(-1), y(0)
-{
-}
-
-portneeded::~portneeded()
-{}
 
 //-------------------------------------------------------------------
 
 MapGenerator::MapGenerator()
     //set reasonable default values
-    :d_terrain(0), d_building(0), d_l_mass(0), d_pswamp(2), d_pwater(25), d_pforest(3),
+    :d_terrain(0), d_building(0), d_pswamp(2), d_pwater(25), d_pforest(3),
     d_phills(5), d_pmountains(5), d_nocities(11), d_notemples(9), d_noruins(20),
     d_nosignposts(30)
 
@@ -79,8 +54,6 @@ MapGenerator::~MapGenerator()
         delete[] d_terrain;
     if (d_building)
         delete[] d_building;
-    if (d_l_mass)
-        delete[] d_l_mass;    
 }
 
 int MapGenerator::setNoCities(int nocities)
@@ -164,7 +137,6 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     //initialize terrain and building arrays
     d_terrain = new Tile::Type[width*height];
     d_building = new Maptile::Building[width*height];
-    d_l_mass = new int [width*height];
     for (int i = 0; i < height; i++)
         for (int j = 0; j < width; j++)
             d_building[i*width + j] = Maptile::NONE;
@@ -189,11 +161,6 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     cout <<_("Normalizing       ... 60%") <<endl;
     normalize();
            
-    // analyse the location of continents/seas
-    int nmrofSeas=0, nmrLands=0;
-    continents(nmrLands, nmrofSeas);
-    findRoutes();
-
     // place buildings
     cout <<_("Building Cities   ... 70%") <<endl;
     makeCities(d_nocities);
@@ -523,7 +490,6 @@ void MapGenerator::makeCities(int cities)
     {
         int x = rand()%(d_width-2);
         int y = rand()%(d_height-2);
-        placePorts( x, y, city_count);
         if((d_terrain[y*d_width +x] == Tile::WATER
             || d_terrain[y*d_width + x+1] == Tile::WATER 
             || d_terrain[(y+1)*d_width + x] == Tile::WATER
@@ -661,257 +627,6 @@ bool MapGenerator::tryToPlaceCity(int px,int py ,int& city_count)
     return false;                   
 }
 
-bool MapGenerator::tryToPlacePort(int px,int py)
-{
-    // first, try to place the city at the given location
-    if (canPutBuilding(px, py))
-    { 
-        d_building[py*d_width + px] = Maptile::PORT;
-        d_terrain[py*d_width + px] = Tile::GRASS;
-        return true;
-    } 
-    
-    // else try all surrounding squares
-    for (int dir = 0; dir < 8; dir++)
-        if (canPutBuilding(px + d_xdir[dir], py + d_ydir[dir]))
-        {
-            d_building[(py+d_ydir[dir])*d_width+d_xdir[dir] + px] = Maptile::PORT;
-            d_terrain[(py+d_ydir[dir])*d_width + px+d_xdir[dir]] = Tile::GRASS;
-            return true;
-        }
-
-    return false;                   
-}
-
-void MapGenerator::placePorts(int x,int y, int& city_count)
-{
-    // sea tile => abort
-    if (d_l_mass[y*d_width + x] < 0)
-        return;
-
-    if (d_portneed.empty())
-        return;
-    
-    // else look for the appropriate connection
-    portneeded& pn = d_portneed[0][0];
-    for (unsigned int i = 0; i < d_portneed.size(); i++)
-        for (unsigned int j = 0; j < d_portneed[i].size(); j++)
-        {
-            if (!d_portneed[i][j].hasPort &&
-                    d_portneed[i][j].landid == d_l_mass[y*d_width + x])
-            {
-                pn = d_portneed[i][j];
-
-                // double break
-                i = d_portneed.size();
-                break;
-            }
-        }
-
-    // Now move around the cost and try to place a city at random.
-    // First, try it clockwise, then counterclockwise. If nothing works, then
-    // try to move some single steps.
-
-    // first, try clockwise direction
-    x = pn.x;
-    y = pn.y;
-
-    
-    int lastwat = 0;
-    walkCoast(x, y, pn.seaid, rand() % 40, lastwat);
-    pn.hasPort = tryToPlacePort(x, y);
-    if (pn.hasPort)
-        return;
-
-    // now try it anticlockwise
-    x = pn.x;
-    y = pn.y;
-    walkCoastAntiClock(x, y, pn.seaid, rand() % 40, lastwat);
-    pn.hasPort = tryToPlacePort(x, y);
-    if (pn.hasPort)
-        return;
-
-    // now try in single steps clockwise
-    x = pn.x;
-    y = pn.y;
-    for (int i = 0; (i < 5) && (!pn.hasPort); i++)
-    {
-        walkCoast(x, y, pn.seaid, 1, lastwat);
-        pn.hasPort = tryToPlacePort(x, y);
-    }
-    if (pn.hasPort)
-        return;
-
-    // still no city placement? Try one last round anticlockwise
-    for (int i = 0; (i < 5) && (!pn.hasPort); i++)
-    {
-        walkCoastAntiClock(x, y, pn.seaid, 1, lastwat);
-        pn.hasPort = tryToPlacePort(x, y);
-    }
-
-    // give up
-    debug("gave up "<<x<<' '<<y<<endl)
-}
-
-
-
-/* 
- * walkCoast
- * moves along a coast line. Goes in a clock wise direction
- * around a lake.
- *
- * Fails under certain setups like this (W=water, G=grass, 1=grass, x=route)
- *
- * WWWWWWWWWW
- * WWWWWxWWWW
- * xxxxxWxxxx
- * GGGGG1GGGG
- *
- * While it would be possible to place a city at location 1, the algorithm
- * ignores it.
- *
- * We assume that we start on a non-water tile and then always check
- * from a starting direction clockwise until we find the first piece
- * of water with the given seaid and then the first piece of land with
- * the given landid, move forward and start again...
- */
-
-
-bool MapGenerator::walkCoast(int& x,int& y, int sea_id, int dist, int& lastwat)
-{
-    for (int steps = 0; steps < dist; steps++)
-    {
-        int loop, dir;
-
-        // first loop until we find the first water tile with the sea's id
-        for (loop = 0, dir = lastwat; loop < 8; loop++, dir = (dir+1)%8)
-        {
-            if (dir < 0)
-              continue;
-            int nx = x + d_xdir[dir];
-            int ny = y + d_ydir[dir];
-
-            // invalid points, we abort when close to the border
-            if (offmap(nx,ny))
-                return false;
-            
-            // found it
-            if (d_l_mass[ny*d_width + nx] == sea_id)
-                break;
-        }
-
-        // didn't find the requested sea => abort
-        if (loop == 8)
-        {
-            debug("Didn't find sea with id " <<sea_id)
-            return false;
-        }
-
-        // continue looping until we find land again
-        for (loop = 0; loop < 8; loop++, dir = (dir+1)%8)
-        {
-            if (dir < 0)
-              continue;
-            int nx = x + d_xdir[dir];
-            int ny = y + d_ydir[dir];
-
-            // invalid point, see above
-            if (offmap(nx,ny))
-                return false;
-
-            if (d_l_mass[ny*d_width + nx] > 0) 
-                break;
-        }
-
-        // we are on a 1x1 island => abort
-        if (loop == 8)
-        {
-            debug("Island too small")
-            return false;
-        }
-
-        // move to the new location
-        x += d_xdir[dir];
-        y += d_ydir[dir];
-
-        // UL: To ensure we _move_ clockwise, set the start for the next water-
-        // searching loop to point to the last water tile we found this time
-        // -1 comes from the fact that the last water tile comes one direction
-        // before the first land tile, another -(1|2) comes from the idea that we
-        // move one step in direction dir. Draw it on a paper or ask me. :)
-        lastwat = (dir - 2 - (dir%2))%8;
-    }
-
-    return true;
-}
-
-
-
-/** 
- * walkCoastAntiClock
- * moves along a coast line in the opposite direction   
- * to walkCoast. may miss the odd promentary.
- */
-
-bool MapGenerator::walkCoastAntiClock(int& x,int& y, int sea_id, int dist, int& lastwat)
-{
-    for (int steps = 0; steps < dist; steps++)
-    {
-        int loop, dir;
-
-        // first loop until we find the first water tile with the sea's id
-        for (loop = 0, dir = lastwat; loop < 8; loop++, dir = (dir-1)%8)
-        {
-            int nx = x + d_xdir[dir];
-            int ny = y + d_ydir[dir];
-
-            // invalid points, we abort when close to the border
-            if (offmap(nx,ny))
-                return false;
-            
-            // found it
-            if (d_l_mass[ny*d_width + nx] == sea_id)
-                break;
-        }
-
-        // didn't find the requested sea => abort
-        if (loop == 8)
-        {
-            debug("Didn't find sea with id " <<sea_id)
-            return false;
-        }
-
-        // continue looping until we find land again
-        for (loop = 0; loop < 8; loop++, dir = (dir-1)%8)
-        {
-            int nx = x + d_xdir[dir];
-            int ny = y + d_ydir[dir];
-
-            // invalid point, see above
-            if (offmap(nx,ny))
-                return false;
-
-            if (d_l_mass[ny*d_width + nx] > 0) 
-                break;
-        }
-
-        // we are on a 1x1 island => abort
-        if (loop == 8)
-        {
-            debug("Island too small")
-            return false;
-        }
-
-        // move to the new location
-        x += d_xdir[dir];
-        y += d_ydir[dir];
-
-        lastwat = (dir + 2 + (dir%2))%8;
-    }
-
-    return true;
-}
-
 void MapGenerator::normalize()
 {
     std::map<Uint32,Uint32> ajacentTer;
@@ -965,180 +680,11 @@ void MapGenerator::normalize()
         }
 }
 
-void MapGenerator::continents(int& nmrLands, int& nmrSeas)
-{   
-    int l_id = 0;   // id of the current continent to set
-    int s_id = 0;   // id of the current sea to set
-
-    if (!d_terrain)
-        return;
-    
-    // first, initialize the d_l_mass array
-    if (!d_l_mass)
-        d_l_mass = new int[d_width*d_height];
-            
-    for (int i = 0; i < d_width*d_height; i++)
-            d_l_mass[i] = 0;
-
-    /* The algorithm is quite simple.
-     * 1. We just go through all tiles until we find one which has not been
-     *    assigned a land/sea id yet (i.e. d_l_mass is set to zero). We append
-     *    it to the process list.
-     * 2. The we continue to check for each process tile if it is valid, set it's
-     *    land/sea id correspondingly (if it is valid) and append all surrounding
-     *    tiles to the list of tiles to process. We end this one if there are no
-     *    more tiles to process (then we have processed all tiles of that
-     *    continent/sea)
-     * 3. Restart with 1. until there are no more tiles untouched.
-     */
-    while(true)
-    {
-        // Step 1
-        int x=-1, y=-1;
-        for (int i = 0; i < d_width; i++)
-            for (int j = 0; j < d_height; j++)
-                if (d_l_mass[j*d_width + i] == 0)
-                {
-                    x = i;
-                    y = j;
-                    break;
-                }
-
-
-        // all tiles have been processed
-        if (x == -1)
-        {
-            nmrLands = l_id;
-            nmrSeas = abs(s_id);
-            return;
-        }
-
-
-        // Step 2
-        // first the setup
-        std::deque<Vector<int> > process;
-        bool land;
-        
-        process.push_back(Vector<int>(x, y));
-        if (d_terrain[y*d_width + x] == Tile::WATER)
-        {
-            land = false;
-            s_id--;
-        }
-        else
-        {
-            land = true;
-            l_id++;
-        }
-        
-        // then the loop
-        while (!process.empty())
-        {
-            Vector<int> p = process.front();
-            process.pop_front();
-            
-            // first check for validity
-            if (offmap(p.x, p.y) || d_l_mass[p.y*d_width + p.x] != 0)
-                continue;
-            if (land && d_terrain[p.y*d_width + p.x] == Tile::WATER)
-                continue;
-            if (!land && d_terrain[p.y * d_width + p.x] != Tile::WATER)
-                continue;
-
-            // set the tile and append all surrounding tiles
-            if (land)
-                d_l_mass[p.y*d_width + p.x] = l_id;
-            else
-                d_l_mass[p.y*d_width + p.x] = s_id;
-
-            for (int i = 0; i < 8; i++)
-                process.push_back(Vector<int>(p.x + d_xdir[i], p.y + d_ydir[i]));
-        }
-    }
-}
-
-void MapGenerator::findRoutes()// Lands is short for LandMasses
+void MapGenerator::placePort(int x, int y)
 {
-    /* Here, we save notifications where we have to put ports later on. This
-     * goes in two steps. First, we assign one port to do to each land/sea
-     * junction. In a second run, we remove obsolete entries (lakes within one
-     * continent) by demanding that a valid sea has to border at least two
-     * continents.
-     */
-    portneeded pn;
-    vecports* vec;
-
-    if (!d_l_mass || !d_terrain)
-        return;
-
-    for (int x = 0; x < d_width; x++)
-        for (int y = 0; y < d_height; y++)
-        {
-            // we are not interested in water tiles as base point
-            if (d_l_mass[y*d_width + x] < 0)
-                continue;
-            
-            for (int i = 0; i < 8; i++)
-            {
-                int locx = x + d_xdir[i];
-                int locy = y + d_ydir[i];
-                vec = 0;
-
-                if (locx >= d_width || locx < 0 || locy >= d_height || locy < 0)
-                    continue;
-
-                // only check borders with water tiles
-                if (d_l_mass[locy*d_width + locx] > 0)
-                    continue;
-
-                // Now we have found a land/sea border. Let's look if an
-                // entry already exists or add another one if neccessary.
-                
-                // look if an entry with the given seaid already exists
-                for (unsigned int i = 0; i < d_portneed.size(); i++)
-                    if (d_portneed[i][0].seaid == d_l_mass[locy*d_width + locx])
-                    {
-                        vec = &d_portneed[i];
-                        break;
-                    }
-
-                // If not, we can be damn sure that this entry does not exist yet.
-                // So only continue checking if we found entries with the seaid.
-                if (vec)
-                    for (unsigned int i = 0; i < vec->size(); i++)
-                        if ((*vec)[i].landid == d_l_mass[y*d_width + x])
-                            continue;
-
-                // We haven't found an entry => add a new one
-                pn.seaid = d_l_mass[locy*d_width + locx];
-                pn.landid = d_l_mass[y*d_width + x];
-                pn.hasPort = false;
-                pn.x = x;
-                pn.y = y;
-
-                if (vec)
-                    vec->push_back(pn);
-                else
-                {
-                    vecports vp;
-                    vp.push_back(pn);
-                    d_portneed.push_back(vp);
-                }
-            }
-        }
-         
-
-    // now the second step
-    for (vecs2d::iterator it = d_portneed.begin(); it != d_portneed.end(); it++)
-        if ((*it).size() == 1)
-        {
-            it = d_portneed.erase(it);
-            if (it == d_portneed.end())
-                break;
-        }
-
+  if (Citylist::getInstance()->getNearestCity(Vector<int>(x, y), 2) == NULL)
+    d_building[y*d_width + x] = Maptile::PORT;
 }
-
 void MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
 {
   Vector<int> src(src_x, src_y);
@@ -1146,18 +692,56 @@ void MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
 
   Path *p = new Path();
   Stack s(NULL, src);
+
+  Armysetlist *al = Armysetlist::getInstance();
+  Uint32 armyset = al->getArmysetId("Default");
+  const Army* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
+  Army *a = new Army(*basearmy, NULL);
+  s.push_back(a);
+  // try to get there with a scout
   Uint32 moves = p->calculate(&s, dest, false);
+  if (moves == 0)
+    {
+      //darn, try again but remove the scout, leaving the stack empty.
+      //empty stacks can cross water and mountains.
+      s.flErase(s.begin());
+      moves = p->calculate(&s, dest, false);
+    }
+
   if (moves != 0)
     {
+      Roadlist *rl = Roadlist::getInstance();
+      bool placed_port = false;
       for (Path::iterator it = p->begin(); it != p->end(); it++)
 	{
+	  int x = (**it).x;
+	  int y = (**it).y;
 	  Citylist *cl = Citylist::getInstance();
-	  if (cl->getObjectAt((**it).x, (**it).y) == NULL)
+	  if (cl->getObjectAt(x, y) == NULL)
 	    {
-	      if (d_terrain[(**it).y*d_width + (**it).x] == Tile::WATER)
-		d_terrain[(**it).y*d_width + (**it).x] = Tile::GRASS;
-	      d_building[(**it).y*d_width + (**it).x] = Maptile::ROAD;
-	      Roadlist::getInstance()->push_back(Road(Vector<int>((**it).x,(**it).y)));
+	      if (d_terrain[y*d_width + x] == Tile::WATER)
+		{
+		  Maptile *t = GameMap::getInstance()->getTile(x, y);
+		  if (t->getTileStyle()->getType() != 
+		      TileStyle::INNERMIDDLECENTER && placed_port == false)
+		    {
+		    placePort(x, y);
+		    placed_port = true;
+		    }
+		  else if (t->getTileStyle()->getType() == 
+			   TileStyle::INNERMIDDLECENTER && placed_port == true)
+		    placed_port = false;
+		  //skip to next port
+		  //bug: we switch walking modes, and then get bitten by it.
+		  //need to somehow switch back to walking with the scout
+		}
+	      else
+		{
+		  d_building[y*d_width + x] = Maptile::ROAD;
+		  rl->push_back(Road(Vector<int>(x, y)));
+		  placed_port = false;
+		}
+
 	    }
 	}
 
@@ -1177,6 +761,11 @@ void MapGenerator::makeRoads()
   GameMap::getInstance("default")->fill(this);
   GameMap::getInstance()->calculateBlockedAvenues();
   Roadlist::getInstance();
+  //the game map class smooths the map, so let's take what it smoothed.
+  for (int y = 0; y < d_height; y++)
+    for (int x = 0; x < d_width; x++)
+      d_terrain[y*d_width + x] = 
+	GameMap::getInstance()->getTile(x, y)->getMaptileType();
 
   for (int y = 0; y < d_height; y++)
     for (int x = 0; x < d_width; x++)
@@ -1189,8 +778,8 @@ void MapGenerator::makeRoads()
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
       if (rand() % 2 == 0)
-	  continue;
-      City *c = cl->getNearestCity(&*it);
+	continue;
+      City *c = cl->getNearestCityPast((*it).getPos(), 13);
       Vector<int> dest = c->getPos();
       Vector<int> src = (*it).getPos();
       //does it already have a road going to it?

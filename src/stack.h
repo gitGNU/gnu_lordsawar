@@ -87,9 +87,6 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
         //! Sets the stack's position to the next item of the internal path
         bool moveOneStep();
 
-        //! Resets the moves of all armies to their maximum
-        void resetMoves();
-
         //! Blesses all armies of the stack (strength +1)
 	//! Returns the number of blessed armies.
         int bless();

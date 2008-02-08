@@ -100,6 +100,7 @@ Army::Army(XML_Helper* helper, enum ArmyContents contents)
         //adjust the values with the saved data
         helper->getData(d_id, "id");
         helper->getData(d_hp, "hp");
+        helper->getData(d_ship, "ship");
         helper->getData(d_moves, "moves");
 	helper->getData(d_max_moves_multiplier, "max_moves_multiplier");
         helper->getData(d_xp, "xp");
@@ -254,7 +255,7 @@ Uint32 Army::getStat(Stat stat, bool modified) const
 
 void Army::resetMoves()
 {
-  if (d_army_bonus & d_ship)
+  if (d_ship)
     d_moves = MAX_BOAT_MOVES;
   else
     d_moves = getStat(MOVES);
