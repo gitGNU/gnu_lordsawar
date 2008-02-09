@@ -439,6 +439,8 @@ Vector<int> Citylist::calculateCenterOfTerritory (Player *p)
   int count = 0;
   for (iterator it = begin(); it != end(); it++)
     {
+      if (p  && (*it).getPlayer() == p)
+	continue;
       Vector<int> pos = (*it).getPos();
       count++;
       if (pos.x > e)
