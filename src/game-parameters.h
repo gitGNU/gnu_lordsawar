@@ -26,6 +26,7 @@ struct GameParameters
 
 	Type type;
 	std::string name;
+	int id;
     };
 
     std::vector<Player> players;
