@@ -177,11 +177,11 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
     int width = GameMap::getWidth();
     int height = GameMap::getHeight();
     d_bonus = s->calculateMoveBonus();
-    if (isBlocked(s, dest.x, dest.y, dest.x, dest.y))
-      {
-	s->setMovesExhaustedAtPoint(0);
-        return 0;
-      }
+    //if (isBlocked(s, dest.x, dest.y, dest.x, dest.y))
+      //{
+	//s->setMovesExhaustedAtPoint(0);
+        //return 0;
+      //}
     
     // Some notes concerning the path finding algorithm. The algorithm
     // uses two different lists. There is a distance array, which contains how
