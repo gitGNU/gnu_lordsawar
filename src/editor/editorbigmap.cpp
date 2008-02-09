@@ -594,7 +594,8 @@ void EditorBigMap::change_map_under_cursor()
 	    
 	case PORT:
 	    if (maptile->getBuilding() == Maptile::NONE 
-		&& maptile->getMaptileType() != Tile::WATER)
+		&& maptile->getMaptileType() == Tile::WATER &&
+		maptile->getTileStyle()->getType() != TileStyle::INNERMIDDLECENTER)
 	    {
 		maptile->setBuilding(Maptile::PORT);
 		Portlist::getInstance()->push_back(Port(tile));
