@@ -718,7 +718,7 @@ void MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
 		{
 		  d_building[y*d_width + x] = Maptile::ROAD;
 		  rl->push_back(Road(Vector<int>(x, y)));
-		  //rejigger blocked aves
+		  gm->calculateBlockedAvenue(x, y);
 		}
 	    }
 	}
@@ -767,6 +767,9 @@ void MapGenerator::makeRoads()
 
       makeRoad(src.x, src.y, dest.x, dest.y);
     }
+
+  Vector<int> pos = cl->calculateCenterOfTerritory(NULL);
+  City *center = cl->getNearestCity(pos);
 
   Roadlist::deleteInstance();
   GameMap::deleteInstance();

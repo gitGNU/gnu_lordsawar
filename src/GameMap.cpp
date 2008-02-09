@@ -487,42 +487,44 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
  return false;
 }
 
-void GameMap::calculateBlockedAvenues()
+void GameMap::calculateBlockedAvenue(int i, int j)
 {
   int diffx = 0, diffy = 0;
   int destx = 0, desty = 0;
+  Maptile *maptile = getTile(i, j);
+  for (int k = 0; k < 8; k++)
+    {
+      switch (k)
+	{
+	case 0: diffx = -1;  diffy = -1; break;
+	case 1: diffx = -1; diffy = 0; break;
+	case 2: diffx = -1; diffy = 1; break;
+	case 3: diffx = 0; diffy = 1; break;
+	case 4: diffx = 0; diffy = -1; break;
+	case 5: diffx = 1; diffy = -1; break;
+	case 6: diffx = 1; diffy = 0; break;
+	case 7: diffx = 1; diffy = 1; break;
+	}
+      destx = i + diffx;
+      desty = j + diffy;
+      if (destx < 0 || destx >= s_width)
+	{
+	  maptile->d_blocked[k] = true;
+	  continue;
+	}
+      if (desty < 0 || desty >= s_height)
+	{
+	  maptile->d_blocked[k] = true;
+	  continue;
+	}
+      maptile->d_blocked[k] = isBlockedAvenue(i, j, destx, desty);
+    }
+}
+void GameMap::calculateBlockedAvenues()
+{
   for (int i = 0; i < s_width; i++)
     for (int j = 0; j < s_height; j++)
-      {
-        Maptile *maptile = getTile(i, j);
-        for (int k = 0; k < 8; k++)
-          {
-            switch (k)
-              {
-                case 0: diffx = -1;  diffy = -1; break;
-                case 1: diffx = -1; diffy = 0; break;
-                case 2: diffx = -1; diffy = 1; break;
-                case 3: diffx = 0; diffy = 1; break;
-                case 4: diffx = 0; diffy = -1; break;
-                case 5: diffx = 1; diffy = -1; break;
-                case 6: diffx = 1; diffy = 0; break;
-                case 7: diffx = 1; diffy = 1; break;
-              }
-              destx = i + diffx;
-              desty = j + diffy;
-              if (destx < 0 || destx >= s_width)
-                {
-                  maptile->d_blocked[k] = true;
-                  continue;
-                }
-              if (desty < 0 || desty >= s_height)
-                {
-                  maptile->d_blocked[k] = true;
-                  continue;
-                }
-              maptile->d_blocked[k] = isBlockedAvenue(i, j, destx, desty);
-          }
-      }
+      calculateBlockedAvenue(i, j);
 }
 
 Vector<int> GameMap::findPlantedStandard(Player *p)

@@ -121,6 +121,7 @@ class GameMap: public sigc::trackable
 
 	//! figure out where a non-flying unit can't go
         void calculateBlockedAvenues();
+	void calculateBlockedAvenue(int i, int j);
 
 	/** Smooth a portion of the map.
 	 *
