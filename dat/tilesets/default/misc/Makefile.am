@@ -17,7 +17,8 @@ map_default_DATA = \
 	small_selector.png \
 	shieldsetsmall.png \
 	shieldsetmedium.png \
-	shieldsetlarge.png
+	shieldsetlarge.png \
+	explosion.png
 
 EXTRA_DIST = \
 	ruin.png \
@@ -35,4 +36,5 @@ EXTRA_DIST = \
 	small_selector.png \
 	shieldsetsmall.png \
 	shieldsetmedium.png \
-	shieldsetlarge.png
+	shieldsetlarge.png \
+	explosion.png

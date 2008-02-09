@@ -210,6 +210,7 @@ GraphicsCache::GraphicsCache()
     d_small_temple = File::getMiscPicture("smalltemple.png");
     std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
     d_port = File::getMapsetPicture(tileset, "misc/port.png");
+    d_explosion = File::getMapsetPicture(tileset, "misc/explosion.png");
 }
 
 GraphicsCache::~GraphicsCache()
@@ -281,6 +282,7 @@ GraphicsCache::~GraphicsCache()
     SDL_FreeSurface(d_small_stronghold_unexplored);
     SDL_FreeSurface(d_small_ruin_explored);
     SDL_FreeSurface(d_port);
+    SDL_FreeSurface(d_explosion);
 }
 
 SDL_Surface* GraphicsCache::getSmallRuinedCityPic()
@@ -313,6 +315,11 @@ SDL_Surface* GraphicsCache::getSmallTemplePic()
 SDL_Surface* GraphicsCache::getPortPic()
 {
   return d_port;
+}
+
+SDL_Surface* GraphicsCache::getExplosionPic()
+{
+  return d_explosion;
 }
 
 SDL_Surface* GraphicsCache::getMoveBonusPic(Uint32 bonus, bool has_ship)

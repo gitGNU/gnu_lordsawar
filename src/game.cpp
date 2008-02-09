@@ -1283,7 +1283,11 @@ void Game::on_fight_started(Fight &fight)
       fight.battle(GameScenario::s_intense_combat);
       return;
     }
+  bigmap->setFighting(true);
+  bigmap->draw();
   fight_started.emit(fight, GameScenario::s_intense_combat);
+  bigmap->setFighting(false);
+  bigmap->draw();
 }
 
 void Game::center_view_on_city()

@@ -63,6 +63,10 @@ class GameBigMap: public BigMap
     // emitted when the cursor changes
     sigc::signal<void, GraphicsCache::CursorType> cursor_changed;
 
+    //the game object sets this when the active stack is fighting so we can 
+    //draw a fight graphic, or not
+    void setFighting(bool ruckus) {d_fighting = ruckus;};
+
  private:
     SDL_Surface* d_waypoints;
     Vector<int> current_tile, prev_mouse_pos;
@@ -87,6 +91,7 @@ class GameBigMap: public BigMap
     bool d_see_opponents_production;
     bool d_see_opponents_stacks;
     bool d_military_advisor;
+    bool d_fighting;
 };
 
 #endif

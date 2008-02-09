@@ -259,6 +259,19 @@ void FightWindow::add_army(Army *army,
 
 bool FightWindow::do_round()
 {
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  SDL_Surface *expl = gc->getExplosionPic();
+  static Gtk::Image *explosion = NULL;
+  if (explosion)
+    {
+      Glib::RefPtr<Gdk::Pixbuf> empty_pic
+	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, expl->w, expl->h);
+      empty_pic->fill(0x00000000);
+      explosion->property_pixbuf() = empty_pic;
+      explosion = NULL;
+      return Timing::CONTINUE;
+    }
+
     while (action_iterator != actions.end())
     {
 	FightItem &f = *action_iterator;
@@ -278,6 +291,8 @@ bool FightWindow::do_round()
 		  {
 		    i->bar->hide();
 		    //i->image->get_pixbuf()->fill(0x00000000);
+		    i->image->property_pixbuf() = to_pixbuf(expl);
+		    explosion = i->image;
 		  }
 		
 		break;
