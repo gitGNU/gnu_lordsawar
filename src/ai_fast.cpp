@@ -282,7 +282,8 @@ void AI_Fast::computerTurn()
                     return;
 
                 debug("Attacking " <<target->getName())
-                s->getPath()->calculate(s, target->getPos());
+                int moves = s->getPath()->calculate(s, target->getPos());
+		debug("Moves to enemy city: " << moves);
 		if (s->getPath()->checkPath(s) == true)
 		  stackMove(s);
 		else
