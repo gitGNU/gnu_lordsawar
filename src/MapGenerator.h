@@ -209,7 +209,7 @@ class MapGenerator
 	bool makeAccessible(Vector<int> src, Vector<int> dest);
 	bool makeAccessible(int src_x, int src_y, int dest_x, int dest_y);
 	void makeRoads();
-	void placePort(int x, int y);
+	bool placePort(int x, int y);
 	void calculateBlockedAvenue(int x, int y);
 
         //Data

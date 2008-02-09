@@ -695,7 +695,7 @@ void MapGenerator::calculateBlockedAvenue(int x, int y)
 	}
     }
 }
-void MapGenerator::placePort(int x, int y)
+bool MapGenerator::placePort(int x, int y)
 {
   //if (Citylist::getInstance()->getNearestCity(Vector<int>(x, y), 2) == NULL)
     {
@@ -705,8 +705,10 @@ void MapGenerator::placePort(int x, int y)
 	  d_building[y*d_width + x] = Maptile::PORT;
 	  pl->push_back(Port(Vector<int>(x, y)));
 	  calculateBlockedAvenue(x, y);
+	  return true;
 	}
     }
+  return false;
 }
 
 bool MapGenerator::makeRoad(Vector<int> src, Vector<int>dest)
@@ -835,10 +837,28 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 	    }
 	  if (d_terrain[y*d_width + x] == Tile::WATER &&
 	      d_terrain[nexty*d_width + nextx] != Tile::WATER)
-	      placePort(x, y);
+	    {
+	      if (placePort(x, y) == true)
+		{
+		  if (isAccessible(x, y, dest.x, dest.y))
+		    {
+		      retval = true;
+		      break;
+		    }
+		}
+	    }
 	  else if (d_terrain[y*d_width + x] != Tile::WATER &&
 		   d_terrain[nexty*d_width + nextx] == Tile::WATER)
-	      placePort(nextx, nexty);
+	    {
+	      if (placePort(nextx, nexty) == true)
+		{
+		  if (isAccessible(nextx, nexty, dest.x, dest.y))
+		    {
+		      retval = true;
+		      break;
+		    }
+		}
+	    }
 
 	}
     }
