@@ -202,9 +202,15 @@ class MapGenerator
           */
         void normalize();
 
-	void makeRoad(int src_x, int src_y, int dest_x, int dest_y);
+	bool makeRoad(int src_x, int src_y, int dest_x, int dest_y);
+	bool makeRoad(Vector<int> src, Vector<int>dest);
+	bool isAccessible(int src_x, int src_y, int dest_x, int dest_y);
+	bool isAccessible(Vector<int> src, Vector<int> dest);
+	bool makeAccessible(Vector<int> src, Vector<int> dest);
+	bool makeAccessible(int src_x, int src_y, int dest_x, int dest_y);
 	void makeRoads();
 	void placePort(int x, int y);
+	void calculateBlockedAvenue(int x, int y);
 
         //Data
         int d_xdir[8];

@@ -427,20 +427,19 @@ bool Path::isBlocked(const Stack* s, int x, int y, int destx, int desty) const
 
 int Path::pointsToMoveTo(const Stack *s, int x, int y, int destx, int desty) const
 {
+  Uint32 moves;
     const Maptile* tile = GameMap::getInstance()->getTile(destx,desty);
     
     if (x == destx && y == desty) //probably shouldn't happen
       return 0;
 
-    // A city on the next square, we _know_ that the city is nice to us
-    if (tile->getBuilding() == Maptile::CITY)
-        return 1;
+    moves = tile->getMoves();
 
     // does everything in the stack have a bonus to move onto this square?
-    if (tile->getMaptileType() & d_bonus)
+    if (tile->getMaptileType() & d_bonus && moves != 1)
         return 2;
 
-    return tile->getMoves();
+    return moves;
 }
 
 // End of file

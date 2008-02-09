@@ -303,6 +303,12 @@ bool GameMap::loadItems(std::string tag, XML_Helper* helper)
     return true;
 }
 
+void GameMap::setTile(int x, int y, Maptile *tile)
+{
+    delete d_map[y*s_width + x];
+    d_map[y*s_width + x] = tile;
+}
+
 Maptile* GameMap::getTile(int x, int y) const
 {
     assert(x >= 0 && x < s_width && y >= 0 && y < s_height);
@@ -459,28 +465,32 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
       if (from == to)
         return false;
       //am i on land, going towards water that has a port on it?
-      if (from->getMaptileType() != Tile::WATER &&
-          to->getMaptileType() == Tile::WATER &&
-          to_dock)
-        return false;
+      //if (from->getMaptileType() != Tile::WATER &&
+          //to->getMaptileType() == Tile::WATER &&
+          //to_dock)
+        //return false;
       //am i on water going towards land from a port?
-      if (from->getMaptileType() == Tile::WATER &&
-          to->getMaptileType() != Tile::WATER &&
-          from_dock)
-        return false;
+      //if (from->getMaptileType() == Tile::WATER &&
+          //to->getMaptileType() != Tile::WATER &&
+          //from_dock)
+        //return false;
 
-      //am i on water going towards land that isn't a city or a port?
+      //am i on water going towards land that isn't a city,
+      //and i'm not coming from a port
       if (from->getMaptileType() == Tile::WATER &&
           to->getMaptileType() != Tile::WATER &&
-          !to_dock)
+          !to_dock && !from_dock)
         return true;
+
       //am i on land, going towards water from a tile that isn't a
-      //city, or a port?
+      //city, or a port and i'm not going to a port?
       if (from->getMaptileType() != Tile::WATER &&
           to->getMaptileType() == Tile::WATER &&
-          !from_dock)
+          !from_dock && !to_dock)
         return true;
+
       //is the tile i'm going to a mountain?
+      //fixme: what about roads over mountains
       if (to->getMaptileType() == Tile::MOUNTAIN)
         return true;
     }

@@ -84,7 +84,13 @@ class GameMap: public sigc::trackable
 
         //! Returns the tileset in use
         TileSet* getTileSet() const {return d_tileSet;}
+
+	//! Sets the tile object at position (x, y)
+	void setTile(int x, int y, Maptile *tile);
         
+        //! Alternative setting
+        void setTile(Vector<int> p, Maptile *t) {return setTile(p.x, p.y, t);}
+
         //! Get the tile object at position (x,y)
         Maptile* getTile(int x, int y) const;
 
