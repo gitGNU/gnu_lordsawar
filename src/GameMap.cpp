@@ -20,6 +20,7 @@
 #include "citylist.h"
 #include "bridgelist.h"
 #include "portlist.h"
+#include "roadlist.h"
 #include "city.h"
 #include "ruin.h"
 #include "temple.h"
@@ -376,7 +377,7 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                   y = pos.y + (j - d);
                   if (x < 0 || y < 0)
                     continue;
-                  if (x > s_width || y > s_height)
+                  if (x >= s_width || y >= s_height)
                     continue;
                   //is there somebody else's city here?
                   City *c = Citylist::getInstance()->getObjectAt(x, y);
@@ -489,9 +490,9 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
           !from_dock && !to_dock)
         return true;
 
-      //is the tile i'm going to a mountain?
-      //fixme: what about roads over mountains
-      if (to->getMaptileType() == Tile::MOUNTAIN)
+      //is the tile i'm going to a mountain that doesn't have a road?
+      if (to->getMaptileType() == Tile::MOUNTAIN &&
+	  Roadlist::getInstance()->getObjectAt(destx, desty) == NULL)
         return true;
     }
  return false;
@@ -667,9 +668,9 @@ void GameMap::close_circles (int minx, int miny, int maxx, int maxy)
     {
       for (int j = miny; j < maxy; j++)
 	{
-	  if (i < 0 || i > s_height)
+	  if (i < 0 || i >= s_height)
 	    continue;
-	  if (j < 0 || j > s_width)
+	  if (j < 0 || j >= s_width)
 	    continue;
 	  Maptile *tile = getTile(j, i);
 	  TileStyle *tilestyle = tile->getTileStyle();
@@ -764,6 +765,10 @@ void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy,
   for (i = minx; i < maxx; i++)
     for (j = miny; j < maxy; j++)
       {
+	if (i < 0 || i >= s_height)
+	  continue;
+	if (j < 0 || j >= s_width)
+	  continue;
 	Tile::Type tile = d_map[i*s_width + j]->getMaptileType();
 	if (tile == intype)
 	  {
@@ -800,9 +805,9 @@ void GameMap::applyTileStyles (int minx, int miny, int maxx, int maxy,
     {
       for (int j = miny; j < maxy; j++)
 	{
-	  if (i < 0 || i > s_height)
+	  if (i < 0 || i >= s_height)
 	    continue;
-	  if (j < 0 || j > s_width)
+	  if (j < 0 || j >= s_width)
 	    continue;
 	  Maptile *mtile = getTile(j, i);
 	  TileSet *tileset = getTileSet();
