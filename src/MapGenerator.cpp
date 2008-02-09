@@ -687,6 +687,7 @@ void MapGenerator::placePort(int x, int y)
 }
 void MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
 {
+  GameMap *gm = GameMap::getInstance();
   Vector<int> src(src_x, src_y);
   Vector<int> dest(dest_x, dest_y);
 
@@ -700,48 +701,25 @@ void MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
   s.push_back(a);
   // try to get there with a scout
   Uint32 moves = p->calculate(&s, dest, false);
-  if (moves == 0)
-    {
-      //darn, try again but remove the scout, leaving the stack empty.
-      //empty stacks can cross water and mountains.
-      s.flErase(s.begin());
-      moves = p->calculate(&s, dest, false);
-    }
 
   if (moves != 0)
     {
       Roadlist *rl = Roadlist::getInstance();
-      bool placed_port = false;
       for (Path::iterator it = p->begin(); it != p->end(); it++)
 	{
 	  int x = (**it).x;
 	  int y = (**it).y;
+	  if (gm->getTile(x, y)->getMaptileType() == Tile::WATER)
+	    break;
 	  Citylist *cl = Citylist::getInstance();
 	  if (cl->getObjectAt(x, y) == NULL)
 	    {
-	      if (d_terrain[y*d_width + x] == Tile::WATER)
-		{
-		  Maptile *t = GameMap::getInstance()->getTile(x, y);
-		  if (t->getTileStyle()->getType() != 
-		      TileStyle::INNERMIDDLECENTER && placed_port == false)
-		    {
-		    placePort(x, y);
-		    placed_port = true;
-		    }
-		  else if (t->getTileStyle()->getType() == 
-			   TileStyle::INNERMIDDLECENTER && placed_port == true)
-		    placed_port = false;
-		  //skip to next port
-		  //bug: we switch walking modes, and then get bitten by it.
-		  //need to somehow switch back to walking with the scout
-		}
-	      else
+	      if (d_building[y*d_width + x] == 0)
 		{
 		  d_building[y*d_width + x] = Maptile::ROAD;
 		  rl->push_back(Road(Vector<int>(x, y)));
-		  placed_port = false;
+		  //rejigger blocked aves
 		}
-
 	    }
 	}
 
@@ -749,7 +727,7 @@ void MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
   delete p;
 
 }
-	
+
 void MapGenerator::makeRoads()
 {
   GameMap::deleteInstance();
@@ -759,7 +737,6 @@ void MapGenerator::makeRoads()
   GameMap::setWidth(d_width);
   GameMap::setHeight(d_height);
   GameMap::getInstance("default")->fill(this);
-  GameMap::getInstance()->calculateBlockedAvenues();
   Roadlist::getInstance();
   //the game map class smooths the map, so let's take what it smoothed.
   for (int y = 0; y < d_height; y++)
@@ -773,6 +750,7 @@ void MapGenerator::makeRoads()
 	if (d_building[y*d_width + x] == Maptile::CITY)
 	  Citylist::getInstance()->push_back(City(Vector<int>(x,y)));
       }
+  GameMap::getInstance()->calculateBlockedAvenues();
 
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
