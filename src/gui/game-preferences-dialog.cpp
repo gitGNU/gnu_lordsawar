@@ -26,9 +26,11 @@
 #include "../ucompose.hpp"
 #include "../defs.h"
 #include "../File.h"
+#include "../xmlhelper.h"
 #include "../armysetlist.h"
 #include "../GameScenario.h"
 #include "../tilesetlist.h"
+#include "../player.h"
 
 #define HUMAN_PLAYER_TYPE _("Human")
 #define EASY_PLAYER_TYPE _("Easy")
@@ -50,6 +52,9 @@ GamePreferencesDialog::GamePreferencesDialog()
     xml->get_widget("difficulty_label", difficulty_label);
     xml->get_widget("random_map_radio", random_map_radio);
     xml->get_widget("load_map_filechooser", load_map_filechooser);
+    load_map_filechooser->signal_selection_changed().connect
+       (sigc::mem_fun(*this, &GamePreferencesDialog::on_map_chosen));
+
     xml->get_widget("random_map_container", random_map_container);
     xml->get_widget("grass_scale", grass_scale);
     xml->get_widget("grass_random_togglebutton", grass_random_togglebutton);
@@ -247,6 +252,50 @@ void GamePreferencesDialog::on_random_map_toggled()
 {
     bool random_map = random_map_radio->get_active();
     
+    if (random_map)
+      {
+	std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
+	std::list<Gtk::Entry *>::iterator e = player_names.begin();
+	for (; c != player_types.end(); c++, e++)
+	  {
+	    (*c)->set_sensitive(true);
+	    (*e)->set_sensitive(true);
+	  }
+      }
+    else
+      {
+	if (load_map_filechooser->get_filename().empty() == false)
+	  {
+	    //disable all names, and types
+	    std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
+	    std::list<Gtk::Entry *>::iterator e = player_names.begin();
+	    for (; c != player_types.end(); c++, e++)
+	      {
+		(*c)->set_sensitive(true);
+		(*c)->set_active(GameParameters::Player::OFF);
+		(*c)->set_sensitive(false);
+		(*e)->set_sensitive(false);
+	      }
+	    //parse load map parameters.
+  
+	    int d = 0;
+	    int b;
+	    for (std::vector<GameParameters::Player>::const_iterator
+		 i = load_map_parameters.players.begin(), 
+		 end = load_map_parameters.players.end(); i != end; ++i, ++d) 
+	      {
+		c = player_types.begin();
+		e = player_names.begin();
+		//zip to correct combobox, entry
+		for (b = 0; b < (*i).id; b++, c++, e++) ;
+		(*c)->set_sensitive(true);
+		(*c)->set_active((*i).type);
+		(*e)->set_sensitive(true);
+		(*e)->set_name((*i).name);
+	      }
+	  }
+      }
+
     load_map_filechooser->set_sensitive(!random_map);
     random_map_container->set_sensitive(random_map);
 }
@@ -655,3 +704,65 @@ bool GamePreferencesDialog::is_greatest()
 	  Configuration::s_diplomacy == true &&
 	  Configuration::s_cusp_of_war == true);
 }
+void GamePreferencesDialog::on_map_chosen()
+{
+  std::string selected_filename = load_map_filechooser->get_filename();
+  if (selected_filename.empty())
+    return;
+  //try to read the file, grab the players
+  printf ("got it : %s\n", selected_filename.c_str());
+  XML_Helper helper(selected_filename, std::ios::in, Configuration::s_zipfiles);
+
+  load_map_parameters.players.clear();
+  helper.registerTag("player",
+		     sigc::mem_fun(this, &GamePreferencesDialog::scan_players));
+
+  if (!helper.parse())
+    {
+      std::cerr << "Error: Could not parse " << selected_filename << std::endl;
+      load_map_filechooser->set_filename("");
+      return;
+    }
+  helper.close();
+  return;
+}
+bool GamePreferencesDialog::scan_players(std::string tag, XML_Helper* helper)
+{
+    if (tag == "player")
+    {
+        int type;
+	int id;
+	std::string name;
+        if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
+        {
+            std::cerr << "scenario has wrong version, we want "
+		      << LORDSAWAR_SAVEGAME_VERSION <<",\n"
+		      << "scenario offers " << helper->getVersion() <<".\n";
+            return false;
+        }
+
+	GameParameters::Player p;
+        helper->getData(id, "id");
+	p.id = id;
+        helper->getData(type, "type");
+	switch (Player::Type(type))
+	  {
+	  case Player::HUMAN: p.type = GameParameters::Player::HUMAN;
+	    break;
+	  case Player::AI_FAST: p.type = GameParameters::Player::EASY;
+	    break;
+	  case Player::AI_DUMMY: p.type = GameParameters::Player::EASY;
+	    break;
+	  case Player::AI_SMART: p.type = GameParameters::Player::HARD;
+	    break;
+	  }
+        helper->getData(name, "name");
+	p.name = name;
+	if (p.id != 8) //is not neutral
+	  load_map_parameters.players.push_back(p);
+	on_random_map_toggled();
+    }
+
+    return true;
+}
+

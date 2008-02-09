@@ -32,6 +32,7 @@
 #include "../game-parameters.h"
 #include "game-options-dialog.h"
 
+class XML_Helper;
 
 // dialog for choosing parameters for starting a new game
 class GamePreferencesDialog
@@ -109,13 +110,15 @@ class GamePreferencesDialog
     void on_cities_random_toggled();
     void on_ruins_random_toggled();
     void on_temples_random_toggled();
+    void on_map_chosen();
     bool is_beginner();
     bool is_intermediate();
     bool is_advanced();
     bool is_greatest();
     void update_difficulty_combobox();
     void update_difficulty_rating();
-
+    bool scan_players(std::string tag, XML_Helper* helper);
+    GameParameters load_map_parameters;
 };
 
 #endif
