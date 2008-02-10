@@ -38,6 +38,9 @@ class FogMap
         //! Load the map using the given XML_Helper. See xml_helper.h for details.
         FogMap(XML_Helper* helper);
 
+	//! Copy constructor
+	FogMap(const FogMap&);
+
         ~FogMap();
 
         /** Fills the whole map with a single status

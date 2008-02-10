@@ -59,6 +59,20 @@ FogMap::FogMap(XML_Helper* helper)
     }
 }
 
+FogMap::FogMap(const FogMap& fogmap)
+    :d_width(fogmap.d_width), d_height(fogmap.d_height)
+{
+    //create the map
+    d_fogmap = new FogType[d_width*d_height];
+
+    for (int y = 0; y < d_height; y++)
+    {
+        for (int x = 0; x < d_width; x++)
+        {
+            d_fogmap[y*d_width + x] = fogmap.d_fogmap[y*d_width + x];
+        }
+    }
+}
 
 FogMap::~FogMap()
 {
@@ -174,4 +188,5 @@ void FogMap::smooth()
         }
     }
 }
+
 // End of file

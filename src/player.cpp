@@ -110,7 +110,7 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, int width,
 Player::Player(const Player& player)
     :d_color(player.d_color), d_name(player.d_name), d_armyset(player.d_armyset),
     d_gold(player.d_gold), d_dead(player.d_dead), d_immortal(player.d_immortal),
-    d_type(player.d_type), d_id(player.d_id), d_fogmap(player.d_fogmap),
+    d_type(player.d_type), d_id(player.d_id), 
     d_fight_order(player.d_fight_order), d_upkeep(player.d_upkeep)
 {
     // as the other player is propably dumped somehow, we need to deep copy
@@ -137,7 +137,7 @@ Player::Player(const Player& player)
         d_history.push_back(History::copy(*pit));
 
     // copy fogmap; TBD
-    //d_fogmap = new FogMap(*player.getFogMap());
+    d_fogmap = new FogMap(*player.getFogMap());
 
     // copy diplomatic states
     for (unsigned int i = 0 ; i < MAX_PLAYERS; i++)
