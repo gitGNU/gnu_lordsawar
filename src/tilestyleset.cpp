@@ -37,7 +37,7 @@ TileStyleSet::~TileStyleSet()
 
 void TileStyleSet::instantiatePixmaps(std::string tileset, Uint32 tilesize)
 {
-  SDL_Surface* pixmaps = File::getMapsetPicture(tileset, d_name + ".png");
+  SDL_Surface* pixmaps = File::getTilesetPicture(tileset, d_name + ".png");
   for (unsigned int i=0; i < size(); i++)
     (*this)[i]->instantiatePixmap(pixmaps, tilesize);
   SDL_FreeSurface (pixmaps);

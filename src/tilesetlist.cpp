@@ -92,7 +92,7 @@ bool Tilesetlist::loadTileset(std::string name)
 {
   debug("Loading tileset " <<name);
 
-  XML_Helper helper(File::getMapset(name), ios::in, false);
+  XML_Helper helper(File::getTileset(name), ios::in, false);
 
   helper.registerTag("tileset", sigc::mem_fun((*this), &Tilesetlist::load));
 

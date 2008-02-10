@@ -76,30 +76,30 @@ class File
         
         
 
-        /** Get the description file for the mapset
+        /** Get the description file for the tileset
           * 
-          * @param mapsetname       the name of the mapset
+          * @param tilesetname       the name of the tileset
           * @return the full name of the description file
           */
-        static std::string getMapset(std::string mapsetname);
+        static std::string getTileset(std::string tilesetname);
 
-        /** Get a mapset picture
-          * @param mapsetname       the name of the mapset
+        /** Get a tileset picture
+          * @param tilesetname       the name of the tileset
           * @param picname          the name of the picture
           * @return the surface which contains the picture
           */
-        static SDL_Surface* getMapsetPicture(std::string mapsetname, std::string picname);
+        static SDL_Surface* getTilesetPicture(std::string tilesetname, std::string picname);
 
-	// get a mapset path
-	static std::string getMapsetFile(std::string mapsetname, std::string picname);
+	// get a tileset path
+	static std::string getTilesetFile(std::string tilesetname, std::string picname);
 	
         /** Load a mask needed by various mapset images (e.g. cities)
           * 
-          * @param mapsetname       the name of the mapset
+          * @param tilesetname       the name of the tileset
           * @param picname          the name of the mask picture
           * @return the surface which contains the surface for the mask
           */
-        static SDL_Surface* getMapsetMask(std::string mapsetname, std::string picname);
+        static SDL_Surface* getTilesetMask(std::string tilesetname, std::string picname);
 
         
         

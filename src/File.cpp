@@ -136,24 +136,24 @@ SDL_Surface* File::getArmyPicture(string armysetname, string pic)
 }
 
 
-string File::getMapset(string mapsetname)
+string File::getTileset(string tilesetname)
 {
-    return Configuration::s_dataPath + "/tilesets/" + mapsetname + "/" + mapsetname + ".xml";
+    return Configuration::s_dataPath + "/tilesets/" + tilesetname + "/" + tilesetname + ".xml";
 }
 
-std::string File::getMapsetFile(string mapsetname, string picname)
+std::string File::getTilesetFile(string tilesetname, string picname)
 {
-    return Configuration::s_dataPath + "/tilesets/" + mapsetname + "/" + picname;
+    return Configuration::s_dataPath + "/tilesets/" + tilesetname + "/" + picname;
 }
 
-SDL_Surface* File::getMapsetPicture(string mapsetname, string picname)
+SDL_Surface* File::getTilesetPicture(string tilesetname, string picname)
 {
-    return loadImage(getMapsetFile(mapsetname, picname));
+    return loadImage(getTilesetFile(tilesetname, picname));
 }
 
-SDL_Surface* File::getMapsetMask(string mapsetname, string picname)
+SDL_Surface* File::getTilesetMask(string tilesetname, string picname)
 {
-    string filename = Configuration::s_dataPath + "/tilesets/" + mapsetname + "/" + picname;
+    string filename = Configuration::s_dataPath + "/tilesets/" + tilesetname + "/" + picname;
     return IMG_Load(filename.c_str());
 }
 

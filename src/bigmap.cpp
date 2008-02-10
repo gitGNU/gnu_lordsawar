@@ -56,7 +56,7 @@ BigMap::BigMap()
     : d_renderer(0), buffer(0)
 {
     // load all pictures
-    d_signpostpic = File::getMapsetPicture("default", "misc/signpost.png");
+    d_signpostpic = File::getTilesetPicture("default", "misc/signpost.png");
 
     d_itempic = File::getMiscPicture("items.png");
 
