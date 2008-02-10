@@ -31,6 +31,7 @@
 #include "xmlhelper.h"
 #include "MapGenerator.h"
 #include "tilesetlist.h"
+#include "shieldsetlist.h"
 
 using namespace std;
 
@@ -51,11 +52,12 @@ GameMap* GameMap::getInstance()
 }
 
 
-GameMap* GameMap::getInstance(std::string TilesetName)
+GameMap* GameMap::getInstance(std::string TilesetName, 
+			      std::string ShieldsetName)
 {
     if (s_instance == 0)
     {
-        s_instance = new GameMap(TilesetName);
+        s_instance = new GameMap(TilesetName, ShieldsetName);
 
     }
     return s_instance;
@@ -78,9 +80,10 @@ void GameMap::deleteInstance()
     s_instance = 0;
 }
 
-GameMap::GameMap(std::string TilesetName)
+GameMap::GameMap(std::string TilesetName, std::string ShieldsetName)
 {
     d_tileSet = Tilesetlist::getInstance()->getTileset(TilesetName);
+    d_shieldSet = Shieldsetlist::getInstance()->getShieldset(ShieldsetName);
 
     d_map = new Maptile*[s_width*s_height];
     for (int j = 0; j < s_height; j++)
@@ -94,14 +97,17 @@ GameMap::GameMap(XML_Helper* helper)
     std::string types;
     std::string styles;
     std::string t_dir;
+    std::string s_name;
 
     helper->getData(s_width, "width");
     helper->getData(s_height, "height");
     helper->getData(t_dir,"tileset");
+    helper->getData(s_name,"shieldset");
     helper->getData(types, "types");
     helper->getData(styles, "styles");
 
     d_tileSet = Tilesetlist::getInstance()->getTileset(t_dir);
+    d_shieldSet = Shieldsetlist::getInstance()->getShieldset(s_name);
 
     //create the map
     d_map = new Maptile*[s_width*s_height];
@@ -259,6 +265,7 @@ bool GameMap::save(XML_Helper* helper) const
     retval &= helper->saveData("width", s_width);
     retval &= helper->saveData("height", s_height);
     retval &= helper->saveData("tileset", d_tileSet->getSubDir());
+    retval &= helper->saveData("shieldset", d_shieldSet->getName());
     retval &= helper->saveData("types", types.str());
     retval &= helper->saveData("styles", styles.str());
 

@@ -1316,7 +1316,6 @@ bool RealPlayer::stackMoveOneStep(Stack* s)
 
   Uint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType();
   City* to_city = Citylist::getInstance()->getObjectAt(dest.x, dest.y);
-  Port* to_port = Portlist::getInstance()->getObjectAt(dest.x, dest.y);
   City* on_city = Citylist::getInstance()->getObjectAt(s->getPos().x, s->getPos().y);
   Port* on_port = Portlist::getInstance()->getObjectAt(s->getPos().x, s->getPos().y);
   bool on_water = (GameMap::getInstance()->getTile(s->getPos().x,s->getPos().y)->getMaptileType() == Tile::WATER);
@@ -1345,31 +1344,22 @@ bool RealPlayer::stackMoveOneStep(Stack* s)
       for (Stack::iterator it = s->begin(); it != s->end(); it++)
 	(*it)->setInShip(false);
     }
-  needed_moves = GameMap::getInstance()->getTile(dest.x,dest.y)->getMoves();
+
+  //how many moves does the stack need to travel to dest?
+  needed_moves = s->calculateTileMovementCost(dest);
 
   for (Stack::iterator it = s->begin(); it != s->end(); it++)
-    //calculate possible move boni for each army
     {
       if (ship_load_unload)
+	(*it)->decrementMoves((*it)->getMoves());
+      else 
 	{
-	  (*it)->decrementMoves((*it)->getMoves());
-	  continue;
+	  //maybe the army has a natural movement ability
+	  if ((*it)->getStat(Army::MOVE_BONUS) == maptype && needed_moves > 1)
+	    (*it)->decrementMoves(2);
+	  else
+	    (*it)->decrementMoves(needed_moves);
 	}
-      if (to_city != 0)
-	//cities cost one MP
-	{
-	  (*it)->decrementMoves(1);
-	  continue;
-	}
-
-      if ((*it)->getStat(Army::MOVE_BONUS) == maptype)
-	//if army has move bonus, it takes only 2 move points...
-	{
-	  (*it)->decrementMoves(2);
-	  continue;
-	}
-      //else the whole
-      (*it)->decrementMoves(needed_moves);
     }
 
   s->moveOneStep();    //this is only for updating positions etc.

@@ -58,7 +58,9 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         map-tip-position.h input-events.h sdl-draw.h  \
         vectoredunit.cpp vectoredunit.h \
         vectoredunitlist.cpp vectoredunitlist.h \
-        AI_Diplomacy.cpp AI_Diplomacy.h
+        AI_Diplomacy.cpp AI_Diplomacy.h \
+	shield.cpp shield.h shieldset.cpp shieldset.h \
+	shieldsetlist.cpp shieldsetlist.h
 
 
 if FL_RESRC

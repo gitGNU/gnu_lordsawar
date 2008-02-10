@@ -309,22 +309,19 @@ int Stack::bless()
   return count;
 }
 
+Uint32 Stack::calculateTileMovementCost(Vector<int> pos) const
+{
+  Maptile* tile = GameMap::getInstance()->getTile(pos);
+  Uint32 moves = tile->getMoves();
+  if (isFlying() && moves > 1)
+    moves = 2;
+  return moves;
+}
+
 bool Stack::enoughMoves() const
 {
   Vector<int> p = **(d_path->begin());
-  Uint32 needed = 0;
-
-  Maptile* tile = GameMap::getInstance()->getTile(p.x, p.y);
-
-  // find out how many MP we need for travelling, first
-  if (tile->getBuilding() == Maptile::CITY)
-    needed = 1;
-  else
-    for (const_iterator it = begin(); it != end(); it++)
-      if ((*it)->getStat(Army::MOVE_BONUS) & tile->getMaptileType())
-	needed = 2;
-  if (needed == 0)
-    needed = tile->getMoves();
+  Uint32 needed = calculateTileMovementCost(p);
 
   // now check if all armies fulfill this requirement
   for (const_iterator it = begin(); it != end(); it++)

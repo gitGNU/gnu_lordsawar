@@ -34,6 +34,7 @@
 #include "File.h"
 #include "armysetlist.h"
 #include "tilesetlist.h"
+#include "shieldsetlist.h"
 #include "stacklist.h"
 #include "GameMap.h"
 #include "player.h"
@@ -75,6 +76,8 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
     Armysetlist::getInstance()->instantiatePixmaps();
     Tilesetlist::getInstance();
     Tilesetlist::getInstance()->instantiatePixmaps();
+    Shieldsetlist::getInstance();
+    Shieldsetlist::getInstance()->instantiatePixmaps();
     Itemlist::createInstance();
 
     if (fl_counter == 0)
@@ -90,6 +93,8 @@ GameScenario::GameScenario(string savegame, bool& broken)
     Armysetlist::getInstance()->instantiatePixmaps();
     Tilesetlist::getInstance();
     Tilesetlist::getInstance()->instantiatePixmaps();
+    Shieldsetlist::getInstance();
+    Shieldsetlist::getInstance()->instantiatePixmaps();
     Itemlist::createInstance();
 
     broken = false;

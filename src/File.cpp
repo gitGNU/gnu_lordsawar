@@ -243,4 +243,33 @@ list<string> File::scanMaps()
 }
 
 
+std::list<std::string> File::scanShieldsets()
+{
+    string path = Configuration::s_dataPath + "/shield/";
+
+    std::list<std::string> retlist = get_xml_files_in_immediate_subdirs(path);
+
+    if (retlist.empty())
+    {
+        cerr << _("Couldn't find any shieldsets!") << endl;
+        cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
+        cerr << _("Exiting!") << endl;
+        exit(-1);
+    }
+
+    return retlist;
+}
+
+
+string File::getShieldset(string shieldsetname)
+{
+    return Configuration::s_dataPath + "/shield/" + shieldsetname + "/" + 
+      shieldsetname + ".xml";
+}
+
+SDL_Surface* File::getShieldPicture(string shieldsetname, string pic)
+{
+    return loadImage(Configuration::s_dataPath + "/shield/" + shieldsetname + "/" + pic);
+}
+
 // End of file

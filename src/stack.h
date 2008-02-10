@@ -163,6 +163,10 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
         bool isFlying () const;
         bool hasShip () const;
 
+	//! how much does it cost in movement points for the stack
+	//to move to move onto a tile that has the characteristics of the
+	//tile located at POS. (this is not a distance calculation)
+	Uint32 calculateTileMovementCost(Vector<int> pos) const;
 
         sigc::signal<void, Stack*> sdying;
 

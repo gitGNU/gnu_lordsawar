@@ -47,10 +47,32 @@ class File
 
         /** Get the armyset picture file
           * 
-          * @param amysetname       the name of the armyset
+          * @param armysetname       the name of the armyset
+	  * @param pic               the name of the army picture 
           * @return the surface which contains the army pictures of this armyset
           */
         static SDL_Surface* getArmyPicture(std::string armysetname, std::string pic);
+
+        /** Scan the data directories for shieldsets
+          * 
+          * @return a list of available shieldsets
+          */
+        static std::list<std::string> scanShieldsets();
+
+        /** Get the shieldset description file
+          *
+          * @param shieldsetname      the name of the shieldset
+          * @return the full name of the shield description file
+          */
+        static std::string getShieldset(std::string shieldsetname);
+
+        /** Get the shield picture file
+          * 
+          * @param shieldsetname       the name of the shieldset
+	  * @param pic                 the name of the shield picture
+          * @return the surface which contains the shield picture
+          */
+        static SDL_Surface* getShieldPicture(std::string armysetname, std::string pic);
         
         
 

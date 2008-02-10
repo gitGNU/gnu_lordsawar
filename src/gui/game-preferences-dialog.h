@@ -53,6 +53,8 @@ class GamePreferencesDialog
     Gtk::Button *start_game_button;
     Gtk::ComboBoxText *tile_theme_combobox;
     Gtk::ComboBoxText *army_theme_combobox;
+    Gtk::ComboBoxText *shield_theme_combobox;
+    Gtk::ComboBoxText *city_theme_combobox;
     Gtk::Label *difficulty_label;
     Gtk::RadioButton *random_map_radio;
     Gtk::FileChooserButton *load_map_filechooser;

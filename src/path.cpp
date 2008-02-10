@@ -343,10 +343,15 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
         dist = min;
     }
 
+    //calculate when the waypoints show no more movement possible
     Uint32 pathcount = 0;
+    Uint32 moves_left = s->getGroupMoves();
     for (iterator it = begin(); it != end(); it++)
       {
-	if (s->getGroupMoves() < (Uint32) distance[(*it)->y * width + (*it)->x])
+	Uint32 moves = s->calculateTileMovementCost(**it);
+	if (moves_left >= moves)
+	  moves_left -= moves;
+	else
 	  break;
 	pathcount++;
       }

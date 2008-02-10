@@ -15,9 +15,6 @@ map_default_DATA = \
 	fog.png \
 	selector.png \
 	small_selector.png \
-	shieldsetsmall.png \
-	shieldsetmedium.png \
-	shieldsetlarge.png \
 	explosion.png
 
 EXTRA_DIST = \
@@ -34,7 +31,4 @@ EXTRA_DIST = \
 	fog.png \
 	selector.png \
 	small_selector.png \
-	shieldsetsmall.png \
-	shieldsetmedium.png \
-	shieldsetlarge.png \
 	explosion.png

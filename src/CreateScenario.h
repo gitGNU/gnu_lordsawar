@@ -60,6 +60,9 @@ class CreateScenario
         //! Set the tileset of the map
         void setMapTiles(std::string tilesname);
 
+	//! Set the shieldset for the map
+	void setShieldset(std::string shieldsname);
+
         //! Set the number of cities on the map
         void setNoCities(int number);
 
@@ -223,6 +226,7 @@ class CreateScenario
         GameScenario* d_scenario;
         MapGenerator* d_generator;
         std::string d_tilesname;
+        std::string d_shieldsname;
         int d_width;
         int d_height;
         bool d_turnmode;

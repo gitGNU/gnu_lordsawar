@@ -28,6 +28,7 @@
 #include "../File.h"
 #include "../xmlhelper.h"
 #include "../armysetlist.h"
+#include "../shieldsetlist.h"
 #include "../GameScenario.h"
 #include "../tilesetlist.h"
 #include "../player.h"
@@ -175,6 +176,28 @@ GamePreferencesDialog::GamePreferencesDialog()
 
     xml->get_widget("army_theme_box", box);
     box->pack_start(*army_theme_combobox, Gtk::PACK_SHRINK);
+
+    // fill in shield themes combobox
+    shield_theme_combobox = manage(new Gtk::ComboBoxText);
+    
+    Shieldsetlist *sl = Shieldsetlist::getInstance();
+    std::list<std::string> shield_themes = sl->getNames();
+    counter = 0;
+    default_id = 0;
+    for (std::list<std::string>::iterator i = shield_themes.begin(),
+	     end = shield_themes.end(); i != end; ++i)
+      {
+	if (*i == "Default")
+	  default_id = counter;
+	shield_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+	counter++;
+      }
+
+    shield_theme_combobox->set_active(default_id);
+
+    xml->get_widget("shield_theme_box", box);
+    box->pack_start(*shield_theme_combobox, Gtk::PACK_SHRINK);
+
     start_game_button->signal_clicked().connect
       (sigc::mem_fun(*this, &GamePreferencesDialog::on_start_game_clicked));
 
@@ -526,6 +549,7 @@ void GamePreferencesDialog::on_start_game_clicked()
       (Glib::filename_from_utf8(tile_theme_combobox->get_active_text()));
 
     g.army_theme = Glib::filename_from_utf8(army_theme_combobox->get_active_text());
+    g.shield_theme = Glib::filename_from_utf8(shield_theme_combobox->get_active_text());
 
     g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
 

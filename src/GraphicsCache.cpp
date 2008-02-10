@@ -18,6 +18,7 @@
 
 #include "GraphicsCache.h"
 #include "armysetlist.h"
+#include "shieldsetlist.h"
 #include "army.h"
 #include "playerlist.h"
 #include "Configuration.h"
@@ -142,8 +143,9 @@ struct SelectorCacheItem
 // the structure to store shield images in
 struct ShieldCacheItem
 {
+    Uint32 shieldset;
     Uint32 type;
-    const Player* player;
+    Uint32 colour;
     SDL_Surface* surface;
 };
 
@@ -196,7 +198,6 @@ GraphicsCache::GraphicsCache()
     loadCursorPics();
     loadFlags();
     loadSelectors();
-    loadShields();
     loadProdShields();
     loadMoveBonusPics();
 
@@ -248,15 +249,6 @@ GraphicsCache::~GraphicsCache()
     {
         SDL_FreeSurface(d_smallselector[i]);
         SDL_FreeSurface(d_smallselectormask[i]);
-    }
-
-    for (int i = 0; i < 2; i++)
-    {
-      for (unsigned int j = 0; j < MAX_PLAYERS + 1; j++)
-	{
-          SDL_FreeSurface(d_shieldpic[i][j]);
-          SDL_FreeSurface(d_shieldmask[i][j]);
-	}
     }
 
     for (int i = 0; i < 7; i++)
@@ -457,6 +449,42 @@ SDL_Surface* GraphicsCache::getArmyPic(Uint32 armyset, Uint32 army, const Player
     myitem = addArmyPic(armyset, army, p, my_medals);
 
     return myitem->surface;
+}
+
+SDL_Surface* GraphicsCache::getShieldPic(Uint32 shieldset, Uint32 type, 
+					 Uint32 colour)
+{
+    debug("getting shield pic " <<shieldset <<" " <<type <<" " <<colour)
+
+    std::list<ShieldCacheItem*>::iterator it;
+    ShieldCacheItem* myitem;
+
+    for (it =d_shieldlist.begin(); it != d_shieldlist.end(); it++)
+    {
+        if ((*it)->shieldset == shieldset && (*it)->type == type
+            && (*it)->colour == colour)
+        {
+            myitem = (*it);
+            
+            // put the item on the last place (==last touched)
+            d_shieldlist.erase(it);
+            d_shieldlist.push_back(myitem);
+            
+            return myitem->surface;
+        }
+    }
+
+    // We are still here, so the graphic is not in the cache. addShieldPic calls
+    // checkPictures on its own, so we can simply return the surface
+    myitem = addShieldPic(shieldset, type, colour);
+
+    return myitem->surface;
+}
+        
+SDL_Surface* GraphicsCache::getShieldPic(Uint32 type, Player *p)
+{
+  Uint32 shieldset = GameMap::getInstance()->getShieldSet()->getId();
+  return getShieldPic(shieldset, type, p->getId());
 }
 
 SDL_Surface* GraphicsCache::getTemplePic(int type)
@@ -740,37 +768,6 @@ SDL_Surface* GraphicsCache::getSelectorPic(Uint32 type, Uint32 frame,
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getShieldPic(Uint32 type, const Player *p)
-{
-    debug("GraphicsCache::getShieldPic " <<type <<", " << ", player" <<s->getPlayer()->getName())
-
-    if (!p)
-    {
-        std::cerr <<_("GraphicsCache::getShieldPic: no player supplied! Exiting...\n");
-        exit(-1);
-    }
-    
-    std::list<ShieldCacheItem*>::iterator it;
-    ShieldCacheItem* myitem;
-
-    for (it = d_shieldlist.begin(); it != d_shieldlist.end(); it++)
-    {
-        myitem = *it;
-        if ((myitem->type == type) && (myitem->player == p))
-        {
-            // put the item in last place (last touched)
-            d_shieldlist.erase(it);
-            d_shieldlist.push_back(myitem);
-
-            return myitem->surface;
-        }
-    }
-
-    // no item found => create a new one
-    myitem = addShieldPic(type, p);
-
-    return myitem->surface;
-}
 
 SDL_Surface* GraphicsCache::getProdShieldPic(Uint32 type, bool prod)
 {
@@ -1003,6 +1000,39 @@ ArmyCacheItem* GraphicsCache::addArmyPic(Uint32 armyset, Uint32 army,
   //we are finished, so return the pic
   return myitem;
 }
+
+ShieldCacheItem* GraphicsCache::addShieldPic(Uint32 shieldset, Uint32 type,
+					     Uint32 colour)
+{
+  debug("ADD shield pic: " <<shieldset <<"," <<type <<"," <<colour)
+
+    ShieldCacheItem* myitem = new ShieldCacheItem();
+  myitem->shieldset = shieldset;
+  myitem->type = type;
+  myitem->colour = colour;
+
+  const Shield* shield;
+  shield = Shieldsetlist::getInstance()->getShield(shieldset, type, colour);
+
+  // copy the pixmap including player colors
+  myitem->surface = applyMask(shield->getPixmap(), shield->getMask(), 
+			      Playerlist::getInstance()->getPlayer(colour));
+
+  //now the final preparation steps:
+  //a) add the size
+  int size = myitem->surface->w * myitem->surface->h;
+  d_cachesize += myitem->surface->format->BytesPerPixel * size;
+
+  //b) add the entry to the list
+  d_shieldlist.push_back(myitem);
+
+  //c) check if the cache size is too large
+  checkPictures();
+
+  //we are finished, so return the pic
+  return myitem;
+}
+
 
 ShipCacheItem* GraphicsCache::addShipPic(const Player* p)
 {
@@ -1311,35 +1341,6 @@ SelectorCacheItem* GraphicsCache::addSelectorPic(Uint32 type, Uint32 frame, cons
   myitem->surface = mysurf;
 
   d_selectorlist.push_back(myitem);
-
-  //add the size
-  int picsize = mysurf->w * mysurf->h;
-  d_cachesize += picsize * mysurf->format->BytesPerPixel;
-
-  //and check the size of the cache
-  checkPictures();
-
-  return myitem;
-}
-
-ShieldCacheItem* GraphicsCache::addShieldPic(Uint32 type, const Player* p)
-{
-  debug("GraphicsCache::addShieldPic, player="<<p->getName()<<", type="<<type);
-  // type is 0 for small, 1 for medium, 2 for large
-
-  assert(type < 3 && p->getId() <= MAX_PLAYERS);
-
-  SDL_Surface* mysurf;
-  mysurf = applyMask(d_shieldpic[type][p->getId()], 
-		     d_shieldmask[type][p->getId()], p);
-
-  //now create the cache item and add the size
-  ShieldCacheItem* myitem = new ShieldCacheItem();
-  myitem->player = p;
-  myitem->type = type;
-  myitem->surface = mysurf;
-
-  d_shieldlist.push_back(myitem);
 
   //add the size
   int picsize = mysurf->w * mysurf->h;
@@ -2189,107 +2190,6 @@ void GraphicsCache::loadSelectors()
 
     }
   SDL_FreeSurface(selpics);
-}
-
-void GraphicsCache::loadShields()
-{
-  //load the small shieldset
-  unsigned int i;
-  SDL_Rect shieldrect;
-  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
-  SDL_Surface* shieldpics = File::getMapsetPicture(tileset, 
-						   "misc/shieldsetsmall.png");
-  // copy alpha values, don't use them
-  SDL_SetAlpha(shieldpics, 0, 0);
-  SDL_PixelFormat* fmt = shieldpics->format;
-  int size = 8; /*FIXME hardcoded size, should be in .defs? */
-  for (i = 0; i < MAX_PLAYERS + 1; i++)
-    {
-      SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
-					      fmt->BitsPerPixel, fmt->Rmask, 
-					      fmt->Gmask, fmt->Bmask, 
-					      fmt->Amask);
-      shieldrect.x = i*size;
-      shieldrect.y = 0;
-      shieldrect.w = shieldrect.h = size;
-      SDL_BlitSurface(shieldpics, &shieldrect, tmp, 0);
-      d_shieldpic[0][i] = SDL_DisplayFormatAlpha(tmp);
-      SDL_FreeSurface(tmp);
-
-      d_shieldmask[0][i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32,
-						0xFF000000, 0xFF0000, 0xFF00, 
-						0xFF);
-      shieldrect.x = i*size;
-      shieldrect.y = size;
-      shieldrect.w = shieldrect.h = size;
-      SDL_BlitSurface(shieldpics, &shieldrect, d_shieldmask[0][i], 0);
-
-    }
-  SDL_FreeSurface(shieldpics);
-  //load the medium shieldset
-  shieldpics = File::getMiscPicture("shieldsetmedium.png");
-  // copy alpha values, don't use them
-  SDL_SetAlpha(shieldpics, 0, 0);
-  fmt = shieldpics->format;
-  int xsize = 11;
-  int ysize = 14;
-  for (i = 0; i < MAX_PLAYERS + 1; i++)
-    {
-      SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize, 
-					      fmt->BitsPerPixel, fmt->Rmask, 
-					      fmt->Gmask, fmt->Bmask, 
-					      fmt->Amask);
-      shieldrect.x = i*xsize;
-      shieldrect.y = 0;
-      shieldrect.w = xsize;
-      shieldrect.h = ysize;
-      SDL_BlitSurface(shieldpics, &shieldrect, tmp, 0);
-      d_shieldpic[1][i] = SDL_DisplayFormatAlpha(tmp);
-      SDL_FreeSurface(tmp);
-
-      d_shieldmask[1][i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize,
-						32, 0xFF000000, 0xFF0000,
-						0xFF00, 0xFF);
-      shieldrect.x = i*xsize;
-      shieldrect.y = ysize;
-      shieldrect.w = xsize;
-      shieldrect.h = ysize;
-      SDL_BlitSurface(shieldpics, &shieldrect, d_shieldmask[1][i], 0);
-
-    }
-  SDL_FreeSurface(shieldpics);
-  //load the large shieldset
-  shieldpics = File::getMiscPicture("shieldsetlarge.png");
-  // copy alpha values, don't use them
-  SDL_SetAlpha(shieldpics, 0, 0);
-  fmt = shieldpics->format;
-  xsize = 31;
-  ysize = 36;
-  for (i = 0; i < MAX_PLAYERS + 1; i++)
-    {
-      SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize, 
-					      fmt->BitsPerPixel, fmt->Rmask, 
-					      fmt->Gmask, fmt->Bmask, 
-					      fmt->Amask);
-      shieldrect.x = i*xsize;
-      shieldrect.y = 0;
-      shieldrect.w = xsize;
-      shieldrect.h = ysize;
-      SDL_BlitSurface(shieldpics, &shieldrect, tmp, 0);
-      d_shieldpic[2][i] = SDL_DisplayFormatAlpha(tmp);
-      SDL_FreeSurface(tmp);
-
-      d_shieldmask[2][i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize,
-						32, 0xFF000000, 0xFF0000,
-						0xFF00, 0xFF);
-      shieldrect.x = i*xsize;
-      shieldrect.y = ysize;
-      shieldrect.w = xsize;
-      shieldrect.h = ysize;
-      SDL_BlitSurface(shieldpics, &shieldrect, d_shieldmask[2][i], 0);
-
-    }
-  SDL_FreeSurface(shieldpics);
 }
 
 void GraphicsCache::loadProdShields()

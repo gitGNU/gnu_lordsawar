@@ -117,6 +117,24 @@ class GraphicsCache
         SDL_Surface* getArmyPic(Uint32 armyset, Uint32 army, const Player* p,
                                 const bool* medals);
 
+        /** Function for getting the shield picture from the cache
+          * 
+          * This function returns either the cached image of the given type or
+          * creates a new one and caches it. Use this function to access
+          * army images! And: Don't touch the returned surface!! For performance
+          * reasons you get the original surface which is also in the cache.
+          *
+          * The returned surface contains the correct player colors and some
+          * icons displaying the level of the unit.
+          *
+          * @param shieldset    the shieldset to be used
+	  * @param type         the size of the shield: 0=sm, 1=med, 2=lg
+          * @param colour       which player the shield is for
+          * @return the image of the shield
+          */
+        SDL_Surface* getShieldPic(Uint32 shieldset, Uint32 type, Uint32 colour);
+        SDL_Surface* getShieldPic(Uint32 type, Player *p);
+
         /** Function for getting a ruin picture
           *
           * @param type         the type of the ruin
@@ -313,6 +331,9 @@ class GraphicsCache
         ArmyCacheItem* addArmyPic(Uint32 armyset, Uint32 army, const Player* p,
                                   const bool* medalsbonus);
 
+        //! Creates a new shield picture with the given parameters.
+        ShieldCacheItem* addShieldPic(Uint32 shieldset, Uint32 type, Uint32 colour);
+
         //! Creates a new city picture with the given parameters.
         CityCacheItem* addCityPic(int type, const Player* p);
 
@@ -331,9 +352,6 @@ class GraphicsCache
         //! Creates a new selector picture with the given parameters.
         SelectorCacheItem* addSelectorPic(Uint32 type, Uint32 frame, 
 					  const Player* p);
-
-        //! Creates a new shield picture with the given parameters.
-        ShieldCacheItem* addShieldPic(Uint32 type, const Player* p);
 
         //! Creates a new production shield picture with the given parameters.
         ProdShieldCacheItem* addProdShieldPic(Uint32 type, bool prod);
@@ -428,9 +446,6 @@ class GraphicsCache
         //! Loads the images for the two selectors
         void loadSelectors();
         
-        //! Loads the images for the shieldsets 
-        void loadShields();
-
         //! Loads the images for the production shields
         void loadProdShields();
         
@@ -476,8 +491,6 @@ class GraphicsCache
 	SDL_Surface* d_selectormask[6];
 	SDL_Surface* d_smallselector[4];
 	SDL_Surface* d_smallselectormask[4];
-        SDL_Surface* d_shieldpic[3][MAX_PLAYERS + 1];
-        SDL_Surface* d_shieldmask[3][MAX_PLAYERS + 1];
         SDL_Surface* d_prodshieldpic[7];
 	SDL_Surface* d_smallruinedcity;
 	SDL_Surface* d_smallhero;
