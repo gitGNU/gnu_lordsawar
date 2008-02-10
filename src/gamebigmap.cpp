@@ -29,6 +29,7 @@
 #include "signpostlist.h"
 #include "templelist.h"
 #include "roadlist.h"
+#include "bridgelist.h"
 #include "ruin.h"
 #include "signpost.h"
 #include "temple.h"
@@ -416,7 +417,9 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 		    d_cursor = GraphicsCache::HAND;
 		  else
 		    {
-		      if (t->getMaptileType() == Tile::WATER)
+		      Bridgelist *bl = Bridgelist::getInstance();
+		      if (t->getMaptileType() == Tile::WATER &&
+			  bl->getObjectAt(tile) == NULL)
 			d_cursor = GraphicsCache::SHIP;
 		      else
 			d_cursor = GraphicsCache::FEET;
