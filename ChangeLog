@@ -1,3 +1,10 @@
+2008-02-11  Ben Asselstine
+	* removed temple slider from game preferences dialog.  now always 4.
+	* removed ruin slider from game preferences dialog.  now it's
+	  35/20/15 for normal/small/tiny maps.
+	* moved city/army/shield/terrain theme into random map section of
+	  game prefs dialog.
+
 2008-02-10  Ben Asselstine
 	* Applied patch to work with gcc 4.3.  Patch from Patrice Dumas
 	  <pertusus@free.fr>.
