@@ -1,3 +1,10 @@
+2008-02-10  Ben Asselstine
+	* Applied patch to work with gcc 4.3.  Patch from Patrice Dumas
+	  <pertusus@free.fr>.
+	* added shieldsets
+
+three missing months of changes without changelogs
+
 2007-10-28  Ben Asselstine
 
 	* updated 2ndpunic scenario to work
