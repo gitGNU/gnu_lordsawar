@@ -2,6 +2,7 @@
 	* Applied patch to work with gcc 4.3.  Patch from Patrice Dumas
 	  <pertusus@free.fr>.
 	* added shieldsets
+	* added citysets
 
 three missing months of changes without changelogs
 
