@@ -26,6 +26,8 @@
 #include "../File.h"
 #include "../tileset.h"
 #include "../tilesetlist.h"
+#include "../citysetlist.h"
+#include "../shieldsetlist.h"
 #include "../GameMap.h"
 
 
@@ -54,6 +56,8 @@ NewMapDialog::NewMapDialog()
     xml->get_widget("signposts_scale", signposts_scale);
     // fill in tile themes combobox
     tile_theme_combobox = manage(new Gtk::ComboBoxText);
+    shield_theme_combobox = manage(new Gtk::ComboBoxText);
+    city_theme_combobox = manage(new Gtk::ComboBoxText);
     
     Uint32 counter = 0;
     Uint32 default_id = 0;
@@ -74,6 +78,43 @@ NewMapDialog::NewMapDialog()
     xml->get_widget("tile_set_box", tile_set_box);
     tile_set_box->pack_start(*tile_theme_combobox, Gtk::PACK_SHRINK);
 
+    counter = 0;
+    default_id = 0;
+    Shieldsetlist *sl = Shieldsetlist::getInstance();
+    std::list<std::string> shield_themes = sl->getNames();
+    for (std::list<std::string>::iterator i = shield_themes.begin(),
+	     end = shield_themes.end(); i != end; ++i)
+      {
+	if (*i == "Default")
+	  default_id = counter;
+	shield_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+	counter++;
+      }
+
+    shield_theme_combobox->set_active(default_id);
+
+    Gtk::Box *shield_set_box;
+    xml->get_widget("shield_set_box", shield_set_box);
+    shield_set_box->pack_start(*shield_theme_combobox, Gtk::PACK_SHRINK);
+
+    counter = 0;
+    default_id = 0;
+    Citysetlist *cl = Citysetlist::getInstance();
+    std::list<std::string> city_themes = cl->getNames();
+    for (std::list<std::string>::iterator i = city_themes.begin(),
+	     end = city_themes.end(); i != end; ++i)
+      {
+	if (*i == "Default")
+	  default_id = counter;
+	city_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+	counter++;
+      }
+
+    city_theme_combobox->set_active(default_id);
+
+    Gtk::Box *city_set_box;
+    xml->get_widget("city_set_box", city_set_box);
+    city_set_box->pack_start(*city_theme_combobox, Gtk::PACK_SHRINK);
 
     // create fill style combobox
     fill_style_combobox = manage(new Gtk::ComboBoxText);
@@ -142,6 +183,12 @@ void NewMapDialog::run()
 
 	map.tileset = Tilesetlist::getInstance()->getTilesetDir
 	  (Glib::filename_from_utf8(tile_theme_combobox->get_active_text()));
+
+	map.shieldset = 
+	  Glib::filename_from_utf8(shield_theme_combobox->get_active_text());
+
+	map.cityset = Citysetlist::getInstance()->getCitysetDir
+	  (Glib::filename_from_utf8(city_theme_combobox->get_active_text()));
 
 	if (map.fill_style == -1)
 	{

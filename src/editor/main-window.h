@@ -137,12 +137,15 @@ class MainWindow: public sigc::trackable
     void setup_terrain_radiobuttons();
 
     void init_maps();
-    void set_filled_map(int width, int height, int fill_style, std::string tileset);
+    void set_filled_map(int width, int height, int fill_style, 
+			std::string tileset, std::string shieldset, 
+			std::string cityset);
     void set_random_map(int width, int height,
 			int grass, int water, int swamp, int forest,
 			int hills, int mountains,
 			int cities, int ruins, int temples, int signposts,
-			std::string tileset);
+			std::string tileset, std::string shieldset,
+			std::string cityset);
 
     void clear_map_state();
     void init_map_state();

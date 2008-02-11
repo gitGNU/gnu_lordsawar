@@ -300,13 +300,13 @@ bool MainWindow::on_delete_event(GdkEventAny *e)
 
 void MainWindow::show_initial_map()
 {
-    set_filled_map(112, 156, Tile::WATER, "default");
+    set_filled_map(112, 156, Tile::WATER, "default", "Default", "default");
     setup_terrain_radiobuttons();
     remove_tile_style_buttons();
     setup_tile_style_buttons(Tile::GRASS);
 }
 
-void MainWindow::set_filled_map(int width, int height, int fill_style, std::string tileset)
+void MainWindow::set_filled_map(int width, int height, int fill_style, std::string tileset, std::string shieldset, std::string cityset)
 {
     clear_map_state();
     d_width = width;
@@ -315,7 +315,7 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
     GameMap::deleteInstance();
     GameMap::setWidth(width);
     GameMap::setHeight(height);
-    GameMap::getInstance(tileset, "Default", "default");
+    GameMap::getInstance(tileset, shieldset, cityset);
 
     // sets up the lists
     game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
@@ -351,14 +351,15 @@ void MainWindow::set_random_map(int width, int height,
 				int grass, int water, int swamp, int forest,
 				int hills, int mountains,
 				int cities, int ruins, int temples,
-				int signposts, std::string tileset)
+				int signposts, std::string tileset,
+				std::string shieldset, std::string cityset)
 {
     clear_map_state();
 
     GameMap::deleteInstance();
     GameMap::setWidth(width);
     GameMap::setHeight(height);
-    GameMap::getInstance(tileset, "Default", "default");
+    GameMap::getInstance(tileset, shieldset, cityset);
 
     //zip past the player IDs
     if (fl_counter)
@@ -553,10 +554,11 @@ void MainWindow::on_new_map_activated()
 			   d.map.grass, d.map.water, d.map.swamp, d.map.forest,
 			   d.map.hills, d.map.mountains,
 			   d.map.cities, d.map.ruins, d.map.temples, 
-			   d.map.signposts, d.map.tileset);
+			   d.map.signposts, d.map.tileset, 
+			   d.map.shieldset, d.map.cityset);
 	else
 	    set_filled_map(d.map.width, d.map.height, d.map.fill_style, 
-			   d.map.tileset);
+			   d.map.tileset, d.map.shieldset, d.map.cityset);
     }
 }
 

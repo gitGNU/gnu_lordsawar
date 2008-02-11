@@ -46,6 +46,8 @@ class NewMapDialog
 	int cities, ruins, temples;
 	int signposts;
 	std::string tileset;
+	std::string shieldset;
+	std::string cityset;
     };
 
     Map map;
@@ -59,6 +61,8 @@ class NewMapDialog
     Gtk::ComboBoxText *fill_style_combobox;
     Gtk::Widget *random_map_container;
     Gtk::ComboBoxText *tile_theme_combobox;
+    Gtk::ComboBoxText *city_theme_combobox;
+    Gtk::ComboBoxText *shield_theme_combobox;
     Gtk::Scale *grass_scale;
     Gtk::Scale *water_scale;
     Gtk::Scale *swamp_scale;
