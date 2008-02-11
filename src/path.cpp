@@ -412,7 +412,7 @@ bool Path::isBlocked(const Stack* s, int x, int y, int destx, int desty) const
 
         // ...friendly stacks which are too big to merge with...
         if ((s->getPlayer() == target->getPlayer())
-            && (s->size() + target->size() > 8))
+            && (s->size() + target->size() > MAX_STACK_SIZE))
             return true;
     }
 

@@ -256,7 +256,7 @@ bool Action_Move::fillData(Stack* s, Vector<int> dest)
 Action_Split::Action_Split()
     :Action(Action::STACK_SPLIT), d_orig(0), d_added(0)
 {
-    for (int i = 0; i < 8; i++)
+    for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
         d_armies_moved[i] = 0;
 }
 
@@ -271,7 +271,7 @@ Action_Split::Action_Split(XML_Helper* helper)
 
     helper->getData(s, "moved");
     si.str(s);
-    for (int i = 0; i < 8; i++)
+    for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
         si >>d_armies_moved[i];
 }
 
@@ -287,7 +287,7 @@ std::string Action_Split::dump() const
     s <<d_added<<".\n";
 
     s <<"moved armies: ";
-    for (int i = 0; i < 8; i++)
+    for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
         s <<d_armies_moved[i] <<" ";
     s <<"\n";
 
@@ -299,9 +299,9 @@ bool Action_Split::save(XML_Helper* helper) const
     bool retval = true;
     std::stringstream s;
 
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < MAX_STACK_SIZE - 1; i++)
         s <<d_armies_moved[i] <<" ";
-    s <<d_armies_moved[7];
+    s <<d_armies_moved[MAX_STACK_SIZE - 1];
 
     retval &= helper->openTag("action");
     retval &= helper->saveData("type", Action::STACK_SPLIT);
@@ -315,7 +315,7 @@ bool Action_Split::save(XML_Helper* helper) const
 
 bool Action_Split::fillData(Stack* orig, Stack* added)
 {
-    if ((orig->size() > 8) ||(added->size() > 8)
+    if ((orig->size() > MAX_STACK_SIZE) ||(added->size() > MAX_STACK_SIZE)
         || (orig->empty()) || (added->empty()))
     {
         std::cerr <<"Action_Split::fillData(): wrong stack size\n";
@@ -493,7 +493,7 @@ bool Action_Join::save(XML_Helper* helper) const
 bool Action_Join::fillData(Stack* orig, Stack* joining)
 {
     if ((orig->empty()) || (joining->empty())
-        || (orig->size() + joining->size() > 8))
+        || (orig->size() + joining->size() > MAX_STACK_SIZE))
     {
         std::cerr <<"Action_Join::fillData(): wrong stack size\n";
 	std::cerr <<"Action_Join:: orig has " << orig->size() << 

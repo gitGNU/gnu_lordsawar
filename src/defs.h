@@ -49,6 +49,7 @@ const unsigned int CUSP_OF_WAR_ROUND = 9;
 const unsigned int DIPLOMACY_STARTING_SCORE = 8;
 const unsigned int DIPLOMACY_MAX_SCORE = 15;
 const unsigned int DIPLOMACY_MIN_SCORE = 0;
+const unsigned int MAX_STACK_SIZE = 8;
 
 // from www.boost.org - derivation from this class makes the derived class
 // noncopyable

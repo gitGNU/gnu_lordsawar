@@ -86,9 +86,6 @@ int main(int argc, char* argv[])
                 //cout << _("-g,      --ggz              Run game in GGZ mode") << endl;
 #endif
 		cout << endl << endl;
-#if 0
-                cout << _("Please send bug reports to ulf82@users.sf.net") << endl << endl;
-#endif
                 exit(0);
             }
         }

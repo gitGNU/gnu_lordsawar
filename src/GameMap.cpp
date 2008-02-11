@@ -405,7 +405,7 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                       if (s->getPlayer() != a->getPlayer())
                         continue;
                       //is it our stack, but too full?
-                      if (s->size() >= 8)
+                      if (s->size() >= MAX_STACK_SIZE)
                         continue;
                     }
                   //hey this looks like a good place for a stack

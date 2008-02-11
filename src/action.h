@@ -164,7 +164,7 @@ class Action_Split : public Action
     
     private:
         Uint32 d_orig, d_added;
-        Uint32 d_armies_moved[8];
+        Uint32 d_armies_moved[MAX_STACK_SIZE];
 };
 
 //-----------------------------------------------------------------------------

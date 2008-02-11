@@ -71,7 +71,7 @@ Stack* Location::getFreeStack(Player *p) const
                 p->addStack(stack);
                 return stack;
             }
-            else if (stack->size() < 8) return stack;
+            else if (stack->size() < MAX_STACK_SIZE) return stack;
         }
     return NULL;
 }

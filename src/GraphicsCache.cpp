@@ -234,7 +234,7 @@ GraphicsCache::~GraphicsCache()
             SDL_FreeSurface(d_towerpic[i]);
     }
 
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < MAX_STACK_SIZE; i++)
     {
         SDL_FreeSurface(d_flagpic[i]);
         SDL_FreeSurface(d_flagmask[i]);
@@ -2268,7 +2268,7 @@ void GraphicsCache::loadFlags()
   // copy alpha values, don't use them!
   SDL_SetAlpha(flag, 0, 0);
 
-  for (int i = 0; i < 8; i++)
+  for (int i = 0; i < MAX_STACK_SIZE; i++)
     {
       // first, create the flag image; create a temporary surface...
       SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, tilesize, tilesize, 

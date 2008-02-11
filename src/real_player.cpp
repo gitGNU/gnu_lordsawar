@@ -179,9 +179,13 @@ bool RealPlayer::stackJoin(Stack* receiver, Stack* joining, bool grouped)
     if ((receiver == 0) || (joining == 0))
         return false;
 
-    if ((receiver->size() + joining->size()) > 8)
+    if ((receiver->size() + joining->size()) > MAX_STACK_SIZE)
         return false;
     
+    Action_Join* item = new Action_Join();
+    item->fillData(receiver, joining);
+    d_actions.push_back(item);
+
     // now if grouped is set to false, ungroup all the receiving stack's armies
     // (by default, only the joining stacks armies will continue to move)
     // Note that the computer player silently ignores the grouped value and always
@@ -195,9 +199,6 @@ bool RealPlayer::stackJoin(Stack* receiver, Stack* joining, bool grouped)
         (*it)->setGrouped(true);
     }
 
-    Action_Join* item = new Action_Join();
-    item->fillData(receiver, joining);
-    d_actions.push_back(item);
 
     joining->clear();    //clear only erases the pointers not the armies
     d_stacklist->flRemove(joining);
@@ -472,7 +473,7 @@ Fight::Result ruinfight (Stack **attacker, Stack **defender)
   hero_strength = (*attacker)->getFirstHero()->getStat(Army::STRENGTH, true);
   monster_strength = (*defender)->getStrongestArmy()->getStat(Army::STRENGTH, true);
   float base_factor = 0.25;
-  float stack_factor = (9.0 - (*attacker)->size()) / 8.0;
+  float stack_factor = ((float)(MAX_STACK_SIZE + 1) - (*attacker)->size()) / (float)MAX_STACK_SIZE;
   float hero_factor = (10.0 - hero_strength) / 5.0;
   float monster_factor;
   if (monster_strength >= 8)

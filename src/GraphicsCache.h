@@ -486,8 +486,8 @@ class GraphicsCache
         SDL_Surface* d_bridgepic[BRIDGE_TYPES];
         SDL_Surface* d_cursorpic[CURSOR_TYPES];
         SDL_Surface* d_razedpic[MAX_PLAYERS + 1]; //+1 for neutral
-        SDL_Surface* d_flagpic[8];
-        SDL_Surface* d_flagmask[8];
+        SDL_Surface* d_flagpic[MAX_STACK_SIZE];
+        SDL_Surface* d_flagmask[MAX_STACK_SIZE];
 	SDL_Surface* d_selector[6];
 	SDL_Surface* d_selectormask[6];
 	SDL_Surface* d_smallselector[4];

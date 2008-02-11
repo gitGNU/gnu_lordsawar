@@ -46,7 +46,7 @@ SDL_Color Player::get_color_for_no(int player_no)
 {
     SDL_Color color;
     color.r = color.b = color.g = color.unused = 0;
-    switch (player_no % 8)
+    switch (player_no % MAX_PLAYERS)
     {
     case 0: color.r = 252; color.b = 252; color.g = 252; break;
     //case 1: color.r = 80; color.b = 28; color.g = 172; break;

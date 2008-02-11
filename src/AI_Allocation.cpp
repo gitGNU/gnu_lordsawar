@@ -182,7 +182,7 @@ int AI_Allocation::allocateStacksToThreats()
             }
 
             // do we think we will lose? Stacks of size 8 have to attack, that's their job
-            if (myStr < opponentStr && attacker->size() < 8)
+            if (myStr < opponentStr && attacker->size() < MAX_STACK_SIZE)
             {
                 debug("we are not strong enough to fight " << threat->toString())
                 break;
@@ -223,7 +223,7 @@ Vector<int> *AI_Allocation::getFreeSpotInCity(City *city, int stackSize)
     if (!s)
         return result;
     else
-        if (s->size() + stackSize <= 8) return result;
+        if (s->size() + stackSize <= MAX_STACK_SIZE) return result;
     
     // northeast
     result->x++;
@@ -231,7 +231,7 @@ Vector<int> *AI_Allocation::getFreeSpotInCity(City *city, int stackSize)
     if (!s)
         return result;
     else
-        if (s->size() + stackSize <= 8) return result;
+        if (s->size() + stackSize <= MAX_STACK_SIZE) return result;
     
     // southeast
     result->y++;
@@ -239,7 +239,7 @@ Vector<int> *AI_Allocation::getFreeSpotInCity(City *city, int stackSize)
     if (!s)
         return result;
     else
-        if (s->size() + stackSize <= 8) return result;
+        if (s->size() + stackSize <= MAX_STACK_SIZE) return result;
     
     // southwest
     result->x--;
@@ -247,7 +247,7 @@ Vector<int> *AI_Allocation::getFreeSpotInCity(City *city, int stackSize)
     if (!s)
         return result;
     else
-        if (s->size() + stackSize <= 8) return result;
+        if (s->size() + stackSize <= MAX_STACK_SIZE) return result;
     
     // no room
     delete result;
@@ -326,7 +326,7 @@ int AI_Allocation::defaultStackMovements()
         debug("thinking about stack " << s->getId() <<" at ("<<s->getPos().x<<","<<s->getPos().y<<")")
         d_owner->getStacklist()->setActivestack(s);
         MoveResult *result = 0;
-        if (s->size() >= 8)
+        if (s->size() >= MAX_STACK_SIZE)
         {
             City* enemyCity = allCities->getNearestEnemyCity(s->getPos());
             if (enemyCity)
@@ -503,7 +503,7 @@ MoveResult *AI_Allocation::shuffleStacksWithinCity(City *city, Stack *stack)
             return 0;
         return moveStack(stack, city->getPos());
     }
-    else if (join->size() + stack->size() <= 8)
+    else if (join->size() + stack->size() <= MAX_STACK_SIZE)
     {
         // join with the stack in the northwest
         return moveStack(stack, city->getPos());

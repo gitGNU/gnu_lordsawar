@@ -187,12 +187,12 @@ void AI_Fast::computerTurn()
 	       <<"," <<s->getPos().y <<")?")
 
         // join armies if close
-        if (d_join && s->size() < 8)
+        if (d_join && s->size() < MAX_STACK_SIZE)
         {
             Stack* target = 0;
             for (Stacklist::iterator it2 = d_stacklist->begin(); it2 != d_stacklist->end(); it2++)
             {
-                if (s->size() + (*it2)->size() > 8 || s == (*it2))
+                if (s->size() + (*it2)->size() > MAX_STACK_SIZE || s == (*it2))
                     continue;
                 
                 int dist = abs(s->getPos().x - (*it2)->getPos().x);
@@ -228,7 +228,7 @@ void AI_Fast::computerTurn()
         if (!d_maniac)
         {
             City *target = Citylist::getInstance()->getNearestFriendlyCity(s->getPos());
-            if (s->size() < 8 && target)
+            if (s->size() < MAX_STACK_SIZE && target)
             {
                 debug("Restocking in " <<target->getName())
                 // try to move to the north west part of the city (where the units
