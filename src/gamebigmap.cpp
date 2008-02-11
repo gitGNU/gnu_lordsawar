@@ -510,7 +510,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       if (mouse_state == NONE && length(delta) <= 2)
 	return;
 
-      int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+      int ts = GameMap::getInstance()->getTileset()->getTileSize();
       SDL_Surface *screen = SDL_GetVideoSurface();
       Vector<int> screen_dim(screen->w, screen->h);
       view_pos = clip(Vector<int>(0, 0),
@@ -551,7 +551,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 void GameBigMap::after_draw()
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  int tilesize = GameMap::getInstance()->getTileSet()->getTileSize();
+  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
 
   Stack* stack = Playerlist::getActiveplayer()->getActivestack();
 

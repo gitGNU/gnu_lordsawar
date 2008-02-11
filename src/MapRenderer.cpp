@@ -38,7 +38,7 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
     GameMap* map = GameMap::getInstance();
     int width = GameMap::getWidth();
     int height = GameMap::getHeight();
-    int tilesize = map->getTileSet()->getTileSize();
+    int tilesize = map->getTileset()->getTileSize();
     r.w = r.h = tilesize;
     int drawY = y;
 

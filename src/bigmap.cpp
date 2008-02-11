@@ -74,7 +74,7 @@ BigMap::~BigMap()
 
 void BigMap::set_view(Rectangle new_view)
 {
-    int tilesize = GameMap::getInstance()->getTileSet()->getTileSize();
+    int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
     
     if (view.dim == new_view.dim && buffer)
     {
@@ -124,7 +124,7 @@ void BigMap::draw(bool redraw_buffer)
         return;
 
     SDL_Surface* screen = SDL_GetVideoSurface();
-    int tilesize = GameMap::getInstance()->getTileSet()->getTileSize();
+    int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
 
     // align the buffer view
     Vector<int> new_buffer_view = clip(
@@ -154,7 +154,7 @@ void BigMap::draw(bool redraw_buffer)
 void BigMap::screen_size_changed()
 {
     SDL_Surface *v = SDL_GetVideoSurface();
-    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+    int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
     Rectangle new_view = view;
     
@@ -175,7 +175,7 @@ Vector<int> BigMap::get_view_pos_from_view()
 {
     SDL_Surface *screen = SDL_GetVideoSurface();
     Vector<int> screen_dim(screen->w, screen->h);
-    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+    int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
     // clip to make sure we don't see a black border at the bottom and right
     return clip(Vector<int>(0, 0), view.pos * ts,
@@ -184,20 +184,20 @@ Vector<int> BigMap::get_view_pos_from_view()
 
 Vector<int> BigMap::tile_to_buffer_pos(Vector<int> tile)
 {
-    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+    int ts = GameMap::getInstance()->getTileset()->getTileSize();
     return (tile - buffer_view.pos) * ts;
 }
 
 Vector<int> BigMap::mouse_pos_to_tile(Vector<int> pos)
 {
-    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+    int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
     return (view_pos + pos) / ts;
 }
 
 Vector<int> BigMap::mouse_pos_to_tile_offset(Vector<int> pos)
 {
-    int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+    int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
     return (view_pos + pos) % ts;
 }
@@ -205,7 +205,7 @@ Vector<int> BigMap::mouse_pos_to_tile_offset(Vector<int> pos)
 MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
 {
     // convert area to pixels on the SDL screen
-    int tilesize = GameMap::getInstance()->getTileSet()->getTileSize();
+    int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
 
     Rectangle area(tile_area.pos * tilesize - view_pos,
 		   tile_area.dim * tilesize);
@@ -458,7 +458,7 @@ void BigMap::drawFogTile (int x, int y)
       SDL_Rect r;
       r.x = p.x;
       r.y = p.y;
-      r.w = GameMap::getInstance()->getTileSet()->getTileSize();
+      r.w = GameMap::getInstance()->getTileset()->getTileSize();
       SDL_BlitSurface(GraphicsCache::getInstance()->getFogPic(type - 1), 0, 
                       buffer, &r);
     }
@@ -469,7 +469,7 @@ void BigMap::draw_stack(Stack *s)
 {
   GameMap *gm = GameMap::getInstance();
   GraphicsCache *gc = GraphicsCache::getInstance();
-  int tilesize = GameMap::getInstance()->getTileSet()->getTileSize();
+  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
   Vector<int> p = s->getPos();
   Player *player = s->getPlayer();
   int army_tilesize;
@@ -540,7 +540,7 @@ void BigMap::draw_stack(Stack *s)
 void BigMap::draw_buffer()
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
-    int tilesize = GameMap::getInstance()->getTileSet()->getTileSize();
+    int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
     d_renderer->render(0, 0, buffer_view.x, buffer_view.y,
 		       buffer_view.w, buffer_view.h);
 

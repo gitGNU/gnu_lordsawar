@@ -146,7 +146,7 @@ void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
 	
 	// FIXME: show a drag cursor
 	
-	int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+	int ts = GameMap::getInstance()->getTileset()->getTileSize();
 	SDL_Surface *screen = SDL_GetVideoSurface();
 	Vector<int> screen_dim(screen->w, screen->h);
 	view_pos = clip(Vector<int>(0, 0),
@@ -217,7 +217,7 @@ void EditorBigMap::after_draw()
     std::vector<Vector<int> > tiles = get_cursor_tiles();
 
     // draw each tile
-    int tilesize = GameMap::getInstance()->getTileSet()->getTileSize();
+    int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
     for (std::vector<Vector<int> >::iterator i = tiles.begin(),
 	     end = tiles.end(); i != end; ++i)
     {
@@ -366,7 +366,7 @@ namespace
 void EditorBigMap::change_map_under_cursor()
 {
     std::vector<Vector<int> > tiles = get_cursor_tiles();
-    TileSet* ts = GameMap::getInstance()->getTileSet();
+    Tileset* ts = GameMap::getInstance()->getTileset();
     
     // find the index of the "grass" tile
     unsigned int grass_index;
@@ -410,7 +410,7 @@ void EditorBigMap::change_map_under_cursor()
 	      }
 	    else
 	      {
-		TileSet *tileset = GameMap::getInstance()->getTileSet();
+		Tileset *tileset = GameMap::getInstance()->getTileset();
 		TileStyle *tile_style;
 		tile_style = tileset->getTileStyle(pointer_tile_style_id);
 		maptile->setTileStyle (tile_style);

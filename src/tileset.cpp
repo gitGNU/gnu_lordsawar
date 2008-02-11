@@ -26,30 +26,30 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-TileSet::TileSet(XML_Helper *helper)
+Tileset::Tileset(XML_Helper *helper)
 {
     helper->getData(d_name, "name"); 
     helper->getData(d_info, "info");
     helper->getData(d_tileSize, "tilesize");
-    helper->registerTag("tile", sigc::mem_fun((*this), &TileSet::loadTile));
-    helper->registerTag("smallmap", sigc::mem_fun((*this), &TileSet::loadTile));
-    helper->registerTag("tilestyle", sigc::mem_fun((*this), &TileSet::loadTile));
-    helper->registerTag("tilestyleset", sigc::mem_fun((*this), &TileSet::loadTile));
+    helper->registerTag("tile", sigc::mem_fun((*this), &Tileset::loadTile));
+    helper->registerTag("smallmap", sigc::mem_fun((*this), &Tileset::loadTile));
+    helper->registerTag("tilestyle", sigc::mem_fun((*this), &Tileset::loadTile));
+    helper->registerTag("tilestyleset", sigc::mem_fun((*this), &Tileset::loadTile));
 }
 
-TileSet::~TileSet()
+Tileset::~Tileset()
 {
     for (unsigned int i=0; i < size(); i++)
         delete (*this)[i];
 }
 
-void TileSet::instantiatePixmaps()
+void Tileset::instantiatePixmaps()
 {
     for (Uint32 i = 0; i < size(); i++)
       (*this)[i]->instantiatePixmaps(d_dir, d_tileSize);
 }
 
-Uint32 TileSet::getIndex(Tile::Type type) const
+Uint32 Tileset::getIndex(Tile::Type type) const
 {
     for (Uint32 i = 0; i < size(); i++)
         if (type == (*this)[i]->getType())
@@ -59,7 +59,7 @@ Uint32 TileSet::getIndex(Tile::Type type) const
     return 0;
 }
 
-bool TileSet::loadTile(string tag, XML_Helper* helper)
+bool Tileset::loadTile(string tag, XML_Helper* helper)
 {
     debug("loadTile()")
 
@@ -131,7 +131,7 @@ bool TileSet::loadTile(string tag, XML_Helper* helper)
     return false;
 }
 
-TileStyle *TileSet::getRandomTileStyle(Uint32 index, TileStyle::Type style)
+TileStyle *Tileset::getRandomTileStyle(Uint32 index, TileStyle::Type style)
 {
   Tile *tile = (*this)[index];
   std::vector<TileStyle*> tilestyles;

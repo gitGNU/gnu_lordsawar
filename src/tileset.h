@@ -24,7 +24,7 @@
 
 class XML_Helper;
 
-/** TileSet is basically an array of tiles (terrain info objects).
+/** Tileset is basically an array of tiles (terrain info objects).
   * 
   * It also contains some functions for loading and some additional items, such
   * as an info string or a name.
@@ -37,14 +37,14 @@ class XML_Helper;
   * release. If it already exists, see there for further info.
   */
 
-class TileSet : public sigc::trackable, public std::vector<Tile*>
+class Tileset : public sigc::trackable, public std::vector<Tile*>
 {
     public:
         /** The constructor.
           * 
           */
-        TileSet(XML_Helper* helper);
-        ~TileSet();
+        Tileset(XML_Helper* helper);
+        ~Tileset();
 
         std::string getSubDir() const {return d_dir;}
         void setSubDir(std::string dir) {d_dir = dir;}

@@ -87,7 +87,7 @@ class GameMap: public sigc::trackable
 	    { return Rectangle(0, 0, s_width, s_height); }
 
         //! Returns the tileset in use
-        TileSet* getTileSet() const {return d_tileSet;}
+        Tileset* getTileset() const {return d_tileSet;}
 
         //! Returns the shieldset in use
         Shieldset* getShieldset() const {return d_shieldSet;}
@@ -176,7 +176,7 @@ class GameMap: public sigc::trackable
         static int s_width;
         static int s_height;
 
-        TileSet* d_tileSet;
+        Tileset* d_tileSet;
         Shieldset* d_shieldSet;
         Cityset* d_citySet;
         Maptile** d_map;

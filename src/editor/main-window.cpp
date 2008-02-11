@@ -205,7 +205,7 @@ void MainWindow::setup_terrain_radiobuttons()
 					 terrain_type_table->children().end());
 
     // then add new ones from the tile set
-    TileSet *tset = GameMap::getInstance()->getTileSet();
+    Tileset *tset = GameMap::getInstance()->getTileset();
     Gtk::RadioButton::Group group;
     bool group_set = false;
     const int no_columns = 6;
@@ -334,7 +334,7 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
     Playerlist::getInstance()->nextPlayer();
 
     // fill the map with tile type
-    TileSet* tset = GameMap::getInstance()->getTileSet();
+    Tileset* tset = GameMap::getInstance()->getTileset();
     for (unsigned int i = 0; i < tset->size(); ++i)
     {
 	if ((*tset)[i]->getType() == fill_style)
@@ -685,7 +685,7 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
 {
   Gtk::RadioButton::Group group;
   //iterate through tilestyles of a certain TERRAIN tile
-  TileSet *tileset = GameMap::getInstance()->getTileSet();
+  Tileset *tileset = GameMap::getInstance()->getTileset();
   Uint32 index = tileset->getIndex(terrain);
   Tile *tile = (*tileset)[index];
   if (tile == NULL)

@@ -585,7 +585,7 @@ Vector<int> GameMap::findPlantedStandard(Player *p)
 
 TileStyle *GameMap::calculatePreferredStyle(int i, int j)
 {
-  TileSet *tileset = getTileSet();
+  Tileset *tileset = getTileset();
   Maptile *mtile = getTile(j, i);
   int box[3][3];
   for (int k = -1; k <= +1; k++)
@@ -678,7 +678,7 @@ TileStyle *GameMap::calculatePreferredStyle(int i, int j)
 
 void GameMap::close_circles (int minx, int miny, int maxx, int maxy)
 {
-  TileSet *tileset = getTileSet();
+  Tileset *tileset = getTileset();
   for (int i = minx; i < maxx; i++)
     {
       for (int j = miny; j < maxy; j++)
@@ -825,7 +825,7 @@ void GameMap::applyTileStyles (int minx, int miny, int maxx, int maxy,
 	  if (j < 0 || j >= s_width)
 	    continue;
 	  Maptile *mtile = getTile(j, i);
-	  TileSet *tileset = getTileSet();
+	  Tileset *tileset = getTileset();
 	  TileStyle *style = calculatePreferredStyle(i, j);
 	  if (!style)
 	    style = tileset->getRandomTileStyle(mtile->getType(), 

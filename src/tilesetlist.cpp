@@ -81,7 +81,7 @@ bool Tilesetlist::load(std::string tag, XML_Helper *helper)
 {
   if (tag == "tileset")
     {
-      TileSet *tileset = new TileSet(helper);
+      Tileset *tileset = new Tileset(helper);
       push_back(tileset); 
     }
   return true;
@@ -97,7 +97,7 @@ bool Tilesetlist::loadTileset(std::string name)
 
   if (!helper.parse())
     {
-      std::cerr <<_("Error, while loading a tileset. TileSet Name: ");
+      std::cerr <<_("Error, while loading a tileset. Tileset Name: ");
       std::cerr <<name <<std::endl <<std::flush;
       exit(-1);
     }

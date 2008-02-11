@@ -46,7 +46,7 @@ class Maptile
           * @param type             the terrain type (index in the tileset)
 	  * @param tileStyle        the look of this tile to use
           */
-        Maptile(TileSet* tileSet, int x, int y, Uint32 type, TileStyle *tileStyle);
+        Maptile(Tileset* tileSet, int x, int y, Uint32 type, TileStyle *tileStyle);
         ~Maptile();
 
         //! Set the type of the terrain (type is an index in the tileset)
@@ -111,7 +111,7 @@ class Maptile
 	void setTileStyle(TileStyle *style) {d_tileStyle = style;}
 
     private:
-        TileSet* d_tileSet;
+        Tileset* d_tileSet;
         Uint32 d_index;
 	TileStyle *d_tileStyle;
         Building d_building;    // which building is on this maptile

@@ -31,7 +31,7 @@
   * Since several classes access this class, it is implemented as a singleton.
   */
 
-class Tilesetlist : public std::list<TileSet*>, public sigc::trackable
+class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
 {
     public:
         //! return the singleton instance of this class
@@ -50,7 +50,7 @@ class Tilesetlist : public std::list<TileSet*>, public sigc::trackable
           */
 	std::string getTilesetDir(std::string name) {return d_dirs[name];}
 
-	TileSet *getTileset(std::string dir) { return d_tilesets[dir];}
+	Tileset *getTileset(std::string dir) { return d_tilesets[dir];}
 
 	/* Reads in the pixmap and mask for every tile of every tileset.
 	 * This can only be done after SDL is initialized.
@@ -71,10 +71,10 @@ class Tilesetlist : public std::list<TileSet*>, public sigc::trackable
         bool loadTileset (std::string name);
         
         typedef std::map<std::string, std::string> DirMap;
-        typedef std::map<std::string, TileSet*> TileSetMap;
+        typedef std::map<std::string, Tileset*> TilesetMap;
 
         DirMap d_dirs;
-        TileSetMap d_tilesets;
+        TilesetMap d_tilesets;
 
         static Tilesetlist* s_instance;
 };

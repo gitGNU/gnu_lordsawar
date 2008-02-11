@@ -17,7 +17,7 @@
 #include <iostream>
 #include "tileset.h"
 
-Maptile::Maptile(TileSet* tileSet, int x, int y, Uint32 type, TileStyle *tileStyle)
+Maptile::Maptile(Tileset* tileSet, int x, int y, Uint32 type, TileStyle *tileStyle)
     :d_index(type), d_building(NONE) 
 {
     d_tileSet = tileSet;
