@@ -15,12 +15,12 @@
     <shield>
         <d_type>0</d_type>
         <d_colour>1</d_colour>
-        <d_image>small-yellow-shield</d_image>
+        <d_image>small-green-shield</d_image>
     </shield>
     <shield>
         <d_type>0</d_type>
         <d_colour>2</d_colour>
-        <d_image>small-green-shield</d_image>
+        <d_image>small-yellow-shield</d_image>
     </shield>
     <shield>
         <d_type>0</d_type>
@@ -60,12 +60,12 @@
     <shield>
         <d_type>1</d_type>
         <d_colour>1</d_colour>
-        <d_image>medium-yellow-shield</d_image>
+        <d_image>medium-green-shield</d_image>
     </shield>
     <shield>
         <d_type>1</d_type>
         <d_colour>2</d_colour>
-        <d_image>medium-green-shield</d_image>
+        <d_image>medium-yellow-shield</d_image>
     </shield>
     <shield>
         <d_type>1</d_type>
@@ -105,12 +105,12 @@
     <shield>
         <d_type>2</d_type>
         <d_colour>1</d_colour>
-        <d_image>large-yellow-shield</d_image>
+        <d_image>large-green-shield</d_image>
     </shield>
     <shield>
         <d_type>2</d_type>
         <d_colour>2</d_colour>
-        <d_image>large-green-shield</d_image>
+        <d_image>large-yellow-shield</d_image>
     </shield>
     <shield>
         <d_type>2</d_type>
