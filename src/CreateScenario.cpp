@@ -160,6 +160,12 @@ void CreateScenario::setShieldset(std::string shieldsname)
     d_shieldsname = shieldsname;
 }
 
+void CreateScenario::setCityset(std::string citysetname)
+{
+    debug("CreateScenario::setCityset")
+    d_citysetname = citysetname;
+}
+
 void CreateScenario::setNoCities(int nocities)
 {
     debug("CreateScenario::setNoCities")
@@ -395,7 +401,8 @@ bool CreateScenario::createMap()
     d_generator->makeMap(d_width, d_height, true);
     
     //...fill the terrain...
-    GameMap::getInstance(d_tilesname, d_shieldsname)->fill(d_generator);
+    GameMap::getInstance(d_tilesname, d_shieldsname,
+			 d_citysetname)->fill(d_generator);
 
     //...and create cities, temples, ruins ,signposts
     map = d_generator->getBuildings(d_width, d_height);

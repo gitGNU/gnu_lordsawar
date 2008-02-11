@@ -32,6 +32,7 @@
 #include "MapGenerator.h"
 #include "tilesetlist.h"
 #include "shieldsetlist.h"
+#include "citysetlist.h"
 
 using namespace std;
 
@@ -53,11 +54,12 @@ GameMap* GameMap::getInstance()
 
 
 GameMap* GameMap::getInstance(std::string TilesetName, 
-			      std::string ShieldsetName)
+			      std::string ShieldsetName, 
+			      std::string CitysetName)
 {
     if (s_instance == 0)
     {
-        s_instance = new GameMap(TilesetName, ShieldsetName);
+        s_instance = new GameMap(TilesetName, ShieldsetName, CitysetName);
 
     }
     return s_instance;
@@ -80,10 +82,12 @@ void GameMap::deleteInstance()
     s_instance = 0;
 }
 
-GameMap::GameMap(std::string TilesetName, std::string ShieldsetName)
+GameMap::GameMap(std::string TilesetName, std::string ShieldsetName,
+		 std::string CitysetName)
 {
     d_tileSet = Tilesetlist::getInstance()->getTileset(TilesetName);
     d_shieldSet = Shieldsetlist::getInstance()->getShieldset(ShieldsetName);
+    d_citySet = Citysetlist::getInstance()->getCityset(CitysetName);
 
     d_map = new Maptile*[s_width*s_height];
     for (int j = 0; j < s_height; j++)
@@ -98,16 +102,19 @@ GameMap::GameMap(XML_Helper* helper)
     std::string styles;
     std::string t_dir;
     std::string s_name;
+    std::string c_dir;
 
     helper->getData(s_width, "width");
     helper->getData(s_height, "height");
     helper->getData(t_dir,"tileset");
     helper->getData(s_name,"shieldset");
+    helper->getData(c_dir,"cityset");
     helper->getData(types, "types");
     helper->getData(styles, "styles");
 
     d_tileSet = Tilesetlist::getInstance()->getTileset(t_dir);
     d_shieldSet = Shieldsetlist::getInstance()->getShieldset(s_name);
+    d_citySet = Citysetlist::getInstance()->getCityset(c_dir);
 
     //create the map
     d_map = new Maptile*[s_width*s_height];
@@ -266,6 +273,7 @@ bool GameMap::save(XML_Helper* helper) const
     retval &= helper->saveData("height", s_height);
     retval &= helper->saveData("tileset", d_tileSet->getSubDir());
     retval &= helper->saveData("shieldset", d_shieldSet->getName());
+    retval &= helper->saveData("cityset", d_citySet->getSubDir());
     retval &= helper->saveData("types", types.str());
     retval &= helper->saveData("styles", styles.str());
 

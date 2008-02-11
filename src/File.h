@@ -93,6 +93,23 @@ class File
 	// get a tileset path
 	static std::string getTilesetFile(std::string tilesetname, std::string picname);
 	
+        /** Get the description file for the cityset
+          * 
+          * @param citysetname       the name of the cityset
+          * @return the full name of the description file
+          */
+        static std::string getCityset(std::string citysetname);
+
+        /** Get a cityset picture
+          * @param citysetname       the name of the cityset
+          * @param picname          the name of the picture
+          * @return the surface which contains the picture
+          */
+        static SDL_Surface* getCitysetPicture(std::string citysetname, std::string picname);
+
+	// get a cityset path
+	static std::string getCitysetFile(std::string citysetname, std::string picname);
+	
         //! load misc file, e.g. hero names 
         static std::string getMiscFile(std::string filename);
         
@@ -129,6 +146,9 @@ class File
 
         // get the available tilesets
         static std::list<std::string> scanTilesets();
+
+        // get the available citysets
+        static std::list<std::string> scanCitysets();
 
         // get the available maps
         static std::list<std::string> scanMaps();

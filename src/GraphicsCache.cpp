@@ -210,9 +210,10 @@ GraphicsCache::GraphicsCache()
     d_small_ruin_explored = File::getMiscPicture("smallexploredruin.png");
     d_small_temple = File::getMiscPicture("smalltemple.png");
     std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
-    d_port = File::getTilesetPicture(tileset, "misc/port.png");
+    std::string cityset = GameMap::getInstance()->getCitySet()->getSubDir();
+    d_port = File::getCitysetPicture(cityset, "port.png");
     d_explosion = File::getTilesetPicture(tileset, "misc/explosion.png");
-    d_signpost = File::getTilesetPicture(tileset, "misc/signpost.png");
+    d_signpost = File::getCitysetPicture(cityset, "signpost.png");
 }
 
 GraphicsCache::~GraphicsCache()
@@ -1754,12 +1755,12 @@ void GraphicsCache::eraseLastMoveBonusItem()
 
 void GraphicsCache::loadTemplePics()
 {
-  // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
-  int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+  // GameMap has the actual cityset stored
+  std::string cityset = GameMap::getInstance()->getCitySet()->getSubDir();
+  int ts = GameMap::getInstance()->getCitySet()->getTileSize();
 
   // load the temple pictures
-  SDL_Surface* templepics = File::getTilesetPicture(tileset, "misc/temples.png");
+  SDL_Surface* templepics = File::getCitysetPicture(cityset, "temples.png");
 
   // copy alpha values, don't use them
   SDL_SetAlpha(templepics, 0, 0);
@@ -1790,12 +1791,12 @@ void GraphicsCache::loadTemplePics()
 
 void GraphicsCache::loadRuinPics()
 {
-  // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
-  int ts = GameMap::getInstance()->getTileSet()->getTileSize();
+  // GameMap has the actual cityset stored
+  std::string cityset = GameMap::getInstance()->getCitySet()->getSubDir();
+  int ts = GameMap::getInstance()->getCitySet()->getTileSize();
 
   // load the ruin pictures
-  SDL_Surface* ruinpics = File::getTilesetPicture(tileset, "misc/ruin.png");
+  SDL_Surface* ruinpics = File::getCitysetPicture(cityset, "ruin.png");
 
   // copy alpha values, don't use them
   SDL_SetAlpha(ruinpics, 0, 0);
@@ -2032,7 +2033,7 @@ void GraphicsCache::loadCityPics()
   int size = GameMap::getInstance()->getTileSet()->getTileSize() * 2;
 
   // load the image for the razed city
-  SDL_Surface* razedpics = File::getTilesetPicture(tileset, "misc/castle_razed.png");
+  SDL_Surface* razedpics = File::getCitysetPicture(tileset, "castle_razed.png");
   // copy alpha values, don't use them
   SDL_SetAlpha(razedpics, 0, 0);
 
@@ -2058,7 +2059,7 @@ void GraphicsCache::loadCityPics()
   SDL_FreeSurface(razedpics);
 
   // load the city pictures
-  SDL_Surface* citypics = File::getTilesetPicture(tileset, "misc/castles.png");
+  SDL_Surface* citypics = File::getCitysetPicture(tileset, "castles.png");
 
   // copy alpha values, don't use them
   SDL_SetAlpha(citypics, 0, 0);
@@ -2098,12 +2099,12 @@ void GraphicsCache::loadTowerPics()
 {
   SDL_Surface *tmp;
   SDL_PixelFormat *fmt;
-  // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
-  int size = GameMap::getInstance()->getTileSet()->getTileSize();
+  // GameMap has the actual cityset stored
+  std::string cityset = GameMap::getInstance()->getCitySet()->getSubDir();
+  int size = GameMap::getInstance()->getCitySet()->getTileSize();
 
   // load the image for the towers
-  SDL_Surface* towerpics = File::getTilesetPicture(tileset, "misc/towers.png");
+  SDL_Surface* towerpics = File::getCitysetPicture(cityset, "towers.png");
   // copy alpha values, don't use them
   SDL_SetAlpha(towerpics, 0, 0);
 

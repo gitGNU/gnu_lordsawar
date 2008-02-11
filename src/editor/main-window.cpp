@@ -315,7 +315,7 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
     GameMap::deleteInstance();
     GameMap::setWidth(width);
     GameMap::setHeight(height);
-    GameMap::getInstance(tileset, "Default");
+    GameMap::getInstance(tileset, "Default", "default");
 
     // sets up the lists
     game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
@@ -358,7 +358,7 @@ void MainWindow::set_random_map(int width, int height,
     GameMap::deleteInstance();
     GameMap::setWidth(width);
     GameMap::setHeight(height);
-    GameMap::getInstance(tileset, "Default");
+    GameMap::getInstance(tileset, "Default", "default");
 
     //zip past the player IDs
     if (fl_counter)

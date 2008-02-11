@@ -60,7 +60,8 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         vectoredunitlist.cpp vectoredunitlist.h \
         AI_Diplomacy.cpp AI_Diplomacy.h \
 	shield.cpp shield.h shieldset.cpp shieldset.h \
-	shieldsetlist.cpp shieldsetlist.h
+	shieldsetlist.cpp shieldsetlist.h \
+	citysetlist.cpp citysetlist.h cityset.cpp cityset.h
 
 
 if FL_RESRC

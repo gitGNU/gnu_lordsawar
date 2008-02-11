@@ -52,10 +52,10 @@ class TileSet : public sigc::trackable, public std::vector<Tile*>
         std::string getName() const {return d_name;}
 
         //! Returns the info string of the tileset
-        std::string getInfo() const {return __(d_info);}
+        std::string getInfo() const {return d_info;}
 
         //! Returns the tilesize of the tileset.
-        int getTileSize() const {return d_tileSize;}
+        Uint32 getTileSize() const {return d_tileSize;}
 
         //! Returns the index to standard terrain type
         Uint32 getIndex(Tile::Type type) const;
@@ -75,7 +75,7 @@ class TileSet : public sigc::trackable, public std::vector<Tile*>
         // DATA
         std::string d_name;
         std::string d_info;
-        int d_tileSize;
+        Uint32 d_tileSize;
         std::string d_dir;
         typedef std::map<Uint32, TileStyle*> TileStyleIdMap;
         TileStyleIdMap d_tilestyles;

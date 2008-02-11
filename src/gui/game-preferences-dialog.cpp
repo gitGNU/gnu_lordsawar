@@ -31,6 +31,7 @@
 #include "../shieldsetlist.h"
 #include "../GameScenario.h"
 #include "../tilesetlist.h"
+#include "../citysetlist.h"
 #include "../player.h"
 
 #define HUMAN_PLAYER_TYPE _("Human")
@@ -197,6 +198,27 @@ GamePreferencesDialog::GamePreferencesDialog()
 
     xml->get_widget("shield_theme_box", box);
     box->pack_start(*shield_theme_combobox, Gtk::PACK_SHRINK);
+
+    // fill in city themes combobox
+    city_theme_combobox = manage(new Gtk::ComboBoxText);
+    
+    Citysetlist *cl = Citysetlist::getInstance();
+    std::list<std::string> city_themes = cl->getNames();
+    counter = 0;
+    default_id = 0;
+    for (std::list<std::string>::iterator i = city_themes.begin(),
+	     end = city_themes.end(); i != end; ++i)
+      {
+	if (*i == "Default")
+	  default_id = counter;
+	city_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+	counter++;
+      }
+
+    city_theme_combobox->set_active(default_id);
+
+    xml->get_widget("city_theme_box", box);
+    box->pack_start(*city_theme_combobox, Gtk::PACK_SHRINK);
 
     start_game_button->signal_clicked().connect
       (sigc::mem_fun(*this, &GamePreferencesDialog::on_start_game_clicked));
@@ -435,6 +457,7 @@ void GamePreferencesDialog::on_start_game_clicked()
 {
   Armysetlist *al = Armysetlist::getInstance();
   Tilesetlist *tl = Tilesetlist::getInstance();
+  Citysetlist *cl = Citysetlist::getInstance();
     // read out the values in the widgets
     GameParameters g;
 
@@ -550,6 +573,8 @@ void GamePreferencesDialog::on_start_game_clicked()
 
     g.army_theme = Glib::filename_from_utf8(army_theme_combobox->get_active_text());
     g.shield_theme = Glib::filename_from_utf8(shield_theme_combobox->get_active_text());
+    g.city_theme = cl->getCitysetDir 
+      (Glib::filename_from_utf8(city_theme_combobox->get_active_text()));
 
     g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
 
@@ -571,9 +596,14 @@ void GamePreferencesDialog::on_start_game_clicked()
 
     //don't start if the armyset size differs from the terrain set size.
     Uint32 army_tilesize = al->getTileSize(al->getArmysetId(g.army_theme));
-    int terrain_size = tl->getTileset(g.tile_theme)->getTileSize();
+    Uint32 terrain_size = tl->getTileset(g.tile_theme)->getTileSize();
+    Uint32 city_size = cl->getCityset(g.city_theme)->getTileSize();
     if (army_tilesize != (Uint32) terrain_size)
       fprintf (stderr, "army tile size doesn't match terrain tile size!\n");
+    else if (army_tilesize != (Uint32) city_size)
+      fprintf (stderr, "army tile size doesn't match city tile size!\n");
+    else if ((Uint32)terrain_size != (Uint32) city_size)
+      fprintf (stderr, "terrain tile size doesn't match city tile size!\n");
     else
       {
 	// and call callback

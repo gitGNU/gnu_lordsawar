@@ -156,6 +156,21 @@ string File::getMiscFile(string filename)
     return Configuration::s_dataPath + "/" + filename;
 }
 
+string File::getCityset(string citysetname)
+{
+    return Configuration::s_dataPath + "/citysets/" + citysetname + "/" + citysetname + ".xml";
+}
+
+std::string File::getCitysetFile(string citysetname, string picname)
+{
+    return Configuration::s_dataPath + "/citysets/" + citysetname + "/" + picname;
+}
+
+SDL_Surface* File::getCitysetPicture(string citysetname, string picname)
+{
+    return loadImage(getCitysetFile(citysetname, picname));
+}
+
 SDL_Surface* File::getMiscPicture(string picname, bool alpha)
 {
     return loadImage(Configuration::s_dataPath + "/various/" + picname,alpha);
@@ -201,6 +216,22 @@ list<string> File::scanTilesets()
     if (retlist.empty())
     {
         cerr << _("Couldn't find any tilesets!") << endl;
+        cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
+        cerr << _("Exiting!") << endl;
+        exit(-1);
+    }
+    
+    return retlist;
+}
+
+list<string> File::scanCitysets()
+{
+    string path = Configuration::s_dataPath + "/citysets/";
+    std::list<std::string> retlist = get_xml_files_in_immediate_subdirs(path);
+    
+    if (retlist.empty())
+    {
+        cerr << _("Couldn't find any citysets!") << endl;
         cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
         cerr << _("Exiting!") << endl;
         exit(-1);

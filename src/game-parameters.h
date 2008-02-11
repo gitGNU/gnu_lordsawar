@@ -45,6 +45,7 @@ struct GameParameters
     std::string tile_theme;
     std::string army_theme;
     std::string shield_theme;
+    std::string city_theme;
 
     enum ProcessArmies {
 	PROCESS_ARMIES_AT_PLAYERS_TURN = 0,

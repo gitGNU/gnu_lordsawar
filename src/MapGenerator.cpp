@@ -877,7 +877,7 @@ void MapGenerator::makeRoads()
 
   GameMap::setWidth(d_width);
   GameMap::setHeight(d_height);
-  GameMap::getInstance("default", "Default")->fill(this);
+  GameMap::getInstance("default", "Default", "default")->fill(this);
   Roadlist::getInstance();
   //the game map class smooths the map, so let's take what it smoothed.
   for (int y = 0; y < d_height; y++)

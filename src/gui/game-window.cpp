@@ -391,6 +391,7 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
     // now fill in some map information
     creator.setMapTiles(g.tile_theme);
     creator.setShieldset(g.shield_theme);
+    creator.setCityset(g.city_theme);
     creator.setNoCities(g.map.cities);
     creator.setNoRuins(g.map.ruins);
     creator.setNoTemples(g.map.temples);

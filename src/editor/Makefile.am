@@ -22,7 +22,8 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
         ../bigmap.o ../smallmap.o ../overviewmap.o ../timing.o \
         ../gui/image-helpers.o ../gui/error-utils.o ../gui/gtksdl.o \
         ../gui/army-info-tip.o ../MapRenderer.o \
-	../shield.o ../shieldset.o ../shieldsetlist.o
+	../shield.o ../shieldset.o ../shieldsetlist.o \
+	../citysetlist.o ../cityset.o
 
 if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor lordsawar-army-editor

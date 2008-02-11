@@ -23,6 +23,7 @@
 #include "stack.h"
 #include "Location.h"
 #include "shieldset.h"
+#include "cityset.h"
 
 class MapGenerator;
 class XML_Helper;
@@ -53,7 +54,8 @@ class GameMap: public sigc::trackable
           * @return singleton instance
           */
         static GameMap* getInstance(std::string TilesetName,
-				    std::string Shieldsetname);
+				    std::string Shieldsetname,
+				    std::string Citysetname);
 
         /** Creates a new singleton instance from a savegame file
           * 
@@ -89,6 +91,9 @@ class GameMap: public sigc::trackable
 
         //! Returns the shieldset in use
         Shieldset* getShieldSet() const {return d_shieldSet;}
+
+        //! Returns the tileset in use
+        CitySet* getCitySet() const {return d_citySet;}
 
 	//! Sets the tile object at position (x, y)
 	void setTile(int x, int y, Maptile *tile);
@@ -144,7 +149,8 @@ class GameMap: public sigc::trackable
 
     protected:
         //! Create the map with the given tileset
-        GameMap(std::string TilesetName, std::string ShieldsetName);
+        GameMap(std::string TilesetName, std::string ShieldsetName,
+		std::string Citysetname);
 
         //! Load the map using the given XML_Helper
         GameMap(XML_Helper* helper);
@@ -172,6 +178,7 @@ class GameMap: public sigc::trackable
 
         TileSet* d_tileSet;
         Shieldset* d_shieldSet;
+        CitySet* d_citySet;
         Maptile** d_map;
 };
 
