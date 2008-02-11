@@ -1269,12 +1269,16 @@ void GameWindow::on_group_toggled(Gtk::ToggleButton *toggle)
 {
   if (toggle->sensitive() == false)
     return;
-  if (toggle->get_active() == false)
-    currently_selected_stack->ungroup();
-  else
+  bool active = toggle->get_active();
+      
+  clear_army_buttons();
+  if (active)
     currently_selected_stack->group();
+  else
+    currently_selected_stack->ungroup();
+
+  on_stack_info_changed(currently_selected_stack);
   game->recalculate_moves_for_stack(currently_selected_stack);
-  update_army_buttons();
 }
 
 bool GameWindow::on_army_button_event(GdkEventButton *e,
