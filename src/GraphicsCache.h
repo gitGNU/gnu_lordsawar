@@ -269,6 +269,7 @@ class GraphicsCache
         SDL_Surface* getSmallHeroPic();
         SDL_Surface* getPortPic();
         SDL_Surface* getExplosionPic();
+        SDL_Surface* getSignpostPic();
         SDL_Surface* getMoveBonusPic(Uint32 bonus, bool has_ship);
         SDL_Surface *getSmallTemplePic();
         SDL_Surface *getSmallRuinExploredPic();
@@ -497,6 +498,7 @@ class GraphicsCache
         SDL_Surface* d_movebonuspic[6];
 	SDL_Surface* d_port;
 	SDL_Surface* d_explosion;
+	SDL_Surface* d_signpost;
 	SDL_Surface* d_small_ruin_unexplored;
 	SDL_Surface* d_small_stronghold_unexplored;
 	SDL_Surface* d_small_ruin_explored;

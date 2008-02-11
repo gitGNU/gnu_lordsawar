@@ -73,7 +73,6 @@ class BigMap: public sigc::trackable
 	
     bool input_locked;
 	
-    SDL_Surface* d_signpostpic;
     SDL_Surface* d_itempic;
         
     // helpers

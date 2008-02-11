@@ -20,6 +20,7 @@
 #include "vector.h"
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
+#include <sstream>
 
 #include "Object.h"
 

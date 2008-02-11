@@ -247,7 +247,6 @@ AC_CONFIG_FILES([
         Makefile 
         src/Makefile
         doc/Makefile
-        src/utils/Makefile 
         src/server/Makefile 
         src/editor/Makefile
         src/gui/Makefile])

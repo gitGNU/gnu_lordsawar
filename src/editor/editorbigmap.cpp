@@ -274,7 +274,7 @@ void EditorBigMap::after_draw()
 	    break;
 	    
 	case SIGNPOST:
-	    pic = d_signpostpic;
+	    pic = GraphicsCache::getInstance()->getSignpostPic();
 	    SDL_BlitSurface(pic, 0, buffer, &r);
 	    break;
 	    

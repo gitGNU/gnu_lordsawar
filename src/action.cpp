@@ -319,6 +319,8 @@ bool Action_Split::fillData(Stack* orig, Stack* added)
         || (orig->empty()) || (added->empty()))
     {
         std::cerr <<"Action_Split::fillData(): wrong stack size\n";
+	std::cerr <<"Action_Split:: orig has " << orig->size() << 
+	  " and added has " <<added->size();
         return false;
     }
     
@@ -494,6 +496,8 @@ bool Action_Join::fillData(Stack* orig, Stack* joining)
         || (orig->size() + joining->size() > 8))
     {
         std::cerr <<"Action_Join::fillData(): wrong stack size\n";
+	std::cerr <<"Action_Join:: orig has " << orig->size() << 
+	  " and joining has " <<joining->size() <<"\n";
         return false;
     }
     

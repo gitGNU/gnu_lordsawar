@@ -212,6 +212,7 @@ GraphicsCache::GraphicsCache()
     std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
     d_port = File::getTilesetPicture(tileset, "misc/port.png");
     d_explosion = File::getTilesetPicture(tileset, "misc/explosion.png");
+    d_signpost = File::getTilesetPicture(tileset, "misc/signpost.png");
 }
 
 GraphicsCache::~GraphicsCache()
@@ -275,6 +276,7 @@ GraphicsCache::~GraphicsCache()
     SDL_FreeSurface(d_small_ruin_explored);
     SDL_FreeSurface(d_port);
     SDL_FreeSurface(d_explosion);
+    SDL_FreeSurface(d_signpost);
 }
 
 SDL_Surface* GraphicsCache::getSmallRuinedCityPic()
@@ -312,6 +314,11 @@ SDL_Surface* GraphicsCache::getPortPic()
 SDL_Surface* GraphicsCache::getExplosionPic()
 {
   return d_explosion;
+}
+
+SDL_Surface* GraphicsCache::getSignpostPic()
+{
+  return d_signpost;
 }
 
 SDL_Surface* GraphicsCache::getMoveBonusPic(Uint32 bonus, bool has_ship)

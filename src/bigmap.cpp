@@ -56,8 +56,6 @@ BigMap::BigMap()
     : d_renderer(0), buffer(0)
 {
     // load all pictures
-    d_signpostpic = File::getTilesetPicture("default", "misc/signpost.png");
-
     d_itempic = File::getMiscPicture("items.png");
 
     // note: we are not fully initialized before set_view is called
@@ -66,7 +64,6 @@ BigMap::BigMap()
 
 BigMap::~BigMap()
 {
-    SDL_FreeSurface(d_signpostpic);
     SDL_FreeSurface(d_itempic);
 
     if (buffer)
@@ -558,7 +555,7 @@ void BigMap::draw_buffer()
 
     for (Signpostlist::iterator i = Signpostlist::getInstance()->begin();
 	 i != Signpostlist::getInstance()->end(); ++i)
-	blit_if_inside_buffer(*i, d_signpostpic);
+	blit_if_inside_buffer(*i, gc->getSignpostPic());
 
     for (Templelist::iterator i = Templelist::getInstance()->begin();
 	 i != Templelist::getInstance()->end(); ++i)

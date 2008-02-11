@@ -20,6 +20,7 @@
 #include "path.h"
 #include "playerlist.h"
 #include "xmlhelper.h"
+#include <algorithm>
 
 using namespace std;
 

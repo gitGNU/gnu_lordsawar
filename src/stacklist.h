@@ -20,6 +20,7 @@
 #include <sigc++/trackable.h>
 #include <SDL_types.h>
 #include "vector.h"
+#include <sstream>
 
 class City;
 class Stack;
