@@ -163,7 +163,6 @@ int Stack::getMinTileMoves() const
   GameMap *map = GameMap::getInstance();
   Rectangle bounds = GameMap::get_boundary();
 
-  Path p;
   std::vector<Vector<int> > tiles;
   tiles.push_back(Vector<int>(getPos().x + 1, getPos().y - 1));
   tiles.push_back(Vector<int>(getPos().x,     getPos().y - 1));
@@ -178,7 +177,7 @@ int Stack::getMinTileMoves() const
 
   for (std::vector<Vector<int> >::iterator i = tiles.begin(), end = tiles.end();
        i != end; ++i)
-    if (is_inside(bounds, *i)) // && p.canMoveThere(this, *i))
+    if (is_inside(bounds, *i))
       {
 	int v = map->getTile(i->x, i->y)->getMoves();
 	if (min == -1)
@@ -333,7 +332,8 @@ bool Stack::enoughMoves() const
 
 bool Stack::canMove() const
 {
-  int tile_moves = getMinTileMoves(), group_moves = getGroupMoves();
+  int tile_moves = getMinTileMoves();
+  int group_moves = getGroupMoves();
 
   return group_moves > 0 && tile_moves >= 0 && group_moves >= tile_moves;
 }

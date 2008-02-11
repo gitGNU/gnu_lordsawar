@@ -299,7 +299,7 @@ bool Action_Split::save(XML_Helper* helper) const
     bool retval = true;
     std::stringstream s;
 
-    for (int i = 0; i < MAX_STACK_SIZE - 1; i++)
+    for (unsigned int i = 0; i < MAX_STACK_SIZE - 1; i++)
         s <<d_armies_moved[i] <<" ";
     s <<d_armies_moved[MAX_STACK_SIZE - 1];
 
