@@ -22,7 +22,7 @@
 
 class XML_Helper;
 
-/** CitySet is basically an array of citys (terrain info objects).
+/** Cityset is basically an array of citys (terrain info objects).
   * 
   * It also contains some functions for loading and some additional items, such
   * as an info string or a name.
@@ -35,14 +35,14 @@ class XML_Helper;
   * release. If it already exists, see there for further info.
   */
 
-class CitySet : public sigc::trackable
+class Cityset : public sigc::trackable
 {
     public:
         /** The constructor.
           * 
           */
-        CitySet(XML_Helper* helper);
-        ~CitySet();
+        Cityset(XML_Helper* helper);
+        ~Cityset();
 
         std::string getSubDir() const {return d_dir;}
         void setSubDir(std::string dir) {d_dir = dir;}

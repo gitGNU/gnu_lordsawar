@@ -30,7 +30,7 @@
   * Since several classes access this class, it is implemented as a singleton.
   */
 
-class Citysetlist : public std::list<CitySet*>, public sigc::trackable
+class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 {
     public:
         //! return the singleton instance of this class
@@ -49,7 +49,7 @@ class Citysetlist : public std::list<CitySet*>, public sigc::trackable
           */
 	std::string getCitysetDir(std::string name) {return d_dirs[name];}
 
-	CitySet *getCityset(std::string dir) { return d_citysets[dir];}
+	Cityset *getCityset(std::string dir) { return d_citysets[dir];}
 
     private:
         //! Constructor; loads all citysets it can find
@@ -65,10 +65,10 @@ class Citysetlist : public std::list<CitySet*>, public sigc::trackable
         bool loadCityset (std::string name);
         
         typedef std::map<std::string, std::string> DirMap;
-        typedef std::map<std::string, CitySet*> CitySetMap;
+        typedef std::map<std::string, Cityset*> CitysetMap;
 
         DirMap d_dirs;
-        CitySetMap d_citysets;
+        CitysetMap d_citysets;
 
         static Citysetlist* s_instance;
 };

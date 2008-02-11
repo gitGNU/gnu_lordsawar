@@ -210,7 +210,7 @@ GraphicsCache::GraphicsCache()
     d_small_ruin_explored = File::getMiscPicture("smallexploredruin.png");
     d_small_temple = File::getMiscPicture("smalltemple.png");
     std::string tileset = GameMap::getInstance()->getTileSet()->getSubDir();
-    std::string cityset = GameMap::getInstance()->getCitySet()->getSubDir();
+    std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
     d_port = File::getCitysetPicture(cityset, "port.png");
     d_explosion = File::getTilesetPicture(tileset, "misc/explosion.png");
     d_signpost = File::getCitysetPicture(cityset, "signpost.png");
@@ -1757,8 +1757,8 @@ void GraphicsCache::eraseLastMoveBonusItem()
 void GraphicsCache::loadTemplePics()
 {
   // GameMap has the actual cityset stored
-  std::string cityset = GameMap::getInstance()->getCitySet()->getSubDir();
-  int ts = GameMap::getInstance()->getCitySet()->getTileSize();
+  std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
+  int ts = GameMap::getInstance()->getCityset()->getTileSize();
 
   // load the temple pictures
   SDL_Surface* templepics = File::getCitysetPicture(cityset, "temples.png");
@@ -1793,8 +1793,8 @@ void GraphicsCache::loadTemplePics()
 void GraphicsCache::loadRuinPics()
 {
   // GameMap has the actual cityset stored
-  std::string cityset = GameMap::getInstance()->getCitySet()->getSubDir();
-  int ts = GameMap::getInstance()->getCitySet()->getTileSize();
+  std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
+  int ts = GameMap::getInstance()->getCityset()->getTileSize();
 
   // load the ruin pictures
   SDL_Surface* ruinpics = File::getCitysetPicture(cityset, "ruin.png");
@@ -2101,8 +2101,8 @@ void GraphicsCache::loadTowerPics()
   SDL_Surface *tmp;
   SDL_PixelFormat *fmt;
   // GameMap has the actual cityset stored
-  std::string cityset = GameMap::getInstance()->getCitySet()->getSubDir();
-  int size = GameMap::getInstance()->getCitySet()->getTileSize();
+  std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
+  int size = GameMap::getInstance()->getCityset()->getTileSize();
 
   // load the image for the towers
   SDL_Surface* towerpics = File::getCitysetPicture(cityset, "towers.png");

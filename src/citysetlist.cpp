@@ -81,7 +81,7 @@ bool Citysetlist::load(std::string tag, XML_Helper *helper)
 {
   if (tag == "cityset")
     {
-      CitySet *cityset = new CitySet(helper);
+      Cityset *cityset = new Cityset(helper);
       push_back(cityset); 
     }
   return true;
@@ -97,7 +97,7 @@ bool Citysetlist::loadCityset(std::string name)
 
   if (!helper.parse())
     {
-      std::cerr <<_("Error, while loading a cityset. CitySet Name: ");
+      std::cerr <<_("Error, while loading a cityset. Cityset Name: ");
       std::cerr <<name <<std::endl <<std::flush;
       exit(-1);
     }

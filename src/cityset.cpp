@@ -26,14 +26,14 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-CitySet::CitySet(XML_Helper *helper)
+Cityset::Cityset(XML_Helper *helper)
 {
     helper->getData(d_name, "name"); 
     helper->getData(d_info, "info");
     helper->getData(d_tileSize, "tilesize");
 }
 
-CitySet::~CitySet()
+Cityset::~Cityset()
 {
 }
 

@@ -93,7 +93,7 @@ class GameMap: public sigc::trackable
         Shieldset* getShieldset() const {return d_shieldSet;}
 
         //! Returns the tileset in use
-        CitySet* getCitySet() const {return d_citySet;}
+        Cityset* getCityset() const {return d_citySet;}
 
 	//! Sets the tile object at position (x, y)
 	void setTile(int x, int y, Maptile *tile);
@@ -178,7 +178,7 @@ class GameMap: public sigc::trackable
 
         TileSet* d_tileSet;
         Shieldset* d_shieldSet;
-        CitySet* d_citySet;
+        Cityset* d_citySet;
         Maptile** d_map;
 };
 
