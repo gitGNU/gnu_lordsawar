@@ -251,7 +251,7 @@ void Stack::group()
 {
   if (empty())
     return;
-  for (const_iterator it = begin(); it != end(); ++it)
+  for (iterator it = begin(); it != end(); ++it)
     (*it)->setGrouped(true);
   return;
 }
@@ -260,7 +260,7 @@ void Stack::ungroup()
 {
   if (empty())
     return;
-  for (const_iterator it = begin(); it != end(); ++it)
+  for (iterator it = begin(); it != end(); ++it)
     (*it)->setGrouped(false);
   //set first army to be in the group
   (*(begin()))->setGrouped(true);
