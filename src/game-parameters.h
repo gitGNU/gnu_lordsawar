@@ -35,7 +35,7 @@ struct GameParameters
     {
 	int width, height;
 	int grass, water, swamp, forest, hills, mountains;
-	int cities, ruins, temples;
+	int cities, ruins;
     };
 
     Map map;

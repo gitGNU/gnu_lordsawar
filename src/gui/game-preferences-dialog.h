@@ -76,8 +76,6 @@ class GamePreferencesDialog
     Gtk::ToggleButton *cities_random_togglebutton;
     Gtk::Scale *ruins_scale;
     Gtk::ToggleButton *ruins_random_togglebutton;
-    Gtk::Scale *temples_scale;
-    Gtk::ToggleButton *temples_random_togglebutton;
     Gtk::CheckButton *cities_can_produce_allies_checkbutton;
     Gtk::ComboBox *difficulty_combobox;
 
@@ -111,7 +109,6 @@ class GamePreferencesDialog
     void on_mountains_random_toggled();
     void on_cities_random_toggled();
     void on_ruins_random_toggled();
-    void on_temples_random_toggled();
     void on_map_chosen();
     bool is_beginner();
     bool is_intermediate();

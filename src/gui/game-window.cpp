@@ -394,7 +394,7 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
     creator.setCityset(g.city_theme);
     creator.setNoCities(g.map.cities);
     creator.setNoRuins(g.map.ruins);
-    creator.setNoTemples(g.map.temples);
+    creator.setNoTemples(4);
 
     // terrain: the scenario generator also accepts input with a sum of
     // more than 100%, so the thing is rather easy here

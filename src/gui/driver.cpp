@@ -55,7 +55,6 @@ Driver::Driver()
 	g.map.mountains = 5;
 	g.map.cities = 20;
 	g.map.ruins = 25;
-	g.map.temples = 25;
 	g.map_path = "";
 	g.play_with_quests = false;
 	g.hidden_map = false;

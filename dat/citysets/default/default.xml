@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <cityset>
-    <d_id>1</d_id>
     <d_name>Default</d_name>
     <d_info>The default cityset of LordsAWar</d_info>
     <d_tilesize>40</d_tilesize>

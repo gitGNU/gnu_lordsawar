@@ -92,10 +92,6 @@ GamePreferencesDialog::GamePreferencesDialog()
     xml->get_widget("ruins_random_togglebutton", ruins_random_togglebutton);
     ruins_random_togglebutton->signal_toggled().connect
       (sigc::mem_fun(*this, &GamePreferencesDialog::on_ruins_random_toggled));
-    xml->get_widget("temples_scale", temples_scale);
-    xml->get_widget("temples_random_togglebutton", temples_random_togglebutton);
-    temples_random_togglebutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &GamePreferencesDialog::on_temples_random_toggled));
     xml->get_widget("map_size_combobox", map_size_combobox);
     xml->get_widget("difficulty_combobox", difficulty_combobox);
 
@@ -351,20 +347,17 @@ void GamePreferencesDialog::on_map_size_changed()
     case MAP_SIZE_SMALL:
 	cities_scale->set_value(15);
 	ruins_scale->set_value(20);
-	temples_scale->set_value(20);
 	break;
 	
     case MAP_SIZE_TINY:
 	cities_scale->set_value(10);
 	ruins_scale->set_value(15);
-	temples_scale->set_value(15);
 	break;
 
     case MAP_SIZE_NORMAL:
     default:
 	cities_scale->set_value(40);
 	ruins_scale->set_value(25);
-	temples_scale->set_value(10);
 	break;
     }
 }
@@ -546,13 +539,6 @@ void GamePreferencesDialog::on_start_game_clicked()
 	else
 	  g.map.ruins = int(ruins_scale->get_value());
 
-	if (temples_random_togglebutton->get_active())
-	  g.map.temples =  
-	    int(temples_scale->get_adjustment()->get_lower()) + 
-	    (rand() % (int(temples_scale->get_adjustment()->get_upper()) -
-		       int(temples_scale->get_adjustment()->get_lower()) + 1));
-	else
-	  g.map.temples = int(temples_scale->get_value());
     }
     else
 	g.map_path = load_map_filechooser->get_filename();
@@ -642,10 +628,6 @@ void GamePreferencesDialog::on_cities_random_toggled()
 void GamePreferencesDialog::on_ruins_random_toggled()
 {
   ruins_scale->set_sensitive(!ruins_random_togglebutton->get_active());
-}
-void GamePreferencesDialog::on_temples_random_toggled()
-{
-  temples_scale->set_sensitive(!temples_random_togglebutton->get_active());
 }
 
 void GamePreferencesDialog::on_difficulty_changed()
