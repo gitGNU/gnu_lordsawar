@@ -93,16 +93,6 @@ class File
 	// get a tileset path
 	static std::string getTilesetFile(std::string tilesetname, std::string picname);
 	
-        /** Load a mask needed by various mapset images (e.g. cities)
-          * 
-          * @param tilesetname       the name of the tileset
-          * @param picname          the name of the mask picture
-          * @return the surface which contains the surface for the mask
-          */
-        static SDL_Surface* getTilesetMask(std::string tilesetname, std::string picname);
-
-        
-        
         //! load misc file, e.g. hero names 
         static std::string getMiscFile(std::string filename);
         

@@ -151,13 +151,6 @@ SDL_Surface* File::getTilesetPicture(string tilesetname, string picname)
     return loadImage(getTilesetFile(tilesetname, picname));
 }
 
-SDL_Surface* File::getTilesetMask(string tilesetname, string picname)
-{
-    string filename = Configuration::s_dataPath + "/tilesets/" + tilesetname + "/" + picname;
-    return IMG_Load(filename.c_str());
-}
-
-
 string File::getMiscFile(string filename)
 {
     return Configuration::s_dataPath + "/" + filename;
