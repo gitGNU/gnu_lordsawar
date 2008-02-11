@@ -104,6 +104,10 @@ int main(int argc, char* argv[])
 
     // Check if armysets are in the path (otherwise exit)
     File::scanArmysets();
+    File::scanTilesets();
+    File::scanShieldsets();
+    File::scanCitysets();
+
 
     kit.start_main_loop();
     
