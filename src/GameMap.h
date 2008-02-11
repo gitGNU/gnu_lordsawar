@@ -90,7 +90,7 @@ class GameMap: public sigc::trackable
         TileSet* getTileSet() const {return d_tileSet;}
 
         //! Returns the shieldset in use
-        Shieldset* getShieldSet() const {return d_shieldSet;}
+        Shieldset* getShieldset() const {return d_shieldSet;}
 
         //! Returns the tileset in use
         CitySet* getCitySet() const {return d_citySet;}

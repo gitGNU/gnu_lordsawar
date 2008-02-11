@@ -101,19 +101,19 @@ GameMap::GameMap(XML_Helper* helper)
     std::string types;
     std::string styles;
     std::string t_dir;
-    std::string s_name;
+    std::string s_dir;
     std::string c_dir;
 
     helper->getData(s_width, "width");
     helper->getData(s_height, "height");
     helper->getData(t_dir,"tileset");
-    helper->getData(s_name,"shieldset");
+    helper->getData(s_dir,"shieldset");
     helper->getData(c_dir,"cityset");
     helper->getData(types, "types");
     helper->getData(styles, "styles");
 
     d_tileSet = Tilesetlist::getInstance()->getTileset(t_dir);
-    d_shieldSet = Shieldsetlist::getInstance()->getShieldset(s_name);
+    d_shieldSet = Shieldsetlist::getInstance()->getShieldset(s_dir);
     d_citySet = Citysetlist::getInstance()->getCityset(c_dir);
 
     //create the map
@@ -272,7 +272,7 @@ bool GameMap::save(XML_Helper* helper) const
     retval &= helper->saveData("width", s_width);
     retval &= helper->saveData("height", s_height);
     retval &= helper->saveData("tileset", d_tileSet->getSubDir());
-    retval &= helper->saveData("shieldset", d_shieldSet->getName());
+    retval &= helper->saveData("shieldset", d_shieldSet->getSubDir());
     retval &= helper->saveData("cityset", d_citySet->getSubDir());
     retval &= helper->saveData("types", types.str());
     retval &= helper->saveData("styles", styles.str());

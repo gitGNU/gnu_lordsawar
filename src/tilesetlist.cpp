@@ -20,7 +20,6 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "tilesetlist.h"
-#include "armyset.h"
 #include "File.h"
 #include "defs.h"
 

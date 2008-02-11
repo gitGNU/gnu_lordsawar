@@ -184,8 +184,8 @@ void NewMapDialog::run()
 	map.tileset = Tilesetlist::getInstance()->getTilesetDir
 	  (Glib::filename_from_utf8(tile_theme_combobox->get_active_text()));
 
-	map.shieldset = 
-	  Glib::filename_from_utf8(shield_theme_combobox->get_active_text());
+	map.shieldset = Shieldsetlist::getInstance()->getShieldsetDir
+	  (Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
 
 	map.cityset = Citysetlist::getInstance()->getCitysetDir
 	  (Glib::filename_from_utf8(city_theme_combobox->get_active_text()));

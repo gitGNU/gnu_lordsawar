@@ -443,6 +443,7 @@ void GamePreferencesDialog::on_start_game_clicked()
 {
   Armysetlist *al = Armysetlist::getInstance();
   Tilesetlist *tl = Tilesetlist::getInstance();
+  Shieldsetlist *sl = Shieldsetlist::getInstance();
   Citysetlist *cl = Citysetlist::getInstance();
     // read out the values in the widgets
     GameParameters g;
@@ -546,7 +547,9 @@ void GamePreferencesDialog::on_start_game_clicked()
       (Glib::filename_from_utf8(tile_theme_combobox->get_active_text()));
 
     g.army_theme = Glib::filename_from_utf8(army_theme_combobox->get_active_text());
-    g.shield_theme = Glib::filename_from_utf8(shield_theme_combobox->get_active_text());
+    g.shield_theme = sl->getShieldsetDir 
+      (Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
+
     g.city_theme = cl->getCitysetDir 
       (Glib::filename_from_utf8(city_theme_combobox->get_active_text()));
 

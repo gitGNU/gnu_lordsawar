@@ -58,10 +58,10 @@ class Shield : public sigc::trackable
         void setMask(SDL_Surface* mask);
 
         //! Set the shieldset of the shield
-        void setShieldset(Uint32 shieldset) {d_shieldset = shieldset;};
+        void setShieldset(std::string shieldset) {d_shieldset = shieldset;};
 
 	//! Get the shieldset of the shield
-        Uint32 getShieldset() const {return d_shieldset;}
+	std::string getShieldset() const {return d_shieldset;}
 
         
         // Get functions
@@ -81,20 +81,14 @@ class Shield : public sigc::trackable
 	std::string getImageName() const {return d_image;}
 	void setImageName(std::string image) {d_image = image;}
 
-        //! Saves the shield information (see XML_Helper for further info)
-        virtual bool save(XML_Helper* helper) const;
-        
     protected:
-        bool saveData(XML_Helper* helper) const;
 
-        //! Copies the generic data from the original prototype shield (used for loading)
-        
         Uint32 d_type;
 	Uint32 d_colour;
         SDL_Surface* d_pixmap;
         SDL_Surface* d_mask;
 	std::string d_image;
-	Uint32 d_shieldset;
+	std::string d_shieldset;
 };
 
 #endif // SHIELD_H

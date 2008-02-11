@@ -28,15 +28,9 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-Shieldset::Shieldset(Uint32 id, std::string name)
-	: d_id(id), d_name(name), d_dir("")
-{
-}
-
 Shieldset::Shieldset(XML_Helper *helper)
-    : d_id(0), d_name(""), d_dir("")
+    : d_dir("")
 {
-  helper->getData(d_id, "id");
   helper->getData(d_name, "name");
   helper->getData(d_small_width, "small_width");
   helper->getData(d_small_height, "small_height");
@@ -128,33 +122,10 @@ bool Shieldset::loadShield(string tag, XML_Helper* helper)
 	std::string s;
 	// First step: Load the shield data
 	Shield* sh = new Shield(helper);
-	sh->setShieldset(d_id);
+	sh->setShieldset(d_dir);
 	push_back(sh);
       }
     return true;
-}
-
-bool Shieldset::save(XML_Helper* helper)
-{
-    bool retval = true;
-
-    retval &= helper->openTag("shieldset");
-
-    retval &= helper->saveData("id", d_id);
-    retval &= helper->saveData("name", d_name);
-    retval &= helper->saveData("small_width", d_small_width);
-    retval &= helper->saveData("small_height", d_small_height);
-    retval &= helper->saveData("medium_width", d_medium_width);
-    retval &= helper->saveData("medium_height", d_medium_height);
-    retval &= helper->saveData("large_width", d_large_width);
-    retval &= helper->saveData("large_height", d_large_height);
-
-    for (const_iterator it = begin(); it != end(); it++)
-        (*it)->save(helper);
-    
-    retval &= helper->closeTag();
-
-    return retval;
 }
 
 Shield * Shieldset::lookupShieldByTypeAndColour(Uint32 type, Uint32 colour)

@@ -1570,7 +1570,7 @@
 		<d_width>100</d_width>
 		<d_height>100</d_height>
 		<d_tileset>default</d_tileset>
-		<d_shieldset>Default</d_shieldset>
+		<d_shieldset>default</d_shieldset>
 		<d_cityset>default</d_cityset>
 		<d_types>
 1111111111100011111111111111111111111111500000000000000000000000000000000000000000000000000000000000

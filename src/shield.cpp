@@ -26,7 +26,7 @@
 #define debug(x)
 
 Shield::Shield(XML_Helper* helper)
-  :d_pixmap(0), d_mask(0), d_shieldset(0)
+  :d_pixmap(0), d_mask(0), d_shieldset("")
 {
   helper->getData(d_type, "type");
   helper->getData(d_colour, "colour");
@@ -50,26 +50,6 @@ SDL_Surface* Shield::getPixmap() const
     //use the GraphicsCache to get a picture of the shield's shieldset_shield
     return GraphicsCache::getInstance()->getShieldPic(d_shieldset, d_type,
                                          d_colour);
-}
-
-bool Shield::save(XML_Helper* helper) const
-{
-    bool retval = true;
-
-    retval &= helper->openTag("shield");
-    retval &= helper->closeTag();
-
-    return retval;
-}
-
-bool Shield::saveData(XML_Helper* helper) const
-{
-    bool retval = true;
-    
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("colour", d_colour);
-    retval &= helper->saveData("image", d_image);
-    return retval;
 }
 
 void Shield::setPixmap(SDL_Surface* pixmap)

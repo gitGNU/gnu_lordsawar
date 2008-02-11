@@ -300,7 +300,7 @@ bool MainWindow::on_delete_event(GdkEventAny *e)
 
 void MainWindow::show_initial_map()
 {
-    set_filled_map(112, 156, Tile::WATER, "default", "Default", "default");
+    set_filled_map(112, 156, Tile::WATER, "default", "default", "default");
     setup_terrain_radiobuttons();
     remove_tile_style_buttons();
     setup_tile_style_buttons(Tile::GRASS);

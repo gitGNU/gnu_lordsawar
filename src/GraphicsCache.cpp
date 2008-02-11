@@ -143,7 +143,7 @@ struct SelectorCacheItem
 // the structure to store shield images in
 struct ShieldCacheItem
 {
-    Uint32 shieldset;
+    std::string shieldset;
     Uint32 type;
     Uint32 colour;
     SDL_Surface* surface;
@@ -235,7 +235,7 @@ GraphicsCache::~GraphicsCache()
             SDL_FreeSurface(d_towerpic[i]);
     }
 
-    for (int i = 0; i < MAX_STACK_SIZE; i++)
+    for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
     {
         SDL_FreeSurface(d_flagpic[i]);
         SDL_FreeSurface(d_flagmask[i]);
@@ -459,7 +459,8 @@ SDL_Surface* GraphicsCache::getArmyPic(Uint32 armyset, Uint32 army, const Player
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getShieldPic(Uint32 shieldset, Uint32 type, 
+SDL_Surface* GraphicsCache::getShieldPic(std::string shieldset, 
+					 Uint32 type, 
 					 Uint32 colour)
 {
     debug("getting shield pic " <<shieldset <<" " <<type <<" " <<colour)
@@ -491,7 +492,7 @@ SDL_Surface* GraphicsCache::getShieldPic(Uint32 shieldset, Uint32 type,
         
 SDL_Surface* GraphicsCache::getShieldPic(Uint32 type, Player *p)
 {
-  Uint32 shieldset = GameMap::getInstance()->getShieldSet()->getId();
+  std::string shieldset = GameMap::getInstance()->getShieldset()->getSubDir();
   return getShieldPic(shieldset, type, p->getId());
 }
 
@@ -1009,8 +1010,8 @@ ArmyCacheItem* GraphicsCache::addArmyPic(Uint32 armyset, Uint32 army,
   return myitem;
 }
 
-ShieldCacheItem* GraphicsCache::addShieldPic(Uint32 shieldset, Uint32 type,
-					     Uint32 colour)
+ShieldCacheItem* GraphicsCache::addShieldPic(std::string shieldset, 
+					     Uint32 type, Uint32 colour)
 {
   debug("ADD shield pic: " <<shieldset <<"," <<type <<"," <<colour)
 
@@ -2269,7 +2270,7 @@ void GraphicsCache::loadFlags()
   // copy alpha values, don't use them!
   SDL_SetAlpha(flag, 0, 0);
 
-  for (int i = 0; i < MAX_STACK_SIZE; i++)
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
     {
       // first, create the flag image; create a temporary surface...
       SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, tilesize, tilesize, 

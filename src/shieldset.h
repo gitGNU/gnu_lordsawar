@@ -28,9 +28,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 {
     public:
 
-	Shieldset(Uint32 id, std::string name);
         Shieldset(XML_Helper* helper);
-	bool save(XML_Helper* helper);
         ~Shieldset();
 
 	Uint32 getSmallHeight() const {return d_small_height;}
@@ -43,8 +41,6 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
         /** Returns the number of shields in this shieldset
           */
         Uint32 getSize() const {return size();}
-
-        Uint32 getId() const {return d_id;}
 
         /** Returns the name of this shieldset
           * 
@@ -67,7 +63,6 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 
 	bool instantiatePixmap(Shield *a);
         
-        Uint32 d_id;
         std::string d_name;
         std::string d_dir;
 	Uint32 d_small_height;

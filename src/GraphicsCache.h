@@ -132,7 +132,7 @@ class GraphicsCache
           * @param colour       which player the shield is for
           * @return the image of the shield
           */
-        SDL_Surface* getShieldPic(Uint32 shieldset, Uint32 type, Uint32 colour);
+        SDL_Surface* getShieldPic(std::string shieldset, Uint32 type, Uint32 colour);
         SDL_Surface* getShieldPic(Uint32 type, Player *p);
 
         /** Function for getting a ruin picture
@@ -333,7 +333,7 @@ class GraphicsCache
                                   const bool* medalsbonus);
 
         //! Creates a new shield picture with the given parameters.
-        ShieldCacheItem* addShieldPic(Uint32 shieldset, Uint32 type, Uint32 colour);
+        ShieldCacheItem* addShieldPic(std::string shieldset, Uint32 type, Uint32 colour);
 
         //! Creates a new city picture with the given parameters.
         CityCacheItem* addCityPic(int type, const Player* p);

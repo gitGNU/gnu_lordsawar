@@ -20,11 +20,9 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "shieldsetlist.h"
-#include "shieldset.h"
+#include "armyset.h"
 #include "File.h"
 #include "defs.h"
-
-
 
 using namespace std;
 
@@ -60,11 +58,9 @@ Shieldsetlist::Shieldsetlist()
         loadShieldset(*i);
 	iterator it = end();
 	it--;
-	//for (Shieldset::iterator ait = (*it)->begin(); ait != (*it)->end(); ait++)
-	d_shieldsets[(*it)->getId()] = *it;
-	d_names[(*it)->getId()] = (*it)->getName();
-	d_ids[(*it)->getName()] = (*it)->getId();
 	(*it)->setSubDir(*i);
+	d_dirs[(*it)->getName()] = *i;
+	d_shieldsets[*i] = *it;
       }
 }
 
@@ -74,68 +70,12 @@ Shieldsetlist::~Shieldsetlist()
     delete (*it);
 }
 
-Shield* Shieldsetlist::getShield(Uint32 id, Uint32 type, Uint32 colour) const
-{
-    ShieldsetMap::const_iterator it = d_shieldsets.find(id);
-	
-    if (it == d_shieldsets.end())
-        return 0;
-
-    return (*it).second->lookupShieldByTypeAndColour(type, colour);
-}
-
-Uint32 Shieldsetlist::getSize(Uint32 id) const
-{
-    ShieldsetMap::const_iterator it = d_shieldsets.find(id);
-
-    // shieldset does not exist
-    if (it == d_shieldsets.end())
-        return 0;
-
-    return (*it).second->getSize();
-}
-
 std::list<std::string> Shieldsetlist::getNames()
 {
   std::list<std::string> names;
   for (iterator it = begin(); it != end(); it++)
     names.push_back((*it)->getName());
   return names;
-}
-
-std::string Shieldsetlist::getName(Uint32 id) const
-{
-    NameMap::const_iterator it = d_names.find(id);
-
-    // shieldset does not exist
-    if (it == d_names.end())
-        return 0;
-
-    return (*it).second;
-}
-
-Shieldset * Shieldsetlist::getShieldset(std::string name)
-{
-  Uint32 id = getShieldsetId(name);
-  if (id == 0)
-    return NULL;
-  ShieldsetMap::iterator sit = d_shieldsets.find(id);
-  if (sit == d_shieldsets.end())
-    return 0;
-  return (*sit).second;
-}
-
-std::vector<Uint32> Shieldsetlist::getShieldsets() const
-{
-    std::vector<Uint32> retlist;
-    
-    NameMap::const_iterator it;
-    for (it = d_names.begin(); it != d_names.end(); it++)
-    {
-        retlist.push_back((*it).first);
-    }
-
-    return retlist;
 }
 
 bool Shieldsetlist::load(std::string tag, XML_Helper *helper)
@@ -148,7 +88,6 @@ bool Shieldsetlist::load(std::string tag, XML_Helper *helper)
   return true;
 }
 
-
 bool Shieldsetlist::loadShieldset(std::string name)
 {
   debug("Loading shieldset " <<name);
@@ -159,7 +98,7 @@ bool Shieldsetlist::loadShieldset(std::string name)
 
   if (!helper.parse())
     {
-      std::cerr <<_("Error, while loading an shieldset. Shieldset Name: ");
+      std::cerr <<_("Error, while loading a shieldset. Shieldset Name: ");
       std::cerr <<name <<std::endl <<std::flush;
       exit(-1);
     }
@@ -173,3 +112,10 @@ void Shieldsetlist::instantiatePixmaps()
     (*it)->instantiatePixmaps();
 }
 	
+Shield *Shieldsetlist::getShield(std::string shieldset, Uint32 type, Uint32 colour)
+{
+  Shieldset *s = getShieldset(shieldset);
+  if (!s)
+    return NULL;
+  return s->lookupShieldByTypeAndColour(type, colour);
+}
