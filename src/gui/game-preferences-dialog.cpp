@@ -88,10 +88,6 @@ GamePreferencesDialog::GamePreferencesDialog()
     xml->get_widget("cities_random_togglebutton", cities_random_togglebutton);
     cities_random_togglebutton->signal_toggled().connect
       (sigc::mem_fun(*this, &GamePreferencesDialog::on_cities_random_toggled));
-    xml->get_widget("ruins_scale", ruins_scale);
-    xml->get_widget("ruins_random_togglebutton", ruins_random_togglebutton);
-    ruins_random_togglebutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &GamePreferencesDialog::on_ruins_random_toggled));
     xml->get_widget("map_size_combobox", map_size_combobox);
     xml->get_widget("difficulty_combobox", difficulty_combobox);
 
@@ -346,18 +342,15 @@ void GamePreferencesDialog::on_map_size_changed()
     switch (map_size_combobox->get_active_row_number()) {
     case MAP_SIZE_SMALL:
 	cities_scale->set_value(15);
-	ruins_scale->set_value(20);
 	break;
 	
     case MAP_SIZE_TINY:
 	cities_scale->set_value(10);
-	ruins_scale->set_value(15);
 	break;
 
     case MAP_SIZE_NORMAL:
     default:
 	cities_scale->set_value(40);
-	ruins_scale->set_value(25);
 	break;
     }
 }
@@ -460,17 +453,20 @@ void GamePreferencesDialog::on_start_game_clicked()
 	case MAP_SIZE_SMALL:
 	    g.map.width = 70;
 	    g.map.height = 105;
+	    g.map.ruins = 20;
 	    break;
 	
 	case MAP_SIZE_TINY:
 	    g.map.width = 50;
 	    g.map.height = 75;
+	    g.map.ruins = 15;
 	    break;
 	
 	case MAP_SIZE_NORMAL:
 	default:
 	    g.map.width = 112;
 	    g.map.height = 156;
+	    g.map.ruins = 35;
 	    break;
 	}
 
@@ -530,14 +526,6 @@ void GamePreferencesDialog::on_start_game_clicked()
 		       int(cities_scale->get_adjustment()->get_lower()) + 1));
 	else
 	  g.map.cities = int(cities_scale->get_value());
-
-	if (ruins_random_togglebutton->get_active())
-	  g.map.ruins =  
-	    int(ruins_scale->get_adjustment()->get_lower()) + 
-	    (rand() % (int(ruins_scale->get_adjustment()->get_upper()) -
-		       int(ruins_scale->get_adjustment()->get_lower()) + 1));
-	else
-	  g.map.ruins = int(ruins_scale->get_value());
 
     }
     else
@@ -624,10 +612,6 @@ void GamePreferencesDialog::on_mountains_random_toggled()
 void GamePreferencesDialog::on_cities_random_toggled()
 {
   cities_scale->set_sensitive(!cities_random_togglebutton->get_active());
-}
-void GamePreferencesDialog::on_ruins_random_toggled()
-{
-  ruins_scale->set_sensitive(!ruins_random_togglebutton->get_active());
 }
 
 void GamePreferencesDialog::on_difficulty_changed()
