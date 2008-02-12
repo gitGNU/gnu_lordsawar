@@ -249,7 +249,8 @@ void PlayersDialog::run()
 
 		pl->insert(j, new_player);
 	    }
-	    else if (player && type != NO_PLAYER_TYPE) // player was modified
+	    else if (player && type != NO_PLAYER_TYPE &&
+		     player->getType() != type_as_enum) // player was modified
 	    {
 		Player *new_player = 0;
 		if (type == HUMAN_PLAYER_TYPE)
