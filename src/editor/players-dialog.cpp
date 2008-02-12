@@ -168,12 +168,13 @@ void PlayersDialog::set_parent_window(Gtk::Window &parent)
 
 void PlayersDialog::run()
 {
+    int min_player_id = -1;
     dialog->show_all();
     int response = dialog->run();
+    Playerlist *pl = Playerlist::getInstance();
 
     if (response == 0)		// accepted
     {
-	Playerlist *pl = Playerlist::getInstance();
 	Uint32 default_armyset = Armysetlist::getInstance()->getArmysets()[0];
 	
 	// update the player list
@@ -271,6 +272,22 @@ void PlayersDialog::run()
 	    }
 	}
     }
+	
+    Playerlist::iterator j = pl->begin();
+    for (; j != pl->end(); j++)
+      {
+	if (pl->getNeutral() == *j)
+	  continue;
+	if (min_player_id == -1)
+	  min_player_id = (*j)->getId();
+	else if ((*j)->getId() < (Uint32) min_player_id)
+	  min_player_id = (*j)->getId();
+      }
+    //the first player needs to be the active player, so that when we
+    //save and then load, that player goes first.
+    if (min_player_id > -1)
+      while (pl->getActiveplayer()->getId() != (Uint32) min_player_id)
+	pl->nextPlayer();
 }
 
 void PlayersDialog::cell_data_type(Gtk::CellRenderer *renderer,
