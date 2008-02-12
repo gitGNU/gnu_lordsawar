@@ -1,3 +1,6 @@
+2008-02-12  Ben Asselstine
+	* load map dialog now opens to the .lordsawar dir initially
+
 2008-02-11  Ben Asselstine
 	* removed temple slider from game preferences dialog.  now always 4.
 	* removed ruin slider from game preferences dialog.  now it's
