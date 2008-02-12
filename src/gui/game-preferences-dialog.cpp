@@ -124,6 +124,7 @@ GamePreferencesDialog::GamePreferencesDialog()
     Gtk::FileFilter map_filter;
     map_filter.add_pattern("*.map");
     map_filter.set_name(_("LordsAWar map files (*.map)"));
+    load_map_filechooser->set_current_folder(Configuration::s_savePath);
     load_map_filechooser->set_filter(map_filter);
 
 
@@ -298,6 +299,7 @@ void GamePreferencesDialog::on_random_map_toggled()
 	    (*c)->set_sensitive(true);
 	    (*e)->set_sensitive(true);
 	  }
+	start_game_button->set_sensitive(true);
       }
     else
       {
@@ -330,6 +332,10 @@ void GamePreferencesDialog::on_random_map_toggled()
 		(*e)->set_sensitive(true);
 		(*e)->set_name((*i).name);
 	      }
+	  }
+	else
+	  {
+	    start_game_button->set_sensitive(false);
 	  }
       }
 
