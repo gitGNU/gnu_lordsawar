@@ -37,7 +37,7 @@ class Shield : public sigc::trackable
 {
     public:
 
-	enum ShieldColour {WHITE = 0, YELLOW = 1, GREEN = 2, LIGHT_BLUE = 3,
+	enum ShieldColour {WHITE = 0, GREEN = 1, YELLOW = 2, LIGHT_BLUE = 3,
 	RED = 4, DARK_BLUE = 5, ORANGE = 6, BLACK = 7, NEUTRAL = 8};
 	enum ShieldType {SMALL = 0, MEDIUM = 1, LARGE = 2};
         /** Loading constructor. See XML_Helper for more details.
