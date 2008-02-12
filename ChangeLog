@@ -1,5 +1,6 @@
 2008-02-12  Ben Asselstine
 	* load map dialog now opens to the .lordsawar dir initially
+	* the editor now saves the correct active player
 
 2008-02-11  Ben Asselstine
 	* removed temple slider from game preferences dialog.  now always 4.
