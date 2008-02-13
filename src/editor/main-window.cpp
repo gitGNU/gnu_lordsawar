@@ -48,6 +48,7 @@
 #include "../smallmap.h"
 #include "../GameScenario.h"
 #include "../armysetlist.h"
+#include "../Itemlist.h"
 #include "../playerlist.h"
 #include "../ai_dummy.h"
 
@@ -316,6 +317,7 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
     GameMap::setWidth(width);
     GameMap::setHeight(height);
     GameMap::getInstance(tileset, shieldset, cityset);
+    Itemlist::createStandardInstance();
 
     // sets up the lists
     game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
@@ -403,6 +405,7 @@ void MainWindow::set_random_map(int width, int height,
     gen.makeMap(width, height, false);
     GameMap::getInstance()->fill(&gen);
 
+    Itemlist::createStandardInstance();
     // sets up the lists
     game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
     

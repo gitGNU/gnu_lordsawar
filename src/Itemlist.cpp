@@ -22,10 +22,22 @@ Itemlist* Itemlist::d_instance = 0;
 
 Itemlist* Itemlist::getInstance()
 {
+    if (!d_instance)
+        d_instance = new Itemlist();
+
     return d_instance;
 }
 
-void Itemlist::createInstance()
+Itemlist* Itemlist::getInstance(XML_Helper *helper)
+{
+    if (!d_instance)
+        d_instance = new Itemlist();
+
+    d_instance = new Itemlist(helper);
+    return d_instance;
+}
+
+void Itemlist::createStandardInstance()
 {
     deleteInstance();
 
@@ -54,6 +66,10 @@ Itemlist::Itemlist(XML_Helper* helper)
     helper->registerTag("item", sigc::mem_fun(*this, &Itemlist::loadItem));
 }
 
+Itemlist::Itemlist()
+{
+}
+
 Itemlist::~Itemlist()
 {
     fl_clear();
@@ -80,4 +96,18 @@ void Itemlist::fl_clear()
 {
     while (!empty())
         fl_erase(begin());
+}
+
+bool Itemlist::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("itemlist");
+
+    for (const_iterator it = begin(); it != end(); it++)
+      (*it).second->save(helper);
+    
+    retval &= helper->closeTag();
+
+    return retval;
 }

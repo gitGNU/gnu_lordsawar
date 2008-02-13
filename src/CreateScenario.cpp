@@ -63,6 +63,7 @@ CreateScenario::CreateScenario(int width, int height)
     Portlist::deleteInstance();
     Bridgelist::deleteInstance();
     Citylist::deleteInstance();
+    Itemlist::deleteInstance();
 
     QuestsManager::deleteInstance();
 
@@ -368,6 +369,9 @@ bool CreateScenario::create(const GameParameters &g)
     int base_gold;
     getBaseGold (g.difficulty, &base_gold);
     if (!setupPlayers(g.diplomacy, g.random_turns, base_gold))
+        return false;
+
+    if (!setupItems())
         return false;
 
     if (!setupRewards())
@@ -861,10 +865,15 @@ bool CreateScenario::setupRuinRewards()
   return true;
 }
 
+bool CreateScenario::setupItems()
+{
+  Itemlist::createStandardInstance();
+  return true;
+}
+
 bool CreateScenario::setupItemRewards()
 {
   debug("CreateScenario::setupItemRewards")
-    Itemlist::createInstance();
   Itemlist *il = Itemlist::getInstance();
   Itemlist::iterator iter;
   for (iter = il->begin(); iter != il->end(); iter++)
@@ -875,7 +884,6 @@ bool CreateScenario::setupItemRewards()
       Rewardlist::getInstance()->push_back(newReward); //add it
     }
 
-  Itemlist::deleteInstance();
   return true;
 }
 

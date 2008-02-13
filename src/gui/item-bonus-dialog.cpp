@@ -42,11 +42,9 @@ ItemBonusDialog::ItemBonusDialog()
     items_treeview->append_column("", items_columns.name);
     items_treeview->append_column("Bonus", items_columns.bonus);
 
-    Itemlist::createInstance();
     Itemlist::iterator iter = Itemlist::getInstance()->begin();
     for (;iter != Itemlist::getInstance()->end(); iter++)
       addItem((*iter).second);
-    Itemlist::deleteInstance();
 }
 
 void ItemBonusDialog::set_parent_window(Gtk::Window &parent)

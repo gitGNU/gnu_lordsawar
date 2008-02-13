@@ -33,21 +33,28 @@ class Itemlist : public std::map<Uint32, Item*>, public sigc::trackable
 {
     public:
 
-        //! Returns the singleton instance. Returns 0 if none exists.
-        static Itemlist* getInstance();
+        //! Returns the singleton instance.
+	static Itemlist* getInstance();
+
+	//! Reads in the itemlist from a file
+        static Itemlist* getInstance(XML_Helper *helper);
 
         //! Creates a new singleton instance. Deletes an existing one.
-        static void createInstance();
+	//This list of items comes from loading the items.xml file.
+        static void createStandardInstance();
 
         //! Explicitely deletes the singleton instance.
         static void deleteInstance();
         
-    private:
-        //! The only constructor loads the items from a description file.
-        Itemlist(XML_Helper* helper);
+	//! Save the item data.  See XML_Helper for details.
+	bool save(XML_Helper* helper) const;
 
-        //! The destructor clears the list of items.
+    protected:
+	Itemlist();
+        Itemlist(XML_Helper* helper);
         ~Itemlist();
+
+    private:
 
         //! Callback for the initialisation. See XML_Helper why using this.
         bool loadItem(std::string tag, XML_Helper* helper);

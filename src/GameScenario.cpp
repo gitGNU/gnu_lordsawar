@@ -78,7 +78,6 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
     Tilesetlist::getInstance()->instantiatePixmaps();
     Shieldsetlist::getInstance();
     Shieldsetlist::getInstance()->instantiatePixmaps();
-    Itemlist::createInstance();
 
     if (fl_counter == 0)
         fl_counter = new FL_Counter();
@@ -95,12 +94,12 @@ GameScenario::GameScenario(string savegame, bool& broken)
     Tilesetlist::getInstance()->instantiatePixmaps();
     Shieldsetlist::getInstance();
     Shieldsetlist::getInstance()->instantiatePixmaps();
-    Itemlist::createInstance();
 
     broken = false;
     XML_Helper helper(savegame, ios::in, Configuration::s_zipfiles);
 
     helper.registerTag("scenario", sigc::mem_fun(this, &GameScenario::load));
+    helper.registerTag("itemlist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("playerlist", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("map", sigc::mem_fun(this, &GameScenario::load));
     helper.registerTag("citylist", sigc::mem_fun(this, &GameScenario::load));
@@ -129,6 +128,7 @@ GameScenario::~GameScenario()
 {
     // GameMap is a Singleton so we need a function to delete it
     GameMap::deleteInstance();
+    Itemlist::deleteInstance();
     Playerlist::deleteInstance();
     Citylist::deleteInstance();
     Templelist::deleteInstance();
@@ -139,7 +139,6 @@ GameScenario::~GameScenario()
     Bridgelist::deleteInstance();
     Roadlist::deleteInstance();
     QuestsManager::deleteInstance();
-    Itemlist::deleteInstance();
     VectoredUnitlist::deleteInstance();
 
     if (fl_counter)
@@ -217,6 +216,7 @@ bool GameScenario::saveGame(string filename, string extension) const
     //if retval is still true it propably doesn't change throughout the rest
     //now save the single object's data
     retval &= fl_counter->save(&helper);
+    retval &= Itemlist::getInstance()->save(&helper);
     retval &= Playerlist::getInstance()->save(&helper);
     retval &= GameMap::getInstance()->save(&helper);
     retval &= Citylist::getInstance()->save(&helper);
@@ -311,6 +311,13 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
     {
         debug("loading counter")
         fl_counter = new FL_Counter(helper);
+        return true;
+    }
+
+    if (tag == "itemlist")
+    {
+        debug("loading items");
+        Itemlist::getInstance(helper);
         return true;
     }
 

@@ -179,6 +179,10 @@ class CreateScenario
 	bool setupRuins(bool strongholds_invisible, int sage_factor, 
 			int no_guardian_factor, int stronghold_factor);
 
+
+	//! Set up the standard set of items
+	bool setupItems();
+
         //! Set up signposts
 	//! @param ratio - how many signposts reference nearby cities vs
 	//                 signposts that don't.
