@@ -186,11 +186,6 @@ int Stack::getMinTileMoves() const
 	  min = std::min(min, v);
       }
 
-  if (min == -1)
-    {
-      fprintf (stderr, "adam's bug hit for stack at %d,%d!\n",
-	       getPos().x, getPos().y);
-    }
   return min;
 }
 
