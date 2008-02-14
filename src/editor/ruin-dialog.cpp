@@ -27,6 +27,7 @@
 #include "glade-helpers.h"
 #include "../ucompose.hpp"
 #include "../playerlist.h"
+#include "../CreateScenarioRandomize.h"
 #include "../defs.h"
 #include "../ruin.h"
 #include "../stack.h"
@@ -34,8 +35,9 @@
 
 #include "stack-dialog.h"
 
-RuinDialog::RuinDialog(Ruin *r)
+RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
 {
+    d_randomizer = randomizer;
     ruin = r;
     
     // copy occupant to be able to undo if the dialog is cancelled
@@ -62,6 +64,10 @@ RuinDialog::RuinDialog(Ruin *r)
     xml->get_widget("keeper_button", keeper_button);
     keeper_button->signal_clicked().connect(
 	sigc::mem_fun(this, &RuinDialog::on_keeper_clicked));
+
+    xml->get_widget("randomize_name_button", randomize_name_button);
+    randomize_name_button->signal_clicked().connect(
+	sigc::mem_fun(this, &RuinDialog::on_randomize_name_clicked));
 
     set_keeper_name();
     xml->get_widget("sage_checkbutton", sage_button);
@@ -142,6 +148,8 @@ void RuinDialog::run()
     }
     else
     {
+        //put the ruin name back.
+	d_randomizer->pushRandomRuinName(name_entry->get_text());
 	delete keeper;
 	keeper = 0;
     }
@@ -176,3 +184,14 @@ void RuinDialog::on_keeper_clicked()
     set_keeper_name();
 }
 
+void RuinDialog::on_randomize_name_clicked()
+{
+  std::string existing_name = name_entry->get_text();
+  if (existing_name == "")
+    name_entry->set_text(d_randomizer->popRandomRuinName());
+  else
+    {
+      name_entry->set_text(d_randomizer->popRandomRuinName());
+      d_randomizer->pushRandomRuinName(existing_name);
+    }
+}

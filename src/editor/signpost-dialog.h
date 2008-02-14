@@ -23,13 +23,15 @@
 #include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/textview.h>
+#include <gtkmm/button.h>
 
 class Signpost;
+class CreateScenarioRandomize;
 
 class SignpostDialog: public sigc::trackable
 {
  public:
-    SignpostDialog(Signpost *signpost);
+    SignpostDialog(Signpost *signpost, CreateScenarioRandomize *randomizer);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -39,6 +41,10 @@ class SignpostDialog: public sigc::trackable
     std::auto_ptr<Gtk::Dialog> dialog;
     Gtk::TextView *sign_textview;
     Signpost *signpost;
+    Gtk::Button *randomize_button;
+    CreateScenarioRandomize *d_randomizer;
+    
+    void on_randomize_clicked();
 };
 
 #endif

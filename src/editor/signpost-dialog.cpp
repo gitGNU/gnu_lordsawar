@@ -26,10 +26,12 @@
 #include "glade-helpers.h"
 #include "../ucompose.hpp"
 #include "../defs.h"
+#include "../CreateScenarioRandomize.h"
 #include "../signpost.h"
 
-SignpostDialog::SignpostDialog(Signpost *s)
+SignpostDialog::SignpostDialog(Signpost *s, CreateScenarioRandomize *randomizer)
 {
+    d_randomizer = randomizer;
     signpost = s;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -43,6 +45,9 @@ SignpostDialog::SignpostDialog(Signpost *s)
     xml->get_widget("sign_textview", sign_textview);
     sign_textview->get_buffer()->set_text(s->getName());
     
+    xml->get_widget("randomize_button", randomize_button);
+    randomize_button->signal_clicked().connect(
+	sigc::mem_fun(this, &SignpostDialog::on_randomize_clicked));
 }
 
 void SignpostDialog::set_parent_window(Gtk::Window &parent)
@@ -53,10 +58,38 @@ void SignpostDialog::set_parent_window(Gtk::Window &parent)
 
 void SignpostDialog::run()
 {
-    dialog->show_all();
-    int response = dialog->run();
+  dialog->show_all();
+  int response = dialog->run();
 
-    if (response == 0)		// accepted
-        signpost->setName(sign_textview->get_buffer()->get_text());
+  if (response == 0)		// accepted
+    signpost->setName(sign_textview->get_buffer()->get_text());
+  else
+    d_randomizer->pushRandomSignpost(sign_textview->get_buffer()->get_text());
 }
 
+void SignpostDialog::on_randomize_clicked()
+{
+  std::string existing_name = sign_textview->get_buffer()->get_text();
+  bool dynamic = ((rand() % d_randomizer->getNumSignposts()) == 0);
+  if (existing_name == "nowhere")
+    {
+      if (dynamic)
+	sign_textview->get_buffer()->set_text
+	  (d_randomizer->getDynamicSignpost(signpost));
+      else
+	sign_textview->get_buffer()->set_text
+	  (d_randomizer->popRandomSignpost());
+    }
+  else
+    {
+      if (dynamic)
+	sign_textview->get_buffer()->set_text
+	  (d_randomizer->getDynamicSignpost(signpost));
+      else
+	{
+	  sign_textview->get_buffer()->set_text
+	    (d_randomizer->popRandomSignpost());
+	  d_randomizer->pushRandomSignpost(existing_name);
+	}
+    }
+}

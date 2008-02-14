@@ -218,6 +218,10 @@ void CityDialog::run()
       for (; c < city->getMaxNoOfBasicProd(); ++c)
 	city->removeBasicProd(c);
     }
+  else
+    {
+      d_randomizer->pushRandomCityName(name_entry->get_text());
+    }
 }
 
 void CityDialog::on_add_clicked()
@@ -261,7 +265,7 @@ void CityDialog::on_randomize_armies_clicked()
 void CityDialog::on_randomize_name_clicked()
 {
   std::string existing_name = name_entry->get_text();
-  if (existing_name == "NoName")
+  if (existing_name == "Noname")
     name_entry->set_text(d_randomizer->popRandomCityName());
   else
     {

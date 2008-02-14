@@ -22,6 +22,8 @@
 #include "CreateScenarioRandomize.h"
 
 #include "File.h"
+#include "citylist.h"
+#include "signpost.h"
 
 using namespace std;
 
@@ -148,4 +150,38 @@ Uint32 CreateScenarioRandomize::getRandomCityIncome(bool capital)
     return 33 + (rand() % 8);
   else
     return 15 + (rand() % 12);
+}
+
+std::string CreateScenarioRandomize::getDynamicSignpost(Signpost *signpost)
+{
+  char *dir = NULL;
+  int xdir, ydir;
+  char buf[101]; buf[100] = '\0';
+  Vector<int> signpostPos = signpost->getPos();
+  City *nearCity = Citylist::getInstance()->getNearestCity(signpostPos);
+  if (nearCity == NULL)
+    return "nowhere";
+
+  Vector<int> cityPos = nearCity->getPos();
+  xdir = cityPos.x - signpostPos.x;
+  ydir = cityPos.y - signpostPos.y;
+  if (xdir >= 1 && ydir >= 1)
+    dir = _("southeast");
+  else if (xdir >= 1 && ydir == 0)
+    dir = _("east");
+  else if (xdir >= 1 && ydir <= -1)
+    dir = _("northeast");
+  else if (xdir == 0 && ydir >= 1)
+    dir = _("south");
+  else if (xdir == 0 && ydir <= -1)
+    dir = _("north");
+  else if (xdir <= -1 && ydir >= 1)
+    dir = _("southwest");
+  else if (xdir <= -1 && ydir == 0)
+    dir = _("west");
+  else if (xdir <= -1 && ydir <= -1)
+    dir = _("northwest");
+  snprintf(buf,100,_("%s lies to the %s"), 
+	   nearCity->getName().c_str(), dir);
+  return buf;
 }

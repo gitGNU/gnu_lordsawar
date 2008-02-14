@@ -30,11 +30,12 @@
 
 class Ruin;
 class Stack;
+class CreateScenarioRandomize;
 
 class RuinDialog: public sigc::trackable
 {
  public:
-    RuinDialog(Ruin *ruin);
+    RuinDialog(Ruin *ruin, CreateScenarioRandomize *randomize);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -45,16 +46,19 @@ class RuinDialog: public sigc::trackable
     Gtk::Entry *name_entry;
     Gtk::SpinButton *type_entry;
     Gtk::Button *keeper_button;
+    Gtk::Button *randomize_name_button;
     Gtk::CheckButton *sage_button;
     Gtk::CheckButton *hidden_button;
     Gtk::ComboBoxText *player_combobox;
     Ruin *ruin;
     Stack *keeper;
+    CreateScenarioRandomize *d_randomizer;
 
     void set_keeper_name();
 
     void on_keeper_clicked();
     void on_hidden_toggled();
+    void on_randomize_name_clicked();
 };
 
 #endif

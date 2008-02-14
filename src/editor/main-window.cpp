@@ -915,13 +915,13 @@ void MainWindow::popup_dialog_for_object(Object *object)
     }
     else if (Ruin *o = dynamic_cast<Ruin *>(object))
     {
-	RuinDialog d(o);
+	RuinDialog d(o, d_create_scenario_names.get());
 	d.set_parent_window(*window.get());
 	d.run();
     }
     else if (Signpost *o = dynamic_cast<Signpost *>(object))
     {
-	SignpostDialog d(o);
+	SignpostDialog d(o, d_create_scenario_names.get());
 	d.set_parent_window(*window.get());
 	d.run();
     }

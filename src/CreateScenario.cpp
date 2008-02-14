@@ -634,37 +634,10 @@ bool CreateScenario::setupSignposts(int ratio)
 	{
             // set up a signpost from the list of signposts
 	    (*it).setName(popRandomSignpost());
-
 	}
 	else
 	{
-	    char *dir = NULL;
-	    int xdir, ydir;
-	    char buf[101]; buf[100] = '\0';
-            Vector<int> signpostPos = (*it).getPos();
-	    City *nearCity = Citylist::getInstance()->getNearestCity(signpostPos);
-            Vector<int> cityPos = nearCity->getPos();
-	    xdir = cityPos.x - signpostPos.x;
-	    ydir = cityPos.y - signpostPos.y;
-	    if (xdir >= 1 && ydir >= 1)
-		dir = _("southeast");
-	    else if (xdir >= 1 && ydir == 0)
-		dir = _("east");
-	    else if (xdir >= 1 && ydir <= -1)
-		dir = _("northeast");
-	    else if (xdir == 0 && ydir >= 1)
-		dir = _("south");
-	    else if (xdir == 0 && ydir <= -1)
-		dir = _("north");
-	    else if (xdir <= -1 && ydir >= 1)
-		dir = _("southwest");
-	    else if (xdir <= -1 && ydir == 0)
-		dir = _("west");
-	    else if (xdir <= -1 && ydir <= -1)
-		dir = _("northwest");
-	    snprintf(buf,100,_("%s lies to the %s"), 
-		             nearCity->getName().c_str(), dir);
-            (*it).setName(buf);
+            (*it).setName(getDynamicSignpost(&*it));
 	}
     }
 
