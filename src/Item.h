@@ -91,7 +91,10 @@ class Item
 	void setBonus(Item::Bonus bonus);
         
         //! Return the name of the item
-        std::string getName() const {return __(d_name);}
+        std::string getName() const {return d_name;}
+
+	//! Set the name of the item
+	void setName(std::string name) {d_name = name;}
 
         //! Return the id of the item. 0 means the item is a template.
         Uint32 getId() const {return d_id;}

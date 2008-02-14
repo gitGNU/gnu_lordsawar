@@ -49,6 +49,8 @@ class Itemlist : public std::map<Uint32, Item*>, public sigc::trackable
 	//! Save the item data.  See XML_Helper for details.
 	bool save(XML_Helper* helper) const;
 
+	void remove(Item *item);
+
     protected:
 	Itemlist();
         Itemlist(XML_Helper* helper);

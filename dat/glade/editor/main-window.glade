@@ -115,6 +115,14 @@
 		  </child>
 
 		  <child>
+		    <widget class="GtkMenuItem" id="edit_items_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">_Items</property>
+		      <property name="use_underline">True</property>
+		    </widget>
+		  </child>
+
+		  <child>
 		    <widget class="GtkMenuItem" id="smooth_screen_menuitem">
 		      <property name="visible">True</property>
 		      <property name="label" translatable="yes">_Smooth Screen</property>

@@ -111,3 +111,17 @@ bool Itemlist::save(XML_Helper* helper) const
 
     return retval;
 }
+
+void Itemlist::remove(Item *item)
+{
+  Uint32 index = 0;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it).second == item)
+	{
+	  erase(index);
+	  break;
+	}
+      index++;
+    }
+}

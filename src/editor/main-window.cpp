@@ -83,6 +83,7 @@
 #include "city-dialog.h"
 #include "map-info-dialog.h"
 #include "new-map-dialog.h"
+#include "itemlist-dialog.h"
 
 
 MainWindow::MainWindow()
@@ -176,6 +177,9 @@ MainWindow::MainWindow()
 				       &MainWindow::on_smooth_map_activated));
     xml->connect_clicked("smooth_screen_menuitem", sigc::mem_fun
 			 (this, &MainWindow::on_smooth_screen_activated));
+    xml->connect_clicked("edit_items_menuitem", 
+			 sigc::mem_fun(this, 
+				       &MainWindow::on_edit_items_activated));
 }
 
 MainWindow::~MainWindow()
@@ -680,6 +684,7 @@ void MainWindow::on_fullscreen_activated()
     else
 	window->unfullscreen();
 }
+
 void MainWindow::remove_tile_style_buttons()
 {
   Glib::ListHandle<Gtk::Widget*> children = 
@@ -692,6 +697,7 @@ void MainWindow::remove_tile_style_buttons()
     }
   tile_style_items.clear();
 }
+
 void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
 {
   Gtk::RadioButton::Group group;
@@ -748,10 +754,12 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
 
   terrain_tile_style_hbox->show_all();
 }
+
 void MainWindow::on_tile_style_radiobutton_toggled()
 {
   on_pointer_radiobutton_toggled();
 }
+
 void MainWindow::on_terrain_radiobutton_toggled()
 {
   remove_tile_style_buttons();
@@ -935,13 +943,22 @@ void MainWindow::popup_dialog_for_object(Object *object)
 	bigmap->draw();
     }
 }
+
 void MainWindow::on_smooth_map_activated()
 {
   GameMap::getInstance()->applyTileStyles(0, 0, GameMap::getHeight(), 
 					  GameMap::getWidth(), true);
   bigmap->draw();
 }
+
 void MainWindow::on_smooth_screen_activated()
 {
   bigmap->smooth_view();
+}
+
+void MainWindow::on_edit_items_activated()
+{
+  ItemlistDialog d;
+  d.set_parent_window(*window.get());
+  d.run();
 }
