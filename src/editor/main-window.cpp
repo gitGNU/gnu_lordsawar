@@ -927,7 +927,7 @@ void MainWindow::popup_dialog_for_object(Object *object)
     }
     else if (Temple *o = dynamic_cast<Temple *>(object))
     {
-	TempleDialog d(o);
+	TempleDialog d(o, d_create_scenario_names.get());
 	d.set_parent_window(*window.get());
 	d.run();
 

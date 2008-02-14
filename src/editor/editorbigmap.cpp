@@ -551,8 +551,8 @@ void EditorBigMap::change_map_under_cursor()
 
 	    // finally, smooth the surrounding map
 	    GameMap::getInstance()->applyTileStyles(r.y - 1, r.x - 1, 
-						    r.y + r.h + 1, 
-						    r.x + r.w + 1, true);
+						    r.y + r.h + 2, 
+						    r.x + r.w + 2, true);
 	}
 	break;
 	    

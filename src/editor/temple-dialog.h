@@ -25,12 +25,14 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/spinbutton.h>
 
+class CreateScenarioRandomize;
+
 class Temple;
 
 class TempleDialog: public sigc::trackable
 {
  public:
-    TempleDialog(Temple *temple);
+    TempleDialog(Temple *temple, CreateScenarioRandomize *randomizer);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -41,6 +43,10 @@ class TempleDialog: public sigc::trackable
     Gtk::Entry *name_entry;
     Gtk::SpinButton *type_entry;
     Temple *temple;
+    Gtk::Button *randomize_name_button;
+    CreateScenarioRandomize *d_randomizer;
+
+    void on_randomize_name_clicked();
 };
 
 #endif

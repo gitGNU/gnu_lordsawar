@@ -25,11 +25,13 @@
 
 #include "glade-helpers.h"
 #include "../ucompose.hpp"
+#include "../CreateScenarioRandomize.h"
 #include "../defs.h"
 #include "../temple.h"
 
-TempleDialog::TempleDialog(Temple *t)
+TempleDialog::TempleDialog(Temple *t, CreateScenarioRandomize *randomizer)
 {
+    d_randomizer = randomizer;
     temple = t;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -45,6 +47,9 @@ TempleDialog::TempleDialog(Temple *t)
 
     xml->get_widget("type_entry", type_entry);
     type_entry->set_value(temple->getType());
+    xml->get_widget("randomize_name_button", randomize_name_button);
+    randomize_name_button->signal_clicked().connect(
+	sigc::mem_fun(this, &TempleDialog::on_randomize_name_clicked));
 }
 
 void TempleDialog::set_parent_window(Gtk::Window &parent)
@@ -65,3 +70,14 @@ void TempleDialog::run()
     }
 }
 
+void TempleDialog::on_randomize_name_clicked()
+{
+  std::string existing_name = name_entry->get_text();
+  if (existing_name == "Shrine")
+    name_entry->set_text(d_randomizer->popRandomTempleName());
+  else
+    {
+      name_entry->set_text(d_randomizer->popRandomTempleName());
+      d_randomizer->pushRandomTempleName(existing_name);
+    }
+}
