@@ -15,6 +15,7 @@
 #ifndef RUIN_H
 #define RUIN_H
 
+#define DEFAULT_RUIN_NAME  ""
 #include <string>
 #include <sigc++/trackable.h>
 #include "Location.h"
@@ -42,9 +43,10 @@ class Ruin : public Location, public sigc::trackable
 	  * @param owner        who can see this hidden ruin
 	  * @param sage         if this ruin contains a sage or not
           */
-        Ruin(Vector<int> pos, std::string name = "", int type = Ruin::RUIN,
-	     Stack* occupant = 0, bool searched = false, bool hidden = false, 
-	     Player *owner = 0, bool sage = false);
+        Ruin(Vector<int> pos, std::string name = DEFAULT_RUIN_NAME, 
+	     int type = Ruin::RUIN, Stack* occupant = 0, 
+	     bool searched = false, bool hidden = false, Player *owner = 0, 
+	     bool sage = false);
 
         //! Copy constructor
         Ruin(const Ruin&);

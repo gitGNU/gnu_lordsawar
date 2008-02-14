@@ -24,6 +24,8 @@ class Stack;
 class Army;
 class Hero;
 
+#define DEFAULT_CITY_NAME "Noname"
+#define DEFAULT_CITY_INCOME 20
 
 /** A city on the game map
   * 
@@ -55,7 +57,8 @@ class City : public Location
           * @param name         the name of the city
           * @param gold         the amount of gold the city produces each turn
           */
-        City(Vector<int> pos, std::string name = "Noname", Uint32 gold = 20);
+        City(Vector<int> pos, std::string name = DEFAULT_CITY_NAME, 
+	     Uint32 gold = DEFAULT_CITY_INCOME);
 
         //! The loading constructor. See XML_Helper for details.
         City(XML_Helper* helper);

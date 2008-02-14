@@ -69,7 +69,10 @@ void TempleDialog::run()
 	temple->setType(type_entry->get_value_as_int());
     }
     else
-      d_randomizer->pushRandomTempleName(name_entry->get_text());
+      {
+	if (name_entry->get_text() != DEFAULT_TEMPLE_NAME)
+	  d_randomizer->pushRandomTempleName(name_entry->get_text());
+      }
 }
 
 void TempleDialog::on_randomize_name_clicked()

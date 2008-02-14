@@ -36,8 +36,9 @@
 #include "../GraphicsCache.h"
 #include "../armysetlist.h"
 
-SelectArmyDialog::SelectArmyDialog(Player *p)
+SelectArmyDialog::SelectArmyDialog(Player *p, bool defends_ruins)
 {
+    d_defends_ruins = defends_ruins;
     player = p;
     selected_army = 0;
     
@@ -117,7 +118,8 @@ void SelectArmyDialog::fill_in_army_toggles()
     for (unsigned int j = 0; j < al->getSize(armyset); j++)
     {
 	const Army *a = al->getArmy(armyset, j);
-	selectable.push_back(a);
+	if ((d_defends_ruins && a->getDefendsRuins()) || !d_defends_ruins)
+	  selectable.push_back(a);
     }
 
     // fill in army options

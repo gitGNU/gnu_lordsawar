@@ -15,6 +15,8 @@
 #ifndef TEMPLE_H
 #define TEMPLE_H
 
+#define DEFAULT_TEMPLE_NAME  "Shrine"
+
 #include <string>
 #include "Location.h"
 
@@ -33,7 +35,8 @@ class Temple : public Location
           * @param pos          the location of the temple
           * @param name         the name of the temple (AFAIR unused)
           */
-        Temple(Vector<int> pos, std::string name = "Shrine", int type=0);
+        Temple(Vector<int> pos, std::string name = DEFAULT_TEMPLE_NAME, 
+	       int type=0);
 
         //! Loading constructor. See XML_Helper
         Temple(XML_Helper* helper);

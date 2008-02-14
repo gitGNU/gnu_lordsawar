@@ -64,14 +64,18 @@ void SignpostDialog::run()
   if (response == 0)		// accepted
     signpost->setName(sign_textview->get_buffer()->get_text());
   else
-    d_randomizer->pushRandomSignpost(sign_textview->get_buffer()->get_text());
+    {
+      if (sign_textview->get_buffer()->get_text() != DEFAULT_SIGNPOST)
+	d_randomizer->pushRandomSignpost
+	  (sign_textview->get_buffer()->get_text());
+    }
 }
 
 void SignpostDialog::on_randomize_clicked()
 {
   std::string existing_name = sign_textview->get_buffer()->get_text();
   bool dynamic = ((rand() % d_randomizer->getNumSignposts()) == 0);
-  if (existing_name == "nowhere")
+  if (existing_name == DEFAULT_SIGNPOST)
     {
       if (dynamic)
 	sign_textview->get_buffer()->set_text

@@ -33,7 +33,7 @@
 #include "../stack.h"
 #include "../army.h"
 
-#include "stack-dialog.h"
+#include "select-army-dialog.h"
 
 RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
 {
@@ -125,8 +125,9 @@ void RuinDialog::run()
 	    keeper = 0;
 	}
 
-	ruin->setOccupant(keeper);
         ruin->setSage(sage_button->get_active());
+	if (sage_button->get_active() == false)
+	  ruin->setOccupant(keeper);
         ruin->setHidden(hidden_button->get_active());
         if (hidden_button->get_active())
           {
@@ -149,7 +150,8 @@ void RuinDialog::run()
     else
     {
         //put the ruin name back.
-	d_randomizer->pushRandomRuinName(name_entry->get_text());
+	if (name_entry->get_text() != DEFAULT_RUIN_NAME)
+	  d_randomizer->pushRandomRuinName(name_entry->get_text());
 	delete keeper;
 	keeper = 0;
     }
@@ -176,10 +178,16 @@ void RuinDialog::on_hidden_toggled()
 
 void RuinDialog::on_keeper_clicked()
 {
-    // FIXME: run stack dialog with keeper
-    StackDialog d(keeper, 0);
+    SelectArmyDialog d(keeper->getPlayer(), true);
     d.set_parent_window(*dialog.get());
     d.run();
+
+    const Army *army = d.get_selected_army();
+    if (army)
+      {
+	keeper->flClear();
+	keeper->push_back(new Army(*army));
+      }
 
     set_keeper_name();
 }
@@ -187,7 +195,7 @@ void RuinDialog::on_keeper_clicked()
 void RuinDialog::on_randomize_name_clicked()
 {
   std::string existing_name = name_entry->get_text();
-  if (existing_name == "")
+  if (existing_name == DEFAULT_RUIN_NAME)
     name_entry->set_text(d_randomizer->popRandomRuinName());
   else
     {

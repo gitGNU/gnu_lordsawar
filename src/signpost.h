@@ -18,6 +18,8 @@
 #ifndef SIGNPOST_H
 #define SIGNPOST_H
 
+#define DEFAULT_SIGNPOST "nowhere"
+
 #include <string>
 #include "Location.h"
 

@@ -40,7 +40,7 @@ class Player;
 class SelectArmyDialog: public sigc::trackable
 {
  public:
-    SelectArmyDialog(Player *p);
+    SelectArmyDialog(Player *p, bool defends_ruins = false);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -60,6 +60,7 @@ class SelectArmyDialog: public sigc::trackable
 
     const Army *selected_army;
     Player *player;
+    bool d_defends_ruins;
 
     std::vector<Gtk::ToggleButton *> army_toggles;
     bool ignore_toggles;
