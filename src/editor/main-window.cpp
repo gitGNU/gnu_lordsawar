@@ -51,6 +51,7 @@
 #include "../GraphicsCache.h"
 #include "../smallmap.h"
 #include "../GameScenario.h"
+#include "../CreateScenarioRandomize.h"
 #include "../armysetlist.h"
 #include "../Itemlist.h"
 #include "../playerlist.h"
@@ -325,6 +326,7 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
 
     // sets up the lists
     game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
+    d_create_scenario_names.reset(new CreateScenarioRandomize());
     //zip past the player IDs (+1 for neutral)
     for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
       fl_counter->getNextId();
@@ -412,6 +414,7 @@ void MainWindow::set_random_map(int width, int height,
     Itemlist::createStandardInstance();
     // sets up the lists
     game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
+    d_create_scenario_names.reset(new CreateScenarioRandomize());
     
     // now fill the lists
     const Maptile::Building* build = gen.getBuildings(width, height);
@@ -454,6 +457,7 @@ void MainWindow::clear_map_state()
     bigmap.reset();
     smallmap.reset();
     game_scenario.reset();
+    d_create_scenario_names.reset();
     GraphicsCache::deleteInstance();
 }
 
@@ -901,7 +905,7 @@ void MainWindow::popup_dialog_for_object(Object *object)
     }
     else if (City *o = dynamic_cast<City *>(object))
     {
-	CityDialog d(o);
+	CityDialog d(o, d_create_scenario_names.get());
 	d.set_parent_window(*window.get());
 	d.run();
 

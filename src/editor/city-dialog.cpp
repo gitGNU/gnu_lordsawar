@@ -32,13 +32,15 @@
 #include "../playerlist.h"
 #include "../stacklist.h"
 #include "../citylist.h"
+#include "../CreateScenarioRandomize.h"
 
 #include "select-army-dialog.h"
 
 
-CityDialog::CityDialog(City *cit)
+CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
 {
     city = cit;
+    d_randomizer = randomizer;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
@@ -95,14 +97,20 @@ CityDialog::CityDialog(City *cit)
 
     xml->get_widget("add_button", add_button);
     xml->get_widget("remove_button", remove_button);
-    xml->get_widget("randomize_button", randomize_button);
+    xml->get_widget("randomize_armies_button", randomize_armies_button);
+    xml->get_widget("randomize_name_button", randomize_name_button);
+    xml->get_widget("randomize_income_button", randomize_income_button);
 
     add_button->signal_clicked().connect(
 	sigc::mem_fun(this, &CityDialog::on_add_clicked));
     remove_button->signal_clicked().connect(
 	sigc::mem_fun(this, &CityDialog::on_remove_clicked));
-    randomize_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CityDialog::on_randomize_clicked));
+    randomize_armies_button->signal_clicked().connect(
+	sigc::mem_fun(this, &CityDialog::on_randomize_armies_clicked));
+    randomize_name_button->signal_clicked().connect(
+	sigc::mem_fun(this, &CityDialog::on_randomize_name_clicked));
+    randomize_income_button->signal_clicked().connect(
+	sigc::mem_fun(this, &CityDialog::on_randomize_income_clicked));
 
     army_treeview->get_selection()->signal_changed()
 	.connect(sigc::mem_fun(this, &CityDialog::on_selection_changed));
@@ -235,7 +243,7 @@ void CityDialog::on_remove_clicked()
   set_button_sensitivity();
 }
 
-void CityDialog::on_randomize_clicked()
+void CityDialog::on_randomize_armies_clicked()
 {
   const Army *army;
   army_list->clear();
@@ -248,6 +256,25 @@ void CityDialog::on_randomize_clicked()
 	add_army(army);
     }
   set_button_sensitivity();
+}
+
+void CityDialog::on_randomize_name_clicked()
+{
+  std::string existing_name = name_entry->get_text();
+  if (existing_name == "NoName")
+    name_entry->set_text(d_randomizer->popRandomCityName());
+  else
+    {
+      name_entry->set_text(d_randomizer->popRandomCityName());
+      d_randomizer->pushRandomCityName(existing_name);
+    }
+}
+
+void CityDialog::on_randomize_income_clicked()
+{
+  int gold;
+  gold = d_randomizer->getRandomCityIncome(capital_checkbutton->get_active());
+  income_spinbutton->set_value(gold);
 }
 
 void CityDialog::add_army(const Army *a)

@@ -69,30 +69,6 @@ CreateScenario::CreateScenario(int width, int height)
 
     fl_counter = new FL_Counter();
 
-    // Fill the namelists 
-    bool success = true;
-    
-    std::ifstream file(File::getMiscFile("citynames").c_str());
-    success &= loadNames(d_citynames, file);
-    file.close();
-
-    file.open(File::getMiscFile("templenames").c_str());
-    success &= loadNames(d_templenames, file);
-    file.close();
-
-    file.open(File::getMiscFile("ruinnames").c_str());
-    success &= loadNames(d_ruinnames, file);
-    file.close();
-
-    file.open(File::getMiscFile("signposts").c_str());
-    success &= loadNames(d_signposts, file);
-    file.close();
-
-    if (!success)
-    {
-        std::cerr <<"CreateScenario: Didn't succeed in reading object names. Aborting!\n";
-        exit(-1);
-    }
     setWidth(width);
     setHeight(height);
 }
@@ -501,12 +477,7 @@ bool CreateScenario::setupCities(bool quick_start,
         it != Citylist::getInstance()->end(); it++)
     {
         //1. set a reasonable cityname
-        int randno = rand() % d_citynames.size();
-        (*it).setName(d_citynames[randno]);
-
-        //remove the used name
-        d_citynames[randno] = d_citynames[d_citynames.size() - 1];
-        d_citynames.pop_back();
+        (*it).setName(popRandomCityName());
 
         //2. distribute the income a bit (TBD)
 
@@ -544,10 +515,7 @@ bool CreateScenario::setupCities(bool quick_start,
 
 	if (rand() % 2 == 0)
 	  (*it).raiseDefense();
-	if ((*it).isCapital())
-	  (*it).setGold(33 + (rand() % 8));
-	else
-	  (*it).setGold(15 + (rand() % 12));
+	(*it).setGold(getRandomCityIncome((*it).isCapital()));
     }
 
     return true;
@@ -567,16 +535,12 @@ bool CreateScenario::setupTemples()
     for (Templelist::iterator it = tl->begin(); it != tl->end(); it++)
     {
         // set a temple name
-        int randno = rand() % d_templenames.size();
-        (*it).setName(d_templenames[randno]);
+        (*it).setName(popRandomTempleName());
 
         // set a random temple type
         int type= (int) ((TEMPLE_TYPES*1.0) * (rand() / (RAND_MAX + 1.0)));
         (*it).setType(type);
 
-        //remove the used name
-        d_templenames[randno] = d_templenames[d_templenames.size() - 1];
-        d_templenames.pop_back();
     }
 
     return true;
@@ -604,8 +568,7 @@ bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
         it != Ruinlist::getInstance()->end(); it++)
     {
         // set a ruin name
-        int randno = rand() % d_ruinnames.size();
-        (*it).setName(d_ruinnames[randno]);
+        (*it).setName(popRandomRuinName());
 
         // set a random ruin type
         if (rand() % stronghold_factor == 0) //one in six ruins is a stronghold
@@ -619,10 +582,6 @@ bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
           }
         else
           (*it).setType(Ruin::RUIN);
-
-        //remove the used name
-        d_ruinnames[randno] = d_ruinnames[d_ruinnames.size() - 1];
-        d_ruinnames.pop_back();
 
         //one in twenty ruins is a sage
         if (rand() % sage_factor == 0 && (*it).getType() == Ruin::RUIN) 
@@ -663,23 +622,19 @@ bool CreateScenario::setupSignposts(int ratio)
     int randno;
     int dynamicPercent = static_cast<int>(1.0 / ratio * 100);
     debug("CreateScenario::setupSignposts")
+    Signpostlist *sl = Signpostlist::getInstance();
 
-    for (Signpostlist::iterator it = Signpostlist::getInstance()->begin();
-        it != Signpostlist::getInstance()->end(); it++)
+    for (Signpostlist::iterator it = sl->begin(); it != sl->end(); it++)
     {
-	if (d_signposts.size() == 0)
+	if (randomSignpostsEmpty())
 	    randno = dynamicPercent;
 	else
 	    randno = rand() % 100;
 	if (randno < dynamicPercent)
 	{
             // set up a signpost from the list of signposts
-            randno = rand() % d_signposts.size();
-            (*it).setName(d_signposts[randno]);
+	    (*it).setName(popRandomSignpost());
 
-            //remove the used name
-            d_signposts[randno] = d_signposts[d_signposts.size() - 1];
-            d_signposts.pop_back();
 	}
 	else
 	{
@@ -755,36 +710,6 @@ bool CreateScenario::setupPlayers(bool diplomacy, bool random_turns,
 
     if (random_turns)
       pl->randomizeOrder();
-    return true;
-}
-
-bool CreateScenario::loadNames(std::vector<std::string>& list, std::ifstream& namefile)
-{
-    debug("CreateScenario::loadNames")
-
-    int counter;
-    char buffer[101];
-    buffer[100] = '\0';
-    
-    if (!namefile)
-    {
-        std::cerr <<_("Critical Error: Couldn't open citynames data file\n");
-        return false;
-    }
-
-    namefile >> counter;
-    list.resize(counter);
-
-    //with getline, the first call will get the first line to the end, i.e.
-    //a newline character. Thus, we throw away the result of the first call.
-    namefile.getline(buffer, 100);
-
-    for (counter--; counter >= 0; counter--)
-    {
-        namefile.getline(buffer, 100);
-        list[counter] = std::string(buffer);
-    }
-
     return true;
 }
 

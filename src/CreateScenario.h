@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 #include <SDL.h>
+#include "CreateScenarioRandomize.h"
 #include "game-parameters.h"
 
 class MapGenerator;
@@ -34,7 +35,7 @@ class Player;
   * e.g. to the player class have to be reflected here, too.
   */
 
-class CreateScenario
+class CreateScenario : public CreateScenarioRandomize
 {
     public:
         //! This represents the class of the map (hills, islands etc.).
@@ -194,12 +195,6 @@ class CreateScenario
         bool setupPlayers(bool dimplomacy, bool random_turns, int base_gold);
 
 	bool setupRoads();
-        /** Loads a list of possible city, ruin or temple names
-          * 
-          * @param list     the list to be filled with the names
-          * @param namefile an ifstream of the file containing the names
-          */
-        bool loadNames(std::vector<std::string>& list, std::ifstream& namefile);
 
         //! Set up rewards to be given out for quests, ruins and sages
         bool setupRewards();
@@ -238,10 +233,6 @@ class CreateScenario
         int d_width;
         int d_height;
         bool d_turnmode;
-
-        //the namelists
-        std::vector<std::string> d_citynames, d_signposts;
-        std::vector<std::string> d_templenames, d_ruinnames;
 };
 
 #endif  //CREATE_SCENARIO_H

@@ -41,6 +41,7 @@ class SDL_Surface;
 class EditorBigMap;
 class SmallMap;
 class GameScenario;
+class CreateScenarioRandomize;
 
 // the top-level window of the map with menu, bigmap, smallmap, drawing
 // controls
@@ -80,6 +81,7 @@ class MainWindow: public sigc::trackable
     bool sdl_inited;
 
     std::auto_ptr<GameScenario> game_scenario;
+    std::auto_ptr<CreateScenarioRandomize> d_create_scenario_names;
     GdkEventButton *button_event;
 
     bool on_delete_event(GdkEventAny *e);
