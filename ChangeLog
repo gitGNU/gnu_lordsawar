@@ -2,6 +2,7 @@
 	* adding ability to randomize the city names and income in editor.
 	* worked around crashing bug in editor, when dropping temples
 	* adding ability randomize the temple names in editor.
+	* fixed crashing bug wrt stack joining thanks to Adam Kowalewski.
 
 2008-02-12  Ben Asselstine
 	* load map dialog now opens to the .lordsawar dir initially
