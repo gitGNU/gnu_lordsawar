@@ -161,7 +161,7 @@ Uint32 Stack::getGroupMoves() const
 int Stack::getMinTileMoves() const
 {
   GameMap *map = GameMap::getInstance();
-  Rectangle bounds = GameMap::get_boundary();
+  Rectangle bounds = map->get_boundary();
 
   std::vector<Vector<int> > tiles;
   tiles.push_back(Vector<int>(getPos().x + 1, getPos().y - 1));
@@ -186,6 +186,11 @@ int Stack::getMinTileMoves() const
 	  min = std::min(min, v);
       }
 
+  if (min == -1)
+    {
+      fprintf (stderr, "adam's bug hit for stack at %d,%d!\n",
+	       getPos().x, getPos().y);
+    }
   return min;
 }
 
@@ -335,6 +340,7 @@ bool Stack::canMove() const
   int tile_moves = getMinTileMoves();
   int group_moves = getGroupMoves();
 
+  assert (tile_moves != -1);
   return group_moves > 0 && tile_moves >= 0 && group_moves >= tile_moves;
 }
 
