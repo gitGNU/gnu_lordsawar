@@ -5,6 +5,7 @@
 	  names, city names, city income, and signposts in the editor.
 	* ruin dialog in editor now only shows armies that can defend ruins
 	  when selecting a keeper.
+	* adding the beginnings of an item editor
 
 2008-02-12  Ben Asselstine
 	* load map dialog now opens to the .lordsawar dir initially
