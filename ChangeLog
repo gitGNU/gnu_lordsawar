@@ -3,6 +3,8 @@
 	* fixed crashing bug wrt stack joining thanks to Adam Kowalewski.
 	* added ability to individually randomize the ruin names, temple
 	  names, city names, city income, and signposts in the editor.
+	* ruin dialog in editor now only shows armies that can defend ruins
+	  when selecting a keeper.
 
 2008-02-12  Ben Asselstine
 	* load map dialog now opens to the .lordsawar dir initially
