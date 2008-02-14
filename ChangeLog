@@ -1,3 +1,6 @@
+2008-02-13  Ben Asselstine
+	* adding ability to randomize the city names and income in editor.
+
 2008-02-12  Ben Asselstine
 	* load map dialog now opens to the .lordsawar dir initially
 	* the editor now saves the correct active player
