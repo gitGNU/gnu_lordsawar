@@ -14,7 +14,6 @@ map-info-dialog.glade \
 new-map-dialog.glade \
 armyset-window.glade \
 armyset-info-dialog.glade \
-itemlist-window.glade \
 itemlist-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)
