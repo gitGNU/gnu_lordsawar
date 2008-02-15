@@ -104,6 +104,14 @@ void Stacklist::nextTurn()
       {
         (*it)->nextTurn();
       }
+    for (iterator it = begin(); it != end(); it++)
+      for (iterator jit = begin(); jit != end(); jit++)
+	if (*jit != *it)
+	  if ((*jit)->getId() == (*it)->getId())
+	    {
+	      fprintf (stderr, "duplicate army id %d found\n", (*it)->getId());
+	      exit (1);
+	    }
 }
 
 vector<Stack*> Stacklist::defendersInCity(City *city)
