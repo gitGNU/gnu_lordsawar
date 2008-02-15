@@ -35,7 +35,7 @@
 #include <gtkmm/button.h>
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/table.h>
-#include <gtkmm/checkmenuitem.h>
+#include <gtkmm/checkbutton.h>
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/tooltips.h>
 
@@ -66,6 +66,18 @@ class ItemlistDialog: public sigc::trackable
     Gtk::Button *add_item_button;
     Gtk::Button *remove_item_button;
     Gtk::VBox *item_vbox;
+    Gtk::CheckButton *add1str_checkbutton;
+    Gtk::CheckButton *add2str_checkbutton;
+    Gtk::CheckButton *add3str_checkbutton;
+    Gtk::CheckButton *add1stack_checkbutton;
+    Gtk::CheckButton *add2stack_checkbutton;
+    Gtk::CheckButton *add3stack_checkbutton;
+    Gtk::CheckButton *flystack_checkbutton;
+    Gtk::CheckButton *doublemovestack_checkbutton;
+    Gtk::CheckButton *add2goldpercity_checkbutton;
+    Gtk::CheckButton *add3goldpercity_checkbutton;
+    Gtk::CheckButton *add4goldpercity_checkbutton;
+    Gtk::CheckButton *add5goldpercity_checkbutton;
 
     class ItemsColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -92,6 +104,21 @@ class ItemlistDialog: public sigc::trackable
     void on_remove_item_clicked();
     void on_item_selected();
 
+
+    void on_checkbutton_toggled(Gtk::CheckButton *checkbutton, 
+				Item::Bonus bonus);
+    void on_add1str_toggled();
+    void on_add2str_toggled();
+    void on_add3str_toggled();
+    void on_add1stack_toggled();
+    void on_add2stack_toggled();
+    void on_add3stack_toggled();
+    void on_flystack_toggled();
+    void on_doublemovestack_toggled();
+    void on_add2goldpercity_toggled();
+    void on_add3goldpercity_toggled();
+    void on_add4goldpercity_toggled();
+    void on_add5goldpercity_toggled();
 };
 
 #endif

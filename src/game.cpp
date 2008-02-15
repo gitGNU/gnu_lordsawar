@@ -1098,7 +1098,7 @@ void Game::maybeRecruitHero (Player *p)
 	      // Initially give the first hero the player's standard.
 	      std::string name = p->getName() + " " + _("Standard");
 	      Item *battle_standard = new Item (name, true, p);
-	      battle_standard->setBonus(Item::ADD1STACK);
+	      battle_standard->addBonus(Item::ADD1STACK);
 	      newhero->addToBackpack(battle_standard, 0);
 	    }
 	  p->withdrawGold(gold_needed);

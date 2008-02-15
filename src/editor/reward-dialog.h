@@ -1,5 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2008, Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -16,27 +15,22 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef RUIN_DIALOG_H
-#define RUIN_DIALOG_H
+#ifndef REWARD_DIALOG_H
+#define REWARD_DIALOG_H
 
 #include <memory>
 #include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
-#include <gtkmm/button.h>
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/radiobutton.h>
-#include <gtkmm/comboboxtext.h>
 #include <gtkmm/spinbutton.h>
+#include <gtkmm/radiobutton.h>
 
-class Ruin;
-class Stack;
-class CreateScenarioRandomize;
+class Reward;
 
-class RuinDialog: public sigc::trackable
+class RewardDialog: public sigc::trackable
 {
  public:
-    RuinDialog(Ruin *ruin, CreateScenarioRandomize *randomize);
+    RewardDialog(Reward *reward);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -44,22 +38,21 @@ class RuinDialog: public sigc::trackable
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
-    Gtk::Entry *name_entry;
-    Gtk::SpinButton *type_entry;
-    Gtk::Button *keeper_button;
-    Gtk::Button *randomize_name_button;
-    Gtk::CheckButton *sage_button;
-    Gtk::CheckButton *hidden_button;
-    Gtk::ComboBoxText *player_combobox;
-    Ruin *ruin;
-    Stack *keeper;
-    CreateScenarioRandomize *d_randomizer;
-
-    void set_keeper_name();
-
-    void on_keeper_clicked();
-    void on_hidden_toggled();
-    void on_randomize_name_clicked();
+    Reward *reward;
+    Gtk::RadioButton *reward_gold_radiobutton;
+    Gtk::RadioButton *reward_item_radiobutton;
+    Gtk::RadioButton *reward_allies_radiobutton;
+    Gtk::RadioButton *reward_map_radiobutton;
+    Gtk::RadioButton *reward_random_radiobutton;
+    Gtk::HBox *reward_gold_hbox;
+    Gtk::HBox *reward_item_hbox;
+    Gtk::HBox *reward_allies_hbox;
+    Gtk::HBox *reward_map_hbox;
+    void on_reward_gold_toggled();
+    void on_reward_item_toggled();
+    void on_reward_allies_toggled();
+    void on_reward_map_toggled();
+    void on_reward_random_toggled();
 };
 
 #endif

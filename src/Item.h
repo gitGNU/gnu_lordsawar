@@ -88,7 +88,10 @@ class Item
         bool getBonus(Item::Bonus bonus) const;
 
 	//! Add a bonus to the item
-	void setBonus(Item::Bonus bonus);
+	void addBonus(Item::Bonus bonus);
+
+	//! Remove a bonus from the item
+	void removeBonus(Item::Bonus bonus);
         
         //! Return the name of the item
         std::string getName() const {return d_name;}

@@ -98,28 +98,6 @@ RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
     alignment->add(*player_combobox);
     on_hidden_toggled();
 
-    xml->get_widget("reward_gold_hbox", reward_gold_hbox);
-    xml->get_widget("reward_gold_radiobutton", reward_gold_radiobutton);
-    reward_gold_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RuinDialog::on_reward_gold_toggled));
-    xml->get_widget("reward_item_hbox", reward_item_hbox);
-    xml->get_widget("reward_item_radiobutton", reward_item_radiobutton);
-    reward_item_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RuinDialog::on_reward_item_toggled));
-    xml->get_widget("reward_allies_hbox", reward_allies_hbox);
-    xml->get_widget("reward_allies_radiobutton", reward_allies_radiobutton);
-    reward_allies_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RuinDialog::on_reward_allies_toggled));
-    xml->get_widget("reward_map_hbox", reward_map_hbox);
-    xml->get_widget("reward_map_radiobutton", reward_map_radiobutton);
-    reward_map_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RuinDialog::on_reward_map_toggled));
-    xml->get_widget("reward_random_radiobutton", reward_random_radiobutton);
-    reward_random_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RuinDialog::on_reward_random_toggled));
-
-    reward_random_radiobutton->set_active(true);
-    //on_reward_random_toggled();
 }
 
 void RuinDialog::set_parent_window(Gtk::Window &parent)
@@ -226,44 +204,4 @@ void RuinDialog::on_randomize_name_clicked()
       name_entry->set_text(d_randomizer->popRandomRuinName());
       d_randomizer->pushRandomRuinName(existing_name);
     }
-}
-
-void RuinDialog::on_reward_gold_toggled()
-{
-  reward_gold_hbox->set_sensitive(true);
-  reward_item_hbox->set_sensitive(false);
-  reward_allies_hbox->set_sensitive(false);
-  reward_map_hbox->set_sensitive(false);
-}
-
-void RuinDialog::on_reward_item_toggled()
-{
-  reward_gold_hbox->set_sensitive(false);
-  reward_item_hbox->set_sensitive(true);
-  reward_allies_hbox->set_sensitive(false);
-  reward_map_hbox->set_sensitive(false);
-}
-
-void RuinDialog::on_reward_allies_toggled()
-{
-  reward_gold_hbox->set_sensitive(false);
-  reward_item_hbox->set_sensitive(false);
-  reward_allies_hbox->set_sensitive(true);
-  reward_map_hbox->set_sensitive(false);
-}
-
-void RuinDialog::on_reward_map_toggled()
-{
-  reward_gold_hbox->set_sensitive(false);
-  reward_item_hbox->set_sensitive(false);
-  reward_allies_hbox->set_sensitive(false);
-  reward_map_hbox->set_sensitive(true);
-}
-
-void RuinDialog::on_reward_random_toggled()
-{
-  reward_gold_hbox->set_sensitive(false);
-  reward_item_hbox->set_sensitive(false);
-  reward_allies_hbox->set_sensitive(false);
-  reward_map_hbox->set_sensitive(false);
 }

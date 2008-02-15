@@ -104,9 +104,14 @@ bool Item::getBonus(Item::Bonus bonus) const
   return (d_bonus & bonus) == 0 ? false : true;
 }
 
-void Item::setBonus(Item::Bonus bonus)
+void Item::addBonus(Item::Bonus bonus)
 {
   d_bonus |= bonus;
+}
+
+void Item::removeBonus(Item::Bonus bonus)
+{
+  d_bonus ^= bonus;
 }
 
 std::string Item::getBonusDescription()
