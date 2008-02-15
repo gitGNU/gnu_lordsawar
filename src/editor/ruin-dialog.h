@@ -25,6 +25,7 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/button.h>
 #include <gtkmm/checkbutton.h>
+#include <gtkmm/radiobutton.h>
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/spinbutton.h>
 
@@ -50,6 +51,15 @@ class RuinDialog: public sigc::trackable
     Gtk::CheckButton *sage_button;
     Gtk::CheckButton *hidden_button;
     Gtk::ComboBoxText *player_combobox;
+    Gtk::RadioButton *reward_gold_radiobutton;
+    Gtk::RadioButton *reward_item_radiobutton;
+    Gtk::RadioButton *reward_allies_radiobutton;
+    Gtk::RadioButton *reward_map_radiobutton;
+    Gtk::RadioButton *reward_random_radiobutton;
+    Gtk::HBox *reward_gold_hbox;
+    Gtk::HBox *reward_item_hbox;
+    Gtk::HBox *reward_allies_hbox;
+    Gtk::HBox *reward_map_hbox;
     Ruin *ruin;
     Stack *keeper;
     CreateScenarioRandomize *d_randomizer;
@@ -59,6 +69,11 @@ class RuinDialog: public sigc::trackable
     void on_keeper_clicked();
     void on_hidden_toggled();
     void on_randomize_name_clicked();
+    void on_reward_gold_toggled();
+    void on_reward_item_toggled();
+    void on_reward_allies_toggled();
+    void on_reward_map_toggled();
+    void on_reward_random_toggled();
 };
 
 #endif
