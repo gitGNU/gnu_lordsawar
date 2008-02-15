@@ -183,8 +183,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      Playerlist::getActiveplayer()->stackMove(stack);
 	      if (!Playerlist::getActiveplayer()->getActivestack())
 		{
-		  if (stack->canMove() == false)
-		    unselect_active_stack();
+		  unselect_active_stack();
 		  return;
 		}
 	      else

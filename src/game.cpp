@@ -284,6 +284,8 @@ void Game::select_next_movable_stack()
 void Game::move_selected_stack_dir(int diffx, int diffy)
 {
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
+  if (!stack)
+    return;
   // Get rid of the old path if there is one
   if (stack->getPath()->size())
     stack->getPath()->flClear();
@@ -354,7 +356,7 @@ void Game::move_selected_stack_along_path()
 
   //maybe we joined another stack
   stack = Playerlist::getActiveplayer()->getActivestack();
-  if (stack->canMove() == false)
+  if (stack && stack->canMove() == false)
     {
       Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
       unselect_active_stack();
