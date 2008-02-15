@@ -24,6 +24,8 @@
 #include "File.h"
 #include "citylist.h"
 #include "signpost.h"
+#include "armysetlist.h"
+#include "playerlist.h"
 
 using namespace std;
 
@@ -56,6 +58,7 @@ CreateScenarioRandomize::CreateScenarioRandomize()
         std::cerr <<"CreateScenarioRandomize: Didn't succeed in reading object names. Aborting!\n";
         exit(-1);
     }
+
 }
 
 CreateScenarioRandomize::~CreateScenarioRandomize()
@@ -150,6 +153,26 @@ Uint32 CreateScenarioRandomize::getRandomCityIncome(bool capital)
     return 33 + (rand() % 8);
   else
     return 15 + (rand() % 12);
+}
+
+Army * CreateScenarioRandomize::getRandomRuinKeeper(Player *p)
+{
+  // list all the army types that can be a sentinel.
+  std::vector<const Army*> occupants;
+  Armysetlist *al = Armysetlist::getInstance();
+  for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
+    {
+      const Army *a = al->getArmy (p->getArmyset(), j);
+      if (a->getDefendsRuins())
+	occupants.push_back(a);
+    }
+            
+  if (!occupants.empty())
+    {
+      const Army *a = occupants[rand() % occupants.size()];
+      return (new Army(*a, p));
+    }
+  return NULL;
 }
 
 std::string CreateScenarioRandomize::getDynamicSignpost(Signpost *signpost)

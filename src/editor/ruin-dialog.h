@@ -48,6 +48,8 @@ class RuinDialog: public sigc::trackable
     Gtk::SpinButton *type_entry;
     Gtk::Button *keeper_button;
     Gtk::Button *randomize_name_button;
+    Gtk::Button *clear_keeper_button;
+    Gtk::Button *randomize_keeper_button;
     Gtk::CheckButton *sage_button;
     Gtk::CheckButton *hidden_button;
     Gtk::ComboBoxText *player_combobox;
@@ -58,8 +60,10 @@ class RuinDialog: public sigc::trackable
     void set_keeper_name();
 
     void on_keeper_clicked();
+    void on_clear_keeper_clicked();
     void on_hidden_toggled();
     void on_randomize_name_clicked();
+    void on_randomize_keeper_clicked();
 };
 
 #endif

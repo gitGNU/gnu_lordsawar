@@ -39,27 +39,22 @@ RewardDialog::RewardDialog(Reward *t)
   xml->get_widget("dialog", d);
   dialog.reset(d);
 
-    xml->get_widget("reward_gold_hbox", reward_gold_hbox);
-    xml->get_widget("reward_gold_radiobutton", reward_gold_radiobutton);
-    reward_gold_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RewardDialog::on_reward_gold_toggled));
-    xml->get_widget("reward_item_hbox", reward_item_hbox);
-    xml->get_widget("reward_item_radiobutton", reward_item_radiobutton);
-    reward_item_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RewardDialog::on_reward_item_toggled));
-    xml->get_widget("reward_allies_hbox", reward_allies_hbox);
-    xml->get_widget("reward_allies_radiobutton", reward_allies_radiobutton);
-    reward_allies_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RewardDialog::on_reward_allies_toggled));
-    xml->get_widget("reward_map_hbox", reward_map_hbox);
-    xml->get_widget("reward_map_radiobutton", reward_map_radiobutton);
-    reward_map_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RewardDialog::on_reward_map_toggled));
-    xml->get_widget("reward_random_radiobutton", reward_random_radiobutton);
-    reward_random_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RewardDialog::on_reward_random_toggled));
-
-    reward_random_radiobutton->set_active(true);
+    xml->get_widget("gold_hbox", gold_hbox);
+    xml->get_widget("gold_radiobutton", gold_radiobutton);
+    gold_radiobutton->signal_toggled().connect(
+	sigc::mem_fun(*this, &RewardDialog::on_gold_toggled));
+    xml->get_widget("item_hbox", item_hbox);
+    xml->get_widget("item_radiobutton", item_radiobutton);
+    item_radiobutton->signal_toggled().connect(
+	sigc::mem_fun(*this, &RewardDialog::on_item_toggled));
+    xml->get_widget("allies_hbox", allies_hbox);
+    xml->get_widget("allies_radiobutton", allies_radiobutton);
+    allies_radiobutton->signal_toggled().connect(
+	sigc::mem_fun(*this, &RewardDialog::on_allies_toggled));
+    xml->get_widget("map_hbox", map_hbox);
+    xml->get_widget("map_radiobutton", map_radiobutton);
+    map_radiobutton->signal_toggled().connect(
+	sigc::mem_fun(*this, &RewardDialog::on_map_toggled));
 }
 
 void RewardDialog::set_parent_window(Gtk::Window &parent)
@@ -84,42 +79,34 @@ void RewardDialog::run()
 }
 
 
-void RewardDialog::on_reward_gold_toggled()
+void RewardDialog::on_gold_toggled()
 {
-  reward_gold_hbox->set_sensitive(true);
-  reward_item_hbox->set_sensitive(false);
-  reward_allies_hbox->set_sensitive(false);
-  reward_map_hbox->set_sensitive(false);
+  gold_hbox->set_sensitive(true);
+  item_hbox->set_sensitive(false);
+  allies_hbox->set_sensitive(false);
+  map_hbox->set_sensitive(false);
 }
 
-void RewardDialog::on_reward_item_toggled()
+void RewardDialog::on_item_toggled()
 {
-  reward_gold_hbox->set_sensitive(false);
-  reward_item_hbox->set_sensitive(true);
-  reward_allies_hbox->set_sensitive(false);
-  reward_map_hbox->set_sensitive(false);
+  gold_hbox->set_sensitive(false);
+  item_hbox->set_sensitive(true);
+  allies_hbox->set_sensitive(false);
+  map_hbox->set_sensitive(false);
 }
 
-void RewardDialog::on_reward_allies_toggled()
+void RewardDialog::on_allies_toggled()
 {
-  reward_gold_hbox->set_sensitive(false);
-  reward_item_hbox->set_sensitive(false);
-  reward_allies_hbox->set_sensitive(true);
-  reward_map_hbox->set_sensitive(false);
+  gold_hbox->set_sensitive(false);
+  item_hbox->set_sensitive(false);
+  allies_hbox->set_sensitive(true);
+  map_hbox->set_sensitive(false);
 }
 
-void RewardDialog::on_reward_map_toggled()
+void RewardDialog::on_map_toggled()
 {
-  reward_gold_hbox->set_sensitive(false);
-  reward_item_hbox->set_sensitive(false);
-  reward_allies_hbox->set_sensitive(false);
-  reward_map_hbox->set_sensitive(true);
-}
-
-void RewardDialog::on_reward_random_toggled()
-{
-  reward_gold_hbox->set_sensitive(false);
-  reward_item_hbox->set_sensitive(false);
-  reward_allies_hbox->set_sensitive(false);
-  reward_map_hbox->set_sensitive(false);
+  gold_hbox->set_sensitive(false);
+  item_hbox->set_sensitive(false);
+  allies_hbox->set_sensitive(false);
+  map_hbox->set_sensitive(true);
 }

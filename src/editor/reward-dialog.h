@@ -39,20 +39,20 @@ class RewardDialog: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     Reward *reward;
-    Gtk::RadioButton *reward_gold_radiobutton;
-    Gtk::RadioButton *reward_item_radiobutton;
-    Gtk::RadioButton *reward_allies_radiobutton;
-    Gtk::RadioButton *reward_map_radiobutton;
-    Gtk::RadioButton *reward_random_radiobutton;
-    Gtk::HBox *reward_gold_hbox;
-    Gtk::HBox *reward_item_hbox;
-    Gtk::HBox *reward_allies_hbox;
-    Gtk::HBox *reward_map_hbox;
-    void on_reward_gold_toggled();
-    void on_reward_item_toggled();
-    void on_reward_allies_toggled();
-    void on_reward_map_toggled();
-    void on_reward_random_toggled();
+    Gtk::RadioButton *gold_radiobutton;
+    Gtk::RadioButton *item_radiobutton;
+    Gtk::RadioButton *allies_radiobutton;
+    Gtk::RadioButton *map_radiobutton;
+    Gtk::HBox *gold_hbox;
+    Gtk::HBox *item_hbox;
+    Gtk::HBox *allies_hbox;
+    Gtk::HBox *map_hbox;
+    void on_gold_toggled();
+    void on_item_toggled();
+    void on_allies_toggled();
+    void on_map_toggled();
+    void on_random_toggled();
+
 };
 
 #endif

@@ -553,17 +553,6 @@ bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
     //The aim of this function is to put a strong stack as sentinel in all
     //ruins.
 
-    // list all the army types that can be a sentinel.
-    std::vector<const Army*> occupants;
-    Armysetlist *al = Armysetlist::getInstance();
-    Player *p = Playerlist::getInstance()->getNeutral();
-    for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
-      {
-        const Army *a = al->getArmy (p->getArmyset(), j);
-        if (a->getDefendsRuins())
-          occupants.push_back(a);
-      }
-
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
         it != Ruinlist::getInstance()->end(); it++)
     {
@@ -597,16 +586,16 @@ bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
 
         // and set a guardian
         Stack* s;
-        const Army* a = 0;
+        Army* a = 0;
         Vector<int> pos = (*it).getPos();
         
-        if (!occupants.empty())
+	a = getRandomRuinKeeper(Playerlist::getInstance()->getNeutral());
+        if (a)
           {
             //create a stack:
             s = new Stack(0, pos);
             
-            a = occupants[rand() % occupants.size()];
-            s->push_back(new Army(*a, p));
+            s->push_back(a);
             a = 0;
 
             //now mark this stack as guard

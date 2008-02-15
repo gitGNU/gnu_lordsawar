@@ -25,6 +25,8 @@
 #include "game-parameters.h"
 
 class Signpost;
+class Army;
+class Player;
 
 class CreateScenarioRandomize
 {
@@ -49,6 +51,7 @@ class CreateScenarioRandomize
 	bool randomSignpostsEmpty() {return d_signposts.empty();}
 	std::string getDynamicSignpost(Signpost *signpost);
 	int getNumSignposts() {return d_signposts.size();}
+	Army * getRandomRuinKeeper(Player *p);
 
     private:
 

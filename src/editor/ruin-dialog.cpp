@@ -65,9 +65,17 @@ RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
     keeper_button->signal_clicked().connect(
 	sigc::mem_fun(this, &RuinDialog::on_keeper_clicked));
 
+    xml->get_widget("clear_keeper_button", clear_keeper_button);
+    clear_keeper_button->signal_clicked().connect(
+	sigc::mem_fun(this, &RuinDialog::on_clear_keeper_clicked));
+
     xml->get_widget("randomize_name_button", randomize_name_button);
     randomize_name_button->signal_clicked().connect(
 	sigc::mem_fun(this, &RuinDialog::on_randomize_name_clicked));
+
+    xml->get_widget("randomize_keeper_button", randomize_keeper_button);
+    randomize_keeper_button->signal_clicked().connect(
+	sigc::mem_fun(this, &RuinDialog::on_randomize_keeper_clicked));
 
     set_keeper_name();
     xml->get_widget("sage_checkbutton", sage_button);
@@ -178,6 +186,12 @@ void RuinDialog::on_hidden_toggled()
     player_combobox->set_sensitive (false);
 }
 
+void RuinDialog::on_clear_keeper_clicked()
+{
+  keeper->flClear();
+  set_keeper_name();
+}
+
 void RuinDialog::on_keeper_clicked()
 {
     SelectArmyDialog d(keeper->getPlayer(), true);
@@ -188,7 +202,8 @@ void RuinDialog::on_keeper_clicked()
     if (army)
       {
 	keeper->flClear();
-	keeper->push_back(new Army(*army));
+	Army *a = new Army(*army);
+	keeper->push_back(a);
       }
 
     set_keeper_name();
@@ -204,4 +219,13 @@ void RuinDialog::on_randomize_name_clicked()
       name_entry->set_text(d_randomizer->popRandomRuinName());
       d_randomizer->pushRandomRuinName(existing_name);
     }
+}
+
+void RuinDialog::on_randomize_keeper_clicked()
+{
+  keeper->flClear();
+  Army *a = d_randomizer->getRandomRuinKeeper
+    (Playerlist::getInstance()->getNeutral());
+  keeper->push_back(a);
+  set_keeper_name();
 }
