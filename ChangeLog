@@ -6,6 +6,7 @@
 	* ruin dialog in editor now only shows armies that can defend ruins
 	  when selecting a keeper.
 	* adding the beginnings of an item editor
+	* adding the beginnings of a reward selector in the ruin editor
 
 2008-02-12  Ben Asselstine
 	* load map dialog now opens to the .lordsawar dir initially
