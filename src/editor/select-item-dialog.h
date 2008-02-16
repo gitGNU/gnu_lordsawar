@@ -22,11 +22,13 @@
 #include <vector>
 #include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/container.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treemodelcolumn.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/textview.h>
 #include <gtkmm/label.h>
-#include <gtkmm/table.h>
-#include <gtkmm/togglebutton.h>
 #include <gtkmm/button.h>
-#include <gtkmm/comboboxtext.h>
 
 
 class Item;
@@ -45,15 +47,27 @@ class SelectItemDialog: public sigc::trackable
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
-    Gtk::Table *toggles_table;
     Gtk::Button *select_button;
 
     const Item *selected_item;
 
+    Gtk::TreeView *items_treeview;
+    class ItemsColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	ItemsColumns() 
+        { add(name); add(item);}
+	
+	Gtk::TreeModelColumn<Glib::ustring> name;
+	Gtk::TreeModelColumn<Item *> item;
+    };
+    const ItemsColumns items_columns;
+    Glib::RefPtr<Gtk::ListStore> items_list;
     std::vector<Gtk::ToggleButton *> item_toggles;
     bool ignore_toggles;
     std::vector<const Item*> selectable;
 
+
+    void addItem(Item *item);
     void on_item_toggled(Gtk::ToggleButton *toggle);
     bool on_item_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
     

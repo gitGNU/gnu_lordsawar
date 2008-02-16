@@ -47,9 +47,32 @@ SelectItemDialog::SelectItemDialog()
     
     xml->get_widget("select_button", select_button);
 
-    xml->get_widget("item_toggles_table", toggles_table);
+    xml->get_widget("items_treeview", items_treeview);
+    items_list = Gtk::ListStore::create(items_columns);
+    items_treeview->set_model(items_list);
+    items_treeview->append_column("", items_columns.name);
+    items_treeview->set_headers_visible(false);
 
-    fill_in_item_toggles();
+    Itemlist *itemlist = Itemlist::getInstance();
+    Itemlist::iterator iter = itemlist->begin();
+    for (;iter != itemlist->end(); iter++)
+      addItem((*iter).second);
+      
+    Uint32 max = itemlist->size();
+    if (max)
+      {
+	Gtk::TreeModel::Row row;
+	row = items_treeview->get_model()->children()[0];
+	if(row)
+	  items_treeview->get_selection()->select(row);
+      }
+}
+
+void SelectItemDialog::addItem(Item *item)
+{
+  Gtk::TreeIter i = items_list->append();
+  (*i)[items_columns.name] = item->getName();
+  (*i)[items_columns.item] = item;
 }
 
 void SelectItemDialog::set_parent_window(Gtk::Window &parent)
@@ -65,64 +88,17 @@ void SelectItemDialog::run()
 
     if (response != 1)
 	selected_item = 0;
+    else
+      {
+	Glib::RefPtr<Gtk::TreeSelection> selection = 
+	  items_treeview->get_selection();
+	Gtk::TreeModel::iterator iterrow = selection->get_selected();
+
+	if (iterrow) 
+	  {
+	    Gtk::TreeModel::Row row = *iterrow;
+	    selected_item = row[items_columns.item];
+	  }
+      }
 }
 
-void SelectItemDialog::on_item_toggled(Gtk::ToggleButton *toggle)
-{
-    if (ignore_toggles)
-	return;
-    
-    selected_item = 0;
-    ignore_toggles = true;
-    for (unsigned int i = 0; i < item_toggles.size(); ++i) {
-	if (toggle == item_toggles[i])
-	    selected_item = selectable[i];
-	
-	item_toggles[i]->set_active(toggle == item_toggles[i]);
-    }
-    ignore_toggles = false;
-
-    set_select_button_state();
-}
-
-void SelectItemDialog::fill_in_item_toggles()
-{
-    // fill in selectable armies
-    selectable.clear();
-    Itemlist::iterator iter = Itemlist::getInstance()->begin();
-    for (;iter != Itemlist::getInstance()->end(); iter++)
-      selectable.push_back((*iter).second);
-
-    // fill in item options
-    item_toggles.clear();
-    toggles_table->foreach(sigc::mem_fun(toggles_table, &Gtk::Container::remove));
-    toggles_table->resize(1, 1);
-    const int no_columns = 5;
-    for (unsigned int i = 0; i < selectable.size(); ++i)
-    {
-	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
-	
-	std::string name = selectable[i]->getName() + "\n" +
-	  selectable[i]->getBonusDescription();
-	toggle->add(*manage(new Gtk::Label(name)));
-	item_toggles.push_back(toggle);
-	int x = i % no_columns;
-	int y = i / no_columns;
-	toggles_table->attach(*toggle, x, x + 1, y, y + 1,
-			      Gtk::SHRINK, Gtk::SHRINK);
-	toggle->show_all();
-
-	toggle->signal_toggled().connect(
-	    sigc::bind(sigc::mem_fun(this, &SelectItemDialog::on_item_toggled),
-		       toggle));
-    }
-
-    ignore_toggles = false;
-    if (!item_toggles.empty())
-	item_toggles[0]->set_active(true);
-}
-
-void SelectItemDialog::set_select_button_state()
-{
-    select_button->set_sensitive(selected_item);
-}
