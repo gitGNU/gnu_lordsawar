@@ -402,10 +402,14 @@ void QuestsManager::cityAction(City *c, Stack *s,
       else
 	{
 	  for (Stack::iterator sit = s->begin(); sit != s->end(); sit++)
-	    if ((*sit)->getId() == (*it).second->getHeroId())
-	      (*it).second->cityAction(c, action, true, gold);
-	    else
-	      (*it).second->cityAction(c, action, false, gold);
+	    {
+	      if ((*it).second == NULL) //fixme: how is this null sometimes?
+		break;
+	      if ((*sit)->getId() == (*it).second->getHeroId())
+		(*it).second->cityAction(c, action, true, gold);
+	      else
+		(*it).second->cityAction(c, action, false, gold);
+	    }
 	}
     }
 }
