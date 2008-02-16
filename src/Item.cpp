@@ -114,7 +114,7 @@ void Item::removeBonus(Item::Bonus bonus)
   d_bonus ^= bonus;
 }
 
-std::string Item::getBonusDescription()
+std::string Item::getBonusDescription() const
 {
   // the attributes column
   std::vector<Glib::ustring> s;

@@ -25,8 +25,10 @@
 #include "armysetlist.h"
 #include "playerlist.h"
 #include "ruinlist.h"
+#include "Itemlist.h"
 #include "GameMap.h"
 #include "ruin.h"
+#include "ucompose.hpp"
 using namespace std;
 
 Reward::Reward(Type type, std::string name)
@@ -101,6 +103,10 @@ Reward_Gold::~Reward_Gold()
 {
 }
 
+Uint32 Reward_Gold::getRandomGoldPieces()
+{
+  return 310 + (rand() % 1000);
+}
 
 Reward_Allies::Reward_Allies(Uint32 army_type, Uint32 army_set, Uint32 count)
     :Reward(Reward::ALLIES), d_count(count)
@@ -140,6 +146,12 @@ bool Reward_Allies::save(XML_Helper* helper) const
   retval &= helper->closeTag();
   return retval;
 }
+	
+const Uint32 Reward_Allies::getRandomAmountOfAllies()
+{
+  return (rand() % MAX_STACK_SIZE) + 1;
+}
+
 const Army* Reward_Allies::randomArmyAlly()
 {
   Uint32 allytype;
@@ -222,6 +234,12 @@ bool Reward_Item::save(XML_Helper* helper) const
   return retval;
 }
 
+Item *Reward_Item::getRandomItem()
+{
+  Itemlist *il = Itemlist::getInstance();
+  Item *i = (*il)[rand() % il->size()];
+  return new Item(*i);
+}
 
 Reward_Item::~Reward_Item()
 {
@@ -307,3 +325,51 @@ Reward_Map::~Reward_Map()
 {
 }
 
+std::string Reward::getDescription()
+{
+  Glib::ustring s = "";
+  switch (getType())
+    {
+    case Reward::GOLD:
+	{
+	  Reward_Gold *g = dynamic_cast<Reward_Gold*>(this);
+	  s += String::ucompose(ngettext("%1 Gold Piece", "%1 Gold Pieces", 
+					 g->getGold()), g->getGold());
+	  return s;
+	}
+    case Reward::ALLIES:
+	{
+	  Reward_Allies *a = dynamic_cast<Reward_Allies *>(this);
+	  if (a->getArmy())
+	    s += String::ucompose(_("Allies: %1 x %2"), a->getArmy()->getName(),
+				  a->getNoOfAllies());
+	  return s;
+	}
+    case Reward::ITEM:
+	{
+	  Reward_Item *i = dynamic_cast<Reward_Item *>(this);
+	  if (i->getItem())
+	    s += String::ucompose(_("Item: %1"), i->getItem()->getName());
+	  return s;
+	}
+    case Reward::RUIN:
+	{
+	  Reward_Ruin *r = dynamic_cast<Reward_Ruin *>(this);
+	  if (r->getRuin())
+	    s += String::ucompose(_("Site: %1"), r->getRuin()->getName());
+	  return s;
+	}
+    case Reward::MAP:
+	{
+	  Reward_Map *m = dynamic_cast<Reward_Map *>(this);
+	  if (m->getLocation())
+	    s += String::ucompose(_("Map: %1,%2 %3x%4"), 
+				  m->getLocation()->getPos().x,
+				  m->getLocation()->getPos().y,
+				  m->getHeight(),
+				  m->getWidth());
+	  return s;
+	}
+    }
+  return s;
+}

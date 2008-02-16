@@ -1,5 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2008, Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -16,8 +15,8 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef SELECT_ARMY_DIALOG_H
-#define SELECT_ARMY_DIALOG_H
+#ifndef SELECT_ITEM_DIALOG_H
+#define SELECT_ITEM_DIALOG_H
 
 #include <memory>
 #include <vector>
@@ -28,52 +27,37 @@
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/button.h>
 #include <gtkmm/comboboxtext.h>
-#include <SDL/SDL_types.h>
 
-#include "../gui/army-info-tip.h"
 
-class Army;
-class City;
-class Player;
+class Item;
 
 // dialog for buying a production slot for a city
-class SelectArmyDialog: public sigc::trackable
+class SelectItemDialog: public sigc::trackable
 {
  public:
-    SelectArmyDialog(Player *p, bool defends_ruins = false,
-		     bool rewardable = false);
+    SelectItemDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
     void run();
 
-    const Army *get_selected_army() { return selected_army; }
+    const Item *get_selected_item() { return selected_item; }
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<ArmyInfoTip> army_info_tip;
-    Gtk::ComboBoxText *armyset_combobox;
-    Gtk::Label *army_info_label1;
-    Gtk::Label *army_info_label2;
     Gtk::Table *toggles_table;
     Gtk::Button *select_button;
-    std::vector<Uint32> armysets;
 
-    const Army *selected_army;
-    Player *player;
-    bool d_defends_ruins;
-    bool d_awardable;
+    const Item *selected_item;
 
-    std::vector<Gtk::ToggleButton *> army_toggles;
+    std::vector<Gtk::ToggleButton *> item_toggles;
     bool ignore_toggles;
-    std::vector<const Army*> selectable;
+    std::vector<const Item*> selectable;
 
-    void on_army_toggled(Gtk::ToggleButton *toggle);
-    bool on_army_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
-    void on_armyset_changed();
+    void on_item_toggled(Gtk::ToggleButton *toggle);
+    bool on_item_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
     
-    void fill_in_army_toggles();
-    void fill_in_army_info();
+    void fill_in_item_toggles();
     void set_select_button_state();
 };
 

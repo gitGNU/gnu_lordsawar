@@ -32,6 +32,7 @@
 class Ruin;
 class Stack;
 class CreateScenarioRandomize;
+class Reward;
 
 class RuinDialog: public sigc::trackable
 {
@@ -53,17 +54,32 @@ class RuinDialog: public sigc::trackable
     Gtk::CheckButton *sage_button;
     Gtk::CheckButton *hidden_button;
     Gtk::ComboBoxText *player_combobox;
+    Gtk::HBox *new_reward_hbox;
+    Gtk::RadioButton *new_reward_radiobutton;
+    Gtk::RadioButton *random_reward_radiobutton;
+    Gtk::Button *reward_button;
+    Gtk::Button *clear_reward_button;
+    Gtk::Button *randomize_reward_button;
+    Gtk::Button *reward_list_button;
     Ruin *ruin;
     Stack *keeper;
+    Reward *reward;
     CreateScenarioRandomize *d_randomizer;
 
     void set_keeper_name();
+    void set_reward_name();
 
     void on_keeper_clicked();
     void on_clear_keeper_clicked();
     void on_hidden_toggled();
     void on_randomize_name_clicked();
     void on_randomize_keeper_clicked();
+    void on_new_reward_toggled();
+    void on_random_reward_toggled();
+    void on_clear_reward_clicked();
+    void on_randomize_reward_clicked();
+    void on_reward_list_clicked();
+    void on_reward_clicked();
 };
 
 #endif

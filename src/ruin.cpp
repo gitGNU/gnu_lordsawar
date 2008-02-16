@@ -142,11 +142,11 @@ void Ruin::populateWithRandomReward()
   else
     num = rand() % 3;
   if (num == 0)
-    setReward(new Reward_Gold(300 + (rand() % 1000)));
+    setReward(new Reward_Gold(Reward_Gold::getRandomGoldPieces()));
   else if (num == 1)
     {
       const Army *a = Reward_Allies::randomArmyAlly();
-      setReward(new Reward_Allies(a, (rand() % MAX_STACK_SIZE) + 1));
+      setReward(new Reward_Allies(a, Reward_Allies::getRandomAmountOfAllies()));
     }
   else if (num == 2)
     {
@@ -154,7 +154,7 @@ void Ruin::populateWithRandomReward()
       if (reward)
 	setReward(reward);
       else //no items left to give!
-	setReward(new Reward_Gold(300 + (rand() % 1000)));
+	setReward(new Reward_Gold(Reward_Gold::getRandomGoldPieces()));
     }
 }
 // End of file

@@ -117,7 +117,7 @@ class Item
 	  {return Playerlist::getInstance()->getPlayer(d_plantable_owner_id);}
 
 	//! Return some text describing the item's abilities
-        std::string getBonusDescription();
+        std::string getBonusDescription() const;
 
     private:
         Uint32 d_bonus;

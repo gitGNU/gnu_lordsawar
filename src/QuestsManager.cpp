@@ -147,7 +147,7 @@ void QuestsManager::questCompleted(Uint32 heroId)
     int num = rand() % 4;
     if (num == 0)
       {
-        int gold = rand() % 1000;
+	int gold = Reward_Gold::getRandomGoldPieces();
         Reward_Gold reward(gold);
         p->giveReward(NULL, &reward);
         quest_completed.emit(quest, &reward);
@@ -174,7 +174,7 @@ void QuestsManager::questCompleted(Uint32 heroId)
           }
         else //no items left to give!
           {
-            int gold = rand() % 1000;
+	    int gold = Reward_Gold::getRandomGoldPieces();
             Reward_Gold reward(gold);
             p->giveReward(NULL, &reward);
             quest_completed.emit(quest, &reward);
@@ -190,7 +190,7 @@ void QuestsManager::questCompleted(Uint32 heroId)
           }
         else //no ruins left to give!
           {
-            int gold = rand() % 1000;
+            int gold = Reward_Gold::getRandomGoldPieces();
             Reward_Gold reward(gold);
             p->giveReward(NULL, &reward);
             quest_completed.emit(quest, &reward);

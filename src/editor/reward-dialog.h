@@ -26,23 +26,46 @@
 #include <gtkmm/radiobutton.h>
 
 class Reward;
+class Item;
+class Army;
+class Player;
 
 class RewardDialog: public sigc::trackable
 {
  public:
-    RewardDialog(Reward *reward);
+    RewardDialog(Player *player);
 
     void set_parent_window(Gtk::Window &parent);
 
     void run();
+
+    Reward *get_reward() {return reward;}
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
+    Player *d_player;
     Reward *reward;
+    Item *item;
+    Army *ally;
     Gtk::RadioButton *gold_radiobutton;
     Gtk::RadioButton *item_radiobutton;
     Gtk::RadioButton *allies_radiobutton;
     Gtk::RadioButton *map_radiobutton;
+    Gtk::SpinButton *gold_spinbutton;
+    Gtk::Button *randomize_gold_button;
+    Gtk::Button *item_button;
+    Gtk::Button *clear_item_button;
+    Gtk::Button *randomize_item_button;
+    Gtk::Button *ally_button;
+    Gtk::Button *clear_ally_button;
+    Gtk::Button *randomize_allies_button;
+    Gtk::SpinButton *num_allies_spinbutton;
+    Gtk::SpinButton *map_x_spinbutton;
+    Gtk::SpinButton *map_y_spinbutton;
+    Gtk::SpinButton *map_width_spinbutton;
+    Gtk::SpinButton *map_height_spinbutton;
+    Gtk::Button *randomize_map_button;
+
     Gtk::HBox *gold_hbox;
     Gtk::HBox *item_hbox;
     Gtk::HBox *allies_hbox;
@@ -52,7 +75,16 @@ class RewardDialog: public sigc::trackable
     void on_allies_toggled();
     void on_map_toggled();
     void on_random_toggled();
-
+    void on_randomize_gold_clicked();
+    void on_item_clicked();
+    void on_clear_item_clicked();
+    void on_randomize_item_clicked();
+    void set_item_name();
+    void on_ally_clicked();
+    void on_randomize_allies_clicked();
+    void on_clear_ally_clicked();
+    void set_ally_name();
+    void on_randomize_map_clicked();
 };
 
 #endif

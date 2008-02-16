@@ -46,8 +46,14 @@ class Reward
         //! Get the type of the reward
         Type getType() const { return d_type; }
 
+	//! Sets the name of the reward
+	void setName(std::string name) {d_name = name;}
+
         //! Returns the name of the reward
         std::string getName() const {return d_name;}
+
+	//! Generates a description of this reward
+	std::string getDescription();
 
         /** Saves the reward data
           * 
@@ -81,6 +87,7 @@ class Reward_Gold : public Reward
         Reward_Gold(Uint32 gold);
 	Reward_Gold(XML_Helper *helper);
         ~Reward_Gold();
+	static Uint32 getRandomGoldPieces();
 
         bool save(XML_Helper* helper) const;
 	Uint32 getGold() const {return d_gold;}
@@ -101,6 +108,7 @@ class Reward_Allies: public Reward
 	const Army * getArmy() const {return d_army;}
 	Uint32 getNoOfAllies() const {return d_count;}
         static const Army* randomArmyAlly();
+	static const Uint32 getRandomAmountOfAllies();
         static bool addAllies(Player *p, Vector<int> pos, const Army *army, Uint32 alliesCount);
         static bool addAllies(Player *p, Location *l, const Army *army, Uint32 alliesCount);
 
@@ -117,6 +125,8 @@ class Reward_Item: public Reward
         Reward_Item (Item *item);
 	Reward_Item(XML_Helper *helper);
         ~Reward_Item();
+
+	static Item *getRandomItem();
 
         bool save(XML_Helper* helper) const;
 	Item *getItem() const {return d_item;}

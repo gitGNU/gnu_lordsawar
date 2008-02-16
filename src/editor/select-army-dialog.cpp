@@ -36,10 +36,12 @@
 #include "../GraphicsCache.h"
 #include "../armysetlist.h"
 
-SelectArmyDialog::SelectArmyDialog(Player *p, bool defends_ruins)
+SelectArmyDialog::SelectArmyDialog(Player *p, bool defends_ruins,
+				   bool awardable)
 {
     d_defends_ruins = defends_ruins;
     player = p;
+    d_awardable = awardable;
     selected_army = 0;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -118,7 +120,11 @@ void SelectArmyDialog::fill_in_army_toggles()
     for (unsigned int j = 0; j < al->getSize(armyset); j++)
     {
 	const Army *a = al->getArmy(armyset, j);
-	if ((d_defends_ruins && a->getDefendsRuins()) || !d_defends_ruins)
+	if ((d_defends_ruins && a->getDefendsRuins()) || 
+	    (!d_defends_ruins && !d_awardable))
+	  selectable.push_back(a);
+	if ((d_awardable && a->getAwardable()) || 
+	    (!d_defends_ruins && !d_awardable))
 	  selectable.push_back(a);
     }
 

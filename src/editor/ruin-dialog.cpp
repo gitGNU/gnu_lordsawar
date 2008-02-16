@@ -34,11 +34,13 @@
 #include "../army.h"
 
 #include "select-army-dialog.h"
+#include "reward-dialog.h"
 
 RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
 {
     d_randomizer = randomizer;
     ruin = r;
+    reward = NULL;
     
     // copy occupant to be able to undo if the dialog is cancelled
     Stack *occupant = ruin->getOccupant();
@@ -106,6 +108,39 @@ RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
     alignment->add(*player_combobox);
     on_hidden_toggled();
 
+    xml->get_widget("new_reward_hbox", new_reward_hbox);
+    xml->get_widget("new_reward_radiobutton", new_reward_radiobutton);
+    new_reward_radiobutton->signal_toggled().connect(
+	sigc::mem_fun(*this, &RuinDialog::on_new_reward_toggled));
+    xml->get_widget("random_reward_radiobutton", random_reward_radiobutton);
+    random_reward_radiobutton->signal_toggled().connect(
+	sigc::mem_fun(*this, &RuinDialog::on_random_reward_toggled));
+
+    xml->get_widget("reward_button", reward_button);
+    reward_button->signal_clicked().connect(
+	sigc::mem_fun(this, &RuinDialog::on_reward_clicked));
+
+    xml->get_widget("clear_reward_button", clear_reward_button);
+    clear_reward_button->signal_clicked().connect(
+	sigc::mem_fun(this, &RuinDialog::on_clear_reward_clicked));
+
+    xml->get_widget("randomize_reward_button", randomize_reward_button);
+    randomize_reward_button->signal_clicked().connect(
+	sigc::mem_fun(this, &RuinDialog::on_randomize_reward_clicked));
+
+    xml->get_widget("reward_list_button", reward_list_button);
+    reward_list_button->signal_clicked().connect(
+	sigc::mem_fun(this, &RuinDialog::on_reward_list_clicked));
+
+    if (ruin->getReward() == NULL)
+      random_reward_radiobutton->set_active(true);
+    else
+      {
+	reward = ruin->getReward();
+	new_reward_radiobutton->set_active(true);
+      }
+
+    set_reward_name();
 }
 
 void RuinDialog::set_parent_window(Gtk::Window &parent)
@@ -229,3 +264,60 @@ void RuinDialog::on_randomize_keeper_clicked()
   keeper->push_back(a);
   set_keeper_name();
 }
+
+void RuinDialog::on_new_reward_toggled()
+{
+  new_reward_hbox->set_sensitive(true);
+}
+
+void RuinDialog::on_random_reward_toggled()
+{
+  new_reward_hbox->set_sensitive(false);
+}
+
+void RuinDialog::on_reward_list_clicked()
+{
+}
+
+void RuinDialog::on_reward_clicked()
+{
+  RewardDialog d(keeper->getPlayer());
+  d.run();
+  if (d.get_reward())
+    {
+      on_clear_reward_clicked();
+      reward = d.get_reward();
+      set_reward_name();
+      ruin->setReward(reward);
+    }
+}
+
+void RuinDialog::on_clear_reward_clicked()
+{
+  if (reward)
+    {
+      delete reward;
+      reward = NULL;
+      ruin->setReward(NULL);
+    }
+  set_reward_name();
+}
+
+void RuinDialog::on_randomize_reward_clicked()
+{
+  on_clear_reward_clicked();
+  //reward = d_randomizer->getNewRandomReward();
+  set_reward_name();
+}
+
+void RuinDialog::set_reward_name()
+{
+  Glib::ustring name;
+  if (reward)
+    name = reward->getName();
+  else
+    name = _("No reward");
+
+  reward_button->set_label(name);
+}
+
