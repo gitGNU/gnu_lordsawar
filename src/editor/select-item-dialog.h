@@ -62,16 +62,10 @@ class SelectItemDialog: public sigc::trackable
     };
     const ItemsColumns items_columns;
     Glib::RefPtr<Gtk::ListStore> items_list;
-    std::vector<Gtk::ToggleButton *> item_toggles;
-    bool ignore_toggles;
-    std::vector<const Item*> selectable;
 
 
     void addItem(Item *item);
-    void on_item_toggled(Gtk::ToggleButton *toggle);
-    bool on_item_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
     
-    void fill_in_item_toggles();
     void set_select_button_state();
 };
 

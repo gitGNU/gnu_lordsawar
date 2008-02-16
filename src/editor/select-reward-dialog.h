@@ -62,16 +62,9 @@ class SelectRewardDialog: public sigc::trackable
     };
     const RewardsColumns rewards_columns;
     Glib::RefPtr<Gtk::ListStore> rewards_list;
-    std::vector<Gtk::ToggleButton *> reward_toggles;
-    bool ignore_toggles;
-    std::vector<const Reward*> selectable;
-
 
     void addReward(Reward *reward);
-    void on_reward_toggled(Gtk::ToggleButton *toggle);
-    bool on_reward_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
     
-    void fill_in_reward_toggles();
     void set_select_button_state();
 };
 
