@@ -1,5 +1,7 @@
 2008-02-15  Ben Asselstine
 	* the ruin editor can now randomize the reward.
+	* fixed bug reported by Patrice Dumas.
+	* change item selector in editor to be a treeview.
 
 2008-02-14  Ben Asselstine
 	* item editor now works minimally.
