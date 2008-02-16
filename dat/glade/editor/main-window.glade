@@ -152,6 +152,84 @@
 	  </child>
 
 	  <child>
+	    <widget class="GtkMenuItem" id="random_menuitem">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">_Random</property>
+	      <property name="use_underline">True</property>
+
+	      <child>
+		<widget class="GtkMenu" id="random_menuitem_menu">
+
+		  <child>
+		    <widget class="GtkMenuItem" id="random_all_cities_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">All Cities</property>
+		      <property name="use_underline">True</property>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="random_unnamed_cities_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Unnamed Cities</property>
+		      <property name="use_underline">True</property>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="random_all_ruins_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">All Ruins</property>
+		      <property name="use_underline">True</property>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="random_unnamed_ruins_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Unnamed Ruins</property>
+		      <property name="use_underline">True</property>
+		      <signal name="activate" handler="on_random_unnamed_ruins_menuitem_activate" last_modification_time="Sat, 16 Feb 2008 21:11:51 GMT"/>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="random_all_temples_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">All Temples</property>
+		      <property name="use_underline">True</property>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="random_unnamed_temples_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Unnamed Temples</property>
+		      <property name="use_underline">True</property>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="random_all_signs_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">All Signs</property>
+		      <property name="use_underline">True</property>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="random_unnamed_signs_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Unnamed Signs</property>
+		      <property name="use_underline">True</property>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
+	    </widget>
+	  </child>
+
+	  <child>
 	    <widget class="GtkMenuItem" id="view_menuitem">
 	      <property name="visible">True</property>
 	      <property name="label" translatable="yes">_View</property>

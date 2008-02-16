@@ -108,6 +108,14 @@ class MainWindow: public sigc::trackable
 
     void on_fullscreen_activated();
 
+    void on_random_all_cities_activated();
+    void on_random_unnamed_cities_activated();
+    void on_random_all_ruins_activated();
+    void on_random_unnamed_ruins_activated();
+    void on_random_all_temples_activated();
+    void on_random_unnamed_temples_activated();
+    void on_random_all_signs_activated();
+    void on_random_unnamed_signs_activated();
     
     struct PointerItem
     {
@@ -159,6 +167,9 @@ class MainWindow: public sigc::trackable
     void init_map_state();
     void remove_tile_style_buttons();
     void setup_tile_style_buttons(Tile::Type terrain);
+    void randomize_signpost(Signpost *signpost);
+    void randomize_city(City *city);
+    void randomize_ruin(Ruin *ruin);
 
     // map callbacks
     void on_smallmap_changed(SDL_Surface *map);

@@ -184,6 +184,30 @@ MainWindow::MainWindow()
     xml->connect_clicked("edit_rewards_menuitem", 
 			 sigc::mem_fun(this, 
 				       &MainWindow::on_edit_rewards_activated));
+    xml->connect_clicked
+      ("random_all_cities_menuitem", 
+       sigc::mem_fun(this, &MainWindow::on_random_all_cities_activated));
+    xml->connect_clicked
+      ("random_unnamed_cities_menuitem", 
+       sigc::mem_fun(this, &MainWindow::on_random_unnamed_cities_activated));
+    xml->connect_clicked
+      ("random_all_ruins_menuitem", 
+       sigc::mem_fun(this, &MainWindow::on_random_all_ruins_activated));
+    xml->connect_clicked
+      ("random_unnamed_ruins_menuitem", 
+       sigc::mem_fun(this, &MainWindow::on_random_unnamed_ruins_activated));
+    xml->connect_clicked
+      ("random_all_temples_menuitem", 
+       sigc::mem_fun(this, &MainWindow::on_random_all_temples_activated));
+    xml->connect_clicked
+      ("random_unnamed_temples_menuitem", 
+       sigc::mem_fun(this, &MainWindow::on_random_unnamed_temples_activated));
+    xml->connect_clicked
+      ("random_all_signs_menuitem", 
+       sigc::mem_fun(this, &MainWindow::on_random_all_signs_activated));
+    xml->connect_clicked
+      ("random_unnamed_signs_menuitem", 
+       sigc::mem_fun(this, &MainWindow::on_random_unnamed_signs_activated));
 }
 
 MainWindow::~MainWindow()
@@ -973,3 +997,107 @@ void MainWindow::on_edit_rewards_activated()
   d.set_parent_window(*window.get());
   d.run();
 }
+
+void MainWindow::randomize_city(City *c)
+{
+  std::string name = d_create_scenario_names->popRandomCityName();
+  if (name != "")
+    c->setName(name);
+  c->setRandomArmytypes(true, 1);
+}
+
+void MainWindow::on_random_all_cities_activated()
+{
+  Citylist *cl = Citylist::getInstance();
+  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+    randomize_city(&*it);
+}
+
+void MainWindow::on_random_unnamed_cities_activated()
+{
+  Citylist *cl = Citylist::getInstance();
+  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+    {
+      if ((*it).getName() == DEFAULT_CITY_NAME)
+	randomize_city(&*it);
+    }
+}
+
+void MainWindow::randomize_ruin(Ruin *r)
+{
+  std::string name = d_create_scenario_names->popRandomRuinName();
+  if (name != "")
+    r->setName(name);
+}
+
+void MainWindow::on_random_all_ruins_activated()
+{
+  Ruinlist *rl = Ruinlist::getInstance();
+  for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
+    randomize_ruin(&*it);
+}
+
+void MainWindow::on_random_unnamed_ruins_activated()
+{
+  Ruinlist *rl = Ruinlist::getInstance();
+  for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
+    {
+      if ((*it).getName() == DEFAULT_RUIN_NAME)
+	randomize_ruin(&*it);
+    }
+}
+
+void MainWindow::on_random_all_temples_activated()
+{
+  Templelist *tl = Templelist::getInstance();
+  for (Templelist::iterator it = tl->begin(); it != tl->end(); it++)
+    {
+      std::string name = d_create_scenario_names->popRandomTempleName();
+      if (name != "")
+	(*it).setName(name);
+    }
+}
+
+void MainWindow::on_random_unnamed_temples_activated()
+{
+  Templelist *tl = Templelist::getInstance();
+  for (Templelist::iterator it = tl->begin(); it != tl->end(); it++)
+    {
+      if ((*it).getName() == DEFAULT_TEMPLE_NAME)
+	{
+	  std::string name = d_create_scenario_names->popRandomTempleName();
+	  if (name != "")
+	    (*it).setName(name);
+	}
+    }
+}
+
+void MainWindow::randomize_signpost(Signpost *signpost)
+{
+  std::string name = "";
+  if ((rand() % d_create_scenario_names->getNumSignposts())  == 0)
+    name = d_create_scenario_names->popRandomSignpost();
+  else
+    name = d_create_scenario_names->getDynamicSignpost(signpost);
+  if (name == "")
+    name = d_create_scenario_names->popRandomSignpost();
+  signpost->setName(name);
+}
+
+void MainWindow::on_random_all_signs_activated()
+{
+  Signpostlist *sl = Signpostlist::getInstance();
+  for (Signpostlist::iterator it = sl->begin(); it != sl->end(); it++)
+    randomize_signpost(&*it);
+}
+
+void MainWindow::on_random_unnamed_signs_activated()
+{
+  Signpostlist *sl = Signpostlist::getInstance();
+  for (Signpostlist::iterator it = sl->begin(); it != sl->end(); it++)
+    {
+      if ((*it).getName() == DEFAULT_SIGNPOST)
+	randomize_signpost(&*it);
+    }
+}
+
