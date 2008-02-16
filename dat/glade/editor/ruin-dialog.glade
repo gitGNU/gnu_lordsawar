@@ -514,7 +514,6 @@
 		      <child>
 			<widget class="GtkButton" id="reward_list_button">
 			  <property name="visible">True</property>
-			  <property name="sensitive">False</property>
 			  <property name="can_focus">True</property>
 			  <property name="label" translatable="yes">_Pick From List</property>
 			  <property name="use_underline">True</property>

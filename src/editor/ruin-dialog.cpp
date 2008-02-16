@@ -34,6 +34,7 @@
 #include "../army.h"
 
 #include "select-army-dialog.h"
+#include "select-reward-dialog.h"
 #include "reward-dialog.h"
 
 RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
@@ -278,6 +279,17 @@ void RuinDialog::on_random_reward_toggled()
 
 void RuinDialog::on_reward_list_clicked()
 {
+  SelectRewardDialog d;
+  d.set_parent_window(*dialog.get());
+  d.run();
+  const Reward *picked_reward = d.get_selected_reward();
+  if (picked_reward)
+    {
+      on_clear_reward_clicked();
+      reward = new Reward(*picked_reward);
+    }
+
+    set_reward_name();
 }
 
 void RuinDialog::on_reward_clicked()
