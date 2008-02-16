@@ -41,7 +41,9 @@ class Reward
         Reward(Type type, std::string name = "");
 	//! XML constructor
         Reward(XML_Helper* helper);
-        
+	//! copy constructor
+        Reward (const Reward& orig);
+
         virtual ~Reward();
 
         //! Get the type of the reward
@@ -87,6 +89,7 @@ class Reward_Gold : public Reward
     public:
         Reward_Gold(Uint32 gold);
 	Reward_Gold(XML_Helper *helper);
+	Reward_Gold(const Reward_Gold& orig);
         ~Reward_Gold();
 	static Uint32 getRandomGoldPieces();
 
@@ -102,6 +105,7 @@ class Reward_Allies: public Reward
     public:
         Reward_Allies(const Army *army, Uint32 count);
         Reward_Allies(Uint32 army_type, Uint32 army_set, Uint32 count);
+	Reward_Allies(const Reward_Allies& orig);
 	Reward_Allies(XML_Helper *helper);
         ~Reward_Allies();
 
@@ -125,6 +129,7 @@ class Reward_Item: public Reward
     public:
         Reward_Item (Item *item);
 	Reward_Item(XML_Helper *helper);
+	Reward_Item(const Reward_Item& orig);
         ~Reward_Item();
 
 	static Item *getRandomItem();
@@ -142,6 +147,7 @@ class Reward_Ruin: public Reward
     public:
         Reward_Ruin(Ruin *ruin);
 	Reward_Ruin(XML_Helper *helper);
+	Reward_Ruin(const Reward_Ruin& orig);
         ~Reward_Ruin();
 
         bool save(XML_Helper* helper) const;
@@ -156,6 +162,7 @@ class Reward_Map: public Reward
     public:
         Reward_Map(Location *l, Uint32 height, Uint32 width);
 	Reward_Map(XML_Helper *helper);
+	Reward_Map(const Reward_Map& orig);
         ~Reward_Map();
 
         bool save(XML_Helper* helper) const;

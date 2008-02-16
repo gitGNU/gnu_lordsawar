@@ -70,7 +70,9 @@ glade-helpers.h \
 itemlist-dialog.cpp itemlist-dialog.h \
 reward-dialog.cpp reward-dialog.h \
 select-item-dialog.cpp select-item-dialog.h \
-select-reward-dialog.cpp select-reward-dialog.h
+select-reward-dialog.cpp select-reward-dialog.h \
+rewardlist-dialog.cpp rewardlist-dialog.h \
+select-hidden-ruin-dialog.cpp select-hidden-ruin-dialog.h
 
 # NewMapDialog.cpp Bigmap.cpp \
 # Smallmap.cpp MapGenDialog.cpp TempleDialog.cpp \

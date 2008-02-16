@@ -84,6 +84,7 @@
 #include "map-info-dialog.h"
 #include "new-map-dialog.h"
 #include "itemlist-dialog.h"
+#include "rewardlist-dialog.h"
 
 
 MainWindow::MainWindow()
@@ -968,7 +969,7 @@ void MainWindow::on_edit_items_activated()
 
 void MainWindow::on_edit_rewards_activated()
 {
-  //RewardlistDialog d;
-  //d.set_parent_window(*window.get());
-  //d.run();
+  RewardlistDialog d;
+  d.set_parent_window(*window.get());
+  d.run();
 }

@@ -32,9 +32,9 @@
 #include "../GameMap.h"
 #include "select-item-dialog.h"
 #include "select-army-dialog.h"
-//#include "select-ruin-dialog.h"
+#include "select-hidden-ruin-dialog.h"
 
-RewardDialog::RewardDialog(Player *player, bool hidden_ruins)
+RewardDialog::RewardDialog(Player *player, bool hidden_ruins, Reward *r)
 {
   d_player = player;
   d_hidden_ruins = hidden_ruins;
@@ -123,6 +123,69 @@ RewardDialog::RewardDialog(Player *player, bool hidden_ruins)
   set_hidden_ruin_name();
   hidden_ruin_radiobutton->set_sensitive(hidden_ruins);
 
+  if (r)
+    {
+      if (r->getType() == Reward::ITEM)
+	{
+	  reward = new Reward_Item(*static_cast<Reward_Item*>(r));
+	  item = static_cast<Reward_Item*>(reward)->getItem();
+	}
+      else if (r->getType() == Reward::ALLIES)
+	{
+	  reward = new Reward_Allies(*static_cast<Reward_Allies*>(r));
+	  ally = new Army(*static_cast<Reward_Allies*>(reward)->getArmy());
+	}
+      else if (r->getType() == Reward::RUIN)
+	{
+	  reward = new Reward_Ruin(*static_cast<Reward_Ruin*>(r));
+	  hidden_ruin = new Ruin(*static_cast<Reward_Ruin*>(reward)->getRuin());
+	}
+      else if (r->getType() == Reward::MAP)
+	reward = new Reward_Map(*static_cast<Reward_Map*>(r));
+      else if (r->getType() == Reward::GOLD)
+	reward = new Reward_Gold(*static_cast<Reward_Gold*>(r));
+    }
+    
+  if (reward)
+    fill_in_reward_info();
+}
+
+void RewardDialog::fill_in_reward_info()
+{
+  if (reward->getType() == Reward::GOLD)
+    {
+      Reward_Gold *r = static_cast<Reward_Gold*>(reward);
+      gold_spinbutton->set_value(r->getGold());
+      gold_radiobutton->set_active(true);
+    }
+  else if (reward->getType() == Reward::ITEM)
+    {
+      set_item_name();
+      item_radiobutton->set_active(true);
+    }
+  else if (reward->getType() == Reward::ALLIES)
+    {
+      Reward_Allies *r = static_cast<Reward_Allies*>(reward);
+      num_allies_spinbutton->set_value(r->getNoOfAllies());
+      set_ally_name();
+      allies_radiobutton->set_active(true);
+    }
+  else if (reward->getType() == Reward::MAP)
+    {
+      Reward_Map *r = static_cast<Reward_Map*>(reward);
+      map_x_spinbutton->set_value(r->getLocation()->getPos().x);
+      map_y_spinbutton->set_value(r->getLocation()->getPos().y);
+      map_width_spinbutton->set_value(r->getWidth());
+      map_height_spinbutton->set_value(r->getHeight());
+	  map_radiobutton->set_active(true);
+    }
+  else if (reward->getType() == Reward::RUIN)
+    {
+      set_hidden_ruin_name();
+      hidden_ruin_radiobutton->set_active(true);
+    }
+
+  //reward holds a reward
 }
 
 void RewardDialog::set_parent_window(Gtk::Window &parent)
@@ -140,9 +203,9 @@ void RewardDialog::run()
     {
       if (gold_radiobutton->get_active() == true)
 	reward = new Reward_Gold(gold_spinbutton->get_value_as_int());
-      else if (item_radiobutton->get_active() == true)
+      else if (item_radiobutton->get_active() == true && item)
 	reward = new Reward_Item(item);
-      else if (allies_radiobutton->get_active() == true)
+      else if (allies_radiobutton->get_active() == true && ally)
 	reward = new Reward_Allies(ally, 
 				   num_allies_spinbutton->get_value_as_int());
       else if (map_radiobutton->get_active() == true)
@@ -152,9 +215,22 @@ void RewardDialog::run()
 			1), 
 	   map_height_spinbutton->get_value_as_int(),
 	   map_width_spinbutton->get_value_as_int());
+      else if (hidden_ruin_radiobutton->get_active() == true && hidden_ruin)
+	reward = new Reward_Ruin(hidden_ruin);
+      else
+	{
+	  if (reward)
+	    {
+	      delete reward;
+	      reward = NULL;
+	    }
+	}
 
 	  
-      reward->setName(reward->getDescription());
+      if (reward)
+	{
+	reward->setName(reward->getDescription());
+	}
     }
   else
     {
@@ -314,14 +390,14 @@ void RewardDialog::on_randomize_map_clicked()
 
 void RewardDialog::on_hidden_ruin_clicked()
 {
-  //SelectRuinDialog d(d_player, true);
-  //d.run();
-  //if (d.get_selected_ruin())
-    //{
-      //on_clear_hidden_ruin_clicked();
-      //hidden_ruin = new Ruin(*(d.get_selected_ruin()));
-      //set_hidden_ruin_name();
-    //}
+  SelectHiddenRuinDialog d;
+  d.run();
+  if (d.get_selected_hidden_ruin())
+    {
+      on_clear_hidden_ruin_clicked();
+      hidden_ruin = new Ruin(*(d.get_selected_hidden_ruin()));
+      set_hidden_ruin_name();
+    }
 }
 
 void RewardDialog::on_clear_hidden_ruin_clicked()

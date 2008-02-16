@@ -294,7 +294,7 @@ void RuinDialog::on_reward_list_clicked()
 
 void RuinDialog::on_reward_clicked()
 {
-  RewardDialog d(keeper->getPlayer(), false);
+  RewardDialog d(keeper->getPlayer(), false, NULL);
   d.run();
   if (d.get_reward())
     {

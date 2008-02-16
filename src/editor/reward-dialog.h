@@ -34,7 +34,7 @@ class Player;
 class RewardDialog: public sigc::trackable
 {
  public:
-    RewardDialog(Player *player, bool hidden_ruins);
+    RewardDialog(Player *player, bool hidden_ruins, Reward *r);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -97,6 +97,8 @@ class RewardDialog: public sigc::trackable
     void on_randomize_hidden_ruin_clicked();
     void on_clear_hidden_ruin_clicked();
     void set_hidden_ruin_name();
+
+    void fill_in_reward_info();
 
 };
 

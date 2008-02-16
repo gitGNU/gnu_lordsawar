@@ -17,6 +17,8 @@ armyset-info-dialog.glade \
 itemlist-dialog.glade \
 reward-dialog.glade \
 select-item-dialog.glade \
-select-reward-dialog.glade
+select-reward-dialog.glade \
+reward-list-dialog.glade \
+select-hidden-ruin-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)

@@ -43,6 +43,11 @@ Reward::Reward(XML_Helper *helper)
   d_type = static_cast<Reward::Type>(t);
   helper->getData(d_name, "name");
 }
+        
+Reward::Reward (const Reward& orig)
+	:d_type(orig.d_type), d_name(orig.d_name)
+{
+}
 
 bool Reward::save(XML_Helper* helper) const
 {
@@ -89,6 +94,11 @@ Reward_Gold::Reward_Gold(XML_Helper* helper)
   helper->getData(d_gold, "gold");
 }
 
+Reward_Gold::Reward_Gold (const Reward_Gold & orig)
+	:Reward(orig), d_gold(orig.d_gold)
+{
+}
+
 bool Reward_Gold::save(XML_Helper* helper) const
 {
   bool retval = true;
@@ -133,6 +143,12 @@ Reward_Allies::Reward_Allies(XML_Helper* helper)
   helper->getData(d_army_type, "ally_type");
   helper->getData(d_army_set, "ally_armyset");
   d_army = al->getArmy (d_army_set, d_army_type);
+}
+
+Reward_Allies::Reward_Allies (const Reward_Allies& orig)
+	:Reward(orig), d_army_type(orig.d_army_type), 
+	d_army_set(orig.d_army_set), d_army(orig.d_army), d_count(orig.d_count)
+{
 }
 
 bool Reward_Allies::save(XML_Helper* helper) const
@@ -224,6 +240,11 @@ Reward_Item::Reward_Item(XML_Helper* helper)
   helper->registerTag("item", sigc::mem_fun(this, &Reward_Item::loadItem));
 }
 
+Reward_Item::Reward_Item (const Reward_Item& orig)
+	:Reward(orig), d_item(orig.d_item)
+{
+}
+
 bool Reward_Item::save(XML_Helper* helper) const
 {
   bool retval = true;
@@ -248,7 +269,7 @@ Reward_Item::~Reward_Item()
 }
 
 Reward_Ruin::Reward_Ruin(Ruin *ruin)
-    :Reward(Reward::RUIN), d_ruin_pos(Vector<int>(-1,-1))
+    :Reward(Reward::RUIN), d_ruin_pos(ruin->getPos())
 {
 }
 
@@ -262,6 +283,10 @@ Reward_Ruin::Reward_Ruin(XML_Helper* helper)
   d_ruin_pos = Vector<int>(x,y);
 }
 
+Reward_Ruin::Reward_Ruin (const Reward_Ruin& orig)
+	:Reward(orig), d_ruin_pos(orig.d_ruin_pos)
+{
+}
 bool Reward_Ruin::save(XML_Helper* helper) const
 {
   bool retval = true;
@@ -300,6 +325,12 @@ Reward_Map::Reward_Map(XML_Helper* helper)
 						&Reward_Map::loadLocation));
   helper->getData(d_height, "height");
   helper->getData(d_width, "width");
+}
+
+Reward_Map::Reward_Map (const Reward_Map& orig)
+	:Reward(orig), d_loc(orig.d_loc), d_height(orig.d_height), 
+	d_width(orig.d_width)
+{
 }
 
 bool Reward_Map::save(XML_Helper* helper) const

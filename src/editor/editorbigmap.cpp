@@ -43,6 +43,7 @@
 #include "../File.h"
 #include "../GameMap.h"
 #include "../Configuration.h"
+#include "../rewardlist.h"
 #include "../GraphicsCache.h"
 #include "../armysetlist.h"
 #include "../sdl-draw.h"
@@ -439,6 +440,24 @@ void EditorBigMap::change_map_under_cursor()
 	    // ... or a port ...
 	    remove_from_map(Portlist::getInstance(), tile);
 	    // ... or a ruin ...
+	    {
+	      if (Ruinlist::getInstance()->getObjectAt(tile))
+		{
+		  Rewardlist *rl = Rewardlist::getInstance();
+		  for (Rewardlist::iterator it = rl->begin(); 
+		       it != rl->end(); it++)
+		    {
+		      if ((*it)->getType() == Reward::RUIN)
+			{
+			  Reward_Ruin *rr = static_cast<Reward_Ruin*>(*it);
+			  if (rr->getRuin()->getPos() == tile)
+			    {
+			      rl->remove(*it);
+			    }
+			}
+		    }
+		}
+	    }
 	    remove_from_map(Ruinlist::getInstance(), tile);
 	    // ... or a road ...
 	    remove_from_map(Roadlist::getInstance(), tile);
