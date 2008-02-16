@@ -248,7 +248,7 @@ Reward_Item::~Reward_Item()
 }
 
 Reward_Ruin::Reward_Ruin(Ruin *ruin)
-    :Reward(Reward::RUIN), d_ruin(ruin)
+    :Reward(Reward::RUIN), d_ruin_pos(Vector<int>(-1,-1))
 {
 }
 
@@ -259,7 +259,7 @@ Reward_Ruin::Reward_Ruin(XML_Helper* helper)
   Uint32 y;
   helper->getData(x, "x");
   helper->getData(y, "y");
-  d_ruin = Ruinlist::getInstance()->getObjectAt(x, y);
+  d_ruin_pos = Vector<int>(x,y);
 }
 
 bool Reward_Ruin::save(XML_Helper* helper) const
@@ -267,8 +267,8 @@ bool Reward_Ruin::save(XML_Helper* helper) const
   bool retval = true;
   retval &= helper->openTag("reward");
   retval &= Reward::save(helper);
-  retval &= helper->saveData("x", d_ruin->getPos().x);
-  retval &= helper->saveData("y", d_ruin->getPos().y);
+  retval &= helper->saveData("x", getRuin()->getPos().x);
+  retval &= helper->saveData("y", getRuin()->getPos().y);
   retval &= helper->closeTag();
   return retval;
 }

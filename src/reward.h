@@ -19,6 +19,7 @@
 #define __REWARD_H
 #include <SDL_types.h>
 #include "vector.h"
+#include "ruinlist.h"
 #include <string>
 class Player;
 class Army;
@@ -144,10 +145,10 @@ class Reward_Ruin: public Reward
         ~Reward_Ruin();
 
         bool save(XML_Helper* helper) const;
-	Ruin* getRuin() const {return d_ruin;}
+	Ruin* getRuin() const {return Ruinlist::getInstance()->getObjectAt(d_ruin_pos);}
 
     private:
-        Ruin *d_ruin;
+	Vector<int> d_ruin_pos;
 };
 
 class Reward_Map: public Reward
