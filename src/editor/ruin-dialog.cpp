@@ -191,6 +191,7 @@ void RuinDialog::run()
         else
           ruin->setOwner(NULL);
 	keeper = 0;
+      ruin->setReward(reward);
     }
     else
     {
@@ -281,14 +282,13 @@ void RuinDialog::on_reward_list_clicked()
 
 void RuinDialog::on_reward_clicked()
 {
-  RewardDialog d(keeper->getPlayer());
+  RewardDialog d(keeper->getPlayer(), false);
   d.run();
   if (d.get_reward())
     {
       on_clear_reward_clicked();
       reward = d.get_reward();
       set_reward_name();
-      ruin->setReward(reward);
     }
 }
 
@@ -298,7 +298,6 @@ void RuinDialog::on_clear_reward_clicked()
     {
       delete reward;
       reward = NULL;
-      ruin->setReward(NULL);
     }
   set_reward_name();
 }
@@ -306,7 +305,7 @@ void RuinDialog::on_clear_reward_clicked()
 void RuinDialog::on_randomize_reward_clicked()
 {
   on_clear_reward_clicked();
-  //reward = d_randomizer->getNewRandomReward();
+  reward = d_randomizer->getNewRandomReward(false);
   set_reward_name();
 }
 

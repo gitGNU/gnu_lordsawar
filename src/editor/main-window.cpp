@@ -180,6 +180,9 @@ MainWindow::MainWindow()
     xml->connect_clicked("edit_items_menuitem", 
 			 sigc::mem_fun(this, 
 				       &MainWindow::on_edit_items_activated));
+    xml->connect_clicked("edit_rewards_menuitem", 
+			 sigc::mem_fun(this, 
+				       &MainWindow::on_edit_rewards_activated));
 }
 
 MainWindow::~MainWindow()
@@ -961,4 +964,11 @@ void MainWindow::on_edit_items_activated()
   ItemlistDialog d;
   d.set_parent_window(*window.get());
   d.run();
+}
+
+void MainWindow::on_edit_rewards_activated()
+{
+  //RewardlistDialog d;
+  //d.set_parent_window(*window.get());
+  //d.run();
 }

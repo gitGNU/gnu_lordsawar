@@ -161,6 +161,7 @@ class Reward_Map: public Reward
 	Location* getLocation() const {return d_loc;}
 	Uint32 getHeight() const {return d_height;}
 	Uint32 getWidth() const {return d_width;}
+	static void getRandomMap(int *x, int *y, int *width, int *height);
 
     private:
         bool loadLocation(std::string tag, XML_Helper* helper);

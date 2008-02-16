@@ -208,3 +208,47 @@ std::string CreateScenarioRandomize::getDynamicSignpost(Signpost *signpost)
 	   nearCity->getName().c_str(), dir);
   return buf;
 }
+  
+Reward *CreateScenarioRandomize::getNewRandomReward(bool hidden_ruins)
+{
+  int max_reward_types = 5;
+  if (!hidden_ruins)
+    max_reward_types--;
+  int num = rand() % max_reward_types;
+  Reward *reward;
+
+  switch (num)
+    {
+    case 0: //Gold
+      reward = new Reward_Gold(Reward_Gold::getRandomGoldPieces());
+      break;
+    case 1: //Item
+      reward = new Reward_Item(Reward_Item::getRandomItem());
+      break;
+    case 2: //Allies
+	{
+	  const Army *a = Reward_Allies::randomArmyAlly();
+	  if (a)
+	    reward = new Reward_Allies 
+	      (new Army (*a), Reward_Allies::getRandomAmountOfAllies());
+	  else
+	    reward = new Reward_Gold(Reward_Gold::getRandomGoldPieces());
+	}
+      break;
+    case 3: //Map
+	{
+	  int x, y, width, height;
+	  Reward_Map::getRandomMap(&x, &y, &width, &height);
+	  reward = new Reward_Map (new Location("", Vector<int>(x, y), 1), 
+				   height, width);
+	}
+      break;
+    case 4: //Hidden Ruin
+      //fixme
+      break;
+    }
+      
+  if (reward)
+    reward->setName(reward->getDescription());
+  return reward;
+}

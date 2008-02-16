@@ -27,6 +27,7 @@
 class Signpost;
 class Army;
 class Player;
+class Reward;
 
 class CreateScenarioRandomize
 {
@@ -52,6 +53,7 @@ class CreateScenarioRandomize
 	std::string getDynamicSignpost(Signpost *signpost);
 	int getNumSignposts() {return d_signposts.size();}
 	Army * getRandomRuinKeeper(Player *p);
+	Reward *getNewRandomReward(bool hidden_ruins);
 
     private:
 

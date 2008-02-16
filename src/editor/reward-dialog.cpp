@@ -26,15 +26,19 @@
 #include "../ucompose.hpp"
 #include "../defs.h"
 #include "../reward.h"
+#include "../ruin.h"
 #include "../Item.h"
 #include "../army.h"
 #include "../GameMap.h"
 #include "select-item-dialog.h"
 #include "select-army-dialog.h"
+//#include "select-ruin-dialog.h"
 
-RewardDialog::RewardDialog(Player *player)
+RewardDialog::RewardDialog(Player *player, bool hidden_ruins)
 {
   d_player = player;
+  d_hidden_ruins = hidden_ruins;
+  hidden_ruin = NULL;
   reward = NULL;
   item = NULL;
   ally = NULL;
@@ -63,6 +67,10 @@ RewardDialog::RewardDialog(Player *player)
   xml->get_widget("map_radiobutton", map_radiobutton);
   map_radiobutton->signal_toggled().connect
     (sigc::mem_fun(*this, &RewardDialog::on_map_toggled));
+  xml->get_widget("hidden_ruin_hbox", hidden_ruin_hbox);
+  xml->get_widget("hidden_ruin_radiobutton", hidden_ruin_radiobutton);
+  hidden_ruin_radiobutton->signal_toggled().connect
+    (sigc::mem_fun(*this, &RewardDialog::on_hidden_ruin_toggled));
   xml->get_widget("gold_spinbutton", gold_spinbutton);
   xml->get_widget("randomize_gold_button", randomize_gold_button);
   randomize_gold_button->signal_clicked().connect
@@ -102,6 +110,19 @@ RewardDialog::RewardDialog(Player *player)
   map_y_spinbutton->set_range (0, GameMap::getInstance()->getHeight() - 1);
   map_width_spinbutton->set_range (1, GameMap::getInstance()->getWidth());
   map_height_spinbutton->set_range (1, GameMap::getInstance()->getHeight());
+
+  xml->get_widget("hidden_ruin_button", hidden_ruin_button);
+  hidden_ruin_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &RewardDialog::on_hidden_ruin_clicked));
+  xml->get_widget("clear_hidden_ruin_button", clear_hidden_ruin_button);
+  clear_hidden_ruin_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &RewardDialog::on_clear_hidden_ruin_clicked));
+  xml->get_widget("randomize_hidden_ruin_button", randomize_hidden_ruin_button);
+  randomize_hidden_ruin_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &RewardDialog::on_randomize_hidden_ruin_clicked));
+  set_hidden_ruin_name();
+  hidden_ruin_radiobutton->set_sensitive(hidden_ruins);
+
 }
 
 void RewardDialog::set_parent_window(Gtk::Window &parent)
@@ -151,6 +172,7 @@ void RewardDialog::on_gold_toggled()
   item_hbox->set_sensitive(false);
   allies_hbox->set_sensitive(false);
   map_hbox->set_sensitive(false);
+  hidden_ruin_hbox->set_sensitive(false);
 }
 
 void RewardDialog::on_item_toggled()
@@ -159,6 +181,7 @@ void RewardDialog::on_item_toggled()
   item_hbox->set_sensitive(true);
   allies_hbox->set_sensitive(false);
   map_hbox->set_sensitive(false);
+  hidden_ruin_hbox->set_sensitive(false);
 }
 
 void RewardDialog::on_allies_toggled()
@@ -167,6 +190,7 @@ void RewardDialog::on_allies_toggled()
   item_hbox->set_sensitive(false);
   allies_hbox->set_sensitive(true);
   map_hbox->set_sensitive(false);
+  hidden_ruin_hbox->set_sensitive(false);
 }
 
 void RewardDialog::on_map_toggled()
@@ -175,6 +199,16 @@ void RewardDialog::on_map_toggled()
   item_hbox->set_sensitive(false);
   allies_hbox->set_sensitive(false);
   map_hbox->set_sensitive(true);
+  hidden_ruin_hbox->set_sensitive(false);
+}
+
+void RewardDialog::on_hidden_ruin_toggled()
+{
+  gold_hbox->set_sensitive(false);
+  item_hbox->set_sensitive(false);
+  allies_hbox->set_sensitive(false);
+  map_hbox->set_sensitive(false);
+  hidden_ruin_hbox->set_sensitive(true);
 }
 
 void RewardDialog::on_randomize_gold_clicked()
@@ -270,15 +304,50 @@ void RewardDialog::set_ally_name()
 
 void RewardDialog::on_randomize_map_clicked()
 {
-  int x;
-  int width = GameMap::getInstance()->getWidth();
-  x = rand() % (width - (width / 10));
-  int y;
-  int height = GameMap::getInstance()->getHeight();
-  y = rand() % (height - (height / 10));
+  int x, y, width, height;
+  Reward_Map::getRandomMap(&x, &y, &width, &height);
   map_x_spinbutton->set_value(x);
   map_y_spinbutton->set_value(y);
-  map_width_spinbutton->set_value((rand() % (width - x)) + 1);
-  map_height_spinbutton->set_value((rand() % (height - y)) + 1);
+  map_width_spinbutton->set_value(width);
+  map_height_spinbutton->set_value(height);
 }
 
+void RewardDialog::on_hidden_ruin_clicked()
+{
+  //SelectRuinDialog d(d_player, true);
+  //d.run();
+  //if (d.get_selected_ruin())
+    //{
+      //on_clear_hidden_ruin_clicked();
+      //hidden_ruin = new Ruin(*(d.get_selected_ruin()));
+      //set_hidden_ruin_name();
+    //}
+}
+
+void RewardDialog::on_clear_hidden_ruin_clicked()
+{
+  if (hidden_ruin)
+    {
+      delete hidden_ruin;
+      hidden_ruin = NULL;
+    }
+  set_hidden_ruin_name();
+}
+
+void RewardDialog::on_randomize_hidden_ruin_clicked()
+{
+  on_clear_hidden_ruin_clicked();
+  //go get a random hidden ruin
+  set_hidden_ruin_name();
+}
+
+void RewardDialog::set_hidden_ruin_name()
+{
+  Glib::ustring name;
+  if (hidden_ruin)
+    name = hidden_ruin->getName();
+  else
+    name = _("No Ruin");
+
+  hidden_ruin_button->set_label(name);
+}

@@ -320,6 +320,15 @@ bool Reward_Map::save(XML_Helper* helper) const
   return retval;
 }
 
+void Reward_Map::getRandomMap(int *x, int *y, int *width, int *height)
+{
+  int map_width = GameMap::getInstance()->getWidth();
+  *x = rand() % (map_width - (map_width / 10));
+  int map_height = GameMap::getInstance()->getHeight();
+  *y = rand() % (map_height - (map_height / 10));
+  *width = ((rand() % (map_width - *x)) + (map_width / 10));
+  *height = ((rand() % (map_height - *y)) + (map_height / 10));
+}
 
 Reward_Map::~Reward_Map()
 {
