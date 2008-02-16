@@ -1841,6 +1841,10 @@ hero_has_quest_here (Stack *s, City *c, bool *pillage, bool *sack, bool *raze, b
   for (std::vector<Quest*>::iterator i = questlist.begin();
        i != questlist.end(); ++i)
     {
+      if ((*i) == NULL)
+	continue;
+      if ((*i)->isPendingDeletion() == true)
+	continue;
       switch ((*i)->getType())
 	{
 	case Quest::CITYSACK:
