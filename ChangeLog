@@ -1,6 +1,7 @@
 2008-02-14  Ben Asselstine
 	* item editor now works minimally.
 	* can now clear and randomize the ruin keeper in the editor.
+	* can now make new rewards in the ruin editor.
 
 2008-02-13  Ben Asselstine
 	* worked around crashing bug in editor, when dropping temples
