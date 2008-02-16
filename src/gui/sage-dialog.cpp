@@ -150,8 +150,26 @@ void SageDialog::addReward(Reward *reward)
     case Reward::ALLIES:
       break;
     case Reward::MAP:
-      (*i)[rewards_columns.name] = 
-	static_cast<Reward_Map*>(reward)->getLocation()->getName();
+	{
+	  std::string name;
+	  Reward_Map *m = static_cast<Reward_Map*>(reward);
+	  name  = m->getLocation()->getName();
+	  if (name == "")
+	    {
+	      switch (rand() % 6)
+		{
+		case 0: name = "parchment map"; break;
+		case 1: name = "vellum map"; break;
+		case 2: name = "paper map"; break;
+		case 3: name = "torn paper map"; break;
+		case 4: name = "dusty map"; break;
+		case 5: name = "blood-stained map"; break;
+		}
+	    }
+	    
+	  (*i)[rewards_columns.name] = name;
+	}
+
       break;
     case Reward::RUIN:
 	{

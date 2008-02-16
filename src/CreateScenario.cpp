@@ -726,6 +726,8 @@ bool CreateScenario::setupMapRewards()
 	  Reward_Map *reward = new Reward_Map(loc, 
 					      GameMap::getHeight() / 3, 
 					      GameMap::getWidth() / 3);
+	    
+	  reward->setName(reward->getDescription());
 	  Rewardlist::getInstance()->push_back(reward); //add it
 	  w_count++;
 	}
@@ -744,6 +746,7 @@ bool CreateScenario::setupRuinRewards()
 	  {
 	    //add it to the reward list
 	    Reward_Ruin *newReward = new Reward_Ruin(&(*it)); //make a reward
+	    newReward->setName(newReward->getDescription());
 	    Rewardlist::getInstance()->push_back(newReward); //add it
 	  }
 	if ((*it).hasSage() == false)
@@ -768,6 +771,7 @@ bool CreateScenario::setupItemRewards()
       Item templateItem = *iter->second;
       Item *newItem = new Item(templateItem); //instantiate it
       Reward_Item *newReward = new Reward_Item(newItem); //make a reward
+      newReward->setName(newReward->getDescription());
       Rewardlist::getInstance()->push_back(newReward); //add it
     }
 
