@@ -2,7 +2,7 @@
 	* the ruin editor can now randomize the reward.
 	* fixed bug reported by Patrice Dumas.
 	* change item selector in editor to be a treeview.
-	* added reward list selector.
+	* added reward list selector, and hidden ruin selector to editor.
 
 2008-02-14  Ben Asselstine
 	* item editor now works minimally.
