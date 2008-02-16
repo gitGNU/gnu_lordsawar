@@ -412,9 +412,13 @@ void RewardDialog::on_clear_hidden_ruin_clicked()
 
 void RewardDialog::on_randomize_hidden_ruin_clicked()
 {
-  on_clear_hidden_ruin_clicked();
-  //go get a random hidden ruin
-  set_hidden_ruin_name();
+  Ruin *ruin = Reward_Ruin::getRandomHiddenRuin();
+  if (ruin)
+    {
+      on_clear_hidden_ruin_clicked();
+      hidden_ruin = new Ruin(*ruin);
+      set_hidden_ruin_name();
+    }
 }
 
 void RewardDialog::set_hidden_ruin_name()

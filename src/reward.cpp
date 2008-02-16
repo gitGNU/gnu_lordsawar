@@ -25,6 +25,7 @@
 #include "armysetlist.h"
 #include "playerlist.h"
 #include "ruinlist.h"
+#include "rewardlist.h"
 #include "Itemlist.h"
 #include "GameMap.h"
 #include "ruin.h"
@@ -296,6 +297,43 @@ bool Reward_Ruin::save(XML_Helper* helper) const
   retval &= helper->saveData("y", getRuin()->getPos().y);
   retval &= helper->closeTag();
   return retval;
+}
+
+Ruin *Reward_Ruin::getRandomHiddenRuin()
+{
+  std::vector<Ruin *>hidden_ruins;
+  Ruinlist *rl = Ruinlist::getInstance();
+  Rewardlist *rw = Rewardlist::getInstance();
+  for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
+    {
+      if ((*it).isHidden())
+	if ((*it).getOwner() == NULL || 
+	    (*it).getOwner() == Playerlist::getInstance()->getNeutral())
+	  {
+	    //is it already being pointed to by a reward in the rewardlist?
+	    bool found = false;
+	    for (Rewardlist::iterator i = rw->begin(); i != rw->end(); i++)
+	      {
+		if ((*i)->getType() == Reward::RUIN)
+		  {
+		    Ruin *r = static_cast<Reward_Ruin*>(*i)->getRuin();
+		    if (r)
+		      {
+			if (r->getPos() == (*it).getPos())
+			  {
+			    found = true;
+			    break;
+			  }
+		      }
+		  }
+	      }
+	    if (found == false)
+	      hidden_ruins.push_back(&*it);
+	  }
+    }
+ if (hidden_ruins.empty())
+   return NULL;
+ return hidden_ruins[rand() % hidden_ruins.size()];
 }
 
 Reward_Ruin::~Reward_Ruin()

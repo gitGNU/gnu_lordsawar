@@ -149,6 +149,7 @@ class Reward_Ruin: public Reward
 	Reward_Ruin(XML_Helper *helper);
 	Reward_Ruin(const Reward_Ruin& orig);
         ~Reward_Ruin();
+	static Ruin *getRandomHiddenRuin();
 
         bool save(XML_Helper* helper) const;
 	Ruin* getRuin() const {return Ruinlist::getInstance()->getObjectAt(d_ruin_pos);}
