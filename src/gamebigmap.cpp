@@ -416,7 +416,8 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	      if (!st)
 		{
 		  Stack *empty = new Stack (*stack);
-		  if (empty->getPath()->calculate(empty, tile) == 0)
+		  int moves = empty->getPath()->calculate(empty, tile);
+		  if (moves == 0)
 		    d_cursor = GraphicsCache::HAND;
 		  else
 		    {
@@ -454,6 +455,24 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 			}
 		      else
 			d_cursor = GraphicsCache::HAND;
+		    }
+		  else
+		    {
+		      //can we make it to our own stack?
+		      Stack *empty = new Stack (*stack);
+		      int moves = empty->getPath()->calculate(empty, tile);
+		      if (moves == 0)
+			d_cursor = GraphicsCache::HAND;
+		      else
+			{
+			  Bridgelist *bl = Bridgelist::getInstance();
+			  if (t->getMaptileType() == Tile::WATER &&
+			      bl->getObjectAt(tile) == NULL)
+			    d_cursor = GraphicsCache::SHIP;
+			  else
+			    d_cursor = GraphicsCache::FEET;
+			}
+		      delete empty;
 		    }
 		}
 

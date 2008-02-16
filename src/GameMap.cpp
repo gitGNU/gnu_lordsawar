@@ -406,6 +406,10 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                     continue;
                   if (!land && getTile(x, y)->getType() != Tile::WATER)
                     continue;
+                  if (land && getTile(x, y)->getType() == Tile::MOUNTAIN &&
+		      (a->getStat(Army::MOVE_BONUS) & Tile::MOUNTAIN) == 
+		      Tile::MOUNTAIN)
+                    continue;
                   //is there somebody else's stack here?
                   s = Stacklist::getObjectAt(x, y);
                   if (s)
@@ -508,6 +512,11 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
       //is the tile i'm going to a mountain that doesn't have a road?
       if (to->getMaptileType() == Tile::MOUNTAIN &&
 	  Roadlist::getInstance()->getObjectAt(destx, desty) == NULL)
+        return true;
+
+      //am i on a mountain without a road?
+      if (from->getMaptileType() == Tile::MOUNTAIN &&
+	  Roadlist::getInstance()->getObjectAt(x, y) == NULL)
         return true;
     }
  return false;
