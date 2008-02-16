@@ -1,6 +1,6 @@
 2008-02-15  Ben Asselstine
 	* the ruin editor can now randomize the reward.
-	* fixed two bugs reported by Patrice Dumas.
+	* fixed three bugs reported by Patrice Dumas.
 	* change item selector in editor to be a treeview.
 	* added reward list selector, and hidden ruin selector to editor.
 	* can now randomize the hidden ruin in the reward editor.
