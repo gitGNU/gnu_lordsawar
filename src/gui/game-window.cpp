@@ -73,6 +73,7 @@
 #include "triumphs-dialog.h"
 #include "diplomacy-report-dialog.h"
 #include "diplomacy-dialog.h"
+#include "stack-info-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -250,6 +251,7 @@ GameWindow::GameWindow()
     xml->get_widget("end_turn_menuitem", end_turn_menuitem);
     xml->get_widget("move_all_menuitem", move_all_menuitem);
     xml->get_widget("disband_menuitem", disband_menuitem);
+    xml->get_widget("stack_info_menuitem", stack_info_menuitem);
     xml->get_widget("signpost_menuitem", signpost_menuitem);
     xml->get_widget("search_menuitem", search_menuitem);
     xml->get_widget("inspect_menuitem", inspect_menuitem);
@@ -539,6 +541,9 @@ void GameWindow::setup_signals()
   setup_menuitem(disband_menuitem,
 		 sigc::mem_fun(*this, &GameWindow::on_disband_activated),
 		 game->can_disband_stack);
+  setup_menuitem(stack_info_menuitem,
+		 sigc::mem_fun(*this, &GameWindow::on_stack_info_activated),
+		 game->can_deselect_selected_stack);
   setup_menuitem(signpost_menuitem,
 		 sigc::mem_fun(*this, &GameWindow::on_signpost_activated),
 		 game->can_change_signpost);
@@ -954,6 +959,13 @@ void GameWindow::on_signpost_activated()
     Playerlist::getActiveplayer()->signpostChange(s, e->get_text());
 
   return;
+}
+
+void GameWindow::on_stack_info_activated()
+{
+  StackInfoDialog d(currently_selected_stack);
+  d.set_parent_window(*window.get());
+  d.run();
 }
 
 void GameWindow::on_disband_activated()

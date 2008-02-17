@@ -1,5 +1,6 @@
 2008-02-16  Ben Asselstine
 	* when allies show up, they now have 0 upkeep.
+	* added the beginnings of a stack info dialog.
 
 2008-02-15  Ben Asselstine
 	* the ruin editor can now randomize the reward.

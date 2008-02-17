@@ -104,6 +104,7 @@ class GameWindow: public sigc::trackable
     Gtk::MenuItem *search_menuitem;
     Gtk::MenuItem *inspect_menuitem;
     Gtk::MenuItem *disband_menuitem;
+    Gtk::MenuItem *stack_info_menuitem;
     Gtk::MenuItem *signpost_menuitem;
     Gtk::MenuItem *city_history_menuitem;
     Gtk::MenuItem *event_history_menuitem;
@@ -177,6 +178,7 @@ class GameWindow: public sigc::trackable
     void on_quit_activated();
     void on_quests_activated();
     void on_disband_activated();
+    void on_stack_info_activated();
     void on_resign_activated();
     void on_signpost_activated();
     void on_inspect_activated();

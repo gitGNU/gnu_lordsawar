@@ -382,6 +382,16 @@
 			  <accelerator key="t" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="stack_info_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Stack Info</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_stack_info_menuitem_activate" last_modification_time="Sun, 17 Feb 2008 14:06:01 GMT"/>
+			  <accelerator key="s" modifiers="0" signal="activate"/>
+			</widget>
+		      </child>
 		    </widget>
 		  </child>
 		</widget>
