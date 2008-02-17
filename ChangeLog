@@ -5,6 +5,7 @@
 	* added reward list selector, and hidden ruin selector to editor.
 	* can now randomize the hidden ruin in the reward editor.
 	* new random menu item in editor
+	* fixed memory corruption bug in editor
 
 2008-02-14  Ben Asselstine
 	* item editor now works minimally.
