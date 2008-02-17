@@ -197,6 +197,7 @@ bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const Army *army, Uint
   for (unsigned int i = 0; i < alliesCount; i++)
     {
       Army* ally = new Army(*army, p);
+      ally->setUpkeep(0);
       if (GameMap::getInstance()->addArmy(pos, ally) == NULL)
         return false;
     }
@@ -208,6 +209,7 @@ bool Reward_Allies::addAllies(Player *p, Location *l, const Army *army, Uint32 a
   for (unsigned int i = 0; i < alliesCount; i++)
     {
       Army* ally = new Army(*army, p);
+      ally->setUpkeep(0);
       if (GameMap::getInstance()->addArmy(l, ally) == NULL)
         return false;
     }
