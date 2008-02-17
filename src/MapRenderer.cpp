@@ -63,12 +63,6 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 		r.x = drawX;
 		r.y = drawY;
 		TileStyle *style = mtile->getTileStyle();
-		//fixme, find out why style is sometimes null in editor
-		if (style == NULL)
-		  {
-		    drawX += tilesize;
-		    continue; 
-		  }
 		SDL_BlitSurface(style->getPixmap(), 0, d_surface, &r);
 
 	    }

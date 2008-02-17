@@ -531,12 +531,15 @@ void EditorBigMap::change_map_under_cursor()
 	    c.setPlayer(Playerlist::getInstance()->getNeutral());
 	    Citylist::getInstance()->push_back(c);
 
+	    bool replaced_grass = false;
 	    // notify the maptiles that a city has been placed here
 	    Rectangle r = c.get_area();
 	    for (int x = r.x; x < r.x + r.w; ++x)
 		for (int y = r.y; y < r.y + r.h; ++y)
 		{
 		    Maptile* t = GameMap::getInstance()->getTile(Vector<int>(x, y));
+		    if (t->getMaptileType() != Tile::GRASS)
+		      replaced_grass = true;
 		    t->setBuilding(Maptile::CITY);
 		    t->setType(grass_index);
 		}
@@ -569,9 +572,9 @@ void EditorBigMap::change_map_under_cursor()
 	      }
 
 	    // finally, smooth the surrounding map
-	    GameMap::getInstance()->applyTileStyles(r.y - 1, r.x - 1, 
-						    r.y + r.h + 2, 
-						    r.x + r.w + 2, true);
+	    if (replaced_grass)
+	      GameMap::getInstance()->applyTileStyles
+		(0, 0, GameMap::getHeight(), GameMap::getWidth(), true);
 	}
 	break;
 	    
@@ -580,14 +583,15 @@ void EditorBigMap::change_map_under_cursor()
 		&& maptile->getMaptileType() != Tile::WATER)
 	    {
 		maptile->setBuilding(Maptile::RUIN);
+		bool replaced_grass = false;
+		if (maptile->getMaptileType() != Tile::GRASS)
+		  replaced_grass = true;
 		maptile->setType(grass_index);
-		Ruinlist::getInstance()->push_back(Ruin(tile));
-		Rectangle r = Ruinlist::getInstance()->back().get_area();
-		// fixme, demote lone tiles, etc
-		GameMap::getInstance()->applyTileStyles(r.y - 1, r.x - 1, 
-							r.y + r.h + 1, 
-							r.x + r.w + 1, 
-							true);
+		Ruin *ruin = new Ruin(tile);
+		Ruinlist::getInstance()->push_back(*ruin);
+		if (replaced_grass)
+		  GameMap::getInstance()->applyTileStyles
+		    (0, 0, GameMap::getHeight(), GameMap::getWidth(), true);
 	    }
 	    break;
 	    
@@ -595,14 +599,15 @@ void EditorBigMap::change_map_under_cursor()
 	    if (maptile->getBuilding() == Maptile::NONE 
 		&& maptile->getMaptileType() != Tile::WATER)
 	    {
+	        bool replaced_grass = false;
 		maptile->setBuilding(Maptile::TEMPLE);
+		if (maptile->getMaptileType() != Tile::GRASS)
+		  replaced_grass = true;
 		maptile->setType(grass_index);
 		Templelist::getInstance()->push_back(Temple(tile));
-		Rectangle r = Templelist::getInstance()->back().get_area();
-		GameMap::getInstance()->applyTileStyles(r.y - 1, r.x - 1, 
-							r.y + r.h + 1, 
-							r.x + r.w + 1,
-							true);
+		if (replaced_grass)
+		  GameMap::getInstance()->applyTileStyles
+		    (0, 0, GameMap::getHeight(), GameMap::getWidth(), true);
 	    }
 	    break;
 	    

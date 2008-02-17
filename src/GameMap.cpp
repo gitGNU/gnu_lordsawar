@@ -601,9 +601,9 @@ TileStyle *GameMap::calculatePreferredStyle(int i, int j)
     for (int l = -1; l <= +1; l++)
       {
 	box[k+1][l+1] = 1;
-	if (i+k >= s_height || i+k < 0)
+	if ((i+k) >= s_height || (i+k) < 0)
 	  continue;
-	if (j+l >= s_width || j+l < 0)
+	if ((j+l) >= s_width || (j+l) < 0)
 	  continue;
 	box[k+1][l+1] = (getTile(j+l, i+k)->getType() == mtile->getType());
       }
@@ -763,12 +763,11 @@ int GameMap::tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, int 
   for (int k = -1; k <= +1; k++)
     for (int l = -1; l <= +1; l++)
       {
-	if (i+k >= s_height || i+k < 0)
+	if ((i+k) >= s_height || (i+k) < 0)
 	  continue;
-	if (j+l >= s_width || j+l < 0)
+	if ((j+l) >= s_width || (j+l) < 0)
 	  continue;
-	box[k+1][l+1] = 
-	  (d_map[(i+k)*s_width + (j+l)]->getMaptileType() == tile);
+	box[k+1][l+1] = (getTile(j+l, i+k)->getMaptileType() == tile);
       }
   if (box[0][0] && box[0][1] && box[1][0] && box[1][1])
     return 1;
@@ -793,7 +792,7 @@ void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy,
 	  continue;
 	if (j < 0 || j >= s_width)
 	  continue;
-	Tile::Type tile = d_map[i*s_width + j]->getMaptileType();
+	Tile::Type tile = getTile(j, i)->getMaptileType();
 	if (tile == intype)
 	  {
 	    //if we're not connected in a square of
@@ -802,11 +801,8 @@ void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy,
 	      {
 		//okay, this is a lone tile.
 		//downgrade it
-		delete d_map[i*s_width + j];
-
-		d_map[i*s_width + j] = 
-		  new Maptile(d_tileSet, j, i, d_tileSet->getIndex(outtype), 
-			      NULL);
+		setTile(j, i, new Maptile
+			(d_tileSet, j, i, d_tileSet->getIndex(outtype), NULL));
 	      }
 	  }
       }
