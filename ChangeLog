@@ -1,3 +1,6 @@
+2008-02-16  Ben Asselstine
+	* when allies show up, they now have 0 upkeep.
+
 2008-02-15  Ben Asselstine
 	* the ruin editor can now randomize the reward.
 	* fixed four bugs reported by Patrice Dumas.
