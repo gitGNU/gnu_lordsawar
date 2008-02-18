@@ -24,6 +24,7 @@
 #include <sigc++/signal.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/checkbutton.h>
+#include <gtkmm/image.h>
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/scale.h>
 #include <gtkmm/box.h>

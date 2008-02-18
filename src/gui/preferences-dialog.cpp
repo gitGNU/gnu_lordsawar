@@ -24,6 +24,7 @@
 #include "preferences-dialog.h"
 
 #include "glade-helpers.h"
+#include "image-helpers.h"
 #include "../ucompose.hpp"
 #include "../defs.h"
 #include "../Configuration.h"
@@ -33,6 +34,7 @@
 #include "../citylist.h"
 #include "../ruinlist.h"
 #include "../ai_fast.h"
+#include "../GraphicsCache.h"
 
 
 PreferencesDialog::PreferencesDialog()
@@ -51,12 +53,14 @@ PreferencesDialog::PreferencesDialog()
     xml->get_widget("music_volume_hbox", music_volume_hbox);
     xml->get_widget("players_vbox", players_vbox);
     
+    GraphicsCache *gc = GraphicsCache::getInstance();
     Playerlist* pl = Playerlist::getInstance();
     for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
       {
 	if (*i == Playerlist::getInstance()->getNeutral())
 	  continue;
 	Gtk::HBox *player_hbox = new Gtk::HBox();
+	Gtk::Image *image = new Gtk::Image(to_pixbuf(gc->getShieldPic(2, *i)));
 	Gtk::ComboBoxText *type = new Gtk::ComboBoxText();
 	type->append_text(_("Human"));
 	type->append_text(_("Computer"));
@@ -66,6 +70,8 @@ PreferencesDialog::PreferencesDialog()
 	  type->set_active(1);
 	if ((*i)->isDead())
 	  type->set_sensitive(false);
+	player_hbox->pack_start(*manage(image), Gtk::PACK_SHRINK, 
+				Gtk::PACK_SHRINK);
 	player_hbox->pack_start(*manage(type), Gtk::PACK_SHRINK, 10);
 	player_types.push_back(type);
 	Gtk::Label *player_name = new Gtk::Label((*i)->getName());
