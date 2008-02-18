@@ -1,6 +1,8 @@
 2008-02-17  Ben Asselstine
 	* fixed graphic issue wrt fog maps.
 	* preferences dialog now shows player shields.
+	* changed hidden map semantics so that the human players don't see
+	  the computer player's territories.
 
 2008-02-16  Ben Asselstine
 	* when allies show up, they now have 0 upkeep.
