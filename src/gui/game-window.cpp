@@ -437,6 +437,8 @@ void GameWindow::new_game(GameParameters g)
     setup_game(g.map_path);
     setup_signals();
     game->startGame();
+    //FIXME: we don't get here until the game ends.
+    //is that right?
 }
 
 void GameWindow::load_game(std::string file_path)
@@ -445,6 +447,8 @@ void GameWindow::load_game(std::string file_path)
     setup_game(file_path);
     setup_signals();
     game->loadGame();
+    //FIXME: we don't get here until the game ends.
+    //is that right?
     if (Playerlist::getInstance()->countPlayersAlive())
       game->redraw();
 }
