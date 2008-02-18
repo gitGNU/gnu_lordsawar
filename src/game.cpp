@@ -509,12 +509,10 @@ void Game::search_selected_stack()
 // descriptions later on
 void Game::stackUpdate(Stack* s)
 {
-  //if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
-      //GameScenario::s_hidden_map == true)
-    //return;
   if (!s)
     s = Playerlist::getActiveplayer()->getActivestack();
 
+  //FIXME: if player is not to be observed, bail now
   if (s)
     smallmap->center_view(s->getPos(), true);
 
@@ -1319,6 +1317,7 @@ void Game::center_view_on_city()
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
       GameScenario::s_hidden_map == true)
     return;
+  //FIXME: if player is not to be observed, bail now
   // preferred city is a capital city that belongs to the player 
   for (Citylist::iterator i = Citylist::getInstance()->begin();
        i != Citylist::getInstance()->end(); i++)
