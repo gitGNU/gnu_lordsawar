@@ -158,6 +158,13 @@ void Path::recalculate (Stack* s)
       //well, it looks like all of our points were in enemy cities
       s->setMovesExhaustedAtPoint(0);
       flClear();
+      Vector<int> pos = s->getPos();
+      City *c = Citylist::getInstance()->getObjectAt(pos.x, pos.y);
+      if (c->getPlayer() != s->getPlayer())
+	{
+	  fprintf(stderr,"we are in a city that isn't ours!\n");
+	  exit(1);
+	}
     }
   else
     {

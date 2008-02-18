@@ -372,6 +372,10 @@ bit position.
 110      100      011     000
 (105)    (43)     (232)   (15)
 
+011      110
+1x1 = 14 1x1 = 15
+110      011
+(126)    (219)
 
 special note:
 none of these sets contain a so-called "lone" tile.
@@ -438,8 +442,9 @@ void BigMap::drawFogTile (int x, int y)
     case  31: case 63: case 159: case 191: type = 10; break;
     case 214: case 215: case 246: case 247: type = 11; break;
     case 107: case 111: case 235: case 239: type = 12; break;
+    case 126: type = 14; break;
+    case 219: type = 15; break;
     case 255: type = 13; break;
-
     }
   if (type)
     {
