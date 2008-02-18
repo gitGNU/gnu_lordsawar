@@ -1,6 +1,7 @@
 2008-02-16  Ben Asselstine
 	* when allies show up, they now have 0 upkeep.
-	* added the beginnings of a stack info dialog.
+	* added a stack info dialog.
+	* added autosave policy to the configuration file
 
 2008-02-15  Ben Asselstine
 	* the ruin editor can now randomize the reward.
