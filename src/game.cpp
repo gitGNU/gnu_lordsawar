@@ -980,7 +980,8 @@ void Game::loadGame()
       update_sidebar_stats();
       player->startTurn();
       d_nextTurn->endTurn();
-      update_control_panel();
+      if (Playerlist::getInstance()->countPlayersAlive())
+	update_control_panel();
     }
 }
 

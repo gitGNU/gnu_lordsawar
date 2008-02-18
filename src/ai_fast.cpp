@@ -262,6 +262,8 @@ void AI_Fast::computerTurn()
 		target2 = cl->getNearestForeignCity(s->getPos());
 		if (target1)
 		  target1_path->calculate (s, target1->getPos());
+		if (!target2)
+		  return; //it's game over and we're still moving
 		target2_path->calculate (s, target2->getPos());
 		if (!target1)
 		  target = target2;

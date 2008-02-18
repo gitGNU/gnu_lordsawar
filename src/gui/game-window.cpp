@@ -445,7 +445,8 @@ void GameWindow::load_game(std::string file_path)
     setup_game(file_path);
     setup_signals();
     game->loadGame();
-    game->redraw();
+    if (Playerlist::getInstance()->countPlayersAlive())
+      game->redraw();
 }
 
 void GameWindow::setup_button(Gtk::Button *button,
