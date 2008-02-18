@@ -21,6 +21,7 @@
 #include "xmlhelper.h"
 #include "stacklist.h"
 #include "templelist.h"
+#include "ucompose.hpp"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -567,4 +568,48 @@ void Army::setMask(SDL_Surface* mask)
   if (d_mask)
     SDL_FreeSurface(d_mask);
   d_mask = mask;
+}
+
+std::string Army::getArmyBonusDescription() const
+{
+  Uint32 bonus = getStat(Army::ARMY_BONUS, false);
+  Glib::ustring s = "";
+  if (bonus & Army::ADD1STRINOPEN)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : "& ", 
+			  _("+1 str in open"));
+  if (bonus & Army::ADD2STRINOPEN)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : "& ", 
+			  _("+2 str in open"));
+  if (bonus & Army::ADD1STRINFOREST)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : "& ", 
+			  _("+1 str in woods"));
+  if (bonus & Army::ADD1STRINHILLS)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+			  _("+1 str in hills"));
+  if (bonus & Army::ADD1STRINCITY)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+			  _("+1 str in city"));
+  if (bonus & Army::ADD2STRINCITY)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+			  _("+2 str in city"));
+  if (bonus & Army::ADD1STACKINHILLS)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+			  _("+1 stack in hills"));
+  if (bonus & Army::SUBALLCITYBONUS)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+			  _("Cancel city bonus"));
+  if (bonus & Army::SUB1ENEMYSTACK)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+			  _("-1 enemy stack"));
+  if (bonus & Army::ADD1STACK)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", _("+1 stack"));
+  if (bonus & Army::ADD2STACK)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", _("+2 stack"));
+  if (bonus & Army::SUBALLNONHEROBONUS)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+			  _("cancel non-hero"));
+  if (bonus & Army::SUBALLHEROBONUS)
+    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+			  _("cancel hero"));
+  return s;
 }

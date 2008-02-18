@@ -961,11 +961,16 @@ void GameWindow::on_signpost_activated()
   return;
 }
 
+  
 void GameWindow::on_stack_info_activated()
 {
   StackInfoDialog d(currently_selected_stack);
   d.set_parent_window(*window.get());
   d.run();
+  //on_stack_info_changed(currently_selected_stack);
+  //FIXME, armies don't stay selected in the right way.  to reproduce:
+  //go in with all three selected.  deselect middle one in stackinfodialog,
+  //then return.
 }
 
 void GameWindow::on_disband_activated()
@@ -1395,6 +1400,7 @@ void GameWindow::on_stack_info_changed(Stack *s)
       else
 	show_stats();
     }
+  return;
 }
 
 void GameWindow::show_stats()
@@ -1443,16 +1449,16 @@ void GameWindow::show_stack(Stack *s)
       Gtk::ToggleButton *toggle = new Gtk::ToggleButton;
       toggle->add(*toggle_box);
       toggle->set_active(army->isGrouped());
-      toggle->signal_toggled().connect(
-				       sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_toggled),
-						  toggle, army));
+      toggle->signal_toggled().connect
+	(sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_toggled),
+		    toggle, army));
       toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
-      toggle->signal_button_press_event().connect(
-						  sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
-							     toggle, army), false);
-      toggle->signal_button_release_event().connect(
-						    sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
-							       toggle, army), false);
+      toggle->signal_button_press_event().connect
+	(sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
+		    toggle, army), false);
+      toggle->signal_button_release_event().connect
+	(sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
+		    toggle, army), false);
       // add it
       stack_info_box->pack_start(*toggle, Gtk::PACK_SHRINK);
       army_buttons.push_back(toggle);
@@ -1460,7 +1466,7 @@ void GameWindow::show_stack(Stack *s)
     }
 
   fill_in_group_info(s);
-  ensure_one_army_button_active();
+  ensure_one_army_button_active(); 
   stack_info_container->show_all();
 }
 

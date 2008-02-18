@@ -81,6 +81,8 @@ class Fight
         //! Returns the participating defender stacks
         std::list<Stack*> getDefenders() const {return d_defenders;}
         
+	//! Get modified strength bonus
+	Uint32 getModifiedStrengthBonus(Army *a);
 
         // CONSTANTS
         //! number of rounds the fight lasts

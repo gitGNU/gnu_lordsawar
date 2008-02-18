@@ -22,11 +22,14 @@
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 #include <gtkmm/dialog.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treemodelcolumn.h>
-#include <gtkmm/treeview.h>
+#include <gtkmm/image.h>
+#include <gtkmm/label.h>
+#include <gtkmm/table.h>
+#include <gtkmm/checkbutton.h>
 #include <list>
 #include <SDL.h>
+
+#include "army-info-tip.h"
 
 class Stack;
 class Army;
@@ -45,22 +48,18 @@ class StackInfoDialog: public sigc::trackable
     std::auto_ptr<Gtk::Dialog> dialog;
 
     Stack *stack;
-    Gtk::TreeView *armies_treeview;
+    Gtk::Table *stack_table;
 
-    class ArmiesColumns: public Gtk::TreeModelColumnRecord {
-    public:
-	ArmiesColumns() 
-        { add(image); add(name); add(str); add(move);}
-	
-	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
-	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<Uint32> str;
-	Gtk::TreeModelColumn<Uint32> move;
-    };
-    const ArmiesColumns armies_columns;
-    Glib::RefPtr<Gtk::ListStore> armies_list;
- private:
-    void addArmy (Army *a);
+    std::auto_ptr<ArmyInfoTip> army_info_tip;
+    std::vector<Gtk::ToggleButton *> toggles;
+    std::vector<const Army*> armies;
+
+    void addArmy (Army *a, Uint32 modified_strength, int idx);
+    void on_group_clicked();
+    void on_ungroup_clicked();
+    void fill_stack_info();
+    void on_army_toggled(Gtk::ToggleButton *toggle);
+    bool on_army_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
 };
 
 #endif

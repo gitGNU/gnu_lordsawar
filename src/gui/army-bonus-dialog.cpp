@@ -98,45 +98,8 @@ void ArmyBonusDialog::addArmyType(Uint32 army_type)
     Uint32 b = a->getStat(Army::MOVE_BONUS, false);
     (*i)[armies_columns.move_image] = to_pixbuf(gc->getMoveBonusPic(b, false));
     (*i)[armies_columns.bonus] = "-";
-    Uint32 bonus = a->getStat(Army::ARMY_BONUS, false);
-    Glib::ustring s = "";
-    if (bonus & Army::ADD1STRINOPEN)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : "& ", 
-                            _("+1 str in open"));
-    if (bonus & Army::ADD2STRINOPEN)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : "& ", 
-                            _("+2 str in open"));
-    if (bonus & Army::ADD1STRINFOREST)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : "& ", 
-                            _("+1 str in woods"));
-    if (bonus & Army::ADD1STRINHILLS)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
-                            _("+1 str in hills"));
-    if (bonus & Army::ADD1STRINCITY)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
-                            _("+1 str in city"));
-    if (bonus & Army::ADD2STRINCITY)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
-                            _("+2 str in city"));
-    if (bonus & Army::ADD1STACKINHILLS)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
-                            _("+1 stack in hills"));
-    if (bonus & Army::SUBALLCITYBONUS)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
-                            _("Cancel city bonus"));
-    if (bonus & Army::SUB1ENEMYSTACK)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
-                            _("-1 enemy stack"));
-    if (bonus & Army::ADD1STACK)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", _("+1 stack"));
-    if (bonus & Army::ADD2STACK)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", _("+2 stack"));
-    if (bonus & Army::SUBALLNONHEROBONUS)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
-                            _("cancel non-hero"));
-    if (bonus & Army::SUBALLHEROBONUS)
-      s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
-                            _("cancel hero"));
+
+    std::string s = a->getArmyBonusDescription();
     if (s == "")
       (*i)[armies_columns.bonus] = "-";
     else

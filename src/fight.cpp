@@ -162,7 +162,11 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
 	d_att_close.push_back(f);
       }
 
-}                
+  // Before the battle starts, calculate the bonuses
+  // bonuses remain even if the unit providing a stackwide bonus dies
+
+  calculateBonus();
+}
 
 Fight::~Fight()
 {
@@ -188,10 +192,6 @@ Fight::~Fight()
 void Fight::battle(bool intense)
 {
   d_intense_combat = intense;
-  // at the beginning of the battle, calculate the bonuses
-  // bonuses remain even if the unit providing a stackwide bonus dies
-
-  calculateBonus();
 
   // first, fight until the fight is over
   for (d_turn = 0; doRound(); d_turn++);
@@ -657,4 +657,16 @@ void Fight::remove(Fighter* f)
 
   // if the fighter wa sin no list, we are rather careful and don't do anything
   debug("Fight: fighter without list!")
+}
+	
+Uint32 Fight::getModifiedStrengthBonus(Army *a)
+{
+  std::list<Fighter*>::iterator it;
+  for (it = d_att_close.begin(); it != d_att_close.end(); it++)
+    if ((*it)->army == a)
+      return (*it)->terrain_strength;
+  for (it = d_def_close.begin(); it != d_def_close.end(); it++)
+    if ((*it)->army == a)
+      return (*it)->terrain_strength;
+  return 0;
 }

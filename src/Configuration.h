@@ -81,6 +81,11 @@ class Configuration : public sigc::trackable
         //zip and obfuscate save files
         static bool s_zipfiles;
 
+	// when to save autosave files
+	// 0 = never, 1 = once a round overwrting, 
+	// 2 = once a round not-overwriting
+	static int s_autosave_policy;
+
         //run game in GGZ mode
         static bool s_ggz;
 
@@ -103,6 +108,7 @@ class Configuration : public sigc::trackable
         static bool s_quick_start;
         static bool s_cusp_of_war;
 
+	//autos
     private:
         /** \brief The callback for the XML_Helper
           * 

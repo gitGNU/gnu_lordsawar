@@ -168,6 +168,13 @@ void GameScenario::nextRound()
 {
     d_round++;
 
+    char filename[1024];
+    if (Configuration::s_autosave_policy == 2)
+      snprintf(filename,sizeof(filename), "autosave-%03d.sav", d_round - 1);
+    else if (Configuration::s_autosave_policy == 1)
+      snprintf(filename,sizeof(filename), "autosave.sav");
+    else
+      return;
     // autosave to the file "autosave.sav". This is crude, but should work
     //
     // As a more enhanced version: autosave to a temporary file, then rename
@@ -179,7 +186,7 @@ void GameScenario::nextRound()
         return;
     }
     if (rename(std::string(File::getSavePath() + "tmp.sav").c_str(),
-               std::string(File::getSavePath() + "autosave.sav").c_str()))
+               std::string(File::getSavePath() + filename).c_str()))
     {
         char* err = strerror(errno);
         std::cerr <<_("Error while trying to rename the temporary file to autosave.sav\n");

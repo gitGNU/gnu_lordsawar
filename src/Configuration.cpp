@@ -46,6 +46,7 @@ int Configuration::s_displaySpeedDelay = 0;
 Uint32 Configuration::s_surfaceFlags = SDL_SWSURFACE;
 Uint32 Configuration::s_cacheSize = 1000000;
 bool Configuration::s_zipfiles = false;
+int Configuration::s_autosave_policy = 1;
 bool Configuration::s_hardware = false;
 bool Configuration::s_ggz = false;
 bool Configuration::s_musicenable = true;
@@ -116,6 +117,7 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("cachesize", s_cacheSize);
     retval &= helper.saveData("hardware", s_hardware);
     retval &= helper.saveData("zipfiles", s_zipfiles);
+    retval &= helper.saveData("autosave_policy", s_autosave_policy);
     retval &= helper.saveData("speeddelay", s_displaySpeedDelay);
     retval &= helper.saveData("shownextplayer", s_showNextPlayer);
     retval &= helper.saveData("musicenable", s_musicenable);
@@ -155,6 +157,7 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     
     string temp;
     bool retval,zipping;
+    int autosave_policy;
     
     if (helper->getVersion() != LORDSAWAR_CONFIG_VERSION)
     {
@@ -229,6 +232,11 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     retval = helper->getData(zipping, "zipfiles");
     if (retval)
         s_zipfiles = zipping;
+
+    //parse when and how to save autosave files
+    retval = helper->getData(autosave_policy, "autosave_policy");
+    if (retval)
+        s_autosave_policy = autosave_policy;
 
     //parse the speed delay
     helper->getData(s_displaySpeedDelay, "speeddelay");

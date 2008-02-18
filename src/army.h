@@ -337,6 +337,9 @@ class Army : public sigc::trackable
 	//! Returns how many experience points the next level requires
         Uint32 getXpNeededForNextLevel() const;
 
+	//! Generate a string that describes what bonuses this army has
+	std::string getArmyBonusDescription() const;
+
     protected:
         //! Generic function for saving the army data. Useful for the hero class,
         //  which doesn't need to repeat the save code.
