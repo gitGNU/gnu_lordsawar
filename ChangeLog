@@ -1,3 +1,6 @@
+2008-02-17  Ben Asselstine
+	* fixed graphic issue wrt fog maps.
+
 2008-02-16  Ben Asselstine
 	* when allies show up, they now have 0 upkeep.
 	* added a stack info dialog.
