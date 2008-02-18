@@ -62,6 +62,7 @@ class BigMap: public sigc::trackable
     // emitted when the view has changed because of user interactions
     sigc::signal<void, Rectangle> view_changed;
 
+    void blank();
  protected:
     MapRenderer* d_renderer;
 	
@@ -85,6 +86,7 @@ class BigMap: public sigc::trackable
     void blit_if_inside_buffer(const Object &obj, SDL_Surface *image);
 
     virtual void after_draw() { }
+
  protected:
     void draw_stack(Stack *s);
  private:

@@ -53,6 +53,8 @@ class SmallMap: public OverviewMap, public sigc::trackable
     sigc::signal<void, SDL_Surface *> map_changed;
         
     void center_view(Vector<int> p, bool slide, bool from_tile = true);
+
+    void blank(); //makes the smallmap go black
  private:
     Rectangle view;
     bool input_locked;

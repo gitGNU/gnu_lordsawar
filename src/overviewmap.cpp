@@ -30,6 +30,7 @@
 #include "sdl-draw.h"
 #include "GraphicsCache.h"
 #include "FogMap.h"
+#include "GameScenario.h"
 
 OverviewMap::OverviewMap()
 {
@@ -243,15 +244,6 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
     draw();
 }
 
-bool OverviewMap::isFogged(Vector <int> pos)
-{
-  //is this tile visible, or not?
-  FogMap *fogmap = Playerlist::getActiveplayer()->getFogMap();
-  if (fogmap->getFogTile(pos) == FogMap::CLOSED)
-    return true;
-  return false;
-}
-
 void OverviewMap::draw_terrain_pixels(Rectangle r)
 {
     GameMap *gm = GameMap::getInstance();
@@ -334,7 +326,7 @@ void OverviewMap::draw()
           Vector <int> pos;
           pos.x = i;
           pos.y = j;
-          if (isFogged(pos) == true)
+          if (FogMap::isFogged(pos) == true)
             {
               pos = mapToSurface(pos);
               draw_filled_rect(surface, pos.x, pos.y,

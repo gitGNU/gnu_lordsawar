@@ -50,9 +50,9 @@ void NextTurn::start()
 	
     while (!d_stop)
     {
+      supdating.emit();
         // do various start-up tasks
         startTurn();
-        supdating.emit();
        
         // inform everyone about the next turn 
         snextTurn.emit(plist->getActiveplayer());

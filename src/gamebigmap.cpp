@@ -44,6 +44,7 @@
 #include "GameMap.h"
 #include "GraphicsCache.h"
 #include "game.h"
+#include "FogMap.h"
 
 #include "timing.h"
 
@@ -620,7 +621,8 @@ void GameBigMap::after_draw()
     {
       // draw the selection
       Vector<int> p = stack->getPos();
-      if (is_inside(buffer_view, Vector<int>(p.x, p.y)))
+      if (is_inside(buffer_view, Vector<int>(p.x, p.y)) &&
+	  FogMap::isFogged(p) == false)
 	{
 	  static int bigframe = -1;
 	  static int smallframe = -1;

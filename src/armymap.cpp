@@ -25,6 +25,7 @@
 #include "stack.h"
 #include "GraphicsCache.h"
 #include "GameMap.h"
+#include "FogMap.h"
 #include <assert.h>
 
 ArmyMap::ArmyMap()
@@ -56,7 +57,7 @@ void ArmyMap::draw_stacks()
                 continue;
 
             // don't draw stacks on tiles we can't see
-            if (isFogged (pos) == true)
+            if (FogMap::isFogged (pos) == true)
                 continue;
 
             pos = mapToSurface(pos);

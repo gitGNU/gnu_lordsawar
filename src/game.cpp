@@ -221,9 +221,9 @@ void Game::update_stack_info()
 {
     Stack* stack = Playerlist::getActiveplayer()->getActivestack();
 
-    if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
-        GameScenario::s_hidden_map == true)
-      return;
+    //if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+        //GameScenario::s_hidden_map == true)
+      //return;
     stack_info_changed.emit(stack);
 }
 
@@ -264,11 +264,13 @@ void Game::update_sidebar_stats()
 void Game::redraw()
 {
     if (bigmap.get())
+      {
 	bigmap->draw();
+      }
     if (smallmap.get())
       {
-	if (Playerlist::getActiveplayer()->getType() == Player::HUMAN ||
-	    GameScenario::s_hidden_map == false)
+	//if (Playerlist::getActiveplayer()->getType() == Player::HUMAN ||
+	    //GameScenario::s_hidden_map == false)
 	  smallmap->draw();
       }
 }
@@ -507,6 +509,9 @@ void Game::search_selected_stack()
 // descriptions later on
 void Game::stackUpdate(Stack* s)
 {
+  //if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+      //GameScenario::s_hidden_map == true)
+    //return;
   if (!s)
     s = Playerlist::getActiveplayer()->getActivestack();
 
@@ -957,7 +962,8 @@ void Game::startGame()
   lock_inputs();
 
   d_nextTurn->start();
-  update_control_panel();
+  if (Playerlist::getInstance()->countPlayersAlive())
+    update_control_panel();
 }
 
 void Game::loadGame()
@@ -1187,11 +1193,16 @@ bool Game::init_turn_for_player(Player* p)
   // can also have it check for e.g. escape key pressed to interrupt
   // an AI-only game to save/quit.
 
+
+  if (GameScenario::s_hidden_map && p->getType() == Player::HUMAN)
+    {
+      smallmap->blank();
+      bigmap->blank();
+    }
+  next_player_turn.emit(p, d_gameScenario->getRound() + 1);
   center_view_on_city();
   if (Playerlist::isFinished())
     return true; //closing game window while the computer is moving
-
-  next_player_turn.emit(p, d_gameScenario->getRound() + 1);
   if (p->getType() == Player::HUMAN)
     {
       unlock_inputs();
@@ -1278,9 +1289,13 @@ void Game::on_fight_started(Fight &fight)
        && pd != Playerlist::getInstance()->getNeutral()))
     {
 
-      if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+      if (pa->getType() != Player::HUMAN && pd->getType() != Player::HUMAN &&
 	  GameScenario::s_hidden_map == true)
-	return;
+	{
+	  //short circuit the battle sequence
+	  fight.battle(GameScenario::s_intense_combat);
+	  return;
+	}
     }
   else
     {
@@ -1301,13 +1316,18 @@ void Game::center_view_on_city()
 
   if (p == Playerlist::getInstance()->getNeutral())
     return;
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+      GameScenario::s_hidden_map == true)
+    return;
   // preferred city is a capital city that belongs to the player 
   for (Citylist::iterator i = Citylist::getInstance()->begin();
        i != Citylist::getInstance()->end(); i++)
     {
-      if (i->getPlayer() == p && i->isCapital())
+      if (i->getPlayer() == p && i->isCapital() &&
+	  i->getCapitalOwner() == p)
 	{
-	  smallmap->center_view(i->getPos(), true);
+	  smallmap->center_view(i->getPos(), 
+				!GameScenario::s_hidden_map);
 	  return;
 	}
     }
@@ -1320,13 +1340,17 @@ void Game::center_view_on_city()
 	{
 	  if (Playerlist::isFinished())
 	    return;
-	  smallmap->center_view(i->getPos(), true);
+	  smallmap->center_view(i->getPos(), 
+				!GameScenario::s_hidden_map);
 	  break;
 	}
     }
 }
 void Game::select_active_stack()
 {
+  //if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+      //GameScenario::s_hidden_map == true)
+    //return;
   Player *p = Playerlist::getInstance()->getActiveplayer();
   smallmap->center_view(p->getActivestack()->getPos(), true);
   bigmap->select_active_stack();

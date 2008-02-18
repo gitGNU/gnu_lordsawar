@@ -23,6 +23,7 @@
 #include "sdl-draw.h"
 #include "timing.h"
 #include "GameMap.h"
+#include "Configuration.h"
 
 SmallMap::SmallMap()
 {
@@ -89,8 +90,12 @@ void SmallMap::center_view(Vector<int> p, bool slide, bool from_tile)
 void SmallMap::after_draw()
 {
   OverviewMap::after_draw();
-  draw_cities(false);
-  draw_selection();
+  if (Playerlist::getActiveplayer()->getType() == Player::HUMAN ||
+      Configuration::s_hidden_map == false)
+    {
+      draw_cities(false);
+      draw_selection();
+    }
   map_changed.emit(get_surface());
 }
 
@@ -155,3 +160,22 @@ void SmallMap::slide_view(Rectangle new_view)
 	}
     }
 }
+
+void SmallMap::blank()
+{
+  Uint32 fog_color = SDL_MapRGB(surface->format, 0, 0, 0);
+  int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
+  //fog it up
+  for (int i = 0; i < GameMap::getWidth(); i++)
+    for (int j = 0; j < GameMap::getHeight(); j++)
+      {
+	Vector <int> pos;
+	pos.x = i;
+	pos.y = j;
+	pos = mapToSurface(pos);
+	draw_filled_rect(surface, pos.x, pos.y,
+			 pos.x + size, pos.y + size, fog_color);
+      }
+  map_changed.emit(get_surface());
+}
+

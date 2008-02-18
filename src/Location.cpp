@@ -85,7 +85,7 @@ bool Location::isFogged()
         Vector<int> pos;
         pos.x = d_pos.x + i;
         pos.y = d_pos.y + j;
-        if (fogmap->getFogTile(pos) == FogMap::CLOSED)
+	if (FogMap::isFogged(pos))
           return true;
       }
   return false;

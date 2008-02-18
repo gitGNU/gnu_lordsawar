@@ -88,6 +88,7 @@ class FogMap
           */
         bool save(XML_Helper* helper) const;
 
+	static bool isFogged(Vector <int> pos);
     private:
         // Data
         int d_width;

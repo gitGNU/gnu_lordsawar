@@ -22,6 +22,7 @@
 
 #include "playerlist.h"
 #include "xmlhelper.h"
+#include "GameScenario.h"
 
 using namespace std;
 
@@ -192,4 +193,20 @@ void FogMap::smooth()
     }
 }
 
+bool FogMap::isFogged(Vector <int> pos)
+{
+  //is this tile visible, or not?
+  FogMap *fogmap = Playerlist::getActiveplayer()->getFogMap();
+  if (fogmap->getFogTile(pos) == FogMap::CLOSED)
+    return true;
+  if (Playerlist::getActiveplayer())
+    if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+	GameScenario::s_hidden_map == true)
+      return true;
+                
+  if (fogmap->isLoneFogTile(pos) == true)
+    return false;
+
+  return false;
+}
 // End of file

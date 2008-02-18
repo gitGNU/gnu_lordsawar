@@ -401,12 +401,7 @@ void BigMap::drawFogTile (int x, int y)
             Vector<int> pos;
             pos.x = i;
             pos.y = j;
-            foggyTile = fogmap->getFogTile(pos) == FogMap::CLOSED;
-            if (foggyTile)
-              {
-                if (fogmap->isLoneFogTile(pos) == true)
-                  foggyTile = false;
-              }
+            foggyTile = FogMap::isFogged(pos);
           }
         if (foggyTile)
           {
@@ -650,12 +645,10 @@ void BigMap::draw_buffer()
 	  {
 	    if (x < GameMap::getWidth() && y < GameMap::getHeight())
 	      {
-		Player *p = Playerlist::getActiveplayer();
 		Vector<int> pos;
 		pos.x = x;
 		pos.y = y;
-		if (p->getFogMap()->getFogTile(pos) == FogMap::CLOSED &&
-		    p->getFogMap()->isLoneFogTile(pos) == false)
+		if (FogMap::isFogged(pos))
 		  drawFogTile (x, y);
 	      }
 	  }
@@ -663,4 +656,22 @@ void BigMap::draw_buffer()
 
     after_draw();
 
+}
+
+void BigMap::blank ()
+{
+    // fog it up
+    for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
+      {
+	for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
+	  {
+	    if (x < GameMap::getWidth() && y < GameMap::getHeight())
+	      {
+		Vector<int> pos;
+		pos.x = x;
+		pos.y = y;
+		drawFogTile (x, y);
+	      }
+	  }
+      }
 }
