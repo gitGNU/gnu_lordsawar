@@ -572,12 +572,12 @@ void City::nextTurn()
 					     MAX_TURNS_FOR_VECTORING, getPlayer());
 	  vul->push_back(v);
 	  setProduction(d_production);
-	  item->fillData(getArmytype(d_production), this, true);
+	  item->fillData(getArmy(d_production), this, true);
 	}
       else //or make it here
 	{
 	  Army *a = produceArmy();
-	  item->fillData(a->getType(), this, false);
+	  item->fillData(a, this, false);
 	}
       //FIXME: a cookie goes to the person who can figure out how
       //to get this action into the realplayer class.

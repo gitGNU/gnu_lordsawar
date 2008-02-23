@@ -81,7 +81,7 @@ bool AI_Dummy::levelArmy(Army* a)
     a->gainLevel(Army::STRENGTH);
 
     Action_Level* item=0;
-    item->fillData(a->getId(), Army::STRENGTH);
+    item->fillData(a, Army::STRENGTH);
     d_actions.push_back(item);
 
     return true;

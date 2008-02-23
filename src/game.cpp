@@ -1301,6 +1301,8 @@ void Game::on_fight_started(Fight &fight)
       fight.battle(GameScenario::s_intense_combat);
       return;
     }
+  //FIXME: zoom the map here if we're attacking an observable human, 
+  //from an unobservable computer player
   bigmap->setFighting(true);
   bigmap->draw();
   fight_started.emit(fight, GameScenario::s_intense_combat);

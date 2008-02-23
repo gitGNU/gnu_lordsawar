@@ -120,7 +120,7 @@ bool AI_Smart::levelArmy(Army* a)
     a->gainLevel(stat);
 
     Action_Level* item = new Action_Level();
-    item->fillData(a->getId(), stat);
+    item->fillData(a, stat);
     d_actions.push_back(item);
     
     return true;

@@ -877,11 +877,11 @@ bool Action_Buy::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_Buy::fillData(City* c, int slot, int prod)
+bool Action_Buy::fillData(City* c, int slot, const Army *prod)
 {
     d_city = c->getId();
     d_slot = slot;
-    d_prod = prod;
+    d_prod = prod->getType();
 
     return true;
 }
@@ -928,10 +928,10 @@ bool Action_Production::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_Production::fillData(City* c, int prod)
+bool Action_Production::fillData(City* c, int slot)
 {
     d_city = c->getId();
-    d_prod = prod;
+    d_prod = slot;
 
     return true;
 }
@@ -1140,10 +1140,10 @@ bool Action_Equip::save(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Equip::fillData(Uint32 hero, Uint32 item, Action_Equip::Slot slot)
+bool Action_Equip::fillData(Hero *hero, Item *item, Action_Equip::Slot slot)
 {
-  d_hero = hero;
-  d_item = item;
+  d_hero = hero->getId();
+  d_item = item->getId();
   d_slot = slot;
 
   return true;
@@ -1191,9 +1191,9 @@ bool Action_Level::save(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Level::fillData(Uint32 unit, Army::Stat raised)
+bool Action_Level::fillData(Army *unit, Army::Stat raised)
 {
-  d_army = unit;
+  d_army = unit->getId();
   d_stat = raised;
 
   return true;
@@ -1542,10 +1542,10 @@ bool Action_Plant::save(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Plant::fillData(Uint32 hero, Uint32 item)
+bool Action_Plant::fillData(Hero *hero, Item *item)
 {
-  d_hero = hero;
-  d_item = item;
+  d_hero = hero->getId();
+  d_item = item->getId();
   return true;
 }
 
@@ -1594,9 +1594,12 @@ bool Action_Produce::save(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Produce::fillData(Uint32 army_type, City *city, bool vectored)
+bool Action_Produce::fillData(const Army *army, City *city, bool vectored)
 {
-  d_army_type = army_type;
+  if (army == NULL)
+    d_army_type = -1;
+  else
+    d_army_type = army->getType();
   d_city = city->getId();
   d_vectored = vectored;
   return true;

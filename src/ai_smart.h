@@ -27,65 +27,64 @@ class Threat;
 class AI_Analysis;
 class XML_Helper;
 
-/** More advanced AI
-  *
-  * After examining if it buys additional production, this AI uses the classical
-  * strategy technique of:
-  * - analyse the game situation - this involves identifying stacks and cities as
-  *   threats, and deciding which are the greatest threats to which cities.
-  * - allocate resources to deal with the threats to our best advantage.
-  *
-  * TODO:  Ruins are also identified as threats, though they are not handled yet.
-  * TODO:  The Ai only buys basic productions
-  * TODO:  The AI doesn't rally make use of the multifight, and it cannot really
-  * handle the results (not checked)
-  * TODO:  The Ai should be able to upgrade cities (Increases their income etc.)
-  * TODO:  AI is way too defensive (in fact, the fast AI tends to win games)
-  *
-  * The code is split up in several classes. Be sure to read the comments there
-  * before trying to read the code. :)
-  *
-  * - AI_Analysis includes the code for the assessment of the game situation
-  * - AI_Allocation distributes the AI's ressources the engage threats
-  * - Threat/Threatlist contains the code for the definition of single threats
-  *   and the container class for threats
-  * - AICityInfo is used to collect the threats and reinforcements etc. of a
-  *   single city of the AI.
-  *
-  * Also see the Player class for the derivation scheme of players.
-  */
+/** 
+ * More advanced AI
+ *
+ * After examining if it buys additional production, this AI uses the classical
+ * strategy technique of:
+ * - analyse the game situation - this involves identifying stacks and cities as
+ *   threats, and deciding which are the greatest threats to which cities.
+ * - allocate resources to deal with the threats to our best advantage.
+ *
+ * TODO:  Ruins are also identified as threats, though they are not handled yet.
+ * TODO:  The Ai only buys basic productions
+ * TODO:  The AI doesn't rally make use of the multifight, and it cannot really
+ * handle the results (not checked)
+ * TODO:  The Ai should be able to upgrade cities (Increases their income etc.)
+ * TODO:  AI is way too defensive (in fact, the fast AI tends to win games)
+ *
+ * The code is split up in several classes. Be sure to read the comments there
+ * before trying to read the code. :)
+ *
+ * - AI_Analysis includes the code for the assessment of the game situation
+ * - AI_Allocation distributes the AI's ressources the engage threats
+ * - Threat/Threatlist contains the code for the definition of single threats
+ *   and the container class for threats
+ * - AICityInfo is used to collect the threats and reinforcements etc. of a
+ *   single city of the AI.
+ *
+ * Also see the Player class for the derivation scheme of players.
+ */
 
 class AI_Smart : public RealPlayer
 {
     public:
-        /** Default constructor
-          *
-          * @param name         the name of the player
-          * @param armyset      the armyset of the player
-          * @param color        the player's color
-          */
-        AI_Smart(std::string name, Uint32 armyset, SDL_Color color, int width, int height, int player_no = -1);
+        /** 
+	 * Make a new AI_Smart player.
+         *
+         * @param name         The name of the player.
+         * @param armyset      The Id of the player's Armyset.
+         * @param color        The player's colour.
+	 * @param width        The width of the player's FogMap.
+	 * @param height       The height of the player's FogMap.
+	 * @param player_no    The Id of the player.  If this value is -1,
+	 *                     the next free Id it used.
+         */
+	//! Default constructor.
+        AI_Smart(std::string name, Uint32 armyset, SDL_Color color, 
+		 int width, int height, int player_no = -1);
 
-        //! Copy constructor
+        //! Copy constructor.
         AI_Smart(const Player&);
-
         //! Loading constructor. See XML_Helper for an explanation.
         AI_Smart(XML_Helper* helper);
+	//! Destructor.
         ~AI_Smart();
 
-        /** This function is called whenever the player's turn starts. As soon
-          * as it returns, the player's turn ends.
-          */
-        bool startTurn();
-
-        //! Callback when the player invades a city
-        bool invadeCity(City* c);
-
-        //! Callback when a hero offers his services
-        bool recruitHero(Hero* hero, City *city, int cost);
-
-        //! Callback when an army of the player advances a level
-        bool levelArmy(Army* a);
+        virtual bool startTurn();
+        virtual bool invadeCity(City* c);
+        virtual bool recruitHero(Hero* hero, City *city, int cost);
+        virtual bool levelArmy(Army* a);
 
     private:
         // Choose a new type of army to buy production for.

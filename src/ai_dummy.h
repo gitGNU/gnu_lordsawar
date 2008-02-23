@@ -23,44 +23,42 @@
 
 class XML_Helper;
 
-/** Dummy AI player.
-  * 
-  * This class is a dummy AI used for the neutral player. It just does, well,
-  * nothing. See the player class for the derivation scheme.
-  */
+/** 
+ * Dummy AI player.
+ * 
+ * This class is a dummy AI used for the neutral player. It just does, well,
+ * nothing.
+ */
 
 class AI_Dummy : public RealPlayer
 {
     public:
-        /** The recommended constructor
-          * 
-          * @param name         the name of the player
-          * @param armyset      the armyset of the player
-          * @param color        the color of the player
-          */
-        AI_Dummy (std::string name, Uint32 armyset, SDL_Color color, int width, int height, int player_no = -1);
+        /** 
+	 * Make a new AI_Dummy player.
+         * 
+         * @param name         The name of the player.
+         * @param armyset      The Id of the player's Armyset.
+         * @param color        The player's colour.
+	 * @param width        The width of the player's FogMap.
+	 * @param height       The height of the player's FogMap.
+	 * @param player_no    The Id of the player.  If this value is -1,
+	 *                     the next free Id it used.
+         */
+	//! Default constructor.
+        AI_Dummy (std::string name, Uint32 armyset, SDL_Color color, 
+		  int width, int height, int player_no = -1);
 
-        /** Copy constructor
-          * 
-          * @param player       player whose data is copied
-          */
+	//! Copy constructor.
         AI_Dummy(const Player& player);
-
         //! Loading constructor. See XML_Helper.
         AI_Dummy(XML_Helper* helper);
+	//! Destructor.
         ~AI_Dummy();
         
-        //! This function is called whenever the player's turn starts.
-        bool startTurn();
-
-        //! A kind of callback when a city has been conquered.
-        bool invadeCity(City* c);
-
-        //! A kind of callback when a hero offers his services.
-        bool recruitHero(Hero* hero, City *city, int cost);
-
-        //! Callback to raise the army by a level
-        bool levelArmy(Army* a);
+        virtual bool startTurn();
+        virtual bool invadeCity(City* c);
+        virtual bool recruitHero(Hero* hero, City *city, int cost);
+        virtual bool levelArmy(Army* a);
 };
 
 #endif // AI_DUMMY_H

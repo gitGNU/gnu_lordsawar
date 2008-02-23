@@ -46,79 +46,124 @@ class FogMap;
 class Signpost;
 
 /** The abstract player class.
-  *
-  * This class does not yet implement an actual player type. Its purpose is to
-  * provide an abstract class design which every player implementation has to
-  * fulfill. Of each player class we demand the following functionality:
-  *
-  * 1. functions for _every_ action a player can do
-  * 2. some kind of callback functions if the player has a choice (e.g. if he has
-  *    conquered a city, he may choose between razing, pillaging and occupying)
-  * 3. signals which are raised whenever something important happens
-  * 4. an actionlist which keeps track of _everything_ a player has done
-  *
-  * The fourth point allows us an easy network playing scheme. After a player
-  * has finished, all he has to do is sending his actionlist to the over network
-  * players. Since every item which the player can touch/kill etc. (cities,
-  * armies, ruins,...) has a unique id, the remote game instances can then
-  * simply apply these action lists to their own situation.
-  *
-  * The third point allows us to dock other classes to every possible event. One
-  * example are ruin searching quests which must be informed whenever any
-  * player searches a ruin. Or the bigmap can be informed when a stack moves,
-  * so that it may update its contents.
-  *
-  * The second item allows an easy coexistence of AI and human players.
-  * Basically, an AI player just follows some kind of routine while a human
-  * player uses gui interaction. However, this becomes a bit problematic
-  * whenever the player may decide something. One solution is providing
-  * callbacks for these cases. The human player then opens a dialog somehow
-  * while the AI player overwrites the default behaviour.
-  *
-  * The first point makes a nice derivation scheme possible. It is possible to
-  * divide the player types into a local player, who implements all these
-  * functions and a networked player. The latter one simply overwrites these
-  * functions so that the game status is updated for each item of the actionlist
-  * he has been sent. Furthermore, with a local player having been implemented,
-  * it is extremely easy to write an AI player. All you have to do is overwrite
-  * the startTurn function with your own code. For every action you already know
-  * there is an implementation in a superior class which takes off the burden
-  * for the actual work.
-  *
-  *
-  * Finally, the current derivation scheme is as follows
-  *
-  * Player
-  *   |
-  *   +--- NetworkPlayer (not implemented yet)
-  *   |
-  *   +--- RealPlayer (a local player, human players use instances of this class)
-  *          +
-  *          |
-  *          +--- AI_Dummy (AI for the neutral player, does nothing)
-  *          |
-  *          +--- AI_Fast (dumb AI, tries to conquer the nearest city)
-  *          |
-  *          +--- AI_Smart (quite smart AI)
-  */
+ *
+ * This class does not yet implement an actual player type. Its purpose is to
+ * provide an abstract class design which every player implementation has to
+ * fulfill. Of each player class we demand the following functionality:
+ *
+ * 1. functions for _every_ action a player can do
+ * 2. some kind of callback functions if the player has a choice (e.g. if he has
+ *    conquered a city, he may choose between razing, pillaging and occupying)
+ * 3. signals which are raised whenever something important happens
+ * 4. an actionlist which keeps track of _everything_ a player has done
+ *
+ * The fourth point allows us an easy network playing scheme. After a player
+ * has finished, all he has to do is sending his actionlist to the over network
+ * players. Since every item which the player can touch/kill etc. (cities,
+ * armies, ruins,...) has a unique id, the remote game instances can then
+ * simply apply these action lists to their own situation.
+ *
+ * The third point allows us to dock other classes to every possible event. One
+ * example are ruin searching quests which must be informed whenever any
+ * player searches a ruin. Or the bigmap can be informed when a stack moves,
+ * so that it may update its contents.
+ *
+ * The second item allows an easy coexistence of AI and human players.
+ * Basically, an AI player just follows some kind of routine while a human
+ * player uses gui interaction. However, this becomes a bit problematic
+ * whenever the player may decide something. One solution is providing
+ * callbacks for these cases. The human player then opens a dialog somehow
+ * while the AI player overwrites the default behaviour.
+ *
+ * The first point makes a nice derivation scheme possible. It is possible to
+ * divide the player types into a local player, who implements all these
+ * functions and a networked player. The latter one simply overwrites these
+ * functions so that the game status is updated for each item of the actionlist
+ * he has been sent. Furthermore, with a local player having been implemented,
+ * it is extremely easy to write an AI player. All you have to do is overwrite
+ * the startTurn function with your own code. For every action you already know
+ * there is an implementation in a superior class which takes off the burden
+ * for the actual work.
+ *
+ *
+ * Finally, the current derivation scheme is as follows:
+ * RealPlayer derives from Player.
+ * NetworkPlayer derives from Player.
+ * AI_Fast, AI_Dummy, and AI_Smart derive from RealPlayer.
+ *
+ * The Ids of players are very specific.  The first player (the White player)
+ * must have the Id of 0, the next player (Green) must have the Id of 1, and 
+ * so on.  The Neutral player must have the final player Id.
+ * If the White player is not in the scenario, then the Id 0 must be skipped.
+ * There can only be MAX_PLAYERS players in total.
+ */
 
 class Player: public sigc::trackable
 {
     public:
-        //! The available player types. Needed when loading a player.
-        enum Type {HUMAN = 0, AI_FAST = 1, AI_DUMMY = 2, AI_SMART = 4 };
+        //! The available player types.
+        enum Type {
+	  //! Local human player.  See the RealPlayer class.
+	  HUMAN = 0, 
+	  //! Local computer player (Easy).  See the AI_Fast class.
+	  AI_FAST = 1, 
+	  //! Local computer player (Neutral).  See the AI_Dummy class.
+	  AI_DUMMY = 2, 
+	  //! Local computer player (Hard).  See the AI_Smart class.
+	  AI_SMART = 4 
+	};
 
 	//! Every player has a diplomatic state with every other player.
-	enum DiplomaticState {AT_PEACE = 1, AT_WAR_IN_FIELD = 2, AT_WAR = 3};
-	enum DiplomaticProposal {NO_PROPOSAL = 0, PROPOSE_PEACE = 1, 
-	  PROPOSE_WAR_IN_FIELD = 2, PROPOSE_WAR = 3 };
+	enum DiplomaticState {
+	  //! Can't attack opponent's stacks anywhere.
+	  AT_PEACE = 1, 
+	  //! Can't attack opponent's stacks in cities.
+	  AT_WAR_IN_FIELD = 2, 
+	  //! Can attack opponent's stack everywhere.
+	  AT_WAR = 3
+	};
 
-        /** Default constructor
-          *
-          * @param name         the name of the player
-          * @param armyset      the player's armyset
-          * @param color        the player's main color
-          */
+	//! Every player has a diplomatic proposal to every other player.
+	enum DiplomaticProposal {
+	  //! Offer to keep the status-quo with the opponent.
+	  NO_PROPOSAL = 0, 
+	  //! Offer peace to an opponent.
+	  PROPOSE_PEACE = 1, 
+	  //! Offer limited war to an opponent (only kill stacks in the field).
+	  PROPOSE_WAR_IN_FIELD = 2, 
+	  //! Offer all-out war to an opponent.
+	  PROPOSE_WAR = 3 
+	};
+
+	//! Every player keeps a tally of frags.
+        enum TriumphType {
+	  //! Kills we've made of an opponent's Hero army units.
+	  TALLY_HERO = 0, 
+	  //! Kills we've made of an opponent's awardable Army units.
+	  TALLY_SPECIAL = 1, 
+	  //! Kills we've made of an opponents other Army units.
+	  TALLY_NORMAL = 2, 
+	  //! Kills we've made of an opponent's Army units on the water.
+	  TALLY_SHIP = 3, 
+	  //! Kills we've made of opponent's Heroes who carry a standard Item.
+	  TALLY_FLAG = 4
+	};
+
+        /** 
+	 * Make a new player.  
+	 * @note AI_Fast, AI_Dummy, AI_Smart and RealPlayer use this 
+	 * constructor to make new Players.
+         *
+         * @param name         The name of the player.
+         * @param armyset      The Id of the player's Armyset.
+         * @param color        The player's colour.
+	 * @param width        The width of the player's FogMap.
+	 * @param height       The height of the player's FogMap.
+	 * @param type         The kind of player (Player::Type).
+	 * @param player_no    The Id of the player.  If this value is -1,
+	 *                     the next free Id it used.
+         */
+	//! Default constructor.
         Player (std::string name, Uint32 armyset, SDL_Color color, int width,
 		int height, Type type, int player_no = -1);
 
@@ -129,75 +174,91 @@ class Player: public sigc::trackable
         Player(XML_Helper* helper);
         virtual ~Player();
 
-        /** creates the correct player
-          * 
-          * @note The neutral player must still be inserted as neutral player
-          * manually!
-          *
-          * @param name     the name of the player
-          * @param armyset  the armyset of the player
-          * @param color    the color of the player
-          * @param type     the player's type
-          * @param width    the width of the player's fogmap
-          * @param height   the height of the player's fogmap
-          */
-        static Player* create(std::string name, Uint32, SDL_Color color, int width, int height, Type type);
+        /** 
+	 * Make a new player with the given parameters.
+         * 
+         * @note The neutral player must still be inserted as neutral player
+         * manually!
+         *
+         * @param name     The name of the player.
+         * @param armyset  The Id of the player's Armyset.
+         * @param color    The player's colour.
+         * @param width    The width of the player's FogMap.
+         * @param height   The height of the player's FogMap.
+         * @param type     The player's type (Player::Type).
+         */
+	//! Create a player.
+        static Player* create(std::string name, Uint32 armyset, 
+			      SDL_Color color, int width, int height, 
+			      Type type);
         
-        /** copies a player to a different type
-          * 
-          * @note this does not change ownerships e.g. of cities!
-          *
-          * @param player   the original player
-          * @param type     the type we want to get out
-          * @return a new player with the old player's data and the given type
-          */
+        /** 
+	 * Copies a player to a different type.
+         * 
+         * @note This method does not change ownerships! (e.g. of cities)
+         *
+         * @param player   The original player.
+         * @param type     The type we want to get out (Player::Type).
+         * @return A new player with the old player's data and the given type.
+         */
+	//! Create a new player from another player.
         static Player* create(Player* orig, Type type);
 
-	// get standard color for player no
+	/**
+	 * Get the default colour for the Player with the given Id.
+	 *
+	 * @note This colour is used to graphically shade Army, Shield, Flags,
+	 * and selector pictures.
+	 *
+	 * @note This is not used to obtain the Neutral player's colour.
+	 *
+	 * @param player_no  The player's Id for which we want the colour.
+	 *
+	 * @return The default colour associated with the player.
+	 */
+	//! Get standard colour for a player.
 	static SDL_Color get_color_for_no(int player_no);
 
-	// get standard color for neutral player
+	//! Get standard colour for the neutral player.
 	static SDL_Color get_color_for_neutral();
 
-        //! Change the player's name
+        //! Change the player's name.
         void setName(std::string name){d_name = name;}
         
-        //! Change the player's armyset
+        //! Change the player's Armyset.
         void setArmyset(Uint32 armyset){d_armyset = armyset;}
 
-        //! Set the type of the player (to be used by derived classes only)
+        //! Set the type of the player (to be used by derived classes only.)
         void setType(Type type) {d_type = type;}
 
-        //! Change the gold of the player. Try to avoid this.
-        void setGold(int gold){d_gold = gold;}
-
-        //! Change the player's color
+        //! Change the player's colour.
         void setColor(SDL_Color c);
 
-        //! Makes a player immortal, even if he has no units or cities.
+        //! Makes a player unable to die, even when having no units or cities.
         void setMortality(bool ismortal) {d_immortal = !ismortal;}
         
+        //! Change the number of gold pieces of the player has.
+        void setGold(int gold){d_gold = gold;}
 
-        //! Add gold to the player's treasure
+        //! Add some gold pieces to the player's treasury.
         void addGold(int gold);
 
-        //! Subtract gold from the player's treasure
+        //! Subtract gold pieces from the player's treasury.
         void withdrawGold(int gold);
 
-        //! Remove all items from the list of player's actions
+        //! Remove every Action from the list of the player's actions.
         void clearActionlist();
 
-        //! Remove all items from the list of player's events
+        //! Remove every History element from the list of the player's events.
         void clearHistorylist();
 
-        //! Add a stack to the player's list of stacks
+        //! Add a Stack to the player's Stacklist.
         void addStack(Stack* stack);
 
-        //! Remove a stack from the player's stacklist
+        //! Remove a Stack from the player's Stacklist.
         bool deleteStack(Stack* stack);
 
-
-        //! Returns the unique ID of the player
+        //! Returns the unique ID of the player.
         Uint32 getId() const {return d_id;}
 
         //! Returns the list of player's actions. 
@@ -206,31 +267,40 @@ class Player: public sigc::trackable
         //! Returns the list of player's events. 
         std::list<History*>* getHistorylist() {return &d_history;}
 
-        //! Return the player's armyset
+        //! Return the Id of the player's Armyset.
         Uint32 getArmyset() const {return d_armyset;}
 
-        //! Return whether the player has been killed
+        //! Return whether or not the player has been killed.
         bool isDead() const {return d_dead;}
 
-        //! Returns whether a player is immortal (not killable) or not
+        //! Returns whether a player is immortal or not.
         bool isImmortal() const {return d_immortal;}
 
-        //! Return the type of the player
+        //! Return the type of the player (Player::Type).
         Uint32 getType() {return d_type;}
 
-        //! Return the upkeep the player spend last turn 
+        /**
+	 * Return the amount of upkeep in gold pieces that the player spent 
+	 * in the previous turn.  
+	 */
+	//! Return the upkeep.
         Uint32 getUpkeep() {return d_upkeep;}
 
-	//! Calculates the upkeep
+	/**
+	 * Perform a summation of the upkeep value for every Army in the 
+	 * player's Stacklist.  This method sets d_upkeep.
+	 * The upkeep value is in gold pieces.
+	 */
+	//! Calculates the upkeep.
 	void calculateUpkeep();
 
-	//! Declare a new diplomatic state wrt another player
+	//! Declare a new diplomatic state with respect to an opponent.
 	void declareDiplomacy(DiplomaticState state, Player *player);
 
-	//! Query the diplomatic state wrt another player
+	//! Query the diplomatic state this player has with an opponent.
 	DiplomaticState getDiplomaticState (Player *player);
 
-	//! Query the diplomatic proposal we're making wrt another player
+	//! Query the diplomatic proposal we're making to an opponent.
 	DiplomaticProposal getDiplomaticProposal (Player *player);
 
 	//! Propose a new diplomatic state wrt another player
@@ -239,415 +309,1030 @@ class Player: public sigc::trackable
 	//! Set this player's rank in diplomatic matters.  Starts at 1.
 	void setDiplomaticRank (Uint32 rank) {d_diplomatic_rank = rank;};
 
-	//! What diplomatic rank does this player have? As a number.
-	//! Starts at 1.
+	//! What diplomatic rank does this player have?  Starts at 1.
 	Uint32 getDiplomaticRank () {return d_diplomatic_rank;};
 
-	//! What rank do we have? As a name.
+	//! What rank do we have?  As a name.
 	std::string getDiplomaticTitle() {return d_diplomatic_title;};
 
 	//! Set the rank as a name.
 	void setDiplomaticTitle (std::string title) {d_diplomatic_title = title;};
-	//! Negotiate diplomatic talks.
+	//! Negotiate diplomatic talks with an opponent, and return a new state.
 	DiplomaticState negotiateDiplomacy (Player *player);
 
-	//! Get the diplomatic score wrt another player
+	//! Get the diplomatic score with respect to an opponent.
 	Uint32 getDiplomaticScore (Player *p);
 
-	//! Make your diplomatic view of another player increase
+	/**
+	 * Change the player's opinion of an opponent for the better.
+	 *
+	 * @param player    The player to improve our opinion by.
+	 * @param amount    The amount to improve by.  The minimum value 
+	 *                  is 1 and the maximum value is 15.
+	 *
+	 */
+	//! Make your diplomatic view of another player increase.
 	void improveDiplomaticRelationship (Player *p, Uint32 amount);
 
-	//! Make all other players diplomatic view of you increase,
-	//! excepting one player (if not null).
+	/**
+	 * Change all players opinion of you for the better, except for 
+	 * possibly a single player.
+	 *
+	 * @param amount    The amount to improve.  The minimum value is 1
+	 *                  and the maximum value is 15.
+	 * @param except    Don't improve this player's view of the player.
+	 *
+	 * @note Pass except as NULL to not except a player.
+	 */
+	//! Make all other players diplomatic view of you increase.
 	void improveDiplomaticRelationship (Uint32 amount, Player *except);
 
-	//! Make your diplomatic view of another player decrease
-	void deteriorateDiplomaticRelationship (Player *, Uint32 amount);
+	/**
+	 * Change the player's view of an opponent for the worse.
+	 *
+	 * @param player    The player to deteriorate our view of.
+	 * @param amount    The amount to deteriorate by.  The minimum value 
+	 *                  is 1 and the maximum value is 15.
+	 *
+	 */
+	//! Make your diplomatic view of another player decrease.
+	void deteriorateDiplomaticRelationship (Player *player, Uint32 amount);
 
+	/**
+	 * Change all players opinion of you for the worse.
+	 *
+	 * @param amount    The amount to deterioriate by.  The minimum value 
+	 *                  is 1 and the maximum value is 15.
+	 */
 	//! Make all other players diplomatic view of you worsen
 	void deteriorateDiplomaticRelationship (Uint32 amount);
 
-	//! Make players you are at STATE with you think less of PLAYER.
-	void deteriorateAlliesRelationship(Player *player, Uint32 amount, Player::DiplomaticState state);
+	/**
+	 * Change all players opinion of another player for the worse, 
+	 * who happen to have a diplomatic state of state with you.
+	 *
+	 * @param player    The target player.
+	 * @param amount    The amount to deterioriate by.  The minimum value 
+	 *                  is 1 and the maximum value is 15.
+	 * @param state     The state that an opponent has to be in with you,
+	 *                  to make the deterioration happen.
+	 */
+	//! Make players you are at state with you think less of player.
+	void deteriorateAlliesRelationship(Player *player, Uint32 amount, 
+					   Player::DiplomaticState state);
 
+	/**
+	 * Change all players opinion of another player for the better, 
+	 * who happen to have a diplomatic state of state with you.
+	 *
+	 * @param player    The target player.
+	 * @param amount    The amount to improve by.  The minimum value 
+	 *                  is 1 and the maximum value is 15.
+	 * @param state     The state that an opponent has to be in with you,
+	 *                  to make the improvement happen.
+	 */
 	//! Make players who are at STATE with PLAYER think better of you.
-	void improveAlliesRelationship(Player *player, Uint32 amount, Player::DiplomaticState state);
+	void improveAlliesRelationship(Player *player, Uint32 amount, 
+				       Player::DiplomaticState state);
 
-        //! Returns the main color of the player
+        //! Returns the colour of the player.
         SDL_Color getColor() const {return d_color;}
 
-        //! Returns the player's color suitable for applying it to masks.
+        //! Returns the player's colour suitable for applying it to masks.
         SDL_Color getMaskColor() const;
 
-        //! Returns the gold of the player
+        //! Returns the amount of gold pieces the player has.
         int getGold() const {return d_gold;}
 
-        //! Returns the name of the player
+        //! Returns the name of the player has.
         std::string getName(bool translate = true) const;
 
-        //! Returns the list of stacks owned by the player
-        Stacklist* getStacklist() const {return d_stacklist;}
-
-        //! A shortcut for getting the stack marked as active
-        Stack* getActivestack();
-
-        //! get the fog map of the player
-        FogMap* getFogMap() const {return d_fogmap;}
-
-        //! get the fight order of the player
-	std::list<Uint32> getFightOrder() const {return d_fight_order;}
-
-        //! set the fight order of the player
-	virtual void setFightOrder(std::list<Uint32> order)=0;
-
-        //! Dumps the items in the actionlist on stderr
-        void dumpActionlist() const;
-
-        //! Dumps the items in the eventlist on stderr
-        void dumpHistorylist() const;
-
-        //! Mark the player as dead; this kills all his armies etc.
-        void kill();
-
-        //! revive the player, this does not give him any cities!!!
-        void revive() {d_dead = false;}
-
-        /** Saves the player data
-          *
-          * @note This function only saves basic data, it doesn't open/close the
-          * player tags, this has to be done by derived functions!
-          */
-        virtual bool save(XML_Helper* helper) const;
-
-        /** Loads a player
-          *
-          * This is a bit inconsistent with other classes, but with players you
-          * have the problem that there are different types with different
-          * classes. So we need a static member function which looks which
-          * player type to load and calls the constructor of the appropriate
-          * class.
-          *
-          * @param helper       the XML_Helper instance of the savegame
-          */
-        static Player* loadPlayer(XML_Helper* helper);
-
-
-        /** This function is called when a player's turn starts. For AI players,
-          * this function should start the algorithm.
-          *
-          * @return true if everything went well
-          */
-        virtual bool startTurn() = 0;
-
-        /** This function is called before a player's turn starts.
-          * The idea here is that it happens before heroes are recruited,
-          * and before new army units show up in cities
-          * @return true if everything went well
-          */
-        virtual bool initTurn() = 0;
-
-        /** Called so that the player can decide what to do with an
-            occupied city as soon as he has occupied it (mainly for AI)
-
-            @return always returns true (unused feature)
-            @param  city   the conquered city
-          */
-        virtual bool invadeCity(City* c) = 0;
-
-        /** Called whenever a hero decides to join you, so the player can
-            decide what to do with the hero.
-
-            @return true if the player accepts the hero, false otherwise
-            @param  hero    the hero who has offered his service
-            @param  cost    the amount of gold neccessary to recruit the
-                            hero
-
-            @note Don't touch the hero except for naming purposes etc.
-                  The hero is integrated elsewhere!
-          */
-        virtual bool recruitHero(Hero* hero, City *city, int cost) = 0;
-
-        /** Callback whenever a unit advances a level.
-          * 
-          * @return true on success, false on error
-          * @param army     army to raise
-          */
-        virtual bool levelArmy(Army* a) = 0;
-        
-        /** Called to split the stack s in two stacks. You have to take great
-          * care that one of the created stacks moves away after that. Some code
-          * parts assume that each tile is occupied by just one stack!
-          * You can change which armies are in the new stack by setting their
-          * "grouped" value.
-          *
-          * @param s        the stack to split
-          * @return false if there were any problems, else true
-          */
-        virtual bool stackSplit(Stack* s) =0;
-
-        /** Called to merge two stacks into one.
-          *
-          * @param receiver         the receiving stack
-          * @param joining          the joining stack, destroyed after the join
-          * @param grouped          whether the armies of the other stacks are selected
-          *                         automatically or not.
-          * @return false if an error occured, else true
-          */
-        virtual bool stackJoin(Stack* receiver, Stack* joining, bool grouped)=0;
-
-        //! A shortcut for stackMove(s, <last path item>, true)
-        virtual bool stackMove(Stack* s) =0;
-
-        /** Move a stack to a specified position
-          *
-          * Moves a stack. The path is calculated on the fly unless you set
-          * follow to true. In this case, an existing path is checked and
-          * iterated over. This is useful if a stack didn't reach its target
-          * within one round and should continue the movement.
-          *
-          * @param s                the stack to be moved
-          * @param dest             the destination of the move
-          * @param follow           if set to false, calculate the path
-          * @return false on error, true otherwise
-          */
-        virtual MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow)=0;
-
-        /** Two stacks fight each other.
-          * 
-          * Note that all stacks next to the defending stack also take part in
-          * the fight, if they belong either to the attacker's side or to the
-          * defender. If the attacker or the defender die in the course of events,
-          * the pointers are set to 0.
-          *
-          * @param attacker         the attacking stack
-          * @param defender         the defending stack
-          * @param ruin             true if the fight is caused by searching a ruin
-          * @return one of Fight::ATTACKER_WON, Fight::DEFENDER_WON, Fight::NONE
-          */
-        virtual Fight::Result stackFight(Stack** attacker, Stack** defender, 
-                                         bool ruin) =0;
-        virtual Fight::Result stackRuinFight(Stack** attacker, Stack** defender) =0;
-
-	/** Decide if we perform treachery on a friendly player.
-	 *
-	 * @param stack             my stack considering the treachery
-	 * @param player            the friendly player.
-	 * @param pos               the place on the map being targetted.
-	 * @param state             the state we end up in if we decide yes.
-	 *
-	 * @return true if we decided to be treacherous.  false otherwise.
-	 */
-	virtual bool treachery (Stack *stack, Player *player, Vector <int> pos) =0;
-
-        /** A stack searches a ruin. The stack should contain a hero.
-          *
-          * @param s                the stack which searches the ruin
-          * @param r                the ruin to be searched
-          * @param reward           a pointer to the received reward
-          * @return true if the ruin was searched (keeper defeated)
-          */
-        virtual Reward* stackSearchRuin(Stack* s, Ruin* r) =0;
-
-        /** A stack visits a temple and becomes blessed. By blessing, the attack
-          * strength of all armies rises by 1.
-          *
-          * @param s                the stack visiting the temple
-          * @param t                the visited temple
-          * @return the number of blessed armies
-          */
-        virtual int stackVisitTemple(Stack* s, Temple* t) = 0;
-
-        /** A stack visits a temple and receives a random quest from the
-         * temple's priests. If more than one heroes are in the stack, the
-         * quest is assigned to the first hero without quest.
-         *
-         * @param s                 the visiting stack
-         * @param t                 the visited temple
-         * @param except_raze       don't give out a raze quest
-         * @return the quest we got or 0 on error
-         */
-        virtual Quest* stackGetQuest(Stack* s, Temple* t, bool except_raze) = 0;
-        
-        /** Called to ask the military advisor about what would happen 
-	  * if the stack attacked the tile.
-          *
-          * @param s        the stack to attack with
-	  * @param tile     the tile to attack (could be a city, or a stack)
-          * @return percent chance to win
-          */
-        virtual float stackFightAdvise(Stack* s, Vector<int> tile,
-				       bool intense_combat) =0;
-
-        /** Occupy a city (i.e. change the owner to yourself)
-          *
-          * @param c                the occupied city
-          * @return false on error, true otherwise
-          */
-        virtual bool cityOccupy(City* c) =0;
-
-        /** Pillage a city (trade in the best army type and get some gold)
-          *
-          * @param c                the city to be pillaged
-          * @param gold             returns the amount of gold pillaged
-	  * @param pillaged_army_type the army type that is cashed in for gold
-          * @return false on error, true otherwise
-          */
-        virtual bool cityPillage(City* c, int& gold, int& pillaged_army_type)=0;
-
-        /** Sack a city (trade in all army types except one and get some gold)
-          *
-          * @param c                the city to be sacked 
-          * @param gold             returns the amount of gold sacked
-	  * @param sacked_types     the army types that were cashed in for gold
-          * @return false on error, true otherwise
-          */
-        virtual bool citySack(City* c, int& gold, std::list<Uint32> *sacked_types) = 0;
-
-        /** Raze (permanently destroy) a city
-          *
-          * @param c                the city to be razed
-          * @return false on error, true otherwise
-          */
-        virtual bool cityRaze(City* c) =0;
-
-        /** Add another production to a city
-          *
-          * @param c                the lucky city
-          * @param slot             the production slot of the city
-          * @param armytype         the index of the army type to add
-          */
-        virtual bool cityBuyProduction(City* c, int slot, int type) =0;
-
-        /** Change the production of a city
-          *
-          * @param c                the affected city
-          * @param slot             the index of the selected production slot
-          * @return false on error, true otherwise
-          */
-        virtual bool cityChangeProduction(City* c, int slot) =0;
-
-        /** Gives the player some random reward
-          *
-          * @param level            the quality of the reward
-          * @param s                the stack which has caused the reward
-          * @param reward           a pointer for storing the type of the reward
-          * @return false on error, true otherwise
-          */
-        virtual bool giveReward (Stack *stack, Reward *reward) = 0;
-
-        //! Disband a player's stack
-        virtual bool stackDisband(Stack* s) =0;
-
-        //! Player's hero drop an item at pos
-        virtual bool heroDropItem(Hero *h, Item *item, Vector<int> pos) =0;
-
-        //! Player's hero drops all items at pos
-        virtual bool heroDropAllItems(Hero *h, Vector<int> pos) =0;
-
-        //! Player's hero picks up an item
-        virtual bool heroPickupItem(Hero *h, Item *item, Vector<int> pos) =0;
-
-        //! Player's hero completes a quest
-        virtual bool heroCompletesQuest(Hero *h) =0;
-
-        //! Disband all the player's stacks and raze all cities.
-        virtual void resign() =0;
-
-        //! Change the text on the signpost of the square we're sitting on
-        virtual bool signpostChange(Signpost * s, std::string message) =0;
-
-        //! Rename a city
-        virtual bool cityRename(City *c, std::string name) =0;
-
-        /** Vector new units from a player's city to a destination.
-            @return always returns true
-            @param  city   the city to vector from
-            @param  dest   the place on the map to vector to
-          */
-        virtual bool vectorFromCity(City* c, Vector<int> dest) = 0;
-        /** Vector units going to a player's city to a new destination.
-            @return always returns true
-            @param  city   the city being vectored to
-            @param  dest   the place on the map to vector to
-          */
-	virtual bool changeVectorDestination(City *c, Vector<int> dest) =0;
-
-        //! Plant a standard
-        virtual bool heroPlantStandard(Stack *s) =0;
-
-	//! return the player's current score
+	//! Returns the player's current score.
         virtual Uint32 getScore() =0;
 
-        /** Signal raised when a city is conquered. This signal is solely
-          * for internal use. Don't use it, you may break stability (Background:
-          * libsigc++ doesn't guarantee order of execution and this signal may
-          * usually end the game which can have unwanted side effects).
-          */
+	/**
+	 * The player's triumphs are tallied as opponent's armies die.
+	 * This method gets a tally for certain kind of triumph.  
+	 * See TriumphsDialog for a caller of this method.
+	 *
+	 * @param player      The player to obtain a tally for.
+	 * @param type        The kind of kills to tally (Player::TriumphType).
+	 *
+	 * @return Zero or more number of armies killed.
+	 */
+	//! Returns a number of armies killed.
+	Uint32 getTriumphTally(Player *player, TriumphType type) const
+	  {return d_triumph[player->getId()][type];}
+
+        //! Returns the list of stacks (Stacklist) owned by the player.
+        Stacklist* getStacklist() const {return d_stacklist;}
+
+        //! A shortcut for getting the Stack marked as active.
+        Stack* getActivestack();
+
+        //! Get the FogMap of the player.
+        FogMap* getFogMap() const {return d_fogmap;}
+
+        //! Get the fight order of the player.
+	std::list<Uint32> getFightOrder() const {return d_fight_order;}
+
+        //! Set the fight order of the player.
+	virtual void setFightOrder(std::list<Uint32> order)=0;
+
+        //! Show debugging information for the player's Action list.
+        void dumpActionlist() const;
+
+        //! Show debugging information for the player's History list.
+        void dumpHistorylist() const;
+
+        //! Mark the player as dead. Kills all Army units in the Stacklist.
+        void kill();
+
+        //! Revive the player, this does not provide any cities.
+        void revive() {d_dead = false;}
+
+        /** 
+	 * Saves the player data to a file.
+	 *
+	 * @param helper     The opened saved-game file to write to.
+         *
+         * @note This function only saves basic data, it doesn't open/close the
+         * player tags, this has to be done by the derived methods in 
+	 * RealPlayer, AI_Fast, AI_Smart and AI_Dummy.
+         */
+	//! Save the player to a saved-game file.
+        virtual bool save(XML_Helper* helper) const;
+
+        /** 
+	 * Loads a player from a file.
+         *
+         * This is a bit inconsistent with other classes, but with players you
+         * have the problem that there are different types with different
+         * classes. So we need a static member function which looks which
+         * player type to load and calls the constructor of the appropriate
+         * class.
+         *
+         * @param helper       the opened saved-game file to read from.
+	 *
+	 * @return The loaded Player instance.
+         */
+        static Player* loadPlayer(XML_Helper* helper);
+
+        /** 
+	 * This function is called when a player's turn starts. 
+	 * For AI players this function should start the algorithm.
+	 * Results in a History_StartTurn event going into the player's 
+	 * Historylist.
+         *
+         * @return True if everything went well.
+         */
+	//! Callback to start a Player's turn.
+        virtual bool startTurn() = 0;
+
+        /** 
+	 * This function is called before a player's turn starts.
+         * The idea here is that it happens before heroes are recruited,
+         * and before new army units show up in cities.
+	 *
+         * @return True if everything went well.
+         */
+	//! Callback to initialise a Player's turn.
+        virtual bool initTurn() = 0;
+
+        /** 
+	 * Called so that the player can decide what to do with a newly
+	 * conquered city.  For human players this method presents the dialog
+	 * that asks the user what should be done (Razing, Pillaging, etc).
+	 * For the computer players this method is for deciding what to do.
+	 * The decision is made by emitting one of the following signals:
+	 * srazingCity, spillagingCity, ssackingCity, soccupyingCity.
+	 *
+         * @param  city   The newly conquered city.
+	 *
+         * @return True if everything went well.
+         */
+	//! Decision callback for if we should invade a city.
+        virtual bool invadeCity(City* city) = 0;
+
+        /** 
+	 * Called whenever a hero emerges in a city, so the player can
+         * decide what to do with the hero.
+	 * For human players this method presents a dialog so that the 
+	 * user can choose.  For computer players this method is used to
+	 * decide whether or not to accept the hero.
+	 *
+         * @param  hero    The hero who has offered his or her service.
+         * @param  city    The city where the hero is emerging.
+         * @param  cost    The amount of gold pieces neccessary to recruit 
+	 *                 the hero.
+	 * 
+         * @note Only change the name and gender attributes of the Hero.
+	 *
+         * @return True if the player accepts the hero, false otherwise.
+         */
+	//! Decision callback for if we should accept a hero.
+        virtual bool recruitHero(Hero* hero, City *city, int cost) = 0;
+
+        /** 
+	 * Called whenever a hero advances a level.
+	 * For human players this method presents a dialog that allows the
+	 * user to select an Army::STAT to improve (HP, MOVES, or SIGHT if
+	 * a hidden map is in use).  For computer players this method is 
+	 * used to decide which stat should be improved.
+         * 
+	 * This callback must result in an Action_Level element being 
+	 * added to the player's Action list (Player::d_actions).
+	 *
+         * @param army     The army to raise (is always a Hero.)
+	 *
+         * @return True on success, false on error.
+         */
+	//! Callback to advance an Army's level.
+        virtual bool levelArmy(Army* a) = 0;
+        
+        /** 
+	 * Called to split the stack in two stacks. You have to take great
+         * care that one of the created stacks moves away after that because 
+	 * there is code that assumes that there is only stack on a tile.
+	 * The Army units that are grouped are the units in the new stack.
+	 *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to split stacks.
+	 *
+	 * This callback must result in an Action_Split element being 
+	 * added to the player's Action list (Player::d_actions).
+         *
+         * @param s        The stack to split.
+	 *
+         * @return False if there were any problems, else true.
+         */
+	//! Callback to split a Stack into two.
+        virtual bool stackSplit(Stack* s) =0;
+
+        /** 
+	 * Called to merge two stacks into one.
+	 *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to merge stacks.
+	 *
+	 * This callback must result in an Action_Join element being 
+	 * added to the player's Action list (Player::d_actions).
+         *
+         * @param receiver     The receiving stack.
+         * @param joining      The joining stack, destroyed after the join.
+         * @param grouped      Whether the armies of the other stacks are 
+	 *                     selected automatically or not.
+	 *
+         * @return False if an error occured, else true.
+         */
+	//! Callback to merge two stacks into one.
+        virtual bool stackJoin(Stack* receiver, Stack* joining, bool grouped)=0;
+
+	/**
+	 * Called to change the position of a Stack on the map.
+	 * The new position is dictated by the last point of the Path of the 
+	 * Stack.  This method can trigger many other actions.
+	 *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to move stacks on the map.
+	 *
+	 * This callback must result in an Action_Move element being 
+	 * added to the player's Action list (Player::d_actions).
+	 *
+	 * @param s             The stack to be moved.
+	 *
+         * @return False if an error occured, else true.
+	 */
+        //! Callback to move a stack on the map.
+        virtual bool stackMove(Stack* s) =0;
+
+        /** 
+	 * Called to move a Stack to a specified position.
+         *
+         * The Path is calculated on the fly unless follow is set to true. 
+	 * In this case, an existing path is checked and iterated over.  
+	 * This is useful if a stack didn't reach its target within one 
+	 * round and should continue the movement.
+         *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to move stacks on the map.
+	 *
+	 * This callback must result in an Action_Move element being 
+	 * added to the player's Action list (Player::d_actions).
+	 *
+         * @param s                The stack to be moved.
+         * @param dest             The destination of the move.
+         * @param follow           If set to false, calculate the path.
+	 *
+         * @return False on error, true otherwise.
+         */
+        //! Callback to move a stack on the map.
+        virtual MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow)=0;
+
+        /** 
+	 * Called to adjudicate a fight between two lists of stacks.
+         * 
+         * Note that all stacks next to the defending stack also take part in
+         * the fight, if they belong either to the attacker's side or to the
+         * defender.  If the attacker or the defender die in the course of 
+	 * events, the pointers are set to 0.
+         *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to adjudicate fights between stacks.
+	 *
+	 * This callback must result in an Action_Fight element being 
+	 * added to the player's Action list (Player::d_actions).
+	 *
+         * @param attacker         The list of attacking stacks.
+         * @param defender         The list of defending stacks.
+         * @param ruin             True if the fight is caused by searching 
+	 *                         a ruin.
+	 *
+         * @return One of Fight::ATTACKER_WON, Fight::DEFENDER_WON, or
+	 *         Fight::DRAW (Fight::Result).
+         */
+	//! Callback to adjudicate fights.
+        virtual Fight::Result stackFight(Stack** attacker, Stack** defender, 
+                                         bool ruin) =0;
+        /** 
+	 * Called to adjudicate a fight between two lists of stacks in a ruin.
+         *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to adjudicate fights between stacks in
+	 * ruins.
+	 *
+         * @param attacker         The list of attacking stacks.  This list
+	 *                         consists of a single Stack containing at
+	 *                         least one Hero unit.
+         * @param defender         The list of defending stacks.  This list
+	 *                         consists of a single Army unit in a 
+	 *                         single Stack.
+	 *
+         *  If the defender dies in the fight, the defender pointer is set 
+	 *  to 0.
+	 *  If the Hero loses the battle, only the Hero unit is removed
+	 *  from the attacker's stack.
+	 *
+         * @return One of Fight::ATTACKER_WON, Fight::DEFENDER_WON, or
+	 *         Fight::DRAW (Fight::Result).
+         */
+	//! Callback to adjudicate fights in ruins.
+        virtual Fight::Result stackRuinFight(Stack** attacker, 
+					     Stack** defender) =0;
+
+	/** 
+	 * Callback to decide if we perform treachery on a friendly player.
+	 *
+	 * For human players this method presents a dialog for the user
+	 * to confirm if treachery should happen or not.  For computer
+	 * players this method implements the decision to perform treachery
+	 * or not.
+	 *
+	 * @param stack             My stack considering the treachery.
+	 * @param player            The friendly player.
+	 * @param pos               The place on the map being targetted.
+	 * @param state             The state we end up in if we decide yes.
+	 *
+	 * @return True if we decided to be treacherous.  False otherwise.
+	 */
+	//! Decision callback for if we should perform trechery or not.
+	virtual bool treachery (Stack *stack, Player *player, 
+				Vector <int> pos) =0;
+
+        /** 
+	 * A stack searches a ruin.  The stack must contain a hero.
+	 *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to have stacks search ruins.
+         *
+	 * This callback must result in an Action_Ruin element being 
+	 * added to the player's Action list (Player::d_actions).
+	 *
+         * @param stack            The stack which searches the ruin.
+         * @param ruin             The ruin to be searched.
+	 *
+         * @return reward          A pointer to the received Reward.  Return 
+	 *                         NULL if the keeper could not be defeated.
+         */
+	//! Callback to have a stack visit a ruin.
+        virtual Reward* stackSearchRuin(Stack* stack, Ruin* ruin) =0;
+
+        /** 
+	 * A stack visits a temple and becomes blessed. By blessing, the 
+         * strength of all armies rises by 1.
+         *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to have stacks get blessed at temples.
+         *
+	 * This callback must result in an Action_Temple element being 
+	 * added to the player's Action list (Player::d_actions).
+	 *
+         * @param stack            The stack visiting the temple.
+         * @param temple           The visited temple.
+	 *
+         * @return The number of blessed armies.
+         */
+	//! Callback to have a stack visit a temple.
+        virtual int stackVisitTemple(Stack* stack, Temple* temple) = 0;
+
+        /** 
+	 * A stack visits a temple and a Hero in the Stack receives a Quest 
+	 * from the temple's priests.  If there is more than one hero in the 
+	 * stack, the quest is assigned to the first hero without a quest.
+         *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to have Heroes get new quests at temples.
+         *
+	 * This callback must result in an Action_Quest element being 
+	 * added to the player's Action list (Player::d_actions).
+	 * This callback must result in a History_QuestStarted element being
+	 * added to the player's History list (Player::d_history).
+	 *
+         * @param stack             The visiting stack.
+         * @param temple            The visited temple.
+         * @param except_raze       Don't give out a raze quest because it's
+	 *                          impossible to raze a city in this 
+	 *                          scenario.
+	 *
+         * @return The newly assigned Quest or 0 on error.
+         */
+	//! Callback to have a Hero get a new Quest from a temple.
+        virtual Quest* stackGetQuest(Stack* stack, Temple* temple, 
+				     bool except_raze) = 0;
+        
+        /** 
+	 * Called to ask the military advisor about what would happen 
+	 * if the stack attacked the tile.
+         *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to get advice on a potential fight.
+         *
+         * @param stack    The stack to attack with.
+	 * @param tile     The tile to attack (could be a city, or a stack).
+	 * @param intense_combat  If the intense combat game option is on or 
+	 *                        not.
+	 *
+         * @return The percent chance to win the fight.  The maximum value
+	 *         is 100.0, and the minimum value is 0.0.
+         */
+	//! Callback to calculate the odds of winning a fight.
+        virtual float stackFightAdvise(Stack* stack, Vector<int> tile,
+				       bool intense_combat) =0;
+
+        /** 
+	 * Callback to have the active player occupy a given city.
+	 * The player has defeated a City and now it has been decided
+	 * that the player wishes to occupy this city.  The decision 
+	 * happens in Player::invadeCity. Occupying means that the city 
+	 * becomes owned by the ocuppying player.
+         *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to occupy cities.
+         *
+	 * This callback must result in an Action_Occupy element being 
+	 * added to the player's Action list (Player::d_actions).
+	 *
+         * @param city             The occupied city.
+	 *
+         * @return False on error, true otherwise.
+         */
+	//! Callback to occupy a city.
+        virtual bool cityOccupy(City* city) =0;
+
+        /** 
+	 * Pillage a city (trade in the best army type and get some gold.)
+	 * The player has defeated a City and now it has been decided
+	 * that the player wishes to pillage this city.  The decision to
+	 * pillage happened in Player::invadeCity. Pillaging means that the 
+	 * city becomes owned by the pillaging player, and that the strongest 
+	 * Army unit type that the city can produce is traded-in for an 
+	 * amount of gold pieces.
+         *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to pillage cities.
+         *
+	 * This callback must result in an Action_Pillage element being 
+	 * added to the player's Action list (Player::d_actions).
+	 *
+         * @param city             The city to be pillaged.
+         * @param gold             Returns the amount of gold pillaged.
+	 * @param pillaged_army_type The army type that is cashed in for gold.
+	 *
+         * @return False on error, true otherwise.
+         */
+	//! Callback to pillage a city.
+        virtual bool cityPillage(City* city, int& gold, 
+				 int& pillaged_army_type)=0;
+
+        /**
+	 * Sack a city (trade in all army types except one and get some gold.)
+	 * The player has defeated a City and now it has been decided
+	 * that the player wishes to sack this city.  The decision to sack
+	 * was made in Player::invadeCity.  Sacking entails that the city 
+	 * becomes owned by the sacking player, and that all of the Army 
+	 * units that the city produces are traded-in for gold pieces except 
+	 * for the weakest Army unit.
+         *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to sack cities.
+         *
+	 * This callback must result in an Action_Sack element being 
+	 * added to the player's Action list (Player::d_actions).
+         *
+         * @param city             The city to be sacked .
+         * @param gold             Returns the amount of gold sacked.
+	 * @param sacked_types     Returns the Army types that were cashed-in 
+	 *                         for gold pieces.
+	 *
+         * @return False on error, true otherwise.
+         */
+	//! Callback to sack a city.
+        virtual bool citySack(City* city, int& gold, 
+			      std::list<Uint32> *sacked_types) = 0;
+
+        /** 
+	 * Raze (permanently destroy) a city.
+	 * The player has defeated a City and now it has been decided
+	 * that the player wishes to raze this city.  The decision to raze
+	 * was made in Player::invadeCity.  Razing entails that the city 
+	 * becomes burned, and is owned by nobody.  The city cannot produce
+	 * Army units.  Other players find razing to be diplomatically 
+	 * treacherous.
+         *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to raze cities.
+         *
+	 * This callback must result in an Action_Raze element being 
+	 * added to the player's Action list (Player::d_actions).
+         *
+         * @param city             The city to be razed.
+	 *
+         * @return False on error, true otherwise.
+         */
+	//! Callback to raze a city.
+        virtual bool cityRaze(City* city) =0;
+
+        /** 
+	 * Add another production to a city.  
+	 * The city has a set of Army units available to produce, but the
+	 * Player deems this insufficent.  A new Army unit is purchased
+	 * for an amount of gold pieces, so that the City can produce that
+	 * Army unit.  Each Army unit type that can be produced is
+	 * associated with one of 4 slots.  If the player purchases a new
+	 * Army unit in a slot that already has an Army unit, it is 
+	 * removed permanently.
+         *
+	 * This callback must result in an Action_Buy element being 
+	 * added to the player's Action list (Player::d_actions).
+         *
+         * @param city             The lucky city.
+         * @param slot             The production slot of the city.  The 
+	 *                         minimum value is 0 and the maximum value
+	 *                         is 3.
+         * @param armytype         The index of the army type to add.  This
+	 *                         type relates to the Player's Armyset.
+	 *
+         * @return False on error, true otherwise.
+         */
+	//! Callback to purchase a new Army unit for production within a City.
+        virtual bool cityBuyProduction(City* city, int slot, int armytype) =0;
+
+        /** 
+	 * Change the production of a city.
+	 * The City has a set of Army units that it may produce.  There are
+	 * up to 4 army units available for production in the City, and each
+	 * sits in a slot.  The change of production is indicated by slot 
+	 * number.  If the production is to stop altogether the slot number
+	 * is -1.
+	 * After a slot is selected and enough time passes, a new Army unit
+	 * will arrive in the city that produced it.
+         *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes use this method
+	 * as defined in RealPlayer to change the Army unit being produced
+	 * in their cities.
+         *
+	 * This callback must result in an Action_Production element being 
+	 * added to the player's Action list (Player::d_actions).
+         *
+         * @param city             The affected city.
+         * @param slot             The index of the selected production slot.
+	 *                         The minimum value is -1 which means to 
+	 *                         stop production in the City.  The other
+	 *                         legal values are 0 through 3; one for
+	 *                         each slot in the city.  If a slot does
+	 *                         not contain an Army unit, then that slot
+	 *                         number is an illegal value to this method.
+	 *
+         * @return False on error, true otherwise.
+         */
+	//! Callback to change the Army unit being produced within a City.
+        virtual bool cityChangeProduction(City* city, int slot) =0;
+
+        /** 
+	 * This method gives the player the specified Reward.  There are 
+	 * various possibilities when they player is being given a reward.
+	 * It could be that the player has been given: some gold pieces, a 
+	 * map that makes more of the map visible or information about the 
+	 * location of a new ruin.  It could also be that a stack has been 
+	 * given a number of powerful allies.  It could also be that a stack 
+	 * contains a Hero, and the Reward is an Item for the Hero to carry.
+	 *
+	 * This callback must result in an Action_Reward element being 
+	 * added to the player's Action list (Player::d_actions).
+         *
+         * @param stack            The stack which has caused the reward.
+         * @param reward           A pointer for storing the Reward being 
+	 *                         given to the player.
+	 *
+         * @return False on error, true otherwise.
+         */
+	//! Callback to give a Reward to the Player or the player's Stack.
+        virtual bool giveReward (Stack *stack, Reward *reward) = 0;
+
+	/**
+	 * Disbanding a player's stack removes it from the game.  Disbanding
+	 * stacks saves upkeep for unwanted Army units.
+	 *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes can use this method
+	 * as defined in RealPlayer to disband stacks but they don't use
+	 * it currently.
+         *
+	 * This callback must result in an Action_Disband element being 
+	 * added to the player's Action list (Player::d_actions).
+	 *
+	 * @param stack            The stack to disband.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Callback to disband a player's stack.
+        virtual bool stackDisband(Stack* stack) =0;
+
+	/**
+	 * Callback to drop an item at a particular position on the game map.
+	 * The item is removed from the Hero's backback and placed in a bag
+	 * at place on the map.
+	 * 
+	 * For this method to make sense, the Hero should be in a Stack
+	 * that is co-located with the drop position.  E.g. Heroes should
+	 * drop items here.
+	 *
+	 * This callback must result in an Action_Equip element being 
+	 * added to the player's Action list (Player::d_actions).
+	 *
+	 * @param hero             The Hero that holds the item.
+	 * @param item             The Item to drop onto the ground.
+	 * @param pos              The position of the tile on the game map to 
+	 *                         drop the item onto.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Callback to have a Hero drop an Item.
+        virtual bool heroDropItem(Hero *hero, Item *item, Vector<int> pos) =0;
+
+	/**
+	 * Callback to drop a all items at a particular position on the 
+	 * game map.  All items in the Hero's backback are removed and placed 
+	 * into a bag at place on the map.
+	 *
+	 * For this method to make sense, the Hero should be in a Stack
+	 * that is co-located with the drop position.  E.g. Heroes should
+	 * drop items here.
+	 *
+	 * The AI_Fast, AI_Dummy and AI_Smart classes can use this method
+	 * as defined in RealPlayer to drop all of the hero's items when
+	 * the hero dies.
+	 *
+	 * This callback must result in one or more Action_Equip elements 
+	 * being added to the player's Action list (Player::d_actions).
+	 *
+	 * @param hero             The Hero that holds the items.
+	 * @param pos              The position of the tile on the game map to 
+	 *                         drop the item onto.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Callback to have a Hero drop all items.
+        virtual bool heroDropAllItems(Hero *hero, Vector<int> pos) =0;
+
+	/**
+	 * Callback to pickup an Item at a particular position on the game 
+	 * map.  The item is removed from a tile on the game map, and placed
+	 * into the Hero's backback.
+	 *
+	 * For this method to make sense, the Hero should be in a Stack
+	 * that is co-located with the pickup position.  E.g. Heroes should
+	 * pickup items from the tile they are on.
+	 *
+	 * This callback must result in an Action_Equip element being 
+	 * added to the player's Action list (Player::d_actions).
+	 *
+	 * @param hero             The Hero that holds the item.
+	 * @param item             The Item to pickup off of the ground.
+	 * @param pos              The position of the tile on the game map to 
+	 *                         pickup the item from.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Callback to have a Hero pick up an Item.
+        virtual bool heroPickupItem(Hero *hero, Item *item, Vector<int> pos) =0;
+
+	/**
+	 * Completing a Quest entails that the Hero is going to receive a
+	 * reward, but that happens in Player::giveReward.
+	 * The QuestsManager class handles removal of expired or completed 
+	 * quests.
+	 * This callback doesn't do much except record the event for
+	 * posterity (see HistoryReportDialog).
+	 *
+	 * This callback must result in a History_QuestCompleted element being
+	 * added to the player's History list (Player::d_history).
+	 *
+	 * @param hero             The Hero completing the Quest.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Callback to have a Hero complete a quest.
+        virtual bool heroCompletesQuest(Hero *hero) =0;
+
+	/**
+	 * Callback to have the Player resign.  This entails disbanding
+	 * all of the player's stacks and then razing all of the player's 
+	 * remaining cities.  It also removes all of the gold pieces from 
+	 * the player's treasury.
+	 *
+	 * This callback is called when a human player wants to surrender
+	 * ungracefully.  Computer players do not currently consider
+	 * calling this method to surrender, and they use a different
+	 * mechanism to collectively surrender to a final human player.
+	 *
+	 * This callback must result in a Action_Resign element being
+	 * added to the player's Action list (Player::d_actions).
+	 *
+	 */
+        //! Callback to disband all the player's stacks and raze all cities.
+        virtual void resign() =0;
+
+	/**
+	 * Modifying a signpost entails changing the message on the sign.
+	 * When playing in a hidden map, the hope is that we change the
+	 * message on the sign before an opponent can read it.
+	 *
+	 * For this callback to make sense, you should only change
+	 * Signposts for which we have a Stack co-located.
+	 *
+	 * This callback must result in a Action_ModifySignpost element being
+	 * added to the player's Action list (Player::d_actions).
+	 *
+	 * @param signpost         The signpost to modify.
+	 * @param message          The new text to inscribe onto the sign.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Change the text on a signpost.
+        virtual bool signpostChange(Signpost *signpost, std::string message) =0;
+
+	/**
+	 * Callback to have a Player rename a City.
+	 *
+	 * Only human players currently rename cities; computer players
+	 * do not consider doing so.
+	 *
+	 * This callback must result in a Action_RenameCity element being
+	 * added to the player's Action list (Player::d_actions).
+	 *
+	 * @param city             The city to change the name of.
+	 * @param name             The new name of the city.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Callback to rename a city.
+        virtual bool cityRename(City *city, std::string name) =0;
+
+        /** 
+	 * Callback to initiate vectoring new units from a player's City to 
+	 * a destination point on the game map.
+	 *
+	 * Computer players don't currently consider vectoring units, so
+	 * only human players use this method.
+	 *
+	 * This callback must result in a Action_Vector element being
+	 * added to the player's Action list (Player::d_actions).
+	 *
+         * @param  city   The city to vector from.
+         * @param  dest   The place on the map to vector the produced Army
+	 *                units to.  If the  destination is -1,-1 it means 
+	 *                to stop vectoring altogether.  The destination 
+	 *                point should be co-located with a City or a 
+	 *                planted standard Item.
+	 *
+         * @return False on error, true otherwise.
+         */
+	//! Callback to vector produced units from a city.
+        virtual bool vectorFromCity(City* city, Vector<int> dest) = 0;
+
+        /** 
+	 * Callback to change the vectoring destination for all of the
+	 * player's cities that are vectoring to a particular city.
+	 *
+	 * Computer players don't currently consider vectoring units, so
+	 * only human players use this method.
+	 *
+	 * This callback must result in one or more Action_Vector elements 
+	 * being added to the player's Action list (Player::d_actions).
+	 *
+	 * @param  city   The city being vectored to.
+         * @param  dest   The place on the map to vector to.  The destination 
+	 *                point should be co-located with a City or a 
+	 *                planted standard Item.
+	 *
+         * @return False on error, true otherwise.
+         */
+	//! Callback to make a mass change to vectoring.
+	virtual bool changeVectorDestination(City *city, Vector<int> dest) =0;
+
+        /** 
+	 * Callback to plant the Player's flag Item on the ground.
+	 * Planting a standard entails taking the Item out of the Hero's
+	 * backpack and putting it on the ground so that Army units can
+	 * be vectored to that location.
+	 *
+	 * Computer players don't currently consider vectoring units, so
+	 * only human players use this method.
+	 *
+	 * This callback must result in an Action_Plant element being added
+	 * to the player's Action list (Player::d_actions).
+	 *
+	 * @param  stack  The Stack that contains the Hero who is holding
+	 *                the plantable Item.  Every player has exactly one 
+	 *                plantable Item.  The item is planted at the
+	 *                position of the Stack on the map.
+	 *
+         * @return False on error, true otherwise.
+         */
+        //! Callback to plant a player's standard.
+        virtual bool heroPlantStandard(Stack *stack) =0;
+
+	/**
+	 * @param city   The city being invaded.
+	 */
+	//! Emitted when the player defeats a City.
         sigc::signal<void, City*> sinvadingCity;
 
-	/** Signal raised when a stack is considering an act of treachery.
+	/**
+	 * @param city   The city being occupied.
+	 * @param stack  The stack doing the occupying.
 	 */
-        sigc::signal<bool, Stack *, Player *, Vector<int> > streacheryStack;
-
-	/** Signal raised when a human player is deciding.
-	 */
-        sigc::signal<bool, Stack *, Player *, Vector<int> > streachery;
-
-        //! Signal raised whenever a player has conquered a city. This is the
-        //! signal you should use for further actions.
+	//! Emitted when the player occupies a City.
         sigc::signal<void, City*, Stack*> soccupyingCity;
 
-        
-        //! Signal raised when a hero is recruited.  Human players only.
-        sigc::signal<bool, Hero*, City *, int>         srecruitingHero;
-        //! Signal raised when an army advances a level; may return stat to raise
-        sigc::signal<Army::Stat, Army*>        snewLevelArmy;
-        //! Signal raised when an army gets a new medal
-        sigc::signal<void, Army*>              snewMedalArmy;
-        //! Signal raised when an army dies
-        sigc::signal<void, Army*, std::vector<Uint32> >    sdyingArmy;
-        //! Signal raised when a stack dies
-        sigc::signal<void, Stack*>             sdyingStack;
-        
-        //! Signal raised whenever the player successfully searched a ruin
-        sigc::signal<void, Ruin*, Stack*, Reward*>      ssearchingRuin;
-        //! Signal raised whenever the player visits a temple
-        sigc::signal<void, Temple*, Stack*>    svisitingTemple;
-        //! Signal raised whenever the player moves a stack
-        sigc::signal<void, Stack*>             smovingStack;
-        //! Signal raised whenever the player pillages a city 
-        sigc::signal<void, City*, Stack*, int, std::list<Uint32> >      spillagingCity;
-        //! Signal raised whenever the player sacks a city 
-        sigc::signal<void, City*, Stack*, int, std::list<Uint32> >      ssackingCity;
-        //! Signal raised whenever the player razes a city 
-        sigc::signal<void, City*, Stack*>      srazingCity;
+	/**
+	 * @param hero   The new hero that is emerging.
+	 * @param city   The city in which the hero is emerging.
+	 * @param gold   The amount of gold pieces the hero costs.
+	 *
+	 * @return True if we're accepting a hero, false if not.
+	 */
+        //! Emitted whenever a hero is recruited.
+        sigc::signal<bool, Hero*, City *, int> srecruitingHero;
 
-        //! Signal raised whenever a player's status (e.g. gold) changes
+	/**
+	 * @param army   The army that has gained a level.
+	 *
+	 * @return One of Army::Stat::STRENGTH, Army::Stat::MOVES, or 
+	 *         Army::Stat::SIGHT.
+	 */
+        //! Emitted when an Army advances a level; returns stat to raise.
+        sigc::signal<Army::Stat, Army*> snewLevelArmy;
+
+	/**
+	 * @param army   The army that has gotten a medal.
+	 */
+        //! Emitted whever a player's army gets a new medal.
+        sigc::signal<void, Army*> snewMedalArmy;
+
+	/**
+	 * @param army         The army that has died.
+	 * @param culprit_ids  A std::vector of enemy Army Ids to have 
+	 *                     participated in the death of this player's Army.
+	 */
+        //! Emitted when a player's Army dies.
+        sigc::signal<void, Army*, std::vector<Uint32> > sdyingArmy;
+
+	/**
+	 * @param stack    The stack that has died.
+	 */
+        //! Emitted when a player's Stack dies.
+        sigc::signal<void, Stack*> sdyingStack;
+        
+	/**
+	 * @param ruin    The ruin being searched.
+	 * @param stack   The stack doing the searching (must contain Hero).
+	 * @param reward  The reward received.
+	 */
+        //! Emitted whenever the player successfully searched a ruin.
+        sigc::signal<void, Ruin*, Stack*, Reward*> ssearchingRuin;
+
+	/**
+	 * @param temple  The temple being visited.
+	 * @param stack   The stack that has gotten blessed.
+	 */
+        //! Emitted whenever the player visits a temple.
+        sigc::signal<void, Temple*, Stack*> svisitingTemple;
+
+	/**
+	 * @param stack   The stack that has moved to a new tile on the map.
+	 */
+        //! Emitted whenever the player moves a stack.
+        sigc::signal<void, Stack*> smovingStack;
+
+	/**
+	 * @param city        The city that has been pillaged.
+	 * @param stack       The stack doing the pillaging.
+	 * @param gold        The amount of gold pieces pillaged.
+	 * @param army_types  The list of Army types traded-in for gold pieces.
+	 */
+        //! Emitted whenever the player pillages a city.
+        sigc::signal<void, City*, Stack*, int, std::list<Uint32> > spillagingCity;
+
+	/**
+	 * @param city        The city that has been sacked.
+	 * @param stack       The stack doing the sacked.
+	 * @param gold        The amount of gold pieces sacked.
+	 * @param army_types  The list of Army types traded-in for gold pieces.
+	 */
+        //! Emitted whenever the player sacks a city.
+        sigc::signal<void, City*, Stack*, int, std::list<Uint32> > ssackingCity;
+
+	/**
+	 * @param city        The city that has been razed.
+	 * @param stack       The razing stack.
+	 */
+        //! Emitted whenever the player razes a city.
+        sigc::signal<void, City*, Stack*> srazingCity;
+
+	/**
+	 * Emitted when the player's treasury has been changed.
+	 */
+        //! Emitted whenever a player's status changes.
         sigc::signal<void> schangingStatus;
-        //! Signal raised whenever the stack's staus has changed
+
+	/**
+	 * Emitted when the player's stack moves, is disbanded, gets blessed,
+	 * searches a ruin, or is otherwise altered.
+	 *
+	 * @param stack    The stack that has been altered.
+	 */
+        //! Emitted whenever the stack's status has changed.
         sigc::signal<void, Stack*> supdatingStack;
-        //! Signal raised whenever the status of a city has changed
+
+	/**
+	 * Emitted whenever a city is conquered or razed.
+	 *
+	 * @param city     The city that has been altered.
+	 */
+        //! Emitted whenever the status of a city has changed.
         sigc::signal<void, City*> supdatingCity;
 
-	// emitted when a fight is started, parameters are in the fight object,
-	// so should the results be
+	/**
+	 * @param fight  The details of the upcoming fight.
+	 */
+	//! Emitted when a fight has started against a city or stack.
         sigc::signal<void, Fight &> fight_started;
 
-	//emitted after we attack a city
+	/**
+	 * @param city     The city we attacked.
+	 * @param result   If we won or not.
+	 */
+	//! Emitted after we attack a city.
         sigc::signal<void, City *, Fight::Result> cityfight_finished;
 	
-	// emitted when a fight in a ruin is started
+	/**
+	 * @param attacker The player's attacking stack.
+	 * @param keeper   The keeper of the ruin.
+	 */
+	//! Emitted when a fight in a ruin is started.
         sigc::signal<void, Stack *, Stack *> ruinfight_started;
+
+	/**
+	 * @param result   If we defeated the ruin's keeper or not.
+	 */
+	//! Emitted when a fight in a ruin has finished.
         sigc::signal<void, Fight::Result> ruinfight_finished;
-	// emitted when a player asks for help from a military advisor
+
+	/**
+	 * @param chance   The percent chance that we will prevail in battle.
+	 */
+	//! Emitted when a player asks for help from a military advisor.
         sigc::signal<void, float> advice_asked;
-        enum TriumphType {TALLY_HERO = 0, TALLY_SPECIAL = 1, TALLY_NORMAL = 2, 
-	  TALLY_SHIP = 3, TALLY_FLAG = 4};
-	Uint32 getTriumphTally(Player *p, TriumphType type) const
-	  {return d_triumph[p->getId()][type];}
+
+	//! Signal raised when a stack is considering an act of treachery.
+        sigc::signal<bool, Stack *, Player *, Vector<int> > streacheryStack;
+
+	//! Signal raised when a human player is deciding.
+        sigc::signal<bool, Stack *, Player *, Vector<int> > streachery;
 
     protected:
-        //! Move stack s one step forward on his stored path
+        //! Move stack s one step forward on it's Path.
         virtual bool stackMoveOneStep(Stack* s) = 0;
 
         // DATA

@@ -123,7 +123,7 @@ bool RealPlayer::levelArmy(Army* a)
     a->gainLevel(stat);
 
     Action_Level* item = new Action_Level();
-    item->fillData(a->getId(), stat);
+    item->fillData(a, stat);
     d_actions.push_back(item);
     
     return true;
@@ -1239,7 +1239,7 @@ bool RealPlayer::cityBuyProduction(City* c, int slot, int type)
   withdrawGold(al->getArmy(as, type)->getProductionCost());
 
   Action_Buy* item = new Action_Buy();
-  item->fillData(c, slot, type);
+  item->fillData(c, slot, al->getArmy(as, type));
   d_actions.push_back(item);
 
   return true;
@@ -1455,7 +1455,7 @@ bool RealPlayer::heroPlantStandard(Stack* s)
 		  gm->getTile(s->getPos())->addItem(*i);
 		  hero->removeFromBackpack(*i);
 		  Action_Plant * item = new Action_Plant();
-		  item->fillData(hero->getId(), (*i)->getId());
+		  item->fillData(hero, (*i));
 		  d_actions.push_back(item);
 		  break;
 		}
@@ -1479,7 +1479,7 @@ bool RealPlayer::heroDropItem(Hero *h, Item *i, Vector<int> pos)
   GameMap::getInstance()->getTile(pos)->addItem(i);
   h->removeFromBackpack(i);
   Action_Equip* item = new Action_Equip();
-  item->fillData(h->getId(), i->getId(), Action_Equip::BACKPACK);
+  item->fillData(h, i, Action_Equip::BACKPACK);
   d_actions.push_back(item);
   return true;
 }
@@ -1489,7 +1489,7 @@ bool RealPlayer::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
   GameMap::getInstance()->getTile(pos)->removeItem(i);
   h->addToBackpack(i, 0);
   Action_Equip* item = new Action_Equip();
-  item->fillData(h->getId(), i->getId(), Action_Equip::GROUND);
+  item->fillData(h, i, Action_Equip::GROUND);
   d_actions.push_back(item);
   return true;
 }

@@ -25,38 +25,46 @@
 class XML_Helper;
 
 
-/** Simple AI
-  *
-  * This AI has two modes. In normal modes it basically assembles stacks of
-  * 8 units each and sends them to the next city, reinforcing them in own cities
-  * if neccessary. In maniac mode, however (meant for wandering monsters etc.),
-  * this AI will attack everything that is close up or take the nearest city if
-  * no enemies are close. When it takes over an enemy city, it razes it.
-  * 
-  * See the Player class for the derivation scheme
-  */
+/** 
+ * Simple AI
+ *
+ * This AI has two modes. In normal modes it basically assembles stacks of
+ * 8 units each and sends them to the next city, reinforcing them in own cities
+ * if neccessary. In maniac mode, however (meant for wandering monsters etc.),
+ * this AI will attack everything that is close up or take the nearest city if
+ * no enemies are close. When it takes over an enemy city, it razes it.
+ * 
+ */
 
 class AI_Fast : public RealPlayer
 {
     public:
-        /** Default constructor
-          * 
-          * @param name         the name of the player
-          * @param armyset      the armyset of the player
-          * @param color        the player's color
-          */
-        AI_Fast(std::string name, Uint32 armyset, SDL_Color color, int width, int height, int player_no = -1);
+        /** 
+	 * Make a new AI_Fast player.
+         * 
+         * @param name         The name of the player.
+         * @param armyset      The Id of the player's Armyset.
+         * @param color        The player's colour.
+	 * @param width        The width of the player's FogMap.
+	 * @param height       The height of the player's FogMap.
+	 * @param player_no    The Id of the player.  If this value is -1,
+	 *                     the next free Id it used.
+         */
+	//! Default constructor.
+        AI_Fast(std::string name, Uint32 armyset, SDL_Color color, 
+		int width, int height, int player_no = -1);
 
-        //! Copy constructor
+        //! Copy constructor.
         AI_Fast(const Player&);
 
         //! Loading constructor. See XML_Helper for an explanation.
         AI_Fast(XML_Helper* helper);
+
+	//! Destructor.
         ~AI_Fast();
         
-        //! Saves data, the function is for saving additional data
+        //! Saves data, the method is for saving additional data.
         bool save(XML_Helper* helper) const;
-        
 
         //! Sets whether the ai joins close armies to make them stronger
         void setJoin(bool join) {d_join = join;}
@@ -71,30 +79,23 @@ class AI_Fast : public RealPlayer
         bool getManiac() const {return d_maniac;}
 
         
-        /** This function is called whenever the player's turn starts. As soon
-          * as it returns, the player's turn ends.
-          */
-        bool startTurn();
+        virtual bool startTurn();
+        virtual bool invadeCity(City* c);
+        virtual bool recruitHero(Hero* hero, City *city, int cost);
+        virtual bool levelArmy(Army* a);
+	virtual bool treachery (Stack *stack, Player *player, Vector <int> pos, 
+				DiplomaticState state);
 
-        //! Callback when the player invades a city
-        bool invadeCity(City* c);
-
-        //! Callback when a hero offers his services
-        bool recruitHero(Hero* hero, City *city, int cost);
-
-        //! Callback when an army of the player advances a level
-        bool levelArmy(Army* a);
-
-	//! Callback when we decide to perform treachery on another player
-	bool treachery (Stack *stack, Player *player, Vector <int> pos, DiplomaticState state);
     private:
         //! The actual core function of the ai's logic.
         void computerTurn(); 
 
+	//! Determines whether to join units or move them separately.
+        bool d_join;
 
-        // Data
-        bool d_join;        //!< determines whether to join units or move them separately
-        bool d_maniac;      //!< maniac mode: kill and raze everything you encounter
+	//! Maniac mode: kill and raze everything you encounter.
+        bool d_maniac;
+
         AI_Analysis* d_analysis;
         AI_Diplomacy* d_diplomacy;
 };
