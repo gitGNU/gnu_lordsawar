@@ -70,7 +70,7 @@ QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, Uint32 hero)
     : Quest(q_mgr, hero, Quest::KILLARMYTYPE)
 {
     // have us be informed when hostilities break out
-    Player *p = getHero()->getPlayer();
+    Player *p = getHero()->getOwner();
     
     // pick a victim
     d_type_to_kill = getVictimArmytype (p, d_targets);
@@ -142,7 +142,7 @@ void QuestEnemyArmytype::initDescription()
 bool QuestEnemyArmytype::isFeasible(Uint32 heroId)
 {
   std::list< Vector<int> >targets;
-  int type = getVictimArmytype(getHeroById(heroId)->getPlayer(), targets);
+  int type = getVictimArmytype(getHeroById(heroId)->getOwner(), targets);
   if (type >= 0)
     return true;
   return false;

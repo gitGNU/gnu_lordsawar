@@ -43,11 +43,6 @@ Stack* Stacklist::getObjectAt(int x, int y)
 
 }
 
-Stack* Stacklist::getObjectAt(Vector<int> point)
-{
-    return getObjectAt(point.x, point.y);
-}
-
 Vector<int> Stacklist::getPosition(Uint32 id)
 {
     for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
@@ -121,12 +116,12 @@ vector<Stack*> Stacklist::defendersInCity(City *city)
     vector<Stack*> stackvector;
     Vector<int> pos = city->getPos();
 
-    for (int i = pos.x; i < pos.x + 2; i++)
+    for (unsigned int i = pos.x; i < pos.x + city->getSize(); i++)
     {
-        for (int j = pos.y; j < pos.y + 2; j++)
+        for (unsigned int j = pos.y; j < pos.y + city->getSize(); j++)
         {
 	    Stack *stack;
-	    stack = city->getPlayer()->getStacklist()->getOwnObjectAt(i, j);
+	    stack = city->getOwner()->getStacklist()->getOwnObjectAt(i, j);
             if (stack)
             {
 	      stackvector.push_back(stack);
@@ -203,7 +198,7 @@ Stack* Stacklist::getNextMovable()
     for (; it != end(); ++it)
     {
 	Stack *s = *it;
-        if (s->getPlayer() == player && !s->getDefending() && 
+        if (s->getOwner() == player && !s->getDefending() && 
 	    !s->getParked() && s->canMove())
 	    return s;
     }
@@ -217,7 +212,7 @@ Stack* Stacklist::getNextMovable()
     for (it = begin(); *it != d_activestack; ++it)
     {
 	Stack *s = *it;
-        if (s->getPlayer() == player && !s->getDefending() &&
+        if (s->getOwner() == player && !s->getDefending() &&
 	    !s->getParked() && s->canMove())
 	    return s;
     }

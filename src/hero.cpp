@@ -32,7 +32,7 @@ Hero::Hero(const Army& a, std::string name, Player *owner)
 }
 
 Hero::Hero(Hero& h)
-    :Army(h, h.d_player)
+    :Army(h, h.d_owner)
 {
     std::list<Item*>::iterator it;
 

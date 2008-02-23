@@ -140,7 +140,7 @@ Quest* QuestsManager::createNewQuest(Uint32 heroId, bool razing_possible)
 void QuestsManager::questCompleted(Uint32 heroId)
 {
     Quest *quest = d_quests[heroId];
-    Player *p = quest->getHero()->getPlayer();
+    Player *p = quest->getHero()->getOwner();
 
     p->heroCompletesQuest(quest->getHero());
 

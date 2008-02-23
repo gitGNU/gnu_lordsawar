@@ -390,7 +390,7 @@ void OverviewMap::draw_cities (bool all_razed)
       if (it->isBurnt() == true || all_razed == true)
         tmp = gc->getSmallRuinedCityPic();
       else
-        tmp = gc->getShieldPic(0, it->getPlayer());
+        tmp = gc->getShieldPic(0, it->getOwner());
   
       Vector<int> pos = it->getPos();
       pos = mapToSurface(pos);

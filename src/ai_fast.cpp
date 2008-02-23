@@ -274,7 +274,7 @@ void AI_Fast::computerTurn()
 
 		if (target == target2)
 		  {
-		    d_diplomacy->needNewEnemy(target->getPlayer());
+		    d_diplomacy->needNewEnemy(target->getOwner());
 		    // try to wait a turn until we're at war
 		    if (target1)
 		      target = target1;

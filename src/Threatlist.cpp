@@ -119,7 +119,7 @@ void Threatlist::addStack(Stack *stack)
     for (iterator it = begin(); it != end(); it++)
     {
         Threat *threat = *it;
-        if (threat->Near(stack->getPos(), stack->getPlayer()))
+        if (threat->Near(stack->getPos(), stack->getOwner()))
         {
             threat->addStack(stack);
             return;

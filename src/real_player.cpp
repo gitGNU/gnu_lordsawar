@@ -240,7 +240,7 @@ bool RealPlayer::stackDisband(Stack* s)
     item->fillData(s);
     d_actions.push_back(item);
     sdyingStack.emit(s);
-    s->getPlayer()->getStacklist()->deleteStack(s);
+    s->getOwner()->getStacklist()->deleteStack(s);
     return true;
 }
 
@@ -300,11 +300,11 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
         Stack* target = Stacklist::getObjectAt(pos);
 
         //first fight_city to avoid ambiguity with fight_army
-        if (city && (city->getPlayer() != this) && (!city->isBurnt()))
+        if (city && (city->getOwner() != this) && (!city->isBurnt()))
         {
-	    if (this->getDiplomaticState (city->getPlayer()) != AT_WAR)
+	    if (this->getDiplomaticState (city->getOwner()) != AT_WAR)
 	      {
-		if (streacheryStack.emit (s, city->getPlayer(), 
+		if (streacheryStack.emit (s, city->getOwner(), 
 					  city->getPos()) == false)
 		  {
 		    s->getPath()->flClear();
@@ -323,7 +323,7 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
                 // Create a dummy stack at the target position if neccessary
                 // and start a fight with this dummy stack.
                 if (!target)
-                    target = new Stack(city->getPlayer(), pos);
+                    target = new Stack(city->getOwner(), pos);
  
                 result = stackFight(&s, &target, false);
                 if (target && target->empty())
@@ -361,7 +361,7 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
         }
         
         //another friendly stack => join it
-        else if (target && target->getPlayer() == this)
+        else if (target && target->getOwner() == this)
         {
             if (stackMoveOneStep(s))
                 stepCount++;
@@ -379,9 +379,9 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
         //enemy stack => fight
         else if (target)
         {
-	  if (this->getDiplomaticState (target->getPlayer()) == AT_PEACE)
+	  if (this->getDiplomaticState (target->getOwner()) == AT_PEACE)
 	    {
-	      if (streacheryStack.emit (s, target->getPlayer(), 
+	      if (streacheryStack.emit (s, target->getOwner(), 
 					target->getPos()) == false)
 		{
 		  s->getPath()->flClear();
@@ -422,7 +422,7 @@ MoveResult *RealPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
       /* if we can't attack a city, don't remember it in the stack's path. */
         Vector<int> pos = **(s->getPath()->begin());
         City* city = Citylist::getInstance()->getObjectAt(pos);
-	if (city && city->getPlayer() != this)
+	if (city && city->getOwner() != this)
 	  s->getPath()->flClear();
     }
 
@@ -582,7 +582,7 @@ Fight::Result RealPlayer::stackFight(Stack** attacker, Stack** defender, bool ru
       return RealPlayer::stackRuinFight (attacker, defender);
 
     // save the defender's player for future use
-    Player* pd = (*defender)->getPlayer();
+    Player* pd = (*defender)->getOwner();
 
     // I suppose, this should be always true, but one can never be sure
     bool attacker_active = *attacker == d_stacklist->getActivestack();
@@ -776,7 +776,7 @@ void RealPlayer::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
                   while((*sit)->canGainLevel())
                     {
                       // Units not associated to a player never raise levels.
-                      if ((*sit)->getPlayer() == 
+                      if ((*sit)->getOwner() == 
                           Playerlist::getInstance()->getNeutral())
                         break;
 
@@ -784,7 +784,7 @@ void RealPlayer::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
                       //levels per time depending on the XP and level itself
 
                       debug("ADVANCING LEVEL "<< "CANGAINLEVEL== " << (*sit)->canGainLevel())
-                      (*sit)->getPlayer()->levelArmy(*sit);
+                      (*sit)->getOwner()->levelArmy(*sit);
                     }
                   debug("Army new XP=" << (*sit)->getXP())
                 }
@@ -808,7 +808,7 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
     Player *owner = NULL;
     if (stacks.empty() == 0)
     {
-        owner = (*stacks.begin())->getPlayer();
+        owner = (*stacks.begin())->getOwner();
         debug("Owner = " << owner);
         if (owner)
             debug("Owner of the stacks: " << owner->getName()
@@ -828,23 +828,23 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
             {
 		//Tally up the triumphs
 		if ((*sit)->getAwardable()) //hey a special died
-		  tallyTriumph((*sit)->getPlayer(), TALLY_SPECIAL);
+		  tallyTriumph((*sit)->getOwner(), TALLY_SPECIAL);
 		else if ((*sit)->isHero() == false)
-		  tallyTriumph((*sit)->getPlayer(), TALLY_NORMAL);
+		  tallyTriumph((*sit)->getOwner(), TALLY_NORMAL);
 		if ((*sit)->getStat(Army::SHIP, false)) //hey it was on a boat
-		  tallyTriumph((*sit)->getPlayer(), TALLY_SHIP);
+		  tallyTriumph((*sit)->getOwner(), TALLY_SHIP);
                 debug("Army: " << (*sit)->getName())
                 debug("Army: " << (*sit)->getXpReward())
                 if ((*sit)->isHero())
                 {
-		  tallyTriumph((*sit)->getPlayer(), TALLY_HERO);
+		  tallyTriumph((*sit)->getOwner(), TALLY_HERO);
 		  Hero *hero = dynamic_cast<Hero*>((*sit));
 		  std::list<Item*> backpack = hero->getBackpack();
 		  for (std::list<Item*>::iterator i = backpack.begin(), 
 		       end = backpack.end(); i != end; ++i)
 		    {
 		      if ((*i)->isPlantable())
-			tallyTriumph((*sit)->getPlayer(), TALLY_FLAG);
+			tallyTriumph((*sit)->getOwner(), TALLY_FLAG);
 		    }
                     //one of our heroes died
                     //drop hero's stuff
@@ -857,7 +857,7 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
                         History_HeroKilledSearching* item;
                         item = new History_HeroKilledSearching();
                         item->fillData(h);
-                        h->getPlayer()->getHistorylist()->push_back(item);
+                        h->getOwner()->getHistorylist()->push_back(item);
                         heroDropAllItems (h, (*it)->getPos());
                     }
                     else if (tile->getBuilding() == Maptile::CITY)
@@ -867,7 +867,7 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
                         History_HeroKilledInCity* item;
                         item = new History_HeroKilledInCity();
                         item->fillData(h, c);
-                        h->getPlayer()->getHistorylist()->push_back(item);
+                        h->getOwner()->getHistorylist()->push_back(item);
                         heroDropAllItems (h, (*it)->getPos());
                     }
                     else //somewhere else
@@ -875,7 +875,7 @@ double RealPlayer::removeDeadArmies(std::list<Stack*>& stacks,
                         History_HeroKilledInBattle* item;
                         item = new History_HeroKilledInBattle();
                         item->fillData(h);
-                        h->getPlayer()->getHistorylist()->push_back(item);
+                        h->getOwner()->getHistorylist()->push_back(item);
                         heroDropAllItems (h, (*it)->getPos());
                     }
                 }
@@ -1217,7 +1217,7 @@ bool RealPlayer::cityBuyProduction(City* c, int slot, int type)
   Uint32 as;
   const Armysetlist* al = Armysetlist::getInstance();
 
-  as = c->getPlayer()->getArmyset();
+  as = c->getOwner()->getArmyset();
 
   // sort out unusual values (-1 is allowed and means "scrap production")
   if ((type < -1) || (type >= (int)al->getSize(as)))
@@ -1269,7 +1269,7 @@ bool RealPlayer::giveReward(Stack *s, Reward *reward)
 	  {
 	    const Army *a = dynamic_cast<Reward_Allies*>(reward)->getArmy();
 
-	    Reward_Allies::addAllies(s->getPlayer(), s->getPos(), a,
+	    Reward_Allies::addAllies(s->getOwner(), s->getPos(), a,
 				     dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies());
     
 	  }
@@ -1414,7 +1414,7 @@ void RealPlayer::resign()
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
-      if ((*it).getPlayer() == this)
+      if ((*it).getOwner() == this)
 	{
 	  (*it).setBurnt(true);
 	  History_CityRazed* history = new History_CityRazed();
@@ -1541,7 +1541,7 @@ float RealPlayer::stackFightAdvise(Stack* s, Vector<int> tile,
   Stack* target = Stacklist::getObjectAt(tile);
                 
   if (!target && city)
-    target = new Stack(city->getPlayer(), tile);
+    target = new Stack(city->getOwner(), tile);
 
   //what chance is there that stack will defeat defenders?
     

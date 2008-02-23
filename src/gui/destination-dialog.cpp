@@ -188,7 +188,7 @@ void DestinationDialog::fill_in_vectoring_info()
   VectoredUnitlist *vul = VectoredUnitlist::getInstance();
   dialog->set_title(city->getName());
 
-  Player *player = city->getPlayer();
+  Player *player = city->getOwner();
   unsigned int as = player->getArmyset();
   Glib::RefPtr<Gdk::Pixbuf> pic;
   GraphicsCache *gc = GraphicsCache::getInstance();

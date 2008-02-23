@@ -690,9 +690,9 @@ SDL_Surface* GraphicsCache::getCityPic(const City* city)
     if (!city)
         return 0;
     if (city->isBurnt())
-      return d_razedpic[city->getPlayer()->getId()];
+      return d_razedpic[city->getOwner()->getId()];
     else
-      return d_citypic[city->getPlayer()->getId()];
+      return d_citypic[city->getOwner()->getId()];
 }
 
 SDL_Surface* GraphicsCache::getCityPic(int type, const Player* p)
@@ -713,7 +713,7 @@ SDL_Surface* GraphicsCache::getTowerPic(const Player* p)
 
 SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
 {
-    debug("GraphicsCache::getFlagPic " <<s->getId() <<", player" <<s->getPlayer()->getName())
+    debug("GraphicsCache::getFlagPic " <<s->getId() <<", player" <<s->getOwner()->getName())
 
     if (!s)
     {
@@ -727,7 +727,7 @@ SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
     for (it = d_flaglist.begin(); it != d_flaglist.end(); it++)
     {
         myitem = *it;
-        if (myitem->size == s->size() - 1 && myitem->player == s->getPlayer())
+        if (myitem->size == s->size() - 1 && myitem->player == s->getOwner())
         {
             // put the item in last place (last touched)
             d_flaglist.erase(it);
@@ -738,7 +738,7 @@ SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
     }
 
     // no item found => create a new one
-    myitem = addFlagPic(s->size(), s->getPlayer());
+    myitem = addFlagPic(s->size(), s->getOwner());
 
     return myitem->surface;
 }
@@ -746,7 +746,7 @@ SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
 SDL_Surface* GraphicsCache::getSelectorPic(Uint32 type, Uint32 frame, 
 					   const Player *p)
 {
-    debug("GraphicsCache::getSelectorPic " <<type <<", " << frame << ", player" <<s->getPlayer()->getName())
+    debug("GraphicsCache::getSelectorPic " <<type <<", " << frame << ", player" <<s->getOwner()->getName())
 
     if (!p)
     {

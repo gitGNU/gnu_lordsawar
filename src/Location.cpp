@@ -43,7 +43,7 @@ Location::~Location()
 
 Stack *Location::addArmy(Army *a) const
 {
-    Stack* stack = getFreeStack(a->getPlayer());
+    Stack* stack = getFreeStack(a->getOwner());
 
     // No stack found in the entire location
     if (!stack)
@@ -78,7 +78,6 @@ Stack* Location::getFreeStack(Player *p) const
 
 bool Location::isFogged()
 {
-  FogMap *fogmap = Playerlist::getActiveplayer()->getFogMap();
   for (unsigned int i = 0; i < d_size; i++)
     for (unsigned int j = 0; j < d_size; j++)
       {

@@ -36,7 +36,7 @@ QuestKillHero::QuestKillHero(QuestsManager& mgr, Uint32 hero)
     assert(hunted);         // should never fail, since isFeasible is checked
 
     d_victim = hunted->getId();
-    d_targets.push_back(hunted->getPlayer()->getStacklist()->getPosition(d_victim));
+    d_targets.push_back(hunted->getOwner()->getStacklist()->getPosition(d_victim));
     initDescription();
 }
 //=======================================================================
@@ -49,7 +49,7 @@ QuestKillHero::QuestKillHero(QuestsManager& q_mgr, XML_Helper* helper)
     // double and triple check :)
     Hero *hero = Quest::getHeroById(d_victim);
     assert(hero);
-    d_targets.push_back(hero->getPlayer()->getStacklist()->getPosition(d_victim));
+    d_targets.push_back(hero->getOwner()->getStacklist()->getPosition(d_victim));
 
     initDescription();
 }
@@ -110,7 +110,7 @@ void QuestKillHero::initDescription()
     Hero* v = Quest::getHeroById(d_victim);
     
     snprintf(buffer, 100, _("Kill the hero named %s, servant of player %s"),
-            v->getName().c_str(), v->getPlayer()->getName().c_str());
+            v->getName().c_str(), v->getOwner()->getName().c_str());
     
     d_description = std::string(buffer);
 }

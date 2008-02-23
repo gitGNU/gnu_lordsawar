@@ -231,7 +231,7 @@ void RuinDialog::on_clear_keeper_clicked()
 
 void RuinDialog::on_keeper_clicked()
 {
-    SelectArmyDialog d(keeper->getPlayer(), true);
+    SelectArmyDialog d(keeper->getOwner(), true);
     d.set_parent_window(*dialog.get());
     d.run();
 
@@ -294,7 +294,7 @@ void RuinDialog::on_reward_list_clicked()
 
 void RuinDialog::on_reward_clicked()
 {
-  RewardDialog d(keeper->getPlayer(), false, NULL);
+  RewardDialog d(keeper->getOwner(), false, NULL);
   d.run();
   if (d.get_reward())
     {

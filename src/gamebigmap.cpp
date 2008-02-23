@@ -160,7 +160,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    {
 	      //restrict going into enemy cities unless they're only
 	      //one square away
-	      if (c->getPlayer() != Playerlist::getActiveplayer())
+	      if (c->getOwner() != Playerlist::getActiveplayer())
 		{
 		  int delta = abs(tile.x - stack->getPos().x);
 		  if (delta <= 1)
@@ -255,7 +255,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 			city_queried (c, false);
 		      else
 			{
-			  if (c->getPlayer() == Playerlist::getActiveplayer())
+			  if (c->getOwner() == Playerlist::getActiveplayer())
 			    city_queried (c, false);
 			}
 		    }
@@ -311,7 +311,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		  stack_queried.emit(st);
 		  mouse_state = SHOWING_STACK;
 		}
-	      else if (st->getPlayer() == Playerlist::getActiveplayer() && 
+	      else if (st->getOwner() == Playerlist::getActiveplayer() && 
 		       d_see_opponents_stacks == false)
 		{
 		  stack_queried.emit(st);
@@ -374,7 +374,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	  City *c = Citylist::getInstance()->getObjectAt(tile);
 	  if (c)
 	    {
-	      if (c->getPlayer() == Playerlist::getActiveplayer())
+	      if (c->getOwner() == Playerlist::getActiveplayer())
 		d_cursor = GraphicsCache::FEET;
 	      else if (c->isBurnt() == true)
 		d_cursor = GraphicsCache::FEET;
@@ -389,8 +389,8 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 			d_cursor = GraphicsCache::QUESTION;
 		      else
 			{
-			  Player *me = stack->getPlayer();
-			  Player *them = c->getPlayer();
+			  Player *me = stack->getOwner();
+			  Player *them = c->getOwner();
 			  bool friendly = (me->getDiplomaticState(them) == 
 					   Player::AT_PEACE);
 			  if (friendly)
@@ -433,7 +433,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 		}
 	      else
 		{
-		  if (st->getPlayer() != Playerlist::getActiveplayer())
+		  if (st->getOwner() != Playerlist::getActiveplayer())
 		    {
 		      int delta = abs(stack->getPos().x - st->getPos().x);
 		      if (delta <= 1)
@@ -444,8 +444,8 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 		    	    d_cursor = GraphicsCache::QUESTION;
 			  else
 			    {
-			      Player *me = stack->getPlayer();
-			      Player *them = st->getPlayer();
+			      Player *me = stack->getOwner();
+			      Player *them = st->getOwner();
 			      bool friendly = (me->getDiplomaticState(them) == 
 					       Player::AT_PEACE);
 			      if (friendly)
@@ -488,7 +488,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
       st = Playerlist::getActiveplayer()->getStacklist()->getObjectAt(tile);
       if (st)
 	{
-	  if (st->getPlayer() == Playerlist::getActiveplayer())
+	  if (st->getOwner() == Playerlist::getActiveplayer())
 	    d_cursor = GraphicsCache::TARGET;
 	  else
 	    d_cursor = GraphicsCache::HAND;
@@ -501,7 +501,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	      City *c = Citylist::getInstance()->getObjectAt(tile);
 	      if (c->isBurnt() == true)
 		d_cursor = GraphicsCache::HAND;
-	      else if (c->getPlayer() == Playerlist::getActiveplayer())
+	      else if (c->getOwner() == Playerlist::getActiveplayer())
 		d_cursor = GraphicsCache::ROOK;
 	      else if (d_see_opponents_production == true)
 		d_cursor = GraphicsCache::ROOK;
@@ -658,9 +658,9 @@ void GameBigMap::after_draw()
 	  else
 	    {
 	      if (num_selected > 1)
-		tmp = gc->getSelectorPic(0, bigframe, stack->getPlayer());
+		tmp = gc->getSelectorPic(0, bigframe, stack->getOwner());
 	      else
-		tmp = gc->getSelectorPic(1, smallframe, stack->getPlayer());
+		tmp = gc->getSelectorPic(1, smallframe, stack->getOwner());
 	      SDL_BlitSurface(tmp, 0, buffer, &r);
 	    }
 

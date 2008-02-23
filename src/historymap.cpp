@@ -54,7 +54,7 @@ void HistoryMap::drawCities()
       if ((*it).isBurnt() == true)
         tmp = gc->getSmallRuinedCityPic();
       else
-        tmp = gc->getShieldPic(0, (*it).getPlayer());
+        tmp = gc->getShieldPic(0, (*it).getOwner());
   
       Vector<int> pos = (*it).getPos();
       pos = mapToSurface(pos);

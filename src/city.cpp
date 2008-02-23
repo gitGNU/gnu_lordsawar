@@ -35,7 +35,7 @@ using namespace std;
 #define debug(x)
 
 City::City(Vector<int> pos, string name, Uint32 gold)
-    :Location(name, pos, 2), d_player(0), d_numbasic(4),
+    :Ownable((Player *)0), Location(name, pos, 2), d_numbasic(4),
      d_production(-1),
      d_duration(-1), d_gold(gold),
      d_defense_level(1), d_burnt(false), d_vectoring(false),
@@ -56,18 +56,14 @@ City::City(Vector<int> pos, string name, Uint32 gold)
 }
 
 City::City(XML_Helper* helper)
-    :Location(helper, 2), d_numbasic(4)
+    :Ownable(helper), Location(helper, 2), d_numbasic(4)
 {
   //note: the armies get loaded in citylist
 
     //initialize the city
-    Uint32 ui;
 
     for (int i = 0; i < 4; i++)
       d_basicprod[i] = NULL;
-
-    helper->getData(ui, "owner");
-    d_player = Playerlist::getInstance()->getPlayer(ui);
 
     helper->getData(d_defense_level, "defense");
     
@@ -78,6 +74,7 @@ City::City(XML_Helper* helper)
     helper->getData(d_capital, "capital");
     if (d_capital)
       {
+	Uint32 ui;
         helper->getData(ui, "capital_owner");
         d_capital_owner = Playerlist::getInstance()->getPlayer(ui);
       }
@@ -105,7 +102,7 @@ City::City(XML_Helper* helper)
 }
 
 City::City(const City& c)
-    :Location(c), d_player(c.d_player), d_numbasic(c.d_numbasic),
+    :Ownable(c), Location(c), d_numbasic(c.d_numbasic),
     d_production(c.d_production), d_duration(c.d_duration), d_gold(c.d_gold), 
     d_defense_level(c.d_defense_level), d_burnt(c.d_burnt),
     d_vectoring(c.d_vectoring),d_vector(c.d_vector), d_capital(c.d_capital), 
@@ -140,7 +137,7 @@ bool City::save(XML_Helper* helper) const
     retval &= helper->saveData("name", d_name);
     retval &= helper->saveData("x", d_pos.x);
     retval &= helper->saveData("y", d_pos.y);
-    retval &= helper->saveData("owner", d_player->getId());
+    retval &= helper->saveData("owner", d_owner->getId());
     retval &= helper->saveData("defense", d_defense_level);
     retval &= helper->saveData("production", d_production);
     retval &= helper->saveData("duration", d_duration);
@@ -272,7 +269,7 @@ bool City::addBasicProd(int index, Army *army)
     if (index >= d_numbasic)
         return false;
 
-    army->setPlayer(this->getPlayer());
+    army->setOwner(d_owner);
 
     if (index < 0)
     {
@@ -317,13 +314,13 @@ void City::removeBasicProd(int index)
 void City::conquer(Player* newowner)
 {
   Citylist::getInstance()->stopVectoringTo(this);
-    d_player = newowner;
+  setOwner(newowner);
 
     // remove vectoring info 
     setVectoring(Vector<int>(-1,-1));
 
     for (int j = 0; j < getNoOfBasicProd(); j++)
-      d_basicprod[j]->setPlayer(newowner);
+      d_basicprod[j]->setOwner(newowner);
 
     deFog(newowner);
 
@@ -389,7 +386,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
     removeBasicProd(i);
 
   const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 set = getPlayer()->getArmyset();
+  Uint32 set = d_owner->getArmyset();
 
   int army_type;
   int num = rand() % 10;
@@ -477,7 +474,7 @@ void City::produceStrongestArmy()
 {
   debug("produceStrongestArmy()");
 
-  Stack* stack = getFreeStack(d_player);
+  Stack* stack = getFreeStack(d_owner);
   if (stack)
     {
       unsigned int max_strength = 0;
@@ -506,9 +503,9 @@ void City::produceStrongestArmy()
 void City::produceScout()
 {
   const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 set = getPlayer()->getArmyset();
+  Uint32 set = d_owner->getArmyset();
   Army *scout = al->getArmy(set, 0);
-  Army *a = new Army(*scout, d_player);
+  Army *a = new Army(*scout, d_owner);
   GameMap::getInstance()->addArmy(this, a);
 
 }
@@ -517,7 +514,7 @@ void City::produceWeakestArmy()
 {
   debug("produceWeakestArmy()");
 
-  Stack* stack = getFreeStack(d_player);
+  Stack* stack = getFreeStack(d_owner);
   if (stack)
     {
       unsigned int min_strength = 100;
@@ -551,7 +548,7 @@ void City::nextTurn()
   // check if an army should be produced
   if (d_production >= 0 && --d_duration == 0) 
     {
-      if (d_player->getGold() <= 0)
+      if (d_owner->getGold() <= 0)
 	{
 	  //dont make or vector the unit
 	  //and also stop production
@@ -569,7 +566,7 @@ void City::nextTurn()
 	  VectoredUnitlist *vul = VectoredUnitlist::getInstance();
 	  VectoredUnit *v = new VectoredUnit(d_pos, d_vector, 
 					     new Army(*(d_basicprod[d_production])),
-					     MAX_TURNS_FOR_VECTORING, getPlayer());
+					     MAX_TURNS_FOR_VECTORING, d_owner);
 	  vul->push_back(v);
 	  setProduction(d_production);
 	  item->fillData(getArmy(d_production), this, true);
@@ -581,7 +578,7 @@ void City::nextTurn()
 	}
       //FIXME: a cookie goes to the person who can figure out how
       //to get this action into the realplayer class.
-      getPlayer()->getActionlist()->push_back(item);
+      d_owner->getActionlist()->push_back(item);
     }
 }
 
@@ -617,11 +614,6 @@ const Army* City::getArmy(int slot) const
   if (getArmytype(slot) == -1)
     return 0;
   return d_basicprod[slot];
-}
-
-bool City::isFriend(Player* player) const
-{
-  return (d_player == player);
 }
 
 int City::getGoldNeededForUpgrade() const
@@ -660,19 +652,19 @@ Army *City::produceArmy()
 
   // do not produce an army if the player has no gold.
   // unless it's the neutrals
-  if (d_player != Playerlist::getInstance()->getNeutral() && 
-      d_player->getGold() < 0) 
+  if (d_owner != Playerlist::getInstance()->getNeutral() && 
+      d_owner->getGold() < 0) 
     return NULL;
 
-  Army *a = new Army(*(getArmy(d_production)), d_player);
+  Army *a = new Army(*(getArmy(d_production)), d_owner);
   GameMap::getInstance()->addArmy(this, a);
 
-  if (d_player == Playerlist::getInstance()->getNeutral()) 
+  if (d_owner == Playerlist::getInstance()->getNeutral()) 
     {
       //we're an active neutral city
       //check to see if we've made 5 or not.
       //stop producing if we've made 5 armies in our neutral city
-      Stack *s = d_player->getStacklist()->getObjectAt(d_pos);
+      Stack *s = d_owner->getStacklist()->getObjectAt(d_pos);
       if (!s)
 	setProduction(d_production);
       else if (s->size() < 5)

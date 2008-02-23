@@ -260,7 +260,7 @@
 				<d_active>0</d_active>
 				<stack>
 					<d_id>650</d_id>
-					<d_player>0</d_player>
+					<d_owner>0</d_owner>
 					<d_x>68</d_x>
 					<d_y>57</d_y>
 					<d_defending>false</d_defending>
@@ -312,7 +312,7 @@
 				</stack>
 				<stack>
 					<d_id>869</d_id>
-					<d_player>0</d_player>
+					<d_owner>0</d_owner>
 					<d_x>29</d_x>
 					<d_y>53</d_y>
 					<d_defending>false</d_defending>
@@ -505,7 +505,7 @@
 				<d_active>0</d_active>
 				<stack>
 					<d_id>209</d_id>
-					<d_player>1</d_player>
+					<d_owner>1</d_owner>
 					<d_x>76</d_x>
 					<d_y>91</d_y>
 					<d_defending>false</d_defending>
@@ -538,7 +538,7 @@
 				</stack>
 				<stack>
 					<d_id>829</d_id>
-					<d_player>1</d_player>
+					<d_owner>1</d_owner>
 					<d_x>86</d_x>
 					<d_y>38</d_y>
 					<d_defending>false</d_defending>
@@ -590,7 +590,7 @@
 				</stack>
 				<stack>
 					<d_id>837</d_id>
-					<d_player>1</d_player>
+					<d_owner>1</d_owner>
 					<d_x>73</d_x>
 					<d_y>29</d_y>
 					<d_defending>false</d_defending>
@@ -623,7 +623,7 @@
 				</stack>
 				<stack>
 					<d_id>840</d_id>
-					<d_player>1</d_player>
+					<d_owner>1</d_owner>
 					<d_x>75</d_x>
 					<d_y>34</d_y>
 					<d_defending>false</d_defending>
@@ -694,7 +694,7 @@
 				</stack>
 				<stack>
 					<d_id>832</d_id>
-					<d_player>1</d_player>
+					<d_owner>1</d_owner>
 					<d_x>70</d_x>
 					<d_y>24</d_y>
 					<d_defending>false</d_defending>
@@ -936,7 +936,7 @@
 				<d_active>0</d_active>
 				<stack>
 					<d_id>653</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>69</d_x>
 					<d_y>62</d_y>
 					<d_defending>false</d_defending>
@@ -969,7 +969,7 @@
 				</stack>
 				<stack>
 					<d_id>655</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>80</d_x>
 					<d_y>76</d_y>
 					<d_defending>false</d_defending>
@@ -1002,7 +1002,7 @@
 				</stack>
 				<stack>
 					<d_id>657</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>14</d_x>
 					<d_y>65</d_y>
 					<d_defending>false</d_defending>
@@ -1035,7 +1035,7 @@
 				</stack>
 				<stack>
 					<d_id>659</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>13</d_x>
 					<d_y>57</d_y>
 					<d_defending>false</d_defending>
@@ -1068,7 +1068,7 @@
 				</stack>
 				<stack>
 					<d_id>671</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>50</d_x>
 					<d_y>28</d_y>
 					<d_defending>false</d_defending>
@@ -1101,7 +1101,7 @@
 				</stack>
 				<stack>
 					<d_id>673</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>62</d_x>
 					<d_y>21</d_y>
 					<d_defending>false</d_defending>
@@ -1134,7 +1134,7 @@
 				</stack>
 				<stack>
 					<d_id>669</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>46</d_x>
 					<d_y>20</d_y>
 					<d_defending>false</d_defending>
@@ -1186,7 +1186,7 @@
 				</stack>
 				<stack>
 					<d_id>844</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>76</d_x>
 					<d_y>53</d_y>
 					<d_defending>false</d_defending>
@@ -1238,7 +1238,7 @@
 				</stack>
 				<stack>
 					<d_id>847</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>84</d_x>
 					<d_y>56</d_y>
 					<d_defending>false</d_defending>
@@ -1290,7 +1290,7 @@
 				</stack>
 				<stack>
 					<d_id>851</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>84</d_x>
 					<d_y>52</d_y>
 					<d_defending>false</d_defending>
@@ -1323,7 +1323,7 @@
 				</stack>
 				<stack>
 					<d_id>853</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>90</d_x>
 					<d_y>47</d_y>
 					<d_defending>false</d_defending>
@@ -1356,7 +1356,7 @@
 				</stack>
 				<stack>
 					<d_id>855</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>92</d_x>
 					<d_y>41</d_y>
 					<d_defending>false</d_defending>
@@ -1389,7 +1389,7 @@
 				</stack>
 				<stack>
 					<d_id>858</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>82</d_x>
 					<d_y>39</d_y>
 					<d_defending>false</d_defending>
@@ -1422,7 +1422,7 @@
 				</stack>
 				<stack>
 					<d_id>663</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>25</d_x>
 					<d_y>39</d_y>
 					<d_defending>false</d_defending>
@@ -1493,7 +1493,7 @@
 				</stack>
 				<stack>
 					<d_id>667</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>36</d_x>
 					<d_y>40</d_y>
 					<d_defending>false</d_defending>
@@ -1526,7 +1526,7 @@
 				</stack>
 				<stack>
 					<d_id>665</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>32</d_x>
 					<d_y>46</d_y>
 					<d_defending>false</d_defending>
@@ -1616,7 +1616,7 @@
 				</stack>
 				<stack>
 					<d_id>661</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>4</d_x>
 					<d_y>49</d_y>
 					<d_defending>false</d_defending>
@@ -1649,7 +1649,7 @@
 				</stack>
 				<stack>
 					<d_id>1282</d_id>
-					<d_player>8</d_player>
+					<d_owner>8</d_owner>
 					<d_x>64</d_x>
 					<d_y>46</d_y>
 					<d_defending>false</d_defending>
@@ -3111,7 +3111,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_owner>8</d_owner>
 			<stack>
 				<d_id>217</d_id>
-				<d_player>-1</d_player>
+				<d_owner>-1</d_owner>
 				<d_x>50</d_x>
 				<d_y>24</d_y>
 				<d_defending>false</d_defending>
@@ -3155,7 +3155,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_owner>8</d_owner>
 			<stack>
 				<d_id>227</d_id>
-				<d_player>-1</d_player>
+				<d_owner>-1</d_owner>
 				<d_x>36</d_x>
 				<d_y>59</d_y>
 				<d_defending>false</d_defending>
@@ -3199,7 +3199,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_owner>0</d_owner>
 			<stack>
 				<d_id>229</d_id>
-				<d_player>-1</d_player>
+				<d_owner>-1</d_owner>
 				<d_x>42</d_x>
 				<d_y>82</d_y>
 				<d_defending>false</d_defending>

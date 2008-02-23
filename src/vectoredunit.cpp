@@ -29,30 +29,23 @@
 #include "action.h"
 
 VectoredUnit::VectoredUnit(Vector<int> pos, Vector<int> dest, Army *army, int duration, Player *player)
-    :Location("", pos), d_destination(dest), d_army(army), 
+    :Ownable(player), Location("", pos), d_destination(dest), d_army(army), 
      d_duration(duration)
 {
-  d_player = player;
 }
 
 VectoredUnit::VectoredUnit(const VectoredUnit& v)
-    :Location(v), d_destination(v.d_destination), d_army(v.d_army), 
-     d_duration(v.d_duration), d_player(v.d_player)
+    :Ownable(v), Location(v), d_destination(v.d_destination), d_army(v.d_army), 
+     d_duration(v.d_duration)
 {
 }
 
 VectoredUnit::VectoredUnit(XML_Helper* helper)
-    :Location(helper), d_army(NULL), d_duration(0)
+    :Ownable(helper), Location(helper), d_army(NULL), d_duration(0)
 {
     helper->getData(d_duration, "duration");
     helper->getData(d_destination.x, "dest_x");
     helper->getData(d_destination.y, "dest_y");
-    int i;
-    helper->getData(i, "player");
-    if (i == -1)
-	d_player = 0;
-    else
-	d_player = Playerlist::getInstance()->getPlayer(i);
     //army is loaded via callback in vectoredunitlist
 }
 
@@ -75,10 +68,10 @@ bool VectoredUnit::save(XML_Helper* helper) const
     retval &= helper->saveData("duration", d_duration);
     retval &= helper->saveData("dest_x", d_destination.x);
     retval &= helper->saveData("dest_y", d_destination.y);
-    if (d_player)
-        retval &= helper->saveData("player", d_player->getId());
+    if (d_owner)
+        retval &= helper->saveData("owner", d_owner->getId());
     else
-        retval &= helper->saveData("player", -1);
+        retval &= helper->saveData("owner", -1);
     retval &= d_army->save(helper, Army::PRODUCTION_BASE);
     retval &= helper->closeTag();
 
@@ -90,18 +83,18 @@ bool VectoredUnit::nextTurn()
   d_duration--;
   if (d_duration == 0)
     {
-      if (d_player->getGold() <= 0)
+      if (d_owner->getGold() <= 0)
 	{
 	  //don't bring this army in because we can't afford it
 	  return false;
 	}
 
       Citylist *cl = Citylist::getInstance();
-      Army *a = new Army(*d_army, d_player);
+      Army *a = new Army(*d_army, d_owner);
       //FIXME: this action should be in player somehow
       Action_ProduceVectored *item = new Action_ProduceVectored();
       item->fillData(a->getType(), d_destination);
-      d_player->getActionlist()->push_back(item);
+      d_owner->getActionlist()->push_back(item);
 
       City *dest;
       // drop it in the destination city!
@@ -114,7 +107,7 @@ bool VectoredUnit::nextTurn()
                it != items.end(); it++)
             {
               if ((*it)->getPlanted() == true &&
-                  (*it)->getPlantableOwner() == d_player)
+                  (*it)->getPlantableOwner() == d_owner)
                 {
                   Location loc = Location("planted standard", d_destination, 1);
                   loc.addArmy(a);
@@ -125,7 +118,7 @@ bool VectoredUnit::nextTurn()
         }
       else
         {
-          if (!dest->isBurnt() && dest->getPlayer() == d_player)
+          if (!dest->isBurnt() && dest->getOwner() == d_owner)
             dest->addArmy(a);
         }
       return true;

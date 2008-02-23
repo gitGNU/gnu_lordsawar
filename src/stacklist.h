@@ -26,107 +26,194 @@ class City;
 class Stack;
 class XML_Helper;
 
-/** List of stacks of a single player
-  *
-  * All stacks of a player are contained in his stacklist. There is not really
-  * much to do besides saving and loading, so the stacklist contains a lot of
-  * useful functions. It can check if two stacks can join, return the defenders
-  * of a city etc.
-  */
+/** 
+ * A list of stacks of a single player.
+ *
+ * All stacks owned by a Player are contained in a Stacklist.  This class
+ * covers the loading and saving of stack lists, and also some methods for
+ * getting and managing groups of stacks.
+ */
 
 class Stacklist : public std::list<Stack*>, public sigc::trackable
 {
     public:
+	//! Default constructor.
         Stacklist();
+	//! Copy constructor.
         Stacklist(Stacklist *stacklist);
+	//! Loading constructor.
         Stacklist(XML_Helper* helper);
+	//! Destructor.
         ~Stacklist();
 
-
-        //! Return the stack at position (x,y) or 0 if there is none
+	/**
+	 * Scan through every player's Stacklist, for a stack that is located 
+	 * at the given position on the game map.
+	 *
+	 * @param x   The number of tiles down in the vertical axis from the
+	 *            topmost edge of the map.
+	 * @param y   The number of tiles right in the horizontal axis from
+	 *            the leftmost edge of the map.
+	 *
+	 * @return A pointer to a stack at the given position, or NULL if no
+	 *         Stack could be found.
+	 */
+        //! Return the stack at position (x,y) or 0 if there is none.
         static Stack* getObjectAt(int x, int y);
 
-        //! Return stack at position pos or 0 if there is none
-        static Stack* getObjectAt(Vector<int> point);
+	/**
+	 * Scan through every player's Stacklist, for a stack that is located 
+	 * at the given position on the game map.
+	 *
+	 * @param point    The point on the map that we're looking to see
+	 *                 if there is a Stack on.
+	 *
+	 * @return A pointer to a stack at the given position, or NULL if no
+	 *         Stack could be found.
+	 */
+        //! Return stack at position pos or 0 if there is none.
+        static Stack* getObjectAt(Vector<int> point)
+	  { return getObjectAt(point.x, point.y);}
 
-        //! Return position of an army
+	/**
+	 * Scan through all stacks in the list, and then through each Army 
+	 * unit of every Stack for an Army unit with a particular Id.
+	 *
+	 * @param id     The Id of the Army unit that we're looking for.
+	 *
+	 * @return The position of the Army unit.  If no Army unit could be
+	 *         found with the given Id, the position of (-1,-1) is
+	 *         returned.
+	 */
+        //! Return position of an Army.
         static Vector<int> getPosition(Uint32 id);
 
-        /** This function finds stacks which occupy the same tile.
-          * For internal and logical reasons, we always assume that a tile is
-          * occupied by at most one stack as strange bugs may happen when this
-          * is violated. However, in some cases, it does happen that stacks
-          * temporarily occupy the same tile. Reasons may be that, on its
-          * route, a stack crosses another stacks tile and can't move further.
-          *
-          * @param s        the stack which we search an ambiguity for
-          */
-        static Stack* getAmbiguity(Stack* s);
+        /** 
+	 * This method finds stacks which occupy the same tile.
+         * For internal and logical reasons, we always assume that a tile is
+         * occupied by at most one stack as strange bugs may happen when this
+         * is violated. However, in some cases, it does happen that stacks
+         * temporarily occupy the same tile. Reasons may be that, on its
+         * route, a stack crosses another stacks tile and can't move further.
+         *
+	 * We only expect one ambiguity at a time with stacks of the same 
+	 * player. This never happens except when a stack comes to halt on 
+	 * another stack during long movements.
+	 *
+         * @param stack        The stack which we search an ambiguity for.
+	 *
+	 * @return The other stack on the same tile occupied by stack.
+         */
+	//! Get the other stack on a tile that has more than one stack on it.
+        static Stack* getAmbiguity(Stack* stack);
 
-        //! Searches through the player's lists and deletes the stack
-        static void deleteStack(Stack* s);
+        //! Searches through the all players Stacklists and deletes the stack.
+        static void deleteStack(Stack* stack);
 
-        /** Returns stacks defending a city
-          *
-          * If a city is attacked, all stacks which occupy a city tile are
-          * regarded as defenders.
-          *
-          * @param c        the city under attack
-          * @return a list of all stacks defending the city
-          */
-        static std::vector<Stack*> defendersInCity(City* c);
+        /** 
+	 * Scan each tile occupied by the given city and return a list of
+	 * stacks who are in the city.
+         *
+         * When a city is attacked, all stacks which occupy a city tile are
+         * regarded as defenders.  The purpose of this function is to 
+	 * enumerate the defending stacks when a stack has attacked a city.
+         *
+         * @param city        The city to search for stacks in.
+	 *
+         * @return A list of all stacks defending the city.
+         */
+	//! Return a list of stacks defending a city.
+        static std::vector<Stack*> defendersInCity(City* city);
 
-        //! Returns the number of stacks owned by all players
+        //! Returns the total number of stacks owned by all players.
         static unsigned int getNoOfStacks();
 
-        //! Returns the number of armies in the list
+        //! Returns the total number of armies in the list.
         unsigned int countArmies();
 
-        /** Sets the activestack. The purpose of this pointer is that the
-          * activestack is assumed to be one the player is currently "touching".
-          * Several functions use this feature for internal purposes, so don't
-          * forget to set the activestack
-          *
-          * @param activestack      the stack currently moved by the player
-          */
+        /** 
+	 * Sets the currently selected stack. The purpose of this method is 
+         * to designate a stack to be the one the player is currently touching.
+         * It is important to use this method because several functions
+	 * expect that there is an active stack.
+         *
+         * @param activestack      The stack currently selected by the player.
+         */
         void setActivestack(Stack* activestack) {d_activestack = activestack;}
 
-        //! Get the next non-defending stack that can move.
+	/**
+	 * Scan through the list of stacks to find one that is not defending, 
+	 * and not parked, and can move to another tile.
+	 *
+	 * @return A pointer to the next moveable stack or NULL if no more
+	 *         stacks can move.
+	 */
+        //! Return the next moveable stack in the list.
         Stack* getNextMovable();
 
-        //! Returns true if s and d can form one stack (esp. regarding size)
-        bool canJoin(Stack* s, Stack* d) const;
-
-        //! Save the data. See XML_Helper for details
+        //! Save the data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
 
-        //! Calls nextTurn of each stack in the list (for healing, upkeep etc.)
+        //! Callback method executed at the end of every turn.
         void nextTurn();
 
-        //! Returns true if _any_ of the stacks has enough moves for its next step
+	/**
+         * @return True if any stacks in the list have enough moves for 
+	 * it's next step along it's Path.  Otherwise, false.
+	 */
+	//! Returns whether or not any stacks can move.
         bool enoughMoves() const;
 
-        //! Returns the designated activestack
+        //! Returns the currently selected stack.
         Stack* getActivestack() const {return d_activestack;}
 
-
-        //! Behaves like std::list::clear(), but frees pointers as well
+        //! Erase all stacks from the list, and their contents too.
         void flClear();
 
-        //! Behaves like std::list::erase(), but frees pointers as well
+        /** 
+	 * Erase a Stack from the list, and free the contents of the Stack.
+	 *
+	 * @param it   The place in the Stacklist to erase.
+	 *
+	 * @return The place in the list that was erased.
+         */
+	//! Erase a stack from the list.
         iterator flErase(iterator object);
 
-        //! Behaves like std::list::remove(), but frees pointers as well
-        bool flRemove(Stack* object);
+        /** 
+	 * Scan the list of stacks for a particular stack.  If it is found,
+	 * remove it from the list of stacks and free it's contents.
+	 *
+	 * @param stack  The stack in the Stacklist to remove.
+	 *
+	 * @return Whether or not the stack was found and deleted.
+         */
+        //! Erase a stack from the list.
+        bool flRemove(Stack* stack);
 
-        //! Return the stack at position (x,y) or 0 if there is none
-	//! only operates on this stacklist, and not all players stacklists.
+	/**
+	 * Scan through the Stacklist, for a stack that is located at the 
+	 * given position on the game map.
+	 *
+	 * @note This method works only on this Stacklist, rather than all
+	 *       of the players Stacklists as in Stacklist::getObjectAt.
+	 *
+	 * @param x   The number of tiles down in the vertical axis from the
+	 *            topmost edge of the map.
+	 * @param y   The number of tiles right in the horizontal axis from
+	 *            the leftmost edge of the map.
+	 *
+	 * @return A pointer to a stack at the given position, or NULL if no
+	 *         Stack could be found.
+	 */
+        //! Return the stack at position (x,y) or 0 if there is none.
         Stack* getOwnObjectAt(int x, int y);
 
     private:
-        //! Callback function for loading
+        //! Callback function for loading.
         bool load(std::string tag, XML_Helper* helper);
 
+	//! A pointer to the currently selected Stack.
         Stack* d_activestack;
 };
 

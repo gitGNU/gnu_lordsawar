@@ -62,7 +62,7 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero)
     : Quest(q_mgr, hero, Quest::KILLARMIES), d_killed(0)
 {
     // have us be informed when hostilities break out
-    d_victim_player = getVictimPlayer(getHero()->getPlayer());
+    d_victim_player = getVictimPlayer(getHero()->getOwner());
     d_victim_player->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmies::dyingArmy));
     
     /** we have to kill 14-20 units: 14 + rand(0..6) */
@@ -159,7 +159,7 @@ void QuestEnemyArmies::initDescription()
 
 bool QuestEnemyArmies::isFeasible(Uint32 heroId)
 {
-  if (getVictimPlayer(getHeroById(heroId)->getPlayer()))
+  if (getVictimPlayer(getHeroById(heroId)->getOwner()))
     return true;
   return false;
 }
@@ -168,7 +168,7 @@ void QuestEnemyArmies::armyDied(Army *a, bool heroIsCulprit)
   if (!isActive())
     return;
 
-  if (heroIsCulprit == true && a->getPlayer() == d_victim_player)
+  if (heroIsCulprit == true && a->getOwner() == d_victim_player)
     {
       d_killed++;
       if (d_killed >= d_to_kill)

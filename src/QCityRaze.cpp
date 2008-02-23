@@ -38,7 +38,7 @@ QuestCityRaze::QuestCityRaze (QuestsManager& mgr, Uint32 hero)
     : Quest(mgr, hero, Quest::CITYRAZE)
 {
     // find us a victim
-    City* c = chooseToRaze(getHero()->getPlayer());
+    City* c = chooseToRaze(getHero()->getOwner());
     assert(c);      // should never fail because isFeasible is checked first
 
     d_city = c->getId();
@@ -57,7 +57,7 @@ QuestCityRaze::QuestCityRaze (QuestsManager& q_mgr, XML_Helper* helper)
 //=======================================================================
 bool QuestCityRaze::isFeasible(Uint32 heroId)
 {
-  if (QuestCityRaze::chooseToRaze(getHeroById(heroId)->getPlayer()))
+  if (QuestCityRaze::chooseToRaze(getHeroById(heroId)->getOwner()))
     return true;
 
   return false;
@@ -124,8 +124,8 @@ City* QuestCityRaze::chooseToRaze(Player *p)
     // Collect all cities
     Citylist* cl = Citylist::getInstance();
     for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-        if (!(*it).isBurnt() && (*it).getPlayer() != p &&
-	    (*it).getPlayer() != Playerlist::getInstance()->getNeutral())
+        if (!(*it).isBurnt() && (*it).getOwner() != p &&
+	    (*it).getOwner() != Playerlist::getInstance()->getNeutral())
             cities.push_back(&(*it));
 
     // Find a suitable city for us to raze 
@@ -158,13 +158,13 @@ void QuestCityRaze::cityAction(City *c, CityDefeatedAction action,
     case CITY_DEFEATED_OCCUPY: //somebody occupied
       if (heroIsCulprit) //quest hero did
 	d_q_mgr.questExpired(d_hero);
-      else if (c->getPlayer() == getHero()->getPlayer()) //our stack did
+      else if (c->getOwner() == getHero()->getOwner()) //our stack did
 	d_q_mgr.questExpired(d_hero);
       break;
     case CITY_DEFEATED_RAZE: //somebody razed
       if (heroIsCulprit) // quest hero
 	d_q_mgr.questCompleted(d_hero);
-      else if (c->getPlayer() == getHero()->getPlayer()) // our stack razed
+      else if (c->getOwner() == getHero()->getOwner()) // our stack razed
 	d_q_mgr.questExpired(d_hero);
       else // their stack did
 	d_q_mgr.questExpired(d_hero);
@@ -172,13 +172,13 @@ void QuestCityRaze::cityAction(City *c, CityDefeatedAction action,
     case CITY_DEFEATED_SACK: //somebody sacked
       if (heroIsCulprit) // quest hero did
 	d_q_mgr.questExpired(d_hero);
-      else if (c->getPlayer() == getHero()->getPlayer()) // our stack did
+      else if (c->getOwner() == getHero()->getOwner()) // our stack did
 	d_q_mgr.questExpired(d_hero);
       break;
     case CITY_DEFEATED_PILLAGE: //somebody pillaged
       if (heroIsCulprit) // quest hero did
 	d_q_mgr.questExpired(d_hero);
-      else if (c->getPlayer() == getHero()->getPlayer()) // our stack did
+      else if (c->getOwner() == getHero()->getOwner()) // our stack did
 	d_q_mgr.questExpired(d_hero);
       break;
     }

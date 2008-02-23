@@ -104,7 +104,7 @@ void AI_Diplomacy::neutralsDwindlingNeedFirstEnemy()
 	      City *c;
 	      c = cl->getNearestForeignCity(first_city->getPos());
 	      if (c)
-		d_owner->proposeDiplomacy(Player::PROPOSE_WAR, c->getPlayer());
+		d_owner->proposeDiplomacy(Player::PROPOSE_WAR, c->getOwner());
 	    }
 	}
     }

@@ -28,7 +28,7 @@
  *  While a unit is "in the air", it is represented in one of these objects.
  *
  */
-class VectoredUnit: public Location, public sigc::trackable
+class VectoredUnit: public Ownable, public Location, public sigc::trackable
 {
     public:
         /** Default constructor
@@ -86,7 +86,6 @@ inline bool operator==(const VectoredUnit &rhs)
 	Vector<int> d_destination;
 	Army *d_army; //army prototype to vector
 	int d_duration;
-	Player *d_player;
 };
 
 #endif // VECTOREDUNIT_H

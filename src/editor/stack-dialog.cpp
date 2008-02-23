@@ -53,7 +53,7 @@ StackDialog::StackDialog(Stack *s, int m)
     xml->get_widget("dialog", d);
     dialog.reset(d);
 
-    if (stack->getPlayer())
+    if (stack->getOwner())
     {
 	// setup the player combo
 	player_combobox = manage(new Gtk::ComboBoxText);
@@ -64,7 +64,7 @@ StackDialog::StackDialog(Stack *s, int m)
 	{
 	    Player *player = *i;
 	    player_combobox->append_text(player->getName());
-	    if (player == stack->getPlayer())
+	    if (player == stack->getOwner())
 		player_no = c;
 	}
 
@@ -165,21 +165,21 @@ void StackDialog::run()
 		    break;
 		}
 
-	    Player *stack_player = stack->getPlayer();
+	    Player *stack_player = stack->getOwner();
 	    if (stack_player)
 		stack_player->getStacklist()->remove(stack);
 	
 	    player->addStack(stack);
 	    stack->setPlayer(player);
 	    for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
-	      (*it)->setPlayer(player);
+	      (*it)->setOwner(player);
 	}
     }
 }
 
 void StackDialog::on_add_clicked()
 {
-    SelectArmyDialog d(stack->getPlayer());
+    SelectArmyDialog d(stack->getOwner());
     d.set_parent_window(*dialog.get());
     d.run();
 

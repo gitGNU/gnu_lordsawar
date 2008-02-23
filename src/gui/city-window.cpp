@@ -165,7 +165,7 @@ void CityWindow::fill_in_city_info()
 
 void CityWindow::fill_in_production_toggles()
 {
-    Player *player = city->getPlayer();
+    Player *player = city->getOwner();
     unsigned int as = player->getArmyset();
     int production_index = city->getProductionIndex();
     int type;
@@ -206,7 +206,7 @@ void CityWindow::fill_in_production_toggles()
 
 void CityWindow::on_production_toggled(Gtk::ToggleButton *toggle)
 {
-    if (city->getPlayer() != Playerlist::getActiveplayer())
+    if (city->getOwner() != Playerlist::getActiveplayer())
     {
         toggle->set_active(false);
         return;
@@ -227,9 +227,9 @@ void CityWindow::on_production_toggled(Gtk::ToggleButton *toggle)
     bool is_empty = city->getArmytype(slot) == -1;
     
     if (is_empty)
-	city->getPlayer()->cityChangeProduction(city, -1);
+	city->getOwner()->cityChangeProduction(city, -1);
     else
-	city->getPlayer()->cityChangeProduction(city, slot);
+	city->getOwner()->cityChangeProduction(city, slot);
 
     on_hold_button->set_sensitive(!is_empty);
     
@@ -238,7 +238,7 @@ void CityWindow::on_production_toggled(Gtk::ToggleButton *toggle)
 
 void CityWindow::fill_in_production_info()
 {
-    Player *player = city->getPlayer();
+    Player *player = city->getOwner();
     unsigned int as = player->getArmyset();
     Glib::RefPtr<Gdk::Pixbuf> pic;
     GraphicsCache *gc = GraphicsCache::getInstance();
@@ -299,7 +299,7 @@ void CityWindow::fill_in_production_info()
     turns_left_label->set_markup("<i>" + s3 + "</i>");
     current_label->set_markup("<i>" + s4 + "</i>");
 
-    if (city->getPlayer () != Playerlist::getActiveplayer())
+    if (city->getOwner () != Playerlist::getActiveplayer())
       {
         turns_left_label->hide();
         current_label->hide();
@@ -364,7 +364,7 @@ bool CityWindow::on_production_button_event(GdkEventButton *e, Gtk::ToggleButton
 void CityWindow::on_on_hold_clicked() //stop button
 {
     city->setVectoring(Vector<int>(-1,-1));
-    city->getPlayer()->cityChangeProduction(city, -1);
+    city->getOwner()->cityChangeProduction(city, -1);
     on_hold_button->set_sensitive(false);
     ignore_toggles = true;
     for (unsigned int i = 0; i < production_toggles.size(); ++i)
@@ -393,8 +393,8 @@ void CityWindow::on_buy_clicked()
 	    if (slot == -1) 
 	      slot = 0;
 	  }
-	city->getPlayer()->cityBuyProduction(city, slot, army);
-	city->getPlayer()->cityChangeProduction(city, slot);
+	city->getOwner()->cityBuyProduction(city, slot, army);
+	city->getOwner()->cityChangeProduction(city, slot);
 
 	fill_in_production_toggles();
 	fill_in_production_info();

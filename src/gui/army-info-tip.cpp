@@ -56,7 +56,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army, ArmyInfoTipType 
       }
     else
       {
-	p = army->getPlayer();
+	p = army->getOwner();
 	armyset = army->getArmyset();
       }
     GraphicsCache *gc = GraphicsCache::getInstance();

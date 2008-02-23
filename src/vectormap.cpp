@@ -184,7 +184,7 @@ void VectorMap::after_draw()
   std::list<City*> srcs; //source cities
     
   Vector<int> flag;
-  flag = GameMap::getInstance()->findPlantedStandard(city->getPlayer());
+  flag = GameMap::getInstance()->findPlantedStandard(city->getOwner());
   planted_standard = flag;
 
   //only show cities that can accept more vectoring when
@@ -198,7 +198,7 @@ void VectorMap::after_draw()
   // draw special shield for every city that player owns.
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
-      if ((*it).getPlayer() == Playerlist::getActiveplayer())
+      if ((*it).getOwner() == Playerlist::getActiveplayer())
         {
       
           if ((*it).getProductionIndex() == -1)
@@ -282,7 +282,7 @@ void VectorMap::after_draw()
 	{
 	  if ((*it).isFogged() == true)
 	    continue;
-	  if ((*it).getPlayer() != city->getPlayer())
+	  if ((*it).getOwner() != city->getOwner())
 	    continue;
 	  if ((*it).getVectoring() == Vector<int>(-1, -1))
 	    continue;

@@ -80,7 +80,7 @@ float AI_Analysis::assessStackStrength(const Stack *stack)
     if (!instance)
         return stack->size() * 5.0;
 
-    if (stack->getPlayer() == instance->d_owner)
+    if (stack->getOwner() == instance->d_owner)
     {
         // our stack, so we can look inside it
         float total = 0.0;

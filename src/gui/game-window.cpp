@@ -1400,7 +1400,7 @@ void GameWindow::on_stack_info_changed(Stack *s)
     show_stats();
   else
     {
-      if (s->getPlayer()->getType() == Player::HUMAN)
+      if (s->getOwner()->getType() == Player::HUMAN)
 	show_stack(s);
       else
 	show_stats();
@@ -1547,7 +1547,7 @@ void GameWindow::hide_map_tip()
 
 void GameWindow::on_sage_visited (Ruin *ruin, Stack *stack)
 {
-  SageDialog d(stack->getFirstHero()->getPlayer(), 
+  SageDialog d(stack->getFirstHero()->getOwner(), 
 	       static_cast<Hero*>(stack->getFirstHero()), ruin);
   d.set_parent_window(*window.get());
   Reward *reward = d.run();
@@ -2055,7 +2055,7 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   std::auto_ptr<Gtk::Dialog> dialog;
-  Player *player = city->getPlayer();
+  Player *player = city->getOwner();
   unsigned int as = player->getArmyset();
 
   Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -2106,7 +2106,7 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
 void GameWindow::on_city_sacked(City *city, int gold, std::list<Uint32> sacked_types)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  Player *player = city->getPlayer();
+  Player *player = city->getOwner();
   unsigned int as = player->getArmyset();
   std::auto_ptr<Gtk::Dialog> dialog;
 

@@ -74,7 +74,7 @@ int Citylist::countCities(Player* player) const
     {
         if ((*it).isBurnt())
           continue;
-        if ((*it).getPlayer() == player) cities++;
+        if ((*it).getOwner() == player) cities++;
     }
     
     return cities;
@@ -87,7 +87,7 @@ void Citylist::nextTurn(Player* p)
     // This iteration adds the city production to the player    
     for (iterator it = begin(); it != end(); it++)
     {
-        if ((*it).getPlayer() == p)
+        if ((*it).getOwner() == p)
             (*it).nextTurn();
     }
 
@@ -96,7 +96,7 @@ void Citylist::nextTurn(Player* p)
     // add the gold in the first run, because then the player may come above 0
     // gold, which means some cities produce units, others not.
     for (const_iterator it = begin(); it != end(); it++)
-        if ((*it).getPlayer() == p)
+        if ((*it).getOwner() == p)
             p->addGold((*it).getGold());
 }
 
@@ -111,8 +111,8 @@ City* Citylist::getNearestEnemyCity(const Vector<int>& pos)
         if ((*it).isBurnt())
             continue;
 
-        if ((*it).getPlayer() != p &&
-	    p->getDiplomaticState((*it).getPlayer()) == Player::AT_WAR)
+        if ((*it).getOwner() != p &&
+	    p->getDiplomaticState((*it).getOwner()) == Player::AT_WAR)
         {        
             Vector<int> p = (*it).getPos();
             int delta = abs(p.x - pos.x);
@@ -141,7 +141,7 @@ City* Citylist::getNearestForeignCity(const Vector<int>& pos)
         if ((*it).isBurnt())
             continue;
 
-        if ((*it).getPlayer() != p)
+        if ((*it).getOwner() != p)
         {        
             Vector<int> p = (*it).getPos();
             int delta = abs(p.x - pos.x);
@@ -197,7 +197,7 @@ City* Citylist::getNearestCity(const Vector<int>& pos, Player *p)
         if ((*it).isBurnt())
             continue;
 
-        if ((*it).getPlayer() == p)
+        if ((*it).getOwner() == p)
         {
             Vector<int> p = (*it).getPos();
             int delta = abs(p.x - pos.x);
@@ -307,7 +307,7 @@ City* Citylist::getNearestVisibleFriendlyCity(const Vector<int>& pos)
 	if ((*it).isFogged())
 	    continue;
 
-        if ((*it).getPlayer() == p)
+        if ((*it).getOwner() == p)
         {
             Vector<int> p = (*it).getPos();
             int delta = abs(p.x - pos.x);
@@ -336,7 +336,7 @@ City* Citylist::getNearestNeutralCity(const Vector<int>& pos)
         if ((*it).isBurnt())
             continue;
 
-        if ((*it).getPlayer() == Playerlist::getInstance()->getNeutral())
+        if ((*it).getOwner() == Playerlist::getInstance()->getNeutral())
         {
             Vector<int> p = (*it).getPos();
             int delta = abs(p.x - pos.x);
@@ -359,7 +359,7 @@ City* Citylist::getNearestNeutralCity(const Vector<int>& pos)
 City* Citylist::getFirstCity(Player* p)
 {
     for (iterator it = begin(); it != end(); it++)
-        if ((*it).getPlayer() == p)
+        if ((*it).getOwner() == p)
             return &(*it);
 
     return 0;
@@ -403,9 +403,9 @@ bool Citylist::load(std::string tag, XML_Helper* helper)
 void Citylist::changeOwnership(Player *old_owner, Player *new_owner)
 {
   for (iterator it = begin(); it != end(); it++)
-    if ((*it).getPlayer() == old_owner)
+    if ((*it).getOwner() == old_owner)
       {
-	(*it).setPlayer(new_owner);
+	(*it).setOwner(new_owner);
 	if ((*it).isCapital())
 	  if ((*it).getCapitalOwner() == old_owner)
 	    (*it).setCapitalOwner(new_owner);
@@ -418,7 +418,7 @@ void Citylist::stopVectoringTo(City *c)
     {
       if ((*it).isBurnt() == true)
 	continue;
-      if ((*it).getPlayer() != c->getPlayer())
+      if ((*it).getOwner() != c->getOwner())
 	continue;
       if ((*it).getVectoring() == Vector<int>(-1,-1))
 	continue;
@@ -439,7 +439,7 @@ Vector<int> Citylist::calculateCenterOfTerritory (Player *p)
   int count = 0;
   for (iterator it = begin(); it != end(); it++)
     {
-      if (p && (*it).getPlayer() == p)
+      if (p && (*it).getOwner() == p)
 	continue;
       Vector<int> pos = (*it).getPos();
       count++;
@@ -461,7 +461,7 @@ bool Citylist::isVectoringTarget(City *target)
 {
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it).getPlayer() != target->getPlayer())
+      if ((*it).getOwner() != target->getOwner())
 	continue;
       if (target->contains((*it).getVectoring()))
 	return true;
@@ -474,7 +474,7 @@ std::list<City*> Citylist::getCitiesVectoringTo(City *target)
   std::list<City*> cities;
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it).getPlayer() != target->getPlayer())
+      if ((*it).getOwner() != target->getOwner())
 	continue;
       if (target->contains((*it).getVectoring()))
 	cities.push_back(&(*it));

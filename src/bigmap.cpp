@@ -383,7 +383,6 @@ a lone tile is a fogged tile surrounded by two unfogged tiles on either side.
  */
 void BigMap::drawFogTile (int x, int y)
 {
-  FogMap *fogmap = Playerlist::getActiveplayer()->getFogMap();
   int idx = 0;
   int count = 0;
   bool foggyTile;
@@ -471,7 +470,7 @@ void BigMap::draw_stack(Stack *s)
   GraphicsCache *gc = GraphicsCache::getInstance();
   int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
   Vector<int> p = s->getPos();
-  Player *player = s->getPlayer();
+  Player *player = s->getOwner();
   int army_tilesize;
 
   // check if the object lies in the viewed part of the map

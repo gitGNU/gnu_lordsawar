@@ -40,7 +40,8 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
         ../gui/image-helpers.o ../gui/error-utils.o ../gui/gtksdl.o \
         ../gui/army-info-tip.o ../MapRenderer.o \
 	../shield.o ../shieldset.o ../shieldsetlist.o \
-	../citysetlist.o ../cityset.o ../CreateScenarioRandomize.o
+	../citysetlist.o ../cityset.o ../CreateScenarioRandomize.o \
+	../Ownable.o
 
 if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor lordsawar-army-editor

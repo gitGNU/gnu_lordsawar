@@ -157,7 +157,7 @@ void HeroDialog::on_drop_clicked()
     if (i)
     {
 	Item *item = (*i)[item_columns.item];
-	hero->getPlayer()->heroDropItem (hero, item, pos);
+	hero->getOwner()->heroDropItem (hero, item, pos);
 	(*i)[item_columns.status] = _("On the ground");
 	on_selection_changed();
 	fill_in_info_labels();
@@ -172,7 +172,7 @@ void HeroDialog::on_pickup_clicked()
 	Item *item = (*i)[item_columns.item];
         if (item->getPlanted() == true)
           item->setPlanted(false);
-	hero->getPlayer()->heroPickupItem (hero, item, pos);
+	hero->getOwner()->heroPickupItem (hero, item, pos);
 	(*i)[item_columns.status] = _("In backpack");
 	on_selection_changed();
 	fill_in_info_labels();

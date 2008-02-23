@@ -396,7 +396,7 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                     continue;
                   //is there somebody else's city here?
                   City *c = Citylist::getInstance()->getObjectAt(x, y);
-                  if (c && c->getPlayer() != a->getPlayer())
+                  if (c && c->getOwner() != a->getOwner())
                     {
                       if (c->isBurnt() == false)
                         continue;
@@ -414,7 +414,7 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                   s = Stacklist::getObjectAt(x, y);
                   if (s)
                     { 
-                      if (s->getPlayer() != a->getPlayer())
+                      if (s->getOwner() != a->getOwner())
                         continue;
                       //is it our stack, but too full?
                       if (s->size() >= MAX_STACK_SIZE)
@@ -424,8 +424,8 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                   else  //but there isn't a stack here
                     {
                       Vector<int> pos(x, y);
-                      s = new Stack(a->getPlayer(), pos);
-                      a->getPlayer()->addStack(s);
+                      s = new Stack(a->getOwner(), pos);
+                      a->getOwner()->addStack(s);
                     }
                   s->push_front(a);
                   added_army = true;

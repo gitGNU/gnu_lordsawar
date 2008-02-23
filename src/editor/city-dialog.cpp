@@ -71,7 +71,7 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
     {
 	Player *player = *i;
 	player_combobox->append_text(player->getName());
-	if (player == city->getPlayer())
+	if (player == city->getOwner())
 	    player_no = c;
     }
 
@@ -141,7 +141,7 @@ void CityDialog::on_player_changed()
 	player = *i;
 	break;
       }
-  city->setPlayer(player);
+  city->setOwner(player);
   //look for stacks in the city, and set them to this player
   for (unsigned int x = 0; x < city->getSize(); x++)
     {
@@ -151,17 +151,17 @@ void CityDialog::on_player_changed()
 					    city->getPos().y + y);
 	  if (s)
 	    {
-	      if (s->getPlayer() != player)
+	      if (s->getOwner() != player)
 		{
 		  //remove it from the old player's list of stacks
-		  s->getPlayer()->getStacklist()->remove(s);
+		  s->getOwner()->getStacklist()->remove(s);
 		  //and give it to the new player list of stacks
 		  player->getStacklist()->push_back(s);
 		  //change the ownership of the stack
 		  s->setPlayer(player);
 		  //and all of it's armies
 		  for (Stack::iterator it = s->begin(); it != s->end(); it++)
-		    (*it)->setPlayer(player);
+		    (*it)->setOwner(player);
 		}
 	    }
 	}
@@ -183,13 +183,13 @@ void CityDialog::run()
 	  // make sure player doesn't have other capitals
 	  Citylist* cl = Citylist::getInstance();
 	  for (Citylist::iterator i = cl->begin(); i != cl->end(); ++i)
-	    if ((*i).isCapital() && (*i).getPlayer() == city->getPlayer())
+	    if ((*i).isCapital() && (*i).getOwner() == city->getOwner())
 	      {
 		(*i).setCapital(false);
 		(*i).setCapitalOwner(NULL);
 	      }
 	  city->setCapital(true);
-	  city->setCapitalOwner(city->getPlayer());
+	  city->setCapitalOwner(city->getOwner());
 	}
       else
 	{
@@ -227,7 +227,7 @@ void CityDialog::run()
 
 void CityDialog::on_add_clicked()
 {
-  SelectArmyDialog d(city->getPlayer());
+  SelectArmyDialog d(city->getOwner());
   d.set_parent_window(*dialog.get());
   d.run();
 

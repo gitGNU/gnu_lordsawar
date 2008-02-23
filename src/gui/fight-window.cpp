@@ -94,12 +94,12 @@ FightWindow::FightWindow(Fight &fight, bool intense_combat)
     Player* p;
 
     Gtk::Image *defender_shield_image;
-    p = defenders.front()->getPlayer();
+    p = defenders.front()->getOwner();
     xml->get_widget("defender_shield_image", defender_shield_image);
     defender_shield_image->property_pixbuf()=to_pixbuf(gc->getShieldPic(2, p));
 
     Gtk::Image *attacker_shield_image;
-    p = attackers.front()->getPlayer();
+    p = attackers.front()->getOwner();
     xml->get_widget("attacker_shield_image", attacker_shield_image);
     attacker_shield_image->property_pixbuf()=to_pixbuf(gc->getShieldPic(2, p));
   

@@ -83,7 +83,7 @@ void StackInfoDialog::run()
 void StackInfoDialog::addArmy (Army *h, Uint32 modified_strength, int idx)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  Player *player = h->getPlayer();
+  Player *player = h->getOwner();
     
   Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = 

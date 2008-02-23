@@ -77,7 +77,8 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	shield.cpp shield.h shieldset.cpp shieldset.h \
 	shieldsetlist.cpp shieldsetlist.h \
 	citysetlist.cpp citysetlist.h cityset.cpp cityset.h \
-	CreateScenarioRandomize.cpp CreateScenarioRandomize.h
+	CreateScenarioRandomize.cpp CreateScenarioRandomize.h \
+	Ownable.cpp Ownable.h
 
 
 if FL_RESRC

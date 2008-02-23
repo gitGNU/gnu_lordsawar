@@ -110,7 +110,7 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
             if (!s)
                 continue;
             
-            if (s->getPlayer() == defender->getPlayer()
+            if (s->getOwner() == defender->getOwner()
                 && s != (*d_defenders.begin()))
             {
                 // check if stack may participate
@@ -427,16 +427,16 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
 	{
 	  if (c->isBurnt()) 
 	    city_bonus = 0;
-	  else if (c->getNoOfBasicProd() <= 2 && c->getPlayer() ==
+	  else if (c->getNoOfBasicProd() <= 2 && c->getOwner() ==
 		   Playerlist::getInstance()->getNeutral())
 	    city_bonus = 0;
-	  else if (c->getNoOfBasicProd() <= 2 && c->getPlayer() ==
+	  else if (c->getNoOfBasicProd() <= 2 && c->getOwner() ==
 		   Playerlist::getInstance()->getActiveplayer())
 	    city_bonus = 1;
-	  else if (c->getNoOfBasicProd() > 2 && c->getPlayer() ==
+	  else if (c->getNoOfBasicProd() > 2 && c->getOwner() ==
 		   Playerlist::getInstance()->getNeutral())
 	    city_bonus = 1;
-	  else if (c->getNoOfBasicProd() > 2 && c->getPlayer() ==
+	  else if (c->getNoOfBasicProd() > 2 && c->getOwner() ==
 		   Playerlist::getInstance()->getActiveplayer())
 	    city_bonus = 2;
 	}

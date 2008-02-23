@@ -191,9 +191,9 @@ Player* Playerlist::getPlayer(Uint32 id) const
     return 0;
 }
 
-int Playerlist::getNoOfPlayers() const
+Uint32 Playerlist::getNoOfPlayers() const
 {
-    int number = 0;
+    unsigned int number = 0;
 
     for (const_iterator it = begin(); it != end(); it++)
     {

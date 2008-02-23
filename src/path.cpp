@@ -148,7 +148,7 @@ void Path::recalculate (Stack* s)
     {
       Vector<int> dest = **it;
       City *c = Citylist::getInstance()->getObjectAt(dest.x, dest.y);
-      if (c && c->getPlayer() != s->getPlayer())
+      if (c && c->getOwner() != s->getOwner())
 	continue;
       else
 	break;
@@ -406,12 +406,12 @@ bool Path::isBlocked(const Stack* s, int x, int y, int destx, int desty) const
     if (target)
     {
         // ...enemy stacks which stand in the way...
-        if ((s->getPlayer() != target->getPlayer())
+        if ((s->getOwner() != target->getOwner())
             && ((x != destx) || (y != desty)))
             return true;
 
         // ...friendly stacks which are too big to merge with...
-        if ((s->getPlayer() == target->getPlayer())
+        if ((s->getOwner() == target->getOwner())
             && (s->size() + target->size() > MAX_STACK_SIZE))
             return true;
     }
@@ -421,7 +421,7 @@ bool Path::isBlocked(const Stack* s, int x, int y, int destx, int desty) const
     if (tile->getBuilding() == Maptile::CITY)
     {
         City* c = Citylist::getInstance()->getObjectAt(x,y);
-        if (c && (c->getPlayer() != s->getPlayer())
+        if (c && (c->getOwner() != s->getOwner())
             && ((x != destx) || (y != desty)))
             return true;
     }

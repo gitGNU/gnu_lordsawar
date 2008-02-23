@@ -23,121 +23,175 @@
 #include <sstream>
 
 #include "Object.h"
+#include "Ownable.h"
 
 class Player;
 class Path;
 class Army;
 class XML_Helper;
 
-/** Group of up to eight armies
-  * 
-  * While armies are the actual troops you command, they always belong to a
-  * stack. The stack holds these armies together in one object. The player
-  * usually doesn't command the armies but the stack, so all functionality and
-  * data which affects player's controls is bundled in the stack class. Among
-  * this is the location of the units, the movement etc.
-  */
+/** 
+ * A set of up to eight Army units that move around as a single entity on the
+ * game map.
+ * 
+ * While Army units are the actual troops you command, they always belong to a
+ * stack. The stack holds these armies together in one object. The player
+ * usually doesn't command the armies but the stack, so all functionality and
+ * data which affects player's controls is bundled in the stack class. Among
+ * this is the location of the units, the intended movement path, and more.
+ */
 
-class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
+class Stack : public ::Object, public Ownable, public std::list<Army*>, public sigc::trackable
 {
     public:
-        /** Default constructor
-          * 
-          * @param player       the owning player or 0 if e.g. ruin keeper
-          * @param pos          the position where the stack is created
-          */
+        /** 
+	 * Make a new stack.
+         * 
+         * @param player       A pointer to the owning player.
+         * @param pos          The position on the map where the stack is to 
+	 *                     be created.
+         */
+	//! Default constructor.
         Stack(Player* player, Vector<int> pos);
 
-        //! Copy constructor, it does a deep copy of the other stack's armies!
+	/**
+	 * Copy the whole stack into a new stack.  This method performs a 
+	 * deep copy of the stack's armies.
+	 */
+        //! Copy constructor.
         Stack(Stack& s);
 
-        //! Loading constructor. See XML_Helper for details
+        //! Loading constructor.
         Stack(XML_Helper* helper);
+
+	//! Destructor.
         ~Stack();
 
-        
-        //! In rare cases it may be wanted to change the stack's loyality...
+        //! Change the loyalty of the stack.
         void setPlayer(Player* p);
 
-        //! ...or its position (for testing reasons)
+        //! Change the position of the stack.
         void setPosition(Vector<int> pos){d_pos = pos;}
 
-        /** Sets the defending value. Defending means that this stack is ignored
-          * when a player cycles through his list of stacks with Stack::setNext().
-	  * If a stack stays defending, it gets a fortify bonus.
-	  * (this isn't implemented yet) fixme
-          */
+        /** 
+	 * Sets the defending value.  Defending entails that this stack is 
+	 * ignored when a user cycles through the list of stacks with 
+	 * Stacklist::getNextMovable().  If a stack stays defending to the
+	 * next round, it gets a fortify bonus in battle.
+	 */
+	//! Set the defending status of the stack.
         void setDefending(bool defending){d_defending = defending;}
-        /** Sets the parked value. Parked means that this stack is ignored
-          * when a player cycles through his list of stacks with Stack::setNext().
-	  * this is just like defending, but there's no bonus conferred if 
-	  * a stack remains in this state.
-          */
+
+        /** 
+	 * Sets the parked value. Parking entails that this stack is ignored
+         * when a player cycles through his list of stacks with 
+	 * Stacklist::getNextMovable().  This value behaves just like 
+	 * defending, but there's no bonus conferred if a stack remains in 
+	 * this state.
+         */
+	//! Set the parked status of the stack.
         void setParked(bool parked){d_parked = parked;}
 
-
-        //! Save the stack's data. See XML_Helper for more details.
+        //! Save the stack to an opened saved-game file.
         bool save(XML_Helper* helper) const;
 
-        //! Heals the armies of the stack etc.
+	/**
+	 * When the end of a turn occurs, this callback is used to calculate
+	 * stack bonuses, moves, paths, and it also charges the player the
+	 * upkeep fee for every Army unit in the Stack.
+	 */
+        //! Callback when the end of a turn happens.
         void nextTurn();
 
-        //! Reduces movement points of the armies.
+        //! Reduces movement points of the Army units in the Stack.
         void decrementMoves(Uint32 moves);
 
-        //! Sets the stack's position to the next item of the internal path
+        //! Sets the stack's position to the next point in it's Path.
         bool moveOneStep();
 
-        //! Blesses all armies of the stack (strength +1)
-	//! Returns the number of blessed armies.
+	/**
+	 * Adds one to the strength of each Army unit in the stack.
+	 * If the Army unit has already visited the temple co-located with
+	 * the stack's position, no strength bonus will be added.
+	 *
+	 * @return The number of Army units blessed.
+	 */
+	//! Bless the Army units in the stack.
         int bless();
 
-        //! Returns whether the stack has enough moves for the next step
+	/**
+         * @return True if the stack has enough moves to traverse to
+	 * the next step in it's Path.  Otherwise, false.
+	 */
+	//! Returns whether or not the stack can move.
         bool enoughMoves() const;
 
-	// returns whether the stack can move in any direction
+	/**
+	 * @return Whether or not the stack has enough moves to travel to
+	 *         an adjacent tile.  The adjacent tile does not have to be
+	 *         in the stack's Path.
+	 */
+	//! Returns whether the stack can move in any direction.
 	bool canMove() const;
         
-        //! Returns the owning player
-        Player* getPlayer() const {return d_player;}
-
-        //! Returns the internal path object of the stack
+        //! Returns the Path object of the stack.
         Path* getPath() const {return d_path;}
 
-        //! Returns the minimum number of MP of all armies
+        //! Returns the minimum number of movement points of all armies.
         Uint32 getGroupMoves() const;
 
-	//! Returns true if all armies in the stack are grouped
+	//! Returns true if all armies in the stack are grouped.
 	bool isGrouped();
 
-        //! Returns the minimum number of MP of all tiles around the stack, or
-        // -1 if the stack can't move
+	/**
+	 * Scan all adjacent tiles relative to the stack's position and 
+	 * see how much a move would cost in terms of movement points.
+	 * Determine the minimum amount of movement points to make a move.
+	 * 
+	 * @return The minimum number of movement points to travel to the
+	 *         cheapest adjacent tile that the stack can afford to
+	 *         move to.  If the stack cannot afford to move there, this
+	 *         method returns -1.
+	 */
         int getMinTileMoves() const;
 
-        //! Get the next item of the stack's path
+        //! Get the next position in the stack's intended Path.
         Vector<int> nextStep();
 
-        //! Get the strongest army (most strength) for displaying
+        //! Return the Army unit in the Stack that has the best strength value.
         Army* getStrongestArmy() const;
 
-        //! Get the strongest hero (most strength) for bonus calculations
+        //! Return the Hero unit in the Stack that has the best strength value.
         Army* getStrongestHero() const;
-	// FIXME: reconcile these "strongest" functions into one
 
-        //! Used for splitting stacks. See Player::stackSplit how it works.
+	/**
+	 * Scan through the Army units in the stack and return the first
+	 * one that is ungrouped.  This method is used for splitting stacks.  
+	 * See Player::stackSplit for more information.
+	 *
+	 * @return A pointer to the first ungrouped army in the stack or NULL
+	 *         if an ungrouped Army unit could not be found.
+	 */
+        //! Get the first ungrouped Army unit in the Stack.
         Army* getFirstUngroupedArmy() const;
 
-        //! True if the stack has a hero. They add strength to the other armies.
+        //! True if the stack contains a Hero unit.  Otherwise, false.
         bool hasHero() const;
 
-        //! Return the first hero in the stack
+        //! Return the first Hero unit in the stack, or NULL if no Hero found.
         Army* getFirstHero() const;
 
         //! Returns the ids of all (living) heroes in the stack in the dst reference
+	/**
+	 * Scan the Army units in the Stack for heroes that have more than
+	 * zero hitpoints.
+	 *
+	 * @param dst       Passed in as an empty or non-empty list, and
+	 *                  filled up with the Ids belonging to Hero army 
+	 *                  units in the stack.
+	 */
+	// Return the Ids of all of the Hero units in the Stack.
         void getHeroes(std::vector<Uint32>& dst) const;
-
-        //! Return true if the stack belongs to player or his allies
-        bool isFriend(Player* player) const;
 
         //! Return the defending status of the stack (see setDefending)
         bool getDefending() const {return d_defending;}
@@ -185,8 +239,9 @@ class Stack : public ::Object, public std::list<Army*>, public sigc::trackable
         //! Callback for loading the stack
         bool load(std::string tag, XML_Helper* helper);
     
+	Army* getStrongestArmy(bool hero) const;
+
         // DATA
-        Player* d_player;
         Path* d_path;
         bool d_defending;
         bool d_parked;

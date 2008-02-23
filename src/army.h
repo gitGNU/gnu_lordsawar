@@ -21,6 +21,7 @@
 #include <sigc++/signal.h>
 
 #include "defs.h"
+#include "Ownable.h"
 
 class Player;
 class XML_Helper;
@@ -37,7 +38,7 @@ class XML_Helper;
   * instance is what moves around the map
   */
 
-class Army : public sigc::trackable
+class Army : public Ownable, public sigc::trackable
 {
     public:
 
@@ -133,9 +134,6 @@ class Army : public sigc::trackable
         //! Set how much gold this unit needs per turn
         void setUpkeep(Uint32 upkeep){d_upkeep = upkeep;}
         
-        //! Set the player owning this army
-        void setPlayer(Player* p) {d_player = p;}
-
         //! Set the number of hitpoints of this army
         void setHP(Uint32 hp) {d_hp = hp;}
 
@@ -168,9 +166,6 @@ class Army : public sigc::trackable
 
         //! Get the type of this army
         Uint32 getType() const {return d_type;}
-
-        //! Get the player owning this army
-        Player* getPlayer() const {return d_player;}
 
         //! Get the image of the army. Internally, this refers to GraphicsCache.
         SDL_Surface* getPixmap() const;
@@ -370,7 +365,6 @@ class Army : public sigc::trackable
 
         Uint32 d_gender;
 
-        Player* d_player;
         Uint32 d_id;
         Uint32 d_hp;
         Uint32 d_moves;

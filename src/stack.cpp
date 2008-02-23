@@ -34,14 +34,14 @@ using namespace std;
 #define debug(x)
 
 Stack::Stack(Player* player, Vector<int> pos)
-    : Object(pos), d_player(player), d_defending(false), d_parked(false),
+    : Object(pos), Ownable(player), d_defending(false), d_parked(false),
     d_deleting(false), d_moves_exhausted_at_point(0)
 {
     d_path = new Path();
 }
 
 Stack::Stack(Stack& s)
-    : Object(s), d_player(s.d_player), d_defending(s.d_defending),
+    : Object(s), Ownable(s), d_defending(s.d_defending),
      d_parked(s.d_parked), d_deleting(false),
      d_moves_exhausted_at_point(s.d_moves_exhausted_at_point)
 {
@@ -59,24 +59,17 @@ Stack::Stack(Stack& s)
 	  }
 	else
 	  {
-	    a = new Army((**sit), (*sit)->getPlayer());
+	    a = new Army((**sit), (*sit)->getOwner());
 	    push_back(a);
 	  }
     }
 }
 
 Stack::Stack(XML_Helper* helper)
-: Object(helper), d_deleting(false)
+: Object(helper), Ownable(helper), d_deleting(false)
 {
   helper->getData(d_defending, "defending");
   helper->getData(d_parked, "parked");
-
-  int i;
-  helper->getData(i, "player");
-  if (i == -1)
-    d_player = 0;
-  else
-    d_player = Playerlist::getInstance()->getPlayer(i);
 
   helper->getData(d_moves_exhausted_at_point, "moves_exhausted_at_point");
 
@@ -97,9 +90,9 @@ Stack::~Stack()
 void Stack::setPlayer(Player* p)
 {
   // we need to change the armies' loyalties as well!!
-  d_player = p;
+  setOwner(p);
   for (iterator it = begin(); it != end(); it++)
-    (*it)->setPlayer(p);
+    (*it)->setOwner(p);
 }
 
 bool Stack::moveOneStep()
@@ -208,34 +201,22 @@ void Stack::decrementMoves(Uint32 moves)
 Army* Stack::getStrongestArmy() const
 {
   assert(!empty());
-  Army *strongest = 0;
-  Uint32 highest_strength = 0;
-
-  for (const_iterator it = begin(); it != end(); ++it)
-    {
-      // if hero
-      if ((*it)->isHero())
-	{
-	  return *it;
-	}
-      else if ((*it)->getStat(Army::STRENGTH) > highest_strength)
-	{
-	  highest_strength = (*it)->getStat(Army::STRENGTH);
-	  strongest = *it;
-	}
-    }
-  return strongest;
+  return getStrongestArmy(false);
 }
 
 Army* Stack::getStrongestHero() const
+{
+  return getStrongestArmy(true);
+}
+
+Army* Stack::getStrongestArmy(bool hero) const
 {
   Army *strongest = 0;
   Uint32 highest_strength = 0;
 
   for (const_iterator it = begin(); it != end(); ++it)
     {
-      // if hero
-      if ((*it)->isHero())
+      if ((*it)->isHero() && hero || !hero)
 	{
 	  if ((*it)->getStat(Army::STRENGTH) > highest_strength)
 	    {
@@ -351,11 +332,6 @@ Army* Stack::getFirstUngroupedArmy() const
   return 0;
 }
 
-bool Stack::isFriend(Player* player) const
-{
-  return d_player == player;
-}
-
 Uint32 Stack::getMaxSight() const
 {
   Uint32 max = 0;
@@ -396,7 +372,7 @@ void Stack::nextTurn()
 	std::list<Item*>::const_iterator item;
 	for (item = backpack.begin(); item != backpack.end(); item++)
 	  {
-	    Player *p = d_player;
+	    Player *p = d_owner;
 	    if ((*item)->getBonus(Item::ADD2GOLDPERCITY))
 	      p->addGold(2 * Citylist::getInstance()->countCities(p));
 	    if ((*item)->getBonus(Item::ADD3GOLDPERCITY))
@@ -414,8 +390,8 @@ void Stack::nextTurn()
     {
       (*it)->resetMoves();
       // TODO: should be moved in a more appropriate place => class Player
-      if (d_player)
-	d_player->withdrawGold((*it)->getUpkeep());
+      if (d_owner)
+	d_owner->withdrawGold((*it)->getUpkeep());
       (*it)->heal();
     }
 
@@ -430,10 +406,10 @@ bool Stack::save(XML_Helper* helper) const
 
   retval &= helper->openTag("stack");
   retval &= helper->saveData("id", d_id);
-  if (d_player)
-    retval &= helper->saveData("player", d_player->getId());
+  if (d_owner)
+    retval &= helper->saveData("owner", d_owner->getId());
   else
-    retval &= helper->saveData("player", -1);
+    retval &= helper->saveData("owner", -1);
   retval &= helper->saveData("x", d_pos.x);
   retval &= helper->saveData("y", d_pos.y);
   retval &= helper->saveData("defending", d_defending);
@@ -466,7 +442,7 @@ bool Stack::load(std::string tag, XML_Helper* helper)
   if (tag == "army")
     {
       Army* a = new Army(helper);
-      a->setPlayer(d_player);
+      a->setOwner(d_owner);
       push_back(a);
 
       return true;
@@ -475,7 +451,7 @@ bool Stack::load(std::string tag, XML_Helper* helper)
   if (tag == "hero")
     {
       Hero* h = new Hero(helper);
-      h->setPlayer(d_player);
+      h->setOwner(d_owner);
       push_back(h);
 
       return true;
@@ -610,8 +586,8 @@ Uint32 getFightOrder(std::list<Uint32> values, Uint32 value)
 
 bool Stack::armyCompareFightOrder (const Army *lhs, const Army *rhs)  
 {
-  std::list<Uint32> lhs_fight_order = lhs->getPlayer()->getFightOrder();
-  std::list<Uint32> rhs_fight_order = rhs->getPlayer()->getFightOrder();
+  std::list<Uint32> lhs_fight_order = lhs->getOwner()->getFightOrder();
+  std::list<Uint32> rhs_fight_order = rhs->getOwner()->getFightOrder();
   Uint32 lhs_rank = getFightOrder (lhs_fight_order, lhs->getType());
   Uint32 rhs_rank = getFightOrder (rhs_fight_order, rhs->getType());
   //if (lhs_rank == rhs_rank)

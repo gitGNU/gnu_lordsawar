@@ -104,7 +104,7 @@ void QuestMap::after_draw()
           case Quest::KILLARMYTYPE:
             draw_cities(false);
             //for each target draw a plus sign
-            draw_stacks(quest->getHero()->getPlayer(), targets);
+            draw_stacks(quest->getHero()->getOwner(), targets);
             break;
           case Quest::KILLHERO:
           case Quest::CITYSACK:

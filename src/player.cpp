@@ -434,8 +434,8 @@ void Player::kill()
     // single cities
     Citylist* cl = Citylist::getInstance();
     for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
-        if ((*it).getPlayer() == this)
-            (*it).setPlayer(Playerlist::getInstance()->getNeutral());
+        if ((*it).getOwner() == this)
+            (*it).setOwner(Playerlist::getInstance()->getNeutral());
 
     d_diplomatic_rank = 0;
     d_diplomatic_title = std::string("");

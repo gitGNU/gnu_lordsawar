@@ -429,7 +429,7 @@ void EditorBigMap::change_map_under_cursor()
 	    // first stack, it's above everything else
 	    if (Stack* s = Stacklist::getObjectAt(tile))
 	    {
-		s->getPlayer()->deleteStack(s);
+		s->getOwner()->deleteStack(s);
 		break;
 	    }
 	    
@@ -488,18 +488,18 @@ void EditorBigMap::change_map_under_cursor()
 		  {
 		    Citylist *clist = Citylist::getInstance();
 		    City *c = clist->getNearestCity(s->getPos());
-			if (s->getPlayer() != c->getPlayer())
+			if (s->getOwner() != c->getOwner())
 			  {
 			    //remove it from the old player's list of stacks
-			    s->getPlayer()->getStacklist()->remove(s);
+			    s->getOwner()->getStacklist()->remove(s);
 			    //and give it to the new player list of stacks
-			    c->getPlayer()->getStacklist()->push_back(s);
+			    c->getOwner()->getStacklist()->push_back(s);
 			    //change the ownership of the stack
-			    s->setPlayer(c->getPlayer());
+			    s->setOwner(c->getOwner());
 			    //and all of it's armies
 			    for (Stack::iterator it = s->begin(); 
 				 it != s->end(); it++)
-			      (*it)->setPlayer(c->getPlayer());
+			      (*it)->setOwner(c->getOwner());
 			  }
 	          }
 	    }
@@ -528,7 +528,7 @@ void EditorBigMap::change_map_under_cursor()
 	    
 	    // create the city
 	    City c(tile);
-	    c.setPlayer(Playerlist::getInstance()->getNeutral());
+	    c.setOwner(Playerlist::getInstance()->getNeutral());
 	    Citylist::getInstance()->push_back(c);
 
 	    bool replaced_grass = false;
@@ -553,18 +553,18 @@ void EditorBigMap::change_map_under_cursor()
 						      c.getPos().y + y);
 		    if (s)
 		      {
-			if (s->getPlayer() != c.getPlayer())
+			if (s->getOwner() != c.getOwner())
 			  {
 			    //remove it from the old player's list of stacks
-			    s->getPlayer()->getStacklist()->remove(s);
+			    s->getOwner()->getStacklist()->remove(s);
 			    //and give it to the new player list of stacks
-			    c.getPlayer()->getStacklist()->push_back(s);
+			    c.getOwner()->getStacklist()->push_back(s);
 			    //change the ownership of the stack
-			    s->setPlayer(c.getPlayer());
+			    s->setOwner(c.getOwner());
 			    //and all of it's armies
 			    for (Stack::iterator it = s->begin(); 
 				 it != s->end(); it++)
-			      (*it)->setPlayer(c.getPlayer());
+			      (*it)->setOwner(c.getOwner());
 			  }
 		      }
 		  }

@@ -184,11 +184,11 @@ void BuyProductionDialog::set_buy_button_state()
 	can_buy = false;
     else
     {
-	int gold = city->getPlayer()->getGold();
+	int gold = city->getOwner()->getGold();
 	const Army *a = army_id_to_army();
 	
 	if (int(a->getProductionCost()) > gold ||
-	    city->hasProduction(selected_army, city->getPlayer()->getArmyset()))
+	    city->hasProduction(selected_army, city->getOwner()->getArmyset()))
 	    can_buy = false;
     }
     

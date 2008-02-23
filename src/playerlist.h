@@ -22,116 +22,213 @@
 
 #include "player.h"
 
-/** List of all players of a scenario
-  * 
-  * The playerlist is also implemented as a singleton function. The currently
-  * active player is designated, you can access players by name or id and the
-  * playerlist can check if there are more than one player remaining alive.
-  */
+/** 
+ * A list of all players in a scenario.
+ * 
+ * The Playerlist is implemented as a singleton class. The currently
+ * active player is designated, you can access players by name or id and the
+ * playerlist can check if there are more than one player remaining alive.
+ * This class also holds methods that affect all players.
+ */
 
 class Playerlist : public std::list<Player*>, public sigc::trackable
 {
     public:
 
-        //! Gets the singleton instance or creates a new one
+        //! Gets the singleton instance or creates a new one.
         static Playerlist* getInstance();
 
-        //! Loads the playerlist (including all players)
+	/**
+	 * Load all Players in the Playerlist from a saved-game file.
+	 *
+	 * @param helper     The opened saved-game file to read from.
+	 *
+	 * @return The loaded Playerlist.
+	 */
+        //! Loads the playerlist from a saved-game file.
         static Playerlist* getInstance(XML_Helper* helper);
 
-        //! Explicitely deletes the singleton instance
+        //! Explicitly deletes the singleton instance.
         static void deleteInstance();
 
-        //! Returns the active player of the singleton instance
+        //! Returns the active player (the Player whose turn it is).
         static Player* getActiveplayer() {return d_activeplayer;}
         
-        //! Returns whether the game has been finished. I didn't know a better place...
+        //! Returns whether all of the players are finished playing the game.
         static bool isFinished() {return s_finish;}
 
-        //! set the game to a finished state
+        //! Set whether or not all players are finished the game.
         static void finish() {s_finish = true;}
         
-        //! Sets the active player to the next player in the order
+        //! Sets the active player to the next player in the order.
         void nextPlayer();
 
-        /** Checks if a player has died (==doesn't own a city). If so, it
-          * marks the player as killed, so he is ignored the next time.
-	  * Returns whether or not any players were marked as dead.
-          */
+        /** 
+	 * Checks if a player is alive and has no cities left. If not then 
+	 * this method marks the player as killed.
+	 *
+	 * @param Returns whether or not any players were marked as dead.
+         */
+	//! Kill any players that don't have cities left.
         bool checkPlayers();
 
-        /** Sets the neutral player. Though the neutral player is located in the
-          * list of existing players, it is handled in a special way. His colors
-          * are e.g. used for stacks not owned by a player (such as monsters
-          * infesting ruins), which is why we keep track of the neutral player
-          * with a special pointer.
-          *
-          * @param neutral          the new neutral player
-          */
+        /** 
+	 * Though the neutral player is located in the list of existing 
+	 * players, it is handled in a special way in many different cases.
+	 *
+	 * There can only be one neutral player per Playerlist.
+         *
+         * @param neutral          The new neutral player.
+         */
+	//! Set the neutral player.
         void setNeutral(Player* neutral) {d_neutral = neutral;}
 
-        //! Returns the neutral player
+        //! Returns the neutral player.
         Player* getNeutral() const {return d_neutral;}
 
-        //! Returns player named "name" or none if not existent
+	/**
+	 * Scan the list of players for a Player with a given name.
+	 *
+	 * @param name      The name of the Player to lookup.
+	 *
+	 * @return A pointer to the Player if it is found, or NULL if it isn't.
+	 */
+	//! Lookup a Player by it's name.
         Player* getPlayer(std::string name) const;
 
-        //! Returns player with the specified id or none if not existent
+	/**
+	 * Scan the list of players for a Player with a given Id.
+	 *
+	 * @param id        The id of the Player to lookup.
+	 *
+	 * @return A pointer to the Player if it is found, or NULL if it isn't.
+	 */
+        //! Lookup a Player by it's Id.
         Player* getPlayer(Uint32 id) const;
 
-        //! Returns the number of living players (neutral player excluded)
-        int getNoOfPlayers() const;
+        //! Returns the number of living players (neutral player excluded.)
+        Uint32 getNoOfPlayers() const;
 
-        /** Returns the first player alive (needed to determine the begin of
-          * a new round).
-          */
+        /** 
+	 * Scan the list of players for the first Player that is alive.
+	 * This method is used to determine the beginning of a round.
+	 *
+	 * @return A pointer to the first living Player.
+         */
+	//! Return the first living Player in the list.
         Player* getFirstLiving() const;
-        
 
-	/** Replace old_player with new_player everywhere.
+	/** 
+	 * Swap out a player from the list and replace it with a new one.
+	 * Specical care is taken to remove all references to the original
+	 * player and replace it with a reference to the new player.
+	 *
+	 * The purpose of this method is to change a human player into a
+	 * computer player and vice-versa.
+	 *
+	 * @param old_player   A pointer to the player to replace.
+	 * @param new_player   A pointer to the new player to replace the 
+	 *                     original player.
 	 */
+	//! Replace a Player in the list with a new Player.
 	void swap(Player *old_player, Player *new_player);
         
-        //! Saves the playerlist. See XML_Helper for further docu.
+        //! Saves the playerlist to an opened saved-game file.
         bool save(XML_Helper* helper) const;
 
-        /** Erase an item. This needs to be implemented, because we have to free
-          * the pointer. Else it behaves like the STL erase member functions.
-          */
+        /** 
+	 * Erase a Player from the list, and free the contents of the Player.
+	 *
+	 * @param it   The place in the Playerlist to erase.
+	 *
+	 * @return The place in the list that was erased.
+         */
+	//! Erase a player from the list.
         iterator flErase(iterator it);
 
-        //! This signal is emitted when a player has died.
-        sigc::signal<void, Player*> splayerDead;
-    
-        //! This signal is emitted when a surrender is offered
-        sigc::signal<void, Player*> ssurrender;
-    
+	/**
+	 * This method is called when a round starts.
+	 * The purpose of this method is to calculate who is winning, and 
+	 * it to negotiate diplomacy between players.  This method also 
+	 * implements the computer players collectively surrendering to a 
+	 * final human player.
+	 *
+	 * @param diplomacy     Whether or not we should negotiate diplomacy
+	 *                      between players.
+	 * @param surrender_already_offered Tells the method if surrender
+	 *                      has already been offered by the computer
+	 *                      players.  This needs to be kept track of
+	 *                      because the computer players only offer
+	 *                      surrender once.  The method will change this
+	 *                      value from false to true if it decided that 
+	 *                      the computer players collectively offer 
+	 *                      surrender.
+	 */
+	//! Callback method to process all players at the start of a round.
 	void nextRound(bool diplomacy, bool *surrender_already_offered);
 
+	//! Return the number of human players left alive in the list.
 	Uint32 countHumanPlayersAlive();
-	Uint32 countPlayersAlive(); //does not include neutral player
 
+	//! Return the number of players left alive, not including neutral.
+	Uint32 countPlayersAlive();
+
+	/**
+	 * The purpose of randomzing the Playerlist is to implement
+	 * random turns.
+	 */
+	//! Randomize the order of the players in the list.
 	void randomizeOrder();
 
+	/**
+	 * This method takes care of giving a player it's diplomatic
+	 * ranking among all other players.  The rank is determined by 
+	 * adding up all of the diplomatic scores, and then sorting them.
+	 * Each rank has a title.  There is always a Player who has the 
+	 * title of `Statesman', and there is always a Player who has the 
+	 * title of `Running Dog'.  The other titles disappear as the other 
+	 * players die off.
+	 */
+	//! Figure out who's winning diplomatically.
         void calculateDiplomaticRankings();
 
+	/**
+	 * @param player  The player who has died.
+	 */
+        //! Emitted when a player has died.
+        sigc::signal<void, Player*> splayerDead;
+    
+	/**
+	 * Emitted when the computer players collectively offer surrender to 
+	 * a single remaining human player.
+	 *
+	 * @param player  The human player who is being surrendered to.
+	 */
+        //! Emitted when a surrender is offered.
+        sigc::signal<void, Player*> ssurrender;
+    
     protected:
-        // CREATORS
+	//! Default constructor.
         Playerlist();
+	//! Loading constructor.
         Playerlist(XML_Helper* helper);
+	//! Destructor.
         ~Playerlist();
         
     private:
-        //! Callback for loading the playerlist.
+        //! Callback for loading the playerlist from an opened saved-game file.
         bool load(std::string, XML_Helper* helper);
 
+	//! Comparison function to assist in sorting the list of players.
 	static bool randomly(const Player *lhs, const Player *rhs);
 
-	//! end of round stuff
+	//! Calculate new scores for all players.
         void calculateWinners();
+
+	//! Calculate new diplomatic states for all players.
 	void negotiateDiplomacy();
 
-        //static pointers for the singleton
+        //! static pointer for the singleton instance.
         static Playerlist* s_instance;
         
         // DATA

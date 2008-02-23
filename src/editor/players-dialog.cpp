@@ -215,7 +215,7 @@ void PlayersDialog::run()
 
 		Citylist* cl = Citylist::getInstance();
 		for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-		    if (it->getPlayer() == player)
+		    if (it->getOwner() == player)
 			it->conquer(neutral);
 
 		delete player;

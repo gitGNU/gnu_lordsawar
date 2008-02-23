@@ -457,7 +457,7 @@ bool CreateScenario::distributePlayers()
                 pit++;
         }
         else
-            (*cit).setPlayer(pl->getNeutral());
+            (*cit).setOwner(pl->getNeutral());
 
     }
 
@@ -484,7 +484,7 @@ bool CreateScenario::setupCities(bool quick_start,
         //3. set the city production
         (*it).setRandomArmytypes(cities_can_produce_allies, 
 				 number_of_armies_factor);
-        if ((*it).getPlayer() == Playerlist::getInstance()->getNeutral())
+        if ((*it).getOwner() == Playerlist::getInstance()->getNeutral())
         {
             switch (GameScenario::s_neutral_cities)
               {

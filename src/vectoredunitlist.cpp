@@ -117,7 +117,7 @@ void VectoredUnitlist::nextTurn(Player* p)
       c = cl->getObjectAt((*it)->getPos());
       if (c)
 	{
-	  if (c->getPlayer() == p)
+	  if (c->getOwner() == p)
 	    {
 	      if ((*it)->nextTurn() == true)
 		{

@@ -29,7 +29,7 @@
 sigc::signal<void, Army*> Army::sdying;
 
 Army::Army(const Army& a, Player* p)
-    :d_type(a.d_type), d_armyset(a.d_armyset), d_pixmap(0),
+    :Ownable(p), d_type(a.d_type), d_armyset(a.d_armyset), d_pixmap(0),
      d_mask(0), d_name(a.d_name), d_description(a.d_description), 
      d_production(a.d_production),
      d_production_cost(a.d_production_cost), d_upkeep(a.d_upkeep),
@@ -40,7 +40,7 @@ Army::Army(const Army& a, Player* p)
      d_sight(a.d_sight),
      d_xp_value(a.d_xp_value), d_move_bonus(a.d_move_bonus),
      d_army_bonus(a.d_army_bonus), d_ship(a.d_ship), d_gender(a.d_gender), 
-     d_player(p), d_id(a.d_id), d_hp(a.d_hp), d_moves(a.d_moves), d_xp(a.d_xp),
+     d_id(a.d_id), d_hp(a.d_hp), d_moves(a.d_moves), d_xp(a.d_xp),
      d_level(a.d_level), d_grouped(a.d_grouped),
      d_battles_number(a.d_battles_number), d_number_hashit(a.d_number_hashit),
      d_number_hasbeenhit(a.d_number_hasbeenhit), 
@@ -63,7 +63,7 @@ Army::Army(const Army& a, Player* p)
 }
 
 Army::Army()
-  :d_pixmap(0), d_mask(0), d_name("Untitled"), d_description(""),
+  :Ownable((Player *)0), d_pixmap(0), d_mask(0), d_name("Untitled"), d_description(""),
     d_production(0), d_production_cost(0), d_upkeep(0), d_strength(0),
     d_max_hp(0), d_max_moves(0), d_max_moves_multiplier(1), d_sight(0), 
     d_gender(NONE), d_level(1), d_defends_ruins(false), d_awardable(false), 
@@ -72,11 +72,10 @@ Army::Army()
 }
 
 Army::Army(XML_Helper* helper, enum ArmyContents contents)
-  :d_pixmap(0), d_mask(0), d_name(""), d_description(""), d_ship(false),
-   d_gender(NONE), d_player(0), 
-   d_id(0), d_xp(0), d_level(1), d_grouped(true),
-   d_number_hashit(0), d_number_hasbeenhit(0), d_defends_ruins(false),
-   d_awardable(false), d_hero(false)
+  :Ownable((XML_Helper*) 0), d_pixmap(0), d_mask(0), d_name(""), 
+    d_description(""), d_ship(false), d_gender(NONE), d_id(0), d_xp(0), 
+    d_level(1), d_grouped(true), d_number_hashit(0), d_number_hasbeenhit(0), 
+    d_defends_ruins(false), d_awardable(false), d_hero(false)
 {
     d_max_hp = 2;
     d_visitedTemples.clear();
@@ -220,7 +219,7 @@ SDL_Surface* Army::getPixmap() const
     
     //use the GraphicsCache to get a picture of the army's armyset_army
     return GraphicsCache::getInstance()->getArmyPic(d_armyset, d_type,
-                                         d_player, d_medal_bonus);
+                                         d_owner, d_medal_bonus);
 }
 
 Uint32 Army::getStat(Stat stat, bool modified) const
@@ -266,7 +265,7 @@ void Army::resetMoves()
 bool Army::bless()
 {
   bool visited = false;
-  Stack *stack = d_player->getStacklist()->getActivestack();
+  Stack *stack = d_owner->getStacklist()->getActivestack();
   Temple* temple = Templelist::getInstance()->getObjectAt(stack->getPos());
 
   if (!temple)
@@ -528,7 +527,7 @@ void Army::copyVals(const Army* a)
     d_defends_ruins = a->getDefendsRuins();
     d_awardable = a->getAwardable();
     d_visitedTemples = a->d_visitedTemples;
-    d_player = a->d_player;
+    setOwner(a->getOwner());
     d_hero = a->d_hero;
 }
 

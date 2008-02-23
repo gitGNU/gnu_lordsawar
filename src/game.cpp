@@ -244,7 +244,7 @@ void Game::update_sidebar_stats()
     s.income = s.cities = 0;
     for (Citylist::iterator i = Citylist::getInstance()->begin(),
 	     end = Citylist::getInstance()->end(); i != end; ++i)
-	if (i->getPlayer() == player)
+	if (i->getOwner() == player)
 	{
 	    s.income += i->getGold();
 	    ++s.cities;
@@ -534,8 +534,8 @@ void Game::stackDied(Stack* s)
 Army::Stat Game::newLevelArmy(Army* a)
 {
   // don't show a dialog if computer or enemy's armies advance
-  if ((a->getPlayer()->getType() != Player::HUMAN) ||
-      (a->getPlayer() != Playerlist::getInstance()->getActiveplayer()))
+  if ((a->getOwner()->getType() != Player::HUMAN) ||
+      (a->getOwner() != Playerlist::getInstance()->getActiveplayer()))
     return Army::STRENGTH;
 
   return army_gains_level.emit(a);
@@ -544,9 +544,9 @@ Army::Stat Game::newLevelArmy(Army* a)
 void Game::newMedalArmy(Army* a)
 {
   // We don't want to have medal awards of computer players displayed
-  if (!a->getPlayer()
-      || (a->getPlayer()->getType() != Player::HUMAN)
-      || a->getPlayer() != Playerlist::getInstance()->getActiveplayer())
+  if (!a->getOwner()
+      || (a->getOwner()->getType() != Player::HUMAN)
+      || a->getOwner() != Playerlist::getInstance()->getActiveplayer())
     return;
 
   medal_awarded_to_army.emit(a);
@@ -563,7 +563,7 @@ void Game::on_city_queried (City* c, bool brief)
 {
   if (c)
     {
-      Player *player = c->getPlayer();
+      Player *player = c->getOwner();
 
       if (brief)
 	{
@@ -687,7 +687,7 @@ void Game::looting_city(City* city, int &gold)
   Citylist *clist = Citylist::getInstance();
   Playerlist *plist = Playerlist::getInstance();
   Player *attacker = plist->getActiveplayer();
-  Player *defender = city->getPlayer();
+  Player *defender = city->getOwner();
   int amt = (defender->getGold() / (2 * clist->countCities (defender)) * 2);
   // give (Enemy-Gold/(2Enemy-Cities)) to the attacker 
   // and then take away twice that from the defender.
@@ -708,19 +708,19 @@ void Game::invading_city(City* city)
 
   // See if this is the last city for that player, and alter the 
   // diplomatic scores.
-  if (Citylist::getInstance()->countCities(city->getPlayer()) == 1)
+  if (Citylist::getInstance()->countCities(city->getOwner()) == 1)
     {
-      if (city->getPlayer()->getDiplomaticRank() < 
+      if (city->getOwner()->getDiplomaticRank() < 
 	  player->getDiplomaticRank())
 	player->deteriorateDiplomaticRelationship (2);
-      else if (city->getPlayer()->getDiplomaticRank() > 
+      else if (city->getOwner()->getDiplomaticRank() > 
 	  player->getDiplomaticRank())
-	player->improveDiplomaticRelationship (2, city->getPlayer());
+	player->improveDiplomaticRelationship (2, city->getOwner());
     }
 
   // loot the city
   // if the attacked city isn't neutral, loot some gold
-  if (city->getPlayer() != plist->getNeutral())
+  if (city->getOwner() != plist->getNeutral())
     looting_city (city, gold);
 
   if (!input_locked)
@@ -1062,7 +1062,7 @@ void Game::maybeRecruitHero (Player *p)
 	  std::vector<City*> cities;
 	  Citylist* cl = Citylist::getInstance();
 	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-	    if (!(*it).isBurnt() && (*it).getPlayer() == p)
+	    if (!(*it).isBurnt() && (*it).getOwner() == p)
 	      cities.push_back(&(*it));
 	  if (cities.empty())
 	    return;
@@ -1076,7 +1076,7 @@ void Game::maybeRecruitHero (Player *p)
 	  item->fillData(newhero, city);
 	  p->getHistorylist()->push_back(item);
 
-	  newhero->setPlayer(p);
+	  newhero->setOwner(p);
 
 	  int alliesCount;
 	  GameMap::getInstance()->addArmy(city, newhero);
@@ -1280,8 +1280,8 @@ void Game::on_player_died(Player *player)
 
 void Game::on_fight_started(Fight &fight)
 {
-  Player* pd = (*(fight.getDefenders().begin()))->getPlayer();
-  Player* pa = (*(fight.getAttackers().begin()))->getPlayer();
+  Player* pd = (*(fight.getDefenders().begin()))->getOwner();
+  Player* pa = (*(fight.getAttackers().begin()))->getOwner();
   if ((pa->getType() == Player::HUMAN || pd->getType() == Player::HUMAN) ||
       (pa->getType() != Player::HUMAN && pd->getType() != Player::HUMAN 
        && pd != Playerlist::getInstance()->getNeutral()))
@@ -1324,7 +1324,7 @@ void Game::center_view_on_city()
   for (Citylist::iterator i = Citylist::getInstance()->begin();
        i != Citylist::getInstance()->end(); i++)
     {
-      if (i->getPlayer() == p && i->isCapital() &&
+      if (i->getOwner() == p && i->isCapital() &&
 	  i->getCapitalOwner() == p)
 	{
 	  smallmap->center_view(i->getPos(), 
@@ -1337,7 +1337,7 @@ void Game::center_view_on_city()
   for (Citylist::iterator i = Citylist::getInstance()->begin();
        i != Citylist::getInstance()->end(); i++)
     {
-      if (i->getPlayer() == p)
+      if (i->getOwner() == p)
 	{
 	  if (Playerlist::isFinished())
 	    return;
@@ -1363,7 +1363,7 @@ void Game::unselect_active_stack()
 
 bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
 {
-  Player *me = stack->getPlayer();
+  Player *me = stack->getOwner();
   bool treachery = me->treachery (stack, them, pos);
   if (treachery == false)
     return false;
@@ -1419,7 +1419,7 @@ void Game::on_city_fight_finished(City *city, Fight::Result result)
       //if this is a neutral city, and we're playing with 
       //active neutral cities, AND it hasn't already been attacked
       //then it's production gets turned on
-      Player *neu = city->getPlayer(); //neutral player
+      Player *neu = city->getOwner(); //neutral player
       if (GameScenario::s_neutral_cities == GameParameters::ACTIVE &&
 	  neu == Playerlist::getInstance()->getNeutral() &&
 	  city->getProductionIndex() == -1)

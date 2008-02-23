@@ -28,7 +28,7 @@ Threat::Threat(City *c)
     :d_city(c), d_ruin(0), d_danger(0)
 {
     d_stacks = new Stacklist();
-    d_player = d_city->getPlayer();
+    d_player = d_city->getOwner();
 }
 
 Threat::Threat(Stack *s)
@@ -36,7 +36,7 @@ Threat::Threat(Stack *s)
 {
     d_stacks = new Stacklist();
     d_stacks->push_front(s);
-    d_player = s->getPlayer();
+    d_player = s->getOwner();
 }
 
 Threat::Threat(Ruin *r)
@@ -101,7 +101,7 @@ float Threat::strength() const
 {
     // neutral cities pose no threat
     if (d_city)
-        if (d_city->getPlayer() == Playerlist::getInstance()->getNeutral())
+        if (d_city->getOwner() == Playerlist::getInstance()->getNeutral())
             return 0.0;
     float score = 0.0;
     for (Stacklist::const_iterator it = d_stacks->begin();
@@ -117,7 +117,7 @@ float Threat::value() const
 {
     float score = 0.0;
     // if city has turned friendly, it is no longer a valuable target
-    if (d_city && d_city->getPlayer() == d_player && !d_city->isBurnt())
+    if (d_city && d_city->getOwner() == d_player && !d_city->isBurnt())
             score += 10.0;
     
     // if ruin has become searched, it is no longer valuable

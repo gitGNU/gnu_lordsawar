@@ -456,7 +456,7 @@ void MainWindow::set_random_map(int width, int height,
 	    {
 	    case Maptile::CITY:
 		Citylist::getInstance()->push_back(City(Vector<int>(i,j)));
-		(*Citylist::getInstance()->rbegin()).setPlayer(
+		(*Citylist::getInstance()->rbegin()).setOwner(
 		    Playerlist::getInstance()->getNeutral());
 		break;
 	    case Maptile::TEMPLE:

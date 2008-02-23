@@ -340,8 +340,8 @@ int AI_Allocation::defaultStackMovements()
 	      enemyCity = allCities->getNearestForeignCity(s->getPos());
 	      if (enemyCity)
 		{
-		  s->getPlayer()->proposeDiplomacy(Player::PROPOSE_WAR,
-						   enemyCity->getPlayer());
+		  s->getOwner()->proposeDiplomacy(Player::PROPOSE_WAR,
+						  enemyCity->getOwner());
 		  debug("let's attack " <<enemyCity->getName())
 		  result = moveStack(s, enemyCity->getPos());
 		  if (result && result->didSomething()) count++;
@@ -355,7 +355,7 @@ int AI_Allocation::defaultStackMovements()
                 // one we can lay our hands on.
                 debug("Mmmh, did not work.")
                 for (Citylist::iterator cit = allCities->begin(); cit != allCities->end(); cit++)
-                    if ((*cit).getPlayer() != d_owner)
+                    if ((*cit).getOwner() != d_owner)
                     {
                         debug("Let's try "<<(*cit).getName() <<" instead.")
                         result = moveStack(s, (*cit).getPos());

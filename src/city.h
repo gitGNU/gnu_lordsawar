@@ -18,6 +18,7 @@
 #include <list>
 #include <string>
 #include "Location.h"
+#include "Ownable.h"
 
 class Player;
 class Stack;
@@ -48,7 +49,7 @@ class Hero;
   */
 
 
-class City : public Location
+class City : public Ownable, public Location
 {
     public:
         /** Preferred constructor
@@ -68,9 +69,6 @@ class City : public Location
         //! Save the city status. See XML_Helper for info.
         bool save(XML_Helper* helper) const;
         
-        //! Set the player owning the city. Don't use this for conquering!!!
-        void setPlayer(Player* player){d_player = player;}
-
         //! Set the gold the city produces each turn
         void setGold(Uint32 gold){d_gold = gold;}
 
@@ -154,9 +152,6 @@ class City : public Location
         //! Get the number of basic productions of the city
         int getNoOfBasicProd();
 
-        //! Get the player owning the city
-        Player* getPlayer() const {return d_player;}
-
         //! Get the duration till the current production is finished
         int getDuration() const {return d_duration;}
 
@@ -180,9 +175,6 @@ class City : public Location
 
         //! Returns the original owner of this capital city
         Player *getCapitalOwner() const {return d_capital_owner;}
-
-        //! Returns whether the player is a "friend" (==owner) of the city
-        bool isFriend(Player* player) const;
 
         //! Set the point where the city will send the produced armies
         //(-1,-1) as argument will disable it
@@ -213,8 +205,6 @@ class City : public Location
 	void sortProduction();
 
         // DATA
-        Player* d_player;           // Owner
-        
         Army* d_basicprod[4];         // possible basic productions
 	//std::vector<Army*> d_basicprod;
         int d_numbasic;             // max number of possible basic productions
