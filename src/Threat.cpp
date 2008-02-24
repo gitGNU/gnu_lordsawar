@@ -25,22 +25,20 @@
 using namespace std;
 
 Threat::Threat(City *c)
-    :d_city(c), d_ruin(0), d_danger(0)
+    :Ownable(*c), d_city(c), d_ruin(0), d_danger(0)
 {
     d_stacks = new Stacklist();
-    d_player = d_city->getOwner();
 }
 
 Threat::Threat(Stack *s)
-    :d_city(0), d_ruin(0), d_danger(0)
+    :Ownable(*s), d_city(0), d_ruin(0), d_danger(0)
 {
     d_stacks = new Stacklist();
     d_stacks->push_front(s);
-    d_player = s->getOwner();
 }
 
 Threat::Threat(Ruin *r)
-    :d_city(0), d_ruin(r), d_player(0), d_danger(0)
+    :Ownable((Player *)0), d_city(0), d_ruin(r), d_danger(0)
 {
     d_stacks = new Stacklist();
 }
@@ -54,7 +52,7 @@ std::string Threat::toString() const
 {
     if (d_city)
     {
-        return d_city->getName() + " owned by " + d_player->getName();
+        return d_city->getName() + " owned by " + d_owner->getName();
     }
     else if (d_ruin)
     {
@@ -62,13 +60,13 @@ std::string Threat::toString() const
     }
     else
     {
-        return "stack owned by " + d_player->getName();
+        return "stack owned by " + d_owner->getName();
     }
 }
 
 bool Threat::Near(Vector<int> pos, Player *p) const
 {
-    if (p != d_player)
+    if (p != d_owner)
         return false;
 
     if (d_city)
@@ -117,7 +115,7 @@ float Threat::value() const
 {
     float score = 0.0;
     // if city has turned friendly, it is no longer a valuable target
-    if (d_city && d_city->getOwner() == d_player && !d_city->isBurnt())
+    if (d_city && d_city->getOwner() == d_owner && !d_city->isBurnt())
             score += 10.0;
     
     // if ruin has become searched, it is no longer valuable

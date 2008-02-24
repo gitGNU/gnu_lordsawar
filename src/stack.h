@@ -30,10 +30,8 @@ class Path;
 class Army;
 class XML_Helper;
 
+//! A set of up to eight Army units that move as a single entity on the map.
 /** 
- * A set of up to eight Army units that move around as a single entity on the
- * game map.
- * 
  * While Army units are the actual troops you command, they always belong to a
  * stack. The stack holds these armies together in one object. The player
  * usually doesn't command the armies but the stack, so all functionality and
@@ -56,7 +54,7 @@ class Stack : public ::Object, public Ownable, public std::list<Army*>, public s
 
 	/**
 	 * Copy the whole stack into a new stack.  This method performs a 
-	 * deep copy of the stack's armies.
+	 * deep copy of the stack's Army units.
 	 */
         //! Copy constructor.
         Stack(Stack& s);
@@ -137,10 +135,10 @@ class Stack : public ::Object, public Ownable, public std::list<Army*>, public s
         //! Returns the Path object of the stack.
         Path* getPath() const {return d_path;}
 
-        //! Returns the minimum number of movement points of all armies.
+        //! Returns the minimum number of movement points of all Army units.
         Uint32 getGroupMoves() const;
 
-	//! Returns true if all armies in the stack are grouped.
+	//! Returns true if all Army units in the stack are grouped.
 	bool isGrouped();
 
 	/**
@@ -193,63 +191,161 @@ class Stack : public ::Object, public Ownable, public std::list<Army*>, public s
 	// Return the Ids of all of the Hero units in the Stack.
         void getHeroes(std::vector<Uint32>& dst) const;
 
-        //! Return the defending status of the stack (see setDefending)
+        //! Return the defending status of the stack.
         bool getDefending() const {return d_defending;}
-        //! Return the parked status of the stack (see setParked)
+
+        //! Return the parked status of the stack.
         bool getParked() const {return d_parked;}
 
-        //! Returns whether the stack is being deleted (set to true in the destructor)
+        //! Returns whether the stack is being deleted.
         bool getDeleting() const {return d_deleting;}
 
-        //! Return the maximum sight of the stack
+        //! Return the maximum sight of the stack.
         Uint32 getMaxSight() const;
 
-
-        //! The same as std::list::clear, but alse frees pointers
+        //! Erase the stack, deleting the Army units too.
         void flClear();
 
-        //! The same as std::list::erase, but also frees pointers
+        /** 
+	 * Erase an Army unit from the Stack, and free the contents of 
+	 * the Army unit too (e.g. Items a Hero might be carrying).
+	 *
+	 * @param it   The place in the Stack to erase.
+	 *
+	 * @return The place in the stack that was erased.
+         */
+	//! Erase an Army unit from the list.
         iterator flErase(iterator object);
 
-       /** Calculates group move bonuses.
-          *
-          */
+       /** 
+	* Determine which terrain kinds (Tile::Type) the Stack can travel 
+	* efficiently on.  When one Army unit is good at traveling through 
+	* the forest, and another in the same stack is good at traveling 
+	* through the hills, the movement capabilities of each individual 
+	* army is given to the other Army units in the Stack.  This means 
+	* the whole stack can move well through hills and forest.
+	* Traveling efficently on a tile means it takes 2 movement points
+	* to traverse.
+	*
+	* The calculation also takes into account a movement-changing Item
+	* that the Hero may be carrying (e.g. `Wings of Flying', or 
+	* `Swamp Boots').
+	*
+	* This calculation also lets Hero units `ride' flying Army units;
+	* meaning that the Hero doesn't have the ability to fly, but it
+	* has the special ability to ride on the back of another flying
+	* Army unit.
+	*
+	* @return A bitwise OR-ing of the values in Tile::Type.
+        */
+	//! Calculate the move bonus for the Stack.
         Uint32 calculateMoveBonus() const;
+
+	//! Calculate if the Stack has the gift of flight.
         bool isFlying () const;
+
+	//! Calculate if the Stack is in a boat.
         bool hasShip () const;
 
-	//! how much does it cost in movement points for the stack
-	//to move to move onto a tile that has the characteristics of the
-	//tile located at POS. (this is not a distance calculation)
+	/**
+	 * Calculate the number of movement points it costs for the Stack
+	 * to move to an adjacent tile.
+	 *
+	 * @note This is not a distance calculation.
+	 *
+	 * @param pos    The adjacent tile to calculate the movement points for.
+	 *
+	 * @return The number of movement points, or -1 if moving to the
+	 *         adjacent tile is impossible.
+	 */
+	//! Return the movement points it costs to travel to an adjacent tile.
 	Uint32 calculateTileMovementCost(Vector<int> pos) const;
 
-        sigc::signal<void, Stack*> sdying;
-
+	//! Set each Army unit in the Stack to a grouped state.
 	void group();
+
+	//! Set all armies in the Stack except the first one to be ungrouped.
 	void ungroup();
+
+	/**
+	 * Alter the order of the Army units in the stack according to each
+	 * unit's groupedness, and fight order.
+	 *
+	 * The purpose of this sorting is to show the units in the stack
+	 * info window.
+	 *
+	 * @param reverse     Invert the sort.
+	 */
+	//! Sort the Army units in the stack.
 	void sortForViewing(bool reverse);
+
+	//! Set all Army units in the stack to have this fortified state.
 	void setFortified(bool fortified);
+
+	//! Return true if any of the Army units in the stack are fortified.
 	bool getFortified();
+	
+	//! Calculate the number of gold pieces this stack costs this turn.
 	Uint32 getUpkeep();
         
-	static bool armyCompareFightOrder (const Army *, const Army *);
+	/**
+	 * This comparator function compares the fight order of two Army units.
+	 *
+	 * @param left    An army that we want to sort by fight order.
+	 * @param right   An army that we want to sort by fight order.
+	 *
+	 * @return True if the fight order of the left army is more than
+	 *         the fight order of the right army.
+	 */
+	//! Comparator function to assist in sorting the armies in the stack.
+	static bool armyCompareFightOrder (const Army *left, const Army *right);
+
+	//! Return the number of points the stack can move along it's path.
 	Uint32 getMovesExhaustedAtPoint() {return d_moves_exhausted_at_point;}
-	void setMovesExhaustedAtPoint(Uint32 index) {d_moves_exhausted_at_point = index;}
+
+	/**
+	 * Set the point at which the stack can't move along it's path.
+	 * If the first point in the stack's path cannot be moved to,
+	 * this method should return 0.  If the second point can't be moved 
+	 * to, then this method should return 1, etc.
+	 * 
+	 * The purpose of this method is to assist in drawing the waypoint
+	 * graphics.
+	 *
+	 * @param index   The index of the point in the stack's path that
+	 *                cannot be moved to.
+	 */
+	//! Set the number of points the stack can move along it's path.
+	void setMovesExhaustedAtPoint(Uint32 index) 
+	  {d_moves_exhausted_at_point = index;}
+
+	//! Emitted when a stack dies.
+        sigc::signal<void, Stack*> sdying;
+
     private:    
         //! Callback for loading the stack
         bool load(std::string tag, XML_Helper* helper);
     
+	//! Helper method for returning strongest army.
 	Army* getStrongestArmy(bool hero) const;
 
         // DATA
+	//! The stack's intended path.
         Path* d_path;
+	//! Whether or not the stack is defending.
         bool d_defending;
+	//! Whether or not the stack is parked.
         bool d_parked;
         
-        // true if the stack is currently being deleted. This is neccessary as
-        // some things may happen in the destructor of the contained armies and
-        // we don't want bigmap to draw the stack when it is being removed.
+	/**
+	 * True if the stack is currently being deleted. This is neccessary as
+	 * some things may happen in the destructor of the contained armies and
+	 * we don't want bigmap to draw the stack when it is being removed.
+	 */
+	//! Whether or not this stack is in the midst of being deleted.
         bool d_deleting;
+
+	//! The point in the stack's path that can't be reached.
 	Uint32 d_moves_exhausted_at_point;
 };
 

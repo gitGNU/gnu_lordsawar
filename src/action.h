@@ -32,26 +32,26 @@ class Ruin;
 class Temple;
 class XML_Helper;
 
-/** The purpose of the action classes is to keep track of what a player has
+//! A temporary record of an event during gameplay.
+/** 
+ * The purpose of the action classes is to keep track of what a player has
  * done. This information can be sent over the network, so that a networked 
  * player then just has to decode and repeat the remote player's actions so
  * that the game state is synchronised.
  * 
  * Each action item is derived from the abstract Action class. It must
- * contain three functions:
- *
- * - A loading constructor (which takes an XML_Helper parameter)
- * - a save function which saves the data
- * - a fillData function which takes some parameters and stores the
- *   pertinent data about what happened.
+ * contain three functions; A loading constructor (which takes an 
+ * XML_Helper parameter), a save function which saves the data to the
+ * XML file, and a fillData function which takes some parameters and 
+ * stores the pertinent data about what happened.
  *
  * Each Player has an Actionlist to which these actions belong.
  */
 
-
 class Action
 {
     public:
+	//! An Action can be one of the following kinds.
         enum Type {
 	        /** A stack has moved. */
                 STACK_MOVE = 1,
@@ -122,8 +122,10 @@ class Action
         };
                 
         
-	//! Make a new action of a particular Action::Type.
+	//! Default constructor.
         Action(Type type);
+
+	//! Destructor.
         virtual ~Action();
 
         //! Returns debug information. Needs to be overwritten by derivatives.
@@ -132,14 +134,16 @@ class Action
         //! Save function. See XML_Helper for information about saving.
         virtual bool save(XML_Helper* helper) const = 0;
         
-        /** static load function (see XML_Helper)
-          * 
-          * Whenever an action item is loaded, this function is called. It
-          * examines the stored id and calls the constructor of the appropriate
-          * action class.
-          *
-          * @param helper       the XML_Helper instance for the savegame
-          */
+        /** 
+	 * static load function (see XML_Helper)
+         * 
+         * Whenever an action item is loaded, this function is called. It
+         * examines the stored id and calls the constructor of the appropriate
+         * action class.
+         *
+         * @param helper       the XML_Helper instance for the savegame
+         */
+	//! Load the action from an opened saved-game file.
         static Action* handle_load(XML_Helper* helper);
 
         //! Make a new action from an existing one.
@@ -154,6 +158,7 @@ class Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a Stack moving.
 /**
  * The purpose of the Action_Move class is to record when a stack has
  * moved to a new position on the map.
@@ -182,13 +187,14 @@ class Action_Move : public Action
         Vector<int> d_dest;
 };
 
-class Action_Disband: public Action
-{
+//! A temporary record of a Stack being disbanded.
 /**
  * The purpose of the Action_Disband class is to record when a stack has
  * removed from the game.  Disbanding is done to primarily to save the 
  * gold pieces paid out every turn as upkeep for the Army units in the Stack.
  */
+class Action_Disband: public Action
+{
     public:
 	//! Make a new disband action.
         Action_Disband();
@@ -212,6 +218,7 @@ class Action_Disband: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a Stack being split into two.
 /**
  * The purpose of the Action_Split class is to record when a Stack has been
  * separated into two parts.  This happens when the Player groups only some
@@ -252,6 +259,7 @@ class Action_Split : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a fight between opposing Stack objects.
 /**
  * The purpose of the Action_Fight class is to record the results of a
  * fight between two Players.
@@ -289,6 +297,7 @@ class Action_Fight : public Action, public sigc::trackable
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of two Stack objects merging into one.
 /**
  * The purpose of the Action_Join class is to record a Stack has had 
  * another Stack merged into it.
@@ -323,6 +332,7 @@ class Action_Join : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of what happened when a Stack searched a Ruin.
 /**
  * The purpose of the Action_Ruin class is to record what happens when a
  * Stack containing a Hero attempts to search a Ruin.
@@ -361,6 +371,7 @@ class Action_Ruin : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of what happened when a Stack visited a Temple.
 /**
  * The purpose of the Action_Temple class is to record what happens when
  * a Stack visits a Temple.  The Stack may be getting blessed, or instead it
@@ -397,6 +408,7 @@ class Action_Temple : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of what happened when a Player occupied a City.
 /**
  * The purpose of the Action_Occupy class is to record when a Player has
  * defeated a City and has occupied it.  Ocuppying differs from sacking
@@ -428,6 +440,7 @@ class Action_Occupy : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of what happened when a Player pillaged a City.
 /**
  * The purpose of the Action_Pillage class is to record when a Player has
  * defeated a City and has pillaged it.  Pillaging a city results in the
@@ -459,6 +472,7 @@ class Action_Pillage : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of what happened when a Player sacked a City.
 /**
  * The purpose of the Action_Sack class is to record when a Player has
  * defeated a City and has sacked it.  Sacking a city results in all 
@@ -490,6 +504,7 @@ class Action_Sack : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of what happened when a Player razed a City.
 /**
  * The purpose of the Action_Raze class is to record when a Player has
  * defeated a City and has razed it.  Razing a city results in that
@@ -520,6 +535,7 @@ class Action_Raze : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of what happened when a City's defenses were increased.
 /**
  * The purpose of the Action_Upgrade class is to record when a Player has
  * improved the City's defenses.  This action is not currently used by 
@@ -550,6 +566,7 @@ class Action_Upgrade : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of more production being added to a City.
 /**
  * The purpose of the Action_Buy class is to record when a Player purchases
  * a new Army unit for production in a City.  When this happens the player
@@ -592,6 +609,7 @@ class Action_Buy : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a change in production strategy in a City.
 /**
  * The purpose of the Action_Production class is to record when the Player
  * changes the production of new Army units within a City.  The idea here
@@ -630,7 +648,7 @@ class Action_Production : public Action
 
 //-----------------------------------------------------------------------------
 
-
+//! A temporary record of a Player or Stack getting a Reward.
 /**
  * The purpose of the Action_Reward class is to record when the Player
  * has been given a Reward.
@@ -667,6 +685,7 @@ class Action_Reward : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a Hero initiating a new Quest.
 /**
  * The purpose of the Action_Quest class is to record when a Player's
  * Hero has gone to a Temple and initiated a new Quest.
@@ -699,6 +718,7 @@ class Action_Quest : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a Hero picking up or dropping an Item.
 /**
  * The purpose of the Action_Equip class is to record when a Player's Hero
  * has picked up an Item or dropped it onto the ground.  Heroes pick up
@@ -744,6 +764,7 @@ class Action_Equip : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a Hero gaining a new level.
 /**
  * The purpose of the Action_Level class is to record when a Player's Hero
  * advances a level and subsequently gains a stat.
@@ -781,6 +802,7 @@ class Action_Level : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a Player changing the contents of a Signpost.
 /**
  * The purpose of the Action_ModifySignpost is to record when a Signpost
  * has been altered by a player to have a different message on it.  The
@@ -813,6 +835,7 @@ class Action_ModifySignpost: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a Player changing the name of a City.
 /**
  * The purpose of the Action_RenameCity class is to record when a Player has
  * changed the name of a City.  The idea here is that a Player wants
@@ -844,6 +867,7 @@ class Action_RenameCity: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a Player changing vectoring strategies for a City.
 /**
  * The purpose of the Action_Vector class is to record when a Player has
  * changed the vectoring policy of a City.  The City's Army units can
@@ -881,6 +905,7 @@ class Action_Vector: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a Player changing the fight order of an Armyset.
 /**
  * The purpose of the Action_FightOrder action is to record when a Player
  * changes the order in which Army units fight in battle.
@@ -910,6 +935,7 @@ class Action_FightOrder: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a Player surrendering.
 /**
  * The purpose of the Action_Resign class is to record when a Player has
  * resigned from the game.  Because these actions are held in a Player's
@@ -937,6 +963,7 @@ class Action_Resign: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a Hero planting a standard into the ground.
 /**
  * The purpose of the Action_Plant class is to record when a Hero has 
  * planted a standard (e.g. a flag Item) into the ground, so that Army units
@@ -968,6 +995,7 @@ class Action_Plant: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a new Army unit showing up at a city.
 /**
  * The purpose of the Action_Produce class is to record when a new Army unit
  * is created.  The idea here is that a City has produced a new Army unit.
@@ -1018,6 +1046,7 @@ class Action_Produce: public Action
         
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a vectored Army unit showing up at a city.
 /**
  * The purpose of the Action_ProduceVectored class is to record when a new
  * vectored Army unit arrives at it's destination.  The idea here is that
@@ -1061,6 +1090,7 @@ class Action_ProduceVectored: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of the diplomatic state changing.
 /**
  * The purpose of the Action_DiplomacyState action is to record our
  * diplomatic state with other players has it changes.  The idea here is 
@@ -1105,6 +1135,7 @@ class Action_DiplomacyState: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of a diplomatic proposal.
 /**
  * The purpose of the Action_DiplomacyProposal action is to record our
  * diplomatic proposals to other players.  The idea here is that the player
@@ -1148,6 +1179,7 @@ class Action_DiplomacyProposal: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record of the diplomatic score.
 /**
  * The purpose of the Action_DiplomacyScore is to record when a Player's
  * diplomatic opinion of another Player has changed.  The idea here is that

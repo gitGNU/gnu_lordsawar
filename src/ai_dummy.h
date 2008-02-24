@@ -23,9 +23,8 @@
 
 class XML_Helper;
 
+//! A simple artificial intelligence Player suitable to be the neutral Player.
 /** 
- * Dummy AI player.
- * 
  * This class is a dummy AI used for the neutral player. It just does, well,
  * nothing.
  */

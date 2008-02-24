@@ -29,7 +29,7 @@ using namespace std;
 //#define debug(x)
 
 History::History(Type type)
-:d_type(type)
+:Ownable((Player *) 0), d_type(type)
 {
 }
 

@@ -23,9 +23,9 @@
 class Player;
 class XML_Helper;
 
+//! A game object that has an owner.
 /** 
  * An Ownable is a map object that can be owned by a Player.
- * This encompasses stacks and cities.
  */
 
 class Ownable
@@ -40,10 +40,14 @@ class Ownable
      //! Destructor.
     ~Ownable();
     
+    //! Return a pointer to the Player who owns an object.
     Player *getOwner() const {return d_owner;}
+
+    //! Set the Player who owns an object.
     void setOwner(Player *player){d_owner = player;}
 
-    bool isFriend (Player *opponent);
+    //! Return true if the player parameter matches the owner.
+    bool isFriend (Player *player);
 
  protected:
     Player *d_owner;

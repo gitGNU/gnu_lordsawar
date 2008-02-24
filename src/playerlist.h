@@ -22,9 +22,8 @@
 
 #include "player.h"
 
+//! A list of all of the Player objects in a scenario.
 /** 
- * A list of all players in a scenario.
- * 
  * The Playerlist is implemented as a singleton class. The currently
  * active player is designated, you can access players by name or id and the
  * playerlist can check if there are more than one player remaining alive.

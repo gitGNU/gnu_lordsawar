@@ -45,8 +45,8 @@ class Reward;
 class FogMap;
 class Signpost;
 
-/** The abstract player class.
- *
+//! The abstract player class.
+/** 
  * This class does not yet implement an actual player type. Its purpose is to
  * provide an abstract class design which every player implementation has to
  * fulfill. Of each player class we demand the following functionality:

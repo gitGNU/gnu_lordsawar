@@ -25,9 +25,8 @@
 class XML_Helper;
 
 
+//! A simple artificial intelligence Player.
 /** 
- * Simple AI
- *
  * This AI has two modes. In normal modes it basically assembles stacks of
  * 8 units each and sends them to the next city, reinforcing them in own cities
  * if neccessary. In maniac mode, however (meant for wandering monsters etc.),

@@ -180,7 +180,7 @@ void HistoryReportDialog::generatePastEventlists()
 		case History::DIPLOMATIC_TREACHERY:
 		case History::DIPLOMATIC_WAR:
 		case History::DIPLOMATIC_PEACE:
-		  (*hit[id])->setPlayer(*pit);
+		  (*hit[id])->setOwner(*pit);
 		  elist->push_back(*hit[id]);
 		  break;
 		case History::START_TURN:
@@ -442,7 +442,7 @@ void HistoryReportDialog::on_switch_page(GtkNotebookPage *page, guint number)
 void HistoryReportDialog::addHistoryEvent(History *event)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  Player *p = event->getPlayer();
+  Player *p = event->getOwner();
 
   Glib::ustring s = "";
   Gtk::TreeIter i = events_list->append();

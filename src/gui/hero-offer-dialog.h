@@ -33,7 +33,7 @@
 
 struct SDL_Surface;
 
-// dialog for accepting/rejecting a hero
+//! dialog for accepting/rejecting a hero
 class HeroOfferDialog: public sigc::trackable
 {
  public:
@@ -45,6 +45,7 @@ class HeroOfferDialog: public sigc::trackable
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
+    //! The smallmap that shows where the Hero is emerging.
     std::auto_ptr<HeroMap> heromap;
 
     Gtk::Image *map_image;

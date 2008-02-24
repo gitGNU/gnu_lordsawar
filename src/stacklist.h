@@ -26,9 +26,8 @@ class City;
 class Stack;
 class XML_Helper;
 
+//! A list of Stack objects for a single player.
 /** 
- * A list of stacks of a single player.
- *
  * All stacks owned by a Player are contained in a Stacklist.  This class
  * covers the loading and saving of stack lists, and also some methods for
  * getting and managing groups of stacks.

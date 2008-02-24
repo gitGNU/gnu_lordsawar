@@ -24,6 +24,7 @@
 class MoveResult;
 class XML_Helper;
 
+//! A local human Player.
 /** 
  * This class implements the abstract Player class in a reasonable manner
  * for local players. It is suitable for local human players, and AI players

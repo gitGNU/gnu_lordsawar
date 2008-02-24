@@ -206,7 +206,6 @@ class City : public Ownable, public Location
 
         // DATA
         Army* d_basicprod[4];         // possible basic productions
-	//std::vector<Army*> d_basicprod;
         int d_numbasic;             // max number of possible basic productions
 
         int d_production;           // number of produced armytype

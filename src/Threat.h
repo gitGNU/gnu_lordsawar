@@ -17,6 +17,7 @@
 
 #include <string>
 #include "vector.h"
+#include "Ownable.h"
 
 class City;
 class Stacklist;
@@ -47,7 +48,7 @@ class Ruin;
   * For more information about the smart AI, see ai_smart.h
   */
 
-class Threat
+class Threat: public Ownable
 {
     public:
         // CREATORS
@@ -111,13 +112,9 @@ class Threat
         //! Increase the danger of this threat 
         void addDanger(float danger) { d_danger += danger; }
 
-        //! return the player that causes this threat
-        Player *getPlayer() const { return d_player; }
-        
     private:
         City *d_city;
         Ruin *d_ruin;
-        Player *d_player;
         Stacklist *d_stacks;
         float d_danger;
 };

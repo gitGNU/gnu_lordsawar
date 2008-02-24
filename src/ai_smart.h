@@ -27,9 +27,8 @@ class Threat;
 class AI_Analysis;
 class XML_Helper;
 
+//! A more complex artificial intelligence Player.
 /** 
- * More advanced AI
- *
  * After examining if it buys additional production, this AI uses the classical
  * strategy technique of:
  * - analyse the game situation - this involves identifying stacks and cities as
