@@ -72,7 +72,7 @@ Itemlist::Itemlist()
 
 Itemlist::~Itemlist()
 {
-    fl_clear();
+    flClear();
 }
 
 bool Itemlist::loadItem(std::string tag, XML_Helper* helper)
@@ -86,16 +86,16 @@ bool Itemlist::loadItem(std::string tag, XML_Helper* helper)
     return true;
 }
 
-void Itemlist::fl_erase(iterator it)
+void Itemlist::flErase(iterator it)
 {
     delete (*it).second;
     erase(it);
 }
 
-void Itemlist::fl_clear()
+void Itemlist::flClear()
 {
     while (!empty())
-        fl_erase(begin());
+        flErase(begin());
 }
 
 bool Itemlist::save(XML_Helper* helper) const

@@ -23,78 +23,107 @@
 #include "Item.h"
 #include "player.h"
 
-/** A hero is a special army, as heroes are rather special, they have names, an
-  * inventory....
-  *
-  * The current hero implementation gives heroes a name and an inventory. The
-  * inventory is split into a backpack (items that are just carried around) and
-  * equipment (items that are active and provide a bonus). The class
-  * automatically overloads the getxxx (with xxx e.g. Strength) functions and
-  * adds all item boni to it. Note however that the stats can never drop below
-  * 1 (else we may have strange behaviour).
-  */
-
+//! A Hero unit capable of carrying items, searching ruins and going on quests.
+/** 
+ * The Hero class is just like the Army class except that the Hero gets
+ * it's name, and gender set, and it's Army:Stat statistics are augmented by 
+ * Item objects that are carried in a d_backpack.
+ *
+ * Heroes emerge in a City usually along with some powerful allies for a 
+ * certain amount of gold pieces.
+ *
+ * Heroes are special because they can get a new Quest from a Temple, and
+ * search Ruin objects.  They can pick up and drop Item objects, and can
+ * also plant standards into the ground.
+ *
+ * Heroes are also unique in that they can increase in experience levels.
+ */
 class Hero : public Army
 {
     public:
-        /** Standard constructor for creating a new hero
-          * 
-          * Copies the prototype hero and creates a hero from it.
-          */
+        /**
+	 * Copies the prototype hero and creates a hero from it.
+         */
+	//! Default constructor.
         Hero(const Army& a, std::string name, Player *owner);
 
-        /** Copy constructor
-          * 
-          * This also copies the hero's equipment etc. Don't use this to
-          * create new heroes!
-          */
+        /**
+         * This performs a deep copy, including the Hero's items.
+         */
+	//! Copy constructor.
         Hero(Hero& h);
 
-        /** Loading constructor. See XML_Helper as well.
-          * 
-          * @param helper           the XML_Helper instance of the savefile
-          */
+        /** 
+	 * @param helper   The opened saved-file to read the Hero from.
+	 */
+	//! Load a Hero from an opened saved-game file.
         Hero(XML_Helper* helper);
 
+	//! Destructor.
         ~Hero();
 
-        //! Saves the hero data
-        bool save(XML_Helper* helper, enum ArmyContents contents = Army::INSTANCE) const;
+        //! Saves the Hero to a saved-game file.
+        bool save(XML_Helper* helper, 
+		  enum ArmyContents contents = Army::INSTANCE) const;
         
-        /** Returns a stat of the hero. See also army.h
-          * 
-          * If modified is set to false, return the "raw", i.e. inherent
-          * value of the hero. Otherwise, all items are checked for a 
-          * bonus or malus.
-          */
-        Uint32 getStat(Army::Stat stat, bool modified=true) const;
+        /**
+	 * Returns a stat of the hero.  See Army::Stat, and Army::getStat.
+         * 
+         * If modified is set to false, return the "raw", i.e. inherent
+         * value of the hero. Otherwise, all items are checked for a 
+         * bonus.
+         */
+        Uint32 getStat(Army::Stat stat, bool modified = true) const;
 
-        //! Blesses the hero (strength+1, once per temple)
-	//! Returns whether or not the hero was blessed.
-        //bool bless();
-
-        //! Add an item to the backpack of the hero. Returns true on success
+        //! Add an Item to the backpack of the Hero.
+	/**
+	 * @param item      The Item to add to the d_backpack.
+	 * @param position  How deep into the backpack the Item is stored.
+	 *                  Subsequent Items get pushed down to make room.
+	 *                  This value starts at 0.
+	 *
+	 * This method is usually used to add an Item to the top of the
+	 * hero's backpack (e.g. position == 0).
+	 *
+	 * @return Always returns true.
+	 */
         bool addToBackpack(Item* item, int position);
+
+	//! Add an Item to the bottom of the hero's backpack. 
         bool addToBackpack(Item* item);
 
-        //! Remove an item from the backpack of the hero (don't delete it!)
-        //! Returns true on success.
+        //! Remove an Item from the backpack of the hero.
+        /**
+	 * Scan the hero's d_backpack for the Item, and remove it if it is
+	 * found.
+	 *
+	 * @note This method removes the Item from the d_backpack, but does
+	 *       not destroy the Item.
+	 *
+	 * @param item   The Item to look for.
+	 *
+	 * @return True if the Item was found and removed.
+	 */
         bool removeFromBackpack(Item* item);
 
-        //! Returns the backpack of the hero
+        //! Returns the backpack of the hero.
         std::list<Item*> getBackpack() {return d_backpack;}
 
-
-        //! Callback needed during loading of the hero (see xmlhelper.h)
+        //! Callback to load the backpack from the opened saved-game file.
         bool loadItems(std::string tag, XML_Helper* helper);
         
-	//! natural command is used for bonus calculations during battle
-	//! Returns a number that is added to the strength to everyone
-	//! in the stack.
+	//! Return the natural command of the hero.
+	/**
+	 * Natural command is used for bonus calculations during a Fight.
+	 *
+	 * @return A number that is added to the strength to other Army and
+	 *         Hero units in the Stack. 
+	 */
 	Uint32 calculateNaturalCommand();
 
     private:
         
+	//! The hero's backpack that holds any number of Item objects.
         std::list<Item*> d_backpack;
 };
 

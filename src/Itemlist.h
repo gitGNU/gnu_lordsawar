@@ -19,16 +19,17 @@
 
 #include "Item.h"
 
-/** The Itemlist holds all item templates (i.e. types of items) together.
-  * 
-  * It is implemented as a singleton. Upon creation, it reads the item
-  * description file and initialises an internal list.
-  *
-  * For easier access, the Itemlist is derived from map. Given an item index,
-  * you can get the item belonging to the index by the []-operator using the
-  * item index as index.
-  */
-
+//! A list of Item objects.
+/** 
+ * The Itemlist holds all item templates (i.e. types of items) together.
+ * 
+ * It is implemented as a singleton. Upon creation, it reads the item
+ * description file and initialises an internal list.
+ *
+ * For easier access, the Itemlist is derived from map. Given an item index,
+ * you can get the item belonging to the index by the []-operator using the
+ * item index as index.
+ */
 class Itemlist : public std::map<Uint32, Item*>, public sigc::trackable
 {
     public:
@@ -52,20 +53,23 @@ class Itemlist : public std::map<Uint32, Item*>, public sigc::trackable
 	void remove(Item *item);
 
     protected:
+	//! Default constructor.
 	Itemlist();
+	//! Loading constructor.
         Itemlist(XML_Helper* helper);
+	//! Destructor.
         ~Itemlist();
 
     private:
 
-        //! Callback for the initialisation. See XML_Helper why using this.
+        //! Callback for loading an Item from an opened saved-game file.
         bool loadItem(std::string tag, XML_Helper* helper);
 
-        //! Erases an item and frees its memory
-        void fl_erase(iterator it);
+        //! Erases an Item from the list and frees the Item too.
+        void flErase(iterator it);
 
-        //! Clears the itemlist
-        void fl_clear();
+        //! Clears the itemlist of all it's items.
+        void flClear();
 
         static Itemlist* d_instance;
 };

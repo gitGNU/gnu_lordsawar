@@ -22,111 +22,198 @@
 class Stack;
 class XML_Helper;
 
-/** The path class cares for path storing and calculation.
-  *
-  * The task of the path class is three-fold.
-  * - it stores existing movement paths of stacks (each stack has a path
-  *   instance)
-  * - it checks existing paths if they are blocked (when a stack doesn't reach
-  *   its target in one round, you have to validate the path in the next round)
-  *   and recalculates the path
-  * - it calculates the shortest path between points on the map
-  */
+//! A list of waypoint coordinates (Vector<int>) on the GameMap.
+/** 
+ * The path class is used to store movement paths, determine new movement 
+ * paths, and to query existing movement paths.
+ *
+ */
 class Path : public std::list<Vector<int>*>
 {
     public:
-        //! Default constructor
+        //! Default constructor.
         Path();
-
-        //! Loads the existing path from a savegame
+        //! Make a new path by loading it from an opened saved-game file.
         Path(XML_Helper* helper);
+	//! Destructor.
         ~Path();
 
-
-        //! Save the current path
+        //! Save the path to an opened saved-game file.
         bool save(XML_Helper* helper) const;
 
-        /** This function erases an item in the path list. We can't use STL
-          * functions, because we need to delete the pointer as well.
-          * Otherwise, it behaves like a normal erase function from the STL.
-          */
+        /** 
+	 * This function erases an item in the path list. We can't use STL
+         * functions, because we need to delete the pointer as well.
+         * Otherwise, it behaves like a normal erase function from the STL.
+         */
+        /** 
+	 * Erase a waypoint from the Path, and free the waypoint too.
+	 *
+	 * @param it   The place in the Path to erase.
+	 *
+	 * @return The place in the path that was erased.
+         */
+	//! Erase a waypoint from the list.
         Path::iterator flErase(Path::iterator it);
 
-        /** The same problem. Erases all items in the path list with the help of
-          * fl_erase.
-          */
+        //! Erase the path, deleting the waypoints too.
         void flClear();
 
-
-        /* This function is used to verify if the stack can move on the Tile
-         * of the given destination point
+        /**
+	 * The purpose of this method is to verify if the Stack can move 
+	 * onto the Tile of the given destination point.
+	 *
+	 * @note This method does not calculate a path and it does not 
+	 * consider the amount of movement points that the given Stack has. 
+	 *
+	 * This method uses two shortcuts to check if it is impossible for 
+	 * the given stack to travel to the given destination on the GameMap.  
+	 * Firstly it checks to see if the destination terrain Tile::Type is 
+	 * of a kind that the Stack can't travel on at all (e.g. Mountains, 
+	 * and the Stack can't fly).  Secondly it checks to see if the tile 
+	 * is both adjacent and blocked from that direction.
+	 *
+	 * This method is primarily used to assist in mouse cursor display.
+	 *
+	 * @param stack   The stack to move.
+	 * @param dest    The position on the map to see if the Stack can 
+	 *                move to.
+	 *
+	 * @return True if the Stack can move to the given position on the 
+	 *         GameMap.  Otherwise the return value is false.
          */
-        bool canMoveThere(const Stack* s, Vector<int> dest);
+	//! Calculates if a Stack move to a position on the GameMap.
+        bool canMoveThere(const Stack* stack, Vector<int> dest);
 
-        /** Validates an existing path.
-          * 
-          * If the path is blocked for some reason, this function tries to
-          * recalculate it.
-          *
-          * @param s            the Stack whose path we validate
-          * @return true if path is valid, false if path is blocked (and could
-          * not be recalculated)
-          */
-        bool checkPath(Stack* s);
+        /** 
+         * Check if the path is blocked for some reason, and recalculate it
+	 * if necessary.
+         *
+         * @param stack        The Stack whose path we validate.
+	 *
+         * @return True if path is valid, False if path is blocked and could
+         *         not be recalculated, True if the path was invalid but was
+	 *         recalculated succesfully.
+         */
+	//! Validate an existing path.
+        bool checkPath(Stack* stack);
 
-        /** Calculates the path from the stack's location to a destination.
-          *
-          * The calculated path is stored within the instance (remember: each
-          * stack has a path instance). During calculation, bonuses and other
-          * specialities are taken into account.
-          *
-          * @param s            the stack whose path we calculate
-          * @param dest         the destination of the calculation
-	  * @param zigzag       whether we're using the normal way to
-	  * calculate paths or not.  false means we never go diagonally.
-          * @return number of movement points needed to destination or 0
-          * if no path is possible
-          */
-        Uint32 calculate(Stack* s, Vector<int> dest, bool zigzag = true);
+        /** 
+	 * Calculates the path from the stack's position to a destination.
+         *
+         * The calculated path is stored within the instance (remember: each
+         * stack has a path instance). During calculation, bonuses and other
+         * specialities are taken into account.
+         *
+         * @param stack        The stack whose path we calculate.
+         * @param dest         The destination point to calculate for.
+	 * @param zigzag       Whether we're using the normal way to
+	 *                     calculate paths or not.  False means we never 
+	 *                     go diagonally.  True means we do.
+	 *
+         * @return The number of movement points needed to destination or 0
+         *         if no path is possible.
+         */
+	//! Calculate a Stack object's Path to a destination on the GameMap.
+        Uint32 calculate(Stack* stack, Vector<int> dest, bool zigzag = true);
 
+	//! Recalculate a Stack object's Path.
 	void recalculate (Stack* s);
 
     private:
-        /** Checks if a tile is blocked for the stack
-          * 
-          * This function returns whether a unit can pass over a tile. The value
-          * destx and desty is needed because some cases (e.g. enemy army/city
-          * blocking the way) don't count as blocking when we engage them at the
-          * _end_ of the path (wo de want to attack after all).
-          *
-          * @param x, y             x/y position of the tile to be checked
-          * @param destx, desty     x/y position of the destination
-          * @return false if unit may pass, true otherwise
-          */
-        bool isBlocked(const Stack* s, int x, int y, int destx, int desty) const;
-        /** Checks if the way to a given tile is blocked
-          * 
-          * This function returns whether a unit can pass over a tile from
-	  * another tile.  The idea here is that the "sides" of certain tiles
-	  * are blocked from entry.  E.g. when trying to go from water to
-	  * land, without going through a city.
-          *
-          * @param x, y             x/y the position of the tile to travel from
-          * @param destx, desty     x/y the position of the tile to travel to
-          * @return false if unit may pass, true otherwise
-          */
+        /** 
+         * This method returns whether or not a Stack can pass over a tile.  
+	 * The value destx and desty is needed because some cases (e.g. enemy 
+	 * army/city blocking the way) don't count as blocking when we engage 
+	 * them at the _end_ of the path (wo de want to attack after all).
+	 *
+	 * The Stack is passed so that a movement bonus can be calculated.
+         *
+	 * @param stack  The stack doing the potential movement.  This is
+	 *               passed to calculate a movement bonus.
+	 * @param x      The number of tiles down in the vertical axis from the
+	 *               topmost edge of the map.  This is half of the origin
+	 *               point that the given Stack is moving from.
+	 * @param y      The number of tiles right in the horizontal axis from
+	 *               the leftmost edge of the map.  This is the other half
+	 *               of the origin point that the Stack is moving from.
+	 * @param destx  The number of tiles down in the vertical axis from the
+	 *               topmost edge of the map.  This is half of the 
+	 *               destination point that we're checking if the Stack
+	 *               can move to.
+	 * @param desty  The number of tiles right in the horizontal axis from
+	 *               the leftmost edge of the map.  This is the other half
+	 *               of the destination point that we're checking if the 
+	 *               Stack can move to.
+	 *
+         * @return False if the Stack may pass, true otherwise.
+         */
+	//! Check if a position is blocked to the given Stack.
+        bool isBlocked(const Stack* stack, int x, int y, 
+		       int destx, int desty) const;
+
+        /** 
+	 * Checks if the way to a given tile is blocked
+         * 
+         * This function returns whether a unit can pass over a tile from
+	 * another tile.  The idea here is that the "sides" of certain tiles
+	 * are blocked from entry.  E.g. when trying to go from water to
+	 * land, without going through a city.
+         *
+	 * @param x      The number of tiles down in the vertical axis from the
+	 *               topmost edge of the map.  This is half of the origin
+	 *               point that the given Stack is moving from.
+	 * @param y      The number of tiles right in the horizontal axis from
+	 *               the leftmost edge of the map.  This is the other half
+	 *               of the origin point that the Stack is moving from.
+	 * @param destx  The number of tiles down in the vertical axis from the
+	 *               topmost edge of the map.  This is half of the 
+	 *               destination point that we're checking if the Stack
+	 *               can move to.
+	 * @param desty  The number of tiles right in the horizontal axis from
+	 *               the leftmost edge of the map.  This is the other half
+	 *               of the destination point that we're checking if the 
+	 *               Stack can move to.
+	 *
+	 * @note The movement capabilities of a Stack are not taken into 
+	 *       account in this method.  This method should only be called 
+	 *       for Stack objects that are not flying.
+	 *
+         * @return False if a non-flying stack may pass, true otherwise.  
+	 *         False if the two points are not adjacent.
+         */
+	//! Checks if the way between adjacent tiles is blocked.
         bool isBlockedDir(int x, int y, int destx, int desty) const;
 
-        /** Checks how many movement points are needed to cross the tile
-          * 
-          * @param x,y              coordinates of the tile to be moved from
-          * @param destx,desty      coordinates of the tile to be moved to
-	  * @param s                the stack being moved
-          * @return costs in movement points, or -1 if movement not possible
-          */
+        /** 
+	 * Checks how many movement points are needed to cross a tile from
+	 * an adjacent tile.
+         * 
+	 * @param stack  The stack doing the potential movement.  This is
+	 *               passed to calculate the proper movement bonus.
+	 * @param x      The number of tiles down in the vertical axis from the
+	 *               topmost edge of the map.  This is half of the origin
+	 *               point that the given Stack is moving from.
+	 * @param y      The number of tiles right in the horizontal axis from
+	 *               the leftmost edge of the map.  This is the other half
+	 *               of the origin point that the Stack is moving from.
+	 * @param destx  The number of tiles down in the vertical axis from the
+	 *               topmost edge of the map.  This is half of the 
+	 *               destination point that we're checking if the Stack
+	 *               can move to.
+	 * @param desty  The number of tiles right in the horizontal axis from
+	 *               the leftmost edge of the map.  This is the other half
+	 *               of the destination point that we're checking if the 
+	 *               Stack can move to.
+         * @return The number of movement points required to traverse the
+	 *         destination tile, or -1 if movement not possible.
+         */
+	//! Calculates movement points to traverse an adjacent tile.
         int pointsToMoveTo(const Stack *s, int x, int y, int destx, int desty) const;
 
-        // data
+        // Data
+
+	//! A cached copy of a Stack object's movement bonus.
         Uint32 d_bonus;
 };
 

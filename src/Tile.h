@@ -23,68 +23,196 @@
 
 #include "tilestyleset.h"
 
-/** Class which describes the terrain
-  * 
-  * Many tiles are put together to form a tileset. Thus, a tile describes a
-  * single terrain type. It keeps the name, movement points, type (grass, water
-  * etc.) as well as the images together.
-  */
-
+//! Describes a kind of tile that a Stack can traverse.
+/** 
+ * Many tiles are put together to form a tileset. Thus, a tile describes a
+ * single terrain type. It keeps the name, movement points, type (grass, water
+ * etc.) and also keeps the images together.
+ *
+ * Each tile holds a list of TileStyleSet objects which hold a list of 
+ * TileStyle objects.  Each TileStyleSet holds a bunch of pictures of
+ * what this tile can look like.  A TileStyle is a single picture.
+ * These TileStyle pictures are displayed on the BigMap using the MapRenderer.
+ */
 class Tile : public std::vector<TileStyleSet*>
 {
     public:
-        //! Describe terrain types
-        enum Type { NONE = 0, GRASS = NONE, WATER = 1, FOREST = 2, HILLS = 4,
-                    MOUNTAIN = 8, SWAMP = 16 };
-	enum Pattern { SOLID = 0, STIPPLED = 1, RANDOMIZED = 2, SUNKEN = 3,
-	               TABLECLOTH = 4};
+        //! Enumerate the kinds of terrain that a Stack can potentially move on.
+        enum Type { 
+	  //! Synomymous with GRASS.
+	  NONE = 0, 
+	  //! Grassy plain.  Flat.  Open.  Easy to pass through.
+	  GRASS = NONE, 
+	  //! Lake, ocean, river, puddle, moat, or anything else watery.
+	  WATER = 1, 
+	  //! Trees in great abundance, also includes shrubberies.
+	  FOREST = 2, 
+	  //! Hilly terrain, generally passable.
+	  HILLS = 4,
+	  //! Very hilly terrain, generally not passable except by flight.
+	  MOUNTAIN = 8, 
+	  //! Marshy terrain.
+	  SWAMP = 16 
+	};
+
+	//! The terrain tile's appearance as seen on the OverviewMap.
+	enum Pattern { 
+
+	  //! The terrain feature is shown as a single solid colour.
+	  SOLID = 0, 
+
+	  //! The terrain feature is checkered with two alternating colours.
+	  /**
+	   * The stippled pattern looks something like this:
+	   * @verbatim
+xoxoxoxo
+oxoxoxox
+xoxoxoxo
+oxoxoxox
+@endverbatim
+	   *
+	   * It is currently used for Type::FOREST, and Type::HILLS.
+	   */
+	  STIPPLED = 1, 
+
+	  //! The feature is random pixels with three different colours.
+	  /**
+	   * The random pattern looks something like this:
+	   * @verbatim
+xoexooxo
+exoxxeox
+xoeoxoxx
+eoxeooex
+@endverbatim
+	   *
+	   * It is currently used for Type::MOUNTAINS.
+	   */
+	  RANDOMIZED = 2, 
+
+	  //! The feature is shaded on the bottom and on the left.
+	  /**
+	   * The sunken pattern looks something like this:
+	   * @verbatim
+xxxxxxxo
+xxxxxxxo
+xxxxxxxo
+oooooooo
+@endverbatim
+	   *
+	   * It is currently used for Type::WATER.
+	   */
+	  SUNKEN = 3,
+
+	  //! The feature is shown as a 3 colour pattern.
+	  /**
+	   * The tablecloth pattern looks something like this:
+	   * @verbatim
+xexexexe
+eoeoeoeo
+xexexexe
+eoeoeoeo
+@endverbatim
+	   *
+	   * It is currently used for Type::SWAMP.
+	   */
+	  TABLECLOTH = 4
+	};
                     
-        //! Loading constructor
+        //! Loading constructor.
         Tile(XML_Helper* helper);
 
+	//! Destructor.
         ~Tile();
 
         //! Get the number of movement points needed to cross this tile
         Uint32 getMoves() const {return d_moves;}
 
-        //! Get the color associated with this tile for the smallmap
+        //! Get the colour associated with this tile for the smallmap.
         SDL_Color getColor() const {return d_color;}
-        //! Set the color associated with this tile for the smallmap
+
+        //! Set the colour associated with this tile for the smallmap.
 	void setColor(SDL_Color clr) {d_color = clr;}
 
-        //! Get the type (grass, hill,...) of this tile type
+        //! Get the type (grass, hill,...) of this tile type.
         Type getType() const {return d_type;}
                 
-        //! Get the pattern (solid, stippled, random) of this type
+        //! Get the pattern (solid, stippled, random) of this type.
         Pattern getPattern() const {return d_pattern;}
-        //! set the pattern (solid, stippled, random) of this type
+
+        //! set the pattern (solid, stippled, random) of this type.
 	void setPattern(Pattern pattern) {d_pattern = pattern;}
 
+	//! Get the name of this kind of tile (used in the editor).
 	std::string getName() const {return d_name;}
 
-        //! Get the alternate color associated with this tile's pattern 
-	//!This "second" colour gets stippled, or randomized, or sunken
+        //! Get the alternate colour associated with this tile's pattern.
+	/**
+	 * This "second" colour gets used when Tile::Pattern is
+	 * Tile::STIPPLED, Tile::RANDOMIZED, Tile::SUNKEN, or Tile::TABLECLOTH.
+	 */
         SDL_Color getSecondColor() const {return d_second_color;}
-        //! set the alternate color associated with this tile's pattern 
+
+        //! Set the alternate colour associated with this tile's pattern.
         void setSecondColor(SDL_Color color) {d_second_color = color;}
 
-        //! Get another alternate color associated with this tile's pattern 
-	//!This "third" colour gets randomized, or sunken
+        //! Get another alternate colour associated with this tile's pattern.
+	/**
+	 * This "third" colour gets used when Tile::Pattern is
+	 * Tile::RANDOMIZED, or Tile::TABLECLOTH.
+	 */
         SDL_Color getThirdColor() const {return d_third_color;}
-        //! set another alternate color associated with this tile's pattern 
+
+        //! Set another alternate colour associated with this tile's pattern.
         void setThirdColor(SDL_Color color) {d_third_color = color;}
 
+	//! Load the pictures associated with this tile.
+	/**
+	 * @param tileset   The name of the tileset to load pictures for.
+	 * @param tilesize  The expected size of the tiles in the image.
+	 */
 	void instantiatePixmaps(std::string tileset, Uint32 tilesize);
 
     private:
         // DATA
+
+	//! The name of this kind of a tile.
+	/**
+	 * The name is taken from the tileset configuration file.
+	 * This value doesn't change during gameplay.
+	 * It used in the scenario editor, but not used in the game.
+	 */
 	std::string d_name;
-        Uint32 d_moves;                    // moves needed to walk over maptile
-        SDL_Color d_color;                // color shown in the smallmap
+
+	//! The number of movement points required to cross this tile.
+	/**
+	 * If an Army unit cannot traverse the tile efficiently it pays
+	 * this number of movement points to walk over this tile.
+	 * This value doesn't change during gameplay.
+	 */
+        Uint32 d_moves;
+	
+	//! The kind of terrain tile this instance represents.
         Type d_type;
+
+	//! The general appearance of the terrain tile on the OverviewMap.
 	Pattern d_pattern;
-        SDL_Color d_second_color;         // the extra pattern-related color
-        SDL_Color d_third_color;         // another pattern-related color
+
+	//! First colour.
+        SDL_Color d_color;
+
+	//! Second colour.
+	/**
+	 * Only used when Tile::Pattern is one of: Tile::STIPPLED, 
+	 * Tile::RANDOMIZED, Tile::SUNKEN, or Tile::TABLECLOTH.
+	 */
+        SDL_Color d_second_color;
+
+	//! Third colour.
+	/**
+	 * Only used when Tile::Pattern is Tile::RANDOMIZED, or 
+	 * Tile::TABLECLOTH.
+	 */
+        SDL_Color d_third_color;
 
 };
 
