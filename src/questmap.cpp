@@ -48,7 +48,7 @@ void QuestMap::draw_stacks(Player *p, std::list< Vector<int> > targets)
       Vector<int> pos = (*it);
 
       // don't draw stacks in cities, they could hardly be identified
-      Maptile* mytile = GameMap::getInstance()->getTile(pos.x, pos.y);
+      Maptile* mytile = GameMap::getInstance()->getTile(pos);
       if (mytile->getBuilding() == Maptile::CITY)
           continue;
 

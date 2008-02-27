@@ -16,34 +16,22 @@
 #include "counter.h"
 #include "xmlhelper.h"
 
-Object::Object(Vector<int> pos, Uint32 size)
-    :d_pos(pos), d_size(size)
+Object::Object()
 {
     d_id = fl_counter->getNextId();
 }
 
 Object::Object(const Object& obj)
-    :d_pos(obj.d_pos), d_id(obj.d_id), d_size(obj.d_size)
+    :d_id(obj.d_id)
 {
 }
 
-Object::Object(XML_Helper* helper, Uint32 size)
-    :d_size(size)
+Object::Object(XML_Helper* helper)
 {
-    int i;
     helper->getData(d_id, "id");
-    helper->getData(i, "x");
-    d_pos.x = i;
-    helper->getData(i, "y");
-    d_pos.y = i;
 }
 
 Object::~Object()
 {
-}
-
-bool Object::contains(Vector<int> pos) const
-{
-    return (pos.x >= d_pos.x) && (pos.x < d_pos.x + (int) d_size) && (pos.y >= d_pos.y) && (pos.y < d_pos.y + (int) d_size);
 }
 

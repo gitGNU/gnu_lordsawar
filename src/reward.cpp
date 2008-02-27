@@ -382,10 +382,9 @@ bool Reward_Map::save(XML_Helper* helper) const
   retval &= helper->saveData("width", d_width);
   retval &= helper->openTag("location");
   retval &= helper->saveData("id", d_loc->getId());
+  retval &= helper->saveData("x", d_loc->getPos().x);
+  retval &= helper->saveData("y", d_loc->getPos().y);
   retval &= helper->saveData("name", d_loc->getName());
-  Vector<int> pos = d_loc->getPos();
-  retval &= helper->saveData("x", pos.x);
-  retval &= helper->saveData("y", pos.y);
   retval &= helper->closeTag();
   retval &= helper->closeTag();
   return retval;

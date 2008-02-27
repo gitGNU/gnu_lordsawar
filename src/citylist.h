@@ -15,7 +15,7 @@
 #ifndef CITYLIST_H
 #define CITYLIST_H
 
-#include "ObjectList.h"
+#include "LocationList.h"
 #include <sigc++/trackable.h>
 
 class City;
@@ -23,13 +23,13 @@ class Player;
 
 /** The list of all cities in the game
   * 
-  * This is basically an ObjectList with some extended abilities.
+  * This is basically an LocationList with some extended abilities.
   *
   * Since many different classes require acess to this list, it is implemented
   * as a singleton.
   */
 
-class Citylist : public ObjectList<City>, public sigc::trackable
+class Citylist : public LocationList<City>, public sigc::trackable
 {
     public:
         //! Returns the singleton instance. Creates a new one if neccessary.

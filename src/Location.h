@@ -20,6 +20,8 @@
 #include <string>
 #include "vector.h"
 #include "stack.h"
+#include "Immovable.h"
+#include "rectangle.h"
 
 class Player;
 class Location;
@@ -29,7 +31,7 @@ class ::Object;
   * cities, ruins and temples.
   */
 
-class Location : public ::Object
+class Location : public ::Object, public Immovable
 {
  public:
     Location(std::string name, Vector<int> pos, Uint32 size = 1);
@@ -37,7 +39,7 @@ class Location : public ::Object
     Location(XML_Helper* helper, Uint32 size = 1);
     ~Location();
     
-    std::string getName() const {return __(d_name);}
+    std::string getName() const {return d_name;}
     void setName(std::string name) {d_name = name;}
 
     Stack *addArmy(Army *a) const;
@@ -45,9 +47,19 @@ class Location : public ::Object
     void deFog();
     void deFog(Player *p);
 
+    //! Get the size of the location
+    Uint32 getSize() const {return d_size;}
+
+    //! Does the Location contain this point?
+    bool contains(Vector<int> pos) const;
+
+    Rectangle get_area() const
+	{ return Rectangle(getPos().x, getPos().y, d_size, d_size); }
+
  protected:
     Stack* getFreeStack(Player *p) const;
     std::string d_name;
+    Uint32 d_size;
 };
 
 #endif

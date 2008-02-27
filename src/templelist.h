@@ -16,7 +16,7 @@
 #define TEMPLELIST_H
 
 #include <sigc++/trackable.h>
-#include "ObjectList.h"
+#include "LocationList.h"
 #include "temple.h"
 
 /** The templelist just keeps track of the temples located on the game map. It
@@ -24,7 +24,7 @@
   * temples.
   */
 
-class Templelist : public ObjectList<Temple>, public sigc::trackable
+class Templelist : public LocationList<Temple>, public sigc::trackable
 {
     public:
         //! Return the singleton instance. Create a new one if needed.

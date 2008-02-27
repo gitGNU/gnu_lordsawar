@@ -76,7 +76,7 @@ class VectoredUnit: public Ownable, public Location, public sigc::trackable
         bool nextTurn();
 inline bool operator==(const VectoredUnit &rhs)
 {
-    return d_pos == rhs.d_pos && d_destination == rhs.d_destination &&
+    return getPos() == rhs.getPos() && d_destination == rhs.d_destination &&
       d_army->getType() == rhs.d_army->getType() && d_duration == rhs.d_duration;
 };
 

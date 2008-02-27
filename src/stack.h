@@ -24,6 +24,7 @@
 
 #include "Object.h"
 #include "Ownable.h"
+#include "Movable.h"
 
 class Player;
 class Path;
@@ -39,7 +40,7 @@ class XML_Helper;
  * this is the location of the units, the intended movement path, and more.
  */
 
-class Stack : public ::Object, public Ownable, public std::list<Army*>, public sigc::trackable
+class Stack : public ::Object, public Movable, public Ownable, public std::list<Army*>, public sigc::trackable
 {
     public:
         /** 
@@ -67,9 +68,6 @@ class Stack : public ::Object, public Ownable, public std::list<Army*>, public s
 
         //! Change the loyalty of the stack.
         void setPlayer(Player* p);
-
-        //! Change the position of the stack.
-        void setPosition(Vector<int> pos){d_pos = pos;}
 
         /** 
 	 * Sets the defending value.  Defending entails that this stack is 

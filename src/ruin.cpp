@@ -25,7 +25,7 @@ Ruin::Ruin(Vector<int> pos, std::string name, int type, Stack* occupant, bool se
     d_owner = NULL;
     d_reward = NULL;
     //mark the location as being occupied by a ruin on the map
-    GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::RUIN);
+    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::RUIN);
 }
 
 Ruin::Ruin(const Ruin& ruin)
@@ -55,7 +55,7 @@ Ruin::Ruin(XML_Helper* helper)
       d_owner = NULL;
 
     //mark the location as being occupied by a ruin on the map
-    GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::RUIN);
+    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::RUIN);
 }
 
 Ruin::~Ruin()
@@ -72,10 +72,10 @@ bool Ruin::save(XML_Helper* helper) const
 
   retval &= helper->openTag("ruin");
   retval &= helper->saveData("id", d_id);
+  retval &= helper->saveData("x", getPos().x);
+  retval &= helper->saveData("y", getPos().y);
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("type", d_type);
-  retval &= helper->saveData("x", d_pos.x);
-  retval &= helper->saveData("y", d_pos.y);
   retval &= helper->saveData("searched", d_searched);
   retval &= helper->saveData("sage", d_sage);
   retval &= helper->saveData("hidden", d_hidden);

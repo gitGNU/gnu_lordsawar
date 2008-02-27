@@ -31,7 +31,7 @@ class City;
 class Ruin;
 class Signpost;
 class Temple;
-class Object;
+class Location;
 
 /** The large map
   * 
@@ -58,6 +58,7 @@ class BigMap: public sigc::trackable
     // return a good position of a map tip given that it should be close to the
     // tiles in tile_area without covering them
     MapTipPosition map_tip_position(Rectangle tile_area);
+    MapTipPosition map_tip_position(Vector<int> tile);
 
     // emitted when the view has changed because of user interactions
     sigc::signal<void, Rectangle> view_changed;
@@ -83,7 +84,7 @@ class BigMap: public sigc::trackable
     Vector<int> tile_to_buffer_pos(Vector<int> tile);
     Vector<int> get_view_pos_from_view();
     void draw_buffer();  
-    void blit_if_inside_buffer(const Object &obj, SDL_Surface *image);
+    void blit_if_inside_buffer(const Location &obj, SDL_Surface *image);
 
     virtual void after_draw() { }
 

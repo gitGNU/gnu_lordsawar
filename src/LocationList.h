@@ -12,8 +12,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#ifndef OBJECTLIST_H
-#define OBJECTLIST_H
+#ifndef LOCATIONLIST_H
+#define LOCATIONLIST_H
 
 #include <list>
 #include "ruin.h"
@@ -27,17 +27,17 @@
   * the city list.
   */
 
-template<class T> class ObjectList : public std::list<T>
+template<class T> class LocationList : public std::list<T>
 {
  public:
   
-  ObjectList(){};  
-  ~ObjectList() {};
+  LocationList(){};  
+  ~LocationList() {};
 
   //! Returns the object at position (x,y).  
   T* getObjectAt(int x, int y) 
     {
-      for (typename ObjectList<T>::iterator it = this->begin(); it != this->end(); ++it)
+      for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)
 	{
 	  Vector<int> p = (*it).getPos();
 	  int size = (*it).getSize() - 1;
@@ -61,10 +61,10 @@ template<class T> class ObjectList : public std::list<T>
 // in the gcc compiler... it goes back to 1997 and seems still
 // not fixed!!! -fexternal-template is deprecated...
 
-//template class ObjectList<Ruin>;
-//template class ObjectList<Temple>;
-//template class ObjectList<City>;
+//template class LocationList<Ruin>;
+//template class LocationList<Temple>;
+//template class LocationList<City>;
 
-#endif // OBJECTLIST_H
+#endif // LOCATIONLIST_H
 
 // End of file

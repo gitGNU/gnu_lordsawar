@@ -19,7 +19,7 @@
 #define BRIDGELIST_H
 
 #include <sigc++/trackable.h>
-#include "ObjectList.h"
+#include "LocationList.h"
 #include "bridge.h"
 
 /** The bridgelist just keeps track of the bridges located on the game map. It
@@ -27,7 +27,7 @@
   * bridges.
   */
 
-class Bridgelist : public ObjectList<Bridge>, public sigc::trackable
+class Bridgelist : public LocationList<Bridge>, public sigc::trackable
 {
     public:
         //! Return the singleton instance. Create a new one if needed.

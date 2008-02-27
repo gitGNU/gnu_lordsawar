@@ -49,7 +49,7 @@ City::City(Vector<int> pos, string name, Uint32 gold)
     // set the tiles to city type
     for (int i = 0; i < 2; i++)
         for (int j = 0; j < 2; j++)
-            GameMap::getInstance()->getTile(d_pos.x + i, d_pos.y + j)
+            GameMap::getInstance()->getTile(getPos().x + i, getPos().y + j)
                                   ->setBuilding(Maptile::CITY);
     d_vector.x=-1;
     d_vector.y=-1; 
@@ -96,7 +96,7 @@ City::City(XML_Helper* helper)
     //mark the positions on the map as being occupied by a city
     for (unsigned int i = 0; i < d_size; i++)
         for (unsigned int j = 0; j < d_size; j++)
-            GameMap::getInstance()->getTile(d_pos.x+i, d_pos.y+j)
+            GameMap::getInstance()->getTile(getPos().x+i, getPos().y+j)
                                   ->setBuilding(Maptile::CITY);
     
 }
@@ -134,9 +134,9 @@ bool City::save(XML_Helper* helper) const
 
     retval &= helper->openTag("city");
     retval &= helper->saveData("id", d_id);
+    retval &= helper->saveData("x", getPos().x);
+    retval &= helper->saveData("y", getPos().y);
     retval &= helper->saveData("name", d_name);
-    retval &= helper->saveData("x", d_pos.x);
-    retval &= helper->saveData("y", d_pos.y);
     retval &= helper->saveData("owner", d_owner->getId());
     retval &= helper->saveData("defense", d_defense_level);
     retval &= helper->saveData("production", d_production);
@@ -564,7 +564,7 @@ void City::nextTurn()
       if (d_vectoring)
 	{
 	  VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-	  VectoredUnit *v = new VectoredUnit(d_pos, d_vector, 
+	  VectoredUnit *v = new VectoredUnit(getPos(), d_vector, 
 					     new Army(*(d_basicprod[d_production])),
 					     MAX_TURNS_FOR_VECTORING, d_owner);
 	  vul->push_back(v);
@@ -664,7 +664,7 @@ Army *City::produceArmy()
       //we're an active neutral city
       //check to see if we've made 5 or not.
       //stop producing if we've made 5 armies in our neutral city
-      Stack *s = d_owner->getStacklist()->getObjectAt(d_pos);
+      Stack *s = d_owner->getStacklist()->getObjectAt(getPos());
       if (!s)
 	setProduction(d_production);
       else if (s->size() < 5)
@@ -684,7 +684,7 @@ bool City::canAcceptVectoredUnit()
 bool City::canAcceptVectoredUnits(Uint32 number_of_units)
 {
   VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-  if (vul->getNumberOfVectoredUnitsGoingTo(d_pos) + number_of_units >= 
+  if (vul->getNumberOfVectoredUnitsGoingTo(getPos()) + number_of_units >= 
       MAX_ARMIES_VECTORED_TO_ONE_CITY)
     return false;
   return true;

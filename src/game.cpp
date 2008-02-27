@@ -651,9 +651,7 @@ void Game::on_stack_queried (Stack* s)
 {
   if (s)
     {
-      Rectangle r = s->get_area();
-      //r.w *= s->size();
-      MapTipPosition mpos = bigmap->map_tip_position(r);
+      MapTipPosition mpos = bigmap->map_tip_position(s->getPos());
       stack_tip_changed.emit(s, mpos);
     }
   else

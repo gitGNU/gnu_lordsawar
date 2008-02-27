@@ -19,7 +19,7 @@
 #define SIGNPOSTLIST_H
 
 #include <sigc++/trackable.h>
-#include "ObjectList.h"
+#include "LocationList.h"
 #include "signpost.h"
 
 /** The signpostlist just keeps track of the signs located on the game map. It
@@ -27,7 +27,7 @@
   * signposts.
   */
 
-class Signpostlist : public ObjectList<Signpost>, public sigc::trackable
+class Signpostlist : public LocationList<Signpost>, public sigc::trackable
 {
     public:
         //! Return the singleton instance. Create a new one if needed.

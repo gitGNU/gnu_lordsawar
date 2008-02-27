@@ -33,7 +33,7 @@
 
 #include "line-chart.h"
 
-#include "../ObjectList.h"
+#include "../LocationList.h"
 #include "../historymap.h"
 #include "../history.h"
 #include "../player.h"
@@ -72,7 +72,7 @@ class HistoryReportDialog: public sigc::trackable
     Gtk::Alignment *gold_alignment;
     Gtk::Alignment *winner_alignment;
 
-    std::vector<ObjectList<City>* > past_citylists;
+    std::vector<LocationList<City>* > past_citylists;
     LineChart *city_chart;
     std::vector<std::list<History *> > past_eventlists;
     std::list<std::list<Uint32> > past_citycounts;

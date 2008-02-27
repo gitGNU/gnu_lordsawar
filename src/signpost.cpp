@@ -22,14 +22,14 @@ Signpost::Signpost(Vector<int> pos, std::string name)
   :Location(name, pos)
 {
     //mark the location on the game map as occupied by a signpost
-    GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::SIGNPOST);
+    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::SIGNPOST);
 }
 
 Signpost::Signpost(XML_Helper* helper)
     :Location(helper)
 {
     //mark the location on the game map as occupied by a signpost
-    GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::SIGNPOST);
+    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::SIGNPOST);
 }
 
 Signpost::Signpost(const Signpost& s)
@@ -47,9 +47,9 @@ bool Signpost::save(XML_Helper* helper) const
 
     retval &= helper->openTag("signpost");
     retval &= helper->saveData("id", d_id);
+    retval &= helper->saveData("x", getPos().x);
+    retval &= helper->saveData("y", getPos().y);
     retval &= helper->saveData("name", d_name);
-    retval &= helper->saveData("x", d_pos.x);
-    retval &= helper->saveData("y", d_pos.y);
     retval &= helper->closeTag();
     
     return retval;

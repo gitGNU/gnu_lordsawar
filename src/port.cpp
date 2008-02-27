@@ -19,14 +19,14 @@ Port::Port(Vector<int> pos, std::string name)
   :Location(name, pos)
 {
     //mark the location on the game map as occupied by a port
-    GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::PORT);
+    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::PORT);
 }
 
 Port::Port(XML_Helper* helper)
     :Location(helper)
 {
     //mark the location on the game map as occupied by a port
-    GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::PORT);
+    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::PORT);
 }
 
 Port::Port(const Port& s)
@@ -44,9 +44,9 @@ bool Port::save(XML_Helper* helper) const
 
     retval &= helper->openTag("port");
     retval &= helper->saveData("id", d_id);
+    retval &= helper->saveData("x", getPos().x);
+    retval &= helper->saveData("y", getPos().y);
     retval &= helper->saveData("name", d_name);
-    retval &= helper->saveData("x", d_pos.x);
-    retval &= helper->saveData("y", d_pos.y);
     retval &= helper->closeTag();
     
     return retval;

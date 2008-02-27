@@ -22,7 +22,7 @@ Bridge::Bridge(Vector<int> pos, std::string name, int type)
   :Location(name, pos), d_type(type)
 {
     //mark the location on the game map as occupied by a bridge
-    GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::BRIDGE);
+    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::BRIDGE);
 }
 
 Bridge::Bridge(XML_Helper* helper)
@@ -30,7 +30,7 @@ Bridge::Bridge(XML_Helper* helper)
 {
     //mark the location on the game map as occupied by a bridge
     helper->getData(d_type, "type");
-    GameMap::getInstance()->getTile(d_pos.x, d_pos.y)->setBuilding(Maptile::BRIDGE);
+    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::BRIDGE);
 }
 
 Bridge::Bridge(const Bridge& s)
@@ -48,10 +48,10 @@ bool Bridge::save(XML_Helper* helper) const
 
     retval &= helper->openTag("bridge");
     retval &= helper->saveData("id", d_id);
+    retval &= helper->saveData("x", getPos().x);
+    retval &= helper->saveData("y", getPos().y);
     retval &= helper->saveData("name", d_name);
     retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("x", d_pos.x);
-    retval &= helper->saveData("y", d_pos.y);
     retval &= helper->closeTag();
     
     return retval;

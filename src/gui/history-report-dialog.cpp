@@ -231,11 +231,11 @@ void HistoryReportDialog::generatePastCitylists()
     }
 
   //start off with an initial city list where all cities are neutral owned
-  ObjectList<City> *clist = new ObjectList<City>();
+  LocationList<City> *clist = new LocationList<City>();
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
     clist->push_back(*it);
-  for (ObjectList<City>::iterator it = clist->begin(); it != clist->end(); ++it)
+  for (LocationList<City>::iterator it = clist->begin(); it != clist->end(); ++it)
     {
       (*it).setOwner(Playerlist::getInstance()->getNeutral());
       (*it).setBurnt(false);
@@ -266,7 +266,7 @@ void HistoryReportDialog::generatePastCitylists()
 		  Uint32 city_id;
 		  city_id = dynamic_cast<History_CityWon*>(*hit[id])->getCityId();
 		  //find city with this city id in clist
-		  ObjectList<City>::iterator cit = clist->begin();
+		  LocationList<City>::iterator cit = clist->begin();
 		  for (; cit != clist->end(); ++cit)
 		    if ((*cit).getId() == city_id)
 		      {
@@ -279,7 +279,7 @@ void HistoryReportDialog::generatePastCitylists()
 		  Uint32 city_id;
 		  city_id = dynamic_cast<History_CityRazed*>(*hit[id])->getCityId();
 		  //find city with this city id in clist
-		  ObjectList<City>::iterator cit = clist->begin();
+		  LocationList<City>::iterator cit = clist->begin();
 		  for (; cit != clist->end(); ++cit)
 		    if ((*cit).getId() == city_id)
 		      {
@@ -299,7 +299,7 @@ void HistoryReportDialog::generatePastCitylists()
 	}
       //and add it to the list
       past_citylists.push_back(clist);
-      ObjectList<City> *new_clist = new ObjectList<City>(*clist);
+      LocationList<City> *new_clist = new LocationList<City>(*clist);
       clist = new_clist;
       if (last_turn == true)
 	break;
@@ -624,7 +624,7 @@ void HistoryReportDialog::generatePastCityCounts()
       for (unsigned int i = 0; i < past_citylists.size(); i++)
 	{
 	  Uint32 total_cities = 0;
-	  ObjectList<City>::iterator it = past_citylists[i]->begin();
+	  LocationList<City>::iterator it = past_citylists[i]->begin();
 	  for (; it != past_citylists[i]->end(); it++)
 	    {
 	      if ((*it).getOwner() == *pit)

@@ -62,9 +62,9 @@ bool VectoredUnit::save(XML_Helper* helper) const
 
     retval &= helper->openTag("vectoredunit");
     retval &= helper->saveData("id", d_id);
+    retval &= helper->saveData("x", getPos().x);
+    retval &= helper->saveData("y", getPos().y);
     retval &= helper->saveData("name", name);
-    retval &= helper->saveData("x", d_pos.x);
-    retval &= helper->saveData("y", d_pos.y);
     retval &= helper->saveData("duration", d_duration);
     retval &= helper->saveData("dest_x", d_destination.x);
     retval &= helper->saveData("dest_y", d_destination.y);

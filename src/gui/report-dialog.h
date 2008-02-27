@@ -31,7 +31,7 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/alignment.h>
 
-#include "../ObjectList.h"
+#include "../LocationList.h"
 #include "../vectormap.h"
 #include "../citymap.h"
 #include "../armymap.h"

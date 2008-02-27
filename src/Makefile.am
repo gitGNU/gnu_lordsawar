@@ -69,7 +69,7 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         timing.cpp timing.h \
         callback-enums.h \
         sidebar-stats.h game-parameters.h vector.h rectangle.h \
-        ucompose.hpp defs.h ObjectList.h \
+        ucompose.hpp defs.h LocationList.h \
         map-tip-position.h input-events.h sdl-draw.h  \
         vectoredunit.cpp vectoredunit.h \
         vectoredunitlist.cpp vectoredunitlist.h \
@@ -78,7 +78,8 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	shieldsetlist.cpp shieldsetlist.h \
 	citysetlist.cpp citysetlist.h cityset.cpp cityset.h \
 	CreateScenarioRandomize.cpp CreateScenarioRandomize.h \
-	Ownable.cpp Ownable.h
+	Ownable.cpp Ownable.h Immovable.cpp Immovable.h \
+	Movable.cpp Movable.h Positionable.cpp Positionable.h
 
 
 if FL_RESRC

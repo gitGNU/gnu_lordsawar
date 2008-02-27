@@ -23,7 +23,7 @@
 #include <sigc++/trackable.h>
 
 #include "overviewmap.h"
-#include "ObjectList.h"
+#include "LocationList.h"
 
 /** 
   * 
@@ -31,16 +31,16 @@
 class HistoryMap: public OverviewMap, public sigc::trackable
 {
  public:
-    HistoryMap(ObjectList<City> *clist);
+    HistoryMap(LocationList<City> *clist);
  
     // emitted when the map surface has changed
     sigc::signal<void, SDL_Surface *> map_changed;
         
-    void updateCities (ObjectList<City> *clist);
+    void updateCities (LocationList<City> *clist);
 
  private:
 
-    ObjectList<City> *d_clist;
+    LocationList<City> *d_clist;
     // hook from base class
     virtual void after_draw();
     void drawCities ();

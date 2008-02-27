@@ -202,6 +202,11 @@ Vector<int> BigMap::mouse_pos_to_tile_offset(Vector<int> pos)
     return (view_pos + pos) % ts;
 }
 
+MapTipPosition BigMap::map_tip_position(Vector<int> tile)
+{
+  return map_tip_position (Rectangle(tile.x, tile.y, 1, 1)); 
+}
+
 MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
 {
     // convert area to pixels on the SDL screen
@@ -251,7 +256,7 @@ MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
     return m;
 }
 
-void BigMap::blit_if_inside_buffer(const Object &obj, SDL_Surface *image)
+void BigMap::blit_if_inside_buffer(const Location &obj, SDL_Surface *image)
 {
     if (is_overlapping(buffer_view, obj.get_area()))
     {

@@ -34,14 +34,14 @@ using namespace std;
 #define debug(x)
 
 Stack::Stack(Player* player, Vector<int> pos)
-    : Object(pos), Ownable(player), d_defending(false), d_parked(false),
-    d_deleting(false), d_moves_exhausted_at_point(0)
+    : Object(), Movable(pos), Ownable(player), d_defending(false), 
+    d_parked(false), d_deleting(false), d_moves_exhausted_at_point(0)
 {
     d_path = new Path();
 }
 
 Stack::Stack(Stack& s)
-    : Object(s), Ownable(s), d_defending(s.d_defending),
+    : Object(s), Movable(s), Ownable(s), d_defending(s.d_defending),
      d_parked(s.d_parked), d_deleting(false),
      d_moves_exhausted_at_point(s.d_moves_exhausted_at_point)
 {
@@ -66,7 +66,7 @@ Stack::Stack(Stack& s)
 }
 
 Stack::Stack(XML_Helper* helper)
-: Object(helper), Ownable(helper), d_deleting(false)
+: Object(helper), Movable(helper), Ownable(helper), d_deleting(false)
 {
   helper->getData(d_defending, "defending");
   helper->getData(d_parked, "parked");
@@ -99,7 +99,7 @@ bool Stack::moveOneStep()
 {
   debug("move_one_step()");
 
-  d_pos = **d_path->begin();
+  setPos(**d_path->begin());
 
   setFortified(false);
   setDefending(false);
@@ -406,12 +406,12 @@ bool Stack::save(XML_Helper* helper) const
 
   retval &= helper->openTag("stack");
   retval &= helper->saveData("id", d_id);
+  retval &= helper->saveData("x", getPos().x);
+  retval &= helper->saveData("y", getPos().y);
   if (d_owner)
     retval &= helper->saveData("owner", d_owner->getId());
   else
     retval &= helper->saveData("owner", -1);
-  retval &= helper->saveData("x", d_pos.x);
-  retval &= helper->saveData("y", d_pos.y);
   retval &= helper->saveData("defending", d_defending);
   retval &= helper->saveData("parked", d_parked);
 

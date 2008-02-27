@@ -19,7 +19,7 @@
 #define ROADLIST_H
 
 #include "road.h"
-#include "ObjectList.h"
+#include "LocationList.h"
 #include <sigc++/trackable.h>
 
 /** The roadlist just keeps track of the roads located on the game map. It
@@ -27,7 +27,7 @@
   * roads.
   */
 
-class Roadlist : public ObjectList<Road>, public sigc::trackable
+class Roadlist : public LocationList<Road>, public sigc::trackable
 {
     public:
         //! Return the singleton instance. Create a new one if needed.

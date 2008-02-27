@@ -16,7 +16,7 @@
 #define PORTLIST_H
 
 #include <sigc++/trackable.h>
-#include "ObjectList.h"
+#include "LocationList.h"
 #include "port.h"
 
 /** The portlist just keeps track of the ports located on the game map. It
@@ -24,7 +24,7 @@
   * ports.
   */
 
-class Portlist : public ObjectList<Port>, public sigc::trackable
+class Portlist : public LocationList<Port>, public sigc::trackable
 {
     public:
         //! Return the singleton instance. Create a new one if needed.

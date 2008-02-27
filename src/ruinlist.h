@@ -16,14 +16,14 @@
 #define RUINLIST_H
 
 #include "ruin.h"
-#include "ObjectList.h"
+#include "LocationList.h"
 #include <sigc++/trackable.h>
 
 /** An object list which keeps track of all ruins. It cannot do much more than
   * saving and loading the elements. Implemented as a singleton again.
   */
 
-class Ruinlist : public ObjectList<Ruin>, public sigc::trackable
+class Ruinlist : public LocationList<Ruin>, public sigc::trackable
 {
     public:
         //! Returns the singleton instance. Creates a new one if required.

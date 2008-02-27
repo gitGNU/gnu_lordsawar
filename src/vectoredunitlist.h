@@ -19,7 +19,7 @@
 #define VECTOREDUNITLIST_H
 
 #include "vectoredunit.h"
-#include "ObjectList.h"
+#include "LocationList.h"
 #include <sigc++/trackable.h>
 
 class City;
