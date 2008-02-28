@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2008, Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,35 +15,32 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <SDL_image.h>
-#include <sigc++/functors/mem_fun.h>
+#include "Positionable.h"
 
-#include "tilestyleset.h"
-
-#include "File.h"
 #include "xmlhelper.h"
 
-using namespace std;
-
-#include <iostream>
-
-TileStyleSet::TileStyleSet(XML_Helper *helper)
+Positionable::Positionable(Vector<int> pos)
+  :d_pos(pos)
 {
-  helper->getData(d_name, "name"); 
 }
 
-TileStyleSet::~TileStyleSet()
+Positionable::Positionable(const Positionable& pos)
+  :d_pos(pos.d_pos)
 {
-  for (unsigned int i=0; i < size(); i++)
-    delete (*this)[i];
 }
 
-void TileStyleSet::instantiatePixmaps(std::string tileset, Uint32 tilesize)
+Positionable::Positionable(XML_Helper* helper)
 {
-  SDL_Surface* pixmaps = File::getTilesetPicture(tileset, d_name + ".png");
-  for (unsigned int i=0; i < size(); i++)
-    (*this)[i]->instantiatePixmap(pixmaps, tilesize, i);
-  SDL_FreeSurface (pixmaps);
+  if (!helper)
+    return;
+  int i;
+  helper->getData(i, "x");
+  d_pos.x = i;
+  helper->getData(i, "y");
+  d_pos.y = i;
 }
 
-// End of file
+Positionable::~Positionable()
+{
+}
+

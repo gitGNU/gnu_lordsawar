@@ -111,7 +111,6 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 	// create a new tile style with the information we got
 	// put it on the latest tilestyleset
 	TileStyle* tilestyle = new TileStyle(helper);
-	tilestyle->setIndex(tilestyleset->size());
 	tilestyleset->push_back(tilestyle);
 	d_tilestyles[tilestyle->getId()] = tilestyle;
 

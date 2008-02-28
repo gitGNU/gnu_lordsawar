@@ -36,7 +36,7 @@ class City;
 class Ruin;
 class Signpost;
 class Temple;
-class Object;
+class UniquelyIdentified;
 
 
 /** Specialization of BigMap for the editor
@@ -60,7 +60,7 @@ class EditorBigMap: public BigMap
     void mouse_leave_event();
 
     // something was selected
-    typedef std::vector<Object *> map_selection_seq;
+    typedef std::vector<UniquelyIdentified *> map_selection_seq;
     sigc::signal<void, map_selection_seq> objects_selected;
 
     // emitted whenever the user moves the mouse to a new tile

@@ -34,16 +34,16 @@ using namespace std;
 #define debug(x)
 
 Stack::Stack(Player* player, Vector<int> pos)
-    : Object(), Movable(pos), Ownable(player), d_defending(false), 
+    : UniquelyIdentified(), Movable(pos), Ownable(player), d_defending(false), 
     d_parked(false), d_deleting(false), d_moves_exhausted_at_point(0)
 {
     d_path = new Path();
 }
 
 Stack::Stack(Stack& s)
-    : Object(s), Movable(s), Ownable(s), d_defending(s.d_defending),
-     d_parked(s.d_parked), d_deleting(false),
-     d_moves_exhausted_at_point(s.d_moves_exhausted_at_point)
+    : UniquelyIdentified(s), Movable(s), Ownable(s), 
+    d_defending(s.d_defending), d_parked(s.d_parked), d_deleting(false),
+    d_moves_exhausted_at_point(s.d_moves_exhausted_at_point)
 {
     clear();
     d_path = new Path();
@@ -66,7 +66,8 @@ Stack::Stack(Stack& s)
 }
 
 Stack::Stack(XML_Helper* helper)
-: Object(helper), Movable(helper), Ownable(helper), d_deleting(false)
+  : UniquelyIdentified(helper), Movable(helper), Ownable(helper), 
+    d_deleting(false)
 {
   helper->getData(d_defending, "defending");
   helper->getData(d_parked, "parked");

@@ -22,7 +22,7 @@
 #include <sigc++/signal.h>
 #include <sstream>
 
-#include "Object.h"
+#include "UniquelyIdentified.h"
 #include "Ownable.h"
 #include "Movable.h"
 
@@ -40,7 +40,7 @@ class XML_Helper;
  * this is the location of the units, the intended movement path, and more.
  */
 
-class Stack : public ::Object, public Movable, public Ownable, public std::list<Army*>, public sigc::trackable
+class Stack : public ::UniquelyIdentified, public Movable, public Ownable, public std::list<Army*>, public sigc::trackable
 {
     public:
         /** 

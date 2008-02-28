@@ -890,7 +890,7 @@ void MainWindow::on_mouse_on_tile(Vector<int> tile)
     mouse_position_label->set_markup(str);
 }
 
-void MainWindow::on_objects_selected(std::vector<Object *> objects)
+void MainWindow::on_objects_selected(std::vector<UniquelyIdentified *> objects)
 {
     assert(!objects.empty());
 
@@ -902,7 +902,7 @@ void MainWindow::on_objects_selected(std::vector<Object *> objects)
     {
 	// show a popup
 	Gtk::Menu *menu = manage(new Gtk::Menu);
-	for (std::vector<Object *>::iterator i = objects.begin(), end = objects.end();
+	for (std::vector<UniquelyIdentified *>::iterator i = objects.begin(), end = objects.end();
 	     i != end; ++i)
 	{
 	    Glib::ustring s;
@@ -927,7 +927,7 @@ void MainWindow::on_objects_selected(std::vector<Object *> objects)
     }
 }
 
-void MainWindow::popup_dialog_for_object(Object *object)
+void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 {
     if (Stack *o = dynamic_cast<Stack *>(object))
     {

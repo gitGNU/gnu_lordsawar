@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2008, Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,35 +15,26 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <SDL_image.h>
-#include <sigc++/functors/mem_fun.h>
+#include "Movable.h"
 
-#include "tilestyleset.h"
-
-#include "File.h"
 #include "xmlhelper.h"
 
-using namespace std;
-
-#include <iostream>
-
-TileStyleSet::TileStyleSet(XML_Helper *helper)
+Movable::Movable(Vector<int> pos)
+  :Positionable(pos)
 {
-  helper->getData(d_name, "name"); 
 }
 
-TileStyleSet::~TileStyleSet()
+Movable::Movable(const Movable& pos)
+  :Positionable(pos)
 {
-  for (unsigned int i=0; i < size(); i++)
-    delete (*this)[i];
 }
 
-void TileStyleSet::instantiatePixmaps(std::string tileset, Uint32 tilesize)
+Movable::Movable(XML_Helper* helper)
+  :Positionable(helper)
 {
-  SDL_Surface* pixmaps = File::getTilesetPicture(tileset, d_name + ".png");
-  for (unsigned int i=0; i < size(); i++)
-    (*this)[i]->instantiatePixmap(pixmaps, tilesize, i);
-  SDL_FreeSurface (pixmaps);
 }
 
-// End of file
+Movable::~Movable()
+{
+}
+

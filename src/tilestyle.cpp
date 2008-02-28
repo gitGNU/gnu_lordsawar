@@ -34,7 +34,8 @@ TileStyle::TileStyle(XML_Helper* helper)
 
 }
     
-void TileStyle::instantiatePixmap(SDL_Surface *tilestyles, Uint32 tilesize)
+void TileStyle::instantiatePixmap(SDL_Surface *tilestyles, Uint32 tilesize,
+				  int index)
 {
   SDL_Surface* tmp;
   SDL_PixelFormat* fmt = tilestyles->format;
@@ -45,7 +46,7 @@ void TileStyle::instantiatePixmap(SDL_Surface *tilestyles, Uint32 tilesize)
 			     fmt->Bmask, fmt->Amask);
 
   SDL_Rect r;
-  r.x = d_index * tilesize;
+  r.x = index * tilesize;
   r.y = 0;
   r.w = r.h = tilesize;
       

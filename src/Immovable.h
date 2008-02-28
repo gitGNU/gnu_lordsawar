@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2008, Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,35 +15,34 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <SDL_image.h>
-#include <sigc++/functors/mem_fun.h>
+#ifndef IMMOVABLE_H
+#define IMMOVABLE_H
 
-#include "tilestyleset.h"
+#include "defs.h"
+#include "vector.h"
+#include "Positionable.h"
 
-#include "File.h"
-#include "xmlhelper.h"
+class XML_Helper;
 
-using namespace std;
-
-#include <iostream>
-
-TileStyleSet::TileStyleSet(XML_Helper *helper)
+//! A game object that has an unchanging position on the map.
+/** 
+ * An Immovable is a game object on the map that doesn't move.
+ */
+class Immovable: private Positionable
 {
-  helper->getData(d_name, "name"); 
-}
+ public:
+     //! Default constructor.
+     Immovable(Vector<int> pos);
+     //! Copy constructor.
+     Immovable(const Immovable&);
+     //! Loading constructor.
+     Immovable(XML_Helper* helper);
+     //! Destructor.
+    ~Immovable();
+    
+    //! Return the position of the object on the game map.
+    Vector<int> getPos() const {return d_pos;}
 
-TileStyleSet::~TileStyleSet()
-{
-  for (unsigned int i=0; i < size(); i++)
-    delete (*this)[i];
-}
+};
 
-void TileStyleSet::instantiatePixmaps(std::string tileset, Uint32 tilesize)
-{
-  SDL_Surface* pixmaps = File::getTilesetPicture(tileset, d_name + ".png");
-  for (unsigned int i=0; i < size(); i++)
-    (*this)[i]->instantiatePixmap(pixmaps, tilesize, i);
-  SDL_FreeSurface (pixmaps);
-}
-
-// End of file
+#endif

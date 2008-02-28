@@ -43,6 +43,8 @@ class SmallMap;
 class GameScenario;
 class CreateScenarioRandomize;
 
+#include "../UniquelyIdentified.h"
+
 // the top-level window of the map with menu, bigmap, smallmap, drawing
 // controls
 class MainWindow: public sigc::trackable
@@ -173,10 +175,10 @@ class MainWindow: public sigc::trackable
 
     // map callbacks
     void on_smallmap_changed(SDL_Surface *map);
-    void on_objects_selected(std::vector<Object *> objects);
+    void on_objects_selected(std::vector<UniquelyIdentified *> objects);
     void on_mouse_on_tile(Vector<int> tile);
     
-    void popup_dialog_for_object(Object *object);
+    void popup_dialog_for_object(UniquelyIdentified *object);
 
     int d_width;
     int d_height;

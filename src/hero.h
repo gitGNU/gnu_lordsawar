@@ -23,7 +23,7 @@
 #include "Item.h"
 #include "player.h"
 
-//! A Hero unit capable of carrying items, searching ruins and going on quests.
+//! A Hero is an Army unit capable of carrying items, going on quests and more.
 /** 
  * The Hero class is just like the Army class except that the Hero gets
  * it's name, and gender set, and it's Army:Stat statistics are augmented by 

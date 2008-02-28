@@ -21,15 +21,19 @@
 
 class XML_Helper;
 
-class Object
+//! A game object that has a unique numeric identifier.
+class UniquelyIdentified
 {
  public:
-    Object();
-    Object(const Object&);
-    Object(XML_Helper* helper);
-    virtual ~Object();
+    //! Default constructor.
+    UniquelyIdentified();
+    //! Copy constructor.
+    UniquelyIdentified(const UniquelyIdentified&);
+    //! Loading constructor.
+    UniquelyIdentified(XML_Helper* helper);
+    virtual ~UniquelyIdentified();
 
-    //! Returns the id of the object
+    //! Returns the id of the object.
     Uint32 getId() const {return d_id;}
         
  protected:

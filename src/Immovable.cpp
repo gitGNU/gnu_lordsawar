@@ -1,3 +1,5 @@
+//  Copyright (C) 2008, Ben Asselstine
+//
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -10,28 +12,29 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
+//  02110-1301, USA.
 
-#include "Object.h"
-#include "counter.h"
+#include "Immovable.h"
+
 #include "xmlhelper.h"
 
-Object::Object()
-{
-    d_id = fl_counter->getNextId();
-}
-
-Object::Object(const Object& obj)
-    :d_id(obj.d_id)
+Immovable::Immovable(Vector<int> pos)
+  :Positionable(pos)
 {
 }
 
-Object::Object(XML_Helper* helper)
+Immovable::Immovable(const Immovable& pos)
+  :Positionable(pos)
 {
-    helper->getData(d_id, "id");
 }
 
-Object::~Object()
+Immovable::Immovable(XML_Helper* helper)
+  :Positionable(helper)
+{
+}
+
+Immovable::~Immovable()
 {
 }
 

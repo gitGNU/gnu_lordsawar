@@ -22,7 +22,8 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         GameScenario.cpp GameScenario.h action.cpp action.h \
 	player.cpp player.h real_player.cpp real_player.h ai_dummy.cpp \
         ai_dummy.h ai_fast.cpp ai_fast.h ai_smart.cpp ai_smart.h \
-	Object.cpp Object.h Location.cpp Location.h city.cpp city.h \
+	UniquelyIdentified.cpp UniquelyIdentified.h Location.cpp Location.h \
+	city.cpp city.h \
         temple.cpp temple.h ruin.cpp ruin.h Tile.cpp Tile.h \
 	tilestyle.cpp tilestyle.h tilestyleset.cpp tilestyleset.h \
 	maptile.cpp maptile.h Item.cpp Item.h armysetlist.cpp armysetlist.h \

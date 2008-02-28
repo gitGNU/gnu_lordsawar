@@ -18,7 +18,8 @@
 MAINTAINERCLEANFILES= Makefile.in
 
 DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist.o \
-        ../hero.o ../citylist.o ../Location.o ../Object.o ../stacklist.o \
+        ../hero.o ../citylist.o ../Location.o ../UniquelyIdentified.o \
+	../stacklist.o \
         ../File.o ../fight.o ../armysetlist.o ../temple.o ../ruin.o ../stack.o \
 	../city.o ../path.o ../action.o ../Configuration.o ../MapGenerator.o \
 	../ai_dummy.o ../ai_fast.o ../ai_smart.o ../xmlhelper.o ../counter.o \

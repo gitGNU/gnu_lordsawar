@@ -15,7 +15,7 @@
 #ifndef LOCATION_H
 #define LOCATION_H
 
-#include "Object.h"
+#include "UniquelyIdentified.h"
 #include "defs.h"
 #include <string>
 #include "vector.h"
@@ -25,13 +25,13 @@
 
 class Player;
 class Location;
-class ::Object;
+class ::UniquelyIdentified;
 
 /** A Location is a map object with a name. This is the metaclass for
   * cities, ruins and temples.
   */
 
-class Location : public ::Object, public Immovable
+class Location : public ::UniquelyIdentified, public Immovable
 {
  public:
     Location(std::string name, Vector<int> pos, Uint32 size = 1);

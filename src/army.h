@@ -211,7 +211,8 @@ class Army : public Ownable, public sigc::trackable
         void setProduction(Uint32 production){d_production = production;}
 
         //! Set the gold pieces needed to add this Army to a city's production.
-        void setProductionCost(Uint32 production_cost){d_production_cost = production_cost;}
+        void setProductionCost(Uint32 production_cost)
+	  {d_production_cost = production_cost;}
 
         //! Set the gender of the army type.
         void setGender(Gender gender){d_gender = gender;}
