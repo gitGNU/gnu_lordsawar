@@ -1027,7 +1027,11 @@ void MainWindow::randomize_ruin(Ruin *r)
 {
   std::string name = d_create_scenario_names->popRandomRuinName();
   if (name != "")
-    r->setName(name);
+    {
+      Location *l = r;
+      RenamableLocation *renamable_ruin = static_cast<RenamableLocation*>(l);
+      renamable_ruin->setName(name);
+    }
 }
 
 void MainWindow::on_random_all_ruins_activated()
@@ -1054,7 +1058,12 @@ void MainWindow::on_random_all_temples_activated()
     {
       std::string name = d_create_scenario_names->popRandomTempleName();
       if (name != "")
-	(*it).setName(name);
+	{
+	  Location *l = &*it;
+	  RenamableLocation *renamable_temple = 
+	    static_cast<RenamableLocation*>(l);
+	  renamable_temple->setName(name);
+	}
     }
 }
 
@@ -1067,7 +1076,12 @@ void MainWindow::on_random_unnamed_temples_activated()
 	{
 	  std::string name = d_create_scenario_names->popRandomTempleName();
 	  if (name != "")
-	    (*it).setName(name);
+	    {
+	      Location *l = &*it;
+	      RenamableLocation *renamable_temple = 
+		static_cast<RenamableLocation*>(l);
+	      renamable_temple->setName(name);
+	    }
 	}
     }
 }

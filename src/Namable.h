@@ -15,32 +15,37 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include "Positionable.h"
+#ifndef NAMABLE_H
+#define NAMABLE_H
 
-#include "xmlhelper.h"
+#include "defs.h"
+#include "vector.h"
+#include "Named.h"
 
-Positionable::Positionable(Vector<int> pos)
-  :d_pos(pos)
+class XML_Helper;
+
+//! A game object that has an unchanging name.
+/** 
+ * An Namable is a game object on the map that has a name that can't be changed.
+ */
+class Namable: private Named
 {
-}
+ public:
+     //! Default constructor.
+     /**
+      * @note After the name is set in the constructor, it cannot be altered.
+      */
+     Namable(std::string name);
+     //! Copy constructor.
+     Namable(const Namable&);
+     //! Loading constructor.
+     Namable(XML_Helper* helper);
+     //! Destructor.
+    ~Namable();
+    
+    //! Return the name of the object on the game map.
+    std::string getName() const {return d_name;}
 
-Positionable::Positionable(const Positionable& pos)
-  :d_pos(pos.d_pos)
-{
-}
+};
 
-Positionable::Positionable(XML_Helper* helper)
-{
-  if (!helper)
-    return;
-  int i;
-  helper->getData(i, "x");
-  d_pos.x = i;
-  helper->getData(i, "y");
-  d_pos.y = i;
-}
-
-Positionable::~Positionable()
-{
-}
-
+#endif

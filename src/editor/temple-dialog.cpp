@@ -28,6 +28,7 @@
 #include "../CreateScenarioRandomize.h"
 #include "../defs.h"
 #include "../temple.h"
+#include "RenamableLocation.h"
 
 TempleDialog::TempleDialog(Temple *t, CreateScenarioRandomize *randomizer)
 {
@@ -65,8 +66,10 @@ void TempleDialog::run()
 
     if (response == 0)		// accepted
     {
-        temple->setName(name_entry->get_text());
-	temple->setType(type_entry->get_value_as_int());
+      Location *l = temple;
+      RenamableLocation *renamable_temple = static_cast<RenamableLocation*>(l);
+      renamable_temple->setName(name_entry->get_text());
+      temple->setType(type_entry->get_value_as_int());
     }
     else
       {

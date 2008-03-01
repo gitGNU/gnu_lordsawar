@@ -15,34 +15,13 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef POSITIONABLE_H
-#define POSITIONABLE_H
+#include "RenamableLocation.h"
 
-#include "defs.h"
-#include "vector.h"
-
-class XML_Helper;
-
-//! A game object that can be positioned at least once on the game map.
-/** 
- * An Positionable is an object on the map.
- */
-
-class Positionable
+RenamableLocation::RenamableLocation(Vector<int> pos)
+  :Location(pos), Renamable("")
 {
- public:
-     //! Default constructor.
-     Positionable(Vector<int> pos);
-     //! Copy constructor.
-     Positionable(const Positionable&);
-     //! Loading constructor.
-     Positionable(XML_Helper* helper);
-     //! Destructor.
-    ~Positionable();
-    
- protected:
-    //! The position of the object on the game map.
-    Vector<int> d_pos;
-};
+}
 
-#endif
+RenamableLocation::~RenamableLocation()
+{
+}

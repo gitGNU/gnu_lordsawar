@@ -15,37 +15,38 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef IMMOVABLE_H
-#define IMMOVABLE_H
+#ifndef RENAMABLE_H
+#define RENAMABLE_H
 
 #include "defs.h"
 #include "vector.h"
-#include "Positioned.h"
+#include "Named.h"
 
 class XML_Helper;
 
-//! A game object that has an unchanging position on the map.
+//! A game object that has a changing position on the map.
 /** 
- * An Immovable is a game object on the map that doesn't move.
+ * A Renamable is a game object on the map that has a position that can be 
+ * altered.
  */
-class Immovable: private Positioned
+
+class Renamable: private Named
 {
  public:
      //! Default constructor.
-     /**
-      * @note After the position is set in the constructor, it cannot be
-      *       altered.
-      */
-     Immovable(Vector<int> pos);
+     Renamable(std::string name);
      //! Copy constructor.
-     Immovable(const Immovable&);
+     Renamable(const Renamable&);
      //! Loading constructor.
-     Immovable(XML_Helper* helper);
+     Renamable(XML_Helper* helper);
      //! Destructor.
-    ~Immovable();
+    ~Renamable();
     
-    //! Return the position of the object on the game map.
-    Vector<int> getPos() const {return d_pos;}
+    //! Return the name of the object on the game map.
+    std::string getName() const {return d_name;}
+
+    //! Set the name of the object on the game map.
+    void setName(std::string name) {d_name = name;}
 
 };
 

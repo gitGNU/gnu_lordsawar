@@ -19,7 +19,7 @@
 #include <stdlib.h>
 
 Ruin::Ruin(Vector<int> pos, std::string name, int type, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
-    :Location(name, pos), d_searched(searched), d_type(type),
+    :NamedLocation(pos, name), d_searched(searched), d_type(type),
     d_occupant(occupant), d_hidden(hidden), d_owner(owner), d_sage(sage)
 {
     d_owner = NULL;
@@ -29,14 +29,15 @@ Ruin::Ruin(Vector<int> pos, std::string name, int type, Stack* occupant, bool se
 }
 
 Ruin::Ruin(const Ruin& ruin)
-    :Location(ruin), d_searched(ruin.d_searched), d_type(ruin.d_type),
-    d_occupant(ruin.d_occupant), d_hidden(ruin.d_hidden), 
+    :NamedLocation(ruin), d_searched(ruin.d_searched), 
+    d_type(ruin.d_type), d_occupant(ruin.d_occupant), d_hidden(ruin.d_hidden), 
     d_owner(ruin.d_owner), d_sage(ruin.d_sage), d_reward(ruin.d_reward)
 {
 }
 
 Ruin::Ruin(XML_Helper* helper)
-    :Location(helper), d_type(0), d_occupant(0), d_hidden(0), d_owner(0), d_sage(0), d_reward(0)
+    :NamedLocation(helper), d_type(0), d_occupant(0), d_hidden(0), 
+    d_owner(0), d_sage(0), d_reward(0)
 {
     Uint32 ui;
     helper->getData(d_type, "type");
@@ -74,7 +75,7 @@ bool Ruin::save(XML_Helper* helper) const
   retval &= helper->saveData("id", d_id);
   retval &= helper->saveData("x", getPos().x);
   retval &= helper->saveData("y", getPos().y);
-  retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("name", getName());
   retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("searched", d_searched);
   retval &= helper->saveData("sage", d_sage);

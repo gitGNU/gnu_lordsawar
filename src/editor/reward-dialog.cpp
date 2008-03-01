@@ -173,8 +173,8 @@ void RewardDialog::fill_in_reward_info()
   else if (reward->getType() == Reward::MAP)
     {
       Reward_Map *r = static_cast<Reward_Map*>(reward);
-      map_x_spinbutton->set_value(r->getLocation()->getPos().x);
-      map_y_spinbutton->set_value(r->getLocation()->getPos().y);
+      map_x_spinbutton->set_value(r->getPos().x);
+      map_y_spinbutton->set_value(r->getPos().y);
       map_width_spinbutton->set_value(r->getWidth());
       map_height_spinbutton->set_value(r->getHeight());
 	  map_radiobutton->set_active(true);
@@ -210,9 +210,8 @@ void RewardDialog::run()
 				   num_allies_spinbutton->get_value_as_int());
       else if (map_radiobutton->get_active() == true)
 	reward = new Reward_Map 
-	  (new Location("", Vector<int>(map_x_spinbutton->get_value_as_int(), 
-					map_y_spinbutton->get_value_as_int()), 
-			1), 
+	  (Vector<int>(map_x_spinbutton->get_value_as_int(), 
+		       map_y_spinbutton->get_value_as_int()), "",
 	   map_height_spinbutton->get_value_as_int(),
 	   map_width_spinbutton->get_value_as_int());
       else if (hidden_ruin_radiobutton->get_active() == true && hidden_ruin)

@@ -18,7 +18,7 @@
 #define DEFAULT_TEMPLE_NAME  "Shrine"
 
 #include <string>
-#include "Location.h"
+#include "NamedLocation.h"
 
 class Stack;
 class Quest;
@@ -28,7 +28,7 @@ class Quest;
  * A temple is the place where heroes can get quests or have their armies
  * blessed.
  */
-class Temple : public Location
+class Temple : public NamedLocation
 {
     public:
 	//! Default constructor.

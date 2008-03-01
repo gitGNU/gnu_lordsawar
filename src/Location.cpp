@@ -21,21 +21,19 @@
 
 #include "xmlhelper.h"
 
-Location::Location(std::string name, Vector<int> pos, Uint32 size)
-    :UniquelyIdentified(), Immovable(pos), d_name(name), d_size(size)
+Location::Location(Vector<int> pos, Uint32 size)
+    :UniquelyIdentified(), Immovable(pos), d_size(size)
 {
 }
 
 Location::Location(const Location& loc)
-  :UniquelyIdentified(loc), Immovable(loc), d_name(loc.d_name), 
-    d_size(loc.d_size)
+  :UniquelyIdentified(loc), Immovable(loc), d_size(loc.d_size)
 {
 }
 
 Location::Location(XML_Helper* helper, Uint32 size)
     :UniquelyIdentified(helper), Immovable(helper)
 {
-    helper->getData(d_name, "name");
     d_size = size;
 }
 

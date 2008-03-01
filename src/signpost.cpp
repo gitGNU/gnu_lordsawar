@@ -19,21 +19,21 @@
 #include "GameMap.h"
 
 Signpost::Signpost(Vector<int> pos, std::string name)
-  :Location(name, pos)
+  :Location(pos), Renamable(name)
 {
     //mark the location on the game map as occupied by a signpost
     GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::SIGNPOST);
 }
 
 Signpost::Signpost(XML_Helper* helper)
-    :Location(helper)
+    :Location(helper), Renamable(helper)
 {
     //mark the location on the game map as occupied by a signpost
     GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::SIGNPOST);
 }
 
 Signpost::Signpost(const Signpost& s)
-  :Location(s)
+  :Location(s), Renamable(s)
 {
 }
 
@@ -49,7 +49,7 @@ bool Signpost::save(XML_Helper* helper) const
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);
-    retval &= helper->saveData("name", d_name);
+    retval &= helper->saveData("name", getName());
     retval &= helper->closeTag();
     
     return retval;

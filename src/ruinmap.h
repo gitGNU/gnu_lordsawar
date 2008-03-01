@@ -19,7 +19,7 @@
 
 #include "overviewmap.h"
 #include "input-events.h"
-#include "player.h"
+#include "NamedLocation.h"
 
 class Ruin;
 
@@ -31,12 +31,12 @@ class Ruin;
 class RuinMap : public OverviewMap
 {
  public:
-    RuinMap(Location *r); //r is the selected ruin or temple
+    RuinMap(NamedLocation *r); //r is the selected ruin or temple
 
     //! change what ruin or temple is selected
-    void setLocation (Location *r) {ruin = r;}
+    void setNamedLocation (NamedLocation *r) {ruin = r;}
 
-    Location * getLocation () const {return ruin;}
+    NamedLocation * getNamedLocation () const {return ruin;}
 
     void mouse_button_event(MouseButtonEvent e);
 
@@ -47,7 +47,7 @@ class RuinMap : public OverviewMap
     sigc::signal<void, SDL_Surface *> map_changed;
     
  private:
-    Location *ruin;
+    NamedLocation *ruin;
     void draw_ruins (bool show_selected);
     void draw_temples (bool show_selected);
     //void draw_cities(bool all_razed);

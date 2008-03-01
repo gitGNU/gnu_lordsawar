@@ -42,7 +42,8 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
         ../gui/army-info-tip.o ../MapRenderer.o \
 	../shield.o ../shieldset.o ../shieldsetlist.o \
 	../citysetlist.o ../cityset.o ../CreateScenarioRandomize.o \
-	../Ownable.o ../Movable.o ../Immovable.o ../Positionable.o
+	../Ownable.o ../Movable.o ../Immovable.o ../Positioned.o \
+	../Named.o ../Namable.o ../Renamable.o ../NamedLocation.o
 
 if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor lordsawar-army-editor
@@ -74,7 +75,8 @@ reward-dialog.cpp reward-dialog.h \
 select-item-dialog.cpp select-item-dialog.h \
 select-reward-dialog.cpp select-reward-dialog.h \
 rewardlist-dialog.cpp rewardlist-dialog.h \
-select-hidden-ruin-dialog.cpp select-hidden-ruin-dialog.h
+select-hidden-ruin-dialog.cpp select-hidden-ruin-dialog.h \
+RenamableLocation.cpp RenamableLocation.h
 
 # NewMapDialog.cpp Bigmap.cpp \
 # Smallmap.cpp MapGenDialog.cpp TempleDialog.cpp \

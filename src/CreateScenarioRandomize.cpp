@@ -239,8 +239,8 @@ Reward *CreateScenarioRandomize::getNewRandomReward(bool hidden_ruins)
 	{
 	  int x, y, width, height;
 	  Reward_Map::getRandomMap(&x, &y, &width, &height);
-	  reward = new Reward_Map (new Location("", Vector<int>(x, y), 1), 
-				   height, width);
+	  reward = new Reward_Map (Vector<int>(x, y), "", height, width);
+	  reward->setName(reward->getDescription());
 	}
       break;
     case 4: //Hidden Ruin

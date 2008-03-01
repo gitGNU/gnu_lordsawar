@@ -18,8 +18,9 @@
 #define DEFAULT_RUIN_NAME  ""
 #include <string>
 #include <sigc++/trackable.h>
-#include "Location.h"
+#include "NamedLocation.h"
 #include "stack.h"
+#include "Namable.h"
 
 class Stack;
 class Reward;
@@ -36,7 +37,7 @@ class Reward;
  *
  * Sometimes a ruin is hidden to all players except one player.
  */
-class Ruin : public Location, public sigc::trackable
+class Ruin : public NamedLocation, public sigc::trackable
 {
     public:
 	//! The kind of ruin.

@@ -37,12 +37,11 @@ class Location : public ::UniquelyIdentified, public Immovable
  public:
      //! Default constructor.
      /**
-      * @param name    The name of the new feature.
       * @param pos     The top-right corner of the feature is located at this
       *                position on the game map.
       * @param size    The number of tiles wide and high the feature is.
       */
-     Location(std::string name, Vector<int> pos, Uint32 size = 1);
+     Location(Vector<int> pos, Uint32 size = 1);
      //! Copy constructor.
      Location(const Location&);
      //! Loading constructor.
@@ -57,12 +56,6 @@ class Location : public ::UniquelyIdentified, public Immovable
      //! Destructor.
     ~Location();
     
-    //! Return the name of the feature.
-    std::string getName() const {return d_name;}
-
-    //! Set the name of the feature.
-    void setName(std::string name) {d_name = name;}
-
     //! Add an army to a tile that is included in this location.
     Stack *addArmy(Army *a) const;
 
@@ -105,9 +98,6 @@ class Location : public ::UniquelyIdentified, public Immovable
      *         an available stack could not be found this method returns NULL.
      */
     Stack* getFreeStack(Player *owner) const;
-
-    //! The name of the location.
-    std::string d_name;
 
     //! The size of the location.
     /**

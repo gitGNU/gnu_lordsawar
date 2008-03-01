@@ -48,7 +48,7 @@ RuinReportDialog::RuinReportDialog(Vector<int> pos)
 
   xml->get_widget("map_image", map_image);
 
-  Location *l = NULL;
+  NamedLocation *l = NULL;
   Ruin *ruin = Ruinlist::getInstance()->getNearestRuin(pos);
   Temple *temple = Templelist::getInstance()->getNearestTemple(pos);
   if (temple && !ruin)
@@ -118,7 +118,7 @@ bool RuinReportDialog::on_map_mouse_button_event(GdkEventButton *e)
 
 void RuinReportDialog::fill_in_ruin_info()
 {
-  Location *l = ruinmap->getLocation();
+  NamedLocation *l = ruinmap->getNamedLocation();
   name_label->set_text(l->getName());
   Ruin *ruin = Ruinlist::getInstance()->getObjectAt(l->getPos());
   Temple *temple = Templelist::getInstance()->getObjectAt(l->getPos());

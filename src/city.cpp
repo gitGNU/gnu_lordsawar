@@ -35,7 +35,8 @@ using namespace std;
 #define debug(x)
 
 City::City(Vector<int> pos, string name, Uint32 gold)
-    :Ownable((Player *)0), Location(name, pos, 2), d_numbasic(4),
+    :Ownable((Player *)0), Location(pos, 2), Renamable(name),
+    d_numbasic(4),
      d_production(-1),
      d_duration(-1), d_gold(gold),
      d_defense_level(1), d_burnt(false), d_vectoring(false),
@@ -56,7 +57,7 @@ City::City(Vector<int> pos, string name, Uint32 gold)
 }
 
 City::City(XML_Helper* helper)
-    :Ownable(helper), Location(helper, 2), d_numbasic(4)
+    :Ownable(helper), Location(helper, 2), Renamable(helper), d_numbasic(4)
 {
   //note: the armies get loaded in citylist
 
@@ -102,7 +103,7 @@ City::City(XML_Helper* helper)
 }
 
 City::City(const City& c)
-    :Ownable(c), Location(c), d_numbasic(c.d_numbasic),
+    :Ownable(c), Location(c), Renamable(c), d_numbasic(c.d_numbasic),
     d_production(c.d_production), d_duration(c.d_duration), d_gold(c.d_gold), 
     d_defense_level(c.d_defense_level), d_burnt(c.d_burnt),
     d_vectoring(c.d_vectoring),d_vector(c.d_vector), d_capital(c.d_capital), 
@@ -136,7 +137,7 @@ bool City::save(XML_Helper* helper) const
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);
-    retval &= helper->saveData("name", d_name);
+    retval &= helper->saveData("name", getName());
     retval &= helper->saveData("owner", d_owner->getId());
     retval &= helper->saveData("defense", d_defense_level);
     retval &= helper->saveData("production", d_production);
@@ -223,10 +224,10 @@ int City::getFreeBasicSlot()
 {
      int index=-1;
 
-     debug(d_name << " BASIC SLOTS=" << d_numbasic) 
+     debug(getName()<< " BASIC SLOTS=" << d_numbasic) 
      for (int i = 0; i < d_numbasic; i++)
      {
-         debug(d_name << " Index Value=" << d_basicprod[i])
+         debug(getName()<< " Index Value=" << d_basicprod[i])
          if (d_basicprod[i] == NULL)
          {
              index=i;

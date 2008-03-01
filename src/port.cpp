@@ -16,7 +16,7 @@
 #include "GameMap.h"
 
 Port::Port(Vector<int> pos)
-  :Location("port", pos)
+  :Location(pos)
 {
     //mark the location on the game map as occupied by a port
     GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::PORT);
@@ -46,7 +46,6 @@ bool Port::save(XML_Helper* helper) const
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);
-    retval &= helper->saveData("name", d_name);
     retval &= helper->closeTag();
     
     return retval;

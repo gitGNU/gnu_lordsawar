@@ -18,14 +18,14 @@
 #include "stack.h"
 
 Temple::Temple(Vector<int> pos, std::string name, int type)
-  :Location(name, pos),d_type(type)
+  :NamedLocation(pos, name),d_type(type)
 {
     //mark the location on the game map as occupied by a temple
     GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::TEMPLE);
 }
 
 Temple::Temple(XML_Helper* helper)
-    :Location(helper)
+    :NamedLocation(helper)
 {
     //mark the location on the game map as occupied by a temple
     helper->getData(d_type, "type");
@@ -33,7 +33,7 @@ Temple::Temple(XML_Helper* helper)
 }
 
 Temple::Temple(const Temple& t)
-  :Location(t), d_type(t.d_type)
+  :NamedLocation(t), d_type(t.d_type)
 {
 }
 
@@ -49,7 +49,7 @@ bool Temple::save(XML_Helper* helper) const
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);
-    retval &= helper->saveData("name", d_name);
+    retval &= helper->saveData("name", getName());
     retval &= helper->saveData("type", d_type);
     retval &= helper->closeTag();
     

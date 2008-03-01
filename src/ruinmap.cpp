@@ -26,7 +26,7 @@
 #include "citylist.h"
 #include "GameMap.h"
 
-RuinMap::RuinMap(Location *r)
+RuinMap::RuinMap(NamedLocation *r)
 {
   ruin = r;
 }

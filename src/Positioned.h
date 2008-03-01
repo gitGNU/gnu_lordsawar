@@ -15,38 +15,34 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef IMMOVABLE_H
-#define IMMOVABLE_H
+#ifndef POSITIONED_H
+#define POSITIONED_H
 
 #include "defs.h"
 #include "vector.h"
-#include "Positioned.h"
 
 class XML_Helper;
 
-//! A game object that has an unchanging position on the map.
+//! A game object that can be positioned at least once on the game map.
 /** 
- * An Immovable is a game object on the map that doesn't move.
+ * An Positioned is an object on the map.
  */
-class Immovable: private Positioned
+
+class Positioned
 {
  public:
      //! Default constructor.
-     /**
-      * @note After the position is set in the constructor, it cannot be
-      *       altered.
-      */
-     Immovable(Vector<int> pos);
+     Positioned(Vector<int> pos);
      //! Copy constructor.
-     Immovable(const Immovable&);
+     Positioned(const Positioned&);
      //! Loading constructor.
-     Immovable(XML_Helper* helper);
+     Positioned(XML_Helper* helper);
      //! Destructor.
-    ~Immovable();
+    ~Positioned();
     
-    //! Return the position of the object on the game map.
-    Vector<int> getPos() const {return d_pos;}
-
+ protected:
+    //! The position of the object on the game map.
+    Vector<int> d_pos;
 };
 
 #endif

@@ -8963,126 +8963,108 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 	<roadlist>
 		<road>
 			<d_id>1101</d_id>
-			<d_name></d_name>
 			<d_type>1</d_type>
 			<d_x>76</d_x>
 			<d_y>36</d_y>
 		</road>
 		<road>
 			<d_id>1102</d_id>
-			<d_name></d_name>
 			<d_type>4</d_type>
 			<d_x>76</d_x>
 			<d_y>37</d_y>
 		</road>
 		<road>
 			<d_id>1103</d_id>
-			<d_name></d_name>
 			<d_type>0</d_type>
 			<d_x>77</d_x>
 			<d_y>37</d_y>
 		</road>
 		<road>
 			<d_id>1104</d_id>
-			<d_name></d_name>
 			<d_type>4</d_type>
 			<d_x>78</d_x>
 			<d_y>38</d_y>
 		</road>
 		<road>
 			<d_id>1105</d_id>
-			<d_name></d_name>
 			<d_type>6</d_type>
 			<d_x>78</d_x>
 			<d_y>37</d_y>
 		</road>
 		<road>
 			<d_id>1106</d_id>
-			<d_name></d_name>
 			<d_type>0</d_type>
 			<d_x>80</d_x>
 			<d_y>38</d_y>
 		</road>
 		<road>
 			<d_id>1107</d_id>
-			<d_name></d_name>
 			<d_type>0</d_type>
 			<d_x>79</d_x>
 			<d_y>38</d_y>
 		</road>
 		<road>
 			<d_id>1108</d_id>
-			<d_name></d_name>
 			<d_type>6</d_type>
 			<d_x>81</d_x>
 			<d_y>38</d_y>
 		</road>
 		<road>
 			<d_id>1109</d_id>
-			<d_name></d_name>
 			<d_type>1</d_type>
 			<d_x>81</d_x>
 			<d_y>39</d_y>
 		</road>
 		<road>
 			<d_id>1111</d_id>
-			<d_name></d_name>
 			<d_type>0</d_type>
 			<d_x>84</d_x>
 			<d_y>41</d_y>
 		</road>
 		<road>
 			<d_id>1112</d_id>
-			<d_name></d_name>
 			<d_type>0</d_type>
 			<d_x>85</d_x>
 			<d_y>41</d_y>
 		</road>
 		<road>
 			<d_id>1115</d_id>
-			<d_name></d_name>
 			<d_type>0</d_type>
 			<d_x>87</d_x>
 			<d_y>41</d_y>
 		</road>
 		<road>
 			<d_id>1119</d_id>
-			<d_name></d_name>
 			<d_type>0</d_type>
 			<d_x>90</d_x>
 			<d_y>41</d_y>
 		</road>
 		<road>
 			<d_id>1121</d_id>
-			<d_name></d_name>
 			<d_type>0</d_type>
 			<d_x>91</d_x>
 			<d_y>41</d_y>
 		</road>
 		<road>
 			<d_id>1122</d_id>
-			<d_name></d_name>
 			<d_type>0</d_type>
 			<d_x>86</d_x>
 			<d_y>41</d_y>
 		</road>
 		<road>
 			<d_id>1123</d_id>
-			<d_name></d_name>
 			<d_type>0</d_type>
 			<d_x>83</d_x>
 			<d_y>41</d_y>
 		</road>
 		<road>
 			<d_id>1124</d_id>
-			<d_name></d_name>
 			<d_type>0</d_type>
 			<d_x>88</d_x>
 			<d_y>41</d_y>
 		</road>
 		<road>
 			<d_id>1125</d_id>
-			<d_name></d_name>
 			<d_type>0</d_type>
 			<d_x>89</d_x>
 			<d_y>41</d_y>

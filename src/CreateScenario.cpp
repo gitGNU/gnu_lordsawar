@@ -396,10 +396,12 @@ bool CreateScenario::createMap()
                     Signpostlist::getInstance()->push_back(Signpost(Vector<int>(x,y)));
                     break;
                 case Maptile::TEMPLE:
-                    Templelist::getInstance()->push_back(Temple(Vector<int>(x,y)));
+                    Templelist::getInstance()->push_back
+		      (Temple(Vector<int>(x,y), popRandomTempleName()));
                     break;
                 case Maptile::RUIN:
-		    Ruinlist::getInstance()->push_back(Ruin(Vector<int>(x,y)));
+		    Ruinlist::getInstance()->push_back
+		      (Ruin(Vector<int>(x,y), popRandomRuinName()));
 		    break;
                 case Maptile::CITY:
                     Citylist::getInstance()->push_back(City(Vector<int>(x,y)));
@@ -534,9 +536,6 @@ bool CreateScenario::setupTemples()
     Templelist* tl = Templelist::getInstance();
     for (Templelist::iterator it = tl->begin(); it != tl->end(); it++)
     {
-        // set a temple name
-        (*it).setName(popRandomTempleName());
-
         // set a random temple type
         int type= (int) ((TEMPLE_TYPES*1.0) * (rand() / (RAND_MAX + 1.0)));
         (*it).setType(type);
@@ -556,9 +555,6 @@ bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
         it != Ruinlist::getInstance()->end(); it++)
     {
-        // set a ruin name
-        (*it).setName(popRandomRuinName());
-
         // set a random ruin type
         if (rand() % stronghold_factor == 0) //one in six ruins is a stronghold
           {
@@ -719,15 +715,10 @@ bool CreateScenario::setupMapRewards()
 	  else
 	    continue;
 
-	  Vector<int> pos;
-	  pos.x = i;
-	  pos.y = j;
-	  Location *loc = new Location(name, pos);
-	  Reward_Map *reward = new Reward_Map(loc, 
+	  Reward_Map *reward = new Reward_Map(Vector<int>(i, j), name,
 					      GameMap::getHeight() / 3, 
 					      GameMap::getWidth() / 3);
 	    
-	  reward->setName(reward->getDescription());
 	  Rewardlist::getInstance()->push_back(reward); //add it
 	  w_count++;
 	}

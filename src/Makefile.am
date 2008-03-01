@@ -23,7 +23,7 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	player.cpp player.h real_player.cpp real_player.h ai_dummy.cpp \
         ai_dummy.h ai_fast.cpp ai_fast.h ai_smart.cpp ai_smart.h \
 	UniquelyIdentified.cpp UniquelyIdentified.h Location.cpp Location.h \
-	city.cpp city.h \
+	city.cpp city.h NamedLocation.cpp NamedLocation.h \
         temple.cpp temple.h ruin.cpp ruin.h Tile.cpp Tile.h \
 	tilestyle.cpp tilestyle.h tilestyleset.cpp tilestyleset.h \
 	maptile.cpp maptile.h Item.cpp Item.h armysetlist.cpp armysetlist.h \
@@ -80,7 +80,8 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	citysetlist.cpp citysetlist.h cityset.cpp cityset.h \
 	CreateScenarioRandomize.cpp CreateScenarioRandomize.h \
 	Ownable.cpp Ownable.h Immovable.cpp Immovable.h \
-	Movable.cpp Movable.h Positionable.cpp Positionable.h
+	Movable.cpp Movable.h Positioned.cpp Positioned.h \
+	Named.cpp Named.h Namable.cpp Namable.h Renamable.cpp Renamable.h
 
 
 if FL_RESRC

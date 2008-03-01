@@ -342,34 +342,22 @@ Reward_Ruin::~Reward_Ruin()
 {
 }
 
-Reward_Map::Reward_Map(Location *loc, Uint32 height, Uint32 width)
-    :Reward(Reward::MAP), d_loc(loc), d_height(height), d_width(width)
+Reward_Map::Reward_Map(Vector<int> pos, std::string name, 
+		       Uint32 height, Uint32 width)
+    :Reward(Reward::MAP, name), Location(pos), d_height(height), d_width(width)
 {
-}
-
-bool Reward_Map::loadLocation(std::string tag, XML_Helper* helper)
-{
-  if (tag == "location")
-    {
-      d_loc = new Location(helper);
-      return true;
-    }
-    
-  return false;
 }
 
 Reward_Map::Reward_Map(XML_Helper* helper)
-    :Reward(helper)
+    :Reward(helper), Location(helper)
 {
-  helper->registerTag("location", sigc::mem_fun(this, 
-						&Reward_Map::loadLocation));
   helper->getData(d_height, "height");
   helper->getData(d_width, "width");
 }
 
 Reward_Map::Reward_Map (const Reward_Map& orig)
-	:Reward(orig), d_loc(orig.d_loc), d_height(orig.d_height), 
-	d_width(orig.d_width)
+	:Reward(orig), Location(orig),
+	d_height(orig.d_height), d_width(orig.d_width)
 {
 }
 
@@ -378,14 +366,12 @@ bool Reward_Map::save(XML_Helper* helper) const
   bool retval = true;
   retval &= helper->openTag("reward");
   retval &= Reward::save(helper);
+  retval &= helper->saveData("id", getId());
+  retval &= helper->saveData("x", getPos().x);
+  retval &= helper->saveData("y", getPos().y);
+  retval &= helper->saveData("name", getName());
   retval &= helper->saveData("height", d_height);
   retval &= helper->saveData("width", d_width);
-  retval &= helper->openTag("location");
-  retval &= helper->saveData("id", d_loc->getId());
-  retval &= helper->saveData("x", d_loc->getPos().x);
-  retval &= helper->saveData("y", d_loc->getPos().y);
-  retval &= helper->saveData("name", d_loc->getName());
-  retval &= helper->closeTag();
   retval &= helper->closeTag();
   return retval;
 }
@@ -441,10 +427,9 @@ std::string Reward::getDescription()
     case Reward::MAP:
 	{
 	  Reward_Map *m = dynamic_cast<Reward_Map *>(this);
-	  if (m->getLocation())
-	    s += String::ucompose(_("Map: %1,%2 %3x%4"), 
-				  m->getLocation()->getPos().x,
-				  m->getLocation()->getPos().y,
+	  s += String::ucompose(_("Map: %1,%2 %3x%4"), 
+				  m->getPos().x,
+				  m->getPos().y,
 				  m->getHeight(),
 				  m->getWidth());
 	  return s;

@@ -153,7 +153,7 @@ void SageDialog::addReward(Reward *reward)
 	{
 	  std::string name;
 	  Reward_Map *m = static_cast<Reward_Map*>(reward);
-	  name  = m->getLocation()->getName();
+	  name  = m->getName();
 	  if (name == "")
 	    {
 	      switch (rand() % 6)

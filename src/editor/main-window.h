@@ -36,6 +36,7 @@
 
 #include "../map-tip-position.h"
 #include "editorbigmap.h"
+#include "RenamableLocation.h"
 
 class SDL_Surface;
 class EditorBigMap;

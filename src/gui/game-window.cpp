@@ -1605,7 +1605,7 @@ void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
   else if (reward->getType() == Reward::MAP)
     {
       Reward_Map *map = dynamic_cast<Reward_Map*>(reward);
-      s += String::ucompose("the %2.", map->getLocation()->getName());
+      s += String::ucompose("the %2.", map->getName());
     }
 
   label->set_text(s);

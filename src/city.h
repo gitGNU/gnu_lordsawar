@@ -19,6 +19,7 @@
 #include <string>
 #include "Location.h"
 #include "Ownable.h"
+#include "Renamable.h"
 
 class Player;
 class Stack;
@@ -48,7 +49,7 @@ class Hero;
  * city.  Conquering another player's capital city doesn't give any bonus
  * except for bragging rights.
  */
-class City : public Ownable, public Location
+class City : public Ownable, public Location, public Renamable
 {
     public:
 	//! Default constructor.

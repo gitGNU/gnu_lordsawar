@@ -20,17 +20,17 @@
 
 #include "defs.h"
 #include "vector.h"
-#include "Positionable.h"
+#include "Positioned.h"
 
 class XML_Helper;
 
-//! A game object that has an changing position on the map.
+//! A game object that has a changing position on the map.
 /** 
  * A Movable is a game object on the map that has a position that can be 
  * altered.
  */
 
-class Movable: private Positionable
+class Movable: private Positioned
 {
  public:
      //! Default constructor.

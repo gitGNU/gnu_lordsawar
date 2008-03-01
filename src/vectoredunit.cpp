@@ -29,7 +29,7 @@
 #include "action.h"
 
 VectoredUnit::VectoredUnit(Vector<int> pos, Vector<int> dest, Army *army, int duration, Player *player)
-    :Ownable(player), Location("", pos), d_destination(dest), d_army(army), 
+    :Ownable(player), Location(pos), d_destination(dest), d_army(army), 
      d_duration(duration)
 {
 }
@@ -109,7 +109,7 @@ bool VectoredUnit::nextTurn()
               if ((*it)->getPlanted() == true &&
                   (*it)->getPlantableOwner() == d_owner)
                 {
-                  Location loc = Location("planted standard", d_destination, 1);
+                  Location loc = Location(d_destination);
                   loc.addArmy(a);
                   break;
                 }

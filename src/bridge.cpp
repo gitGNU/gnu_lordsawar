@@ -19,7 +19,7 @@
 #include "GameMap.h"
 
 Bridge::Bridge(Vector<int> pos, int type)
-  :Location("bridge", pos), d_type(type)
+  :Location(pos), d_type(type)
 {
     //mark the location on the game map as occupied by a bridge
     GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::BRIDGE);
@@ -50,7 +50,6 @@ bool Bridge::save(XML_Helper* helper) const
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);
-    retval &= helper->saveData("name", d_name);
     retval &= helper->saveData("type", d_type);
     retval &= helper->closeTag();
     

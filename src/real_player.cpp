@@ -1289,7 +1289,7 @@ bool RealPlayer::giveReward(Stack *s, Reward *reward)
       case Reward::MAP:
 	  {
 	    Reward_Map *map = dynamic_cast<Reward_Map*>(reward);
-	    d_fogmap->alterFogRectangle(map->getLocation()->getPos(), 
+	    d_fogmap->alterFogRectangle(map->getPos(), 
 					map->getHeight(), map->getWidth(), 
 					FogMap::OPEN);
 	  }

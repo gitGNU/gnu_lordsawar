@@ -158,23 +158,21 @@ class Reward_Ruin: public Reward
 	Vector<int> d_ruin_pos;
 };
 
-class Reward_Map: public Reward
+class Reward_Map: public Reward, public Location
 {
     public:
-        Reward_Map(Location *l, Uint32 height, Uint32 width);
+        Reward_Map(Vector<int> pos, std::string name, 
+		   Uint32 height, Uint32 width);
 	Reward_Map(XML_Helper *helper);
 	Reward_Map(const Reward_Map& orig);
         ~Reward_Map();
 
         bool save(XML_Helper* helper) const;
-	Location* getLocation() const {return d_loc;}
 	Uint32 getHeight() const {return d_height;}
 	Uint32 getWidth() const {return d_width;}
 	static void getRandomMap(int *x, int *y, int *width, int *height);
 
     private:
-        bool loadLocation(std::string tag, XML_Helper* helper);
-        Location *d_loc;
 	Uint32 d_height;
 	Uint32 d_width;
 };

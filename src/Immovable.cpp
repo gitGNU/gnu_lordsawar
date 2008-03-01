@@ -20,17 +20,17 @@
 #include "xmlhelper.h"
 
 Immovable::Immovable(Vector<int> pos)
-  :Positionable(pos)
+  :Positioned(pos)
 {
 }
 
 Immovable::Immovable(const Immovable& pos)
-  :Positionable(pos)
+  :Positioned(pos)
 {
 }
 
 Immovable::Immovable(XML_Helper* helper)
-  :Positionable(helper)
+  :Positioned(helper)
 {
 }
 

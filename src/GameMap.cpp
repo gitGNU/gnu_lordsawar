@@ -365,7 +365,7 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
     max = s_width;
   max--;
 
-  Location l("", pos, 1);
+  Location l(pos, 1);
   s = l.addArmy(a);
   if (s)
     return s;

@@ -36,6 +36,7 @@
 #include "select-army-dialog.h"
 #include "select-reward-dialog.h"
 #include "reward-dialog.h"
+#include "RenamableLocation.h"
 
 RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
 {
@@ -157,7 +158,9 @@ void RuinDialog::run()
 
     if (response == 0)		// accepted
     {
-        ruin->setName(name_entry->get_text());
+        Location *l = ruin;
+        RenamableLocation *renamable_ruin = static_cast<RenamableLocation*>(l);
+        renamable_ruin->setName(name_entry->get_text());
 	ruin->setType(type_entry->get_value_as_int());
 
 	// get rid of old occupant and insert new

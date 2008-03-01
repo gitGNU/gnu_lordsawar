@@ -22,6 +22,7 @@
 
 #include <string>
 #include "Location.h"
+#include "Renamable.h"
 
 //!A signpost is a map feature where a human player can read a relevant message.
 /**
@@ -30,7 +31,7 @@
  *
  * Players can change the contents of the signpost.
  */
-class Signpost: public Location
+class Signpost: public Location, public Renamable
 {
     public:
 	//! Default constructor.
