@@ -35,7 +35,7 @@ src/MapRenderer.cpp
 src/maptile.cpp
 src/MoveResult.cpp
 src/NextTurn.cpp
-src/Object.cpp
+src/UniquelyIdentified.cpp
 src/path.cpp
 src/player.cpp
 src/playerlist.cpp
