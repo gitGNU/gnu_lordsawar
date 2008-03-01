@@ -24,98 +24,147 @@
 class Stack;
 class Reward;
 
-/** A ruin is a simple object on the map which contains an id, a flag whether it
-  * has already been searched and optionally an occupant (called "keeper").
-  * If a ruin is searched, the player starts a fight with the keeper. If he
-  * wins, the ruin becomes search and the player gets some reward.
-  */
-
+//! A ruin on the game map.
+/** 
+ * A ruin is a simple feature on the map which contains an id, a flag whether 
+ * it has already been searched and optionally an occupant (called "keeper").
+ * If a ruin is searched, the player starts a fight with the keeper. If the
+ * player wins, the ruin becomes searched and the player gets a reward.
+ *
+ * Sometimes a ruin contains a sage which lets the player choose from a 
+ * variety of rewards.
+ *
+ * Sometimes a ruin is hidden to all players except one player.
+ */
 class Ruin : public Location, public sigc::trackable
 {
     public:
-        enum Type {RUIN = 0, STRONGHOLD = 1};
-        /** Default constructor
-          * @param pos          the location of the ruin
-          * @param name         the name of the ruin
-          * @param occupant     the monsters occupying the ruin
-          * @param searched     sets the searched flag of the ruin
-	  * @param hidden       sets the hidden flag of the ruin
-	  * @param owner        who can see this hidden ruin
-	  * @param sage         if this ruin contains a sage or not
+	//! The kind of ruin.
+        enum Type {
+	  //! A normal ruin.
+	  RUIN = 0, 
+	  //! A stronghold ruin is a little stronger.
+	  STRONGHOLD = 1
+	};
+	//! Default constructor.
+        /** 
+          * @param pos          The location of the ruin.
+          * @param name         The name of the ruin.
+          * @param occupant     The monster occupying the ruin.
+          * @param searched     Sets the searchedness flag of the ruin.
+	  * @param hidden       Sets the hidden flag of the ruin.
+	  * @param owner        Who can see this hidden ruin.
+	  * @param sage         if this ruin contains a sage or not.
           */
         Ruin(Vector<int> pos, std::string name = DEFAULT_RUIN_NAME, 
 	     int type = Ruin::RUIN, Stack* occupant = 0, 
 	     bool searched = false, bool hidden = false, Player *owner = 0, 
 	     bool sage = false);
 
-        //! Copy constructor
+        //! Copy constructor.
         Ruin(const Ruin&);
 
-        //! Loading constructor. See XML_Helper for a detailed description.
+        //! Loading constructor.
+	/**
+	 * @param helper  The opened saved-game file to load the ruin from.
+	 */
         Ruin(XML_Helper* helper);
+	//!Destructor.
         ~Ruin();
 
-        //! Returns the type of the ruin
+        //! Returns the type of the ruin.
         int getType() {return d_type;};
 
-        //! Returns the type of the ruin
-        void setType(int type) {d_type=type;};
+        //! Sets the type of the ruin.
+        void setType(int type) {d_type = type;};
 
-        //! Change the "searched" flag of the ruin
+        //! Change whether or not the ruin has been successfully searched.
         void setSearched(bool searched) {d_searched = searched; 
-	d_reward = NULL;}
+	  d_reward = NULL;}
         
-        //! Set the keeper of the ruin
+        //! Set the keeper of the ruin.
         void setOccupant(Stack* occupant) {d_occupant = occupant;}
-
         
-        //! Gets the status of the ruin
+        //! Return whether or not the ruin has been searched already.
         bool isSearched() const {return d_searched;}
 
-        //! Returns the keeper
+        //! Returns the keeper that guards the ruin from Hero units.
         Stack* getOccupant() const {return d_occupant;}
 
-	//! Returns whether or not this is a "hidden" ruin
+	//! Returns whether or not this is a "hidden" ruin.
 	bool isHidden() const {return d_hidden;}
 
-        //! Change the "hidden" flag of the ruin
+        //! Change the "hidden" flag of the ruin.
         void setHidden (bool hidden) {d_hidden = hidden;}
 
-	//! Returns whether or not this ruin has a sage
+	//! Returns whether or not this ruin has a sage.
 	bool hasSage() const {return d_sage;}
 
-	//! Sets whether or not this ruin has a sage
+	//! Sets whether or not this ruin has a sage.
 	void setSage(bool sage) {d_sage = sage;}
 
-	//! Returns the player that owns this hidden ruin
+	//! Returns the player that owns this hidden ruin.
 	Player *getOwner() const {return d_owner;}
 
-	//! Sets the player that owns this hidden ruin
+	//! Sets the player that owns this hidden ruin.
 	void setOwner(Player *owner) {d_owner = owner;}
 
-        //! Callback for loading the ruin data
+        //! Callback for loading the ruin data.
         bool load(std::string tag, XML_Helper* helper);
 
-	//! Returns the reward for this ruin
+	//! Returns the reward for this ruin.
 	Reward *getReward() const {return d_reward;}
 
-	//! Sets the reward for this ruin
+	//! Sets the reward for this ruin.
 	void setReward(Reward *r) {d_reward = r;}
 
-        //! Saves the ruin data
+        //! Saves the ruin data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
 
+	//! Put a random reward in this ruin.
+	/**
+	 * @note This method does not remove an existing reward before putting
+	 *       a new one in it.
+	 */
 	void populateWithRandomReward();
 
     private:
         // DATA
-        bool d_searched;    // has ruin already been searched for treasure?
-        bool d_type;        // type of ruin
+	//! Whether or not the Ruin has already successfully been searched.
+        bool d_searched;
+
+	//! The type of the ruin.
+        bool d_type;
+
+	//! The keeper of the ruin.
+	/**
+	 * The Hero unit fights this stack when it is searched.  The stack
+	 * consists of a single Army unit that is cabable of defending ruins.
+	 */
         Stack* d_occupant;
-	bool d_hidden;      // is this a "hidden" ruin that can only be seen
-	Player *d_owner;    // by an "owner"?
-	bool d_sage;        // does this ruin have a sage?
-	Reward *d_reward;   // the ruin contains this reward
+
+	//! Whether or not the ruin is a hidden ruin.
+	/**
+	 * Hidden ruins are rewards.  Only a certain player can see the Ruin.
+	 */
+	bool d_hidden;
+
+	//! The player who can see the hidden ruin.
+	/**
+	 * Owning a ruin only makes sense if it is a hidden ruin.
+	 * Only this player can see the hidden ruin, although other players
+	 * may occupy the same tile.
+	 */
+	Player *d_owner;
+
+	//! The ruin contains a sage.
+	/**
+	 * A Sage offers the Hero the choice of many rewards.
+	 */
+	bool d_sage;
+
+	//! The reward to give if the Hero is successful in beating the keeper.
+	Reward *d_reward;
 };
 
 #endif // RUIN_H

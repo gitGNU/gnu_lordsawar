@@ -20,34 +20,57 @@
 
 #include "Location.h"
 
-/** A bridge is just a thing on the map to differentiate space
-  */
-
+//! A bridge on the game map.
+/** 
+ * A bridge is a place on the map that simultaneously acts like a Road object
+ * and a Port object.  Stack objects can move more efficiently on a bridge
+ * tile, and the Stack can also use it as a jumping off point into the water.
+ * A bridge object is built on a Tile with a terrain kind of Tile::WATER.
+ */
 class Bridge: public Location
 {
     public:
-        /** Default constructor
-          * 
-          * @param pos          the location of the bridge
-          * @param type         the type of bridge.  0=e,1 n, 2 w, 3 s
-          */
-        Bridge(Vector<int> pos, std::string name = "Bridge", int type=0);
-
-        //! Loading constructor. See XML_Helper
-        Bridge(XML_Helper* helper);
+	//! Default constructor.
+        /**
+         * @param pos          The location of the bridge.
+         * @param type         The type of bridge.  0=e,1=n, 2=w, 3=s.
+         */
+        Bridge(Vector<int> pos, int type = 0);
+	//! Copy constructor.
         Bridge(const Bridge&);
+        //! Loading constructor.
+	/**
+	 * Load the bridge from the opened saved-game file.
+	 * @param helper  The opened saved-game file to load the bridge from.
+	 */
+        Bridge(XML_Helper* helper);
+	//! Destructor.
         ~Bridge();
 
-        //! Returns the type of the bridge
+        //! Returns the type of the bridge.
         int getType() {return d_type;};
 
-        //! Sets the type of the bridge
+        //! Sets the type of the bridge.
         void setType(int type) {d_type = type;};
 
-        //! Save the bridge data.
+        //! Save the bridge data to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 
     protected:
+	//! The type of the bridge.
+	/**
+	 * The type of the bridge refers to it's look on the map.  It can be
+	 * one of the following values:
+	 *
+	 * 0 = The bridge connects to a road to the west, and another bridge
+	 *     to the east.
+	 * 1 = The bridge connects to a road to the south, and another bridge
+	 *     to the north.
+	 * 2 = The bridge connects to a road to the east, and another bridge
+	 *     to the west.
+	 * 3 = The bridge connects to a road to the north, and another bridge
+	 *     to the south.
+	 */
 	int d_type;
 
 };

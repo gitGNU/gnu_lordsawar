@@ -28,63 +28,75 @@ class Hero;
 #define DEFAULT_CITY_NAME "Noname"
 #define DEFAULT_CITY_INCOME 20
 
-/** A city on the game map
-  * 
-  * The City class includes the whole functionality of a city on the game map. A
-  * city can produce armies, place produced armies on its fields and buy
-  * production as well as be upgraded.
-  *
-  * Upgrading affects the city in several ways:
-  * - more production can be bought
-  * - the city produces more gold
-  * - units defending the city get a defense bonus
-  *
-  * Some other things to mention are basic production and the system of
-  * production slots.
-  *
-  * A production slot is a production capability of a city. If a city has 4
-  * different production slots, it may choose its production from a maximum of 4
-  * different units. The slots are divided into basic production slots (only
-  * filled by units of the default armyset).
-  */
-
-
+//! A City on the game map.
+/**
+ * Players vie for control of City objects on the game map.  The main goal
+ * of the game is to conquer these City objects.  Cities can be also be razed,
+ * making them uninhabitable and unconquerable.
+ *
+ * A city can produce armies, provide income, place produced armies on it's 
+ * tiles and buy production as well as have it's name changed.  Cities can
+ * also vector their produced units to another position on the map.
+ *
+ * A City has 4 production slots.  A production slot is a production 
+ * capability of a city.  Every one of the slots can be filled with an 
+ * Army production base.  Cities can be assigned a random set of Army
+ * production bases.  The name of a City can also be randomly set from a 
+ * list of potential City names.
+ *
+ * Some City objects are capital cities.  Every player has a single capital
+ * city.  Conquering another player's capital city doesn't give any bonus
+ * except for bragging rights.
+ */
 class City : public Ownable, public Location
 {
     public:
-        /** Preferred constructor
-          * 
-          * @param pos          the location of the city
-          * @param name         the name of the city
-          * @param gold         the amount of gold the city produces each turn
+	//! Default constructor.
+        /** 
+          * Make a new city object.
+	  *
+          * @param pos       The location of the city on the game map.
+          * @param name      The name of the city.
+          * @param gold      The amount of gold the city produces each turn.
           */
         City(Vector<int> pos, std::string name = DEFAULT_CITY_NAME, 
 	     Uint32 gold = DEFAULT_CITY_INCOME);
-
-        //! The loading constructor. See XML_Helper for details.
-        City(XML_Helper* helper);
+	//! Copy constructor.
         City(const City&);
+        //! Loading constructor.
+	/**
+	 * Make a new city object by reading it from a saved-game file.
+	 *
+	 * @param helper The opened saved-game file to load the City from.
+	 */
+        City(XML_Helper* helper);
+	//! Destructor.
         ~City();
 
-        //! Save the city status. See XML_Helper for info.
+        //! Save the city to an opened saved-game file.
         bool save(XML_Helper* helper) const;
         
-        //! Set the gold the city produces each turn
+        //! Set the gold the city produces each turn.
         void setGold(Uint32 gold){d_gold = gold;}
 
-        //! Set if the city is destroyed
+        //! Set whether or not the city is destroyed.
         void setBurnt(bool burnt){d_burnt = burnt;}
 
-        //! Sets whether the city is a capital
+        //! Sets whether the city is a capital.
         void setCapital(bool capital) {d_capital = capital;}
 
-        //! Sets whether the city is a capital
+        //! Sets whether the city is a capital.
         void setCapitalOwner(Player *p) {d_capital_owner = p;}
 
-        /** Set the production of the city
-          * 
-          * @param index    the index of the internal production slot, -1 for none
-          */
+	//! Set the production of the city.
+        /**
+	 * Make the Army production base in particular slot active, so that
+	 * the Army starts being produced.
+	 *
+         * @param index  The index of the production slot to activate. 
+	 *               -1 means no production at all.   This must be a value
+	 *               between -1 and 3.
+         */
         void setProduction(int index);
 
         
@@ -92,25 +104,37 @@ class City : public Ownable, public Location
         bool raiseDefense();
 
         //! Lower the defense level by one. Return true on success.
+	/**
+	 * This method is not used.
+	 */
         bool reduceDefense();
 
-        /** Add a basic production slot
-          *
-          * Basic productions are those of the default armyset, which every
-          * player can produce. Overwrites the production slot if neccessary.
-          * 
-          * @param index        the index of the production slot; if set to -1,
-          *                     the city will try to find a free production slot
-          *                     and overwrite an existing one if neccessary.
-	  * @param army         the army to add
-          * @return true on success, false on error
-          */
+	//! Add an Army production base to a production slot.
+        /**
+         * @note This method overwrites the production slot if neccessary.
+         * 
+         * @param index        The index of the production slot; if set to -1,
+         *                     the city will try to find a free production slot.
+	 *                     This must be a value between -1 and 3.
+	 * @param army         The Army production base to add.
+	 *
+         * @return True on success, false on error.
+         */
         bool addBasicProd(int index, Army *army);
 
-        //! Clears the basic production of a given slot
+        //! Clears the basic production of a given slot.
+	/**
+	 * @param index  The slot to remove the Army production base from.
+	 *               This method deletes the Army production base object.  
+	 *               This parameter must be a a value between 0 and 3.
+	 */
         void removeBasicProd(int index);
         
-        //! Changes the owner of the city and prepares it for takeover
+        //! Changes the owner of the city and prepares it for takeover.
+	/**
+	 * @param newowner  The pointer to the Player in Playerlist who is the
+	 *                  new owner of this City.
+	 */
         void conquer(Player* newowner);
         
         //! Sets the production to random starting values

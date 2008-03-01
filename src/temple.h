@@ -23,39 +23,55 @@
 class Stack;
 class Quest;
 
-/** A temple is the place where heroes can get quests or have their armies
-  * blessed. It doesn't extend the Location class very much...
-  */
-
+//! A temple on the game map.
+/** 
+ * A temple is the place where heroes can get quests or have their armies
+ * blessed.
+ */
 class Temple : public Location
 {
     public:
-        /** Default constructor
-          * 
-          * @param pos          the location of the temple
-          * @param name         the name of the temple (AFAIR unused)
-          */
+	//! Default constructor.
+        /**
+         * @param pos          The location of the temple on the game map.
+         * @param name         The name of the temple.
+	 * @param type         The type of the temple.  This should always
+	 *                     be 0.
+         */
         Temple(Vector<int> pos, std::string name = DEFAULT_TEMPLE_NAME, 
-	       int type=0);
-
-        //! Loading constructor. See XML_Helper
-        Temple(XML_Helper* helper);
+	       int type = 0);
+	//! Copy constructor.
         Temple(const Temple&);
+        //! Loading constructor.
+	/**
+	 * @param helper  The opened saved-game file to load the temple from.
+	 */
+        Temple(XML_Helper* helper);
+	//! Destructor.
         ~Temple();
 
-        //! Returns the type of the temple
+        //! Returns the type of the temple.
         int getType() {return d_type;};
 
-        //! Returns the type of the temple
+        //! Returns the type of the temple.
         void setType(int type) {d_type=type;};
 
-        //! Dummy function. May be extended in the future.
-        bool searchable(){return true;}
+        //! Returns whether or not the temple can be searched.
+	/**
+	 * @note Temples can always be searched in this game.
+	 */
+        bool searchable() {return true;}
 
-        //! Save the temple data.
+        //! Save the temple to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 
     protected:
+	
+	//! The type of the temple.
+	/**
+	 * The temple always has a type of 0, because there is only one kind
+	 * of temple in the game.
+	 */
         int d_type;
 };
 

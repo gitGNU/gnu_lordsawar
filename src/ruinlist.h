@@ -32,7 +32,7 @@ class Ruinlist : public LocationList<Ruin>, public sigc::trackable
         //! Loads the singleton instance with a savegame.
         static Ruinlist* getInstance(XML_Helper* helper);
 
-        //! Explicitely deletes the singleton instance.
+        //! Explicitly deletes the singleton instance.
         static void deleteInstance();
         
         

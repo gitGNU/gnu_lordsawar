@@ -15,8 +15,8 @@
 #include "port.h"
 #include "GameMap.h"
 
-Port::Port(Vector<int> pos, std::string name)
-  :Location(name, pos)
+Port::Port(Vector<int> pos)
+  :Location("port", pos)
 {
     //mark the location on the game map as occupied by a port
     GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::PORT);

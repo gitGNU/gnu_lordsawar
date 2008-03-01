@@ -30,3 +30,5 @@ fight bug:
 		attacked from water
 		heroes had same id.  this was fixed.
 
+
+check to see what happens when i pass a larger attacker/defender list of stacks to fight.  it only seems to use 1!

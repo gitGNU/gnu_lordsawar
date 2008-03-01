@@ -20,101 +20,187 @@
 #include "tileset.h"
 #include "Item.h"
 
-/** A single tile on the map
-  * 
-  * The Maptile class encapsulates all information one may want to get about a
-  * single maptile of the game map. Specifically, it stores the type of and the
-  * buildings on the map tile.
-  *
-  * A remark concerning the type. A maptile has two types. First, the type value
-  * is an index in the tileset which says which tile type this maptile has, e.g.
-  * "This maptile is of the sort of the first tile in the tileset". The maptile
-  * type says which terrain type this maptile has, e.g. grass or swamps.
-  */
-
+//! A single tile on the game map.
+/** 
+ * The Maptile class encapsulates all information one may want to get about a
+ * single maptile of the game map.  Specifically, it stores the type of and the
+ * buildings on the map tile.
+ *
+ * A remark concerning the type.  A maptile has two types. First, the type 
+ * value is an index in the tileset which says which tile type this maptile 
+ * has, e.g. "This maptile is of the sort of the first tile in the tileset". 
+ * The maptile type says which terrain type this maptile has, 
+ * e.g. grass or swamps.
+ *
+ * The GameMap contains on Maptile object for every cell of the map.
+ *
+ */
 class Maptile
 {
     public:
-        //! Enum of possible buldings on the tile
-        enum Building {NONE=0, CITY=1, RUIN=2, TEMPLE=3, SIGNPOST=4, ROAD=6, PORT=7, BRIDGE=8};
+        //! Enumeration of all possible constructed objects on the maptile.
+	/**
+	 * Each member in the enumeration refers to a class that inherits 
+	 * the Location class.
+	 */
+        enum Building {
+	  //! Bupkiss.  Nothing built here.
+	  NONE=0, 
+	  //! A City is built here.
+	  CITY=1, 
+	  //! A Ruin is built here.
+	  RUIN=2, 
+	  //! A Temple is built here.
+	  TEMPLE=3, 
+	  //! A Signpost is built here.
+	  SIGNPOST=4, 
+	  //! A Road is built here.
+	  ROAD=6, 
+	  //! A Port is built here.
+	  PORT=7, 
+	  //! A Bridge is built here.
+	  BRIDGE=8
+	};
 
-        /** Default constructor
-          * 
-          * @param tileSet          the tileset to use
-          * @param x                the x position of the tile
-          * @param y                the y position of the tile
-          * @param type             the terrain type (index in the tileset)
-	  * @param tileStyle        the look of this tile to use
-          */
-        Maptile(Tileset* tileSet, int x, int y, Uint32 type, TileStyle *tileStyle);
+	//! Default constructor.
+        /** 
+	 * Make a new Maptile.
+	 *
+         * @param tileSet          The tileset to use.
+         * @param x                The x position of the tile.
+         * @param y                The y position of the tile.
+         * @param type             The terrain type (index in the tileset).
+	 * @param tileStyle        The look of this tile to use.
+         */
+        Maptile(Tileset* tileSet, int x, int y, Uint32 type, 
+		TileStyle *tileStyle);
+
+	//! Slower constructor.
+        /** 
+	 * Make a new Maptile, but this time using the Tile::Type.
+	 *
+         * @param tileSet          The tileset to use.
+         * @param x                The x position of the tile.
+         * @param y                The y position of the tile.
+         * @param type             The terrain type enumeration Tile::Type.
+	 * @param tileStyle        The look of this tile to use.
+         */
+        Maptile(Tileset* tileSet, int x, int y, Tile::Type type, 
+		TileStyle *tileStyle);
+
+	//! Destructor.
         ~Maptile();
 
-        //! Set the type of the terrain (type is an index in the tileset)
+        //! Set the type of the terrain (type is an index in the tileset).
         void setType(Uint32 index){d_index = index;}
 
-        //! Set which building is on this maptile
+        //! Set which kind of building is on this maptile.
         void setBuilding(Building building){d_building = building;}
 
-        
-        //! Get the index of the tile type in the tileset
+        //! Get the index of the tile type in the tileset.
         Uint32 getType() const {return d_index;}
 
-        //! Get which building is on the maptile
+        //! Get which building is on the maptile.
         Building getBuilding() const {return d_building;}
 
-        //! Get the number of moves needed to cross this maptile
+        //! Get the number of moves needed to cross this maptile.
+	/**
+	 * This method refers to the Tile::getMoves method, but then also 
+	 * takes into account the buildings on the tile.
+	 * 
+	 * @return The number of movement points required to cross this 
+	 *         Maptile.
+	 */
         Uint32 getMoves() const;
 
-        //! Get the smallmap color of this maptile
-        SDL_Color getColor() const;
+        //! Get the smallmap color of this maptile.
+        SDL_Color getColor() const
+	  {return (*d_tileSet)[d_index]->getColor();}
 
-	//! Get the pattern of this maptile on the smallmap
-        Tile::Pattern getPattern() const;
+	//! Get the pattern of this maptile on the smallmap.
+        Tile::Pattern getPattern() const
+	  {return (*d_tileSet)[d_index]->getPattern();}
 
-	//! Get the associated colour with the pattern
-        SDL_Color getSecondColor() const;
+	//! Get the associated colour with the pattern.
+        SDL_Color getSecondColor() const
+	  {return (*d_tileSet)[d_index]->getSecondColor();}
 
-	//! Get the associated colour with the pattern
-        SDL_Color getThirdColor() const;
+	//! Get the associated colour with the pattern.
+        SDL_Color getThirdColor() const
+	  {return (*d_tileSet)[d_index]->getThirdColor();}
 
-        //! Get the tile type (the type of the underlying terrain)
-        Tile::Type getMaptileType() const;
+        //! Get the tile type (the type of the underlying terrain).
+        Tile::Type getMaptileType() const
+	  {return (*d_tileSet)[d_index]->getType();}
 
-        //! Add an item to the maptile at a specific position in the list (<0 => to the end)
-        void addItem(Item*, int position=-1);
+        //! Add an Item to the maptile.
+	/**
+	 * Put an Item on this spot.  If there are others, specify the
+	 * position among the list of other items. 
+	 *
+	 * @param item          The item to add to the maptile.
+	 * @param position      Where to add it in the list of items already
+	 *                      here.  -1 means add to the end.
+	 */
+        void addItem(Item*, int position = -1);
 
-        //! Remove an item from the maptile withut deleting it (!)
+        //! Remove an Item from the maptile without deleting it.
         void removeItem(Item* item);
 
-        //! Get the items located at this maptile
+        //! Get the list of Item objects on this maptile.
         std::list<Item*> getItems() const;
         
-	//! is this map tile considered to be "open terrain".
-	//! this is used for bonus calculations
+	//! Whether or not this map tile considered to be "open terrain".
+	/**
+	 *
+	 * This is used for battle bonus calculations.  An Army unit can
+	 * potentially have a bonus for being `out in the open' -- and this 
+	 * method defines if this maptile is `out in the open' or not.
+	 */
 	bool isOpenTerrain();
 
-	//! is this map tile considered to be "hilly terrain".
-	//! this is used for bonus calculations
+	//! Whether or not this map tile is considered to be "hilly terrain".
+	/**
+	 *
+	 * This is used for battle bonus calculations.  An Army unit can 
+	 * potentially have a bonus for being `in the hills' -- and this method
+	 * defines if this maptile is `in the hills' or not.
+	 */
         bool isHillyTerrain();
 
-	//! is this map tile considered to be "city terrain".
-	//! this is used for bonus calculations
+	//! Whether or not this map tile is considered to be "city terrain".
+	/**
+	 * This is used for battle bonus calculations.  An Army unit can 
+	 * potentially have a bonus for being `in a city' -- and this method
+	 * defines if this maptile is `in a city' or not.
+	 */
         bool isCityTerrain();
 
-        //prints some debug information
+        //! Prints some debug information about this maptile.
         void printDebugInfo() const;
                 
 	bool d_blocked[8];
 
+	//! Get the TileStyle associated with this Maptile.
 	TileStyle * getTileStyle() const {return d_tileStyle;}
 
+	//! Set the TileStyle associated with this Maptile.
 	void setTileStyle(TileStyle *style) {d_tileStyle = style;}
 
     private:
-        Tileset* d_tileSet;
+	//! The index of the Tile within the Tileset (Maptile::d_tileSet).
+	/**
+	 * The Maptile has a type, in the form of a Tile.  This Tile is
+	 * identified by it's index within Maptile::d_tileSet.
+	 */
         Uint32 d_index;
+	//! The Tileset of the Tile referred to by Maptile::d_index.
+        Tileset* d_tileSet;
+	//! The look of the maptile.
 	TileStyle *d_tileStyle;
-        Building d_building;    // which building is on this maptile
+	//! The type of constructed object on this maptile.
+        Building d_building;
+	//! The list of pointers to items on this maptile.
         std::list<Item*> d_items;
 };
 

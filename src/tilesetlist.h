@@ -28,57 +28,88 @@
 #include "tileset.h"
 
 
-/** List of all available tilesets
-  * 
-  * This class contains a list of all tilesets used in the game. 
-  * Since several classes access this class, it is implemented as a singleton.
-  */
-
+//! A list of all Tileset objects available to the game.
+/**
+ * This class contains a list of all Tileset objects available to the game. 
+ * Since several classes access this class, it is implemented as a singleton.
+ *
+ * Tileset objects are usually referenced by the name of the subdirectory
+ * in which they reside on disk (inside the tilesets/ directory).
+ */
 class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
 {
     public:
-        //! return the singleton instance of this class
+        //! Return the singleton instance of this class.
         static Tilesetlist* getInstance();
 
-        //! Explicitly delete the singleton instance of this class
+        //! Explicitly delete the singleton instance of this class.
         static void deleteInstance();
 
-        //! Returns the names of all tilesets
+        //! Returns the names of all tilesets available to the game.
 	std::list<std::string> getNames();
 
-        /** Returns the subdir of a specific tileset by name
-          * 
-          * @param tileset       the name of the tileset
-          * @return the name of the directory that holds the tileset
-          */
+	//! Return the name of the subdirectory for a given tileset.
+        /** 
+         * @param tileset       The name of the tileset to get the subdir of.
+	 *
+         * @return The name of the directory that holds the tileset.  See 
+	 *         Tileset::d_dir for more information about the nature of 
+	 *         the return value.
+         */
 	std::string getTilesetDir(std::string name) {return d_dirs[name];}
 
+	//! Return the Tileset object by the name of the subdir.
+	/**
+	 * @param dir  The directory where the Tileset resides on disk.
+	 *             This value does not contain any slashes, and is
+	 *             presumed to be found inside the tilesets/ directory.
+	 */
 	Tileset *getTileset(std::string dir) { return d_tilesets[dir];}
 
-	/* Reads in the pixmap and mask for every tile of every tileset.
-	 * This can only be done after SDL is initialized.
+	//! Load the pictures for all Tileset objects available to the game.
+	/**
+	 * Reads in the pixmaps for every Tile of every Tileset.
+	 * The images are held in TileStyle objects which are held by
+	 * TileStyleSet objects, which are held in Tile objects.
+	 * @note This can only be done after SDL is initialized.
 	 */
 	void instantiatePixmaps();
 
     private:
-        //! Constructor; loads all tilesets it can find
+        //! Default constructor.  Loads all tilesets it can find.
+	/**
+	 * The tilesets/ directory is scanned for Tileset directories.
+	 */
         Tilesetlist();
         
-        //! Destructor; mainly clears the lists
+        //! Destructor.
         ~Tilesetlist();
 
-        //! Callback for loading. See XML_Helper for details.
+        //! Callback for loading Tileset objects.  See XML_Helper for details.
 	bool load(std::string tag, XML_Helper *helper);
 
-        //! Loads a specific armyset
+        //! Loads a specific Tileset.
+	/**
+	 * Load the Tileset from an tileset configuration file and add it to 
+	 * this list of Tilesetarmysetss.
+	 *
+	 * @param name  The name of the subdirectory that the Tileset resides 
+	 *              in.
+	 *
+	 * @return True if the Tileset could be loaded.  False otherwise.
+	 */
         bool loadTileset (std::string name);
         
         typedef std::map<std::string, std::string> DirMap;
         typedef std::map<std::string, Tileset*> TilesetMap;
 
+	//! A map that provides a subdirectory when supplying a Tileset name.
         DirMap d_dirs;
+
+	//! A map that provides a Tileset when supplying a subdirectory name.
         TilesetMap d_tilesets;
 
+        //! A static pointer for the singleton instance.
         static Tilesetlist* s_instance;
 };
 

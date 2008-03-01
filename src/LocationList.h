@@ -57,14 +57,6 @@ template<class T> class LocationList : public std::list<T>
     }
 };
 
-// the explicit instantiation is needed due to a bug I found
-// in the gcc compiler... it goes back to 1997 and seems still
-// not fixed!!! -fexternal-template is deprecated...
-
-//template class LocationList<Ruin>;
-//template class LocationList<Temple>;
-//template class LocationList<City>;
-
 #endif // LOCATIONLIST_H
 
 // End of file

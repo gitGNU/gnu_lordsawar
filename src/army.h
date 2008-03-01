@@ -154,7 +154,8 @@ class Army : public Ownable, public sigc::trackable
         Army(const Army& army, Player* owner = 0);
 
         /** 
-	 * Load an Army from an opened saved-game file.
+	 * Load an Army from an opened saved-game file or from an opened
+	 * armyset configuration file.
          *
          * The constructor has to care for all three cases. Sometimes, an army
          * prototype is loaded, from which other units are cloned, sometimes

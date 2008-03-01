@@ -27,26 +27,59 @@
 
 class XML_Helper;
 
-/** TileStyleSet is an array of tile styles (the look of terrain info objects).
-  * 
-  */
-
+/** 
+ * TileStyleSet is an array of tilestyles (the look of terrain tile objects).
+ * All of the TileStyles describe one of the many looks of a particular kind
+ * of Tile.  e.g. `Forest'.
+ * Every TileStyleSet belongs to a Tile.
+ * The TileStyleSet images are located in on disk in the Tileset's directory.
+ */
+//! This class manages a set of TileStyle objects.
 class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 {
     public:
-        /** The constructor.
-          * 
-          */
+	//! The default constuctor loads the TileStyleSet from the config file.
+	/**
+	 * Read the tileset.tile.tilestyleset XML entities in the tileset
+	 * configuration file.
+	 *
+	 * @param helper  The opened tileset configuration file.
+	 */
         TileStyleSet(XML_Helper* helper);
+
+	//! Destructor.
         ~TileStyleSet();
 
-	//! Get the name of this tilestyleset
+	//! Get the name of this tilestyleset.
+	/**
+	 * Returns the text loaded from a tileset.tile.tilestyles.d_name
+	 * XML entity of the tileset configuration flie.
+	 */
 	std::string getName() const {return d_name;}
 
+	/**
+	 * Load all of the TileStyle images for this TileStyleSet.
+	 *
+	 * @param tileset    This TileStyleSet belongs to this Tileset.
+	 *                   This value is the name of tileset directory.
+	 * @param tilesize   The width and height of each cell in the
+	 *                   image identified to by TileStyleSet::d_name.
+	 */
 	void instantiatePixmaps(std::string tileset, Uint32 tilesize);
 
     private:
 
+	//! The name of the tilestyleset.
+	/**
+	 * This is the basename of the image that contains a row of
+	 * cells where each cell is tilesize pixels high, and tilesize
+	 * pixels wide.  Each cell is another image of a tilestyle.  There is
+	 * one cell per TileStyle in this TileStyleSet.
+	 * The tilesize comes from the TileStyleSet::instantiatePixmaps
+	 * method.
+	 * The name does not contain a path, and does not contain an
+	 * extension (e.g. .png).  It must refer to a PNG file.
+	 */
         std::string d_name;
 };
 

@@ -227,13 +227,19 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	//! Calculate new diplomatic states for all players.
 	void negotiateDiplomacy();
 
-        //! static pointer for the singleton instance.
+        // DATA
+	//! The pointer to the player whose turn it is in the list.
+        static Player* d_activeplayer;
+
+	//! Whether or not the game is over.
+        static bool s_finish;
+
+	//! The pointer to the neutral player in the list.
+        Player* d_neutral;
+
+        //! A static pointer for the singleton instance.
         static Playerlist* s_instance;
         
-        // DATA
-        static Player* d_activeplayer;
-        static bool s_finish;
-        Player* d_neutral;
 };
 
 #endif // PLAYERLIST_H

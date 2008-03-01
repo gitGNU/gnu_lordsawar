@@ -41,6 +41,7 @@ class Positionable
     ~Positionable();
     
  protected:
+    //! The position of the object on the game map.
     Vector<int> d_pos;
 };
 

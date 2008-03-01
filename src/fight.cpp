@@ -34,6 +34,7 @@
 // Helper class; the single units participating in the fight are saved with
 // additional information. This should be a struct, but I don't know how to
 // forward the declaration properly.
+//! A particpant in a Fight.
 class Fighter
 {
     public:

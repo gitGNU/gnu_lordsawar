@@ -74,16 +74,17 @@ Armysetlist::~Armysetlist()
     delete (*it);
 
     // remove all army entries
-    for (ArmyMap::iterator it = d_armies.begin(); it != d_armies.end(); it++)
+    for (ArmyPrototypeMap::iterator it = d_armies.begin(); 
+	 it != d_armies.end(); it++)
         while (!(*it).second.empty())
             delete ((*it).second)[0];
 }
 
 Army* Armysetlist::getArmy(Uint32 id, Uint32 index) const
 {
-    // always use ArmyMap::find for searching, else a default entry is created,
-    // which can produce really bad results!!
-    ArmyMap::const_iterator it = d_armies.find(id);
+    // always use ArmyProtoMap::find for searching, else a default entry is 
+    // created, which can produce really bad results!!
+    ArmyPrototypeMap::const_iterator it = d_armies.find(id);
 
     // armyset does not exist
     if (it == d_armies.end())
@@ -98,7 +99,7 @@ Army* Armysetlist::getArmy(Uint32 id, Uint32 index) const
 
 Uint32 Armysetlist::getSize(Uint32 id) const
 {
-    ArmyMap::const_iterator it = d_armies.find(id);
+    ArmyPrototypeMap::const_iterator it = d_armies.find(id);
 
     // armyset does not exist
     if (it == d_armies.end())

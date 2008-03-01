@@ -62,7 +62,8 @@ Stack* Location::getFreeStack(Player *p) const
     for (unsigned int i = 0; i < d_size; i++)
         for (unsigned int j = 0; j < d_size; j++)
         {
-            Stack* stack = Stacklist::getObjectAt(getPos().x + j, getPos().y+ i);
+            Stack* stack = Stacklist::getObjectAt(getPos().x + j, 
+						  getPos().y + i);
 
             if (stack == NULL)
             {

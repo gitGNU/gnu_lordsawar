@@ -641,7 +641,7 @@ void EditorBigMap::change_map_under_cursor()
 		else
 		{
 		    maptile->setBuilding(Maptile::BRIDGE);
-		    Bridgelist::getInstance()->push_back(Bridge(tile, "", type));
+		    Bridgelist::getInstance()->push_back(Bridge(tile, type));
 		}
 	        changed_tiles.dim = Vector<int>(1, 1);
 	    }
@@ -656,7 +656,7 @@ void EditorBigMap::change_map_under_cursor()
 		if (maptile->getBuilding() == Maptile::NONE)
 		{
 		    maptile->setBuilding(Maptile::ROAD);
-		    Roadlist::getInstance()->push_back(Road(tile, "", type));
+		    Roadlist::getInstance()->push_back(Road(tile, type));
 		}
 
 		// now reconfigure all roads in the surroundings

@@ -17,24 +17,31 @@
 
 #include "Location.h"
 
-/** A port is just a thing on the map to differentiate space
-  */
-
+//! A port on the game map.
+/** 
+ * A port is place on the map that Stack objects can use to gain access to
+ * the water.
+ */
 class Port: public Location
 {
     public:
-        /** Default constructor
-          * 
-          * @param pos          the location of the port
+	//! Default constructor.
+        /**
+          * @param pos          The location of the port on the game map.
           */
-        Port(Vector<int> pos, std::string name = "Port");
-
-        //! Loading constructor. See XML_Helper
-        Port(XML_Helper* helper);
+        Port(Vector<int> pos);
+	//! Copy constructor.
         Port(const Port&);
+        //! Loading constructor.
+	/**
+	 * Load the port object from the opened saved-game file.
+	 * @param helper  The opened saved-game file to load the port from.
+	 */
+        Port(XML_Helper* helper);
+	//! Destructor.
         ~Port();
 
-        //! Save the port data.
+        //! Save the port data to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 
 };

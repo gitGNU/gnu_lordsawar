@@ -104,7 +104,7 @@ lordsawar_LDADD = $(SDL_LIBS) \
 lordsawar_DEPENDENCIES = \
   ./server/liblwserver.a ./gui/liblwgui.a
 
-AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\"
+AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\" -Wunused-function
 INCLUDES = $(SDL_CFLAGS) \
     $(GTKMM_CFLAGS) \
     $(LIBSIGC_CFLAGS) \

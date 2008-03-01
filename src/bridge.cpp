@@ -18,8 +18,8 @@
 #include "bridge.h"
 #include "GameMap.h"
 
-Bridge::Bridge(Vector<int> pos, std::string name, int type)
-  :Location(name, pos), d_type(type)
+Bridge::Bridge(Vector<int> pos, int type)
+  :Location("bridge", pos), d_type(type)
 {
     //mark the location on the game map as occupied by a bridge
     GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::BRIDGE);

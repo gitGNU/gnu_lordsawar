@@ -26,7 +26,8 @@ class XML_Helper;
 
 //! A game object that has an changing position on the map.
 /** 
- * A Movable is a game object on the map that has a position that can change.
+ * A Movable is a game object on the map that has a position that can be 
+ * altered.
  */
 
 class Movable: private Positionable
@@ -44,7 +45,7 @@ class Movable: private Positionable
     //! Return the position of the object on the game map.
     Vector<int> getPos() const {return d_pos;}
 
-    //! Set the position of the obejct on the game map.
+    //! Set the position of the object on the game map.
     void setPos(Vector<int> pos) {d_pos = pos;}
 
 };

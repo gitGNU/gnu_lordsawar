@@ -25,60 +25,69 @@
 #include "armyset.h"
 
 
-/** List of all available armysets
-  * 
-  * This class contains a list of all armysetsused in the game. Each armyset has
-  * a size, a name and a list of armies. The armysetlist shields all these from
-  * the evil rest of the program. Armysets are in general referenced by their
-  * id.
-  *
-  * @note Throughout this class, it is assumed that the standard armyset usable
-  * by all playes ha sthe index 1, the heroes armyset index 2. However, to avoid
-  * this assumption being spread over the whole code, we separate the access to
-  * these two armysets from the rest via special functions.
-  *
-  * Since several classes access this class, it is implemented as a singleton.
-  */
+//! A list of all Armyset objects available to the game.
+/** 
+ * This class contains a list of all armyset objects available to the game. 
+ * Each armyset has a size, a name and a list of armies. The armysetlist 
+ * shields all these from the rest of the program.  Armysets are most often
+ * referenced by their id.
+ *
+ * The Armysetlist is populated with Armyset objects that are loaded from the 
+ * army/ directory.
+ *
+ * Since several classes access this class, it is implemented as a singleton.
+ */
 
 class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 {
     public:
-        //! return the singleton instance of this class
+        //! Return the singleton instance of this class.
         static Armysetlist* getInstance();
 
         //! Explicitly delete the singleton instance of this class
         static void deleteInstance();
 
-        /** Returns an army prototype
-          *
-          * @param id       the id of the armyset
-          * @param index    the index of the army within the set
-          * @return the requested army or 0 on error
-          */
+	//! Returns an army prototype from a given armyset.
+        /** 
+         * @param id       The Id of the armyset.
+         * @param index    The index of the army within the set.
+	 *                 This value becomes the Army object's type.
+	 *
+         * @return The requested army or 0 on error.
+         */
         Army* getArmy(Uint32 id, Uint32 index) const;
 
+	//! Get the unshaded ship image for the given Armyset.
 	SDL_Surface * getShipPic (Uint32 id);
+
+	//! Get the ship mask picture for the given Armyset.
 	SDL_Surface * getShipMask (Uint32 id);
+
+	//! Get the unshaded planted standard picture for the given Armyset.
 	SDL_Surface * getStandardPic (Uint32 id);
+
+	//! Get the planted standard mask for the given Armyset.
 	SDL_Surface * getStandardMask (Uint32 id);
         Uint32 getTileSize(Uint32 id);
 
-        /** Returns the size of a specific armyset
-          * 
-          * @param id       the id of the armyset
-          * @return size of the armyset or 0 on error (an armyset should never
-          *         have a size of 0)
-          */
+	//! Returns the size of a specific armyset.
+        /** 
+         * @param id       The id of the armyset to get the size of.
+	 *
+         * @return The number of Army prototype objects in the Armyset.
+	 *         Returns 0 on error. 
+         */
         Uint32 getSize(Uint32 id) const;
 
-        /** Returns the name of a specific armyset
-          * 
-          * @param id       the id of the armyset
-          * @return the name or an empty string on error
-          */
+	//! Return the name of a given armyset.
+        /** 
+         * @param id       The id of the armyset to get the name of.
+	 *
+         * @return The name of the Armyset or an empty string on error.
+         */
         std::string getName(Uint32 id) const;
 
-        //! Returns the names of all armysets
+        //! Returns the names of all Armyset objects available to the game.
 	std::list<std::string> getNames();
 
         /** Returns the Id of a specific armyset by name
@@ -88,36 +97,54 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
           */
 	Uint32 getArmysetId(std::string armyset) {return d_ids[armyset];}
 
-        /** Returns a list of all existing army sets
-          */
+	//! Returns a list of all Armyset objects available to the game.
         std::vector<Uint32> getArmysets() const;
 
-	/* Reads in the pixmap and mask for every army of every armyset.
-	 * This can only be done after SDL is initialized.
+	//! Load the pictures for all Armyset objects available to the game.
+	/**
+	 * Reads in the pixmap and mask for every army of every armyset.
+	 * @note This can only be done after SDL is initialized.
 	 */
 	void instantiatePixmaps();
 
     private:
-        //! Constructor; loads all armysets it can find
+        //! Default Constructor.  Loads all armyset objects it can find.
+	/**
+	 * The army/ directory is scanned for armyset directories.
+	 */
         Armysetlist();
         
-        //! Destructor; mainly clears the lists
+        //! Destructor.
         ~Armysetlist();
 
-        //! Callback for loading. See XML_Helper for details.
+        //! Callback for loading an armyset.  See XML_Helper for details.
 	bool load(std::string tag, XML_Helper *helper);
 
-        //! Loads a specific armyset
+        //! Loads a specific armyset.
+	/**
+	 * Load the armyset from an armyset configuration file and add it to 
+	 * this list of armysets.
+	 *
+	 * @param name  The subdirectory name that the Armyset resides in.
+	 *
+	 * @return True if the Armyset could be loaded.  False otherwise.
+	 */
         bool loadArmyset (std::string name);
         
-        typedef std::map<Uint32, std::vector<Army*> > ArmyMap;
+        typedef std::map<Uint32, std::vector<Army*> > ArmyPrototypeMap;
         typedef std::map<Uint32, std::string> NameMap;
         typedef std::map<std::string, Uint32> IdMap;
         
-        ArmyMap d_armies;
+	//! A map that provides Army objects by their index.
+        ArmyPrototypeMap d_armies;
+
+	//! A map that provides Armyset::d_name by supplying a Armyset::d_id.
         NameMap d_names;
+
+	//! A map that provides Armyset:d_id by supplying a Armyset::d_name.
         IdMap d_ids;
 
+        //! A static pointer for the singleton instance.
         static Armysetlist* s_instance;
 };
 

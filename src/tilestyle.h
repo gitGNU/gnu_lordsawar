@@ -41,7 +41,7 @@ class TileStyle
 {
     public:
         //! Describe terrain tile styles.
-	  /*
+	  /**
 	   * All of the Tilestyle kinds can be described by using the
 	   * following template:
 	   * @verbatim
@@ -55,9 +55,11 @@ class TileStyle
 @endverbatim
            * Picture a terrain feature transitioning to grass on the outside 
 	   * of the ring and on the inside of the ring also.
+	   * In the very center of the template is a single feature that
+	   * transitions to grass on all sides.
            */
 	enum Type { 
-	  /*
+	  /**
 	   * @verbatim
 ooooooo
 ooooooo
@@ -70,7 +72,7 @@ ooooooo
            */
 	  LONE = 0,
 
-	  /*
+	  /**
 	   * @verbatim
 xoooooo
 ooooooo
@@ -82,7 +84,7 @@ ooooooo
 @endverbatim
            */
 	  OUTERTOPLEFT = 1, 
-	  /*
+	  /**
 	   * @verbatim
 oxxxxxo
 ooooooo
@@ -94,7 +96,7 @@ ooooooo
 @endverbatim
            */
 	  OUTERTOPCENTER = 2, 
-	  /*
+	  /**
 	   * @verbatim
 oooooox
 ooooooo
@@ -106,7 +108,7 @@ ooooooo
 @endverbatim
            */
 	  OUTERTOPRIGHT = 3,
-	  /*
+	  /**
 	   * @verbatim
 ooooooo
 ooooooo
@@ -118,7 +120,7 @@ xoooooo
 @endverbatim
            */
 	  OUTERBOTTOMLEFT = 4, 
-	  /*
+	  /**
 	   * @verbatim
 ooooooo
 ooooooo
@@ -130,7 +132,7 @@ oxxxxxo
 @endverbatim
            */
 	  OUTERBOTTOMCENTER = 5, 
-	  /*
+	  /**
 	   * @verbatim
 ooooooo
 ooooooo
@@ -142,7 +144,7 @@ oooooox
 @endverbatim
            */
 	  OUTERBOTTOMRIGHT = 6,
-	  /*
+	  /**
 	   * @verbatim
 ooooooo
 xoooooo
@@ -154,7 +156,7 @@ ooooooo
 @endverbatim
            */
 	  OUTERMIDDLELEFT = 7, 
-	  /*
+	  /**
 	   * @verbatim
 ooooooo
 oxxxxxo
@@ -166,7 +168,7 @@ ooooooo
 @endverbatim
            */
 	  INNERMIDDLECENTER = 8, 
-	  /*
+	  /**
 	   * @verbatim
 ooooooo
 oooooox
@@ -178,7 +180,7 @@ ooooooo
 @endverbatim
            */
 	  OUTERMIDDLERIGHT = 9,
-	  /*
+	  /**
 	   * @verbatim
 ooooooo
 ooooooo
@@ -190,7 +192,7 @@ ooooooo
 @endverbatim
            */
 	  INNERTOPLEFT = 10, 
-	  /*
+	  /**
 	   * @verbatim
 ooooooo
 ooooooo
@@ -202,7 +204,7 @@ ooooooo
 @endverbatim
            */
 	  INNERTOPRIGHT = 11, 
-	  /*
+	  /**
 	   * @verbatim
 ooooooo
 ooooooo
@@ -214,7 +216,7 @@ ooooooo
 @endverbatim
            */
 	  INNERBOTTOMLEFT = 12, 
-	  /*
+	  /**
 	   * @verbatim
 ooooooo
 ooooooo
@@ -226,7 +228,7 @@ ooooooo
 @endverbatim
            */
 	  INNERBOTTOMRIGHT = 13,
-	  /*
+	  /**
 	   * Visually it's the merging of positions 1 and 2.
 	   * @verbatim
 1oooooo
@@ -239,7 +241,7 @@ oooooo2
 @endverbatim
            */
 	  TOPLEFTTOBOTTOMRIGHTDIAGONAL = 14, 
-	  /*
+	  /**
 	   * Visually it's the merging of positions 1 and 2.
 	   * @verbatim
 oooooo1
@@ -255,7 +257,11 @@ ooooooo
 	  OTHER = 16,
 	};
 
-        //! Loading constructor
+        //! Loading constructor.
+	/**
+	 * Load the tileset.tile.tilestyles.tilestyle XML entities from the
+	 * tileset configuration files.
+	 */
         TileStyle(XML_Helper* helper);
 
         ~TileStyle();

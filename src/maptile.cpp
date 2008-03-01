@@ -24,6 +24,25 @@ Maptile::Maptile(Tileset* tileSet, int x, int y, Uint32 type, TileStyle *tileSty
     d_tileStyle = tileStyle;
 }
 
+Maptile::Maptile(Tileset* tileSet, int x, int y, Tile::Type type, TileStyle *tileStyle)
+{
+    bool found = false;
+    d_building = NONE;
+    d_tileSet = tileSet;
+    d_tileStyle = tileStyle;
+    for (unsigned int i = 0; i < (*tileSet).size(); i++)
+      {
+	if ((*tileSet)[i]->getType() == type)
+	  {
+	    found = true;
+	    d_index = i;
+	    break;
+	  }
+      }
+    if (found == false)
+      d_index = 0;
+}
+
 Maptile::~Maptile()
 {
     while (!d_items.empty())
@@ -31,11 +50,6 @@ Maptile::~Maptile()
         delete (*d_items.begin());
         d_items.erase(d_items.begin());
     }
-}
-
-Tile::Type Maptile::getMaptileType() const
-{
-    return (*d_tileSet)[d_index]->getType();
 }
 
 Uint32 Maptile::getMoves() const
@@ -55,26 +69,6 @@ Uint32 Maptile::getMoves() const
 	  return tile->getMoves() / 2;
       }
     return tile->getMoves();
-}
-
-SDL_Color Maptile::getColor() const
-{
-    return (*d_tileSet)[d_index]->getColor();
-}
-
-Tile::Pattern Maptile::getPattern() const
-{
-    return (*d_tileSet)[d_index]->getPattern();
-}
-
-SDL_Color Maptile::getSecondColor() const
-{
-    return (*d_tileSet)[d_index]->getSecondColor();
-}
-
-SDL_Color Maptile::getThirdColor() const
-{
-    return (*d_tileSet)[d_index]->getThirdColor();
 }
 
 void Maptile::printDebugInfo() const

@@ -32,6 +32,10 @@ class Immovable: private Positionable
 {
  public:
      //! Default constructor.
+     /**
+      * @note After the position is set in the constructor, it cannot be
+      *       altered.
+      */
      Immovable(Vector<int> pos);
      //! Copy constructor.
      Immovable(const Immovable&);

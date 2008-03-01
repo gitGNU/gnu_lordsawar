@@ -33,6 +33,9 @@
  * TileStyle objects.  Each TileStyleSet holds a bunch of pictures of
  * what this tile can look like.  A TileStyle is a single picture.
  * These TileStyle pictures are displayed on the BigMap using the MapRenderer.
+ *
+ * Tile objects are held in a Tileset object.
+ * Maptile objects refer to Tile objects.
  */
 class Tile : public std::vector<TileStyleSet*>
 {
@@ -119,6 +122,10 @@ eoeoeoeo
 	};
                     
         //! Loading constructor.
+	/**
+	 * Loads the tileset.tile XML entities in the tileset configuration 
+	 * files.
+	 * */
         Tile(XML_Helper* helper);
 
 	//! Destructor.

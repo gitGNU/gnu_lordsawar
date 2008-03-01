@@ -27,38 +27,93 @@ class Player;
 class Location;
 class ::UniquelyIdentified;
 
-/** A Location is a map object with a name. This is the metaclass for
-  * cities, ruins and temples.
-  */
-
+//! A named feature on the map.
+/** 
+ * A Location is a map feature with a name, and a size. 
+ * City, Ruin, Temple, Signpost and more classes are derived from Location.
+ */
 class Location : public ::UniquelyIdentified, public Immovable
 {
  public:
-    Location(std::string name, Vector<int> pos, Uint32 size = 1);
-    Location(const Location&);
-    Location(XML_Helper* helper, Uint32 size = 1);
+     //! Default constructor.
+     /**
+      * @param name    The name of the new feature.
+      * @param pos     The top-right corner of the feature is located at this
+      *                position on the game map.
+      * @param size    The number of tiles wide and high the feature is.
+      */
+     Location(std::string name, Vector<int> pos, Uint32 size = 1);
+     //! Copy constructor.
+     Location(const Location&);
+     //! Loading constructor.
+     /**
+      * Load the location from an opened saved-game file.
+      *
+      * @param helper  The opened saved-game file to read the location from.
+      * @param size    The size of the feature.  This value is not read in
+      *                from the saved-game file.
+      */
+     Location(XML_Helper* helper, Uint32 size = 1);
+     //! Destructor.
     ~Location();
     
+    //! Return the name of the feature.
     std::string getName() const {return d_name;}
+
+    //! Set the name of the feature.
     void setName(std::string name) {d_name = name;}
 
+    //! Add an army to a tile that is included in this location.
     Stack *addArmy(Army *a) const;
+
+    //! Returns whether or not this location obscured from view on a hidden map.
+    /**
+     * @note This method relies on Playerlist::getActiveplayer to know
+     *       which FogMap to query.
+     */
     bool isFogged();
+
+    //! Unobscures the view of this location in the active player's FogMap.
     void deFog();
+
+    //! Unobscures the view of this location in the given player's FogMap.
     void deFog(Player *p);
 
-    //! Get the size of the location
+    //! Return the size of the location.
     Uint32 getSize() const {return d_size;}
 
-    //! Does the Location contain this point?
+    //! Returns whether or not the Location contains the given point?
     bool contains(Vector<int> pos) const;
 
+    //! Returns a rectangle that describes the location.
     Rectangle get_area() const
 	{ return Rectangle(getPos().x, getPos().y, d_size, d_size); }
 
  protected:
-    Stack* getFreeStack(Player *p) const;
+
+    //! Obtains a stack in the location to put an Army unit in.
+    /**
+     * This method scans the tiles of the location for a place to put a new
+     * Army unit.  If the position is empty it makes a new stack in that
+     * position and returns that stack.  If a stack containing fewer than
+     * eight Army units is found, that stack is returned.  If no open spots 
+     * could be found, it returns NULL.
+     *
+     * @param owner  The player to own the new stack if one needs to be created.
+     *
+     * @return The stack that has room for one Army unit in the Location.  If
+     *         an available stack could not be found this method returns NULL.
+     */
+    Stack* getFreeStack(Player *owner) const;
+
+    //! The name of the location.
     std::string d_name;
+
+    //! The size of the location.
+    /**
+     * This size is the number tiles high and wide the location is.
+     * This value is always 1, except for City objects which are always 2.
+     */
     Uint32 d_size;
 };
 
