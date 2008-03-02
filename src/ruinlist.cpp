@@ -145,29 +145,26 @@ Ruin* Ruinlist::getNearestRuin(const Vector<int>& pos, int dist)
   return NULL;
 }
 
+static bool isNotAHiddenRuin(void *object)
+{
+  Ruin *ruin = (Ruin*) object;
+  if (ruin->isHidden() == true && 
+      ruin->getOwner() != Playerlist::getInstance()->getActiveplayer())
+    return true;
+  return false;
+}
+
+static bool isFogged(void *object)
+{
+  return ((Ruin*)object)->isFogged();
+}
+
 Ruin* Ruinlist::getNearestVisibleRuin(const Vector<int>& pos)
 {
-    int diff = -1;
-    iterator diffit;
-    for (iterator it = begin(); it != end(); ++it)
-    {
-        if ((*it).isHidden() == true && 
-            (*it).getOwner() != Playerlist::getInstance()->getActiveplayer())
-          continue;
-        if ((*it).isFogged() == true)
-          continue;
-
-        Vector<int> p = (*it).getPos();
-        int delta = abs(p.x - pos.x) + abs(p.y - pos.y);
-
-        if ((diff > delta) || (diff == -1))
-        {
-            diff = delta;
-            diffit = it;
-        }
-    }
-    if (diff == -1) return 0;
-    return &(*diffit);
+  std::list<bool (*)(void *)> filters;
+  filters.push_back(isFogged);
+  filters.push_back(isNotAHiddenRuin);
+  return getNearestObject(pos, &filters);
 }
 Ruin* Ruinlist::getNearestVisibleRuin(const Vector<int>& pos, int dist)
 {

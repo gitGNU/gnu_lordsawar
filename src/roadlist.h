@@ -39,9 +39,6 @@ class Roadlist : public LocationList<Road>, public sigc::trackable
         //! Explicitly delete the singleton instance
         static void deleteInstance();
         
-        //! Returns the road closest to pos
-        Road* getNearestRoad(const Vector<int>& pos);
-	Road* getNearestRoad(const Vector<int>& pos, int dist);
         //! Saves the game data. See XML_Helper for details.
         bool save(XML_Helper* helper) const;
 

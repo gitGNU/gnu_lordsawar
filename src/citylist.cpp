@@ -99,64 +99,58 @@ void Citylist::nextTurn(Player* p)
         if ((*it).getOwner() == p)
             p->addGold((*it).getGold());
 }
+static bool isFogged(void *object)
+{
+  return ((City*)object)->isFogged();
+}
+
+static bool isBurnt(void *object)
+{
+  return ((City*)object)->isBurnt();
+}
+
+static bool isNotOwnedByNeutral(void *object)
+{
+  return ((City*)object)->getOwner() != Playerlist::getInstance()->getNeutral();
+}
+
+static bool isNotOwnedByActivePlayer(void *object)
+{
+  return ((City*)object)->getOwner() != Playerlist::getActiveplayer();
+}
+
+static bool isOwnedByActivePlayer(void *object)
+{
+  return ((City*)object)->getOwner() == Playerlist::getActiveplayer();
+}
+
+static bool isNotOwnedByEnemy(void *object)
+{
+  Player *p = Playerlist::getActiveplayer();
+  if (!p)
+    return false;
+  City *city = ((City*)object);
+  if (city->getOwner() != p &&
+	    p->getDiplomaticState(city->getOwner()) == Player::AT_WAR)
+    return false;
+  return true;
+}
 
 City* Citylist::getNearestEnemyCity(const Vector<int>& pos)
 {
-    int diff = -1;
-    iterator diffit;
-    Player* p = Playerlist::getInstance()->getActiveplayer();
-    
-    for (iterator it = begin(); it != end(); ++it)
-    {
-        if ((*it).isBurnt())
-            continue;
-
-        if ((*it).getOwner() != p &&
-	    p->getDiplomaticState((*it).getOwner()) == Player::AT_WAR)
-        {        
-            Vector<int> p = (*it).getPos();
-            int delta = abs(p.x - pos.x);
-            if (delta < abs(p.y - pos.y))
-                delta = abs(p.y - pos.y);
-            if ((diff > delta) || (diff == -1))
-            {
-                diff = delta;
-                diffit = it;
-            }
-        }
-    }
-
-    if (diff == -1) return 0;
-    return &(*diffit);
+  std::list<bool (*)(void *)> filters;
+  filters.push_back(isBurnt);
+  filters.push_back(isNotOwnedByEnemy);
+  return getNearestObject(pos, &filters);
 }
+
 
 City* Citylist::getNearestForeignCity(const Vector<int>& pos)
 {
-    int diff = -1;
-    iterator diffit;
-    Player* p = Playerlist::getInstance()->getActiveplayer();
-    
-    for (iterator it = begin(); it != end(); ++it)
-    {
-        if ((*it).isBurnt())
-            continue;
-
-        if ((*it).getOwner() != p)
-        {        
-            Vector<int> p = (*it).getPos();
-            int delta = abs(p.x - pos.x);
-            if (delta < abs(p.y - pos.y))
-                delta = abs(p.y - pos.y);
-            if ((diff > delta) || (diff == -1))
-            {
-                diff = delta;
-                diffit = it;
-            }
-        }
-    }
-
-    if (diff == -1) return 0;
-    return &(*diffit);
+  std::list<bool (*)(void *)> filters;
+  filters.push_back(isBurnt);
+  filters.push_back(isOwnedByActivePlayer);
+  return getNearestObject(pos, &filters);
 }
 
 City* Citylist::getNearestCity(const Vector<int>& pos, int dist)
@@ -218,57 +212,17 @@ City* Citylist::getNearestCity(const Vector<int>& pos, Player *p)
 
 City* Citylist::getNearestCity(const Vector<int>& pos)
 {
-    int diff = -1;
-    iterator diffit;
-
-    for (iterator it = begin(); it != end(); ++it)
-    {
-          if ((*it).isBurnt())
-              continue;
-          
-          Vector<int> p = (*it).getPos();
-          int delta = abs(p.x - pos.x);
-          if (delta < abs(p.y - pos.y))
-              delta = abs(p.y - pos.y);
-          
-          if ((diff > delta) || (diff == -1))
-          {
-              diff = delta;
-              diffit = it;
-          }
-    }
-    
-    if (diff == -1) return 0;
-    return &(*diffit);
+  std::list<bool (*)(void *)> filters;
+  filters.push_back(isBurnt);
+  return getNearestObject(pos, &filters);
 }
 
 City* Citylist::getNearestVisibleCity(const Vector<int>& pos)
 {
-    int diff = -1;
-    iterator diffit;
-
-    for (iterator it = begin(); it != end(); ++it)
-    {
-          if ((*it).isBurnt())
-              continue;
-
-          if ((*it).isFogged() == true)
-              continue;
-          
-          Vector<int> p = (*it).getPos();
-          int delta = abs(p.x - pos.x);
-          if (delta < abs(p.y - pos.y))
-              delta = abs(p.y - pos.y);
-          
-          if ((diff > delta) || (diff == -1))
-          {
-              diff = delta;
-              diffit = it;
-          }
-    }
-    
-    if (diff == -1) return 0;
-    return &(*diffit);
+  std::list<bool (*)(void *)> filters;
+  filters.push_back(isBurnt);
+  filters.push_back(isFogged);
+  return getNearestObject(pos, &filters);
 }
 
 City* Citylist::getNearestVisibleCity(const Vector<int>& pos, int dist)
@@ -293,66 +247,22 @@ City* Citylist::getNearestVisibleFriendlyCity(const Vector<int>& pos, int dist)
   return NULL;
 }
 
+
 City* Citylist::getNearestVisibleFriendlyCity(const Vector<int>& pos)
 {
-    int diff = -1;
-    iterator diffit;
-    Player* p = Playerlist::getInstance()->getActiveplayer();
-    
-    for (iterator it = begin(); it != end(); ++it)
-    {
-        if ((*it).isBurnt())
-            continue;
-
-	if ((*it).isFogged())
-	    continue;
-
-        if ((*it).getOwner() == p)
-        {
-            Vector<int> p = (*it).getPos();
-            int delta = abs(p.x - pos.x);
-            if (delta < abs(p.y - pos.y))
-                delta = abs(p.y - pos.y);
-            
-            if ((diff > delta) || (diff == -1))
-            {
-                diff = delta;
-                diffit = it;
-            }
-        }
-    }
-    
-    if (diff == -1) return 0;
-    return &(*diffit);
+  std::list<bool (*)(void *)> filters;
+  filters.push_back(isBurnt);
+  filters.push_back(isFogged);
+  filters.push_back(isNotOwnedByActivePlayer);
+  return getNearestObject(pos, &filters);
 }
 
 City* Citylist::getNearestNeutralCity(const Vector<int>& pos)
 {
-    int diff = -1;
-    iterator diffit;
-    
-    for (iterator it = begin(); it != end(); ++it)
-    {
-        if ((*it).isBurnt())
-            continue;
-
-        if ((*it).getOwner() == Playerlist::getInstance()->getNeutral())
-        {
-            Vector<int> p = (*it).getPos();
-            int delta = abs(p.x - pos.x);
-            if (delta < abs(p.y - pos.y))
-                delta = abs(p.y - pos.y);
-            
-            if ((diff > delta) || (diff == -1))
-            {
-                diff = delta;
-                diffit = it;
-            }
-        }
-    }
-    
-    if (diff == -1) return 0;
-    return &(*diffit);
+  std::list<bool (*)(void *)> filters;
+  filters.push_back(isBurnt);
+  filters.push_back(isNotOwnedByNeutral);
+  return getNearestObject(pos, &filters);
 }
 
 
@@ -388,7 +298,7 @@ bool Citylist::load(std::string tag, XML_Helper* helper)
 	it--;
 	City *city = &*it;
 	Army *a = new Army (helper, Army::PRODUCTION_BASE);
-	city->addBasicProd(-1, a);
+	city->addProductionBase(-1, a);
 	return true;
       }
     if (tag == "city")
@@ -480,32 +390,6 @@ std::list<City*> Citylist::getCitiesVectoringTo(City *target)
 	cities.push_back(&(*it));
     }
   return cities;
-}
-City* Citylist::getNearestCity(City *city)
-{
-    int diff = -1;
-    iterator diffit;
-
-    for (iterator it = begin(); it != end(); ++it)
-    {
-          if ((*it).isBurnt())
-              continue;
-          
-	  Vector<int> pos = city->getPos();
-          Vector<int> p = (*it).getPos();
-          int delta = abs(p.x - pos.x);
-          if (delta < abs(p.y - pos.y))
-              delta = abs(p.y - pos.y);
-          
-          if ((diff > delta && delta != 0) || (diff == -1))
-          {
-              diff = delta;
-              diffit = it;
-          }
-    }
-    
-    if (diff == -1) return 0;
-    return &(*diffit);
 }
 
 City* Citylist::getNearestCityPast(const Vector<int>& pos, int dist)

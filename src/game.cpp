@@ -1420,7 +1420,7 @@ void Game::on_city_fight_finished(City *city, Fight::Result result)
       Player *neu = city->getOwner(); //neutral player
       if (GameScenario::s_neutral_cities == GameParameters::ACTIVE &&
 	  neu == Playerlist::getInstance()->getNeutral() &&
-	  city->getProductionIndex() == -1)
+	  city->getActiveProductionSlot() == -1)
 	{
 	  //great, then let's turn on the production.
 	  //well, we already made a unit, and we want to produce more
@@ -1429,12 +1429,12 @@ void Game::on_city_fight_finished(City *city, Fight::Result result)
 	  if (o)
 	    {
 	      int army_type = o->getStrongestArmy()->getType();
-	      for (int i = 0; i < 4; i++)
+	      for (int i = 0; i < city->getMaxNoOfProductionBases(); i++)
 		{
 		  if (city->getArmytype(i) == army_type)
 		    {
 		      // hey, we found the droid we were looking for
-		      city->setProduction(i);
+		      city->setActiveProductionSlot(i);
 		      break;
 		    }
 		}

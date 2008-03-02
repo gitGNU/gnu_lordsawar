@@ -98,7 +98,8 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	toggle->signal_button_release_event().connect(
 	    sigc::bind(sigc::mem_fun(*this, &BuyProductionDialog::on_production_button_event),
 		       toggle), false);
-	toggle->set_sensitive(city->isAlreadyBought(purchasables[i]) == false);
+	toggle->set_sensitive
+	  (city->hasProductionBase(purchasables[i]) == false);
     }
 
     ignore_toggles = false;
@@ -188,7 +189,8 @@ void BuyProductionDialog::set_buy_button_state()
 	const Army *a = army_id_to_army();
 	
 	if (int(a->getProductionCost()) > gold ||
-	    city->hasProduction(selected_army, city->getOwner()->getArmyset()))
+	    city->hasProductionBase(selected_army, 
+				    city->getOwner()->getArmyset()))
 	    can_buy = false;
     }
     

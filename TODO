@@ -32,3 +32,4 @@ fight bug:
 
 
 check to see what happens when i pass a larger attacker/defender list of stacks to fight.  it only seems to use 1!
+add random hidden ruin to CreateScenarioRandomize.cpp line 247

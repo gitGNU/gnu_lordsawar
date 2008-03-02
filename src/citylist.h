@@ -75,9 +75,6 @@ class Citylist : public LocationList<City>, public sigc::trackable
         //! Returns the city closest to pos but within N tiles
         City* getNearestCity(const Vector<int>& pos, int dist);
 
-	//! Returns the next city nearest to City
-	City* getNearestCity(City *city);
-
         //! Returns the city closest to pos
         City* getNearestCity(const Vector<int>& pos);
 

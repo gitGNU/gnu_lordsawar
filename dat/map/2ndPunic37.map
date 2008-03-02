@@ -2015,7 +2015,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>34</d_y>
 			<d_owner>1</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>0</d_production>
+			<d_active_production_slot>0</d_active_production_slot>
 			<d_duration>1</d_duration>
 			<d_gold>63</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2072,7 +2072,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>41</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2128,7 +2128,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>57</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2163,7 +2163,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>53</d_y>
 			<d_owner>0</d_owner>
 			<d_defense>4</d_defense>
-			<d_production>0</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>1</d_duration>
 			<d_gold>21</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2198,7 +2198,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>57</d_y>
 			<d_owner>0</d_owner>
 			<d_defense>4</d_defense>
-			<d_production>0</d_production>
+			<d_active_production_slot>0</d_active_production_slot>
 			<d_duration>1</d_duration>
 			<d_gold>46</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2255,7 +2255,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>39</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2311,7 +2311,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>46</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2367,7 +2367,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>39</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2423,7 +2423,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>56</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>22</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2479,7 +2479,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>38</d_y>
 			<d_owner>1</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>0</d_production>
+			<d_active_production_slot>0</d_active_production_slot>
 			<d_duration>1</d_duration>
 			<d_gold>18</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2535,7 +2535,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>47</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>12</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2570,7 +2570,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>29</d_y>
 			<d_owner>1</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>0</d_production>
+			<d_active_production_slot>0</d_active_production_slot>
 			<d_duration>2</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2605,7 +2605,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>53</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2640,7 +2640,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>65</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>12</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2696,7 +2696,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>46</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>12</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2731,7 +2731,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>62</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2766,7 +2766,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>21</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2822,7 +2822,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>28</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2857,7 +2857,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>76</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2892,7 +2892,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>40</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2948,7 +2948,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>52</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>10</d_gold>
 			<d_burnt>false</d_burnt>
@@ -2983,7 +2983,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>20</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>15</d_gold>
 			<d_burnt>false</d_burnt>
@@ -3039,7 +3039,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_y>49</d_y>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
-			<d_production>-1</d_production>
+			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
 			<d_gold>20</d_gold>
 			<d_burnt>false</d_burnt>

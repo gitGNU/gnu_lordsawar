@@ -426,18 +426,19 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
       City *c = Citylist::getInstance()->getNearestCity((*fit)->pos);
       if (c && mtile->getBuilding() == Maptile::CITY)
 	{
+	  int num_production_bases = c->getNoOfProductionBases();
 	  if (c->isBurnt()) 
 	    city_bonus = 0;
-	  else if (c->getNoOfBasicProd() <= 2 && c->getOwner() ==
+	  else if (num_production_bases <= 2 && c->getOwner() ==
 		   Playerlist::getInstance()->getNeutral())
 	    city_bonus = 0;
-	  else if (c->getNoOfBasicProd() <= 2 && c->getOwner() ==
+	  else if (num_production_bases <= 2 && c->getOwner() ==
 		   Playerlist::getInstance()->getActiveplayer())
 	    city_bonus = 1;
-	  else if (c->getNoOfBasicProd() > 2 && c->getOwner() ==
+	  else if (num_production_bases > 2 && c->getOwner() ==
 		   Playerlist::getInstance()->getNeutral())
 	    city_bonus = 1;
-	  else if (c->getNoOfBasicProd() > 2 && c->getOwner() ==
+	  else if (num_production_bases > 2 && c->getOwner() ==
 		   Playerlist::getInstance()->getActiveplayer())
 	    city_bonus = 2;
 	}

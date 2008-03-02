@@ -50,7 +50,7 @@ RuinReportDialog::RuinReportDialog(Vector<int> pos)
 
   NamedLocation *l = NULL;
   Ruin *ruin = Ruinlist::getInstance()->getNearestRuin(pos);
-  Temple *temple = Templelist::getInstance()->getNearestTemple(pos);
+  Temple *temple = Templelist::getInstance()->getNearestObject(pos);
   if (temple && !ruin)
     l = temple;
   else if (ruin && !temple)

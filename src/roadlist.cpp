@@ -55,39 +55,6 @@ Roadlist::Roadlist()
 {
 }
 
-Road* Roadlist::getNearestRoad(const Vector<int>& pos)
-{
-    int diff = -1;
-    iterator diffit;
-    
-    for (iterator it = begin(); it != end(); ++it)
-    {
-       Vector<int> p = (*it).getPos();
-       int delta = abs(p.x - pos.x);
-       if (delta < abs(p.y - pos.y))
-           delta = abs(p.y - pos.y);
-       if ((diff > delta) || (diff == -1))
-       {
-           diff = delta;
-           diffit = it;
-       }
-    }
-
-    if (diff == -1) return 0;
-    return &(*diffit);
-}
-Road* Roadlist::getNearestRoad(const Vector<int>& pos, int dist)
-{
-  Road *r = getNearestRoad(pos);
-  if (!r)
-    return r;
-  if (r->getPos().x <= pos.x + dist && r->getPos().x >= pos.x - dist &&
-      r->getPos().y <= pos.y + dist && r->getPos().y >= pos.y - dist)
-    return r;
-  return NULL;
-}
-
-
 Roadlist::Roadlist(XML_Helper* helper)
 {
     helper->registerTag("road", sigc::mem_fun(this, &Roadlist::load));

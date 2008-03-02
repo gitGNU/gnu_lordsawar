@@ -99,14 +99,14 @@ void VectorMap::draw_cities (std::list<City*> citylist, Uint32 type)
 	    }
 	  else
 	    {
-              if ((*it)->getProductionIndex() == -1)
+              if ((*it)->getActiveProductionSlot() == -1)
                 prod = false;
               else
                 prod = true;
 	    }
 	  break;
 	case CLICK_SELECTS:
-          if ((*it)->getProductionIndex() == -1)
+          if ((*it)->getActiveProductionSlot() == -1)
             prod = false;
           else
             prod = true;
@@ -201,7 +201,7 @@ void VectorMap::after_draw()
       if ((*it).getOwner() == Playerlist::getActiveplayer())
         {
       
-          if ((*it).getProductionIndex() == -1)
+          if ((*it).getActiveProductionSlot() == -1)
             prod = false;
           else
             prod = true;

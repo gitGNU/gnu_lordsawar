@@ -2001,13 +2001,13 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 	}
     }
 
-  if (city->getNoOfBasicProd() <= 0) {
+  if (city->getNoOfProductionBases() <= 0) {
     Gtk::Button *b;
     xml->get_widget("pillage_button", b);
     b->hide();
   }
 
-  if (city->getNoOfBasicProd() <= 1) {
+  if (city->getNoOfProductionBases() <= 1) {
     Gtk::Button *b;
     xml->get_widget("sack_button", b);
     b->hide();

@@ -902,7 +902,8 @@ void MapGenerator::makeRoads()
       Vector<int> dest = c->getPos();
       Vector<int> src = (*it).getPos();
       //does it already have a road going to it?
-      if (Roadlist::getInstance()->getNearestRoad(dest, c->getSize() + 1))
+      if (Roadlist::getInstance()->getNearestObjectBefore(dest, 
+							  c->getSize() + 1))
 	continue;
 
       makeRoad(src, dest);

@@ -168,12 +168,12 @@ int AI_Smart::setBestProduction(City *c)
     int scorebasic = -1;
 
     // we try to determine the most attractive basic production
-    for (int i = 0; i < c->getMaxNoOfBasicProd(); i++)
+    for (int i = 0; i < c->getMaxNoOfProductionBases(); i++)
     {
         if (c->getArmytype(i) == -1)    // no production in this slot
             continue;
 
-        const Army *proto = c->getArmy(i);
+        const Army *proto = c->getProductionBase(i);
         if (scoreArmyType(proto) > scorebasic)
         {
             selectbasic = i;
@@ -184,13 +184,13 @@ int AI_Smart::setBestProduction(City *c)
 
     select=selectbasic;
 
-    if (select != c->getProductionIndex())
+    if (select != c->getActiveProductionSlot())
     {
         cityChangeProduction(c, select);
         debug(getName() << " Set production to BASIC" << select << " in " << c->getName())
     }
 
-    return c->getProductionIndex();
+    return c->getActiveProductionSlot();
 }
 
 int AI_Smart::chooseArmyTypeToBuy(City *c)
@@ -198,13 +198,6 @@ int AI_Smart::chooseArmyTypeToBuy(City *c)
     int bestScore, bestIndex;
     Uint32 size = 0;
 
-    // Andrea: cannot understand why was addes this piece of code
-    //         i comment it
-    //if (c->//getProductionIndex() > 0)
-    //{
-    //    return -1;
-    //}
-    
     const Armysetlist* al = Armysetlist::getInstance();
 
     size = al->getSize(getArmyset());
@@ -232,7 +225,7 @@ int AI_Smart::chooseArmyTypeToBuy(City *c)
             continue;
 	}
         
-       if (c->hasProduction(proto->getType(), getArmyset())==false)
+       if (c->hasProductionBase(proto->getType(), getArmyset())==false)
        {
          debug("I can buy it " << i)
          int score = scoreArmyType(proto);

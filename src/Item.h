@@ -22,6 +22,7 @@
 #include "defs.h"
 #include "player.h"
 #include "playerlist.h"
+#include "Renamable.h"
 
 //! A carryable thing that confers special properties on it's holder.
 /** 
@@ -38,7 +39,7 @@
  * 
  */
 
-class Item
+class Item: public Renamable
 {
     public:
 
@@ -96,12 +97,6 @@ class Item
 	//! Remove a bonus from the Item.
 	void removeBonus(Item::Bonus bonus);
         
-        //! Return the name of the item.
-        std::string getName() const {return d_name;}
-
-	//! Set the name of the item.
-	void setName(std::string name) {d_name = name;}
-
         //! Return the Id of the Item.  0 means the item is a prototype.
         Uint32 getId() const {return d_id;}
 
@@ -128,12 +123,6 @@ class Item
 	 */
         Uint32 d_bonus;
         
-	//! The name of the Item.
-	/**
-	 * This value does not change during gameplay.
-	 */
-        std::string d_name;
-
 	//! The Id of the Item.
 	/**
 	 * This value is a unique Id among all other game objects.

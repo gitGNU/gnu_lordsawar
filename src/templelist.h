@@ -19,44 +19,56 @@
 #include "LocationList.h"
 #include "temple.h"
 
-/** The templelist just keeps track of the temples located on the game map. It
-  * is also implemented as a singleton since many classes use it for looking up
-  * temples.
+//! A list of Temple objects.
+/** 
+ * The templelist keeps track of the temples located on the game map. It
+  * is also implemented as a singleton since many classes use it for looking 
+  * up temples.
   */
-
 class Templelist : public LocationList<Temple>, public sigc::trackable
 {
     public:
-        //! Return the singleton instance. Create a new one if needed.
+        //! Return the singleton instance.  Create a new one if needed.
         static Templelist* getInstance();
 
-        //! Load the singleton instance with the given savegame
+        //! Load the temple list from an opened saved-game file.
+	/**
+	 * @param helper  The opened saved-game file to load the list of 
+	 *                temples from.
+	 *
+	 * @return The list of temples.
+	 */
         static Templelist* getInstance(XML_Helper* helper);
 
-        //! Explicitely delete the singleton instance
+        //! Explicitly delete the singleton instance.
         static void deleteInstance();
-        
 
-        //! Saves the game data. See XML_Helper for details.
+        //! Saves the temple data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
 
         // Find the nearest temple
-        Temple* getNearestTemple(const Vector<int>& pos);
-        Temple* getNearestTemple(const Vector<int>& pos, int dist);
         Temple* getNearestVisibleTemple(const Vector<int>& pos);
         Temple* getNearestVisibleTemple(const Vector<int>& pos, int dist);
+
+	Temple * getNearestTemple(const Vector<int>& pos, std::list<bool (*)(Temple *)> filters);
         
     protected:
-        //! Default constructor
+        //! Default constructor.
         Templelist();
 
-        //! Loading constructor
+        //! Loading constructor.
+	/**
+	 * Load the list of temples from an opened saved-game file.
+	 *
+	 * @param helper  The opened saved-game file to load the temples from.
+	 */
         Templelist(XML_Helper* helper);
 
     private:
-        //! Callback for loading
+        //! Callback for loading temple objects from opened saved game files.
         bool load(std::string tag, XML_Helper* helper);
 
+        //! A static pointer for the singleton instance.
         static Templelist* s_instance;
 };
 

@@ -26,6 +26,7 @@
 using namespace std;
 
 Item::Item(XML_Helper* helper)
+	: Renamable (helper)
 {
     
     // Loading of items is a bit complicated, so i'd better loose some words.
@@ -35,7 +36,6 @@ Item::Item(XML_Helper* helper)
 
     helper->getData(d_bonus, "bonus");
     
-    helper->getData(d_name, "name");
     helper->getData(d_plantable, "plantable");
     if (d_plantable)
       {
@@ -55,9 +55,9 @@ Item::Item(XML_Helper* helper)
 }
 
 Item::Item(std::string name, bool plantable, Player *plantable_owner)
+	: Renamable(name)
 {
   d_bonus = 0;
-  d_name = name;
   d_plantable = plantable;
   d_plantable_owner_id = plantable_owner->getId();
   d_planted = false;
@@ -65,8 +65,7 @@ Item::Item(std::string name, bool plantable, Player *plantable_owner)
 }
 
 Item::Item(const Item& orig)
-:d_bonus(orig.d_bonus),
-    d_name(orig.d_name), d_plantable(orig.d_plantable),
+:Renamable(orig), d_bonus(orig.d_bonus), d_plantable(orig.d_plantable),
     d_plantable_owner_id(orig.d_plantable_owner_id), d_planted(orig.d_planted)
 {
   // Some things we don't copy from the template; we rather get an own ID
@@ -83,7 +82,7 @@ bool Item::save(XML_Helper* helper) const
 
   // A template is never saved, so we assume this class is a real-life item
   retval &= helper->openTag("item");
-  retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("name", getName());
   retval &= helper->saveData("plantable", d_plantable);
   if (d_plantable)
     {

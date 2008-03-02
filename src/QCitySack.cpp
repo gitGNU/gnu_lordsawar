@@ -124,7 +124,7 @@ City * QuestCitySack::chooseToSack(Player *p)
     Citylist* cl = Citylist::getInstance();
     for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
         if (!(*it).isBurnt() && (*it).getOwner() != p && 
-            (*it).getNoOfBasicProd() > 1 &&
+            (*it).getNoOfProductionBases() > 1 &&
 	    (*it).getOwner() != Playerlist::getInstance()->getNeutral())
             cities.push_back(&(*it));
 

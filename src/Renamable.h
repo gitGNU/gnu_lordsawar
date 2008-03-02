@@ -24,12 +24,10 @@
 
 class XML_Helper;
 
-//! A game object that has a changing position on the map.
+//! A game object that has a name that can be altered.
 /** 
- * A Renamable is a game object on the map that has a position that can be 
- * altered.
+ * A Renamable is a game object that has a name that can be changed.
  */
-
 class Renamable: private Named
 {
  public:

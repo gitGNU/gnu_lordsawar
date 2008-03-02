@@ -26,7 +26,7 @@ class XML_Helper;
 
 //! A game object that has an unchanging name.
 /** 
- * An Namable is a game object on the map that has a name that can't be changed.
+ * An Namable is a game object that has a name that can't be changed.
  */
 class Namable: private Named
 {

@@ -57,7 +57,13 @@ class Location : public ::UniquelyIdentified, public Immovable
     ~Location();
     
     //! Add an army to a tile that is included in this location.
-    Stack *addArmy(Army *a) const;
+    /**
+     * @param army    The army instance to add to a tile in the location.
+     *
+     * @return A pointer to the stack where the Army was added.  Returns NULL
+     *         when the Army couldn't be added because the location is full.
+     */
+    Stack *addArmy(Army *army) const;
 
     //! Returns whether or not this location obscured from view on a hidden map.
     /**

@@ -115,9 +115,9 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
     army_treeview->get_selection()->signal_changed()
 	.connect(sigc::mem_fun(this, &CityDialog::on_selection_changed));
 
-    for (int i = 0; i < city->getMaxNoOfBasicProd(); i++)
+    for (int i = 0; i < city->getMaxNoOfProductionBases(); i++)
     {
-	const Army* a = city->getArmy(i);
+	const Army* a = city->getProductionBase(i);
 	if (a)
 	    add_army(a);
     }
@@ -210,13 +210,13 @@ void CityDialog::run()
 	  Army *army = new Army(*a);
 	  army->setStat(Army::STRENGTH, (*i)[army_columns.strength]);
 	  army->setProduction((*i)[army_columns.duration]);
-	  city->addBasicProd(c, army);
+	  city->addProductionBase(c, army);
 
 	  // FIXME: use (*i)[army_columns.duration] to set special city
 	  // production ability
 	}
-      for (; c < city->getMaxNoOfBasicProd(); ++c)
-	city->removeBasicProd(c);
+      for (; c < city->getMaxNoOfProductionBases(); ++c)
+	city->removeProductionBase(c);
     }
   else
     {
@@ -254,9 +254,9 @@ void CityDialog::on_randomize_armies_clicked()
   army_list->clear();
   //crapola
   city->setRandomArmytypes(true, 1);
-  for (int i = 0; i < city->getMaxNoOfBasicProd(); i++)
+  for (int i = 0; i < city->getMaxNoOfProductionBases(); i++)
     {
-      army = city->getArmy(i);
+      army = city->getProductionBase(i);
       if (army)
 	add_army(army);
     }
@@ -306,7 +306,7 @@ void CityDialog::set_button_sensitivity()
 {
   Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
   int armies = army_list->children().size();
-  add_button->set_sensitive(armies < city->getMaxNoOfBasicProd());
+  add_button->set_sensitive(armies < city->getMaxNoOfProductionBases());
   remove_button->set_sensitive(i);
 }
 

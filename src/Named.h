@@ -23,11 +23,10 @@
 
 class XML_Helper;
 
-//! A game object that can be positioned at least once on the game map.
+//! A game object that has a name.
 /** 
  * An Named is an object on the map.
  */
-
 class Named
 {
  public:

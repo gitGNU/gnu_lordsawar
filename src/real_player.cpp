@@ -20,7 +20,6 @@
 #include "real_player.h"
 #include "playerlist.h"
 #include "armysetlist.h"
-//#include "FightDialog.h"
 #include "stacklist.h"
 #include "citylist.h"
 #include "portlist.h"
@@ -1058,9 +1057,9 @@ bool RealPlayer::cityOccupy(City* c, bool emit)
   c->conquer(this);
 
   //set the production to the cheapest armytype
-  c->setProduction(-1);
+  c->setActiveProductionSlot(-1);
   if (c->getArmytype(0) != -1)
-    c->setProduction(0);
+    c->setActiveProductionSlot(0);
 
   Action_Occupy* item = new Action_Occupy();
   item->fillData(c);
@@ -1098,14 +1097,14 @@ bool RealPlayer::cityPillage(City* c, int& gold, int& pillaged_army_type)
   // half it's cost
   // it is presumed that the last army type is the most expensive
 
-  if (c->getNoOfBasicProd() > 0)
+  if (c->getNoOfProductionBases() > 0)
     {
       int i;
       unsigned int max_cost = 0;
       int slot = -1;
-      for (i = 0; i < c->getNoOfBasicProd(); i++)
+      for (i = 0; i < c->getNoOfProductionBases(); i++)
 	{
-	  const Army *a = c->getArmy(i);
+	  const Army *a = c->getProductionBase(i);
 	  if (a != NULL)
 	    {
 	      if (a->getProductionCost() == 0)
@@ -1122,13 +1121,13 @@ bool RealPlayer::cityPillage(City* c, int& gold, int& pillaged_army_type)
 	}
       if (slot > -1)
 	{
-	  const Army *a = c->getArmy(slot);
+	  const Army *a = c->getProductionBase(slot);
 	  pillaged_army_type = a->getType();
 	  if (a->getProductionCost() == 0)
 	    gold += 1500;
 	  else
 	    gold += a->getProductionCost() / 2;
-	  c->removeBasicProd(slot);
+	  c->removeProductionBase(slot);
 	}
     }
 
@@ -1153,21 +1152,21 @@ bool RealPlayer::citySack(City* c, int& gold, std::list<Uint32> *sacked_types)
   //trade in all of the army types except for one
   //presumes that the army types are listed in order of expensiveness
 
-  if (c->getNoOfBasicProd() > 1)
+  if (c->getNoOfProductionBases() > 1)
     {
       const Army *a;
       int i, max = 0;
-      for (i = 0; i < c->getNoOfBasicProd(); i++)
+      for (i = 0; i < c->getNoOfProductionBases(); i++)
 	{
-	  a = c->getArmy(i);
+	  a = c->getProductionBase(i);
 	  if (a)
 	    max++;
 	}
 
-      i = c->getNoOfBasicProd() - 1;
+      i = c->getNoOfProductionBases() - 1;
       while (max > 1)
 	{
-	  a = c->getArmy(i);
+	  a = c->getProductionBase(i);
 	  if (a != NULL)
 	    {
 	      sacked_types->push_back(a->getType());
@@ -1175,7 +1174,7 @@ bool RealPlayer::citySack(City* c, int& gold, std::list<Uint32> *sacked_types)
 		gold += 1500;
 	      else
 		gold += a->getProductionCost() / 2;
-	      c->removeBasicProd(i);
+	      c->removeProductionBase(i);
 	      max--;
 	    }
 	  i--;
@@ -1228,11 +1227,11 @@ bool RealPlayer::cityBuyProduction(City* c, int slot, int type)
     return false;
 
   // return if the city already has the production
-  if (c->hasProduction(type, as))
+  if (c->hasProductionBase(type, as))
     return false;
 
-  c->removeBasicProd(slot);
-  if (!c->addBasicProd(slot, new Army(*al->getArmy(as, type))))
+  c->removeProductionBase(slot);
+  if (!c->addProductionBase(slot, new Army(*al->getArmy(as, type))))
     return false;
 
   // and do the rest of the neccessary actions
@@ -1247,7 +1246,7 @@ bool RealPlayer::cityBuyProduction(City* c, int slot, int type)
 
 bool RealPlayer::cityChangeProduction(City* c, int slot)
 {
-  c->setProduction(slot);
+  c->setActiveProductionSlot(slot);
 
   Action_Production* item = new Action_Production();
   item->fillData(c, slot);

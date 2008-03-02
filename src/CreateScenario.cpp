@@ -494,25 +494,25 @@ bool CreateScenario::setupCities(bool quick_start,
                 (*it).produceScout();
                 break;
               case GameParameters::STRONG:
-                (*it).produceStrongestArmy();
+                (*it).produceStrongestProductionBase();
                 break;
               case GameParameters::ACTIVE:
                 if (rand () % 100 >  20)
-                  (*it).produceStrongestArmy();
+                  (*it).produceStrongestProductionBase();
                 else
-                  (*it).produceWeakestArmy();
+                  (*it).produceWeakestProductionBase();
                 break;
               }
-            (*it).setProduction(-1);
+            (*it).setActiveProductionSlot(-1);
         }
         else
         {
           if ((*it).isCapital())
-            (*it).produceStrongestArmy();
+            (*it).produceStrongestProductionBase();
           else
-            (*it).produceWeakestArmy();
+            (*it).produceWeakestProductionBase();
 
-            (*it).setProduction(0);
+            (*it).setActiveProductionSlot(0);
         }
 
 	if (rand() % 2 == 0)

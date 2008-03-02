@@ -192,7 +192,7 @@ void DestinationDialog::fill_in_vectoring_info()
   unsigned int as = player->getArmyset();
   Glib::RefPtr<Gdk::Pixbuf> pic;
   GraphicsCache *gc = GraphicsCache::getInstance();
-  int slot = city->getProductionIndex();
+  int slot = city->getActiveProductionSlot();
   SDL_Surface *s
     = GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
   Glib::RefPtr<Gdk::Pixbuf> empty_pic
@@ -226,7 +226,7 @@ void DestinationDialog::fill_in_vectoring_info()
     }
   else
     {
-      const Army* a = city->getArmy(slot);
+      const Army* a = city->getProductionBase(slot);
       pic = to_pixbuf(gc->getArmyPic(as, a->getType(), player, NULL));
       s1 = String::ucompose(_("%1t"), city->getDuration());
       turns_label->set_markup("<i>" + s1 + "</i>");

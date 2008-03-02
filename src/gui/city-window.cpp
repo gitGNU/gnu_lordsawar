@@ -90,7 +90,7 @@ CityWindow::CityWindow(City *c, bool razing_possible,
     raze_button->signal_clicked().connect(
 	sigc::mem_fun(this, &CityWindow::on_raze_clicked));
 
-    for (int i = 1; i <= city->getMaxNoOfBasicProd(); ++i) {
+    for (int i = 1; i <= city->getMaxNoOfProductionBases(); ++i) {
 	Gtk::ToggleButton *toggle;
 	xml->get_widget(String::ucompose("production_toggle%1", i), toggle);
 	production_toggles.push_back(toggle);
@@ -167,7 +167,7 @@ void CityWindow::fill_in_production_toggles()
 {
     Player *player = city->getOwner();
     unsigned int as = player->getArmyset();
-    int production_index = city->getProductionIndex();
+    int production_index = city->getActiveProductionSlot();
     int type;
     Glib::RefPtr<Gdk::Pixbuf> pic;
     GraphicsCache *gc = GraphicsCache::getInstance();
@@ -179,7 +179,7 @@ void CityWindow::fill_in_production_toggles()
     empty_pic->fill(0x00000000);
     
     ignore_toggles = true;
-    for (int i = 0; i < city->getMaxNoOfBasicProd(); i++)
+    for (int i = 0; i < city->getMaxNoOfProductionBases(); i++)
     {
 	Gtk::ToggleButton *toggle = production_toggles[i];
 	toggle->foreach(sigc::mem_fun(toggle, &Gtk::Container::remove));
@@ -242,7 +242,7 @@ void CityWindow::fill_in_production_info()
     unsigned int as = player->getArmyset();
     Glib::RefPtr<Gdk::Pixbuf> pic;
     GraphicsCache *gc = GraphicsCache::getInstance();
-    int slot = city->getProductionIndex();
+    int slot = city->getActiveProductionSlot();
     SDL_Surface *s
 	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
     Glib::RefPtr<Gdk::Pixbuf> empty_pic
@@ -264,7 +264,7 @@ void CityWindow::fill_in_production_info()
     }
     else
     {
-        const Army* a = city->getArmy(slot);
+        const Army* a = city->getProductionBase(slot);
 
 	// fill in first column
 	s1 += a->getName();
@@ -346,7 +346,7 @@ bool CityWindow::on_production_button_event(GdkEventButton *e, Gtk::ToggleButton
 	}
 	assert(slot != -1);
 
-	const Army *army = city->getArmy(slot);
+	const Army *army = city->getProductionBase(slot);
 
 	if (army)
 	    army_info_tip.reset(new ArmyInfoTip(toggle, army));
@@ -389,7 +389,7 @@ void CityWindow::on_buy_clicked()
 	if  (slot == -1)
 	  {
 	    //no free slots available.  change the one we're on.
-	    slot = city->getProductionIndex();
+	    slot = city->getActiveProductionSlot();
 	    if (slot == -1) 
 	      slot = 0;
 	  }
