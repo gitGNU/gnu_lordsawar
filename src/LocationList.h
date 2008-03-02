@@ -106,6 +106,47 @@ template<class T> class LocationList : public std::list<T>
         return t;
       return NULL;
     }
+
+  T* getNearestObjectAfter(const Vector<int>& pos, int dist, 
+			   std::list<bool (*)(void*)> *filters)
+    {
+      int diff = -1;
+      typename LocationList<T>::iterator diffit;
+
+      for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)
+        {
+	  if (filters)
+	    {
+	      std::list<bool (*)(void*)>::iterator fit = filters->begin();
+	      bool filtered = false;
+	      for (; fit != filters->end(); fit++)
+	        {
+	          if ((*fit)(&*it) == true)
+	            {
+		      filtered = true;
+		      break;
+	            }
+	            
+	        }
+	      if (filtered)
+	        continue;
+	    }
+          
+            Vector<int> p = (*it).getPos();
+            int delta = abs(p.x - pos.x);
+            if (delta < abs(p.y - pos.y))
+                delta = abs(p.y - pos.y);
+          
+            if ((diff > delta && delta >= dist) || (diff == -1))
+              {
+                diff = delta;
+                diffit = it;
+              }
+        }
+    
+      if (diff == -1) return 0;
+      return &(*diffit);
+    }
 };
 
 #endif // LOCATIONLIST_H

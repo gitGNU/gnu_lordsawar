@@ -22,39 +22,57 @@
 #include "LocationList.h"
 #include <sigc++/trackable.h>
 
-/** The roadlist just keeps track of the roads located on the game map. It
-  * is also implemented as a singleton since many classes use it for looking up
-  * roads.
-  */
-
+//! A list of Road objects on the game map.
+/** 
+ * The roadlist keeps track of the roads located on the game map. It
+ * is implemented as a singleton because many classes use it for looking up
+ * roads.
+ */
 class Roadlist : public LocationList<Road>, public sigc::trackable
 {
     public:
-        //! Return the singleton instance. Create a new one if needed.
+        //! Return the singleton instance.  Create a new one if needed.
         static Roadlist* getInstance();
 
-        //! Load the singleton instance with the given savegame
+        //! Load the singleton instance from the opened saved-game file.
         static Roadlist* getInstance(XML_Helper* helper);
 
-        //! Explicitly delete the singleton instance
+        //! Explicitly delete the singleton instance.
         static void deleteInstance();
         
-        //! Saves the game data. See XML_Helper for details.
+        //! Saves the list of roads to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 
-	int calculateType (Vector<int> t);
+	//! Determines what the right Road::Type should be for the given tile.
+	/**
+	 * Scans the surrounding tiles to see which road picture fits best.
+	 *
+	 * @param tile  The position on the game map to calculate a road type
+	 *              for.
+	 *
+	 * @return The Road::Type that makes the most sense for the given tile.
+	 */
+	int calculateType (Vector<int> tile);
 
     protected:
-        //! Default constructor
+        //! Default constructor.
         Roadlist();
 
-        //! Loading constructor
+        //! Loading constructor.
+	/**
+	 * Make a new roadlist object by loading it from the opened saved-game
+	 * file.
+	 *
+	 * @param helper  The opened saved game file to load the list of roads
+	 *                from.
+	 */
         Roadlist(XML_Helper* helper);
 
     private:
-        //! Callback for loading
+        //! Callback for loading road objects into the list.
         bool load(std::string tag, XML_Helper* helper);
 
+        //! A static pointer for the singleton instance.
         static Roadlist* s_instance;
 };
 

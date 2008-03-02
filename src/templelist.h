@@ -19,12 +19,12 @@
 #include "LocationList.h"
 #include "temple.h"
 
-//! A list of Temple objects.
+//! A list of Temple objects on the game map.
 /** 
  * The templelist keeps track of the temples located on the game map. It
-  * is also implemented as a singleton since many classes use it for looking 
-  * up temples.
-  */
+ * is implemented as a singleton because many classes use it for looking 
+ * up temples.
+ */
 class Templelist : public LocationList<Temple>, public sigc::trackable
 {
     public:
@@ -46,12 +46,32 @@ class Templelist : public LocationList<Temple>, public sigc::trackable
         //! Saves the temple data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
 
-        // Find the nearest temple
+        //! Find the nearest temple that is not obscured by fog.
+	/**
+	 * Scan through all temples, searching for the closest one that is
+	 * not covered by fog-of-war on a hidden map.
+	 *
+	 * @param pos  The position to find the nearest temple from.
+	 *
+	 * @return A pointer to the nearest temple that is not obscured by fog.
+	 */
         Temple* getNearestVisibleTemple(const Vector<int>& pos);
+
+	//! Find the nearest temple that is unobscured and is not too far away.
+	/**
+	 * Scan through all the temples, searching for the closest one that
+	 * is not covered by fog-of-war on a hidden map, but is not farther
+	 * away than a given distance.
+	 *
+	 * @param pos  The position to find the nearest temple from.
+	 * @param dist The number of tiles away that is deemed "too far".
+	 *
+	 * @return A pointer to the nearest temple that is not obscured by fog 
+	 *         and is within the prescribed number of tiles.  Returns NULL 
+	 *         if no temple could be found.
+	 */
         Temple* getNearestVisibleTemple(const Vector<int>& pos, int dist);
 
-	Temple * getNearestTemple(const Vector<int>& pos, std::list<bool (*)(Temple *)> filters);
-        
     protected:
         //! Default constructor.
         Templelist();

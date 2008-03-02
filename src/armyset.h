@@ -51,6 +51,9 @@
  *
  * Every Player has an Armyset that dictates the characteristics of the
  * player's forces, but in practise there is only one Armyset per scenario.
+ *
+ * The armyset configuration file is a same named XML file inside the Armyset's
+ * directory.  E.g. army/${Armyset::d_dir}/${Armyset::d_dir}.xml.
  */
 class Armyset: public std::list<Army *>, public sigc::trackable
 {

@@ -19,46 +19,134 @@
 #include "LocationList.h"
 #include <sigc++/trackable.h>
 
-/** An object list which keeps track of all ruins. It cannot do much more than
-  * saving and loading the elements. Implemented as a singleton again.
-  */
-
+//! A list of Ruin objects on the game map.
+/** 
+ * The ruinlist keeps track of the Ruin objects located on the game map. It
+ * is implemented as a singleton because many classes use it for looking 
+ * up ruins.
+ */
 class Ruinlist : public LocationList<Ruin>, public sigc::trackable
 {
     public:
-        //! Returns the singleton instance. Creates a new one if required.
+        //! Returns the singleton instance.  Creates a new one if required.
         static Ruinlist* getInstance();
 
-        //! Loads the singleton instance with a savegame.
+        //! Loads the singleton instance from the opened saved-game file.
         static Ruinlist* getInstance(XML_Helper* helper);
 
         //! Explicitly deletes the singleton instance.
         static void deleteInstance();
         
-        
-        //! Save function. See XML_Helper for details.
+        //! Save the list of Ruin objects to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 
-        // Find the nearest ruin which has not been searched
+        //! Find the nearest Ruin object that has not been searched.
+	/**
+	 * Scan through all of the Ruin objects searching for the closest one
+	 * that has not already had a Hero successfully search it.
+	 *
+	 * @note This method does not return hidden ruins that do not belong
+	 *       to the active player.
+	 *
+	 * @param pos  The position on the game map to search for the nearest
+	 *             unsearched Ruin object from.
+	 *
+	 * @return A pointer to the nearest Ruin object that has not been 
+	 *         successfully searched already.  Returns NULL when all Ruin 
+	 *         objects have been searched.
+	 */
         Ruin* getNearestUnsearchedRuin(const Vector<int>& pos);
-        // Find the nearest ruin
+
+        //! Find the nearest ruin.
+	/**
+	 * Scan through all of the Ruin objects searching for the closest one.
+	 *
+	 * @note This method does not return hidden ruins that do not belong
+	 *       to the active player.
+	 *
+	 * @param pos  The position on the game map to search for the nearest
+	 *             Ruin object from.
+	 *
+	 * @return A pointer to the nearest Ruin object.  Returns NULL when 
+	 *         there are no Ruin object in this list.
+	 */
         Ruin* getNearestRuin(const Vector<int>& pos);
+
+        //! Find the nearest ruin that is not too far away.
+	/**
+	 * Scan through all of the Ruin objects searching for the closest one
+	 * that is no far than the given distance.
+	 *
+	 * @note This method does not return hidden ruins that do not belong
+	 *       to the active player.
+	 *
+	 * @param pos  The position on the game map to search for the nearest
+	 *             Ruin object from.
+	 * @param dist The number of tiles away that is deemed "too far".
+	 *
+	 * @return A pointer to the nearest Ruin object that isn't too far 
+	 *         away.  If all of the Ruin objects in the list are too far 
+	 *         away, this method returns NULL.
+	 */
         Ruin* getNearestRuin(const Vector<int>& pos, int dist);
+
+        //! Find the nearest Ruin object that is not obscured by fog.
+	/**
+	 * Scan through all ruins, searching for the closest one that is
+	 * not covered by fog-of-war on a hidden map.
+	 *
+	 * @note This method does not return hidden ruins that do not belong
+	 *       to the active player.
+	 *
+	 * @param pos  The position to find the nearest ruin from.
+	 *
+	 * @return A pointer to the nearest ruin that is not obscured by fog.
+	 */
         Ruin* getNearestVisibleRuin(const Vector<int>& pos);
+
+	//! Find the nearest ruin that is unobscured and is not too far away.
+	/**
+	 * Scan through all the ruins, searching for the closest one that
+	 * is not covered by fog-of-war on a hidden map, but is not farther
+	 * away than a given distance.
+	 *
+	 * @note This method does not return hidden ruins that do not belong
+	 *       to the active player.
+	 *
+	 * @param pos  The position to find the nearest ruin from.
+	 * @param dist The number of tiles away that is deemed "too far".
+	 *
+	 * @return A pointer to the nearest ruin that is not obscured by fog 
+	 *         and is within the prescribed number of tiles.  Returns NULL 
+	 *         if no ruin could be found.
+	 */
         Ruin* getNearestVisibleRuin(const Vector<int>& pos, int dist);
 
-	//! Changes all ruins owned by old owner, to be owned by the new
-	//! owner.
+	//! Change ownership of all Ruin objects in the list.
+	/**
+	 * Changes all ruins owned by old owner, to be owned by the new owner.
+	 */
 	void changeOwnership(Player *old_owner, Player *new_owner);
 
     protected:
+	//! Default constructor.
         Ruinlist();
+
+	//! Loading constructor.
+	/**
+	 * Make a new list of Road objects by loading it from an opened 
+	 * saved-game file.
+	 *
+	 * @param helper  The opened saved-game file to load the Ruin objects
+	 *                from.
+	 */
         Ruinlist(XML_Helper* helper);
 
     private:
-        //! Loading callback. See XML_Helper as well.
+        //! Loading callback for loading Ruin objects into the list.
         bool load(std::string tag, XML_Helper* helper);
 
+        //! A static pointer for the singleton instance.
         static Ruinlist* s_instance;
 };
 

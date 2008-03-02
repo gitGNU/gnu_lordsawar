@@ -22,38 +22,42 @@
 #include "LocationList.h"
 #include "signpost.h"
 
-/** The signpostlist just keeps track of the signs located on the game map. It
-  * is also implemented as a singleton since many classes use it for looking up
-  * signposts.
-  */
-
+//! A list of Signpost objects on the game map.
+/** 
+ * The signpostlist keeps track of the signs located on the game map. It
+ * is implemented as a singleton because many classes use it for looking up
+ * signposts.
+ */
 class Signpostlist : public LocationList<Signpost>, public sigc::trackable
 {
     public:
-        //! Return the singleton instance. Create a new one if needed.
+        //! Return the singleton instance.  Create a new one if needed.
         static Signpostlist* getInstance();
 
-        //! Load the singleton instance with the given savegame
+        //! Load the singleton instance loaded from the opened saved-game file.
         static Signpostlist* getInstance(XML_Helper* helper);
 
-        //! Explicitly delete the singleton instance
+        //! Explicitly delete the singleton instance.
         static void deleteInstance();
-        
 
-        //! Saves the game data. See XML_Helper for details.
+        //! Saves the signpost list to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 
     protected:
-        //! Default constructor
+        //! Default constructor.
         Signpostlist();
 
-        //! Loading constructor
+        //! Loading constructor.
+	/**
+	 * @param helper  The opened saved-game file to load the signposts from.
+	 */
         Signpostlist(XML_Helper* helper);
 
     private:
-        //! Callback for loading
+        //! Callback for loading signpost objects into the list.
         bool load(std::string tag, XML_Helper* helper);
 
+        //! A static pointer for the singleton instance.
         static Signpostlist* s_instance;
 };
 

@@ -187,6 +187,8 @@ eoeoeoeo
 	 * The name is taken from the tileset configuration file.
 	 * This value doesn't change during gameplay.
 	 * It used in the scenario editor, but not used in the game.
+	 * Equates to the tileset.tile.d_name XML entities in the tileset
+	 * configuration file.
 	 */
 	std::string d_name;
 
@@ -195,22 +197,45 @@ eoeoeoeo
 	 * If an Army unit cannot traverse the tile efficiently it pays
 	 * this number of movement points to walk over this tile.
 	 * This value doesn't change during gameplay.
+	 * Equates to the tileset.tile.d_moves XML entities in the tileset
+	 * configuration file.
 	 */
         Uint32 d_moves;
 	
 	//! The kind of terrain tile this instance represents.
+	/**
+	 * Equates to the tileset.tile.d_type XML entities in the tileset
+	 * configuration file.
+	 */
         Type d_type;
 
 	//! The general appearance of the terrain tile on the OverviewMap.
+	/**
+	 * Equates to the tileset.tile.smallmap.d_pattern XML entities in the 
+	 * tileset configuration file.
+	 */
 	Pattern d_pattern;
 
 	//! First colour.
+	/**
+	 * Equates to the following XML entities in the tileset configuration
+	 * file:
+	 * tileset.tile.smallmap.d_red 
+	 * tileset.tile.smallmap.d_green
+	 * tileset.tile.smallmap.d_blue
+	 */
         SDL_Color d_color;
 
 	//! Second colour.
 	/**
 	 * Only used when Tile::Pattern is one of: Tile::STIPPLED, 
 	 * Tile::RANDOMIZED, Tile::SUNKEN, or Tile::TABLECLOTH.
+	 *
+	 * Equates to the following XML entities in the tileset configuration
+	 * file:
+	 * tileset.tile.smallmap.d_2nd_red 
+	 * tileset.tile.smallmap.d_2nd_green
+	 * tileset.tile.smallmap.d_2nd_blue
 	 */
         SDL_Color d_second_color;
 
@@ -218,6 +243,12 @@ eoeoeoeo
 	/**
 	 * Only used when Tile::Pattern is Tile::RANDOMIZED, or 
 	 * Tile::TABLECLOTH.
+	 *
+	 * Equates to the following XML entities in the tileset configuration
+	 * file:
+	 * tileset.tile.smallmap.d_3rd_red 
+	 * tileset.tile.smallmap.d_3rd_green
+	 * tileset.tile.smallmap.d_3rd_blue
 	 */
         SDL_Color d_third_color;
 
