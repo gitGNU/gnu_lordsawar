@@ -28,7 +28,7 @@
 class Player;
 class XML_Helper;
 
-//! A shield graphic.
+//! A graphic of a shield.
 /**
  * This class is the atom of every shield. It contains all data related to
  * a single Shield type of a Shieldset.

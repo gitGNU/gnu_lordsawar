@@ -27,9 +27,9 @@ class Player;
 class Location;
 class ::UniquelyIdentified;
 
-//! A named feature on the map.
+//! A feature constructed on the game map.
 /** 
- * A Location is a map feature with a name, and a size. 
+ * A Location is a map feature with a location, and a size. 
  * City, Ruin, Temple, Signpost and more classes are derived from Location.
  */
 class Location : public ::UniquelyIdentified, public Immovable

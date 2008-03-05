@@ -85,13 +85,13 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
         //! Destructor.
         ~Tilesetlist();
 
-        //! Callback for loading Tileset objects.  See XML_Helper for details.
+        //! Callback for loading Tileset objects into the Tilesetlist.
 	bool load(std::string tag, XML_Helper *helper);
 
         //! Loads a specific Tileset.
 	/**
 	 * Load the Tileset from an tileset configuration file and add it to 
-	 * this list of Tilesetarmysetss.
+	 * this list of Tileset objects.
 	 *
 	 * @param name  The name of the subdirectory that the Tileset resides 
 	 *              in.

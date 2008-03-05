@@ -22,45 +22,83 @@
 
 class XML_Helper;
 
-/** Cityset is basically an array of citys (terrain info objects).
-  * 
-  * It also contains some functions for loading and some additional items, such
-  * as an info string or a name.
-  *
-  * The image file for a cityset contains of the terrain images. Each terrain
-  * has a row in the image, where each column has a special meaning (See
-  * MapRenderer for details how smoothing works). Furthermore, there are citys
-  * for special cases of diagonal adjacent water images. I hope to have a
-  * documentation about map rendering and citysets ready soon after the 0.3.5
-  * release. If it already exists, see there for further info.
-  */
-
+//! A list of city graphic objects in a city theme.
+/** 
+ * Every scenario has a city set; it is the theme of the city graphics 
+ * within the game. 
+ *
+ * The Cityset dictates the size of city images.
+ *
+ * Citysets are referred to by their subdirectory name.
+ *
+ * The cityset configuration file is a same named XML file inside the 
+ * cityset's directory.  E.g. cityset/${Cityset::d_dir}/${Cityset::d_dir}.xml.
+ */
 class Cityset : public sigc::trackable
 {
     public:
-        /** The constructor.
-          * 
-          */
+	//! Default constructor.
+	/**
+	 * Make a new Cityset object by reading it in from the cityset
+	 * configuration file.
+	 *
+	 * @param helper  The opened cityset configuration file to load the
+	 *                Cityset from.
+	 */
         Cityset(XML_Helper* helper);
+	//! Destructor.
         ~Cityset();
 
+	//! Get the directory in which the cityset configuration file resides.
         std::string getSubDir() const {return d_dir;}
+
+	//! Set the direction where the shieldset configuration file resides.
         void setSubDir(std::string dir) {d_dir = dir;}
-        //! Returns the name of the cityset
+
+        //! Returns the name of the cityset.
         std::string getName() const {return d_name;}
 
-        //! Returns the info string of the cityset
+        //! Returns the description of the cityset.
         std::string getInfo() const {return d_info;}
 
-        //! Returns the citysize of the cityset.
+        //! Returns the width and height in pixels of the city images.
         Uint32 getTileSize() const {return d_tileSize;}
 
     private:
 
         // DATA
+	//! The name of the cityset.
+	/**
+	 * This equates to the cityset.d_name XML entity in the cityset
+	 * configuration file.
+	 * This name appears in the dialogs where the user is asked to 
+	 * select a particular Cityset.
+	 */
         std::string d_name;
+
+	//! The description of the cityset.
+	/**
+	 * Equates to the cityset.d_info XML entity in the cityset 
+	 * configuration file.
+	 * This value is not used.
+	 */
         std::string d_info;
+
+	//! The size of each city image onscreen.
+	/**
+	 * Equates to the cityset.d_tilesize XML entity in the cityset
+	 * configuration file.
+	 * It represents the size in pixels of the width and height of city
+	 * imagery onscreen.
+	 */
         Uint32 d_tileSize;
+
+	//! The subdirectory of the cityset.
+	/**
+	 * This is the name of the subdirectory that the Cityset files are
+	 * residing in.  It does not contain a path (e.g. no slashes).
+	 * Cityset directories sit in the citysets/ directory.
+	 */
         std::string d_dir;
 };
 
