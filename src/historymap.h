@@ -25,25 +25,58 @@
 #include "overviewmap.h"
 #include "LocationList.h"
 
+//! Draw the given cities on the map.
 /** 
-  * 
-  */
+ * Draw a set of cities onto the miniature map graphic.
+ *
+ * @note This is called HistoryMap because it is used for the HistoryDialog.
+ *
+ */
 class HistoryMap: public OverviewMap, public sigc::trackable
 {
  public:
-    HistoryMap(LocationList<City> *clist);
+     //! Default constructor.  Make a new HistoryMap.
+     /**
+      * @param clist  The list of the City objects to draw on the miniature map.
+      */
+     HistoryMap(LocationList<City> *clist);
  
-    // emitted when the map surface has changed
-    sigc::signal<void, SDL_Surface *> map_changed;
+     //! Emitted when the cities are finished being drawn on the map surface.
+     /**
+      * Classes that use HistoryMap must catch this signal to display the map.
+      */
+     sigc::signal<void, SDL_Surface *> map_changed;
         
-    void updateCities (LocationList<City> *clist);
+     //! Change which cities are shown on the miniature map graphic.
+     /**
+      * This method erases the cities that were previously drawn and shows
+      * a new set of City objects.
+      *
+      * @param clist  The new list of City objects to draw onto the miniature
+      *               map graphic.
+      */
+     void updateCities (LocationList<City> *clist);
 
  private:
 
-    LocationList<City> *d_clist;
-    // hook from base class
-    virtual void after_draw();
-    void drawCities ();
+     //! The set of city objects to show on the miniature map graphic.
+     LocationList<City> *d_clist;
+
+     //! Draw the City objects onto the miniature map graphic.
+     /**
+      * This method is automatically called by the HistoryMap::draw method.
+      */
+     virtual void after_draw();
+
+     //! Draw the cities.
+     /**
+      * This method iterates over the members of HistoryMap::d_clist and draws
+      * each city onto the minature map graphic.
+      *
+      * We can't use the OverviewMap::draw_cities method because it draws the
+      * City objects of Citylist, and not the set of cities defined here.
+      */
+     void drawCities ();
 };
 
 #endif

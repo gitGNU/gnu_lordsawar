@@ -1,3 +1,5 @@
+//  Copyright (C) 2007, 2008 Ben Asselstine
+//
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -10,7 +12,8 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
+//  02110-1301, USA.
 
 #ifndef RUINMAP_H
 #define RUINMAP_H
@@ -23,36 +26,63 @@
 
 class Ruin;
 
-/** Display of the whole game map.
-  * 
-  * This is a map where you can see ruins and temples.
+//! Draw the ruins and temples onto a miniature map graphic.
+/** 
+  * This method draws Ruin and Temple objects onto a miniature map graphic.
+  * The ruins and temples are depicted with icons instead of little white dots.
+  *
+  * The RuinMap is interactive.  Each Ruin and Temple is selectable with the 
+  * left mouse button.
   */
-
 class RuinMap : public OverviewMap
 {
  public:
-    RuinMap(NamedLocation *r); //r is the selected ruin or temple
+     //! Default constructor.  Make a new RuinMap.
+     /**
+      * @param ruin  The Ruin or Temple object that is selected initially when
+      *              the miniature map graphic is created.
+      */
+     RuinMap(NamedLocation *ruin);
 
-    //! change what ruin or temple is selected
+    //! Change the Ruin or Temple object that is currently selected.
     void setNamedLocation (NamedLocation *r) {ruin = r;}
 
+    //! Obtain the Ruin or Temple object that is currently selected.
     NamedLocation * getNamedLocation () const {return ruin;}
 
+    //! Realize the given mouse button event.
     void mouse_button_event(MouseButtonEvent e);
 
-    // emits the location chosen
-    sigc::signal<void, Location *> location_changed;
+    //! Emitted when a new Ruin or Temple object has been clicked.
+    sigc::signal<void, NamedLocation *> location_changed;
 
-    // emitted when the map surface has changed
+    //! Emitted when the objects are finished being drawn on the map surface.
+    /**
+     * Classes that use RuinMap must catch this signal to display the map.
+     */
     sigc::signal<void, SDL_Surface *> map_changed;
     
  private:
+    //! The currently selected Ruin or Temple object.
     NamedLocation *ruin;
+
+    //! Draw the Ruin objects on the map.
+    /**
+     * @param show_selected  Whether or not to draw a box around a Ruin object
+     *                       that is the selected object (RuinMap::ruin).
+     */
     void draw_ruins (bool show_selected);
+    //! Draw the Temple objects on the map.
+    /**
+     * @param show_selected  Whether or not to draw a box around a Temple object
+     *                       that is the selected object (RuinMap::ruin).
+     */
     void draw_temples (bool show_selected);
-    //void draw_cities(bool all_razed);
     
-    // hook from base class
+    //! Draw the Ruin and Temple objects objects onto the miniature map graphic.
+    /**
+     * This method is automatically called by the RuinMap::draw method.
+     */
     virtual void after_draw();
 };
 

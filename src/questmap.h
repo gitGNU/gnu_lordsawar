@@ -26,29 +26,59 @@
 
 class Quest;
 
-/** Display of the whole game map.
-  * 
-  * This is a map where you can see a quest.
-  */
-
+//! Draw a Quest objective onto a miniature map graphic.
+/** 
+ * This is a map where you can depict a Quest.
+ * The depiction is different for each kind of Quest (Quest::Type).
+ *
+ * @note This class is also used in a special case to depict the quest 
+ * completion when the reward is a hidden ruin (Reward::RUIN).
+ */
 class QuestMap : public OverviewMap
 {
  public:
-    QuestMap(Quest *q);
+     //! Default constructor.  Make a new QuestMap.
+     /**
+      * @param quest  The quest to depict on the miniature map graphic.
+      */
+    QuestMap(Quest *quest);
 
-    // emitted when the map surface has changed
+    //! Emitted when the quest is finished being drawn on the map surface.
+    /**
+     * Classes that use QuestMap must catch this signal to display the map.
+     */
     sigc::signal<void, SDL_Surface *> map_changed;
     
-    void set_target(Vector<int>target);
+    //! Point to another position on the miniature map graphic.
+    /**
+     * @note This is used to point to a hidden map Reward after a Quest has
+     * been completed.
+     */
+    void set_target(Vector<int>target){ d_target = target;}
 
  private:
+    //! The Quest to depict on the miniature map graphic.
     Quest *quest;
+
+    //! Draw the given positions on the map in the colour of the given player.
     void draw_stacks(Player *p, std::list< Vector<int> > targets);
+
+    //! Draw a line to a boxed target.
     void draw_target(Vector<int> start, Vector<int> target);
+
+    //! Draw a box around a target.
     void draw_target();
     
+    //! The new position to point to on the miniature map graphic.
     Vector<int> d_target;
-    // hook from base class
+
+    
+    //! Draw the Quest onto the miniature map graphic.
+    /**
+     * This method is automatically called by the QuestMap::draw method.
+     * Either draws the given stacks, a line to a target with a target, or a 
+     * target, or nothing at all depending on the kind of Quest.
+     */
     virtual void after_draw();
 };
 

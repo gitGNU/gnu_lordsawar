@@ -23,25 +23,32 @@
 #include "overviewmap.h"
 #include "input-events.h"
 
-/** Display of the whole game map.
-  * 
-  * This is a map where you can see all the armies in the field
-  */
-
+//! Display a miniature map that shows where Stack objects are on the game map.
+/** 
+ * This is a map where you can see all the armies in the field.  Army units
+ * in City objects are not shown.
+ */
 class ArmyMap : public OverviewMap
 {
  public:
-    ArmyMap();
+     //! Default constructor.  Make a new ArmyMap.
+     ArmyMap();
 
-    // emitted when the map surface has changed
+    //! Emitted when the Army units are finished being drawn on the map surface.
+    /**
+     * Classes that use ArmyMap must catch this signal to display the map.
+     */
     sigc::signal<void, SDL_Surface *> map_changed;
     
  private:
     
-    // hook from base class
+    //! Draw the City objects and Stack objects onto the miniature map graphic.
+    /**
+     * This method is automatically called by the ArmyMap::draw method.
+     */
     virtual void after_draw();
 
-    //! draw stacks on the map
+    //! Draw just the Stack objects onto the miniature map graphic.
     void draw_stacks();
 
 };

@@ -20,21 +20,29 @@
 #include "overviewmap.h"
 #include "input-events.h"
 
-/** Display of the whole game map.
-  * 
-  */
+//! Draw all of the City objects onto a miniature map graphic.
+/** 
+ * 
+ */
 
 class CityMap : public OverviewMap
 {
  public:
+     //! Default constructor.  Make a new CityMap.
     CityMap();
 
-    // emitted when the map surface has changed
+    //! Emitted when the cities are finished being drawn on the map surface.
+    /**
+     * Classes that use CityMap must catch this signal to display the map.
+     */
     sigc::signal<void, SDL_Surface *> map_changed;
     
  private:
     
-    // hook from base class
+    //! Draw the City objects onto the miniature map graphic.
+    /**
+     * This method is automatically called by the CityMap::draw method.
+     */
     virtual void after_draw();
 
 };

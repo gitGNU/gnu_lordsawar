@@ -139,11 +139,6 @@ void QuestMap::after_draw()
     map_changed.emit(surface);
 }
 
-void QuestMap::set_target(Vector<int>target)
-{
-  d_target = target;
-}
-
 void QuestMap::draw_target()
 {
   if (d_target.x == -1 && d_target.y == -1)

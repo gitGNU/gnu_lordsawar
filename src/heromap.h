@@ -25,23 +25,39 @@
 
 class City;
 
-/** Display of the whole game map.
-  * 
-  * This is a map where you can highlight a city with a hero icon.
+//! Draw a miniature map graphic with an indication of where a Hero is.
+/** 
+  * This is a map where you can highlight a city with a hero icon.  This
+  * draws the shields for City objects and the icon for the Hero.
+  *
+  * @note This is used to show a map when a Hero initially emerges from a City.
   */
-
 class HeroMap : public OverviewMap
 {
  public:
-    HeroMap(City *city);
+     //! Default constructor.  Make a new HeroMap.
+     /**
+      * @param city  The city where the Hero has emerged.
+      */
+     HeroMap(City *city);
 
-    // emitted when the map surface has changed
+    //! Emitted when the Hero icon is finished being drawn on the map surface.
+    /**
+     * Classes that use HeroMap must catch this signal to display the map.
+     */
     sigc::signal<void, SDL_Surface *> map_changed;
     
  private:
+    //! The City of where to draw the Hero icon.
     City *city;
     
-    // hook from base class
+    //! Draw the Hero icon onto the miniature map graphic.
+    /**
+     * This draws the shields for each city as well as the icon to indicate
+     * that a Hero is there.
+     *
+     * This method is automatically called by the HeroMap::draw method.
+     */
     virtual void after_draw();
 };
 
