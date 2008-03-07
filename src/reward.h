@@ -277,56 +277,226 @@ class Reward_Allies: public Reward
         Uint32 d_count;
 };
 
+//! A useful item to be awarded to a Hero.
+/**
+ * Item objects are given to a Hero who has completed a Quest or searched a 
+ * Ruin object.
+ */
 class Reward_Item: public Reward
 {
     public:
+	//! Default constructor.
+	/**
+	 * @param item  A pointer to the item to give to the Hero.
+	 */
         Reward_Item (Item *item);
+
+	//! Loading constructor.
+	/**
+	 * Make a new reward item by loading it from an opened saved-game file.
+	 *
+	 * @param helper  The opened saved-game file to load the item reward 
+	 *                from.
+	 */
 	Reward_Item(XML_Helper *helper);
+
+	//! Copy constructor.
+	/**
+	 * Make a new reward item by copying it from another one.
+	 *
+	 * @param orig  The reward item to copy from.
+	 */
 	Reward_Item(const Reward_Item& orig);
+
+	//! Destructor.
         ~Reward_Item();
 
+	//! Return a random Item object.
+	/**
+	 * @note This method does not return an Reward_Item object.
+	 *
+	 * @note This method does not remove the Item object from the Itemlist.
+	 *
+	 * @return A pointer to a random Item object in the Itemlist.
+	 */
 	static Item *getRandomItem();
 
+	//! Save the reward item to a file.
+	/**
+	 * @param helper  The opened saved-game file to save the reward item to.
+	 */
         bool save(XML_Helper* helper) const;
+
+	//! Get the Item object associated with this reward.
 	Item *getItem() const {return d_item;}
 
     private:
+	//! Callback to load the Item object in the Reward_Item object.
         bool loadItem(std::string tag, XML_Helper* helper);
+
+	//! A pointer to the Item object associated with this Reward_Item.
         Item *d_item;
 };
 
+//! A hidden ruin to be awarded to a Player.
+/**
+ * Hidden Ruin objects are only visitable by a single Player.
+ * Hidden ruins are not given out as a reward when a Hero searched it and is
+ * successful.  Hidden ruins are given out as a reward for a completed Quest.
+ */
 class Reward_Ruin: public Reward
 {
     public:
+	//! Default constructor.
+	/**
+	 * Make a new Reward_Ruin.
+	 *
+	 * @param ruin  A pointer to the hidden Ruin object to present to the
+	 *              Player.
+	 */
         Reward_Ruin(Ruin *ruin);
+
+	//! Loading constructor.
+	/**
+	 * Make a new Reward_Ruin by loading it from an opened saved-game file.
+	 *
+	 * @param helper  The opened saved-game file to load the reward ruin 
+	 *                from.
+	 */
 	Reward_Ruin(XML_Helper *helper);
+
+	//! Copy constructor.
+	/**
+	 * Make a new reward ruin by copying it from another one.
+	 *
+	 * @param orig  The reward ruin to copy from.
+	 */
 	Reward_Ruin(const Reward_Ruin& orig);
+
+	//! Destructor.
         ~Reward_Ruin();
+
+	//! Go get a random hidden ruin to give to the Player.
+	/**
+	 * Scan all of the Ruin objects in the game and find one that is
+	 * hidden but only visible by Neutral.  Pick a random Ruin object
+	 * out of the ones that qualify.
+	 * It is up to the caller to change the owner of the hidden Ruin 
+	 * object..
+	 *
+	 * @return A pointer to a Ruin object in the Ruinlist that is a hidden
+	 *         ruin and is owned by the neutral Player.  This method will
+	 *         return NULL if there are no more Ruin objects that meet 
+	 *         that criteria.
+	 */
 	static Ruin *getRandomHiddenRuin();
 
+	//! Save the reward ruin to an opened saved-game file.
+	/**
+	 * @param helper  The opened saved-game file to write the ruin reward 
+	 *                to.
+	 */
         bool save(XML_Helper* helper) const;
-	Ruin* getRuin() const {return Ruinlist::getInstance()->getObjectAt(d_ruin_pos);}
+
+	//! Return the Ruin object associated with this Reward_Ruin.
+	Ruin* getRuin() const 
+	  {return Ruinlist::getInstance()->getObjectAt(d_ruin_pos);}
 
     private:
+	//! The position of the Ruin object associated with this reward.
+	/**
+	 * The ruin is saved as a position for a good reason, but I don't know
+	 * what that reason is.  Perhaps the Ruinlist was loaded after the
+	 * Rewardlist at one time (but isn't any longer).
+	 * Maybe it is because a Ruin can reference a Reward_Ruin which can
+	 * reference a (hidden) Ruin.
+	 */
+	//FIXME: verify that the ruin's position has to be used here.
 	Vector<int> d_ruin_pos;
 };
 
+//! A portion of a hidden map to reveal to a Player.
+/**
+ * When playing on a hidden map, the Player can receive a map that uncovers a
+ * portion of the game map.  It only reveals a portion of the map for one 
+ * Player.
+ * The map has a position (from the derived Location class), and as well as a
+ * height and a width.
+ */
 class Reward_Map: public Reward, public Location
 {
     public:
+	//! Default constructor.
+	/**
+	 * Make a new Reward_Map from the given parameters.
+	 *
+	 * @param pos     The position of the top left corner tile of the map.
+	 * @param name    The name of this map.
+	 * @param height  The height of the revealed portion of the game map.
+	 * @param width   The width of the revealed portion of the game map.
+	 */
         Reward_Map(Vector<int> pos, std::string name, 
 		   Uint32 height, Uint32 width);
+
+	//! Loading constructor.
+	/**
+	 * Make a new Reward_Map by loading it from an opened saved-game file.
+	 *
+	 * @param helper  The opened saved-game file to load the reward map
+	 *                from.
+	 */
 	Reward_Map(XML_Helper *helper);
+
+	//! Copy constructor.
+	/**
+	 * Make a new reward map by copying it from another one.
+	 *
+	 * @param orig  The reward map to copy from.
+	 */
 	Reward_Map(const Reward_Map& orig);
+
+	//! Destructor.
         ~Reward_Map();
 
+	//! Save the reward map to an opened saved-game file.
+	/**
+	 * @param helper  The opened saved-game file to write the ruin map to.
+	 */
         bool save(XML_Helper* helper) const;
+
+	//! Get the height of the revealed portion of the game map.
 	Uint32 getHeight() const {return d_height;}
+
+	//! Get the width of the revealed portion of the game map.
 	Uint32 getWidth() const {return d_width;}
+
+	//! Return a description of a random map.
+	/**
+	 * @note This will produce random maps that overlap each other.
+	 * @note x,y defines the top-left-most tile of the map.
+	 *
+	 * @param x       The number of tiles down in the vertical axis from the
+	 *                topmost edge of the map.
+	 * @param y       The number of tiles right in the horizontal axis from
+	 *                the leftmost edge of the map.
+	 * @param width   The width of the revealed portion of the game map.
+	 * @param height  The height of the revealed portion of the game map.
+	 */
 	static void getRandomMap(int *x, int *y, int *width, int *height);
 
     private:
+	//! The height of the revealed portion of the map (in tiles).
+	/**
+	 * @note d_height + getPos().x must not exceed the height of the game
+	 *       map.
+	 */
 	Uint32 d_height;
+
+	//! The width of the revealed portion of the map (in tiles).
+	/**
+	 * @note d_width + getPos().y must not exceed the width of the game
+	 *       map.
+	 */
 	Uint32 d_width;
 };
 
