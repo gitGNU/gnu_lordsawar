@@ -64,12 +64,12 @@ void QuestsManager::deleteInstance()
 //======================================================================
 QuestsManager::QuestsManager()
 {
-    _sharedInit();
+    sharedInit();
 }
 //======================================================================
 QuestsManager::QuestsManager(XML_Helper* helper)
 {
-    _sharedInit();
+    sharedInit();
     debug("QuestsManager: registerTag!");
     helper->registerTag("quest", sigc::mem_fun((*this), &QuestsManager::load));
 }
@@ -80,7 +80,7 @@ QuestsManager::~QuestsManager()
 
     for (it = d_quests.begin(); it != d_quests.end(); it++) 
         delete (*it).second;
-    _cleanup();
+    cleanup();
 }
 //======================================================================
 Quest* QuestsManager::createNewQuest(Uint32 heroId, bool razing_possible)
@@ -198,7 +198,7 @@ void QuestsManager::questCompleted(Uint32 heroId)
       }
 
     //debug("deactivate quest");
-    //_deactivateQuest(heroId);
+    //deactivateQuest(heroId);
     d_quests.erase(heroId);
     //debug("quest deactivated");
 }
@@ -213,7 +213,7 @@ void QuestsManager::questExpired(Uint32 heroId)
     //quest_expired.emit(quest);
     
     debug("deactivate quest");
-    _deactivateQuest(heroId);
+    deactivateQuest(heroId);
     debug("quest deactivated");
 }
 //=========================================================================
@@ -315,7 +315,7 @@ bool QuestsManager::load(string tag, XML_Helper* helper)
     return false;
 }
 //======================================================================
-void QuestsManager::_sharedInit()
+void QuestsManager::sharedInit()
 {
     debug("QuestsManager constructor")
 
@@ -331,7 +331,7 @@ void QuestsManager::_sharedInit()
     d_questsFeasible.push_back(&(QuestPillageGold::isFeasible));
 }
 //========================================================================
-void QuestsManager::_deactivateQuest(Uint32 heroId)
+void QuestsManager::deactivateQuest(Uint32 heroId)
 {
     Quest *q = d_quests[heroId];
     q->deactivate();
@@ -340,9 +340,9 @@ void QuestsManager::_deactivateQuest(Uint32 heroId)
     d_quests.erase(heroId);
 }
 //======================================================================
-void QuestsManager::_cleanup(Player::Type type)
+void QuestsManager::cleanup(Player::Type type)
 {
-    debug("QuestsManager: _cleanup!");
+    debug("QuestsManager: cleanup!");
 
     std::list<Quest *>::iterator it = d_inactive_quests.begin();
     while(it != d_inactive_quests.end())

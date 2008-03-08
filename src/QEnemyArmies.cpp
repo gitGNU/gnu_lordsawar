@@ -63,7 +63,6 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero)
 {
     // have us be informed when hostilities break out
     d_victim_player = getVictimPlayer(getHero()->getOwner());
-    d_victim_player->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmies::dyingArmy));
     
     /** we have to kill 14-20 units: 14 + rand(0..6) */
     d_to_kill = 14 + (rand() % 7);
@@ -82,8 +81,6 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper)
     helper->getData(ui, "victim_player");
 
     d_victim_player = Playerlist::getInstance()->getPlayer(ui);
-    // we want to be informed about fight causalties
-    d_victim_player->sdyingArmy.connect( sigc::mem_fun(*this, &QuestEnemyArmies::dyingArmy));
 
     update_targets();
 
@@ -125,29 +122,6 @@ void QuestEnemyArmies::getExpiredMsg(std::queue<std::string>& msgs) const
     // This quest should never expire, so this is just a dummy function
 }
 //=======================================================================
-void QuestEnemyArmies::dyingArmy(Army *army, std::vector<Uint32> culprits)
-{
-    debug("QuestEnemyArmies: dyingArmy - pending = " << (int)d_pending);
-
-    if (!isActive())
-        return;
-    
-    // did our hero kill them?
-    for (unsigned int i = 0; i < culprits.size(); i++)
-    {
-        if (culprits[i] == d_hero)
-        {
-            d_killed++;
-            if (d_killed >= d_to_kill)
-            {
-                debug("CONGRATULATIONS: QUEST 'ENEMY ARMIES' IS COMPLETED!");
-                d_q_mgr.questCompleted(d_hero);
-            }
-            break;
-        }
-    }
-}
-//=======================================================================
 void QuestEnemyArmies::initDescription()
 {
     char buffer[101]; buffer[100]='\0';
@@ -163,6 +137,7 @@ bool QuestEnemyArmies::isFeasible(Uint32 heroId)
     return true;
   return false;
 }
+
 void QuestEnemyArmies::armyDied(Army *a, bool heroIsCulprit)
 {
   if (!isActive())

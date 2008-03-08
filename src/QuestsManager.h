@@ -31,139 +31,257 @@ class Army;
 class Reward;
 
 
+//! Manages Quest objects.
 /**
- * \brief The manager of the quests in the LordsAWar game.
+ * This class creates new quests and assigns them to heroes.  It also keeps 
+ * track of pending quests and invalidates quests due to Hero death.  It
+ * acts as a central place to catch army death events, and city conquered
+ * events, and it passes these events on to the Quest objects it manages.
  *
- * Responsibilities:
+ * This object equates to the lordsawar.questlist XML entity in the saved-game
+ * file.
  *
- * - creation of new quests and assigning them to heroes,
- * - separating the Quest objects from the rest of the system,
- * - keeping track of pending quests and reacting to heroes' deaths
- *   by invalidating the quests that belonged to the dead,
- * - ability to return the information of recently completed quests
- *   (possibly at the end of the players' turn).
+ * This class is implemented as a singleton.
  *
- * \note We encountered some problems connected with the signals emitted
- *       and received by using the libsigc++ library. If the QM detects
- *       that some quest should be cancelled as a result of processing
- *       the sdyingArmy signal, it cannot delete this Quest, nor can
- *       it disconnect this quest, if this quest has connected
- *       itself to the same signal. As a result when we want to
- *       delete a quest, we move it from the hash of active quests
- *       to a vector of 'quests being marked to delete'. Then we
- *       wait for someone to emit the signal sendingTurn and
- *       delete all marked quests when processing this signal.
+ * @note There are some problems related to the signals emitted and received 
+ *       by using the libsigc++ library.  If the QuestsManager detects that 
+ *       some quest should be cancelled as a result of processing the 
+ *       sdyingArmy signal, it cannot delete this Quest, nor can it disconnect 
+ *       this quest, if this quest has connected itself to the same signal. 
+ *       As a result when we want to delete a quest, we move it from the hash 
+ *       of active quests to a vector of 'quests being marked to delete'.  
+ *       Then we wait for someone to emit the signal sendingTurn and delete 
+ *       all marked quests when processing this signal.
  *
  */
 class QuestsManager : public sigc::trackable
 {
     public:
-        /** \brief Singleton creator */
+
+        //! Gets the singleton instance or creates a new one.
         static QuestsManager* getInstance();
 
-        /** \brief Singleton creator, but builds an object
-                   from XML-parsed data (savegame) */
+	/**
+	 * Make a new QuestsManager object by loading all Quest objects from
+	 * an opened saved-game file.
+	 *
+	 * @param helper     The opened saved-game file to read from.
+	 *
+	 * @return A pointer to the new QuestsManager object.
+	 */
+        //! Loads the questlist from a saved-game file.
         static QuestsManager* getInstance(XML_Helper* helper);
 
-        /** \brief Singleton destruction method */
+        //! Explicitly deletes the singleton instance.
         static void deleteInstance();
 
-	sigc::signal<void, Quest *, Reward *> quest_completed;
-	sigc::signal<void, Quest *> quest_expired;
-	
-        /**
-         * \brief Create a random quest and assign it to the hero.
-         */
+	//! Create a new quest for the given hero.
+	/**
+	 * Check and see which quests are possible and give the specified hero
+	 * a random quest.
+	 *
+	 * @param heroId  The Id of the Hero object to be responsible for the
+	 *                new Quest.
+	 * @param razing_possible  Whether or not razing cities is allowed in
+	 *                         the scenario.  If this is set to true, the
+	 *                         quests that involve razing will be
+	 *                         considered.  Otherwise a razing quest will
+	 *                         not be considered at all, and not returned.
+	 *
+	 * @return A pointer to the new Quest object.
+	 */
         Quest* createNewQuest(Uint32 heroId, bool razing_possible);
 
-        /** \brief Quest completion - called by the particular Quest.
-         *
-         *  Here we deactivate the quest and possibly save the notification
-         *  which will be presented to the player.
+	//! Mark the Quest that the given Hero object is on to be completed.
+        /**
+         *  This method deactivates the quest and saves the completion 
+	 *  notification message which will be presented to the player.
+	 *
+	 *  @param heroId  The id of the Hero object who has a Quest that we
+	 *                 want to mark as complete.
          */
         void questCompleted(Uint32 heroId);
 
-        /** \brief Quest expiration - called by the particular Quest.
-         *
-         *  Here we deactivate the quest and possibly save the notification
-         *  which will be presented to the player.
+	//! Mark the Quest that the given Hero object is on to be expired.
+        /** 
+         *  This method deactivates the quest and saves the expiry notification
+         *  message which will be presented to the player.
+	 *
+	 *  @param heroId  The id of the Hero object who has a Quest that we
+	 *                 want to mark as expired.
          */
         void questExpired(Uint32 heroId);
 
-        /** \brief callback when an army dies
-         *
+	//! Callback when an Army object is killed.
+        /** 
          *  Here we account for a dead army.   maybe it's our hero,
 	 *  maybe it's a target hero, maybe we're somebody else's target hero
-	 *  or maybe we're some other army we're suppsed to kill.
+	 *  or maybe we're some other army we're supposed to kill.
+	 *
+	 *  @param army      The army who was killed.
+	 *  @param culprits  The list of Army object Ids that were involved in
+	 *                   killing the given army.
          */
-	void armyDied(Army *a, std::vector<Uint32>& culprits);
+	void armyDied(Army *army, std::vector<Uint32>& culprits);
 
-
-	/* \brief callbacks when cities get conquered
-	 * Here we account for actions on a city
+	//! Callback when a city is razed.
+	/**
+	 * Other classes call this to trigger this razing event.  Derived 
+	 * classes of Quest catch this event via the Quest::cityAction 
+	 * callback.
+	 *
+	 * @param city   A pointer to the City object being razed.
+	 * @param stack  A pointer to the stack that conquered and is razing
+	 *               the given city.
 	 */
-	void cityRazed(City *c, Stack *s);
-	void citySacked(City *c, Stack *s, int gold);
-	void cityPillaged(City *c, Stack *s, int gold);
-	void cityOccupied(City *c, Stack *s);
+	void cityRazed(City *city, Stack *stack);
 
+	//! Callback when a city is sacked.
+	/**
+	 * Other classes call this to trigger this sacking event.  Derived 
+	 * classes of Quest catch this event via the Quest::cityAction 
+	 * callback.
+	 *
+	 * @param city   A pointer to the City object being sacked.
+	 * @param stack  A pointer to the stack that conquered and is sacking
+	 *               the given city.
+	 * @param gold   The number of gold pieces that the sacking resulted in.
+	 */
+	void citySacked(City *city, Stack *stack, int gold);
 
-	void nextTurn(Player *p);
+	//! Callback when a city is pillaged.
+	/**
+	 * Other classes call this to trigger this pillaging event.  Derived 
+	 * classes of Quest catch this event via the Quest::cityAction 
+	 * callback.
+	 *
+	 * @param city   A pointer to the City object being pillaged.
+	 * @param stack  A pointer to the stack that conquered and is pillaging
+	 *               the given city.
+	 * @param gold   The number of gold pieces that the pillaging resulted 
+	 *               in.
+	 */
+	void cityPillaged(City *city, Stack *stack, int gold);
 
-        /**
-         * \brief Get quests for a specific player
-         */
+	//! Callback when a city is occupied.
+	/**
+	 * Other classes call this to trigger this occupying event.  Derived 
+	 * classes of Quest catch this event via the Quest::cityAction 
+	 * callback.
+	 *
+	 * @param city   A pointer to the City object being occupied.
+	 * @param stack  A pointer to the stack that conquered and is occupying
+	 *               the given city.
+	 */
+	void cityOccupied(City *city, Stack *stack);
+
+	//! Process the Quests at the start of every turn for the given player.
+	/**
+	 * @param player  The player to process Quest objects for.  The Hero
+	 *                object must be owned by this player to be processed.
+	 */
+	void nextTurn(Player *player);
+
+	//! Return a list of Quest objects that belong to the given player.
+	/**
+	 * @param player  The player to get Quest objects for.
+	 */
         std::vector<Quest*> getPlayerQuests(Player *player);
 
-        /**
-         * \brief Save all quests 
-         */
+	//! Save the quests to an opened saved-game file.
+	/**
+	 * Saves the lordsawar.questlist XML entity to the saved-game file.
+	 *
+	 * @param helper  The opened saved-game file to save the Quest objects
+	 *                to.
+	 */
         bool save(XML_Helper* helper) const;
 
+	//! Emitted when a Hero object completes a Quest.
+	/**
+	 * @param quest   A pointer to the Quest object that was successfully 
+	 *                completed.
+	 * @param reward  A pointer to the reward that the Hero is receiving.
+	 */
+	sigc::signal<void, Quest *, Reward *> quest_completed;
+
+	//! Emitted when a Hero object fails to complete a Quest.
+	/**
+	 * @param quest  A pointer to the Ques tobject that was expired.
+	 */
+	sigc::signal<void, Quest *> quest_expired;
+	
     protected:
-        /** \brief Constructor */
+
+	//! Default constructor.
         QuestsManager();
 
-        /** \brief Constructor - use XML data */
+	//! Loading constructor.
+	/**
+	 * Loads the lordsawar.questlist XML entity from the saved-game file.
+	 *
+	 * @param helper  The opened saved-game file to load the questlist from.
+	 */
         QuestsManager(XML_Helper* helper);
 
-        /** \brief Destructor */
-		~QuestsManager();
+	//! Destructor.
+	~QuestsManager();
 
     private:
+
+	//! Definition of a function pointer for the Quest::isFeasible methods.
         typedef bool (*QFeasibilityType)(Uint32);
 
-        /**
-         * \brief Load one quest from the savegame. 
-         */
+	//! Callback for loading Quest objects into the QuestsManager.
         bool load(std::string tag, XML_Helper* helper);
 
         //! Does some setup that has to be done on loading as well as creation.
-        void _sharedInit();
+        void sharedInit();
 
-        //! this method deactivates a quest, i.e. marks it as 'to-delete'
-        void _deactivateQuest(Uint32 heroId);
+        //! Deactivates a given quest, i.e. marks it as 'to-delete'.
+	/**
+	 * @note A Hero can only have one quest, so giving the heroId is as
+	 *       good as specifying a particular quest.
+	 */
+        void deactivateQuest(Uint32 heroId);
 
-        //! this method performs cleanup of the marked quests
-        void _cleanup(Player::Type type = Player::HUMAN);
+        //! This method performs cleanup of the marked quests
+	/**
+	 * Remove the quests marked as deactivated, and have heroes that belong
+	 * to players of the given type.
+	 */
+        void cleanup(Player::Type type = Player::HUMAN);
 
+	//! Callback when a city is conquered.
+	/**
+	 * This method calls the other simlarly named methods in the derived
+	 * Quest classes.
+	 *
+	 * @param city   A pointer to the city that was defeated.
+	 * @param stack  A pointer to the stack doing the conquering.
+	 * @param action What action was taken: pillaging, sacking, razing, or
+	 *               occupying.
+	 * @param gold   The number of gold pieces achieved in the sacking or
+	 *               pillaging.
+	 */
 	void cityAction(City *c, Stack *s, CityDefeatedAction action, int gold);
 
         // Data
         
-        /** hash of active quests */
+	//! A hash of all Quests in this QuestsManager.  Lookup by HeroId.
         std::map<Uint32,Quest*> d_quests;
 
-        /** quests that have been marked as 'to-delete' */
+        //! A list of quests that have been marked as 'to-delete'.
         std::list<Quest*> d_inactive_quests;
 
-        /** \brief Vector of pointers to code (class static members)
-         *         checking if a particular question makes sense
-         *         in the current game state.
+	//! A vector of isFeasible function pointers.
+        /** 
+	 * This list of function pointers is used to see if it makes sense to
+	 * give out a quest of a particular kind (Quest::Type).
          */
         std::vector<QFeasibilityType> d_questsFeasible;
 
-        /** instance variable pointer */
+        //! A static pointer for the singleton instance.
         static QuestsManager * s_instance;
 };
 

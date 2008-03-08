@@ -14,42 +14,59 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
-#ifndef __QUEST_CITY_RAZE_H
-#define __QUEST_CITY_RAZE_H
+#ifndef QUEST_CITY_RAZE_H
+#define QUEST_CITY_RAZE_H
 
 #include <sigc++/trackable.h>
 
 #include <list>
 #include "Quest.h"
 
-
 class City;
 class XML_Helper;
 
-
-/** Class describing a city raze quest
-  * 
-  * A hero that receives this quest has to raze a specific city to fulfill
-  * it.
-  */
-
+//! A Quest where the Hero must raze a City owned by another Player.
+/**
+ * A hero that receives this quest has to burn a specific city to fulfill
+ * it.  The Quest is completed when this happens, but the quest is expired if
+ * the user conquers the correct city but forgets to raze the city.
+ */
 class QuestCityRaze: public Quest, public sigc::trackable
 {
     public:
-        /** \brief Constructor - create a new quest */
+	//! Default constructor.
+	/**
+	 * Make a new city burning quest.
+	 *
+	 * @param q_mgr  The quests manager to associate this quest with.
+	 * @param hero   The Id of the Hero who is responsible for the quest.
+	 */
         QuestCityRaze(QuestsManager& q_mgr, Uint32 hero);
 
-        /** \brief Constructor - create a new quest from
-                   saved data */
+	//! Loading constructor.
+	/**
+	 * @param q_mgr   The quests manager to associate this quest with.
+	 * @param helper  The opened saved-game file to load this quest from.
+	 */
         QuestCityRaze(QuestsManager& q_mgr, XML_Helper* helper);
 
-         /**
-          * \brief Checks if such a quest is possible at all.
-          */
-         static bool isFeasible(Uint32 heroId);
+	//! Returns whether or not this quest is impossible.
+        /**
+	 * Scans all City objects in the Citylist to see if there is one the 
+	 * active player can raze.
+	 *
+	 * @note This method is static because it is executed before the
+	 *       Quest is instantiated.  It is also called from within the
+	 *       instantiated Quest.
+	 *
+	 * @param heroId  The Id of the Hero responsible for the razing quest.
+	 *
+	 * @return Whether or not the quest is possible.
+         */
+        static bool isFeasible(Uint32 heroId);
 
-         //! Saves the quest data.
-         bool save(XML_Helper* helper) const;
+        //! Saves the occupy quest data to an opened saved-game file.
+        bool save(XML_Helper* helper) const;
 
         /**
          * \brief Get progress information 
@@ -58,38 +75,68 @@ class QuestCityRaze: public Quest, public sigc::trackable
          */
         std::string getProgress() const;
 
-        /**
-         * \brief Provide the lines of the message describing
-                  the quest completion.
-         */
-         void getSuccessMsg(std::queue<std::string>& msgs) const;
+	//! Return a description of how well the city razing quest is going.
+        void getSuccessMsg(std::queue<std::string>& msgs) const;
 
-         /**
-         * \brief Provide the lines of the message describing
-                  the quest completion.
-         */
+	//! Return a queue of strings to show when the quest is compeleted.
         void getExpiredMsg(std::queue<std::string>& msgs) const;
 
+        //! Returns the id of the City object to be razed.
+        Uint32 getCityId() const {return d_city;}
 
-         //! Returns the id of the city to be razed
-         Uint32 getCityId() const {return d_city;}
+        //! Returns a pointer to the City object to be razed.
+        City* getCity() const;
 
-         //! Returns the city to be razed
-         City* getCity() const;
+	//! Callback for when an Army object is killed.
+	/**
+	 * @note This method is not used.
+	 */
+	void armyDied(Army *a, bool heroIsCulprit);
 
-	 void armyDied(Army *a, bool heroIsCulprit);
-	 void cityAction(City *c, CityDefeatedAction action, 
-			 bool heroIsCulprit, int gold);
+	//! Callback for when a City object is defeated.
+	/**
+	 * This method notifies the Quest that a City has fallen, and what the 
+	 * conquering action (pillage/sack/raze/occupy) was.  It also notifies
+	 * whether or not the hero responsible for this quest was involved in 
+	 * the conquering, and how much gold was taken as a result.
+	 *
+	 * If the city isn't razed then the Quest is expired.
+	 * If the city is razed then the Quest is completed.
+	 *
+	 * @param city           The City object that has been conquered.
+	 * @param action         What action was taken by the Player.  See
+	 *                       CityDefeatedAction for more information.
+	 * @param heroIsCulprit  Whether or not the Hero object associated with
+	 *                       this Quest object is responsible for 
+	 *                       conquering the given City object.
+	 * @param gold           How many gold pieces were taken as a result
+	 *                       of the action.
+	 */
+	void cityAction(City *city, CityDefeatedAction action, 
+			bool heroIsCulprit, int gold);
     private:
 
-         /** \brief Make quest description from the city we'll raze */
-         void initDescription();
+	//! Make a quest description about the city that needs to be razed.
+        void initDescription();
          
-         /** \brief Select a victim city */
-         static City* chooseToRaze(Player *p);
+	//! Return a pointer to a random city not owned by the given player.
+	/**
+	 * Find a city to raze.
+	 *
+	 * Scan through all of the City objects in the Citylist for a city
+	 * that is not owned by the given player or by neutral.  Pick a random
+	 * one that isn't already razed and return it.
+	 *
+	 * @param player  The player whose City objects are exempt from being
+	 *                selected as a target for razing.
+	 *
+	 * @return A pointer to a City object that can be razed by the Hero.
+	 *         If no valid City objects are found, this method returns NULL.
+	 */
+        static City* chooseToRaze(Player *p);
 
-         /** city id to be razed by the hero */
-         Uint32 d_city;
+	//! The Id of the target City object to raze.
+        Uint32 d_city;
 
 };
 
