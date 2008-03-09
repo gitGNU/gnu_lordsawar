@@ -33,6 +33,7 @@
 
 class Player;
 
+//! Scenario editor.  Edit Player objects in the scenario.
 class PlayersDialog
 {
  public:

@@ -28,6 +28,7 @@
 class Signpost;
 class CreateScenarioRandomize;
 
+//! Scenario editor.  Change the contents of a signpost.
 class SignpostDialog: public sigc::trackable
 {
  public:

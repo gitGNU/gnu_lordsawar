@@ -35,6 +35,7 @@ class CreateScenarioRandomize;
 class City;
 class Army;
 
+//! Scenario editor.  Edits a City object.
 class CityDialog: public sigc::trackable
 {
  public:

@@ -23,68 +23,106 @@
 #include "army.h"
 #include "Location.h"
 
-/*
- *  When units are "vectored" to another city, they disappear for 2 turns.
- *  While a unit is "in the air", it is represented in one of these objects.
- *
+//! An Army that is being vectored to another city.
+/**
+ *  When Army objects are "vectored" to another city, they disappear for two 
+ *  turns.   While an Army is "in the air", it is represented in one of these 
+ *  objects.
  */
 class VectoredUnit: public Ownable, public Location, public sigc::trackable
 {
     public:
-        /** Default constructor
-          * @param pos          the position of the source of the vectored unit
-          * @param dest         destination location for the unit
-	  * @param army		the kind of army that is being vectored
-          * @param duration     how many turns it takes for the armytype to
-	  *                     show up at dest.
-          */
-        VectoredUnit(Vector<int> pos, Vector<int> dest, Army *army, int duration, Player *p);
+	//! Default constructor.
+        /** 
+	 * Make a new vectored unit.
+	 *
+         * @param pos         The position of the source of the vectored unit.
+         * @param dest        The destination location for the unit.
+	 * @param army	      The Army prototype that is being vectored.
+         * @param duration    How many turns it takes for the armytype to
+	 *                    show up at dest.
+	 * @param player      The player that owns the vectored Army unit.
+         */
+        VectoredUnit(Vector<int> pos, Vector<int> dest, Army *army, 
+		     int duration, Player *player);
 
-        //! Copy constructor
+        //! Copy constructor.
+	/**
+	 * Make a new vectored unit by copying it from another one.
+	 */
         VectoredUnit(const VectoredUnit&);
 
-        //! Loading constructor. See XML_Helper for a detailed description.
+        //! Loading constructor.
+	/**
+	 * Make a new vectored unit by loading from an opened saved-game file.
+	 * This method loads the lordsawar.vectoredunitlist.vectoredunit XML
+	 * entities in the saved-game file.
+	 *
+	 * @param helper  The opened-saved game file to load the vectored unit
+	 *                from.
+	 */
         VectoredUnit(XML_Helper* helper);
+
+	//! Destructor.
         ~VectoredUnit();
 
-	//! Return the location of the destination target for this vectored
-	//! unit.
+	//! Return the position of the destination for this vectored unit.
+	/**
+	 * @return The position of a tile on the game map where the vectored
+	 *         unit will show up (eventually).
+	 */
 	Vector<int>getDestination() const {return d_destination;};
 
-	//! set the location of the destination target for this vectored unit.
+	//! Set the position of the destination target for this vectored unit.
+	/**
+	 * @param dest  The position of a tile on the game map to have the
+	 *              vectored unit show up at.
+	 */
 	void setDestination(Vector<int>dest) {d_destination = dest;};
 
-	//! Return the number of turns that it takes for this vectored unit
-	//! to show up at the destination.
+	//! Return how long it will take for the vectored unit to arrive.
+	/**
+	 * Returns the number of turns that it takes for this vectored unit
+	 * to show up at the destination position on the game map.
+	 */
 	int getDuration () const { return d_duration; };
 
-	//! set the number of turns it takes for this vectored unit to show
-	//! up at the destination.
+	//! Sets how long it will take for the vectored unit to arrive.
+	/**
+	 * @param duration  The number of turns to take before showing up at
+	 *                  the destination posititon on the game map.
+	 */
 	void setDuration(int duration) {d_duration = duration;};
 
-	//! Get the armytype that is being vectored
+	//! Return a pointer to the Army prototype that is being vectored.
+	/**
+	 * @return A pointer to an Army in an Armyset.
+	 */
 	Army *getArmy() const { return d_army; };
 
-	//! Set the armytype that is being vectored
+	//! Set the Army prototype that is being vectored.
 	void setArmy(Army *army) {d_army = army;}
 
-        //! Saves the vectored unit data
+        //! Saves the vectored unit data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
 
-        //! Do everything neccessary for a new turn
-	//! returns true when this vectored unit has shown up in the city
+        //! Process the vectored unit at the start of a new turn.
+	/**
+	 * @return True when this vectored unit has shown up at the destination
+	 *         position on the game map.  Otherwise false.
+	 */
         bool nextTurn();
-inline bool operator==(const VectoredUnit &rhs)
-{
-    return getPos() == rhs.getPos() && d_destination == rhs.d_destination &&
-      d_army->getType() == rhs.d_army->getType() && d_duration == rhs.d_duration;
-};
 
     private:
 
         // DATA
+	//!  The position on the game map that this vectored unit is going to.
 	Vector<int> d_destination;
-	Army *d_army; //army prototype to vector
+
+	//! A pointer to the Army prototype to vector.
+	Army *d_army;
+
+	//! The number of turns remaining until the Army shows up.
 	int d_duration;
 };
 

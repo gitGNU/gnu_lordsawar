@@ -36,7 +36,7 @@ class Army;
 class City;
 class Player;
 
-// dialog for buying a production slot for a city
+//! Scenario editor.  Select an Army prototype.
 class SelectArmyDialog: public sigc::trackable
 {
  public:

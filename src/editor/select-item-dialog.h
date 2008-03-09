@@ -33,7 +33,7 @@
 
 class Item;
 
-// dialog for buying a production slot for a city
+//! Scenario editor.  Select an Item object from the Itemlist.
 class SelectItemDialog: public sigc::trackable
 {
  public:

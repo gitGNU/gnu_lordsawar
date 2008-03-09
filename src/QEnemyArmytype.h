@@ -15,8 +15,8 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef __QUEST_ENEMY_ARMYTYPES_H
-#define __QUEST_ENEMY_ARMYTYPES_H
+#ifndef QUEST_ENEMY_ARMYTYPES_H
+#define QUEST_ENEMY_ARMYTYPES_H
 
 #include <sigc++/trackable.h>
 

@@ -29,6 +29,7 @@ class CreateScenarioRandomize;
 
 class Temple;
 
+//! Scenario editor.  Edits a Temple object.
 class TempleDialog: public sigc::trackable
 {
  public:

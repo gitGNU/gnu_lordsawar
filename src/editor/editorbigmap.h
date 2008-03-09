@@ -39,8 +39,7 @@ class Temple;
 class UniquelyIdentified;
 
 
-/** Specialization of BigMap for the editor
-  */
+//! Scenario editor.  Specializatoin of the BigMap class for the editor.
 class EditorBigMap: public BigMap
 {
  public:

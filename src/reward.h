@@ -15,8 +15,9 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef __REWARD_H
-#define __REWARD_H
+#ifndef REWARD_H
+#define REWARD_H
+
 #include <SDL_types.h>
 #include "vector.h"
 #include "ruinlist.h"

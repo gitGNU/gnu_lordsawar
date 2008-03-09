@@ -41,6 +41,7 @@
 
 #include "../rewardlist.h"
 
+//! Scenario editor.  Manages Reward objects in the Rewardlist.
 class RewardlistDialog: public sigc::trackable
 {
  public:

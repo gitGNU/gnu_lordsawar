@@ -25,6 +25,7 @@
 #include <gtkmm/spinbutton.h>
 #include "../armyset.h"
 
+//! Armyset Editor.  Edit the description of the Armyset.
 class ArmySetInfoDialog: public sigc::trackable
 {
  public:

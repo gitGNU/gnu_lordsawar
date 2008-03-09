@@ -23,7 +23,7 @@
 #include "../Location.h"
 #include "../Renamable.h"
 
-//! A game object that has a position on the map and a changeable name.
+//! Scenario Editor.  A game object that has a position and a changeable name.
 class RenamableLocation: public Location, public Renamable
 {
  public:

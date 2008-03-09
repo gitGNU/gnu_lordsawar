@@ -46,8 +46,7 @@ class CreateScenarioRandomize;
 
 #include "../UniquelyIdentified.h"
 
-// the top-level window of the map with menu, bigmap, smallmap, drawing
-// controls
+//! Scenario editor.  Edits a Scenario.
 class MainWindow: public sigc::trackable
 {
  public:

@@ -33,7 +33,7 @@
 
 class Ruin;
 
-// dialog for buying a production slot for a city
+//! Scenario editor.  Select a hidden Ruin object in the scenario.
 class SelectHiddenRuinDialog: public sigc::trackable
 {
  public:

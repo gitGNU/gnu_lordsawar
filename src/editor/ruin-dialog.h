@@ -34,6 +34,7 @@ class Stack;
 class CreateScenarioRandomize;
 class Reward;
 
+//! Scenario editor.  Edits Ruin objects.
 class RuinDialog: public sigc::trackable
 {
  public:

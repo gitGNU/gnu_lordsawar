@@ -23,63 +23,189 @@
 #include <sigc++/trackable.h>
 
 class City;
-/** An object list which keeps track of all vectoredunits. It cannot do much more than
-  * saving and loading the elements. Implemented as a singleton again.
-  */
-
+//! A list of VectoredUnit objects.
+/** 
+ * This class loads and saves the VectoredUnit objects in the game.  It 
+ * facilitates looking up VectoredUnit objects in the list.
+ *
+ * This class is loaded from, and saved to the lordsawar.vectoredunitlist XML
+ * entity in the saved-game file.
+ *
+ * Implemented as a singleton.
+ */
 class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 {
     public:
-        //! Returns the singleton instance. Creates a new one if required.
+        //! Gets the singleton instance or creates a new one.
         static VectoredUnitlist* getInstance();
 
-        //! Loads the singleton instance with a savegame.
+        //! Loads the VectoredUnitlist from a saved-game file.
+	/**
+	 * Load all VectoredUnit objects in the VectoredUnitlist from a 
+	 * saved-game file.
+	 *
+	 * @param helper     The opened saved-game file to read from.
+	 *
+	 * @return The loaded VectoredUnitlist.
+	 */
         static VectoredUnitlist* getInstance(XML_Helper* helper);
 
-        //! Explicitely deletes the singleton instance.
+        //! Explicitly deletes the singleton instance.
         static void deleteInstance();
         
-	//! updates the vectored units belonging to the player
+	//! Processes all VectoredUnit objects belonging to the given Player.
         void nextTurn(Player* p);
 
-        //! Save function. See XML_Helper for details.
+        //! Save the list of VectoredUnit objects to a saved-game file.
         bool save(XML_Helper* helper) const;
 
-	//! When destination cities get conquered, this list needs to be 
-	//! cleaned up.
+	//! Cull the list of VectoredUnit objects going to the given position.
+	/**
+	 * Scan through the VectoredUnitlist for VectoredUnit objects that
+	 * have the given destination position on the game map.  When found, 
+	 * remove it from the list.
+	 *
+	 * When a planted standard is picked up by another Player's Hero this
+	 * method is called.
+	 *
+	 * @param pos  Any VectoredUnit object in the list that is being
+	 *             vectored to this tile is deleted from the list.
+	 */
         void removeVectoredUnitsGoingTo(Vector<int> pos);
-        void removeVectoredUnitsGoingTo(City *c);
 
-	//! When source cities get conquered, this list needs to be 
-	//! cleaned up.
+	//! Cull the list of VectoredUnit objects going to the given city.
+	/**
+	 * Scan through the VectoredUnitlist for VectoredUnit objects that
+	 * have a destination position of the given city.  When found, remove
+	 * it from the list.
+	 *
+	 * This method gets called when a destination city is conquered.
+	 *
+	 * @param city  Any VectoredUnit object in the list that is being
+	 *              vectored to one of the tiles in this City are deleted
+	 *              from the list.
+	 */
+        void removeVectoredUnitsGoingTo(City *city);
+
+	//! Cull the list of VectoredUnit objects being vectored from a place.
+	/**
+	 * Scan through the VectoredUnitlist for VectoredUnit objects that
+	 * have a source tile of the given position on the game map.  When 
+	 * found, remove the VectoredUnit object from this list.
+	 *
+	 * When a source city gets conquered, VectoredUnit objects need to be
+	 * deleted from this list.
+	 *
+	 * @param pos  Any VectoredUnit object in the list that is being
+	 *             vectored from this tile is deleted from the list.
+	 */
         void removeVectoredUnitsComingFrom(Vector<int> pos);
-        void removeVectoredUnitsComingFrom(City *c);
 
-	//! When showing info we need to know who's going to where.
-	//! vectored is filled up with the results.
-        void getVectoredUnitsGoingTo(Vector<int> pos, std::list<VectoredUnit*>& vectored);
-	void getVectoredUnitsGoingTo(City *c, std::list<VectoredUnit*>& vectored);
+	//! Cull the list of VectoredUnit objects coming from the given city.
+	/**
+	 * Scan through the VectoredUnitlist for VectoredUnit objects that
+	 * have a source position of a tile in the given city.  When found, 
+	 * remove it from the list.
+	 *
+	 * This method gets called when a destination city is conquered.
+	 *
+	 * @param city  Any VectoredUnit object in the list that is being
+	 *              vectored to one of the tiles in this City are deleted
+	 *              from the list.
+	 */
+        void removeVectoredUnitsComingFrom(City *city);
 
-	//! When showing info we need to know who's coming from where.
-	//! vectored is filled up with the results.
-        void getVectoredUnitsComingFrom(Vector<int> pos, std::list<VectoredUnit*>& vectored);
+	//! Return the list of VectoredUnit objects with the given destination.
+	/**
+	 * Scan through the list of VectoredUnit objects for the ones that are
+	 * being vectored to the given position.  Return all of the 
+	 * VectoredUnit objects that match.
+	 *
+	 * This method is used for showing who's going where.
+	 *
+	 * @param pos  Any VectoredUnit object in the list that is being
+	 *             vectored to this tile is returned.
+	 *
+	 * @param vectored  This list is filled with the VectoredUnit objects 
+	 *                  being vectored to the given position.
+	 */
+        void getVectoredUnitsGoingTo(Vector<int> pos, 
+				     std::list<VectoredUnit*>& vectored);
 
-	//! Instead of returning the the vector, just return how many units
-	//! are going to a particular destination.
+	//! Return the list of VectoredUnit objects going to the given city.
+	/**
+	 * Scan through the list of VectoredUnit objects for the ones that are
+	 * being vectored to the tiles on the game map assocaited with the
+	 * given city.  Return all of the VectoredUnit objects that match.
+	 *
+	 * This method is used for showing who's going where.
+	 *
+	 * @param city  Any VectoredUnit object in the list that is being
+	 *              vectored to this city is returned.
+	 *
+	 * @param vectored  This list is filled with the VectoredUnit objects 
+	 *                  being vectored to the given city.
+	 */
+	void getVectoredUnitsGoingTo(City *city, 
+				     std::list<VectoredUnit*>& vectored);
+
+	//! Return the list of VectoredUnit objects with the given source.
+	/**
+	 * Scan through the list of VectoredUnit objects for the ones that are
+	 * being vectored from the given position.  Return all of the 
+	 * VectoredUnit objects that match.
+	 *
+	 * This method is used for showing who's coming from where.
+	 *
+	 * @param pos  Any VectoredUnit object in the list that is being
+	 *             vectored from this tile is returned.
+	 *
+	 * @param vectored  This list is filled with the VectoredUnit objects 
+	 *                  being vectored from the given position.
+	 */
+        void getVectoredUnitsComingFrom(Vector<int> pos, 
+					std::list<VectoredUnit*>& vectored);
+
+	//! Return the number of VectoredUnits being vectored to a given place.
+	/**
+	 * Scan through all of the VectoredUnit objects in the list for ones
+	 * that are being vectored to the given position on the game map.
+	 * Count all of the matching VectoredUnit objects, and return the
+	 * count.
+	 *
+	 * @return The number of VectoredUnit objects that are being vectored
+	 *         to the given position on the game map.
+	 */
         Uint32 getNumberOfVectoredUnitsGoingTo(Vector<int> pos);
 
 	//! Change the destination of vectored units as they are "in the air".
-	void changeDestination(City *c, Vector<int> new_dest);
+	/**
+	 * Scan through all of the VectoredUnit objects in the list for the
+	 * ones that are being vectored to the given city.  When found,
+	 * change the destination to be the given destination.
+	 *
+	 * @param city     A pointer to the city to change VectoredUnit objects
+	 *                 from going to.
+	 * @param new_dest A position on the game map to change where the
+	 *                 VectoredUnit objects are going to.
+	 */
+	void changeDestination(City *city, Vector<int> new_dest);
 
     protected:
+
+	//! Default constructor.
         VectoredUnitlist();
-        ~VectoredUnitlist();
+	//! Loading constructor.
         VectoredUnitlist(XML_Helper* helper);
+	//! Destructor.
+        ~VectoredUnitlist();
 
     private:
-        //! Loading callback. See XML_Helper as well.
+
+        //! Callback for loading the VectoredUnitlist from a saved-game file.
         bool load(std::string tag, XML_Helper* helper);
 
+        //! A static pointer for the singleton instance.
         static VectoredUnitlist* s_instance;
 };
 

@@ -31,6 +31,7 @@ class Army;
 class Ruin;
 class Player;
 
+//! Scenario editor.  Edits rewards.
 class RewardDialog: public sigc::trackable
 {
  public:

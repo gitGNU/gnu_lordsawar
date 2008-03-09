@@ -22,17 +22,17 @@
 
 class XML_Helper;
 
-/** Class to hold several scenario options
-  * 
-  * This class has two functions. On the one hand side, it holds some data
-  * about the current scenario being played (such as the name), on the other
-  * hand it has a kind of supervisor function. Loading and saving works in
-  * a hierarchical way with superior objects (such as the playerlist) saving
-  * their data and then telling inferior objects (such as players) to save
-  * their data as well. GameScenario is kind of the root of the saving or
-  * loading process. For more information about the saving procedure, have
-  * a look at XML_Helper.
-  */
+//! A class to hold several scenario options.
+/** 
+ * This class has two functions. On the one hand side, it holds some data
+ * about the current scenario being played (such as the name), on the other
+ * hand it has a kind of supervisor function. Loading and saving works in
+ * a hierarchical way with superior objects (such as the playerlist) saving
+ * their data and then telling inferior objects (such as players) to save
+ * their data as well. GameScenario is kind of the root of the saving or
+ * loading process. For more information about the saving procedure, have
+ * a look at XML_Helper.
+ */
 
 class GameScenario: public sigc::trackable
 {

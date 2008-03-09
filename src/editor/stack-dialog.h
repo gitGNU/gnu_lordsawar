@@ -33,6 +33,7 @@
 class Stack;
 class Army;
 
+//! Scenario editor.  Change the contents of a Stack.
 class StackDialog: public sigc::trackable
 {
  public:

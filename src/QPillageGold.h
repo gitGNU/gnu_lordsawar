@@ -15,8 +15,8 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef __QUEST_PILLAGE_GOLD_H
-#define __QUEST_PILLAGE_GOLD_H
+#ifndef QUEST_PILLAGE_GOLD_H
+#define QUEST_PILLAGE_GOLD_H
 
 #include <sigc++/trackable.h>
 

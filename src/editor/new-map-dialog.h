@@ -32,6 +32,7 @@
 #include "../Tile.h"
 #include "../game-parameters.h"
 
+//! Scenario editor.  Edit parameters to make a new map.
 class NewMapDialog
 {
  public:

@@ -42,6 +42,7 @@
 #include "../army.h"
 #include "../armyset.h"
 
+//! Armyset Editor.  Edit an Armyset.
 class ArmySetWindow: public sigc::trackable
 {
  public:

@@ -41,6 +41,7 @@
 
 #include "../Itemlist.h"
 
+//! Scenario editor.  Edits the global list of Item objects in the scenario.
 class ItemlistDialog: public sigc::trackable
 {
  public:

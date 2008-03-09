@@ -27,6 +27,7 @@
 
 class GameScenario;
 
+//! Scenario editor.  Edits the description of the scenario.
 class MapInfoDialog: public sigc::trackable
 {
  public:

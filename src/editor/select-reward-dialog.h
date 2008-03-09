@@ -33,7 +33,7 @@
 
 class Reward;
 
-// dialog for buying a production slot for a city
+//! Scenario editor.  Select a Reward from the Rewardlist.
 class SelectRewardDialog: public sigc::trackable
 {
  public:
