@@ -1336,25 +1336,71 @@ class Player: public sigc::trackable
         virtual bool stackMoveOneStep(Stack* s) = 0;
 
         // DATA
+	//! The player's colour.
+	/**
+	 * Mask portions of images are shaded in this colour.
+	 */
         SDL_Color d_color;
+
+	//! The name of the Player.
         std::string d_name;
+
+	//! The ArmySet of the Player.
         Uint32 d_armyset;
+
+	//! The number of gold pieces the Player has in the treasury.
         int d_gold;
-        bool d_dead;            // is player already dead?
+
+	//! Whether or not this player is dead.
+        bool d_dead;
+
+	//! Whether or not this player can be killed.
         bool d_immortal;
+
+	//! The kind of Player (see Player::Type).
         Uint32 d_type;
+
+	//! A unique numeric identifier identifying this Player.
         Uint32 d_id;
-        std::list<Action*> d_actions; //list of actions done by the player
-        std::list<History*> d_history; //player's history
+
+	//! A list of actions that this Player made this turn.
+        std::list<Action*> d_actions;
+
+	//! A list of "headlines" for this Player for the whole game.
+        std::list<History*> d_history;
+
+	//! A list of the Player's Stack objects.
         Stacklist* d_stacklist;
+
+	//! What the player can see on the hidden map.
         FogMap* d_fogmap;
-	std::list<Uint32> d_fight_order; //for each army in armyset, a number
-	Uint32 d_triumph[MAX_PLAYERS][5]; // 5 is max TriumphType + 1
-	Uint32 d_upkeep; //how much we paid out last turn
+
+	//! The order in which this Player's army types fight in battle.
+	/**
+	 * @note This value is related to the Player's ArmySet.
+	 */
+	std::list<Uint32> d_fight_order; 
+
+	//! A set of statistics for this Player.
+	// 5 is max TriumphType + 1
+	Uint32 d_triumph[MAX_PLAYERS][5]; 
+
+	//! How many gold pieces the Player paid out in the last turn.
+	Uint32 d_upkeep;
+
+	//! The diplomatic view that this Player has of each other Player.
 	DiplomaticState d_diplomatic_state[MAX_PLAYERS];
+
+	//! The diplomatic rank this Player has among all other Players.
 	Uint32 d_diplomatic_rank;
+
+	//! The title that goes along with the diplomatic rank.
 	std::string d_diplomatic_title;
+
+	//! The proposals that this Player is making this turn.
 	DiplomaticProposal d_diplomatic_proposal[MAX_PLAYERS];
+
+	//! A quantification of how much this Player likes every other Player.
 	Uint32 d_diplomatic_score[MAX_PLAYERS];
 
 
