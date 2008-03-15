@@ -8,9 +8,7 @@ buildings can be put on tiles that get turned into water
 replace the following images:
 	roads (x8)
 	bridges (x4)
-	cursors (x12)
 	waypoints (x2)
-	flags (x8)
 
 fight bug:
 	armies fight out of order somehow
