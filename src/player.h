@@ -110,7 +110,9 @@ class Player: public sigc::trackable
 	  //! Local computer player (Neutral).  See the AI_Dummy class.
 	  AI_DUMMY = 2, 
 	  //! Local computer player (Hard).  See the AI_Smart class.
-	  AI_SMART = 4 
+	  AI_SMART = 4,
+	  //! Remote player.  See the NetworkPlayer class.
+	  NETWORKED = 8,
 	};
 
 	//! Every player has a diplomatic state with every other player.
