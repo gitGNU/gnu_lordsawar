@@ -1,3 +1,6 @@
+2008-03-15  Ben Asselstine
+	* starting to add the beginnings of networked play.
+
 2008-02-17  Ben Asselstine
 	* fixed graphic issue wrt fog maps.
 	* preferences dialog now shows player shields.
