@@ -1,3 +1,10 @@
+2008-03-16  Ben Asselstine
+	* fixed getNewRandomReward to handle hidden ruins.
+	* added constants for the various map sizes and used them.
+	* added constants for production shield graphics.
+	* added constants for movement bonus graphics.
+	* added constants for selector graphics.
+
 2008-03-15  Ben Asselstine
 	* starting to add the beginnings of networked play.
 

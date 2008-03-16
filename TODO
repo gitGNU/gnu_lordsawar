@@ -1,6 +1,4 @@
 
-flying stack couldn't fly to a particular spot (endless loop)
-
 buildings can be put on tiles that get turned into water
 	or turned into forest
 		true or false?
@@ -30,4 +28,3 @@ fight bug:
 
 
 check to see what happens when i pass a larger attacker/defender list of stacks to fight.  it only seems to use 1!
-add random hidden ruin to CreateScenarioRandomize.cpp line 247
