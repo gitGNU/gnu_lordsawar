@@ -462,21 +462,21 @@ void GamePreferencesDialog::on_start_game_clicked()
 	g.map_path = "";
 	switch (map_size_combobox->get_active_row_number()) {
 	case MAP_SIZE_SMALL:
-	    g.map.width = 70;
-	    g.map.height = 105;
+	    g.map.width = MAP_SIZE_SMALL_WIDTH;
+	    g.map.height = MAP_SIZE_SMALL_HEIGHT;
 	    g.map.ruins = 20;
 	    break;
 	
 	case MAP_SIZE_TINY:
-	    g.map.width = 50;
-	    g.map.height = 75;
+	    g.map.width = MAP_SIZE_TINY_WIDTH;
+	    g.map.height = MAP_SIZE_TINY_HEIGHT;
 	    g.map.ruins = 15;
 	    break;
 	
 	case MAP_SIZE_NORMAL:
 	default:
-	    g.map.width = 112;
-	    g.map.height = 156;
+	    g.map.width = MAP_SIZE_NORMAL_WIDTH;
+	    g.map.height = MAP_SIZE_NORMAL_HEIGHT;
 	    g.map.ruins = 35;
 	    break;
 	}

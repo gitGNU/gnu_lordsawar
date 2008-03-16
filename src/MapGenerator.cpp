@@ -918,7 +918,6 @@ void MapGenerator::makeRoads()
 	continue;
       if (isAccessible(center->getPos(), (*it).getPos()) == false)
 	makeAccessible(center->getPos(), (*it).getPos());
-      //fixme: if one city is accessible, then all i have to do is make it to the nearest accessible city
     }
 
   Roadlist::deleteInstance();

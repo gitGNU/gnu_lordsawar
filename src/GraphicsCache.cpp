@@ -241,24 +241,24 @@ GraphicsCache::~GraphicsCache()
         SDL_FreeSurface(d_flagmask[i]);
     }
 
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < SELECTOR_FRAMES; i++)
     {
         SDL_FreeSurface(d_selector[i]);
         SDL_FreeSurface(d_selectormask[i]);
     }
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < SMALL_SELECTOR_FRAMES; i++)
     {
         SDL_FreeSurface(d_smallselector[i]);
         SDL_FreeSurface(d_smallselectormask[i]);
     }
 
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
     {
         SDL_FreeSurface(d_prodshieldpic[i]);
     }
 
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < MOVE_BONUS_TYPES; i++)
     {
         SDL_FreeSurface(d_movebonuspic[i]);
     }
@@ -2145,7 +2145,7 @@ void GraphicsCache::loadSelectors()
 
   // copy alpha values, don't use them
   SDL_SetAlpha(selpics, 0, 0);
-  for (i = 0; i < 6; i++)
+  for (i = 0; i < SELECTOR_FRAMES; i++)
     {
       SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
 					      fmt->BitsPerPixel, fmt->Rmask, 
@@ -2159,7 +2159,7 @@ void GraphicsCache::loadSelectors()
       d_selector[i] = SDL_DisplayFormatAlpha(tmp);
       SDL_FreeSurface(tmp);
 
-      d_selectormask[i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32,
+      d_selectormask[i] = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32,
 					       0xFF000000, 0xFF0000, 0xFF00, 
 					       0xFF);
       selrect.y = size;
@@ -2173,7 +2173,7 @@ void GraphicsCache::loadSelectors()
   fmt = selpics->format;
   // copy alpha values, don't use them
   SDL_SetAlpha(selpics, 0, 0);
-  for (i = 0; i < 4; i++)
+  for (i = 0; i < SMALL_SELECTOR_FRAMES; i++)
     {
       SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
 					      fmt->BitsPerPixel, fmt->Rmask, 
@@ -2210,16 +2210,18 @@ void GraphicsCache::loadProdShields()
   // copy alpha values, don't use them
   SDL_SetAlpha(prodshieldpics, 0, 0);
   SDL_PixelFormat* fmt = prodshieldpics->format;
-  int size = 10; /*FIXME hardcoded size, should be in .defs? */
-  for (i = 0; i < 7; i++)
+  int xsize = PRODUCTION_SHIELD_WIDTH;
+  int ysize = PRODUCTION_SHIELD_HEIGHT;
+  for (i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
     {
-      SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
+      SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize, 
 					      fmt->BitsPerPixel, fmt->Rmask, 
 					      fmt->Gmask, fmt->Bmask, 
 					      fmt->Amask);
-      prodshieldrect.x = i*size;
+      prodshieldrect.x = i * xsize;
       prodshieldrect.y = 0;
-      prodshieldrect.w = prodshieldrect.h = size;
+      prodshieldrect.w = xsize;
+      prodshieldrect.h = ysize;
       SDL_BlitSurface(prodshieldpics, &prodshieldrect, tmp, 0);
       d_prodshieldpic[i] = SDL_DisplayFormatAlpha(tmp);
       SDL_FreeSurface(tmp);
@@ -2237,15 +2239,15 @@ void GraphicsCache::loadMoveBonusPics()
   // copy alpha values, don't use them
   SDL_SetAlpha(movebonuspics, 0, 0);
   SDL_PixelFormat* fmt = movebonuspics->format;
-  int xsize = 32; /*FIXME hardcoded size, should be in .defs? */
-  int ysize = 10; /*FIXME hardcoded size, should be in .defs? */
-  for (i = 0; i < 6; i++)
+  int xsize = MOVE_BONUS_WIDTH;
+  int ysize = MOVE_BONUS_HEIGHT;
+  for (i = 0; i < MOVE_BONUS_TYPES; i++)
     {
       SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize, 
 					      fmt->BitsPerPixel, fmt->Rmask, 
 					      fmt->Gmask, fmt->Bmask, 
 					      fmt->Amask);
-      movebonusrect.x = i*xsize;
+      movebonusrect.x = i * xsize;
       movebonusrect.y = 0;
       movebonusrect.w = xsize;
       movebonusrect.h = ysize;

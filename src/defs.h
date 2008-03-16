@@ -52,6 +52,22 @@ const unsigned int DIPLOMACY_MIN_SCORE = 0;
 const unsigned int MAX_STACK_SIZE = 8;
 const unsigned int MAX_PRODUCTION_SLOTS_IN_A_CITY = 4;
 
+const unsigned int MAP_SIZE_TINY_WIDTH = 50;
+const unsigned int MAP_SIZE_TINY_HEIGHT = 75;
+const unsigned int MAP_SIZE_SMALL_WIDTH = 70;
+const unsigned int MAP_SIZE_SMALL_HEIGHT = 105;
+const unsigned int MAP_SIZE_NORMAL_WIDTH = 112;
+const unsigned int MAP_SIZE_NORMAL_HEIGHT = 156;
+
+const unsigned int PRODUCTION_SHIELD_WIDTH = 10;
+const unsigned int PRODUCTION_SHIELD_HEIGHT = 10;
+const unsigned int PRODUCTION_SHIELD_TYPES = 7;
+const unsigned int MOVE_BONUS_WIDTH = 32;
+const unsigned int MOVE_BONUS_HEIGHT = 10;
+const unsigned int MOVE_BONUS_TYPES = 6;
+const unsigned int SELECTOR_FRAMES = 6;
+const unsigned int SMALL_SELECTOR_FRAMES = 4;
+
 // from www.boost.org - derivation from this class makes the derived class
 // noncopyable
 class noncopyable

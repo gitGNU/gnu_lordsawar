@@ -244,7 +244,11 @@ Reward *CreateScenarioRandomize::getNewRandomReward(bool hidden_ruins)
 	}
       break;
     case 4: //Hidden Ruin
-      //fixme
+	{
+	  Ruin *r = Reward_Ruin::getRandomHiddenRuin();
+	  reward = new Reward_Ruin (r);
+	  reward->setName(reward->getDescription());
+	}
       break;
     }
       

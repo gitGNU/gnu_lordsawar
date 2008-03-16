@@ -447,7 +447,7 @@ void ArmySetWindow::on_save_armyset_activated()
     on_save_armyset_as_activated();
   else
     {
-      //fixme: reorder the armyset according to the treeview
+      //Reorder the armyset according to the treeview
       d_armyset->clear();
       for (Gtk::TreeIter i = armies_list->children().begin(),
 	   end = armies_list->children().end(); i != end; ++i) 

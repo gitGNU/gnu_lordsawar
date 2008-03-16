@@ -488,14 +488,14 @@ class GraphicsCache
         SDL_Surface* d_razedpic[MAX_PLAYERS + 1]; //+1 for neutral
         SDL_Surface* d_flagpic[MAX_STACK_SIZE];
         SDL_Surface* d_flagmask[MAX_STACK_SIZE];
-	SDL_Surface* d_selector[6];
-	SDL_Surface* d_selectormask[6];
-	SDL_Surface* d_smallselector[4];
-	SDL_Surface* d_smallselectormask[4];
-        SDL_Surface* d_prodshieldpic[7];
+	SDL_Surface* d_selector[SELECTOR_FRAMES];
+	SDL_Surface* d_selectormask[SELECTOR_FRAMES];
+	SDL_Surface* d_smallselector[SMALL_SELECTOR_FRAMES];
+	SDL_Surface* d_smallselectormask[SMALL_SELECTOR_FRAMES];
+        SDL_Surface* d_prodshieldpic[PRODUCTION_SHIELD_TYPES];
 	SDL_Surface* d_smallruinedcity;
 	SDL_Surface* d_smallhero;
-        SDL_Surface* d_movebonuspic[6];
+        SDL_Surface* d_movebonuspic[MOVE_BONUS_TYPES];
 	SDL_Surface* d_port;
 	SDL_Surface* d_explosion;
 	SDL_Surface* d_signpost;

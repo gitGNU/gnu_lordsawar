@@ -755,7 +755,6 @@ void Game::invading_city(City* city)
 	city_visited.emit(city);
     }
 
-  //fixme: check for end of game here
   redraw();
   update_stack_info();
   update_sidebar_stats();

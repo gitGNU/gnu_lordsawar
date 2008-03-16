@@ -175,16 +175,19 @@ void OverviewMap::draw_tile_pixel(Maptile *t, int i, int j)
         break;
     }
 }
+
 void OverviewMap::resize()
 {
-  /* fixme: these values must align with gui/game-preferences.cpp */
-  if (GameMap::getWidth() <= 50 && GameMap::getWidth() <= 75)
+  if (GameMap::getWidth() <= MAP_SIZE_TINY_WIDTH && 
+      GameMap::getHeight() <= MAP_SIZE_TINY_HEIGHT)
     resize(GameMap::get_dim() * 4);
-  else if (GameMap::getWidth() <= 70 && GameMap::getWidth() <= 105)
+  else if (GameMap::getWidth() <= MAP_SIZE_SMALL_WIDTH && 
+	   GameMap::getHeight() <= MAP_SIZE_SMALL_HEIGHT)
     resize(GameMap::get_dim() * 3);
   else
     resize(GameMap::get_dim() * 2);
 }
+
 void OverviewMap::resize(Vector<int> max_dimensions)
 {
     if (surface)

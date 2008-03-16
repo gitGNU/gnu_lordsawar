@@ -165,19 +165,19 @@ void NewMapDialog::run()
     {
 	switch (map_size_combobox->get_active_row_number()) {
 	case MAP_SIZE_SMALL:
-	    map.width = 70;
-	    map.height = 105;
+	    map.width = MAP_SIZE_SMALL_WIDTH;
+	    map.height = MAP_SIZE_SMALL_HEIGHT;
 	    break;
 	
 	case MAP_SIZE_TINY:
-	    map.width = 50;
-	    map.height = 75;
+	    map.width = MAP_SIZE_TINY_WIDTH;
+	    map.height = MAP_SIZE_TINY_HEIGHT;
 	    break;
 	
 	case MAP_SIZE_NORMAL:
 	default:
-	    map.width = 112;
-	    map.height = 156;
+	    map.width = MAP_SIZE_NORMAL_WIDTH;
+	    map.height = MAP_SIZE_NORMAL_HEIGHT;
 	    break;
 	}
 	

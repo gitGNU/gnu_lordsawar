@@ -603,7 +603,6 @@ void GameBigMap::after_draw()
 	  r2.y = pos.y + offset;
 	  r2.w = r2.h = wpsize;
 
-	  //fixme: check to see if we can move here
 	  canMoveThere = (pathcount < stack->getMovesExhaustedAtPoint());
 	  if (canMoveThere)
 	    r1.x = 0;
