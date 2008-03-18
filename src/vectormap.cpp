@@ -154,7 +154,7 @@ void VectorMap::draw_lines (std::list<City*> srcs, std::list<City*> dests)
 	continue;
       if ((*it)->isFogged() == true)
         continue;
-      City *c = cl->getObjectAt((*it)->getVectoring());
+      City *c = cl->getNearestObjectBefore((*it)->getVectoring(), 2);
       if (c)
         end = c->getPos();
       else
