@@ -895,13 +895,21 @@ void GameWindow::on_save_game_as_activated()
 
 void GameWindow::on_quit_activated()
 {
-  // FIXME: ask
-  bool end = true;
+  std::auto_ptr<Gtk::Dialog> dialog;
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/game-quit-dialog.glade");
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
 
-  if (end) {
-    stop_game();
-    game_ended.emit();
-  }
+  int response = dialog->run();
+
+  if (response == 0) //end the game
+    {
+      stop_game();
+      game_ended.emit();
+    }
 }
 
 void GameWindow::on_quests_activated()

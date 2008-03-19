@@ -55,6 +55,7 @@ triumphs-dialog.glade \
 diplomacy-report-dialog.glade \
 diplomacy-dialog.glade \
 treachery-dialog.glade \
-stack-info-dialog.glade
+stack-info-dialog.glade \
+game-quit-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)
