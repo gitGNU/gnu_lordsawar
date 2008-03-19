@@ -93,9 +93,28 @@ std::string LoadScenarioDialog::get_scenario_filename()
 void LoadScenarioDialog::add_scenario(std::string filename)
 {
     Gtk::TreeIter i = scenarios_list->append();
-    // FIXME: crude name
-    (*i)[scenarios_columns.name] = filename;
     (*i)[scenarios_columns.filename] = filename;
+    selected_filename = Configuration::s_dataPath + "/map/"
+      + std::string((*i)[scenarios_columns.filename]);
+
+    XML_Helper helper(selected_filename, std::ios::in, 
+		      Configuration::s_zipfiles);
+
+    helper.registerTag ("scenario", sigc::mem_fun
+			(this, &LoadScenarioDialog::scan_scenario_name));
+
+    if (!helper.parse())
+      {
+	std::cerr << "Error: Could not parse " << selected_filename << std::endl;
+	(*i)[scenarios_columns.name] = filename;
+	    
+	return;
+      }
+    else
+	(*i)[scenarios_columns.name] = loaded_scenario_name;
+
+	
+    helper.close();
 }
 
 
@@ -110,8 +129,9 @@ void LoadScenarioDialog::on_selection_changed()
 
 	XML_Helper helper(selected_filename, std::ios::in, Configuration::s_zipfiles);
 
-	helper.registerTag("scenario",
-			   sigc::mem_fun(this, &LoadScenarioDialog::scan_scenario));
+	helper.registerTag
+	  ("scenario", sigc::mem_fun
+	   (this, &LoadScenarioDialog::scan_scenario_details));
 
 	if (!helper.parse())
 	{
@@ -128,7 +148,8 @@ void LoadScenarioDialog::on_selection_changed()
 	load_button->set_sensitive(false);
 }
 
-bool LoadScenarioDialog::scan_scenario(std::string tag, XML_Helper* helper)
+bool LoadScenarioDialog::scan_scenario_details(std::string tag, 
+					       XML_Helper* helper)
 {
     if (tag == "scenario")
     {
@@ -146,6 +167,27 @@ bool LoadScenarioDialog::scan_scenario(std::string tag, XML_Helper* helper)
 
 	name_label->set_text(name);
 	description_label->set_text(comment);
+    }
+
+    return true;
+}
+
+bool LoadScenarioDialog::scan_scenario_name(std::string tag, XML_Helper* helper)
+{
+    if (tag == "scenario")
+    {
+        if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
+        {
+            std::cerr << "scenario has wrong version, we want "
+		      << LORDSAWAR_SAVEGAME_VERSION <<",\n"
+		      << "scenario offers " << helper->getVersion() <<".\n";
+            return false;
+        }
+
+	std::string name;
+        helper->getData(name, "name");
+
+	loaded_scenario_name = name;
     }
 
     return true;

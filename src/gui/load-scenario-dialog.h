@@ -64,8 +64,11 @@ class LoadScenarioDialog: public sigc::trackable
     
     std::string selected_filename;
     
+    std::string loaded_scenario_name;
+
     void on_selection_changed();
-    bool scan_scenario(std::string tag, XML_Helper* helper);
+    bool scan_scenario_details(std::string tag, XML_Helper* helper);
+    bool scan_scenario_name(std::string tag, XML_Helper* helper);
     void add_scenario(std::string filename);
 };
 
