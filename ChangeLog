@@ -1,3 +1,6 @@
+2008-03-19  Ben Asselstine
+	* improved depiction of quest targets on the quest map.
+
 2008-03-16  Ben Asselstine
 	* fixed getNewRandomReward to handle hidden ruins.
 	* added constants for the various map sizes and used them.
