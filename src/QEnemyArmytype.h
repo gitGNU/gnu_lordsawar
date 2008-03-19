@@ -29,6 +29,7 @@
  * A hero that receives this quest has to kill a single instance of a 
  * particular king of Army object (e.g. Ghosts).  The Quest is completed when 
  * this happens, and does not expire.
+ * This quest presumes that all players have the same Armyset.
  */
 class QuestEnemyArmytype : public Quest, public sigc::trackable
 {

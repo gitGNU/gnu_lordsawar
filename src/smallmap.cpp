@@ -62,28 +62,33 @@ void SmallMap::draw_selection()
     draw_rect(surface, pos.x+1, pos.y+1, pos.x + w-1, pos.y + h-1, raw);
 }
 
-void SmallMap::center_view(Vector<int> p, bool slide, bool from_tile)
+void SmallMap::center_view_on_tile(Vector<int> pos, bool slide)
 {
-  if (from_tile == false)
-    {
-      p.x = int(round(p.x / pixels_per_tile));
-      p.y = int(round(p.y / pixels_per_tile));
-
-      p -= view.dim / 2;
-
-      p = clip(Vector<int>(0, 0), p, GameMap::get_dim() - view.dim);
-    }
-  else
-      
-    p = clip(Vector<int>(0,0), p - view.dim / 2, GameMap::get_dim() - view.dim);
+  pos = clip(Vector<int>(0,0), pos - view.dim / calculateResizeFactor(), 
+	     GameMap::get_dim() - view.dim);
 
   if (slide)
-    slide_view(Rectangle(p.x, p.y, view.w, view.h));
+    slide_view(Rectangle(pos.x, pos.y, view.w, view.h));
   else
-    set_view(Rectangle(p.x, p.y, view.w, view.h));
+    set_view(Rectangle(pos.x, pos.y, view.w, view.h));
 	  
-  if (Playerlist::isFinished()) //window closed while computer player moves
-      return;
+  view_changed.emit(view);
+}
+
+void SmallMap::center_view_on_pixel(Vector<int> pos, bool slide)
+{
+  pos.x = int(round(pos.x / pixels_per_tile));
+  pos.y = int(round(pos.y / pixels_per_tile));
+
+  pos -= view.dim / calculateResizeFactor();
+
+  pos = clip(Vector<int>(0, 0), pos, GameMap::get_dim() - view.dim);
+
+  if (slide)
+    slide_view(Rectangle(pos.x, pos.y, view.w, view.h));
+  else
+    set_view(Rectangle(pos.x, pos.y, view.w, view.h));
+	  
   view_changed.emit(view);
 }
 
@@ -107,7 +112,7 @@ void SmallMap::mouse_button_event(MouseButtonEvent e)
   if ((e.button == MouseButtonEvent::LEFT_BUTTON ||
        e.button == MouseButtonEvent::RIGHT_BUTTON)
       && e.state == MouseButtonEvent::PRESSED)
-    center_view(e.pos, true, false);
+    center_view_on_pixel(e.pos, true);
 }
 
 void SmallMap::mouse_motion_event(MouseMotionEvent e)
@@ -117,8 +122,9 @@ void SmallMap::mouse_motion_event(MouseMotionEvent e)
 
   if (e.pressed[MouseMotionEvent::LEFT_BUTTON] ||
       e.pressed[MouseMotionEvent::RIGHT_BUTTON])
-    center_view(e.pos, false, false);
+    center_view_on_pixel(e.pos, false);
 }
+
 int slide (int x, int y)
 {
   int skip = 2;

@@ -79,13 +79,12 @@ bool Armyset::instantiatePixmap(Army *a)
     // load the army picture. This is done here to avoid confusion
     // since the armies are used as prototypes as well as actual units in the
     // game.
-    // The army image consists of two halves. On the left is the army image, on the
-    // right the mask.
+    // The army image consists of two halves. On the left is the army image, 
+    // on the right the mask.
     SDL_Surface* pic = File::getArmyPicture(d_dir, a->getImageName() + ".png");
     if (!pic)
     {
         std::cerr <<"Could not load army image: " << s <<std::endl;
-	// FIXME: more gentle way of reporting error than just exiting?
         exit(-1);
     }
 

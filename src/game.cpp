@@ -514,7 +514,7 @@ void Game::stackUpdate(Stack* s)
 
   //FIXME: if player is not to be observed, bail now
   if (s)
-    smallmap->center_view(s->getPos(), true);
+    smallmap->center_view_on_tile(s->getPos(), true);
 
   redraw();
 
@@ -1324,8 +1324,8 @@ void Game::center_view_on_city()
       if (i->getOwner() == p && i->isCapital() &&
 	  i->getCapitalOwner() == p)
 	{
-	  smallmap->center_view(i->getPos(), 
-				!GameScenario::s_hidden_map);
+	  smallmap->center_view_on_tile(i->getPos(), 
+					!GameScenario::s_hidden_map);
 	  return;
 	}
     }
@@ -1338,8 +1338,8 @@ void Game::center_view_on_city()
 	{
 	  if (Playerlist::isFinished())
 	    return;
-	  smallmap->center_view(i->getPos(), 
-				!GameScenario::s_hidden_map);
+	  smallmap->center_view_on_tile(i->getPos(), 
+					!GameScenario::s_hidden_map);
 	  break;
 	}
     }
@@ -1350,7 +1350,7 @@ void Game::select_active_stack()
       //GameScenario::s_hidden_map == true)
     //return;
   Player *p = Playerlist::getInstance()->getActiveplayer();
-  smallmap->center_view(p->getActivestack()->getPos(), true);
+  smallmap->center_view_on_tile (p->getActivestack()->getPos(), true);
   bigmap->select_active_stack();
 }
 void Game::unselect_active_stack()

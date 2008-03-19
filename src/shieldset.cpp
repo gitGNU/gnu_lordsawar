@@ -62,13 +62,12 @@ bool Shieldset::instantiatePixmap(Shield *sh)
 {
     std::string s;
 
-    // The shield image consists of two halves. On the left is the shield image, on the
-    // right the mask.
+    // The shield image consists of two halves. On the left is the shield 
+    // image, on the right the mask.
     SDL_Surface* pic = File::getShieldPicture(d_dir, sh->getImageName() + ".png");
     if (!pic)
     {
         std::cerr <<"Could not load shield image: " << s <<std::endl;
-	// FIXME: more gentle way of reporting error than just exiting?
         exit(-1);
     }
 

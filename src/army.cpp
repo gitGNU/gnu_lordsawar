@@ -509,7 +509,12 @@ void  Army::printAllDebugInfo() const
     std::cerr << "battle number = "     << d_battles_number    << std::endl;
     std::cerr << "has hit = "           << d_number_hashit     << std::endl;
     std::cerr << "has been hit = "      << d_number_hasbeenhit << std::endl;
-//XXX FIXME: show the visited temple info
+    std::stringstream temples;
+    std::list<unsigned int>::const_iterator tit = d_visitedTemples.begin();
+    std::list<unsigned int>::const_iterator tend = d_visitedTemples.end();
+    for(;tit != tend;++tit)
+        temples << (*tit) << " ";
+    std::cerr << "visited temples with ids = " << temples << std::endl;
 }
 
 

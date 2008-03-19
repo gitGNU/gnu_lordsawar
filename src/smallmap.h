@@ -93,24 +93,23 @@ public:
     /**
      * @param pos        The position to move the little white box to.  The
      *                   referenced tile is in the center of the little white
-     *                   box.  If the from_value parameter is set to true,
-     *                   this value represents the pixel position, instead of
-     *                   the tile position.
+     *                   box.
      * @param slide      Whether or not to animate the movement of the little
      *                   white box from it's current location to it's new
      *                   given location.
-     * @param from_tile  When this is set to false, it changes the meaning of
-     *                   the pos parameter to mean the position on the small
-     *                   map graphic in pixels.  When it is set to true, the
-     *                   meaning of the pos parameter is a position of a 
-     *                   tile on the game map.
      */
-    /*
-     * FIXME: separate these into two methods somehow.
-     * center_view_on_pixel
-     * center_view_on_tile
+    void center_view_on_tile(Vector<int> pos, bool slide);
+
+    //! Center the view on the given pixel of the map graphic.
+    /**
+     * @param pos        The position to move the little white box to.  The
+     *                   referenced pixel is in the center of the little white
+     *                   box. 
+     * @param slide      Whether or not to animate the movement of the little
+     *                   white box from it's current location to it's new
+     *                   given location.
      */
-    void center_view(Vector<int> pos, bool slide, bool from_tile = true);
+    void center_view_on_pixel(Vector<int> pos, bool slide);
 
     //! Make the map go black.
     void blank();

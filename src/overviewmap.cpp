@@ -176,16 +176,22 @@ void OverviewMap::draw_tile_pixel(Maptile *t, int i, int j)
     }
 }
 
-void OverviewMap::resize()
+int OverviewMap::calculateResizeFactor()
 {
   if (GameMap::getWidth() <= MAP_SIZE_TINY_WIDTH && 
       GameMap::getHeight() <= MAP_SIZE_TINY_HEIGHT)
-    resize(GameMap::get_dim() * 4);
+    return 4;
   else if (GameMap::getWidth() <= MAP_SIZE_SMALL_WIDTH && 
 	   GameMap::getHeight() <= MAP_SIZE_SMALL_HEIGHT)
-    resize(GameMap::get_dim() * 3);
+    return 3;
   else
-    resize(GameMap::get_dim() * 2);
+    return 2;
+}
+
+void OverviewMap::resize()
+{
+  int factor = calculateResizeFactor();
+  resize(GameMap::get_dim() * factor);
 }
 
 void OverviewMap::resize(Vector<int> max_dimensions)

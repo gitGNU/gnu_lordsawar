@@ -450,8 +450,6 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
 	    city_bonus = 2;
 	}
 
-      // FIXME: implement towers.  they get a city bonus
-
       // does the attacker cancel our city bonus?
       for (fit = enemy.begin(); fit != enemy.end(); fit++)
 	{

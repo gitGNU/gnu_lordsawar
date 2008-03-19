@@ -107,7 +107,7 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 
 	//! Set the unique identifier for this armyset.
 	/**
-	 * @note This method is only used in the armyset editor.
+	 * @note This method is only used in the armyset editor.  
 	 */
         void setId(Uint32 id) {d_id = id;}
 
@@ -157,7 +157,8 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 	/**
 	 * Scan the Army prototype objects in this Armyset and return it.
 	 *
-	 * @note This is only used for the editor.
+	 * @note This is only used for the editor.  Most callers should use 
+	 * Armysetlist::getArmy instead.
 	 *
 	 * @param army_type  The army type id of the Army prototype object
 	 *                   to search for in this Armyset.
@@ -165,7 +166,6 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 	 * @return The Army with the given army type id, or NULL if none
 	 *         could be found.
 	 */
-	//FIXME: try to use Armysetlist::getArmyType instead.
 	Army * lookupArmyByType(Uint32 army_type);
     private:
 

@@ -65,15 +65,52 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
   start = mapToSurface(start);
   end = mapToSurface(end);
 
+
   start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
   end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
-
   Uint32 raw = SDL_MapRGBA(surface->format,252, 160, 0, 255);
+  int xsize = 8;
+  int ysize = 8;
+  //draw an 8 by 8 box, with a smaller box inside of it
+  draw_rect(surface, end.x - (xsize / 2), end.y - (ysize / 2), 
+	    end.x + ((xsize / 2) - 1), end.y + ((ysize / 2) - 1), raw);
+  xsize = 4;
+  ysize = 4;
+  draw_filled_rect(surface, end.x - (xsize / 2), end.y - (ysize / 2), 
+		   end.x + (xsize / 2), end.y + (ysize / 2), raw);
+
+  xsize = 8;
+  ysize = 8;
+  //which corner do we connect the line to?
+  if (start.x >= end.x)
+    {
+      //westerly
+      if (start.y >= end.y)
+	//northerly
+	//line is heading northwesterly.  
+	//connect to the southeastern corner of the box.
+	end += Vector<int>((xsize / 2) - 1, (ysize / 2) - 1);
+      else
+	//southerly
+	//line is heading southwesterly.  
+	//connect to the northeastern corner of the box.
+	end += Vector<int>((xsize / 2) - 1, -(ysize / 2));
+    }
+  else
+    {
+      //easterly
+      if (start.y >= end.y)
+	//northerly
+	//line is heading northeasterly.
+	//connect to the southwestern corner of the box.
+	end += Vector<int>(-(xsize / 2), (ysize / 2) - 1);
+      else
+	//southerly
+	//line is heading southeasterly.
+	//connect to the northwestern corner of the box.
+	end += Vector<int>(-(xsize / 2), -(ysize / 2));
+    }
   draw_line(surface, start.x, start.y, end.x, end.y, raw);
-  //an 8 by 8 box, with a 6x6 box inside of it
-  draw_rect(surface, end.x - 4, end.y - 4, end.x + 3, end.y + 3, raw);
-  draw_filled_rect(surface, end.x - 2, end.y - 2, end.x + 2, end.y + 2, raw);
-  //FIXME: end should connect to the correct corner!
 }
 void QuestMap::after_draw()
 {

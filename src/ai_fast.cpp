@@ -366,9 +366,6 @@ void AI_Fast::computerTurn()
 		City *friendly_city = cl->getNearestFriendlyCity(s->getPos());
 		s->getPath()->calculate(s, friendly_city->getPos());
 		stackMove(s);
-		//FIXME: again, we should be able to reach any city,
-		//but we can't reach this one.  just go to the nearest city
-		//instead.  this is an error in map generation
 	      }
 
             if (!d_stacklist->getActivestack())

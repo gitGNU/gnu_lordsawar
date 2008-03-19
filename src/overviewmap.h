@@ -173,6 +173,8 @@ class OverviewMap
     //! Redraw the specified region.
     void draw_terrain_pixels(Rectangle r);
 
+    int calculateResizeFactor();
+
     //! The surface containing the drawn map.
     SDL_Surface* surface;
 };

@@ -101,7 +101,6 @@ bool QuestEnemyArmytype::save(XML_Helper *helper) const
 std::string QuestEnemyArmytype::getProgress() const
 {
     Armysetlist *al = Armysetlist::getInstance();
-    //FIXME: we're picking a type that *we* own, not what our enemy owns
     Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
     const Army *a = al->getArmy(set, d_type_to_kill);
     char buffer[101]; buffer[100]='\0';
