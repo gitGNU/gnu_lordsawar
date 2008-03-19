@@ -199,7 +199,6 @@ void HeroDialog::fill_in_info_labels()
     Uint32 bonus = 0;
     Glib::ustring s;
     // fill in first column
-    // FIXME: put in real numbers
     std::list<Item*> backpack = hero->getBackpack();
     for (std::list<Item*>::iterator i = backpack.begin(), end = backpack.end();
 	i != end; ++i)

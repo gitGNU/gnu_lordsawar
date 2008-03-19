@@ -269,7 +269,7 @@ class GameWindow: public sigc::trackable
     void hide_map_tip();
     void update_diplomacy_button (bool proposals_present);
 
-    void setup_game(std::string file_path);
+    bool setup_game(std::string file_path);
     void setup_signals();
     void stop_game();
     std::list<sigc::connection> connections;

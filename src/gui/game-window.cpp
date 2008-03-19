@@ -434,7 +434,9 @@ void GameWindow::new_game(GameParameters g)
 	g.map_path = path;
     }
 
-    setup_game(g.map_path);
+    bool success = setup_game(g.map_path);
+    if (!success)
+      return;
     setup_signals();
     game->startGame();
     //FIXME: we don't get here until the game ends.
@@ -444,7 +446,9 @@ void GameWindow::new_game(GameParameters g)
 void GameWindow::load_game(std::string file_path)
 {
     current_save_filename = file_path;
-    setup_game(file_path);
+    bool success = setup_game(file_path);
+    if (!success)
+      return;
     setup_signals();
     game->loadGame();
     //FIXME: we don't get here until the game ends.
@@ -713,7 +717,7 @@ void GameWindow::update_diplomacy_button (bool proposals_present)
     diplomacy_button->property_image() = new Gtk::Image(d_button_images[0]);
 }
 
-void GameWindow::setup_game(std::string file_path)
+bool GameWindow::setup_game(std::string file_path)
 {
   stop_game();
 
@@ -721,8 +725,11 @@ void GameWindow::setup_game(std::string file_path)
   GameScenario* game_scenario = new GameScenario(file_path, broken);
 
   if (broken)
-    // FIXME: we should not die here, but simply return to the splash screen
-    show_fatal_error(_("Map was broken when re-reading. Exiting..."));
+    {
+      on_message_requested("Corrupted saved game file.");
+      game_ended.emit();
+      return false;
+    }
 
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();
@@ -730,6 +737,7 @@ void GameWindow::setup_game(std::string file_path)
   game.reset(new Game(game_scenario));
 
   show_shield_turn();
+  return true;
 }
 
 bool GameWindow::on_delete_event(GdkEventAny *e)
