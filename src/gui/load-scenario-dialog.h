@@ -49,6 +49,8 @@ class LoadScenarioDialog: public sigc::trackable
     Gtk::Button *load_button;
     Gtk::Label *name_label;
     Gtk::Label *description_label;
+    Gtk::Label *num_players_label;
+    Gtk::Label *num_cities_label;
     Gtk::TreeView *scenarios_treeview;
 
     class ScenariosColumns: public Gtk::TreeModelColumnRecord {
@@ -65,6 +67,8 @@ class LoadScenarioDialog: public sigc::trackable
     std::string selected_filename;
     
     std::string loaded_scenario_name;
+    int loaded_scenario_player_count;
+    int loaded_scenario_city_count;
 
     void on_selection_changed();
     bool scan_scenario_details(std::string tag, XML_Helper* helper);

@@ -46,6 +46,8 @@ LoadScenarioDialog::LoadScenarioDialog()
     xml->get_widget("name_label", name_label);
     xml->get_widget("description_label", description_label);
     xml->get_widget("load_button", load_button);
+    xml->get_widget("num_players_label", num_players_label);
+    xml->get_widget("num_cities_label", num_cities_label);
 
     scenarios_list = Gtk::ListStore::create(scenarios_columns);
     xml->get_widget("treeview", scenarios_treeview);
@@ -129,8 +131,16 @@ void LoadScenarioDialog::on_selection_changed()
 
 	XML_Helper helper(selected_filename, std::ios::in, Configuration::s_zipfiles);
 
+	loaded_scenario_player_count = 0;
+	loaded_scenario_city_count = 0;
 	helper.registerTag
 	  ("scenario", sigc::mem_fun
+	   (this, &LoadScenarioDialog::scan_scenario_details));
+	helper.registerTag
+	  ("player", sigc::mem_fun
+	   (this, &LoadScenarioDialog::scan_scenario_details));
+	helper.registerTag
+	  ("city", sigc::mem_fun
 	   (this, &LoadScenarioDialog::scan_scenario_details));
 
 	if (!helper.parse())
@@ -139,10 +149,15 @@ void LoadScenarioDialog::on_selection_changed()
 	    load_button->set_sensitive(false);
 	    return;
 	}
-	else
-	    load_button->set_sensitive(true);
 	
 	helper.close();
+	{
+	    load_button->set_sensitive(true);
+	  num_players_label->set_text
+	    (String::ucompose("%1", loaded_scenario_player_count - 1));
+	  num_cities_label->set_text
+	    (String::ucompose("%1", loaded_scenario_city_count));
+	}
     }
     else
 	load_button->set_sensitive(false);
@@ -167,6 +182,14 @@ bool LoadScenarioDialog::scan_scenario_details(std::string tag,
 
 	name_label->set_text(name);
 	description_label->set_text(comment);
+    }
+    else if (tag == "player")
+    {
+      loaded_scenario_player_count++;
+    }
+    else if (tag == "city")
+    {
+      loaded_scenario_city_count++;
     }
 
     return true;
