@@ -2,6 +2,7 @@
 	* improved depiction of quest targets on the quest map.
 	* load scenario dialog now shows scenario name instead of filename.
 	* added an "are you sure" prompt when quitting the game.
+	* fixed reporting and handling of broken saved-game files.
 
 2008-03-16  Ben Asselstine
 	* fixed getNewRandomReward to handle hidden ruins.
