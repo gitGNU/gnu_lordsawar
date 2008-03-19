@@ -1,5 +1,6 @@
 2008-03-19  Ben Asselstine
 	* improved depiction of quest targets on the quest map.
+	* load scenario dialog now shows scenario name instead of filename.
 
 2008-03-16  Ben Asselstine
 	* fixed getNewRandomReward to handle hidden ruins.
