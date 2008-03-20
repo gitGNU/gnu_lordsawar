@@ -4,6 +4,7 @@
 	* added number of players and cities to the load scenario dialog.
 	* added an "are you sure" prompt when quitting the game.
 	* fixed reporting and handling of broken saved-game files.
+	* added ticks and labels to the bar graph.
 
 2008-03-16  Ben Asselstine
 	* fixed getNewRandomReward to handle hidden ruins.
