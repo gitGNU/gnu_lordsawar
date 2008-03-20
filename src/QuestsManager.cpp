@@ -137,6 +137,43 @@ Quest* QuestsManager::createNewQuest(Uint32 heroId, bool razing_possible)
     return quest;
 }
 //========================================================================
+Quest* QuestsManager::createNewQuest(Uint32 hero, Uint32 questtype,
+                                     Uint32 data, Uint32 victim_player)
+{
+  Quest *quest = NULL;
+  switch (Quest::Type(questtype))
+  {
+  case Quest::KILLHERO:
+    quest = new QuestKillHero(*this, hero, data);
+    break;
+  case Quest::KILLARMIES:
+    quest = new QuestEnemyArmies(*this, hero, data, victim_player);
+    break;
+  case Quest::CITYSACK:
+    quest = new QuestCitySack(*this, hero, data);
+    break;
+  case Quest::CITYRAZE:
+    quest = new QuestCityRaze(*this, hero, data);
+    break;
+  case Quest::CITYOCCUPY:
+    quest = new QuestCityOccupy(*this, hero, data);
+    break;
+  case Quest::KILLARMYTYPE:
+    quest = new QuestEnemyArmytype(*this, hero, data);
+    break;
+  case Quest::PILLAGEGOLD:
+    quest = new QuestPillageGold(*this, hero, data);
+    break;
+  }
+    
+  if (quest)
+  {
+    d_quests[hero] = quest;
+  }
+  
+  return quest;
+}
+//========================================================================
 void QuestsManager::questCompleted(Uint32 heroId)
 {
     Quest *quest = d_quests[heroId];

@@ -147,8 +147,8 @@ Reward_Allies::Reward_Allies(XML_Helper* helper)
 }
 
 Reward_Allies::Reward_Allies (const Reward_Allies& orig)
-	:Reward(orig), d_army_type(orig.d_army_type), 
-	d_army_set(orig.d_army_set), d_army(orig.d_army), d_count(orig.d_count)
+	:Reward(orig), d_army(orig.d_army), d_army_type(orig.d_army_type), 
+	d_army_set(orig.d_army_set), d_count(orig.d_count)
 {
 }
 
@@ -184,11 +184,10 @@ const Army* Reward_Allies::randomArmyAlly()
       if (a->getAwardable())
         allytypes.push_back(a);
     }
-  if (!allytypes.empty())
-    allytype = rand() % allytypes.size();
-  else 
+  if (allytypes.empty())
     return NULL;
 
+  allytype = rand() % allytypes.size();
   return allytypes[allytype];
 }
 
@@ -261,7 +260,9 @@ bool Reward_Item::save(XML_Helper* helper) const
 Item *Reward_Item::getRandomItem()
 {
   Itemlist *il = Itemlist::getInstance();
-  Item *i = (*il)[rand() % il->size()];
+  Itemlist::iterator it = il->begin();
+  std::advance(it, rand() % il->size());
+  Item *i = it->second;
   return new Item(*i);
 }
 

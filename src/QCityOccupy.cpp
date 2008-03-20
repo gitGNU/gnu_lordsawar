@@ -43,7 +43,7 @@ QuestCityOccupy::QuestCityOccupy (QuestsManager& mgr, Uint32 hero)
 
     d_city = c->getId();
     d_targets.push_back(c->getPos());
-    debug("city_id = " << d_ruin);
+    debug("city_id = " << d_city);
     initDescription();
 }
 //=======================================================================
@@ -51,6 +51,14 @@ QuestCityOccupy::QuestCityOccupy (QuestsManager& q_mgr, XML_Helper* helper)
      : Quest(q_mgr, helper)
 {
     helper->getData(d_city, "city");
+    d_targets.push_back(getCity()->getPos());
+    initDescription();
+}
+//=======================================================================
+QuestCityOccupy::QuestCityOccupy (QuestsManager& mgr, Uint32 hero, Uint32 target) 
+    : Quest(mgr, hero, Quest::CITYOCCUPY)
+{
+    d_city = target;
     d_targets.push_back(getCity()->getPos());
     initDescription();
 }

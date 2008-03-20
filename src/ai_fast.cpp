@@ -82,10 +82,10 @@ bool AI_Fast::startTurn()
     debug("being in " <<(d_maniac?"maniac":"normal") <<" mode")
     debug((d_join?"":"not ") <<"joining armies")
 
-    RealPlayer::startTurn();
-
     d_analysis = new AI_Analysis(this);
     d_diplomacy = new AI_Diplomacy(this);
+
+    d_diplomacy->considerCuspOfWar();
     
     // this is a recursively-programmed quite staightforward AI,we just call:
     computerTurn();
@@ -100,26 +100,22 @@ bool AI_Fast::startTurn()
     return true;
 }
 
-bool AI_Fast::invadeCity(City* c)
+void AI_Fast::invadeCity(City* c)
 {
-    debug("Invaded city " <<c->getName())
+  debug("Invaded city " <<c->getName());
 
-    // There are two modes: maniac razes all cities, non-maniac just
-    // occupies them
-    if (d_maniac)
-    {
-        debug ("Razing it")
-        bool retval = cityRaze(c);
-        sinvadingCity.emit(c);
-        return retval;
-    }
-
-    debug("Occupying it")
-    bool retval = cityOccupy(c);
-    sinvadingCity.emit(c);
-    soccupyingCity.emit(c, getActivestack());
-
-    return retval;
+  // There are two modes: maniac razes all cities, non-maniac just
+  // occupies them
+  if (d_maniac)
+  {
+    debug ("Razing it");
+    cityRaze(c);
+  }
+  else
+  {
+    debug("Occupying it");
+    cityOccupy(c);
+  }
 }
 
 bool AI_Fast::recruitHero(Hero* hero, City *city, int cost)
@@ -133,23 +129,18 @@ bool AI_Fast::recruitHero(Hero* hero, City *city, int cost)
     return true;
 }
 
-bool AI_Fast::levelArmy(Army* a)
+void AI_Fast::levelArmy(Army* a)
 {
-    if (!a->canGainLevel())
-        return false;
- 
     debug("Army raised a level, id = " <<a->getId())
     
     //advancing a level
     // increase the strength attack (uninnovative, but enough here)
     Army::Stat stat = Army::STRENGTH;
-    a->gainLevel(stat);
+    doLevelArmy(a, stat);
 
     Action_Level* item = new Action_Level();
     item->fillData(a, stat);
-    d_actions.push_back(item);
-
-    return true;
+    addAction(item);
 }
 
 void AI_Fast::computerTurn()

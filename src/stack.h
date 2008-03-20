@@ -103,7 +103,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         void decrementMoves(Uint32 moves);
 
         //! Sets the stack's position to the next point in it's Path.
-        bool moveOneStep();
+        void moveOneStep();
+
+        void moveToDest(Vector<int> dest);
 
 	/**
 	 * Adds one to the strength of each Army unit in the stack.
@@ -171,6 +173,8 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         //! Get the first ungrouped Army unit in the Stack.
         Army* getFirstUngroupedArmy() const;
 
+        Army* getArmyById(Uint32 id) const;
+        
         //! True if the stack contains a Hero unit.  Otherwise, false.
         bool hasHero() const;
 
@@ -298,29 +302,11 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Comparator function to assist in sorting the armies in the stack.
 	static bool armyCompareFightOrder (const Army *left, const Army *right);
 
-	//! Return the number of points the stack can move along it's path.
-	Uint32 getMovesExhaustedAtPoint() {return d_moves_exhausted_at_point;}
-
-	/**
-	 * Set the point at which the stack can't move along it's path.
-	 * If the first point in the stack's path cannot be moved to,
-	 * this method should return 0.  If the second point can't be moved 
-	 * to, then this method should return 1, etc.
-	 * 
-	 * The purpose of this method is to assist in drawing the waypoint
-	 * graphics.
-	 *
-	 * @param index   The index of the point in the stack's path that
-	 *                cannot be moved to.
-	 */
-	//! Set the number of points the stack can move along it's path.
-	void setMovesExhaustedAtPoint(Uint32 index) 
-	  {d_moves_exhausted_at_point = index;}
-
 	//! Emitted when a stack dies.
         sigc::signal<void, Stack*> sdying;
 
     private:    
+
         //! Callback for loading the stack
         bool load(std::string tag, XML_Helper* helper);
     
@@ -342,9 +328,6 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	 */
 	//! Whether or not this stack is in the midst of being deleted.
         bool d_deleting;
-
-	//! The point in the stack's path that can't be reached.
-	Uint32 d_moves_exhausted_at_point;
 };
 
 #endif // STACK_H

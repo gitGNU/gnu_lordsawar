@@ -20,6 +20,9 @@
 #include "player.h"
 #include "playerlist.h"
 #include "citylist.h"
+#include "history.h"
+#include "game.h"
+#include "GameScenario.h"
 
 using namespace std;
 
@@ -37,6 +40,31 @@ AI_Diplomacy::AI_Diplomacy(Player *owner)
 AI_Diplomacy::~AI_Diplomacy()
 {
   instance = 0;
+}
+
+void AI_Diplomacy::considerCuspOfWar()
+{
+  Playerlist *pl = Playerlist::getInstance();
+  
+  if (Game::getScenario()->s_cusp_of_war &&
+      Game::getScenario()->getRound() == CUSP_OF_WAR_ROUND)
+  {
+    for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+    {
+      Player *other = *it;
+      if (other->getType() == Player::HUMAN && !other->isDead() &&
+          d_owner->getDiplomaticState(other) != Player::AT_WAR)
+      {
+        d_owner->proposeDiplomacy (Player::PROPOSE_WAR, *it);
+        other->proposeDiplomacy (Player::PROPOSE_WAR, d_owner);
+        d_owner->declareDiplomacy (Player::AT_WAR, *it);
+  
+        History_DiplomacyWar *item = new History_DiplomacyWar();
+        item->fillData(other);
+        d_owner->getHistorylist()->push_back(item);
+      }
+    }
+  }
 }
 
 void AI_Diplomacy::makeFriendsAndEnemies()

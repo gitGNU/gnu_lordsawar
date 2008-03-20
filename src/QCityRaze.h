@@ -50,6 +50,9 @@ class QuestCityRaze: public Quest, public sigc::trackable
 	 */
         QuestCityRaze(QuestsManager& q_mgr, XML_Helper* helper);
 
+        // Construct from remote action.
+        QuestCityRaze(QuestsManager& q_mgr, Uint32 hero, Uint32 target);
+        
 	//! Returns whether or not this quest is impossible.
         /**
 	 * Scans all City objects in the Citylist to see if there is one the 

@@ -92,6 +92,10 @@ class QuestsManager : public sigc::trackable
 	 */
         Quest* createNewQuest(Uint32 heroId, bool razing_possible);
 
+        //! Create new quest of given type (from remote action). 
+        Quest* createNewQuest(Uint32 hero, Uint32 questtype,
+                              Uint32 data, Uint32 victim_player);
+        
 	//! Mark the Quest that the given Hero object is on to be completed.
         /**
          *  This method deactivates the quest and saves the completion 

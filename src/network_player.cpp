@@ -15,6 +15,7 @@
 #include <fstream>
 #include <algorithm>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "network_player.h"
 #include "playerlist.h"
@@ -25,6 +26,7 @@
 #include "templelist.h"
 #include "ruinlist.h"
 #include "signpostlist.h"
+#include "Itemlist.h"
 #include "rewardlist.h"
 #include "QuestsManager.h"
 #include "path.h"
@@ -79,231 +81,88 @@ bool NetworkPlayer::save(XML_Helper* helper) const
     return retval;
 }
 
-bool NetworkPlayer::initTurn()
+#include "gui/error-utils.h"
+#include "ucompose.hpp"
+#include <time.h>
+#include <gtkmm/messagedialog.h>
+#include <gtkmm/button.h>
+#include <set>
+
+Gtk::Dialog *remoteControlDialog = 0;
+Gtk::Button *loadButton = 0, *nextActionButton = 0;
+std::list<Action *> actionsToApply;
+int actionsApplied = 0;
+
+bool NetworkPlayer::loadAction(std::string tag, XML_Helper* helper)
 {
-  //get data from our corresponding real player from the network
-    clearActionlist();
-    //get our action list,
-    //get our history list.
-    return true;
+  if (tag == "action") {
+    Action* action = Action::handle_load(helper);
+    actionsToApply.push_back(action);
+  }
+  return true;
 }
 
 bool NetworkPlayer::startTurn()
 {
-    return true;
+  if (!remoteControlDialog) {
+    remoteControlDialog = new Gtk::Dialog("Network player control");
+    loadButton = remoteControlDialog->add_button("load actions", 1);
+    nextActionButton = remoteControlDialog->add_button("execute action", 2);
+    remoteControlDialog->signal_response().connect(sigc::mem_fun(this, &NetworkPlayer::onResponse));
+
+    nextActionButton->set_sensitive(false);
+    
+    remoteControlDialog->show();
+  }
+    
+  //d_stacklist->setActivestack(0);
+
+  return false;
 }
 
-bool NetworkPlayer::invadeCity(City* c)
+#include <algorithm>
+
+void NetworkPlayer::onResponse(int responseId)
 {
-    return true;
+  if (responseId == 1) {
+    actionsToApply.clear();
+    XML_Helper helper("actiondump", std::ios::in, false);
+    helper.registerTag("action", sigc::mem_fun(this, &NetworkPlayer::loadAction));
+    helper.parse();
+    std::cerr << "read " << actionsToApply.size() << " actions" << std::endl;
+  }
+
+  if (responseId == 2) {
+    std::list<Action *>::iterator i = actionsToApply.begin();
+    std::advance(i, actionsApplied);
+    ++actionsApplied;
+    
+    std::cerr << "applying action " << (*i)->getType() << std::endl;
+    decodeAction(*i);
+  }
+
+  nextActionButton->set_sensitive(actionsApplied < int(actionsToApply.size()));
+}
+
+void NetworkPlayer::endTurn()
+{
+}
+
+void NetworkPlayer::invadeCity(City* c)
+{
+  assert(false);
 }
 
 bool NetworkPlayer::recruitHero(Hero* hero, City *city, int cost)
 {
-    return true;
-}
-
-bool NetworkPlayer::levelArmy(Army* a)
-{
-    
-    return true;
-}
-
-bool NetworkPlayer::stackSplit(Stack* s)
-{
-    debug("NetworkPlayer::stackSplit("<<s->getId()<<")")
-
-
-    return true;
-}
-
-bool NetworkPlayer::stackJoin(Stack* receiver, Stack* joining, bool grouped)
-{
-    debug("NetworkPlayer::stackJoin("<<receiver->getId()<<","<<joining->getId()<<")")
-
-    return true;
-}
-
-
-bool NetworkPlayer::signpostChange(Signpost *s, std::string message)
-{
-  return true;
-}
-
-bool NetworkPlayer::cityRename(City *c, std::string name)
-{
-  return true;
-}
-
-bool NetworkPlayer::stackDisband(Stack* s)
-{
-    debug("player::stackDisband(Stack*)")
-    return true;
-}
-
-bool NetworkPlayer::stackMove(Stack* s)
-{
-    debug("player::stackMove(Stack*)")
-
-    return true;
-}
-
-MoveResult *NetworkPlayer::stackMove(Stack* s, Vector<int> dest, bool follow)
-{
-    debug("player::stack_move()");
-    return new MoveResult(true);
-}
-
-Fight::Result NetworkPlayer::stackRuinFight (Stack **attacker, Stack **defender)
-{
-    Fight::Result result = Fight::DRAW;
-    debug("stackRuinFight: player = " << getName()<<" at position "
-          <<(*defender)->getPos().x<<","<<(*defender)->getPos().y);
-      return Fight::ATTACKER_WON;
-}
-
-bool NetworkPlayer::treachery (Stack *stack, Player *player, Vector <int> pos)
-{
-  return true;
-}
-
-Fight::Result NetworkPlayer::stackFight(Stack** attacker, Stack** defender, bool ruin) 
-{
-    debug("stackFight: player = " << getName()<<" at position "
-          <<(*defender)->getPos().x<<","<<(*defender)->getPos().y);
-    if (ruin)
-      return NetworkPlayer::stackRuinFight (attacker, defender);
-
-      return Fight::ATTACKER_WON;
-}
-
-Reward* NetworkPlayer::stackSearchRuin(Stack* s, Ruin* r)
-{
-    Reward *retReward = NULL;
-    debug("NetworkPlayer::stack_search_ruin")
-
-     return retReward;
-}
-
-int NetworkPlayer::stackVisitTemple(Stack* s, Temple* t)
-{
-  debug("NetworkPlayer::stackVisitTemple")
-
-  return 0;
-}
-
-Quest* NetworkPlayer::stackGetQuest(Stack* s, Temple* t, bool except_raze)
-{
-  debug("NetworkPlayer::stackGetQuest")
-  return NULL;
-}
-
-bool NetworkPlayer::cityOccupy(City* c)
-{
-  debug("NetworkPlayer::cityOccupy")
-
-    return true;
-}
-
-bool NetworkPlayer::cityPillage(City* c, int& gold, int& pillaged_army_type)
-{
-  debug("NetworkPlayer::cityPillage")
-  return true;
-}
-
-bool NetworkPlayer::citySack(City* c, int& gold, std::list<Uint32> *sacked_types)
-{
-  debug("NetworkPlayer::citySack")
-  return true;
-}
-
-bool NetworkPlayer::cityRaze(City* c)
-{
-  debug("NetworkPlayer::cityRaze")
-  return true;
-}
-
-bool NetworkPlayer::cityBuyProduction(City* c, int slot, int type)
-{
-  return true;
-}
-
-bool NetworkPlayer::cityChangeProduction(City* c, int slot)
-{
-  return true;
-}
-
-bool NetworkPlayer::giveReward(Stack *s, Reward *reward)
-{
-  debug("NetworkPlayer::give_reward")
+  assert(false);
 
   return true;
 }
 
-bool NetworkPlayer::stackMoveOneStep(Stack* s)
+void NetworkPlayer::levelArmy(Army* a)
 {
-  return true;
-}
-
-bool NetworkPlayer::changeVectorDestination(City *c, Vector<int> dest)
-{
-  return true;
-}
-
-bool NetworkPlayer::vectorFromCity(City * c, Vector<int> dest)
-{
-  return true;
-}
-
-void NetworkPlayer::setFightOrder(std::list<Uint32> order) 
-{
-}
-
-void NetworkPlayer::resign() 
-{
-}
-
-bool NetworkPlayer::heroPlantStandard(Stack* s)
-{
-  debug("player::heroPlantStandard(Stack*)")
-  return true;
-}
-
-bool NetworkPlayer::heroDropAllItems(Hero *h, Vector<int> pos)
-{
-  return true;
-}
-
-bool NetworkPlayer::heroDropItem(Hero *h, Item *i, Vector<int> pos)
-{
-  return true;
-}
-
-bool NetworkPlayer::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
-{
-  return true;
-}
-
-bool NetworkPlayer::heroCompletesQuest(Hero *h)
-{
-  return true;
-}
-
-Uint32 NetworkPlayer::getScore()
-{
-  return 0;
-}
-
-void NetworkPlayer::tallyTriumph(Player *p, TriumphType type)
-{
-}
-
-float NetworkPlayer::stackFightAdvise(Stack* s, Vector<int> tile, 
-				   bool intense_combat)
-{
-  float percent = 0.0;
-        
-  return percent;
+  assert(false);
 }
 
 void NetworkPlayer::decodeAction(const Action *a)
@@ -377,124 +236,304 @@ void NetworkPlayer::decodeAction(const Action *a)
     case Action::DIPLOMATIC_SCORE:
       return decodeActionDiplomacyScore
 	(dynamic_cast<const Action_DiplomacyScore*>(a));
+    case Action::END_TURN:
+      return decodeActionEndTurn
+        (dynamic_cast<const Action_EndTurn*>(a));
+    case Action::CITY_CONQUER:
+      return decodeActionConquerCity
+        (dynamic_cast<const Action_ConquerCity*>(a));
     }
 
   return;
 }
 
+// decode helpers
+  
+Stack *findStackById(Uint32 id)
+{
+  for (Playerlist::iterator j = Playerlist::getInstance()->begin(), jend = Playerlist::getInstance()->end();
+       j != jend; ++j) {
+    Stack *s = (*j)->getStacklist()->getStackById(id);
+    if (s)
+      return s;
+  }
+  return 0;
+}
+
+Item *findItemById(const std::list<Item *> &l, Uint32 id) 
+{
+  for (std::list<Item *>::const_iterator i = l.begin(), end = l.end(); i != end; ++i)
+    if ((*i)->getId() == id)
+      return *i;
+  
+  return 0;
+}
+
+
+// decoders
+
 void NetworkPlayer::decodeActionMove(const Action_Move *action)
 {
+  Stack *stack = d_stacklist->getStackById(action->d_stack);
+  stack->moveToDest(action->d_dest);
+  supdatingStack.emit(stack);
 }
 
 void NetworkPlayer::decodeActionSplit(const Action_Split *action)
 {
+  Stack *stack = d_stacklist->getStackById(action->d_orig);
+  
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; ++i) {
+    Uint32 army_id = action->d_armies_moved[i];
+    if (army_id == 0)
+      continue;
+
+    Army *army = stack->getArmyById(army_id);
+    army->setGrouped(false);
+  }
+
+  doStackSplit(stack);
 }
 
 void NetworkPlayer::decodeActionFight(const Action_Fight *action)
 {
+  std::list<Stack *> attackers, defenders;
+  for (std::list<Uint32>::const_iterator i = action->d_attackers.begin(),
+         end = action->d_attackers.end(); i != end; ++i)
+    attackers.push_back(d_stacklist->getStackById(*i));
+  
+  for (std::list<Uint32>::const_iterator i = action->d_defenders.begin(),
+         end = action->d_defenders.end(); i != end; ++i)
+    defenders.push_back(findStackById(*i));
+
+  Fight fight(attackers, defenders, action->d_history);
+  fight.battleFromHistory();
+  fight_started.emit(fight);
+  cleanupAfterFight(attackers, defenders);
 }
 
 void NetworkPlayer::decodeActionJoin(const Action_Join *action)
 {
+  Stack *receiver = d_stacklist->getStackById(action->d_orig_id);
+  Stack *joining = d_stacklist->getStackById(action->d_joining_id);
+
+  doStackJoin(receiver, joining, false);
 }
 
 void NetworkPlayer::decodeActionRuin(const Action_Ruin *action)
 {
+  Stack *explorer = d_stacklist->getStackById(action->d_stack);
+  Ruin *r = Ruinlist::getInstance()->getById(action->d_ruin);
+  bool searched = action->d_searched;
+
+  Stack* keeper = r->getOccupant();
+
+  // now simulate the fight that might have happened on the other side
+  if (keeper) {
+    if (searched) {
+      // whack the keeper
+      for (Stack::iterator i = keeper->begin(); i != keeper->end(); ++i)
+        (*i)->setHP(0);
+    }
+    else {
+      // whack the hero
+      explorer->getFirstHero()->setHP(0);
+    }
+
+    std::list<Stack *> attackers, defenders;
+    attackers.push_back(explorer);
+    defenders.push_back(keeper);
+    
+    cleanupAfterFight(attackers, defenders);
+
+    if (searched) {
+        r->setOccupant(0);
+        delete keeper;
+    }
+  }
+
+  r->setSearched(searched);
+
+  supdatingStack.emit(0);
 }
 
 void NetworkPlayer::decodeActionTemple(const Action_Temple *action)
 {
+  Stack *stack = d_stacklist->getStackById(action->d_stack);
+  Temple *temple = Templelist::getInstance()->getById(action->d_temple);
+  doStackVisitTemple(stack, temple);
 }
 
 void NetworkPlayer::decodeActionOccupy(const Action_Occupy *action)
 {
+  City *city = Citylist::getInstance()->getById(action->d_city);
+  doCityOccupy(city);
 }
 
 void NetworkPlayer::decodeActionPillage(const Action_Pillage *action)
 {
+  City *city = Citylist::getInstance()->getById(action->d_city);
+  int gold, pillaged_army_type;
+  doCityPillage(city, gold, pillaged_army_type);
 }
 
 void NetworkPlayer::decodeActionSack(const Action_Sack *action)
 {
+  City *city = Citylist::getInstance()->getById(action->d_city);
+  int gold;
+  std::list<Uint32> sacked_types;
+  doCitySack(city, gold, &sacked_types);
+  // FIXME: the game class doesn't listen for sack signals, so it doesn't
+  // redraw the map as it should
 }
 
 void NetworkPlayer::decodeActionRaze(const Action_Raze *action)
 {
+  City *city = Citylist::getInstance()->getById(action->d_city);
+  doCityRaze(city);
 }
 
 void NetworkPlayer::decodeActionUpgrade(const Action_Upgrade *action)
 {
+  // doesn't exist, not handled
+  assert(false);
 }
 
 void NetworkPlayer::decodeActionBuy(const Action_Buy *action)
 {
+  City *city = Citylist::getInstance()->getById(action->d_city);
+  doCityBuyProduction(city, action->d_slot, action->d_prod);
 }
 
 void NetworkPlayer::decodeActionProduction(const Action_Production *action)
 {
+  City *city = Citylist::getInstance()->getById(action->d_city);
+  doCityChangeProduction(city, action->d_prod);
 }
 
 void NetworkPlayer::decodeActionReward(const Action_Reward *action)
 {
+  Stack *stack = d_stacklist->getStackById(action->d_stack);
+  doGiveReward(stack, action->d_reward);
+  supdatingStack.emit(stack); // make sure we get a redraw
 }
 
 void NetworkPlayer::decodeActionQuest(const Action_Quest *action)
 {
+  QuestsManager::getInstance()->createNewQuest(
+    action->d_hero, action->d_questtype, action->d_data,
+    action->d_victim_player);
 }
 
 void NetworkPlayer::decodeActionEquip(const Action_Equip *action)
 {
+  Stack *stack = d_stacklist->getArmyStackById(action->d_hero);
+  Hero *hero = dynamic_cast<Hero *>(stack->getArmyById(action->d_hero));
+  Item *item = 0;
+
+  switch (action->d_slot)
+  {
+  case Action_Equip::BACKPACK:
+    item = findItemById(GameMap::getInstance()->getTile(stack->getPos())->getItems(), action->d_item);
+    doHeroPickupItem(hero, item, stack->getPos());
+    break;
+
+  case Action_Equip::GROUND:
+    item = findItemById(hero->getBackpack(), action->d_item);
+    doHeroDropItem(hero, item, stack->getPos());
+    break;
+  }
 }
 
 void NetworkPlayer::decodeActionLevel(const Action_Level *action)
 {
+  Stack *stack = d_stacklist->getArmyStackById(action->d_army);
+  Army *army = stack->getArmyById(action->d_army);
+
+  doLevelArmy(army, Army::Stat(action->d_stat));
 }
 
 void NetworkPlayer::decodeActionDisband(const Action_Disband *action)
 {
+  Stack *stack = d_stacklist->getStackById(action->d_stack);
+  doStackDisband(stack);
 }
 
 void NetworkPlayer::decodeActionModifySignpost(const Action_ModifySignpost *action)
 {
+  Signpost *signpost = Signpostlist::getInstance()->getById(action->d_signpost);
+  doSignpostChange(signpost, action->d_message);
 }
 
 void NetworkPlayer::decodeActionRenameCity(const Action_RenameCity *action)
 {
+  City *city = Citylist::getInstance()->getById(action->d_city);
+  doCityRename(city, action->d_name);
 }
 
 void NetworkPlayer::decodeActionVector(const Action_Vector *action)
 {
+  City *city = Citylist::getInstance()->getById(action->d_city);
+  doVectorFromCity(city, action->d_dest);
 }
 
 void NetworkPlayer::decodeActionFightOrder(const Action_FightOrder *action)
 {
+  doSetFightOrder(action->d_order);
 }
 
 void NetworkPlayer::decodeActionResign(const Action_Resign *action)
 {
+  doResign();
 }
 
 void NetworkPlayer::decodeActionPlant(const Action_Plant *action)
 {
+  Stack *stack = d_stacklist->getArmyStackById(action->d_hero);
+  Hero *hero = dynamic_cast<Hero *>(stack->getArmyById(action->d_hero));
+  Item *item = findItemById(hero->getBackpack(), action->d_item);
+    
+  doHeroPlantStandard(hero, item, stack->getPos());
 }
 
 void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
 {
+  // FIXME: needed?
 }
 
 void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *action)
 {
+  // FIXME: needed?
 }
 
 void NetworkPlayer::decodeActionDiplomacyState(const Action_DiplomacyState *action)
 {
+  Player *player = Playerlist::getInstance()->getPlayer(action->getOpponentId());
+  doDeclareDiplomacy(action->getDiplomaticState(), player);
 }
 
 void NetworkPlayer::decodeActionDiplomacyProposal(const Action_DiplomacyProposal *action)
 {
+  Player *player = Playerlist::getInstance()->getPlayer(action->getOpponentId());
+  doProposeDiplomacy(action->getDiplomaticProposal(), player);
 }
 
 void NetworkPlayer::decodeActionDiplomacyScore(const Action_DiplomacyScore *action)
 {
+  Player *player = Playerlist::getInstance()->getPlayer(action->getOpponentId());
+  alterDiplomaticRelationshipScore(player, action->getAmountChange());
 }
+
+void NetworkPlayer::decodeActionEndTurn(const Action_EndTurn *action)
+{
+  ending_turn.emit();
+}
+
+void NetworkPlayer::decodeActionConquerCity(const Action_ConquerCity *action)
+{
+  City *city = Citylist::getInstance()->getById(action->d_city);
+  Stack *stack = d_stacklist->getStackById(action->d_stack);
+  conquerCity(city, stack);
+}
+
 // End of file

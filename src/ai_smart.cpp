@@ -58,8 +58,11 @@ AI_Smart::~AI_Smart()
 bool AI_Smart::startTurn()
 {
     debug(getName() << " start_turn")
-    RealPlayer::startTurn();
 
+    AI_Diplomacy diplomacy (this);
+
+    diplomacy.considerCuspOfWar();
+    
     // the real stuff
     examineCities();
     int loopCount = 0;
@@ -86,23 +89,19 @@ bool AI_Smart::startTurn()
     }
     d_stacklist->setActivestack(0);
 
-    AI_Diplomacy *diplomacy = new AI_Diplomacy (this);
-    diplomacy->makeProposals();
-    delete diplomacy;
+    diplomacy.makeProposals();
+    
     return true;
 }
 
-bool AI_Smart::invadeCity(City* c)
+void AI_Smart::invadeCity(City* c)
 {
     // always occupy an enemy city
-    bool retval = cityOccupy(c);
-    sinvadingCity.emit(c);
-    soccupyingCity.emit(c, getActivestack());
+    cityOccupy(c);
 
     // Update its production
     maybeBuyProduction(c);
     setBestProduction(c);
-    return retval;
 }
 
 bool AI_Smart::recruitHero(Hero* hero, City *city, int cost)
@@ -111,19 +110,14 @@ bool AI_Smart::recruitHero(Hero* hero, City *city, int cost)
     return true;    //always recruit heroes
 }
 
-bool AI_Smart::levelArmy(Army* a)
+void AI_Smart::levelArmy(Army* a)
 {
-    if (!a->canGainLevel())
-        return false;
-    
     Army::Stat stat = Army::STRENGTH;
-    a->gainLevel(stat);
+    doLevelArmy(a, stat);
 
     Action_Level* item = new Action_Level();
     item->fillData(a, stat);
-    d_actions.push_back(item);
-    
-    return true;
+    addAction(item);
 }
 
 int AI_Smart::maybeBuyProduction(City *c)

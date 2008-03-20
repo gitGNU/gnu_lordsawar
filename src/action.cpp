@@ -114,6 +114,10 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_DiplomacyProposal(helper));
 	case DIPLOMATIC_SCORE:
             return (new Action_DiplomacyScore(helper));
+        case END_TURN:
+            return (new Action_EndTurn(helper));
+        case CITY_CONQUER:
+            return (new Action_ConquerCity(helper));
     }
 
     return 0;
@@ -189,6 +193,14 @@ Action* Action::copy(const Action* a)
             return 
               (new Action_DiplomacyScore
                 (*dynamic_cast<const Action_DiplomacyScore*>(a)));
+        case END_TURN:
+            return 
+              (new Action_EndTurn
+                (*dynamic_cast<const Action_EndTurn*>(a)));
+        case CITY_CONQUER:
+            return 
+              (new Action_ConquerCity
+                (*dynamic_cast<const Action_ConquerCity*>(a)));
     }
 
     return 0;
@@ -359,6 +371,7 @@ Action_Fight::Action_Fight(XML_Helper* helper)
     si.str(s);
     while (si >> ui)
         d_attackers.push_back(ui);
+    si.clear();
 
     helper->getData(s, "defenders");
     si.str(s);
@@ -431,9 +444,9 @@ bool Action_Fight::fillData(const Fight* f)
     list = f->getDefenders();
 
     for (it = list.begin(); it != list.end(); it++)
-        d_attackers.push_back((*it)->getId());
+        d_defenders.push_back((*it)->getId());
     
-    d_history   = f->getCourseOfEvents();
+    d_history = f->getCourseOfEvents();
 
     return true;
 }
@@ -445,6 +458,8 @@ bool Action_Fight::loadItem(std::string tag, XML_Helper* helper)
     helper->getData(item.turn, "turn");
     helper->getData(item.id, "id");
     helper->getData(item.damage, "damage");
+
+    d_history.push_back(item);
 
     return true;
 }
@@ -970,6 +985,7 @@ bool Action_Reward::load(std::string tag, XML_Helper *helper)
 Action_Reward::Action_Reward(XML_Helper* helper)
 :Action(Action::REWARD)
 {
+  helper->getData(d_stack, "stack");
   helper->registerTag("reward", sigc::mem_fun((*this), &Action_Reward::load));
 }
 
@@ -977,8 +993,9 @@ Action_Reward::~Action_Reward()
 {
 }
 
-bool Action_Reward::fillData(Reward* r)
+bool Action_Reward::fillData(Stack *s, Reward* r)
 {
+  d_stack = s->getId();
   d_reward = r;
   return true;
 }
@@ -999,6 +1016,7 @@ bool Action_Reward::save(XML_Helper* helper) const
 
   retval &= helper->openTag("action");
   retval &= helper->saveData("type", Action::REWARD);
+  retval &= helper->saveData("stack", d_stack);
   if (d_reward->getType() == Reward::GOLD)
     static_cast<Reward_Gold*>(d_reward)->save(helper);
   else if (d_reward->getType() == Reward::ALLIES)
@@ -1822,4 +1840,85 @@ bool Action_DiplomacyScore::fillData(Player *opponent, int amount)
   d_opponent_id = opponent->getId();
   d_amount = amount;
   return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_EndTurn
+
+Action_EndTurn::Action_EndTurn()
+:Action(Action::END_TURN)
+{
+}
+
+Action_EndTurn::Action_EndTurn(XML_Helper* helper)
+:Action(Action::END_TURN)
+{
+}
+
+Action_EndTurn::~Action_EndTurn()
+{
+}
+
+std::string Action_EndTurn::dump() const
+{
+  return "ending turn\n";
+}
+
+bool Action_EndTurn::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("action");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+
+//-----------------------------------------------------------------------------
+//Action_ConquerCity
+
+Action_ConquerCity::Action_ConquerCity()
+  :Action(Action::CITY_CONQUER), d_city(0), d_stack(0)
+{
+}
+
+Action_ConquerCity::Action_ConquerCity(XML_Helper* helper)
+    :Action(Action::CITY_CONQUER)
+{
+    helper->getData(d_city, "city");
+    helper->getData(d_stack, "stack");
+}
+
+Action_ConquerCity::~Action_ConquerCity()
+{
+}
+
+std::string Action_ConquerCity::dump() const
+{
+    std::stringstream s;
+
+    s <<"City " <<d_city <<" occupied by " << d_stack << "\n";
+
+    return s.str();
+}
+
+bool Action_ConquerCity::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("action");
+    retval &= helper->saveData("type", getType());
+    retval &= helper->saveData("city", d_city);
+    retval &= helper->saveData("stack", d_stack);
+    retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool Action_ConquerCity::fillData(City* c, Stack *s)
+{
+    d_city = c->getId();
+    d_stack = s->getId();
+    return true;
 }

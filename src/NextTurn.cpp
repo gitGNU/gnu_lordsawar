@@ -23,6 +23,7 @@
 #include "vectoredunitlist.h"
 #include "FogMap.h"
 #include "history.h"
+#include "QuestsManager.h"
 
 #include "path.h"
 
@@ -33,6 +34,13 @@ using namespace std;
 NextTurn::NextTurn(bool turnmode, bool random_turns)
     :d_turnmode(turnmode), d_random_turns (random_turns), d_stop(false)
 {
+  continuing_turn = false;
+  
+  Playerlist* plist = Playerlist::getInstance();
+  for (Playerlist::iterator i = plist->begin(); i != plist->end(); ++i) {
+    Player *p = *i;
+    p->ending_turn.connect(sigc::mem_fun(this, &NextTurn::endTurn));
+  }
 }
 
 NextTurn::~NextTurn()
@@ -51,27 +59,32 @@ void NextTurn::start()
     while (!d_stop)
     {
       supdating.emit();
+
         // do various start-up tasks
-        startTurn();
+        if (!continuing_turn)
+          startTurn();
+        else
+          continuing_turn = false;
        
         // inform everyone about the next turn 
         snextTurn.emit(plist->getActiveplayer());
         
 	if (plist->getNoOfPlayers() <= 2)
 	{
-          if (plist->checkPlayers() == true) //end of game detected
+          if (plist->checkPlayers()) //end of game detected
 	      return;
 	}
 
-	bool break_loop = splayerStart.emit(plist->getActiveplayer());
+        if (Playerlist::isFinished())
+          return;
+        
+	splayerStart.emit(plist->getActiveplayer());
 
-	if (break_loop)
-	  return;
-        //Let the player do his duties...
-        plist->getActiveplayer()->startTurn();
+        // let the player do his duties...
+        bool continue_loop = plist->getActiveplayer()->startTurn();
 
-        if (break_loop)
-            return;
+        if (!continue_loop)
+          return;
 	
         //Now do some cleanup at the end of the turn.
         finishTurn();
@@ -110,7 +123,7 @@ void NextTurn::endTurn()
       snextRound.emit();
     }
 
-    start();
+  start();
 }
 
 void NextTurn::startTurn()
@@ -123,31 +136,35 @@ void NextTurn::startTurn()
   Player* p = Playerlist::getActiveplayer();
 
   p->initTurn();
-      
+
   //if turnmode is set, create/heal armies at player's turn
   if (d_turnmode)
     {
       //pay upkeep for stacks, reset moves, and heal stacks
       p->getStacklist()->nextTurn();
 
+      //if (p->getType() != Player::NETWORKED)
+      
       //vector armies (needs to preceed city's next turn)
       VectoredUnitlist::getInstance()->nextTurn(p);
 
       //build armies
       Citylist::getInstance()->nextTurn(p);
-
     }
 
   //calculate upkeep
   p->calculateUpkeep();
 
+  QuestsManager::getInstance()->nextTurn(p);
 }
 
 void NextTurn::finishTurn()
 {
   //Put everything that has to be done before the next player starts
   //his turn here. E.g. one could clear some caches.
-  Playerlist::getActiveplayer()->getFogMap()->smooth();
+  Player *p = Playerlist::getActiveplayer();
+  p->getFogMap()->smooth();
+  p->endTurn();
 }
 
 void NextTurn::finishRound()

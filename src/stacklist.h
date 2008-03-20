@@ -208,6 +208,9 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         //! Return the stack at position (x,y) or 0 if there is none.
         Stack* getOwnObjectAt(int x, int y);
 
+        Stack *getStackById(Uint32 id);
+        Stack *getArmyStackById(Uint32 army);
+
     private:
         //! Callback function for loading.
         bool load(std::string tag, XML_Helper* helper);

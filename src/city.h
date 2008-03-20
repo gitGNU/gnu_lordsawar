@@ -107,10 +107,8 @@ class City : public Ownable, public Location, public Renamable
 	 *                     This must be a value between -1 and 3.
 	 * @param army         The Army production base to add.  Look at the
 	 *                     Army class to find out what a production base is.
-	 *
-         * @return True on success, false on error.
          */
-        bool addProductionBase(int index, Army *army);
+        void addProductionBase(int index, Army *army);
 
         //! Clears the basic production of a given slot.
 	/**

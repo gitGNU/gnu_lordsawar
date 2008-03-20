@@ -69,7 +69,6 @@ int getVictimArmytype(Player *p, std::list<Vector<int> >&targets)
 QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, Uint32 hero)
     : Quest(q_mgr, hero, Quest::KILLARMYTYPE)
 {
-    // have us be informed when hostilities break out
     Player *p = getHero()->getOwner();
     
     // pick a victim
@@ -83,6 +82,16 @@ QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, XML_Helper* helper)
 {
     helper->getData(d_type_to_kill, "type_to_kill");
 
+    initDescription();
+}
+//=======================================================================
+QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, Uint32 hero,
+                                       Uint32 type_to_kill)
+    : Quest(q_mgr, hero, Quest::KILLARMYTYPE)
+{
+    // pick a victim
+    d_type_to_kill = type_to_kill;
+    
     initDescription();
 }
 //=======================================================================

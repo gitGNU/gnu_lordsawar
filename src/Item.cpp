@@ -17,7 +17,6 @@
 #include <sstream>
 #include <map>
 #include "Item.h"
-#include "Itemlist.h"
 #include "File.h"
 #include "counter.h"
 #include "playerlist.h"
@@ -62,6 +61,7 @@ Item::Item(std::string name, bool plantable, Player *plantable_owner)
   d_plantable_owner_id = plantable_owner->getId();
   d_planted = false;
   d_id = fl_counter->getNextId();
+  //std::cerr << "item created with id " << d_id << std::endl;
 }
 
 Item::Item(const Item& orig)
@@ -70,6 +70,7 @@ Item::Item(const Item& orig)
 {
   // Some things we don't copy from the template; we rather get an own ID
   d_id = fl_counter->getNextId();
+  //std::cerr << "item created with id " << d_id << std::endl;
 }
 
 Item::~Item()

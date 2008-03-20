@@ -55,9 +55,9 @@ class AI_Dummy : public RealPlayer
         ~AI_Dummy();
         
         virtual bool startTurn();
-        virtual bool invadeCity(City* c);
+        virtual void invadeCity(City* c);
         virtual bool recruitHero(Hero* hero, City *city, int cost);
-        virtual bool levelArmy(Army* a);
+        virtual void levelArmy(Army* a);
 };
 
 #endif // AI_DUMMY_H

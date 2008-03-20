@@ -53,6 +53,9 @@ class QuestCitySack : public Quest, public sigc::trackable
 	 */
         QuestCitySack(QuestsManager& q_mgr, XML_Helper* helper);
 
+        // Construct from remote action.
+        QuestCitySack(QuestsManager& q_mgr, Uint32 hero, Uint32 target);
+        
 	//! Returns whether or not this quest is impossible.
         /**
 	 * Scans all City objects in the Citylist to see if there is one the 

@@ -205,17 +205,17 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		  bool deselect = false;
 		  if (path_already_set)
 		    {
-		      if (stack->getPath()->size() > 0 && 
+		      if (!stack->getPath()->empty() && 
 			  stack->enoughMoves() == false)
 			deselect = true;
-		      else if (stack->getPath()->size() > 0 &&
-			       stack->getMovesExhaustedAtPoint() == 0)
+		      else if (!stack->getPath()->empty() &&
+			       stack->getPath()->getMovesExhaustedAtPoint() == 0)
 			deselect = true;
 		    }
 		  else
 		    {
-		      if (stack->getPath()->size() > 0 && 
-			  stack->getMovesExhaustedAtPoint() == 0)
+		      if (!stack->getPath()->empty() && 
+			  stack->getPath()->getMovesExhaustedAtPoint() == 0)
 			deselect = true;
 		      if ((d_cursor == GraphicsCache::SWORD ||
 			   d_cursor == GraphicsCache::HEART) &&
@@ -412,12 +412,35 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	  else
 	    {
 	      Maptile *t = GameMap::getInstance()->getTile(tile);
-	      Stack *st;
-	      st = Stacklist::getObjectAt(tile);
-	      if (!st)
+	      Stack *st = Stacklist::getObjectAt(tile);
+	      if (st && st->getOwner() != Playerlist::getActiveplayer())
+	        {
+	          int delta = abs(stack->getPos().x - st->getPos().x);
+	          if (delta <= 1)
+	            delta = abs(stack->getPos().y - st->getPos().y);
+	          if (delta <= 1)
+	            {
+	              if (is_shift_key_down())
+	        	    d_cursor = GraphicsCache::QUESTION;
+	              else
+	                {
+	                  Player *me = stack->getOwner();
+	                  Player *them = st->getOwner();
+	                  bool friendly = (me->getDiplomaticState(them) == 
+	            		       Player::AT_PEACE);
+	                  if (friendly)
+	            	d_cursor = GraphicsCache::HEART;
+	                  else
+	            	d_cursor = GraphicsCache::SWORD;
+	                }
+	            }
+	          else
+	            d_cursor = GraphicsCache::HAND;
+	        }
+              else
 		{
-		  Stack *empty = new Stack (*stack);
-		  int moves = empty->getPath()->calculate(empty, tile);
+                  Path path;
+                  int moves = path.calculate(stack, tile);
 		  if (moves == 0)
 		    d_cursor = GraphicsCache::HAND;
 		  else
@@ -429,54 +452,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 		      else
 			d_cursor = GraphicsCache::FEET;
 		    }
-		  delete empty;
 		}
-	      else
-		{
-		  if (st->getOwner() != Playerlist::getActiveplayer())
-		    {
-		      int delta = abs(stack->getPos().x - st->getPos().x);
-		      if (delta <= 1)
-			delta = abs(stack->getPos().y - st->getPos().y);
-		      if (delta <= 1)
-			{
-			  if (is_shift_key_down())
-		    	    d_cursor = GraphicsCache::QUESTION;
-			  else
-			    {
-			      Player *me = stack->getOwner();
-			      Player *them = st->getOwner();
-			      bool friendly = (me->getDiplomaticState(them) == 
-					       Player::AT_PEACE);
-			      if (friendly)
-				d_cursor = GraphicsCache::HEART;
-			      else
-				d_cursor = GraphicsCache::SWORD;
-			    }
-			}
-		      else
-			d_cursor = GraphicsCache::HAND;
-		    }
-		  else
-		    {
-		      //can we make it to our own stack?
-		      Stack *empty = new Stack (*stack);
-		      int moves = empty->getPath()->calculate(empty, tile);
-		      if (moves == 0)
-			d_cursor = GraphicsCache::HAND;
-		      else
-			{
-			  Bridgelist *bl = Bridgelist::getInstance();
-			  if (t->getMaptileType() == Tile::WATER &&
-			      bl->getObjectAt(tile) == NULL)
-			    d_cursor = GraphicsCache::SHIP;
-			  else
-			    d_cursor = GraphicsCache::FEET;
-			}
-		      delete empty;
-		    }
-		}
-
 	    }
 	}
     }
@@ -603,7 +579,7 @@ void GameBigMap::after_draw()
 	  r2.y = pos.y + offset;
 	  r2.w = r2.h = wpsize;
 
-	  canMoveThere = (pathcount < stack->getMovesExhaustedAtPoint());
+	  canMoveThere = (pathcount < stack->getPath()->getMovesExhaustedAtPoint());
 	  if (canMoveThere)
 	    r1.x = 0;
 	  else

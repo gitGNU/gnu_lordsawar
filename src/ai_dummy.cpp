@@ -52,20 +52,14 @@ bool AI_Dummy::startTurn()
 {
     //this is a dummy AI (neutral player) so there is not much point in
     //doing anything
-    RealPlayer::startTurn();
-
     return true;
 }
 
-bool AI_Dummy::invadeCity(City* c)
+void AI_Dummy::invadeCity(City* c)
 {
-    //dummy ai player should never invade an enmy city, but if it happens, we
+    //dummy ai player should never invade an enemy city, but if it happens, we
     //make sure there is no inconsistency
-    bool retval = cityOccupy(c);
-    sinvadingCity.emit(c);
-    soccupyingCity.emit(c, getActivestack());
-
-    return retval;
+    cityOccupy(c);
 }
 
 bool AI_Dummy::recruitHero(Hero* hero, City *city, int cost)
@@ -73,18 +67,14 @@ bool AI_Dummy::recruitHero(Hero* hero, City *city, int cost)
     return false;   //never recruit a hero
 }
 
-bool AI_Dummy::levelArmy(Army* a)
+void AI_Dummy::levelArmy(Army* a)
 {
-    if (!a->canGainLevel())
-        return false;
+    Army::Stat stat = Army::STRENGTH;
+    doLevelArmy(a, stat);
 
-    a->gainLevel(Army::STRENGTH);
-
-    Action_Level* item=0;
-    item->fillData(a, Army::STRENGTH);
-    d_actions.push_back(item);
-
-    return true;
+    Action_Level* item = new Action_Level();
+    item->fillData(a, stat);
+    addAction(item);
 }
 
 // End of file

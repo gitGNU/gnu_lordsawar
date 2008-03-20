@@ -49,7 +49,10 @@ class QuestEnemyArmytype : public Quest, public sigc::trackable
 	 * @param helper  The opened saved-game file to load this quest from.
 	 */
         QuestEnemyArmytype(QuestsManager& q_mgr, XML_Helper* helper);
-     
+
+        // Construct from remote action.
+        QuestEnemyArmytype(QuestsManager& q_mgr, Uint32 hero, Uint32 type_to_kill);
+
 	//! Returns whether or not this quest is impossible.
         /**
 	 * Scans all of the Stack objects for each Player in the Playerlist 

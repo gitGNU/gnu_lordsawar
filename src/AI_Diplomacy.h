@@ -30,6 +30,9 @@ class AI_Diplomacy
     public:
         // Initializes the object 
         AI_Diplomacy(Player *owner);
+
+        void considerCuspOfWar();
+        
 	void makeProposals();
 	void needNewEnemy(Player *player);
         ~AI_Diplomacy();

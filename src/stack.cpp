@@ -27,6 +27,10 @@
 #include "GameMap.h"
 #include "vector.h"
 #include "xmlhelper.h"
+#include "FogMap.h"
+#include "player.h"
+#include "portlist.h"
+#include "port.h"
 
 using namespace std;
 
@@ -35,19 +39,19 @@ using namespace std;
 
 Stack::Stack(Player* player, Vector<int> pos)
     : UniquelyIdentified(), Movable(pos), Ownable(player), d_defending(false), 
-    d_parked(false), d_deleting(false), d_moves_exhausted_at_point(0)
+    d_parked(false), d_deleting(false)
 {
     d_path = new Path();
 }
 
 Stack::Stack(Stack& s)
     : UniquelyIdentified(s), Movable(s), Ownable(s), 
-    d_defending(s.d_defending), d_parked(s.d_parked), d_deleting(false),
-    d_moves_exhausted_at_point(s.d_moves_exhausted_at_point)
+    d_defending(s.d_defending), d_parked(s.d_parked), d_deleting(false)
 {
     clear();
     d_path = new Path();
     //deep copy the other stack's armies
+    
     for (iterator sit = s.begin(); sit != s.end(); sit++)
     {
         Army* a;
@@ -72,8 +76,6 @@ Stack::Stack(XML_Helper* helper)
   helper->getData(d_defending, "defending");
   helper->getData(d_parked, "parked");
 
-  helper->getData(d_moves_exhausted_at_point, "moves_exhausted_at_point");
-
   helper->registerTag("path", sigc::mem_fun((*this), &Stack::load));
   helper->registerTag("army", sigc::mem_fun((*this), &Stack::load));
   helper->registerTag("hero", sigc::mem_fun((*this), &Stack::load));
@@ -96,25 +98,79 @@ void Stack::setPlayer(Player* p)
     (*it)->setOwner(p);
 }
 
-bool Stack::moveOneStep()
+void Stack::moveOneStep()
 {
   debug("move_one_step()");
 
-  setPos(**d_path->begin());
+  Vector<int> dest = *getPath()->front();
+  moveToDest(dest);
+
+  //now remove first point of the path
+  d_path->eraseFirstPoint();
+}
+
+void Stack::moveToDest(Vector<int> dest)
+{
+  Vector<int> pos = getPos();
+    
+  Uint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType();
+  City* to_city = Citylist::getInstance()->getObjectAt(dest.x, dest.y);
+  City* on_city = Citylist::getInstance()->getObjectAt(pos.x, pos.y);
+  Port* on_port = Portlist::getInstance()->getObjectAt(pos.x, pos.y);
+  bool on_water = (GameMap::getInstance()->getTile(pos.x,pos.y)->getMaptileType() == Tile::WATER);
+  bool to_water = (GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType() == Tile::WATER);
+  bool ship_load_unload = false;
+  //here we mark the armies as being on or off a boat
+  if (!isFlying())
+    {
+      if ((on_water && to_city) || 
+	  (on_water && on_port && !to_water) ||
+	  ((on_city || on_port) && to_water))
+	{
+	  ship_load_unload = true;
+	  for (Stack::iterator it = begin(); it != end(); it++)
+	    {
+	      if (to_water && 
+		  ((*it)->getStat(Army::MOVE_BONUS) & Tile::WATER) == 0)
+		(*it)->setInShip(true);
+	      else
+		(*it)->setInShip(false);
+	    }
+	}
+    }
+  else
+    {
+      for (Stack::iterator it = begin(); it != end(); it++)
+	(*it)->setInShip(false);
+    }
+
+  //how many moves does the stack need to travel to dest?
+  int needed_moves = calculateTileMovementCost(dest);
+
+  for (Stack::iterator it = begin(); it != end(); it++)
+    {
+      if (ship_load_unload)
+	(*it)->decrementMoves((*it)->getMoves());
+      else 
+	{
+	  //maybe the army has a natural movement ability
+	  if ((*it)->getStat(Army::MOVE_BONUS) == maptype && needed_moves > 1)
+	    (*it)->decrementMoves(2);
+	  else
+	    (*it)->decrementMoves(needed_moves);
+	}
+    }
+
+  //update position and status
+  setPos(dest);
 
   setFortified(false);
   setDefending(false);
   setParked(false);
 
-  //now remove first point of the path
-  d_path->flErase(d_path->begin());
-
-  //and decrement the point at which we exhaust our path
-  if (getMovesExhaustedAtPoint())
-    setMovesExhaustedAtPoint(getMovesExhaustedAtPoint()-1);
-  return true;
+  //update fogmap
+  getOwner()->getFogMap()->alterFogRadius(dest, getMaxSight(), FogMap::OPEN);
 }
-
 
 bool Stack::isGrouped()
 {
@@ -228,6 +284,16 @@ Army* Stack::getStrongestArmy(bool hero) const
     }
   return strongest;
 }
+
+Army *Stack::getArmyById(Uint32 id) const
+{
+  for (Stack::const_iterator i = begin(), e = end(); i != e; ++i)
+    if ((*i)->getId() == id)
+      return *i;
+  
+  return 0;
+}
+
 
 void Stack::group()
 {
@@ -416,8 +482,6 @@ bool Stack::save(XML_Helper* helper) const
   retval &= helper->saveData("defending", d_defending);
   retval &= helper->saveData("parked", d_parked);
 
-  retval &= helper->saveData("moves_exhausted_at_point", 
-			     d_moves_exhausted_at_point);
 
   //save path
   retval &= d_path->save(helper);

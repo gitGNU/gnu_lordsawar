@@ -36,7 +36,7 @@ Uint32 FL_Counter::getNextId()
 {
   Uint32 ret = d_curID;
   d_curID++;
-    return ret;
+  return ret;
 }
 
 bool FL_Counter::save(XML_Helper* helper)

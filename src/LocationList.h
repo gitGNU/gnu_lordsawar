@@ -147,6 +147,14 @@ template<class T> class LocationList : public std::list<T>
       if (diff == -1) return 0;
       return &(*diffit);
     }
+
+  T* getById(Uint32 id)
+  {
+    for (typename LocationList<T>::iterator i = this->begin(); i != this->end(); ++i)
+      if (i->getId() == id)
+        return &(*i);
+    return 0;
+  }
 };
 
 #endif // LOCATIONLIST_H

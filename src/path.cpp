@@ -31,7 +31,10 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-Path::Path() {}
+Path::Path()
+{
+  d_moves_exhausted_at_point = 0;
+}
 
 Path::Path(XML_Helper* helper)
 {
@@ -39,6 +42,7 @@ Path::Path(XML_Helper* helper)
     std::istringstream sx, sy;
     std::string s;
 
+    helper->getData(d_moves_exhausted_at_point, "moves_exhausted_at_point");
     helper->getData(i, "size");
 
     helper->getData(s, "x");
@@ -74,6 +78,8 @@ bool Path::save(XML_Helper* helper) const
 
     retval &= helper->openTag("path");
     retval &= helper->saveData("size", size());
+    retval &= helper->saveData("moves_exhausted_at_point", 
+                               d_moves_exhausted_at_point);
     retval &= helper->saveData("x", sx.str());
     retval &= helper->saveData("y", sy.str());
     retval &= helper->closeTag();
@@ -156,7 +162,7 @@ void Path::recalculate (Stack* s)
   if (it == rend())
     {
       //well, it looks like all of our points were in enemy cities
-      s->setMovesExhaustedAtPoint(0);
+      setMovesExhaustedAtPoint(0);
       flClear();
     }
   else
@@ -281,7 +287,7 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
     int dist = distance[dest.y * width + dest.x];
     if (dist < 0)
       {
-	s->setMovesExhaustedAtPoint(0);
+	setMovesExhaustedAtPoint(0);
         return 0;
       }
 
@@ -355,11 +361,21 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
 	  break;
 	pathcount++;
       }
-    s->setMovesExhaustedAtPoint(pathcount);
+    setMovesExhaustedAtPoint(pathcount);
 
-    debug("...done")
+    debug("...done");
     return distance[dest.y * width + dest.x];
 }
+
+void Path::eraseFirstPoint()
+{
+  flErase(begin());
+
+  if (getMovesExhaustedAtPoint() > 0)
+    setMovesExhaustedAtPoint(getMovesExhaustedAtPoint()-1);
+}
+
+
 
 //am i blocked from entering destx,desty from x,y when i'm not flying?
 bool Path::isBlockedDir(int x, int y, int destx, int desty) const

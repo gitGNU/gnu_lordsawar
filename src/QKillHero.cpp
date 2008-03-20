@@ -54,6 +54,19 @@ QuestKillHero::QuestKillHero(QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
+QuestKillHero::QuestKillHero(QuestsManager& q_mgr, Uint32 hero, Uint32 victim) 
+    : Quest(q_mgr, hero, Quest::KILLHERO)
+{
+    d_victim = victim;
+
+    // double and triple check :)
+    Hero *h = Quest::getHeroById(d_victim);
+    assert(h);
+    d_targets.push_back(h->getOwner()->getStacklist()->getPosition(d_victim));
+
+    initDescription();
+}
+//=======================================================================
 bool QuestKillHero::isFeasible(Uint32 heroId)
 {
     // chooseToKill returns 0 if no enemy heroes exist

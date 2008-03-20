@@ -224,6 +224,24 @@ Stack* Stacklist::getNextMovable()
 	return d_activestack;
 }
 
+Stack *Stacklist::getStackById(Uint32 id)
+{
+  for (Stacklist::iterator i = begin(), e = end(); i != e; ++i)
+    if ((*i)->getId() == id)
+      return *i;
+    
+  return 0;
+}
+
+Stack *Stacklist::getArmyStackById(Uint32 army)
+{
+  for (Stacklist::iterator i = begin(), e = end(); i != e; ++i)
+    if ((*i)->getArmyById(army))
+      return *i;
+  
+  return 0;
+}
+
 void Stacklist::flClear()
 {
     d_activestack = 0;

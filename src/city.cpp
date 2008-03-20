@@ -246,11 +246,8 @@ bool City::hasProductionBase(const Army * army)
   return hasProductionBase(army->getType(), army->getArmyset());
 }
 
-bool City::addProductionBase(int index, Army *army)
+void City::addProductionBase(int index, Army *army)
 {
-    if (index >= d_numprodbase)
-        return false;
-
     army->setOwner(d_owner);
 
     if (index < 0)
@@ -277,7 +274,6 @@ bool City::addProductionBase(int index, Army *army)
     d_prodbase[index] = army;
     if (restore_production)
       setActiveProductionSlot(index);
-    return true;
 }
 
 void City::removeProductionBase(int index)

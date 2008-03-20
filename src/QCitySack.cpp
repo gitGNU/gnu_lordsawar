@@ -43,7 +43,7 @@ QuestCitySack::QuestCitySack (QuestsManager& mgr, Uint32 hero)
 
     d_city = c->getId();
     d_targets.push_back(c->getPos());
-    debug("city_id = " << d_ruin);
+    debug("city_id = " << d_city);
     initDescription();
 }
 //=======================================================================
@@ -52,6 +52,14 @@ QuestCitySack::QuestCitySack (QuestsManager& q_mgr, XML_Helper* helper)
 {
     // let us stay in touch with the world...
     helper->getData(d_city, "city");
+    d_targets.push_back(getCity()->getPos());
+    initDescription();
+}
+//=======================================================================
+QuestCitySack::QuestCitySack (QuestsManager& mgr, Uint32 hero, Uint32 target) 
+    : Quest(mgr, hero, Quest::CITYSACK)
+{
+    d_city = target;
     d_targets.push_back(getCity()->getPos());
     initDescription();
 }

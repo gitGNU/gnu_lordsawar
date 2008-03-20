@@ -52,6 +52,9 @@ class QuestPillageGold : public Quest, public sigc::trackable
 	 */
         QuestPillageGold(QuestsManager& q_mgr, XML_Helper* helper);
      
+        // Construct from remote action.
+        QuestPillageGold(QuestsManager& q_mgr, Uint32 hero, Uint32 gold);
+        
 	//! Returns that this quest is feasible.
         static bool isFeasible(Uint32 heroId) {return true;}
 

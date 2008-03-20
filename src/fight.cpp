@@ -130,20 +130,7 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
 
 	
     std::list<Stack*>::iterator it;
-    if (d_type == FOR_KEEPS)
-      {
-	// Now some last initializing. Each unit has its battle number 
-	// increased.
-
-	for (it = d_attackers.begin(); it != d_attackers.end(); it++)
-	  for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
-	    (*sit)->setBattlesNumber((*sit)->getBattlesNumber() + 1);
-
-	for (it = d_defenders.begin(); it != d_defenders.end(); it++)
-	  for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
-	    (*sit)->setBattlesNumber((*sit)->getBattlesNumber() + 1);
-      }
-
+    
     //setup fighters
     it = d_defenders.begin();
     std::vector<Army*> def;
@@ -169,6 +156,14 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
   calculateBonus();
 }
 
+Fight::Fight(std::list<Stack*> attackers, std::list<Stack*> defenders,
+             std::list<FightItem> history)
+{
+  d_attackers = attackers;
+  d_defenders = defenders;
+  d_actions = history;
+}
+
 Fight::~Fight()
 {
       
@@ -187,7 +182,6 @@ Fight::~Fight()
       delete (*d_def_close.begin());
       d_def_close.erase(d_def_close.begin());
     }
-
 }
 
 void Fight::battle(bool intense)
@@ -242,15 +236,41 @@ void Fight::battle(bool intense)
     }
 }
 
+Army *findArmyById(const std::list<Stack *> &l, Uint32 id)
+{
+  for (std::list<Stack *>::const_iterator i = l.begin(), end = l.end();
+       i != end; ++i) {
+    Army *a = (*i)->getArmyById(id);
+    if (a)
+      return a;
+  }
+
+  return 0;
+}
+
+void Fight::battleFromHistory()
+{
+  for (std::list<FightItem>::iterator i = d_actions.begin(),
+         end = d_actions.end(); i != end; ++i) {
+    FightItem &f = *i;
+
+    Army *a = findArmyById(d_attackers, f.id);
+    if (!a)
+      a = findArmyById(d_defenders, f.id);
+
+    a->damage(f.damage);
+  }
+}
+
 bool Fight::doRound()
 {
   if (MAX_ROUNDS && d_turn >= MAX_ROUNDS)
     return false;
 
-  debug ("Fight round #" <<d_turn)
+  debug ("Fight round #" <<d_turn);
 
-    //fight the first one in attackers with the first one in defenders
-    std::list<Fighter*>::iterator ffit = d_att_close.begin();
+  //fight the first one in attackers with the first one in defenders
+  std::list<Fighter*>::iterator ffit = d_att_close.begin();
   std::list<Fighter*>::iterator efit = d_def_close.begin();
 
   //have the attacker and defender try to hit each other

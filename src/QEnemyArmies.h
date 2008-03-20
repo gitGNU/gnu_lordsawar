@@ -41,6 +41,10 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
 	 */
         QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero);
 
+        // Construct from remote action.
+        QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero,
+                         Uint32 armies_to_kill, Uint32 victim_player);
+        
 	//! Loading constructor.
 	/**
 	 * @param q_mgr   The quests manager to associate this quest with.

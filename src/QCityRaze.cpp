@@ -55,6 +55,14 @@ QuestCityRaze::QuestCityRaze (QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
+QuestCityRaze::QuestCityRaze (QuestsManager& mgr, Uint32 hero, Uint32 target) 
+    : Quest(mgr, hero, Quest::CITYRAZE)
+{
+    d_city = target;
+    d_targets.push_back(getCity()->getPos());
+    initDescription();
+}
+//=======================================================================
 bool QuestCityRaze::isFeasible(Uint32 heroId)
 {
   if (QuestCityRaze::chooseToRaze(getHeroById(heroId)->getOwner()))

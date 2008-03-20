@@ -258,62 +258,69 @@ void FightWindow::add_army(Army *army,
     item.hp = army->getHP();
     item.bar = progress;
     item.image = image;
+    item.exploding = false;
     army_items.push_back(item);
 }
+
+#include <iostream>
 
 bool FightWindow::do_round()
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   SDL_Surface *expl = gc->getExplosionPic();
-  static Gtk::Image *explosion = NULL;
-  if (explosion)
+
+  // first we clear out any explosions
+  for (army_items_type::iterator i = army_items.begin(),
+         end = army_items.end(); i != end; ++i)
+  {
+    if (!i->exploding)
+      continue;
+    
+    Glib::RefPtr<Gdk::Pixbuf> empty_pic
+      = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, expl->w, expl->h);
+    empty_pic->fill(0x00000000);
+    i->image->property_pixbuf() = empty_pic;
+    i->exploding = false;
+    return Timing::CONTINUE;
+  }
+
+  while (action_iterator != actions.end())
+  {
+    FightItem &f = *action_iterator;
+	
+    ++action_iterator;
+
+    for (army_items_type::iterator i = army_items.begin(),
+           end = army_items.end(); i != end; ++i)
+      if (i->army->getId() == f.id)
+      {
+        i->hp -= f.damage;
+        if (i->hp < 0)
+          i->hp = 0;
+        double fraction = double(i->hp) / i->army->getStat(Army::HP);
+        i->bar->set_fraction(fraction);
+        if (fraction == 0.0)
+        {
+          i->bar->hide();
+          i->image->property_pixbuf() = to_pixbuf(expl);
+          i->exploding = true;
+        }
+		
+        break;
+      }
+
+    if (f.turn > round)
     {
-      Glib::RefPtr<Gdk::Pixbuf> empty_pic
-	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, expl->w, expl->h);
-      empty_pic->fill(0x00000000);
-      explosion->property_pixbuf() = empty_pic;
-      explosion = NULL;
+      ++round;
+
       return Timing::CONTINUE;
     }
+  }
 
-    while (action_iterator != actions.end())
-    {
-	FightItem &f = *action_iterator;
-	
-	++action_iterator;
-
-	for (army_items_type::iterator i = army_items.begin(),
-		 end = army_items.end(); i != end; ++i)
-	    if (i->army->getId() == f.id)
-	    {
-		i->hp -= f.damage;
-		if (i->hp < 0)
-		    i->hp = 0;
-		double fraction = double(i->hp) / i->army->getStat(Army::HP);
-		i->bar->set_fraction(fraction);
-		if (fraction == 0.0)
-		  {
-		    i->bar->hide();
-		    //i->image->get_pixbuf()->fill(0x00000000);
-		    i->image->property_pixbuf() = to_pixbuf(expl);
-		    explosion = i->image;
-		  }
-		
-		break;
-	    }
-
-	if (f.turn > round)
-	{
-	    ++round;
-
-	    return Timing::CONTINUE;
-	}
-    }
-
-    window->hide();
-    main_loop->quit();
+  window->hide();
+  main_loop->quit();
     
-    return Timing::STOP;
+  return Timing::STOP;
 }
 void FightWindow::on_key_release_event(GdkEventKey* event)
 {

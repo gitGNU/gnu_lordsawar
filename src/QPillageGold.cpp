@@ -46,6 +46,14 @@ QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
+QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, Uint32 hero, Uint32 gold)
+    : Quest(q_mgr, hero, Quest::PILLAGEGOLD), d_pillaged(0)
+{
+    d_to_pillage = gold;
+
+    initDescription();
+}
+//=======================================================================
 bool QuestPillageGold::save(XML_Helper *helper) const
 {
     bool retval = true;

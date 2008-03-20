@@ -28,7 +28,6 @@
 #include "sound.h"
 #include "GraphicsCache.h"
 #include "GameScenario.h"
-#include "QuestsManager.h"
 #include "NextTurn.h"
 
 #include "gamebigmap.h"
@@ -60,6 +59,8 @@
 #include "history.h"
 
 
+Game *Game::current_game = 0;
+
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 #define debug(x)
 void Game::addPlayer(Player *p)
@@ -71,9 +72,6 @@ void Game::addPlayer(Player *p)
        it != connections[p->getId()].end(); it++) 
     (*it).disconnect();
   connections[p->getId()].clear();
-
-  connections[p->getId()].push_back
-    (p->sdyingStack.connect(sigc::mem_fun(this, &Game::stackDied)));
 
   if (p->getType() == Player::HUMAN)
     {
@@ -126,6 +124,7 @@ void Game::addPlayer(Player *p)
 Game::Game(GameScenario* gameScenario)
     : d_gameScenario(gameScenario) 
 {
+    current_game = this;
     input_locked = false;
     
     // init the bigmap
@@ -191,7 +190,7 @@ Game::Game(GameScenario* gameScenario)
     center_view_on_city();
     update_control_panel();
 
-    loadHeroTemplates();
+    //loadHeroTemplates();
 }
 
 Game::~Game()
@@ -206,6 +205,12 @@ Game::~Game()
     delete d_gameScenario;
     delete d_nextTurn;
 }
+
+GameScenario *Game::getScenario()
+{
+  return current_game->d_gameScenario;
+}
+
 
 void Game::end_turn()
 {
@@ -505,8 +510,6 @@ void Game::search_selected_stack()
     }
 }
 
-// the parameter is currently not used (=0), but may be used for more detailed
-// descriptions later on
 void Game::stackUpdate(Stack* s)
 {
   if (!s)
@@ -520,16 +523,10 @@ void Game::stackUpdate(Stack* s)
 
   update_stack_info();
   update_control_panel();
-}
 
-// s is currently unused, but can later be filled with reasonable data
-void Game::stackDied(Stack* s)
-{
-  unselect_active_stack();
-  redraw();
-  update_control_panel();
+  // sleep for a specified amount of time
+  SDL_Delay(Configuration::s_displaySpeedDelay);
 }
-
 
 Army::Stat Game::newLevelArmy(Army* a)
 {
@@ -698,30 +695,11 @@ void Game::looting_city(City* city, int &gold)
   return;
 }
 
-void Game::invading_city(City* city)
+void Game::invading_city(City* city, int gold)
 {
-  Playerlist *plist = Playerlist::getInstance();
-  Player *player = plist->getActiveplayer();
-  int gold = 0;
-
-  // See if this is the last city for that player, and alter the 
-  // diplomatic scores.
-  if (Citylist::getInstance()->countCities(city->getOwner()) == 1)
-    {
-      if (city->getOwner()->getDiplomaticRank() < 
-	  player->getDiplomaticRank())
-	player->deteriorateDiplomaticRelationship (2);
-      else if (city->getOwner()->getDiplomaticRank() > 
-	  player->getDiplomaticRank())
-	player->improveDiplomaticRelationship (2, city->getOwner());
-    }
-
-  // loot the city
-  // if the attacked city isn't neutral, loot some gold
-  if (city->getOwner() != plist->getNeutral())
-    looting_city (city, gold);
-
-  if (!input_locked)
+  Player *player = Playerlist::getInstance()->getActiveplayer();
+  
+  if (player->getType() == Player::HUMAN)
     {
       redraw();
       CityDefeatedAction a = city_defeated.emit(city, gold);
@@ -837,8 +815,8 @@ void Game::update_control_panel()
   if (stack)
     {
       can_move_selected_stack_along_path.emit
-	(stack->getPath()->size() > 0 && stack->enoughMoves() ||
-	 (stack->getPath()->size() && stack->getMovesExhaustedAtPoint() > 0));
+	(!stack->getPath()->empty() && stack->enoughMoves() ||
+	 (!stack->getPath()->empty() && stack->getPath()->getMovesExhaustedAtPoint() > 0));
 
       /*
        * a note about searching.
@@ -952,7 +930,6 @@ SmallMap &Game::get_smallmap()
 
 void Game::startGame()
 {
-
   debug ("start_game()");
   lock_inputs();
 
@@ -975,6 +952,10 @@ void Game::loadGame()
       update_stack_info();
       game_loaded.emit(player);
     }
+
+  d_nextTurn->setContinuingTurn();
+  d_nextTurn->start();
+#if 0
   else
     {
       lock_inputs();
@@ -984,6 +965,7 @@ void Game::loadGame()
       if (Playerlist::getInstance()->countPlayersAlive())
 	update_control_panel();
     }
+#endif
 }
 
 void Game::stopGame()
@@ -1016,6 +998,7 @@ bool Game::saveGame(std::string file)
  */
 void Game::maybeRecruitHero (Player *p)
 {
+  return;
   City *city;
   Playerlist *plist = Playerlist::getInstance();
   int gold_needed = 0;
@@ -1041,7 +1024,7 @@ void Game::maybeRecruitHero (Player *p)
     }
 
   //we set the chance of some hero recruitment to, ehm, 10 percent
-  if (((((rand() % 6) == 0) && (gold_needed < p->getGold())) 
+  if (((((rand() % 1) == 0) && (gold_needed < p->getGold())) 
        || gold_needed == 0)
       && (p != plist->getNeutral()))
     {
@@ -1181,13 +1164,9 @@ Game::loadHeroTemplates()
   return 0;
 }
 
-bool Game::init_turn_for_player(Player* p)
+void Game::init_turn_for_player(Player* p)
 {
   Playerlist* pl = Playerlist::getInstance();
-  // FIXME: Currently this function only checks for a human player. You
-  // can also have it check for e.g. escape key pressed to interrupt
-  // an AI-only game to save/quit.
-
 
   if (GameScenario::s_hidden_map && p->getType() == Player::HUMAN)
     {
@@ -1196,18 +1175,13 @@ bool Game::init_turn_for_player(Player* p)
     }
   next_player_turn.emit(p, d_gameScenario->getRound() + 1);
   center_view_on_city();
-  if (Playerlist::isFinished())
-    return true; //closing game window while the computer is moving
   if (p->getType() == Player::HUMAN)
     {
       unlock_inputs();
 
-
       update_sidebar_stats();
       update_stack_info();
       update_control_panel();
-
-      QuestsManager::getInstance()->nextTurn(p);
 
       maybeRecruitHero(p);
 
@@ -1234,35 +1208,11 @@ bool Game::init_turn_for_player(Player* p)
 	    }
 	}
       received_diplomatic_proposal.emit(proposal_received);
-
-      return true;
     }
   else
     {
       SDL_Delay(250);
-      QuestsManager::getInstance()->nextTurn(p);
       maybeRecruitHero(p);
-      if (d_gameScenario->s_cusp_of_war == true &&
-	  d_gameScenario->getRound() == CUSP_OF_WAR_ROUND)
-	{
-	  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
-	    if ((*it)->getType() == Player::HUMAN)
-	      {
-		if ((*it)->isDead())
-		  continue;
-		if (p->getDiplomaticState(*it) != Player::AT_WAR)
-		  {
-		    p->proposeDiplomacy (Player::PROPOSE_WAR, *it);
-		    (*it)->proposeDiplomacy (Player::PROPOSE_WAR, p);
-		    p->declareDiplomacy (Player::AT_WAR, *it);
-  
-		    History_DiplomacyWar *item1 = new History_DiplomacyWar();
-		    item1->fillData(*it);
-		    p->getHistorylist()->push_back(item1);
-		  }
-	      }
-	}
-	  return false;
     }
 }
 
@@ -1277,27 +1227,23 @@ void Game::on_player_died(Player *player)
 
 void Game::on_fight_started(Fight &fight)
 {
-  Player* pd = (*(fight.getDefenders().begin()))->getOwner();
-  Player* pa = (*(fight.getAttackers().begin()))->getOwner();
+#if 0
+  Player* pd = fight.getDefenders().front()->getOwner();
+  Player* pa = fight.getAttackers().front()->getOwner();
   if ((pa->getType() == Player::HUMAN || pd->getType() == Player::HUMAN) ||
       (pa->getType() != Player::HUMAN && pd->getType() != Player::HUMAN 
        && pd != Playerlist::getInstance()->getNeutral()))
-    {
+  {
 
-      if (pa->getType() != Player::HUMAN && pd->getType() != Player::HUMAN &&
-	  GameScenario::s_hidden_map == true)
-	{
-	  //short circuit the battle sequence
-	  fight.battle(GameScenario::s_intense_combat);
-	  return;
-	}
-    }
-  else
-    {
-      //short circuit the battle sequence
-      fight.battle(GameScenario::s_intense_combat);
+    //short circuit the battle sequence
+    if (pa->getType() != Player::HUMAN && pd->getType() != Player::HUMAN &&
+        GameScenario::s_hidden_map == true)
       return;
-    }
+  }
+  else
+    return; //short circuit the battle sequence
+#endif
+  
   //FIXME: zoom the map here if we're attacking an observable human, 
   //from an unobservable computer player
   bigmap->setFighting(true);

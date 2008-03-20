@@ -68,13 +68,12 @@ class NextTurn: public sigc::trackable
          */
         void endTurn();
 
+        void setContinuingTurn() { continuing_turn = true; }
+        
         /**
            \brief signals for announcing events
-
-           If the splayerStart signal returns true, the main loop will quit,
-           which is useful if a human player's turn starts.
          */
-        sigc::signal<bool, Player*> splayerStart;
+        sigc::signal<void, Player*> splayerStart;
 
 	// emitted whenever a new player's turn starts.
         sigc::signal<void, Player*> snextTurn;
@@ -122,6 +121,8 @@ class NextTurn: public sigc::trackable
         //! If set to true, the game is interrupted at the next occasion
         bool d_stop;
 
+        // whether we're starting a turn again from loading a game
+        bool continuing_turn;
 };
 
 #endif //NEXT_TURN_H

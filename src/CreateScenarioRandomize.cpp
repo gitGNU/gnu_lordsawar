@@ -215,7 +215,7 @@ Reward *CreateScenarioRandomize::getNewRandomReward(bool hidden_ruins)
   if (!hidden_ruins)
     max_reward_types--;
   int num = rand() % max_reward_types;
-  Reward *reward;
+  Reward *reward = 0;
 
   switch (num)
     {

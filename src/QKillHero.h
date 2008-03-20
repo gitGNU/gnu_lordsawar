@@ -48,6 +48,9 @@ class QuestKillHero : public Quest, public sigc::trackable
 	 */
         QuestKillHero(QuestsManager& q_mgr, XML_Helper* helper);
 
+        // Construct from remote action.
+        QuestKillHero(QuestsManager& q_mgr, Uint32 hero, Uint32 victim);
+        
 	//! Returns whether or not this quest is impossible.
         /**
 	 * Checks to see if any Players have a Hero to target.

@@ -94,6 +94,10 @@ class Fight
          */
         Fight(Stack* attacker, Stack* defender, FightType type = FOR_KEEPS);
 
+        // construct from serialized action
+        Fight(std::list<Stack*> attackers, std::list<Stack*> defenders,
+              std::list<FightItem> history);
+        
 	//! Destructor.
         ~Fight();
 
@@ -107,7 +111,8 @@ class Fight
 	 */
         void battle(bool intense);
 
-
+        void battleFromHistory();
+        
         //! Returns the result of the fight.
         Result getResult() const {return d_result;}
 

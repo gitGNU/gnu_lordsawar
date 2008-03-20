@@ -86,7 +86,7 @@ class Game
     // save current game, returns true if successful
     bool saveGame(std::string file);
 
-    GameScenario *getScenario() {return d_gameScenario;};
+    static GameScenario *getScenario();
     GameBigMap &get_bigmap();
     SmallMap &get_smallmap();
     
@@ -145,6 +145,7 @@ class Game
     void addPlayer(Player *p);
 
  private:
+    static Game *current_game;
 
     /**
     \brief The function reads in the heronames file and produces a
@@ -185,18 +186,15 @@ class Game
     void on_smallmap_changed(SDL_Surface *map);
     
     // misc. callbacks
-    void invading_city(City* city);
-    // returns true if the next turn loop should stop
-    bool init_turn_for_player(Player* p);
+    void invading_city(City* city, int gold);
+    void init_turn_for_player(Player* p);
     void on_player_died(Player *p);
     //! Callback when the army of a human player reaches a new level.
     Army::Stat newLevelArmy(Army* a);
     //! Callback when an army gets a new medal.
     void newMedalArmy(Army* a);
-    //! Called whenever a stack has moved, updates the map etc.
+    //! Called whenever a stack has changed, updates the map etc.
     void stackUpdate(Stack* s);
-    //! Called whenever a stack has died; updates bigmap as well
-    void stackDied(Stack* s);
     //! Called whenever players fight
     void on_fight_started(Fight &fight);
     //! Called whenever a player receives an offer of surrender

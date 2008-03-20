@@ -120,6 +120,27 @@ class Path : public std::list<Vector<int>*>
 	//! Recalculate a Stack object's Path.
 	void recalculate (Stack* s);
 
+	//! Return the number of points the stack can move along it's path.
+	Uint32 getMovesExhaustedAtPoint() {return d_moves_exhausted_at_point;}
+
+	/**
+	 * Set the point at which the stack can't move along it's path.
+	 * If the first point in the stack's path cannot be moved to,
+	 * this method should return 0.  If the second point can't be moved 
+	 * to, then this method should return 1, etc.
+	 * 
+	 * The purpose of this method is to assist in drawing the waypoint
+	 * graphics.
+	 *
+	 * @param index   The index of the point in the stack's path that
+	 *                cannot be moved to.
+	 */
+	//! Set the number of points the stack can move along it's path.
+	void setMovesExhaustedAtPoint(Uint32 index) 
+	  {d_moves_exhausted_at_point = index;}
+
+        void eraseFirstPoint();
+        
     private:
         /** 
          * This method returns whether or not a Stack can pass over a tile.  
@@ -215,6 +236,9 @@ class Path : public std::list<Vector<int>*>
 
 	//! A cached copy of a Stack object's movement bonus.
         Uint32 d_bonus;
+
+	//! The point in the path that can't be reached.
+	Uint32 d_moves_exhausted_at_point;
 };
 
 #endif // PATH_H

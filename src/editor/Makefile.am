@@ -1,4 +1,4 @@
-#   Copyright (C) 2007, Ole Laursen
+#   Copyright (C) 2007, 2008, Ole Laursen
 #   Copyright (C) 2007, 2008 Ben Asselstine
 # 
 #   This program is free software; you can redistribute it and/or modify
@@ -44,7 +44,7 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../citysetlist.o ../cityset.o ../CreateScenarioRandomize.o \
 	../Ownable.o ../Movable.o ../Immovable.o ../Positioned.o \
 	../Named.o ../Namable.o ../Renamable.o ../NamedLocation.o \
-	../network_player.o
+	../network_player.o ../game.o ../NextTurn.o ../gamebigmap.o
 
 if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor lordsawar-army-editor

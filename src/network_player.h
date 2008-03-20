@@ -43,56 +43,15 @@ class NetworkPlayer : public Player
         
         //! Actions, see player.h for explanation
         virtual bool startTurn();
-        virtual bool initTurn();
-        virtual bool invadeCity(City* c);
+        virtual void endTurn();
+        virtual void invadeCity(City* c);
         virtual bool recruitHero(Hero* hero, City *city, int cost);
-        virtual bool levelArmy(Army* a);
+        virtual void levelArmy(Army* a);
 
-        bool stackSplit(Stack* s);
-        bool stackJoin(Stack* receiver, Stack* joining, bool grouped);
-        bool stackDisband(Stack* s);
-        bool signpostChange(Signpost *s, std::string message);
-        bool cityRename(City *c, std::string name);
-        bool vectorFromCity(City* c, Vector<int> dest);
-	bool changeVectorDestination(City *c, Vector<int> dest);
-	void setFightOrder(std::list<Uint32> order);
-        void resign();
-        bool heroPlantStandard(Stack *s);
-        bool heroDropItem(Hero *h, Item *item, Vector<int> pos);
-        bool heroDropAllItems(Hero *h, Vector<int> pos);
-        bool heroPickupItem(Hero *h, Item *item, Vector<int> pos);
-        bool heroCompletesQuest(Hero *h);
-
-
-        bool stackMove(Stack* s);
-        MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow);
-        Reward* stackSearchRuin(Stack* s, Ruin* r);
-        int stackVisitTemple(Stack* s, Temple* t);
-        Quest* stackGetQuest(Stack* s, Temple*t, bool except_raze);
-
-	bool treachery (Stack *stack, Player *player, Vector <int> pos);
-
-        Fight::Result stackFight(Stack** attacker, Stack** defender,
-                                 bool ruin=false);
-
-        Fight::Result stackRuinFight (Stack **attacker, Stack **defender);
-	float stackFightAdvise(Stack* s, Vector<int> tile, bool intense_combat);
-        bool cityOccupy(City* c);
-        bool cityPillage(City* c, int& gold, int& pillaged_army_type);
-        bool citySack(City* c, int& gold, std::list<Uint32> *sacked_types);
-        bool cityRaze(City* c);
-        bool cityBuyProduction(City* c, int slot, int type);
-        bool cityChangeProduction(City* c, int slot);
-        Uint32 getScore();
-
-    protected:
-
-        //if reward != 0, give this reward, else randomize
-        bool giveReward (Stack *s, Reward *r);
-        bool stackMoveOneStep(Stack* s);
-    private:
-        bool cityOccupy(City* c, bool emit);
-	void tallyTriumph(Player *p, TriumphType type);
+private:
+        bool loadAction(std::string tag, XML_Helper* helper);
+        void onResponse(int responseId);
+  
 	void decodeAction(const Action *action);
 	void decodeActionMove(const Action_Move *action);
 	void decodeActionSplit(const Action_Split *action);
@@ -123,6 +82,8 @@ class NetworkPlayer : public Player
 	void decodeActionDiplomacyState(const Action_DiplomacyState *action);
 	void decodeActionDiplomacyProposal(const Action_DiplomacyProposal *action);
 	void decodeActionDiplomacyScore(const Action_DiplomacyScore *action);
+	void decodeActionEndTurn(const Action_EndTurn *action);
+	void decodeActionConquerCity(const Action_ConquerCity *action);
 };
 
 #endif // NETWORK_PLAYER_H

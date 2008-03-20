@@ -86,7 +86,8 @@ void Maptile::addItem(Item* item, int position)
     }
 
     std::list<Item*>::iterator it;
-    for (it = d_items.begin(); position > 0; position--, it++);
+    for (it = d_items.begin(); position > 0; position--, it++)
+      ;
     d_items.insert(it, item);
 }
 

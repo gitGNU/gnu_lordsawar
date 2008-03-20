@@ -83,7 +83,18 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper)
     d_victim_player = Playerlist::getInstance()->getPlayer(ui);
 
     update_targets();
+    initDescription();
+}
+//=======================================================================
+QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero,
+                                   Uint32 armies_to_kill, Uint32 victim_player)
+    : Quest(q_mgr, hero, Quest::KILLARMIES), d_killed(0)
+{
+    // have us be informed when hostilities break out
+    d_victim_player = Playerlist::getInstance()->getPlayer(victim_player);
+    d_to_kill = armies_to_kill;
 
+    update_targets();
     initDescription();
 }
 //=======================================================================

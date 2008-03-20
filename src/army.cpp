@@ -23,7 +23,7 @@
 #include "templelist.h"
 #include "ucompose.hpp"
 
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 sigc::signal<void, Army*> Army::sdying;
@@ -51,6 +51,7 @@ Army::Army(const Army& a, Player* p)
     if (d_id == 0)
     {
         d_id = fl_counter->getNextId();
+        debug("army created with id " << d_id);
         d_hp = d_max_hp;
         d_moves = d_max_moves;
 	d_max_moves_multiplier = 1;
