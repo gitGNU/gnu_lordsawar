@@ -55,7 +55,7 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
     cr->set_source_rgb (0.8, 0.8, 0.8);
     cr->set_line_width(1000.0);
     cr->move_to(0,0);
-    cr->line_to(width,height);
+    cr->line_to(width, height);
     cr->stroke();
     cr->set_line_width((double)lw);
 
@@ -68,12 +68,40 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
 	    if (*bit > max)
 	      max = *bit;
 	  }
+	if (max < 10)
+	  max = 10;
+	else if (max < 100)
+	  max = 100;
+	else if (max < 250)
+	  max = 250;
+	else if (max < 500)
+	  max = 500;
+	else if (max < 1000)
+	  max = 1000;
+	else if (max < 1500)
+	  max = 1500;
+	else if (max < 2500)
+	  max = 2500;
+	else if (max < 3500)
+	  max = 3500;
+	else if (max < 5000)
+	  max = 5000;
+	else if (max < 7500)
+	  max = 7500;
+	else if (max < 10000)
+	  max = 10000;
+	else if (max < 25000)
+	  max = 25000;
+	else if (max < 50000)
+	  max = 50000;
+	else if (max < 100000)
+	  max = 100000;
       }
     else
       max = d_max_value;
 
-
-    unsigned int offs = 15;
+    unsigned int voffs = 15;
+    unsigned int hoffs = 15;
     unsigned int d = 10;
     cr->move_to(0, 0);
     bit = d_bars.begin();
@@ -81,17 +109,72 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
     unsigned int i = 0;
     for (; bit != d_bars.end(), cit != d_colours.end(); bit++, cit++, i+=(lw+d))
       {
-	cr->move_to(0, i + lw + offs);
+	cr->move_to(hoffs, i + lw + voffs);
 	double red = (double)(*cit).get_red() /65535.0;
 	double green = (double)(*cit).get_green() /65535.0;
 	double blue = (double)(*cit).get_blue() /65535.0;
 	cr->set_source_rgb(red, green, blue);
-	cr->set_source_rgb(red, green, blue);
-	cr->line_to(((float) *bit / (float)max) * width, i + lw + offs);
+	cr->line_to(((float) *bit / (float)max) * (width - (hoffs * 2)) , 
+		    i + lw + voffs);
 	cr->stroke();
       }
+    cr->set_source_rgb (0.2, 0.2, 0.2);
+    lw = 2;
+    cr->set_line_width((double)lw);
+
+    // draw the line across the bottom
+    cr->move_to(hoffs, i + lw + voffs);
+    cr->line_to(((float)max / (float)max) * (width - (hoffs * 2)), 
+		i + lw + voffs);
+    cr->stroke();
+
+    //now the three ticks
+    cr->move_to(hoffs + 1, i + lw + voffs + 1);
+    cr->line_to(hoffs + 1, i + lw + voffs + (voffs / 2) + 1);
+    cr->stroke();
+    cr->move_to(((float)0.5 * ((float)width - (hoffs * 2.0))) + (hoffs / 2), i + lw + voffs + 1);
+    cr->line_to(((float)0.5 * ((float)width - (hoffs * 2.0))) + (hoffs / 2), 
+		i + lw + voffs + (voffs / 2) + 1);
+    cr->stroke();
+    cr->move_to(((float)1.0 * ((float)width - ((float)hoffs * 2.0))) - 1, i + lw + voffs + 1);
+    cr->line_to(((float)1.0 * ((float)width - ((float)hoffs * 2.0))) - 1, 
+		i + lw + voffs + (voffs / 2) + 1);
+    cr->stroke();
+
+    // now draw the labels
+    Glib::RefPtr<Pango::Layout> layout = Glib::wrap (pango_cairo_create_layout (cr->cobj ()));
+    std::string text_font = "Sans 8";
+    Pango::FontDescription font_desc (text_font);
+    layout->set_font_description (font_desc);
+    layout->set_text("0");
+    int w, h;
+    layout->get_pixel_size (w, h);
+    cr->move_to(hoffs + 1 - (w / 2), i + lw + voffs + (voffs / 2) + 1);
+    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_operator (Cairo::OPERATOR_ATOP);
+    pango_cairo_show_layout (cr->cobj (), layout->gobj ());
+    char buf[15];
+
+    snprintf (buf, sizeof (buf), "%d", max / 2);
+    layout->set_text(buf);
+    layout->get_pixel_size (w, h);
+    cr->move_to(((float)0.5 * ((float)width - (hoffs * 2.0))) + (hoffs / 2) - 
+		( w/2), i + lw + voffs + (voffs / 2) + 1);
+    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_operator (Cairo::OPERATOR_ATOP);
+    pango_cairo_show_layout (cr->cobj (), layout->gobj ());
+
+    snprintf (buf, sizeof (buf), "%d", max);
+    layout->set_text(buf);
+    layout->get_pixel_size (w, h);
+    cr->move_to(((float)1.0 * ((float)width - ((float)hoffs * 2.0))) - 1 - 
+		(w / 2), i + lw + voffs + (voffs / 2) + 1);
+    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_operator (Cairo::OPERATOR_ATOP);
+    pango_cairo_show_layout (cr->cobj (), layout->gobj ());
+
+
   }
 
-  //FIXME: add a horizontal axis, put some ticks on it, and label it.
   return true;
 }
