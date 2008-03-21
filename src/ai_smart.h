@@ -82,7 +82,6 @@ class AI_Smart : public RealPlayer
 
         virtual bool startTurn();
         virtual void invadeCity(City* c);
-        virtual bool recruitHero(Hero* hero, City *city, int cost);
         virtual void levelArmy(Army* a);
 
     private:

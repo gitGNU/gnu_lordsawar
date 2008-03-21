@@ -23,12 +23,12 @@
 #include "templelist.h"
 #include "ucompose.hpp"
 
-//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
-#define debug(x)
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
+//#define debug(x)
 
 sigc::signal<void, Army*> Army::sdying;
 
-Army::Army(const Army& a, Player* p)
+Army::Army(const Army& a, Player* p, bool for_template)
     :Ownable(p), d_type(a.d_type), d_armyset(a.d_armyset), d_pixmap(0),
      d_mask(0), d_name(a.d_name), d_description(a.d_description), 
      d_production(a.d_production),
@@ -48,7 +48,7 @@ Army::Army(const Army& a, Player* p)
      d_visitedTemples(a.d_visitedTemples), d_hero(a.d_hero)
 {
     // if we have been copied from an army prototype, initialise several values
-    if (d_id == 0)
+    if (d_id == 0 && !for_template)
     {
         d_id = fl_counter->getNextId();
         debug("army created with id " << d_id);

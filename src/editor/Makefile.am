@@ -44,7 +44,8 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../citysetlist.o ../cityset.o ../CreateScenarioRandomize.o \
 	../Ownable.o ../Movable.o ../Immovable.o ../Positioned.o \
 	../Named.o ../Namable.o ../Renamable.o ../NamedLocation.o \
-	../network_player.o ../game.o ../NextTurn.o ../gamebigmap.o
+	../network_player.o ../game.o ../NextTurn.o ../gamebigmap.o \
+	../herotemplates.o
 
 if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor lordsawar-army-editor

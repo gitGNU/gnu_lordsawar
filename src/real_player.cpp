@@ -19,6 +19,12 @@
 
 #include "real_player.h"
 #include "action.h"
+#include "playerlist.h"
+#include "stacklist.h"
+#include "citylist.h"
+#include "herotemplates.h"
+#include "game.h"
+#include "GameScenario.h"
 #include "xmlhelper.h"
 
 using namespace std;
@@ -61,7 +67,8 @@ bool RealPlayer::save(XML_Helper* helper) const
 
 bool RealPlayer::startTurn()
 {
-    return false;
+  maybeRecruitHero();
+  return false;
 }
 
 void RealPlayer::endTurn()
@@ -76,14 +83,6 @@ void RealPlayer::invadeCity(City* c)
     // player has to decide here what to do (occupy, raze, pillage)
 }
 
-bool RealPlayer::recruitHero(Hero* hero, City *city, int cost)
-{
-    // for the realplayer, this function also just raises a signal and looks
-    // what to do next.
-
-    return srecruitingHero.emit(hero, city, cost);
-}
-
 void RealPlayer::levelArmy(Army* a)
 {
     // the standard human player just asks the GUI what to do
@@ -94,5 +93,105 @@ void RealPlayer::levelArmy(Army* a)
     item->fillData(a, stat);
     addAction(item);
 }
+
+/*
+ *
+ * what are the chances of a hero showing up?
+ *
+ * 1 in 6 if you have enough gold, where "enough gold" is...
+ *
+ * ... 1500 if the player already has a hero, then:  1500 is generally 
+ * enough to buy all the heroes.  I forget the exact distribution of 
+ * hero prices but memory says from 1000 to 1500.  (But, if you don't 
+ * have 1500 gold, and the price is less, you still get the offer...  
+ * So, calculate price, compare to available gold, then decided whether 
+ * or not to offer...)
+ *
+ * ...500 if all your heroes are dead: then prices are cut by about 
+ * a factor of 3.
+ */
+void RealPlayer::maybeRecruitHero ()
+{
+  if (this == Playerlist::getInstance()->getNeutral())
+    return;
+  
+  City *city;
+  int gold_needed = 0;
+  if (Citylist::getInstance()->countCities(this) == 0)
+    return;
+  //give the player a hero if it's the first round.
+  //otherwise we get a hero based on chance
+  //a hero costs a random number of gold pieces
+  if (Game::getScenario()->getRound() == 0)
+    gold_needed = 0;
+  else
+    {
+      bool exists = false;
+      for (Stacklist::iterator it = d_stacklist->begin(); 
+	   it != d_stacklist->end(); it++)
+	if ((*it)->hasHero())
+	  exists = true; 
+
+      gold_needed = (rand() % 500) + 1000;
+      if (exists == false)
+	gold_needed /= 3;
+    }
+
+  if (((((rand() % 6) == 0) && (gold_needed < getGold())) 
+       || gold_needed == 0))
+    {
+      Hero *herotemplate =HeroTemplates::getInstance()->getRandomHero(getId());
+#if 0
+      const Armysetlist* al = Armysetlist::getInstance();
+      const Army *heroType = al->getArmy (p->getArmyset(), 
+					  templateHero->getType());
+      Hero* newhero = new Hero(*heroType, templateHero->getName(), p);
+      newhero->setGender(Army::Gender(templateHero->getGender()));
+#endif
+      if (gold_needed == 0)
+	city = Citylist::getInstance()->getFirstCity(this);
+      else
+	{
+	  std::vector<City*> cities;
+	  Citylist* cl = Citylist::getInstance();
+	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+	    if (!(*it).isBurnt() && (*it).getOwner() == this)
+	      cities.push_back(&(*it));
+	  if (cities.empty())
+	    return;
+	  city = cities[rand() % cities.size()];
+	}
+
+      bool accepted;
+      if (srecruitingHero.empty())
+        accepted = true;
+      else
+        accepted = srecruitingHero.emit(herotemplate, city, gold_needed);
+
+      if (accepted) {
+        /* now maybe add a few allies */
+        int alliesCount;
+        if (gold_needed > 1300)
+          alliesCount = 3;
+        else if (gold_needed > 1000)
+          alliesCount = 2;
+        else if (gold_needed > 800)
+          alliesCount = 1;
+        else
+          alliesCount = 0;
+
+        const Army *ally = 0;
+        if (alliesCount > 0)
+        {
+          ally = Reward_Allies::randomArmyAlly();
+          if (!ally)
+            alliesCount = 0;
+        }
+        
+        recruitHero(herotemplate, city, gold_needed, alliesCount, ally);
+      }
+    }
+}
+
 
 // End of file

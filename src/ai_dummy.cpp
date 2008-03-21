@@ -62,11 +62,6 @@ void AI_Dummy::invadeCity(City* c)
     cityOccupy(c);
 }
 
-bool AI_Dummy::recruitHero(Hero* hero, City *city, int cost)
-{
-    return false;   //never recruit a hero
-}
-
 void AI_Dummy::levelArmy(Army* a)
 {
     Army::Stat stat = Army::STRENGTH;

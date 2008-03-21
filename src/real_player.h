@@ -49,8 +49,10 @@ class RealPlayer : public Player
         virtual bool startTurn();
         virtual void endTurn();
         virtual void invadeCity(City* c);
-        virtual bool recruitHero(Hero* hero, City *city, int cost);
         virtual void levelArmy(Army* a);
+
+    protected:
+        void maybeRecruitHero();
 };
 
 #endif // REAL_PLAYER_H

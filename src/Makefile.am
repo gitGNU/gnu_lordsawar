@@ -82,7 +82,8 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	Ownable.cpp Ownable.h Immovable.cpp Immovable.h \
 	Movable.cpp Movable.h Positioned.cpp Positioned.h \
 	Named.cpp Named.h Namable.cpp Namable.h Renamable.cpp Renamable.h \
-	network_player.cpp network_player.h
+	network_player.cpp network_player.h \
+	herotemplates.cpp herotemplates.h
 
 
 if FL_RESRC

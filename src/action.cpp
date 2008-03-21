@@ -118,6 +118,8 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_EndTurn(helper));
         case CITY_CONQUER:
             return (new Action_ConquerCity(helper));
+        case RECRUIT_HERO:
+            return (new Action_RecruitHero(helper));
     }
 
     return 0;
@@ -201,6 +203,10 @@ Action* Action::copy(const Action* a)
             return 
               (new Action_ConquerCity
                 (*dynamic_cast<const Action_ConquerCity*>(a)));
+        case RECRUIT_HERO:
+            return 
+              (new Action_RecruitHero
+                (*dynamic_cast<const Action_RecruitHero*>(a)));
     }
 
     return 0;
@@ -986,7 +992,7 @@ Action_Reward::Action_Reward(XML_Helper* helper)
 :Action(Action::REWARD)
 {
   helper->getData(d_stack, "stack");
-  helper->registerTag("reward", sigc::mem_fun((*this), &Action_Reward::load));
+  helper->registerTag("reward", sigc::mem_fun(this, &Action_Reward::load));
 }
 
 Action_Reward::~Action_Reward()
@@ -1920,5 +1926,76 @@ bool Action_ConquerCity::fillData(City* c, Stack *s)
 {
     d_city = c->getId();
     d_stack = s->getId();
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_RecruitHero
+
+Action_RecruitHero::Action_RecruitHero()
+  :Action(Action::RECRUIT_HERO), d_hero(0)
+{
+}
+
+Action_RecruitHero::Action_RecruitHero(XML_Helper* helper)
+    :Action(Action::RECRUIT_HERO)
+{
+    helper->getData(d_city, "city");
+    helper->getData(d_cost, "cost");
+    helper->getData(d_allies, "allies");
+    helper->getData(d_ally_army_type, "ally_army_type");
+    helper->registerTag("hero", sigc::mem_fun(this, &Action_RecruitHero::load));
+}
+
+bool Action_RecruitHero::load(std::string tag, XML_Helper *helper)
+{
+    if (tag == "hero")
+      {
+	d_hero = new Hero(helper);
+
+	return true;
+      }
+    return false;
+}
+
+Action_RecruitHero::~Action_RecruitHero()
+{
+}
+
+std::string Action_RecruitHero::dump() const
+{
+    std::stringstream s;
+
+    s << "Hero " << d_hero->getId() << " recruited with " << d_allies << "allies\n";
+
+    return s.str();
+}
+
+bool Action_RecruitHero::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("action");
+    retval &= helper->saveData("type", getType());
+    retval &= helper->saveData("city", d_city);
+    retval &= helper->saveData("cost", d_cost);
+    retval &= helper->saveData("allies", d_allies);
+    retval &= helper->saveData("ally_army_type", d_ally_army_type);
+    retval &= d_hero->save(helper);
+    retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool Action_RecruitHero::fillData(Hero* hero, City *city, int cost, int alliesCount, const Army *ally)
+{
+    d_hero = hero;
+    d_city = city->getId();
+    d_cost = cost;
+    d_allies = alliesCount;
+    if (alliesCount > 0)
+      d_ally_army_type = ally->getType();
+    else
+      d_ally_army_type = 0;
     return true;
 }

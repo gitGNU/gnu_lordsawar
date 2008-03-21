@@ -41,7 +41,6 @@
 #include "ruinlist.h"
 #include "templelist.h"
 #include "signpostlist.h"
-#include "armysetlist.h"
 #include "city.h"
 #include "ruin.h"
 #include "signpost.h"
@@ -58,6 +57,7 @@
 #include "GameMap.h"
 #include "history.h"
 
+#include "herotemplates.h"
 
 Game *Game::current_game = 0;
 
@@ -91,6 +91,10 @@ void Game::addPlayer(Player *p)
 	  (sigc::mem_fun
 	   (stack_considers_treachery, 
 	    &sigc::signal<bool, Player *, Stack *, Player *, Vector<int> >::emit), p)));
+      connections[p->getId()].push_back
+	(p->hero_arrives_with_allies.connect
+         (sigc::mem_fun
+          (hero_arrives, &sigc::signal<void, int>::emit)));
     }
 	
       
@@ -190,7 +194,7 @@ Game::Game(GameScenario* gameScenario)
     center_view_on_city();
     update_control_panel();
 
-    //loadHeroTemplates();
+    HeroTemplates::getInstance();
 }
 
 Game::~Game()
@@ -204,6 +208,8 @@ Game::~Game()
     }
     delete d_gameScenario;
     delete d_nextTurn;
+    
+    HeroTemplates::deleteInstance();
 }
 
 GameScenario *Game::getScenario()
@@ -979,191 +985,6 @@ bool Game::saveGame(std::string file)
   return d_gameScenario->saveGame(file);
 }
 
-
-/*
- *
- * what are the chances of a hero showing up?
- *
- * 1 in 6 if you have enough gold, where "enough gold" is...
- *
- * ... 1500 if the player already has a hero, then:  1500 is generally 
- * enough to buy all the heroes.  I forget the exact distribution of 
- * hero prices but memory says from 1000 to 1500.  (But, if you don't 
- * have 1500 gold, and the price is less, you still get the offer...  
- * So, calculate price, compare to available gold, then decided whether 
- * or not to offer...)
- *
- * ...500 if all your heroes are dead: then prices are cut by about 
- * a factor of 3.
- */
-void Game::maybeRecruitHero (Player *p)
-{
-  return;
-  City *city;
-  Playerlist *plist = Playerlist::getInstance();
-  int gold_needed = 0;
-  if (Citylist::getInstance()->countCities(p) == 0)
-    return;
-  //give the player a hero if it's the first round.
-  //otherwise we get a hero based on chance
-  //a hero costs a random number of gold pieces
-  if (d_gameScenario->getRound() == 0)
-    gold_needed = 0;
-  else
-    {
-      bool exists = false;
-      Stacklist *stacklist = p->getStacklist();
-      for (Stacklist::iterator it = stacklist->begin(); 
-	   it != stacklist->end(); it++)
-	if ((*it)->hasHero())
-	  exists = true; 
-
-      gold_needed = (rand() % 500) + 1000;
-      if (exists == false)
-	gold_needed /= 3;
-    }
-
-  //we set the chance of some hero recruitment to, ehm, 10 percent
-  if (((((rand() % 1) == 0) && (gold_needed < p->getGold())) 
-       || gold_needed == 0)
-      && (p != plist->getNeutral()))
-    {
-      const Armysetlist* al = Armysetlist::getInstance();
-      int num = rand() % d_herotemplates[p->getId()].size();
-      Hero *templateHero = d_herotemplates[p->getId()][num];
-      const Army *heroType = al->getArmy (p->getArmyset(), 
-					  templateHero->getType());
-      Hero* newhero = new Hero(*heroType, templateHero->getName(), p);
-      newhero->setGender(Army::Gender(templateHero->getGender()));
-      if (gold_needed == 0)
-	city = Citylist::getInstance()->getFirstCity(p);
-      else
-	{
-	  std::vector<City*> cities;
-	  Citylist* cl = Citylist::getInstance();
-	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-	    if (!(*it).isBurnt() && (*it).getOwner() == p)
-	      cities.push_back(&(*it));
-	  if (cities.empty())
-	    return;
-	  city = cities[rand() % cities.size()];
-	}
-
-      bool accepted = p->recruitHero(newhero, city, gold_needed);
-      if (accepted)
-	{
-	  History_HeroEmerges *item = new History_HeroEmerges();
-	  item->fillData(newhero, city);
-	  p->getHistorylist()->push_back(item);
-
-	  newhero->setOwner(p);
-
-	  int alliesCount;
-	  GameMap::getInstance()->addArmy(city, newhero);
-	  /* now maybe add a few allies */
-	  if (gold_needed > 1300)
-	    alliesCount = 3;
-	  else if (gold_needed > 1000)
-	    alliesCount = 2;
-	  else if (gold_needed > 800)
-	    alliesCount = 1;
-	  else
-	    alliesCount = 0;
-
-	  if (alliesCount > 0)
-	    {
-	      const Army *army = Reward_Allies::randomArmyAlly();
-	      if (army)
-		{
-		  Reward_Allies::addAllies(p, city->getPos(), army,alliesCount);
-		  if (p->getType() == Player::HUMAN)
-		    hero_arrives.emit(alliesCount);
-		}
-	    }
-	  if (gold_needed == 0)
-	    {
-	      // Initially give the first hero the player's standard.
-	      std::string name = p->getName() + " " + _("Standard");
-	      Item *battle_standard = new Item (name, true, p);
-	      battle_standard->addBonus(Item::ADD1STACK);
-	      newhero->addToBackpack(battle_standard, 0);
-	    }
-	  p->withdrawGold(gold_needed);
-	  p->supdatingStack.emit(0);
-	}
-      else
-	delete newhero;
-    }
-  return;
-}
-
-int
-Game::loadHeroTemplates()
-{
-  FILE *fileptr = fopen (File::getMiscFile("heronames").c_str(), "r");
-  char *line = NULL;
-  size_t len = 0;
-  ssize_t read;
-  int retval;
-  int gender;
-  int side;
-  size_t bytesread = 0;
-  char *tmp;
-  const Armysetlist* al = Armysetlist::getInstance();
-  const Army* herotype;
-
-  // list all the army types that are heroes.
-  std::vector<const Army*> heroes;
-  Player *p = Playerlist::getInstance()->getNeutral();
-  for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
-    {
-      const Army *a = al->getArmy (p->getArmyset(), j);
-      if (a->isHero())
-	heroes.push_back(a);
-    }
-
-  if (fileptr == NULL)
-    return -1;
-  while ((read = getline (&line, &len, fileptr)) != -1)
-    {
-      bytesread = 0;
-      retval = sscanf (line, "%d%d%n", &side, &gender, &bytesread);
-      if (retval != 2)
-	{
-	  free (line);
-	  return -2;
-	}
-      while (isspace(line[bytesread]) && line[bytesread] != '\0')
-	bytesread++;
-      tmp = strchr (&line[bytesread], '\n');
-      if (tmp)
-	tmp[0] = '\0';
-      if (strlen (&line[bytesread]) == 0)
-	{
-	  free (line);
-	  return -3;
-	}
-      if (side < 0 || side > (int) MAX_PLAYERS)
-	{
-	  free (line);
-	  return -4;
-	}
-
-      herotype = heroes[rand() % heroes.size()];
-      Hero *newhero = new Hero (*herotype, "", NULL);
-      if (gender)
-	newhero->setGender(Hero::MALE);
-      else
-	newhero->setGender(Hero::FEMALE);
-      newhero->setName (&line[bytesread]);
-      d_herotemplates[side].push_back (newhero);
-    }
-  if (line)
-    free (line);
-  fclose (fileptr);
-  return 0;
-}
-
 void Game::init_turn_for_player(Player* p)
 {
   Playerlist* pl = Playerlist::getInstance();
@@ -1182,8 +1003,6 @@ void Game::init_turn_for_player(Player* p)
       update_sidebar_stats();
       update_stack_info();
       update_control_panel();
-
-      maybeRecruitHero(p);
 
       if (d_gameScenario->getRound() == 0)
 	{
@@ -1212,7 +1031,6 @@ void Game::init_turn_for_player(Player* p)
   else
     {
       SDL_Delay(250);
-      maybeRecruitHero(p);
     }
 }
 

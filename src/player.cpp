@@ -44,6 +44,7 @@
 #include "QuestsManager.h"
 #include "GameMap.h"
 #include "signpost.h"
+#include "ucompose.hpp"
 
 using namespace std;
 
@@ -248,12 +249,9 @@ Player::~Player()
     if (d_fogmap)
         delete d_fogmap;
 
-    for (std::list<Action*>::iterator it = d_actions.begin(); it != d_actions.end(); it++)
-        delete (*it);
+    clearActionlist();
+    clearHistorylist();
     d_fight_order.clear();
-    for (std::list<History*>::iterator it = d_history.begin(); 
-         it != d_history.end(); it++)
-        delete (*it);
 }
 
 Player* Player::create(std::string name, Uint32 armyset, SDL_Color color, int width, int height, Type type)
@@ -523,11 +521,13 @@ bool Player::save(XML_Helper* helper) const
       }
     retval &= helper->saveData("diplomatic_scores", diplomatic_scores.str());
 
+#if 0
     //save the actionlist
     for (list<Action*>::const_iterator it = d_actions.begin();
             it != d_actions.end(); it++)
         retval &= (*it)->save(helper);
-
+#endif
+    
     //save the pasteventlist
     for (list<History*>::const_iterator it = d_history.begin();
             it != d_history.end(); it++)
@@ -595,13 +595,14 @@ Player* Player::loadPlayer(XML_Helper* helper)
 
 bool Player::load(string tag, XML_Helper* helper)
 {
+#if 0
     if (tag == "action")
     {
         Action* action;
         action = Action::handle_load(helper);
         d_actions.push_back(action);
     }
-
+#endif
     if (tag == "history")
     {
         History* history;
@@ -903,11 +904,6 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
             if (result == Fight::ATTACKER_WON)
             {
                 adjustDiplomacyFromConqueringCity(city);
-                
-                Action_ConquerCity *action = new Action_ConquerCity();
-                action->fillData(city, s);
-                addAction(action);
-                
                 conquerCity(city, s);
                 invadeCity(city); //let AIs determine what to do with city
             }
@@ -1410,7 +1406,7 @@ int Player::lootCity(City *city)
   return gold;
 }
 
-void Player::conquerCity(City *city, Stack *stack)
+void Player::doConquerCity(City *city, Stack *stack)
 {
   int gold = lootCity(city);
   sinvadingCity.emit(city, gold);
@@ -1425,6 +1421,16 @@ void Player::conquerCity(City *city, Stack *stack)
     another->fillData(hero, city);
     d_history.push_back(another);
   }
+}
+
+void Player::conquerCity(City *city, Stack *stack)
+{
+  
+  Action_ConquerCity *action = new Action_ConquerCity();
+  action->fillData(city, stack);
+  addAction(action);
+                
+  doConquerCity(city, stack);
 }
 
 void Player::takeCityInPossession(City* c)
@@ -2178,6 +2184,42 @@ void Player::tallyTriumph(Player *p, TriumphType type)
     return;
   //we (this player) have killed P's army. it was of type TYPE.
   d_triumph[id][type]++;
+}
+
+void Player::doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const Army *ally)
+{
+  History_HeroEmerges *item = new History_HeroEmerges();
+  item->fillData(herotemplate, city);
+  d_history.push_back(item);
+
+  Hero *newhero = new Hero(*herotemplate);
+  newhero->setOwner(this);
+  GameMap::getInstance()->addArmy(city, newhero);
+
+  if (alliesCount > 0)
+  {
+    Reward_Allies::addAllies(this, city->getPos(), ally, alliesCount);
+    hero_arrives_with_allies.emit(alliesCount);
+  }
+  
+  if (cost == 0)
+  {
+    // Initially give the first hero the player's standard.
+    std::string name = String::ucompose(_("%1 Standard"), getName());
+    Item *battle_standard = new Item (name, true, this);
+    battle_standard->addBonus(Item::ADD1STACK);
+    newhero->addToBackpack(battle_standard, 0);
+  }
+  withdrawGold(cost);
+  supdatingStack.emit(0);
+}
+
+void Player::recruitHero(Hero* hero, City *city, int cost, int alliesCount, const Army *ally)
+{
+  Action_RecruitHero *action = new Action_RecruitHero();
+  action->fillData(hero, city, cost, alliesCount, ally);
+  addAction(action);
+  doRecruitHero(hero, city, cost, alliesCount, ally);
 }
 
 void Player::doDeclareDiplomacy (DiplomaticState state, Player *player)

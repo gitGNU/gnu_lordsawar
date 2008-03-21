@@ -153,13 +153,6 @@ void NetworkPlayer::invadeCity(City* c)
   assert(false);
 }
 
-bool NetworkPlayer::recruitHero(Hero* hero, City *city, int cost)
-{
-  assert(false);
-
-  return true;
-}
-
 void NetworkPlayer::levelArmy(Army* a)
 {
   assert(false);
@@ -242,6 +235,9 @@ void NetworkPlayer::decodeAction(const Action *a)
     case Action::CITY_CONQUER:
       return decodeActionConquerCity
         (dynamic_cast<const Action_ConquerCity*>(a));
+    case Action::RECRUIT_HERO:
+      return decodeActionRecruitHero
+        (dynamic_cast<const Action_RecruitHero*>(a));
     }
 
   return;
@@ -534,6 +530,16 @@ void NetworkPlayer::decodeActionConquerCity(const Action_ConquerCity *action)
   City *city = Citylist::getInstance()->getById(action->d_city);
   Stack *stack = d_stacklist->getStackById(action->d_stack);
   conquerCity(city, stack);
+}
+
+void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
+{
+  City *city = Citylist::getInstance()->getById(action->d_city);
+  Army *ally = 0;
+  if (action->d_allies)
+    ally = Armysetlist::getInstance()->getArmy(getArmyset(),
+                                               action->d_ally_army_type);
+  doRecruitHero(action->d_hero, city, action->d_cost, action->d_allies, ally);
 }
 
 // End of file

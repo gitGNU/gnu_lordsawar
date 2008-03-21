@@ -45,7 +45,7 @@ class Hero : public Army
 	 * Copies the prototype hero and creates a hero from it.
          */
 	//! Default constructor.
-        Hero(const Army& a, std::string name, Player *owner);
+        Hero(const Army& a, std::string name, Player *owner, bool for_template = false);
 
         /**
          * This performs a deep copy, including the Hero's items.

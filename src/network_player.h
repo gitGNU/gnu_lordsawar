@@ -45,7 +45,6 @@ class NetworkPlayer : public Player
         virtual bool startTurn();
         virtual void endTurn();
         virtual void invadeCity(City* c);
-        virtual bool recruitHero(Hero* hero, City *city, int cost);
         virtual void levelArmy(Army* a);
 
 private:
@@ -84,6 +83,7 @@ private:
 	void decodeActionDiplomacyScore(const Action_DiplomacyScore *action);
 	void decodeActionEndTurn(const Action_EndTurn *action);
 	void decodeActionConquerCity(const Action_ConquerCity *action);
+	void decodeActionRecruitHero(const Action_RecruitHero *action);
 };
 
 #endif // NETWORK_PLAYER_H

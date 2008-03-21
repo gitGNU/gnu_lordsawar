@@ -147,12 +147,6 @@ class Game
  private:
     static Game *current_game;
 
-    /**
-    \brief The function reads in the heronames file and produces a
-    set of hero templates to be randomly selected from
-    */
-    int loadHeroTemplates();
-
     // move the selected stack one tile in a given direction
     void move_selected_stack_dir(int diffx, int diffy);
 
@@ -167,9 +161,6 @@ class Game
     // locks/unlocks the input widgets during computer turns
     void lock_inputs();
     void unlock_inputs();
-
-    //! Possibly recruit a new hero at the beginning of a turn
-    void maybeRecruitHero(Player *p);
 
     //! Maybe peform treachery
     bool maybeTreachery(Stack *stack, Player *them, Vector<int> pos);
@@ -202,8 +193,6 @@ class Game
     void nextRound();
     //! Called after a player's stack attacks a city
     void on_city_fight_finished(City *city, Fight::Result result);
-
-
     
     void looting_city(City *city, int &gold);
     void unselect_active_stack();
@@ -214,8 +203,6 @@ class Game
     std::auto_ptr<GameBigMap> bigmap;
     std::auto_ptr<SmallMap> smallmap;
 
-    /* the contents of the heronames data file */
-    std::vector<Hero*> d_herotemplates[MAX_PLAYERS];
 
     bool input_locked;
 

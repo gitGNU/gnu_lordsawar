@@ -120,7 +120,8 @@ class Action
 		 * player has changed. */
 		DIPLOMATIC_SCORE = 29,
                 END_TURN = 30,
-                CITY_CONQUER = 31
+                CITY_CONQUER = 31,
+                RECRUIT_HERO = 32
         };
                 
         
@@ -1251,7 +1252,7 @@ class Action_ConquerCity : public Action
     public:
 	//! Make a new city conquer action.
         Action_ConquerCity();
-	//! Load a new city conquered action from an opened saved-game file.
+	//! Load a new city conquer action from an opened saved-game file.
         Action_ConquerCity(XML_Helper* helper);
 	//! Destroy a city conquer action.
         ~Action_ConquerCity();
@@ -1267,6 +1268,34 @@ class Action_ConquerCity : public Action
     
         //private:
         Uint32 d_city, d_stack;
+};
+
+//-----------------------------------------------------------------------------
+
+class Action_RecruitHero : public Action
+{
+    public:
+	//! Make a new recruit hero action.
+        Action_RecruitHero();
+	//! Load a new recruit hero action from an opened saved-game file.
+        Action_RecruitHero(XML_Helper* helper);
+	//! Destroy a recruit hero action.
+        ~Action_RecruitHero();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this city occupied action to an opened saved-game file.
+        bool save(XML_Helper* helper) const;
+
+	//! Populate the action.
+        bool fillData(Hero* hero, City *city, int cost, int alliesCount, const Army *ally);
+    
+        //private:
+        Hero *d_hero;
+        Uint32 d_city, d_cost, d_allies, d_ally_army_type;
+
+        bool load(std::string tag, XML_Helper *helper);
 };
 
 #endif //ACTION_H

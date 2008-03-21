@@ -24,15 +24,15 @@
 
 using namespace std;
 
-Hero::Hero(const Army& a, std::string name, Player *owner)
- : Army (a, owner)
+Hero::Hero(const Army& a, std::string name, Player *owner, bool for_template)
+  : Army (a, owner, for_template)
 {
     d_name = name;
     d_hero = true;
 }
 
 Hero::Hero(Hero& h)
-    :Army(h, h.d_owner)
+  : Army(h, h.d_owner)
 {
     std::list<Item*>::iterator it;
 

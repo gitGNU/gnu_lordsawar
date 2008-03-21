@@ -57,12 +57,14 @@ AI_Smart::~AI_Smart()
 
 bool AI_Smart::startTurn()
 {
+  maybeRecruitHero();
+  
     debug(getName() << " start_turn")
 
     AI_Diplomacy diplomacy (this);
 
     diplomacy.considerCuspOfWar();
-    
+
     // the real stuff
     examineCities();
     int loopCount = 0;
@@ -102,12 +104,6 @@ void AI_Smart::invadeCity(City* c)
     // Update its production
     maybeBuyProduction(c);
     setBestProduction(c);
-}
-
-bool AI_Smart::recruitHero(Hero* hero, City *city, int cost)
-{
-    debug("AI_Smart: hero recruited")
-    return true;    //always recruit heroes
 }
 
 void AI_Smart::levelArmy(Army* a)

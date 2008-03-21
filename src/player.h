@@ -516,11 +516,7 @@ class Player: public sigc::trackable
         virtual void invadeCity(City* city) = 0;
 
         /** 
-	 * Called whenever a hero emerges in a city, so the player can
-         * decide what to do with the hero.
-	 * For human players this method presents a dialog so that the 
-	 * user can choose.  For computer players this method is used to
-	 * decide whether or not to accept the hero.
+	 * Called whenever a hero emerges in a city
 	 *
          * @param  hero    The hero who has offered his or her service.
          * @param  city    The city where the hero is emerging.
@@ -528,11 +524,8 @@ class Player: public sigc::trackable
 	 *                 the hero.
 	 * 
          * @note Only change the name and gender attributes of the Hero.
-	 *
-         * @return True if the player accepts the hero, false otherwise.
          */
-	//! Decision callback for if we should accept a hero.
-        virtual bool recruitHero(Hero* hero, City *city, int cost) = 0;
+        void recruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const Army *ally);
 
         /** 
 	 * Called whenever a hero advances a level.
@@ -1265,6 +1258,8 @@ class Player: public sigc::trackable
 
         //! Player would like to end the turn.
         sigc::signal<void> ending_turn;
+
+        sigc::signal<void, int> hero_arrives_with_allies;
         
     protected:
         // do some fight cleaning up, setting
@@ -1372,6 +1367,8 @@ class Player: public sigc::trackable
         void doHeroPlantStandard(Hero *hero, Item *item, Vector<int> pos);
         void doDeclareDiplomacy (DiplomaticState state, Player *player);
         void doProposeDiplomacy (DiplomaticProposal proposal, Player *player);
+        void doConquerCity(City *city, Stack *stack);
+        void doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const Army *ally);
 
     private:
         //! Loads the subdata of a player (actions and stacklist)

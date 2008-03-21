@@ -149,9 +149,10 @@ class Army : public Ownable, public sigc::trackable
 	 *
 	 * @param army    The Army unit to create the new one from.
 	 * @param owner   The Player who owns this Army.
+	 * @param for_template   Whether the army should get and id
          */
 	//! Copy constructor.
-        Army(const Army& army, Player* owner = 0);
+        Army(const Army& army, Player* owner = 0, bool for_template = false);
 
         /** 
 	 * Load an Army from an opened saved-game file or from an opened

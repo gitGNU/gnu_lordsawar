@@ -78,6 +78,10 @@ bool AI_Fast::save(XML_Helper* helper) const
 
 bool AI_Fast::startTurn()
 {
+    // maniac AI's never recruit heroes, otherwise take everything we can get
+    if (!d_maniac)
+      maybeRecruitHero();
+    
     debug(getName() << ": AI_Fast::start_turn")
     debug("being in " <<(d_maniac?"maniac":"normal") <<" mode")
     debug((d_join?"":"not ") <<"joining armies")
@@ -116,17 +120,6 @@ void AI_Fast::invadeCity(City* c)
     debug("Occupying it");
     cityOccupy(c);
   }
-}
-
-bool AI_Fast::recruitHero(Hero* hero, City *city, int cost)
-{
-    debug("AI_Fast: hero offers service")
-
-    // maniac AI's never recruit heroes, otherwise take everything we can get
-    if (d_maniac)
-        return false;
-
-    return true;
 }
 
 void AI_Fast::levelArmy(Army* a)
