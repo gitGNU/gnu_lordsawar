@@ -114,7 +114,7 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
 	double green = (double)(*cit).get_green() /65535.0;
 	double blue = (double)(*cit).get_blue() /65535.0;
 	cr->set_source_rgb(red, green, blue);
-	cr->line_to(((float) *bit / (float)max) * (width - (hoffs * 2)) , 
+	cr->line_to(((float) *bit / (float)max) * (width - hoffs) + hoffs, 
 		    i + lw + voffs);
 	cr->stroke();
       }
@@ -132,9 +132,17 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
     cr->move_to(hoffs + 1, i + lw + voffs + 1);
     cr->line_to(hoffs + 1, i + lw + voffs + (voffs / 2) + 1);
     cr->stroke();
+    cr->move_to(((float)0.25 * ((float)width - (hoffs * 2.0))) + (hoffs / 2), i + lw + voffs + 1);
+    cr->line_to(((float)0.25 * ((float)width - (hoffs * 2.0))) + (hoffs / 2), 
+		i + lw + voffs + (voffs / 4) + 1);
+    cr->stroke();
     cr->move_to(((float)0.5 * ((float)width - (hoffs * 2.0))) + (hoffs / 2), i + lw + voffs + 1);
     cr->line_to(((float)0.5 * ((float)width - (hoffs * 2.0))) + (hoffs / 2), 
 		i + lw + voffs + (voffs / 2) + 1);
+    cr->stroke();
+    cr->move_to(((float)0.75 * ((float)width - (hoffs * 2.0))) + (hoffs / 2), i + lw + voffs + 1);
+    cr->line_to(((float)0.75 * ((float)width - (hoffs * 2.0))) + (hoffs / 2), 
+		i + lw + voffs + (voffs / 4) + 1);
     cr->stroke();
     cr->move_to(((float)1.0 * ((float)width - ((float)hoffs * 2.0))) - 1, i + lw + voffs + 1);
     cr->line_to(((float)1.0 * ((float)width - ((float)hoffs * 2.0))) - 1, 

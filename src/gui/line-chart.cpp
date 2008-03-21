@@ -46,11 +46,11 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     yc = height / 2;
     int origin_x = 0;
     int origin_y = height;
+    unsigned int hoffs = 30;
+    unsigned int voffs = 30;
 
     Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
       
-
-
     // clip to the area indicated by the expose event so that we only redraw
     // the portion of the window that needs to be redrawn
     cr->rectangle(event->area.x, event->area.y,
@@ -97,21 +97,34 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
 	cr->set_source_rgb(red, green, blue);
 	std::list<unsigned int>::iterator it = (*line).begin();
 	unsigned int turn = 1;
-	cr->move_to(origin_x, origin_y);
+	cr->move_to(origin_x + hoffs, origin_y - voffs);
 	for (; it != (*line).end(); it++, turn++)
 	  {
-	    cr->line_to(((float)turn / (float)max_turn) * width,
-			(height - (((float)*it / (float)d_max_height_value) * height)));
+	    cr->line_to((((float)turn / (float)max_turn) * (width - (hoffs * 2))) + hoffs,
+	    (((float)*it / (float)d_max_height_value) * (height - (voffs * 2))) + voffs);
+			//(height + voffs - (((float)*it / (float)d_max_height_value) * height - (voffs * 2) )));
 	  }
 	cr->stroke();
       }
+
+    //draw horizontal axis
+    cr->set_source_rgb(0.3, 0.3, 0.3);
+    cr->move_to(origin_x + hoffs, origin_y - voffs);
+    cr->line_to((width - (hoffs * 2)) + hoffs, origin_y - voffs);
+    cr->stroke();
+
+    //draw vertical axis
+    cr->set_source_rgb(0.3, 0.3, 0.3);
+    cr->move_to(origin_x + hoffs, origin_y - voffs);
+    cr->line_to(origin_x + hoffs, voffs);
+    cr->stroke();
 
     if (d_x_indicator > -1 && d_x_indicator <= max_turn)
       {
 	//draw a line at turn x
 	cr->set_source_rgb(0.0, 0.0, 0.0);
-	cr->move_to(((float)d_x_indicator/ (float)max_turn) * width, 0);
-	cr->line_to(((float)d_x_indicator/ (float)max_turn) * width, height);
+	cr->move_to((((float)d_x_indicator/ (float)max_turn) * (width - (hoffs * 2))) + hoffs, voffs);
+	cr->line_to((((float)d_x_indicator/ (float)max_turn) * (width - (hoffs * 2))) + hoffs, height - voffs);
 	cr->stroke();
       }
   }
