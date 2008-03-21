@@ -23,8 +23,8 @@
 #include "templelist.h"
 #include "ucompose.hpp"
 
-#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
-//#define debug(x)
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
+#define debug(x)
 
 sigc::signal<void, Army*> Army::sdying;
 
