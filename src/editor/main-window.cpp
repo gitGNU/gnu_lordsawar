@@ -129,6 +129,8 @@ MainWindow::MainWindow()
 			      EditorBigMap::TERRAIN, 2);
     setup_pointer_radiobutton(xml, "draw_3", "button_3x3",
 			      EditorBigMap::TERRAIN, 3);
+    setup_pointer_radiobutton(xml, "draw_6", "button_6x6",
+			      EditorBigMap::TERRAIN, 6);
     setup_pointer_radiobutton(xml, "draw_stack", "button_stack",
 			      EditorBigMap::STACK, 1);
     setup_pointer_radiobutton(xml, "draw_ruin", "button_ruin",
