@@ -108,15 +108,18 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
 
   generatePastCityCounts();
   city_chart = new LineChart(past_citycounts, d_colours, 
-			     Citylist::getInstance()->size());
+			     Citylist::getInstance()->size(),
+			     _("Cities"), _("Turns"));
   city_alignment->add(*manage(city_chart));
 
   generatePastGoldCounts();
-  gold_chart = new LineChart(past_goldcounts, d_colours, 0);
+  gold_chart = new LineChart(past_goldcounts, d_colours, 0, 
+			     _("Gold Pieces"), _("Turns"));
   gold_alignment->add(*manage(gold_chart));
 
   generatePastWinningCounts();
-  rank_chart = new LineChart(past_rankcounts, d_colours, 100);
+  rank_chart = new LineChart(past_rankcounts, d_colours, 100,
+			     _("Score"), _("Turns"));
   winner_alignment->add(*manage(rank_chart));
 
   fill_in_turn_info((Uint32)turn_scale->get_value());

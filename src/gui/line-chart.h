@@ -20,6 +20,7 @@
 
 #include <gtkmm/drawingarea.h>
 #include <list>
+#include <string>
 
 //the first parameter to the construct might seem a bit weird.
 //the outer list contains a list of numbers belonging to a player
@@ -28,7 +29,7 @@
 class LineChart: public Gtk::DrawingArea
 {
 public:
-    LineChart(std::list<std::list<unsigned int> > lines, std::list<Gdk::Color> colours, unsigned int max_height_value);
+    LineChart(std::list<std::list<unsigned int> > lines, std::list<Gdk::Color> colours, unsigned int max_height_value, std::string x_axis_description, std::string y_axis_description);
     virtual ~LineChart();
 
     void set_x_indicator(int x);
@@ -41,6 +42,8 @@ private:
     std::list<Gdk::Color> d_colours;
     unsigned int d_max_height_value;
     int d_x_indicator;
+    std::string d_x_axis_description;
+    std::string d_y_axis_description;
 };
 
 #endif

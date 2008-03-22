@@ -20,11 +20,15 @@
 
 LineChart::LineChart(std::list<std::list<unsigned int> > lines, 
 		     std::list<Gdk::Color> colours, 
-		     unsigned int max_height_value)
+		     unsigned int max_height_value,
+		     std::string x_axis_description,
+		     std::string y_axis_description)
 {
   d_lines = lines;
   d_colours = colours;
   d_max_height_value = max_height_value;
+  d_x_axis_description = x_axis_description;
+  d_y_axis_description = y_axis_description;
   d_x_indicator = -1;
 }
 
@@ -173,7 +177,7 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
-    layout->set_text("Turns");
+    layout->set_text(d_y_axis_description);
     layout->get_pixel_size (w, h);
     cr->move_to((width / 2 - (hoffs * 1)) + hoffs - (w / 2), 
 		origin_y - voffs + (voffs / 2) + 1);
@@ -198,6 +202,21 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
+    PangoContext *context;
+    PangoCairoFontMap *fontmap;
+    fontmap = (PangoCairoFontMap *) pango_cairo_font_map_get_default ();
+    context = pango_cairo_font_map_create_context (fontmap);
+    pango_context_set_base_gravity(context, PANGO_GRAVITY_EAST);
+    pango_context_set_gravity_hint(context, PANGO_GRAVITY_HINT_STRONG);
+    layout->context_changed();
+
+    layout->set_text(d_x_axis_description);
+    layout->get_pixel_size (w, h);
+    cr->move_to(0, height - (voffs * 2) - 
+		(0.50 * (height - (voffs * 2.0))) + voffs + (w / 2));
+    cr->rotate(-90 / (180.0 / G_PI));
+    pango_cairo_show_layout (cr->cobj (), layout->gobj ());
+
     //draw the indicator line
     if (d_x_indicator > -1 && d_x_indicator <= max_turn)
       {
@@ -209,8 +228,6 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
       }
   }
 
-  //FIXME: add a horizontal axis, put some ticks on it, and label it.
-  //FIXME: add a vertical axis, put some ticks on it, and label it.
   return true;
 }
 
