@@ -18,7 +18,9 @@
 #include "line-chart.h"
 #include <cairomm/context.h>
 
-LineChart::LineChart(std::list<std::list<unsigned int> > lines, std::list<Gdk::Color> colours, unsigned int max_height_value)
+LineChart::LineChart(std::list<std::list<unsigned int> > lines, 
+		     std::list<Gdk::Color> colours, 
+		     unsigned int max_height_value)
 {
   d_lines = lines;
   d_colours = colours;
@@ -85,6 +87,7 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
 	      }
 	  }
       }
+
     // ensure the border is big enough for the label.
     Glib::RefPtr<Pango::Layout> layout = Glib::wrap (pango_cairo_create_layout (cr->cobj ()));
     std::string text_font = "Sans 8";
@@ -95,8 +98,8 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     layout->set_text(buf);
     int w, h;
     layout->get_pixel_size (w, h);
-    if (w  > hoffs)
-      hoffs = w;
+    if (w * (hoffs / 4) > hoffs)
+      hoffs = w + (hoffs / 4);
 
     std::list<Gdk::Color>::iterator cit = d_colours.begin();
     line = d_lines.begin();
@@ -112,9 +115,11 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
 	cr->move_to(origin_x + hoffs, origin_y - voffs);
 	for (; it != (*line).end(); it++, turn++)
 	  {
-	    cr->line_to((((float)turn / (float)max_turn) * (width - (hoffs * 2))) + hoffs,
-	    (((float)*it / (float)d_max_height_value) * (height - (voffs * 2))) + voffs);
-			//(height + voffs - (((float)*it / (float)d_max_height_value) * height - (voffs * 2) )));
+	    cr->line_to((((float)turn / (float)max_turn) * 
+			 (width - (hoffs * 2))) + hoffs,
+			height - (voffs * 2) - 
+			(((float)*it / (float)d_max_height_value) * 
+			 (height - (voffs * 2.0))) + voffs);
 	  }
 	cr->stroke();
       }
