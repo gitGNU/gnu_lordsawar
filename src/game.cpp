@@ -80,11 +80,8 @@ void Game::addPlayer(Player *p)
       connections[p->getId()].push_back
 	(p->snewMedalArmy.connect(sigc::mem_fun(this, &Game::newMedalArmy)));
       connections[p->getId()].push_back
-	(p->srecruitingHero.connect
-	 (sigc::bind<0>
-	  (sigc::mem_fun
-	   (hero_offers_service, &sigc::signal<bool, Player *, 
-	    Hero *, City *, int>::emit), p)));
+	(p->srecruitingHero.connect(sigc::mem_fun(this, &Game::recruitHero)));
+
       connections[p->getId()].push_back
 	(p->streachery.connect
 	 (sigc::bind<0>
@@ -1004,11 +1001,11 @@ void Game::init_turn_for_player(Player* p)
       update_stack_info();
       update_control_panel();
 
-      if (d_gameScenario->getRound() == 0)
-	{
-	  Citylist *clist = Citylist::getInstance();
-	  city_visited.emit(clist->getFirstCity(p));
-	}
+      //if (d_gameScenario->getRound() == 0)
+	//{
+	  //Citylist *clist = Citylist::getInstance();
+	  //city_visited.emit(clist->getFirstCity(p));
+	//}
 
       // update the diplomacy icon if we've received a proposal
       bool proposal_received = false;
@@ -1205,4 +1202,12 @@ void Game::on_city_fight_finished(City *city, Fight::Result result)
 	}
     }
   return;
+}
+    
+bool Game::recruitHero(Hero *hero, City *city, int gold)
+{
+  bool retval = hero_offers_service (city->getOwner(), hero, city, gold);
+  if (d_gameScenario->getRound() == 0)
+    city_visited.emit(city);
+  return retval;
 }

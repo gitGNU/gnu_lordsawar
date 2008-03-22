@@ -52,7 +52,7 @@ class RealPlayer : public Player
         virtual void levelArmy(Army* a);
 
     protected:
-        void maybeRecruitHero();
+        bool maybeRecruitHero();
 };
 
 #endif // REAL_PLAYER_H

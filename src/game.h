@@ -197,6 +197,7 @@ class Game
     void looting_city(City *city, int &gold);
     void unselect_active_stack();
     void select_active_stack();
+    bool recruitHero(Hero *hero, City *city, int gold);
 
     GameScenario* d_gameScenario;
     NextTurn* d_nextTurn;

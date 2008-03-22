@@ -110,15 +110,16 @@ void RealPlayer::levelArmy(Army* a)
  * ...500 if all your heroes are dead: then prices are cut by about 
  * a factor of 3.
  */
-void RealPlayer::maybeRecruitHero ()
+bool RealPlayer::maybeRecruitHero ()
 {
+  bool accepted = false;
   if (this == Playerlist::getInstance()->getNeutral())
-    return;
+    return false;
   
   City *city;
   int gold_needed = 0;
   if (Citylist::getInstance()->countCities(this) == 0)
-    return;
+    return false;
   //give the player a hero if it's the first round.
   //otherwise we get a hero based on chance
   //a hero costs a random number of gold pieces
@@ -158,11 +159,10 @@ void RealPlayer::maybeRecruitHero ()
 	    if (!(*it).isBurnt() && (*it).getOwner() == this)
 	      cities.push_back(&(*it));
 	  if (cities.empty())
-	    return;
+	    return false;
 	  city = cities[rand() % cities.size()];
 	}
 
-      bool accepted;
       if (srecruitingHero.empty())
         accepted = true;
       else
@@ -191,6 +191,7 @@ void RealPlayer::maybeRecruitHero ()
         recruitHero(herotemplate, city, gold_needed, alliesCount, ally);
       }
     }
+  return accepted;
 }
 
 

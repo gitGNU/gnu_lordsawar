@@ -90,6 +90,7 @@
 #include "../stacklist.h"
 #include "../signpostlist.h"
 #include "../playerlist.h"
+#include "../citylist.h"
 #include "../hero.h"
 #include "../temple.h"
 #include "../city.h"
@@ -2299,28 +2300,31 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
   show_shield_turn();
   if (player->getType() != Player::HUMAN)
     return;
-  if (Configuration::s_showNextPlayer == false)
-    return;
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/next-player-turn-dialog.glade");
+  if (Configuration::s_showNextPlayer == true)
+    {
+      Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path() + 
+				    "/next-player-turn-dialog.glade");
 
-  Gtk::Dialog *d;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
-  dialog->set_transient_for(*window.get());
+      Gtk::Dialog *d;
+      xml->get_widget("dialog", d);
+      dialog.reset(d);
+      dialog->set_transient_for(*window.get());
 
-  Gtk::Image *image;
-  xml->get_widget("image", image);
-  image->property_file() = File::getMiscFile("various/ship.png");
+      Gtk::Image *image;
+      xml->get_widget("image", image);
+      image->property_file() = File::getMiscFile("various/ship.png");
 
-  Gtk::Label *label;
-  xml->get_widget("label", label);
-  Glib::ustring s = String::ucompose(_("%1\nTurn %2"), player->getName(), 
-				     turn_number);
-  label->set_text(s);
+      Gtk::Label *label;
+      xml->get_widget("label", label);
+      Glib::ustring s = String::ucompose(_("%1\nTurn %2"), player->getName(), 
+					 turn_number);
+      label->set_text(s);
 
-  dialog->show_all();
-  dialog->run();
+      dialog->show_all();
+      dialog->run();
+    }
+	
 }
 
 void GameWindow::on_medal_awarded_to_army(Army *army)
