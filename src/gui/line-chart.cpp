@@ -85,6 +85,18 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
 	      }
 	  }
       }
+    // ensure the border is big enough for the label.
+    Glib::RefPtr<Pango::Layout> layout = Glib::wrap (pango_cairo_create_layout (cr->cobj ()));
+    std::string text_font = "Sans 8";
+    Pango::FontDescription font_desc (text_font);
+    layout->set_font_description (font_desc);
+    char buf[15];
+    snprintf (buf, sizeof (buf), "%d", d_max_height_value);
+    layout->set_text(buf);
+    int w, h;
+    layout->get_pixel_size (w, h);
+    if (w  > hoffs)
+      hoffs = w;
 
     std::list<Gdk::Color>::iterator cit = d_colours.begin();
     line = d_lines.begin();
@@ -113,12 +125,75 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     cr->line_to((width - (hoffs * 2)) + hoffs, origin_y - voffs);
     cr->stroke();
 
+    //draw ticks on the horizontal axis
+    cr->set_source_rgb(0.3, 0.3, 0.3);
+    cr->move_to(origin_x + hoffs, origin_y - voffs + 1);
+    cr->line_to(origin_x + hoffs, origin_y - voffs + (voffs / 4) + 1);
+    cr->stroke();
+
+    cr->move_to((width - (hoffs * 2)) + hoffs - 1, origin_y - voffs + 1);
+    cr->line_to((width - (hoffs * 2)) + hoffs - 1, 
+		origin_y - voffs + (voffs / 4) + 1);
+    cr->stroke();
+
     //draw vertical axis
     cr->set_source_rgb(0.3, 0.3, 0.3);
     cr->move_to(origin_x + hoffs, origin_y - voffs);
     cr->line_to(origin_x + hoffs, voffs);
     cr->stroke();
 
+    //draw ticks on the vertical axis
+    cr->move_to(origin_x + hoffs - 1, origin_y - voffs);
+    cr->line_to(origin_x + hoffs - (hoffs / 4) - 1, origin_y - voffs);
+    cr->stroke();
+    cr->move_to(origin_x + hoffs - 1, voffs + 1);
+    cr->line_to(origin_x + hoffs - (hoffs / 4) - 1, voffs + 1);
+    cr->stroke();
+
+    // draw the labels on the horizontal axis
+    layout->set_font_description (font_desc);
+    layout->set_text("0");
+    layout->get_pixel_size (w, h);
+    cr->move_to(hoffs - (w / 2), origin_y - voffs + (voffs / 4));
+    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_operator (Cairo::OPERATOR_ATOP);
+    pango_cairo_show_layout (cr->cobj (), layout->gobj ());
+
+    snprintf (buf, sizeof (buf), "%d", max_turn);
+    layout->set_text(buf);
+    layout->get_pixel_size (w, h);
+    cr->move_to((width - (hoffs * 2)) + hoffs - (w / 2), 
+		origin_y - voffs + (voffs / 4) + 1);
+    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_operator (Cairo::OPERATOR_ATOP);
+    pango_cairo_show_layout (cr->cobj (), layout->gobj ());
+
+    layout->set_text("Turns");
+    layout->get_pixel_size (w, h);
+    cr->move_to((width / 2 - (hoffs * 1)) + hoffs - (w / 2), 
+		origin_y - voffs + (voffs / 2) + 1);
+    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_operator (Cairo::OPERATOR_ATOP);
+    pango_cairo_show_layout (cr->cobj (), layout->gobj ());
+
+    // draw the labels on the vertical axis
+    layout->set_font_description (font_desc);
+    layout->set_text("0");
+    layout->get_pixel_size (w, h);
+    cr->move_to(origin_x + hoffs - (hoffs / 4) - 1 - w, origin_y - voffs - (h/2));
+    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_operator (Cairo::OPERATOR_ATOP);
+    pango_cairo_show_layout (cr->cobj (), layout->gobj ());
+
+    snprintf (buf, sizeof (buf), "%d", d_max_height_value);
+    layout->set_text(buf);
+    layout->get_pixel_size (w, h);
+    cr->move_to(origin_x + hoffs - (hoffs / 4) - 1 - w, voffs + 1 - (h/2));
+    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_operator (Cairo::OPERATOR_ATOP);
+    pango_cairo_show_layout (cr->cobj (), layout->gobj ());
+
+    //draw the indicator line
     if (d_x_indicator > -1 && d_x_indicator <= max_turn)
       {
 	//draw a line at turn x
