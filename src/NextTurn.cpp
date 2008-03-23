@@ -61,30 +61,33 @@ void NextTurn::start()
       supdating.emit();
 
         // do various start-up tasks
-        if (!continuing_turn)
-          startTurn();
-        else
-          continuing_turn = false;
-       
-        // inform everyone about the next turn 
-        snextTurn.emit(plist->getActiveplayer());
-        
-	if (plist->getNoOfPlayers() <= 2)
-	{
-          if (plist->checkPlayers()) //end of game detected
-	      return;
-	}
+        if (continuing_turn)
+	  {
+	    continuing_turn = false;
+	    return;
+	  }
 
-        if (Playerlist::isFinished())
-          return;
-        
+	startTurn();
+       
+	// inform everyone about the next turn 
+	snextTurn.emit(plist->getActiveplayer());
+    
+	if (plist->getNoOfPlayers() <= 2)
+	  {
+	    if (plist->checkPlayers()) //end of game detected
+	      return;
+	  }
+
+	if (Playerlist::isFinished())
+	  return;
+    
 	splayerStart.emit(plist->getActiveplayer());
 
-        // let the player do his duties...
-        bool continue_loop = plist->getActiveplayer()->startTurn();
+	// let the player do his or her duties...
+	bool continue_loop = plist->getActiveplayer()->startTurn();
 
-        if (!continue_loop)
-          return;
+	if (!continue_loop)
+	  return;
 	
         //Now do some cleanup at the end of the turn.
         finishTurn();
