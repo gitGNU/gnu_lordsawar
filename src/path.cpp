@@ -1,3 +1,9 @@
+// Copyright 2000, 2001, 2003 Michael Bartl
+// Copyright 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
+// Copyright 2004, 2005, 2006 Andrea Patton
+// Copyright 2004 John Farrell
+// Copyright 2006, 2007, 2008 Ben Asselstine
+//
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
