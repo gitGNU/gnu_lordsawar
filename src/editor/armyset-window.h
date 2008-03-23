@@ -132,6 +132,7 @@ class ArmySetWindow: public sigc::trackable
     void on_save_armyset_as_activated();
     void on_quit_activated();
     void on_edit_armyset_info_activated();
+    void on_help_about_activated();
     void on_army_selected();
     void fill_army_info(Army *army);
 

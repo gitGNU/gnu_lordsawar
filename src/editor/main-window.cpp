@@ -30,6 +30,7 @@
 #include <gtkmm/eventbox.h>
 #include <gtkmm/image.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/aboutdialog.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/menu.h>
@@ -210,6 +211,9 @@ MainWindow::MainWindow()
     xml->connect_clicked
       ("random_unnamed_signs_menuitem", 
        sigc::mem_fun(this, &MainWindow::on_random_unnamed_signs_activated));
+    xml->connect_clicked
+      ("help_about_menuitem", 
+       sigc::mem_fun(this, &MainWindow::on_help_about_activated));
 }
 
 MainWindow::~MainWindow()
@@ -1115,5 +1119,26 @@ void MainWindow::on_random_unnamed_signs_activated()
       if ((*it).getName() == DEFAULT_SIGNPOST)
 	randomize_signpost(&*it);
     }
+}
+
+void MainWindow::on_help_about_activated()
+{
+  std::auto_ptr<Gtk::AboutDialog> dialog;
+
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/../about-dialog.glade");
+
+  Gtk::AboutDialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_version(PACKAGE_VERSION);
+  SDL_Surface *logo = File::getMiscPicture("castle_icon.png");
+  dialog->set_logo(to_pixbuf(logo));
+  dialog->show_all();
+  dialog->run();
+
+  return;
 }
 

@@ -39,7 +39,8 @@ various_DATA = \
     smalltreasury.png \
     smallcity.png \
     diplomacy-small.png \
-    diplomacy-large.png
+    diplomacy-large.png \
+    castle_icon.png
 
 EXTRA_DIST = \
     arrows.png \
@@ -77,4 +78,5 @@ EXTRA_DIST = \
     smalltreasury.png \
     smallcity.png \
     diplomacy-small.png \
-    diplomacy-large.png
+    diplomacy-large.png \
+    castle_icon.png

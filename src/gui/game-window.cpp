@@ -36,6 +36,7 @@
 #include <gdkmm/cursor.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/aboutdialog.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/filechooserdialog.h>
@@ -281,6 +282,8 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_production_report_activated));
     xml->connect_clicked("triumphs_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_triumphs_activated));
+    xml->connect_clicked("help_about_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_help_about_activated));
     d_quick_fights = false;
 }
 
@@ -1176,6 +1179,27 @@ void GameWindow::on_triumphs_activated()
   TriumphsDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
+}
+
+void GameWindow::on_help_about_activated()
+{
+  std::auto_ptr<Gtk::AboutDialog> dialog;
+
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/about-dialog.glade");
+
+  Gtk::AboutDialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_version(PACKAGE_VERSION);
+  SDL_Surface *logo = File::getMiscPicture("castle_icon.png");
+  dialog->set_logo(to_pixbuf(logo));
+  dialog->show_all();
+  dialog->run();
+
+  return;
 }
 
 void GameWindow::on_diplomacy_report_activated()

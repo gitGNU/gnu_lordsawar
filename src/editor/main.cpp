@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
     File::scanArmysets();
 
     // init GUI stuff
-    g_set_application_name(_("LordsAWar! Map Editor"));
+    g_set_application_name(_("LordsAWar! Scenario Editor"));
     Timing::instance().timer_registered.connect(
 	sigc::ptr_fun(on_timer_registered));
 

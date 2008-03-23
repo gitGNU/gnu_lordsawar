@@ -31,6 +31,7 @@
 #include <gtkmm/image.h>
 #include <gtkmm/box.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/aboutdialog.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/menu.h>
@@ -48,6 +49,7 @@
 #include "../Configuration.h"
 #include "../armysetlist.h"
 #include "../Tile.h"
+#include "../File.h"
 
 #include "../ucompose.hpp"
 
@@ -188,6 +190,9 @@ ArmySetWindow::ArmySetWindow()
     xml->get_widget("edit_armyset_info_menuitem", edit_armyset_info_menuitem);
     edit_armyset_info_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_edit_armyset_info_activated));
+    xml->connect_clicked 
+      ("help_about_menuitem", 
+       sigc::mem_fun(this, &ArmySetWindow::on_help_about_activated));
 
     w->signal_delete_event().connect(
 	sigc::mem_fun(*this, &ArmySetWindow::on_delete_event));
@@ -499,6 +504,28 @@ void ArmySetWindow::on_edit_armyset_info_activated()
   d.set_parent_window(*window.get());
   d.run();
 }
+
+void ArmySetWindow::on_help_about_activated()
+{
+  std::auto_ptr<Gtk::AboutDialog> dialog;
+
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + "/../about-dialog.glade");
+
+  Gtk::AboutDialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->set_version(PACKAGE_VERSION);
+  SDL_Surface *logo = File::getMiscPicture("castle_icon.png");
+  dialog->set_logo(to_pixbuf(logo));
+  dialog->show_all();
+  dialog->run();
+
+  return;
+}
+
 void ArmySetWindow::addArmyType(Uint32 army_type)
 {
   Army *a;

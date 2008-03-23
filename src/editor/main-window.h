@@ -118,6 +118,8 @@ class MainWindow: public sigc::trackable
     void on_random_unnamed_temples_activated();
     void on_random_all_signs_activated();
     void on_random_unnamed_signs_activated();
+
+    void on_help_about_activated();
     
     struct PointerItem
     {
