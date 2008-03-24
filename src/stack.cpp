@@ -1,4 +1,4 @@
-// Copyright (C) 2000, 2001, 2003 Michael Bartl
+// Copyright (C) 2000, 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2000, Anluan O'Brien
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
