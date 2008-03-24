@@ -1,6 +1,6 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2000, 2001, 2002, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2006 Andrea Patton
+// Copyright (C) 2006 Andrea Paternesi
 // Copyright (C) 2006, 2007, 2008 Ben Asselstine
 
 #ifndef LOCATION_H

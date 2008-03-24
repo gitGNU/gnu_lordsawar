@@ -2,7 +2,7 @@
 // Copyright (C) 2000, Anluan O'Brien
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
-// Copyright (C) 2004, 2005 Andrea Patton
+// Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2006, 2007, 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify

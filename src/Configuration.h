@@ -1,6 +1,6 @@
 //  Copyright (C) 2002, 2003 Michael Bartl
 //  Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
-//  Copyright (C) 2004, 2005 Andrea Patton
+//  Copyright (C) 2004, 2005 Andrea Paternesi
 //  Copyright (C) 2005 Josef Spillner
 //  Copyright (C) 2006 Ben Asselstine
 //

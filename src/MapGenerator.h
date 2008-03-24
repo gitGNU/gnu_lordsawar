@@ -2,7 +2,7 @@
 // Copyright (C) 2002, 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004 David Barnsdale
-// Copyright (C) 2004 Andrea Patton
+// Copyright (C) 2004 Andrea Paternesi
 // Copyright (C) 2006, 2007, 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
