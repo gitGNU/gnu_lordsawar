@@ -1,3 +1,16 @@
+2008-03-21  Ole Laursen
+
+	* don't save the actionlist in savegames
+	* moved hero templates to a separate file, prevent them from
+	  creating armies that use up ids
+	* moved hero recruitment to the player classes
+	* added recruit hero action and decoding in network player
+
+2008-03-20  Ole Laursen
+
+	* first steps of a network player, moved around most of the player
+	  code and fixed some bugs that show up when replaying actions.
+
 2008-03-20  Ben Asselstine
 	* added minor ticks to the bar graphs.
 	* added axes to the line graph.
