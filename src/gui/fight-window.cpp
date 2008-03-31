@@ -263,8 +263,6 @@ void FightWindow::add_army(Army *army, int initial_hp,
     army_items.push_back(item);
 }
 
-#include <iostream>
-
 bool FightWindow::do_round()
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
@@ -277,7 +275,6 @@ bool FightWindow::do_round()
     if (!i->exploding)
       continue;
     
-    std::cerr << "clearing " << i->army->getId() << std::endl;
     Glib::RefPtr<Gdk::Pixbuf> empty_pic
       = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, expl->w, expl->h);
     empty_pic->fill(0x00000000);
@@ -296,7 +293,6 @@ bool FightWindow::do_round()
            end = army_items.end(); i != end; ++i)
       if (i->army->getId() == f.id)
       {
-        std::cerr << "hack slashing " << f.id << " with damage " << f.damage << " hp left " << i->hp << std::endl;
         i->hp -= f.damage;
         if (i->hp < 0)
           i->hp = 0;
@@ -304,7 +300,6 @@ bool FightWindow::do_round()
         i->bar->set_fraction(fraction);
         if (fraction == 0.0)
         {
-          std::cerr << "exploding " << f.id << std::endl;
           i->bar->hide();
           i->image->property_pixbuf() = to_pixbuf(expl);
           i->exploding = true;
