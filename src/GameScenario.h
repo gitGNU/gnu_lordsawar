@@ -59,6 +59,9 @@ class GameScenario: public sigc::trackable
           * @param broken       set to true if something goes wrong
           */
         GameScenario(std::string savegame, bool& broken);
+
+        GameScenario(XML_Helper &helper, bool &broken);
+
         ~GameScenario();
 
         //! Returns the number of the current turn.
@@ -89,6 +92,10 @@ class GameScenario: public sigc::trackable
           * @return true if all went well, false otherwise
           */
         bool saveGame(std::string filename, std::string extension = "sav") const;
+
+        bool loadWithHelper(XML_Helper &helper);
+        bool saveWithHelper(XML_Helper &helper) const;
+        
         static bool s_see_opponents_stacks;
         static bool s_see_opponents_production;
         static bool s_play_with_quests;

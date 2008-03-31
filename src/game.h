@@ -117,7 +117,7 @@ class Game
     sigc::signal<void, Stack *, MapTipPosition> stack_tip_changed;
     sigc::signal<void, Ruin*, Stack*, Reward*> ruin_searched;
     sigc::signal<void, Ruin*, Stack*> sage_visited;
-    sigc::signal<void, Fight &, bool> fight_started;
+    sigc::signal<void, Fight &> fight_started;
     sigc::signal<void, Stack *, Stack *> ruinfight_started;
     sigc::signal<void, float> advice_asked;
     sigc::signal<void, Fight::Result> ruinfight_finished;

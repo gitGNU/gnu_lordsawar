@@ -158,8 +158,11 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
 	d_att_close.push_back(f);
       }
 
+  fillInInitialHPs();
+
   // Before the battle starts, calculate the bonuses
   // bonuses remain even if the unit providing a stackwide bonus dies
+
 
   calculateBonus();
 }
@@ -170,6 +173,8 @@ Fight::Fight(std::list<Stack*> attackers, std::list<Stack*> defenders,
   d_attackers = attackers;
   d_defenders = defenders;
   d_actions = history;
+
+  fillInInitialHPs();
 }
 
 Fight::~Fight()
@@ -697,4 +702,17 @@ Uint32 Fight::getModifiedStrengthBonus(Army *a)
     if ((*it)->army == a)
       return (*it)->terrain_strength;
   return 0;
+}
+
+void Fight::fillInInitialHPs()
+{
+  for (std::list<Stack *>::iterator i = d_attackers.begin();
+       i != d_attackers.end(); ++i)
+    for (Stack::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
+      initial_hps[(*j)->getId()] = (*j)->getHP();
+  
+  for (std::list<Stack *>::iterator i = d_defenders.begin();
+       i != d_defenders.end(); ++i)
+    for (Stack::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
+      initial_hps[(*j)->getId()] = (*j)->getHP();
 }

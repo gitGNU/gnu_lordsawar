@@ -1269,6 +1269,8 @@ class Player: public sigc::trackable
         sigc::signal<void> ending_turn;
 
         sigc::signal<void, int> hero_arrives_with_allies;
+
+        sigc::signal<void, Action *> action_done;
         
     protected:
         // do some fight cleaning up, setting

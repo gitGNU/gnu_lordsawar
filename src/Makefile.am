@@ -83,8 +83,11 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	Movable.cpp Movable.h Positioned.cpp Positioned.h \
 	Named.cpp Named.h Namable.cpp Namable.h Renamable.cpp Renamable.h \
 	network_player.cpp network_player.h \
-	herotemplates.cpp herotemplates.h
-
+	herotemplates.cpp herotemplates.h \
+	network-connection.cpp network-connection.h \
+	network-server.cpp network-server.h \
+	game-server.cpp game-server.h \
+	game-client.cpp game-client.h
 
 if FL_RESRC
 lordsawar_SOURCES += lordsawar.rc
@@ -98,10 +101,10 @@ DEFS = -DFL_VERSION=\"@VERSION@\"  -DLOCALEDIR=\"$(localedir)\" @DEFS@
 lordsawar_LDFLAGS = $(GGZMOD_LDFLAGS) $(GGZDMOD_LDFLAGS)
 lordsawar_LDADD = $(SDL_LIBS) \
     $(GTKMM_LIBS) \
+    $(LIBGNET_LIBS) \
     $(LIBSIGC_LIBS) \
     $(LIB_GGZMOD) \
     $(LIB_GGZDMOD) \
-    ./server/liblwserver.a \
     ./gui/liblwgui.a \
     @LIBINTL@
 lordsawar_DEPENDENCIES = \
@@ -110,6 +113,7 @@ lordsawar_DEPENDENCIES = \
 AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\" -Wunused-function
 INCLUDES = $(SDL_CFLAGS) \
     $(GTKMM_CFLAGS) \
+    $(LIBGNET_CFLAGS) \
     $(LIBSIGC_CFLAGS) \
     $(LIBGGZ_INCLUDES) \
     $(GGZDMOD_INCLUDES) \

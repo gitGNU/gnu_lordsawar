@@ -130,6 +130,20 @@ XML_Helper::XML_Helper(std::string filename, std::ios::openmode mode, bool zip)
     }
 }
 
+XML_Helper::XML_Helper(std::ostream* output)
+  : d_inbuf(0), d_outbuf(0), d_fout(0), d_fin(0), d_out(0), d_in(0),
+    d_last_opened(""), d_version(""), d_failed(false), d_zip(false)
+{
+  d_out = output;
+}
+
+XML_Helper::XML_Helper(std::istream* input)
+  : d_inbuf(0), d_outbuf(0), d_fout(0), d_fin(0), d_out(0), d_in(0),
+    d_last_opened(""), d_version(""), d_failed(false), d_zip(false)
+{
+  d_in = input;
+}
+
 XML_Helper::~XML_Helper()
 {
     if (d_tags.size() != 0)

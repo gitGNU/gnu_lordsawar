@@ -301,13 +301,9 @@ Player* Player::create(Player* orig, Type type)
     return 0;
 }
 
-#define NETWORK_TESTING 0
-
 void Player::initTurn()
 {
-#if !NETWORK_TESTING
   clearActionlist();
-#endif
   History_StartTurn* item = new History_StartTurn();
   d_history.push_back(item);
 }
@@ -417,7 +413,9 @@ void Player::clearActionlist()
     for (list<Action*>::iterator it = d_actions.begin();
         it != d_actions.end(); it++)
     {
-        delete (*it);
+#if 0  // FIXME: temp. leak to avoid double-delete
+      delete (*it);
+#endif
     }
     d_actions.clear();
 }
@@ -664,26 +662,14 @@ bool Player::load(string tag, XML_Helper* helper)
 
 void Player::addAction(Action *action)
 {
+  action->setPlayer(getId());
+  
   // FIXME
-  if (getType() == Player::NETWORKED)
-    delete action;
+  if (!action_done.empty())
+    action_done.emit(action);
+#if 0
   else
-    d_actions.push_back(action);
-
-#if NETWORK_TESTING
-  if (getType() == Player::HUMAN) {
-    std::cerr << "dumping actions" << std::endl;
-
-    XML_Helper helper("actiondump", std::ios::out | std::ios::app, false);
-    
-    helper.begin("1");
-    helper.openTag("lordsawar");
-    
-    for (std::list<Action *>::iterator i = d_actions.begin(), end = d_actions.end(); i != end; ++i)
-      (**i).save(&helper);
-
-    helper.closeTag();
-  }
+    delete action;
 #endif
 }
 

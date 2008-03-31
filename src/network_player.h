@@ -47,11 +47,9 @@ class NetworkPlayer : public Player
         virtual void invadeCity(City* c);
         virtual void levelArmy(Army* a);
 
-private:
-        bool loadAction(std::string tag, XML_Helper* helper);
-        void onResponse(int responseId);
-  
 	void decodeAction(const Action *action);
+        
+    private:
 	void decodeActionMove(const Action_Move *action);
 	void decodeActionSplit(const Action_Split *action);
 	void decodeActionFight(const Action_Fight *action);

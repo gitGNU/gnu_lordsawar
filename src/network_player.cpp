@@ -81,67 +81,11 @@ bool NetworkPlayer::save(XML_Helper* helper) const
     return retval;
 }
 
-#include "gui/error-utils.h"
-#include "ucompose.hpp"
-#include <time.h>
-#include <gtkmm/messagedialog.h>
-#include <gtkmm/button.h>
-#include <set>
-
-Gtk::Dialog *remoteControlDialog = 0;
-Gtk::Button *loadButton = 0, *nextActionButton = 0;
-std::list<Action *> actionsToApply;
-int actionsApplied = 0;
-
-bool NetworkPlayer::loadAction(std::string tag, XML_Helper* helper)
-{
-  if (tag == "action") {
-    Action* action = Action::handle_load(helper);
-    actionsToApply.push_back(action);
-  }
-  return true;
-}
-
 bool NetworkPlayer::startTurn()
 {
-  if (!remoteControlDialog) {
-    remoteControlDialog = new Gtk::Dialog("Network player control");
-    loadButton = remoteControlDialog->add_button("load actions", 1);
-    nextActionButton = remoteControlDialog->add_button("execute action", 2);
-    remoteControlDialog->signal_response().connect(sigc::mem_fun(this, &NetworkPlayer::onResponse));
-
-    nextActionButton->set_sensitive(false);
-    
-    remoteControlDialog->show();
-  }
-    
   //d_stacklist->setActivestack(0);
 
   return false;
-}
-
-#include <algorithm>
-
-void NetworkPlayer::onResponse(int responseId)
-{
-  if (responseId == 1) {
-    actionsToApply.clear();
-    XML_Helper helper("actiondump", std::ios::in, false);
-    helper.registerTag("action", sigc::mem_fun(this, &NetworkPlayer::loadAction));
-    helper.parse();
-    std::cerr << "read " << actionsToApply.size() << " actions" << std::endl;
-  }
-
-  if (responseId == 2) {
-    std::list<Action *>::iterator i = actionsToApply.begin();
-    std::advance(i, actionsApplied);
-    ++actionsApplied;
-    
-    std::cerr << "applying action " << (*i)->getType() << std::endl;
-    decodeAction(*i);
-  }
-
-  nextActionButton->set_sensitive(actionsApplied < int(actionsToApply.size()));
 }
 
 void NetworkPlayer::endTurn()
@@ -297,7 +241,7 @@ void NetworkPlayer::decodeActionFight(const Action_Fight *action)
   for (std::list<Uint32>::const_iterator i = action->d_attackers.begin(),
          end = action->d_attackers.end(); i != end; ++i)
     attackers.push_back(d_stacklist->getStackById(*i));
-  
+
   for (std::list<Uint32>::const_iterator i = action->d_defenders.begin(),
          end = action->d_defenders.end(); i != end; ++i)
     defenders.push_back(findStackById(*i));
@@ -305,6 +249,7 @@ void NetworkPlayer::decodeActionFight(const Action_Fight *action)
   Fight fight(attackers, defenders, action->d_history);
   fight.battleFromHistory();
   fight_started.emit(fight);
+
   cleanupAfterFight(attackers, defenders);
 }
 

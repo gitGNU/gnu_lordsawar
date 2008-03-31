@@ -26,6 +26,7 @@
 #include <SDL_types.h>
 #include <list>
 #include <vector>
+#include <map>
 
 class Stack;
 class Fighter;
@@ -150,6 +151,8 @@ class Fight
         static void orderArmies(std::list<Stack*> stacks, 
 				std::vector<Army*> &armies);
 
+        std::map<Uint32, Uint32> getInitialHPs() { return initial_hps; }
+        
     private:
 	//! Calculates one round of the fight.
         /** 
@@ -190,6 +193,8 @@ class Fight
         //! Removes an army from the fight.
         void remove(Fighter* f);
 
+        void fillInInitialHPs();
+        
         // DATA
 
 	//! The attackers.
@@ -203,6 +208,8 @@ class Fight
 
 	//! The defenders in the fight.
         std::list<Fighter*> d_def_close;
+
+        std::map<Uint32, Uint32> initial_hps;
         
 	//! The list of fight events that gets calculated.
         std::list<FightItem> d_actions;

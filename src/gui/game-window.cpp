@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007, 2008, Ole Laursen
 //  Copyright (C) 2007, 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -729,12 +729,12 @@ bool GameWindow::setup_game(std::string file_path)
   GameScenario* game_scenario = new GameScenario(file_path, broken);
 
   if (broken)
-    {
-      on_message_requested("Corrupted saved game file.");
-      game_ended.emit();
-      return false;
-    }
-
+  {
+    on_message_requested("Corrupted saved game file.");
+    game_ended.emit();
+    return false;
+  }
+  
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();
 
@@ -1719,9 +1719,9 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
   dialog->run();
 }
 
-void GameWindow::on_fight_started(Fight &fight, bool intense_combat)
+void GameWindow::on_fight_started(Fight &fight)
 {
-  FightWindow d(fight, intense_combat);
+  FightWindow d(fight);
 
   d.set_parent_window(*window.get());
   d.run(&d_quick_fights);

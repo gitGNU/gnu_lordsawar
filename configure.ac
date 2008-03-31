@@ -138,13 +138,21 @@ PKG_CHECK_MODULES(GTKMM, gtkmm-2.4 libglademm-2.4)
 AC_SUBST(GTKMM_CFLAGS)
 AC_SUBST(GTKMM_LIBS)
 			     		      
-		      
+dnl Check for libgnet
+
+PKG_CHECK_MODULES(LIBGNET, gnet-2.0)
+
+AC_SUBST(LIBGNET_CFLAGS)
+AC_SUBST(LIBGNET_LIBS)
+
+
 dnl Finally, check for libsigc++
 PKG_CHECK_MODULES(LIBSIGC, sigc++-2.0)
 
 AC_SUBST(LIBSIGC_CFLAGS)
 AC_SUBST(LIBSIGC_LIBS)
 AC_SUBST(HOME)
+
 
 	
 dnl----------------------------------------------------------------------

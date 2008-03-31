@@ -122,11 +122,22 @@ void Game::addPlayer(Player *p)
      (sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit)));
 }
 
+#define NETWORK_TESTING 0
+
+#include "game-server.h"
+
+GameServer *game_server = 0;
+
 Game::Game(GameScenario* gameScenario)
     : d_gameScenario(gameScenario) 
 {
     current_game = this;
     input_locked = false;
+
+#if NETWORK_TESTING
+    game_server = new GameServer();
+    game_server->start();
+#endif
     
     // init the bigmap
     bigmap.reset(new GameBigMap
@@ -1063,7 +1074,7 @@ void Game::on_fight_started(Fight &fight)
   //from an unobservable computer player
   bigmap->setFighting(true);
   bigmap->draw();
-  fight_started.emit(fight, GameScenario::s_intense_combat);
+  fight_started.emit(fight);
   bigmap->setFighting(false);
   bigmap->draw();
 }

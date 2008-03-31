@@ -99,16 +99,12 @@ class XML_Helper
 
         /** This constructor reads from a given input stream.
           * 
-          * It is currently not implemented because we don't need it yet.
-          * 
           * @param input        the input stream to read from
           */
         XML_Helper(std::istream* input);
 
         /** This constructor writes to a given output stream.
           * 
-          * It is also not implemented yet.
-          *
           * @param output       the output stream to write to
           */
         XML_Helper(std::ostream* output);

@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2006 Andrea Paternesi
 // Copyright (C) 2006, 2007, 2008 Ben Asselstine
-// Copyright (C) 2007 Ole Laursen
+// Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -93,43 +93,54 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
 // savegame is a filename with absolute path!
 
 GameScenario::GameScenario(string savegame, bool& broken)
-    :d_turnmode(true)
+  :d_turnmode(true)
 {
-    Armysetlist::getInstance();
-    Armysetlist::getInstance()->instantiatePixmaps();
-    Tilesetlist::getInstance();
-    Tilesetlist::getInstance()->instantiatePixmaps();
-    Shieldsetlist::getInstance();
-    Shieldsetlist::getInstance()->instantiatePixmaps();
-
-    broken = false;
-    XML_Helper helper(savegame, ios::in, Configuration::s_zipfiles);
-
-    helper.registerTag("scenario", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("itemlist", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("playerlist", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("map", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("citylist", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("templelist", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("ruinlist", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("rewardlist", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("signpostlist", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("roadlist", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("counter", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("questlist", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("bridgelist", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("portlist", sigc::mem_fun(this, &GameScenario::load));
-    helper.registerTag("vectoredunitlist", sigc::mem_fun(this, &GameScenario::load));
-
-    //now parse the document and close the file afterwards
-    if (!helper.parse())
-    {
-        broken = true;
-    }
-
-    helper.close();
-    GameMap::getInstance()->calculateBlockedAvenues();
+  XML_Helper helper(savegame, ios::in, Configuration::s_zipfiles);
+  broken = loadWithHelper(helper);
+  helper.close();
 }
+
+GameScenario::GameScenario(XML_Helper &helper, bool& broken)
+  : d_turnmode(true)
+{
+  broken = loadWithHelper(helper);
+}
+
+bool GameScenario::loadWithHelper(XML_Helper& helper)
+{
+  Armysetlist::getInstance();
+  Armysetlist::getInstance()->instantiatePixmaps();
+  Tilesetlist::getInstance();
+  Tilesetlist::getInstance()->instantiatePixmaps();
+  Shieldsetlist::getInstance();
+  Shieldsetlist::getInstance()->instantiatePixmaps();
+
+  bool broken = false;
+
+  helper.registerTag("scenario", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("itemlist", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("playerlist", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("map", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("citylist", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("templelist", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("ruinlist", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("rewardlist", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("signpostlist", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("roadlist", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("counter", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("questlist", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("bridgelist", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("portlist", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("vectoredunitlist", sigc::mem_fun(this, &GameScenario::load));
+
+  if (!helper.parse())
+    broken = true;
+    
+  GameMap::getInstance()->calculateBlockedAvenues();
+
+  return broken;
+}
+
 
 GameScenario::~GameScenario()
 {
@@ -222,7 +233,20 @@ bool GameScenario::saveGame(string filename, string extension) const
     delete strtoken;
 
     XML_Helper helper(goodfilename, ios::out, Configuration::s_zipfiles);
+    retval &= saveWithHelper(helper);
+    helper.close();
 
+    if (retval)
+        return true;
+        
+    std::cerr <<_("GameScenario: Something went wrong with saving.\n");
+    return false;
+}
+
+bool GameScenario::saveWithHelper(XML_Helper &helper) const
+{
+    bool retval = true;
+    
     //start writing
     retval &= helper.begin(LORDSAWAR_SAVEGAME_VERSION);
     retval &= helper.openTag("lordsawar");
@@ -266,21 +290,9 @@ bool GameScenario::saveGame(string filename, string extension) const
     
     retval &= helper.closeTag();
     
-    if (!retval)
-    {
-        std::cerr <<_("GameScenario: Something went wrong with saving.\n");
-        return false;
-    }
-    
     retval &= helper.closeTag();
-
-    helper.close();
-
-    if (retval)
-        return true;
-        
-    std::cerr <<_("GameScenario: Something went wrong with saving.\n");
-    return false;
+    
+    return retval;
 }
 
 bool GameScenario::load(std::string tag, XML_Helper* helper)

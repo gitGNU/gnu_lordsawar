@@ -134,6 +134,8 @@ class Action
 	//! Default constructor.
         Action(Type type);
 
+        Action(XML_Helper *helper);
+
 	//! Destructor.
         virtual ~Action();
 
@@ -141,7 +143,7 @@ class Action
         virtual std::string dump() const = 0;
 
         //! Save function. See XML_Helper for information about saving.
-        virtual bool save(XML_Helper* helper) const = 0;
+        bool save(XML_Helper* helper) const;
         
         /** 
 	 * static load function (see XML_Helper)
@@ -160,9 +162,15 @@ class Action
 
         //! Returns the Action::Type for this action.
         Type getType() const {return d_type;}
+
+        void setPlayer(Uint32 p) { d_player = p; }
+        Uint32 getPlayer() const { return d_player; }
         
     protected:
+        virtual bool doSave(XML_Helper* helper) const = 0;
+        
         Type d_type;
+        Uint32 d_player;
 };
 
 //-----------------------------------------------------------------------------
@@ -186,7 +194,7 @@ class Action_Move : public Action
         std::string dump() const;
 
 	//! Save this move action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the move action with the stack and it's new position.
         bool fillData(Stack* s, Vector<int> dest);
@@ -216,7 +224,7 @@ class Action_Disband: public Action
         std::string dump() const;
 
 	//! Save this disband action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the Stack being removed.
         bool fillData(Stack* s);
@@ -251,7 +259,7 @@ class Action_Split : public Action
         std::string dump() const;
 
 	//! Save this split action to an opened saved-game file.
-        bool save (XML_Helper* helper) const;
+        bool doSave (XML_Helper* helper) const;
 
         /** 
 	 * Populate the Action_Split class with the original Stack, and the 
@@ -287,7 +295,7 @@ class Action_Fight : public Action, public sigc::trackable
         std::string dump() const;
 
 	//! Save this fight action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the action with the Fight.  Please note that the
@@ -325,7 +333,7 @@ class Action_Join : public Action
         std::string dump() const;
 
 	//! Save this stack join action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
         /** 
 	 * Populate the Action_Join class with the original Stack, and the 
@@ -360,7 +368,7 @@ class Action_Ruin : public Action
         std::string dump() const;
 
 	//! Save this ruin search attempted action to a saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the Action_Ruin class with the Stack containing the
@@ -400,7 +408,7 @@ class Action_Temple : public Action
         std::string dump() const;
 
 	//! Save this temple search attempted action to a saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the Action_Temple class with the Stack and the Temple
@@ -438,7 +446,7 @@ class Action_Occupy : public Action
         std::string dump() const;
 
 	//! Save this city occupied action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the City being occupied.
         bool fillData (City* c);
@@ -470,7 +478,7 @@ class Action_Pillage : public Action
         std::string dump() const;
 
 	//! Save this city pillaged action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the City that has been pillaged.
         bool fillData(City* c);
@@ -502,7 +510,7 @@ class Action_Sack : public Action
         std::string dump() const;
 
 	//! Save this city sacked action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the City that has been sacked.
         bool fillData(City* c);
@@ -533,7 +541,7 @@ class Action_Raze : public Action
         std::string dump() const;
 
 	//! Save this city razed action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the City that has been razed.
         bool fillData (City* c);
@@ -564,7 +572,7 @@ class Action_Upgrade : public Action
         std::string dump() const;
 
 	//! Save this city upgraded action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the City that has been upgraded.
         bool fillData(City* c);
@@ -600,7 +608,7 @@ class Action_Buy : public Action
         std::string dump() const;
 
 	//! Save this city buy production action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the Action_Buy with City where the buy has happened.
@@ -640,7 +648,7 @@ class Action_Production : public Action
         std::string dump() const;
 
 	//! Save this city change production action to a saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the Action_Production with City where the change
@@ -681,7 +689,7 @@ class Action_Reward : public Action
         std::string dump() const;
 
 	//! Save this player rewarded action to a saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the Action_Reward with a Reward.
         bool fillData (Stack *stack, Reward *r);
@@ -714,7 +722,7 @@ class Action_Quest : public Action
         std::string dump() const;
 
 	//! Save this hero quest assigned action to a saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the Action_Quest with a Quest.
         bool fillData(Quest* q);
@@ -756,7 +764,7 @@ class Action_Equip : public Action
         std::string dump() const;
 
 	//! Save this item equipped action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the Action_Equip class with the Id of the Hero,
@@ -795,7 +803,7 @@ class Action_Level : public Action
         std::string dump() const;
 
 	//! Save this level advancement action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the Action_Level class with the the Id of the Hero
@@ -833,7 +841,7 @@ class Action_ModifySignpost: public Action
         std::string dump() const;
 
 	//! Save this change signpost action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the signpost and the new message.
         bool fillData(Signpost * s, std::string message);
@@ -865,7 +873,7 @@ class Action_RenameCity: public Action
         std::string dump() const;
 
 	//! Save this city rename action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the city being renamed and the new name.
         bool fillData(City *c, std::string name);
@@ -899,7 +907,7 @@ class Action_Vector: public Action
         std::string dump() const;
 
 	//! Save this city vector action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the Action_Vector class with the City being vectored
@@ -934,7 +942,7 @@ class Action_FightOrder: public Action
         std::string dump() const;
 
 	//! Save this fight order action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with a list of ranks, one per Army unit type.
         bool fillData(std::list<Uint32> order);
@@ -965,7 +973,7 @@ class Action_Resign: public Action
         std::string dump() const;
 
 	//! Save this player resignation action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! This method doesn't need to be called for Action_Resign actions.
         bool fillData();
@@ -993,7 +1001,7 @@ class Action_Plant: public Action
         std::string dump() const;
 
 	//! Save this item planted action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the Id of the Hero and the Id of the Item.
         bool fillData(Hero *hero, Item *item);
@@ -1028,7 +1036,7 @@ class Action_Produce: public Action
         std::string dump() const;
 
 	//! Save this unit produced action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the Action_Produce action with the army type being
@@ -1078,7 +1086,7 @@ class Action_ProduceVectored: public Action
         std::string dump() const;
 
 	//! Save this vector arrival action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the Action_ProduceVectored with the Id of the army
@@ -1122,7 +1130,7 @@ class Action_DiplomacyState: public Action
         std::string dump() const;
 
 	//! Save this diplomatic state action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the Action_DiplomacyState class with the Player for
@@ -1166,7 +1174,7 @@ class Action_DiplomacyProposal: public Action
         std::string dump() const;
 
 	//! Save this diplomatic proposal action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the Action_DiplomacyProposal class with the Player for
@@ -1210,7 +1218,7 @@ class Action_DiplomacyScore: public Action
         std::string dump() const;
 
 	//! Save this diplomatic score action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	/**
 	 * Populate the Action_DiplomacyScore class with the Player for
@@ -1248,7 +1256,7 @@ class Action_EndTurn: public Action
         std::string dump() const;
 
 	//! Save this action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 };
 
 //-----------------------------------------------------------------------------
@@ -1267,7 +1275,7 @@ class Action_ConquerCity : public Action
         std::string dump() const;
 
 	//! Save this city occupied action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the City being conquered.
         bool fillData (City* c, Stack *s);
@@ -1292,7 +1300,7 @@ class Action_RecruitHero : public Action
         std::string dump() const;
 
 	//! Save this city occupied action to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action.
         bool fillData(Hero* hero, City *city, int cost, int alliesCount, const Army *ally);

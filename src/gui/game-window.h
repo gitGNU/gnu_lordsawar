@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007, 2008, Ole Laursen
 //  Copyright (C) 2007, 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -84,7 +84,7 @@ class GameWindow: public sigc::trackable
     
     // setup and use the game stored under file_path
     void load_game(std::string file_path);
-    
+
     // emitted when the game has ended and it is time to show the splash again
     sigc::signal<void> game_ended;
     
@@ -235,7 +235,7 @@ class GameWindow: public sigc::trackable
     void on_ruin_searched(Ruin *ruin, Stack *s, Reward *reward);
     void on_sage_visited(Ruin *ruin, Stack *s);
     void on_ruin_rewarded(Reward_Ruin *reward);
-    void on_fight_started(Fight &fight, bool intense_combat);
+    void on_fight_started(Fight &fight);
     void on_ruinfight_started(Stack *attackers, Stack *defenders);
     void on_ruinfight_finished(Fight::Result result);
     bool on_hero_offers_service(Player *player, Hero *hero, City *city, int gold);

@@ -1,3 +1,13 @@
+2008-03-31  Ole Laursen
+
+	* added beginnings of network code (depends on GNet -
+	  www.gnetlibrary.org)
+	* prevent fights from being battled twice and collect the initial
+	  army HPs (fixes weird double explosions, and crashes in
+	  NetworkPlayer)
+	* added support for streams in XML_Helper
+	* include the player id in actions
+
 2008-03-23  Ben Asselstine
 	* added about dialog boxes.
 

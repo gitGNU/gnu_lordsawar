@@ -38,7 +38,7 @@ class Army;
 class FightWindow: public sigc::trackable
 {
  public:
-    FightWindow(Fight &fight, bool intense_combat);
+    FightWindow(Fight &fight);
     ~FightWindow();
 
     void set_parent_window(Gtk::Window &parent);
@@ -78,7 +78,8 @@ class FightWindow: public sigc::trackable
 			 const armies_type &defenders);
     
     // add an army to the window
-    void add_army(Army *army, std::vector<Gtk::HBox *> &hboxes,
+    void add_army(Army *army, int initial_hp,
+                  std::vector<Gtk::HBox *> &hboxes,
 		  Gtk::VBox *vbox,
 		  int current_no, int max_rows, Gtk::AlignmentEnum alignment);
 
@@ -86,7 +87,6 @@ class FightWindow: public sigc::trackable
 
     bool do_round();
     bool d_quick;
-    bool d_intense_combat;
 };
 
 #endif

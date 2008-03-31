@@ -45,7 +45,9 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../Ownable.o ../Movable.o ../Immovable.o ../Positioned.o \
 	../Named.o ../Namable.o ../Renamable.o ../NamedLocation.o \
 	../network_player.o ../game.o ../NextTurn.o ../gamebigmap.o \
-	../herotemplates.o
+	../herotemplates.o ../game-server.o \
+        ../game-client.o ../network-server.o \
+	../network-connection.o
 
 if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor lordsawar-army-editor
@@ -95,10 +97,12 @@ endif
 	i586-mingw32msvc-windres -o $@ $<
 
 lordsawar_editor_LDADD = $(GTKMM_LIBS) \
-	                   $(DEPENDSON) \
+			 $(LIBGNET_LIBS) \
+			 $(DEPENDSON) \
                            $(SDL_LIBS) \
                @LIBINTL@ -L..
 lordsawar_army_editor_LDADD = $(GTKMM_LIBS) \
+		              $(LIBGNET_LIBS) \
 	                      $(DEPENDSON) \
                               $(SDL_LIBS) \
                @LIBINTL@ -L..

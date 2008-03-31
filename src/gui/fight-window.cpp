@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007, 2008, Ole Laursen
 //  Copyright (C) 2007, 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -42,9 +42,8 @@
 #include "../army.h"
 #include "../GraphicsCache.h"
 
-FightWindow::FightWindow(Fight &fight, bool intense_combat)
+FightWindow::FightWindow(Fight &fight)
 {
-  bool d_intense_combat = intense_combat;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/fight-window.glade");
 
@@ -70,12 +69,14 @@ FightWindow::FightWindow(Fight &fight, bool intense_combat)
     // add the armies
     std::vector<Gtk::HBox *> close_hboxes;
     int close;
+    std::map<Uint32, Uint32> initial_hps = fight.getInitialHPs();
 
     // ... attackers
     close = 0;
     for (armies_type::iterator i = attackers.begin(); i != attackers.end(); ++i)
     {
-      add_army(*i, close_hboxes, attacker_close_vbox, close++, rows,
+      add_army(*i, initial_hps[(*i)->getId()],
+               close_hboxes, attacker_close_vbox, close++, rows,
 	       Gtk::ALIGN_LEFT);
     }
 
@@ -85,7 +86,8 @@ FightWindow::FightWindow(Fight &fight, bool intense_combat)
     close = 0;
     for (armies_type::iterator i = defenders.begin(); i != defenders.end(); ++i)
     {
-	add_army(*i, close_hboxes, defender_close_vbox, close++, rows,
+	add_army(*i, initial_hps[(*i)->getId()],
+                 close_hboxes, defender_close_vbox, close++, rows,
 		 Gtk::ALIGN_LEFT);
     }
     
@@ -103,7 +105,6 @@ FightWindow::FightWindow(Fight &fight, bool intense_combat)
     xml->get_widget("attacker_shield_image", attacker_shield_image);
     attacker_shield_image->property_pixbuf()=to_pixbuf(gc->getShieldPic(2, p));
   
-    fight.battle(d_intense_combat);
     actions = fight.getCourseOfEvents();
     d_quick = false;
 }
@@ -214,7 +215,7 @@ int FightWindow::compute_max_rows(const armies_type &attackers,
     return old_height;
 }
 
-void FightWindow::add_army(Army *army,
+void FightWindow::add_army(Army *army, int initial_hp,
 			   std::vector<Gtk::HBox *> &hboxes,
 			   Gtk::VBox *vbox,
 			   int current_no, int max_rows,
@@ -229,7 +230,7 @@ void FightWindow::add_army(Army *army,
     
     // hit points graph
     Gtk::ProgressBar *progress = manage(new Gtk::ProgressBar);
-    progress->set_fraction(double(army->getHP()) / army->getStat(Army::HP));
+    progress->set_fraction(double(initial_hp) / army->getStat(Army::HP));
     progress->property_width_request() = army->getPixmap()->w;
     progress->property_height_request() = 12;
     army_box->pack_start(*progress, Gtk::PACK_SHRINK, 4);
@@ -255,7 +256,7 @@ void FightWindow::add_army(Army *army,
     // finally add an entry for later use
     ArmyItem item;
     item.army = army;
-    item.hp = army->getHP();
+    item.hp = initial_hp;
     item.bar = progress;
     item.image = image;
     item.exploding = false;
@@ -276,6 +277,7 @@ bool FightWindow::do_round()
     if (!i->exploding)
       continue;
     
+    std::cerr << "clearing " << i->army->getId() << std::endl;
     Glib::RefPtr<Gdk::Pixbuf> empty_pic
       = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, expl->w, expl->h);
     empty_pic->fill(0x00000000);
@@ -294,6 +296,7 @@ bool FightWindow::do_round()
            end = army_items.end(); i != end; ++i)
       if (i->army->getId() == f.id)
       {
+        std::cerr << "hack slashing " << f.id << " with damage " << f.damage << " hp left " << i->hp << std::endl;
         i->hp -= f.damage;
         if (i->hp < 0)
           i->hp = 0;
@@ -301,6 +304,7 @@ bool FightWindow::do_round()
         i->bar->set_fraction(fraction);
         if (fraction == 0.0)
         {
+          std::cerr << "exploding " << f.id << std::endl;
           i->bar->hide();
           i->image->property_pixbuf() = to_pixbuf(expl);
           i->exploding = true;

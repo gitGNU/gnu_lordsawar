@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007, 2008, Ole Laursen
 //  Copyright (C) 2007, 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -29,6 +29,11 @@
 #include "../defs.h"
 #include "../GraphicsCache.h"
 #include "../GameScenario.h"
+
+#include "../game-client.h"
+
+static GameClient *game_client = 0;
+
 Driver::Driver()
 {
     splash_window.reset(new SplashWindow);
@@ -40,6 +45,13 @@ Driver::Driver()
 	sigc::mem_fun(*this, &Driver::on_quit_requested));
 
     if (Main::instance().start_test_scenario) {
+        game_client = new GameClient();
+        game_client->game_scenario_received.connect(
+          sigc::mem_fun(this, &Driver::on_load_requested));
+        game_client->start("localhost", 12345);
+        splash_window->show();
+        return;
+      
 	// quick load a test scenario
 	GameParameters g;
 	GameParameters::Player p;
