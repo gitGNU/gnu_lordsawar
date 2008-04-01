@@ -122,7 +122,7 @@ void Game::addPlayer(Player *p)
      (sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit)));
 }
 
-#define NETWORK_TESTING 0
+#define NETWORK_TESTING 1
 
 #include "game-server.h"
 
