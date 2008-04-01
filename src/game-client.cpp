@@ -18,11 +18,11 @@
 #include "game-client.h"
 
 #include "network-connection.h"
-#include "../File.h"
-#include "../action.h"
-#include "../playerlist.h"
-#include "../network_player.h"
-#include "../xmlhelper.h"
+#include "File.h"
+#include "action.h"
+#include "playerlist.h"
+#include "network_player.h"
+#include "xmlhelper.h"
 
 
 

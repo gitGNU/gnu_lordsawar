@@ -19,12 +19,12 @@
 #include "game-server.h"
 
 #include "network-server.h"
-#include "../game.h"
-#include "../xmlhelper.h"
-#include "../GameScenario.h"
-#include "../playerlist.h"
-#include "../player.h"
-#include "../action.h"
+#include "game.h"
+#include "xmlhelper.h"
+#include "GameScenario.h"
+#include "playerlist.h"
+#include "player.h"
+#include "action.h"
 
 
 class Action;
