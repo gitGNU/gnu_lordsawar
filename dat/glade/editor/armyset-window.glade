@@ -102,7 +102,7 @@
 		  <child>
 		    <widget class="GtkMenuItem" id="edit_armyset_info_menuitem">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Armyset info</property>
+		      <property name="label" translatable="yes">Armyset Information</property>
 		      <property name="use_underline">True</property>
 		    </widget>
 		  </child>

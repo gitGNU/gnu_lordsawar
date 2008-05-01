@@ -19,6 +19,9 @@ reward-dialog.glade \
 select-item-dialog.glade \
 select-reward-dialog.glade \
 reward-list-dialog.glade \
-select-hidden-ruin-dialog.glade
+select-hidden-ruin-dialog.glade \
+tileset-window.glade \
+tileset-info-dialog.glade \
+tileset-terrain-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)
