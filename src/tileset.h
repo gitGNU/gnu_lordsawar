@@ -100,6 +100,12 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	 */
 	TileStyle *getRandomTileStyle(Uint32 index, TileStyle::Type style);
 
+	//! Save a Tileset to an opened tile configuration file.
+	/**
+	 * @param  The opened XML tile configuration file.
+	 */
+	bool save(XML_Helper *helper);
+
     private:
         //! Callback to load Tile objects into the Tileset.
         bool loadTile(std::string, XML_Helper* helper);

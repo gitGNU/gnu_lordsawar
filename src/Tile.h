@@ -184,6 +184,13 @@ eoeoeoeo
 	 */
 	void instantiatePixmaps(std::string tileset, Uint32 tilesize);
 
+
+	//! Save a Tile to an opened tile configuration file.
+	/**
+	 * @param  The opened XML tile configuration file.
+	 */
+	bool save(XML_Helper *helper);
+
     private:
         // DATA
 

@@ -291,6 +291,13 @@ ooooooo
 	 */
 	void instantiatePixmap(SDL_Surface *tilestyles, Uint32 tilesize,
 			       int index);
+
+	//! Save a TileStyle to an opened tile configuration file.
+	/**
+	 * @param  The opened XML tile configuration file.
+	 */
+	bool save(XML_Helper *helper);
+
     private:
         // DATA
 	//! The image of this tilestyle.

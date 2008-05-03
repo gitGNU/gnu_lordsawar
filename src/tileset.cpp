@@ -149,4 +149,19 @@ TileStyle *Tileset::getRandomTileStyle(Uint32 index, TileStyle::Type style)
     return NULL;
   return tilestyles[rand() % tilestyles.size()];
 }
+
+bool Tileset::save(XML_Helper *helper)
+{
+  bool retval = true;
+
+  retval &= helper->openTag("tileset");
+  retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("info", d_info);
+  retval &= helper->saveData("tilesize", d_tileSize);
+  for (Tileset::iterator i = begin(); i != end(); ++i)
+    retval &= (*i)->save(helper);
+  retval &= helper->closeTag();
+
+  return retval;
+}
 // End of file

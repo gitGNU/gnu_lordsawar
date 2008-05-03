@@ -14,6 +14,7 @@
 
 #include "network-connection.h"
 #include <iostream>
+#include <cstring>
 #include <gnet.h>
 
 #include "network-common.h"

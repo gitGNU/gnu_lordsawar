@@ -19,6 +19,7 @@
 
 #include <map>
 #include <sigc++/signal.h>
+#include <string>
 
 #include "network-common.h"
 

@@ -33,6 +33,53 @@ Tile::Tile(XML_Helper* helper)
     d_type = static_cast<Tile::Type>(i);
 
 }
+
+bool Tile::save(XML_Helper *helper)
+{
+  bool retval = true;
+
+  retval &= helper->openTag("tile");
+  retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("moves", d_moves);
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->openTag("smallmap");
+  switch (d_pattern)
+    {
+      //patterns with a single colour
+    case SOLID:
+      retval &= helper->saveData("red", d_color.r);
+      retval &= helper->saveData("green", d_color.g);
+      retval &= helper->saveData("blue", d_color.b);
+      break;
+      //patterns with two colours
+    case STIPPLED: case SUNKEN:
+      retval &= helper->saveData("red", d_color.r);
+      retval &= helper->saveData("green", d_color.g);
+      retval &= helper->saveData("blue", d_color.b);
+      retval &= helper->saveData("2nd_red", d_second_color.r);
+      retval &= helper->saveData("2nd_green", d_second_color.g);
+      retval &= helper->saveData("2nd_blue", d_second_color.b);
+      break;
+      //patterns with three colours
+    case RANDOMIZED: case TABLECLOTH:
+      retval &= helper->saveData("red", d_color.r);
+      retval &= helper->saveData("green", d_color.g);
+      retval &= helper->saveData("blue", d_color.b);
+      retval &= helper->saveData("2nd_red", d_second_color.r);
+      retval &= helper->saveData("2nd_green", d_second_color.g);
+      retval &= helper->saveData("2nd_blue", d_second_color.b);
+      retval &= helper->saveData("3rd_red", d_third_color.r);
+      retval &= helper->saveData("3rd_green", d_third_color.g);
+      retval &= helper->saveData("3rd_blue", d_third_color.b);
+      break;
+    }
+  retval &= helper->closeTag();
+  for (Tile::iterator i = begin(); i != end(); ++i)
+    retval &= (*i)->save(helper);
+  retval &= helper->closeTag();
+
+  return retval;
+}
     
 Tile::~Tile()
 {

@@ -46,4 +46,16 @@ void TileStyleSet::instantiatePixmaps(std::string tileset, Uint32 tilesize)
   SDL_FreeSurface (pixmaps);
 }
 
+bool TileStyleSet::save(XML_Helper *helper)
+{
+  bool retval = true;
+
+  retval &= helper->openTag("tilestyleset");
+  retval &= helper->saveData("name", d_name);
+  for (TileStyleSet::iterator i = begin(); i != end(); ++i)
+    retval &= (*i)->save(helper);
+  retval &= helper->closeTag();
+
+  return retval;
+}
 // End of file

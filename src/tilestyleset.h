@@ -67,6 +67,12 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	 */
 	void instantiatePixmaps(std::string tileset, Uint32 tilesize);
 
+	//! Save a TileStyleSet to an opened tile configuration file.
+	/**
+	 * @param  The opened XML tile configuration file.
+	 */
+	bool save(XML_Helper *helper);
+
     private:
 
 	//! The name of the tilestyleset.

@@ -65,3 +65,23 @@ TileStyle::~TileStyle()
   if (d_pixmap)
     SDL_FreeSurface(d_pixmap);
 }
+
+bool TileStyle::save(XML_Helper *helper)
+{
+  bool retval = true;
+
+  char *idstr = NULL;
+  retval &= helper->openTag("tilestyle");
+  if (asprintf (&idstr, "0x%02x", d_id) != -1)
+    {
+      retval &= helper->saveData("id", idstr);
+      free (idstr);
+    }
+  else
+    retval &= false;
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+// End of file
