@@ -42,7 +42,7 @@
  * Tile objects are held in a Tileset object.
  * Maptile objects refer to Tile objects.
  */
-class Tile : public std::vector<TileStyleSet*>
+class Tile : public std::list<TileStyleSet*>
 {
     public:
         //! Enumerate the kinds of terrain that a Stack can potentially move on.
@@ -126,6 +126,10 @@ eoeoeoeo
 	  TABLECLOTH = 4
 	};
                     
+
+	//! Default constructor.
+	Tile();
+
         //! Loading constructor.
 	/**
 	 * Loads the tileset.tile XML entities in the tileset configuration 
@@ -147,7 +151,14 @@ eoeoeoeo
 
         //! Get the type (grass, hill,...) of this tile type.
         Type getType() const {return d_type;}
+
+	void setType(Type type) {d_type = type;}
                 
+	static int getTypeIndexForType(Tile::Type type);
+
+	int getTypeIndex() {return getTypeIndexForType(d_type);}
+
+	void setTypeByIndex(int idx);
         //! Get the pattern (solid, stippled, random) of this type.
         Pattern getPattern() const {return d_pattern;}
 
@@ -156,6 +167,9 @@ eoeoeoeo
 
 	//! Get the name of this kind of tile (used in the editor).
 	std::string getName() const {return d_name;}
+
+	//! Set the name of this kind of tile (used in the editor).
+	void setName(std::string name) {d_name = name;}
 
         //! Get the alternate colour associated with this tile's pattern.
 	/**

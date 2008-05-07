@@ -50,7 +50,7 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../network-connection.o
 
 if WANT_EDITOR
-bin_PROGRAMS = lordsawar-editor lordsawar-army-editor
+bin_PROGRAMS = lordsawar-editor lordsawar-army-editor lordsawar-tile-editor
 
 lordsawar_army_editor_SOURCES = \
 armyset-main.cpp \
@@ -59,6 +59,11 @@ armyset-info-dialog.cpp armyset-info-dialog.h \
 glade-helpers.h
 
 
+lordsawar_tile_editor_SOURCES = \
+tileset-main.cpp \
+tileset-window.cpp tileset-window.h \
+tileset-info-dialog.cpp tileset-info-dialog.h \
+glade-helpers.h
 
 lordsawar_editor_SOURCES = \
 main.cpp \
@@ -102,6 +107,12 @@ lordsawar_editor_LDADD = $(GTKMM_LIBS) \
                            $(SDL_LIBS) \
                @LIBINTL@ -L..
 lordsawar_army_editor_LDADD = $(GTKMM_LIBS) \
+		              $(LIBGNET_LIBS) \
+	                      $(DEPENDSON) \
+                              $(SDL_LIBS) \
+               @LIBINTL@ -L..
+
+lordsawar_tile_editor_LDADD = $(GTKMM_LIBS) \
 		              $(LIBGNET_LIBS) \
 	                      $(DEPENDSON) \
                               $(SDL_LIBS) \

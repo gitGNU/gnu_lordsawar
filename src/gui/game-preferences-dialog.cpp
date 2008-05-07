@@ -743,7 +743,6 @@ void GamePreferencesDialog::on_map_chosen()
   if (selected_filename.empty())
     return;
   //try to read the file, grab the players
-  printf ("got it : %s\n", selected_filename.c_str());
   XML_Helper helper(selected_filename, std::ios::in, Configuration::s_zipfiles);
 
   load_map_parameters.players.clear();

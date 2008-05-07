@@ -43,6 +43,14 @@ class XML_Helper;
 class Tileset : public sigc::trackable, public std::vector<Tile*>
 {
     public:
+	//! Default constructor.
+	/**
+	 * Make a new Tileset.
+	 *
+	 * @param name  The name of the Tileset.  Analagous to Tileset::d_name.
+	 */
+	Tileset(std::string name);
+
 	//! Loading constructor.
 	/**
 	 * Make a new Tileset object by loading the data from a tileset
@@ -64,11 +72,26 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
         //! Returns the name of the tileset.
         std::string getName() const {return d_name;}
 
+	//! Set the name of the tileset.
+	/**
+	 * @note This method is only used in the tileset editor.
+	 */
+        void setName(std::string name) {d_name = name;}
+
         //! Returns the description of the tileset.
         std::string getInfo() const {return d_info;}
 
+	//! Set the description of the tileset.
+	/**
+	 * @note This method is only used in the tileset editor.
+	 */
+        void setInfo(std::string info) {d_info = info;}
+
         //! Returns the tilesize of the tileset.
         Uint32 getTileSize() const {return d_tileSize;}
+
+	//! Sets the tilesize of the tileset.
+	void setTileSize(Uint32 tileSize) {d_tileSize = tileSize;}
 
         //! Returns the index to the given terrain type.
         Uint32 getIndex(Tile::Type type) const;
@@ -105,6 +128,10 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	 * @param  The opened XML tile configuration file.
 	 */
 	bool save(XML_Helper *helper);
+
+	Tile *lookupTileByName(std::string name);
+
+	int getFreeTileStyleId();
 
     private:
         //! Callback to load Tile objects into the Tileset.

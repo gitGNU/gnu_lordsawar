@@ -274,7 +274,8 @@ void MainWindow::setup_terrain_radiobuttons()
 	item.button->signal_toggled().connect(
 	    sigc::mem_fun(this, &MainWindow::on_terrain_radiobutton_toggled));
 
-	SDL_Surface *surf = (*(*tile)[0])[0]->getPixmap();
+	//SDL_Surface *surf = (*(*tile)[0])[0]->getPixmap();
+	SDL_Surface *surf = (*(*(*tile).begin())->begin())->getPixmap();
 	Glib::RefPtr<Gdk::Pixbuf> pic = to_pixbuf(surf)->scale_simple(20, 20, Gdk::INTERP_NEAREST);
 	item.button->add(*manage(new Gtk::Image(pic)));
 
@@ -756,9 +757,9 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
   group = auto_item.button->get_group();
   tile_style_items.push_back(auto_item);
 
-  for (unsigned int i = 0; i < tile->size(); i++)
+  for (Tile::iterator it = tile->begin(); it != tile->end(); it++)
     {
-      TileStyleSet *tilestyleset = (*tile)[i];
+      TileStyleSet *tilestyleset = *it;
       //loop through tile style sets
       for (unsigned int j = 0; j < tilestyleset->size(); j++)
 	{

@@ -27,6 +27,11 @@ using namespace std;
 
 #include <iostream>
 
+        
+TileStyleSet::TileStyleSet()
+{
+}
+
 TileStyleSet::TileStyleSet(XML_Helper *helper)
 {
   helper->getData(d_name, "name"); 
@@ -41,9 +46,12 @@ TileStyleSet::~TileStyleSet()
 void TileStyleSet::instantiatePixmaps(std::string tileset, Uint32 tilesize)
 {
   SDL_Surface* pixmaps = File::getTilesetPicture(tileset, d_name + ".png");
-  for (unsigned int i=0; i < size(); i++)
-    (*this)[i]->instantiatePixmap(pixmaps, tilesize, i);
-  SDL_FreeSurface (pixmaps);
+  if (pixmaps)
+    {
+      for (unsigned int i=0; i < size(); i++)
+	(*this)[i]->instantiatePixmap(pixmaps, tilesize, i);
+      SDL_FreeSurface (pixmaps);
+    }
 }
 
 bool TileStyleSet::save(XML_Helper *helper)

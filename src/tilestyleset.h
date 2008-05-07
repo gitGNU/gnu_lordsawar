@@ -38,7 +38,11 @@ class XML_Helper;
 class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 {
     public:
-	//! The default constuctor loads the TileStyleSet from the config file.
+
+	//! The default constructor.
+        TileStyleSet();
+
+	//! The loading constuctor loads the TileStyleSet from the config file.
 	/**
 	 * Read the tileset.tile.tilestyleset XML entities in the tileset
 	 * configuration file.
@@ -56,6 +60,9 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	 * XML entity of the tileset configuration flie.
 	 */
 	std::string getName() const {return d_name;}
+
+	//! Set the name of this tilestyleset.
+	void setName(std::string name) {d_name = name;}
 
 	/**
 	 * Load all of the TileStyle images for this TileStyleSet.

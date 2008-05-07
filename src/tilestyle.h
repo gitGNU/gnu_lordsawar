@@ -257,6 +257,9 @@ ooooooo
 	  OTHER = 16,
 	};
 
+	//! Default constructor.
+	TileStyle();
+
         //! Loading constructor.
 	/**
 	 * Load the tileset.tile.tilestyles.tilestyle XML entities from the
@@ -268,15 +271,24 @@ ooooooo
 
         //! Get the style type of this tile style.
         Type getType() const {return d_type;}
+
+	//! Set the style type of this tile style.
+	/**
+	 * @note This method is only used in the tileset editor.
+	 */
+	void setType(Type type) {d_type = type;}
                 
         //! Get the picture for tile style.
         SDL_Surface *getPixmap() const {return d_pixmap;}
- 
+
         //! Get the id for this tilestyle.
 	/*
 	 * The id is unique among all other tilestyles in the Tileset.
 	 */
 	Uint32 getId() const {return d_id;}
+
+	//! Set the id for this tilestyle.
+	void setId(Uint32 id) {d_id = id;}
  
 	//! Load the picture associated with this tile style.
 	/**
@@ -298,6 +310,14 @@ ooooooo
 	 */
 	bool save(XML_Helper *helper);
 
+	//! Get the name of the current style.
+	std::string getTypeName();
+
+	//! Get the name of the another style.
+	static std::string getTypeName(Type type);
+
+	//! Return the style type enumeration given the type name.
+	static TileStyle::Type typeNameToType(std::string name);
     private:
         // DATA
 	//! The image of this tilestyle.

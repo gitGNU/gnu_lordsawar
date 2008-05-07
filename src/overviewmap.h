@@ -105,6 +105,10 @@ class OverviewMap
      */
     SDL_Surface *get_surface();
 
+    static void draw_tile_pixel(SDL_Surface *surface, Tile::Pattern pattern,
+				SDL_Color first_color, SDL_Color second_color,
+				SDL_Color third_color,
+				int i, int j, bool shadowed);
  private:
     //! An SDL surface of the terrain without the features.
     /**
@@ -149,10 +153,10 @@ class OverviewMap
 
     //! Every pixel on the graphic is this wide and tall.
     double pixels_per_tile;
-	
+
     //! Maps the given point in graphic coordinates to a game map coordinate.
     Vector<int> mapFromScreen(Vector<int> pos);
-        
+
     //! And the other way round. Map a map coordinate to a surface pixel.
     Vector<int> mapToSurface(Vector<int> pos);
 

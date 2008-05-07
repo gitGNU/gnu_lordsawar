@@ -85,95 +85,104 @@ bool OverviewMap::isShadowed(Uint32 type, int i, int j)
   return false;
 }
 
-void OverviewMap::draw_tile_pixel(Maptile *t, int i, int j)
+void OverviewMap::draw_tile_pixel(SDL_Surface *surface, Tile::Pattern pattern,
+				  SDL_Color first_color, SDL_Color second_color,
+				  SDL_Color third_color,
+				  int i, int j, bool shadowed)
 {
-  SDL_Color c = t->getColor();
-  Tile::Pattern p = t->getPattern();
+  SDL_Color c = first_color;
   
-  Uint32 first = SDL_MapRGB(static_surface->format, c.r, c.g, c.b);
-  switch (p)
+  Uint32 first = SDL_MapRGB(surface->format, c.r, c.g, c.b);
+  switch (pattern)
     {
       case Tile::SOLID:
-        draw_pixel(static_surface, i, j, first);
+        draw_pixel(surface, i, j, first);
         break;
       case Tile::STIPPLED:
         {
-          SDL_Color s = t->getSecondColor();
-          Uint32 second = SDL_MapRGB(static_surface->format, s.r, s.g, s.b);
+          SDL_Color s = second_color;
+          Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
          
           if ((i+j) % 2 == 0)
-            draw_pixel(static_surface, i, j, first);
+            draw_pixel(surface, i, j, first);
           else
-            draw_pixel(static_surface, i, j, second);
+            draw_pixel(surface, i, j, second);
         }
         break;
       case Tile::RANDOMIZED:
         {
-          SDL_Color s = t->getSecondColor();
-          Uint32 second = SDL_MapRGB(static_surface->format, s.r, s.g, s.b);
-          SDL_Color th = t->getThirdColor();
-          Uint32 third = SDL_MapRGB(static_surface->format, th.r, th.g, th.b);
+          SDL_Color s = second_color;
+          Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+          SDL_Color th = third_color;
+          Uint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
           int num = rand() % 3;
           if (num == 0)
-            draw_pixel(static_surface, i, j, first);
+            draw_pixel(surface, i, j, first);
           else if (num == 1)
-            draw_pixel(static_surface, i, j, second);
+            draw_pixel(surface, i, j, second);
           else
-            draw_pixel(static_surface, i, j, third);
+            draw_pixel(surface, i, j, third);
         }
         break;
       case Tile::SUNKEN:
-        if (isShadowed(t->getType(), i, j) == false)
-          draw_pixel(static_surface, i, j, first);
+        if (shadowed == false)
+          draw_pixel(surface, i, j, first);
         else
           {
-            SDL_Color s = t->getSecondColor();
-            Uint32 shadow_color = SDL_MapRGB(static_surface->format, s.r, s.g, 
-                                             s.b);
-            draw_pixel(static_surface, i, j, shadow_color);
+            SDL_Color s = second_color;
+            Uint32 shadow_color = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+            draw_pixel(surface, i, j, shadow_color);
           }
         break;
       case Tile::TABLECLOTH:
           {
-            SDL_Color s = t->getSecondColor();
-            Uint32 second = SDL_MapRGB(static_surface->format, s.r, s.g, s.b);
-            SDL_Color th = t->getThirdColor();
-            Uint32 third = SDL_MapRGB(static_surface->format, th.r, th.g, th.b);
+            SDL_Color s = second_color;
+            Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+            SDL_Color th = third_color;
+            Uint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
             if (i % 4 == 0 && j % 4 == 0)
-              draw_pixel(static_surface, i, j, first);
+              draw_pixel(surface, i, j, first);
             else if (i % 4 == 0 && j % 4 == 1)
-              draw_pixel(static_surface, i, j, second);
+              draw_pixel(surface, i, j, second);
             else if (i % 4 == 0 && j % 4 == 2)
-              draw_pixel(static_surface, i, j, first);
+              draw_pixel(surface, i, j, first);
             else if (i % 4 == 0 && j % 4 == 3)
-              draw_pixel(static_surface, i, j, second);
+              draw_pixel(surface, i, j, second);
             else if (i % 4 == 1 && j % 4 == 0)
-              draw_pixel(static_surface, i, j, second);
+              draw_pixel(surface, i, j, second);
             else if (i % 4 == 1 && j % 4 == 1)
-              draw_pixel(static_surface, i, j, third);
+              draw_pixel(surface, i, j, third);
             else if (i % 4 == 1 && j % 4 == 2)
-              draw_pixel(static_surface, i, j, second);
+              draw_pixel(surface, i, j, second);
             else if (i % 4 == 1 && j % 4 == 3)
-              draw_pixel(static_surface, i, j, third);
+              draw_pixel(surface, i, j, third);
             else if (i % 4 == 2 && j % 4 == 0)
-              draw_pixel(static_surface, i, j, first);
+              draw_pixel(surface, i, j, first);
             else if (i % 4 == 2 && j % 4 == 1)
-              draw_pixel(static_surface, i, j, second);
+              draw_pixel(surface, i, j, second);
             else if (i % 4 == 2 && j % 4 == 2)
-              draw_pixel(static_surface, i, j, first);
+              draw_pixel(surface, i, j, first);
             else if (i % 4 == 2 && j % 4 == 3)
-              draw_pixel(static_surface, i, j, second);
+              draw_pixel(surface, i, j, second);
             else if (i % 4 == 3 && j % 4 == 0)
-              draw_pixel(static_surface, i, j, second);
+              draw_pixel(surface, i, j, second);
             else if (i % 4 == 3 && j % 4 == 1)
-              draw_pixel(static_surface, i, j, third);
+              draw_pixel(surface, i, j, third);
             else if (i % 4 == 3 && j % 4 == 2)
-              draw_pixel(static_surface, i, j, second);
+              draw_pixel(surface, i, j, second);
             else if (i % 4 == 3 && j % 4 == 3)
-              draw_pixel(static_surface, i, j, third);
+              draw_pixel(surface, i, j, third);
           }
         break;
     }
+}
+
+void OverviewMap::draw_tile_pixel(Maptile *t, int i, int j)
+{
+  bool shadowed = isShadowed(t->getType(), i, j);
+  draw_tile_pixel(static_surface, t->getPattern(), 
+		  t->getColor(), t->getSecondColor(), t->getThirdColor(),
+		  i, j, shadowed);
 }
 
 int OverviewMap::calculateResizeFactor()

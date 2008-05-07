@@ -26,6 +26,14 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
+#define DEFAULT_TILE_SIZE 40
+	
+Tileset::Tileset(std::string name)
+	: d_name(name), d_dir(""), d_tileSize(DEFAULT_TILE_SIZE)
+{
+  d_info = "";
+}
+
 Tileset::Tileset(XML_Helper *helper)
 {
     helper->getData(d_name, "name"); 
@@ -134,9 +142,9 @@ TileStyle *Tileset::getRandomTileStyle(Uint32 index, TileStyle::Type style)
 {
   Tile *tile = (*this)[index];
   std::vector<TileStyle*> tilestyles;
-  for (Uint32 j = 0; j < tile->size(); j++)
+  for (Tile::iterator it = tile->begin(); it != tile->end(); ++it)
     {
-      TileStyleSet *tilestyleset = (*tile)[j];
+      TileStyleSet *tilestyleset = *it;
       for (Uint32 k = 0; k < tilestyleset->size(); k++)
 	{
 	  TileStyle *tilestyle = (*tilestyleset)[k];
@@ -163,5 +171,36 @@ bool Tileset::save(XML_Helper *helper)
   retval &= helper->closeTag();
 
   return retval;
+}
+	
+Tile *Tileset::lookupTileByName(std::string name)
+{
+  for (Tileset::iterator i = begin(); i != end(); ++i)
+    if ((*i)->getName() == name)
+      return *i;
+  return NULL;
+}
+	
+int Tileset::getFreeTileStyleId()
+{
+  int ids[256];
+  memset (ids, 0, sizeof (ids));
+  for (Tileset::iterator i = begin(); i != end(); ++i)
+    {
+      for (std::list<TileStyleSet*>::iterator j = (*i)->begin(); j != (*i)->end(); j++)
+	{
+	  for (std::vector<TileStyle*>::iterator k = (*j)->begin(); k != (*j)->end(); k++)
+	    {
+	      ids[(*k)->getId()] = 1;
+	    }
+	}
+    }
+  //these ids range from 0 to 255.
+  for (unsigned int i = 0; i < 256; i++)
+    {
+      if (ids[i] == 0)
+	return i;
+    }
+  return -1;
 }
 // End of file

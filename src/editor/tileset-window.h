@@ -1,0 +1,194 @@
+//  Copyright (C) 2008 Ben Asselstine
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Library General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
+//  02110-1301, USA.
+
+#ifndef GUI_TILELIST_WINDOW_H
+#define GUI_TILELIST_WINDOW_H
+
+#include <memory>
+#include <vector>
+#include <sigc++/signal.h>
+#include <sigc++/trackable.h>
+#include <libglademm/xml.h>
+#include <gtkmm/window.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/container.h>
+#include <gtkmm/comboboxtext.h>
+#include <gtkmm/combobox.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treemodelcolumn.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/textview.h>
+#include <gtkmm/filechooserbutton.h>
+#include <gtkmm/image.h>
+#include <gtkmm/button.h>
+#include <gtkmm/spinbutton.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/colorbutton.h>
+#include <gtkmm/notebook.h>
+#include <gtkmm/table.h>
+#include <gtkmm/checkmenuitem.h>
+#include <gtkmm/radiobutton.h>
+#include <gtkmm/tooltips.h>
+
+#include "../Tile.h"
+#include "../tileset.h"
+
+//! Tileset Editor.  Edit an Tileset.
+class TileSetWindow: public sigc::trackable
+{
+ public:
+    TileSetWindow();
+    ~TileSetWindow();
+
+    void show();
+    void hide();
+
+    // initialize the SDL widget 
+    void init(int width, int height);
+
+    sigc::signal<void> sdl_initialized;
+    Gtk::Window &get_window() { return *window.get(); }
+
+ private:
+    std::auto_ptr<Gtk::Window> window;
+    Gtk::Container *sdl_container;
+    Gtk::Widget *sdl_widget;
+    std::string current_save_filename;
+    Tileset *d_tileset; //current tileset
+    Tile *d_tile; //current tile
+    Gtk::Frame *tilestyleset_frame;
+    Gtk::Frame *tilestyle_frame;
+    Gtk::Entry *name_entry;
+    Gtk::TreeView *tiles_treeview;
+    Gtk::Button *add_tile_button;
+    Gtk::Button *remove_tile_button;
+    Gtk::VBox *tile_vbox;
+    Gtk::Entry *tile_name_entry;
+    Gtk::ComboBox *tile_type_combobox;
+    Gtk::SpinButton *tile_moves_spinbutton;
+    Gtk::ComboBox *tile_smallmap_pattern_combobox;
+    Gtk::Notebook *tile_smallmap_notebook;
+    Gtk::ColorButton *tile_smallmap_first_colorbutton;
+    Gtk::ColorButton *tile_smallmap_second_colorbutton;
+    Gtk::ColorButton *tile_smallmap_third_colorbutton;
+    Gtk::Image *tile_smallmap_image;
+    Gtk::Button *add_tilestyleset_button;
+    Gtk::Button *remove_tilestyleset_button;
+    bool sdl_inited;
+    Gtk::MenuItem *new_tileset_menuitem;
+    Gtk::MenuItem *load_tileset_menuitem;
+    Gtk::MenuItem *save_tileset_menuitem;
+    Gtk::MenuItem *save_tileset_as_menuitem;
+    Gtk::MenuItem *edit_tileset_info_menuitem;
+    Gtk::ComboBox *tilestyle_combobox;
+    Gtk::Image *tilestyle_image;
+    Gtk::FileChooserButton *image_filechooser_button;
+
+    class TilesColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	TilesColumns() 
+        { add(name); add(tile);}
+	
+	Gtk::TreeModelColumn<Glib::ustring> name;
+	Gtk::TreeModelColumn<Tile *> tile;
+    };
+    const TilesColumns tiles_columns;
+    Glib::RefPtr<Gtk::ListStore> tiles_list;
+
+    Gtk::TreeView *tilestylesets_treeview;
+    class TileStyleSetsColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	TileStyleSetsColumns() 
+        { add(name); add(tilestyleset);}
+	
+	Gtk::TreeModelColumn<Glib::ustring> name;
+	Gtk::TreeModelColumn<TileStyleSet *> tilestyleset;
+    };
+    const TileStyleSetsColumns tilestylesets_columns;
+    Glib::RefPtr<Gtk::ListStore> tilestylesets_list;
+    SDL_Surface *tile_smallmap_surface;
+    Gtk::TreeView *tilestyles_treeview;
+    class TileStylesColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	TileStylesColumns() 
+        { add(name); add(tilestyle);}
+	
+	Gtk::TreeModelColumn<Glib::ustring> name;
+	Gtk::TreeModelColumn<TileStyle *> tilestyle;
+    };
+    const TileStylesColumns tilestyles_columns;
+    Glib::RefPtr<Gtk::ListStore> tilestyles_list;
+
+    Tile * get_selected_tile ();
+    TileStyleSet * get_selected_tilestyleset ();
+    TileStyle * get_selected_tilestyle ();
+
+    bool inhibit_image_change;
+
+    bool on_delete_event(GdkEventAny *e);
+
+    void update_tile_panel();
+    void update_tilestyleset_panel();
+    void update_tilestyle_panel();
+    void update_tileset_buttons();
+    void update_tilestyleset_buttons();
+    void update_tileset_menuitems();
+
+    void on_new_tileset_activated();
+    void on_load_tileset_activated();
+    void on_save_tileset_activated();
+    void on_save_tileset_as_activated();
+    void on_quit_activated();
+    void on_edit_tileset_info_activated();
+    void on_edit_terrain_types_activated();
+    void on_help_about_activated();
+    void on_tile_selected();
+    void on_tilestyleset_selected();
+    void on_tilestyle_selected();
+
+    void fill_tile_info(Tile *tile);
+    void fill_tile_smallmap(Tile *tile);
+    void fill_colours(Tile *);
+    void fill_tilestylesets();
+    void fill_tilestyleset_info(TileStyleSet *t);
+
+    bool load(std::string tag, XML_Helper *helper);
+
+
+
+    //callbacks
+    void on_tile_type_changed();
+    void on_tile_name_changed();
+    void on_tile_moves_changed();
+    void on_tile_first_color_changed();
+    void on_tile_second_color_changed();
+    void on_tile_third_color_changed();
+    void on_tile_pattern_changed();
+    void on_tilestyle_changed();
+    void on_image_chosen();
+
+    void on_add_tile_clicked();
+    void on_remove_tile_clicked();
+    void on_add_tilestyleset_clicked();
+    void on_remove_tilestyleset_clicked();
+
+public:
+    // not part of the API, but for surface_attached_helper
+    void on_sdl_surface_changed();
+};
+
+#endif

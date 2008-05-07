@@ -23,6 +23,16 @@
 
 using namespace std;
 
+Tile::Tile()
+{
+  d_type = Tile::GRASS;
+  d_pattern = Tile::SOLID;
+  d_moves = 0;
+  d_color.r = 80;
+  d_color.g = 172;
+  d_color.b = 28;
+}
+
 Tile::Tile(XML_Helper* helper)
 {
     int i;
@@ -83,13 +93,38 @@ bool Tile::save(XML_Helper *helper)
     
 Tile::~Tile()
 {
-    for (unsigned int i=0; i < size(); i++)
-        delete (*this)[i];
+  for (iterator it = begin(); it != end(); it++)
+      delete *it;
 }
 
 void Tile::instantiatePixmaps(std::string tileset, Uint32 tilesize)
 {
-  for (unsigned int i=0; i < size(); i++)
-    (*this)[i]->instantiatePixmaps(tileset, tilesize);
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->instantiatePixmaps(tileset, tilesize);
+}
+
+void Tile::setTypeByIndex(int idx)
+{
+  switch (idx)
+    {
+    case 0: setType(GRASS); break;
+    case 1: setType(WATER); break;
+    case 2: setType(FOREST); break;
+    case 3: setType(HILLS); break;
+    case 4: setType(MOUNTAIN); break;
+    case 5: setType(SWAMP); break;
+    }
+}
+int Tile::getTypeIndexForType(Tile::Type type)
+{
+  switch (type)
+    {
+    case GRASS: return 0; break;
+    case WATER: return 1; break;
+    case FOREST: return 2; break;
+    case HILLS: return 3; break;
+    case MOUNTAIN: return 4; break;
+    case SWAMP: return 5; break;
+    }
 }
 // End of file
