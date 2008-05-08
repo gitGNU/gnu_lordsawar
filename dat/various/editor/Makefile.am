@@ -15,6 +15,7 @@ editor_DATA = button_selector.png \
 			button_temple.png \
 			button_stack.png \
 			button_bridge.png \
-			button_port.png
+			button_port.png \
+			tilestyles.png
 
 EXTRA_DIST = $(editor_DATA)

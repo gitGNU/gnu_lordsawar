@@ -98,6 +98,8 @@ class TileSetWindow: public sigc::trackable
     Gtk::Image *tilestyle_image;
     Gtk::FileChooserButton *image_filechooser_button;
     Gtk::Button *refresh_button;
+    std::vector<Glib::RefPtr<Gdk::Pixbuf> > tilestyle_images;
+    Gtk::Image *tilestyle_standard_image;
 
     class TilesColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -191,6 +193,7 @@ class TileSetWindow: public sigc::trackable
 public:
     // not part of the API, but for surface_attached_helper
     void on_sdl_surface_changed();
+      
 };
 
 #endif

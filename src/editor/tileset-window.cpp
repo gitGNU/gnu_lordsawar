@@ -176,6 +176,10 @@ TileSetWindow::TileSetWindow()
     image_filechooser_button->set_filter(sav_filter);
     image_filechooser_button->set_current_folder
       (Configuration::s_dataPath + "/tilesets/");
+
+    xml->get_widget("tilestyle_standard_image", tilestyle_standard_image);
+    tilestyle_images = disassemble_row(File::getMiscFile("various/editor/tilestyles.png"), 17);
+
     update_tile_panel();
     update_tilestyleset_panel();
     update_tilestyle_panel();
@@ -244,6 +248,7 @@ TileSetWindow::update_tilestyle_panel()
       tilestyle_frame->set_sensitive(false);
       tilestyle_combobox->set_active(0);
       tilestyle_image->clear();
+      tilestyle_standard_image->clear();
       tilestyle_image->show_all();
 	  
       return;
@@ -260,6 +265,8 @@ TileSetWindow::update_tilestyle_panel()
 	  tilestyle_image->property_pixbuf() = to_pixbuf(pixmap);
 	  tilestyle_image->show_all();
 	}
+      int idx = t->getType();
+      tilestyle_standard_image->property_pixbuf() = tilestyle_images[idx];
     }
 }
 
@@ -903,7 +910,11 @@ void TileSetWindow::on_tilestyle_changed()
 {
   TileStyle *t = get_selected_tilestyle ();
   if (t)
-    t->setType(TileStyle::Type(tilestyle_combobox->get_active_row_number()));
+    {
+      t->setType(TileStyle::Type(tilestyle_combobox->get_active_row_number()));
+      int idx = t->getType();
+      tilestyle_standard_image->property_pixbuf() = tilestyle_images[idx];
+    }
 }
 
 void TileSetWindow::on_image_chosen()
