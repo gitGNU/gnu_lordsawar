@@ -167,6 +167,9 @@ TileSetWindow::TileSetWindow()
     xml->get_widget("image_filechooser_button", image_filechooser_button);
     image_filechooser_button->signal_selection_changed().connect
       (sigc::mem_fun(*this, &TileSetWindow::on_image_chosen));
+    xml->get_widget("refresh_button", refresh_button);
+    refresh_button->signal_clicked().connect
+      (sigc::mem_fun(this, &TileSetWindow::on_refresh_clicked));
 
     Gtk::FileFilter sav_filter;
     sav_filter.add_pattern("*.xml");
@@ -289,6 +292,7 @@ void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
     }
   inhibit_image_change = true;
   image_filechooser_button->set_filename(n);
+  refresh_button->set_sensitive(true);
   //add the tilestyles to the tilestyles_treeview
   tilestyles_list->clear();
   for (unsigned int i = 0; i < t->size(); i++)
@@ -311,6 +315,7 @@ TileSetWindow::update_tilestyleset_panel()
       image_filechooser_button->set_current_folder
 	(Configuration::s_dataPath + "/tilesets/");
       tilestyles_list->clear();
+      refresh_button->set_sensitive(false);
       return;
     }
   tilestyleset_frame->set_sensitive(true);
@@ -942,7 +947,6 @@ void TileSetWindow::on_image_chosen()
 
   set->setName(name);
   free (name);
-  //set->instantiatePixmaps(d_tileset->getName(), height);
   (*i)[tilestylesets_columns.name] = set->getName();
   (*i)[tilestylesets_columns.tilestyleset] = set;
   Tile *tile = get_selected_tile ();
@@ -961,4 +965,10 @@ void TileSetWindow::on_image_chosen()
 	  set->push_back(style);
 	}
     }
+}
+
+void TileSetWindow::on_refresh_clicked()
+{
+  TileStyleSet *set = get_selected_tilestyleset ();
+  set->instantiatePixmaps(d_tileset->getSubDir(), d_tileset->getTileSize());
 }

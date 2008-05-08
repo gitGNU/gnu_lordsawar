@@ -97,6 +97,7 @@ class TileSetWindow: public sigc::trackable
     Gtk::ComboBox *tilestyle_combobox;
     Gtk::Image *tilestyle_image;
     Gtk::FileChooserButton *image_filechooser_button;
+    Gtk::Button *refresh_button;
 
     class TilesColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -185,6 +186,7 @@ class TileSetWindow: public sigc::trackable
     void on_remove_tile_clicked();
     void on_add_tilestyleset_clicked();
     void on_remove_tilestyleset_clicked();
+    void on_refresh_clicked();
 
 public:
     // not part of the API, but for surface_attached_helper
