@@ -510,11 +510,6 @@ void TileSetWindow::on_save_tileset_activated()
     on_save_tileset_as_activated();
   else
     {
-      //Reorder the tileset according to the treeview
-      d_tileset->clear();
-      for (Gtk::TreeIter i = tiles_list->children().begin(),
-	   end = tiles_list->children().end(); i != end; ++i) 
-	d_tileset->push_back((*i)[tiles_columns.tile]);
       XML_Helper helper(current_save_filename, std::ios::out, false);
       helper.openTag("tileset");
       d_tileset->save(&helper);
@@ -530,7 +525,7 @@ void TileSetWindow::on_save_tileset_as_activated()
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*.xml");
   chooser.set_filter(sav_filter);
-  chooser.set_current_folder(Configuration::s_dataPath + "/tile/");
+  chooser.set_current_folder(Configuration::s_dataPath + "/tilesets/");
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
