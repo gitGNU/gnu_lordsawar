@@ -38,7 +38,6 @@
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/colorbutton.h>
-#include <gtkmm/notebook.h>
 #include <gtkmm/table.h>
 #include <gtkmm/checkmenuitem.h>
 #include <gtkmm/radiobutton.h>
@@ -81,7 +80,6 @@ class TileSetWindow: public sigc::trackable
     Gtk::ComboBox *tile_type_combobox;
     Gtk::SpinButton *tile_moves_spinbutton;
     Gtk::ComboBox *tile_smallmap_pattern_combobox;
-    Gtk::Notebook *tile_smallmap_notebook;
     Gtk::ColorButton *tile_smallmap_first_colorbutton;
     Gtk::ColorButton *tile_smallmap_second_colorbutton;
     Gtk::ColorButton *tile_smallmap_third_colorbutton;
@@ -98,6 +96,7 @@ class TileSetWindow: public sigc::trackable
     Gtk::Image *tilestyle_image;
     Gtk::FileChooserButton *image_filechooser_button;
     Gtk::Button *refresh_button;
+    std::vector<Glib::RefPtr<Gdk::Pixbuf> > tilestyle_standard_images;
     std::vector<Glib::RefPtr<Gdk::Pixbuf> > tilestyle_images;
     Gtk::Image *tilestyle_standard_image;
 
