@@ -63,6 +63,7 @@ lordsawar_tile_editor_SOURCES = \
 tileset-main.cpp \
 tileset-window.cpp tileset-window.h \
 tileset-info-dialog.cpp tileset-info-dialog.h \
+preview-tile-dialog.cpp preview-tile-dialog.h \
 glade-helpers.h
 
 lordsawar_editor_SOURCES = \

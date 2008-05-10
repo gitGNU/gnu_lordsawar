@@ -92,6 +92,7 @@ class TileSetWindow: public sigc::trackable
     Gtk::MenuItem *save_tileset_menuitem;
     Gtk::MenuItem *save_tileset_as_menuitem;
     Gtk::MenuItem *edit_tileset_info_menuitem;
+    Gtk::MenuItem *preview_tile_menuitem;
     Gtk::ComboBox *tilestyle_combobox;
     Gtk::Image *tilestyle_image;
     Gtk::FileChooserButton *image_filechooser_button;
@@ -150,6 +151,7 @@ class TileSetWindow: public sigc::trackable
     void update_tileset_buttons();
     void update_tilestyleset_buttons();
     void update_tileset_menuitems();
+    void update_tile_preview_menuitem();
 
     void on_new_tileset_activated();
     void on_load_tileset_activated();
@@ -157,7 +159,7 @@ class TileSetWindow: public sigc::trackable
     void on_save_tileset_as_activated();
     void on_quit_activated();
     void on_edit_tileset_info_activated();
-    void on_edit_terrain_types_activated();
+    void on_preview_tile_activated();
     void on_help_about_activated();
     void on_tile_selected();
     void on_tilestyleset_selected();

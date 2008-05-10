@@ -41,6 +41,7 @@
 
 #include "tileset-window.h"
 #include "tileset-info-dialog.h"
+#include "preview-tile-dialog.h"
 
 #include "../gui/gtksdl.h"
 #include "../gui/image-helpers.h"
@@ -123,6 +124,9 @@ TileSetWindow::TileSetWindow()
     xml->get_widget("edit_tileset_info_menuitem", edit_tileset_info_menuitem);
     edit_tileset_info_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &TileSetWindow::on_edit_tileset_info_activated));
+    xml->get_widget("preview_tile_menuitem", preview_tile_menuitem);
+    preview_tile_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &TileSetWindow::on_preview_tile_activated));
     xml->connect_clicked 
       ("help_about_menuitem", 
        sigc::mem_fun(this, &TileSetWindow::on_help_about_activated));
@@ -192,6 +196,7 @@ TileSetWindow::TileSetWindow()
     update_tileset_buttons();
     update_tilestyleset_buttons();
     update_tileset_menuitems();
+    update_tile_preview_menuitem();
 
     tile_smallmap_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, 32, 32, 24,
 						 0xFFu, 0xFFu << 8, 
@@ -451,6 +456,7 @@ void TileSetWindow::on_new_tileset_activated()
   update_tileset_buttons();
   update_tilestyleset_buttons();
   update_tileset_menuitems();
+  update_tile_preview_menuitem();
 }
 
 void TileSetWindow::on_load_tileset_activated()
@@ -514,6 +520,7 @@ void TileSetWindow::on_load_tileset_activated()
       update_tile_panel();
       update_tilestyleset_panel();
       update_tilestyle_panel();
+      update_tile_preview_menuitem();
     }
 }
 
@@ -601,6 +608,14 @@ void TileSetWindow::on_sdl_surface_changed()
   }
 }
 
+void TileSetWindow::update_tile_preview_menuitem()
+{
+  if (get_selected_tile())
+    preview_tile_menuitem->set_sensitive(true);
+  else
+    preview_tile_menuitem->set_sensitive(false);
+}
+
 void TileSetWindow::on_tile_selected()
 {
   update_tile_panel();
@@ -608,6 +623,7 @@ void TileSetWindow::on_tile_selected()
   update_tilestyle_panel();
   update_tileset_buttons();
   update_tilestyleset_buttons();
+  update_tile_preview_menuitem();
 }
 
 void TileSetWindow::on_tilestyleset_selected()
@@ -662,6 +678,7 @@ void TileSetWindow::on_add_tile_clicked()
   char path[20];
   snprintf (path, sizeof (path), "%d", d_tileset->size() - 1);
   tiles_treeview->set_cursor (Gtk::TreePath (path));
+  update_tile_preview_menuitem();
 }
 
 void TileSetWindow::on_remove_tile_clicked()
@@ -686,6 +703,7 @@ void TileSetWindow::on_remove_tile_clicked()
 	    }
 	}
     }
+  update_tile_preview_menuitem();
 }
 
 void TileSetWindow::on_tile_first_color_changed()
@@ -1000,7 +1018,7 @@ void TileSetWindow::on_image_chosen()
   if (!tmp)
     return;
   tmp[0] = '\0';
-      
+
   //hackus horribilium
   std::string back = "../../../../../../../../../../../../../../../../";
 
@@ -1039,4 +1057,14 @@ void TileSetWindow::on_refresh_clicked()
 {
   TileStyleSet *set = get_selected_tilestyleset ();
   set->instantiatePixmaps(set->getSubDir(), d_tileset->getTileSize());
+}
+
+void TileSetWindow::on_preview_tile_activated()
+{
+  Tile *tile = get_selected_tile();
+  if (tile)
+    {
+      PreviewTileDialog d(tile);
+      d.run();
+    }
 }
