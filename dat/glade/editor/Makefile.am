@@ -21,6 +21,7 @@ select-reward-dialog.glade \
 reward-list-dialog.glade \
 select-hidden-ruin-dialog.glade \
 tileset-window.glade \
-tileset-info-dialog.glade
+tileset-info-dialog.glade \
+tile-preview-dialog.glade
 
 EXTRA_DIST = $(glade_DATA)

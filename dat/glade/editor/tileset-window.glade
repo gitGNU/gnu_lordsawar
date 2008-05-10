@@ -112,6 +112,29 @@
 	  </child>
 
 	  <child>
+	    <widget class="GtkMenuItem" id="view_menuitem">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">_View</property>
+	      <property name="use_underline">True</property>
+	      <signal name="activate" handler="on_view_menuitem_activate" last_modification_time="Sat, 10 May 2008 19:29:09 GMT"/>
+
+	      <child>
+		<widget class="GtkMenu" id="view_menuitem_menu">
+
+		  <child>
+		    <widget class="GtkMenuItem" id="preview_tile_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">_Preview Tile</property>
+		      <property name="use_underline">True</property>
+		      <signal name="activate" handler="on_preview_tile_menuitem_activate" last_modification_time="Sat, 10 May 2008 19:29:09 GMT"/>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
+	    </widget>
+	  </child>
+
+	  <child>
 	    <widget class="GtkMenuItem" id="help_menuitem">
 	      <property name="visible">True</property>
 	      <property name="label" translatable="yes">_Help</property>
