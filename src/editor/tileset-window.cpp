@@ -41,7 +41,7 @@
 
 #include "tileset-window.h"
 #include "tileset-info-dialog.h"
-#include "preview-tile-dialog.h"
+#include "tile-preview-dialog.h"
 
 #include "../gui/gtksdl.h"
 #include "../gui/image-helpers.h"
@@ -1064,7 +1064,7 @@ void TileSetWindow::on_preview_tile_activated()
   Tile *tile = get_selected_tile();
   if (tile)
     {
-      PreviewTileDialog d(tile);
+      TilePreviewDialog d(tile);
       d.run();
     }
 }

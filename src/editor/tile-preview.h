@@ -15,42 +15,29 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <config.h>
+#ifndef TILE_PREVIEW_DIALOG_H
+#define TILE_PREVIEW_DIALOG_H
 
-#include <libglademm/xml.h>
-#include <sigc++/functors/mem_fun.h>
+#include <memory>
+#include <sigc++/trackable.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/textview.h>
+#include <gtkmm/entry.h>
+#include "../Tile.h"
 
-#include "preview-tile-dialog.h"
-
-#include "glade-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-
-
-PreviewTileDialog::PreviewTileDialog(Tile *tile)
+//! Scenario editor.  Edits the description of the scenario.
+class TilePreviewDialog: public sigc::trackable
 {
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path()
-				    + "/preview-tile-dialog.glade");
+ public:
+    TilePreviewDialog(Tile *tile);
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    void set_parent_window(Gtk::Window &parent);
 
-    d_tile = tile;
-}
+    void run();
+    
+ private:
+    Tile *d_tile;
+    std::auto_ptr<Gtk::Dialog> dialog;
+};
 
-void PreviewTileDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
-}
-
-void PreviewTileDialog::run()
-{
-    dialog->show_all();
-    dialog->run();
-
-    return;
-}
-
+#endif
