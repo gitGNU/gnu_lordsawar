@@ -27,7 +27,6 @@
 #include <gtkmm/table.h>
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/button.h>
-#include <gtkmm/comboboxtext.h>
 #include <SDL/SDL_types.h>
 
 #include "../gui/army-info-tip.h"
@@ -52,7 +51,6 @@ class SelectArmyDialog: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     std::auto_ptr<ArmyInfoTip> army_info_tip;
-    Gtk::ComboBoxText *armyset_combobox;
     Gtk::Label *army_info_label1;
     Gtk::Label *army_info_label2;
     Gtk::Table *toggles_table;
@@ -70,7 +68,6 @@ class SelectArmyDialog: public sigc::trackable
 
     void on_army_toggled(Gtk::ToggleButton *toggle);
     bool on_army_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
-    void on_armyset_changed();
     
     void fill_in_army_toggles();
     void fill_in_army_info();

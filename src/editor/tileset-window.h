@@ -115,9 +115,10 @@ class TileSetWindow: public sigc::trackable
     class TileStyleSetsColumns: public Gtk::TreeModelColumnRecord {
     public:
 	TileStyleSetsColumns() 
-        { add(name); add(tilestyleset);}
+        { add(name); add(subdir); add(tilestyleset);}
 	
 	Gtk::TreeModelColumn<Glib::ustring> name;
+	Gtk::TreeModelColumn<Glib::ustring> subdir;
 	Gtk::TreeModelColumn<TileStyleSet *> tilestyleset;
     };
     const TileStyleSetsColumns tilestylesets_columns;

@@ -58,21 +58,7 @@ SelectArmyDialog::SelectArmyDialog(Player *p, bool defends_ruins,
 
     xml->get_widget("army_toggles_table", toggles_table);
 
-    // setup the armyset combo
-    armyset_combobox = manage(new Gtk::ComboBoxText);
-
-    armysets = Armysetlist::getInstance()->getArmysets();
-    for (std::vector<Uint32>::iterator i = armysets.begin(),
-	     end = armysets.end(); i != end; ++i)
-	armyset_combobox->append_text(Armysetlist::getInstance()->getName(*i));
-
-    Gtk::Alignment *alignment;
-    xml->get_widget("armyset_alignment", alignment);
-    alignment->add(*armyset_combobox);
-
-    armyset_combobox->signal_changed().connect(
-	sigc::mem_fun(this, &SelectArmyDialog::on_armyset_changed));
-    armyset_combobox->set_active(0);
+  fill_in_army_toggles();
 }
 
 void SelectArmyDialog::set_parent_window(Gtk::Window &parent)
@@ -113,7 +99,10 @@ void SelectArmyDialog::fill_in_army_toggles()
 {
     const Armysetlist* al = Armysetlist::getInstance();
 
-    Uint32 armyset = armysets[armyset_combobox->get_active_row_number()];
+    Uint32 armyset = 0;
+    if (player)
+      armyset = player->getArmyset();
+    bool pushed_back = false;
 
     // fill in selectable armies
     selectable.clear();
@@ -122,10 +111,14 @@ void SelectArmyDialog::fill_in_army_toggles()
 	const Army *a = al->getArmy(armyset, j);
 	if ((d_defends_ruins && a->getDefendsRuins()) || 
 	    (!d_defends_ruins && !d_awardable))
-	  selectable.push_back(a);
+	  {
+	    pushed_back = true;
+	    selectable.push_back(a);
+	  }
 	if ((d_awardable && a->getAwardable()) || 
-	    (!d_defends_ruins && !d_awardable))
+	    (!d_defends_ruins && !d_awardable) && !pushed_back)
 	  selectable.push_back(a);
+	pushed_back = false;
     }
 
     // fill in army options
@@ -134,14 +127,14 @@ void SelectArmyDialog::fill_in_army_toggles()
     toggles_table->resize(1, 1);
     const int no_columns = 4;
     for (unsigned int i = 0; i < selectable.size(); ++i)
-    {
+      {
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
-	
+
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf
-	    = to_pixbuf(GraphicsCache::getInstance()->getArmyPic(armyset,
-                                       selectable[i]->getType(),
-                                       player, NULL));
-	
+	  = to_pixbuf(GraphicsCache::getInstance()->getArmyPic(armyset,
+							       selectable[i]->getType(),
+							       player, NULL));
+
 	toggle->add(*manage(new Gtk::Image(pixbuf)));
 	army_toggles.push_back(toggle);
 	int x = i % no_columns;
@@ -151,89 +144,84 @@ void SelectArmyDialog::fill_in_army_toggles()
 	toggle->show_all();
 
 	toggle->signal_toggled().connect(
-	    sigc::bind(sigc::mem_fun(this, &SelectArmyDialog::on_army_toggled),
-		       toggle));
+					 sigc::bind(sigc::mem_fun(this, &SelectArmyDialog::on_army_toggled),
+						    toggle));
 	toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
 	toggle->signal_button_press_event().connect(
-	    sigc::bind(sigc::mem_fun(*this, &SelectArmyDialog::on_army_button_event),
-		       toggle), false);
-	
+						    sigc::bind(sigc::mem_fun(*this, &SelectArmyDialog::on_army_button_event),
+							       toggle), false);
+
 	toggle->signal_button_release_event().connect(
-	    sigc::bind(sigc::mem_fun(*this, &SelectArmyDialog::on_army_button_event),
-		       toggle), false);
-    }
+						      sigc::bind(sigc::mem_fun(*this, &SelectArmyDialog::on_army_button_event),
+								 toggle), false);
+      }
 
     ignore_toggles = false;
     if (!army_toggles.empty())
-	army_toggles[0]->set_active(true);
+      army_toggles[0]->set_active(true);
 }
 
 void SelectArmyDialog::fill_in_army_info()
 {
-    Glib::ustring s1, s2;
-    
-    if (!selected_army)
-    {
-	s1 = _("No army");
-	s1 += "\n\n\n";
-	s2 = "\n\n\n";
-    }
-    else
-    {
-	const Army *a = selected_army;
+  Glib::ustring s1, s2;
 
-	// fill in first column
-	s1 += a->getName();
-	s1 += "\n";
-	s1 += String::ucompose(_("Strength: %1"),
-			      a->getStat(Army::STRENGTH, false));
-	s1 += "\n";
-	s1 += String::ucompose(_("Moves: %1"), a->getStat(Army::MOVES, false));
-	
-	// fill in second column
-	s2 += "\n";
-	s2 += String::ucompose(_("Hitpoints: %1"), a->getStat(Army::HP, false));
-	s2 += "\n";
-	s2 += String::ucompose(_("Upkeep: %1"), a->getUpkeep());
+  if (!selected_army)
+    {
+      s1 = _("No army");
+      s1 += "\n\n\n";
+      s2 = "\n\n\n";
     }
-    
-    army_info_label1->set_markup("<i>" + s1 + "</i>");
-    army_info_label2->set_markup("<i>" + s2 + "</i>");
+  else
+    {
+      const Army *a = selected_army;
+
+      // fill in first column
+      s1 += a->getName();
+      s1 += "\n";
+      s1 += String::ucompose(_("Strength: %1"),
+			     a->getStat(Army::STRENGTH, false));
+      s1 += "\n";
+      s1 += String::ucompose(_("Moves: %1"), a->getStat(Army::MOVES, false));
+
+      // fill in second column
+      s2 += "\n";
+      s2 += String::ucompose(_("Hitpoints: %1"), a->getStat(Army::HP, false));
+      s2 += "\n";
+      s2 += String::ucompose(_("Upkeep: %1"), a->getUpkeep());
+    }
+
+  army_info_label1->set_markup("<i>" + s1 + "</i>");
+  army_info_label2->set_markup("<i>" + s2 + "</i>");
 }
 
 void SelectArmyDialog::set_select_button_state()
 {
-    select_button->set_sensitive(selected_army);
+  select_button->set_sensitive(selected_army);
 }
 
 bool SelectArmyDialog::on_army_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle)
 {
-    MouseButtonEvent event = to_input_event(e);
-    if (event.button == MouseButtonEvent::RIGHT_BUTTON
-	&& event.state == MouseButtonEvent::PRESSED) {
-	int slot = -1;
-	for (unsigned int i = 0; i < army_toggles.size(); ++i) {
-	    if (toggle == army_toggles[i])
-		slot = i;
-	}
-	assert(slot != -1);
-
-	const Army *army = selectable[slot];
-
-	if (army)
-	    army_info_tip.reset(new ArmyInfoTip(toggle, army));
-	return true;
+  MouseButtonEvent event = to_input_event(e);
+  if (event.button == MouseButtonEvent::RIGHT_BUTTON
+      && event.state == MouseButtonEvent::PRESSED) {
+    int slot = -1;
+    for (unsigned int i = 0; i < army_toggles.size(); ++i) {
+      if (toggle == army_toggles[i])
+	slot = i;
     }
-    else if (event.button == MouseButtonEvent::RIGHT_BUTTON
-	     && event.state == MouseButtonEvent::RELEASED) {
-	army_info_tip.reset();
-	return true;
-    }
-    
-    return false;
-}
+    assert(slot != -1);
 
-void SelectArmyDialog::on_armyset_changed()
-{
-    fill_in_army_toggles();
+    const Army *army = selectable[slot];
+
+    if (army)
+      army_info_tip.reset(new ArmyInfoTip(toggle, army));
+    return true;
+  }
+  else if (event.button == MouseButtonEvent::RIGHT_BUTTON
+	   && event.state == MouseButtonEvent::RELEASED) {
+    army_info_tip.reset();
+    return true;
+  }
+
+  return false;
 }

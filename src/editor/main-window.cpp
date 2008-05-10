@@ -345,13 +345,14 @@ bool MainWindow::on_delete_event(GdkEventAny *e)
 
 void MainWindow::show_initial_map()
 {
-    set_filled_map(112, 156, Tile::WATER, "default", "default", "default");
+    set_filled_map(112, 156, Tile::WATER, "default", "default", "default",
+		   "Default");
     setup_terrain_radiobuttons();
     remove_tile_style_buttons();
     setup_tile_style_buttons(Tile::GRASS);
 }
 
-void MainWindow::set_filled_map(int width, int height, int fill_style, std::string tileset, std::string shieldset, std::string cityset)
+void MainWindow::set_filled_map(int width, int height, int fill_style, std::string tileset, std::string shieldset, std::string cityset, std::string armyset)
 {
     clear_map_state();
     d_width = width;
@@ -373,8 +374,8 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
 
     // ...however we need to do some of the setup by hand. We need to create a
     // neutral player to give cities a player upon creation...
-    Uint32 armyset = Armysetlist::getInstance()->getArmysets()[0];
-    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral(), width, height, MAX_PLAYERS);
+    Uint32 armyset_id = Armysetlist::getInstance()->getArmysetId(armyset);
+    Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, Player::get_color_for_neutral(), width, height, MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
     Playerlist::getInstance()->push_back(neutral);
     Playerlist::getInstance()->setNeutral(neutral);
@@ -399,7 +400,8 @@ void MainWindow::set_random_map(int width, int height,
 				int hills, int mountains,
 				int cities, int ruins, int temples,
 				int signposts, std::string tileset,
-				std::string shieldset, std::string cityset)
+				std::string shieldset, std::string cityset,
+				std::string armyset)
 {
     clear_map_state();
 
@@ -415,8 +417,8 @@ void MainWindow::set_random_map(int width, int height,
     
     // We need to create a neutral player to give cities a player upon
     // creation...
-    Uint32 armyset = Armysetlist::getInstance()->getArmysets()[0];
-    Player* neutral = new AI_Dummy(_("Neutral"), armyset, Player::get_color_for_neutral(), width, height, MAX_PLAYERS);
+    Uint32 armyset_id = Armysetlist::getInstance()->getArmysetId(armyset);
+    Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, Player::get_color_for_neutral(), width, height, MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
     Playerlist::getInstance()->push_back(neutral);
     Playerlist::getInstance()->setNeutral(neutral);
@@ -605,10 +607,11 @@ void MainWindow::on_new_map_activated()
 			   d.map.hills, d.map.mountains,
 			   d.map.cities, d.map.ruins, d.map.temples, 
 			   d.map.signposts, d.map.tileset, 
-			   d.map.shieldset, d.map.cityset);
+			   d.map.shieldset, d.map.cityset, d.map.armyset);
 	else
 	    set_filled_map(d.map.width, d.map.height, d.map.fill_style, 
-			   d.map.tileset, d.map.shieldset, d.map.cityset);
+			   d.map.tileset, d.map.shieldset, d.map.cityset,
+			   d.map.armyset);
     }
 }
 

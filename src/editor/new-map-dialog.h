@@ -53,6 +53,7 @@ class NewMapDialog
 	std::string tileset;
 	std::string shieldset;
 	std::string cityset;
+	std::string armyset;
     };
 
     Map map;
@@ -67,6 +68,7 @@ class NewMapDialog
     Gtk::Widget *random_map_container;
     Gtk::ComboBoxText *tile_theme_combobox;
     Gtk::ComboBoxText *city_theme_combobox;
+    Gtk::ComboBoxText *army_theme_combobox;
     Gtk::ComboBoxText *shield_theme_combobox;
     Gtk::Scale *grass_scale;
     Gtk::Scale *water_scale;

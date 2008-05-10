@@ -80,6 +80,12 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	 */
 	bool save(XML_Helper *helper);
 
+	//! Return the subdirectory of this Tilestyleset.
+        std::string getSubDir() const {return d_dir;}
+
+	//! Set the subdirectory of where this Tilestyleset resides on disk.
+        void setSubDir(std::string dir) {d_dir = dir;}
+
     private:
 
 	//! The name of the tilestyleset.
@@ -94,6 +100,12 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	 * extension (e.g. .png).  It must refer to a PNG file.
 	 */
         std::string d_name;
+
+	//! The directory of where the image file lives.
+	/**
+	 * @param This is a hack used for the tileset editor.
+	 */
+	std::string d_dir;
 };
 
 #endif // TILESTYLESET_H

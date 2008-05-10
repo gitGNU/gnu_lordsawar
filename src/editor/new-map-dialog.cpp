@@ -30,6 +30,7 @@
 #include "../File.h"
 #include "../tileset.h"
 #include "../tilesetlist.h"
+#include "../armysetlist.h"
 #include "../citysetlist.h"
 #include "../shieldsetlist.h"
 #include "../GameMap.h"
@@ -62,6 +63,7 @@ NewMapDialog::NewMapDialog()
     tile_theme_combobox = manage(new Gtk::ComboBoxText);
     shield_theme_combobox = manage(new Gtk::ComboBoxText);
     city_theme_combobox = manage(new Gtk::ComboBoxText);
+    army_theme_combobox = manage(new Gtk::ComboBoxText);
     
     Uint32 counter = 0;
     Uint32 default_id = 0;
@@ -119,6 +121,25 @@ NewMapDialog::NewMapDialog()
     Gtk::Box *city_set_box;
     xml->get_widget("city_set_box", city_set_box);
     city_set_box->pack_start(*city_theme_combobox, Gtk::PACK_SHRINK);
+
+    Gtk::Box *armyset_box;
+    xml->get_widget("armyset_box", armyset_box);
+    armyset_box->pack_start(*army_theme_combobox, Gtk::PACK_SHRINK);
+
+    counter = 0;
+    default_id = 0;
+    Armysetlist *al = Armysetlist::getInstance();
+    std::list<std::string> army_themes = al->getNames();
+    for (std::list<std::string>::iterator i = army_themes.begin(),
+	     end = army_themes.end(); i != end; ++i)
+      {
+	if (*i == "Default")
+	  default_id = counter;
+	army_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+	counter++;
+      }
+
+    army_theme_combobox->set_active(default_id);
 
     // create fill style combobox
     fill_style_combobox = manage(new Gtk::ComboBoxText);
@@ -193,6 +214,9 @@ void NewMapDialog::run()
 
 	map.cityset = Citysetlist::getInstance()->getCitysetDir
 	  (Glib::filename_from_utf8(city_theme_combobox->get_active_text()));
+
+	map.armyset = 
+	  Glib::filename_from_utf8(army_theme_combobox->get_active_text());
 
 	if (map.fill_style == -1)
 	{

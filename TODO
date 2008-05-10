@@ -28,3 +28,7 @@ fight bug:
 
 
 check to see what happens when i pass a larger attacker/defender list of stacks to fight.  it only seems to use 1!
+
+tileset editor:
+no subdir set, so can't load images in "new" tilesets.
+put the dir in the tilestyleset treeview model, and then set the subdir accordingly

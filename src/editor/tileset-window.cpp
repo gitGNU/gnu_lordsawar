@@ -293,12 +293,12 @@ int get_image_width (std::string filename)
 
 void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
 {
-  std::string n = Configuration::s_dataPath + "/tilesets/" + d_tileset->getSubDir() + "/" + t->getName() + ".png";
+  std::string n = Configuration::s_dataPath + "/tilesets/" + t->getSubDir() + "/" + t->getName() + ".png";
   int height = get_image_height (n);
   if (height)
     {
       d_tileset->setTileSize(height);
-      t->instantiatePixmaps(d_tileset->getSubDir(), height);
+      t->instantiatePixmaps(t->getSubDir(), height);
     }
   inhibit_image_change = true;
   image_filechooser_button->set_filename(n);
@@ -497,9 +497,7 @@ void TileSetWindow::on_load_tileset_activated()
       if (tmp)
 	tmp[0] = '\0';
       //hackus horribilium
-      std::string back = "../../../../../../../../../../../../../../../../";
-
-      d_tileset->setSubDir(back + dir + "/");
+      d_tileset->setSubDir(dir);
       d_tileset->instantiatePixmaps();
       for (Tileset::iterator i = d_tileset->begin(); i != d_tileset->end(); ++i)
 	{
@@ -634,6 +632,7 @@ void TileSetWindow::fill_tilestylesets()
     {
       Gtk::TreeIter l = tilestylesets_list->append();
       (*l)[tilestylesets_columns.name] = (*it)->getName();
+      (*l)[tilestylesets_columns.subdir] = (*it)->getSubDir();
       (*l)[tilestylesets_columns.tilestyleset] = *it;
     }
 }
@@ -1004,7 +1003,9 @@ void TileSetWindow::on_image_chosen()
       
   //hackus horribilium
   std::string back = "../../../../../../../../../../../../../../../../";
-  d_tileset->setSubDir(back + dir + "/");
+
+  set->setSubDir(back + dir + "/");
+  (*i)[tilestylesets_columns.subdir] = set->getSubDir();
 
   tmp++;
   char *name = strdup (tmp);
@@ -1037,5 +1038,5 @@ void TileSetWindow::on_image_chosen()
 void TileSetWindow::on_refresh_clicked()
 {
   TileStyleSet *set = get_selected_tilestyleset ();
-  set->instantiatePixmaps(d_tileset->getSubDir(), d_tileset->getTileSize());
+  set->instantiatePixmaps(set->getSubDir(), d_tileset->getTileSize());
 }
