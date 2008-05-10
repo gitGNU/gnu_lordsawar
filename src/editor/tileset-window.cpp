@@ -298,7 +298,12 @@ int get_image_width (std::string filename)
 
 void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
 {
-  std::string n = Configuration::s_dataPath + "/tilesets/" + t->getSubDir() + "/" + t->getName() + ".png";
+  std::string subdir;
+  if (t->getSubDir() == "")
+    subdir = d_tileset->getSubDir();
+  else
+    subdir = t->getSubDir();
+  std::string n = Configuration::s_dataPath + "/tilesets/" + subdir + "/" + t->getName() + ".png";
   int height = get_image_height (n);
   if (height)
     {
@@ -503,7 +508,8 @@ void TileSetWindow::on_load_tileset_activated()
       if (tmp)
 	tmp[0] = '\0';
       //hackus horribilium
-      d_tileset->setSubDir(dir);
+      std::string back = "../../../../../../../../../../../../../../../../";
+      d_tileset->setSubDir(back + dir);
       d_tileset->instantiatePixmaps();
       for (Tileset::iterator i = d_tileset->begin(); i != d_tileset->end(); ++i)
 	{
