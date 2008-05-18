@@ -127,4 +127,22 @@ int Tile::getTypeIndexForType(Tile::Type type)
     case SWAMP: return 5; break;
     }
 }
+TileStyle *Tile::getRandomTileStyle (TileStyle::Type style)
+{
+  std::vector<TileStyle*> tilestyles;
+  for (iterator it = begin(); it != end(); ++it)
+    {
+      TileStyleSet *tilestyleset = *it;
+      for (Uint32 k = 0; k < tilestyleset->size(); k++)
+	{
+	  TileStyle *tilestyle = (*tilestyleset)[k];
+	  if (tilestyle->getType() == style)
+	    tilestyles.push_back(tilestyle);
+	}
+    }
+
+  if (tilestyles.empty() == true)
+    return NULL;
+  return tilestyles[rand() % tilestyles.size()];
+}
 // End of file

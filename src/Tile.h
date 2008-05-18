@@ -205,6 +205,18 @@ eoeoeoeo
 	 */
 	bool save(XML_Helper *helper);
 
+	//! Lookup a random tile style for this tile.
+	/**
+	 * Scan the TileStyles for this Tile for a TileStyle that matches 
+	 * the given style.  When there is more than one TileStyle to choose 
+	 * from, randomly pick one from all of the matching TileStyle objects.
+	 *
+	 * @param style  The kind of style we're looking for.
+	 *
+	 * @return A pointer to the matching TileStyle object, or NULL if no 
+	 *         TileStyle could be found with that given style.
+	 */
+	TileStyle *getRandomTileStyle (TileStyle::Type style);
     private:
         // DATA
 

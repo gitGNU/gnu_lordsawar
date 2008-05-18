@@ -1070,7 +1070,7 @@ void TileSetWindow::on_preview_tile_activated()
   Tile *tile = get_selected_tile();
   if (tile)
     {
-      TilePreviewDialog d(tile);
+      TilePreviewDialog d(tile, d_tileset->getTileSize());
       d.run();
     }
 }

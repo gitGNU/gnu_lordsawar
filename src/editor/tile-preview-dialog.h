@@ -21,15 +21,19 @@
 #include <memory>
 #include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
-#include <gtkmm/textview.h>
-#include <gtkmm/entry.h>
+#include <gtkmm/button.h>
+#include <gtkmm/image.h>
+#include <gtkmm/label.h>
+#include <gtkmm/table.h>
 #include "../Tile.h"
+#include "tile-preview-scene.h"
 
-//! Scenario editor.  Edits the description of the scenario.
+
+//! Tile Preview Dialog.  Shows completeness and correctness of tilesets.
 class TilePreviewDialog: public sigc::trackable
 {
  public:
-    TilePreviewDialog(Tile *tile);
+    TilePreviewDialog(Tile *tile, Uint32 tileSize);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -38,6 +42,24 @@ class TilePreviewDialog: public sigc::trackable
  private:
     Tile *d_tile;
     std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Button *next_button;
+    Gtk::Button *previous_button;
+    Gtk::Button *refresh_button;
+    Gtk::Label *status_label;
+    Gtk::HBox *scene_box;
+    Gtk::Table *scene_table;
+
+    std::vector<Glib::RefPtr<Gdk::Pixbuf> > tilestyle_images;
+
+    void on_next_clicked();
+    void on_previous_clicked();
+    void on_refresh_clicked();
+    void update_status();
+    void update_buttons();
+    void update_scene(TilePreviewScene *scene);
+    std::list<TilePreviewScene*> scenes;
+    std::list<TilePreviewScene*>::iterator current_scene;
+    Uint32 d_tileSize;
 };
 
 #endif

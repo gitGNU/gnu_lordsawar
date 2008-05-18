@@ -141,21 +141,10 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 TileStyle *Tileset::getRandomTileStyle(Uint32 index, TileStyle::Type style)
 {
   Tile *tile = (*this)[index];
-  std::vector<TileStyle*> tilestyles;
-  for (Tile::iterator it = tile->begin(); it != tile->end(); ++it)
-    {
-      TileStyleSet *tilestyleset = *it;
-      for (Uint32 k = 0; k < tilestyleset->size(); k++)
-	{
-	  TileStyle *tilestyle = (*tilestyleset)[k];
-	  if (tilestyle->getType() == style)
-	    tilestyles.push_back(tilestyle);
-	}
-    }
-
-  if (tilestyles.empty() == true)
+  if (tile)
+    return tile->getRandomTileStyle (style);
+  else
     return NULL;
-  return tilestyles[rand() % tilestyles.size()];
 }
 
 bool Tileset::save(XML_Helper *helper)
