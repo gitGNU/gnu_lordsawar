@@ -45,7 +45,6 @@ class TilePreviewDialog: public sigc::trackable
     Gtk::Button *next_button;
     Gtk::Button *previous_button;
     Gtk::Button *refresh_button;
-    Gtk::Label *status_label;
     Gtk::HBox *scene_box;
     Gtk::Table *scene_table;
 
@@ -54,7 +53,6 @@ class TilePreviewDialog: public sigc::trackable
     void on_next_clicked();
     void on_previous_clicked();
     void on_refresh_clicked();
-    void update_status();
     void update_buttons();
     void update_scene(TilePreviewScene *scene);
     std::list<TilePreviewScene*> scenes;
