@@ -30,5 +30,14 @@ fight bug:
 check to see what happens when i pass a larger attacker/defender list of stacks to fight.  it only seems to use 1!
 
 tileset editor:
-no subdir set, so can't load images in "new" tilesets.
-put the dir in the tilestyleset treeview model, and then set the subdir accordingly
+add editors/preview for the other images in the tileset like:
+explosion
+flags
+	is more difficult because there's a mask
+fog
+roads
+	and bridges too
+	preview on grass, and bridges with water
+selectors
+	preview animates
+	is more difficult because there's a mask

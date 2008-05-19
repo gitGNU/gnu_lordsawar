@@ -1,3 +1,7 @@
+2008-05-19  Ben Asselstine
+
+	* diplomacy button is now disabled when it's not our turn
+
 2008-05-07  Ben Asselstine
 
 	* added tileset editor
