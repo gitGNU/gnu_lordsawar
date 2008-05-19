@@ -268,7 +268,8 @@ class GameWindow: public sigc::trackable
     void show_map_tip(Glib::ustring msg, MapTipPosition pos);
     void on_city_looted(City *city, int gold);
     void hide_map_tip();
-    void update_diplomacy_button (bool proposals_present);
+    void change_diplomacy_button_image (bool proposals_present);
+    void update_diplomacy_button (bool sensitive);
 
     bool setup_game(std::string file_path);
     void setup_signals();

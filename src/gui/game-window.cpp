@@ -498,6 +498,9 @@ void GameWindow::setup_signals()
    (sigc::mem_fun (*this, &GameWindow::on_diplomacy_button_clicked)));
   connections.push_back 
     (game->received_diplomatic_proposal.connect 
+     (sigc::mem_fun(*this, &GameWindow::change_diplomacy_button_image)));
+  connections.push_back 
+    (game->can_end_turn.connect 
      (sigc::mem_fun(*this, &GameWindow::update_diplomacy_button)));
 
   setup_button(defend_button,
@@ -707,18 +710,28 @@ void GameWindow::setup_signals()
 
 }
 
-void GameWindow::update_diplomacy_button (bool proposals_present)
+void GameWindow::change_diplomacy_button_image (bool proposals_present)
 {
-  if (GameScenario::s_diplomacy == false)
-    {
-      diplomacy_button->set_sensitive (false);
-      return;
-    }
   /* switch up the image. */
   if (proposals_present)
     diplomacy_button->property_image() = new Gtk::Image(d_button_images[8]);
   else
     diplomacy_button->property_image() = new Gtk::Image(d_button_images[0]);
+}
+
+void GameWindow::update_diplomacy_button (bool sensitive)
+{
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    {
+      diplomacy_button->set_sensitive (false);
+      return;
+    }
+  if (GameScenario::s_diplomacy == false)
+    {
+      diplomacy_button->set_sensitive (false);
+      return;
+    }
+  diplomacy_button->set_sensitive(sensitive);
 }
 
 bool GameWindow::setup_game(std::string file_path)
