@@ -213,10 +213,14 @@ void TilePreviewDialog::update_scene(TilePreviewScene *scene)
 	  Glib::RefPtr<Gdk::Pixbuf> pixbuf = scene->getTileStylePixbuf(i, j);
 	  Gtk::Image *image = new Gtk::Image(pixbuf);
 	  TileStyle *style = scene->getTileStyle(i, j);
-	  char buf[20];
-	  snprintf (buf, sizeof (buf), "0x%02x", style->getId());
-	  image->set_tooltip_text(buf);
-	  scene_table->attach(*image, j, j + 1, i, i + 1, Gtk::SHRINK, Gtk::SHRINK);
+	  if (style)
+	    {
+	      char buf[20];
+	      snprintf (buf, sizeof (buf), "0x%02x", style->getId());
+	      image->set_tooltip_text(buf);
+	    }
+	  scene_table->attach(*image, j, j + 1, i, i + 1, 
+			      Gtk::SHRINK, Gtk::SHRINK);
 	  image->show();
 	}
     }
