@@ -67,12 +67,6 @@ int main(int argc, char* argv[])
             {
                 kit.start_test_scenario = true;
             }
-#ifdef WITH_GGZ
-            if (parameter == "-g" || parameter == "--ggz")
-            {
-                Configuration::s_ggz = true;
-            }
-#endif 
             if (parameter == "--help" || parameter == "-h")
             {
                 cout << endl;
@@ -81,26 +75,11 @@ int main(int argc, char* argv[])
                 cout << _("-h,      --help             Shows this help screen\n");
                 cout << _("-c <size>                   Set the maximum cache size") <<endl;
                 cout << _("-t,      --test             Starting with a test-scenario") << endl;
-#ifdef WITH_GGZ
-                // deprecated, but should stay reserved for future use
-                //cout << _("-g,      --ggz              Run game in GGZ mode") << endl;
-#endif
 		cout << endl << endl;
                 exit(0);
             }
         }
     }
-
-    // New GGZ versions (>= 0.0.12) support the GGZMODE environment variable
-    // It is recommended over the -g/--ggz usage, which will be kept for compatibility
-#ifdef WITH_GGZ
-    char* ggzmode = getenv("GGZMODE");
-    if(ggzmode)
-    {
-        cout << _("Detected GGZ Gaming Zone environment") << endl;
-        Configuration::s_ggz = true;
-    }
-#endif
 
     // Check if armysets are in the path (otherwise exit)
     File::scanArmysets();
