@@ -224,9 +224,6 @@ AC_CONFIG_FILES([
         dat/various/items/Makefile
         dat/various/editor/Makefile
         dat/map/Makefile 
-        dat/ggz/Makefile 
-        dat/ggz/lordsawar.dsc
-        dat/ggz/lordsawar-server.dsc	
         dat/music/Makefile
         dat/glade/Makefile
         dat/glade/editor/Makefile
@@ -236,7 +233,6 @@ AC_CONFIG_FILES([
         Makefile 
         src/Makefile
         doc/Makefile
-        src/server/Makefile 
         src/editor/Makefile
         src/gui/Makefile])
 AC_OUTPUT
