@@ -58,7 +58,6 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	historymap.cpp historymap.h \
 	bigmap.cpp bigmap.h  \
 	history.cpp history.h  \
-	netggz.cpp netggz.h \
 	signpost.cpp signpost.h signpostlist.cpp signpostlist.h \
         port.cpp port.h portlist.cpp portlist.h \
         bridge.cpp bridge.h bridgelist.cpp bridgelist.h \
