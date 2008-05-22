@@ -1,6 +1,0 @@
-[RoomInfo]
-Name = LordsAWar
-Description = Room where to play a warlords II clone
-GameType = LordsAWar
-MaxPlayers = 25
-MaxTables = 5
