@@ -98,13 +98,11 @@ endif
 localedir = $(datadir)/locale
 DEFS = -DFL_VERSION=\"@VERSION@\"  -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
-lordsawar_LDFLAGS = $(GGZMOD_LDFLAGS) $(GGZDMOD_LDFLAGS)
+lordsawar_LDFLAGS =
 lordsawar_LDADD = $(SDL_LIBS) \
     $(GTKMM_LIBS) \
     $(LIBGNET_LIBS) \
     $(LIBSIGC_LIBS) \
-    $(LIB_GGZMOD) \
-    $(LIB_GGZDMOD) \
     ./gui/liblwgui.a \
     @LIBINTL@
 lordsawar_DEPENDENCIES = \
@@ -115,7 +113,5 @@ INCLUDES = $(SDL_CFLAGS) \
     $(GTKMM_CFLAGS) \
     $(LIBGNET_CFLAGS) \
     $(LIBSIGC_CFLAGS) \
-    $(LIBGGZ_INCLUDES) \
-    $(GGZDMOD_INCLUDES) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' \
     -Iserver -I..

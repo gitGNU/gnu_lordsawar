@@ -164,28 +164,6 @@ AC_ARG_ENABLE(editor,
             use_editor="$enableval", use_editor="yes")
 AM_CONDITIONAL([WANT_EDITOR], [test $use_editor = "yes"])
 
-dnl Should GGZ support be compiled in for server and client?
-AC_ARG_ENABLE(ggz,
-             [  --enable-ggz    enable ggz support (default=no)],,
-             enable_ggz=no
-)
-	
-if test x$enable_ggz = xyes; then
-	AC_GGZ_INIT(defaults, export)
-	AC_GGZ_GGZDMOD([], [enable_ggz=no])
-	AC_GGZ_SERVER([], [enable_ggz=no])
-	AC_GGZ_GGZMOD([], [enable_ggz=no])
-	AC_GGZ_CONFIG([], [enable_ggz=no])
-	if test x$enable_ggz = xyes; then
-		AC_GGZ_VERSION(0, 0, 12)
-		AC_DEFINE([WITH_GGZ], 1, [Enable GGZ support])
-	fi
-else
-AC_GGZ_CHECK
-fi
-AM_CONDITIONAL([GGZSUPPORT], [test "x$enable_ggz" = "xyes"])
-
-
 dnl ...the standard screen resolution...
 AC_ARG_WITH(resolution,
            [  --with-resolution=RES standard resolution for lordsawar [default=800x600]], 
@@ -268,7 +246,6 @@ echo ""
 echo "Configuration:"
 echo " Installation location : $prefix"
 echo " Editor compilation    : $use_editor"
-echo " GGZ support           : $enable_ggz"
 echo " Sound support         : $use_sound"
 echo ""
 echo "Extra Options:"
