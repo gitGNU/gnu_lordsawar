@@ -83,7 +83,7 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	Named.cpp Named.h Namable.cpp Namable.h Renamable.cpp Renamable.h \
 	network_player.cpp network_player.h \
 	herotemplates.cpp herotemplates.h \
-	network-connection.cpp network-connection.h \
+	network-connection.cpp network-connection.h network-common.h \
 	network-server.cpp network-server.h \
 	game-server.cpp game-server.h \
 	game-client.cpp game-client.h
@@ -105,7 +105,7 @@ lordsawar_LDADD = $(SDL_LIBS) \
     ./gui/liblwgui.a \
     @LIBINTL@
 lordsawar_DEPENDENCIES = \
-  ./server/liblwserver.a ./gui/liblwgui.a
+  ./gui/liblwgui.a
 
 AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\" -Wunused-function
 INCLUDES = $(SDL_CFLAGS) \
