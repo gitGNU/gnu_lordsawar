@@ -21,10 +21,7 @@ various_DATA = \
     stats.png \
     win.jpg \
     win_mask.png \
-    freelords.png \
     lordsawar_logo.png \
-    freelords_editor.png \
-    editor.png \
     hero.png \
     prodshieldset.png \
     smallruinedcity.png \
@@ -61,10 +58,7 @@ EXTRA_DIST = \
     stats.png \
     win.jpg \
     win_mask.png \
-    freelords.png \
     lordsawar_logo.png \
-    freelords_editor.png \
-    editor.png \
     hero.png \
     prodshieldset.png \
     smallruinedcity.png \
