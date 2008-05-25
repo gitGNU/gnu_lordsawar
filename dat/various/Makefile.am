@@ -16,8 +16,6 @@ various_DATA = \
     ruin_1.png \
     ruin_2.png \
     splash_screen.jpg \
-    about_screen.jpg \
-    network_screen.jpg \
     stats.png \
     win.jpg \
     win_mask.png \
@@ -53,8 +51,6 @@ EXTRA_DIST = \
     ruin_1.png \
     ruin_2.png \
     splash_screen.jpg \
-    about_screen.jpg \
-    network_screen.jpg \
     stats.png \
     win.jpg \
     win_mask.png \
