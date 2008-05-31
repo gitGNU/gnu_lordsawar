@@ -60,6 +60,7 @@
 #include "ruin-rewarded-dialog.h"
 #include "hero-offer-dialog.h"
 #include "surrender-dialog.h"
+#include "surrender-refused-dialog.h"
 #include "quest-report-dialog.h"
 #include "quest-assigned-dialog.h"
 #include "quest-completed-dialog.h"
@@ -1776,8 +1777,11 @@ void GameWindow::on_surrender_answered (bool accepted)
     on_message_requested
       (_("You graciously and benevolently accept their offer."));
   else
-    on_message_requested
-      (_("Off with their heads!  I want it ALL!"));
+    {
+      SurrenderRefusedDialog d;
+      d.set_parent_window(*window.get());
+      d.run();
+    }
 }
 
 bool GameWindow::on_stack_considers_treachery (Player *me, Stack *stack, 

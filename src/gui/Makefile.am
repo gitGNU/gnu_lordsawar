@@ -39,6 +39,7 @@ liblwgui_a_SOURCES = \
     hero-dialog.cpp hero-dialog.h \
     hero-offer-dialog.cpp hero-offer-dialog.h \
     surrender-dialog.cpp surrender-dialog.h \
+    surrender-refused-dialog.cpp surrender-refused-dialog.h \
     sage-dialog.cpp sage-dialog.h \
     ruin-rewarded-dialog.cpp ruin-rewarded-dialog.h \
     ruin-report-dialog.cpp ruin-report-dialog.h \
