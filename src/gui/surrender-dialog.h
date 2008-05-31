@@ -26,10 +26,6 @@
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/entry.h>
 
-#include "../heromap.h"
-#include "../player.h"
-#include "../hero.h"
-
 struct SDL_Surface;
 
 // dialog for accepting/rejecting surrender from computer players
@@ -44,6 +40,7 @@ class SurrenderDialog: public sigc::trackable
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Image *image;
 
 };
 

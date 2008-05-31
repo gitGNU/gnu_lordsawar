@@ -1256,23 +1256,11 @@ void GameWindow::on_game_over(Player *winner)
   Gtk::Image *image;
   xml->get_widget("image", image);
 
-  SDL_Surface *win_unmasked = File::getMiscPicture("win.jpg", false);
-  // mask pics need a special format
-  SDL_Surface* tmp = File::getMiscPicture("win_mask.png");
-  SDL_Surface *mask = SDL_CreateRGBSurface(
-					   SDL_SWSURFACE, tmp->w, tmp->h, 32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
-  SDL_SetAlpha(tmp, 0, 0);
-  SDL_BlitSurface(tmp, 0, mask, 0);
-  SDL_FreeSurface(tmp);
-
-  SDL_Surface* win = GraphicsCache::getInstance()->applyMask(
-							     win_unmasked, mask, Playerlist::getActiveplayer());
+  SDL_Surface *win = File::getMiscPicture("win.png", false);
 
   image->property_pixbuf() = to_pixbuf(win);
 
   SDL_FreeSurface(win);
-  SDL_FreeSurface(win_unmasked);
-  SDL_FreeSurface(mask);
 
   Gtk::Label *label;
   xml->get_widget("label", label);

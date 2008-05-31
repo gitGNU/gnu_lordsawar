@@ -43,21 +43,24 @@ SurrenderDialog::SurrenderDialog(int numEnemies)
 
     Gtk::Label *label;
     xml->get_widget("label", label);
+    xml->get_widget("image", image);
     
     Glib::ustring s;
     s = String::ucompose
-      (ngettext("%1 player comes on bended knee and offers surrender!",
-		"%1 players come on bended knee and offer surrender!",
+      (ngettext("Your final opponent comes on bended knee and offers surrender!",
+		"%1 opponents come on bended knee and offer surrender!",
 		numEnemies), numEnemies);
     s += _("\nDo you accept?");
     label->set_text(s);
+    image->property_file()
+      = File::getMiscFile("various/parley_offered.png");
 }
 
 
 void SurrenderDialog::set_parent_window(Gtk::Window &parent)
 {
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
+  dialog->set_transient_for(parent);
+  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 bool SurrenderDialog::run()

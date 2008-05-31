@@ -17,8 +17,7 @@ various_DATA = \
     ruin_2.png \
     splash_screen.jpg \
     stats.png \
-    win.jpg \
-    win_mask.png \
+    win.png \
     lordsawar_logo.png \
     hero.png \
     prodshieldset.png \
@@ -36,7 +35,8 @@ various_DATA = \
     diplomacy-small.png \
     diplomacy-large.png \
     castle_icon.png \
-    tileset_icon.png
+    tileset_icon.png \
+    parley_offered.png
 
 EXTRA_DIST = \
     arrows.png \
@@ -52,8 +52,7 @@ EXTRA_DIST = \
     ruin_2.png \
     splash_screen.jpg \
     stats.png \
-    win.jpg \
-    win_mask.png \
+    win.png \
     lordsawar_logo.png \
     hero.png \
     prodshieldset.png \
@@ -71,4 +70,5 @@ EXTRA_DIST = \
     diplomacy-small.png \
     diplomacy-large.png \
     castle_icon.png \
-    tileset_icon.png
+    tileset_icon.png \
+    parley_offered.png
