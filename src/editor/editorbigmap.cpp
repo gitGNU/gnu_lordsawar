@@ -284,7 +284,7 @@ void EditorBigMap::after_draw()
 	    break;
 	    
 	case ROAD:
-	    pic = GraphicsCache::getInstance()->getRoadPic(Roadlist::getInstance()->calculateType(*i));
+	    pic = GraphicsCache::getInstance()->getRoadPic(calculateRoadType(*i));
 	    SDL_BlitSurface(pic, 0, buffer, &r);
 	    break;
 	case PORT:
@@ -652,7 +652,7 @@ void EditorBigMap::change_map_under_cursor()
 		 || maptile->getBuilding() == Maptile::ROAD)
 		&& maptile->getMaptileType() != Tile::WATER)
 	    {
-		int type = Roadlist::getInstance()->calculateType(tile);
+		int type = calculateRoadType(tile);
 		if (maptile->getBuilding() == Maptile::NONE)
 		{
 		    maptile->setBuilding(Maptile::ROAD);
@@ -670,7 +670,7 @@ void EditorBigMap::change_map_under_cursor()
 			Vector<int> pos(x, y);
 			if (Road *r = Roadlist::getInstance()->getObjectAt(pos))
 			{
-			    int newtype = Roadlist::getInstance()->calculateType(pos);
+			    int newtype = calculateRoadType(pos);
 			    r->setType(newtype);
 			}
 		    }
@@ -694,3 +694,72 @@ void EditorBigMap::smooth_view()
 					  view.x+view.w, true);
   draw();
 }
+
+int EditorBigMap::calculateRoadType (Vector<int> t)
+{
+    Roadlist *rl = Roadlist::getInstance();
+    Bridgelist *bl = Bridgelist::getInstance();
+
+    // examine neighbour tiles to discover whether there's a road or
+    // bridge on them
+    bool u = false; //up
+    bool b = false; //bottom
+    bool l = false; //left
+    bool r = false; //right
+
+    if (t.y > 0)
+      u = rl->getObjectAt(t + Vector<int>(0, -1));
+    if (t.y < GameMap::getHeight() - 1)
+      b = rl->getObjectAt(t + Vector<int>(0, 1));
+    if (t.x > 0)
+      l = rl->getObjectAt(t + Vector<int>(-1, 0));
+    if (t.x < GameMap::getWidth() - 1)
+      r = rl->getObjectAt(t + Vector<int>(1, 0));
+
+    if (!u && t.y > 0)
+      u = bl->getObjectAt(t + Vector<int>(0, -1));
+    if (!b && t.y < GameMap::getHeight() - 1)
+      b = bl->getObjectAt(t + Vector<int>(0, 1));
+    if (!l && t.x > 0)
+      l = bl->getObjectAt(t + Vector<int>(-1, 0));
+    if (!r && t.x < GameMap::getWidth() - 1)
+      r = bl->getObjectAt(t + Vector<int>(1, 0));
+
+    // then translate this to the type
+    int type = 2; 
+    //show road type 2 when no other road tiles are around
+    if (!u && !b && !l && !r)
+	type = 2;
+    else if (u && b && l && r)
+	type = 2;
+    else if (!u && b && l && r)
+	type = 9;
+    else if (u && !b && l && r)
+	type = 8;
+    else if (u && b && !l && r)
+	type = 7;
+    else if (u && b && l && !r)
+	type = 10;
+    else if (u && b && !l && !r)
+	type = 1;
+    else if (!u && !b && l && r)
+	type = 0;
+    else if (u && !b && l && !r)
+	type = 3;
+    else if (u && !b && !l && r)
+	type = 4;
+    else if (!u && b && l && !r)
+	type = 6;
+    else if (!u && b && !l && r)
+	type = 5;
+    else if (u && !b && !l && !r)
+	type = 1;
+    else if (!u && b && !l && !r)
+	type = 1;
+    else if (!u && !b && l && !r)
+	type = 0;
+    else if (!u && !b && !l && r)
+	type = 0;
+    return type;
+}
+

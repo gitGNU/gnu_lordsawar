@@ -87,6 +87,7 @@ class EditorBigMap: public BigMap
     int tile_to_bridge_type(Vector<int> tile);
     void change_map_under_cursor();
     std::vector<Vector<int> > get_cursor_tiles();
+    int calculateRoadType (Vector<int> t);
 };
 
 #endif
