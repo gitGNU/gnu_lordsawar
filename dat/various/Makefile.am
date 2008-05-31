@@ -16,7 +16,6 @@ various_DATA = \
     ruin_1.png \
     ruin_2.png \
     splash_screen.jpg \
-    stats.png \
     win.png \
     lordsawar_logo.png \
     hero.png \
@@ -51,7 +50,6 @@ EXTRA_DIST = \
     ruin_1.png \
     ruin_2.png \
     splash_screen.jpg \
-    stats.png \
     win.png \
     lordsawar_logo.png \
     hero.png \
