@@ -1,3 +1,8 @@
+2008-05-31  Ben Asselstine
+
+	* changed scenario editor to take bridges into account when placing
+	  roads.
+
 2008-05-19  Ben Asselstine
 
 	* diplomacy button is now disabled when it's not our turn
