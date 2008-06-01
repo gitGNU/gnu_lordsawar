@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.3.7\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-05-31 21:53-0400\n"
+"POT-Creation-Date: 2008-06-01 11:00-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Piotr Cychowski <cycholka@wp.pl>\n"
 "Language-Team: \n"
@@ -208,17 +208,1528 @@ msgstr[0] "Bohater chce do ciebie do³±czyæ za darmo!"
 msgstr[1] "Bohater chce do ciebie do³±czyæ za darmo!"
 msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 
-#~ msgid "You have managed to slaughter %i army."
-#~ msgid_plural "You have managed to slaughter %i armies."
-#~ msgstr[0] "Zdo³a³e¶ zabiæ %i jednostkê"
-#~ msgstr[1] "Zdo³a³e¶ zabiæ %i jednostki"
-#~ msgstr[2] "Zdo³a³e¶ zabiæ %i jednostek"
+#, fuzzy
+#~ msgid "All Cities"
+#~ msgstr "Miasta"
 
-#~ msgid "You must destroy %i unit of enemy armies"
-#~ msgid_plural "You must destroy %i units of enemy armies"
-#~ msgstr[0] "Musisz zniszczyæ %i wrog± jednostkê"
-#~ msgstr[1] "Musisz zniszczyæ %i wrogie jednostki"
-#~ msgstr[2] "Musisz zniszczyæ %i wrogich jednostek"
+#, fuzzy
+#~ msgid "All Ruins"
+#~ msgstr "Ruiny"
+
+#, fuzzy
+#~ msgid "All Temples"
+#~ msgstr "¦wi±tynie"
+
+#, fuzzy
+#~ msgid "LordsAWar! Scenario Editor"
+#~ msgstr "Wczytaj Scenariusz"
+
+#, fuzzy
+#~ msgid "Save Map _As..."
+#~ msgstr "Zapisz jako"
+
+#, fuzzy
+#~ msgid "Unnamed Cities"
+#~ msgstr "Miasta"
+
+#, fuzzy
+#~ msgid "Unnamed Ruins"
+#~ msgstr "Dziwne Ruiny"
+
+#, fuzzy
+#~ msgid "Unnamed Temples"
+#~ msgstr "Zrujnowana ¦wi±tynia"
+
+#, fuzzy
+#~ msgid "_Edit"
+#~ msgstr "Edytuj"
+
+#, fuzzy
+#~ msgid "_File"
+#~ msgstr "Plik"
+
+#, fuzzy
+#~ msgid "_Fullscreen"
+#~ msgstr "Pe³ny ekran"
+
+#, fuzzy
+#~ msgid "_Help"
+#~ msgstr "Pomoc"
+
+#, fuzzy
+#~ msgid "_Items"
+#~ msgstr "Przedmioty"
+
+#, fuzzy
+#~ msgid "_Load Map"
+#~ msgstr "Wczytaj Mapê"
+
+#, fuzzy
+#~ msgid "_New Map"
+#~ msgstr "Stwórz Now± Mapê"
+
+#, fuzzy
+#~ msgid "_Players"
+#~ msgstr "Gracze"
+
+#, fuzzy
+#~ msgid "_Quit"
+#~ msgstr "Wyjd¼"
+
+#, fuzzy
+#~ msgid "_Random"
+#~ msgstr "Losowa"
+
+#, fuzzy
+#~ msgid "_Save Map"
+#~ msgstr "Zapisz jako"
+
+#, fuzzy
+#~ msgid "_Smooth Screen"
+#~ msgstr "G³adkie przewijanie"
+
+#, fuzzy
+#~ msgid "_View"
+#~ msgstr "Grafika"
+
+#, fuzzy
+#~ msgid "Randomi_ze"
+#~ msgstr "Losowa"
+
+#, fuzzy
+#~ msgid "_Cancel"
+#~ msgstr "Anuluj"
+
+#, fuzzy
+#~ msgid "_OK"
+#~ msgstr "OK"
+
+#, fuzzy
+#~ msgid "<b>Temple</b>"
+#~ msgstr "¦wi±tynia"
+
+#, fuzzy
+#~ msgid "Edit Temple"
+#~ msgstr "¦wi±tynia"
+
+#~ msgid "Name:"
+#~ msgstr "Nazwa: "
+
+#~ msgid "Type:"
+#~ msgstr "Typ:"
+
+#, fuzzy
+#~ msgid "Cle_ar Keeper"
+#~ msgstr "Stra¿nik"
+
+#, fuzzy
+#~ msgid "Edit Ruin"
+#~ msgstr "Edytuj"
+
+#, fuzzy
+#~ msgid "Keeper:"
+#~ msgstr "Stra¿nik"
+
+#, fuzzy
+#~ msgid "Ran_domize"
+#~ msgstr "Losowa"
+
+#, fuzzy
+#~ msgid "Random Reward"
+#~ msgstr "Losowa Mapa"
+
+#, fuzzy
+#~ msgid "Randomiz_e"
+#~ msgstr "Losowa"
+
+#~ msgid "Type"
+#~ msgstr "Typ"
+
+#, fuzzy
+#~ msgid "Edit Stack"
+#~ msgstr "Grupa"
+
+#~ msgid "Player:"
+#~ msgstr "Gracz:"
+
+#, fuzzy
+#~ msgid "_Add"
+#~ msgstr "Dodaj"
+
+#, fuzzy
+#~ msgid "_Remove"
+#~ msgstr "Usuñ"
+
+#, fuzzy
+#~ msgid "Select Army"
+#~ msgstr "Wybierz przedmiot"
+
+#, fuzzy
+#~ msgid "_Select"
+#~ msgstr "Odrzuæ"
+
+#, fuzzy
+#~ msgid "<b>Players</b>"
+#~ msgstr "Gracze"
+
+#, fuzzy
+#~ msgid "Edit Players"
+#~ msgstr "Gracze"
+
+#, fuzzy
+#~ msgid "<b>Production</b>"
+#~ msgstr "Kup Produkcjê"
+
+#, fuzzy
+#~ msgid "Burned down"
+#~ msgstr "Spalone"
+
+#, fuzzy
+#~ msgid "Capital"
+#~ msgstr "Katapulta"
+
+#, fuzzy
+#~ msgid "Edit City"
+#~ msgstr "Edytuj"
+
+#, fuzzy
+#~ msgid "Ra_ndomize"
+#~ msgstr "Losowa"
+
+#~ msgid "Description:"
+#~ msgstr "Opis:"
+
+#, fuzzy
+#~ msgid "   Cities"
+#~ msgstr "Miasta"
+
+#, fuzzy
+#~ msgid "Army Set:"
+#~ msgstr "Zestaw Wojsk"
+
+#, fuzzy
+#~ msgid "City Set:"
+#~ msgstr "Miasto:"
+
+#, fuzzy
+#~ msgid "Fill style:"
+#~ msgstr "Typ pliku:"
+
+#~ msgid "Forest"
+#~ msgstr "Las"
+
+#~ msgid "Grass"
+#~ msgstr "£±ka"
+
+#~ msgid "Hills"
+#~ msgstr "Wzgórza"
+
+#~ msgid "Mountains"
+#~ msgstr "Góry"
+
+#, fuzzy
+#~ msgid "New Map"
+#~ msgstr "Nowa Gra"
+
+#~ msgid "Ruins"
+#~ msgstr "Ruiny"
+
+#~ msgid "Size:"
+#~ msgstr "Rozmiar:"
+
+#~ msgid "Swamp"
+#~ msgstr "Bagno"
+
+#~ msgid "Temples"
+#~ msgstr "¦wi±tynie"
+
+#, fuzzy
+#~ msgid "Tile Set:"
+#~ msgstr "Nazwa pliku:"
+
+#~ msgid "Water"
+#~ msgstr "Woda"
+
+#, fuzzy
+#~ msgid "_Create Map"
+#~ msgstr "Stwórz Now± Mapê"
+
+#, fuzzy
+#~ msgid "Armyset Information"
+#~ msgstr "brak informacji"
+
+#, fuzzy
+#~ msgid "Can Fly"
+#~ msgstr "Anuluj"
+
+#~ msgid "Cost:"
+#~ msgstr "Koszt:"
+
+#, fuzzy
+#~ msgid "Defends Ruins?"
+#~ msgstr "Obrona: %i"
+
+#, fuzzy
+#~ msgid "Exp Points:"
+#~ msgstr "Punkty ¯ycia:"
+
+#, fuzzy
+#~ msgid "Max Moves:"
+#~ msgstr "Ruch:"
+
+#, fuzzy
+#~ msgid "Select A File"
+#~ msgstr "Wybierz przedmiot"
+
+#~ msgid "Sight:"
+#~ msgstr "Pole widzenia:"
+
+#~ msgid "Strength:"
+#~ msgstr "Si³a:"
+
+#, fuzzy
+#~ msgid "Turns:"
+#~ msgstr "Tury: %i"
+
+#~ msgid "Upkeep:"
+#~ msgstr "Utrzymanie:"
+
+#, fuzzy
+#~ msgid "_Load Armyset"
+#~ msgstr "Zestaw Wojsk"
+
+#, fuzzy
+#~ msgid "_New Armyset"
+#~ msgstr "Zestaw Wojsk"
+
+#, fuzzy
+#~ msgid "_Save Armyset"
+#~ msgstr "Zestaw Wojsk"
+
+#, fuzzy
+#~ msgid "Edit Armyset Info"
+#~ msgstr "Informacje o jednostce"
+
+#, fuzzy
+#~ msgid "Id:"
+#~ msgstr "Id:"
+
+#, fuzzy
+#~ msgid "+1 to Hero's Strength"
+#~ msgstr "+%i si³y"
+
+#, fuzzy
+#~ msgid "+2 to Hero's Strength"
+#~ msgstr "+%i si³y"
+
+#, fuzzy
+#~ msgid "+3 to Hero's Strength"
+#~ msgstr "+%i si³y"
+
+#, fuzzy
+#~ msgid "_Close"
+#~ msgstr "Zamknij"
+
+#, fuzzy
+#~ msgid "Allies"
+#~ msgstr "Algier"
+
+#, fuzzy
+#~ msgid "Clear Item"
+#~ msgstr "StwórzPrzedmiot"
+
+#~ msgid "Gold"
+#~ msgstr "Z³oto"
+
+#, fuzzy
+#~ msgid "Hidden Ruin"
+#~ msgstr "Dziwne Ruiny"
+
+#, fuzzy
+#~ msgid "Item"
+#~ msgstr "Przedmioty"
+
+#, fuzzy
+#~ msgid "Rand_omize"
+#~ msgstr "Losowa"
+
+#, fuzzy
+#~ msgid "Random_ize"
+#~ msgstr "Losowa"
+
+#, fuzzy
+#~ msgid "Select Item"
+#~ msgstr "Wybierz przedmiot"
+
+#, fuzzy
+#~ msgid "Select Hidden Ruin"
+#~ msgstr "Wybierz akcjê"
+
+#~ msgid "Moves:"
+#~ msgstr "Ruch:"
+
+#, fuzzy
+#~ msgid "Pattern:"
+#~ msgstr "Gracz:"
+
+#, fuzzy
+#~ msgid "Tileset info"
+#~ msgstr "Dane miasta"
+
+#, fuzzy
+#~ msgid "_Load Tileset"
+#~ msgstr "Wybierz Zestaw Terenów"
+
+#, fuzzy
+#~ msgid "_New Tileset"
+#~ msgstr "Wybierz Zestaw Terenów"
+
+#, fuzzy
+#~ msgid "_Save Tileset"
+#~ msgstr "Wybierz Zestaw Terenów"
+
+#, fuzzy
+#~ msgid "_Choose"
+#~ msgstr "Zamknij"
+
+#, fuzzy
+#~ msgid "<b>Buy Production</b>"
+#~ msgstr "Kup Produkcjê"
+
+#~ msgid "Buy Production"
+#~ msgstr "Kup Produkcjê"
+
+#, fuzzy
+#~ msgid "_Buy"
+#~ msgstr "Kup"
+
+#, fuzzy
+#~ msgid "_Occupy"
+#~ msgstr "Zajmij"
+
+#, fuzzy
+#~ msgid "_Pillage"
+#~ msgstr "Spl±druj"
+
+#, fuzzy
+#~ msgid "_Raze"
+#~ msgstr "Spal"
+
+#, fuzzy
+#~ msgid "_Sack"
+#~ msgstr "Grupa"
+
+#, fuzzy
+#~ msgid "Your troops have looted the city!"
+#~ msgstr "Zosta³e¶ pokonany!"
+
+#, fuzzy
+#~ msgid "_Continue"
+#~ msgstr "Warunki"
+
+#, fuzzy
+#~ msgid "Your troops have sacked the city!"
+#~ msgstr "Zosta³e¶ pokonany!"
+
+#, fuzzy
+#~ msgid "Buy a production capability"
+#~ msgstr "Kup Produkcjê"
+
+#, fuzzy
+#~ msgid "Current:"
+#~ msgstr "Liczik:"
+
+#, fuzzy
+#~ msgid "R_ename"
+#~ msgstr "Bezimienny"
+
+#, fuzzy
+#~ msgid "Stop producing armies"
+#~ msgstr "po³±cz jednostki"
+
+#, fuzzy
+#~ msgid "_Buy..."
+#~ msgstr "Kup"
+
+#, fuzzy
+#~ msgid "_Vector..."
+#~ msgstr "Wektor"
+
+#, fuzzy
+#~ msgid "Chan_ge"
+#~ msgstr "Kartagina"
+
+#, fuzzy
+#~ msgid "Choose Destination"
+#~ msgstr "Wybierz Zestaw Terenów"
+
+#, fuzzy
+#~ msgid "Next Turn:"
+#~ msgstr "NastêpnaTura"
+
+#, fuzzy
+#~ msgid "Turn After:"
+#~ msgstr "Liczik:"
+
+#, fuzzy
+#~ msgid "_Vector"
+#~ msgstr "Wektor"
+
+#, fuzzy
+#~ msgid "Game Loaded"
+#~ msgstr "Gra Wczytana."
+
+#, fuzzy
+#~ msgid "Game Lost"
+#~ msgstr "Opcje"
+
+#, fuzzy
+#~ msgid "Choose a map"
+#~ msgstr "Wybierz drogê!"
+
+#~ msgid "Cities"
+#~ msgstr "Miasta"
+
+#, fuzzy
+#~ msgid "Edit Options"
+#~ msgstr "Opcje"
+
+#, fuzzy
+#~ msgid "Generate map randomly:"
+#~ msgstr "Generowanie losowej mapy"
+
+#, fuzzy
+#~ msgid "Load map:"
+#~ msgstr "Wczytaj Mapê"
+
+#~ msgid "New Game"
+#~ msgstr "Nowa Gra"
+
+#~ msgid "Random"
+#~ msgstr "Losowa"
+
+#, fuzzy
+#~ msgid "_Start Game"
+#~ msgstr "Rozpocznij Grê"
+
+#, fuzzy
+#~ msgid "Army"
+#~ msgstr "CJednostka"
+
+#, fuzzy
+#~ msgid "Army Bonus"
+#~ msgstr "Informacje o jednostce"
+
+#, fuzzy
+#~ msgid "Center map on stack"
+#~ msgstr "Wy¶rodkuj ekran na wybranej grupie"
+
+#~ msgid "City"
+#~ msgstr "Miasto"
+
+#, fuzzy
+#~ msgid "Deselect the stack"
+#~ msgstr "Wybierz nastêpn± grupê"
+
+#, fuzzy
+#~ msgid "Disband"
+#~ msgstr "Lizbona"
+
+#~ msgid "Events"
+#~ msgstr "Wydarzenia"
+
+#, fuzzy
+#~ msgid "Game"
+#~ msgstr "Nazwa"
+
+#~ msgid "Help"
+#~ msgstr "Pomoc"
+
+#, fuzzy
+#~ msgid "Hero"
+#~ msgstr "Bohaterowie"
+
+#~ msgid "Items"
+#~ msgstr "Przedmioty"
+
+#, fuzzy
+#~ msgid "Leave the stack here"
+#~ msgstr "Pozwól grupie siê broniæ"
+
+#~ msgid "Let the stack defend"
+#~ msgstr "Pozwól grupie siê broniæ"
+
+#, fuzzy
+#~ msgid "Levels"
+#~ msgstr "Poziom:"
+
+#~ msgid "Load Game"
+#~ msgstr "Wczytaj Grê"
+
+#, fuzzy
+#~ msgid "Move to the destination"
+#~ msgstr "Niech wszystkie grupy porusz± siê w kierunku celu"
+
+#~ msgid "Next"
+#~ msgstr "Nastêpne"
+
+#, fuzzy
+#~ msgid "Order"
+#~ msgstr "Inne"
+
+#, fuzzy
+#~ msgid "Plant Flag"
+#~ msgstr "Placentia"
+
+#, fuzzy
+#~ msgid "Production"
+#~ msgstr "Kup Produkcjê"
+
+#~ msgid "Quest"
+#~ msgstr "Zadanie"
+
+#~ msgid "Quit"
+#~ msgstr "Wyjd¼"
+
+#~ msgid "Reports"
+#~ msgstr "Raporty"
+
+#, fuzzy
+#~ msgid "Resign"
+#~ msgstr "Ruiny"
+
+#~ msgid "Save Game"
+#~ msgstr "Zapisz Grê"
+
+#, fuzzy
+#~ msgid "Save Game As..."
+#~ msgstr "Zapisz Grê"
+
+#, fuzzy
+#~ msgid "Search"
+#~ msgstr "Przeszukano:"
+
+#, fuzzy
+#~ msgid "Search ruin or temple"
+#~ msgstr "Przeszukaj ruiny lub ¶wi±tyniê"
+
+#, fuzzy
+#~ msgid "Select next stack that can move"
+#~ msgstr "Wybierz nastêpn± grupê która mo¿e siê poruszyæ"
+
+#, fuzzy
+#~ msgid "Stack Info"
+#~ msgstr "Grupa"
+
+#, fuzzy
+#~ msgid "Turn: %6"
+#~ msgstr "Tury: %i"
+
+#, fuzzy
+#~ msgid "View"
+#~ msgstr "Grafika"
+
+#, fuzzy
+#~ msgid "Winning"
+#~ msgstr "Ostrze¿enie"
+
+#, fuzzy
+#~ msgid "_Preferences"
+#~ msgstr "Pelerine"
+
+#, fuzzy
+#~ msgid "_Turn"
+#~ msgstr "NastêpnaTura"
+
+#, fuzzy
+#~ msgid "A_ccept"
+#~ msgstr "Zaakceptuj"
+
+#, fuzzy
+#~ msgid "_Decline"
+#~ msgstr "Pelerine"
+
+#, fuzzy
+#~ msgid "female"
+#~ msgstr "¦wi±tynia"
+
+#, fuzzy
+#~ msgid "male"
+#~ msgstr "Trales"
+
+#, fuzzy
+#~ msgid "An Offer of Peace!"
+#~ msgstr "Ogród Pokoju"
+
+#, fuzzy
+#~ msgid "<b>Scenarios</b>"
+#~ msgstr "Scenariusz"
+
+#~ msgid "Load Scenario"
+#~ msgstr "Wczytaj Scenariusz"
+
+#, fuzzy
+#~ msgid "Number of Players:"
+#~ msgstr "Nowy Gracz"
+
+#, fuzzy
+#~ msgid "_Load"
+#~ msgstr "Wczytaj"
+
+#, fuzzy
+#~ msgid "Medal Awarded"
+#~ msgstr "przyznane ordery"
+
+#, fuzzy
+#~ msgid "Quest Expired"
+#~ msgstr "Raport o zadaniach"
+
+#, fuzzy
+#~ msgid "<i>Volume:</i>"
+#~ msgstr "G³o¶no¶æ:"
+
+#, fuzzy
+#~ msgid "Play _music"
+#~ msgstr "W³±cz muzykê"
+
+#, fuzzy
+#~ msgid "Preferences"
+#~ msgstr "Pelerine"
+
+#, fuzzy
+#~ msgid "L_oad Game"
+#~ msgstr "Wczytaj Grê"
+
+#, fuzzy
+#~ msgid "Load _Scenario"
+#~ msgstr "Wczytaj Scenariusz"
+
+#, fuzzy
+#~ msgid "New _Campaign"
+#~ msgstr "Nowa Kampania"
+
+#, fuzzy
+#~ msgid "New _Game"
+#~ msgstr "Nowa Gra"
+
+#, fuzzy
+#~ msgid "New _Network Game"
+#~ msgstr "Nowa Gra Sieciowa"
+
+#, fuzzy
+#~ msgid "_No"
+#~ msgstr "Nie"
+
+#, fuzzy
+#~ msgid "_Yes"
+#~ msgstr "Tak"
+
+#, fuzzy
+#~ msgid "Next Turn"
+#~ msgstr "NastêpnaTura"
+
+#, fuzzy
+#~ msgid "Message:"
+#~ msgstr "Wiadomo¶æ"
+
+#, fuzzy
+#~ msgid "Hero Levels"
+#~ msgstr "Bohaterowie"
+
+#, fuzzy
+#~ msgid "Item Bonus"
+#~ msgstr "Przedmioty"
+
+#, fuzzy
+#~ msgid "Game Options"
+#~ msgstr "Opcje"
+
+#, fuzzy
+#~ msgid "Neutral Cities:"
+#~ msgstr "Neutralni"
+
+#~ msgid "Quests"
+#~ msgstr "Zadania"
+
+#, fuzzy
+#~ msgid "Random Turns"
+#~ msgstr "Losowa"
+
+#, fuzzy
+#~ msgid "Razing Cities:"
+#~ msgstr "Miasta"
+
+#, fuzzy
+#~ msgid "View Production"
+#~ msgstr "Kup Produkcjê"
+
+#, fuzzy
+#~ msgid "Continue"
+#~ msgstr "Warunki"
+
+#, fuzzy
+#~ msgid "Report"
+#~ msgstr "Raporty"
+
+#, fuzzy
+#~ msgid "player name"
+#~ msgstr "tura gracza"
+
+#, fuzzy
+#~ msgid "Treachery!"
+#~ msgstr "£ucznik"
+
+#, fuzzy
+#~ msgid "_Attack!"
+#~ msgstr "Grupa"
+
+#, fuzzy
+#~ msgid "_Group"
+#~ msgstr "Na Ziemi"
+
+#, fuzzy
+#~ msgid "Lone"
+#~ msgstr "Brak"
+
+#~ msgid "Other"
+#~ msgstr "Inne"
+
+#~ msgid "Error, while loading an armyset. Armyset Name: "
+#~ msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
+
+#, fuzzy
+#~ msgid "Error: "
+#~ msgstr "B³±d"
+
+#~ msgid "The Filename is well formed"
+#~ msgstr "Nazwa pliku jest dobrze utworzona"
+
+#~ msgid "The Filename lacks the extension --> "
+#~ msgstr "W nazwie pliku brakuje rozszerzenia --> "
+
+#~ msgid "GameScenario: Something went wrong with saving.\n"
+#~ msgstr "GameScenario: B³±d podczas zapisu.\n"
+
+#~ msgid "savefile has wrong version, we want "
+#~ msgstr "niew³a¶ciwa wersja pliku, oczekiwano"
+
+#~ msgid "savefile offers "
+#~ msgstr "plik oferuje"
+
+#~ msgid "You're still searching for him..."
+#~ msgstr "Wci±¿ go szukasz..."
+
+#~ msgid "Seen lately near ("
+#~ msgstr "Widziano go niedawno nieopodal("
+
+#~ msgid "You slayed the wicked hero %s. He deserved that!"
+#~ msgstr "Zabi³e¶ wynaturzonego bohatera %s. Zas³u¿y³ na taki los!"
+
+#~ msgid "You could not slay the wicked hero %s"
+#~ msgstr "Nie uda³o ci siê zabiæ %s"
+
+#~ msgid "He was slain by other fellows!"
+#~ msgstr "Zabili go inni towarzysze!"
+
+#~ msgid "Kill the hero named %s, servant of player %s"
+#~ msgstr "Zabij bohatera zw±cego siê %s s³u¿±cego u gracza %s"
+
+#, fuzzy
+#~ msgid "You have not killed a unit of enemy %s yet."
+#~ msgstr "Dotychczas zabi³e¶ %i"
+
+#, fuzzy
+#~ msgid "You have killed a unit of enemy %s."
+#~ msgstr "Dotychczas zabi³e¶ %i"
+
+#~ msgid "Well done!"
+#~ msgstr "Doskonale!"
+
+#, fuzzy
+#~ msgid "You must destroy a unit of enemy %s."
+#~ msgstr "Musisz zniszczyæ %i wrog± jednostkê"
+
+#~ msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
+#~ msgstr "B³±d w GameMap::fillMap: rozmiary siê nie zgadzaj±. Zamykam.\n"
+
+#, fuzzy
+#~ msgid "Error, while loading a cityset. Cityset Name: "
+#~ msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
+
+#, fuzzy
+#~ msgid "You have already stolen %i gold."
+#~ msgstr "Zdo³a³e¶ zabiæ %i jednostkê"
+
+#, fuzzy
+#~ msgid "You aren't afraid of doing it, are you?"
+#~ msgstr "Nie przera¿a ciê to chyba?"
+
+#, fuzzy
+#~ msgid "The priests thank you for occupying this evil place."
+#~ msgstr "Kap³ani dziêkuj± ci za zbadanie tego ponurego miejsca."
+
+#, fuzzy
+#~ msgid "%1 (capital city)"
+#~ msgstr "%i ¿ywotno¶ci"
+
+#, fuzzy
+#~ msgid "Defense: %1"
+#~ msgstr "Obrona: %i"
+
+#, fuzzy
+#~ msgid "Status: razed!"
+#~ msgstr "Status:"
+
+#~ msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
+#~ msgstr "GraphicsCache::getFlagPic: nie dostarczono grupy! Zamykam...\n"
+
+#, fuzzy
+#~ msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
+#~ msgstr "GraphicsCache::getFlagPic: nie dostarczono grupy! Zamykam...\n"
+
+#, fuzzy
+#~ msgid "Error, while loading a tileset. Tileset Name: "
+#~ msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
+
+#~ msgid "Found configuration file: "
+#~ msgstr "Znaleziono plik konfiguracyjny: "
+
+#~ msgid "Configuration: Something went wrong while saving.\n"
+#~ msgstr "Konfiguracja: Wyst±pi³ b³±d podczas zapisu.\n"
+
+#~ msgid "Configuration file has wrong version, we want "
+#~ msgstr "Niew³a¶ciwa wersja pliku konfiguracyjnego. Oczekiwano "
+
+#~ msgid "Configuration file offers "
+#~ msgstr "Plik konfiguracyjny oferuje "
+
+#~ msgid "I make a backup copy from "
+#~ msgstr "Tworzê kopiê zapasow± od"
+
+#~ msgid "Couldn't save the new configuration file..."
+#~ msgstr "Nie uda³o siê zapisaæ konfiguracji..."
+
+#, fuzzy
+#~ msgid "Check permissions of your home directory....aborting!"
+#~ msgstr "Sprawd¼ zezwolenia w katalogu g³ównym...przerywam!\n"
+
+#~ msgid "Created the standard configuration file "
+#~ msgstr "Utworzono standardowy plik konfiguracyjny "
+
+#~ msgid "Couldn't create save game directory "
+#~ msgstr "Nie uda³o siê utworzyæ katalogu do zapisu gier "
+
+#, fuzzy
+#~ msgid "Check permissions and the entries in your lordsawarrc file!"
+#~ msgstr "Sprawd¼ zezwolenia i wpisy w swoim pliku freelordsrc!\n"
+
+#, fuzzy
+#~ msgid "Error, while loading a shieldset. Shieldset Name: "
+#~ msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
+
+#~ msgid "Making random map"
+#~ msgstr "Tworzenie losowej mapy"
+
+#~ msgid "Flatening Plains  ... 10%"
+#~ msgstr "Sp³aszczanie Równin ... 10%"
+
+#~ msgid "Raining Water     ... 30%"
+#~ msgstr "Przywo³ywanie Wody ... 30%"
+
+#~ msgid "Raising Hills     ... 20%"
+#~ msgstr "Wnoszenie Wzgórz ... 20%"
+
+#~ msgid "Raising Mountains ... 30%"
+#~ msgstr "Wznoszenie Gór ... 30%"
+
+#~ msgid "Planting Forest   ... 40%"
+#~ msgstr "Sadzenie lasów ... 40%"
+
+#~ msgid "Watering Swamps   ... 50%"
+#~ msgstr "Nawadnianie Bagien ... 50%"
+
+#~ msgid "Normalizing       ... 60%"
+#~ msgstr "Normalizowanie    ... 60%"
+
+#~ msgid "Building Cities   ... 70%"
+#~ msgstr "Budowanie Miast   ... 70%"
+
+#, fuzzy
+#~ msgid "Paving Roads      ... 75%"
+#~ msgstr "Przywo³ywanie Wody ... 30%"
+
+#~ msgid "Ruining Ruins     ... 80%"
+#~ msgstr "Rujnowanie Ruin   ... 80%"
+
+#, fuzzy
+#~ msgid "Raising Signs     ... 88%"
+#~ msgstr "Wnoszenie Wzgórz ... 20%"
+
+#~ msgid "Spawning temples  ... 90%"
+#~ msgstr "Wykluwanie ¦wi±tyñ ... 90%"
+
+#~ msgid "Done making map   ... 100%"
+#~ msgstr "Tworzenie mapy zakoñczone ... 100%"
+
+#~ msgid "You have killed %i so far."
+#~ msgstr "Dotychczas zabi³e¶ %i"
+
+#~ msgid ""
+#~ "Error: searching stack and ruin to be searched not on same position\n"
+#~ msgstr ""
+#~ "B³±d: przeszukuj±ca grupa i ruiny nie znajduj± siê w tym samym miejscu\n"
+
+#~ msgid "Stack tried to visit temple at wrong location\n"
+#~ msgstr "Grupa usi³owa³a odwiedziæ ¶wi±tyniê w niew³a¶ciwym miejscu\n"
+
+#, fuzzy
+#~ msgid "%1 Standard"
+#~ msgstr "Jednostki Standardowe"
+
+#, fuzzy
+#~ msgid "Item: %1"
+#~ msgstr "Przedmiot:"
+
+#, fuzzy
+#~ msgid "Site: %1"
+#~ msgstr "Rozmiar:"
+
+#, fuzzy
+#~ msgid "The priests thank you for razing this evil place."
+#~ msgstr "Kap³ani dziêkuj± ci za zbadanie tego ponurego miejsca."
+
+#, fuzzy
+#~ msgid "Capital city of %1"
+#~ msgstr "Miasto %s"
+
+#, fuzzy
+#~ msgid "Defence: %1"
+#~ msgstr "Obrona: %i"
+
+#, fuzzy
+#~ msgid "No production"
+#~ msgstr "Brak wolnych produkcji"
+
+#, fuzzy
+#~ msgid "Strength: %1"
+#~ msgstr "Si³a: %i"
+
+#, fuzzy
+#~ msgid "Moves: %1"
+#~ msgstr "Ruch: %i"
+
+#, fuzzy
+#~ msgid "Cost: %1"
+#~ msgstr "Koszt:"
+
+#, fuzzy
+#~ msgid "Rename City"
+#~ msgstr "Zrujnowane Miasto"
+
+#, fuzzy
+#~ msgid "Raze City"
+#~ msgstr "Zrujnowane Miasto"
+
+#~ msgid "Human"
+#~ msgstr "Cz³owiek"
+
+#, fuzzy
+#~ msgid "Computer"
+#~ msgstr "CLicznik"
+
+#, fuzzy
+#~ msgid "Quest for %1"
+#~ msgstr "¯adnych zadañ dla %s"
+
+#, fuzzy
+#~ msgid "%1 completed the quest!"
+#~ msgstr "Twój bohater %s ukoñczy³ zadanie."
+
+#, fuzzy
+#~ msgid "Movement: %1"
+#~ msgstr "Ruch: %i"
+
+#, fuzzy
+#~ msgid "Moves: %1/%2"
+#~ msgstr "Ruch: %i"
+
+#, fuzzy
+#~ msgid "Upkeep: %1"
+#~ msgstr "Utrzymanie: %i"
+
+#~ msgid "Easy"
+#~ msgstr "£atwy"
+
+#, fuzzy
+#~ msgid "LordsAWar map files (*.map)"
+#~ msgstr "Pliki map"
+
+#, fuzzy
+#~ msgid "Duration: %1"
+#~ msgstr "Czas trwania: %i"
+
+#, fuzzy
+#~ msgid "Hitpoints: %1"
+#~ msgstr "Punkty ¯ycia: %i"
+
+#, fuzzy
+#~ msgid "This hero already has a quest."
+#~ msgstr "Ten bohater ju¿ ma zadanie"
+
+#, fuzzy
+#~ msgid "Turns"
+#~ msgstr "Thurso"
+
+#, fuzzy
+#~ msgid "Gold Pieces"
+#~ msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#, fuzzy
+#~ msgid "Score"
+#~ msgstr "Scone"
+
+#, fuzzy
+#~ msgid "City History"
+#~ msgstr "Dane miasta"
+
+#, fuzzy
+#~ msgid "Event History"
+#~ msgstr "Wydarzenia"
+
+#, fuzzy
+#~ msgid "Gold History"
+#~ msgstr "Raport o dochodach"
+
+#~ msgid "Name"
+#~ msgstr "Nazwa"
+
+#, fuzzy
+#~ msgid "Attributes"
+#~ msgstr "Jednostki"
+
+#, fuzzy
+#~ msgid "Status"
+#~ msgstr "Status:"
+
+#, fuzzy
+#~ msgid "In backpack"
+#~ msgstr "Plecak"
+
+#, fuzzy
+#~ msgid "On the ground"
+#~ msgstr "nowa runda"
+
+#, fuzzy
+#~ msgid "Command: %1"
+#~ msgstr "Komentarz:"
+
+#, fuzzy
+#~ msgid "Level: %1"
+#~ msgstr "Poziom:"
+
+#~ msgid "Neutral"
+#~ msgstr "Neutralny"
+
+#, fuzzy
+#~ msgid "Game was not saved!"
+#~ msgstr "Gra Zapisana"
+
+#, fuzzy
+#~ msgid "Choose a Name"
+#~ msgstr "Wybierz drogê!"
+
+#, fuzzy
+#~ msgid "Error saving game!"
+#~ msgstr "B³±d. Gra niezapisana"
+
+#, fuzzy
+#~ msgid "Are you sure you want to disband this group?"
+#~ msgstr "Naprawdê chcesz usun±æ t± produkcjê?"
+
+#, fuzzy
+#~ msgid "Are you sure you want to resign?"
+#~ msgstr "Napewno chcesz usun±æ to wydarzenie?"
+
+#, fuzzy
+#~ msgid "Searching"
+#~ msgstr "Przeszukano:"
+
+#, fuzzy
+#~ msgid "Hero Defeated"
+#~ msgstr "Pokonane miasto"
+
+#, fuzzy
+#~ msgid "Pillaged %1"
+#~ msgstr "Spl±druj"
+
+#, fuzzy
+#~ msgid "Sacked %1"
+#~ msgstr "GrupaZabita"
+
+#, fuzzy
+#~ msgid "Razed %1"
+#~ msgstr "Spal"
+
+#, fuzzy
+#~ msgid ""
+#~ "%1\n"
+#~ "Turn %2"
+#~ msgstr "Tury: %i"
+
+#, fuzzy
+#~ msgid "%1 did not complete the quest."
+#~ msgstr "Twój bohater %s nie ukoñczy³ zadania."
+
+#, fuzzy
+#~ msgid "Advisor!"
+#~ msgstr "D¼wiêk"
+
+#, fuzzy
+#~ msgid "O Great Warlord!"
+#~ msgstr "Galeon Orków"
+
+#, fuzzy
+#~ msgid "Move"
+#~ msgstr "Ruch:"
+
+#, fuzzy
+#~ msgid "Bonus"
+#~ msgstr "bonus"
+
+#, fuzzy
+#~ msgid "Ruins and Temples"
+#~ msgstr "Zrujnowana ¦wi±tynia"
+
+#~ msgid "Ruin"
+#~ msgstr "Ruiny"
+
+#, fuzzy
+#~ msgid "Stronghold"
+#~ msgstr "Si³a:"
+
+#~ msgid "Yes"
+#~ msgstr "Tak"
+
+#~ msgid "No"
+#~ msgstr "Nie"
+
+#~ msgid "Temple"
+#~ msgstr "¦wi±tynia"
+
+#~ msgid "GGZ initialization failed. Exiting.\n"
+#~ msgstr "Instalacja GGZ nie powiod³a siê. Zamykam.\n"
+
+#~ msgid "Play on GGZ"
+#~ msgstr "Graj na GGZ"
+
+#, fuzzy
+#~ msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
+#~ msgstr "Proszê uruchomiæ Freelords z klienta GGZ Gaming Zone."
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#, fuzzy
+#~ msgid "No Quest"
+#~ msgstr "Zadanie"
+
+#, fuzzy
+#~ msgid "Seek a quest in a temple!"
+#~ msgstr "Przeszukaj ruiny lub ¶wi±tyniê"
+
+#, fuzzy
+#~ msgid "Army Report"
+#~ msgstr "Zestaw Wojsk"
+
+#, fuzzy
+#~ msgid "City Report"
+#~ msgstr "raport miejski"
+
+#, fuzzy
+#~ msgid "Gold Report"
+#~ msgstr "Raport o dochodach"
+
+#, fuzzy
+#~ msgid "Production Report"
+#~ msgstr "Koszt Produkcji:"
+
+#, fuzzy
+#~ msgid "third"
+#~ msgstr "Inne"
+
+#, fuzzy
+#~ msgid "sixth"
+#~ msgstr "pole widzenia"
+
+#, fuzzy
+#~ msgid "seventh"
+#~ msgstr "Wywo³ajWydarzenie"
+
+#, fuzzy
+#~ msgid "eighth"
+#~ msgstr "pole widzenia"
+
+#, fuzzy
+#~ msgid "Standard"
+#~ msgstr "Jednostki Standardowe"
+
+#, fuzzy
+#~ msgid "%1 has advanced to level %2!"
+#~ msgstr "Twoja jednostka zdoby³a poziom!"
+
+#, fuzzy
+#~ msgid "Choose an attribute to improve:"
+#~ msgstr "Wybierz cechê do zwiêkszenia."
+
+#, fuzzy
+#~ msgid "Sight: %1"
+#~ msgstr "Pole widzenia:"
+
+#, fuzzy
+#~ msgid "Hero offer for %1"
+#~ msgstr "Bohater oferowany %s"
+
+#, fuzzy
+#~ msgid "A hero in %1 wants to join you!"
+#~ msgstr "Bohater chce do ciebie do³±czyæ"
+
+#, fuzzy
+#~ msgid "east"
+#~ msgstr "Zadanie"
+
+#, fuzzy
+#~ msgid "northeast"
+#~ msgstr "Las"
+
+#, fuzzy
+#~ msgid "south"
+#~ msgstr "O programie"
+
+#, fuzzy
+#~ msgid "north"
+#~ msgstr "Illorath"
+
+#, fuzzy
+#~ msgid "west"
+#~ msgstr "Zadanie"
+
+#, fuzzy
+#~ msgid "northwest"
+#~ msgstr "Las"
+
+#, fuzzy
+#~ msgid "Strength"
+#~ msgstr "Si³a:"
+
+#, fuzzy
+#~ msgid "Max Moves"
+#~ msgstr "Ruch:"
+
+#, fuzzy
+#~ msgid "Upkeep"
+#~ msgstr "Utrzymanie:"
+
+#, fuzzy
+#~ msgid "No description"
+#~ msgstr "Opis:"
+
+#, fuzzy
+#~ msgid "Could not load map %1."
+#~ msgstr "Nie uda³o siê wczytaæ mapy "
+
+#, fuzzy
+#~ msgid "Auto"
+#~ msgstr "O programie"
+
+#~ msgid "Stack"
+#~ msgstr "Grupa"
+
+#, fuzzy
+#~ msgid "No keeper"
+#~ msgstr "Stra¿nik"
+
+#, fuzzy
+#~ msgid "No army"
+#~ msgstr "Bezimienny"
+
+#, fuzzy
+#~ msgid "No Ruin"
+#~ msgstr "Ruiny"
+
+#, fuzzy
+#~ msgid "Choose an Tileset to Load"
+#~ msgstr "Wybierz Zestaw Terenów"
+
+#, fuzzy
+#~ msgid "Error, while loading an tileset. Tileset Name: "
+#~ msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
+
+#, fuzzy
+#~ msgid "Mov"
+#~ msgstr "Ruch:"
+
+#, fuzzy
+#~ msgid "HP"
+#~ msgstr "P¯:"
+
+#, fuzzy
+#~ msgid "Upk"
+#~ msgstr "Utrzymanie:"
+
+#~ msgid ""
+#~ "XML_Helper: Either open file for reading or writing, not both, exiting\n"
+#~ msgstr ""
+#~ "XML_Helper: Otwórz plik dla zapisu lub odczytu, nie obu naraz, zamykam\n"
+
+#~ msgid ": Error opening file for reading. Exiting\n"
+#~ msgstr ": B³±d podczas otwierania pliku do odczytu. Zamykam\n"
+
+#~ msgid ": The file is obfuscated, attempting to read it....\n"
+#~ msgstr ": plik jest zamazany, próbujê odczytaæ....\n"
+
+#~ msgid ": The file is not obfuscated, attempting to read it....\n"
+#~ msgstr ": plik nie jest zamazany, próbujê odczytaæ...\n"
+
+#~ msgid ": Error opening file for writing. Exiting\n"
+#~ msgstr ": B³±d podczas otwierania pliku do zapisu\n"
+
+#~ msgid "XML_Helper: dtags not empty!!\n"
+#~ msgstr "XML_Helper: dtags niepuste!!\n"
+
+#~ msgid "XML_Helper: no output stream given\n"
+#~ msgstr "XML_Helper: nie podano strumienia wyj¶ciowego\n"
+
+#~ msgid ": The tag name starts with a \"d\". Not creating tag!\n"
+#~ msgstr ": Nazwa taga rozpoczyna siê liter± d. Anulujê tworzenie!\n"
+
+#~ msgid "XML_Helper: no output stream given.\n"
+#~ msgstr "XML_Helper: nie podano strumienia wyj¶ciowego\n"
+
+#~ msgid "XML_Helper: save_data with empty name\n"
+#~ msgstr "XML_Helper: save_data ma pust± nazwê\n"
+
+#~ msgid "Saving game and obfuscating the Savefile.\n"
+#~ msgstr "Zapisujê i zamazujê plik.\n"
+
+#~ msgid "Saving game without obfuscation.\n"
+#~ msgstr "Zapisujê bez zamazywania.\n"
+
+#~ msgid "XML_Helper: error parsing xml document.\n"
+#~ msgstr "XML_Helper: b³±d podczas parsowania dokumentu xml.\n"
+
+#~ msgid "Line "
+#~ msgstr "Linia"
+
+#~ msgid "Buffercontent = "
+#~ msgstr "Zawarto¶æ bufora = "
+
+#~ msgid ": Callback for tag returned false. Stop parsing document.\n"
+#~ msgstr ""
+#~ ": Odwo³anie zwrotne do taga (callback) zwróci³o false. Przerywam "
+#~ "parsowanie.\n"
+
+#, fuzzy
+#~ msgid "Couldn't initialize SDL-mixer\n"
+#~ msgstr "Nie uda³o siê zainicjalizowaæ X Windowing System\n"
+
+#~ msgid "original path of stack was blocked\n"
+#~ msgstr "orginalna ¶cie¿ka grupy zosta³a zablokowana\n"
+
+#, fuzzy
+#~ msgid "+1 stack"
+#~ msgstr "grupy"
+
+#, fuzzy
+#~ msgid "+2 stack"
+#~ msgstr "grupy"
+
+#, fuzzy
+#~ msgid "+2 gold per city"
+#~ msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#, fuzzy
+#~ msgid "+3 gold per city"
+#~ msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#, fuzzy
+#~ msgid "+4 gold per city"
+#~ msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#, fuzzy
+#~ msgid "+5 gold per city"
+#~ msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#, fuzzy
+#~ msgid "CreateScenario:: wrong width given\n"
+#~ msgstr "CreateScenario:: podano nieprawid³owy rozmiar\n"
+
+#, fuzzy
+#~ msgid "CreateScenario:: wrong height given\n"
+#~ msgstr "CreateScenario:: podano nieprawid³owy rozmiar\n"
+
+#, fuzzy
+#~ msgid "northeastern map"
+#~ msgstr "Tworzenie mapy"
+
+#, fuzzy
+#~ msgid "western map"
+#~ msgstr "Tworzenie mapy"
+
+#, fuzzy
+#~ msgid "eastern map"
+#~ msgstr "Tworzenie mapy"
+
+#~ msgid "Could not parse items description file. Exiting!\n"
+#~ msgstr "Nie uda³o siê sparsowaæ pliku opisuj±cego przedmioty. Zamykam!\n"
+
+#~ msgid "ERROR: Couldn't load image "
+#~ msgstr "B³±d: Wczytanie obrazu niemo¿liwe "
+
+#, fuzzy
+#~ msgid "Couldn't find any armysets!"
+#~ msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu wojsk!"
+
+#, fuzzy
+#~ msgid "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc"
+#~ msgstr "Proszê sprawdziæ ¶cie¿ki w /etc/freelordsrc lub ~/.freelordsrc"
+
+#~ msgid "Exiting!"
+#~ msgstr "Zamykam!"
+
+#, fuzzy
+#~ msgid "Couldn't find any tilesets!"
+#~ msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu terenów"
+
+#, fuzzy
+#~ msgid "Couldn't find any citysets!"
+#~ msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu wojsk!"
+
+#~ msgid "Couldn't find a single map!"
+#~ msgstr "Nie uda³o siê odnale¼æ ¿adnej mapy!"
+
+#, fuzzy
+#~ msgid "Couldn't find any shieldsets!"
+#~ msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu terenów"
+
+#~ msgid "non-numerical value for cache size\n"
+#~ msgstr "nienueryczna warto¶æ dla rozmiaru cache\n"
+
+#~ msgid "Available parameters:"
+#~ msgstr "Dostêpne parametry:"
+
+#~ msgid "-h,      --help             Shows this help screen\n"
+#~ msgstr "-h,     --help              Wy¶wietla ten ekran\n"
+
+#, fuzzy
+#~ msgid "-c <size>                   Set the maximum cache size"
+#~ msgstr "-c <size>                   Ustawia maksymaln± wielko¶æ cache"
+
+#~ msgid "-t,      --test             Starting with a test-scenario"
+#~ msgstr "-t,     --test              Rozpoczyna scenariuszem testowym"
+
+#, fuzzy
+#~ msgid "The priests thank you for sacking this evil place."
+#~ msgstr "Kap³ani dziêkuj± ci za zbadanie tego ponurego miejsca."
 
 #~ msgid "%i shot"
 #~ msgid_plural "%i shots"
@@ -232,29 +1743,17 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgstr[1] "Czy chcesz ulepszyæ miasto za %i szt. z³ota?"
 #~ msgstr[2] "Czy chcesz ulepszyæ miasto za %i szt. z³ota?"
 
-#~ msgid "Standard Units"
-#~ msgstr "Jednostki Standardowe"
-
 #~ msgid "Pikeman"
 #~ msgstr "Pikinier"
 
 #~ msgid "Soldier"
 #~ msgstr "¯o³nierz"
 
-#~ msgid "Archer"
-#~ msgstr "£ucznik"
-
 #~ msgid "Veteran"
 #~ msgstr "Weteran"
 
 #~ msgid "Cavalry"
 #~ msgstr "Kawaleria"
-
-#~ msgid "Catapult"
-#~ msgstr "Katapulta"
-
-#~ msgid "Heroes"
-#~ msgstr "Bohaterowie"
 
 #~ msgid "Barbarian"
 #~ msgstr "Barbarzyñca"
@@ -349,24 +1848,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "default"
 #~ msgstr "domy¶lny"
 
-#~ msgid "Grass"
-#~ msgstr "£±ka"
-
-#~ msgid "Water"
-#~ msgstr "Woda"
-
-#~ msgid "Forest"
-#~ msgstr "Las"
-
-#~ msgid "Hills"
-#~ msgstr "Wzgórza"
-
-#~ msgid "Swamp"
-#~ msgstr "Bagno"
-
-#~ msgid "Mountains"
-#~ msgstr "Góry"
-
 #~ msgid "Moon Blade"
 #~ msgstr "Ksiê¿ycowe Ostrze"
 
@@ -392,10 +1873,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgstr "Pier¶cieñ Wytrwa³o¶ci"
 
 #, fuzzy
-#~ msgid "Defense Rapier"
-#~ msgstr "Obrona: %i"
-
-#, fuzzy
 #~ msgid "Orcish Dagger"
 #~ msgstr "Galeon Orków"
 
@@ -406,10 +1883,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #, fuzzy
 #~ msgid "Magic Spear"
 #~ msgstr "Zarz±dzaj Scenariuszem"
-
-#, fuzzy
-#~ msgid "Orcish Greatsword"
-#~ msgstr "Galeon Orków"
 
 #, fuzzy
 #~ msgid "Dwarven Hammer"
@@ -427,14 +1900,8 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Golden Mask"
 #~ msgstr "Zimny Szczyt"
 
-#~ msgid "Neutral"
-#~ msgstr "Neutralny"
-
 #~ msgid "Seville"
 #~ msgstr "Sewilla"
-
-#~ msgid "Illorath"
-#~ msgstr "Illorath"
 
 #~ msgid "Almoravid"
 #~ msgstr "Almoravid"
@@ -487,9 +1954,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Pamplona"
 #~ msgstr "Pampeluna"
 
-#~ msgid "Lisbon"
-#~ msgstr "Lizbona"
-
 #~ msgid "Oviedo"
 #~ msgstr "Oviedo"
 
@@ -501,9 +1965,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 
 #~ msgid "Metilla"
 #~ msgstr "Metilla"
-
-#~ msgid "Algiers"
-#~ msgstr "Algier"
 
 #~ msgid "Tlemsen"
 #~ msgstr "Tlemsen"
@@ -561,9 +2022,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 
 #~ msgid "Silent Lair"
 #~ msgstr "Cicha Jaskinia"
-
-#~ msgid "Ruined Temple"
-#~ msgstr "Zrujnowana ¦wi±tynia"
 
 #~ msgid "Dusty Caves"
 #~ msgstr "Zakurzone Jaskinie"
@@ -623,9 +2081,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Player Count of Barcelona has won!"
 #~ msgstr "Hrabia Barcelony zwyciê¿y³"
 
-#~ msgid "Carthage"
-#~ msgstr "Kartagina"
-
 #~ msgid "Hanibal"
 #~ msgstr "Hanibal"
 
@@ -680,9 +2135,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Hadrumentum"
 #~ msgstr "Hadrumentum"
 
-#~ msgid "Placentia"
-#~ msgstr "Placentia"
-
 #~ msgid "Massillia"
 #~ msgstr "Massillia"
 
@@ -724,12 +2176,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 
 #~ msgid "Zelasen's Tomb"
 #~ msgstr "Grobowiec Zelasena"
-
-#~ msgid "Ruined City"
-#~ msgstr "Zrujnowane Miasto"
-
-#~ msgid "Weird Ruins"
-#~ msgstr "Dziwne Ruiny"
 
 #~ msgid "Keltic Barrow"
 #~ msgstr "Celtycki Kram"
@@ -776,9 +2222,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "If New Carthage falls..."
 #~ msgstr "Je¶li Nowa Kartagina upadnie..."
 
-#~ msgid "Neutrale"
-#~ msgstr "Neutralni"
-
 #~ msgid "Northumbria"
 #~ msgstr "Nortumbria"
 
@@ -812,9 +2255,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "York"
 #~ msgstr "York"
 
-#~ msgid "Scone"
-#~ msgstr "Scone"
-
 #~ msgid "Leicester"
 #~ msgstr "Leicester"
 
@@ -844,9 +2284,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 
 #~ msgid "Dingwall"
 #~ msgstr "Dingwall"
-
-#~ msgid "Thurso"
-#~ msgstr "Thurso"
 
 #~ msgid "Exeter"
 #~ msgstr "Exeter"
@@ -1020,20 +2457,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Karhain"
 #~ msgstr "Karhain"
 
-#~ msgid "Pelerine"
-#~ msgstr "Pelerine"
-
 #~ msgid "Moonshine"
 #~ msgstr "Ksiê¿ycowy Blask"
 
 #~ msgid "Hellgate"
 #~ msgstr "Wrota Piekie³"
-
-#~ msgid "Trales"
-#~ msgstr "Trales"
-
-#~ msgid "Noname"
-#~ msgstr "Bezimienny"
 
 #~ msgid "Atena"
 #~ msgstr "Atena"
@@ -1049,9 +2477,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 
 #~ msgid "Peasant's church"
 #~ msgstr "Wiejski ko¶ció³"
-
-#~ msgid "Garden of Peace"
-#~ msgstr "Ogród Pokoju"
 
 #~ msgid "Order of Fire"
 #~ msgstr "Bractwo Ognia"
@@ -1362,9 +2787,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "YOU WIN!"
 #~ msgstr "ZWYCIÊ¯Y£E¦!"
 
-#~ msgid "About"
-#~ msgstr "O programie"
-
 #~ msgid "Creator of the project:"
 #~ msgstr "Twórca projektu:"
 
@@ -1386,20 +2808,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Version %s"
 #~ msgstr "Wersja %s"
 
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgid "Items"
-#~ msgstr "Przedmioty"
-
 #~ msgid "xp: %.2f"
 #~ msgstr "pd: %.2f"
 
 #~ msgid "level: %i"
 #~ msgstr "poziom: %i"
-
-#~ msgid "Upkeep: %i"
-#~ msgstr "Utrzymanie: %i"
 
 #, fuzzy
 #~ msgid "ship"
@@ -1416,12 +2829,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #, fuzzy
 #~ msgid "regeneration"
 #~ msgstr "Regeneracja"
-
-#~ msgid "Your unit advanced a level!"
-#~ msgstr "Twoja jednostka zdoby³a poziom!"
-
-#~ msgid "Choose a characteristic to raise."
-#~ msgstr "Wybierz cechê do zwiêkszenia."
 
 #~ msgid "level: "
 #~ msgstr "poziom: "
@@ -1441,32 +2848,14 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "vitality"
 #~ msgstr "¿ywotno¶æ"
 
-#~ msgid "sight"
-#~ msgstr "pole widzenia"
-
 #~ msgid "hp"
 #~ msgstr "p¿"
 
 #~ msgid "moves"
 #~ msgstr "ruch"
 
-#~ msgid "medal awarded"
-#~ msgstr "przyznane ordery"
-
-#~ msgid "Error, while loading an armyset. Armyset Name: "
-#~ msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
-
-#~ msgid "original path of stack was blocked\n"
-#~ msgstr "orginalna ¶cie¿ka grupy zosta³a zablokowana\n"
-
-#~ msgid "no information"
-#~ msgstr "brak informacji"
-
 #~ msgid "gold: %i"
 #~ msgstr "z³oto: %i szt."
-
-#~ msgid "None"
-#~ msgstr "Brak"
 
 #~ msgid "n.a."
 #~ msgstr "niedostêpne"
@@ -1474,26 +2863,14 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Idle"
 #~ msgstr "Bezczynny"
 
-#~ msgid "city report"
-#~ msgstr "raport miejski"
-
 #~ msgid "Prev."
 #~ msgstr "Poprzedne"
-
-#~ msgid "Next"
-#~ msgstr "Nastêpne"
-
-#~ msgid "City info"
-#~ msgstr "Dane miasta"
 
 #~ msgid "Village of %s"
 #~ msgstr "Wioska %s"
 
 #~ msgid "Town of %s"
 #~ msgstr "Miasteczko %s"
-
-#~ msgid "City of %s"
-#~ msgstr "Miasto %s"
 
 #~ msgid "Income: %i gold , Defense level : %i"
 #~ msgstr "Dochód: %i szt. z³ota, Poziom fortyfikacji : %i"
@@ -1504,29 +2881,14 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Advanced productions"
 #~ msgstr "Produkcje zaawansowane"
 
-#~ msgid "Name:"
-#~ msgstr "Nazwa: "
-
 #~ msgid "Duration:"
 #~ msgstr "Czas trwania:"
-
-#~ msgid "Strength:"
-#~ msgstr "Si³a:"
 
 #~ msgid "Ranged:"
 #~ msgstr "Strzelanie:"
 
-#~ msgid "Moves:"
-#~ msgstr "Ruch:"
-
-#~ msgid "Upkeep:"
-#~ msgstr "Utrzymanie:"
-
 #~ msgid "Upgrade"
 #~ msgstr "Ulepsz"
-
-#~ msgid "Vectoring"
-#~ msgstr "Wektor"
 
 #~ msgid "Buy Basic"
 #~ msgstr "Kup Podstawow±"
@@ -1534,29 +2896,17 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Buy Advanced"
 #~ msgstr "Kup Zaawasowan±"
 
-#~ msgid "Close"
-#~ msgstr "Zamknij"
-
 #~ msgid "Upgrade City"
 #~ msgstr "Ulepsz Miasto"
 
 #~ msgid "Upgrade city"
 #~ msgstr "Ulepsz miasto"
 
-#~ msgid "Yes"
-#~ msgstr "Tak"
-
-#~ msgid "No"
-#~ msgstr "Nie"
-
 #~ msgid "Income: %i gold coins , Defense level : %i"
 #~ msgstr "Dochód: %i szt. z³ota, Poziom fortyfikacji :%i"
 
 #~ msgid "No production selected!"
 #~ msgstr "Nie wybrano produkcji!"
-
-#~ msgid "No free production"
-#~ msgstr "Brak wolnych produkcji"
 
 #~ msgid ""
 #~ "There are no free production slots available. Select the one you want to "
@@ -1580,42 +2930,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgstr ""
 #~ "Funkcja Player::city_buyAdvancedProduction nieoczekiwanie zwróci³a false "
 
-#~ msgid "Defeated city"
-#~ msgstr "Pokonane miasto"
-
-#~ msgid "Choose your way!"
-#~ msgstr "Wybierz drogê!"
-
-#~ msgid "Occupy"
-#~ msgstr "Zajmij"
-
-#~ msgid "Raze"
-#~ msgstr "Spal"
-
-#~ msgid "Pillage"
-#~ msgstr "Spl±druj"
-
-#~ msgid "Found configuration file: "
-#~ msgstr "Znaleziono plik konfiguracyjny: "
-
-#~ msgid "Configuration: Something went wrong while saving.\n"
-#~ msgstr "Konfiguracja: Wyst±pi³ b³±d podczas zapisu.\n"
-
-#~ msgid "Configuration file has wrong version, we want "
-#~ msgstr "Niew³a¶ciwa wersja pliku konfiguracyjnego. Oczekiwano "
-
-#~ msgid "Configuration file offers "
-#~ msgstr "Plik konfiguracyjny oferuje "
-
-#~ msgid "I make a backup copy from "
-#~ msgstr "Tworzê kopiê zapasow± od"
-
-#~ msgid "CreateScenario:: wrong size given\n"
-#~ msgstr "CreateScenario:: podano nieprawid³owy rozmiar\n"
-
-#~ msgid "Creating map"
-#~ msgstr "Tworzenie mapy"
-
 #~ msgid "Distributing players"
 #~ msgstr "Umiejscawianie graczy"
 
@@ -1637,32 +2951,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Critical Error: Couldn't open citynames data file\n"
 #~ msgstr "B³±d Krytyczny: Nie mo¿na otworzyæ pliku z danymi miast\n"
 
-#~ msgid "Buy Production"
-#~ msgstr "Kup Produkcjê"
-
-#~ msgid "Production cost:"
-#~ msgstr "Koszt Produkcji:"
-
 #~ msgid "Shots:"
 #~ msgstr "Strza³y:"
 
 #~ msgid "Defense:"
 #~ msgstr "Obrona:"
-
-#~ msgid "Hitpoints:"
-#~ msgstr "Punkty ¯ycia:"
-
-#~ msgid "Buy"
-#~ msgstr "Kup"
-
-#~ msgid "Cancel"
-#~ msgstr "Anuluj"
-
-#~ msgid "Duration: %i"
-#~ msgstr "Czas trwania: %i"
-
-#~ msgid "Strength: %i"
-#~ msgstr "Si³a: %i"
 
 #~ msgid "Ranged: %i"
 #~ msgstr "Strzelanie: %i"
@@ -1670,80 +2963,14 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Shots: %i"
 #~ msgstr "Strza³y: %i"
 
-#~ msgid "Defense: %i"
-#~ msgstr "Obrona: %i"
-
-#~ msgid "Hitpoints: %i"
-#~ msgstr "Punkty ¯ycia: %i"
-
-#~ msgid "Moves: %i"
-#~ msgstr "Ruch: %i"
-
 #~ msgid "Production cost: %i"
 #~ msgstr "Koszt produkcji: %i"
-
-#~ msgid "ERROR: Couldn't load image "
-#~ msgstr "B³±d: Wczytanie obrazu niemo¿liwe "
-
-#~ msgid "Couldn't find a single armyset!"
-#~ msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu wojsk!"
-
-#~ msgid "Please check the path settings in /etc/freelordsrc or ~/.freelordsrc"
-#~ msgstr "Proszê sprawdziæ ¶cie¿ki w /etc/freelordsrc lub ~/.freelordsrc"
-
-#~ msgid "Exiting!"
-#~ msgstr "Zamykam!"
-
-#~ msgid "Couldn't find a single tileset!"
-#~ msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu terenów"
-
-#~ msgid "Couldn't find a single map!"
-#~ msgstr "Nie uda³o siê odnale¼æ ¿adnej mapy!"
-
-#~ msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
-#~ msgstr "B³±d w GameMap::fillMap: rozmiary siê nie zgadzaj±. Zamykam.\n"
-
-#~ msgid "player's turn"
-#~ msgstr "tura gracza"
-
-#~ msgid "new round"
-#~ msgstr "nowa runda"
-
-#~ msgid "Type"
-#~ msgstr "Typ"
-
-#~ msgid "Name"
-#~ msgstr "Nazwa"
-
-#~ msgid "Armyset"
-#~ msgstr "Zestaw Wojsk"
-
-#~ msgid "Random"
-#~ msgstr "Losowa"
-
-#~ msgid "Load Map"
-#~ msgstr "Wczytaj Mapê"
-
-#~ msgid "Choose Tileset"
-#~ msgstr "Wybierz Zestaw Terenów"
 
 #~ msgid "Process armies at beginning of"
 #~ msgstr "Przetwórz jednostki z pocz±tkiem"
 
 #~ msgid "Browse"
 #~ msgstr "Przegl±daj"
-
-#~ msgid "Cities"
-#~ msgstr "Miasta"
-
-#~ msgid "Ruins"
-#~ msgstr "Ruiny"
-
-#~ msgid "Temples"
-#~ msgstr "¦wi±tynie"
-
-#~ msgid "Start Game"
-#~ msgstr "Rozpocznij Grê"
 
 #~ msgid "Back to main menu"
 #~ msgstr "Powrót do menu g³ównego"
@@ -1757,28 +2984,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Tiny size"
 #~ msgstr "Malutki rozmiar"
 
-#, fuzzy
-#~ msgid "Error: "
-#~ msgstr "B³±d"
-
-#~ msgid "The Filename is well formed"
-#~ msgstr "Nazwa pliku jest dobrze utworzona"
-
-#~ msgid "The Filename lacks the extension --> "
-#~ msgstr "W nazwie pliku brakuje rozszerzenia --> "
-
-#~ msgid "GameScenario: Something went wrong with saving.\n"
-#~ msgstr "GameScenario: B³±d podczas zapisu.\n"
-
-#~ msgid "savefile has wrong version, we want "
-#~ msgstr "niew³a¶ciwa wersja pliku, oczekiwano"
-
-#~ msgid "savefile offers "
-#~ msgstr "plik oferuje"
-
-#~ msgid "Gold report"
-#~ msgstr "Raport o dochodach"
-
 #~ msgid "Player's gold ressources:"
 #~ msgstr "Zasoby z³ota gracza:"
 
@@ -1786,20 +2991,8 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgstr ""
 #~ "GraphicsCache: próba pobrania obrazu miasta bez gracza. Zamykam...\n"
 
-#~ msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
-#~ msgstr "GraphicsCache::getFlagPic: nie dostarczono grupy! Zamykam...\n"
-
 #~ msgid "Hero offer"
 #~ msgstr "Oferta bohatera"
-
-#~ msgid "Accept"
-#~ msgstr "Zaakceptuj"
-
-#~ msgid "Reject"
-#~ msgstr "Odrzuæ"
-
-#~ msgid "A hero wants to join you"
-#~ msgstr "Bohater chce do ciebie do³±czyæ"
 
 #~ msgid "for %i gold"
 #~ msgstr "za %i szt. z³ota"
@@ -1816,20 +3009,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "accessoire"
 #~ msgstr "akcesoria"
 
-#~ msgid "Backpack"
-#~ msgstr "Plecak"
-
 #~ msgid "prev"
 #~ msgstr "poprzedni"
 
 #~ msgid "next"
 #~ msgstr "nastêpny"
-
-#~ msgid "Ground"
-#~ msgstr "Na Ziemi"
-
-#~ msgid "+%i strength"
-#~ msgstr "+%i si³y"
 
 #~ msgid "%i strength"
 #~ msgstr "%i si³y"
@@ -1842,9 +3026,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 
 #~ msgid "+%i vitality"
 #~ msgstr "+%i ¿ywotno¶ci"
-
-#~ msgid "%i vitality"
-#~ msgstr "%i ¿ywotno¶ci"
 
 #~ msgid "+%i hitpoints"
 #~ msgstr "+%i punktów ¿ycia"
@@ -1869,9 +3050,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 
 #~ msgid "can deal instant death"
 #~ msgstr "mo¿e zadaæ natychmiastow± ¶mieræ"
-
-#~ msgid "Could not parse items description file. Exiting!\n"
-#~ msgstr "Nie uda³o siê sparsowaæ pliku opisuj±cego przedmioty. Zamykam!\n"
 
 #~ msgid "No modes available!\n"
 #~ msgstr "Brak dostêpnych trybów!\n"
@@ -1900,30 +3078,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ "Nie znaleziono ¿adnego dobrego pliku konfiguracyjnego... próbujê "
 #~ "autokonfiguracji."
 
-#~ msgid "Couldn't save the new configuration file..."
-#~ msgstr "Nie uda³o siê zapisaæ konfiguracji..."
-
-#~ msgid "Check permissions of your home directory....aborting!\n"
-#~ msgstr "Sprawd¼ zezwolenia w katalogu g³ównym...przerywam!\n"
-
-#~ msgid "Created the standard configuration file "
-#~ msgstr "Utworzono standardowy plik konfiguracyjny "
-
-#~ msgid "Couldn't create save game directory "
-#~ msgstr "Nie uda³o siê utworzyæ katalogu do zapisu gier "
-
-#~ msgid "Check permissions and the entries in your freelordsrc file!\n"
-#~ msgstr "Sprawd¼ zezwolenia i wpisy w swoim pliku freelordsrc!\n"
-
-#~ msgid "non-numerical value for cache size\n"
-#~ msgstr "nienueryczna warto¶æ dla rozmiaru cache\n"
-
-#~ msgid "Available parameters:"
-#~ msgstr "Dostêpne parametry:"
-
-#~ msgid "-h,      --help             Shows this help screen\n"
-#~ msgstr "-h,     --help              Wy¶wietla ten ekran\n"
-
 #~ msgid "-r1600                      Resolution set to 1600x1200"
 #~ msgstr "-r1600                      Ustawia rozdzielczo¶æ na 1600x1200"
 
@@ -1942,12 +3096,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "-f,      --fullscreen       Fullscreen mode"
 #~ msgstr "-f,      --fullscreen        Tryb pe³noekranowy"
 
-#~ msgid "-c <size>                   set the maximum cache size"
-#~ msgstr "-c <size>                   Ustawia maksymaln± wielko¶æ cache"
-
-#~ msgid "-t,      --test             Starting with a test-scenario"
-#~ msgstr "-t,     --test              Rozpoczyna scenariuszem testowym"
-
 #~ msgid "Please send bug reports to ulf82@users.sf.net"
 #~ msgstr "Proszê wysy³aæ raporty o b³êdach na ulf82@users.sf.net"
 
@@ -1963,44 +3111,8 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Using resolution: "
 #~ msgstr "U¿ywam rozdzielczo¶ci: "
 
-#~ msgid "Couldn't initialize X Windowing System\n"
-#~ msgstr "Nie uda³o siê zainicjalizowaæ X Windowing System\n"
-
-#~ msgid "Load"
-#~ msgstr "Wczytaj"
-
 #~ msgid "Save"
 #~ msgstr "Zapisz"
-
-#~ msgid "Save as"
-#~ msgstr "Zapisz jako"
-
-#~ msgid "Quit"
-#~ msgstr "Wyjd¼"
-
-#~ msgid "Armies"
-#~ msgstr "Jednostki"
-
-#~ msgid "Gold"
-#~ msgstr "Z³oto"
-
-#~ msgid "Quests"
-#~ msgstr "Zadania"
-
-#~ msgid "Game options"
-#~ msgstr "Opcje"
-
-#~ msgid "Help"
-#~ msgstr "Pomoc"
-
-#~ msgid "File"
-#~ msgstr "Plik"
-
-#~ msgid "Reports"
-#~ msgstr "Raporty"
-
-#~ msgid "Options"
-#~ msgstr "Opcje"
 
 #~ msgid "Freelords savegames"
 #~ msgstr "Zapisane gry"
@@ -2011,83 +3123,17 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid ". Bailing out.\n"
 #~ msgstr ". Wyskakujê. \n"
 
-#~ msgid "Save Game"
-#~ msgstr "Zapisz Grê"
-
-#~ msgid "Game Saved."
-#~ msgstr "Gra Zapisana"
-
-#~ msgid "Error saving. Game not saved"
-#~ msgstr "B³±d. Gra niezapisana"
-
 #~ msgid "not implemented yet\n"
 #~ msgstr "jeszcze nie zaimplementowane\n"
 
 #~ msgid "Creating Map"
 #~ msgstr "Tworzenie Mapy"
 
-#~ msgid "Generating random map"
-#~ msgstr "Generowanie losowej mapy"
-
-#~ msgid "Making random map"
-#~ msgstr "Tworzenie losowej mapy"
-
-#~ msgid "Flatening Plains  ... 10%"
-#~ msgstr "Sp³aszczanie Równin ... 10%"
-
-#~ msgid "Raining Water     ... 30%"
-#~ msgstr "Przywo³ywanie Wody ... 30%"
-
-#~ msgid "Raising Hills     ... 20%"
-#~ msgstr "Wnoszenie Wzgórz ... 20%"
-
-#~ msgid "Raising Mountains ... 30%"
-#~ msgstr "Wznoszenie Gór ... 30%"
-
-#~ msgid "Planting Forest   ... 40%"
-#~ msgstr "Sadzenie lasów ... 40%"
-
-#~ msgid "Watering Swamps   ... 50%"
-#~ msgstr "Nawadnianie Bagien ... 50%"
-
-#~ msgid "Normalizing       ... 60%"
-#~ msgstr "Normalizowanie    ... 60%"
-
-#~ msgid "Building Cities   ... 70%"
-#~ msgstr "Budowanie Miast   ... 70%"
-
-#~ msgid "Ruining Ruins     ... 80%"
-#~ msgstr "Rujnowanie Ruin   ... 80%"
-
-#~ msgid "Spawning temples  ... 90%"
-#~ msgstr "Wykluwanie ¦wi±tyñ ... 90%"
-
-#~ msgid "Done making map   ... 100%"
-#~ msgstr "Tworzenie mapy zakoñczone ... 100%"
-
 #~ msgid "Game settings"
 #~ msgstr "Ustawienia"
 
-#~ msgid "Video"
-#~ msgstr "Grafika"
-
-#~ msgid "Audio"
-#~ msgstr "D¼wiêk"
-
 #~ msgid "Misc"
 #~ msgstr "Ró¿ne"
-
-#~ msgid "Fullscreen"
-#~ msgstr "Pe³ny ekran"
-
-#~ msgid "Enable music"
-#~ msgstr "W³±cz muzykê"
-
-#~ msgid "Volume:"
-#~ msgstr "G³o¶no¶æ:"
-
-#~ msgid "Smooth scrolling"
-#~ msgstr "G³adkie przewijanie"
 
 #~ msgid "Show next player popup"
 #~ msgstr "Pokazuj okienko nastêpny gracz"
@@ -2102,12 +3148,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Save in:"
 #~ msgstr "Zapisuj w:"
 
-#~ msgid "File name:"
-#~ msgstr "Nazwa pliku:"
-
-#~ msgid "File type:"
-#~ msgstr "Typ pliku:"
-
 #~ msgid "Open"
 #~ msgstr "Otwórz"
 
@@ -2120,47 +3160,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Cannot add directory '%s' to the archive"
 #~ msgstr "Nie mo¿na dodaæ katalogu '%s' do archiwum"
 
-#~ msgid "Human"
-#~ msgstr "Cz³owiek"
-
-#~ msgid "Easy"
-#~ msgstr "£atwy"
-
 #~ msgid "Smart"
 #~ msgstr "Sprytny"
 
 #~ msgid "User selected wrong armytype ????\n"
 #~ msgstr "U¿ytkownik wybra³ niew³a¶ciwy zestaw wojsk ???\n"
-
-#~ msgid "You have killed %i so far."
-#~ msgstr "Dotychczas zabi³e¶ %i"
-
-#~ msgid "Well done!"
-#~ msgstr "Doskonale!"
-
-#~ msgid "You're still searching for him..."
-#~ msgstr "Wci±¿ go szukasz..."
-
-#~ msgid "Seen lately near ("
-#~ msgstr "Widziano go niedawno nieopodal("
-
-#~ msgid "You slayed the wicked hero %s. He deserved that!"
-#~ msgstr "Zabi³e¶ wynaturzonego bohatera %s. Zas³u¿y³ na taki los!"
-
-#~ msgid "You could not slay the wicked hero %s"
-#~ msgstr "Nie uda³o ci siê zabiæ %s"
-
-#~ msgid "He was slain by other fellows!"
-#~ msgstr "Zabili go inni towarzysze!"
-
-#~ msgid "Kill the hero named %s, servant of player %s"
-#~ msgstr "Zabij bohatera zw±cego siê %s s³u¿±cego u gracza %s"
-
-#~ msgid "You aren't afraid of doing it, do you?"
-#~ msgstr "Nie przera¿a ciê to chyba?"
-
-#~ msgid "The priests thank you for exploring this gloomy place."
-#~ msgstr "Kap³ani dziêkuj± ci za zbadanie tego ponurego miejsca."
 
 #~ msgid "Now they can set a temple here."
 #~ msgstr "Teraz mog± wznie¶æ tu ¶wi±tyniê."
@@ -2179,34 +3183,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "CONGRATULATIONS!"
 #~ msgstr "Gratulacje!"
 
-#~ msgid "Your Hero %s completed the quest."
-#~ msgstr "Twój bohater %s ukoñczy³ zadanie."
-
 #~ msgid "SORRY FOR YOU!"
 #~ msgstr "¯a³uj!"
 
-#~ msgid "Your Hero %s did not complete the quest."
-#~ msgstr "Twój bohater %s nie ukoñczy³ zadania."
-
-#~ msgid "Quests report"
-#~ msgstr "Raport o zadaniach"
-
-#~ msgid "No quests for %s"
-#~ msgstr "¯adnych zadañ dla %s"
-
-#~ msgid ""
-#~ "Error: searching stack and ruin to be searched not on same position\n"
-#~ msgstr ""
-#~ "B³±d: przeszukuj±ca grupa i ruiny nie znajduj± siê w tym samym miejscu\n"
-
-#~ msgid "Stack tried to visit temple at wrong location\n"
-#~ msgstr "Grupa usi³owa³a odwiedziæ ¶wi±tyniê w niew³a¶ciwym miejscu\n"
-
 #~ msgid "Position:"
 #~ msgstr "Po³o¿enie:"
-
-#~ msgid "Searched:"
-#~ msgstr "Przeszukano:"
 
 #~ msgid "Entering the ruin..."
 #~ msgstr "Wkraczanie w ruiny"
@@ -2214,35 +3195,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "You defeated the monsters"
 #~ msgstr "Pokona³e¶ potwory"
 
-#~ msgid "New Campaign"
-#~ msgstr "Nowa Kampania"
-
-#~ msgid "New Game"
-#~ msgstr "Nowa Gra"
-
-#~ msgid "Load Game"
-#~ msgstr "Wczytaj Grê"
-
-#~ msgid "Load Scenario"
-#~ msgstr "Wczytaj Scenariusz"
-
-#~ msgid "New Network Game"
-#~ msgstr "Nowa Gra Sieciowa"
-
 #~ msgid "Language"
 #~ msgstr "Jêzyk"
 
 #~ msgid "random.map was broken when re-reading. Exiting...\n"
 #~ msgstr "plik random.map by³ uszkodzony podczas odczytywania. Zamykam...\n"
-
-#~ msgid "GGZ initialization failed. Exiting.\n"
-#~ msgstr "Instalacja GGZ nie powiod³a siê. Zamykam.\n"
-
-#~ msgid "Play on GGZ"
-#~ msgstr "Graj na GGZ"
-
-#~ msgid "Please launch Freelords from a GGZ Gaming Zone client."
-#~ msgstr "Proszê uruchomiæ Freelords z klienta GGZ Gaming Zone."
 
 #~ msgid "FreeLords savegames"
 #~ msgstr "Zapisane gry"
@@ -2270,56 +3227,23 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "stack report"
 #~ msgstr "raport o grupie"
 
-#~ msgid "Turns: %i"
-#~ msgstr "Tury: %i"
-
 #~ msgid "Gold: %i"
 #~ msgstr "Z³oto: %i szt."
 
 #~ msgid "Next Player: %s"
 #~ msgstr "Nastêpny Gracz: %s"
 
-#~ msgid "Hero offer for %s"
-#~ msgstr "Bohater oferowany %s"
-
-#~ msgid "Select an action"
-#~ msgstr "Wybierz akcjê"
-
 #~ msgid "Bless"
 #~ msgstr "B³ogos³aw"
-
-#~ msgid "Quest"
-#~ msgstr "Zadanie"
 
 #~ msgid "Quest - "
 #~ msgstr "Zadanie - "
 
-#~ msgid "This hero already has a quest"
-#~ msgstr "Ten bohater ju¿ ma zadanie"
-
-#~ msgid "Game Loaded."
-#~ msgstr "Gra Wczytana."
-
 #~ msgid "Select the previous stack"
 #~ msgstr "Wybierz poprzedni± grupê"
 
-#~ msgid "Select the next stack"
-#~ msgstr "Wybierz nastêpn± grupê"
-
-#~ msgid "Select the next stack that can move"
-#~ msgstr "Wybierz nastêpn± grupê która mo¿e siê poruszyæ"
-
 #~ msgid "Let the selected stack move to destination"
 #~ msgstr "Pozwól wybranej grupie poruszyæ siê w kierunku celu"
-
-#~ msgid "Let all stacks move to their destinations"
-#~ msgstr "Niech wszystkie grupy porusz± siê w kierunku celu"
-
-#~ msgid "Center window on selected stack"
-#~ msgstr "Wy¶rodkuj ekran na wybranej grupie"
-
-#~ msgid "Let the stack defend"
-#~ msgstr "Pozwól grupie siê broniæ"
 
 #~ msgid "Let the stack defend and select the next stack"
 #~ msgstr "Pozwól grupie siê broniæ i wybierz nastêpn±"
@@ -2327,66 +3251,8 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Let the stack defend and select the next stack that can move"
 #~ msgstr "Pozwól grupie siê broniæ i wybierz nastêpn± zdoln± do ruchu"
 
-#~ msgid "Search a ruin or a temple"
-#~ msgstr "Przeszukaj ruiny lub ¶wi±tyniê"
-
 #~ msgid "Next turn"
 #~ msgstr "NAstêpna tura"
-
-#~ msgid "Description:"
-#~ msgstr "Opis:"
-
-#~ msgid ""
-#~ "XML_Helper: Either open file for reading or writing, not both, exiting\n"
-#~ msgstr ""
-#~ "XML_Helper: Otwórz plik dla zapisu lub odczytu, nie obu naraz, zamykam\n"
-
-#~ msgid ": Error opening file for reading. Exiting\n"
-#~ msgstr ": B³±d podczas otwierania pliku do odczytu. Zamykam\n"
-
-#~ msgid ": The file is obfuscated, attempting to read it....\n"
-#~ msgstr ": plik jest zamazany, próbujê odczytaæ....\n"
-
-#~ msgid ": The file is not obfuscated, attempting to read it....\n"
-#~ msgstr ": plik nie jest zamazany, próbujê odczytaæ...\n"
-
-#~ msgid ": Error opening file for writing. Exiting\n"
-#~ msgstr ": B³±d podczas otwierania pliku do zapisu\n"
-
-#~ msgid "XML_Helper: dtags not empty!!\n"
-#~ msgstr "XML_Helper: dtags niepuste!!\n"
-
-#~ msgid "XML_Helper: no output stream given\n"
-#~ msgstr "XML_Helper: nie podano strumienia wyj¶ciowego\n"
-
-#~ msgid ": The tag name starts with a \"d\". Not creating tag!\n"
-#~ msgstr ": Nazwa taga rozpoczyna siê liter± d. Anulujê tworzenie!\n"
-
-#~ msgid "XML_Helper: no output stream given.\n"
-#~ msgstr "XML_Helper: nie podano strumienia wyj¶ciowego\n"
-
-#~ msgid "XML_Helper: save_data with empty name\n"
-#~ msgstr "XML_Helper: save_data ma pust± nazwê\n"
-
-#~ msgid "Saving game and obfuscating the Savefile.\n"
-#~ msgstr "Zapisujê i zamazujê plik.\n"
-
-#~ msgid "Saving game without obfuscation.\n"
-#~ msgstr "Zapisujê bez zamazywania.\n"
-
-#~ msgid "XML_Helper: error parsing xml document.\n"
-#~ msgstr "XML_Helper: b³±d podczas parsowania dokumentu xml.\n"
-
-#~ msgid "Line "
-#~ msgstr "Linia"
-
-#~ msgid "Buffercontent = "
-#~ msgstr "Zawarto¶æ bufora = "
-
-#~ msgid ": Callback for tag returned false. Stop parsing document.\n"
-#~ msgstr ""
-#~ ": Odwo³anie zwrotne do taga (callback) zwróci³o false. Przerywam "
-#~ "parsowanie.\n"
 
 #~ msgid "You need at least 800 x 600 resolution to run the editor\n"
 #~ msgstr ""
@@ -2401,26 +3267,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "New"
 #~ msgstr "Nowe"
 
-#~ msgid "Scenario"
-#~ msgstr "Scenariusz"
-
-#~ msgid "Players"
-#~ msgstr "Gracze"
-
-#~ msgid "Events"
-#~ msgstr "Wydarzenia"
-
-#~ msgid "Edit"
-#~ msgstr "Edytuj"
-
 #~ msgid "By ID"
 #~ msgstr "Po ID"
 
 #~ msgid "Find"
 #~ msgstr "Znajd¼"
-
-#~ msgid "stacks"
-#~ msgstr "grupy"
 
 #~ msgid "cities"
 #~ msgstr "miasta"
@@ -2435,35 +3286,20 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Freelords maps"
 #~ msgstr "Mapy"
 
-#~ msgid "Couldn't load map "
-#~ msgstr "Nie uda³o siê wczytaæ mapy "
-
 #~ msgid "Map Saved"
 #~ msgstr "Mapa Zapisana"
 
 #~ msgid "Error saving. Map not saved"
 #~ msgstr "B³±d. Mapa niezapisana."
 
-#~ msgid "Freelords map files"
-#~ msgstr "Pliki map"
-
 #~ msgid "Map Saved."
 #~ msgstr "Mapa Zapisana"
-
-#~ msgid "Create New Map"
-#~ msgstr "Stwórz Now± Mapê"
 
 #~ msgid "Select fill style"
 #~ msgstr "Wybierz styl wype³niania"
 
-#~ msgid "Size:"
-#~ msgstr "Rozmiar:"
-
 #~ msgid "Create"
 #~ msgstr "Stwórz"
-
-#~ msgid "Random Map"
-#~ msgstr "Losowa Mapa"
 
 #~ msgid "Mapsize must be between 20 and 200!"
 #~ msgstr "Rozmiar musi zawieraæ siê miêdzy 20 a 200!"
@@ -2474,29 +3310,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Do you want to modify the stack or the object beneath?"
 #~ msgstr "Czy chcesz zmodyfikowaæ grupê czy obiekt pod spodem?"
 
-#~ msgid "Stack"
-#~ msgstr "Grupa"
-
-#~ msgid "Other"
-#~ msgstr "Inne"
-
 #~ msgid "ArmySelection"
 #~ msgstr "Wybór Wojsk"
 
-#~ msgid "Cost:"
-#~ msgstr "Koszt:"
-
-#~ msgid "HP:"
-#~ msgstr "P¯:"
-
 #~ msgid "Vitality:"
 #~ msgstr "¯ywotno¶æ:"
-
-#~ msgid "Sight:"
-#~ msgstr "Pole widzenia:"
-
-#~ msgid "City"
-#~ msgstr "Miasto"
 
 #~ msgid "City at (%i,%i)"
 #~ msgstr "Miasto na (%i,%i)"
@@ -2510,14 +3328,8 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Owner:"
 #~ msgstr "W³a¶ciciel:"
 
-#~ msgid "Level:"
-#~ msgstr "Poziom:"
-
 #~ msgid "Untouched"
 #~ msgstr "Nietkniête"
-
-#~ msgid "Burnt down"
-#~ msgstr "Spalone"
 
 #~ msgid "Remove Production"
 #~ msgstr "Usuñ Produkcjê"
@@ -2528,9 +3340,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Confirmation"
 #~ msgstr "Potwierdzenie"
 
-#~ msgid "Do you really want to remove this production?"
-#~ msgstr "Naprawdê chcesz usun±æ t± produkcjê?"
-
 #~ msgid "Set map properties"
 #~ msgstr "Ustaw w³a¶ciwo¶ci mapy"
 
@@ -2540,20 +3349,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Temple at (%i,%i)"
 #~ msgstr "¦wi±tynia na (%i,%i)"
 
-#~ msgid "Type:"
-#~ msgstr "Typ:"
-
 #~ msgid "Modify ruin"
 #~ msgstr "Zmodyfikuj ruiny"
 
 #~ msgid "Ruin at (%i,%i)"
 #~ msgstr "Ruiny na (%i,%i)"
-
-#~ msgid "ID:"
-#~ msgstr "Id:"
-
-#~ msgid "Keeper"
-#~ msgstr "Stra¿nik"
 
 #~ msgid "Manage players"
 #~ msgstr "Zarz±dzaj graczami"
@@ -2588,23 +3388,8 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "maniac mode"
 #~ msgstr "tryb maniaka"
 
-#~ msgid "join armies"
-#~ msgstr "po³±cz jednostki"
-
-#~ msgid "Add"
-#~ msgstr "Dodaj"
-
-#~ msgid "Remove"
-#~ msgstr "Usuñ"
-
-#~ msgid "Warning"
-#~ msgstr "Ostrze¿enie"
-
 #~ msgid "Do you really want to remove this player?"
 #~ msgstr "Naprawdê chcesz usun±æ tego gracza?"
-
-#~ msgid "New Player"
-#~ msgstr "Nowy Gracz"
 
 #~ msgid ""
 #~ "Do you want to add the new player in front of this player or at the end "
@@ -2620,29 +3405,17 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Find object"
 #~ msgstr "Znajd¼ obiekt"
 
-#~ msgid "Temple"
-#~ msgstr "¦wi±tynia"
-
-#~ msgid "Ruin"
-#~ msgstr "Ruiny"
-
 #~ msgid "Manage conditions"
 #~ msgstr "Zarz±dzaj warunkami"
 
 #~ msgid "CPlayer"
 #~ msgstr "CGracz"
 
-#~ msgid "CCounter"
-#~ msgstr "CLicznik"
-
 #~ msgid "CLiving"
 #~ msgstr "C¯yje"
 
 #~ msgid "CDead"
 #~ msgstr "CMartwy"
-
-#~ msgid "CArmy"
-#~ msgstr "CJednostka"
 
 #~ msgid "%i. CPlayer"
 #~ msgstr "%i. CGracz"
@@ -2659,26 +3432,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "%i. CArmy"
 #~ msgstr "%i. CJednostka"
 
-#~ msgid "Player:"
-#~ msgstr "Gracz:"
-
-#~ msgid "Counter:"
-#~ msgstr "Liczik:"
-
 #~ msgid "Army:"
 #~ msgstr "Jednostka:"
 
-#~ msgid "Select an item"
-#~ msgstr "Wybierz przedmiot"
-
 #~ msgid "Manage reactions"
 #~ msgstr "Zarz±dzaj reakcjami"
-
-#~ msgid "Conditions"
-#~ msgstr "Warunki"
-
-#~ msgid "Message"
-#~ msgstr "Wiadomo¶æ"
 
 #~ msgid "AddGold"
 #~ msgstr "DodajZ³oto"
@@ -2698,17 +3456,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "CenterObj"
 #~ msgstr "Wy¶rodkujNaObiekcie"
 
-#~ msgid "CreateItem"
-#~ msgstr "StwórzPrzedmiot"
-
 #~ msgid "WinGame"
 #~ msgstr "WygrajGrê"
 
 #~ msgid "LoseGame"
 #~ msgstr "PrzegrajGrê"
-
-#~ msgid "RaiseEvent"
-#~ msgstr "Wywo³ajWydarzenie"
 
 #~ msgid "ActEvent"
 #~ msgstr "AktywujWydarzenie"
@@ -2779,20 +3531,11 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Object:"
 #~ msgstr "Obiekt:"
 
-#~ msgid "Item:"
-#~ msgstr "Przedmiot:"
-
-#~ msgid "Status:"
-#~ msgstr "Status:"
-
 #~ msgid "Event:"
 #~ msgstr "Wydarzenie:"
 
 #~ msgid "Activate:"
 #~ msgstr "Aktywuj:"
-
-#~ msgid "City:"
-#~ msgstr "Miasto:"
 
 #~ msgid "Manage events"
 #~ msgstr "Zarz±dzaj zdarzeniami"
@@ -2803,14 +3546,8 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Deactivate"
 #~ msgstr "Dezaktywuj"
 
-#~ msgid "Comment:"
-#~ msgstr "Komentarz:"
-
 #~ msgid "Reactions"
 #~ msgstr "Reakcje"
-
-#~ msgid "Do you really want to remove this event?"
-#~ msgstr "Napewno chcesz usun±æ to wydarzenie?"
 
 #~ msgid "KillAll"
 #~ msgstr "ZabijWszystkich"
@@ -2835,12 +3572,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 
 #~ msgid "Dummy"
 #~ msgstr "G³upol"
-
-#~ msgid "NextTurn"
-#~ msgstr "NastêpnaTura"
-
-#~ msgid "StackKilled"
-#~ msgstr "GrupaZabita"
 
 #~ msgid "StackMove"
 #~ msgstr "GrupaRuszona"
@@ -2905,9 +3636,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 #~ msgid "Couldn't find any configuration file...trying auto-configuration."
 #~ msgstr "Nie znaleziono pliku konfiguracyjnego...próbujê autokonfiguracji."
 
-#~ msgid "Army info"
-#~ msgstr "Informacje o jednostce"
-
 #~ msgid "basic"
 #~ msgstr "podstawowe"
 
@@ -2934,9 +3662,6 @@ msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 
 #~ msgid "move bonus"
 #~ msgstr "bonus ruchu"
-
-#~ msgid "bonus"
-#~ msgstr "bonus"
 
 #~ msgid "no shots"
 #~ msgstr "brak strza³ów"

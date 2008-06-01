@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-05-31 21:53-0400\n"
+"POT-Creation-Date: 2008-06-01 11:00-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -180,15 +180,1561 @@ msgid_plural "A hero in %2 wants to join you for %1 gold pieces!"
 msgstr[0] "Un héros veut se joindre à vous gratuitement !"
 msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 
-#~ msgid "You have managed to slaughter %i army."
-#~ msgid_plural "You have managed to slaughter %i armies."
-#~ msgstr[0] "Sei riuscito ad uccidere %i armata."
-#~ msgstr[1] "Sei riuscito ad uccidere %i armate."
+#, fuzzy
+#~ msgid "All Cities"
+#~ msgstr "Cité"
 
-#~ msgid "You must destroy %i unit of enemy armies"
-#~ msgid_plural "You must destroy %i units of enemy armies"
-#~ msgstr[0] "Devi distruggere %i unit‡ delle armate nemiche"
-#~ msgstr[1] "Devi distruggere %i unit‡ delle armate nemiche"
+#, fuzzy
+#~ msgid "All Ruins"
+#~ msgstr "Ruines"
+
+#, fuzzy
+#~ msgid "All Temples"
+#~ msgstr "Temples"
+
+#, fuzzy
+#~ msgid "LordsAWar! Scenario Editor"
+#~ msgstr "Carica uno Scenario"
+
+#, fuzzy
+#~ msgid "Save Map _As..."
+#~ msgstr "Salva con nome"
+
+#, fuzzy
+#~ msgid "Unnamed Cities"
+#~ msgstr "Cité"
+
+#, fuzzy
+#~ msgid "Unnamed Ruins"
+#~ msgstr "Ruines étranges"
+
+#, fuzzy
+#~ msgid "Unnamed Temples"
+#~ msgstr "Ruines de Temple"
+
+#, fuzzy
+#~ msgid "_Edit"
+#~ msgstr "Edita"
+
+#, fuzzy
+#~ msgid "_File"
+#~ msgstr "File"
+
+#, fuzzy
+#~ msgid "_Fullscreen"
+#~ msgstr "Schermo Intero"
+
+#, fuzzy
+#~ msgid "_Help"
+#~ msgstr "Aiuto"
+
+#, fuzzy
+#~ msgid "_Items"
+#~ msgstr "Objets"
+
+#, fuzzy
+#~ msgid "_Load Map"
+#~ msgstr "Charger la carte"
+
+#, fuzzy
+#~ msgid "_New Map"
+#~ msgstr "Crea una nuova Mappa"
+
+#, fuzzy
+#~ msgid "_Players"
+#~ msgstr "Giocatori"
+
+#, fuzzy
+#~ msgid "_Quit"
+#~ msgstr "Esci"
+
+#, fuzzy
+#~ msgid "_Random"
+#~ msgstr "Aléatoire"
+
+#, fuzzy
+#~ msgid "_Save Map"
+#~ msgstr "Salva con nome"
+
+#, fuzzy
+#~ msgid "_Smooth Screen"
+#~ msgstr "Scorrimento fluido"
+
+#, fuzzy
+#~ msgid "_View"
+#~ msgstr "Video"
+
+#, fuzzy
+#~ msgid "Randomi_ze"
+#~ msgstr "Aléatoire"
+
+#, fuzzy
+#~ msgid "_Cancel"
+#~ msgstr "Annuler"
+
+#, fuzzy
+#~ msgid "_OK"
+#~ msgstr "OK"
+
+#, fuzzy
+#~ msgid "<b>Temple</b>"
+#~ msgstr "Tempio"
+
+#, fuzzy
+#~ msgid "Edit Temple"
+#~ msgstr "Tempio"
+
+#~ msgid "Name:"
+#~ msgstr "Nom :"
+
+#~ msgid "Type:"
+#~ msgstr "Tipo:"
+
+#, fuzzy
+#~ msgid "Cle_ar Keeper"
+#~ msgstr "Occupante"
+
+#, fuzzy
+#~ msgid "Edit Ruin"
+#~ msgstr "Edita"
+
+#, fuzzy
+#~ msgid "Keeper:"
+#~ msgstr "Occupante"
+
+#, fuzzy
+#~ msgid "Ran_domize"
+#~ msgstr "Aléatoire"
+
+#, fuzzy
+#~ msgid "Random Reward"
+#~ msgstr "Mappa Casuale"
+
+#, fuzzy
+#~ msgid "Randomiz_e"
+#~ msgstr "Aléatoire"
+
+#~ msgid "Type"
+#~ msgstr "Type"
+
+#, fuzzy
+#~ msgid "Edit Stack"
+#~ msgstr "Gruppo"
+
+#~ msgid "Player:"
+#~ msgstr "Giocatore:"
+
+#, fuzzy
+#~ msgid "_Add"
+#~ msgstr "Aggiungi"
+
+#, fuzzy
+#~ msgid "_Remove"
+#~ msgstr "Rimuovi"
+
+#, fuzzy
+#~ msgid "Select Army"
+#~ msgstr "Seleziona un oggetto"
+
+#, fuzzy
+#~ msgid "_Select"
+#~ msgstr "Refusé"
+
+#, fuzzy
+#~ msgid "<b>Players</b>"
+#~ msgstr "Giocatori"
+
+#, fuzzy
+#~ msgid "Edit Players"
+#~ msgstr "Giocatori"
+
+#, fuzzy
+#~ msgid "<b>Production</b>"
+#~ msgstr "Acheter la production"
+
+#, fuzzy
+#~ msgid "Burned down"
+#~ msgstr "Rasa al suolo"
+
+#, fuzzy
+#~ msgid "Capital"
+#~ msgstr "Catapulte"
+
+#, fuzzy
+#~ msgid "Edit City"
+#~ msgstr "Edita"
+
+#, fuzzy
+#~ msgid "Ra_ndomize"
+#~ msgstr "Aléatoire"
+
+#~ msgid "Description:"
+#~ msgstr "Descrizione:"
+
+#, fuzzy
+#~ msgid "   Cities"
+#~ msgstr "Cité"
+
+#, fuzzy
+#~ msgid "Army Set:"
+#~ msgstr "Paquetage de combat"
+
+#, fuzzy
+#~ msgid "City Set:"
+#~ msgstr "Citt‡:"
+
+#, fuzzy
+#~ msgid "Fill style:"
+#~ msgstr "Tipo del File:"
+
+#~ msgid "Forest"
+#~ msgstr "Forêt"
+
+#~ msgid "Grass"
+#~ msgstr "Herbe"
+
+#~ msgid "Hills"
+#~ msgstr "Collines"
+
+#~ msgid "Mountains"
+#~ msgstr "Montagnes"
+
+#, fuzzy
+#~ msgid "New Map"
+#~ msgstr "Nuovo Gioco"
+
+#~ msgid "Ruins"
+#~ msgstr "Ruines"
+
+#~ msgid "Size:"
+#~ msgstr "Grandezza:"
+
+#~ msgid "Swamp"
+#~ msgstr "Marais"
+
+#~ msgid "Temples"
+#~ msgstr "Temples"
+
+#, fuzzy
+#~ msgid "Tile Set:"
+#~ msgstr "Nome del file:"
+
+#~ msgid "Water"
+#~ msgstr "Eau"
+
+#, fuzzy
+#~ msgid "_Create Map"
+#~ msgstr "Crea una nuova Mappa"
+
+#, fuzzy
+#~ msgid "Armyset Information"
+#~ msgstr "Aucune information"
+
+#, fuzzy
+#~ msgid "Can Fly"
+#~ msgstr "Annuler"
+
+#~ msgid "Cost:"
+#~ msgstr "Costo:"
+
+#, fuzzy
+#~ msgid "Defends Ruins?"
+#~ msgstr "Rapière de Défense"
+
+#, fuzzy
+#~ msgid "Exp Points:"
+#~ msgstr "Points d'attaque :"
+
+#, fuzzy
+#~ msgid "Max Moves:"
+#~ msgstr "Mouvements:"
+
+#, fuzzy
+#~ msgid "Select A File"
+#~ msgstr "Seleziona un oggetto"
+
+#~ msgid "Sight:"
+#~ msgstr "Vista:"
+
+#~ msgid "Strength:"
+#~ msgstr "Force :"
+
+#, fuzzy
+#~ msgid "Turns:"
+#~ msgstr "Turni: %i"
+
+#~ msgid "Upkeep:"
+#~ msgstr "Entretien :"
+
+#, fuzzy
+#~ msgid "_Load Armyset"
+#~ msgstr "Paquetage de combat"
+
+#, fuzzy
+#~ msgid "_New Armyset"
+#~ msgstr "Paquetage de combat"
+
+#, fuzzy
+#~ msgid "_Save Armyset"
+#~ msgstr "Paquetage de combat"
+
+#, fuzzy
+#~ msgid "Edit Armyset Info"
+#~ msgstr "Informazioni sull'unit‡"
+
+#, fuzzy
+#~ msgid "Id:"
+#~ msgstr "ID:"
+
+#, fuzzy
+#~ msgid "+1 to Hero's Strength"
+#~ msgstr "Force +%i"
+
+#, fuzzy
+#~ msgid "+2 to Hero's Strength"
+#~ msgstr "Force +%i"
+
+#, fuzzy
+#~ msgid "+3 to Hero's Strength"
+#~ msgstr "Force +%i"
+
+#, fuzzy
+#~ msgid "_Close"
+#~ msgstr "Fermer"
+
+#, fuzzy
+#~ msgid "Allies"
+#~ msgstr "Algiers"
+
+#, fuzzy
+#~ msgid "Clear Item"
+#~ msgstr "CreateItem"
+
+#~ msgid "Gold"
+#~ msgstr "Oro"
+
+#, fuzzy
+#~ msgid "Hidden Ruin"
+#~ msgstr "Ruines étranges"
+
+#, fuzzy
+#~ msgid "Item"
+#~ msgstr "Objets"
+
+#, fuzzy
+#~ msgid "Rand_omize"
+#~ msgstr "Aléatoire"
+
+#, fuzzy
+#~ msgid "Random_ize"
+#~ msgstr "Aléatoire"
+
+#, fuzzy
+#~ msgid "Select Item"
+#~ msgstr "Seleziona un oggetto"
+
+#, fuzzy
+#~ msgid "Select Hidden Ruin"
+#~ msgstr "Seleziona un'azione"
+
+#~ msgid "Moves:"
+#~ msgstr "Mouvements:"
+
+#, fuzzy
+#~ msgid "Pattern:"
+#~ msgstr "Giocatore:"
+
+#, fuzzy
+#~ msgid "Tileset info"
+#~ msgstr "Informations sur la cité"
+
+#, fuzzy
+#~ msgid "_Load Tileset"
+#~ msgstr "Choisissez le quadrillage"
+
+#, fuzzy
+#~ msgid "_New Tileset"
+#~ msgstr "Choisissez le quadrillage"
+
+#, fuzzy
+#~ msgid "_Save Tileset"
+#~ msgstr "Choisissez le quadrillage"
+
+#, fuzzy
+#~ msgid "_Choose"
+#~ msgstr "Fermer"
+
+#, fuzzy
+#~ msgid "<b>Buy Production</b>"
+#~ msgstr "Acheter la production"
+
+#~ msgid "Buy Production"
+#~ msgstr "Acheter la production"
+
+#, fuzzy
+#~ msgid "_Buy"
+#~ msgstr "Acheter"
+
+#, fuzzy
+#~ msgid "_Occupy"
+#~ msgstr "Occupé"
+
+#, fuzzy
+#~ msgid "_Pillage"
+#~ msgstr "Pillage"
+
+#, fuzzy
+#~ msgid "_Raze"
+#~ msgstr "Rasé"
+
+#, fuzzy
+#~ msgid "_Sack"
+#~ msgstr "Gruppo"
+
+#, fuzzy
+#~ msgid "Your troops have looted the city!"
+#~ msgstr "Vous avez perdu !!!"
+
+#, fuzzy
+#~ msgid "_Continue"
+#~ msgstr "Condizioni"
+
+#, fuzzy
+#~ msgid "Your troops have sacked the city!"
+#~ msgstr "Vous avez perdu !!!"
+
+#, fuzzy
+#~ msgid "Buy a production capability"
+#~ msgstr "Acheter la production"
+
+#, fuzzy
+#~ msgid "Current:"
+#~ msgstr "Contatore:"
+
+#, fuzzy
+#~ msgid "R_ename"
+#~ msgstr "Sans nom"
+
+#, fuzzy
+#~ msgid "Stop producing armies"
+#~ msgstr "Unisce le armate"
+
+#, fuzzy
+#~ msgid "_Buy..."
+#~ msgstr "Acheter"
+
+#, fuzzy
+#~ msgid "_Vector..."
+#~ msgstr "Vectoring"
+
+#, fuzzy
+#~ msgid "Chan_ge"
+#~ msgstr "Carthage"
+
+#, fuzzy
+#~ msgid "Choose Destination"
+#~ msgstr "Choisissez le quadrillage"
+
+#, fuzzy
+#~ msgid "Next Turn:"
+#~ msgstr "Turno Successivo"
+
+#, fuzzy
+#~ msgid "Turn After:"
+#~ msgstr "Contatore:"
+
+#, fuzzy
+#~ msgid "_Vector"
+#~ msgstr "Vectoring"
+
+#, fuzzy
+#~ msgid "Game Loaded"
+#~ msgstr "Gioco caricato."
+
+#, fuzzy
+#~ msgid "Game Lost"
+#~ msgstr "Opzioni di gioco"
+
+#, fuzzy
+#~ msgid "Choose a map"
+#~ msgstr "Choisissez votre chemin !"
+
+#~ msgid "Cities"
+#~ msgstr "Cité"
+
+#, fuzzy
+#~ msgid "Edit Options"
+#~ msgstr "Opzioni"
+
+#, fuzzy
+#~ msgid "Generate map randomly:"
+#~ msgstr "genero la mappa casuale"
+
+#, fuzzy
+#~ msgid "Load map:"
+#~ msgstr "Charger la carte"
+
+#~ msgid "New Game"
+#~ msgstr "Nuovo Gioco"
+
+#~ msgid "Random"
+#~ msgstr "Aléatoire"
+
+#, fuzzy
+#~ msgid "_Start Game"
+#~ msgstr "Démarrer le jeu"
+
+#, fuzzy
+#~ msgid "Army"
+#~ msgstr "Army"
+
+#, fuzzy
+#~ msgid "Army Bonus"
+#~ msgstr "Informazioni sull'unit‡"
+
+#, fuzzy
+#~ msgid "Center map on stack"
+#~ msgstr "Centra la finestra sul gruppo di armate"
+
+#~ msgid "City"
+#~ msgstr "Citt‡"
+
+#, fuzzy
+#~ msgid "Deselect the stack"
+#~ msgstr "Seleziona il successivo gruppo di armate"
+
+#, fuzzy
+#~ msgid "Disband"
+#~ msgstr "Lisbone"
+
+#~ msgid "Events"
+#~ msgstr "Eventi"
+
+#, fuzzy
+#~ msgid "Game"
+#~ msgstr "Nom "
+
+#~ msgid "Help"
+#~ msgstr "Aiuto"
+
+#, fuzzy
+#~ msgid "Hero"
+#~ msgstr "Héros"
+
+#~ msgid "Items"
+#~ msgstr "Objets"
+
+#, fuzzy
+#~ msgid "Leave the stack here"
+#~ msgstr "Fai difendere il gruppo di armate"
+
+#~ msgid "Let the stack defend"
+#~ msgstr "Fai difendere il gruppo di armate"
+
+#, fuzzy
+#~ msgid "Levels"
+#~ msgstr "Livello:"
+
+#~ msgid "Load Game"
+#~ msgstr "Carica Gioco"
+
+#, fuzzy
+#~ msgid "Move to the destination"
+#~ msgstr "Muovi tutti i possibili gruppi di armate verso la loro destinazione"
+
+#~ msgid "Next"
+#~ msgstr "Suivant"
+
+#, fuzzy
+#~ msgid "Order"
+#~ msgstr "Altro"
+
+#, fuzzy
+#~ msgid "Plant Flag"
+#~ msgstr "Placentia"
+
+#, fuzzy
+#~ msgid "Production"
+#~ msgstr "Acheter la production"
+
+#~ msgid "Quest"
+#~ msgstr "Quest"
+
+#~ msgid "Quit"
+#~ msgstr "Esci"
+
+#~ msgid "Reports"
+#~ msgstr "Resoconti"
+
+#, fuzzy
+#~ msgid "Resign"
+#~ msgstr "Rovina"
+
+#~ msgid "Save Game"
+#~ msgstr "Salvataggio del Gioco"
+
+#, fuzzy
+#~ msgid "Save Game As..."
+#~ msgstr "Salvataggio del Gioco"
+
+#, fuzzy
+#~ msgid "Search"
+#~ msgstr "Esplorata:"
+
+#, fuzzy
+#~ msgid "Search ruin or temple"
+#~ msgstr "Cerca in una rovina o un tempio"
+
+#, fuzzy
+#~ msgid "Select next stack that can move"
+#~ msgstr "Seleziona il successivo gruppo di armate che abbia punti movimento"
+
+#, fuzzy
+#~ msgid "Stack Info"
+#~ msgstr "Gruppo"
+
+#, fuzzy
+#~ msgid "Turn: %6"
+#~ msgstr "Turni: %i"
+
+#, fuzzy
+#~ msgid "View"
+#~ msgstr "Video"
+
+#, fuzzy
+#~ msgid "Winning"
+#~ msgstr "Attenzione"
+
+#, fuzzy
+#~ msgid "_Preferences"
+#~ msgstr "Pelerine"
+
+#, fuzzy
+#~ msgid "_Turn"
+#~ msgstr "Turno Successivo"
+
+#, fuzzy
+#~ msgid "A_ccept"
+#~ msgstr "Accepter"
+
+#, fuzzy
+#~ msgid "_Decline"
+#~ msgstr "Pelerine"
+
+#, fuzzy
+#~ msgid "female"
+#~ msgstr "Tempio"
+
+#, fuzzy
+#~ msgid "male"
+#~ msgstr "Tralse"
+
+#, fuzzy
+#~ msgid "An Offer of Peace!"
+#~ msgstr "Jardin de la Paix"
+
+#, fuzzy
+#~ msgid "<b>Scenarios</b>"
+#~ msgstr "Scenario"
+
+#~ msgid "Load Scenario"
+#~ msgstr "Carica uno Scenario"
+
+#, fuzzy
+#~ msgid "Number of Players:"
+#~ msgstr "Nuovo giocatore"
+
+#, fuzzy
+#~ msgid "_Load"
+#~ msgstr "Carica"
+
+#, fuzzy
+#~ msgid "Medal Awarded"
+#~ msgstr "Médailles obtenues"
+
+#, fuzzy
+#~ msgid "Quest Expired"
+#~ msgstr "Resoconto sulle quest"
+
+#, fuzzy
+#~ msgid "<i>Volume:</i>"
+#~ msgstr "Volume:"
+
+#, fuzzy
+#~ msgid "Play _music"
+#~ msgstr "Abilita la musica"
+
+#, fuzzy
+#~ msgid "Preferences"
+#~ msgstr "Pelerine"
+
+#, fuzzy
+#~ msgid "L_oad Game"
+#~ msgstr "Carica Gioco"
+
+#, fuzzy
+#~ msgid "Load _Scenario"
+#~ msgstr "Carica uno Scenario"
+
+#, fuzzy
+#~ msgid "New _Campaign"
+#~ msgstr "Nuova Campagna"
+
+#, fuzzy
+#~ msgid "New _Game"
+#~ msgstr "Nuovo Gioco"
+
+#
+#, fuzzy
+#~ msgid "New _Network Game"
+#~ msgstr "Nuovo Gioco in Rete"
+
+#, fuzzy
+#~ msgid "_No"
+#~ msgstr "Non"
+
+#, fuzzy
+#~ msgid "_Yes"
+#~ msgstr "Oui"
+
+#, fuzzy
+#~ msgid "Next Turn"
+#~ msgstr "Turno Successivo"
+
+#, fuzzy
+#~ msgid "Message:"
+#~ msgstr "Message"
+
+#, fuzzy
+#~ msgid "Hero Levels"
+#~ msgstr "Héros"
+
+#, fuzzy
+#~ msgid "Item Bonus"
+#~ msgstr "Objets"
+
+#, fuzzy
+#~ msgid "Game Options"
+#~ msgstr "Opzioni di gioco"
+
+#, fuzzy
+#~ msgid "Neutral Cities:"
+#~ msgstr "Neutre"
+
+#~ msgid "Quests"
+#~ msgstr "Quest"
+
+#, fuzzy
+#~ msgid "Random Turns"
+#~ msgstr "Aléatoire"
+
+#, fuzzy
+#~ msgid "Razing Cities:"
+#~ msgstr "Cité"
+
+#, fuzzy
+#~ msgid "View Production"
+#~ msgstr "Acheter la production"
+
+#, fuzzy
+#~ msgid "Continue"
+#~ msgstr "Condizioni"
+
+#, fuzzy
+#~ msgid "Report"
+#~ msgstr "Resoconti"
+
+#, fuzzy
+#~ msgid "player name"
+#~ msgstr "tour du joueur"
+
+#, fuzzy
+#~ msgid "Treachery!"
+#~ msgstr "Archer"
+
+#, fuzzy
+#~ msgid "_Attack!"
+#~ msgstr "Gruppo"
+
+#, fuzzy
+#~ msgid "_Group"
+#~ msgstr "Sol"
+
+#, fuzzy
+#~ msgid "Lone"
+#~ msgstr "Néant"
+
+#~ msgid "Other"
+#~ msgstr "Altro"
+
+#~ msgid "Error, while loading an armyset. Armyset Name: "
+#~ msgstr ""
+#~ "Erreur lors du chargement du paquetage de combat. Nom du paquetage : "
+
+#~ msgid "Autosave failed.\n"
+#~ msgstr "La sauvegarde automatique a échouée.\n"
+
+#~ msgid "Error while trying to rename the temporary file to autosave.sav\n"
+#~ msgstr ""
+#~ "Erreur lors de la tentative de renommage du fichier temporaire dans "
+#~ "autosave.sav\n"
+
+#, fuzzy
+#~ msgid "Error: "
+#~ msgstr "Erruer :"
+
+#~ msgid "The Filename is well formed"
+#~ msgstr "Le nom de fichier est correct"
+
+#~ msgid "The Filename lacks the extension --> "
+#~ msgstr "Il manque l'extension au nom du fichier --> "
+
+#~ msgid "GameScenario: Something went wrong with saving.\n"
+#~ msgstr ""
+#~ "GameScenario: Quelque chose s'est mal déroulée pendant la sauvegarde.\n"
+
+#~ msgid "savefile has wrong version, we want "
+#~ msgstr "Le fichier sauvegardé a une mauvaise version. Il attendait "
+
+#~ msgid "savefile offers "
+#~ msgstr "Le fichier sauvegardé offre "
+
+#~ msgid "You're still searching for him..."
+#~ msgstr " Lo stai ancora cercando..."
+
+#~ msgid "Seen lately near ("
+#~ msgstr "Avvistato vicino ("
+
+#~ msgid "You slayed the wicked hero %s. He deserved that!"
+#~ msgstr "Hai ucciso il crudele eroe %s. Se lo meritava!"
+
+# c-format
+#~ msgid "You could not slay the wicked hero %s"
+#~ msgstr "Non sei riuscito ad uccidere il crudele eroe %s"
+
+#~ msgid "He was slain by other fellows!"
+#~ msgstr "» stato ucciso da un altro gruppo di armate!"
+
+#~ msgid "Kill the hero named %s, servant of player %s"
+#~ msgstr "Uccidi l'eroe chiamato %s, servitore del giocatore %s"
+
+#, fuzzy
+#~ msgid "You have not killed a unit of enemy %s yet."
+#~ msgstr "Hai ucciso %i armate fino ad ora."
+
+#, fuzzy
+#~ msgid "You have killed a unit of enemy %s."
+#~ msgstr "Hai ucciso %i armate fino ad ora."
+
+#~ msgid "Well done!"
+#~ msgstr "Ben fatto!"
+
+#, fuzzy
+#~ msgid "You must destroy a unit of enemy %s."
+#~ msgstr "Devi distruggere %i unit‡ delle armate nemiche"
+
+#~ msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
+#~ msgstr ""
+#~ "Erreur dans GameMap::fillMap : la taille ne correspond pas !!! Sortie.\n"
+
+#, fuzzy
+#~ msgid "Error, while loading a cityset. Cityset Name: "
+#~ msgstr ""
+#~ "Erreur lors du chargement du paquetage de combat. Nom du paquetage : "
+
+#, fuzzy
+#~ msgid "You have already stolen %i gold."
+#~ msgstr "Sei riuscito ad uccidere %i armata."
+
+#, fuzzy
+#~ msgid "You aren't afraid of doing it, are you?"
+#~ msgstr "Non hai paura di farlo, giusto?"
+
+#, fuzzy
+#~ msgid "The priests thank you for occupying this evil place."
+#~ msgstr ""
+#~ "I monaci ti ringraziano per aver esplorato questa tenebrosa locazione."
+
+#, fuzzy
+#~ msgid "%1 (capital city)"
+#~ msgstr "vélocité %i"
+
+#, fuzzy
+#~ msgid "Defense: %1"
+#~ msgstr "Défense : %i"
+
+#, fuzzy
+#~ msgid "Status: razed!"
+#~ msgstr "Stato:"
+
+#~ msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
+#~ msgstr "GraphicsCache::getFlagPic: aucune pile proposée ! Sortie...\n"
+
+#, fuzzy
+#~ msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
+#~ msgstr "GraphicsCache::getFlagPic: aucune pile proposée ! Sortie...\n"
+
+#, fuzzy
+#~ msgid "Error, while loading a tileset. Tileset Name: "
+#~ msgstr ""
+#~ "Erreur lors du chargement du paquetage de combat. Nom du paquetage : "
+
+#~ msgid "Found configuration file: "
+#~ msgstr "Trouver le fichier de configuration : "
+
+#~ msgid "Configuration: Something went wrong while saving.\n"
+#~ msgstr ""
+#~ "Configuration : quelque chose s'est mal passé pendant la sauvegarde.\n"
+
+#~ msgid "Configuration file has wrong version, we want "
+#~ msgstr "Le fichier de configuration n'a pas la bonne version. Il demande "
+
+#~ msgid "Configuration file offers "
+#~ msgstr "Le fichier de configuration offre : "
+
+#~ msgid "I make a backup copy from "
+#~ msgstr "Je fais une copie de sauvegarde depuis "
+
+#~ msgid "Couldn't save the new configuration file..."
+#~ msgstr "Non ho potuto salvere il file di configurazione..."
+
+#, fuzzy
+#~ msgid "Check permissions of your home directory....aborting!"
+#~ msgstr "Controlla i permessi della tua home directory...esco!\n"
+
+#~ msgid "Created the standard configuration file "
+#~ msgstr "Ho creato il file di configurazione standard "
+
+#~ msgid "Couldn't create save game directory "
+#~ msgstr "Non ho potuto creare la directory per i file di salvataggio "
+
+#, fuzzy
+#~ msgid "Check permissions and the entries in your lordsawarrc file!"
+#~ msgstr "Controlla i permessi e le opzioni del tuo file freelordsrc!\n"
+
+#, fuzzy
+#~ msgid "Error, while loading a shieldset. Shieldset Name: "
+#~ msgstr ""
+#~ "Erreur lors du chargement du paquetage de combat. Nom du paquetage : "
+
+#~ msgid "Making random map"
+#~ msgstr "genero la mappa casuale"
+
+#~ msgid "Flatening Plains  ... 10%"
+#~ msgstr "Genero le pianure .. 10%"
+
+#~ msgid "Raining Water     ... 30%"
+#~ msgstr "Genero l'acqua   ... 30%"
+
+#~ msgid "Raising Hills     ... 20%"
+#~ msgstr "Genero le colline .. 20%"
+
+#~ msgid "Raising Mountains ... 30%"
+#~ msgstr "Genero le montagne .. 30%"
+
+#~ msgid "Planting Forest   ... 40%"
+#~ msgstr "Pianto le foreste .. 40%"
+
+#~ msgid "Watering Swamps   ... 50%"
+#~ msgstr "Genero le paludi ... 50%"
+
+#~ msgid "Normalizing       ... 60%"
+#~ msgstr "Normalizzo la mappa  60%"
+
+#~ msgid "Building Cities   ... 70%"
+#~ msgstr "Costruisco le Citt‡ 70%"
+
+#, fuzzy
+#~ msgid "Paving Roads      ... 75%"
+#~ msgstr "Genero l'acqua   ... 30%"
+
+#~ msgid "Ruining Ruins     ... 80%"
+#~ msgstr "Posiziono le rovine  80%"
+
+#, fuzzy
+#~ msgid "Raising Signs     ... 88%"
+#~ msgstr "Genero le colline .. 20%"
+
+#~ msgid "Spawning temples  ... 90%"
+#~ msgstr "Posiziono i tempi .. 90%"
+
+#~ msgid "Done making map   ... 100%"
+#~ msgstr "Mappa costruita .... 100%"
+
+#~ msgid "You have killed %i so far."
+#~ msgstr "Hai ucciso %i armate fino ad ora."
+
+#~ msgid ""
+#~ "Error: searching stack and ruin to be searched not on same position\n"
+#~ msgstr ""
+#~ "Errore: il gruppo che esplora e la rovina che viene esplorata non sono "
+#~ "nella stessa posizione\n"
+
+#~ msgid "Stack tried to visit temple at wrong location\n"
+#~ msgstr ""
+#~ "Il gruppo ha cercato di visitare il tempio alla locazione sbagliata\n"
+
+#, fuzzy
+#~ msgid "%1 Standard"
+#~ msgstr "Unité standard"
+
+#, fuzzy
+#~ msgid "Item: %1"
+#~ msgstr "Oggetto:"
+
+#, fuzzy
+#~ msgid "Site: %1"
+#~ msgstr "Grandezza:"
+
+#, fuzzy
+#~ msgid "The priests thank you for razing this evil place."
+#~ msgstr ""
+#~ "I monaci ti ringraziano per aver esplorato questa tenebrosa locazione."
+
+#, fuzzy
+#~ msgid "Capital city of %1"
+#~ msgstr "Cité de %s"
+
+#, fuzzy
+#~ msgid "Defence: %1"
+#~ msgstr "Défense : %i"
+
+#, fuzzy
+#~ msgid "No production"
+#~ msgstr "Pas de production libre"
+
+#, fuzzy
+#~ msgid "Strength: %1"
+#~ msgstr "Force : %i"
+
+#, fuzzy
+#~ msgid "Moves: %1"
+#~ msgstr "Mouvements : %i"
+
+#, fuzzy
+#~ msgid "Cost: %1"
+#~ msgstr "Costo:"
+
+#, fuzzy
+#~ msgid "Rename City"
+#~ msgstr "Cité en ruines"
+
+#, fuzzy
+#~ msgid "Raze City"
+#~ msgstr "Cité en ruines"
+
+#~ msgid "Human"
+#~ msgstr "Umano"
+
+#, fuzzy
+#~ msgid "Computer"
+#~ msgstr "Counter"
+
+#, fuzzy
+#~ msgid "Quest for %1"
+#~ msgstr "Nessuna quest per %s"
+
+#, fuzzy
+#~ msgid "%1 completed the quest!"
+#~ msgstr "Il tuo eroe %s ha completato la quest."
+
+#, fuzzy
+#~ msgid "Movement: %1"
+#~ msgstr "Mouvements : %i"
+
+#, fuzzy
+#~ msgid "Moves: %1/%2"
+#~ msgstr "Mouvements : %i"
+
+#, fuzzy
+#~ msgid "Upkeep: %1"
+#~ msgstr "Entretien : %i"
+
+#~ msgid "Easy"
+#~ msgstr "Semplice"
+
+#, fuzzy
+#~ msgid "LordsAWar map files (*.map)"
+#~ msgstr "File delle mappe di Freelords"
+
+#, fuzzy
+#~ msgid "Duration: %1"
+#~ msgstr "Durée : %i"
+
+#, fuzzy
+#~ msgid "Hitpoints: %1"
+#~ msgstr "Points d'attaque : %i"
+
+#, fuzzy
+#~ msgid "This hero already has a quest."
+#~ msgstr "Questo eroe ha gi‡ un'altra quest"
+
+#, fuzzy
+#~ msgid "Turns"
+#~ msgstr "Thurso"
+
+#, fuzzy
+#~ msgid "Gold Pieces"
+#~ msgstr "e hai trovato %i moneta d'oro!"
+
+#, fuzzy
+#~ msgid "Score"
+#~ msgstr "Scone"
+
+#, fuzzy
+#~ msgid "City History"
+#~ msgstr "Informations sur la cité"
+
+#, fuzzy
+#~ msgid "Event History"
+#~ msgstr "Eventi"
+
+#, fuzzy
+#~ msgid "Gold History"
+#~ msgstr "Rapport sur l'or"
+
+#~ msgid "Name"
+#~ msgstr "Nom "
+
+#, fuzzy
+#~ msgid "Attributes"
+#~ msgstr "Armate"
+
+#, fuzzy
+#~ msgid "Status"
+#~ msgstr "Stato:"
+
+#, fuzzy
+#~ msgid "In backpack"
+#~ msgstr "Sac à dos"
+
+#, fuzzy
+#~ msgid "On the ground"
+#~ msgstr "nouveau tour"
+
+#, fuzzy
+#~ msgid "Command: %1"
+#~ msgstr "Commento:"
+
+#, fuzzy
+#~ msgid "Level: %1"
+#~ msgstr "Livello:"
+
+#~ msgid "Neutral"
+#~ msgstr "Neutre"
+
+#, fuzzy
+#~ msgid "Game was not saved!"
+#~ msgstr "Gioco salvato."
+
+#, fuzzy
+#~ msgid "Choose a Name"
+#~ msgstr "Choisissez votre chemin !"
+
+#, fuzzy
+#~ msgid "Error saving game!"
+#~ msgstr "Errore nel salvataggio. Gioco non salvato"
+
+#, fuzzy
+#~ msgid "Are you sure you want to disband this group?"
+#~ msgstr "Vuoi veramente rimuovere questa produzione?"
+
+#, fuzzy
+#~ msgid "Are you sure you want to resign?"
+#~ msgstr "Vuoi veramente rimuovere questo evento?"
+
+#, fuzzy
+#~ msgid "Searching"
+#~ msgstr "Esplorata:"
+
+#, fuzzy
+#~ msgid "Hero Defeated"
+#~ msgstr "Défaite de la cité"
+
+#, fuzzy
+#~ msgid "Pillaged %1"
+#~ msgstr "Pillage"
+
+#, fuzzy
+#~ msgid "Sacked %1"
+#~ msgstr "StackKilled"
+
+#, fuzzy
+#~ msgid "Razed %1"
+#~ msgstr "Rasé"
+
+#, fuzzy
+#~ msgid ""
+#~ "%1\n"
+#~ "Turn %2"
+#~ msgstr "Turni: %i"
+
+#, fuzzy
+#~ msgid "%1 did not complete the quest."
+#~ msgstr "Il tuo Eroe %s non ha completato la quest."
+
+#, fuzzy
+#~ msgid "Advisor!"
+#~ msgstr "Audio"
+
+#, fuzzy
+#~ msgid "O Great Warlord!"
+#~ msgstr "Grande Épée orque"
+
+#, fuzzy
+#~ msgid "This battle shall be"
+#~ msgstr "Hache de Combat de Thrakil's"
+
+#, fuzzy
+#~ msgid "Move"
+#~ msgstr "Mouvements:"
+
+#, fuzzy
+#~ msgid "Bonus"
+#~ msgstr "bonus"
+
+#, fuzzy
+#~ msgid "Ruins and Temples"
+#~ msgstr "Ruines de Temple"
+
+#~ msgid "Ruin"
+#~ msgstr "Rovina"
+
+#, fuzzy
+#~ msgid "Stronghold"
+#~ msgstr "Force :"
+
+#~ msgid "Yes"
+#~ msgstr "Oui"
+
+#~ msgid "No"
+#~ msgstr "Non"
+
+#~ msgid "Temple"
+#~ msgstr "Tempio"
+
+#~ msgid "GGZ initialization failed. Exiting.\n"
+#~ msgstr "inizializzazione della GGZ fallita.Esco\n"
+
+#~ msgid "Play on GGZ"
+#~ msgstr "Gioca su GGZ"
+
+#, fuzzy
+#~ msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
+#~ msgstr "Per piacere lancia Freelords da un client GGZ Gaming Zone."
+
+#~ msgid "OK"
+#~ msgstr "OK"
+
+#, fuzzy
+#~ msgid "No Quest"
+#~ msgstr "Quest"
+
+#, fuzzy
+#~ msgid "Seek a quest in a temple!"
+#~ msgstr "Cerca in una rovina o un tempio"
+
+#, fuzzy
+#~ msgid "Army Report"
+#~ msgstr "Paquetage de combat"
+
+#, fuzzy
+#~ msgid "City Report"
+#~ msgstr "Rapport de la cité"
+
+#, fuzzy
+#~ msgid "Gold Report"
+#~ msgstr "Rapport sur l'or"
+
+#, fuzzy
+#~ msgid "Production Report"
+#~ msgstr "Coût de la production. :"
+
+#, fuzzy
+#~ msgid "third"
+#~ msgstr "Altro"
+
+#, fuzzy
+#~ msgid "sixth"
+#~ msgstr "vision"
+
+#, fuzzy
+#~ msgid "seventh"
+#~ msgstr "RaiseEvent"
+
+#, fuzzy
+#~ msgid "eighth"
+#~ msgstr "vision"
+
+#, fuzzy
+#~ msgid "Standard"
+#~ msgstr "Unité standard"
+
+#, fuzzy
+#~ msgid "%1 has advanced to level %2!"
+#~ msgstr "Votre unité à progresser d'un niveau !"
+
+#, fuzzy
+#~ msgid "Choose an attribute to improve:"
+#~ msgstr "Choisissez une caractéristiques à augmenter."
+
+#, fuzzy
+#~ msgid "Sight: %1"
+#~ msgstr "Vista:"
+
+#, fuzzy
+#~ msgid "Hero offer for %1"
+#~ msgstr "Un eroe si offre a %s"
+
+#, fuzzy
+#~ msgid "A hero in %1 wants to join you!"
+#~ msgstr "Un héros veut se joindre à vous"
+
+#, fuzzy
+#~ msgid "east"
+#~ msgstr "Quest"
+
+#, fuzzy
+#~ msgid "northeast"
+#~ msgstr "Forêt"
+
+#, fuzzy
+#~ msgid "south"
+#~ msgstr "A propos "
+
+#, fuzzy
+#~ msgid "north"
+#~ msgstr "Illorath"
+
+#, fuzzy
+#~ msgid "west"
+#~ msgstr "Quest"
+
+#, fuzzy
+#~ msgid "northwest"
+#~ msgstr "Forêt"
+
+#, fuzzy
+#~ msgid "Strength"
+#~ msgstr "Force :"
+
+#, fuzzy
+#~ msgid "Max Moves"
+#~ msgstr "Mouvements:"
+
+#, fuzzy
+#~ msgid "Upkeep"
+#~ msgstr "Entretien :"
+
+#, fuzzy
+#~ msgid "No description"
+#~ msgstr "Descrizione:"
+
+#, fuzzy
+#~ msgid "Could not load map %1."
+#~ msgstr "Non ho potuto creare la mappa "
+
+#, fuzzy
+#~ msgid "Auto"
+#~ msgstr "A propos "
+
+#~ msgid "Stack"
+#~ msgstr "Gruppo"
+
+#, fuzzy
+#~ msgid "No keeper"
+#~ msgstr "Occupante"
+
+#, fuzzy
+#~ msgid "No army"
+#~ msgstr "Sans nom"
+
+#, fuzzy
+#~ msgid "No Ruin"
+#~ msgstr "Rovina"
+
+#, fuzzy
+#~ msgid "Choose an Tileset to Load"
+#~ msgstr "Choisissez le quadrillage"
+
+#, fuzzy
+#~ msgid "Error, while loading an tileset. Tileset Name: "
+#~ msgstr ""
+#~ "Erreur lors du chargement du paquetage de combat. Nom du paquetage : "
+
+#, fuzzy
+#~ msgid "Mov"
+#~ msgstr "Mouvements:"
+
+#, fuzzy
+#~ msgid "HP"
+#~ msgstr "PE:"
+
+#, fuzzy
+#~ msgid "Upk"
+#~ msgstr "Entretien :"
+
+#~ msgid ""
+#~ "XML_Helper: Either open file for reading or writing, not both, exiting\n"
+#~ msgstr ""
+#~ "XML_Helper: Il file puÚ essere aperto il lettura o scrittura non in "
+#~ "entrambi i modi, esco\n"
+
+#~ msgid ": Error opening file for reading. Exiting\n"
+#~ msgstr ":Errore aprendo il file in lettura. Esco\n"
+
+#~ msgid ": The file is obfuscated, attempting to read it....\n"
+#~ msgstr ": Il file Ë offuscato, cerco di leggerlo....\n"
+
+#~ msgid ": The file is not obfuscated, attempting to read it....\n"
+#~ msgstr ": Il file non Ë offuscato, cerco di leggerlo....\n"
+
+#~ msgid ": Error opening file for writing. Exiting\n"
+#~ msgstr ": Errore aprendo il file in scrittura. Esco\n"
+
+#~ msgid "XML_Helper: dtags not empty!!\n"
+#~ msgstr "XML_Helper: dtags non Ë vuoto!!\n"
+
+#~ msgid "XML_Helper: no output stream given\n"
+#~ msgstr "XML_Helper: nessun output stream assegnato\n"
+
+#~ msgid ": The tag name starts with a \"d\". Not creating tag!\n"
+#~ msgstr ": Il nome del tag inizia con un \"d\". Non creo il tag!.\n"
+
+#~ msgid "XML_Helper: no output stream given.\n"
+#~ msgstr "XML_Helper: nessun output stream assegnato\n"
+
+#~ msgid "XML_Helper: save_data with empty name\n"
+#~ msgstr "XML_Helper: save_data con nome vuoto\n"
+
+#~ msgid "Saving game and obfuscating the Savefile.\n"
+#~ msgstr "Salvo il gioco e offusco il file di salvataggio.\n"
+
+#~ msgid "Saving game without obfuscation.\n"
+#~ msgstr "Salvo il gioco senza offuscare il file di salvataggio.\n"
+
+#~ msgid "XML_Helper: error parsing xml document.\n"
+#~ msgstr "XML_Helper: errore nel parsing del documento xml.\n"
+
+#~ msgid "Line "
+#~ msgstr "Linea "
+
+#~ msgid "Buffercontent = "
+#~ msgstr "Buffercontent = "
+
+#~ msgid ": Callback for tag returned false. Stop parsing document.\n"
+#~ msgstr ""
+#~ ": La callback per il tag ha ritornato falso. Smetto di parsare il "
+#~ "documento.\n"
+
+#, fuzzy
+#~ msgid "Couldn't initialize SDL-mixer\n"
+#~ msgstr "Non ho potuto inizializzare il sistema in X Window\n"
+
+#~ msgid "original path of stack was blocked\n"
+#~ msgstr "Le chemin d'origine de l'empilement est bloqué\n"
+
+#, fuzzy
+#~ msgid "+1 stack"
+#~ msgstr "Gruppi"
+
+#, fuzzy
+#~ msgid "+2 stack"
+#~ msgstr "Gruppi"
+
+#, fuzzy
+#~ msgid "+2 gold per city"
+#~ msgstr "e hai trovato %i moneta d'oro!"
+
+#, fuzzy
+#~ msgid "+3 gold per city"
+#~ msgstr "e hai trovato %i moneta d'oro!"
+
+#, fuzzy
+#~ msgid "+4 gold per city"
+#~ msgstr "e hai trovato %i moneta d'oro!"
+
+#, fuzzy
+#~ msgid "+5 gold per city"
+#~ msgstr "e hai trovato %i moneta d'oro!"
+
+#, fuzzy
+#~ msgid "CreateScenario:: wrong width given\n"
+#~ msgstr "CreateScenario:: mauvaise size donnée\n"
+
+#, fuzzy
+#~ msgid "CreateScenario:: wrong height given\n"
+#~ msgstr "CreateScenario:: mauvaise size donnée\n"
+
+#, fuzzy
+#~ msgid "northeastern map"
+#~ msgstr "Création de la carte"
+
+#, fuzzy
+#~ msgid "western map"
+#~ msgstr "Création de la carte"
+
+#, fuzzy
+#~ msgid "eastern map"
+#~ msgstr "Création de la carte"
+
+#~ msgid "Could not parse items description file. Exiting!\n"
+#~ msgstr ""
+#~ "Impossible de parser le fichier de description des objets. Sortie...\n"
+
+#~ msgid "ERROR: Couldn't load image "
+#~ msgstr "ERREUR : Impossible de charger l'image "
+
+#, fuzzy
+#~ msgid "Couldn't find any armysets!"
+#~ msgstr "Un possible de trouver un paquetage de combat seul !"
+
+#, fuzzy
+#~ msgid "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc"
+#~ msgstr ""
+#~ "Merci de vérifier le chemin d'accès dans /etc/freelordsrc o ~/."
+#~ "freelordsrc"
+
+#~ msgid "Exiting!"
+#~ msgstr "En cours de fermeture !"
+
+#, fuzzy
+#~ msgid "Couldn't find any tilesets!"
+#~ msgstr "Impossible de trouver un quadrillage !"
+
+#, fuzzy
+#~ msgid "Couldn't find any citysets!"
+#~ msgstr "Un possible de trouver un paquetage de combat seul !"
+
+#~ msgid "Couldn't find a single map!"
+#~ msgstr "Impossible de trouver une carte !"
+
+#, fuzzy
+#~ msgid "Couldn't find any shieldsets!"
+#~ msgstr "Impossible de trouver un quadrillage !"
+
+#~ msgid "non-numerical value for cache size\n"
+#~ msgstr "valore non numerico per la grandezza della cache\n"
+
+#~ msgid "Available parameters:"
+#~ msgstr "Parametri disponibili:"
+
+#~ msgid "-h,      --help             Shows this help screen\n"
+#~ msgstr "-h,      --help\t\t     Mostra questa schermata di aiuto\n"
+
+#, fuzzy
+#~ msgid "-c <size>                   Set the maximum cache size"
+#~ msgstr ""
+#~ "-c <size>                   imposta il valora massimo della grandezza "
+#~ "della cache"
+
+#~ msgid "-t,      --test             Starting with a test-scenario"
+#~ msgstr "-t,      --test             Parto con uno scenario di test"
+
+#, fuzzy
+#~ msgid "The priests thank you for sacking this evil place."
+#~ msgstr ""
+#~ "I monaci ti ringraziano per aver esplorato questa tenebrosa locazione."
 
 #~ msgid "%i shot"
 #~ msgid_plural "%i shots"
@@ -200,29 +1746,17 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgstr[0] "Souhaitez-vous mettre à niveau la cité pour %i pièce d'or ?"
 #~ msgstr[1] "Souhaitez-vous mettre à niveau la cité pour %i pièces d'or ?"
 
-#~ msgid "Standard Units"
-#~ msgstr "Unité standard"
-
 #~ msgid "Pikeman"
 #~ msgstr "Lancier"
 
 #~ msgid "Soldier"
 #~ msgstr "Soldat"
 
-#~ msgid "Archer"
-#~ msgstr "Archer"
-
 #~ msgid "Veteran"
 #~ msgstr "Vétéran"
 
 #~ msgid "Cavalry"
 #~ msgstr "Cavalerie"
-
-#~ msgid "Catapult"
-#~ msgstr "Catapulte"
-
-#~ msgid "Heroes"
-#~ msgstr "Héros"
 
 #~ msgid "Barbarian"
 #~ msgstr "Barbare"
@@ -320,24 +1854,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "default"
 #~ msgstr "défaut"
 
-#~ msgid "Grass"
-#~ msgstr "Herbe"
-
-#~ msgid "Water"
-#~ msgstr "Eau"
-
-#~ msgid "Forest"
-#~ msgstr "Forêt"
-
-#~ msgid "Hills"
-#~ msgstr "Collines"
-
-#~ msgid "Swamp"
-#~ msgstr "Marais"
-
-#~ msgid "Mountains"
-#~ msgstr "Montagnes"
-
 #~ msgid "Moon Blade"
 #~ msgstr "Lame lunaire"
 
@@ -374,10 +1890,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Enchanted Axe"
 #~ msgstr "Hache enchantée"
 
-#, fuzzy
-#~ msgid "Defense Rapier"
-#~ msgstr "Rapière de Défense"
-
 #~ msgid "Skull Crusher"
 #~ msgstr "Briseur de Crâne"
 
@@ -395,10 +1907,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 
 #~ msgid "Enchanted Greatsword"
 #~ msgstr "Grande Épée enchantée"
-
-#, fuzzy
-#~ msgid "Orcish Greatsword"
-#~ msgstr "Grande Épée orque"
 
 #~ msgid "Everburning Torch"
 #~ msgstr "Torche éternelle"
@@ -418,9 +1926,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 
 #~ msgid "Baneblade"
 #~ msgstr "Fléau"
-
-#~ msgid "Thrakil's Battleaxe"
-#~ msgstr "Hache de Combat de Thrakil's"
 
 #, fuzzy
 #~ msgid "Trident of the Seas"
@@ -461,14 +1966,8 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Crystal Rose"
 #~ msgstr "Rose de cristal"
 
-#~ msgid "Neutral"
-#~ msgstr "Neutre"
-
 #~ msgid "Seville"
 #~ msgstr "Séville"
-
-#~ msgid "Illorath"
-#~ msgstr "Illorath"
 
 #~ msgid "Almoravid"
 #~ msgstr "Almoravid"
@@ -521,9 +2020,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Pamplona"
 #~ msgstr "Pamplone"
 
-#~ msgid "Lisbon"
-#~ msgstr "Lisbone"
-
 #~ msgid "Oviedo"
 #~ msgstr "Obiedo"
 
@@ -535,9 +2031,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 
 #~ msgid "Metilla"
 #~ msgstr "Métille"
-
-#~ msgid "Algiers"
-#~ msgstr "Algiers"
 
 #~ msgid "Tlemsen"
 #~ msgstr "Tlemsen"
@@ -596,9 +2089,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Silent Lair"
 #~ msgstr "Antre Silencieuse"
 
-#~ msgid "Ruined Temple"
-#~ msgstr "Ruines de Temple"
-
 #~ msgid "Dusty Caves"
 #~ msgstr "Grottes poussièreuses"
 
@@ -640,9 +2130,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 
 #~ msgid "Player Count of Barcelona has won!"
 #~ msgstr "Le Comte de Barcelone est victorieux !"
-
-#~ msgid "Carthage"
-#~ msgstr "Carthage"
 
 #~ msgid "Hanibal"
 #~ msgstr "Hannibal"
@@ -698,9 +2185,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Hadrumentum"
 #~ msgstr "Hadrumentum"
 
-#~ msgid "Placentia"
-#~ msgstr "Placentia"
-
 #~ msgid "Massillia"
 #~ msgstr "Marseille"
 
@@ -743,12 +2227,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Zelasen's Tomb"
 #~ msgstr "Tombe de Zelasen"
 
-#~ msgid "Ruined City"
-#~ msgstr "Cité en ruines"
-
-#~ msgid "Weird Ruins"
-#~ msgstr "Ruines étranges"
-
 #~ msgid "Keltic Barrow"
 #~ msgstr "Brouette celtique"
 
@@ -785,9 +2263,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "If New Carthage falls..."
 #~ msgstr "Si la Nouvelle Carthage tombait..."
 
-#~ msgid "Neutrale"
-#~ msgstr "Neutre"
-
 #~ msgid "Northumbria"
 #~ msgstr "Northumbrie"
 
@@ -821,9 +2296,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "York"
 #~ msgstr "York"
 
-#~ msgid "Scone"
-#~ msgstr "Scone"
-
 #~ msgid "Leicester"
 #~ msgstr "Leicester"
 
@@ -853,9 +2325,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 
 #~ msgid "Dingwall"
 #~ msgstr "Dingwall"
-
-#~ msgid "Thurso"
-#~ msgstr "Thurso"
 
 #~ msgid "Exeter"
 #~ msgstr "Exeter"
@@ -1016,20 +2485,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Karhain"
 #~ msgstr "Harhain"
 
-#~ msgid "Pelerine"
-#~ msgstr "Pelerine"
-
 #~ msgid "Moonshine"
 #~ msgstr "Leur lunaire"
 
 #~ msgid "Hellgate"
 #~ msgstr "Porte de l'Enfer"
-
-#~ msgid "Trales"
-#~ msgstr "Tralse"
-
-#~ msgid "Noname"
-#~ msgstr "Sans nom"
 
 #~ msgid "Atena"
 #~ msgstr "Athena"
@@ -1045,9 +2505,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 
 #~ msgid "Peasant's church"
 #~ msgstr "Église paysanne"
-
-#~ msgid "Garden of Peace"
-#~ msgstr "Jardin de la Paix"
 
 #~ msgid "Order of Fire"
 #~ msgstr "Ordre du Feu"
@@ -1361,9 +2818,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "YOU WIN!"
 #~ msgstr "VOUS ÊTES VICTORIEUX !"
 
-#~ msgid "About"
-#~ msgstr "A propos "
-
 #~ msgid "Creator of the project:"
 #~ msgstr "Créateur du projet :"
 
@@ -1385,20 +2839,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Version %s"
 #~ msgstr "Version %s"
 
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgid "Items"
-#~ msgstr "Objets"
-
 #~ msgid "xp: %.2f"
 #~ msgstr "Exp : %.2f"
 
 #~ msgid "level: %i"
 #~ msgstr "Niveau : %i"
-
-#~ msgid "Upkeep: %i"
-#~ msgstr "Entretien : %i"
 
 #, fuzzy
 #~ msgid "ship"
@@ -1419,12 +2864,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "can score critical hits"
 #~ msgstr "peut infliger des coups critiques"
 
-#~ msgid "Your unit advanced a level!"
-#~ msgstr "Votre unité à progresser d'un niveau !"
-
-#~ msgid "Choose a characteristic to raise."
-#~ msgstr "Choisissez une caractéristiques à augmenter."
-
 #~ msgid "level: "
 #~ msgstr "niveau : "
 
@@ -1443,33 +2882,14 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "vitality"
 #~ msgstr "vélocité"
 
-#~ msgid "sight"
-#~ msgstr "vision"
-
 #~ msgid "hp"
 #~ msgstr "pv"
 
 #~ msgid "moves"
 #~ msgstr "mouvements"
 
-#~ msgid "medal awarded"
-#~ msgstr "Médailles obtenues"
-
-#~ msgid "Error, while loading an armyset. Armyset Name: "
-#~ msgstr ""
-#~ "Erreur lors du chargement du paquetage de combat. Nom du paquetage : "
-
-#~ msgid "original path of stack was blocked\n"
-#~ msgstr "Le chemin d'origine de l'empilement est bloqué\n"
-
-#~ msgid "no information"
-#~ msgstr "Aucune information"
-
 #~ msgid "gold: %i"
 #~ msgstr "Or : %i"
-
-#~ msgid "None"
-#~ msgstr "Néant"
 
 #~ msgid "n.a."
 #~ msgstr "n.c."
@@ -1477,26 +2897,14 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Idle"
 #~ msgstr "Inactive"
 
-#~ msgid "city report"
-#~ msgstr "Rapport de la cité"
-
 #~ msgid "Prev."
 #~ msgstr "Précédent"
-
-#~ msgid "Next"
-#~ msgstr "Suivant"
-
-#~ msgid "City info"
-#~ msgstr "Informations sur la cité"
 
 #~ msgid "Village of %s"
 #~ msgstr "Village de %s"
 
 #~ msgid "Town of %s"
 #~ msgstr "Ville de %s"
-
-#~ msgid "City of %s"
-#~ msgstr "Cité de %s"
 
 #~ msgid "Income: %i gold , Defense level : %i"
 #~ msgstr "Arrive : %i pièce d'or , niveau de défense : %i"
@@ -1507,29 +2915,14 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Advanced productions"
 #~ msgstr "Productions avancées"
 
-#~ msgid "Name:"
-#~ msgstr "Nom :"
-
 #~ msgid "Duration:"
 #~ msgstr "Durée :"
-
-#~ msgid "Strength:"
-#~ msgstr "Force :"
 
 #~ msgid "Ranged:"
 #~ msgstr "A distance :"
 
-#~ msgid "Moves:"
-#~ msgstr "Mouvements:"
-
-#~ msgid "Upkeep:"
-#~ msgstr "Entretien :"
-
 #~ msgid "Upgrade"
 #~ msgstr "Mise à niveau"
-
-#~ msgid "Vectoring"
-#~ msgstr "Vectoring"
 
 #~ msgid "Buy Basic"
 #~ msgstr "Construire base"
@@ -1537,29 +2930,17 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Buy Advanced"
 #~ msgstr "Construire avancé"
 
-#~ msgid "Close"
-#~ msgstr "Fermer"
-
 #~ msgid "Upgrade City"
 #~ msgstr "Mettre à niveau la cité"
 
 #~ msgid "Upgrade city"
 #~ msgstr "Mettre à jour la cité"
 
-#~ msgid "Yes"
-#~ msgstr "Oui"
-
-#~ msgid "No"
-#~ msgstr "Non"
-
 #~ msgid "Income: %i gold coins , Defense level : %i"
 #~ msgstr "Arrive : %i pièces d'or , niveau de défense : %i"
 
 #~ msgid "No production selected!"
 #~ msgstr "Aucune production sélectionnée !"
-
-#~ msgid "No free production"
-#~ msgstr "Pas de production libre"
 
 #~ msgid ""
 #~ "There are no free production slots available. Select the one you want to "
@@ -1585,43 +2966,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ "Player::city_buyAdvanced_productiona retourné faux la où il ne devrait "
 #~ "pas "
 
-#~ msgid "Defeated city"
-#~ msgstr "Défaite de la cité"
-
-#~ msgid "Choose your way!"
-#~ msgstr "Choisissez votre chemin !"
-
-#~ msgid "Occupy"
-#~ msgstr "Occupé"
-
-#~ msgid "Raze"
-#~ msgstr "Rasé"
-
-#~ msgid "Pillage"
-#~ msgstr "Pillage"
-
-#~ msgid "Found configuration file: "
-#~ msgstr "Trouver le fichier de configuration : "
-
-#~ msgid "Configuration: Something went wrong while saving.\n"
-#~ msgstr ""
-#~ "Configuration : quelque chose s'est mal passé pendant la sauvegarde.\n"
-
-#~ msgid "Configuration file has wrong version, we want "
-#~ msgstr "Le fichier de configuration n'a pas la bonne version. Il demande "
-
-#~ msgid "Configuration file offers "
-#~ msgstr "Le fichier de configuration offre : "
-
-#~ msgid "I make a backup copy from "
-#~ msgstr "Je fais une copie de sauvegarde depuis "
-
-#~ msgid "CreateScenario:: wrong size given\n"
-#~ msgstr "CreateScenario:: mauvaise size donnée\n"
-
-#~ msgid "Creating map"
-#~ msgstr "Création de la carte"
-
 #~ msgid "Distributing players"
 #~ msgstr "Distribution des joueurs"
 
@@ -1645,32 +2989,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ "Erreur grave : impossible d'ouvrir le fichier de données des noms des "
 #~ "villes\n"
 
-#~ msgid "Buy Production"
-#~ msgstr "Acheter la production"
-
-#~ msgid "Production cost:"
-#~ msgstr "Coût de la production. :"
-
 #~ msgid "Shots:"
 #~ msgstr "Tirs :"
 
 #~ msgid "Defense:"
 #~ msgstr "Défense :"
-
-#~ msgid "Hitpoints:"
-#~ msgstr "Points d'attaque :"
-
-#~ msgid "Buy"
-#~ msgstr "Acheter"
-
-#~ msgid "Cancel"
-#~ msgstr "Annuler"
-
-#~ msgid "Duration: %i"
-#~ msgstr "Durée : %i"
-
-#~ msgid "Strength: %i"
-#~ msgstr "Force : %i"
 
 #~ msgid "Ranged: %i"
 #~ msgstr "A Distance : %i"
@@ -1678,83 +3001,14 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Shots: %i"
 #~ msgstr "Tirs : %i"
 
-#~ msgid "Defense: %i"
-#~ msgstr "Défense : %i"
-
-#~ msgid "Hitpoints: %i"
-#~ msgstr "Points d'attaque : %i"
-
-#~ msgid "Moves: %i"
-#~ msgstr "Mouvements : %i"
-
 #~ msgid "Production cost: %i"
 #~ msgstr "Coût de la production : %i"
-
-#~ msgid "ERROR: Couldn't load image "
-#~ msgstr "ERREUR : Impossible de charger l'image "
-
-#~ msgid "Couldn't find a single armyset!"
-#~ msgstr "Un possible de trouver un paquetage de combat seul !"
-
-#~ msgid "Please check the path settings in /etc/freelordsrc or ~/.freelordsrc"
-#~ msgstr ""
-#~ "Merci de vérifier le chemin d'accès dans /etc/freelordsrc o ~/."
-#~ "freelordsrc"
-
-#~ msgid "Exiting!"
-#~ msgstr "En cours de fermeture !"
-
-#~ msgid "Couldn't find a single tileset!"
-#~ msgstr "Impossible de trouver un quadrillage !"
-
-#~ msgid "Couldn't find a single map!"
-#~ msgstr "Impossible de trouver une carte !"
-
-#~ msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
-#~ msgstr ""
-#~ "Erreur dans GameMap::fillMap : la taille ne correspond pas !!! Sortie.\n"
-
-#~ msgid "player's turn"
-#~ msgstr "tour du joueur"
-
-#~ msgid "new round"
-#~ msgstr "nouveau tour"
-
-#~ msgid "Type"
-#~ msgstr "Type"
-
-#~ msgid "Name"
-#~ msgstr "Nom "
-
-#~ msgid "Armyset"
-#~ msgstr "Paquetage de combat"
-
-#~ msgid "Random"
-#~ msgstr "Aléatoire"
-
-#~ msgid "Load Map"
-#~ msgstr "Charger la carte"
-
-#~ msgid "Choose Tileset"
-#~ msgstr "Choisissez le quadrillage"
 
 #~ msgid "Process armies at beginning of"
 #~ msgstr "Processus des armées au début de"
 
 #~ msgid "Browse"
 #~ msgstr "Parcourir"
-
-#~ msgid "Cities"
-#~ msgstr "Cité"
-
-#~ msgid "Ruins"
-#~ msgstr "Ruines"
-
-#~ msgid "Temples"
-#~ msgstr "Temples"
-
-#~ msgid "Start Game"
-#~ msgstr "Démarrer le jeu"
 
 #~ msgid "Back to main menu"
 #~ msgstr "Retour au menu principal"
@@ -1768,37 +3022,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Tiny size"
 #~ msgstr "Taille minuscule"
 
-#~ msgid "Autosave failed.\n"
-#~ msgstr "La sauvegarde automatique a échouée.\n"
-
-#~ msgid "Error while trying to rename the temporary file to autosave.sav\n"
-#~ msgstr ""
-#~ "Erreur lors de la tentative de renommage du fichier temporaire dans "
-#~ "autosave.sav\n"
-
-#, fuzzy
-#~ msgid "Error: "
-#~ msgstr "Erruer :"
-
-#~ msgid "The Filename is well formed"
-#~ msgstr "Le nom de fichier est correct"
-
-#~ msgid "The Filename lacks the extension --> "
-#~ msgstr "Il manque l'extension au nom du fichier --> "
-
-#~ msgid "GameScenario: Something went wrong with saving.\n"
-#~ msgstr ""
-#~ "GameScenario: Quelque chose s'est mal déroulée pendant la sauvegarde.\n"
-
-#~ msgid "savefile has wrong version, we want "
-#~ msgstr "Le fichier sauvegardé a une mauvaise version. Il attendait "
-
-#~ msgid "savefile offers "
-#~ msgstr "Le fichier sauvegardé offre "
-
-#~ msgid "Gold report"
-#~ msgstr "Rapport sur l'or"
-
 #~ msgid "Player's gold ressources:"
 #~ msgstr "Ressources en or du joueur :"
 
@@ -1807,20 +3030,8 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ "GraphicsCache: tentative d'accéder à l'image de la ville sans le "
 #~ "joueur. Sortie...\n"
 
-#~ msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
-#~ msgstr "GraphicsCache::getFlagPic: aucune pile proposée ! Sortie...\n"
-
 #~ msgid "Hero offer"
 #~ msgstr "Offre du Héros"
-
-#~ msgid "Accept"
-#~ msgstr "Accepter"
-
-#~ msgid "Reject"
-#~ msgstr "Refusé"
-
-#~ msgid "A hero wants to join you"
-#~ msgstr "Un héros veut se joindre à vous"
 
 #~ msgid "for %i gold"
 #~ msgstr "pour  %i pièce d'or"
@@ -1837,20 +3048,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "accessoire"
 #~ msgstr "Accessoires"
 
-#~ msgid "Backpack"
-#~ msgstr "Sac à dos"
-
 #~ msgid "prev"
 #~ msgstr "Précédente"
 
 #~ msgid "next"
 #~ msgstr "Suivante"
-
-#~ msgid "Ground"
-#~ msgstr "Sol"
-
-#~ msgid "+%i strength"
-#~ msgstr "Force +%i"
 
 #~ msgid "%i strength"
 #~ msgstr "%i force"
@@ -1863,9 +3065,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 
 #~ msgid "+%i vitality"
 #~ msgstr "Vélocité +%i"
-
-#~ msgid "%i vitality"
-#~ msgstr "vélocité %i"
 
 #~ msgid "+%i hitpoints"
 #~ msgstr "Points d'attaque +%i"
@@ -1890,10 +3089,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 
 #~ msgid "can deal instant death"
 #~ msgstr "peut négocier une mort instantanée"
-
-#~ msgid "Could not parse items description file. Exiting!\n"
-#~ msgstr ""
-#~ "Impossible de parser le fichier de description des objets. Sortie...\n"
 
 #~ msgid "No modes available!\n"
 #~ msgstr "Aucun mode disponible !\n"
@@ -1920,30 +3115,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ "Non ho potuto trovare nessun file di configurazione...tento l'auto-"
 #~ "configurazione."
 
-#~ msgid "Couldn't save the new configuration file..."
-#~ msgstr "Non ho potuto salvere il file di configurazione..."
-
-#~ msgid "Check permissions of your home directory....aborting!\n"
-#~ msgstr "Controlla i permessi della tua home directory...esco!\n"
-
-#~ msgid "Created the standard configuration file "
-#~ msgstr "Ho creato il file di configurazione standard "
-
-#~ msgid "Couldn't create save game directory "
-#~ msgstr "Non ho potuto creare la directory per i file di salvataggio "
-
-#~ msgid "Check permissions and the entries in your freelordsrc file!\n"
-#~ msgstr "Controlla i permessi e le opzioni del tuo file freelordsrc!\n"
-
-#~ msgid "non-numerical value for cache size\n"
-#~ msgstr "valore non numerico per la grandezza della cache\n"
-
-#~ msgid "Available parameters:"
-#~ msgstr "Parametri disponibili:"
-
-#~ msgid "-h,      --help             Shows this help screen\n"
-#~ msgstr "-h,      --help\t\t     Mostra questa schermata di aiuto\n"
-
 #~ msgid "-r1600                      Resolution set to 1600x1200"
 #~ msgstr "-r1600                      Risoluzione impostata a 1600x1200"
 
@@ -1962,14 +3133,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "-f,      --fullscreen       Fullscreen mode"
 #~ msgstr "-f,      --fullscreen       Modalit‡ a schermo intero"
 
-#~ msgid "-c <size>                   set the maximum cache size"
-#~ msgstr ""
-#~ "-c <size>                   imposta il valora massimo della grandezza "
-#~ "della cache"
-
-#~ msgid "-t,      --test             Starting with a test-scenario"
-#~ msgstr "-t,      --test             Parto con uno scenario di test"
-
 #~ msgid "Please send bug reports to ulf82@users.sf.net"
 #~ msgstr "Spedire i bug report a ulf82@users.sf.net"
 
@@ -1986,44 +3149,8 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Using resolution: "
 #~ msgstr "Uso la risoluzione: "
 
-#~ msgid "Couldn't initialize X Windowing System\n"
-#~ msgstr "Non ho potuto inizializzare il sistema in X Window\n"
-
-#~ msgid "Load"
-#~ msgstr "Carica"
-
 #~ msgid "Save"
 #~ msgstr "Salva"
-
-#~ msgid "Save as"
-#~ msgstr "Salva con nome"
-
-#~ msgid "Quit"
-#~ msgstr "Esci"
-
-#~ msgid "Armies"
-#~ msgstr "Armate"
-
-#~ msgid "Gold"
-#~ msgstr "Oro"
-
-#~ msgid "Quests"
-#~ msgstr "Quest"
-
-#~ msgid "Game options"
-#~ msgstr "Opzioni di gioco"
-
-#~ msgid "Help"
-#~ msgstr "Aiuto"
-
-#~ msgid "File"
-#~ msgstr "File"
-
-#~ msgid "Reports"
-#~ msgstr "Resoconti"
-
-#~ msgid "Options"
-#~ msgstr "Opzioni"
 
 #~ msgid "Freelords savegames"
 #~ msgstr "File di Freelords"
@@ -2034,83 +3161,17 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid ". Bailing out.\n"
 #~ msgstr ". Sto uscendo.\n"
 
-#~ msgid "Save Game"
-#~ msgstr "Salvataggio del Gioco"
-
-#~ msgid "Game Saved."
-#~ msgstr "Gioco salvato."
-
-#~ msgid "Error saving. Game not saved"
-#~ msgstr "Errore nel salvataggio. Gioco non salvato"
-
 #~ msgid "not implemented yet\n"
 #~ msgstr "non ancora implementato\n"
 
 #~ msgid "Creating Map"
 #~ msgstr "Sto creando la mappa"
 
-#~ msgid "Generating random map"
-#~ msgstr "genero la mappa casuale"
-
-#~ msgid "Making random map"
-#~ msgstr "genero la mappa casuale"
-
-#~ msgid "Flatening Plains  ... 10%"
-#~ msgstr "Genero le pianure .. 10%"
-
-#~ msgid "Raining Water     ... 30%"
-#~ msgstr "Genero l'acqua   ... 30%"
-
-#~ msgid "Raising Hills     ... 20%"
-#~ msgstr "Genero le colline .. 20%"
-
-#~ msgid "Raising Mountains ... 30%"
-#~ msgstr "Genero le montagne .. 30%"
-
-#~ msgid "Planting Forest   ... 40%"
-#~ msgstr "Pianto le foreste .. 40%"
-
-#~ msgid "Watering Swamps   ... 50%"
-#~ msgstr "Genero le paludi ... 50%"
-
-#~ msgid "Normalizing       ... 60%"
-#~ msgstr "Normalizzo la mappa  60%"
-
-#~ msgid "Building Cities   ... 70%"
-#~ msgstr "Costruisco le Citt‡ 70%"
-
-#~ msgid "Ruining Ruins     ... 80%"
-#~ msgstr "Posiziono le rovine  80%"
-
-#~ msgid "Spawning temples  ... 90%"
-#~ msgstr "Posiziono i tempi .. 90%"
-
-#~ msgid "Done making map   ... 100%"
-#~ msgstr "Mappa costruita .... 100%"
-
 #~ msgid "Game settings"
 #~ msgstr "Opzioni di gioco"
 
-#~ msgid "Video"
-#~ msgstr "Video"
-
-#~ msgid "Audio"
-#~ msgstr "Audio"
-
 #~ msgid "Misc"
 #~ msgstr "Varie"
-
-#~ msgid "Fullscreen"
-#~ msgstr "Schermo Intero"
-
-#~ msgid "Enable music"
-#~ msgstr "Abilita la musica"
-
-#~ msgid "Volume:"
-#~ msgstr "Volume:"
-
-#~ msgid "Smooth scrolling"
-#~ msgstr "Scorrimento fluido"
 
 #~ msgid "Show next player popup"
 #~ msgstr "Mostra il popup del prossimo giocatore"
@@ -2125,12 +3186,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Save in:"
 #~ msgstr "Salva in:"
 
-#~ msgid "File name:"
-#~ msgstr "Nome del file:"
-
-#~ msgid "File type:"
-#~ msgstr "Tipo del File:"
-
 #~ msgid "Open"
 #~ msgstr "Apri"
 
@@ -2143,49 +3198,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Cannot add directory '%s' to the archive"
 #~ msgstr "Non posso aggiungere la dir '%s' all'archivio"
 
-#~ msgid "Human"
-#~ msgstr "Umano"
-
-#~ msgid "Easy"
-#~ msgstr "Semplice"
-
 #~ msgid "Smart"
 #~ msgstr "Avanzato"
 
 #~ msgid "User selected wrong armytype ????\n"
 #~ msgstr "L'utente ha selezioneto il tipo di armata sbagliato????\n"
-
-#~ msgid "You have killed %i so far."
-#~ msgstr "Hai ucciso %i armate fino ad ora."
-
-#~ msgid "Well done!"
-#~ msgstr "Ben fatto!"
-
-#~ msgid "You're still searching for him..."
-#~ msgstr " Lo stai ancora cercando..."
-
-#~ msgid "Seen lately near ("
-#~ msgstr "Avvistato vicino ("
-
-#~ msgid "You slayed the wicked hero %s. He deserved that!"
-#~ msgstr "Hai ucciso il crudele eroe %s. Se lo meritava!"
-
-# c-format
-#~ msgid "You could not slay the wicked hero %s"
-#~ msgstr "Non sei riuscito ad uccidere il crudele eroe %s"
-
-#~ msgid "He was slain by other fellows!"
-#~ msgstr "» stato ucciso da un altro gruppo di armate!"
-
-#~ msgid "Kill the hero named %s, servant of player %s"
-#~ msgstr "Uccidi l'eroe chiamato %s, servitore del giocatore %s"
-
-#~ msgid "You aren't afraid of doing it, do you?"
-#~ msgstr "Non hai paura di farlo, giusto?"
-
-#~ msgid "The priests thank you for exploring this gloomy place."
-#~ msgstr ""
-#~ "I monaci ti ringraziano per aver esplorato questa tenebrosa locazione."
 
 #~ msgid "Now they can set a temple here."
 #~ msgstr "Ora potranno costruirci un tempio."
@@ -2205,36 +3222,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "CONGRATULATIONS!"
 #~ msgstr "CONGRATULAZIONI!"
 
-#~ msgid "Your Hero %s completed the quest."
-#~ msgstr "Il tuo eroe %s ha completato la quest."
-
 #~ msgid "SORRY FOR YOU!"
 #~ msgstr "SPIACENTE!"
 
-#~ msgid "Your Hero %s did not complete the quest."
-#~ msgstr "Il tuo Eroe %s non ha completato la quest."
-
-#~ msgid "Quests report"
-#~ msgstr "Resoconto sulle quest"
-
-#~ msgid "No quests for %s"
-#~ msgstr "Nessuna quest per %s"
-
-#~ msgid ""
-#~ "Error: searching stack and ruin to be searched not on same position\n"
-#~ msgstr ""
-#~ "Errore: il gruppo che esplora e la rovina che viene esplorata non sono "
-#~ "nella stessa posizione\n"
-
-#~ msgid "Stack tried to visit temple at wrong location\n"
-#~ msgstr ""
-#~ "Il gruppo ha cercato di visitare il tempio alla locazione sbagliata\n"
-
 #~ msgid "Position:"
 #~ msgstr "Posizione:"
-
-#~ msgid "Searched:"
-#~ msgstr "Esplorata:"
 
 #~ msgid "Entering the ruin..."
 #~ msgstr "Stai entrando nelle rovine..."
@@ -2242,36 +3234,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "You defeated the monsters"
 #~ msgstr "Hai sconfitto i mostri"
 
-#~ msgid "New Campaign"
-#~ msgstr "Nuova Campagna"
-
-#~ msgid "New Game"
-#~ msgstr "Nuovo Gioco"
-
-#~ msgid "Load Game"
-#~ msgstr "Carica Gioco"
-
-#~ msgid "Load Scenario"
-#~ msgstr "Carica uno Scenario"
-
-#
-#~ msgid "New Network Game"
-#~ msgstr "Nuovo Gioco in Rete"
-
 #~ msgid "Language"
 #~ msgstr "Lingua"
 
 #~ msgid "random.map was broken when re-reading. Exiting...\n"
 #~ msgstr "il file random.map Ë rovinato (durante la rilettura). Esco...\n"
-
-#~ msgid "GGZ initialization failed. Exiting.\n"
-#~ msgstr "inizializzazione della GGZ fallita.Esco\n"
-
-#~ msgid "Play on GGZ"
-#~ msgstr "Gioca su GGZ"
-
-#~ msgid "Please launch Freelords from a GGZ Gaming Zone client."
-#~ msgstr "Per piacere lancia Freelords da un client GGZ Gaming Zone."
 
 #~ msgid "FreeLords savegames"
 #~ msgstr "File di salvataggio di Freelords"
@@ -2303,56 +3270,23 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "stack report"
 #~ msgstr "Resoconto sulle armate"
 
-#~ msgid "Turns: %i"
-#~ msgstr "Turni: %i"
-
 #~ msgid "Gold: %i"
 #~ msgstr "Oro: %i"
 
 #~ msgid "Next Player: %s"
 #~ msgstr "Prossimo giocatore %s"
 
-#~ msgid "Hero offer for %s"
-#~ msgstr "Un eroe si offre a %s"
-
-#~ msgid "Select an action"
-#~ msgstr "Seleziona un'azione"
-
 #~ msgid "Bless"
 #~ msgstr "Benedizione"
-
-#~ msgid "Quest"
-#~ msgstr "Quest"
 
 #~ msgid "Quest - "
 #~ msgstr "Quest - "
 
-#~ msgid "This hero already has a quest"
-#~ msgstr "Questo eroe ha gi‡ un'altra quest"
-
-#~ msgid "Game Loaded."
-#~ msgstr "Gioco caricato."
-
 #~ msgid "Select the previous stack"
 #~ msgstr "Seleziona il precedente gruppo di armate"
 
-#~ msgid "Select the next stack"
-#~ msgstr "Seleziona il successivo gruppo di armate"
-
-#~ msgid "Select the next stack that can move"
-#~ msgstr "Seleziona il successivo gruppo di armate che abbia punti movimento"
-
 #~ msgid "Let the selected stack move to destination"
 #~ msgstr "Muovi il gruppo di armate verso la destinazione"
-
-#~ msgid "Let all stacks move to their destinations"
-#~ msgstr "Muovi tutti i possibili gruppi di armate verso la loro destinazione"
-
-#~ msgid "Center window on selected stack"
-#~ msgstr "Centra la finestra sul gruppo di armate"
-
-#~ msgid "Let the stack defend"
-#~ msgstr "Fai difendere il gruppo di armate"
 
 #~ msgid "Let the stack defend and select the next stack"
 #~ msgstr "Fai difendere il gruppo di armate e seleziona il prossimo gruppo"
@@ -2362,67 +3296,8 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ "Fai difendere il gruppo di armate e seleziona il prossimo gruppo che "
 #~ "abbia punti movimento"
 
-#~ msgid "Search a ruin or a temple"
-#~ msgstr "Cerca in una rovina o un tempio"
-
 #~ msgid "Next turn"
 #~ msgstr "Turno Successivo"
-
-#~ msgid "Description:"
-#~ msgstr "Descrizione:"
-
-#~ msgid ""
-#~ "XML_Helper: Either open file for reading or writing, not both, exiting\n"
-#~ msgstr ""
-#~ "XML_Helper: Il file puÚ essere aperto il lettura o scrittura non in "
-#~ "entrambi i modi, esco\n"
-
-#~ msgid ": Error opening file for reading. Exiting\n"
-#~ msgstr ":Errore aprendo il file in lettura. Esco\n"
-
-#~ msgid ": The file is obfuscated, attempting to read it....\n"
-#~ msgstr ": Il file Ë offuscato, cerco di leggerlo....\n"
-
-#~ msgid ": The file is not obfuscated, attempting to read it....\n"
-#~ msgstr ": Il file non Ë offuscato, cerco di leggerlo....\n"
-
-#~ msgid ": Error opening file for writing. Exiting\n"
-#~ msgstr ": Errore aprendo il file in scrittura. Esco\n"
-
-#~ msgid "XML_Helper: dtags not empty!!\n"
-#~ msgstr "XML_Helper: dtags non Ë vuoto!!\n"
-
-#~ msgid "XML_Helper: no output stream given\n"
-#~ msgstr "XML_Helper: nessun output stream assegnato\n"
-
-#~ msgid ": The tag name starts with a \"d\". Not creating tag!\n"
-#~ msgstr ": Il nome del tag inizia con un \"d\". Non creo il tag!.\n"
-
-#~ msgid "XML_Helper: no output stream given.\n"
-#~ msgstr "XML_Helper: nessun output stream assegnato\n"
-
-#~ msgid "XML_Helper: save_data with empty name\n"
-#~ msgstr "XML_Helper: save_data con nome vuoto\n"
-
-#~ msgid "Saving game and obfuscating the Savefile.\n"
-#~ msgstr "Salvo il gioco e offusco il file di salvataggio.\n"
-
-#~ msgid "Saving game without obfuscation.\n"
-#~ msgstr "Salvo il gioco senza offuscare il file di salvataggio.\n"
-
-#~ msgid "XML_Helper: error parsing xml document.\n"
-#~ msgstr "XML_Helper: errore nel parsing del documento xml.\n"
-
-#~ msgid "Line "
-#~ msgstr "Linea "
-
-#~ msgid "Buffercontent = "
-#~ msgstr "Buffercontent = "
-
-#~ msgid ": Callback for tag returned false. Stop parsing document.\n"
-#~ msgstr ""
-#~ ": La callback per il tag ha ritornato falso. Smetto di parsare il "
-#~ "documento.\n"
 
 #~ msgid "You need at least 800 x 600 resolution to run the editor\n"
 #~ msgstr ""
@@ -2437,26 +3312,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "New"
 #~ msgstr "Nuovo"
 
-#~ msgid "Scenario"
-#~ msgstr "Scenario"
-
-#~ msgid "Players"
-#~ msgstr "Giocatori"
-
-#~ msgid "Events"
-#~ msgstr "Eventi"
-
-#~ msgid "Edit"
-#~ msgstr "Edita"
-
 #~ msgid "By ID"
 #~ msgstr "Per ID"
 
 #~ msgid "Find"
 #~ msgstr "Trova"
-
-#~ msgid "stacks"
-#~ msgstr "Gruppi"
 
 #~ msgid "cities"
 #~ msgstr "Citt‡"
@@ -2474,35 +3334,20 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Freelords maps"
 #~ msgstr "Mappe di Freelords"
 
-#~ msgid "Couldn't load map "
-#~ msgstr "Non ho potuto creare la mappa "
-
 #~ msgid "Map Saved"
 #~ msgstr "Mappa salvata"
 
 #~ msgid "Error saving. Map not saved"
 #~ msgstr "Errore nel salvataggio. Mappa non salvata"
 
-#~ msgid "Freelords map files"
-#~ msgstr "File delle mappe di Freelords"
-
 #~ msgid "Map Saved."
 #~ msgstr "Mappa salvata."
-
-#~ msgid "Create New Map"
-#~ msgstr "Crea una nuova Mappa"
 
 #~ msgid "Select fill style"
 #~ msgstr "Seleziona lo stile di riempimento"
 
-#~ msgid "Size:"
-#~ msgstr "Grandezza:"
-
 #~ msgid "Create"
 #~ msgstr "Crea"
-
-#~ msgid "Random Map"
-#~ msgstr "Mappa Casuale"
 
 #~ msgid "Mapsize must be between 20 and 200!"
 #~ msgstr "La grandezza della mappa deve esssere tra 20 e 200!"
@@ -2513,29 +3358,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Do you want to modify the stack or the object beneath?"
 #~ msgstr "Vuoi modificare il gruppo o l'oggetto sottostante?"
 
-#~ msgid "Stack"
-#~ msgstr "Gruppo"
-
-#~ msgid "Other"
-#~ msgstr "Altro"
-
 #~ msgid "ArmySelection"
 #~ msgstr "Selezione Unit‡"
 
-#~ msgid "Cost:"
-#~ msgstr "Costo:"
-
-#~ msgid "HP:"
-#~ msgstr "PE:"
-
 #~ msgid "Vitality:"
 #~ msgstr "Vitalit‡:"
-
-#~ msgid "Sight:"
-#~ msgstr "Vista:"
-
-#~ msgid "City"
-#~ msgstr "Citt‡"
 
 #~ msgid "City at (%i,%i)"
 #~ msgstr "Citt‡ a (%i,%i)"
@@ -2549,14 +3376,8 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Owner:"
 #~ msgstr "Proprietario:"
 
-#~ msgid "Level:"
-#~ msgstr "Livello:"
-
 #~ msgid "Untouched"
 #~ msgstr "Intonso"
-
-#~ msgid "Burnt down"
-#~ msgstr "Rasa al suolo"
 
 #~ msgid "Remove Production"
 #~ msgstr "Rimuovi Produzione"
@@ -2567,9 +3388,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Confirmation"
 #~ msgstr "Conferma"
 
-#~ msgid "Do you really want to remove this production?"
-#~ msgstr "Vuoi veramente rimuovere questa produzione?"
-
 #~ msgid "Set map properties"
 #~ msgstr "Imposta le propriwt‡ della mappa"
 
@@ -2579,20 +3397,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Temple at (%i,%i)"
 #~ msgstr "Tempio a (%i,%i)"
 
-#~ msgid "Type:"
-#~ msgstr "Tipo:"
-
 #~ msgid "Modify ruin"
 #~ msgstr "Modifica Rovina"
 
 #~ msgid "Ruin at (%i,%i)"
 #~ msgstr "Rovina a (%i,%i)"
-
-#~ msgid "ID:"
-#~ msgstr "ID:"
-
-#~ msgid "Keeper"
-#~ msgstr "Occupante"
 
 #~ msgid "Manage players"
 #~ msgstr "Gestisci i Giocatori"
@@ -2627,23 +3436,8 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "maniac mode"
 #~ msgstr "Modalit‡ maniaco"
 
-#~ msgid "join armies"
-#~ msgstr "Unisce le armate"
-
-#~ msgid "Add"
-#~ msgstr "Aggiungi"
-
-#~ msgid "Remove"
-#~ msgstr "Rimuovi"
-
-#~ msgid "Warning"
-#~ msgstr "Attenzione"
-
 #~ msgid "Do you really want to remove this player?"
 #~ msgstr "Vuoi veramente rimuovere questo giocatore?"
-
-#~ msgid "New Player"
-#~ msgstr "Nuovo giocatore"
 
 #~ msgid ""
 #~ "Do you want to add the new player in front of this player or at the end "
@@ -2661,29 +3455,17 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Find object"
 #~ msgstr "Trova oggetto"
 
-#~ msgid "Temple"
-#~ msgstr "Tempio"
-
-#~ msgid "Ruin"
-#~ msgstr "Rovina"
-
 #~ msgid "Manage conditions"
 #~ msgstr "Gestisci le condizioni"
 
 #~ msgid "CPlayer"
 #~ msgstr "Player"
 
-#~ msgid "CCounter"
-#~ msgstr "Counter"
-
 #~ msgid "CLiving"
 #~ msgstr "Living"
 
 #~ msgid "CDead"
 #~ msgstr "Dead"
-
-#~ msgid "CArmy"
-#~ msgstr "Army"
 
 #~ msgid "%i. CPlayer"
 #~ msgstr "%i. CPlayer"
@@ -2700,26 +3482,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "%i. CArmy"
 #~ msgstr "%i. CArmy"
 
-#~ msgid "Player:"
-#~ msgstr "Giocatore:"
-
-#~ msgid "Counter:"
-#~ msgstr "Contatore:"
-
 #~ msgid "Army:"
 #~ msgstr "Unit‡:"
 
-#~ msgid "Select an item"
-#~ msgstr "Seleziona un oggetto"
-
 #~ msgid "Manage reactions"
 #~ msgstr "Gestisci le reazioni"
-
-#~ msgid "Conditions"
-#~ msgstr "Condizioni"
-
-#~ msgid "Message"
-#~ msgstr "Message"
 
 #~ msgid "AddGold"
 #~ msgstr "AddGold"
@@ -2739,17 +3506,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "CenterObj"
 #~ msgstr "CenterObj"
 
-#~ msgid "CreateItem"
-#~ msgstr "CreateItem"
-
 #~ msgid "WinGame"
 #~ msgstr "WinGame"
 
 #~ msgid "LoseGame"
 #~ msgstr "LoseGame"
-
-#~ msgid "RaiseEvent"
-#~ msgstr "RaiseEvent"
 
 #~ msgid "ActEvent"
 #~ msgstr "ActEvent"
@@ -2820,20 +3581,11 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Object:"
 #~ msgstr "Oggetto:"
 
-#~ msgid "Item:"
-#~ msgstr "Oggetto:"
-
-#~ msgid "Status:"
-#~ msgstr "Stato:"
-
 #~ msgid "Event:"
 #~ msgstr "Evento:"
 
 #~ msgid "Activate:"
 #~ msgstr "Attiva:"
-
-#~ msgid "City:"
-#~ msgstr "Citt‡:"
 
 #~ msgid "Manage events"
 #~ msgstr "Gestisci gli eventi"
@@ -2844,14 +3596,8 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ msgid "Deactivate"
 #~ msgstr "Disattiva"
 
-#~ msgid "Comment:"
-#~ msgstr "Commento:"
-
 #~ msgid "Reactions"
 #~ msgstr "Reazioni"
-
-#~ msgid "Do you really want to remove this event?"
-#~ msgstr "Vuoi veramente rimuovere questo evento?"
 
 #~ msgid "KillAll"
 #~ msgstr "KillAll"
@@ -2876,12 +3622,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 
 #~ msgid "Dummy"
 #~ msgstr "Dummy"
-
-#~ msgid "NextTurn"
-#~ msgstr "Turno Successivo"
-
-#~ msgid "StackKilled"
-#~ msgstr "StackKilled"
 
 #~ msgid "StackMove"
 #~ msgstr "StackMove"
@@ -2948,9 +3688,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 #~ "Non ho potuto trovare nessun file di configurazione...tento l'auto-"
 #~ "configurazione."
 
-#~ msgid "Army info"
-#~ msgstr "Informazioni sull'unit‡"
-
 #~ msgid "basic"
 #~ msgstr "Base"
 
@@ -2976,9 +3713,6 @@ msgstr[1] "Un héros veut se joindre à vous gratuitement !"
 
 #~ msgid "move bonus"
 #~ msgstr "bonus di movimento"
-
-#~ msgid "bonus"
-#~ msgstr "bonus"
 
 #~ msgid "no shots"
 #~ msgstr "nessun colpo"
