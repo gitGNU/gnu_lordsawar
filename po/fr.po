@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2007-05-17 12:30-0400\n"
+"POT-Creation-Date: 2008-05-31 21:53-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -15,34 +15,185 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: src/QEnemyArmies.cpp:79
-#, c-format
-msgid "You have managed to slaughter %i army."
-msgid_plural "You have managed to slaughter %i armies."
-msgstr[0] "Sei riuscito ad uccidere %i armata."
-msgstr[1] "Sei riuscito ad uccidere %i armate."
+#: src/reward.cpp:402
+msgid "%1 Gold Piece"
+msgid_plural "%1 Gold Pieces"
+msgstr[0] ""
+msgstr[1] ""
 
-#: src/QEnemyArmies.cpp:117
-#, c-format
-msgid "You must destroy %i unit of enemy armies"
-msgid_plural "You must destroy %i units of enemy armies"
-msgstr[0] "Devi distruggere %i unit‡ delle armate nemiche"
-msgstr[1] "Devi distruggere %i unit‡ delle armate nemiche"
+#: src/gui/quest-completed-dialog.cpp:79
+#, fuzzy
+msgid "You have been rewarded with %1 gold piece."
+msgid_plural "You have been rewarded with %1 gold pieces."
+msgstr[0] "Ti hanno ricompensato con %i moneta d'oro!"
+msgstr[1] "Ti hanno ricompensato con %i monete d'oro!"
+
+#: src/gui/quest-completed-dialog.cpp:87
+#, fuzzy
+msgid "You have been rewarded with %1 ally."
+msgid_plural "You have been rewarded with %1 allies."
+msgstr[0] "Ti hanno ricompensato con %i moneta d'oro!"
+msgstr[1] "Ti hanno ricompensato con %i monete d'oro!"
+
+#: src/gui/triumphs-dialog.cpp:102
+msgid "%1 hero earned fates worthy of legend!"
+msgid_plural "%1 heroes earned fates worthy of legend!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/triumphs-dialog.cpp:107
+msgid "%1 so-called hero slaughtered without mercy!"
+msgid_plural "%1 so-called heroes slaughtered without mercy!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/triumphs-dialog.cpp:132
+msgid "%1 navy not currently in service!"
+msgid_plural "%1 navies not currently in service!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/triumphs-dialog.cpp:136
+msgid "%1 navy rests with the fishes!"
+msgid_plural "%1 navies rest with the fishes!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/triumphs-dialog.cpp:147
+msgid "%1 army died to ensure final victory!"
+msgid_plural "%1 armies died to ensure final victory!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/triumphs-dialog.cpp:151
+msgid "%1 army smote like sheep!"
+msgid_plural "%1 armies smote like sheep!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/triumphs-dialog.cpp:164
+msgid "%1 unnatural creature returned from whence it came!"
+msgid_plural "%1 unnatural creatures returned from whence they came!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/triumphs-dialog.cpp:168
+msgid "%1 unnatural creature dispatched!"
+msgid_plural "%1 unnatural creatures dispatched!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/triumphs-dialog.cpp:192
+msgid "%1 standard betrayed by it's guardian!"
+msgid_plural "%1 standards betrayed by it's guardian!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/triumphs-dialog.cpp:197
+msgid "%1 standard wrested from a vanquished foe!"
+msgid_plural "%1 standards wrested from a vanquished foe!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/history-report-dialog.cpp:392
+#, fuzzy
+msgid "%1 gold piece!"
+msgid_plural "%1 gold pieces!"
+msgstr[0] "e hai trovato %i moneta d'oro!"
+msgstr[1] "e hai trovato %i monete d'oro!"
+
+#: src/gui/history-report-dialog.cpp:411
+msgid "%1 city!"
+msgid_plural "%1 cities!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/game-window.cpp:1752
+msgid "The hero brings %1 ally!"
+msgid_plural "The hero brings %1 allies!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/game-window.cpp:1854
+#, fuzzy
+msgid "%1 army has been blessed!"
+msgid_plural "%1 armies have been blessed!"
+msgstr[0] "Le tue armate sono state benedette."
+msgstr[1] "Le tue armate sono state benedette."
+
+#: src/gui/game-window.cpp:2093
+#, fuzzy
+msgid "Your armies loot %1 gold piece."
+msgid_plural "Your armies loot %1 gold pieces."
+msgstr[0] "Ti hanno ricompensato con %i moneta d'oro!"
+msgstr[1] "Ti hanno ricompensato con %i monete d'oro!"
+
+#: src/gui/game-window.cpp:2143
+msgid "The loot is worth %1 gold piece."
+msgid_plural "The loot is worth %1 gold pieces."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/game-window.cpp:2175
+msgid "Ability to produce %1 unit has been lost"
+msgid_plural "Ability to produce %1 units has been lost"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/surrender-dialog.cpp:50
+msgid "Your final opponent comes on bended knee and offers surrender!"
+msgid_plural "%1 opponents come on bended knee and offer surrender!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/report-dialog.cpp:93
+msgid "You produced %1 army this turn!"
+msgid_plural "You produced %1 armies this turn!"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/gui/report-dialog.cpp:223
+#, fuzzy
+msgid "You have %1 army!"
+msgid_plural "You have %1 armies!"
+msgstr[0] "Vous avez perdu !!!"
+msgstr[1] "Vous avez perdu !!!"
+
+#: src/gui/report-dialog.cpp:254
+#, fuzzy
+msgid "You have %1 city!"
+msgid_plural "You have %1 cities!"
+msgstr[0] "Vous avez perdu !!!"
+msgstr[1] "Vous avez perdu !!!"
+
+#: src/gui/report-dialog.cpp:285
+#, fuzzy
+msgid "You have %1 gold piece!"
+msgid_plural "You have %1 gold pieces!"
+msgstr[0] "e hai trovato %i moneta d'oro!"
+msgstr[1] "e hai trovato %i monete d'oro!"
+
+#: src/gui/hero-offer-dialog.cpp:80
+#, fuzzy
+msgid "A hero in %2 wants to join you for %1 gold piece!"
+msgid_plural "A hero in %2 wants to join you for %1 gold pieces!"
+msgstr[0] "Un héros veut se joindre à vous gratuitement !"
+msgstr[1] "Un héros veut se joindre à vous gratuitement !"
+
+#~ msgid "You have managed to slaughter %i army."
+#~ msgid_plural "You have managed to slaughter %i armies."
+#~ msgstr[0] "Sei riuscito ad uccidere %i armata."
+#~ msgstr[1] "Sei riuscito ad uccidere %i armate."
+
+#~ msgid "You must destroy %i unit of enemy armies"
+#~ msgid_plural "You must destroy %i units of enemy armies"
+#~ msgstr[0] "Devi distruggere %i unit‡ delle armate nemiche"
+#~ msgstr[1] "Devi distruggere %i unit‡ delle armate nemiche"
 
 #~ msgid "%i shot"
 #~ msgid_plural "%i shots"
 #~ msgstr[0] "%i tir"
 #~ msgstr[1] "%i tirs"
-
-#~ msgid "You have been rewarded with %i gold piece!"
-#~ msgid_plural "You have been rewarded, with %i gold pieces!"
-#~ msgstr[0] "Ti hanno ricompensato con %i moneta d'oro!"
-#~ msgstr[1] "Ti hanno ricompensato con %i monete d'oro!"
-
-#~ msgid "and found %i gold piece!"
-#~ msgid_plural "and found %i gold pieces!"
-#~ msgstr[0] "e hai trovato %i moneta d'oro!"
-#~ msgstr[1] "e hai trovato %i monete d'oro!"
 
 #~ msgid "Do you want to upgrade the city level for %i gold?"
 #~ msgid_plural "Do you want to upgrade the city level for %i gold?"
@@ -792,9 +943,6 @@ msgstr[1] "Devi distruggere %i unit‡ delle armate nemiche"
 
 #~ msgid "Britain 802"
 #~ msgstr "Bretagne, 802"
-
-#~ msgid "You have lost!!"
-#~ msgstr "Vous avez perdu !!!"
 
 #~ msgid "Despair at the desolation of defeat!"
 #~ msgstr "Désespoir devant la désolation de la défaite !"
@@ -1677,9 +1825,6 @@ msgstr[1] "Devi distruggere %i unit‡ delle armate nemiche"
 #~ msgid "for %i gold"
 #~ msgstr "pour  %i pièce d'or"
 
-#~ msgid "A hero wants to join for free!"
-#~ msgstr "Un héros veut se joindre à vous gratuitement !"
-
 #~ msgid "weapon"
 #~ msgstr "Arme"
 
@@ -2178,9 +2323,6 @@ msgstr[1] "Devi distruggere %i unit‡ delle armate nemiche"
 
 #~ msgid "Quest"
 #~ msgstr "Quest"
-
-#~ msgid "Your armies have been blessed."
-#~ msgstr "Le tue armate sono state benedette."
 
 #~ msgid "Quest - "
 #~ msgstr "Quest - "

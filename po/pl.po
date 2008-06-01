@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.3.7\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2007-05-17 12:30-0400\n"
+"POT-Creation-Date: 2008-05-31 21:53-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Piotr Cychowski <cycholka@wp.pl>\n"
 "Language-Team: \n"
@@ -17,39 +17,214 @@ msgstr ""
 "Plural-Forms: nplurals=3;     plural=n==1 ? 0 :                n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: src/QEnemyArmies.cpp:79
-#, c-format
-msgid "You have managed to slaughter %i army."
-msgid_plural "You have managed to slaughter %i armies."
-msgstr[0] "Zdo³a³e¶ zabiæ %i jednostkê"
-msgstr[1] "Zdo³a³e¶ zabiæ %i jednostki"
-msgstr[2] "Zdo³a³e¶ zabiæ %i jednostek"
+#: src/reward.cpp:402
+msgid "%1 Gold Piece"
+msgid_plural "%1 Gold Pieces"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
-#: src/QEnemyArmies.cpp:117
-#, c-format
-msgid "You must destroy %i unit of enemy armies"
-msgid_plural "You must destroy %i units of enemy armies"
-msgstr[0] "Musisz zniszczyæ %i wrog± jednostkê"
-msgstr[1] "Musisz zniszczyæ %i wrogie jednostki"
-msgstr[2] "Musisz zniszczyæ %i wrogich jednostek"
+#: src/gui/quest-completed-dialog.cpp:79
+#, fuzzy
+msgid "You have been rewarded with %1 gold piece."
+msgid_plural "You have been rewarded with %1 gold pieces."
+msgstr[0] "W nagrodê otrzymujesz %i szt. z³ota"
+msgstr[1] "W nagrodê otrzymujesz %i szt. z³ota"
+msgstr[2] "W nagrodê otrzymujesz %i szt. z³ota"
+
+#: src/gui/quest-completed-dialog.cpp:87
+#, fuzzy
+msgid "You have been rewarded with %1 ally."
+msgid_plural "You have been rewarded with %1 allies."
+msgstr[0] "W nagrodê otrzymujesz %i szt. z³ota"
+msgstr[1] "W nagrodê otrzymujesz %i szt. z³ota"
+msgstr[2] "W nagrodê otrzymujesz %i szt. z³ota"
+
+#: src/gui/triumphs-dialog.cpp:102
+msgid "%1 hero earned fates worthy of legend!"
+msgid_plural "%1 heroes earned fates worthy of legend!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/triumphs-dialog.cpp:107
+msgid "%1 so-called hero slaughtered without mercy!"
+msgid_plural "%1 so-called heroes slaughtered without mercy!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/triumphs-dialog.cpp:132
+msgid "%1 navy not currently in service!"
+msgid_plural "%1 navies not currently in service!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/triumphs-dialog.cpp:136
+msgid "%1 navy rests with the fishes!"
+msgid_plural "%1 navies rest with the fishes!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/triumphs-dialog.cpp:147
+msgid "%1 army died to ensure final victory!"
+msgid_plural "%1 armies died to ensure final victory!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/triumphs-dialog.cpp:151
+msgid "%1 army smote like sheep!"
+msgid_plural "%1 armies smote like sheep!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/triumphs-dialog.cpp:164
+msgid "%1 unnatural creature returned from whence it came!"
+msgid_plural "%1 unnatural creatures returned from whence they came!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/triumphs-dialog.cpp:168
+msgid "%1 unnatural creature dispatched!"
+msgid_plural "%1 unnatural creatures dispatched!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/triumphs-dialog.cpp:192
+msgid "%1 standard betrayed by it's guardian!"
+msgid_plural "%1 standards betrayed by it's guardian!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/triumphs-dialog.cpp:197
+msgid "%1 standard wrested from a vanquished foe!"
+msgid_plural "%1 standards wrested from a vanquished foe!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/history-report-dialog.cpp:392
+#, fuzzy
+msgid "%1 gold piece!"
+msgid_plural "%1 gold pieces!"
+msgstr[0] "i znalaz³e¶ %i szt. z³ota"
+msgstr[1] "i znalaz³e¶ %i szt. z³ota"
+msgstr[2] "i znalaz³e¶ %i szt. z³ota"
+
+#: src/gui/history-report-dialog.cpp:411
+msgid "%1 city!"
+msgid_plural "%1 cities!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/game-window.cpp:1752
+msgid "The hero brings %1 ally!"
+msgid_plural "The hero brings %1 allies!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/game-window.cpp:1854
+#, fuzzy
+msgid "%1 army has been blessed!"
+msgid_plural "%1 armies have been blessed!"
+msgstr[0] "Twoje oddzia³y zosta³y pob³ogos³awione"
+msgstr[1] "Twoje oddzia³y zosta³y pob³ogos³awione"
+msgstr[2] "Twoje oddzia³y zosta³y pob³ogos³awione"
+
+#: src/gui/game-window.cpp:2093
+#, fuzzy
+msgid "Your armies loot %1 gold piece."
+msgid_plural "Your armies loot %1 gold pieces."
+msgstr[0] "W nagrodê otrzymujesz %i szt. z³ota"
+msgstr[1] "W nagrodê otrzymujesz %i szt. z³ota"
+msgstr[2] "W nagrodê otrzymujesz %i szt. z³ota"
+
+#: src/gui/game-window.cpp:2143
+msgid "The loot is worth %1 gold piece."
+msgid_plural "The loot is worth %1 gold pieces."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/game-window.cpp:2175
+msgid "Ability to produce %1 unit has been lost"
+msgid_plural "Ability to produce %1 units has been lost"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/surrender-dialog.cpp:50
+msgid "Your final opponent comes on bended knee and offers surrender!"
+msgid_plural "%1 opponents come on bended knee and offer surrender!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/report-dialog.cpp:93
+msgid "You produced %1 army this turn!"
+msgid_plural "You produced %1 armies this turn!"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/gui/report-dialog.cpp:223
+#, fuzzy
+msgid "You have %1 army!"
+msgid_plural "You have %1 armies!"
+msgstr[0] "Zosta³e¶ pokonany!"
+msgstr[1] "Zosta³e¶ pokonany!"
+msgstr[2] "Zosta³e¶ pokonany!"
+
+#: src/gui/report-dialog.cpp:254
+#, fuzzy
+msgid "You have %1 city!"
+msgid_plural "You have %1 cities!"
+msgstr[0] "Zosta³e¶ pokonany!"
+msgstr[1] "Zosta³e¶ pokonany!"
+msgstr[2] "Zosta³e¶ pokonany!"
+
+#: src/gui/report-dialog.cpp:285
+#, fuzzy
+msgid "You have %1 gold piece!"
+msgid_plural "You have %1 gold pieces!"
+msgstr[0] "i znalaz³e¶ %i szt. z³ota"
+msgstr[1] "i znalaz³e¶ %i szt. z³ota"
+msgstr[2] "i znalaz³e¶ %i szt. z³ota"
+
+#: src/gui/hero-offer-dialog.cpp:80
+#, fuzzy
+msgid "A hero in %2 wants to join you for %1 gold piece!"
+msgid_plural "A hero in %2 wants to join you for %1 gold pieces!"
+msgstr[0] "Bohater chce do ciebie do³±czyæ za darmo!"
+msgstr[1] "Bohater chce do ciebie do³±czyæ za darmo!"
+msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
+
+#~ msgid "You have managed to slaughter %i army."
+#~ msgid_plural "You have managed to slaughter %i armies."
+#~ msgstr[0] "Zdo³a³e¶ zabiæ %i jednostkê"
+#~ msgstr[1] "Zdo³a³e¶ zabiæ %i jednostki"
+#~ msgstr[2] "Zdo³a³e¶ zabiæ %i jednostek"
+
+#~ msgid "You must destroy %i unit of enemy armies"
+#~ msgid_plural "You must destroy %i units of enemy armies"
+#~ msgstr[0] "Musisz zniszczyæ %i wrog± jednostkê"
+#~ msgstr[1] "Musisz zniszczyæ %i wrogie jednostki"
+#~ msgstr[2] "Musisz zniszczyæ %i wrogich jednostek"
 
 #~ msgid "%i shot"
 #~ msgid_plural "%i shots"
 #~ msgstr[0] "%i strza³"
 #~ msgstr[1] "%i strza³y"
 #~ msgstr[2] "%i strza³ów"
-
-#~ msgid "You have been rewarded with %i gold piece!"
-#~ msgid_plural "You have been rewarded, with %i gold pieces!"
-#~ msgstr[0] "W nagrodê otrzymujesz %i szt. z³ota"
-#~ msgstr[1] "W nagrodê otrzymujesz %i szt. z³ota"
-#~ msgstr[2] "W nagrodê otrzymujesz %i szt. z³ota"
-
-#~ msgid "and found %i gold piece!"
-#~ msgid_plural "and found %i gold pieces!"
-#~ msgstr[0] "i znalaz³e¶ %i szt. z³ota"
-#~ msgstr[1] "i znalaz³e¶ %i szt. z³ota"
-#~ msgstr[2] "i znalaz³e¶ %i szt. z³ota"
 
 #~ msgid "Do you want to upgrade the city level for %i gold?"
 #~ msgid_plural "Do you want to upgrade the city level for %i gold?"
@@ -772,9 +947,6 @@ msgstr[2] "Musisz zniszczyæ %i wrogich jednostek"
 #~ "dominacji. Wysoki Król Irlandi na zachodzie, Król Piktów na pó³nocy, "
 #~ "królowie Wessex i Mercji na po³udniu. No i ty, król Nortumbrii, po¶rodku "
 #~ "otoczony przez wrogów..."
-
-#~ msgid "You have lost!!"
-#~ msgstr "Zosta³e¶ pokonany!"
 
 #~ msgid "Despair at the desolation of defeat!"
 #~ msgstr "Rozpaczaj nad samotno¶ci± pora¿ki!"
@@ -1632,9 +1804,6 @@ msgstr[2] "Musisz zniszczyæ %i wrogich jednostek"
 #~ msgid "for %i gold"
 #~ msgstr "za %i szt. z³ota"
 
-#~ msgid "A hero wants to join for free!"
-#~ msgstr "Bohater chce do ciebie do³±czyæ za darmo!"
-
 #~ msgid "weapon"
 #~ msgstr "broñ"
 
@@ -2121,9 +2290,6 @@ msgstr[2] "Musisz zniszczyæ %i wrogich jednostek"
 
 #~ msgid "Quest"
 #~ msgstr "Zadanie"
-
-#~ msgid "Your armies have been blessed."
-#~ msgstr "Twoje oddzia³y zosta³y pob³ogos³awione"
 
 #~ msgid "Quest - "
 #~ msgstr "Zadanie - "
