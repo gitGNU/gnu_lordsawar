@@ -2352,6 +2352,7 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 
       dialog->show_all();
       dialog->run();
+      show();
     }
 	
 }
