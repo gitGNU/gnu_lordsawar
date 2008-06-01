@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.3.7\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-06-01 11:18-0400\n"
+"POT-Creation-Date: 2008-06-01 12:26-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Piotr Cychowski <cycholka@wp.pl>\n"
 "Language-Team: \n"
@@ -17,12 +17,2648 @@ msgstr ""
 "Plural-Forms: nplurals=3;     plural=n==1 ? 0 :                n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
+#: dat/glade/editor/main-window.glade.h:1
+#, fuzzy
+msgid "All Cities"
+msgstr "Miasta"
+
+#: dat/glade/editor/main-window.glade.h:2
+#, fuzzy
+msgid "All Ruins"
+msgstr "Ruiny"
+
+#: dat/glade/editor/main-window.glade.h:3
+#, fuzzy
+msgid "All Signs"
+msgstr "Ruiny"
+
+#: dat/glade/editor/main-window.glade.h:4
+#, fuzzy
+msgid "All Temples"
+msgstr "¦wi±tynie"
+
+#: dat/glade/editor/main-window.glade.h:5
+msgid "Draw terrain with a 1x1 pointer"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade.h:6
+msgid "Draw terrain with a 3x3 pointer"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade.h:7 src/editor/main.cpp:59
+#, fuzzy
+msgid "LordsAWar! Scenario Editor"
+msgstr "Wczytaj Scenariusz"
+
+#: dat/glade/editor/main-window.glade.h:8
+#, fuzzy
+msgid "Save Map _As..."
+msgstr "Zapisz jako"
+
+#: dat/glade/editor/main-window.glade.h:9
+msgid "Smooth _Entire Map"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade.h:10
+#, fuzzy
+msgid "Unnamed Cities"
+msgstr "Miasta"
+
+#: dat/glade/editor/main-window.glade.h:11
+#, fuzzy
+msgid "Unnamed Ruins"
+msgstr "Dziwne Ruiny"
+
+#: dat/glade/editor/main-window.glade.h:12
+#, fuzzy
+msgid "Unnamed Signs"
+msgstr "Dziwne Ruiny"
+
+#: dat/glade/editor/main-window.glade.h:13
+#, fuzzy
+msgid "Unnamed Temples"
+msgstr "Zrujnowana ¦wi±tynia"
+
+#: dat/glade/editor/main-window.glade.h:14
+#: dat/glade/editor/armyset-window.glade.h:110
+#: dat/glade/editor/reward-list-dialog.glade.h:4
+#: dat/glade/editor/tileset-window.glade.h:47
+#, fuzzy
+msgid "_Edit"
+msgstr "Edytuj"
+
+#: dat/glade/editor/main-window.glade.h:15
+#: dat/glade/editor/armyset-window.glade.h:111
+#: dat/glade/editor/tileset-window.glade.h:48
+#, fuzzy
+msgid "_File"
+msgstr "Plik"
+
+#: dat/glade/editor/main-window.glade.h:16 dat/glade/game-window.glade.h:55
+#, fuzzy
+msgid "_Fullscreen"
+msgstr "Pe³ny ekran"
+
+#: dat/glade/editor/main-window.glade.h:17
+#: dat/glade/editor/armyset-window.glade.h:112
+#: dat/glade/editor/tileset-window.glade.h:49
+#, fuzzy
+msgid "_Help"
+msgstr "Pomoc"
+
+#: dat/glade/editor/main-window.glade.h:18
+#, fuzzy
+msgid "_Items"
+msgstr "Przedmioty"
+
+#: dat/glade/editor/main-window.glade.h:19
+#, fuzzy
+msgid "_Load Map"
+msgstr "Wczytaj Mapê"
+
+#: dat/glade/editor/main-window.glade.h:20
+#, fuzzy
+msgid "_Map Info"
+msgstr "Grupa"
+
+#: dat/glade/editor/main-window.glade.h:21
+#, fuzzy
+msgid "_New Map"
+msgstr "Stwórz Now± Mapê"
+
+#: dat/glade/editor/main-window.glade.h:22
+#, fuzzy
+msgid "_Players"
+msgstr "Gracze"
+
+#: dat/glade/editor/main-window.glade.h:23
+#: dat/glade/editor/armyset-window.glade.h:115
+#: dat/glade/editor/tileset-window.glade.h:53
+#: dat/glade/splash-window.glade.h:8
+#, fuzzy
+msgid "_Quit"
+msgstr "Wyjd¼"
+
+#: dat/glade/editor/main-window.glade.h:24
+#, fuzzy
+msgid "_Random"
+msgstr "Losowa"
+
+#: dat/glade/editor/main-window.glade.h:25
+#, fuzzy
+msgid "_Rewards"
+msgstr "Gracze"
+
+#: dat/glade/editor/main-window.glade.h:26
+#, fuzzy
+msgid "_Save Map"
+msgstr "Zapisz jako"
+
+#: dat/glade/editor/main-window.glade.h:27
+#, fuzzy
+msgid "_Smooth Screen"
+msgstr "G³adkie przewijanie"
+
+#: dat/glade/editor/main-window.glade.h:28
+#: dat/glade/editor/tileset-window.glade.h:55
+#, fuzzy
+msgid "_View"
+msgstr "Grafika"
+
+#: dat/glade/editor/signpost-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Signpost</b>"
+msgstr "Scenariusz"
+
+#: dat/glade/editor/signpost-dialog.glade.h:2
+#, fuzzy
+msgid "Edit Signpost"
+msgstr "Opcje"
+
+#: dat/glade/editor/signpost-dialog.glade.h:3
+#: dat/glade/editor/temple-dialog.glade.h:4
+#: dat/glade/editor/ruin-dialog.glade.h:12
+#: dat/glade/editor/city-dialog.glade.h:10
+#, fuzzy
+msgid "Randomi_ze"
+msgstr "Losowa"
+
+#: dat/glade/editor/signpost-dialog.glade.h:4
+#: dat/glade/editor/temple-dialog.glade.h:6
+#: dat/glade/editor/ruin-dialog.glade.h:16
+#: dat/glade/editor/stack-dialog.glade.h:5
+#: dat/glade/editor/select-army-dialog.glade.h:2
+#: dat/glade/editor/players-dialog.glade.h:3
+#: dat/glade/editor/city-dialog.glade.h:13
+#: dat/glade/editor/map-info-dialog.glade.h:5
+#: dat/glade/editor/new-map-dialog.glade.h:22
+#: dat/glade/editor/armyset-info-dialog.glade.h:5
+#: dat/glade/editor/reward-dialog.glade.h:16
+#: dat/glade/editor/select-item-dialog.glade.h:2
+#: dat/glade/editor/select-reward-dialog.glade.h:2
+#: dat/glade/editor/select-hidden-ruin-dialog.glade.h:2
+#: dat/glade/editor/tileset-info-dialog.glade.h:5
+#: dat/glade/buy-production-dialog.glade.h:4
+#: dat/glade/game-preferences-dialog.glade.h:33
+#: dat/glade/load-scenario-dialog.glade.h:8
+#: dat/glade/city-rename-dialog.glade.h:2 dat/glade/city-raze-dialog.glade.h:1
+#: dat/glade/signpost-change-dialog.glade.h:2
+#: dat/glade/fight-order-dialog.glade.h:3
+#: dat/glade/hero-levels-dialog.glade.h:3
+#: dat/glade/army-bonus-dialog.glade.h:3
+#, fuzzy
+msgid "_Cancel"
+msgstr "Anuluj"
+
+#: dat/glade/editor/signpost-dialog.glade.h:5
+#: dat/glade/editor/temple-dialog.glade.h:7
+#: dat/glade/editor/ruin-dialog.glade.h:17
+#: dat/glade/editor/stack-dialog.glade.h:6
+#: dat/glade/editor/players-dialog.glade.h:4
+#: dat/glade/editor/city-dialog.glade.h:14
+#: dat/glade/editor/map-info-dialog.glade.h:6
+#: dat/glade/editor/armyset-info-dialog.glade.h:6
+#: dat/glade/editor/reward-dialog.glade.h:17
+#: dat/glade/editor/tileset-info-dialog.glade.h:6
+#: dat/glade/history-report-dialog.glade.h:5
+#: dat/glade/report-dialog.glade.h:11 dat/glade/city-rename-dialog.glade.h:3
+#: dat/glade/city-raze-dialog.glade.h:2
+#: dat/glade/signpost-change-dialog.glade.h:3
+#: dat/glade/fight-order-dialog.glade.h:4
+#: dat/glade/hero-levels-dialog.glade.h:4
+#: dat/glade/army-bonus-dialog.glade.h:4 dat/glade/item-bonus-dialog.glade.h:3
+#, fuzzy
+msgid "_OK"
+msgstr "OK"
+
+#: dat/glade/editor/temple-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Temple</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/editor/temple-dialog.glade.h:2
+#, fuzzy
+msgid "Edit Temple"
+msgstr "¦wi±tynia"
+
+#: dat/glade/editor/temple-dialog.glade.h:3
+#: dat/glade/editor/ruin-dialog.glade.h:8
+#: dat/glade/editor/city-dialog.glade.h:7
+#: dat/glade/editor/map-info-dialog.glade.h:4
+#: dat/glade/editor/armyset-window.glade.h:24
+#: dat/glade/editor/armyset-info-dialog.glade.h:4
+#: dat/glade/editor/itemlist-dialog.glade.h:14
+#: dat/glade/editor/tileset-window.glade.h:32
+#: dat/glade/editor/tileset-info-dialog.glade.h:4
+#: dat/glade/hero-offer-dialog.glade.h:2
+#: dat/glade/ruin-report-dialog.glade.h:3
+#: dat/glade/load-scenario-dialog.glade.h:5
+#: dat/glade/city-rename-dialog.glade.h:1
+msgid "Name:"
+msgstr "Nazwa: "
+
+#: dat/glade/editor/temple-dialog.glade.h:5
+#: dat/glade/editor/tileset-window.glade.h:46
+#: dat/glade/ruin-report-dialog.glade.h:4
+msgid "Type:"
+msgstr "Typ:"
+
+#: dat/glade/editor/ruin-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Ruin</b>"
+msgstr "Kup Produkcjê"
+
+#: dat/glade/editor/ruin-dialog.glade.h:2
+#, fuzzy
+msgid "Cle_ar Keeper"
+msgstr "Stra¿nik"
+
+#: dat/glade/editor/ruin-dialog.glade.h:3
+#, fuzzy
+msgid "Clea_r Reward"
+msgstr "Stra¿nik"
+
+#: dat/glade/editor/ruin-dialog.glade.h:4
+#, fuzzy
+msgid "Edit Ruin"
+msgstr "Edytuj"
+
+#: dat/glade/editor/ruin-dialog.glade.h:5
+#, fuzzy
+msgid "Is Hidden?"
+msgstr "Bohaterowie"
+
+#: dat/glade/editor/ruin-dialog.glade.h:6
+msgid "Is a Sage?"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade.h:7
+#, fuzzy
+msgid "Keeper:"
+msgstr "Stra¿nik"
+
+#: dat/glade/editor/ruin-dialog.glade.h:9
+#, fuzzy
+msgid "New Reward:"
+msgstr "Losowa Mapa"
+
+#: dat/glade/editor/ruin-dialog.glade.h:10
+#: dat/glade/editor/reward-dialog.glade.h:12
+#, fuzzy
+msgid "Ran_domize"
+msgstr "Losowa"
+
+#: dat/glade/editor/ruin-dialog.glade.h:11
+#, fuzzy
+msgid "Random Reward"
+msgstr "Losowa Mapa"
+
+#: dat/glade/editor/ruin-dialog.glade.h:13
+#: dat/glade/editor/city-dialog.glade.h:11
+#: dat/glade/editor/reward-dialog.glade.h:15
+#, fuzzy
+msgid "Randomiz_e"
+msgstr "Losowa"
+
+#: dat/glade/editor/ruin-dialog.glade.h:14
+msgid "Seen By:"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade.h:15 src/editor/players-dialog.cpp:64
+msgid "Type"
+msgstr "Typ"
+
+#: dat/glade/editor/ruin-dialog.glade.h:18
+msgid "_Pick From List"
+msgstr ""
+
+#: dat/glade/editor/stack-dialog.glade.h:1
+#: dat/glade/stack-info-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Stack</b>"
+msgstr "Scenariusz"
+
+#: dat/glade/editor/stack-dialog.glade.h:2
+#, fuzzy
+msgid "Edit Stack"
+msgstr "Grupa"
+
+#: dat/glade/editor/stack-dialog.glade.h:3
+#: dat/glade/editor/city-dialog.glade.h:8
+msgid "Player:"
+msgstr "Gracz:"
+
+#: dat/glade/editor/stack-dialog.glade.h:4
+#: dat/glade/editor/city-dialog.glade.h:12
+#: dat/glade/editor/reward-list-dialog.glade.h:2
+#, fuzzy
+msgid "_Add"
+msgstr "Dodaj"
+
+#: dat/glade/editor/stack-dialog.glade.h:7
+#: dat/glade/editor/city-dialog.glade.h:15
+#: dat/glade/editor/reward-list-dialog.glade.h:5
+#, fuzzy
+msgid "_Remove"
+msgstr "Usuñ"
+
+#: dat/glade/editor/select-army-dialog.glade.h:1
+#, fuzzy
+msgid "Select Army"
+msgstr "Wybierz przedmiot"
+
+#: dat/glade/editor/select-army-dialog.glade.h:3
+#: dat/glade/editor/select-item-dialog.glade.h:3
+#: dat/glade/editor/select-reward-dialog.glade.h:3
+#: dat/glade/editor/select-hidden-ruin-dialog.glade.h:3
+#, fuzzy
+msgid "_Select"
+msgstr "Odrzuæ"
+
+#: dat/glade/editor/players-dialog.glade.h:1
+#: dat/glade/game-preferences-dialog.glade.h:4
+#: dat/glade/preferences-dialog.glade.h:2
+#, fuzzy
+msgid "<b>Players</b>"
+msgstr "Gracze"
+
+#: dat/glade/editor/players-dialog.glade.h:2
+#, fuzzy
+msgid "Edit Players"
+msgstr "Gracze"
+
+#: dat/glade/editor/city-dialog.glade.h:1
+#, fuzzy
+msgid "<b>City</b>"
+msgstr "Gracze"
+
+#: dat/glade/editor/city-dialog.glade.h:2
+#, fuzzy
+msgid "<b>Production</b>"
+msgstr "Kup Produkcjê"
+
+#: dat/glade/editor/city-dialog.glade.h:3
+#, fuzzy
+msgid "Burned down"
+msgstr "Spalone"
+
+#: dat/glade/editor/city-dialog.glade.h:4
+#, fuzzy
+msgid "Capital"
+msgstr "Katapulta"
+
+#: dat/glade/editor/city-dialog.glade.h:5
+#, fuzzy
+msgid "Edit City"
+msgstr "Edytuj"
+
+#: dat/glade/editor/city-dialog.glade.h:6
+#, fuzzy
+msgid "Income:"
+msgstr "Przedmiot:"
+
+#: dat/glade/editor/city-dialog.glade.h:9
+#: dat/glade/editor/reward-dialog.glade.h:11
+#, fuzzy
+msgid "Ra_ndomize"
+msgstr "Losowa"
+
+#: dat/glade/editor/map-info-dialog.glade.h:1
+#: dat/glade/editor/new-map-dialog.glade.h:2
+#: dat/glade/editor/armyset-info-dialog.glade.h:1
+#: dat/glade/game-preferences-dialog.glade.h:3
+#, fuzzy
+msgid "<b>Map</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/editor/map-info-dialog.glade.h:2
+#: dat/glade/editor/armyset-window.glade.h:18
+#: dat/glade/editor/tileset-info-dialog.glade.h:2
+#: dat/glade/load-scenario-dialog.glade.h:3
+msgid "Description:"
+msgstr "Opis:"
+
+#: dat/glade/editor/map-info-dialog.glade.h:3
+#, fuzzy
+msgid "Edit Map Info"
+msgstr "Informacje o jednostce"
+
+#: dat/glade/editor/new-map-dialog.glade.h:1
+#, fuzzy
+msgid "   Cities"
+msgstr "Miasta"
+
+#: dat/glade/editor/new-map-dialog.glade.h:3
+#: dat/glade/game-preferences-dialog.glade.h:5
+#, fuzzy
+msgid "Army Set:"
+msgstr "Zestaw Wojsk"
+
+#: dat/glade/editor/new-map-dialog.glade.h:4
+#: dat/glade/game-preferences-dialog.glade.h:14
+#, fuzzy
+msgid "City Set:"
+msgstr "Miasto:"
+
+#: dat/glade/editor/new-map-dialog.glade.h:5
+#, fuzzy
+msgid "Fill style:"
+msgstr "Typ pliku:"
+
+#: dat/glade/editor/new-map-dialog.glade.h:6
+#: dat/glade/game-preferences-dialog.glade.h:17
+msgid "Forest"
+msgstr "Las"
+
+#: dat/glade/editor/new-map-dialog.glade.h:7
+#: dat/glade/game-preferences-dialog.glade.h:19
+msgid "Grass"
+msgstr "£±ka"
+
+#: dat/glade/editor/new-map-dialog.glade.h:8
+#: dat/glade/game-preferences-dialog.glade.h:20
+msgid "Hills"
+msgstr "Wzgórza"
+
+#: dat/glade/editor/new-map-dialog.glade.h:9
+#: dat/glade/game-preferences-dialog.glade.h:22
+msgid "Mountains"
+msgstr "Góry"
+
+#: dat/glade/editor/new-map-dialog.glade.h:10
+#, fuzzy
+msgid "New Map"
+msgstr "Nowa Gra"
+
+#: dat/glade/editor/new-map-dialog.glade.h:11
+#: dat/glade/game-preferences-dialog.glade.h:24
+msgid ""
+"Normal\n"
+"Small\n"
+"Tiny"
+msgstr ""
+
+#: dat/glade/editor/new-map-dialog.glade.h:14 dat/glade/game-window.glade.h:41
+msgid "Ruins"
+msgstr "Ruiny"
+
+#: dat/glade/editor/new-map-dialog.glade.h:15
+#: dat/glade/game-preferences-dialog.glade.h:28
+#, fuzzy
+msgid "Shield Set:"
+msgstr "Nazwa pliku:"
+
+#: dat/glade/editor/new-map-dialog.glade.h:16
+#, fuzzy
+msgid "Signposts"
+msgstr "Opcje"
+
+#: dat/glade/editor/new-map-dialog.glade.h:17
+#: dat/glade/game-preferences-dialog.glade.h:29
+msgid "Size:"
+msgstr "Rozmiar:"
+
+#: dat/glade/editor/new-map-dialog.glade.h:18
+#: dat/glade/game-preferences-dialog.glade.h:30
+msgid "Swamp"
+msgstr "Bagno"
+
+#: dat/glade/editor/new-map-dialog.glade.h:19
+msgid "Temples"
+msgstr "¦wi±tynie"
+
+#: dat/glade/editor/new-map-dialog.glade.h:20
+#: dat/glade/game-preferences-dialog.glade.h:31
+#, fuzzy
+msgid "Tile Set:"
+msgstr "Nazwa pliku:"
+
+#: dat/glade/editor/new-map-dialog.glade.h:21
+#: dat/glade/game-preferences-dialog.glade.h:32
+msgid "Water"
+msgstr "Woda"
+
+#: dat/glade/editor/new-map-dialog.glade.h:23
+#, fuzzy
+msgid "_Create Map"
+msgstr "Stwórz Now± Mapê"
+
+#: dat/glade/editor/armyset-window.glade.h:1
+#, fuzzy
+msgid "+1 Str in City"
+msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#: dat/glade/editor/armyset-window.glade.h:2
+#, fuzzy
+msgid "+1 Str in Forest"
+msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#: dat/glade/editor/armyset-window.glade.h:3
+#, fuzzy
+msgid "+1 Str in Hills"
+msgstr "grupy"
+
+#: dat/glade/editor/armyset-window.glade.h:4
+#, fuzzy
+msgid "+1 Str in Open"
+msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#: dat/glade/editor/armyset-window.glade.h:5
+#, fuzzy
+msgid "+1 Str to Stack"
+msgstr "grupy"
+
+#: dat/glade/editor/armyset-window.glade.h:6
+#, fuzzy
+msgid "+1 to Stack in Hills"
+msgstr "grupy"
+
+#: dat/glade/editor/armyset-window.glade.h:7
+#, fuzzy
+msgid "+2 Str in City"
+msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#: dat/glade/editor/armyset-window.glade.h:8
+#, fuzzy
+msgid "+2 Str in Open"
+msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#: dat/glade/editor/armyset-window.glade.h:9
+#, fuzzy
+msgid "+2 Str to Stack"
+msgstr "grupy"
+
+#: dat/glade/editor/armyset-window.glade.h:10
+#, fuzzy
+msgid "-1 Str to Enemy Stack"
+msgstr "grupy"
+
+#: dat/glade/editor/armyset-window.glade.h:11
+#: dat/glade/army-bonus-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Army Bonus</b>"
+msgstr "Informacje o jednostce"
+
+#: dat/glade/editor/armyset-window.glade.h:12
+#, fuzzy
+msgid "<b>Army</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/editor/armyset-window.glade.h:13
+#, fuzzy
+msgid "<b>Move Bonus</b>"
+msgstr "Scenariusz"
+
+#: dat/glade/editor/armyset-window.glade.h:14
+#, fuzzy
+msgid "Armyset Information"
+msgstr "brak informacji"
+
+#: dat/glade/editor/armyset-window.glade.h:15
+#, fuzzy
+msgid "Can Fly"
+msgstr "Anuluj"
+
+#: dat/glade/editor/armyset-window.glade.h:16
+msgid "Cost:"
+msgstr "Koszt:"
+
+#: dat/glade/editor/armyset-window.glade.h:17
+#, fuzzy
+msgid "Defends Ruins?"
+msgstr "Obrona: %i"
+
+#: dat/glade/editor/armyset-window.glade.h:19
+#, fuzzy
+msgid "Exp Points:"
+msgstr "Punkty ¯ycia:"
+
+#: dat/glade/editor/armyset-window.glade.h:20
+msgid "Is Awardable?"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:21
+#, fuzzy
+msgid "Is Hero?"
+msgstr "Bohaterowie"
+
+#: dat/glade/editor/armyset-window.glade.h:22 src/editor/armyset-main.cpp:53
+#, fuzzy
+msgid "LordsAWar! Armyset Editor"
+msgstr "Wczytaj Scenariusz"
+
+#: dat/glade/editor/armyset-window.glade.h:23
+#, fuzzy
+msgid "Max Moves:"
+msgstr "Ruch:"
+
+#: dat/glade/editor/armyset-window.glade.h:25
+msgid "Picture:"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:26
+#, fuzzy
+msgid "Save Armyset _As..."
+msgstr "Zapisz Grê"
+
+#: dat/glade/editor/armyset-window.glade.h:27
+#: dat/glade/editor/tileset-window.glade.h:37
+#, fuzzy
+msgid "Select A File"
+msgstr "Wybierz przedmiot"
+
+#: dat/glade/editor/armyset-window.glade.h:28
+msgid "Sight:"
+msgstr "Pole widzenia:"
+
+#: dat/glade/editor/armyset-window.glade.h:29
+msgid "Strength:"
+msgstr "Si³a:"
+
+#: dat/glade/editor/armyset-window.glade.h:30
+msgid "Subtract All City Bonus"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:31
+msgid "Subtract All Non-Hero Bonuses"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:32
+msgid "Subtract all Hero Bonuses"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:33
+#, fuzzy
+msgid "Travels faster in forests"
+msgstr "grupy"
+
+#: dat/glade/editor/armyset-window.glade.h:34
+#, fuzzy
+msgid "Travels faster in hills"
+msgstr "grupy"
+
+#: dat/glade/editor/armyset-window.glade.h:35
+#, fuzzy
+msgid "Travels faster in marshland"
+msgstr "grupy"
+
+#: dat/glade/editor/armyset-window.glade.h:36
+#, fuzzy
+msgid "Travels faster in mountains"
+msgstr "grupy"
+
+#: dat/glade/editor/armyset-window.glade.h:37
+#, fuzzy
+msgid "Turns:"
+msgstr "Tury: %i"
+
+#: dat/glade/editor/armyset-window.glade.h:38
+msgid "Upkeep:"
+msgstr "Utrzymanie:"
+
+#: dat/glade/editor/armyset-window.glade.h:39
+msgid ""
+"When checked, the army\n"
+"requires 2 movement points\n"
+"to travel over any kind of\n"
+"terrain"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:43
+msgid ""
+"When checked, the army\n"
+"requires 2 movement points\n"
+"to travel over forest"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:46
+msgid ""
+"When checked, the army\n"
+"requires 2 movement points\n"
+"to travel over hills"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:49
+msgid ""
+"When checked, the army\n"
+"requires 2 movement points\n"
+"to travel over marsh"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:52
+msgid ""
+"When checked, the army\n"
+"requires 2 movement points\n"
+"to travel over mountains"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:55
+msgid ""
+"When checked, the army \n"
+"negates 1 from the strength\n"
+"of an attacking stack"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:58
+msgid ""
+"When checked, the army \n"
+"negates any city bonuses\n"
+"that an enemy stack has\n"
+"in battle"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:62
+msgid ""
+"When checked, the army \n"
+"negates any hero bonuses\n"
+"that an attacking enemy\n"
+"stack has"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:66
+msgid ""
+"When checked, the army \n"
+"negates any non-hero \n"
+"bonuses that an attacking \n"
+"enemy stack has"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:70
+msgid ""
+"When checked, the army gets\n"
+"1 added to it's strength if it is\n"
+"standing in a city and it is\n"
+"attacked"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:74
+msgid ""
+"When checked, the army gets\n"
+"1 added to it's strength if it is\n"
+"standing in a city and it is \n"
+"attacked\n"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:79
+msgid ""
+"When checked, the army gets\n"
+"1 added to it's strength if it is\n"
+"standing in forest and it is\n"
+"attacked"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:83
+msgid ""
+"When checked, the army gets\n"
+"1 added to it's strength if it is\n"
+"standing out in the open\n"
+"(e.g. in grass, no buildings)\n"
+"and it is attacked"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:88
+msgid ""
+"When checked, the army gets\n"
+"2 added to it's strength if it is\n"
+"standing in a city and it is \n"
+"attacked\n"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:93
+msgid ""
+"When checked, the army gets\n"
+"2 added to it's strength if it is\n"
+"standing out in the open\n"
+"(e.g. in grass, no buildings)\n"
+"and it is attacked"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:98
+msgid ""
+"When checked, the stack\n"
+"with this army in it gets 1 \n"
+"added to it's strength in battle"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:101
+msgid ""
+"When checked, the stack\n"
+"with this army in it gets 2 \n"
+"added to it's strength in battle"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:104
+msgid ""
+"When checked, the stack \n"
+"with this army in it gets 1 \n"
+"added to it's strength if it \n"
+"is standing in hills and it \n"
+"is attacked\n"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:113
+#, fuzzy
+msgid "_Load Armyset"
+msgstr "Zestaw Wojsk"
+
+#: dat/glade/editor/armyset-window.glade.h:114
+#, fuzzy
+msgid "_New Armyset"
+msgstr "Zestaw Wojsk"
+
+#: dat/glade/editor/armyset-window.glade.h:116
+#, fuzzy
+msgid "_Save Armyset"
+msgstr "Zestaw Wojsk"
+
+#: dat/glade/editor/armyset-window.glade.h:117
+msgid ""
+"can this army be \n"
+"given to a hero?"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:119
+msgid ""
+"can this army stand\n"
+"guard within a ruin?"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:121
+msgid ""
+"how far this army\n"
+"can travel in a\n"
+"single turn"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:124
+msgid ""
+"how far this army can\n"
+"see when playing on\n"
+"a hidden map"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:127
+msgid ""
+"how many experience\n"
+"points this army is worth \n"
+"when it is killed"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:130
+msgid ""
+"how many turns it\n"
+"takes for this army\n"
+"to be produced in\n"
+"a city"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:134
+msgid ""
+"how much it costs \n"
+"per-turn to keep this \n"
+"army in the field \n"
+"after it has been \n"
+"produced"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:139
+msgid ""
+"how much it costs to \n"
+"buy this army unit so \n"
+"that it can be \n"
+"produced in a city"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade.h:143
+msgid "how strong the army is"
+msgstr ""
+
+#: dat/glade/editor/armyset-info-dialog.glade.h:2
+#, fuzzy
+msgid "Edit Armyset Info"
+msgstr "Informacje o jednostce"
+
+#: dat/glade/editor/armyset-info-dialog.glade.h:3
+#, fuzzy
+msgid "Id:"
+msgstr "Id:"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:1
+#, fuzzy
+msgid "+1 to Hero's Strength"
+msgstr "+%i si³y"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:2
+#, fuzzy
+msgid "+1 to Stack's Strength"
+msgstr "+%i si³y"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:3
+#, fuzzy
+msgid "+2 Gold Per City"
+msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:4
+#, fuzzy
+msgid "+2 to Hero's Strength"
+msgstr "+%i si³y"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:5
+#, fuzzy
+msgid "+2 to Stack's Strength"
+msgstr "+%i si³y"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:6
+#, fuzzy
+msgid "+3 Gold Per City"
+msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:7
+#, fuzzy
+msgid "+3 to Hero's Strength"
+msgstr "+%i si³y"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:8
+#, fuzzy
+msgid "+3 to Stack's Strength"
+msgstr "+%i si³y"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:9
+#, fuzzy
+msgid "+4 Gold Per City"
+msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:10
+#, fuzzy
+msgid "+5 Gold Per City"
+msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:11
+#, fuzzy
+msgid "<b>Item</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:12
+msgid "Double Movement of Stack"
+msgstr ""
+
+#: dat/glade/editor/itemlist-dialog.glade.h:13
+msgid "Item Editor"
+msgstr ""
+
+#: dat/glade/editor/itemlist-dialog.glade.h:15
+#, fuzzy
+msgid "Stack Can Fly"
+msgstr "Anuluj"
+
+#: dat/glade/editor/itemlist-dialog.glade.h:16
+#: dat/glade/editor/reward-list-dialog.glade.h:3
+#: dat/glade/editor/tile-preview-dialog.glade.h:2
+#: dat/glade/city-window.glade.h:7 dat/glade/destination-dialog.glade.h:13
+#: dat/glade/player-died-dialog.glade.h:2 dat/glade/game-over-dialog.glade.h:1
+#: dat/glade/hero-dialog.glade.h:4
+#: dat/glade/surrender-refused-dialog.glade.h:2
+#: dat/glade/quest-expired-dialog.glade.h:2
+#: dat/glade/preferences-dialog.glade.h:8
+#: dat/glade/game-options-dialog.glade.h:22
+#: dat/glade/stack-info-dialog.glade.h:4 src/gui/game-window.cpp:1874
+#, fuzzy
+msgid "_Close"
+msgstr "Zamknij"
+
+#: dat/glade/editor/reward-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Reward</b>"
+msgstr "Scenariusz"
+
+#: dat/glade/editor/reward-dialog.glade.h:2 src/gui/sage-dialog.cpp:181
+#, fuzzy
+msgid "Allies"
+msgstr "Algier"
+
+#: dat/glade/editor/reward-dialog.glade.h:3
+msgid "Clear Ally Type"
+msgstr ""
+
+#: dat/glade/editor/reward-dialog.glade.h:4
+#, fuzzy
+msgid "Clear Hidden Ruin"
+msgstr "Wybierz akcjê"
+
+#: dat/glade/editor/reward-dialog.glade.h:5
+#, fuzzy
+msgid "Clear Item"
+msgstr "StwórzPrzedmiot"
+
+#: dat/glade/editor/reward-dialog.glade.h:6
+#, fuzzy
+msgid "Edit Reward"
+msgstr "Losowa Mapa"
+
+#: dat/glade/editor/reward-dialog.glade.h:7 dat/glade/game-window.glade.h:13
+#: dat/glade/history-report-dialog.glade.h:3 dat/glade/report-dialog.glade.h:5
+#: src/gui/sage-dialog.cpp:147 src/editor/players-dialog.cpp:108
+msgid "Gold"
+msgstr "Z³oto"
+
+#: dat/glade/editor/reward-dialog.glade.h:8
+#, fuzzy
+msgid "Hidden Ruin"
+msgstr "Dziwne Ruiny"
+
+#: dat/glade/editor/reward-dialog.glade.h:9
+#, fuzzy
+msgid "Item"
+msgstr "Przedmioty"
+
+#: dat/glade/editor/reward-dialog.glade.h:10
+#, fuzzy
+msgid "Map"
+msgstr "Nowa Gra"
+
+#: dat/glade/editor/reward-dialog.glade.h:13
+#, fuzzy
+msgid "Rand_omize"
+msgstr "Losowa"
+
+#: dat/glade/editor/reward-dialog.glade.h:14
+#, fuzzy
+msgid "Random_ize"
+msgstr "Losowa"
+
+#: dat/glade/editor/reward-dialog.glade.h:18
+msgid "h:"
+msgstr ""
+
+#: dat/glade/editor/reward-dialog.glade.h:19
+msgid "w:"
+msgstr ""
+
+#: dat/glade/editor/reward-dialog.glade.h:20
+msgid "x:"
+msgstr ""
+
+#: dat/glade/editor/reward-dialog.glade.h:21
+msgid "y:"
+msgstr ""
+
+#: dat/glade/editor/select-item-dialog.glade.h:1
+#, fuzzy
+msgid "Select Item"
+msgstr "Wybierz przedmiot"
+
+#: dat/glade/editor/select-reward-dialog.glade.h:1
+#, fuzzy
+msgid "Select Reward"
+msgstr "Wybierz przedmiot"
+
+#: dat/glade/editor/reward-list-dialog.glade.h:1
+#, fuzzy
+msgid "Edit Rewards"
+msgstr "Gracze"
+
+#: dat/glade/editor/select-hidden-ruin-dialog.glade.h:1
+#, fuzzy
+msgid "Select Hidden Ruin"
+msgstr "Wybierz akcjê"
+
+#: dat/glade/editor/tileset-window.glade.h:1
+#, fuzzy
+msgid "<b>Tile Style Set</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/editor/tileset-window.glade.h:2
+#, fuzzy
+msgid "<b>Tile Style Sets</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/editor/tileset-window.glade.h:3
+#, fuzzy
+msgid "<b>Tile Style</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/editor/tileset-window.glade.h:4
+#, fuzzy
+msgid "<b>Tile</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/editor/tileset-window.glade.h:5
+msgid "First Colour:"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade.h:6
+msgid ""
+"Grass\n"
+"Water\n"
+"Forest\n"
+"Hills\n"
+"Mountains\n"
+"Swamp"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade.h:12
+msgid "Image File:"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade.h:13
+msgid ""
+"Lone\n"
+"Outer Top-Left\n"
+"Outer Top-Center\n"
+"Outer Top-Right\n"
+"Outer Bottom-Left\n"
+"Outer Bottom-Center\n"
+"Outer Bottom-Right\n"
+"Outer Middle-Left\n"
+"Inner Middle-Center\n"
+"Outer Middle-Right\n"
+"Inner Top-Left\n"
+"Inner Top-Right\n"
+"Inner Bottom-Left\n"
+"Inner Bottom-Right\n"
+"Top-Left To Bottom-Right\n"
+"Bottom-Left To Top-Right\n"
+"Other"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade.h:30 src/editor/tileset-main.cpp:53
+#, fuzzy
+msgid "LordsAWar! Tileset Editor"
+msgstr "Wczytaj Scenariusz"
+
+#: dat/glade/editor/tileset-window.glade.h:31
+msgid "Moves:"
+msgstr "Ruch:"
+
+#: dat/glade/editor/tileset-window.glade.h:33
+#, fuzzy
+msgid "Pattern:"
+msgstr "Gracz:"
+
+#: dat/glade/editor/tileset-window.glade.h:34
+msgid "Refresh Image from File"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade.h:35
+#, fuzzy
+msgid "Save Tileset _As..."
+msgstr "Wybierz Zestaw Terenów"
+
+#: dat/glade/editor/tileset-window.glade.h:36
+msgid "Second Colour:"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade.h:38
+msgid "Smallmap Appearance:"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade.h:39
+msgid ""
+"Solid\n"
+"Stippled\n"
+"Randomized\n"
+"Sunken\n"
+"Tablecloth"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade.h:44
+msgid "Third Colour:"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade.h:45
+#, fuzzy
+msgid "Tileset info"
+msgstr "Dane miasta"
+
+#: dat/glade/editor/tileset-window.glade.h:50
+#, fuzzy
+msgid "_Load Tileset"
+msgstr "Wybierz Zestaw Terenów"
+
+#: dat/glade/editor/tileset-window.glade.h:51
+#, fuzzy
+msgid "_New Tileset"
+msgstr "Wybierz Zestaw Terenów"
+
+#: dat/glade/editor/tileset-window.glade.h:52
+#, fuzzy
+msgid "_Preview Tile"
+msgstr "Wybierz Zestaw Terenów"
+
+#: dat/glade/editor/tileset-window.glade.h:54
+#, fuzzy
+msgid "_Save Tileset"
+msgstr "Wybierz Zestaw Terenów"
+
+#: dat/glade/editor/tileset-info-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Tileset</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/editor/tileset-info-dialog.glade.h:3
+#, fuzzy
+msgid "Edit Tileset Info"
+msgstr "Informacje o jednostce"
+
+#: dat/glade/editor/tile-preview-dialog.glade.h:1
+#, fuzzy
+msgid "Preview Tile"
+msgstr "Wybierz Zestaw Terenów"
+
+#: dat/glade/army-gains-level-dialog.glade.h:1
+msgid "Army Gained Level"
+msgstr ""
+
+#: dat/glade/army-gains-level-dialog.glade.h:2
+#, fuzzy
+msgid "_Choose"
+msgstr "Zamknij"
+
+#: dat/glade/buy-production-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Buy Production</b>"
+msgstr "Kup Produkcjê"
+
+#: dat/glade/buy-production-dialog.glade.h:2
+msgid "Buy Production"
+msgstr "Kup Produkcjê"
+
+#: dat/glade/buy-production-dialog.glade.h:3
+#, fuzzy
+msgid "_Buy"
+msgstr "Kup"
+
+#: dat/glade/city-defeated-dialog.glade.h:1
+msgid "The city is yours! Will you..."
+msgstr ""
+
+#: dat/glade/city-defeated-dialog.glade.h:2
+#, fuzzy
+msgid "Victory!"
+msgstr "Wektor"
+
+#: dat/glade/city-defeated-dialog.glade.h:3
+#, fuzzy
+msgid "_Occupy"
+msgstr "Zajmij"
+
+#: dat/glade/city-defeated-dialog.glade.h:4
+#, fuzzy
+msgid "_Pillage"
+msgstr "Spl±druj"
+
+#: dat/glade/city-defeated-dialog.glade.h:5 dat/glade/city-window.glade.h:8
+#, fuzzy
+msgid "_Raze"
+msgstr "Spal"
+
+#: dat/glade/city-defeated-dialog.glade.h:6
+#, fuzzy
+msgid "_Sack"
+msgstr "Grupa"
+
+#: dat/glade/city-looted-dialog.glade.h:1
+#: dat/glade/hero-brings-allies-dialog.glade.h:1
+#, fuzzy
+msgid "Your troops have looted the city!"
+msgstr "Zosta³e¶ pokonany!"
+
+#: dat/glade/city-looted-dialog.glade.h:2
+#: dat/glade/city-pillaged-dialog.glade.h:2
+#: dat/glade/city-sacked-dialog.glade.h:2
+#: dat/glade/game-loaded-dialog.glade.h:2 dat/glade/sage-dialog.glade.h:5
+#: dat/glade/ruin-rewarded-dialog.glade.h:2
+#: dat/glade/ruin-report-dialog.glade.h:5
+#: dat/glade/medal-awarded-dialog.glade.h:2
+#: dat/glade/quest-assigned-dialog.glade.h:1
+#: dat/glade/ruinfight-finished-dialog.glade.h:2
+#: dat/glade/ruinfight-started-dialog.glade.h:2
+#: dat/glade/hero-brings-allies-dialog.glade.h:2
+#: dat/glade/military-advisor-dialog.glade.h:1
+#: dat/glade/next-player-turn-dialog.glade.h:2
+#: dat/glade/city-razed-dialog.glade.h:2
+#, fuzzy
+msgid "_Continue"
+msgstr "Warunki"
+
+#: dat/glade/city-pillaged-dialog.glade.h:1
+#, fuzzy
+msgid "Your troops have pillaged the city!"
+msgstr "Zosta³e¶ pokonany!"
+
+#: dat/glade/city-sacked-dialog.glade.h:1
+#: dat/glade/city-razed-dialog.glade.h:1
+#, fuzzy
+msgid "Your troops have sacked the city!"
+msgstr "Zosta³e¶ pokonany!"
+
+#: dat/glade/city-window.glade.h:1 dat/glade/hero-dialog.glade.h:2
+#, fuzzy
+msgid "Buy a production capability"
+msgstr "Kup Produkcjê"
+
+#: dat/glade/city-window.glade.h:2 dat/glade/destination-dialog.glade.h:8
+#: src/gui/city-window.cpp:255 src/gui/destination-dialog.cpp:220
+#, fuzzy
+msgid "Current:"
+msgstr "Liczik:"
+
+#: dat/glade/city-window.glade.h:3
+#, fuzzy
+msgid "R_ename"
+msgstr "Bezimienny"
+
+#: dat/glade/city-window.glade.h:4
+#, fuzzy
+msgid "Set destination for produced armies"
+msgstr "po³±cz jednostki"
+
+#: dat/glade/city-window.glade.h:5 dat/glade/hero-dialog.glade.h:3
+#, fuzzy
+msgid "Stop producing armies"
+msgstr "po³±cz jednostki"
+
+#: dat/glade/city-window.glade.h:6
+#, fuzzy
+msgid "_Buy..."
+msgstr "Kup"
+
+#: dat/glade/city-window.glade.h:9
+#, fuzzy
+msgid "_Stop"
+msgstr "Na Ziemi"
+
+#: dat/glade/city-window.glade.h:10
+#, fuzzy
+msgid "_Vector..."
+msgstr "Wektor"
+
+#: dat/glade/destination-dialog.glade.h:1
+msgid "4t"
+msgstr ""
+
+#: dat/glade/destination-dialog.glade.h:2
+#, fuzzy
+msgid "Chan_ge"
+msgstr "Kartagina"
+
+#: dat/glade/destination-dialog.glade.h:3
+#, fuzzy
+msgid "Choose Destination"
+msgstr "Wybierz Zestaw Terenów"
+
+#: dat/glade/destination-dialog.glade.h:4
+msgid ""
+"Click here to change the\n"
+"destination of armies"
+msgstr ""
+
+#: dat/glade/destination-dialog.glade.h:6
+msgid ""
+"Click here to vector to\n"
+"a new city"
+msgstr ""
+
+#: dat/glade/destination-dialog.glade.h:9
+#, fuzzy
+msgid "Next Turn:"
+msgstr "NastêpnaTura"
+
+#: dat/glade/destination-dialog.glade.h:10
+msgid ""
+"See\n"
+"All"
+msgstr ""
+
+#: dat/glade/destination-dialog.glade.h:12
+#, fuzzy
+msgid "Turn After:"
+msgstr "Liczik:"
+
+#: dat/glade/destination-dialog.glade.h:14
+#, fuzzy
+msgid "_Vector"
+msgstr "Wektor"
+
+#: dat/glade/game-loaded-dialog.glade.h:1
+#, fuzzy
+msgid "Game Loaded"
+msgstr "Gra Wczytana."
+
+#: dat/glade/player-died-dialog.glade.h:1
+#, fuzzy
+msgid "Game Lost"
+msgstr "Opcje"
+
+#: dat/glade/game-preferences-dialog.glade.h:2
+#, no-c-format
+msgid "###%"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade.h:6
+msgid ""
+"Beginner\n"
+"Intermediate\n"
+"Advanced\n"
+"I am the Lord Of War!\n"
+"Custom"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade.h:11
+#, fuzzy
+msgid "Choose a map"
+msgstr "Wybierz drogê!"
+
+#: dat/glade/game-preferences-dialog.glade.h:12
+#: src/gui/history-report-dialog.cpp:112
+msgid "Cities"
+msgstr "Miasta"
+
+#: dat/glade/game-preferences-dialog.glade.h:13
+#, fuzzy
+msgid "Cities can produce allies"
+msgstr "po³±cz jednostki"
+
+#: dat/glade/game-preferences-dialog.glade.h:15
+msgid "Difficulty:"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade.h:16
+#, fuzzy
+msgid "Edit Options"
+msgstr "Opcje"
+
+#: dat/glade/game-preferences-dialog.glade.h:18
+#, fuzzy
+msgid "Generate map randomly:"
+msgstr "Generowanie losowej mapy"
+
+#: dat/glade/game-preferences-dialog.glade.h:21
+#, fuzzy
+msgid "Load map:"
+msgstr "Wczytaj Mapê"
+
+#: dat/glade/game-preferences-dialog.glade.h:23
+msgid "New Game"
+msgstr "Nowa Gra"
+
+#: dat/glade/game-preferences-dialog.glade.h:27
+#: src/editor/new-map-dialog.cpp:154
+msgid "Random"
+msgstr "Losowa"
+
+#: dat/glade/game-preferences-dialog.glade.h:34
+#, fuzzy
+msgid "_Start Game"
+msgstr "Rozpocznij Grê"
+
+#: dat/glade/game-window.glade.h:1 dat/glade/report-dialog.glade.h:3
+#, fuzzy
+msgid "Army"
+msgstr "CJednostka"
+
+#: dat/glade/game-window.glade.h:2 dat/glade/army-bonus-dialog.glade.h:2
+#, fuzzy
+msgid "Army Bonus"
+msgstr "Informacje o jednostce"
+
+#: dat/glade/game-window.glade.h:3
+#, fuzzy
+msgid "Center map on stack"
+msgstr "Wy¶rodkuj ekran na wybranej grupie"
+
+#: dat/glade/game-window.glade.h:4 dat/glade/history-report-dialog.glade.h:1
+#: dat/glade/report-dialog.glade.h:4 src/editor/main-window.cpp:922
+msgid "City"
+msgstr "Miasto"
+
+#: dat/glade/game-window.glade.h:5
+#, fuzzy
+msgid "Deselect the stack"
+msgstr "Wybierz nastêpn± grupê"
+
+#: dat/glade/game-window.glade.h:6 dat/glade/game-options-dialog.glade.h:7
+#, fuzzy
+msgid "Diplomacy"
+msgstr "Zestaw Wojsk"
+
+#: dat/glade/game-window.glade.h:7 src/gui/game-window.cpp:1027
+#, fuzzy
+msgid "Disband"
+msgstr "Lizbona"
+
+#: dat/glade/game-window.glade.h:8
+#, fuzzy
+msgid "End Turn"
+msgstr "Losowa"
+
+#: dat/glade/game-window.glade.h:9
+#, fuzzy
+msgid "End the turn"
+msgstr "nowa runda"
+
+#: dat/glade/game-window.glade.h:10 dat/glade/history-report-dialog.glade.h:2
+msgid "Events"
+msgstr "Wydarzenia"
+
+#: dat/glade/game-window.glade.h:11 dat/glade/fight-order-dialog.glade.h:2
+#, fuzzy
+msgid "Fight Order"
+msgstr "Inne"
+
+#: dat/glade/game-window.glade.h:12
+#, fuzzy
+msgid "Game"
+msgstr "Nazwa"
+
+#: dat/glade/game-window.glade.h:14
+msgid ""
+"Group\n"
+"Moves\n"
+"XX"
+msgstr ""
+
+#: dat/glade/game-window.glade.h:17
+#, fuzzy
+msgid "Group/Ungroup"
+msgstr "Na Ziemi"
+
+#: dat/glade/game-window.glade.h:18
+#, fuzzy
+msgid "Grp"
+msgstr "Na Ziemi"
+
+#: dat/glade/game-window.glade.h:19
+msgid "Help"
+msgstr "Pomoc"
+
+#: dat/glade/game-window.glade.h:20
+#, fuzzy
+msgid "Hero"
+msgstr "Bohaterowie"
+
+#: dat/glade/game-window.glade.h:21 src/gui/history-report-dialog.cpp:60
+#, fuzzy
+msgid "History"
+msgstr "Dane miasta"
+
+#: dat/glade/game-window.glade.h:22
+msgid "Inspect"
+msgstr ""
+
+#: dat/glade/game-window.glade.h:23
+msgid "Items"
+msgstr "Przedmioty"
+
+#: dat/glade/game-window.glade.h:24
+#, fuzzy
+msgid "Leave Here"
+msgstr "Pozwól grupie siê broniæ"
+
+#: dat/glade/game-window.glade.h:25
+#, fuzzy
+msgid "Leave the stack here"
+msgstr "Pozwól grupie siê broniæ"
+
+#: dat/glade/game-window.glade.h:26
+msgid "Let the stack defend"
+msgstr "Pozwól grupie siê broniæ"
+
+#: dat/glade/game-window.glade.h:27
+#, fuzzy
+msgid "Levels"
+msgstr "Poziom:"
+
+#: dat/glade/game-window.glade.h:28
+msgid "Load Game"
+msgstr "Wczytaj Grê"
+
+#: dat/glade/game-window.glade.h:29 dat/glade/splash-window.glade.h:3
+#: dat/glade/about-dialog.glade.h:3 src/gui/main.cpp:58
+msgid "LordsAWar!"
+msgstr ""
+
+#: dat/glade/game-window.glade.h:30
+#, fuzzy
+msgid "Move All"
+msgstr "Ruch:"
+
+#: dat/glade/game-window.glade.h:31
+#, fuzzy
+msgid "Move all stacks"
+msgstr "Ruch:"
+
+#: dat/glade/game-window.glade.h:32
+#, fuzzy
+msgid "Move to the destination"
+msgstr "Niech wszystkie grupy porusz± siê w kierunku celu"
+
+#: dat/glade/game-window.glade.h:33
+msgid "Next"
+msgstr "Nastêpne"
+
+#: dat/glade/game-window.glade.h:34
+#, fuzzy
+msgid "Order"
+msgstr "Inne"
+
+#: dat/glade/game-window.glade.h:35
+#, fuzzy
+msgid "Plant Flag"
+msgstr "Placentia"
+
+#: dat/glade/game-window.glade.h:36 dat/glade/report-dialog.glade.h:8
+#, fuzzy
+msgid "Production"
+msgstr "Kup Produkcjê"
+
+#: dat/glade/game-window.glade.h:37
+msgid "Quest"
+msgstr "Zadanie"
+
+#: dat/glade/game-window.glade.h:38 dat/glade/game-quit-dialog.glade.h:4
+msgid "Quit"
+msgstr "Wyjd¼"
+
+#: dat/glade/game-window.glade.h:39
+msgid "Reports"
+msgstr "Raporty"
+
+#: dat/glade/game-window.glade.h:40 src/gui/game-window.cpp:1054
+#, fuzzy
+msgid "Resign"
+msgstr "Ruiny"
+
+#: dat/glade/game-window.glade.h:42
+msgid "Save Game"
+msgstr "Zapisz Grê"
+
+#: dat/glade/game-window.glade.h:43
+#, fuzzy
+msgid "Save Game As..."
+msgstr "Zapisz Grê"
+
+#: dat/glade/game-window.glade.h:44
+#, fuzzy
+msgid "Search"
+msgstr "Przeszukano:"
+
+#: dat/glade/game-window.glade.h:45
+#, fuzzy
+msgid "Search ruin or temple"
+msgstr "Przeszukaj ruiny lub ¶wi±tyniê"
+
+#: dat/glade/game-window.glade.h:46
+#, fuzzy
+msgid "Select next stack that can move"
+msgstr "Wybierz nastêpn± grupê która mo¿e siê poruszyæ"
+
+#: dat/glade/game-window.glade.h:47 src/gui/game-window.cpp:980
+#: src/editor/main-window.cpp:926
+#, fuzzy
+msgid "Signpost"
+msgstr "Opcje"
+
+#: dat/glade/game-window.glade.h:48 dat/glade/stack-info-dialog.glade.h:2
+#, fuzzy
+msgid "Stack Info"
+msgstr "Grupa"
+
+#: dat/glade/game-window.glade.h:49 dat/glade/triumphs-dialog.glade.h:2
+msgid "Triumphs"
+msgstr ""
+
+#: dat/glade/game-window.glade.h:51
+#, fuzzy, no-c-format
+msgid "Turn: %6"
+msgstr "Tury: %i"
+
+#: dat/glade/game-window.glade.h:52
+#, fuzzy
+msgid "View"
+msgstr "Grafika"
+
+#: dat/glade/game-window.glade.h:53 dat/glade/history-report-dialog.glade.h:4
+#, fuzzy
+msgid "Winners"
+msgstr "Dane miasta"
+
+#: dat/glade/game-window.glade.h:54 dat/glade/report-dialog.glade.h:10
+#, fuzzy
+msgid "Winning"
+msgstr "Ostrze¿enie"
+
+#: dat/glade/game-window.glade.h:56 dat/glade/splash-window.glade.h:7
+#, fuzzy
+msgid "_Preferences"
+msgstr "Pelerine"
+
+#: dat/glade/game-window.glade.h:57
+#, fuzzy
+msgid "_Turn"
+msgstr "NastêpnaTura"
+
+#: dat/glade/hero-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Items</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/hero-dialog.glade.h:5
+#, fuzzy
+msgid "_Drop"
+msgstr "Na Ziemi"
+
+#: dat/glade/hero-dialog.glade.h:6
+msgid "_Pick up"
+msgstr ""
+
+#: dat/glade/hero-offer-dialog.glade.h:1 dat/glade/surrender-dialog.glade.h:1
+#, fuzzy
+msgid "A_ccept"
+msgstr "Zaakceptuj"
+
+#: dat/glade/hero-offer-dialog.glade.h:3 dat/glade/surrender-dialog.glade.h:3
+#, fuzzy
+msgid "_Decline"
+msgstr "Pelerine"
+
+#: dat/glade/hero-offer-dialog.glade.h:4
+#, fuzzy
+msgid "female"
+msgstr "¦wi±tynia"
+
+#: dat/glade/hero-offer-dialog.glade.h:5
+#, fuzzy
+msgid "male"
+msgstr "Trales"
+
+#: dat/glade/surrender-dialog.glade.h:2
+#, fuzzy
+msgid "An Offer of Peace!"
+msgstr "Ogród Pokoju"
+
+#: dat/glade/surrender-refused-dialog.glade.h:1
+msgid "Surrender Refused!"
+msgstr ""
+
+#: dat/glade/sage-dialog.glade.h:1
+msgid ""
+"The Sage greets you warmly...\n"
+"\"Welcome, O seeker of knowledge.\n"
+"I can show thee many things - items, money or maps.\n"
+"What wouldst thou ask of me\""
+msgstr ""
+
+#: dat/glade/ruin-rewarded-dialog.glade.h:1
+msgid "The Sages show thee the site of X where Y can be found."
+msgstr ""
+
+#: dat/glade/ruin-report-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Details</b>"
+msgstr "Scenariusz"
+
+#: dat/glade/ruin-report-dialog.glade.h:2
+msgid "Explored:"
+msgstr ""
+
+#: dat/glade/report-dialog.glade.h:1
+msgid "Amount of gold each side possesses"
+msgstr ""
+
+#: dat/glade/report-dialog.glade.h:2
+msgid "Armies you produced this turn"
+msgstr ""
+
+#: dat/glade/report-dialog.glade.h:6
+#, fuzzy
+msgid "Number of armies each side owns"
+msgstr "Nowy Gracz"
+
+#: dat/glade/report-dialog.glade.h:7
+#, fuzzy
+msgid "Number of cities each side owns"
+msgstr "Nowy Gracz"
+
+#: dat/glade/report-dialog.glade.h:9
+msgid "Who is the most powerful nation"
+msgstr ""
+
+#: dat/glade/load-scenario-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Scenarios</b>"
+msgstr "Scenariusz"
+
+#: dat/glade/load-scenario-dialog.glade.h:2
+msgid "<i>You can use the editor to make your own scenarios.</i>"
+msgstr ""
+
+#: dat/glade/load-scenario-dialog.glade.h:4
+msgid "Load Scenario"
+msgstr "Wczytaj Scenariusz"
+
+#: dat/glade/load-scenario-dialog.glade.h:6
+#, fuzzy
+msgid "Number of Cities:"
+msgstr "Nowy Gracz"
+
+#: dat/glade/load-scenario-dialog.glade.h:7
+#, fuzzy
+msgid "Number of Players:"
+msgstr "Nowy Gracz"
+
+#: dat/glade/load-scenario-dialog.glade.h:9
+#, fuzzy
+msgid "_Load"
+msgstr "Wczytaj"
+
+#: dat/glade/medal-awarded-dialog.glade.h:1
+#, fuzzy
+msgid "Medal Awarded"
+msgstr "przyznane ordery"
+
+#: dat/glade/quest-expired-dialog.glade.h:1
+#, fuzzy
+msgid "Quest Expired"
+msgstr "Raport o zadaniach"
+
+#: dat/glade/preferences-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Game</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/preferences-dialog.glade.h:3
+#, fuzzy
+msgid "<b>Sound</b>"
+msgstr "Kup Produkcjê"
+
+#: dat/glade/preferences-dialog.glade.h:4
+#, fuzzy
+msgid "<i>Volume:</i>"
+msgstr "G³o¶no¶æ:"
+
+#: dat/glade/preferences-dialog.glade.h:5
+#, fuzzy
+msgid "Play _music"
+msgstr "W³±cz muzykê"
+
+#: dat/glade/preferences-dialog.glade.h:6
+#, fuzzy
+msgid "Preferences"
+msgstr "Pelerine"
+
+#: dat/glade/preferences-dialog.glade.h:7
+msgid "Show popup at beginning of _turn"
+msgstr ""
+
+#: dat/glade/ruinfight-finished-dialog.glade.h:1
+msgid "...is victorious! or ...is slain by it!"
+msgstr ""
+
+#: dat/glade/ruinfight-started-dialog.glade.h:1
+msgid "So and so encounters a monster and...."
+msgstr ""
+
+#: dat/glade/splash-window.glade.h:1
+#, fuzzy
+msgid "L_oad Game"
+msgstr "Wczytaj Grê"
+
+#: dat/glade/splash-window.glade.h:2
+#, fuzzy
+msgid "Load _Scenario"
+msgstr "Wczytaj Scenariusz"
+
+#: dat/glade/splash-window.glade.h:4
+#, fuzzy
+msgid "New _Campaign"
+msgstr "Nowa Kampania"
+
+#: dat/glade/splash-window.glade.h:5
+#, fuzzy
+msgid "New _Game"
+msgstr "Nowa Gra"
+
+#: dat/glade/splash-window.glade.h:6
+#, fuzzy
+msgid "New _Network Game"
+msgstr "Nowa Gra Sieciowa"
+
+#: dat/glade/temple-visit-dialog.glade.h:1
+msgid ""
+"Your armies have been blessed!\n"
+"\n"
+"Do you seek a quest?"
+msgstr ""
+
+#: dat/glade/temple-visit-dialog.glade.h:4
+#: dat/glade/game-quit-dialog.glade.h:5
+#, fuzzy
+msgid "_No"
+msgstr "Nie"
+
+#: dat/glade/temple-visit-dialog.glade.h:5
+#: dat/glade/game-quit-dialog.glade.h:6
+#, fuzzy
+msgid "_Yes"
+msgstr "Tak"
+
+#: dat/glade/next-player-turn-dialog.glade.h:1
+#, fuzzy
+msgid "Next Turn"
+msgstr "NastêpnaTura"
+
+#: dat/glade/signpost-change-dialog.glade.h:1
+#, fuzzy
+msgid "Message:"
+msgstr "Wiadomo¶æ"
+
+#: dat/glade/fight-order-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Fight Order</b>"
+msgstr "Inne"
+
+#: dat/glade/hero-levels-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Hero Levels</b>"
+msgstr "Bohaterowie"
+
+#: dat/glade/hero-levels-dialog.glade.h:2
+#, fuzzy
+msgid "Hero Levels"
+msgstr "Bohaterowie"
+
+#: dat/glade/item-bonus-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Item Bonus</b>"
+msgstr "Przedmioty"
+
+#: dat/glade/item-bonus-dialog.glade.h:2
+#, fuzzy
+msgid "Item Bonus"
+msgstr "Przedmioty"
+
+#: dat/glade/game-options-dialog.glade.h:1
+msgid "<b>Affecting Difficulty</b>"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade.h:2
+msgid "<b>Not Affecting Difficulty</b>"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade.h:3
+msgid ""
+"Average\n"
+"Strong\n"
+"Active"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade.h:6
+msgid "Cusp of War"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade.h:8
+#, fuzzy
+msgid "Game Options"
+msgstr "Opcje"
+
+#: dat/glade/game-options-dialog.glade.h:9
+#, fuzzy
+msgid "Hidden Map"
+msgstr "Dziwne Ruiny"
+
+#: dat/glade/game-options-dialog.glade.h:10
+msgid "Intense Combat"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade.h:11
+msgid "Military Advisor"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade.h:12
+#, fuzzy
+msgid "Neutral Cities:"
+msgstr "Neutralni"
+
+#: dat/glade/game-options-dialog.glade.h:13
+msgid ""
+"Never Allowed\n"
+"Only On Capture\n"
+"Always Allowed"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade.h:16
+msgid "Quests"
+msgstr "Zadania"
+
+#: dat/glade/game-options-dialog.glade.h:17
+msgid "Quick Start"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade.h:18
+#, fuzzy
+msgid "Random Turns"
+msgstr "Losowa"
+
+#: dat/glade/game-options-dialog.glade.h:19
+#, fuzzy
+msgid "Razing Cities:"
+msgstr "Miasta"
+
+#: dat/glade/game-options-dialog.glade.h:20
+msgid "View Enemies"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade.h:21
+#, fuzzy
+msgid "View Production"
+msgstr "Kup Produkcjê"
+
+#: dat/glade/triumphs-dialog.glade.h:1
+#, fuzzy
+msgid "Continue"
+msgstr "Warunki"
+
+#: dat/glade/diplomacy-report-dialog.glade.h:1
+#, fuzzy
+msgid "Diplomacy Report"
+msgstr "Zestaw Wojsk"
+
+#: dat/glade/diplomacy-dialog.glade.h:1
+#, fuzzy
+msgid "Diplomatic Proposals"
+msgstr "Zestaw Wojsk"
+
+#: dat/glade/diplomacy-dialog.glade.h:2
+#, fuzzy
+msgid "Diplomatic State"
+msgstr "Zestaw Wojsk"
+
+#: dat/glade/diplomacy-dialog.glade.h:3
+#, fuzzy
+msgid "Report"
+msgstr "Raporty"
+
+#: dat/glade/diplomacy-dialog.glade.h:4
+#, fuzzy
+msgid "Their Proposals"
+msgstr "Zestaw Wojsk"
+
+#: dat/glade/diplomacy-dialog.glade.h:5
+#, fuzzy
+msgid "Your offers and replies"
+msgstr "Zrujnowana ¦wi±tynia"
+
+#: dat/glade/diplomacy-dialog.glade.h:6
+#, fuzzy
+msgid "player name"
+msgstr "tura gracza"
+
+#: dat/glade/treachery-dialog.glade.h:1
+#, fuzzy
+msgid "Treachery!"
+msgstr "£ucznik"
+
+#: dat/glade/treachery-dialog.glade.h:2
+msgid "Whoops!  _Pardon me, friend."
+msgstr ""
+
+#: dat/glade/treachery-dialog.glade.h:3
+#, fuzzy
+msgid "_Attack!"
+msgstr "Grupa"
+
+#: dat/glade/stack-info-dialog.glade.h:3 src/gui/stack-info-dialog.cpp:186
+#: src/editor/stack-dialog.cpp:86
+msgid "Str"
+msgstr ""
+
+#: dat/glade/stack-info-dialog.glade.h:5
+#, fuzzy
+msgid "_Group"
+msgstr "Na Ziemi"
+
+#: dat/glade/stack-info-dialog.glade.h:6
+#, fuzzy
+msgid "_Ungroup"
+msgstr "Na Ziemi"
+
+#: dat/glade/game-quit-dialog.glade.h:1
+#, fuzzy
+msgid ""
+"Are you sure you want to quit?\n"
+"\n"
+msgstr "Napewno chcesz usun±æ to wydarzenie?"
+
+#: dat/glade/about-dialog.glade.h:1
+msgid ""
+"Freedom is the most important \n"
+"feature of this game."
+msgstr ""
+
+#: dat/glade/about-dialog.glade.h:4
+msgid "The GPL version 2 or later."
+msgstr ""
+
+#: dat/glade/about-dialog.glade.h:5
+#, fuzzy
+msgid "The LordsAWar Website"
+msgstr "Wczytaj Scenariusz"
+
+#. TRANSLATORS: Replace this string with your names, one name per line.
+#: dat/glade/about-dialog.glade.h:7
+msgid "translator-credits"
+msgstr ""
+
+#: src/tilestyle.cpp:106 src/tilestyle.cpp:163
+#, fuzzy
+msgid "Lone"
+msgstr "Brak"
+
+#: src/tilestyle.cpp:109 src/tilestyle.cpp:165
+msgid "Outer Top-Left"
+msgstr ""
+
+#: src/tilestyle.cpp:112 src/tilestyle.cpp:167
+msgid "Outer Top-Centre"
+msgstr ""
+
+#: src/tilestyle.cpp:115 src/tilestyle.cpp:169
+msgid "Outer Top-Right"
+msgstr ""
+
+#: src/tilestyle.cpp:118 src/tilestyle.cpp:171
+msgid "Outer Bottom-Left"
+msgstr ""
+
+#: src/tilestyle.cpp:121 src/tilestyle.cpp:173
+msgid "Outer Bottom-Centre"
+msgstr ""
+
+#: src/tilestyle.cpp:124 src/tilestyle.cpp:175
+msgid "Outer Bottom-Right"
+msgstr ""
+
+#: src/tilestyle.cpp:127 src/tilestyle.cpp:177
+msgid "Outer Middle-Left"
+msgstr ""
+
+#: src/tilestyle.cpp:130 src/tilestyle.cpp:179
+msgid "Outer Middle-Centre"
+msgstr ""
+
+#: src/tilestyle.cpp:133 src/tilestyle.cpp:181
+msgid "Outer Middle-Right"
+msgstr ""
+
+#: src/tilestyle.cpp:136 src/tilestyle.cpp:183
+msgid "Inner Top-Left"
+msgstr ""
+
+#: src/tilestyle.cpp:139 src/tilestyle.cpp:185
+msgid "Inner Top-Right"
+msgstr ""
+
+#: src/tilestyle.cpp:142 src/tilestyle.cpp:187
+msgid "Inner Bottom-Left"
+msgstr ""
+
+#: src/tilestyle.cpp:145 src/tilestyle.cpp:189
+msgid "Inner Bottom-Right"
+msgstr ""
+
+#: src/tilestyle.cpp:148 src/tilestyle.cpp:191
+msgid "Top-Left To Bottom-Right Diagonal"
+msgstr ""
+
+#: src/tilestyle.cpp:151 src/tilestyle.cpp:193
+msgid "Bottom-Left to Top-Right Diagonal"
+msgstr ""
+
+#: src/tilestyle.cpp:154 src/tilestyle.cpp:195
+msgid "Other"
+msgstr "Inne"
+
+#: src/armysetlist.cpp:170 src/editor/armyset-window.cpp:419
+msgid "Error, while loading an armyset. Armyset Name: "
+msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
+
+#: src/GameScenario.cpp:203
+msgid "Autosave failed.\n"
+msgstr ""
+
+#: src/GameScenario.cpp:210
+msgid "Error while trying to rename the temporary file to autosave.sav\n"
+msgstr ""
+
+#: src/GameScenario.cpp:211
+#, fuzzy
+msgid "Error: "
+msgstr "B³±d"
+
+#: src/GameScenario.cpp:224
+msgid "The Filename is well formed"
+msgstr "Nazwa pliku jest dobrze utworzona"
+
+#: src/GameScenario.cpp:229
+msgid "The Filename lacks the extension --> "
+msgstr "W nazwie pliku brakuje rozszerzenia --> "
+
+#: src/GameScenario.cpp:242
+msgid "GameScenario: Something went wrong with saving.\n"
+msgstr "GameScenario: B³±d podczas zapisu.\n"
+
+#: src/GameScenario.cpp:304
+msgid "savefile has wrong version, we want "
+msgstr "niew³a¶ciwa wersja pliku, oczekiwano"
+
+#: src/GameScenario.cpp:306
+msgid "savefile offers "
+msgstr "plik oferuje"
+
+#: src/QKillHero.cpp:97
+msgid "You're still searching for him..."
+msgstr "Wci±¿ go szukasz..."
+
+#: src/QKillHero.cpp:103
+msgid "Seen lately near ("
+msgstr "Widziano go niedawno nieopodal("
+
+#: src/QKillHero.cpp:112
+#, c-format
+msgid "You slayed the wicked hero %s. He deserved that!"
+msgstr "Zabi³e¶ wynaturzonego bohatera %s. Zas³u¿y³ na taki los!"
+
+#: src/QKillHero.cpp:119
+#, c-format
+msgid "You could not slay the wicked hero %s"
+msgstr "Nie uda³o ci siê zabiæ %s"
+
+#: src/QKillHero.cpp:123
+msgid "He was slain by other fellows!"
+msgstr "Zabili go inni towarzysze!"
+
+#: src/QKillHero.cpp:131
+#, c-format
+msgid "Kill the hero named %s, servant of player %s"
+msgstr "Zabij bohatera zw±cego siê %s s³u¿±cego u gracza %s"
+
+#: src/QEnemyArmytype.cpp:116
+#, fuzzy, c-format
+msgid "You have not killed a unit of enemy %s yet."
+msgstr "Dotychczas zabi³e¶ %i"
+
+#: src/QEnemyArmytype.cpp:127
+#, fuzzy, c-format
+msgid "You have killed a unit of enemy %s."
+msgstr "Dotychczas zabi³e¶ %i"
+
+#: src/QEnemyArmytype.cpp:130 src/QPillageGold.cpp:83 src/QEnemyArmies.cpp:134
+msgid "Well done!"
+msgstr "Doskonale!"
+
+#: src/QEnemyArmytype.cpp:144
+#, fuzzy, c-format
+msgid "You must destroy a unit of enemy %s."
+msgstr "Musisz zniszczyæ %i wrog± jednostkê"
+
+#: src/GameMap.cpp:218
+msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
+msgstr "B³±d w GameMap::fillMap: rozmiary siê nie zgadzaj±. Zamykam.\n"
+
+#: src/citysetlist.cpp:103
+#, fuzzy
+msgid "Error, while loading a cityset. Cityset Name: "
+msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
+
+#: src/QPillageGold.cpp:73
+#, fuzzy, c-format
+msgid "You have already stolen %i gold."
+msgstr "Zdo³a³e¶ zabiæ %i jednostkê"
+
+#: src/QCityOccupy.cpp:88 src/QCityRaze.cpp:88 src/QCitySack.cpp:88
+#, fuzzy
+msgid "You aren't afraid of doing it, are you?"
+msgstr "Nie przera¿a ciê to chyba?"
+
+#: src/QCityOccupy.cpp:93
+#, fuzzy
+msgid "The priests thank you for occupying this evil place."
+msgstr "Kap³ani dziêkuj± ci za zbadanie tego ponurego miejsca."
+
+#: src/QCityOccupy.cpp:101
+#, c-format
+msgid "The occupation of city \"%s\" could not be accomplished."
+msgstr ""
+
+#: src/QCityOccupy.cpp:122
+#, c-format
+msgid "You must take over the city \"%s\" and occupy it."
+msgstr ""
+
+#: src/game.cpp:588
+#, fuzzy
+msgid "%1 (capital city)"
+msgstr "%i ¿ywotno¶ci"
+
+#: src/game.cpp:594
+msgid "Under rule of %1"
+msgstr ""
+
+#: src/game.cpp:597 src/gui/city-window.cpp:162
+#, fuzzy
+msgid "Income: %1"
+msgstr "Przedmiot:"
+
+#: src/game.cpp:599
+#, fuzzy
+msgid "Defense: %1"
+msgstr "Obrona: %i"
+
+#: src/game.cpp:603
+#, fuzzy
+msgid "Status: razed!"
+msgstr "Status:"
+
+#: src/game.cpp:633
+msgid "Explored"
+msgstr ""
+
+#: src/game.cpp:636
+msgid "Unexplored"
+msgstr ""
+
+#: src/GraphicsCache.cpp:725
+msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
+msgstr "GraphicsCache::getFlagPic: nie dostarczono grupy! Zamykam...\n"
+
+#: src/GraphicsCache.cpp:758
+#, fuzzy
+msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
+msgstr "GraphicsCache::getFlagPic: nie dostarczono grupy! Zamykam...\n"
+
+#: src/tilesetlist.cpp:103
+#, fuzzy
+msgid "Error, while loading a tileset. Tileset Name: "
+msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
+
+#: src/Configuration.cpp:98
+msgid "Found configuration file: "
+msgstr "Znaleziono plik konfiguracyjny: "
+
+#: src/Configuration.cpp:150
+msgid "Configuration: Something went wrong while saving.\n"
+msgstr "Konfiguracja: Wyst±pi³ b³±d podczas zapisu.\n"
+
+#: src/Configuration.cpp:172
+msgid "Configuration file has wrong version, we want "
+msgstr "Niew³a¶ciwa wersja pliku konfiguracyjnego. Oczekiwano "
+
+#: src/Configuration.cpp:174
+msgid "Configuration file offers "
+msgstr "Plik konfiguracyjny oferuje "
+
+#: src/Configuration.cpp:185
+msgid "I make a backup copy from "
+msgstr "Tworzê kopiê zapasow± od"
+
+#: src/Configuration.cpp:289
+msgid "Couldn't save the new configuration file..."
+msgstr "Nie uda³o siê zapisaæ konfiguracji..."
+
+#: src/Configuration.cpp:290
+#, fuzzy
+msgid "Check permissions of your home directory....aborting!"
+msgstr "Sprawd¼ zezwolenia w katalogu g³ównym...przerywam!\n"
+
+#: src/Configuration.cpp:294
+msgid "Created the standard configuration file "
+msgstr "Utworzono standardowy plik konfiguracyjny "
+
+#: src/Configuration.cpp:307
+msgid "Couldn't create save game directory "
+msgstr "Nie uda³o siê utworzyæ katalogu do zapisu gier "
+
+#: src/Configuration.cpp:309
+#, fuzzy
+msgid "Check permissions and the entries in your lordsawarrc file!"
+msgstr "Sprawd¼ zezwolenia i wpisy w swoim pliku freelordsrc!\n"
+
+#: src/shieldsetlist.cpp:104
+#, fuzzy
+msgid "Error, while loading a shieldset. Shieldset Name: "
+msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
+
+#: src/MapGenerator.cpp:153
+msgid "Making random map"
+msgstr "Tworzenie losowej mapy"
+
+#: src/MapGenerator.cpp:156
+msgid "Flatening Plains  ... 10%"
+msgstr "Sp³aszczanie Równin ... 10%"
+
+#: src/MapGenerator.cpp:158
+msgid "Raining Water     ... 30%"
+msgstr "Przywo³ywanie Wody ... 30%"
+
+#: src/MapGenerator.cpp:161
+msgid "Raising Hills     ... 20%"
+msgstr "Wnoszenie Wzgórz ... 20%"
+
+#: src/MapGenerator.cpp:163
+msgid "Raising Mountains ... 30%"
+msgstr "Wznoszenie Gór ... 30%"
+
+#: src/MapGenerator.cpp:166
+msgid "Planting Forest   ... 40%"
+msgstr "Sadzenie lasów ... 40%"
+
+#: src/MapGenerator.cpp:168
+msgid "Watering Swamps   ... 50%"
+msgstr "Nawadnianie Bagien ... 50%"
+
+#: src/MapGenerator.cpp:170
+msgid "Normalizing       ... 60%"
+msgstr "Normalizowanie    ... 60%"
+
+#: src/MapGenerator.cpp:174
+msgid "Building Cities   ... 70%"
+msgstr "Budowanie Miast   ... 70%"
+
+#: src/MapGenerator.cpp:179
+#, fuzzy
+msgid "Paving Roads      ... 75%"
+msgstr "Przywo³ywanie Wody ... 30%"
+
+#: src/MapGenerator.cpp:183
+msgid "Ruining Ruins     ... 80%"
+msgstr "Rujnowanie Ruin   ... 80%"
+
+#: src/MapGenerator.cpp:185
+#, fuzzy
+msgid "Raising Signs     ... 88%"
+msgstr "Wnoszenie Wzgórz ... 20%"
+
+#: src/MapGenerator.cpp:187
+msgid "Spawning temples  ... 90%"
+msgstr "Wykluwanie ¦wi±tyñ ... 90%"
+
+#: src/MapGenerator.cpp:189
+msgid "Done making map   ... 100%"
+msgstr "Tworzenie mapy zakoñczone ... 100%"
+
+#: src/QEnemyArmies.cpp:124
+#, c-format
+msgid "You have killed %i so far."
+msgstr "Dotychczas zabi³e¶ %i"
+
+#: src/player.cpp:1221
+msgid "Error: searching stack and ruin to be searched not on same position\n"
+msgstr ""
+"B³±d: przeszukuj±ca grupa i ruiny nie znajduj± siê w tym samym miejscu\n"
+
+#: src/player.cpp:1310
+msgid "Stack tried to visit temple at wrong location\n"
+msgstr "Grupa usi³owa³a odwiedziæ ¶wi±tyniê w niew³a¶ciwym miejscu\n"
+
+#: src/player.cpp:2203
+#, fuzzy
+msgid "%1 Standard"
+msgstr "Jednostki Standardowe"
+
 #: src/reward.cpp:402
 msgid "%1 Gold Piece"
 msgid_plural "%1 Gold Pieces"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+
+#: src/reward.cpp:410
+msgid "Allies: %1 x %2"
+msgstr ""
+
+#: src/reward.cpp:418
+#, fuzzy
+msgid "Item: %1"
+msgstr "Przedmiot:"
+
+#: src/reward.cpp:425
+#, fuzzy
+msgid "Site: %1"
+msgstr "Rozmiar:"
+
+#: src/reward.cpp:431
+msgid "Map: %1,%2 %3x%4"
+msgstr ""
+
+#: src/QCityRaze.cpp:93
+#, fuzzy
+msgid "The priests thank you for razing this evil place."
+msgstr "Kap³ani dziêkuj± ci za zbadanie tego ponurego miejsca."
+
+#: src/QCityRaze.cpp:101
+#, c-format
+msgid "The razing of city \"%s\" could not be accomplished."
+msgstr ""
+
+#: src/QCityRaze.cpp:122
+#, c-format
+msgid "You must conquer the city \"%s\" and burn it to the ground."
+msgstr ""
+
+#: src/gui/city-window.cpp:155
+#, fuzzy
+msgid "Capital city of %1"
+msgstr "Miasto %s"
+
+#: src/gui/city-window.cpp:160
+#, fuzzy
+msgid "Defence: %1"
+msgstr "Obrona: %i"
+
+#: src/gui/city-window.cpp:260 src/gui/buy-production-dialog.cpp:149
+#, fuzzy
+msgid "No production"
+msgstr "Brak wolnych produkcji"
+
+#: src/gui/city-window.cpp:274 src/gui/army-info-tip.cpp:89
+#, fuzzy
+msgid "Time: %1"
+msgstr "Rozmiar:"
+
+#: src/gui/city-window.cpp:276 src/gui/army-info-tip.cpp:81
+#: src/gui/buy-production-dialog.cpp:163 src/gui/hero-dialog.cpp:242
+#: src/gui/army-gains-level-dialog.cpp:66
+#: src/editor/select-army-dialog.cpp:181
+#, fuzzy
+msgid "Strength: %1"
+msgstr "Si³a: %i"
+
+#: src/gui/city-window.cpp:281 src/gui/buy-production-dialog.cpp:169
+#: src/gui/army-gains-level-dialog.cpp:63
+#: src/editor/select-army-dialog.cpp:184
+#, fuzzy
+msgid "Moves: %1"
+msgstr "Ruch: %i"
+
+#: src/gui/city-window.cpp:283 src/gui/army-info-tip.cpp:91
+#: src/gui/buy-production-dialog.cpp:167
+#, fuzzy
+msgid "Cost: %1"
+msgstr "Koszt:"
+
+#: src/gui/city-window.cpp:285 src/gui/destination-dialog.cpp:231
+msgid "%1t"
+msgstr ""
+
+#: src/gui/city-window.cpp:290
+msgid ", then to %1"
+msgstr ""
+
+#: src/gui/city-window.cpp:431
+#, fuzzy
+msgid "Rename City"
+msgstr "Zrujnowane Miasto"
+
+#: src/gui/city-window.cpp:439
+msgid "Type the new name for this city:"
+msgstr ""
+
+#: src/gui/city-window.cpp:466
+#, fuzzy
+msgid "Raze City"
+msgstr "Zrujnowane Miasto"
+
+#: src/gui/city-window.cpp:472
+#, fuzzy
+msgid "Are you sure that you want to raze %1?"
+msgstr "Napewno chcesz usun±æ to wydarzenie?"
+
+#: src/gui/city-window.cpp:475
+msgid "You won't be popular!"
+msgstr ""
+
+#: src/gui/preferences-dialog.cpp:65 src/gui/preferences-dialog.cpp:124
+#: src/gui/preferences-dialog.cpp:137 src/gui/game-preferences-dialog.cpp:41
+#: src/editor/players-dialog.cpp:42
+msgid "Human"
+msgstr "Cz³owiek"
+
+#: src/gui/preferences-dialog.cpp:66
+#, fuzzy
+msgid "Computer"
+msgstr "CLicznik"
+
+#: src/gui/quest-completed-dialog.cpp:58 src/gui/quest-assigned-dialog.cpp:56
+#: src/gui/quest-report-dialog.cpp:61
+#, fuzzy
+msgid "Quest for %1"
+msgstr "¯adnych zadañ dla %s"
+
+#: src/gui/quest-completed-dialog.cpp:63
+#, fuzzy
+msgid "%1 completed the quest!"
+msgstr "Twój bohater %s ukoñczy³ zadanie."
 
 #: src/gui/quest-completed-dialog.cpp:79
 #, fuzzy
@@ -39,6 +2675,30 @@ msgid_plural "You have been rewarded with %1 allies."
 msgstr[0] "W nagrodê otrzymujesz %i szt. z³ota"
 msgstr[1] "W nagrodê otrzymujesz %i szt. z³ota"
 msgstr[2] "W nagrodê otrzymujesz %i szt. z³ota"
+
+#: src/gui/quest-completed-dialog.cpp:105 src/gui/ruin-rewarded-dialog.cpp:80
+msgid "where powerful allies can be found!"
+msgstr ""
+
+#: src/gui/quest-completed-dialog.cpp:109 src/gui/ruin-rewarded-dialog.cpp:84
+msgid "where the %1 can be found!"
+msgstr ""
+
+#: src/gui/quest-completed-dialog.cpp:113 src/gui/ruin-rewarded-dialog.cpp:87
+msgid "where a map can be found!"
+msgstr ""
+
+#: src/gui/quest-completed-dialog.cpp:115 src/gui/ruin-rewarded-dialog.cpp:89
+msgid "where crapola can be found!"
+msgstr ""
+
+#: src/gui/quest-completed-dialog.cpp:117 src/gui/ruin-rewarded-dialog.cpp:91
+msgid "where gold can be found!"
+msgstr ""
+
+#: src/gui/quest-completed-dialog.cpp:119 src/gui/ruin-rewarded-dialog.cpp:93
+msgid "where something important can be found!"
+msgstr ""
 
 #: src/gui/triumphs-dialog.cpp:102
 msgid "%1 hero earned fates worthy of legend!"
@@ -110,6 +2770,98 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
+#: src/gui/error-utils.cpp:30
+msgid "Fatal error"
+msgstr ""
+
+#: src/gui/army-info-tip.cpp:87
+#, fuzzy
+msgid "Movement: %1"
+msgstr "Ruch: %i"
+
+#: src/gui/army-info-tip.cpp:96 src/gui/hero-dialog.cpp:246
+#, fuzzy
+msgid "Moves: %1/%2"
+msgstr "Ruch: %i"
+
+#: src/gui/army-info-tip.cpp:99 src/gui/buy-production-dialog.cpp:173
+#: src/gui/hero-dialog.cpp:249 src/editor/select-army-dialog.cpp:190
+#, fuzzy
+msgid "Upkeep: %1"
+msgstr "Utrzymanie: %i"
+
+#: src/gui/game-preferences-dialog.cpp:42 src/editor/players-dialog.cpp:43
+msgid "Easy"
+msgstr "£atwy"
+
+#: src/gui/game-preferences-dialog.cpp:43 src/editor/players-dialog.cpp:44
+msgid "Hard"
+msgstr ""
+
+#: src/gui/game-preferences-dialog.cpp:44 src/editor/players-dialog.cpp:45
+msgid "Off"
+msgstr ""
+
+#: src/gui/game-preferences-dialog.cpp:130
+#, fuzzy
+msgid "LordsAWar map files (*.map)"
+msgstr "Pliki map"
+
+#: src/gui/buy-production-dialog.cpp:160
+#, fuzzy
+msgid "Duration: %1"
+msgstr "Czas trwania: %i"
+
+#: src/gui/buy-production-dialog.cpp:171 src/editor/select-army-dialog.cpp:188
+#, fuzzy
+msgid "Hitpoints: %1"
+msgstr "Punkty ¯ycia: %i"
+
+#: src/gui/quest-assigned-dialog.cpp:63
+#, fuzzy
+msgid "This hero already has a quest."
+msgstr "Ten bohater ju¿ ma zadanie"
+
+#: src/gui/history-report-dialog.cpp:112 src/gui/history-report-dialog.cpp:117
+#: src/gui/history-report-dialog.cpp:122 src/editor/city-dialog.cpp:96
+#, fuzzy
+msgid "Turns"
+msgstr "Thurso"
+
+#: src/gui/history-report-dialog.cpp:117
+#, fuzzy
+msgid "Gold Pieces"
+msgstr "i znalaz³e¶ %i szt. z³ota"
+
+#: src/gui/history-report-dialog.cpp:122
+#, fuzzy
+msgid "Score"
+msgstr "Scone"
+
+#: src/gui/history-report-dialog.cpp:354
+#, fuzzy
+msgid "City History"
+msgstr "Dane miasta"
+
+#: src/gui/history-report-dialog.cpp:357
+#, fuzzy
+msgid "Event History"
+msgstr "Wydarzenia"
+
+#: src/gui/history-report-dialog.cpp:360
+#, fuzzy
+msgid "Gold History"
+msgstr "Raport o dochodach"
+
+#: src/gui/history-report-dialog.cpp:363
+#, fuzzy
+msgid "Winner History"
+msgstr "Dane miasta"
+
+#: src/gui/history-report-dialog.cpp:390 src/gui/history-report-dialog.cpp:409
+msgid "On turn %1 you %2 "
+msgstr ""
+
 #: src/gui/history-report-dialog.cpp:392
 #, fuzzy
 msgid "%1 gold piece!"
@@ -125,12 +2877,227 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
+#: src/gui/history-report-dialog.cpp:433
+msgid "On turn %1 you %2 coming %3"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:459
+msgid "%1 finds a sage!"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:467
+msgid "%1 emerges in %2!"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:476
+msgid "%1 begins a quest!"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:484
+msgid "%1 finishes a quest!"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:492
+msgid "%1 is killed in %2!"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:501
+msgid "%1 is killed in battle!"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:509
+msgid "%1 is killed while searching!"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:518
+msgid "%1 conquers %2!"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:527
+msgid "%1 is vanquished!"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:537
+msgid "%1 at peace with %2!"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:547
+msgid "%1 at war with %2!"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:557
+#, fuzzy
+msgid "Treachery by %1 on %2!"
+msgstr "£ucznik"
+
+#: src/gui/history-report-dialog.cpp:566
+msgid "%1 finds allies!"
+msgstr ""
+
+#: src/gui/history-report-dialog.cpp:571
+msgid "unknown"
+msgstr ""
+
+#: src/gui/sage-dialog.cpp:65 src/gui/ruin-rewarded-dialog.cpp:59
+msgid "A Sage!"
+msgstr ""
+
+#: src/gui/hero-dialog.cpp:75 src/editor/players-dialog.cpp:107
+#: src/editor/city-dialog.cpp:92 src/editor/stack-dialog.cpp:84
+msgid "Name"
+msgstr "Nazwa"
+
+#: src/gui/hero-dialog.cpp:76
+#, fuzzy
+msgid "Attributes"
+msgstr "Jednostki"
+
+#: src/gui/hero-dialog.cpp:77
+#, fuzzy
+msgid "Status"
+msgstr "Status:"
+
+#: src/gui/hero-dialog.cpp:143 src/gui/hero-dialog.cpp:176
+#: src/gui/hero-dialog.cpp:190
+#, fuzzy
+msgid "In backpack"
+msgstr "Plecak"
+
+#: src/gui/hero-dialog.cpp:161 src/gui/hero-dialog.cpp:192
+#, fuzzy
+msgid "On the ground"
+msgstr "nowa runda"
+
+#: src/gui/hero-dialog.cpp:213
+#, fuzzy
+msgid "Battle: %1"
+msgstr "Przedmiot:"
+
+#: src/gui/hero-dialog.cpp:231
+#, fuzzy
+msgid "Command: %1"
+msgstr "Komentarz:"
+
+#: src/gui/hero-dialog.cpp:233 src/gui/game-window.cpp:2383
+#, fuzzy
+msgid "Level: %1"
+msgstr "Poziom:"
+
+#: src/gui/hero-dialog.cpp:235 src/gui/game-window.cpp:2381
+#, fuzzy
+msgid "Experience: %1"
+msgstr "Obrona: %i"
+
+#: src/gui/game-window.cpp:399 src/editor/main-window.cpp:378
+#: src/editor/main-window.cpp:421
+msgid "Neutral"
+msgstr "Neutralny"
+
+#: src/gui/game-window.cpp:854 src/gui/splash-window.cpp:117
+#, fuzzy
+msgid "Choose Game to Load"
+msgstr "Wybierz Zestaw Terenów"
+
+#: src/gui/game-window.cpp:885
+#, fuzzy
+msgid "Game was not saved!"
+msgstr "Gra Zapisana"
+
+#: src/gui/game-window.cpp:892 src/editor/armyset-window.cpp:470
+#: src/editor/main-window.cpp:669 src/editor/tileset-window.cpp:548
+#: src/editor/tileset-window.cpp:884
+#, fuzzy
+msgid "Choose a Name"
+msgstr "Wybierz drogê!"
+
+#: src/gui/game-window.cpp:917
+#, fuzzy
+msgid "Error saving game!"
+msgstr "B³±d. Gra niezapisana"
+
+#: src/gui/game-window.cpp:990
+msgid "Change the message on this sign:"
+msgstr ""
+
+#: src/gui/game-window.cpp:1032
+#, fuzzy
+msgid "Are you sure you want to disband this group?"
+msgstr "Naprawdê chcesz usun±æ t± produkcjê?"
+
+#: src/gui/game-window.cpp:1059
+#, fuzzy
+msgid "Are you sure you want to resign?"
+msgstr "Napewno chcesz usun±æ to wydarzenie?"
+
+#: src/gui/game-window.cpp:1269
+msgid "Congratulations to %1 for conquering the world!"
+msgstr ""
+
+#: src/gui/game-window.cpp:1297
+msgid "The rule of %1 has permanently ended!"
+msgstr ""
+
+#: src/gui/game-window.cpp:1303
+msgid "No further human resistance is possible"
+msgstr ""
+
+#: src/gui/game-window.cpp:1305
+msgid "but the battle will continue!"
+msgstr ""
+
+#: src/gui/game-window.cpp:1307
+msgid "Press `CTRL-P' to stop the war"
+msgstr ""
+
+#: src/gui/game-window.cpp:1309
+msgid "and visit the sites of thy old battles."
+msgstr ""
+
+#: src/gui/game-window.cpp:1673
+#, fuzzy
+msgid "Searching"
+msgstr "Przeszukano:"
+
+#: src/gui/game-window.cpp:1699
+msgid "Hero Victorious"
+msgstr ""
+
+#: src/gui/game-window.cpp:1701
+#, fuzzy
+msgid "Hero Defeated"
+msgstr "Pokonane miasto"
+
+#: src/gui/game-window.cpp:1708
+msgid "...and is victorious!"
+msgstr ""
+
+#: src/gui/game-window.cpp:1710
+msgid "...and is slain by it!"
+msgstr ""
+
+#: src/gui/game-window.cpp:1746
+msgid "Hero brings allies!"
+msgstr ""
+
 #: src/gui/game-window.cpp:1752
 msgid "The hero brings %1 ally!"
 msgid_plural "The hero brings %1 allies!"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+
+#: src/gui/game-window.cpp:1778
+msgid "You graciously and benevolently accept their offer."
+msgstr ""
+
+#: src/gui/game-window.cpp:1802
+#, fuzzy
+msgid "Are you sure you want to attack %1?"
+msgstr "Napewno chcesz usun±æ to wydarzenie?"
+
+#: src/gui/game-window.cpp:1805
+msgid "Other players may not like this!"
+msgstr ""
 
 #: src/gui/game-window.cpp:1854
 #, fuzzy
@@ -140,6 +3107,39 @@ msgstr[0] "Twoje oddzia³y zosta³y pob³ogos³awione"
 msgstr[1] "Twoje oddzia³y zosta³y pob³ogos³awione"
 msgstr[2] "Twoje oddzia³y zosta³y pob³ogos³awione"
 
+#: src/gui/game-window.cpp:1857
+msgid "We have already blessed thee!"
+msgstr ""
+
+#: src/gui/game-window.cpp:1860
+#, fuzzy
+msgid "Seek more blessings in far temples!"
+msgstr "Przeszukaj ruiny lub ¶wi±tyniê"
+
+#: src/gui/game-window.cpp:1865
+msgid "Do you seek a quest?"
+msgstr ""
+
+#: src/gui/game-window.cpp:2003
+msgid "%1, you have triumphed in the battle of %2."
+msgstr ""
+
+#: src/gui/game-window.cpp:2004
+msgid "%1, you have claimed victory in the battle of %2."
+msgstr ""
+
+#: src/gui/game-window.cpp:2005
+msgid "%1, you have shown no mercy in the battle of %2."
+msgstr ""
+
+#: src/gui/game-window.cpp:2006
+msgid "%1, you have slain the foe in the battle of %2."
+msgstr ""
+
+#: src/gui/game-window.cpp:2086
+msgid "%1 Looted"
+msgstr ""
+
 #: src/gui/game-window.cpp:2093
 #, fuzzy
 msgid "Your armies loot %1 gold piece."
@@ -148,12 +3148,22 @@ msgstr[0] "W nagrodê otrzymujesz %i szt. z³ota"
 msgstr[1] "W nagrodê otrzymujesz %i szt. z³ota"
 msgstr[2] "W nagrodê otrzymujesz %i szt. z³ota"
 
+#: src/gui/game-window.cpp:2116
+#, fuzzy
+msgid "Pillaged %1"
+msgstr "Spl±druj"
+
 #: src/gui/game-window.cpp:2143
 msgid "The loot is worth %1 gold piece."
 msgid_plural "The loot is worth %1 gold pieces."
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+
+#: src/gui/game-window.cpp:2167
+#, fuzzy
+msgid "Sacked %1"
+msgstr "GrupaZabita"
 
 #: src/gui/game-window.cpp:2175
 msgid "Ability to produce %1 unit has been lost"
@@ -162,6 +3172,139 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
+#: src/gui/game-window.cpp:2264
+#, fuzzy
+msgid "Razed %1"
+msgstr "Spal"
+
+#: src/gui/game-window.cpp:2269
+msgid "The city of %1 is in ruins!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2349
+#, fuzzy
+msgid ""
+"%1\n"
+"Turn %2"
+msgstr "Tury: %i"
+
+#: src/gui/game-window.cpp:2379
+msgid "%1 is awarded a medal!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2415
+msgid "%1, your turn continues."
+msgstr ""
+
+#: src/gui/game-window.cpp:2444
+#, fuzzy
+msgid "%1 did not complete the quest."
+msgstr "Twój bohater %s nie ukoñczy³ zadania."
+
+#: src/gui/game-window.cpp:2491
+#, fuzzy
+msgid "Advisor!"
+msgstr "D¼wiêk"
+
+#: src/gui/game-window.cpp:2499
+msgid "My Good Lord!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2501
+#, fuzzy
+msgid "Great and Worthy Lord!"
+msgstr "Galeon Orków"
+
+#: src/gui/game-window.cpp:2503
+msgid "O Champion of Justice!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2505
+msgid "O Mighty Leader!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2507
+#, fuzzy
+msgid "O Great Warlord!"
+msgstr "Galeon Orków"
+
+#: src/gui/game-window.cpp:2512
+msgid "This battle will surely be"
+msgstr ""
+
+#: src/gui/game-window.cpp:2514 src/gui/game-window.cpp:2520
+msgid "A battle here would be"
+msgstr ""
+
+#: src/gui/game-window.cpp:2516
+msgid "I believe this battle will surely be"
+msgstr ""
+
+#: src/gui/game-window.cpp:2518
+msgid "This battle would be"
+msgstr ""
+
+#: src/gui/game-window.cpp:2522
+msgid "I believe this battle will be"
+msgstr ""
+
+#: src/gui/game-window.cpp:2524
+msgid "This battle shall be"
+msgstr ""
+
+#: src/gui/game-window.cpp:2529
+msgid "as simple as butchering sleeping cattle!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2531
+msgid "an easy victory!  We cannot lose!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2533
+msgid "a comfortable victory"
+msgstr ""
+
+#: src/gui/game-window.cpp:2535
+msgid "a hard fought victory! But we shall win!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2537
+msgid "very evenly matched!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2539
+msgid "difficult but not impossible to win!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2541
+msgid "a brave choice! I leave it to thee!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2543
+msgid "a foolish decision!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2545
+msgid "sheerest folly!  Thou shouldst not attack!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2547
+#, fuzzy
+msgid "complete and utter suicide!"
+msgstr "Twój bohater %s ukoñczy³ zadanie."
+
+#: src/gui/hero-levels-dialog.cpp:99 src/gui/report-dialog.cpp:309
+msgid "%1"
+msgstr ""
+
+#: src/gui/ruin-rewarded-dialog.cpp:76
+msgid "The sages show thee the site of %1\n"
+msgstr ""
+
+#: src/gui/surrender-refused-dialog.cpp:48
+msgid "Off with their heads!  I want it ALL!"
+msgstr ""
+
 #: src/gui/surrender-dialog.cpp:50
 msgid "Your final opponent comes on bended knee and offers surrender!"
 msgid_plural "%1 opponents come on bended knee and offer surrender!"
@@ -169,12 +3312,114 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
+#: src/gui/surrender-dialog.cpp:53
+msgid ""
+"\n"
+"Do you accept?"
+msgstr ""
+
+#: src/gui/stack-info-dialog.cpp:189
+#, fuzzy
+msgid "Move"
+msgstr "Ruch:"
+
+#: src/gui/stack-info-dialog.cpp:192
+#, fuzzy
+msgid "Bonus"
+msgstr "bonus"
+
+#: src/gui/ruin-report-dialog.cpp:77
+#, fuzzy
+msgid "Ruins and Temples"
+msgstr "Zrujnowana ¦wi±tynia"
+
+#: src/gui/ruin-report-dialog.cpp:128 src/editor/main-window.cpp:924
+msgid "Ruin"
+msgstr "Ruiny"
+
+#: src/gui/ruin-report-dialog.cpp:130
+#, fuzzy
+msgid "Stronghold"
+msgstr "Si³a:"
+
+#: src/gui/ruin-report-dialog.cpp:133
+msgid "Yes"
+msgstr "Tak"
+
+#: src/gui/ruin-report-dialog.cpp:135 src/gui/ruin-report-dialog.cpp:140
+msgid "No"
+msgstr "Nie"
+
+#: src/gui/ruin-report-dialog.cpp:139 src/editor/main-window.cpp:928
+msgid "Temple"
+msgstr "¦wi±tynia"
+
+#: src/gui/splash-window.cpp:169
+msgid "GGZ initialization failed. Exiting.\n"
+msgstr "Instalacja GGZ nie powiod³a siê. Zamykam.\n"
+
+#: src/gui/splash-window.cpp:187
+msgid "Play on GGZ"
+msgstr "Graj na GGZ"
+
+#: src/gui/splash-window.cpp:188
+#, fuzzy
+msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
+msgstr "Proszê uruchomiæ Freelords z klienta GGZ Gaming Zone."
+
+#: src/gui/splash-window.cpp:189
+msgid "OK"
+msgstr "OK"
+
+#: src/gui/quest-report-dialog.cpp:71
+#, fuzzy
+msgid "No Quest"
+msgstr "Zadanie"
+
+#: src/gui/quest-report-dialog.cpp:76
+#, fuzzy
+msgid "Seek a quest in a temple!"
+msgstr "Przeszukaj ruiny lub ¶wi±tyniê"
+
+#: src/gui/quest-report-dialog.cpp:79
+msgid "Quest?  What Quest?"
+msgstr ""
+
+#: src/gui/quest-report-dialog.cpp:82
+msgid "Thou hast no quests!"
+msgstr ""
+
 #: src/gui/report-dialog.cpp:93
 msgid "You produced %1 army this turn!"
 msgid_plural "You produced %1 armies this turn!"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+
+#: src/gui/report-dialog.cpp:186
+#, fuzzy
+msgid "Army Report"
+msgstr "Zestaw Wojsk"
+
+#: src/gui/report-dialog.cpp:189
+#, fuzzy
+msgid "City Report"
+msgstr "raport miejski"
+
+#: src/gui/report-dialog.cpp:192
+#, fuzzy
+msgid "Gold Report"
+msgstr "Raport o dochodach"
+
+#: src/gui/report-dialog.cpp:195
+#, fuzzy
+msgid "Production Report"
+msgstr "Koszt Produkcji:"
+
+#: src/gui/report-dialog.cpp:198
+#, fuzzy
+msgid "Winning Report"
+msgstr "Ostrze¿enie"
 
 #: src/gui/report-dialog.cpp:223
 #, fuzzy
@@ -200,6 +3445,74 @@ msgstr[0] "i znalaz³e¶ %i szt. z³ota"
 msgstr[1] "i znalaz³e¶ %i szt. z³ota"
 msgstr[2] "i znalaz³e¶ %i szt. z³ota"
 
+#: src/gui/report-dialog.cpp:299
+#, fuzzy
+msgid "first"
+msgstr "pole widzenia"
+
+#: src/gui/report-dialog.cpp:299
+msgid "second"
+msgstr ""
+
+#: src/gui/report-dialog.cpp:299
+#, fuzzy
+msgid "third"
+msgstr "Inne"
+
+#: src/gui/report-dialog.cpp:299
+#, fuzzy
+msgid "fourth"
+msgstr "O programie"
+
+#: src/gui/report-dialog.cpp:299
+#, fuzzy
+msgid "fifth"
+msgstr "pole widzenia"
+
+#: src/gui/report-dialog.cpp:300
+#, fuzzy
+msgid "sixth"
+msgstr "pole widzenia"
+
+#: src/gui/report-dialog.cpp:300
+#, fuzzy
+msgid "seventh"
+msgstr "Wywo³ajWydarzenie"
+
+#: src/gui/report-dialog.cpp:300
+#, fuzzy
+msgid "eighth"
+msgstr "pole widzenia"
+
+#: src/gui/report-dialog.cpp:331
+msgid "You are coming %1"
+msgstr ""
+
+#: src/gui/report-dialog.cpp:371
+#, fuzzy
+msgid "Standard"
+msgstr "Jednostki Standardowe"
+
+#: src/gui/army-gains-level-dialog.cpp:54
+#, fuzzy
+msgid "%1 has advanced to level %2!"
+msgstr "Twoja jednostka zdoby³a poziom!"
+
+#: src/gui/army-gains-level-dialog.cpp:58
+#, fuzzy
+msgid "Choose an attribute to improve:"
+msgstr "Wybierz cechê do zwiêkszenia."
+
+#: src/gui/army-gains-level-dialog.cpp:65
+#, fuzzy
+msgid "Sight: %1"
+msgstr "Pole widzenia:"
+
+#: src/gui/hero-offer-dialog.cpp:60
+#, fuzzy
+msgid "Hero offer for %1"
+msgstr "Bohater oferowany %s"
+
 #: src/gui/hero-offer-dialog.cpp:80
 #, fuzzy
 msgid "A hero in %2 wants to join you for %1 gold piece!"
@@ -208,1528 +3521,513 @@ msgstr[0] "Bohater chce do ciebie do³±czyæ za darmo!"
 msgstr[1] "Bohater chce do ciebie do³±czyæ za darmo!"
 msgstr[2] "Bohater chce do ciebie do³±czyæ za darmo!"
 
+#: src/gui/hero-offer-dialog.cpp:84
 #, fuzzy
-#~ msgid "All Cities"
-#~ msgstr "Miasta"
+msgid "A hero in %1 wants to join you!"
+msgstr "Bohater chce do ciebie do³±czyæ"
 
+#: src/CreateScenarioRandomize.cpp:192
 #, fuzzy
-#~ msgid "All Ruins"
-#~ msgstr "Ruiny"
+msgid "southeast"
+msgstr "Las"
 
+#: src/CreateScenarioRandomize.cpp:194
 #, fuzzy
-#~ msgid "All Temples"
-#~ msgstr "¦wi±tynie"
+msgid "east"
+msgstr "Zadanie"
 
+#: src/CreateScenarioRandomize.cpp:196
 #, fuzzy
-#~ msgid "LordsAWar! Scenario Editor"
-#~ msgstr "Wczytaj Scenariusz"
+msgid "northeast"
+msgstr "Las"
 
+#: src/CreateScenarioRandomize.cpp:198
 #, fuzzy
-#~ msgid "Save Map _As..."
-#~ msgstr "Zapisz jako"
+msgid "south"
+msgstr "O programie"
 
+#: src/CreateScenarioRandomize.cpp:200
 #, fuzzy
-#~ msgid "Unnamed Cities"
-#~ msgstr "Miasta"
+msgid "north"
+msgstr "Illorath"
 
+#: src/CreateScenarioRandomize.cpp:202
 #, fuzzy
-#~ msgid "Unnamed Ruins"
-#~ msgstr "Dziwne Ruiny"
+msgid "southwest"
+msgstr "Las"
 
+#: src/CreateScenarioRandomize.cpp:204
 #, fuzzy
-#~ msgid "Unnamed Temples"
-#~ msgstr "Zrujnowana ¦wi±tynia"
+msgid "west"
+msgstr "Zadanie"
 
+#: src/CreateScenarioRandomize.cpp:206
 #, fuzzy
-#~ msgid "_Edit"
-#~ msgstr "Edytuj"
+msgid "northwest"
+msgstr "Las"
 
-#, fuzzy
-#~ msgid "_File"
-#~ msgstr "Plik"
-
-#, fuzzy
-#~ msgid "_Fullscreen"
-#~ msgstr "Pe³ny ekran"
-
-#, fuzzy
-#~ msgid "_Help"
-#~ msgstr "Pomoc"
-
-#, fuzzy
-#~ msgid "_Items"
-#~ msgstr "Przedmioty"
-
-#, fuzzy
-#~ msgid "_Load Map"
-#~ msgstr "Wczytaj Mapê"
-
-#, fuzzy
-#~ msgid "_New Map"
-#~ msgstr "Stwórz Now± Mapê"
-
-#, fuzzy
-#~ msgid "_Players"
-#~ msgstr "Gracze"
-
-#, fuzzy
-#~ msgid "_Quit"
-#~ msgstr "Wyjd¼"
-
-#, fuzzy
-#~ msgid "_Random"
-#~ msgstr "Losowa"
-
-#, fuzzy
-#~ msgid "_Save Map"
-#~ msgstr "Zapisz jako"
-
-#, fuzzy
-#~ msgid "_Smooth Screen"
-#~ msgstr "G³adkie przewijanie"
-
-#, fuzzy
-#~ msgid "_View"
-#~ msgstr "Grafika"
-
-#, fuzzy
-#~ msgid "Randomi_ze"
-#~ msgstr "Losowa"
-
-#, fuzzy
-#~ msgid "_Cancel"
-#~ msgstr "Anuluj"
-
-#, fuzzy
-#~ msgid "_OK"
-#~ msgstr "OK"
-
-#, fuzzy
-#~ msgid "<b>Temple</b>"
-#~ msgstr "¦wi±tynia"
-
-#, fuzzy
-#~ msgid "Edit Temple"
-#~ msgstr "¦wi±tynia"
-
-#~ msgid "Name:"
-#~ msgstr "Nazwa: "
-
-#~ msgid "Type:"
-#~ msgstr "Typ:"
-
-#, fuzzy
-#~ msgid "Cle_ar Keeper"
-#~ msgstr "Stra¿nik"
-
-#, fuzzy
-#~ msgid "Edit Ruin"
-#~ msgstr "Edytuj"
-
-#, fuzzy
-#~ msgid "Keeper:"
-#~ msgstr "Stra¿nik"
-
-#, fuzzy
-#~ msgid "Ran_domize"
-#~ msgstr "Losowa"
-
-#, fuzzy
-#~ msgid "Random Reward"
-#~ msgstr "Losowa Mapa"
-
-#, fuzzy
-#~ msgid "Randomiz_e"
-#~ msgstr "Losowa"
-
-#~ msgid "Type"
-#~ msgstr "Typ"
-
-#, fuzzy
-#~ msgid "Edit Stack"
-#~ msgstr "Grupa"
-
-#~ msgid "Player:"
-#~ msgstr "Gracz:"
-
-#, fuzzy
-#~ msgid "_Add"
-#~ msgstr "Dodaj"
-
-#, fuzzy
-#~ msgid "_Remove"
-#~ msgstr "Usuñ"
-
-#, fuzzy
-#~ msgid "Select Army"
-#~ msgstr "Wybierz przedmiot"
-
-#, fuzzy
-#~ msgid "_Select"
-#~ msgstr "Odrzuæ"
-
-#, fuzzy
-#~ msgid "<b>Players</b>"
-#~ msgstr "Gracze"
-
-#, fuzzy
-#~ msgid "Edit Players"
-#~ msgstr "Gracze"
-
-#, fuzzy
-#~ msgid "<b>Production</b>"
-#~ msgstr "Kup Produkcjê"
-
-#, fuzzy
-#~ msgid "Burned down"
-#~ msgstr "Spalone"
-
-#, fuzzy
-#~ msgid "Capital"
-#~ msgstr "Katapulta"
-
-#, fuzzy
-#~ msgid "Edit City"
-#~ msgstr "Edytuj"
-
-#, fuzzy
-#~ msgid "Ra_ndomize"
-#~ msgstr "Losowa"
-
-#~ msgid "Description:"
-#~ msgstr "Opis:"
-
-#, fuzzy
-#~ msgid "   Cities"
-#~ msgstr "Miasta"
-
-#, fuzzy
-#~ msgid "Army Set:"
-#~ msgstr "Zestaw Wojsk"
-
-#, fuzzy
-#~ msgid "City Set:"
-#~ msgstr "Miasto:"
-
-#, fuzzy
-#~ msgid "Fill style:"
-#~ msgstr "Typ pliku:"
-
-#~ msgid "Forest"
-#~ msgstr "Las"
-
-#~ msgid "Grass"
-#~ msgstr "£±ka"
-
-#~ msgid "Hills"
-#~ msgstr "Wzgórza"
-
-#~ msgid "Mountains"
-#~ msgstr "Góry"
-
-#, fuzzy
-#~ msgid "New Map"
-#~ msgstr "Nowa Gra"
-
-#~ msgid "Ruins"
-#~ msgstr "Ruiny"
-
-#~ msgid "Size:"
-#~ msgstr "Rozmiar:"
-
-#~ msgid "Swamp"
-#~ msgstr "Bagno"
-
-#~ msgid "Temples"
-#~ msgstr "¦wi±tynie"
-
-#, fuzzy
-#~ msgid "Tile Set:"
-#~ msgstr "Nazwa pliku:"
-
-#~ msgid "Water"
-#~ msgstr "Woda"
-
-#, fuzzy
-#~ msgid "_Create Map"
-#~ msgstr "Stwórz Now± Mapê"
-
-#, fuzzy
-#~ msgid "Armyset Information"
-#~ msgstr "brak informacji"
-
-#, fuzzy
-#~ msgid "Can Fly"
-#~ msgstr "Anuluj"
-
-#~ msgid "Cost:"
-#~ msgstr "Koszt:"
-
-#, fuzzy
-#~ msgid "Defends Ruins?"
-#~ msgstr "Obrona: %i"
-
-#, fuzzy
-#~ msgid "Exp Points:"
-#~ msgstr "Punkty ¯ycia:"
-
-#, fuzzy
-#~ msgid "Max Moves:"
-#~ msgstr "Ruch:"
-
-#, fuzzy
-#~ msgid "Select A File"
-#~ msgstr "Wybierz przedmiot"
-
-#~ msgid "Sight:"
-#~ msgstr "Pole widzenia:"
-
-#~ msgid "Strength:"
-#~ msgstr "Si³a:"
-
-#, fuzzy
-#~ msgid "Turns:"
-#~ msgstr "Tury: %i"
-
-#~ msgid "Upkeep:"
-#~ msgstr "Utrzymanie:"
-
-#, fuzzy
-#~ msgid "_Load Armyset"
-#~ msgstr "Zestaw Wojsk"
-
-#, fuzzy
-#~ msgid "_New Armyset"
-#~ msgstr "Zestaw Wojsk"
-
-#, fuzzy
-#~ msgid "_Save Armyset"
-#~ msgstr "Zestaw Wojsk"
-
-#, fuzzy
-#~ msgid "Edit Armyset Info"
-#~ msgstr "Informacje o jednostce"
-
-#, fuzzy
-#~ msgid "Id:"
-#~ msgstr "Id:"
-
-#, fuzzy
-#~ msgid "+1 to Hero's Strength"
-#~ msgstr "+%i si³y"
-
-#, fuzzy
-#~ msgid "+2 to Hero's Strength"
-#~ msgstr "+%i si³y"
-
-#, fuzzy
-#~ msgid "+3 to Hero's Strength"
-#~ msgstr "+%i si³y"
-
-#, fuzzy
-#~ msgid "_Close"
-#~ msgstr "Zamknij"
-
-#, fuzzy
-#~ msgid "Allies"
-#~ msgstr "Algier"
-
-#, fuzzy
-#~ msgid "Clear Item"
-#~ msgstr "StwórzPrzedmiot"
-
-#~ msgid "Gold"
-#~ msgstr "Z³oto"
-
-#, fuzzy
-#~ msgid "Hidden Ruin"
-#~ msgstr "Dziwne Ruiny"
-
-#, fuzzy
-#~ msgid "Item"
-#~ msgstr "Przedmioty"
-
-#, fuzzy
-#~ msgid "Rand_omize"
-#~ msgstr "Losowa"
-
-#, fuzzy
-#~ msgid "Random_ize"
-#~ msgstr "Losowa"
-
-#, fuzzy
-#~ msgid "Select Item"
-#~ msgstr "Wybierz przedmiot"
-
-#, fuzzy
-#~ msgid "Select Hidden Ruin"
-#~ msgstr "Wybierz akcjê"
-
-#~ msgid "Moves:"
-#~ msgstr "Ruch:"
-
-#, fuzzy
-#~ msgid "Pattern:"
-#~ msgstr "Gracz:"
-
-#, fuzzy
-#~ msgid "Tileset info"
-#~ msgstr "Dane miasta"
-
-#, fuzzy
-#~ msgid "_Load Tileset"
-#~ msgstr "Wybierz Zestaw Terenów"
-
-#, fuzzy
-#~ msgid "_New Tileset"
-#~ msgstr "Wybierz Zestaw Terenów"
-
-#, fuzzy
-#~ msgid "_Save Tileset"
-#~ msgstr "Wybierz Zestaw Terenów"
-
-#, fuzzy
-#~ msgid "_Choose"
-#~ msgstr "Zamknij"
-
-#, fuzzy
-#~ msgid "<b>Buy Production</b>"
-#~ msgstr "Kup Produkcjê"
-
-#~ msgid "Buy Production"
-#~ msgstr "Kup Produkcjê"
-
-#, fuzzy
-#~ msgid "_Buy"
-#~ msgstr "Kup"
-
-#, fuzzy
-#~ msgid "_Occupy"
-#~ msgstr "Zajmij"
-
-#, fuzzy
-#~ msgid "_Pillage"
-#~ msgstr "Spl±druj"
-
-#, fuzzy
-#~ msgid "_Raze"
-#~ msgstr "Spal"
-
-#, fuzzy
-#~ msgid "_Sack"
-#~ msgstr "Grupa"
-
-#, fuzzy
-#~ msgid "Your troops have looted the city!"
-#~ msgstr "Zosta³e¶ pokonany!"
-
-#, fuzzy
-#~ msgid "_Continue"
-#~ msgstr "Warunki"
-
-#, fuzzy
-#~ msgid "Your troops have sacked the city!"
-#~ msgstr "Zosta³e¶ pokonany!"
-
-#, fuzzy
-#~ msgid "Buy a production capability"
-#~ msgstr "Kup Produkcjê"
-
-#, fuzzy
-#~ msgid "Current:"
-#~ msgstr "Liczik:"
-
-#, fuzzy
-#~ msgid "R_ename"
-#~ msgstr "Bezimienny"
-
-#, fuzzy
-#~ msgid "Stop producing armies"
-#~ msgstr "po³±cz jednostki"
-
-#, fuzzy
-#~ msgid "_Buy..."
-#~ msgstr "Kup"
-
-#, fuzzy
-#~ msgid "_Vector..."
-#~ msgstr "Wektor"
-
-#, fuzzy
-#~ msgid "Chan_ge"
-#~ msgstr "Kartagina"
-
-#, fuzzy
-#~ msgid "Choose Destination"
-#~ msgstr "Wybierz Zestaw Terenów"
-
-#, fuzzy
-#~ msgid "Next Turn:"
-#~ msgstr "NastêpnaTura"
-
-#, fuzzy
-#~ msgid "Turn After:"
-#~ msgstr "Liczik:"
-
-#, fuzzy
-#~ msgid "_Vector"
-#~ msgstr "Wektor"
-
-#, fuzzy
-#~ msgid "Game Loaded"
-#~ msgstr "Gra Wczytana."
-
-#, fuzzy
-#~ msgid "Game Lost"
-#~ msgstr "Opcje"
-
-#, fuzzy
-#~ msgid "Choose a map"
-#~ msgstr "Wybierz drogê!"
-
-#~ msgid "Cities"
-#~ msgstr "Miasta"
-
-#, fuzzy
-#~ msgid "Edit Options"
-#~ msgstr "Opcje"
-
-#, fuzzy
-#~ msgid "Generate map randomly:"
-#~ msgstr "Generowanie losowej mapy"
-
-#, fuzzy
-#~ msgid "Load map:"
-#~ msgstr "Wczytaj Mapê"
-
-#~ msgid "New Game"
-#~ msgstr "Nowa Gra"
-
-#~ msgid "Random"
-#~ msgstr "Losowa"
-
-#, fuzzy
-#~ msgid "_Start Game"
-#~ msgstr "Rozpocznij Grê"
-
-#, fuzzy
-#~ msgid "Army"
-#~ msgstr "CJednostka"
-
-#, fuzzy
-#~ msgid "Army Bonus"
-#~ msgstr "Informacje o jednostce"
-
-#, fuzzy
-#~ msgid "Center map on stack"
-#~ msgstr "Wy¶rodkuj ekran na wybranej grupie"
-
-#~ msgid "City"
-#~ msgstr "Miasto"
-
-#, fuzzy
-#~ msgid "Deselect the stack"
-#~ msgstr "Wybierz nastêpn± grupê"
-
-#, fuzzy
-#~ msgid "Disband"
-#~ msgstr "Lizbona"
-
-#~ msgid "Events"
-#~ msgstr "Wydarzenia"
-
-#, fuzzy
-#~ msgid "Game"
-#~ msgstr "Nazwa"
-
-#~ msgid "Help"
-#~ msgstr "Pomoc"
-
-#, fuzzy
-#~ msgid "Hero"
-#~ msgstr "Bohaterowie"
-
-#~ msgid "Items"
-#~ msgstr "Przedmioty"
-
-#, fuzzy
-#~ msgid "Leave the stack here"
-#~ msgstr "Pozwól grupie siê broniæ"
-
-#~ msgid "Let the stack defend"
-#~ msgstr "Pozwól grupie siê broniæ"
-
-#, fuzzy
-#~ msgid "Levels"
-#~ msgstr "Poziom:"
-
-#~ msgid "Load Game"
-#~ msgstr "Wczytaj Grê"
-
-#, fuzzy
-#~ msgid "Move to the destination"
-#~ msgstr "Niech wszystkie grupy porusz± siê w kierunku celu"
-
-#~ msgid "Next"
-#~ msgstr "Nastêpne"
-
-#, fuzzy
-#~ msgid "Order"
-#~ msgstr "Inne"
-
-#, fuzzy
-#~ msgid "Plant Flag"
-#~ msgstr "Placentia"
-
-#, fuzzy
-#~ msgid "Production"
-#~ msgstr "Kup Produkcjê"
-
-#~ msgid "Quest"
-#~ msgstr "Zadanie"
-
-#~ msgid "Quit"
-#~ msgstr "Wyjd¼"
-
-#~ msgid "Reports"
-#~ msgstr "Raporty"
-
-#, fuzzy
-#~ msgid "Resign"
-#~ msgstr "Ruiny"
-
-#~ msgid "Save Game"
-#~ msgstr "Zapisz Grê"
-
-#, fuzzy
-#~ msgid "Save Game As..."
-#~ msgstr "Zapisz Grê"
-
-#, fuzzy
-#~ msgid "Search"
-#~ msgstr "Przeszukano:"
-
-#, fuzzy
-#~ msgid "Search ruin or temple"
-#~ msgstr "Przeszukaj ruiny lub ¶wi±tyniê"
-
-#, fuzzy
-#~ msgid "Select next stack that can move"
-#~ msgstr "Wybierz nastêpn± grupê która mo¿e siê poruszyæ"
-
-#, fuzzy
-#~ msgid "Stack Info"
-#~ msgstr "Grupa"
+#: src/CreateScenarioRandomize.cpp:207
+#, c-format
+msgid "%s lies to the %s"
+msgstr ""
 
+#: src/editor/armyset-window.cpp:388
 #, fuzzy
-#~ msgid "Turn: %6"
-#~ msgstr "Tury: %i"
+msgid "Choose an Armyset to Load"
+msgstr "Wybierz Zestaw Terenów"
 
+#: src/editor/city-dialog.cpp:93
 #, fuzzy
-#~ msgid "View"
-#~ msgstr "Grafika"
+msgid "Strength"
+msgstr "Si³a:"
 
+#: src/editor/city-dialog.cpp:94
 #, fuzzy
-#~ msgid "Winning"
-#~ msgstr "Ostrze¿enie"
+msgid "Max Moves"
+msgstr "Ruch:"
 
+#: src/editor/city-dialog.cpp:95
 #, fuzzy
-#~ msgid "_Preferences"
-#~ msgstr "Pelerine"
+msgid "Upkeep"
+msgstr "Utrzymanie:"
 
-#, fuzzy
-#~ msgid "_Turn"
-#~ msgstr "NastêpnaTura"
-
-#, fuzzy
-#~ msgid "A_ccept"
-#~ msgstr "Zaakceptuj"
-
-#, fuzzy
-#~ msgid "_Decline"
-#~ msgstr "Pelerine"
-
-#, fuzzy
-#~ msgid "female"
-#~ msgstr "¦wi±tynia"
-
-#, fuzzy
-#~ msgid "male"
-#~ msgstr "Trales"
-
-#, fuzzy
-#~ msgid "An Offer of Peace!"
-#~ msgstr "Ogród Pokoju"
-
-#, fuzzy
-#~ msgid "<b>Scenarios</b>"
-#~ msgstr "Scenariusz"
-
-#~ msgid "Load Scenario"
-#~ msgstr "Wczytaj Scenariusz"
-
-#, fuzzy
-#~ msgid "Number of Players:"
-#~ msgstr "Nowy Gracz"
-
-#, fuzzy
-#~ msgid "_Load"
-#~ msgstr "Wczytaj"
-
-#, fuzzy
-#~ msgid "Medal Awarded"
-#~ msgstr "przyznane ordery"
-
-#, fuzzy
-#~ msgid "Quest Expired"
-#~ msgstr "Raport o zadaniach"
-
-#, fuzzy
-#~ msgid "<i>Volume:</i>"
-#~ msgstr "G³o¶no¶æ:"
-
-#, fuzzy
-#~ msgid "Play _music"
-#~ msgstr "W³±cz muzykê"
-
-#, fuzzy
-#~ msgid "Preferences"
-#~ msgstr "Pelerine"
-
-#, fuzzy
-#~ msgid "L_oad Game"
-#~ msgstr "Wczytaj Grê"
-
-#, fuzzy
-#~ msgid "Load _Scenario"
-#~ msgstr "Wczytaj Scenariusz"
-
-#, fuzzy
-#~ msgid "New _Campaign"
-#~ msgstr "Nowa Kampania"
-
-#, fuzzy
-#~ msgid "New _Game"
-#~ msgstr "Nowa Gra"
-
-#, fuzzy
-#~ msgid "New _Network Game"
-#~ msgstr "Nowa Gra Sieciowa"
-
-#, fuzzy
-#~ msgid "_No"
-#~ msgstr "Nie"
-
-#, fuzzy
-#~ msgid "_Yes"
-#~ msgstr "Tak"
-
-#, fuzzy
-#~ msgid "Next Turn"
-#~ msgstr "NastêpnaTura"
-
-#, fuzzy
-#~ msgid "Message:"
-#~ msgstr "Wiadomo¶æ"
-
-#, fuzzy
-#~ msgid "Hero Levels"
-#~ msgstr "Bohaterowie"
-
-#, fuzzy
-#~ msgid "Item Bonus"
-#~ msgstr "Przedmioty"
-
-#, fuzzy
-#~ msgid "Game Options"
-#~ msgstr "Opcje"
-
-#, fuzzy
-#~ msgid "Neutral Cities:"
-#~ msgstr "Neutralni"
-
-#~ msgid "Quests"
-#~ msgstr "Zadania"
-
-#, fuzzy
-#~ msgid "Random Turns"
-#~ msgstr "Losowa"
-
-#, fuzzy
-#~ msgid "Razing Cities:"
-#~ msgstr "Miasta"
-
-#, fuzzy
-#~ msgid "View Production"
-#~ msgstr "Kup Produkcjê"
-
-#, fuzzy
-#~ msgid "Continue"
-#~ msgstr "Warunki"
-
-#, fuzzy
-#~ msgid "Report"
-#~ msgstr "Raporty"
-
-#, fuzzy
-#~ msgid "player name"
-#~ msgstr "tura gracza"
-
-#, fuzzy
-#~ msgid "Treachery!"
-#~ msgstr "£ucznik"
-
-#, fuzzy
-#~ msgid "_Attack!"
-#~ msgstr "Grupa"
-
-#, fuzzy
-#~ msgid "_Group"
-#~ msgstr "Na Ziemi"
-
-#, fuzzy
-#~ msgid "Lone"
-#~ msgstr "Brak"
-
-#~ msgid "Other"
-#~ msgstr "Inne"
-
-#~ msgid "Error, while loading an armyset. Armyset Name: "
-#~ msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
-
-#, fuzzy
-#~ msgid "Error: "
-#~ msgstr "B³±d"
-
-#~ msgid "The Filename is well formed"
-#~ msgstr "Nazwa pliku jest dobrze utworzona"
-
-#~ msgid "The Filename lacks the extension --> "
-#~ msgstr "W nazwie pliku brakuje rozszerzenia --> "
-
-#~ msgid "GameScenario: Something went wrong with saving.\n"
-#~ msgstr "GameScenario: B³±d podczas zapisu.\n"
-
-#~ msgid "savefile has wrong version, we want "
-#~ msgstr "niew³a¶ciwa wersja pliku, oczekiwano"
-
-#~ msgid "savefile offers "
-#~ msgstr "plik oferuje"
-
-#~ msgid "You're still searching for him..."
-#~ msgstr "Wci±¿ go szukasz..."
-
-#~ msgid "Seen lately near ("
-#~ msgstr "Widziano go niedawno nieopodal("
-
-#~ msgid "You slayed the wicked hero %s. He deserved that!"
-#~ msgstr "Zabi³e¶ wynaturzonego bohatera %s. Zas³u¿y³ na taki los!"
-
-#~ msgid "You could not slay the wicked hero %s"
-#~ msgstr "Nie uda³o ci siê zabiæ %s"
-
-#~ msgid "He was slain by other fellows!"
-#~ msgstr "Zabili go inni towarzysze!"
-
-#~ msgid "Kill the hero named %s, servant of player %s"
-#~ msgstr "Zabij bohatera zw±cego siê %s s³u¿±cego u gracza %s"
-
-#, fuzzy
-#~ msgid "You have not killed a unit of enemy %s yet."
-#~ msgstr "Dotychczas zabi³e¶ %i"
-
-#, fuzzy
-#~ msgid "You have killed a unit of enemy %s."
-#~ msgstr "Dotychczas zabi³e¶ %i"
-
-#~ msgid "Well done!"
-#~ msgstr "Doskonale!"
-
-#, fuzzy
-#~ msgid "You must destroy a unit of enemy %s."
-#~ msgstr "Musisz zniszczyæ %i wrog± jednostkê"
-
-#~ msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
-#~ msgstr "B³±d w GameMap::fillMap: rozmiary siê nie zgadzaj±. Zamykam.\n"
-
-#, fuzzy
-#~ msgid "Error, while loading a cityset. Cityset Name: "
-#~ msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
-
-#, fuzzy
-#~ msgid "You have already stolen %i gold."
-#~ msgstr "Zdo³a³e¶ zabiæ %i jednostkê"
-
-#, fuzzy
-#~ msgid "You aren't afraid of doing it, are you?"
-#~ msgstr "Nie przera¿a ciê to chyba?"
-
-#, fuzzy
-#~ msgid "The priests thank you for occupying this evil place."
-#~ msgstr "Kap³ani dziêkuj± ci za zbadanie tego ponurego miejsca."
-
-#, fuzzy
-#~ msgid "%1 (capital city)"
-#~ msgstr "%i ¿ywotno¶ci"
-
-#, fuzzy
-#~ msgid "Defense: %1"
-#~ msgstr "Obrona: %i"
-
-#, fuzzy
-#~ msgid "Status: razed!"
-#~ msgstr "Status:"
-
-#~ msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
-#~ msgstr "GraphicsCache::getFlagPic: nie dostarczono grupy! Zamykam...\n"
-
-#, fuzzy
-#~ msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
-#~ msgstr "GraphicsCache::getFlagPic: nie dostarczono grupy! Zamykam...\n"
-
-#, fuzzy
-#~ msgid "Error, while loading a tileset. Tileset Name: "
-#~ msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
-
-#~ msgid "Found configuration file: "
-#~ msgstr "Znaleziono plik konfiguracyjny: "
-
-#~ msgid "Configuration: Something went wrong while saving.\n"
-#~ msgstr "Konfiguracja: Wyst±pi³ b³±d podczas zapisu.\n"
-
-#~ msgid "Configuration file has wrong version, we want "
-#~ msgstr "Niew³a¶ciwa wersja pliku konfiguracyjnego. Oczekiwano "
-
-#~ msgid "Configuration file offers "
-#~ msgstr "Plik konfiguracyjny oferuje "
-
-#~ msgid "I make a backup copy from "
-#~ msgstr "Tworzê kopiê zapasow± od"
-
-#~ msgid "Couldn't save the new configuration file..."
-#~ msgstr "Nie uda³o siê zapisaæ konfiguracji..."
-
-#, fuzzy
-#~ msgid "Check permissions of your home directory....aborting!"
-#~ msgstr "Sprawd¼ zezwolenia w katalogu g³ównym...przerywam!\n"
-
-#~ msgid "Created the standard configuration file "
-#~ msgstr "Utworzono standardowy plik konfiguracyjny "
-
-#~ msgid "Couldn't create save game directory "
-#~ msgstr "Nie uda³o siê utworzyæ katalogu do zapisu gier "
-
-#, fuzzy
-#~ msgid "Check permissions and the entries in your lordsawarrc file!"
-#~ msgstr "Sprawd¼ zezwolenia i wpisy w swoim pliku freelordsrc!\n"
-
-#, fuzzy
-#~ msgid "Error, while loading a shieldset. Shieldset Name: "
-#~ msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
-
-#~ msgid "Making random map"
-#~ msgstr "Tworzenie losowej mapy"
-
-#~ msgid "Flatening Plains  ... 10%"
-#~ msgstr "Sp³aszczanie Równin ... 10%"
-
-#~ msgid "Raining Water     ... 30%"
-#~ msgstr "Przywo³ywanie Wody ... 30%"
-
-#~ msgid "Raising Hills     ... 20%"
-#~ msgstr "Wnoszenie Wzgórz ... 20%"
-
-#~ msgid "Raising Mountains ... 30%"
-#~ msgstr "Wznoszenie Gór ... 30%"
-
-#~ msgid "Planting Forest   ... 40%"
-#~ msgstr "Sadzenie lasów ... 40%"
-
-#~ msgid "Watering Swamps   ... 50%"
-#~ msgstr "Nawadnianie Bagien ... 50%"
-
-#~ msgid "Normalizing       ... 60%"
-#~ msgstr "Normalizowanie    ... 60%"
-
-#~ msgid "Building Cities   ... 70%"
-#~ msgstr "Budowanie Miast   ... 70%"
-
-#, fuzzy
-#~ msgid "Paving Roads      ... 75%"
-#~ msgstr "Przywo³ywanie Wody ... 30%"
-
-#~ msgid "Ruining Ruins     ... 80%"
-#~ msgstr "Rujnowanie Ruin   ... 80%"
-
-#, fuzzy
-#~ msgid "Raising Signs     ... 88%"
-#~ msgstr "Wnoszenie Wzgórz ... 20%"
-
-#~ msgid "Spawning temples  ... 90%"
-#~ msgstr "Wykluwanie ¦wi±tyñ ... 90%"
-
-#~ msgid "Done making map   ... 100%"
-#~ msgstr "Tworzenie mapy zakoñczone ... 100%"
-
-#~ msgid "You have killed %i so far."
-#~ msgstr "Dotychczas zabi³e¶ %i"
-
-#~ msgid ""
-#~ "Error: searching stack and ruin to be searched not on same position\n"
-#~ msgstr ""
-#~ "B³±d: przeszukuj±ca grupa i ruiny nie znajduj± siê w tym samym miejscu\n"
-
-#~ msgid "Stack tried to visit temple at wrong location\n"
-#~ msgstr "Grupa usi³owa³a odwiedziæ ¶wi±tyniê w niew³a¶ciwym miejscu\n"
-
-#, fuzzy
-#~ msgid "%1 Standard"
-#~ msgstr "Jednostki Standardowe"
-
-#, fuzzy
-#~ msgid "Item: %1"
-#~ msgstr "Przedmiot:"
-
-#, fuzzy
-#~ msgid "Site: %1"
-#~ msgstr "Rozmiar:"
-
-#, fuzzy
-#~ msgid "The priests thank you for razing this evil place."
-#~ msgstr "Kap³ani dziêkuj± ci za zbadanie tego ponurego miejsca."
-
-#, fuzzy
-#~ msgid "Capital city of %1"
-#~ msgstr "Miasto %s"
-
-#, fuzzy
-#~ msgid "Defence: %1"
-#~ msgstr "Obrona: %i"
-
-#, fuzzy
-#~ msgid "No production"
-#~ msgstr "Brak wolnych produkcji"
-
-#, fuzzy
-#~ msgid "Strength: %1"
-#~ msgstr "Si³a: %i"
-
-#, fuzzy
-#~ msgid "Moves: %1"
-#~ msgstr "Ruch: %i"
-
-#, fuzzy
-#~ msgid "Cost: %1"
-#~ msgstr "Koszt:"
-
-#, fuzzy
-#~ msgid "Rename City"
-#~ msgstr "Zrujnowane Miasto"
-
-#, fuzzy
-#~ msgid "Raze City"
-#~ msgstr "Zrujnowane Miasto"
-
-#~ msgid "Human"
-#~ msgstr "Cz³owiek"
-
-#, fuzzy
-#~ msgid "Computer"
-#~ msgstr "CLicznik"
-
-#, fuzzy
-#~ msgid "Quest for %1"
-#~ msgstr "¯adnych zadañ dla %s"
-
-#, fuzzy
-#~ msgid "%1 completed the quest!"
-#~ msgstr "Twój bohater %s ukoñczy³ zadanie."
-
-#, fuzzy
-#~ msgid "Movement: %1"
-#~ msgstr "Ruch: %i"
-
-#, fuzzy
-#~ msgid "Moves: %1/%2"
-#~ msgstr "Ruch: %i"
-
-#, fuzzy
-#~ msgid "Upkeep: %1"
-#~ msgstr "Utrzymanie: %i"
-
-#~ msgid "Easy"
-#~ msgstr "£atwy"
-
-#, fuzzy
-#~ msgid "LordsAWar map files (*.map)"
-#~ msgstr "Pliki map"
-
-#, fuzzy
-#~ msgid "Duration: %1"
-#~ msgstr "Czas trwania: %i"
+#: src/editor/main-window.cpp:368 src/editor/main-window.cpp:457
+msgid "Untitled"
+msgstr ""
 
+#: src/editor/main-window.cpp:368 src/editor/main-window.cpp:457
 #, fuzzy
-#~ msgid "Hitpoints: %1"
-#~ msgstr "Punkty ¯ycia: %i"
+msgid "No description"
+msgstr "Opis:"
 
+#: src/editor/main-window.cpp:620
 #, fuzzy
-#~ msgid "This hero already has a quest."
-#~ msgstr "Ten bohater ju¿ ma zadanie"
+msgid "Choose Map to Load"
+msgstr "Wybierz Zestaw Terenów"
 
+#: src/editor/main-window.cpp:645
 #, fuzzy
-#~ msgid "Turns"
-#~ msgstr "Thurso"
+msgid "Could not load map %1."
+msgstr "Nie uda³o siê wczytaæ mapy "
 
+#: src/editor/main-window.cpp:663 src/editor/main-window.cpp:690
 #, fuzzy
-#~ msgid "Gold Pieces"
-#~ msgstr "i znalaz³e¶ %i szt. z³ota"
+msgid "Map was not saved!"
+msgstr "Gra Zapisana"
 
+#: src/editor/main-window.cpp:753
 #, fuzzy
-#~ msgid "Score"
-#~ msgstr "Scone"
+msgid "Auto"
+msgstr "O programie"
 
-#, fuzzy
-#~ msgid "City History"
-#~ msgstr "Dane miasta"
-
-#, fuzzy
-#~ msgid "Event History"
-#~ msgstr "Wydarzenia"
-
-#, fuzzy
-#~ msgid "Gold History"
-#~ msgstr "Raport o dochodach"
-
-#~ msgid "Name"
-#~ msgstr "Nazwa"
-
-#, fuzzy
-#~ msgid "Attributes"
-#~ msgstr "Jednostki"
+#: src/editor/main-window.cpp:898
+msgid "(%1, %2)"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Status"
-#~ msgstr "Status:"
-
-#, fuzzy
-#~ msgid "In backpack"
-#~ msgstr "Plecak"
-
-#, fuzzy
-#~ msgid "On the ground"
-#~ msgstr "nowa runda"
-
-#, fuzzy
-#~ msgid "Command: %1"
-#~ msgstr "Komentarz:"
+#: src/editor/main-window.cpp:920
+msgid "Stack"
+msgstr "Grupa"
 
+#: src/editor/ruin-dialog.cpp:216
 #, fuzzy
-#~ msgid "Level: %1"
-#~ msgstr "Poziom:"
-
-#~ msgid "Neutral"
-#~ msgstr "Neutralny"
+msgid "No keeper"
+msgstr "Stra¿nik"
 
+#: src/editor/ruin-dialog.cpp:333
 #, fuzzy
-#~ msgid "Game was not saved!"
-#~ msgstr "Gra Zapisana"
+msgid "No reward"
+msgstr "Losowa Mapa"
 
+#: src/editor/select-army-dialog.cpp:170
 #, fuzzy
-#~ msgid "Choose a Name"
-#~ msgstr "Wybierz drogê!"
+msgid "No army"
+msgstr "Bezimienny"
 
-#, fuzzy
-#~ msgid "Error saving game!"
-#~ msgstr "B³±d. Gra niezapisana"
+#: src/editor/reward-dialog.cpp:329
+msgid "No item"
+msgstr ""
 
+#: src/editor/reward-dialog.cpp:375
 #, fuzzy
-#~ msgid "Are you sure you want to disband this group?"
-#~ msgstr "Naprawdê chcesz usun±æ t± produkcjê?"
+msgid "No ally"
+msgstr "Bezimienny"
 
+#: src/editor/reward-dialog.cpp:429
 #, fuzzy
-#~ msgid "Are you sure you want to resign?"
-#~ msgstr "Napewno chcesz usun±æ to wydarzenie?"
+msgid "No Ruin"
+msgstr "Ruiny"
 
+#: src/editor/tileset-window.cpp:469
 #, fuzzy
-#~ msgid "Searching"
-#~ msgstr "Przeszukano:"
+msgid "Choose an Tileset to Load"
+msgstr "Wybierz Zestaw Terenów"
 
+#: src/editor/tileset-window.cpp:500
 #, fuzzy
-#~ msgid "Hero Defeated"
-#~ msgstr "Pokonane miasto"
+msgid "Error, while loading an tileset. Tileset Name: "
+msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
 
+#: src/editor/stack-dialog.cpp:88
 #, fuzzy
-#~ msgid "Pillaged %1"
-#~ msgstr "Spl±druj"
+msgid "Mov"
+msgstr "Ruch:"
 
+#: src/editor/stack-dialog.cpp:90
 #, fuzzy
-#~ msgid "Sacked %1"
-#~ msgstr "GrupaZabita"
+msgid "HP"
+msgstr "P¯:"
 
+#: src/editor/stack-dialog.cpp:92
 #, fuzzy
-#~ msgid "Razed %1"
-#~ msgstr "Spal"
+msgid "Upk"
+msgstr "Utrzymanie:"
 
-#, fuzzy
-#~ msgid ""
-#~ "%1\n"
-#~ "Turn %2"
-#~ msgstr "Tury: %i"
+#: src/xmlhelper.cpp:53
+msgid ""
+"XML_Helper: Either open file for reading or writing, not both, exiting\n"
+msgstr ""
+"XML_Helper: Otwórz plik dla zapisu lub odczytu, nie obu naraz, zamykam\n"
 
-#, fuzzy
-#~ msgid "%1 did not complete the quest."
-#~ msgstr "Twój bohater %s nie ukoñczy³ zadania."
+#: src/xmlhelper.cpp:65
+msgid ": Error opening file for reading. Exiting\n"
+msgstr ": B³±d podczas otwierania pliku do odczytu. Zamykam\n"
 
-#, fuzzy
-#~ msgid "Advisor!"
-#~ msgstr "D¼wiêk"
+#: src/xmlhelper.cpp:75
+msgid "File too short (<=1 byte), propably broken. Skipping load\n"
+msgstr ""
 
-#, fuzzy
-#~ msgid "O Great Warlord!"
-#~ msgstr "Galeon Orków"
+#: src/xmlhelper.cpp:81
+msgid ": The file is obfuscated, attempting to read it....\n"
+msgstr ": plik jest zamazany, próbujê odczytaæ....\n"
 
-#, fuzzy
-#~ msgid "Move"
-#~ msgstr "Ruch:"
+#: src/xmlhelper.cpp:112
+msgid ": The file is not obfuscated, attempting to read it....\n"
+msgstr ": plik nie jest zamazany, próbujê odczytaæ...\n"
 
-#, fuzzy
-#~ msgid "Bonus"
-#~ msgstr "bonus"
+#: src/xmlhelper.cpp:124
+msgid ": Error opening file for writing. Exiting\n"
+msgstr ": B³±d podczas otwierania pliku do zapisu\n"
 
-#, fuzzy
-#~ msgid "Ruins and Temples"
-#~ msgstr "Zrujnowana ¦wi±tynia"
+#: src/xmlhelper.cpp:151
+msgid "XML_Helper: dtags not empty!!\n"
+msgstr "XML_Helper: dtags niepuste!!\n"
 
-#~ msgid "Ruin"
-#~ msgstr "Ruiny"
+#: src/xmlhelper.cpp:169
+msgid "XML_Helper: no output stream given\n"
+msgstr "XML_Helper: nie podano strumienia wyj¶ciowego\n"
 
-#, fuzzy
-#~ msgid "Stronghold"
-#~ msgstr "Si³a:"
+#: src/xmlhelper.cpp:175
+msgid ": The tag name starts with a \"d\". Not creating tag!\n"
+msgstr ": Nazwa taga rozpoczyna siê liter± d. Anulujê tworzenie!\n"
 
-#~ msgid "Yes"
-#~ msgstr "Tak"
+#: src/xmlhelper.cpp:195 src/xmlhelper.cpp:222 src/xmlhelper.cpp:243
+#: src/xmlhelper.cpp:264 src/xmlhelper.cpp:285 src/xmlhelper.cpp:309
+msgid "XML_Helper: no output stream given.\n"
+msgstr "XML_Helper: nie podano strumienia wyj¶ciowego\n"
 
-#~ msgid "No"
-#~ msgstr "Nie"
+#: src/xmlhelper.cpp:217 src/xmlhelper.cpp:238 src/xmlhelper.cpp:259
+#: src/xmlhelper.cpp:280 src/xmlhelper.cpp:304
+msgid "XML_Helper: save_data with empty name\n"
+msgstr "XML_Helper: save_data ma pust± nazwê\n"
 
-#~ msgid "Temple"
-#~ msgstr "¦wi±tynia"
+#: src/xmlhelper.cpp:332
+msgid "Saving game and obfuscating the Savefile.\n"
+msgstr "Zapisujê i zamazujê plik.\n"
 
-#~ msgid "GGZ initialization failed. Exiting.\n"
-#~ msgstr "Instalacja GGZ nie powiod³a siê. Zamykam.\n"
+#: src/xmlhelper.cpp:360
+msgid "Saving game without obfuscation.\n"
+msgstr "Zapisujê bez zamazywania.\n"
 
-#~ msgid "Play on GGZ"
-#~ msgstr "Graj na GGZ"
+#: src/xmlhelper.cpp:560
+msgid "XML_Helper: error parsing xml document.\n"
+msgstr "XML_Helper: b³±d podczas parsowania dokumentu xml.\n"
 
-#, fuzzy
-#~ msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
-#~ msgstr "Proszê uruchomiæ Freelords z klienta GGZ Gaming Zone."
+#: src/xmlhelper.cpp:561
+msgid "Line "
+msgstr "Linia"
 
-#~ msgid "OK"
-#~ msgstr "OK"
+#: src/xmlhelper.cpp:563
+msgid "Buffercontent = "
+msgstr "Zawarto¶æ bufora = "
 
-#, fuzzy
-#~ msgid "No Quest"
-#~ msgstr "Zadanie"
+#: src/xmlhelper.cpp:633 src/xmlhelper.cpp:676
+msgid ": Callback for tag returned false. Stop parsing document.\n"
+msgstr ""
+": Odwo³anie zwrotne do taga (callback) zwróci³o false. Przerywam "
+"parsowanie.\n"
 
+#: src/sound.cpp:91
 #, fuzzy
-#~ msgid "Seek a quest in a temple!"
-#~ msgstr "Przeszukaj ruiny lub ¶wi±tyniê"
+msgid "Couldn't initialize SDL-mixer\n"
+msgstr "Nie uda³o siê zainicjalizowaæ X Windowing System\n"
 
-#, fuzzy
-#~ msgid "Army Report"
-#~ msgstr "Zestaw Wojsk"
+#: src/sound.cpp:102
+msgid "Error loading music descriptions; disable music\n"
+msgstr ""
 
-#, fuzzy
-#~ msgid "City Report"
-#~ msgstr "raport miejski"
+#: src/gamebigmap.cpp:100
+msgid "original path of stack was blocked\n"
+msgstr "orginalna ¶cie¿ka grupy zosta³a zablokowana\n"
 
-#, fuzzy
-#~ msgid "Gold Report"
-#~ msgstr "Raport o dochodach"
+#: src/army.cpp:590 src/army.cpp:593 src/army.cpp:596 src/army.cpp:599
+#: src/army.cpp:602 src/army.cpp:605 src/army.cpp:608 src/army.cpp:611
+#: src/army.cpp:614 src/army.cpp:617 src/army.cpp:619 src/army.cpp:621
+#: src/army.cpp:624
+msgid "%1%2"
+msgstr ""
 
+#: src/army.cpp:591
 #, fuzzy
-#~ msgid "Production Report"
-#~ msgstr "Koszt Produkcji:"
+msgid "+1 str in open"
+msgstr "i znalaz³e¶ %i szt. z³ota"
 
+#: src/army.cpp:594
 #, fuzzy
-#~ msgid "third"
-#~ msgstr "Inne"
+msgid "+2 str in open"
+msgstr "i znalaz³e¶ %i szt. z³ota"
 
+#: src/army.cpp:597
 #, fuzzy
-#~ msgid "sixth"
-#~ msgstr "pole widzenia"
+msgid "+1 str in woods"
+msgstr "grupy"
 
+#: src/army.cpp:600
 #, fuzzy
-#~ msgid "seventh"
-#~ msgstr "Wywo³ajWydarzenie"
+msgid "+1 str in hills"
+msgstr "grupy"
 
+#: src/army.cpp:603
 #, fuzzy
-#~ msgid "eighth"
-#~ msgstr "pole widzenia"
+msgid "+1 str in city"
+msgstr "i znalaz³e¶ %i szt. z³ota"
 
+#: src/army.cpp:606
 #, fuzzy
-#~ msgid "Standard"
-#~ msgstr "Jednostki Standardowe"
+msgid "+2 str in city"
+msgstr "i znalaz³e¶ %i szt. z³ota"
 
+#: src/army.cpp:609
 #, fuzzy
-#~ msgid "%1 has advanced to level %2!"
-#~ msgstr "Twoja jednostka zdoby³a poziom!"
+msgid "+1 stack in hills"
+msgstr "grupy"
 
-#, fuzzy
-#~ msgid "Choose an attribute to improve:"
-#~ msgstr "Wybierz cechê do zwiêkszenia."
+#: src/army.cpp:612
+msgid "Cancel city bonus"
+msgstr ""
 
+#: src/army.cpp:615
 #, fuzzy
-#~ msgid "Sight: %1"
-#~ msgstr "Pole widzenia:"
+msgid "-1 enemy stack"
+msgstr "grupy"
 
+#: src/army.cpp:617
 #, fuzzy
-#~ msgid "Hero offer for %1"
-#~ msgstr "Bohater oferowany %s"
+msgid "+1 stack"
+msgstr "grupy"
 
+#: src/army.cpp:619
 #, fuzzy
-#~ msgid "A hero in %1 wants to join you!"
-#~ msgstr "Bohater chce do ciebie do³±czyæ"
+msgid "+2 stack"
+msgstr "grupy"
 
-#, fuzzy
-#~ msgid "east"
-#~ msgstr "Zadanie"
+#: src/army.cpp:622
+msgid "cancel non-hero"
+msgstr ""
 
-#, fuzzy
-#~ msgid "northeast"
-#~ msgstr "Las"
+#: src/army.cpp:625
+msgid "cancel hero"
+msgstr ""
 
+#: src/Item.cpp:126
 #, fuzzy
-#~ msgid "south"
-#~ msgstr "O programie"
+msgid "+1 Battle"
+msgstr "Przedmiot:"
 
+#: src/Item.cpp:128
 #, fuzzy
-#~ msgid "north"
-#~ msgstr "Illorath"
+msgid "+2 Battle"
+msgstr "Przedmiot:"
 
+#: src/Item.cpp:130
 #, fuzzy
-#~ msgid "west"
-#~ msgstr "Zadanie"
+msgid "+3 Battle"
+msgstr "Przedmiot:"
 
+#: src/Item.cpp:132
 #, fuzzy
-#~ msgid "northwest"
-#~ msgstr "Las"
+msgid "+1 Command"
+msgstr "Komentarz:"
 
+#: src/Item.cpp:134
 #, fuzzy
-#~ msgid "Strength"
-#~ msgstr "Si³a:"
+msgid "+2 Command"
+msgstr "Komentarz:"
 
+#: src/Item.cpp:136
 #, fuzzy
-#~ msgid "Max Moves"
-#~ msgstr "Ruch:"
+msgid "+3 Command"
+msgstr "Komentarz:"
 
-#, fuzzy
-#~ msgid "Upkeep"
-#~ msgstr "Utrzymanie:"
+#: src/Item.cpp:138
+msgid "Allows Flight"
+msgstr ""
 
-#, fuzzy
-#~ msgid "No description"
-#~ msgstr "Opis:"
+#: src/Item.cpp:140
+msgid "Doubles Movement"
+msgstr ""
 
+#: src/Item.cpp:142
 #, fuzzy
-#~ msgid "Could not load map %1."
-#~ msgstr "Nie uda³o siê wczytaæ mapy "
+msgid "+2 gold per city"
+msgstr "i znalaz³e¶ %i szt. z³ota"
 
+#: src/Item.cpp:144
 #, fuzzy
-#~ msgid "Auto"
-#~ msgstr "O programie"
-
-#~ msgid "Stack"
-#~ msgstr "Grupa"
+msgid "+3 gold per city"
+msgstr "i znalaz³e¶ %i szt. z³ota"
 
+#: src/Item.cpp:146
 #, fuzzy
-#~ msgid "No keeper"
-#~ msgstr "Stra¿nik"
+msgid "+4 gold per city"
+msgstr "i znalaz³e¶ %i szt. z³ota"
 
+#: src/Item.cpp:148
 #, fuzzy
-#~ msgid "No army"
-#~ msgstr "Bezimienny"
+msgid "+5 gold per city"
+msgstr "i znalaz³e¶ %i szt. z³ota"
 
+#: src/CreateScenario.cpp:200
 #, fuzzy
-#~ msgid "No Ruin"
-#~ msgstr "Ruiny"
+msgid "CreateScenario:: wrong width given\n"
+msgstr "CreateScenario:: podano nieprawid³owy rozmiar\n"
 
+#: src/CreateScenario.cpp:215
 #, fuzzy
-#~ msgid "Choose an Tileset to Load"
-#~ msgstr "Wybierz Zestaw Terenów"
+msgid "CreateScenario:: wrong height given\n"
+msgstr "CreateScenario:: podano nieprawid³owy rozmiar\n"
 
+#: src/CreateScenario.cpp:706
 #, fuzzy
-#~ msgid "Error, while loading an tileset. Tileset Name: "
-#~ msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
+msgid "northwestern map"
+msgstr "Tworzenie mapy"
 
+#: src/CreateScenario.cpp:708
 #, fuzzy
-#~ msgid "Mov"
-#~ msgstr "Ruch:"
+msgid "northern map"
+msgstr "Tworzenie mapy"
 
+#: src/CreateScenario.cpp:710
 #, fuzzy
-#~ msgid "HP"
-#~ msgstr "P¯:"
+msgid "northeastern map"
+msgstr "Tworzenie mapy"
 
+#: src/CreateScenario.cpp:712
 #, fuzzy
-#~ msgid "Upk"
-#~ msgstr "Utrzymanie:"
-
-#~ msgid ""
-#~ "XML_Helper: Either open file for reading or writing, not both, exiting\n"
-#~ msgstr ""
-#~ "XML_Helper: Otwórz plik dla zapisu lub odczytu, nie obu naraz, zamykam\n"
-
-#~ msgid ": Error opening file for reading. Exiting\n"
-#~ msgstr ": B³±d podczas otwierania pliku do odczytu. Zamykam\n"
-
-#~ msgid ": The file is obfuscated, attempting to read it....\n"
-#~ msgstr ": plik jest zamazany, próbujê odczytaæ....\n"
-
-#~ msgid ": The file is not obfuscated, attempting to read it....\n"
-#~ msgstr ": plik nie jest zamazany, próbujê odczytaæ...\n"
-
-#~ msgid ": Error opening file for writing. Exiting\n"
-#~ msgstr ": B³±d podczas otwierania pliku do zapisu\n"
-
-#~ msgid "XML_Helper: dtags not empty!!\n"
-#~ msgstr "XML_Helper: dtags niepuste!!\n"
-
-#~ msgid "XML_Helper: no output stream given\n"
-#~ msgstr "XML_Helper: nie podano strumienia wyj¶ciowego\n"
-
-#~ msgid ": The tag name starts with a \"d\". Not creating tag!\n"
-#~ msgstr ": Nazwa taga rozpoczyna siê liter± d. Anulujê tworzenie!\n"
-
-#~ msgid "XML_Helper: no output stream given.\n"
-#~ msgstr "XML_Helper: nie podano strumienia wyj¶ciowego\n"
-
-#~ msgid "XML_Helper: save_data with empty name\n"
-#~ msgstr "XML_Helper: save_data ma pust± nazwê\n"
-
-#~ msgid "Saving game and obfuscating the Savefile.\n"
-#~ msgstr "Zapisujê i zamazujê plik.\n"
-
-#~ msgid "Saving game without obfuscation.\n"
-#~ msgstr "Zapisujê bez zamazywania.\n"
+msgid "western map"
+msgstr "Tworzenie mapy"
 
-#~ msgid "XML_Helper: error parsing xml document.\n"
-#~ msgstr "XML_Helper: b³±d podczas parsowania dokumentu xml.\n"
-
-#~ msgid "Line "
-#~ msgstr "Linia"
-
-#~ msgid "Buffercontent = "
-#~ msgstr "Zawarto¶æ bufora = "
-
-#~ msgid ": Callback for tag returned false. Stop parsing document.\n"
-#~ msgstr ""
-#~ ": Odwo³anie zwrotne do taga (callback) zwróci³o false. Przerywam "
-#~ "parsowanie.\n"
-
+#: src/CreateScenario.cpp:714
 #, fuzzy
-#~ msgid "Couldn't initialize SDL-mixer\n"
-#~ msgstr "Nie uda³o siê zainicjalizowaæ X Windowing System\n"
+msgid "central map"
+msgstr "Tworzenie mapy"
 
-#~ msgid "original path of stack was blocked\n"
-#~ msgstr "orginalna ¶cie¿ka grupy zosta³a zablokowana\n"
-
+#: src/CreateScenario.cpp:716
 #, fuzzy
-#~ msgid "+1 stack"
-#~ msgstr "grupy"
+msgid "eastern map"
+msgstr "Tworzenie mapy"
 
+#: src/CreateScenario.cpp:718
 #, fuzzy
-#~ msgid "+2 stack"
-#~ msgstr "grupy"
+msgid "southwestern map"
+msgstr "Tworzenie mapy"
 
+#: src/CreateScenario.cpp:720
 #, fuzzy
-#~ msgid "+2 gold per city"
-#~ msgstr "i znalaz³e¶ %i szt. z³ota"
+msgid "southern map"
+msgstr "Tworzenie mapy"
 
+#: src/CreateScenario.cpp:722
 #, fuzzy
-#~ msgid "+3 gold per city"
-#~ msgstr "i znalaz³e¶ %i szt. z³ota"
+msgid "southeastern map"
+msgstr "Tworzenie mapy"
 
-#, fuzzy
-#~ msgid "+4 gold per city"
-#~ msgstr "i znalaz³e¶ %i szt. z³ota"
+#: src/Itemlist.cpp:54
+msgid "Could not parse items description file. Exiting!\n"
+msgstr "Nie uda³o siê sparsowaæ pliku opisuj±cego przedmioty. Zamykam!\n"
 
-#, fuzzy
-#~ msgid "+5 gold per city"
-#~ msgstr "i znalaz³e¶ %i szt. z³ota"
+#: src/File.cpp:99
+msgid "ERROR: Couldn't load image "
+msgstr "B³±d: Wczytanie obrazu niemo¿liwe "
 
+#: src/File.cpp:124
 #, fuzzy
-#~ msgid "CreateScenario:: wrong width given\n"
-#~ msgstr "CreateScenario:: podano nieprawid³owy rozmiar\n"
+msgid "Couldn't find any armysets!"
+msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu wojsk!"
 
+#: src/File.cpp:125 src/File.cpp:226 src/File.cpp:242 src/File.cpp:270
+#: src/File.cpp:286
 #, fuzzy
-#~ msgid "CreateScenario:: wrong height given\n"
-#~ msgstr "CreateScenario:: podano nieprawid³owy rozmiar\n"
+msgid "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc"
+msgstr "Proszê sprawdziæ ¶cie¿ki w /etc/freelordsrc lub ~/.freelordsrc"
 
-#, fuzzy
-#~ msgid "northeastern map"
-#~ msgstr "Tworzenie mapy"
+#: src/File.cpp:126 src/File.cpp:227 src/File.cpp:243 src/File.cpp:287
+msgid "Exiting!"
+msgstr "Zamykam!"
 
+#: src/File.cpp:225
 #, fuzzy
-#~ msgid "western map"
-#~ msgstr "Tworzenie mapy"
+msgid "Couldn't find any tilesets!"
+msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu terenów"
 
+#: src/File.cpp:241
 #, fuzzy
-#~ msgid "eastern map"
-#~ msgstr "Tworzenie mapy"
+msgid "Couldn't find any citysets!"
+msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu wojsk!"
 
-#~ msgid "Could not parse items description file. Exiting!\n"
-#~ msgstr "Nie uda³o siê sparsowaæ pliku opisuj±cego przedmioty. Zamykam!\n"
+#: src/File.cpp:269
+msgid "Couldn't find a single map!"
+msgstr "Nie uda³o siê odnale¼æ ¿adnej mapy!"
 
-#~ msgid "ERROR: Couldn't load image "
-#~ msgstr "B³±d: Wczytanie obrazu niemo¿liwe "
-
-#, fuzzy
-#~ msgid "Couldn't find any armysets!"
-#~ msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu wojsk!"
-
+#: src/File.cpp:285
 #, fuzzy
-#~ msgid "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc"
-#~ msgstr "Proszê sprawdziæ ¶cie¿ki w /etc/freelordsrc lub ~/.freelordsrc"
-
-#~ msgid "Exiting!"
-#~ msgstr "Zamykam!"
+msgid "Couldn't find any shieldsets!"
+msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu terenów"
 
-#, fuzzy
-#~ msgid "Couldn't find any tilesets!"
-#~ msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu terenów"
+#: src/main.cpp:70
+msgid "non-numerical value for cache size\n"
+msgstr "nienueryczna warto¶æ dla rozmiaru cache\n"
 
-#, fuzzy
-#~ msgid "Couldn't find any citysets!"
-#~ msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu wojsk!"
+#: src/main.cpp:83
+msgid "Available parameters:"
+msgstr "Dostêpne parametry:"
 
-#~ msgid "Couldn't find a single map!"
-#~ msgstr "Nie uda³o siê odnale¼æ ¿adnej mapy!"
+#: src/main.cpp:84
+msgid "-h,      --help             Shows this help screen\n"
+msgstr "-h,     --help              Wy¶wietla ten ekran\n"
 
+#: src/main.cpp:85
 #, fuzzy
-#~ msgid "Couldn't find any shieldsets!"
-#~ msgstr "Nie uda³o siê odnale¼æ ¿adnego zestawu terenów"
+msgid "-c <size>                   Set the maximum cache size"
+msgstr "-c <size>                   Ustawia maksymaln± wielko¶æ cache"
 
-#~ msgid "non-numerical value for cache size\n"
-#~ msgstr "nienueryczna warto¶æ dla rozmiaru cache\n"
+#: src/main.cpp:86
+msgid "-t,      --test             Starting with a test-scenario"
+msgstr "-t,     --test              Rozpoczyna scenariuszem testowym"
 
-#~ msgid "Available parameters:"
-#~ msgstr "Dostêpne parametry:"
-
-#~ msgid "-h,      --help             Shows this help screen\n"
-#~ msgstr "-h,     --help              Wy¶wietla ten ekran\n"
-
+#: src/QCitySack.cpp:93
 #, fuzzy
-#~ msgid "-c <size>                   Set the maximum cache size"
-#~ msgstr "-c <size>                   Ustawia maksymaln± wielko¶æ cache"
+msgid "The priests thank you for sacking this evil place."
+msgstr "Kap³ani dziêkuj± ci za zbadanie tego ponurego miejsca."
 
-#~ msgid "-t,      --test             Starting with a test-scenario"
-#~ msgstr "-t,     --test              Rozpoczyna scenariuszem testowym"
+#: src/QCitySack.cpp:101
+#, c-format
+msgid "The sacking of \"%s\" could not be accomplished."
+msgstr ""
 
-#, fuzzy
-#~ msgid "The priests thank you for sacking this evil place."
-#~ msgstr "Kap³ani dziêkuj± ci za zbadanie tego ponurego miejsca."
+#: src/QCitySack.cpp:121
+#, c-format
+msgid "You must take over and sack the city of \"%s\"."
+msgstr ""
 
 #~ msgid "%i shot"
 #~ msgid_plural "%i shots"
