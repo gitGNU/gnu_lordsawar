@@ -35,7 +35,8 @@ various_DATA = \
     diplomacy-large.png \
     castle_icon.png \
     tileset_icon.png \
-    parley_offered.png
+    parley_offered.png \
+    parley_refused.png
 
 EXTRA_DIST = \
     arrows.png \
@@ -69,4 +70,5 @@ EXTRA_DIST = \
     diplomacy-large.png \
     castle_icon.png \
     tileset_icon.png \
-    parley_offered.png
+    parley_offered.png \
+    parley_refused.png

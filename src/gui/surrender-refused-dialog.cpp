@@ -46,8 +46,8 @@ SurrenderRefusedDialog::SurrenderRefusedDialog()
     xml->get_widget("image", image);
     
     label->set_text(_("Off with their heads!  I want it ALL!"));
-    //image->property_file()
-      //= File::getMiscFile("various/parley_refused.png");
+    image->property_file()
+      = File::getMiscFile("various/parley_refused.png");
 }
 
 
