@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.3.7\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-06-01 12:26-0400\n"
+"POT-Creation-Date: 2008-06-02 18:08-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Piotr Cychowski <cycholka@wp.pl>\n"
 "Language-Team: \n"
@@ -2321,6 +2321,44 @@ msgstr "Doskonale!"
 #, fuzzy, c-format
 msgid "You must destroy a unit of enemy %s."
 msgstr "Musisz zniszczyæ %i wrog± jednostkê"
+
+#: src/playerlist.cpp:303
+#, fuzzy
+msgid "Statesman"
+msgstr "Cechy"
+
+#: src/playerlist.cpp:304
+#, fuzzy
+msgid "Diplomat"
+msgstr "Zestaw Wojsk"
+
+#: src/playerlist.cpp:305
+msgid "Pragmatist"
+msgstr ""
+
+#: src/playerlist.cpp:306
+#, fuzzy
+msgid "Politician"
+msgstr "Po³o¿enie:"
+
+#: src/playerlist.cpp:307
+#, fuzzy
+msgid "Deciever"
+msgstr "Dezaktywuj"
+
+#: src/playerlist.cpp:308
+#, fuzzy
+msgid "Scoundrel"
+msgstr "Scone"
+
+#: src/playerlist.cpp:309
+#, fuzzy
+msgid "Turncoat"
+msgstr "NastêpnaTura"
+
+#: src/playerlist.cpp:310
+msgid "Running Dog"
+msgstr ""
 
 #: src/GameMap.cpp:218
 msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
@@ -5131,9 +5169,6 @@ msgstr ""
 #~ msgid "level: "
 #~ msgstr "poziom: "
 
-#~ msgid "Stats"
-#~ msgstr "Cechy"
-
 #~ msgid "strength"
 #~ msgstr "si³a"
 
@@ -5483,9 +5518,6 @@ msgstr ""
 
 #~ msgid "SORRY FOR YOU!"
 #~ msgstr "¯a³uj!"
-
-#~ msgid "Position:"
-#~ msgstr "Po³o¿enie:"
 
 #~ msgid "Entering the ruin..."
 #~ msgstr "Wkraczanie w ruiny"
@@ -5840,9 +5872,6 @@ msgstr ""
 
 #~ msgid "Activate"
 #~ msgstr "Aktywuj"
-
-#~ msgid "Deactivate"
-#~ msgstr "Dezaktywuj"
 
 #~ msgid "Reactions"
 #~ msgstr "Reakcje"

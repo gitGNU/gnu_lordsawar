@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.6\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-06-01 12:26-0400\n"
+"POT-Creation-Date: 2008-06-02 18:08-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: विभू ॠषि <vibhu.rishi@gmail.com>\n"
 "Language-Team: Hindi <vibhu.rishi@gmail.com>\n"
@@ -2312,6 +2312,44 @@ msgstr "Ben fatto!"
 #, fuzzy, c-format
 msgid "You must destroy a unit of enemy %s."
 msgstr "Devi distruggere %i unita' delle armate nemiche"
+
+#: src/playerlist.cpp:303
+#, fuzzy
+msgid "Statesman"
+msgstr "आँकडे"
+
+#: src/playerlist.cpp:304
+#, fuzzy
+msgid "Diplomat"
+msgstr "Armyset"
+
+#: src/playerlist.cpp:305
+msgid "Pragmatist"
+msgstr ""
+
+#: src/playerlist.cpp:306
+#, fuzzy
+msgid "Politician"
+msgstr "Posizione:"
+
+#: src/playerlist.cpp:307
+#, fuzzy
+msgid "Deciever"
+msgstr "Disattiva"
+
+#: src/playerlist.cpp:308
+#, fuzzy
+msgid "Scoundrel"
+msgstr "कुछ नही"
+
+#: src/playerlist.cpp:309
+#, fuzzy
+msgid "Turncoat"
+msgstr "Turno अगला"
+
+#: src/playerlist.cpp:310
+msgid "Running Dog"
+msgstr ""
 
 #: src/GameMap.cpp:218
 msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
@@ -4891,9 +4929,6 @@ msgstr ""
 #~ msgid "level: "
 #~ msgstr "स्तर : "
 
-#~ msgid "Stats"
-#~ msgstr "आँकडे"
-
 #~ msgid "strength"
 #~ msgstr "दम"
 
@@ -5239,9 +5274,6 @@ msgstr ""
 
 #~ msgid "SORRY FOR YOU!"
 #~ msgstr "SPIACENTE!"
-
-#~ msgid "Position:"
-#~ msgstr "Posizione:"
 
 #~ msgid "Entering the ruin..."
 #~ msgstr "Stai entrando nelle खंडर..."
@@ -5602,9 +5634,6 @@ msgstr ""
 
 #~ msgid "Activate"
 #~ msgstr "Attiva"
-
-#~ msgid "Deactivate"
-#~ msgstr "Disattiva"
 
 #~ msgid "Reactions"
 #~ msgstr "Reazioni"

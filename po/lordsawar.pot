@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-06-01 12:26-0400\n"
+"POT-Creation-Date: 2008-06-02 18:08-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2053,6 +2053,38 @@ msgstr ""
 #: src/QEnemyArmytype.cpp:144
 #, c-format
 msgid "You must destroy a unit of enemy %s."
+msgstr ""
+
+#: src/playerlist.cpp:303
+msgid "Statesman"
+msgstr ""
+
+#: src/playerlist.cpp:304
+msgid "Diplomat"
+msgstr ""
+
+#: src/playerlist.cpp:305
+msgid "Pragmatist"
+msgstr ""
+
+#: src/playerlist.cpp:306
+msgid "Politician"
+msgstr ""
+
+#: src/playerlist.cpp:307
+msgid "Deciever"
+msgstr ""
+
+#: src/playerlist.cpp:308
+msgid "Scoundrel"
+msgstr ""
+
+#: src/playerlist.cpp:309
+msgid "Turncoat"
+msgstr ""
+
+#: src/playerlist.cpp:310
+msgid "Running Dog"
 msgstr ""
 
 #: src/GameMap.cpp:218

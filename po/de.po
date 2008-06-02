@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-06-01 12:26-0400\n"
+"POT-Creation-Date: 2008-06-02 18:08-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -2315,6 +2315,44 @@ msgstr "Sehr gut!"
 #, fuzzy, c-format
 msgid "You must destroy a unit of enemy %s."
 msgstr "Du muﬂt %i gegnerische Einheit vernichten."
+
+#: src/playerlist.cpp:303
+#, fuzzy
+msgid "Statesman"
+msgstr "Eigenschaften"
+
+#: src/playerlist.cpp:304
+#, fuzzy
+msgid "Diplomat"
+msgstr "Armeeset"
+
+#: src/playerlist.cpp:305
+msgid "Pragmatist"
+msgstr ""
+
+#: src/playerlist.cpp:306
+#, fuzzy
+msgid "Politician"
+msgstr "Position:"
+
+#: src/playerlist.cpp:307
+#, fuzzy
+msgid "Deciever"
+msgstr "Deaktivieren"
+
+#: src/playerlist.cpp:308
+#, fuzzy
+msgid "Scoundrel"
+msgstr "Scone"
+
+#: src/playerlist.cpp:309
+#, fuzzy
+msgid "Turncoat"
+msgstr "NextTurn"
+
+#: src/playerlist.cpp:310
+msgid "Running Dog"
+msgstr ""
 
 #: src/GameMap.cpp:218
 msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
@@ -5000,9 +5038,6 @@ msgstr ""
 #~ msgid "level: "
 #~ msgstr "Stufe:"
 
-#~ msgid "Stats"
-#~ msgstr "Eigenschaften"
-
 #~ msgid "strength"
 #~ msgstr "St‰rke"
 
@@ -5350,9 +5385,6 @@ msgstr ""
 
 #~ msgid "SORRY FOR YOU!"
 #~ msgstr "SCHADE F‹R DICH!"
-
-#~ msgid "Position:"
-#~ msgstr "Position:"
 
 #~ msgid "Entering the ruin..."
 #~ msgstr "Betreten der Ruine..."
@@ -5719,9 +5751,6 @@ msgstr ""
 
 #~ msgid "Activate"
 #~ msgstr "Aktivieren"
-
-#~ msgid "Deactivate"
-#~ msgstr "Deaktivieren"
 
 #~ msgid "Reactions"
 #~ msgstr "Reaktionen"
