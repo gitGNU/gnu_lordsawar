@@ -298,16 +298,16 @@ bool compareDiplomaticScores (const struct rankable_t lhs,
 void Playerlist::calculateDiplomaticRankings()
 {
   unsigned int i = 0;
-  char* titles[MAX_PLAYERS] = 
+  char* titles[MAX_PLAYERS] =
     {
-      "Statesman",
-      "Diplomat",
-      "Pragmatist",
-      "Politician",
-      "Deciever",
-      "Scoundrel",
-      "Turncoat",
-      "Running Dog",
+      _("Statesman"),
+      _("Diplomat"),
+      _("Pragmatist"),
+      _("Politician"),
+      _("Deciever"),
+      _("Scoundrel"),
+      _("Turncoat"),
+      _("Running Dog"),
     };
 
   //determine the rank for each player
@@ -359,7 +359,7 @@ void Playerlist::calculateDiplomaticRankings()
       for (unsigned int j = 0; j < MAX_PLAYERS; j++)
 	{
 	  if (deplete[j] == i)
-	    titles[j]="";
+	    titles[j][0]='\0';
 	}
     }
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
