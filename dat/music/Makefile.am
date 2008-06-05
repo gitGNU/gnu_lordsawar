@@ -4,19 +4,16 @@ musicdir = $(datadir)/lordsawar/music
 music_DATA = \
 	back1.ogg \
 	defeat.ogg \
-	defeat1.ogg \
 	victory.ogg \
-	victory1.ogg \
 	hero.ogg \
 	intro.ogg \
 	music.xml
 
 EXTRA_DIST = \
+	README \
 	back1.ogg \
 	defeat.ogg \
-	defeat1.ogg \
 	victory.ogg \
-	victory1.ogg \
 	hero.ogg \
 	intro.ogg \
 	music.xml

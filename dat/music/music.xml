@@ -19,18 +19,6 @@
         <d_alias></d_alias>
     </piece>
     <piece>
-        <d_name>victory1</d_name>
-        <d_filename>victory1.ogg</d_filename>
-        <d_background>false</d_background>
-        <d_alias>victory</d_alias>
-    </piece>
-    <piece>
-        <d_name>defeat1</d_name>
-        <d_filename>defeat1.ogg</d_filename>
-        <d_background>false</d_background>
-        <d_alias>defeat</d_alias>
-    </piece>
-    <piece>
         <d_name>hero</d_name>
         <d_filename>hero.ogg</d_filename>
         <d_background>false</d_background>

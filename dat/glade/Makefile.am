@@ -61,6 +61,7 @@ game-quit-dialog.glade \
 about-dialog.glade
 
 EXTRA_DIST = $(glade_DATA) \
+README \
 army-gains-level-dialog.glade.h \
 army-info-window.glade.h \
 stack-info-window.glade.h \

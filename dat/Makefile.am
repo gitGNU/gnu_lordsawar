@@ -19,6 +19,7 @@ lordsawar32icondir=$(datadir)/icons/hicolor/32x32/apps
 lordsawar32icon= 
 
 EXTRA_DIST = \
+    README \
     citynames \
     heronames \
     templenames \

@@ -5,4 +5,5 @@ map_DATA = \
 	2ndPunic37.map
 
 EXTRA_DIST = \
+	README \
 	2ndPunic37.map
