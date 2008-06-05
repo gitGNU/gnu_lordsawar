@@ -12,6 +12,7 @@ cityset_bigdefault_DATA = \
 	towers.png
 
 EXTRA_DIST = \
+	README \
 	bigdefault.xml \
 	castle_razed.png \
 	castles.png \

@@ -11,6 +11,7 @@ lordsawarshieldplain_DATA = \
 	large-neutral-shield.png 
 
 EXTRA_DIST = \
+	README \
 	plain.xml \
 	small-shield.png \
 	small-neutral-shield.png \

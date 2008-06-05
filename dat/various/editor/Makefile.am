@@ -18,4 +18,4 @@ editor_DATA = button_selector.png \
 			button_port.png \
 			tilestyles.png
 
-EXTRA_DIST = $(editor_DATA)
+EXTRA_DIST = $(editor_DATA) README

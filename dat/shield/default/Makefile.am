@@ -32,6 +32,7 @@ lordsawarshielddefault_DATA = \
 	large-neutral-shield.png 
 
 EXTRA_DIST = \
+	README \
 	default.xml \
 	small-white-shield.png \
 	small-green-shield.png \

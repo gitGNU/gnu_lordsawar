@@ -12,6 +12,7 @@ map_default_DATA = \
     swamp.png 
 
 EXTRA_DIST = \
+    README \
     default.xml \
     grass.png \
     water.png \

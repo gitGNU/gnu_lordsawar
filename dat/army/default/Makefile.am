@@ -35,6 +35,7 @@ lordsawararmydefault_DATA = \
 	plantedstandard.png
 
 EXTRA_DIST = \
+	README \
 	default.xml \
 	archers.png \
 	archons.png \

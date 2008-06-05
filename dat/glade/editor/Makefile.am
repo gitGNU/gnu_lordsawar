@@ -25,6 +25,7 @@ tileset-info-dialog.glade \
 tile-preview-dialog.glade
 
 EXTRA_DIST = $(glade_DATA) \
+README \
 main-window.glade.h \
 signpost-dialog.glade.h \
 temple-dialog.glade.h \

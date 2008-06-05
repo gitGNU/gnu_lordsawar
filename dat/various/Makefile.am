@@ -39,6 +39,7 @@ various_DATA = \
     parley_refused.png
 
 EXTRA_DIST = \
+    README \
     arrows.png \
     waypoints.png \
     buttons.png \

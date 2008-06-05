@@ -11,6 +11,7 @@ map_bigdefault_DATA = \
 	explosion.png
 
 EXTRA_DIST = \
+	README \
 	flags.png \
 	roads.png \
 	bridges.png \
