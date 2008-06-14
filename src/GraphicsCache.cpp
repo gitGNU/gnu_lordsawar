@@ -206,7 +206,7 @@ GraphicsCache::GraphicsCache()
     loadProdShields();
     loadMoveBonusPics();
 
-    d_medalsmask = File::getMiscPicture("medals_mask.gif");
+    d_medalsmask = File::getMiscPicture("medals_mask.png");
     d_smallruinedcity = File::getMiscPicture("smallruinedcity.png");
     d_smallhero = File::getMiscPicture("hero.png");
     d_small_ruin_unexplored = File::getMiscPicture("smallunexploredruin.png");
