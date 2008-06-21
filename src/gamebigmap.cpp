@@ -271,6 +271,32 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    }
 	}
     }
+  else if (e.button == MouseButtonEvent::LEFT_BUTTON
+      && e.state == MouseButtonEvent::RELEASED)
+    {
+      if (mouse_state == DRAGGING_STACK)
+	{
+	  Stack* stack = Playerlist::getActiveplayer()->getActivestack();
+	  //march a dragged stack!
+	  mouse_state = NONE;
+	  d_cursor = GraphicsCache::FEET;
+	  cursor_changed.emit(d_cursor);
+	  //watch out here.  
+	  //we recurse for least amount of code and most programmer confusion.
+	  e.state = MouseButtonEvent::PRESSED;
+	  //go get the final spot in the path
+	  if (stack->getPath()->empty() == false)
+	    {
+	      int ts = GameMap::getInstance()->getTileset()->getTileSize();
+	      e.pos = tile_to_buffer_pos (*stack->getPath()->back());
+	      e.pos.x -= ts/2;
+	      e.pos.y -= ts/2;
+	    }
+	  mouse_button_event(e);
+	}
+      else
+	mouse_state = NONE;
+    }
 
 
   // right mousebutton to get information about things on the map and to
@@ -323,7 +349,12 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	{
 	  switch(mouse_state)
 	    {
-	    case DRAGGING:
+
+	    case DRAGGING_STACK:
+	      //no-op
+	      break;
+
+	    case DRAGGING_MAP:
 	      break;
 
 	    case SHOWING_CITY:
@@ -364,7 +395,11 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
 void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 {
-  if (stack)
+  if (stack && mouse_state == DRAGGING_STACK)
+    {
+      d_cursor = GraphicsCache::GOTO_ARROW;
+    }
+  else if (stack)
     {
       d_cursor = GraphicsCache::FEET;
       if (stack->getPos() == tile)
@@ -498,9 +533,18 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
   if (input_locked)
     return;
 
-  // drag with left mouse button
+  Stack* stack = Playerlist::getActiveplayer()->getActivestack();
+  Vector<int> tile = mouse_pos_to_tile(e.pos);
+
   if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
-      && (mouse_state == NONE || mouse_state == DRAGGING))
+      && (mouse_state == NONE || mouse_state == SHOWING_STACK) && 
+      stack && stack->getPos() == tile)
+    {
+      //initial drag
+      mouse_state = DRAGGING_STACK;
+    }
+  else if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
+      && (mouse_state == NONE || mouse_state == DRAGGING_MAP) && !stack)
     {
       Vector<int> delta = -(e.pos - prev_mouse_pos);
 
@@ -530,17 +574,35 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	}
 
       draw(redraw_buffer);
-      mouse_state = DRAGGING;
+      mouse_state = DRAGGING_MAP;
     }
 
   // the following block of code shows the correct mouse cursor
-  Stack* stack = Playerlist::getActiveplayer()->getActivestack();
-  Vector<int> tile = mouse_pos_to_tile(e.pos);
   if (tile == last_tile)
     {
       prev_mouse_pos = e.pos;
       return;
     }
+
+  // drag stack with left mouse button
+  if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
+      && (mouse_state == DRAGGING_STACK))
+    {
+      //subsequent dragging
+      //alright.  calculate the path, and show it but don't move
+      //be careful that we don't drop our path on bad objects
+      mouse_state = NONE;
+      determine_mouse_cursor(stack, tile);
+      mouse_state = DRAGGING_STACK;
+      if (d_cursor == GraphicsCache::FEET ||
+	  d_cursor == GraphicsCache::SHIP || 
+	  d_cursor == GraphicsCache::TARGET)
+	{
+	  stack->getPath()->calculate(stack, tile);
+	  draw();
+	}
+    }
+
   determine_mouse_cursor (stack, tile);
 
   prev_mouse_pos = e.pos;

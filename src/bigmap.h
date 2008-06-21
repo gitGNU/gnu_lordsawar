@@ -74,17 +74,17 @@ class BigMap: public sigc::trackable
     void blank();
  protected:
     MapRenderer* d_renderer;
-	
+
     Rectangle view;		// approximate view of screen, in tiles
     Vector<int> view_pos; 	// precise position of view in pixels
-        
+
     SDL_Surface* buffer;	// the buffer we draw things in
     Rectangle buffer_view;	// current view of the buffer, in tiles
-	
+
     bool input_locked;
-	
+
     SDL_Surface* d_itempic;
-        
+
     // helpers
     Vector<int> mouse_pos_to_tile(Vector<int> pos);
     // offset in pixels within tile
