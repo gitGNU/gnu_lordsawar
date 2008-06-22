@@ -1,4 +1,4 @@
-SUBDIRS = intl src dat po doc
+SUBDIRS = intl src dat po doc help
 MAINTAINERCLEANFILES = Makefile.in
 CLEANFILES = *~
 

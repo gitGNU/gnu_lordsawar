@@ -233,6 +233,7 @@ AC_CONFIG_FILES([
         Makefile 
         src/Makefile
         doc/Makefile
+        help/Makefile
         src/editor/Makefile
         src/gui/Makefile])
 AC_OUTPUT

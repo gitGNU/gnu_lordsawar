@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "
+http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+  <!ENTITY legal SYSTEM "legal.xml">
+<!ENTITY app "<application>LordsAwar!</application>">
+<!ENTITY appversion "0.1.0">
+<!ENTITY date "June 2008">
+<!ENTITY manrevision "0.1.0">
+]>
+
+<article id="index" lang="en"> 
+
+<articleinfo> 
+	<title>LordsAWar! User's Manual &manrevision;</title> 
+	<copyright> 
+		<year>2008</year>
+		<holder>Ben Asselstine</holder> 
+ 	</copyright>
+	<publisher> 
+		<publishername>Ben Asselstine</publishername> 
+	</publisher> 
+	&legal; 
+	<authorgroup> 
+		<author> 
+			<firstname>Ben</firstname> 
+			<surname>Asselstine</surname>
+			<affiliation>
+				<orgname>LordsAWar! Development Team</orgname> 
+				<address>
+					<email>benasselstine@gmail.com</email>
+				</address>
+			</affiliation>
+		</author> 
+	</authorgroup> 
+	<releaseinfo> This manual describes version &appversion; of &app;.
+	</releaseinfo> 
+	<legalnotice id="feedback"> 
+		<title>Feedback Information</title> 
+		<para>
+			To report a bug or make a suggestion regarding this application or this documentation, see the <ulink type="help" url="ghelp:gnome-feedback">GNOME Feedback Page</ulink>.
+		</para>
+	</legalnotice>
+</articleinfo>
+
+<indexterm zone="index"> 
+	<primary>LordsAWar!</primary> 
+</indexterm> 
+<indexterm zone="index"> 
+	<primary>LordsAWar</primary> 
+</indexterm> 
+<indexterm zone="index"> 
+	<primary>Lordsawar</primary> 
+</indexterm> 
+<indexterm zone="index"> 
+	<primary>lordsawar</primary> 
+</indexterm>
+
+
+<!-- ============= Prologue ============================== -->
+<!-- Use the Prologue section to excite the user into wanting to play
+     the gmae. -->
+<sect1 id="lordsawar-prologue"> 
+	<title>Prologue</title> 
+	<para>
+The entire realm is holding its breath -- war is coming, and the citizens know what that means; cities will be sacked, towns will be looted, and flags will be raised.  There will be a shortage of food supplies, high taxes, and fire burning on the horizon, if not even closer.  The best thing to do is to join the army before getting drafted.  
+</para>
+
+	<para>
+Several factions will vie for total control of the realm.  Talented generals will be needed to lead forces against the enemy.  Plans will be made, and lands will be conquered.  Heroes will emerge to fight on behalf of their general.  Large seige engines will be constructed and rolled to distant cities.  Great ships of war will take to the seas.   Infantry units will be sent to the front line to face the enemy in battle.
+	</para>
+
+	<para>
+The future is uncertain.  The lords of the realm are warring.  The lords are a-war.
+	</para>
+</sect1>
+
+<!-- ============= Introduction ============================== -->
+<!-- Use the Introduction section to give a brief overview of what
+     the game is and what it does. -->
+<sect1 id="lordsawar-introduction"> 
+	<title>Introduction</title> 
+	<para>
+&app; is a turn-based strategy game where up to 8 players strive to conquer all of the cities on the map.  The player has three distinct roles in the game:
+
+	  <orderedlist>
+		<listitem>
+The player acts as a General who controls all of military strategy elements of the game; moving armies around the map, conquering cities and managing the production of new army units.
+</listitem>
+<listitem>
+The player acts as a diplomatic envoy, managing diplomatic relations with every other player.
+</listitem>
+<listitem>
+The player acts as a tax collector, automatically collecting gold pieces from each city that has been conquered.  This pays for the maintenance of army units already created.  It can also be used to buy new and different kinds of army units.
+</listitem>
+	  </orderedlist>
+</para>
+<para>
+Army units are arranged into stacks of up to eight.  Stacks are moved around the map through varying terrain; forest, hills, swamp, or water.  Each of the varying kinds of terrain cost the stack some of its movement points.  Some stacks may even have the ability to fly over troublesome mountains.  
+</para>
+
+<para>
+Some army units are special Hero units.  Heroes sometimes emerge spontaneously in cities at the start of the player's turn.  Heroes can search ruins to obtain gold pieces or magical items, or go on special quests.  Powerful allies often accompany a hero.
+</para>
+
+<para>
+The objective of the game is to conquer all of the cities on the map.  This is accomplished by producing army units in cities and making ever more powerful stacks to conquer neighbouring cities.  Strategy is employed to know which city, or player to target next, on the way to total victory.
+</para>
+</sect1>
+
+<sect1 id="lordsawar-cities"> 
+	<title>Cities</title> 
+<sect2 id="lordsawar-cities-what-are-they">
+	<title>What are they?</title> 
+</sect2>
+<sect2 id="lordsawar-explain-the-city-screen">
+	<title>Explanation of the City screen </title> 
+</sect2>
+<sect2 id="lordsawar-cities-how-they-make-critters">
+	<title>Producing new Army units</title> 
+</sect2>
+<sect2 id="lordsawar-taking cities">
+	<title>Taking Cities</title> 
+<para>
+explain neutral cities here.
+</para>
+</sect2>
+<sect2 id="lordsawar-cities-buying-production">
+	<title>Buying new production capabilities</title> 
+</sect2>
+</sect1>
+
+<sect1 id="lordsawar-units"> 
+	<title>Army Units</title> 
+<sect2 id="lordsawar-how-to-read-a-units-stats">
+	<title>How to read an Army Unit's stats</title> 
+</sect2>
+<sect2 id="lordsawar-units-what-kind-of-bonuses">
+	<title>Augmenting an Army Unit's stats</title> 
+</sect2>
+</sect1>
+<sect1 id="lordsawar-combat"> 
+	<title>Combat</title> 
+<sect2 id="lordsawar-entering-combat">
+	<title>Entering combat</title> 
+</sect2>
+<sect2 id="lordsawar-combat-stacks">
+	<title>Stacks</title> 
+</sect2>
+<sect2 id="lordsawar-combat-order-of-battle">
+	<title>Fighting Order</title> 
+<para>
+...and order of dying.
+</para>
+</sect2>
+<sect2 id="lordsawar-combat-bonuses">
+	<title>Bonuses</title> 
+</sect2>
+<sect2 id="lordsawar-combat-example-in-field">
+	<title>example of combat in the field</title> 
+<para>
+...1 on 1 in the field.
+</para>
+</sect2>
+<sect2 id="lordsawar-combat-example-in-city">
+	<title>example of combat in a city</title> 
+<para>
+...1 on 1 in a city.
+</para>
+</sect2>
+<sect2 id="lordsawar-combat-another-example-in-city">
+	<title>another example of combat in a city</title> 
+<para>
+...8 on 32 in a city.
+</para>
+</sect2>
+</sect1>
+<sect1 id="lordsawar-heroes"> 
+	<title>Heroes</title> 
+<para>
+how to get more heroes?
+</para>
+<sect2 id="lordsawar-heroes-why-they-rock">
+	<title>Using Heroes to your advantage</title> 
+</sect2>
+<sect2 id="lordsawar-heroes-exploring ruins">
+	<title>Exploring ruins</title> 
+</sect2>
+<sect2 id="lordsawar-heroes-quests">
+	<title>Going on Quests</title> 
+</sect2>
+</sect1>
+<sect1 id="lordsawar-movement"> 
+	<title>Movement</title> 
+<sect2 id="lordsawar-movement-over-land">
+	<title>Traveling over land</title> 
+</sect2>
+<sect2 id="lordsawar-movement-over-water">
+	<title>Traveling over water</title> 
+</sect2>
+</sect1>
+<sect1 id="lordsawar-diplomacy"> 
+	<title>Diplomacy</title> 
+<sect2 id="lordsawar-diplomacy-advantages">
+	<title>Using Dimplomacy to your advantage</title> 
+</sect2>
+<sect2 id="lordsawar-diplomacy-explaining-the-report">
+	<title>Explanation of the Diplomatic Report</title> 
+</sect2>
+</sect1>
+<sect1 id="lordsawar-options"> 
+	<title>Options</title> 
+<sect2 id="lordsawar-scenario-options">
+	<title>Scenario options</title> 
+</sect2>
+</sect1>
+<sect1 id="lordsawar-keyboard-commands"> 
+	<title>Keyboard Commands</title> 
+</sect1>
+<sect1 id="lordsawar-multiplayer"> 
+	<title>Multi-player play</title> 
+<sect2 id="lordsawar-hot-seat">
+	<title>Hot-seat Play</title> 
+</sect2>
+<sect2 id="lordsawar-network-play">
+	<title>Network Play</title> 
+</sect2>
+</sect1>
+</article>
