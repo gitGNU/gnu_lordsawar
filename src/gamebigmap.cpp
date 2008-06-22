@@ -535,6 +535,15 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
   Stack* stack = Playerlist::getActiveplayer()->getActivestack();
   Vector<int> tile = mouse_pos_to_tile(e.pos);
+  if (tile.x < 0)
+    tile.x = 0;
+  if (tile.y < 0)
+    tile.y = 0;
+  if (tile.x >= GameMap::getWidth())
+    tile.x = GameMap::getWidth() - 1;
+  if (tile.y >= GameMap::getHeight())
+    tile.y = GameMap::getHeight() - 1;
+
 
   if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
       && (mouse_state == NONE || mouse_state == SHOWING_STACK) && 
@@ -591,6 +600,22 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       //subsequent dragging
       //alright.  calculate the path, and show it but don't move
       //be careful that we don't drop our path on bad objects
+      if (is_inside(view, tile) == false)
+	{
+	  Vector<int> delta(0,0);
+	  if (tile.x >= view.x + view.w)
+	    delta.x += 1;
+	  if (tile.x < view.x)
+	    delta.x -= 1;
+	  if (tile.y > view.y + view.h)
+	    delta.y += 1;
+	  if (tile.y < view.y)
+	    delta.y -= 1;
+	  Rectangle new_view = view;
+	  new_view.pos += delta;
+	  set_view (new_view);
+	  view_changed.emit(view);
+	}
       mouse_state = NONE;
       determine_mouse_cursor(stack, tile);
       mouse_state = DRAGGING_STACK;
