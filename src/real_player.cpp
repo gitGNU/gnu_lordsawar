@@ -159,7 +159,18 @@ bool RealPlayer::maybeRecruitHero ()
       newhero->setGender(Army::Gender(templateHero->getGender()));
 #endif
       if (gold_needed == 0)
-	city = Citylist::getInstance()->getFirstCity(this);
+	{
+	  //city = Citylist::getInstance()->getFirstCity(this);
+	  //we do it this way because maybe quickstart is on.
+	  Citylist* cl = Citylist::getInstance();
+	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+	    if (!(*it).isBurnt() && (*it).getOwner() == this &&
+		(*it).getCapitalOwner() == this && (*it).isCapital())
+	      {
+		city = &*it;
+		break;
+	      }
+	}
       else
 	{
 	  std::vector<City*> cities;
