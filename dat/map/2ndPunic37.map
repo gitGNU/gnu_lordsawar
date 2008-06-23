@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<lordsawar version="0.0.9">
+<lordsawar version="0.1.0">
 	<counter>
 		<d_curID>1438</d_curID>
 	</counter>
@@ -265,8 +265,8 @@
 					<d_y>57</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -317,8 +317,8 @@
 					<d_y>53</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -510,8 +510,8 @@
 					<d_y>91</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -543,8 +543,8 @@
 					<d_y>38</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -595,8 +595,8 @@
 					<d_y>29</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -628,8 +628,8 @@
 					<d_y>34</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -699,8 +699,8 @@
 					<d_y>24</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -941,8 +941,8 @@
 					<d_y>62</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -974,8 +974,8 @@
 					<d_y>76</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1007,8 +1007,8 @@
 					<d_y>65</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1040,8 +1040,8 @@
 					<d_y>57</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1073,8 +1073,8 @@
 					<d_y>28</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1106,8 +1106,8 @@
 					<d_y>21</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1139,8 +1139,8 @@
 					<d_y>20</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1191,8 +1191,8 @@
 					<d_y>53</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1243,8 +1243,8 @@
 					<d_y>56</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1295,8 +1295,8 @@
 					<d_y>52</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1328,8 +1328,8 @@
 					<d_y>47</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1361,8 +1361,8 @@
 					<d_y>41</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1394,8 +1394,8 @@
 					<d_y>39</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1427,8 +1427,8 @@
 					<d_y>39</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1498,8 +1498,8 @@
 					<d_y>40</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1531,8 +1531,8 @@
 					<d_y>46</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1621,8 +1621,8 @@
 					<d_y>49</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -1654,8 +1654,8 @@
 					<d_y>46</d_y>
 					<d_defending>false</d_defending>
 					<d_parked>false</d_parked>
-					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<path>
+					<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 						<d_size>0</d_size>
 						<d_x></d_x>
 						<d_y></d_y>
@@ -3116,8 +3116,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_y>24</d_y>
 				<d_defending>false</d_defending>
 				<d_parked>false</d_parked>
-				<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 				<path>
+				<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<d_size>0</d_size>
 					<d_x></d_x>
 					<d_y></d_y>
@@ -3160,8 +3160,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_y>59</d_y>
 				<d_defending>false</d_defending>
 				<d_parked>false</d_parked>
-				<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 				<path>
+				<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<d_size>0</d_size>
 					<d_x></d_x>
 					<d_y></d_y>
@@ -3204,8 +3204,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_y>82</d_y>
 				<d_defending>false</d_defending>
 				<d_parked>false</d_parked>
-				<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 				<path>
+				<d_moves_exhausted_at_point>0</d_moves_exhausted_at_point>
 					<d_size>0</d_size>
 					<d_x></d_x>
 					<d_y></d_y>
