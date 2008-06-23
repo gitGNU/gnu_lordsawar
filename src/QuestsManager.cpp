@@ -235,7 +235,7 @@ void QuestsManager::questCompleted(Uint32 heroId)
           {
             int gold = Reward_Gold::getRandomGoldPieces();
             Reward_Gold reward(gold);
-            p->giveReward(NULL, &reward);
+            p->giveReward(p->getActivestack(), &reward);
             quest_completed.emit(quest, &reward);
           }
       }
