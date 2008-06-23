@@ -32,6 +32,7 @@
 #include "../army.h"
 #include "../GameScenario.h"
 
+//give a hero some more abilities
 ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
 {
     army = a;
@@ -66,7 +67,7 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
     add_item(Army::STRENGTH, _("Strength: %1"));
 
     stat_items[0].radio->set_active(true);
-    fill_in_descriptions();
+    on_stat_toggled();
 }
 
 void ArmyGainsLevelDialog::set_parent_window(Gtk::Window &parent)
