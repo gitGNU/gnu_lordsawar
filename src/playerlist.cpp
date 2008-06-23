@@ -359,7 +359,7 @@ void Playerlist::calculateDiplomaticRankings()
       for (unsigned int j = 0; j < MAX_PLAYERS; j++)
 	{
 	  if (deplete[j] == i)
-	    titles[j][0]='\0';
+	    titles[j] = _("");
 	}
     }
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
