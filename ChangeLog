@@ -10,6 +10,8 @@
 	* Heroes now cost a little more.
 	* First hero now goes in the player's capital city when quick start
 	  is on.
+	* Now cities can only have one special army when
+	  cities-produces-allies is turned on.
 
 2008-08-22  Ben Asselstine
 
