@@ -1,6 +1,8 @@
 2008-08-23  Ben Asselstine
 
 	* fixed crash bug when some players are off.  Reported by Rob Kinyon.
+	* now showing the boots cursor when flying over water instead of the
+	  ship cursor.  Reported by Rob Kinyon.
 
 2008-08-22  Ben Asselstine
 
