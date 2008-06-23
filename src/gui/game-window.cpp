@@ -991,6 +991,7 @@ void GameWindow::on_signpost_activated()
   Gtk::Entry *e;
   xml->get_widget("message_entry", e);
   e->set_text(s->getName());
+  e->set_activates_default(true);
   dialog->show_all();
   int response = dialog->run();
 
