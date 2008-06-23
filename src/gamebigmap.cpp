@@ -483,7 +483,12 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 		      Bridgelist *bl = Bridgelist::getInstance();
 		      if (t->getMaptileType() == Tile::WATER &&
 			  bl->getObjectAt(tile) == NULL)
-			d_cursor = GraphicsCache::SHIP;
+			{
+			  if (stack->isFlying() == true)
+			    d_cursor = GraphicsCache::FEET;
+			  else
+			    d_cursor = GraphicsCache::SHIP;
+			}
 		      else
 			d_cursor = GraphicsCache::FEET;
 		    }
