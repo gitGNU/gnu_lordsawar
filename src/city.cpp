@@ -394,7 +394,8 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(0, army);
 
-  if ((rand() % 10) < 3 && !isCapital() && likely < 1 )
+  if ((rand() % 10) < 3 && !isCapital() && likely < 1 ||
+      template_army->getAwardable())
     {
       sortProduction();
       return;
@@ -413,7 +414,8 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(1, army);
 
-  if ((rand() % 10) < 4 && !isCapital() && likely < 2)
+  if ((rand() % 10) < 4 && !isCapital() && likely < 2 ||
+      template_army->getAwardable())
     {
       sortProduction();
       return;
@@ -435,7 +437,8 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(2, army);
 
-  if ((rand() % 10) < 6 && !isCapital() && likely < 3)
+  if ((rand() % 10) < 6 && !isCapital() && likely < 3 ||
+      template_army->getAwardable())
     {
       sortProduction();
       return;
