@@ -639,6 +639,7 @@ void MainWindow::on_load_map_activated()
 
 	bool broken;
 	game_scenario.reset(new GameScenario(current_save_filename, broken));
+	d_create_scenario_names.reset(new CreateScenarioRandomize());
 
 	if (broken)
 	{
