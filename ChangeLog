@@ -6,6 +6,8 @@
 	* fixed quest completion crash bug.  Reported by Rob Kinyon.
 	* fixed hero leveling bug that prevented the movement reward from
 	  being given to the hero.  Reported by Rob Kinyon.
+	* Now 8% easier for heroes to win fights in ruins.
+	* Heroes now cost a little more.
 
 2008-08-22  Ben Asselstine
 
