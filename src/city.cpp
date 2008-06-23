@@ -368,7 +368,8 @@ void City::sortProduction()
 void City::setRandomArmytypes(bool produce_allies, int likely)
 {
   //remove armies any that happen to be being produced
-  for (int i = 0; i < getMaxNoOfProductionBases(); i++)
+  int max = getMaxNoOfProductionBases();
+  for (int i = 0; i < max; i++)
     removeProductionBase(i);
 
   const Armysetlist* al = Armysetlist::getInstance();
