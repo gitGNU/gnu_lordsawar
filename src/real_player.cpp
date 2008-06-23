@@ -144,7 +144,7 @@ bool RealPlayer::maybeRecruitHero ()
 
       gold_needed = (rand() % 500) + 1000;
       if (exists == false)
-	gold_needed /= 3;
+	gold_needed /= 2;
     }
 
   if (((((rand() % 6) == 0) && (gold_needed < getGold())) 

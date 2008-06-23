@@ -1126,7 +1126,7 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
  * OddsOfFailure = BaseOdds * MonsterFactor * StackFactor * HeroFactor,
  *
  * with
- *        BaseOdds = 0.25
+ *        BaseOdds = 0.33
  * and
  *        MonsterFactor = 2, 1 or 0.5 depending on hard vs. easy
  * and
@@ -1141,7 +1141,7 @@ Fight::Result ruinfight (Stack **attacker, Stack **defender)
   Uint32 hero_strength, monster_strength;
   hero_strength = (*attacker)->getFirstHero()->getStat(Army::STRENGTH, true);
   monster_strength = (*defender)->getStrongestArmy()->getStat(Army::STRENGTH, true);
-  float base_factor = 0.25;
+  float base_factor = 0.33;
   float stack_factor = ((float)(MAX_STACK_SIZE + 1) - (*attacker)->size()) / (float)MAX_STACK_SIZE;
   float hero_factor = (10.0 - hero_strength) / 5.0;
   float monster_factor;
