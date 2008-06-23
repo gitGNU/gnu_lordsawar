@@ -1,3 +1,7 @@
+2008-08-23  Ben Asselstine
+
+	* fixed crash bug when some players are off.  Reported by Rob Kinyon.
+
 2008-08-22  Ben Asselstine
 
 	* added ability to scroll while dragging stacks for movement.
