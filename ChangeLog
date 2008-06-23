@@ -3,6 +3,9 @@
 	* fixed crash bug when some players are off.  Reported by Rob Kinyon.
 	* now showing the boots cursor when flying over water instead of the
 	  ship cursor.  Reported by Rob Kinyon.
+	* fixed quest completion crash bug.  Reported by Rob Kinyon.
+	* fixed hero leveling bug that prevented the movement reward from
+	  being given to the hero.  Reported by Rob Kinyon.
 
 2008-08-22  Ben Asselstine
 
