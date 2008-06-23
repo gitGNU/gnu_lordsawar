@@ -247,6 +247,7 @@ GamePreferencesDialog::GamePreferencesDialog(std::string filename)
   load_map_radio->set_sensitive(false);
   random_map_radio->set_sensitive(false);
   load_map_filechooser->set_sensitive(false);
+  dialog->set_title(_("New Scenario"));
 }
 
 GamePreferencesDialog::~GamePreferencesDialog()
