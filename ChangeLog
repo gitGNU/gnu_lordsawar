@@ -1,6 +1,8 @@
 2008-08-22  Ben Asselstine
 
 	* added ability to scroll while dragging stacks for movement.
+	* added initial game manual.
+	* loading scenarios now lets you set game options.
 
 2008-08-21  Ben Asselstine
 
