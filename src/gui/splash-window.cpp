@@ -145,7 +145,14 @@ void SplashWindow::on_load_scenario_clicked()
     
     std::string filename = d.get_scenario_filename();
     if (!filename.empty())
-	load_requested.emit(filename);
+      {
+	GamePreferencesDialog gp(filename);
+	gp.set_parent_window(*window.get());
+	gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
+    
+	gp.run();
+      } 
+	//load_requested.emit(filename);
 }
 
 void SplashWindow::on_game_started(GameParameters g)

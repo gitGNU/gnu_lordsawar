@@ -45,7 +45,7 @@
 
 static bool inhibit_difficulty_combobox = false;
 
-GamePreferencesDialog::GamePreferencesDialog()
+void GamePreferencesDialog::init()
 {
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/game-preferences-dialog.glade");
@@ -57,6 +57,7 @@ GamePreferencesDialog::GamePreferencesDialog()
     xml->get_widget("start_game_button", start_game_button);
     xml->get_widget("difficulty_label", difficulty_label);
     xml->get_widget("random_map_radio", random_map_radio);
+    xml->get_widget("load_map_radio", load_map_radio);
     xml->get_widget("load_map_filechooser", load_map_filechooser);
     load_map_filechooser->signal_selection_changed().connect
        (sigc::mem_fun(*this, &GamePreferencesDialog::on_map_chosen));
@@ -230,6 +231,22 @@ GamePreferencesDialog::GamePreferencesDialog()
   game_options_dialog->difficulty_option_changed.connect(
 	sigc::mem_fun(*this, 
 		      &GamePreferencesDialog::update_difficulty_rating));
+  return;
+}
+
+GamePreferencesDialog::GamePreferencesDialog()
+{
+  init();
+}
+
+GamePreferencesDialog::GamePreferencesDialog(std::string filename)
+{
+  init ();
+  load_map_radio->set_active(true);
+  load_map_filechooser->set_filename(filename);
+  load_map_radio->set_sensitive(false);
+  random_map_radio->set_sensitive(false);
+  load_map_filechooser->set_sensitive(false);
 }
 
 GamePreferencesDialog::~GamePreferencesDialog()

@@ -43,6 +43,7 @@ class GamePreferencesDialog
 {
  public:
     GamePreferencesDialog();
+    GamePreferencesDialog(std::string filename);
     ~GamePreferencesDialog();
 
     void set_parent_window(Gtk::Window &parent);
@@ -52,6 +53,7 @@ class GamePreferencesDialog
     void run();
     
  private:
+    void init();
     std::auto_ptr<Gtk::Dialog> dialog;
 
     Gtk::Button *start_game_button;
@@ -61,6 +63,7 @@ class GamePreferencesDialog
     Gtk::ComboBoxText *city_theme_combobox;
     Gtk::Label *difficulty_label;
     Gtk::RadioButton *random_map_radio;
+    Gtk::RadioButton *load_map_radio;
     Gtk::FileChooserButton *load_map_filechooser;
     Gtk::Widget *random_map_container;
     Gtk::ComboBox *map_size_combobox;
