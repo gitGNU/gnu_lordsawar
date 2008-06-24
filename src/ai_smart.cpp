@@ -210,11 +210,8 @@ int AI_Smart::chooseArmyTypeToBuy(City *c)
 
         proto=al->getArmy(getArmyset(), i);
 
-        if (proto->getStat(Army::ARMY_BONUS) & Army::SHIP)
-	{ 
-	    debug("skipping : The Army was a ship. index=" << i)   
-            continue;
-	}
+	if (proto->getProductionCost() == 0)
+	  continue;
 
         if ((int)proto->getProductionCost() > d_gold)
 	{ 
