@@ -1,3 +1,8 @@
+2008-08-24  Ben Asselstine
+
+	* preventing heroes and special units from being purchased by the
+	  smart ai player.  Reported by Rob Kinyon.
+
 2008-08-23  Ben Asselstine
 
 	* fixed crash bug when some players are off.  Reported by Rob Kinyon.
