@@ -2,6 +2,8 @@
 
 	* added movement bonus to rested army units.  Suggested by Rob Kinyon.
 	* fixed stack-deselection bug.  Reported by Rob Kinyon.
+	* fixed bug that prevented player names originating from a scenario
+	  file from showing up in the new game dialog.
 
 2008-08-24  Ben Asselstine
 
