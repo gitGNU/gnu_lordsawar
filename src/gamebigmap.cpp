@@ -287,12 +287,16 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	  //go get the final spot in the path
 	  if (stack->getPath()->empty() == false)
 	    {
-	      int ts = GameMap::getInstance()->getTileset()->getTileSize();
-	      e.pos = tile_to_buffer_pos (*stack->getPath()->back());
-	      e.pos.x -= ts/2;
-	      e.pos.y -= ts/2;
+	      //check if we dropped on the same tile that the stack lives on.
+	      if (mouse_pos_to_tile(e.pos) != stack->getPos())
+		{
+		  int ts = GameMap::getInstance()->getTileset()->getTileSize();
+		  e.pos = tile_to_buffer_pos (*stack->getPath()->back());
+		  e.pos.x -= ts/2;
+		  e.pos.y -= ts/2;
+		  mouse_button_event(e);
+		}
 	    }
-	  mouse_button_event(e);
 	}
       else
 	mouse_state = NONE;
@@ -449,33 +453,33 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	      Maptile *t = GameMap::getInstance()->getTile(tile);
 	      Stack *st = Stacklist::getObjectAt(tile);
 	      if (st && st->getOwner() != Playerlist::getActiveplayer())
-	        {
-	          int delta = abs(stack->getPos().x - st->getPos().x);
-	          if (delta <= 1)
-	            delta = abs(stack->getPos().y - st->getPos().y);
-	          if (delta <= 1)
-	            {
-	              if (is_shift_key_down())
-	        	    d_cursor = GraphicsCache::QUESTION;
-	              else
-	                {
-	                  Player *me = stack->getOwner();
-	                  Player *them = st->getOwner();
-	                  bool friendly = (me->getDiplomaticState(them) == 
-	            		       Player::AT_PEACE);
-	                  if (friendly)
-	            	d_cursor = GraphicsCache::HEART;
-	                  else
-	            	d_cursor = GraphicsCache::SWORD;
-	                }
-	            }
-	          else
-	            d_cursor = GraphicsCache::HAND;
-	        }
-              else
 		{
-                  Path path;
-                  int moves = path.calculate(stack, tile);
+		  int delta = abs(stack->getPos().x - st->getPos().x);
+		  if (delta <= 1)
+		    delta = abs(stack->getPos().y - st->getPos().y);
+		  if (delta <= 1)
+		    {
+		      if (is_shift_key_down())
+			d_cursor = GraphicsCache::QUESTION;
+		      else
+			{
+			  Player *me = stack->getOwner();
+			  Player *them = st->getOwner();
+			  bool friendly = (me->getDiplomaticState(them) == 
+					   Player::AT_PEACE);
+			  if (friendly)
+			    d_cursor = GraphicsCache::HEART;
+			  else
+			    d_cursor = GraphicsCache::SWORD;
+			}
+		    }
+		  else
+		    d_cursor = GraphicsCache::HAND;
+		}
+	      else
+		{
+		  Path path;
+		  int moves = path.calculate(stack, tile);
 		  if (moves == 0)
 		    d_cursor = GraphicsCache::HAND;
 		  else
@@ -558,7 +562,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       mouse_state = DRAGGING_STACK;
     }
   else if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
-      && (mouse_state == NONE || mouse_state == DRAGGING_MAP) && !stack)
+	   && (mouse_state == NONE || mouse_state == DRAGGING_MAP) && !stack)
     {
       Vector<int> delta = -(e.pos - prev_mouse_pos);
 
