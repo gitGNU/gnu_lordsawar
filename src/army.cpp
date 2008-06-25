@@ -44,6 +44,7 @@ Army::Army(const Army& a, Player* p, bool for_template)
      d_max_hp(a.d_max_hp),
      d_max_moves(a.d_max_moves), 
      d_max_moves_multiplier(a.d_max_moves_multiplier),
+     d_max_moves_rest_bonus(a.d_max_moves_rest_bonus),
      d_sight(a.d_sight),
      d_xp_value(a.d_xp_value), d_move_bonus(a.d_move_bonus),
      d_army_bonus(a.d_army_bonus), d_ship(a.d_ship), d_gender(a.d_gender), 
@@ -62,6 +63,7 @@ Army::Army(const Army& a, Player* p, bool for_template)
         d_hp = d_max_hp;
         d_moves = d_max_moves;
 	d_max_moves_multiplier = 1;
+	d_max_moves_rest_bonus = 0;
     }
         
     for(int i=0;i<3;i++)
@@ -73,7 +75,8 @@ Army::Army(const Army& a, Player* p, bool for_template)
 Army::Army()
   :Ownable((Player *)0), d_pixmap(0), d_mask(0), d_name("Untitled"), d_description(""),
     d_production(0), d_production_cost(0), d_upkeep(0), d_strength(0),
-    d_max_hp(0), d_max_moves(0), d_max_moves_multiplier(1), d_sight(0), 
+    d_max_hp(0), d_max_moves(0), d_max_moves_multiplier(1), 
+    d_max_moves_rest_bonus(0), d_sight(0), 
     d_gender(NONE), d_level(1), d_defends_ruins(false), d_awardable(false), 
     d_hero(false), d_image("")
 {
@@ -92,6 +95,7 @@ Army::Army(XML_Helper* helper, enum ArmyContents contents)
     helper->getData(d_sight, "sight");
     helper->getData(d_max_moves, "max_moves");
     d_max_moves_multiplier = 1;
+    d_max_moves_rest_bonus = 0;
     helper->getData(d_xp_value,"expvalue");
     
     // now if we are a prototype, we have to load different data than
@@ -187,15 +191,18 @@ void Army::setStat(Army::Stat stat, Uint32 value)
 {
     switch (stat)
     {
-        case STRENGTH:  d_strength = value;
+        case STRENGTH:  
+	  d_strength = value;
                         if (d_strength > 9)
                           d_strength = 9;
                         break;
-        case HP:        d_max_hp = value;
+        case HP:        
+			d_max_hp = value;
                         if (d_hp > d_max_hp)
                             d_hp = value;
                         break;
-        case MOVES:     d_max_moves = value;
+        case MOVES:     
+			d_max_moves = value;
                         if (d_moves > d_max_moves)
                             d_moves = value;
                         break;
@@ -241,7 +248,7 @@ Uint32 Army::getStat(Stat stat, bool modified) const
         case MOVES:
 	{
 	  if (modified)
-            return d_max_moves * d_max_moves_multiplier;
+            return (d_max_moves + d_max_moves_rest_bonus) * d_max_moves_multiplier;
 	  else
             return d_max_moves;
 	}
@@ -263,6 +270,13 @@ Uint32 Army::getStat(Stat stat, bool modified) const
 
 void Army::resetMoves()
 {
+  switch (d_moves)
+    {
+    case 0: d_max_moves_rest_bonus = 0; break;
+    case 1: d_max_moves_rest_bonus = 1; break;
+    case 2: d_max_moves_rest_bonus = 2; break;
+    default: d_max_moves_rest_bonus = 2; break;
+    }
   if (d_ship)
     d_moves = MAX_BOAT_MOVES;
   else
@@ -495,6 +509,8 @@ void  Army::printAllDebugInfo() const
     std::cerr << "max_moves = " << d_max_moves << std::endl;
     std::cerr << "max_moves_multiplier = " 
       << d_max_moves_multiplier << std::endl;
+    std::cerr << "max_moves_rest_bonus = " 
+      << d_max_moves_rest_bonus << std::endl;
     std::cerr << "upkeep = " << d_upkeep << std::endl;
     std::cerr << "defends_ruins = " << d_defends_ruins << std::endl;
     std::cerr << "awardable = " << d_awardable << std::endl;

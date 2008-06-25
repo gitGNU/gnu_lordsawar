@@ -615,6 +615,18 @@ class Army : public Ownable, public sigc::trackable
 	 */
 	Uint32 d_max_moves_multiplier;
 
+	//! Movement point bonus due to resting.
+	/**
+	 * When an army unit doesn't use all of it's movement points in a
+	 * turn, some of those points get held-over until the following turn.
+	 * If a unit has 3 movement points remaining, the bonus is 2.  If the
+	 * unit has 2 movement points remaining, the bonus is 2.  If the unit
+	 * has 1 movement point remaining, the bonus is 1.
+	 *
+	 * This value is a number between 0 and 2.
+	 */
+	Uint32 d_max_moves_rest_bonus;
+
 	//! How far the Army unit can see on a hidden map.
 	/**
 	 * When a stack is moving on a hidden map, a certain number of
