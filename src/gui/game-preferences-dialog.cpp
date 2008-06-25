@@ -352,7 +352,7 @@ void GamePreferencesDialog::on_random_map_toggled()
 		(*c)->set_sensitive(true);
 		(*c)->set_active((*i).type);
 		(*e)->set_sensitive(true);
-		(*e)->set_name((*i).name);
+		(*e)->set_text((*i).name);
 	      }
 	  }
 	else
@@ -815,4 +815,3 @@ bool GamePreferencesDialog::scan_players(std::string tag, XML_Helper* helper)
 
     return true;
 }
-
