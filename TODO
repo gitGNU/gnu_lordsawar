@@ -24,8 +24,3 @@ fight bug:
 
 check to see what happens when i pass a larger attacker/defender list of stacks to fight.  it only seems to use 1!
 ---
-movement bonuses
-0 left over, 0 extra next turn
-1 left over, 1 extra next turn
-2 left over, 2 extra next turn
-3 left over, 2 extra next turn
