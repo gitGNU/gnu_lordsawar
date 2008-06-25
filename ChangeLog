@@ -4,6 +4,7 @@
 	* fixed stack-deselection bug.  Reported by Rob Kinyon.
 	* fixed bug that prevented player names originating from a scenario
 	  file from showing up in the new game dialog.
+	* the quick start option now works with non-random maps.
 
 2008-08-24  Ben Asselstine
 
