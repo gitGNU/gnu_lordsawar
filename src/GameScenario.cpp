@@ -56,6 +56,7 @@
 #include "string_tokenizer.h"
 #include "player.h"
 #include "vectoredunitlist.h"
+#include "history.h"
 #include "xmlhelper.h"
 
 using namespace std;
@@ -106,6 +107,103 @@ GameScenario::GameScenario(XML_Helper &helper, bool& broken)
   broken = loadWithHelper(helper);
 }
 
+void GameScenario::quickStart()
+{
+  Playerlist *plist = Playerlist::getInstance();
+  Citylist *clist = Citylist::getInstance();
+  Vector <int> pos;
+  // no neutral cities
+  // divvy up the neutral cities among other non-neutral players
+  int cities_left = clist->size() - plist->size() + 1;
+  unsigned int citycount[MAX_PLAYERS];
+  memset (citycount, 0, sizeof (citycount));
+  Playerlist::iterator pit = plist->begin();
+
+  while (cities_left > 0)
+    {
+      if (*pit != plist->getNeutral())
+	{
+	  citycount[(*pit)->getId()]++;
+	  cities_left--;
+	}
+
+      pit++;
+      if (pit == plist->end())
+	pit = plist->begin();
+    }
+
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+      for (unsigned int j = 0; j < citycount[i]; j++)
+	{
+	  Player *p = plist->getPlayer(i);
+	  if (!p)
+	    continue;
+	  if (p == plist->getNeutral())
+	    continue;
+	  pos = clist->getFirstCity(p)->getPos();
+	  City *c = clist->getNearestNeutralCity(pos);
+	  c->conquer(p);
+	  History_CityWon *item = new History_CityWon();
+	  item->fillData(c);
+	  p->getHistorylist()->push_back(item);
+	}
+    }
+}
+
+bool GameScenario::setupCities(bool quick_start)
+{
+  debug("GameScenario::setupCities")
+
+  for (Citylist::iterator it = Citylist::getInstance()->begin();
+       it != Citylist::getInstance()->end(); it++)
+    {
+      if ((*it).isCapital() == true)
+	{
+	  History_CityWon *item = new History_CityWon();
+	  item->fillData(&*it);
+	  (*it).getCapitalOwner()->getHistorylist()->push_back(item);
+	}
+    }
+
+  if (quick_start)
+    quickStart();
+
+  for (Citylist::iterator it = Citylist::getInstance()->begin();
+       it != Citylist::getInstance()->end(); it++)
+    {
+      if ((*it).getOwner() == Playerlist::getInstance()->getNeutral())
+	{
+	  switch (GameScenario::s_neutral_cities)
+	    {
+	    case GameParameters::AVERAGE:
+	      (*it).produceScout();
+	      break;
+	    case GameParameters::STRONG:
+	      (*it).produceStrongestProductionBase();
+	      break;
+	    case GameParameters::ACTIVE:
+	      if (rand () % 100 >  20)
+		(*it).produceStrongestProductionBase();
+	      else
+		(*it).produceWeakestProductionBase();
+	      break;
+	    }
+	  (*it).setActiveProductionSlot(-1);
+	}
+      else
+	{
+	  if ((*it).isCapital())
+	    (*it).produceStrongestProductionBase();
+
+	  (*it).setActiveProductionSlot(0);
+	}
+
+    }
+
+  return true;
+}
+
 bool GameScenario::loadWithHelper(XML_Helper& helper)
 {
   Armysetlist::getInstance();
@@ -135,7 +233,7 @@ bool GameScenario::loadWithHelper(XML_Helper& helper)
 
   if (!helper.parse())
     broken = true;
-    
+
   GameMap::getInstance()->calculateBlockedAvenues();
 
   return broken;
@@ -144,295 +242,295 @@ bool GameScenario::loadWithHelper(XML_Helper& helper)
 
 GameScenario::~GameScenario()
 {
-    // GameMap is a Singleton so we need a function to delete it
-    GameMap::deleteInstance();
-    Itemlist::deleteInstance();
-    Playerlist::deleteInstance();
-    Citylist::deleteInstance();
-    Templelist::deleteInstance();
-    Ruinlist::deleteInstance();
-    Rewardlist::deleteInstance();
-    Signpostlist::deleteInstance();
-    Portlist::deleteInstance();
-    Bridgelist::deleteInstance();
-    Roadlist::deleteInstance();
-    QuestsManager::deleteInstance();
-    VectoredUnitlist::deleteInstance();
+  // GameMap is a Singleton so we need a function to delete it
+  GameMap::deleteInstance();
+  Itemlist::deleteInstance();
+  Playerlist::deleteInstance();
+  Citylist::deleteInstance();
+  Templelist::deleteInstance();
+  Ruinlist::deleteInstance();
+  Rewardlist::deleteInstance();
+  Signpostlist::deleteInstance();
+  Portlist::deleteInstance();
+  Bridgelist::deleteInstance();
+  Roadlist::deleteInstance();
+  QuestsManager::deleteInstance();
+  VectoredUnitlist::deleteInstance();
 
-    if (fl_counter)
+  if (fl_counter)
     {
-        delete fl_counter;
-        fl_counter = 0;
+      delete fl_counter;
+      fl_counter = 0;
     }
 } 
 
 std::string GameScenario::getName(bool translate) const
 {
-    if (translate)
-        return __(d_name);
+  if (translate)
+    return __(d_name);
 
-    return d_name;
+  return d_name;
 }
 
 std::string GameScenario::getComment(bool translate) const
 {
-    if (translate)
-        return __(d_comment);
+  if (translate)
+    return __(d_comment);
 
-    return d_comment;
+  return d_comment;
 }
 
 void GameScenario::nextRound()
 {
-    d_round++;
+  d_round++;
 
-    char filename[1024];
-    if (Configuration::s_autosave_policy == 2)
-      snprintf(filename,sizeof(filename), "autosave-%03d.sav", d_round - 1);
-    else if (Configuration::s_autosave_policy == 1)
-      snprintf(filename,sizeof(filename), "autosave.sav");
-    else
+  char filename[1024];
+  if (Configuration::s_autosave_policy == 2)
+    snprintf(filename,sizeof(filename), "autosave-%03d.sav", d_round - 1);
+  else if (Configuration::s_autosave_policy == 1)
+    snprintf(filename,sizeof(filename), "autosave.sav");
+  else
+    return;
+  // autosave to the file "autosave.sav". This is crude, but should work
+  //
+  // As a more enhanced version: autosave to a temporary file, then rename
+  // the file. Avoids screwing up the autosave if something goes wrong
+  // (and we have a savefile for debugging)
+  if (!saveGame(File::getSavePath() + "tmp.sav"))
+    {
+      std::cerr<<_("Autosave failed.\n");
       return;
-    // autosave to the file "autosave.sav". This is crude, but should work
-    //
-    // As a more enhanced version: autosave to a temporary file, then rename
-    // the file. Avoids screwing up the autosave if something goes wrong
-    // (and we have a savefile for debugging)
-    if (!saveGame(File::getSavePath() + "tmp.sav"))
-    {
-        std::cerr<<_("Autosave failed.\n");
-        return;
     }
-    if (rename(std::string(File::getSavePath() + "tmp.sav").c_str(),
-               std::string(File::getSavePath() + filename).c_str()))
+  if (rename(std::string(File::getSavePath() + "tmp.sav").c_str(),
+	     std::string(File::getSavePath() + filename).c_str()))
     {
-        char* err = strerror(errno);
-        std::cerr <<_("Error while trying to rename the temporary file to autosave.sav\n");
-        std::cerr <<_("Error: ") <<err <<std::endl;
+      char* err = strerror(errno);
+      std::cerr <<_("Error while trying to rename the temporary file to autosave.sav\n");
+      std::cerr <<_("Error: ") <<err <<std::endl;
     }
 }
 
 bool GameScenario::saveGame(string filename, string extension) const
 {
-    bool retval = true;
-    string goodfilename=filename;
-    
-    stringTokenizer * strtoken= new stringTokenizer(filename,"/.\\ ");
-       
-    if (strtoken->getLastToken() == extension)
+  bool retval = true;
+  string goodfilename=filename;
+
+  stringTokenizer * strtoken= new stringTokenizer(filename,"/.\\ ");
+
+  if (strtoken->getLastToken() == extension)
     {
-        debug(_("The Filename is well formed"))
-        std::cerr <<"";  //dummy call if debug statement is commented out
+      debug(_("The Filename is well formed"))
+	std::cerr <<"";  //dummy call if debug statement is commented out
     }
-    else 
+  else 
     {
-        debug(_("The Filename lacks the extension --> ") << strtoken->getLastToken())
-        goodfilename += "." + extension;
+      debug(_("The Filename lacks the extension --> ") << strtoken->getLastToken())
+	goodfilename += "." + extension;
     }
 
-    delete strtoken;
+  delete strtoken;
 
-    XML_Helper helper(goodfilename, ios::out, Configuration::s_zipfiles);
-    retval &= saveWithHelper(helper);
-    helper.close();
+  XML_Helper helper(goodfilename, ios::out, Configuration::s_zipfiles);
+  retval &= saveWithHelper(helper);
+  helper.close();
 
-    if (retval)
-        return true;
-        
-    std::cerr <<_("GameScenario: Something went wrong with saving.\n");
-    return false;
+  if (retval)
+    return true;
+
+  std::cerr <<_("GameScenario: Something went wrong with saving.\n");
+  return false;
 }
 
 bool GameScenario::saveWithHelper(XML_Helper &helper) const
 {
-    bool retval = true;
-    
-    //start writing
-    retval &= helper.begin(LORDSAWAR_SAVEGAME_VERSION);
-    retval &= helper.openTag("lordsawar");
-    
-    //if retval is still true it propably doesn't change throughout the rest
-    //now save the single object's data
-    retval &= fl_counter->save(&helper);
-    retval &= Itemlist::getInstance()->save(&helper);
-    retval &= Playerlist::getInstance()->save(&helper);
-    retval &= GameMap::getInstance()->save(&helper);
-    retval &= Citylist::getInstance()->save(&helper);
-    retval &= Templelist::getInstance()->save(&helper);
-    retval &= Ruinlist::getInstance()->save(&helper);
-    retval &= Rewardlist::getInstance()->save(&helper);
-    retval &= Signpostlist::getInstance()->save(&helper);
-    retval &= Roadlist::getInstance()->save(&helper);
-    retval &= Portlist::getInstance()->save(&helper);
-    retval &= Bridgelist::getInstance()->save(&helper);
-    retval &= QuestsManager::getInstance()->save(&helper);
-    retval &= VectoredUnitlist::getInstance()->save(&helper);
+  bool retval = true;
 
-    //save the private GameScenario data last due to dependencies
-    retval &= helper.openTag("scenario");
-    retval &= helper.saveData("name", d_name);
-    retval &= helper.saveData("comment", d_comment);
-    retval &= helper.saveData("turn", d_round);
-    retval &= helper.saveData("turnmode", d_turnmode);
-    retval &= helper.saveData("view_enemies", s_see_opponents_stacks);
-    retval &= helper.saveData("view_production", s_see_opponents_production);
-    retval &= helper.saveData("quests", s_play_with_quests);
-    retval &= helper.saveData("hidden_map", s_hidden_map);
-    retval &= helper.saveData("diplomacy", s_diplomacy);
-    retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
-    retval &= helper.saveData("neutral_cities", (int) s_neutral_cities);
-    retval &= helper.saveData("razing_cities", (int) s_razing_cities);
-    retval &= helper.saveData("intense_combat", s_intense_combat);
-    retval &= helper.saveData("military_advisor", s_military_advisor);
-    retval &= helper.saveData("random_turns", s_random_turns);
-    retval &= helper.saveData("surrender_already_offered", 
-			      s_surrender_already_offered);
-    
-    retval &= helper.closeTag();
-    
-    retval &= helper.closeTag();
-    
-    return retval;
+  //start writing
+  retval &= helper.begin(LORDSAWAR_SAVEGAME_VERSION);
+  retval &= helper.openTag("lordsawar");
+
+  //if retval is still true it propably doesn't change throughout the rest
+  //now save the single object's data
+  retval &= fl_counter->save(&helper);
+  retval &= Itemlist::getInstance()->save(&helper);
+  retval &= Playerlist::getInstance()->save(&helper);
+  retval &= GameMap::getInstance()->save(&helper);
+  retval &= Citylist::getInstance()->save(&helper);
+  retval &= Templelist::getInstance()->save(&helper);
+  retval &= Ruinlist::getInstance()->save(&helper);
+  retval &= Rewardlist::getInstance()->save(&helper);
+  retval &= Signpostlist::getInstance()->save(&helper);
+  retval &= Roadlist::getInstance()->save(&helper);
+  retval &= Portlist::getInstance()->save(&helper);
+  retval &= Bridgelist::getInstance()->save(&helper);
+  retval &= QuestsManager::getInstance()->save(&helper);
+  retval &= VectoredUnitlist::getInstance()->save(&helper);
+
+  //save the private GameScenario data last due to dependencies
+  retval &= helper.openTag("scenario");
+  retval &= helper.saveData("name", d_name);
+  retval &= helper.saveData("comment", d_comment);
+  retval &= helper.saveData("turn", d_round);
+  retval &= helper.saveData("turnmode", d_turnmode);
+  retval &= helper.saveData("view_enemies", s_see_opponents_stacks);
+  retval &= helper.saveData("view_production", s_see_opponents_production);
+  retval &= helper.saveData("quests", s_play_with_quests);
+  retval &= helper.saveData("hidden_map", s_hidden_map);
+  retval &= helper.saveData("diplomacy", s_diplomacy);
+  retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
+  retval &= helper.saveData("neutral_cities", (int) s_neutral_cities);
+  retval &= helper.saveData("razing_cities", (int) s_razing_cities);
+  retval &= helper.saveData("intense_combat", s_intense_combat);
+  retval &= helper.saveData("military_advisor", s_military_advisor);
+  retval &= helper.saveData("random_turns", s_random_turns);
+  retval &= helper.saveData("surrender_already_offered", 
+			    s_surrender_already_offered);
+
+  retval &= helper.closeTag();
+
+  retval &= helper.closeTag();
+
+  return retval;
 }
 
 bool GameScenario::load(std::string tag, XML_Helper* helper)
 {
-    if (tag == "scenario")
+  if (tag == "scenario")
     {
-        if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
-        {
-            cerr <<_("savefile has wrong version, we want ");
-            std::cerr <<LORDSAWAR_SAVEGAME_VERSION <<",\n";
-            cerr <<_("savefile offers ") <<helper->getVersion() <<".\n";
-            return false;
-        }
-    
-        debug("loading scenario")
-        helper->getData(d_round, "turn");
-        helper->getData(d_turnmode, "turnmode");
-        helper->getData(d_name, "name");
-        helper->getData(d_comment, "comment");
-        helper->getData(s_see_opponents_stacks, "view_enemies");
-        helper->getData(s_see_opponents_production, "view_production");
-        helper->getData(s_play_with_quests, "quests");
-        helper->getData(s_hidden_map, "hidden_map");
-        helper->getData(s_diplomacy, "diplomacy");
-        helper->getData(s_cusp_of_war, "cusp_of_war");
-        int val = -1;
-        helper->getData(val, "neutral_cities");
-        s_neutral_cities = GameParameters::NeutralCities (val);
-        val = -1;
-        helper->getData(val, "razing_cities");
-        s_razing_cities = GameParameters::RazingCities (val);
-        helper->getData(s_intense_combat, "intense_combat");
-        helper->getData(s_military_advisor, "military_advisor");
-        helper->getData(s_random_turns, "random_turns");
-        helper->getData(s_surrender_already_offered, 
-			"surrender_already_offered");
+      if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
+	{
+	  cerr <<_("savefile has wrong version, we want ");
+	  std::cerr <<LORDSAWAR_SAVEGAME_VERSION <<",\n";
+	  cerr <<_("savefile offers ") <<helper->getVersion() <<".\n";
+	  return false;
+	}
 
-        return true;
+      debug("loading scenario")
+	helper->getData(d_round, "turn");
+      helper->getData(d_turnmode, "turnmode");
+      helper->getData(d_name, "name");
+      helper->getData(d_comment, "comment");
+      helper->getData(s_see_opponents_stacks, "view_enemies");
+      helper->getData(s_see_opponents_production, "view_production");
+      helper->getData(s_play_with_quests, "quests");
+      helper->getData(s_hidden_map, "hidden_map");
+      helper->getData(s_diplomacy, "diplomacy");
+      helper->getData(s_cusp_of_war, "cusp_of_war");
+      int val = -1;
+      helper->getData(val, "neutral_cities");
+      s_neutral_cities = GameParameters::NeutralCities (val);
+      val = -1;
+      helper->getData(val, "razing_cities");
+      s_razing_cities = GameParameters::RazingCities (val);
+      helper->getData(s_intense_combat, "intense_combat");
+      helper->getData(s_military_advisor, "military_advisor");
+      helper->getData(s_random_turns, "random_turns");
+      helper->getData(s_surrender_already_offered, 
+		      "surrender_already_offered");
+
+      return true;
     }
 
-    if (tag == "counter")
+  if (tag == "counter")
     {
-        debug("loading counter")
-        fl_counter = new FL_Counter(helper);
-        return true;
+      debug("loading counter")
+	fl_counter = new FL_Counter(helper);
+      return true;
     }
 
-    if (tag == "itemlist")
+  if (tag == "itemlist")
     {
-        debug("loading items");
-        Itemlist::getInstance(helper);
-        return true;
+      debug("loading items");
+      Itemlist::getInstance(helper);
+      return true;
     }
 
-    if (tag == "playerlist")
+  if (tag == "playerlist")
     {
-        debug("loading players");
-        Playerlist::getInstance(helper);
-        return true;
+      debug("loading players");
+      Playerlist::getInstance(helper);
+      return true;
     }
 
-    if (tag == "map")
+  if (tag == "map")
     {
-        debug("loading map")
-        GameMap::getInstance(helper);
-        return true;
+      debug("loading map")
+	GameMap::getInstance(helper);
+      return true;
     }
 
-    if (tag == "citylist")
+  if (tag == "citylist")
     {
-        debug("loading cities")
+      debug("loading cities")
 
-        Citylist::getInstance(helper);
-        return true;
+	Citylist::getInstance(helper);
+      return true;
     }
 
-    if (tag == "templelist")
+  if (tag == "templelist")
     {
-        debug("loading temples")
-        Templelist::getInstance(helper);
-        return true;
+      debug("loading temples")
+	Templelist::getInstance(helper);
+      return true;
     }
 
-    if (tag == "ruinlist")
+  if (tag == "ruinlist")
     {
-        debug("loading ruins")
-        Ruinlist::getInstance(helper);
-        return true;
+      debug("loading ruins")
+	Ruinlist::getInstance(helper);
+      return true;
     }
 
-    if (tag == "rewardlist")
+  if (tag == "rewardlist")
     {
-        debug("loading rewards")
-        Rewardlist::getInstance(helper);
-        return true;
+      debug("loading rewards")
+	Rewardlist::getInstance(helper);
+      return true;
     }
 
-    if (tag == "signpostlist")
+  if (tag == "signpostlist")
     {
-        debug("loading signposts")
-            Signpostlist::getInstance(helper);
-        return true;
+      debug("loading signposts")
+	Signpostlist::getInstance(helper);
+      return true;
     }
 
-    if (tag == "roadlist")
+  if (tag == "roadlist")
     {
-        debug("loading roads")
-        Roadlist::getInstance(helper);
-        return true;
+      debug("loading roads")
+	Roadlist::getInstance(helper);
+      return true;
     }
 
-    if (tag == "questlist")
+  if (tag == "questlist")
     {
-        debug("loading quests")
-        QuestsManager::getInstance(helper);
-        return true;
+      debug("loading quests")
+	QuestsManager::getInstance(helper);
+      return true;
     }
 
-    if (tag == "vectoredunitlist")
+  if (tag == "vectoredunitlist")
     {
-        debug("loading vectored units")
-        VectoredUnitlist::getInstance(helper);
-        return true;
+      debug("loading vectored units")
+	VectoredUnitlist::getInstance(helper);
+      return true;
     }
 
-    if (tag == "portlist")
+  if (tag == "portlist")
     {
-        debug("loading ports")
-        Portlist::getInstance(helper);
-        return true;
+      debug("loading ports")
+	Portlist::getInstance(helper);
+      return true;
     }
 
-    if (tag == "bridgelist")
+  if (tag == "bridgelist")
     {
-        debug("loading bridges")
-        Bridgelist::getInstance(helper);
-        return true;
+      debug("loading bridges")
+	Bridgelist::getInstance(helper);
+      return true;
     }
 
-    return false;
+  return false;
 }
 
 int GameScenario::calculate_difficulty_rating(GameParameters g)
@@ -465,9 +563,9 @@ int GameScenario::calculate_difficulty_rating(GameParameters g)
       else if ((*i).type == GameParameters::Player::EASY)
 	total_difficulty += player_difficulty;
       //FIXME: when the hard player gets better, switch this.
-	//total_difficulty += (player_difficulty * 0.325);
+      //total_difficulty += (player_difficulty * 0.325);
       //else if ((*i).type == GameParameters::Player::EASIER)
-	//total_difficulty += (player_difficulty * 0.655);
+      //total_difficulty += (player_difficulty * 0.655);
     }
   if (g.diplomacy)
     total_difficulty += (float) 3.0;

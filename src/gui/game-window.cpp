@@ -439,7 +439,7 @@ void GameWindow::new_game(GameParameters g)
 	g.map_path = path;
     }
 
-    bool success = setup_game(g.map_path);
+    bool success = setup_game(g.map_path, g.quick_start);
     if (!success)
       return;
     setup_signals();
@@ -451,7 +451,7 @@ void GameWindow::new_game(GameParameters g)
 void GameWindow::load_game(std::string file_path)
 {
     current_save_filename = file_path;
-    bool success = setup_game(file_path);
+    bool success = setup_game(file_path, false);
     if (!success)
       return;
     setup_signals();
@@ -735,12 +735,14 @@ void GameWindow::update_diplomacy_button (bool sensitive)
   diplomacy_button->set_sensitive(sensitive);
 }
 
-bool GameWindow::setup_game(std::string file_path)
+bool GameWindow::setup_game(std::string file_path, bool quick_start)
 {
   stop_game();
 
   bool broken = false;
   GameScenario* game_scenario = new GameScenario(file_path, broken);
+
+  game_scenario->setupCities(quick_start);
 
   if (broken)
   {

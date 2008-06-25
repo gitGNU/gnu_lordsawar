@@ -95,6 +95,8 @@ class GameScenario: public sigc::trackable
 
         bool loadWithHelper(XML_Helper &helper);
         bool saveWithHelper(XML_Helper &helper) const;
+
+	bool setupCities(bool quick_start);
         
         static bool s_see_opponents_stacks;
         static bool s_see_opponents_production;
@@ -120,6 +122,7 @@ class GameScenario: public sigc::trackable
           * @return true if all went well, false otherwise.
           */
         bool load(std::string tag, XML_Helper* helper);
+	void quickStart();
 
         // DATA
         unsigned int d_round;

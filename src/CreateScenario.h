@@ -176,8 +176,10 @@ class CreateScenario : public CreateScenarioRandomize
         bool distributePlayers();
 
         //! Setup city names and production
-        bool setupCities(bool quick_start, bool cities_can_produce_allies,
+        bool setupCities(bool cities_can_produce_allies, 
 			 int number_of_armies_factor);
+
+        bool setupCities2(bool quick_start);
 
         //! Setup temple names
         bool setupTemples();

@@ -329,8 +329,7 @@ bool CreateScenario::create(const GameParameters &g)
 
     int number_of_armies_factor;
     getCityDifficulty(g.difficulty, &number_of_armies_factor);
-    if (!setupCities(g.quick_start, g.cities_can_produce_allies,
-		     number_of_armies_factor))
+    if (!setupCities(g.cities_can_produce_allies, number_of_armies_factor))
         return false;
 
     if (!setupTemples())
@@ -474,14 +473,10 @@ bool CreateScenario::distributePlayers()
     return true;
 }
 
-bool CreateScenario::setupCities(bool quick_start, 
-				 bool cities_can_produce_allies,
+bool CreateScenario::setupCities(bool cities_can_produce_allies,
 				 int number_of_armies_factor)
 {
     debug("CreateScenario::setupCities")
-
-    if (quick_start)
-      quickStart();
 
     for (Citylist::iterator it = Citylist::getInstance()->begin();
         it != Citylist::getInstance()->end(); it++)
@@ -494,34 +489,6 @@ bool CreateScenario::setupCities(bool quick_start,
         //3. set the city production
         (*it).setRandomArmytypes(cities_can_produce_allies, 
 				 number_of_armies_factor);
-        if ((*it).getOwner() == Playerlist::getInstance()->getNeutral())
-        {
-            switch (GameScenario::s_neutral_cities)
-              {
-              case GameParameters::AVERAGE:
-                (*it).produceScout();
-                break;
-              case GameParameters::STRONG:
-                (*it).produceStrongestProductionBase();
-                break;
-              case GameParameters::ACTIVE:
-                if (rand () % 100 >  20)
-                  (*it).produceStrongestProductionBase();
-                else
-                  (*it).produceWeakestProductionBase();
-                break;
-              }
-            (*it).setActiveProductionSlot(-1);
-        }
-        else
-        {
-          if ((*it).isCapital())
-            (*it).produceStrongestProductionBase();
-          else
-            (*it).produceWeakestProductionBase();
-
-            (*it).setActiveProductionSlot(0);
-        }
 
 	if (rand() % 2 == 0)
 	  (*it).raiseDefense();
@@ -777,40 +744,6 @@ bool CreateScenario::setupItemRewards()
   return true;
 }
 
-void CreateScenario::quickStart()
-{
-  Playerlist *plist = Playerlist::getInstance();
-  Citylist *clist = Citylist::getInstance();
-  Vector <int> pos;
-  // no neutral cities
-  // divvy up the neutral cities among other non-neutral players
-  int cities_left = clist->size() - plist->size() + 1;
-  unsigned int citycount[MAX_PLAYERS];
-  memset (citycount, 0, sizeof (citycount));
-  Playerlist::iterator pit = plist->begin();
-  for (; pit != plist->end(); pit++)
-    {
-      if (*pit == plist->getNeutral())
-	pit = plist->begin();
-      citycount[(*pit)->getId()]++;
-      cities_left--;
-      if (cities_left == 0)
-	break;
-    }
-  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
-    {
-      for (unsigned int j = 0; j < citycount[i]; j++)
-	{
-	  Player *p = plist->getPlayer(i);
-	  pos = clist->getFirstCity(p)->getPos();
-	  City *c = clist->getNearestNeutralCity(pos);
-	  c->conquer(p);
-	  History_CityWon *item = new History_CityWon();
-	  item->fillData(c);
-	  p->getHistorylist()->push_back(item);
-	}
-    }
-}
 void CreateScenario::getRuinDifficulty (int difficulty, int *sage_factor, 
 					int *no_guardian_factor, 
 					int *stronghold_factor)
