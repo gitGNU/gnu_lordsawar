@@ -1,3 +1,9 @@
+2008-08-26  Ben Asselstine
+
+	* fixed movement bug where an army could not move over a prefered
+	  terrain tile type, even though it had enough movement points.
+	  Reported by Rob Kinyon.
+
 2008-08-25  Ben Asselstine
 
 	* added movement bonus to rested army units.  Suggested by Rob Kinyon.
