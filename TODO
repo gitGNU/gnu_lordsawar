@@ -24,3 +24,6 @@ fight bug:
 
 check to see what happens when i pass a larger attacker/defender list of stacks to fight.  it only seems to use 1!
 ---
+starting a new scenario can't have quick start
+starting a new scenario can't auto-set the production
+what else?
