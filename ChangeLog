@@ -3,6 +3,7 @@
 	* fixed movement bug where an army could not move over a prefered
 	  terrain tile type, even though it had enough movement points.
 	  Reported by Rob Kinyon.
+	* made the bag of stuff a little bit bigger.  Suggested by Rob Kinyon.
 
 2008-08-25  Ben Asselstine
 
