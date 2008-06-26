@@ -1126,7 +1126,7 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
  * OddsOfFailure = BaseOdds * MonsterFactor * StackFactor * HeroFactor,
  *
  * with
- *        BaseOdds = 0.33
+ *        BaseOdds = 0.10
  * and
  *        MonsterFactor = 2, 1 or 0.5 depending on hard vs. easy
  * and
