@@ -628,9 +628,9 @@ void BigMap::draw_buffer()
                 else
                 {
 		    SDL_Rect r;
-		    r.x = p.x+(tilesize-15);
-		    r.y = p.y+(tilesize-15);
-		    r.w = r.h = 10;
+		    r.x = p.x+(tilesize-18);
+		    r.y = p.y+(tilesize-18);
+		    r.w = r.h = 16;
 		    SDL_BlitSurface(d_itempic, 0, buffer,&r);
                 }
 	    }
