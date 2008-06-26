@@ -163,7 +163,7 @@ void Stack::moveToDest(Vector<int> dest)
       else 
 	{
 	  //maybe the army has a natural movement ability
-	  if ((*it)->getStat(Army::MOVE_BONUS) == maptype && needed_moves > 1)
+	  if ((*it)->getStat(Army::MOVE_BONUS) & maptype && needed_moves > 1)
 	    (*it)->decrementMoves(2);
 	  else
 	    (*it)->decrementMoves(needed_moves);
@@ -369,7 +369,10 @@ Uint32 Stack::calculateTileMovementCost(Vector<int> pos) const
 {
   Maptile* tile = GameMap::getInstance()->getTile(pos);
   Uint32 moves = tile->getMoves();
-  if (isFlying() && moves > 1)
+  Uint32 bonus = calculateMoveBonus();
+  if (bonus & tile->getMaptileType() && moves > 1)
+    moves = 2;
+  else if (isFlying() && moves > 1)
     moves = 2;
   return moves;
 }
