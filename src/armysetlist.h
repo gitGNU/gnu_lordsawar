@@ -62,6 +62,14 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
          */
         Army* getArmy(Uint32 id, Uint32 index) const;
 
+	//! Returns an army prototype of a scout from a given armyset.
+        /** 
+         * @param id       The Id of the armyset.
+	 *
+         * @return The requested scout or 0 on error.
+         */
+        Army* getScout(Uint32 id) const;
+
 	//! Get the unshaded ship image for the given Armyset.
 	SDL_Surface * getShipPic (Uint32 id);
 

@@ -496,7 +496,7 @@ void City::produceScout()
 {
   const Armysetlist* al = Armysetlist::getInstance();
   Uint32 set = d_owner->getArmyset();
-  Army *scout = al->getArmy(set, 0);
+  Army *scout = al->getScout(set);
   Army *a = new Army(*scout, d_owner);
   GameMap::getInstance()->addArmy(this, a);
 

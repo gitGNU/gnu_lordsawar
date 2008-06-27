@@ -114,6 +114,9 @@ class AI_Smart : public RealPlayer
         // examine cities to see if we need to change production
         void examineCities();
 
+	// buy a scout if we need to
+	void maybeBuyScout();
+
         // DATA
         int d_mustmakemoney;  // used to avoid to buy new production 
                               // and to reinforce cities to earn more money

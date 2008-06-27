@@ -103,6 +103,19 @@ Army* Armysetlist::getArmy(Uint32 id, Uint32 index) const
     return ((*it).second)[index];
 }
 
+Army* Armysetlist::getScout(Uint32 id) const
+{
+    // always use ArmyProtoMap::find for searching, else a default entry is 
+    // created, which can produce really bad results!!
+    ArmyPrototypeMap::const_iterator it = d_armies.find(id);
+
+    // armyset does not exist
+    if (it == d_armies.end())
+        return 0;
+
+    return ((*it).second)[0];
+}
+
 Uint32 Armysetlist::getSize(Uint32 id) const
 {
     ArmyPrototypeMap::const_iterator it = d_armies.find(id);

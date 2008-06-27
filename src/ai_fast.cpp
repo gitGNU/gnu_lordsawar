@@ -84,12 +84,54 @@ bool AI_Fast::save(XML_Helper* helper) const
     return retval;
 }
 
+void AI_Fast::maybeBuyScout()
+{
+  bool hero_exists = false;
+  for (Stacklist::iterator it = d_stacklist->begin(); 
+       it != d_stacklist->end(); it++)
+    
+    if ((*it)->hasHero())
+      hero_exists = true; 
+    
+  if (Citylist::getInstance()->countCities(this) == 1 && 
+	hero_exists == false)
+    {
+      bool one_turn_army_exists = false;
+      City *c = Citylist::getInstance()->getFirstCity(this);
+      //do we already have something that can be produced in one turn?
+      for (int i = 0; i < c->getMaxNoOfProductionBases(); i++)
+	{
+	  if (c->getArmytype(i) == -1)    // no production in this slot
+	    continue;
+
+	  const Army *proto = c->getProductionBase(i);
+	  if (proto->getProduction() == 1)
+	    {
+	      one_turn_army_exists = true;
+	      break;
+	    }
+	}
+      if (one_turn_army_exists == false)
+	{
+	  const Armysetlist* al = Armysetlist::getInstance();
+	  int free_slot = c->getFreeBasicSlot();
+	  if (free_slot == -1)
+	    free_slot = 0;
+	  Army *scout = al->getScout(getArmyset());
+	  cityBuyProduction(c, free_slot, scout->getType());
+	}
+    }
+}
+
 bool AI_Fast::startTurn()
 {
+    maybeBuyScout();
+
     // maniac AI's never recruit heroes, otherwise take everything we can get
     if (!d_maniac)
       maybeRecruitHero();
     
+
     debug(getName() << ": AI_Fast::start_turn")
     debug("being in " <<(d_maniac?"maniac":"normal") <<" mode")
     debug((d_join?"":"not ") <<"joining armies")

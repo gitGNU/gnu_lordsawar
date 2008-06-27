@@ -95,6 +95,9 @@ class AI_Fast : public RealPlayer
         //! The actual core function of the ai's logic.
         void computerTurn(); 
 
+	//! buy a scout unit if we need one.
+	void maybeBuyScout();
+
 	//! Determines whether to join units or move them separately.
         bool d_join;
 
