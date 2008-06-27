@@ -3,6 +3,9 @@
 	* fixed stack movement bug where a stack couldn't join with another
 	  stack that was one tile away.  Reported by Rob Kinyon.
 	* fixed crashing bug wrt ai_smart buying production.
+	* fixed crashing in player dialog of the scenario editor.
+	* added ability to change player names and types in the new game
+	  dialog when loading from a scenario.
 
 2008-08-26  Ben Asselstine
 
