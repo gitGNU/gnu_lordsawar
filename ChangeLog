@@ -1,3 +1,9 @@
+2008-08-27  Ben Asselstine
+
+	* fixed stack movement bug where a stack couldn't join with another
+	  stack that was one tile away.  Reported by Rob Kinyon.
+	* fixed crashing bug wrt ai_smart buying production.
+
 2008-08-26  Ben Asselstine
 
 	* fixed movement bug where an army could not move over a prefered
