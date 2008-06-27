@@ -742,7 +742,6 @@ bool GameWindow::setup_game(std::string file_path, bool quick_start)
   bool broken = false;
   GameScenario* game_scenario = new GameScenario(file_path, broken);
 
-  game_scenario->setupCities(quick_start);
 
   if (broken)
   {
@@ -751,6 +750,12 @@ bool GameWindow::setup_game(std::string file_path, bool quick_start)
     return false;
   }
   
+  if (game_scenario->getRound() == 0)
+    {
+      game_scenario->setupCities(quick_start);
+      game_scenario->nextRound();
+    }
+
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();
 
@@ -1422,7 +1427,7 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
   gold_stats_label->set_text(String::ucompose("%1", s.gold));
   income_stats_label->set_text(String::ucompose("%1", s.income));
   upkeep_stats_label->set_text(String::ucompose("%1", s.upkeep));
-  turn_label->set_text(String::ucompose("Turn %1", s.turns + 1));
+  turn_label->set_text(String::ucompose("Turn %1", s.turns));
 }
 
 void GameWindow::on_smallmap_changed(SDL_Surface *map)
