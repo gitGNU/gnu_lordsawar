@@ -24,5 +24,3 @@ fight bug:
 
 check to see what happens when i pass a larger attacker/defender list of stacks to fight.  it only seems to use 1!
 ---
-
-gotta save names/types for scenarios we're loading
