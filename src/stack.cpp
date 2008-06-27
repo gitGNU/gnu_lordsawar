@@ -303,6 +303,16 @@ Army *Stack::getArmyById(Uint32 id) const
   return 0;
 }
 
+Uint32 Stack::countGroupedArmies() const
+{
+  Uint32 count = 0;
+  if (empty())
+    return 0;
+  for (const_iterator it = begin(); it != end(); ++it)
+    if ((*it)->isGrouped() == true)
+      count++;
+  return count;
+}
 
 void Stack::group()
 {
@@ -714,5 +724,21 @@ Uint32 Stack::getUpkeep()
   for (iterator it = begin(); it != end(); it++)
     upkeep += (*it)->getUpkeep();
   return upkeep;
+}
+
+bool Stack::canJoin(const Stack *stack) const
+{
+  Uint32 joinSize = countGroupedArmies();
+  if (joinSize == 0)
+    joinSize = size();
+
+  /* this is necessary because human players "group" armies in stacks,
+   * while the computer player does not.
+   */
+  if ((stack->size() + joinSize) > MAX_STACK_SIZE)
+    return false;
+
+  return true;
+
 }
 // End of file

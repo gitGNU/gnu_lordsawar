@@ -276,6 +276,17 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Set all armies in the Stack except the first one to be ungrouped.
 	void ungroup();
 
+	//! Count the number of armies in the stack that are selected.
+	Uint32 countGroupedArmies() const;
+
+	//! Returns true if this stack can join the given stack.
+	/**
+	 * @pnote This is not a distance calculation.  It checks to see if
+	 * the stack sizes are such that the amalgamated stack would be less
+	 * than 8.
+	 */
+	bool canJoin(const Stack *stack) const;
+
 	/**
 	 * Alter the order of the Army units in the stack according to each
 	 * unit's groupedness, and fight order.

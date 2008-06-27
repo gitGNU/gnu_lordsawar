@@ -195,6 +195,8 @@ bool GameScenario::setupCities(bool quick_start)
 	{
 	  if ((*it).isCapital())
 	    (*it).produceStrongestProductionBase();
+	  else
+	    (*it).produceWeakestProductionBase();
 
 	  (*it).setActiveProductionSlot(0);
 	}

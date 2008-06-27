@@ -790,8 +790,12 @@ bool Player::stackJoin(Stack* receiver, Stack* joining, bool grouped)
     if ((receiver == 0) || (joining == 0))
         return false;
 
-    if ((receiver->size() + joining->size()) > MAX_STACK_SIZE)
+    if (joining->canJoin(receiver) == false)
+      {
+	Stack *already_there = Stacklist::getAmbiguity(joining);
+	stackJoin(joining, already_there,  false);
         return false;
+      }
     
     Action_Join* item = new Action_Join();
     item->fillData(receiver, joining);
@@ -840,10 +844,8 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
     }
 
     int stepCount = 0;
-    while (s->getPath()->size() > 1 && s->enoughMoves())
+    while (s->getPath()->size() > 1 && stackMoveOneStep(s))
     {
-        if (stackMoveOneStep(s))
-            stepCount++;
         supdatingStack.emit(0);
     }
 
@@ -912,19 +914,29 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
         
         //another friendly stack => join it
         else if (target && target->getOwner() == this)
-        {
+          {
+	    bool moved = false;
             if (stackMoveOneStep(s))
+	      {
+		moved = true;
                 stepCount++;
-            stackJoin(Stacklist::getAmbiguity(s), s, false);
+	      }
+	    Stack *other_stack = Stacklist::getAmbiguity(s);
+            stackJoin(other_stack, s, false);
 
-            supdatingStack.emit(0);
-            SDL_Delay(Configuration::s_displaySpeedDelay);
+	    if (other_stack)
+	      d_stacklist->getActivestack()->sortForViewing(false);
+	      
+	    supdatingStack.emit(0);
+	    SDL_Delay(Configuration::s_displaySpeedDelay);
     
-            MoveResult *moveResult = new MoveResult(true);
+            MoveResult *moveResult = new MoveResult(moved);
             moveResult->setStepCount(stepCount);
-            moveResult->setJoin(true);
+            moveResult->setJoin(moved);
+	    if (moved == false)
+	      d_stacklist->getActivestack()->getPath()->flClear();
             return moveResult;
-        }
+         }
         
         //enemy stack => fight
         else if (target)
@@ -1001,6 +1013,18 @@ bool Player::stackMoveOneStep(Stack* s)
 
   Vector<int> dest = *s->getPath()->front();
   
+  Stack *another_stack = d_stacklist->getObjectAt(dest);
+  if (another_stack)
+    {
+      if (another_stack->getOwner() == s->getOwner())
+	{
+	  if (s->canJoin(another_stack) == false)
+	    return false;
+	}
+      else
+	return false;
+
+    }
   Action_Move* item = new Action_Move();
   item->fillData(s, dest);
   addAction(item);
@@ -1618,7 +1642,7 @@ bool Player::cityBuyProduction(City* c, int slot, int type)
   Uint32 as = c->getOwner()->getArmyset();
 
   // sort out unusual values (-1 is allowed and means "scrap production")
-  if ((type < -1) || (type >= (int)al->getSize(as)))
+  if ((type <= -1) || (type >= (int)al->getSize(as)))
     return false;
 
   // return if we don't have enough money

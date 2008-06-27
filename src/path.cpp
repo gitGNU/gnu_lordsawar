@@ -188,6 +188,13 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
     debug("path from "<<start.x<<","<<start.y<<" to "<<dest.x<<","<<dest.y)
         
     flClear();
+    //can we get there with one move?
+    if (dist(s->getPos(), dest) == 1 && canMoveThere(s, dest) == true)
+      {
+        Vector<int> *p = new Vector<int>(dest);
+        push_back(p);
+	return 1;
+      }
     int width = GameMap::getWidth();
     int height = GameMap::getHeight();
     d_bonus = s->calculateMoveBonus();
@@ -435,9 +442,11 @@ bool Path::isBlocked(const Stack* s, int x, int y, int destx, int desty) const
             return true;
 
         // ...friendly stacks which are too big to merge with...
-        if ((s->getOwner() == target->getOwner())
-            && (s->size() + target->size() > MAX_STACK_SIZE))
+        if (s->getOwner() == target->getOwner()
+            && s->canJoin(target) == false)
+	  {
             return true;
+	  }
     }
 
     //...enemy cities

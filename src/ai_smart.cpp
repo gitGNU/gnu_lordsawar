@@ -144,7 +144,6 @@ int AI_Smart::maybeBuyProduction(City *c)
 
     freeslot=freebasicslot; 
     armytype=chooseArmyTypeToBuy(c);
-    debug("AI choosed to buy basic."); 
 
     debug("armytype i want to produce " << armytype)
 
