@@ -61,6 +61,12 @@ class FogMap
 	//! Destructor.
         ~FogMap();
 
+        //! Returns the width of the fog map.
+        int getWidth() const {return d_width;}
+ 
+        //! Returns the height of the fog map.
+        int getHeight() const {return d_height;}
+
 	//! Fill the fogmap with a status.
         /** 
          * @param type             The status to use.

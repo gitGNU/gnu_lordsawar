@@ -431,6 +431,7 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
     return path;
 }
 
+    
 void GameWindow::new_game(GameParameters g)
 {
     if (g.map_path.empty()) {
@@ -439,7 +440,27 @@ void GameWindow::new_game(GameParameters g)
 	g.map_path = path;
     }
 
-    bool success = setup_game(g.map_path, g.quick_start);
+    stop_game();
+
+    bool broken = false;
+    GameScenario* game_scenario = new GameScenario(g.map_path, broken);
+
+    if (broken)
+      {
+	on_message_requested("Corrupted saved game file.");
+	game_ended.emit();
+	return;
+      }
+
+    if (game_scenario->getRound() == 0)
+      {
+	Playerlist::getInstance()->syncPlayers(g.players);
+	game_scenario->setupCities(g.quick_start);
+	game_scenario->nextRound();
+      }
+
+
+    bool success = setup_game(game_scenario);
     if (!success)
       return;
     setup_signals();
@@ -451,7 +472,20 @@ void GameWindow::new_game(GameParameters g)
 void GameWindow::load_game(std::string file_path)
 {
     current_save_filename = file_path;
-    bool success = setup_game(file_path, false);
+
+    stop_game();
+
+    bool broken = false;
+    GameScenario* game_scenario = new GameScenario(file_path, broken);
+
+    if (broken)
+      {
+	on_message_requested("Corrupted saved game file.");
+	game_ended.emit();
+	return;
+      }
+
+    bool success = setup_game(game_scenario);
     if (!success)
       return;
     setup_signals();
@@ -735,26 +769,8 @@ void GameWindow::update_diplomacy_button (bool sensitive)
   diplomacy_button->set_sensitive(sensitive);
 }
 
-bool GameWindow::setup_game(std::string file_path, bool quick_start)
+bool GameWindow::setup_game(GameScenario *game_scenario)
 {
-  stop_game();
-
-  bool broken = false;
-  GameScenario* game_scenario = new GameScenario(file_path, broken);
-
-
-  if (broken)
-  {
-    on_message_requested("Corrupted saved game file.");
-    game_ended.emit();
-    return false;
-  }
-  
-  if (game_scenario->getRound() == 0)
-    {
-      game_scenario->setupCities(quick_start);
-      game_scenario->nextRound();
-    }
 
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();

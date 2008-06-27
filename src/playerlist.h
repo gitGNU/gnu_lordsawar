@@ -23,8 +23,10 @@
 
 #include <list>
 #include <string>
+#include <vector>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
+#include "game-parameters.h"
 
 #include "player.h"
 
@@ -197,6 +199,15 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	//! Figure out who's winning diplomatically.
         void calculateDiplomaticRankings();
 
+	//! Sync the playerlist.
+	/**
+	 * Sync the playerlist with the list of players given.
+	 */
+	void syncPlayers(std::vector<GameParameters::Player> players);
+
+	//! Sync the given player with the playerlist
+	void syncPlayer(GameParameters::Player player);
+
 	/**
 	 * @param player  The player who has died.
 	 */
@@ -226,6 +237,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 
 	//! Comparison function to assist in sorting the list of players.
 	static bool randomly(const Player *lhs, const Player *rhs);
+
+	//! Comparison function to assist in sorting the list of players.
+	static bool inOrderOfId(const Player *lhs, const Player *rhs);
 
 	//! Calculate new scores for all players.
         void calculateWinners();

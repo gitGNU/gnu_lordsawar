@@ -34,6 +34,10 @@
 #include "history.h"
 #include "citylist.h"
 #include "stacklist.h"
+#include "FogMap.h"
+#include "real_player.h"
+#include "ai_smart.h"
+#include "ai_fast.h"
 
 using namespace std;
 
@@ -543,6 +547,14 @@ bool Playerlist::randomly(const Player *lhs, const Player *rhs)
     return false;
 }
 
+bool Playerlist::inOrderOfId(const Player *lhs, const Player *rhs)  
+{
+  if (lhs->getId() > rhs->getId())
+    return false;
+  else
+    return true;
+}
+
 //randomly reorder the player list, but keeping neutral last.
 void Playerlist::randomizeOrder()
 {
@@ -581,4 +593,107 @@ void Playerlist::nextRound(bool diplomacy, bool *surrender_already_offered)
 	    }
 	}
     }
+}
+
+void Playerlist::syncPlayer(GameParameters::Player player)
+{
+  Player *p = getPlayer((Uint32)player.id);
+  if (!p)
+    {
+      //player was off originally, but now it's on
+      Uint32 armyset = d_neutral->getArmyset();
+      int width = d_neutral->getFogMap()->getWidth();
+      int height = d_neutral->getFogMap()->getHeight();
+      int gold = d_neutral->getGold();
+      switch (player.type)
+	{
+	case GameParameters::Player::HUMAN:
+	  p = new RealPlayer(player.name, armyset,
+			     Player::get_color_for_no(player.id),
+			     width, height, Player::HUMAN, player.id);
+	  break;
+	case GameParameters::Player::EASY:
+	  p = new AI_Fast(player.name, armyset,
+			  Player::get_color_for_no(player.id),
+			  width, height, player.id);
+	  break;
+	case GameParameters::Player::HARD:
+	  p = new AI_Smart(player.name, armyset,
+			   Player::get_color_for_no(player.id), 
+			   width, height, player.id);
+	  break;
+	case GameParameters::Player::OFF:
+	  //was off, now it's still off.
+	  break;
+	default:
+	  cerr << "could not make player with type " << player.type;
+	  exit (1);
+	  break;
+	}
+      if (p)
+	{
+	  p->setGold(gold);
+	  push_back(p);
+
+	  sort(inOrderOfId);
+	  d_activeplayer = getFirstLiving();
+	}
+      return;
+    }
+  else
+    p->setName(player.name);
+
+  switch (player.type)
+    {
+    case GameParameters::Player::HUMAN:
+      if (p->getType() != Player::HUMAN)
+	{
+	  RealPlayer *new_p = new RealPlayer(*p);
+	  swap(p, new_p);
+	}
+      break;
+    case GameParameters::Player::EASY:
+      if (p->getType() != Player::AI_FAST)
+	{
+	  AI_Fast *new_p = new AI_Fast(*p);
+	  swap(p, new_p);
+	}
+      break;
+    case GameParameters::Player::HARD:
+      if (p->getType() != Player::AI_SMART)
+	{
+	  AI_Smart *new_p = new AI_Smart(*p);
+	  swap(p, new_p);
+	}
+      break;
+    case GameParameters::Player::OFF:
+	{
+	  //point owned cities to neutral
+	  Citylist *clist = Citylist::getInstance();
+	  clist->changeOwnership (p, d_neutral);
+	  //point owned ruins to neutral
+	  Ruinlist *rlist = Ruinlist::getInstance();
+	  rlist->changeOwnership (p, d_neutral);
+	  //now get rid of the player entirely
+	  flErase(find(begin(), end(), p));
+	}
+      break;
+    default:
+      cerr << "could not sync player with type " << player.type;
+      exit (1);
+      break;
+    }
+
+  sort(inOrderOfId);
+  d_activeplayer = getFirstLiving();
+  return;
+}
+
+void Playerlist::syncPlayers(std::vector<GameParameters::Player> players)
+{
+
+  std::vector<GameParameters::Player>::const_iterator i = players.begin();
+  for (; i != players.end(); i++)
+    syncPlayer(*i);
+
 }

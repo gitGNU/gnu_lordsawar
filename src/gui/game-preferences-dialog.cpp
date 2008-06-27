@@ -560,14 +560,16 @@ void GamePreferencesDialog::on_start_game_clicked()
     else
 	g.map_path = load_map_filechooser->get_filename();
 
+    int id = 0;
     std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
     std::list<Gtk::Entry *>::iterator e = player_names.begin();
-    for (; c != player_types.end(); c++, e++)
+    for (; c != player_types.end(); c++, e++, id++)
       {
 	GameParameters::Player p;
 	p.type = player_type_to_enum((*c)->get_active_text());
 	Glib::ustring name = (*e)->get_text();
 	p.name = name;
+	p.id = id;
 	g.players.push_back(p);
       }
 

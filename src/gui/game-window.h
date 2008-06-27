@@ -47,6 +47,7 @@
 #include "../vector.h"
 #include "../army.h"
 #include "../GraphicsCache.h"
+#include "../GameScenario.h"
 
 class Game;
 class SDL_Surface;
@@ -271,7 +272,7 @@ class GameWindow: public sigc::trackable
     void change_diplomacy_button_image (bool proposals_present);
     void update_diplomacy_button (bool sensitive);
 
-    bool setup_game(std::string file_path, bool quick_start);
+    bool setup_game(GameScenario *game_scenario);
     void setup_signals();
     void stop_game();
     std::list<sigc::connection> connections;
