@@ -1,3 +1,18 @@
+2008-08-28  Ben Asselstine
+
+	* fixed easy and hard ai players to make an infantry unit initially 
+	  if it doesn't have one already.
+	* path generation for ai players now avoid stacks that are too big to 
+	  merge with.
+	* path generation for human players does not avoid stacks that are 
+	  too big to merge with.
+	* now not showing path waypoints for ai players.
+	* added a timed message box for player perished messages
+	* easy ai player now makes a special effort to take empty cities
+	  when it can.
+	* save file format has changed -- introduction of player "income" tag.
+	* addressed more stack splitting/joining bugs.
+
 2008-08-27  Ben Asselstine
 
 	* fixed stack movement bug where a stack couldn't join with another
