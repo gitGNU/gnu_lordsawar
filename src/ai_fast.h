@@ -101,8 +101,33 @@ class AI_Fast : public RealPlayer
 	//! search through our stacklist for a stack we can join
 	Stack *findNearOwnStackToJoin(Stack *s, int max_distance);
 
-	//! go to a temple if we're near enough
-	bool maybeVisitTemple(Stack *s, bool &blessed);
+	//! Go to a temple if we're near enough.
+	/**
+	 * Helper method to take a stack on a mission to get blessed.
+	 * If the method returns false initially, it means that the nearest 
+	 * temple is unsuitable.
+	 * @note The idea is that this method is called over subsequent turns, 
+	 * until the blessed parameter gets filled with a value of true.
+	 *
+	 * @param s            The stack to visit a temple.
+	 * @param dist         The maximum number of tiles that a temple
+	 *                     can be away from the stack, and be considered
+	 *                     for visiting.
+	 * @param mp           The maximum number of movement points that a
+	 *                     stack needs to have to reach the temple.
+	 * @param percent_can_be_blessed  If the stack has this many army 
+	 *                                units that have not been blessed
+	 *                                at the temple (expressed as a
+	 *                                percent), then the temple will be
+	 *                                considered for visiting.
+	 * @param blessed      Gets filled with false if the stack didn't get 
+	 *                     blessed.  Gets filled with true if the stack 
+	 *                     got blessed at the temple.
+	 *
+	 * Returns true if the stack moved, false if it stayed still.
+	 */
+	bool maybeVisitTemple(Stack *s, int dist, int mp, 
+			      double percent_can_be_blessed, bool &blessed);
 
 	//! Determines whether to join units or move them separately.
         bool d_join;

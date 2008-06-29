@@ -291,11 +291,17 @@ bool AI_Fast::computerTurn()
 	if (!d_maniac)
 	  {
 	    bool blessed = false;
-	    stack_moved = maybeVisitTemple(s, blessed);
-	    if (blessed && stack_moved)
-	      stack_moved = false;
-	    else if (stack_moved)
-	      continue;
+	    //are we not in a city?
+	    if (Citylist::getInstance()->getObjectAt(s->getPos()) == NULL)
+	      {
+		stack_moved = maybeVisitTemple(s, s->getGroupMoves(), 
+					       s->getGroupMoves() + 7, 50.0, 
+					       blessed);
+		if (blessed && stack_moved)
+		  stack_moved = false; //do this so we move it later on
+		else if (stack_moved)
+		  continue;
+	      }
 	  }
 
         debug(">>>> What to do with stack " <<s->getId() <<" at (" <<s->getPos().x
@@ -510,65 +516,42 @@ bool AI_Fast::treachery (Stack *stack, Player *player, Vector <int> pos, Diploma
   return performTreachery;
 }
 
-bool AI_Fast::maybeVisitTemple(Stack *s, bool &blessed)
+bool AI_Fast::maybeVisitTemple(Stack *s, int dist, int max_mp, 
+			       double percent_can_be_blessed, bool &blessed)
 {
-  bool get_blessed = false;
-  bool move_to_temple = false;
   bool stack_moved = false;
   Templelist *tl = Templelist::getInstance();
 
-  //are we standing on the temple?
-  Temple *temple = tl->getObjectAt(s->getPos());
-
+  Temple *temple = tl->getNearestVisibleAndUsefulTemple(s, 
+							percent_can_be_blessed,
+						       	dist);
   if (!temple)
+    return false;
+
+  //if we're not there yet
+  if (s->getPos() != temple->getPos())
     {
-      //is there a temple nearby?
-      temple = tl->getNearestVisibleTemple(s->getPos(), 
-					   s->getGroupMoves());
-      if (!temple)
-	return false;
-
-      //are we not in a city?
-      if (Citylist::getInstance()->getObjectAt(s->getPos()) != NULL)
-	return false;
-
       //can we really reach it?
       Vector<int> old_dest(-1,-1);
       if (s->getPath()->size())
 	old_dest = *s->getPath()->back();
       Uint32 mp = s->getPath()->calculate(s, temple->getPos());
-      if ((int)mp > (int)s->getGroupMoves() + 7)
+      if ((int)mp > max_mp)
 	{
 	  //nope.  unreachable.  set in our old path.
 	  if (old_dest != Vector<int>(-1,-1))
 	    s->getPath()->calculate(s, old_dest);
 	  return false;
 	}
-
-      move_to_temple = true;
-      //we can reach it.
-    }
-  else
-    get_blessed = true;
-
-  //only go if half or more of the stack's armies can be blessed
-  Uint32 num_need_blessing = s->size() - 
-    s->countArmiesBlessedAtTemple(temple->getId());
-  if (num_need_blessing < s->size() / 2)
-    return false;
-
-  if (move_to_temple)
-    {
-      //let's walk
       stack_moved = stackMove(s);
-      //are we standing on it?
-      if (stack_moved && tl->getObjectAt(s->getPos()))
-	get_blessed = true;
     }
 
   int num_blessed = 0;
-  if (get_blessed)
-    num_blessed = stackVisitTemple(s, temple);
+  //are we there yet?
+  if (s->getPos() == temple->getPos())
+    {
+      num_blessed = stackVisitTemple(s, temple);
+    }
 
   blessed = num_blessed > 0;
   return stack_moved;

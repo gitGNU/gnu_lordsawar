@@ -23,6 +23,7 @@
 #include <sigc++/trackable.h>
 #include "LocationList.h"
 #include "temple.h"
+class Stack;
 
 //! A list of Temple objects on the game map.
 /** 
@@ -76,6 +77,10 @@ class Templelist : public LocationList<Temple>, public sigc::trackable
 	 *         if no temple could be found.
 	 */
         Temple* getNearestVisibleTemple(const Vector<int>& pos, int dist);
+
+	Temple* getNearestVisibleAndUsefulTemple(Stack *stack, double percent_can_be_blessed);
+
+	Temple* getNearestVisibleAndUsefulTemple(Stack *stack, double percent_can_be_blessed, int dist);
 
     protected:
         //! Default constructor.

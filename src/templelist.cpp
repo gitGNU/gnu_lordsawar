@@ -22,6 +22,7 @@
 
 #include "xmlhelper.h"
 #include "templelist.h"
+#include "stack.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -100,6 +101,53 @@ Temple * Templelist::getNearestVisibleTemple(const Vector<int>& pos)
   return getNearestObject(pos, &filters);
 }
 
+Temple* Templelist::getNearestVisibleAndUsefulTemple(Stack *s, 
+						     double percent_can_be_blessed)
+{
+  Vector<int> pos = s->getPos();
+  int diff = -1;
+  iterator diffit;
+
+  for (iterator it = begin(); it != end(); ++it)
+    {
+      Temple *temple = &*it;
+      if (isFogged(temple))
+	continue;
+
+      if ((double)(s->size() - s->countArmiesBlessedAtTemple(temple->getId()))
+	  < (double)s->size() * (percent_can_be_blessed / 100.0))
+	continue;
+
+      Vector<int> p = (*it).getPos();
+      int delta = abs(p.x - pos.x);
+      if (delta < abs(p.y - pos.y))
+	delta = abs(p.y - pos.y);
+
+      if ((diff > delta) || (diff == -1))
+	{
+	  diff = delta;
+	  diffit = it;
+	}
+    }
+
+  if (diff == -1) return 0;
+  return &(*diffit);
+
+}
+
+Temple* Templelist::getNearestVisibleAndUsefulTemple(Stack *stack, 
+						     double percent_can_be_blessed, 
+						     int dist)
+{
+  Vector<int> pos = stack->getPos();
+  Temple *t = getNearestVisibleAndUsefulTemple
+    (stack, percent_can_be_blessed);
+  if (t->getPos().x <= pos.x + dist && t->getPos().x >= pos.x - dist &&
+      t->getPos().y <= pos.y + dist && t->getPos().y >= pos.y - dist)
+    return t;
+  return NULL;
+}
+
 Temple* Templelist::getNearestVisibleTemple(const Vector<int>& pos, int dist)
 {
   Temple *t = getNearestVisibleTemple(pos);
@@ -108,3 +156,4 @@ Temple* Templelist::getNearestVisibleTemple(const Vector<int>& pos, int dist)
     return t;
   return NULL;
 }
+
