@@ -76,6 +76,7 @@
 #include "diplomacy-report-dialog.h"
 #include "diplomacy-dialog.h"
 #include "stack-info-dialog.h"
+#include "timed-message-dialog.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -84,7 +85,7 @@
 #include "../game.h"
 #include "../gamebigmap.h"
 #include "../smallmap.h"
-#include "../GameScenario.h"
+#include "../GameScenarioOptions.h"
 #include "../army.h"
 #include "../ruin.h"
 #include "../path.h"
@@ -1305,18 +1306,6 @@ void GameWindow::on_player_died(Player *player)
 {
   assert(player);
 
-  std::auto_ptr<Gtk::Dialog> dialog;
-
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/player-died-dialog.glade");
-
-  Gtk::Dialog *d;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
-  dialog->set_transient_for(*window.get());
-
-  Gtk::Label *label;
-  xml->get_widget("label", label);
   Glib::ustring s;
   s += String::ucompose(_("The rule of %1 has permanently ended!"),
 			player->getName());
@@ -1332,16 +1321,18 @@ void GameWindow::on_player_died(Player *player)
       s += "\n";
       s += _("and visit the sites of thy old battles.");
     }
-  label->set_text(s);
 
-  dialog->show_all();
-  dialog->run();
+  TimedMessageDialog dialog(*window.get(), s, 30);
+
+  dialog.show_all();
+  dialog.run();
 }
 
 void GameWindow::on_message_requested(std::string msg)
 {
   // FIXME: this is a bit crude, maybe beef it up
   Gtk::MessageDialog dialog(*window.get(), msg);
+  //TimedMessageDialog dialog(*window.get(), msg, 30, 5);
   dialog.show_all();
   dialog.run();
 }
@@ -2038,8 +2029,8 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
   xml->get_widget("raze_button", raze_button);
 
   raze_button->set_sensitive
-    (game->getScenario()->s_razing_cities == GameParameters::ON_CAPTURE || 
-     game->getScenario()->s_razing_cities == GameParameters::ALWAYS);
+    (GameScenarioOptions::s_razing_cities == GameParameters::ON_CAPTURE || 
+     GameScenarioOptions::s_razing_cities == GameParameters::ALWAYS);
 
   if (h) /* if there was a hero in the stack */
     {
@@ -2300,8 +2291,8 @@ void GameWindow::on_city_razed (City *city)
 void GameWindow::on_city_visited(City *city)
 {
   CityWindow d(city, 
-	       game->getScenario()->s_razing_cities == GameParameters::ALWAYS,
-	       GameScenario::s_see_opponents_production);
+	       GameScenarioOptions::s_razing_cities == GameParameters::ALWAYS,
+	       GameScenarioOptions::s_see_opponents_production);
 
   d.set_parent_window(*window.get());
   d.run();

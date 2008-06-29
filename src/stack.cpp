@@ -389,6 +389,9 @@ Uint32 Stack::calculateTileMovementCost(Vector<int> pos) const
 
 bool Stack::enoughMoves() const
 {
+  if (d_path->size() == 0)
+    return true; //we have enough moves to move nowhere!
+
   Vector<int> p = **(d_path->begin());
   Uint32 needed = calculateTileMovementCost(p);
 
@@ -741,4 +744,56 @@ bool Stack::canJoin(const Stack *stack) const
   return true;
 
 }
+
+std::vector<Uint32> Stack::determineReachableArmies(Vector<int> dest)
+{
+  printf ("dest is %d,%d\n", dest.x, dest.y);
+  std::vector<Uint32> ids;
+  //try each army individually to see if it reaches
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getMoves() > 0)
+	{
+	  Stack *stack = new Stack(getOwner(), getPos());
+	  stack->push_back(*it);
+	  if (stack->getGroupMoves() >= 
+	      stack->getPath()->calculate(stack, dest))
+	    ids.push_back((*it)->getId());
+	  stack->clear();
+	  delete stack;
+	  //fixme: can't delete stacks like this because it deletes the army
+	}
+    }
+  if (ids.size() == 0)
+    return ids;
+
+  //now try to see if any army units can tag along
+  for (iterator it = begin(); it != end(); it++)
+    {
+      //skip over armies that are already known to be reachable
+      if (find(ids.begin(), ids.end(), (*it)->getId()) != ids.end())
+	continue;
+      if ((*it)->getMoves() > 0)
+	{
+	  Stack *stack = new Stack(getOwner(), getPos());
+	  stack->push_back(*it);
+	  //also push back the rest of the known reachables
+	  std::vector<Uint32>::iterator iit = ids.begin();
+	  for (; iit != ids.end(); iit++)
+	    {
+	      Army *army = getArmyById(*iit);
+	      if (army)
+		stack->push_back(army);
+	    }
+	  if (stack->getGroupMoves() >= 
+	      stack->getPath()->calculate(stack, dest))
+	    ids.push_back((*it)->getId());
+	  stack->clear();
+	  delete stack;
+	}
+    }
+
+  return ids;
+}
+
 // End of file

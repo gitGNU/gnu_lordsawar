@@ -61,7 +61,8 @@ liblwgui_a_SOURCES = \
     image-helpers.cpp image-helpers.h \
     gtksdl.c gtksdl.h \
     glade-helpers.h \
-    input-helpers.h
+    input-helpers.h \
+    timed-message-dialog.cpp timed-message-dialog.h
 
 INCLUDES = \
    $(GTKMM_CFLAGS) \

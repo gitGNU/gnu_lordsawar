@@ -693,4 +693,17 @@ bool City::changeVectorDestination(Vector<int> dest)
   return true;
 }
 
+Uint32 City::countDefenders()
+{
+  std::vector<Stack*> defenders;
+  defenders = getOwner()->getStacklist()->defendersInCity(this);
+
+  Uint32 armies = 0;
+  std::vector<Stack*>::iterator it = defenders.begin();
+  for (;it != defenders.end(); it++)
+    armies += (*it)->size();
+
+  return armies;
+}
+
 // End of file

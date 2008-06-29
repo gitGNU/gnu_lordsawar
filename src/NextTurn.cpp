@@ -160,8 +160,9 @@ void NextTurn::startTurn()
       Citylist::getInstance()->nextTurn(p);
     }
 
-  //calculate upkeep
+  //calculate upkeep and income
   p->calculateUpkeep();
+  p->calculateIncome();
 
   QuestsManager::getInstance()->nextTurn(p);
 }

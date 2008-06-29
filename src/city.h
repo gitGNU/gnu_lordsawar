@@ -324,6 +324,9 @@ class City : public Ownable, public Location, public Renamable
 	 */
 	bool changeVectorDestination(Vector<int> dest);
 
+	//! Return how many armies are in the city.
+	Uint32 countDefenders();
+
     private:
 
         //! Produces the currently active Army production base.

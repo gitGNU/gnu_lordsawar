@@ -33,8 +33,8 @@
 #include "citylist.h"
 #include "herotemplates.h"
 #include "game.h"
-#include "GameScenario.h"
 #include "xmlhelper.h"
+#include "GameScenarioOptions.h"
 
 using namespace std;
 
@@ -132,7 +132,7 @@ bool RealPlayer::maybeRecruitHero ()
   //give the player a hero if it's the first round.
   //otherwise we get a hero based on chance
   //a hero costs a random number of gold pieces
-  if (Game::getScenario()->getRound() == 0)
+  if (GameScenarioOptions::s_round == 1)
     gold_needed = 0;
   else
     {

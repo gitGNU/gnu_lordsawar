@@ -265,13 +265,8 @@ void Game::update_sidebar_stats()
     s.name = player->getName();
     s.gold = player->getGold();
     s.income = s.cities = 0;
-    for (Citylist::iterator i = Citylist::getInstance()->begin(),
-	     end = Citylist::getInstance()->end(); i != end; ++i)
-	if (i->getOwner() == player)
-	{
-	    s.income += i->getGold();
-	    ++s.cities;
-	}
+    s.income = player->getIncome();
+    s.cities = Citylist::getInstance()->countCities(player);
 
     s.units = 0;
     s.upkeep = player->getUpkeep();
@@ -1006,7 +1001,7 @@ void Game::init_turn_for_player(Player* p)
       smallmap->blank();
       bigmap->blank();
     }
-  next_player_turn.emit(p, d_gameScenario->getRound() + 1);
+  next_player_turn.emit(p, d_gameScenario->getRound());
   center_view_on_city();
   if (p->getType() == Player::HUMAN)
     {

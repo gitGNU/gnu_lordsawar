@@ -22,7 +22,7 @@
 
 #include "playerlist.h"
 #include "xmlhelper.h"
-#include "GameScenario.h"
+#include "GameScenarioOptions.h"
 
 using namespace std;
 
@@ -201,7 +201,7 @@ bool FogMap::isFogged(Vector <int> pos)
     return true;
   if (Playerlist::getActiveplayer())
     if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
-	GameScenario::s_hidden_map == true)
+	GameScenarioOptions::s_hidden_map == true)
       return true;
                 
   if (fogmap->isLoneFogTile(pos) == true)

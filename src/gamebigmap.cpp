@@ -653,7 +653,8 @@ void GameBigMap::after_draw()
   Stack* stack = Playerlist::getActiveplayer()->getActivestack();
 
   // Draw Path
-  if (stack && stack->getPath()->size())
+  if (stack && stack->getPath()->size() && 
+      stack->getOwner()->getType() == Player::HUMAN)
     {
       Vector<int> pos;
       SDL_Color c;

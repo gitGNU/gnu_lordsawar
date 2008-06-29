@@ -64,21 +64,8 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-bool GameScenario::s_see_opponents_stacks = false;
-bool GameScenario::s_see_opponents_production = false;
-bool GameScenario::s_play_with_quests = true;
-bool GameScenario::s_hidden_map = false;
-bool GameScenario::s_diplomacy = false;
-bool GameScenario::s_cusp_of_war = false;
-GameParameters::NeutralCities GameScenario::s_neutral_cities = GameParameters::AVERAGE;
-GameParameters::RazingCities GameScenario::s_razing_cities = GameParameters::ALWAYS;
-bool GameScenario::s_intense_combat = false;
-bool GameScenario::s_military_advisor = false;
-bool GameScenario::s_random_turns = false;
-bool GameScenario::s_surrender_already_offered = false;
-
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
-    :d_round(0), d_name(name),d_comment(comment), d_turnmode(turnmode)
+    :d_name(name),d_comment(comment), d_turnmode(turnmode)
 {
     Armysetlist::getInstance();
     Armysetlist::getInstance()->instantiatePixmaps();
@@ -282,36 +269,6 @@ std::string GameScenario::getComment(bool translate) const
   return d_comment;
 }
 
-void GameScenario::nextRound()
-{
-  d_round++;
-
-  char filename[1024];
-  if (Configuration::s_autosave_policy == 2)
-    snprintf(filename,sizeof(filename), "autosave-%03d.sav", d_round - 1);
-  else if (Configuration::s_autosave_policy == 1)
-    snprintf(filename,sizeof(filename), "autosave.sav");
-  else
-    return;
-  // autosave to the file "autosave.sav". This is crude, but should work
-  //
-  // As a more enhanced version: autosave to a temporary file, then rename
-  // the file. Avoids screwing up the autosave if something goes wrong
-  // (and we have a savefile for debugging)
-  if (!saveGame(File::getSavePath() + "tmp.sav"))
-    {
-      std::cerr<<_("Autosave failed.\n");
-      return;
-    }
-  if (rename(std::string(File::getSavePath() + "tmp.sav").c_str(),
-	     std::string(File::getSavePath() + filename).c_str()))
-    {
-      char* err = strerror(errno);
-      std::cerr <<_("Error while trying to rename the temporary file to autosave.sav\n");
-      std::cerr <<_("Error: ") <<err <<std::endl;
-    }
-}
-
 bool GameScenario::saveGame(string filename, string extension) const
 {
   bool retval = true;
@@ -372,7 +329,7 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   retval &= helper.openTag("scenario");
   retval &= helper.saveData("name", d_name);
   retval &= helper.saveData("comment", d_comment);
-  retval &= helper.saveData("turn", d_round);
+  retval &= helper.saveData("turn", s_round);
   retval &= helper.saveData("turnmode", d_turnmode);
   retval &= helper.saveData("view_enemies", s_see_opponents_stacks);
   retval &= helper.saveData("view_production", s_see_opponents_production);
@@ -408,7 +365,7 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
 	}
 
       debug("loading scenario")
-	helper->getData(d_round, "turn");
+	helper->getData(s_round, "turn");
       helper->getData(d_turnmode, "turnmode");
       helper->getData(d_name, "name");
       helper->getData(d_comment, "comment");
@@ -535,59 +492,33 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
   return false;
 }
 
-int GameScenario::calculate_difficulty_rating(GameParameters g)
+void GameScenario::nextRound()
 {
-  float total_difficulty = 0;
-  int max_player_difficulty = 73;
-  int players_on = 0;
-  for (std::vector<GameParameters::Player>::iterator it = g.players.begin(); 
-       it != g.players.end(); it++)
+  s_round++;
+
+  char filename[1024];
+  if (Configuration::s_autosave_policy == 2)
+    snprintf(filename,sizeof(filename), "autosave-%03d.sav", s_round - 1);
+  else if (Configuration::s_autosave_policy == 1)
+    snprintf(filename,sizeof(filename), "autosave.sav");
+  else
+    return;
+  // autosave to the file "autosave.sav". This is crude, but should work
+  //
+  // As a more enhanced version: autosave to a temporary file, then rename
+  // the file. Avoids screwing up the autosave if something goes wrong
+  // (and we have a savefile for debugging)
+  if (!saveGame(File::getSavePath() + "tmp.sav"))
     {
-      if ((*it).type != GameParameters::Player::OFF)
-	players_on++;
-
+      std::cerr<<_("Autosave failed.\n");
+      return;
     }
-  int players_off = g.players.size() - players_on;
-
-  //find out how much each player is worth
-  float player_difficulty;
-  player_difficulty = (float) max_player_difficulty / (float) players_off;
-  if (players_on != 0)
-    player_difficulty = (float)max_player_difficulty / (float)players_on;
-
-  //go through all players, adding up difficulty points for each
-  for (std::vector<GameParameters::Player>::iterator i = g.players.begin(); 
-       i != g.players.end(); i++)
+  if (rename(std::string(File::getSavePath() + "tmp.sav").c_str(),
+	     std::string(File::getSavePath() + filename).c_str()))
     {
-      if ((*i).type == GameParameters::Player::HUMAN || 
-	  ((*i).type == GameParameters::Player::HARD))
-	total_difficulty += player_difficulty;
-      else if ((*i).type == GameParameters::Player::EASY)
-	total_difficulty += player_difficulty;
-      //FIXME: when the hard player gets better, switch this.
-      //total_difficulty += (player_difficulty * 0.325);
-      //else if ((*i).type == GameParameters::Player::EASIER)
-      //total_difficulty += (player_difficulty * 0.655);
+      char* err = strerror(errno);
+      std::cerr <<_("Error while trying to rename the temporary file to autosave.sav\n");
+      std::cerr <<_("Error: ") <<err <<std::endl;
     }
-  if (g.diplomacy)
-    total_difficulty += (float) 3.0;
-  if (g.hidden_map)
-    total_difficulty += (float) 3.0;
-  if (g.play_with_quests)
-    total_difficulty += (float) 3.0;
-  if (g.see_opponents_production == false)
-    total_difficulty += (float) 2.0;
-  if (g.see_opponents_stacks == false)
-    total_difficulty += (float) 2.0;
-  if (g.neutral_cities == GameParameters::STRONG)
-    total_difficulty += (float) 3.0;
-  else if (g.neutral_cities == GameParameters::ACTIVE)
-    total_difficulty += (float) 6.0;
-  if (g.razing_cities == GameParameters::ON_CAPTURE)
-    total_difficulty += (float) 3.0;
-  else if (g.razing_cities == GameParameters::NEVER)
-    total_difficulty += (float) 6.0;
-  if (g.cusp_of_war == true)
-    total_difficulty += (float) 2.0;
-  return (int) total_difficulty;
 }
+

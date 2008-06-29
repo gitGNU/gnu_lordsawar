@@ -30,7 +30,6 @@
 #include "../ucompose.hpp"
 #include "../defs.h"
 #include "../army.h"
-#include "../GameScenario.h"
 
 //give a hero some more abilities
 ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)

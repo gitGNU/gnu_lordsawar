@@ -22,7 +22,7 @@
 #include "citylist.h"
 #include "history.h"
 #include "game.h"
-#include "GameScenario.h"
+#include "GameScenarioOptions.h"
 
 using namespace std;
 
@@ -46,8 +46,8 @@ void AI_Diplomacy::considerCuspOfWar()
 {
   Playerlist *pl = Playerlist::getInstance();
   
-  if (Game::getScenario()->s_cusp_of_war &&
-      Game::getScenario()->getRound() == CUSP_OF_WAR_ROUND)
+  if (GameScenarioOptions::s_cusp_of_war &&
+      GameScenarioOptions::s_round == CUSP_OF_WAR_ROUND)
   {
     for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
     {

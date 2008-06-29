@@ -26,6 +26,7 @@
 #include <list>
 #include <sigc++/trackable.h>
 #include "game-parameters.h"
+#include "GameScenarioOptions.h"
 
 class XML_Helper;
 
@@ -41,7 +42,7 @@ class XML_Helper;
  * a look at XML_Helper.
  */
 
-class GameScenario: public sigc::trackable
+class GameScenario: public GameScenarioOptions
 {
     public:
 
@@ -65,7 +66,7 @@ class GameScenario: public sigc::trackable
         ~GameScenario();
 
         //! Returns the number of the current turn.
-        unsigned int getRound() const {return d_round;}
+        unsigned int getRound() const {return s_round;}
 
         //! Returns the turn mode. See NextTurn for a description.
         bool getTurnmode() const {return d_turnmode;}
@@ -98,22 +99,6 @@ class GameScenario: public sigc::trackable
 
 	bool setupCities(bool quick_start);
         
-        static bool s_see_opponents_stacks;
-        static bool s_see_opponents_production;
-        static bool s_play_with_quests;
-        static bool s_hidden_map;
-        static bool s_diplomacy;
-        static bool s_cusp_of_war;
-        static GameParameters::NeutralCities s_neutral_cities;
-        static GameParameters::RazingCities s_razing_cities;
-        static bool s_intense_combat;
-        static bool s_military_advisor;
-        static bool s_random_turns;
-	static bool s_surrender_already_offered;
-	static int s_difficulty;
-
-	static int calculate_difficulty_rating(GameParameters g);
-
     private:
         /** Callback function for loading a game. See XML_Helper for details.
           *
@@ -125,7 +110,6 @@ class GameScenario: public sigc::trackable
 	void quickStart();
 
         // DATA
-        unsigned int d_round;
         std::string d_name;
         std::string d_comment;
         bool d_turnmode; //see NextTurn for a description of this option

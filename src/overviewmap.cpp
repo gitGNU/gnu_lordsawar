@@ -35,7 +35,6 @@
 #include "sdl-draw.h"
 #include "GraphicsCache.h"
 #include "FogMap.h"
-#include "GameScenario.h"
 
 OverviewMap::OverviewMap()
 {

@@ -37,6 +37,8 @@
 #include "action.h"
 #include "xmlhelper.h"
 #include "AI_Diplomacy.h"
+#include "stack.h"
+#include "GameScenarioOptions.h"
 
 using namespace std;
 
@@ -141,8 +143,51 @@ bool AI_Fast::startTurn()
 
     d_diplomacy->considerCuspOfWar();
     
+    if (getUpkeep() > getIncome() + (getIncome()/3))
+      d_maniac = true;
+    else
+      d_maniac = false;
+
+    //setup production
+    if (getIncome() > getUpkeep())
+      {
+	Citylist *cl = Citylist::getInstance();
+	for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
+	  {
+	    City *c = &*cit;
+	    if (c->getOwner() != this || c->isBurnt())
+	      continue;
+	    if (c->getActiveProductionSlot() == -1)
+	      {
+		if (c->getProductionBase(0))
+		  c->setActiveProductionSlot(0);
+	      }
+	  }
+      }
+
     // this is a recursively-programmed quite staightforward AI,we just call:
-    computerTurn();
+    while (computerTurn() == true)
+      {
+	bool found = false;
+    
+	//are there any stacks with paths that can move?
+	for (Stacklist::reverse_iterator it = d_stacklist->rbegin(); it != d_stacklist->rend(); it++)
+	  {
+	    Stack *s = (*it);
+	    if (s->getPath()->size() > 0 && s->enoughMoves())
+	      {
+		printf ("AI_FAST stack %d can still potentially move\n", s->getId());
+	    
+		printf("moving from %d,%d to %d,%d with %d moves left\n",
+		       s->getPos().x, s->getPos().y,
+		       (*s->getPath()->begin())->x, 
+		       (*s->getPath()->begin())->y, s->getGroupMoves());
+		found = true;
+	      }
+	  }
+	if (found)
+	  found = false;
+      }
 
     delete d_analysis;
     d_analysis = 0;
@@ -150,7 +195,9 @@ bool AI_Fast::startTurn()
     d_stacklist->setActivestack(0);
 
     // Declare war with enemies, make peace with friends
-    d_diplomacy->makeProposals();
+    if (GameScenarioOptions::s_diplomacy)
+      d_diplomacy->makeProposals();
+
     return true;
 }
 
@@ -186,8 +233,27 @@ void AI_Fast::levelArmy(Army* a)
     addAction(item);
 }
 
-void AI_Fast::computerTurn()
+Stack *AI_Fast::findNearOwnStackToJoin(Stack *s, int max_distance)
 {
+  Stack* target = NULL;
+  for (Stacklist::iterator it2 = d_stacklist->begin(); it2 != d_stacklist->end(); it2++)
+    {
+      if (s->size() + (*it2)->size() > MAX_STACK_SIZE || s == (*it2))
+	continue;
+
+      int distance = dist(s->getPos(), (*it2)->getPos());
+
+      if (distance <= max_distance)
+	{
+	  target = (*it2);
+	  break;
+	}
+    }
+  return target;
+}
+bool AI_Fast::computerTurn()
+{
+  bool stack_moved = false;
     // we have configurable behaviour in two ways:
     // 1. join => merges close stacks
     // 2. maniac => attack at any costs, raze everything in the path
@@ -204,6 +270,7 @@ void AI_Fast::computerTurn()
     //          find next enemy unit with preference to cities
     //      attack
     //
+    // return true if any stack moved
 
     // we are using reversed order because new stacks come behind old stacks
     // and we want the freshly created stacks join the veterans and not the other
@@ -216,6 +283,7 @@ void AI_Fast::computerTurn()
 
         d_stacklist->setActivestack(*it);
         Stack* s = *it;
+	s->group();
         
         debug(">>>> What to do with stack " <<s->getId() <<" at (" <<s->getPos().x
 	       <<"," <<s->getPos().y <<")?")
@@ -223,41 +291,29 @@ void AI_Fast::computerTurn()
         // join armies if close
         if (d_join && s->size() < MAX_STACK_SIZE)
         {
-            Stack* target = 0;
-            for (Stacklist::iterator it2 = d_stacklist->begin(); it2 != d_stacklist->end(); it2++)
-            {
-                if (s->size() + (*it2)->size() > MAX_STACK_SIZE || s == (*it2))
-                    continue;
-                
-                int dist = abs(s->getPos().x - (*it2)->getPos().x);
-                if (dist < abs(s->getPos().y - (*it2)->getPos().y))
-                    dist = abs(s->getPos().y - (*it2)->getPos().y);
-                    
-                if (dist <= 5)
-                {
-                    target = (*it2);
-                    break;
-                }
-            }
+            Stack* target = NULL;
+	    target = findNearOwnStackToJoin(s, 5);
 
             if (target)
             {
                 debug("Joining with stack " <<target->getId() <<" at (" <<target->getPos().x
                       <<"," <<target->getPos().y <<")")
 		s->getPath()->calculate(s, target->getPos());
-                stackMove(s);
+                stack_moved |= stackMove(s);
 		continue;
             }
         }
         
         // Maybe the stack vanished upon joining. If so, reiterate;
         if (!d_stacklist->getActivestack())
-        {
-            computerTurn();
-            return;
-        }
+	  {
+	    cerr <<"crapola.  i hit a bad spot.\n";
+	    //remove me if this is never hit
+	    sleep (30);
+	    exit(1);
+	  return true;
+	  }
 
-                    
         // second step: try to resupply
         if (!d_maniac)
         {
@@ -268,39 +324,47 @@ void AI_Fast::computerTurn()
                 // try to move to the north west part of the city (where the units
                 // move after production), otherwise just wait and stand around
 
+		if (target->contains(s->getPos()) == false)
+		  {
+		    s->getPath()->calculateToCity(s, target);
+		    stack_moved |= stackMove(s);
 
-                if (target->getPos().x != s->getPos().x
-                    || target->getPos().y != s->getPos().y)
-                {
-                    s->getPath()->calculate(s, target->getPos());
-                    stackMove(s);
+		    // the stack could have joined another stack waiting there
+		    if (!d_stacklist->getActivestack())
+		      {
+			cerr <<"crapola.  i hit a another bad spot.\n";
+			//remove me if this is never hit
+			sleep (30);
+			exit(1);
+			return computerTurn();
+		      }
+		    continue;
+		  }
+		//just stay put in the city
+	    }
 
-                    // the stack could have joined another stack waiting there
-                    if (!d_stacklist->getActivestack())
-                    {
-                        computerTurn();
-                        return;
-                    }
-                }
-            }
-
-            // third step: non-maniac players attack only enemy cities
-            else
-            {
-	        City *target1;
-	        City *target2;
+	    // third step: non-maniac players attack only enemy cities
+	    else
+	      {
+		target = NULL;
 		Path *target1_path = new Path();
 		Path *target2_path = new Path();
-	        Citylist *cl = Citylist::getInstance();
-                target1 = cl->getNearestEnemyCity(s->getPos());
-		target2 = cl->getNearestForeignCity(s->getPos());
+		Citylist *cl = Citylist::getInstance();
+		City *target1 = cl->getNearestEnemyCity(s->getPos());
+		City *target2 = cl->getNearestForeignCity(s->getPos());
 		if (target1)
-		  target1_path->calculate (s, target1->getPos());
+		  target1_path->calculateToCity (s, target1);
 		if (!target2)
-		  return; //it's game over and we're still moving
-		target2_path->calculate (s, target2->getPos());
+		  return false; //it's game over and we're still moving
+		target2_path->calculateToCity (s, target2);
+
+		//no enemies?  then go for the nearest foreign city.
+		//if diplomacy isn't on and we hit this, then it's game over
 		if (!target1)
 		  target = target2;
+
+		//is the enemy city far enough away that a foreign city
+		//outweighs it?
 		else if (target1_path->size() / 13 > target2_path->size())
 		  target = target2;
 		else
@@ -308,107 +372,123 @@ void AI_Fast::computerTurn()
 
 		if (target == target2)
 		  {
-		    d_diplomacy->needNewEnemy(target->getOwner());
+		    if (GameScenarioOptions::s_diplomacy == true)
+		      d_diplomacy->needNewEnemy(target->getOwner());
 		    // try to wait a turn until we're at war
 		    if (target1)
 		      target = target1;
 		  }
 
-                if (!target)    // strange situation
-                    return;
-
-                debug("Attacking " <<target->getName())
-                int moves = s->getPath()->calculate(s, target->getPos());
-		debug("Moves to enemy city: " << moves);
-		if (s->getPath()->checkPath(s) == true)
-		  stackMove(s);
-		else
+		if (!target)    // strange situation
 		  {
-		    Citylist *cl = Citylist::getInstance();
-		    City *friendly_city = 
-		      cl->getNearestFriendlyCity(s->getPos());
-		    s->getPath()->calculate(s, friendly_city->getPos());
-		    stackMove(s);
-		    //we should *always* be able to reach a target city!
-		    //this is an error in map generation.
+		    cerr << "yet another bad situation!!\n";
+		    sleep (30);
+		    exit (1);
+		    return false;
 		  }
 
-                // a stack has died ->restart
-                if (!d_stacklist->getActivestack())
-                {
-                    computerTurn();
-                    return;
-                }
-            }
-        }
+		debug("Attacking " <<target->getName())
+		  int moves = s->getPath()->calculateToCity(s, target);
+		debug("Moves to enemy city: " << moves);
+
+		if (moves >= 1)
+		  {
+		    stack_moved |= stackMove(s);
+		    //if we didn't win
+		    if (target->getOwner() != s->getOwner())
+		      {
+			//and the target city is empty
+			if (target->countDefenders() == 0)
+			  {
+			    //attack if if we can reach it.
+			    int moved = stackSplitAndMove(s);
+			    stack_moved |=  moved;
+			  }
+		      }
+		  }
+		else
+		  {
+		    cerr << "hit yet another bad spot.\n";
+		    sleep (30);
+		    exit (1);
+		  }
+
+		// a stack has died ->restart
+		if (!d_stacklist->getActivestack())
+		  return true;
+
+		continue;
+	      }
+	}
 
 
-        // fourth step: maniac players attack everything that is close if they can
-        // reach it or cities otherwise.
-        if (d_maniac)
-        {
-            const Threatlist* threats = d_analysis->getThreatsInOrder(s->getPos());
-            Threatlist::const_iterator tit = threats->begin();
-            float mystrength = AI_Analysis::assessStackStrength(s);
-            const Threat* target = 0;
-            
-            // prefer weak forces (take strong if neccessary) and stop after 10
-            // stacks
-            for (int i = 0; tit != threats->end() && i < 10; tit++, i++)
-            {
-                // in a first step, we only look at enemy stacks
-                if ((*tit)->isCity() || (*tit)->isRuin())
-                    continue;
+	// fourth step: maniac players attack everything that is close if they can
+	// reach it or cities otherwise.
+	if (d_maniac)
+	  {
+	    const Threatlist* threats = d_analysis->getThreatsInOrder(s->getPos());
+	    Threatlist::const_iterator tit = threats->begin();
+	    float mystrength = AI_Analysis::assessStackStrength(s);
+	    const Threat* target = 0;
 
-                // ignore stacks out of reach
-                Uint32 mp = s->getPath()->calculate(s, (*tit)->getClosestPoint(s->getPos()));
-                if (mp == 0 || mp > s->getGroupMoves())
-                    continue;
+	    // prefer weak forces (take strong if neccessary) and stop after 10
+	    // stacks
+	    for (int i = 0; tit != threats->end() && i < 10; tit++, i++)
+	      {
+		// in a first step, we only look at enemy stacks
+		if ((*tit)->isCity() || (*tit)->isRuin())
+		  continue;
 
-                // if the target is weaker than us, attack it!
-                if ((*tit)->strength() < mystrength)
-                {
-                    target = *tit;
-                    break;
-                }
+		// ignore stacks out of reach
+		Uint32 mp = s->getPath()->calculate(s, (*tit)->getClosestPoint(s->getPos()));
+		if (mp == 0 || mp > s->getGroupMoves())
+		  continue;
 
-                // otherwise take the weakest target we can get
-                if (!target || target->strength() > (*tit)->strength())
-                    target = *tit;
-            }
+		// if the target is weaker than us, attack it!
+		if ((*tit)->strength() < mystrength)
+		  {
+		    target = *tit;
+		    break;
+		  }
 
-            // now we need to choose. If we found a target, attack it, otherwise
-            // attack the closest city.
-            Vector<int> pos;
-            if (target)
-            {
-                pos = target->getClosestPoint(s->getPos());
-                debug("Maniac mode, found target at (" <<pos.x <<"," <<pos.y <<")")
-            }
-            else
-            {
-                pos  = Citylist::getInstance()->getNearestForeignCity(s->getPos())->getPos();
-                debug("Maniac, found no targets, attacking city at (" <<pos.x <<"," <<pos.y <<")")
-            }
+		// otherwise take the weakest target we can get
+		if (!target || target->strength() > (*tit)->strength())
+		  target = *tit;
+	      }
 
-            s->getPath()->calculate(s, pos);
+	    // now we need to choose. If we found a target, attack it, otherwise
+	    // attack the closest city.
+	    Vector<int> pos;
+	    if (target)
+	      {
+		pos = target->getClosestPoint(s->getPos());
+		debug("Maniac mode, found target at (" <<pos.x <<"," <<pos.y <<")")
+	      }
+	    else
+	      {
+		pos  = Citylist::getInstance()->getNearestForeignCity(s->getPos())->getPos();
+		debug("Maniac, found no targets, attacking city at (" <<pos.x <<"," <<pos.y <<")")
+	      }
+
+	    s->getPath()->calculate(s, pos);
 	    if (s->getPath()->checkPath(s) == true)
-	      stackMove(s);
+	      stack_moved = stackMove(s);
 	    else
 	      {
 		Citylist *cl = Citylist::getInstance();
 		City *friendly_city = cl->getNearestFriendlyCity(s->getPos());
 		s->getPath()->calculate(s, friendly_city->getPos());
-		stackMove(s);
+		stack_moved = stackMove(s);
 	      }
 
-            if (!d_stacklist->getActivestack())
-            {
-                computerTurn();
-                break;
-            }
-        }
+	    if (!d_stacklist->getActivestack())
+	      {
+		stack_moved |= computerTurn();
+		break;
+	      }
+	  }
     }
+    return stack_moved;
 }
 
 bool AI_Fast::treachery (Stack *stack, Player *player, Vector <int> pos, DiplomaticState state)

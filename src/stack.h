@@ -323,6 +323,10 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Emitted when a stack dies.
         sigc::signal<void, Stack*> sdying;
 
+	//! Return a list of army Ids in the stack that can reach the given 
+	//! destination.
+	std::vector<Uint32> determineReachableArmies(Vector<int> dest);
+
     private:    
 
         //! Callback for loading the stack

@@ -93,10 +93,13 @@ class AI_Fast : public RealPlayer
 
     private:
         //! The actual core function of the ai's logic.
-        void computerTurn(); 
+        bool computerTurn(); 
 
 	//! buy a scout unit if we need one.
 	void maybeBuyScout();
+
+	//! search through our a stacklist
+	Stack *findNearOwnStackToJoin(Stack *s, int max_distance);
 
 	//! Determines whether to join units or move them separately.
         bool d_join;

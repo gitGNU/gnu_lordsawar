@@ -44,7 +44,7 @@
 #include "army.h"
 #include "hero.h"
 #include "Configuration.h"
-#include "GameScenario.h"
+#include "GameScenarioOptions.h"
 #include "action.h"
 #include "history.h"
 #include "AI_Analysis.h"
@@ -94,7 +94,7 @@ sigc::signal<void, Player::Type> sendingTurn;
 Player::Player(string name, Uint32 armyset, SDL_Color color, int width,
 	       int height, Type type, int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
-    d_dead(false), d_immortal(false), d_type(type), d_upkeep(0)
+    d_dead(false), d_immortal(false), d_type(type), d_upkeep(0), d_income(0)
 {
     if (player_no != -1)
 	d_id = player_no;
@@ -129,7 +129,8 @@ Player::Player(const Player& player)
     :d_color(player.d_color), d_name(player.d_name), d_armyset(player.d_armyset),
     d_gold(player.d_gold), d_dead(player.d_dead), d_immortal(player.d_immortal),
     d_type(player.d_type), d_id(player.d_id), 
-    d_fight_order(player.d_fight_order), d_upkeep(player.d_upkeep)
+    d_fight_order(player.d_fight_order), d_upkeep(player.d_upkeep), 
+    d_income(player.d_income)
 {
     // as the other player is propably dumped somehow, we need to deep copy
     // everything. This costs a lot, but the only useful situation for this
@@ -178,6 +179,7 @@ Player::Player(XML_Helper* helper)
     helper->getData(d_immortal, "immortal");
     helper->getData(d_type, "type");
     helper->getData(d_upkeep, "upkeep");
+    helper->getData(d_income, "income");
 
     string s;
     helper->getData(s, "color");
@@ -490,6 +492,7 @@ bool Player::save(XML_Helper* helper) const
     retval &= helper->saveData("type", d_type);
     debug("type of " << d_name << " is " << d_type)
     retval &= helper->saveData("upkeep", d_upkeep);
+    retval &= helper->saveData("income", d_income);
 
     // save the fight order, one ranking per army type
     std::stringstream fight_order;
@@ -695,6 +698,17 @@ void Player::calculateUpkeep()
       d_upkeep += (*i)->getUpkeep();
 }
 
+void Player::calculateIncome()
+{
+    d_income = 0;
+    Citylist *cl = Citylist::getInstance();
+    for (Citylist::iterator i = cl->begin(), iend = cl->end(); i != iend; ++i)
+      {
+	if ((*i).getOwner() == this)
+	  d_income += (*i).getGold();
+      }
+}
+
 void Player::doSetFightOrder(std::list<Uint32> order)
 {
   d_fight_order = order;
@@ -806,6 +820,32 @@ bool Player::stackJoin(Stack* receiver, Stack* joining, bool grouped)
     return true;
 }
 
+bool Player::stackSplitAndMove(Stack* s)
+{
+  //the stack can't get there, but maybe part of the stack can.
+  if (s->getPath()->empty())
+    return false;
+
+  Path::iterator it = s->getPath()->end();
+  it--;
+  std::vector<Uint32> ids;
+  ids = s->determineReachableArmies(**(it));
+  if (ids.size() == 0)
+    return false;
+  if (ids.size() == s->size())
+    return stackMove(s);
+
+  for (Stack::iterator it = s->begin(); it != s->end(); it++)
+    {
+      (*it)->setGrouped(false);
+      if (find(ids.begin(), ids.end(), (*it)->getId()) != ids.end())
+	(*it)->setGrouped(true);
+    }
+  //this splits the ungrouped armies into their own stack
+  stackSplit(s);
+  return stackMove(s);
+}
+
 bool Player::stackMove(Stack* s)
 {
     debug("Player::stackMove(Stack*)")
@@ -818,7 +858,7 @@ bool Player::stackMove(Stack* s)
     Path::iterator it = s->getPath()->end();
     it--;
     MoveResult *result = stackMove(s, **(it), true);
-    bool ret = result->moveSucceeded();
+    bool ret = result->didSomething();//result->moveSucceeded();
     delete result;
     result = 0;
     return ret;
@@ -933,8 +973,8 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
             MoveResult *moveResult = new MoveResult(moved);
             moveResult->setStepCount(stepCount);
             moveResult->setJoin(moved);
-	    if (moved == false)
-	      d_stacklist->getActivestack()->getPath()->flClear();
+	    //if (moved == false)
+	      //d_stacklist->getActivestack()->getPath()->flClear();
             return moveResult;
          }
         
@@ -1076,7 +1116,7 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
     bool attacker_active = *attacker == d_stacklist->getActivestack();
 
     Fight fight(*attacker, *defender);
-    fight.battle(GameScenario::s_intense_combat);
+    fight.battle(GameScenarioOptions::s_intense_combat);
     
     fight_started.emit(fight);
     // cleanup

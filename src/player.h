@@ -296,6 +296,9 @@ class Player: public sigc::trackable
 	//! Return the upkeep.
         Uint32 getUpkeep() {return d_upkeep;}
 
+	//! Return the income from all of the player's cities.
+        Uint32 getIncome () {return d_income;}
+
 	/**
 	 * Perform a summation of the upkeep value for every Army in the 
 	 * player's Stacklist.  This method sets d_upkeep.
@@ -303,6 +306,14 @@ class Player: public sigc::trackable
 	 */
 	//! Calculates the upkeep.
 	void calculateUpkeep();
+
+	/**
+	 * Perform a summation of the income value for every City in the 
+	 * player's Citylist.  This method sets d_income.
+	 * The income value is in gold pieces.
+	 */
+	//! Calculates the upkeep.
+	void calculateIncome();
 
 	//! Declare a new diplomatic state with respect to an opponent.
 	void declareDiplomacy(DiplomaticState state, Player *player);
@@ -597,6 +608,10 @@ class Player: public sigc::trackable
 	 */
         //! Callback to move a stack on the map.
         bool stackMove(Stack* s);
+
+	//! Callback to take the armies from the stack that have at least
+	//! enough moves to reach the end of the stack's path.
+	bool stackSplitAndMove(Stack* s);
 
         /** 
 	 * Called to move a Stack to a specified position.
@@ -1335,6 +1350,9 @@ class Player: public sigc::trackable
 	//! How many gold pieces the Player paid out in the last turn.
 	Uint32 d_upkeep;
 
+	//! How many gold pieces the Player made from taxes in the last turn.
+	Uint32 d_income;
+
 	//! The diplomatic view that this Player has of each other Player.
 	DiplomaticState d_diplomatic_state[MAX_PLAYERS];
 
@@ -1380,6 +1398,7 @@ class Player: public sigc::trackable
         void doProposeDiplomacy (DiplomaticProposal proposal, Player *player);
         void doConquerCity(City *city, Stack *stack);
         void doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const Army *ally);
+
 
     private:
         //! Loads the subdata of a player (actions and stacklist)

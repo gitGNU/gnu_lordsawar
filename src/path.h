@@ -29,6 +29,7 @@
 
 class Stack;
 class XML_Helper;
+class Location;
 
 //! A list of waypoint coordinates (Vector<int>) on the GameMap.
 /** 
@@ -149,6 +150,8 @@ class Path : public std::list<Vector<int>*>
 
         void eraseFirstPoint();
         
+	//! find which tile in the city is quickest to move to.
+	Uint32 calculateToCity (Stack *s, Location *c, bool zigzag = true);
     private:
         /** 
          * This method returns whether or not a Stack can pass over a tile.  
