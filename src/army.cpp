@@ -641,3 +641,12 @@ std::string Army::getArmyBonusDescription() const
 			  _("cancel hero"));
   return s;
 }
+
+bool Army::blessedAtTemple(Uint32 temple_id)
+{
+  if (find (d_visitedTemples.begin(), d_visitedTemples.end(), temple_id) ==
+      d_visitedTemples.end())
+    return false;
+      
+  return true;
+}

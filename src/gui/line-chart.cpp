@@ -159,6 +159,16 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     cr->line_to(origin_x + hoffs - (hoffs / 4) - 1, voffs + 1);
     cr->stroke();
 
+    //draw the indicator line
+    if (d_x_indicator > -1 && d_x_indicator <= max_turn)
+      {
+	//draw a line at turn x
+	cr->set_source_rgb(0.0, 0.0, 0.0);
+	cr->move_to((((float)d_x_indicator/ (float)max_turn) * (width - (hoffs * 2))) + hoffs, voffs);
+	cr->line_to((((float)d_x_indicator/ (float)max_turn) * (width - (hoffs * 2))) + hoffs, height - voffs);
+	cr->stroke();
+      }
+
     // draw the labels on the horizontal axis
     layout->set_font_description (font_desc);
     layout->set_text("0");
@@ -217,15 +227,6 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     cr->rotate(-90 / (180.0 / G_PI));
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
-    //draw the indicator line
-    if (d_x_indicator > -1 && d_x_indicator <= max_turn)
-      {
-	//draw a line at turn x
-	cr->set_source_rgb(0.0, 0.0, 0.0);
-	cr->move_to((((float)d_x_indicator/ (float)max_turn) * (width - (hoffs * 2))) + hoffs, voffs);
-	cr->line_to((((float)d_x_indicator/ (float)max_turn) * (width - (hoffs * 2))) + hoffs, height - voffs);
-	cr->stroke();
-      }
   }
 
   return true;

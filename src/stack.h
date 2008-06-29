@@ -37,6 +37,7 @@ class Player;
 class Path;
 class Army;
 class XML_Helper;
+class Temple;
 
 //! A set of up to eight Army units that move as a single entity on the map.
 /** 
@@ -326,6 +327,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Return a list of army Ids in the stack that can reach the given 
 	//! destination.
 	std::vector<Uint32> determineReachableArmies(Vector<int> dest);
+
+	//! returns how many armies in the stack have visited the given temple.
+	Uint32 countArmiesBlessedAtTemple(Uint32 temple_id);
 
     private:    
 

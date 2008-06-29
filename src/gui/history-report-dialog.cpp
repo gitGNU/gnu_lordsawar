@@ -308,6 +308,7 @@ void HistoryReportDialog::generatePastCitylists()
 	break;
 
     }
+  past_citylists.erase(--past_citylists.end());
 }
 
 void HistoryReportDialog::set_parent_window(Gtk::Window &parent)
@@ -397,7 +398,7 @@ void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
   //update the city chart
   std::list<Uint32> citylist = *past_citycounts.begin();
   it = citylist.begin();
-  count=1;
+  count = 0;
   for (; it != citylist.end(); it++, count++)
     {
       if (count == turn)

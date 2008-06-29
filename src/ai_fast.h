@@ -98,8 +98,11 @@ class AI_Fast : public RealPlayer
 	//! buy a scout unit if we need one.
 	void maybeBuyScout();
 
-	//! search through our a stacklist
+	//! search through our stacklist for a stack we can join
 	Stack *findNearOwnStackToJoin(Stack *s, int max_distance);
+
+	//! go to a temple if we're near enough
+	bool maybeVisitTemple(Stack *s, bool &blessed);
 
 	//! Determines whether to join units or move them separately.
         bool d_join;

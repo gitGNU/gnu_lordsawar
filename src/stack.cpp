@@ -796,4 +796,14 @@ std::vector<Uint32> Stack::determineReachableArmies(Vector<int> dest)
   return ids;
 }
 
+Uint32 Stack::countArmiesBlessedAtTemple(Uint32 temple_id)
+{
+  Uint32 blessed = 0;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->blessedAtTemple(temple_id))
+	blessed++;
+    }
+    return blessed;
+}
 // End of file

@@ -486,6 +486,9 @@ class Army : public Ownable, public sigc::trackable
 	//! Return how much the stat would be boosted by gaining a level.
         int computeLevelGain(Stat stat);
 
+	//! Returns whether or not the army was blessed at the given temple.
+        bool blessedAtTemple(Uint32 temple_id);
+
         void printAllDebugInfo() const;
 
         //! Saves the Army to an opened saved-game file.

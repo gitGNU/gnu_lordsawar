@@ -706,7 +706,10 @@ void GamePreferencesDialog::on_difficulty_changed()
 	{
 	  std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
 	  for (; c != player_types.end(); c++)
-	    (*c)->set_active (type_num);
+	    {
+	      if ((*c)->get_active_row_number() != 3)
+		(*c)->set_active (type_num);
+	    }
 	}
       update_difficulty_rating();
     }
