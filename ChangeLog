@@ -1,3 +1,11 @@
+
+2008-08-29  Ben Asselstine
+
+	* added ability for easy ai player to go to temples to get blessed.
+	* fixed turn indicator in line charts.
+	* fixed "player perished" notices for players who aren't playing in 
+	  the scenario.
+
 2008-08-28  Ben Asselstine
 
 	* fixed easy and hard ai players to make an infantry unit initially 
