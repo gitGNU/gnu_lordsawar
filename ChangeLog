@@ -1,4 +1,9 @@
 
+2008-08-30  Ben Asselstine
+
+	* fixing bug where stack fails to move into conquered city
+	  immediately after winning the fight.  Reported by Rob Kinyon.
+
 2008-08-29  Ben Asselstine
 
 	* added ability for easy ai player to go to temples to get blessed.
