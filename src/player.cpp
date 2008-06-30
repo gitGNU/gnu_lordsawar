@@ -912,25 +912,25 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
             Fight::Result result;
             MoveResult *moveResult = new MoveResult(true);
 	    if (stackMoveOneStep(s))
-	      stepCount++;
+	      {
+		stepCount++;
+		moveResult = new MoveResult(true);
+	      }
+	    else
+	      {
+		moveResult = new MoveResult(false);
+		moveResult->setStepCount(stepCount);
+		return moveResult;
+	      }
+
             vector<Stack*> def_in_city = Stacklist::defendersInCity(city);
             if (!def_in_city.empty())
             {
                 // This is a hack to circumvent the limitations of stackFight.
-                // Create a dummy stack at the target position if neccessary
-                // and start a fight with this dummy stack.
-#if 0
-                if (!target)
-                    target = new Stack(city->getOwner(), pos);
-#endif
                 if (!target)
                   target = def_in_city[0];
  
                 result = stackFight(&s, &target);
-#if 0
-                if (target && target->empty())
-                    delete target;
-#endif
             }
             else
                 result = Fight::ATTACKER_WON;
@@ -1062,7 +1062,11 @@ bool Player::stackMoveOneStep(Stack* s)
 	    return false;
 	}
       else
-	return false;
+	{
+	  //if we're attacking, then jump onto the square with the enemy.
+	  if (s->getPath()->size() != 1)
+	    return false;
+	}
 
     }
   Action_Move* item = new Action_Move();
@@ -1140,15 +1144,6 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
     bool exists =
 	std::find(d_stacklist->begin(), d_stacklist->end(), *attacker)
 	!= d_stacklist->end();
-#if 0
-    bool exists = false;
-    for (Stacklist::iterator it = d_stacklist->begin(); it != d_stacklist->end(); it++)
-        if ((*it) == (*attacker))
-	{
-            exists = true;
-	    break;
-	}
-#endif
     
     if (!exists)
     {
@@ -1160,12 +1155,9 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
     // ...then the defender.
     exists = false;
     if (pd)
-        for (Stacklist::iterator it = pd->getStacklist()->begin();
-             it != pd->getStacklist()->end(); it++)
-        {
-            if ((*it) == (*defender))
-                exists = true;
-        }
+      exists = 
+	std::find(pd->getStacklist()->begin(), pd->getStacklist()->end(), 
+		  *defender) != pd->getStacklist()->end();
     else
         exists = true;
     if (!exists)
