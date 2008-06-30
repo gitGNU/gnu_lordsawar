@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-06-28 21:58-0400\n"
+"POT-Creation-Date: 2008-06-29 21:54-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -2566,7 +2566,7 @@ msgstr ""
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Il gruppo ha cercato di visitare il tempio alla locazione sbagliata\n"
 
-#: src/player.cpp:2267
+#: src/player.cpp:2276
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Unité standard"
@@ -2875,101 +2875,101 @@ msgstr "e hai trovato %i moneta d'oro!"
 msgid "Score"
 msgstr "Scone"
 
-#: src/gui/history-report-dialog.cpp:354
+#: src/gui/history-report-dialog.cpp:355
 #, fuzzy
 msgid "City History"
 msgstr "Informations sur la cité"
 
-#: src/gui/history-report-dialog.cpp:357
+#: src/gui/history-report-dialog.cpp:358
 #, fuzzy
 msgid "Event History"
 msgstr "Eventi"
 
-#: src/gui/history-report-dialog.cpp:360
+#: src/gui/history-report-dialog.cpp:361
 #, fuzzy
 msgid "Gold History"
 msgstr "Rapport sur l'or"
 
-#: src/gui/history-report-dialog.cpp:363
+#: src/gui/history-report-dialog.cpp:364
 #, fuzzy
 msgid "Winner History"
 msgstr "Informations sur la cité"
 
-#: src/gui/history-report-dialog.cpp:390 src/gui/history-report-dialog.cpp:409
+#: src/gui/history-report-dialog.cpp:391 src/gui/history-report-dialog.cpp:410
 msgid "On turn %1 you %2 "
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:392
+#: src/gui/history-report-dialog.cpp:393
 #, fuzzy
 msgid "%1 gold piece!"
 msgid_plural "%1 gold pieces!"
 msgstr[0] "e hai trovato %i moneta d'oro!"
 msgstr[1] "e hai trovato %i monete d'oro!"
 
-#: src/gui/history-report-dialog.cpp:411
+#: src/gui/history-report-dialog.cpp:412
 msgid "%1 city!"
 msgid_plural "%1 cities!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/history-report-dialog.cpp:433
+#: src/gui/history-report-dialog.cpp:434
 msgid "On turn %1 you %2 coming %3"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:459
+#: src/gui/history-report-dialog.cpp:460
 msgid "%1 finds a sage!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:467
+#: src/gui/history-report-dialog.cpp:468
 msgid "%1 emerges in %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:476
+#: src/gui/history-report-dialog.cpp:477
 msgid "%1 begins a quest!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:484
+#: src/gui/history-report-dialog.cpp:485
 msgid "%1 finishes a quest!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:492
+#: src/gui/history-report-dialog.cpp:493
 msgid "%1 is killed in %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:501
+#: src/gui/history-report-dialog.cpp:502
 msgid "%1 is killed in battle!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:509
+#: src/gui/history-report-dialog.cpp:510
 msgid "%1 is killed while searching!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:518
+#: src/gui/history-report-dialog.cpp:519
 msgid "%1 conquers %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:527
+#: src/gui/history-report-dialog.cpp:528
 msgid "%1 is vanquished!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:537
+#: src/gui/history-report-dialog.cpp:538
 msgid "%1 at peace with %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:547
+#: src/gui/history-report-dialog.cpp:548
 msgid "%1 at war with %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:557
+#: src/gui/history-report-dialog.cpp:558
 #, fuzzy
 msgid "Treachery by %1 on %2!"
 msgstr "Archer"
 
-#: src/gui/history-report-dialog.cpp:566
+#: src/gui/history-report-dialog.cpp:567
 msgid "%1 finds allies!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:571
+#: src/gui/history-report-dialog.cpp:572
 msgid "unknown"
 msgstr ""
 
