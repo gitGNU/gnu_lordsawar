@@ -3,6 +3,7 @@
 
 	* fixing bug where stack fails to move into conquered city
 	  immediately after winning the fight.  Reported by Rob Kinyon.
+	* easy ai player now performs vectoring.
 
 2008-08-29  Ben Asselstine
 
