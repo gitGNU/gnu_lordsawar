@@ -1840,6 +1840,15 @@ bool Player::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
   return true;
 }
 
+bool Player::heroPickupAllItems(Hero *h, Vector<int> pos)
+{
+  std::list<Item*> bag = GameMap::getInstance()->getTile(pos)->getItems();
+  for (std::list<Item*>::iterator i = bag.begin(), end = bag.end();
+       i != end; ++i)
+    heroPickupItem(h, *i, pos);
+  return true;
+}
+
 bool Player::heroCompletesQuest(Hero *h)
 {
   // record it for posterity

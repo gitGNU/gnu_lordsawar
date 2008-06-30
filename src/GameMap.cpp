@@ -850,3 +850,17 @@ void GameMap::applyTileStyles (int minx, int miny, int maxx, int maxy,
     }
   close_circles(minx, miny, maxx, maxy);
 }
+
+std::vector<Vector<int> > GameMap::getItems()
+{
+  std::vector<Vector<int> > items;
+  for (int j = 0; j < s_height; j++)
+    for (int i = 0; i < s_width; i++)
+      {
+	if (d_map[j*s_width + i])
+	  if (d_map[j*s_width + i]->getItems().empty() == false)
+	    items.push_back(Vector<int>(i, j));
+
+      }
+  return items;
+}

@@ -996,6 +996,8 @@ class Player: public sigc::trackable
         //! Callback to have a Hero pick up an Item.
         bool heroPickupItem(Hero *hero, Item *item, Vector<int> pos);
 
+	bool heroPickupAllItems(Hero *h, Vector<int> pos);
+
 	/**
 	 * Completing a Quest entails that the Hero is going to receive a
 	 * reward, but that happens in Player::giveReward.

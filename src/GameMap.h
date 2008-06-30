@@ -23,6 +23,8 @@
 
 #include <sigc++/trackable.h>
 
+#include <vector>
+
 #include "vector.h"
 #include "rectangle.h"
 #include "maptile.h"
@@ -152,6 +154,9 @@ class GameMap: public sigc::trackable
 	 */
 	void applyTileStyles (int minx, int miny, int maxx, int maxy,
 			      bool smooth_terrain);
+
+	//! Get the positions of all of the items on the game map (in bags).
+	std::vector<Vector<int> > getItems();
 
     protected:
         //! Create the map with the given tileset

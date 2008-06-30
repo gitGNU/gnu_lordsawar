@@ -747,7 +747,6 @@ bool Stack::canJoin(const Stack *stack) const
 
 std::vector<Uint32> Stack::determineReachableArmies(Vector<int> dest)
 {
-  printf ("dest is %d,%d\n", dest.x, dest.y);
   std::vector<Uint32> ids;
   //try each army individually to see if it reaches
   for (iterator it = begin(); it != end(); it++)

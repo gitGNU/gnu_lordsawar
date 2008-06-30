@@ -123,11 +123,17 @@ class AI_Fast : public RealPlayer
 	 * @param blessed      Gets filled with false if the stack didn't get 
 	 *                     blessed.  Gets filled with true if the stack 
 	 *                     got blessed at the temple.
+	 * @param stack_died   Gets filled with true if the stack got killed
+	 *                     by an enemy stack on the same square as the
+	 *                     temple.
 	 *
 	 * Returns true if the stack moved, false if it stayed still.
 	 */
-	bool maybeVisitTemple(Stack *s, int dist, int mp, 
-			      double percent_can_be_blessed, bool &blessed);
+	bool maybeVisitTempleForBlessing(Stack *s, int dist, int mp, 
+					 double percent_can_be_blessed, 
+					 bool &blessed, bool &stack_died);
+	bool maybePickUpItems (Stack *s, int dist, int mp, bool &picked_up,
+			       bool &stack_died);
 
 	//! Determines whether to join units or move them separately.
         bool d_join;

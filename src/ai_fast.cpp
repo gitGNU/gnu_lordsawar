@@ -40,6 +40,7 @@
 #include "AI_Diplomacy.h"
 #include "stack.h"
 #include "GameScenarioOptions.h"
+#include "hero.h"
 
 using namespace std;
 
@@ -288,15 +289,18 @@ bool AI_Fast::computerTurn()
         Stack* s = *it;
 	s->group();
         
+	//go to a temple
 	if (!d_maniac)
 	  {
+	    bool stack_died = false;
 	    bool blessed = false;
-	    //are we not in a city?
 	    if (Citylist::getInstance()->getObjectAt(s->getPos()) == NULL)
 	      {
-		stack_moved = maybeVisitTemple(s, s->getGroupMoves(), 
-					       s->getGroupMoves() + 7, 50.0, 
-					       blessed);
+		stack_moved = maybeVisitTempleForBlessing
+		  (s, s->getGroupMoves(), s->getGroupMoves() + 7, 50.0, 
+		   blessed, stack_died);
+		if (stack_died)
+		  return true;
 		if (blessed && stack_moved)
 		  stack_moved = false; //do this so we move it later on
 		else if (stack_moved)
@@ -304,8 +308,25 @@ bool AI_Fast::computerTurn()
 	      }
 	  }
 
+	//pick up items
+	if (!d_maniac)
+	  {
+	    bool stack_died = false;
+	    bool picked_up = false;
+		
+	    stack_moved = maybePickUpItems(s, s->getGroupMoves(), 
+					       s->getGroupMoves() + 7, 
+					       picked_up, stack_died);
+	    if (stack_died)
+	      return true;
+	    if (picked_up && stack_moved)
+	      stack_moved = false; //do this so we move it later on
+	    else if (stack_moved)
+	      continue;
+	  }
+
         debug(">>>> What to do with stack " <<s->getId() <<" at (" <<s->getPos().x
-	       <<"," <<s->getPos().y <<")?")
+	       <<"," <<s->getPos().y <<") containing " <<s->size() << " armies ?")
 
         // join armies if close
         if (d_join && s->size() < MAX_STACK_SIZE)
@@ -328,7 +349,6 @@ bool AI_Fast::computerTurn()
 	  {
 	    cerr <<"crapola.  i hit a bad spot.\n";
 	    //remove me if this is never hit
-	    sleep (30);
 	    exit(1);
 	  return true;
 	  }
@@ -350,13 +370,7 @@ bool AI_Fast::computerTurn()
 
 		    // the stack could have joined another stack waiting there
 		    if (!d_stacklist->getActivestack())
-		      {
-			cerr <<"crapola.  i hit a another bad spot.\n";
-			//remove me if this is never hit
-			sleep (30);
-			exit(1);
-			return computerTurn();
-		      }
+		      return true;
 		    continue;
 		  }
 		//just stay put in the city
@@ -401,7 +415,6 @@ bool AI_Fast::computerTurn()
 		if (!target)    // strange situation
 		  {
 		    cerr << "yet another bad situation!!\n";
-		    sleep (30);
 		    exit (1);
 		    return false;
 		  }
@@ -413,7 +426,9 @@ bool AI_Fast::computerTurn()
 		if (moves >= 1)
 		  {
 		    stack_moved |= stackMove(s);
-		    //if we didn't win
+		    if (!d_stacklist->getActivestack())
+		      return true;
+		    //if we didn't get there
 		    if (target->getOwner() != s->getOwner())
 		      {
 			//and the target city is empty
@@ -428,7 +443,6 @@ bool AI_Fast::computerTurn()
 		else
 		  {
 		    cerr << "hit yet another bad spot.\n";
-		    sleep (30);
 		    exit (1);
 		  }
 
@@ -459,7 +473,11 @@ bool AI_Fast::computerTurn()
 		  continue;
 
 		// ignore stacks out of reach
-		Uint32 mp = s->getPath()->calculate(s, (*tit)->getClosestPoint(s->getPos()));
+		Vector<int> threatpos = (*tit)->getClosestPoint(s->getPos());
+		if (threatpos == Vector<int>(-1, -1))
+		  continue;
+
+		Uint32 mp = s->getPath()->calculate(s, threatpos);
 		if (mp == 0 || mp > s->getGroupMoves())
 		  continue;
 
@@ -489,6 +507,13 @@ bool AI_Fast::computerTurn()
 		debug("Maniac, found no targets, attacking city at (" <<pos.x <<"," <<pos.y <<")")
 	      }
 
+	    if (pos == Vector<int>(-1,-1))
+	      {
+		debug("Maniac, failure to calc point")
+		exit (1);
+		return false;
+	      }
+
 	    s->getPath()->calculate(s, pos);
 	    if (s->getPath()->checkPath(s) == true)
 	      stack_moved = stackMove(s);
@@ -501,10 +526,8 @@ bool AI_Fast::computerTurn()
 	      }
 
 	    if (!d_stacklist->getActivestack())
-	      {
-		stack_moved |= computerTurn();
-		break;
-	      }
+	      return true;
+
 	  }
     }
     return stack_moved;
@@ -516,8 +539,79 @@ bool AI_Fast::treachery (Stack *stack, Player *player, Vector <int> pos, Diploma
   return performTreachery;
 }
 
-bool AI_Fast::maybeVisitTemple(Stack *s, int dist, int max_mp, 
-			       double percent_can_be_blessed, bool &blessed)
+bool AI_Fast::maybePickUpItems(Stack *s, int max_dist, int max_mp, bool &picked_up, bool &stack_died)
+{
+  int min_dist = -1;
+  bool stack_moved = false;
+  Vector<int> item_tile(-1, -1);
+
+  // do we not have a hero?
+  if (s->hasHero() == false)
+    return false;
+
+  //ok, which bag of stuff is closest?
+  std::vector<Vector<int> > tiles = GameMap::getInstance()->getItems();
+  std::vector<Vector<int> >::iterator it = tiles.begin();
+  for(; it != tiles.end(); it++)
+    {
+      Vector<int> tile = *it;
+      //don't consider bags of stuff that are inside enemy cities
+      City *c = Citylist::getInstance()->getObjectAt(tile);
+      if (c)
+	{
+	  if (c->getOwner() != s->getOwner())
+	    continue;
+	}
+
+      int distance = dist (tile, s->getPos());
+      if (distance < min_dist || min_dist == -1)
+	{
+	  min_dist = distance;
+	  item_tile = tile;
+	}
+    }
+
+  //if no bags of stuff, or the bag is too far away
+  if (min_dist == -1 || min_dist > max_dist)
+    return false;
+  
+  //are we not standing on it?
+  if (s->getPos() != item_tile)
+    {
+      //can we really reach it?
+      Vector<int> old_dest(-1,-1);
+      if (s->getPath()->size())
+	old_dest = *s->getPath()->back();
+      Uint32 mp = s->getPath()->calculate(s, item_tile);
+      if ((int)mp > max_mp)
+	{
+	  //nope.  unreachable.  set in our old path.
+	  if (old_dest != Vector<int>(-1,-1))
+	    s->getPath()->calculate(s, old_dest);
+	  return false;
+	}
+      stack_moved = stackMove(s);
+      //maybe we died -- an enemy stack was guarding the bag.
+      if (!d_stacklist->getActivestack())
+	{
+	  stack_died = true;
+	  return true;
+	}
+    }
+
+  //are we standing on it now?
+  if (s->getPos() == item_tile)
+    {
+      Hero *hero = dynamic_cast<Hero*>(s->getFirstHero());
+      picked_up = heroPickupAllItems(hero, s->getPos());
+    }
+
+  return stack_moved;
+}
+
+bool AI_Fast::maybeVisitTempleForBlessing(Stack *s, int dist, int max_mp, 
+					  double percent_can_be_blessed, 
+					  bool &blessed, bool &stack_died)
 {
   bool stack_moved = false;
   Templelist *tl = Templelist::getInstance();
@@ -544,6 +638,13 @@ bool AI_Fast::maybeVisitTemple(Stack *s, int dist, int max_mp,
 	  return false;
 	}
       stack_moved = stackMove(s);
+        
+      //maybe we died -- an enemy stack was guarding the temple
+      if (!d_stacklist->getActivestack())
+	{
+	  stack_died = true;
+	  return true;
+	}
     }
 
   int num_blessed = 0;
