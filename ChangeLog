@@ -5,6 +5,8 @@
 	* fixed turn indicator in line charts.
 	* fixed "player perished" notices for players who aren't playing in 
 	  the scenario.
+	* the easy ai player now uses heroes to pick up bags of stuff.
+	* fixed crashes in easy ai player stack movement.
 
 2008-08-28  Ben Asselstine
 
