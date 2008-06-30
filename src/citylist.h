@@ -337,6 +337,10 @@ class Citylist : public LocationList<City>, public sigc::trackable
 	 */
 	City* getNearestCityPast(const Vector<int>& pos, int dist);
 
+
+	//! Get the nearest city to POS that can be vectored to.
+	City* getNearestFriendlyVectorableCity(const Vector<int>& pos);
+
     protected:
         // CREATORS
 	//! Default constructor.
@@ -352,6 +356,7 @@ class Citylist : public LocationList<City>, public sigc::trackable
         Citylist(XML_Helper* helper);
 	//! Destructor.
         ~Citylist();
+
 
     private:
         //! A callback for loading City objects into the list of cities.

@@ -331,6 +331,10 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! returns how many armies in the stack have visited the given temple.
 	Uint32 countArmiesBlessedAtTemple(Uint32 temple_id);
 
+	//! how many movement points is it for a scout to travel this line.
+	static Uint32 scout(Player *p, Vector<int> src, Vector<int> dest, 
+			    const Army *proto = NULL);
+
     private:    
 
         //! Callback for loading the stack

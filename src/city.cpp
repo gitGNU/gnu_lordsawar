@@ -706,4 +706,18 @@ Uint32 City::countDefenders()
   return armies;
 }
 
+Uint32 City::countCitiesVectoringToHere()
+{
+  Citylist *cl = Citylist::getInstance();
+  Uint32 count = 0;
+  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+    {
+      if ((*it).getOwner() != getOwner())
+	continue;
+      if ((*it).getVectoring() == getPos())
+	count++;
+    }
+
+  return count;
+}
 // End of file

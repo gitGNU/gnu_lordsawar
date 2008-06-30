@@ -805,4 +805,23 @@ Uint32 Stack::countArmiesBlessedAtTemple(Uint32 temple_id)
     }
     return blessed;
 }
+	
+Uint32 Stack::scout(Player *p, Vector<int> src, Vector<int> dest, 
+		    const Army *proto)
+{
+  Stack *stack = new Stack(p, src);
+
+  if (!proto)
+    proto = Armysetlist::getInstance()->getScout(p->getArmyset());
+  if (!proto)
+    return 0;
+
+  Army *army = new Army (*proto);
+  if (!army)
+    return 0;
+  stack->push_back(army);
+  Uint32 mp = stack->getPath()->calculate(stack, dest);
+  delete stack;
+  return mp;
+}
 // End of file

@@ -327,6 +327,7 @@ class City : public Ownable, public Location, public Renamable
 	//! Return how many armies are in the city.
 	Uint32 countDefenders();
 
+	Uint32 countCitiesVectoringToHere();
     private:
 
         //! Produces the currently active Army production base.

@@ -98,6 +98,9 @@ class AI_Fast : public RealPlayer
 	//! buy a scout unit if we need one.
 	void maybeBuyScout();
 
+	//! is it safe to vector from the given city?
+	bool safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders);
+
 	//! search through our stacklist for a stack we can join
 	Stack *findNearOwnStackToJoin(Stack *s, int max_distance);
 
@@ -134,6 +137,15 @@ class AI_Fast : public RealPlayer
 					 bool &blessed, bool &stack_died);
 	bool maybePickUpItems (Stack *s, int dist, int mp, bool &picked_up,
 			       bool &stack_died);
+
+	bool maybeVector(City *c, Uint32 safe_mp, Uint32 min_defenders,
+			 City *target, City **vector_city = NULL);
+
+
+	void setupVectoring();
+
+	bool maybeDisband(Stack *s, City *city, Uint32 min_defenders, 
+			  int safe_mp, bool &stack_died);
 
 	//! Determines whether to join units or move them separately.
         bool d_join;
