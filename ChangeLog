@@ -4,6 +4,7 @@
 	* now properly setting up diplomacy in loaded scenarios.
 	* fixed infnite loop bug in easy ai player.
 	* fixing temple visitation crash in easy ai.  Reported by Rob Kinyon.
+	* added fight window delays to the configuration file.
 
 2008-08-30  Ben Asselstine
 
