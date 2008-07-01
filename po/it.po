@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-07-01 07:00-0400\n"
+"POT-Creation-Date: 2008-07-01 15:14-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -2243,35 +2243,35 @@ msgstr "Altro"
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr "Errore, mentre caricavo un armyset. Nome dell'Armyset: "
 
-#: src/GameScenario.cpp:310
+#: src/GameScenario.cpp:315
 msgid "The Filename is well formed"
 msgstr "Il nome del file di salvataggio è ben formato"
 
-#: src/GameScenario.cpp:315
+#: src/GameScenario.cpp:320
 msgid "The Filename lacks the extension --> "
 msgstr "Il nome del file di salvataggio non ha l'estensione --> "
 
-#: src/GameScenario.cpp:328
+#: src/GameScenario.cpp:333
 msgid "GameScenario: Something went wrong with saving.\n"
 msgstr "GameScenario: Qualcosa è andato male durante il salvataggio.\n"
 
-#: src/GameScenario.cpp:390
+#: src/GameScenario.cpp:395
 msgid "savefile has wrong version, we want "
 msgstr "il file di salvatagio ha una versione sbagliata, vogliamo "
 
-#: src/GameScenario.cpp:392
+#: src/GameScenario.cpp:397
 msgid "savefile offers "
 msgstr "il file di salvataggio offre "
 
-#: src/GameScenario.cpp:542
+#: src/GameScenario.cpp:547
 msgid "Autosave failed.\n"
 msgstr ""
 
-#: src/GameScenario.cpp:549
+#: src/GameScenario.cpp:554
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:550
+#: src/GameScenario.cpp:555
 #, fuzzy
 msgid "Error: "
 msgstr "Errore"
@@ -2395,35 +2395,35 @@ msgstr ""
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
 
-#: src/game.cpp:583
+#: src/game.cpp:585
 #, fuzzy
 msgid "%1 (capital city)"
 msgstr "vitalità %i"
 
-#: src/game.cpp:589
+#: src/game.cpp:591
 msgid "Under rule of %1"
 msgstr ""
 
-#: src/game.cpp:592 src/gui/city-window.cpp:162
+#: src/game.cpp:594 src/gui/city-window.cpp:162
 #, fuzzy
 msgid "Income: %1"
 msgstr "Oggetto:"
 
-#: src/game.cpp:594
+#: src/game.cpp:596
 #, fuzzy
 msgid "Defense: %1"
 msgstr "Difesa: %i"
 
-#: src/game.cpp:598
+#: src/game.cpp:600
 #, fuzzy
 msgid "Status: razed!"
 msgstr "Stato:"
 
-#: src/game.cpp:628
+#: src/game.cpp:630
 msgid "Explored"
 msgstr ""
 
-#: src/game.cpp:631
+#: src/game.cpp:633
 msgid "Unexplored"
 msgstr ""
 
@@ -2441,44 +2441,44 @@ msgstr "GraphicsCache::getFlagPic: nessun gruppo come argomento! Esco...\n"
 msgid "Error, while loading a tileset. Tileset Name: "
 msgstr "Errore, mentre caricavo un armyset. Nome dell'Armyset: "
 
-#: src/Configuration.cpp:98
+#: src/Configuration.cpp:100
 msgid "Found configuration file: "
 msgstr "Ho trovato un file di configurazione: "
 
-#: src/Configuration.cpp:150
+#: src/Configuration.cpp:154
 msgid "Configuration: Something went wrong while saving.\n"
 msgstr "GameScenario: Qualcosa è andato male durante il salvataggio.\n"
 
-#: src/Configuration.cpp:172
+#: src/Configuration.cpp:176
 msgid "Configuration file has wrong version, we want "
 msgstr "Il file di configurazione ha una versione sbagliata, vogliamo "
 
-#: src/Configuration.cpp:174
+#: src/Configuration.cpp:178
 msgid "Configuration file offers "
 msgstr "Il file di configurazione offre: "
 
-#: src/Configuration.cpp:185
+#: src/Configuration.cpp:189
 msgid "I make a backup copy from "
 msgstr "Eseguo una copia di backup da "
 
-#: src/Configuration.cpp:289
+#: src/Configuration.cpp:295
 msgid "Couldn't save the new configuration file..."
 msgstr "Non ho potuto salvere il file di configurazione..."
 
-#: src/Configuration.cpp:290
+#: src/Configuration.cpp:296
 #, fuzzy
 msgid "Check permissions of your home directory....aborting!"
 msgstr "Controlla i permessi della tua home directory...esco!\n"
 
-#: src/Configuration.cpp:294
+#: src/Configuration.cpp:300
 msgid "Created the standard configuration file "
 msgstr "Ho creato il file di configurazione standard "
 
-#: src/Configuration.cpp:307
+#: src/Configuration.cpp:313
 msgid "Couldn't create save game directory "
 msgstr "Non ho potuto creare la directory per i file di salvataggio "
 
-#: src/Configuration.cpp:309
+#: src/Configuration.cpp:315
 #, fuzzy
 msgid "Check permissions and the entries in your lordsawarrc file!"
 msgstr "Controlla i permessi e le opzioni del tuo file freelordsrc!\n"
@@ -2551,17 +2551,17 @@ msgstr "Mappa costruita .... 100%"
 msgid "You have killed %i so far."
 msgstr "Hai ucciso %i armate fino ad ora."
 
-#: src/player.cpp:1281
+#: src/player.cpp:1282
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr ""
 "Errore: il gruppo che esplora e la rovina che viene esplorata non sono nella "
 "stessa posizione\n"
 
-#: src/player.cpp:1370
+#: src/player.cpp:1371
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Il gruppo ha cercato di visitare il tempio alla locazione sbagliata\n"
 
-#: src/player.cpp:2272
+#: src/player.cpp:2273
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Unità standard"
@@ -3023,7 +3023,7 @@ msgstr "Difesa: %i"
 msgid "Neutral"
 msgstr "Neutrale"
 
-#: src/gui/game-window.cpp:879 src/gui/splash-window.cpp:117
+#: src/gui/game-window.cpp:879 src/gui/splash-window.cpp:143
 #, fuzzy
 msgid "Choose Game to Load"
 msgstr "Scegli un Tileset"
@@ -3378,20 +3378,24 @@ msgstr "No"
 msgid "Temple"
 msgstr "Tempio"
 
-#: src/gui/splash-window.cpp:176
+#: src/gui/splash-window.cpp:88
+msgid "Rescue Crashed Game"
+msgstr ""
+
+#: src/gui/splash-window.cpp:202
 msgid "GGZ initialization failed. Exiting.\n"
 msgstr "inizializzazione della GGZ fallita.Esco\n"
 
-#: src/gui/splash-window.cpp:194
+#: src/gui/splash-window.cpp:220
 msgid "Play on GGZ"
 msgstr "Gioca su GGZ"
 
-#: src/gui/splash-window.cpp:195
+#: src/gui/splash-window.cpp:221
 #, fuzzy
 msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
 msgstr "Per piacere lancia Freelords da un client GGZ Gaming Zone."
 
-#: src/gui/splash-window.cpp:196
+#: src/gui/splash-window.cpp:222
 msgid "OK"
 msgstr "OK"
 

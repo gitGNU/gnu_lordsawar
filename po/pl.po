@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.3.7\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-07-01 07:00-0400\n"
+"POT-Creation-Date: 2008-07-01 15:14-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Piotr Cychowski <cycholka@wp.pl>\n"
 "Language-Team: \n"
@@ -2244,35 +2244,35 @@ msgstr "Inne"
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
 
-#: src/GameScenario.cpp:310
+#: src/GameScenario.cpp:315
 msgid "The Filename is well formed"
 msgstr "Nazwa pliku jest dobrze utworzona"
 
-#: src/GameScenario.cpp:315
+#: src/GameScenario.cpp:320
 msgid "The Filename lacks the extension --> "
 msgstr "W nazwie pliku brakuje rozszerzenia --> "
 
-#: src/GameScenario.cpp:328
+#: src/GameScenario.cpp:333
 msgid "GameScenario: Something went wrong with saving.\n"
 msgstr "GameScenario: B³±d podczas zapisu.\n"
 
-#: src/GameScenario.cpp:390
+#: src/GameScenario.cpp:395
 msgid "savefile has wrong version, we want "
 msgstr "niew³a¶ciwa wersja pliku, oczekiwano"
 
-#: src/GameScenario.cpp:392
+#: src/GameScenario.cpp:397
 msgid "savefile offers "
 msgstr "plik oferuje"
 
-#: src/GameScenario.cpp:542
+#: src/GameScenario.cpp:547
 msgid "Autosave failed.\n"
 msgstr ""
 
-#: src/GameScenario.cpp:549
+#: src/GameScenario.cpp:554
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:550
+#: src/GameScenario.cpp:555
 #, fuzzy
 msgid "Error: "
 msgstr "B³±d"
@@ -2395,35 +2395,35 @@ msgstr ""
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
 
-#: src/game.cpp:583
+#: src/game.cpp:585
 #, fuzzy
 msgid "%1 (capital city)"
 msgstr "%i ¿ywotno¶ci"
 
-#: src/game.cpp:589
+#: src/game.cpp:591
 msgid "Under rule of %1"
 msgstr ""
 
-#: src/game.cpp:592 src/gui/city-window.cpp:162
+#: src/game.cpp:594 src/gui/city-window.cpp:162
 #, fuzzy
 msgid "Income: %1"
 msgstr "Przedmiot:"
 
-#: src/game.cpp:594
+#: src/game.cpp:596
 #, fuzzy
 msgid "Defense: %1"
 msgstr "Obrona: %i"
 
-#: src/game.cpp:598
+#: src/game.cpp:600
 #, fuzzy
 msgid "Status: razed!"
 msgstr "Status:"
 
-#: src/game.cpp:628
+#: src/game.cpp:630
 msgid "Explored"
 msgstr ""
 
-#: src/game.cpp:631
+#: src/game.cpp:633
 msgid "Unexplored"
 msgstr ""
 
@@ -2441,44 +2441,44 @@ msgstr "GraphicsCache::getFlagPic: nie dostarczono grupy! Zamykam...\n"
 msgid "Error, while loading a tileset. Tileset Name: "
 msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
 
-#: src/Configuration.cpp:98
+#: src/Configuration.cpp:100
 msgid "Found configuration file: "
 msgstr "Znaleziono plik konfiguracyjny: "
 
-#: src/Configuration.cpp:150
+#: src/Configuration.cpp:154
 msgid "Configuration: Something went wrong while saving.\n"
 msgstr "Konfiguracja: Wyst±pi³ b³±d podczas zapisu.\n"
 
-#: src/Configuration.cpp:172
+#: src/Configuration.cpp:176
 msgid "Configuration file has wrong version, we want "
 msgstr "Niew³a¶ciwa wersja pliku konfiguracyjnego. Oczekiwano "
 
-#: src/Configuration.cpp:174
+#: src/Configuration.cpp:178
 msgid "Configuration file offers "
 msgstr "Plik konfiguracyjny oferuje "
 
-#: src/Configuration.cpp:185
+#: src/Configuration.cpp:189
 msgid "I make a backup copy from "
 msgstr "Tworzê kopiê zapasow± od"
 
-#: src/Configuration.cpp:289
+#: src/Configuration.cpp:295
 msgid "Couldn't save the new configuration file..."
 msgstr "Nie uda³o siê zapisaæ konfiguracji..."
 
-#: src/Configuration.cpp:290
+#: src/Configuration.cpp:296
 #, fuzzy
 msgid "Check permissions of your home directory....aborting!"
 msgstr "Sprawd¼ zezwolenia w katalogu g³ównym...przerywam!\n"
 
-#: src/Configuration.cpp:294
+#: src/Configuration.cpp:300
 msgid "Created the standard configuration file "
 msgstr "Utworzono standardowy plik konfiguracyjny "
 
-#: src/Configuration.cpp:307
+#: src/Configuration.cpp:313
 msgid "Couldn't create save game directory "
 msgstr "Nie uda³o siê utworzyæ katalogu do zapisu gier "
 
-#: src/Configuration.cpp:309
+#: src/Configuration.cpp:315
 #, fuzzy
 msgid "Check permissions and the entries in your lordsawarrc file!"
 msgstr "Sprawd¼ zezwolenia i wpisy w swoim pliku freelordsrc!\n"
@@ -2551,16 +2551,16 @@ msgstr "Tworzenie mapy zakoñczone ... 100%"
 msgid "You have killed %i so far."
 msgstr "Dotychczas zabi³e¶ %i"
 
-#: src/player.cpp:1281
+#: src/player.cpp:1282
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr ""
 "B³±d: przeszukuj±ca grupa i ruiny nie znajduj± siê w tym samym miejscu\n"
 
-#: src/player.cpp:1370
+#: src/player.cpp:1371
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Grupa usi³owa³a odwiedziæ ¶wi±tyniê w niew³a¶ciwym miejscu\n"
 
-#: src/player.cpp:2272
+#: src/player.cpp:2273
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Jednostki Standardowe"
@@ -3037,7 +3037,7 @@ msgstr "Obrona: %i"
 msgid "Neutral"
 msgstr "Neutralny"
 
-#: src/gui/game-window.cpp:879 src/gui/splash-window.cpp:117
+#: src/gui/game-window.cpp:879 src/gui/splash-window.cpp:143
 #, fuzzy
 msgid "Choose Game to Load"
 msgstr "Wybierz Zestaw Terenów"
@@ -3398,20 +3398,24 @@ msgstr "Nie"
 msgid "Temple"
 msgstr "¦wi±tynia"
 
-#: src/gui/splash-window.cpp:176
+#: src/gui/splash-window.cpp:88
+msgid "Rescue Crashed Game"
+msgstr ""
+
+#: src/gui/splash-window.cpp:202
 msgid "GGZ initialization failed. Exiting.\n"
 msgstr "Instalacja GGZ nie powiod³a siê. Zamykam.\n"
 
-#: src/gui/splash-window.cpp:194
+#: src/gui/splash-window.cpp:220
 msgid "Play on GGZ"
 msgstr "Graj na GGZ"
 
-#: src/gui/splash-window.cpp:195
+#: src/gui/splash-window.cpp:221
 #, fuzzy
 msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
 msgstr "Proszê uruchomiæ Freelords z klienta GGZ Gaming Zone."
 
-#: src/gui/splash-window.cpp:196
+#: src/gui/splash-window.cpp:222
 msgid "OK"
 msgstr "OK"
 
