@@ -9,6 +9,8 @@
 	* added more difference between the dark blue and light blue colours.  
 	  Suggested by Rob Kinyon.
 	* smart ai player now does vectoring.
+	* fixed bug with the move-all button and two stacks going to
+	  the same tile that causes infinite loop.
 
 2008-08-30  Ben Asselstine
 
