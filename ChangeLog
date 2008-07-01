@@ -5,6 +5,7 @@
 	* fixed infnite loop bug in easy ai player.
 	* fixing temple visitation crash in easy ai.  Reported by Rob Kinyon.
 	* added fight window delays to the configuration file.
+	* added ability to rescue crashed games.  Suggested by Rob Kinyon.
 
 2008-08-30  Ben Asselstine
 
