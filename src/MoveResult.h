@@ -52,7 +52,7 @@ class MoveResult
         Fight::Result getFightResult() const { return d_fightResult; }
 
         //! did anything actually happen in this move?
-        bool didSomething() const { return (d_result && (d_fight || (d_stepCount > 0) || d_join)); }
+        bool didSomething() const { return (d_fight || (d_stepCount > 0) || d_join); }
 
     private:
         bool d_result;

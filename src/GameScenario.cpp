@@ -192,6 +192,35 @@ bool GameScenario::setupCities(bool quick_start)
 
   return true;
 }
+void GameScenario::setupDiplomacy(bool diplomacy)
+{
+  Playerlist *pl = Playerlist::getInstance();
+    // Set up diplomacy
+    for (Playerlist::iterator pit = pl->begin(); pit != pl->end(); pit++)
+      {
+	if (pl->getNeutral() == (*pit))
+	  continue;
+	for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+	  {
+	    if (pl->getNeutral() == (*it))
+	      continue;
+	    if (*pit == *it)
+	      continue;
+	    if (diplomacy == false)
+	      {
+		(*pit)->proposeDiplomacy(Player::PROPOSE_WAR, *it);
+		(*pit)->declareDiplomacy(Player::AT_WAR, *it);
+	      }
+	    else 
+	      {
+		(*pit)->proposeDiplomacy(Player::NO_PROPOSAL, *it);
+		(*pit)->declareDiplomacy(Player::AT_PEACE, *it);
+	      }
+	  }
+      }
+    if (diplomacy)
+      pl->calculateDiplomaticRankings();
+}
 
 bool GameScenario::loadWithHelper(XML_Helper& helper)
 {

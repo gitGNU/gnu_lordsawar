@@ -200,7 +200,7 @@ class CreateScenario : public CreateScenarioRandomize
         //! Do some setup concerning the players (give them money)
 	//! If we're playing with diplomacy then we start out at peace,
 	//! and if we're not playing with diplomacy we start out at war.
-        bool setupPlayers(bool dimplomacy, bool random_turns, int base_gold);
+        bool setupPlayers(bool random_turns, int base_gold);
 
 	bool setupRoads();
 

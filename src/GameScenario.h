@@ -98,6 +98,7 @@ class GameScenario: public GameScenarioOptions
         bool saveWithHelper(XML_Helper &helper) const;
 
 	bool setupCities(bool quick_start);
+	void setupDiplomacy(bool diplomacy);
         
     private:
         /** Callback function for loading a game. See XML_Helper for details.

@@ -351,7 +351,7 @@ bool CreateScenario::create(const GameParameters &g)
 
     int base_gold;
     getBaseGold (g.difficulty, &base_gold);
-    if (!setupPlayers(g.diplomacy, g.random_turns, base_gold))
+    if (!setupPlayers(g.random_turns, base_gold))
         return false;
 
     if (!setupItems())
@@ -604,7 +604,7 @@ bool CreateScenario::setupSignposts(int ratio)
     return true;
 }
 
-bool CreateScenario::setupPlayers(bool diplomacy, bool random_turns, 
+bool CreateScenario::setupPlayers(bool random_turns, 
 				  int base_gold)
 {
     debug("CreateScenario::setupPlayers")
@@ -615,31 +615,6 @@ bool CreateScenario::setupPlayers(bool diplomacy, bool random_turns,
     for (Playerlist::iterator pit = pl->begin(); pit != pl->end(); pit++)
       (*pit)->setGold(base_gold + ((rand() % 8) * 50));
 
-    // Set up diplomacy
-    for (Playerlist::iterator pit = pl->begin(); pit != pl->end(); pit++)
-      {
-	if (pl->getNeutral() == (*pit))
-	  continue;
-	for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-	  {
-	    if (pl->getNeutral() == (*it))
-	      continue;
-	    if (*pit == *it)
-	      continue;
-	    if (diplomacy == false)
-	      {
-		(*pit)->proposeDiplomacy(Player::PROPOSE_WAR, *it);
-		(*pit)->declareDiplomacy(Player::AT_WAR, *it);
-	      }
-	    else 
-	      {
-		(*pit)->proposeDiplomacy(Player::NO_PROPOSAL, *it);
-		(*pit)->declareDiplomacy(Player::AT_PEACE, *it);
-	      }
-	  }
-      }
-    if (diplomacy)
-      pl->calculateDiplomaticRankings();
 
     if (random_turns)
       pl->randomizeOrder();

@@ -966,7 +966,8 @@ void Game::loadGame()
       game_loaded.emit(player);
     }
 
-  d_nextTurn->setContinuingTurn();
+  if (player->getType() == Player::HUMAN)
+    d_nextTurn->setContinuingTurn();
   d_nextTurn->start();
 #if 0
   else
@@ -1146,7 +1147,8 @@ bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
 void Game::nextRound()
 {
   Playerlist::getInstance()->nextRound
-    (GameScenario::s_diplomacy, &GameScenario::s_surrender_already_offered);
+    (GameScenarioOptions::s_diplomacy, 
+     &GameScenarioOptions::s_surrender_already_offered);
 }
     
 void Game::on_surrender_offered(Player *recipient)

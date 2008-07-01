@@ -457,6 +457,7 @@ void GameWindow::new_game(GameParameters g)
       {
 	Playerlist::getInstance()->syncPlayers(g.players);
 	game_scenario->setupCities(g.quick_start);
+	game_scenario->setupDiplomacy(g.diplomacy);
 	game_scenario->nextRound();
       }
 

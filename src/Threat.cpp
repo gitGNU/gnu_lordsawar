@@ -151,23 +151,18 @@ Vector<int> Threat::getClosestPoint(Vector<int> location) const
     }
     else
     {
-        int distToClosest = 1000000;
+        int min_dist = -1;
         for (Stacklist::const_iterator it = d_stacks->begin();
             it != d_stacks->end(); ++it)
         {
             Vector<int> spos = (*it)->getPos();
             
-            //UL: remember, stacks can move diagonally
-            int dist = abs(spos.x - location.x);
-            int disty = abs(spos.y - location.y);
-            if (dist > disty)
-                dist = disty;
-            if (dist < distToClosest)
-            {
-                distToClosest = dist;
-                result.x = spos.x;
-                result.y = spos.y;
-            }
+	    int distance = dist(spos, location);
+	    if (distance < min_dist || min_dist == -1)
+	      {
+		result = spos;
+		min_dist = distance;
+	      }
         }
     }
 

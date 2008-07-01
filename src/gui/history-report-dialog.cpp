@@ -525,7 +525,7 @@ void HistoryReportDialog::addHistoryEvent(History *event)
 	{
 	  History_PlayerVanquished *ev;
 	  ev = static_cast<History_PlayerVanquished*>(event);
-	  s = String::ucompose(_("%1 is vanquished!"), p->getName());
+	  s = String::ucompose(_("%1 utterly vanquished!"), p->getName());
 	  (*i)[events_columns.image] = to_pixbuf(gc->getShieldPic(1, p));
 	  break;
 	}

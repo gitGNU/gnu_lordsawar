@@ -145,7 +145,7 @@ bool AI_Fast::startTurn()
 
     d_diplomacy->considerCuspOfWar();
     
-    if (getUpkeep() > getIncome() + (getIncome()/3))
+    if (getUpkeep() > getIncome() + getIncome())
       d_maniac = true;
     else
       d_maniac = false;
@@ -182,6 +182,9 @@ bool AI_Fast::startTurn()
 	    Stack *s = (*it);
 	    if (s->getPath()->size() > 0 && s->enoughMoves())
 	      {
+		int mp = s->getPath()->calculate(s, *s->getPath()->back());
+		if (mp <= 0)
+		  continue;
 		printf ("AI_FAST stack %d can still potentially move\n", s->getId());
 	    
 		printf("moving from %d,%d to %d,%d with %d moves left\n",
@@ -211,18 +214,24 @@ void AI_Fast::invadeCity(City* c)
 {
   debug("Invaded city " <<c->getName());
 
-  // There are two modes: maniac razes all cities, non-maniac just
-  // occupies them
+  // There are three modes: maniac razes all cities, non-maniac just
+  // occupies them...
+  // but even a maniac won't raze a city if money is needed
+  if (getIncome() < getUpkeep())
+    {
+      debug("Occupying it");
+      cityOccupy(c);
+    }
   if (d_maniac)
-  {
-    debug ("Razing it");
-    cityRaze(c);
-  }
+    {
+      debug ("Razing it");
+      cityRaze(c);
+    }
   else
-  {
-    debug("Occupying it");
-    cityOccupy(c);
-  }
+    {
+      debug("Occupying it");
+      cityOccupy(c);
+    }
 }
 
 void AI_Fast::levelArmy(Army* a)
@@ -271,7 +280,10 @@ bool AI_Fast::maybeDisband(Stack *s, City *city, Uint32 min_defenders,
     return false;
 
   if (city->countDefenders() - s->size() >= min_defenders)
+    {
+      printf("disbanding here1\n");
     return stackDisband(s);
+    }
 
   //okay, we need to disband part of our stack
   //find a square to travel to
@@ -307,15 +319,21 @@ bool AI_Fast::maybeDisband(Stack *s, City *city, Uint32 min_defenders,
   //before we move, ungroup the lucky ones not being disbanded
   unsigned int count = 0;
   s->group();
-  for (Stack::reverse_iterator i = s->rbegin(); i != s->rend(); i++, count++)
+  for (Stack::reverse_iterator i = s->rbegin(); i != s->rend(); i++)
     {
       if (count == min_defenders)
 	break;
-      (*i)->setGrouped(false);
+      if ((*i)->isHero() == false)
+	{
+	  count++;
+	  (*i)->setGrouped(false);
+	}
     }
+      printf("disbanding here2\n");
 
   stackSplit(s);
   stackMove(s);
+  s = d_stacklist->getActivestack();
 
   if (d_stacklist->getActivestack() == 0) 
     {
@@ -447,7 +465,15 @@ bool AI_Fast::computerTurn()
 		      return true;
 		    continue;
 		  }
-		//just stay put in the city
+		else if (s->getPos() != target->getPos())
+		  {
+		    //if we're not in the upper right corner
+		    s->getPath()->calculate(s, target->getPos());
+		    //then try to go there
+		    stack_moved |= stackMove(s);
+		    continue;
+		  }
+		//otherwise just stay put in the city
 	    }
 
 	    // third step: non-maniac players attack only enemy cities
@@ -493,7 +519,8 @@ bool AI_Fast::computerTurn()
 		    return false;
 		  }
 
-		debug("Attacking " <<target->getName())
+		debug("Attacking " << target->getName() << " (" << 
+		      target->getPos().x <<","<< target->getPos().y << ")")
 		  int moves = s->getPath()->calculateToCity(s, target);
 		debug("Moves to enemy city: " << moves);
 
@@ -522,6 +549,7 @@ bool AI_Fast::computerTurn()
 		if (moves >= 1)
 		  {
 		    stack_moved |= stackMove(s);
+		    s = d_stacklist->getActivestack();
 		    if (!d_stacklist->getActivestack())
 		      return true;
 		    //if we didn't get there
@@ -557,7 +585,6 @@ bool AI_Fast::computerTurn()
 	  {
 	    const Threatlist* threats = d_analysis->getThreatsInOrder(s->getPos());
 	    Threatlist::const_iterator tit = threats->begin();
-	    float mystrength = AI_Analysis::assessStackStrength(s);
 	    const Threat* target = 0;
 
 	    // prefer weak forces (take strong if neccessary) and stop after 10
@@ -574,19 +601,12 @@ bool AI_Fast::computerTurn()
 		  continue;
 
 		Uint32 mp = s->getPath()->calculate(s, threatpos);
-		if (mp == 0 || mp > s->getGroupMoves())
+		if ((int)mp <= 0 || mp > s->getGroupMoves())
 		  continue;
 
-		// if the target is weaker than us, attack it!
-		if ((*tit)->strength() < mystrength)
-		  {
-		    target = *tit;
-		    break;
-		  }
+		target = *tit;
+		break;
 
-		// otherwise take the weakest target we can get
-		if (!target || target->strength() > (*tit)->strength())
-		  target = *tit;
 	      }
 
 	    // now we need to choose. If we found a target, attack it, otherwise
@@ -599,8 +619,10 @@ bool AI_Fast::computerTurn()
 	      }
 	    else
 	      {
-		pos  = Citylist::getInstance()->getNearestForeignCity(s->getPos())->getPos();
-		debug("Maniac, found no targets, attacking city at (" <<pos.x <<"," <<pos.y <<")")
+		Citylist *cl = Citylist::getInstance();
+		City *enemy_city = cl->getNearestForeignCity(s->getPos());
+		pos  = enemy_city->getPos();
+		debug("Maniac, found no targets, attacking city " << enemy_city->getName() << " at (" <<pos.x <<"," <<pos.y <<")")
 	      }
 
 	    if (pos == Vector<int>(-1,-1))
@@ -610,19 +632,31 @@ bool AI_Fast::computerTurn()
 		return false;
 	      }
 
-	    s->getPath()->calculate(s, pos);
-	    if (s->getPath()->checkPath(s) == true)
-	      stack_moved = stackMove(s);
+	    int mp = s->getPath()->calculate(s, pos);
+	    if (mp > 0)
+	      {
+	      printf ("stack %d at %d,%d moving %d with %d moves\n",
+		      s->getId(), s->getPos().x, s->getPos().y,
+		      mp, s->getGroupMoves());
+		bool moved = stackMove(s);
+		printf("result of move: %d\n", moved);
+	      stack_moved |= moved;
+	      s = d_stacklist->getActivestack();
+	      }
 	    else
 	      {
+		printf ("we're going the wrong way (mp is %d)!!\n", mp);
+		printf ("this means we couldn't calculate a path from %d,%d to %d,%d\n", s->getPos().x, s->getPos().y, pos.x, pos.y);
+		sleep (10);
 		Citylist *cl = Citylist::getInstance();
 		City *friendly_city = cl->getNearestFriendlyCity(s->getPos());
 		s->getPath()->calculate(s, friendly_city->getPos());
-		stack_moved = stackMove(s);
+		stack_moved |= stackMove(s);
 	      }
 
 	    if (!d_stacklist->getActivestack())
 	      return true;
+	    continue;
 
 	  }
     }
@@ -693,6 +727,7 @@ bool AI_Fast::maybePickUpItems(Stack *s, int max_dist, int max_mp, bool &picked_
 	  stack_died = true;
 	  return true;
 	}
+      s = d_stacklist->getActivestack();
     }
 
   //are we standing on it now?
@@ -742,6 +777,7 @@ bool AI_Fast::maybeVisitTempleForBlessing(Stack *s, int dist, int max_mp,
 	  stack_died = true;
 	  return true;
 	}
+      s = d_stacklist->getActivestack();
     }
 
   int num_blessed = 0;
@@ -858,7 +894,7 @@ void AI_Fast::setupVectoring()
       if (safeFromAttack(c, 18, 3) == false)
 	{
 	  City *target_city = Citylist::getInstance()->getObjectAt(dest);
-	  debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because it's not safe to anymore!!!\n")
+	  debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because it's not safe to anymore!\n")
 	    c->setVectoring(Vector<int>(-1,-1));
 	  continue;
 	}
@@ -867,7 +903,7 @@ void AI_Fast::setupVectoring()
       if (!enemy_city)
 	{
 	  City *target_city = Citylist::getInstance()->getObjectAt(dest);
-	  debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because there aren't any more enemy cities!!!\n")
+	  debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because there aren't any more enemy cities!\n")
 	    c->setVectoring(Vector<int>(-1,-1));
 	  continue;
 	}
@@ -877,7 +913,7 @@ void AI_Fast::setupVectoring()
 	{
 
 	  City *target_city = Citylist::getInstance()->getObjectAt(dest);
-	  debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because it's too far away from an enemy city!!!\n")
+	  debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because it's too far away from an enemy city!\n")
 	    c->setVectoring(Vector<int>(-1,-1));
 	  continue;
 	}
@@ -897,7 +933,7 @@ void AI_Fast::setupVectoring()
 	{
 	  bool vectored = maybeVector(c, 18, 3, enemy_city, &vector_city);
 	  if (vectored)
-	    debug("begin vectoring from " << c->getName() <<" to " << vector_city->getName() << "!!!\n")
+	    debug("begin vectoring from " << c->getName() <<" to " << vector_city->getName() << "!\n")
 	}
     }
 }

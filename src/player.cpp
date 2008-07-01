@@ -885,9 +885,10 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 
     int stepCount = 0;
     while (s->getPath()->size() > 1 && stackMoveOneStep(s))
-    {
+      {
+	stepCount++;
         supdatingStack.emit(0);
-    }
+      }
 
     if (s->getPath()->size() == 1 && s->enoughMoves())
     //now look for fight targets, joins etc.
@@ -988,6 +989,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 		{
 		  s->getPath()->flClear();
 		  MoveResult *moveResult = new MoveResult(false);
+		  moveResult->setStepCount(stepCount);
 		  return moveResult;
 		}
 	    }
@@ -1040,7 +1042,9 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
         return moveResult;
     }
 
-    return new MoveResult(true);
+    MoveResult *moveResult = new MoveResult(true);
+    moveResult->setStepCount(stepCount);
+    return moveResult;
 }
 
 bool Player::stackMoveOneStep(Stack* s)

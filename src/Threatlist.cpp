@@ -79,10 +79,10 @@ void Threatlist::sortByDistance(Vector<int> pos)
 
     for (iterator it = begin(); it != end(); it++)
     {
-        int dist = abs((*it)->getClosestPoint(pos).x - pos.x);
-        if (dist < abs((*it)->getClosestPoint(pos).y - pos.y))
-            dist = abs((*it)->getClosestPoint(pos).y - pos.y);
-        distances.push_back(dist);
+        //int dist = abs((*it)->getClosestPoint(pos).x - pos.x);
+        //if (dist < abs((*it)->getClosestPoint(pos).y - pos.y))
+            //dist = abs((*it)->getClosestPoint(pos).y - pos.y);
+        distances.push_back(dist((*it)->getClosestPoint(pos), pos));
     }
 
     // now again a bubble sort :)
