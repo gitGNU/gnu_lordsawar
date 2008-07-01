@@ -1,3 +1,9 @@
+2008-09-01  Ben Asselstine
+
+	* loading autosaved games now restarts the computer players correctly.
+	* now properly setting up diplomacy in loaded scenarios.
+	* fixed infnite loop bug in easy ai player.
+	* fixing temple visitation crash in easy ai.  Reported by Rob Kinyon.
 
 2008-08-30  Ben Asselstine
 
