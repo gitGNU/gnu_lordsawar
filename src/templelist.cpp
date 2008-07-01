@@ -142,6 +142,8 @@ Temple* Templelist::getNearestVisibleAndUsefulTemple(Stack *stack,
   Vector<int> pos = stack->getPos();
   Temple *t = getNearestVisibleAndUsefulTemple
     (stack, percent_can_be_blessed);
+  if (!t)
+    return NULL;
   if (t->getPos().x <= pos.x + dist && t->getPos().x >= pos.x - dist &&
       t->getPos().y <= pos.y + dist && t->getPos().y >= pos.y - dist)
     return t;
