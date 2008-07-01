@@ -397,7 +397,9 @@ void Game::move_all_stacks()
 	  select_active_stack();
 	  if (player->getActivestack()->isGrouped() == false)
 	    player->stackSplit(player->getActivestack());
-	  player->stackMove(player->getActivestack());
+	  bool moved = player->stackMove(player->getActivestack());
+	  if (!moved)
+	    break;
 	  i = sl->begin();
 	}
     }
