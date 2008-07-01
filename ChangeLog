@@ -6,6 +6,9 @@
 	* fixing temple visitation crash in easy ai.  Reported by Rob Kinyon.
 	* added fight window delays to the configuration file.
 	* added ability to rescue crashed games.  Suggested by Rob Kinyon.
+	* added more difference between the dark blue and light blue colours.  
+	  Suggested by Rob Kinyon.
+	* smart ai player now does vectoring.
 
 2008-08-30  Ben Asselstine
 
