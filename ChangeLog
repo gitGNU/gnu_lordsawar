@@ -11,6 +11,8 @@
 	* smart ai player now does vectoring.
 	* fixed bug with the move-all button and two stacks going to
 	  the same tile that causes infinite loop.
+	* fixed bug where vectoring to a city would cause a crash.  Reported
+	  by Rob Kinyon.
 
 2008-08-30  Ben Asselstine
 
