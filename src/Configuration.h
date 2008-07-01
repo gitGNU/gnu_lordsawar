@@ -71,6 +71,8 @@ class Configuration : public sigc::trackable
         // as the name implies
         static bool s_showNextPlayer;
         static int s_displaySpeedDelay;
+        static int s_displayFightRoundDelayFast;
+        static int s_displayFightRoundDelaySlow;
         
         //the paths
         static std::string s_dataPath;

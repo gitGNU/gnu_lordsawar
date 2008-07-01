@@ -51,6 +51,8 @@ string Configuration::s_savePath = "./saves/";
 #endif
 string Configuration::s_lang = "";
 int Configuration::s_displaySpeedDelay = 0;
+int Configuration::s_displayFightRoundDelayFast = 250;
+int Configuration::s_displayFightRoundDelaySlow = 500;
 Uint32 Configuration::s_surfaceFlags = SDL_SWSURFACE;
 Uint32 Configuration::s_cacheSize = 1000000;
 bool Configuration::s_zipfiles = false;
@@ -127,6 +129,8 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("zipfiles", s_zipfiles);
     retval &= helper.saveData("autosave_policy", s_autosave_policy);
     retval &= helper.saveData("speeddelay", s_displaySpeedDelay);
+    retval &= helper.saveData("fightrounddelayfast", s_displayFightRoundDelayFast);
+    retval &= helper.saveData("fightrounddelayslow", s_displayFightRoundDelaySlow);
     retval &= helper.saveData("shownextplayer", s_showNextPlayer);
     retval &= helper.saveData("musicenable", s_musicenable);
     retval &= helper.saveData("musicvolume", s_musicvolume);
@@ -246,8 +250,10 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     if (retval)
         s_autosave_policy = autosave_policy;
 
-    //parse the speed delay
+    //parse the speed delays
     helper->getData(s_displaySpeedDelay, "speeddelay");
+    helper->getData(s_displayFightRoundDelayFast, "fightrounddelayfast");
+    helper->getData(s_displayFightRoundDelayFast, "fightrounddelayslow");
 
     //parse if nextplayer dialog should be enabled
     helper->getData(s_showNextPlayer, "shownextplayer");

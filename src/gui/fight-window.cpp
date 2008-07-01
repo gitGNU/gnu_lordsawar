@@ -41,6 +41,7 @@
 #include "../stack.h"
 #include "../army.h"
 #include "../GraphicsCache.h"
+#include "../Configuration.h"
 
 FightWindow::FightWindow(Fight &fight)
 {
@@ -107,6 +108,11 @@ FightWindow::FightWindow(Fight &fight)
   
     actions = fight.getCourseOfEvents();
     d_quick = false;
+
+    fast_round_speed = 
+      Configuration::s_displayFightRoundDelayFast; //milliseconds
+    normal_round_speed = 
+      Configuration::s_displayFightRoundDelaySlow; //milliseconds
 }
 
 FightWindow::~FightWindow()
@@ -121,6 +127,7 @@ void FightWindow::set_parent_window(Gtk::Window &parent)
 
 void FightWindow::run(bool *quick)
 {
+
     round = 0;
     action_iterator = actions.begin();
     

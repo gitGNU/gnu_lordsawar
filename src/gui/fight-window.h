@@ -47,9 +47,7 @@ class FightWindow: public sigc::trackable
     
  private:
     std::auto_ptr<Gtk::Window> window;
-    static const int normal_round_speed = 500; //milliseconds
     static const int max_cols = 8;
-    static const int fast_round_speed = 250; //after a key is pressed
 
     struct ArmyItem
     {
@@ -87,6 +85,8 @@ class FightWindow: public sigc::trackable
 
     bool do_round();
     bool d_quick;
+    int normal_round_speed;
+    int fast_round_speed;
 };
 
 #endif
