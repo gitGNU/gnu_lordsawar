@@ -88,48 +88,9 @@ bool AI_Fast::save(XML_Helper* helper) const
     return retval;
 }
 
-void AI_Fast::maybeBuyScout()
-{
-  bool hero_exists = false;
-  for (Stacklist::iterator it = d_stacklist->begin(); 
-       it != d_stacklist->end(); it++)
-    
-    if ((*it)->hasHero())
-      hero_exists = true; 
-    
-  if (Citylist::getInstance()->countCities(this) == 1 && 
-	hero_exists == false)
-    {
-      bool one_turn_army_exists = false;
-      City *c = Citylist::getInstance()->getFirstCity(this);
-      //do we already have something that can be produced in one turn?
-      for (int i = 0; i < c->getMaxNoOfProductionBases(); i++)
-	{
-	  if (c->getArmytype(i) == -1)    // no production in this slot
-	    continue;
-
-	  const Army *proto = c->getProductionBase(i);
-	  if (proto->getProduction() == 1)
-	    {
-	      one_turn_army_exists = true;
-	      break;
-	    }
-	}
-      if (one_turn_army_exists == false)
-	{
-	  const Armysetlist* al = Armysetlist::getInstance();
-	  int free_slot = c->getFreeBasicSlot();
-	  if (free_slot == -1)
-	    free_slot = 0;
-	  Army *scout = al->getScout(getArmyset());
-	  cityBuyProduction(c, free_slot, scout->getType());
-	}
-    }
-}
-
 bool AI_Fast::startTurn()
 {
-    maybeBuyScout();
+    AI_maybeBuyScout();
 
     // maniac AI's never recruit heroes, otherwise take everything we can get
     if (!d_maniac)
@@ -169,7 +130,7 @@ bool AI_Fast::startTurn()
 
     //setup vectoring
     if (!d_maniac)
-	setupVectoring();
+	AI_setupVectoring(18, 3, 30);
 
     // this is a recursively-programmed quite staightforward AI,we just call:
     while (computerTurn() == true)
@@ -185,12 +146,12 @@ bool AI_Fast::startTurn()
 		int mp = s->getPath()->calculate(s, *s->getPath()->back());
 		if (mp <= 0)
 		  continue;
-		printf ("AI_FAST stack %d can still potentially move\n", s->getId());
+		debug ("AI_FAST stack " << s->getId() << " can still potentially move");
+		debug ("moving from " << s->getPos().x << "," << s->getPos().y
+		       << ") to (" <<(*s->getPath()->begin())->x << "," <<
+		       (*s->getPath()->begin())->y << ") with " << s->getGroupMoves() <<" left");
+
 	    
-		printf("moving from %d,%d to %d,%d with %d moves left\n",
-		       s->getPos().x, s->getPos().y,
-		       (*s->getPath()->begin())->x, 
-		       (*s->getPath()->begin())->y, s->getGroupMoves());
 		found = true;
 	      }
 	  }
@@ -267,84 +228,6 @@ Stack *AI_Fast::findNearOwnStackToJoin(Stack *s, int max_distance)
   return target;
 }
 
-bool AI_Fast::maybeDisband(Stack *s, City *city, Uint32 min_defenders, 
-			   int safe_mp, bool &stack_killed)
-{
-  //to prevent armies from piling up in far away places, 
-  //we disband some periodically.
-  if (s->size() != MAX_STACK_SIZE)
-    return false;
-
-  //is the city in danger from a city?
-  if (safeFromAttack(city, safe_mp, 0) == false)
-    return false;
-
-  if (city->countDefenders() - s->size() >= min_defenders)
-    {
-      printf("disbanding here1\n");
-    return stackDisband(s);
-    }
-
-  //okay, we need to disband part of our stack
-  //find a square to travel to
-  std::list<Vector<int> > diffs;
-  diffs.push_back(Vector<int>(0, 1));
-  diffs.push_back(Vector<int>(0, -1));
-  diffs.push_back(Vector<int>(-1, -1));
-  diffs.push_back(Vector<int>(-1, 1));
-  diffs.push_back(Vector<int>(1, -1));
-  diffs.push_back(Vector<int>(1, 1));
-  diffs.push_back(Vector<int>(1, 0));
-  diffs.push_back(Vector<int>(-1, 0));
-
-  Vector<int> found = Vector<int>(-1, -1);
-  for (std::list<Vector<int> >::iterator it = diffs.begin();
-       it != diffs.end(); it++)
-    {
-      Vector<int> dest = s->getPos() + (*it);
-      if (d_stacklist->getObjectAt(dest) == NULL)
-	{
-	  Uint32 mp = s->getPath()->calculate(s, dest);
-	  if ((int)mp <= 0)
-	    continue;
-	  found = dest;
-	  break;
-	}
-    }
-
-  //no place to move to (strange)
-  if (found == Vector<int>(-1, -1))
-    return false;
-
-  //before we move, ungroup the lucky ones not being disbanded
-  unsigned int count = 0;
-  s->group();
-  for (Stack::reverse_iterator i = s->rbegin(); i != s->rend(); i++)
-    {
-      if (count == min_defenders)
-	break;
-      if ((*i)->isHero() == false)
-	{
-	  count++;
-	  (*i)->setGrouped(false);
-	}
-    }
-      printf("disbanding here2\n");
-
-  stackSplit(s);
-  stackMove(s);
-  s = d_stacklist->getActivestack();
-
-  if (d_stacklist->getActivestack() == 0) 
-    {
-      //maybe we got lucky and inadvertently attacked an enemy stack and lost.
-      stack_killed = true;
-      return false;
-    }
-
-  return stackDisband(s);
-}
-
 bool AI_Fast::computerTurn()
 {
   bool stack_moved = false;
@@ -388,7 +271,7 @@ bool AI_Fast::computerTurn()
 	    bool blessed = false;
 	    if (Citylist::getInstance()->getObjectAt(s->getPos()) == NULL)
 	      {
-		stack_moved = maybeVisitTempleForBlessing
+		stack_moved = AI_maybeVisitTempleForBlessing
 		  (s, s->getGroupMoves(), s->getGroupMoves() + 7, 50.0, 
 		   blessed, stack_died);
 		if (stack_died)
@@ -406,7 +289,7 @@ bool AI_Fast::computerTurn()
 	    bool stack_died = false;
 	    bool picked_up = false;
 		
-	    stack_moved = maybePickUpItems(s, s->getGroupMoves(), 
+	    stack_moved = AI_maybePickUpItems(s, s->getGroupMoves(), 
 					       s->getGroupMoves() + 7, 
 					       picked_up, stack_died);
 	    if (stack_died)
@@ -535,7 +418,7 @@ bool AI_Fast::computerTurn()
 			  {
 			    bool disbanded;
 			    bool killed = false;
-			    disbanded = maybeDisband(s, c, 3, 18, killed);
+			    disbanded = AI_maybeDisband(s, c, 3, 18, killed);
 			    if (disbanded)
 			      {
 				debug ("disbanded stack in " << c->getName() <<"\n");
@@ -669,272 +552,5 @@ bool AI_Fast::treachery (Stack *stack, Player *player, Vector <int> pos, Diploma
   return performTreachery;
 }
 
-bool AI_Fast::maybePickUpItems(Stack *s, int max_dist, int max_mp, bool &picked_up, bool &stack_died)
-{
-  int min_dist = -1;
-  bool stack_moved = false;
-  Vector<int> item_tile(-1, -1);
 
-  // do we not have a hero?
-  if (s->hasHero() == false)
-    return false;
-
-  //ok, which bag of stuff is closest?
-  std::vector<Vector<int> > tiles = GameMap::getInstance()->getItems();
-  std::vector<Vector<int> >::iterator it = tiles.begin();
-  for(; it != tiles.end(); it++)
-    {
-      Vector<int> tile = *it;
-      //don't consider bags of stuff that are inside enemy cities
-      City *c = Citylist::getInstance()->getObjectAt(tile);
-      if (c)
-	{
-	  if (c->getOwner() != s->getOwner())
-	    continue;
-	}
-
-      int distance = dist (tile, s->getPos());
-      if (distance < min_dist || min_dist == -1)
-	{
-	  min_dist = distance;
-	  item_tile = tile;
-	}
-    }
-
-  //if no bags of stuff, or the bag is too far away
-  if (min_dist == -1 || min_dist > max_dist)
-    return false;
-  
-  //are we not standing on it?
-  if (s->getPos() != item_tile)
-    {
-      //can we really reach it?
-      Vector<int> old_dest(-1,-1);
-      if (s->getPath()->size())
-	old_dest = *s->getPath()->back();
-      Uint32 mp = s->getPath()->calculate(s, item_tile);
-      if ((int)mp > max_mp)
-	{
-	  //nope.  unreachable.  set in our old path.
-	  if (old_dest != Vector<int>(-1,-1))
-	    s->getPath()->calculate(s, old_dest);
-	  return false;
-	}
-      stack_moved = stackMove(s);
-      //maybe we died -- an enemy stack was guarding the bag.
-      if (!d_stacklist->getActivestack())
-	{
-	  stack_died = true;
-	  return true;
-	}
-      s = d_stacklist->getActivestack();
-    }
-
-  //are we standing on it now?
-  if (s->getPos() == item_tile)
-    {
-      Hero *hero = static_cast<Hero*>(s->getFirstHero());
-      if (hero)
-	picked_up = heroPickupAllItems(hero, s->getPos());
-    }
-
-  return stack_moved;
-}
-
-bool AI_Fast::maybeVisitTempleForBlessing(Stack *s, int dist, int max_mp, 
-					  double percent_can_be_blessed, 
-					  bool &blessed, bool &stack_died)
-{
-  bool stack_moved = false;
-  Templelist *tl = Templelist::getInstance();
-
-  Temple *temple = tl->getNearestVisibleAndUsefulTemple(s, 
-							percent_can_be_blessed,
-						       	dist);
-  if (!temple)
-    return false;
-
-  //if we're not there yet
-  if (s->getPos() != temple->getPos())
-    {
-      //can we really reach it?
-      Vector<int> old_dest(-1,-1);
-      if (s->getPath()->size())
-	old_dest = *s->getPath()->back();
-      Uint32 mp = s->getPath()->calculate(s, temple->getPos());
-      if ((int)mp > max_mp)
-	{
-	  //nope.  unreachable.  set in our old path.
-	  if (old_dest != Vector<int>(-1,-1))
-	    s->getPath()->calculate(s, old_dest);
-	  return false;
-	}
-      stack_moved = stackMove(s);
-        
-      //maybe we died -- an enemy stack was guarding the temple
-      if (!d_stacklist->getActivestack())
-	{
-	  stack_died = true;
-	  return true;
-	}
-      s = d_stacklist->getActivestack();
-    }
-
-  int num_blessed = 0;
-  //are we there yet?
-  if (s->getPos() == temple->getPos())
-    {
-      num_blessed = stackVisitTemple(s, temple);
-    }
-
-  blessed = num_blessed > 0;
-  return stack_moved;
-}
-
-bool AI_Fast::safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders)
-{
-  //if there isn't an enemy city nearby to the source
-  // calculate mp to nearest enemy city
-  //   needs to be less than 18 mp with a scout
-  //does the source city contain at least 3 defenders?
-
-  City *enemy_city = Citylist::getInstance()->getNearestEnemyCity(c->getPos());
-  if (enemy_city)
-    {
-      Uint32 mp = Stack::scout (c->getOwner(), c->getPos(), 
-				enemy_city->getPos());
-      if ((int)mp <= 0 || mp >= safe_mp)
-	{
-	  if (c->countDefenders() >= min_defenders)
-	    return true;
-	}
-    }
-
-  return false;
-}
-
-bool AI_Fast::maybeVector(City *c, Uint32 safe_mp, Uint32 min_defenders,
-			  City *target, City **vector_city)
-{
-  if (vector_city)
-    *vector_city = NULL;
-  Citylist *cl = Citylist::getInstance();
-
-  //is this city producing anything that we can vector?
-  if (c->getActiveProductionSlot() == -1)
-    return false;
-
-  //is it safe to vector from this city?
-  bool safe = safeFromAttack(c, 18, 3);
-
-  if (!safe)
-    return false;
-
-  //get the nearest city to the enemy city that can accept vectored units
-  City *near_city = cl->getNearestFriendlyVectorableCity(target->getPos());
-  if (!near_city)
-    return false;
-
-  //if it's us then it's easier to just walk.
-  if (near_city == c)
-    return false;
-
-  //is that city already vectoring?
-  if (near_city->getVectoring() != Vector<int>(-1, -1))
-    return false;
-
-  //can i just walk there faster?
-
-  //find mp from source to target city
-  const Army *proto = c->getProductionBase(c->getActiveProductionSlot());
-  Uint32 mp_from_source_city = Stack::scout(c->getOwner(), c->getPos(),
-					    target->getPos(), proto);
-
-  //find mp from nearer vectorable city to target city
-  Uint32 mp_from_near_city = Stack::scout(c->getOwner(), near_city->getPos(),
-					  target->getPos(), proto);
-
-  Uint32 max_moves_per_turn = proto->getStat(Army::MOVES);
-
-  double turns_to_move_from_source_city = 
-    (double)mp_from_source_city / (double)max_moves_per_turn;
-  double turns_to_move_from_near_city = 
-    (double)mp_from_near_city / (double)max_moves_per_turn;
-  turns_to_move_from_near_city += 1.0; //add extra turn to vector
-
-  //yes i can walk there faster, so don't vector
-  if (turns_to_move_from_source_city <= turns_to_move_from_near_city)
-    return false;
-
-  //great.  now do the vectoring.
-  c->changeVectorDestination(near_city->getPos());
-
-  if (vector_city)
-    *vector_city = near_city;
-  return true;
-}
-
-void AI_Fast::setupVectoring()
-{
-  Citylist *cl = Citylist::getInstance();
-  //turn off vectoring where it isn't safe anymore
-  //turn off vectoring for destinations that are far away from the
-  //nearest enemy city
-
-	  
-  debug("setting up vectoring\n");
-  for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
-    {
-      City *c = &*cit;
-      if (c->getOwner() != this || c->isBurnt())
-	continue;
-      Vector<int> dest = c->getVectoring();
-      if (dest == Vector<int>(-1, -1))
-	continue;
-      if (safeFromAttack(c, 18, 3) == false)
-	{
-	  City *target_city = Citylist::getInstance()->getObjectAt(dest);
-	  debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because it's not safe to anymore!\n")
-	    c->setVectoring(Vector<int>(-1,-1));
-	  continue;
-	}
-
-      City *enemy_city = cl->getNearestEnemyCity(dest);
-      if (!enemy_city)
-	{
-	  City *target_city = Citylist::getInstance()->getObjectAt(dest);
-	  debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because there aren't any more enemy cities!\n")
-	    c->setVectoring(Vector<int>(-1,-1));
-	  continue;
-	}
-
-      Uint32 mp = Stack::scout(this, dest, enemy_city->getPos(), NULL);
-      if ((int)mp <= 0 || mp > 30)
-	{
-
-	  City *target_city = Citylist::getInstance()->getObjectAt(dest);
-	  debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because it's too far away from an enemy city!\n")
-	    c->setVectoring(Vector<int>(-1,-1));
-	  continue;
-	}
-    }
-
-  for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
-    {
-      City *c = &*cit;
-      if (c->getOwner() != this || c->isBurnt())
-	continue;
-      City *enemy_city = cl->getNearestEnemyCity(c->getPos());
-      if (!enemy_city)
-	continue;
-      City *vector_city = NULL;
-      //if the city isn't already vectoring
-      if (c->getVectoring() == Vector<int>(-1,-1))
-	{
-	  bool vectored = maybeVector(c, 18, 3, enemy_city, &vector_city);
-	  if (vectored)
-	    debug("begin vectoring from " << c->getName() <<" to " << vector_city->getName() << "!\n")
-	}
-    }
-}
 // End of file

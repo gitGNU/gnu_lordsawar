@@ -1401,6 +1401,53 @@ class Player: public sigc::trackable
         void doConquerCity(City *city, Stack *stack);
         void doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const Army *ally);
 
+	void AI_maybeBuyScout();
+
+	//! Go to a temple if we're near enough.
+	/**
+	 * Helper method to take a stack on a mission to get blessed.
+	 * If the method returns false initially, it means that the nearest 
+	 * temple is unsuitable.
+	 * @note The idea is that this method is called over subsequent turns, 
+	 * until the blessed parameter gets filled with a value of true.
+	 *
+	 * @param s            The stack to visit a temple.
+	 * @param dist         The maximum number of tiles that a temple
+	 *                     can be away from the stack, and be considered
+	 *                     for visiting.
+	 * @param mp           The maximum number of movement points that a
+	 *                     stack needs to have to reach the temple.
+	 * @param percent_can_be_blessed  If the stack has this many army 
+	 *                                units that have not been blessed
+	 *                                at the temple (expressed as a
+	 *                                percent), then the temple will be
+	 *                                considered for visiting.
+	 * @param blessed      Gets filled with false if the stack didn't get 
+	 *                     blessed.  Gets filled with true if the stack 
+	 *                     got blessed at the temple.
+	 * @param stack_died   Gets filled with true if the stack got killed
+	 *                     by an enemy stack on the same square as the
+	 *                     temple.
+	 *
+	 * Returns true if the stack moved, false if it stayed still.
+	 */
+	bool AI_maybeVisitTempleForBlessing(Stack *s, int dist, int mp, 
+					    double percent_can_be_blessed, 
+					    bool &blessed, bool &stack_died);
+	bool AI_maybePickUpItems (Stack *s, int dist, int mp, bool &picked_up,
+				  bool &stack_died);
+
+
+
+	bool AI_maybeVector(City *c, Uint32 safe_mp, Uint32 min_defenders,
+			    City *target, City **vector_city = NULL);
+
+
+	void AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
+			       Uint32 mp_to_front);
+
+	bool AI_maybeDisband(Stack *s, City *city, Uint32 min_defenders, 
+			     int safe_mp, bool &stack_died);
 
     private:
         //! Loads the subdata of a player (actions and stacklist)
@@ -1451,6 +1498,8 @@ class Player: public sigc::trackable
         int lootCity(City *city);
         void takeCityInPossession(City* c);
 	void tallyTriumph(Player *p, TriumphType type);
+	//! is it safe to vector from the given city?
+	bool safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders);
 };
 
 extern sigc::signal<void, Player::Type>  sendingTurn;

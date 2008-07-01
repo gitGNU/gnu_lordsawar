@@ -271,11 +271,7 @@ Stack *AI_Allocation::findClosestStack(Vector<int> pos, int limitInMoves)
     {
       Stack* s = *it;
       Vector<int> spos = s->getPos();
-      // UL: stacks can move diagonally
-      int distToThreat = abs(pos.x - spos.x);
-      int disty = abs(pos.y - spos.y);
-      if (distToThreat < disty)
-	distToThreat = disty;
+      int distToThreat = dist(pos, spos);
 
       float movesToThreat = (distToThreat + 6.0) / 7.0;
       if (movesToThreat > (float) limitInMoves) continue;
@@ -301,11 +297,7 @@ Stack *AI_Allocation::findBestAttackerFor(Threat *threat)
 	return 0;
       Vector<int> spos = s->getPos();
 
-      // UL: consider diagonal movement of stacks
-      int distToThreat = abs(closestPoint.x - spos.x);
-      int disty = abs(closestPoint.y - spos.y);
-      if (distToThreat < disty)
-	distToThreat = disty;
+      int distToThreat = dist(closestPoint, spos);
 
       int movesToThreat = (distToThreat + 6) / 7;
       // don't bother moving more than three moves to kill anything
@@ -337,12 +329,33 @@ int AI_Allocation::defaultStackMovements()
 	MoveResult *result = 0;
 	if (s->size() >= MAX_STACK_SIZE)
 	  {
+		    
+	    bool moved = false;
 	    City* enemyCity = allCities->getNearestEnemyCity(s->getPos());
 	    if (enemyCity)
 	      {
-		debug("let's attack " <<enemyCity->getName())
-		  result = moveStack(s, enemyCity->getPos());
-		if (result && result->didSomething()) count++;
+		int mp = s->getPath()->calculateToCity(s, enemyCity);
+		debug("let's attack " <<enemyCity->getName() << " that is "
+		      << mp << " movement points away")
+		if (mp > 0)
+		  {
+		    printf ("starting at %d,%d\n", s->getPos().x, s->getPos().y);
+		    moved = d_owner->stackMove(s);
+		    s = d_owner->getStacklist()->getActivestack();
+		    if (moved)
+		      count++;
+		    else
+		      {
+			printf ("ended up at %d,%d\n", s->getPos().x, s->getPos().y);
+			printf ("couldn't move stack %d to attack enemy city %s\n",  s->getId(), enemyCity->getName().c_str());
+			sleep (10);
+		      }
+		  }
+		else
+		  {
+		  printf ("can't plan movement for stack %d to attack enemy city\n", s->getId());
+		  sleep (10);
+		  }
 	      }
 	    else
 	      {
@@ -352,17 +365,36 @@ int AI_Allocation::defaultStackMovements()
 		    s->getOwner()->proposeDiplomacy(Player::PROPOSE_WAR,
 						    enemyCity->getOwner());
 		    debug("let's attack " <<enemyCity->getName())
-		      result = moveStack(s, enemyCity->getPos());
-		    if (result && result->didSomething()) count++;
+		    int mp = s->getPath()->calculateToCity(s, enemyCity);
+		    if (mp > 0)
+		      {
+			moved = d_owner->stackMove(s);
+			s = d_owner->getStacklist()->getActivestack();
+			if (moved)
+			  count++;
+			else
+			  {
+			    s = d_owner->getStacklist()->getActivestack();
+			    printf ("couldn't move stack %d to attack enemy city\n",  s->getId());
+			    sleep (10);
+			  }
+		      }
+		    else
+		      {
+			printf ("can't move stack %d to attack foreign city\n", s->getId());
+			sleep(10);
+		      }
 		  }
 	      }
 
-	    if (!result || !result->didSomething())
+	    if (!moved)
 	      {
 		// for some reason (islands are one bet), we could not attack the
 		// enemy city. Let's iterator through all cities and attack the first
 		// one we can lay our hands on.
 		debug("Mmmh, did not work.")
+		  sleep (10);
+/*
 		  for (Citylist::iterator cit = allCities->begin(); cit != allCities->end(); cit++)
 		    if ((*cit).getOwner() != d_owner)
 		      {
@@ -375,6 +407,7 @@ int AI_Allocation::defaultStackMovements()
 			    break;
 			  }
 		      }
+		      */
 	      }
 	  }
 	else
@@ -411,11 +444,7 @@ MoveResult *AI_Allocation::stackReinforce(Stack *s)
       City *city = &(*it);
       Vector<int> spos = s->getPos();
       Vector<int> cpos = city->getPos();
-      // UL: stacks can move diagnonally
-      int distToCity = abs(spos.x - cpos.x);
-      int disty = abs(spos.y - cpos.y);
-      if (distToCity < disty)
-	distToCity = disty;
+      int distToCity = dist(spos, cpos);
 
       int movesToCity = (distToCity + 6) / 7;
       if (movesToCity > 3) continue;

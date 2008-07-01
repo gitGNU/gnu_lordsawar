@@ -160,11 +160,7 @@ void Threatlist::findThreats(AICityInfo *info) const
         if (closestPoint.x == -1)
             continue;
 
-        // UL: stacks can move diagonally
-        int distToThreat = abs(closestPoint.x - location.x);
-        int disty = abs(closestPoint.y - location.y);
-        if (distToThreat < disty)
-            distToThreat = disty;
+        int distToThreat = dist(closestPoint, location);
 
         float movesToThreat = ((float) distToThreat + 6.0) / 7.0;
         debug("moves to " << threat->toString() << " is " << movesToThreat)
