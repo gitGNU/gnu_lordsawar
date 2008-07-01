@@ -1,4 +1,6 @@
 
+ scp lordsawar-0.1.0.tar.gz benasselstine@dl.sv.nongnu.org:/releases/lordsawar/
+
 buildings can be put on tiles that get turned into water
 	or turned into forest
 		true or false?
@@ -24,4 +26,4 @@ fight bug:
 
 check to see what happens when i pass a larger attacker/defender list of stacks to fight.  it only seems to use 1!
 ---
-vectoring
+moving the ai maybe* methods into realplayer, so that the smart ai player can use them
