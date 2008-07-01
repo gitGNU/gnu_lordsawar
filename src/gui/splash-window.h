@@ -21,6 +21,7 @@
 
 #include <memory>
 #include <gtkmm/window.h>
+#include <gtkmm/button.h>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 
@@ -50,6 +51,7 @@ class SplashWindow: public sigc::trackable
 
  private:
     std::auto_ptr<Gtk::Window> window;
+    Gtk::Button *crash_button;
 	
     bool on_delete_event(GdkEventAny *e);
     
@@ -60,6 +62,7 @@ class SplashWindow: public sigc::trackable
     void on_load_scenario_clicked();
     void on_preferences_clicked();
     void on_quit_clicked();
+    void on_rescue_crashed_game_clicked();
 	
     void on_game_started(GameParameters g);
 

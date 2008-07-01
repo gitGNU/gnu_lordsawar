@@ -34,6 +34,7 @@
 #include "../Configuration.h"
 #include "../defs.h"
 #include "../sound.h"
+#include "../File.h"
 //#include "../netggz.h"
 
 SplashWindow::SplashWindow()
@@ -72,6 +73,24 @@ SplashWindow::SplashWindow()
 			 sigc::mem_fun(*this, &SplashWindow::on_quit_clicked));
 
     Sound::getInstance()->playMusic("intro");
+
+    if (Configuration::s_autosave_policy == 1)
+      {
+	Gtk::VBox *button_box;
+	xml->get_widget("button_box", button_box);
+  
+	std::string filename = File::getSavePath() + "autosave.sav";
+	FILE *fileptr = fopen (filename.c_str(), "r");
+	if (fileptr)
+	  {
+	    fclose (fileptr);
+	    crash_button = Gtk::manage(new Gtk::Button());
+	    crash_button->set_label(_("Rescue Crashed Game"));
+	    button_box->pack_start(*crash_button, true, true, 0);
+	    crash_button->signal_clicked().connect(sigc::mem_fun(*this, &SplashWindow::on_rescue_crashed_game_clicked));
+	    button_box->reorder_child(*crash_button, 0);
+	  }
+      }
 }
 
 SplashWindow::~SplashWindow()
@@ -100,6 +119,13 @@ bool SplashWindow::on_delete_event(GdkEventAny *e)
 void SplashWindow::on_quit_clicked()
 {
     quit_requested.emit();
+}
+
+void SplashWindow::on_rescue_crashed_game_clicked()
+{
+  delete crash_button;
+  std::string filename = File::getSavePath() + "autosave.sav";
+  load_requested.emit(filename);
 }
 
 void SplashWindow::on_new_game_clicked()

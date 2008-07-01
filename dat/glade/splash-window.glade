@@ -46,7 +46,7 @@
       </child>
 
       <child>
-	<widget class="GtkVBox" id="vbox">
+	<widget class="GtkVBox" id="button_box">
 	  <property name="border_width">24</property>
 	  <property name="width_request">266</property>
 	  <property name="visible">True</property>

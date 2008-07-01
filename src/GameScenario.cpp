@@ -280,6 +280,11 @@ GameScenario::~GameScenario()
       delete fl_counter;
       fl_counter = 0;
     }
+  if (Configuration::s_autosave_policy == 1)
+    {
+      std::string filename = File::getSavePath() + "autosave.sav";
+      remove(filename.c_str());
+    }
 } 
 
 std::string GameScenario::getName(bool translate) const
