@@ -343,6 +343,12 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	    /* clicking on own city, makes vectoring stop */
 	    dest = Vector<int>(-1, -1);
 
+	  if (dest != Vector<int>(-1, -1) && dest != planted_standard &&
+	      nearestCity != NULL)
+	    {
+	      //make sure that dest is the top left tile of the city
+	      dest = nearestCity->getPos();
+	    }
 	  if (dest != city->getVectoring())
 	    {
 	      destination_chosen.emit(dest);
@@ -391,6 +397,8 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	  else if (nearestCity == city)
 	    /* clicking on own city, makes vectoring stop */
 	    dest = Vector<int>(-1, -1);
+	  else
+	    dest = nearestCity->getPos();
 
 	  if (dest == Vector<int>(-1, -1)) //stop vectoring
 	    {
