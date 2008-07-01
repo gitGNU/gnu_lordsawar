@@ -253,7 +253,7 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     //parse the speed delays
     helper->getData(s_displaySpeedDelay, "speeddelay");
     helper->getData(s_displayFightRoundDelayFast, "fightrounddelayfast");
-    helper->getData(s_displayFightRoundDelayFast, "fightrounddelayslow");
+    helper->getData(s_displayFightRoundDelaySlow, "fightrounddelayslow");
 
     //parse if nextplayer dialog should be enabled
     helper->getData(s_showNextPlayer, "shownextplayer");
