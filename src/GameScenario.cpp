@@ -285,6 +285,7 @@ GameScenario::~GameScenario()
       std::string filename = File::getSavePath() + "autosave.sav";
       remove(filename.c_str());
     }
+  GameScenarioOptions::s_round = 0;
 } 
 
 std::string GameScenario::getName(bool translate) const
