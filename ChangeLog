@@ -1,3 +1,8 @@
+2008-09-02  Ben Asselstine
+
+	* fixed bug preventing subsequent new games from being initialized 
+	  properly.
+
 2008-09-01  Ben Asselstine
 
 	* loading autosaved games now restarts the computer players correctly.
