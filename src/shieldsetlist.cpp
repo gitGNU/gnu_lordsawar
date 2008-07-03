@@ -115,7 +115,21 @@ void Shieldsetlist::instantiatePixmaps()
     (*it)->instantiatePixmaps();
 }
 	
-Shield *Shieldsetlist::getShield(std::string shieldset, Uint32 type, Uint32 colour)
+SDL_Color Shieldsetlist::getColor(std::string shieldset, Uint32 owner)
+{
+  Shieldset *s = getShieldset(shieldset);
+  if (!s)
+    {
+      SDL_Color def;
+      def.r = 0;
+      def.g = 0;
+      def.b = 0;
+      return def;
+    }
+  return s->getColor(owner);
+}
+
+ShieldStyle *Shieldsetlist::getShield(std::string shieldset, Uint32 type, Uint32 colour)
 {
   Shieldset *s = getShieldset(shieldset);
   if (!s)

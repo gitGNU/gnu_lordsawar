@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<shieldset version="0.2">
+<shieldset version="0.3">
     <d_name>Plain</d_name>
     <d_small_width>8</d_small_width>
     <d_small_height>8</d_small_height>
@@ -8,138 +8,147 @@
     <d_large_width>31</d_large_width>
     <d_large_height>36</d_large_height>
     <shield>
-        <d_type>0</d_type>
-        <d_colour>0</d_colour>
-        <d_image>small-shield</d_image>
+        <d_owner>0</d_owner>
+        <d_color>252 252 252</d_color>
+        <shieldstyle>
+            <d_type>0</d_type>
+            <d_image>small-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>1</d_type>
+            <d_image>medium-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>2</d_type>
+            <d_image>large-shield</d_image>
+        </shieldstyle>
     </shield>
     <shield>
-        <d_type>0</d_type>
-        <d_colour>1</d_colour>
-        <d_image>small-shield</d_image>
+        <d_owner>1</d_owner>
+        <d_color>80 193 28</d_color>
+        <shieldstyle>
+            <d_type>0</d_type>
+            <d_image>small-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>1</d_type>
+            <d_image>medium-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>2</d_type>
+            <d_image>large-shield</d_image>
+        </shieldstyle>
     </shield>
     <shield>
-        <d_type>0</d_type>
-        <d_colour>2</d_colour>
-        <d_image>small-shield</d_image>
+        <d_owner>2</d_owner>
+        <d_color>252 236 32</d_color>
+        <shieldstyle>
+            <d_type>0</d_type>
+            <d_image>small-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>1</d_type>
+            <d_image>medium-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>2</d_type>
+            <d_image>large-shield</d_image>
+        </shieldstyle>
     </shield>
     <shield>
-        <d_type>0</d_type>
-        <d_colour>3</d_colour>
-        <d_image>small-shield</d_image>
+        <d_owner>3</d_owner>
+        <d_color>92 92 208</d_color>
+        <shieldstyle>
+            <d_type>0</d_type>
+            <d_image>small-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>1</d_type>
+            <d_image>medium-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>2</d_type>
+            <d_image>large-shield</d_image>
+        </shieldstyle>
     </shield>
     <shield>
-        <d_type>0</d_type>
-        <d_colour>4</d_colour>
-        <d_image>small-shield</d_image>
+        <d_owner>4</d_owner>
+        <d_color>252 160 0</d_color>
+        <shieldstyle>
+            <d_type>0</d_type>
+            <d_image>small-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>1</d_type>
+            <d_image>medium-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>2</d_type>
+            <d_image>large-shield</d_image>
+        </shieldstyle>
     </shield>
     <shield>
-        <d_type>0</d_type>
-        <d_colour>5</d_colour>
-        <d_image>small-shield</d_image>
+        <d_owner>5</d_owner>
+        <d_color>44 184 252</d_color>
+        <shieldstyle>
+            <d_type>0</d_type>
+            <d_image>small-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>1</d_type>
+            <d_image>medium-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>2</d_type>
+            <d_image>large-shield</d_image>
+        </shieldstyle>
     </shield>
     <shield>
-        <d_type>0</d_type>
-        <d_colour>6</d_colour>
-        <d_image>small-shield</d_image>
+        <d_owner>6</d_owner>
+        <d_color>196 28 0</d_color>
+        <shieldstyle>
+            <d_type>0</d_type>
+            <d_image>small-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>1</d_type>
+            <d_image>medium-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>2</d_type>
+            <d_image>large-shield</d_image>
+        </shieldstyle>
     </shield>
     <shield>
-        <d_type>0</d_type>
-        <d_colour>7</d_colour>
-        <d_image>small-shield</d_image>
+        <d_owner>7</d_owner>
+        <d_color>0 0 0</d_color>
+        <shieldstyle>
+            <d_type>0</d_type>
+            <d_image>small-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>1</d_type>
+            <d_image>medium-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>2</d_type>
+            <d_image>large-shield</d_image>
+        </shieldstyle>
     </shield>
     <shield>
-        <d_type>0</d_type>
-        <d_colour>8</d_colour>
-        <d_image>small-neutral-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>1</d_type>
-        <d_colour>0</d_colour>
-        <d_image>medium-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>1</d_type>
-        <d_colour>1</d_colour>
-        <d_image>medium-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>1</d_type>
-        <d_colour>2</d_colour>
-        <d_image>medium-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>1</d_type>
-        <d_colour>3</d_colour>
-        <d_image>medium-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>1</d_type>
-        <d_colour>4</d_colour>
-        <d_image>medium-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>1</d_type>
-        <d_colour>5</d_colour>
-        <d_image>medium-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>1</d_type>
-        <d_colour>6</d_colour>
-        <d_image>medium-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>1</d_type>
-        <d_colour>7</d_colour>
-        <d_image>medium-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>1</d_type>
-        <d_colour>8</d_colour>
-        <d_image>medium-neutral-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>2</d_type>
-        <d_colour>0</d_colour>
-        <d_image>large-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>2</d_type>
-        <d_colour>1</d_colour>
-        <d_image>large-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>2</d_type>
-        <d_colour>2</d_colour>
-        <d_image>large-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>2</d_type>
-        <d_colour>3</d_colour>
-        <d_image>large-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>2</d_type>
-        <d_colour>4</d_colour>
-        <d_image>large-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>2</d_type>
-        <d_colour>5</d_colour>
-        <d_image>large-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>2</d_type>
-        <d_colour>6</d_colour>
-        <d_image>large-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>2</d_type>
-        <d_colour>7</d_colour>
-        <d_image>large-shield</d_image>
-    </shield>
-    <shield>
-        <d_type>2</d_type>
-        <d_colour>8</d_colour>
-        <d_image>large-neutral-shield</d_image>
+        <d_owner>8</d_owner>
+        <d_color>204 204 204</d_color>
+        <shieldstyle>
+            <d_type>0</d_type>
+            <d_image>small-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>1</d_type>
+            <d_image>medium-shield</d_image>
+        </shieldstyle>
+        <shieldstyle>
+            <d_type>2</d_type>
+            <d_image>large-shield</d_image>
+        </shieldstyle>
     </shield>
 </shieldset>

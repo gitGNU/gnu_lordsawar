@@ -56,6 +56,7 @@
 #include "../armysetlist.h"
 #include "../Itemlist.h"
 #include "../playerlist.h"
+#include "../shieldsetlist.h"
 #include "../ai_dummy.h"
 
 #include "../stack.h"
@@ -375,7 +376,10 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
     // ...however we need to do some of the setup by hand. We need to create a
     // neutral player to give cities a player upon creation...
     Uint32 armyset_id = Armysetlist::getInstance()->getArmysetId(armyset);
-    Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, Player::get_color_for_neutral(), width, height, MAX_PLAYERS);
+    Shieldsetlist *ssl = Shieldsetlist::getInstance();
+    Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, 
+				   ssl->getColor(shieldset, MAX_PLAYERS), 
+				   width, height, MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
     Playerlist::getInstance()->push_back(neutral);
     Playerlist::getInstance()->setNeutral(neutral);
@@ -418,7 +422,10 @@ void MainWindow::set_random_map(int width, int height,
     // We need to create a neutral player to give cities a player upon
     // creation...
     Uint32 armyset_id = Armysetlist::getInstance()->getArmysetId(armyset);
-    Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, Player::get_color_for_neutral(), width, height, MAX_PLAYERS);
+    Shieldsetlist *ssl = Shieldsetlist::getInstance();
+    Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, 
+				   ssl->getColor(shieldset, MAX_PLAYERS), 
+				   width, height, MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
     Playerlist::getInstance()->push_back(neutral);
     Playerlist::getInstance()->setNeutral(neutral);

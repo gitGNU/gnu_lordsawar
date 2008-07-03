@@ -114,6 +114,7 @@
 #include "../Configuration.h"
 #include "../GameMap.h"
 #include "../Item.h"
+#include "../shieldsetlist.h"
 
 
 GameWindow::GameWindow()
@@ -375,6 +376,7 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
     // then fill the other players
     int c = 0;
     int army_id = Armysetlist::getInstance()->getArmysetId(g.army_theme);
+    Shieldsetlist *ssl = Shieldsetlist::getInstance();
     for (std::vector<GameParameters::Player>::const_iterator
 	     i = g.players.begin(), end = g.players.end();
 	 i != end; ++i, ++c) {
@@ -393,11 +395,13 @@ create_and_dump_scenario(const std::string &file, const GameParameters &g)
 	else
 	    type = Player::HUMAN;
 
-	creator.addPlayer(i->name, army_id, Player::get_color_for_no(c), type);
+	creator.addPlayer(i->name, army_id, ssl->getColor(g.shield_theme, 
+							  c), type);
     }
 
     // the neutral player must come last so it has the highest id among players
-    creator.addNeutral(_("Neutral"), army_id, Player::get_color_for_neutral(),
+    creator.addNeutral(_("Neutral"), army_id, 
+		       ssl->getColor(g.shield_theme, MAX_PLAYERS),
 		       Player::AI_DUMMY);
 
     // now fill in some map information

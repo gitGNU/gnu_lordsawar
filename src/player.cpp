@@ -61,33 +61,6 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 #define debug(x)
 
-SDL_Color Player::get_color_for_no(int player_no)
-{
-    SDL_Color color;
-    color.r = color.b = color.g = color.unused = 0;
-    switch (player_no % MAX_PLAYERS)
-    {
-    case 0: color.r = 252; color.b = 252; color.g = 252; break;
-    //case 1: color.r = 80; color.b = 28; color.g = 172; break;
-    case 1: color.r = 80; color.b = 28; color.g = 193; break;
-    case 2: color.r = 252; color.b = 32; color.g = 236; break;
-    case 3: color.r = 0; color.b = 252; color.g = 252; break;
-    case 4: color.r = 252; color.b = 0; color.g = 160;break;
-    case 5: color.r = 44; color.b = 252; color.g = 184; break;
-    case 6: color.r = 196; color.b = 0; color.g = 28; break;
-    case 7: color.r = color.g = color.b = 0; break;
-    }
-    
-    return color;
-}
-
-SDL_Color Player::get_color_for_neutral()
-{
-    SDL_Color color;
-    color.r = color.g = color.b = 204; color.unused = 0;
-    return color;
-}
-
 
 // signal
 sigc::signal<void, Player::Type> sendingTurn;

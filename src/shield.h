@@ -24,24 +24,17 @@
 #include <sigc++/signal.h>
 
 #include "defs.h"
+#include "shieldstyle.h"
 
 class Player;
 class XML_Helper;
+class Shieldset;
 
-//! A graphic of a shield.
+//! A single set of shields for a player
 /**
- * This class is the atom of every shield. It contains all data related to
- * a single Shield type of a Shieldset.
- * Shields come in three sizes: small, medium and large (Shield::ShieldType).
- * Shields are associated with one of 9 players (Shield::ShieldColours).
- * These so-called players are not Player objects; instead they are notional.
- *
- * Every Shield object has an image and a mask.  The mask identifies the
- * portion of the Shield to shade in the Player's colour (Player::d_color).
- * The mask appears on the right side the shield image file.
  *
  */
-class Shield : public sigc::trackable
+class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 {
     public:
 
@@ -49,19 +42,9 @@ class Shield : public sigc::trackable
 	enum ShieldColour {WHITE = 0, GREEN = 1, YELLOW = 2, LIGHT_BLUE = 3,
 	RED = 4, DARK_BLUE = 5, ORANGE = 6, BLACK = 7, NEUTRAL = 8};
 
-	//! The size of the shield.
-	enum ShieldType {
-	  //! Small shields are shown on the OverviewMap object.
-	  SMALL = 0, 
-	  //! Medium shields are shown in the top right of the GameWindow.
-	  MEDIUM = 1, 
-	  //! Large shields are shown in the DiplomacyDialog and FightWindow.
-	  LARGE = 2
-	};
-
 	//! Loading constructor.
         /**
-	 * Make a new Shield object by readiang it in from an opened shieldset
+	 * Make a new Shield object by reading it in from an opened shieldset
 	 * configuration file.
 	 *
          * @param helper  The opened shieldset configuration file to read the
@@ -72,49 +55,32 @@ class Shield : public sigc::trackable
 	//! Destructor.
         virtual ~Shield();
 
-        // Set functions:
-        
-        //! Set the basic image of the shield.
-        void setPixmap(SDL_Surface* pixmap);
-
-        //! Set the mask of the shield.
-        void setMask(SDL_Surface* mask);
-
-        //! Set the shieldset of the shield.
-        void setShieldset(std::string shieldset) {d_shieldset = shieldset;};
-
-	//! Set the basename of the shield picture's filename.
-	void setImageName(std::string image) {d_image = image;}
-        
-        // Get functions
-        
-        //! Get the size of this shield.
-        Uint32 getType() const {return d_type;}
-
         //! Get the player that this shield will belong to.
-	Uint32 getColour() const {return d_colour;}
+	Uint32 getOwner() const {return d_owner;}
 
-        //! Get the image of the shield.
-        SDL_Surface* getPixmap() const;
+        //! Returns the colour of the player.
+        SDL_Color getColor() const {return d_color;}
 
-        //! Returns the mask of the shield.
-        SDL_Surface* getMask() const {return d_mask;}
+	void instantiatePixmaps(Shieldset *sh);
 
-	//! Returns the basename of the picture's filename.
-	std::string getImageName() const {return d_image;}
-
-	//! Get the shieldset of the shield.
-	std::string getShieldset() const {return d_shieldset;}
-
-    protected:
-
-	//! The size of the shield.
 	/**
-	 * Equates to the shieldset.shield.d_type XML entities in the shieldset
-	 * configuration file.
-	 * Equates to the Shield::ShieldType enumeration.
+	 * Get the default colour for the Player with the given Id.
+	 *
+	 * @note This colour is used to graphically shade Army, Shield, Flags,
+	 * and selector pictures.
+	 *
+	 * @note This is not used to obtain the Neutral player's colour.
+	 *
+	 * @param player_no  The player's Id for which we want the colour.
+	 *
+	 * @return The default colour associated with the player.
 	 */
-        Uint32 d_type;
+	//! Get standard colour for a player.
+	static SDL_Color get_default_color_for_no(int player_no);
+
+	//! Get standard colour for the neutral player.
+	static SDL_Color get_default_color_for_neutral();
+    protected:
 
 	//! The player of the shield.
 	/**
@@ -122,28 +88,13 @@ class Shield : public sigc::trackable
 	 * shieldset configuration file.
 	 * Equates to the Shield::ShieldColour enumeration.
 	 */
-	Uint32 d_colour;
+	Uint32 d_owner;
 
-	//! The unshaded image portion of the shield's picture.
-        SDL_Surface* d_pixmap;
-
-	//! The portion of the shield's image to shade in the player's colour.
+	//! The player's colour.
 	/**
-	 * The mask appears to the right of the image in the shield's picture.
-	 * The colour that shades the mask is dictated by Player::d_colour.
+	 * Mask portions of images are shaded in this colour.
 	 */
-        SDL_Surface* d_mask;
-
-	//! The basename of the shield's picture file.
-	/**
-	 * Returns the filename that holds the image for this Shield.
-	 * The filename does not have a path, and the filename does
-	 * not have an extension (e.g. .png).
-	 */
-	std::string d_image;
-
-	//! The Shieldset to which this Shield belongs.
-	std::string d_shieldset;
+        SDL_Color d_color;
 };
 
 #endif // SHIELD_H

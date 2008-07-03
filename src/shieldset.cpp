@@ -23,6 +23,7 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "shieldset.h"
+#include "shieldstyle.h"
 #include "File.h"
 #include "defs.h"
 
@@ -43,6 +44,8 @@ Shieldset::Shieldset(XML_Helper *helper)
   helper->getData(d_large_height, "large_height");
   helper->registerTag("shield", sigc::mem_fun((*this), 
 					      &Shieldset::loadShield));
+  helper->registerTag("shieldstyle", sigc::mem_fun((*this), 
+						   &Shieldset::loadShield));
 }
 
 Shieldset::~Shieldset()
@@ -53,91 +56,51 @@ Shieldset::~Shieldset()
 
 void Shieldset::instantiatePixmaps()
 {
-  iterator a = begin();
   for (iterator it = begin(); it != end(); it++)
-    instantiatePixmap(*it);
-}
-
-bool Shieldset::instantiatePixmap(Shield *sh)
-{
-    std::string s;
-
-    // The shield image consists of two halves. On the left is the shield 
-    // image, on the right the mask.
-    SDL_Surface* pic = File::getShieldPicture(d_dir, sh->getImageName() + ".png");
-    if (!pic)
-    {
-        std::cerr <<"Could not load shield image: " << s <<std::endl;
-        exit(-1);
-    }
-
-    // don't use alpha information, just copy the channel! very important
-    SDL_SetAlpha(pic, 0, 0);
-    SDL_PixelFormat* fmt = pic->format;
-
-    int xsize = 0;
-    int ysize = 0;
-    switch (sh->getType())
-      {
-      case Shield::SMALL:
-	xsize = getSmallWidth(); ysize = getSmallHeight(); break;
-      case Shield::MEDIUM:
-	xsize = getMediumWidth(); ysize = getMediumHeight(); break;
-      case Shield::LARGE:
-	xsize = getLargeWidth(); ysize = getLargeHeight(); break;
-      }
-
-    // mask out the shield image 
-    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, 
-					    xsize, ysize,
-					    fmt->BitsPerPixel, fmt->Rmask, 
-					    fmt->Gmask, fmt->Bmask, fmt->Amask);
-    SDL_Rect r;
-    r.x = r.y = 0;
-    r.w = xsize;
-    r.h = ysize;
-    SDL_BlitSurface(pic, &r, tmp, 0);
-
-    SDL_Surface* pixmap = SDL_DisplayFormatAlpha(tmp);
-    sh->setPixmap(pixmap);
-
-    SDL_FreeSurface(tmp);
-
-    // now extract the mask; it should have a certain data format since the 
-    // player colors are applied by modifying the RGB shifts
-    tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize, 32,
-                               0xFF000000, 0xFF0000, 0xFF00, 0xFF);
-
-    r.x = xsize;
-    SDL_BlitSurface(pic, &r, tmp, 0);
-    sh->setMask(tmp);
-
-    SDL_FreeSurface(pic);
-
-    return true;
+    (*it)->instantiatePixmaps(this);
 }
 
 bool Shieldset::loadShield(string tag, XML_Helper* helper)
 {
     if (tag == "shield")
       {
-	std::string s;
-	// First step: Load the shield data
 	Shield* sh = new Shield(helper);
-	sh->setShieldset(d_dir);
 	push_back(sh);
+	return true;
       }
-    return true;
+    if (tag == "shieldstyle")
+      {
+	ShieldStyle *sh = new ShieldStyle(helper);
+	(*back()).push_back(sh);
+	return true;
+      }
+    return false;
 }
 
-Shield * Shieldset::lookupShieldByTypeAndColour(Uint32 type, Uint32 colour)
+ShieldStyle * Shieldset::lookupShieldByTypeAndColour(Uint32 type, Uint32 owner)
 {
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it)->getType() == type && (*it)->getColour() == colour)
-	return *it;
+      for (Shield::iterator i = (*it)->begin(); i != (*it)->end(); i++)
+	{
+	  if ((*i)->getType() == type && (*it)->getOwner() == owner)
+	    return *i;
+	}
     }
   return NULL;
 }
 
-    
+SDL_Color Shieldset::getColor(Uint32 owner)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getOwner() == owner)
+	return (*it)->getColor();
+    }
+  SDL_Color def;
+  def.r= 0;
+  def.g= 0;
+  def.b= 0;
+  return def;
+}
+

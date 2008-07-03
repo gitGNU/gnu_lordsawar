@@ -38,6 +38,7 @@
 #include "real_player.h"
 #include "ai_smart.h"
 #include "ai_fast.h"
+#include "GameMap.h"
 
 using namespace std;
 
@@ -605,21 +606,22 @@ void Playerlist::syncPlayer(GameParameters::Player player)
       int width = d_neutral->getFogMap()->getWidth();
       int height = d_neutral->getFogMap()->getHeight();
       int gold = d_neutral->getGold();
+      GameMap *gm = GameMap::getInstance();
       switch (player.type)
 	{
 	case GameParameters::Player::HUMAN:
 	  p = new RealPlayer(player.name, armyset,
-			     Player::get_color_for_no(player.id),
+			     gm->getShieldset()->getColor(player.id),
 			     width, height, Player::HUMAN, player.id);
 	  break;
 	case GameParameters::Player::EASY:
 	  p = new AI_Fast(player.name, armyset,
-			  Player::get_color_for_no(player.id),
+		       	  gm->getShieldset()->getColor(player.id),
 			  width, height, player.id);
 	  break;
 	case GameParameters::Player::HARD:
 	  p = new AI_Smart(player.name, armyset,
-			   Player::get_color_for_no(player.id), 
+			   gm->getShieldset()->getColor(player.id),
 			   width, height, player.id);
 	  break;
 	case GameParameters::Player::OFF:

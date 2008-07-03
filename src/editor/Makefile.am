@@ -40,7 +40,7 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
         ../bigmap.o ../smallmap.o ../overviewmap.o ../timing.o \
         ../gui/image-helpers.o ../gui/error-utils.o ../gui/gtksdl.o \
         ../gui/army-info-tip.o ../MapRenderer.o \
-	../shield.o ../shieldset.o ../shieldsetlist.o \
+	../shield.o ../shieldset.o ../shieldstyle.o ../shieldsetlist.o \
 	../citysetlist.o ../cityset.o ../CreateScenarioRandomize.o \
 	../Ownable.o ../Movable.o ../Immovable.o ../Positioned.o \
 	../Named.o ../Namable.o ../Renamable.o ../NamedLocation.o \

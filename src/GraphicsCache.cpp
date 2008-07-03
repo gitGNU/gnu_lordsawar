@@ -1025,11 +1025,12 @@ ShieldCacheItem* GraphicsCache::addShieldPic(std::string shieldset,
   myitem->type = type;
   myitem->colour = colour;
 
-  const Shield* shield;
-  shield = Shieldsetlist::getInstance()->getShield(shieldset, type, colour);
+  ShieldStyle *sh;
+  sh = Shieldsetlist::getInstance()->getShield(shieldset, type, colour);
 
   // copy the pixmap including player colors
-  myitem->surface = applyMask(shield->getPixmap(), shield->getMask(), 
+  //lookup the shieldstyle
+  myitem->surface = applyMask(sh->getPixmap(), sh->getMask(), 
 			      Playerlist::getInstance()->getPlayer(colour));
 
   //now the final preparation steps:

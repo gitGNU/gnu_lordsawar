@@ -114,18 +114,14 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	 *         If no Shield object could be found that matches the given
 	 *         parameters, NULL is returned.
 	 */
-	Shield * lookupShieldByTypeAndColour(Uint32 type, Uint32 colour);
+	ShieldStyle * lookupShieldByTypeAndColour(Uint32 type, Uint32 colour);
+
+	SDL_Color getColor(Uint32 owner);
     private:
 
         //! Callback function to load Shield objects into the Shieldset.
         bool loadShield(std::string tag, XML_Helper* helper);
 
-	//! Load the shield graphics for the given Shield.
-	/**
-	 * @note SDL must be initialized before this method is called.
-	 */
-	bool instantiatePixmap(Shield *a);
-        
 	//! The name of the Shieldset.
 	/**
 	 * This equates to the shieldset.d_name XML entity in the shieldset

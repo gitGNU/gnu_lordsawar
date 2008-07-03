@@ -75,7 +75,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	 *         the given parameters.  If no shield could be found, NULL
 	 *         is returned.
 	 */
-	Shield *getShield(std::string shieldset, Uint32 type, Uint32 colour);
+	ShieldStyle *getShield(std::string shieldset, Uint32 type, Uint32 colour);
 
 	//! Return the Shieldset object that is in the given directory.
 	Shieldset *getShieldset(std::string dir) { return d_shieldsets[dir];}
@@ -87,6 +87,8 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	 * @note This can only be done after SDL is initialized.
 	 */
 	void instantiatePixmaps();
+
+	SDL_Color getColor(std::string shieldset, Uint32 owner);
 
     private:
         //! Default Constructor.

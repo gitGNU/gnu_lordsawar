@@ -214,24 +214,6 @@ class Player: public sigc::trackable
 	//! Create a new player from another player.
         static Player* create(Player* orig, Type type);
 
-	/**
-	 * Get the default colour for the Player with the given Id.
-	 *
-	 * @note This colour is used to graphically shade Army, Shield, Flags,
-	 * and selector pictures.
-	 *
-	 * @note This is not used to obtain the Neutral player's colour.
-	 *
-	 * @param player_no  The player's Id for which we want the colour.
-	 *
-	 * @return The default colour associated with the player.
-	 */
-	//! Get standard colour for a player.
-	static SDL_Color get_color_for_no(int player_no);
-
-	//! Get standard colour for the neutral player.
-	static SDL_Color get_color_for_neutral();
-
         //! Change the player's name.
         void setName(std::string name){d_name = name;}
         
