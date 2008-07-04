@@ -1,7 +1,12 @@
+2008-09-04  Ben Asselstine
+
+	* now showing shields in the new game screen.
+
 2008-09-02  Ben Asselstine
 
 	* fixed bug preventing subsequent new games from being initialized 
 	  properly.
+	* now taking the player's colour from the shield set.
 
 2008-09-01  Ben Asselstine
 

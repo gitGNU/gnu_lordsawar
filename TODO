@@ -29,3 +29,4 @@ check to see what happens when i pass a larger attacker/defender list of stacks 
 moving the ai maybe* methods into realplayer, so that the smart ai player can use them
 	maybe they belong in AI_Allocate
 		the danger stuff looks redundant
+
