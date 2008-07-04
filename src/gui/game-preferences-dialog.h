@@ -23,17 +23,20 @@
 #include <vector>
 #include <sigc++/signal.h>
 #include <gtkmm/window.h>
+#include <gtkmm/container.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/combobox.h>
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/togglebutton.h>
+#include <gtkmm/image.h>
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/filechooserbutton.h>
 #include <gtkmm/widget.h>
 #include <gtkmm/scale.h>
 
 #include "../game-parameters.h"
+#include <SDL.h>
 #include "game-options-dialog.h"
 
 class XML_Helper;
@@ -52,9 +55,13 @@ class GamePreferencesDialog
     
     void run();
     
+    sigc::signal<void> sdl_initialized;
  private:
     void init();
+    bool sdl_inited;
     std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Container *sdl_container;
+    Gtk::Widget *sdl_widget;
 
     Gtk::Button *start_game_button;
     Gtk::ComboBoxText *tile_theme_combobox;
@@ -95,6 +102,7 @@ class GamePreferencesDialog
     
     std::list<Gtk::ComboBoxText *> player_types;
     std::list<Gtk::Entry *> player_names;
+    std::list<Gtk::Image *> player_shields;
 
     GameOptionsDialog *game_options_dialog;
 
@@ -120,8 +128,13 @@ class GamePreferencesDialog
     bool is_greatest();
     void update_difficulty_combobox();
     void update_difficulty_rating();
+    void update_shields();
     bool scan_players(std::string tag, XML_Helper* helper);
+    bool scan_shieldset(std::string tag, XML_Helper* helper);
+SDL_Surface *getShieldPic(Uint32 type, Uint32 owner);
     GameParameters load_map_parameters;
+ public:
+    void on_sdl_surface_changed();
 };
 
 #endif

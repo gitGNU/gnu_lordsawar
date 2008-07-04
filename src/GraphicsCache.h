@@ -307,6 +307,7 @@ class GraphicsCache
           * @return a surface with player colors applied.
           */
         SDL_Surface* applyMask(SDL_Surface* image, SDL_Surface* mask, const Player* p);
+	static SDL_Surface* applyMask(SDL_Surface* image, SDL_Surface* mask, SDL_Color mask_color, bool isNeutral);
         
     private:
         GraphicsCache();

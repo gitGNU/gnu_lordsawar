@@ -89,6 +89,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	void instantiatePixmaps();
 
 	SDL_Color getColor(std::string shieldset, Uint32 owner);
+	SDL_Color getMaskColor(std::string shieldset, Uint32 owner);
 
     private:
         //! Default Constructor.

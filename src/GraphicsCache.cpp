@@ -810,8 +810,49 @@ SDL_Surface* GraphicsCache::getProdShieldPic(Uint32 type, bool prod)
 }
 
 
+SDL_Surface* GraphicsCache::applyMask(SDL_Surface* image, SDL_Surface* mask, SDL_Color mask_color, bool isNeutral)
+{
+    if (!mask || mask->w != image->w || mask->h != image->h)
+    {
+        // we are expected to produce some output and a missing/wrong mask is no
+        // critical error, so just copy the original image.
+        std::cerr <<"Warning: mask and original image do not match\n";
+        return SDL_DisplayFormatAlpha(image);
+    }
+
+    SDL_Surface* s = SDL_DisplayFormatAlpha(image);
+
+    // Now copy the mask. The player's mask colors, that denote how important the
+    // corresponding color is, are used to additionally shift the colors for the pixels
+    // in the mask (see the code :) ). That way, if the player is e.g. blue, the red
+    // and green components of the mask are shifted by an additional 8 bits to the
+    // right so that in the end the mask pixels all only consist of different blue
+    // colors.
+        
+    SDL_Color c = mask_color;
+
+    if (!isNeutral)
+      {
+	mask->format->Rshift += c.r;
+	mask->format->Gshift += c.g;
+	mask->format->Bshift += c.b;
+
+	// copy the mask image over the original image
+	SDL_BlitSurface(mask, 0, s, 0);
+
+	// set everything back
+	mask->format->Rshift -= c.r;
+	mask->format->Gshift -= c.g;
+	mask->format->Bshift -= c.b;
+      }
+
+    return s;
+}
+
 SDL_Surface* GraphicsCache::applyMask(SDL_Surface* image, SDL_Surface* mask, const Player* p)
 {
+  applyMask(image, mask, p->getMaskColor(),
+	    Playerlist::getInstance()->getNeutral() == p);
     if (!mask || mask->w != image->w || mask->h != image->h)
     {
         // we are expected to produce some output and a missing/wrong mask is no

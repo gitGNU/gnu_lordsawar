@@ -78,3 +78,52 @@ SDL_Color Shield::get_default_color_for_neutral()
     return color;
 }
 
+SDL_Color Shield::getMaskColor() const
+{
+    // This is a bit tricky. The color values we return here encode additional
+    // shifts that are performed when getting the color. I.e. a color value for
+    // red of 8 means that the red color is completely ignored.
+
+    // For each color component, find the n where 2^n best describes the color.
+    // The mask value then is (8-n).
+    SDL_Color c;
+    c.r = c.g = c.b = 0;
+
+    for (int i = 8, diff = 257; i > 0; i--)
+    {
+        int color = 1<<i;
+        int tmp_diff = abs(d_color.r - color);
+        c.r = 8 - (i+1);
+
+        if (diff < tmp_diff)
+            break;
+        else
+            diff = tmp_diff;
+    }
+        
+    for (int i = 8, diff = 257; i > 0; i--)
+    {
+        int color = 1<<i;
+        int tmp_diff = abs(d_color.g - color);
+        c.g = 8 - (i+1);
+
+        if (diff < tmp_diff)
+            break;
+        else
+            diff = tmp_diff;
+    }
+        
+    for (int i = 8, diff = 257; i > 0; i--)
+    {
+        int color = 1<<i;
+        int tmp_diff = abs(d_color.b - color);
+        c.b = 8 - (i+1);
+
+        if (diff < tmp_diff)
+            break;
+        else
+            diff = tmp_diff;
+    }
+        
+    return c;
+}

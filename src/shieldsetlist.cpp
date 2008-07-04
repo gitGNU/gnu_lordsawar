@@ -129,6 +129,19 @@ SDL_Color Shieldsetlist::getColor(std::string shieldset, Uint32 owner)
   return s->getColor(owner);
 }
 
+SDL_Color Shieldsetlist::getMaskColor(std::string shieldset, Uint32 owner)
+{
+  Shieldset *s = getShieldset(shieldset);
+  if (!s)
+    {
+      SDL_Color def;
+      def.r = 0;
+      def.g = 0;
+      def.b = 0;
+      return def;
+    }
+  return s->getMaskColor(owner);
+}
 ShieldStyle *Shieldsetlist::getShield(std::string shieldset, Uint32 type, Uint32 colour)
 {
   Shieldset *s = getShieldset(shieldset);

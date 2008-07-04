@@ -61,6 +61,8 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
         //! Returns the colour of the player.
         SDL_Color getColor() const {return d_color;}
 
+	SDL_Color getMaskColor() const;
+
 	void instantiatePixmaps(Shieldset *sh);
 
 	/**

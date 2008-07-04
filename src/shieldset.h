@@ -117,6 +117,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	ShieldStyle * lookupShieldByTypeAndColour(Uint32 type, Uint32 colour);
 
 	SDL_Color getColor(Uint32 owner);
+	SDL_Color getMaskColor(Uint32 owner);
     private:
 
         //! Callback function to load Shield objects into the Shieldset.

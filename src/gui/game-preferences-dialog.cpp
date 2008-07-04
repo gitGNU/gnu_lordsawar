@@ -27,6 +27,7 @@
 #include "game-preferences-dialog.h"
 
 #include "glade-helpers.h"
+#include "image-helpers.h"
 #include "../ucompose.hpp"
 #include "../defs.h"
 #include "../File.h"
@@ -34,9 +35,11 @@
 #include "../armysetlist.h"
 #include "../shieldsetlist.h"
 #include "../GameScenario.h"
+#include "../GraphicsCache.h"
 #include "../tilesetlist.h"
 #include "../citysetlist.h"
 #include "../player.h"
+#include "gtksdl.h"
 
 #define HUMAN_PLAYER_TYPE _("Human")
 #define EASY_PLAYER_TYPE _("Easy")
@@ -45,8 +48,16 @@
 
 static bool inhibit_difficulty_combobox = false;
 
+namespace
+{
+  void surface_attached_helper(GtkSDL *gtksdl, gpointer data)
+    {
+      static_cast<GamePreferencesDialog*>(data)->on_sdl_surface_changed();
+    }
+}
 void GamePreferencesDialog::init()
 {
+  sdl_inited = false;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/game-preferences-dialog.glade");
 
@@ -54,6 +65,8 @@ void GamePreferencesDialog::init()
     xml->get_widget("dialog", d);
     dialog.reset(d);
 
+    xml->get_widget("sdl_container", sdl_container);
+      
     xml->get_widget("start_game_button", start_game_button);
     xml->get_widget("difficulty_label", difficulty_label);
     xml->get_widget("random_map_radio", random_map_radio);
@@ -193,6 +206,8 @@ void GamePreferencesDialog::init()
       }
 
     shield_theme_combobox->set_active(default_id);
+    shield_theme_combobox->signal_changed().connect
+      (sigc::mem_fun(this, &GamePreferencesDialog::update_shields));
 
     xml->get_widget("shield_theme_box", box);
     box->pack_start(*shield_theme_combobox, Gtk::PACK_SHRINK);
@@ -231,6 +246,19 @@ void GamePreferencesDialog::init()
   game_options_dialog->difficulty_option_changed.connect(
 	sigc::mem_fun(*this, 
 		      &GamePreferencesDialog::update_difficulty_rating));
+      
+  sdl_widget = Gtk::manage(Glib::wrap(gtk_sdl_new(1,1,0,SDL_SWSURFACE)));
+  sdl_widget->grab_focus();
+  sdl_widget->add_events(Gdk::KEY_PRESS_MASK | Gdk::BUTTON_PRESS_MASK | 
+			 Gdk::BUTTON_RELEASE_MASK | Gdk::POINTER_MOTION_MASK | 
+			 Gdk::LEAVE_NOTIFY_MASK);
+
+      // connect to the special signal that signifies that a new surface has been
+      // generated and attached to the widget 
+  g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached", 
+     G_CALLBACK(surface_attached_helper), this); 
+      
+      sdl_container->add(*sdl_widget); 
   return;
 }
 
@@ -262,8 +290,24 @@ void GamePreferencesDialog::set_parent_window(Gtk::Window &parent)
 
 void GamePreferencesDialog::run()
 {
+    sdl_container->show_all();
     dialog->show_all();
     dialog->run();
+}
+
+SDL_Surface *GamePreferencesDialog::getShieldPic(Uint32 type, Uint32 owner)
+{
+  Shieldsetlist *sl = Shieldsetlist::getInstance();
+  std::string shieldset = "default";
+  if (shield_theme_combobox->is_sensitive() == true)
+    shieldset = sl->getShieldsetDir
+      (Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
+  else if (load_map_parameters.shield_theme != "")
+    shieldset = load_map_parameters.shield_theme;
+
+  ShieldStyle *sh= sl->getShield(shieldset, type, owner);
+  SDL_Color color = sl->getMaskColor(shieldset, owner);
+  return GraphicsCache::applyMask(sh->getPixmap(), sh->getMask(), color, false);
 }
 
 void GamePreferencesDialog::add_player(const Glib::ustring &type,
@@ -291,9 +335,10 @@ void GamePreferencesDialog::add_player(const Glib::ustring &type,
   else if (type== NO_PLAYER_TYPE)
     player_type->set_active(3);
 
+
   player_types.push_back(player_type);
   player_names.push_back(player_name);
-  player_hbox->add(*manage(player_name));
+  player_hbox->pack_start(*manage(player_name), Gtk::PACK_SHRINK, 10);
   player_hbox->add(*manage(player_type));
   players_vbox->add(*manage(player_hbox));
 }
@@ -363,6 +408,7 @@ void GamePreferencesDialog::on_random_map_toggled()
 
     load_map_filechooser->set_sensitive(!random_map);
     random_map_container->set_sensitive(random_map);
+    update_shields();
 }
 
 void GamePreferencesDialog::on_map_size_changed()
@@ -421,6 +467,41 @@ void GamePreferencesDialog::update_difficulty_combobox()
   else
     difficulty_combobox->set_active(CUSTOM);
 }
+
+void GamePreferencesDialog::update_shields()
+{
+  if (sdl_inited == false)
+    return;
+  //get rid of the old shields
+  player_shields.clear();
+
+  std::vector<Gtk::Widget*> list;
+  list = players_vbox->get_children();
+
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+      Gtk::HBox *player_hbox = static_cast<Gtk::HBox*>(list[i + 1]);
+      std::vector<Gtk::Widget*> sublist;
+      sublist = player_hbox->get_children();
+      if (sublist.size() > 2)
+	  player_hbox->remove(*sublist[0]);
+    }
+
+  //make the shields and display them
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+      Gtk::Image *player_shield = new Gtk::Image
+	(to_pixbuf(getShieldPic(2, i)));
+      player_shields.push_back(player_shield);
+      Gtk::HBox *player_hbox = static_cast<Gtk::HBox*>(list[i + 1]);
+      player_hbox->pack_start(*manage(player_shield), Gtk::PACK_SHRINK, 10);
+      player_hbox->reorder_child(*player_shield, 0);
+      player_hbox->show_all();
+    }
+  players_vbox->show_all();
+
+}
+
 void GamePreferencesDialog::on_player_type_changed()
 {
   Uint32 offcount = 0;
@@ -771,6 +852,8 @@ void GamePreferencesDialog::on_map_chosen()
   load_map_parameters.players.clear();
   helper.registerTag("player",
 		     sigc::mem_fun(this, &GamePreferencesDialog::scan_players));
+  helper.registerTag("map",
+		     sigc::mem_fun(this, &GamePreferencesDialog::scan_shieldset));
 
   if (!helper.parse())
     {
@@ -779,7 +862,16 @@ void GamePreferencesDialog::on_map_chosen()
       return;
     }
   helper.close();
+  update_shields();
   return;
+}
+bool GamePreferencesDialog::scan_shieldset(std::string tag, XML_Helper* helper)
+{
+    if (tag == "map")
+      {
+        helper->getData(load_map_parameters.shield_theme, "shieldset");
+      }
+    return true;
 }
 bool GamePreferencesDialog::scan_players(std::string tag, XML_Helper* helper)
 {
@@ -819,4 +911,16 @@ bool GamePreferencesDialog::scan_players(std::string tag, XML_Helper* helper)
     }
 
     return true;
+}
+
+void
+GamePreferencesDialog::on_sdl_surface_changed()
+{
+  if (!sdl_inited)
+    {
+      sdl_inited = true;
+      sdl_initialized.emit();
+      Shieldsetlist::getInstance()->instantiatePixmaps();
+      update_shields();
+    }
 }

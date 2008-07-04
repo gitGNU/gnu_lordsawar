@@ -104,3 +104,17 @@ SDL_Color Shieldset::getColor(Uint32 owner)
   return def;
 }
 
+SDL_Color Shieldset::getMaskColor(Uint32 owner)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getOwner() == owner)
+	return (*it)->getMaskColor();
+    }
+  SDL_Color def;
+  def.r= 0;
+  def.g= 0;
+  def.b= 0;
+  return def;
+}
+
