@@ -594,6 +594,8 @@ class Player: public sigc::trackable
 	//! Callback to take the armies from the stack that have at least
 	//! enough moves to reach the end of the stack's path.
 	bool stackSplitAndMove(Stack* s);
+	bool stackSplitAndMoveToAttack(Stack* s);
+	bool stackSplitAndMoveToJoin(Stack* s, Stack *join);
 
         /** 
 	 * Called to move a Stack to a specified position.
@@ -1271,6 +1273,8 @@ class Player: public sigc::trackable
 
         sigc::signal<void, Action *> action_done;
         
+	//! is it safe to vector from the given city?
+	static bool safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders);
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,
@@ -1480,8 +1484,6 @@ class Player: public sigc::trackable
         int lootCity(City *city);
         void takeCityInPossession(City* c);
 	void tallyTriumph(Player *p, TriumphType type);
-	//! is it safe to vector from the given city?
-	bool safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders);
 };
 
 extern sigc::signal<void, Player::Type>  sendingTurn;

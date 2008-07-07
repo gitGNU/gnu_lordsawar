@@ -969,6 +969,8 @@ void GameWindow::on_quit_activated()
 
 void GameWindow::on_quests_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   Player *player = Playerlist::getActiveplayer();
   std::vector<Quest*> quests
     = QuestsManager::getInstance()->getPlayerQuests(player);
@@ -996,6 +998,8 @@ void GameWindow::on_fullscreen_activated()
 
 void GameWindow::on_signpost_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   std::auto_ptr<Gtk::Dialog> dialog;
 
   Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -1033,6 +1037,8 @@ void GameWindow::on_signpost_activated()
   
 void GameWindow::on_stack_info_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   StackInfoDialog d(currently_selected_stack);
   d.set_parent_window(*window.get());
   d.run();
@@ -1044,6 +1050,8 @@ void GameWindow::on_stack_info_activated()
 
 void GameWindow::on_disband_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   std::auto_ptr<Gtk::Dialog> dialog;
 
   Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -1071,6 +1079,9 @@ void GameWindow::on_disband_activated()
 
 void GameWindow::on_resign_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
+
   std::auto_ptr<Gtk::Dialog> dialog;
 
   Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -1108,11 +1119,15 @@ void GameWindow::on_preferences_activated()
 
 void GameWindow::on_group_ungroup_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   group_ungroup_toggle->set_active(!group_ungroup_toggle->get_active());
 }
 
 void GameWindow::on_fight_order_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   FightOrderDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
@@ -1120,6 +1135,8 @@ void GameWindow::on_fight_order_activated()
 
 void GameWindow::on_levels_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   HeroLevelsDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
@@ -1127,6 +1144,8 @@ void GameWindow::on_levels_activated()
 
 void GameWindow::on_ruin_report_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   Vector<int> pos;
   pos.x = 0;
   pos.y = 0;
@@ -1140,6 +1159,8 @@ void GameWindow::on_ruin_report_activated()
 
 void GameWindow::on_army_bonus_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   ArmyBonusDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
@@ -1147,6 +1168,8 @@ void GameWindow::on_army_bonus_activated()
 
 void GameWindow::on_item_bonus_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   ItemBonusDialog d;
   d.set_parent_window(*window.get());
   d.run();
@@ -1154,6 +1177,8 @@ void GameWindow::on_item_bonus_activated()
 
 void GameWindow::on_army_report_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::ARMY);
   d.set_parent_window(*window.get());
   d.run();
@@ -1161,6 +1186,8 @@ void GameWindow::on_army_report_activated()
 
 void GameWindow::on_city_report_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::CITY);
   d.set_parent_window(*window.get());
   d.run();
@@ -1168,6 +1195,8 @@ void GameWindow::on_city_report_activated()
 
 void GameWindow::on_gold_report_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::GOLD);
   d.set_parent_window(*window.get());
   d.run();
@@ -1175,6 +1204,8 @@ void GameWindow::on_gold_report_activated()
 
 void GameWindow::on_production_report_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::PRODUCTION);
   d.set_parent_window(*window.get());
   d.run();
@@ -1182,12 +1213,16 @@ void GameWindow::on_production_report_activated()
 
 void GameWindow::on_winning_report_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::WINNING);
   d.set_parent_window(*window.get());
   d.run();
 }
 void GameWindow::on_city_history_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   HistoryReportDialog d(Playerlist::getActiveplayer(), 
 			HistoryReportDialog::CITY);
   d.set_parent_window(*window.get());
@@ -1196,6 +1231,8 @@ void GameWindow::on_city_history_activated()
 
 void GameWindow::on_event_history_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   HistoryReportDialog d(Playerlist::getActiveplayer(),
 			HistoryReportDialog::EVENTS);
   d.set_parent_window(*window.get());
@@ -1204,6 +1241,8 @@ void GameWindow::on_event_history_activated()
 
 void GameWindow::on_gold_history_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   HistoryReportDialog d(Playerlist::getActiveplayer(),
 			HistoryReportDialog::GOLD);
   d.set_parent_window(*window.get());
@@ -1212,6 +1251,8 @@ void GameWindow::on_gold_history_activated()
 
 void GameWindow::on_winner_history_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   HistoryReportDialog d(Playerlist::getActiveplayer(),
 			HistoryReportDialog::WINNING);
   d.set_parent_window(*window.get());
@@ -1220,6 +1261,8 @@ void GameWindow::on_winner_history_activated()
 
 void GameWindow::on_triumphs_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   TriumphsDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
@@ -1248,6 +1291,8 @@ void GameWindow::on_help_about_activated()
 
 void GameWindow::on_diplomacy_report_activated()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   DiplomacyReportDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
@@ -1255,6 +1300,8 @@ void GameWindow::on_diplomacy_report_activated()
 
 void GameWindow::on_diplomacy_button_clicked()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   DiplomacyDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
@@ -2484,6 +2531,8 @@ void GameWindow::on_quest_expired(Quest *quest)
 
 void GameWindow::on_inspect_activated ()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   HeroDialog d(dynamic_cast<Hero*>(currently_selected_stack->getFirstHero()), 
 	       currently_selected_stack->getPos());
   d.set_parent_window(*window.get());
@@ -2491,11 +2540,15 @@ void GameWindow::on_inspect_activated ()
 }
 void GameWindow::on_plant_standard_activated ()
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   Playerlist::getActiveplayer()->heroPlantStandard(NULL);
 }
     
 void GameWindow::on_advice_asked(float percent)
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   //we asked for advice on a fight, and we're being told that we 
   //have a PERCENT chance of winning the fight
   std::auto_ptr<Gtk::Dialog> dialog;

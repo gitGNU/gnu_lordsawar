@@ -31,6 +31,7 @@
 #include "path.h"
 #include "ruinlist.h"
 #include "GameMap.h"
+#include "GameScenarioOptions.h"
 #include "Threatlist.h"
 
 using namespace std;
@@ -72,6 +73,7 @@ int AI_Allocation::move()
     int count = allocateDefensiveStacks(allCities);
     debug(d_owner->getName() << " has " << d_stacks->size() << " stacks after assigning defenders")
 
+    //do we have any left for offense?
     if (d_stacks->size())
       {
 	// stacks which are assigned to defence are no longer in 'stacks',
@@ -86,7 +88,6 @@ int AI_Allocation::move()
 	delete d_stacks;
 	d_stacks = 0;
 
-	// return 0 (leads to an end in the loop in ai_smart) if the game has ended
 	if (Playerlist::isFinished())
 	  return 0;
       }
@@ -106,7 +107,8 @@ int AI_Allocation::allocateDefensiveStacks(Citylist *allCities)
 	continue;
 
       float cityDanger = d_analysis->getCityDanger(city);
-      if (cityDanger <= 0.0) continue; // city is not in danger, so allocate no defenders
+      //if city is not endangered, don't move any existing stacks into it
+      if (cityDanger <= 0.0) continue;
 
       // Look how many defenders the city already has
       std::vector<Stack*> defenders = Stacklist::defendersInCity(city);
@@ -131,20 +133,21 @@ int AI_Allocation::allocateDefensiveStacks(Citylist *allCities)
       // because we don't have enough defence
       while (totalDefenderStrength < cityDanger)
 	{
-	  Stack *s = findClosestStack(city->getPos(), 2);
-	  if (!s) break;
+	  Stack *s = findClosestStackToCity(city, 2);
+	  if (!s) 
+	    {
+	      debug("City " << city->getName() << " is endangered but no stacks are close enough to go defend it (or no more space available in city).")
+	      break;
+	    }
 	  debug("Stack " << s->getId() << " should return to " << city->getName() << " to defend")
-	    Vector<int> *dest = getFreeSpotInCity(city, s->size());
-	  if (!dest) break;
+	  Vector<int> dest = getFreeSpotInCity(city, s->size());
 
 	  d_stacks->remove(s);
 	  d_owner->getStacklist()->setActivestack(s);
-	  MoveResult *result = moveStack(s, *dest);
-	  if (result && result->didSomething())
+
+	  int mp = s->getPath()->calculate(s, dest);
+	  if (mp >= 0 && d_owner->stackMove(s))
 	    count++;
-	  if (result)
-	    delete result;
-	  delete dest;
 	}
 
       if (totalDefenderStrength < cityDanger)
@@ -157,8 +160,14 @@ int AI_Allocation::allocateDefensiveStacks(Citylist *allCities)
 
 int AI_Allocation::allocateStacksToThreats()
 {
+  const Threatlist *threats ;
   int count = 0;
-  const Threatlist *threats = d_analysis->getThreatsInOrder();
+  City *city = Citylist::getInstance()->getFirstCity(d_owner);
+  if (!city)
+    threats = d_analysis->getThreatsInOrder();
+  else
+    threats = d_analysis->getThreatsInOrder(city->getPos());
+
   //debug("Threats to " << d_owner->getName() << " are " << threats->toString())
   debug("We start with " <<threats->size() <<" threats.")
 
@@ -170,115 +179,101 @@ int AI_Allocation::allocateStacksToThreats()
 	Threat *threat = (*it);
 	while (true)
 	  {
-	    // make this short when we have no more players
-	    if (Playerlist::isFinished())
-	      return 0;
-
 	    Stack *attacker = findBestAttackerFor(threat);
 	    // if there is nobody to attack the threat, go onto the next one
 	    if (!attacker) break;
 
+	    d_stacks->remove(attacker);
+
 	    d_owner->getStacklist()->setActivestack(attacker);
 	    Vector<int> dest = threat->getClosestPoint(attacker->getPos());
-	    float myStr = d_analysis->assessStackStrength(attacker);
-	    float opponentStr = 0.0;
-	    if (threat->isCity())
-	      opponentStr = threat->strength();
-	    else
-	      {
-		Stack *opponent = Stacklist::getObjectAt(dest);
-		opponentStr = (opponent == 0) ? 0.0 : d_analysis->assessStackStrength(opponent);
-	      }
 
-	    // do we think we will lose? Stacks of size 8 have to attack, that's their job
-	    if (myStr < opponentStr && attacker->size() < MAX_STACK_SIZE)
-	      {
-		debug("we are not strong enough to fight " << threat->toString())
-		  break;
-	      }
-
-	    debug("assign stack " << attacker->getId() << " with strength " << myStr
-		  << " to attack " << threat->toString()
-		  << " which we think has strength " << opponentStr)
-	      d_stacks->remove(attacker);
-	    MoveResult *result = moveStack(attacker, dest);
-	    if (result && result->didSomething())
+	    int mp = attacker->getPath()->calculate(attacker, dest);
+	    if (mp >= 0 && d_owner->stackMove(attacker))
 	      count++;
 
-	    if (result && result->getFightResult() != Fight::DEFENDER_WON)
-	      {
-		// if the threat has been removed, go onto the next one
-		if (threat->strength() == 0.0)
-		  {
-		    delete result;
-		    result = 0;
-		    break;
-		  }
-	      }
-
-	    if (result)
-	      delete result;
-	    result = 0;
+	    // if the threat has been removed, go onto the next one
+	    if (threat->strength() == 0.0)
+		break;
 	  }
       }
   return count;
 }
 
-Vector<int> *AI_Allocation::getFreeSpotInCity(City *city, int stackSize)
+Vector<int> AI_Allocation::getFreeSpotInCity(City *city, int stackSize)
 {
   // northwest
-  Vector<int> *result = new Vector<int>(city->getPos());
-  Stack *s = Stacklist::getObjectAt(*result);
+  Vector<int> result(city->getPos());
+  Stack *s = Stacklist::getObjectAt(result);
   if (!s)
     return result;
   else
     if (s->size() + stackSize <= MAX_STACK_SIZE) return result;
 
   // northeast
-  result->x++;
-  s = Stacklist::getObjectAt(*result);
+  result.x++;
+  s = Stacklist::getObjectAt(result);
   if (!s)
     return result;
   else
     if (s->size() + stackSize <= MAX_STACK_SIZE) return result;
 
   // southeast
-  result->y++;
-  s = Stacklist::getObjectAt(*result);
+  result.y++;
+  s = Stacklist::getObjectAt(result);
   if (!s)
     return result;
   else
     if (s->size() + stackSize <= MAX_STACK_SIZE) return result;
 
   // southwest
-  result->x--;
-  s = Stacklist::getObjectAt(*result);
+  result.x--;
+  s = Stacklist::getObjectAt(result);
   if (!s)
     return result;
   else
     if (s->size() + stackSize <= MAX_STACK_SIZE) return result;
 
   // no room
-  delete result;
-  return 0;
+  return Vector<int>(-1, -1);
 }
 
-Stack *AI_Allocation::findClosestStack(Vector<int> pos, int limitInMoves)
+Stack *AI_Allocation::findClosestStackToCity(City *city, int limitInMoves)
 {
+  Vector<int> pos = city->getPos();
   Stack *best = 0;
-  float bestScore = 1000.0;
+  int lowest_mp = -1;
   for (Stacklist::iterator it = d_stacks->begin(); it != d_stacks->end(); ++it)
     {
       Stack* s = *it;
+      //don't consider the stack if it's already in the city
       Vector<int> spos = s->getPos();
-      int distToThreat = dist(pos, spos);
+      if (city->contains(spos))
+	continue;
+      //don't consider the city if we can't fit this stack anywhere inside it.
+      Vector<int> dest = getFreeSpotInCity(city, s->size());
+      if (dest == Vector<int>(-1, -1))
+	continue;
+      //don't consider the stack if it's in an endangered city
+      City *stack_city = Citylist::getInstance()->getObjectAt(s->getPos());
+      if (stack_city)
+	{
+	  if (Player::safeFromAttack(stack_city, 16, 3) == false)
+	    continue;
+	}
 
-      float movesToThreat = (distToThreat + 6.0) / 7.0;
-      if (movesToThreat > (float) limitInMoves) continue;
-      if (movesToThreat < bestScore)
+      //don't consider stacks that are too many tiles away
+      int distToThreat = dist(pos, spos);
+      if (distToThreat > 20)
+	continue;
+
+      int mp = Stack::scout(s, dest);
+      if (mp <= 0)
+	continue;
+      if (mp < lowest_mp || lowest_mp == -1)
 	{
 	  best = s;
-	  bestScore = movesToThreat;
+	  lowest_mp = mp;
 	}
     }
   return best;
@@ -286,8 +281,8 @@ Stack *AI_Allocation::findClosestStack(Vector<int> pos, int limitInMoves)
 
 Stack *AI_Allocation::findBestAttackerFor(Threat *threat)
 {
-  Stack *best = 0;
-  float bestScore = 0.0;
+  Stack *best = NULL;
+  float best_chance = -1.0;
   for (Stacklist::iterator it = d_stacks->begin(); it != d_stacks->end(); ++it)
     {
       Stack* s = *it;
@@ -298,15 +293,31 @@ Stack *AI_Allocation::findBestAttackerFor(Threat *threat)
       Vector<int> spos = s->getPos();
 
       int distToThreat = dist(closestPoint, spos);
+      if (distToThreat > 27)
+	continue;
 
-      int movesToThreat = (distToThreat + 6) / 7;
-      // don't bother moving more than three moves to kill anything
-      if (movesToThreat > 3) continue;
-      float score = d_analysis->assessStackStrength(s) / (float) movesToThreat;
-      if (score > bestScore)
+      //don't consider the stack if it's in an endangered city
+      City *stack_city = Citylist::getInstance()->getObjectAt(s->getPos());
+      if (stack_city)
+	{
+	  if (Player::safeFromAttack(stack_city, 16, 3) == false)
+	    continue;
+	}
+
+      int mp = Stack::scout(s, closestPoint);
+      if (mp <= 0)
+	continue;
+      if (s->getGroupMoves() < mp)
+	continue;
+
+      //don't consider the stack if we're probably going to lose
+      float chance = d_owner->stackFightAdvise
+	(s, closestPoint, GameScenarioOptions::s_intense_combat);
+
+      if (chance > best_chance || best_chance == -1.0)
 	{
 	  best = s;
-	  bestScore = score;
+	  best_chance = chance;
 	}
     }
   return best;
@@ -316,20 +327,16 @@ int AI_Allocation::defaultStackMovements()
 {
   int count = 0;
   Citylist *allCities = Citylist::getInstance();
-  debug("Default movement for " <<d_stacks->size() <<" stacks")
+  debug("Default movement for " <<d_stacks->size() <<" stacks");
 
-    for (Stacklist::iterator it = d_stacks->begin(); it != d_stacks->end(); ++it)
-      {
-	if (Playerlist::isFinished())
-	  return 0;
-
+  for (Stacklist::iterator it = d_stacks->begin(); it != d_stacks->end(); ++it)
+    {
 	Stack* s = *it;
 	debug("thinking about stack " << s->getId() <<" at ("<<s->getPos().x<<","<<s->getPos().y<<")")
 	  d_owner->getStacklist()->setActivestack(s);
 	MoveResult *result = 0;
 	if (s->size() >= MAX_STACK_SIZE)
 	  {
-		    
 	    bool moved = false;
 	    City* enemyCity = allCities->getNearestEnemyCity(s->getPos());
 	    if (enemyCity)
@@ -339,22 +346,16 @@ int AI_Allocation::defaultStackMovements()
 		      << mp << " movement points away")
 		if (mp > 0)
 		  {
-		    printf ("starting at %d,%d\n", s->getPos().x, s->getPos().y);
+		    d_owner->getStacklist()->setActivestack(s);
 		    moved = d_owner->stackMove(s);
+		    if (s !=d_owner->getStacklist()->getActivestack())
+		      {
+			d_stacks->remove(s);
+			break;
+		      }
 		    s = d_owner->getStacklist()->getActivestack();
 		    if (moved)
 		      count++;
-		    else
-		      {
-			printf ("ended up at %d,%d\n", s->getPos().x, s->getPos().y);
-			printf ("couldn't move stack %d to attack enemy city %s\n",  s->getId(), enemyCity->getName().c_str());
-			sleep (10);
-		      }
-		  }
-		else
-		  {
-		  printf ("can't plan movement for stack %d to attack enemy city\n", s->getId());
-		  sleep (10);
 		  }
 	      }
 	    else
@@ -368,21 +369,16 @@ int AI_Allocation::defaultStackMovements()
 		    int mp = s->getPath()->calculateToCity(s, enemyCity);
 		    if (mp > 0)
 		      {
+			d_owner->getStacklist()->setActivestack(s);
 			moved = d_owner->stackMove(s);
+			if (s != d_owner->getStacklist()->getActivestack())
+			  {
+			    d_stacks->remove(s);
+			    break;
+			  }
 			s = d_owner->getStacklist()->getActivestack();
 			if (moved)
 			  count++;
-			else
-			  {
-			    s = d_owner->getStacklist()->getActivestack();
-			    printf ("couldn't move stack %d to attack enemy city\n",  s->getId());
-			    sleep (10);
-			  }
-		      }
-		    else
-		      {
-			printf ("can't move stack %d to attack foreign city\n", s->getId());
-			sleep(10);
 		      }
 		  }
 	      }
@@ -393,7 +389,7 @@ int AI_Allocation::defaultStackMovements()
 		// enemy city. Let's iterator through all cities and attack the first
 		// one we can lay our hands on.
 		debug("Mmmh, did not work.")
-		  sleep (10);
+		  //sleep (10);
 /*
 		  for (Citylist::iterator cit = allCities->begin(); cit != allCities->end(); cit++)
 		    if ((*cit).getOwner() != d_owner)
@@ -412,28 +408,26 @@ int AI_Allocation::defaultStackMovements()
 	  }
 	else
 	  {
-	    result = stackReinforce(s);
-	    if (result && result->didSomething()) count++;
+	    City *c = Citylist::getInstance()->getObjectAt(s->getPos());
+	    bool moved;
+	    if (!c)
+		moved = false; //stackReinforce(s);
+	    else
+		moved = shuffleStacksWithinCity (c, s, Vector<int>(0,0));
+		
+	    if (moved)
+	      count++;
+	    if (s != d_owner->getStacklist()->getActivestack())
+	      {
+		d_stacks->remove(s);
+		break;
+	      }
 	  }
-	// a stack has died -> further iterating leads to a crash so we
-	// start again (recursive programming, therefore the break
-	// afterwards is _VERY_ important)
-	if (result) {
-	  if (result->stackVanished())
-	    {
-	      d_stacks->remove(s);
-	      delete result;
-	      result = 0;
-	      break;
-	    }
-	}
-	delete result;
-	result = 0;
-      }
+    }
   return count;
 }
 
-MoveResult *AI_Allocation::stackReinforce(Stack *s)
+bool AI_Allocation::stackReinforce(Stack *s)
 {
   Citylist *allCities = Citylist::getInstance();
   float mostNeeded = -1000.0;
@@ -442,12 +436,23 @@ MoveResult *AI_Allocation::stackReinforce(Stack *s)
   for (Citylist::iterator it = allCities->begin(); it != allCities->end(); ++it)
     {
       City *city = &(*it);
-      Vector<int> spos = s->getPos();
-      Vector<int> cpos = city->getPos();
-      int distToCity = dist(spos, cpos);
+      int distToCity = dist(s->getPos(), city->getPos());
 
+      //if the city already contains the given stack, then disregard it
+      //hopefully it will be shuffled later
+      if (city->contains(s->getPos()))
+	return false;
+
+      //disregard if the city is too far away
       int movesToCity = (distToCity + 6) / 7;
       if (movesToCity > 3) continue;
+      
+      //disregard if the city can't hold our stack
+      Vector<int> dest = getFreeSpotInCity(city, s->size());
+      if (dest == Vector<int>(-1,-1))
+	continue;
+
+      //pick the city that needs us the most
       float need = d_analysis->reinforcementsNeeded(city);
       if (need > mostNeeded)
 	{
@@ -459,60 +464,38 @@ MoveResult *AI_Allocation::stackReinforce(Stack *s)
 
   if (cityNeeds) {
     debug("stack is sent to reinforce " << cityNeeds->getName() <<" if possible")
-      // don't forget to send the stack to a free field within the city
-      Vector<int>* dest = getFreeSpotInCity(cityNeeds, s->size());
-    if (dest)
+    // don't forget to send the stack to a free field within the city
+    Vector<int> dest = getFreeSpotInCity(cityNeeds, s->size());
+    if (dest != Vector<int>(-1,-1))
       {
 	d_analysis->reinforce(cityNeeds, s, moves);
-	Vector<int> target = *dest;
-	delete dest;
-	return moveStack(s, target);
+	int mp = s->getPath()->calculate(s, dest);
+	if (mp <= 0)
+	  return false;
+	else 
+	  return d_owner->stackMove(s);
       }
   }
 
+  //okay, no city needed us, just try to reinforce our nearest city
   City *target = allCities->getNearestFriendlyCity(s->getPos());
   if (!target) // no friendly city?
-    return 0;
+    return false;
+  //are we already there?
   if (target->contains(s->getPos()))
     {
-      // already at that city
-      return shuffleStacksWithinCity(target, s);
+      return false;
     }
   else
     {
-      Vector<int> p = target->getPos();
-      Vector<int> alt;
-      debug(d_owner->getName() << " has decided to retreat to " << target->getName())
-	MoveResult *result = moveStack(s, p);
-      if (result->moveSucceeded())
-	{
-	  debug(d_owner->getName() << " The best position in the city is available")
-	    return result;
-	}
-      alt.x = p.x + 1;
-      alt.y = p.y;
-      result = moveStack(s, alt);
-      if (result->moveSucceeded())
-	{
-	  debug(d_owner->getName() << " Moving into the northeast")
-	    return result;
-	}
-      alt.x = p.x;
-      alt.y = p.y + 1;
-      result = moveStack(s, alt);
-      if (result->moveSucceeded())
-	{
-	  debug(d_owner->getName() << " Moving into the southwest")
-	    return result;
-	}
-      alt.x = p.x + 1;
-      alt.y = p.y + 1;
-      result = moveStack(s, alt);
-      if (result->moveSucceeded())
-	{
-	  debug(d_owner->getName() << " Moving into the southeast")
-	    return result;
-	}
+      Vector<int> dest = getFreeSpotInCity(target, s->size());
+      if (dest == Vector<int>(-1, -1))
+	return false;
+      int mp = s->getPath()->calculate(s, dest);
+      if (mp <= 0)
+	return false;
+      else 
+	return d_owner->stackMove(s);
     }
   return 0;
 }
@@ -523,31 +506,44 @@ void AI_Allocation::searchRuin(Stack *stack, Ruin *ruin)
   // what to do if the ruin search fails?
 }
 
-MoveResult *AI_Allocation::shuffleStacksWithinCity(City *city, Stack *stack)
+bool AI_Allocation::shuffleStacksWithinCity(City *city, Stack *stack,
+						   Vector<int> diff)
 {
-  Stack *join;
-  int cx = city->getPos().x;
-  int cy = city->getPos().y;
-  int sx = stack->getPos().x;
-  int sy = stack->getPos().y;
-  if (sx == cx && sy == cy)
-    // already in the "primary" position
-    return 0;
-  join = Stacklist::getObjectAt(city->getPos());
+  if (city->getPos() + diff == stack->getPos())
+    // already in the preferred position
+    return false;
+  int mp = stack->getPath()->calculate(stack, city->getPos() + diff);
+  if (mp <= 0)
+    return false;
+  Stack *join = Stacklist::getObjectAt(city->getPos() + diff);
   if (!join)
     {
-      // move to the northwest unless there is nothing there
-      if (!Stacklist::getObjectAt(city->getPos().x, city->getPos().y))
-	return 0;
-      return moveStack(stack, city->getPos());
+      return d_owner->stackMove(stack);
     }
-  else if (join->size() + stack->size() <= MAX_STACK_SIZE)
+  else if (stack->canJoin(join))
     {
-      // join with the stack in the northwest
-      return moveStack(stack, city->getPos());
+      return d_owner->stackMove(stack);
     }
-  // To do any more we would have to split the stack, which sounds hard.
-  return 0;
+  else if (join->size() >= MAX_STACK_SIZE)
+    {
+      //recurse, but prefer a different tile.
+      if (diff == Vector<int>(0,0))
+	diff = Vector<int>(0,1);
+      else if (diff == Vector<int>(0,1))
+	diff = Vector<int>(1,0);
+      else if (diff == Vector<int>(1,0))
+	diff = Vector<int>(1,1);
+      else if (diff == Vector<int>(1,1))
+	return false;
+      return shuffleStacksWithinCity(city, stack, diff);
+    }
+  else
+    {
+      //take armies from the stack and split them off to
+      //join the stack at the preferred position
+      return d_owner->stackSplitAndMove(stack);
+    }
+  return false;
 }
 
 MoveResult *AI_Allocation::moveStack(Stack *stack, Vector<int> pos)

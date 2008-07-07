@@ -70,13 +70,14 @@ class AI_Allocation
         int allocateStacksToThreats();
         
         // stack return to a safe city
-        MoveResult *stackReinforce(Stack *s);
+        bool stackReinforce(Stack *s);
         
         // search a ruin
         void searchRuin(Stack *stack, Ruin *ruin);
         
         // move armies within a city to try to make full stacks
-        MoveResult *shuffleStacksWithinCity(City *city, Stack *stack);
+        bool shuffleStacksWithinCity(City *city, Stack *stack, 
+				     Vector<int> diff);
         
         // tell the stack to move to the point
         MoveResult *moveStack(Stack *stack, Vector<int> pos);
@@ -86,10 +87,10 @@ class AI_Allocation
         
         // find the closest stack to the given position, but 0 if none within
         // limitInMoves (estimate of a maximum number of turns for getting there) 
-        Stack *findClosestStack(Vector<int> pos, int limitInMoves);
+        Stack *findClosestStackToCity(City *city, int limitInMoves);
         
         // find a position in the city that a stack can move to
-        Vector<int> *getFreeSpotInCity(City *city, int stackSize);
+        Vector<int> getFreeSpotInCity(City *city, int stackSize);
         
         // move stacks that we have no particular use for
         int defaultStackMovements();

@@ -335,6 +335,8 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	static Uint32 scout(Player *p, Vector<int> src, Vector<int> dest, 
 			    const Army *proto = NULL);
 
+	//! how many movement points is it for the stack to travel this line
+	static Uint32 scout(Stack *stack, Vector<int> dest);
     private:    
 
         //! Callback for loading the stack

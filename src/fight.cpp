@@ -237,6 +237,7 @@ void Fight::battle(bool intense)
 
   if (d_type == FOR_KICKS)
     {
+      //fixme: this will heal armies who happen to have a single hitpoint left.
       std::list<Stack*>::iterator it;
       //heal the attackers and defenders to full hit points
       for (it = d_attackers.begin(); it != d_attackers.end(); it++)

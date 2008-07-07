@@ -796,6 +796,48 @@ bool Player::stackJoin(Stack* receiver, Stack* joining, bool grouped)
 
 bool Player::stackSplitAndMove(Stack* s)
 {
+  Stack *join = getStacklist()->getObjectAt(*s->getPath()->back());
+  if (join)
+    return stackSplitAndMoveToJoin(s, join);
+  else
+    return stackSplitAndMoveToAttack(s);
+}
+
+bool Player::stackSplitAndMoveToJoin(Stack* s, Stack *join)
+{
+  //the stack can't get there, but maybe part of the stack can.
+  if (s->getPath()->empty())
+    return false;
+
+  if (s->canJoin(join) == false)
+    return false;
+
+  Path::iterator it = s->getPath()->end();
+  it--;
+  std::vector<Uint32> ids;
+  ids = s->determineReachableArmies(**(it));
+  if (ids.size() == 0)
+    return false;
+  //if they're all reachable and we can join, just move them
+  if (ids.size() == s->size())
+    return stackMove(s);
+
+  for (Stack::iterator it = s->begin(); it != s->end(); it++)
+    {
+      (*it)->setGrouped(false);
+      if (find(ids.begin(), ids.end(), (*it)->getId()) != ids.end())
+	{
+	  if (s->countGroupedArmies() + join->size() < MAX_STACK_SIZE)
+	    (*it)->setGrouped(true);
+	}
+    }
+  //this splits the ungrouped armies into their own stack
+  stackSplit(s);
+  return stackMove(s);
+}
+
+bool Player::stackSplitAndMoveToAttack(Stack* s)
+{
   //the stack can't get there, but maybe part of the stack can.
   if (s->getPath()->empty())
     return false;
@@ -1381,7 +1423,12 @@ float Player::stackFightAdvise(Stack* s, Vector<int> tile,
   Stack* target = Stacklist::getObjectAt(tile);
                 
   if (!target && city)
-    target = new Stack(city->getOwner(), tile);
+    {
+      vector<Stack*> def_in_city = Stacklist::defendersInCity(city);
+      if (def_in_city.empty())
+	return 100.0;
+      target = def_in_city[0];
+    }
 
   //what chance is there that stack will defeat defenders?
     

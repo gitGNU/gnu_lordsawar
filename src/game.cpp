@@ -96,6 +96,9 @@ void Game::addPlayer(Player *p)
 	(p->hero_arrives_with_allies.connect
          (sigc::mem_fun
           (hero_arrives, &sigc::signal<void, int>::emit)));
+      connections[p->getId()].push_back
+	(p->advice_asked.connect
+	 (sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit)));
     }
 	
       
@@ -121,9 +124,6 @@ void Game::addPlayer(Player *p)
       (ruinfight_finished, &sigc::signal<void, Fight::Result>::emit)));
   connections[p->getId()].push_back
     (p->cityfight_finished.connect (sigc::mem_fun(*this, &Game::on_city_fight_finished))); 
-  connections[p->getId()].push_back
-    (p->advice_asked.connect
-     (sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit)));
 }
 
 #define NETWORK_TESTING 1

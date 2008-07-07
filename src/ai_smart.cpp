@@ -74,6 +74,11 @@ bool AI_Smart::startTurn()
 
     diplomacy.considerCuspOfWar();
 
+    if (getGold() < 500 && getUpkeep() > getIncome())
+      d_mustmakemoney = 1;
+    else
+      d_mustmakemoney = 0;
+
     // the real stuff
     examineCities();
 
@@ -130,6 +135,7 @@ void AI_Smart::levelArmy(Army* a)
 
 int AI_Smart::maybeBuyProduction(City *c)
 {
+  Armysetlist *al = Armysetlist::getInstance();
     int freebasicslot = -1;
     int freeslot= -1;
 
@@ -149,16 +155,31 @@ int AI_Smart::maybeBuyProduction(City *c)
 
     freeslot=freebasicslot; 
     armytype=chooseArmyTypeToBuy(c);
+    //does this armytype beat the one we're currently producing?
+    //is the one we're buying any better ?
+    if (armytype == -1)
+      return -1;
 
-    debug("armytype i want to produce " << armytype)
+    bool buy = false;
+    int slot = c->getActiveProductionSlot();
+    if (slot == -1)
+      buy = true;
+    else if (scoreArmyType(al->getArmy(getArmyset(), armytype)) > 
+	     scoreArmyType(c->getProductionBase(slot)))
+      buy = true;
 
-    bool couldbuy=cityBuyProduction(c, freeslot, armytype);
+    if (buy)
+      {
+	debug("armytype i want to produce " << armytype)
 
-    if (armytype >= 0 && couldbuy)
-    {
-        debug("YES I COULD BUY! type=" << armytype) 
-        return armytype;
-    }
+	bool couldbuy=cityBuyProduction(c, freeslot, armytype);
+
+	if (armytype >= 0 && couldbuy)
+	  {
+	    debug("YES I COULD BUY! type=" << armytype) 
+	    return armytype;
+	  }
+      }
     return -1;
 }
 
@@ -242,10 +263,27 @@ int AI_Smart::chooseArmyTypeToBuy(City *c)
 
 int AI_Smart::scoreArmyType(const Army *a)
 {
-    // UL: I have spent some minutes calculating the score of the default
-    // armyset. The algorithm looks reasonable.
-    int strength = a->getStat(Army::STRENGTH) + a->getStat(Army::HP) / 3;
-    return (strength - a->getProduction());
+  //this treats armies with turns of 7 or higher unfairly
+  int max_strength = 60 / a->getProduction() * a->getStat(Army::STRENGTH);
+
+  int city_bonus = 0;
+  switch (a->getStat(Army::ARMY_BONUS))
+    {
+    case Army::ADD1STRINCITY: city_bonus += 5; break;
+    case Army::ADD2STRINCITY: city_bonus += 10; break;
+    }
+
+  int any_other_bonus = 0;
+  if (a->getStat(Army::ARMY_BONUS) && city_bonus == 0)
+    any_other_bonus += 2;
+
+  int move_bonus = 0;
+  if (a->getStat(Army::MOVES) >  10)
+    move_bonus += 2;
+  if (a->getStat(Army::MOVES) >=  20)
+    move_bonus += 4;
+
+  return max_strength + city_bonus + move_bonus + any_other_bonus;
 }
 
 void AI_Smart::examineCities()

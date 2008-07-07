@@ -824,4 +824,11 @@ Uint32 Stack::scout(Player *p, Vector<int> src, Vector<int> dest,
   delete stack;
   return mp;
 }
+Uint32 Stack::scout(Stack *stack, Vector<int> dest)
+{
+  Stack *scout_stack = new Stack(*stack);
+  Uint32 mp = scout_stack->getPath()->calculate(scout_stack, dest);
+  delete scout_stack;
+  return mp;
+}
 // End of file
