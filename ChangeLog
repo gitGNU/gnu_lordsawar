@@ -1,3 +1,8 @@
+2008-09-06  Ben Asselstine
+
+	* improving the smart ai player
+	* disabling various hotkeys when the computer is moving.
+
 2008-09-04  Ben Asselstine
 
 	* now showing shields in the new game screen.
