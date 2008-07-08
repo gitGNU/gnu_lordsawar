@@ -1,19 +1,23 @@
-2008-09-06  Ben Asselstine
+2008-07-07  Ben Asselstine
+
+	* added improved hills.  Thanks to Robert Pilstål.
+
+2008-07-06  Ben Asselstine
 
 	* improving the smart ai player
 	* disabling various hotkeys when the computer is moving.
 
-2008-09-04  Ben Asselstine
+2008-07-04  Ben Asselstine
 
 	* now showing shields in the new game screen.
 
-2008-09-02  Ben Asselstine
+2008-07-02  Ben Asselstine
 
 	* fixed bug preventing subsequent new games from being initialized 
 	  properly.
 	* now taking the player's colour from the shield set.
 
-2008-09-01  Ben Asselstine
+2008-07-01  Ben Asselstine
 
 	* loading autosaved games now restarts the computer players correctly.
 	* now properly setting up diplomacy in loaded scenarios.
@@ -29,13 +33,13 @@
 	* fixed bug where vectoring to a city would cause a crash.  Reported
 	  by Rob Kinyon.
 
-2008-08-30  Ben Asselstine
+2008-06-30  Ben Asselstine
 
 	* fixing bug where stack fails to move into conquered city
 	  immediately after winning the fight.  Reported by Rob Kinyon.
 	* easy ai player now performs vectoring.
 
-2008-08-29  Ben Asselstine
+2008-06-29  Ben Asselstine
 
 	* added ability for easy ai player to go to temples to get blessed.
 	* fixed turn indicator in line charts.
@@ -44,7 +48,7 @@
 	* the easy ai player now uses heroes to pick up bags of stuff.
 	* fixed crashes in easy ai player stack movement.
 
-2008-08-28  Ben Asselstine
+2008-06-28  Ben Asselstine
 
 	* fixed easy and hard ai players to make an infantry unit initially 
 	  if it doesn't have one already.
@@ -59,7 +63,7 @@
 	* save file format has changed -- introduction of player "income" tag.
 	* addressed more stack splitting/joining bugs.
 
-2008-08-27  Ben Asselstine
+2008-06-27  Ben Asselstine
 
 	* fixed stack movement bug where a stack couldn't join with another
 	  stack that was one tile away.  Reported by Rob Kinyon.
@@ -68,14 +72,14 @@
 	* added ability to change player names and types in the new game
 	  dialog when loading from a scenario.
 
-2008-08-26  Ben Asselstine
+2008-06-26  Ben Asselstine
 
 	* fixed movement bug where an army could not move over a prefered
 	  terrain tile type, even though it had enough movement points.
 	  Reported by Rob Kinyon.
 	* made the bag of stuff a little bit bigger.  Suggested by Rob Kinyon.
 
-2008-08-25  Ben Asselstine
+2008-06-25  Ben Asselstine
 
 	* added movement bonus to rested army units.  Suggested by Rob Kinyon.
 	* fixed stack-deselection bug.  Reported by Rob Kinyon.
@@ -83,12 +87,12 @@
 	  file from showing up in the new game dialog.
 	* the quick start option now works with non-random maps.
 
-2008-08-24  Ben Asselstine
+2008-06-24  Ben Asselstine
 
 	* preventing heroes and special units from being purchased by the
 	  smart ai player.  Reported by Rob Kinyon.
 
-2008-08-23  Ben Asselstine
+2008-06-23  Ben Asselstine
 
 	* fixed crash bug when some players are off.  Reported by Rob Kinyon.
 	* now showing the boots cursor when flying over water instead of the
@@ -105,13 +109,13 @@
 	* Signpost dialog now closes when the user hits enter on the text
 	  entry.  Reported by Rob Kinyon.
 
-2008-08-22  Ben Asselstine
+2008-06-22  Ben Asselstine
 
 	* added ability to scroll while dragging stacks for movement.
 	* added initial game manual.
 	* loading scenarios now lets you set game options.
 
-2008-08-21  Ben Asselstine
+2008-06-21  Ben Asselstine
 
 	* added ability to drag and drop stacks for movement planning and
 	  execution.
