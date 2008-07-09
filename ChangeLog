@@ -1,3 +1,7 @@
+2008-07-09  Ben Asselstine
+
+	* added ability for game-options gui to be instantiated read-only.
+
 2008-07-07  Ben Asselstine
 
 	* added improved hills.  Thanks to Robert Pilstål.
