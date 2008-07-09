@@ -21,9 +21,12 @@
 #include <sigc++/slot.h>
 #include <libglademm/xml.h>
 #include <gtkmm/window.h>
+#include <gtkmm/dialog.h>
 #include <gtkmm/image.h>
 #include <gtkmm/table.h>
+#include <gtkmm/radiobutton.h>
 #include <gtkmm/filechooserdialog.h>
+#include <gtkmm/messagedialog.h>
 #include <gtkmm/stock.h>
 
 #include "splash-window.h"
@@ -72,6 +75,8 @@ SplashWindow::SplashWindow()
     xml->connect_clicked("quit_button",
 			 sigc::mem_fun(*this, &SplashWindow::on_quit_clicked));
 
+    xml->connect_clicked("new_network_game_button",
+			 sigc::mem_fun(*this, &SplashWindow::on_new_network_game_clicked));
     Sound::getInstance()->playMusic("intro");
 
     if (Configuration::s_autosave_policy == 1)
@@ -159,6 +164,39 @@ void SplashWindow::on_load_game_clicked()
 	chooser.hide();	
 	load_requested.emit(filename);
     }
+}
+
+void SplashWindow::on_new_network_game_clicked()
+{
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + 
+				"/new-network-game-dialog.glade");
+  std::auto_ptr<Gtk::Dialog> dialog;
+  Gtk::Dialog *d;
+  Gtk::RadioButton *client_radiobutton;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  xml->get_widget("client_radiobutton", client_radiobutton);
+  dialog->set_transient_for(*window.get());
+  int response = dialog->run();
+  if (response == 0) //we hit okay
+    {
+      if (client_radiobutton->get_active() == true)
+	{
+	  Gtk::MessageDialog mdialog(*window.get(), "not implemented yet.");
+	  mdialog.show_all();
+	  mdialog.run();
+	  //okay, we're a client.
+	}
+      else
+	{
+	  Gtk::MessageDialog mdialog(*window.get(), "not implemented yet.");
+	  mdialog.show_all();
+	  mdialog.run();
+	  //okay, we're a server.
+	}
+    }
+
 }
 
 void SplashWindow::on_load_scenario_clicked()
