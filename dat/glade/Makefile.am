@@ -59,7 +59,9 @@ treachery-dialog.glade \
 stack-info-dialog.glade \
 game-quit-dialog.glade \
 about-dialog.glade \
-new-network-game-dialog.glade
+new-network-game-dialog.glade \
+game-lobby-dialog.glade \
+new-network-game-client.glade
 
 EXTRA_DIST = $(glade_DATA) \
 README \
@@ -119,7 +121,9 @@ treachery-dialog.glade.h \
 stack-info-dialog.glade.h \
 game-quit-dialog.glade.h \
 about-dialog.glade.h \
-new-network-game-dialog.glade.h
+new-network-game-dialog.glade.h \
+game-lobby-dialog.glade.h \
+new-network-game-client.glade.h
 
 ##to generate the .h files, run this:
 ##find ./ -name "*.glade"  -exec intltool-extract --type=gettext/glade '{}' \;

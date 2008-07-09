@@ -45,6 +45,7 @@ class SplashWindow: public sigc::trackable
     void show();
     void hide();
         
+    sigc::signal<void, std::string> new_network_game_requested;
     sigc::signal<void, GameParameters> new_game_requested;
     sigc::signal<void, std::string> load_requested;
     sigc::signal<void> quit_requested;
@@ -65,6 +66,7 @@ class SplashWindow: public sigc::trackable
     void on_rescue_crashed_game_clicked();
 	
     void on_game_started(GameParameters g);
+    void on_network_game_created(GameParameters g);
 
 #if 0
     //! Separate network input thread

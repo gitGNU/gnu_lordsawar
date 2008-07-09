@@ -369,7 +369,7 @@ void GameWindow::init(int width, int height)
 }
 
 std::string
-create_and_dump_scenario(const std::string &file, const GameParameters &g)
+GameWindow::create_and_dump_scenario(const std::string &file, const GameParameters &g)
 {
     CreateScenario creator (g.map.width, g.map.height);
 

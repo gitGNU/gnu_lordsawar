@@ -53,7 +53,7 @@ class GamePreferencesDialog
 
     sigc::signal<void, GameParameters> game_started;
     
-    void run();
+    bool run();
     
     sigc::signal<void> sdl_initialized;
  private:

@@ -40,6 +40,7 @@ class Driver: public sigc::trackable
     std::auto_ptr<SplashWindow> splash_window;
 
     void on_new_game_requested(GameParameters g);
+    void on_new_network_game_requested(std::string filenmae);
     void on_load_requested(std::string filename);
     void on_quit_requested();
 

@@ -29,6 +29,7 @@
 #include "../defs.h"
 #include "../GraphicsCache.h"
 #include "../GameScenario.h"
+#include "game-lobby-dialog.h"
 
 #include "../game-client.h"
 
@@ -39,6 +40,8 @@ Driver::Driver()
     splash_window.reset(new SplashWindow);
     splash_window->new_game_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_new_game_requested));
+    splash_window->new_network_game_requested.connect(
+	sigc::mem_fun(*this, &Driver::on_new_network_game_requested));
     splash_window->load_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_load_requested));
     splash_window->quit_requested.connect(
@@ -94,6 +97,12 @@ Driver::Driver()
 
 Driver::~Driver()
 {
+}
+
+void Driver::on_new_network_game_requested(std::string filename)
+{
+  GameLobbyDialog gld(filename, true);
+  int response = gld.run();
 }
 
 void Driver::on_new_game_requested(GameParameters g)

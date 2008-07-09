@@ -30,6 +30,7 @@
 #include <gtkmm/stock.h>
 
 #include "splash-window.h"
+#include "game-window.h"
 
 #include "game-preferences-dialog.h"
 #include "load-scenario-dialog.h"
@@ -38,6 +39,8 @@
 #include "../defs.h"
 #include "../sound.h"
 #include "../File.h"
+#include "../GameScenario.h"
+#include "../playerlist.h"
 //#include "../netggz.h"
 
 SplashWindow::SplashWindow()
@@ -186,7 +189,9 @@ void SplashWindow::on_new_network_game_clicked()
 	  Gtk::MessageDialog mdialog(*window.get(), "not implemented yet.");
 	  mdialog.show_all();
 	  mdialog.run();
+	  return;
 	  //okay, we're a client.
+	  //launch lobby
 	}
       else
 	{
@@ -194,6 +199,12 @@ void SplashWindow::on_new_network_game_clicked()
 	  mdialog.show_all();
 	  mdialog.run();
 	  //okay, we're a server.
+	  GamePreferencesDialog gpd;
+    
+	  gpd.set_parent_window(*window.get());
+	  gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_created));
+	  gpd.run();
+	  return;
 	}
     }
 
@@ -217,6 +228,39 @@ void SplashWindow::on_load_scenario_clicked()
 	gp.run();
       } 
 	//load_requested.emit(filename);
+}
+
+void SplashWindow::on_network_game_created(GameParameters g)
+{
+  std::string filename;
+  if (g.map_path.empty()) 
+    {
+      // construct new random scenario if we're not going to load the game
+      std::string path = GameWindow::create_and_dump_scenario("random.map", g);
+      g.map_path = path;
+    }
+
+    bool broken = false;
+    GameScenario* game_scenario = new GameScenario(g.map_path, broken);
+
+    if (broken)
+      {
+	//on_message_requested("Corrupted saved game file.");
+	return;
+      }
+
+    if (game_scenario->getRound() == 0)
+      {
+	Playerlist::getInstance()->syncPlayers(g.players);
+	game_scenario->setupCities(g.quick_start);
+	game_scenario->setupDiplomacy(g.diplomacy);
+	game_scenario->nextRound();
+      }
+
+    filename = File::getSavePath() + "network.sav";
+    game_scenario->saveGame(filename);
+    delete game_scenario;
+    new_network_game_requested.emit(filename);
 }
 
 void SplashWindow::on_game_started(GameParameters g)

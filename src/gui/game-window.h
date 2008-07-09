@@ -93,6 +93,9 @@ class GameWindow: public sigc::trackable
 
     sigc::signal<void> sdl_initialized;
     
+
+    static std::string create_and_dump_scenario(const std::string &file, const GameParameters &g);
+
  private:
     std::auto_ptr<Gtk::Window> window;
     std::auto_ptr<Gtk::Window> map_tip;	// tooltip appears over the map

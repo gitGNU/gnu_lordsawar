@@ -288,11 +288,14 @@ void GamePreferencesDialog::set_parent_window(Gtk::Window &parent)
     dialog->set_transient_for(parent);
 }
 
-void GamePreferencesDialog::run()
+bool GamePreferencesDialog::run()
 {
     sdl_container->show_all();
     dialog->show_all();
-    dialog->run();
+    int response = dialog->run();
+    if (response == 0)
+      return true;
+    return false;
 }
 
 SDL_Surface *GamePreferencesDialog::getShieldPic(Uint32 type, Uint32 owner)

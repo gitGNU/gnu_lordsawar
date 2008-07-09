@@ -88,4 +88,5 @@ private:
 };
 
 
+const unsigned short LORDSAWAR_PORT = 14998;
 #endif // DEFINITIONS_H
