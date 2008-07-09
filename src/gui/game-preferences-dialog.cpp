@@ -242,7 +242,7 @@ void GamePreferencesDialog::init()
 
     xml->get_widget("cities_can_produce_allies_checkbutton", 
 		    cities_can_produce_allies_checkbutton);
-  game_options_dialog = new GameOptionsDialog();
+  game_options_dialog = new GameOptionsDialog(false);
   game_options_dialog->difficulty_option_changed.connect(
 	sigc::mem_fun(*this, 
 		      &GamePreferencesDialog::update_difficulty_rating));

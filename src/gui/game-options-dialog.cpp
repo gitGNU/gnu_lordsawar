@@ -29,7 +29,7 @@
 #include "../File.h"
 #include "../Configuration.h"
 
-GameOptionsDialog::GameOptionsDialog()
+GameOptionsDialog::GameOptionsDialog(bool readonly)
 {
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
@@ -39,6 +39,9 @@ GameOptionsDialog::GameOptionsDialog()
     xml->get_widget("dialog", d);
     dialog.reset(d);
 
+    d_readonly = readonly;
+    xml->get_widget("difficultoptionstable", difficultoptionstable);
+    xml->get_widget("notdifficultoptionstable", notdifficultoptionstable);
     xml->get_widget("view_enemies_checkbutton", view_enemies_checkbutton);
     xml->get_widget("view_production_checkbutton", view_production_checkbutton);
     xml->get_widget("quests_checkbutton", quests_checkbutton);
@@ -73,6 +76,11 @@ void GameOptionsDialog::fill_in_options()
     cusp_of_war_checkbutton->set_sensitive(diplomacy_checkbutton->get_active());
     intense_combat_checkbutton->set_active(Configuration::s_intense_combat);
     random_turns_checkbutton->set_active(Configuration::s_random_turns);
+    if (d_readonly)
+      {
+	difficultoptionstable->set_sensitive(false);
+	notdifficultoptionstable->set_sensitive(false);
+      }
 }
 void GameOptionsDialog::set_parent_window(Gtk::Window &parent)
 {

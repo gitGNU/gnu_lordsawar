@@ -23,6 +23,7 @@
 #include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/combobox.h>
+#include <gtkmm/table.h>
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/checkbutton.h>
@@ -36,7 +37,7 @@
 class GameOptionsDialog: public sigc::trackable
 {
  public:
-    GameOptionsDialog();
+    GameOptionsDialog(bool readonly);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -46,6 +47,8 @@ class GameOptionsDialog: public sigc::trackable
 
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Table *difficultoptionstable;
+    Gtk::Table *notdifficultoptionstable;
     Gtk::CheckButton *quests_checkbutton;
     Gtk::CheckButton *view_enemies_checkbutton;
     Gtk::CheckButton *view_production_checkbutton;
@@ -71,6 +74,7 @@ class GameOptionsDialog: public sigc::trackable
     void on_quick_start_checkbutton_clicked();
     void on_intense_combat_checkbutton_clicked();
     void on_military_advisor_checkbutton_clicked();
+    bool d_readonly;
 };
 
 #endif
