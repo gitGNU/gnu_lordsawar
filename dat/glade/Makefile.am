@@ -61,7 +61,7 @@ game-quit-dialog.glade \
 about-dialog.glade \
 new-network-game-dialog.glade \
 game-lobby-dialog.glade \
-new-network-game-client.glade
+pick-network-game-to-join-dialog.glade
 
 EXTRA_DIST = $(glade_DATA) \
 README \
@@ -123,7 +123,7 @@ game-quit-dialog.glade.h \
 about-dialog.glade.h \
 new-network-game-dialog.glade.h \
 game-lobby-dialog.glade.h \
-new-network-game-client.glade.h
+pick-network-game-to-join-dialog.glade.h
 
 ##to generate the .h files, run this:
 ##find ./ -name "*.glade"  -exec intltool-extract --type=gettext/glade '{}' \;

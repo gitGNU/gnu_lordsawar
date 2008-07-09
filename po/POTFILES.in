@@ -83,7 +83,7 @@ dat/glade/game-quit-dialog.glade.h
 dat/glade/about-dialog.glade.h
 dat/glade/new-network-game-dialog.glade.h
 dat/glade/game-lobby-dialog.glade.h
-dat/glade/new-network-game-client.glade.h
+dat/glade/pick-network-game-to-join-dialog.glade.h
 src/FogMap.cpp
 src/templelist.cpp
 src/network-connection.cpp
