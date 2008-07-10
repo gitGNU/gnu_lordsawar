@@ -63,7 +63,8 @@ liblwgui_a_SOURCES = \
     glade-helpers.h \
     input-helpers.h \
     timed-message-dialog.cpp timed-message-dialog.h \
-    game-lobby-dialog.cpp game-lobby-dialog.h
+    game-lobby-dialog.cpp game-lobby-dialog.h \
+    network-game-selector-dialog.cpp network-game-selector-dialog.h
 
 INCLUDES = \
    $(GTKMM_CFLAGS) \

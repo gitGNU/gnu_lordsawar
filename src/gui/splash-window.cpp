@@ -41,6 +41,8 @@
 #include "../File.h"
 #include "../GameScenario.h"
 #include "../playerlist.h"
+#include "game-lobby-dialog.h"
+#include "network-game-selector-dialog.h"
 //#include "../netggz.h"
 
 SplashWindow::SplashWindow()
@@ -189,9 +191,16 @@ void SplashWindow::on_new_network_game_clicked()
 	  Gtk::MessageDialog mdialog(*window.get(), "not implemented yet.");
 	  mdialog.show_all();
 	  mdialog.run();
-	  return;
+	  NetworkGameSelectorDialog ngsd;
+	  ngsd.game_selected.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_selected));
+	  ngsd.run();
 	  //okay, we're a client.
-	  //launch lobby
+	  //ask which ip
+	  //go get the file
+	  //std::string filename;
+	  //launch lobby.. emit something?
+	  //GameLobbyDialog gld(filename, false);
+	  //return gld.run();
 	}
       else
 	{
@@ -228,6 +237,14 @@ void SplashWindow::on_load_scenario_clicked()
 	gp.run();
       } 
 	//load_requested.emit(filename);
+}
+
+void SplashWindow::on_network_game_selected(std::string ip, unsigned short port)
+{
+  //go get the file!
+  //download it into a file called network.sav, and then:
+  std::string filename = File::getSavePath() + "network.sav";
+  new_network_game_requested.emit(filename);
 }
 
 void SplashWindow::on_network_game_created(GameParameters g)

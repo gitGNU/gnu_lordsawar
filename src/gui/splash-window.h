@@ -67,6 +67,7 @@ class SplashWindow: public sigc::trackable
 	
     void on_game_started(GameParameters g);
     void on_network_game_created(GameParameters g);
+    void on_network_game_selected(std::string ip, unsigned short port);
 
 #if 0
     //! Separate network input thread
