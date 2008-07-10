@@ -1580,14 +1580,14 @@ void Player::doCityPillage(City *c, int& gold, int& pillaged_army_type)
 	    gold += a->getProductionCost() / 2;
 	  c->removeProductionBase(slot);
 	}
+      addGold(gold);
+      std::list<Uint32> sacked_types;
+      sacked_types.push_back (pillaged_army_type);
+      Stack *s = getActivestack();
+      spillagingCity.emit(c, s, gold, sacked_types);
+      QuestsManager::getInstance()->cityPillaged(c, s, gold);
     }
 
-  addGold(gold);
-  std::list<Uint32> sacked_types;
-  sacked_types.push_back (pillaged_army_type);
-  Stack *s = getActivestack();
-  spillagingCity.emit(c, s, gold, sacked_types);
-  QuestsManager::getInstance()->cityPillaged(c, s, gold);
   takeCityInPossession(c);
 }
 
