@@ -322,6 +322,7 @@ void GameWindow::show()
     
     sdl_container->show_all();
     window->show();
+    on_sdl_surface_changed();
 }
 
 void GameWindow::hide()

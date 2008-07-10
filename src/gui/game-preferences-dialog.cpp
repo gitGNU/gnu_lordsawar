@@ -676,6 +676,7 @@ void GamePreferencesDialog::on_start_game_clicked()
     else
       {
 	// and call callback
+	dialog->hide();
 	game_started(g);
       }
 }

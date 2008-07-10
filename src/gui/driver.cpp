@@ -112,6 +112,8 @@ void Driver::on_new_game_requested(GameParameters g)
     game_window->sdl_initialized.connect(
 	sigc::bind(sigc::mem_fun(game_window.get(), &GameWindow::new_game), g));
     game_window->show();
+    if (splash_window.get())
+	splash_window->hide();
 }
 
 void Driver::on_load_requested(std::string filename)
@@ -122,6 +124,9 @@ void Driver::on_load_requested(std::string filename)
 	sigc::bind(sigc::mem_fun(game_window.get(), &GameWindow::load_game),
 		   filename));
     game_window->show();
+    if (splash_window.get())
+	splash_window->hide();
+
 }
 
 void Driver::on_quit_requested()
@@ -147,9 +152,6 @@ void Driver::on_game_ended()
 
 void Driver::init_game_window()
 {
-    if (splash_window.get())
-	splash_window->hide();
-
     game_window.reset(new GameWindow);
 
     game_window->game_ended.connect(
@@ -158,5 +160,6 @@ void Driver::init_game_window()
 	sigc::mem_fun(*this, &Driver::on_quit_requested));
 
     game_window->init(640, 480);
+
 }
 

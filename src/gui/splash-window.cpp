@@ -140,6 +140,7 @@ void SplashWindow::show()
 
 void SplashWindow::hide()
 {
+  sdl_container->hide();
     window->hide();
 }
 
