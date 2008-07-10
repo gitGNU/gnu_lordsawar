@@ -55,13 +55,9 @@ class GamePreferencesDialog
     
     bool run();
     
-    sigc::signal<void> sdl_initialized;
  private:
     void init();
-    bool sdl_inited;
     std::auto_ptr<Gtk::Dialog> dialog;
-    Gtk::Container *sdl_container;
-    Gtk::Widget *sdl_widget;
 
     Gtk::Button *start_game_button;
     Gtk::ComboBoxText *tile_theme_combobox;
@@ -133,8 +129,6 @@ class GamePreferencesDialog
     bool scan_shieldset(std::string tag, XML_Helper* helper);
 SDL_Surface *getShieldPic(Uint32 type, Uint32 owner);
     GameParameters load_map_parameters;
- public:
-    void on_sdl_surface_changed();
 };
 
 #endif

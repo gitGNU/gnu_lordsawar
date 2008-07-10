@@ -39,7 +39,6 @@
 #include "../tilesetlist.h"
 #include "../citysetlist.h"
 #include "../player.h"
-#include "gtksdl.h"
 
 #define HUMAN_PLAYER_TYPE _("Human")
 #define EASY_PLAYER_TYPE _("Easy")
@@ -48,16 +47,8 @@
 
 static bool inhibit_difficulty_combobox = false;
 
-namespace
-{
-  void surface_attached_helper(GtkSDL *gtksdl, gpointer data)
-    {
-      static_cast<GamePreferencesDialog*>(data)->on_sdl_surface_changed();
-    }
-}
 void GamePreferencesDialog::init()
 {
-  sdl_inited = false;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/game-preferences-dialog.glade");
 
@@ -65,8 +56,6 @@ void GamePreferencesDialog::init()
     xml->get_widget("dialog", d);
     dialog.reset(d);
 
-    xml->get_widget("sdl_container", sdl_container);
-      
     xml->get_widget("start_game_button", start_game_button);
     xml->get_widget("difficulty_label", difficulty_label);
     xml->get_widget("random_map_radio", random_map_radio);
@@ -247,18 +236,6 @@ void GamePreferencesDialog::init()
 	sigc::mem_fun(*this, 
 		      &GamePreferencesDialog::update_difficulty_rating));
       
-  sdl_widget = Gtk::manage(Glib::wrap(gtk_sdl_new(1,1,0,SDL_SWSURFACE)));
-  sdl_widget->grab_focus();
-  sdl_widget->add_events(Gdk::KEY_PRESS_MASK | Gdk::BUTTON_PRESS_MASK | 
-			 Gdk::BUTTON_RELEASE_MASK | Gdk::POINTER_MOTION_MASK | 
-			 Gdk::LEAVE_NOTIFY_MASK);
-
-      // connect to the special signal that signifies that a new surface has been
-      // generated and attached to the widget 
-  g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached", 
-     G_CALLBACK(surface_attached_helper), this); 
-      
-      sdl_container->add(*sdl_widget); 
   return;
 }
 
@@ -290,8 +267,9 @@ void GamePreferencesDialog::set_parent_window(Gtk::Window &parent)
 
 bool GamePreferencesDialog::run()
 {
-    sdl_container->show_all();
+  Shieldsetlist::getInstance()->instantiatePixmaps();
     dialog->show_all();
+  update_shields();
     int response = dialog->run();
     if (response == 0)
       return true;
@@ -473,7 +451,7 @@ void GamePreferencesDialog::update_difficulty_combobox()
 
 void GamePreferencesDialog::update_shields()
 {
-  if (sdl_inited == false)
+  if (dialog->is_realized() == false)
     return;
   //get rid of the old shields
   player_shields.clear();
@@ -916,14 +894,3 @@ bool GamePreferencesDialog::scan_players(std::string tag, XML_Helper* helper)
     return true;
 }
 
-void
-GamePreferencesDialog::on_sdl_surface_changed()
-{
-  if (!sdl_inited)
-    {
-      sdl_inited = true;
-      sdl_initialized.emit();
-      Shieldsetlist::getInstance()->instantiatePixmaps();
-      update_shields();
-    }
-}

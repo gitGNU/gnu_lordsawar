@@ -24,6 +24,8 @@
 #include <gtkmm/button.h>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
+#include <gtkmm/container.h>
+#include <gtkmm/widget.h>
 
 #include "../game-parameters.h"
 
@@ -45,6 +47,7 @@ class SplashWindow: public sigc::trackable
     void show();
     void hide();
         
+    sigc::signal<void> sdl_initialized;
     sigc::signal<void, std::string> new_network_game_requested;
     sigc::signal<void, GameParameters> new_game_requested;
     sigc::signal<void, std::string> load_requested;
@@ -54,6 +57,9 @@ class SplashWindow: public sigc::trackable
     std::auto_ptr<Gtk::Window> window;
     Gtk::Button *crash_button;
 	
+    bool sdl_inited;
+    Gtk::Container *sdl_container;
+    Gtk::Widget *sdl_widget;
     bool on_delete_event(GdkEventAny *e);
     
     void on_new_campaign_clicked();
@@ -80,6 +86,8 @@ class SplashWindow: public sigc::trackable
     void networkData();
 #endif
         
+ public:
+    void on_sdl_surface_changed();
 };
 
 

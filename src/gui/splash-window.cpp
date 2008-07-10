@@ -44,9 +44,18 @@
 #include "game-lobby-dialog.h"
 #include "network-game-selector-dialog.h"
 //#include "../netggz.h"
+#include "gtksdl.h"
 
+namespace
+{
+  void surface_attached_helper(GtkSDL *gtksdl, gpointer data)
+    {
+      static_cast<SplashWindow*>(data)->on_sdl_surface_changed();
+    }
+}
 SplashWindow::SplashWindow()
 {
+  sdl_inited = false;
 #if 0
     d_networkcancelled = false;
     d_networkready = false;
@@ -59,6 +68,7 @@ SplashWindow::SplashWindow()
     xml->get_widget("window", w);
     window.reset(w);
 
+    xml->get_widget("sdl_container", sdl_container);
     w->signal_delete_event().connect(
 	sigc::mem_fun(*this, &SplashWindow::on_delete_event));
     
@@ -101,6 +111,19 @@ SplashWindow::SplashWindow()
 	    button_box->reorder_child(*crash_button, 0);
 	  }
       }
+
+  sdl_widget = Gtk::manage(Glib::wrap(gtk_sdl_new(1,1,0,SDL_SWSURFACE)));
+  sdl_widget->grab_focus();
+  sdl_widget->add_events(Gdk::KEY_PRESS_MASK | Gdk::BUTTON_PRESS_MASK | 
+			 Gdk::BUTTON_RELEASE_MASK | Gdk::POINTER_MOTION_MASK | 
+			 Gdk::LEAVE_NOTIFY_MASK);
+
+      // connect to the special signal that signifies that a new surface has been
+      // generated and attached to the widget 
+  g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached", 
+     G_CALLBACK(surface_attached_helper), this); 
+      
+      sdl_container->add(*sdl_widget); 
 }
 
 SplashWindow::~SplashWindow()
@@ -111,6 +134,7 @@ SplashWindow::~SplashWindow()
 
 void SplashWindow::show()
 {
+    sdl_container->show_all();
     window->show_all();
 }
 
@@ -454,3 +478,13 @@ void SplashWindow::networkData()
 }
 
 #endif
+void
+SplashWindow::on_sdl_surface_changed()
+{
+  if (!sdl_inited)
+    {
+      printf ("here!\n");
+      sdl_inited = true;
+      sdl_initialized.emit();
+    }
+}
