@@ -43,3 +43,6 @@ calculate to city should be different for enemy cities
 bug: showing neutral battles *Again*
 favour cheaper army units for production when we don't have much money
 
+
+init sdl on the splash screen
+  remove sdl init code from game preferences dialog
