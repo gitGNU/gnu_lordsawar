@@ -53,7 +53,10 @@ class NetworkPlayer : public Player
 
 	void decodeAction(const Action *action);
         
+	bool isConnected() const {return d_connected;}
+	void setConnected(bool connected) {d_connected = connected;}
     private:
+	bool d_connected;
 	void decodeActionMove(const Action_Move *action);
 	void decodeActionSplit(const Action_Split *action);
 	void decodeActionFight(const Action_Fight *action);

@@ -34,6 +34,7 @@
 #include "../playerlist.h"
 #include "game-options-dialog.h"
 #include "../GraphicsCache.h"
+#include "../network_player.h"
 
 namespace
 {
@@ -44,7 +45,6 @@ namespace
 	case Player::HUMAN: return HUMAN_PLAYER_TYPE;
 	case Player::AI_FAST: return EASY_PLAYER_TYPE;
 	case Player::AI_SMART: return HARD_PLAYER_TYPE;
-	case Player::NETWORKED: return NETWORKED_PLAYER_TYPE;
 	default: return NO_PLAYER_TYPE;
 	}
     }
@@ -76,7 +76,12 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
     xml->get_widget("dialog", d);
     dialog.reset(d);
 
-  xml->get_widget("player_treeview", player_treeview);
+    xml->get_widget("player_treeview", player_treeview);
+    player_treeview->get_selection()->signal_changed().connect
+          (sigc::mem_fun(*this, &GameLobbyDialog::on_player_selected));
+    xml->get_widget("sit_button", sit_button);
+    sit_button->signal_clicked().connect
+      (sigc::mem_fun(this, &GameLobbyDialog::on_sit_clicked));
     xml->get_widget("map_image", map_image);
     xml->get_widget("turn_label", turn_label);
     xml->get_widget("scenario_name_label", scenario_name_label);
@@ -91,6 +96,30 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 	sigc::mem_fun(*this, &GameLobbyDialog::on_show_options_clicked));
 
   update_player_details();
+  update_buttons();
+}
+
+void GameLobbyDialog::update_buttons()
+{
+  if (player_treeview->get_selection()->get_selected() == 0)
+    sit_button->set_sensitive(false);
+  else
+    {
+      Glib::RefPtr<Gtk::TreeSelection> selection;
+      selection = player_treeview->get_selection();
+      Gtk::TreeModel::iterator iterrow = selection->get_selected();
+      if (iterrow)
+	{
+	  Gtk::TreeModel::Row row = *iterrow;
+	  if (row[player_columns.status] == PLAYER_NOT_HERE)
+	    sit_button->set_sensitive(true);
+	  else
+	    sit_button->set_sensitive(false);
+	}
+      else
+	sit_button->set_sensitive(false);
+
+    }
 }
 
 void
@@ -111,8 +140,6 @@ GameLobbyDialog::update_player_details()
   (*i)[player_type_columns.type] = EASY_PLAYER_TYPE;
   i = player_type_list->append();
   (*i)[player_type_columns.type] = HARD_PLAYER_TYPE;
-  i = player_type_list->append();
-  (*i)[player_type_columns.type] = NETWORKED_PLAYER_TYPE;
   i = player_type_list->append();
   (*i)[player_type_columns.type] = NO_PLAYER_TYPE;
 
@@ -265,7 +292,10 @@ void GameLobbyDialog::cell_data_status(Gtk::CellRenderer *renderer,
 				       const Gtk::TreeIter& i)
 {
   Glib::ustring s;
-  s = String::ucompose("<b> - %1 - </b>", (*i)[player_columns.status]);
+  if ((*i)[player_columns.status] != "")
+    s = String::ucompose("<b> - %1 - </b>", (*i)[player_columns.status]);
+  else
+    s = "";
   dynamic_cast<Gtk::CellRendererText*>(renderer)->property_markup() = s;
 }
 
@@ -280,10 +310,73 @@ void GameLobbyDialog::add_player(const Glib::ustring &type,
   (*i)[player_columns.shield] = to_pixbuf(gc->getShieldPic(1, player));
   (*i)[player_columns.type] = type;
   (*i)[player_columns.name] = name;
-  (*i)[player_columns.status] = _("moving");
-  (*i)[player_columns.status] = _("watching");
-  (*i)[player_columns.status] = _("not here");
+  if (player->getType() == Player::NETWORKED)
+    {
+      //do we have the particpant?
+      if (dynamic_cast<NetworkPlayer*>(player)->isConnected() == true)
+	{
+	  //we do?  is it the active player?
+	  if (Playerlist::getInstance()->getActiveplayer() == player)
+	    (*i)[player_columns.status] = PLAYER_MOVING;
+	  else
+	    (*i)[player_columns.status] = PLAYER_WATCHING;
+	}
+      else
+	//otherwise, the player is not here to play.
+	(*i)[player_columns.status] = PLAYER_NOT_HERE;
+      //hackola:
+      if (player->getId() == 7)
+	(*i)[player_columns.status] = PLAYER_NOT_HERE;
+      if (player->getId() == 6)
+	(*i)[player_columns.status] = "";
+    }
+  else
+    {
+      if (Playerlist::getInstance()->getActiveplayer() == player)
+	(*i)[player_columns.status] = PLAYER_MOVING;
+      else
+	(*i)[player_columns.status] = PLAYER_WATCHING;
+    }
   (*i)[player_columns.player] = player;
 
   player_treeview->get_selection()->select(i);
+}
+
+void GameLobbyDialog::on_player_selected()
+{
+  update_buttons();
+}
+
+void GameLobbyDialog::on_remote_player_joins()
+{
+  update_player_details();
+  update_buttons();
+}
+
+void GameLobbyDialog::on_remote_player_departs()
+{
+  update_player_details();
+  update_buttons();
+}
+
+void GameLobbyDialog::on_remote_player_ends_turn()
+{
+  update_scenario_details();
+  update_city_map();
+}
+
+void GameLobbyDialog::on_remote_player_changes_name()
+{
+  update_player_details();
+  update_buttons();
+}
+      
+void GameLobbyDialog::on_remote_player_changes_type()
+{
+  update_player_details();
+  update_buttons();
+}
+ 
+void GameLobbyDialog::on_sit_clicked()
+{
 }

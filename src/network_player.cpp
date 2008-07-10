@@ -54,18 +54,19 @@ using namespace std;
 
 NetworkPlayer::NetworkPlayer(string name, Uint32 armyset, SDL_Color color, int width,
 		       int height, Player::Type type, int player_no)
-    :Player(name, armyset, color, width, height, type, player_no)
+    :Player(name, armyset, color, width, height, type, player_no),
+    d_connected(false)
 {
 }
 
 NetworkPlayer::NetworkPlayer(const Player& player)
-    :Player(player)
+    :Player(player), d_connected(false)
 {
     d_type = Player::NETWORKED;
 }
 
 NetworkPlayer::NetworkPlayer(XML_Helper* helper)
-    :Player(helper)
+    :Player(helper), d_connected(false)
 {
 }
 

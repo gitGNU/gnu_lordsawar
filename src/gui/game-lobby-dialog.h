@@ -24,6 +24,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/image.h>
 #include <gtkmm/box.h>
+#include <gtkmm/button.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 #include <sigc++/signal.h>
@@ -65,6 +66,7 @@ class GameLobbyDialog//: public sigc::trackable
     Gtk::Label *turn_label;
     Gtk::Label *scenario_name_label;
     Gtk::Label *cities_label;
+    Gtk::Button *sit_button;
     void update_scenario_details();
     void update_player_details();
     void on_show_options_clicked();
@@ -118,7 +120,15 @@ class GameLobbyDialog//: public sigc::trackable
     
     void add_player(const Glib::ustring &type, const Glib::ustring &name,
 		    Player *player);
+    void on_player_selected();
     bool d_has_ops;
+    void update_buttons();
+    void on_remote_player_ends_turn();
+    void on_remote_player_departs();
+    void on_remote_player_joins();
+    void on_remote_player_changes_name();
+    void on_remote_player_changes_type();
+    void on_sit_clicked();
 };
 
 #endif
