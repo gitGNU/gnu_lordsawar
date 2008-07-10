@@ -81,7 +81,6 @@ class PlayersDialog
     void on_type_edited(const Glib::ustring &path,
 			const Glib::ustring &new_text);
     
-    void increment_current_player_name();
     void add_player(const Glib::ustring &type, const Glib::ustring &name,
 		    int gold, Player *player);
     int d_width;

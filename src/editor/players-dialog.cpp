@@ -40,11 +40,6 @@
 #include "../game-parameters.h"
 
 
-#define HUMAN_PLAYER_TYPE _("Human")
-#define EASY_PLAYER_TYPE _("Easy")
-#define HARD_PLAYER_TYPE _("Hard")
-#define NO_PLAYER_TYPE _("Off")
-
 namespace
 {
     const int default_gold = 1000;
