@@ -1111,7 +1111,7 @@ void GameWindow::on_resign_activated()
 void GameWindow::on_preferences_activated()
 {
   Player *current = Playerlist::getInstance()->getActiveplayer();
-  PreferencesDialog d;
+  PreferencesDialog d(false);
   d.set_parent_window(*window.get());
   d.run(game.get());
   if (current != Playerlist::getInstance()->getActiveplayer())

@@ -36,7 +36,7 @@ class Game;
 class PreferencesDialog: public sigc::trackable
 {
  public:
-    PreferencesDialog();
+    PreferencesDialog(bool readonly);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -50,6 +50,7 @@ class PreferencesDialog: public sigc::trackable
     Gtk::Box *music_volume_hbox;
     Gtk::VBox *players_vbox;
 
+    bool d_readonly;
     void on_show_turn_popup_toggled();
     void on_play_music_toggled();
     void on_music_volume_changed();

@@ -37,8 +37,9 @@
 #include "../GraphicsCache.h"
 
 
-PreferencesDialog::PreferencesDialog()
+PreferencesDialog::PreferencesDialog(bool readonly)
 {
+  d_readonly = readonly;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
 				    + "/preferences-dialog.glade");
@@ -69,6 +70,8 @@ PreferencesDialog::PreferencesDialog()
 	else
 	  type->set_active(1);
 	if ((*i)->isDead())
+	  type->set_sensitive(false);
+	if (readonly)
 	  type->set_sensitive(false);
 	player_hbox->pack_start(*manage(image), Gtk::PACK_SHRINK, 
 				Gtk::PACK_SHRINK);
