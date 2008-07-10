@@ -47,8 +47,10 @@ class SplashWindow: public sigc::trackable
     void show();
     void hide();
         
+    Gtk::Window *get_window() {return window.get();}
+
     sigc::signal<void> sdl_initialized;
-    sigc::signal<void, std::string> new_network_game_requested;
+    sigc::signal<void, std::string, bool> new_network_game_requested;
     sigc::signal<void, GameParameters> new_game_requested;
     sigc::signal<void, std::string> load_requested;
     sigc::signal<void> quit_requested;

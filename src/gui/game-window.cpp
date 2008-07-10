@@ -2625,3 +2625,4 @@ void GameWindow::on_advice_asked(float percent)
   dialog->run();
   return;
 }
+

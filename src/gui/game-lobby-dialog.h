@@ -21,17 +21,26 @@
 #include <string>
 #include <memory>
 #include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/image.h>
+#include <gtkmm/box.h>
+#include <gtkmm/entry.h>
 #include <gtkmm/label.h>
+#include <sigc++/signal.h>
+#include <gtkmm/combobox.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treemodelcolumn.h>
+#include <gtkmm/cellrenderercombo.h>
+#include <gtkmm/treeview.h>
 #include "../citymap.h"
 #include "../GameScenario.h"
 
 struct SDL_Surface;
 
-//! dialog for accepting/rejecting a hero
-class GameLobbyDialog: public sigc::trackable
+class Player;
+
+//! dialog for showing the scenario and who's joined
+class GameLobbyDialog//: public sigc::trackable
 {
  public:
     GameLobbyDialog(std::string filename, bool has_ops);
@@ -56,8 +65,60 @@ class GameLobbyDialog: public sigc::trackable
     Gtk::Label *turn_label;
     Gtk::Label *scenario_name_label;
     Gtk::Label *cities_label;
-    void fill_in_scenario_details();
+    void update_scenario_details();
+    void update_player_details();
     void on_show_options_clicked();
+    void update_city_map();
+
+    Gtk::TreeView *player_treeview;
+    
+    class PlayerColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	PlayerColumns()
+	    {add(shield); add(type); add(name); add(status); add(turn); add(player);}
+	
+	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > shield;
+	Gtk::TreeModelColumn<Glib::ustring> type, name, status;
+	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > turn;
+	Gtk::TreeModelColumn<Player *> player;
+    };
+    const PlayerColumns player_columns;
+    Glib::RefPtr<Gtk::ListStore> player_list;
+    
+    Gtk::CellRendererCombo type_renderer;
+    Gtk::TreeViewColumn type_column;
+    
+    class PlayerTypeColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	PlayerTypeColumns()
+	    { add(type); }
+	
+	Gtk::TreeModelColumn<Glib::ustring> type;
+    };
+    const PlayerTypeColumns player_type_columns;
+    Glib::RefPtr<Gtk::ListStore> player_type_list;
+
+    void cell_data_type(Gtk::CellRenderer *renderer, const Gtk::TreeIter &i);
+    void on_type_edited(const Glib::ustring &path,
+			const Glib::ustring &new_text);
+
+    Gtk::CellRendererCombo status_renderer;
+    Gtk::TreeViewColumn status_column;
+    
+    class PlayerStatusColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	PlayerStatusColumns()
+	    { add(status); }
+	
+	Gtk::TreeModelColumn<Glib::ustring> status;
+    };
+    const PlayerTypeColumns player_status_columns;
+    Glib::RefPtr<Gtk::ListStore> player_status_list;
+    void cell_data_status(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
+    
+    void add_player(const Glib::ustring &type, const Glib::ustring &name,
+		    Player *player);
+    bool d_has_ops;
 };
 
 #endif

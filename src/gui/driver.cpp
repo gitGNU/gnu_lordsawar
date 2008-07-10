@@ -99,9 +99,10 @@ Driver::~Driver()
 {
 }
 
-void Driver::on_new_network_game_requested(std::string filename)
+void Driver::on_new_network_game_requested(std::string filename, bool has_ops)
 {
-  GameLobbyDialog gld(filename, true);
+  GameLobbyDialog gld(filename, has_ops);
+  gld.set_parent_window(*splash_window.get()->get_window());
   int response = gld.run();
 }
 

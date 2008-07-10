@@ -269,7 +269,7 @@ void SplashWindow::on_network_game_selected(std::string ip, unsigned short port)
   //go get the file!
   //download it into a file called network.sav, and then:
   std::string filename = File::getSavePath() + "network.sav";
-  new_network_game_requested.emit(filename);
+  new_network_game_requested.emit(filename, false);
 }
 
 void SplashWindow::on_network_game_created(GameParameters g)
@@ -302,7 +302,7 @@ void SplashWindow::on_network_game_created(GameParameters g)
     filename = File::getSavePath() + "network.sav";
     game_scenario->saveGame(filename);
     delete game_scenario;
-    new_network_game_requested.emit(filename);
+    new_network_game_requested.emit(filename, true);
 }
 
 void SplashWindow::on_game_started(GameParameters g)
@@ -484,7 +484,6 @@ SplashWindow::on_sdl_surface_changed()
 {
   if (!sdl_inited)
     {
-      printf ("here!\n");
       sdl_inited = true;
       sdl_initialized.emit();
     }

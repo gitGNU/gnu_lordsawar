@@ -40,11 +40,6 @@
 #include "../citysetlist.h"
 #include "../player.h"
 
-#define HUMAN_PLAYER_TYPE _("Human")
-#define EASY_PLAYER_TYPE _("Easy")
-#define HARD_PLAYER_TYPE _("Hard")
-#define NO_PLAYER_TYPE _("Off")
-
 static bool inhibit_difficulty_combobox = false;
 
 void GamePreferencesDialog::init()

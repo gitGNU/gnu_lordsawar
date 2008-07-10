@@ -31,7 +31,39 @@
 #include "../defs.h"
 #include "../File.h"
 #include "../citylist.h"
+#include "../playerlist.h"
 #include "game-options-dialog.h"
+#include "../GraphicsCache.h"
+
+namespace
+{
+    Glib::ustring player_type_to_string(Uint32 type)
+    {
+	switch (type)
+	{
+	case Player::HUMAN: return HUMAN_PLAYER_TYPE;
+	case Player::AI_FAST: return EASY_PLAYER_TYPE;
+	case Player::AI_SMART: return HARD_PLAYER_TYPE;
+	case Player::NETWORKED: return NETWORKED_PLAYER_TYPE;
+	default: return NO_PLAYER_TYPE;
+	}
+    }
+}
+
+void GameLobbyDialog::update_city_map()
+{
+  if (d_game_scenario->s_hidden_map == false)
+    {
+      citymap.reset(new CityMap());
+      citymap->map_changed.connect
+	(sigc::mem_fun(this, &GameLobbyDialog::on_map_changed));
+    }
+  else
+    {
+      map_image->property_file() = 
+	File::getMiscFile("various/city_occupied.png");
+    }
+}
 
 void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 {
@@ -44,34 +76,107 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
     xml->get_widget("dialog", d);
     dialog.reset(d);
 
+  xml->get_widget("player_treeview", player_treeview);
     xml->get_widget("map_image", map_image);
     xml->get_widget("turn_label", turn_label);
     xml->get_widget("scenario_name_label", scenario_name_label);
     xml->get_widget("cities_label", cities_label);
 
-    citymap.reset(new CityMap());
-    citymap->map_changed.connect(
-	sigc::mem_fun(this, &GameLobbyDialog::on_map_changed));
+    update_city_map();
 
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
     xml->connect_clicked(
 	"show_options_button",
 	sigc::mem_fun(*this, &GameLobbyDialog::on_show_options_clicked));
+
+  update_player_details();
 }
-GameLobbyDialog::GameLobbyDialog(std::string filename, bool has_ops)
+
+void
+GameLobbyDialog::update_player_details()
 {
+  player_list.clear();
+  player_list = Gtk::ListStore::create(player_columns);
+  // setup the player settings
+  player_treeview->set_model(player_list);
+
+  player_treeview->append_column("", player_columns.shield);
+  // the type column
+  player_type_list = Gtk::ListStore::create(player_type_columns);
+  Gtk::TreeModel::iterator i;
+  i = player_type_list->append();
+  (*i)[player_type_columns.type] = HUMAN_PLAYER_TYPE;
+  i = player_type_list->append();
+  (*i)[player_type_columns.type] = EASY_PLAYER_TYPE;
+  i = player_type_list->append();
+  (*i)[player_type_columns.type] = HARD_PLAYER_TYPE;
+  i = player_type_list->append();
+  (*i)[player_type_columns.type] = NETWORKED_PLAYER_TYPE;
+  i = player_type_list->append();
+  (*i)[player_type_columns.type] = NO_PLAYER_TYPE;
+
+  type_renderer.property_model() = player_type_list;
+  type_renderer.property_text_column() = 0;
+  type_renderer.property_has_entry() = false;
+  type_renderer.property_editable() = d_has_ops;
+
+  type_renderer.signal_edited()
+    .connect(sigc::mem_fun(*this, &GameLobbyDialog::on_type_edited));
+  type_column.set_cell_data_func
+    ( type_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_type));
+  player_treeview->append_column(type_column);
+
+
+  // the name
+  if (d_has_ops)
+    player_treeview->append_column_editable(_("Name"), player_columns.name);
+  else
+    player_treeview->append_column(_("Name"), player_columns.name);
+
+  //the status
+  status_renderer.property_model() = player_status_list;
+  status_renderer.property_text_column() = 0;
+  status_renderer.property_has_entry() = false;
+  status_renderer.property_editable() = false;
+  status_column.set_cell_data_func
+    (status_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_status));
+  player_treeview->append_column(status_column);
+
+  //if it's this player's turn
+  player_treeview->append_column(_("Turn"), player_columns.turn);
+
+  Playerlist *pl = Playerlist::getInstance();
+
+  for (Playerlist::iterator i = pl->begin(), end = pl->end(); i != end; ++i)
+    {
+      Player *player = *i;
+      if (player == pl->getNeutral())
+	continue;
+      add_player(player_type_to_string(player->getType()), player->getName(), 
+		 player);
+    }
+}
+
+GameLobbyDialog::GameLobbyDialog(std::string filename, bool has_ops)
+  :type_column(_("Type"), type_renderer), 
+    status_column(_("Status"), status_renderer)
+{
+  d_has_ops = has_ops;
   bool broken = false;
   d_destroy_gamescenario = true;
   GameScenario *game_scenario = new GameScenario(filename, broken);
   initDialog(game_scenario);
-  fill_in_scenario_details();
+  update_scenario_details();
 }
 
 GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario, bool has_ops)
+  :type_column(_("Type"), type_renderer),
+    status_column(_("Status"), status_renderer)
 {
+  d_has_ops = has_ops;
   initDialog(game_scenario);
-  fill_in_scenario_details();
+  update_scenario_details();
 }
 
 GameLobbyDialog::~GameLobbyDialog()
@@ -85,7 +190,7 @@ GameLobbyDialog::~GameLobbyDialog()
     }
 }
 
-void GameLobbyDialog::fill_in_scenario_details()
+void GameLobbyDialog::update_scenario_details()
 {
     
   Glib::ustring s;
@@ -94,6 +199,19 @@ void GameLobbyDialog::fill_in_scenario_details()
   scenario_name_label->set_text(d_game_scenario->getName());
   s = String::ucompose("%1", Citylist::getInstance()->size());
   cities_label->set_text(s);
+
+  //select the player whose turn it is.
+  int i = 0;
+  Playerlist *pl = Playerlist::getInstance();
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+    {
+      if (*it == pl->getActiveplayer())
+	break;
+      i++;
+    }
+  Gtk::TreeModel::Row row = player_treeview->get_model()->children()[i];
+  player_treeview->get_selection()->select(row);
+
 }
 void GameLobbyDialog::set_parent_window(Gtk::Window &parent)
 {
@@ -103,8 +221,11 @@ void GameLobbyDialog::set_parent_window(Gtk::Window &parent)
 
 bool GameLobbyDialog::run()
 {
-    citymap->resize();
-    citymap->draw();
+  if (d_game_scenario->s_hidden_map == false)
+    {
+      citymap->resize();
+      citymap->draw();
+    }
 
     dialog->show_all();
     int response = dialog->run();
@@ -124,4 +245,45 @@ void GameLobbyDialog::on_show_options_clicked()
 {
   GameOptionsDialog gd(true);
   gd.run();
+}
+
+void GameLobbyDialog::cell_data_type(Gtk::CellRenderer *renderer,
+				     const Gtk::TreeIter& i)
+{
+  dynamic_cast<Gtk::CellRendererText*>(renderer)->property_text()
+    = (*i)[player_columns.type];
+}
+
+void GameLobbyDialog::on_type_edited(const Glib::ustring &path,
+				     const Glib::ustring &new_text)
+{
+  (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.type]
+    = new_text;
+}
+
+void GameLobbyDialog::cell_data_status(Gtk::CellRenderer *renderer,
+				       const Gtk::TreeIter& i)
+{
+  Glib::ustring s;
+  s = String::ucompose("<b> - %1 - </b>", (*i)[player_columns.status]);
+  dynamic_cast<Gtk::CellRendererText*>(renderer)->property_markup() = s;
+}
+
+void GameLobbyDialog::add_player(const Glib::ustring &type,
+			       const Glib::ustring &name, Player *player)
+{
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  Gtk::TreeIter i = player_list->append();
+  if (player == Playerlist::getInstance()->getActiveplayer())
+    (*i)[player_columns.turn] = 
+      to_pixbuf(gc->getCursorPic(GraphicsCache::SWORD));
+  (*i)[player_columns.shield] = to_pixbuf(gc->getShieldPic(1, player));
+  (*i)[player_columns.type] = type;
+  (*i)[player_columns.name] = name;
+  (*i)[player_columns.status] = _("moving");
+  (*i)[player_columns.status] = _("watching");
+  (*i)[player_columns.status] = _("not here");
+  (*i)[player_columns.player] = player;
+
+  player_treeview->get_selection()->select(i);
 }
