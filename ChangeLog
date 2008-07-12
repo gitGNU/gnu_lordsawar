@@ -1,6 +1,8 @@
 2008-07-12  Ben Asselstine
 
 	* fixed pillage-crashing bug reported by Rob Kinyon.
+	* empty production slots in cities are now retained across saves.
+	  This changed the scenario file specification.
 
 2008-07-09  Ben Asselstine
 
