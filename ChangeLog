@@ -1,3 +1,7 @@
+2008-07-12  Ben Asselstine
+
+	* fixed pillage-crashing bug reported by Rob Kinyon.
+
 2008-07-09  Ben Asselstine
 
 	* added machinery for multiplayer.
