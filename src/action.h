@@ -127,7 +127,8 @@ class Action
 		DIPLOMATIC_SCORE = 29,
                 END_TURN = 30,
                 CITY_CONQUER = 31,
-                RECRUIT_HERO = 32
+                RECRUIT_HERO = 32,
+                PLAYER_RENAME = 33,
         };
                 
         
@@ -1312,4 +1313,28 @@ class Action_RecruitHero : public Action
         bool load(std::string tag, XML_Helper *helper);
 };
 
+//-----------------------------------------------------------------------------
+
+class Action_RenamePlayer: public Action
+{
+    public:
+	//! Make a new rename player action
+        Action_RenamePlayer();
+	//! Load a new rename player action from an opened saved-game file.
+        Action_RenamePlayer(XML_Helper* helper);
+	//! Destroy a rename player action.
+        ~Action_RenamePlayer();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this city occupied action to an opened saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Populate the action.
+        bool fillData(std::string name);
+    
+        //private:
+	std::string d_name;
+};
 #endif //ACTION_H

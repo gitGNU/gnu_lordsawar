@@ -529,6 +529,7 @@ class Player: public sigc::trackable
          */
         void recruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const Army *ally);
 
+	void rename (std::string name);
         /** 
 	 * Called whenever a hero advances a level.
 	 * For human players this method presents a dialog that allows the
@@ -779,7 +780,7 @@ class Player: public sigc::trackable
          * @return False on error, true otherwise.
          */
 	//! Callback to pillage a city.
-        void cityPillage(City* city, int& gold, int& pillaged_army_type);
+        void cityPillage(City* city, int& gold, int *pillaged_army_type);
 
         /**
 	 * Sack a city (trade in all army types except one and get some gold.)
@@ -1187,7 +1188,7 @@ class Player: public sigc::trackable
 	 * @param army_types  The list of Army types traded-in for gold pieces.
 	 */
         //! Emitted whenever the player pillages a city.
-        sigc::signal<void, City*, Stack*, int, std::list<Uint32> > spillagingCity;
+        sigc::signal<void, City*, Stack*, int, Uint32> spillagingCity;
 
 	/**
 	 * @param city        The city that has been sacked.
@@ -1272,9 +1273,11 @@ class Player: public sigc::trackable
         sigc::signal<void, int> hero_arrives_with_allies;
 
         sigc::signal<void, Action *> action_done;
+        sigc::signal<void, History *> history_done;
         
 	//! is it safe to vector from the given city?
 	static bool safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders);
+	void addHistory(History *history);
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,
@@ -1366,7 +1369,7 @@ class Player: public sigc::trackable
         void doStackJoin(Stack* receiver, Stack* joining, bool grouped);
         int doStackVisitTemple(Stack *s, Temple *t);
         void doCityOccupy(City *c);
-        void doCityPillage(City *c, int& gold, int& pillaged_army_type);
+        void doCityPillage(City *c, int& gold, int* pillaged_army_type);
         void doCitySack(City *c, int& gold, std::list<Uint32> *sacked_types);
         void doCityRaze(City *c);
         void doCityBuyProduction(City *c, int slot, int type);
@@ -1386,6 +1389,7 @@ class Player: public sigc::trackable
         void doProposeDiplomacy (DiplomaticProposal proposal, Player *player);
         void doConquerCity(City *city, Stack *stack);
         void doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const Army *ally);
+        void doRename(std::string name);
 
 	void AI_maybeBuyScout();
 

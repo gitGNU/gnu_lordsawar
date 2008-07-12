@@ -44,6 +44,7 @@ private:
 
   void gotScenario(const std::string &payload);
   void gotActions(const std::string &payload);
+  void gotHistory(const std::string &payload);
 
   void onConnected();
   void onConnectionLost();

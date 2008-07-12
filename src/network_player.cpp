@@ -187,6 +187,9 @@ void NetworkPlayer::decodeAction(const Action *a)
     case Action::RECRUIT_HERO:
       return decodeActionRecruitHero
         (dynamic_cast<const Action_RecruitHero*>(a));
+    case Action::PLAYER_RENAME:
+      return decodeActionRenamePlayer
+        (dynamic_cast<const Action_RenamePlayer*>(a));
     }
 
   return;
@@ -320,7 +323,7 @@ void NetworkPlayer::decodeActionPillage(const Action_Pillage *action)
 {
   City *city = Citylist::getInstance()->getById(action->d_city);
   int gold, pillaged_army_type;
-  doCityPillage(city, gold, pillaged_army_type);
+  doCityPillage(city, gold, &pillaged_army_type);
 }
 
 void NetworkPlayer::decodeActionSack(const Action_Sack *action)
@@ -490,6 +493,11 @@ void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
     ally = Armysetlist::getInstance()->getArmy(getArmyset(),
                                                action->d_ally_army_type);
   doRecruitHero(action->d_hero, city, action->d_cost, action->d_allies, ally);
+}
+
+void NetworkPlayer::decodeActionRenamePlayer(const Action_RenamePlayer *action)
+{
+  doRename(action->d_name);
 }
 
 // End of file

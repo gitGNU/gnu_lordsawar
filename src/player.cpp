@@ -281,7 +281,7 @@ void Player::initTurn()
 {
   clearActionlist();
   History_StartTurn* item = new History_StartTurn();
-  d_history.push_back(item);
+  addHistory(item);
 }
 
 void Player::setColor(SDL_Color c)
@@ -428,7 +428,7 @@ void Player::kill()
                         
     History_PlayerVanquished* item;
     item = new History_PlayerVanquished();
-    d_history.push_back(item);
+    addHistory(item);
 
     d_dead = true;
     d_stacklist->flClear();
@@ -644,6 +644,18 @@ void Player::addAction(Action *action)
   // FIXME
   if (!action_done.empty())
     action_done.emit(action);
+#if 0
+  else
+    delete action;
+#endif
+}
+
+void Player::addHistory(History *history)
+{
+  d_history.push_back(history);
+  // FIXME
+  if (!history_done.empty())
+    history_done.emit(history);
 #if 0
   else
     delete action;
@@ -1329,7 +1341,7 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r)
   {
     History_FoundSage* history = new History_FoundSage();
     history->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
-    d_history.push_back(history);
+    addHistory(history);
   }
   else
   {
@@ -1410,7 +1422,7 @@ Quest* Player::stackGetQuest(Stack* s, Temple* t, bool except_raze)
   // and record it for posterity
   History_HeroQuestStarted * history = new History_HeroQuestStarted();
   history->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
-  d_history.push_back(history);
+  addHistory(history);
   return q;
 }
 
@@ -1489,13 +1501,13 @@ void Player::doConquerCity(City *city, Stack *stack)
   
   History_CityWon *item = new History_CityWon();
   item->fillData(city);
-  d_history.push_back(item);
+  addHistory(item);
   if (stack->hasHero())
   {
     History_HeroCityWon *another = new History_HeroCityWon();
     Hero *hero = dynamic_cast<Hero *>(stack->getFirstHero());
     another->fillData(hero, city);
-    d_history.push_back(another);
+    addHistory(another);
   }
 }
 
@@ -1539,10 +1551,11 @@ void Player::cityOccupy(City* c)
   addAction(item);
 }
 
-void Player::doCityPillage(City *c, int& gold, int& pillaged_army_type)
+void Player::doCityPillage(City *c, int& gold, int* pillaged_army_type)
 {
   gold = 0;
-  pillaged_army_type = -1;
+  if (pillaged_army_type)
+    *pillaged_army_type = -1;
   
   // get rid of the most expensive army type and trade it in for 
   // half it's cost
@@ -1573,25 +1586,27 @@ void Player::doCityPillage(City *c, int& gold, int& pillaged_army_type)
       if (slot > -1)
 	{
 	  const Army *a = c->getProductionBase(slot);
-	  pillaged_army_type = a->getType();
+	  if (pillaged_army_type)
+	    *pillaged_army_type = a->getType();
 	  if (a->getProductionCost() == 0)
 	    gold += 1500;
 	  else
 	    gold += a->getProductionCost() / 2;
 	  c->removeProductionBase(slot);
 	}
+  //*pillaged_army_type = 10;
+  //gold = 300;
       addGold(gold);
-      std::list<Uint32> sacked_types;
-      sacked_types.push_back (pillaged_army_type);
       Stack *s = getActivestack();
-      spillagingCity.emit(c, s, gold, sacked_types);
+      //printf ("%s emitting %p, %p, %d, %d\n", getName().c_str(), c, s, gold, *pillaged_army_type);
+      spillagingCity.emit(c, s, gold, *pillaged_army_type);
       QuestsManager::getInstance()->cityPillaged(c, s, gold);
     }
 
   takeCityInPossession(c);
 }
 
-void Player::cityPillage(City* c, int& gold, int& pillaged_army_type)
+void Player::cityPillage(City* c, int& gold, int* pillaged_army_type)
 {
   debug("Player::cityPillage");
   
@@ -1659,7 +1674,7 @@ void Player::doCityRaze(City *c)
 {
   History_CityRazed* history = new History_CityRazed();
   history->fillData(c);
-  d_history.push_back(history);
+  addHistory(history);
 
   c->conquer(this);
   c->setBurnt(true);
@@ -1871,7 +1886,7 @@ bool Player::heroCompletesQuest(Hero *h)
   // record it for posterity
   History_HeroQuestCompleted* item = new History_HeroQuestCompleted();
   item->fillData(h);
-  d_history.push_back(item);
+  addHistory(item);
   return true;
 }
 
@@ -1889,7 +1904,7 @@ void Player::doResign()
 	  (*it).setBurnt(true);
 	  History_CityRazed* history = new History_CityRazed();
 	  history->fillData(&(*it));
-	  d_history.push_back(history);
+	  addHistory(history);
 	}
     }
   withdrawGold(getGold()); //empty the coffers!
@@ -1941,6 +1956,20 @@ bool Player::cityRename(City *c, std::string name)
   item->fillData(c, name);
   addAction(item);
   return true;
+}
+
+void Player::doRename(std::string name)
+{
+  setName(name);
+}
+
+void Player::rename(std::string name)
+{
+  doRename(name);
+  Action_RenamePlayer * item = new Action_RenamePlayer();
+  item->fillData(name);
+  addAction(item);
+  return;
 }
 
 void Player::doVectorFromCity(City * c, Vector<int> dest)
@@ -2071,7 +2100,7 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
                         History_HeroKilledSearching* item;
                         item = new History_HeroKilledSearching();
                         item->fillData(h);
-                        h->getOwner()->getHistorylist()->push_back(item);
+			h->getOwner()->addHistory(item);
                         heroDropAllItems (h, (*it)->getPos());
                     }
                     else if (tile->getBuilding() == Maptile::CITY)
@@ -2081,7 +2110,7 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
                         History_HeroKilledInCity* item;
                         item = new History_HeroKilledInCity();
                         item->fillData(h, c);
-                        h->getOwner()->getHistorylist()->push_back(item);
+			h->getOwner()->addHistory(item);
                         heroDropAllItems (h, (*it)->getPos());
                     }
                     else //somewhere else
@@ -2089,7 +2118,7 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
                         History_HeroKilledInBattle* item;
                         item = new History_HeroKilledInBattle();
                         item->fillData(h);
-                        h->getOwner()->getHistorylist()->push_back(item);
+			h->getOwner()->addHistory(item);
                         heroDropAllItems (h, (*it)->getPos());
                     }
                 }
@@ -2275,7 +2304,7 @@ void Player::doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesC
 {
   History_HeroEmerges *item = new History_HeroEmerges();
   item->fillData(herotemplate, city);
-  d_history.push_back(item);
+  addHistory(item);
 
   Hero *newhero = new Hero(*herotemplate);
   newhero->setOwner(this);

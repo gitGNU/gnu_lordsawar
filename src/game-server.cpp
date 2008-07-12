@@ -28,6 +28,7 @@
 #include "playerlist.h"
 #include "player.h"
 #include "action.h"
+#include "history.h"
 
 
 class Action;
@@ -37,6 +38,7 @@ struct Participant
   void *conn;
   Player *player;
   std::list<Action *> actions;
+  std::list<History *> histories;
 };
 
 
@@ -63,6 +65,7 @@ void GameServer::start()
   network_server->startListening(port);
 
   listenForActions();
+  listenForHistories();
 }
 
 void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
@@ -88,6 +91,11 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_SENDING_MAP:
     // should never occur
     break;
+
+  case MESSAGE_TYPE_SENDING_HISTORY:
+    gotHistory(conn, payload);
+    break;
+
   }
 }
 
@@ -118,6 +126,13 @@ void GameServer::listenForActions()
     (*i)->action_done.connect(sigc::mem_fun(this, &GameServer::onActionDone));
 }
 
+void GameServer::listenForHistories()
+{
+  Playerlist *pl = Playerlist::getInstance();
+  for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
+    (*i)->history_done.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
+}
+
 void GameServer::onActionDone(Action *action)
 {
   for (std::list<Participant *>::iterator i = participants.begin(),
@@ -129,6 +144,20 @@ void GameServer::onActionDone(Action *action)
 
 #if 0
   delete action;
+#endif
+}
+
+void GameServer::onHistoryDone(History *history)
+{
+  for (std::list<Participant *>::iterator i = participants.begin(),
+         end = participants.end(); i != end; ++i) {
+    (*i)->histories.push_back(history);
+    sendHistory(*i);
+    (*i)->histories.clear();
+  }
+
+#if 0
+  delete history;
 #endif
 }
 
@@ -148,6 +177,10 @@ void GameServer::join(void *conn)
 }
 
 void GameServer::gotActions(void *conn, const std::string &payload)
+{
+}
+
+void GameServer::gotHistory(void *conn, const std::string &payload)
 {
 }
 
@@ -194,6 +227,24 @@ void GameServer::sendActions(Participant *part)
     
   std::cerr << "sending actions" << std::endl;
   network_server->send(part->conn, MESSAGE_TYPE_SENDING_ACTIONS, os.str());
+}
+
+void GameServer::sendHistory(Participant *part)
+{
+  std::ostringstream os;
+  XML_Helper helper(&os);
+
+  helper.begin("1");
+  helper.openTag("histories");
+  
+  for (std::list<History *>::iterator i = part->histories.begin(),
+         end = part->histories.end(); i != end; ++i)
+    (**i).save(&helper);
+
+  helper.closeTag();
+    
+  std::cerr << "sending histories" << std::endl;
+  network_server->send(part->conn, MESSAGE_TYPE_SENDING_HISTORY, os.str());
 }
 
 

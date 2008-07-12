@@ -732,9 +732,11 @@ void Game::invading_city(City* city, int gold)
 	break;
 
       case CITY_DEFEATED_PILLAGE:
-	int pillaged_army_type;
-	player->cityPillage(city, gold, pillaged_army_type);
-	city_pillaged.emit(city, gold, pillaged_army_type);
+	  {
+	    int pillaged_army_type = -1;
+	    player->cityPillage(city, gold, &pillaged_army_type);
+	    city_pillaged.emit(city, gold, pillaged_army_type);
+	  }
 	break;
 
       case CITY_DEFEATED_SACK:
@@ -1138,7 +1140,7 @@ bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
   them->declareDiplomacy (Player::AT_WAR, me);
   History_DiplomacyTreachery *item = new History_DiplomacyTreachery();
   item->fillData(them);
-  me->getHistorylist()->push_back(item);
+  me->addHistory(item);
 
   me->deteriorateDiplomaticRelationship (5);
   them->improveDiplomaticRelationship (2, me);

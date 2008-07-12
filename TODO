@@ -42,3 +42,7 @@ calculate to city should be different for enemy cities
 
 bug: showing neutral battles *Again*
 favour cheaper army units for production when we don't have much money
+
+--pillage crash:
+it's memory corruption.  uh oh.
+--can hit space while the computer moves to cause crash

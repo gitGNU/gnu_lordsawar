@@ -440,8 +440,8 @@ bool Army::saveData(XML_Helper* helper, enum ArmyContents contents) const
     if (contents == TYPE || contents == PRODUCTION_BASE)
       {
 	retval &= helper->saveData("name", d_name);
-	retval &= helper->saveData("description", d_description);
 	retval &= helper->saveData("image", d_image);
+	retval &= helper->saveData("description", d_description);
 	retval &= helper->saveData("production", d_production);
 	retval &= helper->saveData("production_cost", d_production_cost);
 	retval &= helper->saveData("upkeep", d_upkeep);

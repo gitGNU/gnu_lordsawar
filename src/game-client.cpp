@@ -23,6 +23,7 @@
 #include "network-connection.h"
 #include "File.h"
 #include "action.h"
+#include "history.h"
 #include "playerlist.h"
 #include "network_player.h"
 #include "xmlhelper.h"
@@ -86,6 +87,11 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
   case MESSAGE_TYPE_JOIN:
     // FIXME: faulty server
     break;
+
+  case MESSAGE_TYPE_SENDING_HISTORY:
+    gotHistory(payload);
+    break;
+    
   }
 }
 
@@ -117,7 +123,6 @@ public:
   std::list<Action *> actions;
 };
   
-
 void GameClient::gotActions(const std::string &payload)
 {
   std::istringstream is(payload);
@@ -147,5 +152,47 @@ void GameClient::gotActions(const std::string &payload)
 
   for (std::list<Action *>::iterator i = loader.actions.begin(),
        end = loader.actions.end(); i != end; ++i)
+    delete *i;
+}
+
+class HistoryLoader 
+{
+public:
+  bool loadHistory(std::string tag, XML_Helper* helper)
+  {
+    if (tag == "history") {
+      History * history = History::handle_load(helper);
+      histories.push_back(history);
+    }
+    return true;
+  }
+
+  std::list<History *> histories;
+};
+  
+
+void GameClient::gotHistory(const std::string &payload)
+{
+  std::istringstream is(payload);
+
+  HistoryLoader loader;
+  
+  XML_Helper helper(&is);
+  helper.registerTag("history", sigc::mem_fun(loader, &HistoryLoader::loadHistory));
+  helper.parse();
+
+  for (std::list<History *>::iterator i = loader.histories.begin(),
+       end = loader.histories.end(); i != end; ++i)
+  {
+    History *history = *i;
+    std::cerr << "decoding history " << history->getType() << std::endl;
+    
+    Player *p = Playerlist::getInstance()->getActiveplayer();
+
+    p->getHistorylist()->push_back(history);
+  }
+
+  for (std::list<History *>::iterator i = loader.histories.begin(),
+       end = loader.histories.end(); i != end; ++i)
     delete *i;
 }

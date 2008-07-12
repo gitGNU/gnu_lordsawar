@@ -147,6 +147,8 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_ConquerCity(helper));
         case RECRUIT_HERO:
             return (new Action_RecruitHero(helper));
+        case PLAYER_RENAME:
+            return (new Action_RenamePlayer(helper));
     }
 
     return 0;
@@ -234,6 +236,10 @@ Action* Action::copy(const Action* a)
             return 
               (new Action_RecruitHero
                 (*dynamic_cast<const Action_RecruitHero*>(a)));
+        case PLAYER_RENAME:
+            return 
+              (new Action_RenamePlayer
+                (*dynamic_cast<const Action_RenamePlayer*>(a)));
     }
 
     return 0;
@@ -1926,4 +1932,46 @@ bool Action_RecruitHero::fillData(Hero* hero, City *city, int cost, int alliesCo
     else
       d_ally_army_type = 0;
     return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_RenamePlayer
+
+Action_RenamePlayer::Action_RenamePlayer()
+  :Action(Action::PLAYER_RENAME), d_name("")
+{
+}
+
+Action_RenamePlayer::Action_RenamePlayer(XML_Helper* helper)
+  :Action(helper)
+{
+    helper->getData(d_name, "name");
+}
+
+Action_RenamePlayer::~Action_RenamePlayer()
+{
+}
+
+std::string Action_RenamePlayer::dump() const
+{
+    std::stringstream s;
+
+    s << "Player changes name to " << d_name <<".\n";
+
+    return s.str();
+}
+
+bool Action_RenamePlayer::doSave(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->saveData("name", d_name);
+
+    return retval;
+}
+
+bool Action_RenamePlayer::fillData(std::string name)
+{
+  d_name = name;
+  return true;
 }

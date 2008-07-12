@@ -133,7 +133,7 @@ void GameScenario::quickStart()
 	  c->conquer(p);
 	  History_CityWon *item = new History_CityWon();
 	  item->fillData(c);
-	  p->getHistorylist()->push_back(item);
+	  p->addHistory(item);
 	}
     }
 }
@@ -149,7 +149,7 @@ bool GameScenario::setupCities(bool quick_start)
 	{
 	  History_CityWon *item = new History_CityWon();
 	  item->fillData(&*it);
-	  (*it).getCapitalOwner()->getHistorylist()->push_back(item);
+	  (*it).getCapitalOwner()->addHistory(item);
 	}
     }
 

@@ -459,7 +459,7 @@ bool CreateScenario::distributePlayers()
 
 	    History_CityWon *item = new History_CityWon();
 	    item->fillData(&*cit);
-	    (*pit)->getHistorylist()->push_back(item);
+	    (*pit)->addHistory(item);
 
             pit++;
             if ((*pit) == pl->getNeutral())

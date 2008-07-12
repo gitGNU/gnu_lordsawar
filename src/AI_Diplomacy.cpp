@@ -61,7 +61,7 @@ void AI_Diplomacy::considerCuspOfWar()
   
         History_DiplomacyWar *item = new History_DiplomacyWar();
         item->fillData(other);
-        d_owner->getHistorylist()->push_back(item);
+	d_owner->addHistory(item);
       }
     }
   }

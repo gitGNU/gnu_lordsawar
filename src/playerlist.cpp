@@ -422,11 +422,11 @@ void Playerlist::calculateWinners()
 	score = (Uint32) (city_component + gold_component + army_component);
 	History_Score *item = new History_Score();
 	item->fillData(score);
-	(*it)->getHistorylist()->push_back(item);
+	(*it)->addHistory(item);
 
 	History_GoldTotal* gold = new History_GoldTotal();
 	gold->fillData((*it)->getGold());
-	(*it)->getHistorylist()->push_back(gold);
+	(*it)->addHistory(gold);
       }
 
     return;
@@ -500,7 +500,7 @@ void Playerlist::negotiateDiplomacy()
 
 		  History_DiplomacyPeace *item = new History_DiplomacyPeace();
 		  item->fillData(*it);
-		  (*pit)->getHistorylist()->push_back(item);
+		  (*pit)->addHistory(item);
 		}
 	      else if (new_state == Player::AT_WAR)
 		{
@@ -513,7 +513,7 @@ void Playerlist::negotiateDiplomacy()
 
 		  History_DiplomacyWar *item = new History_DiplomacyWar();
 		  item->fillData(them);
-		  me->getHistorylist()->push_back(item);
+		  me->addHistory(item);
 		}
 	    }
 	}

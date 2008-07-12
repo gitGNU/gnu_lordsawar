@@ -205,7 +205,7 @@ void QuestsManager::questCompleted(Uint32 heroId)
 	    
 	History_HeroFindsAllies* item = new History_HeroFindsAllies();
 	item->fillData(quest->getHero());
-	p->getHistorylist()->push_back(item);
+	p->addHistory(item);
       }
     else if (num == 2)
       {
