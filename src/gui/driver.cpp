@@ -108,25 +108,25 @@ void Driver::on_new_network_game_requested(std::string filename, bool has_ops)
 
 void Driver::on_new_game_requested(GameParameters g)
 {
+    if (splash_window.get())
+	splash_window->hide();
     init_game_window();
     
     game_window->sdl_initialized.connect(
 	sigc::bind(sigc::mem_fun(game_window.get(), &GameWindow::new_game), g));
     game_window->show();
-    if (splash_window.get())
-	splash_window->hide();
 }
 
 void Driver::on_load_requested(std::string filename)
 {
+    if (splash_window.get())
+	splash_window->hide();
     init_game_window();
     
     game_window->sdl_initialized.connect(
 	sigc::bind(sigc::mem_fun(game_window.get(), &GameWindow::load_game),
 		   filename));
     game_window->show();
-    if (splash_window.get())
-	splash_window->hide();
 
 }
 
