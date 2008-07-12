@@ -254,59 +254,63 @@ bool City::hasProductionBase(const Army * army)
   return hasProductionBase(army->getType(), army->getArmyset());
 }
 
-void City::addProductionBase(int index, Army *army)
+void City::addProductionBase(int idx, Army *army)
 {
     army->setOwner(d_owner);
 
-    if (index < 0)
+    if (idx < 0)
     {
         // try to find an unoccupied production slot. If there is none, pick 
         // the slot with the highest index.
         for (int i = 0; i < d_numprodbase; i++)
             if (d_prodbase[i] == NULL)
             {
-                index = i;
+                idx = i;
                 break;
             }
 
-        if (index < 0)
+        if (idx < 0)
         {
-            index = d_numprodbase - 1;
+            idx = d_numprodbase - 1;
         }
     }
     
     bool restore_production = false;
-    if (d_active_production_slot == index)
+    if (d_active_production_slot == idx)
       restore_production = true;
-    removeProductionBase(index);
-    d_prodbase[index] = army;
+    removeProductionBase(idx);
+    d_prodbase[idx] = army;
     if (restore_production)
-      setActiveProductionSlot(index);
+      setActiveProductionSlot(idx);
 }
 
-void City::removeProductionBase(int index)
+void City::removeProductionBase(int idx)
 {
-    if ((index < 0) || (index > (getMaxNoOfProductionBases() - 1)))
+    if ((idx < 0) || (idx > (getMaxNoOfProductionBases() - 1)))
         return;
 
-    if (d_prodbase[index])
-      delete d_prodbase[index];
-    d_prodbase[index] = NULL;
+    if (d_prodbase[idx])
+      delete d_prodbase[idx];
+    d_prodbase[idx] = NULL;
 
-    if (d_active_production_slot == index)
+    if (d_active_production_slot == idx)
         setActiveProductionSlot(-1);
 }
 
 void City::conquer(Player* newowner)
 {
   Citylist::getInstance()->stopVectoringTo(this);
+
   setOwner(newowner);
 
     // remove vectoring info 
     setVectoring(Vector<int>(-1,-1));
 
-    for (int j = 0; j < getNoOfProductionBases(); j++)
-      d_prodbase[j]->setOwner(newowner);
+    for (int j = 0; j < getMaxNoOfProductionBases(); j++)
+      {
+	if (d_prodbase[j])
+	  d_prodbase[j]->setOwner(newowner);
+      }
 
     deFog(newowner);
 
