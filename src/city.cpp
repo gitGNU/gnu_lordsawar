@@ -52,8 +52,8 @@ City::City(Vector<int> pos, string name, Uint32 gold)
 
 {
     // Initialise armytypes
-    for (int i = 0; i < getMaxNoOfProductionBases(); i++)
-        d_prodbase[i] = NULL; 
+    for (int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
+      d_prodbase[i] = NULL;
 
     // set the tiles to city type
     for (int i = 0; i < 2; i++)
@@ -66,13 +66,13 @@ City::City(Vector<int> pos, string name, Uint32 gold)
 
 City::City(XML_Helper* helper)
     :Ownable(helper), Location(helper, 2), Renamable(helper), 
-    d_numprodbase(MAX_PRODUCTION_SLOTS_IN_A_CITY)
+    d_numprodbase(0)
 {
   //note: the armies get loaded in citylist
 
     //initialize the city
 
-    for (int i = 0; i < getMaxNoOfProductionBases(); i++)
+    for (int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
       d_prodbase[i] = NULL;
 
     helper->getData(d_defense_level, "defense");
@@ -119,7 +119,7 @@ City::City(const City& c)
     d_vectoring(c.d_vectoring),d_vector(c.d_vector), d_capital(c.d_capital), 
     d_capital_owner(c.d_capital_owner)
 {
-    for (int i = 0; i < getMaxNoOfProductionBases(); i++)
+    for (int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
       {
 	if (c.d_prodbase[i] != NULL)
 	  d_prodbase[i] = new Army(*c.d_prodbase[i]);
@@ -162,9 +162,10 @@ bool City::save(XML_Helper* helper) const
 
     for (int i = 0; i < d_numprodbase; i++)
       {
-	if (d_prodbase[i] == NULL)
-	  continue;
-	retval &= d_prodbase[i]->save(helper, Army::PRODUCTION_BASE);
+	retval &= helper->openTag("slot");
+	if (d_prodbase[i])
+	  retval &= d_prodbase[i]->save(helper, Army::PRODUCTION_BASE);
+	retval &= helper->closeTag();
       }
     retval &= helper->closeTag();
     return retval;
@@ -274,14 +275,21 @@ void City::addProductionBase(int idx, Army *army)
             idx = d_numprodbase - 1;
         }
     }
+    if (idx >= d_numprodbase)
+      return;
     
-    bool restore_production = false;
-    if (d_active_production_slot == idx)
-      restore_production = true;
-    removeProductionBase(idx);
-    d_prodbase[idx] = army;
-    if (restore_production)
-      setActiveProductionSlot(idx);
+    if (d_prodbase[idx])
+      {
+	bool restore_production = false;
+	if (d_active_production_slot == idx)
+	  restore_production = true;
+	removeProductionBase(idx);
+	d_prodbase[idx] = army;
+	if (restore_production)
+	  setActiveProductionSlot(idx);
+      }
+    else
+      d_prodbase[idx] = army;
 }
 
 void City::removeProductionBase(int idx)
@@ -358,8 +366,11 @@ void City::sortProduction()
     {
       std::list<Army*> productibles;
       int j;
-      for (j = 0; j < getNoOfProductionBases(); j++)
-        productibles.push_back(d_prodbase[j]);
+      for (j = 0; j < getMaxNoOfProductionBases(); j++)
+	{
+	  if (d_prodbase[j])
+	    productibles.push_back(d_prodbase[j]);
+	}
       productibles.sort(armyCompareStrength);
       j = 0;
       for (std::list<Army*>::iterator it = productibles.begin();

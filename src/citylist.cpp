@@ -68,6 +68,7 @@ Citylist::Citylist(XML_Helper* helper)
     // simply ask the helper to inform us when a city tag is opened
     helper->registerTag("city", sigc::mem_fun(this, &Citylist::load));
     helper->registerTag("army", sigc::mem_fun(this, &Citylist::load));
+    helper->registerTag("slot", sigc::mem_fun(this, &Citylist::load));
 }
 
 Citylist::~Citylist()
@@ -319,11 +320,21 @@ bool Citylist::load(std::string tag, XML_Helper* helper)
     if (tag == "army")
       {
 	//add it to the right city
+	//how do i add it to the right slot?
 	Citylist::iterator it = end();
 	it--;
 	City *city = &*it;
 	Army *a = new Army (helper, Army::PRODUCTION_BASE);
-	city->addProductionBase(-1, a);
+	int slot = city->getMaxNoOfProductionBases() - 1;
+	city->addProductionBase(slot, a);
+	return true;
+      }
+    if (tag == "slot")
+      {
+	Citylist::iterator it = end();
+	it--;
+	City *city = &*it;
+	city->setMaxNoOfProductionBases(city->getMaxNoOfProductionBases() + 1);
 	return true;
       }
     if (tag == "city")

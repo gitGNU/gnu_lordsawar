@@ -208,6 +208,8 @@ class City : public Ownable, public Location, public Renamable
 	 */
         int getMaxNoOfProductionBases() const {return d_numprodbase;};
 
+	void setMaxNoOfProductionBases(int max) {d_numprodbase = max;};
+
         //! Return the number of basic productions of the city.
 	/**
 	 * Scan the production slots and count how many are filled with an
