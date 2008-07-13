@@ -448,7 +448,7 @@ void Stack::nextTurn()
 	for (item = backpack.begin(); item != backpack.end(); item++)
 	  {
 	    if ((*item)->getBonus(Item::DOUBLEMOVESTACK))
-	      movement_multiplier++;
+	      movement_multiplier*=2;
 	  }
       }
 
