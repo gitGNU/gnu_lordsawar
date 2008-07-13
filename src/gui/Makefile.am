@@ -64,7 +64,8 @@ liblwgui_a_SOURCES = \
     input-helpers.h \
     timed-message-dialog.cpp timed-message-dialog.h \
     game-lobby-dialog.cpp game-lobby-dialog.h \
-    network-game-selector-dialog.cpp network-game-selector-dialog.h
+    network-game-selector-dialog.cpp network-game-selector-dialog.h \
+    generation-progress-window.cpp generation-progress-window.h
 
 INCLUDES = \
    $(GTKMM_CFLAGS) \
