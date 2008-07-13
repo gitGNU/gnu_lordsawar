@@ -1,3 +1,8 @@
+2008-07-13  Ben Asselstine
+
+	* fixed stack movement doubling when having more than one item that
+	  doubles movement.  Reported by Rob Kinyon.
+
 2008-07-12  Ben Asselstine
 
 	* fixed pillage-crashing bug reported by Rob Kinyon.
