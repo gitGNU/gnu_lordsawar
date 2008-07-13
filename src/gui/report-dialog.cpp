@@ -79,16 +79,12 @@ ReportDialog::ReportDialog(Player *player, ReportType type)
   armies_treeview->append_column("", armies_columns.desc);
 
   //loop through the action list looking for production actions
-  Uint32 total = 0;
-  std::list<Action*> *actions = player->getActionlist();
+  std::list<Action*> actions = player->getReportableActions();
+  Uint32 total = actions.size();
   std::list<Action*>::const_iterator it;
-  for (it = actions->begin(); it != actions->end(); it++)
-   if ((*it)->getType() == Action::PRODUCE_UNIT ||
-      (*it)->getType() == Action::PRODUCE_VECTORED_UNIT)
-     {
-       addProduction(*it);
-       total++;
-     }
+  for (it = actions.begin(); it != actions.end(); it++)
+    addProduction(*it);
+
   Glib::ustring s;
   s = String::ucompose(ngettext("You produced %1 army this turn!",
 				"You produced %1 armies this turn!",

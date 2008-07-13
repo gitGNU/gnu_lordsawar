@@ -53,6 +53,7 @@ class FogMap;
 class Fight;
 class Reward;
 class Signpost;
+class VectoredUnit;
 
 //! The abstract player class.
 /** 
@@ -254,8 +255,8 @@ class Player: public sigc::trackable
         //! Returns the unique ID of the player.
         Uint32 getId() const {return d_id;}
 
-        //! Returns the list of player's actions. 
-        std::list<Action*>* getActionlist() {return &d_actions;}
+	//! Returns a list of the player's actions to show in a report.
+	std::list<Action *> getReportableActions();
 
         //! Returns the list of player's events. 
         std::list<History*>* getHistorylist() {return &d_history;}
@@ -882,6 +883,16 @@ class Player: public sigc::trackable
 	//! Callback to change the Army unit being produced within a City.
         bool cityChangeProduction(City* city, int slot);
 
+	//! A player's city produces an army unit.
+	/**
+	 * @param city  The city that has produced an army unit.
+         * @return False on error, true otherwise.
+	 */
+	bool cityProducesArmy(City *city);
+
+	//! A player has a vectored army unit arrive somewhere.
+	bool vectoredUnitArrives(VectoredUnit *unit);
+
         /** 
 	 * This method gives the player the specified Reward.  There are 
 	 * various possibilities when they player is being given a reward.
@@ -1391,6 +1402,8 @@ class Player: public sigc::trackable
         void doConquerCity(City *city, Stack *stack);
         void doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const Army *ally);
         void doRename(std::string name);
+	void doCityProducesArmy(City *city);
+	void doVectoredUnitArrives(VectoredUnit *unit);
 
 	void AI_maybeBuyScout();
 

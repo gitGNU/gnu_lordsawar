@@ -113,6 +113,8 @@ class VectoredUnit: public Ownable, public Location, public sigc::trackable
 	 */
         bool nextTurn();
 
+	//! Called when a vectored unit arrives at the destination.
+	bool armyArrives();
     private:
 
         // DATA

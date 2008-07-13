@@ -330,6 +330,10 @@ class City : public Ownable, public Location, public Renamable
 	Uint32 countDefenders();
 
 	Uint32 countCitiesVectoringToHere();
+
+	//! This makes the army show up.  called when it's time.
+	const Army *armyArrives();
+
     private:
 
         //! Produces the currently active Army production base.

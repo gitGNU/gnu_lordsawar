@@ -549,6 +549,27 @@ void City::produceWeakestProductionBase()
     }
 }
 
+const Army *City::armyArrives()
+{
+  const Army *army;
+  // vector the army to the new spot
+  if (d_vectoring)
+    {
+      VectoredUnitlist *vul = VectoredUnitlist::getInstance();
+      VectoredUnit *v = new VectoredUnit 
+	(getPos(), d_vector, new Army(*(d_prodbase[d_active_production_slot])),
+	 MAX_TURNS_FOR_VECTORING, d_owner);
+      vul->push_back(v);
+      d_owner->cityChangeProduction(this, d_active_production_slot);
+      army = getProductionBase(d_active_production_slot);
+    }
+  else //or make it here
+    {
+      army = produceArmy();
+    }
+  return army;
+}
+
 void City::nextTurn()
 {
   if (d_burnt)
@@ -561,35 +582,13 @@ void City::nextTurn()
 	{
 	  //dont make or vector the unit
 	  //and also stop production
-	  setActiveProductionSlot(-1);
-	  d_vectoring = false;
-	  d_vector.x = -1;
-	  d_vector.y = -1;
+	  d_owner->cityChangeProduction(this, -1);
+	  d_owner->vectorFromCity(this, Vector<int>(-1,-1));
 	  return;
 	}
 
-      Action_Produce *item = new Action_Produce();
-      // vector the army to the new spot
-      if (d_vectoring)
-	{
-	  VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-	  VectoredUnit *v = new VectoredUnit
-	    (getPos(), d_vector, 
-	     new Army(*(d_prodbase[d_active_production_slot])),
-	     MAX_TURNS_FOR_VECTORING, d_owner);
-	  vul->push_back(v);
-	  setActiveProductionSlot(d_active_production_slot);
-	  item->fillData(getProductionBase(d_active_production_slot), this, 
-			 true);
-	}
-      else //or make it here
-	{
-	  Army *a = produceArmy();
-	  item->fillData(a, this, false);
-	}
-      //FIXME: a cookie goes to the person who can figure out how
-      //to get this action into the realplayer class.
-      d_owner->getActionlist()->push_back(item);
+      d_owner->cityProducesArmy(this);
+
     }
 }
 

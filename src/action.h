@@ -1071,6 +1071,8 @@ class Action_Plant: public Action
  * The City might be vectoring elsewhere, so the unit doesn't show up in the
  * City that produced it.  If vectoring is not enabled the Army unit shows
  * up right away in the host City.
+ * This action is used primarily for reporting purposes.  The player's 
+ * production report shows which army units were created in what cities.
  * The army unit is taken from the Player's Armyset.
  */
 class Action_Produce: public Action
@@ -1123,6 +1125,8 @@ class Action_Produce: public Action
  * vectored Army unit arrives at it's destination.  The idea here is that
  * two turns have passed since a unit was vectored, and now the unit has
  * shown up.
+ * This action is used primarily for reporting purposes.  The player's 
+ * production report shows which vectored army units arrived in what cities.
  * The army unit is taken from the Player's Armyset.
  */
 class Action_ProduceVectored: public Action

@@ -447,12 +447,35 @@ void NetworkPlayer::decodeActionPlant(const Action_Plant *action)
 
 void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
 {
-  // FIXME: needed?
+  //Note: we don't use this to produce new armies in cities
+  //That happens during the city->nextTurn method.
+  //It is enough that we record the changes in city production, and then
+  //let the city->nextTurn method do it's job.
+  //This action is used for the Production Report instead, see
+  //gui/report-dialog.cpp
+ 
+  //there's no real need to send this action back to the server because
+  //only the current player can see her own production report.
+
+  //if we wanted to decode it, we'd do this:
+  //City *city = Citylist::getInstance()->getById(action->getCityId());
+  //doCityProducesArmy(city);
 }
 
 void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *action)
 {
-  // FIXME: needed?
+  //Note: we don't use this to produce new vectored army units on the map 
+  //That happens during the vectoredunit->nextTurn method.
+  //It is enough that we record the changes in city vectoring, and then
+  //let the vectoredunitlist->nextTurn method do it's job.
+  //This action is used for the Production Report instead, see
+  //gui/report-dialog.cpp
+ 
+  //there's no real need to send this action back to the server because
+  //only the current player can see her own production report.
+
+  //we couldn't decode this action if we wanted to, because there isn't
+  //enough data to make it happen.
 }
 
 void NetworkPlayer::decodeActionDiplomacyState(const Action_DiplomacyState *action)

@@ -78,6 +78,39 @@ bool VectoredUnit::save(XML_Helper* helper) const
     return retval;
 }
 
+bool VectoredUnit::armyArrives()
+{
+  Citylist *cl = Citylist::getInstance();
+  Army *a = new Army(*d_army, d_owner);
+
+  City *dest;
+  // drop it in the destination city!
+  dest = cl->getObjectAt(d_destination);
+  if (!dest)
+    {
+      std::list<Item*> items;
+      items = GameMap::getInstance()->getTile(d_destination)->getItems();
+      for (std::list<Item*>::iterator it = items.begin(); 
+	   it != items.end(); it++)
+	{
+	  if ((*it)->getPlanted() == true &&
+	      (*it)->getPlantableOwner() == d_owner)
+	    {
+	      Location loc = Location(d_destination);
+	      loc.addArmy(a);
+	      break;
+	    }
+
+	}
+    }
+  else
+    {
+      if (!dest->isBurnt() && dest->getOwner() == d_owner)
+	dest->addArmy(a);
+    }
+  return true;
+}
+
 bool VectoredUnit::nextTurn()
 {
   d_duration--;
@@ -88,40 +121,7 @@ bool VectoredUnit::nextTurn()
 	  //don't bring this army in because we can't afford it
 	  return false;
 	}
-
-      Citylist *cl = Citylist::getInstance();
-      Army *a = new Army(*d_army, d_owner);
-      //FIXME: this action should be in player somehow
-      Action_ProduceVectored *item = new Action_ProduceVectored();
-      item->fillData(a->getType(), d_destination);
-      d_owner->getActionlist()->push_back(item);
-
-      City *dest;
-      // drop it in the destination city!
-      dest = cl->getObjectAt(d_destination);
-      if (!dest)
-        {
-          std::list<Item*> items;
-          items = GameMap::getInstance()->getTile(d_destination)->getItems();
-          for (std::list<Item*>::iterator it = items.begin(); 
-               it != items.end(); it++)
-            {
-              if ((*it)->getPlanted() == true &&
-                  (*it)->getPlantableOwner() == d_owner)
-                {
-                  Location loc = Location(d_destination);
-                  loc.addArmy(a);
-                  break;
-                }
-             
-            }
-        }
-      else
-        {
-          if (!dest->isBurnt() && dest->getOwner() == d_owner)
-            dest->addArmy(a);
-        }
-      return true;
+      d_owner->vectoredUnitArrives(this);
     }
   return false;
 }

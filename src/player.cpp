@@ -55,6 +55,7 @@
 #include "QuestsManager.h"
 #include "GameMap.h"
 #include "signpost.h"
+#include "vectoredunit.h"
 #include "ucompose.hpp"
 
 using namespace std;
@@ -216,7 +217,6 @@ Player::Player(XML_Helper* helper)
 	    d_diplomatic_score[i] = val;
     }
 
-    //last but not least, register the load function for actionlist
     helper->registerTag("action", sigc::mem_fun(this, &Player::load));
     helper->registerTag("history", sigc::mem_fun(this, &Player::load));
     helper->registerTag("stacklist", sigc::mem_fun(this, &Player::load));
@@ -637,12 +637,6 @@ void Player::addAction(Action *action)
   d_actions.push_back(action);
   NetworkAction *copy = new NetworkAction(action, this);
   acting.emit(copy);
-  // FIXME
-  //if (!acting.empty())
-//#if 0
-  //else
-    //delete action;
-//#endif
 }
 
 void Player::addHistory(History *history)
@@ -2958,4 +2952,50 @@ void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
 	}
     }
 }
+
+void Player::doCityProducesArmy(City *city)
+{
+  city->armyArrives();
+}
+
+bool Player::cityProducesArmy(City *city)
+{
+  Action_Produce *item = new Action_Produce();
+  doCityProducesArmy(city);
+  const Army *army = city->getProductionBase(city->getActiveProductionSlot());
+  if (city->getVectoring() == Vector<int>(-1, -1))
+    item->fillData(army, city, false);
+  else
+    item->fillData(army, city, true);
+  addAction(item);
+  return true;
+}
+	
+void Player::doVectoredUnitArrives(VectoredUnit *unit)
+{
+  unit->armyArrives();
+}
+
+bool Player::vectoredUnitArrives(VectoredUnit *unit)
+{
+  Action_ProduceVectored *item = new Action_ProduceVectored();
+  item->fillData(unit->getArmy()->getType(), unit->getDestination());
+  addAction(item);
+  doVectoredUnitArrives(unit);
+  return true;
+}
+
+std::list<Action *> Player::getReportableActions()
+{
+  std::list<Action *> actions;
+  std::list<Action *>::iterator it = d_actions.begin();
+  for (; it != d_actions.end(); it++)
+    {
+      if ((*it)->getType() == Action::PRODUCE_UNIT ||
+	  (*it)->getType() == Action::PRODUCE_VECTORED_UNIT)
+	actions.push_back(*it);
+    }
+  return actions;
+}
+
 // End of file
