@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-07-10 17:26-0400\n"
+"POT-Creation-Date: 2008-07-13 12:39-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2323,15 +2323,15 @@ msgstr ""
 msgid "You have killed %i so far."
 msgstr ""
 
-#: src/player.cpp:1297
+#: src/player.cpp:1300
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr ""
 
-#: src/player.cpp:1386
+#: src/player.cpp:1389
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr ""
 
-#: src/player.cpp:2293
+#: src/player.cpp:2313
 msgid "%1 Standard"
 msgstr ""
 
@@ -3010,7 +3010,7 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr ""
 
-#: src/gui/hero-levels-dialog.cpp:99 src/gui/report-dialog.cpp:309
+#: src/gui/hero-levels-dialog.cpp:99 src/gui/report-dialog.cpp:305
 msgid "%1"
 msgstr ""
 
@@ -3102,87 +3102,87 @@ msgstr ""
 msgid "Thou hast no quests!"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:93
+#: src/gui/report-dialog.cpp:89
 msgid "You produced %1 army this turn!"
 msgid_plural "You produced %1 armies this turn!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:186
+#: src/gui/report-dialog.cpp:182
 msgid "Army Report"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:189
+#: src/gui/report-dialog.cpp:185
 msgid "City Report"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:192
+#: src/gui/report-dialog.cpp:188
 msgid "Gold Report"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:195
+#: src/gui/report-dialog.cpp:191
 msgid "Production Report"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:198
+#: src/gui/report-dialog.cpp:194
 msgid "Winning Report"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:223
+#: src/gui/report-dialog.cpp:219
 msgid "You have %1 army!"
 msgid_plural "You have %1 armies!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:254
+#: src/gui/report-dialog.cpp:250
 msgid "You have %1 city!"
 msgid_plural "You have %1 cities!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:285
+#: src/gui/report-dialog.cpp:281
 msgid "You have %1 gold piece!"
 msgid_plural "You have %1 gold pieces!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:299
+#: src/gui/report-dialog.cpp:295
 msgid "first"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:299
+#: src/gui/report-dialog.cpp:295
 msgid "second"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:299
+#: src/gui/report-dialog.cpp:295
 msgid "third"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:299
+#: src/gui/report-dialog.cpp:295
 msgid "fourth"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:299
+#: src/gui/report-dialog.cpp:295
 msgid "fifth"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:296
 msgid "sixth"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:296
 msgid "seventh"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:296
 msgid "eighth"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:331
+#: src/gui/report-dialog.cpp:327
 msgid "You are coming %1"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:371
+#: src/gui/report-dialog.cpp:367
 msgid "Standard"
 msgstr ""
 

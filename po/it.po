@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-07-10 17:26-0400\n"
+"POT-Creation-Date: 2008-07-13 12:39-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -2619,17 +2619,17 @@ msgstr "Mappa costruita .... 100%"
 msgid "You have killed %i so far."
 msgstr "Hai ucciso %i armate fino ad ora."
 
-#: src/player.cpp:1297
+#: src/player.cpp:1300
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr ""
 "Errore: il gruppo che esplora e la rovina che viene esplorata non sono nella "
 "stessa posizione\n"
 
-#: src/player.cpp:1386
+#: src/player.cpp:1389
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Il gruppo ha cercato di visitare il tempio alla locazione sbagliata\n"
 
-#: src/player.cpp:2293
+#: src/player.cpp:2313
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Unità standard"
@@ -3373,7 +3373,7 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr "Il tuo eroe %s ha completato la quest."
 
-#: src/gui/hero-levels-dialog.cpp:99 src/gui/report-dialog.cpp:309
+#: src/gui/hero-levels-dialog.cpp:99 src/gui/report-dialog.cpp:305
 msgid "%1"
 msgstr ""
 
@@ -3472,102 +3472,102 @@ msgstr ""
 msgid "Thou hast no quests!"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:93
+#: src/gui/report-dialog.cpp:89
 msgid "You produced %1 army this turn!"
 msgid_plural "You produced %1 armies this turn!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:186
+#: src/gui/report-dialog.cpp:182
 #, fuzzy
 msgid "Army Report"
 msgstr "Armyset"
 
-#: src/gui/report-dialog.cpp:189
+#: src/gui/report-dialog.cpp:185
 #, fuzzy
 msgid "City Report"
 msgstr "Resoconto sulla città"
 
-#: src/gui/report-dialog.cpp:192
+#: src/gui/report-dialog.cpp:188
 #, fuzzy
 msgid "Gold Report"
 msgstr "Resoconto sull'oro"
 
-#: src/gui/report-dialog.cpp:195
+#: src/gui/report-dialog.cpp:191
 #, fuzzy
 msgid "Production Report"
 msgstr "Costo di prod. :"
 
-#: src/gui/report-dialog.cpp:198
+#: src/gui/report-dialog.cpp:194
 #, fuzzy
 msgid "Winning Report"
 msgstr "Attenzione"
 
-#: src/gui/report-dialog.cpp:223
+#: src/gui/report-dialog.cpp:219
 #, fuzzy
 msgid "You have %1 army!"
 msgid_plural "You have %1 armies!"
 msgstr[0] "Hai perso!!"
 msgstr[1] "Hai perso!!"
 
-#: src/gui/report-dialog.cpp:254
+#: src/gui/report-dialog.cpp:250
 #, fuzzy
 msgid "You have %1 city!"
 msgid_plural "You have %1 cities!"
 msgstr[0] "Hai perso!!"
 msgstr[1] "Hai perso!!"
 
-#: src/gui/report-dialog.cpp:285
+#: src/gui/report-dialog.cpp:281
 #, fuzzy
 msgid "You have %1 gold piece!"
 msgid_plural "You have %1 gold pieces!"
 msgstr[0] "e hai trovato %i moneta d'oro!"
 msgstr[1] "e hai trovato %i monete d'oro!"
 
-#: src/gui/report-dialog.cpp:299
+#: src/gui/report-dialog.cpp:295
 #, fuzzy
 msgid "first"
 msgstr "vista"
 
-#: src/gui/report-dialog.cpp:299
+#: src/gui/report-dialog.cpp:295
 msgid "second"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:299
+#: src/gui/report-dialog.cpp:295
 #, fuzzy
 msgid "third"
 msgstr "Altro"
 
-#: src/gui/report-dialog.cpp:299
+#: src/gui/report-dialog.cpp:295
 #, fuzzy
 msgid "fourth"
 msgstr "Informazioni "
 
-#: src/gui/report-dialog.cpp:299
+#: src/gui/report-dialog.cpp:295
 #, fuzzy
 msgid "fifth"
 msgstr "vista"
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:296
 #, fuzzy
 msgid "sixth"
 msgstr "vista"
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:296
 #, fuzzy
 msgid "seventh"
 msgstr "RaiseEvent"
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:296
 #, fuzzy
 msgid "eighth"
 msgstr "vista"
 
-#: src/gui/report-dialog.cpp:331
+#: src/gui/report-dialog.cpp:327
 msgid "You are coming %1"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:371
+#: src/gui/report-dialog.cpp:367
 #, fuzzy
 msgid "Standard"
 msgstr "Unità standard"
