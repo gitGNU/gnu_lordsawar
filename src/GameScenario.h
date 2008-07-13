@@ -97,6 +97,7 @@ class GameScenario: public GameScenarioOptions
         bool loadWithHelper(XML_Helper &helper);
         bool saveWithHelper(XML_Helper &helper) const;
 
+	bool setupFog(bool hidden_map);
 	bool setupCities(bool quick_start);
 	void setupDiplomacy(bool diplomacy);
         

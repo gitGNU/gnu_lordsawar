@@ -28,6 +28,7 @@
 #include "GameScenario.h"
 #include "MapGenerator.h"
 #include "playerlist.h"
+#include "FogMap.h"
 #include "citylist.h"
 #include "ruinlist.h"
 #include "rewardlist.h"
@@ -138,6 +139,20 @@ void GameScenario::quickStart()
     }
 }
 
+bool GameScenario::setupFog(bool hidden_map)
+{
+  Playerlist *pl = Playerlist::getInstance();
+  Playerlist::iterator it = pl->begin();
+  for (; it != pl->end(); it++)
+    {
+      if (hidden_map)
+	(*it)->getFogMap()->fill(FogMap::CLOSED);
+      else
+	(*it)->getFogMap()->fill(FogMap::OPEN);
+    }
+  return true;
+}
+
 bool GameScenario::setupCities(bool quick_start)
 {
   debug("GameScenario::setupCities")
@@ -147,6 +162,7 @@ bool GameScenario::setupCities(bool quick_start)
     {
       if ((*it).isCapital() == true)
 	{
+	  (*it).deFog((*it).getOwner());
 	  History_CityWon *item = new History_CityWon();
 	  item->fillData(&*it);
 	  (*it).getCapitalOwner()->addHistory(item);

@@ -461,6 +461,7 @@ void GameWindow::new_game(GameParameters g)
     if (game_scenario->getRound() == 0)
       {
 	Playerlist::getInstance()->syncPlayers(g.players);
+	game_scenario->setupFog(g.hidden_map);
 	game_scenario->setupCities(g.quick_start);
 	game_scenario->setupDiplomacy(g.diplomacy);
 	game_scenario->nextRound();
@@ -1697,26 +1698,26 @@ void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
 
   Glib::ustring s = label->get_text();
   s += "\n\n";
-  s += String::ucompose("%1 finds ", stack->getFirstHero()->getName());
+  s += String::ucompose(_("%1 finds "), stack->getFirstHero()->getName());
   if (reward->getType() == Reward::GOLD)
     {
       Reward_Gold *gold = dynamic_cast<Reward_Gold*>(reward);
-      s += String::ucompose("%1 gold pieces.", gold->getGold());
+      s += String::ucompose(_("%1 gold pieces."), gold->getGold());
     }
   else if (reward->getType() == Reward::ALLIES)
     {
       Reward_Allies *allies = dynamic_cast<Reward_Allies*>(reward);
-      s += String::ucompose("%1 allies.", allies->getNoOfAllies());
+      s += String::ucompose(_("%1 allies!"), allies->getNoOfAllies());
     }
   else if (reward->getType() == Reward::ITEM)
     {
       Reward_Item *item = dynamic_cast<Reward_Item*>(reward);
-      s += String::ucompose("the %1.", item->getItem()->getName());
+      s += String::ucompose(_("the %1!"), item->getItem()->getName());
     }
   else if (reward->getType() == Reward::MAP)
     {
       Reward_Map *map = dynamic_cast<Reward_Map*>(reward);
-      s += String::ucompose("the %2.", map->getName());
+      s += String::ucompose(_("a map!"), map->getName());
     }
 
   label->set_text(s);

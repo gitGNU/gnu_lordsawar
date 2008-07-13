@@ -24,7 +24,7 @@
 #include "File.h"
 #include "action.h"
 #include "network-action.h"
-#include "history.h"
+#include "network-history.h"
 #include "playerlist.h"
 #include "network_player.h"
 #include "xmlhelper.h"
@@ -168,14 +168,20 @@ class HistoryLoader
 public:
   bool loadHistory(std::string tag, XML_Helper* helper)
   {
-    if (tag == "history") {
-      History * history = History::handle_load(helper);
-      histories.push_back(history);
-    }
+    if (tag == "networkhistory") 
+      {
+	NetworkHistory* history = new NetworkHistory(helper);
+	histories.push_back(history);
+      }
+    if (tag == "history")
+      {
+	NetworkHistory *history = &*histories.back();
+	history->setHistory(History::handle_load(helper));
+      }
     return true;
   }
 
-  std::list<History *> histories;
+  std::list<NetworkHistory *> histories;
 };
   
 
@@ -189,18 +195,18 @@ void GameClient::gotHistory(const std::string &payload)
   helper.registerTag("history", sigc::mem_fun(loader, &HistoryLoader::loadHistory));
   helper.parse();
 
-  for (std::list<History *>::iterator i = loader.histories.begin(),
+  for (std::list<NetworkHistory *>::iterator i = loader.histories.begin(),
        end = loader.histories.end(); i != end; ++i)
   {
-    History *history = *i;
-    std::cerr << "decoding history " << history->getType() << std::endl;
+    NetworkHistory *history = *i;
+    std::cerr << "received history " << history->getHistory()->getType() << std::endl;
     
+    //just add it to the player's history list.
     Player *p = Playerlist::getInstance()->getActiveplayer();
-
-    p->getHistorylist()->push_back(history);
+    p->getHistorylist()->push_back(history->getHistory());
   }
 
-  for (std::list<History *>::iterator i = loader.histories.begin(),
+  for (std::list<NetworkHistory *>::iterator i = loader.histories.begin(),
        end = loader.histories.end(); i != end; ++i)
     delete *i;
 }

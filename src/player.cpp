@@ -49,6 +49,7 @@
 #include "action.h"
 #include "network-action.h"
 #include "history.h"
+#include "network-history.h"
 #include "AI_Analysis.h"
 #include "AI_Allocation.h"
 #include "FogMap.h"
@@ -637,18 +638,15 @@ void Player::addAction(Action *action)
   d_actions.push_back(action);
   NetworkAction *copy = new NetworkAction(action, this);
   acting.emit(copy);
+  //free'd in game-server
 }
 
 void Player::addHistory(History *history)
 {
   d_history.push_back(history);
-  // FIXME
-  if (!history_done.empty())
-    history_done.emit(history);
-#if 0
-  else
-    delete action;
-#endif
+  NetworkHistory *copy = new NetworkHistory(history, this);
+  history_written.emit(copy);
+  //free'd in game-server
 }
 
 

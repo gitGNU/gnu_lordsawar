@@ -43,6 +43,7 @@ class Hero;
 class Action;
 class NetworkAction;
 class History;
+class NetworkHistory;
 class City;
 class Quest;
 class Army;
@@ -1285,7 +1286,7 @@ class Player: public sigc::trackable
         sigc::signal<void, int> hero_arrives_with_allies;
 
         sigc::signal<void, NetworkAction *> acting;
-        sigc::signal<void, History *> history_done;
+        sigc::signal<void, NetworkHistory *> history_written;
         
 	//! is it safe to vector from the given city?
 	static bool safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders);

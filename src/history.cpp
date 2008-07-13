@@ -166,6 +166,11 @@ History_StartTurn::History_StartTurn()
 {
 }
 
+History_StartTurn::History_StartTurn(const History_StartTurn &history)
+:History(history)
+{
+}
+
 History_StartTurn::History_StartTurn(XML_Helper* helper)
 :History(History::START_TURN)
 {
@@ -205,6 +210,11 @@ bool History_StartTurn::fillData()
 
 History_FoundSage::History_FoundSage()
 :History(History::FOUND_SAGE), d_hero("")
+{
+}
+
+History_FoundSage::History_FoundSage(const History_FoundSage &history)
+:History(history), d_hero(history.d_hero)
 {
 }
 
@@ -253,6 +263,11 @@ History_GoldTotal::History_GoldTotal()
 {
 }
 
+History_GoldTotal::History_GoldTotal(const History_GoldTotal &history)
+:History(history), d_gold(history.d_gold)
+{
+}
+
 History_GoldTotal::History_GoldTotal(XML_Helper* helper)
 :History(History::GOLD_TOTAL)
 {
@@ -295,6 +310,11 @@ bool History_GoldTotal::fillData(int gold)
 
 History_HeroEmerges::History_HeroEmerges()
 :History(History::HERO_EMERGES), d_hero(""), d_city("")
+{
+}
+
+History_HeroEmerges::History_HeroEmerges(const History_HeroEmerges &history)
+:History(history), d_hero(history.d_hero), d_city(history.d_city)
 {
 }
 
@@ -346,6 +366,11 @@ History_CityWon::History_CityWon()
 {
 }
 
+History_CityWon::History_CityWon(const History_CityWon &history)
+:History(history), d_city(history.d_city)
+{
+}
+
 History_CityWon::History_CityWon(XML_Helper* helper)
 :History(History::CITY_WON)
 {
@@ -389,6 +414,11 @@ bool History_CityWon::fillData(City *city)
 
 History_HeroCityWon::History_HeroCityWon()
 :History(History::HERO_CITY_WON), d_hero(""), d_city("")
+{
+}
+
+History_HeroCityWon::History_HeroCityWon(const History_HeroCityWon &history)
+:History(history), d_hero(history.d_hero), d_city(history.d_city)
 {
 }
 
@@ -442,6 +472,11 @@ History_CityRazed::History_CityRazed()
 {
 }
 
+History_CityRazed::History_CityRazed(const History_CityRazed &history)
+:History(history), d_city(history.d_city)
+{
+}
+
 History_CityRazed::History_CityRazed(XML_Helper* helper)
 :History(History::CITY_RAZED)
 {
@@ -484,6 +519,11 @@ bool History_CityRazed::fillData(City *city)
 
 History_HeroQuestStarted::History_HeroQuestStarted()
 :History(History::HERO_QUEST_STARTED), d_hero("")
+{
+}
+
+History_HeroQuestStarted::History_HeroQuestStarted(const History_HeroQuestStarted &history)
+:History(history), d_hero(history.d_hero)
 {
 }
 
@@ -532,6 +572,11 @@ History_HeroQuestCompleted::History_HeroQuestCompleted()
 {
 }
 
+History_HeroQuestCompleted::History_HeroQuestCompleted(const History_HeroQuestCompleted &history)
+:History(history), d_hero(history.d_hero)
+{
+}
+
 History_HeroQuestCompleted::History_HeroQuestCompleted(XML_Helper* helper)
 :History(History::HERO_QUEST_COMPLETED)
 {
@@ -574,6 +619,11 @@ bool History_HeroQuestCompleted::fillData(Hero *hero)
 
 History_HeroKilledInCity::History_HeroKilledInCity()
 :History(History::HERO_KILLED_IN_CITY), d_hero(""), d_city("")
+{
+}
+
+History_HeroKilledInCity::History_HeroKilledInCity(const History_HeroKilledInCity &history)
+:History(history), d_hero(history.d_hero), d_city(history.d_city)
 {
 }
 
@@ -625,6 +675,11 @@ History_HeroKilledInBattle::History_HeroKilledInBattle()
 {
 }
 
+History_HeroKilledInBattle::History_HeroKilledInBattle(const History_HeroKilledInBattle &history)
+:History(history), d_hero(history.d_hero)
+{
+}
+
 History_HeroKilledInBattle::History_HeroKilledInBattle(XML_Helper* helper)
 :History(History::HERO_KILLED_IN_BATTLE)
 {
@@ -667,6 +722,11 @@ bool History_HeroKilledInBattle::fillData(Hero *hero)
 
 History_HeroKilledSearching::History_HeroKilledSearching()
 :History(History::HERO_KILLED_SEARCHING), d_hero("")
+{
+}
+
+History_HeroKilledSearching::History_HeroKilledSearching(const History_HeroKilledSearching &history)
+:History(history), d_hero(history.d_hero)
 {
 }
 
@@ -715,6 +775,11 @@ History_Score::History_Score()
 {
 }
 
+History_Score::History_Score(const History_Score &history)
+:History(history), d_score(history.d_score)
+{
+}
+
 History_Score::History_Score(XML_Helper* helper)
 :History(History::SCORE)
 {
@@ -760,6 +825,11 @@ History_PlayerVanquished::History_PlayerVanquished()
 {
 }
 
+History_PlayerVanquished::History_PlayerVanquished(const History_PlayerVanquished &history)
+:History(history)
+{
+}
+
 History_PlayerVanquished::History_PlayerVanquished(XML_Helper* helper)
 :History(History::PLAYER_VANQUISHED)
 {
@@ -794,6 +864,11 @@ bool History_PlayerVanquished::save(XML_Helper* helper) const
 
 History_DiplomacyPeace::History_DiplomacyPeace()
 :History(History::DIPLOMATIC_PEACE), d_opponent_id(0)
+{
+}
+
+History_DiplomacyPeace::History_DiplomacyPeace(const History_DiplomacyPeace &history)
+:History(history), d_opponent_id(history.d_opponent_id)
 {
 }
 
@@ -843,6 +918,11 @@ History_DiplomacyWar::History_DiplomacyWar()
 {
 }
 
+History_DiplomacyWar::History_DiplomacyWar(const History_DiplomacyWar &history)
+:History(history), d_opponent_id(history.d_opponent_id)
+{
+}
+
 History_DiplomacyWar::History_DiplomacyWar(XML_Helper* helper)
 :History(History::DIPLOMATIC_WAR)
 {
@@ -889,6 +969,11 @@ History_DiplomacyTreachery::History_DiplomacyTreachery()
 {
 }
 
+History_DiplomacyTreachery::History_DiplomacyTreachery(const History_DiplomacyTreachery &history)
+:History(history), d_opponent_id(history.d_opponent_id)
+{
+}
+
 History_DiplomacyTreachery::History_DiplomacyTreachery(XML_Helper* helper)
 :History(History::DIPLOMATIC_TREACHERY)
 {
@@ -932,6 +1017,11 @@ bool History_DiplomacyTreachery::fillData(Player *opponent)
 
 History_HeroFindsAllies::History_HeroFindsAllies()
 :History(History::HERO_FINDS_ALLIES), d_hero("")
+{
+}
+
+History_HeroFindsAllies::History_HeroFindsAllies(const History_HeroFindsAllies &history)
+:History(history), d_hero(history.d_hero)
 {
 }
 

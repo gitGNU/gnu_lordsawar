@@ -127,6 +127,8 @@ class History_StartTurn : public History
     public:
 	//! Default constructor.
         History_StartTurn();
+	//! Copy constructor.
+	History_StartTurn(const History_StartTurn &history);
 	//! Load the historical event from an opened saved-game file.
         History_StartTurn(XML_Helper* helper);
 	//! Destructor.
@@ -152,6 +154,8 @@ class History_FoundSage : public History
     public:
 	//! Default constructor.
         History_FoundSage();
+	//! Copy constructor.
+	History_FoundSage(const History_FoundSage &history);
 	//! Load the historical event from an opened saved-game file.
         History_FoundSage(XML_Helper* helper);
 	//! Destructor.
@@ -182,6 +186,8 @@ class History_GoldTotal : public History
     public:
 	//! Default constructor.
         History_GoldTotal();
+	//! Copy constructor.
+	History_GoldTotal(const History_GoldTotal &history);
 	//! Load the historical event from an opened saved-game file.
         History_GoldTotal(XML_Helper* helper);
 	//! Destructor.
@@ -212,6 +218,8 @@ class History_HeroEmerges : public History
     public:
 	//! Default constructor.
         History_HeroEmerges();
+	//! Copy constructor.
+	History_HeroEmerges(const History_HeroEmerges &history);
 	//! Load the historical event from an opened saved-game file.
         History_HeroEmerges(XML_Helper* helper);
 	//! Destructor.
@@ -255,6 +263,8 @@ class History_CityWon : public History
     public:
 	//! Default constructor.
         History_CityWon();
+	//! Copy constructor.
+	History_CityWon(const History_CityWon &history);
 	//! Load the historical event from an opened saved-game file.
         History_CityWon(XML_Helper* helper);
 	//! Destructor.
@@ -285,6 +295,8 @@ class History_HeroCityWon: public History
     public:
 	//! Default constructor.
         History_HeroCityWon();
+	//! Copy constructor.
+	History_HeroCityWon(const History_HeroCityWon &history);
 	//! Load the historical event from an opened saved-game file.
         History_HeroCityWon(XML_Helper* helper);
 	//! Destructor.
@@ -328,6 +340,8 @@ class History_CityRazed : public History
     public:
 	//! Default constructor.
         History_CityRazed();
+	//! Copy constructor.
+	History_CityRazed(const History_CityRazed &history);
 	//! Load the historical event from an opened saved-game file.
         History_CityRazed(XML_Helper* helper);
 	//! Destructor.
@@ -358,6 +372,8 @@ class History_HeroQuestStarted : public History
     public:
 	//! Default constructor.
         History_HeroQuestStarted();
+	//! Copy constructor.
+	History_HeroQuestStarted(const History_HeroQuestStarted &history);
 	//! Load the historical event from an opened saved-game file.
         History_HeroQuestStarted(XML_Helper* helper);
 	//! Destructor.
@@ -388,6 +404,8 @@ class History_HeroQuestCompleted: public History
     public:
 	//! Default constructor.
         History_HeroQuestCompleted();
+	//! Copy constructor.
+	History_HeroQuestCompleted(const History_HeroQuestCompleted &history);
 	//! Load the historical event from an opened saved-game file.
         History_HeroQuestCompleted(XML_Helper* helper);
 	//! Destructor.
@@ -418,6 +436,8 @@ class History_HeroKilledInCity : public History
     public:
 	//! Default constructor.
         History_HeroKilledInCity();
+	//! Copy constructor.
+	History_HeroKilledInCity(const History_HeroKilledInCity &history);
 	//! Load the historical event from an opened saved-game file.
         History_HeroKilledInCity(XML_Helper* helper);
 	//! Destructor.
@@ -461,6 +481,8 @@ class History_HeroKilledInBattle: public History
     public:
 	//! Default constructor.
         History_HeroKilledInBattle();
+	//! Copy constructor.
+	History_HeroKilledInBattle(const History_HeroKilledInBattle &history);
 	//! Load the historical event from an opened saved-game file.
         History_HeroKilledInBattle(XML_Helper* helper);
 	//! Destructor.
@@ -491,6 +513,8 @@ class History_HeroKilledSearching: public History
     public:
 	//! Default constructor.
         History_HeroKilledSearching();
+	//! Copy constructor.
+	History_HeroKilledSearching(const History_HeroKilledSearching &history);
 	//! Load the historical event from an opened saved-game file.
         History_HeroKilledSearching(XML_Helper* helper);
 	//! Destructor.
@@ -521,6 +545,8 @@ class History_Score: public History
     public:
 	//! Default constructor.
         History_Score();
+	//! Copy constructor.
+	History_Score(const History_Score &history);
 	//! Load the historical event from an opened saved-game file.
         History_Score(XML_Helper* helper);
 	//! Destructor.
@@ -551,6 +577,8 @@ class History_PlayerVanquished: public History
     public:
 	//! Default constructor.
         History_PlayerVanquished();
+	//! Copy constructor.
+	History_PlayerVanquished(const History_PlayerVanquished &history);
 	//! Load the historical event from an opened saved-game file.
         History_PlayerVanquished(XML_Helper* helper);
 	//! Destructor.
@@ -572,6 +600,8 @@ class History_DiplomacyPeace : public History
     public:
 	//! Default constructor.
         History_DiplomacyPeace();
+	//! Copy constructor.
+	History_DiplomacyPeace(const History_DiplomacyPeace &history);
 	//! Load the historical event from an opened saved-game file.
         History_DiplomacyPeace(XML_Helper* helper);
 	//! Destructor.
@@ -602,6 +632,8 @@ class History_DiplomacyWar: public History
     public:
 	//! Default constructor.
         History_DiplomacyWar();
+	//! Copy constructor.
+	History_DiplomacyWar(const History_DiplomacyWar &history);
 	//! Load the historical event from an opened saved-game file.
         History_DiplomacyWar(XML_Helper* helper);
 	//! Destructor.
@@ -632,6 +664,8 @@ class History_DiplomacyTreachery: public History
     public:
 	//! Default constructor.
         History_DiplomacyTreachery();
+	//! Copy constructor.
+	History_DiplomacyTreachery(const History_DiplomacyTreachery &history);
 	//! Load the historical event from an opened saved-game file.
         History_DiplomacyTreachery(XML_Helper* helper);
 	//! Destructor.
@@ -662,6 +696,8 @@ class History_HeroFindsAllies : public History
     public:
 	//! Default constructor.
         History_HeroFindsAllies();
+	//! Copy constructor.
+	History_HeroFindsAllies(const History_HeroFindsAllies &history);
 	//! Load the historical event from an opened saved-game file.
         History_HeroFindsAllies(XML_Helper* helper);
 	//! Destructor.

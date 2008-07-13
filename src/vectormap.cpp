@@ -327,7 +327,7 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	      Vector<int>flag = planted_standard;
 	      if (planted_standard.x != -1 && planted_standard.y != -1)
 		{
-		  int dist = 4;
+		  unsigned int dist = 4;
 		  if (flag.x <= dest.x + dist && dest.x >= dest.x - dist &&
 		      flag.y <= dest.y + dist && flag.y >= dest.y - dist)
 		    {

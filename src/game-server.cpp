@@ -28,7 +28,7 @@
 #include "playerlist.h"
 #include "player.h"
 #include "network-action.h"
-#include "history.h"
+#include "network-history.h"
 
 
 class NetworkAction;
@@ -38,7 +38,7 @@ struct Participant
   void *conn;
   Player *player;
   std::list<NetworkAction *> actions;
-  std::list<History *> histories;
+  std::list<NetworkHistory *> histories;
 };
 
 
@@ -130,7 +130,7 @@ void GameServer::listenForHistories()
 {
   Playerlist *pl = Playerlist::getInstance();
   for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
-    (*i)->history_done.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
+    (*i)->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
 }
 
 void GameServer::onActionDone(NetworkAction *action)
@@ -148,8 +148,11 @@ void GameServer::onActionDone(NetworkAction *action)
   delete action;
 }
 
-void GameServer::onHistoryDone(History *history)
+void GameServer::onHistoryDone(NetworkHistory *history)
 {
+  std::string desc = history->toString();
+  std::cerr << "Game Server got " << desc <<"\n";
+
   for (std::list<Participant *>::iterator i = participants.begin(),
          end = participants.end(); i != end; ++i) {
     (*i)->histories.push_back(history);
@@ -157,9 +160,7 @@ void GameServer::onHistoryDone(History *history)
     (*i)->histories.clear();
   }
 
-#if 0
   delete history;
-#endif
 }
 
 void GameServer::join(void *conn)
@@ -238,7 +239,7 @@ void GameServer::sendHistory(Participant *part)
   helper.begin("1");
   helper.openTag("histories");
   
-  for (std::list<History *>::iterator i = part->histories.begin(),
+  for (std::list<NetworkHistory *>::iterator i = part->histories.begin(),
          end = part->histories.end(); i != end; ++i)
     (**i).save(&helper);
 

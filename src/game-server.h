@@ -29,7 +29,7 @@
 class NetworkServer;
 class Participant;
 class NetworkAction;
-class History;
+class NetworkHistory;
 
 class GameServer: public sigc::trackable
 {
@@ -43,7 +43,7 @@ private:
   void listenForActions();
   void listenForHistories();
   void onActionDone(NetworkAction *action);
-  void onHistoryDone(History *history);
+  void onHistoryDone(NetworkHistory *history);
 
   void join(void *conn);
   void gotActions(void *conn, const std::string &payload);

@@ -294,6 +294,7 @@ void SplashWindow::on_network_game_created(GameParameters g)
     if (game_scenario->getRound() == 0)
       {
 	Playerlist::getInstance()->syncPlayers(g.players);
+	game_scenario->setupFog(g.hidden_map);
 	game_scenario->setupCities(g.quick_start);
 	game_scenario->setupDiplomacy(g.diplomacy);
 	game_scenario->nextRound();
