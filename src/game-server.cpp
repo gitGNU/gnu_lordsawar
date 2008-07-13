@@ -145,9 +145,7 @@ void GameServer::onActionDone(NetworkAction *action)
     (*i)->actions.clear();
   }
 
-#if 0
   delete action;
-#endif
 }
 
 void GameServer::onHistoryDone(History *history)
