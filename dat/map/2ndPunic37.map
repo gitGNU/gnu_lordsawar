@@ -2025,6 +2025,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_capital>true</d_capital>
 			<d_capital_owner>1</d_capital_owner>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Scouts</d_name>
 				<d_description></d_description>
@@ -2046,6 +2047,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
 			<army>
 				<d_name>Heavy Inf.</d_name>
 				<d_description></d_description>
@@ -2067,6 +2070,11 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>106</d_id>
@@ -2081,6 +2089,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Scouts</d_name>
 				<d_description></d_description>
@@ -2102,6 +2111,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
 			<army>
 				<d_name>Pikemen</d_name>
 				<d_description></d_description>
@@ -2123,6 +2134,11 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>110</d_id>
@@ -2137,6 +2153,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Scouts</d_name>
 				<d_description></d_description>
@@ -2158,6 +2175,13 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>133</d_id>
@@ -2172,6 +2196,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Scouts</d_name>
 				<d_description></d_description>
@@ -2193,6 +2218,13 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>156</d_id>
@@ -2208,6 +2240,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_capital>true</d_capital>
 			<d_capital_owner>0</d_capital_owner>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Scouts</d_name>
 				<d_description></d_description>
@@ -2229,6 +2262,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
 			<army>
 				<d_name>Pikemen</d_name>
 				<d_description></d_description>
@@ -2250,6 +2285,11 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>393</d_id>
@@ -2264,6 +2304,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Orcish Mob</d_name>
 				<d_description></d_description>
@@ -2285,6 +2326,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
 			<army>
 				<d_name>Scouts</d_name>
 				<d_description></d_description>
@@ -2306,6 +2349,11 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>394</d_id>
@@ -2320,6 +2368,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Pikemen</d_name>
 				<d_description></d_description>
@@ -2341,6 +2390,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
 			<army>
 				<d_name>Light Inf.</d_name>
 				<d_description></d_description>
@@ -2362,6 +2413,11 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>395</d_id>
@@ -2376,6 +2432,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Heavy Inf.</d_name>
 				<d_description></d_description>
@@ -2397,6 +2454,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
 			<army>
 				<d_name>Light Inf.</d_name>
 				<d_description></d_description>
@@ -2418,6 +2477,11 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>396</d_id>
@@ -2432,6 +2496,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Pikemen</d_name>
 				<d_description></d_description>
@@ -2453,6 +2518,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
 			<army>
 				<d_name>Light Inf.</d_name>
 				<d_description></d_description>
@@ -2474,6 +2541,11 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>397</d_id>
@@ -2488,6 +2560,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Scouts</d_name>
 				<d_description></d_description>
@@ -2509,6 +2582,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
 			<army>
 				<d_name>Heavy Inf.</d_name>
 				<d_description></d_description>
@@ -2530,6 +2605,11 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>398</d_id>
@@ -2544,6 +2624,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Scouts</d_name>
 				<d_description></d_description>
@@ -2565,6 +2646,13 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>399</d_id>
@@ -2579,6 +2667,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Heavy Inf.</d_name>
 				<d_description></d_description>
@@ -2600,6 +2689,13 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>400</d_id>
@@ -2614,6 +2710,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Dwarves</d_name>
 				<d_description></d_description>
@@ -2635,6 +2732,13 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>480</d_id>
@@ -2649,6 +2753,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Light Cav.</d_name>
 				<d_description></d_description>
@@ -2670,6 +2775,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
 			<army>
 				<d_name>Scouts</d_name>
 				<d_description></d_description>
@@ -2691,6 +2798,11 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>481</d_id>
@@ -2705,6 +2817,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Scouts</d_name>
 				<d_description></d_description>
@@ -2726,6 +2839,13 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>482</d_id>
@@ -2740,6 +2860,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Archers</d_name>
 				<d_description></d_description>
@@ -2761,6 +2882,13 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>483</d_id>
@@ -2775,6 +2903,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Orcish Mob</d_name>
 				<d_description></d_description>
@@ -2796,6 +2925,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
 			<army>
 				<d_name>Heavy Cav.</d_name>
 				<d_description></d_description>
@@ -2817,6 +2948,11 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>484</d_id>
@@ -2831,6 +2967,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Pikemen</d_name>
 				<d_description></d_description>
@@ -2852,6 +2989,13 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>485</d_id>
@@ -2866,6 +3010,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Light Cav.</d_name>
 				<d_description></d_description>
@@ -2887,6 +3032,13 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>486</d_id>
@@ -2901,6 +3053,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Light Inf.</d_name>
 				<d_description></d_description>
@@ -2922,6 +3075,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
 			<army>
 				<d_name>Scouts</d_name>
 				<d_description></d_description>
@@ -2943,6 +3098,11 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>487</d_id>
@@ -2957,6 +3117,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Scouts</d_name>
 				<d_description></d_description>
@@ -2978,6 +3139,13 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>488</d_id>
@@ -2992,6 +3160,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Orcish Mob</d_name>
 				<d_description></d_description>
@@ -3013,6 +3182,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
 			<army>
 				<d_name>Light Inf.</d_name>
 				<d_description></d_description>
@@ -3034,6 +3205,11 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 		<city>
 			<d_id>489</d_id>
@@ -3048,6 +3224,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			<d_burnt>false</d_burnt>
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
+<slot>
 			<army>
 				<d_name>Archers</d_name>
 				<d_description></d_description>
@@ -3069,6 +3246,13 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_expvalue>1</d_expvalue>
 				<d_level>1</d_level>
 			</army>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
+<slot>
+</slot>
 		</city>
 	</citylist>
 	<templelist>
