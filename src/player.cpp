@@ -798,7 +798,7 @@ bool Player::stackJoin(Stack* receiver, Stack* joining, bool grouped)
 bool Player::stackSplitAndMove(Stack* s)
 {
   if (s->getPath()->size() == 0)
-    return true;
+    return false;
   Stack *join = getStacklist()->getObjectAt(*s->getPath()->back());
   if (join)
     return stackSplitAndMoveToJoin(s, join);
