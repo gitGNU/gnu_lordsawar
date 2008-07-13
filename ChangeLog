@@ -2,7 +2,8 @@
 
 	* fixed pillage-crashing bug reported by Rob Kinyon.
 	* empty production slots in cities are now retained across saves.
-	  This changed the scenario file specification.
+	  This changed the scenario schema.
+	* changed 2ndpunic to the new schema.
 
 2008-07-09  Ben Asselstine
 
