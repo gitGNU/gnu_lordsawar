@@ -28,7 +28,7 @@
 
 class NetworkServer;
 class Participant;
-class Action;
+class NetworkAction;
 class History;
 
 class GameServer: public sigc::trackable
@@ -42,7 +42,7 @@ public:
 private:
   void listenForActions();
   void listenForHistories();
-  void onActionDone(Action *action);
+  void onActionDone(NetworkAction *action);
   void onHistoryDone(History *history);
 
   void join(void *conn);

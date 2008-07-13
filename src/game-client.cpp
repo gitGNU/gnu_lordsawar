@@ -23,6 +23,7 @@
 #include "network-connection.h"
 #include "File.h"
 #include "action.h"
+#include "network-action.h"
 #include "history.h"
 #include "playerlist.h"
 #include "network_player.h"
@@ -113,14 +114,20 @@ class ActionLoader
 public:
   bool loadAction(std::string tag, XML_Helper* helper)
   {
-    if (tag == "action") {
-      Action* action = Action::handle_load(helper);
-      actions.push_back(action);
-    }
+    if (tag == "networkaction") 
+      {
+	NetworkAction * action = new NetworkAction(helper);
+	actions.push_back(action);
+      }
+    if (tag == "action")
+      {
+	NetworkAction *action = &*actions.back();
+	action->setAction(Action::handle_load(helper));
+      }
     return true;
   }
 
-  std::list<Action *> actions;
+  std::list<NetworkAction *> actions;
 };
   
 void GameClient::gotActions(const std::string &payload)
@@ -130,16 +137,17 @@ void GameClient::gotActions(const std::string &payload)
   ActionLoader loader;
   
   XML_Helper helper(&is);
+  helper.registerTag("networkaction", sigc::mem_fun(loader, &ActionLoader::loadAction));
   helper.registerTag("action", sigc::mem_fun(loader, &ActionLoader::loadAction));
   helper.parse();
 
-  for (std::list<Action *>::iterator i = loader.actions.begin(),
+  for (std::list<NetworkAction *>::iterator i = loader.actions.begin(),
        end = loader.actions.end(); i != end; ++i)
   {
-    Action *action = *i;
-    std::cerr << "decoding action " << action->getType() << std::endl;
+    NetworkAction *action = *i;
+    std::cerr << "decoding action " << action->getAction()->getType() << std::endl;
     
-    Player *p = Playerlist::getInstance()->getPlayer(action->getPlayer());
+    Player *p = action->getOwner();
     NetworkPlayer *np = dynamic_cast<NetworkPlayer *>(p);
 
     if (!np) {
@@ -147,10 +155,10 @@ void GameClient::gotActions(const std::string &payload)
       continue;
     }
 
-    np->decodeAction(action);
+    np->decodeAction(action->getAction());
   }
 
-  for (std::list<Action *>::iterator i = loader.actions.begin(),
+  for (std::list<NetworkAction *>::iterator i = loader.actions.begin(),
        end = loader.actions.end(); i != end; ++i)
     delete *i;
 }

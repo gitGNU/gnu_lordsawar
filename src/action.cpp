@@ -51,12 +51,16 @@ Action::Action(Type type)
 {
 }
 
+Action::Action(const Action &action)
+:d_type(action.d_type)
+{
+
+}
 Action::Action(XML_Helper *helper)
 {
   Uint32 t;
   helper->getData(t, "type");
   d_type = Action::Type(t);
-  helper->getData(d_player, "player");
 }
 
 Action::~Action()
@@ -68,10 +72,18 @@ bool Action::save(XML_Helper* helper) const
     bool retval = true;
 
     retval &= helper->openTag("action");
-    retval &= helper->saveData("type", d_type);
-    retval &= helper->saveData("player", d_player);
-    retval &= doSave(helper);
+    retval &= saveContents(helper);
     retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool Action::saveContents(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->saveData("type", d_type);
+    retval &= doSave(helper);
 
     return retval;
 }
@@ -153,6 +165,7 @@ Action* Action::handle_load(XML_Helper* helper)
 
     return 0;
 }
+
 
 Action* Action::copy(const Action* a)
 {
@@ -254,6 +267,11 @@ Action_Move::Action_Move()
     d_dest.x = d_dest.y = 0;
 }
 
+Action_Move::Action_Move (const Action_Move &action)
+:Action(action), d_stack(action.d_stack), d_dest(action.d_dest)
+{
+}
+
 Action_Move::Action_Move(XML_Helper* helper)
     :Action(helper)
 {
@@ -306,6 +324,14 @@ Action_Split::Action_Split()
 {
     for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
         d_armies_moved[i] = 0;
+}
+
+Action_Split::Action_Split(const Action_Split &action)
+: Action(action), d_orig(action.d_orig), 
+    d_added(action.d_added)
+{
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    d_armies_moved[i] = action.d_armies_moved[i];
 }
 
 Action_Split::Action_Split(XML_Helper* helper)
@@ -387,6 +413,12 @@ bool Action_Split::fillData(Stack* orig, Stack* added)
 
 Action_Fight::Action_Fight()
     :Action(Action::STACK_FIGHT)
+{
+}
+
+Action_Fight::Action_Fight(const Action_Fight &action)
+: Action(action), d_history(action.d_history), d_attackers(action.d_attackers), 
+    d_defenders(action.d_defenders)
 {
 }
 
@@ -501,6 +533,11 @@ Action_Join::Action_Join()
 {
 }
 
+Action_Join::Action_Join(const Action_Join &action)
+: Action(action), d_orig_id(action.d_orig_id), d_joining_id(action.d_joining_id)
+{
+}
+
 Action_Join::Action_Join(XML_Helper* helper)
     :Action(helper)
 {
@@ -557,6 +594,12 @@ Action_Ruin::Action_Ruin()
 {
 }
 
+Action_Ruin::Action_Ruin(const Action_Ruin&action)
+: Action(action), d_ruin(action.d_ruin), d_stack(action.d_stack),
+    d_searched(action.d_searched)
+{
+}
+
 Action_Ruin::Action_Ruin(XML_Helper* helper)
     :Action(helper)
 {
@@ -608,6 +651,11 @@ Action_Temple::Action_Temple()
 {
 }
 
+Action_Temple::Action_Temple(const Action_Temple &action)
+: Action(action), d_temple(action.d_temple), d_stack(action.d_stack)
+{
+}
+
 Action_Temple::Action_Temple(XML_Helper* helper)
     :Action(helper)
 {
@@ -655,6 +703,11 @@ Action_Occupy::Action_Occupy()
 {
 }
 
+Action_Occupy::Action_Occupy(const Action_Occupy &action)
+: Action(action), d_city(action.d_city)
+{
+}
+
 Action_Occupy::Action_Occupy(XML_Helper* helper)
     :Action(helper)
 {
@@ -694,6 +747,11 @@ bool Action_Occupy::fillData(City* c)
 
 Action_Pillage::Action_Pillage()
     :Action(Action::CITY_PILLAGE), d_city(0)
+{
+}
+
+Action_Pillage::Action_Pillage(const Action_Pillage &action)
+: Action(action), d_city(action.d_city)
 {
 }
 
@@ -737,6 +795,11 @@ Action_Sack::Action_Sack()
 {
 }
 
+Action_Sack::Action_Sack(const Action_Sack &action)
+: Action(action), d_city(action.d_city)
+{
+}
+
 Action_Sack::Action_Sack(XML_Helper* helper)
     :Action(helper)
 {
@@ -774,6 +837,11 @@ bool Action_Sack::fillData(City* c)
 
 Action_Raze::Action_Raze()
     :Action(Action::CITY_RAZE), d_city(0)
+{
+}
+
+Action_Raze::Action_Raze(const Action_Raze &action)
+: Action(action), d_city(action.d_city)
 {
 }
 
@@ -819,6 +887,11 @@ Action_Upgrade::Action_Upgrade()
 {
 }
 
+Action_Upgrade::Action_Upgrade(const Action_Upgrade &action)
+: Action(action), d_city(action.d_city)
+{
+}
+
 Action_Upgrade::Action_Upgrade(XML_Helper* helper)
     :Action(helper)
 {
@@ -858,6 +931,12 @@ bool Action_Upgrade::fillData(City* c)
 
 Action_Buy::Action_Buy()
     :Action(Action::CITY_BUY), d_city(0), d_slot(-1), d_prod(-1)
+{
+}
+
+Action_Buy::Action_Buy(const Action_Buy &action)
+: Action(action), d_city(action.d_city), d_slot(action.d_slot), 
+    d_prod(action.d_prod)
 {
 }
 
@@ -908,6 +987,11 @@ bool Action_Buy::fillData(City* c, int slot, const Army *prod)
 
 Action_Production::Action_Production()
     :Action(Action::CITY_PROD), d_city(0), d_prod(0)
+{
+}
+
+Action_Production::Action_Production (const Action_Production &action)
+: Action(action), d_city(action.d_city), d_prod(action.d_prod)
 {
 }
 
@@ -981,6 +1065,12 @@ bool Action_Reward::load(std::string tag, XML_Helper *helper)
     return false;
 }
 
+Action_Reward::Action_Reward (const Action_Reward &action)
+: Action(action), d_stack(action.d_stack)
+{
+  d_reward = new Reward(*action.d_reward);
+}
+
 Action_Reward::Action_Reward(XML_Helper* helper)
 :Action(helper)
 {
@@ -1033,6 +1123,12 @@ bool Action_Reward::doSave(XML_Helper* helper) const
 
 Action_Quest::Action_Quest()
 :Action(Action::QUEST), d_hero(0), d_data(0), d_victim_player(0)
+{
+}
+
+Action_Quest::Action_Quest (const Action_Quest &action)
+: Action(action), d_hero(action.d_hero), d_questtype(action.d_questtype),
+    d_data(action.d_data), d_victim_player(action.d_victim_player)
 {
 }
 
@@ -1115,6 +1211,12 @@ Action_Equip::Action_Equip()
 {
 }
 
+Action_Equip::Action_Equip (const Action_Equip &action)
+: Action(action), d_hero(action.d_hero), d_item(action.d_item),
+    d_slot(action.d_slot)
+{
+}
+
 Action_Equip::Action_Equip(XML_Helper* helper)
 :Action(helper)
 {
@@ -1165,6 +1267,11 @@ Action_Level::Action_Level()
 {
 }
 
+Action_Level::Action_Level (const Action_Level &action)
+: Action(action), d_army(action.d_army), d_stat(action.d_stat)
+{
+}
+
 Action_Level::Action_Level(XML_Helper* helper)
 :Action(helper)
 {
@@ -1212,6 +1319,11 @@ Action_Disband::Action_Disband()
 {
 }
 
+Action_Disband::Action_Disband(const Action_Disband &action)
+: Action(action), d_stack(action.d_stack)
+{
+}
+
 Action_Disband::Action_Disband(XML_Helper* helper)
 :Action(helper)
 {
@@ -1250,7 +1362,12 @@ bool Action_Disband::fillData(Stack* s)
 //Action_ModifySignpost
 
 Action_ModifySignpost::Action_ModifySignpost()
-	:Action(Action::MODIFY_SIGNPOST), d_signpost(0), d_message("")
+:Action(Action::MODIFY_SIGNPOST), d_signpost(0), d_message("")
+{
+}
+
+Action_ModifySignpost::Action_ModifySignpost(const Action_ModifySignpost &action)
+: Action(action), d_signpost(action.d_signpost), d_message(action.d_message)
 {
 }
 
@@ -1295,7 +1412,12 @@ bool Action_ModifySignpost::fillData(Signpost * s, std::string message)
 //Action_RenameCity
 
 Action_RenameCity::Action_RenameCity()
-	:Action(Action::CITY_RENAME), d_city(0), d_name("")
+:Action(Action::CITY_RENAME), d_city(0), d_name("")
+{
+}
+
+Action_RenameCity::Action_RenameCity(const Action_RenameCity &action)
+: Action(action), d_city(action.d_city), d_name(action.d_name)
 {
 }
 
@@ -1341,6 +1463,11 @@ bool Action_RenameCity::fillData(City* c, std::string name)
 
 Action_Vector::Action_Vector()
 :Action(Action::CITY_VECTOR)
+{
+}
+
+Action_Vector::Action_Vector(const Action_Vector &action)
+: Action(action), d_city(action.d_city), d_dest(action.d_dest)
 {
 }
 
@@ -1392,6 +1519,11 @@ bool Action_Vector::fillData(City* src, Vector <int> dest)
 
 Action_FightOrder::Action_FightOrder()
 :Action(Action::FIGHT_ORDER)
+{
+}
+
+Action_FightOrder::Action_FightOrder(const Action_FightOrder &action)
+: Action(action), d_order(action.d_order)
 {
 }
 
@@ -1459,6 +1591,11 @@ Action_Resign::Action_Resign()
 {
 }
 
+Action_Resign::Action_Resign(const Action_Resign &action)
+: Action(action)
+{
+}
+
 Action_Resign::Action_Resign(XML_Helper* helper)
 :Action(helper)
 {
@@ -1493,6 +1630,11 @@ bool Action_Resign::fillData()
 
 Action_Plant::Action_Plant()
 :Action(Action::ITEM_PLANT)
+{
+}
+
+Action_Plant::Action_Plant(const Action_Plant &action)
+: Action(action), d_hero(action.d_hero), d_item(action.d_item)
 {
 }
 
@@ -1537,6 +1679,12 @@ bool Action_Plant::fillData(Hero *hero, Item *item)
 
 Action_Produce::Action_Produce()
 :Action(Action::PRODUCE_UNIT)
+{
+}
+
+Action_Produce::Action_Produce(const Action_Produce &action)
+: Action(action), d_army_type(action.d_army_type), d_city(action.d_city),
+    d_vectored(action.d_vectored)
 {
 }
 
@@ -1593,6 +1741,11 @@ Action_ProduceVectored::Action_ProduceVectored()
 {
 }
 
+Action_ProduceVectored::Action_ProduceVectored(const Action_ProduceVectored &action)
+: Action(action), d_army_type(action.d_army_type), d_dest(action.d_dest)
+{
+}
+
 Action_ProduceVectored::Action_ProduceVectored(XML_Helper* helper)
 :Action(helper)
 {
@@ -1640,6 +1793,12 @@ bool Action_ProduceVectored::fillData(Uint32 army_type, Vector<int> dest)
 
 Action_DiplomacyState::Action_DiplomacyState()
 :Action(Action::DIPLOMATIC_STATE)
+{
+}
+
+Action_DiplomacyState::Action_DiplomacyState(const Action_DiplomacyState &action)
+: Action(action), d_opponent_id(action.d_opponent_id), 
+    d_diplomatic_state(action.d_diplomatic_state)
 {
 }
 
@@ -1694,6 +1853,12 @@ bool Action_DiplomacyState::fillData(Player *opponent,
 
 Action_DiplomacyProposal::Action_DiplomacyProposal()
 :Action(Action::DIPLOMATIC_PROPOSAL)
+{
+}
+
+Action_DiplomacyProposal::Action_DiplomacyProposal(const Action_DiplomacyProposal &action)
+: Action(action), d_opponent_id(action.d_opponent_id), 
+	d_diplomatic_proposal(action.d_diplomatic_proposal)
 {
 }
 
@@ -1752,6 +1917,11 @@ Action_DiplomacyScore::Action_DiplomacyScore()
 {
 }
 
+Action_DiplomacyScore::Action_DiplomacyScore(const Action_DiplomacyScore &action)
+: Action(action), d_opponent_id(action.d_opponent_id), d_amount(action.d_amount)
+{
+}
+
 Action_DiplomacyScore::Action_DiplomacyScore(XML_Helper* helper)
 :Action(helper)
 {
@@ -1800,6 +1970,11 @@ Action_EndTurn::Action_EndTurn()
 {
 }
 
+Action_EndTurn::Action_EndTurn(const Action_EndTurn &action)
+: Action(action)
+{
+}
+
 Action_EndTurn::Action_EndTurn(XML_Helper* helper)
 :Action(helper)
 {
@@ -1826,6 +2001,11 @@ bool Action_EndTurn::doSave(XML_Helper* helper) const
 
 Action_ConquerCity::Action_ConquerCity()
   :Action(Action::CITY_CONQUER), d_city(0), d_stack(0)
+{
+}
+
+Action_ConquerCity::Action_ConquerCity(const Action_ConquerCity &action)
+: Action(action), d_city(action.d_city), d_stack(action.d_stack)
 {
 }
 
@@ -1882,6 +2062,13 @@ Action_RecruitHero::Action_RecruitHero(XML_Helper* helper)
     helper->getData(d_allies, "allies");
     helper->getData(d_ally_army_type, "ally_army_type");
     helper->registerTag("hero", sigc::mem_fun(this, &Action_RecruitHero::load));
+}
+
+Action_RecruitHero::Action_RecruitHero(const Action_RecruitHero &action)
+: Action(action), d_city(action.d_city), d_cost(action.d_cost), 
+    d_allies(action.d_allies), d_ally_army_type(action.d_ally_army_type)
+{
+  d_hero = new Hero(*action.d_hero);
 }
 
 bool Action_RecruitHero::load(std::string tag, XML_Helper *helper)
@@ -1942,6 +2129,11 @@ Action_RenamePlayer::Action_RenamePlayer()
 {
 }
 
+Action_RenamePlayer::Action_RenamePlayer(const Action_RenamePlayer &action)
+:Action(action), d_name(action.d_name)
+{
+}
+
 Action_RenamePlayer::Action_RenamePlayer(XML_Helper* helper)
   :Action(helper)
 {
@@ -1975,3 +2167,4 @@ bool Action_RenamePlayer::fillData(std::string name)
   d_name = name;
   return true;
 }
+

@@ -31,16 +31,25 @@ Ownable::Ownable(const Ownable& own)
 {
 }
 
+Ownable Ownable::load(XML_Helper *helper)
+{
+  Ownable result((Player*)0);
+  int i = -1;
+  helper->getData(i, "owner");
+  if (i == -1)
+    result.setOwner(0);
+  else
+    result.setOwner(Playerlist::getInstance()->getPlayer(i));
+  return result;
+}
+
 Ownable::Ownable(XML_Helper* helper)
 {
   if (!helper)
     return;
-  int i;
-  helper->getData(i, "owner");
-  if (i == -1)
-    d_owner = 0;
-  else
-    d_owner = Playerlist::getInstance()->getPlayer(i);
+  Ownable result((Player*)0);
+  result = load(helper);
+  d_owner = result.d_owner;
 }
 
 Ownable::~Ownable()

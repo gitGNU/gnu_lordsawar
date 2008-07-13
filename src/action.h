@@ -29,6 +29,7 @@
 #include "army.h"
 #include "reward.h"
 #include "player.h"
+#include "Ownable.h"
 
 class Quest;
 class Stack;
@@ -135,6 +136,10 @@ class Action
 	//! Default constructor.
         Action(Type type);
 
+	//! Copy constructor (shallow).
+	Action(const Action &action);
+
+	//! Loading constructor.
         Action(XML_Helper *helper);
 
 	//! Destructor.
@@ -145,6 +150,7 @@ class Action
 
         //! Save function. See XML_Helper for information about saving.
         bool save(XML_Helper* helper) const;
+	bool saveContents(XML_Helper* helper) const;
         
         /** 
 	 * static load function (see XML_Helper)
@@ -164,14 +170,10 @@ class Action
         //! Returns the Action::Type for this action.
         Type getType() const {return d_type;}
 
-        void setPlayer(Uint32 p) { d_player = p; }
-        Uint32 getPlayer() const { return d_player; }
-        
     protected:
         virtual bool doSave(XML_Helper* helper) const = 0;
         
         Type d_type;
-        Uint32 d_player;
 };
 
 //-----------------------------------------------------------------------------
@@ -186,6 +188,8 @@ class Action_Move : public Action
     public:
 	//! Make a new move action.
         Action_Move();
+	//! Copy constructor
+        Action_Move(const Action_Move &action);
 	//! Load a new move action from an opened saved-game file.
         Action_Move(XML_Helper* helper);
 	//! Destroy a move action.
@@ -216,6 +220,8 @@ class Action_Disband: public Action
     public:
 	//! Make a new disband action.
         Action_Disband();
+	//! Copy constructor
+	Action_Disband(const Action_Disband &action);
 	//! Load a new disband action from an opened saved-game file.
         Action_Disband(XML_Helper* helper);
 	//! Destroy a disband action.
@@ -251,6 +257,8 @@ class Action_Split : public Action
     public:
 	//! Make a new stack split action.
         Action_Split();
+	//! Copy constructor
+	Action_Split(const Action_Split &action);
 	//! Load a new stack split action from an opened saved-game file.
         Action_Split(XML_Helper* helper);
 	//! Destroy a stack split action.
@@ -287,6 +295,8 @@ class Action_Fight : public Action, public sigc::trackable
     public:
 	//! Make a new fight action.
         Action_Fight();
+	//! Copy constructor
+	Action_Fight(const Action_Fight &action);
 	//! Load a new fight action from an opened saved-game file.
         Action_Fight(XML_Helper* helper);
 	//! Destroy a fight action.
@@ -325,6 +335,8 @@ class Action_Join : public Action
     public:
 	//! Make a new stack join action.
         Action_Join();
+	//! Copy constructor
+	Action_Join(const Action_Join &action);
 	//! Load a new stack join action from an opened saved-game file.
         Action_Join(XML_Helper* helper);
 	//! Destroy a stack join action.
@@ -360,6 +372,8 @@ class Action_Ruin : public Action
     public:
 	//! Make a new ruin search attempted action.
         Action_Ruin();
+	//! Copy constructor
+	Action_Ruin(const Action_Ruin&action);
 	//! Load a new ruin search attempted action from a saved-game file.
         Action_Ruin(XML_Helper* helper);
 	//! Destroy a ruin search attempted action.
@@ -400,6 +414,8 @@ class Action_Temple : public Action
     public:
 	//! Make a new temple search action.
         Action_Temple();
+	//! Copy constructor
+	Action_Temple(const Action_Temple &action);
 	//! Load a new temple search action from a saved-game file.
         Action_Temple(XML_Helper* helper);
 	//! Destroy a temple search action.
@@ -438,6 +454,8 @@ class Action_Occupy : public Action
     public:
 	//! Make a new city occupy action.
         Action_Occupy();
+	//! Copy constructor.
+	Action_Occupy(const Action_Occupy &action);
 	//! Load a new city occupied action from an opened saved-game file.
         Action_Occupy(XML_Helper* helper);
 	//! Destroy a city occupy action.
@@ -470,6 +488,8 @@ class Action_Pillage : public Action
     public:
 	//! Make a new city pillaged action.
         Action_Pillage();
+	//! Copy constructor
+	Action_Pillage(const Action_Pillage &action);
 	//! Load a new city pillaged action from an opened saved-game file.
         Action_Pillage(XML_Helper* helper);
 	//! Destroy a city pillaged action.
@@ -502,6 +522,8 @@ class Action_Sack : public Action
     public:
 	//! Make a new city sacked action.
         Action_Sack();
+	//! Copy constructor
+	Action_Sack(const Action_Sack &action);
 	//! Load a new city sacked action from an opened saved-game file.
         Action_Sack(XML_Helper* helper);
 	//! Destroy a city sacked action.
@@ -533,6 +555,8 @@ class Action_Raze : public Action
     public:
 	//! Make a new city razed action.
         Action_Raze();
+	//! Copy constructor
+	Action_Raze(const Action_Raze &action);
 	//! Load a new city razed action from an opened saved-game file.
         Action_Raze(XML_Helper* helper);
 	//! Destroy a city razed action.
@@ -564,6 +588,8 @@ class Action_Upgrade : public Action
     public:
 	//! Make a new city upgraded action.
         Action_Upgrade();
+	//! Copy constructor
+	Action_Upgrade(const Action_Upgrade &action);
 	//! Load a new city upgraded action from an opened saved-game file.
         Action_Upgrade(XML_Helper* helper);
 	//! Destroy a city upgraded action.
@@ -600,6 +626,8 @@ class Action_Buy : public Action
     public:
 	//! Make a new city buy production action.
         Action_Buy();
+	//! Copy constructor
+	Action_Buy(const Action_Buy &action);
 	//! Load a new city buy production action from a saved-game file.
         Action_Buy(XML_Helper* helper);
 	//! Destroy a city buy production action.
@@ -640,6 +668,8 @@ class Action_Production : public Action
     public:
 	//! Make a new city change production action.
         Action_Production();
+	//! Copy constructor
+	Action_Production (const Action_Production &action);
 	//! Load a new city change production action from a saved-game file.
         Action_Production(XML_Helper* helper);
 	//! Destroy a city change production action.
@@ -681,6 +711,8 @@ class Action_Reward : public Action
     public:
 	//! Make a new player rewarded action.
         Action_Reward();
+	//! Copy constructor
+	Action_Reward (const Action_Reward &action);
 	//! Load a new player rewarded action from a saved-game file.
         Action_Reward(XML_Helper* helper);
 	//! Destroy a player rewarded action.
@@ -714,6 +746,8 @@ class Action_Quest : public Action
     public:
 	//! Make a new hero quest assigned action.
         Action_Quest();
+	//! Copy constructor
+	Action_Quest (const Action_Quest &action);
 	//! Load a new hero quest assigned action from a saved-game file.
         Action_Quest(XML_Helper* helper);
 	//! Destroy a hero quest assigned action.
@@ -756,6 +790,8 @@ class Action_Equip : public Action
         
 	//! Make a new item equipped action.
         Action_Equip();
+	//! Copy constructor
+	Action_Equip (const Action_Equip &action);
 	//! Load a new item equipped action from an opened saved-game file.
         Action_Equip(XML_Helper* helper);
 	//! Destroy an item equipped action.
@@ -795,6 +831,8 @@ class Action_Level : public Action
     public:
 	//! Make a new level advancement action.
         Action_Level();
+	//! Copy constructor
+	Action_Level (const Action_Level &action);
 	//! Load a new level advancement action from an opened saved-game file.
         Action_Level(XML_Helper* helper);
 	//! Destroy a level advancement action.
@@ -833,6 +871,8 @@ class Action_ModifySignpost: public Action
     public:
 	//! Make a new change signpost action.
         Action_ModifySignpost();
+	//! Copy constructor
+	Action_ModifySignpost(const Action_ModifySignpost &action);
 	//! Load a new change signpost action from an opened saved-game file.
         Action_ModifySignpost(XML_Helper* helper);
 	//! Destroy a change signpost action.
@@ -865,6 +905,8 @@ class Action_RenameCity: public Action
     public:
 	//! Make a new city rename action.
         Action_RenameCity();
+	//! Copy constructor
+	Action_RenameCity(const Action_RenameCity &action);
 	//! Load a new city rename action from an opened saved-game file.
         Action_RenameCity(XML_Helper* helper);
 	//! Destroy a city rename action.
@@ -899,6 +941,8 @@ class Action_Vector: public Action
     public:
 	//! Make a new city vector action.
         Action_Vector();
+	//! Copy constructor
+	Action_Vector(const Action_Vector &action);
 	//! Load a new city vector action from an opened saved-game file.
         Action_Vector(XML_Helper* helper);
 	//! Destroy a city vector action.
@@ -934,6 +978,8 @@ class Action_FightOrder: public Action
     public:
 	//! Make a new fight order action.
         Action_FightOrder();
+	//! Copy constructor
+	Action_FightOrder(const Action_FightOrder &action);
 	//! Load a new fight order action from an opened saved-game file.
         Action_FightOrder(XML_Helper* helper);
 	//! Destroy a fight order action.
@@ -965,6 +1011,8 @@ class Action_Resign: public Action
     public:
 	//! Make a new player resignation action.
         Action_Resign();
+	//! Copy constructor
+	Action_Resign(const Action_Resign &action);
 	//! Load a new player resignation action from an opened saved-game file.
         Action_Resign(XML_Helper* helper);
 	//! Destroy a player resignation action.
@@ -993,6 +1041,8 @@ class Action_Plant: public Action
     public:
 	//! Make a new item planted action.
         Action_Plant();
+	//! Copy constructor
+	Action_Plant(const Action_Plant &action);
 	//! Load a new item planted action from an opened saved-game file.
         Action_Plant(XML_Helper* helper);
 	//! Destroy a item planted action.
@@ -1028,6 +1078,8 @@ class Action_Produce: public Action
     public:
 	//! Make a new unit produced action.
         Action_Produce();
+	//! Copy constructor
+	Action_Produce(const Action_Produce &action);
 	//! Load a new unit produced action from an opened saved-game file.
         Action_Produce(XML_Helper* helper);
 	//! Destroy a unit produced action.
@@ -1078,6 +1130,8 @@ class Action_ProduceVectored: public Action
     public:
 	//! Make a new vector arrival action.
         Action_ProduceVectored();
+	//! Copy constructor
+	Action_ProduceVectored(const Action_ProduceVectored &action);
 	//! Load a new vector arrival action from an opened saved-game file.
         Action_ProduceVectored(XML_Helper* helper);
 	//! Destroy a vector arrival action.
@@ -1122,6 +1176,8 @@ class Action_DiplomacyState: public Action
     public:
 	//! Make a new diplomatic state action.
         Action_DiplomacyState();
+	//! Copy constructor
+	Action_DiplomacyState(const Action_DiplomacyState &action);
 	//! Load a new diplomatic state action from an opened saved-game file.
         Action_DiplomacyState(XML_Helper* helper);
 	//! Destroy a diplomatic state action.
@@ -1166,6 +1222,8 @@ class Action_DiplomacyProposal: public Action
     public:
 	//! Make a new diplomatic proposal action.
         Action_DiplomacyProposal();
+	//! Copy constructor
+	Action_DiplomacyProposal(const Action_DiplomacyProposal &action);
 	//! Load a new diplomatic proposal action from a saved-game file.
         Action_DiplomacyProposal(XML_Helper* helper);
 	//! Destroy a diplomatic proposal action.
@@ -1210,6 +1268,8 @@ class Action_DiplomacyScore: public Action
     public:
 	//! Make a new diplomatic score action.
         Action_DiplomacyScore();
+	//! Copy constructor.
+	Action_DiplomacyScore(const Action_DiplomacyScore &action);
 	//! Load a new diplomatic score action from an opened saved-game file.
         Action_DiplomacyScore(XML_Helper* helper);
 	//! Destroy a diplomatic score action.
@@ -1248,6 +1308,8 @@ class Action_EndTurn: public Action
     public:
 	//! Make a new end turn action.
         Action_EndTurn();
+	//! Copy constructor
+	Action_EndTurn(const Action_EndTurn &action);
 	//! Load a new end turn action from an opened saved-game file.
         Action_EndTurn(XML_Helper* helper);
 	//! Destroy a end turn action.
@@ -1267,6 +1329,8 @@ class Action_ConquerCity : public Action
     public:
 	//! Make a new city conquer action.
         Action_ConquerCity();
+	//! Copy constructor
+	Action_ConquerCity(const Action_ConquerCity &action);
 	//! Load a new city conquer action from an opened saved-game file.
         Action_ConquerCity(XML_Helper* helper);
 	//! Destroy a city conquer action.
@@ -1292,6 +1356,8 @@ class Action_RecruitHero : public Action
     public:
 	//! Make a new recruit hero action.
         Action_RecruitHero();
+	//! Copy a new recruit hero action
+	Action_RecruitHero(const Action_RecruitHero &action);
 	//! Load a new recruit hero action from an opened saved-game file.
         Action_RecruitHero(XML_Helper* helper);
 	//! Destroy a recruit hero action.
@@ -1320,6 +1386,8 @@ class Action_RenamePlayer: public Action
     public:
 	//! Make a new rename player action
         Action_RenamePlayer();
+	//! Copy constructor
+	Action_RenamePlayer(const Action_RenamePlayer &action);
 	//! Load a new rename player action from an opened saved-game file.
         Action_RenamePlayer(XML_Helper* helper);
 	//! Destroy a rename player action.

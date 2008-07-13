@@ -40,6 +40,8 @@ class Ownable
      //! Destructor.
     ~Ownable();
     
+    static Ownable load(XML_Helper *helper);
+
     //! Return a pointer to the Player who owns an object.
     Player *getOwner() const {return d_owner;}
 

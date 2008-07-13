@@ -41,6 +41,7 @@ class Stacklist;
 class XML_Helper;
 class Hero;
 class Action;
+class NetworkAction;
 class History;
 class City;
 class Quest;
@@ -538,7 +539,7 @@ class Player: public sigc::trackable
 	 * used to decide which stat should be improved.
          * 
 	 * This callback must result in an Action_Level element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
          * @param army     The army to raise (is always a Hero.)
          */
@@ -552,7 +553,7 @@ class Player: public sigc::trackable
 	 * The Army units that are grouped are the units in the new stack.
 	 *
 	 * This callback must result in an Action_Split element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
          *
          * @param s        The stack to split.
 	 *
@@ -565,7 +566,7 @@ class Player: public sigc::trackable
 	 * Called to merge two stacks into one.
 	 *
 	 * This callback must result in an Action_Join element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
          *
          * @param receiver     The receiving stack.
          * @param joining      The joining stack, destroyed after the join.
@@ -583,7 +584,7 @@ class Player: public sigc::trackable
 	 * Stack.  This method can trigger many other actions.
 	 *
 	 * This callback must result in an Action_Move element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
 	 * @param s             The stack to be moved.
 	 *
@@ -607,7 +608,7 @@ class Player: public sigc::trackable
 	 * round and should continue the movement.
          *
 	 * This callback must result in an Action_Move element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
          * @param s                The stack to be moved.
          * @param dest             The destination of the move.
@@ -627,7 +628,7 @@ class Player: public sigc::trackable
 	 * events, the pointers are set to 0.
          *
 	 * This callback must result in an Action_Fight element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
          * @param attacker         The list of attacking stacks.
          * @param defender         The list of defending stacks.
@@ -681,7 +682,7 @@ class Player: public sigc::trackable
 	 * A stack searches a ruin.  The stack must contain a hero.
 	 *
 	 * This callback must result in an Action_Ruin element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
          * @param stack            The stack which searches the ruin.
          * @param ruin             The ruin to be searched.
@@ -697,7 +698,7 @@ class Player: public sigc::trackable
          * strength of all armies rises by 1.
          *
 	 * This callback must result in an Action_Temple element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
          * @param stack            The stack visiting the temple.
          * @param temple           The visited temple.
@@ -713,7 +714,7 @@ class Player: public sigc::trackable
 	 * stack, the quest is assigned to the first hero without a quest.
          *
 	 * This callback must result in an Action_Quest element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 * This callback must result in a History_QuestStarted element being
 	 * added to the player's History list (Player::d_history).
 	 *
@@ -752,7 +753,7 @@ class Player: public sigc::trackable
 	 * becomes owned by the ocuppying player.
          *
 	 * This callback must result in an Action_Occupy element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
          * @param city             The occupied city.
 	 *
@@ -771,7 +772,7 @@ class Player: public sigc::trackable
 	 * amount of gold pieces.
          *
 	 * This callback must result in an Action_Pillage element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
          * @param city             The city to be pillaged.
          * @param gold             Returns the amount of gold pillaged.
@@ -795,7 +796,7 @@ class Player: public sigc::trackable
 	 * as defined in RealPlayer to sack cities.
          *
 	 * This callback must result in an Action_Sack element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
          *
          * @param city             The city to be sacked .
          * @param gold             Returns the amount of gold sacked.
@@ -820,7 +821,7 @@ class Player: public sigc::trackable
 	 * as defined in RealPlayer to raze cities.
          *
 	 * This callback must result in an Action_Raze element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
          *
          * @param city             The city to be razed.
 	 *
@@ -840,7 +841,7 @@ class Player: public sigc::trackable
 	 * removed permanently.
          *
 	 * This callback must result in an Action_Buy element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
          *
          * @param city             The lucky city.
          * @param slot             The production slot of the city.  The 
@@ -865,7 +866,7 @@ class Player: public sigc::trackable
 	 * will arrive in the city that produced it.
          *
 	 * This callback must result in an Action_Production element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
          *
          * @param city             The affected city.
          * @param slot             The index of the selected production slot.
@@ -891,7 +892,7 @@ class Player: public sigc::trackable
 	 * contains a Hero, and the Reward is an Item for the Hero to carry.
 	 *
 	 * This callback must result in an Action_Reward element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
          *
          * @param stack            The stack which has caused the reward.
          * @param reward           A pointer for storing the Reward being 
@@ -907,7 +908,7 @@ class Player: public sigc::trackable
 	 * stacks saves upkeep for unwanted Army units.
 	 *
 	 * This callback must result in an Action_Disband element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
 	 * @param stack            The stack to disband.
 	 *
@@ -926,7 +927,7 @@ class Player: public sigc::trackable
 	 * drop items here.
 	 *
 	 * This callback must result in an Action_Equip element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
 	 * @param hero             The Hero that holds the item.
 	 * @param item             The Item to drop onto the ground.
@@ -948,7 +949,7 @@ class Player: public sigc::trackable
 	 * drop items here.
 	 *
 	 * This callback must result in one or more Action_Equip elements 
-	 * being added to the player's Action list (Player::d_actions).
+	 * being given to the addAction method.
 	 *
 	 * @param hero             The Hero that holds the items.
 	 * @param pos              The position of the tile on the game map to 
@@ -969,7 +970,7 @@ class Player: public sigc::trackable
 	 * pickup items from the tile they are on.
 	 *
 	 * This callback must result in an Action_Equip element being 
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
 	 * @param hero             The Hero that holds the item.
 	 * @param item             The Item to pickup off of the ground.
@@ -1013,7 +1014,7 @@ class Player: public sigc::trackable
 	 * mechanism to collectively surrender to a final human player.
 	 *
 	 * This callback must result in a Action_Resign element being
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
 	 */
         //! Callback to disband all the player's stacks and raze all cities.
@@ -1028,7 +1029,7 @@ class Player: public sigc::trackable
 	 * Signposts for which we have a Stack co-located.
 	 *
 	 * This callback must result in a Action_ModifySignpost element being
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
 	 * @param signpost         The signpost to modify.
 	 * @param message          The new text to inscribe onto the sign.
@@ -1045,7 +1046,7 @@ class Player: public sigc::trackable
 	 * do not consider doing so.
 	 *
 	 * This callback must result in a Action_RenameCity element being
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
 	 * @param city             The city to change the name of.
 	 * @param name             The new name of the city.
@@ -1063,7 +1064,7 @@ class Player: public sigc::trackable
 	 * only human players use this method.
 	 *
 	 * This callback must result in a Action_Vector element being
-	 * added to the player's Action list (Player::d_actions).
+	 * given to the addAction method.
 	 *
          * @param  city   The city to vector from.
          * @param  dest   The place on the map to vector the produced Army
@@ -1085,7 +1086,7 @@ class Player: public sigc::trackable
 	 * only human players use this method.
 	 *
 	 * This callback must result in one or more Action_Vector elements 
-	 * being added to the player's Action list (Player::d_actions).
+	 * being given to the addAction method.
 	 *
 	 * @param  city   The city being vectored to.
          * @param  dest   The place on the map to vector to.  The destination 
@@ -1272,7 +1273,7 @@ class Player: public sigc::trackable
 
         sigc::signal<void, int> hero_arrives_with_allies;
 
-        sigc::signal<void, Action *> action_done;
+        sigc::signal<void, NetworkAction *> acting;
         sigc::signal<void, History *> history_done;
         
 	//! is it safe to vector from the given city?

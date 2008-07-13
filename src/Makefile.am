@@ -88,7 +88,8 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	network-server.cpp network-server.h \
 	game-server.cpp game-server.h \
 	game-client.cpp game-client.h \
-	GameScenarioOptions.cpp GameScenarioOptions.h
+	GameScenarioOptions.cpp GameScenarioOptions.h \
+	network-action.cpp network-action.h
 
 if FL_RESRC
 lordsawar_SOURCES += lordsawar.rc

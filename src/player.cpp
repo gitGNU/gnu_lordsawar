@@ -47,6 +47,7 @@
 #include "Configuration.h"
 #include "GameScenarioOptions.h"
 #include "action.h"
+#include "network-action.h"
 #include "history.h"
 #include "AI_Analysis.h"
 #include "AI_Allocation.h"
@@ -389,9 +390,7 @@ void Player::clearActionlist()
     for (list<Action*>::iterator it = d_actions.begin();
         it != d_actions.end(); it++)
     {
-#if 0  // FIXME: temp. leak to avoid double-delete
       delete (*it);
-#endif
     }
     d_actions.clear();
 }
@@ -505,12 +504,10 @@ bool Player::save(XML_Helper* helper) const
       }
     retval &= helper->saveData("diplomatic_scores", diplomatic_scores.str());
 
-#if 0
     //save the actionlist
     for (list<Action*>::const_iterator it = d_actions.begin();
             it != d_actions.end(); it++)
         retval &= (*it)->save(helper);
-#endif
     
     //save the pasteventlist
     for (list<History*>::const_iterator it = d_history.begin();
@@ -579,14 +576,12 @@ Player* Player::loadPlayer(XML_Helper* helper)
 
 bool Player::load(string tag, XML_Helper* helper)
 {
-#if 0
     if (tag == "action")
     {
         Action* action;
         action = Action::handle_load(helper);
         d_actions.push_back(action);
     }
-#endif
     if (tag == "history")
     {
         History* history;
@@ -639,15 +634,15 @@ bool Player::load(string tag, XML_Helper* helper)
 
 void Player::addAction(Action *action)
 {
-  action->setPlayer(getId());
-  
+  d_actions.push_back(action);
+  NetworkAction *copy = new NetworkAction(action, this);
+  acting.emit(copy);
   // FIXME
-  if (!action_done.empty())
-    action_done.emit(action);
-#if 0
-  else
-    delete action;
-#endif
+  //if (!acting.empty())
+//#if 0
+  //else
+    //delete action;
+//#endif
 }
 
 void Player::addHistory(History *history)
