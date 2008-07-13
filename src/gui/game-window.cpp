@@ -77,6 +77,7 @@
 #include "diplomacy-dialog.h"
 #include "stack-info-dialog.h"
 #include "timed-message-dialog.h"
+#include "generation-progress-window.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -431,6 +432,9 @@ GameWindow::create_and_dump_scenario(const std::string &file, const GameParamete
     std::string path = File::getSavePath();
     path += file;
     
+    //GenerationProgressWindow gpw;
+    //gpw.show_all();
+    //gpw.setGenerator(creator.getGenerator());
     creator.create(g);
     creator.dump(path);
     

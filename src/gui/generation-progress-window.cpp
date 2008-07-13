@@ -22,6 +22,7 @@
 
 #include "glade-helpers.h"
 #include "generation-progress-window.h"
+#include "../MapGenerator.h"
 
 GenerationProgressWindow::GenerationProgressWindow()
 {
@@ -29,25 +30,33 @@ GenerationProgressWindow::GenerationProgressWindow()
     = Gnome::Glade::Xml::create(get_glade_path() + 
 				"/generation-progress-window.glade");
 
-  Gtk::Window *w = 0;
+  Gtk::Dialog *w = 0;
   xml->get_widget("window", w);
   window.reset(w);
 
   xml->get_widget("statusbar", statusbar);
   xml->get_widget("progressbar", progressbar);
 
-  w->signal_delete_event().connect
-    (sigc::mem_fun(*this, &GenerationProgressWindow::on_delete_event));
+  //w->signal_delete_event().connect
+    //(sigc::mem_fun(*this, &GenerationProgressWindow::on_delete_event));
 
 }
 
+void GenerationProgressWindow::setGenerator(MapGenerator *generator)
+{
+  generator->progress.connect
+    (sigc::mem_fun (this, &GenerationProgressWindow::update_progress));
+}
 GenerationProgressWindow::~GenerationProgressWindow()
 {
 }
 
 void GenerationProgressWindow::show_all()
 {
+  window->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
   window->show_all();
+  progressbar->show();
+  statusbar->show();
 }
 
 void GenerationProgressWindow::update_progress(double fraction, 
@@ -57,8 +66,8 @@ void GenerationProgressWindow::update_progress(double fraction,
   statusbar->push(status, 0);
 }
 
-bool GenerationProgressWindow::on_delete_event(GdkEventAny *e)
-{
-  return true;
-}
+//bool GenerationProgressWindow::on_delete_event(GdkEventAny *e)
+//{
+  //return true;
+//}
 

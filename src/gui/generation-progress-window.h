@@ -19,10 +19,12 @@
 #define GENERATION_PROGRESS_WINDOW_H
 
 #include <sigc++/trackable.h>
-#include <gtkmm/window.h>
+#include <gtkmm/dialog.h>
 #include <gtkmm/progressbar.h>
 #include <gtkmm/statusbar.h>
 #include <string>
+#include <glibmm/main.h>
+class MapGenerator;
 
 // used for displaying a timed dialog that goes away after a period of time
 class GenerationProgressWindow: public sigc::trackable
@@ -31,15 +33,17 @@ class GenerationProgressWindow: public sigc::trackable
     GenerationProgressWindow();
     ~GenerationProgressWindow();
 
+    void setGenerator(MapGenerator *generator);
     void update_progress(double fraction, std::string status);
     void show_all();
     
  private:
-    std::auto_ptr<Gtk::Window> window;
+    std::auto_ptr<Gtk::Dialog> window;
     Gtk::ProgressBar *progressbar;
     Gtk::Statusbar *statusbar;
+    Glib::RefPtr<Glib::MainLoop> main_loop;
 
-    bool on_delete_event(GdkEventAny *e);
+    //bool on_delete_event(GdkEventAny *e);
 };
 
 #endif

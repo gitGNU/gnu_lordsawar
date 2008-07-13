@@ -167,6 +167,7 @@ class CreateScenario : public CreateScenarioRandomize
           */
         bool dump(std::string filename) const;
 
+	MapGenerator *getGenerator() const {return d_generator;};
     private:
         //! Creates the map and distributes cities, temples and ruins
         bool createMap();

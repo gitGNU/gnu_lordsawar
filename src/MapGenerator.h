@@ -25,14 +25,11 @@
 
 #include <string>
 #include <vector>
+#include <sigc++/signal.h>
 
 // we need the enums from these classes
 #include "Tile.h"
 #include "maptile.h"
-
-struct portneeded;
-typedef  std::vector<portneeded> vecports;
-typedef  std::vector<vecports> vecs2d;
 
 /** This class creates a map including the buildings (cities, ruins, temples).
   * It does NOT care about player setup and such. This is done in a second step
@@ -127,6 +124,13 @@ class MapGenerator
           * @return char array which represents the building map
           */
         const Maptile::Building* getBuildings(int& width, int& height) const;
+
+	/**
+	 * @param fraction How far along the progress bar should be.
+	 * @param status   A description of what's being generated.
+	 */
+	//! Emitted when the generator generates something
+        sigc::signal<void, double, std::string> progress;
 
     protected:
         //! Fills the terrain map with grass
