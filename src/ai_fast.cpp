@@ -449,8 +449,14 @@ bool AI_Fast::computerTurn()
 		  }
 		else
 		  {
-		    cerr << "hit yet another bad spot.\n";
-		    exit (1);
+		    cerr << "hit yet another bad spot." << moves << "\n";
+		    printf ("stack is at %d,%d, target is at %d,%d\n",
+			    s->getPos().x, s->getPos().y, target->getPos().x,
+			    target->getPos().y);
+		    printf ("this error means the map has an unreachable city on it, which is supposed to be impossible.\n");
+		    printf ("if an enemy city is completely surrouned by other stacks, this error message is possible.\n");
+		    printf ("fixme: the stack should try for somewhere else.\n");
+		    return false;
 		  }
 
 		// a stack has died ->restart
