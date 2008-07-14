@@ -49,6 +49,7 @@ signpost-change-dialog.glade \
 fight-order-dialog.glade \
 hero-levels-dialog.glade \
 player-resign-dialog.glade \
+player-resign-completed-dialog.glade \
 army-bonus-dialog.glade \
 item-bonus-dialog.glade \
 game-options-dialog.glade \
