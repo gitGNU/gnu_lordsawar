@@ -1083,6 +1083,26 @@ void GameWindow::on_disband_activated()
   return;
 }
 
+void GameWindow::on_resignation_completed()
+{
+  std::auto_ptr<Gtk::Dialog> dialog;
+
+  Glib::RefPtr<Gnome::Glade::Xml> xml
+    = Gnome::Glade::Xml::create(get_glade_path() + 
+				"/player-resign-completed-dialog.glade");
+
+  Gtk::Dialog *d;
+  xml->get_widget("dialog", d);
+  dialog.reset(d);
+  dialog->set_transient_for(*window.get());
+
+  dialog->show_all();
+  dialog->run();
+  dialog->hide();
+
+  return;
+}
+
 void GameWindow::on_resign_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
@@ -1108,7 +1128,11 @@ void GameWindow::on_resign_activated()
   int response = dialog->run();
 
   if (response == 0) //disband all stacks, raze all cities
-    Playerlist::getActiveplayer()->resign();
+    {
+      Playerlist::getActiveplayer()->resign();
+      dialog->hide();
+      on_resignation_completed();
+    }
 
   return;
 }

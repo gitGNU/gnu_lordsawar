@@ -184,6 +184,7 @@ class GameWindow: public sigc::trackable
     void on_disband_activated();
     void on_stack_info_activated();
     void on_resign_activated();
+    void on_resignation_completed();
     void on_signpost_activated();
     void on_inspect_activated();
     void on_plant_standard_activated();
