@@ -71,6 +71,7 @@ dat/glade/signpost-change-dialog.glade.h
 dat/glade/fight-order-dialog.glade.h
 dat/glade/hero-levels-dialog.glade.h
 dat/glade/player-resign-dialog.glade.h
+dat/glade/player-resign-completed-dialog.glade.h
 dat/glade/army-bonus-dialog.glade.h
 dat/glade/item-bonus-dialog.glade.h
 dat/glade/game-options-dialog.glade.h
