@@ -1,3 +1,10 @@
+2008-07-14  Ben Asselstine
+
+	* added a notification after a player has resigned.  Suggested by
+	  Rob Kinyon.
+	* now showing which cities are automatically turned off when the
+	  player is too poor to produce army units.  Suggested by Rob Kinyon.
+
 2008-07-13  Ben Asselstine
 
 	* fixed stack movement doubling when having more than one item that
