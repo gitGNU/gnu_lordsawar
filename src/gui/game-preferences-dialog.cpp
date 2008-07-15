@@ -260,6 +260,11 @@ void GamePreferencesDialog::set_parent_window(Gtk::Window &parent)
     dialog->set_transient_for(parent);
 }
 
+void GamePreferencesDialog::hide()
+{
+  dialog->hide();
+}
+
 bool GamePreferencesDialog::run()
 {
   Shieldsetlist::getInstance()->instantiatePixmaps();

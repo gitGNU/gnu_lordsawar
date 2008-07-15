@@ -2992,10 +2992,20 @@ std::list<Action *> Player::getReportableActions()
   for (; it != d_actions.end(); it++)
     {
       if ((*it)->getType() == Action::PRODUCE_UNIT ||
-	  (*it)->getType() == Action::PRODUCE_VECTORED_UNIT)
+	  (*it)->getType() == Action::PRODUCE_VECTORED_UNIT ||
+	  (*it)->getType() == Action::CITY_DESTITUTE)
 	actions.push_back(*it);
     }
   return actions;
 }
 
+	
+void Player::cityTooPoorToProduce(City *city, int slot)
+{
+  cityChangeProduction(city, slot);
+  const Army *a = city->getProductionBase(slot);
+  Action_CityTooPoorToProduce *action = new Action_CityTooPoorToProduce();
+  action->fillData(city, a);
+  addAction(action);
+}
 // End of file

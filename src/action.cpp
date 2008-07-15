@@ -161,6 +161,8 @@ Action* Action::handle_load(XML_Helper* helper)
             return (new Action_RecruitHero(helper));
         case PLAYER_RENAME:
             return (new Action_RenamePlayer(helper));
+        case CITY_DESTITUTE:
+            return (new Action_CityTooPoorToProduce(helper));
     }
 
     return 0;
@@ -253,6 +255,10 @@ Action* Action::copy(const Action* a)
             return 
               (new Action_RenamePlayer
                 (*dynamic_cast<const Action_RenamePlayer*>(a)));
+        case CITY_DESTITUTE:
+            return 
+              (new Action_CityTooPoorToProduce
+                (*dynamic_cast<const Action_CityTooPoorToProduce*>(a)));
     }
 
     return 0;
@@ -2166,5 +2172,57 @@ bool Action_RenamePlayer::fillData(std::string name)
 {
   d_name = name;
   return true;
+}
+
+//-----------------------------------------------------------------------------
+//Action_CityTooPoorToProduce
+
+Action_CityTooPoorToProduce::Action_CityTooPoorToProduce()
+    :Action(Action::CITY_DESTITUTE), d_city(0), d_army_type(0)
+{
+}
+
+Action_CityTooPoorToProduce::Action_CityTooPoorToProduce(const Action_CityTooPoorToProduce &action)
+: Action(action), d_city(action.d_city), d_army_type(action.d_army_type)
+{
+}
+
+Action_CityTooPoorToProduce::Action_CityTooPoorToProduce(XML_Helper* helper)
+    :Action(helper)
+{
+    helper->getData(d_city, "city");
+    helper->getData(d_army_type, "army_type");
+}
+
+Action_CityTooPoorToProduce::~Action_CityTooPoorToProduce()
+{
+}
+
+std::string Action_CityTooPoorToProduce::dump() const
+{
+    std::stringstream s;
+
+    s << "City " << d_city << " is too poor to produce army type " 
+      << d_army_type << "\n";
+
+    return s.str();
+}
+
+bool Action_CityTooPoorToProduce::doSave(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->saveData("city", d_city);
+    retval &= helper->saveData("army_type", d_army_type);
+
+    return retval;
+}
+
+bool Action_CityTooPoorToProduce::fillData(City* c, const Army *army)
+{
+    d_city = c->getId();
+    d_army_type = army->getType();
+
+    return true;
 }
 

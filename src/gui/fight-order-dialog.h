@@ -40,6 +40,8 @@ class FightOrderDialog: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
+    void hide();
+
     void run();
 
  private:

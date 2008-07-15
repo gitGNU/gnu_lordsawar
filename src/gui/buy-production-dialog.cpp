@@ -112,6 +112,11 @@ void BuyProductionDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void BuyProductionDialog::hide()
+{
+  dialog->hide();
+}
+
 void BuyProductionDialog::run()
 {
     dialog->show();

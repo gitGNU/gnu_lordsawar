@@ -54,6 +54,7 @@ class ReportDialog: public sigc::trackable
 
     static std::string calculateRank(std::list<Uint32> scores, Uint32 score);
     void run();
+    void hide();
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;

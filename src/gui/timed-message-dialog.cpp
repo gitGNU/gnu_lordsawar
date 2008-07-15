@@ -55,6 +55,11 @@ void TimedMessageDialog::show_all()
     window->show_all();
 }
 
+void TimedMessageDialog::hide()
+{
+  window->hide();
+}
+
 void TimedMessageDialog::run()
 {
   if (d_timeout > 0)

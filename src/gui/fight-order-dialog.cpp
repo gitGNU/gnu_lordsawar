@@ -65,6 +65,11 @@ void FightOrderDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void FightOrderDialog::hide()
+{
+  dialog->hide();
+}
+
 void FightOrderDialog::run()
 {
     static int width = -1;

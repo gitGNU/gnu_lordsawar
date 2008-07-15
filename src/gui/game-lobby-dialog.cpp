@@ -246,6 +246,11 @@ void GameLobbyDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void GameLobbyDialog::hide()
+{
+  dialog->hide();
+}
+
 bool GameLobbyDialog::run()
 {
   if (d_game_scenario->s_hidden_map == false)

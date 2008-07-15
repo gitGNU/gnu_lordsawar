@@ -102,6 +102,11 @@ Reward *SageDialog::grabSelectedReward()
     return row[rewards_columns.reward];
 }
 
+void SageDialog::hide()
+{
+  dialog->hide();
+}
+
 Reward *SageDialog::run()
 {
     ruinmap->resize();

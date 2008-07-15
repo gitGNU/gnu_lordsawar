@@ -93,20 +93,43 @@ void Citylist::nextTurn(Player* p)
 {
     debug("next_turn(" <<p->getName() <<")");
 
+    // Because players are nextTurn'd before cities, the income, treasury, 
+    // and upkeep are calculated already for the upcoming round.
+
+    // Collect the taxes
+    for (const_iterator it = begin(); it != end(); it++)
+      if ((*it).getOwner() == p)
+	p->addGold((*it).getGold());
+
+    //now our treasury must have enough money to pay our upkeep.
+    if (p->getGold() < p->getUpkeep())
+      {
+	int diff = p->getUpkeep() - p->getGold();
+	//then we have to turn off enough production to make up for diff
+	//gold pieces.
+	for (iterator it = begin(); it != end(); it++)
+	  {
+	    if ((*it).isBurnt() == true)
+	      continue;
+	    int slot =(*it).getActiveProductionSlot();
+	    if (slot == -1)
+	      continue;
+	    const Army *a = (*it).getProductionBase(slot);
+	    diff -= a->getUpkeep();
+    
+	    p->cityTooPoorToProduce(&(*it), slot);
+	    if (diff < 0)
+	      break;
+	  }
+      }
+
     // This iteration adds the city production to the player    
     for (iterator it = begin(); it != end(); it++)
-    {
+      {
         if ((*it).getOwner() == p)
             (*it).nextTurn();
-    }
+      }
 
-    // In a second round, add the gold. The idea is that a player cannot
-    // produce units if his gold is <0. However, to be consistent, we may not
-    // add the gold in the first run, because then the player may come above 0
-    // gold, which means some cities produce units, others not.
-    for (const_iterator it = begin(); it != end(); it++)
-        if ((*it).getOwner() == p)
-            p->addGold((*it).getGold());
 }
 static bool isFogged(void *object)
 {

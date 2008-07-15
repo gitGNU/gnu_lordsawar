@@ -63,6 +63,10 @@ void TriumphsDialog::set_parent_window(Gtk::Window &parent)
   //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void TriumphsDialog::hide()
+{
+  dialog->hide();
+}
 void TriumphsDialog::run()
 {
   dialog->show_all();

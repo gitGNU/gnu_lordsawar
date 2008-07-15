@@ -274,6 +274,7 @@ class GameWindow: public sigc::trackable
     void on_city_looted(City *city, int gold);
     void hide_map_tip();
     void change_diplomacy_button_image (bool proposals_present);
+    void show_city_production_report (bool destitute);
     void update_diplomacy_button (bool sensitive);
 
     bool setup_game(GameScenario *game_scenario);

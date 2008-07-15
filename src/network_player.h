@@ -90,6 +90,7 @@ class NetworkPlayer : public Player
 	void decodeActionConquerCity(const Action_ConquerCity *action);
 	void decodeActionRecruitHero(const Action_RecruitHero *action);
 	void decodeActionRenamePlayer(const Action_RenamePlayer *action);
+	void decodeActionCityTooPoorToProduce(const Action_CityTooPoorToProduce *action);
 };
 
 #endif // NETWORK_PLAYER_H

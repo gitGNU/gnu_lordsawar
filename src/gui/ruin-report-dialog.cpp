@@ -89,6 +89,11 @@ void RuinReportDialog::set_parent_window(Gtk::Window &parent)
   //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void RuinReportDialog::hide()
+{
+  dialog->hide();
+}
+
 void RuinReportDialog::run()
 {
   ruinmap->resize();

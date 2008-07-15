@@ -93,6 +93,10 @@ void QuestReportDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void QuestReportDialog::hide()
+{
+  dialog->hide();
+}
 void QuestReportDialog::run()
 {
     questmap->resize();

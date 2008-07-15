@@ -75,6 +75,11 @@ void ArmyGainsLevelDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void ArmyGainsLevelDialog::hide()
+{
+  dialog->hide();
+}
+
 void ArmyGainsLevelDialog::run()
 {
     dialog->show_all();

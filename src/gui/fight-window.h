@@ -43,6 +43,7 @@ class FightWindow: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
+    void hide();
     void run(bool *quick);
     
  private:

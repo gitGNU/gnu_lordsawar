@@ -63,6 +63,10 @@ void SurrenderDialog::set_parent_window(Gtk::Window &parent)
   //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void SurrenderDialog::hide()
+{
+  dialog->hide();
+}
 bool SurrenderDialog::run()
 {
   return dialog->run();

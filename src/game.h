@@ -115,6 +115,7 @@ class Game
 	can_change_signpost,
 	can_see_history,
 	received_diplomatic_proposal,
+	city_too_poor_to_produce,
 	can_end_turn;
     sigc::signal<void, Stack *> stack_info_changed;
     sigc::signal<void, Glib::ustring, MapTipPosition> map_tip_changed;

@@ -56,6 +56,10 @@ void ItemBonusDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void ItemBonusDialog::hide()
+{
+  dialog->hide();
+}
 void ItemBonusDialog::run()
 {
     static int width = -1;

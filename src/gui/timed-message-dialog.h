@@ -34,6 +34,7 @@ class TimedMessageDialog: public sigc::trackable
 
     void show_all();
     void run();
+    void hide();
     
  private:
     Gtk::MessageDialog *window;

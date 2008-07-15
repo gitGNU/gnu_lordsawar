@@ -67,6 +67,11 @@ void RuinRewardedDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void RuinRewardedDialog::hide()
+{
+  dialog->hide();
+}
+
 void RuinRewardedDialog::run()
 {
   ruinmap->resize();

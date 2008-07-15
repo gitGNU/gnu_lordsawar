@@ -125,6 +125,11 @@ void FightWindow::set_parent_window(Gtk::Window &parent)
     window->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void FightWindow::hide()
+{
+  window->hide();
+}
+
 void FightWindow::run(bool *quick)
 {
 

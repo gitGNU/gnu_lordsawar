@@ -41,6 +41,7 @@ class SageDialog: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
+    void hide();
     Reward *run();
     
  private:

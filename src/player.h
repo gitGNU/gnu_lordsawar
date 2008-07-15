@@ -1132,6 +1132,7 @@ class Player: public sigc::trackable
         //! Callback to plant a player's standard.
         bool heroPlantStandard(Stack *stack);
 
+	void cityTooPoorToProduce(City *city, int slot);
 	/**
 	 * @param city   The city being invaded.
 	 * @param loot   The gold looted.
@@ -1454,6 +1455,7 @@ class Player: public sigc::trackable
 	bool AI_maybeDisband(Stack *s, City *city, Uint32 min_defenders, 
 			     int safe_mp, bool &stack_died);
 
+	    
     private:
         //! Loads the subdata of a player (actions and stacklist)
         bool load(std::string tag, XML_Helper* helper);

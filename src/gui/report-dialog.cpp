@@ -120,6 +120,11 @@ void ReportDialog::set_parent_window(Gtk::Window &parent)
   //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void ReportDialog::hide()
+{
+  dialog->hide();
+}
+
 void ReportDialog::run()
 {
   citymap->resize();
@@ -365,6 +370,18 @@ void ReportDialog::addProduction(const Action *action)
 	s += c->getName();
       else
 	s += _("Standard");
+    }
+  else if (action->getType() == Action::CITY_DESTITUTE)
+    {
+      const Action_CityTooPoorToProduce *act;
+      act = dynamic_cast<const Action_CityTooPoorToProduce*>(action);
+      army_type = act->getArmyType();
+      City *c = Citylist::getInstance()->getById(act->getCityId());
+      s = c->getName();
+      s += " stops producing ";
+      const Army *a;
+      a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
+      s += a->getName() + "!";
     }
   const Army *a;
   a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);

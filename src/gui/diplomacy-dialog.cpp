@@ -223,8 +223,13 @@ void DiplomacyDialog::on_report_clicked()
   DiplomacyReportDialog d(d_player);
   d.set_parent_window(*dialog.get());
   d.run();
+  d.hide();
 }
 
+void DiplomacyDialog::hide()
+{
+  dialog->hide();
+}
 void DiplomacyDialog::run()
 {
   dialog->show_all();

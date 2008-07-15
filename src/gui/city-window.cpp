@@ -135,6 +135,11 @@ void CityWindow::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void CityWindow::hide()
+{
+  dialog->hide();
+}
+
 void CityWindow::run()
 {
     prodmap->resize();

@@ -37,6 +37,7 @@ class ArmyGainsLevelDialog: public sigc::trackable
     void set_parent_window(Gtk::Window &parent);
 
     void run();
+    void hide();
 
     Army::Stat get_selected_stat() { return selected_stat; }
     

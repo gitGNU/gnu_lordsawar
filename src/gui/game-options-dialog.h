@@ -42,6 +42,7 @@ class GameOptionsDialog: public sigc::trackable
     void set_parent_window(Gtk::Window &parent);
 
     bool run();
+    void hide();
     
     sigc::signal<void> difficulty_option_changed;
 

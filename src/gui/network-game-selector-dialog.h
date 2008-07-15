@@ -34,6 +34,7 @@ class NetworkGameSelectorDialog: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
+    void hide();
     bool run();
     
  private:

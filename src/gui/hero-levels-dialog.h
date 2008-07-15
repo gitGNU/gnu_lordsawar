@@ -41,6 +41,7 @@ class HeroLevelsDialog: public sigc::trackable
     void set_parent_window(Gtk::Window &parent);
 
     void run();
+    void hide();
 
  private:
     std::auto_ptr<Gtk::Dialog> dialog;

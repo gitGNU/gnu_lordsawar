@@ -41,6 +41,7 @@ class BuyProductionDialog: public sigc::trackable
     void set_parent_window(Gtk::Window &parent);
 
     void run();
+    void hide();
 
     enum { NO_ARMY_SELECTED = -1 };
     int get_selected_army() { return selected_army; }

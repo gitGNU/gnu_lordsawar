@@ -102,6 +102,11 @@ void PreferencesDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void PreferencesDialog::hide()
+{
+  dialog->hide();
+}
+
 void PreferencesDialog::run(Game *game)
 {
     static int width = -1;

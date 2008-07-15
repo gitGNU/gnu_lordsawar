@@ -54,6 +54,7 @@ class GamePreferencesDialog
     sigc::signal<void, GameParameters> game_started;
     
     bool run();
+    void hide();
     
  private:
     void init();

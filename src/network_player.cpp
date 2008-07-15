@@ -190,6 +190,9 @@ void NetworkPlayer::decodeAction(const Action *a)
     case Action::PLAYER_RENAME:
       return decodeActionRenamePlayer
         (dynamic_cast<const Action_RenamePlayer*>(a));
+    case Action::CITY_DESTITUTE:
+      return decodeActionCityTooPoorToProduce
+	(dynamic_cast<const Action_CityTooPoorToProduce*>(a));
     }
 
   return;
@@ -510,17 +513,24 @@ void NetworkPlayer::decodeActionConquerCity(const Action_ConquerCity *action)
 
 void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
 {
-  City *city = Citylist::getInstance()->getById(action->d_city);
+
+  City *city = Citylist::getInstance()->getById(action->getCityId());
   Army *ally = 0;
-  if (action->d_allies)
+  if (action->getNumAllies())
     ally = Armysetlist::getInstance()->getArmy(getArmyset(),
-                                               action->d_ally_army_type);
-  doRecruitHero(action->d_hero, city, action->d_cost, action->d_allies, ally);
+                                               action->getAllyArmyType());
+  doRecruitHero(action->getHero(), city, action->getCost(), 
+		action->getNumAllies(), ally);
 }
 
 void NetworkPlayer::decodeActionRenamePlayer(const Action_RenamePlayer *action)
 {
-  doRename(action->d_name);
+  doRename(action->getName());
+}
+
+void NetworkPlayer::decodeActionCityTooPoorToProduce(const Action_CityTooPoorToProduce *action)
+{
+  //this action is only used for reporting purposes.
 }
 
 // End of file

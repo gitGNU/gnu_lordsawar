@@ -49,6 +49,11 @@ void NetworkGameSelectorDialog::set_parent_window(Gtk::Window &parent)
   //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void NetworkGameSelectorDialog::hide()
+{
+  dialog->hide();
+}
+
 bool NetworkGameSelectorDialog::run()
 {
   int response = dialog->run();

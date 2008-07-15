@@ -71,6 +71,11 @@ void QuestAssignedDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void QuestAssignedDialog::hide()
+{
+  dialog->hide();
+}
+
 void QuestAssignedDialog::run()
 {
     questmap->resize();

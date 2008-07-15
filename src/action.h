@@ -130,6 +130,7 @@ class Action
                 CITY_CONQUER = 31,
                 RECRUIT_HERO = 32,
                 PLAYER_RENAME = 33,
+		CITY_DESTITUTE = 34
         };
                 
         
@@ -1376,7 +1377,13 @@ class Action_RecruitHero : public Action
 	//! Populate the action.
         bool fillData(Hero* hero, City *city, int cost, int alliesCount, const Army *ally);
     
-        //private:
+	Hero* getHero() const {return d_hero;};
+	Uint32 getCityId() const {return d_city;};
+	Uint32 getCost() const {return d_cost;};
+	Uint32 getNumAllies() const {return d_allies;};
+	Uint32 getAllyArmyType() const {return d_ally_army_type;};
+
+        private:
         Hero *d_hero;
         Uint32 d_city, d_cost, d_allies, d_ally_army_type;
 
@@ -1406,7 +1413,40 @@ class Action_RenamePlayer: public Action
 	//! Populate the action.
         bool fillData(std::string name);
     
-        //private:
+	std::string getName() const {return d_name;};
+
+        private:
 	std::string d_name;
+};
+
+//-----------------------------------------------------------------------------
+
+class Action_CityTooPoorToProduce: public Action
+{
+    public:
+	//! Make a new city-too-poor action
+        Action_CityTooPoorToProduce();
+	//! Copy constructor
+	Action_CityTooPoorToProduce(const Action_CityTooPoorToProduce &action);
+	//! Load a new too-poor action from an opened saved-game file.
+        Action_CityTooPoorToProduce(XML_Helper* helper);
+	//! Destroy a too-poor action.
+        ~Action_CityTooPoorToProduce();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this city occupied action to an opened saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Populate the action.
+        bool fillData(City *city, const Army *army);
+    
+	Uint32 getCityId() const {return d_city;}
+	Uint32 getArmyType() const {return d_army_type;}
+
+        private:
+	Uint32 d_city;
+	Uint32 d_army_type;
 };
 #endif //ACTION_H

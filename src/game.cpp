@@ -56,6 +56,7 @@
 #include "File.h"
 #include "Quest.h"
 #include "reward.h"
+#include "action.h"
 #include "game-parameters.h"
 #include "FogMap.h"
 #include "GameMap.h"
@@ -1033,6 +1034,19 @@ void Game::init_turn_for_player(Player* p)
 	    }
 	}
       received_diplomatic_proposal.emit(proposal_received);
+      //check to see if we've turned off production due to destitution.
+      bool destitute = false;
+      std::list<Action*> actions = p->getReportableActions();
+      std::list<Action*>::iterator it = actions.begin();
+      for (;it != actions.end(); it++)
+	{
+	  if ((*it)->getType() == Action::CITY_DESTITUTE)
+	    {
+	      destitute = true;
+	      break;
+	    }
+	}
+      city_too_poor_to_produce.emit(destitute);
     }
   else
     {

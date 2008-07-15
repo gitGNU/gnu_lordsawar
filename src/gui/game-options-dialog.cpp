@@ -89,6 +89,11 @@ void GameOptionsDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void GameOptionsDialog::hide()
+{
+  dialog->hide();
+}
+
 bool GameOptionsDialog::run()
 {
   std::list<sigc::connection> connections;

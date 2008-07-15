@@ -99,6 +99,11 @@ void DestinationDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void DestinationDialog::hide()
+{
+  dialog->hide();
+}
+
 void DestinationDialog::run()
 {
     vectormap->resize();

@@ -41,6 +41,7 @@ class LoadScenarioDialog: public sigc::trackable
     void set_parent_window(Gtk::Window &parent);
 
     void run();
+    void hide();
 
     std::string get_scenario_filename();
 

@@ -129,6 +129,11 @@ void QuestCompletedDialog::set_parent_window(Gtk::Window &parent)
   //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
+void QuestCompletedDialog::hide()
+{
+  dialog->hide();
+}
+
 void QuestCompletedDialog::run()
 {
   questmap->resize();

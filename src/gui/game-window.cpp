@@ -547,6 +547,9 @@ void GameWindow::setup_signals()
     (game->received_diplomatic_proposal.connect 
      (sigc::mem_fun(*this, &GameWindow::change_diplomacy_button_image)));
   connections.push_back 
+    (game->city_too_poor_to_produce.connect 
+     (sigc::mem_fun(*this, &GameWindow::show_city_production_report)));
+  connections.push_back 
     (game->can_end_turn.connect 
      (sigc::mem_fun(*this, &GameWindow::update_diplomacy_button)));
 
@@ -757,6 +760,16 @@ void GameWindow::setup_signals()
 
 }
 
+void GameWindow::show_city_production_report (bool destitute)
+{
+  if (!destitute)
+    return;
+  ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::PRODUCTION);
+  d.set_parent_window(*window.get());
+  d.run();
+  d.hide();
+}
+
 void GameWindow::change_diplomacy_button_image (bool proposals_present)
 {
   /* switch up the image. */
@@ -898,11 +911,11 @@ void GameWindow::on_load_game_activated()
 
   chooser.show_all();
   int res = chooser.run();
+  chooser.hide();
 
   if (res == Gtk::RESPONSE_ACCEPT)
     {
       std::string filename = chooser.get_filename();
-      chooser.hide();
       load_game(filename);
     }
 }
@@ -937,11 +950,11 @@ void GameWindow::on_save_game_as_activated()
 
   chooser.show_all();
   int res = chooser.run();
+  chooser.hide();
 
   if (res == Gtk::RESPONSE_ACCEPT)
     {
       std::string filename = chooser.get_filename();
-      chooser.hide();
 
       current_save_filename = filename;
 
@@ -965,6 +978,7 @@ void GameWindow::on_quit_activated()
   dialog->set_transient_for(*window.get());
 
   int response = dialog->run();
+  dialog->hide();
 
   if (response == 0) //end the game
     {
@@ -984,13 +998,17 @@ void GameWindow::on_quests_activated()
     {
       QuestReportDialog d(quests[0]);
       d.set_parent_window(*window.get());
-      return d.run();
+      d.run();
+      d.hide();
+      return;
     }
   else //no quest!
     {
       QuestReportDialog d(NULL);
       d.set_parent_window(*window.get());
-      return d.run();
+      d.run();
+      d.hide();
+      return;
     }
 }
 
@@ -1033,6 +1051,7 @@ void GameWindow::on_signpost_activated()
   e->set_activates_default(true);
   dialog->show_all();
   int response = dialog->run();
+  dialog->hide();
 
   if (response == 0)
     Playerlist::getActiveplayer()->signpostChange(s, e->get_text());
@@ -1048,6 +1067,7 @@ void GameWindow::on_stack_info_activated()
   StackInfoDialog d(currently_selected_stack);
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
   //on_stack_info_changed(currently_selected_stack);
   //FIXME, armies don't stay selected in the right way.  to reproduce:
   //go in with all three selected.  deselect middle one in stackinfodialog,
@@ -1076,6 +1096,7 @@ void GameWindow::on_disband_activated()
   l->set_text(_("Are you sure you want to disband this group?"));
   dialog->show_all();
   int response = dialog->run();
+  dialog->hide();
 
   if (response == 0) //disband the active stack
     Playerlist::getActiveplayer()->stackDisband(NULL);
@@ -1143,6 +1164,7 @@ void GameWindow::on_preferences_activated()
   PreferencesDialog d(false);
   d.set_parent_window(*window.get());
   d.run(game.get());
+  d.hide();
   if (current != Playerlist::getInstance()->getActiveplayer())
     game->end_turn();
 }
@@ -1161,6 +1183,7 @@ void GameWindow::on_fight_order_activated()
   FightOrderDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_levels_activated()
@@ -1170,6 +1193,7 @@ void GameWindow::on_levels_activated()
   HeroLevelsDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_ruin_report_activated()
@@ -1185,6 +1209,7 @@ void GameWindow::on_ruin_report_activated()
   RuinReportDialog d(pos);
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_army_bonus_activated()
@@ -1194,6 +1219,7 @@ void GameWindow::on_army_bonus_activated()
   ArmyBonusDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_item_bonus_activated()
@@ -1203,6 +1229,7 @@ void GameWindow::on_item_bonus_activated()
   ItemBonusDialog d;
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_army_report_activated()
@@ -1212,6 +1239,7 @@ void GameWindow::on_army_report_activated()
   ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::ARMY);
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_city_report_activated()
@@ -1221,6 +1249,7 @@ void GameWindow::on_city_report_activated()
   ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::CITY);
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_gold_report_activated()
@@ -1230,6 +1259,7 @@ void GameWindow::on_gold_report_activated()
   ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::GOLD);
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_production_report_activated()
@@ -1239,6 +1269,7 @@ void GameWindow::on_production_report_activated()
   ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::PRODUCTION);
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_winning_report_activated()
@@ -1248,6 +1279,7 @@ void GameWindow::on_winning_report_activated()
   ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::WINNING);
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 void GameWindow::on_city_history_activated()
 {
@@ -1257,6 +1289,7 @@ void GameWindow::on_city_history_activated()
 			HistoryReportDialog::CITY);
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_event_history_activated()
@@ -1267,6 +1300,7 @@ void GameWindow::on_event_history_activated()
 			HistoryReportDialog::EVENTS);
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_gold_history_activated()
@@ -1277,6 +1311,7 @@ void GameWindow::on_gold_history_activated()
 			HistoryReportDialog::GOLD);
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_winner_history_activated()
@@ -1287,6 +1322,7 @@ void GameWindow::on_winner_history_activated()
 			HistoryReportDialog::WINNING);
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_triumphs_activated()
@@ -1296,6 +1332,7 @@ void GameWindow::on_triumphs_activated()
   TriumphsDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_help_about_activated()
@@ -1315,6 +1352,7 @@ void GameWindow::on_help_about_activated()
   dialog->set_logo(to_pixbuf(logo));
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 
   return;
 }
@@ -1326,6 +1364,7 @@ void GameWindow::on_diplomacy_report_activated()
   DiplomacyReportDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_diplomacy_button_clicked()
@@ -1335,6 +1374,7 @@ void GameWindow::on_diplomacy_button_clicked()
   DiplomacyDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::stop_game()
@@ -1379,6 +1419,7 @@ void GameWindow::on_game_over(Player *winner)
 
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 
   stop_game();
   game_ended.emit();
@@ -1408,6 +1449,7 @@ void GameWindow::on_player_died(Player *player)
 
   dialog.show_all();
   dialog.run();
+  dialog.hide();
 }
 
 void GameWindow::on_message_requested(std::string msg)
@@ -1417,6 +1459,7 @@ void GameWindow::on_message_requested(std::string msg)
   //TimedMessageDialog dialog(*window.get(), msg, 30, 5);
   dialog.show_all();
   dialog.run();
+  dialog.hide();
 }
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Army *army)
@@ -1691,6 +1734,7 @@ void GameWindow::on_sage_visited (Ruin *ruin, Stack *stack)
 	       static_cast<Hero*>(stack->getFirstHero()), ruin);
   d.set_parent_window(*window.get());
   Reward *reward = d.run();
+  d.hide();
   ruin->setReward(reward);
 }
 
@@ -1699,6 +1743,7 @@ void GameWindow::on_ruin_rewarded (Reward_Ruin *reward)
   RuinRewardedDialog d(reward);
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
@@ -1752,6 +1797,7 @@ void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
 
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 }
 
 void GameWindow::on_ruinfight_started(Stack *attackers, Stack *defenders)
@@ -1779,6 +1825,7 @@ void GameWindow::on_ruinfight_started(Stack *attackers, Stack *defenders)
 
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 }
 void GameWindow::on_ruinfight_finished(Fight::Result result)
 {
@@ -1816,6 +1863,7 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
 
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 }
 
 void GameWindow::on_fight_started(Fight &fight)
@@ -1824,6 +1872,7 @@ void GameWindow::on_fight_started(Fight &fight)
 
   d.set_parent_window(*window.get());
   d.run(&d_quick_fights);
+  d.hide();
   if (Playerlist::getActiveplayer()->getType() == Player::HUMAN)
     d_quick_fights = false;
 }
@@ -1852,20 +1901,25 @@ void GameWindow::on_hero_brings_allies (int numAllies)
 
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 }
 
 bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, int gold)
 {
   HeroOfferDialog d(player, hero, city, gold);
   d.set_parent_window(*window.get());
-  return d.run();
+  bool retval = d.run();
+  d.hide();
+  return retval;
 }
 
 bool GameWindow::on_enemy_offers_surrender(int numPlayers)
 {
   SurrenderDialog d(numPlayers);
   d.set_parent_window(*window.get());
-  return d.run();
+  bool retval = d.run();
+  d.hide();
+  return retval;
 }
 
 void GameWindow::on_surrender_answered (bool accepted)
@@ -1878,6 +1932,7 @@ void GameWindow::on_surrender_answered (bool accepted)
       SurrenderRefusedDialog d;
       d.set_parent_window(*window.get());
       d.run();
+      d.hide();
     }
 }
 
@@ -1903,6 +1958,7 @@ bool GameWindow::on_stack_considers_treachery (Player *me, Stack *stack,
   label->set_text(s);
   dialog->show_all();
   int retval = dialog->run();
+  dialog->hide();
   if (retval == Gtk::RESPONSE_DELETE_EVENT)
     return false;
   else if (retval)
@@ -1917,6 +1973,7 @@ void GameWindow::on_temple_visited(Temple *temple)
   RuinReportDialog d(temple->getPos());
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 bool GameWindow::on_temple_searched(bool hasHero, Temple *temple, int blessCount)
@@ -1973,6 +2030,7 @@ bool GameWindow::on_temple_searched(bool hasHero, Temple *temple, int blessCount
     }
 
   int response = dialog->run();
+  dialog->hide();
 
   if (hasHero == false || GameScenario::s_play_with_quests == false)
     response = 1;
@@ -1987,7 +2045,8 @@ void GameWindow::on_quest_assigned(Hero *hero, Quest *quest)
 {
   QuestAssignedDialog d(hero, quest);
   d.set_parent_window(*window.get());
-  return d.run();
+  d.run();
+  d.hide();
 }
 
 static bool
@@ -2159,6 +2218,7 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
   dialog->show();
 
   int response = dialog->run();
+  dialog->hide();
   switch (response) {
   default:
   case 0: return CITY_DEFEATED_OCCUPY;
@@ -2193,6 +2253,7 @@ void GameWindow::on_city_looted (City *city, int gold)
 
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 }
 void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
 {
@@ -2244,6 +2305,7 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
 
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 }
 
 void GameWindow::on_city_sacked(City *city, int gold, std::list<Uint32> sacked_types)
@@ -2344,6 +2406,7 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<Uint32> sacked_t
     }
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 }
 
 void GameWindow::on_city_razed (City *city)
@@ -2368,6 +2431,7 @@ void GameWindow::on_city_razed (City *city)
 
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 }
 
 void GameWindow::on_city_visited(City *city)
@@ -2378,6 +2442,7 @@ void GameWindow::on_city_visited(City *city)
 
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::on_ruin_visited(Ruin *ruin)
@@ -2385,6 +2450,7 @@ void GameWindow::on_ruin_visited(Ruin *ruin)
   RuinReportDialog d(ruin->getPos());
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 
 void GameWindow::show_shield_turn()
@@ -2449,6 +2515,7 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 
       dialog->show_all();
       dialog->run();
+      dialog->hide();
       show();
     }
 	
@@ -2482,6 +2549,7 @@ void GameWindow::on_medal_awarded_to_army(Army *army)
 
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 }
 
 Army::Stat GameWindow::on_army_gains_level(Army *army)
@@ -2490,6 +2558,7 @@ Army::Stat GameWindow::on_army_gains_level(Army *army)
 
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 
   return d.get_selected_stat();
 }
@@ -2514,13 +2583,15 @@ void GameWindow::on_game_loaded(Player *player)
 
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 }
 
 void GameWindow::on_quest_completed(Quest *quest, Reward *reward)
 {
   QuestCompletedDialog d(quest, reward);
   d.set_parent_window(*window.get());
-  return d.run();
+  d.run();
+  d.hide();
 }
 
 void GameWindow::on_quest_expired(Quest *quest)
@@ -2557,6 +2628,7 @@ void GameWindow::on_quest_expired(Quest *quest)
 
   dialog->show_all();
   dialog->run();
+  dialog->hide();
 }
 
 void GameWindow::on_inspect_activated ()
@@ -2567,6 +2639,7 @@ void GameWindow::on_inspect_activated ()
 	       currently_selected_stack->getPos());
   d.set_parent_window(*window.get());
   d.run();
+  d.hide();
 }
 void GameWindow::on_plant_standard_activated ()
 {
@@ -2652,6 +2725,7 @@ void GameWindow::on_advice_asked(float percent)
 
   dialog->show_all();
   dialog->run();
+  dialog->hide();
   return;
 }
 
