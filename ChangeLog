@@ -1,3 +1,11 @@
+2008-07-15  Ben Asselstine
+
+	* improving the sage dialog.
+	* fixed bug where we weren't defogging ruin rewards.  Reported by Rob
+	  Kinyon.
+	* fixed map rewards generated on the fly to have a bounds that are on
+	  the map.
+
 2008-07-14  Ben Asselstine
 
 	* added a notification after a player has resigned.  Suggested by
