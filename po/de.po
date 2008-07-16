@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-07-13 19:43-0400\n"
+"POT-Creation-Date: 2008-07-14 20:29-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -1029,7 +1029,7 @@ msgstr "Abbrechen"
 #: dat/glade/quest-expired-dialog.glade.h:2
 #: dat/glade/preferences-dialog.glade.h:8
 #: dat/glade/game-options-dialog.glade.h:22
-#: dat/glade/stack-info-dialog.glade.h:4 src/gui/game-window.cpp:1947
+#: dat/glade/stack-info-dialog.glade.h:4 src/gui/game-window.cpp:2028
 #, fuzzy
 msgid "_Close"
 msgstr "Schließen"
@@ -1039,7 +1039,7 @@ msgstr "Schließen"
 msgid "<b>Reward</b>"
 msgstr "Editiere Reaktionen"
 
-#: dat/glade/editor/reward-dialog.glade.h:2 src/gui/sage-dialog.cpp:181
+#: dat/glade/editor/reward-dialog.glade.h:2 src/gui/sage-dialog.cpp:186
 #, fuzzy
 msgid "Allies"
 msgstr "Algier"
@@ -1065,7 +1065,7 @@ msgstr "Zufallskarte"
 
 #: dat/glade/editor/reward-dialog.glade.h:7 dat/glade/game-window.glade.h:13
 #: dat/glade/history-report-dialog.glade.h:3 dat/glade/report-dialog.glade.h:5
-#: src/gui/sage-dialog.cpp:147 src/editor/players-dialog.cpp:103
+#: src/gui/sage-dialog.cpp:152 src/editor/players-dialog.cpp:103
 msgid "Gold"
 msgstr "Gold"
 
@@ -1363,7 +1363,7 @@ msgid "Buy a production capability"
 msgstr "Produktion kaufen"
 
 #: dat/glade/city-window.glade.h:2 dat/glade/destination-dialog.glade.h:8
-#: src/gui/city-window.cpp:255 src/gui/destination-dialog.cpp:220
+#: src/gui/city-window.cpp:260 src/gui/destination-dialog.cpp:225
 #, fuzzy
 msgid "Current:"
 msgstr "Zähler:"
@@ -1548,7 +1548,7 @@ msgstr "Wähle nächste aktive Armee"
 msgid "Diplomacy"
 msgstr "Armeeset"
 
-#: dat/glade/game-window.glade.h:7 src/gui/game-window.cpp:1071
+#: dat/glade/game-window.glade.h:7 src/gui/game-window.cpp:1091
 #, fuzzy
 msgid "Disband"
 msgstr "Lissabon"
@@ -1689,7 +1689,7 @@ msgstr "Beenden"
 msgid "Reports"
 msgstr "Reports"
 
-#: dat/glade/game-window.glade.h:40 src/gui/game-window.cpp:1101
+#: dat/glade/game-window.glade.h:40 src/gui/game-window.cpp:1142
 #, fuzzy
 msgid "Resign"
 msgstr "Ruine"
@@ -1718,7 +1718,7 @@ msgstr "Betreten von Ruine oder Tempel"
 msgid "Select next stack that can move"
 msgstr "Wähle nächste Armee mit Bewegungspunkten"
 
-#: dat/glade/game-window.glade.h:47 src/gui/game-window.cpp:1019
+#: dat/glade/game-window.glade.h:47 src/gui/game-window.cpp:1037
 #: src/editor/main-window.cpp:934
 #, fuzzy
 msgid "Signpost"
@@ -2132,7 +2132,7 @@ msgstr ""
 msgid "_Attack!"
 msgstr "Armee"
 
-#: dat/glade/stack-info-dialog.glade.h:3 src/gui/stack-info-dialog.cpp:186
+#: dat/glade/stack-info-dialog.glade.h:3 src/gui/stack-info-dialog.cpp:191
 #: src/editor/stack-dialog.cpp:86
 msgid "Str"
 msgstr ""
@@ -2456,35 +2456,35 @@ msgstr ""
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
 
-#: src/game.cpp:585
+#: src/game.cpp:586
 #, fuzzy
 msgid "%1 (capital city)"
 msgstr "%i Vitalität"
 
-#: src/game.cpp:591
+#: src/game.cpp:592
 msgid "Under rule of %1"
 msgstr ""
 
-#: src/game.cpp:594 src/gui/city-window.cpp:162
+#: src/game.cpp:595 src/gui/city-window.cpp:167
 #, fuzzy
 msgid "Income: %1"
 msgstr "Artefakt:"
 
-#: src/game.cpp:596
+#: src/game.cpp:597
 #, fuzzy
 msgid "Defense: %1"
 msgstr "Verteidigung: %i"
 
-#: src/game.cpp:600
+#: src/game.cpp:601
 #, fuzzy
 msgid "Status: razed!"
 msgstr "Status:"
 
-#: src/game.cpp:630
+#: src/game.cpp:631
 msgid "Explored"
 msgstr ""
 
-#: src/game.cpp:633
+#: src/game.cpp:634
 msgid "Unexplored"
 msgstr ""
 
@@ -2729,80 +2729,80 @@ msgstr ""
 msgid "You must conquer the city \"%s\" and burn it to the ground."
 msgstr ""
 
-#: src/gui/city-window.cpp:155
+#: src/gui/city-window.cpp:160
 #, fuzzy
 msgid "Capital city of %1"
 msgstr "Festung %s"
 
-#: src/gui/city-window.cpp:160
+#: src/gui/city-window.cpp:165
 #, fuzzy
 msgid "Defence: %1"
 msgstr "Verteidigung: %i"
 
-#: src/gui/city-window.cpp:260 src/gui/buy-production-dialog.cpp:149
+#: src/gui/city-window.cpp:265 src/gui/buy-production-dialog.cpp:154
 #, fuzzy
 msgid "No production"
 msgstr "Keine freie Produktion"
 
-#: src/gui/city-window.cpp:274 src/gui/army-info-tip.cpp:89
+#: src/gui/city-window.cpp:279 src/gui/army-info-tip.cpp:89
 #, fuzzy
 msgid "Time: %1"
 msgstr "Größe:"
 
-#: src/gui/city-window.cpp:276 src/gui/army-info-tip.cpp:81
-#: src/gui/buy-production-dialog.cpp:163 src/gui/hero-dialog.cpp:242
+#: src/gui/city-window.cpp:281 src/gui/army-info-tip.cpp:81
+#: src/gui/buy-production-dialog.cpp:168 src/gui/hero-dialog.cpp:247
 #: src/gui/army-gains-level-dialog.cpp:66
 #: src/editor/select-army-dialog.cpp:181
 #, fuzzy
 msgid "Strength: %1"
 msgstr "Stärke: %i"
 
-#: src/gui/city-window.cpp:281 src/gui/buy-production-dialog.cpp:169
+#: src/gui/city-window.cpp:286 src/gui/buy-production-dialog.cpp:174
 #: src/gui/army-gains-level-dialog.cpp:63
 #: src/editor/select-army-dialog.cpp:184
 #, fuzzy
 msgid "Moves: %1"
 msgstr "Bewegung: %i"
 
-#: src/gui/city-window.cpp:283 src/gui/army-info-tip.cpp:91
-#: src/gui/buy-production-dialog.cpp:167
+#: src/gui/city-window.cpp:288 src/gui/army-info-tip.cpp:91
+#: src/gui/buy-production-dialog.cpp:172
 #, fuzzy
 msgid "Cost: %1"
 msgstr "Kosten:"
 
-#: src/gui/city-window.cpp:285 src/gui/destination-dialog.cpp:231
+#: src/gui/city-window.cpp:290 src/gui/destination-dialog.cpp:236
 msgid "%1t"
 msgstr ""
 
-#: src/gui/city-window.cpp:290
+#: src/gui/city-window.cpp:295
 msgid ", then to %1"
 msgstr ""
 
-#: src/gui/city-window.cpp:431
+#: src/gui/city-window.cpp:436
 #, fuzzy
 msgid "Rename City"
 msgstr "Zerstörte Stadt"
 
-#: src/gui/city-window.cpp:439
+#: src/gui/city-window.cpp:444
 msgid "Type the new name for this city:"
 msgstr ""
 
-#: src/gui/city-window.cpp:466
+#: src/gui/city-window.cpp:471
 #, fuzzy
 msgid "Raze City"
 msgstr "Zerstörte Stadt"
 
-#: src/gui/city-window.cpp:472
+#: src/gui/city-window.cpp:477
 #, fuzzy
 msgid "Are you sure that you want to raze %1?"
 msgstr "Soll dieses Ereignis wirklich entfernt werden?"
 
-#: src/gui/city-window.cpp:475
+#: src/gui/city-window.cpp:480
 msgid "You won't be popular!"
 msgstr ""
 
-#: src/gui/preferences-dialog.cpp:66 src/gui/preferences-dialog.cpp:127
-#: src/gui/preferences-dialog.cpp:140
+#: src/gui/preferences-dialog.cpp:66 src/gui/preferences-dialog.cpp:132
+#: src/gui/preferences-dialog.cpp:145
 msgid "Human"
 msgstr "Spieler"
 
@@ -2836,85 +2836,85 @@ msgid_plural "You have been rewarded with %1 allies."
 msgstr[0] "Du wurdest mit %i Goldstück belohnt!"
 msgstr[1] "Du wurdest mit %i Goldstücken belohnt!"
 
-#: src/gui/quest-completed-dialog.cpp:105 src/gui/ruin-rewarded-dialog.cpp:80
+#: src/gui/quest-completed-dialog.cpp:105 src/gui/ruin-rewarded-dialog.cpp:85
 msgid "where powerful allies can be found!"
 msgstr ""
 
-#: src/gui/quest-completed-dialog.cpp:109 src/gui/ruin-rewarded-dialog.cpp:84
+#: src/gui/quest-completed-dialog.cpp:109 src/gui/ruin-rewarded-dialog.cpp:89
 msgid "where the %1 can be found!"
 msgstr ""
 
-#: src/gui/quest-completed-dialog.cpp:113 src/gui/ruin-rewarded-dialog.cpp:87
+#: src/gui/quest-completed-dialog.cpp:113 src/gui/ruin-rewarded-dialog.cpp:92
 msgid "where a map can be found!"
 msgstr ""
 
-#: src/gui/quest-completed-dialog.cpp:115 src/gui/ruin-rewarded-dialog.cpp:89
+#: src/gui/quest-completed-dialog.cpp:115 src/gui/ruin-rewarded-dialog.cpp:94
 msgid "where crapola can be found!"
 msgstr ""
 
-#: src/gui/quest-completed-dialog.cpp:117 src/gui/ruin-rewarded-dialog.cpp:91
+#: src/gui/quest-completed-dialog.cpp:117 src/gui/ruin-rewarded-dialog.cpp:96
 msgid "where gold can be found!"
 msgstr ""
 
-#: src/gui/quest-completed-dialog.cpp:119 src/gui/ruin-rewarded-dialog.cpp:93
+#: src/gui/quest-completed-dialog.cpp:119 src/gui/ruin-rewarded-dialog.cpp:98
 msgid "where something important can be found!"
 msgstr ""
 
-#: src/gui/triumphs-dialog.cpp:102
+#: src/gui/triumphs-dialog.cpp:106
 msgid "%1 hero earned fates worthy of legend!"
 msgid_plural "%1 heroes earned fates worthy of legend!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:107
+#: src/gui/triumphs-dialog.cpp:111
 msgid "%1 so-called hero slaughtered without mercy!"
 msgid_plural "%1 so-called heroes slaughtered without mercy!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:132
+#: src/gui/triumphs-dialog.cpp:136
 msgid "%1 navy not currently in service!"
 msgid_plural "%1 navies not currently in service!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:136
+#: src/gui/triumphs-dialog.cpp:140
 msgid "%1 navy rests with the fishes!"
 msgid_plural "%1 navies rest with the fishes!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:147
+#: src/gui/triumphs-dialog.cpp:151
 msgid "%1 army died to ensure final victory!"
 msgid_plural "%1 armies died to ensure final victory!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:151
+#: src/gui/triumphs-dialog.cpp:155
 msgid "%1 army smote like sheep!"
 msgid_plural "%1 armies smote like sheep!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:164
+#: src/gui/triumphs-dialog.cpp:168
 msgid "%1 unnatural creature returned from whence it came!"
 msgid_plural "%1 unnatural creatures returned from whence they came!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:168
+#: src/gui/triumphs-dialog.cpp:172
 msgid "%1 unnatural creature dispatched!"
 msgid_plural "%1 unnatural creatures dispatched!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:192
+#: src/gui/triumphs-dialog.cpp:196
 msgid "%1 standard betrayed by it's guardian!"
 msgid_plural "%1 standards betrayed by it's guardian!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:197
+#: src/gui/triumphs-dialog.cpp:201
 msgid "%1 standard wrested from a vanquished foe!"
 msgid_plural "%1 standards wrested from a vanquished foe!"
 msgstr[0] ""
@@ -2929,13 +2929,13 @@ msgstr ""
 msgid "Movement: %1"
 msgstr "Bewegung: %i"
 
-#: src/gui/army-info-tip.cpp:96 src/gui/hero-dialog.cpp:246
+#: src/gui/army-info-tip.cpp:96 src/gui/hero-dialog.cpp:251
 #, fuzzy
 msgid "Moves: %1/%2"
 msgstr "Bewegung: %i"
 
-#: src/gui/army-info-tip.cpp:99 src/gui/buy-production-dialog.cpp:173
-#: src/gui/hero-dialog.cpp:249 src/editor/select-army-dialog.cpp:190
+#: src/gui/army-info-tip.cpp:99 src/gui/buy-production-dialog.cpp:178
+#: src/gui/hero-dialog.cpp:254 src/editor/select-army-dialog.cpp:190
 #, fuzzy
 msgid "Upkeep: %1"
 msgstr "Unterhalt: %i"
@@ -2950,12 +2950,12 @@ msgstr "FreeLords-Karten"
 msgid "New Scenario"
 msgstr "Editiere Reaktionen"
 
-#: src/gui/buy-production-dialog.cpp:160
+#: src/gui/buy-production-dialog.cpp:165
 #, fuzzy
 msgid "Duration: %1"
 msgstr "Dauer: %i"
 
-#: src/gui/buy-production-dialog.cpp:171 src/editor/select-army-dialog.cpp:188
+#: src/gui/buy-production-dialog.cpp:176 src/editor/select-army-dialog.cpp:188
 #, fuzzy
 msgid "Hitpoints: %1"
 msgstr "Lebenspunkte: %i"
@@ -2981,101 +2981,101 @@ msgstr "und %i Goldstück gefunden!"
 msgid "Score"
 msgstr "Scone"
 
-#: src/gui/history-report-dialog.cpp:355
+#: src/gui/history-report-dialog.cpp:360
 #, fuzzy
 msgid "City History"
 msgstr "Stadtinformationen"
 
-#: src/gui/history-report-dialog.cpp:358
+#: src/gui/history-report-dialog.cpp:363
 #, fuzzy
 msgid "Event History"
 msgstr "Ereignisse"
 
-#: src/gui/history-report-dialog.cpp:361
+#: src/gui/history-report-dialog.cpp:366
 #, fuzzy
 msgid "Gold History"
 msgstr "Goldreport"
 
-#: src/gui/history-report-dialog.cpp:364
+#: src/gui/history-report-dialog.cpp:369
 #, fuzzy
 msgid "Winner History"
 msgstr "Stadtinformationen"
 
-#: src/gui/history-report-dialog.cpp:391 src/gui/history-report-dialog.cpp:410
+#: src/gui/history-report-dialog.cpp:396 src/gui/history-report-dialog.cpp:415
 msgid "On turn %1 you %2 "
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:393
+#: src/gui/history-report-dialog.cpp:398
 #, fuzzy
 msgid "%1 gold piece!"
 msgid_plural "%1 gold pieces!"
 msgstr[0] "und %i Goldstück gefunden!"
 msgstr[1] "und %i Goldstücke gefunden!"
 
-#: src/gui/history-report-dialog.cpp:412
+#: src/gui/history-report-dialog.cpp:417
 msgid "%1 city!"
 msgid_plural "%1 cities!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/history-report-dialog.cpp:434
+#: src/gui/history-report-dialog.cpp:439
 msgid "On turn %1 you %2 coming %3"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:460
+#: src/gui/history-report-dialog.cpp:465
 msgid "%1 finds a sage!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:468
+#: src/gui/history-report-dialog.cpp:473
 msgid "%1 emerges in %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:477
+#: src/gui/history-report-dialog.cpp:482
 msgid "%1 begins a quest!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:485
+#: src/gui/history-report-dialog.cpp:490
 msgid "%1 finishes a quest!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:493
+#: src/gui/history-report-dialog.cpp:498
 msgid "%1 is killed in %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:502
+#: src/gui/history-report-dialog.cpp:507
 msgid "%1 is killed in battle!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:510
+#: src/gui/history-report-dialog.cpp:515
 msgid "%1 is killed while searching!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:519
+#: src/gui/history-report-dialog.cpp:524
 msgid "%1 conquers %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:528
+#: src/gui/history-report-dialog.cpp:533
 msgid "%1 utterly vanquished!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:538
+#: src/gui/history-report-dialog.cpp:543
 msgid "%1 at peace with %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:548
+#: src/gui/history-report-dialog.cpp:553
 msgid "%1 at war with %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:558
+#: src/gui/history-report-dialog.cpp:563
 #, fuzzy
 msgid "Treachery by %1 on %2!"
 msgstr "Bogenschütze"
 
-#: src/gui/history-report-dialog.cpp:567
+#: src/gui/history-report-dialog.cpp:572
 msgid "%1 finds allies!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:572
+#: src/gui/history-report-dialog.cpp:577
 msgid "unknown"
 msgstr ""
 
@@ -3098,33 +3098,33 @@ msgstr "Armeen"
 msgid "Status"
 msgstr "Status:"
 
-#: src/gui/hero-dialog.cpp:143 src/gui/hero-dialog.cpp:176
-#: src/gui/hero-dialog.cpp:190
+#: src/gui/hero-dialog.cpp:148 src/gui/hero-dialog.cpp:181
+#: src/gui/hero-dialog.cpp:195
 #, fuzzy
 msgid "In backpack"
 msgstr "Rucksack"
 
-#: src/gui/hero-dialog.cpp:161 src/gui/hero-dialog.cpp:192
+#: src/gui/hero-dialog.cpp:166 src/gui/hero-dialog.cpp:197
 #, fuzzy
 msgid "On the ground"
 msgstr "einer neuen Runde"
 
-#: src/gui/hero-dialog.cpp:213
+#: src/gui/hero-dialog.cpp:218
 #, fuzzy
 msgid "Battle: %1"
 msgstr "Artefakt:"
 
-#: src/gui/hero-dialog.cpp:231
+#: src/gui/hero-dialog.cpp:236
 #, fuzzy
 msgid "Command: %1"
 msgstr "Kommentar:"
 
-#: src/gui/hero-dialog.cpp:233 src/gui/game-window.cpp:2456
+#: src/gui/hero-dialog.cpp:238 src/gui/game-window.cpp:2547
 #, fuzzy
 msgid "Level: %1"
 msgstr "Stufe:"
 
-#: src/gui/hero-dialog.cpp:235 src/gui/game-window.cpp:2454
+#: src/gui/hero-dialog.cpp:240 src/gui/game-window.cpp:2545
 #, fuzzy
 msgid "Experience: %1"
 msgstr "Verteidigung: %i"
@@ -3134,330 +3134,330 @@ msgstr "Verteidigung: %i"
 msgid "Neutral"
 msgstr "Neutraler Spieler"
 
-#: src/gui/game-window.cpp:889 src/gui/splash-window.cpp:178
+#: src/gui/game-window.cpp:902 src/gui/splash-window.cpp:178
 #, fuzzy
 msgid "Choose Game to Load"
 msgstr "Terraintyp"
 
-#: src/gui/game-window.cpp:920
+#: src/gui/game-window.cpp:933
 #, fuzzy
 msgid "Game was not saved!"
 msgstr "Spiel gespeichert."
 
-#: src/gui/game-window.cpp:927 src/editor/armyset-window.cpp:470
+#: src/gui/game-window.cpp:940 src/editor/armyset-window.cpp:470
 #: src/editor/main-window.cpp:677 src/editor/tileset-window.cpp:548
 #: src/editor/tileset-window.cpp:884
 #, fuzzy
 msgid "Choose a Name"
 msgstr "Wählt Euer Verhalten!"
 
-#: src/gui/game-window.cpp:952
+#: src/gui/game-window.cpp:965
 #, fuzzy
 msgid "Error saving game!"
 msgstr "Fehler beim Speichern. Spiel nicht gespeichert."
 
-#: src/gui/game-window.cpp:1029
+#: src/gui/game-window.cpp:1047
 msgid "Change the message on this sign:"
 msgstr ""
 
-#: src/gui/game-window.cpp:1076
+#: src/gui/game-window.cpp:1096
 #, fuzzy
 msgid "Are you sure you want to disband this group?"
 msgstr "Möchtest du wirklich diese Produktion entfernen?"
 
-#: src/gui/game-window.cpp:1106
+#: src/gui/game-window.cpp:1147
 #, fuzzy
 msgid "Are you sure you want to resign?"
 msgstr "Soll dieses Ereignis wirklich entfernt werden?"
 
-#: src/gui/game-window.cpp:1352
+#: src/gui/game-window.cpp:1416
 msgid "Congratulations to %1 for conquering the world!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1368
+#: src/gui/game-window.cpp:1433
 msgid "The rule of %1 has permanently ended!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1374
+#: src/gui/game-window.cpp:1439
 msgid "No further human resistance is possible"
 msgstr ""
 
-#: src/gui/game-window.cpp:1376
+#: src/gui/game-window.cpp:1441
 msgid "but the battle will continue!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1378
+#: src/gui/game-window.cpp:1443
 msgid "Press `CTRL-P' to stop the war"
 msgstr ""
 
-#: src/gui/game-window.cpp:1380
+#: src/gui/game-window.cpp:1445
 msgid "and visit the sites of thy old battles."
 msgstr ""
 
-#: src/gui/game-window.cpp:1705
+#: src/gui/game-window.cpp:1774
 msgid "%1 finds "
 msgstr ""
 
-#: src/gui/game-window.cpp:1709
+#: src/gui/game-window.cpp:1778
 #, fuzzy
 msgid "%1 gold pieces."
 msgstr "und %i Goldstück gefunden!"
 
-#: src/gui/game-window.cpp:1714
+#: src/gui/game-window.cpp:1783
 #, fuzzy
 msgid "%1 allies!"
 msgstr "Algier"
 
-#: src/gui/game-window.cpp:1719
+#: src/gui/game-window.cpp:1788
 #, fuzzy
 msgid "the %1!"
 msgstr "Artefakt:"
 
-#: src/gui/game-window.cpp:1724
+#: src/gui/game-window.cpp:1793
 #, fuzzy
 msgid "a map!"
 msgstr "Karte laden"
 
-#: src/gui/game-window.cpp:1746
+#: src/gui/game-window.cpp:1816
 #, fuzzy
 msgid "Searching"
 msgstr "Durchsucht:"
 
-#: src/gui/game-window.cpp:1772
+#: src/gui/game-window.cpp:1843
 msgid "Hero Victorious"
 msgstr ""
 
-#: src/gui/game-window.cpp:1774
+#: src/gui/game-window.cpp:1845
 #, fuzzy
 msgid "Hero Defeated"
 msgstr "Stadt unterworfen"
 
-#: src/gui/game-window.cpp:1781
+#: src/gui/game-window.cpp:1852
 msgid "...and is victorious!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1783
+#: src/gui/game-window.cpp:1854
 msgid "...and is slain by it!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1819
+#: src/gui/game-window.cpp:1892
 msgid "Hero brings allies!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1825
+#: src/gui/game-window.cpp:1898
 msgid "The hero brings %1 ally!"
 msgid_plural "The hero brings %1 allies!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/game-window.cpp:1851
+#: src/gui/game-window.cpp:1929
 msgid "You graciously and benevolently accept their offer."
 msgstr ""
 
-#: src/gui/game-window.cpp:1875
+#: src/gui/game-window.cpp:1954
 #, fuzzy
 msgid "Are you sure you want to attack %1?"
 msgstr "Soll dieses Ereignis wirklich entfernt werden?"
 
-#: src/gui/game-window.cpp:1878
+#: src/gui/game-window.cpp:1957
 msgid "Other players may not like this!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1927
+#: src/gui/game-window.cpp:2008
 #, fuzzy
 msgid "%1 army has been blessed!"
 msgid_plural "%1 armies have been blessed!"
 msgstr[0] "Eure Einheiten wurden gesegnet."
 msgstr[1] "Eure Einheiten wurden gesegnet."
 
-#: src/gui/game-window.cpp:1930
+#: src/gui/game-window.cpp:2011
 msgid "We have already blessed thee!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1933
+#: src/gui/game-window.cpp:2014
 #, fuzzy
 msgid "Seek more blessings in far temples!"
 msgstr "Betreten von Ruine oder Tempel"
 
-#: src/gui/game-window.cpp:1938
+#: src/gui/game-window.cpp:2019
 msgid "Do you seek a quest?"
 msgstr ""
 
-#: src/gui/game-window.cpp:2076
+#: src/gui/game-window.cpp:2159
 msgid "%1, you have triumphed in the battle of %2."
 msgstr ""
 
-#: src/gui/game-window.cpp:2077
+#: src/gui/game-window.cpp:2160
 msgid "%1, you have claimed victory in the battle of %2."
 msgstr ""
 
-#: src/gui/game-window.cpp:2078
+#: src/gui/game-window.cpp:2161
 msgid "%1, you have shown no mercy in the battle of %2."
 msgstr ""
 
-#: src/gui/game-window.cpp:2079
+#: src/gui/game-window.cpp:2162
 msgid "%1, you have slain the foe in the battle of %2."
 msgstr ""
 
-#: src/gui/game-window.cpp:2159
+#: src/gui/game-window.cpp:2243
 msgid "%1 Looted"
 msgstr ""
 
-#: src/gui/game-window.cpp:2166
+#: src/gui/game-window.cpp:2250
 #, fuzzy
 msgid "Your armies loot %1 gold piece."
 msgid_plural "Your armies loot %1 gold pieces."
 msgstr[0] "Du wurdest mit %i Goldstück belohnt!"
 msgstr[1] "Du wurdest mit %i Goldstücken belohnt!"
 
-#: src/gui/game-window.cpp:2189
+#: src/gui/game-window.cpp:2274
 #, fuzzy
 msgid "Pillaged %1"
 msgstr "Plündern"
 
-#: src/gui/game-window.cpp:2216
+#: src/gui/game-window.cpp:2301
 msgid "The loot is worth %1 gold piece."
 msgid_plural "The loot is worth %1 gold pieces."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/game-window.cpp:2240
+#: src/gui/game-window.cpp:2326
 #, fuzzy
 msgid "Sacked %1"
 msgstr "StackKilled"
 
-#: src/gui/game-window.cpp:2248
+#: src/gui/game-window.cpp:2334
 msgid "Ability to produce %1 unit has been lost"
 msgid_plural "Ability to produce %1 units has been lost"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/game-window.cpp:2337
+#: src/gui/game-window.cpp:2424
 #, fuzzy
 msgid "Razed %1"
 msgstr "Zerstören"
 
-#: src/gui/game-window.cpp:2342
+#: src/gui/game-window.cpp:2429
 msgid "The city of %1 is in ruins!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2422
+#: src/gui/game-window.cpp:2512
 #, fuzzy
 msgid ""
 "%1\n"
 "Turn %2"
 msgstr "Runde: %i"
 
-#: src/gui/game-window.cpp:2452
+#: src/gui/game-window.cpp:2543
 msgid "%1 is awarded a medal!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2488
+#: src/gui/game-window.cpp:2581
 msgid "%1, your turn continues."
 msgstr ""
 
-#: src/gui/game-window.cpp:2517
+#: src/gui/game-window.cpp:2612
 #, fuzzy
 msgid "%1 did not complete the quest."
 msgstr "Dein Held %s hat die Mission nicht geschafft."
 
-#: src/gui/game-window.cpp:2570
+#: src/gui/game-window.cpp:2667
 #, fuzzy
 msgid "Advisor!"
 msgstr "Audio"
 
-#: src/gui/game-window.cpp:2578
+#: src/gui/game-window.cpp:2675
 msgid "My Good Lord!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2580
+#: src/gui/game-window.cpp:2677
 #, fuzzy
 msgid "Great and Worthy Lord!"
 msgstr "Orkische Galleone"
 
-#: src/gui/game-window.cpp:2582
+#: src/gui/game-window.cpp:2679
 msgid "O Champion of Justice!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2584
+#: src/gui/game-window.cpp:2681
 msgid "O Mighty Leader!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2586
+#: src/gui/game-window.cpp:2683
 #, fuzzy
 msgid "O Great Warlord!"
 msgstr "Orkische Galleone"
 
-#: src/gui/game-window.cpp:2591
+#: src/gui/game-window.cpp:2688
 msgid "This battle will surely be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2593 src/gui/game-window.cpp:2599
+#: src/gui/game-window.cpp:2690 src/gui/game-window.cpp:2696
 msgid "A battle here would be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2595
+#: src/gui/game-window.cpp:2692
 msgid "I believe this battle will surely be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2597
+#: src/gui/game-window.cpp:2694
 msgid "This battle would be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2601
+#: src/gui/game-window.cpp:2698
 msgid "I believe this battle will be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2603
+#: src/gui/game-window.cpp:2700
 msgid "This battle shall be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2608
+#: src/gui/game-window.cpp:2705
 msgid "as simple as butchering sleeping cattle!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2610
+#: src/gui/game-window.cpp:2707
 msgid "an easy victory!  We cannot lose!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2612
+#: src/gui/game-window.cpp:2709
 msgid "a comfortable victory"
 msgstr ""
 
-#: src/gui/game-window.cpp:2614
+#: src/gui/game-window.cpp:2711
 msgid "a hard fought victory! But we shall win!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2616
+#: src/gui/game-window.cpp:2713
 msgid "very evenly matched!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2618
+#: src/gui/game-window.cpp:2715
 msgid "difficult but not impossible to win!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2620
+#: src/gui/game-window.cpp:2717
 msgid "a brave choice! I leave it to thee!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2622
+#: src/gui/game-window.cpp:2719
 msgid "a foolish decision!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2624
+#: src/gui/game-window.cpp:2721
 msgid "sheerest folly!  Thou shouldst not attack!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2626
+#: src/gui/game-window.cpp:2723
 #, fuzzy
 msgid "complete and utter suicide!"
 msgstr "Dein Held %s hat die Mission abgeschlossen."
 
-#: src/gui/hero-levels-dialog.cpp:99 src/gui/report-dialog.cpp:305
+#: src/gui/hero-levels-dialog.cpp:104 src/gui/report-dialog.cpp:310
 msgid "%1"
 msgstr ""
 
-#: src/gui/ruin-rewarded-dialog.cpp:76
+#: src/gui/ruin-rewarded-dialog.cpp:81
 msgid "The sages show thee the site of %1\n"
 msgstr ""
 
@@ -3477,12 +3477,12 @@ msgid ""
 "Do you accept?"
 msgstr ""
 
-#: src/gui/stack-info-dialog.cpp:189
+#: src/gui/stack-info-dialog.cpp:194
 #, fuzzy
 msgid "Move"
 msgstr "Bewegung:"
 
-#: src/gui/stack-info-dialog.cpp:192
+#: src/gui/stack-info-dialog.cpp:197
 #, fuzzy
 msgid "Bonus"
 msgstr "Bonus"
@@ -3492,24 +3492,24 @@ msgstr "Bonus"
 msgid "Ruins and Temples"
 msgstr "Zerstörter Tempel"
 
-#: src/gui/ruin-report-dialog.cpp:128 src/editor/main-window.cpp:932
+#: src/gui/ruin-report-dialog.cpp:133 src/editor/main-window.cpp:932
 msgid "Ruin"
 msgstr "Ruine"
 
-#: src/gui/ruin-report-dialog.cpp:130
+#: src/gui/ruin-report-dialog.cpp:135
 #, fuzzy
 msgid "Stronghold"
 msgstr "Stärke:"
 
-#: src/gui/ruin-report-dialog.cpp:133
+#: src/gui/ruin-report-dialog.cpp:138
 msgid "Yes"
 msgstr "Ja"
 
-#: src/gui/ruin-report-dialog.cpp:135 src/gui/ruin-report-dialog.cpp:140
+#: src/gui/ruin-report-dialog.cpp:140 src/gui/ruin-report-dialog.cpp:145
 msgid "No"
 msgstr "Nein"
 
-#: src/gui/ruin-report-dialog.cpp:139 src/editor/main-window.cpp:936
+#: src/gui/ruin-report-dialog.cpp:144 src/editor/main-window.cpp:936
 msgid "Temple"
 msgstr "Tempel"
 
@@ -3558,95 +3558,95 @@ msgid_plural "You produced %1 armies this turn!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:182
+#: src/gui/report-dialog.cpp:187
 #, fuzzy
 msgid "Army Report"
 msgstr "Armeeset"
 
-#: src/gui/report-dialog.cpp:185
+#: src/gui/report-dialog.cpp:190
 #, fuzzy
 msgid "City Report"
 msgstr "Stadtreport"
 
-#: src/gui/report-dialog.cpp:188
+#: src/gui/report-dialog.cpp:193
 #, fuzzy
 msgid "Gold Report"
 msgstr "Goldreport"
 
-#: src/gui/report-dialog.cpp:191
+#: src/gui/report-dialog.cpp:196
 #, fuzzy
 msgid "Production Report"
 msgstr "Produktionskosten:"
 
-#: src/gui/report-dialog.cpp:194
+#: src/gui/report-dialog.cpp:199
 #, fuzzy
 msgid "Winning Report"
 msgstr "Warnung"
 
-#: src/gui/report-dialog.cpp:219
+#: src/gui/report-dialog.cpp:224
 #, fuzzy
 msgid "You have %1 army!"
 msgid_plural "You have %1 armies!"
 msgstr[0] "Du hast bereits %i getötet."
 msgstr[1] "Du hast bereits %i getötet."
 
-#: src/gui/report-dialog.cpp:250
+#: src/gui/report-dialog.cpp:255
 msgid "You have %1 city!"
 msgid_plural "You have %1 cities!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:281
+#: src/gui/report-dialog.cpp:286
 #, fuzzy
 msgid "You have %1 gold piece!"
 msgid_plural "You have %1 gold pieces!"
 msgstr[0] "und %i Goldstück gefunden!"
 msgstr[1] "und %i Goldstücke gefunden!"
 
-#: src/gui/report-dialog.cpp:295
+#: src/gui/report-dialog.cpp:300
 #, fuzzy
 msgid "first"
 msgstr "Erkundung"
 
-#: src/gui/report-dialog.cpp:295
+#: src/gui/report-dialog.cpp:300
 msgid "second"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:295
+#: src/gui/report-dialog.cpp:300
 #, fuzzy
 msgid "third"
 msgstr "Anderes"
 
-#: src/gui/report-dialog.cpp:295
+#: src/gui/report-dialog.cpp:300
 #, fuzzy
 msgid "fourth"
 msgstr "Autoren"
 
-#: src/gui/report-dialog.cpp:295
+#: src/gui/report-dialog.cpp:300
 #, fuzzy
 msgid "fifth"
 msgstr "Erkundung"
 
-#: src/gui/report-dialog.cpp:296
+#: src/gui/report-dialog.cpp:301
 #, fuzzy
 msgid "sixth"
 msgstr "Erkundung"
 
-#: src/gui/report-dialog.cpp:296
+#: src/gui/report-dialog.cpp:301
 #, fuzzy
 msgid "seventh"
 msgstr "RaiseEvent"
 
-#: src/gui/report-dialog.cpp:296
+#: src/gui/report-dialog.cpp:301
 #, fuzzy
 msgid "eighth"
 msgstr "Erkundung"
 
-#: src/gui/report-dialog.cpp:327
+#: src/gui/report-dialog.cpp:332
 msgid "You are coming %1"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:367
+#: src/gui/report-dialog.cpp:372
 #, fuzzy
 msgid "Standard"
 msgstr "Standardeinheiten"
