@@ -3003,7 +3003,7 @@ std::list<Action *> Player::getReportableActions()
 	
 void Player::cityTooPoorToProduce(City *city, int slot)
 {
-  cityChangeProduction(city, slot);
+  cityChangeProduction(city, -1);
   const Army *a = city->getProductionBase(slot);
   Action_CityTooPoorToProduce *action = new Action_CityTooPoorToProduce();
   action->fillData(city, a);

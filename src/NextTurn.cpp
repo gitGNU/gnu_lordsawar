@@ -145,24 +145,27 @@ void NextTurn::startTurn()
 
   p->initTurn();
 
+  //calculate upkeep and income
+  p->calculateUpkeep();
+  p->calculateIncome();
+
   //if turnmode is set, create/heal armies at player's turn
   if (d_turnmode)
     {
-      //pay upkeep for stacks, reset moves, and heal stacks
-      p->getStacklist()->nextTurn();
 
       //if (p->getType() != Player::NETWORKED)
       
       //vector armies (needs to preceed city's next turn)
       VectoredUnitlist::getInstance()->nextTurn(p);
 
-      //build armies
+      //collect taxes
+      Citylist::getInstance()->collectTaxes(p);
+      //pay upkeep for existing stacks, reset moves, and heal stacks
+      p->getStacklist()->nextTurn();
+      //build new armies
       Citylist::getInstance()->nextTurn(p);
     }
-
-  //calculate upkeep and income
   p->calculateUpkeep();
-  p->calculateIncome();
 
   QuestsManager::getInstance()->nextTurn(p);
 }
@@ -192,11 +195,14 @@ void NextTurn::finishRound()
 	  if ((*it)->isDead())
 	    continue;
 
-	  //produce armies
-	  Citylist::getInstance()->nextTurn(*it);
+	  //collect monies from cities
+	  Citylist::getInstance()->collectTaxes(*it);
 
-	  //heal armies
+	  //pay for existing armies, reset, and heal armies
 	  (*it)->getStacklist()->nextTurn();
+
+	  //produce new armies
+	  Citylist::getInstance()->nextTurn(*it);
 
 	}
     }

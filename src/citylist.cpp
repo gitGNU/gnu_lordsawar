@@ -89,6 +89,14 @@ int Citylist::countCities(Player* player) const
     return cities;
 }
 
+void Citylist::collectTaxes(Player* p)
+{
+  // Collect the taxes
+  for (const_iterator it = begin(); it != end(); it++)
+    if ((*it).getOwner() == p)
+      p->addGold((*it).getGold());
+}
+
 void Citylist::nextTurn(Player* p)
 {
     debug("next_turn(" <<p->getName() <<")");
@@ -96,12 +104,8 @@ void Citylist::nextTurn(Player* p)
     // Because players are nextTurn'd before cities, the income, treasury, 
     // and upkeep are calculated already for the upcoming round.
 
-    // Collect the taxes
-    for (const_iterator it = begin(); it != end(); it++)
-      if ((*it).getOwner() == p)
-	p->addGold((*it).getGold());
-
-    //now our treasury must have enough money to pay our upkeep.
+    //we've already collected taxes this round, so hopefully our
+    //treasury has enough money to pay our city upkeep.
     if (p->getGold() < p->getUpkeep())
       {
 	int diff = p->getUpkeep() - p->getGold();

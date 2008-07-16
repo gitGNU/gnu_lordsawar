@@ -80,10 +80,15 @@ ReportDialog::ReportDialog(Player *player, ReportType type)
 
   //loop through the action list looking for production actions
   std::list<Action*> actions = player->getReportableActions();
-  Uint32 total = actions.size();
+  Uint32 total = 0;
   std::list<Action*>::const_iterator it;
   for (it = actions.begin(); it != actions.end(); it++)
+    {
+      if ((*it)->getType() == Action::PRODUCE_UNIT ||
+	  (*it)->getType() == Action::PRODUCE_VECTORED_UNIT)
+	total++;
     addProduction(*it);
+    }
 
   Glib::ustring s;
   s = String::ucompose(ngettext("You produced %1 army this turn!",
@@ -378,10 +383,7 @@ void ReportDialog::addProduction(const Action *action)
       army_type = act->getArmyType();
       City *c = Citylist::getInstance()->getById(act->getCityId());
       s = c->getName();
-      s += " stops producing ";
-      const Army *a;
-      a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
-      s += a->getName() + "!";
+      s += " stops producing!";
     }
   const Army *a;
   a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);

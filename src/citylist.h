@@ -57,6 +57,8 @@ class Citylist : public LocationList<City>, public sigc::trackable
          */
         void nextTurn(Player* p);
 
+	void collectTaxes(Player* p);
+
         //! Save the list of City objects to an opened saved-game file.
         bool save(XML_Helper* helper) const;
        
