@@ -54,6 +54,9 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
 	//! remove one ruin reward from the list and return it
 	Reward *popRandomRuinReward();
 
+	//! remove one ruin reward from the list and return it
+	Reward *popRandomMapReward();
+
         //! Save the data. See XML_Helper for details
         bool save(XML_Helper* helper) const;
 

@@ -622,7 +622,7 @@ std::string Action_Ruin::dump() const
 {
     std::stringstream s;
 
-    s <<"Ruin " <<d_ruin <<" searched by stack " <<d_stack <<".\n";
+    s <<"Ruin " <<d_ruin <<" searched by stack " <<d_stack <<".  ";
     s <<"Ruin has" <<(d_searched? " ":" not ") <<"been searched.\n";
 
     return s.str();

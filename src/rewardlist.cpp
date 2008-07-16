@@ -176,6 +176,11 @@ Reward *Rewardlist::popRandomItemReward()
   return popRandomReward(Reward::ITEM);
 }
 
+Reward *Rewardlist::popRandomMapReward()
+{
+  return popRandomReward(Reward::MAP);
+}
+
 Reward *Rewardlist::popRandomRuinReward()
 {
   return popRandomReward(Reward::RUIN);

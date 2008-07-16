@@ -26,6 +26,7 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/treemodelcolumn.h>
+#include <gtkmm/button.h>
 
 #include "../ruinmap.h"
 #include "../player.h"
@@ -62,6 +63,7 @@ class SageDialog: public sigc::trackable
     Glib::RefPtr<Gtk::ListStore> rewards_list;
 
     Gtk::Image *map_image;
+    Gtk::Button *continue_button;
     
     Hero *hero;
     Ruin *ruin;
@@ -70,6 +72,7 @@ class SageDialog: public sigc::trackable
     void on_map_changed(SDL_Surface *map);
     void addReward(Reward *reward);
     Reward *grabSelectedReward();
+    void on_reward_selected();
 };
 
 #endif

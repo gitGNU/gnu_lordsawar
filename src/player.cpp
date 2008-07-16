@@ -1769,6 +1769,7 @@ void Player::doGiveReward(Stack *s, Reward *reward)
           Ruin *r = dynamic_cast<Reward_Ruin*>(reward)->getRuin();
           r->setHidden(true);
           r->setOwner(this);
+	  r->deFog(this);
         }
       break;
     case Reward::MAP:

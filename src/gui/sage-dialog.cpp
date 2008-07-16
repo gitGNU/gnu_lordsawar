@@ -52,8 +52,11 @@ SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
     xml->get_widget("rewardtreeview", rewards_treeview);
     rewards_treeview->set_model(rewards_list);
     rewards_treeview->append_column("", rewards_columns.name);
+    rewards_treeview->get_selection()->signal_changed().connect
+      (sigc::mem_fun(*this, &SageDialog::on_reward_selected));
 
     xml->get_widget("map_image", map_image);
+    xml->get_widget("continue_button", continue_button);
 
     ruinmap.reset(new RuinMap(ruin));
     ruinmap->map_changed.connect(
@@ -84,6 +87,7 @@ SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
     std::list<Reward*>::iterator it = common_rewards.begin();
     for (;it != common_rewards.end(); it++)
       addReward((*it));
+  continue_button->set_sensitive(false);
 
 }
 
@@ -179,13 +183,41 @@ void SageDialog::addReward(Reward *reward)
     case Reward::RUIN:
 	{
 	  Ruin *r = static_cast<Reward_Ruin*>(reward)->getRuin();
+	  if (r->getReward() == NULL)
+	    {
+	      Reward *rew  = NULL;
+	      if (rand() % 2 == 0)
+		{
+		  rew = Rewardlist::getInstance()->popRandomItemReward();
+		  if (!rew)
+		    rew = Rewardlist::getInstance()->popRandomMapReward();
+		}
+	      else
+		{
+		  rew = Rewardlist::getInstance()->popRandomMapReward();
+		  if (!rew)
+		    rew = Rewardlist::getInstance()->popRandomItemReward();
+		}
+	      if (!rew)
+		r->populateWithRandomReward();
+	      else
+		r->setReward(rew);
+	    }
 	  if (r->getReward()->getType() == Reward::ITEM)
 	    (*i)[rewards_columns.name] = 
 	      static_cast<Reward_Item*>(r->getReward())->getItem()->getName();
 	  else if (r->getReward()->getType() == Reward::ALLIES)
 	    (*i)[rewards_columns.name] = _("Allies");
+	  else if (r->getReward()->getType() == Reward::MAP)
+	    (*i)[rewards_columns.name] = r->getReward()->getName();
 	}
       break;
     }
   (*i)[rewards_columns.reward] = reward;
 }
+
+void SageDialog::on_reward_selected()
+{
+  continue_button->set_sensitive(true);
+}
+
