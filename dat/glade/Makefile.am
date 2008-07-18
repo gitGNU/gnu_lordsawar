@@ -127,7 +127,7 @@ about-dialog.glade.h \
 new-network-game-dialog.glade.h \
 game-lobby-dialog.glade.h \
 pick-network-game-to-join-dialog.glade.h \
-player-resign-completed-dialog.glade
+generation-progress-window.glade.h
 
 ##to generate the .h files, run this:
 ##find ./ -name "*.glade"  -exec intltool-extract --type=gettext/glade '{}' \;
