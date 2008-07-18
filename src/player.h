@@ -1456,6 +1456,7 @@ class Player: public sigc::trackable
 			     int safe_mp, bool &stack_died);
 
 	void pruneActionlist();
+	static void pruneActionlist(std::list<Action*> actions);
 	    
     private:
         //! Loads the subdata of a player (actions and stacklist)

@@ -98,9 +98,21 @@ class QuestsManager : public sigc::trackable
 	 */
         Quest* createNewQuest(Uint32 heroId, bool razing_possible);
 
-        //! Create new quest of given type (from remote action). 
-        Quest* createNewQuest(Uint32 hero, Uint32 questtype,
-                              Uint32 data, Uint32 victim_player);
+        //! Create new kill hero quest from remote action. 
+	Quest* createNewKillHeroQuest(Uint32 heroId, Uint32 targetHeroId);
+        //! Create new enemy armies quest from remote action. 
+	Quest* createNewEnemyArmiesQuest(Uint32 heroId, Uint32 num_armies, 
+					 Uint32 victim_player_id);
+        //! Create new city sacking quest from remote action. 
+	Quest* createNewCitySackQuest(Uint32 heroId, Uint32 cityId);
+        //! Create new city razing quest from remote action. 
+	Quest* createNewCityRazeQuest(Uint32 heroId, Uint32 cityId);
+        //! Create new city occupation quest from remote action. 
+	Quest* createNewCityOccupyQuest(Uint32 heroId, Uint32 cityId);
+        //! Create new kill enemy army type quest from remote action. 
+	Quest* createNewEnemyArmytypeQuest(Uint32 heroId, Uint32 armyTypeId);
+        //! Create new pillage gold quest from remote action. 
+	Quest* createNewPillageGoldQuest(Uint32 heroId, Uint32 amount);
         
 	//! Mark the Quest that the given Hero object is on to be completed.
         /**

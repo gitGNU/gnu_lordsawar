@@ -52,6 +52,7 @@ class NetworkPlayer : public Player
         virtual void levelArmy(Army* a);
 
 	void decodeAction(const Action *action);
+	void decodeActions(std::list<Action *> actions);
         
 	bool isConnected() const {return d_connected;}
 	void setConnected(bool connected) {d_connected = connected;}

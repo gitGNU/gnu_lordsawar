@@ -205,7 +205,10 @@ class Action_Move : public Action
 	//! Populate the move action with the stack and it's new position.
         bool fillData(Stack* s, Vector<int> dest);
     
-        //private:
+	Uint32 getStackId() const {return d_stack;};
+	Vector<int> getEndingPosition() const {return d_dest;};
+
+        private:
         Uint32 d_stack;
         Vector<int> d_dest;
 };
@@ -237,7 +240,9 @@ class Action_Disband: public Action
 	//! Populate the action with the Stack being removed.
         bool fillData(Stack* s);
     
-        //private:
+	Uint32 getStackId() const {return d_stack;};
+
+        private:
         Uint32 d_stack;
 };
 
@@ -279,7 +284,10 @@ class Action_Split : public Action
 	//! Populate the action with pertinent data.
         bool fillData(Stack* orig, Stack* added);
     
-        //private:
+	Uint32 getStackId() const {return d_orig;};
+	Uint32 getNewStackId() const {return d_added;};
+	Uint32 getGroupedArmyId(int idx) const {return d_armies_moved[idx];};
+        private:
         Uint32 d_orig, d_added;
         Uint32 d_armies_moved[MAX_STACK_SIZE];
 };
@@ -316,12 +324,18 @@ class Action_Fight : public Action, public sigc::trackable
 	//! Fill the action with pertinent data.
         bool fillData(const Fight* f);
 
-        //private:
-        bool loadItem(std::string tag, XML_Helper* helper);
+
+	std::list<FightItem> getBattleHistory() const {return d_history;};
+	std::list<Uint32> getAttackerArmyIds() const {return d_attackers;};
+	std::list<Uint32> getDefenderArmyIds() const {return d_defenders;};
+
+        private:
         
         std::list<FightItem> d_history;
         std::list<Uint32> d_attackers;
         std::list<Uint32> d_defenders;
+
+        bool loadItem(std::string tag, XML_Helper* helper);
 };
 
 //-----------------------------------------------------------------------------
@@ -357,7 +371,9 @@ class Action_Join : public Action
 	//! Populate the action with pertinent data.
         bool fillData(Stack* orig, Stack* joining);
     
-        //private:
+	Uint32 getReceivingStackId() const {return d_orig_id;};
+	Uint32 getJoiningStackId() const {return d_joining_id;};
+        private:
         Uint32 d_orig_id, d_joining_id;
 };
 
@@ -396,7 +412,11 @@ class Action_Ruin : public Action
 	//! Set whether or not the Stack was successful in searching the ruin.
         void setSearched(bool searched) {d_searched = searched;}
     
-        //private:
+	Uint32 getRuinId() const {return d_ruin;};
+	Uint32 getStackId() const {return d_stack;};
+	bool getSearchSuccessful() const {return d_searched;};
+
+        private:
         Uint32 d_ruin;
         Uint32 d_stack;
         bool d_searched;
@@ -435,7 +455,10 @@ class Action_Temple : public Action
 	//! Populate the action with pertinent data.
         bool fillData(Temple* t, Stack* s);
     
-        //private:
+	Uint32 getTempleId() const {return d_temple;};
+	Uint32 getStackId() const {return d_stack;};
+
+        private:
         Uint32 d_temple;
         Uint32 d_stack;
 };
@@ -471,7 +494,9 @@ class Action_Occupy : public Action
 	//! Populate the action with the City being occupied.
         bool fillData (City* c);
     
-        //private:
+	Uint32 getCityId() const {return d_city;};
+
+        private:
         Uint32 d_city;
 };
 
@@ -505,7 +530,9 @@ class Action_Pillage : public Action
 	//! Populate the action with the City that has been pillaged.
         bool fillData(City* c);
 
-        //private:
+	Uint32 getCityId() const {return d_city;};
+
+        private:
         Uint32 d_city;
 };
 
@@ -539,7 +566,9 @@ class Action_Sack : public Action
 	//! Populate the action with the City that has been sacked.
         bool fillData(City* c);
 
-        //private:
+	Uint32 getCityId() const {return d_city;};
+
+        private:
         Uint32 d_city;
 };
 
@@ -572,7 +601,9 @@ class Action_Raze : public Action
 	//! Populate the action with the City that has been razed.
         bool fillData (City* c);
     
-        //private:
+	Uint32 getCityId() const {return d_city;};
+
+        private:
         Uint32 d_city;
 };
 
@@ -605,7 +636,9 @@ class Action_Upgrade : public Action
 	//! Populate the action with the City that has been upgraded.
         bool fillData(City* c);
 
-        //private:
+	Uint32 getCityId() const {return d_city;};
+
+        private:
         Uint32 d_city;
 };
 
@@ -649,7 +682,10 @@ class Action_Buy : public Action
 	//! Populate the action with pertinent data.
         bool fillData(City* c, int slot, const Army *prod);
 
-        //private:
+	Uint32 getCityId() const {return d_city;};
+	int getProductionSlot() const {return d_slot;};
+	int getBoughtArmyTypeId() const {return d_prod;};
+        private:
         Uint32 d_city;
         int d_slot, d_prod;
 };
@@ -731,10 +767,15 @@ class Action_Reward : public Action
 	//! Populate the Action_Reward with a Reward.
         bool fillData (Stack *stack, Reward *r);
     
-        //private:
-        bool load(std::string tag, XML_Helper *helper);
+
+	Reward *getReward() const {return d_reward;};
+	Uint32 getStackId() const {return d_stack;};
+
+        private:
 	Reward *d_reward;
         Uint32 d_stack;
+
+        bool load(std::string tag, XML_Helper *helper);
 	
 };
 
@@ -766,7 +807,12 @@ class Action_Quest : public Action
 	//! Populate the Action_Quest with a Quest.
         bool fillData(Quest* q);
 
-        //private:
+	Uint32 getHeroId() const {return d_hero;};
+	Uint32 getQuestType() const {return d_questtype;};
+	Uint32 getData() const {return d_data;};
+	Uint32 getVictimPlayerId() const {return d_victim_player;};
+
+        private:
         Uint32 d_hero;
         Uint32 d_questtype;
         Uint32 d_data;
@@ -815,7 +861,11 @@ class Action_Equip : public Action
 	//! Populate the action with pertinent data.
         bool fillData(Hero *hero, Item *item, Slot slot);
 
-        //private:
+	Uint32 getHeroId() const {return d_hero;};
+	Uint32 getItemId() const {return d_item;};
+	Uint32 getToBackpackOrToGround() const {return d_slot;};
+
+        private:
         Uint32 d_hero;
         Uint32 d_item;
         Uint32 d_slot;
@@ -856,7 +906,10 @@ class Action_Level : public Action
 	//! Populate the action with pertinent data.
         bool fillData(Army *unit, Army::Stat raised);
 
-        //private:
+	Uint32 getArmyId() const {return d_army;};
+	Uint32 getStatToIncrease() const {return d_stat;};
+
+        private:
         Uint32 d_army;
         Uint32 d_stat;
 };
@@ -891,7 +944,10 @@ class Action_ModifySignpost: public Action
 	//! Populate the action with the signpost and the new message.
         bool fillData(Signpost * s, std::string message);
     
-        //private:
+	Uint32 getSignpostId() const {return d_signpost;};
+	std::string getSignContents() const {return d_message;};
+
+        private:
         Uint32 d_signpost;
 	std::string d_message;
 };
@@ -925,7 +981,9 @@ class Action_RenameCity: public Action
 	//! Populate the action with the city being renamed and the new name.
         bool fillData(City *c, std::string name);
     
-        //private:
+	Uint32 getCityId() const {return d_city;};
+	std::string getNewCityName() const {return d_name;};
+        private:
         Uint32 d_city;
 	std::string d_name;
 };
@@ -965,7 +1023,10 @@ class Action_Vector: public Action
 	//! Populate the action with pertinent data.
         bool fillData(City* src, Vector <int> dest);
     
-        //private:
+	Uint32 getCityId() const {return d_city;};
+	Vector<int> getVectoringDestination() const {return d_dest;};
+
+        private:
         Uint32 d_city;
         Vector<int> d_dest;
 };
@@ -998,7 +1059,9 @@ class Action_FightOrder: public Action
 	//! Populate the action with a list of ranks, one per Army unit type.
         bool fillData(std::list<Uint32> order);
     
-        //private:
+	std::list<Uint32> getFightOrder() const {return d_order;};
+
+        private:
 	std::list<Uint32> d_order;
 };
 
@@ -1061,7 +1124,10 @@ class Action_Plant: public Action
 	//! Populate the action with the Id of the Hero and the Id of the Item.
         bool fillData(Hero *hero, Item *item);
 
-        //private:
+	Uint32 getHeroId() const {return d_hero;};
+	Uint32 getItemId() const {return d_item;};
+
+        private:
         Uint32 d_hero;
         Uint32 d_item;
 };
@@ -1353,7 +1419,9 @@ class Action_ConquerCity : public Action
 	//! Populate the action with the City being conquered.
         bool fillData (City* c, Stack *s);
     
-        //private:
+	Uint32 getCityId() const {return d_city;};
+	Uint32 getStackId() const {return d_stack;};
+        private:
         Uint32 d_city, d_stack;
 };
 
