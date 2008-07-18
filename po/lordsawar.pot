@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-07-14 20:29-0400\n"
+"POT-Creation-Date: 2008-07-16 06:28-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -925,7 +925,7 @@ msgstr ""
 msgid "<b>Reward</b>"
 msgstr ""
 
-#: dat/glade/editor/reward-dialog.glade.h:2 src/gui/sage-dialog.cpp:186
+#: dat/glade/editor/reward-dialog.glade.h:2 src/gui/sage-dialog.cpp:210
 msgid "Allies"
 msgstr ""
 
@@ -947,7 +947,7 @@ msgstr ""
 
 #: dat/glade/editor/reward-dialog.glade.h:7 dat/glade/game-window.glade.h:13
 #: dat/glade/history-report-dialog.glade.h:3 dat/glade/report-dialog.glade.h:5
-#: src/gui/sage-dialog.cpp:152 src/editor/players-dialog.cpp:103
+#: src/gui/sage-dialog.cpp:156 src/editor/players-dialog.cpp:103
 msgid "Gold"
 msgstr ""
 
@@ -2379,7 +2379,7 @@ msgstr ""
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr ""
 
-#: src/player.cpp:2311
+#: src/player.cpp:2312
 msgid "%1 Standard"
 msgstr ""
 
@@ -2737,7 +2737,7 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: src/gui/sage-dialog.cpp:65 src/gui/ruin-rewarded-dialog.cpp:59
+#: src/gui/sage-dialog.cpp:68 src/gui/ruin-rewarded-dialog.cpp:59
 msgid "A Sage!"
 msgstr ""
 
@@ -3078,7 +3078,7 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr ""
 
-#: src/gui/hero-levels-dialog.cpp:104 src/gui/report-dialog.cpp:310
+#: src/gui/hero-levels-dialog.cpp:104 src/gui/report-dialog.cpp:315
 msgid "%1"
 msgstr ""
 
@@ -3170,87 +3170,87 @@ msgstr ""
 msgid "Thou hast no quests!"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:89
+#: src/gui/report-dialog.cpp:94
 msgid "You produced %1 army this turn!"
 msgid_plural "You produced %1 armies this turn!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:187
+#: src/gui/report-dialog.cpp:192
 msgid "Army Report"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:190
+#: src/gui/report-dialog.cpp:195
 msgid "City Report"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:193
+#: src/gui/report-dialog.cpp:198
 msgid "Gold Report"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:196
+#: src/gui/report-dialog.cpp:201
 msgid "Production Report"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:199
+#: src/gui/report-dialog.cpp:204
 msgid "Winning Report"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:224
+#: src/gui/report-dialog.cpp:229
 msgid "You have %1 army!"
 msgid_plural "You have %1 armies!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:255
+#: src/gui/report-dialog.cpp:260
 msgid "You have %1 city!"
 msgid_plural "You have %1 cities!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:286
+#: src/gui/report-dialog.cpp:291
 msgid "You have %1 gold piece!"
 msgid_plural "You have %1 gold pieces!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:305
 msgid "first"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:305
 msgid "second"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:305
 msgid "third"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:305
 msgid "fourth"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:305
 msgid "fifth"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:301
+#: src/gui/report-dialog.cpp:306
 msgid "sixth"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:301
+#: src/gui/report-dialog.cpp:306
 msgid "seventh"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:301
+#: src/gui/report-dialog.cpp:306
 msgid "eighth"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:332
+#: src/gui/report-dialog.cpp:337
 msgid "You are coming %1"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:372
+#: src/gui/report-dialog.cpp:377
 msgid "Standard"
 msgstr ""
 
@@ -3611,40 +3611,40 @@ msgstr ""
 msgid "CreateScenario:: wrong height given\n"
 msgstr ""
 
-#: src/CreateScenario.cpp:648
-msgid "northwestern map"
+#: src/CreateScenario.cpp:643
+msgid "Northwestern map"
 msgstr ""
 
-#: src/CreateScenario.cpp:650
-msgid "northern map"
+#: src/CreateScenario.cpp:646
+msgid "Northern map"
+msgstr ""
+
+#: src/CreateScenario.cpp:649
+msgid "Northeastern map"
 msgstr ""
 
 #: src/CreateScenario.cpp:652
-msgid "northeastern map"
+msgid "Western map"
 msgstr ""
 
-#: src/CreateScenario.cpp:654
-msgid "western map"
-msgstr ""
-
-#: src/CreateScenario.cpp:656
-msgid "central map"
+#: src/CreateScenario.cpp:655
+msgid "Central map"
 msgstr ""
 
 #: src/CreateScenario.cpp:658
-msgid "eastern map"
+msgid "Eastern map"
 msgstr ""
 
-#: src/CreateScenario.cpp:660
-msgid "southwestern map"
-msgstr ""
-
-#: src/CreateScenario.cpp:662
-msgid "southern map"
+#: src/CreateScenario.cpp:661
+msgid "Southwestern map"
 msgstr ""
 
 #: src/CreateScenario.cpp:664
-msgid "southeastern map"
+msgid "Southern map"
+msgstr ""
+
+#: src/CreateScenario.cpp:667
+msgid "Southeastern map"
 msgstr ""
 
 #: src/Itemlist.cpp:54

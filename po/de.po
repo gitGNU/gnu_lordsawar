@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-07-14 20:29-0400\n"
+"POT-Creation-Date: 2008-07-16 06:28-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -1039,7 +1039,7 @@ msgstr "Schließen"
 msgid "<b>Reward</b>"
 msgstr "Editiere Reaktionen"
 
-#: dat/glade/editor/reward-dialog.glade.h:2 src/gui/sage-dialog.cpp:186
+#: dat/glade/editor/reward-dialog.glade.h:2 src/gui/sage-dialog.cpp:210
 #, fuzzy
 msgid "Allies"
 msgstr "Algier"
@@ -1065,7 +1065,7 @@ msgstr "Zufallskarte"
 
 #: dat/glade/editor/reward-dialog.glade.h:7 dat/glade/game-window.glade.h:13
 #: dat/glade/history-report-dialog.glade.h:3 dat/glade/report-dialog.glade.h:5
-#: src/gui/sage-dialog.cpp:152 src/editor/players-dialog.cpp:103
+#: src/gui/sage-dialog.cpp:156 src/editor/players-dialog.cpp:103
 msgid "Gold"
 msgstr "Gold"
 
@@ -2685,7 +2685,7 @@ msgstr "Fehler: Armee und zu durchsuchende Ruine nicht am selben Platz\n"
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Armee versuchte Tempel an der falschen Position zu besuchen\n"
 
-#: src/player.cpp:2311
+#: src/player.cpp:2312
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Standardeinheiten"
@@ -3079,7 +3079,7 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: src/gui/sage-dialog.cpp:65 src/gui/ruin-rewarded-dialog.cpp:59
+#: src/gui/sage-dialog.cpp:68 src/gui/ruin-rewarded-dialog.cpp:59
 msgid "A Sage!"
 msgstr ""
 
@@ -3453,7 +3453,7 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr "Dein Held %s hat die Mission abgeschlossen."
 
-#: src/gui/hero-levels-dialog.cpp:104 src/gui/report-dialog.cpp:310
+#: src/gui/hero-levels-dialog.cpp:104 src/gui/report-dialog.cpp:315
 msgid "%1"
 msgstr ""
 
@@ -3552,101 +3552,101 @@ msgstr ""
 msgid "Thou hast no quests!"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:89
+#: src/gui/report-dialog.cpp:94
 msgid "You produced %1 army this turn!"
 msgid_plural "You produced %1 armies this turn!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:187
+#: src/gui/report-dialog.cpp:192
 #, fuzzy
 msgid "Army Report"
 msgstr "Armeeset"
 
-#: src/gui/report-dialog.cpp:190
+#: src/gui/report-dialog.cpp:195
 #, fuzzy
 msgid "City Report"
 msgstr "Stadtreport"
 
-#: src/gui/report-dialog.cpp:193
+#: src/gui/report-dialog.cpp:198
 #, fuzzy
 msgid "Gold Report"
 msgstr "Goldreport"
 
-#: src/gui/report-dialog.cpp:196
+#: src/gui/report-dialog.cpp:201
 #, fuzzy
 msgid "Production Report"
 msgstr "Produktionskosten:"
 
-#: src/gui/report-dialog.cpp:199
+#: src/gui/report-dialog.cpp:204
 #, fuzzy
 msgid "Winning Report"
 msgstr "Warnung"
 
-#: src/gui/report-dialog.cpp:224
+#: src/gui/report-dialog.cpp:229
 #, fuzzy
 msgid "You have %1 army!"
 msgid_plural "You have %1 armies!"
 msgstr[0] "Du hast bereits %i getötet."
 msgstr[1] "Du hast bereits %i getötet."
 
-#: src/gui/report-dialog.cpp:255
+#: src/gui/report-dialog.cpp:260
 msgid "You have %1 city!"
 msgid_plural "You have %1 cities!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/report-dialog.cpp:286
+#: src/gui/report-dialog.cpp:291
 #, fuzzy
 msgid "You have %1 gold piece!"
 msgid_plural "You have %1 gold pieces!"
 msgstr[0] "und %i Goldstück gefunden!"
 msgstr[1] "und %i Goldstücke gefunden!"
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:305
 #, fuzzy
 msgid "first"
 msgstr "Erkundung"
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:305
 msgid "second"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:305
 #, fuzzy
 msgid "third"
 msgstr "Anderes"
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:305
 #, fuzzy
 msgid "fourth"
 msgstr "Autoren"
 
-#: src/gui/report-dialog.cpp:300
+#: src/gui/report-dialog.cpp:305
 #, fuzzy
 msgid "fifth"
 msgstr "Erkundung"
 
-#: src/gui/report-dialog.cpp:301
+#: src/gui/report-dialog.cpp:306
 #, fuzzy
 msgid "sixth"
 msgstr "Erkundung"
 
-#: src/gui/report-dialog.cpp:301
+#: src/gui/report-dialog.cpp:306
 #, fuzzy
 msgid "seventh"
 msgstr "RaiseEvent"
 
-#: src/gui/report-dialog.cpp:301
+#: src/gui/report-dialog.cpp:306
 #, fuzzy
 msgid "eighth"
 msgstr "Erkundung"
 
-#: src/gui/report-dialog.cpp:332
+#: src/gui/report-dialog.cpp:337
 msgid "You are coming %1"
 msgstr ""
 
-#: src/gui/report-dialog.cpp:372
+#: src/gui/report-dialog.cpp:377
 #, fuzzy
 msgid "Standard"
 msgstr "Standardeinheiten"
@@ -4066,49 +4066,49 @@ msgstr "CreateScenario: falsche Größe angegeben\n"
 msgid "CreateScenario:: wrong height given\n"
 msgstr "CreateScenario: falsche Größe angegeben\n"
 
-#: src/CreateScenario.cpp:648
+#: src/CreateScenario.cpp:643
 #, fuzzy
-msgid "northwestern map"
+msgid "Northwestern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:650
+#: src/CreateScenario.cpp:646
 #, fuzzy
-msgid "northern map"
+msgid "Northern map"
+msgstr "Erzeuge Karte"
+
+#: src/CreateScenario.cpp:649
+#, fuzzy
+msgid "Northeastern map"
 msgstr "Erzeuge Karte"
 
 #: src/CreateScenario.cpp:652
 #, fuzzy
-msgid "northeastern map"
+msgid "Western map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:654
+#: src/CreateScenario.cpp:655
 #, fuzzy
-msgid "western map"
-msgstr "Erzeuge Karte"
-
-#: src/CreateScenario.cpp:656
-#, fuzzy
-msgid "central map"
+msgid "Central map"
 msgstr "Erzeuge Karte"
 
 #: src/CreateScenario.cpp:658
 #, fuzzy
-msgid "eastern map"
+msgid "Eastern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:660
+#: src/CreateScenario.cpp:661
 #, fuzzy
-msgid "southwestern map"
-msgstr "Erzeuge Karte"
-
-#: src/CreateScenario.cpp:662
-#, fuzzy
-msgid "southern map"
+msgid "Southwestern map"
 msgstr "Erzeuge Karte"
 
 #: src/CreateScenario.cpp:664
 #, fuzzy
-msgid "southeastern map"
+msgid "Southern map"
+msgstr "Erzeuge Karte"
+
+#: src/CreateScenario.cpp:667
+#, fuzzy
+msgid "Southeastern map"
 msgstr "Erzeuge Karte"
 
 #: src/Itemlist.cpp:54
