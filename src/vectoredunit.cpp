@@ -115,14 +115,7 @@ bool VectoredUnit::nextTurn()
 {
   d_duration--;
   if (d_duration == 0)
-    {
-      if (d_owner->getGold() <= 0)
-	{
-	  //don't bring this army in because we can't afford it
-	  return false;
-	}
-      d_owner->vectoredUnitArrives(this);
-    }
+    d_owner->vectoredUnitArrives(this);
   return false;
 }
 
