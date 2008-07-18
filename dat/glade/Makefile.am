@@ -113,6 +113,7 @@ signpost-change-dialog.glade.h \
 fight-order-dialog.glade.h \
 hero-levels-dialog.glade.h \
 player-resign-dialog.glade.h \
+player-resign-completed-dialog.glade.h \
 army-bonus-dialog.glade.h \
 item-bonus-dialog.glade.h \
 game-options-dialog.glade.h \
