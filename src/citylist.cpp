@@ -93,8 +93,27 @@ void Citylist::collectTaxes(Player* p)
 {
   // Collect the taxes
   for (const_iterator it = begin(); it != end(); it++)
-    if ((*it).getOwner() == p)
+    if ((*it).getOwner() == p && (*it).isBurnt() == false)
       p->addGold((*it).getGold());
+}
+
+//calculate the amount of money new armies will cost in the upcoming turn.
+Uint32 Citylist::calculateUpcomingUpkeep(Player *p)
+{
+  Uint32 total = 0;
+  for (const_iterator it = begin(); it != end(); it++)
+    if ((*it).getOwner() == p && (*it).isBurnt() == false)
+      {
+	if ((*it).getDuration() == 1)
+	  {
+	    int slot =(*it).getActiveProductionSlot();
+	    if (slot == -1)
+	      continue;
+	    const Army *a = (*it).getProductionBase(slot);
+	    total += a->getUpkeep();
+	  }
+      }
+  return total;
 }
 
 void Citylist::nextTurn(Player* p)
@@ -106,14 +125,20 @@ void Citylist::nextTurn(Player* p)
 
     //we've already collected taxes this round, so hopefully our
     //treasury has enough money to pay our city upkeep.
-    if (p->getGold() < p->getUpkeep())
+
+    //fixme: here we want the upkeep that we would pay out to all cities.
+    //and not the total upkeep.
+    Uint32 upkeep_for_new_armies = calculateUpcomingUpkeep(p);
+    if (p->getGold() < upkeep_for_new_armies)
       {
-	int diff = p->getUpkeep() - p->getGold();
+	int diff = upkeep_for_new_armies - p->getGold();
 	//then we have to turn off enough production to make up for diff
 	//gold pieces.
 	for (iterator it = begin(); it != end(); it++)
 	  {
 	    if ((*it).isBurnt() == true)
+	      continue;
+	    if ((*it).getOwner() != p)
 	      continue;
 	    int slot =(*it).getActiveProductionSlot();
 	    if (slot == -1)

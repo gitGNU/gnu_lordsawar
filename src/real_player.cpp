@@ -82,6 +82,7 @@ bool RealPlayer::startTurn()
 
 void RealPlayer::endTurn()
 {
+  pruneActionlist();
   Action *action = new Action_EndTurn;
   addAction(action);
 }

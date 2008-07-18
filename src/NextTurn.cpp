@@ -155,15 +155,18 @@ void NextTurn::startTurn()
 
       //if (p->getType() != Player::NETWORKED)
       
+      //collect taxes
+      Citylist::getInstance()->collectTaxes(p);
+
+      //pay upkeep for existing stacks, reset moves, and heal stacks
+      p->getStacklist()->nextTurn();
+
       //vector armies (needs to preceed city's next turn)
       VectoredUnitlist::getInstance()->nextTurn(p);
 
-      //collect taxes
-      Citylist::getInstance()->collectTaxes(p);
-      //pay upkeep for existing stacks, reset moves, and heal stacks
-      p->getStacklist()->nextTurn();
       //build new armies
       Citylist::getInstance()->nextTurn(p);
+
     }
   p->calculateUpkeep();
 
@@ -200,6 +203,9 @@ void NextTurn::finishRound()
 
 	  //pay for existing armies, reset, and heal armies
 	  (*it)->getStacklist()->nextTurn();
+
+	  //vector armies (needs to preceed city's next turn)
+	  VectoredUnitlist::getInstance()->nextTurn(*it);
 
 	  //produce new armies
 	  Citylist::getInstance()->nextTurn(*it);

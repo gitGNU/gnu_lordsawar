@@ -690,7 +690,10 @@ class Action_Production : public Action
 	//! Populate the action with pertinent data.
         bool fillData(City* c, int slot);
 
-        //private:
+	Uint32 getCityId() const {return d_city;};
+	int getSlot() const {return d_prod;};
+
+        private:
         Uint32 d_city;
         int d_prod;
 };

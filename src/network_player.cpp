@@ -359,8 +359,8 @@ void NetworkPlayer::decodeActionBuy(const Action_Buy *action)
 
 void NetworkPlayer::decodeActionProduction(const Action_Production *action)
 {
-  City *city = Citylist::getInstance()->getById(action->d_city);
-  doCityChangeProduction(city, action->d_prod);
+  City *city = Citylist::getInstance()->getById(action->getCityId());
+  doCityChangeProduction(city, action->getSlot());
 }
 
 void NetworkPlayer::decodeActionReward(const Action_Reward *action)

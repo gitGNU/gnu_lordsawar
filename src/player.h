@@ -1455,6 +1455,7 @@ class Player: public sigc::trackable
 	bool AI_maybeDisband(Stack *s, City *city, Uint32 min_defenders, 
 			     int safe_mp, bool &stack_died);
 
+	void pruneActionlist();
 	    
     private:
         //! Loads the subdata of a player (actions and stacklist)

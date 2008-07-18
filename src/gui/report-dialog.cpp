@@ -383,7 +383,7 @@ void ReportDialog::addProduction(const Action *action)
       army_type = act->getArmyType();
       City *c = Citylist::getInstance()->getById(act->getCityId());
       s = c->getName();
-      s += " stops producing!";
+      s += " stops production!";
     }
   const Army *a;
   a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);

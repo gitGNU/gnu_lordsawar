@@ -3009,4 +3009,54 @@ void Player::cityTooPoorToProduce(City *city, int slot)
   action->fillData(city, a);
   addAction(action);
 }
+
+void Player::pruneActionlist()
+{
+  //remove duplicate city production actions
+
+  //enumerate the ones we want
+  std::list<Action_Production*> keepers;
+  std::list<Action*>::reverse_iterator ait;
+  for (ait = d_actions.rbegin(); ait != d_actions.rend(); ait++)
+    {
+      if ((*ait)->getType() != Action::CITY_PROD)
+	continue;
+      //if this city isn't already in the keepers list, then add it.
+  
+      Action_Production *action = static_cast<Action_Production*>(*ait);
+      bool found = false;
+      std::list<Action_Production*>::const_iterator it;
+      for (it = keepers.begin(); it != keepers.end(); it++)
+	{
+	  if (action->getCityId() == (*it)->getCityId())
+	    {
+	      found = true;
+	      break;
+	    }
+	}
+      if (found == false)
+	keepers.push_back(action);
+
+    }
+
+  //now delete all city production events that aren't in keepers
+  int total = 0;
+  std::list<Action*>::iterator bit;
+  for (bit = d_actions.begin(); bit != d_actions.end(); bit++)
+    {
+      if ((*bit)->getType() != Action::CITY_PROD)
+	continue;
+      if (find (keepers.begin(), keepers.end(), (*bit)) == keepers.end())
+	{
+	  total++;
+	  d_actions.erase (bit);
+	  bit = d_actions.begin();
+	  continue;
+	}
+    }
+  if (total)
+    printf ("pruned %d city production actions.\n", total);
+
+}
+
 // End of file

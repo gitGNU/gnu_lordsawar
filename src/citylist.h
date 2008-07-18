@@ -343,6 +343,8 @@ class Citylist : public LocationList<City>, public sigc::trackable
 	//! Get the nearest city to POS that can be vectored to.
 	City* getNearestFriendlyVectorableCity(const Vector<int>& pos);
 
+	Uint32 calculateUpcomingUpkeep(Player *p);
+
     protected:
         // CREATORS
 	//! Default constructor.
