@@ -1,5 +1,9 @@
 2008-07-16  Ben Asselstine
 
+	* bumped version to 0.1.1.
+
+2008-07-16  Ben Asselstine
+
 	* no longer collecting taxes from razed cities.
 	* now only checking our own cities for being too poor.
 	* pruning duplicate city production actions.
