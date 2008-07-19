@@ -458,9 +458,7 @@ void ArmySetWindow::on_save_armyset_activated()
 	   end = armies_list->children().end(); i != end; ++i) 
 	d_armyset->push_back((*i)[armies_columns.army]);
       XML_Helper helper(current_save_filename, std::ios::out, false);
-      helper.openTag("armyset");
       d_armyset->save(&helper);
-      helper.closeTag();
       helper.close();
     }
 }
