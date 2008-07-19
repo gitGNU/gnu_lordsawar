@@ -51,6 +51,7 @@ Main::Main(int &argc, char **&argv)
 
     start_test_scenario = false;
     
+    Glib::thread_init();
     try
     {
 	impl->gtk_main.reset(new Gtk::Main(argc, argv));

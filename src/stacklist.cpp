@@ -29,6 +29,8 @@
 #include "playerlist.h"
 #include "xmlhelper.h"
 #include <algorithm>
+#include "Item.h"
+#include "hero.h"
 
 using namespace std;
 
@@ -98,6 +100,12 @@ void Stacklist::deleteStack(Stack* s)
                 return;
             }
     }
+}
+
+void Stacklist::payUpkeep(Player *p)
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->payUpkeep(p);
 }
 
 void Stacklist::nextTurn()
@@ -351,6 +359,40 @@ Stack* Stacklist::getOwnObjectAt(int x, int y)
     if (((*it)->getPos().x == x) && ((*it)->getPos().y == y))
       return *it;
   return 0;
+}
+
+void Stacklist::getHeroes(std::vector<Uint32>& dst)
+{
+  for (Stacklist::iterator it = begin(); it != end(); it++)
+    (*it)->getHeroes(dst);
+}
+
+void Stacklist::collectTaxes(Player *p, Uint32 num_cities)
+{
+  std::vector<Uint32> hero_ids;
+  getHeroes(hero_ids);
+
+  //now let's see if we have any items that give us gold per city
+  for (std::vector<Uint32>::iterator it = hero_ids.begin(); 
+       it != hero_ids.end(); it++)
+    {
+      Stack *stack = getArmyStackById(*it);
+      Army *army = stack->getArmyById(*it);
+      Hero *hero = static_cast<Hero*>(army);
+      std::list<Item*> backpack = hero->getBackpack();
+      std::list<Item*>::const_iterator item;
+      for (item = backpack.begin(); item != backpack.end(); item++)
+	{
+	  if ((*item)->getBonus(Item::ADD2GOLDPERCITY))
+	    p->addGold(2 * num_cities);
+	    if ((*item)->getBonus(Item::ADD3GOLDPERCITY))
+	      p->addGold(3 * num_cities);
+	    if ((*item)->getBonus(Item::ADD4GOLDPERCITY))
+	      p->addGold(4 * num_cities);
+	    if ((*item)->getBonus(Item::ADD5GOLDPERCITY))
+	      p->addGold(5 * num_cities);
+	  }
+    }
 }
 
 // End of file

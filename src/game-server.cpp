@@ -35,6 +35,7 @@ class NetworkAction;
 
 struct Participant
 {
+  std::string email; //for play by mail
   void *conn;
   Player *player;
   std::list<NetworkAction *> actions;
@@ -42,7 +43,8 @@ struct Participant
 };
 
 
-GameServer::GameServer()
+GameServer::GameServer(GameServer::Type type)
+	: d_type(type)
 {
 }
 
@@ -55,14 +57,17 @@ GameServer::~GameServer()
 
 void GameServer::start()
 {
-  network_server.reset(new NetworkServer());
-  network_server->got_message.connect(
-    sigc::mem_fun(this, &GameServer::onGotMessage));
-  network_server->connection_lost.connect(
-    sigc::mem_fun(this, &GameServer::onConnectionLost));
+  if (d_type == REALTIME)
+    {
+      network_server.reset(new NetworkServer());
+      network_server->got_message.connect
+	(sigc::mem_fun(this, &GameServer::onGotMessage));
+      network_server->connection_lost.connect
+	(sigc::mem_fun(this, &GameServer::onConnectionLost));
 
-  int port = 12345;
-  network_server->startListening(port);
+      int port = 12345;
+      network_server->startListening(port);
+    }
 
   listenForActions();
   listenForHistories();
@@ -87,7 +92,7 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_JOIN:
     join(conn);
     break;
-    
+
   case MESSAGE_TYPE_SENDING_MAP:
     // should never occur
     break;
@@ -102,7 +107,7 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
 void GameServer::onConnectionLost(void *conn)
 {
   std::cerr << "connection lost" << std::endl;
-  
+
   Participant *part = findParticipantByConn(conn);
   if (part)
     participants.remove(part);
@@ -112,10 +117,10 @@ void GameServer::onConnectionLost(void *conn)
 Participant *GameServer::findParticipantByConn(void *conn)
 {
   for (std::list<Participant *>::iterator i = participants.begin(),
-         end = participants.end(); i != end; ++i)
+       end = participants.end(); i != end; ++i)
     if ((*i)->conn == conn)
       return *i;
-  
+
   return 0;
 }
 
@@ -133,19 +138,52 @@ void GameServer::listenForHistories()
     (*i)->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
 }
 
+void GameServer::clearNetworkActionlist(std::list<NetworkAction*> actions)
+{
+    for (std::list<NetworkAction*>::iterator it = actions.begin();
+        it != actions.end(); it++)
+      {
+	delete (*it);
+      }
+    actions.clear();
+}
+
+void GameServer::clearNetworkHistorylist(std::list<NetworkHistory*> histories)
+{
+    for (std::list<NetworkHistory*>::iterator it = histories.begin();
+        it != histories.end(); it++)
+      {
+	delete (*it);
+      }
+    histories.clear();
+}
+
 void GameServer::onActionDone(NetworkAction *action)
 {
   std::string desc = action->toString();
   std::cerr << "Game Server got " << desc <<"\n";
 
   for (std::list<Participant *>::iterator i = participants.begin(),
-         end = participants.end(); i != end; ++i) {
-    (*i)->actions.push_back(action);
-    sendActions(*i);
-    (*i)->actions.clear();
-  }
+       end = participants.end(); i != end; ++i) 
+    {
+      (*i)->actions.push_back(action);
+      if (d_type == REALTIME)
+	{
+	  sendActions(*i);
+	  clearNetworkActionlist((*i)->actions);
+	}
+    }
 
-  delete action;
+  if (d_type == PLAY_BY_MAIL && 
+      action->getAction()->getType() == Action::END_TURN)
+    {
+      for (std::list<Participant *>::iterator i = participants.begin(),
+	   end = participants.end(); i != end; ++i) 
+	{
+	  sendActions(*i);
+	  clearNetworkActionlist((*i)->actions);
+	}
+    }
 }
 
 void GameServer::onHistoryDone(NetworkHistory *history)
@@ -154,19 +192,32 @@ void GameServer::onHistoryDone(NetworkHistory *history)
   std::cerr << "Game Server got " << desc <<"\n";
 
   for (std::list<Participant *>::iterator i = participants.begin(),
-         end = participants.end(); i != end; ++i) {
-    (*i)->histories.push_back(history);
-    sendHistory(*i);
-    (*i)->histories.clear();
-  }
+       end = participants.end(); i != end; ++i) 
+    {
+      (*i)->histories.push_back(history);
+      if (d_type == REALTIME)
+	{
+	  sendHistories(*i);
+	  clearNetworkHistorylist((*i)->histories);
+	}
+    }
 
-  delete history;
+  if (d_type == PLAY_BY_MAIL && 
+      history->getHistory()->getType() == History::END_TURN)
+    {
+      for (std::list<Participant *>::iterator i = participants.begin(),
+	   end = participants.end(); i != end; ++i) 
+	{
+	  sendHistories(*i);
+	  clearNetworkHistorylist((*i)->histories);
+	}
+    }
 }
 
 void GameServer::join(void *conn)
 {
   std::cout << "JOIN: " << conn << std::endl;
-  
+
   Participant *part = findParticipantByConn(conn);
   if (!part) {
     part = new Participant;
@@ -189,14 +240,14 @@ void GameServer::gotHistory(void *conn, const std::string &payload)
 void GameServer::sendMap(Participant *part)
 {
   Playerlist *pl = Playerlist::getInstance();
-  
+
   // first hack the players so the player type we serialize is right
   std::vector<Uint32> player_types;
   for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i) {
     player_types.push_back((*i)->getType());
     (*i)->setType(Player::NETWORKED);
   }
-  
+
 
   // send the map
   std::ostringstream os;
@@ -220,31 +271,31 @@ void GameServer::sendActions(Participant *part)
 
   helper.begin("1");
   helper.openTag("actions");
-  
+
   for (std::list<NetworkAction *>::iterator i = part->actions.begin(),
-         end = part->actions.end(); i != end; ++i)
+       end = part->actions.end(); i != end; ++i)
     (**i).save(&helper);
 
   helper.closeTag();
-    
+
   std::cerr << "sending actions" << std::endl;
   network_server->send(part->conn, MESSAGE_TYPE_SENDING_ACTIONS, os.str());
 }
 
-void GameServer::sendHistory(Participant *part)
+void GameServer::sendHistories(Participant *part)
 {
   std::ostringstream os;
   XML_Helper helper(&os);
 
   helper.begin("1");
   helper.openTag("histories");
-  
+
   for (std::list<NetworkHistory *>::iterator i = part->histories.begin(),
-         end = part->histories.end(); i != end; ++i)
+       end = part->histories.end(); i != end; ++i)
     (**i).save(&helper);
 
   helper.closeTag();
-    
+
   std::cerr << "sending histories" << std::endl;
   network_server->send(part->conn, MESSAGE_TYPE_SENDING_HISTORY, os.str());
 }

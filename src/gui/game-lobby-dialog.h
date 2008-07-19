@@ -68,6 +68,8 @@ class GameLobbyDialog//: public sigc::trackable
     Gtk::Label *scenario_name_label;
     Gtk::Label *cities_label;
     Gtk::Button *sit_button;
+    Gtk::Button *cancel_button;
+
     void update_scenario_details();
     void update_player_details();
     void on_show_options_clicked();
@@ -130,6 +132,7 @@ class GameLobbyDialog//: public sigc::trackable
     void on_remote_player_changes_name();
     void on_remote_player_changes_type();
     void on_sit_clicked();
+    void on_cancel_clicked();
 };
 
 #endif

@@ -30,6 +30,14 @@
 #include "../GraphicsCache.h"
 #include "../GameScenario.h"
 #include "game-lobby-dialog.h"
+#include "../CreateScenario.h"
+#include "../counter.h"
+#include "../shieldsetlist.h"
+#include "../File.h"
+#include "../armysetlist.h"
+#include "../playerlist.h"
+#include "timed-message-dialog.h"
+#include "new-game-progress-window.h"
 
 #include "../game-client.h"
 
@@ -40,8 +48,10 @@ Driver::Driver()
     splash_window.reset(new SplashWindow);
     splash_window->new_game_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_new_game_requested));
-    splash_window->new_network_game_requested.connect(
-	sigc::mem_fun(*this, &Driver::on_new_network_game_requested));
+    splash_window->new_hosted_network_game_requested.connect(
+	sigc::mem_fun(*this, &Driver::on_new_hosted_network_game_requested));
+    splash_window->new_remote_network_game_requested.connect(
+	sigc::mem_fun(*this, &Driver::on_new_remote_network_game_requested));
     splash_window->load_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_load_requested));
     splash_window->quit_requested.connect(
@@ -99,34 +109,80 @@ Driver::~Driver()
 {
 }
 
-void Driver::on_new_network_game_requested(std::string filename, bool has_ops)
+void Driver::on_new_hosted_network_game_requested(GameParameters g, bool has_ops)
 {
-  GameLobbyDialog gld(filename, has_ops);
-  gld.set_parent_window(*splash_window.get()->get_window());
-  int response = gld.run();
+    if (splash_window.get())
+	splash_window->hide();
+
+    NewGameProgressWindow pw(g);
+    Gtk::Main::instance()->run(pw);
+    GameScenario *game_scenario = pw.getGameScenario();
+
+    if (game_scenario == NULL)
+      {
+	TimedMessageDialog dialog(*splash_window->get_window(),
+				  _("Corrupted saved game file."), 0);
+	return;
+      }
+
+  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, has_ops));
+  game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
+  int response = game_lobby_dialog->run();
+  game_lobby_dialog->hide();
+  if (splash_window.get())
+    splash_window->show();
+}
+
+void Driver::on_new_remote_network_game_requested(std::string filename, bool has_ops)
+{
+  if (splash_window.get())
+    splash_window->hide();
+  game_lobby_dialog.reset(new GameLobbyDialog(filename, has_ops));
+  game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
+  int response = game_lobby_dialog->run();
+  game_lobby_dialog->hide();
+  if (splash_window.get())
+    splash_window->show();
 }
 
 void Driver::on_new_game_requested(GameParameters g)
 {
     if (splash_window.get())
 	splash_window->hide();
+
+    NewGameProgressWindow pw(g);
+    Gtk::Main::instance()->run(pw);
+    GameScenario *game_scenario = pw.getGameScenario();
+
+    if (game_scenario == NULL)
+      {
+	TimedMessageDialog dialog(*splash_window->get_window(),
+				  _("Corrupted saved game file."), 0);
+	return;
+      }
+
     init_game_window();
     
-    game_window->sdl_initialized.connect(
-	sigc::bind(sigc::mem_fun(game_window.get(), &GameWindow::new_game), g));
     game_window->show();
+    game_window->new_game(game_scenario);
 }
 
 void Driver::on_load_requested(std::string filename)
 {
     if (splash_window.get())
 	splash_window->hide();
+
+    GameScenario *game_scenario = load_game(filename);
+    if (game_scenario == NULL)
+      return;
+
     init_game_window();
     
-    game_window->sdl_initialized.connect(
-	sigc::bind(sigc::mem_fun(game_window.get(), &GameWindow::load_game),
-		   filename));
+    //game_window->sdl_initialized.connect(
+	//sigc::bind(sigc::mem_fun(game_window.get(), &GameWindow::load_game),
+		   //filename));
     game_window->show();
+    game_window->load_game(game_scenario);
 
 }
 
@@ -164,3 +220,85 @@ void Driver::init_game_window()
 
 }
 
+std::string
+Driver::create_and_dump_scenario(const std::string &file, const GameParameters &g)
+{
+    CreateScenario creator (g.map.width, g.map.height);
+
+    // then fill the other players
+    int c = 0;
+    int army_id = Armysetlist::getInstance()->getArmysetId(g.army_theme);
+    Shieldsetlist *ssl = Shieldsetlist::getInstance();
+    for (std::vector<GameParameters::Player>::const_iterator
+	     i = g.players.begin(), end = g.players.end();
+	 i != end; ++i, ++c) {
+	
+	if (i->type == GameParameters::Player::OFF)
+	{
+            fl_counter->getNextId();
+	    continue;
+	}
+	
+	Player::Type type;
+	if (i->type == GameParameters::Player::EASY)
+	    type = Player::AI_FAST;
+	else if (i->type == GameParameters::Player::HARD)
+	    type = Player::AI_SMART;
+	else
+	    type = Player::HUMAN;
+
+	creator.addPlayer(i->name, army_id, ssl->getColor(g.shield_theme, 
+							  c), type);
+    }
+
+    // the neutral player must come last so it has the highest id among players
+    creator.addNeutral(_("Neutral"), army_id, 
+		       ssl->getColor(g.shield_theme, MAX_PLAYERS),
+		       Player::AI_DUMMY);
+
+    // now fill in some map information
+    creator.setMapTiles(g.tile_theme);
+    creator.setShieldset(g.shield_theme);
+    creator.setCityset(g.city_theme);
+    creator.setNoCities(g.map.cities);
+    creator.setNoRuins(g.map.ruins);
+    creator.setNoTemples(4);
+
+    // terrain: the scenario generator also accepts input with a sum of
+    // more than 100%, so the thing is rather easy here
+    creator.setPercentages(g.map.grass, g.map.water, g.map.forest, g.map.swamp,
+			   g.map.hills, g.map.mountains);
+
+    int area = g.map.width * g.map.height;
+    creator.setNoSignposts(int(area * (g.map.grass / 100.0) * 0.0030));
+
+    // and tell it the turn mode
+    if (g.process_armies == GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN)
+        creator.setTurnmode(true);
+    else
+	creator.setTurnmode(false);
+	
+    // now create the map and dump the created map
+    std::string path = File::getSavePath();
+    path += file;
+    
+    creator.create(g);
+    creator.dump(path);
+    
+    return path;
+}
+
+
+GameScenario *Driver::load_game(std::string file_path)
+{
+    bool broken = false;
+    GameScenario* game_scenario = new GameScenario(file_path, broken);
+
+    if (broken)
+      {
+	TimedMessageDialog dialog(*splash_window->get_window(),
+				  _("Corrupted saved game file."), 0);
+	return NULL;
+      }
+    return game_scenario;
+}

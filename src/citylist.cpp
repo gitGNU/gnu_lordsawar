@@ -27,6 +27,9 @@
 #include "playerlist.h"
 #include <limits.h>
 #include "xmlhelper.h"
+#include "hero.h"
+#include "stack.h"
+#include "army.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -95,6 +98,7 @@ void Citylist::collectTaxes(Player* p)
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it).getOwner() == p && (*it).isBurnt() == false)
       p->addGold((*it).getGold());
+
 }
 
 //calculate the amount of money new armies will cost in the upcoming turn.

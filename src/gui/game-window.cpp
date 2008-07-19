@@ -52,6 +52,8 @@
 #include "input-helpers.h"
 #include "error-utils.h"
 
+#include "driver.h"
+
 #include "fight-window.h"
 #include "city-window.h"
 #include "army-gains-level-dialog.h"
@@ -77,7 +79,6 @@
 #include "diplomacy-dialog.h"
 #include "stack-info-dialog.h"
 #include "timed-message-dialog.h"
-#include "generation-progress-window.h"
 
 #include "../ucompose.hpp"
 #include "../defs.h"
@@ -370,107 +371,9 @@ void GameWindow::init(int width, int height)
     sdl_container->add(*sdl_widget);
 }
 
-std::string
-GameWindow::create_and_dump_scenario(const std::string &file, const GameParameters &g)
+void GameWindow::new_game(GameScenario *game_scenario)
 {
-    CreateScenario creator (g.map.width, g.map.height);
-
-    // then fill the other players
-    int c = 0;
-    int army_id = Armysetlist::getInstance()->getArmysetId(g.army_theme);
-    Shieldsetlist *ssl = Shieldsetlist::getInstance();
-    for (std::vector<GameParameters::Player>::const_iterator
-	     i = g.players.begin(), end = g.players.end();
-	 i != end; ++i, ++c) {
-	
-	if (i->type == GameParameters::Player::OFF)
-	{
-            fl_counter->getNextId();
-	    continue;
-	}
-	
-	Player::Type type;
-	if (i->type == GameParameters::Player::EASY)
-	    type = Player::AI_FAST;
-	else if (i->type == GameParameters::Player::HARD)
-	    type = Player::AI_SMART;
-	else
-	    type = Player::HUMAN;
-
-	creator.addPlayer(i->name, army_id, ssl->getColor(g.shield_theme, 
-							  c), type);
-    }
-
-    // the neutral player must come last so it has the highest id among players
-    creator.addNeutral(_("Neutral"), army_id, 
-		       ssl->getColor(g.shield_theme, MAX_PLAYERS),
-		       Player::AI_DUMMY);
-
-    // now fill in some map information
-    creator.setMapTiles(g.tile_theme);
-    creator.setShieldset(g.shield_theme);
-    creator.setCityset(g.city_theme);
-    creator.setNoCities(g.map.cities);
-    creator.setNoRuins(g.map.ruins);
-    creator.setNoTemples(4);
-
-    // terrain: the scenario generator also accepts input with a sum of
-    // more than 100%, so the thing is rather easy here
-    creator.setPercentages(g.map.grass, g.map.water, g.map.forest, g.map.swamp,
-			   g.map.hills, g.map.mountains);
-
-    int area = g.map.width * g.map.height;
-    creator.setNoSignposts(int(area * (g.map.grass / 100.0) * 0.0030));
-
-    // and tell it the turn mode
-    if (g.process_armies == GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN)
-        creator.setTurnmode(true);
-    else
-	creator.setTurnmode(false);
-	
-    // now create the map and dump the created map
-    std::string path = File::getSavePath();
-    path += file;
-    
-    //GenerationProgressWindow gpw;
-    //gpw.show_all();
-    //gpw.setGenerator(creator.getGenerator());
-    creator.create(g);
-    creator.dump(path);
-    
-    return path;
-}
-
-    
-void GameWindow::new_game(GameParameters g)
-{
-    if (g.map_path.empty()) {
-	// construct new random scenario if we're not going to load the game
-	std::string path = create_and_dump_scenario("random.map", g);
-	g.map_path = path;
-    }
-
     stop_game();
-
-    bool broken = false;
-    GameScenario* game_scenario = new GameScenario(g.map_path, broken);
-
-    if (broken)
-      {
-	on_message_requested("Corrupted saved game file.");
-	game_ended.emit();
-	return;
-      }
-
-    if (game_scenario->getRound() == 0)
-      {
-	Playerlist::getInstance()->syncPlayers(g.players);
-	game_scenario->setupFog(g.hidden_map);
-	game_scenario->setupCities(g.quick_start);
-	game_scenario->setupDiplomacy(g.diplomacy);
-	game_scenario->nextRound();
-      }
-
 
     bool success = setup_game(game_scenario);
     if (!success)
@@ -481,22 +384,8 @@ void GameWindow::new_game(GameParameters g)
     //is that right?
 }
 
-void GameWindow::load_game(std::string file_path)
+void GameWindow::load_game(GameScenario *game_scenario)
 {
-    current_save_filename = file_path;
-
-    stop_game();
-
-    bool broken = false;
-    GameScenario* game_scenario = new GameScenario(file_path, broken);
-
-    if (broken)
-      {
-	on_message_requested("Corrupted saved game file.");
-	game_ended.emit();
-	return;
-      }
-
     bool success = setup_game(game_scenario);
     if (!success)
       return;
@@ -898,7 +787,6 @@ void GameWindow::on_sdl_surface_changed()
 
 void GameWindow::on_load_game_activated()
 {
-  //return;
   Gtk::FileChooserDialog chooser(*window.get(), _("Choose Game to Load"));
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*.sav");
@@ -916,7 +804,19 @@ void GameWindow::on_load_game_activated()
   if (res == Gtk::RESPONSE_ACCEPT)
     {
       std::string filename = chooser.get_filename();
-      load_game(filename);
+      current_save_filename = filename;
+      stop_game();
+    
+      bool broken = false;
+      GameScenario* game_scenario = new GameScenario(filename, broken);
+
+      if (broken)
+	{
+	  on_message_requested(_("Corrupted saved game file."));
+	  game_ended.emit();
+	  return;
+	}
+      load_game(game_scenario);
     }
 }
 

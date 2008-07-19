@@ -33,6 +33,7 @@
 class City;
 class Stack;
 class XML_Helper;
+class Player;
 
 //! A list of Stack objects for a single player.
 /** 
@@ -163,6 +164,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 
         //! Callback method executed at the end of every turn.
         void nextTurn();
+	void payUpkeep(Player *p);
 
 	/**
          * @return True if any stacks in the list have enough moves for 
@@ -219,10 +221,13 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         Stack *getStackById(Uint32 id);
         Stack *getArmyStackById(Uint32 army);
 
+	void collectTaxes(Player *p, Uint32 num_cities);
     private:
         //! Callback function for loading.
         bool load(std::string tag, XML_Helper* helper);
 
+
+	void getHeroes(std::vector<Uint32>& dst);
 	//! A pointer to the currently selected Stack.
         Stack* d_activestack;
 };

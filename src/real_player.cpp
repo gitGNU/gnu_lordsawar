@@ -28,6 +28,7 @@
 
 #include "real_player.h"
 #include "action.h"
+#include "history.h"
 #include "playerlist.h"
 #include "stacklist.h"
 #include "citylist.h"
@@ -82,6 +83,8 @@ bool RealPlayer::startTurn()
 
 void RealPlayer::endTurn()
 {
+  History *history = new History_EndTurn();
+  addHistory(history);
   pruneActionlist();
   Action *action = new Action_EndTurn;
   addAction(action);

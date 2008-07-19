@@ -82,7 +82,9 @@ class History: public Ownable
 	  //! The player has been treacherous towards an opponent.
 	  DIPLOMATIC_TREACHERY = 17,
 	  //! A Hero finds some powerful allies.
-	  HERO_FINDS_ALLIES = 18
+	  HERO_FINDS_ALLIES = 18,
+	  //! The player has finished a turn.
+	  END_TURN = 19
         };
                 
 	//! Default constructor.
@@ -719,5 +721,32 @@ class History_HeroFindsAllies : public History
 	//! The name of the Hero who found powerful allies at a Ruin.
 	std::string d_hero;
 };
+
+//-----------------------------------------------------------------------------
+//! A permanent record of a player ending a turn.
+class History_EndTurn : public History
+{
+    public:
+	//! Default constructor.
+	History_EndTurn();
+	//! Copy constructor.
+	History_EndTurn(const History_EndTurn &history);
+	//! Load the historical event from an opened saved-game file.
+	History_EndTurn(XML_Helper* helper);
+	//! Destructor.
+	~History_EndTurn();
+
+	//! Return some debug information about this historical event.
+	std::string dump() const;
+
+	//! Save the historical event to an opened saved-game file.
+	bool save(XML_Helper* helper) const;
+
+	//! This method doesn't need to be called for History_EndTurn.
+	bool fillData();
+    
+    private:
+};
+
 
 #endif //HISTORY_H

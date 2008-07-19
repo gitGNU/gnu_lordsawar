@@ -81,10 +81,10 @@ class GameWindow: public sigc::trackable
     void init(int width, int height);
 
     // setup a new game
-    void new_game(GameParameters g);
+    void new_game(GameScenario *game_scenario);
     
-    // setup and use the game stored under file_path
-    void load_game(std::string file_path);
+    // load the game
+    void load_game(GameScenario *game_scenario);
 
     // emitted when the game has ended and it is time to show the splash again
     sigc::signal<void> game_ended;
@@ -93,9 +93,7 @@ class GameWindow: public sigc::trackable
 
     sigc::signal<void> sdl_initialized;
     
-
-    static std::string create_and_dump_scenario(const std::string &file, const GameParameters &g);
-
+    Gtk::Window *get_window() const {return window.get();};
  private:
     std::auto_ptr<Gtk::Window> window;
     std::auto_ptr<Gtk::Window> map_tip;	// tooltip appears over the map

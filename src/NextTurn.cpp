@@ -158,11 +158,17 @@ void NextTurn::startTurn()
       //collect taxes
       Citylist::getInstance()->collectTaxes(p);
 
-      //pay upkeep for existing stacks, reset moves, and heal stacks
-      p->getStacklist()->nextTurn();
+      Uint32 num_cities = Citylist::getInstance()->countCities(p);
+      p->getStacklist()->collectTaxes(p, num_cities);
 
       //vector armies (needs to preceed city's next turn)
       VectoredUnitlist::getInstance()->nextTurn(p);
+
+      //pay upkeep for existing stacks
+      p->getStacklist()->payUpkeep(p);
+
+      //reset moves, and heal stacks
+      p->getStacklist()->nextTurn();
 
       //build new armies
       Citylist::getInstance()->nextTurn(p);
@@ -201,11 +207,17 @@ void NextTurn::finishRound()
 	  //collect monies from cities
 	  Citylist::getInstance()->collectTaxes(*it);
 
-	  //pay for existing armies, reset, and heal armies
-	  (*it)->getStacklist()->nextTurn();
+	  Uint32 num_cities = Citylist::getInstance()->countCities(*it);
+	  (*it)->getStacklist()->collectTaxes((*it), num_cities);
 
 	  //vector armies (needs to preceed city's next turn)
 	  VectoredUnitlist::getInstance()->nextTurn(*it);
+
+	  //pay for existing armies
+	  (*it)->getStacklist()->payUpkeep(*it);
+
+	  //reset, and heal armies
+	  (*it)->getStacklist()->nextTurn();
 
 	  //produce new armies
 	  Citylist::getInstance()->nextTurn(*it);

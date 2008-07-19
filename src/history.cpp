@@ -80,6 +80,8 @@ History* History::handle_load(XML_Helper* helper)
       return (new History_DiplomacyTreachery(helper));
     case HERO_FINDS_ALLIES:
       return (new History_HeroFindsAllies(helper));
+    case END_TURN:
+      return (new History_EndTurn(helper));
     }
 
   return 0;
@@ -153,6 +155,9 @@ History* History::copy(const History* a)
       return 
 	(new History_HeroFindsAllies
           (*dynamic_cast<const History_HeroFindsAllies*>(a)));
+    case END_TURN:
+      return 
+	(new History_EndTurn(*dynamic_cast<const History_EndTurn*>(a)));
     }
 
   return 0;
@@ -1059,6 +1064,53 @@ bool History_HeroFindsAllies::save(XML_Helper* helper) const
 bool History_HeroFindsAllies::fillData(Hero *hero)
 {
   d_hero = hero->getName();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+//History_EndTurn
+
+History_EndTurn::History_EndTurn()
+:History(History::END_TURN)
+{
+}
+
+History_EndTurn::History_EndTurn(const History_EndTurn &history)
+:History(history)
+{
+}
+
+History_EndTurn::History_EndTurn(XML_Helper* helper)
+:History(History::END_TURN)
+{
+}
+
+History_EndTurn::~History_EndTurn()
+{
+}
+
+std::string History_EndTurn::dump() const
+{
+  std::stringstream s;
+
+  s <<"player ends a turn" << "\n";
+
+  return s.str();
+}
+
+bool History_EndTurn::save(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->openTag("history");
+  retval &= helper->saveData("type", d_type);
+  retval &= helper->closeTag();
+
+  return retval;
+}
+
+bool History_EndTurn::fillData()
+{
   return true;
 }
 

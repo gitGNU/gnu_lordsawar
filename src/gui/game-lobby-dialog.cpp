@@ -82,6 +82,9 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
     xml->get_widget("sit_button", sit_button);
     sit_button->signal_clicked().connect
       (sigc::mem_fun(this, &GameLobbyDialog::on_sit_clicked));
+    xml->get_widget("cancel_button", cancel_button);
+    cancel_button->signal_clicked().connect
+      (sigc::mem_fun(this, &GameLobbyDialog::on_cancel_clicked));
     xml->get_widget("map_image", map_image);
     xml->get_widget("turn_label", turn_label);
     xml->get_widget("scenario_name_label", scenario_name_label);
@@ -263,9 +266,9 @@ bool GameLobbyDialog::run()
     int response = dialog->run();
 
     if (response == 0)
-	return true;
+      return true;
     else
-	return false;
+      return false;
 }
 
 void GameLobbyDialog::on_map_changed(SDL_Surface *map)
@@ -383,5 +386,8 @@ void GameLobbyDialog::on_remote_player_changes_type()
 }
  
 void GameLobbyDialog::on_sit_clicked()
+{
+}
+void GameLobbyDialog::on_cancel_clicked()
 {
 }

@@ -434,6 +434,12 @@ Uint32 Stack::getMaxSight() const
   return max;
 }
 
+void Stack::payUpkeep(Player *p)
+{
+  for (iterator it = begin(); it != end(); ++it)
+      p->withdrawGold((*it)->getUpkeep());
+}
+
 void Stack::nextTurn()
 {
   Uint32 movement_multiplier = 1;
@@ -456,34 +462,12 @@ void Stack::nextTurn()
   for (const_iterator it = begin(); it != end(); it++)
     (*it)->setStat(Army::MOVES_MULTIPLIER, movement_multiplier);
 
-  //now let's see if we have any items that give us gold per city
-  for (const_iterator it = begin(); it != end(); it++)
-    if ((*it)->isHero())
-      {
-	std::list<Item*> backpack = dynamic_cast<Hero*>((*it))->getBackpack();
-	std::list<Item*>::const_iterator item;
-	for (item = backpack.begin(); item != backpack.end(); item++)
-	  {
-	    Player *p = d_owner;
-	    if ((*item)->getBonus(Item::ADD2GOLDPERCITY))
-	      p->addGold(2 * Citylist::getInstance()->countCities(p));
-	    if ((*item)->getBonus(Item::ADD3GOLDPERCITY))
-	      p->addGold(3 * Citylist::getInstance()->countCities(p));
-	    if ((*item)->getBonus(Item::ADD4GOLDPERCITY))
-	      p->addGold(4 * Citylist::getInstance()->countCities(p));
-	    if ((*item)->getBonus(Item::ADD5GOLDPERCITY))
-	      p->addGold(5 * Citylist::getInstance()->countCities(p));
-	  }
-      }
   if (d_defending == true)
     setFortified(true);
 
   for (iterator it = begin(); it != end(); ++it)
     {
       (*it)->resetMoves();
-      // TODO: should be moved in a more appropriate place => class Player
-      if (d_owner)
-	d_owner->withdrawGold((*it)->getUpkeep());
       (*it)->heal();
     }
 

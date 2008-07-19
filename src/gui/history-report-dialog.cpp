@@ -191,6 +191,7 @@ void HistoryReportDialog::generatePastEventlists()
 		case History::CITY_WON:
 		case History::CITY_RAZED:
 		case History::SCORE:
+		case History::END_TURN:
 		  break;
 		}
 	    }

@@ -25,6 +25,7 @@
 
 #include "splash-window.h"
 #include "game-window.h"
+#include "game-lobby-dialog.h"
 #include "../game-parameters.h"
 
 // takes care of setting up the splash window and the game window, the
@@ -35,18 +36,25 @@ class Driver: public sigc::trackable
     Driver();
     ~Driver();
 
+    static std::string create_and_dump_scenario(const std::string &file, 
+						const GameParameters &g);
  private:
     std::auto_ptr<GameWindow> game_window;
+    std::auto_ptr<GameLobbyDialog> game_lobby_dialog;
     std::auto_ptr<SplashWindow> splash_window;
 
     void on_new_game_requested(GameParameters g);
-    void on_new_network_game_requested(std::string filename, bool has_ops);
+    void on_new_remote_network_game_requested(std::string filename, bool has_ops);
+    void on_new_hosted_network_game_requested(GameParameters g, bool has_ops);
     void on_load_requested(std::string filename);
     void on_quit_requested();
 
     void on_game_ended();
 
     void init_game_window();
+
+    GameScenario *new_game(GameParameters g);
+    GameScenario *load_game(std::string file_path);
 };
 
 

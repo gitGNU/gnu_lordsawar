@@ -34,12 +34,19 @@ class NetworkHistory;
 class GameServer: public sigc::trackable
 {
 public:
-  GameServer();
+        
+    enum Type 
+      {
+	REALTIME,
+	PLAY_BY_MAIL,
+      };
+  GameServer(Type type = REALTIME);
   ~GameServer();
 
   void start();
   
 private:
+  Type d_type;
   void listenForActions();
   void listenForHistories();
   void onActionDone(NetworkAction *action);
@@ -51,7 +58,7 @@ private:
 
   void sendMap(Participant *part);
   void sendActions(Participant *part);
-  void sendHistory(Participant *part);
+  void sendHistories(Participant *part);
 
   std::auto_ptr<NetworkServer> network_server;
 
@@ -61,6 +68,8 @@ private:
   
   void onGotMessage(void *conn, MessageType type, std::string message);
   void onConnectionLost(void *conn);
+  void clearNetworkActionlist(std::list<NetworkAction*> actions);
+  void clearNetworkHistorylist(std::list<NetworkHistory*> histories);
 };
 
 #endif
