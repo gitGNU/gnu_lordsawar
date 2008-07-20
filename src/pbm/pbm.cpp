@@ -15,6 +15,29 @@ pbm::~pbm()
 {
 }
 
+void pbm::init(std::string save_game_file)
+{
+  bool broken = false;
+  GameScenario* game_scenario = new GameScenario(save_game_file, broken);
+  if (game_scenario == NULL)
+    return;
+  Playerlist *pl = Playerlist::getInstance();
+  bool first = true;
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+    {
+      if ((*it) == Playerlist::getInstance()->getNeutral())
+	continue;
+      if (first)
+	{
+	  (*it)->setType(Player::HUMAN);
+	  first = false;
+	}
+      else
+	(*it)->setType(Player::NETWORKED);
+    }
+  broken = game_scenario->saveGame(save_game_file);
+}
+
 void pbm::run(std::string save_game_file, std::string turn_file)
 {
   bool broken = false;

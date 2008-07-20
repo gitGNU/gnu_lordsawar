@@ -42,20 +42,18 @@ int main(int argc, char* argv[])
   bindtextdomain ("lordsawar","./locale/");
 #endif
 
-  // Check if armysets are in the path (otherwise exit)
-  //File::scanArmysets();
-  //File::scanTilesets();
-  //File::scanShieldsets();
-  //File::scanCitysets();
-
   if (argc != 3)
     {
-      fprintf (stderr, "%s save-game-file turn-file\n", argv[0]);
+      fprintf (stderr, "Usage: %s saved-game-file turn-file\n", argv[0]);
+      fprintf (stderr, "  or: %s --init saved-game-file\n", argv[0]);
       exit (1);
     }
 
   pbm playbymail;
-  playbymail.run(argv[1], argv[2]);
+  if (strcmp(argv[1], "--init") == 0)
+    playbymail.init(argv[2]);
+  else
+    playbymail.run(argv[1], argv[2]);
 
   return EXIT_SUCCESS;
 }

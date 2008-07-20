@@ -1,0 +1,9 @@
+
+Play by mail Lordsawar.
+
+1. make a new game, and save it.
+2. run lordsawar-pbm --init saved-game-file
+3. send the resulting saved-game file to the first player.
+4. have the first player send back a turn file.
+5. run lordsawar-pbm saved-game-file turn-file
+6. repeat step 3, until there's a winner.

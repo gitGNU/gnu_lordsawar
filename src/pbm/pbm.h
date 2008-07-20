@@ -25,6 +25,7 @@ class pbm
     public:
         pbm();
 	~pbm();
+	void init(std::string save_game_file);
 	void run(std::string save_game_file, std::string turn_file);
 
     private:
