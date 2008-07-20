@@ -109,7 +109,7 @@ XML_Helper::XML_Helper(std::string filename, std::ios::openmode mode, bool zip)
         }
         else 
         {
-            std::cout <<filename <<_(": The file is not obfuscated, attempting to read it....\n"); 
+            //std::cout <<filename <<_(": The file is not obfuscated, attempting to read it....\n"); 
             d_fin->seekg(0, std::ios::beg);
             d_in = d_fin;
         }

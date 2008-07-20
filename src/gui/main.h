@@ -39,6 +39,8 @@ class Main: public sigc::trackable, public noncopyable
     bool iterate_main_loop();
 
     bool start_test_scenario;
+    bool start_network_test;
+    std::string load_filename;
     
  private:
     struct Impl;

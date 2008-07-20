@@ -99,7 +99,7 @@ endif
 	i586-mingw32msvc-windres -o $@ $<
 
 localedir = $(datadir)/locale
-DEFS = -DFL_VERSION=\"@VERSION@\"  -DLOCALEDIR=\"$(localedir)\" @DEFS@
+DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 lordsawar_LDFLAGS =
 lordsawar_LDADD = $(SDL_LIBS) \

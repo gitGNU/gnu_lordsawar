@@ -50,6 +50,8 @@ Main::Main(int &argc, char **&argv)
     singleton = this;
 
     start_test_scenario = false;
+    start_network_test = false;
+    load_filename = "";
     
     Glib::thread_init();
     try
@@ -95,7 +97,7 @@ void Main::start_main_loop()
 {
     try
     {
-	impl->driver.reset(new Driver);
+	impl->driver.reset(new Driver(load_filename));
 	impl->gtk_main->run();
     }
     catch (const Glib::Error &ex) {

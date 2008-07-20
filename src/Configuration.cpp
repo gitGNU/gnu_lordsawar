@@ -97,7 +97,7 @@ bool Configuration::loadConfigurationFile(string fileName)
     ifstream in(fileName.c_str());
     if (in)
     {
-        cout << _("Found configuration file: ") << fileName << endl;
+        //cout << _("Found configuration file: ") << fileName << endl;
 
         //parse the file
         XML_Helper helper(fileName.c_str(), ios::in, false);

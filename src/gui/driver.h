@@ -33,15 +33,17 @@
 class Driver: public sigc::trackable
 {
  public:
-    Driver();
+    Driver(std::string load_filename);
     ~Driver();
 
+    void run();
     static std::string create_and_dump_scenario(const std::string &file, 
 						const GameParameters &g);
  private:
     std::auto_ptr<GameWindow> game_window;
     std::auto_ptr<GameLobbyDialog> game_lobby_dialog;
     std::auto_ptr<SplashWindow> splash_window;
+    std::string d_load_filename;
 
     void on_new_game_requested(GameParameters g);
     void on_new_remote_network_game_requested(std::string filename, bool has_ops);

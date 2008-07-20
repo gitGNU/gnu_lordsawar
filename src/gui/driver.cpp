@@ -38,12 +38,13 @@
 #include "../playerlist.h"
 #include "timed-message-dialog.h"
 #include "new-game-progress-window.h"
+#include "game-preferences-dialog.h"
 
 #include "../game-client.h"
 
 static GameClient *game_client = 0;
 
-Driver::Driver()
+Driver::Driver(std::string load_filename)
 {
     splash_window.reset(new SplashWindow);
     splash_window->new_game_requested.connect(
@@ -57,52 +58,101 @@ Driver::Driver()
     splash_window->quit_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_quit_requested));
 
-    if (Main::instance().start_test_scenario) {
-        game_client = new GameClient();
-        game_client->game_scenario_received.connect(
-          sigc::mem_fun(this, &Driver::on_load_requested));
-        game_client->start("localhost", 12345);
-        splash_window->show();
-        return;
-      
-	// quick load a test scenario
-	GameParameters g;
-	GameParameters::Player p;
-	p.type = GameParameters::Player::HUMAN;
-	p.name = "Mr. Test";
-	g.players.push_back(p);
-	p.type = GameParameters::Player::EASY;
-	p.name = "Evail";
-	g.players.push_back(p);
-	g.map.width = 75;
-	g.map.height = 100;
-	g.map.grass = 78;
-	g.map.water = 7;
-	g.map.swamp = 2;
-	g.map.forest = 3;
-	g.map.hills = 5;
-	g.map.mountains = 5;
-	g.map.cities = 20;
-	g.map.ruins = 25;
-	g.map_path = "";
-	g.play_with_quests = false;
-	g.hidden_map = false;
-	g.neutral_cities = GameParameters::STRONG;
-	g.razing_cities = GameParameters::ALWAYS;
-	g.diplomacy = false;
-	g.random_turns = false;
-	g.quick_start = false;
-	g.intense_combat = false;
-	g.military_advisor = false;
-	g.tile_theme = "default";
-	g.army_theme = "Default";
-	g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
-	
-	g.difficulty = GameScenario::calculate_difficulty_rating(g);
-	on_new_game_requested(g);
+    d_load_filename = load_filename;
+    splash_window->sdl_initialized.connect(sigc::mem_fun(*this, &Driver::run));
+    splash_window->show();
+}
+
+void Driver::run()
+{
+  if (Main::instance().start_test_scenario) 
+    {
+      // quick load a test scenario
+      GameParameters g;
+      GameParameters::Player p;
+      p.type = GameParameters::Player::HUMAN;
+      p.id = 0;
+      p.name = "Mr. Test";
+      g.players.push_back(p);
+      p.type = GameParameters::Player::EASY;
+      p.id = 1;
+      p.name = "Evil";
+      g.players.push_back(p);
+      for (int i = 2; i < MAX_PLAYERS; i++)
+	{
+	  p.type = GameParameters::Player::OFF;
+	  p.id = i;
+	  p.name = "";
+	  g.players.push_back(p);
+	}
+      g.map.width = 125;
+      g.map.height = 125;
+      g.map.grass = 78;
+      g.map.water = 7;
+      g.map.swamp = 2;
+      g.map.forest = 3;
+      g.map.hills = 5;
+      g.map.mountains = 5;
+      g.map.cities = 20;
+      g.map.ruins = 25;
+      g.map_path = "";
+      g.play_with_quests = false;
+      g.hidden_map = false;
+      g.neutral_cities = GameParameters::STRONG;
+      g.razing_cities = GameParameters::ALWAYS;
+      g.diplomacy = false;
+      g.random_turns = false;
+      g.quick_start = false;
+      g.intense_combat = false;
+      g.military_advisor = false;
+      g.army_theme = "Default";
+      g.tile_theme = "default";
+      g.shield_theme = "default";
+      g.city_theme = "default";
+      g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
+      g.difficulty = GameScenario::calculate_difficulty_rating(g);
+      g.cities_can_produce_allies = false;
+      g.cusp_of_war = false;
+      g.see_opponents_stacks = true;
+      g.see_opponents_production = true;
+      on_new_game_requested(g);
     }
-    else
-	splash_window->show();
+  else if (Main::instance().start_network_test) 
+    {
+      game_client = new GameClient();
+      game_client->game_scenario_received.connect
+	(sigc::mem_fun(this, &Driver::on_load_requested));
+      game_client->start("localhost", LORDSAWAR_PORT);
+      splash_window->show();
+      return;
+    }
+  else
+    {
+      splash_window->show();
+      if (d_load_filename.empty() == false)
+	{
+	  GameParameters g;
+	  g.map_path = d_load_filename;
+	  size_t found = d_load_filename.find(".map");
+	  if (found != std::string::npos)
+	    {
+	      GamePreferencesDialog d(d_load_filename);
+	      d.set_parent_window(*splash_window->get_window());
+	      d.game_started.connect(sigc::mem_fun
+				     (*this, &Driver::on_new_game_requested));
+	      d.run();
+	    }
+	  else
+	    {
+	      found = d_load_filename.find(".sav");
+	      if (found != std::string::npos)
+		on_load_requested(d_load_filename);
+	      else
+		on_new_game_requested(g);
+	    }
+	}
+    }
+  return;
 }
 
 Driver::~Driver()

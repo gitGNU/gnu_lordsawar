@@ -40,64 +40,80 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    srand(time(NULL));         // set the random seed
+  srand(time(NULL));         // set the random seed
 
-    initialize_configuration();
+  initialize_configuration();
 
-    setlocale(LC_ALL, Configuration::s_lang.c_str());
+  setlocale(LC_ALL, Configuration::s_lang.c_str());
 #ifndef __WIN32__
-    bindtextdomain ("lordsawar",PO_PATH);
+  bindtextdomain ("lordsawar",PO_PATH);
 #else
-    bindtextdomain ("lordsawar","./locale/");
+  bindtextdomain ("lordsawar","./locale/");
 #endif
 
-    Main kit(argc, argv);
+  Main kit(argc, argv);
 
-    textdomain ("lordsawar");
-    if (argc > 1)
+  textdomain ("lordsawar");
+  if (argc > 1)
     {
-        for (int i = 2; i <= argc; i++)
-        {
-            string parameter(argv[i-1]); 
-            if (parameter == "-c")
-            {
-                i++;
-                //convert the next argument
-                char* error = 0;
-                long size = strtol(argv[i-1], &error, 10);
-                if (error && (*error != '\0'))
-                {
-                    cerr <<_("non-numerical value for cache size\n");
-                    exit(-1);
-                }
-                Configuration::s_cacheSize = size;
-            }
-            if (parameter == "--test" || parameter == "-t")
-            {
-                kit.start_test_scenario = true;
-            }
-            if (parameter == "--help" || parameter == "-h")
-            {
-                cout << endl;
-                cout << "LordsAWar " << FL_VERSION << endl << endl;
-                cout << _("Available parameters:") << endl << endl; 
-                cout << _("-h,      --help             Shows this help screen\n");
-                cout << _("-c <size>                   Set the maximum cache size") <<endl;
-                cout << _("-t,      --test             Starting with a test-scenario") << endl;
-		cout << endl << endl;
-                exit(0);
-            }
-        }
+      for (int i = 2; i <= argc; i++)
+	{
+	  string parameter(argv[i-1]); 
+	  if (parameter == "-c")
+	    {
+	      i++;
+	      //convert the next argument
+	      char* error = 0;
+	      long size = strtol(argv[i-1], &error, 10);
+	      if (error && (*error != '\0'))
+		{
+		  cerr <<_("non-numerical value for cache size\n");
+		  exit(-1);
+		}
+	      Configuration::s_cacheSize = size;
+	    }
+	  else if (parameter == "--test" || parameter == "-t")
+	    {
+	      kit.start_test_scenario = true;
+	    }
+	  else if (parameter == "--network-test" || parameter == "-n")
+	    {
+	      kit.start_network_test = true;
+	    }
+	  else if (parameter == "--help" || parameter == "-h")
+	    {
+	      cout << argv[0] << " [OPTION]... [FILE]" << endl << endl;
+	      cout << "LordsAWar! version " << VERSION << endl << endl;
+	      cout << _("Options:") << endl << endl; 
+	      cout << _("  -h, --help                 Shows this help screen") <<endl;
+	      cout << _("  -c <size>                  Set the maximum cache size") <<endl;
+	      cout << _("  -t, --test                 Start with a test-scenario") << endl;
+	      cout << _("  -n, --network-test         Start a network test") << endl;
+	      cout << endl;
+	      cout << "FILE can be a saved game file (.sav), or a map (.map) file." << endl;
+	      cout << endl;
+	      cout << "Report bugs to <" << PACKAGE_BUGREPORT ">." << endl;
+	      exit(0);
+	    }
+	  else
+	    kit.load_filename = parameter;
+	}
     }
 
-    // Check if armysets are in the path (otherwise exit)
-    File::scanArmysets();
-    File::scanTilesets();
-    File::scanShieldsets();
-    File::scanCitysets();
+  if (kit.load_filename != "" && kit.start_test_scenario)
+    {
+      cerr <<"Error: Cannot specify -t and have a file specified." << endl;
+      exit (1);
+    }
+
+  // Check if armysets are in the path (otherwise exit)
+  File::scanArmysets();
+  File::scanTilesets();
+  File::scanShieldsets();
+  File::scanCitysets();
 
 
-    kit.start_main_loop();
-    
-    return EXIT_SUCCESS;
+  kit.start_main_loop();
+
+  return EXIT_SUCCESS;
 }
