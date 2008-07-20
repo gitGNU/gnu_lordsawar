@@ -52,6 +52,7 @@ Main::Main(int &argc, char **&argv)
     start_test_scenario = false;
     start_network_test = false;
     load_filename = "";
+    turn_filename = "";
     
     Glib::thread_init();
     try

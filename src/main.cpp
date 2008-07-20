@@ -72,6 +72,11 @@ int main(int argc, char* argv[])
 		}
 	      Configuration::s_cacheSize = size;
 	    }
+	  else if (parameter == "--turn")
+	    {
+	      i++;
+	      kit.turn_filename = argv[i-1];
+	    }
 	  else if (parameter == "--test" || parameter == "-t")
 	    {
 	      kit.start_test_scenario = true;
@@ -105,6 +110,19 @@ int main(int argc, char* argv[])
       cerr <<"Error: Cannot specify -t and have a file specified." << endl;
       exit (1);
     }
+
+  if (kit.start_network_test  && kit.start_test_scenario)
+    {
+      cerr <<"Error: Cannot specify -n and -t simultaneously." << endl;
+      exit (1);
+    }
+
+  if (kit.turn_filename != "" && kit.load_filename == "")
+    {
+      cerr <<"Error: Must specify a file to load when specifying --turn." << endl;
+      exit (1);
+    }
+
 
   // Check if armysets are in the path (otherwise exit)
   File::scanArmysets();

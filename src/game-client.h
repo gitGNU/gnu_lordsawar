@@ -20,9 +20,13 @@
 
 #include "config.h"
 
+#include <list>
 #include <memory>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
+class XML_Helper;
+class NetworkAction;
+class NetworkHistory;
 
 #include "network-common.h"
 
@@ -39,12 +43,16 @@ public:
 
   sigc::signal<void, std::string> game_scenario_received;
   
+  bool loadWithHelper(XML_Helper &helper);
+
 private:
   std::auto_ptr<NetworkConnection> network_connection;
 
   void gotScenario(const std::string &payload);
   void gotActions(const std::string &payload);
-  void gotHistory(const std::string &payload);
+  int decodeActions(std::list<NetworkAction*> actions);
+  void gotHistories(const std::string &payload);
+  int decodeHistories(std::list<NetworkHistory*> histories);
 
   void onConnected();
   void onConnectionLost();

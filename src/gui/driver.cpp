@@ -22,25 +22,29 @@
 
 #include "driver.h"
 
+#include <iostream>
 #include "error-utils.h"
 #include "main.h"
 #include "splash-window.h"
 #include "game-window.h"
+#include "game-lobby-dialog.h"
 #include "../defs.h"
 #include "../GraphicsCache.h"
 #include "../GameScenario.h"
-#include "game-lobby-dialog.h"
 #include "../CreateScenario.h"
 #include "../counter.h"
 #include "../shieldsetlist.h"
 #include "../File.h"
 #include "../armysetlist.h"
 #include "../playerlist.h"
+#include "../xmlhelper.h"
+#include "../Configuration.h"
 #include "timed-message-dialog.h"
 #include "new-game-progress-window.h"
 #include "game-preferences-dialog.h"
 
 #include "../game-client.h"
+#include "../NextTurn.h"
 
 static GameClient *game_client = 0;
 
@@ -125,6 +129,41 @@ void Driver::run()
       game_client->start("localhost", LORDSAWAR_PORT);
       splash_window->show();
       return;
+    }
+  else if (Main::instance().turn_filename != "") 
+    {
+      game_client = new GameClient();
+      GameScenario *game_scenario = load_game(d_load_filename);
+      if (game_scenario == NULL)
+	return;
+      //now apply the actions in the turn file
+      bool broken;
+
+      //if the active player isn't a network player than don't do anything
+      if (Playerlist::getActiveplayer()->getType() != Player::NETWORKED)
+	return;
+      //load the file, and decode them as we go.
+      XML_Helper helper(Main::instance().turn_filename, std::ios::in, 
+			Configuration::s_zipfiles);
+      NextTurn *nextTurn;
+      nextTurn = new NextTurn(game_scenario->getTurnmode(),
+			      game_scenario->s_random_turns);
+      broken = game_client->loadWithHelper(helper);
+      helper.close();
+      delete nextTurn;
+      if (!broken)
+	{
+	  game_scenario->saveGame(d_load_filename);
+	  if (Playerlist::getActiveplayer()->getType() != Player::NETWORKED)
+	    {
+	      if (splash_window.get())
+		splash_window->hide();
+
+	      init_game_window();
+	      game_window->show();
+	      game_window->load_game(game_scenario);
+	    }
+	}
     }
   else
     {

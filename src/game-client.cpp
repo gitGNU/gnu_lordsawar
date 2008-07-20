@@ -90,7 +90,7 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_SENDING_HISTORY:
-    gotHistory(payload);
+    gotHistories(payload);
     break;
     
   }
@@ -114,41 +114,36 @@ class ActionLoader
 public:
   bool loadAction(std::string tag, XML_Helper* helper)
   {
-    if (tag == "networkaction") 
-      {
-	NetworkAction * action = new NetworkAction(helper);
-	actions.push_back(action);
-      }
     if (tag == "action")
       {
 	NetworkAction *action = &*actions.back();
 	action->setAction(Action::handle_load(helper));
+	return true;
       }
-    return true;
+    if (tag == "networkaction") 
+      {
+	NetworkAction * action = new NetworkAction(helper);
+	actions.push_back(action);
+	return true;
+      }
+    return false;
   }
 
   std::list<NetworkAction *> actions;
 };
-  
-void GameClient::gotActions(const std::string &payload)
+ 
+int GameClient::decodeActions(std::list<NetworkAction*> actions)
 {
-  std::istringstream is(payload);
-
-  ActionLoader loader;
-  
-  XML_Helper helper(&is);
-  helper.registerTag("networkaction", sigc::mem_fun(loader, &ActionLoader::loadAction));
-  helper.registerTag("action", sigc::mem_fun(loader, &ActionLoader::loadAction));
-  helper.parse();
-
-  for (std::list<NetworkAction *>::iterator i = loader.actions.begin(),
-       end = loader.actions.end(); i != end; ++i)
+  int count = 0;
+  for (std::list<NetworkAction *>::iterator i = actions.begin(),
+       end = actions.end(); i != end; ++i)
   {
     NetworkAction *action = *i;
-    std::cerr << "decoding action " << action->getAction()->getType() << std::endl;
+    std::string desc = action->toString();
+    std::cerr << "decoding action: " << desc << std::endl;
     
     Player *p = action->getOwner();
-    NetworkPlayer *np = dynamic_cast<NetworkPlayer *>(p);
+    NetworkPlayer *np = static_cast<NetworkPlayer *>(p);
 
     if (!np) {
       std::cerr << "warning: ignoring action for player " << p << std::endl;
@@ -156,11 +151,27 @@ void GameClient::gotActions(const std::string &payload)
     }
 
     np->decodeAction(action->getAction());
+    count++;
   }
 
-  for (std::list<NetworkAction *>::iterator i = loader.actions.begin(),
-       end = loader.actions.end(); i != end; ++i)
+  for (std::list<NetworkAction *>::iterator i = actions.begin(),
+       end = actions.end(); i != end; ++i)
     delete *i;
+  return count;
+}
+
+void GameClient::gotActions(const std::string &payload)
+{
+  std::istringstream is(payload);
+
+  ActionLoader loader;
+  
+  XML_Helper helper(&is);
+  helper.registerTag("action", sigc::mem_fun(loader, &ActionLoader::loadAction));
+  helper.registerTag("networkaction", sigc::mem_fun(loader, &ActionLoader::loadAction));
+  helper.parse();
+
+  decodeActions(loader.actions);
 }
 
 class HistoryLoader 
@@ -168,24 +179,48 @@ class HistoryLoader
 public:
   bool loadHistory(std::string tag, XML_Helper* helper)
   {
-    if (tag == "networkhistory") 
-      {
-	NetworkHistory* history = new NetworkHistory(helper);
-	histories.push_back(history);
-      }
     if (tag == "history")
       {
 	NetworkHistory *history = &*histories.back();
 	history->setHistory(History::handle_load(helper));
+	return true;
       }
-    return true;
+    if (tag == "networkhistory") 
+      {
+	NetworkHistory* history = new NetworkHistory(helper);
+	histories.push_back(history);
+	return true;
+      }
+    return false;
   }
 
   std::list<NetworkHistory *> histories;
 };
   
 
-void GameClient::gotHistory(const std::string &payload)
+int GameClient::decodeHistories(std::list<NetworkHistory *> histories)
+{
+  int count = 0;
+  for (std::list<NetworkHistory *>::iterator i = histories.begin(),
+       end = histories.end(); i != end; ++i)
+  {
+    NetworkHistory *history = *i;
+    std::string desc = history->toString();
+    std::cerr << "received history: " << desc << std::endl;
+    
+    //just add it to the player's history list.
+    Player *p = Playerlist::getInstance()->getActiveplayer();
+    p->getHistorylist()->push_back(History::copy(history->getHistory()));
+    count++;
+  }
+
+  for (std::list<NetworkHistory *>::iterator i = histories.begin(),
+       end = histories.end(); i != end; ++i)
+    delete *i;
+  return count;
+}
+
+void GameClient::gotHistories(const std::string &payload)
 {
   std::istringstream is(payload);
 
@@ -193,20 +228,28 @@ void GameClient::gotHistory(const std::string &payload)
   
   XML_Helper helper(&is);
   helper.registerTag("history", sigc::mem_fun(loader, &HistoryLoader::loadHistory));
+  helper.registerTag("networkhistory", sigc::mem_fun(loader, &HistoryLoader::loadHistory));
   helper.parse();
 
-  for (std::list<NetworkHistory *>::iterator i = loader.histories.begin(),
-       end = loader.histories.end(); i != end; ++i)
-  {
-    NetworkHistory *history = *i;
-    std::cerr << "received history " << history->getHistory()->getType() << std::endl;
-    
-    //just add it to the player's history list.
-    Player *p = Playerlist::getInstance()->getActiveplayer();
-    p->getHistorylist()->push_back(history->getHistory());
-  }
+  decodeHistories(loader.histories);
+}
 
-  for (std::list<NetworkHistory *>::iterator i = loader.histories.begin(),
-       end = loader.histories.end(); i != end; ++i)
-    delete *i;
+bool GameClient::loadWithHelper(XML_Helper &helper)
+{
+  ActionLoader actionloader;
+  HistoryLoader historyloader;
+  bool broken = false;
+  helper.registerTag("networkaction", sigc::mem_fun(actionloader, &ActionLoader::loadAction));
+  helper.registerTag("action", sigc::mem_fun(actionloader, &ActionLoader::loadAction));
+  helper.registerTag("networkhistory", sigc::mem_fun(historyloader, &HistoryLoader::loadHistory));
+  helper.registerTag("history", sigc::mem_fun(historyloader, &HistoryLoader::loadHistory));
+  if (!helper.parse())
+    broken = true;
+
+  int num = decodeActions(actionloader.actions);
+  printf ("decoded %d actions\n", num);
+  num = decodeHistories(historyloader.histories);
+  printf ("decoded %d histories\n", num);
+  printf ("broken is %d\n", broken);
+  return broken;
 }

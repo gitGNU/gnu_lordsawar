@@ -91,82 +91,84 @@ bool Action::saveContents(XML_Helper* helper) const
 
 Action* Action::handle_load(XML_Helper* helper)
 {
-    Uint32 t;
-    helper->getData(t, "type");
+  std::string type_str;
 
-    switch (t)
+  helper->getData(type_str, "type");
+  Action::Type t = actionTypeFromString(type_str);
+
+  switch (t)
     {
-        case STACK_MOVE:
-            return (new Action_Move(helper));
-        case STACK_SPLIT:
-            return (new Action_Split(helper));
-        case STACK_FIGHT:
-            return (new Action_Fight(helper));
-        case STACK_JOIN:
-            return(new Action_Join(helper));
-        case RUIN_SEARCH:
-            return (new Action_Ruin(helper));
-        case TEMPLE_SEARCH:
-            return (new Action_Temple(helper));
-        case CITY_OCCUPY:
-            return (new Action_Occupy(helper));
-        case CITY_PILLAGE:
-            return (new Action_Pillage(helper));
-        case CITY_SACK:
-            return (new Action_Sack(helper));
-        case CITY_RAZE:
-            return (new Action_Raze(helper));
-        case CITY_UPGRADE:
-            return (new Action_Upgrade(helper));
-        case CITY_BUY:
-            return (new Action_Buy(helper));
-        case CITY_PROD:
-            return (new Action_Production(helper));
-        case REWARD: 
-            return (new Action_Reward(helper));
-        case QUEST:
-            return (new Action_Quest(helper));
-        case HERO_EQUIP:
-            return (new Action_Equip(helper));
-        case UNIT_ADVANCE:
-            return (new Action_Level(helper));
-        case STACK_DISBAND:
-            return (new Action_Disband(helper));
-        case MODIFY_SIGNPOST:
-            return (new Action_ModifySignpost(helper));
-        case CITY_RENAME:
-            return (new Action_RenameCity(helper));
-        case CITY_VECTOR:
-            return (new Action_Vector(helper));
-        case FIGHT_ORDER:
-            return (new Action_FightOrder(helper));
-        case RESIGN:
-            return (new Action_Resign(helper));
-        case ITEM_PLANT:
-            return (new Action_Plant(helper));
-        case PRODUCE_UNIT:
-            return (new Action_Produce(helper));
-        case PRODUCE_VECTORED_UNIT:
-            return (new Action_ProduceVectored(helper));
-        case DIPLOMATIC_STATE:
-            return (new Action_DiplomacyState(helper));
-        case DIPLOMATIC_PROPOSAL:
-            return (new Action_DiplomacyProposal(helper));
-	case DIPLOMATIC_SCORE:
-            return (new Action_DiplomacyScore(helper));
-        case END_TURN:
-            return (new Action_EndTurn(helper));
-        case CITY_CONQUER:
-            return (new Action_ConquerCity(helper));
-        case RECRUIT_HERO:
-            return (new Action_RecruitHero(helper));
-        case PLAYER_RENAME:
-            return (new Action_RenamePlayer(helper));
-        case CITY_DESTITUTE:
-            return (new Action_CityTooPoorToProduce(helper));
+      case STACK_MOVE:
+          return (new Action_Move(helper));
+      case STACK_SPLIT:
+          return (new Action_Split(helper));
+      case STACK_FIGHT:
+          return (new Action_Fight(helper));
+      case STACK_JOIN:
+          return(new Action_Join(helper));
+      case RUIN_SEARCH:
+          return (new Action_Ruin(helper));
+      case TEMPLE_SEARCH:
+          return (new Action_Temple(helper));
+      case CITY_OCCUPY:
+          return (new Action_Occupy(helper));
+      case CITY_PILLAGE:
+          return (new Action_Pillage(helper));
+      case CITY_SACK:
+          return (new Action_Sack(helper));
+      case CITY_RAZE:
+          return (new Action_Raze(helper));
+      case CITY_UPGRADE:
+          return (new Action_Upgrade(helper));
+      case CITY_BUY:
+          return (new Action_Buy(helper));
+      case CITY_PROD:
+          return (new Action_Production(helper));
+      case REWARD: 
+          return (new Action_Reward(helper));
+      case QUEST:
+          return (new Action_Quest(helper));
+      case HERO_EQUIP:
+          return (new Action_Equip(helper));
+      case UNIT_ADVANCE:
+          return (new Action_Level(helper));
+      case STACK_DISBAND:
+          return (new Action_Disband(helper));
+      case MODIFY_SIGNPOST:
+          return (new Action_ModifySignpost(helper));
+      case CITY_RENAME:
+          return (new Action_RenameCity(helper));
+      case CITY_VECTOR:
+          return (new Action_Vector(helper));
+      case FIGHT_ORDER:
+          return (new Action_FightOrder(helper));
+      case RESIGN:
+          return (new Action_Resign(helper));
+      case ITEM_PLANT:
+          return (new Action_Plant(helper));
+      case PRODUCE_UNIT:
+          return (new Action_Produce(helper));
+      case PRODUCE_VECTORED_UNIT:
+          return (new Action_ProduceVectored(helper));
+      case DIPLOMATIC_STATE:
+          return (new Action_DiplomacyState(helper));
+      case DIPLOMATIC_PROPOSAL:
+          return (new Action_DiplomacyProposal(helper));
+      case DIPLOMATIC_SCORE:
+          return (new Action_DiplomacyScore(helper));
+      case END_TURN:
+          return (new Action_EndTurn(helper));
+      case CITY_CONQUER:
+          return (new Action_ConquerCity(helper));
+      case RECRUIT_HERO:
+          return (new Action_RecruitHero(helper));
+      case PLAYER_RENAME:
+          return (new Action_RenamePlayer(helper));
+      case CITY_DESTITUTE:
+          return (new Action_CityTooPoorToProduce(helper));
     }
 
-    return 0;
+  return 0;
 }
 
 
@@ -2097,7 +2099,7 @@ std::string Action_RecruitHero::dump() const
 {
     std::stringstream s;
 
-    s << "Hero " << d_hero->getId() << " recruited with " << d_allies << "allies\n";
+    s << "Hero " << d_hero->getId() << " recruited with " << d_allies << " allies\n";
 
     return s.str();
 }
