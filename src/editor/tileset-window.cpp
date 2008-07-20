@@ -608,6 +608,7 @@ void TileSetWindow::on_help_about_activated()
 void TileSetWindow::on_sdl_surface_changed()
 {
   if (!sdl_inited) {
+    Tilesetlist::getInstance()->instantiatePixmaps();
     sdl_inited = true;
     sdl_initialized.emit();
   }

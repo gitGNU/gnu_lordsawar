@@ -25,6 +25,7 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "playerlist.h"
+#include "armysetlist.h"
 
 #include "citylist.h"
 #include "ruinlist.h"
@@ -698,4 +699,10 @@ void Playerlist::syncPlayers(std::vector<GameParameters::Player> players)
   for (; i != players.end(); i++)
     syncPlayer(*i);
 
+}
+	
+void Playerlist::instantiateArmysetPixmaps()
+{
+  for (iterator i = begin(); i != end(); ++i)
+    Armysetlist::getInstance()->instantiatePixmaps((*i)->getArmyset());
 }

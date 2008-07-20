@@ -120,6 +120,9 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 */
 	void instantiatePixmaps();
 
+	//! Load the pictures for the given armyset.
+	void instantiatePixmaps(Uint32 armyset);
+
     private:
         //! Default Constructor.  Loads all armyset objects it can find.
 	/**

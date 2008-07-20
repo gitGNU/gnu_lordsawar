@@ -69,11 +69,8 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
     :d_name(name),d_comment(comment), d_turnmode(turnmode)
 {
     Armysetlist::getInstance();
-    Armysetlist::getInstance()->instantiatePixmaps();
     Tilesetlist::getInstance();
-    Tilesetlist::getInstance()->instantiatePixmaps();
     Shieldsetlist::getInstance();
-    Shieldsetlist::getInstance()->instantiatePixmaps();
 
     if (fl_counter == 0)
         fl_counter = new FL_Counter();
@@ -241,11 +238,8 @@ void GameScenario::setupDiplomacy(bool diplomacy)
 bool GameScenario::loadWithHelper(XML_Helper& helper)
 {
   Armysetlist::getInstance();
-  Armysetlist::getInstance()->instantiatePixmaps();
   Tilesetlist::getInstance();
-  Tilesetlist::getInstance()->instantiatePixmaps();
   Shieldsetlist::getInstance();
-  Shieldsetlist::getInstance()->instantiatePixmaps();
 
   bool broken = false;
 

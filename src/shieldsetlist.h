@@ -88,6 +88,9 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	 */
 	void instantiatePixmaps();
 
+	//! Load the pictures for the given shieldset.
+	void instantiatePixmaps(std::string subdir);
+
 	SDL_Color getColor(std::string shieldset, Uint32 owner);
 	SDL_Color getMaskColor(std::string shieldset, Uint32 owner);
 

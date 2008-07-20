@@ -537,6 +537,7 @@ void ArmySetWindow::addArmyType(Uint32 army_type)
 void ArmySetWindow::on_sdl_surface_changed()
 {
   if (!sdl_inited) {
+    Armysetlist::getInstance()->instantiatePixmaps();
     sdl_inited = true;
     sdl_initialized.emit();
   }

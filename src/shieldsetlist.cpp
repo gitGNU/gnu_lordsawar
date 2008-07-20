@@ -114,6 +114,15 @@ void Shieldsetlist::instantiatePixmaps()
   for (iterator it = begin(); it != end(); it++)
     (*it)->instantiatePixmaps();
 }
+
+void Shieldsetlist::instantiatePixmaps(std::string subdir)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getSubDir() == subdir)
+	(*it)->instantiatePixmaps();
+    }
+}
 	
 SDL_Color Shieldsetlist::getColor(std::string shieldset, Uint32 owner)
 {

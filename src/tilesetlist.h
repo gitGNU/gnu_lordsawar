@@ -75,6 +75,9 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
 	 */
 	void instantiatePixmaps();
 
+	//! Load the pictures for the given tileset.
+	void instantiatePixmaps(std::string subdir);
+
     private:
         //! Default constructor.  Loads all tilesets it can find.
 	/**

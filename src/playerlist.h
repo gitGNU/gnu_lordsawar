@@ -223,6 +223,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         //! Emitted when a surrender is offered.
         sigc::signal<void, Player*> ssurrender;
     
+	void instantiateArmysetPixmaps();
+
     protected:
 	//! Default constructor.
         Playerlist();

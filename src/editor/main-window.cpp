@@ -45,6 +45,7 @@
 
 #include "../ucompose.hpp"
 #include "../tileset.h"
+#include "../tilesetlist.h"
 #include "../GameMap.h"
 #include "../defs.h"
 #include "../sound.h"
@@ -585,6 +586,9 @@ bool MainWindow::on_map_mouse_motion_event(GdkEventMotion *e)
 void MainWindow::on_sdl_surface_changed()
 {
     if (!sdl_inited) {
+        Armysetlist::getInstance()->instantiatePixmaps();
+        Tilesetlist::getInstance()->instantiatePixmaps();
+        Shieldsetlist::getInstance()->instantiatePixmaps();
 	sdl_inited = true;
 	sdl_initialized.emit();
     }

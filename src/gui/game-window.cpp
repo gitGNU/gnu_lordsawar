@@ -111,6 +111,7 @@
 #include "../QPillageGold.h"
 #include "../counter.h"
 #include "../armysetlist.h"
+#include "../tilesetlist.h"
 #include "../CreateScenario.h"
 #include "../reward.h"
 #include "../Configuration.h"
@@ -369,6 +370,9 @@ void GameWindow::init(int width, int height)
 		     G_CALLBACK(surface_attached_helper), this);
     
     sdl_container->add(*sdl_widget);
+
+	    
+
 }
 
 void GameWindow::new_game(GameScenario *game_scenario)
@@ -685,6 +689,8 @@ void GameWindow::update_diplomacy_button (bool sensitive)
 
 bool GameWindow::setup_game(GameScenario *game_scenario)
 {
+  Playerlist::getInstance()->instantiateArmysetPixmaps();
+  GameMap::getInstance()->instantiatePixmaps();
 
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();
