@@ -2,6 +2,9 @@
 
 	* fixed the -t command-line option so that it works.
 	* now users can specify a file to load on the command line.
+	* added a play by mail utility
+	* now instantiating only the pixmaps that are needed instead of all
+	  of them.
 
 2008-07-19  Ben Asselstine
 
