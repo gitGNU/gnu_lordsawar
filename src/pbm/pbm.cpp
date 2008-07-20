@@ -37,6 +37,7 @@ void pbm::run(std::string save_game_file, std::string turn_file)
 					Playerlist::getActiveplayer());
   helper.close();
   delete nextTurn;
+  Playerlist::getActiveplayer()->setType(Player::HUMAN);
   if (!broken)
     {
       game_scenario->saveGame(save_game_file);
