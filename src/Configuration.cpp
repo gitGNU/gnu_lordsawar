@@ -140,8 +140,10 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("quests", s_play_with_quests);
     retval &= helper.saveData("hidden_map", s_hidden_map);
     retval &= helper.saveData("diplomacy", s_diplomacy);
-    retval &= helper.saveData("neutral_cities", (int) s_neutral_cities);
-    retval &= helper.saveData("razing_cities", (int) s_razing_cities);
+    std::string neutral_cities_str = neutralCitiesToString(GameParameters::NeutralCities(s_neutral_cities));
+    retval &= helper.saveData("neutral_cities", neutral_cities_str);
+    std::string razing_cities_str = razingCitiesToString(GameParameters::RazingCities(s_razing_cities));
+    retval &= helper.saveData("razing_cities", razing_cities_str);
     retval &= helper.saveData("intense_combat", s_intense_combat);
     retval &= helper.saveData("military_advisor", s_military_advisor);
     retval &= helper.saveData("random_turns", s_random_turns);
@@ -268,12 +270,12 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     helper->getData(s_play_with_quests, "quests");
     helper->getData(s_hidden_map, "hidden_map");
     helper->getData(s_diplomacy, "diplomacy");
-    int val = -1;
-    helper->getData(val, "neutral_cities");
-    s_neutral_cities = GameParameters::NeutralCities (val);
-    val = -1;
-    helper->getData(val, "razing_cities");
-    s_razing_cities = GameParameters::RazingCities (val);
+    std::string neutral_cities_str;
+    helper->getData(neutral_cities_str, "neutral_cities");
+    s_neutral_cities = neutralCitiesFromString(neutral_cities_str);
+    std::string razing_cities_str;
+    helper->getData(razing_cities_str, "razing_cities");
+    s_razing_cities = razingCitiesFromString(razing_cities_str);
     helper->getData(s_intense_combat, "intense_combat");
     helper->getData(s_military_advisor, "military_advisor");
     helper->getData(s_random_turns, "random_turns");
@@ -317,4 +319,66 @@ void initialize_configuration()
         }
     }
 #endif
+}
+
+std::string Configuration::neutralCitiesToString(const GameParameters::NeutralCities neutrals)
+{
+  switch (neutrals)
+    {
+      case GameParameters::AVERAGE:
+	return "GameParameters::AVERAGE";
+	break;
+      case GameParameters::STRONG:
+	return "GameParameters::STRONG";
+	break;
+      case GameParameters::ACTIVE:
+	return "GameParameters::ACTIVE";
+	break;
+    }
+  return "GameParameters::AVERAGE";
+}
+
+GameParameters::NeutralCities Configuration::neutralCitiesFromString(std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return GameParameters::NeutralCities(atoi(str.c_str()));
+  if (str == "GameParameters::AVERAGE")
+    return GameParameters::AVERAGE;
+  else if (str == "GameParameters::STRONG")
+    return GameParameters::STRONG;
+  else if (str == "GameParameters::ACTIVE")
+    return GameParameters::ACTIVE;
+    
+  return GameParameters::AVERAGE;
+}
+
+std::string Configuration::razingCitiesToString(const GameParameters::RazingCities razing)
+{
+  switch (razing)
+    {
+      case GameParameters::NEVER:
+	return "GameParameters::NEVER";
+	break;
+      case GameParameters::ON_CAPTURE:
+	return "GameParameters::ON_CAPTURE";
+	break;
+      case GameParameters::ALWAYS:
+	return "GameParameters::ALWAYS";
+	break;
+    }
+  return "GameParameters::ALWAYS";
+}
+
+GameParameters::RazingCities Configuration::razingCitiesFromString(std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return GameParameters::RazingCities(atoi(str.c_str()));
+  if (str == "GameParameters::NEVER")
+    return GameParameters::NEVER;
+  else if (str == "GameParameters::ON_CAPTURE")
+    return GameParameters::ON_CAPTURE;
+  else if (str == "GameParameters::ALWAYS")
+    return GameParameters::ALWAYS;
+    
+  return GameParameters::ALWAYS;
 }

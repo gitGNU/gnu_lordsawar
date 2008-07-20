@@ -53,11 +53,11 @@ Hero::Hero(Hero& h)
 Hero::Hero(XML_Helper* helper)
     :Army(helper)
 {
-    int i;
     d_hero = true;
     helper->getData(d_name, "name");
-    helper->getData(i, "gender");
-    d_gender = static_cast<Army::Gender>(i);
+    std::string gender_str;
+    helper->getData(gender_str, "gender");
+    d_gender = Army::genderFromString(gender_str);
 
     helper->registerTag("backpack", sigc::mem_fun(*this, &Hero::loadItems));
     helper->registerTag("item", sigc::mem_fun(*this, &Hero::loadItems));
@@ -82,8 +82,8 @@ bool Hero::save(XML_Helper* helper, enum ArmyContents contents) const
 
     retval &= helper->openTag("hero");
     retval &= helper->saveData("name", d_name);
-    // Save the sex as well, whatever this is good for...
-    retval &= helper->saveData("gender", d_gender);
+    std::string gender_str = Army::genderToString(Army::Gender(d_gender));
+    retval &= helper->saveData("gender", gender_str);
 
     retval &= saveData(helper, Army::INSTANCE);
 

@@ -29,7 +29,7 @@ using namespace std;
 //#define debug(x)
 
 History::History(Type type)
-:Ownable((Player *) 0), d_type(type)
+:d_type(type)
 {
 }
 
@@ -39,8 +39,9 @@ History::~History()
 
 History* History::handle_load(XML_Helper* helper)
 {
-  Uint32 t;
-  helper->getData(t, "type");
+  std::string type_str;
+  helper->getData(type_str, "type");
+  History::Type t = historyTypeFromString(type_str);
 
   switch (t)
     {
@@ -163,6 +164,35 @@ History* History::copy(const History* a)
   return 0;
 }
 
+History::History (XML_Helper *helper)
+{
+  std::string type_str;
+  helper->getData(type_str, "type");
+  d_type = historyTypeFromString(type_str);
+}
+
+bool History::save(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->openTag("history");
+    retval &= saveContents(helper);
+    retval &= helper->closeTag();
+
+    return retval;
+}
+
+bool History::saveContents(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    std::string type_str = historyTypeToString(History::Type(d_type));
+    retval &= helper->saveData("type", type_str);
+    retval &= doSave(helper);
+
+    return retval;
+}
+
 //-----------------------------------------------------------------------------
 //History_StartTurn
 
@@ -177,7 +207,7 @@ History_StartTurn::History_StartTurn(const History_StartTurn &history)
 }
 
 History_StartTurn::History_StartTurn(XML_Helper* helper)
-:History(History::START_TURN)
+:History(helper)
 {
 }
 
@@ -194,13 +224,9 @@ std::string History_StartTurn::dump() const
   return s.str();
 }
 
-bool History_StartTurn::save(XML_Helper* helper) const
+bool History_StartTurn::doSave(XML_Helper* helper) const
 {
   bool retval = true;
-
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -224,7 +250,7 @@ History_FoundSage::History_FoundSage(const History_FoundSage &history)
 }
 
 History_FoundSage::History_FoundSage(XML_Helper* helper)
-:History(History::FOUND_SAGE)
+:History(helper)
 {
   helper->getData(d_hero, "hero");
 }
@@ -242,14 +268,11 @@ std::string History_FoundSage::dump() const
   return s.str();
 }
 
-bool History_FoundSage::save(XML_Helper* helper) const
+bool History_FoundSage::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("hero", d_hero);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -274,7 +297,7 @@ History_GoldTotal::History_GoldTotal(const History_GoldTotal &history)
 }
 
 History_GoldTotal::History_GoldTotal(XML_Helper* helper)
-:History(History::GOLD_TOTAL)
+:History(helper)
 {
   helper->getData(d_gold, "gold");
 }
@@ -292,14 +315,11 @@ std::string History_GoldTotal::dump() const
   return s.str();
 }
 
-bool History_GoldTotal::save(XML_Helper* helper) const
+bool History_GoldTotal::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("gold", d_gold);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -324,7 +344,7 @@ History_HeroEmerges::History_HeroEmerges(const History_HeroEmerges &history)
 }
 
 History_HeroEmerges::History_HeroEmerges(XML_Helper* helper)
-:History(History::HERO_EMERGES)
+:History(helper)
 {
   helper->getData(d_hero, "hero");
   helper->getData(d_city, "city");
@@ -343,15 +363,12 @@ std::string History_HeroEmerges::dump() const
   return s.str();
 }
 
-bool History_HeroEmerges::save(XML_Helper* helper) const
+bool History_HeroEmerges::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("hero", d_hero);
   retval &= helper->saveData("city", d_city);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -377,7 +394,7 @@ History_CityWon::History_CityWon(const History_CityWon &history)
 }
 
 History_CityWon::History_CityWon(XML_Helper* helper)
-:History(History::CITY_WON)
+:History(helper)
 {
   helper->getData(d_city, "city");
 }
@@ -396,14 +413,11 @@ std::string History_CityWon::dump() const
   return s.str();
 }
 
-bool History_CityWon::save(XML_Helper* helper) const
+bool History_CityWon::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("city", d_city);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -428,7 +442,7 @@ History_HeroCityWon::History_HeroCityWon(const History_HeroCityWon &history)
 }
 
 History_HeroCityWon::History_HeroCityWon(XML_Helper* helper)
-:History(History::HERO_CITY_WON)
+:History(helper)
 {
   helper->getData(d_city, "city");
   helper->getData(d_hero, "hero");
@@ -449,15 +463,12 @@ std::string History_HeroCityWon::dump() const
   return s.str();
 }
 
-bool History_HeroCityWon::save(XML_Helper* helper) const
+bool History_HeroCityWon::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("city", d_city);
   retval &= helper->saveData("hero", d_hero);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -483,7 +494,7 @@ History_CityRazed::History_CityRazed(const History_CityRazed &history)
 }
 
 History_CityRazed::History_CityRazed(XML_Helper* helper)
-:History(History::CITY_RAZED)
+:History(helper)
 {
   helper->getData(d_city, "city");
 }
@@ -501,14 +512,11 @@ std::string History_CityRazed::dump() const
   return s.str();
 }
 
-bool History_CityRazed::save(XML_Helper* helper) const
+bool History_CityRazed::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("city", d_city);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -533,7 +541,7 @@ History_HeroQuestStarted::History_HeroQuestStarted(const History_HeroQuestStarte
 }
 
 History_HeroQuestStarted::History_HeroQuestStarted(XML_Helper* helper)
-:History(History::HERO_QUEST_STARTED)
+:History(helper)
 {
   helper->getData(d_hero, "hero");
 }
@@ -551,14 +559,11 @@ std::string History_HeroQuestStarted::dump() const
   return s.str();
 }
 
-bool History_HeroQuestStarted::save(XML_Helper* helper) const
+bool History_HeroQuestStarted::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("hero", d_hero);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -583,7 +588,7 @@ History_HeroQuestCompleted::History_HeroQuestCompleted(const History_HeroQuestCo
 }
 
 History_HeroQuestCompleted::History_HeroQuestCompleted(XML_Helper* helper)
-:History(History::HERO_QUEST_COMPLETED)
+:History(helper)
 {
   helper->getData(d_hero, "hero");
 }
@@ -601,14 +606,11 @@ std::string History_HeroQuestCompleted::dump() const
   return s.str();
 }
 
-bool History_HeroQuestCompleted::save(XML_Helper* helper) const
+bool History_HeroQuestCompleted::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("hero", d_hero);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -633,7 +635,7 @@ History_HeroKilledInCity::History_HeroKilledInCity(const History_HeroKilledInCit
 }
 
 History_HeroKilledInCity::History_HeroKilledInCity(XML_Helper* helper)
-:History(History::HERO_KILLED_IN_CITY)
+:History(helper)
 {
   helper->getData(d_hero, "hero");
   helper->getData(d_city, "city");
@@ -652,15 +654,12 @@ std::string History_HeroKilledInCity::dump() const
   return s.str();
 }
 
-bool History_HeroKilledInCity::save(XML_Helper* helper) const
+bool History_HeroKilledInCity::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("hero", d_hero);
   retval &= helper->saveData("city", d_city);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -686,7 +685,7 @@ History_HeroKilledInBattle::History_HeroKilledInBattle(const History_HeroKilledI
 }
 
 History_HeroKilledInBattle::History_HeroKilledInBattle(XML_Helper* helper)
-:History(History::HERO_KILLED_IN_BATTLE)
+:History(helper)
 {
   helper->getData(d_hero, "hero");
 }
@@ -704,14 +703,11 @@ std::string History_HeroKilledInBattle::dump() const
   return s.str();
 }
 
-bool History_HeroKilledInBattle::save(XML_Helper* helper) const
+bool History_HeroKilledInBattle::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("hero", d_hero);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -736,7 +732,7 @@ History_HeroKilledSearching::History_HeroKilledSearching(const History_HeroKille
 }
 
 History_HeroKilledSearching::History_HeroKilledSearching(XML_Helper* helper)
-:History(History::HERO_KILLED_SEARCHING)
+:History(helper)
 {
   helper->getData(d_hero, "hero");
 }
@@ -754,14 +750,11 @@ std::string History_HeroKilledSearching::dump() const
   return s.str();
 }
 
-bool History_HeroKilledSearching::save(XML_Helper* helper) const
+bool History_HeroKilledSearching::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("hero", d_hero);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -786,7 +779,7 @@ History_Score::History_Score(const History_Score &history)
 }
 
 History_Score::History_Score(XML_Helper* helper)
-:History(History::SCORE)
+:History(helper)
 {
   helper->getData(d_score, "score");
 }
@@ -804,14 +797,11 @@ std::string History_Score::dump() const
   return s.str();
 }
 
-bool History_Score::save(XML_Helper* helper) const
+bool History_Score::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("score", d_score);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -836,7 +826,7 @@ History_PlayerVanquished::History_PlayerVanquished(const History_PlayerVanquishe
 }
 
 History_PlayerVanquished::History_PlayerVanquished(XML_Helper* helper)
-:History(History::PLAYER_VANQUISHED)
+:History(helper)
 {
 }
 
@@ -853,13 +843,9 @@ std::string History_PlayerVanquished::dump() const
   return s.str();
 }
 
-bool History_PlayerVanquished::save(XML_Helper* helper) const
+bool History_PlayerVanquished::doSave(XML_Helper* helper) const
 {
   bool retval = true;
-
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -878,7 +864,7 @@ History_DiplomacyPeace::History_DiplomacyPeace(const History_DiplomacyPeace &his
 }
 
 History_DiplomacyPeace::History_DiplomacyPeace(XML_Helper* helper)
-:History(History::DIPLOMATIC_PEACE)
+:History(helper)
 {
   helper->getData(d_opponent_id, "opponent_id");
 }
@@ -897,14 +883,11 @@ std::string History_DiplomacyPeace::dump() const
   return s.str();
 }
 
-bool History_DiplomacyPeace::save(XML_Helper* helper) const
+bool History_DiplomacyPeace::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("opponent_id", d_opponent_id);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -929,7 +912,7 @@ History_DiplomacyWar::History_DiplomacyWar(const History_DiplomacyWar &history)
 }
 
 History_DiplomacyWar::History_DiplomacyWar(XML_Helper* helper)
-:History(History::DIPLOMATIC_WAR)
+:History(helper)
 {
   helper->getData(d_opponent_id, "opponent_id");
 }
@@ -948,14 +931,11 @@ std::string History_DiplomacyWar::dump() const
   return s.str();
 }
 
-bool History_DiplomacyWar::save(XML_Helper* helper) const
+bool History_DiplomacyWar::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("opponent_id", d_opponent_id);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -980,7 +960,7 @@ History_DiplomacyTreachery::History_DiplomacyTreachery(const History_DiplomacyTr
 }
 
 History_DiplomacyTreachery::History_DiplomacyTreachery(XML_Helper* helper)
-:History(History::DIPLOMATIC_TREACHERY)
+:History(helper)
 {
   helper->getData(d_opponent_id, "opponent_id");
 }
@@ -999,14 +979,11 @@ std::string History_DiplomacyTreachery::dump() const
   return s.str();
 }
 
-bool History_DiplomacyTreachery::save(XML_Helper* helper) const
+bool History_DiplomacyTreachery::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("opponent_id", d_opponent_id);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -1031,7 +1008,7 @@ History_HeroFindsAllies::History_HeroFindsAllies(const History_HeroFindsAllies &
 }
 
 History_HeroFindsAllies::History_HeroFindsAllies(XML_Helper* helper)
-:History(History::HERO_FINDS_ALLIES)
+:History(helper)
 {
   helper->getData(d_hero, "hero");
 }
@@ -1049,14 +1026,11 @@ std::string History_HeroFindsAllies::dump() const
   return s.str();
 }
 
-bool History_HeroFindsAllies::save(XML_Helper* helper) const
+bool History_HeroFindsAllies::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
   retval &= helper->saveData("hero", d_hero);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -1081,7 +1055,7 @@ History_EndTurn::History_EndTurn(const History_EndTurn &history)
 }
 
 History_EndTurn::History_EndTurn(XML_Helper* helper)
-:History(History::END_TURN)
+:History(helper)
 {
 }
 
@@ -1098,13 +1072,9 @@ std::string History_EndTurn::dump() const
   return s.str();
 }
 
-bool History_EndTurn::save(XML_Helper* helper) const
+bool History_EndTurn::doSave(XML_Helper* helper) const
 {
   bool retval = true;
-
-  retval &= helper->openTag("history");
-  retval &= helper->saveData("type", d_type);
-  retval &= helper->closeTag();
 
   return retval;
 }
@@ -1114,3 +1084,93 @@ bool History_EndTurn::fillData()
   return true;
 }
 
+std::string History::historyTypeToString(const History::Type type)
+{
+  switch (type)
+    {
+    case History::START_TURN:
+      return "History::START_TURN";
+    case History::FOUND_SAGE:
+      return "History::FOUND_SAGE";
+    case History::GOLD_TOTAL:
+      return "History::GOLD_TOTAL";
+    case History::HERO_EMERGES:
+      return "History::HERO_EMERGES";
+    case History::CITY_WON:
+      return "History::CITY_WON";
+    case History::HERO_CITY_WON:
+      return "History::HERO_CITY_WON";
+    case History::CITY_RAZED:
+      return "History::CITY_RAZED";
+    case History::HERO_QUEST_STARTED:
+      return "History::HERO_QUEST_STARTED";
+    case History::HERO_QUEST_COMPLETED:
+      return "History::HERO_QUEST_COMPLETED";
+    case History::HERO_KILLED_IN_CITY:
+      return "History::HERO_KILLED_IN_CITY";
+    case History::HERO_KILLED_IN_BATTLE:
+      return "History::HERO_KILLED_IN_BATTLE";
+    case History::HERO_KILLED_SEARCHING:
+      return "History::HERO_KILLED_SEARCHING";
+    case History::SCORE:
+      return "History::SCORE";
+    case History::PLAYER_VANQUISHED:
+      return "History::PLAYER_VANQUISHED";
+    case History::DIPLOMATIC_PEACE:
+      return "History::DIPLOMATIC_PEACE";
+    case History::DIPLOMATIC_WAR:
+      return "History::DIPLOMATIC_WAR";
+    case History::DIPLOMATIC_TREACHERY:
+      return "History::DIPLOMATIC_TREACHERY";
+    case History::HERO_FINDS_ALLIES:
+      return "History::HERO_FINDS_ALLIES";
+    case History::END_TURN:
+      return "History::END_TURN";
+    }
+  return "History::START_TURN";
+}
+
+History::Type History::historyTypeFromString(const std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return History::Type(atoi(str.c_str()));
+  if (str == "History::START_TURN")
+    return History::START_TURN;
+  else if (str == "History::FOUND_SAGE")
+    return History::FOUND_SAGE;
+  else if (str == "History::GOLD_TOTAL")
+    return History::GOLD_TOTAL;
+  else if (str == "History::HERO_EMERGES")
+    return History::HERO_EMERGES;
+  else if (str == "History::CITY_WON")
+    return History::CITY_WON;
+  else if (str== "History::HERO_CITY_WON")
+    return History::HERO_CITY_WON;
+  else if (str == "History::CITY_RAZED")
+    return History::CITY_RAZED;
+  else if (str == "History::HERO_QUEST_STARTED")
+    return History::HERO_QUEST_STARTED;
+  else if (str == "History::HERO_QUEST_COMPLETED")
+    return History::HERO_QUEST_COMPLETED;
+  else if (str == "History::HERO_KILLED_IN_CITY")
+    return History::HERO_KILLED_IN_CITY;
+  else if (str == "History::HERO_KILLED_IN_BATTLE")
+    return History::HERO_KILLED_IN_BATTLE;
+  else if (str == "History::HERO_KILLED_SEARCHING")
+    return History::HERO_KILLED_SEARCHING;
+  else if (str == "History::SCORE")
+    return History::SCORE;
+  else if (str == "History::PLAYER_VANQUISHED")
+    return History::PLAYER_VANQUISHED;
+  else if (str == "History::DIPLOMATIC_PEACE")
+    return History::DIPLOMATIC_PEACE;
+  else if (str == "History::DIPLOMATIC_WAR")
+    return History::DIPLOMATIC_WAR;
+  else if (str == "History::DIPLOMATIC_TREACHERY")
+    return History::DIPLOMATIC_TREACHERY;
+  else if (str == "History::HERO_FINDS_ALLIES")
+    return History::HERO_FINDS_ALLIES;
+  else if (str == "History::END_TURN")
+    return History::END_TURN;
+  return History::START_TURN;
+}

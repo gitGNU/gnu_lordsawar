@@ -52,6 +52,9 @@ class Ruin : public NamedLocation, public sigc::trackable
 	  //! A stronghold ruin is a little stronger.
 	  STRONGHOLD = 1
 	};
+	static std::string ruinTypeToString(const Ruin::Type type);
+	static Ruin::Type ruinTypeFromString(const std::string str);
+
 	//! Default constructor.
         /** 
           * @param pos          The location of the ruin.
@@ -140,7 +143,7 @@ class Ruin : public NamedLocation, public sigc::trackable
         bool d_searched;
 
 	//! The type of the ruin.
-        bool d_type;
+        Uint32 d_type;
 
 	//! The keeper of the ruin.
 	/**
@@ -174,4 +177,3 @@ class Ruin : public NamedLocation, public sigc::trackable
 };
 
 #endif // RUIN_H
-

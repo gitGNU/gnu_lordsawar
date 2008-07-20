@@ -39,12 +39,12 @@ Reward::Reward(Type type, std::string name)
 
 Reward::Reward(XML_Helper *helper)
 {
-  Uint32 t;
-  helper->getData(t, "type");
-  d_type = static_cast<Reward::Type>(t);
+  std::string type_str;
+  helper->getData(type_str, "type");
+  d_type = rewardTypeFromString(type_str);
   helper->getData(d_name, "name");
 }
-        
+
 Reward::Reward (const Reward& orig)
 	:d_type(orig.d_type), d_name(orig.d_name)
 {
@@ -53,7 +53,8 @@ Reward::Reward (const Reward& orig)
 bool Reward::save(XML_Helper* helper) const
 {
   bool retval = true;
-  retval &= helper->saveData("type", d_type);
+  std::string type_str = rewardTypeToString(Reward::Type(d_type));
+  retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("name", d_name);
   return retval;
 }
@@ -65,7 +66,9 @@ Reward::~Reward()
 Reward* Reward::handle_load(XML_Helper* helper)
 {
     Uint32 t;
-    helper->getData(t, "type");
+    std::string type_str;
+    helper->getData(type_str, "type");
+    t = rewardTypeFromString(type_str);
 
     switch (t)
     {
@@ -437,4 +440,44 @@ std::string Reward::getDescription()
 	}
     }
   return s;
+}
+
+std::string Reward::rewardTypeToString(const Reward::Type type)
+{
+  switch (type)
+    {
+      case Reward::GOLD:
+	return "Reward::GOLD";
+	break;
+      case Reward::ALLIES:
+	return "Reward::ALLIES";
+	break;
+      case Reward::ITEM:
+	return "Reward::ITEM";
+	break;
+      case Reward::RUIN:
+	return "Reward::RUIN";
+	break;
+      case Reward::MAP:
+	return "Reward::MAP";
+	break;
+    }
+  return "Reward::GOLD";
+}
+
+Reward::Type Reward::rewardTypeFromString(const std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Reward::Type(atoi(str.c_str()));
+  if (str == "Reward::GOLD")
+    return Reward::GOLD;
+  else if (str == "Reward::ALLIES")
+    return Reward::ALLIES;
+  else if (str == "Reward::ITEM")
+    return Reward::ITEM;
+  else if (str == "Reward::RUIN")
+    return Reward::RUIN;
+  else if (str == "Reward::MAP")
+    return Reward::MAP;
+  return Reward::GOLD;
 }

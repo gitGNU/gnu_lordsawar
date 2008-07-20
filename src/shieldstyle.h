@@ -33,7 +33,7 @@ class Shieldset;
 /**
  * This class is the atom of every shield. It contains all data related to
  * a single ShieldStyle type of a Shield.  ShieldStyles come in three sizes: 
- * small, medium and large (ShieldStyle::ShieldStyleType).
+ * small, medium and large (ShieldStyle::Type).
  *
  * Every ShieldStyle object has an image and a mask.  The mask identifies the
  * portion of the ShieldStyle to shade in the Player's colour (Player::d_color).
@@ -45,7 +45,7 @@ class ShieldStyle : public sigc::trackable
     public:
 
 	//! The size of the shield.
-	enum ShieldStyleType {
+	enum Type {
 	  //! Small shields are shown on the OverviewMap object.
 	  SMALL = 0, 
 	  //! Medium shields are shown in the top right of the GameWindow.
@@ -53,6 +53,8 @@ class ShieldStyle : public sigc::trackable
 	  //! Large shields are shown in the DiplomacyDialog and FightWindow.
 	  LARGE = 2
 	};
+	static std::string shieldStyleTypeToString(const ShieldStyle::Type type);
+	static ShieldStyle::Type shieldStyleTypeFromString(const std::string str);
 
 	//! Loading constructor.
         /**
@@ -99,7 +101,7 @@ class ShieldStyle : public sigc::trackable
 	/**
 	 * Equates to the shieldset.shield.d_type XML entities in the shieldset
 	 * configuration file.
-	 * Equates to the ShieldStyle::ShieldStyleType enumeration.
+	 * Equates to the ShieldStyle::Type enumeration.
 	 */
         Uint32 d_type;
 

@@ -48,6 +48,7 @@ class HistoryReportDialog: public sigc::trackable
  public:
     enum HistoryReportType {CITY = 0, EVENTS, GOLD, WINNING};
     HistoryReportDialog(Player *p, HistoryReportType type);
+    ~HistoryReportDialog();
 
     void generatePastCitylists(); //data for map
     void generatePastCityCounts(); //data for chart
@@ -75,7 +76,7 @@ class HistoryReportDialog: public sigc::trackable
 
     std::vector<LocationList<City>* > past_citylists;
     LineChart *city_chart;
-    std::vector<std::list<History *> > past_eventlists;
+    std::vector<std::list<NetworkHistory *> > past_eventlists;
     std::list<std::list<Uint32> > past_citycounts;
     std::list<std::list<Uint32> > past_goldcounts;
     LineChart *gold_chart;
@@ -99,7 +100,7 @@ class HistoryReportDialog: public sigc::trackable
     };
     const EventsColumns events_columns;
     Glib::RefPtr<Gtk::ListStore> events_list;
-    void addHistoryEvent(History *event);
+    void addHistoryEvent(NetworkHistory *event);
     void on_close_button();
     void on_map_changed(SDL_Surface *map);
     void on_turn_changed(Gtk::Scale *scale);

@@ -29,6 +29,22 @@
 class Road: public Location
 {
     public:
+        enum Type {
+	  CONNECTS_EAST_AND_WEST = 0,
+	  CONNECTS_NORTH_AND_SOUTH = 1,
+	  CONNECTS_ALL_DIRECTIONS = 2,
+	  CONNECTS_NORTH_AND_WEST = 3,
+	  CONNECTS_NORTH_AND_EAST = 4,
+	  CONNECTS_SOUTH_AND_EAST = 5,
+	  CONNECTS_WEST_AND_SOUTH = 6,
+	  CONNECTS_NORTH_AND_SOUTH_AND_EAST = 7,
+	  CONNECTS_EAST_WEST_AND_NORTH = 8,
+	  CONNECTS_EAST_WEST_AND_SOUTH = 9,
+	  CONNECTS_NORTH_SOUTH_AND_WEST = 10,
+	};
+	static std::string roadTypeToString(const Road::Type type);
+	static Road::Type roadTypeFromString(const std::string str);
+
 	//! Default constructor.
         /**
           * @param pos          The location of the road.

@@ -78,6 +78,8 @@ class Item: public Renamable
 	  ADD5GOLDPERCITY = 0x00000800, 
 
         };
+	static Uint32 bonusFlagsFromString(const std::string str);
+	static std::string bonusFlagsToString(const Uint32 bonus);
         
 	//! Loading constructor.
         Item(XML_Helper* helper);
@@ -123,6 +125,10 @@ class Item: public Renamable
         std::string getBonusDescription() const;
 
     private:
+
+	static std::string bonusFlagToString(Item::Bonus type);
+	static Item::Bonus bonusFlagFromString(std::string str);
+
 	//! The item's bonus.
 	/**
 	 * This value is a bitwise OR-ing of the valuesi in Item::Bonus.
@@ -158,6 +164,7 @@ class Item: public Renamable
 	 */
 	//! Whether or not this Item is currently planted.
 	bool d_planted;
+
 };
 
 #endif //ITEM_H

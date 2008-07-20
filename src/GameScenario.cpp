@@ -388,8 +388,10 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   retval &= helper.saveData("hidden_map", s_hidden_map);
   retval &= helper.saveData("diplomacy", s_diplomacy);
   retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
-  retval &= helper.saveData("neutral_cities", (int) s_neutral_cities);
-  retval &= helper.saveData("razing_cities", (int) s_razing_cities);
+  std::string neutral_cities_str = Configuration::neutralCitiesToString(GameParameters::NeutralCities(s_neutral_cities));
+  retval &= helper.saveData("neutral_cities", neutral_cities_str);
+  std::string razing_cities_str = Configuration::razingCitiesToString(GameParameters::RazingCities(s_razing_cities));
+  retval &= helper.saveData("razing_cities", razing_cities_str);
   retval &= helper.saveData("intense_combat", s_intense_combat);
   retval &= helper.saveData("military_advisor", s_military_advisor);
   retval &= helper.saveData("random_turns", s_random_turns);
@@ -426,12 +428,12 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       helper->getData(s_hidden_map, "hidden_map");
       helper->getData(s_diplomacy, "diplomacy");
       helper->getData(s_cusp_of_war, "cusp_of_war");
-      int val = -1;
-      helper->getData(val, "neutral_cities");
-      s_neutral_cities = GameParameters::NeutralCities (val);
-      val = -1;
-      helper->getData(val, "razing_cities");
-      s_razing_cities = GameParameters::RazingCities (val);
+      std::string neutral_cities_str;
+      helper->getData(neutral_cities_str, "neutral_cities");
+      s_neutral_cities = Configuration::neutralCitiesFromString(neutral_cities_str);
+      std::string razing_cities_str;
+      helper->getData(razing_cities_str, "razing_cities");
+      s_razing_cities = Configuration::razingCitiesFromString(razing_cities_str);
       helper->getData(s_intense_combat, "intense_combat");
       helper->getData(s_military_advisor, "military_advisor");
       helper->getData(s_random_turns, "random_turns");
@@ -572,4 +574,3 @@ void GameScenario::nextRound()
       std::cerr <<_("Error: ") <<err <<std::endl;
     }
 }
-

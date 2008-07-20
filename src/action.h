@@ -132,8 +132,9 @@ class Action
                 PLAYER_RENAME = 33,
 		CITY_DESTITUTE = 34
         };
-                
-        
+	static std::string actionTypeToString(Action::Type type);
+	static Action::Type actionTypeFromString(std::string str);
+
 	//! Default constructor.
         Action(Type type);
 

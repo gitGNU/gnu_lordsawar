@@ -39,8 +39,9 @@ Tile::Tile(XML_Helper* helper)
     
     helper->getData(d_name, "name");
     helper->getData(d_moves, "moves");
-    helper->getData(i, "type");
-    d_type = static_cast<Tile::Type>(i);
+    std::string type_str;
+    helper->getData(type_str, "type");
+    d_type = tileTypeFromString(type_str);
 
 }
 
@@ -51,7 +52,8 @@ bool Tile::save(XML_Helper *helper)
   retval &= helper->openTag("tile");
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("moves", d_moves);
-  retval &= helper->saveData("type", d_type);
+  std::string type_str = tileTypeToString(Tile::Type(d_type));
+  retval &= helper->saveData("type", type_str);
   retval &= helper->openTag("smallmap");
   switch (d_pattern)
     {
@@ -145,4 +147,44 @@ TileStyle *Tile::getRandomTileStyle (TileStyle::Type style)
     return NULL;
   return tilestyles[rand() % tilestyles.size()];
 }
+
+std::string Tile::tileTypeToString(const Tile::Type type)
+{
+  switch (type)
+    {
+    case Tile::GRASS:
+      return "Tile::GRASS";
+    case Tile::WATER:
+      return "Tile::WATER";
+    case Tile::FOREST:
+      return "Tile::FOREST";
+    case Tile::HILLS:
+      return "Tile::HILLS";
+    case Tile::MOUNTAIN:
+      return "Tile::MOUNTAIN";
+    case Tile::SWAMP:
+      return "Tile::SWAMP";
+    }
+  return "Tile::GRASS";
+}
+
+Tile::Type Tile::tileTypeFromString(const std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Tile::Type(atoi(str.c_str()));
+  if (str == "Tile::GRASS")
+    return Tile::GRASS;
+  else if (str == "Tile::WATER")
+    return Tile::WATER;
+  else if (str == "Tile::FOREST")
+    return Tile::FOREST;
+  else if (str == "Tile::HILLS")
+    return Tile::HILLS;
+  else if (str == "Tile::MOUNTAIN")
+    return Tile::MOUNTAIN;
+  else if (str == "Tile::SWAMP")
+    return Tile::SWAMP;
+  return Tile::GRASS;
+}
+
 // End of file

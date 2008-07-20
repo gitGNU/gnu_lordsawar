@@ -28,9 +28,12 @@ Bridge::Bridge(Vector<int> pos, int type)
 Bridge::Bridge(XML_Helper* helper)
     :Location(helper)
 {
-    //mark the location on the game map as occupied by a bridge
-    helper->getData(d_type, "type");
-    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::BRIDGE);
+  std::string type_str;
+  helper->getData(type_str, "type");
+  d_type = bridgeTypeFromString(type_str);
+    
+  //mark the location on the game map as occupied by a bridge
+  GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::BRIDGE);
 }
 
 Bridge::Bridge(const Bridge& s)
@@ -50,8 +53,32 @@ bool Bridge::save(XML_Helper* helper) const
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);
-    retval &= helper->saveData("type", d_type);
+    std::string type_str = bridgeTypeToString(Bridge::Type(d_type));
+    retval &= helper->saveData("type", type_str);
     retval &= helper->closeTag();
     
     return retval;
+}
+
+std::string Bridge::bridgeTypeToString(const Bridge::Type type)
+{
+  switch (type)
+    {
+    case Bridge::CONNECTS_EAST_AND_WEST:
+      return "Bridge::CONNECTS_EAST_AND_WEST";
+    case Bridge::CONNECTS_NORTH_AND_SOUTH:
+      return "Bridge::CONNECTS_NORTH_AND_SOUTH";
+    }
+  return "Bridge::CONNECTS_EAST_AND_WEST";
+}
+
+Bridge::Type Bridge::bridgeTypeFromString(const std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Bridge::Type(atoi(str.c_str()));
+  if (str == "Bridge::CONNECTS_EAST_AND_WEST")
+    return Bridge::CONNECTS_EAST_AND_WEST;
+  else if (str == "Bridge::CONNECTS_NORTH_AND_SOUTH")
+    return Bridge::CONNECTS_NORTH_AND_SOUTH;
+  return Bridge::CONNECTS_EAST_AND_WEST;
 }

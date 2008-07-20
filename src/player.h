@@ -125,6 +125,8 @@ class Player: public sigc::trackable
 	  //! Remote player.  See the NetworkPlayer class.
 	  NETWORKED = 8
 	};
+	static std::string playerTypeToString(const Player::Type type);
+	static Player::Type playerTypeFromString(const std::string str);
 
 	//! Every player has a diplomatic state with every other player.
 	enum DiplomaticState {

@@ -30,6 +30,13 @@
 class Bridge: public Location
 {
     public:
+        enum Type {
+	  CONNECTS_EAST_AND_WEST = 0,
+	  CONNECTS_NORTH_AND_SOUTH = 1,
+	};
+	static std::string bridgeTypeToString(const Bridge::Type type);
+	static Bridge::Type bridgeTypeFromString(const std::string str);
+
 	//! Default constructor.
         /**
          * @param pos          The location of the bridge.

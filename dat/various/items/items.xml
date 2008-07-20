@@ -5,229 +5,229 @@
 <!-- to understand the bonus values, see Item.h -->
     <item>
         <d_name>Shield of Courage</d_name>
-        <d_bonus>1</d_bonus>
+        <d_bonus>Item::ADD1STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Troll Helm</d_name>
-        <d_bonus>1</d_bonus>
+        <d_bonus>Item::ADD1STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Icesword</d_name>
-        <d_bonus>1</d_bonus>
+        <d_bonus>Item::ADD1STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Armour of Gods</d_name>
-        <d_bonus>4</d_bonus>
+        <d_bonus>Item::ADD3STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Crimson Banner</d_name>
-        <d_bonus>8</d_bonus>
+        <d_bonus>Item::ADD1STACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Crown of Loriel</d_name>
-        <d_bonus>8</d_bonus>
+        <d_bonus>Item::ADD1STACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Ring of Power</d_name>
-        <d_bonus>16</d_bonus>
+        <d_bonus>Item::ADD2STACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Horn of Ages</d_name>
-        <d_bonus>16</d_bonus>
+        <d_bonus>Item::ADD2STACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Staff of Ruling</d_name>
-        <d_bonus>32</d_bonus>
+        <d_bonus>Item::ADD3STACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Wings of Flying</d_name>
-        <d_bonus>64</d_bonus>
+        <d_bonus>Item::FLYSTACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Wand of Flight</d_name>
-        <d_bonus>64</d_bonus>
+        <d_bonus>Item::FLYSTACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Ring of Travel</d_name>
-        <d_bonus>128</d_bonus>
+        <d_bonus>Item::DOUBLEMOVESTACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Phantom Steed</d_name>
-        <d_bonus>128</d_bonus>
+        <d_bonus>Item::DOUBLEMOVESTACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Staff of Movement</d_name>
-        <d_bonus>128</d_bonus>
+        <d_bonus>Item::DOUBLEMOVESTACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Darksword</d_name>
-        <d_bonus>2</d_bonus>
+        <d_bonus>Item::ADD2STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Beserker Helm</d_name>
-        <d_bonus>2</d_bonus>
+        <d_bonus>Item::ADD2STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Bow of Eldros</d_name>
-        <d_bonus>2</d_bonus>
+        <d_bonus>Item::ADD2STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Sceptre of Loriel</d_name>
-        <d_bonus>1</d_bonus>
+        <d_bonus>Item::ADD1STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Magic Carpet</d_name>
-        <d_bonus>64</d_bonus>
+        <d_bonus>Item::FLYSTACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Cup of Haste</d_name>
-        <d_bonus>128</d_bonus>
+        <d_bonus>Item::DOUBLEMOVESTACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Boots of Speed</d_name>
-        <d_bonus>128</d_bonus>
+        <d_bonus>Item::DOUBLEMOVESTACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Eldros's Pouch</d_name>
-        <d_bonus>256</d_bonus>
+        <d_bonus>Item::ADD2GOLDPERCITY</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Spear of Ank</d_name>
-        <d_bonus>1</d_bonus>
+        <d_bonus>Item::ADD1STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Lock of Safety</d_name>
-        <d_bonus>2</d_bonus>
+        <d_bonus>Item::ADD2STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Horn of Siege</d_name>
-        <d_bonus>4</d_bonus>
+        <d_bonus>Item::ADD3STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Staff of Might</d_name>
-        <d_bonus>4</d_bonus>
+        <d_bonus>Item::ADD3STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Wings of the Eagle</d_name>
-        <d_bonus>64</d_bonus>
+        <d_bonus>Item::FLYSTACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Everful Purse</d_name>
-        <d_bonus>256</d_bonus>
+        <d_bonus>Item::ADD2GOLDPERCITY</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Okradon's Pouch</d_name>
-        <d_bonus>1024</d_bonus>
+        <d_bonus>Item::ADD4GOLDPERCITY</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Firesword</d_name>
-        <d_bonus>1</d_bonus>
+        <d_bonus>Item::ADD1STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Sword of Death</d_name>
-        <d_bonus>1</d_bonus>
+        <d_bonus>Item::ADD1STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Chimes of Safety</d_name>
-        <d_bonus>2</d_bonus>
+        <d_bonus>Item::ADD2STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Lightsword</d_name>
-        <d_bonus>2</d_bonus>
+        <d_bonus>Item::ADD2STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Orb of Loriel</d_name>
-        <d_bonus>8</d_bonus>
+        <d_bonus>Item::ADD1STACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Witch's Broom</d_name>
-        <d_bonus>64</d_bonus>
+        <d_bonus>Item::FLYSTACK</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Silver Purse</d_name>
-        <d_bonus>1024</d_bonus>
+        <d_bonus>Item::ADD4GOLDPERCITY</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Tome of War</d_name>
-        <d_bonus>1</d_bonus>
+        <d_bonus>Item::ADD1STR</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>
     <item>
         <d_name>Horn of Plenty</d_name>
-        <d_bonus>1280</d_bonus>
+        <d_bonus>Item::ADD2GOLDPERCITY Item::ADD4GOLDPERCITY</d_bonus>
         <d_plantable>false</d_plantable>
         <d_id>0</d_id>
     </item>

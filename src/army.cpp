@@ -29,6 +29,7 @@
 #include "stacklist.h"
 #include "templelist.h"
 #include "ucompose.hpp"
+#include "Tile.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -139,10 +140,13 @@ Army::Army(XML_Helper* helper, enum ArmyContents contents)
         helper->getData(temples, "visited_temples");
         stemples.str(temples);
 
-        ival = -1;
-        stemples >> ival;
-        if (ival != -1)
-          d_visitedTemples.push_front(ival);
+	while (stemples.eof() == false)
+	  {
+	    ival = -1;
+	    stemples >> ival;
+	    if (ival != -1)
+	      d_visitedTemples.push_front(ival);
+	  }
     }
     else if (contents == TYPE || contents == PRODUCTION_BASE)
     {
@@ -152,15 +156,22 @@ Army::Army(XML_Helper* helper, enum ArmyContents contents)
         helper->getData(d_production, "production");
         helper->getData(d_production_cost, "production_cost");
         helper->getData(d_upkeep, "upkeep");
-        helper->getData(d_move_bonus, "move_bonus");
-        helper->getData(d_army_bonus, "army_bonus");
+	std::string move_bonus_str;
+        helper->getData(move_bonus_str, "move_bonus");
+	d_move_bonus = moveFlagsFromString(move_bonus_str);
+	std::string army_bonus_str;
+        helper->getData(army_bonus_str, "army_bonus");
+	d_army_bonus = bonusFlagsFromString(army_bonus_str);
+
 
 	helper->getData(d_defends_ruins,"defends_ruins");
 	helper->getData(d_awardable,"awardable");
 
-        if (!helper->getData(d_gender, "gender"))
-            d_gender = NONE;
-
+	std::string gender_str;
+        if (!helper->getData(gender_str, "gender"))
+	  d_gender = NONE;
+	else
+	  d_gender = genderFromString(gender_str);
 
         d_hp = d_max_hp;
         d_moves = d_max_moves;
@@ -445,11 +456,14 @@ bool Army::saveData(XML_Helper* helper, enum ArmyContents contents) const
 	retval &= helper->saveData("production", d_production);
 	retval &= helper->saveData("production_cost", d_production_cost);
 	retval &= helper->saveData("upkeep", d_upkeep);
-	retval &= helper->saveData("gender", d_gender);
+	std::string gender_str = genderToString(Army::Gender(d_gender));
+	retval &= helper->saveData("gender", gender_str);
 	retval &= helper->saveData("awardable", d_awardable);
 	retval &= helper->saveData("defends_ruins", d_defends_ruins);
-	retval &= helper->saveData("move_bonus", d_move_bonus);
-	retval &= helper->saveData("army_bonus", d_army_bonus);
+	std::string move_bonus_str = moveFlagsToString(d_move_bonus);
+	retval &= helper->saveData("move_bonus", move_bonus_str);
+	std::string army_bonus_str = bonusFlagsToString(d_army_bonus);
+	retval &= helper->saveData("army_bonus", army_bonus_str);
       }
     else if (contents == INSTANCE)
       {
@@ -462,6 +476,7 @@ bool Army::saveData(XML_Helper* helper, enum ArmyContents contents) const
 	retval &= helper->saveData("xp", d_xp);
 	retval &= helper->saveData("max_moves_multiplier", 
 				   d_max_moves_multiplier);
+	retval &= helper->saveData("level", d_level);
       }
 
     if (contents == PRODUCTION_BASE)
@@ -475,7 +490,6 @@ bool Army::saveData(XML_Helper* helper, enum ArmyContents contents) const
     retval &= helper->saveData("strength", d_strength);
     retval &= helper->saveData("sight", d_sight);
     retval &= helper->saveData("expvalue", getXpReward());
-    retval &= helper->saveData("level", d_level);
 
     if (contents == PRODUCTION_BASE || contents == TYPE)
       return retval;
@@ -649,4 +663,190 @@ bool Army::blessedAtTemple(Uint32 temple_id)
     return false;
       
   return true;
+}
+
+std::string Army::moveFlagsToString(const Uint32 bonus)
+{
+  std::string move_bonuses;
+  //we don't add grass, because it's always implied.
+  if (bonus & Tile::WATER)
+    move_bonuses += " " + Tile::tileTypeToString(Tile::WATER);
+  if (bonus & Tile::FOREST)
+    move_bonuses += " " + Tile::tileTypeToString(Tile::FOREST);
+  if (bonus & Tile::HILLS)
+    move_bonuses += " " + Tile::tileTypeToString(Tile::HILLS);
+  if (bonus & Tile::MOUNTAIN)
+    move_bonuses += " " + Tile::tileTypeToString(Tile::MOUNTAIN);
+  if (bonus & Tile::SWAMP)
+    move_bonuses += " " + Tile::tileTypeToString(Tile::SWAMP);
+  return move_bonuses;
+}
+
+Uint32 Army::moveFlagsFromString(const std::string str)
+{
+  Uint32 total = 0;
+  std::stringstream bonuses;
+  bonuses.str(str);
+
+  while (bonuses.eof() == false)
+    {
+      std::string bonus;
+      bonuses >> bonus;
+      if (bonus.size() == 0)
+	break;
+      total += Tile::tileTypeFromString(bonus);
+    }
+  return total;
+}
+
+std::string Army::genderToString(const Army::Gender gender)
+{
+  switch (gender)
+    {
+      case Army::NONE:
+	return "Army::NONE";
+	break;
+      case Army::MALE:
+	return "Army::MALE";
+	break;
+      case Army::FEMALE:
+	return "Army::FEMALE";
+	break;
+    }
+  return "Army::FEMALE";
+}
+
+Army::Gender Army::genderFromString(const std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Army::Gender(atoi(str.c_str()));
+  if (str == "Army::MALE")
+    return Army::MALE;
+  else if (str == "Army::NONE")
+    return Army::NONE;
+  else if (str == "Army::FEMALE")
+    return Army::FEMALE;
+  return Army::FEMALE;
+}
+
+std::string Army::bonusFlagToString(const Army::Bonus bonus)
+{
+  switch (bonus)
+    {
+    case Army::ADD1STRINOPEN:
+      return "Army::ADD1STRINOPEN";
+    case Army::ADD2STRINOPEN:
+      return "Army::ADD2STRINOPEN";
+    case Army::ADD1STRINFOREST:
+      return "Army::ADD1STRINFOREST";
+    case Army::ADD1STRINHILLS:
+      return "Army::ADD1STRINHILLS";
+    case Army::ADD1STRINCITY:
+      return "Army::ADD1STRINCITY";
+    case Army::ADD2STRINCITY:
+      return "Army::ADD2STRINCITY";
+    case Army::ADD1STACKINHILLS:
+      return "Army::ADD1STACKINHILLS";
+    case Army::SUBALLCITYBONUS:
+      return "Army::SUBALLCITYBONUS";
+    case Army::SUB1ENEMYSTACK:
+      return "Army::SUB1ENEMYSTACK";
+    case Army::ADD1STACK:
+      return "Army::ADD1STACK";
+    case Army::ADD2STACK:
+      return "Army::ADD2STACK";
+    case Army::SUBALLNONHEROBONUS:
+      return "Army::SUBALLNONHEROBONUS";
+    case Army::SUBALLHEROBONUS:
+      return "Army::SUBALLHEROBONUS";
+    case Army::FORTIFY:
+      return "Army::FORTIFY";
+    }
+  return "";
+}
+
+std::string Army::bonusFlagsToString(const Uint32 bonus)
+{
+  std::string bonuses;
+  if (bonus & Army::ADD1STRINOPEN)
+    bonuses += " " + bonusFlagToString(Army::ADD1STRINOPEN);
+  if (bonus & Army::ADD2STRINOPEN)
+    bonuses += " " + bonusFlagToString(Army::ADD2STRINOPEN);
+  if (bonus & Army::ADD1STRINFOREST)
+    bonuses += " " + bonusFlagToString(Army::ADD1STRINFOREST);
+  if (bonus & Army::ADD1STRINHILLS)
+    bonuses += " " + bonusFlagToString(Army::ADD1STRINHILLS);
+  if (bonus & Army::ADD1STRINCITY)
+    bonuses += " " + bonusFlagToString(Army::ADD1STRINCITY);
+  if (bonus & Army::ADD2STRINCITY)
+    bonuses += " " + bonusFlagToString(Army::ADD2STRINCITY);
+  if (bonus & Army::ADD1STACKINHILLS)
+    bonuses += " " + bonusFlagToString(Army::ADD1STACKINHILLS);
+  if (bonus & Army::SUBALLCITYBONUS)
+    bonuses += " " + bonusFlagToString(Army::SUBALLCITYBONUS);
+  if (bonus & Army::SUB1ENEMYSTACK)
+    bonuses += " " + bonusFlagToString(Army::SUB1ENEMYSTACK);
+  if (bonus & Army::ADD1STACK)
+    bonuses += " " + bonusFlagToString(Army::ADD1STACK);
+  if (bonus & Army::ADD2STACK)
+    bonuses += " " + bonusFlagToString(Army::ADD2STACK);
+  if (bonus & Army::SUBALLNONHEROBONUS)
+    bonuses += " " + bonusFlagToString(Army::SUBALLNONHEROBONUS);
+  if (bonus & Army::SUBALLHEROBONUS)
+    bonuses += " " + bonusFlagToString(Army::SUBALLHEROBONUS);
+  if (bonus & Army::FORTIFY)
+    bonuses += " " + bonusFlagToString(Army::FORTIFY);
+  return bonuses;
+}
+
+Uint32 Army::bonusFlagsFromString(const std::string str)
+{
+  Uint32 total = 0;
+  std::stringstream bonuses;
+  bonuses.str(str);
+
+  while (bonuses.eof() == false)
+    {
+      std::string bonus;
+      bonuses >> bonus;
+      if (bonus.size() == 0)
+	break;
+      total += bonusFlagFromString(bonus);
+    }
+  return total;
+}
+
+Army::Bonus Army::bonusFlagFromString(const std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Army::Bonus(atoi(str.c_str()));
+  if (str == "Army::ADD1STRINOPEN")
+    return Army::ADD1STRINOPEN;
+  else if (str == "Army::ADD2STRINOPEN")
+    return Army::ADD2STRINOPEN;
+  else if (str == "Army::ADD1STRINFOREST")
+    return Army::ADD1STRINFOREST;
+  else if (str == "Army::ADD1STRINHILLS")
+    return Army::ADD1STRINHILLS;
+  else if (str == "Army::ADD1STRINCITY")
+    return Army::ADD1STRINCITY;
+  else if (str == "Army::ADD2STRINCITY")
+    return Army::ADD2STRINCITY;
+  else if (str == "Army::ADD1STACKINHILLS")
+    return Army::ADD1STACKINHILLS;
+  else if (str == "Army::SUBALLCITYBONUS")
+    return Army::SUBALLCITYBONUS;
+  else if (str == "Army::ADD2GOLDPERCITY")
+    return Army::SUB1ENEMYSTACK;
+  else if (str == "Army::SUB1ENEMYSTACK")
+    return Army::ADD1STACK;
+  else if (str == "Army::ADD1STACK")
+    return Army::ADD2STACK;
+  else if (str == "Army::ADD2STACK")
+    return Army::ADD2STACK;
+  else if (str == "Army::SUBALLNONHEROBONUS")
+    return Army::SUBALLNONHEROBONUS;
+  else if (str == "Army::SUBALLHEROBONUS")
+    return Army::SUBALLHEROBONUS;
+  return Army::ADD1STRINOPEN;
 }

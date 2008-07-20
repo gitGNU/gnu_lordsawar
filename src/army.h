@@ -89,6 +89,9 @@ class Army : public Ownable, public sigc::trackable
 	  FEMALE = 2
 	};
 
+	static Army::Gender genderFromString(const std::string str);
+	static std::string genderToString(const Army::Gender gender);
+
 	//! The bitwise OR-able special bonus that the Army gives.
         enum Bonus {
 	  //! Provides +1 strength to the Army when positioned in the open.
@@ -120,6 +123,8 @@ class Army : public Ownable, public sigc::trackable
 	  //! Provides a +1 strength to all Army units in a fortified Stack.
 	  FORTIFY            = 0x00002000,
         };
+	static Uint32 bonusFlagsFromString(const std::string str);
+	static std::string bonusFlagsToString(const Uint32 bonus);
         
 	//! Various kinds of statistics that an instance of Army unit has.
 	/**
@@ -144,6 +149,9 @@ class Army : public Ownable, public sigc::trackable
 	  //! If the Army unit is having it's movement doubled/tripled or not.
 	  MOVES_MULTIPLIER = 9,
         };
+
+	static Uint32 moveFlagsFromString(const std::string str);
+	static std::string moveFlagsToString(const Uint32 move_bonus);
 
         /** 
 	 * Make a new instance of an Army unit by copying it from another.
@@ -508,6 +516,10 @@ class Army : public Ownable, public sigc::trackable
         static sigc::signal<void, Army*> sdying;
 
     protected:
+
+	static std::string bonusFlagToString(Army::Bonus bonus);
+	static Army::Bonus bonusFlagFromString(std::string str);
+
         //! Generic method for saving Army data.  Useful to the Hero class.
         bool saveData(XML_Helper* helper, 
 		      enum ArmyContents contents = INSTANCE) const;

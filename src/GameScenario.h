@@ -46,6 +46,7 @@ class GameScenario: public GameScenarioOptions
 {
     public:
 
+
         /** Initializes an "empty" scenario
           * 
           * @param name     the name of the scenario

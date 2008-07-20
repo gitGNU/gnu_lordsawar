@@ -244,6 +244,7 @@ void SplashWindow::on_load_scenario_clicked()
     d.set_parent_window(*window.get());
     
     d.run();
+    d.hide();
     
     std::string filename = d.get_scenario_filename();
     if (!filename.empty())

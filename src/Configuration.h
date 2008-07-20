@@ -118,6 +118,10 @@ class Configuration : public sigc::trackable
         static bool s_quick_start;
         static bool s_cusp_of_war;
 
+	static GameParameters::NeutralCities neutralCitiesFromString(const std::string str);
+	static std::string neutralCitiesToString(const GameParameters::NeutralCities neutrals);
+	static GameParameters::RazingCities razingCitiesFromString(const std::string str);
+	static std::string razingCitiesToString(const GameParameters::RazingCities razing);
 	//autos
     private:
         /** \brief The callback for the XML_Helper

@@ -61,6 +61,8 @@ class Reward
 	  //! A portion of the hidden map to expose to the rewarded player.
 	  MAP = 5
 	};
+	static std::string rewardTypeToString(const Reward::Type type);
+	static Reward::Type rewardTypeFromString(const std::string str);
 
         //! Default constructor.
 	/**

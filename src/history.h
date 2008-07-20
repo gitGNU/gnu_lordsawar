@@ -19,7 +19,6 @@
 #define HISTORY_H
 
 #include <string>
-#include "Ownable.h"
 #include "vector.h"
 #include <sigc++/trackable.h>
 
@@ -42,7 +41,7 @@ class City;
  * happened.
  *
  */
-class History: public Ownable
+class History
 {
     public:
 	//! A History can be one of the following kinds.
@@ -86,9 +85,14 @@ class History: public Ownable
 	  //! The player has finished a turn.
 	  END_TURN = 19
         };
+	static std::string historyTypeToString(const History::Type type);
+	static History::Type historyTypeFromString(const std::string str);
                 
 	//! Default constructor.
         History(Type type);
+
+	//! Loading from XML constructor.
+	History (XML_Helper *helper);
 
 	//! Destructor.
         virtual ~History();
@@ -96,9 +100,6 @@ class History: public Ownable
         //! Returns debug information. Needs to be overwritten by derivatives
         virtual std::string dump() const = 0;
 
-        //! Save function. See XML_Helper for information about saving.
-        virtual bool save(XML_Helper* helper) const = 0;
-        
         /** 
 	 * static load function (see XML_Helper)
          * 
@@ -117,7 +118,11 @@ class History: public Ownable
         //! Returns the id which identifies the type of History event.
         Type getType() const {return d_type;}
         
+	bool save(XML_Helper* helper) const;
+	bool saveContents(XML_Helper* helper) const;
+
     protected:
+        virtual bool doSave(XML_Helper* helper) const = 0;
         Type d_type;
 };
 
@@ -140,7 +145,7 @@ class History_StartTurn : public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! This method doesn't need to be called for History_StartTurn.
         bool fillData();
@@ -167,7 +172,7 @@ class History_FoundSage : public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the Hero who found the sage.
         bool fillData(Hero *hero);
@@ -199,7 +204,7 @@ class History_GoldTotal : public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the amount of gold pieces the Player has.
         bool fillData(int gold);
@@ -231,7 +236,7 @@ class History_HeroEmerges : public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with pertinent data.
 	/**
@@ -276,7 +281,7 @@ class History_CityWon : public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the record with the City that the Player defeated.
         bool fillData(City *city);
@@ -308,7 +313,7 @@ class History_HeroCityWon: public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with pertinent data.
 	/**
@@ -353,7 +358,7 @@ class History_CityRazed : public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the City that was razed.
         bool fillData(City *city);
@@ -385,7 +390,7 @@ class History_HeroQuestStarted : public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the Hero who initiated a new Quest.
         bool fillData(Hero *hero);
@@ -417,7 +422,7 @@ class History_HeroQuestCompleted: public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the Hero who finished a Quest.
         bool fillData(Hero *hero);
@@ -449,7 +454,7 @@ class History_HeroKilledInCity : public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with pertinent data.
 	/**
@@ -494,7 +499,7 @@ class History_HeroKilledInBattle: public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the Hero who was killed in battle.
         bool fillData(Hero *hero);
@@ -526,7 +531,7 @@ class History_HeroKilledSearching: public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the Hero who was killed while searching.
         bool fillData(Hero *hero);
@@ -558,7 +563,7 @@ class History_Score: public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the player's score for this turn.
         bool fillData(Uint32 score);
@@ -590,7 +595,7 @@ class History_PlayerVanquished: public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 };
 
@@ -613,7 +618,7 @@ class History_DiplomacyPeace : public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the Player who we are at peace with.
         bool fillData(Player *opponent);
@@ -645,7 +650,7 @@ class History_DiplomacyWar: public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the Player who we are at war with.
         bool fillData(Player *opponent);
@@ -677,7 +682,7 @@ class History_DiplomacyTreachery: public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the Player we performed treachery on.
         bool fillData(Player *opponent);
@@ -709,7 +714,7 @@ class History_HeroFindsAllies : public History
         std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the name of the Hero who found allies.
         bool fillData(Hero *hero);
@@ -740,7 +745,7 @@ class History_EndTurn : public History
 	std::string dump() const;
 
 	//! Save the historical event to an opened saved-game file.
-	bool save(XML_Helper* helper) const;
+        virtual bool doSave(XML_Helper* helper) const;
 
 	//! This method doesn't need to be called for History_EndTurn.
 	bool fillData();

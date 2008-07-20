@@ -37,7 +37,9 @@ Item::Item(XML_Helper* helper)
     // from a savegame. They both differ a bit, more on that when we encounter
     // such a situation. First, let us deal with the common things.
 
-    helper->getData(d_bonus, "bonus");
+    std::string bonus_str;
+    helper->getData(bonus_str, "bonus");
+    d_bonus = bonusFlagsFromString(bonus_str);
     
     helper->getData(d_plantable, "plantable");
     if (d_plantable)
@@ -96,7 +98,8 @@ bool Item::save(XML_Helper* helper) const
     }
   retval &= helper->saveData("id", d_id);
 
-  retval &= helper->saveData("bonus", d_bonus);
+  std::string bonus_str = bonusFlagsToString(d_bonus);
+  retval &= helper->saveData("bonus", bonus_str);
 
   retval &= helper->closeTag();
 
@@ -159,4 +162,114 @@ std::string Item::getBonusDescription() const
       str += *i;
     }
   return str;
+}
+
+std::string Item::bonusFlagToString(Item::Bonus bonus)
+{
+  switch (bonus)
+    {
+    case Item::ADD1STR:
+      return "Item::ADD1STR";
+    case Item::ADD2STR:
+      return "Item::ADD2STR";
+    case Item::ADD3STR:
+      return "Item::ADD3STR";
+    case Item::ADD1STACK:
+      return "Item::ADD1STACK";
+    case Item::ADD2STACK:
+      return "Item::ADD2STACK";
+    case Item::ADD3STACK:
+      return "Item::ADD3STACK";
+    case Item::FLYSTACK:
+      return "Item::FLYSTACK";
+    case Item::DOUBLEMOVESTACK:
+      return "Item::DOUBLEMOVESTACK";
+    case Item::ADD2GOLDPERCITY:
+      return "Item::ADD2GOLDPERCITY";
+    case Item::ADD3GOLDPERCITY:
+      return "ADD3GOLDPERCITY";
+    case Item::ADD4GOLDPERCITY:
+      return "Item::ADD4GOLDPERCITY";
+    case Item::ADD5GOLDPERCITY:
+      return "Item::ADD5GOLDPERCITY";
+    }
+  return "Item::ADD1STR";
+}
+
+std::string Item::bonusFlagsToString(Uint32 bonus)
+{
+  std::string bonuses;
+  if (bonus & Item::ADD1STR)
+    bonuses += " " + bonusFlagToString(Item::ADD1STR);
+  if (bonus & Item::ADD2STR)
+    bonuses += " " + bonusFlagToString(Item::ADD2STR);
+  if (bonus & Item::ADD3STR)
+    bonuses += " " + bonusFlagToString(Item::ADD3STR);
+  if (bonus & Item::ADD1STACK)
+    bonuses += " " + bonusFlagToString(Item::ADD1STACK);
+  if (bonus & Item::ADD2STACK)
+    bonuses += " " + bonusFlagToString(Item::ADD2STACK);
+  if (bonus & Item::ADD3STACK)
+    bonuses += " " + bonusFlagToString(Item::ADD3STACK);
+  if (bonus & Item::FLYSTACK)
+    bonuses += " " + bonusFlagToString(Item::FLYSTACK);
+  if (bonus & Item::DOUBLEMOVESTACK)
+    bonuses += " " + bonusFlagToString(Item::DOUBLEMOVESTACK);
+  if (bonus & Item::ADD2GOLDPERCITY)
+    bonuses += " " + bonusFlagToString(Item::ADD2GOLDPERCITY);
+  if (bonus & Item::ADD3GOLDPERCITY)
+    bonuses += " " + bonusFlagToString(Item::ADD3GOLDPERCITY);
+  if (bonus & Item::ADD4GOLDPERCITY)
+    bonuses += " " + bonusFlagToString(Item::ADD4GOLDPERCITY);
+  if (bonus & Item::ADD5GOLDPERCITY)
+    bonuses += " " + bonusFlagToString(Item::ADD5GOLDPERCITY);
+  return bonuses;
+}
+
+Uint32 Item::bonusFlagsFromString(std::string str)
+{
+  Uint32 total = 0;
+  std::stringstream bonuses;
+  bonuses.str(str);
+
+  while (bonuses.eof() == false)
+    {
+      std::string bonus;
+      bonuses >> bonus;
+      if (bonus.size() == 0)
+	break;
+      total += bonusFlagFromString(bonus);
+    }
+  return total;
+}
+
+Item::Bonus Item::bonusFlagFromString(std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Item::Bonus(atoi(str.c_str()));
+  if (str == "Item::ADD1STR")
+    return Item::ADD1STR;
+  else if (str == "Item::ADD2STR")
+    return Item::ADD2STR;
+  else if (str == "Item::ADD3STR")
+    return Item::ADD3STR;
+  else if (str == "Item::ADD1STACK")
+    return Item::ADD1STACK;
+  else if (str == "Item::ADD2STACK")
+    return Item::ADD2STACK;
+  else if (str == "Item::ADD3STACK")
+    return Item::ADD3STACK;
+  else if (str == "Item::FLYSTACK")
+    return Item::FLYSTACK;
+  else if (str == "Item::DOUBLEMOVESTACK")
+    return Item::DOUBLEMOVESTACK;
+  else if (str == "Item::ADD2GOLDPERCITY")
+    return Item::ADD2GOLDPERCITY;
+  else if (str == "Item::ADD3GOLDPERCITY")
+    return Item::ADD3GOLDPERCITY;
+  else if (str == "Item::ADD4GOLDPERCITY")
+    return Item::ADD4GOLDPERCITY;
+  else if (str == "Item::ADD5GOLDPERCITY")
+    return Item::ADD5GOLDPERCITY;
+  return Item::ADD1STR;
 }

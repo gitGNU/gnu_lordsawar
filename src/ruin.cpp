@@ -45,7 +45,9 @@ Ruin::Ruin(XML_Helper* helper)
     d_owner(0), d_sage(0), d_reward(0)
 {
     Uint32 ui;
-    helper->getData(d_type, "type");
+    std::string type_str;
+    helper->getData(type_str, "type");
+    d_type = ruinTypeFromString(type_str);
     helper->getData(d_searched, "searched");
     helper->getData(d_sage, "sage");
     helper->getData(d_hidden, "hidden");
@@ -81,7 +83,8 @@ bool Ruin::save(XML_Helper* helper) const
   retval &= helper->saveData("x", getPos().x);
   retval &= helper->saveData("y", getPos().y);
   retval &= helper->saveData("name", getName());
-  retval &= helper->saveData("type", d_type);
+  std::string type_str = ruinTypeToString(Ruin::Type(d_type));
+  retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("searched", d_searched);
   retval &= helper->saveData("sage", d_sage);
   retval &= helper->saveData("hidden", d_hidden);
@@ -162,5 +165,30 @@ void Ruin::populateWithRandomReward()
       else //no items left to give!
 	setReward(new Reward_Gold(Reward_Gold::getRandomGoldPieces()));
     }
+}
+
+std::string Ruin::ruinTypeToString(const Ruin::Type type)
+{
+  switch (type)
+    {
+      case Ruin::RUIN:
+	return "Ruin::RUIN";
+	break;
+      case Ruin::STRONGHOLD:
+	return "Ruin::STRONGHOLD";
+	break;
+    }
+  return "Ruin::RUIN";
+}
+
+Ruin::Type Ruin::ruinTypeFromString(const std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Ruin::Type(atoi(str.c_str()));
+  if (str == "Ruin::RUIN")
+    return Ruin::RUIN;
+  else if (str == "Ruin::STRONGHOLD")
+    return Ruin::STRONGHOLD;
+  return Ruin::RUIN;
 }
 // End of file

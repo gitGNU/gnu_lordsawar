@@ -29,7 +29,9 @@
 ShieldStyle::ShieldStyle(XML_Helper* helper)
   :d_pixmap(0), d_mask(0)
 {
-  helper->getData(d_type, "type");
+  std::string type_str;
+  helper->getData(type_str, "type");
+  d_type = shieldStyleTypeFromString(type_str);
   helper->getData(d_image, "image");
 }
 
@@ -122,4 +124,34 @@ bool ShieldStyle::instantiatePixmap(Shieldset *sh)
     SDL_FreeSurface(pic);
 
     return true;
+}
+
+std::string ShieldStyle::shieldStyleTypeToString(const ShieldStyle::Type type)
+{
+  switch (type)
+    {
+      case ShieldStyle::SMALL:
+	return "ShieldStyle::SMALL";
+	break;
+      case ShieldStyle::MEDIUM:
+	return "ShieldStyle::MEDIUM";
+	break;
+      case ShieldStyle::LARGE:
+	return "ShieldStyle::LARGE";
+	break;
+    }
+  return "ShieldStyle::SMALL";
+}
+
+ShieldStyle::Type ShieldStyle::shieldStyleTypeFromString(const std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return ShieldStyle::Type(atoi(str.c_str()));
+  if (str == "ShieldStyle::SMALL")
+    return ShieldStyle::SMALL;
+  else if (str == "ShieldStyle::MEDIUM")
+    return ShieldStyle::MEDIUM;
+  else if (str == "ShieldStyle::LARGE")
+    return ShieldStyle::LARGE;
+  return ShieldStyle::SMALL;
 }

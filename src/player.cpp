@@ -154,7 +154,9 @@ Player::Player(XML_Helper* helper)
     helper->getData(d_gold, "gold");
     helper->getData(d_dead, "dead");
     helper->getData(d_immortal, "immortal");
-    helper->getData(d_type, "type");
+    std::string type_str;
+    helper->getData(type_str, "type");
+    d_type = playerTypeFromString(type_str);
     helper->getData(d_upkeep, "upkeep");
     helper->getData(d_income, "income");
 
@@ -463,7 +465,8 @@ bool Player::save(XML_Helper* helper) const
     retval &= helper->saveData("gold", d_gold);
     retval &= helper->saveData("dead", d_dead);
     retval &= helper->saveData("immortal", d_immortal);
-    retval &= helper->saveData("type", d_type);
+    std::string type_str = playerTypeToString(Player::Type(d_type));
+    retval &= helper->saveData("type", type_str);
     debug("type of " << d_name << " is " << d_type)
     retval &= helper->saveData("upkeep", d_upkeep);
     retval &= helper->saveData("income", d_income);
@@ -3062,6 +3065,41 @@ void Player::pruneActionlist(std::list<Action*> actions)
   //if (total)
     //printf ("pruned %d city production actions.\n", total);
 
+}
+
+std::string Player::playerTypeToString(const Player::Type type)
+{
+  switch (type)
+    {
+    case Player::HUMAN:
+      return "Player::HUMAN";
+    case Player::AI_FAST:
+      return "Player::AI_FAST";
+    case Player::AI_DUMMY:
+      return "Player::AI_DUMMY";
+    case Player::AI_SMART:
+      return "Player::AI_SMART";
+    case Player::NETWORKED:
+      return "Player::NETWORKED";
+    }
+  return "Player::HUMAN";
+}
+
+Player::Type Player::playerTypeFromString(const std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Player::Type(atoi(str.c_str()));
+  if (str == "Player::HUMAN")
+    return Player::HUMAN;
+  else if (str == "Player::AI_FAST")
+    return Player::AI_FAST;
+  else if (str == "Player::AI_DUMMY")
+    return Player::AI_DUMMY;
+  else if (str == "Player::AI_SMART")
+    return Player::AI_SMART;
+  else if (str == "Player::NETWORKED")
+    return Player::NETWORKED;
+  return Player::HUMAN;
 }
 
 // End of file

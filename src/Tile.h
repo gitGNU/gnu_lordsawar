@@ -62,6 +62,8 @@ class Tile : public std::list<TileStyleSet*>
 	  //! Marshy terrain.
 	  SWAMP = 16 
 	};
+	static std::string tileTypeToString(const Tile::Type type);
+	static Tile::Type tileTypeFromString(const std::string str);
 
 	//! The terrain tile's appearance as seen on the OverviewMap.
 	enum Pattern { 
