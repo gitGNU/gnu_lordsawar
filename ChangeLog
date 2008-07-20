@@ -1,3 +1,8 @@
+2008-07-20  Ben Asselstine
+
+	* fixed the -t command-line option so that it works.
+	* now users can specify a file to load on the command line.
+
 2008-07-19  Ben Asselstine
 
 	* added progress indicator for generating new games.

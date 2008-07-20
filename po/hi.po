@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.6\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-07-19 09:18-0400\n"
+"POT-Creation-Date: 2008-07-19 21:24-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: विभू ॠषि <vibhu.rishi@gmail.com>\n"
 "Language-Team: Hindi <vibhu.rishi@gmail.com>\n"
@@ -1473,7 +1473,7 @@ msgid "Choose a map"
 msgstr "Scgli la tua strada1"
 
 #: dat/glade/game-preferences-dialog.glade.h:12
-#: src/gui/history-report-dialog.cpp:112
+#: src/gui/history-report-dialog.cpp:113
 msgid "Cities"
 msgstr "Cities'"
 
@@ -1599,7 +1599,7 @@ msgstr "Help"
 msgid "Hero"
 msgstr "हीरो"
 
-#: dat/glade/game-window.glade.h:21 src/gui/history-report-dialog.cpp:60
+#: dat/glade/game-window.glade.h:21 src/gui/history-report-dialog.cpp:61
 #, fuzzy
 msgid "History"
 msgstr "शहर की सूचना'"
@@ -2314,23 +2314,23 @@ msgstr "Il nome del file di salvataggio non ha l'estensione --> "
 msgid "GameScenario: Something went wrong with saving.\n"
 msgstr "GameScenario: Qualcosa e' andato male durante il salvataggio.\n"
 
-#: src/GameScenario.cpp:412
+#: src/GameScenario.cpp:414
 msgid "savefile has wrong version, we want "
 msgstr "il file di salvatagio ha una versione sbagliata, vogliamo "
 
-#: src/GameScenario.cpp:414
+#: src/GameScenario.cpp:416
 msgid "savefile offers "
 msgstr "il file di salvataggio offre "
 
-#: src/GameScenario.cpp:564
+#: src/GameScenario.cpp:566
 msgid "Autosave failed.\n"
 msgstr ""
 
-#: src/GameScenario.cpp:571
+#: src/GameScenario.cpp:573
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:572
+#: src/GameScenario.cpp:574
 #, fuzzy
 msgid "Error: "
 msgstr "Errore"
@@ -2504,44 +2504,44 @@ msgstr "Error, while loading an armyset. Armyset Name:"
 msgid "Found configuration file: "
 msgstr "Ho trovato un file di configurazione: "
 
-#: src/Configuration.cpp:154
+#: src/Configuration.cpp:156
 #, fuzzy
 msgid "Configuration: Something went wrong while saving.\n"
 msgstr "GameScenario: Qualcosa e' andato male durante il salvataggio.\n"
 
-#: src/Configuration.cpp:176
+#: src/Configuration.cpp:178
 #, fuzzy
 msgid "Configuration file has wrong version, we want "
 msgstr "il file di salvatagio ha una versione sbagliata, vogliamo "
 
-#: src/Configuration.cpp:178
+#: src/Configuration.cpp:180
 #, fuzzy
 msgid "Configuration file offers "
 msgstr "Ho trovato un file di configurazione: "
 
-#: src/Configuration.cpp:189
+#: src/Configuration.cpp:191
 msgid "I make a backup copy from "
 msgstr ""
 
-#: src/Configuration.cpp:295
+#: src/Configuration.cpp:297
 #, fuzzy
 msgid "Couldn't save the new configuration file..."
 msgstr "Ho trovato un file di configurazione: "
 
-#: src/Configuration.cpp:296
+#: src/Configuration.cpp:298
 msgid "Check permissions of your home directory....aborting!"
 msgstr ""
 
-#: src/Configuration.cpp:300
+#: src/Configuration.cpp:302
 #, fuzzy
 msgid "Created the standard configuration file "
 msgstr "Ho trovato un file di configurazione: "
 
-#: src/Configuration.cpp:313
+#: src/Configuration.cpp:315
 msgid "Couldn't create save game directory "
 msgstr "Couldn't create save game directory "
 
-#: src/Configuration.cpp:315
+#: src/Configuration.cpp:317
 #, fuzzy
 msgid "Check permissions and the entries in your lordsawarrc file!"
 msgstr "Check permissions and the entries in your freelordsrc file!\n"
@@ -2674,42 +2674,42 @@ msgstr "Done making map   ... 100%"
 msgid "You have killed %i so far."
 msgstr "Hai ucciso %i armate fino ad ora."
 
-#: src/player.cpp:1298
+#: src/player.cpp:1301
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr ""
 "Errore: il gruppo che esplora e la rovina che viene esplorata non sono nella "
 "stessa posizione\n"
 
-#: src/player.cpp:1387
+#: src/player.cpp:1390
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Il gruppo ha cercato di visitare il मंदिर alla locazione sbagliata\n"
 
-#: src/player.cpp:2312
+#: src/player.cpp:2315
 #, fuzzy
 msgid "%1 Standard"
 msgstr "आम सेना"
 
-#: src/reward.cpp:402
+#: src/reward.cpp:405
 msgid "%1 Gold Piece"
 msgid_plural "%1 Gold Pieces"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/reward.cpp:410
+#: src/reward.cpp:413
 msgid "Allies: %1 x %2"
 msgstr ""
 
-#: src/reward.cpp:418
+#: src/reward.cpp:421
 #, fuzzy
 msgid "Item: %1"
 msgstr "Oggetto:"
 
-#: src/reward.cpp:425
+#: src/reward.cpp:428
 #, fuzzy
 msgid "Site: %1"
 msgstr "Grandezza:"
 
-#: src/reward.cpp:431
+#: src/reward.cpp:434
 msgid "Map: %1,%2 %3x%4"
 msgstr ""
 
@@ -2964,117 +2964,117 @@ msgstr "Punti ferita: %i"
 msgid "This hero already has a quest."
 msgstr "Questo eroe ha gia' un'altra quest"
 
-#: src/gui/history-report-dialog.cpp:112 src/gui/history-report-dialog.cpp:117
-#: src/gui/history-report-dialog.cpp:122 src/editor/city-dialog.cpp:96
+#: src/gui/history-report-dialog.cpp:113 src/gui/history-report-dialog.cpp:118
+#: src/gui/history-report-dialog.cpp:123 src/editor/city-dialog.cpp:96
 #, fuzzy
 msgid "Turns"
 msgstr "Turni: %i"
 
-#: src/gui/history-report-dialog.cpp:117
+#: src/gui/history-report-dialog.cpp:118
 #, fuzzy
 msgid "Gold Pieces"
 msgstr "e hai trovato %i सोना!"
 
-#: src/gui/history-report-dialog.cpp:122
+#: src/gui/history-report-dialog.cpp:123
 #, fuzzy
 msgid "Score"
 msgstr "कुछ नही"
 
-#: src/gui/history-report-dialog.cpp:361
+#: src/gui/history-report-dialog.cpp:374
 #, fuzzy
 msgid "City History"
 msgstr "शहर की सूचना'"
 
-#: src/gui/history-report-dialog.cpp:364
+#: src/gui/history-report-dialog.cpp:377
 #, fuzzy
 msgid "Event History"
 msgstr "Eventi"
 
-#: src/gui/history-report-dialog.cpp:367
+#: src/gui/history-report-dialog.cpp:380
 #, fuzzy
 msgid "Gold History"
 msgstr "सवर्ण मुर्दा report"
 
-#: src/gui/history-report-dialog.cpp:370
+#: src/gui/history-report-dialog.cpp:383
 #, fuzzy
 msgid "Winner History"
 msgstr "शहर की सूचना'"
 
-#: src/gui/history-report-dialog.cpp:397 src/gui/history-report-dialog.cpp:416
+#: src/gui/history-report-dialog.cpp:410 src/gui/history-report-dialog.cpp:429
 msgid "On turn %1 you %2 "
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:399
+#: src/gui/history-report-dialog.cpp:412
 #, fuzzy
 msgid "%1 gold piece!"
 msgid_plural "%1 gold pieces!"
 msgstr[0] "e hai trovato %i सोना!"
 msgstr[1] "e hai trovato %i सोना!"
 
-#: src/gui/history-report-dialog.cpp:418
+#: src/gui/history-report-dialog.cpp:431
 msgid "%1 city!"
 msgid_plural "%1 cities!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/history-report-dialog.cpp:440
+#: src/gui/history-report-dialog.cpp:453
 msgid "On turn %1 you %2 coming %3"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:466
+#: src/gui/history-report-dialog.cpp:481
 msgid "%1 finds a sage!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:474
+#: src/gui/history-report-dialog.cpp:489
 msgid "%1 emerges in %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:483
+#: src/gui/history-report-dialog.cpp:498
 msgid "%1 begins a quest!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:491
+#: src/gui/history-report-dialog.cpp:506
 msgid "%1 finishes a quest!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:499
+#: src/gui/history-report-dialog.cpp:514
 msgid "%1 is killed in %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:508
+#: src/gui/history-report-dialog.cpp:523
 msgid "%1 is killed in battle!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:516
+#: src/gui/history-report-dialog.cpp:531
 msgid "%1 is killed while searching!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:525
+#: src/gui/history-report-dialog.cpp:540
 msgid "%1 conquers %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:534
+#: src/gui/history-report-dialog.cpp:549
 msgid "%1 utterly vanquished!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:544
+#: src/gui/history-report-dialog.cpp:559
 msgid "%1 at peace with %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:554
+#: src/gui/history-report-dialog.cpp:569
 msgid "%1 at war with %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:564
+#: src/gui/history-report-dialog.cpp:579
 #, fuzzy
 msgid "Treachery by %1 on %2!"
 msgstr "तीरंदाज"
 
-#: src/gui/history-report-dialog.cpp:573
+#: src/gui/history-report-dialog.cpp:588
 msgid "%1 finds allies!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:578
+#: src/gui/history-report-dialog.cpp:593
 msgid "unknown"
 msgstr ""
 
@@ -3143,7 +3143,7 @@ msgstr ""
 msgid "Game was not saved!"
 msgstr "Game Saved."
 
-#: src/gui/game-window.cpp:840 src/editor/armyset-window.cpp:470
+#: src/gui/game-window.cpp:840 src/editor/armyset-window.cpp:468
 #: src/editor/main-window.cpp:677 src/editor/tileset-window.cpp:548
 #: src/editor/tileset-window.cpp:884
 #, fuzzy
@@ -3520,20 +3520,20 @@ msgstr "मंदिर"
 msgid "Rescue Crashed Game"
 msgstr ""
 
-#: src/gui/splash-window.cpp:286
+#: src/gui/splash-window.cpp:287
 msgid "GGZ initialization failed. Exiting.\n"
 msgstr "inizializzazione della GGZ fallita.Esco\n"
 
-#: src/gui/splash-window.cpp:304
+#: src/gui/splash-window.cpp:305
 msgid "Play on GGZ"
 msgstr "Gioca su GGZ"
 
-#: src/gui/splash-window.cpp:305
+#: src/gui/splash-window.cpp:306
 #, fuzzy
 msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
 msgstr "Per piacere lancia Freelords da un client GGZ Gaming Zone."
 
-#: src/gui/splash-window.cpp:306
+#: src/gui/splash-window.cpp:307
 msgid "OK"
 msgstr "ऒ के"
 
@@ -3934,129 +3934,129 @@ msgstr "original path of stack was blocked\n"
 msgid "error calculating path!"
 msgstr ""
 
-#: src/army.cpp:606 src/army.cpp:609 src/army.cpp:612 src/army.cpp:615
-#: src/army.cpp:618 src/army.cpp:621 src/army.cpp:624 src/army.cpp:627
-#: src/army.cpp:630 src/army.cpp:633 src/army.cpp:635 src/army.cpp:637
-#: src/army.cpp:640
+#: src/army.cpp:620 src/army.cpp:623 src/army.cpp:626 src/army.cpp:629
+#: src/army.cpp:632 src/army.cpp:635 src/army.cpp:638 src/army.cpp:641
+#: src/army.cpp:644 src/army.cpp:647 src/army.cpp:649 src/army.cpp:651
+#: src/army.cpp:654
 msgid "%1%2"
 msgstr ""
 
-#: src/army.cpp:607
+#: src/army.cpp:621
 #, fuzzy
 msgid "+1 str in open"
 msgstr "e hai trovato %i सोना!"
 
-#: src/army.cpp:610
+#: src/army.cpp:624
 #, fuzzy
 msgid "+2 str in open"
 msgstr "e hai trovato %i सोना!"
 
-#: src/army.cpp:613
+#: src/army.cpp:627
 #, fuzzy
 msgid "+1 str in woods"
 msgstr "Gruppi"
 
-#: src/army.cpp:616
+#: src/army.cpp:630
 #, fuzzy
 msgid "+1 str in hills"
 msgstr "Gruppi"
 
-#: src/army.cpp:619
+#: src/army.cpp:633
 #, fuzzy
 msgid "+1 str in city"
 msgstr "e hai trovato %i सोना!"
 
-#: src/army.cpp:622
+#: src/army.cpp:636
 #, fuzzy
 msgid "+2 str in city"
 msgstr "e hai trovato %i सोना!"
 
-#: src/army.cpp:625
+#: src/army.cpp:639
 #, fuzzy
 msgid "+1 stack in hills"
 msgstr "Gruppi"
 
-#: src/army.cpp:628
+#: src/army.cpp:642
 msgid "Cancel city bonus"
 msgstr ""
 
-#: src/army.cpp:631
+#: src/army.cpp:645
 #, fuzzy
 msgid "-1 enemy stack"
 msgstr "Gruppi"
 
-#: src/army.cpp:633
+#: src/army.cpp:647
 #, fuzzy
 msgid "+1 stack"
 msgstr "Gruppi"
 
-#: src/army.cpp:635
+#: src/army.cpp:649
 #, fuzzy
 msgid "+2 stack"
 msgstr "Gruppi"
 
-#: src/army.cpp:638
+#: src/army.cpp:652
 msgid "cancel non-hero"
 msgstr ""
 
-#: src/army.cpp:641
+#: src/army.cpp:655
 msgid "cancel hero"
 msgstr ""
 
-#: src/Item.cpp:126
+#: src/Item.cpp:129
 #, fuzzy
 msgid "+1 Battle"
 msgstr "Oggetto:"
 
-#: src/Item.cpp:128
+#: src/Item.cpp:131
 #, fuzzy
 msgid "+2 Battle"
 msgstr "Oggetto:"
 
-#: src/Item.cpp:130
+#: src/Item.cpp:133
 #, fuzzy
 msgid "+3 Battle"
 msgstr "Oggetto:"
 
-#: src/Item.cpp:132
+#: src/Item.cpp:135
 #, fuzzy
 msgid "+1 Command"
 msgstr "Commento:"
 
-#: src/Item.cpp:134
+#: src/Item.cpp:137
 #, fuzzy
 msgid "+2 Command"
 msgstr "Commento:"
 
-#: src/Item.cpp:136
+#: src/Item.cpp:139
 #, fuzzy
 msgid "+3 Command"
 msgstr "Commento:"
 
-#: src/Item.cpp:138
+#: src/Item.cpp:141
 msgid "Allows Flight"
 msgstr ""
 
-#: src/Item.cpp:140
+#: src/Item.cpp:143
 msgid "Doubles Movement"
 msgstr ""
 
-#: src/Item.cpp:142
+#: src/Item.cpp:145
 #, fuzzy
 msgid "+2 gold per city"
 msgstr "e hai trovato %i सोना!"
 
-#: src/Item.cpp:144
+#: src/Item.cpp:147
 #, fuzzy
 msgid "+3 gold per city"
 msgstr "e hai trovato %i सोना!"
 
-#: src/Item.cpp:146
+#: src/Item.cpp:149
 #, fuzzy
 msgid "+4 gold per city"
 msgstr "e hai trovato %i सोना!"
 
-#: src/Item.cpp:148
+#: src/Item.cpp:151
 #, fuzzy
 msgid "+5 gold per city"
 msgstr "e hai trovato %i सोना!"
