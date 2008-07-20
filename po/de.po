@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-07-19 21:24-0400\n"
+"POT-Creation-Date: 2008-07-20 09:37-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -1640,7 +1640,7 @@ msgid "Load Game"
 msgstr "Spielstand laden"
 
 #: dat/glade/game-window.glade.h:29 dat/glade/splash-window.glade.h:3
-#: dat/glade/about-dialog.glade.h:3 src/gui/main.cpp:59
+#: dat/glade/about-dialog.glade.h:3 src/gui/main.cpp:61
 msgid "LordsAWar!"
 msgstr ""
 
@@ -2502,10 +2502,6 @@ msgstr "GraphicsCache::getFlagPic keine Armee mitgeliefert! Breche ab...\n"
 msgid "Error, while loading a tileset. Tileset Name: "
 msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
 
-#: src/Configuration.cpp:100
-msgid "Found configuration file: "
-msgstr "Konfigurationsdatei gefunden: "
-
 #: src/Configuration.cpp:156
 msgid "Configuration: Something went wrong while saving.\n"
 msgstr "Configuration: Fehler beim Speichern.\n"
@@ -3134,8 +3130,8 @@ msgstr "Verteidigung: %i"
 msgid "Choose Game to Load"
 msgstr "Terraintyp"
 
-#: src/gui/game-window.cpp:815 src/gui/driver.cpp:124 src/gui/driver.cpp:160
-#: src/gui/driver.cpp:300
+#: src/gui/game-window.cpp:815 src/gui/driver.cpp:174 src/gui/driver.cpp:210
+#: src/gui/driver.cpp:350
 msgid "Corrupted saved game file."
 msgstr ""
 
@@ -3453,7 +3449,7 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr "Dein Held %s hat die Mission abgeschlossen."
 
-#: src/gui/driver.cpp:255 src/editor/main-window.cpp:380
+#: src/gui/driver.cpp:305 src/editor/main-window.cpp:380
 #: src/editor/main-window.cpp:426
 msgid "Neutral"
 msgstr "Neutraler Spieler"
@@ -3863,10 +3859,6 @@ msgstr ""
 msgid ": The file is obfuscated, attempting to read it....\n"
 msgstr ": Der Spielstand wurde komprimiert, versuche ihn zu lesen...\n"
 
-#: src/xmlhelper.cpp:112
-msgid ": The file is not obfuscated, attempting to read it....\n"
-msgstr ": Spielstand ist unkomprimiert, versuche ihn zu lesen...\n"
-
 #: src/xmlhelper.cpp:124
 msgid ": Error opening file for writing. Exiting\n"
 msgstr ": Fehler beim Öffnen der Datei zum Schreiben. Breche ab\n"
@@ -4163,22 +4155,29 @@ msgstr "Konnte kein einziges Terrainset finden! "
 msgid "non-numerical value for cache size\n"
 msgstr "Nicht-numerischer Wert für die Größe des Caches\n"
 
-#: src/main.cpp:83
-msgid "Available parameters:"
-msgstr "Verfügbare Kommandozeilenoptionen:"
+#: src/main.cpp:87
+#, fuzzy
+msgid "Options:"
+msgstr "Optionen"
 
-#: src/main.cpp:84
-msgid "-h,      --help             Shows this help screen\n"
+#: src/main.cpp:88
+#, fuzzy
+msgid "  -h, --help                 Shows this help screen"
 msgstr "-h,      --help             Zeigt diese Hilfe an\n"
 
-#: src/main.cpp:85
+#: src/main.cpp:89
 #, fuzzy
-msgid "-c <size>                   Set the maximum cache size"
+msgid "  -c <size>                  Set the maximum cache size"
 msgstr "-c <Wert>                   legt die maximale Cachegröße fest"
 
-#: src/main.cpp:86
-msgid "-t,      --test             Starting with a test-scenario"
+#: src/main.cpp:90
+#, fuzzy
+msgid "  -t, --test                 Start with a test-scenario"
 msgstr "-t,      --test             Startet mit einem Testszenario"
+
+#: src/main.cpp:91
+msgid "  -n, --network-test         Start a network test"
+msgstr ""
 
 #: src/QCitySack.cpp:93
 #, fuzzy
@@ -4194,6 +4193,15 @@ msgstr ""
 #, c-format
 msgid "You must take over and sack the city of \"%s\"."
 msgstr ""
+
+#~ msgid "Found configuration file: "
+#~ msgstr "Konfigurationsdatei gefunden: "
+
+#~ msgid ": The file is not obfuscated, attempting to read it....\n"
+#~ msgstr ": Spielstand ist unkomprimiert, versuche ihn zu lesen...\n"
+
+#~ msgid "Available parameters:"
+#~ msgstr "Verfügbare Kommandozeilenoptionen:"
 
 #~ msgid "Easy"
 #~ msgstr "Einfache KI"
