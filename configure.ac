@@ -164,6 +164,12 @@ AC_ARG_ENABLE(editor,
             use_editor="$enableval", use_editor="yes")
 AM_CONDITIONAL([WANT_EDITOR], [test $use_editor = "yes"])
 
+dnl Do we want to compile the play by mail server?
+AC_ARG_ENABLE(pbm,
+            [  --enable-pbm     compile play-by-mail (default=yes)],
+            use_pbm="$enableval", use_pbm="yes")
+AM_CONDITIONAL([WANT_PBM], [test $use_pbm= "yes"])
+
 dnl ...the standard screen resolution...
 AC_ARG_WITH(resolution,
            [  --with-resolution=RES standard resolution for lordsawar [default=800x600]], 
@@ -235,6 +241,7 @@ AC_CONFIG_FILES([
         doc/Makefile
         help/Makefile
         src/editor/Makefile
+        src/pbm/Makefile
         src/gui/Makefile])
 AC_OUTPUT
 echo ""
@@ -243,6 +250,7 @@ echo ""
 echo "Configuration:"
 echo " Installation location : $prefix"
 echo " Editor compilation    : $use_editor"
+echo " Play-by-mail          : $use_pbm"
 echo " Sound support         : $use_sound"
 echo ""
 echo "Extra Options:"
