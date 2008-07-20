@@ -1,6 +1,9 @@
 2008-07-19  Ben Asselstine
 
 	* added progress indicator for generating new games.
+	* fixed bug that allowed armies to get blessed more than once at
+	  the same temple.
+	* fixed armyset editor to save armysets properly.
 
 2008-07-16  Ben Asselstine
 

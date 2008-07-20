@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-07-18 18:20-0400\n"
+"POT-Creation-Date: 2008-07-19 09:18-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -1641,7 +1641,7 @@ msgid "Load Game"
 msgstr "Carica Gioco"
 
 #: dat/glade/game-window.glade.h:29 dat/glade/splash-window.glade.h:3
-#: dat/glade/about-dialog.glade.h:3 src/gui/main.cpp:58
+#: dat/glade/about-dialog.glade.h:3 src/gui/main.cpp:59
 msgid "LordsAWar!"
 msgstr ""
 
@@ -2990,101 +2990,101 @@ msgstr "e hai trovato %i moneta d'oro!"
 msgid "Score"
 msgstr "Scone"
 
-#: src/gui/history-report-dialog.cpp:360
+#: src/gui/history-report-dialog.cpp:361
 #, fuzzy
 msgid "City History"
 msgstr "Informations sur la cité"
 
-#: src/gui/history-report-dialog.cpp:363
+#: src/gui/history-report-dialog.cpp:364
 #, fuzzy
 msgid "Event History"
 msgstr "Eventi"
 
-#: src/gui/history-report-dialog.cpp:366
+#: src/gui/history-report-dialog.cpp:367
 #, fuzzy
 msgid "Gold History"
 msgstr "Rapport sur l'or"
 
-#: src/gui/history-report-dialog.cpp:369
+#: src/gui/history-report-dialog.cpp:370
 #, fuzzy
 msgid "Winner History"
 msgstr "Informations sur la cité"
 
-#: src/gui/history-report-dialog.cpp:396 src/gui/history-report-dialog.cpp:415
+#: src/gui/history-report-dialog.cpp:397 src/gui/history-report-dialog.cpp:416
 msgid "On turn %1 you %2 "
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:398
+#: src/gui/history-report-dialog.cpp:399
 #, fuzzy
 msgid "%1 gold piece!"
 msgid_plural "%1 gold pieces!"
 msgstr[0] "e hai trovato %i moneta d'oro!"
 msgstr[1] "e hai trovato %i monete d'oro!"
 
-#: src/gui/history-report-dialog.cpp:417
+#: src/gui/history-report-dialog.cpp:418
 msgid "%1 city!"
 msgid_plural "%1 cities!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/history-report-dialog.cpp:439
+#: src/gui/history-report-dialog.cpp:440
 msgid "On turn %1 you %2 coming %3"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:465
+#: src/gui/history-report-dialog.cpp:466
 msgid "%1 finds a sage!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:473
+#: src/gui/history-report-dialog.cpp:474
 msgid "%1 emerges in %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:482
+#: src/gui/history-report-dialog.cpp:483
 msgid "%1 begins a quest!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:490
+#: src/gui/history-report-dialog.cpp:491
 msgid "%1 finishes a quest!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:498
+#: src/gui/history-report-dialog.cpp:499
 msgid "%1 is killed in %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:507
+#: src/gui/history-report-dialog.cpp:508
 msgid "%1 is killed in battle!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:515
+#: src/gui/history-report-dialog.cpp:516
 msgid "%1 is killed while searching!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:524
+#: src/gui/history-report-dialog.cpp:525
 msgid "%1 conquers %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:533
+#: src/gui/history-report-dialog.cpp:534
 msgid "%1 utterly vanquished!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:543
+#: src/gui/history-report-dialog.cpp:544
 msgid "%1 at peace with %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:553
+#: src/gui/history-report-dialog.cpp:554
 msgid "%1 at war with %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:563
+#: src/gui/history-report-dialog.cpp:564
 #, fuzzy
 msgid "Treachery by %1 on %2!"
 msgstr "Archer"
 
-#: src/gui/history-report-dialog.cpp:572
+#: src/gui/history-report-dialog.cpp:573
 msgid "%1 finds allies!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:577
+#: src/gui/history-report-dialog.cpp:578
 msgid "unknown"
 msgstr ""
 
@@ -3143,7 +3143,8 @@ msgstr "Défense : %i"
 msgid "Choose Game to Load"
 msgstr "Choisissez le quadrillage"
 
-#: src/gui/game-window.cpp:815 src/gui/driver.cpp:270 src/gui/driver.cpp:294
+#: src/gui/game-window.cpp:815 src/gui/driver.cpp:124 src/gui/driver.cpp:160
+#: src/gui/driver.cpp:300
 msgid "Corrupted saved game file."
 msgstr ""
 
@@ -3468,7 +3469,7 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr "Il tuo eroe %s ha completato la quest."
 
-#: src/gui/driver.cpp:216 src/editor/main-window.cpp:380
+#: src/gui/driver.cpp:255 src/editor/main-window.cpp:380
 #: src/editor/main-window.cpp:426
 msgid "Neutral"
 msgstr "Neutre"
@@ -3537,20 +3538,20 @@ msgstr "Tempio"
 msgid "Rescue Crashed Game"
 msgstr ""
 
-#: src/gui/splash-window.cpp:319
+#: src/gui/splash-window.cpp:286
 msgid "GGZ initialization failed. Exiting.\n"
 msgstr "inizializzazione della GGZ fallita.Esco\n"
 
-#: src/gui/splash-window.cpp:337
+#: src/gui/splash-window.cpp:304
 msgid "Play on GGZ"
 msgstr "Gioca su GGZ"
 
-#: src/gui/splash-window.cpp:338
+#: src/gui/splash-window.cpp:305
 #, fuzzy
 msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
 msgstr "Per piacere lancia Freelords da un client GGZ Gaming Zone."
 
-#: src/gui/splash-window.cpp:339
+#: src/gui/splash-window.cpp:306
 msgid "OK"
 msgstr "OK"
 
