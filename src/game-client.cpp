@@ -253,6 +253,5 @@ bool GameClient::loadWithHelper(XML_Helper &helper, Player *p)
   printf ("decoded %d actions\n", num);
   num = decodeHistories(historyloader.histories);
   printf ("decoded %d histories\n", num);
-  printf ("broken is %d\n", broken);
   return broken;
 }
