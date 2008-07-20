@@ -148,7 +148,8 @@ void Driver::run()
       NextTurn *nextTurn;
       nextTurn = new NextTurn(game_scenario->getTurnmode(),
 			      game_scenario->s_random_turns);
-      broken = game_client->loadWithHelper(helper);
+      broken = game_client->loadWithHelper (helper, 
+					    Playerlist::getActiveplayer());
       helper.close();
       delete nextTurn;
       if (!broken)

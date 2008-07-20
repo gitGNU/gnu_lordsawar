@@ -132,7 +132,8 @@ public:
   std::list<NetworkAction *> actions;
 };
  
-int GameClient::decodeActions(std::list<NetworkAction*> actions)
+int GameClient::decodeActions(std::list<NetworkAction*> actions,
+			      Player *player)
 {
   int count = 0;
   for (std::list<NetworkAction *>::iterator i = actions.begin(),
@@ -140,9 +141,11 @@ int GameClient::decodeActions(std::list<NetworkAction*> actions)
   {
     NetworkAction *action = *i;
     std::string desc = action->toString();
-    std::cerr << "decoding action: " << desc << std::endl;
     
     Player *p = action->getOwner();
+    if (p != player && player)
+      continue;
+    std::cerr << "decoding action: " << desc << std::endl;
     NetworkPlayer *np = static_cast<NetworkPlayer *>(p);
 
     if (!np) {
@@ -171,7 +174,7 @@ void GameClient::gotActions(const std::string &payload)
   helper.registerTag("networkaction", sigc::mem_fun(loader, &ActionLoader::loadAction));
   helper.parse();
 
-  decodeActions(loader.actions);
+  decodeActions(loader.actions, Playerlist::getActiveplayer());
 }
 
 class HistoryLoader 
@@ -234,7 +237,7 @@ void GameClient::gotHistories(const std::string &payload)
   decodeHistories(loader.histories);
 }
 
-bool GameClient::loadWithHelper(XML_Helper &helper)
+bool GameClient::loadWithHelper(XML_Helper &helper, Player *p)
 {
   ActionLoader actionloader;
   HistoryLoader historyloader;
@@ -246,7 +249,7 @@ bool GameClient::loadWithHelper(XML_Helper &helper)
   if (!helper.parse())
     broken = true;
 
-  int num = decodeActions(actionloader.actions);
+  int num = decodeActions(actionloader.actions, p);
   printf ("decoded %d actions\n", num);
   num = decodeHistories(historyloader.histories);
   printf ("decoded %d histories\n", num);

@@ -32,6 +32,7 @@ class NetworkHistory;
 
 class NetworkConnection;
 class GameScenario;
+class Player;
 
 class GameClient: public sigc::trackable
 {
@@ -43,14 +44,15 @@ public:
 
   sigc::signal<void, std::string> game_scenario_received;
   
-  bool loadWithHelper(XML_Helper &helper);
+  bool loadWithHelper(XML_Helper &helper, Player *player);
 
 private:
   std::auto_ptr<NetworkConnection> network_connection;
 
   void gotScenario(const std::string &payload);
   void gotActions(const std::string &payload);
-  int decodeActions(std::list<NetworkAction*> actions);
+  int decodeActions(std::list<NetworkAction*> actions,
+		    Player *player);
   void gotHistories(const std::string &payload);
   int decodeHistories(std::list<NetworkHistory*> histories);
 
