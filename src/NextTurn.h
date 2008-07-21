@@ -45,8 +45,12 @@ class NextTurn: public sigc::trackable
 
            @param   turnmode    setting for the private variable d_turnmode
            @param   random_turns change the order every round
+	   @param   start_next_player start players turns automatically.
+
+	   @note The start_next_player means that the player->startTurn
+	         method will be called.
          */
-        NextTurn(bool turnmode, bool random_turns);
+        NextTurn(bool turnmode, bool random_turns, bool start_players = true);
 
         /**
            \brief destructor
@@ -128,6 +132,8 @@ class NextTurn: public sigc::trackable
 
         // whether we're starting a turn again from loading a game
         bool continuing_turn;
+
+	bool d_start_players;
 };
 
 #endif //NEXT_TURN_H

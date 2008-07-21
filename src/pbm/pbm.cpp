@@ -55,7 +55,7 @@ void pbm::run(std::string save_game_file, std::string turn_file)
 		    Configuration::s_zipfiles);
   NextTurn *nextTurn;
   nextTurn = new NextTurn(game_scenario->getTurnmode(),
-			  game_scenario->s_random_turns);
+			  game_scenario->s_random_turns, false);
   broken = game_client->loadWithHelper (helper, 
 					Playerlist::getActiveplayer());
   helper.close();

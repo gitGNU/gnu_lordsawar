@@ -36,8 +36,9 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 //#define debug(x)
 
-NextTurn::NextTurn(bool turnmode, bool random_turns)
-    :d_turnmode(turnmode), d_random_turns (random_turns), d_stop(false)
+NextTurn::NextTurn(bool turnmode, bool random_turns, bool start_players)
+    :d_turnmode(turnmode), d_random_turns (random_turns), d_stop(false),
+    d_start_players(start_players)
 {
   continuing_turn = false;
   
@@ -94,8 +95,8 @@ void NextTurn::start()
 	if (!continue_loop)
 	  return;
 	
-        //Now do some cleanup at the end of the turn.
-        finishTurn();
+	//Now do some cleanup at the end of the turn.
+	finishTurn();
 
         //...and initiate the next one.
         plist->nextPlayer();
@@ -103,18 +104,19 @@ void NextTurn::start()
         //if it is the first player's turn now, a new round has started
         if (Playerlist::getInstance()->getActiveplayer() == 
 	    Playerlist::getInstance()->getFirstLiving())
-        {
-          if (plist->checkPlayers() == true)
-	    {
-	      if (plist->getNoOfPlayers() <= 1)
-		break;
-	      if (plist->getActiveplayer()->isDead())
-		plist->nextPlayer();
-	    }
-	  finishRound();
-	  snextRound.emit();
-	}
-	  
+        
+	  {
+	    if (plist->checkPlayers() == true)
+	      {
+		if (plist->getNoOfPlayers() <= 1)
+		  break;
+		if (plist->getActiveplayer()->isDead())
+		  plist->nextPlayer();
+	      }
+	    finishRound();
+	    snextRound.emit();
+	  }
+
     }
 }
 
@@ -131,7 +133,8 @@ void NextTurn::endTurn()
       snextRound.emit();
     }
 
-  start();
+  if (d_start_players)
+    start();
 }
 
 void NextTurn::startTurn()
