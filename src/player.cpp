@@ -556,16 +556,16 @@ bool Player::save(XML_Helper* helper) const
 Player* Player::loadPlayer(XML_Helper* helper)
 {
     Type type;
-    int t;
-    
-    helper->getData(t, "type");
-    type = static_cast<Type>(t);
+    std::string type_str;
+    helper->getData(type_str, "type");
+    type = playerTypeFromString(type_str);
 
     switch (type)
     {
         case HUMAN:
             return new RealPlayer(helper);
         case AI_FAST:
+	    printf ("making new ai_fast!!\n");
             return new AI_Fast(helper);
         case AI_SMART:
             return new AI_Smart(helper);
@@ -3003,7 +3003,6 @@ std::list<Action *> Player::getReportableActions()
   return actions;
 }
 
-	
 void Player::cityTooPoorToProduce(City *city, int slot)
 {
   cityChangeProduction(city, -1);
