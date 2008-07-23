@@ -1,3 +1,7 @@
+2008-07-23  Ben Asselstine
+
+	* changed reward xml entity.  changes saved-game file format.
+
 2008-07-20  Ben Asselstine
 
 	* fixed the -t command-line option so that it works.
