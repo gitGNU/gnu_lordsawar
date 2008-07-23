@@ -95,6 +95,7 @@ Action* Action::handle_load(XML_Helper* helper)
 
   helper->getData(type_str, "type");
   Action::Type t = actionTypeFromString(type_str);
+  printf ("type_str is %s\n", type_str.c_str());
 
   switch (t)
     {
@@ -1055,20 +1056,23 @@ bool Action_Reward::load(std::string tag, XML_Helper *helper)
 {
     if (tag == "reward")
       {
-	Reward *reward = new Reward(helper);
-	if (reward->getType() == Reward::GOLD)
-	  d_reward = new Reward_Gold(helper);
-	else if (reward->getType() == Reward::ALLIES)
-	  d_reward = new Reward_Allies(helper);
-	else if (reward->getType() == Reward::ITEM)
-	  d_reward = new Reward_Item(helper);
-	else if (reward->getType() == Reward::RUIN)
-	  d_reward = new Reward_Ruin(helper);
-	else if (reward->getType() == Reward::MAP)
-	  d_reward = new Reward_Map(helper);
-	  
-	delete reward;
-
+	Uint32 t;
+	std::string type_str;
+	helper->getData(type_str, "type");
+	t = Reward::rewardTypeFromString(type_str);
+	switch (t)
+	  {
+	  case  Reward::GOLD:
+	    d_reward = new Reward_Gold(helper); break;
+	  case  Reward::ALLIES:
+	    d_reward = new Reward_Allies(helper); break;
+	  case Reward::ITEM:
+	    d_reward = new Reward_Item(helper); break;
+	  case Reward::RUIN:
+	    d_reward = new Reward_Ruin(helper); break;
+	  case Reward::MAP:
+	    d_reward = new Reward_Map(helper); break;
+	  }
 	return true;
       }
     return false;
@@ -1077,7 +1081,8 @@ bool Action_Reward::load(std::string tag, XML_Helper *helper)
 Action_Reward::Action_Reward (const Action_Reward &action)
 : Action(action), d_stack(action.d_stack)
 {
-  d_reward = new Reward(*action.d_reward);
+  const Reward *reward = action.d_reward;
+  d_reward = Reward::copy(reward);
 }
 
 Action_Reward::Action_Reward(XML_Helper* helper)
@@ -1113,16 +1118,17 @@ bool Action_Reward::doSave(XML_Helper* helper) const
   bool retval = true;
 
   retval &= helper->saveData("stack", d_stack);
-  if (d_reward->getType() == Reward::GOLD)
-    static_cast<Reward_Gold*>(d_reward)->save(helper);
-  else if (d_reward->getType() == Reward::ALLIES)
-    static_cast<Reward_Allies*>(d_reward)->save(helper);
-  else if (d_reward->getType() == Reward::ITEM)
-    static_cast<Reward_Item*>(d_reward)->save(helper);
-  else if (d_reward->getType() == Reward::RUIN)
-    static_cast<Reward_Ruin*>(d_reward)->save(helper);
-  else if (d_reward->getType() == Reward::MAP)
-    static_cast<Reward_Map*>(d_reward)->save(helper);
+  retval &= d_reward->save(helper);
+  //if (d_reward->getType() == Reward::GOLD)
+    //dynamic_cast<Reward_Gold*>(d_reward)->save(helper);
+  //else if (d_reward->getType() == Reward::ALLIES)
+    //dynamic_cast<Reward_Allies*>(d_reward)->save(helper);
+  //else if (d_reward->getType() == Reward::ITEM)
+    //dynamic_cast<Reward_Item*>(d_reward)->save(helper);
+  //else if (d_reward->getType() == Reward::RUIN)
+    //dynamic_cast<Reward_Ruin*>(d_reward)->save(helper);
+  //else if (d_reward->getType() == Reward::MAP)
+    //dynamic_cast<Reward_Map*>(d_reward)->save(helper);
 
   return retval;
 }

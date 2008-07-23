@@ -95,18 +95,7 @@ bool Ruin::save(XML_Helper* helper) const
   if (d_occupant)
     retval &= d_occupant->save(helper);
   if (d_sage == false && d_reward)
-    {
-      if (d_reward->getType() == Reward::GOLD)
-	static_cast<Reward_Gold*>(d_reward)->save(helper);
-      else if (d_reward->getType() == Reward::ALLIES)
-	static_cast<Reward_Allies*>(d_reward)->save(helper);
-      else if (d_reward->getType() == Reward::ITEM)
-	static_cast<Reward_Item*>(d_reward)->save(helper);
-      else if (d_reward->getType() == Reward::RUIN)
-	static_cast<Reward_Ruin*>(d_reward)->save(helper);
-      else if (d_reward->getType() == Reward::MAP)
-	static_cast<Reward_Map*>(d_reward)->save(helper);
-    }
+    retval &= d_reward->save(helper);
   retval &= helper->closeTag();
 
   return retval;
@@ -116,21 +105,24 @@ bool Ruin::load(std::string tag, XML_Helper* helper)
 {
   if (tag == "reward")
     {
-      Reward *reward = new Reward(helper);
-      if (reward->getType() == Reward::GOLD)
-	d_reward = new Reward_Gold(helper);
-      else if (reward->getType() == Reward::ALLIES)
-	d_reward = new Reward_Allies(helper);
-      else if (reward->getType() == Reward::ITEM)
-	d_reward = new Reward_Item(helper);
-      else if (reward->getType() == Reward::RUIN)
-	d_reward = new Reward_Ruin(helper);
-      else if (reward->getType() == Reward::MAP)
-	d_reward = new Reward_Map(helper);
-
-      delete reward;
-
-      return true;
+	Uint32 t;
+	std::string type_str;
+	helper->getData(type_str, "type");
+	t = Reward::rewardTypeFromString(type_str);
+	switch (t)
+	  {
+	  case  Reward::GOLD:
+	    d_reward = new Reward_Gold(helper); break;
+	  case  Reward::ALLIES:
+	    d_reward = new Reward_Allies(helper); break;
+	  case Reward::ITEM:
+	    d_reward = new Reward_Item(helper); break;
+	  case Reward::RUIN:
+	    d_reward = new Reward_Ruin(helper); break;
+	  case Reward::MAP:
+	    d_reward = new Reward_Map(helper); break;
+	  }
+	return true;
     }
 
   if (tag == "stack")

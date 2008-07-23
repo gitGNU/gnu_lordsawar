@@ -100,6 +100,9 @@ class Reward
 	 */
         Reward (const Reward& orig);
 
+	//! deep copy a reward into another one
+	static Reward* copy(const Reward* r);
+
 	//! Destructor.
         virtual ~Reward();
 
@@ -128,7 +131,7 @@ class Reward
 	 * @param helper  The opened saved-game file to save the Reward object
 	 *                to.
          */
-        virtual bool save(XML_Helper* helper) const;
+        virtual bool save(XML_Helper* helper)= 0;
 
 	//! Assist in the loading of Rewards of all kinds.
         /**
@@ -177,7 +180,7 @@ class Reward_Gold : public Reward
 	static Uint32 getRandomGoldPieces();
 
 	//! Save the gold reward to the opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool save(XML_Helper* helper);
 
 	//! Return the number of gold pieces associated with this reward.
 	Uint32 getGold() const {return d_gold;}
@@ -220,7 +223,7 @@ class Reward_Allies: public Reward
         ~Reward_Allies();
 
 	//! Save the allies reward to the opened saved-game file.
-        bool save(XML_Helper* helper) const;
+        virtual bool save(XML_Helper* helper);
 
 	//! Return the army prototype of the allies associated with this reward.
 	const Army * getArmy() const {return d_army;}
@@ -328,7 +331,7 @@ class Reward_Item: public Reward
 	/**
 	 * @param helper  The opened saved-game file to save the reward item to.
 	 */
-        bool save(XML_Helper* helper) const;
+        virtual bool save(XML_Helper* helper);
 
 	//! Get the Item object associated with this reward.
 	Item *getItem() const {return d_item;}
@@ -399,7 +402,7 @@ class Reward_Ruin: public Reward
 	 * @param helper  The opened saved-game file to write the ruin reward 
 	 *                to.
 	 */
-        bool save(XML_Helper* helper) const;
+        virtual bool save(XML_Helper* helper);
 
 	//! Return the Ruin object associated with this Reward_Ruin.
 	Ruin* getRuin() const 
@@ -426,7 +429,7 @@ class Reward_Ruin: public Reward
  * The map has a position (from the derived Location class), and as well as a
  * height and a width.
  */
-class Reward_Map: public Reward, public Location
+class Reward_Map: public Reward
 {
     public:
 	//! Default constructor.
@@ -461,11 +464,14 @@ class Reward_Map: public Reward, public Location
 	//! Destructor.
         ~Reward_Map();
 
+
+	bool loadMap(std::string tag, XML_Helper* helper);
+
 	//! Save the reward map to an opened saved-game file.
 	/**
 	 * @param helper  The opened saved-game file to write the ruin map to.
 	 */
-        bool save(XML_Helper* helper) const;
+        virtual bool save(XML_Helper* helper);
 
 	//! Get the height of the revealed portion of the game map.
 	Uint32 getHeight() const {return d_height;}
@@ -487,6 +493,11 @@ class Reward_Map: public Reward, public Location
 	 */
 	static void getRandomMap(int *x, int *y, int *width, int *height);
 
+	Location *getLocation() {return d_loc;};
+
+	void setMapName(std::string name) {d_map_name = name;};
+	std::string getMapName() const {return d_map_name;};
+
     private:
 	//! The height of the revealed portion of the map (in tiles).
 	/**
@@ -501,6 +512,8 @@ class Reward_Map: public Reward, public Location
 	 *       map.
 	 */
 	Uint32 d_width;
+	Location *d_loc;
+	std::string d_map_name;
 };
 
 #endif

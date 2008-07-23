@@ -289,7 +289,7 @@ void RuinDialog::on_reward_list_clicked()
   if (picked_reward)
     {
       on_clear_reward_clicked();
-      reward = new Reward(*picked_reward);
+      reward = Reward::copy(picked_reward);
     }
 
     set_reward_name();
