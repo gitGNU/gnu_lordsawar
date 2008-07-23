@@ -45,15 +45,11 @@ int main(int argc, char* argv[])
   if (argc != 3)
     {
       fprintf (stderr, "Usage: %s saved-game-file turn-file\n", argv[0]);
-      fprintf (stderr, "  or: %s --init saved-game-file\n", argv[0]);
       exit (1);
     }
 
   pbm playbymail;
-  if (strcmp(argv[1], "--init") == 0)
-    playbymail.init(argv[2]);
-  else
-    playbymail.run(argv[1], argv[2]);
+  playbymail.run(argv[1], argv[2]);
 
   return EXIT_SUCCESS;
 }

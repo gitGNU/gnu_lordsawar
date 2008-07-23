@@ -91,6 +91,8 @@ SplashWindow::SplashWindow()
 
     xml->connect_clicked("new_network_game_button",
 			 sigc::mem_fun(*this, &SplashWindow::on_new_network_game_clicked));
+    xml->connect_clicked("new_pbm_game_button",
+			 sigc::mem_fun(*this, &SplashWindow::on_new_pbm_game_clicked));
     Sound::getInstance()->playMusic("intro");
 
     if (Configuration::s_autosave_policy == 1)
@@ -235,6 +237,17 @@ void SplashWindow::on_new_network_game_clicked()
 	}
     }
 
+}
+
+void SplashWindow::on_new_pbm_game_clicked()
+{
+  GamePreferencesDialog gpd;
+    
+  gpd.set_parent_window(*window.get());
+  gpd.set_title(_("New Play By Mail game"));
+  gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_pbm_game_created));
+  gpd.run();
+  gpd.hide();
 }
 
 void SplashWindow::on_load_scenario_clicked()
@@ -453,8 +466,9 @@ SplashWindow::on_sdl_surface_changed()
 void SplashWindow::on_network_game_created(GameParameters g)
 {
   new_hosted_network_game_requested.emit(g, true);
+}
 
-    //filename = File::getSavePath() + "network.sav";
-    //game_scenario->saveGame(filename);
-    //delete game_scenario;
+void SplashWindow::on_pbm_game_created(GameParameters g)
+{
+  new_pbm_game_requested.emit(g);
 }

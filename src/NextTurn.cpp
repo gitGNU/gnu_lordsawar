@@ -29,6 +29,7 @@
 #include "FogMap.h"
 #include "history.h"
 #include "QuestsManager.h"
+#include "ai_fast.h" //remove me
 
 #include "path.h"
 
@@ -91,7 +92,6 @@ void NextTurn::start()
 
 	// let the player do his or her duties...
 	bool continue_loop = plist->getActiveplayer()->startTurn();
-
 	if (!continue_loop)
 	  return;
 	
@@ -117,6 +117,8 @@ void NextTurn::start()
 	    snextRound.emit();
 	  }
 
+	if (!d_start_players)
+	  break;
     }
 }
 

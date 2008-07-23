@@ -3,14 +3,16 @@ Play by mail Lordsawar.
 
 The idea here is that you're the game master, and you're setting up a game for other people to play.
 
-1. make a new game in the normal way
-2. run lordsawar-pbm --init saved-game-file
-3. send the resulting saved-game file to the first player.
-4. have the first player send back a turn file.
-5. run lordsawar-pbm saved-game-file turn-file
-6. repeat step 3, until there's a winner.
+1. make a new play by mail game
+2. send the resulting saved-game file to the first player.
+3. have the player send back a turn file.
+4. run lordsawar-pbm saved-game-file turn-file
+5. repeat step 2, until there's a winner.
 
-defficiencies:
-players have no way of extracting a turn file
-players need to be able to start their turn at the start.
-	e.g. to be able to receive heroes, etc.
+As game master, you can modify the scenario as the game is played.  For example, you can load the game up in the scenario editor and inject new events like a flood, or an earthquake.
+
+*defficiencies:
+does neutral ever get to move?
+	does neutral get turned into a human player?
+
+we currently don't get a prompt for our turn after we load a game

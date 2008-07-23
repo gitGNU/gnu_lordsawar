@@ -49,6 +49,8 @@ class GamePreferencesDialog
     GamePreferencesDialog(std::string filename);
     ~GamePreferencesDialog();
 
+    void set_title(std::string title) {dialog->set_title(title);};
+
     void set_parent_window(Gtk::Window &parent);
 
     sigc::signal<void, GameParameters> game_started;

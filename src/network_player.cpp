@@ -120,6 +120,7 @@ void NetworkPlayer::decodeActions(std::list<Action *> actions)
 
 void NetworkPlayer::decodeAction(const Action *a)
 {
+  d_actions.push_back(Action::copy(a));
   switch(a->getType())
     {
     case Action::STACK_MOVE:
@@ -539,6 +540,7 @@ void NetworkPlayer::decodeActionDiplomacyScore(const Action_DiplomacyScore *acti
 
 void NetworkPlayer::decodeActionEndTurn(const Action_EndTurn *action)
 {
+  printf ("ending turn!!\n");
   ending_turn.emit();
 }
 

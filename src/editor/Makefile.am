@@ -48,7 +48,7 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../herotemplates.o ../game-server.o \
         ../game-client.o ../network-server.o \
 	../network-connection.o ../GameScenarioOptions.o ../network-action.o \
-	../network-history.o
+	../network-history.o ../pbm-game-server.o
 
 if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor lordsawar-army-editor lordsawar-tile-editor

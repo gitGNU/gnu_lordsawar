@@ -19,6 +19,7 @@
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/bind.h>
+#include <errno.h>
 
 #include "driver.h"
 
@@ -45,6 +46,7 @@
 
 #include "../game-client.h"
 #include "../NextTurn.h"
+#include "../pbm/pbm.h"
 
 static GameClient *game_client = 0;
 
@@ -57,6 +59,8 @@ Driver::Driver(std::string load_filename)
 	sigc::mem_fun(*this, &Driver::on_new_hosted_network_game_requested));
     splash_window->new_remote_network_game_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_new_remote_network_game_requested));
+    splash_window->new_pbm_game_requested.connect(
+	sigc::mem_fun(*this, &Driver::on_new_pbm_game_requested));
     splash_window->load_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_load_requested));
     splash_window->quit_requested.connect(
@@ -147,7 +151,7 @@ void Driver::run()
 			Configuration::s_zipfiles);
       NextTurn *nextTurn;
       nextTurn = new NextTurn(game_scenario->getTurnmode(),
-			      game_scenario->s_random_turns);
+			      game_scenario->s_random_turns, false);
       broken = game_client->loadWithHelper (helper, 
 					    Playerlist::getActiveplayer());
       helper.close();
@@ -391,4 +395,53 @@ GameScenario *Driver::load_game(std::string file_path)
 	return NULL;
       }
     return game_scenario;
+}
+
+void Driver::on_new_pbm_game_requested(GameParameters g)
+{
+  std::string filename;
+  std::string temp_filename = File::getSavePath() + "pbmtmp.sav";
+      
+  NewGameProgressWindow pw(g);
+  Gtk::Main::instance()->run(pw);
+  GameScenario *game_scenario = pw.getGameScenario();
+  if (game_scenario == NULL)
+    {
+      TimedMessageDialog dialog(*splash_window->get_window(),
+				_("Corrupted saved game file."), 0);
+      return;
+    }
+  game_scenario->saveGame(temp_filename);
+  delete game_scenario;
+  pbm play_by_mail;
+  play_by_mail.init(temp_filename);
+
+  Gtk::FileChooserDialog chooser(*splash_window->get_window(), _("Save the scenario and mail it to the first player"),
+				 Gtk::FILE_CHOOSER_ACTION_SAVE);
+  Gtk::FileFilter sav_filter;
+  sav_filter.add_pattern("*.sav");
+  chooser.set_filter(sav_filter);
+  chooser.set_current_folder(Glib::get_home_dir());
+
+  chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
+  chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+
+  chooser.show_all();
+  int res = chooser.run();
+  chooser.hide();
+
+  if (res == Gtk::RESPONSE_ACCEPT)
+    {
+      std::string filename = chooser.get_filename();
+
+      remove (filename.c_str());
+      if (rename(temp_filename.c_str(), filename.c_str()))
+	{
+	  char* err = strerror(errno);
+	  std::cerr <<_("Error while trying to rename the temporary file to ")
+	    << filename << "\n";
+	  std::cerr <<_("Error: ") <<err <<std::endl;
+	}
+    }
 }

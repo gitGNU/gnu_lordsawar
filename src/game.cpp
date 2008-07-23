@@ -61,6 +61,7 @@
 #include "FogMap.h"
 #include "GameMap.h"
 #include "history.h"
+#include "pbm-game-server.h"
 
 #include "herotemplates.h"
 
@@ -127,6 +128,7 @@ void Game::addPlayer(Player *p)
     (p->cityfight_finished.connect (sigc::mem_fun(*this, &Game::on_city_fight_finished))); 
 }
 
+PbmGameServer *pbm_game_server = 0;
 #define NETWORK_TESTING 1
 
 #include "game-server.h"
@@ -143,6 +145,8 @@ Game::Game(GameScenario* gameScenario)
     game_server = new GameServer();
     game_server->start();
 #endif
+    pbm_game_server = new PbmGameServer();
+    pbm_game_server->start();
     
     // init the bigmap
     bigmap.reset(new GameBigMap
@@ -958,8 +962,12 @@ void Game::startGame()
 
 void Game::loadGame()
 {
+  //if pbm and human
+  //if pbm and not human, then bail
+
   Player *player = Playerlist::getActiveplayer();
-  if (player->getType() == Player::HUMAN)
+
+  if (player->getType() == Player::HUMAN && d_gameScenario->getPlayMode() == GameScenario::HOTSEAT)
     {
       //human players want access to the controls and an info box
       unlock_inputs();
@@ -969,10 +977,16 @@ void Game::loadGame()
       update_control_panel();
       update_stack_info();
       game_loaded.emit(player);
+      if (player->getType() == Player::HUMAN)
+	d_nextTurn->setContinuingTurn();
+    }
+  else if (player->getType() == Player::HUMAN && 
+	   d_gameScenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
+    {
+      lock_inputs();
+      d_nextTurn->setStartPlayers(false);
     }
 
-  if (player->getType() == Player::HUMAN)
-    d_nextTurn->setContinuingTurn();
   d_nextTurn->start();
 #if 0
   else
@@ -1234,4 +1248,14 @@ bool Game::recruitHero(Hero *hero, City *city, int gold)
   if (d_gameScenario->getRound() == 1)
     city_visited.emit(city);
   return retval;
+}
+    
+bool Game::saveTurnFile(std::string turnfile)
+{
+  bool broken;
+  //trigger the GameServer to spit out a set of networkactions and networkhistory events for the active player, into a file.
+  if (pbm_game_server && 
+      d_gameScenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
+    pbm_game_server->endTurn(turnfile, broken);
+  return true;
 }

@@ -262,6 +262,7 @@ class GameWindow: public sigc::trackable
     void on_game_over(Player *winner);
     void on_player_died(Player *player);
     void on_advice_asked(float percent);
+    void end_turn_play_by_mail ();
 
     // quest manager callbacks
     void on_quest_completed(Quest *quest, Reward *reward);
@@ -276,7 +277,7 @@ class GameWindow: public sigc::trackable
     void update_diplomacy_button (bool sensitive);
 
     bool setup_game(GameScenario *game_scenario);
-    void setup_signals();
+    void setup_signals(GameScenario *game_scenario);
     void stop_game();
     std::list<sigc::connection> connections;
     

@@ -65,8 +65,9 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
-    :d_name(name),d_comment(comment), d_turnmode(turnmode)
+GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
+			   GameScenario::PlayMode playmode)
+    :d_name(name),d_comment(comment), d_turnmode(turnmode), d_playmode(playmode)
 {
     Armysetlist::getInstance();
     Tilesetlist::getInstance();
@@ -79,7 +80,7 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode)
 // savegame is a filename with absolute path!
 
 GameScenario::GameScenario(string savegame, bool& broken)
-  :d_turnmode(true)
+  :d_turnmode(true), d_playmode(GameScenario::HOTSEAT)
 {
   XML_Helper helper(savegame, ios::in, Configuration::s_zipfiles);
   broken = loadWithHelper(helper);
@@ -87,7 +88,7 @@ GameScenario::GameScenario(string savegame, bool& broken)
 }
 
 GameScenario::GameScenario(XML_Helper &helper, bool& broken)
-  : d_turnmode(true)
+  : d_turnmode(true), d_playmode(GameScenario::HOTSEAT)
 {
   broken = loadWithHelper(helper);
 }
@@ -328,7 +329,7 @@ bool GameScenario::saveGame(string filename, string extension) const
     }
   else 
     {
-      debug(_("The Filename lacks the extension --> ") << strtoken->getLastToken())
+      debug(_("The Filename lacks the extension --> ") << extension)
 	goodfilename += "." + extension;
     }
 
@@ -391,6 +392,8 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   retval &= helper.saveData("random_turns", s_random_turns);
   retval &= helper.saveData("surrender_already_offered", 
 			    s_surrender_already_offered);
+  std::string playmode_str = playModeToString(GameScenario::PlayMode(d_playmode));
+  retval &= helper.saveData("playmode", playmode_str);
 
   retval &= helper.closeTag();
 
@@ -433,6 +436,9 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       helper->getData(s_random_turns, "random_turns");
       helper->getData(s_surrender_already_offered, 
 		      "surrender_already_offered");
+      std::string playmode_str;
+      helper->getData(playmode_str, "playmode");
+      d_playmode = GameScenario::playModeFromString(playmode_str);
 
       return true;
     }
@@ -567,4 +573,34 @@ void GameScenario::nextRound()
       std::cerr <<_("Error while trying to rename the temporary file to autosave.sav\n");
       std::cerr <<_("Error: ") <<err <<std::endl;
     }
+}
+
+std::string GameScenario::playModeToString(const GameScenario::PlayMode mode)
+{
+  switch (mode)
+    {
+      case GameScenario::HOTSEAT:
+	return "GameScenario::HOTSEAT";
+	break;
+      case GameScenario::NETWORKED:
+	return "GameScenario::NETWORKED";
+	break;
+      case GameScenario::PLAY_BY_MAIL:
+	return "GameScenario::PLAY_BY_MAIL";
+	break;
+    }
+  return "GameScenario::HOTSEAT";
+}
+
+GameScenario::PlayMode GameScenario::playModeFromString(const std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return GameScenario::PlayMode(atoi(str.c_str()));
+  if (str == "GameScenario::HOTSEAT")
+    return GameScenario::HOTSEAT;
+  else if (str == "GameScenario::NETWORKED")
+    return GameScenario::NETWORKED;
+  else if (str == "GameScenario::PLAY_BY_MAIL")
+    return GameScenario::PLAY_BY_MAIL;
+  return GameScenario::HOTSEAT;
 }

@@ -267,7 +267,6 @@ void GamePreferencesDialog::hide()
 
 bool GamePreferencesDialog::run()
 {
-  Shieldsetlist::getInstance()->instantiatePixmaps();
     dialog->show_all();
   update_shields();
     int response = dialog->run();
@@ -453,6 +452,7 @@ void GamePreferencesDialog::update_shields()
 {
   if (dialog->is_realized() == false)
     return;
+  Shieldsetlist::getInstance()->instantiatePixmaps();
   //get rid of the old shields
   player_shields.clear();
 

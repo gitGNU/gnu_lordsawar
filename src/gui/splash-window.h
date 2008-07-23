@@ -52,6 +52,7 @@ class SplashWindow: public sigc::trackable
     sigc::signal<void> sdl_initialized;
     sigc::signal<void, std::string, bool> new_remote_network_game_requested;
     sigc::signal<void, GameParameters, bool> new_hosted_network_game_requested;
+    sigc::signal<void, GameParameters> new_pbm_game_requested;
     sigc::signal<void, GameParameters> new_game_requested;
     sigc::signal<void, std::string> load_requested;
     sigc::signal<void> quit_requested;
@@ -68,6 +69,7 @@ class SplashWindow: public sigc::trackable
     void on_new_campaign_clicked();
     void on_new_game_clicked();
     void on_new_network_game_clicked();
+    void on_new_pbm_game_clicked();
     void on_load_game_clicked();
     void on_load_scenario_clicked();
     void on_preferences_clicked();
@@ -76,6 +78,7 @@ class SplashWindow: public sigc::trackable
 	
     void on_game_started(GameParameters g);
     void on_network_game_created(GameParameters g);
+    void on_pbm_game_created(GameParameters g);
     void on_network_game_selected(std::string ip, unsigned short port);
 
 #if 0

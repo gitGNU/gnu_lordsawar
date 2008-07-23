@@ -73,16 +73,16 @@ class AI_Fast : public RealPlayer
         bool save(XML_Helper* helper) const;
 
         //! Sets whether the ai joins close armies to make them stronger
-        void setJoin(bool join) {d_join = join;}
+        void setJoin(bool join) {d_join = join;};
 
         //! Returns the current behaviour regarding joining armies
-        bool getJoin() const {return d_join;}
+        bool getJoin() const {return d_join;};
 
         //! Set maniac/normal mode
-        void setManiac(bool maniac) {d_maniac = maniac;}
+        void setManiac(bool maniac) {d_maniac = maniac;};
 
         //! Returns the current behaviour
-        bool getManiac() const {return d_maniac;}
+        bool getManiac() const {return d_maniac;};
 
         
         virtual bool startTurn();

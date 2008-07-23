@@ -89,6 +89,7 @@ class Game
     void stopGame(); // stop game flow, clean up
     // save current game, returns true if successful
     bool saveGame(std::string file);
+    bool saveTurnFile(std::string file);
 
     static GameScenario *getScenario();
     GameBigMap &get_bigmap();

@@ -524,11 +524,11 @@ bool AI_Fast::computerTurn()
 	    int mp = s->getPath()->calculate(s, pos);
 	    if (mp > 0)
 	      {
-	      printf ("stack %d at %d,%d moving %d with %d moves\n",
-		      s->getId(), s->getPos().x, s->getPos().y,
-		      mp, s->getGroupMoves());
+	      //printf ("stack %d at %d,%d moving %d with %d moves\n",
+		      //s->getId(), s->getPos().x, s->getPos().y,
+		      //mp, s->getGroupMoves());
 		bool moved = stackMove(s);
-		printf("result of move: %d\n", moved);
+		//printf("result of move: %d\n", moved);
 	      stack_moved |= moved;
 	      s = d_stacklist->getActivestack();
 	      }

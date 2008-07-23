@@ -1,4 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
+// Copyright (C) 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,13 +30,13 @@
 #include "player.h"
 #include "network-action.h"
 #include "network-history.h"
+#include "Configuration.h"
 
 
 class NetworkAction;
 
 struct Participant
 {
-  std::string email; //for play by mail
   void *conn;
   Player *player;
   std::list<NetworkAction *> actions;
@@ -43,8 +44,7 @@ struct Participant
 };
 
 
-GameServer::GameServer(GameServer::Type type)
-	: d_type(type)
+GameServer::GameServer()
 {
 }
 
@@ -57,17 +57,14 @@ GameServer::~GameServer()
 
 void GameServer::start()
 {
-  if (d_type == REALTIME)
-    {
-      network_server.reset(new NetworkServer());
-      network_server->got_message.connect
-	(sigc::mem_fun(this, &GameServer::onGotMessage));
-      network_server->connection_lost.connect
-	(sigc::mem_fun(this, &GameServer::onConnectionLost));
+  network_server.reset(new NetworkServer());
+  network_server->got_message.connect
+    (sigc::mem_fun(this, &GameServer::onGotMessage));
+  network_server->connection_lost.connect
+    (sigc::mem_fun(this, &GameServer::onConnectionLost));
 
-      int port = 12345;
-      network_server->startListening(port);
-    }
+  int port = LORDSAWAR_PORT;
+  network_server->startListening(port);
 
   listenForActions();
   listenForHistories();
@@ -167,23 +164,10 @@ void GameServer::onActionDone(NetworkAction *action)
        end = participants.end(); i != end; ++i) 
     {
       (*i)->actions.push_back(action);
-      if (d_type == REALTIME)
-	{
-	  sendActions(*i);
-	  clearNetworkActionlist((*i)->actions);
-	}
+      sendActions(*i);
+      clearNetworkActionlist((*i)->actions);
     }
 
-  if (d_type == PLAY_BY_MAIL && 
-      action->getAction()->getType() == Action::END_TURN)
-    {
-      for (std::list<Participant *>::iterator i = participants.begin(),
-	   end = participants.end(); i != end; ++i) 
-	{
-	  sendActions(*i);
-	  clearNetworkActionlist((*i)->actions);
-	}
-    }
 }
 
 void GameServer::onHistoryDone(NetworkHistory *history)
@@ -195,22 +179,8 @@ void GameServer::onHistoryDone(NetworkHistory *history)
        end = participants.end(); i != end; ++i) 
     {
       (*i)->histories.push_back(history);
-      if (d_type == REALTIME)
-	{
-	  sendHistories(*i);
-	  clearNetworkHistorylist((*i)->histories);
-	}
-    }
-
-  if (d_type == PLAY_BY_MAIL && 
-      history->getHistory()->getType() == History::END_TURN)
-    {
-      for (std::list<Participant *>::iterator i = participants.begin(),
-	   end = participants.end(); i != end; ++i) 
-	{
-	  sendHistories(*i);
-	  clearNetworkHistorylist((*i)->histories);
-	}
+      sendHistories(*i);
+      clearNetworkHistorylist((*i)->histories);
     }
 }
 
@@ -300,5 +270,43 @@ void GameServer::sendHistories(Participant *part)
   network_server->send(part->conn, MESSAGE_TYPE_SENDING_HISTORY, os.str());
 }
 
+bool GameServer::dumpActionsAndHistories(XML_Helper *helper, Player *player)
+{
+  Participant *part = NULL;
+  for (std::list<Participant *>::iterator i = participants.begin(),
+         end = participants.end(); i != end; ++i)
+    {
+      if (player == (*i)->player)
+	{
+	  part = *i;
+	  break;
+	}
+    }
+  if (part == NULL)
+    return false;
+  for (std::list<NetworkHistory *>::iterator i = part->histories.begin(),
+       end = part->histories.end(); i != end; ++i)
+    (**i).save(helper);
+  for (std::list<NetworkAction *>::iterator i = part->actions.begin(),
+       end = part->actions.end(); i != end; ++i)
+    (**i).save(helper);
+  return true;
+}
+bool GameServer::dumpActionsAndHistories(XML_Helper *helper)
+{
+  Player *player = Playerlist::getActiveplayer();
+  return dumpActionsAndHistories(helper, player);
+}
 
+  
+bool GameServer::endPlayByMailTurn(std::string turnfile, bool &broken)
+{
+  bool retval = true;
+  XML_Helper helper(turnfile, std::ios::out, Configuration::s_zipfiles);
+  retval &= helper.openTag("lordsawarturn");
+  broken = dumpActionsAndHistories(&helper);
+  helper.closeTag();
+  helper.close();
+  return retval;
+}
 // End of file

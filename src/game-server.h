@@ -1,4 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
+// Copyright (C) 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,23 +31,21 @@ class NetworkServer;
 class Participant;
 class NetworkAction;
 class NetworkHistory;
+class Player;
+class XML_Helper;
 
 class GameServer: public sigc::trackable
 {
 public:
         
-    enum Type 
-      {
-	REALTIME,
-	PLAY_BY_MAIL,
-      };
-  GameServer(Type type = REALTIME);
+  GameServer();
   ~GameServer();
 
   void start();
+
+  bool endPlayByMailTurn(std::string turnfile, bool &broken);
   
 private:
-  Type d_type;
   void listenForActions();
   void listenForHistories();
   void onActionDone(NetworkAction *action);
@@ -64,12 +63,16 @@ private:
 
   std::list<Participant *> participants;
 
+  Participant * play_by_mail_participant;
+
   Participant *findParticipantByConn(void *conn);
   
   void onGotMessage(void *conn, MessageType type, std::string message);
   void onConnectionLost(void *conn);
   void clearNetworkActionlist(std::list<NetworkAction*> actions);
   void clearNetworkHistorylist(std::list<NetworkHistory*> histories);
+  bool dumpActionsAndHistories(XML_Helper *helper);
+  bool dumpActionsAndHistories(XML_Helper *helper, Player *player);
 };
 
 #endif

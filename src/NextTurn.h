@@ -77,7 +77,9 @@ class NextTurn: public sigc::trackable
          */
         void endTurn();
 
-        void setContinuingTurn() { continuing_turn = true; }
+        void setContinuingTurn() { continuing_turn = true; };
+
+	void setStartPlayers(bool start) { d_start_players = start;};
         
         /**
            \brief signals for announcing events

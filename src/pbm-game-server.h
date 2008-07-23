@@ -15,26 +15,41 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef PBM_H
-#define PBM_H
+#ifndef PBM_GAME_SERVER_H
+#define PBM_GAME_SERVER_H
 
-#include <string>
+#include "config.h"
 
-class GameScenario;
-class pbm
+#include <memory>
+#include <list>
+#include <sigc++/trackable.h>
+
+class NetworkAction;
+class NetworkHistory;
+class XML_Helper;
+
+class PbmGameServer: public sigc::trackable
 {
-    public:
-        pbm();
-	~pbm();
-	void init(std::string save_game_file);
-	void run(std::string save_game_file, std::string turn_file);
+public:
+        
+  PbmGameServer();
+  ~PbmGameServer();
 
-    private:
+  void start();
 
-	void humanize_active_player();
-	void turn_all_players_to_networked();
-	void playUnitFirstNetworkedPlayer(GameScenario *game_scenario);
+  bool endTurn(std::string turnfile, bool &broken);
+  
+private:
+  std::list<NetworkAction*> d_actions;
+  std::list<NetworkHistory*> d_histories;
+  void listenForActions();
+  void listenForHistories();
+  void onActionDone(NetworkAction *action);
+  void onHistoryDone(NetworkHistory *history);
+
+  void clearNetworkActionlist();
+  void clearNetworkHistorylist();
+  bool dumpActionsAndHistories(XML_Helper *helper);
 };
 
-#endif // PBM_H
-
+#endif

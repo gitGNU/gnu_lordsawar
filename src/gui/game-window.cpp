@@ -382,7 +382,7 @@ void GameWindow::new_game(GameScenario *game_scenario)
     bool success = setup_game(game_scenario);
     if (!success)
       return;
-    setup_signals();
+    setup_signals(game_scenario);
     game->startGame();
     //FIXME: we don't get here until the game ends.
     //is that right?
@@ -393,7 +393,7 @@ void GameWindow::load_game(GameScenario *game_scenario)
     bool success = setup_game(game_scenario);
     if (!success)
       return;
-    setup_signals();
+    setup_signals(game_scenario);
     game->loadGame();
     //FIXME: we don't get here until the game ends.
     //is that right?
@@ -419,7 +419,7 @@ void GameWindow::setup_menuitem(Gtk::MenuItem *item,
     (game_signal.connect(sigc::mem_fun(item, &Gtk::Widget::set_sensitive)));
 }
 
-void GameWindow::setup_signals()
+void GameWindow::setup_signals(GameScenario *game_scenario)
 {
   // get rid of the connections that might be still around from last time
   std::list<sigc::connection>::iterator it = connections.begin();
@@ -464,6 +464,13 @@ void GameWindow::setup_signals()
   setup_button(move_all_button,
 	       sigc::mem_fun(game.get(), &Game::move_all_stacks),
 	       game->can_move_all_stacks);
+  setup_button(end_turn_button,
+	       sigc::mem_fun(game.get(), &Game::end_turn),
+	       game->can_end_turn);
+  if (game_scenario->getPlayMode() ==  GameScenario::PLAY_BY_MAIL)
+    setup_button(end_turn_button,
+		 sigc::mem_fun(*this, &GameWindow::end_turn_play_by_mail),
+		 game->can_end_turn);
   setup_button(nw_keypad_button,
 	       sigc::mem_fun(game.get(), &Game::move_selected_stack_northwest),
 	       game->can_move_selected_stack);
@@ -491,12 +498,13 @@ void GameWindow::setup_signals()
   setup_menuitem(move_all_menuitem,
 		 sigc::mem_fun(game.get(), &Game::move_all_stacks),
 		 game->can_move_all_stacks);
-  setup_button(end_turn_button,
-	       sigc::mem_fun(game.get(), &Game::end_turn),
-	       game->can_end_turn);
   setup_menuitem(end_turn_menuitem,
 		 sigc::mem_fun(game.get(), &Game::end_turn),
 		 game->can_end_turn);
+  if (game_scenario->getPlayMode() ==  GameScenario::PLAY_BY_MAIL)
+    setup_menuitem(end_turn_menuitem,
+		   sigc::mem_fun(*this, &GameWindow::end_turn_play_by_mail),
+		   game->can_end_turn);
   setup_menuitem(disband_menuitem,
 		 sigc::mem_fun(*this, &GameWindow::on_disband_activated),
 		 game->can_disband_stack);
@@ -670,6 +678,33 @@ void GameWindow::change_diplomacy_button_image (bool proposals_present)
     diplomacy_button->property_image() = new Gtk::Image(d_button_images[8]);
   else
     diplomacy_button->property_image() = new Gtk::Image(d_button_images[0]);
+}
+
+void GameWindow::end_turn_play_by_mail ()
+{
+  //prompt to save the turn file!
+  Gtk::FileChooserDialog chooser(*window.get(), _("Save your Turn file and mail it back"),
+				 Gtk::FILE_CHOOSER_ACTION_SAVE);
+  Gtk::FileFilter trn_filter;
+  trn_filter.add_pattern("*.trn");
+  chooser.set_filter(trn_filter);
+  chooser.set_current_folder(Glib::get_home_dir());
+
+  chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
+  chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+
+  chooser.show_all();
+  int res = chooser.run();
+  chooser.hide();
+
+  if (res == Gtk::RESPONSE_ACCEPT)
+    {
+      std::string filename = chooser.get_filename();
+
+      game->saveTurnFile(filename);
+    }
+  game_ended.emit();
 }
 
 void GameWindow::update_diplomacy_button (bool sensitive)

@@ -565,7 +565,6 @@ Player* Player::loadPlayer(XML_Helper* helper)
         case HUMAN:
             return new RealPlayer(helper);
         case AI_FAST:
-	    printf ("making new ai_fast!!\n");
             return new AI_Fast(helper);
         case AI_SMART:
             return new AI_Smart(helper);

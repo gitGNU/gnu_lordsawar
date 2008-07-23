@@ -27,6 +27,7 @@
 #include <sigc++/trackable.h>
 #include "game-parameters.h"
 #include "GameScenarioOptions.h"
+#include "xmlhelper.h"
 
 class XML_Helper;
 
@@ -47,13 +48,24 @@ class GameScenario: public GameScenarioOptions
     public:
 
 
+        enum PlayMode 
+	  {
+	    HOTSEAT = 0, 
+	    NETWORKED = 1,
+	    PLAY_BY_MAIL = 2
+	  };
+
+	static std::string playModeToString(const GameScenario::PlayMode mode);
+	static GameScenario::PlayMode playModeFromString(const std::string str);
+
         /** Initializes an "empty" scenario
           * 
           * @param name     the name of the scenario
           * @param comment  the comment for the scenario
           * @param turnmode the turnmode (see NextTurn for description)
           */
-        GameScenario(std::string name, std::string comment, bool turnmode);
+        GameScenario(std::string name, std::string comment, bool turnmode,
+		     GameScenario::PlayMode playmode = GameScenario::HOTSEAT);
         
         /** Load the game scenario using a specified save game
           * 
@@ -102,6 +114,8 @@ class GameScenario: public GameScenarioOptions
 	bool setupCities(bool quick_start);
 	void setupDiplomacy(bool diplomacy);
         
+	Uint32 getPlayMode() const {return d_playmode;};
+	void setPlayMode(GameScenario::PlayMode mode) {d_playmode = mode;};
     private:
         /** Callback function for loading a game. See XML_Helper for details.
           *
@@ -116,6 +130,7 @@ class GameScenario: public GameScenarioOptions
         std::string d_name;
         std::string d_comment;
         bool d_turnmode; //see NextTurn for a description of this option
+	Uint32 d_playmode;
 };
 
 #endif // GAME_SCENARIO_H
