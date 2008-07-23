@@ -426,7 +426,7 @@ bool XML_Helper::unregisterTag(std::string tag)
 
 bool XML_Helper::getData(std::string& data, std::string name)
 {
-    //the data tags are stored with leadin "d_", so prepend it here
+    //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
 
     std::map<std::string, std::string>::const_iterator it;
@@ -448,7 +448,7 @@ bool XML_Helper::getData(std::string& data, std::string name)
 
 bool XML_Helper::getData(bool& data, std::string name)
 {
-    //the data tags are stored with leadin "d_", so prepend it here
+    //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
 
     std::map<std::string, std::string>::const_iterator it;
@@ -478,7 +478,7 @@ bool XML_Helper::getData(bool& data, std::string name)
 
 bool XML_Helper::getData(int& data, std::string name)
 {
-    //the data tags are stored with leadin "d_", so prepend it here
+    //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
 
     std::map<std::string, std::string>::const_iterator it;
@@ -497,7 +497,7 @@ bool XML_Helper::getData(int& data, std::string name)
 
 bool XML_Helper::getData(Uint32& data, std::string name)
 {
-    //the data tags are stored with leadin "d_", so prepend it here
+    //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
 
     std::map<std::string, std::string>::const_iterator it;
@@ -518,7 +518,7 @@ bool XML_Helper::getData(Uint32& data, std::string name)
 
 bool XML_Helper::getData(double& data, std::string name)
 {
-    //the data tags are stored with leadin "d_", so prepend it here
+    //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
 
     std::map<std::string, std::string>::const_iterator it;
