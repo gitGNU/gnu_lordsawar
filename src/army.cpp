@@ -658,7 +658,8 @@ std::string Army::getArmyBonusDescription() const
 
 bool Army::blessedAtTemple(Uint32 temple_id)
 {
-  if (find (d_visitedTemples.begin(), d_visitedTemples.end(), temple_id) ==
+  unsigned int id = temple_id;
+  if (find (d_visitedTemples.begin(), d_visitedTemples.end(), id) ==
       d_visitedTemples.end())
     return false;
       
