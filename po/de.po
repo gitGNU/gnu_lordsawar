@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-07-22 20:41-0400\n"
+"POT-Creation-Date: 2008-07-25 12:19-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -2456,35 +2456,35 @@ msgstr ""
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
 
-#: src/game.cpp:590
+#: src/game.cpp:604
 #, fuzzy
 msgid "%1 (capital city)"
 msgstr "%i Vitalität"
 
-#: src/game.cpp:596
+#: src/game.cpp:610
 msgid "Under rule of %1"
 msgstr ""
 
-#: src/game.cpp:599 src/gui/city-window.cpp:167
+#: src/game.cpp:613 src/gui/city-window.cpp:167
 #, fuzzy
 msgid "Income: %1"
 msgstr "Artefakt:"
 
-#: src/game.cpp:601
+#: src/game.cpp:615
 #, fuzzy
 msgid "Defense: %1"
 msgstr "Verteidigung: %i"
 
-#: src/game.cpp:605
+#: src/game.cpp:619
 #, fuzzy
 msgid "Status: razed!"
 msgstr "Status:"
 
-#: src/game.cpp:635
+#: src/game.cpp:649
 msgid "Explored"
 msgstr ""
 
-#: src/game.cpp:638
+#: src/game.cpp:652
 msgid "Unexplored"
 msgstr ""
 
@@ -2673,40 +2673,40 @@ msgstr "Fertig mit Kartenerzeugung ... 100%"
 msgid "You have killed %i so far."
 msgstr "Du hast bereits %i getötet."
 
-#: src/player.cpp:1300
+#: src/player.cpp:1302
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr "Fehler: Armee und zu durchsuchende Ruine nicht am selben Platz\n"
 
-#: src/player.cpp:1389
+#: src/player.cpp:1391
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Armee versuchte Tempel an der falschen Position zu besuchen\n"
 
-#: src/player.cpp:2314
+#: src/player.cpp:2316
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Standardeinheiten"
 
-#: src/reward.cpp:405
+#: src/reward.cpp:425
 msgid "%1 Gold Piece"
 msgid_plural "%1 Gold Pieces"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/reward.cpp:413
+#: src/reward.cpp:433
 msgid "Allies: %1 x %2"
 msgstr ""
 
-#: src/reward.cpp:421
+#: src/reward.cpp:441
 #, fuzzy
 msgid "Item: %1"
 msgstr "Artefakt:"
 
-#: src/reward.cpp:428
+#: src/reward.cpp:448
 #, fuzzy
 msgid "Site: %1"
 msgstr "Größe:"
 
-#: src/reward.cpp:434
+#: src/reward.cpp:454
 msgid "Map: %1,%2 %3x%4"
 msgstr ""
 
