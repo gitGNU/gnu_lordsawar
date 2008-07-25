@@ -2958,16 +2958,16 @@ void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
     }
 }
 
-void Player::doCityProducesArmy(City *city)
+const Army * Player::doCityProducesArmy(City *city)
 {
-  city->armyArrives();
+  return city->armyArrives();
 }
 
 bool Player::cityProducesArmy(City *city)
 {
   Action_Produce *item = new Action_Produce();
-  doCityProducesArmy(city);
-  const Army *army = city->getProductionBase(city->getActiveProductionSlot());
+  const Army *army = doCityProducesArmy(city);
+  //const Army *army = city->getProductionBase(city->getActiveProductionSlot());
   if (city->getVectoring() == Vector<int>(-1, -1))
     item->fillData(army, city, false);
   else

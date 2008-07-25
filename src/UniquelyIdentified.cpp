@@ -43,6 +43,7 @@ UniquelyIdentified::~UniquelyIdentified()
 
 void UniquelyIdentified::syncNewId()
 {
-  fl_counter->syncToId(d_id);
+  //we sync to the one after, so we don't reuse the same id
+  fl_counter->syncToId(d_id + 1);
 }
 

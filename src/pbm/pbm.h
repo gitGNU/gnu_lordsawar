@@ -33,7 +33,7 @@ class pbm
 
 	void humanize_active_player();
 	void turn_all_players_to_networked();
-	void playUnitFirstNetworkedPlayer(GameScenario *game_scenario);
+	void playUntilFirstNetworkedPlayer(GameScenario *game_scenario);
 };
 
 #endif // PBM_H

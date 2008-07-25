@@ -36,7 +36,7 @@ void pbm::humanize_active_player()
     pl->getActiveplayer()->setType(Player::HUMAN);
 }
 
-void pbm::playUnitFirstNetworkedPlayer(GameScenario *game_scenario)
+void pbm::playUntilFirstNetworkedPlayer(GameScenario *game_scenario)
 {
   //are we an ai player?
   while (Playerlist::getActiveplayer()->getType() == Player::AI_FAST ||
@@ -46,6 +46,7 @@ void pbm::playUnitFirstNetworkedPlayer(GameScenario *game_scenario)
       NextTurnPbm *nextTurn;
       nextTurn = new NextTurnPbm(game_scenario->getTurnmode(),
 				 game_scenario->s_random_turns);
+      printf ("telling %s to start their turn\n", Playerlist::getActiveplayer()->getName().c_str());
       nextTurn->start();
       delete nextTurn;
     }
@@ -59,7 +60,7 @@ void pbm::init(std::string save_game_file)
     return;
   game_scenario->setPlayMode(GameScenario::PLAY_BY_MAIL);
   turn_all_players_to_networked();
-  playUnitFirstNetworkedPlayer(game_scenario);
+  playUntilFirstNetworkedPlayer(game_scenario);
   humanize_active_player();
   broken = game_scenario->saveGame(save_game_file);
 }
@@ -92,7 +93,7 @@ void pbm::run(std::string save_game_file, std::string turn_file)
       //return;
     //}
   turn_all_players_to_networked();
-  playUnitFirstNetworkedPlayer(game_scenario);
+  playUntilFirstNetworkedPlayer(game_scenario);
   humanize_active_player();
   printf ("active player is now %s\n", Playerlist::getActiveplayer()->getName().c_str());
   if (!broken)

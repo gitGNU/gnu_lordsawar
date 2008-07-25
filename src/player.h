@@ -1408,7 +1408,7 @@ class Player: public sigc::trackable
         void doConquerCity(City *city, Stack *stack);
         void doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const Army *ally);
         void doRename(std::string name);
-	void doCityProducesArmy(City *city);
+	const Army *doCityProducesArmy(City *city);
 	void doVectoredUnitArrives(VectoredUnit *unit);
 
 	void AI_maybeBuyScout();
