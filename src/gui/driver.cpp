@@ -45,7 +45,7 @@
 #include "game-preferences-dialog.h"
 
 #include "../game-client.h"
-#include "../NextTurn.h"
+#include "../NextTurnPbm.h"
 #include "../pbm/pbm.h"
 
 static GameClient *game_client = 0;
@@ -149,9 +149,9 @@ void Driver::run()
       //load the file, and decode them as we go.
       XML_Helper helper(Main::instance().turn_filename, std::ios::in, 
 			Configuration::s_zipfiles);
-      NextTurn *nextTurn;
-      nextTurn = new NextTurn(game_scenario->getTurnmode(),
-			      game_scenario->s_random_turns, false);
+      NextTurnPbm *nextTurn;
+      nextTurn = new NextTurnPbm(game_scenario->getTurnmode(),
+			      game_scenario->s_random_turns);
       broken = game_client->loadWithHelper (helper, 
 					    Playerlist::getActiveplayer());
       helper.close();

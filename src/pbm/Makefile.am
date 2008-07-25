@@ -44,6 +44,7 @@ DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist
 	../Ownable.o ../Movable.o ../Immovable.o ../Positioned.o \
 	../Named.o ../Namable.o ../Renamable.o ../NamedLocation.o \
 	../network_player.o ../game.o ../NextTurn.o ../gamebigmap.o \
+	../NextTurnPbm.o  ../NextTurnHotseat.o ../NextTurnNetworked.o \
 	../herotemplates.o ../game-server.o \
         ../game-client.o ../network-server.o \
 	../network-connection.o ../GameScenarioOptions.o ../network-action.o \

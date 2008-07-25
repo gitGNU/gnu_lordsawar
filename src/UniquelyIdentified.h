@@ -42,6 +42,8 @@ class UniquelyIdentified
 
     //! Returns the id of the object.
     Uint32 getId() const {return d_id;}
+
+    void syncNewId();
         
  protected:
     Uint32 d_id;

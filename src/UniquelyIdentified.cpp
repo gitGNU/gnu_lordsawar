@@ -41,3 +41,8 @@ UniquelyIdentified::~UniquelyIdentified()
 {
 }
 
+void UniquelyIdentified::syncNewId()
+{
+  fl_counter->syncToId(d_id);
+}
+

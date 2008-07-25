@@ -44,7 +44,11 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
         QEnemyArmytype.cpp QEnemyArmytype.h QPillageGold.cpp QPillageGold.h \
         File.cpp File.h main.cpp \
 	xmlhelper.cpp xmlhelper.h string_tokenizer.cpp string_tokenizer.h \
-        NextTurn.cpp NextTurn.h FogMap.cpp FogMap.h \
+        NextTurn.cpp NextTurn.h \
+	NextTurnPbm.cpp NextTurnPbm.h \
+	NextTurnHotseat.cpp NextTurnHotseat.h \
+	NextTurnNetworked.cpp NextTurnNetworked.h \
+	FogMap.cpp FogMap.h \
 	counter.cpp counter.h fight.cpp fight.h \
         CreateScenario.cpp CreateScenario.h \
         MapGenerator.cpp MapGenerator.h Configuration.cpp Configuration.h \

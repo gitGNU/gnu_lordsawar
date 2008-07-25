@@ -113,4 +113,5 @@ bool PbmGameServer::endTurn(std::string turnfile, bool &broken)
   helper.close();
   return retval;
 }
+
 // End of file

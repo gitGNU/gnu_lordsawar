@@ -851,3 +851,8 @@ Army::Bonus Army::bonusFlagFromString(const std::string str)
     return Army::SUBALLHEROBONUS;
   return Army::ADD1STRINOPEN;
 }
+	
+void Army::syncNewId()
+{
+  fl_counter->syncToId(d_id);
+}

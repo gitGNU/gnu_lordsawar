@@ -27,6 +27,7 @@
 class NetworkAction;
 class NetworkHistory;
 class XML_Helper;
+class Player;
 
 class PbmGameServer: public sigc::trackable
 {

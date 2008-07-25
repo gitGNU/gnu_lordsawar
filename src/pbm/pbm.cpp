@@ -4,7 +4,7 @@
 #include "../game-client.h"
 #include "../playerlist.h"
 #include "../xmlhelper.h"
-#include "../NextTurn.h"
+#include "../NextTurnPbm.h"
 #include "../Configuration.h"
 
 pbm::pbm()
@@ -43,10 +43,9 @@ void pbm::playUnitFirstNetworkedPlayer(GameScenario *game_scenario)
 	 Playerlist::getActiveplayer()->getType() == Player::AI_SMART ||
 	 Playerlist::getActiveplayer()->getType() == Player::AI_DUMMY)
     {
-      NextTurn *nextTurn;
-      nextTurn = new NextTurn(game_scenario->getTurnmode(),
-			      game_scenario->s_random_turns, false);
-      nextTurn->setStartPlayers(false);
+      NextTurnPbm *nextTurn;
+      nextTurn = new NextTurnPbm(game_scenario->getTurnmode(),
+				 game_scenario->s_random_turns);
       nextTurn->start();
       delete nextTurn;
     }
@@ -77,9 +76,9 @@ void pbm::run(std::string save_game_file, std::string turn_file)
   //load the file, and decode them as we go.
   XML_Helper helper(turn_file, std::ios::in, 
 		    Configuration::s_zipfiles);
-  NextTurn *nextTurn;
-  nextTurn = new NextTurn(game_scenario->getTurnmode(),
-			  game_scenario->s_random_turns, false);
+  NextTurnPbm *nextTurn;
+  nextTurn = new NextTurnPbm(game_scenario->getTurnmode(),
+			     game_scenario->s_random_turns);
   Player *player = Playerlist::getActiveplayer();
   broken = game_client->loadWithHelper (helper,  player);
   helper.close();

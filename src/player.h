@@ -1294,6 +1294,8 @@ class Player: public sigc::trackable
 	//! is it safe to vector from the given city?
 	static bool safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders);
 	void addHistory(History *history);
+	bool hasAlreadyInitializedTurn() const;
+	void loadPbmGame();
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,
@@ -1459,6 +1461,7 @@ class Player: public sigc::trackable
 
 	void pruneActionlist();
 	static void pruneActionlist(std::list<Action*> actions);
+	std::list<History*> getHistoryForThisTurn() const;
 	    
     private:
         //! Loads the subdata of a player (actions and stacklist)

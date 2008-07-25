@@ -286,6 +286,8 @@ void Player::initTurn()
   clearActionlist();
   History_StartTurn* item = new History_StartTurn();
   addHistory(item);
+  Action_InitTurn* action = new Action_InitTurn();
+  addAction(action);
 }
 
 void Player::setColor(SDL_Color c)
@@ -2982,7 +2984,7 @@ void Player::doVectoredUnitArrives(VectoredUnit *unit)
 bool Player::vectoredUnitArrives(VectoredUnit *unit)
 {
   Action_ProduceVectored *item = new Action_ProduceVectored();
-  item->fillData(unit->getArmy()->getType(), unit->getDestination());
+  item->fillData(unit->getArmy(), unit->getDestination());
   addAction(item);
   doVectoredUnitArrives(unit);
   return true;
@@ -3100,4 +3102,42 @@ Player::Type Player::playerTypeFromString(const std::string str)
   return Player::HUMAN;
 }
 
+bool Player::hasAlreadyInitializedTurn() const
+{
+    for (list<Action*>::const_iterator it = d_actions.begin();
+        it != d_actions.end(); it++)
+      if ((*it)->getType() == Action::INIT_TURN)
+	return true;
+    return false;
+}
+
+std::list<History*> Player::getHistoryForThisTurn() const
+{
+  std::list<History*> history;
+  for (list<History*>::const_reverse_iterator it = d_history.rbegin();
+       it != d_history.rend(); it++)
+    {
+      history.push_front(*it);
+      if ((*it)->getType() == History::START_TURN)
+	break;
+    }
+  return history;
+}
+
+void Player::loadPbmGame() 
+{
+  for (list<Action*>::const_iterator it = d_actions.begin();
+       it != d_actions.end(); it++)
+    {
+      NetworkAction *copy = new NetworkAction(*it, this);
+      acting.emit(copy);
+    }
+  std::list<History*> history = getHistoryForThisTurn();
+  for (list<History*>::const_iterator it = history.begin();
+       it != history.end(); it++)
+    {
+      NetworkHistory *copy = new NetworkHistory(*it, this);
+      history_written.emit(copy);
+    }
+}
 // End of file

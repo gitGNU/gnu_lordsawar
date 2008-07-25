@@ -15,4 +15,17 @@ As game master, you can modify the scenario as the game is played.  For example,
 does neutral ever get to move?
 	does neutral get turned into a human player?
 
-we currently don't get a prompt for our turn after we load a game
+stack splits don't work
+the split action refers to units by id that aren't there
+even if i refer to the armies in the stack in a relative manner, i'm still depending on ids being aligned.
+
+the white player made an army with id 1008.
+but when we went to decode the action, there wasn't an army with that id.
+the army in question was produced that turn.
+the lordsawar-pbm program won't ever know about the army
+unless the appropriate next-turn method is run
+which happens in initTurn
+but i can't init the turn for the player because there could be a hero offer in it.
+
+this means that the produce unit action has to send the actual army
+	which is probably appropriate

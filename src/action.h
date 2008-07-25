@@ -130,7 +130,8 @@ class Action
                 CITY_CONQUER = 31,
                 RECRUIT_HERO = 32,
                 PLAYER_RENAME = 33,
-		CITY_DESTITUTE = 34
+		CITY_DESTITUTE = 34,
+		INIT_TURN = 35,
         };
 	static std::string actionTypeToString(Action::Type type);
 	static Action::Type actionTypeFromString(std::string str);
@@ -1173,8 +1174,8 @@ class Action_Produce: public Action
 	//! Populate the action with pertinent data.
         bool fillData(const Army *a, City *city, bool vectored);
 
-	//! Get the Id of the army type of the Army unit that was produced.
-	Uint32 getArmyType() const {return d_army_type;}
+	//! Get the instance of the army that was produced.
+	Army * getArmy() const {return d_army;}
 
 	//! Get the Id of the City that produced the Army unit.
 	Uint32 getCityId() const {return d_city;}
@@ -1182,9 +1183,11 @@ class Action_Produce: public Action
 	//! Get whether or not the Army unit is being vectored elsewhere.
 	bool getVectored() const {return d_vectored;}
     private:
-        Uint32 d_army_type;
+	Army *d_army;
         Uint32 d_city;
         bool d_vectored;
+
+	bool load(std::string tag, XML_Helper *helper);
 };
 
         
@@ -1224,16 +1227,17 @@ class Action_ProduceVectored: public Action
 	 * it has showing up.
 	 */
 	//! Populate the action with pertinent data.
-        bool fillData(Uint32 army_type, Vector <int>dest);
+        bool fillData(Army *army, Vector <int>dest);
 
 	//! Get the army type Id that has shown up.
-	Uint32 getArmyType() const {return d_army_type;}
+	Army *getArmy() const {return d_army;}
 
 	//! Get the position on the map where the army showed up.
 	Vector<int> getDestination() const {return d_dest;}
     private:
-        Uint32 d_army_type;
+	Army *d_army;
         Vector<int> d_dest;
+	bool load(std::string tag, XML_Helper *helper);
 };
 
 //-----------------------------------------------------------------------------
@@ -1521,4 +1525,26 @@ class Action_CityTooPoorToProduce: public Action
 	Uint32 d_city;
 	Uint32 d_army_type;
 };
+
+//-----------------------------------------------------------------------------
+
+class Action_InitTurn: public Action
+{
+    public:
+	//! Make a new initialize turn action.
+        Action_InitTurn();
+	//! Copy constructor
+	Action_InitTurn(const Action_InitTurn &action);
+	//! Load a new initialize turn action from an opened saved-game file.
+        Action_InitTurn(XML_Helper* helper);
+	//! Destroy a initialize turn action.
+        ~Action_InitTurn();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this action to an opened saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+};
+
 #endif //ACTION_H

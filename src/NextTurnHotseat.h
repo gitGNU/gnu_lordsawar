@@ -17,15 +17,13 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef NEXT_TURN_H
-#define NEXT_TURN_H
+#ifndef NEXT_TURN_HOTSEAT_H
+#define NEXT_TURN_HOTSEAT_H
 
-#include <sigc++/trackable.h>
-#include "playerlist.h"
-#include "hero.h"
+#include "NextTurn.h"
 
 /**
-   \brief The class to pass turns around the players
+   \brief The class to pass turns around the players during a hotseat game.
  
    \note    This class takes care of calling the correct players in the correct
             order. The problem is, no other class really has the scope of doing
@@ -37,7 +35,7 @@
             or each round and therefore want a central place for this code.
  */
 
-class NextTurn: public sigc::trackable
+class NextTurnHotseat: public NextTurn
 {
     public:
         /**
@@ -45,13 +43,14 @@ class NextTurn: public sigc::trackable
 
            @param   turnmode    setting for the private variable d_turnmode
            @param   random_turns change the order every round
+
          */
-        NextTurn(bool turnmode, bool random_turns);
+        NextTurnHotseat(bool turnmode, bool random_turns);
 
         /**
            \brief destructor
          */
-        ~NextTurn();
+        ~NextTurnHotseat();
         
         /**
            \brief start a new game
@@ -60,57 +59,35 @@ class NextTurn: public sigc::trackable
            if there is none active. For starting a game. This should be the
            lowest of all scenario-related functions in the stack.
          */
-        virtual void start()=0;
+        void start();
 
-        //! Interrupts the game on the next possible occasion
-        void stop() {d_stop = true;}
-        
         /**
            \brief go on to the next player
            
            This function starts the next to the active player's turn. Used when
            a human player has pushed the next_turn button.
          */
-        virtual void endTurn()=0;
+        void endTurn();
 
-        void setContinuingTurn() { continuing_turn = true; };
+    private:
+        /**
+           \brief The function for all actions which are taken at the beginning
+           of a player's turn
+          */
+        void startTurn();
+        
+        /**
+           \brief The function for all actions which are taken at the end of a
+           player's turn
+         */
+        void finishTurn();
 
         /**
-           \brief signals for announcing events
+           \brief The function for all actions which are taken at the end of a
+           Game Turn.
          */
-        sigc::signal<void, Player*> splayerStart;
+        void finishRound();
 
-	// emitted whenever a new player's turn starts.
-        sigc::signal<void, Player*> snextTurn;
-        
-        //! Signal which is emitted whenever a new round starts
-        sigc::signal<void> snextRound;
-
-        //! Signal as a workaround for a display bug; updates the screen
-        sigc::signal<void> supdating;
-
-    protected:
-
-        /** \brief determines whether armies are healed/produced at the
-          * beginning of a round or at the beginning of each player's turn.
-          *
-          * If the value is set to true, the production/healing of armies takes
-          * place at the beginning of each player's turn (which is fairer); else
-          * all armies of all playes are healed when a new game round starts.
-          * The latter setting is a bit unfair, because the last player knows
-          * that his armies are healed immediately when he has finished his turn
-          * while the other player's armies may have to survive some attacks,
-          * but it may be useful in some circumstances.
-          */
-        bool d_turnmode;
-
-        bool d_random_turns;
-
-        //! If set to true, the game is interrupted at the next occasion
-        bool d_stop;
-
-        // whether we're starting a turn again from loading a game
-        bool continuing_turn;
 };
 
-#endif //NEXT_TURN_H
+#endif //NEXT_TURN_HOTSEAT_H

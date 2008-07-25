@@ -352,7 +352,7 @@ void ReportDialog::addProduction(const Action *action)
     {
       const Action_Produce *act;
       act = dynamic_cast<const Action_Produce*>(action);
-      army_type = act->getArmyType();
+      army_type = act->getArmy()->getType();
       Citylist::iterator cit = Citylist::getInstance()->begin();
       for (; cit != Citylist::getInstance()->end(); ++cit)
 	if ((*cit).getId() == act->getCityId())
@@ -367,7 +367,7 @@ void ReportDialog::addProduction(const Action *action)
     {
       const Action_ProduceVectored *act;
       act = dynamic_cast<const Action_ProduceVectored*>(action);
-      army_type = act->getArmyType();
+      army_type = act->getArmy()->getType();
       Vector<int> pos = act->getDestination();
       City *c = Citylist::getInstance()->getObjectAt(pos);
       s+="...";

@@ -95,7 +95,6 @@ Action* Action::handle_load(XML_Helper* helper)
 
   helper->getData(type_str, "type");
   Action::Type t = actionTypeFromString(type_str);
-  printf ("type_str is %s\n", type_str.c_str());
 
   switch (t)
     {
@@ -167,6 +166,8 @@ Action* Action::handle_load(XML_Helper* helper)
           return (new Action_RenamePlayer(helper));
       case CITY_DESTITUTE:
           return (new Action_CityTooPoorToProduce(helper));
+      case INIT_TURN:
+          return (new Action_InitTurn(helper));
     }
 
   return 0;
@@ -263,6 +264,10 @@ Action* Action::copy(const Action* a)
             return 
               (new Action_CityTooPoorToProduce
                 (*dynamic_cast<const Action_CityTooPoorToProduce*>(a)));
+        case INIT_TURN:
+            return 
+              (new Action_InitTurn
+                (*dynamic_cast<const Action_InitTurn*>(a)));
     }
 
     return 0;
@@ -1698,27 +1703,39 @@ Action_Produce::Action_Produce()
 }
 
 Action_Produce::Action_Produce(const Action_Produce &action)
-: Action(action), d_army_type(action.d_army_type), d_city(action.d_city),
-    d_vectored(action.d_vectored)
+: Action(action), d_city(action.d_city), d_vectored(action.d_vectored)
 {
+  d_army = new Army (*action.d_army, action.d_army->getOwner());
 }
 
 Action_Produce::Action_Produce(XML_Helper* helper)
 :Action(helper)
 {
-  helper->getData(d_army_type, "army_type");
   helper->getData(d_city, "city");
   helper->getData(d_vectored, "vectored");
+  helper->registerTag("army", sigc::mem_fun(this, &Action_Produce::load));
+}
+
+bool Action_Produce::load(std::string tag, XML_Helper *helper)
+{
+    if (tag == "army")
+      {
+	d_army = new Army(helper);
+
+	return true;
+      }
+    return false;
 }
 
 Action_Produce::~Action_Produce()
 {
+  delete d_army;
 }
 
 std::string Action_Produce::dump() const
 {
   std::stringstream s;
-  s << "armytype " << d_army_type << " shows up at city " << d_city;
+  s << "armytype " << d_army->getType() << " shows up at city " << d_city;
   if (d_vectored)
     s <<" but it is vectored to another city";
   s <<"\n";
@@ -1730,19 +1747,16 @@ bool Action_Produce::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->saveData("army_type", d_army_type);
   retval &= helper->saveData("city", d_city);
   retval &= helper->saveData("vectored", d_vectored);
+  retval &= d_army->save(helper);
 
   return retval;
 }
 
 bool Action_Produce::fillData(const Army *army, City *city, bool vectored)
 {
-  if (army == NULL)
-    d_army_type = -1;
-  else
-    d_army_type = army->getType();
+  d_army = new Army(*army, army->getOwner());
   d_city = city->getId();
   d_vectored = vectored;
   return true;
@@ -1754,32 +1768,46 @@ bool Action_Produce::fillData(const Army *army, City *city, bool vectored)
 Action_ProduceVectored::Action_ProduceVectored()
 :Action(Action::PRODUCE_VECTORED_UNIT)
 {
+  d_army = NULL;
 }
 
 Action_ProduceVectored::Action_ProduceVectored(const Action_ProduceVectored &action)
-: Action(action), d_army_type(action.d_army_type), d_dest(action.d_dest)
+: Action(action), d_dest(action.d_dest)
 {
+  d_army = new Army(*action.d_army, action.d_army->getOwner());
 }
 
 Action_ProduceVectored::Action_ProduceVectored(XML_Helper* helper)
 :Action(helper)
 {
-  helper->getData(d_army_type, "army_type");
   int i;
   helper->getData(i, "x");
   d_dest.x = i;
   helper->getData(i, "y");
   d_dest.y = i;
+  helper->registerTag("army", sigc::mem_fun(this, &Action_ProduceVectored::load));
+}
+
+bool Action_ProduceVectored::load(std::string tag, XML_Helper *helper)
+{
+    if (tag == "army")
+      {
+	d_army = new Army(helper);
+
+	return true;
+      }
+    return false;
 }
 
 Action_ProduceVectored::~Action_ProduceVectored()
 {
+  delete d_army;
 }
 
 std::string Action_ProduceVectored::dump() const
 {
   std::stringstream s;
-  s << "armytype " << d_army_type << " shows up at ";
+  s << "armytype " << d_army->getType() << " shows up at ";
   s <<d_dest.x <<"," <<d_dest.y <<")\n";
 
   return s.str();
@@ -1789,16 +1817,16 @@ bool Action_ProduceVectored::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->saveData("army_type", d_army_type);
   retval &= helper->saveData("x", d_dest.x);
   retval &= helper->saveData("y", d_dest.y);
+  retval &= d_army->save(helper);
 
   return retval;
 }
 
-bool Action_ProduceVectored::fillData(Uint32 army_type, Vector<int> dest)
+bool Action_ProduceVectored::fillData(Army *army, Vector<int> dest)
 {
-  d_army_type = army_type;
+  d_army = new Army (*army, army->getOwner());
   d_dest = dest;
   return true;
 }
@@ -2235,6 +2263,40 @@ bool Action_CityTooPoorToProduce::fillData(City* c, const Army *army)
     return true;
 }
 
+//-----------------------------------------------------------------------------
+//Action_InitTurn
+
+Action_InitTurn::Action_InitTurn()
+:Action(Action::INIT_TURN)
+{
+}
+
+Action_InitTurn::Action_InitTurn(const Action_InitTurn &action)
+: Action(action)
+{
+}
+
+Action_InitTurn::Action_InitTurn(XML_Helper* helper)
+:Action(helper)
+{
+}
+
+Action_InitTurn::~Action_InitTurn()
+{
+}
+
+std::string Action_InitTurn::dump() const
+{
+  return "initializing turn\n";
+}
+
+bool Action_InitTurn::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  return retval;
+}
+
 std::string Action::actionTypeToString(Action::Type type)
 {
   switch (type)
@@ -2307,6 +2369,8 @@ std::string Action::actionTypeToString(Action::Type type)
       return "Action::PLAYER_RENAME";
     case Action::CITY_DESTITUTE:
       return "Action::CITY_DESTITUTE";
+    case Action::INIT_TURN:
+      return "Action::INIT_TURN";
     }
       
   return "Action::MOVE";
@@ -2384,5 +2448,7 @@ Action::Type Action::actionTypeFromString(std::string str)
     return Action::PLAYER_RENAME;
   else if (str == "Action::CITY_DESTITUTE")
     return Action::CITY_DESTITUTE;
+  else if (str == "Action::INIT_TURN")
+    return Action::INIT_TURN;
   return Action::STACK_MOVE;
 }

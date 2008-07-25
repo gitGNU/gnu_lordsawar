@@ -515,6 +515,8 @@ class Army : public Ownable, public sigc::trackable
 	//! Emitted when an Army has died.
         static sigc::signal<void, Army*> sdying;
 
+	void syncNewId();
+
     protected:
 
 	static std::string bonusFlagToString(Army::Bonus bonus);

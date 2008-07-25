@@ -49,6 +49,8 @@ class FL_Counter : public sigc::trackable
         //! Returns a unique id
         Uint32 getNextId();
 
+	void syncToId(Uint32 id);
+
         //! Saves the current counter position
         bool save(XML_Helper* helper);
 

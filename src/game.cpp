@@ -32,7 +32,8 @@
 #include "sound.h"
 #include "GraphicsCache.h"
 #include "GameScenario.h"
-#include "NextTurn.h"
+#include "NextTurnHotseat.h"
+#include "NextTurnPbm.h"
 
 #include "gamebigmap.h"
 #include "smallmap.h"
@@ -197,8 +198,21 @@ Game::Game(GameScenario* gameScenario)
     pl->ssurrender.connect(sigc::mem_fun(this, &Game::on_surrender_offered));
 
     //set up a NextTurn object
-    d_nextTurn = new NextTurn(d_gameScenario->getTurnmode(),
-			      d_gameScenario->s_random_turns);
+    switch (d_gameScenario->getPlayMode())
+      {
+      case GameScenario::HOTSEAT:
+	d_nextTurn = new NextTurnHotseat(d_gameScenario->getTurnmode(),
+					 d_gameScenario->s_random_turns);
+	break;
+      case GameScenario::NETWORKED:
+	//d_nextTurn = new NextTurnNetworked(d_gameScenario->getTurnmode(),
+					   //d_gameScenario->s_random_turns);
+	break;
+      case GameScenario::PLAY_BY_MAIL:
+	d_nextTurn = new NextTurnPbm(d_gameScenario->getTurnmode(),
+				     d_gameScenario->s_random_turns);
+	break;
+      }
     d_nextTurn->splayerStart.connect(
 	sigc::mem_fun(this, &Game::init_turn_for_player));
     d_nextTurn->snextRound.connect(
@@ -983,8 +997,22 @@ void Game::loadGame()
   else if (player->getType() == Player::HUMAN && 
 	   d_gameScenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
     {
-      lock_inputs();
-      d_nextTurn->setStartPlayers(false);
+      if (player->hasAlreadyInitializedTurn())
+	{
+	  unlock_inputs();
+	  player->getStacklist()->setActivestack(0);
+	  center_view_on_city();
+	  update_sidebar_stats();
+	  update_control_panel();
+	  update_stack_info();
+	  game_loaded.emit(player);
+	  player->loadPbmGame();
+	  d_nextTurn->setContinuingTurn();
+	}
+      else
+	{
+	  lock_inputs();
+	}
     }
 
   d_nextTurn->start();

@@ -205,6 +205,9 @@ void NetworkPlayer::decodeAction(const Action *a)
     case Action::CITY_DESTITUTE:
       return decodeActionCityTooPoorToProduce
 	(dynamic_cast<const Action_CityTooPoorToProduce*>(a));
+    case Action::INIT_TURN:
+      return decodeActionInitTurn
+	(dynamic_cast<const Action_InitTurn*>(a));
     }
 
   return;
@@ -244,7 +247,8 @@ void NetworkPlayer::decodeActionMove(const Action_Move *action)
 
 void NetworkPlayer::decodeActionSplit(const Action_Split *action)
 {
-  Stack *stack = d_stacklist->getStackById(action->getStackId());
+  Uint32 stack_id = action->getStackId();
+  Stack *stack = d_stacklist->getStackById(stack_id);
   
   for (unsigned int i = 0; i < MAX_STACK_SIZE; ++i) {
     Uint32 army_id = action->getGroupedArmyId(i);
@@ -489,35 +493,18 @@ void NetworkPlayer::decodeActionPlant(const Action_Plant *action)
 
 void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
 {
-  //Note: we don't use this to produce new armies in cities
-  //That happens during the city->nextTurn method.
-  //It is enough that we record the changes in city production, and then
-  //let the city->nextTurn method do it's job.
-  //This action is used for the Production Report instead, see
-  //gui/report-dialog.cpp
- 
-  //there's no real need to send this action back to the server because
-  //only the current player can see her own production report.
-
-  //if we wanted to decode it, we'd do this:
-  //City *city = Citylist::getInstance()->getById(action->getCityId());
-  //doCityProducesArmy(city);
+  Army *a = action->getArmy();
+  City *c = Citylist::getInstance()->getById(action->getCityId());
+  c->addArmy(a);
+  a->syncNewId();
 }
 
 void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *action)
 {
-  //Note: we don't use this to produce new vectored army units on the map 
-  //That happens during the vectoredunit->nextTurn method.
-  //It is enough that we record the changes in city vectoring, and then
-  //let the vectoredunitlist->nextTurn method do it's job.
-  //This action is used for the Production Report instead, see
-  //gui/report-dialog.cpp
- 
-  //there's no real need to send this action back to the server because
-  //only the current player can see her own production report.
-
-  //we couldn't decode this action if we wanted to, because there isn't
-  //enough data to make it happen.
+  Army *a = action->getArmy();
+  Vector<int> dest = action->getDestination();
+  GameMap::getInstance()->addArmy(dest, a);
+  a->syncNewId();
 }
 
 void NetworkPlayer::decodeActionDiplomacyState(const Action_DiplomacyState *action)
@@ -561,6 +548,8 @@ void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
                                                action->getAllyArmyType());
   doRecruitHero(action->getHero(), city, action->getCost(), 
 		action->getNumAllies(), ally);
+  action->getHero()->syncNewId();
+
 }
 
 void NetworkPlayer::decodeActionRenamePlayer(const Action_RenamePlayer *action)
@@ -571,6 +560,10 @@ void NetworkPlayer::decodeActionRenamePlayer(const Action_RenamePlayer *action)
 void NetworkPlayer::decodeActionCityTooPoorToProduce(const Action_CityTooPoorToProduce *action)
 {
   //this action is only used for reporting purposes.
+}
+
+void NetworkPlayer::decodeActionInitTurn(const Action_InitTurn*action)
+{
 }
 
 // End of file

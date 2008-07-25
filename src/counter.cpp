@@ -38,6 +38,12 @@ FL_Counter::~FL_Counter()
 {
 }
 
+void FL_Counter::syncToId(Uint32 id)
+{
+  if (id > d_curID)
+    d_curID = id;
+}
+
 Uint32 FL_Counter::getNextId()
 {
   Uint32 ret = d_curID;
