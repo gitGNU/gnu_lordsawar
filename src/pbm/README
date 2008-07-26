@@ -11,5 +11,6 @@ The idea here is that you're the game master, and you're setting up a game for o
 
 As game master, you can modify the scenario as the game is played.  For example, you can load the game up in the scenario editor and inject new events like a flood, or an earthquake.
 
-the game master needs to know who to send the file to first.
-	there's no notification
+The files aren't sent automatically, it's up to the players and the game master to send files back and forth.
+This allows for some flexibility: the files don't need to be sent in e-mail; they can be sent as instant messages, or in some other fashion.
+On the other hand it demands that the user know how to find the file they just saved, and how to get it to the right person.
