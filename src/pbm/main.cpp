@@ -50,6 +50,7 @@ int main(int argc, char* argv[])
 
   pbm playbymail;
   playbymail.run(argv[1], argv[2]);
+  printf ("Now send the saved-game file to %s.\n", playbymail.getActiveplayerName().c_str());
 
   return EXIT_SUCCESS;
 }

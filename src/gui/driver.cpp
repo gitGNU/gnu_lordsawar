@@ -40,6 +40,7 @@
 #include "../playerlist.h"
 #include "../xmlhelper.h"
 #include "../Configuration.h"
+#include "../ucompose.hpp"
 #include "timed-message-dialog.h"
 #include "new-game-progress-window.h"
 #include "game-preferences-dialog.h"
@@ -412,6 +413,7 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
       return;
     }
   game_scenario->saveGame(temp_filename);
+  std::string player_name = Playerlist::getActiveplayer()->getName();
   delete game_scenario;
   pbm play_by_mail;
   play_by_mail.init(temp_filename);
@@ -444,4 +446,11 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
 	  std::cerr <<_("Error: ") <<err <<std::endl;
 	}
     }
+  Glib::ustring s = String::ucompose(_("Now send the saved-game file to %1"),
+				     player_name);
+  printf("here\n");
+  TimedMessageDialog dialog(*splash_window->get_window(), s, 0);
+  dialog.run();
+  dialog.hide();
+      return;
 }

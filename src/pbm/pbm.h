@@ -28,12 +28,14 @@ class pbm
 	~pbm();
 	void init(std::string save_game_file);
 	void run(std::string save_game_file, std::string turn_file);
+	std::string getActiveplayerName() const {return d_player_name;};
 
     private:
 
 	void humanize_active_player();
 	void turn_all_players_to_networked();
 	void playUntilFirstNetworkedPlayer(GameScenario *game_scenario);
+	std::string d_player_name;
 };
 
 #endif // PBM_H

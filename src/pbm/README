@@ -11,16 +11,5 @@ The idea here is that you're the game master, and you're setting up a game for o
 
 As game master, you can modify the scenario as the game is played.  For example, you can load the game up in the scenario editor and inject new events like a flood, or an earthquake.
 
-stack splits don't work
-the split action refers to units by id that aren't there
-even if i refer to the armies in the stack in a relative manner, i'm still depending on ids being aligned.
-
-crashing in this case with an army unit that should be present
-the unit id == the current id in the save game going in.
-the army exists in the saved-game file after we move.
-the army does not exist in the turn file that is created.
-where does the army come from?
-
-need to give the action produce, the army as it's produced, and not it's type.
-vectored units don't get created! when done in an action produce.
-
+the game master needs to know who to send the file to first.
+	there's no notification

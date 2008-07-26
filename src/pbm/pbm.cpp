@@ -46,7 +46,6 @@ void pbm::playUntilFirstNetworkedPlayer(GameScenario *game_scenario)
       NextTurnPbm *nextTurn;
       nextTurn = new NextTurnPbm(game_scenario->getTurnmode(),
 				 game_scenario->s_random_turns);
-      printf ("telling %s to start their turn\n", Playerlist::getActiveplayer()->getName().c_str());
       nextTurn->start();
       delete nextTurn;
     }
@@ -62,6 +61,7 @@ void pbm::init(std::string save_game_file)
   turn_all_players_to_networked();
   playUntilFirstNetworkedPlayer(game_scenario);
   humanize_active_player();
+  d_player_name = Playerlist::getActiveplayer()->getName();
   broken = game_scenario->saveGame(save_game_file);
 }
 
@@ -85,17 +85,10 @@ void pbm::run(std::string save_game_file, std::string turn_file)
   helper.close();
   delete nextTurn;
 
-  printf ("active player is now %s\n", Playerlist::getActiveplayer()->getName().c_str());
-  //if (player->hasEndedTurn() == false)
-    //{
-      //std::cout << "turn file doesn't contain an end turn for "<< 
-	//player->getName() << std::endl;
-      //return;
-    //}
   turn_all_players_to_networked();
   playUntilFirstNetworkedPlayer(game_scenario);
   humanize_active_player();
-  printf ("active player is now %s\n", Playerlist::getActiveplayer()->getName().c_str());
+  d_player_name = Playerlist::getActiveplayer()->getName();
   if (!broken)
     {
       game_scenario->saveGame(save_game_file);

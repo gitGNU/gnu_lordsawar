@@ -703,6 +703,10 @@ void GameWindow::end_turn_play_by_mail ()
       std::string filename = chooser.get_filename();
 
       game->saveTurnFile(filename);
+      TimedMessageDialog dialog
+	(*window.get(), ("Now send the turn file back to the game master."), 0);
+      dialog.run();
+      dialog.hide();
     }
   game_ended.emit();
 }
