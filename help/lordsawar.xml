@@ -80,7 +80,7 @@ The future is uncertain.  The lords of the realm are warring.  The lords are a-w
 <sect1 id="lordsawar-introduction"> 
 	<title>Introduction</title> 
 	<para>
-&app; is a turn-based strategy game where up to 8 players strive to conquer all of the cities on the map.  The player has three distinct roles in the game:
+&app; is a turn-based strategy game where up to eight players strive to conquer all of the cities on the map.  The player has three distinct roles in the game:
 
 	  <orderedlist>
 		<listitem>
@@ -90,7 +90,7 @@ The player acts as a General who controls all of military strategy elements of t
 The player acts as a diplomatic envoy, managing diplomatic relations with every other player.
 </listitem>
 <listitem>
-The player acts as a tax collector, automatically collecting gold pieces from each city that has been conquered.  This pays for the maintenance of army units already created.  It can also be used to buy new and different kinds of army units.
+The player acts as a tax collector, automatically collecting gold pieces from each city that has been conquered.  This pays for the maintenance of army units already created.  The income can also be used to buy new and different kinds of army units.
 </listitem>
 	  </orderedlist>
 </para>
@@ -109,8 +109,37 @@ The objective of the game is to conquer all of the cities on the map.  This is a
 
 <sect1 id="lordsawar-cities"> 
 	<title>Cities</title> 
+<para>
+Cities are important because conquering cities is the key to winning the game.  Each player starts with one city, or more than one if the game is started with the "quick start" option.  Each city can produce army units that the player can use to attack other cities.  Each player has a capital city that other players can target and take over for bragging rights.
+</para>
 <sect2 id="lordsawar-cities-what-are-they">
 	<title>What are they?</title> 
+<para>
+Cities appear as castles on the map.  They occupy four tiles on the screen; a two-by-two square.  Army units located in the city fight as a single force when the city is attacked by the enemy.  Some army units will have a special fighting bonus if they are defending a city, or attacking a city.
+</para>
+<para>
+Cities have a name, a set of army unit types that they may create or "produce"; they provide a number of gold pieces to the player's treasury every turn, and they have a defense level.
+</para>
+<para>
+Each city can produce one of up to four different army unit types.  When enough turns have passed the army unit shows up in the city and can be moved around the map as the player sees fit.
+</para>
+<para>
+Production can be viewed and modified in cities that the player owns.  The production in enemy cities can also be viewed if the game is started with the "view production" option turned on.
+</para>
+<para>
+Cities provide income in the form of gold pieces, which happens to be exactly what army units require as their upkeep.  Conquering more cities gives the player more money and enables the upkeep of more army units.
+</para>
+<para>
+Movement in a city that the player owns is the same as moving on a road; it is easy for every army unit to move within the two-by-two confines of a city.  Cities that are adjacent to the water act as a port; a jumping-off point for naval operations.
+</para>
+<para>
+Army units may not move through a foreign city without conquering it first.
+</para>
+
+<para>
+The defense level for the city is not important and is ignored by all battle calculations.
+</para>
+
 </sect2>
 <sect2 id="lordsawar-explain-the-city-screen">
 	<title>Explanation of the City screen </title> 
