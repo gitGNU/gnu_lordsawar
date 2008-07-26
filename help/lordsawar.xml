@@ -110,39 +110,63 @@ The objective of the game is to conquer all of the cities on the map.  This is a
 <sect1 id="lordsawar-cities"> 
 	<title>Cities</title> 
 <para>
-Cities are important because conquering cities is the key to winning the game.  Each player starts with one city, or more than one if the game is started with the "quick start" option.  Each city can produce army units that the player can use to attack other cities.  Each player has a capital city that other players can target and take over for bragging rights.
+Cities are important because conquering cities is the key to winning the game.  Each player typically starts with one city, with the remainder of the cities being unowned.  Each city can produce army units that the player can use to attack other cities.  Each player has a capital city that other players can target and take over for bragging rights.
 </para>
 <sect2 id="lordsawar-cities-what-are-they">
 	<title>What are they?</title> 
 <para>
-Cities appear as castles on the map.  They occupy four tiles on the screen; a two-by-two square.  Army units located in the city fight as a single force when the city is attacked by the enemy.  Some army units will have a special fighting bonus if they are defending a city, or attacking a city.
-</para>
-<para>
-Cities have a name, a set of army unit types that they may create or "produce"; they provide a number of gold pieces to the player's treasury every turn, and they have a defense level.
-</para>
-<para>
-Each city can produce one of up to four different army unit types.  When enough turns have passed the army unit shows up in the city and can be moved around the map as the player sees fit.
-</para>
-<para>
-Production can be viewed and modified in cities that the player owns.  The production in enemy cities can also be viewed if the game is started with the "view production" option turned on.
-</para>
-<para>
-Cities provide income in the form of gold pieces, which happens to be exactly what army units require as their upkeep.  Conquering more cities gives the player more money and enables the upkeep of more army units.
-</para>
-<para>
-Movement in a city that the player owns is the same as moving on a road; it is easy for every army unit to move within the two-by-two confines of a city.  Cities that are adjacent to the water act as a port; a jumping-off point for naval operations.
-</para>
-<para>
-Army units may not move through a foreign city without conquering it first.
+Cities appear as castles on the map display; they occupy four tiles on the screen; a two-by-two square.  Cities appear as little shields on the miniature map.
 </para>
 
 <para>
+Cities have a name, a defense level, and they provide a number of gold pieces to the player's treasury every turn.
+</para>
+<para>
+The income is in the form of gold pieces, which happens to be exactly what army units require as their upkeep.  Conquering more cities gives the player more money and enables the upkeep of more army units.
+</para>
+<para>
 The defense level for the city is not important and is ignored by all battle calculations.
+</para>
+<para>
+Each city can produce one of up to four different army unit types.  After enough turns have passed the army unit shows up in the city and can be moved around the map as the player sees fit.  Changing a city's production of army units is one of the main ways that a player affects the outcome of the game.  The player can also choose to add a new army unit type to the suite of army unit types that the city can produce; which can cost a lot of gold pieces.
+</para>
+<para>
+Army unit production can be viewed and modified in cities that the player owns.  The production in enemy cities can also be viewed if the game is started with the "view production" option turned on.
+</para>
+<para>
+Movement in a city that the player owns is the same as moving on a road; it is the easiest mode of transportation.  Cities that are adjacent to the water act as a port; a jumping-off point for naval operations.
+</para>
+<para>
+Army units located in the city fight as a single force when the city is attacked by the enemy.  Some army units will have a special fighting bonus if they are defending a city, or attacking a city.  To attack a city, move your army units to an adjacent tile and then attempt to move into the city.
+</para>
+
+<para>
+Army units may not move through a foreign city without conquering it first.
 </para>
 
 </sect2>
 <sect2 id="lordsawar-explain-the-city-screen">
 	<title>Explanation of the City screen </title> 
+<para>When the player left-clicks on the city the following window is displayed:</para>
+<figure id="citywindow-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/city_window.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; city window.  Contains the city name, it's income the army units it may produce and the one it is currently producing.  It also shows operations like stop production, buy production, vector, raze and rename.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+information
+stop
+buy
+vector
+raze
+rename
+selecting different cities to manage.
 </sect2>
 <sect2 id="lordsawar-cities-how-they-make-critters">
 	<title>Producing new Army units</title> 

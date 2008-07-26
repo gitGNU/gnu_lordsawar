@@ -240,6 +240,7 @@ AC_CONFIG_FILES([
         src/Makefile
         doc/Makefile
         help/Makefile
+        help/figures/Makefile
         src/editor/Makefile
         src/pbm/Makefile
         src/gui/Makefile])

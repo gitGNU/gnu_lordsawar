@@ -1,3 +1,4 @@
+SUBDIRS=figures
 EXTRA_DIST = $(help_DATA)
 helpdir = ${datadir}/gnome/help/lordsawar/C/
 
