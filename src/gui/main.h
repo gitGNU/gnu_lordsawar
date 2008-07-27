@@ -38,6 +38,7 @@ class Main: public sigc::trackable, public noncopyable
     void stop_main_loop();
     bool iterate_main_loop();
 
+    bool start_stress_test;
     bool start_test_scenario;
     bool start_network_test;
     std::string load_filename;

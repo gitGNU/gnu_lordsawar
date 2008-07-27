@@ -41,6 +41,7 @@
 #include "../xmlhelper.h"
 #include "../Configuration.h"
 #include "../ucompose.hpp"
+#include "../NextTurnHotseat.h"
 #include "timed-message-dialog.h"
 #include "new-game-progress-window.h"
 #include "game-preferences-dialog.h"
@@ -134,6 +135,10 @@ void Driver::run()
       game_client->start("localhost", LORDSAWAR_PORT);
       splash_window->show();
       return;
+    }
+  else if (Main::instance().start_stress_test) 
+    {
+      return stress_test();
     }
   else if (Main::instance().turn_filename != "") 
     {
@@ -453,4 +458,98 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
   dialog.run();
   dialog.hide();
       return;
+}
+
+    
+void Driver::stressTestNextRound()
+{
+  static int count = 1;
+  count++;
+  printf ("starting round %d!\n", count);
+  sleep (1);
+}
+
+void Driver::stress_test()
+{
+
+  // quick load a test scenario
+  GameParameters g;
+  GameParameters::Player p;
+  for (int i = 0; i < MAX_PLAYERS; i++)
+    {
+      p.type = GameParameters::Player::EASY;
+      p.id = i;
+      switch (p.id)
+	{
+	case 0: p.name = "one"; break;
+	case 1: p.name = "two"; break;
+	case 2: p.name = "three"; break;
+	case 3: p.name = "four"; break;
+	case 4: p.name = "five"; break;
+	case 5: p.name = "six"; break;
+	case 6: p.name = "seven"; break;
+	case 7: p.name = "eight"; break;
+	}
+      g.players.push_back(p);
+    }
+  g.map.width = MAP_SIZE_NORMAL_WIDTH;
+  g.map.height = MAP_SIZE_NORMAL_HEIGHT;
+  g.map.grass = 78;
+  g.map.water = 7;
+  g.map.swamp = 2;
+  g.map.forest = 3;
+  g.map.hills = 5;
+  g.map.mountains = 5;
+  g.map.cities = 80;
+  g.map.ruins = 15;
+  g.map_path = "";
+  g.play_with_quests = false;
+  g.hidden_map = false;
+  g.neutral_cities = GameParameters::STRONG;
+  g.razing_cities = GameParameters::ALWAYS;
+  g.diplomacy = false;
+  g.random_turns = false;
+  g.quick_start = false;
+  g.intense_combat = false;
+  g.military_advisor = false;
+  g.army_theme = "Default";
+  g.tile_theme = "default";
+  g.shield_theme = "default";
+  g.city_theme = "default";
+  g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
+  g.difficulty = GameScenario::calculate_difficulty_rating(g);
+  g.cities_can_produce_allies = false;
+  g.cusp_of_war = false;
+  g.see_opponents_stacks = true;
+  g.see_opponents_production = true;
+      
+  std::string path = create_and_dump_scenario("random.map", g);
+  g.map_path = path;
+
+  bool broken = false;
+  GameScenario* game_scenario = new GameScenario(g.map_path, broken);
+
+  if (broken)
+    return;
+
+  NextTurnHotseat *nextTurn;
+  nextTurn = new NextTurnHotseat(game_scenario->getTurnmode(),
+				 game_scenario->s_random_turns);
+    
+  nextTurn->snextRound.connect
+    (sigc::mem_fun(this, &Driver::stressTestNextRound));
+  nextTurn->snextRound.connect
+    (sigc::mem_fun(game_scenario, &GameScenario::nextRound));
+  if (game_scenario->getRound() == 0)
+    {
+      Playerlist::getInstance()->syncPlayers(g.players);
+      game_scenario->setupFog(g.hidden_map);
+      game_scenario->setupCities(g.quick_start);
+      game_scenario->setupDiplomacy(g.diplomacy);
+      game_scenario->nextRound();
+    }
+
+  nextTurn->start();
+  delete nextTurn;
+
 }

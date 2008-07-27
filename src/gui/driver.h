@@ -58,6 +58,8 @@ class Driver: public sigc::trackable
 
     GameScenario *new_game(GameParameters g);
     GameScenario *load_game(std::string file_path);
+    void stress_test();
+    void stressTestNextRound();
 };
 
 

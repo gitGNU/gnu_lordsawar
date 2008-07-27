@@ -51,6 +51,7 @@ Main::Main(int &argc, char **&argv)
 
     start_test_scenario = false;
     start_network_test = false;
+    start_stress_test = false;
     load_filename = "";
     turn_filename = "";
     
