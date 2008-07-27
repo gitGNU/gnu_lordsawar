@@ -1,6 +1,8 @@
 2008-07-27  Ben Asselstine
 
 	* added new command-line option --stress-test.
+	* fixed crashing bug wrt ai fast player joining stacks on the way to
+	  getting blessed, or picking up an item.
 
 2008-07-26  Ben Asselstine
 
