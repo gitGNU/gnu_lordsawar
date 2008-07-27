@@ -1253,7 +1253,7 @@ std::string Action_Equip::dump() const
 {
   std::stringstream ss;
 
-  ss <<"Hero " <<d_hero <<" moved item " <<d_item <<"to slot " <<d_slot;
+  ss <<"Hero " <<d_hero <<" moved item " <<d_item <<" to slot " <<d_slot;
   ss <<std::endl;
 
   return ss.str();

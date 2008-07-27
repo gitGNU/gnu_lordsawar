@@ -254,6 +254,7 @@ bool AI_Fast::computerTurn()
     // we are using reversed order because new stacks come behind old stacks
     // and we want the freshly created stacks join the veterans and not the other
     // way round.
+    printf ("starting\n");
     for (Stacklist::reverse_iterator it = d_stacklist->rbegin(); it != d_stacklist->rend(); it++)
     {
         // game ended; emergency stop
@@ -276,6 +277,7 @@ bool AI_Fast::computerTurn()
 		   blessed, stack_died);
 		if (stack_died)
 		  return true;
+		s = d_stacklist->getActivestack();
 		if (blessed && stack_moved)
 		  stack_moved = false; //do this so we move it later on
 		else if (stack_moved)
@@ -288,12 +290,13 @@ bool AI_Fast::computerTurn()
 	  {
 	    bool stack_died = false;
 	    bool picked_up = false;
-		
+
 	    stack_moved = AI_maybePickUpItems(s, s->getGroupMoves(), 
 					       s->getGroupMoves() + 7, 
 					       picked_up, stack_died);
 	    if (stack_died)
 	      return true;
+	    s = d_stacklist->getActivestack();
 	    if (picked_up && stack_moved)
 	      stack_moved = false; //do this so we move it later on
 	    else if (stack_moved)
@@ -303,6 +306,7 @@ bool AI_Fast::computerTurn()
         debug(">>>> What to do with stack " <<s->getId() <<" at (" <<s->getPos().x
 	       <<"," <<s->getPos().y <<") containing " <<s->size() << " armies ?")
 
+	  printf ("here1\n");
         // join armies if close
         if (d_join && s->size() < MAX_STACK_SIZE)
         {

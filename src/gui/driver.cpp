@@ -42,6 +42,7 @@
 #include "../Configuration.h"
 #include "../ucompose.hpp"
 #include "../NextTurnHotseat.h"
+#include "../sound.h"
 #include "timed-message-dialog.h"
 #include "new-game-progress-window.h"
 #include "game-preferences-dialog.h"
@@ -138,6 +139,7 @@ void Driver::run()
     }
   else if (Main::instance().start_stress_test) 
     {
+      Sound::deleteInstance();
       return stress_test();
     }
   else if (Main::instance().turn_filename != "") 

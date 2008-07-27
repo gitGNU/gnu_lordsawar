@@ -1851,8 +1851,9 @@ bool Player::heroDropAllItems(Hero *h, Vector<int> pos)
 
 void Player::doHeroPickupItem(Hero *h, Item *i, Vector<int> pos)
 {
-  GameMap::getInstance()->getTile(pos)->removeItem(i);
-  h->addToBackpack(i, 0);
+  bool found = GameMap::getInstance()->getTile(pos)->removeItem(i);
+  if (found)
+    h->addToBackpack(i);
 }
 
 bool Player::heroPickupItem(Hero *h, Item *i, Vector<int> pos)

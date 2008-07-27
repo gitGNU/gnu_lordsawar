@@ -97,15 +97,16 @@ void Maptile::addItem(Item* item, int position)
     d_items.insert(it, item);
 }
 
-void Maptile::removeItem(Item* item)
+bool Maptile::removeItem(Item* item)
 {
     std::list<Item*>::iterator it;
     for (it = d_items.begin(); it != d_items.end(); it++)
         if ((*it) == item)
         {
             d_items.erase(it);
-            return;
+            return true;
         }
+    return false;
 }
 
 std::list<Item*> Maptile::getItems() const

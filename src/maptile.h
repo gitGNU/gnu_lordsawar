@@ -136,7 +136,7 @@ class Maptile
         void addItem(Item*, int position = -1);
 
         //! Remove an Item from the maptile without deleting it.
-        void removeItem(Item* item);
+        bool removeItem(Item* item);
 
         //! Get the list of Item objects on this maptile.
         std::list<Item*> getItems() const;
