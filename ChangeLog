@@ -1,3 +1,11 @@
+2008-07-27  Ben Asselstine
+
+	* added new command-line option --stress-test.
+
+2008-07-26  Ben Asselstine
+
+	* improved the user's manual.
+
 2008-07-23  Ben Asselstine
 
 	* changed reward xml entity.  changes saved-game file format.

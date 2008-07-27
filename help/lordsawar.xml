@@ -95,7 +95,7 @@ The player acts as a tax collector, automatically collecting gold pieces from ea
 	  </orderedlist>
 </para>
 <para>
-Army units are arranged into stacks of up to eight.  Stacks are moved around the map through varying terrain; forest, hills, swamp, or water.  Each of the varying kinds of terrain cost the stack some of its movement points.  Some stacks may even have the ability to fly over troublesome mountains.  
+Army units are arranged into stacks of up to eight and are moved around the map through varying terrain; forest, hills, swamp, or water.  Each of the varying kinds of terrain cost the stack some of its movement points.  Some stacks may even have the ability to fly over troublesome mountains.  
 </para>
 
 <para>
@@ -107,6 +107,7 @@ The objective of the game is to conquer all of the cities on the map.  This is a
 </para>
 </sect1>
 
+<!-- ============= Cities ============================== -->
 <sect1 id="lordsawar-cities"> 
 	<title>Cities</title> 
 <para>
@@ -162,10 +163,10 @@ Shows &app; city window.  Contains a map, with icons for cities we own.  Contain
 </figure>
 
 <para>
-The most noticeable thing in the window is the miniature map that only shows all of the player's cities.  At a glance it shows; which cities are producing an army unit (white shield with an anvil), which ones are not (a white shield without an anvil), and which city the player is currently visiting (a black shield, with or without an anvil).  The player can visit another city by left-clicking on it.
+The most noticeable thing in the window is the miniature map that only shows all of the player's cities.  At a glance it shows; which cities are producing an army unit (shown by a white shield with an anvil), which ones are not (shown by a white shield without an anvil), and which city the player is currently visiting (shown by a black shield, with or without an anvil).  The player can visit another city by left-clicking on it.
 </para>
 <para>
-The window contains information about the selected city.  The title of the window is the name of the city.  To the right of the map the defense level is shown, along with the income in gold pieces that this city provides.  Next is the army unit that is currently being produced, and how many more turns until it becomes available.  Then appear the set of army units that this city can produce.
+The window contains information about the selected city.  The title of the window is the name of the city.  To the right of the map the defense level is shown, along with the amount of money in gold pieces that this city provides.  Next is the army unit that is currently being produced, and how many more turns until it becomes available for use.  The set of buttons in the middle of the window represent the set of army unit types that this city can produce.
 Below that are statistics about the army unit currently being produced.
 </para>
 
@@ -181,7 +182,7 @@ Stops the production army units in this city.  Stopping production is a good ide
 <listitem>
 <para>Buy.</para>
 <para>
-Make a new army unit available for production in this city.  Warning: clicking this button will <b>replace</b> the currently selected production unit.
+Make a new army unit available for production in this city.  Warning: clicking this button will replace the currently selected production unit.
 <para>
 Buying new army units is a good idea when the player needs an army unit with a particular capability and that capability does not exist in any of the other army units that the city already produces.
 </para>
