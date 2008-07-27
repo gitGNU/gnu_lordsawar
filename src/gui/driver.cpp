@@ -553,5 +553,6 @@ void Driver::stress_test()
 
   nextTurn->start();
   delete nextTurn;
+  delete game_scenario;
 
 }

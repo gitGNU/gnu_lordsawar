@@ -322,15 +322,6 @@ bool AI_Fast::computerTurn()
             }
         }
         
-        // Maybe the stack vanished upon joining. If so, reiterate;
-        if (!d_stacklist->getActivestack())
-	  {
-	    cerr <<"crapola.  i hit a bad spot.\n";
-	    //remove me if this is never hit
-	    exit(1);
-	  return true;
-	  }
-
         // second step: try to resupply
         if (!d_maniac)
         {
@@ -539,11 +530,23 @@ bool AI_Fast::computerTurn()
 	      {
 		printf ("we're going the wrong way (mp is %d)!!\n", mp);
 		printf ("this means we couldn't calculate a path from %d,%d to %d,%d\n", s->getPos().x, s->getPos().y, pos.x, pos.y);
-		sleep (10);
+		//sleep (10);
 		Citylist *cl = Citylist::getInstance();
 		City *friendly_city = cl->getNearestFriendlyCity(s->getPos());
-		s->getPath()->calculate(s, friendly_city->getPos());
-		stack_moved |= stackMove(s);
+		if (friendly_city)
+		  {
+		    mp = s->getPath()->calculate(s, friendly_city->getPos());
+		    if (mp > 0)
+		      stack_moved |= stackMove(s);
+		    else
+		      stack_moved |= false;
+		  }
+		else
+		  {
+		    //we can't find anyplace to move to!
+		    //so we stay put.
+		    stack_moved |= false;
+		  }
 	      }
 
 	    if (!d_stacklist->getActivestack())
