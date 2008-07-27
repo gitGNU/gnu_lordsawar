@@ -218,11 +218,68 @@ Renaming a city can be a way of taunting another player.  e.g. The Impregnable F
 </sect2>
 <sect2 id="lordsawar-cities-how-they-make-critters">
 	<title>Producing new Army units</title> 
+<para>
+Army units come to life in cities after they have been "produced".  Every army unit takes a number of turns to be produced; typically one to four turns.  The city can produce one army unit at a time, for up to four different army unit types; these are shown as pictures in the boxes on the right side of the city screen.
+The button that appears to be pushed-in is the army unit type that is being produced in this city.  When there is one button pushed-in, that army unit type's picture appears, with the number of turns left until the army unit appears in the city.  If none of the army unit type buttons are pushed-in, then the city isn't producing an army unit at all.
+</para>
+<para>
+To select a new army unit for production, left-click on it's button.  The button will become pushed-in, and any other army unit type button will become pushed-out.  This will cause production to stop on any prior army units in this city.  This means if the player has one turn left before some dragons are produced, and then the player selects Pikemen, the dragons will not show up next turn.  The player can right-click on each army unit type button to get more information about that army unit type's capabilities.
+</para>
 </sect2>
-<sect2 id="lordsawar-taking cities">
+<sect2 id="lordsawar-taking-cities">
 	<title>Taking Cities</title> 
 <para>
-explain neutral cities here.
+Conquering cities is important because it leads to the player winning the game.  After fighting the forces in an enemy city and winning, the player is presented with some options about how to take the city:
+<figure id="conquercity-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/conquer_city.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; enemy city defeated window.  It shows the operations that the player can take; like occupy, pillage, sack, and raze.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+Here is what the various buttons at the bottom of the window mean:
+<itemizedlist>
+<listitem>
+<para> Occupy.</para>
+<para>
+Take the city and leave the production in the new city unchanged.
+</para>
+</listitem>
+<listitem>
+<para> Pillage.</para>
+<para>
+Take the city and cash in the weakest army unit type that the city can produce for gold pieces.  This will prevent that army unit from being produced in that city.
+</para>
+</listitem>
+<listitem>
+<para> Sack.</para>
+<para>
+Take the city and cash in all except weakest army unit type that the city can produce for gold pieces.  The army units that are cashed-in will not be available for production any longer.
+<para>
+If this button is not available, it is because the city has fewer than two army unit types available for production.
+</para>
+</para>
+</listitem>
+<listitem>
+<para> Raze.</para>
+<para>
+Don't take the city; destroy it instead.  This will make the city uninhabitable by any other player.  Other players may not appreciate this course of action.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</para>
+<para>
+The easiest cities to conquer are the ones that aren't defended at all.  The player can win the city with the weakest army unit.
+</para>
+<para>
+Neutral cities are typically the next easiest to conquer; they are the unowned cities on the map.  Neutral army units never stray from their castle; they never come to the aid of another neutral city nearby.  Athough neutral cities can be active in that they produce army units after an attempt to attack the city fails (this is a game option that can be turned on).
 </para>
 </sect2>
 <sect2 id="lordsawar-cities-buying-production">
