@@ -306,7 +306,6 @@ bool AI_Fast::computerTurn()
         debug(">>>> What to do with stack " <<s->getId() <<" at (" <<s->getPos().x
 	       <<"," <<s->getPos().y <<") containing " <<s->size() << " armies ?")
 
-	  printf ("here1\n");
         // join armies if close
         if (d_join && s->size() < MAX_STACK_SIZE)
         {
