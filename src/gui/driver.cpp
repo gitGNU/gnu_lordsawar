@@ -70,6 +70,12 @@ Driver::Driver(std::string load_filename)
 	sigc::mem_fun(*this, &Driver::on_quit_requested));
 
     d_load_filename = load_filename;
+    if (Main::instance().start_stress_test) 
+      {
+	Sound::deleteInstance();
+	stress_test();
+	exit(0);
+      }
     splash_window->sdl_initialized.connect(sigc::mem_fun(*this, &Driver::run));
     splash_window->show();
 }
@@ -136,11 +142,6 @@ void Driver::run()
       game_client->start("localhost", LORDSAWAR_PORT);
       splash_window->show();
       return;
-    }
-  else if (Main::instance().start_stress_test) 
-    {
-      Sound::deleteInstance();
-      return stress_test();
     }
   else if (Main::instance().turn_filename != "") 
     {
