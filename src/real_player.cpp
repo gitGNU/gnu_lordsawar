@@ -129,7 +129,7 @@ bool RealPlayer::maybeRecruitHero ()
   if (this == Playerlist::getInstance()->getNeutral())
     return false;
   
-  City *city;
+  City *city = NULL;
   int gold_needed = 0;
   if (Citylist::getInstance()->countCities(this) == 0)
     return false;
@@ -164,7 +164,6 @@ bool RealPlayer::maybeRecruitHero ()
 #endif
       if (gold_needed == 0)
 	{
-	  //city = Citylist::getInstance()->getFirstCity(this);
 	  //we do it this way because maybe quickstart is on.
 	  Citylist* cl = Citylist::getInstance();
 	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
@@ -174,6 +173,8 @@ bool RealPlayer::maybeRecruitHero ()
 		city = &*it;
 		break;
 	      }
+	  if (!city) //no capital cities
+	    city = Citylist::getInstance()->getFirstCity(this);
 	}
       else
 	{
@@ -189,7 +190,7 @@ bool RealPlayer::maybeRecruitHero ()
 
       if (srecruitingHero.empty())
         accepted = true;
-      else
+      else if (city)
         accepted = srecruitingHero.emit(herotemplate, city, gold_needed);
 
       if (accepted) {

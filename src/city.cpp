@@ -479,6 +479,9 @@ void City::produceStrongestProductionBase()
 {
   debug("produceStrongestProductionBase()");
 
+  if (getNoOfProductionBases() == 0)
+    return;
+
   Stack* stack = getFreeStack(d_owner);
   if (stack)
     {
@@ -520,6 +523,9 @@ void City::produceScout()
 void City::produceWeakestProductionBase()
 {
   debug("produceWeakestProductionBase()");
+
+  if (getNoOfProductionBases() == 0)
+    return;
 
   Stack* stack = getFreeStack(d_owner);
   if (stack)
