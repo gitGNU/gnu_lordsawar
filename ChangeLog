@@ -1,3 +1,8 @@
+2008-07-28  Ben Asselstine
+
+	* fixed crashing bug when an initial hero shows up and the player
+	  doesn't have a capital city.
+
 2008-07-27  Ben Asselstine
 
 	* added new command-line option --stress-test.
