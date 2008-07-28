@@ -723,10 +723,337 @@ The player can only have one hero on a quest at any given time.
 	<title>Options</title> 
 <sect2 id="lordsawar-scenario-options">
 	<title>Scenario options</title> 
+<para>
+Here are the options that are settable at the start of a game:
+<figure id="gameoptions-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/game_options.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; game options window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<itemizedlist>
+<listitem>
+<para>View Enemies</para>
+<para>
+When this option is turned on, the player can right-click on enemy stacks in the large map screen and see their contents.
+</para>
+</listitem>
+<listitem>
+<para>View Production</para>
+<para>
+When this option is turned on, the player can right-click on enemy cities in the large map screen and see their production.
+</para>
+</listitem>
+<listitem>
+<para>Quests</para>
+<para>
+When this option is turned on, heroes can visit temples to obtain quests.
+</para>
+</listitem>
+<listitem>
+<para>Hidden Map</para>
+<para>
+When this option is turned on, the map is turned black and the player's stacks must explore the map to uncover it.  This option is also known as fog of war.
+</para>
+</listitem>
+<listitem>
+<para>Diplomacy</para>
+<para>
+When this option is turned on, the player is not automatically at war with all other players; instead some of them are allies and cannot be attacked without diplomatic consequences.
+</para>
+</listitem>
+<listitem>
+<para>Neutral Cities</para>
+<para>
+This option controls the behaviour of neutral cities.  This option can be one of three values:
+<itemizedlist>
+<listitem>
+<para>Average</para>
+<para>
+Neutral cities are manned by the weakest army unit they can produce.
+</para>
+</listitem>
+<listitem>
+<para>Strong</para>
+<para>
+Neutral cities are manned by the strongest army unit they can produce.
+</para>
+</listitem>
+<listitem>
+<para>Active</para>
+<para>
+Neutral cities start to produce army units after they resist an attacked by a player.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+<listitem>
+<para>Cusp Of War</para>
+<para>
+For this option to be available, the diplomacy option must first be turned on.
+When this option is turned on, all computer players will declare war on human players at an early stage within the game.
+</para>
+</listitem>
+<listitem>
+<para>Razing Cities</para>
+<para>
+This option governs when the player may raze cities.  It can have one of three values:
+<itemizedlist>
+<listitem>
+<para>Always Allowed</para>
+<para>
+The player can always raze cities.
+</para>
+</listitem>
+<listitem>
+<para>On Capture</para>
+<para>
+The player may only raze cities when it is conquered in battle.
+</para>
+</listitem>
+<listitem>
+<para>Never</para>
+<para>
+The player may never raze cities (not even in the city screen).
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+<listitem>
+<para>Intense Combat</para>
+<para>
+Use a slightly different calculation for battles that makes gaps in strength less evident.
+</para>
+</listitem>
+<listitem>
+<para>Quick Start</para>
+<para>
+Have each player start with many ciites (instead of just one), such that there are no unowned cities in the scenario.
+</para>
+</listitem>
+<listitem>
+<para>Military Advisor</para>
+<para>
+Make the military advisor available.  This means the player can get advice on a battle by pressing the Shift key and left-clicking on an adjacent target.
+</para>
+</listitem>
+<listitem>
+<para>Random Turns</para>
+<para>
+Change the order that the players get to take their turn.  This option changes the order every round of the game.
+</para>
+</listitem>
+</itemizedlist>
+</para>
 </sect2>
 </sect1>
 <sect1 id="lordsawar-keyboard-commands"> 
 	<title>Keyboard Commands</title> 
+<para>
+Here is a list of all of the keyboard shortcuts in &app;.  Please note that L means lowercase L, while Shift+L means uppercase L.
+</para>
+<itemizedlist>
+<listitem>
+<para>Alt+L</para>
+<para>
+Load a game.
+</para>
+</listitem>
+<listitem>
+<para>Alt+S</para>
+<para>
+Save game.
+</para>
+</listitem>
+<listitem>
+<para>I (the letter eye)</para>
+<para>
+Open the fight-order dialog.
+</para>
+</listitem>
+<listitem>
+<para>M</para>
+<para>
+Move all stacks that have a path set.
+</para>
+</listitem>
+<listitem>
+<para>X</para>
+<para>
+Change the contents of the sign the stack is standing on.
+</para>
+</listitem>
+<listitem>
+<para>Q</para>
+<para>
+Disband the selected stack.
+</para>
+</listitem>
+<listitem>
+<para>Escape</para>
+<para>
+Deselect the selected stack and don't come back to it.
+</para>
+</listitem>
+<listitem>
+<para>Enter</para>
+<para>
+Select the next stack in the list.
+</para>
+</listitem>
+<listitem>
+<para>R</para>
+<para>
+Resign from the game.
+</para>
+</listitem>
+<listitem>
+<para>A</para>
+<para>
+Show the Army Report.
+</para>
+</listitem>
+<listitem>
+<para>K</para>
+<para>
+Show the City Report.
+</para>
+</listitem>
+<listitem>
+<para>G</para>
+<para>
+Show the Gold Report.
+</para>
+</listitem>
+<listitem>
+<para>N</para>
+<para>
+Show the Production Report.
+</para>
+</listitem>
+<listitem>
+<para>W</para>
+<para>
+Show the Winning Report.
+</para>
+</listitem>
+<listitem>
+<para>D</para>
+<para>
+Show the Diplomacy Report.
+</para>
+</listitem>
+<listitem>
+<para>=</para>
+<para>
+Show the active quest.
+</para>
+</listitem>
+<listitem>
+<para>, (comma)</para>
+<para>
+Have the selected hero pick-up or drop items at this location.
+</para>
+</listitem>
+<listitem>
+<para>F</para>
+<para>
+Have the selected hero plant the player's standard at this location.
+</para>
+</listitem>
+<listitem>
+<para>U</para>
+<para>
+Show the hero levels dialog.
+</para>
+</listitem>
+<listitem>
+<para>Z</para>
+<para>
+Have the hero search this location.
+</para>
+</listitem>
+<listitem>
+<para>F11</para>
+<para>
+Toggle fullscreen mode.
+</para>
+</listitem>
+<listitem>
+<para>Ctrl+P</para>
+<para>
+Show the game preferences dialog.
+</para>
+</listitem>
+<listitem>
+<para>. (period)</para>
+<para>
+Show the ruin status dialog.
+</para>
+</listitem>
+<listitem>
+<para>O (the letter oh)</para>
+<para>
+Show the list of army unit types and their bonuses.
+</para>
+</listitem>
+<listitem>
+<para>T</para>
+<para>
+Show the list of items and their bonuses.
+</para>
+</listitem>
+<listitem>
+<para>S</para>
+<para>
+Show the bonuses of army units in the selected stack.
+</para>
+</listitem>
+<listitem>
+<para>H</para>
+<para>
+Show the historical report for cities.
+</para>
+</listitem>
+<listitem>
+<para>E</para>
+<para>
+Show the historical events report.
+</para>
+</listitem>
+<listitem>
+<para>J</para>
+<para>
+Show the historical gold report.
+</para>
+</listitem>
+<listitem>
+<para>Y</para>
+<para>
+Show the historical winning report.
+</para>
+</listitem>
+<listitem>
+<para>T</para>
+<para>
+Show some statistics regarding the player's battle record.
+</para>
+</listitem>
+<listitem>
+<para>Alt+E</para>
+<para>
+End the turn.
+</para>
+</listitem>
+</itemizedlist>
 </sect1>
 <sect1 id="lordsawar-multiplayer"> 
 	<title>Multi-player play</title> 
