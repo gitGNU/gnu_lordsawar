@@ -3,9 +3,9 @@
 http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
   <!ENTITY legal SYSTEM "legal.xml">
 <!ENTITY app "<application>LordsAwar!</application>">
-<!ENTITY appversion "0.1.0">
-<!ENTITY date "June 2008">
-<!ENTITY manrevision "0.1.0">
+<!ENTITY appversion "0.1.1">
+<!ENTITY date "July 2008">
+<!ENTITY manrevision "0.1.1">
 ]>
 
 <article id="index" lang="en"> 
@@ -148,7 +148,7 @@ Army units may not move through a foreign city without conquering it first.
 </sect2>
 <sect2 id="lordsawar-explain-the-city-screen">
 	<title>Explanation of the City screen </title> 
-<para>When the player left-clicks on the city the following screen is displayed:</para>
+<para>When the player left-clicks on a city the following screen is displayed:</para>
 <figure id="citywindow-fig">
 <screenshot>
 <mediaobject>
@@ -314,62 +314,391 @@ Some army units are not shown because they are not purchasable.  Special units l
 
 <sect1 id="lordsawar-units"> 
 	<title>Army Units</title> 
+<para>
+Army units are used to attack cities and other army units.  It is an important distinction of the game that all army units are not made alike.  One city might make Giants that have a strength of 5, while another city might produce Giants with a strength of 6.  Inspecting the statistics of an army unit will state the abilities of that particular army unit.
+</para>
 <sect2 id="lordsawar-how-to-read-a-units-stats">
 	<title>How to read an Army Unit's stats</title> 
+<para>
+When the player right-clicks on an army unit in a stack, the following information is popped up:
+<figure id="armyunitinfo-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/army_unit_info.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; army unit information.  Contains strength, maximum number of moves, as well as the number of moves left, and the number of gold pieces this unit costs per turn.  Also shown are the terrain capabilities of the army unit.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+
+<para>
+Here we can see a unit of Giants.  It fights with a strength of 5 (more strength is better), and has 18 movement points left of a maximum of 18.  The Giants cost the player 10 gold pieces per turn.
+</para>
+
+<para>
+Below the picture of the Giants, there is an image of mountains.  This means that this army unit moves more efficiently over hills.  Other terrain movement bonus pictures are: water, flight, forest, as well as forest/hills.
+</para>
+
+</para>
 </sect2>
 <sect2 id="lordsawar-units-what-kind-of-bonuses">
 	<title>Augmenting an Army Unit's stats</title> 
+<para>
+Army units can get medals for fighting with distinction in battle.  Each medal confers one point of strength to the wearer.
+</para>
+<para>
+Army units also have a fighting bonus that only take effect during battle.  For example, a unit of Giants fight more effectively in hills.  There are many varieties of fighting bonuses and they are all covered in more detail elsewhere in this manual.
+</para>
+<para>
+Army units can have a fortification bonus that is conferred after they are put into "defend" mode.  When the enemy sees a stack with the fortified bonus, it appears to be in a small tent or tower.  The fortification bonus is one point of strength per army unit during battle.  Fortification has the added feature of masking the true size of the stack in the field to the enemy.
+</para>
+<para>
+Army units can visit temples and get blessed.  The blessing confers a single point of strength upon the army unit.  An army unit can only be blessed once by a temple, but may visit many different temples for many blessings.
+</para>
+</sect2>
+<sect2 id="lordsawar-cities-vectoring">
+	<title>Vectoring</title> 
 </sect2>
 </sect1>
+<!-- ============= Combat ============================== -->
 <sect1 id="lordsawar-combat"> 
 	<title>Combat</title> 
+<para>
+Battles usually happen when attempting to capture a city, although it can also happen outside of a city "in the field" with one stack attacking another.
+</para>
 <sect2 id="lordsawar-entering-combat">
 	<title>Entering combat</title> 
-</sect2>
-<sect2 id="lordsawar-combat-stacks">
-	<title>Stacks</title> 
+<para>
+The player initiates combat by moving a stack to a tile immediately adjacent to a foreign city or a stack, and then attemping to move the stack onto the foreign city or stack.  The cursor will change from a pair of walking feet, into a sword or into a heart if the diplomacy game option is turned on, and the foreign stack or city is a friend).  More information about diplomacy can be found elsewhere in this manual.
+</para>
+<para>
+When attacking a city, the player needs to attack one of the four corners of the city; it doesn't make a difference if that corner contains an enemy stack or not.  All of the army units in the city will fight as a single force against the attacking stack.  When an army unit attacks another stack from a city, it only attacks with the other army units in it's stack, and not that of the entire city.
+</para>
+<para>
+There is a military advisor that can help the player decide if a given combat should be entered into or not.  After the stack has moved adjacent to it's target, and the cursor icon is a sword (or a heart), press the shift key; the cursor will change to a question mark.  When the player left-clicks when the question mark is being shown, the military advisor will prognosticate on the outcome.  Beware that the military advisor doesn't see the future, and is offfering advice that the player can choose to accept or ignore.
+The military advisor is a game option that has to be turned on when the game is created to be available in the game.
+</para>
 </sect2>
 <sect2 id="lordsawar-combat-order-of-battle">
 	<title>Fighting Order</title> 
 <para>
-...and order of dying.
+When combat is entered, all of the combatant army units line up for battle.  The two frontmost army units duel each other until one of them dies; the army unit that remains standing fights the next enemy army unit.  This continues until a player has no army units left to fight with.
+</para>
+<para>
+The player has some control over how the army units line up for battle: it is called the fight order.  The fight order is controlled by the army unit type of the combatants; this is why scouts often fight prior to heroes.  The fight order can be seen by opening up the fight order dialog:
+<figure id="fightorderdialog-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/fight_order.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; fight order dialog.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+To change the order of a given army unit type, drag and drop it to another place in the list.  Imagine your opponent's surprise when you protect your fodder units by having your elephants fight first!
 </para>
 </sect2>
 <sect2 id="lordsawar-combat-bonuses">
 	<title>Bonuses</title> 
+<para>
+Army units have other capabilities that are not shown when the player right-clicks on them.  One of these extra capabilities is the fighting bonus which can be seen in the Army Bonus dialog:
+<figure id="armybonusdialog-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/army_bonus.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; army bonus information.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+Whereas the Pikemen that are produced in a city might have a strength of 5, the standard Pikemen army unit has a strength of 4.  More importantly it has a strength bonus when fighting in the open (on grass, not in hills, forest, etc.).  All Pikemen have this fighting bonus, and the bonus is not shown anywhere except in this army bonus dialog.
+
+An army unit can have any of the following fighting bonuses:
+<itemizedlist>
+<listitem>
+<para>+1 str in open, +2 str in open</para>
+<para>
+The army unit is stronger when fighting while standing on grass.
+When the army unit is fighting on grass, it fights as an army unit that has one or two points more strength than it was produced with.
+</para>
+</listitem>
+<listitem>
+<para>+1 str in woods.</para>
+<para>
+The army unit is stronger when fighting while standing in a forest.
+When the army unit is fighting in the forest, it fights as an army unit that has one more point of strength than it was produced with.
+</para>
+</listitem>
+<listitem>
+<para>+1 str in hills.</para>
+The army unit is stronger when fighting while standing in hills.
+When the army unit is fighting in the hils, it fights as an army unit that has one more point of strength than it was produced with.
+<para>
+</para>
+</listitem>
+<listitem>
+<para>+1 str in city, +2 str in city.</para>
+The army unit is stronger when defending a city.
+When the army unit is fighting in a city, it fights as an army unit that has one or two more points of strength than it was produced with.
+<para>
+</para>
+</listitem>
+<listitem>
+<para>+1 stack in hills.</para>
+<para>
+All army units in the stack are stronger when fighting in the hills.
+When the army unit is fighting in the hills, all of the army units it is fighting with have one more point of strength than they were produced with.
+</para>
+</listitem>
+<listitem>
+<para>Cancel city bonus.</para>
+<para>
+The army unit nullfies the city bonus of any defenders.
+</para>
+</listitem>
+<listitem>
+<para>-1 enemy stack.</para>
+<para>
+This army unit nullifies one point of strength from each of the army units it is attacking.
+</para>
+</listitem>
+<listitem>
+<para>+1 stack, +2 stack.</para>
+<para>
+All army units in the stack are stronger when fighting.
+When the army unit is fighting, all of the army units it is fighting with have one more point of strength than they were produced with.
+</para>
+</listitem>
+<listitem>
+<para>cancel hero.</para>
+<para>
+This army unit nullifies any fighting bonuses an ememy Hero brings to the battle.
+</para>
+</listitem>
+<listitem>
+<para>cancel non-hero.</para>
+<para>
+This army unit nullifies any fighting bonuses an ememy army unit (except for a hero) brings to the battle.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</sect2>
+<sect2 id="lordsawar-combat-stacks">
+	<title>Stacks</title> 
+<para>
+Stack composition is a key factor in winning the game.  There is no such thing as the perfect stack in &app;; only an ideal stack for a given task.  The wise player will make careful choices about which army units will be included in any given stack.
+</para>
+<para>
+Generally it is best to maximize the total number of strength points in the stack.  However if a stack of strong army units cannot move very far, the player might be more wise to construct a weaker stack that will reach the target in a more timely manner.
+</para>
+<para>
+It generally makes sense to have army units that have city fighting bonuses to reside in cities.  The trade-off here is that these armies are unsuited to traveling overland to attack remote cities; the player also needs to create units that are offensively suited.  The player can only afford so many army units at any given time.
+</para>
 </sect2>
 <sect2 id="lordsawar-combat-example-in-field">
-	<title>example of combat in the field</title> 
+	<title>Example of combat in the field</title> 
 <para>
-...1 on 1 in the field.
+Here the yellow player wishes to attack the red player.  The yellow player has selected a stack that has one Orcish Mob unit.  The yellow player wishes to attack the enemy Light Infantry unit to the southeast.  Either the yellow player will succeed in destroying the red unit, or the yellow unit will die trying.
+<figure id="fight-one-on-one-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/fight_one_vs_one.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; scenario where one yellow stack is about to attack a red stack.
+They both have one army unit per stack.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+The yellow player commits to the battle by left-clicking on the red army unit withe sword cursor.  The battle ensues:
+<figure id="fighting-one-on-one-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/fighting_one_vs_one.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; fight window where one yellow stack is attacking a red stack.
+They both have one army unit per stack.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+Here is the fight screen.  The attacker is always depicted on the bottom of the fight window, while the defender is always shown on the top.  The shields of both players is shown, along with the army units fighting.  The progress bar indicates how many hitpoints each of the army units have left.  Every army unit has precisely two hitpoints, and strength is used as the main determinator if the aunit is hit or not.  In this battle each army unit has a single hitpoint left.
+</para>
+<para>
+The battle finishes, and the yellow unit of Orcish Mob fails to kill the unit of red's Light infantry.  The yellow player loses the unit of Orcish Mob:
+<figure id="fought-one-on-one-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/fought_one_vs_one.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; scenario where one red stack remains after a battle with yellow.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+</para>
 </para>
 </sect2>
 <sect2 id="lordsawar-combat-example-in-city">
-	<title>example of combat in a city</title> 
+	<title>Example of combat in a city</title> 
 <para>
-...1 on 1 in a city.
+Here the yellow player wishes to attack the red player.  The yellow player has selected a stack that has one Orcish Mob unit.  The yellow player wishes to attack the enemy city to the northwest.  Either the yellow player will succeed in capturing the red city, or the yellow unit will die trying.
+<figure id="fight-one-on-two-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/fight_city_one_vs_two.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; scenario where one yellow stack is about to attack a red city that contains a stack with 2 army units.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+The yellow player commits to the battle by left-clicking on the red city withe sword cursor.  The battle ensues:
+<figure id="fighting-one-on-two-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/fighting_city_one_vs_two.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; fight window where one yellow stack with one army unit is attacking a red stack with two army units.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+Here is the fight screen.  The Orcish mob has just dispatched one of the two army units; and hasn't lost a single hitpoint in doing so.  The battle is down to a single unit of Light Calvary, and a single unit of Orcish Mob.
 </para>
-</sect2>
-<sect2 id="lordsawar-combat-another-example-in-city">
-	<title>another example of combat in a city</title> 
 <para>
-...8 on 32 in a city.
+The battle finishes, and the yellow unit of Orcish Mob succeeds in killing the final Light Cavalry unit.  The yellow player captures the city:
+<figure id="fought-one-on-two-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/fought_city_one_vs_two.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; scenario where the yellow player has just captured one of red's cities.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+</para>
 </para>
 </sect2>
 </sect1>
+<!-- ============= Heroes ============================== -->
 <sect1 id="lordsawar-heroes"> 
 	<title>Heroes</title> 
 <para>
-how to get more heroes?
+Heroes are special army units that can do fun and interesting things in &app;.  Every player starts out with a single hero that will carry that player's battle standard.  Subsequent heroes may emerge during the course of the game; their showing up will cost the player gold pieces, and they may have some allies who accompany them.  Typically new heroes will not offer their services to players who do not have many gold pieces in their treasury.
 </para>
 <sect2 id="lordsawar-heroes-why-they-rock">
 	<title>Using Heroes to your advantage</title> 
+<para>
+Heroes have a command bonus that gives a strength bonus to all other army units fighting in the hero's stack.  The command bonus increases for more experienced heroes.  It is a good strategy to have other army units to travel with heroes.
+</para>
+<para>
+Heroes can increase levels as experience is gained in battle.  When a new level is attained a hero can increase it's strength, it's movement points, or it's sight (when playing a scenario with fog of war).  Powerful heroes are hard to kill, and are often targeted by other players.
+</para>
+<para>
+Heroes can find and carry useful items.  Items can give the hero more strength in battle, or a larger command bonus; they can also give the player a gold bonus (per city), or double the movement of all army units in the hero's stack, or give the stack the gift of flight.  Heroes can drop items to give to other heroes.  A wise player will distribute powerful objects among heroes.
+</para>
+<para>
+Heroes can make special use of the player's battle standard; it can be planted in the ground and army units can be vectored to it from far-off cities.  This can only be done with the player's own standard, and not with a standard belonging to an opponent.  It is good strategy to retain ownership of the player's battle standard, so that it can be employed at a crucial stage of the game.
+</para>
+<para>Unlike other army units, heroes do not cost the player anything to keep per turn.</para>
 </sect2>
 <sect2 id="lordsawar-heroes-exploring ruins">
 	<title>Exploring ruins</title> 
+<para>
+Ruins appear as white dots on the miniature map, and as a grey stone building occupying one tile on the large map screen.  Heroes can visit ruins and explore them; this is accomplished by moving the hero's stack onto the ruin, and clicking the search button.
+</para>
+<para>
+It is a dangerous thing for a hero to search a ruin!  The hero will likely encounter a monster, and the hero may or may not survive the battle.  Successfully exploring a ruin will yield a treasure to the hero.  The hero will sometimes be rewarded  with gold pieces, sometimes with a magical item, and sometimes with powerful ally army units.
+Once a ruin is explored, it cannot be explored again.
+</para>
 </sect2>
 <sect2 id="lordsawar-heroes-quests">
 	<title>Going on Quests</title> 
+<para>
+Heroes can visit temples and obtain quests.  Temples appear as white dots on the miniature map, and as a brown shrine occupying one tile on the large map screen.  A temple is visited by moving the hero's stack onto the temple and then clicking the search button.
+</para>
+<para>
+A quest is a mission to complete a particular task in the game.  The hero is well rewarded for completing a quest.  Quests come in many varieties:
+<itemizedlist>
+<listitem>
+<para>Hero Assassination Quest</para>
+<para>
+The hero is tasked with dispatching another hero in the game.
+</para>
+</listitem>
+<listitem>
+<para>Kill Enemy Stacks Quest</para>
+<para>
+The hero is tasked with killing a specific number of a specific player's army units.
+</para>
+</listitem>
+<listitem>
+<para>City Occupation Quest</para>
+<para>
+The hero is tasked with capturing a particular city, and occupying it.
+</para>
+</listitem>
+<listitem>
+<para>City Sacking Quest</para>
+<para>
+The hero is tasked with capturing a particular city, and sacking it.
+</para>
+</listitem>
+<listitem>
+<para>City Razing Quest</para>
+<para>
+The hero is tasked with capturing a particular city, and razing it.
+</para>
+</listitem>
+<listitem>
+<para>Kill Army Unit Type Quest</para>
+<para>
+The hero is tasked with killing a particular kind of army unit -- e.g. a unit of Ghosts.  The army unit can belong to any player.
+</para>
+</listitem>
+<listitem>
+<para>Plunder Quest</para>
+<para>
+The hero is tasked with plundering a specific amount of gold pieces by pillaging and sacking cities.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+<para>
+Upon completing a quest, the hero is rewarded with a large number of gold pieces, or a magical item, or some powerful allies.
+</para>
+<para>
+Some quests can expire, freeing the hero to obtain another quest.
+</para>
+<para>
+The player can only have one hero on a quest at any given time.
+</para>
 </sect2>
 </sect1>
 <sect1 id="lordsawar-movement"> 
