@@ -703,14 +703,58 @@ The player can only have one hero on a quest at any given time.
 </sect1>
 <sect1 id="lordsawar-movement"> 
 	<title>Movement</title> 
+<para>
+Every army unit has a number of movement points that get replenished every turn.  These army units are arranged into stacks, and they move over various kinds of terrain on the map.  The army unit in the stack that has the lowest number of movement points governs how far the stack can move.  Army units can have terrain bonsues that help the stack move more effectively over a specific kind of terrain.
+</para>
 <sect2 id="lordsawar-movement-over-land">
 	<title>Traveling over land</title> 
 <para>
-Stacks are usually moved over land, and movement can be slower or faster depending on the kind of terrain the stack is moving on.  Stacks can usually move through hills, swamp, and forest at a slower rate, than on grass.  Some stacks may have army units that provide a movement bonus that makes the whole stack move faster through forest, or hills.  Stacks cannot move through mountains at all, unless the stack can fly.  The fastest mode of travel is always on a road or in a city.
+Stacks are usually moved over land, and movement can be more effective or less effective depending on the kind of terrain the stack is moving on.  The different kinds of terrain are:
+<itemizedlist>
+<listitem>roads,</listitem>
+<listitem>hills,</listitem>
+<listitem>swamp,</listitem>
+<listitem>forest,</listitem>
+<listitem>grass,</listitem>
+<listitem>water,</listitem>
+<listitem>and mountains.</listitem>
+</itemizedlist>
+</para>
+<para>
+Stacks that move on roads, or cities move with the greatest ease.  Grass is the next easiest terrain feature to move through.  Some stacks may have army units that provide a movement bonus that makes the whole stack move faster through forest, or hills.  Mountains are usually impassable, unless the stack can fly.  Swamps are always difficult to move through.
 </para>
 </sect2>
 <sect2 id="lordsawar-movement-over-water">
 	<title>Traveling over water</title> 
+<para>
+Naval operations can be a crucial avenue to victory in the game.  To begin naval operations, simply move a stack into the water.  The stack's remaining movement points will be completely sapped with the effort of putting into the water.  During the next turn, the stack will have 18 movement points; this is how far a boat can move in &app;.  When the stack eventually moors back onto land, all of the remaining movement points will again be sapped with the effort.
+</para>
+<para>
+Stacks can get into and out of the water at different places on the map:
+<itemizedlist>
+<listitem>
+at a city that is adjacent to water,
+</listitem>
+<listitem>
+at a port (a black anchor on the map),
+</listitem>
+<listitem>
+and at a bridge.
+</listitem>
+</itemizedlist>
+</para>
+<para>
+Battle on the open seas is an encumbering experience for land-loving army units!  Those army units fight with similar effectiveness when on a boat.  Flying units will fight with their regular veracity, not being encumbered by the walls of a ship.
+</para>
+<para>
+When a hero dies on the water, the items belonging to that hero are lost to the sea forever.
+</para>
+</sect2>
+<sect2 id="lordsawar-resting-bonus">
+	<title>Resting</title> 
+<para>
+There is a resting bonus that gives a stack more movement points if it didn't use all of it's movement points in the previous turn.  If a stack has 2 or more movement points at the end of the player's turn it receives 2 extra movement points next turn.  If a stack has 1 movement point at the end of the player's turn, it retains that point into the next turn.
+</para>
 </sect2>
 </sect1>
 <sect1 id="lordsawar-diplomacy"> 
