@@ -27,6 +27,7 @@
 #include <sigc++/signal.h>
 
 #include "network-common.h"
+#include "game-client-decoder.h"
 
 class NetworkServer;
 class Participant;
@@ -35,7 +36,7 @@ class NetworkHistory;
 class Player;
 class XML_Helper;
 
-class GameServer: public sigc::trackable
+class GameServer: public GameClientDecoder 
 {
 public:
         
@@ -61,8 +62,8 @@ private:
   void onHistoryDone(NetworkHistory *history);
 
   void join(void *conn, Player *player);
-  void gotActions(void *conn, const std::string &payload);
-  void gotHistory(void *conn, const std::string &payload);
+  void gotRemoteActions(void *conn, const std::string &payload);
+  void gotRemoteHistory(void *conn, const std::string &payload);
 
   void sendMap(Participant *part);
   void sendActions(Participant *part);

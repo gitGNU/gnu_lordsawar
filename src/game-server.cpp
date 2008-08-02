@@ -103,7 +103,7 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_SENDING_ACTIONS:
-    gotActions(conn, payload);
+    gotRemoteActions(conn, payload);
     break;
 
   case MESSAGE_TYPE_SENDING_MAP:
@@ -111,7 +111,7 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_SENDING_HISTORY:
-    gotHistory(conn, payload);
+    gotRemoteHistory(conn, payload);
     break;
 
   case MESSAGE_TYPE_P1_JOIN:
@@ -255,12 +255,20 @@ void GameServer::join(void *conn, Player *player)
   client_connected.emit(player);
 }
 
-void GameServer::gotActions(void *conn, const std::string &payload)
+void GameServer::gotRemoteActions(void *conn, const std::string &payload)
 {
+  gotActions(payload);
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    network_server->send((*i)->conn, MESSAGE_TYPE_SENDING_ACTIONS, payload);
 }
 
-void GameServer::gotHistory(void *conn, const std::string &payload)
+void GameServer::gotRemoteHistory(void *conn, const std::string &payload)
 {
+  gotHistories(payload);
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    network_server->send((*i)->conn, MESSAGE_TYPE_SENDING_HISTORY, payload);
 }
 
 void GameServer::sendMap(Participant *part)

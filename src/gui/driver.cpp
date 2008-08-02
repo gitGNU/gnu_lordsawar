@@ -230,7 +230,6 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g)
       }
 
   GameServer::getInstance()->start(LORDSAWAR_PORT);
-  GameClient::getInstance()->start("127.0.0.1", LORDSAWAR_PORT);
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, true));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   int response = game_lobby_dialog->run();
