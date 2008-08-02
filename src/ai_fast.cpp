@@ -494,7 +494,7 @@ bool AI_Fast::computerTurn()
 
 	    // now we need to choose. If we found a target, attack it, otherwise
 	    // attack the closest city.
-	    Vector<int> pos;
+	    Vector<int> pos = Vector<int>(-1,-1);
 	    if (target)
 	      {
 		pos = target->getClosestPoint(s->getPos());
@@ -504,16 +504,15 @@ bool AI_Fast::computerTurn()
 	      {
 		Citylist *cl = Citylist::getInstance();
 		City *enemy_city = cl->getNearestForeignCity(s->getPos());
-		pos  = enemy_city->getPos();
-		debug("Maniac, found no targets, attacking city " << enemy_city->getName() << " at (" <<pos.x <<"," <<pos.y <<")")
+		if (enemy_city)
+		  {
+		    pos  = enemy_city->getPos();
+		    debug("Maniac, found no targets, attacking city " << enemy_city->getName() << " at (" <<pos.x <<"," <<pos.y <<")")
+		  }
 	      }
 
 	    if (pos == Vector<int>(-1,-1))
-	      {
-		debug("Maniac, failure to calc point")
-		exit (1);
-		return false;
-	      }
+	      return false;
 
 	    int mp = s->getPath()->calculate(s, pos);
 	    if (mp > 0)
@@ -523,8 +522,8 @@ bool AI_Fast::computerTurn()
 		      //mp, s->getGroupMoves());
 		bool moved = stackMove(s);
 		//printf("result of move: %d\n", moved);
-	      stack_moved |= moved;
-	      s = d_stacklist->getActivestack();
+		stack_moved |= moved;
+		s = d_stacklist->getActivestack();
 	      }
 	    else
 	      {
