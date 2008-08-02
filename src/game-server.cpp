@@ -74,7 +74,7 @@ GameServer::~GameServer()
     delete *i;
 }
 
-void GameServer::start()
+void GameServer::start(int port)
 {
   if (network_server->isListening())
     return;
@@ -84,7 +84,6 @@ void GameServer::start()
   network_server->connection_lost.connect
     (sigc::mem_fun(this, &GameServer::onConnectionLost));
 
-  int port = LORDSAWAR_PORT;
   network_server->startListening(port);
 
   listenForActions();

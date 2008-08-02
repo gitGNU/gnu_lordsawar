@@ -45,7 +45,7 @@ public:
   //! Deletes the singleton instance.
   static void deleteInstance();
 
-  void start();
+  void start(int port);
 
   sigc::signal<void, Player*> client_disconnected;
   sigc::signal<void, Player*> client_connected;

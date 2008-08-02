@@ -377,28 +377,45 @@ void GameWindow::init(int width, int height)
 
 void GameWindow::new_game(GameScenario *game_scenario)
 {
-    stop_game();
+  bool success = false;
+  stop_game();
 
-    bool success = setup_game(game_scenario);
-    if (!success)
-      return;
-    setup_signals(game_scenario);
-    game->startGame();
-    //FIXME: we don't get here until the game ends.
-    //is that right?
+  switch (game_scenario->getPlayMode())
+    {
+    case GameScenario::HOTSEAT:
+      success = setup_game(game_scenario); break;
+    case GameScenario::NETWORKED:
+      success = setup_network_game(game_scenario, LORDSAWAR_PORT); break;
+    case GameScenario::PLAY_BY_MAIL:
+      success = setup_game(game_scenario); break;
+    }
+  if (!success)
+    return;
+  setup_signals(game_scenario);
+  game->startGame();
+  //we don't get here until the game ends.
 }
 
 void GameWindow::load_game(GameScenario *game_scenario)
 {
-    bool success = setup_game(game_scenario);
-    if (!success)
-      return;
-    setup_signals(game_scenario);
-    game->loadGame();
-    //FIXME: we don't get here until the game ends.
-    //is that right?
-    if (Playerlist::getInstance()->countPlayersAlive())
-      game->redraw();
+  bool success = false;
+  switch (game_scenario->getPlayMode())
+    {
+    case GameScenario::HOTSEAT:
+      success = setup_game(game_scenario); break;
+    case GameScenario::NETWORKED:
+      success = setup_network_game(game_scenario, LORDSAWAR_PORT); break;
+    case GameScenario::PLAY_BY_MAIL:
+      success = setup_game(game_scenario); break;
+    }
+  if (!success)
+    return;
+
+  setup_signals(game_scenario);
+  game->loadGame();
+  //we don't get here until the game ends.
+  if (Playerlist::getInstance()->countPlayersAlive())
+    game->redraw();
 }
 
 void GameWindow::setup_button(Gtk::Button *button,
@@ -724,6 +741,20 @@ void GameWindow::update_diplomacy_button (bool sensitive)
       return;
     }
   diplomacy_button->set_sensitive(sensitive);
+}
+
+bool GameWindow::setup_network_game(GameScenario *game_scenario, int port)
+{
+  Playerlist::getInstance()->instantiateArmysetPixmaps();
+  GameMap::getInstance()->instantiatePixmaps();
+
+  Sound::getInstance()->haltMusic(false);
+  Sound::getInstance()->enableBackground();
+
+  game.reset(new Game(game_scenario, port));
+
+  show_shield_turn();
+  return true;
 }
 
 bool GameWindow::setup_game(GameScenario *game_scenario)

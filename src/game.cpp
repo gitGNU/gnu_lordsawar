@@ -131,7 +131,7 @@ void Game::addPlayer(Player *p)
 
 #include "game-server.h"
 
-Game::Game(GameScenario* gameScenario)
+Game::Game(GameScenario* gameScenario, int port)
     : d_gameScenario(gameScenario) 
 {
     current_game = this;
@@ -141,7 +141,7 @@ Game::Game(GameScenario* gameScenario)
       {
       case GameScenario::HOTSEAT: break;
       case GameScenario::NETWORKED:
-				  GameServer::getInstance()->start(); break;
+	GameServer::getInstance()->start(port); break;
       case GameScenario::PLAY_BY_MAIL: 
 				  PbmGameServer::getInstance()->start(); break;
       }
