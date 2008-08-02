@@ -43,6 +43,25 @@ struct Participant
   std::list<NetworkHistory *> histories;
 };
 
+GameServer * GameServer::s_instance = 0;
+
+
+GameServer* GameServer::getInstance()
+{
+    if (s_instance == 0)
+        s_instance = new GameServer();
+
+    return s_instance;
+}
+
+void GameServer::deleteInstance()
+{
+    if (s_instance)
+        delete s_instance;
+
+    s_instance = 0;
+}
+
 
 GameServer::GameServer()
 {

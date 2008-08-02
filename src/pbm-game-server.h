@@ -33,13 +33,19 @@ class PbmGameServer: public sigc::trackable
 {
 public:
         
-  PbmGameServer();
-  ~PbmGameServer();
+  //! Returns the singleton instance.  Creates a new one if neccessary.
+  static PbmGameServer * getInstance();
+
+  //! Deletes the singleton instance.
+  static void deleteInstance();
 
   void start();
 
   bool endTurn(std::string turnfile, bool &broken);
   
+protected:
+  PbmGameServer();
+  ~PbmGameServer();
 private:
   std::list<NetworkAction*> d_actions;
   std::list<NetworkHistory*> d_histories;
@@ -51,6 +57,9 @@ private:
   void clearNetworkActionlist();
   void clearNetworkHistorylist();
   bool dumpActionsAndHistories(XML_Helper *helper);
+
+  //! A static pointer for the singleton instance.
+  static PbmGameServer * s_instance;
 };
 
 #endif

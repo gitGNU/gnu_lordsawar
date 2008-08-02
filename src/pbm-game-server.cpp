@@ -31,6 +31,25 @@
 #include "Configuration.h"
 
 
+PbmGameServer * PbmGameServer::s_instance = 0;
+
+
+PbmGameServer* PbmGameServer::getInstance()
+{
+    if (s_instance == 0)
+        s_instance = new PbmGameServer();
+
+    return s_instance;
+}
+
+void PbmGameServer::deleteInstance()
+{
+    if (s_instance)
+        delete s_instance;
+
+    s_instance = 0;
+}
+
 PbmGameServer::PbmGameServer()
 {
 }

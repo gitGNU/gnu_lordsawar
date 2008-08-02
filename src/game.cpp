@@ -129,12 +129,7 @@ void Game::addPlayer(Player *p)
     (p->cityfight_finished.connect (sigc::mem_fun(*this, &Game::on_city_fight_finished))); 
 }
 
-PbmGameServer *pbm_game_server = 0;
-#define NETWORK_TESTING 1
-
 #include "game-server.h"
-
-GameServer *game_server = 0;
 
 Game::Game(GameScenario* gameScenario)
     : d_gameScenario(gameScenario) 
@@ -142,12 +137,14 @@ Game::Game(GameScenario* gameScenario)
     current_game = this;
     input_locked = false;
 
-#if NETWORK_TESTING
-    game_server = new GameServer();
-    game_server->start();
-#endif
-    pbm_game_server = new PbmGameServer();
-    pbm_game_server->start();
+    switch (gameScenario->getPlayMode())
+      {
+      case GameScenario::HOTSEAT: break;
+      case GameScenario::NETWORKED: 
+				  GameServer::getInstance()->start(); break;
+      case GameScenario::PLAY_BY_MAIL: 
+				  PbmGameServer::getInstance()->start(); break;
+      }
     
     // init the bigmap
     bigmap.reset(new GameBigMap
@@ -1282,8 +1279,7 @@ bool Game::saveTurnFile(std::string turnfile)
 {
   bool broken;
   //trigger the GameServer to spit out a set of networkactions and networkhistory events for the active player, into a file.
-  if (pbm_game_server && 
-      d_gameScenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
-    pbm_game_server->endTurn(turnfile, broken);
+  if (d_gameScenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
+    PbmGameServer::getInstance()->endTurn(turnfile, broken);
   return true;
 }

@@ -465,7 +465,6 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
     }
   Glib::ustring s = String::ucompose(_("Now send the saved-game file to %1"),
 				     player_name);
-  printf("here\n");
   TimedMessageDialog dialog(*splash_window->get_window(), s, 0);
   dialog.run();
   dialog.hide();

@@ -39,13 +39,20 @@ class GameServer: public sigc::trackable
 {
 public:
         
-  GameServer();
-  ~GameServer();
+  //! Returns the singleton instance.  Creates a new one if neccessary.
+  static GameServer * getInstance();
+
+  //! Deletes the singleton instance.
+  static void deleteInstance();
 
   void start();
 
   sigc::signal<void, Player*> client_disconnected;
   sigc::signal<void, Player*> client_connected;
+
+protected:
+  GameServer();
+  ~GameServer();
 
 private:
   void listenForActions();
@@ -75,6 +82,9 @@ private:
   void clearNetworkHistorylist(std::list<NetworkHistory*> histories);
   bool dumpActionsAndHistories(XML_Helper *helper);
   bool dumpActionsAndHistories(XML_Helper *helper, Player *player);
+
+  //! A static pointer for the singleton instance.
+  static GameServer * s_instance;
 };
 
 #endif
