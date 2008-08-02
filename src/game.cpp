@@ -140,7 +140,7 @@ Game::Game(GameScenario* gameScenario)
     switch (gameScenario->getPlayMode())
       {
       case GameScenario::HOTSEAT: break;
-      case GameScenario::NETWORKED: 
+      case GameScenario::NETWORKED:
 				  GameServer::getInstance()->start(); break;
       case GameScenario::PLAY_BY_MAIL: 
 				  PbmGameServer::getInstance()->start(); break;

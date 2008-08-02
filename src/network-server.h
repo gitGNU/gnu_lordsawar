@@ -36,6 +36,7 @@ public:
   NetworkServer();
   ~NetworkServer();
 
+  bool isListening();
   void startListening(int port);
   void send(void *conn, MessageType type, const std::string &payload);
 

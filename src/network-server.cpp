@@ -85,3 +85,10 @@ void NetworkServer::onConnectionLost(NetworkConnection *conn)
 {
   delete conn;
 }
+  
+bool NetworkServer::isListening()
+{
+  if (server)
+    return true;
+  return false;
+}

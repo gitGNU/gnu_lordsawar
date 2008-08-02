@@ -76,6 +76,8 @@ GameServer::~GameServer()
 
 void GameServer::start()
 {
+  if (network_server->isListening())
+    return;
   network_server.reset(new NetworkServer());
   network_server->got_message.connect
     (sigc::mem_fun(this, &GameServer::onGotMessage));
