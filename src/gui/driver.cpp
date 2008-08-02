@@ -49,6 +49,8 @@
 
 #include "../game-client.h"
 #include "../pbm-game-client.h"
+#include "../game-server.h"
+#include "../pbm-game-server.h"
 #include "../NextTurnPbm.h"
 #include "../pbm/pbm.h"
 
@@ -313,6 +315,8 @@ void Driver::on_game_ended()
     game_window.reset();
     GameClient::deleteInstance();
     PbmGameClient::deleteInstance();
+    GameServer::deleteInstance();
+    PbmGameServer::deleteInstance();
 
     GraphicsCache::deleteInstance();
 
