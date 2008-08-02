@@ -236,6 +236,8 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g)
   game_lobby_dialog->hide();
   if (splash_window.get())
     splash_window->show();
+  if (response != 0)
+    GameServer::deleteInstance();
 }
 
 void Driver::on_new_remote_network_game_requested(std::string host, unsigned short port)
@@ -256,6 +258,8 @@ void Driver::on_remote_game_scenario_received(std::string filename)
   game_lobby_dialog->hide();
   if (splash_window.get())
     splash_window->show();
+  if (response != 0)
+    GameClient::deleteInstance();
   }
 
 void Driver::on_new_game_requested(GameParameters g)
