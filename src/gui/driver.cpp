@@ -52,9 +52,6 @@
 #include "../NextTurnPbm.h"
 #include "../pbm/pbm.h"
 
-static GameClient *game_client = 0;
-static PbmGameClient *pbm_game_client = 0;
-
 Driver::Driver(std::string load_filename)
 {
     splash_window.reset(new SplashWindow);
@@ -138,7 +135,7 @@ void Driver::run()
     }
   else if (Main::instance().start_network_test) 
     {
-      game_client = new GameClient();
+      GameClient *game_client = GameClient::getInstance();
       game_client->game_scenario_received.connect
 	(sigc::mem_fun(this, &Driver::on_load_requested));
       game_client->start("localhost", LORDSAWAR_PORT);
@@ -147,7 +144,7 @@ void Driver::run()
     }
   else if (Main::instance().turn_filename != "") 
     {
-      pbm_game_client = new PbmGameClient();
+      PbmGameClient *pbm_game_client = PbmGameClient::getInstance();
       GameScenario *game_scenario = load_game(d_load_filename);
       if (game_scenario == NULL)
 	return;
@@ -214,7 +211,7 @@ Driver::~Driver()
 {
 }
 
-void Driver::on_new_hosted_network_game_requested(GameParameters g, bool has_ops)
+void Driver::on_new_hosted_network_game_requested(GameParameters g)
 {
     if (splash_window.get())
 	splash_window->hide();
@@ -230,7 +227,7 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, bool has_ops
 	return;
       }
 
-  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, has_ops));
+  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, true));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   int response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
@@ -238,17 +235,25 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, bool has_ops
     splash_window->show();
 }
 
-void Driver::on_new_remote_network_game_requested(std::string filename, bool has_ops)
+void Driver::on_new_remote_network_game_requested(std::string host, unsigned short port)
 {
   if (splash_window.get())
     splash_window->hide();
-  game_lobby_dialog.reset(new GameLobbyDialog(filename, has_ops));
+  GameClient *game_client = GameClient::getInstance();
+  game_client->game_scenario_received.connect
+    (sigc::mem_fun(*this, &Driver::on_remote_game_scenario_received));
+  game_client->start(host, port);
+}
+  
+void Driver::on_remote_game_scenario_received(std::string filename)
+{
+  game_lobby_dialog.reset(new GameLobbyDialog(filename, false));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   int response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
   if (splash_window.get())
     splash_window->show();
-}
+  }
 
 void Driver::on_new_game_requested(GameParameters g)
 {
@@ -306,6 +311,8 @@ void Driver::on_game_ended()
 {
     game_window->hide();
     game_window.reset();
+    GameClient::deleteInstance();
+    PbmGameClient::deleteInstance();
 
     GraphicsCache::deleteInstance();
 

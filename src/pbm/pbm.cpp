@@ -68,7 +68,7 @@ void pbm::init(std::string save_game_file)
 void pbm::run(std::string save_game_file, std::string turn_file)
 {
   bool broken = false;
-  PbmGameClient *pbm_game_client = new PbmGameClient();
+  PbmGameClient *pbm_game_client = PbmGameClient::getInstance();
   GameScenario* game_scenario = new GameScenario(save_game_file, broken);
   if (game_scenario == NULL)
     return;
@@ -93,5 +93,5 @@ void pbm::run(std::string save_game_file, std::string turn_file)
     {
       game_scenario->saveGame(save_game_file);
     }
-  delete pbm_game_client;
+  pbm_game_client->deleteInstance();
 }

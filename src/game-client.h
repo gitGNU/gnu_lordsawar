@@ -38,16 +38,23 @@ class Player;
 class GameClient: public GameClientDecoder
 {
 public:
-  GameClient();
-  ~GameClient();
+        
+  //! Returns the singleton instance.  Creates a new one if neccessary.
+  static GameClient* getInstance();
 
-  void setPlayerId(int id) {player_id = id;};
+  //! Deletes the singleton instance.
+  static void deleteInstance();
 
   void start(std::string host, int port);
+  void startAsPlayer(std::string host, int port, int id);
 
   sigc::signal<void> client_connected;
   sigc::signal<void> client_disconnected;
   
+protected:
+  GameClient();
+  ~GameClient();
+
 private:
   std::auto_ptr<NetworkConnection> network_connection;
   int player_id;
@@ -55,6 +62,9 @@ private:
   void onConnected();
   void onConnectionLost();
   void onGotMessage(MessageType type, std::string message);
+
+  //! A static pointer for the singleton instance.
+  static GameClient * s_instance;
 };
 
 #endif

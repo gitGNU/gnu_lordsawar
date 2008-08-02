@@ -31,6 +31,26 @@
 
 
 
+PbmGameClient * PbmGameClient::s_instance = 0;
+
+
+PbmGameClient* PbmGameClient::getInstance()
+{
+    if (s_instance == 0)
+        s_instance = new PbmGameClient();
+
+    return s_instance;
+}
+
+void PbmGameClient::deleteInstance()
+{
+    if (s_instance)
+        delete s_instance;
+
+    s_instance = 0;
+}
+
+
 PbmGameClient::PbmGameClient()
 {
 }

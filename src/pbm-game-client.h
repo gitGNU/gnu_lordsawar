@@ -37,12 +37,21 @@ class Player;
 class PbmGameClient: public GameClientDecoder
 {
 public:
-  PbmGameClient();
-  ~PbmGameClient();
+  //! Returns the singleton instance.  Creates a new one if neccessary.
+  static PbmGameClient* getInstance();
+
+  //! Deletes the singleton instance.
+  static void deleteInstance();
 
   bool loadWithHelper(XML_Helper &helper, Player *player);
 
+protected:
+  PbmGameClient();
+  ~PbmGameClient();
+
 private:
+  //! A static pointer for the singleton instance.
+  static PbmGameClient * s_instance;
 
 };
 

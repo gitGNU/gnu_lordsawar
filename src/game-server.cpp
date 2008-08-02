@@ -126,6 +126,10 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     join(conn, Playerlist::getInstance()->getPlayer(7));
     break;
 
+  case MESSAGE_TYPE_VIEWER_JOIN:
+    join(conn, NULL);
+    break;
+
   }
 }
 

@@ -30,6 +30,24 @@
 #include "xmlhelper.h"
 
 
+GameClient * GameClient::s_instance = 0;
+
+
+GameClient* GameClient::getInstance()
+{
+    if (s_instance == 0)
+        s_instance = new GameClient();
+
+    return s_instance;
+}
+
+void GameClient::deleteInstance()
+{
+    if (s_instance)
+        delete s_instance;
+
+    s_instance = 0;
+}
 
 GameClient::GameClient()
 {
@@ -40,7 +58,7 @@ GameClient::~GameClient()
 {
 }
 
-void GameClient::start(std::string host, int port)
+void GameClient::startAsPlayer(std::string host, int port, int id) 
 {
   network_connection.reset(new NetworkConnection());
   network_connection->connected.connect(
@@ -50,6 +68,12 @@ void GameClient::start(std::string host, int port)
   network_connection->got_message.connect(
     sigc::mem_fun(this, &GameClient::onGotMessage));
 
+  network_connection->connectToHost(host, port);
+};
+
+void GameClient::start(std::string host, int port)
+{
+  player_id = -1;
   network_connection->connectToHost(host, port);
 }
 
@@ -88,6 +112,7 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
       case 5: type = MESSAGE_TYPE_P6_JOIN; break;
       case 6: type = MESSAGE_TYPE_P7_JOIN; break;
       case 7: type = MESSAGE_TYPE_P8_JOIN; break;
+      case -1: type = MESSAGE_TYPE_VIEWER_JOIN; break;
       default:
 	      return;
       }
@@ -110,6 +135,7 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
   case MESSAGE_TYPE_P6_JOIN:
   case MESSAGE_TYPE_P7_JOIN:
   case MESSAGE_TYPE_P8_JOIN:
+  case MESSAGE_TYPE_VIEWER_JOIN:
     // FIXME: faulty server
     break;
 
