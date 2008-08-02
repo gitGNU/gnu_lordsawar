@@ -125,6 +125,12 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     
   case MESSAGE_TYPE_SENDING_MAP:
     gotScenario(payload);
+    if (player_id > -1)
+      {
+	Player *player = Playerlist::getInstance()->getPlayer(player_id);
+	listenForActions(player);
+	listenForHistories(player);
+      }
     break;
 
   case MESSAGE_TYPE_P1_JOIN:
@@ -144,5 +150,94 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     break;
     
   }
+}
+
+void GameClient::listenForActions(Player *player)
+{
+  if (!player)
+    return;
+  player->acting.connect(sigc::mem_fun(this, &GameClient::onActionDone));
+}
+
+void GameClient::listenForHistories(Player *player)
+{
+  if (!player)
+    return;
+ player->history_written.connect(sigc::mem_fun(this, &GameClient::onHistoryDone));
+}
+
+void GameClient::clearNetworkActionlist(std::list<NetworkAction*> actions)
+{
+    for (std::list<NetworkAction*>::iterator it = actions.begin();
+        it != actions.end(); it++)
+      {
+	delete (*it);
+      }
+    actions.clear();
+}
+
+void GameClient::clearNetworkHistorylist(std::list<NetworkHistory*> histories)
+{
+    for (std::list<NetworkHistory*>::iterator it = histories.begin();
+        it != histories.end(); it++)
+      {
+	delete (*it);
+      }
+    histories.clear();
+}
+
+void GameClient::onHistoryDone(NetworkHistory *history)
+{
+  std::string desc = history->toString();
+  std::cerr << "Game Client got " << desc <<"\n";
+
+  histories.push_back(history);
+  sendHistories();
+  clearNetworkHistorylist(histories);
+}
+
+void GameClient::onActionDone(NetworkAction *action)
+{
+  std::string desc = action->toString();
+  std::cerr << "Game Client got " << desc <<"\n";
+
+  actions.push_back(action);
+  sendActions();
+  clearNetworkActionlist(actions);
+
+}
+void GameClient::sendActions()
+{
+  std::ostringstream os;
+  XML_Helper helper(&os);
+
+  helper.begin("1");
+  helper.openTag("actions");
+
+  for (std::list<NetworkAction *>::iterator i = actions.begin(),
+       end = actions.end(); i != end; ++i)
+    (**i).save(&helper);
+
+  helper.closeTag();
+
+  std::cerr << "sending actions" << std::endl;
+  network_connection->send(MESSAGE_TYPE_SENDING_ACTIONS, os.str());
+}
+
+void GameClient::sendHistories()
+{
+  std::ostringstream os;
+  XML_Helper helper(&os);
+
+  helper.begin("1");
+  helper.openTag("histories");
+
+  for (std::list<NetworkHistory *>::iterator i = histories.begin(),
+       end = histories.end(); i != end; ++i)
+    (**i).save(&helper);
+
+  helper.closeTag();
+
+  network_connection->send(MESSAGE_TYPE_SENDING_HISTORY, os.str());
 }
 

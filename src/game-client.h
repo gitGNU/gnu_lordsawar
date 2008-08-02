@@ -63,6 +63,18 @@ private:
   void onConnectionLost();
   void onGotMessage(MessageType type, std::string message);
 
+  void listenForActions(Player *player);
+  void onActionDone(NetworkAction *action);
+  void sendActions();
+  void clearNetworkActionlist(std::list<NetworkAction*> actions);
+
+  void listenForHistories(Player *player);
+  void onHistoryDone(NetworkHistory *history);
+  void sendHistories();
+  void clearNetworkHistorylist(std::list<NetworkHistory*> histories);
+
+  std::list<NetworkAction*> actions;
+  std::list<NetworkHistory*> histories;
   //! A static pointer for the singleton instance.
   static GameClient * s_instance;
 };
