@@ -86,16 +86,44 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     gotActions(conn, payload);
     break;
 
-  case MESSAGE_TYPE_JOIN:
-    join(conn);
-    break;
-
   case MESSAGE_TYPE_SENDING_MAP:
     // should never occur
     break;
 
   case MESSAGE_TYPE_SENDING_HISTORY:
     gotHistory(conn, payload);
+    break;
+
+  case MESSAGE_TYPE_P1_JOIN:
+    join(conn, Playerlist::getInstance()->getPlayer(0));
+    break;
+
+  case MESSAGE_TYPE_P2_JOIN:
+    join(conn, Playerlist::getInstance()->getPlayer(1));
+    break;
+
+  case MESSAGE_TYPE_P3_JOIN:
+    join(conn, Playerlist::getInstance()->getPlayer(2));
+    break;
+
+  case MESSAGE_TYPE_P4_JOIN:
+    join(conn, Playerlist::getInstance()->getPlayer(3));
+    break;
+
+  case MESSAGE_TYPE_P5_JOIN:
+    join(conn, Playerlist::getInstance()->getPlayer(4));
+    break;
+
+  case MESSAGE_TYPE_P6_JOIN:
+    join(conn, Playerlist::getInstance()->getPlayer(5));
+    break;
+
+  case MESSAGE_TYPE_P7_JOIN:
+    join(conn, Playerlist::getInstance()->getPlayer(6));
+    break;
+
+  case MESSAGE_TYPE_P8_JOIN:
+    join(conn, Playerlist::getInstance()->getPlayer(7));
     break;
 
   }
@@ -107,7 +135,10 @@ void GameServer::onConnectionLost(void *conn)
 
   Participant *part = findParticipantByConn(conn);
   if (part)
-    participants.remove(part);
+    {
+      client_disconnected.emit(part->player);
+      participants.remove(part);
+    }
   delete part;
 }
 
@@ -184,7 +215,7 @@ void GameServer::onHistoryDone(NetworkHistory *history)
     }
 }
 
-void GameServer::join(void *conn)
+void GameServer::join(void *conn, Player *player)
 {
   std::cout << "JOIN: " << conn << std::endl;
 
@@ -192,11 +223,12 @@ void GameServer::join(void *conn)
   if (!part) {
     part = new Participant;
     part->conn = conn;
-    part->player = 0;
     participants.push_back(part);
   }
+  part->player = player;
 
   sendMap(part);
+  client_connected.emit(player);
 }
 
 void GameServer::gotActions(void *conn, const std::string &payload)
@@ -298,15 +330,4 @@ bool GameServer::dumpActionsAndHistories(XML_Helper *helper)
   return dumpActionsAndHistories(helper, player);
 }
 
-  
-bool GameServer::endPlayByMailTurn(std::string turnfile, bool &broken)
-{
-  bool retval = true;
-  XML_Helper helper(turnfile, std::ios::out, Configuration::s_zipfiles);
-  retval &= helper.openTag("lordsawarturn");
-  broken = dumpActionsAndHistories(&helper);
-  helper.closeTag();
-  helper.close();
-  return retval;
-}
 // End of file

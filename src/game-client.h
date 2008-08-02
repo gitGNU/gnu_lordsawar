@@ -29,32 +29,28 @@ class NetworkAction;
 class NetworkHistory;
 
 #include "network-common.h"
+#include "game-client-decoder.h"
 
 class NetworkConnection;
 class GameScenario;
 class Player;
 
-class GameClient: public sigc::trackable
+class GameClient: public GameClientDecoder
 {
 public:
   GameClient();
   ~GameClient();
 
+  void setPlayerId(int id) {player_id = id;};
+
   void start(std::string host, int port);
 
-  sigc::signal<void, std::string> game_scenario_received;
+  sigc::signal<void> client_connected;
+  sigc::signal<void> client_disconnected;
   
-  bool loadWithHelper(XML_Helper &helper, Player *player);
-
 private:
   std::auto_ptr<NetworkConnection> network_connection;
-
-  void gotScenario(const std::string &payload);
-  void gotActions(const std::string &payload);
-  int decodeActions(std::list<NetworkAction*> actions,
-		    Player *player);
-  void gotHistories(const std::string &payload);
-  int decodeHistories(std::list<NetworkHistory*> histories);
+  int player_id;
 
   void onConnected();
   void onConnectionLost();

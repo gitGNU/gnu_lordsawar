@@ -33,6 +33,7 @@
 
 GameClient::GameClient()
 {
+  player_id = -1;
 }
 
 GameClient::~GameClient()
@@ -57,11 +58,14 @@ void GameClient::onConnected()
   std::cerr << "connected" << std::endl;
 
   network_connection->send(MESSAGE_TYPE_PING, "");
+
+  client_connected.emit();
 }
 
 void GameClient::onConnectionLost()
 {
   std::cerr << "connection lost" << std::endl;
+  client_disconnected.emit();
 }
 
 void GameClient::onGotMessage(MessageType type, std::string payload)
@@ -73,8 +77,21 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_PONG:
-    std::cerr << "sending join" << std::endl;
-    network_connection->send(MESSAGE_TYPE_JOIN, "I wanna join");
+    std::cerr << "sending join for player number " <<player_id << std::endl;
+    switch (player_id)
+      {
+      case 0: type = MESSAGE_TYPE_P1_JOIN; break;
+      case 1: type = MESSAGE_TYPE_P2_JOIN; break;
+      case 2: type = MESSAGE_TYPE_P3_JOIN; break;
+      case 3: type = MESSAGE_TYPE_P4_JOIN; break;
+      case 4: type = MESSAGE_TYPE_P5_JOIN; break;
+      case 5: type = MESSAGE_TYPE_P6_JOIN; break;
+      case 6: type = MESSAGE_TYPE_P7_JOIN; break;
+      case 7: type = MESSAGE_TYPE_P8_JOIN; break;
+      default:
+	      return;
+      }
+    network_connection->send(type, "I wanna join");
     break;
 
   case MESSAGE_TYPE_SENDING_ACTIONS:
@@ -85,7 +102,14 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     gotScenario(payload);
     break;
 
-  case MESSAGE_TYPE_JOIN:
+  case MESSAGE_TYPE_P1_JOIN:
+  case MESSAGE_TYPE_P2_JOIN:
+  case MESSAGE_TYPE_P3_JOIN:
+  case MESSAGE_TYPE_P4_JOIN:
+  case MESSAGE_TYPE_P5_JOIN:
+  case MESSAGE_TYPE_P6_JOIN:
+  case MESSAGE_TYPE_P7_JOIN:
+  case MESSAGE_TYPE_P8_JOIN:
     // FIXME: faulty server
     break;
 
@@ -96,162 +120,3 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
   }
 }
 
-void GameClient::gotScenario(const std::string &payload)
-{
-  std::string file = "network.sav";
-  std::string path = File::getSavePath();
-  path += file;
-  
-  std::ofstream f(path.c_str());
-  f << payload;
-  f.close();
-  
-  game_scenario_received.emit(path);
-}
-
-class ActionLoader 
-{
-public:
-  bool loadAction(std::string tag, XML_Helper* helper)
-  {
-    if (tag == "action")
-      {
-	NetworkAction *action = &*actions.back();
-	action->setAction(Action::handle_load(helper));
-	return true;
-      }
-    if (tag == "networkaction") 
-      {
-	NetworkAction * action = new NetworkAction(helper);
-	actions.push_back(action);
-	return true;
-      }
-    return false;
-  }
-
-  std::list<NetworkAction *> actions;
-};
- 
-int GameClient::decodeActions(std::list<NetworkAction*> actions,
-			      Player *player)
-{
-  int count = 0;
-  for (std::list<NetworkAction *>::iterator i = actions.begin(),
-       end = actions.end(); i != end; ++i)
-  {
-    NetworkAction *action = *i;
-    std::string desc = action->toString();
-    
-    Player *p = action->getOwner();
-    //if (p != player && player)
-      //continue;
-    std::cerr << "decoding action: " << desc << std::endl;
-    NetworkPlayer *np = static_cast<NetworkPlayer *>(p);
-
-    if (!np) {
-      std::cerr << "warning: ignoring action for player " << p << std::endl;
-      continue;
-    }
-
-    np->decodeAction(action->getAction());
-    count++;
-  }
-
-  for (std::list<NetworkAction *>::iterator i = actions.begin(),
-       end = actions.end(); i != end; ++i)
-    delete *i;
-  return count;
-}
-
-void GameClient::gotActions(const std::string &payload)
-{
-  std::istringstream is(payload);
-
-  ActionLoader loader;
-  
-  XML_Helper helper(&is);
-  helper.registerTag("action", sigc::mem_fun(loader, &ActionLoader::loadAction));
-  helper.registerTag("networkaction", sigc::mem_fun(loader, &ActionLoader::loadAction));
-  helper.parse();
-
-  decodeActions(loader.actions, Playerlist::getActiveplayer());
-}
-
-class HistoryLoader 
-{
-public:
-  bool loadHistory(std::string tag, XML_Helper* helper)
-  {
-    if (tag == "history")
-      {
-	NetworkHistory *history = &*histories.back();
-	history->setHistory(History::handle_load(helper));
-	return true;
-      }
-    if (tag == "networkhistory") 
-      {
-	NetworkHistory* history = new NetworkHistory(helper);
-	histories.push_back(history);
-	return true;
-      }
-    return false;
-  }
-
-  std::list<NetworkHistory *> histories;
-};
-  
-
-int GameClient::decodeHistories(std::list<NetworkHistory *> histories)
-{
-  int count = 0;
-  for (std::list<NetworkHistory *>::iterator i = histories.begin(),
-       end = histories.end(); i != end; ++i)
-  {
-    NetworkHistory *history = *i;
-    std::string desc = history->toString();
-    std::cerr << "received history: " << desc << std::endl;
-    
-    //just add it to the player's history list.
-    Player *p = Playerlist::getInstance()->getActiveplayer();
-    p->getHistorylist()->push_back(History::copy(history->getHistory()));
-    count++;
-  }
-
-  for (std::list<NetworkHistory *>::iterator i = histories.begin(),
-       end = histories.end(); i != end; ++i)
-    delete *i;
-  return count;
-}
-
-void GameClient::gotHistories(const std::string &payload)
-{
-  std::istringstream is(payload);
-
-  HistoryLoader loader;
-  
-  XML_Helper helper(&is);
-  helper.registerTag("history", sigc::mem_fun(loader, &HistoryLoader::loadHistory));
-  helper.registerTag("networkhistory", sigc::mem_fun(loader, &HistoryLoader::loadHistory));
-  helper.parse();
-
-  decodeHistories(loader.histories);
-}
-
-bool GameClient::loadWithHelper(XML_Helper &helper, Player *p)
-{
-  ActionLoader actionloader;
-  HistoryLoader historyloader;
-  bool broken = false;
-  helper.registerTag("networkaction", sigc::mem_fun(actionloader, &ActionLoader::loadAction));
-  helper.registerTag("action", sigc::mem_fun(actionloader, &ActionLoader::loadAction));
-  helper.registerTag("networkhistory", sigc::mem_fun(historyloader, &HistoryLoader::loadHistory));
-  helper.registerTag("history", sigc::mem_fun(historyloader, &HistoryLoader::loadHistory));
-  if (!helper.parse())
-    broken = true;
-
-  int num = decodeActions(actionloader.actions, p);
-  printf ("decoded %d actions\n", num);
-  num = decodeHistories(historyloader.histories);
-  printf ("decoded %d histories\n", num);
-  return broken;
-}

@@ -48,10 +48,12 @@
 #include "game-preferences-dialog.h"
 
 #include "../game-client.h"
+#include "../pbm-game-client.h"
 #include "../NextTurnPbm.h"
 #include "../pbm/pbm.h"
 
 static GameClient *game_client = 0;
+static PbmGameClient *pbm_game_client = 0;
 
 Driver::Driver(std::string load_filename)
 {
@@ -145,7 +147,7 @@ void Driver::run()
     }
   else if (Main::instance().turn_filename != "") 
     {
-      game_client = new GameClient();
+      pbm_game_client = new PbmGameClient();
       GameScenario *game_scenario = load_game(d_load_filename);
       if (game_scenario == NULL)
 	return;
@@ -161,8 +163,8 @@ void Driver::run()
       NextTurnPbm *nextTurn;
       nextTurn = new NextTurnPbm(game_scenario->getTurnmode(),
 			      game_scenario->s_random_turns);
-      broken = game_client->loadWithHelper (helper, 
-					    Playerlist::getActiveplayer());
+      broken = pbm_game_client->loadWithHelper (helper, 
+						Playerlist::getActiveplayer());
       helper.close();
       delete nextTurn;
       if (!broken)

@@ -24,6 +24,7 @@
 #include <memory>
 #include <list>
 #include <sigc++/trackable.h>
+#include <sigc++/signal.h>
 
 #include "network-common.h"
 
@@ -43,15 +44,16 @@ public:
 
   void start();
 
-  bool endPlayByMailTurn(std::string turnfile, bool &broken);
-  
+  sigc::signal<void, Player*> client_disconnected;
+  sigc::signal<void, Player*> client_connected;
+
 private:
   void listenForActions();
   void listenForHistories();
   void onActionDone(NetworkAction *action);
   void onHistoryDone(NetworkHistory *history);
 
-  void join(void *conn);
+  void join(void *conn, Player *player);
   void gotActions(void *conn, const std::string &payload);
   void gotHistory(void *conn, const std::string &payload);
 

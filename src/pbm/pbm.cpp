@@ -1,7 +1,7 @@
 #include "pbm.h"
 #include "../defs.h"
 #include "..//GameScenario.h"
-#include "../game-client.h"
+#include "../pbm-game-client.h"
 #include "../playerlist.h"
 #include "../xmlhelper.h"
 #include "../NextTurnPbm.h"
@@ -68,7 +68,7 @@ void pbm::init(std::string save_game_file)
 void pbm::run(std::string save_game_file, std::string turn_file)
 {
   bool broken = false;
-  GameClient *game_client = new GameClient();
+  PbmGameClient *pbm_game_client = new PbmGameClient();
   GameScenario* game_scenario = new GameScenario(save_game_file, broken);
   if (game_scenario == NULL)
     return;
@@ -81,7 +81,7 @@ void pbm::run(std::string save_game_file, std::string turn_file)
   nextTurn = new NextTurnPbm(game_scenario->getTurnmode(),
 			     game_scenario->s_random_turns);
   Player *player = Playerlist::getActiveplayer();
-  broken = game_client->loadWithHelper (helper,  player);
+  broken = pbm_game_client->loadWithHelper (helper,  player);
   helper.close();
   delete nextTurn;
 
@@ -93,5 +93,5 @@ void pbm::run(std::string save_game_file, std::string turn_file)
     {
       game_scenario->saveGame(save_game_file);
     }
-  delete game_client;
+  delete pbm_game_client;
 }

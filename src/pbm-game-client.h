@@ -1,4 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
+// Copyright (C) 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,32 +16,34 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef NETWORK_COMMON_H
-#define NETWORK_COMMON_H
+#ifndef PBM_GAME_CLIENT_H
+#define PBM_GAME_CLIENT_H
 
 #include "config.h"
 
+#include <list>
+#include <memory>
+#include <sigc++/trackable.h>
+#include <sigc++/signal.h>
+class XML_Helper;
+class NetworkAction;
+class NetworkHistory;
 
-// the network protocol
+class GameScenario;
+class Player;
 
-#define MESSAGE_SIZE_BYTES 4
-#define MESSAGE_PREAMBLE_EXTRA_BYTES 2
-#define MESSAGE_PROTOCOL_VERSION 1
+#include "game-client-decoder.h"
 
-enum MessageType {
-  MESSAGE_TYPE_PING = 1,
-  MESSAGE_TYPE_PONG = 2,
-  MESSAGE_TYPE_SENDING_MAP = 3,
-  MESSAGE_TYPE_SENDING_ACTIONS = 4,
-  MESSAGE_TYPE_SENDING_HISTORY = 5,
-  MESSAGE_TYPE_P1_JOIN = 6,
-  MESSAGE_TYPE_P2_JOIN = 7,
-  MESSAGE_TYPE_P3_JOIN = 8,
-  MESSAGE_TYPE_P4_JOIN = 9,
-  MESSAGE_TYPE_P5_JOIN = 10,
-  MESSAGE_TYPE_P6_JOIN = 11,
-  MESSAGE_TYPE_P7_JOIN = 12,
-  MESSAGE_TYPE_P8_JOIN = 13,
+class PbmGameClient: public GameClientDecoder
+{
+public:
+  PbmGameClient();
+  ~PbmGameClient();
+
+  bool loadWithHelper(XML_Helper &helper, Player *player);
+
+private:
+
 };
 
 #endif
