@@ -100,6 +100,7 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 
   update_player_details();
   update_buttons();
+
 }
 
 void GameLobbyDialog::update_buttons()

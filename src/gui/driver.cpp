@@ -244,7 +244,6 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
   if (splash_window.get())
     splash_window->hide();
   GameClient *game_client = GameClient::getInstance();
-  GameServer::getInstance()->start(port);
   game_client->game_scenario_received.connect
     (sigc::mem_fun(*this, &Driver::on_remote_game_scenario_received));
   game_client->start(host, port);
