@@ -150,6 +150,26 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     join(conn, NULL);
     break;
 
+  case MESSAGE_TYPE_P1_JOINED:
+  case MESSAGE_TYPE_P2_JOINED:
+  case MESSAGE_TYPE_P3_JOINED:
+  case MESSAGE_TYPE_P4_JOINED:
+  case MESSAGE_TYPE_P5_JOINED:
+  case MESSAGE_TYPE_P6_JOINED:
+  case MESSAGE_TYPE_P7_JOINED:
+  case MESSAGE_TYPE_P8_JOINED:
+  case MESSAGE_TYPE_VIEWER_JOINED:
+  case MESSAGE_TYPE_P1_DEPARTED:
+  case MESSAGE_TYPE_P2_DEPARTED:
+  case MESSAGE_TYPE_P3_DEPARTED:
+  case MESSAGE_TYPE_P4_DEPARTED:
+  case MESSAGE_TYPE_P5_DEPARTED:
+  case MESSAGE_TYPE_P6_DEPARTED:
+  case MESSAGE_TYPE_P7_DEPARTED:
+  case MESSAGE_TYPE_P8_DEPARTED:
+  case MESSAGE_TYPE_VIEWER_DEPARTED:
+    //faulty client
+    break;
   }
 }
 
@@ -160,8 +180,31 @@ void GameServer::onConnectionLost(void *conn)
   Participant *part = findParticipantByConn(conn);
   if (part)
     {
-      client_disconnected.emit(part->player);
+      Player *player = part->player;
+      client_disconnected.emit(player);
       participants.remove(part);
+      MessageType type;
+      if (player)
+	{
+	  switch (player->getId())
+	    {
+	    case 0: type = MESSAGE_TYPE_P1_DEPARTED; break;
+	    case 1: type = MESSAGE_TYPE_P2_DEPARTED; break;
+	    case 2: type = MESSAGE_TYPE_P3_DEPARTED; break;
+	    case 3: type = MESSAGE_TYPE_P4_DEPARTED; break;
+	    case 4: type = MESSAGE_TYPE_P5_DEPARTED; break;
+	    case 5: type = MESSAGE_TYPE_P6_DEPARTED; break;
+	    case 6: type = MESSAGE_TYPE_P7_DEPARTED; break;
+	    case 7: type = MESSAGE_TYPE_P8_DEPARTED; break;
+	    default:
+		    return;
+	    }
+	}
+      else
+	type = MESSAGE_TYPE_VIEWER_JOIN;
+      for (std::list<Participant *>::iterator i = participants.begin(),
+	   end = participants.end(); i != end; ++i) 
+	network_server->send((*i)->conn, type, "player departed");
     }
   delete part;
 }
@@ -253,6 +296,29 @@ void GameServer::join(void *conn, Player *player)
 
   sendMap(part);
   client_connected.emit(player);
+  MessageType type;
+  if (player)
+    {
+      switch (player->getId())
+	{
+	case 0: type = MESSAGE_TYPE_P1_JOINED; break;
+	case 1: type = MESSAGE_TYPE_P2_JOINED; break;
+	case 2: type = MESSAGE_TYPE_P3_JOINED; break;
+	case 3: type = MESSAGE_TYPE_P4_JOINED; break;
+	case 4: type = MESSAGE_TYPE_P5_JOINED; break;
+	case 5: type = MESSAGE_TYPE_P6_JOINED; break;
+	case 6: type = MESSAGE_TYPE_P7_JOINED; break;
+	case 7: type = MESSAGE_TYPE_P8_JOINED; break;
+	default:
+		 return;
+	}
+    }
+  else
+    type = MESSAGE_TYPE_VIEWER_JOINED;
+
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    network_server->send((*i)->conn, type, "player joined");
 }
 
 void GameServer::gotRemoteActions(void *conn, const std::string &payload)

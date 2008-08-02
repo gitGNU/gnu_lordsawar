@@ -142,7 +142,64 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
   case MESSAGE_TYPE_P7_JOIN:
   case MESSAGE_TYPE_P8_JOIN:
   case MESSAGE_TYPE_VIEWER_JOIN:
-    // FIXME: faulty server
+    //FIXME: faulty server.
+    break;
+
+    //this is the client realizing that some other player joined the server
+  case MESSAGE_TYPE_P1_JOINED:
+    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(0));
+    break;
+  case MESSAGE_TYPE_P2_JOINED:
+    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(1));
+    break;
+  case MESSAGE_TYPE_P3_JOINED:
+    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(2));
+    break;
+  case MESSAGE_TYPE_P4_JOINED:
+    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(3));
+    break;
+  case MESSAGE_TYPE_P5_JOINED:
+    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(4));
+    break;
+  case MESSAGE_TYPE_P6_JOINED:
+    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(5));
+    break;
+  case MESSAGE_TYPE_P7_JOINED:
+    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(6));
+    break;
+  case MESSAGE_TYPE_P8_JOINED:
+    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(7));
+    break;
+  case MESSAGE_TYPE_VIEWER_JOINED:
+    remote_client_connected.emit(NULL);
+    break;
+    //this is the client realizing that a remote player has disconnected
+  case MESSAGE_TYPE_P1_DEPARTED:
+    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(0));
+    break;
+  case MESSAGE_TYPE_P2_DEPARTED:
+    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(1));
+    break;
+  case MESSAGE_TYPE_P3_DEPARTED:
+    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(2));
+    break;
+  case MESSAGE_TYPE_P4_DEPARTED:
+    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(3));
+    break;
+  case MESSAGE_TYPE_P5_DEPARTED:
+    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(4));
+    break;
+  case MESSAGE_TYPE_P6_DEPARTED:
+    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(5));
+    break;
+  case MESSAGE_TYPE_P7_DEPARTED:
+    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(6));
+    break;
+  case MESSAGE_TYPE_P8_DEPARTED:
+    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(7));
+    break;
+  case MESSAGE_TYPE_VIEWER_DEPARTED:
+    remote_client_disconnected.emit(NULL);
     break;
 
   case MESSAGE_TYPE_SENDING_HISTORY:
