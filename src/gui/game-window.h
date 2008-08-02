@@ -277,7 +277,6 @@ class GameWindow: public sigc::trackable
     void update_diplomacy_button (bool sensitive);
 
     bool setup_game(GameScenario *game_scenario);
-    bool setup_network_game(GameScenario *game_scenario, int port);
     void setup_signals(GameScenario *game_scenario);
     void stop_game();
     std::list<sigc::connection> connections;

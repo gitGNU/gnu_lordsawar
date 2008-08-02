@@ -229,6 +229,8 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g)
 	return;
       }
 
+  GameServer::getInstance()->start(LORDSAWAR_PORT);
+  GameClient::getInstance()->start("127.0.0.1", LORDSAWAR_PORT);
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, true));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   int response = game_lobby_dialog->run();
@@ -242,6 +244,7 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
   if (splash_window.get())
     splash_window->hide();
   GameClient *game_client = GameClient::getInstance();
+  GameServer::getInstance()->start(port);
   game_client->game_scenario_received.connect
     (sigc::mem_fun(*this, &Driver::on_remote_game_scenario_received));
   game_client->start(host, port);
@@ -287,6 +290,8 @@ void Driver::on_load_requested(std::string filename)
     GameScenario *game_scenario = load_game(filename);
     if (game_scenario == NULL)
       return;
+    if (game_scenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
+      PbmGameServer::getInstance()->start();
 
     init_game_window();
     

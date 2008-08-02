@@ -131,21 +131,12 @@ void Game::addPlayer(Player *p)
 
 #include "game-server.h"
 
-Game::Game(GameScenario* gameScenario, int port)
+Game::Game(GameScenario* gameScenario)
     : d_gameScenario(gameScenario) 
 {
     current_game = this;
     input_locked = false;
 
-    switch (gameScenario->getPlayMode())
-      {
-      case GameScenario::HOTSEAT: break;
-      case GameScenario::NETWORKED:
-	GameServer::getInstance()->start(port); break;
-      case GameScenario::PLAY_BY_MAIL: 
-				  PbmGameServer::getInstance()->start(); break;
-      }
-    
     // init the bigmap
     bigmap.reset(new GameBigMap
 		 (GameScenario::s_intense_combat, 

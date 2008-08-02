@@ -60,7 +60,7 @@ class Reward;
 class Game
 {
  public:
-    Game(GameScenario* gameScenario, int port = LORDSAWAR_PORT);
+    Game(GameScenario* gameScenario);
     ~Game();
 
     void redraw();

@@ -379,16 +379,7 @@ void GameWindow::new_game(GameScenario *game_scenario)
 {
   bool success = false;
   stop_game();
-
-  switch (game_scenario->getPlayMode())
-    {
-    case GameScenario::HOTSEAT:
-      success = setup_game(game_scenario); break;
-    case GameScenario::NETWORKED:
-      success = setup_network_game(game_scenario, LORDSAWAR_PORT); break;
-    case GameScenario::PLAY_BY_MAIL:
-      success = setup_game(game_scenario); break;
-    }
+  success = setup_game(game_scenario);
   if (!success)
     return;
   setup_signals(game_scenario);
@@ -399,15 +390,7 @@ void GameWindow::new_game(GameScenario *game_scenario)
 void GameWindow::load_game(GameScenario *game_scenario)
 {
   bool success = false;
-  switch (game_scenario->getPlayMode())
-    {
-    case GameScenario::HOTSEAT:
-      success = setup_game(game_scenario); break;
-    case GameScenario::NETWORKED:
-      success = setup_network_game(game_scenario, LORDSAWAR_PORT); break;
-    case GameScenario::PLAY_BY_MAIL:
-      success = setup_game(game_scenario); break;
-    }
+  success = setup_game(game_scenario);
   if (!success)
     return;
 
@@ -741,20 +724,6 @@ void GameWindow::update_diplomacy_button (bool sensitive)
       return;
     }
   diplomacy_button->set_sensitive(sensitive);
-}
-
-bool GameWindow::setup_network_game(GameScenario *game_scenario, int port)
-{
-  Playerlist::getInstance()->instantiateArmysetPixmaps();
-  GameMap::getInstance()->instantiatePixmaps();
-
-  Sound::getInstance()->haltMusic(false);
-  Sound::getInstance()->enableBackground();
-
-  game.reset(new Game(game_scenario, port));
-
-  show_shield_turn();
-  return true;
 }
 
 bool GameWindow::setup_game(GameScenario *game_scenario)
