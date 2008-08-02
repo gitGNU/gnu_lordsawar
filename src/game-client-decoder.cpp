@@ -74,6 +74,8 @@ int GameClientDecoder::decodeActions(std::list<NetworkAction*> actions,
     }
 
     np->decodeAction(action->getAction());
+    if (action->getAction()->getType() == Action::PLAYER_RENAME)
+      remote_player_named.emit(action->getOwner());
     count++;
   }
 
