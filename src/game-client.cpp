@@ -140,8 +140,11 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     if (player_id > -1)
       {
 	Player *player = Playerlist::getInstance()->getPlayer(player_id);
-	listenForActions(player);
-	listenForHistories(player);
+	if (player)
+	  {
+	    listenForActions(player);
+	    listenForHistories(player);
+	  }
       }
     break;
 

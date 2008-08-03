@@ -437,6 +437,8 @@ void GameServer::sit(void *conn, Player *player)
 {
   std::cout << "SIT: " << conn << " " << player << std::endl;
 
+  if (!player || !conn)
+    return;
   Participant *part = findParticipantByConn(conn);
   if (!part) 
     return;
@@ -488,7 +490,7 @@ void GameServer::notifyStand(Player *player)
 void GameServer::stand(void *conn, Player *player)
 {
   std::cout << "STAND: " << conn << " " << player << std::endl;
-  if (!player && !conn)
+  if (!player || !conn)
     return;
 
   Participant *part = findParticipantByConn(conn);
