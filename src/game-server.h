@@ -46,10 +46,13 @@ public:
   //! Deletes the singleton instance.
   static void deleteInstance();
 
+  bool isListening();
   void start(int port);
 
-  sigc::signal<void, Player*> client_disconnected;
-  sigc::signal<void, Player*> client_connected;
+  void sit_down (Player *player);
+  void stand_up (Player *player);
+  sigc::signal<void, Player*> remote_player_disconnected;
+  sigc::signal<void, Player*> remote_player_connected;
 
 protected:
   GameServer();
@@ -62,6 +65,9 @@ private:
   void onHistoryDone(NetworkHistory *history);
 
   void join(void *conn, Player *player);
+  void notifyJoin(Player *player);
+  void depart(void *conn, Player *player);
+  void notifyDepart(Player *player);
   void gotRemoteActions(void *conn, const std::string &payload);
   void gotRemoteHistory(void *conn, const std::string &payload);
 

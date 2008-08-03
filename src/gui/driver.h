@@ -47,7 +47,7 @@ class Driver: public sigc::trackable
 
     void on_new_game_requested(GameParameters g);
     void on_new_remote_network_game_requested(std::string host, unsigned short port);
-    void on_new_hosted_network_game_requested(GameParameters g);
+    void on_new_hosted_network_game_requested(GameParameters g, int port);
     void on_new_pbm_game_requested(GameParameters g);
     void on_remote_game_scenario_received(std::string filename);
     void on_load_requested(std::string filename);
@@ -57,6 +57,11 @@ class Driver: public sigc::trackable
 
     void init_game_window();
 
+
+    void on_hosted_player_sat_down(Player *player);
+    void on_hosted_player_stood_up(Player *player);
+    void on_client_player_sat_down(Player *player);
+    void on_client_player_stood_up(Player *player);
 
     GameScenario *new_game(GameParameters g);
     GameScenario *load_game(std::string file_path);

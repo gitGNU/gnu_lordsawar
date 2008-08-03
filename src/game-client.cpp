@@ -28,6 +28,9 @@
 #include "playerlist.h"
 #include "network_player.h"
 #include "xmlhelper.h"
+  
+#include "real_player.h" 
+#include "network_player.h" 
 
 
 GameClient * GameClient::s_instance = 0;
@@ -92,6 +95,40 @@ void GameClient::onConnectionLost()
   client_disconnected.emit();
 }
 
+void GameClient::joined(Player *player)
+{
+  if (player)
+    {
+      //now turning a network player into a human player
+      dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
+      RealPlayer *new_p = new RealPlayer (*player);
+      Playerlist::getInstance()->swap(player, new_p);
+      delete player;
+      listenForActions(new_p);
+      listenForHistories(new_p);
+      remote_player_connected.emit(new_p);
+    }
+  else
+    remote_player_connected.emit(player);
+}
+
+void GameClient::departed(Player *player)
+{
+  if (player)
+    {
+      //now turning a human player into a network player
+      NetworkPlayer *new_p = new NetworkPlayer(*player);
+      Playerlist::getInstance()->swap(player, new_p);
+      delete player;
+      listenForActions(new_p);
+      listenForHistories(new_p);
+      new_p->setConnected(false);
+      remote_player_connected.emit(new_p);
+    }
+  else
+    remote_player_disconnected.emit(player);
+}
+
 void GameClient::onGotMessage(MessageType type, std::string payload)
 {
   std::cerr << "got message of type " << type << std::endl;
@@ -142,64 +179,73 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
   case MESSAGE_TYPE_P7_JOIN:
   case MESSAGE_TYPE_P8_JOIN:
   case MESSAGE_TYPE_VIEWER_JOIN:
+  case MESSAGE_TYPE_P1_DEPART:
+  case MESSAGE_TYPE_P2_DEPART:
+  case MESSAGE_TYPE_P3_DEPART:
+  case MESSAGE_TYPE_P4_DEPART:
+  case MESSAGE_TYPE_P5_DEPART:
+  case MESSAGE_TYPE_P6_DEPART:
+  case MESSAGE_TYPE_P7_DEPART:
+  case MESSAGE_TYPE_P8_DEPART:
+  case MESSAGE_TYPE_VIEWER_DEPART:
     //FIXME: faulty server.
     break;
 
     //this is the client realizing that some other player joined the server
   case MESSAGE_TYPE_P1_JOINED:
-    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(0));
+    joined(Playerlist::getInstance()->getPlayer(0));
     break;
   case MESSAGE_TYPE_P2_JOINED:
-    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(1));
+    joined(Playerlist::getInstance()->getPlayer(1));
     break;
   case MESSAGE_TYPE_P3_JOINED:
-    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(2));
+    joined(Playerlist::getInstance()->getPlayer(2));
     break;
   case MESSAGE_TYPE_P4_JOINED:
-    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(3));
+    joined(Playerlist::getInstance()->getPlayer(3));
     break;
   case MESSAGE_TYPE_P5_JOINED:
-    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(4));
+    joined(Playerlist::getInstance()->getPlayer(4));
     break;
   case MESSAGE_TYPE_P6_JOINED:
-    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(5));
+    joined(Playerlist::getInstance()->getPlayer(5));
     break;
   case MESSAGE_TYPE_P7_JOINED:
-    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(6));
+    joined(Playerlist::getInstance()->getPlayer(6));
     break;
   case MESSAGE_TYPE_P8_JOINED:
-    remote_client_connected.emit(Playerlist::getInstance()->getPlayer(7));
+    joined(Playerlist::getInstance()->getPlayer(7));
     break;
   case MESSAGE_TYPE_VIEWER_JOINED:
-    remote_client_connected.emit(NULL);
+    joined(NULL);
     break;
     //this is the client realizing that a remote player has disconnected
   case MESSAGE_TYPE_P1_DEPARTED:
-    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(0));
+    departed(Playerlist::getInstance()->getPlayer(0));
     break;
   case MESSAGE_TYPE_P2_DEPARTED:
-    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(1));
+    departed(Playerlist::getInstance()->getPlayer(1));
     break;
   case MESSAGE_TYPE_P3_DEPARTED:
-    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(2));
+    departed(Playerlist::getInstance()->getPlayer(2));
     break;
   case MESSAGE_TYPE_P4_DEPARTED:
-    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(3));
+    departed(Playerlist::getInstance()->getPlayer(3));
     break;
   case MESSAGE_TYPE_P5_DEPARTED:
-    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(4));
+    departed(Playerlist::getInstance()->getPlayer(4));
     break;
   case MESSAGE_TYPE_P6_DEPARTED:
-    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(5));
+    departed(Playerlist::getInstance()->getPlayer(5));
     break;
   case MESSAGE_TYPE_P7_DEPARTED:
-    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(6));
+    departed(Playerlist::getInstance()->getPlayer(6));
     break;
   case MESSAGE_TYPE_P8_DEPARTED:
-    remote_client_disconnected.emit(Playerlist::getInstance()->getPlayer(7));
+    departed(Playerlist::getInstance()->getPlayer(7));
     break;
   case MESSAGE_TYPE_VIEWER_DEPARTED:
-    remote_client_disconnected.emit(NULL);
+    departed(NULL);
     break;
 
   case MESSAGE_TYPE_SENDING_HISTORY:
@@ -298,3 +344,40 @@ void GameClient::sendHistories()
   network_connection->send(MESSAGE_TYPE_SENDING_HISTORY, os.str());
 }
 
+void GameClient::sit_down (Player *player)
+{
+  MessageType type;
+  switch (player->getId())
+    {
+    case 0: type = MESSAGE_TYPE_P1_JOIN; break;
+    case 1: type = MESSAGE_TYPE_P2_JOIN; break;
+    case 2: type = MESSAGE_TYPE_P3_JOIN; break;
+    case 3: type = MESSAGE_TYPE_P4_JOIN; break;
+    case 4: type = MESSAGE_TYPE_P5_JOIN; break;
+    case 5: type = MESSAGE_TYPE_P6_JOIN; break;
+    case 6: type = MESSAGE_TYPE_P7_JOIN; break;
+    case 7: type = MESSAGE_TYPE_P8_JOIN; break;
+    default:
+	     return;
+    }
+  network_connection->send(type, "I wanna join");
+}
+
+void GameClient::stand_up (Player *player)
+{
+  MessageType type;
+  switch (player->getId())
+    {
+    case 0: type = MESSAGE_TYPE_P1_DEPART; break;
+    case 1: type = MESSAGE_TYPE_P2_DEPART; break;
+    case 2: type = MESSAGE_TYPE_P3_DEPART; break;
+    case 3: type = MESSAGE_TYPE_P4_DEPART; break;
+    case 4: type = MESSAGE_TYPE_P5_DEPART; break;
+    case 5: type = MESSAGE_TYPE_P6_DEPART; break;
+    case 6: type = MESSAGE_TYPE_P7_DEPART; break;
+    case 7: type = MESSAGE_TYPE_P8_DEPART; break;
+    default:
+	     return;
+    }
+  network_connection->send(type, "I wanna depart");
+}

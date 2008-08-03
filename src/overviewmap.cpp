@@ -39,6 +39,7 @@
 OverviewMap::OverviewMap()
 {
     surface = 0;
+    static_surface = 0;
 }
 
 OverviewMap::~OverviewMap()

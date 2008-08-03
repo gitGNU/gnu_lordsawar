@@ -48,11 +48,13 @@ public:
   void start(std::string host, int port);
   void startAsPlayer(std::string host, int port, int id);
 
-  sigc::signal<void, Player*> remote_client_connected;
-  sigc::signal<void, Player*> remote_client_disconnected;
+  sigc::signal<void, Player*> remote_player_connected;
+  sigc::signal<void, Player*> remote_player_disconnected;
   sigc::signal<void> client_connected;
   sigc::signal<void> client_disconnected;
   
+  void sit_down (Player *player);
+  void stand_up (Player *player);
 protected:
   GameClient();
   ~GameClient();
@@ -74,6 +76,10 @@ private:
   void onHistoryDone(NetworkHistory *history);
   void sendHistories();
   void clearNetworkHistorylist(std::list<NetworkHistory*> histories);
+
+
+  void joined(Player *player);
+  void departed(Player *player);
 
   std::list<NetworkAction*> actions;
   std::list<NetworkHistory*> histories;

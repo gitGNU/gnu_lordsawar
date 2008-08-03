@@ -6,8 +6,8 @@
 
 Glib::StaticMutex mutex = GLIBMM_STATIC_MUTEX_INIT;
  
-NewGameProgressWindow::NewGameProgressWindow(GameParameters g)
-: game_params(g), m_end_thread(false), m_vbox(false,10)
+NewGameProgressWindow::NewGameProgressWindow(GameParameters g, GameScenario::PlayMode mode)
+: game_params(g), m_end_thread(false), m_vbox(false,10), d_play_mode(mode)
 {
   add(m_vbox);
   m_vbox.set_border_width(10);
@@ -53,10 +53,14 @@ void NewGameProgressWindow::thread_worker()
   if (broken)
     return;
 
+  game_scenario->setPlayMode(d_play_mode);
+
   if (game_scenario->getRound() == 0)
     {
       Playerlist::getInstance()->syncPlayers(game_params.players);
+
       m_dispatcher();
+
       game_scenario->setupFog(game_params.hidden_map);
       m_dispatcher();
       game_scenario->setupCities(game_params.quick_start);
@@ -64,6 +68,11 @@ void NewGameProgressWindow::thread_worker()
       game_scenario->setupDiplomacy(game_params.diplomacy);
       m_dispatcher();
       game_scenario->nextRound();
+      if (d_play_mode == GameScenario::NETWORKED)
+	Playerlist::getInstance()->turnHumansIntoNetworkPlayers();
+
+      m_dispatcher();
+
     }
 
   d_game_scenario = game_scenario;

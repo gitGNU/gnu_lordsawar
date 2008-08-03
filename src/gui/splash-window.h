@@ -51,7 +51,7 @@ class SplashWindow: public sigc::trackable
 
     sigc::signal<void> sdl_initialized;
     sigc::signal<void, std::string, unsigned short> new_remote_network_game_requested;
-    sigc::signal<void, GameParameters> new_hosted_network_game_requested;
+    sigc::signal<void, GameParameters, int > new_hosted_network_game_requested;
     sigc::signal<void, GameParameters> new_pbm_game_requested;
     sigc::signal<void, GameParameters> new_game_requested;
     sigc::signal<void, std::string> load_requested;

@@ -31,6 +31,8 @@
 #include "network-action.h"
 #include "network-history.h"
 #include "Configuration.h"
+#include "network_player.h"
+#include "real_player.h"
 
 
 class NetworkAction;
@@ -74,9 +76,17 @@ GameServer::~GameServer()
     delete *i;
 }
 
+bool GameServer::isListening()
+{
+  if (network_server.get() != NULL)
+    return network_server->isListening();
+  else
+    return false;
+}
+
 void GameServer::start(int port)
 {
-  if (network_server->isListening())
+  if (network_server.get() != NULL && network_server->isListening())
     return;
   network_server.reset(new NetworkServer());
   network_server->got_message.connect
@@ -150,6 +160,42 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     join(conn, NULL);
     break;
 
+  case MESSAGE_TYPE_P1_DEPART:
+    depart(conn, Playerlist::getInstance()->getPlayer(0));
+    break;
+
+  case MESSAGE_TYPE_P2_DEPART:
+    depart(conn, Playerlist::getInstance()->getPlayer(1));
+    break;
+
+  case MESSAGE_TYPE_P3_DEPART:
+    depart(conn, Playerlist::getInstance()->getPlayer(2));
+    break;
+
+  case MESSAGE_TYPE_P4_DEPART:
+    depart(conn, Playerlist::getInstance()->getPlayer(3));
+    break;
+
+  case MESSAGE_TYPE_P5_DEPART:
+    depart(conn, Playerlist::getInstance()->getPlayer(4));
+    break;
+
+  case MESSAGE_TYPE_P6_DEPART:
+    depart(conn, Playerlist::getInstance()->getPlayer(5));
+    break;
+
+  case MESSAGE_TYPE_P7_DEPART:
+    depart(conn, Playerlist::getInstance()->getPlayer(6));
+    break;
+
+  case MESSAGE_TYPE_P8_DEPART:
+    depart(conn, Playerlist::getInstance()->getPlayer(7));
+    break;
+
+  case MESSAGE_TYPE_VIEWER_DEPART:
+    depart(conn, NULL);
+    break;
+
   case MESSAGE_TYPE_P1_JOINED:
   case MESSAGE_TYPE_P2_JOINED:
   case MESSAGE_TYPE_P3_JOINED:
@@ -181,7 +227,7 @@ void GameServer::onConnectionLost(void *conn)
   if (part)
     {
       Player *player = part->player;
-      client_disconnected.emit(player);
+      remote_player_disconnected.emit(player);
       participants.remove(part);
       MessageType type;
       if (player)
@@ -282,20 +328,9 @@ void GameServer::onHistoryDone(NetworkHistory *history)
     }
 }
 
-void GameServer::join(void *conn, Player *player)
+void GameServer::notifyJoin(Player *player)
 {
-  std::cout << "JOIN: " << conn << std::endl;
-
-  Participant *part = findParticipantByConn(conn);
-  if (!part) {
-    part = new Participant;
-    part->conn = conn;
-    participants.push_back(part);
-  }
-  part->player = player;
-
-  sendMap(part);
-  client_connected.emit(player);
+  remote_player_connected.emit(player);
   MessageType type;
   if (player)
     {
@@ -319,6 +354,70 @@ void GameServer::join(void *conn, Player *player)
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     network_server->send((*i)->conn, type, "player joined");
+}
+
+void GameServer::join(void *conn, Player *player)
+{
+  bool new_participant = false;
+  std::cout << "JOIN: " << conn << std::endl;
+
+  Participant *part = findParticipantByConn(conn);
+  if (!part) {
+    part = new Participant;
+    part->conn = conn;
+    participants.push_back(part);
+    new_participant = true;
+  }
+  part->player = player;
+
+  if (player)
+    dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
+  if (new_participant)
+    sendMap(part);
+
+  notifyJoin(player);
+}
+
+void GameServer::notifyDepart(Player *player)
+{
+  remote_player_disconnected.emit(player);
+  MessageType type;
+  if (player)
+    {
+      switch (player->getId())
+	{
+	case 0: type = MESSAGE_TYPE_P1_DEPARTED; break;
+	case 1: type = MESSAGE_TYPE_P2_DEPARTED; break;
+	case 2: type = MESSAGE_TYPE_P3_DEPARTED; break;
+	case 3: type = MESSAGE_TYPE_P4_DEPARTED; break;
+	case 4: type = MESSAGE_TYPE_P5_DEPARTED; break;
+	case 5: type = MESSAGE_TYPE_P6_DEPARTED; break;
+	case 6: type = MESSAGE_TYPE_P7_DEPARTED; break;
+	case 7: type = MESSAGE_TYPE_P8_DEPARTED; break;
+	default:
+		 return;
+	}
+    }
+  else
+    type = MESSAGE_TYPE_VIEWER_DEPARTED;
+
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    network_server->send((*i)->conn, type, "player departed");
+}
+
+void GameServer::depart(void *conn, Player *player)
+{
+  std::cout << "DEPART: " << conn << std::endl;
+
+  Participant *part = findParticipantByConn(conn);
+  if (!part) 
+    return;
+  part->player = player;
+
+  if (player && player->getType() == Player::NETWORKED)
+    dynamic_cast<NetworkPlayer*>(player)->setConnected(false);
+  notifyDepart(player);
 }
 
 void GameServer::gotRemoteActions(void *conn, const std::string &payload)
@@ -428,4 +527,30 @@ bool GameServer::dumpActionsAndHistories(XML_Helper *helper)
   return dumpActionsAndHistories(helper, player);
 }
 
+void GameServer::sit_down (Player *player)
+{
+  //alright, we want to sit down as this player
+  //convert the network player to a human player
+  dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
+  RealPlayer *new_p = new RealPlayer (*player);
+  new_p->acting.connect(sigc::mem_fun(this, &GameServer::onActionDone));
+  new_p->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
+  Playerlist::getInstance()->swap(player, new_p);
+  delete player;
+  notifyJoin(new_p);
+}
+
+void GameServer::stand_up (Player *player)
+{
+  //alright, we want to stand up as this player
+  //convert the player from a human player back to a network player
+
+  NetworkPlayer *new_p = new NetworkPlayer(*player);
+  Playerlist::getInstance()->swap(player, new_p);
+  delete player;
+  new_p->setConnected(false);
+  new_p->acting.connect(sigc::mem_fun(this, &GameServer::onActionDone));
+  new_p->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
+  notifyDepart(new_p);
+}
 // End of file

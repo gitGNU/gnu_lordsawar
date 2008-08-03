@@ -35,6 +35,8 @@
 #include "game-options-dialog.h"
 #include "../GraphicsCache.h"
 #include "../network_player.h"
+#include "../game-client.h"
+#include "../game-server.h"
 
 namespace
 {
@@ -45,6 +47,7 @@ namespace
 	case Player::HUMAN: return HUMAN_PLAYER_TYPE;
 	case Player::AI_FAST: return EASY_PLAYER_TYPE;
 	case Player::AI_SMART: return HARD_PLAYER_TYPE;
+	case Player::NETWORKED: return NETWORKED_PLAYER_TYPE;
 	default: return NO_PLAYER_TYPE;
 	}
     }
@@ -81,7 +84,7 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
           (sigc::mem_fun(*this, &GameLobbyDialog::on_player_selected));
     xml->get_widget("sit_button", sit_button);
     sit_button->signal_clicked().connect
-      (sigc::mem_fun(this, &GameLobbyDialog::on_sit_clicked));
+      (sigc::mem_fun(this, &GameLobbyDialog::on_play_clicked));
     xml->get_widget("cancel_button", cancel_button);
     cancel_button->signal_clicked().connect
       (sigc::mem_fun(this, &GameLobbyDialog::on_cancel_clicked));
@@ -98,6 +101,30 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 	"show_options_button",
 	sigc::mem_fun(*this, &GameLobbyDialog::on_show_options_clicked));
 
+  if (GameServer::getInstance()->isListening())
+    {
+      GameServer *game_server = GameServer::getInstance();
+      game_server->remote_player_moved.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn));
+      game_server->remote_player_connected.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_joins));
+      game_server->remote_player_disconnected.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_departs));
+      game_server->remote_player_named.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
+    }
+  else
+    {
+      GameClient *game_client = GameClient::getInstance();
+      game_client->remote_player_moved.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn));
+      game_client->remote_player_connected.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_joins));
+      game_client->remote_player_disconnected.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_departs));
+      game_client->remote_player_named.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
+    }
   update_player_details();
   update_buttons();
 
@@ -129,11 +156,16 @@ void GameLobbyDialog::update_buttons()
 void
 GameLobbyDialog::update_player_details()
 {
-  player_list.clear();
+  if (player_list)
+    {
+      player_list->clear();
+      player_list.reset();
+    }
   player_list = Gtk::ListStore::create(player_columns);
   // setup the player settings
   player_treeview->set_model(player_list);
 
+  player_treeview->remove_all_columns();
   player_treeview->append_column("", player_columns.shield);
   // the type column
   player_type_list = Gtk::ListStore::create(player_type_columns);
@@ -174,6 +206,15 @@ GameLobbyDialog::update_player_details()
     (status_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_status));
   player_treeview->append_column(status_column);
 
+  //the sitting toggle
+  sitting_renderer.property_mode() = Gtk::CELL_RENDERER_MODE_EDITABLE;
+  sitting_renderer.property_activatable() = true;
+  sitting_renderer.signal_editing_started().connect
+    (sigc::mem_fun(*this, &GameLobbyDialog::on_sitting_changed));
+  sitting_column.set_cell_data_func
+    (sitting_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_sitting));
+  player_treeview->append_column(sitting_column);
+
   //if it's this player's turn
   player_treeview->append_column(_("Turn"), player_columns.turn);
 
@@ -189,9 +230,27 @@ GameLobbyDialog::update_player_details()
     }
 }
 
+    
+
+void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
+					 const Glib::ustring &path)
+{
+  Glib::RefPtr < Gtk::TreeSelection > selection = 
+    player_treeview->get_selection();
+  Gtk::TreeModel::iterator iter = selection->get_selected();
+  if (!selection->count_selected_rows())
+    return;
+  (*iter)[player_columns.sitting] = !(*iter)[player_columns.sitting];
+  if ((*iter)[player_columns.sitting])
+    player_sat_down.emit((*iter)[player_columns.player]);
+  else
+    player_stood_up.emit((*iter)[player_columns.player]);
+}
+
 GameLobbyDialog::GameLobbyDialog(std::string filename, bool has_ops)
   :type_column(_("Type"), type_renderer), 
-    status_column(_("Status"), status_renderer)
+    status_column(_("Status"), status_renderer),
+    sitting_column(_("Sitting"), sitting_renderer)
 {
   d_has_ops = has_ops;
   bool broken = false;
@@ -203,7 +262,8 @@ GameLobbyDialog::GameLobbyDialog(std::string filename, bool has_ops)
 
 GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario, bool has_ops)
   :type_column(_("Type"), type_renderer),
-    status_column(_("Status"), status_renderer)
+    status_column(_("Status"), status_renderer),
+    sitting_column(_("Sitting"), sitting_renderer)
 {
   d_has_ops = has_ops;
   initDialog(game_scenario);
@@ -308,6 +368,12 @@ void GameLobbyDialog::cell_data_status(Gtk::CellRenderer *renderer,
   dynamic_cast<Gtk::CellRendererText*>(renderer)->property_markup() = s;
 }
 
+void GameLobbyDialog::cell_data_sitting(Gtk::CellRenderer *renderer,
+					const Gtk::TreeIter& i)
+{
+  dynamic_cast<Gtk::CellRendererToggle*>(renderer)->set_active((*i)[player_columns.sitting]);
+}
+
 void GameLobbyDialog::add_player(const Glib::ustring &type,
 			       const Glib::ustring &name, Player *player)
 {
@@ -333,11 +399,6 @@ void GameLobbyDialog::add_player(const Glib::ustring &type,
       else
 	//otherwise, the player is not here to play.
 	(*i)[player_columns.status] = PLAYER_NOT_HERE;
-      //hackola:
-      if (player->getId() == 7)
-	(*i)[player_columns.status] = PLAYER_NOT_HERE;
-      if (player->getId() == 6)
-	(*i)[player_columns.status] = "";
     }
   else
     {
@@ -356,25 +417,25 @@ void GameLobbyDialog::on_player_selected()
   update_buttons();
 }
 
-void GameLobbyDialog::on_remote_player_joins()
+void GameLobbyDialog::on_remote_player_joins(Player *p)
 {
   update_player_details();
   update_buttons();
 }
 
-void GameLobbyDialog::on_remote_player_departs()
+void GameLobbyDialog::on_remote_player_departs(Player *p)
 {
   update_player_details();
   update_buttons();
 }
 
-void GameLobbyDialog::on_remote_player_ends_turn()
+void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
 {
   update_scenario_details();
   update_city_map();
 }
 
-void GameLobbyDialog::on_remote_player_changes_name()
+void GameLobbyDialog::on_remote_player_changes_name(Player *p)
 {
   update_player_details();
   update_buttons();
@@ -386,9 +447,10 @@ void GameLobbyDialog::on_remote_player_changes_type()
   update_buttons();
 }
  
-void GameLobbyDialog::on_sit_clicked()
+void GameLobbyDialog::on_play_clicked()
 {
 }
+
 void GameLobbyDialog::on_cancel_clicked()
 {
 }

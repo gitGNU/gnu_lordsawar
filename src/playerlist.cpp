@@ -39,6 +39,7 @@
 #include "real_player.h"
 #include "ai_smart.h"
 #include "ai_fast.h"
+#include "network_player.h"
 #include "GameMap.h"
 
 using namespace std;
@@ -706,3 +707,19 @@ void Playerlist::instantiateArmysetPixmaps()
   for (iterator i = begin(); i != end(); ++i)
     Armysetlist::getInstance()->instantiatePixmaps((*i)->getArmyset());
 }
+
+void Playerlist::turnHumansIntoNetworkPlayers()
+{
+  for (iterator i = begin(); i != end(); i++)
+    {
+      if ((*i)->getType() == Player::HUMAN)
+	{
+	  NetworkPlayer *new_p = new NetworkPlayer(**i);
+	  swap((*i), new_p);
+	  //delete *i; fixme
+	  i = begin();
+	  continue;
+	}
+    }
+}
+

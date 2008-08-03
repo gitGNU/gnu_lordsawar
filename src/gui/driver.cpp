@@ -213,12 +213,36 @@ Driver::~Driver()
 {
 }
 
-void Driver::on_new_hosted_network_game_requested(GameParameters g)
+void Driver::on_hosted_player_sat_down(Player *player)
+{
+  GameServer *game_server = GameServer::getInstance();
+  game_server->sit_down(player);
+}
+
+void Driver::on_hosted_player_stood_up(Player *player)
+{
+  GameServer *game_server = GameServer::getInstance();
+  game_server->stand_up(player);
+}
+
+void Driver::on_client_player_sat_down(Player *player)
+{
+  GameClient *game_client = GameClient::getInstance();
+  game_client->sit_down(player);
+}
+
+void Driver::on_client_player_stood_up(Player *player)
+{
+  GameClient *game_client = GameClient::getInstance();
+  game_client->stand_up(player);
+}
+
+void Driver::on_new_hosted_network_game_requested(GameParameters g, int port)
 {
     if (splash_window.get())
 	splash_window->hide();
 
-    NewGameProgressWindow pw(g);
+    NewGameProgressWindow pw(g, GameScenario::NETWORKED);
     Gtk::Main::instance()->run(pw);
     GameScenario *game_scenario = pw.getGameScenario();
 
@@ -229,9 +253,13 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g)
 	return;
       }
 
-  GameServer::getInstance()->start(LORDSAWAR_PORT);
+  GameServer::getInstance()->start(port);
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, true));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
+  game_lobby_dialog->player_sat_down.connect
+    (sigc::mem_fun(*this, &Driver::on_hosted_player_sat_down));
+  game_lobby_dialog->player_stood_up.connect
+    (sigc::mem_fun(*this, &Driver::on_hosted_player_stood_up));
   int response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
   if (splash_window.get())
@@ -254,6 +282,10 @@ void Driver::on_remote_game_scenario_received(std::string filename)
 {
   game_lobby_dialog.reset(new GameLobbyDialog(filename, false));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
+  game_lobby_dialog->player_sat_down.connect
+    (sigc::mem_fun(*this, &Driver::on_client_player_sat_down));
+  game_lobby_dialog->player_stood_up.connect
+    (sigc::mem_fun(*this, &Driver::on_client_player_stood_up));
   int response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
   if (splash_window.get())
@@ -267,7 +299,7 @@ void Driver::on_new_game_requested(GameParameters g)
     if (splash_window.get())
 	splash_window->hide();
 
-    NewGameProgressWindow pw(g);
+    NewGameProgressWindow pw(g, GameScenario::HOTSEAT);
     Gtk::Main::instance()->run(pw);
     GameScenario *game_scenario = pw.getGameScenario();
 
@@ -431,7 +463,7 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
   std::string filename;
   std::string temp_filename = File::getSavePath() + "pbmtmp.sav";
       
-  NewGameProgressWindow pw(g);
+  NewGameProgressWindow pw(g, GameScenario::PLAY_BY_MAIL);
   Gtk::Main::instance()->run(pw);
   GameScenario *game_scenario = pw.getGameScenario();
   if (game_scenario == NULL)

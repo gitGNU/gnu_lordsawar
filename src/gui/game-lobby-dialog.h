@@ -32,6 +32,7 @@
 #include <gtkmm/liststore.h>
 #include <gtkmm/treemodelcolumn.h>
 #include <gtkmm/cellrenderercombo.h>
+#include <gtkmm/cellrenderertoggle.h>
 #include <gtkmm/treeview.h>
 #include "../citymap.h"
 #include "../GameScenario.h"
@@ -54,6 +55,9 @@ class GameLobbyDialog//: public sigc::trackable
     void hide();
     bool run();
     
+  sigc::signal<void, Player*> player_sat_down;
+  sigc::signal<void, Player*> player_stood_up;
+
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     //! The mini map that shows the scenario map
@@ -80,10 +84,11 @@ class GameLobbyDialog//: public sigc::trackable
     class PlayerColumns: public Gtk::TreeModelColumnRecord {
     public:
 	PlayerColumns()
-	    {add(shield); add(type); add(name); add(status); add(turn); add(player);}
+	    {add(shield); add(type); add(name); add(status); add(sitting); add(turn); add(player);}
 	
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > shield;
 	Gtk::TreeModelColumn<Glib::ustring> type, name, status;
+	Gtk::TreeModelColumn<bool> sitting;
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > turn;
 	Gtk::TreeModelColumn<Player *> player;
     };
@@ -117,22 +122,36 @@ class GameLobbyDialog//: public sigc::trackable
 	
 	Gtk::TreeModelColumn<Glib::ustring> status;
     };
-    const PlayerTypeColumns player_status_columns;
+    const PlayerStatusColumns player_status_columns;
     Glib::RefPtr<Gtk::ListStore> player_status_list;
     void cell_data_status(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
+
+    Gtk::CellRendererToggle sitting_renderer;
+    Gtk::TreeViewColumn sitting_column;
+    class PlayerSittingColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	PlayerSittingColumns()
+	    { add(sitting); }
+	
+	Gtk::TreeModelColumn<bool> sitting;
+    };
+    const PlayerSittingColumns player_sitting_columns;
+    Glib::RefPtr<Gtk::ListStore> player_sitting_list;
+    void cell_data_sitting(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
     
     void add_player(const Glib::ustring &type, const Glib::ustring &name,
 		    Player *player);
     void on_player_selected();
     bool d_has_ops;
     void update_buttons();
-    void on_remote_player_ends_turn();
-    void on_remote_player_departs();
-    void on_remote_player_joins();
-    void on_remote_player_changes_name();
+    void on_remote_player_ends_turn(Player *p);
+    void on_remote_player_departs(Player *p);
+    void on_remote_player_joins(Player *p);
+    void on_remote_player_changes_name(Player *p);
     void on_remote_player_changes_type();
-    void on_sit_clicked();
+    void on_play_clicked();
     void on_cancel_clicked();
+    void on_sitting_changed(Gtk::CellEditable *editable, const Glib::ustring &path);
 };
 
 #endif

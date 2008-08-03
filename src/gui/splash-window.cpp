@@ -465,7 +465,7 @@ SplashWindow::on_sdl_surface_changed()
 
 void SplashWindow::on_network_game_created(GameParameters g)
 {
-  new_hosted_network_game_requested.emit(g);
+  new_hosted_network_game_requested.emit(g, LORDSAWAR_PORT);
 }
 
 void SplashWindow::on_pbm_game_created(GameParameters g)

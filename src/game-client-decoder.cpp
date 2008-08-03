@@ -76,11 +76,10 @@ int GameClientDecoder::decodeActions(std::list<NetworkAction*> actions,
     np->decodeAction(action->getAction());
     if (action->getAction()->getType() == Action::PLAYER_RENAME)
       remote_player_named.emit(action->getOwner());
+    else if (action->getAction()->getType() == Action::END_TURN)
+      remote_player_moved.emit((*actions.back()).getOwner());
     count++;
   }
-
-  if (actions.size() > 0)
-    remote_player_moved.emit((*actions.back()).getOwner());
 
   for (std::list<NetworkAction *>::iterator i = actions.begin(),
        end = actions.end(); i != end; ++i)

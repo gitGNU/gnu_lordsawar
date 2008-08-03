@@ -225,6 +225,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
     
 	void instantiateArmysetPixmaps();
 
+
+	void turnHumansIntoNetworkPlayers();
+
     protected:
 	//! Default constructor.
         Playerlist();
