@@ -273,15 +273,12 @@ void SplashWindow::on_load_scenario_clicked()
 
 void SplashWindow::on_network_game_selected(std::string ip, unsigned short port)
 {
-  //go get the file!
-  //download it into a file called network.sav, and then:
-  std::string filename = File::getSavePath() + "network.sav";
   new_remote_network_game_requested.emit(ip, port);
 }
 
 void SplashWindow::on_game_started(GameParameters g)
 {
-    new_game_requested.emit(g);
+  new_game_requested.emit(g);
 }
 
 

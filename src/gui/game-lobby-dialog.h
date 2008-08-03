@@ -45,7 +45,6 @@ class Player;
 class GameLobbyDialog//: public sigc::trackable
 {
  public:
-    GameLobbyDialog(std::string filename, bool has_ops);
     GameLobbyDialog(GameScenario *game_scenario, bool has_ops);
 
     ~GameLobbyDialog();
@@ -66,7 +65,6 @@ class GameLobbyDialog//: public sigc::trackable
 
     void initDialog(GameScenario *gamescenario);
     void on_map_changed(SDL_Surface *map);
-    bool d_destroy_gamescenario;
     GameScenario *d_game_scenario;
     Gtk::Label *turn_label;
     Gtk::Label *scenario_name_label;
@@ -145,8 +143,11 @@ class GameLobbyDialog//: public sigc::trackable
     bool d_has_ops;
     void update_buttons();
     void on_remote_player_ends_turn(Player *p);
-    void on_remote_player_departs(Player *p);
-    void on_remote_player_joins(Player *p);
+
+    void on_remote_participant_joins();
+    void on_remote_participant_departs();
+    void on_player_stands(Player *p);
+    void on_player_sits(Player *p);
     void on_remote_player_changes_name(Player *p);
     void on_remote_player_changes_type();
     void on_play_clicked();

@@ -59,10 +59,13 @@ GameClient::GameClient()
 
 GameClient::~GameClient()
 {
+  if (network_connection.get() != NULL)
+    network_connection->send(MESSAGE_TYPE_PARTICIPANT_DISCONNECT, "");
 }
 
-void GameClient::startAsPlayer(std::string host, int port, int id) 
+void GameClient::start(std::string host, int port)
 {
+  player_id = -1;
   network_connection.reset(new NetworkConnection());
   network_connection->connected.connect(
     sigc::mem_fun(this, &GameClient::onConnected));
@@ -70,14 +73,7 @@ void GameClient::startAsPlayer(std::string host, int port, int id)
     sigc::mem_fun(this, &GameClient::onConnectionLost));
   network_connection->got_message.connect(
     sigc::mem_fun(this, &GameClient::onGotMessage));
-
   network_connection->connectToHost(host, port);
-};
-
-void GameClient::start(std::string host, int port)
-{
-  player_id = -1;
-  startAsPlayer(host, port, player_id);
 }
 
 void GameClient::onConnected() 
@@ -95,38 +91,32 @@ void GameClient::onConnectionLost()
   client_disconnected.emit();
 }
 
-void GameClient::joined(Player *player)
+void GameClient::sat_down(Player *player)
 {
-  if (player)
-    {
-      //now turning a network player into a human player
-      dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
-      RealPlayer *new_p = new RealPlayer (*player);
-      Playerlist::getInstance()->swap(player, new_p);
-      delete player;
-      listenForActions(new_p);
-      listenForHistories(new_p);
-      remote_player_connected.emit(new_p);
-    }
-  else
-    remote_player_connected.emit(player);
+  if (!player)
+    return;
+  //now turning a network player into a human player
+  dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
+  RealPlayer *new_p = new RealPlayer (*player);
+  Playerlist::getInstance()->swap(player, new_p);
+  delete player;
+  listenForActions(new_p);
+  listenForHistories(new_p);
+  player_sits.emit(new_p);
 }
 
-void GameClient::departed(Player *player)
+void GameClient::stood_up(Player *player)
 {
-  if (player)
-    {
-      //now turning a human player into a network player
-      NetworkPlayer *new_p = new NetworkPlayer(*player);
-      Playerlist::getInstance()->swap(player, new_p);
-      delete player;
-      listenForActions(new_p);
-      listenForHistories(new_p);
-      new_p->setConnected(false);
-      remote_player_connected.emit(new_p);
-    }
-  else
-    remote_player_disconnected.emit(player);
+  if (!player)
+    return;
+  //now turning a human player into a network player
+  NetworkPlayer *new_p = new NetworkPlayer(*player);
+  Playerlist::getInstance()->swap(player, new_p);
+  delete player;
+  listenForActions(new_p);
+  listenForHistories(new_p);
+  new_p->setConnected(false);
+  player_stands.emit(new_p);
 }
 
 void GameClient::onGotMessage(MessageType type, std::string payload)
@@ -138,28 +128,13 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_PONG:
-    std::cerr << "sending join for player number " <<player_id << std::endl;
-    switch (player_id)
-      {
-      case 0: type = MESSAGE_TYPE_P1_JOIN; break;
-      case 1: type = MESSAGE_TYPE_P2_JOIN; break;
-      case 2: type = MESSAGE_TYPE_P3_JOIN; break;
-      case 3: type = MESSAGE_TYPE_P4_JOIN; break;
-      case 4: type = MESSAGE_TYPE_P5_JOIN; break;
-      case 5: type = MESSAGE_TYPE_P6_JOIN; break;
-      case 6: type = MESSAGE_TYPE_P7_JOIN; break;
-      case 7: type = MESSAGE_TYPE_P8_JOIN; break;
-      case -1: type = MESSAGE_TYPE_VIEWER_JOIN; break;
-      default:
-	      return;
-      }
-    network_connection->send(type, "I wanna join");
+    network_connection->send(MESSAGE_TYPE_PARTICIPANT_CONNECT, "I wanna join");
     break;
 
   case MESSAGE_TYPE_SENDING_ACTIONS:
     gotActions(payload);
     break;
-    
+
   case MESSAGE_TYPE_SENDING_MAP:
     gotScenario(payload);
     if (player_id > -1)
@@ -170,88 +145,93 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
       }
     break;
 
-  case MESSAGE_TYPE_P1_JOIN:
-  case MESSAGE_TYPE_P2_JOIN:
-  case MESSAGE_TYPE_P3_JOIN:
-  case MESSAGE_TYPE_P4_JOIN:
-  case MESSAGE_TYPE_P5_JOIN:
-  case MESSAGE_TYPE_P6_JOIN:
-  case MESSAGE_TYPE_P7_JOIN:
-  case MESSAGE_TYPE_P8_JOIN:
-  case MESSAGE_TYPE_VIEWER_JOIN:
-  case MESSAGE_TYPE_P1_DEPART:
-  case MESSAGE_TYPE_P2_DEPART:
-  case MESSAGE_TYPE_P3_DEPART:
-  case MESSAGE_TYPE_P4_DEPART:
-  case MESSAGE_TYPE_P5_DEPART:
-  case MESSAGE_TYPE_P6_DEPART:
-  case MESSAGE_TYPE_P7_DEPART:
-  case MESSAGE_TYPE_P8_DEPART:
-  case MESSAGE_TYPE_VIEWER_DEPART:
+  case MESSAGE_TYPE_PARTICIPANT_CONNECTED:
+    remote_participant_joins.emit();
+    break;
+  case MESSAGE_TYPE_PARTICIPANT_DISCONNECTED:
+    remote_participant_departs.emit();
+    break;
+
+  case MESSAGE_TYPE_P1_SIT:
+  case MESSAGE_TYPE_P2_SIT:
+  case MESSAGE_TYPE_P3_SIT:
+  case MESSAGE_TYPE_P4_SIT:
+  case MESSAGE_TYPE_P5_SIT:
+  case MESSAGE_TYPE_P6_SIT:
+  case MESSAGE_TYPE_P7_SIT:
+  case MESSAGE_TYPE_P8_SIT:
+  case MESSAGE_TYPE_P1_STAND:
+  case MESSAGE_TYPE_P2_STAND:
+  case MESSAGE_TYPE_P3_STAND:
+  case MESSAGE_TYPE_P4_STAND:
+  case MESSAGE_TYPE_P5_STAND:
+  case MESSAGE_TYPE_P6_STAND:
+  case MESSAGE_TYPE_P7_STAND:
+  case MESSAGE_TYPE_P8_STAND:
+  case MESSAGE_TYPE_PARTICIPANT_CONNECT:
+  case MESSAGE_TYPE_PARTICIPANT_DISCONNECT:
     //FIXME: faulty server.
     break;
 
     //this is the client realizing that some other player joined the server
-  case MESSAGE_TYPE_P1_JOINED:
-    joined(Playerlist::getInstance()->getPlayer(0));
+  case MESSAGE_TYPE_P1_SAT_DOWN:
+    sat_down(Playerlist::getInstance()->getPlayer(0));
     break;
-  case MESSAGE_TYPE_P2_JOINED:
-    joined(Playerlist::getInstance()->getPlayer(1));
+  case MESSAGE_TYPE_P2_SAT_DOWN:
+    sat_down(Playerlist::getInstance()->getPlayer(1));
     break;
-  case MESSAGE_TYPE_P3_JOINED:
-    joined(Playerlist::getInstance()->getPlayer(2));
+  case MESSAGE_TYPE_P3_SAT_DOWN:
+    sat_down(Playerlist::getInstance()->getPlayer(2));
     break;
-  case MESSAGE_TYPE_P4_JOINED:
-    joined(Playerlist::getInstance()->getPlayer(3));
+  case MESSAGE_TYPE_P4_SAT_DOWN:
+    sat_down(Playerlist::getInstance()->getPlayer(3));
     break;
-  case MESSAGE_TYPE_P5_JOINED:
-    joined(Playerlist::getInstance()->getPlayer(4));
+  case MESSAGE_TYPE_P5_SAT_DOWN:
+    sat_down(Playerlist::getInstance()->getPlayer(4));
     break;
-  case MESSAGE_TYPE_P6_JOINED:
-    joined(Playerlist::getInstance()->getPlayer(5));
+  case MESSAGE_TYPE_P6_SAT_DOWN:
+    sat_down(Playerlist::getInstance()->getPlayer(5));
     break;
-  case MESSAGE_TYPE_P7_JOINED:
-    joined(Playerlist::getInstance()->getPlayer(6));
+  case MESSAGE_TYPE_P7_SAT_DOWN:
+    sat_down(Playerlist::getInstance()->getPlayer(6));
     break;
-  case MESSAGE_TYPE_P8_JOINED:
-    joined(Playerlist::getInstance()->getPlayer(7));
-    break;
-  case MESSAGE_TYPE_VIEWER_JOINED:
-    joined(NULL);
+  case MESSAGE_TYPE_P8_SAT_DOWN:
+    sat_down(Playerlist::getInstance()->getPlayer(7));
     break;
     //this is the client realizing that a remote player has disconnected
-  case MESSAGE_TYPE_P1_DEPARTED:
-    departed(Playerlist::getInstance()->getPlayer(0));
+  case MESSAGE_TYPE_P1_STOOD_UP:
+    stood_up(Playerlist::getInstance()->getPlayer(0));
     break;
-  case MESSAGE_TYPE_P2_DEPARTED:
-    departed(Playerlist::getInstance()->getPlayer(1));
+  case MESSAGE_TYPE_P2_STOOD_UP:
+    stood_up(Playerlist::getInstance()->getPlayer(1));
     break;
-  case MESSAGE_TYPE_P3_DEPARTED:
-    departed(Playerlist::getInstance()->getPlayer(2));
+  case MESSAGE_TYPE_P3_STOOD_UP:
+    stood_up(Playerlist::getInstance()->getPlayer(2));
     break;
-  case MESSAGE_TYPE_P4_DEPARTED:
-    departed(Playerlist::getInstance()->getPlayer(3));
+  case MESSAGE_TYPE_P4_STOOD_UP:
+    stood_up(Playerlist::getInstance()->getPlayer(3));
     break;
-  case MESSAGE_TYPE_P5_DEPARTED:
-    departed(Playerlist::getInstance()->getPlayer(4));
+  case MESSAGE_TYPE_P5_STOOD_UP:
+    stood_up(Playerlist::getInstance()->getPlayer(4));
     break;
-  case MESSAGE_TYPE_P6_DEPARTED:
-    departed(Playerlist::getInstance()->getPlayer(5));
+  case MESSAGE_TYPE_P6_STOOD_UP:
+    stood_up(Playerlist::getInstance()->getPlayer(5));
     break;
-  case MESSAGE_TYPE_P7_DEPARTED:
-    departed(Playerlist::getInstance()->getPlayer(6));
+  case MESSAGE_TYPE_P7_STOOD_UP:
+    stood_up(Playerlist::getInstance()->getPlayer(6));
     break;
-  case MESSAGE_TYPE_P8_DEPARTED:
-    departed(Playerlist::getInstance()->getPlayer(7));
-    break;
-  case MESSAGE_TYPE_VIEWER_DEPARTED:
-    departed(NULL);
+  case MESSAGE_TYPE_P8_STOOD_UP:
+    stood_up(Playerlist::getInstance()->getPlayer(7));
     break;
 
   case MESSAGE_TYPE_SENDING_HISTORY:
     gotHistories(payload);
     break;
-    
+  
+  case MESSAGE_TYPE_SERVER_DISCONNECT:
+    client_disconnected.emit();
+    break;
+
   }
 }
 
@@ -266,27 +246,27 @@ void GameClient::listenForHistories(Player *player)
 {
   if (!player)
     return;
- player->history_written.connect(sigc::mem_fun(this, &GameClient::onHistoryDone));
+  player->history_written.connect(sigc::mem_fun(this, &GameClient::onHistoryDone));
 }
 
 void GameClient::clearNetworkActionlist(std::list<NetworkAction*> actions)
 {
-    for (std::list<NetworkAction*>::iterator it = actions.begin();
-        it != actions.end(); it++)
-      {
-	delete (*it);
-      }
-    actions.clear();
+  for (std::list<NetworkAction*>::iterator it = actions.begin();
+       it != actions.end(); it++)
+    {
+      delete (*it);
+    }
+  actions.clear();
 }
 
 void GameClient::clearNetworkHistorylist(std::list<NetworkHistory*> histories)
 {
-    for (std::list<NetworkHistory*>::iterator it = histories.begin();
-        it != histories.end(); it++)
-      {
-	delete (*it);
-      }
-    histories.clear();
+  for (std::list<NetworkHistory*>::iterator it = histories.begin();
+       it != histories.end(); it++)
+    {
+      delete (*it);
+    }
+  histories.clear();
 }
 
 void GameClient::onHistoryDone(NetworkHistory *history)
@@ -347,18 +327,19 @@ void GameClient::sendHistories()
 void GameClient::sit_down (Player *player)
 {
   MessageType type;
+  printf ("id is %d\n", player->getId());
   switch (player->getId())
     {
-    case 0: type = MESSAGE_TYPE_P1_JOIN; break;
-    case 1: type = MESSAGE_TYPE_P2_JOIN; break;
-    case 2: type = MESSAGE_TYPE_P3_JOIN; break;
-    case 3: type = MESSAGE_TYPE_P4_JOIN; break;
-    case 4: type = MESSAGE_TYPE_P5_JOIN; break;
-    case 5: type = MESSAGE_TYPE_P6_JOIN; break;
-    case 6: type = MESSAGE_TYPE_P7_JOIN; break;
-    case 7: type = MESSAGE_TYPE_P8_JOIN; break;
+    case 0: type = MESSAGE_TYPE_P1_SIT; break;
+    case 1: type = MESSAGE_TYPE_P2_SIT; break;
+    case 2: type = MESSAGE_TYPE_P3_SIT; break;
+    case 3: type = MESSAGE_TYPE_P4_SIT; break;
+    case 4: type = MESSAGE_TYPE_P5_SIT; break;
+    case 5: type = MESSAGE_TYPE_P6_SIT; break;
+    case 6: type = MESSAGE_TYPE_P7_SIT; break;
+    case 7: type = MESSAGE_TYPE_P8_SIT; break;
     default:
-	     return;
+	    return;
     }
   network_connection->send(type, "I wanna join");
 }
@@ -368,16 +349,16 @@ void GameClient::stand_up (Player *player)
   MessageType type;
   switch (player->getId())
     {
-    case 0: type = MESSAGE_TYPE_P1_DEPART; break;
-    case 1: type = MESSAGE_TYPE_P2_DEPART; break;
-    case 2: type = MESSAGE_TYPE_P3_DEPART; break;
-    case 3: type = MESSAGE_TYPE_P4_DEPART; break;
-    case 4: type = MESSAGE_TYPE_P5_DEPART; break;
-    case 5: type = MESSAGE_TYPE_P6_DEPART; break;
-    case 6: type = MESSAGE_TYPE_P7_DEPART; break;
-    case 7: type = MESSAGE_TYPE_P8_DEPART; break;
+    case 0: type = MESSAGE_TYPE_P1_STAND; break;
+    case 1: type = MESSAGE_TYPE_P2_STAND; break;
+    case 2: type = MESSAGE_TYPE_P3_STAND; break;
+    case 3: type = MESSAGE_TYPE_P4_STAND; break;
+    case 4: type = MESSAGE_TYPE_P5_STAND; break;
+    case 5: type = MESSAGE_TYPE_P6_STAND; break;
+    case 6: type = MESSAGE_TYPE_P7_STAND; break;
+    case 7: type = MESSAGE_TYPE_P8_STAND; break;
     default:
-	     return;
+	    return;
     }
   network_connection->send(type, "I wanna depart");
 }

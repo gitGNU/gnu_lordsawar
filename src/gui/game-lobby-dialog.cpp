@@ -108,10 +108,14 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
       GameServer *game_server = GameServer::getInstance();
       game_server->remote_player_moved.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn));
-      game_server->remote_player_connected.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_joins));
-      game_server->remote_player_disconnected.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_departs));
+      game_server->remote_participant_joins.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_joins));
+      game_server->remote_participant_departs.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_departs));
+      game_server->player_sits.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_player_sits));
+      game_server->player_stands.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_player_stands));
       game_server->remote_player_named.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
     }
@@ -120,10 +124,14 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
       GameClient *game_client = GameClient::getInstance();
       game_client->remote_player_moved.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn));
-      game_client->remote_player_connected.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_joins));
-      game_client->remote_player_disconnected.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_departs));
+      game_client->remote_participant_joins.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_joins));
+      game_client->remote_participant_departs.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_departs));
+      game_client->player_sits.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_player_sits));
+      game_client->player_stands.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_player_stands));
       game_client->remote_player_named.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
     }
@@ -243,19 +251,6 @@ void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
     player_stood_up.emit((*iter)[player_columns.player]);
 }
 
-GameLobbyDialog::GameLobbyDialog(std::string filename, bool has_ops)
-  :type_column(_("Type"), type_renderer), 
-    status_column(_("Status"), status_renderer),
-    sitting_column(_("Sitting"), sitting_renderer)
-{
-  d_has_ops = has_ops;
-  bool broken = false;
-  d_destroy_gamescenario = true;
-  GameScenario *game_scenario = new GameScenario(filename, broken);
-  initDialog(game_scenario);
-  update_scenario_details();
-}
-
 GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario, bool has_ops)
   :type_column(_("Type"), type_renderer),
     status_column(_("Status"), status_renderer),
@@ -268,13 +263,6 @@ GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario, bool has_ops)
 
 GameLobbyDialog::~GameLobbyDialog()
 {
-  if (d_destroy_gamescenario)
-    delete d_game_scenario;
-  else
-    {
-      std::string filename = File::getSavePath() + "network.sav";
-      d_game_scenario->saveGame(filename);
-    }
 }
 
 void GameLobbyDialog::update_scenario_details()
@@ -418,7 +406,15 @@ void GameLobbyDialog::on_player_selected()
   update_buttons();
 }
 
-void GameLobbyDialog::on_remote_player_joins(Player *p)
+void GameLobbyDialog::on_remote_participant_joins()
+{
+}
+
+void GameLobbyDialog::on_remote_participant_departs()
+{
+}
+
+void GameLobbyDialog::on_player_sits(Player *p)
 {
   if (!p)
     return;
@@ -434,7 +430,7 @@ void GameLobbyDialog::on_remote_player_joins(Player *p)
   update_buttons();
 }
 
-void GameLobbyDialog::on_remote_player_departs(Player *p)
+void GameLobbyDialog::on_player_stands(Player *p)
 {
   if (!p)
     return;

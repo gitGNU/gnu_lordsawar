@@ -1,4 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
+// Copyright (C) 2008 Ben Asselstine 
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -41,6 +42,7 @@ public:
   void send(void *conn, MessageType type, const std::string &payload);
 
   sigc::signal<void, void *, MessageType, std::string> got_message;
+  sigc::signal<void, void *> connection_made;
   sigc::signal<void, void *> connection_lost;
   
   // private callback

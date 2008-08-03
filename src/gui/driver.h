@@ -39,17 +39,20 @@ class Driver: public sigc::trackable
     void run();
     static std::string create_and_dump_scenario(const std::string &file, 
 						const GameParameters &g);
+  
  private:
     std::auto_ptr<GameWindow> game_window;
     std::auto_ptr<GameLobbyDialog> game_lobby_dialog;
     std::auto_ptr<SplashWindow> splash_window;
     std::string d_load_filename;
+    sigc::signal<void, std::string> game_scenario_received;
 
     void on_new_game_requested(GameParameters g);
     void on_new_remote_network_game_requested(std::string host, unsigned short port);
     void on_new_hosted_network_game_requested(GameParameters g, int port);
     void on_new_pbm_game_requested(GameParameters g);
-    void on_remote_game_scenario_received(std::string filename);
+    void on_game_scenario_downloaded(std::string filename);
+    void on_game_scenario_received(std::string path);
     void on_load_requested(std::string filename);
     void on_quit_requested();
 
@@ -62,11 +65,15 @@ class Driver: public sigc::trackable
     void on_hosted_player_stood_up(Player *player);
     void on_client_player_sat_down(Player *player);
     void on_client_player_stood_up(Player *player);
+    void on_server_went_away();
 
     GameScenario *new_game(GameParameters g);
     GameScenario *load_game(std::string file_path);
     void stress_test();
     void stressTestNextRound();
+
+    void heartbeat();
+    std::string game_scenario_downloaded;
 };
 
 

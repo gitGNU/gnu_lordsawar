@@ -46,10 +46,11 @@ public:
   static void deleteInstance();
 
   void start(std::string host, int port);
-  void startAsPlayer(std::string host, int port, int id);
 
-  sigc::signal<void, Player*> remote_player_connected;
-  sigc::signal<void, Player*> remote_player_disconnected;
+  sigc::signal<void> remote_participant_joins;
+  sigc::signal<void, Player*> player_sits;
+  sigc::signal<void, Player*> player_stands;
+  sigc::signal<void> remote_participant_departs;
   sigc::signal<void> client_connected;
   sigc::signal<void> client_disconnected;
   
@@ -77,10 +78,8 @@ private:
   void sendHistories();
   void clearNetworkHistorylist(std::list<NetworkHistory*> histories);
 
-
-  void joined(Player *player);
-  void departed(Player *player);
-
+  void sat_down(Player *player);
+  void stood_up(Player *player);
   std::list<NetworkAction*> actions;
   std::list<NetworkHistory*> histories;
   //! A static pointer for the singleton instance.

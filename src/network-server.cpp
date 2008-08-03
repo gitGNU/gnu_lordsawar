@@ -1,4 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
+// Copyright (C) 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,9 +31,9 @@ NetworkServer::NetworkServer()
 
 NetworkServer::~NetworkServer()
 {
-  for (std::list<NetworkConnection *>::iterator i = connections.begin(),
-         end = connections.end(); i != end; ++i)
-    delete *i;
+  //for (std::list<NetworkConnection *>::iterator i = connections.begin(),
+         //end = connections.end(); i != end; ++i)
+    //delete *i;
   
   if (server)
     gnet_server_delete(server);
@@ -70,6 +71,8 @@ void NetworkServer::gotClientConnection(GConn* c)
     conn->connection_lost.connect(
       sigc::bind(sigc::mem_fun(connection_lost, &sigc::signal<void, void *>::emit), conn));
 
+    conn->connected.connect(
+      sigc::bind(sigc::mem_fun(connection_made, &sigc::signal<void, void *>::emit), conn));
     conn->got_message.connect(
       sigc::bind<0>(sigc::mem_fun(got_message, &sigc::signal<void, void *, MessageType, std::string>::emit), conn));
 

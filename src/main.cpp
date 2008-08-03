@@ -85,10 +85,6 @@ int main(int argc, char* argv[])
 	    {
 	      kit.start_stress_test = true;
 	    }
-	  else if (parameter == "--network-test" || parameter == "-n")
-	    {
-	      kit.start_network_test = true;
-	    }
 	  else if (parameter == "--help" || parameter == "-h")
 	    {
 	      cout << argv[0] << " [OPTION]... [FILE]" << endl << endl;
@@ -98,7 +94,6 @@ int main(int argc, char* argv[])
 	      cout << _("  -c <size>                  Set the maximum cache size") <<endl;
 	      cout << _("  -t, --test                 Start with a test-scenario") << endl;
 	      cout << _("  -s, --stress-test          Non-interactive stress test") << endl;
-	      cout << _("  -n, --network-test         Start a network test") << endl;
 	      cout << endl;
 	      cout << "FILE can be a saved game file (.sav), or a map (.map) file." << endl;
 	      cout << endl;
@@ -119,18 +114,6 @@ int main(int argc, char* argv[])
   if (kit.load_filename != "" && kit.start_stress_test)
     {
       cerr <<"Error: Cannot specify -s and have a file specified." << endl;
-      exit (1);
-    }
-
-  if (kit.start_network_test  && kit.start_test_scenario)
-    {
-      cerr <<"Error: Cannot specify -n and -t simultaneously." << endl;
-      exit (1);
-    }
-
-  if (kit.start_network_test  && kit.start_stress_test)
-    {
-      cerr <<"Error: Cannot specify -n and -s simultaneously." << endl;
       exit (1);
     }
 

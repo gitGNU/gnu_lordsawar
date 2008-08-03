@@ -1,4 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
+// Copyright (C) 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,13 +43,17 @@ NetworkConnection::NetworkConnection(_GConn *conn)
 NetworkConnection::~NetworkConnection()
 {
   if (conn)
-    gnet_conn_delete(conn);
+    {
+      gnet_conn_delete(conn);
+      conn = 0;
+    }
 }
 
 void NetworkConnection::connectToHost(std::string host, int port)
 {
   conn = gnet_conn_new(host.c_str(), port, &event_helper, this);
   if (!conn)
+    exit(1);
     ; // FIXME: report error
 
   gnet_conn_connect(conn);
@@ -58,6 +63,8 @@ void NetworkConnection::connectToHost(std::string host, int port)
 
 void NetworkConnection::send(MessageType type, const std::string &payload)
 {
+  if (gnet_conn_is_connected(conn) == false)
+    return;
   // write the preamble
   gchar buf[MESSAGE_SIZE_BYTES + MESSAGE_PREAMBLE_EXTRA_BYTES];
   guint32 l = g_htonl(MESSAGE_PREAMBLE_EXTRA_BYTES + payload.size());
@@ -67,7 +74,7 @@ void NetworkConnection::send(MessageType type, const std::string &payload)
   
   gnet_conn_write(conn, buf, MESSAGE_SIZE_BYTES + MESSAGE_PREAMBLE_EXTRA_BYTES);
 
-  std::cerr << "sending length " << MESSAGE_PREAMBLE_EXTRA_BYTES + payload.size() << std::endl;
+  std::cerr << "sending length " << MESSAGE_PREAMBLE_EXTRA_BYTES + payload.size() << " to " << gnet_inetaddr_get_name(conn->inetaddr) << std::endl;
 
   // write the payload
   if (!payload.empty())
@@ -90,6 +97,7 @@ void NetworkConnection::gotConnectionEvent(GConn* conn, GConnEvent* event)
     {
       if (event->length < 2)
       {
+	printf ("misbehaving server!\n");
         // misbehaving server
         gnet_conn_disconnect(conn);
         break;

@@ -50,7 +50,6 @@ Main::Main(int &argc, char **&argv)
     singleton = this;
 
     start_test_scenario = false;
-    start_network_test = false;
     start_stress_test = false;
     load_filename = "";
     turn_filename = "";

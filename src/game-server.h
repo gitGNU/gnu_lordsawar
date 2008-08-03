@@ -48,12 +48,16 @@ public:
   static void deleteInstance();
 
   bool isListening();
-  void start(int port);
+  void start(GameScenario *game_scenario, int port);
 
   void sit_down (Player *player);
   void stand_up (Player *player);
-  sigc::signal<void, Player*> remote_player_disconnected;
-  sigc::signal<void, Player*> remote_player_connected;
+  sigc::signal<void> remote_participant_connected;
+  sigc::signal<void> remote_participant_joins;
+  sigc::signal<void, Player*> player_sits;
+  sigc::signal<void, Player*> player_stands;
+  sigc::signal<void> remote_participant_departs;
+  sigc::signal<void> remote_participant_disconnected;
 
   void setGameScenario(GameScenario *scenario) {d_game_scenario = scenario;};
 
@@ -68,10 +72,14 @@ private:
   void onActionDone(NetworkAction *action);
   void onHistoryDone(NetworkHistory *history);
 
-  void join(void *conn, Player *player);
-  void notifyJoin(Player *player);
-  void depart(void *conn, Player *player);
-  void notifyDepart(Player *player);
+  void join(void *conn);
+  void notifyJoin ();
+  void depart(void *conn);
+  void notifyDepart (void *conn);
+  void sit(void *conn, Player *player);
+  void notifySit(Player *player);
+  void stand(void *conn, Player *player);
+  void notifyStand(Player *player);
   void gotRemoteActions(void *conn, const std::string &payload);
   void gotRemoteHistory(void *conn, const std::string &payload);
 
@@ -89,6 +97,7 @@ private:
   
   void onGotMessage(void *conn, MessageType type, std::string message);
   void onConnectionLost(void *conn);
+  void onConnectionMade(void *conn);
   void clearNetworkActionlist(std::list<NetworkAction*> actions);
   void clearNetworkHistorylist(std::list<NetworkHistory*> histories);
   bool dumpActionsAndHistories(XML_Helper *helper);

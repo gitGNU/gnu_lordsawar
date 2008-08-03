@@ -28,6 +28,7 @@
 #include "network_player.h"
 #include "playerlist.h"
 #include "xmlhelper.h"
+#include "GameScenario.h"
 
 
 
@@ -41,7 +42,7 @@ GameClientDecoder::~GameClientDecoder()
 
 void GameClientDecoder::gotScenario(const std::string &payload)
 {
-  std::string file = "network.sav";
+  std::string file = "clientnetwork.sav";
   std::string path = File::getSavePath();
   path += file;
   

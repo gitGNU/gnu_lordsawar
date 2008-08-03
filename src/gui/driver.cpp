@@ -56,6 +56,7 @@
 
 Driver::Driver(std::string load_filename)
 {
+  game_scenario_downloaded = "";
     splash_window.reset(new SplashWindow);
     splash_window->new_game_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_new_game_requested));
@@ -134,15 +135,6 @@ void Driver::run()
       g.see_opponents_stacks = true;
       g.see_opponents_production = true;
       on_new_game_requested(g);
-    }
-  else if (Main::instance().start_network_test) 
-    {
-      GameClient *game_client = GameClient::getInstance();
-      game_client->game_scenario_received.connect
-	(sigc::mem_fun(this, &Driver::on_load_requested));
-      game_client->start("localhost", LORDSAWAR_PORT);
-      splash_window->show();
-      return;
     }
   else if (Main::instance().turn_filename != "") 
     {
@@ -227,6 +219,7 @@ void Driver::on_hosted_player_stood_up(Player *player)
 
 void Driver::on_client_player_sat_down(Player *player)
 {
+  printf ("somebody sat down!\n");
   GameClient *game_client = GameClient::getInstance();
   game_client->sit_down(player);
 }
@@ -250,18 +243,19 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port)
       {
 	TimedMessageDialog dialog(*splash_window->get_window(),
 				  _("Corrupted saved game file."), 0);
+	dialog.run();
+	dialog.hide();
 	return;
       }
 
   GameServer *game_server = GameServer::getInstance();
-  game_server->setGameScenario(game_scenario);
-  game_server->start(port);
+  game_server->start(game_scenario, port);
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, true));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   game_lobby_dialog->player_sat_down.connect
-    (sigc::mem_fun(*this, &Driver::on_hosted_player_sat_down));
+    (sigc::mem_fun(this, &Driver::on_hosted_player_sat_down));
   game_lobby_dialog->player_stood_up.connect
-    (sigc::mem_fun(*this, &Driver::on_hosted_player_stood_up));
+    (sigc::mem_fun(this, &Driver::on_hosted_player_stood_up));
   int response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
   if (splash_window.get())
@@ -270,31 +264,76 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port)
     GameServer::deleteInstance();
 }
 
+  
+void Driver::on_server_went_away()
+{
+  game_lobby_dialog->hide();
+  if (splash_window.get())
+    splash_window->show();
+  GameClient::deleteInstance();
+  TimedMessageDialog dialog(*splash_window->get_window(), 
+			    _("Server went away."), 0);
+  dialog.run();
+  dialog.hide();
+}
+
 void Driver::on_new_remote_network_game_requested(std::string host, unsigned short port)
 {
   if (splash_window.get())
     splash_window->hide();
   GameClient *game_client = GameClient::getInstance();
   game_client->game_scenario_received.connect
-    (sigc::mem_fun(*this, &Driver::on_remote_game_scenario_received));
+    (sigc::mem_fun(this, &Driver::on_game_scenario_downloaded));
+  game_client->client_disconnected.connect
+    (sigc::mem_fun(this, &Driver::on_server_went_away));
+  game_scenario_received.connect
+    (sigc::mem_fun(this, &Driver::on_game_scenario_received));
   game_client->start(host, port);
+  Glib::signal_timeout().connect
+    (bind_return(sigc::mem_fun(*this, &Driver::heartbeat), true), 1 * 1000);
+
 }
-  
-void Driver::on_remote_game_scenario_received(std::string filename)
+
+void Driver::heartbeat()
 {
-  game_lobby_dialog.reset(new GameLobbyDialog(filename, false));
+  printf("checking for download finished!\n");
+  if (game_scenario_downloaded == "")
+    {
+      printf ("not downloaded yet.\n");
+      return;
+    }
+  
+  printf ("downloaded scenario!  proceeding.\n");
+  game_scenario_received.emit(game_scenario_downloaded);
+}
+
+void Driver::on_game_scenario_received(std::string path)
+{
+  GameScenario *game_scenario = 
+    load_game(path);
+  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, false));
+  printf ("game lobby dialog created\n");
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   game_lobby_dialog->player_sat_down.connect
-    (sigc::mem_fun(*this, &Driver::on_client_player_sat_down));
+    (sigc::mem_fun(this, &Driver::on_client_player_sat_down));
   game_lobby_dialog->player_stood_up.connect
-    (sigc::mem_fun(*this, &Driver::on_client_player_stood_up));
+    (sigc::mem_fun(this, &Driver::on_client_player_stood_up));
   int response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
   if (splash_window.get())
     splash_window->show();
   if (response != 0)
     GameClient::deleteInstance();
-  }
+}
+void Driver::on_game_scenario_downloaded(std::string path)
+{
+  printf ("got a path to a scenario that was downloaded!!\n");
+  game_scenario_downloaded = path;
+  //emitting the signal doesn't work.
+  //it stops the game client from doing more processing.
+  //how can i bring up the game lobby dialog with this scenario?
+  //...without stopping the game client from getting more messages
+}
 
 void Driver::on_new_game_requested(GameParameters g)
 {
@@ -309,6 +348,8 @@ void Driver::on_new_game_requested(GameParameters g)
       {
 	TimedMessageDialog dialog(*splash_window->get_window(),
 				  _("Corrupted saved game file."), 0);
+	dialog.run();
+	dialog.hide();
 	return;
       }
 
@@ -455,6 +496,8 @@ GameScenario *Driver::load_game(std::string file_path)
       {
 	TimedMessageDialog dialog(*splash_window->get_window(),
 				  _("Corrupted saved game file."), 0);
+	dialog.run();
+	dialog.hide();
 	return NULL;
       }
     return game_scenario;
@@ -472,6 +515,8 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
     {
       TimedMessageDialog dialog(*splash_window->get_window(),
 				_("Corrupted saved game file."), 0);
+	dialog.run();
+	dialog.hide();
       return;
     }
   game_scenario->saveGame(temp_filename);
@@ -513,7 +558,7 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
   TimedMessageDialog dialog(*splash_window->get_window(), s, 0);
   dialog.run();
   dialog.hide();
-      return;
+  return;
 }
 
     
