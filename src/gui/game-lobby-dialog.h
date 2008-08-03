@@ -71,7 +71,7 @@ class GameLobbyDialog//: public sigc::trackable
     Gtk::Label *turn_label;
     Gtk::Label *scenario_name_label;
     Gtk::Label *cities_label;
-    Gtk::Button *sit_button;
+    Gtk::Button *play_button;
     Gtk::Button *cancel_button;
 
     void update_scenario_details();
@@ -152,6 +152,7 @@ class GameLobbyDialog//: public sigc::trackable
     void on_play_clicked();
     void on_cancel_clicked();
     void on_sitting_changed(Gtk::CellEditable *editable, const Glib::ustring &path);
+
 };
 
 #endif

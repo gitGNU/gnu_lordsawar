@@ -253,7 +253,9 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port)
 	return;
       }
 
-  GameServer::getInstance()->start(port);
+  GameServer *game_server = GameServer::getInstance();
+  game_server->setGameScenario(game_scenario);
+  game_server->start(port);
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, true));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   game_lobby_dialog->player_sat_down.connect

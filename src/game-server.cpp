@@ -372,9 +372,11 @@ void GameServer::join(void *conn, Player *player)
 
   if (player)
     dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
+  printf ("new_participant is %d\n", new_participant);
   if (new_participant)
     sendMap(part);
 
+  printf ("notifying of the join!\n");
   notifyJoin(player);
 }
 
@@ -440,27 +442,41 @@ void GameServer::sendMap(Participant *part)
 {
   Playerlist *pl = Playerlist::getInstance();
 
+  printf ("hacking players...\n");
   // first hack the players so the player type we serialize is right
-  std::vector<Uint32> player_types;
-  for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i) {
-    player_types.push_back((*i)->getType());
-    (*i)->setType(Player::NETWORKED);
-  }
+  std::vector<Player*> players;
+  for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i) 
+    {
+      bool connected = false;
+      players.push_back(*i);
+      if ((*i)->getType() == Player::AI_FAST ||
+	  (*i)->getType() == Player::AI_SMART ||
+	  (*i)->getType() == Player::AI_DUMMY)
+	connected = true;
+      NetworkPlayer *new_p = new NetworkPlayer(**i);
+      new_p->setConnected(connected);
+      pl->swap(*i, new_p);
+    }
 
 
+  printf ("sending map...\n");
   // send the map
   std::ostringstream os;
   XML_Helper helper(&os);
-  Game::getScenario()->saveWithHelper(helper);
+  printf ("d_game_scenario is %p\n", d_game_scenario);
+  d_game_scenario->saveWithHelper(helper);
   std::cerr << "sending map" << std::endl;
   network_server->send(part->conn, MESSAGE_TYPE_SENDING_MAP, os.str());
 
+  printf ("unhacking players...\n");
 
   // unhack the players
-  std::vector<Uint32>::iterator j = player_types.begin();
-  for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i, ++j) {
-    (*i)->setType(Player::Type(*j));
-  }
+  std::vector<Player*>::iterator j = players.begin();
+  for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i, ++j) 
+    {
+      pl->swap(*i, *j);
+      delete *i;
+    }
 }
 
 void GameServer::sendActions(Participant *part)

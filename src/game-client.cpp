@@ -77,7 +77,7 @@ void GameClient::startAsPlayer(std::string host, int port, int id)
 void GameClient::start(std::string host, int port)
 {
   player_id = -1;
-  network_connection->connectToHost(host, port);
+  startAsPlayer(host, port, player_id);
 }
 
 void GameClient::onConnected() 

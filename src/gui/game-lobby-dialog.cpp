@@ -37,6 +37,7 @@
 #include "../network_player.h"
 #include "../game-client.h"
 #include "../game-server.h"
+#include "../shieldsetlist.h"
 
 namespace
 {
@@ -70,6 +71,7 @@ void GameLobbyDialog::update_city_map()
 
 void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 {
+  Shieldsetlist::getInstance()->instantiatePixmaps();
   d_game_scenario = gamescenario;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
@@ -82,8 +84,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
     xml->get_widget("player_treeview", player_treeview);
     player_treeview->get_selection()->signal_changed().connect
           (sigc::mem_fun(*this, &GameLobbyDialog::on_player_selected));
-    xml->get_widget("sit_button", sit_button);
-    sit_button->signal_clicked().connect
+    xml->get_widget("play_button", play_button);
+    play_button->signal_clicked().connect
       (sigc::mem_fun(this, &GameLobbyDialog::on_play_clicked));
     xml->get_widget("cancel_button", cancel_button);
     cancel_button->signal_clicked().connect
@@ -132,25 +134,20 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 
 void GameLobbyDialog::update_buttons()
 {
-  if (player_treeview->get_selection()->get_selected() == 0)
-    sit_button->set_sensitive(false);
-  else
+  //if any types aren't networked, we can play.
+  //if all types are networked then we can't.
+  Gtk::TreeModel::Children kids = player_list->children();
+  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
+       i != kids.end(); i++)
     {
-      Glib::RefPtr<Gtk::TreeSelection> selection;
-      selection = player_treeview->get_selection();
-      Gtk::TreeModel::iterator iterrow = selection->get_selected();
-      if (iterrow)
+      Gtk::TreeModel::Row row = *i;
+      if (row[player_columns.type] != NETWORKED_PLAYER_TYPE)
 	{
-	  Gtk::TreeModel::Row row = *iterrow;
-	  if (row[player_columns.status] == PLAYER_NOT_HERE)
-	    sit_button->set_sensitive(true);
-	  else
-	    sit_button->set_sensitive(false);
+	  play_button->set_sensitive(true);
+	  return;
 	}
-      else
-	sit_button->set_sensitive(false);
-
     }
+  play_button->set_sensitive(false);
 }
 
 void
@@ -240,8 +237,7 @@ void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
   Gtk::TreeModel::iterator iter = selection->get_selected();
   if (!selection->count_selected_rows())
     return;
-  (*iter)[player_columns.sitting] = !(*iter)[player_columns.sitting];
-  if ((*iter)[player_columns.sitting])
+  if (!(*iter)[player_columns.sitting])
     player_sat_down.emit((*iter)[player_columns.player]);
   else
     player_stood_up.emit((*iter)[player_columns.player]);
@@ -385,11 +381,13 @@ void GameLobbyDialog::add_player(const Glib::ustring &type,
   (*i)[player_columns.shield] = to_pixbuf(gc->getShieldPic(1, player));
   (*i)[player_columns.type] = type;
   (*i)[player_columns.name] = name;
+  (*i)[player_columns.player] = player;
   if (player->getType() == Player::NETWORKED)
     {
       //do we have the particpant?
       if (dynamic_cast<NetworkPlayer*>(player)->isConnected() == true)
 	{
+	  (*i)[player_columns.sitting] = true;
 	  //we do?  is it the active player?
 	  if (Playerlist::getInstance()->getActiveplayer() == player)
 	    (*i)[player_columns.status] = PLAYER_MOVING;
@@ -397,8 +395,11 @@ void GameLobbyDialog::add_player(const Glib::ustring &type,
 	    (*i)[player_columns.status] = PLAYER_WATCHING;
 	}
       else
-	//otherwise, the player is not here to play.
-	(*i)[player_columns.status] = PLAYER_NOT_HERE;
+	{
+	  //otherwise, the player is not here to play.
+	  (*i)[player_columns.status] = PLAYER_NOT_HERE;
+	  (*i)[player_columns.sitting] = false;
+	}
     }
   else
     {
@@ -406,8 +407,8 @@ void GameLobbyDialog::add_player(const Glib::ustring &type,
 	(*i)[player_columns.status] = PLAYER_MOVING;
       else
 	(*i)[player_columns.status] = PLAYER_WATCHING;
+      (*i)[player_columns.sitting] = true;
     }
-  (*i)[player_columns.player] = player;
 
   player_treeview->get_selection()->select(i);
 }
@@ -419,13 +420,30 @@ void GameLobbyDialog::on_player_selected()
 
 void GameLobbyDialog::on_remote_player_joins(Player *p)
 {
-  update_player_details();
+  if (!p)
+    return;
+  Gtk::TreeModel::Children kids = player_list->children();
+  Gtk::TreeModel::Row row = *kids[p->getId()];
+  row[player_columns.sitting] = true;
+  row[player_columns.player] = p;
+  row[player_columns.type] = HUMAN_PLAYER_TYPE;
+  if (Playerlist::getInstance()->getActiveplayer() == p)
+    row[player_columns.status] = PLAYER_MOVING;
+  else
+    row[player_columns.status] = PLAYER_WATCHING;
   update_buttons();
 }
 
 void GameLobbyDialog::on_remote_player_departs(Player *p)
 {
-  update_player_details();
+  if (!p)
+    return;
+  Gtk::TreeModel::Children kids = player_list->children();
+  Gtk::TreeModel::Row row = *kids[p->getId()];
+  row[player_columns.sitting] = false;
+  row[player_columns.player] = p;
+  row[player_columns.type] = NETWORKED_PLAYER_TYPE;
+  row[player_columns.status] = PLAYER_NOT_HERE;
   update_buttons();
 }
 
@@ -437,8 +455,9 @@ void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
 
 void GameLobbyDialog::on_remote_player_changes_name(Player *p)
 {
-  update_player_details();
-  update_buttons();
+  Gtk::TreeModel::Children kids = player_list->children();
+  Gtk::TreeModel::Row row = *kids[p->getId()];
+  row[player_columns.name] = p->getName();
 }
       
 void GameLobbyDialog::on_remote_player_changes_type()

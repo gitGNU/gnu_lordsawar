@@ -35,6 +35,7 @@ class NetworkAction;
 class NetworkHistory;
 class Player;
 class XML_Helper;
+class GameScenario;
 
 class GameServer: public GameClientDecoder 
 {
@@ -54,11 +55,14 @@ public:
   sigc::signal<void, Player*> remote_player_disconnected;
   sigc::signal<void, Player*> remote_player_connected;
 
+  void setGameScenario(GameScenario *scenario) {d_game_scenario = scenario;};
+
 protected:
   GameServer();
   ~GameServer();
 
 private:
+  GameScenario *d_game_scenario;
   void listenForActions();
   void listenForHistories();
   void onActionDone(NetworkAction *action);
