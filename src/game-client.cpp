@@ -95,28 +95,26 @@ void GameClient::sat_down(Player *player)
 {
   if (!player)
     return;
-  //now turning a network player into a human player
-  dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
-  RealPlayer *new_p = new RealPlayer (*player);
-  Playerlist::getInstance()->swap(player, new_p);
-  delete player;
-  listenForActions(new_p);
-  listenForHistories(new_p);
-  player_sits.emit(new_p);
+  if (player->getType() == Player::NETWORKED)
+    dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
+  player_sits.emit(player);
 }
 
 void GameClient::stood_up(Player *player)
 {
   if (!player)
     return;
-  //now turning a human player into a network player
-  NetworkPlayer *new_p = new NetworkPlayer(*player);
-  Playerlist::getInstance()->swap(player, new_p);
-  delete player;
-  listenForActions(new_p);
-  listenForHistories(new_p);
-  new_p->setConnected(false);
-  player_stands.emit(new_p);
+  if (player->getType() == Player::HUMAN)
+    {
+      //this covers the "boot", or forcibly-stand case.
+      NetworkPlayer *new_p = new NetworkPlayer(*player);
+      Playerlist::getInstance()->swap(player, new_p);
+      delete player;
+      new_p->setConnected(false);
+    }
+  else if (player->getType() == Player::NETWORKED)
+    dynamic_cast<NetworkPlayer*>(player)->setConnected(false);
+  player_stands.emit(player);
 }
 
 void GameClient::onGotMessage(MessageType type, std::string payload)
@@ -329,6 +327,8 @@ void GameClient::sendHistories()
 
 void GameClient::sit_down (Player *player)
 {
+  if (!player)
+    return;
   MessageType type;
   printf ("id is %d\n", player->getId());
   switch (player->getId())
@@ -344,11 +344,18 @@ void GameClient::sit_down (Player *player)
     default:
 	    return;
     }
-  network_connection->send(type, "I wanna join");
+  RealPlayer *new_p = new RealPlayer (*player);
+  Playerlist::getInstance()->swap(player, new_p);
+  delete player;
+  listenForActions(new_p);
+  listenForHistories(new_p);
+  network_connection->send(type, "I wanna sit");
 }
 
 void GameClient::stand_up (Player *player)
 {
+  if (!player)
+    return;
   MessageType type;
   switch (player->getId())
     {
@@ -363,5 +370,10 @@ void GameClient::stand_up (Player *player)
     default:
 	    return;
     }
-  network_connection->send(type, "I wanna depart");
+  //now turning a human player into a network player
+  NetworkPlayer *new_p = new NetworkPlayer(*player);
+  Playerlist::getInstance()->swap(player, new_p);
+  delete player;
+  new_p->setConnected(false);
+  network_connection->send(type, "I wanna stand");
 }

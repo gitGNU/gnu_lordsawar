@@ -296,6 +296,9 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
 
 void Driver::heartbeat()
 {
+  static bool already_done = false;
+  if (already_done)
+    return;
   printf("checking for download finished!\n");
   if (game_scenario_downloaded == "")
     {
@@ -305,6 +308,7 @@ void Driver::heartbeat()
   
   printf ("downloaded scenario!  proceeding.\n");
   game_scenario_received.emit(game_scenario_downloaded);
+  already_done = true;
 }
 
 void Driver::on_game_scenario_received(std::string path)

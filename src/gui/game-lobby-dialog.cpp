@@ -245,6 +245,10 @@ void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
   Gtk::TreeModel::iterator iter = selection->get_selected();
   if (!selection->count_selected_rows())
     return;
+  //maybe we can't make other ppl stand up
+  if ((*iter)[player_columns.sitting] &&
+      (*iter)[player_columns.type] == NETWORKED_PLAYER_TYPE && d_has_ops == false)
+    return;
   if (!(*iter)[player_columns.sitting])
     player_sat_down.emit((*iter)[player_columns.player]);
   else
@@ -422,7 +426,7 @@ void GameLobbyDialog::on_player_sits(Player *p)
   Gtk::TreeModel::Row row = *kids[p->getId()];
   row[player_columns.sitting] = true;
   row[player_columns.player] = p;
-  row[player_columns.type] = HUMAN_PLAYER_TYPE;
+  row[player_columns.type] = player_type_to_string(p->getType());
   if (Playerlist::getInstance()->getActiveplayer() == p)
     row[player_columns.status] = PLAYER_MOVING;
   else
@@ -438,7 +442,7 @@ void GameLobbyDialog::on_player_stands(Player *p)
   Gtk::TreeModel::Row row = *kids[p->getId()];
   row[player_columns.sitting] = false;
   row[player_columns.player] = p;
-  row[player_columns.type] = NETWORKED_PLAYER_TYPE;
+  row[player_columns.type] = player_type_to_string(p->getType());
   row[player_columns.status] = PLAYER_NOT_HERE;
   update_buttons();
 }
