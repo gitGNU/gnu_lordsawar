@@ -1,3 +1,7 @@
+2008-08-04  Ben Asselstine
+
+	* added more multiplayer machinery (still not working).
+
 2008-07-28  Ben Asselstine
 
 	* fixed crashing bug when an initial hero shows up and the player
