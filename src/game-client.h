@@ -45,7 +45,7 @@ public:
   //! Deletes the singleton instance.
   static void deleteInstance();
 
-  void start(std::string host, int port);
+  void start(std::string host, int port, std::string nick);
 
   sigc::signal<void> remote_participant_joins;
   sigc::signal<void, Player*> player_sits;
@@ -63,6 +63,7 @@ protected:
 private:
   std::auto_ptr<NetworkConnection> network_connection;
   int player_id;
+  std::string d_nickname;
 
   void onConnected();
   void onConnectionLost();

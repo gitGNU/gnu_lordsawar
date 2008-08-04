@@ -63,9 +63,10 @@ GameClient::~GameClient()
     network_connection->send(MESSAGE_TYPE_PARTICIPANT_DISCONNECT, "");
 }
 
-void GameClient::start(std::string host, int port)
+void GameClient::start(std::string host, int port, std::string nick)
 {
   player_id = -1;
+  d_nickname = nick;
   network_connection.reset(new NetworkConnection());
   network_connection->connected.connect(
     sigc::mem_fun(this, &GameClient::onConnected));

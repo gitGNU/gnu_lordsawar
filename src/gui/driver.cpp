@@ -230,7 +230,8 @@ void Driver::on_client_player_stood_up(Player *player)
   game_client->stand_up(player);
 }
 
-void Driver::on_new_hosted_network_game_requested(GameParameters g, int port)
+void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
+						  std::string nick)
 {
     if (splash_window.get())
 	splash_window->hide();
@@ -249,7 +250,7 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port)
       }
 
   GameServer *game_server = GameServer::getInstance();
-  game_server->start(game_scenario, port);
+  game_server->start(game_scenario, port, nick);
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, true));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   game_lobby_dialog->player_sat_down.connect
@@ -277,7 +278,7 @@ void Driver::on_server_went_away()
   dialog.hide();
 }
 
-void Driver::on_new_remote_network_game_requested(std::string host, unsigned short port)
+void Driver::on_new_remote_network_game_requested(std::string host, unsigned short port, std::string nick)
 {
   if (splash_window.get())
     splash_window->hide();
@@ -288,7 +289,7 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
     (sigc::mem_fun(this, &Driver::on_server_went_away));
   game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_received));
-  game_client->start(host, port);
+  game_client->start(host, port, nick);
   Glib::signal_timeout().connect
     (bind_return(sigc::mem_fun(*this, &Driver::heartbeat), true), 1 * 1000);
 

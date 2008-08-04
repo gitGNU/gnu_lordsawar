@@ -48,8 +48,8 @@ class Driver: public sigc::trackable
     sigc::signal<void, std::string> game_scenario_received;
 
     void on_new_game_requested(GameParameters g);
-    void on_new_remote_network_game_requested(std::string host, unsigned short port);
-    void on_new_hosted_network_game_requested(GameParameters g, int port);
+    void on_new_remote_network_game_requested(std::string host, unsigned short port, std::string nick);
+    void on_new_hosted_network_game_requested(GameParameters g, int port, std::string nick);
     void on_new_pbm_game_requested(GameParameters g);
     void on_game_scenario_downloaded(std::string filename);
     void on_game_scenario_received(std::string path);

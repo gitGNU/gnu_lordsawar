@@ -54,6 +54,7 @@ namespace
 }
 SplashWindow::SplashWindow()
 {
+  network_game_nickname = "";
   sdl_inited = false;
 #if 0
     d_networkcancelled = false;
@@ -209,9 +210,20 @@ void SplashWindow::on_new_network_game_clicked()
   dialog.reset(d);
   xml->get_widget("client_radiobutton", client_radiobutton);
   dialog->set_transient_for(*window.get());
+  Gtk::Entry *nick_entry;
+  xml->get_widget("nick_entry", nick_entry);
+  std::string nick;
+  if (getenv("USER"))
+    nick = getenv("USER");
+  else if (network_game_nickname != "")
+    nick = network_game_nickname;
+  else
+    nick = "guest";
+  nick_entry->set_text(nick);
   int response = dialog->run();
   if (response == 0) //we hit okay
     {
+      network_game_nickname = nick_entry->get_text();
       if (client_radiobutton->get_active() == true)
 	{
 	  Gtk::MessageDialog mdialog(*window.get(), "not implemented yet.");
@@ -273,7 +285,7 @@ void SplashWindow::on_load_scenario_clicked()
 
 void SplashWindow::on_network_game_selected(std::string ip, unsigned short port)
 {
-  new_remote_network_game_requested.emit(ip, port);
+  new_remote_network_game_requested.emit(ip, port, network_game_nickname);
 }
 
 void SplashWindow::on_game_started(GameParameters g)
@@ -462,7 +474,8 @@ SplashWindow::on_sdl_surface_changed()
 
 void SplashWindow::on_network_game_created(GameParameters g)
 {
-  new_hosted_network_game_requested.emit(g, LORDSAWAR_PORT);
+  new_hosted_network_game_requested.emit(g, LORDSAWAR_PORT, 
+					 network_game_nickname);
 }
 
 void SplashWindow::on_pbm_game_created(GameParameters g)

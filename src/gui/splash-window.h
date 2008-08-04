@@ -50,8 +50,8 @@ class SplashWindow: public sigc::trackable
     Gtk::Window *get_window() {return window.get();}
 
     sigc::signal<void> sdl_initialized;
-    sigc::signal<void, std::string, unsigned short> new_remote_network_game_requested;
-    sigc::signal<void, GameParameters, int > new_hosted_network_game_requested;
+    sigc::signal<void, std::string, unsigned short, std::string> new_remote_network_game_requested;
+    sigc::signal<void, GameParameters, int, std::string > new_hosted_network_game_requested;
     sigc::signal<void, GameParameters> new_pbm_game_requested;
     sigc::signal<void, GameParameters> new_game_requested;
     sigc::signal<void, std::string> load_requested;
@@ -65,6 +65,8 @@ class SplashWindow: public sigc::trackable
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
     bool on_delete_event(GdkEventAny *e);
+  
+    std::string network_game_nickname;
     
     void on_new_campaign_clicked();
     void on_new_game_clicked();

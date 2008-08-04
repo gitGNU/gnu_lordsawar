@@ -82,11 +82,11 @@ class GameLobbyDialog//: public sigc::trackable
     class PlayerColumns: public Gtk::TreeModelColumnRecord {
     public:
 	PlayerColumns()
-	    {add(shield); add(type); add(name); add(status); add(sitting); add(turn); add(player);}
+	    {add(shield); add(sitting); add(name); add(type); add(status); add(turn); add(player);}
 	
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > shield;
-	Gtk::TreeModelColumn<Glib::ustring> type, name, status;
 	Gtk::TreeModelColumn<bool> sitting;
+	Gtk::TreeModelColumn<Glib::ustring> name, type, status;
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > turn;
 	Gtk::TreeModelColumn<Player *> player;
     };

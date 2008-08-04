@@ -171,7 +171,25 @@ GameLobbyDialog::update_player_details()
   player_treeview->set_model(player_list);
 
   player_treeview->remove_all_columns();
+
+
   player_treeview->append_column("", player_columns.shield);
+
+  //the sitting toggle
+  sitting_renderer.property_mode() = Gtk::CELL_RENDERER_MODE_EDITABLE;
+  sitting_renderer.property_activatable() = true;
+  sitting_renderer.signal_editing_started().connect
+    (sigc::mem_fun(*this, &GameLobbyDialog::on_sitting_changed));
+  sitting_column.set_cell_data_func
+    (sitting_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_sitting));
+  player_treeview->append_column(sitting_column);
+
+  // the name
+  if (d_has_ops)
+    player_treeview->append_column_editable(_("Name"), player_columns.name);
+  else
+    player_treeview->append_column(_("Name"), player_columns.name);
+
   // the type column
   player_type_list = Gtk::ListStore::create(player_type_columns);
   Gtk::TreeModel::iterator i;
@@ -195,13 +213,6 @@ GameLobbyDialog::update_player_details()
     ( type_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_type));
   player_treeview->append_column(type_column);
 
-
-  // the name
-  if (d_has_ops)
-    player_treeview->append_column_editable(_("Name"), player_columns.name);
-  else
-    player_treeview->append_column(_("Name"), player_columns.name);
-
   //the status
   status_renderer.property_model() = player_status_list;
   status_renderer.property_text_column() = 0;
@@ -210,15 +221,6 @@ GameLobbyDialog::update_player_details()
   status_column.set_cell_data_func
     (status_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_status));
   player_treeview->append_column(status_column);
-
-  //the sitting toggle
-  sitting_renderer.property_mode() = Gtk::CELL_RENDERER_MODE_EDITABLE;
-  sitting_renderer.property_activatable() = true;
-  sitting_renderer.signal_editing_started().connect
-    (sigc::mem_fun(*this, &GameLobbyDialog::on_sitting_changed));
-  sitting_column.set_cell_data_func
-    (sitting_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_sitting));
-  player_treeview->append_column(sitting_column);
 
   //if it's this player's turn
   player_treeview->append_column(_("Turn"), player_columns.turn);
@@ -258,7 +260,7 @@ void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
 GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario, bool has_ops)
   :type_column(_("Type"), type_renderer),
     status_column(_("Status"), status_renderer),
-    sitting_column(_("Sitting"), sitting_renderer)
+    sitting_column(_("Seated"), sitting_renderer)
 {
   d_has_ops = has_ops;
   initDialog(game_scenario);

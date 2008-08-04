@@ -89,9 +89,10 @@ bool GameServer::isListening()
     return false;
 }
 
-void GameServer::start(GameScenario *game_scenario, int port)
+void GameServer::start(GameScenario *game_scenario, int port, std::string nick)
 {
   setGameScenario(game_scenario);
+  d_nickname = nick;
 
   if (network_server.get() != NULL && network_server->isListening())
     return;
