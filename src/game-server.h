@@ -52,6 +52,7 @@ public:
 
   void sit_down (Player *player);
   void stand_up (Player *player);
+  void chat(std::string message);
   sigc::signal<void> remote_participant_connected;
   sigc::signal<void> remote_participant_joins;
   sigc::signal<void, Player*> player_sits;
@@ -67,14 +68,13 @@ protected:
 
 private:
   GameScenario *d_game_scenario;
-  std::string d_nickname;
   void listenForActions();
   void listenForHistories();
   void onActionDone(NetworkAction *action);
   void onHistoryDone(NetworkHistory *history);
 
-  void join(void *conn);
-  void notifyJoin ();
+  void join(void *conn, std::string payload);
+  void notifyJoin (std::string nickname);
   void depart(void *conn);
   void notifyDepart (void *conn);
   void sit(void *conn, Player *player);
@@ -83,6 +83,7 @@ private:
   void notifyStand(Player *player);
   void gotRemoteActions(void *conn, const std::string &payload);
   void gotRemoteHistory(void *conn, const std::string &payload);
+  void notifyChat(std::string message);
 
   void sendMap(Participant *part);
   void sendActions(Participant *part);
@@ -103,6 +104,8 @@ private:
   void clearNetworkHistorylist(std::list<NetworkHistory*> histories);
   bool dumpActionsAndHistories(XML_Helper *helper);
   bool dumpActionsAndHistories(XML_Helper *helper, Player *player);
+
+  void gotChat(void *conn, std::string message);
 
   //! A static pointer for the singleton instance.
   static GameServer * s_instance;

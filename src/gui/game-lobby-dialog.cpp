@@ -94,6 +94,12 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
     xml->get_widget("turn_label", turn_label);
     xml->get_widget("scenario_name_label", scenario_name_label);
     xml->get_widget("cities_label", cities_label);
+    xml->get_widget("chat_scrolledwindow", chat_scrolledwindow);
+    xml->get_widget("chat_textview", chat_textview);
+    xml->get_widget("chat_entry", chat_entry);
+
+    chat_entry->signal_key_release_event().connect_notify
+          (sigc::mem_fun(*this, &GameLobbyDialog::on_chat_key_pressed));
 
     update_city_map();
 
@@ -118,6 +124,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_player_stands));
       game_server->remote_player_named.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
+      game_server->chat_message_received.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
     }
   else
     {
@@ -134,6 +142,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_player_stands));
       game_client->remote_player_named.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
+      game_client->chat_message_received.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
     }
   update_player_details();
   update_buttons();
@@ -474,4 +484,29 @@ void GameLobbyDialog::on_play_clicked()
 
 void GameLobbyDialog::on_cancel_clicked()
 {
+}
+          
+void GameLobbyDialog::on_chat_key_pressed(GdkEventKey *event)
+{
+  if (event->keyval == 65293) //enter
+    {
+      if (chat_entry->get_text().length() > 0)
+	message_sent(chat_entry->get_text());
+      chat_entry->set_text("");
+    }
+  return;
+}
+	
+void GameLobbyDialog::on_chatted(std::string nickname, std::string message)
+{
+  //if nickname is empty, then the message holds it.
+  std::string new_text;
+  if (nickname == "")
+    new_text = chat_textview->get_buffer()->get_text() + "\n" + message;
+  else
+    new_text = chat_textview->get_buffer()->get_text() + "\n" + message;
+    
+
+  chat_textview->get_buffer()->set_text(new_text);
+  chat_scrolledwindow->get_vadjustment()->set_value(chat_scrolledwindow->get_vadjustment()->get_upper());
 }

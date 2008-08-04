@@ -217,6 +217,12 @@ void Driver::on_hosted_player_stood_up(Player *player)
   game_server->stand_up(player);
 }
 
+void Driver::on_hosted_player_chat(std::string message)
+{
+  GameServer *game_server = GameServer::getInstance();
+  game_server->chat(message);
+}
+
 void Driver::on_client_player_sat_down(Player *player)
 {
   printf ("somebody sat down!\n");
@@ -228,6 +234,12 @@ void Driver::on_client_player_stood_up(Player *player)
 {
   GameClient *game_client = GameClient::getInstance();
   game_client->stand_up(player);
+}
+
+void Driver::on_client_player_chat(std::string message)
+{
+  GameClient *game_client = GameClient::getInstance();
+  game_client->chat(message);
 }
 
 void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
@@ -257,6 +269,8 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
     (sigc::mem_fun(this, &Driver::on_hosted_player_sat_down));
   game_lobby_dialog->player_stood_up.connect
     (sigc::mem_fun(this, &Driver::on_hosted_player_stood_up));
+  game_lobby_dialog->message_sent.connect
+    (sigc::mem_fun(this, &Driver::on_hosted_player_chat));
   int response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
   if (splash_window.get())
@@ -323,6 +337,8 @@ void Driver::on_game_scenario_received(std::string path)
     (sigc::mem_fun(this, &Driver::on_client_player_sat_down));
   game_lobby_dialog->player_stood_up.connect
     (sigc::mem_fun(this, &Driver::on_client_player_stood_up));
+  game_lobby_dialog->message_sent.connect
+    (sigc::mem_fun(this, &Driver::on_client_player_chat));
   int response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
   if (splash_window.get())

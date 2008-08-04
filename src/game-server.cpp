@@ -43,6 +43,7 @@ struct Participant
   std::list<Uint32> players;
   std::list<NetworkAction *> actions;
   std::list<NetworkHistory *> histories;
+  std::string nickname;
 };
 
 GameServer * GameServer::s_instance = 0;
@@ -92,7 +93,7 @@ bool GameServer::isListening()
 void GameServer::start(GameScenario *game_scenario, int port, std::string nick)
 {
   setGameScenario(game_scenario);
-  d_nickname = nick;
+  setNickname(nick);
 
   if (network_server.get() != NULL && network_server->isListening())
     return;
@@ -110,6 +111,22 @@ void GameServer::start(GameScenario *game_scenario, int port, std::string nick)
   listenForHistories();
 }
 
+void GameServer::gotChat(void *conn, std::string message)
+  {
+    Participant *part = findParticipantByConn(conn);
+    if (part)
+      {
+	gotChatMessage(part->nickname, message);
+	for (std::list<Participant *>::iterator i = participants.begin(),
+	     end = participants.end(); i != end; ++i)
+	  {
+	    if (*i != part->conn)
+	      network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
+				   part->nickname + ":" + message);
+	  }
+      }
+    return;
+  }
 void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
 {
   std::cerr << "got message of type " << type << std::endl;
@@ -135,7 +152,7 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_CONNECT:
-    join(conn);
+    join(conn, payload);
     break;
 
   case MESSAGE_TYPE_P1_SIT:
@@ -207,7 +224,18 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_CONNECTED:
+    break;
+
+  case MESSAGE_TYPE_CHAT:
+    gotChat(conn, payload);
+    break;
+
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECTED:
+    for (std::list<Participant *>::iterator i = participants.begin(),
+	 end = participants.end(); i != end; ++i)
+      if (*i != conn)
+	network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
+			     "participant disconnected");
     break;
   case MESSAGE_TYPE_P1_SAT_DOWN:
   case MESSAGE_TYPE_P2_SAT_DOWN:
@@ -226,6 +254,7 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_P7_STOOD_UP:
   case MESSAGE_TYPE_P8_STOOD_UP:
   case MESSAGE_TYPE_SERVER_DISCONNECT:
+  case MESSAGE_TYPE_CHATTED:
     //faulty client
     break;
   }
@@ -356,13 +385,16 @@ void GameServer::onHistoryDone(NetworkHistory *history)
     }
 }
 
-void GameServer::notifyJoin()
+void GameServer::notifyJoin(std::string nickname)
 {
   remote_participant_joins.emit();
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     {
-      network_server->send((*i)->conn, MESSAGE_TYPE_PARTICIPANT_CONNECTED, "client joined");
+      network_server->send((*i)->conn, MESSAGE_TYPE_PARTICIPANT_CONNECTED, 
+			   nickname + " joined");
+    network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
+			 nickname + " connected");
     }
 }
 
@@ -405,7 +437,7 @@ void GameServer::notifySit(Player *player)
     }
 }
 
-void GameServer::join(void *conn)
+void GameServer::join(void *conn, std::string nickname)
 {
   bool new_participant = false;
   std::cout << "JOIN: " << conn << std::endl;
@@ -414,13 +446,14 @@ void GameServer::join(void *conn)
   if (!part) {
     part = new Participant;
     part->conn = conn;
+    part->nickname = nickname;
     participants.push_back(part);
     new_participant = true;
   }
   if (new_participant)
     sendMap(part);
 
-  notifyJoin();
+  notifyJoin(nickname);
 }
 
 void GameServer::depart(void *conn)
@@ -664,5 +697,18 @@ void GameServer::stand_up (Player *player)
   new_p->acting.connect(sigc::mem_fun(this, &GameServer::onActionDone));
   new_p->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
   notifyStand(new_p);
+}
+
+void GameServer::chat (std::string message)
+{
+  notifyChat(d_nickname + ":" + message);
+}
+
+void GameServer::notifyChat(std::string message)
+{
+  gotChatMessage(d_nickname, message);
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, message);
 }
 // End of file

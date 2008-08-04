@@ -56,6 +56,7 @@ public:
   
   void sit_down (Player *player);
   void stand_up (Player *player);
+  void chat(std::string message);
 protected:
   GameClient();
   ~GameClient();
@@ -63,7 +64,6 @@ protected:
 private:
   std::auto_ptr<NetworkConnection> network_connection;
   int player_id;
-  std::string d_nickname;
 
   void onConnected();
   void onConnectionLost();
@@ -81,6 +81,7 @@ private:
 
   void sat_down(Player *player);
   void stood_up(Player *player);
+
   std::list<NetworkAction*> actions;
   std::list<NetworkHistory*> histories;
   //! A static pointer for the singleton instance.

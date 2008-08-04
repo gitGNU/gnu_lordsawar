@@ -31,6 +31,8 @@
 #include <gtkmm/combobox.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/treemodelcolumn.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/textview.h>
 #include <gtkmm/cellrenderercombo.h>
 #include <gtkmm/cellrenderertoggle.h>
 #include <gtkmm/treeview.h>
@@ -56,6 +58,7 @@ class GameLobbyDialog//: public sigc::trackable
     
   sigc::signal<void, Player*> player_sat_down;
   sigc::signal<void, Player*> player_stood_up;
+  sigc::signal<void, std::string> message_sent;
 
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
@@ -71,6 +74,9 @@ class GameLobbyDialog//: public sigc::trackable
     Gtk::Label *cities_label;
     Gtk::Button *play_button;
     Gtk::Button *cancel_button;
+    Gtk::ScrolledWindow *chat_scrolledwindow;
+    Gtk::TextView *chat_textview;
+    Gtk::Entry *chat_entry;
 
     void update_scenario_details();
     void update_player_details();
@@ -153,6 +159,9 @@ class GameLobbyDialog//: public sigc::trackable
     void on_play_clicked();
     void on_cancel_clicked();
     void on_sitting_changed(Gtk::CellEditable *editable, const Glib::ustring &path);
+
+    void on_chat_key_pressed(GdkEventKey *event);
+    void on_chatted(std::string nickname, std::string message);
 
 };
 

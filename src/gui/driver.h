@@ -74,6 +74,9 @@ class Driver: public sigc::trackable
 
     void heartbeat();
     std::string game_scenario_downloaded;
+
+    void on_client_player_chat(std::string message);
+    void on_hosted_player_chat(std::string message);
 };
 
 

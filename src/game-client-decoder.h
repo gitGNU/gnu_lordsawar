@@ -20,6 +20,7 @@
 #define GAME_CLIENT_DECODER_H
 
 #include "config.h"
+#include "chat-client.h"
 
 #include <list>
 #include <memory>
@@ -32,7 +33,7 @@ class XML_Helper;
 class GameScenario;
 class Player;
 
-class GameClientDecoder: public sigc::trackable
+class GameClientDecoder: public ChatClient
 {
 public:
   GameClientDecoder();

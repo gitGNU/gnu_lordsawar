@@ -66,7 +66,7 @@ GameClient::~GameClient()
 void GameClient::start(std::string host, int port, std::string nick)
 {
   player_id = -1;
-  d_nickname = nick;
+  setNickname(nick);
   network_connection.reset(new NetworkConnection());
   network_connection->connected.connect(
     sigc::mem_fun(this, &GameClient::onConnected));
@@ -127,7 +127,7 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_PONG:
-    network_connection->send(MESSAGE_TYPE_PARTICIPANT_CONNECT, "I wanna join");
+    network_connection->send(MESSAGE_TYPE_PARTICIPANT_CONNECT, d_nickname);
     break;
 
   case MESSAGE_TYPE_SENDING_ACTIONS:
@@ -172,9 +172,13 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
   case MESSAGE_TYPE_P8_STAND:
   case MESSAGE_TYPE_PARTICIPANT_CONNECT:
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECT:
+  case MESSAGE_TYPE_CHAT:
     //FIXME: faulty server.
     break;
 
+  case MESSAGE_TYPE_CHATTED:
+    gotChatMessage("", payload);
+    break;
     //this is the client realizing that some other player joined the server
   case MESSAGE_TYPE_P1_SAT_DOWN:
     sat_down(Playerlist::getInstance()->getPlayer(0));
@@ -377,4 +381,9 @@ void GameClient::stand_up (Player *player)
   delete player;
   new_p->setConnected(false);
   network_connection->send(type, "I wanna stand");
+}
+
+void GameClient::chat(std::string message)
+{
+  network_connection->send(MESSAGE_TYPE_CHAT, d_nickname + ":" + message);
 }
