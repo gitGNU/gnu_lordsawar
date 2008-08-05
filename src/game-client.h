@@ -53,6 +53,7 @@ public:
   sigc::signal<void> remote_participant_departs;
   sigc::signal<void> client_connected;
   sigc::signal<void> client_disconnected;
+  sigc::signal<void> client_could_not_connect;
   
   void sit_down (Player *player);
   void stand_up (Player *player);
@@ -86,6 +87,7 @@ private:
   std::list<NetworkHistory*> histories;
   //! A static pointer for the singleton instance.
   static GameClient * s_instance;
+  bool d_connected;
 };
 
 #endif

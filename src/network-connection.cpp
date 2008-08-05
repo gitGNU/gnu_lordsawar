@@ -122,6 +122,7 @@ void NetworkConnection::gotConnectionEvent(GConn* conn, GConnEvent* event)
       std::cerr << "going to read length " << message_size << std::endl;
       receiving_message = true;
       gnet_conn_readn(conn, message_size);
+      connection_received_data.emit();
     }
     break;
 

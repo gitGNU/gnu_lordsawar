@@ -39,6 +39,7 @@ public:
 
   sigc::signal<void> connected;
   sigc::signal<void> connection_lost;
+  sigc::signal<void> connection_received_data;
   sigc::signal<void, MessageType, std::string> got_message;
 
   void send(MessageType type, const std::string &payload);

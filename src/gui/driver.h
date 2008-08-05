@@ -26,10 +26,12 @@
 #include "splash-window.h"
 #include "game-window.h"
 #include "game-lobby-dialog.h"
+#include "new-network-game-download-window.h"
 #include "../game-parameters.h"
 
 // takes care of setting up the splash window and the game window, the
 // interaction between them and the model classes
+// it also takes care of the game lobby window.
 class Driver: public sigc::trackable
 {
  public:
@@ -44,6 +46,7 @@ class Driver: public sigc::trackable
     std::auto_ptr<GameWindow> game_window;
     std::auto_ptr<GameLobbyDialog> game_lobby_dialog;
     std::auto_ptr<SplashWindow> splash_window;
+    std::auto_ptr<NewNetworkGameDownloadWindow> download_window;
     std::string d_load_filename;
     sigc::signal<void, std::string> game_scenario_received;
 
@@ -66,6 +69,7 @@ class Driver: public sigc::trackable
     void on_client_player_sat_down(Player *player);
     void on_client_player_stood_up(Player *player);
     void on_server_went_away();
+    void on_client_could_not_connect();
 
     GameScenario *new_game(GameParameters g);
     GameScenario *load_game(std::string file_path);
@@ -77,6 +81,7 @@ class Driver: public sigc::trackable
 
     void on_client_player_chat(std::string message);
     void on_hosted_player_chat(std::string message);
+    sigc::connection heartbeat_conn;
 };
 
 

@@ -275,36 +275,7 @@ void GameServer::onConnectionLost(void *conn)
       MessageType type;
       for (std::list<Uint32>::iterator it = part->players.begin();
 	   it != part->players.end(); it++)
-	{
-	  switch (*it)
-	    {
-	    case 0: type = MESSAGE_TYPE_P1_STOOD_UP; break;
-	    case 1: type = MESSAGE_TYPE_P2_STOOD_UP; break;
-	    case 2: type = MESSAGE_TYPE_P3_STOOD_UP; break;
-	    case 3: type = MESSAGE_TYPE_P4_STOOD_UP; break;
-	    case 4: type = MESSAGE_TYPE_P5_STOOD_UP; break;
-	    case 5: type = MESSAGE_TYPE_P6_STOOD_UP; break;
-	    case 6: type = MESSAGE_TYPE_P7_STOOD_UP; break;
-	    case 7: type = MESSAGE_TYPE_P8_STOOD_UP; break;
-	    default:
-		    return;
-	    }
-	  for (std::list<Participant *>::iterator i = participants.begin(),
-	       end = participants.end(); i != end; ++i) 
-	    {
-	      if ((*i)->conn == conn)
-		continue;
-	      network_server->send((*i)->conn, type, "player stood up");
-	    }
-	}
-
-      for (std::list<Participant *>::iterator i = participants.begin(),
-	   end = participants.end(); i != end; ++i) 
-	{
-	  if ((*i)->conn == conn)
-	    continue;
-	  network_server->send((*i)->conn, MESSAGE_TYPE_PARTICIPANT_DISCONNECTED, "client departed");
-	}
+	stand_up (Playerlist::getInstance()->getPlayer(*it));
 
       remote_participant_disconnected.emit();
       participants.remove(part);
@@ -674,6 +645,8 @@ bool GameServer::dumpActionsAndHistories(XML_Helper *helper)
 
 void GameServer::sit_down (Player *player)
 {
+  if (!player)
+    return;
   //alright, we want to sit down as this player
   //convert the network player to a human player
   dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
@@ -687,6 +660,8 @@ void GameServer::sit_down (Player *player)
 
 void GameServer::stand_up (Player *player)
 {
+  if (!player)
+    return;
   //alright, we want to stand up as this player
   //convert the player from a human player back to a network player
 

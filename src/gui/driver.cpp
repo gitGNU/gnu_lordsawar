@@ -282,12 +282,32 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   
 void Driver::on_server_went_away()
 {
-  game_lobby_dialog->hide();
+  heartbeat_conn.disconnect();
+  if (game_lobby_dialog.get())
+    game_lobby_dialog->hide();
+  if (download_window.get())
+    download_window->hide();
   if (splash_window.get())
     splash_window->show();
   GameClient::deleteInstance();
   TimedMessageDialog dialog(*splash_window->get_window(), 
 			    _("Server went away."), 0);
+  dialog.run();
+  dialog.hide();
+}
+
+void Driver::on_client_could_not_connect()
+{
+  heartbeat_conn.disconnect();
+  if (game_lobby_dialog.get())
+    game_lobby_dialog->hide();
+  if (download_window.get())
+    download_window->hide();
+  if (splash_window.get())
+    splash_window->show();
+  GameClient::deleteInstance();
+  TimedMessageDialog dialog(*splash_window->get_window(), 
+			    _("Could not connect."), 0);
   dialog.run();
   dialog.hide();
 }
@@ -301,10 +321,14 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
     (sigc::mem_fun(this, &Driver::on_game_scenario_downloaded));
   game_client->client_disconnected.connect
     (sigc::mem_fun(this, &Driver::on_server_went_away));
+  game_client->client_could_not_connect.connect
+    (sigc::mem_fun(this, &Driver::on_client_could_not_connect));
   game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_received));
+  download_window.reset(new NewNetworkGameDownloadWindow());
+  download_window->pulse();
   game_client->start(host, port, nick);
-  Glib::signal_timeout().connect
+  heartbeat_conn = Glib::signal_timeout().connect
     (bind_return(sigc::mem_fun(*this, &Driver::heartbeat), true), 1 * 1000);
 
 }
@@ -317,6 +341,7 @@ void Driver::heartbeat()
   printf("checking for download finished!\n");
   if (game_scenario_downloaded == "")
     {
+      download_window->pulse();
       printf ("not downloaded yet.\n");
       return;
     }
@@ -328,6 +353,9 @@ void Driver::heartbeat()
 
 void Driver::on_game_scenario_received(std::string path)
 {
+  heartbeat_conn.disconnect();
+  if (download_window.get())
+    download_window->hide();
   GameScenario *game_scenario = 
     load_game(path);
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, false));

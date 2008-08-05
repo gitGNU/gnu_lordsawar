@@ -54,6 +54,7 @@ void GameClient::deleteInstance()
 
 GameClient::GameClient()
 {
+  d_connected = false;
   player_id = -1;
 }
 
@@ -80,6 +81,7 @@ void GameClient::start(std::string host, int port, std::string nick)
 void GameClient::onConnected() 
 {
   std::cerr << "connected" << std::endl;
+  d_connected = true;
 
   network_connection->send(MESSAGE_TYPE_PING, "");
 
@@ -89,7 +91,10 @@ void GameClient::onConnected()
 void GameClient::onConnectionLost()
 {
   std::cerr << "connection lost" << std::endl;
-  client_disconnected.emit();
+  if (d_connected)
+    client_disconnected.emit();
+  else
+    client_could_not_connect.emit();
 }
 
 void GameClient::sat_down(Player *player)
