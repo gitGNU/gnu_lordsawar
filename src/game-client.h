@@ -46,6 +46,7 @@ public:
   static void deleteInstance();
 
   void start(std::string host, int port, std::string nick);
+  void request_seat_manifest();
 
   sigc::signal<void> remote_participant_joins;
   sigc::signal<void, Player*> player_sits;

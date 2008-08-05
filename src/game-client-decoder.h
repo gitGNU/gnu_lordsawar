@@ -42,6 +42,7 @@ public:
   sigc::signal<void, std::string> game_scenario_received;
   sigc::signal<void, Player *> remote_player_moved;
   sigc::signal<void, Player *> remote_player_named;
+  sigc::signal<void, Player *> remote_player_died;
 
 protected:
   class ActionLoader 

@@ -88,13 +88,13 @@ class GameLobbyDialog//: public sigc::trackable
     class PlayerColumns: public Gtk::TreeModelColumnRecord {
     public:
 	PlayerColumns()
-	    {add(shield); add(sitting); add(name); add(type); add(status); add(turn); add(player);}
+	    {add(shield); add(sitting); add(name); add(type); add(status); add(turn); add(player_id);}
 	
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > shield;
 	Gtk::TreeModelColumn<bool> sitting;
 	Gtk::TreeModelColumn<Glib::ustring> name, type, status;
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > turn;
-	Gtk::TreeModelColumn<Player *> player;
+	Gtk::TreeModelColumn<Uint32> player_id;
     };
     const PlayerColumns player_columns;
     Glib::RefPtr<Gtk::ListStore> player_list;
@@ -155,13 +155,14 @@ class GameLobbyDialog//: public sigc::trackable
     void on_player_stands(Player *p);
     void on_player_sits(Player *p);
     void on_remote_player_changes_name(Player *p);
-    void on_remote_player_changes_type();
+    void on_remote_player_died(Player *p);
     void on_play_clicked();
     void on_cancel_clicked();
     void on_sitting_changed(Gtk::CellEditable *editable, const Glib::ustring &path);
 
     void on_chat_key_pressed(GdkEventKey *event);
     void on_chatted(std::string nickname, std::string message);
+
 
 };
 

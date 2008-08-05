@@ -71,6 +71,7 @@ void GameLobbyDialog::update_city_map()
 
 void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 {
+  Playerlist *pl = Playerlist::getInstance();
   Shieldsetlist::getInstance()->instantiatePixmaps();
   d_game_scenario = gamescenario;
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -126,6 +127,23 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
       game_server->chat_message_received.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
+      game_server->remote_player_died.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_died));
+      //seat the ai players
+      for (Playerlist::iterator i = pl->begin(), end = pl->end(); i != end; ++i)
+	{
+	  Player *player = *i;
+	  if (player == pl->getNeutral())
+	    continue;
+	  if (player->isDead())
+	    continue;
+	  if (player->getType() == Player::HUMAN)
+	    continue;
+	  if (player->getType() == Player::NETWORKED)
+	    continue;
+
+	  player_sat_down.emit(player);
+	}
     }
   else
     {
@@ -144,6 +162,9 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
       game_client->chat_message_received.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
+      game_client->remote_player_died.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_died));
+      game_client->request_seat_manifest();
     }
   update_player_details();
   update_buttons();
@@ -242,16 +263,20 @@ GameLobbyDialog::update_player_details()
       Player *player = *i;
       if (player == pl->getNeutral())
 	continue;
+      if (player->isDead())
+	continue;
       add_player(player_type_to_string(player->getType()), player->getName(), 
 		 player);
     }
 }
 
-    
+
 
 void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
 					 const Glib::ustring &path)
 {
+  Playerlist *pl = Playerlist::getInstance();
+  Player *player;
   Glib::RefPtr < Gtk::TreeSelection > selection = 
     player_treeview->get_selection();
   Gtk::TreeModel::iterator iter = selection->get_selected();
@@ -261,16 +286,19 @@ void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
   if ((*iter)[player_columns.sitting] &&
       (*iter)[player_columns.type] == NETWORKED_PLAYER_TYPE && d_has_ops == false)
     return;
+
+  player = pl->getPlayer((*iter)[player_columns.player_id]);
+
   if (!(*iter)[player_columns.sitting])
-    player_sat_down.emit((*iter)[player_columns.player]);
+    player_sat_down.emit(player);
   else
-    player_stood_up.emit((*iter)[player_columns.player]);
+    player_stood_up.emit(player);
 }
 
 GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario, bool has_ops)
-  :type_column(_("Type"), type_renderer),
-    status_column(_("Status"), status_renderer),
-    sitting_column(_("Seated"), sitting_renderer)
+	:type_column(_("Type"), type_renderer),
+	status_column(_("Status"), status_renderer),
+	sitting_column(_("Seated"), sitting_renderer)
 {
   d_has_ops = has_ops;
   initDialog(game_scenario);
@@ -283,7 +311,7 @@ GameLobbyDialog::~GameLobbyDialog()
 
 void GameLobbyDialog::update_scenario_details()
 {
-    
+
   Glib::ustring s;
   s = String::ucompose("%1", d_game_scenario->getRound());
   turn_label->set_text(s);
@@ -306,8 +334,8 @@ void GameLobbyDialog::update_scenario_details()
 }
 void GameLobbyDialog::set_parent_window(Gtk::Window &parent)
 {
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
+  dialog->set_transient_for(parent);
+  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void GameLobbyDialog::hide()
@@ -323,18 +351,18 @@ bool GameLobbyDialog::run()
       citymap->draw();
     }
 
-    dialog->show_all();
-    int response = dialog->run();
+  dialog->show_all();
+  int response = dialog->run();
 
-    if (response == 0)
-      return true;
-    else
-      return false;
+  if (response == 0)
+    return true;
+  else
+    return false;
 }
 
 void GameLobbyDialog::on_map_changed(SDL_Surface *map)
 {
-    map_image->property_pixbuf() = to_pixbuf(map);
+  map_image->property_pixbuf() = to_pixbuf(map);
 }
 
 void GameLobbyDialog::on_show_options_clicked()
@@ -375,7 +403,7 @@ void GameLobbyDialog::cell_data_sitting(Gtk::CellRenderer *renderer,
 }
 
 void GameLobbyDialog::add_player(const Glib::ustring &type,
-			       const Glib::ustring &name, Player *player)
+				 const Glib::ustring &name, Player *player)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   Gtk::TreeIter i = player_list->append();
@@ -385,7 +413,7 @@ void GameLobbyDialog::add_player(const Glib::ustring &type,
   (*i)[player_columns.shield] = to_pixbuf(gc->getShieldPic(1, player));
   (*i)[player_columns.type] = type;
   (*i)[player_columns.name] = name;
-  (*i)[player_columns.player] = player;
+  (*i)[player_columns.player_id] = player->getId();
   if (player->getType() == Player::NETWORKED)
     {
       //do we have the particpant?
@@ -435,15 +463,23 @@ void GameLobbyDialog::on_player_sits(Player *p)
   if (!p)
     return;
   Gtk::TreeModel::Children kids = player_list->children();
-  Gtk::TreeModel::Row row = *kids[p->getId()];
-  row[player_columns.sitting] = true;
-  row[player_columns.player] = p;
-  row[player_columns.type] = player_type_to_string(p->getType());
-  if (Playerlist::getInstance()->getActiveplayer() == p)
-    row[player_columns.status] = PLAYER_MOVING;
-  else
-    row[player_columns.status] = PLAYER_WATCHING;
-  update_buttons();
+  //look for the row that has the right player id.
+  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
+       i != kids.end(); i++)
+    {
+      Gtk::TreeModel::Row row = *i;
+      if (row[player_columns.player_id] == p->getId())
+	{
+	  row[player_columns.sitting] = true;
+	  row[player_columns.type] = player_type_to_string(p->getType());
+	  if (Playerlist::getInstance()->getActiveplayer() == p)
+	    row[player_columns.status] = PLAYER_MOVING;
+	  else
+	    row[player_columns.status] = PLAYER_WATCHING;
+	  update_buttons();
+	  return;
+	}
+    }
 }
 
 void GameLobbyDialog::on_player_stands(Player *p)
@@ -451,12 +487,19 @@ void GameLobbyDialog::on_player_stands(Player *p)
   if (!p)
     return;
   Gtk::TreeModel::Children kids = player_list->children();
-  Gtk::TreeModel::Row row = *kids[p->getId()];
-  row[player_columns.sitting] = false;
-  row[player_columns.player] = p;
-  row[player_columns.type] = player_type_to_string(p->getType());
-  row[player_columns.status] = PLAYER_NOT_HERE;
-  update_buttons();
+  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
+       i != kids.end(); i++)
+    {
+      Gtk::TreeModel::Row row = *i;
+      if (row[player_columns.player_id] == p->getId())
+	{
+	  row[player_columns.sitting] = false;
+	  row[player_columns.type] = player_type_to_string(p->getType());
+	  row[player_columns.status] = PLAYER_NOT_HERE;
+	  update_buttons();
+	  return;
+	}
+    }
 }
 
 void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
@@ -468,16 +511,18 @@ void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
 void GameLobbyDialog::on_remote_player_changes_name(Player *p)
 {
   Gtk::TreeModel::Children kids = player_list->children();
-  Gtk::TreeModel::Row row = *kids[p->getId()];
-  row[player_columns.name] = p->getName();
+  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
+       i != kids.end(); i++)
+    {
+      Gtk::TreeModel::Row row = *i;
+      if (row[player_columns.player_id] == p->getId())
+	{
+	  row[player_columns.name] = p->getName();
+	  return;
+	}
+    }
 }
-      
-void GameLobbyDialog::on_remote_player_changes_type()
-{
-  update_player_details();
-  update_buttons();
-}
- 
+
 void GameLobbyDialog::on_play_clicked()
 {
 }
@@ -485,7 +530,7 @@ void GameLobbyDialog::on_play_clicked()
 void GameLobbyDialog::on_cancel_clicked()
 {
 }
-          
+
 void GameLobbyDialog::on_chat_key_pressed(GdkEventKey *event)
 {
   if (event->keyval == 65293) //enter
@@ -496,7 +541,7 @@ void GameLobbyDialog::on_chat_key_pressed(GdkEventKey *event)
     }
   return;
 }
-	
+
 void GameLobbyDialog::on_chatted(std::string nickname, std::string message)
 {
   //if nickname is empty, then the message holds it.
@@ -505,8 +550,25 @@ void GameLobbyDialog::on_chatted(std::string nickname, std::string message)
     new_text = chat_textview->get_buffer()->get_text() + "\n" + message;
   else
     new_text = chat_textview->get_buffer()->get_text() + "\n" + message;
-    
+
 
   chat_textview->get_buffer()->set_text(new_text);
   chat_scrolledwindow->get_vadjustment()->set_value(chat_scrolledwindow->get_vadjustment()->get_upper());
+}
+
+void GameLobbyDialog::on_remote_player_died(Player *p)
+{
+  if (!p)
+    return;
+
+  Gtk::TreeNodeChildren rows = player_list->children();
+  for(Gtk::TreeIter row = rows.begin(); row != rows.end(); ++row)
+    {
+      Gtk::TreeModel::Row my_row = *row;
+      if (my_row[player_columns.player_id] == p->getId())
+	{
+	  player_list->erase(row);
+	  return;
+	}
+    }
 }

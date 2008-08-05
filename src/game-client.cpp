@@ -101,6 +101,7 @@ void GameClient::sat_down(Player *player)
 {
   if (!player)
     return;
+  printf ("we got sit down for player %d\n", player->getId());
   if (player->getType() == Player::NETWORKED)
     dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
   player_sits.emit(player);
@@ -159,6 +160,7 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     remote_participant_departs.emit();
     break;
 
+  case MESSAGE_TYPE_REQUEST_SEAT_MANIFEST:
   case MESSAGE_TYPE_P1_SIT:
   case MESSAGE_TYPE_P2_SIT:
   case MESSAGE_TYPE_P3_SIT:
@@ -391,4 +393,9 @@ void GameClient::stand_up (Player *player)
 void GameClient::chat(std::string message)
 {
   network_connection->send(MESSAGE_TYPE_CHAT, d_nickname + ":" + message);
+}
+  
+void GameClient::request_seat_manifest()
+{
+  network_connection->send(MESSAGE_TYPE_REQUEST_SEAT_MANIFEST, "");
 }

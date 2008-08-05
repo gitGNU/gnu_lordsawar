@@ -155,6 +155,10 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     join(conn, payload);
     break;
 
+  case MESSAGE_TYPE_REQUEST_SEAT_MANIFEST:
+    sendSeats(conn);
+    break;
+
   case MESSAGE_TYPE_P1_SIT:
     sit(conn, Playerlist::getInstance()->getPlayer(0));
     break;
@@ -364,9 +368,10 @@ void GameServer::notifyJoin(std::string nickname)
     {
       network_server->send((*i)->conn, MESSAGE_TYPE_PARTICIPANT_CONNECTED, 
 			   nickname + " joined");
-    network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
-			 nickname + " connected");
+      //network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
+			   //nickname + " connected");
     }
+  gotChatMessage("[server]", nickname + " connected");
 }
 
 void GameServer::notifyDepart(void *conn)
@@ -422,7 +427,9 @@ void GameServer::join(void *conn, std::string nickname)
     new_participant = true;
   }
   if (new_participant)
-    sendMap(part);
+    {
+      sendMap(part);
+    }
 
   notifyJoin(nickname);
 }
@@ -448,18 +455,7 @@ void GameServer::sit(void *conn, Player *player)
   if (!part) 
     return;
 
-  bool found = false;
-  for (std::list<Uint32>::iterator i = part->players.begin(); 
-       i != part->players.end(); i++)
-    {
-      if (*i == player->getId())
-	{
-	  found = true;
-	  break;
-	}
-    }
-  if (found == false)
-    part->players.push_back(player->getId());
+  add_to_player_list(part->players, player->getId());
 
   if (player)
     dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
@@ -492,6 +488,38 @@ void GameServer::notifyStand(Player *player)
     network_server->send((*i)->conn, type, "player departed");
 }
 
+bool
+GameServer::add_to_player_list(std::list<Uint32> &list, Uint32 id)
+{
+  bool found = false;
+  for (std::list<Uint32>::iterator i = list.begin(); i != list.end(); i++)
+    {
+      if (*i == id)
+	{
+	  found = true;
+	  break;
+	}
+    }
+  if (found == false)
+    list.push_back(id);
+  return found;
+}
+
+void
+GameServer::remove_from_player_list(std::list<Uint32> &list, Uint32 id)
+{
+  //remove player id from part.
+  for (std::list<Uint32>::iterator i = list.begin(); 
+       i != list.end(); i++)
+    {
+      if (*i == id)
+	{
+	  list.erase (i);
+	  break;
+	}
+    }
+}
+
 void GameServer::stand(void *conn, Player *player)
 {
   std::cout << "STAND: " << conn << " " << player << std::endl;
@@ -502,15 +530,7 @@ void GameServer::stand(void *conn, Player *player)
   if (!part) 
     return;
   //remove player id from part.
-  for (std::list<Uint32>::iterator i = part->players.begin(); 
-       i != part->players.end(); i++)
-    {
-      if (*i == player->getId())
-	{
-	  part->players.erase (i);
-	  break;
-	}
-    }
+  remove_from_player_list (part->players, player->getId());
 
   if (player && player->getType() == Player::NETWORKED)
     dynamic_cast<NetworkPlayer*>(player)->setConnected(false);
@@ -621,6 +641,7 @@ bool GameServer::dumpActionsAndHistories(XML_Helper *helper, Player *player)
 	      break;
 	    }
 	}
+
       if (found)
 	{
 	  part = *i;
@@ -637,6 +658,7 @@ bool GameServer::dumpActionsAndHistories(XML_Helper *helper, Player *player)
     (**i).save(helper);
   return true;
 }
+
 bool GameServer::dumpActionsAndHistories(XML_Helper *helper)
 {
   Player *player = Playerlist::getActiveplayer();
@@ -647,31 +669,57 @@ void GameServer::sit_down (Player *player)
 {
   if (!player)
     return;
-  //alright, we want to sit down as this player
-  //convert the network player to a human player
-  dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
-  RealPlayer *new_p = new RealPlayer (*player);
-  new_p->acting.connect(sigc::mem_fun(this, &GameServer::onActionDone));
-  new_p->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
-  Playerlist::getInstance()->swap(player, new_p);
-  delete player;
-  notifySit(new_p);
+  if (player->getType() == Player::NETWORKED)
+    {
+      //alright, we want to sit down as this player
+      //convert the network player to a human player
+      dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
+      RealPlayer *new_p = new RealPlayer (*player);
+      new_p->acting.connect(sigc::mem_fun(this, &GameServer::onActionDone));
+      new_p->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
+      Playerlist::getInstance()->swap(player, new_p);
+      delete player;
+      add_to_player_list (players_seated_locally, new_p->getId());
+      notifySit(new_p);
+    }
+  else if (player->getType() == Player::HUMAN)
+    {
+      // do nothing
+    }
+  else // an ai player
+    {
+      add_to_player_list (players_seated_locally, player->getId());
+      notifySit(player);
+    }
 }
 
 void GameServer::stand_up (Player *player)
 {
   if (!player)
     return;
-  //alright, we want to stand up as this player
-  //convert the player from a human player back to a network player
+  if (player->getType() == Player::HUMAN)
+    {
+      //alright, we want to stand up as this player
+      //convert the player from a human player back to a network player
 
-  NetworkPlayer *new_p = new NetworkPlayer(*player);
-  Playerlist::getInstance()->swap(player, new_p);
-  delete player;
-  new_p->setConnected(false);
-  new_p->acting.connect(sigc::mem_fun(this, &GameServer::onActionDone));
-  new_p->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
-  notifyStand(new_p);
+      NetworkPlayer *new_p = new NetworkPlayer(*player);
+      Playerlist::getInstance()->swap(player, new_p);
+      delete player;
+      new_p->setConnected(false);
+      new_p->acting.connect(sigc::mem_fun(this, &GameServer::onActionDone));
+      new_p->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
+      notifyStand(new_p);
+      remove_from_player_list (players_seated_locally, new_p->getId());
+    }
+  else if (player->getType() == Player::NETWORKED)
+    {
+      // do nothing
+    }
+  else // an ai player
+    {
+      remove_from_player_list (players_seated_locally, player->getId());
+      notifyStand(player);
+    }
 }
 
 void GameServer::chat (std::string message)
@@ -685,5 +733,65 @@ void GameServer::notifyChat(std::string message)
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, message);
+}
+
+void GameServer::sendSeats(void *conn)
+{
+  Participant *part = findParticipantByConn(conn);
+  if (!part)
+    return;
+  //send seatedness info for remote participants
+
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    {
+      if ((*i)->conn == part->conn)
+	continue;
+      for (std::list<Uint32>::iterator j = part->players.begin(); 
+	   j != part->players.end(); j++)
+	{
+	  Player *player = Playerlist::getInstance()->getPlayer(*j);
+	  MessageType type;
+	  switch (player->getId())
+	    {
+	    case 0: type = MESSAGE_TYPE_P1_SAT_DOWN; break;
+	    case 1: type = MESSAGE_TYPE_P2_SAT_DOWN; break;
+	    case 2: type = MESSAGE_TYPE_P3_SAT_DOWN; break;
+	    case 3: type = MESSAGE_TYPE_P4_SAT_DOWN; break;
+	    case 4: type = MESSAGE_TYPE_P5_SAT_DOWN; break;
+	    case 5: type = MESSAGE_TYPE_P6_SAT_DOWN; break;
+	    case 6: type = MESSAGE_TYPE_P7_SAT_DOWN; break;
+	    case 7: type = MESSAGE_TYPE_P8_SAT_DOWN; break;
+	    default:
+		    printf ("what!\n");
+		    return;
+	    }
+	  network_server->send(part->conn, type, "player sat down");
+	}
+    }
+  //send out seatedness info for local server
+  printf ("sending out seats for local server...\n");
+  for (std::list<Uint32>::iterator j = players_seated_locally.begin(); 
+       j != players_seated_locally.end(); j++)
+    {
+      Player *player = Playerlist::getInstance()->getPlayer(*j);
+      printf ("player is %d\n", *j);
+      MessageType type;
+      switch (player->getId())
+	{
+	case 0: type = MESSAGE_TYPE_P1_SAT_DOWN; break;
+	case 1: type = MESSAGE_TYPE_P2_SAT_DOWN; break;
+	case 2: type = MESSAGE_TYPE_P3_SAT_DOWN; break;
+	case 3: type = MESSAGE_TYPE_P4_SAT_DOWN; break;
+	case 4: type = MESSAGE_TYPE_P5_SAT_DOWN; break;
+	case 5: type = MESSAGE_TYPE_P6_SAT_DOWN; break;
+	case 6: type = MESSAGE_TYPE_P7_SAT_DOWN; break;
+	case 7: type = MESSAGE_TYPE_P8_SAT_DOWN; break;
+	default:
+		return;
+	}
+      network_server->send(part->conn, type, "player sat down");
+    }
+  printf ("done sending local seats\n");
 }
 // End of file

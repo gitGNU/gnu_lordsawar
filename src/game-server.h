@@ -86,12 +86,15 @@ private:
   void notifyChat(std::string message);
 
   void sendMap(Participant *part);
+  void sendSeats(void *conn);
+
   void sendActions(Participant *part);
   void sendHistories(Participant *part);
 
   std::auto_ptr<NetworkServer> network_server;
 
   std::list<Participant *> participants;
+  std::list<Uint32> players_seated_locally;
 
   Participant * play_by_mail_participant;
 
@@ -107,6 +110,9 @@ private:
 
   void gotChat(void *conn, std::string message);
 
+
+  bool add_to_player_list(std::list<Uint32> &list, Uint32 id);
+  void remove_from_player_list(std::list<Uint32> &list, Uint32 id);
   //! A static pointer for the singleton instance.
   static GameServer * s_instance;
 };

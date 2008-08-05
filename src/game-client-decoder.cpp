@@ -117,6 +117,8 @@ int GameClientDecoder::decodeHistories(std::list<NetworkHistory *> histories)
     Player *p = Playerlist::getInstance()->getActiveplayer();
     p->getHistorylist()->push_back(History::copy(history->getHistory()));
     count++;
+    if (history->getHistory()->getType() == History::PLAYER_VANQUISHED)
+      remote_player_died.emit(history->getOwner());
   }
 
   for (std::list<NetworkHistory *>::iterator i = histories.begin(),
