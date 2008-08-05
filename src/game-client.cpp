@@ -101,7 +101,6 @@ void GameClient::sat_down(Player *player)
 {
   if (!player)
     return;
-  printf ("we got sit down for player %d\n", player->getId());
   if (player->getType() == Player::NETWORKED)
     dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
   player_sits.emit(player);
@@ -342,7 +341,6 @@ void GameClient::sit_down (Player *player)
   if (!player)
     return;
   MessageType type;
-  printf ("id is %d\n", player->getId());
   switch (player->getId())
     {
     case 0: type = MESSAGE_TYPE_P1_SIT; break;

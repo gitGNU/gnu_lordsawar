@@ -80,6 +80,7 @@ GameServer::~GameServer()
   for (std::list<Participant *>::iterator i = participants.begin(),
          end = participants.end(); i != end; ++i)
     delete *i;
+  players_seated_locally.clear();
 }
 
 bool GameServer::isListening()
@@ -763,19 +764,16 @@ void GameServer::sendSeats(void *conn)
 	    case 6: type = MESSAGE_TYPE_P7_SAT_DOWN; break;
 	    case 7: type = MESSAGE_TYPE_P8_SAT_DOWN; break;
 	    default:
-		    printf ("what!\n");
 		    return;
 	    }
 	  network_server->send(part->conn, type, "player sat down");
 	}
     }
   //send out seatedness info for local server
-  printf ("sending out seats for local server...\n");
   for (std::list<Uint32>::iterator j = players_seated_locally.begin(); 
        j != players_seated_locally.end(); j++)
     {
       Player *player = Playerlist::getInstance()->getPlayer(*j);
-      printf ("player is %d\n", *j);
       MessageType type;
       switch (player->getId())
 	{
@@ -792,6 +790,5 @@ void GameServer::sendSeats(void *conn)
 	}
       network_server->send(part->conn, type, "player sat down");
     }
-  printf ("done sending local seats\n");
 }
 // End of file

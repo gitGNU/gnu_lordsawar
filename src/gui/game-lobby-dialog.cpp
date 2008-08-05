@@ -71,7 +71,6 @@ void GameLobbyDialog::update_city_map()
 
 void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 {
-  Playerlist *pl = Playerlist::getInstance();
   Shieldsetlist::getInstance()->instantiatePixmaps();
   d_game_scenario = gamescenario;
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -129,21 +128,6 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
       game_server->remote_player_died.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_died));
-      //seat the ai players
-      for (Playerlist::iterator i = pl->begin(), end = pl->end(); i != end; ++i)
-	{
-	  Player *player = *i;
-	  if (player == pl->getNeutral())
-	    continue;
-	  if (player->isDead())
-	    continue;
-	  if (player->getType() == Player::HUMAN)
-	    continue;
-	  if (player->getType() == Player::NETWORKED)
-	    continue;
-
-	  player_sat_down.emit(player);
-	}
     }
   else
     {
@@ -164,7 +148,6 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
       game_client->remote_player_died.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_died));
-      game_client->request_seat_manifest();
     }
   update_player_details();
   update_buttons();
@@ -345,6 +328,8 @@ void GameLobbyDialog::hide()
 
 bool GameLobbyDialog::run()
 {
+  Playerlist *pl = Playerlist::getInstance();
+
   if (d_game_scenario->s_hidden_map == false)
     {
       citymap->resize();
@@ -352,6 +337,26 @@ bool GameLobbyDialog::run()
     }
 
   dialog->show_all();
+  if (GameServer::getInstance()->isListening() == false)
+    GameClient::getInstance()->request_seat_manifest();
+  else
+    {
+      //seat the ai players
+      for (Playerlist::iterator i = pl->begin(), end = pl->end(); i != end; ++i)
+	{
+	  Player *player = *i;
+	  if (player == pl->getNeutral())
+	    continue;
+	  if (player->isDead())
+	    continue;
+	  if (player->getType() == Player::HUMAN)
+	    continue;
+	  if (player->getType() == Player::NETWORKED)
+	    continue;
+
+	  player_sat_down.emit(player);
+	}
+    }
   int response = dialog->run();
 
   if (response == 0)

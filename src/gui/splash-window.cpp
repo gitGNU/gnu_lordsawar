@@ -220,6 +220,7 @@ void SplashWindow::on_new_network_game_clicked()
   else
     nick = "guest";
   nick_entry->set_text(nick);
+  nick_entry->set_activates_default(true);
   int response = dialog->run();
   if (response == 0) //we hit okay
     {
