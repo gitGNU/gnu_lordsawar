@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: src/playerlist.cpp:368
+#: src/playerlist.cpp:369
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-07-28 16:33-0400\n"
+"POT-Creation-Date: 2008-08-05 13:14-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1451,7 +1451,7 @@ msgid "Load Game"
 msgstr ""
 
 #: dat/glade/game-window.glade.h:29 dat/glade/splash-window.glade.h:3
-#: dat/glade/about-dialog.glade.h:3 src/gui/main.cpp:63
+#: dat/glade/about-dialog.glade.h:3 src/gui/main.cpp:62
 msgid "LordsAWar!"
 msgstr ""
 
@@ -2065,7 +2065,7 @@ msgstr ""
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:574 src/gui/driver.cpp:454
+#: src/GameScenario.cpp:574 src/gui/driver.cpp:602
 msgid "Error: "
 msgstr ""
 
@@ -2115,35 +2115,35 @@ msgstr ""
 msgid "You must destroy a unit of enemy %s."
 msgstr ""
 
-#: src/playerlist.cpp:309
+#: src/playerlist.cpp:310
 msgid "Statesman"
 msgstr ""
 
-#: src/playerlist.cpp:310
+#: src/playerlist.cpp:311
 msgid "Diplomat"
 msgstr ""
 
-#: src/playerlist.cpp:311
+#: src/playerlist.cpp:312
 msgid "Pragmatist"
 msgstr ""
 
-#: src/playerlist.cpp:312
+#: src/playerlist.cpp:313
 msgid "Politician"
 msgstr ""
 
-#: src/playerlist.cpp:313
+#: src/playerlist.cpp:314
 msgid "Deciever"
 msgstr ""
 
-#: src/playerlist.cpp:314
+#: src/playerlist.cpp:315
 msgid "Scoundrel"
 msgstr ""
 
-#: src/playerlist.cpp:315
+#: src/playerlist.cpp:316
 msgid "Turncoat"
 msgstr ""
 
-#: src/playerlist.cpp:316
+#: src/playerlist.cpp:317
 msgid "Running Dog"
 msgstr ""
 
@@ -2178,31 +2178,31 @@ msgstr ""
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
 
-#: src/game.cpp:604
+#: src/game.cpp:592
 msgid "%1 (capital city)"
 msgstr ""
 
-#: src/game.cpp:610
+#: src/game.cpp:598
 msgid "Under rule of %1"
 msgstr ""
 
-#: src/game.cpp:613 src/gui/city-window.cpp:167
+#: src/game.cpp:601 src/gui/city-window.cpp:167
 msgid "Income: %1"
 msgstr ""
 
-#: src/game.cpp:615
+#: src/game.cpp:603
 msgid "Defense: %1"
 msgstr ""
 
-#: src/game.cpp:619
+#: src/game.cpp:607
 msgid "Status: razed!"
 msgstr ""
 
-#: src/game.cpp:649
+#: src/game.cpp:637
 msgid "Explored"
 msgstr ""
 
-#: src/game.cpp:652
+#: src/game.cpp:640
 msgid "Unexplored"
 msgstr ""
 
@@ -2779,12 +2779,12 @@ msgstr ""
 msgid "Save your Turn file and mail it back"
 msgstr ""
 
-#: src/gui/game-window.cpp:835 src/gui/splash-window.cpp:179
+#: src/gui/game-window.cpp:835 src/gui/splash-window.cpp:180
 msgid "Choose Game to Load"
 msgstr ""
 
-#: src/gui/game-window.cpp:860 src/gui/driver.cpp:227 src/gui/driver.cpp:263
-#: src/gui/driver.cpp:403 src/gui/driver.cpp:420
+#: src/gui/game-window.cpp:860 src/gui/driver.cpp:258 src/gui/driver.cpp:399
+#: src/gui/driver.cpp:547 src/gui/driver.cpp:566
 msgid "Corrupted saved game file."
 msgstr ""
 
@@ -3078,20 +3078,28 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr ""
 
-#: src/gui/driver.cpp:358 src/editor/main-window.cpp:381
+#: src/gui/driver.cpp:294
+msgid "Server went away."
+msgstr ""
+
+#: src/gui/driver.cpp:310
+msgid "Could not connect."
+msgstr ""
+
+#: src/gui/driver.cpp:502 src/editor/main-window.cpp:381
 #: src/editor/main-window.cpp:427
 msgid "Neutral"
 msgstr ""
 
-#: src/gui/driver.cpp:429
+#: src/gui/driver.cpp:577
 msgid "Save the scenario and mail it to the first player"
 msgstr ""
 
-#: src/gui/driver.cpp:452
+#: src/gui/driver.cpp:600
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 
-#: src/gui/driver.cpp:457
+#: src/gui/driver.cpp:605
 msgid "Now send the saved-game file to %1"
 msgstr ""
 
@@ -3151,27 +3159,27 @@ msgstr ""
 msgid "Temple"
 msgstr ""
 
-#: src/gui/splash-window.cpp:109
+#: src/gui/splash-window.cpp:110
 msgid "Rescue Crashed Game"
 msgstr ""
 
-#: src/gui/splash-window.cpp:247
+#: src/gui/splash-window.cpp:260
 msgid "New Play By Mail game"
 msgstr ""
 
-#: src/gui/splash-window.cpp:300
+#: src/gui/splash-window.cpp:310
 msgid "GGZ initialization failed. Exiting.\n"
 msgstr ""
 
-#: src/gui/splash-window.cpp:318
+#: src/gui/splash-window.cpp:328
 msgid "Play on GGZ"
 msgstr ""
 
-#: src/gui/splash-window.cpp:319
+#: src/gui/splash-window.cpp:329
 msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
 msgstr ""
 
-#: src/gui/splash-window.cpp:320
+#: src/gui/splash-window.cpp:330
 msgid "OK"
 msgstr ""
 
@@ -3705,28 +3713,24 @@ msgstr ""
 msgid "non-numerical value for cache size\n"
 msgstr ""
 
-#: src/main.cpp:96
+#: src/main.cpp:92
 msgid "Options:"
 msgstr ""
 
-#: src/main.cpp:97
+#: src/main.cpp:93
 msgid "  -h, --help                 Shows this help screen"
 msgstr ""
 
-#: src/main.cpp:98
+#: src/main.cpp:94
 msgid "  -c <size>                  Set the maximum cache size"
 msgstr ""
 
-#: src/main.cpp:99
+#: src/main.cpp:95
 msgid "  -t, --test                 Start with a test-scenario"
 msgstr ""
 
-#: src/main.cpp:100
+#: src/main.cpp:96
 msgid "  -s, --stress-test          Non-interactive stress test"
-msgstr ""
-
-#: src/main.cpp:101
-msgid "  -n, --network-test         Start a network test"
 msgstr ""
 
 #: src/QCitySack.cpp:93
