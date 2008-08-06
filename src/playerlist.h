@@ -227,6 +227,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 
 
 	void turnHumansIntoNetworkPlayers();
+	void setTurnOrder(std::list<Uint32> order);
 
     protected:
 	//! Default constructor.
@@ -242,6 +243,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 
 	//! Comparison function to assist in sorting the list of players.
 	static bool randomly(const Player *lhs, const Player *rhs);
+
+	//! Comparison function to assist in sorting the list of players.
+	static bool inGivenOrder(const Player *lhs, const Player *rhs);
 
 	//! Comparison function to assist in sorting the list of players.
 	static bool inOrderOfId(const Player *lhs, const Player *rhs);

@@ -81,6 +81,8 @@ private:
   void sendHistories();
   void clearNetworkHistorylist(std::list<NetworkHistory*> histories);
 
+  void gotTurnOrder (std::string payload);
+
   void sat_down(Player *player);
   void stood_up(Player *player);
 

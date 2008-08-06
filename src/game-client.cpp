@@ -244,6 +244,9 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     client_disconnected.emit();
     break;
 
+  case MESSAGE_TYPE_TURN_ORDER:
+    gotTurnOrder (payload);
+    break;
   }
 }
 
@@ -396,4 +399,21 @@ void GameClient::chat(std::string message)
 void GameClient::request_seat_manifest()
 {
   network_connection->send(MESSAGE_TYPE_REQUEST_SEAT_MANIFEST, "");
+}
+    
+void GameClient::gotTurnOrder (std::string payload)
+{
+  std::list<Uint32> player_ids;
+  std::stringstream players;
+  players.str(payload);
+
+  int ival;
+  while (players.eof() == false)
+    {
+      ival = -1;
+      players >> ival;
+      if (ival != -1)
+	player_ids.push_back(ival);
+    }
+  Playerlist::getInstance()->setTurnOrder(player_ids);
 }

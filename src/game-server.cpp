@@ -121,9 +121,13 @@ void GameServer::gotChat(void *conn, std::string message)
 	for (std::list<Participant *>::iterator i = participants.begin(),
 	     end = participants.end(); i != end; ++i)
 	  {
-	    if (*i != part->conn)
+	    if ((*i)->conn != part->conn)
 	      network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
 				   part->nickname + ":" + message);
+	    else
+	      network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
+				   message);
+
 	  }
       }
     return;
@@ -242,6 +246,7 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
 	network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
 			     "participant disconnected");
     break;
+
   case MESSAGE_TYPE_P1_SAT_DOWN:
   case MESSAGE_TYPE_P2_SAT_DOWN:
   case MESSAGE_TYPE_P3_SAT_DOWN:
@@ -260,6 +265,7 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_P8_STOOD_UP:
   case MESSAGE_TYPE_SERVER_DISCONNECT:
   case MESSAGE_TYPE_CHATTED:
+  case MESSAGE_TYPE_TURN_ORDER:
     //faulty client
     break;
   }
@@ -790,5 +796,16 @@ void GameServer::sendSeats(void *conn)
 	}
       network_server->send(part->conn, type, "player sat down");
     }
+}
+
+void GameServer::sendTurnOrder()
+{
+  std::stringstream players;
+  Playerlist *pl = Playerlist::getInstance();
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+    players << (*it)->getId() << " ";
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    network_server->send((*i)->conn, MESSAGE_TYPE_TURN_ORDER, players.str());
 }
 // End of file

@@ -95,6 +95,7 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
     xml->get_widget("scenario_name_label", scenario_name_label);
     xml->get_widget("cities_label", cities_label);
     xml->get_widget("chat_scrolledwindow", chat_scrolledwindow);
+    chat_scrolledwindow->property_hscrollbar_policy() = Gtk::POLICY_NEVER;
     xml->get_widget("chat_textview", chat_textview);
     xml->get_widget("chat_entry", chat_entry);
 
@@ -541,7 +542,7 @@ void GameLobbyDialog::on_chat_key_pressed(GdkEventKey *event)
   if (event->keyval == 65293) //enter
     {
       if (chat_entry->get_text().length() > 0)
-	message_sent(chat_entry->get_text());
+	message_sent.emit(chat_entry->get_text());
       chat_entry->set_text("");
     }
   return;
@@ -549,14 +550,7 @@ void GameLobbyDialog::on_chat_key_pressed(GdkEventKey *event)
 
 void GameLobbyDialog::on_chatted(std::string nickname, std::string message)
 {
-  //if nickname is empty, then the message holds it.
-  std::string new_text;
-  if (nickname == "")
-    new_text = chat_textview->get_buffer()->get_text() + "\n" + message;
-  else
-    new_text = chat_textview->get_buffer()->get_text() + "\n" + message;
-
-
+  new_text = chat_textview->get_buffer()->get_text() + "\n" + message;
   chat_textview->get_buffer()->set_text(new_text);
   chat_scrolledwindow->get_vadjustment()->set_value(chat_scrolledwindow->get_vadjustment()->get_upper());
 }

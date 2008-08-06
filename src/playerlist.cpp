@@ -723,3 +723,39 @@ void Playerlist::turnHumansIntoNetworkPlayers()
     }
 }
 
+std::list<Uint32> given_turn_order;
+bool Playerlist::inGivenOrder(const Player *lhs, const Player *rhs)  
+{
+  if (given_turn_order.size() == 0)
+    return true;
+
+  int count = 0;
+  for(std::list<Uint32>::iterator it = given_turn_order.begin(); 
+      it != given_turn_order.end(); it++)
+    {
+      count++;
+      if (lhs->getId() == (*it))
+	break;
+    }
+  int lhs_rank = count;
+  count = 0;
+  for(std::list<Uint32>::iterator it = given_turn_order.begin(); 
+      it != given_turn_order.end(); it++)
+    {
+      count++;
+      if (rhs->getId() == (*it))
+	break;
+    }
+  int rhs_rank = count;
+  return lhs_rank > rhs_rank;
+}
+
+
+void Playerlist::setTurnOrder(std::list<Uint32> order)
+{
+  given_turn_order = order;
+  sort(inGivenOrder);
+  given_turn_order.clear();
+  d_activeplayer = getFirstLiving();
+}
+

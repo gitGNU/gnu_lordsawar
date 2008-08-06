@@ -87,6 +87,7 @@ private:
 
   void sendMap(Participant *part);
   void sendSeats(void *conn);
+  void sendTurnOrder();
 
   void sendActions(Participant *part);
   void sendHistories(Participant *part);
@@ -109,6 +110,7 @@ private:
   bool dumpActionsAndHistories(XML_Helper *helper, Player *player);
 
   void gotChat(void *conn, std::string message);
+
 
 
   bool add_to_player_list(std::list<Uint32> &list, Uint32 id);

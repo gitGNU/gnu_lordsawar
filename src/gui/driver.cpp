@@ -225,7 +225,6 @@ void Driver::on_hosted_player_chat(std::string message)
 
 void Driver::on_client_player_sat_down(Player *player)
 {
-  printf ("somebody sat down!\n");
   GameClient *game_client = GameClient::getInstance();
   game_client->sit_down(player);
 }
@@ -275,8 +274,10 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   game_lobby_dialog->hide();
   if (splash_window.get())
     splash_window->show();
-  if (response != 0)
-    GameServer::deleteInstance();
+  printf ("response is %d\n", response);
+    
+  GameServer::deleteInstance();
+  delete game_scenario;
 }
 
   
@@ -338,15 +339,12 @@ void Driver::heartbeat()
   static bool already_done = false;
   if (already_done)
     return;
-  printf("checking for download finished!\n");
   if (game_scenario_downloaded == "")
     {
       download_window->pulse();
-      printf ("not downloaded yet.\n");
       return;
     }
   
-  printf ("downloaded scenario!  proceeding.\n");
   game_scenario_received.emit(game_scenario_downloaded);
   already_done = true;
 }
@@ -359,7 +357,6 @@ void Driver::on_game_scenario_received(std::string path)
   GameScenario *game_scenario = 
     load_game(path);
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, false));
-  printf ("game lobby dialog created\n");
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   game_lobby_dialog->player_sat_down.connect
     (sigc::mem_fun(this, &Driver::on_client_player_sat_down));
@@ -371,12 +368,13 @@ void Driver::on_game_scenario_received(std::string path)
   game_lobby_dialog->hide();
   if (splash_window.get())
     splash_window->show();
-  if (response != 0)
-    GameClient::deleteInstance();
+  printf ("response is %d\n", response);
+    
+  GameClient::deleteInstance();
+  delete game_scenario;
 }
 void Driver::on_game_scenario_downloaded(std::string path)
 {
-  printf ("got a path to a scenario that was downloaded!!\n");
   game_scenario_downloaded = path;
   //emitting the signal doesn't work.
   //it stops the game client from doing more processing.
