@@ -206,11 +206,18 @@ GameLobbyDialog::update_player_details()
 
   player_treeview->append_column(_("Person"), player_columns.person);
 
-  // the name
-  if (d_has_ops)
-    player_treeview->append_column_editable(_("Name"), player_columns.name);
-  else
-    player_treeview->append_column(_("Name"), player_columns.name);
+  // the name column
+  player_name_list = Gtk::ListStore::create(player_name_columns);
+
+  name_renderer.property_editable() = d_has_ops;
+
+  name_renderer.signal_edited()
+    .connect(sigc::mem_fun(*this, &GameLobbyDialog::on_name_edited));
+  //name_renderer.signal_edited()
+    //.connect(sigc::mem_fun(*this, &GameLobbyDialog::on_name_changed));
+  name_column.set_cell_data_func
+    ( name_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_name));
+  player_treeview->append_column(name_column);
 
   // the type column
   player_type_list = Gtk::ListStore::create(player_type_columns);
@@ -261,6 +268,25 @@ GameLobbyDialog::update_player_details()
     }
 }
 
+void GameLobbyDialog::on_name_changed(const Glib::ustring &path,
+				      const Glib::ustring &new_text)
+{
+  Playerlist *pl = Playerlist::getInstance();
+  Player *player;
+  Glib::RefPtr < Gtk::TreeSelection > selection = 
+    player_treeview->get_selection();
+  Gtk::TreeModel::iterator iter = selection->get_selected();
+  if (!selection->count_selected_rows())
+    return;
+  //maybe we can't change the name
+  //fixme
+
+  Glib::ustring name = (*iter)[player_columns.name];
+  printf ("name is now %s\n", name.c_str());
+  player = pl->getPlayer((*iter)[player_columns.player_id]);
+
+  //player->rename(name);
+}
 
 
 void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
@@ -287,7 +313,8 @@ void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
 }
 
 GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario, bool has_ops)
-	:type_column(_("Type"), type_renderer),
+	:name_column(_("Name"), name_renderer),
+	type_column(_("Type"), type_renderer),
 	status_column(_("Status"), status_renderer),
 	sitting_column(_("Seated"), sitting_renderer)
 {
@@ -402,6 +429,41 @@ void GameLobbyDialog::on_type_edited(const Glib::ustring &path,
 				     const Glib::ustring &new_text)
 {
   (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.type]
+    = new_text;
+}
+
+void GameLobbyDialog::cell_data_name(Gtk::CellRenderer *renderer,
+				     const Gtk::TreeIter& i)
+{
+  Playerlist *pl = Playerlist::getInstance();
+  Player *player;
+  player = pl->getPlayer((*i)[player_columns.player_id]);
+
+  dynamic_cast<Gtk::CellRendererText*>(renderer)->property_text()
+    = player->getName();
+}
+
+void GameLobbyDialog::on_name_edited(const Glib::ustring &path,
+				     const Glib::ustring &new_text)
+{
+  Playerlist *pl = Playerlist::getInstance();
+  Player *player;
+  Glib::RefPtr < Gtk::TreeSelection > selection = 
+    player_treeview->get_selection();
+  Gtk::TreeModel::iterator iter = selection->get_selected();
+  if (!selection->count_selected_rows())
+    return;
+  //maybe we can't change the name
+  //fixme
+  if ((*iter)[player_columns.sitting] == false)
+    return;
+  printf ("new text is %s\n", new_text.c_str());
+  //Glib::ustring name = (*iter)[player_columns.name];
+  //printf ("name is now %s\n", name.c_str());
+  player = pl->getPlayer((*iter)[player_columns.player_id]);
+
+  player->rename(new_text);
+  (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.name]
     = new_text;
 }
 

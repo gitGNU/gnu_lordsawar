@@ -99,6 +99,26 @@ class GameLobbyDialog//: public sigc::trackable
     const PlayerColumns player_columns;
     Glib::RefPtr<Gtk::ListStore> player_list;
     
+    Gtk::CellRendererText name_renderer;
+    Gtk::TreeViewColumn name_column;
+    
+    class PlayerNameColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	PlayerNameColumns()
+	    { add(name); }
+	
+	Gtk::TreeModelColumn<Glib::ustring> name;
+    };
+    const PlayerNameColumns player_name_columns;
+    Glib::RefPtr<Gtk::ListStore> player_name_list;
+
+    void cell_data_name(Gtk::CellRenderer *renderer, const Gtk::TreeIter &i);
+void on_name_changed(const Glib::ustring &path,
+				      const Glib::ustring &new_text);
+
+    void on_name_edited(const Glib::ustring &path,
+				     const Glib::ustring &new_text);
+
     Gtk::CellRendererCombo type_renderer;
     Gtk::TreeViewColumn type_column;
     
@@ -171,6 +191,7 @@ class GameLobbyDialog//: public sigc::trackable
     void on_play_clicked();
     void on_cancel_clicked();
     void on_sitting_changed(Gtk::CellEditable *editable, const Glib::ustring &path);
+    void on_name_changed(Gtk::CellEditable *editable, const Glib::ustring &path);
 
     void on_chat_key_pressed(GdkEventKey *event);
     void on_chatted(std::string nickname, std::string message);
