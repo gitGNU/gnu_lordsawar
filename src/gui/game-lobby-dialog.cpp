@@ -84,6 +84,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
     xml->get_widget("player_treeview", player_treeview);
     player_treeview->get_selection()->signal_changed().connect
           (sigc::mem_fun(*this, &GameLobbyDialog::on_player_selected));
+    xml->get_widget("people_treeview", people_treeview);
+    people_treeview->property_headers_visible() = true;
     xml->get_widget("play_button", play_button);
     play_button->signal_clicked().connect
       (sigc::mem_fun(this, &GameLobbyDialog::on_play_clicked));
@@ -153,6 +155,10 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
   update_player_details();
   update_buttons();
 
+  people_list = Gtk::ListStore::create(people_columns);
+  // setup the player settings
+  people_treeview->set_model(people_list);
+
 }
 
 void GameLobbyDialog::update_buttons()
@@ -187,7 +193,6 @@ GameLobbyDialog::update_player_details()
 
   player_treeview->remove_all_columns();
 
-
   player_treeview->append_column("", player_columns.shield);
 
   //the sitting toggle
@@ -198,6 +203,8 @@ GameLobbyDialog::update_player_details()
   sitting_column.set_cell_data_func
     (sitting_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_sitting));
   player_treeview->append_column(sitting_column);
+
+  player_treeview->append_column(_("Person"), player_columns.person);
 
   // the name
   if (d_has_ops)
@@ -338,10 +345,17 @@ bool GameLobbyDialog::run()
     }
 
   dialog->show_all();
+    people_treeview->append_column(_("People"), people_columns.nickname);
   if (GameServer::getInstance()->isListening() == false)
-    GameClient::getInstance()->request_seat_manifest();
+    {
+      GameClient::getInstance()->request_seat_manifest();
+      Gtk::TreeIter j = people_list->append();
+      (*j)[people_columns.nickname] = "[" + GameClient::getInstance()->getNickname() + "]";
+    }
   else
     {
+      Gtk::TreeIter j = people_list->append();
+      (*j)[people_columns.nickname] = "[" + GameServer::getInstance()->getNickname() + "]";
       //seat the ai players
       for (Playerlist::iterator i = pl->begin(), end = pl->end(); i != end; ++i)
 	{
@@ -456,15 +470,28 @@ void GameLobbyDialog::on_player_selected()
   update_buttons();
 }
 
-void GameLobbyDialog::on_remote_participant_joins()
+void GameLobbyDialog::on_remote_participant_joins(std::string nickname)
 {
+  Gtk::TreeIter j = people_list->append();
+  (*j)[people_columns.nickname] = nickname;
 }
 
-void GameLobbyDialog::on_remote_participant_departs()
+void GameLobbyDialog::on_remote_participant_departs(std::string nickname)
 {
+  //iterate through and remove the nickname
+  Gtk::TreeNodeChildren rows = people_list->children();
+  for(Gtk::TreeIter row = rows.begin(); row != rows.end(); ++row)
+    {
+      Gtk::TreeModel::Row my_row = *row;
+      if (my_row[people_columns.nickname] == nickname)
+	{
+	  people_list->erase(row);
+	  return;
+	}
+    }
 }
 
-void GameLobbyDialog::on_player_sits(Player *p)
+void GameLobbyDialog::on_player_sits(Player *p, std::string nickname)
 {
   if (!p)
     return;
@@ -478,6 +505,7 @@ void GameLobbyDialog::on_player_sits(Player *p)
 	{
 	  row[player_columns.sitting] = true;
 	  row[player_columns.type] = player_type_to_string(p->getType());
+	  row[player_columns.person] = nickname;
 	  if (Playerlist::getInstance()->getActiveplayer() == p)
 	    row[player_columns.status] = PLAYER_MOVING;
 	  else
@@ -488,7 +516,7 @@ void GameLobbyDialog::on_player_sits(Player *p)
     }
 }
 
-void GameLobbyDialog::on_player_stands(Player *p)
+void GameLobbyDialog::on_player_stands(Player *p, std::string nickname)
 {
   if (!p)
     return;
@@ -500,6 +528,7 @@ void GameLobbyDialog::on_player_stands(Player *p)
       if (row[player_columns.player_id] == p->getId())
 	{
 	  row[player_columns.sitting] = false;
+	  row[player_columns.person] = "";
 	  row[player_columns.type] = player_type_to_string(p->getType());
 	  row[player_columns.status] = PLAYER_NOT_HERE;
 	  update_buttons();
@@ -550,6 +579,7 @@ void GameLobbyDialog::on_chat_key_pressed(GdkEventKey *event)
 
 void GameLobbyDialog::on_chatted(std::string nickname, std::string message)
 {
+  std::string new_text;
   new_text = chat_textview->get_buffer()->get_text() + "\n" + message;
   chat_textview->get_buffer()->set_text(new_text);
   chat_scrolledwindow->get_vadjustment()->set_value(chat_scrolledwindow->get_vadjustment()->get_upper());

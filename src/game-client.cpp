@@ -61,7 +61,7 @@ GameClient::GameClient()
 GameClient::~GameClient()
 {
   if (network_connection.get() != NULL)
-    network_connection->send(MESSAGE_TYPE_PARTICIPANT_DISCONNECT, "");
+    network_connection->send(MESSAGE_TYPE_PARTICIPANT_DISCONNECT, d_nickname);
 }
 
 void GameClient::start(std::string host, int port, std::string nick)
@@ -97,16 +97,16 @@ void GameClient::onConnectionLost()
     client_could_not_connect.emit();
 }
 
-void GameClient::sat_down(Player *player)
+void GameClient::sat_down(Player *player, std::string nickname)
 {
   if (!player)
     return;
   if (player->getType() == Player::NETWORKED)
     dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
-  player_sits.emit(player);
+  player_sits.emit(player, nickname);
 }
 
-void GameClient::stood_up(Player *player)
+void GameClient::stood_up(Player *player, std::string nickname)
 {
   if (!player)
     return;
@@ -120,7 +120,7 @@ void GameClient::stood_up(Player *player)
     }
   else if (player->getType() == Player::NETWORKED)
     dynamic_cast<NetworkPlayer*>(player)->setConnected(false);
-  player_stands.emit(player);
+  player_stands.emit(player, nickname);
 }
 
 void GameClient::onGotMessage(MessageType type, std::string payload)
@@ -153,10 +153,10 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_CONNECTED:
-    remote_participant_joins.emit();
+    remote_participant_joins.emit(payload);
     break;
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECTED:
-    remote_participant_departs.emit();
+    remote_participant_departs.emit(payload);
     break;
 
   case MESSAGE_TYPE_REQUEST_SEAT_MANIFEST:
@@ -187,53 +187,52 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     break;
     //this is the client realizing that some other player joined the server
   case MESSAGE_TYPE_P1_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(0));
+    sat_down(Playerlist::getInstance()->getPlayer(0), payload);
     break;
   case MESSAGE_TYPE_P2_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(1));
+    sat_down(Playerlist::getInstance()->getPlayer(1), payload);
     break;
   case MESSAGE_TYPE_P3_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(2));
+    sat_down(Playerlist::getInstance()->getPlayer(2), payload);
     break;
   case MESSAGE_TYPE_P4_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(3));
+    sat_down(Playerlist::getInstance()->getPlayer(3), payload);
     break;
   case MESSAGE_TYPE_P5_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(4));
+    sat_down(Playerlist::getInstance()->getPlayer(4), payload);
     break;
   case MESSAGE_TYPE_P6_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(5));
+    sat_down(Playerlist::getInstance()->getPlayer(5), payload);
     break;
   case MESSAGE_TYPE_P7_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(6));
+    sat_down(Playerlist::getInstance()->getPlayer(6), payload);
     break;
   case MESSAGE_TYPE_P8_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(7));
+    sat_down(Playerlist::getInstance()->getPlayer(7), payload);
     break;
-    //this is the client realizing that a remote player has disconnected
   case MESSAGE_TYPE_P1_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(0));
+    stood_up(Playerlist::getInstance()->getPlayer(0), payload);
     break;
   case MESSAGE_TYPE_P2_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(1));
+    stood_up(Playerlist::getInstance()->getPlayer(1), payload);
     break;
   case MESSAGE_TYPE_P3_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(2));
+    stood_up(Playerlist::getInstance()->getPlayer(2), payload);
     break;
   case MESSAGE_TYPE_P4_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(3));
+    stood_up(Playerlist::getInstance()->getPlayer(3), payload);
     break;
   case MESSAGE_TYPE_P5_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(4));
+    stood_up(Playerlist::getInstance()->getPlayer(4), payload);
     break;
   case MESSAGE_TYPE_P6_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(5));
+    stood_up(Playerlist::getInstance()->getPlayer(5), payload);
     break;
   case MESSAGE_TYPE_P7_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(6));
+    stood_up(Playerlist::getInstance()->getPlayer(6), payload);
     break;
   case MESSAGE_TYPE_P8_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(7));
+    stood_up(Playerlist::getInstance()->getPlayer(7), payload);
     break;
 
   case MESSAGE_TYPE_SENDING_HISTORY:
@@ -362,7 +361,7 @@ void GameClient::sit_down (Player *player)
   delete player;
   listenForActions(new_p);
   listenForHistories(new_p);
-  network_connection->send(type, "I wanna sit");
+  network_connection->send(type, d_nickname);
 }
 
 void GameClient::stand_up (Player *player)
@@ -388,7 +387,7 @@ void GameClient::stand_up (Player *player)
   Playerlist::getInstance()->swap(player, new_p);
   delete player;
   new_p->setConnected(false);
-  network_connection->send(type, "I wanna stand");
+  network_connection->send(type, d_nickname);
 }
 
 void GameClient::chat(std::string message)

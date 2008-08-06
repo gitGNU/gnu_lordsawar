@@ -113,7 +113,7 @@ void GameServer::start(GameScenario *game_scenario, int port, std::string nick)
 }
 
 void GameServer::gotChat(void *conn, std::string message)
-  {
+{
     Participant *part = findParticipantByConn(conn);
     if (part)
       {
@@ -131,7 +131,7 @@ void GameServer::gotChat(void *conn, std::string message)
 	  }
       }
     return;
-  }
+}
 void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
 {
   std::cerr << "got message of type " << type << std::endl;
@@ -162,70 +162,71 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
 
   case MESSAGE_TYPE_REQUEST_SEAT_MANIFEST:
     sendSeats(conn);
+    sendChatRoster(conn);
     break;
 
   case MESSAGE_TYPE_P1_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(0));
+    sit(conn, Playerlist::getInstance()->getPlayer(0), payload);
     break;
 
   case MESSAGE_TYPE_P2_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(1));
+    sit(conn, Playerlist::getInstance()->getPlayer(1), payload);
     break;
 
   case MESSAGE_TYPE_P3_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(2));
+    sit(conn, Playerlist::getInstance()->getPlayer(2), payload);
     break;
 
   case MESSAGE_TYPE_P4_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(3));
+    sit(conn, Playerlist::getInstance()->getPlayer(3), payload);
     break;
 
   case MESSAGE_TYPE_P5_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(4));
+    sit(conn, Playerlist::getInstance()->getPlayer(4), payload);
     break;
 
   case MESSAGE_TYPE_P6_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(5));
+    sit(conn, Playerlist::getInstance()->getPlayer(5), payload);
     break;
 
   case MESSAGE_TYPE_P7_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(6));
+    sit(conn, Playerlist::getInstance()->getPlayer(6), payload);
     break;
 
   case MESSAGE_TYPE_P8_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(7));
+    sit(conn, Playerlist::getInstance()->getPlayer(7), payload);
     break;
 
   case MESSAGE_TYPE_P1_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(0));
+    stand(conn, Playerlist::getInstance()->getPlayer(0), payload);
     break;
 
   case MESSAGE_TYPE_P2_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(1));
+    stand(conn, Playerlist::getInstance()->getPlayer(1), payload);
     break;
 
   case MESSAGE_TYPE_P3_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(2));
+    stand(conn, Playerlist::getInstance()->getPlayer(2), payload);
     break;
 
   case MESSAGE_TYPE_P4_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(3));
+    stand(conn, Playerlist::getInstance()->getPlayer(3), payload);
     break;
 
   case MESSAGE_TYPE_P5_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(4));
+    stand(conn, Playerlist::getInstance()->getPlayer(4), payload);
     break;
 
   case MESSAGE_TYPE_P6_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(5));
+    stand(conn, Playerlist::getInstance()->getPlayer(5), payload);
     break;
 
   case MESSAGE_TYPE_P7_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(6));
+    stand(conn, Playerlist::getInstance()->getPlayer(6), payload);
     break;
 
   case MESSAGE_TYPE_P8_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(7));
+    stand(conn, Playerlist::getInstance()->getPlayer(7), payload);
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECT:
@@ -240,11 +241,6 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECTED:
-    for (std::list<Participant *>::iterator i = participants.begin(),
-	 end = participants.end(); i != end; ++i)
-      if (*i != conn)
-	network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
-			     "participant disconnected");
     break;
 
   case MESSAGE_TYPE_P1_SAT_DOWN:
@@ -280,16 +276,23 @@ void GameServer::onConnectionLost(void *conn)
 {
   std::cerr << "connection lost" << std::endl;
 
+  printf ("conn is %p\n", conn);
   Participant *part = findParticipantByConn(conn);
   if (part)
     {
       MessageType type;
-      for (std::list<Uint32>::iterator it = part->players.begin();
-	   it != part->players.end(); it++)
-	stand_up (Playerlist::getInstance()->getPlayer(*it));
+      std::list<Uint32> players_to_stand = part->players;
 
-      remote_participant_disconnected.emit();
+      printf ("conn is now %p\n", conn);
+      printf ("trying to depart\n");
+      depart(conn);
+      printf ("done departing\n");
       participants.remove(part);
+      printf ("now we're standing up his %d players\n", players_to_stand.size());
+      for (std::list<Uint32>::iterator it = players_to_stand.begin();
+	   it != players_to_stand.end(); it++)
+	notifyStand(Playerlist::getInstance()->getPlayer(*it), d_nickname);
+      remote_participant_disconnected.emit();
     }
   delete part;
 }
@@ -369,35 +372,39 @@ void GameServer::onHistoryDone(NetworkHistory *history)
 
 void GameServer::notifyJoin(std::string nickname)
 {
-  remote_participant_joins.emit();
+  remote_participant_joins.emit(nickname);
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     {
       network_server->send((*i)->conn, MESSAGE_TYPE_PARTICIPANT_CONNECTED, 
-			   nickname + " joined");
+			   nickname);
       //network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
-			   //nickname + " connected");
+			   //nickname + " connected.");
     }
-  gotChatMessage("[server]", nickname + " connected");
+  gotChatMessage("[server]", nickname + " connected.");
 }
 
-void GameServer::notifyDepart(void *conn)
+void GameServer::notifyDepart(void *conn, std::string nickname)
 {
-  remote_participant_departs.emit();
+  remote_participant_departs.emit(nickname);
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     {
       if ((*i)->conn == conn)
 	continue;
-      network_server->send((*i)->conn, MESSAGE_TYPE_PARTICIPANT_DISCONNECTED, "client departed");
+      network_server->send((*i)->conn, MESSAGE_TYPE_PARTICIPANT_DISCONNECTED, 
+			   nickname);
+      network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
+			   nickname + " disconnected.");
     }
+  gotChatMessage("", nickname + " disconnected.");
 }
 
-void GameServer::notifySit(Player *player)
+void GameServer::notifySit(Player *player, std::string nickname)
 {
   if (!player)
     return;
-  player_sits.emit(player);
+  player_sits.emit(player, nickname);
   MessageType type;
   switch (player->getId())
     {
@@ -416,7 +423,7 @@ void GameServer::notifySit(Player *player)
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     {
-      network_server->send((*i)->conn, type, "player joined");
+      network_server->send((*i)->conn, type, nickname);
     }
 }
 
@@ -447,12 +454,13 @@ void GameServer::depart(void *conn)
 
   Participant *part = findParticipantByConn(conn);
 
-  notifyDepart(conn);
+  printf ("sending out depart for %s\n", part->nickname.c_str());
+  notifyDepart(conn, part->nickname);
   //we don't delete the participant, it gets deleted when it disconnects.
   //see onConnectionLost
 }
 
-void GameServer::sit(void *conn, Player *player)
+void GameServer::sit(void *conn, Player *player, std::string nickname)
 {
   std::cout << "SIT: " << conn << " " << player << std::endl;
 
@@ -467,14 +475,14 @@ void GameServer::sit(void *conn, Player *player)
   if (player)
     dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
 
-  notifySit(player);
+  notifySit(player, nickname);
 }
 
-void GameServer::notifyStand(Player *player)
+void GameServer::notifyStand(Player *player, std::string nickname)
 {
   if (!player)
     return;
-  player_stands.emit(player);
+  player_stands.emit(player, nickname);
   MessageType type;
   switch (player->getId())
     {
@@ -492,7 +500,7 @@ void GameServer::notifyStand(Player *player)
 
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
-    network_server->send((*i)->conn, type, "player departed");
+    network_server->send((*i)->conn, type, nickname);
 }
 
 bool
@@ -527,7 +535,7 @@ GameServer::remove_from_player_list(std::list<Uint32> &list, Uint32 id)
     }
 }
 
-void GameServer::stand(void *conn, Player *player)
+void GameServer::stand(void *conn, Player *player, std::string nickname)
 {
   std::cout << "STAND: " << conn << " " << player << std::endl;
   if (!player || !conn)
@@ -541,7 +549,7 @@ void GameServer::stand(void *conn, Player *player)
 
   if (player && player->getType() == Player::NETWORKED)
     dynamic_cast<NetworkPlayer*>(player)->setConnected(false);
-  notifyStand(player);
+  notifyStand(player, nickname);
 }
 
 void GameServer::gotRemoteActions(void *conn, const std::string &payload)
@@ -687,7 +695,7 @@ void GameServer::sit_down (Player *player)
       Playerlist::getInstance()->swap(player, new_p);
       delete player;
       add_to_player_list (players_seated_locally, new_p->getId());
-      notifySit(new_p);
+      notifySit(new_p, d_nickname);
     }
   else if (player->getType() == Player::HUMAN)
     {
@@ -696,7 +704,7 @@ void GameServer::sit_down (Player *player)
   else // an ai player
     {
       add_to_player_list (players_seated_locally, player->getId());
-      notifySit(player);
+      notifySit(player, d_nickname);
     }
 }
 
@@ -715,7 +723,7 @@ void GameServer::stand_up (Player *player)
       new_p->setConnected(false);
       new_p->acting.connect(sigc::mem_fun(this, &GameServer::onActionDone));
       new_p->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
-      notifyStand(new_p);
+      notifyStand(new_p, d_nickname);
       remove_from_player_list (players_seated_locally, new_p->getId());
     }
   else if (player->getType() == Player::NETWORKED)
@@ -725,7 +733,7 @@ void GameServer::stand_up (Player *player)
   else // an ai player
     {
       remove_from_player_list (players_seated_locally, player->getId());
-      notifyStand(player);
+      notifyStand(player, d_nickname);
     }
 }
 
@@ -754,8 +762,9 @@ void GameServer::sendSeats(void *conn)
     {
       if ((*i)->conn == part->conn)
 	continue;
-      for (std::list<Uint32>::iterator j = part->players.begin(); 
-	   j != part->players.end(); j++)
+	  
+      for (std::list<Uint32>::iterator j = (*i)->players.begin(); 
+	   j != (*i)->players.end(); j++)
 	{
 	  Player *player = Playerlist::getInstance()->getPlayer(*j);
 	  MessageType type;
@@ -772,7 +781,7 @@ void GameServer::sendSeats(void *conn)
 	    default:
 		    return;
 	    }
-	  network_server->send(part->conn, type, "player sat down");
+	  network_server->send(part->conn, type, (*i)->nickname);
 	}
     }
   //send out seatedness info for local server
@@ -794,8 +803,25 @@ void GameServer::sendSeats(void *conn)
 	default:
 		return;
 	}
-      network_server->send(part->conn, type, "player sat down");
+      network_server->send(part->conn, type, d_nickname);
     }
+}
+    
+void GameServer::sendChatRoster(void *conn)
+{
+  Participant *part = findParticipantByConn(conn);
+  if (!part)
+    return;
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    {
+      if ((*i)->conn == part->conn)
+	continue;
+      network_server->send(part->conn, MESSAGE_TYPE_PARTICIPANT_CONNECTED, 
+			   (*i)->nickname);
+    }
+  network_server->send(part->conn, MESSAGE_TYPE_PARTICIPANT_CONNECTED, 
+		       d_nickname);
 }
 
 void GameServer::sendTurnOrder()

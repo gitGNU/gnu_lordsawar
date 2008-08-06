@@ -40,8 +40,21 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog()
 
     xml->get_widget("hostname_entry", hostname_entry);
     hostname_entry->set_activates_default(true);
+    hostname_entry->signal_changed().connect
+	(sigc::mem_fun(this, &NetworkGameSelectorDialog::on_hostname_changed));
+    xml->get_widget("connect_button", connect_button);
+    connect_button->set_sensitive(false);
 }
 
+
+void NetworkGameSelectorDialog::on_hostname_changed()
+{
+  //validate the ip/hostname
+  if (hostname_entry->get_text().length() > 0)
+    connect_button->set_sensitive(true);
+  else
+    connect_button->set_sensitive(false);
+}
 
 void NetworkGameSelectorDialog::set_parent_window(Gtk::Window &parent)
 {

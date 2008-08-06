@@ -74,7 +74,7 @@ void NetworkConnection::send(MessageType type, const std::string &payload)
   
   gnet_conn_write(conn, buf, MESSAGE_SIZE_BYTES + MESSAGE_PREAMBLE_EXTRA_BYTES);
 
-  std::cerr << "sending length " << MESSAGE_PREAMBLE_EXTRA_BYTES + payload.size() << " to " << gnet_inetaddr_get_name(conn->inetaddr) << std::endl;
+  std::cerr << "sending message " << type <<" of length " << MESSAGE_PREAMBLE_EXTRA_BYTES + payload.size() << " to " << gnet_inetaddr_get_name(conn->inetaddr) << std::endl;
 
   // write the payload
   if (!payload.empty())

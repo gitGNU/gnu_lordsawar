@@ -23,6 +23,7 @@
 #include <sigc++/trackable.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
+#include <gtkmm/button.h>
 
 // dialog for joining remote games
 class NetworkGameSelectorDialog: public sigc::trackable
@@ -40,6 +41,9 @@ class NetworkGameSelectorDialog: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     Gtk::Entry *hostname_entry;
+    Gtk::Button *connect_button;
+
+    void on_hostname_changed();
 
 };
 

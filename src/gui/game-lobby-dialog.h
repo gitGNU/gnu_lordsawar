@@ -88,11 +88,11 @@ class GameLobbyDialog//: public sigc::trackable
     class PlayerColumns: public Gtk::TreeModelColumnRecord {
     public:
 	PlayerColumns()
-	    {add(shield); add(sitting); add(name); add(type); add(status); add(turn); add(player_id);}
+	    {add(shield); add(sitting); add(person); add(name); add(type); add(status); add(turn); add(player_id);}
 	
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > shield;
 	Gtk::TreeModelColumn<bool> sitting;
-	Gtk::TreeModelColumn<Glib::ustring> name, type, status;
+	Gtk::TreeModelColumn<Glib::ustring> person, name, type, status;
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > turn;
 	Gtk::TreeModelColumn<Uint32> player_id;
     };
@@ -143,6 +143,18 @@ class GameLobbyDialog//: public sigc::trackable
     Glib::RefPtr<Gtk::ListStore> player_sitting_list;
     void cell_data_sitting(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
     
+    Gtk::TreeView *people_treeview;
+    
+    class PeopleColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	PeopleColumns()
+	    {add(nickname);}
+	
+	Gtk::TreeModelColumn<Glib::ustring> nickname;
+    };
+    const PeopleColumns people_columns;
+    Glib::RefPtr<Gtk::ListStore> people_list;
+
     void add_player(const Glib::ustring &type, const Glib::ustring &name,
 		    Player *player);
     void on_player_selected();
@@ -150,10 +162,10 @@ class GameLobbyDialog//: public sigc::trackable
     void update_buttons();
     void on_remote_player_ends_turn(Player *p);
 
-    void on_remote_participant_joins();
-    void on_remote_participant_departs();
-    void on_player_stands(Player *p);
-    void on_player_sits(Player *p);
+    void on_remote_participant_joins(std::string nickname);
+    void on_remote_participant_departs(std::string nickname);
+    void on_player_stands(Player *p, std::string nickname);
+    void on_player_sits(Player *p, std::string nickname);
     void on_remote_player_changes_name(Player *p);
     void on_remote_player_died(Player *p);
     void on_play_clicked();

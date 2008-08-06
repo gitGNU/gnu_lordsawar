@@ -33,6 +33,7 @@ public:
 
   void gotChatMessage(const std::string nickname, const std::string &payload);
   void setNickname(std::string nick) {d_nickname = nick;};
+  std::string getNickname() {return d_nickname;};
   sigc::signal<void, std::string, std::string> chat_message_received;
 protected:
 

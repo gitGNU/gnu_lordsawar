@@ -54,10 +54,10 @@ public:
   void stand_up (Player *player);
   void chat(std::string message);
   sigc::signal<void> remote_participant_connected;
-  sigc::signal<void> remote_participant_joins;
-  sigc::signal<void, Player*> player_sits;
-  sigc::signal<void, Player*> player_stands;
-  sigc::signal<void> remote_participant_departs;
+  sigc::signal<void, std::string> remote_participant_joins;
+  sigc::signal<void, Player*, std::string> player_sits;
+  sigc::signal<void, Player*, std::string> player_stands;
+  sigc::signal<void, std::string> remote_participant_departs;
   sigc::signal<void> remote_participant_disconnected;
 
   void setGameScenario(GameScenario *scenario) {d_game_scenario = scenario;};
@@ -76,17 +76,18 @@ private:
   void join(void *conn, std::string payload);
   void notifyJoin (std::string nickname);
   void depart(void *conn);
-  void notifyDepart (void *conn);
-  void sit(void *conn, Player *player);
-  void notifySit(Player *player);
-  void stand(void *conn, Player *player);
-  void notifyStand(Player *player);
+  void notifyDepart (void *conn, std::string nickname);
+  void sit(void *conn, Player *player, std::string nickname);
+  void notifySit(Player *player, std::string nickname);
+  void stand(void *conn, Player *player, std::string nickname);
+  void notifyStand(Player *player, std::string nickname);
   void gotRemoteActions(void *conn, const std::string &payload);
   void gotRemoteHistory(void *conn, const std::string &payload);
   void notifyChat(std::string message);
 
   void sendMap(Participant *part);
   void sendSeats(void *conn);
+  void sendChatRoster(void *conn);
   void sendTurnOrder();
 
   void sendActions(Participant *part);

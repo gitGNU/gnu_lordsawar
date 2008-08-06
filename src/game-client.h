@@ -48,10 +48,10 @@ public:
   void start(std::string host, int port, std::string nick);
   void request_seat_manifest();
 
-  sigc::signal<void> remote_participant_joins;
-  sigc::signal<void, Player*> player_sits;
-  sigc::signal<void, Player*> player_stands;
-  sigc::signal<void> remote_participant_departs;
+  sigc::signal<void, std::string> remote_participant_joins;
+  sigc::signal<void, Player*, std::string> player_sits;
+  sigc::signal<void, Player*, std::string> player_stands;
+  sigc::signal<void, std::string> remote_participant_departs;
   sigc::signal<void> client_connected;
   sigc::signal<void> client_disconnected;
   sigc::signal<void> client_could_not_connect;
@@ -83,8 +83,8 @@ private:
 
   void gotTurnOrder (std::string payload);
 
-  void sat_down(Player *player);
-  void stood_up(Player *player);
+  void sat_down(Player *player, std::string nickname);
+  void stood_up(Player *player, std::string nickname);
 
   std::list<NetworkAction*> actions;
   std::list<NetworkHistory*> histories;
