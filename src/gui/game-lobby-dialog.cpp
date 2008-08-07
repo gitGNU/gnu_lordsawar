@@ -213,8 +213,6 @@ GameLobbyDialog::update_player_details()
 
   name_renderer.signal_edited()
     .connect(sigc::mem_fun(*this, &GameLobbyDialog::on_name_edited));
-  //name_renderer.signal_edited()
-    //.connect(sigc::mem_fun(*this, &GameLobbyDialog::on_name_changed));
   name_column.set_cell_data_func
     ( name_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_name));
   player_treeview->append_column(name_column);
@@ -282,7 +280,6 @@ void GameLobbyDialog::on_name_changed(const Glib::ustring &path,
   //fixme
 
   Glib::ustring name = (*iter)[player_columns.name];
-  printf ("name is now %s\n", name.c_str());
   player = pl->getPlayer((*iter)[player_columns.player_id]);
 
   //player->rename(name);
@@ -453,13 +450,8 @@ void GameLobbyDialog::on_name_edited(const Glib::ustring &path,
   Gtk::TreeModel::iterator iter = selection->get_selected();
   if (!selection->count_selected_rows())
     return;
-  //maybe we can't change the name
-  //fixme
   if ((*iter)[player_columns.sitting] == false)
     return;
-  printf ("new text is %s\n", new_text.c_str());
-  //Glib::ustring name = (*iter)[player_columns.name];
-  //printf ("name is now %s\n", name.c_str());
   player = pl->getPlayer((*iter)[player_columns.player_id]);
 
   player->rename(new_text);
