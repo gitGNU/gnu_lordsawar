@@ -44,7 +44,7 @@ struct ArmyCacheItem
 {
     Uint32 armyset;
     Uint32 index;
-    const Player* player;
+    Uint32 player_id;
     bool medals[3];
     SDL_Surface* surface;
 };
@@ -52,14 +52,14 @@ struct ArmyCacheItem
 //the structure to store ships in
 struct ShipCacheItem
 {
-    const Player* player;
+    Uint32 player_id;
     SDL_Surface* surface;
 };
 
 //the structure to store planted standard in
 struct PlantedStandardCacheItem
 {
-    const Player* player;
+    Uint32 player_id;
     SDL_Surface* surface;
 };
 
@@ -117,14 +117,14 @@ struct CursorCacheItem
 struct CityCacheItem
 {
     int type;
-    const Player* player;
+    Uint32 player_id;
     SDL_Surface* surface;
 };
 
 //the structure to store towers in
 struct TowerCacheItem
 {
-    const Player* player;
+    Uint32 player_id;
     SDL_Surface* surface;
 };
 
@@ -132,7 +132,7 @@ struct TowerCacheItem
 struct FlagCacheItem
 {
     Uint32 size;
-    const Player* player;
+    Uint32 player_id;
     SDL_Surface* surface;
 };
 
@@ -141,7 +141,7 @@ struct SelectorCacheItem
 {
     Uint32 type;
     Uint32 frame;
-    const Player* player;
+    Uint32 player_id;
     SDL_Surface* surface;
 };
 
@@ -375,7 +375,7 @@ SDL_Surface* GraphicsCache::getShipPic(const Player* p)
     ShipCacheItem* myitem;
     for (it = d_shiplist.begin(); it != d_shiplist.end(); it++)
     {
-        if ((*it)->player == p)
+        if ((*it)->player_id == p->getId())
         {
             myitem = (*it);
             
@@ -400,7 +400,7 @@ SDL_Surface* GraphicsCache::getPlantedStandardPic(const Player* p)
     PlantedStandardCacheItem* myitem;
     for (it = d_plantedstandardlist.begin(); it != d_plantedstandardlist.end(); it++)
     {
-        if ((*it)->player == p)
+        if ((*it)->player_id == p->getId())
         {
             myitem = (*it);
             
@@ -441,7 +441,7 @@ SDL_Surface* GraphicsCache::getArmyPic(Uint32 armyset, Uint32 army, const Player
     for (it =d_armylist.begin(); it != d_armylist.end(); it++)
     {
         if (((*it)->armyset == armyset) && ((*it)->index == army)
-            && ((*it)->player ==p)
+            && ((*it)->player_id == p->getId())
             && ((*it)->medals[0]==my_medals[0])
             && ((*it)->medals[1]==my_medals[1])
             && ((*it)->medals[2]==my_medals[2]))
@@ -732,7 +732,7 @@ SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
     for (it = d_flaglist.begin(); it != d_flaglist.end(); it++)
     {
         myitem = *it;
-        if (myitem->size == s->size() - 1 && myitem->player == s->getOwner())
+        if (myitem->size == s->size() - 1 && myitem->player_id == s->getOwner()->getId())
         {
             // put the item in last place (last touched)
             d_flaglist.erase(it);
@@ -765,7 +765,7 @@ SDL_Surface* GraphicsCache::getSelectorPic(Uint32 type, Uint32 frame,
     for (it = d_selectorlist.begin(); it != d_selectorlist.end(); it++)
     {
         myitem = *it;
-        if ((myitem->type == type) && (myitem->player == p) 
+        if ((myitem->type == type) && (myitem->player_id == p->getId()) 
 	    && myitem->frame == frame)
         {
             // put the item in last place (last touched)
@@ -852,7 +852,7 @@ SDL_Surface* GraphicsCache::applyMask(SDL_Surface* image, SDL_Surface* mask, SDL
 SDL_Surface* GraphicsCache::applyMask(SDL_Surface* image, SDL_Surface* mask, const Player* p)
 {
   applyMask(image, mask, p->getMaskColor(),
-	    Playerlist::getInstance()->getNeutral() == p);
+	    Playerlist::getInstance()->getNeutral()->getId() == p->getId());
     if (!mask || mask->w != image->w || mask->h != image->h)
     {
         // we are expected to produce some output and a missing/wrong mask is no
@@ -1000,7 +1000,7 @@ ArmyCacheItem* GraphicsCache::addArmyPic(Uint32 armyset, Uint32 army,
     ArmyCacheItem* myitem = new ArmyCacheItem();
   myitem->armyset = armyset;
   myitem->index = army;
-  myitem->player = p;
+  myitem->player_id = p->getId();
   myitem->medals[0] = medalsbonus[0];
   myitem->medals[1] = medalsbonus[1];
   myitem->medals[2] = medalsbonus[2];
@@ -1095,7 +1095,7 @@ ShipCacheItem* GraphicsCache::addShipPic(const Player* p)
   debug("ADD ship pic: " <<p->getName())
 
   ShipCacheItem* myitem = new ShipCacheItem();
-  myitem->player = p;
+  myitem->player_id = p->getId();
 
   //Now the most important part: load the ship picture
   //First, copy the ship picture and change it to the display format
@@ -1126,7 +1126,7 @@ PlantedStandardCacheItem* GraphicsCache::addPlantedStandardPic(const Player* p)
   debug("ADD planted standard pic: " <<p->getName())
 
     PlantedStandardCacheItem* myitem = new PlantedStandardCacheItem();
-  myitem->player = p;
+  myitem->player_id = p->getId();
 
   //Now the most important part: load the planted standard picture
   //First, copy the picture and change it to the display format
@@ -1314,7 +1314,7 @@ CityCacheItem* GraphicsCache::addCityPic(int type, const Player* p)
 {
   //now create the cache item and add the size
   CityCacheItem* myitem = new CityCacheItem();
-  myitem->player = p;
+  myitem->player_id = p->getId();
   myitem->type = type;
   myitem->surface = d_citypic[p->getId()];
 
@@ -1334,7 +1334,7 @@ TowerCacheItem* GraphicsCache::addTowerPic(const Player* p)
 {
   //now create the cache item and add the size
   TowerCacheItem* myitem = new TowerCacheItem();
-  myitem->player = p;
+  myitem->player_id = p->getId();
   myitem->surface = d_towerpic[p->getId()];
 
   d_towerlist.push_back(myitem);
@@ -1360,7 +1360,7 @@ FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player* p)
 
   //now create the cache item and add the size
   FlagCacheItem* myitem = new FlagCacheItem();
-  myitem->player = p;
+  myitem->player_id = p->getId();
   myitem->size = size;
   myitem->surface = mysurf;
 
@@ -1391,7 +1391,7 @@ SelectorCacheItem* GraphicsCache::addSelectorPic(Uint32 type, Uint32 frame, cons
 
   //now create the cache item and add the size
   SelectorCacheItem* myitem = new SelectorCacheItem();
-  myitem->player = p;
+  myitem->player_id = p->getId();
   myitem->type = type;
   myitem->frame = frame;
   myitem->surface = mysurf;
