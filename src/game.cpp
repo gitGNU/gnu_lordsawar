@@ -32,6 +32,7 @@
 #include "sound.h"
 #include "GraphicsCache.h"
 #include "GameScenario.h"
+#include "NextTurnNetworked.h"
 #include "NextTurnHotseat.h"
 #include "NextTurnPbm.h"
 
@@ -193,8 +194,8 @@ Game::Game(GameScenario* gameScenario)
 					 d_gameScenario->s_random_turns);
 	break;
       case GameScenario::NETWORKED:
-	//d_nextTurn = new NextTurnNetworked(d_gameScenario->getTurnmode(),
-					   //d_gameScenario->s_random_turns);
+	d_nextTurn = new NextTurnNetworked(d_gameScenario->getTurnmode(),
+					   d_gameScenario->s_random_turns);
 	break;
       case GameScenario::PLAY_BY_MAIL:
 	d_nextTurn = new NextTurnPbm(d_gameScenario->getTurnmode(),

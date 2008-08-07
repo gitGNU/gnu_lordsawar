@@ -163,7 +163,6 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_REQUEST_SEAT_MANIFEST:
     sendSeats(conn);
     sendChatRoster(conn);
-    sendTurnOrder();
     break;
 
   case MESSAGE_TYPE_P1_SIT:

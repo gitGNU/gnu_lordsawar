@@ -54,11 +54,13 @@ class GameLobbyDialog//: public sigc::trackable
     void set_parent_window(Gtk::Window &parent);
 
     void hide();
+    void show();
     bool run();
     
   sigc::signal<void, Player*> player_sat_down;
   sigc::signal<void, Player*> player_stood_up;
   sigc::signal<void, std::string> message_sent;
+  sigc::signal<void, GameScenario *> start_network_game;
 
  private:
     std::auto_ptr<Gtk::Dialog> dialog;

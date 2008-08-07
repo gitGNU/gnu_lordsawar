@@ -383,6 +383,16 @@ void GameWindow::init(int width, int height)
 
 }
 
+void GameWindow::new_network_game(GameScenario *game_scenario)
+{
+  bool success = false;
+  stop_game();
+  success = setup_game(game_scenario);
+  if (!success)
+    return;
+  setup_signals(game_scenario);
+  game->startGame();
+}
 void GameWindow::new_game(GameScenario *game_scenario)
 {
   bool success = false;
@@ -515,9 +525,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
 		   game->can_end_turn);
   if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
     {
+      load_game_menuitem->set_sensitive(false);
       if (GameServer::getInstance()->isListening() == false)
 	{
-	  load_game_menuitem->set_sensitive(false);
 	  save_game_menuitem->set_sensitive(false);
 	  save_game_as_menuitem->set_sensitive(false);
 	}
@@ -2696,4 +2706,5 @@ void GameWindow::on_advice_asked(float percent)
 
 void GameWindow::on_show_lobby_activated()
 {
+  show_lobby.emit();
 }

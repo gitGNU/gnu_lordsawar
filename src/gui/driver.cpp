@@ -270,14 +270,19 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
     (sigc::mem_fun(this, &Driver::on_hosted_player_stood_up));
   game_lobby_dialog->message_sent.connect
     (sigc::mem_fun(this, &Driver::on_hosted_player_chat));
-  int response = game_lobby_dialog->run();
+  game_lobby_dialog->start_network_game.connect
+    (sigc::mem_fun(this, &Driver::start_network_game_requested));
+  game_lobby_dialog->show();
+  bool response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
-  if (splash_window.get())
-    splash_window->show();
-  printf ("response is %d\n", response);
     
-  GameServer::deleteInstance();
-  delete game_scenario;
+  if (response == false)
+    {
+      GameServer::deleteInstance();
+      delete game_scenario;
+      if (splash_window.get())
+	splash_window->show();
+    }
 }
 
   
@@ -326,6 +331,8 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
     (sigc::mem_fun(this, &Driver::on_client_could_not_connect));
   game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_received));
+  game_lobby_dialog->start_network_game.connect
+    (sigc::mem_fun(this, &Driver::start_network_game_requested));
   download_window.reset(new NewNetworkGameDownloadWindow());
   download_window->pulse();
   game_client->start(host, port, nick);
@@ -364,14 +371,18 @@ void Driver::on_game_scenario_received(std::string path)
     (sigc::mem_fun(this, &Driver::on_client_player_stood_up));
   game_lobby_dialog->message_sent.connect
     (sigc::mem_fun(this, &Driver::on_client_player_chat));
-  int response = game_lobby_dialog->run();
+  game_lobby_dialog->show();
+  bool response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
-  if (splash_window.get())
-    splash_window->show();
-  printf ("response is %d\n", response);
+
+  if (response == false)
+    {
+      if (splash_window.get())
+	splash_window->show();
     
-  GameClient::deleteInstance();
-  delete game_scenario;
+      GameClient::deleteInstance();
+      delete game_scenario;
+    }
 }
 void Driver::on_game_scenario_downloaded(std::string path)
 {
@@ -440,16 +451,19 @@ void Driver::on_quit_requested()
 
 void Driver::on_game_ended()
 {
-    game_window->hide();
-    game_window.reset();
-    GameClient::deleteInstance();
-    PbmGameClient::deleteInstance();
-    GameServer::deleteInstance();
-    PbmGameServer::deleteInstance();
+  if (game_window.get())
+    {
+      game_window->hide();
+      game_window.reset();
+    }
+  GameClient::deleteInstance();
+  PbmGameClient::deleteInstance();
+  GameServer::deleteInstance();
+  PbmGameServer::deleteInstance();
 
-    GraphicsCache::deleteInstance();
+  GraphicsCache::deleteInstance();
 
-    splash_window->show();
+  splash_window->show();
 }
 
 void Driver::init_game_window()
@@ -458,6 +472,8 @@ void Driver::init_game_window()
 
     game_window->game_ended.connect(
 	sigc::mem_fun(*this, &Driver::on_game_ended));
+    game_window->show_lobby.connect(
+	sigc::mem_fun(*this, &Driver::on_show_lobby_requested));
     game_window->quit_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_quit_requested));
 
@@ -701,4 +717,23 @@ void Driver::stress_test()
   delete nextTurn;
   delete game_scenario;
 
+}
+	
+void Driver::on_show_lobby_requested()
+{
+  if (game_lobby_dialog.get())
+    game_lobby_dialog->show();
+}
+    
+void Driver::start_network_game_requested(GameScenario *game_scenario)
+{
+  if (game_window.get())
+    game_window->show();
+  else
+    {
+      printf ("here we go!\n");
+      init_game_window();
+      game_window->show();
+      game_window->new_network_game(game_scenario);
+    }
 }

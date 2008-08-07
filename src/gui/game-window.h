@@ -82,6 +82,9 @@ class GameWindow: public sigc::trackable
 
     // setup a new game
     void new_game(GameScenario *game_scenario);
+
+    // setup a new network game
+    void new_network_game(GameScenario *game_scenario);
     
     // load the game
     void load_game(GameScenario *game_scenario);
@@ -89,6 +92,8 @@ class GameWindow: public sigc::trackable
     // emitted when the game has ended and it is time to show the splash again
     sigc::signal<void> game_ended;
     
+    sigc::signal<void> show_lobby;
+
     sigc::signal<void> quit_requested;
 
     sigc::signal<void> sdl_initialized;

@@ -72,6 +72,7 @@ bool NetworkGameSelectorDialog::run()
   int response = dialog->run();
   if (response == 0)
     {
+      hide();
       game_selected.emit(hostname_entry->get_text(), LORDSAWAR_PORT);
       return true;
     }

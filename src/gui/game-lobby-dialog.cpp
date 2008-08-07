@@ -352,7 +352,7 @@ void GameLobbyDialog::hide()
   dialog->hide();
 }
 
-bool GameLobbyDialog::run()
+void GameLobbyDialog::show()
 {
   Playerlist *pl = Playerlist::getInstance();
 
@@ -363,7 +363,8 @@ bool GameLobbyDialog::run()
     }
 
   dialog->show_all();
-    people_treeview->append_column(_("People"), people_columns.nickname);
+  people_treeview->remove_all_columns();
+  people_treeview->append_column(_("People"), people_columns.nickname);
   if (GameServer::getInstance()->isListening() == false)
     {
       GameClient::getInstance()->request_seat_manifest();
@@ -390,12 +391,7 @@ bool GameLobbyDialog::run()
 	  player_sat_down.emit(player);
 	}
     }
-  int response = dialog->run();
-
-  if (response == 0)
-    return true;
-  else
-    return false;
+  return;
 }
 
 void GameLobbyDialog::on_map_changed(SDL_Surface *map)
@@ -582,10 +578,14 @@ void GameLobbyDialog::on_remote_player_changes_name(Player *p)
 
 void GameLobbyDialog::on_play_clicked()
 {
+  hide();
+  //emit a signal saying to start a network game.
+  start_network_game.emit(d_game_scenario);
 }
 
 void GameLobbyDialog::on_cancel_clicked()
 {
+  hide();
 }
 
 void GameLobbyDialog::on_chat_key_pressed(GdkEventKey *event)
@@ -644,4 +644,13 @@ void GameLobbyDialog::on_reorder_playerlist()
 	}
     }
   player_list->reorder(new_order);
+}
+
+bool GameLobbyDialog::run()
+{
+  int response = dialog->run();
+  if (response == 1)
+    return true;
+  else
+    return false;
 }

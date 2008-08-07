@@ -82,6 +82,10 @@ class Driver: public sigc::trackable
     void on_client_player_chat(std::string message);
     void on_hosted_player_chat(std::string message);
     sigc::connection heartbeat_conn;
+
+    void on_show_lobby_requested();
+
+    void start_network_game_requested(GameScenario *game_scenario);
 };
 
 
