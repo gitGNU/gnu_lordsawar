@@ -244,15 +244,6 @@ GameLobbyDialog::update_player_details()
     ( type_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_type));
   player_treeview->append_column(type_column);
 
-  //the status
-  status_renderer.property_model() = player_status_list;
-  status_renderer.property_text_column() = 0;
-  status_renderer.property_has_entry() = false;
-  status_renderer.property_editable() = false;
-  status_column.set_cell_data_func
-    (status_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_status));
-  player_treeview->append_column(status_column);
-
   //if it's this player's turn
   player_treeview->append_column(_("Turn"), player_columns.turn);
 
@@ -316,7 +307,6 @@ void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
 GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario, bool has_ops)
 	:name_column(_("Name"), name_renderer),
 	type_column(_("Type"), type_renderer),
-	status_column(_("Status"), status_renderer),
 	sitting_column(_("Seated"), sitting_renderer)
 {
   d_has_ops = has_ops;
@@ -463,17 +453,6 @@ void GameLobbyDialog::on_name_edited(const Glib::ustring &path,
     = new_text;
 }
 
-void GameLobbyDialog::cell_data_status(Gtk::CellRenderer *renderer,
-				       const Gtk::TreeIter& i)
-{
-  Glib::ustring s;
-  if ((*i)[player_columns.status] != "")
-    s = String::ucompose("<b> - %1 - </b>", (*i)[player_columns.status]);
-  else
-    s = "";
-  dynamic_cast<Gtk::CellRendererText*>(renderer)->property_markup() = s;
-}
-
 void GameLobbyDialog::cell_data_sitting(Gtk::CellRenderer *renderer,
 					const Gtk::TreeIter& i)
 {
@@ -498,25 +477,15 @@ void GameLobbyDialog::add_player(const Glib::ustring &type,
       if (dynamic_cast<NetworkPlayer*>(player)->isConnected() == true)
 	{
 	  (*i)[player_columns.sitting] = true;
-	  //we do?  is it the active player?
-	  if (Playerlist::getInstance()->getActiveplayer() == player)
-	    (*i)[player_columns.status] = PLAYER_MOVING;
-	  else
-	    (*i)[player_columns.status] = PLAYER_WATCHING;
 	}
       else
 	{
 	  //otherwise, the player is not here to play.
-	  (*i)[player_columns.status] = PLAYER_NOT_HERE;
 	  (*i)[player_columns.sitting] = false;
 	}
     }
   else
     {
-      if (Playerlist::getInstance()->getActiveplayer() == player)
-	(*i)[player_columns.status] = PLAYER_MOVING;
-      else
-	(*i)[player_columns.status] = PLAYER_WATCHING;
       (*i)[player_columns.sitting] = true;
     }
 
@@ -564,10 +533,6 @@ void GameLobbyDialog::on_player_sits(Player *p, std::string nickname)
 	  row[player_columns.sitting] = true;
 	  row[player_columns.type] = player_type_to_string(p->getType());
 	  row[player_columns.person] = nickname;
-	  if (Playerlist::getInstance()->getActiveplayer() == p)
-	    row[player_columns.status] = PLAYER_MOVING;
-	  else
-	    row[player_columns.status] = PLAYER_WATCHING;
 	  update_buttons();
 	  return;
 	}
@@ -588,7 +553,6 @@ void GameLobbyDialog::on_player_stands(Player *p, std::string nickname)
 	  row[player_columns.sitting] = false;
 	  row[player_columns.person] = "";
 	  row[player_columns.type] = player_type_to_string(p->getType());
-	  row[player_columns.status] = PLAYER_NOT_HERE;
 	  update_buttons();
 	  return;
 	}

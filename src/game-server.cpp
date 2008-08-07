@@ -289,7 +289,6 @@ void GameServer::onConnectionLost(void *conn)
       depart(conn);
       printf ("done departing\n");
       participants.remove(part);
-      printf ("now we're standing up his %d players\n", players_to_stand.size());
       for (std::list<Uint32>::iterator it = players_to_stand.begin();
 	   it != players_to_stand.end(); it++)
 	notifyStand(Playerlist::getInstance()->getPlayer(*it), d_nickname);
@@ -425,6 +424,9 @@ void GameServer::notifySit(Player *player, std::string nickname)
        end = participants.end(); i != end; ++i) 
     {
       network_server->send((*i)->conn, type, nickname);
+      network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
+			   nickname + " assumes control of " + 
+			   player->getName() +".");
     }
 }
 
@@ -501,7 +503,12 @@ void GameServer::notifyStand(Player *player, std::string nickname)
 
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
-    network_server->send((*i)->conn, type, nickname);
+    {
+      network_server->send((*i)->conn, type, nickname);
+      network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
+			   nickname + " relinquishes control of " + 
+			   player->getName() +".");
+    }
 }
 
 bool

@@ -88,11 +88,11 @@ class GameLobbyDialog//: public sigc::trackable
     class PlayerColumns: public Gtk::TreeModelColumnRecord {
     public:
 	PlayerColumns()
-	    {add(shield); add(sitting); add(person); add(name); add(type); add(status); add(turn); add(player_id);}
+	    {add(shield); add(sitting); add(person); add(name); add(type); add(turn); add(player_id);}
 	
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > shield;
 	Gtk::TreeModelColumn<bool> sitting;
-	Gtk::TreeModelColumn<Glib::ustring> person, name, type, status;
+	Gtk::TreeModelColumn<Glib::ustring> person, name, type;
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > turn;
 	Gtk::TreeModelColumn<Uint32> player_id;
     };
@@ -135,20 +135,6 @@ void on_name_changed(const Glib::ustring &path,
     void cell_data_type(Gtk::CellRenderer *renderer, const Gtk::TreeIter &i);
     void on_type_edited(const Glib::ustring &path,
 			const Glib::ustring &new_text);
-
-    Gtk::CellRendererCombo status_renderer;
-    Gtk::TreeViewColumn status_column;
-    
-    class PlayerStatusColumns: public Gtk::TreeModelColumnRecord {
-    public:
-	PlayerStatusColumns()
-	    { add(status); }
-	
-	Gtk::TreeModelColumn<Glib::ustring> status;
-    };
-    const PlayerStatusColumns player_status_columns;
-    Glib::RefPtr<Gtk::ListStore> player_status_list;
-    void cell_data_status(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
 
     Gtk::CellRendererToggle sitting_renderer;
     Gtk::TreeViewColumn sitting_column;

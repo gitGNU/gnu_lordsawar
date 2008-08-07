@@ -95,8 +95,4 @@ const unsigned short LORDSAWAR_PORT = 14998;
 #define NO_PLAYER_TYPE _("Off")
 #define NETWORKED_PLAYER_TYPE _("Network")
 
-#define PLAYER_MOVING _("moving")
-#define PLAYER_WATCHING _("watching")
-#define PLAYER_NOT_HERE _("not here")
-
 #endif // DEFINITIONS_H
