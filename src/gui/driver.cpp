@@ -331,8 +331,6 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
     (sigc::mem_fun(this, &Driver::on_client_could_not_connect));
   game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_received));
-  game_lobby_dialog->start_network_game.connect
-    (sigc::mem_fun(this, &Driver::start_network_game_requested));
   download_window.reset(new NewNetworkGameDownloadWindow());
   download_window->pulse();
   game_client->start(host, port, nick);
@@ -371,6 +369,8 @@ void Driver::on_game_scenario_received(std::string path)
     (sigc::mem_fun(this, &Driver::on_client_player_stood_up));
   game_lobby_dialog->message_sent.connect
     (sigc::mem_fun(this, &Driver::on_client_player_chat));
+  game_lobby_dialog->start_network_game.connect
+    (sigc::mem_fun(this, &Driver::start_network_game_requested));
   game_lobby_dialog->show();
   bool response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
@@ -731,7 +731,6 @@ void Driver::start_network_game_requested(GameScenario *game_scenario)
     game_window->show();
   else
     {
-      printf ("here we go!\n");
       init_game_window();
       game_window->show();
       game_window->new_network_game(game_scenario);

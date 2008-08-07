@@ -40,8 +40,6 @@ using namespace std;
 NextTurnNetworked::NextTurnNetworked(bool turnmode, bool random_turns)
     :NextTurn(turnmode, random_turns)
 {
-  continuing_turn = false;
-  
   Playerlist* plist = Playerlist::getInstance();
   for (Playerlist::iterator i = plist->begin(); i != plist->end(); ++i) {
     Player *p = *i;
@@ -62,16 +60,12 @@ void NextTurnNetworked::start()
     if (!plist->getActiveplayer())
         plist->nextPlayer();
 	
+    if (plist->getActiveplayer()->getType() == Player::NETWORKED)
+      return;
+
     while (!d_stop)
     {
       supdating.emit();
-
-        // do various start-up tasks
-        if (continuing_turn)
-	  {
-	    continuing_turn = false;
-	    return;
-	  }
 
 	startTurn();
        
@@ -115,6 +109,8 @@ void NextTurnNetworked::start()
 	    finishRound();
 	    snextRound.emit();
 	  }
+	if (Playerlist::getInstance()->getActiveplayer()->getType() == Player::NETWORKED)
+	  break;
     }
 }
 

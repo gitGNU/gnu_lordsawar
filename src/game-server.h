@@ -53,6 +53,7 @@ public:
   void sit_down (Player *player);
   void stand_up (Player *player);
   void chat(std::string message);
+  void sendTurnOrder();
   sigc::signal<void> remote_participant_connected;
   sigc::signal<void, std::string> remote_participant_joins;
   sigc::signal<void, Player*, std::string> player_sits;
@@ -89,7 +90,6 @@ private:
   void sendMap(Participant *part);
   void sendSeats(void *conn);
   void sendChatRoster(void *conn);
-  void sendTurnOrder();
 
   void sendActions(Participant *part);
   void sendHistories(Participant *part);

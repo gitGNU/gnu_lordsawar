@@ -194,8 +194,10 @@ Game::Game(GameScenario* gameScenario)
 					 d_gameScenario->s_random_turns);
 	break;
       case GameScenario::NETWORKED:
-	d_nextTurn = new NextTurnNetworked(d_gameScenario->getTurnmode(),
-					   d_gameScenario->s_random_turns);
+	  {
+	    d_nextTurn = new NextTurnNetworked(d_gameScenario->getTurnmode(),
+					       d_gameScenario->s_random_turns);
+	  }
 	break;
       case GameScenario::PLAY_BY_MAIL:
 	d_nextTurn = new NextTurnPbm(d_gameScenario->getTurnmode(),
@@ -211,6 +213,15 @@ Game::Game(GameScenario* gameScenario)
     d_nextTurn->supdating.connect(
 	sigc::mem_fun(this, &Game::redraw));
             
+    if (d_gameScenario->getPlayMode() == GameScenario::NETWORKED &&
+	GameServer::getInstance()->isListening() && 
+	d_gameScenario->s_random_turns == true)
+      {
+	d_nextTurn->snextRound.connect
+	  (sigc::mem_fun(GameServer::getInstance(), 
+			 &GameServer::sendTurnOrder));
+      }
+
     center_view_on_city();
     update_control_panel();
 
