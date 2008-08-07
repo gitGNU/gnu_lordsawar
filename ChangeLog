@@ -3,6 +3,7 @@
 	* more multiplayer machinery.
 	* changing GraphicsCache to refer to player ids instead of pointers to
 	  players.
+	* reporting sit/stand events to the chat window.
 
 2008-08-06  Ben Asselstine
 
