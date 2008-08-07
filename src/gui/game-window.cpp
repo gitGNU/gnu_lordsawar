@@ -118,6 +118,7 @@
 #include "../GameMap.h"
 #include "../Item.h"
 #include "../shieldsetlist.h"
+#include "../game-server.h"
 
 
 GameWindow::GameWindow()
@@ -230,12 +231,16 @@ GameWindow::GameWindow()
     se_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[7])));
 
     // connect callbacks for the menu
-    xml->connect_clicked("load_game_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_load_game_activated));
-    xml->connect_clicked("save_game_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_save_game_activated));
-    xml->connect_clicked("save_game_as_menuitem", 
-			 sigc::mem_fun(*this, &GameWindow::on_save_game_as_activated));
+    xml->get_widget("load_game_menuitem", load_game_menuitem);
+    load_game_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_load_game_activated));
+    xml->get_widget("save_game_menuitem", save_game_menuitem);
+    save_game_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_save_game_activated));
+    xml->get_widget("save_game_as_menuitem", save_game_as_menuitem);
+    save_game_as_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_save_game_as_activated));
+
     xml->connect_clicked("quit_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_quit_activated));
     xml->connect_clicked("army_report_menuitem",
@@ -256,6 +261,9 @@ GameWindow::GameWindow()
     xml->connect_clicked("preferences_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_preferences_activated));
 
+    xml->get_widget("show_lobby_menuitem", show_lobby_menuitem);
+    show_lobby_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_show_lobby_activated));
     xml->get_widget("end_turn_menuitem", end_turn_menuitem);
     xml->get_widget("move_all_menuitem", move_all_menuitem);
     xml->get_widget("disband_menuitem", disband_menuitem);
@@ -501,10 +509,22 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   setup_menuitem(end_turn_menuitem,
 		 sigc::mem_fun(game.get(), &Game::end_turn),
 		 game->can_end_turn);
-  if (game_scenario->getPlayMode() ==  GameScenario::PLAY_BY_MAIL)
+  if (game_scenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
     setup_menuitem(end_turn_menuitem,
 		   sigc::mem_fun(*this, &GameWindow::end_turn_play_by_mail),
 		   game->can_end_turn);
+  if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
+    {
+      if (GameServer::getInstance()->isListening() == false)
+	{
+	  load_game_menuitem->set_sensitive(false);
+	  save_game_menuitem->set_sensitive(false);
+	  save_game_as_menuitem->set_sensitive(false);
+	}
+    }
+  else
+    show_lobby_menuitem->set_sensitive(false);
+
   setup_menuitem(disband_menuitem,
 		 sigc::mem_fun(*this, &GameWindow::on_disband_activated),
 		 game->can_disband_stack);
@@ -2674,3 +2694,6 @@ void GameWindow::on_advice_asked(float percent)
   return;
 }
 
+void GameWindow::on_show_lobby_activated()
+{
+}

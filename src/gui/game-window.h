@@ -101,6 +101,10 @@ class GameWindow: public sigc::trackable
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
     Gtk::CheckMenuItem *fullscreen_menuitem;
+    Gtk::MenuItem *load_game_menuitem;
+    Gtk::MenuItem *save_game_menuitem;
+    Gtk::MenuItem *save_game_as_menuitem;
+    Gtk::MenuItem *show_lobby_menuitem;
     Gtk::MenuItem *end_turn_menuitem;
     Gtk::MenuItem *move_all_menuitem;
     Gtk::MenuItem *search_menuitem;
@@ -177,6 +181,7 @@ class GameWindow: public sigc::trackable
     void on_load_game_activated();
     void on_save_game_activated();
     void on_save_game_as_activated();
+    void on_show_lobby_activated();
     void on_quit_activated();
     void on_quests_activated();
     void on_disband_activated();
