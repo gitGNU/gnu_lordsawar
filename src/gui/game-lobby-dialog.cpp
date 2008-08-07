@@ -129,6 +129,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
       game_server->chat_message_received.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
+      game_server->playerlist_reorder_received.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_reorder_playerlist));
       game_server->remote_player_died.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_died));
     }
@@ -149,6 +151,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario)
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
       game_client->chat_message_received.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
+      game_client->playerlist_reorder_received.connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_reorder_playerlist));
       game_client->remote_player_died.connect
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_died));
     }
@@ -209,7 +213,7 @@ GameLobbyDialog::update_player_details()
   // the name column
   player_name_list = Gtk::ListStore::create(player_name_columns);
 
-  name_renderer.property_editable() = d_has_ops;
+  name_renderer.property_editable() = true;
 
   name_renderer.signal_edited()
     .connect(sigc::mem_fun(*this, &GameLobbyDialog::on_name_edited));
@@ -654,4 +658,26 @@ void GameLobbyDialog::on_remote_player_died(Player *p)
 	  return;
 	}
     }
+}
+	
+void GameLobbyDialog::on_reorder_playerlist()
+{
+  int count = 0;
+  std::list<int> new_order;
+  Playerlist *pl = Playerlist::getInstance();
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+    {
+      Gtk::TreeNodeChildren rows = player_list->children();
+      for(Gtk::TreeIter row = rows.begin(); row != rows.end(); ++row)
+	{
+	  Gtk::TreeModel::Row my_row = *row;
+	  if (my_row[player_columns.player_id] == (*it)->getId())
+	    {
+	      new_order.push_back(count);
+	      count++;
+	      break;
+	    }
+	}
+    }
+  player_list->reorder(new_order);
 }

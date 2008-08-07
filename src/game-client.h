@@ -55,6 +55,7 @@ public:
   sigc::signal<void> client_connected;
   sigc::signal<void> client_disconnected;
   sigc::signal<void> client_could_not_connect;
+  sigc::signal<void> playerlist_reorder_received;
   
   void sit_down (Player *player);
   void stand_up (Player *player);

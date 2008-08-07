@@ -121,10 +121,10 @@ void GameServer::gotChat(void *conn, std::string message)
 	for (std::list<Participant *>::iterator i = participants.begin(),
 	     end = participants.end(); i != end; ++i)
 	  {
-	    if ((*i)->conn != part->conn)
-	      network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
-				   part->nickname + ":" + message);
-	    else
+	    //if ((*i)->conn != part->conn)
+	      //network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
+				   //part->nickname + ":" + message);
+	    //else
 	      network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
 				   message);
 
@@ -163,6 +163,7 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_REQUEST_SEAT_MANIFEST:
     sendSeats(conn);
     sendChatRoster(conn);
+    sendTurnOrder();
     break;
 
   case MESSAGE_TYPE_P1_SIT:
@@ -833,5 +834,6 @@ void GameServer::sendTurnOrder()
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     network_server->send((*i)->conn, MESSAGE_TYPE_TURN_ORDER, players.str());
+  playerlist_reorder_received.emit();
 }
 // End of file

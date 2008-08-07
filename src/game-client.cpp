@@ -414,5 +414,6 @@ void GameClient::gotTurnOrder (std::string payload)
       if (ival != -1)
 	player_ids.push_back(ival);
     }
-  Playerlist::getInstance()->setTurnOrder(player_ids);
+  Playerlist::getInstance()->reorder(player_ids);
+  playerlist_reorder_received.emit();
 }

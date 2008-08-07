@@ -67,6 +67,9 @@ void NewGameProgressWindow::thread_worker()
       m_dispatcher();
       game_scenario->setupDiplomacy(game_params.diplomacy);
       m_dispatcher();
+      if (game_scenario->s_random_turns)
+	Playerlist::getInstance()->randomizeOrder();
+      m_dispatcher();
       game_scenario->nextRound();
       if (d_play_mode == GameScenario::NETWORKED)
 	Playerlist::getInstance()->turnHumansIntoNetworkPlayers();

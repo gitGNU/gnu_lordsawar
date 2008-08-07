@@ -196,6 +196,8 @@ void on_name_changed(const Glib::ustring &path,
     void on_chat_key_pressed(GdkEventKey *event);
     void on_chatted(std::string nickname, std::string message);
 
+    void on_reorder_playerlist();
+
 
 };
 

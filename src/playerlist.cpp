@@ -543,7 +543,7 @@ bool Playerlist::randomly(const Player *lhs, const Player *rhs)
 {
   Playerlist *pl = Playerlist::getInstance();
   if (lhs == pl->getNeutral())
-    return true;
+    return false;
   if (rand() % 2 == 0)
     return true;
   else
@@ -751,7 +751,7 @@ bool Playerlist::inGivenOrder(const Player *lhs, const Player *rhs)
 }
 
 
-void Playerlist::setTurnOrder(std::list<Uint32> order)
+void Playerlist::reorder(std::list<Uint32> order)
 {
   given_turn_order = order;
   sort(inGivenOrder);

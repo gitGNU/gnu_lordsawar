@@ -59,6 +59,7 @@ public:
   sigc::signal<void, Player*, std::string> player_stands;
   sigc::signal<void, std::string> remote_participant_departs;
   sigc::signal<void> remote_participant_disconnected;
+  sigc::signal<void> playerlist_reorder_received;
 
   void setGameScenario(GameScenario *scenario) {d_game_scenario = scenario;};
 
