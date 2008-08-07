@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-05 13:14-0400\n"
+"POT-Creation-Date: 2008-08-06 10:44-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -2342,7 +2342,7 @@ msgstr ""
 "Erreur lors de la tentative de renommage du fichier temporaire dans autosave."
 "sav\n"
 
-#: src/GameScenario.cpp:574 src/gui/driver.cpp:602
+#: src/GameScenario.cpp:574 src/gui/driver.cpp:600
 #, fuzzy
 msgid "Error: "
 msgstr "Erruer :"
@@ -3143,8 +3143,8 @@ msgstr ""
 msgid "Choose Game to Load"
 msgstr "Choisissez le quadrillage"
 
-#: src/gui/game-window.cpp:860 src/gui/driver.cpp:258 src/gui/driver.cpp:399
-#: src/gui/driver.cpp:547 src/gui/driver.cpp:566
+#: src/gui/game-window.cpp:860 src/gui/driver.cpp:257 src/gui/driver.cpp:397
+#: src/gui/driver.cpp:545 src/gui/driver.cpp:564
 msgid "Corrupted saved game file."
 msgstr ""
 
@@ -3469,32 +3469,32 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr "Il tuo eroe %s ha completato la quest."
 
-#: src/gui/driver.cpp:294
+#: src/gui/driver.cpp:295
 msgid "Server went away."
 msgstr ""
 
-#: src/gui/driver.cpp:310
+#: src/gui/driver.cpp:311
 #, fuzzy
 msgid "Could not connect."
 msgstr "Non ho potuto creare la mappa "
 
-#: src/gui/driver.cpp:502 src/editor/main-window.cpp:381
+#: src/gui/driver.cpp:500 src/editor/main-window.cpp:381
 #: src/editor/main-window.cpp:427
 msgid "Neutral"
 msgstr "Neutre"
 
-#: src/gui/driver.cpp:577
+#: src/gui/driver.cpp:575
 msgid "Save the scenario and mail it to the first player"
 msgstr ""
 
-#: src/gui/driver.cpp:600
+#: src/gui/driver.cpp:598
 #, fuzzy
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 "Erreur lors de la tentative de renommage du fichier temporaire dans autosave."
 "sav\n"
 
-#: src/gui/driver.cpp:605
+#: src/gui/driver.cpp:603
 msgid "Now send the saved-game file to %1"
 msgstr ""
 

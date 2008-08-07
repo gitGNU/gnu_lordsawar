@@ -1,3 +1,9 @@
+2008-08-07  Ben Asselstine
+
+	* more multiplayer machinery.
+	* changing GraphicsCache to refer to player ids instead of pointers to
+	  players.
+
 2008-08-06  Ben Asselstine
 
 	* adding more multiplayer machinery (still not working).
