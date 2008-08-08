@@ -186,34 +186,6 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
     pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
     pl->ssurrender.connect(sigc::mem_fun(this, &Game::on_surrender_offered));
 
-    /*
-    //set up a NextTurn object
-    switch (d_gameScenario->getPlayMode())
-      {
-      case GameScenario::HOTSEAT:
-	d_nextTurn = new NextTurnHotseat(d_gameScenario->getTurnmode(),
-					 d_gameScenario->s_random_turns);
-	break;
-      case GameScenario::NETWORKED:
-	  {
-	    d_nextTurn = new NextTurnNetworked(d_gameScenario->getTurnmode(),
-					       d_gameScenario->s_random_turns);
-    if (d_gameScenario->getPlayMode() == GameScenario::NETWORKED &&
-	GameServer::getInstance()->isListening() && 
-	d_gameScenario->s_random_turns == true)
-      {
-	d_nextTurn->snextRound.connect
-	  (sigc::mem_fun(GameServer::getInstance(), 
-			 &GameServer::sendTurnOrder));
-      }
-	  }
-	break;
-      case GameScenario::PLAY_BY_MAIL:
-	d_nextTurn = new NextTurnPbm(d_gameScenario->getTurnmode(),
-				     d_gameScenario->s_random_turns);
-	break;
-      }
-      */
     d_nextTurn->splayerStart.connect(
 	sigc::mem_fun(this, &Game::init_turn_for_player));
     d_nextTurn->snextRound.connect(
@@ -969,6 +941,11 @@ SmallMap &Game::get_smallmap()
 void Game::startGame()
 {
   debug ("start_game()");
+      
+  center_view_on_city();
+  update_sidebar_stats();
+  update_control_panel();
+  update_stack_info();
   lock_inputs();
 
   d_nextTurn->start();
