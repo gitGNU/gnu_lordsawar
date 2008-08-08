@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-08 13:42-0400\n"
+"POT-Creation-Date: 2008-08-08 16:20-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -2681,7 +2681,7 @@ msgstr "Fehler: Armee und zu durchsuchende Ruine nicht am selben Platz\n"
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Armee versuchte Tempel an der falschen Position zu besuchen\n"
 
-#: src/player.cpp:2317
+#: src/player.cpp:2318
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Standardeinheiten"
