@@ -228,20 +228,12 @@ void SplashWindow::on_new_network_game_clicked()
       network_game_nickname = nick_entry->get_text();
       if (client_radiobutton->get_active() == true)
 	{
-	  Gtk::MessageDialog mdialog(*window.get(), "not implemented yet.");
-	  mdialog.show_all();
-	  mdialog.run();
-	  mdialog.hide();
 	  NetworkGameSelectorDialog ngsd;
 	  ngsd.game_selected.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_selected));
 	  ngsd.run();
 	}
       else
 	{
-	  Gtk::MessageDialog mdialog(*window.get(), "not implemented yet.");
-	  mdialog.show_all();
-	  mdialog.run();
-	  mdialog.hide();
 	  //okay, we're a server.
 	  GamePreferencesDialog gpd;
     

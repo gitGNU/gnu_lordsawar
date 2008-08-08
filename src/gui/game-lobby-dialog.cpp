@@ -261,26 +261,6 @@ GameLobbyDialog::update_player_details()
     }
 }
 
-void GameLobbyDialog::on_name_changed(const Glib::ustring &path,
-				      const Glib::ustring &new_text)
-{
-  Playerlist *pl = Playerlist::getInstance();
-  Player *player;
-  Glib::RefPtr < Gtk::TreeSelection > selection = 
-    player_treeview->get_selection();
-  Gtk::TreeModel::iterator iter = selection->get_selected();
-  if (!selection->count_selected_rows())
-    return;
-  //maybe we can't change the name
-  //fixme
-
-  Glib::ustring name = (*iter)[player_columns.name];
-  player = pl->getPlayer((*iter)[player_columns.player_id]);
-
-  //player->rename(name);
-}
-
-
 void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
 					 const Glib::ustring &path)
 {
@@ -557,6 +537,25 @@ void GameLobbyDialog::on_player_stands(Player *p, std::string nickname)
 
 void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
 {
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  printf ("player %d ends turn\n", p->getId());
+  printf ("active player is now %d\n", Playerlist::getActiveplayer()->getId());
+  Gtk::TreeModel::Children kids = player_list->children();
+  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
+       i != kids.end(); i++)
+    {
+      Gtk::TreeModel::Row row = *i;
+      if (row[player_columns.player_id] == p->getId())
+	{
+	  Glib::RefPtr<Gdk::Pixbuf> empty_pic
+	    = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, 1, 1);
+	  empty_pic->fill(0x00000000);
+	  row[player_columns.shield] = empty_pic;
+	}
+      Player *active = Playerlist::getActiveplayer();
+      if (row[player_columns.player_id] == active->getId())
+	  (*i)[player_columns.shield] = to_pixbuf(gc->getShieldPic(1, active));
+    }
   //fixme, go through the list and stick the sword next to the active player.
   update_scenario_details();
   update_city_map();

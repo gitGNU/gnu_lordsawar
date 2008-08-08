@@ -115,8 +115,6 @@ class GameLobbyDialog//: public sigc::trackable
     Glib::RefPtr<Gtk::ListStore> player_name_list;
 
     void cell_data_name(Gtk::CellRenderer *renderer, const Gtk::TreeIter &i);
-void on_name_changed(const Glib::ustring &path,
-				      const Glib::ustring &new_text);
 
     void on_name_edited(const Glib::ustring &path,
 				     const Glib::ustring &new_text);
