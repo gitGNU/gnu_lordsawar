@@ -119,6 +119,10 @@
 #include "../Item.h"
 #include "../shieldsetlist.h"
 #include "../game-server.h"
+#include "../NextTurnHotseat.h"
+#include "../NextTurnPbm.h"
+#include "../NextTurnNetworked.h"
+#include "../pbm-game-server.h"
 
 
 GameWindow::GameWindow()
@@ -383,22 +387,22 @@ void GameWindow::init(int width, int height)
 
 }
 
-void GameWindow::new_network_game(GameScenario *game_scenario)
+void GameWindow::new_network_game(GameScenario *game_scenario, NextTurn *next_turn)
 {
   bool success = false;
   //stop_game();
-  success = setup_game(game_scenario);
+  success = setup_game(game_scenario, next_turn);
   if (!success)
     return;
   setup_signals(game_scenario);
   game->startGame();
-  printf ("uh oh!\n");
 }
-void GameWindow::new_game(GameScenario *game_scenario)
+
+void GameWindow::new_game(GameScenario *game_scenario, NextTurn *next_turn)
 {
   bool success = false;
   stop_game();
-  success = setup_game(game_scenario);
+  success = setup_game(game_scenario, next_turn);
   if (!success)
     return;
   setup_signals(game_scenario);
@@ -406,10 +410,10 @@ void GameWindow::new_game(GameScenario *game_scenario)
   //we don't get here until the game ends.
 }
 
-void GameWindow::load_game(GameScenario *game_scenario)
+void GameWindow::load_game(GameScenario *game_scenario, NextTurn *next_turn)
 {
   bool success = false;
-  success = setup_game(game_scenario);
+  success = setup_game(game_scenario, next_turn);
   if (!success)
     return;
 
@@ -757,7 +761,7 @@ void GameWindow::update_diplomacy_button (bool sensitive)
   diplomacy_button->set_sensitive(sensitive);
 }
 
-bool GameWindow::setup_game(GameScenario *game_scenario)
+bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
 {
   Playerlist::getInstance()->instantiateArmysetPixmaps();
   GameMap::getInstance()->instantiatePixmaps();
@@ -765,7 +769,7 @@ bool GameWindow::setup_game(GameScenario *game_scenario)
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();
 
-  game.reset(new Game(game_scenario));
+  game.reset(new Game(game_scenario, nextTurn));
 
   show_shield_turn();
   return true;
@@ -892,7 +896,21 @@ void GameWindow::on_load_game_activated()
 	  game_ended.emit();
 	  return;
 	}
-      load_game(game_scenario);
+      if (game_scenario->getPlayMode() == GameScenario::HOTSEAT)
+	load_game(game_scenario, 
+		  new NextTurnHotseat(game_scenario->getTurnmode(),
+				      game_scenario->s_random_turns));
+      else if (game_scenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
+	{
+	  PbmGameServer::getInstance()->start();
+	  load_game(game_scenario, 
+		    new NextTurnPbm(game_scenario->getTurnmode(),
+				    game_scenario->s_random_turns));
+	}
+      else if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
+	load_game(game_scenario, 
+		  new NextTurnNetworked(game_scenario->getTurnmode(),
+					game_scenario->s_random_turns));
     }
 }
 

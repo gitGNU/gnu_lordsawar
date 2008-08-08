@@ -40,14 +40,17 @@
 #include "../GameScenario.h"
 
 struct SDL_Surface;
+class NextTurnNetworked;
 
 class Player;
+class NextTurnNetworked;
 
 //! dialog for showing the scenario and who's joined
 class GameLobbyDialog//: public sigc::trackable
 {
  public:
-    GameLobbyDialog(GameScenario *game_scenario, bool has_ops);
+    GameLobbyDialog(GameScenario *game_scenario, NextTurnNetworked *next_turn, 
+		    bool has_ops);
 
     ~GameLobbyDialog();
 
@@ -60,7 +63,7 @@ class GameLobbyDialog//: public sigc::trackable
   sigc::signal<void, Player*> player_sat_down;
   sigc::signal<void, Player*> player_stood_up;
   sigc::signal<void, std::string> message_sent;
-  sigc::signal<void, GameScenario *> start_network_game;
+  sigc::signal<void, GameScenario *, NextTurnNetworked*> start_network_game;
 
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
@@ -68,9 +71,10 @@ class GameLobbyDialog//: public sigc::trackable
     std::auto_ptr<CityMap> citymap;
     Gtk::Image *map_image;
 
-    void initDialog(GameScenario *gamescenario);
+    void initDialog(GameScenario *gamescenario, NextTurnNetworked *next_turn);
     void on_map_changed(SDL_Surface *map);
     GameScenario *d_game_scenario;
+    NextTurnNetworked *d_next_turn;
     Gtk::Label *turn_label;
     Gtk::Label *scenario_name_label;
     Gtk::Label *cities_label;

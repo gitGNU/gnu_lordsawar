@@ -38,6 +38,7 @@
 #include "../game-client.h"
 #include "../game-server.h"
 #include "../shieldsetlist.h"
+#include "../NextTurnNetworked.h"
 
 namespace
 {
@@ -69,10 +70,12 @@ void GameLobbyDialog::update_city_map()
     }
 }
 
-void GameLobbyDialog::initDialog(GameScenario *gamescenario)
+void GameLobbyDialog::initDialog(GameScenario *gamescenario, 
+				 NextTurnNetworked *next_turn)
 {
   Shieldsetlist::getInstance()->instantiatePixmaps();
   d_game_scenario = gamescenario;
+  d_next_turn = next_turn;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
 				    + "/game-lobby-dialog.glade");
@@ -284,13 +287,14 @@ void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
     player_stood_up.emit(player);
 }
 
-GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario, bool has_ops)
+GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario, 
+				 NextTurnNetworked *next_turn, bool has_ops)
 	:name_column(_("Name"), name_renderer),
 	type_column(_("Type"), type_renderer),
 	sitting_column(_("Seated"), sitting_renderer)
 {
   d_has_ops = has_ops;
-  initDialog(game_scenario);
+  initDialog(game_scenario, next_turn);
   update_scenario_details();
 }
 
@@ -538,8 +542,6 @@ void GameLobbyDialog::on_player_stands(Player *p, std::string nickname)
 void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  printf ("player %d ends turn\n", p->getId());
-  printf ("active player is now %d\n", Playerlist::getActiveplayer()->getId());
   Gtk::TreeModel::Children kids = player_list->children();
   for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
        i != kids.end(); i++)
@@ -550,13 +552,13 @@ void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
 	  Glib::RefPtr<Gdk::Pixbuf> empty_pic
 	    = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, 1, 1);
 	  empty_pic->fill(0x00000000);
-	  row[player_columns.shield] = empty_pic;
+	  row[player_columns.turn] = empty_pic;
 	}
       Player *active = Playerlist::getActiveplayer();
       if (row[player_columns.player_id] == active->getId())
-	  (*i)[player_columns.shield] = to_pixbuf(gc->getShieldPic(1, active));
+	  (*i)[player_columns.turn] = 
+	    to_pixbuf(gc->getCursorPic(GraphicsCache::SWORD));
     }
-  //fixme, go through the list and stick the sword next to the active player.
   update_scenario_details();
   update_city_map();
 }
@@ -580,7 +582,7 @@ void GameLobbyDialog::on_play_clicked()
 {
   hide();
   //emit a signal saying to start a network game.
-  start_network_game.emit(d_game_scenario);
+  start_network_game.emit(d_game_scenario, d_next_turn);
 }
 
 void GameLobbyDialog::on_cancel_clicked()

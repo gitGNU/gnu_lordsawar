@@ -59,6 +59,7 @@ class Temple;
 class Quest;
 class City;
 class Reward;
+class NextTurn;
 
 /** The main window in which all the game action is going on.
   *
@@ -81,13 +82,13 @@ class GameWindow: public sigc::trackable
     void init(int width, int height);
 
     // setup a new game
-    void new_game(GameScenario *game_scenario);
+    void new_game(GameScenario *game_scenario, NextTurn *next_turn);
 
     // setup a new network game
-    void new_network_game(GameScenario *game_scenario);
+    void new_network_game(GameScenario *game_scenario, NextTurn *next_turn);
     
     // load the game
-    void load_game(GameScenario *game_scenario);
+    void load_game(GameScenario *game_scenario, NextTurn *next_turn);
 
     // emitted when the game has ended and it is time to show the splash again
     sigc::signal<void> game_ended;
@@ -286,7 +287,7 @@ class GameWindow: public sigc::trackable
     void show_city_production_report (bool destitute);
     void update_diplomacy_button (bool sensitive);
 
-    bool setup_game(GameScenario *game_scenario);
+    bool setup_game(GameScenario *game_scenario, NextTurn *nextTurn);
     void setup_signals(GameScenario *game_scenario);
     void stop_game();
     std::list<sigc::connection> connections;

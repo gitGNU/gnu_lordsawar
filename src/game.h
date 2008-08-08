@@ -60,7 +60,7 @@ class Reward;
 class Game
 {
  public:
-    Game(GameScenario* gameScenario);
+    Game(GameScenario* gameScenario, NextTurn *nextTurn);
     ~Game();
 
     void redraw();

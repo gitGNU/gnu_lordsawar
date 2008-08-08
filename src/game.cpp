@@ -132,8 +132,8 @@ void Game::addPlayer(Player *p)
 
 #include "game-server.h"
 
-Game::Game(GameScenario* gameScenario)
-    : d_gameScenario(gameScenario) 
+Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
+    : d_gameScenario(gameScenario), d_nextTurn(nextTurn)
 {
     current_game = this;
     input_locked = false;
@@ -186,6 +186,7 @@ Game::Game(GameScenario* gameScenario)
     pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
     pl->ssurrender.connect(sigc::mem_fun(this, &Game::on_surrender_offered));
 
+    /*
     //set up a NextTurn object
     switch (d_gameScenario->getPlayMode())
       {
@@ -197,6 +198,14 @@ Game::Game(GameScenario* gameScenario)
 	  {
 	    d_nextTurn = new NextTurnNetworked(d_gameScenario->getTurnmode(),
 					       d_gameScenario->s_random_turns);
+    if (d_gameScenario->getPlayMode() == GameScenario::NETWORKED &&
+	GameServer::getInstance()->isListening() && 
+	d_gameScenario->s_random_turns == true)
+      {
+	d_nextTurn->snextRound.connect
+	  (sigc::mem_fun(GameServer::getInstance(), 
+			 &GameServer::sendTurnOrder));
+      }
 	  }
 	break;
       case GameScenario::PLAY_BY_MAIL:
@@ -204,6 +213,7 @@ Game::Game(GameScenario* gameScenario)
 				     d_gameScenario->s_random_turns);
 	break;
       }
+      */
     d_nextTurn->splayerStart.connect(
 	sigc::mem_fun(this, &Game::init_turn_for_player));
     d_nextTurn->snextRound.connect(
@@ -213,14 +223,6 @@ Game::Game(GameScenario* gameScenario)
     d_nextTurn->supdating.connect(
 	sigc::mem_fun(this, &Game::redraw));
             
-    if (d_gameScenario->getPlayMode() == GameScenario::NETWORKED &&
-	GameServer::getInstance()->isListening() && 
-	d_gameScenario->s_random_turns == true)
-      {
-	d_nextTurn->snextRound.connect
-	  (sigc::mem_fun(GameServer::getInstance(), 
-			 &GameServer::sendTurnOrder));
-      }
 
     center_view_on_city();
     update_control_panel();

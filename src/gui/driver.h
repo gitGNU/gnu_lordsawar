@@ -85,7 +85,8 @@ class Driver: public sigc::trackable
 
     void on_show_lobby_requested();
 
-    void start_network_game_requested(GameScenario *game_scenario);
+    void start_network_game_requested(GameScenario *game_scenario,
+				      NextTurnNetworked *next_turn);
 };
 
 

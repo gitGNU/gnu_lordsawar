@@ -41,7 +41,6 @@
 #include "../xmlhelper.h"
 #include "../Configuration.h"
 #include "../ucompose.hpp"
-#include "../NextTurnHotseat.h"
 #include "../sound.h"
 #include "timed-message-dialog.h"
 #include "new-game-progress-window.h"
@@ -51,7 +50,9 @@
 #include "../pbm-game-client.h"
 #include "../game-server.h"
 #include "../pbm-game-server.h"
+#include "../NextTurnHotseat.h"
 #include "../NextTurnPbm.h"
+#include "../NextTurnNetworked.h"
 #include "../pbm/pbm.h"
 
 Driver::Driver(std::string load_filename)
@@ -157,7 +158,6 @@ void Driver::run()
       broken = pbm_game_client->loadWithHelper (helper, 
 						Playerlist::getActiveplayer());
       helper.close();
-      delete nextTurn;
       if (!broken)
 	{
 	  game_scenario->saveGame(d_load_filename);
@@ -168,7 +168,7 @@ void Driver::run()
 
 	      init_game_window();
 	      game_window->show();
-	      game_window->load_game(game_scenario);
+	      game_window->load_game(game_scenario, nextTurn);
 	    }
 	}
     }
@@ -262,7 +262,11 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
 
   GameServer *game_server = GameServer::getInstance();
   game_server->start(game_scenario, port, nick);
-  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, true));
+  NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
+  if (game_scenario->s_random_turns == true)
+    next_turn->snextRound.connect (sigc::mem_fun(GameServer::getInstance(), 
+						 &GameServer::sendTurnOrder));
+  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, true));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   game_lobby_dialog->player_sat_down.connect
     (sigc::mem_fun(this, &Driver::on_hosted_player_sat_down));
@@ -361,7 +365,8 @@ void Driver::on_game_scenario_received(std::string path)
     download_window->hide();
   GameScenario *game_scenario = 
     load_game(path);
-  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, false));
+  NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
+  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, false));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   game_lobby_dialog->player_sat_down.connect
     (sigc::mem_fun(this, &Driver::on_client_player_sat_down));
@@ -411,10 +416,12 @@ void Driver::on_new_game_requested(GameParameters g)
 	return;
       }
 
+    NextTurn *next_turn = new NextTurnHotseat(game_scenario->getTurnmode(),
+					      game_scenario->s_random_turns);
     init_game_window();
     
     game_window->show();
-    game_window->new_game(game_scenario);
+    game_window->new_game(game_scenario, next_turn);
 }
 
 void Driver::on_load_requested(std::string filename)
@@ -426,16 +433,25 @@ void Driver::on_load_requested(std::string filename)
     if (game_scenario == NULL)
       return;
     if (game_scenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
-      PbmGameServer::getInstance()->start();
 
     init_game_window();
     
-    //game_window->sdl_initialized.connect(
-	//sigc::bind(sigc::mem_fun(game_window.get(), &GameWindow::load_game),
-		   //filename));
     game_window->show();
-    game_window->load_game(game_scenario);
-
+    if (game_scenario->getPlayMode() == GameScenario::HOTSEAT)
+      game_window->load_game
+	(game_scenario, new NextTurnHotseat(game_scenario->getTurnmode(),
+					    game_scenario->s_random_turns));
+    else if (game_scenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
+      {
+	PbmGameServer::getInstance()->start();
+	game_window->load_game
+	  (game_scenario, new NextTurnPbm(game_scenario->getTurnmode(),
+					  game_scenario->s_random_turns));
+      }
+    else if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
+      game_window->load_game
+	(game_scenario, new NextTurnNetworked(game_scenario->getTurnmode(),
+					      game_scenario->s_random_turns));
 }
 
 void Driver::on_quit_requested()
@@ -725,7 +741,7 @@ void Driver::on_show_lobby_requested()
     game_lobby_dialog->show();
 }
     
-void Driver::start_network_game_requested(GameScenario *game_scenario)
+void Driver::start_network_game_requested(GameScenario *game_scenario, NextTurnNetworked *next_turn)
 {
   if (game_window.get())
     game_window->show();
@@ -733,6 +749,6 @@ void Driver::start_network_game_requested(GameScenario *game_scenario)
     {
       init_game_window();
       game_window->show();
-      game_window->new_network_game(game_scenario);
+      game_window->new_network_game (game_scenario, next_turn);
     }
 }
