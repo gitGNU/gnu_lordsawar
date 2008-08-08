@@ -1490,6 +1490,7 @@ int Player::lootCity(City *city)
 void Player::doConquerCity(City *city, Stack *stack)
 {
   int gold = lootCity(city);
+  takeCityInPossession(city);
   sinvadingCity.emit(city, gold);
   
   History_CityWon *item = new History_CityWon();
@@ -1528,7 +1529,7 @@ void Player::takeCityInPossession(City* c)
 
 void Player::doCityOccupy(City *c)
 {
-  takeCityInPossession(c);
+  //takeCityInPossession(c);
   
   soccupyingCity.emit(c, getActivestack());
   QuestsManager::getInstance()->cityOccupied(c, getActivestack());
@@ -1596,7 +1597,7 @@ void Player::doCityPillage(City *c, int& gold, int* pillaged_army_type)
       QuestsManager::getInstance()->cityPillaged(c, s, gold);
     }
 
-  takeCityInPossession(c);
+  //takeCityInPossession(c);
 }
 
 void Player::cityPillage(City* c, int& gold, int* pillaged_army_type)
@@ -1649,7 +1650,7 @@ void Player::doCitySack(City* c, int& gold, std::list<Uint32> *sacked_types)
   Stack *s = getActivestack();
   ssackingCity.emit(c, s, gold, *sacked_types);
   QuestsManager::getInstance()->citySacked(c, s, gold);
-  takeCityInPossession(c);
+  //takeCityInPossession(c);
 }
 
 void Player::citySack(City* c, int& gold, std::list<Uint32> *sacked_types)
