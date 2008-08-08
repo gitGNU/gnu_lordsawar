@@ -2,6 +2,7 @@
 
 	* game lobby now cycles the turn icon as players move in networked
 	  multiplayer mode.
+	* basic multiplayer play now works.
 
 2008-08-07  Ben Asselstine
 

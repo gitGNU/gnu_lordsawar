@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.3.7\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-08 09:31-0400\n"
+"POT-Creation-Date: 2008-08-08 13:42-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Piotr Cychowski <cycholka@wp.pl>\n"
 "Language-Team: \n"
@@ -2338,7 +2338,7 @@ msgstr ""
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:574 src/gui/driver.cpp:632
+#: src/GameScenario.cpp:574 src/gui/driver.cpp:633
 #, fuzzy
 msgid "Error: "
 msgstr "B³±d"
@@ -3150,8 +3150,8 @@ msgstr ""
 msgid "Choose Game to Load"
 msgstr "Wybierz Zestaw Terenów"
 
-#: src/gui/game-window.cpp:895 src/gui/driver.cpp:257 src/gui/driver.cpp:413
-#: src/gui/driver.cpp:577 src/gui/driver.cpp:596
+#: src/gui/game-window.cpp:895 src/gui/driver.cpp:257 src/gui/driver.cpp:414
+#: src/gui/driver.cpp:578 src/gui/driver.cpp:597
 msgid "Corrupted saved game file."
 msgstr ""
 
@@ -3474,29 +3474,29 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr "Twój bohater %s ukoñczy³ zadanie."
 
-#: src/gui/driver.cpp:304
+#: src/gui/driver.cpp:305
 msgid "Server went away."
 msgstr ""
 
-#: src/gui/driver.cpp:320
+#: src/gui/driver.cpp:321
 #, fuzzy
 msgid "Could not connect."
 msgstr "Nie uda³o siê wczytaæ mapy "
 
-#: src/gui/driver.cpp:532 src/editor/main-window.cpp:381
+#: src/gui/driver.cpp:533 src/editor/main-window.cpp:381
 #: src/editor/main-window.cpp:427
 msgid "Neutral"
 msgstr "Neutralny"
 
-#: src/gui/driver.cpp:607
+#: src/gui/driver.cpp:608
 msgid "Save the scenario and mail it to the first player"
 msgstr ""
 
-#: src/gui/driver.cpp:630
+#: src/gui/driver.cpp:631
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 
-#: src/gui/driver.cpp:635
+#: src/gui/driver.cpp:636
 msgid "Now send the saved-game file to %1"
 msgstr ""
 
