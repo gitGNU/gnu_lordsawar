@@ -108,8 +108,6 @@ void GameServer::start(GameScenario *game_scenario, int port, std::string nick)
 
   network_server->startListening(port);
 
-  listenForActions();
-  listenForHistories();
 }
 
 void GameServer::gotChat(void *conn, std::string message)
@@ -276,17 +274,13 @@ void GameServer::onConnectionLost(void *conn)
 {
   std::cerr << "connection lost" << std::endl;
 
-  printf ("conn is %p\n", conn);
   Participant *part = findParticipantByConn(conn);
   if (part)
     {
       MessageType type;
       std::list<Uint32> players_to_stand = part->players;
 
-      printf ("conn is now %p\n", conn);
-      printf ("trying to depart\n");
       depart(conn);
-      printf ("done departing\n");
       participants.remove(part);
       for (std::list<Uint32>::iterator it = players_to_stand.begin();
 	   it != players_to_stand.end(); it++)
@@ -304,40 +298,6 @@ Participant *GameServer::findParticipantByConn(void *conn)
       return *i;
 
   return 0;
-}
-
-void GameServer::listenForActions()
-{
-  Playerlist *pl = Playerlist::getInstance();
-  for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
-    (*i)->acting.connect(sigc::mem_fun(this, &GameServer::onActionDone));
-}
-
-void GameServer::listenForHistories()
-{
-  Playerlist *pl = Playerlist::getInstance();
-  for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
-    (*i)->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
-}
-
-void GameServer::clearNetworkActionlist(std::list<NetworkAction*> &a)
-{
-  for (std::list<NetworkAction*>::iterator it = a.begin();
-       it != a.end(); it++)
-    {
-      delete (*it);
-    }
-  a.clear();
-}
-
-void GameServer::clearNetworkHistorylist(std::list<NetworkHistory*> &h)
-{
-  for (std::list<NetworkHistory*>::iterator it = h.begin(); 
-       it != h.end(); it++)
-    {
-      delete (*it);
-    }
-  h.clear();
 }
 
 void GameServer::onActionDone(NetworkAction *action)
@@ -458,7 +418,6 @@ void GameServer::depart(void *conn)
 
   Participant *part = findParticipantByConn(conn);
 
-  printf ("sending out depart for %s\n", part->nickname.c_str());
   notifyDepart(conn, part->nickname);
   //we don't delete the participant, it gets deleted when it disconnects.
   //see onConnectionLost
@@ -701,9 +660,9 @@ void GameServer::sit_down (Player *player)
       //convert the network player to a human player
       dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
       RealPlayer *new_p = new RealPlayer (*player);
-      new_p->acting.connect(sigc::mem_fun(this, &GameServer::onActionDone));
-      new_p->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
       Playerlist::getInstance()->swap(player, new_p);
+      stopListeningForLocalEvents(player);
+      listenForLocalEvents(new_p);
       delete player;
       add_to_player_list (players_seated_locally, new_p->getId());
       notifySit(new_p, d_nickname);
@@ -714,6 +673,8 @@ void GameServer::sit_down (Player *player)
     }
   else // an ai player
     {
+      stopListeningForLocalEvents(player);
+      listenForLocalEvents(player);
       add_to_player_list (players_seated_locally, player->getId());
       notifySit(player, d_nickname);
     }
@@ -730,10 +691,9 @@ void GameServer::stand_up (Player *player)
 
       NetworkPlayer *new_p = new NetworkPlayer(*player);
       Playerlist::getInstance()->swap(player, new_p);
+      stopListeningForLocalEvents(player);
       delete player;
       new_p->setConnected(false);
-      new_p->acting.connect(sigc::mem_fun(this, &GameServer::onActionDone));
-      new_p->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
       notifyStand(new_p, d_nickname);
       remove_from_player_list (players_seated_locally, new_p->getId());
     }
@@ -743,6 +703,7 @@ void GameServer::stand_up (Player *player)
     }
   else // an ai player
     {
+      stopListeningForLocalEvents(player);
       remove_from_player_list (players_seated_locally, player->getId());
       notifyStand(player, d_nickname);
     }

@@ -38,6 +38,7 @@
 #include <gtkmm/treeview.h>
 #include "../citymap.h"
 #include "../GameScenario.h"
+#include "../game-station.h"
 
 struct SDL_Surface;
 class NextTurnNetworked;
@@ -49,7 +50,9 @@ class NextTurnNetworked;
 class GameLobbyDialog//: public sigc::trackable
 {
  public:
-    GameLobbyDialog(GameScenario *game_scenario, NextTurnNetworked *next_turn, 
+    GameLobbyDialog(GameScenario *game_scenario, 
+		    NextTurnNetworked *next_turn, 
+		    GameStation *game_station,
 		    bool has_ops);
 
     ~GameLobbyDialog();
@@ -71,9 +74,11 @@ class GameLobbyDialog//: public sigc::trackable
     std::auto_ptr<CityMap> citymap;
     Gtk::Image *map_image;
 
-    void initDialog(GameScenario *gamescenario, NextTurnNetworked *next_turn);
+    void initDialog(GameScenario *gamescenario, NextTurnNetworked *next_turn,
+		    GameStation *game_station);
     void on_map_changed(SDL_Surface *map);
     GameScenario *d_game_scenario;
+    GameStation *d_game_station;
     NextTurnNetworked *d_next_turn;
     Gtk::Label *turn_label;
     Gtk::Label *scenario_name_label;

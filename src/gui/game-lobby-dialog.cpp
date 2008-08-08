@@ -71,10 +71,12 @@ void GameLobbyDialog::update_city_map()
 }
 
 void GameLobbyDialog::initDialog(GameScenario *gamescenario, 
-				 NextTurnNetworked *next_turn)
+				 NextTurnNetworked *next_turn,
+				 GameStation *game_station)
 {
   Shieldsetlist::getInstance()->instantiatePixmaps();
   d_game_scenario = gamescenario;
+  d_game_station = game_station;
   d_next_turn = next_turn;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
@@ -115,56 +117,31 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
 	"show_options_button",
 	sigc::mem_fun(*this, &GameLobbyDialog::on_show_options_clicked));
 
-  if (GameServer::getInstance()->isListening())
-    {
-      GameServer *game_server = GameServer::getInstance();
-      game_server->remote_player_moved.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn));
-      game_server->remote_participant_joins.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_joins));
-      game_server->remote_participant_departs.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_departs));
-      game_server->player_sits.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_player_sits));
-      game_server->player_stands.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_player_stands));
-      game_server->remote_player_named.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
-      game_server->chat_message_received.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
-      game_server->playerlist_reorder_received.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_reorder_playerlist));
-      game_server->remote_player_died.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_died));
-    }
-  else
-    {
-      GameClient *game_client = GameClient::getInstance();
-      game_client->remote_player_moved.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn));
-      game_client->remote_participant_joins.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_joins));
-      game_client->remote_participant_departs.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_departs));
-      game_client->player_sits.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_player_sits));
-      game_client->player_stands.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_player_stands));
-      game_client->remote_player_named.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
-      game_client->chat_message_received.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
-      game_client->playerlist_reorder_received.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_reorder_playerlist));
-      game_client->remote_player_died.connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_died));
-    }
-  update_player_details();
-  update_buttons();
+    game_station->remote_player_moved.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn));
+    game_station->remote_participant_joins.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_joins));
+    game_station->remote_participant_departs.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_departs));
+    game_station->player_sits.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_sits));
+    game_station->player_stands.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_stands));
+    game_station->remote_player_named.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
+    game_station->chat_message_received.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
+    game_station->playerlist_reorder_received.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_reorder_playerlist));
+    game_station->remote_player_died.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_died));
 
-  people_list = Gtk::ListStore::create(people_columns);
-  // setup the player settings
-  people_treeview->set_model(people_list);
+    update_player_details();
+    update_buttons();
+
+    people_list = Gtk::ListStore::create(people_columns);
+    // setup the player settings
+    people_treeview->set_model(people_list);
 
 }
 
@@ -288,13 +265,15 @@ void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
 }
 
 GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario, 
-				 NextTurnNetworked *next_turn, bool has_ops)
-	:name_column(_("Name"), name_renderer),
-	type_column(_("Type"), type_renderer),
-	sitting_column(_("Seated"), sitting_renderer)
+				 NextTurnNetworked *next_turn, 
+				 GameStation *game_station,
+				 bool has_ops)
+:name_column(_("Name"), name_renderer),
+    type_column(_("Type"), type_renderer),
+    sitting_column(_("Seated"), sitting_renderer)
 {
   d_has_ops = has_ops;
-  initDialog(game_scenario, next_turn);
+  initDialog(game_scenario, next_turn, game_station);
   update_scenario_details();
 }
 
@@ -359,7 +338,7 @@ void GameLobbyDialog::show()
     {
       Gtk::TreeIter j = people_list->append();
       (*j)[people_columns.nickname] = "[" + GameServer::getInstance()->getNickname() + "]";
-      //seat the ai players
+      //automatically seat the ai players
       for (Playerlist::iterator i = pl->begin(), end = pl->end(); i != end; ++i)
 	{
 	  Player *player = *i;
@@ -556,8 +535,8 @@ void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
 	}
       Player *active = Playerlist::getActiveplayer();
       if (row[player_columns.player_id] == active->getId())
-	  (*i)[player_columns.turn] = 
-	    to_pixbuf(gc->getCursorPic(GraphicsCache::SWORD));
+	(*i)[player_columns.turn] = 
+	  to_pixbuf(gc->getCursorPic(GraphicsCache::SWORD));
     }
   update_scenario_details();
   update_city_map();
@@ -625,7 +604,7 @@ void GameLobbyDialog::on_remote_player_died(Player *p)
 	}
     }
 }
-	
+
 void GameLobbyDialog::on_reorder_playerlist()
 {
   int count = 0;

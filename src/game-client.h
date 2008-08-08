@@ -29,13 +29,13 @@ class NetworkAction;
 class NetworkHistory;
 
 #include "network-common.h"
-#include "game-client-decoder.h"
+#include "game-station.h"
 
 class NetworkConnection;
 class GameScenario;
 class Player;
 
-class GameClient: public GameClientDecoder
+class GameClient: public GameStation
 {
 public:
         
@@ -48,14 +48,9 @@ public:
   void start(std::string host, int port, std::string nick);
   void request_seat_manifest();
 
-  sigc::signal<void, std::string> remote_participant_joins;
-  sigc::signal<void, Player*, std::string> player_sits;
-  sigc::signal<void, Player*, std::string> player_stands;
-  sigc::signal<void, std::string> remote_participant_departs;
   sigc::signal<void> client_connected;
   sigc::signal<void> client_disconnected;
   sigc::signal<void> client_could_not_connect;
-  sigc::signal<void> playerlist_reorder_received;
   
   void sit_down (Player *player);
   void stand_up (Player *player);
@@ -72,15 +67,11 @@ private:
   void onConnectionLost();
   void onGotMessage(MessageType type, std::string message);
 
-  void listenForActions(Player *player);
   void onActionDone(NetworkAction *action);
   void sendActions();
-  void clearNetworkActionlist(std::list<NetworkAction*> &actions);
 
-  void listenForHistories(Player *player);
   void onHistoryDone(NetworkHistory *history);
   void sendHistories();
-  void clearNetworkHistorylist(std::list<NetworkHistory*> &histories);
 
   void gotTurnOrder (std::string payload);
 

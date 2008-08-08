@@ -98,7 +98,7 @@ lordsawar_SOURCES = army.cpp army.h hero.cpp hero.h stack.cpp stack.h \
 	pbm-game-server.cpp pbm-game-server.h \
 	pbm-game-client.cpp pbm-game-client.h \
 	game-client-decoder.cpp game-client-decoder.h \
-	chat-client.cpp chat-client.h
+	chat-client.cpp chat-client.h game-station.cpp game-station.h
 
 if FL_RESRC
 lordsawar_SOURCES += lordsawar.rc

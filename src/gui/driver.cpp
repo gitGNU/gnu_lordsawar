@@ -266,7 +266,8 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   if (game_scenario->s_random_turns == true)
     next_turn->snextRound.connect (sigc::mem_fun(GameServer::getInstance(), 
 						 &GameServer::sendTurnOrder));
-  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, true));
+  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, 
+					      game_server, true));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   game_lobby_dialog->player_sat_down.connect
     (sigc::mem_fun(this, &Driver::on_hosted_player_sat_down));
@@ -363,10 +364,10 @@ void Driver::on_game_scenario_received(std::string path)
   heartbeat_conn.disconnect();
   if (download_window.get())
     download_window->hide();
-  GameScenario *game_scenario = 
-    load_game(path);
+  GameScenario *game_scenario = load_game(path);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
-  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, false));
+  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, 
+					      GameClient::getInstance(), false));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   game_lobby_dialog->player_sat_down.connect
     (sigc::mem_fun(this, &Driver::on_client_player_sat_down));

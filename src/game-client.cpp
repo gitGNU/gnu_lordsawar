@@ -141,15 +141,6 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
 
   case MESSAGE_TYPE_SENDING_MAP:
     gotScenario(payload);
-    if (player_id > -1)
-      {
-	Player *player = Playerlist::getInstance()->getPlayer(player_id);
-	if (player)
-	  {
-	    listenForActions(player);
-	    listenForHistories(player);
-	  }
-      }
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_CONNECTED:
@@ -249,40 +240,6 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
   }
 }
 
-void GameClient::listenForActions(Player *player)
-{
-  if (!player)
-    return;
-  player->acting.connect(sigc::mem_fun(this, &GameClient::onActionDone));
-}
-
-void GameClient::listenForHistories(Player *player)
-{
-  if (!player)
-    return;
-  player->history_written.connect(sigc::mem_fun(this, &GameClient::onHistoryDone));
-}
-
-void GameClient::clearNetworkActionlist(std::list<NetworkAction*> &a)
-{
-  for (std::list<NetworkAction*>::iterator it = a.begin();
-       it != a.end(); it++)
-    {
-      delete (*it);
-    }
-  a.clear();
-}
-
-void GameClient::clearNetworkHistorylist(std::list<NetworkHistory*> &h)
-{
-  for (std::list<NetworkHistory*>::iterator it = h.begin();
-       it != h.end(); it++)
-    {
-      delete (*it);
-    }
-  h.clear();
-}
-
 void GameClient::onHistoryDone(NetworkHistory *history)
 {
   std::string desc = history->toString();
@@ -360,9 +317,9 @@ void GameClient::sit_down (Player *player)
     }
   RealPlayer *new_p = new RealPlayer (*player);
   Playerlist::getInstance()->swap(player, new_p);
+  stopListeningForLocalEvents(player);
+  listenForLocalEvents(new_p);
   delete player;
-  listenForActions(new_p);
-  listenForHistories(new_p);
   network_connection->send(type, d_nickname);
 }
 
@@ -387,6 +344,7 @@ void GameClient::stand_up (Player *player)
   //now turning a human player into a network player
   NetworkPlayer *new_p = new NetworkPlayer(*player);
   Playerlist::getInstance()->swap(player, new_p);
+  stopListeningForLocalEvents(new_p);
   delete player;
   new_p->setConnected(false);
   network_connection->send(type, d_nickname);

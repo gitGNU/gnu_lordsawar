@@ -27,7 +27,7 @@
 #include <sigc++/signal.h>
 
 #include "network-common.h"
-#include "game-client-decoder.h"
+#include "game-station.h"
 
 class NetworkServer;
 class Participant;
@@ -37,7 +37,7 @@ class Player;
 class XML_Helper;
 class GameScenario;
 
-class GameServer: public GameClientDecoder 
+class GameServer: public GameStation
 {
 public:
         
@@ -55,12 +55,7 @@ public:
   void chat(std::string message);
   void sendTurnOrder();
   sigc::signal<void> remote_participant_connected;
-  sigc::signal<void, std::string> remote_participant_joins;
-  sigc::signal<void, Player*, std::string> player_sits;
-  sigc::signal<void, Player*, std::string> player_stands;
-  sigc::signal<void, std::string> remote_participant_departs;
   sigc::signal<void> remote_participant_disconnected;
-  sigc::signal<void> playerlist_reorder_received;
 
   void setGameScenario(GameScenario *scenario) {d_game_scenario = scenario;};
 
@@ -70,8 +65,6 @@ protected:
 
 private:
   GameScenario *d_game_scenario;
-  void listenForActions();
-  void listenForHistories();
   void onActionDone(NetworkAction *action);
   void onHistoryDone(NetworkHistory *history);
 
@@ -106,8 +99,6 @@ private:
   void onGotMessage(void *conn, MessageType type, std::string message);
   void onConnectionLost(void *conn);
   void onConnectionMade(void *conn);
-  void clearNetworkActionlist(std::list<NetworkAction*> &actions);
-  void clearNetworkHistorylist(std::list<NetworkHistory*> &histories);
   bool dumpActionsAndHistories(XML_Helper *helper);
   bool dumpActionsAndHistories(XML_Helper *helper, Player *player);
 
