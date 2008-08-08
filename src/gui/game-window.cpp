@@ -395,6 +395,7 @@ void GameWindow::new_network_game(GameScenario *game_scenario, NextTurn *next_tu
   if (!success)
     return;
   setup_signals(game_scenario);
+  game->redraw();
   game->startGame();
 }
 
