@@ -263,24 +263,24 @@ void GameClient::listenForHistories(Player *player)
   player->history_written.connect(sigc::mem_fun(this, &GameClient::onHistoryDone));
 }
 
-void GameClient::clearNetworkActionlist(std::list<NetworkAction*> actions)
+void GameClient::clearNetworkActionlist(std::list<NetworkAction*> &a)
 {
-  for (std::list<NetworkAction*>::iterator it = actions.begin();
-       it != actions.end(); it++)
+  for (std::list<NetworkAction*>::iterator it = a.begin();
+       it != a.end(); it++)
     {
       delete (*it);
     }
-  actions.clear();
+  a.clear();
 }
 
-void GameClient::clearNetworkHistorylist(std::list<NetworkHistory*> histories)
+void GameClient::clearNetworkHistorylist(std::list<NetworkHistory*> &h)
 {
-  for (std::list<NetworkHistory*>::iterator it = histories.begin();
-       it != histories.end(); it++)
+  for (std::list<NetworkHistory*>::iterator it = h.begin();
+       it != h.end(); it++)
     {
       delete (*it);
     }
-  histories.clear();
+  h.clear();
 }
 
 void GameClient::onHistoryDone(NetworkHistory *history)
@@ -313,7 +313,9 @@ void GameClient::sendActions()
 
   for (std::list<NetworkAction *>::iterator i = actions.begin(),
        end = actions.end(); i != end; ++i)
-    (**i).save(&helper);
+    {
+      (*i)->save(&helper);
+    }
 
   helper.closeTag();
 

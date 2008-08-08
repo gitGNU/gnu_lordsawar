@@ -106,8 +106,8 @@ private:
   void onGotMessage(void *conn, MessageType type, std::string message);
   void onConnectionLost(void *conn);
   void onConnectionMade(void *conn);
-  void clearNetworkActionlist(std::list<NetworkAction*> actions);
-  void clearNetworkHistorylist(std::list<NetworkHistory*> histories);
+  void clearNetworkActionlist(std::list<NetworkAction*> &actions);
+  void clearNetworkHistorylist(std::list<NetworkHistory*> &histories);
   bool dumpActionsAndHistories(XML_Helper *helper);
   bool dumpActionsAndHistories(XML_Helper *helper, Player *player);
 

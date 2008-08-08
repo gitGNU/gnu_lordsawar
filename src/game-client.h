@@ -75,12 +75,12 @@ private:
   void listenForActions(Player *player);
   void onActionDone(NetworkAction *action);
   void sendActions();
-  void clearNetworkActionlist(std::list<NetworkAction*> actions);
+  void clearNetworkActionlist(std::list<NetworkAction*> &actions);
 
   void listenForHistories(Player *player);
   void onHistoryDone(NetworkHistory *history);
   void sendHistories();
-  void clearNetworkHistorylist(std::list<NetworkHistory*> histories);
+  void clearNetworkHistorylist(std::list<NetworkHistory*> &histories);
 
   void gotTurnOrder (std::string payload);
 

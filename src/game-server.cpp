@@ -320,24 +320,24 @@ void GameServer::listenForHistories()
     (*i)->history_written.connect(sigc::mem_fun(this, &GameServer::onHistoryDone));
 }
 
-void GameServer::clearNetworkActionlist(std::list<NetworkAction*> actions)
+void GameServer::clearNetworkActionlist(std::list<NetworkAction*> &a)
 {
-  for (std::list<NetworkAction*>::iterator it = actions.begin();
-       it != actions.end(); it++)
+  for (std::list<NetworkAction*>::iterator it = a.begin();
+       it != a.end(); it++)
     {
       delete (*it);
     }
-  actions.clear();
+  a.clear();
 }
 
-void GameServer::clearNetworkHistorylist(std::list<NetworkHistory*> histories)
+void GameServer::clearNetworkHistorylist(std::list<NetworkHistory*> &h)
 {
-  for (std::list<NetworkHistory*>::iterator it = histories.begin();
-       it != histories.end(); it++)
+  for (std::list<NetworkHistory*>::iterator it = h.begin(); 
+       it != h.end(); it++)
     {
       delete (*it);
     }
-  histories.clear();
+  h.clear();
 }
 
 void GameServer::onActionDone(NetworkAction *action)
@@ -427,6 +427,8 @@ void GameServer::notifySit(Player *player, std::string nickname)
 			   nickname + " assumes control of " + 
 			   player->getName() +".");
     }
+  gotChatMessage("", nickname + " assumes control of " + 
+		 player->getName() +".");
 }
 
 void GameServer::join(void *conn, std::string nickname)
@@ -564,7 +566,8 @@ void GameServer::gotRemoteActions(void *conn, const std::string &payload)
   gotActions(payload);
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
-    network_server->send((*i)->conn, MESSAGE_TYPE_SENDING_ACTIONS, payload);
+    if ((*i)->conn != conn)
+      network_server->send((*i)->conn, MESSAGE_TYPE_SENDING_ACTIONS, payload);
 }
 
 void GameServer::gotRemoteHistory(void *conn, const std::string &payload)
@@ -572,7 +575,8 @@ void GameServer::gotRemoteHistory(void *conn, const std::string &payload)
   gotHistories(payload);
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
-    network_server->send((*i)->conn, MESSAGE_TYPE_SENDING_HISTORY, payload);
+    if ((*i)->conn != conn)
+      network_server->send((*i)->conn, MESSAGE_TYPE_SENDING_HISTORY, payload);
 }
 
 void GameServer::sendMap(Participant *part)

@@ -386,12 +386,18 @@ void GameWindow::init(int width, int height)
 void GameWindow::new_network_game(GameScenario *game_scenario)
 {
   bool success = false;
-  stop_game();
+  //stop_game();
   success = setup_game(game_scenario);
   if (!success)
     return;
   setup_signals(game_scenario);
   game->startGame();
+  while (1)
+    {
+      sleep (1);
+      if (Playerlist::isFinished())
+	break;
+    }
 }
 void GameWindow::new_game(GameScenario *game_scenario)
 {
