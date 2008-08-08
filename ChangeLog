@@ -1,3 +1,8 @@
+2008-08-08  Ben Asselstine
+
+	* game lobby now cycles the turn icon as players move in networked
+	  multiplayer mode.
+
 2008-08-07  Ben Asselstine
 
 	* more multiplayer machinery.
