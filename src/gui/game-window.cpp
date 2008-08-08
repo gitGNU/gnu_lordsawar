@@ -392,12 +392,7 @@ void GameWindow::new_network_game(GameScenario *game_scenario)
     return;
   setup_signals(game_scenario);
   game->startGame();
-  while (1)
-    {
-      sleep (1);
-      if (Playerlist::isFinished())
-	break;
-    }
+  printf ("uh oh!\n");
 }
 void GameWindow::new_game(GameScenario *game_scenario)
 {

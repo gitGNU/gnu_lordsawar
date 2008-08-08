@@ -557,6 +557,7 @@ void GameLobbyDialog::on_player_stands(Player *p, std::string nickname)
 
 void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
 {
+  //fixme, go through the list and stick the sword next to the active player.
   update_scenario_details();
   update_city_map();
 }
