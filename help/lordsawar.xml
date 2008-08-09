@@ -32,7 +32,7 @@ http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 			</affiliation>
 		</author> 
 	</authorgroup> 
-	<releaseinfo> This manual describes version &appversion; of &app;.
+	<releaseinfo> This manual describes version &appversion; of &app; and is licensed under the terms of the GNU Free Documentation License version 1.2.
 	</releaseinfo> 
 	<legalnotice id="feedback"> 
 		<title>Feedback Information</title> 
@@ -631,7 +631,7 @@ Heroes can make special use of the player's battle standard; it can be planted i
 <sect2 id="lordsawar-heroes-exploring ruins">
 	<title>Exploring ruins</title> 
 <para>
-Ruins appear as white dots on the miniature map, and as a grey stone building occupying one tile on the large map screen.  Heroes can visit ruins and explore them; this is accomplished by moving the hero's stack onto the ruin, and clicking the search button.
+Ruins appear as white dots on the miniature map, and as a grey stone building occupying one tile on the large map screen.  Heroes can visit ruins and explore them; this is accomplished by moving the hero's stack onto the ruin, and clicking the search button (the magnifying glass).
 </para>
 <para>
 It is a dangerous thing for a hero to search a ruin!  The hero will likely encounter a monster, and the hero may or may not survive the battle.  Successfully exploring a ruin will yield a treasure to the hero.  The hero will sometimes be rewarded  with gold pieces, sometimes with a magical item, and sometimes with powerful ally army units.
@@ -641,7 +641,7 @@ Once a ruin is explored, it cannot be explored again.
 <sect2 id="lordsawar-heroes-quests">
 	<title>Going on Quests</title> 
 <para>
-Heroes can visit temples and obtain quests.  Temples appear as white dots on the miniature map, and as a brown shrine occupying one tile on the large map screen.  A temple is visited by moving the hero's stack onto the temple and then clicking the search button.
+Heroes can visit temples and obtain quests.  Temples appear as white dots on the miniature map, and as a brown shrine occupying one tile on the large map screen.  A temple is visited by moving the hero's stack onto the temple and then clicking the search button (the magnifying glass).
 </para>
 <para>
 A quest is a mission to complete a particular task in the game.  The hero is well rewarded for completing a quest.  Quests come in many varieties:
@@ -1141,9 +1141,15 @@ After the program is executed, the saved-game file is now ready for the next pla
 <para>
 The game-master notifies all of the players when the game is over, and when a human player is vanquished.
 </para>
+<para>
+One of the disadvantages of playing a game by mail is that players can't watch other players as they move.
+</para>
 </sect2>
 <sect2 id="lordsawar-network-play">
 	<title>Network Play</title> 
+<para>
+Network play allows players to enjoy a game of &app; over the internet.
+</para>
 </sect2>
 </sect1>
 </article>
