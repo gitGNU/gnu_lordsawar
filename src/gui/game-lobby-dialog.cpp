@@ -89,6 +89,7 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
     xml->get_widget("player_treeview", player_treeview);
     player_treeview->get_selection()->signal_changed().connect
           (sigc::mem_fun(*this, &GameLobbyDialog::on_player_selected));
+    //player_treeview->get_selection()->set_mode(Gtk::SELECTION_NONE);
     xml->get_widget("people_treeview", people_treeview);
     people_treeview->property_headers_visible() = true;
     xml->get_widget("play_button", play_button);
@@ -244,13 +245,9 @@ GameLobbyDialog::update_player_details()
 void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
 					 const Glib::ustring &path)
 {
+  Gtk::TreeModel::iterator iter = player_treeview->get_model()->get_iter(path);
   Playerlist *pl = Playerlist::getInstance();
   Player *player;
-  Glib::RefPtr < Gtk::TreeSelection > selection = 
-    player_treeview->get_selection();
-  Gtk::TreeModel::iterator iter = selection->get_selected();
-  if (!selection->count_selected_rows())
-    return;
   //maybe we can't make other ppl stand up
   if ((*iter)[player_columns.sitting] &&
       (*iter)[player_columns.type] == NETWORKED_PLAYER_TYPE && d_has_ops == false)
@@ -291,19 +288,8 @@ void GameLobbyDialog::update_scenario_details()
   s = String::ucompose("%1", Citylist::getInstance()->size());
   cities_label->set_text(s);
 
-  //select the player whose turn it is.
-  int i = 0;
-  Playerlist *pl = Playerlist::getInstance();
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-    {
-      if (*it == pl->getActiveplayer())
-	break;
-      i++;
-    }
-  Gtk::TreeModel::Row row = player_treeview->get_model()->children()[i];
-  player_treeview->get_selection()->select(row);
-
 }
+
 void GameLobbyDialog::set_parent_window(Gtk::Window &parent)
 {
   dialog->set_transient_for(parent);
@@ -380,6 +366,7 @@ void GameLobbyDialog::on_type_edited(const Glib::ustring &path,
 {
   (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.type]
     = new_text;
+  //fixme, make a player->changeType method, and send it as an action
 }
 
 void GameLobbyDialog::cell_data_name(Gtk::CellRenderer *renderer,
@@ -398,11 +385,7 @@ void GameLobbyDialog::on_name_edited(const Glib::ustring &path,
 {
   Playerlist *pl = Playerlist::getInstance();
   Player *player;
-  Glib::RefPtr < Gtk::TreeSelection > selection = 
-    player_treeview->get_selection();
-  Gtk::TreeModel::iterator iter = selection->get_selected();
-  if (!selection->count_selected_rows())
-    return;
+  Gtk::TreeModel::iterator iter = player_treeview->get_model()->get_iter(path);
   if ((*iter)[player_columns.sitting] == false)
     return;
   player = pl->getPlayer((*iter)[player_columns.player_id]);
@@ -448,12 +431,11 @@ void GameLobbyDialog::add_player(const Glib::ustring &type,
       (*i)[player_columns.sitting] = true;
     }
 
-  player_treeview->get_selection()->select(i);
 }
 
 void GameLobbyDialog::on_player_selected()
 {
-  update_buttons();
+
 }
 
 void GameLobbyDialog::on_remote_participant_joins(std::string nickname)
