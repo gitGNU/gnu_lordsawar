@@ -469,6 +469,8 @@ void GameServer::notifyStand(Player *player, std::string nickname)
 			   nickname + " relinquishes control of " + 
 			   player->getName() +".");
     }
+  gotChatMessage("", nickname + " relinquishes control of " + 
+		 player->getName() +".");
 }
 
 bool
