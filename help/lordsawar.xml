@@ -113,9 +113,6 @@ The objective of the game is to conquer all of the cities on the map.  This is a
 <imageobject>
 <imagedata fileref="figures/main_screen.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -130,9 +127,6 @@ Below the mini-map, there are a set of buttons that allow the player to control 
 <imageobject>
 <imagedata fileref="figures/main_screen_buttons.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the control buttons in the &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -149,9 +143,6 @@ Here is what each of the buttons do:
 <imageobject>
 <imagedata fileref="figures/main_screen_move_stack_button.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the move stack button on the &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -166,9 +157,6 @@ Clicking this button causes the stack to travel along it's path.
 <imageobject>
 <imagedata fileref="figures/main_screen_select_next_stack_button.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the select next stack button on the &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -183,9 +171,6 @@ Clicking this button causes the next stack to be selected.
 <imageobject>
 <imagedata fileref="figures/main_screen_park_stack_button.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the park stack button on the &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -200,9 +185,6 @@ Clicking this button causes the stack stop here.  Clicking this button means tha
 <imageobject>
 <imagedata fileref="figures/main_screen_deselect_stack_button.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the deselect stack button on the &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -217,9 +199,6 @@ Clicking this button causes the stack to be deselected.  This stack will be visi
 <imageobject>
 <imagedata fileref="figures/main_screen_center_on_stack_button.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the center-on-stack button on the &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -234,9 +213,6 @@ Clicking this button causes the map to be centered on the selected stack.
 <imageobject>
 <imagedata fileref="figures/main_screen_diplomacy_button.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the diplomacy button on the &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -248,9 +224,6 @@ Clicking this button causes the diplomacy screen to pop up.  When other players 
 <imageobject>
 <imagedata fileref="figures/main_screen_diplomacy_proposed_button.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the diplomacy button on the &app; main window, when other players have made diplomatic proposals towards the player.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -264,9 +237,6 @@ This makes it easy for the player to tell if there are new diplomatic actions to
 <imageobject>
 <imagedata fileref="figures/main_screen_defend_stack_button.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the defend stack button on the &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -281,9 +251,6 @@ Clicking this button causes the stack to go into defend mode.  This will put the
 <imageobject>
 <imagedata fileref="figures/main_screen_stack_search_button.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the stack search button on the &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -306,9 +273,6 @@ When exploring a ruin, the stack must contain a hero.  Exploring a ruin means th
 <imageobject>
 <imagedata fileref="figures/main_screen_move_all_stacks_button.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the move all stacks button on the &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -323,9 +287,6 @@ Clicking this button causes all stacks that have a path set, to travel along the
 <imageobject>
 <imagedata fileref="figures/main_screen_end_turn_button.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the end turn button on the &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -340,9 +301,6 @@ Clicking this button causes the player to end her turn.  This means that the pla
 <imageobject>
 <imagedata fileref="figures/main_screen_move_stack_dir_buttons.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows the direction buttons for stack movement on the &app; main window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -403,9 +361,6 @@ Army units may not move through a foreign city without conquering it first.
 <imageobject>
 <imagedata fileref="figures/city_window.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; city window.  Contains a map, with icons for cities we own.  Contains the city name, it's income the army units it may produce and the one it is currently producing.  It also shows the operations that the player can take; like stop production, buy production, vector, raze and rename.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -484,9 +439,6 @@ Conquering cities is important because it leads to the player winning the game. 
 <imageobject>
 <imagedata fileref="figures/conquer_city.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; enemy city defeated window.  It shows the operations that the player can take; like occupy, pillage, sack, and raze.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -543,9 +495,6 @@ When the player clicks on the buy button in the city screen the following screen
 <imageobject>
 <imagedata fileref="figures/buy_production.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; buy production window.  Contains a list of army unit types that can be purchased.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -575,9 +524,6 @@ When the player right-clicks on an army unit in a stack, the following informati
 <imageobject>
 <imagedata fileref="figures/army_unit_info.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; army unit information.  Contains strength, maximum number of moves, as well as the number of moves left, and the number of gold pieces this unit costs per turn.  Also shown are the terrain capabilities of the army unit.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -643,9 +589,6 @@ The player has some control over how the army units line up for battle: it is ca
 <imageobject>
 <imagedata fileref="figures/fight_order.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; fight order dialog.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -662,9 +605,6 @@ Army units have other capabilities that are not shown when the player right-clic
 <imageobject>
 <imagedata fileref="figures/army_bonus.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; army bonus information.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -763,10 +703,6 @@ Here the yellow player wishes to attack the red player.  The yellow player has s
 <imageobject>
 <imagedata fileref="figures/fight_one_vs_one.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; scenario where one yellow stack is about to attack a red stack.
-They both have one army unit per stack.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -778,10 +714,6 @@ The yellow player commits to the battle by left-clicking on the red army unit wi
 <imageobject>
 <imagedata fileref="figures/fighting_one_vs_one.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; fight window where one yellow stack is attacking a red stack.
-They both have one army unit per stack.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -795,9 +727,6 @@ The battle finishes, and the yellow unit of Orcish Mob fails to kill the unit of
 <imageobject>
 <imagedata fileref="figures/fought_one_vs_one.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; scenario where one red stack remains after a battle with yellow.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -814,9 +743,6 @@ Here the yellow player wishes to attack the red player.  The yellow player has s
 <imageobject>
 <imagedata fileref="figures/fight_city_one_vs_two.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; scenario where one yellow stack is about to attack a red city that contains a stack with 2 army units.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -828,9 +754,6 @@ The yellow player commits to the battle by left-clicking on the red city withe s
 <imageobject>
 <imagedata fileref="figures/fighting_city_one_vs_two.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; fight window where one yellow stack with one army unit is attacking a red stack with two army units.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -844,9 +767,6 @@ The battle finishes, and the yellow unit of Orcish Mob succeeds in killing the f
 <imageobject>
 <imagedata fileref="figures/fought_city_one_vs_two.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; scenario where the yellow player has just captured one of red's cities.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -1026,9 +946,6 @@ Here are the options that are settable at the start of a game:
 <imageobject>
 <imagedata fileref="figures/game_options.png" format="PNG"/>
 </imageobject>
-<textobject>
-Shows &app; game options window.
-</textobject>
 </mediaobject>
 </screenshot>
 </figure>
@@ -1166,6 +1083,12 @@ Load a game.
 <para>Alt+S</para>
 <para>
 Save game.
+</para>
+</listitem>
+<listitem>
+<para>Ctrl+L</para>
+<para>
+Show the game lobby (networked play).
 </para>
 </listitem>
 <listitem>
@@ -1346,6 +1269,12 @@ Show some statistics regarding the player's battle record.
 <para>Alt+E</para>
 <para>
 End the turn.
+</para>
+</listitem>
+<listitem>
+<para>keypad keys</para>
+<para>
+The number keys on the keypad will move the selected stack in the given direction.
 </para>
 </listitem>
 </itemizedlist>
