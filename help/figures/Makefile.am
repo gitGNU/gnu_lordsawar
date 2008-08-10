@@ -19,4 +19,5 @@ help_DATA = city_window.png conquer_city.png buy_production.png \
 	main_screen_stack_search_button.png \
 	main_screen_move_all_stacks_button.png \
 	main_screen_end_turn_button.png \
-	main_screen_move_stack_dir_buttons.png
+	main_screen_move_stack_dir_buttons.png \
+	game_lobby.png

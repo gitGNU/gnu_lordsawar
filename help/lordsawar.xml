@@ -783,7 +783,7 @@ Heroes are special army units that can do fun and interesting things in &app;.  
 <sect2 id="lordsawar-heroes-why-they-rock">
 	<title>Using Heroes to your advantage</title> 
 <para>
-Heroes have a command bonus that gives a strength bonus to all other army units fighting in the hero's stack.  The command bonus increases for more experienced heroes.  It is a good strategy to have other army units to travel with heroes.
+Heroes have a natural command bonus that gives a strength bonus to all other army units fighting in the hero's stack.  The command bonus increases for more experienced heroes.  It is a good strategy to have other army units to travel with heroes.  The command bonus means that all army units in the stack fight with greater strength; the larger command the hero has, the more powerful the other army units in the stack will act in battle.
 </para>
 <para>
 Heroes can increase levels as experience is gained in battle.  When a new level is attained a hero can increase it's strength, it's movement points, or it's sight (when playing a scenario with fog of war).  Powerful heroes are hard to kill, and are often targeted by other players.
@@ -1325,7 +1325,43 @@ One of the disadvantages of playing a game by mail is that players can't watch o
 <sect2 id="lordsawar-network-play">
 	<title>Network Play</title> 
 <para>
-Network play allows players to enjoy a game of &app; over the internet.
+Network play allows players to enjoy a game of &app; over the internet.  Players who play in a network game can watch their opponents move their stacks around the map, and can even chat with their opponents as they do so. 
+</para>
+<para>
+Network play works by having one player start a new game that other players will connect to.  The player who starts the game is said to be on the server.  Before the game starts, the map, number of players and game options are chosen by the player who serving the game.  If the server stops running &app;, or her connection to the internet is temporarily severed, the game will cease to function.  The other players can connect to the server by specifying it's IP address.  These other players are said to be clients of the server.
+<para>
+Common networking problems can arise when clients try to connect to servers.  Often a particular port on a firewall needs to be opened so that communication can be established.  For &app; the port that needs to be opened is 14998.
+</para>
+</para>
+<para>
+Players of a network game can join and leave at any time, but beware that the game stops for everyone if a player is absent and it is their turn to move.
+</para>
+<para>
+After the game server is running, the lobby screen is shown.  Clients also see this screen when they connect to the game server.  Here is what the lobby looks like:
+<figure id="gamelobby-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/game_lobby.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+</para>
+<para>
+The lobby screen has three main portions: the chat window, the seats, and the map.  The figure shows two people (ben and benny) playing a five-sided game with a map that has 71 cities.  Both ben and benny are responsible for playing for two players each, although one of ben's players is a computer player.  It is currently benny's turn to move The Sirians.  Nobody is playing for the Lord Bane player, but that's not a problem because it's not their turn yet.
+<para>
+As clients connect to the server, they appear in the People list of the chat window.  To send a message to all other players, type in a message into the box next to "Send:" and press the Enter key.  As clients leave, their name gets removed from the People list.
+</para>
+<para>
+To play the game, players need to "sit down" at a seat.  This is accomplished by clicking the "Seated" checkbox beside the shield of the player the person wants to play as.  After this happens the player may choose to change their name.  This is accomplished by clicking on "The Sirians" (for example), and typing in a new name and pressing the Enter key.
+</para>
+<para>
+The map portion of the game lobby is there to familiarize the players with the map that this scenario is using.  Players can use this information to choose which seat they will sit down in.  Perhaps there is value in starting in a city that is farther away from human opponents.  The map is not shown when the scenario is using a hidden map.
+</para>
+<para>
+Players can choose to leave this lobby window can stay open for the duration of the game for chatting purposes, or to monitor the availability of opponents.  Other clients who are only observing the game will keep this window open to watch the progress of the game as it unfolds.  Observers will watch the map change, and see the turn indicator cycle through the players, and they can chat with the players about what they see happening in the game.
+</para>
 </para>
 </sect2>
 </sect1>
