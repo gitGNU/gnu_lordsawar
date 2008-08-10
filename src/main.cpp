@@ -45,11 +45,6 @@ int main(int argc, char* argv[])
   initialize_configuration();
 
   setlocale(LC_ALL, Configuration::s_lang.c_str());
-#ifndef __WIN32__
-  bindtextdomain ("lordsawar",PO_PATH);
-#else
-  bindtextdomain ("lordsawar","./locale/");
-#endif
 
   Main kit(argc, argv);
 
