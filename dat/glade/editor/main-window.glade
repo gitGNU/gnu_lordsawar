@@ -248,6 +248,15 @@
 		      <accelerator key="F11" modifiers="0" signal="activate"/>
 		    </widget>
 		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="toggle_tile_graphics_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">_Toggle Tile Graphics</property>
+		      <property name="use_underline">True</property>
+		      <accelerator key="space" modifiers="0" signal="activate"/>
+		    </widget>
+		  </child>
 		</widget>
 	      </child>
 	    </widget>

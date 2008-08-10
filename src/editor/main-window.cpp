@@ -177,6 +177,8 @@ MainWindow::MainWindow()
     
     xml->connect_clicked("fullscreen_menuitem", 
 			 sigc::mem_fun(this, &MainWindow::on_fullscreen_activated));
+    xml->connect_clicked("toggle_tile_graphics_menuitem", 
+			 sigc::mem_fun(this, &MainWindow::on_tile_graphics_toggled));
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
     xml->connect_clicked("smooth_map_menuitem", 
 			 sigc::mem_fun(this, 
@@ -733,6 +735,12 @@ void MainWindow::on_fullscreen_activated()
 	window->fullscreen();
     else
 	window->unfullscreen();
+}
+			 
+void MainWindow::on_tile_graphics_toggled()
+{
+  bigmap->toggleViewStylesOrTypes();
+  bigmap->draw();
 }
 
 void MainWindow::remove_tile_style_buttons()

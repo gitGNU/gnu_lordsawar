@@ -189,6 +189,23 @@ void EditorBigMap::mouse_leave_event()
     draw();
 }
 
+std::vector<Vector<int> > EditorBigMap::get_screen_tiles()
+{
+    // find out which tiles are within bounds
+    std::vector<Vector<int> > tiles;
+
+    for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
+      for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
+	{
+	    Vector<int> tile(x, y);
+	    if (tile.x >= 0 && tile.x < GameMap::getWidth() &&
+		tile.y >= 0 && tile.y < GameMap::getHeight())
+		tiles.push_back(tile);
+	}
+    
+    return tiles;
+}
+
 std::vector<Vector<int> > EditorBigMap::get_cursor_tiles()
 {
     // find out which cursor tiles are within bounds
@@ -217,12 +234,26 @@ void EditorBigMap::after_draw()
     if (pointer == POINTER)
 	return;
     
-    // we need to draw a drawing cursor on the map
-    
-    std::vector<Vector<int> > tiles = get_cursor_tiles();
-
-    // draw each tile
     int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+    std::vector<Vector<int> > tiles;
+
+    if (show_tile_types_instead_of_tile_styles)
+      {
+	tiles = get_screen_tiles();
+	for (std::vector<Vector<int> >::iterator i = tiles.begin(),
+	     end = tiles.end(); i != end; ++i)
+	  {
+	    Vector<int> pos = tile_to_buffer_pos(*i);
+	    SDL_Color tc = GameMap::getInstance()->getTile(*i)->getColor();
+	    const Uint32 color = SDL_MapRGB(buffer->format, tc.r, tc.g, tc.b);
+	    draw_filled_rect(buffer, pos.x, pos.y,
+			     pos.x + tilesize, pos.y + tilesize, color);
+	  }
+      }
+
+    // we need to draw a drawing cursor on the map
+    tiles = get_cursor_tiles();
+    // draw each tile
     for (std::vector<Vector<int> >::iterator i = tiles.begin(),
 	     end = tiles.end(); i != end; ++i)
     {
