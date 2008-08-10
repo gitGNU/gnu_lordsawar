@@ -75,15 +75,13 @@ void TriumphsDialog::run()
 
 Uint32 TriumphsDialog::tally(Player *p, Player::TriumphType type)
 {
+  Playerlist *pl = Playerlist::getInstance();
   Uint32 count = 0;
   if (p == d_player)
     {
       // add up what the other players did to us
-      for (unsigned int i = 0; i < MAX_PLAYERS; i++)
-	{
-	  count += p->getTriumphTally(Playerlist::getInstance()->getPlayer(i), 
-				      type);
-	}
+      for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+	count += p->getTriumphTally(*it, type);
     }
   else
     {
