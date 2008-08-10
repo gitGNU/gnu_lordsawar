@@ -7,6 +7,6 @@ help_DATA = legal.xml \
 
 ## for html publishing install docbook-utils:
 ## cd into this directory
-## $ docbook2html --no-chunks lordsawar.xml
+## $ docbook2html --nochunks lordsawar.xml
 ## cp -r figures lordsawar.html lordsawar-web/lordsawar/manual/0.1.1/
 ## do the necessary cvs adds, and then commit
