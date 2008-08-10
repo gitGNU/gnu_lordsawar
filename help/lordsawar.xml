@@ -105,6 +105,254 @@ Some army units are special Hero units.  Heroes sometimes emerge spontaneously i
 <para>
 The objective of the game is to conquer all of the cities on the map.  This is accomplished by producing army units in cities and making ever more powerful stacks to conquer neighbouring cities.  Strategy is employed to know which city, or player to target next, on the way to total victory.
 </para>
+<sect2 id="lordsawar-main-screen">
+	<title>The Main Screen at a Glance</title> 
+<figure id="mainscreen-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+</sect2>
+<sect2 id="lordsawar-main-screen-buttons">
+	<title>A Closer Look at the Buttons</title> 
+<para>
+Below the mini-map, there are a set of buttons that allow the player to control stacks:
+<figure id="mainscreen-buttons-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_buttons.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the control buttons in the &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+</para>
+
+<para>
+&app; games can contain a large number of stacks, and it's easy to forget about a stack.  These buttons help the player manage large numbers of stacks.
+Here is what each of the buttons do:
+<orderedlist>
+<listitem>
+<figure id="mainscreen-move-stack-button-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_move_stack_button.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the move stack button on the &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+Clicking this button causes the stack to travel along it's path.
+</para>
+</listitem>
+<listitem>
+<figure id="mainscreen-select-next-stack-button-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_select_next_stack_button.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the select next stack button on the &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+Clicking this button causes the next stack to be selected.
+</para>
+</listitem>
+<listitem>
+<figure id="mainscreen-park-stack-button-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_park_stack_button.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the park stack button on the &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+Clicking this button causes the stack stop here.  Clicking this button means that the stack will not be visited again as the player clicks the next-stack button for the duration of this turn.
+</para>
+</listitem>
+<listitem>
+<figure id="mainscreen-deselect-stack-button-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_deselect_stack_button.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the deselect stack button on the &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+Clicking this button causes the stack to be deselected.  This stack will be visited again as the player clicks the "next stack" button.
+</para>
+</listitem>
+<listitem>
+<figure id="mainscreen-center-on-stack-button-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_center_on_stack_button.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the center-on-stack button on the &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+Clicking this button causes the map to be centered on the selected stack.
+</para>
+</listitem>
+<listitem>
+<figure id="mainscreen-diplomacy-button-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_diplomacy_button.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the diplomacy button on the &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+Clicking this button causes the diplomacy screen to pop up.  When other players make diplomatic proposals to you, the diplomacy button looks like this:
+<figure id="mainscreen-diplomacy-proposed-button-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_diplomacy_proposed_button.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the diplomacy button on the &app; main window, when other players have made diplomatic proposals towards the player.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+This makes it easy for the player to tell if there are new diplomatic actions to consider.
+</para>
+</listitem>
+<listitem>
+<figure id="mainscreen-defend-stack-button-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_defend_stack_button.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the defend stack button on the &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+Clicking this button causes the stack to go into defend mode.  This will put the stack into a tent for the next turn.
+</para>
+</listitem>
+<listitem>
+<figure id="mainscreen-stack-search-button-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_stack_search_button.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the stack search button on the &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+<para>
+Clicking this button causes the stack to explore a ruin or temple.  
+</para>
+<para>
+When exploring a temple, the stack needs to be on a tile that has a temple; and clicking this button will cause the stack to be blessed (all army units will receive a bonus of 1 strength point).
+</para>
+<para>
+When exploring a ruin, the stack must contain a hero.  Exploring a ruin means the hero will fight a monster in the ruin, and if successful will be given a reward.
+</para>
+</para>
+</listitem>
+<listitem>
+<figure id="mainscreen-move-all-stacks-button-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_move_all_stacks_button.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the move all stacks button on the &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+Clicking this button causes all stacks that have a path set, to travel along their paths.
+</para>
+</listitem>
+<listitem>
+<figure id="mainscreen-end-turn-button-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_end_turn_button.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the end turn button on the &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+Clicking this button causes the player to end her turn.  This means that the player is finished moving stacks for this turn.
+</para>
+</listitem>
+<listitem>
+<figure id="mainscreen-move-stack-dir-buttons-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_move_stack_dir_buttons.png" format="PNG"/>
+</imageobject>
+<textobject>
+Shows the direction buttons for stack movement on the &app; main window.
+</textobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+Clicking these buttons causes the stack to move in the given direction.  These buttons are tied to the keypad; pressing keys on the keypad activates these buttons.  Often it is preferrable to move stacks by clicking on the map instead of using these movement buttons.
+</para>
+</listitem>
+</orderedlist>
+</para>
+</sect2>
 </sect1>
 
 <!-- ============= Cities ============================== -->
