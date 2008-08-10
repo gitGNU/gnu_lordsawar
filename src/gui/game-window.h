@@ -220,6 +220,7 @@ class GameWindow: public sigc::trackable
     void on_winner_history_activated();
     void on_triumphs_activated();
     void on_help_about_activated();
+    void on_online_help_activated();
 
     void on_message_requested(std::string msg);
     

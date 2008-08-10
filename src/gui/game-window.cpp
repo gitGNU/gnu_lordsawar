@@ -43,6 +43,7 @@
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/alignment.h>
+#include <glib.h>
 
 #include "game-window.h"
 
@@ -302,6 +303,8 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_triumphs_activated));
     xml->connect_clicked("help_about_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_help_about_activated));
+    xml->connect_clicked("online_help_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_online_help_activated));
     d_quick_fights = false;
 }
 
@@ -2728,3 +2731,93 @@ void GameWindow::on_show_lobby_activated()
 {
   show_lobby.emit();
 }
+
+//taken from go-file.c of gnucash 2.0.4
+static char *
+check_program (char const *prog)
+{
+  if (NULL == prog)
+    return NULL;
+  if (g_path_is_absolute (prog)) {
+    if (!g_file_test (prog, G_FILE_TEST_IS_EXECUTABLE))
+      return NULL;
+  } else if (!g_find_program_in_path (prog))
+    return NULL;
+  return g_strdup (prog);
+}
+
+//taken from go-file.c of gnucash 2.0.4
+GError *
+go_url_show (gchar const *url)
+{
+  GError *err = NULL;
+  char *browser = NULL;
+  char *clean_url = NULL;
+
+  /* 1) Check BROWSER env var */
+  browser = check_program (getenv ("BROWSER"));
+
+  if (browser == NULL) {
+    static char const * const browsers[] = {
+      "sensible-browser",	/* debian */
+      "htmlview", /* fedora */
+      "firefox",
+      "epiphany",
+      "mozilla-firebird",
+      "mozilla",
+      "netscape",
+      "konqueror",
+      "xterm -e w3m",
+      "xterm -e lynx",
+      "xterm -e links"
+    };
+    unsigned i;
+    for (i = 0 ; i < G_N_ELEMENTS (browsers) ; i++)
+      if (NULL != (browser = check_program (browsers[i])))
+	break;
+  }
+
+  if (browser != NULL) {
+    gint    argc;
+    gchar **argv = NULL;
+    char   *cmd_line = g_strconcat (browser, " %1", NULL);
+
+    if (g_shell_parse_argv (cmd_line, &argc, &argv, &err)) {
+      /* check for '%1' in an argument and substitute the url
+       * 			 * otherwise append it */
+      gint i;
+      char *tmp;
+
+      for (i = 1 ; i < argc ; i++)
+	if (NULL != (tmp = strstr (argv[i], "%1"))) {
+	  *tmp = '\0';
+	  tmp = g_strconcat (argv[i],
+			     (clean_url != NULL) ? (char const *)clean_url : url,
+			     tmp+2, NULL);
+	  g_free (argv[i]);
+	  argv[i] = tmp;
+	  break;
+	}
+
+      /* there was actually a %1, drop the one we added */
+      if (i != argc-1) {
+	g_free (argv[argc-1]);
+	argv[argc-1] = NULL;
+      }
+      g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH,
+		     NULL, NULL, NULL, &err);
+      g_strfreev (argv);
+    }
+    g_free (cmd_line);
+  }
+  g_free (browser);
+  g_free (clean_url);
+  return err;
+}
+
+void GameWindow::on_online_help_activated()
+{
+  go_url_show ("http://www.nongnu.org/lordsawar/manual/" PACKAGE_VERSION "/lordsawar.html");
+  return;
+}
+
