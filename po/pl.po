@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.3.7\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-10 19:04-0400\n"
+"POT-Creation-Date: 2008-08-11 14:11-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Piotr Cychowski <cycholka@wp.pl>\n"
 "Language-Team: \n"
@@ -671,6 +671,7 @@ msgstr "Zapisz Grê"
 
 #: dat/glade/editor/armyset-window.glade.h:27
 #: dat/glade/editor/tileset-window.glade.h:37
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:5
 #, fuzzy
 msgid "Select A File"
 msgstr "Wybierz przedmiot"
@@ -1022,6 +1023,7 @@ msgstr "Anuluj"
 #: dat/glade/editor/itemlist-dialog.glade.h:16
 #: dat/glade/editor/reward-list-dialog.glade.h:3
 #: dat/glade/editor/tile-preview-dialog.glade.h:2
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:9
 #: dat/glade/city-window.glade.h:7 dat/glade/destination-dialog.glade.h:13
 #: dat/glade/player-died-dialog.glade.h:2 dat/glade/game-over-dialog.glade.h:1
 #: dat/glade/hero-dialog.glade.h:4
@@ -1272,6 +1274,41 @@ msgstr "Informacje o jednostce"
 #, fuzzy
 msgid "Preview Tile"
 msgstr "Wybierz Zestaw Terenów"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Army Unit Selector</b>"
+msgstr "Informacje o jednostce"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:2
+#, fuzzy
+msgid "<b>Preview</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:3
+#, fuzzy
+msgid "Image:"
+msgstr "Przedmiot:"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:4
+#, fuzzy
+msgid "Large"
+msgstr "Cel"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:6
+#, fuzzy
+msgid "Selector Editor"
+msgstr "Edytor Freelords %s"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:7
+#, fuzzy
+msgid "Shieildset:"
+msgstr "Nazwa pliku:"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:8
+#, fuzzy
+msgid "Small"
+msgstr "Trales"
 
 #: dat/glade/army-gains-level-dialog.glade.h:1
 msgid "Army Gained Level"
@@ -1537,7 +1574,7 @@ msgid "Center map on stack"
 msgstr "Wy¶rodkuj ekran na wybranej grupie"
 
 #: dat/glade/game-window.glade.h:4 dat/glade/history-report-dialog.glade.h:1
-#: dat/glade/report-dialog.glade.h:4 src/editor/main-window.cpp:934
+#: dat/glade/report-dialog.glade.h:4 src/editor/main-window.cpp:942
 msgid "City"
 msgstr "Miasto"
 
@@ -1723,7 +1760,7 @@ msgid "Select next stack that can move"
 msgstr "Wybierz nastêpn± grupê która mo¿e siê poruszyæ"
 
 #: dat/glade/game-window.glade.h:47 src/gui/game-window.cpp:1035
-#: src/editor/main-window.cpp:938
+#: src/editor/main-window.cpp:946
 #, fuzzy
 msgid "Signpost"
 msgstr "Opcje"
@@ -2493,11 +2530,11 @@ msgstr ""
 msgid "Unexplored"
 msgstr ""
 
-#: src/GraphicsCache.cpp:725
+#: src/GraphicsCache.cpp:736
 msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
 msgstr "GraphicsCache::getFlagPic: nie dostarczono grupy! Zamykam...\n"
 
-#: src/GraphicsCache.cpp:758
+#: src/GraphicsCache.cpp:769
 #, fuzzy
 msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
 msgstr "GraphicsCache::getFlagPic: nie dostarczono grupy! Zamykam...\n"
@@ -3161,8 +3198,8 @@ msgid "Game was not saved!"
 msgstr "Gra Zapisana"
 
 #: src/gui/game-window.cpp:938 src/editor/armyset-window.cpp:468
-#: src/editor/main-window.cpp:681 src/editor/tileset-window.cpp:548
-#: src/editor/tileset-window.cpp:885
+#: src/editor/main-window.cpp:683 src/editor/tileset-window.cpp:554
+#: src/editor/tileset-window.cpp:891
 #, fuzzy
 msgid "Choose a Name"
 msgstr "Wybierz drogê!"
@@ -3483,8 +3520,8 @@ msgstr ""
 msgid "Could not connect."
 msgstr "Nie uda³o siê wczytaæ mapy "
 
-#: src/gui/driver.cpp:533 src/editor/main-window.cpp:381
-#: src/editor/main-window.cpp:427
+#: src/gui/driver.cpp:533 src/editor/main-window.cpp:383
+#: src/editor/main-window.cpp:429
 msgid "Neutral"
 msgstr "Neutralny"
 
@@ -3540,7 +3577,7 @@ msgstr "bonus"
 msgid "Ruins and Temples"
 msgstr "Zrujnowana ¦wi±tynia"
 
-#: src/gui/ruin-report-dialog.cpp:133 src/editor/main-window.cpp:936
+#: src/gui/ruin-report-dialog.cpp:133 src/editor/main-window.cpp:944
 msgid "Ruin"
 msgstr "Ruiny"
 
@@ -3557,7 +3594,7 @@ msgstr "Tak"
 msgid "No"
 msgstr "Nie"
 
-#: src/gui/ruin-report-dialog.cpp:144 src/editor/main-window.cpp:940
+#: src/gui/ruin-report-dialog.cpp:144 src/editor/main-window.cpp:948
 msgid "Temple"
 msgstr "¦wi±tynia"
 
@@ -3806,40 +3843,40 @@ msgstr "Ruch:"
 msgid "Upkeep"
 msgstr "Utrzymanie:"
 
-#: src/editor/main-window.cpp:370 src/editor/main-window.cpp:465
+#: src/editor/main-window.cpp:372 src/editor/main-window.cpp:467
 msgid "Untitled"
 msgstr ""
 
-#: src/editor/main-window.cpp:370 src/editor/main-window.cpp:465
+#: src/editor/main-window.cpp:372 src/editor/main-window.cpp:467
 #, fuzzy
 msgid "No description"
 msgstr "Opis:"
 
-#: src/editor/main-window.cpp:631
+#: src/editor/main-window.cpp:633
 #, fuzzy
 msgid "Choose Map to Load"
 msgstr "Wybierz Zestaw Terenów"
 
-#: src/editor/main-window.cpp:657
+#: src/editor/main-window.cpp:659
 #, fuzzy
 msgid "Could not load map %1."
 msgstr "Nie uda³o siê wczytaæ mapy "
 
-#: src/editor/main-window.cpp:675 src/editor/main-window.cpp:702
+#: src/editor/main-window.cpp:677 src/editor/main-window.cpp:704
 #, fuzzy
 msgid "Map was not saved!"
 msgstr "Gra Zapisana"
 
-#: src/editor/main-window.cpp:765
+#: src/editor/main-window.cpp:773
 #, fuzzy
 msgid "Auto"
 msgstr "O programie"
 
-#: src/editor/main-window.cpp:910
+#: src/editor/main-window.cpp:918
 msgid "(%1, %2)"
 msgstr ""
 
-#: src/editor/main-window.cpp:932
+#: src/editor/main-window.cpp:940
 msgid "Stack"
 msgstr "Grupa"
 
@@ -3872,12 +3909,12 @@ msgstr "Bezimienny"
 msgid "No Ruin"
 msgstr "Ruiny"
 
-#: src/editor/tileset-window.cpp:469
+#: src/editor/tileset-window.cpp:475
 #, fuzzy
 msgid "Choose an Tileset to Load"
 msgstr "Wybierz Zestaw Terenów"
 
-#: src/editor/tileset-window.cpp:500
+#: src/editor/tileset-window.cpp:506
 #, fuzzy
 msgid "Error, while loading an tileset. Tileset Name: "
 msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
@@ -5040,9 +5077,6 @@ msgstr ""
 #~ msgid "Khan's tomb"
 #~ msgstr "Grobowiec Chana"
 
-#~ msgid "Target"
-#~ msgstr "Cel"
-
 #~ msgid ""
 #~ "The two AI players will treat you as their target and will get extra "
 #~ "advantages on top of that. But you're better than the two of them aren't "
@@ -5783,9 +5817,6 @@ msgstr ""
 
 #~ msgid "-f,      --fullscreen         Fullscreen mode"
 #~ msgstr "-f,     --fullscreen          Tryb pe³noekranowy"
-
-#~ msgid "FreeLords Editor %s"
-#~ msgstr "Edytor Freelords %s"
 
 #~ msgid "New"
 #~ msgstr "Nowe"

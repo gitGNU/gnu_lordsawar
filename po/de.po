@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-10 19:04-0400\n"
+"POT-Creation-Date: 2008-08-11 14:11-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -671,6 +671,7 @@ msgstr "Spiel speichern"
 
 #: dat/glade/editor/armyset-window.glade.h:27
 #: dat/glade/editor/tileset-window.glade.h:37
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:5
 #, fuzzy
 msgid "Select A File"
 msgstr "Wählt ein Artefakt"
@@ -1022,6 +1023,7 @@ msgstr "Abbrechen"
 #: dat/glade/editor/itemlist-dialog.glade.h:16
 #: dat/glade/editor/reward-list-dialog.glade.h:3
 #: dat/glade/editor/tile-preview-dialog.glade.h:2
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:9
 #: dat/glade/city-window.glade.h:7 dat/glade/destination-dialog.glade.h:13
 #: dat/glade/player-died-dialog.glade.h:2 dat/glade/game-over-dialog.glade.h:1
 #: dat/glade/hero-dialog.glade.h:4
@@ -1272,6 +1274,41 @@ msgstr "Einheiteninformation"
 #, fuzzy
 msgid "Preview Tile"
 msgstr "Terraintyp"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Army Unit Selector</b>"
+msgstr "Einheiteninformation"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:2
+#, fuzzy
+msgid "<b>Preview</b>"
+msgstr "Tempel"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:3
+#, fuzzy
+msgid "Image:"
+msgstr "Artefakt:"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:4
+#, fuzzy
+msgid "Large"
+msgstr "Tangier"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:6
+#, fuzzy
+msgid "Selector Editor"
+msgstr "FreeLords Editor %s"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:7
+#, fuzzy
+msgid "Shieildset:"
+msgstr "Dateiname:"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:8
+#, fuzzy
+msgid "Small"
+msgstr "Tlemsen"
 
 #: dat/glade/army-gains-level-dialog.glade.h:1
 msgid "Army Gained Level"
@@ -1534,7 +1571,7 @@ msgid "Center map on stack"
 msgstr "Zentriert auf aktiver Armee"
 
 #: dat/glade/game-window.glade.h:4 dat/glade/history-report-dialog.glade.h:1
-#: dat/glade/report-dialog.glade.h:4 src/editor/main-window.cpp:934
+#: dat/glade/report-dialog.glade.h:4 src/editor/main-window.cpp:942
 msgid "City"
 msgstr "Stadt"
 
@@ -1719,7 +1756,7 @@ msgid "Select next stack that can move"
 msgstr "Wähle nächste Armee mit Bewegungspunkten"
 
 #: dat/glade/game-window.glade.h:47 src/gui/game-window.cpp:1035
-#: src/editor/main-window.cpp:938
+#: src/editor/main-window.cpp:946
 #, fuzzy
 msgid "Signpost"
 msgstr "Optionen"
@@ -2488,11 +2525,11 @@ msgstr ""
 msgid "Unexplored"
 msgstr ""
 
-#: src/GraphicsCache.cpp:725
+#: src/GraphicsCache.cpp:736
 msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
 msgstr "GraphicsCache::getFlagPic keine Armee mitgeliefert! Breche ab...\n"
 
-#: src/GraphicsCache.cpp:758
+#: src/GraphicsCache.cpp:769
 #, fuzzy
 msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
 msgstr "GraphicsCache::getFlagPic keine Armee mitgeliefert! Breche ab...\n"
@@ -3145,8 +3182,8 @@ msgid "Game was not saved!"
 msgstr "Spiel gespeichert."
 
 #: src/gui/game-window.cpp:938 src/editor/armyset-window.cpp:468
-#: src/editor/main-window.cpp:681 src/editor/tileset-window.cpp:548
-#: src/editor/tileset-window.cpp:885
+#: src/editor/main-window.cpp:683 src/editor/tileset-window.cpp:554
+#: src/editor/tileset-window.cpp:891
 #, fuzzy
 msgid "Choose a Name"
 msgstr "Wählt Euer Verhalten!"
@@ -3462,8 +3499,8 @@ msgstr ""
 msgid "Could not connect."
 msgstr "FEHLER: Konnte Karte nicht laden "
 
-#: src/gui/driver.cpp:533 src/editor/main-window.cpp:381
-#: src/editor/main-window.cpp:427
+#: src/gui/driver.cpp:533 src/editor/main-window.cpp:383
+#: src/editor/main-window.cpp:429
 msgid "Neutral"
 msgstr "Neutraler Spieler"
 
@@ -3518,7 +3555,7 @@ msgstr "Bonus"
 msgid "Ruins and Temples"
 msgstr "Zerstörter Tempel"
 
-#: src/gui/ruin-report-dialog.cpp:133 src/editor/main-window.cpp:936
+#: src/gui/ruin-report-dialog.cpp:133 src/editor/main-window.cpp:944
 msgid "Ruin"
 msgstr "Ruine"
 
@@ -3535,7 +3572,7 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
-#: src/gui/ruin-report-dialog.cpp:144 src/editor/main-window.cpp:940
+#: src/gui/ruin-report-dialog.cpp:144 src/editor/main-window.cpp:948
 msgid "Temple"
 msgstr "Tempel"
 
@@ -3778,40 +3815,40 @@ msgstr "Bewegung:"
 msgid "Upkeep"
 msgstr "Unterhalt:"
 
-#: src/editor/main-window.cpp:370 src/editor/main-window.cpp:465
+#: src/editor/main-window.cpp:372 src/editor/main-window.cpp:467
 msgid "Untitled"
 msgstr ""
 
-#: src/editor/main-window.cpp:370 src/editor/main-window.cpp:465
+#: src/editor/main-window.cpp:372 src/editor/main-window.cpp:467
 #, fuzzy
 msgid "No description"
 msgstr "Position:"
 
-#: src/editor/main-window.cpp:631
+#: src/editor/main-window.cpp:633
 #, fuzzy
 msgid "Choose Map to Load"
 msgstr "Terraintyp"
 
-#: src/editor/main-window.cpp:657
+#: src/editor/main-window.cpp:659
 #, fuzzy
 msgid "Could not load map %1."
 msgstr "FEHLER: Konnte Karte nicht laden "
 
-#: src/editor/main-window.cpp:675 src/editor/main-window.cpp:702
+#: src/editor/main-window.cpp:677 src/editor/main-window.cpp:704
 #, fuzzy
 msgid "Map was not saved!"
 msgstr "Spiel gespeichert."
 
-#: src/editor/main-window.cpp:765
+#: src/editor/main-window.cpp:773
 #, fuzzy
 msgid "Auto"
 msgstr "Autoren"
 
-#: src/editor/main-window.cpp:910
+#: src/editor/main-window.cpp:918
 msgid "(%1, %2)"
 msgstr ""
 
-#: src/editor/main-window.cpp:932
+#: src/editor/main-window.cpp:940
 msgid "Stack"
 msgstr "Armee"
 
@@ -3844,12 +3881,12 @@ msgstr "Nichts"
 msgid "No Ruin"
 msgstr "Ruine"
 
-#: src/editor/tileset-window.cpp:469
+#: src/editor/tileset-window.cpp:475
 #, fuzzy
 msgid "Choose an Tileset to Load"
 msgstr "Terraintyp"
 
-#: src/editor/tileset-window.cpp:500
+#: src/editor/tileset-window.cpp:506
 #, fuzzy
 msgid "Error, while loading an tileset. Tileset Name: "
 msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
@@ -4908,10 +4945,6 @@ msgstr ""
 #~ msgstr "Stilles Kloster"
 
 #, fuzzy
-#~ msgid "Target"
-#~ msgstr "Tangier"
-
-#, fuzzy
 #~ msgid "Player Arkadia died."
 #~ msgstr "Spieler Almovarid ist gestorben."
 
@@ -5653,9 +5686,6 @@ msgstr ""
 
 #~ msgid "-f,      --fullscreen         Fullscreen mode"
 #~ msgstr "-f,      --fullscreen         Vollbildmodus"
-
-#~ msgid "FreeLords Editor %s"
-#~ msgstr "FreeLords Editor %s"
 
 #~ msgid "New"
 #~ msgstr "Neu"

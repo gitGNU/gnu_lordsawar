@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-10 19:04-0400\n"
+"POT-Creation-Date: 2008-08-11 14:11-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -582,6 +582,7 @@ msgstr ""
 
 #: dat/glade/editor/armyset-window.glade.h:27
 #: dat/glade/editor/tileset-window.glade.h:37
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:5
 msgid "Select A File"
 msgstr ""
 
@@ -910,6 +911,7 @@ msgstr ""
 #: dat/glade/editor/itemlist-dialog.glade.h:16
 #: dat/glade/editor/reward-list-dialog.glade.h:3
 #: dat/glade/editor/tile-preview-dialog.glade.h:2
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:9
 #: dat/glade/city-window.glade.h:7 dat/glade/destination-dialog.glade.h:13
 #: dat/glade/player-died-dialog.glade.h:2 dat/glade/game-over-dialog.glade.h:1
 #: dat/glade/hero-dialog.glade.h:4
@@ -1129,6 +1131,34 @@ msgstr ""
 
 #: dat/glade/editor/tile-preview-dialog.glade.h:1
 msgid "Preview Tile"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:1
+msgid "<b>Army Unit Selector</b>"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:2
+msgid "<b>Preview</b>"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:3
+msgid "Image:"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:4
+msgid "Large"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:6
+msgid "Selector Editor"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:7
+msgid "Shieildset:"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:8
+msgid "Small"
 msgstr ""
 
 #: dat/glade/army-gains-level-dialog.glade.h:1
@@ -1359,7 +1389,7 @@ msgid "Center map on stack"
 msgstr ""
 
 #: dat/glade/game-window.glade.h:4 dat/glade/history-report-dialog.glade.h:1
-#: dat/glade/report-dialog.glade.h:4 src/editor/main-window.cpp:934
+#: dat/glade/report-dialog.glade.h:4 src/editor/main-window.cpp:942
 msgid "City"
 msgstr ""
 
@@ -1520,7 +1550,7 @@ msgid "Select next stack that can move"
 msgstr ""
 
 #: dat/glade/game-window.glade.h:47 src/gui/game-window.cpp:1035
-#: src/editor/main-window.cpp:938
+#: src/editor/main-window.cpp:946
 msgid "Signpost"
 msgstr ""
 
@@ -2206,11 +2236,11 @@ msgstr ""
 msgid "Unexplored"
 msgstr ""
 
-#: src/GraphicsCache.cpp:725
+#: src/GraphicsCache.cpp:736
 msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
 msgstr ""
 
-#: src/GraphicsCache.cpp:758
+#: src/GraphicsCache.cpp:769
 msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
 msgstr ""
 
@@ -2793,8 +2823,8 @@ msgid "Game was not saved!"
 msgstr ""
 
 #: src/gui/game-window.cpp:938 src/editor/armyset-window.cpp:468
-#: src/editor/main-window.cpp:681 src/editor/tileset-window.cpp:548
-#: src/editor/tileset-window.cpp:885
+#: src/editor/main-window.cpp:683 src/editor/tileset-window.cpp:554
+#: src/editor/tileset-window.cpp:891
 msgid "Choose a Name"
 msgstr ""
 
@@ -3086,8 +3116,8 @@ msgstr ""
 msgid "Could not connect."
 msgstr ""
 
-#: src/gui/driver.cpp:533 src/editor/main-window.cpp:381
-#: src/editor/main-window.cpp:427
+#: src/gui/driver.cpp:533 src/editor/main-window.cpp:383
+#: src/editor/main-window.cpp:429
 msgid "Neutral"
 msgstr ""
 
@@ -3139,7 +3169,7 @@ msgstr ""
 msgid "Ruins and Temples"
 msgstr ""
 
-#: src/gui/ruin-report-dialog.cpp:133 src/editor/main-window.cpp:936
+#: src/gui/ruin-report-dialog.cpp:133 src/editor/main-window.cpp:944
 msgid "Ruin"
 msgstr ""
 
@@ -3155,7 +3185,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/gui/ruin-report-dialog.cpp:144 src/editor/main-window.cpp:940
+#: src/gui/ruin-report-dialog.cpp:144 src/editor/main-window.cpp:948
 msgid "Temple"
 msgstr ""
 
@@ -3362,35 +3392,35 @@ msgstr ""
 msgid "Upkeep"
 msgstr ""
 
-#: src/editor/main-window.cpp:370 src/editor/main-window.cpp:465
+#: src/editor/main-window.cpp:372 src/editor/main-window.cpp:467
 msgid "Untitled"
 msgstr ""
 
-#: src/editor/main-window.cpp:370 src/editor/main-window.cpp:465
+#: src/editor/main-window.cpp:372 src/editor/main-window.cpp:467
 msgid "No description"
 msgstr ""
 
-#: src/editor/main-window.cpp:631
+#: src/editor/main-window.cpp:633
 msgid "Choose Map to Load"
 msgstr ""
 
-#: src/editor/main-window.cpp:657
+#: src/editor/main-window.cpp:659
 msgid "Could not load map %1."
 msgstr ""
 
-#: src/editor/main-window.cpp:675 src/editor/main-window.cpp:702
+#: src/editor/main-window.cpp:677 src/editor/main-window.cpp:704
 msgid "Map was not saved!"
 msgstr ""
 
-#: src/editor/main-window.cpp:765
+#: src/editor/main-window.cpp:773
 msgid "Auto"
 msgstr ""
 
-#: src/editor/main-window.cpp:910
+#: src/editor/main-window.cpp:918
 msgid "(%1, %2)"
 msgstr ""
 
-#: src/editor/main-window.cpp:932
+#: src/editor/main-window.cpp:940
 msgid "Stack"
 msgstr ""
 
@@ -3418,11 +3448,11 @@ msgstr ""
 msgid "No Ruin"
 msgstr ""
 
-#: src/editor/tileset-window.cpp:469
+#: src/editor/tileset-window.cpp:475
 msgid "Choose an Tileset to Load"
 msgstr ""
 
-#: src/editor/tileset-window.cpp:500
+#: src/editor/tileset-window.cpp:506
 msgid "Error, while loading an tileset. Tileset Name: "
 msgstr ""
 

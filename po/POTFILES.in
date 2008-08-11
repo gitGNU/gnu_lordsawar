@@ -25,6 +25,7 @@ dat/glade/editor/select-hidden-ruin-dialog.glade.h
 dat/glade/editor/tileset-window.glade.h
 dat/glade/editor/tileset-info-dialog.glade.h
 dat/glade/editor/tile-preview-dialog.glade.h
+dat/glade/editor/tileset-selector-editor-dialog.glade.h
 dat/glade/army-gains-level-dialog.glade.h
 dat/glade/army-info-window.glade.h
 dat/glade/stack-info-window.glade.h

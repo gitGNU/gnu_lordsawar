@@ -1,9 +1,18 @@
+2008-08-11  Ben Asselstine
+
+	* added stack selector graphic information to the tileset 
+	  configuration file. (tileset configuration file schema changed)
+	* changed the tileset editor to be able to modify and view the stack
+	  selector graphic.  fixes bug #23982.
+
 2008-08-10  Ben Asselstine
 
 	* added "Online Help" menu item in the game window.
 	* improved the user's manual.
 	* fixed bug causing the triumphs report to crash with less than 8
 	  players.
+	* added ability in the scenario editor to toggle tile graphics in the
+	  map display.
 
 2008-08-08  Ben Asselstine
 

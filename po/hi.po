@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.6\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-10 19:04-0400\n"
+"POT-Creation-Date: 2008-08-11 14:11-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: विभू ॠषि <vibhu.rishi@gmail.com>\n"
 "Language-Team: Hindi <vibhu.rishi@gmail.com>\n"
@@ -671,6 +671,7 @@ msgstr "Save as"
 
 #: dat/glade/editor/armyset-window.glade.h:27
 #: dat/glade/editor/tileset-window.glade.h:37
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:5
 #, fuzzy
 msgid "Select A File"
 msgstr "Seleziona un oggetto"
@@ -1022,6 +1023,7 @@ msgstr "Annulla"
 #: dat/glade/editor/itemlist-dialog.glade.h:16
 #: dat/glade/editor/reward-list-dialog.glade.h:3
 #: dat/glade/editor/tile-preview-dialog.glade.h:2
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:9
 #: dat/glade/city-window.glade.h:7 dat/glade/destination-dialog.glade.h:13
 #: dat/glade/player-died-dialog.glade.h:2 dat/glade/game-over-dialog.glade.h:1
 #: dat/glade/hero-dialog.glade.h:4
@@ -1272,6 +1274,41 @@ msgstr "सेना सूचना"
 #, fuzzy
 msgid "Preview Tile"
 msgstr "Choose Tileset"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:1
+#, fuzzy
+msgid "<b>Army Unit Selector</b>"
+msgstr "सेना सूचना"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:2
+#, fuzzy
+msgid "<b>Preview</b>"
+msgstr "मंदिर"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:3
+#, fuzzy
+msgid "Image:"
+msgstr "Oggetto:"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:4
+#, fuzzy
+msgid "Large"
+msgstr "दूरी"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:6
+#, fuzzy
+msgid "Selector Editor"
+msgstr "Editor di Freelords %s"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:7
+#, fuzzy
+msgid "Shieildset:"
+msgstr "Nome del file:"
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:8
+#, fuzzy
+msgid "Small"
+msgstr "मंदिर"
 
 #: dat/glade/army-gains-level-dialog.glade.h:1
 msgid "Army Gained Level"
@@ -1531,7 +1568,7 @@ msgid "Center map on stack"
 msgstr "Centra la finestra sul gruppo di armate"
 
 #: dat/glade/game-window.glade.h:4 dat/glade/history-report-dialog.glade.h:1
-#: dat/glade/report-dialog.glade.h:4 src/editor/main-window.cpp:934
+#: dat/glade/report-dialog.glade.h:4 src/editor/main-window.cpp:942
 msgid "City"
 msgstr "शहर'"
 
@@ -1716,7 +1753,7 @@ msgid "Select next stack that can move"
 msgstr "Seleziona il अगला gruppo di armate che abbia punti movimento"
 
 #: dat/glade/game-window.glade.h:47 src/gui/game-window.cpp:1035
-#: src/editor/main-window.cpp:938
+#: src/editor/main-window.cpp:946
 #, fuzzy
 msgid "Signpost"
 msgstr "Options"
@@ -2486,11 +2523,11 @@ msgstr ""
 msgid "Unexplored"
 msgstr ""
 
-#: src/GraphicsCache.cpp:725
+#: src/GraphicsCache.cpp:736
 msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
 msgstr "GraphicsCache::getFlagPic: nessun gruppo come argomento! Esco...\n"
 
-#: src/GraphicsCache.cpp:758
+#: src/GraphicsCache.cpp:769
 #, fuzzy
 msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
 msgstr "GraphicsCache::getFlagPic: nessun gruppo come argomento! Esco...\n"
@@ -3144,8 +3181,8 @@ msgid "Game was not saved!"
 msgstr "Game Saved."
 
 #: src/gui/game-window.cpp:938 src/editor/armyset-window.cpp:468
-#: src/editor/main-window.cpp:681 src/editor/tileset-window.cpp:548
-#: src/editor/tileset-window.cpp:885
+#: src/editor/main-window.cpp:683 src/editor/tileset-window.cpp:554
+#: src/editor/tileset-window.cpp:891
 #, fuzzy
 msgid "Choose a Name"
 msgstr "Scgli la tua strada1"
@@ -3460,8 +3497,8 @@ msgstr ""
 msgid "Could not connect."
 msgstr "Non ho potuto creare la mappa "
 
-#: src/gui/driver.cpp:533 src/editor/main-window.cpp:381
-#: src/editor/main-window.cpp:427
+#: src/gui/driver.cpp:533 src/editor/main-window.cpp:383
+#: src/editor/main-window.cpp:429
 msgid "Neutral"
 msgstr "Neutral"
 
@@ -3516,7 +3553,7 @@ msgstr "लाभ"
 msgid "Ruins and Temples"
 msgstr "मंदिर"
 
-#: src/gui/ruin-report-dialog.cpp:133 src/editor/main-window.cpp:936
+#: src/gui/ruin-report-dialog.cpp:133 src/editor/main-window.cpp:944
 msgid "Ruin"
 msgstr "Rovina"
 
@@ -3533,7 +3570,7 @@ msgstr "हाँ"
 msgid "No"
 msgstr "नहीं"
 
-#: src/gui/ruin-report-dialog.cpp:144 src/editor/main-window.cpp:940
+#: src/gui/ruin-report-dialog.cpp:144 src/editor/main-window.cpp:948
 msgid "Temple"
 msgstr "मंदिर"
 
@@ -3776,40 +3813,40 @@ msgstr "चाल:"
 msgid "Upkeep"
 msgstr "Upkeep:"
 
-#: src/editor/main-window.cpp:370 src/editor/main-window.cpp:465
+#: src/editor/main-window.cpp:372 src/editor/main-window.cpp:467
 msgid "Untitled"
 msgstr ""
 
-#: src/editor/main-window.cpp:370 src/editor/main-window.cpp:465
+#: src/editor/main-window.cpp:372 src/editor/main-window.cpp:467
 #, fuzzy
 msgid "No description"
 msgstr "Posizione:"
 
-#: src/editor/main-window.cpp:631
+#: src/editor/main-window.cpp:633
 #, fuzzy
 msgid "Choose Map to Load"
 msgstr "Choose Tileset"
 
-#: src/editor/main-window.cpp:657
+#: src/editor/main-window.cpp:659
 #, fuzzy
 msgid "Could not load map %1."
 msgstr "Non ho potuto creare la mappa "
 
-#: src/editor/main-window.cpp:675 src/editor/main-window.cpp:702
+#: src/editor/main-window.cpp:677 src/editor/main-window.cpp:704
 #, fuzzy
 msgid "Map was not saved!"
 msgstr "Game Saved."
 
-#: src/editor/main-window.cpp:765
+#: src/editor/main-window.cpp:773
 #, fuzzy
 msgid "Auto"
 msgstr "बारे"
 
-#: src/editor/main-window.cpp:910
+#: src/editor/main-window.cpp:918
 msgid "(%1, %2)"
 msgstr ""
 
-#: src/editor/main-window.cpp:932
+#: src/editor/main-window.cpp:940
 msgid "Stack"
 msgstr "Gruppo"
 
@@ -3842,12 +3879,12 @@ msgstr "कुछ नही"
 msgid "No Ruin"
 msgstr "Rovina"
 
-#: src/editor/tileset-window.cpp:469
+#: src/editor/tileset-window.cpp:475
 #, fuzzy
 msgid "Choose an Tileset to Load"
 msgstr "Choose Tileset"
 
-#: src/editor/tileset-window.cpp:500
+#: src/editor/tileset-window.cpp:506
 #, fuzzy
 msgid "Error, while loading an tileset. Tileset Name: "
 msgstr "Error, while loading an armyset. Armyset Name:"
@@ -4795,10 +4832,6 @@ msgstr ""
 #~ msgstr "मंदिर"
 
 #, fuzzy
-#~ msgid "Target"
-#~ msgstr "दूरी"
-
-#, fuzzy
 #~ msgid "Player Arkadia died."
 #~ msgstr "Il giocatore %s e' sconfitto."
 
@@ -5544,9 +5577,6 @@ msgstr ""
 
 #~ msgid "-f,      --fullscreen         Fullscreen mode"
 #~ msgstr "-f,      --fullscreen         Fullscreen mode"
-
-#~ msgid "FreeLords Editor %s"
-#~ msgstr "Editor di Freelords %s"
 
 #~ msgid "New"
 #~ msgstr "Nuovo"
