@@ -41,6 +41,7 @@
 #include "tileset-window.h"
 #include "tileset-info-dialog.h"
 #include "tile-preview-dialog.h"
+#include "tileset-selector-editor-dialog.h"
 
 #include "../gui/gtksdl.h"
 #include "../gui/image-helpers.h"
@@ -123,6 +124,9 @@ TileSetWindow::TileSetWindow()
     xml->get_widget("edit_tileset_info_menuitem", edit_tileset_info_menuitem);
     edit_tileset_info_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &TileSetWindow::on_edit_tileset_info_activated));
+    xml->get_widget("army_unit_selector_menuitem", army_unit_selector_menuitem);
+    army_unit_selector_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &TileSetWindow::on_army_unit_selector_activated));
     xml->get_widget("preview_tile_menuitem", preview_tile_menuitem);
     preview_tile_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &TileSetWindow::on_preview_tile_activated));
@@ -211,11 +215,13 @@ TileSetWindow::update_tileset_menuitems()
     {
       save_tileset_as_menuitem->set_sensitive(false);
       save_tileset_menuitem->set_sensitive(false);
+      army_unit_selector_menuitem->set_sensitive(false);
     }
   else
     {
       save_tileset_as_menuitem->set_sensitive(true);
       save_tileset_menuitem->set_sensitive(true);
+      army_unit_selector_menuitem->set_sensitive(true);
     }
 }
 
@@ -1073,4 +1079,10 @@ void TileSetWindow::on_preview_tile_activated()
       TilePreviewDialog d(tile, d_tileset->getTileSize());
       d.run();
     }
+}
+      
+void TileSetWindow::on_army_unit_selector_activated()
+{
+  TilesetSelectorEditorDialog d(d_tileset);
+  d.run();
 }

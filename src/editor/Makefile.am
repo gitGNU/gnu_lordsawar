@@ -69,6 +69,7 @@ tileset-window.cpp tileset-window.h \
 tileset-info-dialog.cpp tileset-info-dialog.h \
 tile-preview-dialog.cpp tile-preview-dialog.h \
 tile-preview-scene.cpp tile-preview-scene.h \
+tileset-selector-editor-dialog.cpp tileset-selector-editor-dialog.h \
 glade-helpers.h
 
 lordsawar_editor_SOURCES = \
@@ -91,7 +92,7 @@ select-item-dialog.cpp select-item-dialog.h \
 select-reward-dialog.cpp select-reward-dialog.h \
 rewardlist-dialog.cpp rewardlist-dialog.h \
 select-hidden-ruin-dialog.cpp select-hidden-ruin-dialog.h \
-RenamableLocation.cpp RenamableLocation.h
+RenamableLocation.cpp RenamableLocation.h 
 
 # NewMapDialog.cpp Bigmap.cpp \
 # Smallmap.cpp MapGenDialog.cpp TempleDialog.cpp \

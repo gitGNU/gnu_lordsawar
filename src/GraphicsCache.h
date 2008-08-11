@@ -22,6 +22,7 @@
 
 #include <string>
 #include <list>
+#include <vector>
 
 #include "player.h"
 #include "defs.h"
@@ -309,6 +310,7 @@ class GraphicsCache
         SDL_Surface* applyMask(SDL_Surface* image, SDL_Surface* mask, const Player* p);
 	static SDL_Surface* applyMask(SDL_Surface* image, SDL_Surface* mask, SDL_Color mask_color, bool isNeutral);
         
+	static bool loadSelectorImages(std::string tileset, std::string filename, Uint32 tilesize, std::vector<SDL_Surface*> &images, std::vector<SDL_Surface *> &masks, int num_frames);
     private:
         GraphicsCache();
         ~GraphicsCache();
@@ -452,6 +454,7 @@ class GraphicsCache
 
         //! Loads the images for the two selectors
         void loadSelectors();
+
         
         //! Loads the images for the production shields
         void loadProdShields();

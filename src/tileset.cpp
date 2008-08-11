@@ -34,9 +34,11 @@ using namespace std;
 #define DEFAULT_TILE_SIZE 40
 	
 Tileset::Tileset(std::string name)
-	: d_name(name), d_dir(""), d_tileSize(DEFAULT_TILE_SIZE)
+	: d_name(name), d_tileSize(DEFAULT_TILE_SIZE), d_dir("")
 {
   d_info = "";
+  d_large_selector = "misc/selector.png";
+  d_small_selector = "misc/small_selector.png";
 }
 
 Tileset::Tileset(XML_Helper *helper)
@@ -44,6 +46,8 @@ Tileset::Tileset(XML_Helper *helper)
     helper->getData(d_name, "name"); 
     helper->getData(d_info, "info");
     helper->getData(d_tileSize, "tilesize");
+    helper->getData(d_large_selector, "large_selector");
+    helper->getData(d_small_selector, "small_selector");
     helper->registerTag("tile", sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag("smallmap", sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag("tilestyle", sigc::mem_fun((*this), &Tileset::loadTile));
@@ -160,6 +164,8 @@ bool Tileset::save(XML_Helper *helper)
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("info", d_info);
   retval &= helper->saveData("tilesize", d_tileSize);
+  retval &= helper->saveData("large_selector", d_large_selector);
+  retval &= helper->saveData("small_selector", d_small_selector);
   for (Tileset::iterator i = begin(); i != end(); ++i)
     retval &= (*i)->save(helper);
   retval &= helper->closeTag();

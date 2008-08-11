@@ -22,7 +22,8 @@ reward-list-dialog.glade \
 select-hidden-ruin-dialog.glade \
 tileset-window.glade \
 tileset-info-dialog.glade \
-tile-preview-dialog.glade
+tile-preview-dialog.glade \
+tileset-selector-editor-dialog.glade
 
 EXTRA_DIST = $(glade_DATA) \
 README \
@@ -46,7 +47,8 @@ reward-list-dialog.glade.h \
 select-hidden-ruin-dialog.glade.h \
 tileset-window.glade.h \
 tileset-info-dialog.glade.h \
-tile-preview-dialog.glade.h
+tile-preview-dialog.glade.h \
+tileset-selector-editor-dialog.glade.h
 
 ##to generate the .h files, run this:
 ##find ./ -name "*.glade"  -exec intltool-extract --type=gettext/glade '{}' \;

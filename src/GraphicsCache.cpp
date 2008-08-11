@@ -202,6 +202,17 @@ GraphicsCache::GraphicsCache()
     loadBridgePics();
     loadCursorPics();
     loadFlags();
+    for (int i = 0; i < SELECTOR_FRAMES; i++)
+      {
+        d_selector[i] = NULL;
+        d_selectormask[i] = NULL;
+      }
+
+    for (int i = 0; i < SMALL_SELECTOR_FRAMES; i++)
+      {
+        d_smallselector[i] = NULL;
+        d_smallselectormask[i] = NULL;
+      }
     loadSelectors();
     loadProdShields();
     loadMoveBonusPics();
@@ -2179,20 +2190,31 @@ void GraphicsCache::loadTowerPics()
 
 }
 
-void GraphicsCache::loadSelectors()
+bool GraphicsCache::loadSelectorImages(std::string tileset, std::string filename, Uint32 size, std::vector<SDL_Surface*> &images, std::vector<SDL_Surface *> &masks, int num_frames)
 {
-  //load the big selector pictures
-  int i;
-  std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
-
   // to build flags, we need these three images as basic blocks
-  SDL_Surface* selpics = File::getTilesetPicture(tileset, "misc/selector.png");
+  SDL_Surface* selpics = File::getTilesetPicture(tileset, filename);
+
+  if (!selpics)
+    return false;
+
+  if (selpics->w != num_frames * size)
+    {
+      SDL_FreeSurface (selpics);
+      return false;
+    }
+
+  if (selpics->h != size * 2)
+    {
+      SDL_FreeSurface (selpics);
+      return false;
+    }
+
   SDL_PixelFormat* fmt = selpics->format;
-  int size = GameMap::getInstance()->getTileset()->getTileSize();
 
   // copy alpha values, don't use them
   SDL_SetAlpha(selpics, 0, 0);
-  for (i = 0; i < SELECTOR_FRAMES; i++)
+  for (int i = 0; i < num_frames; i++)
     {
       SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
 					      fmt->BitsPerPixel, fmt->Rmask, 
@@ -2203,49 +2225,64 @@ void GraphicsCache::loadSelectors()
       selrect.y = 0;
       selrect.w = selrect.h = size;
       SDL_BlitSurface(selpics, &selrect, tmp, 0);
-      d_selector[i] = SDL_DisplayFormatAlpha(tmp);
+      images.push_back (SDL_DisplayFormatAlpha(tmp));
       SDL_FreeSurface(tmp);
 
-      d_selectormask[i] = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32,
+      SDL_Surface *mask = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32,
 					       0xFF000000, 0xFF0000, 0xFF00, 
 					       0xFF);
       selrect.y = size;
-      SDL_BlitSurface(selpics, &selrect, d_selectormask[i], 0);
+      SDL_BlitSurface(selpics, &selrect, mask, 0);
+      masks.push_back(mask);
 
     }
   SDL_FreeSurface(selpics);
+  return true;
+}
 
-  //load the small selector pictures
-  selpics = File::getTilesetPicture(tileset, "misc/small_selector.png");
-  fmt = selpics->format;
-  // copy alpha values, don't use them
-  SDL_SetAlpha(selpics, 0, 0);
-  for (i = 0; i < SMALL_SELECTOR_FRAMES; i++)
+void GraphicsCache::loadSelectors()
+{
+  int i;
+  std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
+  std::string small = GameMap::getInstance()->getTileset()->getSmallSelectorFilename();
+  std::string large = GameMap::getInstance()->getTileset()->getLargeSelectorFilename();
+
+  int size = GameMap::getInstance()->getTileset()->getTileSize();
+  std::vector<SDL_Surface*> images;
+  std::vector<SDL_Surface*> masks;
+  bool success = loadSelectorImages(tileset, large, size, images, masks, SELECTOR_FRAMES);
+  if (!success)
     {
-      SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
-					      fmt->BitsPerPixel, fmt->Rmask, 
-					      fmt->Gmask, fmt->Bmask, 
-					      fmt->Amask);
-      SDL_Rect selrect;
-      selrect.x = i*size;
-      selrect.y = 0;
-      selrect.w = selrect.h = size;
-      SDL_BlitSurface(selpics, &selrect, tmp, 0);
-
-      // convert the surface to screen resolution
-      d_smallselector[i] = SDL_DisplayFormatAlpha(tmp);
-
-      // free the temporary surface
-      SDL_FreeSurface(tmp);
-
-      d_smallselectormask[i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, size, size,
-						    32, 0xFF000000, 0xFF0000,
-						    0xFF00, 0xFF);
-      selrect.y = size;
-      SDL_BlitSurface(selpics, &selrect, d_smallselectormask[i], 0);
-
+      fprintf (stderr,"Selector file %s is malformed\n", large.c_str());
+      exit(1);
     }
-  SDL_FreeSurface(selpics);
+  for (int i = 0; i < SELECTOR_FRAMES; i++)
+    {
+      if (d_selector[i])
+	SDL_FreeSurface(d_selector[i]);
+      d_selector[i] = images[i];
+      if (d_selectormask[i])
+	SDL_FreeSurface(d_selectormask[i]);
+      d_selectormask[i] = masks[i];
+    }
+
+  images.clear();
+  masks.clear();
+  success = loadSelectorImages(tileset, small, size, images, masks, SMALL_SELECTOR_FRAMES);
+  if (!success)
+    {
+      fprintf (stderr,"Selector file %s is malformed\n", small.c_str());
+      exit(1);
+    }
+  for (int i = 0; i < SMALL_SELECTOR_FRAMES; i++)
+    {
+      if (d_smallselector[i])
+	SDL_FreeSurface(d_smallselector[i]);
+      d_smallselector[i] = images[i];
+      if (d_smallselectormask[i])
+	SDL_FreeSurface(d_smallselectormask[i]);
+      d_smallselectormask[i] = masks[i];
+    }
 }
 
 void GraphicsCache::loadProdShields()
