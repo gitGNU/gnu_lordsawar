@@ -56,6 +56,7 @@ liblwgui_a_SOURCES = \
     main.cpp main.h \
     quest-report-dialog.cpp quest-report-dialog.h \
     preferences-dialog.cpp preferences-dialog.h \
+    main-preferences-dialog.cpp main-preferences-dialog.h \
     stack-info-dialog.cpp stack-info-dialog.h \
     splash-window.cpp splash-window.h \
     image-helpers.cpp image-helpers.h \

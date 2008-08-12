@@ -33,6 +33,7 @@ medal-awarded-dialog.glade \
 quest-assigned-dialog.glade \
 quest-expired-dialog.glade \
 preferences-dialog.glade \
+main-preferences-dialog.glade \
 ruinfight-finished-dialog.glade \
 ruinfight-started-dialog.glade \
 ruin-searched-dialog.glade \
@@ -96,6 +97,7 @@ medal-awarded-dialog.glade.h \
 quest-assigned-dialog.glade.h \
 quest-expired-dialog.glade.h \
 preferences-dialog.glade.h \
+main-preferences-dialog.glade.h \
 ruinfight-finished-dialog.glade.h \
 ruinfight-started-dialog.glade.h \
 ruin-searched-dialog.glade.h \

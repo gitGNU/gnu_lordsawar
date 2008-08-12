@@ -44,6 +44,7 @@
 #include "network-game-selector-dialog.h"
 //#include "../netggz.h"
 #include "gtksdl.h"
+#include "main-preferences-dialog.h"
 
 namespace
 {
@@ -96,6 +97,8 @@ SplashWindow::SplashWindow()
 			 sigc::mem_fun(*this, &SplashWindow::on_new_network_game_clicked));
     xml->connect_clicked("new_pbm_game_button",
 			 sigc::mem_fun(*this, &SplashWindow::on_new_pbm_game_clicked));
+    xml->connect_clicked("preferences_button",
+			 sigc::mem_fun(*this, &SplashWindow::on_preferences_clicked));
     Sound::getInstance()->playMusic("intro");
 
     if (Configuration::s_autosave_policy == 1)
@@ -479,4 +482,12 @@ void SplashWindow::on_network_game_created(GameParameters g)
 void SplashWindow::on_pbm_game_created(GameParameters g)
 {
   new_pbm_game_requested.emit(g);
+}
+    
+void SplashWindow::on_preferences_clicked()
+{
+  MainPreferencesDialog d;
+  d.set_parent_window(*window.get());
+  d.run();
+  d.hide();
 }
