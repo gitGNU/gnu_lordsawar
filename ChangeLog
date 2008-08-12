@@ -1,3 +1,8 @@
+2008-08-12  Ben Asselstine
+
+	* added window decorations, and a configuration option to turn them
+	* added preferences dialog off of the main menu.
+
 2008-08-11  Ben Asselstine
 
 	* added stack selector graphic information to the tileset 
