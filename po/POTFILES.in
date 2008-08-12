@@ -167,6 +167,7 @@ src/tileset.cpp
 src/gui/image-helpers.cpp
 src/gui/city-window.cpp
 src/gui/preferences-dialog.cpp
+src/gui/main-preferences-dialog.cpp
 src/gui/quest-completed-dialog.cpp
 src/gui/fight-order-dialog.cpp
 src/gui/triumphs-dialog.cpp
