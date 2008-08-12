@@ -305,43 +305,7 @@ void GameLobbyDialog::hide()
 
 void GameLobbyDialog::show()
 {
-  Playerlist *pl = Playerlist::getInstance();
-
-  if (d_game_scenario->s_hidden_map == false)
-    {
-      citymap->resize();
-      citymap->draw();
-    }
-
   dialog->show_all();
-  people_treeview->remove_all_columns();
-  people_treeview->append_column(_("People"), people_columns.nickname);
-  if (GameServer::getInstance()->isListening() == false)
-    {
-      GameClient::getInstance()->request_seat_manifest();
-      Gtk::TreeIter j = people_list->append();
-      (*j)[people_columns.nickname] = "[" + GameClient::getInstance()->getNickname() + "]";
-    }
-  else
-    {
-      Gtk::TreeIter j = people_list->append();
-      (*j)[people_columns.nickname] = "[" + GameServer::getInstance()->getNickname() + "]";
-      //automatically seat the ai players
-      for (Playerlist::iterator i = pl->begin(), end = pl->end(); i != end; ++i)
-	{
-	  Player *player = *i;
-	  if (player == pl->getNeutral())
-	    continue;
-	  if (player->isDead())
-	    continue;
-	  if (player->getType() == Player::HUMAN)
-	    continue;
-	  if (player->getType() == Player::NETWORKED)
-	    continue;
-
-	  player_sat_down.emit(player);
-	}
-    }
   return;
 }
 
@@ -613,6 +577,42 @@ void GameLobbyDialog::on_reorder_playerlist()
 
 bool GameLobbyDialog::run()
 {
+  Playerlist *pl = Playerlist::getInstance();
+
+  if (d_game_scenario->s_hidden_map == false)
+    {
+      citymap->resize();
+      citymap->draw();
+    }
+
+  people_treeview->remove_all_columns();
+  people_treeview->append_column(_("People"), people_columns.nickname);
+  if (GameServer::getInstance()->isListening() == false)
+    {
+      GameClient::getInstance()->request_seat_manifest();
+      Gtk::TreeIter j = people_list->append();
+      (*j)[people_columns.nickname] = "[" + GameClient::getInstance()->getNickname() + "]";
+    }
+  else
+    {
+      Gtk::TreeIter j = people_list->append();
+      (*j)[people_columns.nickname] = "[" + GameServer::getInstance()->getNickname() + "]";
+      //automatically seat the ai players
+      for (Playerlist::iterator i = pl->begin(), end = pl->end(); i != end; ++i)
+	{
+	  Player *player = *i;
+	  if (player == pl->getNeutral())
+	    continue;
+	  if (player->isDead())
+	    continue;
+	  if (player->getType() == Player::HUMAN)
+	    continue;
+	  if (player->getType() == Player::NETWORKED)
+	    continue;
+
+	  player_sat_down.emit(player);
+	}
+    }
   int response = dialog->run();
   if (response == 1)
     return true;
