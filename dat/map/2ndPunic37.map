@@ -9247,5 +9247,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 		<d_military_advisor>false</d_military_advisor>
 		<d_random_turns>false</d_random_turns>
 		<d_surrender_already_offered>false</d_surrender_already_offered>
+		<d_playmode>GameScenario::HOTSEAT</d_playmode>
+
 	</scenario>
 </lordsawar>

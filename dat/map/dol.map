@@ -9129,5 +9129,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 		<d_military_advisor>false</d_military_advisor>
 		<d_random_turns>false</d_random_turns>
 		<d_surrender_already_offered>false</d_surrender_already_offered>
+		<d_playmode>GameScenario::HOTSEAT</d_playmode>
 	</scenario>
 </lordsawar>
