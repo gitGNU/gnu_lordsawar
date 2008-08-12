@@ -32,8 +32,9 @@
 
 struct SDL_Surface;
 
+#include "decorated.h"
 // dialog for depicting a quest
-class QuestAssignedDialog: public sigc::trackable
+class QuestAssignedDialog: public Decorated
 {
  public:
     QuestAssignedDialog(Hero *hero, Quest *quest);

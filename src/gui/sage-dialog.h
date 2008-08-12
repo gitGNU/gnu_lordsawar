@@ -34,8 +34,10 @@
 
 struct SDL_Surface;
 
+#include "decorated.h"
+
 // dialog for visiting a sage
-class SageDialog: public sigc::trackable
+class SageDialog: public Decorated
 {
  public:
     SageDialog(Player *player, Hero *hero, Ruin *r);

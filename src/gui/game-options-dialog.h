@@ -33,8 +33,9 @@
 
 #include "../game-parameters.h"
 
+#include "decorated.h"
 // dialog for setting game options before the game starts
-class GameOptionsDialog: public sigc::trackable
+class GameOptionsDialog: public Decorated
 {
  public:
     GameOptionsDialog(bool readonly);

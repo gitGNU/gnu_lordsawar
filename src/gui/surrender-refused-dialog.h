@@ -28,8 +28,10 @@
 
 struct SDL_Surface;
 
+#include "decorated.h"
+
 // dialog for showing the refusal of surrender
-class SurrenderRefusedDialog: public sigc::trackable
+class SurrenderRefusedDialog: public Decorated
 {
  public:
     SurrenderRefusedDialog();

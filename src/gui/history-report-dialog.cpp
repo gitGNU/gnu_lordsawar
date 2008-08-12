@@ -48,6 +48,7 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
   Gtk::Dialog *d = 0;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  decorate(dialog.get());
 
   generatePastCitylists();
   generatePastEventlists();
@@ -58,7 +59,7 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
     (sigc::mem_fun(this, &HistoryReportDialog::on_map_changed));
 
   xml->get_widget("turn_scale", turn_scale);
-  dialog->set_title(_("History"));
+  set_title(_("History"));
   turn_scale->set_range(1, past_citylists.size());
   turn_scale->set_value(past_citylists.size());
 
@@ -371,16 +372,16 @@ void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
   switch (history_notebook->get_current_page())
     {
     case CITY:
-      dialog->set_title(_("City History"));
+      set_title(_("City History"));
       break;
     case EVENTS: 
-      dialog->set_title(_("Event History"));
+      set_title(_("Event History"));
       break;
     case GOLD: 
-      dialog->set_title(_("Gold History"));
+      set_title(_("Gold History"));
       break;
     case WINNING:
-      dialog->set_title(_("Winner History"));
+      set_title(_("Winner History"));
       break;
     }
 

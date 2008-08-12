@@ -30,8 +30,9 @@
 #include <SDL.h>
 class Player;
 
+#include "decorated.h"
 // dialog for showing the bonuses that armies have
-class ArmyBonusDialog: public sigc::trackable
+class ArmyBonusDialog: public Decorated
 {
  public:
     ArmyBonusDialog(Player *p);

@@ -29,8 +29,9 @@
 #include <SDL.h>
 class Item;
 
+#include "decorated.h"
 // dialog for showing the bonuses that items have
-class ItemBonusDialog: public sigc::trackable
+class ItemBonusDialog: public Decorated
 {
  public:
     ItemBonusDialog();

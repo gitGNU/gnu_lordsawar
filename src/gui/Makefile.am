@@ -66,7 +66,8 @@ liblwgui_a_SOURCES = \
     game-lobby-dialog.cpp game-lobby-dialog.h \
     network-game-selector-dialog.cpp network-game-selector-dialog.h \
     new-game-progress-window.cpp new-game-progress-window.h \
-    new-network-game-download-window.cpp new-network-game-download-window.h
+    new-network-game-download-window.cpp new-network-game-download-window.h \
+    decorated.cpp decorated.h
 
 INCLUDES = \
    $(GTKMM_CFLAGS) \

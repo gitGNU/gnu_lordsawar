@@ -31,9 +31,10 @@
 
 #include "../vector.h"
 
+#include "decorated.h"
 class Game;
 // dialog for showing sound and game preferences
-class PreferencesDialog: public sigc::trackable
+class PreferencesDialog: public Decorated
 {
  public:
     PreferencesDialog(bool readonly);

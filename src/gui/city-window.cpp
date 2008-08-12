@@ -55,6 +55,9 @@ CityWindow::CityWindow(City *c, bool razing_possible,
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    set_title(c->getName());
     
     xml->get_widget("map_image", map_image);
 
@@ -151,7 +154,7 @@ void CityWindow::run()
 void CityWindow::fill_in_city_info()
 {
     
-    dialog->set_title(city->getName());
+    set_title(city->getName());
 
     // fill in status label
     Glib::ustring s;
@@ -431,6 +434,9 @@ void CityWindow::on_rename_clicked ()
     Gtk::Dialog *d;
     renamexml->get_widget("dialog", d);
     renamedialog.reset(d);
+    Decorated decorator;
+    decorator.decorate(renamedialog.get());
+    decorator.window_closed.connect(sigc::mem_fun(renamedialog.get(), &Gtk::Dialog::hide));
     renamedialog->set_transient_for(*dialog.get());
     
     Glib::ustring s = _("Rename City");
@@ -440,7 +446,7 @@ void CityWindow::on_rename_clicked ()
     Gtk::Entry *e;
     renamexml->get_widget("name_entry", e);
 
-    d->set_title(s);
+    decorator.set_title(s);
     s = _("Type the new name for this city:");
     l->set_text(s);
 
@@ -466,6 +472,9 @@ void CityWindow::on_raze_clicked ()
     Gtk::Dialog *d;
     razexml->get_widget("dialog", d);
     razedialog.reset(d);
+    Decorated decorator;
+    decorator.decorate(razedialog.get());
+    decorator.window_closed.connect(sigc::mem_fun(razedialog.get(), &Gtk::Dialog::hide));
     razedialog->set_transient_for(*dialog.get());
     
     Glib::ustring s = _("Raze City");
@@ -473,7 +482,7 @@ void CityWindow::on_raze_clicked ()
     Gtk::Label *l;
     razexml->get_widget("label", l);
 
-    d->set_title(s);
+    decorator.set_title(s);
     s = String::ucompose(_("Are you sure that you want to raze %1?"), 
                            city->getName());
     s += "\n";

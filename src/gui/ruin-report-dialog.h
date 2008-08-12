@@ -30,9 +30,10 @@
 
 struct SDL_Surface;
 
+#include "decorated.h"
 // dialog for showing all ruins and temples
 // the stack parameter is used as a starting position for showing ruins
-class RuinReportDialog: public sigc::trackable
+class RuinReportDialog: public Decorated
 {
  public:
     RuinReportDialog(Vector<int> pos);

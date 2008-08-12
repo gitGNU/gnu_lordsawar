@@ -47,6 +47,8 @@ TriumphsDialog::TriumphsDialog(Player *player)
   Gtk::Dialog *d = 0;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  decorate(dialog.get());
+  window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
   Gtk::HBox *contents;
   xml->get_widget("outer_hbox", contents);

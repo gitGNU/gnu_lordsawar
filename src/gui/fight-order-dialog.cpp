@@ -43,6 +43,8 @@ FightOrderDialog::FightOrderDialog(Player *theplayer)
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     armies_list = Gtk::ListStore::create(armies_columns);
     xml->get_widget("treeview", armies_treeview);

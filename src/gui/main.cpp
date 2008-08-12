@@ -29,6 +29,8 @@
 
 #include "driver.h"
 #include "../defs.h"
+#include "../File.h"
+#include "../Configuration.h"
 #include "../timing.h"
 
 
@@ -96,6 +98,9 @@ bool Main::iterate_main_loop()
 
 void Main::start_main_loop()
 {
+    if (Configuration::s_decorated)
+      Gtk::RC::add_default_file(File::getMiscFile("gtkrc"));
+
     try
     {
 	impl->driver.reset(new Driver(load_filename));

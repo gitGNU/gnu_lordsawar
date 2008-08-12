@@ -26,9 +26,10 @@
 
 #include "../player.h"
 
+#include "decorated.h"
 //
 //
-class TriumphsDialog: public sigc::trackable
+class TriumphsDialog: public Decorated
 {
  public:
     TriumphsDialog(Player *player);

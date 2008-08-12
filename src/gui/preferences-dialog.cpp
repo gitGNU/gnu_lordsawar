@@ -47,6 +47,8 @@ PreferencesDialog::PreferencesDialog(bool readonly)
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     xml->get_widget("show_turn_popup_checkbutton", show_turn_popup_checkbutton);
     xml->get_widget("play_music_checkbutton", play_music_checkbutton);

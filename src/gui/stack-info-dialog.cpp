@@ -47,6 +47,8 @@ StackInfoDialog::StackInfoDialog(Stack *s)
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     xml->get_widget("stack_table", stack_table);
 

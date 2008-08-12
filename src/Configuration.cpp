@@ -75,6 +75,7 @@ bool Configuration::s_military_advisor = false;
 bool Configuration::s_random_turns = false;
 bool Configuration::s_quick_start = false;
 bool Configuration::s_cusp_of_war = false;
+bool Configuration::s_decorated = true;
 
 Configuration::Configuration()
 {
@@ -149,6 +150,7 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("random_turns", s_random_turns);
     retval &= helper.saveData("quick_start", s_quick_start);
     retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
+    retval &= helper.saveData("decorated", s_decorated);
     retval &= helper.closeTag();
     
     if (!retval)
@@ -281,6 +283,7 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     helper->getData(s_random_turns, "random_turns");
     helper->getData(s_quick_start, "quick_start");
     helper->getData(s_cusp_of_war, "cusp_of_war");
+    helper->getData(s_decorated, "decorated");
     return true;
 }
 

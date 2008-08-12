@@ -42,6 +42,8 @@ LoadScenarioDialog::LoadScenarioDialog()
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     xml->get_widget("name_label", name_label);
     xml->get_widget("description_label", description_label);

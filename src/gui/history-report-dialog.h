@@ -41,9 +41,10 @@ class Citylist;
 
 struct SDL_Surface;
 class Player;
+#include "decorated.h"
 // dialog for showing all ruins and temples
 // the stack parameter is used as a starting position for showing ruins
-class HistoryReportDialog: public sigc::trackable
+class HistoryReportDialog: public Decorated
 {
  public:
     enum HistoryReportType {CITY = 0, EVENTS, GOLD, WINNING};

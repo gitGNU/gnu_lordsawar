@@ -51,6 +51,8 @@ DestinationDialog::DestinationDialog(City *c, bool *see_all)
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     xml->get_widget("map_image", map_image);
     xml->get_widget("see_all_togglebutton", see_all_toggle);
@@ -191,7 +193,7 @@ void DestinationDialog::fill_in_vectoring_info()
   std::list<VectoredUnit*> vectored;
   std::list<VectoredUnit*>::const_iterator it;
   VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-  dialog->set_title(city->getName());
+  set_title(city->getName());
 
   Player *player = city->getOwner();
   unsigned int as = player->getArmyset();

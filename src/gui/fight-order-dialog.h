@@ -31,9 +31,11 @@
 class Stack;
 class Player;
 
+#include "decorated.h"
+
 // dialog for showing and changing the order in which army types fight
 // in battle
-class FightOrderDialog: public sigc::trackable
+class FightOrderDialog: public Decorated
 {
  public:
     FightOrderDialog(Player *player);

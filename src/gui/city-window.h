@@ -32,8 +32,9 @@
 
 class City;
 
+#include "decorated.h"
 // dialog for displaying a friendly city
-class CityWindow: public sigc::trackable
+class CityWindow: public Decorated
 {
  public:
     CityWindow(City *city, bool razing_possible, bool see_opponents_production);

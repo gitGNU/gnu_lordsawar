@@ -32,8 +32,10 @@
 class Player;
 class Hero;
 
+#include "decorated.h"
+
 // dialog for showing hero information
-class HeroLevelsDialog: public sigc::trackable
+class HeroLevelsDialog: public Decorated
 {
  public:
     HeroLevelsDialog(Player *player);

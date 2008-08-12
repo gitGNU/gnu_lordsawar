@@ -47,6 +47,8 @@ HeroLevelsDialog::HeroLevelsDialog(Player *theplayer)
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     heroes_list = Gtk::ListStore::create(heroes_columns);
     xml->get_widget("treeview", heroes_treeview);

@@ -34,9 +34,11 @@
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/box.h>
 #include <gtkmm/checkmenuitem.h>
+#include <gtkmm/menubar.h>
 
 #include "army-info-tip.h"
 #include "stack-info-tip.h"
+#include "decorated.h"
 
 #include "../game-parameters.h"
 #include "../sidebar-stats.h"
@@ -69,7 +71,7 @@ class NextTurn;
   * It has a pane at the bottom with information about the currently selected
   * stack and a pane to the right with the small map, buttons and statistics. 
   */
-class GameWindow: public sigc::trackable
+class GameWindow: public Decorated
 {
  public:
     GameWindow();
@@ -106,6 +108,7 @@ class GameWindow: public sigc::trackable
     std::auto_ptr<Gtk::Window> stack_tip;// tooltip appears over the map
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
+    Gtk::MenuBar *menubar;
     Gtk::CheckMenuItem *fullscreen_menuitem;
     Gtk::MenuItem *load_game_menuitem;
     Gtk::MenuItem *save_game_menuitem;

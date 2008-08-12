@@ -25,8 +25,9 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/button.h>
 
+#include "decorated.h"
 // dialog for joining remote games
-class NetworkGameSelectorDialog: public sigc::trackable
+class NetworkGameSelectorDialog: public Decorated
 {
  public:
     NetworkGameSelectorDialog();

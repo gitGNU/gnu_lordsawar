@@ -38,6 +38,8 @@ ItemBonusDialog::ItemBonusDialog()
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     items_list = Gtk::ListStore::create(items_columns);
     xml->get_widget("treeview", items_treeview);

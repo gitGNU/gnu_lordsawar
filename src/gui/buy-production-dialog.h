@@ -32,8 +32,9 @@
 class Army;
 class City;
 
+#include "decorated.h"
 // dialog for buying a production slot for a city
-class BuyProductionDialog: public sigc::trackable
+class BuyProductionDialog: public Decorated
 {
  public:
     BuyProductionDialog(City *city);

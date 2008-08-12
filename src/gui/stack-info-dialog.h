@@ -34,8 +34,10 @@
 class Stack;
 class Army;
 
+#include "decorated.h"
+
 // dialog for showing hero information
-class StackInfoDialog: public sigc::trackable
+class StackInfoDialog: public Decorated
 {
  public:
     StackInfoDialog(Stack *s);

@@ -30,8 +30,10 @@
 
 struct SDL_Surface;
 
+#include "decorated.h"
+
 // dialog for visiting a sage
-class RuinRewardedDialog: public sigc::trackable
+class RuinRewardedDialog: public Decorated
 {
  public:
     RuinRewardedDialog(Reward_Ruin *reward);

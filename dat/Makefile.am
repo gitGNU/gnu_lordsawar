@@ -7,7 +7,8 @@ lordsawardata_DATA = \
     heronames \
     templenames \
     ruinnames \
-    signposts
+    signposts \
+    gtkrc
 
 lwdesktopdir= $(datadir)/applications
 lwdesktop_DATA= lordsawar.desktop
@@ -25,4 +26,5 @@ EXTRA_DIST = \
     templenames \
     ruinnames \
     signposts \
-    lordsawar.desktop
+    lordsawar.desktop \
+    gtkrc

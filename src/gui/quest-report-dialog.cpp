@@ -44,6 +44,8 @@ QuestReportDialog::QuestReportDialog(Quest *q)
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     xml->get_widget("map_image", map_image);
 
@@ -58,8 +60,8 @@ QuestReportDialog::QuestReportDialog(Quest *q)
 
     if (quest)
       {
-        dialog->set_title(String::ucompose(_("Quest for %1"), 
-                                           quest->getHero()->getName()));
+        set_title(String::ucompose(_("Quest for %1"), 
+				   quest->getHero()->getName()));
 
         s = quest->getDescription();
         s += "\n\n";
@@ -68,7 +70,7 @@ QuestReportDialog::QuestReportDialog(Quest *q)
       }
     else
       {
-        dialog->set_title(_("No Quest"));
+        set_title(_("No Quest"));
         int num = rand() % 3;
         switch (num)
           {

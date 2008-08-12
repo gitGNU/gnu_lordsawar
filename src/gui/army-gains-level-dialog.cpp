@@ -43,6 +43,8 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
     
     Gtk::Image *image;
     xml->get_widget("image", image);
@@ -53,7 +55,7 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
     Glib::ustring s;
     s = String::ucompose(_("%1 has advanced to level %2!"), a->getName(),
 			 a->getLevel() + 1);
-    dialog->set_title(s);
+    set_title(s);
     s += "\n\n";
     s += _("Choose an attribute to improve:");
     label->set_text(s);

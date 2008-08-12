@@ -39,6 +39,8 @@ GameOptionsDialog::GameOptionsDialog(bool readonly)
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     d_readonly = readonly;
     xml->get_widget("difficultoptionstable", difficultoptionstable);

@@ -28,8 +28,9 @@
 
 #include "../army.h"
 
+#include "decorated.h"
 // dialog for choosing what army stat to boost when a level is gained
-class ArmyGainsLevelDialog: public sigc::trackable
+class ArmyGainsLevelDialog: public Decorated
 {
  public:
     ArmyGainsLevelDialog(Army *army, bool show_sight_stat);

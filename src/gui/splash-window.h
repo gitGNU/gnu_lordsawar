@@ -30,6 +30,7 @@
 #include "../game-parameters.h"
 
 
+#include "decorated.h"
 /** The opening window of the game
   * 
   * This is the first window to pop up, where the user selects whether to start
@@ -38,7 +39,7 @@
   * The splash screen is also responsible for launching dialogs in response to
   * the menu choices.
   */
-class SplashWindow: public sigc::trackable
+class SplashWindow: public Decorated
 {
  public:
     SplashWindow();

@@ -47,6 +47,8 @@ SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     rewards_list = Gtk::ListStore::create(rewards_columns);
     xml->get_widget("rewardtreeview", rewards_treeview);
@@ -65,7 +67,7 @@ SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
 
-    dialog->set_title(_("A Sage!"));
+    set_title(_("A Sage!"));
 
     Rewardlist::iterator iter = Rewardlist::getInstance()->begin();
     for (;iter != Rewardlist::getInstance()->end(); iter++)

@@ -45,6 +45,8 @@ RuinRewardedDialog::RuinRewardedDialog(Reward_Ruin *reward)
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     xml->get_widget("map_image", map_image);
 
@@ -56,7 +58,7 @@ RuinRewardedDialog::RuinRewardedDialog(Reward_Ruin *reward)
     xml->get_widget("map_eventbox", map_eventbox);
 
     xml->get_widget("label", label);
-    dialog->set_title(_("A Sage!"));
+    set_title(_("A Sage!"));
 
     d_reward = reward;
 }

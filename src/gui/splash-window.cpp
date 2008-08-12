@@ -67,6 +67,8 @@ SplashWindow::SplashWindow()
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
     window.reset(w);
+    decorate(window.get(), File::getMiscFile("various/back.bmp"));
+    window_closed.connect(sigc::mem_fun(window.get(), &Gtk::Window::hide));
 
     xml->get_widget("sdl_container", sdl_container);
     w->signal_delete_event().connect(

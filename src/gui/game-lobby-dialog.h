@@ -40,6 +40,7 @@
 #include "../GameScenario.h"
 #include "../game-station.h"
 
+#include "decorated.h"
 struct SDL_Surface;
 class NextTurnNetworked;
 
@@ -47,7 +48,7 @@ class Player;
 class NextTurnNetworked;
 
 //! dialog for showing the scenario and who's joined
-class GameLobbyDialog//: public sigc::trackable
+class GameLobbyDialog: public Decorated
 {
  public:
     GameLobbyDialog(GameScenario *game_scenario, 

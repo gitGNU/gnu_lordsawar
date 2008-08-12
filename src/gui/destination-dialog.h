@@ -29,10 +29,11 @@
 
 #include "../vectormap.h"
 
+#include "decorated.h"
 struct SDL_Surface;
 
 // dialog for choosing the destination of the production of a city
-class DestinationDialog: public sigc::trackable
+class DestinationDialog: public Decorated
 {
  public:
     DestinationDialog(City *city, bool *see_all);

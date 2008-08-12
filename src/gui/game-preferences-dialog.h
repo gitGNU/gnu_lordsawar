@@ -39,10 +39,11 @@
 #include <SDL.h>
 #include "game-options-dialog.h"
 
+#include "decorated.h"
 class XML_Helper;
 
 // dialog for choosing parameters for starting a new game
-class GamePreferencesDialog
+class GamePreferencesDialog: public Decorated
 {
  public:
     GamePreferencesDialog();

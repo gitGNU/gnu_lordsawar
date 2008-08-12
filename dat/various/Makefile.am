@@ -36,7 +36,8 @@ various_DATA = \
     castle_icon.png \
     tileset_icon.png \
     parley_offered.png \
-    parley_refused.png
+    parley_refused.png \
+    background.png back.bmp
 
 EXTRA_DIST = \
     README \
@@ -72,4 +73,5 @@ EXTRA_DIST = \
     castle_icon.png \
     tileset_icon.png \
     parley_offered.png \
-    parley_refused.png
+    parley_refused.png \
+    background.png back.bmp

@@ -136,10 +136,15 @@ GameWindow::GameWindow()
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
     window.reset(w);
+    decorate(window.get(), File::getMiscFile("various/back.bmp"));
+    
+    window_closed.connect
+      (sigc::mem_fun(*this, &GameWindow::on_quit_activated));
 
-      w->signal_delete_event().connect
-       (sigc::mem_fun(*this, &GameWindow::on_delete_event));
+    w->signal_delete_event().connect
+      (sigc::mem_fun(*this, &GameWindow::on_delete_event));
 
+    xml->get_widget("menubar", menubar);
     xml->get_widget("sdl_container", sdl_container);
     xml->get_widget("stack_info_box", stack_info_box);
     xml->get_widget("stack_info_container", stack_info_container);
@@ -306,6 +311,30 @@ GameWindow::GameWindow()
     xml->connect_clicked("online_help_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_online_help_activated));
     d_quick_fights = false;
+
+    if (Configuration::s_decorated == true)
+      {
+	//colour the menubar
+	Glib::RefPtr<Gtk::Style> copy;
+	Glib::RefPtr<Gdk::Pixbuf> back;
+	Glib::RefPtr<Gdk::Pixmap> pixmap;
+	Glib::RefPtr<Gdk::Bitmap> bitmap;
+	copy = menubar->get_style()->copy();
+	back = Gdk::Pixbuf::create_from_file
+	  (File::getMiscFile("various/back.bmp"));
+	pixmap = Gdk::Pixmap::create
+	  (window->get_window(), back->get_width(), back->get_height());
+	back->composite_color(back, 0, 0, 
+			      back->get_width(), back->get_height(), 
+			      0.0, 0.0, 1.0, 1.0, Gdk::INTERP_NEAREST, 127, 
+			      0, 0, 64, 0, 0);
+	back->render_pixmap_and_mask(pixmap, bitmap, 10);
+	copy->set_bg_pixmap(Gtk::STATE_NORMAL, pixmap);
+	menubar->set_style(copy);
+      }
+
+
+
 }
 
 GameWindow::~GameWindow()
@@ -973,6 +1002,10 @@ void GameWindow::on_quit_activated()
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+
   dialog->set_transient_for(*window.get());
 
   int response = dialog->run();
@@ -1030,9 +1063,12 @@ void GameWindow::on_signpost_activated()
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
-  dialog->set_title(_("Signpost"));
+  decorator.set_title(_("Signpost"));
 
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
   if (!stack)
@@ -1084,9 +1120,12 @@ void GameWindow::on_disband_activated()
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
-  dialog->set_title(_("Disband"));
+  decorator.set_title(_("Disband"));
 
   Gtk::Label *l;
   xml->get_widget("label", l);
@@ -1113,6 +1152,9 @@ void GameWindow::on_resignation_completed()
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
   dialog->show_all();
@@ -1135,9 +1177,12 @@ void GameWindow::on_resign_activated()
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
-  dialog->set_title(_("Resign"));
+  decorator.set_title(_("Resign"));
 
   Gtk::Label *l;
   xml->get_widget("label", l);
@@ -1343,6 +1388,9 @@ void GameWindow::on_help_about_activated()
   Gtk::AboutDialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
   dialog->set_version(PACKAGE_VERSION);
@@ -1397,6 +1445,9 @@ void GameWindow::on_game_over(Player *winner)
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
   Gtk::Image *image;
@@ -1553,11 +1604,22 @@ void GameWindow::ensure_one_army_button_active()
 
 void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 {
-  cities_stats_label->set_text(String::ucompose("%1", s.cities));
-  gold_stats_label->set_text(String::ucompose("%1", s.gold));
-  income_stats_label->set_text(String::ucompose("%1", s.income));
-  upkeep_stats_label->set_text(String::ucompose("%1", s.upkeep));
-  turn_label->set_text(String::ucompose("Turn %1", s.turns));
+  if (Configuration::s_decorated)
+    {
+      cities_stats_label->set_markup(String::ucompose("<b>%1</b>", s.cities));
+      gold_stats_label->set_markup(String::ucompose("<b>%1</b>", s.gold));
+      income_stats_label->set_markup(String::ucompose("<b>%1</b>", s.income));
+      upkeep_stats_label->set_markup(String::ucompose("<b>%1</b>", s.upkeep));
+      turn_label->set_markup(String::ucompose("<b>Turn %1</b>", s.turns));
+    }
+  else
+    {
+      cities_stats_label->set_markup(String::ucompose("%1", s.cities));
+      gold_stats_label->set_markup(String::ucompose("%1", s.gold));
+      income_stats_label->set_markup(String::ucompose("%1", s.income));
+      upkeep_stats_label->set_markup(String::ucompose("%1", s.upkeep));
+      turn_label->set_markup(String::ucompose("Turn %1", s.turns));
+    }
 }
 
 void GameWindow::on_smallmap_changed(SDL_Surface *map)
@@ -1760,9 +1822,12 @@ void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
-  dialog->set_title(ruin->getName());
+  decorator.set_title(ruin->getName());
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -1809,9 +1874,12 @@ void GameWindow::on_ruinfight_started(Stack *attackers, Stack *defenders)
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
-  dialog->set_title(_("Searching"));
+  decorator.set_title(_("Searching"));
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -1835,12 +1903,15 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
   if (result == Fight::ATTACKER_WON)
-    dialog->set_title(_("Hero Victorious"));
+    decorator.set_title(_("Hero Victorious"));
   else
-    dialog->set_title(_("Hero Defeated"));
+    decorator.set_title(_("Hero Defeated"));
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -1885,9 +1956,12 @@ void GameWindow::on_hero_brings_allies (int numAllies)
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
-  dialog->set_title(_("Hero brings allies!"));
+  decorator.set_title(_("Hero brings allies!"));
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -1945,6 +2019,9 @@ bool GameWindow::on_stack_considers_treachery (Player *me, Stack *stack,
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -1985,9 +2062,12 @@ bool GameWindow::on_temple_searched(bool hasHero, Temple *temple, int blessCount
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
-  dialog->set_title(temple->getName());
+  decorator.set_title(temple->getName());
 
   Gtk::Label *l;
   Gtk::Button *close_button;
@@ -2131,6 +2211,9 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
   Gtk::Image *image;
@@ -2236,9 +2319,12 @@ void GameWindow::on_city_looted (City *city, int gold)
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
-  dialog->set_title(String::ucompose(_("%1 Looted"), city->getName()));
+  decorator.set_title(String::ucompose(_("%1 Looted"), city->getName()));
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2267,9 +2353,12 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
   Gtk::Image *pillaged_army_type_image;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
-  dialog->set_title(String::ucompose(_("Pillaged %1"), city->getName()));
+  decorator.set_title(String::ucompose(_("Pillaged %1"), city->getName()));
 
   Gtk::Label *pillaged_army_type_cost_label;
   xml->get_widget("pillaged_army_type_cost_label", pillaged_army_type_cost_label);
@@ -2319,9 +2408,12 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<Uint32> sacked_t
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
-  dialog->set_title(String::ucompose(_("Sacked %1"), city->getName()));
+  decorator.set_title(String::ucompose(_("Sacked %1"), city->getName()));
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2417,9 +2509,12 @@ void GameWindow::on_city_razed (City *city)
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
-  dialog->set_title(String::ucompose(_("Razed %1"), city->getName()));
+  decorator.set_title(String::ucompose(_("Razed %1"), city->getName()));
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2501,6 +2596,9 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
       dialog.reset(d);
       dialog->set_transient_for(*window.get());
 
+      Decorated decorator;
+      decorator.decorate(dialog.get());
+      decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
       Gtk::Image *image;
       xml->get_widget("image", image);
       image->property_file() = File::getMiscFile("various/ship.png");
@@ -2529,6 +2627,9 @@ void GameWindow::on_medal_awarded_to_army(Army *army)
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
   Gtk::Image *image;
@@ -2571,6 +2672,9 @@ void GameWindow::on_game_loaded(Player *player)
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
   Gtk::Label *label;
@@ -2602,6 +2706,9 @@ void GameWindow::on_quest_expired(Quest *quest)
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
   Gtk::Label *label;
@@ -2660,9 +2767,12 @@ void GameWindow::on_advice_asked(float percent)
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  Decorated decorator;
+  decorator.decorate(dialog.get());
+  decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
   dialog->set_transient_for(*window.get());
 
-  dialog->set_title(_("Advisor!"));
+  decorator.set_title(_("Advisor!"));
 
   Gtk::Label *label;
   xml->get_widget("label", label);

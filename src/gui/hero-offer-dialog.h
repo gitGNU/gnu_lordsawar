@@ -31,10 +31,11 @@
 #include "../player.h"
 #include "../hero.h"
 
+#include "decorated.h"
 struct SDL_Surface;
 
 //! dialog for accepting/rejecting a hero
-class HeroOfferDialog: public sigc::trackable
+class HeroOfferDialog: public Decorated
 {
  public:
     HeroOfferDialog(Player *player, Hero *hero, City *city, int gold);

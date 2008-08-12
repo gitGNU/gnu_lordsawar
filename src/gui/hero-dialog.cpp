@@ -46,7 +46,9 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
-    d->set_title(hero->getName());
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    set_title(hero->getName());
 
     Gtk::Label *hero_label;
     xml->get_widget("hero_label", hero_label);

@@ -33,8 +33,10 @@
 class Hero;
 class Item;
 
+#include "decorated.h"
+
 // dialog for showing info about a hero, esp. about the hero's items
-class HeroDialog: public sigc::trackable
+class HeroDialog: public Decorated
 {
  public:
     HeroDialog(Hero *hero, Vector<int> pos);

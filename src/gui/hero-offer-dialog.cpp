@@ -48,6 +48,9 @@ HeroOfferDialog::HeroOfferDialog(Player *player, Hero *h, City *c, int gold)
     xml->get_widget("dialog", d);
     dialog.reset(d);
 
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+
     xml->get_widget("map_image", map_image);
 
     heromap.reset(new HeroMap(city));
@@ -57,7 +60,7 @@ HeroOfferDialog::HeroOfferDialog(Player *player, Hero *h, City *c, int gold)
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
 
-    dialog->set_title(String::ucompose(_("Hero offer for %1"),
+    set_title(String::ucompose(_("Hero offer for %1"),
 				       player->getName()));
 
     xml->get_widget("hero_image", hero_image);

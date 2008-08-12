@@ -41,9 +41,11 @@ class Action;
 class BarChart;
 struct SDL_Surface;
 
+#include "decorated.h"
+
 //
 //
-class ReportDialog: public sigc::trackable
+class ReportDialog: public Decorated
 {
  public:
     enum ReportType {ARMY = 0, CITY, GOLD, PRODUCTION, WINNING};

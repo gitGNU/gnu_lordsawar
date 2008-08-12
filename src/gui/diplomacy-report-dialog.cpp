@@ -46,6 +46,8 @@ DiplomacyReportDialog::DiplomacyReportDialog(Player *player)
   Gtk::Dialog *d = 0;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  decorate(dialog.get());
+  window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
   xml->get_widget("diplomacy_table", d_table);
 

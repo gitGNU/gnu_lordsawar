@@ -47,6 +47,8 @@ ReportDialog::ReportDialog(Player *player, ReportType type)
   Gtk::Dialog *d = 0;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  decorate(dialog.get());
+  window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
   xml->get_widget("map_image", map_image);
   citymap.reset(new CityMap());
@@ -189,19 +191,19 @@ void ReportDialog::fill_in_info()
   switch (report_notebook->get_current_page())
     {
     case ARMY:
-      dialog->set_title(_("Army Report"));
+      set_title(_("Army Report"));
       break;
     case CITY: 
-      dialog->set_title(_("City Report"));
+      set_title(_("City Report"));
       break;
     case GOLD: 
-      dialog->set_title(_("Gold Report"));
+      set_title(_("Gold Report"));
       break;
     case PRODUCTION:
-      dialog->set_title(_("Production Report"));
+      set_title(_("Production Report"));
       break;
     case WINNING:
-      dialog->set_title(_("Winning Report"));
+      set_title(_("Winning Report"));
       break;
     }
 }

@@ -85,6 +85,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     xml->get_widget("player_treeview", player_treeview);
     player_treeview->get_selection()->signal_changed().connect

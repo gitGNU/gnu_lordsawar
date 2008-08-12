@@ -3,7 +3,6 @@
 #include "../GameScenario.h"
 #include <gtkmm.h>
 
-
 class NewGameProgressWindow : public Gtk::Window, boost::noncopyable
 {
   public:

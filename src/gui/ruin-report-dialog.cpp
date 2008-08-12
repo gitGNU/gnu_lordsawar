@@ -45,6 +45,8 @@ RuinReportDialog::RuinReportDialog(Vector<int> pos)
   Gtk::Dialog *d = 0;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  decorate(dialog.get());
+  window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
   xml->get_widget("map_image", map_image);
 
@@ -74,7 +76,7 @@ RuinReportDialog::RuinReportDialog(Vector<int> pos)
   map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
   map_eventbox->signal_button_press_event().connect(
     sigc::mem_fun(*this, &RuinReportDialog::on_map_mouse_button_event));
-  dialog->set_title(_("Ruins and Temples"));
+  set_title(_("Ruins and Temples"));
 
   xml->get_widget("name_label", name_label);
   xml->get_widget("type_label", type_label);

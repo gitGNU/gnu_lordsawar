@@ -45,6 +45,8 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    decorate(dialog.get());
+    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     xml->get_widget("map_image", map_image);
 
@@ -55,8 +57,8 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
 
-    dialog->set_title(String::ucompose(_("Quest for %1"), 
-                                       quest->getHero()->getName()));
+    set_title(String::ucompose(_("Quest for %1"), 
+			       quest->getHero()->getName()));
 
     xml->get_widget("label", label);
     Glib::ustring s;

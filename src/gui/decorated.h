@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,36 +15,33 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef SURRENDER_DIALOG_H
-#define SURRENDER_DIALOG_H
+#ifndef DECORATED_H
+#define DECORATED_H
 
-#include <memory>
-#include <vector>
+#include <gtkmm/window.h>
+
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/image.h>
-#include <gtkmm/radiobutton.h>
-#include <gtkmm/entry.h>
+#include <sigc++/signal.h>
 
-struct SDL_Surface;
-
-#include "decorated.h"
-
-// dialog for accepting/rejecting surrender from computer players
-class SurrenderDialog: public Decorated
+class Decorated: public sigc::trackable
 {
  public:
-    SurrenderDialog(int numPlayers);
+    Decorated();
+    ~Decorated();
 
-    void set_parent_window(Gtk::Window &parent);
+    void decorate(Gtk::Window *window, std::string background_filename="", int alpha = 255);
 
-    void hide();
-    bool run();
-    
+    void set_title(std::string title);
+
+    sigc::signal<void> window_closed;
+
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    Gtk::Image *image;
+    Gtk::Window *window;
+    Gtk::Label *title;
 
+    bool on_mouse_motion_event(GdkEventMotion *e);
+
+    void on_hide();
 };
 
 #endif

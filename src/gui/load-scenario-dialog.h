@@ -32,8 +32,9 @@
 
 class XML_Helper;
 
+#include "decorated.h"
 // dialog for choosing a scenario
-class LoadScenarioDialog: public sigc::trackable
+class LoadScenarioDialog: public Decorated
 {
  public:
     LoadScenarioDialog();
