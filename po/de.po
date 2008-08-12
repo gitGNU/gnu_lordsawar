@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-12 08:28-0400\n"
+"POT-Creation-Date: 2008-08-12 13:54-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -1030,6 +1030,7 @@ msgstr "Abbrechen"
 #: dat/glade/surrender-refused-dialog.glade.h:2
 #: dat/glade/quest-expired-dialog.glade.h:2
 #: dat/glade/preferences-dialog.glade.h:8
+#: dat/glade/main-preferences-dialog.glade.h:8
 #: dat/glade/game-options-dialog.glade.h:22
 #: dat/glade/stack-info-dialog.glade.h:4 src/gui/game-window.cpp:2106
 #, fuzzy
@@ -1925,31 +1926,41 @@ msgid "Quest Expired"
 msgstr "Missionsbericht"
 
 #: dat/glade/preferences-dialog.glade.h:1
+#: dat/glade/main-preferences-dialog.glade.h:1
 #, fuzzy
 msgid "<b>Game</b>"
 msgstr "Tempel"
 
 #: dat/glade/preferences-dialog.glade.h:3
+#: dat/glade/main-preferences-dialog.glade.h:2
 #, fuzzy
 msgid "<b>Sound</b>"
 msgstr "Produktion kaufen"
 
 #: dat/glade/preferences-dialog.glade.h:4
+#: dat/glade/main-preferences-dialog.glade.h:3
 #, fuzzy
 msgid "<i>Volume:</i>"
 msgstr "Lautstärke:"
 
 #: dat/glade/preferences-dialog.glade.h:5
+#: dat/glade/main-preferences-dialog.glade.h:4
 #, fuzzy
 msgid "Play _music"
 msgstr "Aktiviere Musik"
 
 #: dat/glade/preferences-dialog.glade.h:6
+#: dat/glade/main-preferences-dialog.glade.h:5
 msgid "Preferences"
 msgstr ""
 
 #: dat/glade/preferences-dialog.glade.h:7
+#: dat/glade/main-preferences-dialog.glade.h:6
 msgid "Show popup at beginning of _turn"
+msgstr ""
+
+#: dat/glade/main-preferences-dialog.glade.h:7
+msgid "Show standard window decorations"
 msgstr ""
 
 #: dat/glade/ruinfight-finished-dialog.glade.h:1
@@ -3166,7 +3177,7 @@ msgstr "Verteidigung: %i"
 msgid "Save your Turn file and mail it back"
 msgstr ""
 
-#: src/gui/game-window.cpp:903 src/gui/splash-window.cpp:182
+#: src/gui/game-window.cpp:903 src/gui/splash-window.cpp:185
 #, fuzzy
 msgid "Choose Game to Load"
 msgstr "Terraintyp"
@@ -3576,28 +3587,28 @@ msgstr "Nein"
 msgid "Temple"
 msgstr "Tempel"
 
-#: src/gui/splash-window.cpp:112
+#: src/gui/splash-window.cpp:115
 msgid "Rescue Crashed Game"
 msgstr ""
 
-#: src/gui/splash-window.cpp:257
+#: src/gui/splash-window.cpp:260
 msgid "New Play By Mail game"
 msgstr ""
 
-#: src/gui/splash-window.cpp:307
+#: src/gui/splash-window.cpp:310
 msgid "GGZ initialization failed. Exiting.\n"
 msgstr "GGZ Initialisierung lieferte Fehler. Breche ab.\n"
 
-#: src/gui/splash-window.cpp:325
+#: src/gui/splash-window.cpp:328
 msgid "Play on GGZ"
 msgstr "GGZ-Spiel"
 
-#: src/gui/splash-window.cpp:326
+#: src/gui/splash-window.cpp:329
 #, fuzzy
 msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
 msgstr "FreeLords muss als GGZ client gestartet werden."
 
-#: src/gui/splash-window.cpp:327
+#: src/gui/splash-window.cpp:330
 msgid "OK"
 msgstr "OK"
 
