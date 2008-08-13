@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-13 18:55-0400\n"
+"POT-Creation-Date: 2008-08-13 19:32-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2219,31 +2219,31 @@ msgstr ""
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
 
-#: src/game.cpp:578
+#: src/game.cpp:582
 msgid "%1 (capital city)"
 msgstr ""
 
-#: src/game.cpp:584
+#: src/game.cpp:588
 msgid "Under rule of %1"
 msgstr ""
 
-#: src/game.cpp:587 src/gui/city-window.cpp:170
+#: src/game.cpp:591 src/gui/city-window.cpp:170
 msgid "Income: %1"
 msgstr ""
 
-#: src/game.cpp:589
+#: src/game.cpp:593
 msgid "Defense: %1"
 msgstr ""
 
-#: src/game.cpp:593
+#: src/game.cpp:597
 msgid "Status: razed!"
 msgstr ""
 
-#: src/game.cpp:623
+#: src/game.cpp:627
 msgid "Explored"
 msgstr ""
 
-#: src/game.cpp:626
+#: src/game.cpp:630
 msgid "Unexplored"
 msgstr ""
 

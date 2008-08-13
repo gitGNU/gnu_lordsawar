@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.6\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-13 18:55-0400\n"
+"POT-Creation-Date: 2008-08-13 19:32-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: विभू ॠषि <vibhu.rishi@gmail.com>\n"
 "Language-Team: Hindi <vibhu.rishi@gmail.com>\n"
@@ -2502,35 +2502,35 @@ msgstr ""
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
 
-#: src/game.cpp:578
+#: src/game.cpp:582
 #, fuzzy
 msgid "%1 (capital city)"
 msgstr "जीवनांक' %i"
 
-#: src/game.cpp:584
+#: src/game.cpp:588
 msgid "Under rule of %1"
 msgstr ""
 
-#: src/game.cpp:587 src/gui/city-window.cpp:170
+#: src/game.cpp:591 src/gui/city-window.cpp:170
 #, fuzzy
 msgid "Income: %1"
 msgstr "Oggetto:"
 
-#: src/game.cpp:589
+#: src/game.cpp:593
 #, fuzzy
 msgid "Defense: %1"
 msgstr "बचाव: %i"
 
-#: src/game.cpp:593
+#: src/game.cpp:597
 #, fuzzy
 msgid "Status: razed!"
 msgstr "Stato:"
 
-#: src/game.cpp:623
+#: src/game.cpp:627
 msgid "Explored"
 msgstr ""
 
-#: src/game.cpp:626
+#: src/game.cpp:630
 msgid "Unexplored"
 msgstr ""
 
