@@ -2,6 +2,8 @@
 
 	* fixed turn indicator in the game lobby dialog to cycle properly for
 	  local players.  fixes bug #24057.
+	* now popping up the game lobby dialog when a player is unavailable to
+	  take her turn.
 
 2008-08-12  Ben Asselstine
 
