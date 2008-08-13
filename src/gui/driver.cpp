@@ -747,7 +747,18 @@ void Driver::on_show_lobby_requested()
 void Driver::start_network_game_requested(GameScenario *game_scenario, NextTurnNetworked *next_turn)
 {
   if (game_window.get())
-    game_window->show();
+    {
+      Player *active = Playerlist::getActiveplayer();
+      if (active->getType() == Player::NETWORKED)
+	game_window->show();
+      else
+	{
+	  if (active->hasAlreadyInitializedTurn())
+	    game_window->show();
+	  else
+	    game_window->continue_network_game (next_turn);
+	}
+    }
   else
     {
       init_game_window();
@@ -758,5 +769,6 @@ void Driver::start_network_game_requested(GameScenario *game_scenario, NextTurnN
   
 void Driver::on_player_unavailable(Player *p)
 {
+  game_lobby_dialog->player_is_unavailable(p);
   on_show_lobby_requested();
 }

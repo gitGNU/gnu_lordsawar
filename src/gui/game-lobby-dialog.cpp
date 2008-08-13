@@ -549,7 +549,8 @@ void GameLobbyDialog::on_remote_player_changes_name(Player *p)
 void GameLobbyDialog::on_play_clicked()
 {
   hide();
-  //emit a signal saying to start a network game.
+  //we only get here on the first time play is clicked
+  //otherwise it just shows the form (Driver::start_network_game_requested)
   start_network_game.emit(d_game_scenario, d_next_turn);
 }
 
@@ -659,4 +660,9 @@ bool GameLobbyDialog::run()
     return true;
   else
     return false;
+}
+
+void GameLobbyDialog::player_is_unavailable(Player *p)
+{
+  on_local_player_starts_turn(p);
 }
