@@ -104,6 +104,8 @@ class GameWindow: public Decorated
     sigc::signal<void> sdl_initialized;
     
     Gtk::Window *get_window() const {return window.get();};
+
+    void on_player_replaced(Player *p);
  private:
     std::auto_ptr<Gtk::Window> window;
     std::auto_ptr<Gtk::Window> map_tip;	// tooltip appears over the map

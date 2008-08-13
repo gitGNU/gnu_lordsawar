@@ -49,6 +49,7 @@ class Driver: public sigc::trackable
     std::auto_ptr<NewNetworkGameDownloadWindow> download_window;
     std::string d_load_filename;
     sigc::signal<void, std::string> game_scenario_received;
+    sigc::signal<void, Player*> player_replaced;
 
     void on_new_game_requested(GameParameters g);
     void on_new_remote_network_game_requested(std::string host, unsigned short port, std::string nick);

@@ -207,14 +207,18 @@ Driver::~Driver()
 
 void Driver::on_hosted_player_sat_down(Player *player)
 {
+  Uint32 id = player->getId();
   GameServer *game_server = GameServer::getInstance();
   game_server->sit_down(player);
+  player_replaced.emit(Playerlist::getInstance()->getPlayer(id));
 }
 
 void Driver::on_hosted_player_stood_up(Player *player)
 {
+  Uint32 id = player->getId();
   GameServer *game_server = GameServer::getInstance();
   game_server->stand_up(player);
+  player_replaced.emit(Playerlist::getInstance()->getPlayer(id));
 }
 
 void Driver::on_hosted_player_chat(std::string message)
@@ -762,6 +766,8 @@ void Driver::start_network_game_requested(GameScenario *game_scenario, NextTurnN
   else
     {
       init_game_window();
+      player_replaced.connect
+	(sigc::mem_fun(game_window.get(), &GameWindow::on_player_replaced));
       game_window->show();
       game_window->new_network_game (game_scenario, next_turn);
     }

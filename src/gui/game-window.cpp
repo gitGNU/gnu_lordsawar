@@ -2937,3 +2937,7 @@ void GameWindow::on_online_help_activated()
   return;
 }
 
+void GameWindow::on_player_replaced(Player *p)
+{
+  game->addPlayer(p);
+}
