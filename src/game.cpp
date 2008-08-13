@@ -128,6 +128,10 @@ void Game::addPlayer(Player *p)
       (ruinfight_finished, &sigc::signal<void, Fight::Result>::emit)));
   connections[p->getId()].push_back
     (p->cityfight_finished.connect (sigc::mem_fun(*this, &Game::on_city_fight_finished))); 
+  if (p->getType() == Player::NETWORKED && p == Playerlist::getActiveplayer())
+    lock_inputs();
+  if (p->getType() == Player::HUMAN && p == Playerlist::getActiveplayer())
+    unlock_inputs();
 }
 
 #include "game-server.h"

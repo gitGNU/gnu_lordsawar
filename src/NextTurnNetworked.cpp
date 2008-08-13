@@ -149,6 +149,8 @@ void NextTurnNetworked::startTurn()
   //a shortcut
   Player* p = Playerlist::getActiveplayer();
 
+  if (p->hasAlreadyInitializedTurn())
+    return;
   p->initTurn();
 
   //calculate upkeep and income
