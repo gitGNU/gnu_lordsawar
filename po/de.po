@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-12 13:54-0400\n"
+"POT-Creation-Date: 2008-08-13 13:04-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -1032,7 +1032,7 @@ msgstr "Abbrechen"
 #: dat/glade/preferences-dialog.glade.h:8
 #: dat/glade/main-preferences-dialog.glade.h:8
 #: dat/glade/game-options-dialog.glade.h:22
-#: dat/glade/stack-info-dialog.glade.h:4 src/gui/game-window.cpp:2106
+#: dat/glade/stack-info-dialog.glade.h:4 src/gui/game-window.cpp:2112
 #, fuzzy
 msgid "_Close"
 msgstr "Schließen"
@@ -1586,7 +1586,7 @@ msgstr "Wähle nächste aktive Armee"
 msgid "Diplomacy"
 msgstr "Armeeset"
 
-#: dat/glade/game-window.glade.h:7 src/gui/game-window.cpp:1128
+#: dat/glade/game-window.glade.h:7 src/gui/game-window.cpp:1134
 #, fuzzy
 msgid "Disband"
 msgstr "Lissabon"
@@ -1727,7 +1727,7 @@ msgstr "Beenden"
 msgid "Reports"
 msgstr "Reports"
 
-#: dat/glade/game-window.glade.h:40 src/gui/game-window.cpp:1185
+#: dat/glade/game-window.glade.h:40 src/gui/game-window.cpp:1191
 #, fuzzy
 msgid "Resign"
 msgstr "Ruine"
@@ -1756,7 +1756,7 @@ msgstr "Betreten von Ruine oder Tempel"
 msgid "Select next stack that can move"
 msgstr "Wähle nächste Armee mit Bewegungspunkten"
 
-#: dat/glade/game-window.glade.h:47 src/gui/game-window.cpp:1071
+#: dat/glade/game-window.glade.h:47 src/gui/game-window.cpp:1077
 #: src/editor/main-window.cpp:946
 #, fuzzy
 msgid "Signpost"
@@ -2380,7 +2380,7 @@ msgstr ""
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:574 src/gui/driver.cpp:633
+#: src/GameScenario.cpp:574 src/gui/driver.cpp:635
 #, fuzzy
 msgid "Error: "
 msgstr "Fehler"
@@ -3163,367 +3163,367 @@ msgstr "Artefakt:"
 msgid "Command: %1"
 msgstr "Kommentar:"
 
-#: src/gui/hero-dialog.cpp:240 src/gui/game-window.cpp:2646
+#: src/gui/hero-dialog.cpp:240 src/gui/game-window.cpp:2652
 #, fuzzy
 msgid "Level: %1"
 msgstr "Stufe:"
 
-#: src/gui/hero-dialog.cpp:242 src/gui/game-window.cpp:2644
+#: src/gui/hero-dialog.cpp:242 src/gui/game-window.cpp:2650
 #, fuzzy
 msgid "Experience: %1"
 msgstr "Verteidigung: %i"
 
-#: src/gui/game-window.cpp:754
+#: src/gui/game-window.cpp:760
 msgid "Save your Turn file and mail it back"
 msgstr ""
 
-#: src/gui/game-window.cpp:903 src/gui/splash-window.cpp:185
+#: src/gui/game-window.cpp:909 src/gui/splash-window.cpp:185
 #, fuzzy
 msgid "Choose Game to Load"
 msgstr "Terraintyp"
 
-#: src/gui/game-window.cpp:928 src/gui/driver.cpp:257 src/gui/driver.cpp:414
-#: src/gui/driver.cpp:578 src/gui/driver.cpp:597
+#: src/gui/game-window.cpp:934 src/gui/driver.cpp:257 src/gui/driver.cpp:416
+#: src/gui/driver.cpp:580 src/gui/driver.cpp:599
 msgid "Corrupted saved game file."
 msgstr ""
 
-#: src/gui/game-window.cpp:960
+#: src/gui/game-window.cpp:966
 #, fuzzy
 msgid "Game was not saved!"
 msgstr "Spiel gespeichert."
 
-#: src/gui/game-window.cpp:967 src/editor/armyset-window.cpp:468
+#: src/gui/game-window.cpp:973 src/editor/armyset-window.cpp:468
 #: src/editor/main-window.cpp:683 src/editor/tileset-window.cpp:554
 #: src/editor/tileset-window.cpp:891
 #, fuzzy
 msgid "Choose a Name"
 msgstr "Wählt Euer Verhalten!"
 
-#: src/gui/game-window.cpp:992
+#: src/gui/game-window.cpp:998
 #, fuzzy
 msgid "Error saving game!"
 msgstr "Fehler beim Speichern. Spiel nicht gespeichert."
 
-#: src/gui/game-window.cpp:1081
+#: src/gui/game-window.cpp:1087
 msgid "Change the message on this sign:"
 msgstr ""
 
-#: src/gui/game-window.cpp:1133
+#: src/gui/game-window.cpp:1139
 #, fuzzy
 msgid "Are you sure you want to disband this group?"
 msgstr "Möchtest du wirklich diese Produktion entfernen?"
 
-#: src/gui/game-window.cpp:1190
+#: src/gui/game-window.cpp:1196
 #, fuzzy
 msgid "Are you sure you want to resign?"
 msgstr "Soll dieses Ereignis wirklich entfernt werden?"
 
-#: src/gui/game-window.cpp:1465
+#: src/gui/game-window.cpp:1471
 msgid "Congratulations to %1 for conquering the world!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1482
+#: src/gui/game-window.cpp:1488
 msgid "The rule of %1 has permanently ended!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1488
+#: src/gui/game-window.cpp:1494
 msgid "No further human resistance is possible"
 msgstr ""
 
-#: src/gui/game-window.cpp:1490
+#: src/gui/game-window.cpp:1496
 msgid "but the battle will continue!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1492
+#: src/gui/game-window.cpp:1498
 msgid "Press `CTRL-P' to stop the war"
 msgstr ""
 
-#: src/gui/game-window.cpp:1494
+#: src/gui/game-window.cpp:1500
 msgid "and visit the sites of thy old battles."
 msgstr ""
 
-#: src/gui/game-window.cpp:1837
+#: src/gui/game-window.cpp:1843
 msgid "%1 finds "
 msgstr ""
 
-#: src/gui/game-window.cpp:1841
+#: src/gui/game-window.cpp:1847
 #, fuzzy
 msgid "%1 gold pieces."
 msgstr "und %i Goldstück gefunden!"
 
-#: src/gui/game-window.cpp:1846
+#: src/gui/game-window.cpp:1852
 #, fuzzy
 msgid "%1 allies!"
 msgstr "Algier"
 
-#: src/gui/game-window.cpp:1851
+#: src/gui/game-window.cpp:1857
 #, fuzzy
 msgid "the %1!"
 msgstr "Artefakt:"
 
-#: src/gui/game-window.cpp:1856
+#: src/gui/game-window.cpp:1862
 #, fuzzy
 msgid "a map!"
 msgstr "Karte laden"
 
-#: src/gui/game-window.cpp:1882
+#: src/gui/game-window.cpp:1888
 #, fuzzy
 msgid "Searching"
 msgstr "Durchsucht:"
 
-#: src/gui/game-window.cpp:1912
+#: src/gui/game-window.cpp:1918
 msgid "Hero Victorious"
 msgstr ""
 
-#: src/gui/game-window.cpp:1914
+#: src/gui/game-window.cpp:1920
 #, fuzzy
 msgid "Hero Defeated"
 msgstr "Stadt unterworfen"
 
-#: src/gui/game-window.cpp:1921
+#: src/gui/game-window.cpp:1927
 msgid "...and is victorious!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1923
+#: src/gui/game-window.cpp:1929
 msgid "...and is slain by it!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1964
+#: src/gui/game-window.cpp:1970
 msgid "Hero brings allies!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1970
+#: src/gui/game-window.cpp:1976
 msgid "The hero brings %1 ally!"
 msgid_plural "The hero brings %1 allies!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/game-window.cpp:2001
+#: src/gui/game-window.cpp:2007
 msgid "You graciously and benevolently accept their offer."
 msgstr ""
 
-#: src/gui/game-window.cpp:2029
+#: src/gui/game-window.cpp:2035
 #, fuzzy
 msgid "Are you sure you want to attack %1?"
 msgstr "Soll dieses Ereignis wirklich entfernt werden?"
 
-#: src/gui/game-window.cpp:2032
+#: src/gui/game-window.cpp:2038
 msgid "Other players may not like this!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2086
+#: src/gui/game-window.cpp:2092
 #, fuzzy
 msgid "%1 army has been blessed!"
 msgid_plural "%1 armies have been blessed!"
 msgstr[0] "Eure Einheiten wurden gesegnet."
 msgstr[1] "Eure Einheiten wurden gesegnet."
 
-#: src/gui/game-window.cpp:2089
+#: src/gui/game-window.cpp:2095
 msgid "We have already blessed thee!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2092
+#: src/gui/game-window.cpp:2098
 #, fuzzy
 msgid "Seek more blessings in far temples!"
 msgstr "Betreten von Ruine oder Tempel"
 
-#: src/gui/game-window.cpp:2097
+#: src/gui/game-window.cpp:2103
 msgid "Do you seek a quest?"
 msgstr ""
 
-#: src/gui/game-window.cpp:2240
+#: src/gui/game-window.cpp:2246
 msgid "%1, you have triumphed in the battle of %2."
 msgstr ""
 
-#: src/gui/game-window.cpp:2241
+#: src/gui/game-window.cpp:2247
 msgid "%1, you have claimed victory in the battle of %2."
 msgstr ""
 
-#: src/gui/game-window.cpp:2242
+#: src/gui/game-window.cpp:2248
 msgid "%1, you have shown no mercy in the battle of %2."
 msgstr ""
 
-#: src/gui/game-window.cpp:2243
+#: src/gui/game-window.cpp:2249
 msgid "%1, you have slain the foe in the battle of %2."
 msgstr ""
 
-#: src/gui/game-window.cpp:2327
+#: src/gui/game-window.cpp:2333
 msgid "%1 Looted"
 msgstr ""
 
-#: src/gui/game-window.cpp:2334
+#: src/gui/game-window.cpp:2340
 #, fuzzy
 msgid "Your armies loot %1 gold piece."
 msgid_plural "Your armies loot %1 gold pieces."
 msgstr[0] "Du wurdest mit %i Goldstück belohnt!"
 msgstr[1] "Du wurdest mit %i Goldstücken belohnt!"
 
-#: src/gui/game-window.cpp:2361
+#: src/gui/game-window.cpp:2367
 #, fuzzy
 msgid "Pillaged %1"
 msgstr "Plündern"
 
-#: src/gui/game-window.cpp:2388
+#: src/gui/game-window.cpp:2394
 msgid "The loot is worth %1 gold piece."
 msgid_plural "The loot is worth %1 gold pieces."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/game-window.cpp:2416
+#: src/gui/game-window.cpp:2422
 #, fuzzy
 msgid "Sacked %1"
 msgstr "StackKilled"
 
-#: src/gui/game-window.cpp:2424
+#: src/gui/game-window.cpp:2430
 msgid "Ability to produce %1 unit has been lost"
 msgid_plural "Ability to produce %1 units has been lost"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/game-window.cpp:2517
+#: src/gui/game-window.cpp:2523
 #, fuzzy
 msgid "Razed %1"
 msgstr "Zerstören"
 
-#: src/gui/game-window.cpp:2522
+#: src/gui/game-window.cpp:2528
 msgid "The city of %1 is in ruins!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2608
+#: src/gui/game-window.cpp:2614
 #, fuzzy
 msgid ""
 "%1\n"
 "Turn %2"
 msgstr "Runde: %i"
 
-#: src/gui/game-window.cpp:2642
+#: src/gui/game-window.cpp:2648
 msgid "%1 is awarded a medal!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2683
+#: src/gui/game-window.cpp:2689
 msgid "%1, your turn continues."
 msgstr ""
 
-#: src/gui/game-window.cpp:2717
+#: src/gui/game-window.cpp:2723
 #, fuzzy
 msgid "%1 did not complete the quest."
 msgstr "Dein Held %s hat die Mission nicht geschafft."
 
-#: src/gui/game-window.cpp:2775
+#: src/gui/game-window.cpp:2781
 #, fuzzy
 msgid "Advisor!"
 msgstr "Audio"
 
-#: src/gui/game-window.cpp:2783
-msgid "My Good Lord!"
-msgstr ""
-
-#: src/gui/game-window.cpp:2785
-#, fuzzy
-msgid "Great and Worthy Lord!"
-msgstr "Orkische Galleone"
-
-#: src/gui/game-window.cpp:2787
-msgid "O Champion of Justice!"
-msgstr ""
-
 #: src/gui/game-window.cpp:2789
-msgid "O Mighty Leader!"
+msgid "My Good Lord!"
 msgstr ""
 
 #: src/gui/game-window.cpp:2791
 #, fuzzy
+msgid "Great and Worthy Lord!"
+msgstr "Orkische Galleone"
+
+#: src/gui/game-window.cpp:2793
+msgid "O Champion of Justice!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2795
+msgid "O Mighty Leader!"
+msgstr ""
+
+#: src/gui/game-window.cpp:2797
+#, fuzzy
 msgid "O Great Warlord!"
 msgstr "Orkische Galleone"
 
-#: src/gui/game-window.cpp:2796
+#: src/gui/game-window.cpp:2802
 msgid "This battle will surely be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2798 src/gui/game-window.cpp:2804
+#: src/gui/game-window.cpp:2804 src/gui/game-window.cpp:2810
 msgid "A battle here would be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2800
+#: src/gui/game-window.cpp:2806
 msgid "I believe this battle will surely be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2802
+#: src/gui/game-window.cpp:2808
 msgid "This battle would be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2806
+#: src/gui/game-window.cpp:2812
 msgid "I believe this battle will be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2808
+#: src/gui/game-window.cpp:2814
 msgid "This battle shall be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2813
+#: src/gui/game-window.cpp:2819
 msgid "as simple as butchering sleeping cattle!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2815
+#: src/gui/game-window.cpp:2821
 msgid "an easy victory!  We cannot lose!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2817
+#: src/gui/game-window.cpp:2823
 msgid "a comfortable victory"
 msgstr ""
 
-#: src/gui/game-window.cpp:2819
+#: src/gui/game-window.cpp:2825
 msgid "a hard fought victory! But we shall win!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2821
+#: src/gui/game-window.cpp:2827
 msgid "very evenly matched!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2823
+#: src/gui/game-window.cpp:2829
 msgid "difficult but not impossible to win!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2825
+#: src/gui/game-window.cpp:2831
 msgid "a brave choice! I leave it to thee!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2827
+#: src/gui/game-window.cpp:2833
 msgid "a foolish decision!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2829
+#: src/gui/game-window.cpp:2835
 msgid "sheerest folly!  Thou shouldst not attack!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2831
+#: src/gui/game-window.cpp:2837
 #, fuzzy
 msgid "complete and utter suicide!"
 msgstr "Dein Held %s hat die Mission abgeschlossen."
 
-#: src/gui/driver.cpp:305
+#: src/gui/driver.cpp:306
 msgid "Server went away."
 msgstr ""
 
-#: src/gui/driver.cpp:321
+#: src/gui/driver.cpp:322
 #, fuzzy
 msgid "Could not connect."
 msgstr "FEHLER: Konnte Karte nicht laden "
 
-#: src/gui/driver.cpp:533 src/editor/main-window.cpp:383
+#: src/gui/driver.cpp:535 src/editor/main-window.cpp:383
 #: src/editor/main-window.cpp:429
 msgid "Neutral"
 msgstr "Neutraler Spieler"
 
-#: src/gui/driver.cpp:608
+#: src/gui/driver.cpp:610
 msgid "Save the scenario and mail it to the first player"
 msgstr ""
 
-#: src/gui/driver.cpp:631
+#: src/gui/driver.cpp:633
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 
-#: src/gui/driver.cpp:636
+#: src/gui/driver.cpp:638
 msgid "Now send the saved-game file to %1"
 msgstr ""
 
