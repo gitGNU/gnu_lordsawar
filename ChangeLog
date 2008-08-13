@@ -1,3 +1,8 @@
+2008-08-13  Ben Asselstine
+
+	* fixed turn indicator in the game lobby dialog to cycle properly for
+	  local players.  fixes bug #24057.
+
 2008-08-12  Ben Asselstine
 
 	* added window decorations, and a configuration option to turn them
