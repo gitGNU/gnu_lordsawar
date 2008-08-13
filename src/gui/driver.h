@@ -87,6 +87,8 @@ class Driver: public sigc::trackable
 
     void start_network_game_requested(GameScenario *game_scenario,
 				      NextTurnNetworked *next_turn);
+
+    void on_player_unavailable(Player *p);
 };
 
 

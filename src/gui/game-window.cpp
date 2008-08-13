@@ -124,6 +124,7 @@
 #include "../NextTurnPbm.h"
 #include "../NextTurnNetworked.h"
 #include "../pbm-game-server.h"
+#include "../network_player.h"
 
 
 GameWindow::GameWindow()
@@ -429,6 +430,11 @@ void GameWindow::new_network_game(GameScenario *game_scenario, NextTurn *next_tu
   setup_signals(game_scenario);
   game->redraw();
   game->startGame();
+}
+
+void GameWindow::continue_network_game(NextTurn *next_turn)
+{
+  next_turn->start();
 }
 
 void GameWindow::new_game(GameScenario *game_scenario, NextTurn *next_turn)

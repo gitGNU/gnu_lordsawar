@@ -61,6 +61,10 @@ class NextTurnNetworked: public NextTurn
          */
         void endTurn();
 
+	/**
+           \brief signal for telling when the game stops due to player absence.
+	 */
+	sigc::signal<void, Player*> snextPlayerUnavailable;
     private:
         /**
            \brief The function for all actions which are taken at the beginning

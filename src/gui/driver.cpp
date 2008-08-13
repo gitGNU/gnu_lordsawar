@@ -266,6 +266,7 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   if (game_scenario->s_random_turns == true)
     next_turn->snextRound.connect (sigc::mem_fun(GameServer::getInstance(), 
 						 &GameServer::sendTurnOrder));
+  next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, 
 					      game_server, true));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
@@ -366,6 +367,7 @@ void Driver::on_game_scenario_received(std::string path)
     download_window->hide();
   GameScenario *game_scenario = load_game(path);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
+  next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, 
 					      GameClient::getInstance(), false));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
@@ -752,4 +754,9 @@ void Driver::start_network_game_requested(GameScenario *game_scenario, NextTurnN
       game_window->show();
       game_window->new_network_game (game_scenario, next_turn);
     }
+}
+  
+void Driver::on_player_unavailable(Player *p)
+{
+  on_show_lobby_requested();
 }

@@ -88,6 +88,8 @@ class GameWindow: public Decorated
 
     // setup a new network game
     void new_network_game(GameScenario *game_scenario, NextTurn *next_turn);
+
+    void continue_network_game(NextTurn *next_turn);
     
     // load the game
     void load_game(GameScenario *game_scenario, NextTurn *next_turn);

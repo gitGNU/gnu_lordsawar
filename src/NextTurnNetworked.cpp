@@ -29,7 +29,7 @@
 #include "FogMap.h"
 #include "history.h"
 #include "QuestsManager.h"
-#include "ai_fast.h" //remove me
+#include "network_player.h"
 
 #include "path.h"
 
@@ -60,58 +60,68 @@ void NextTurnNetworked::start()
     if (!plist->getActiveplayer())
         plist->nextPlayer();
 	
-    if (plist->getActiveplayer()->getType() == Player::NETWORKED)
-      return;
-
-    while (!d_stop)
-    {
-      supdating.emit();
-
-	startTurn();
-       
-	// inform everyone about the next turn 
-	snextTurn.emit(plist->getActiveplayer());
-    
-	if (plist->getNoOfPlayers() <= 2)
+    if (plist->getActiveplayer()->getType() != Player::NETWORKED)
+      {
+	while (!d_stop)
 	  {
-	    if (plist->checkPlayers()) //end of game detected
-	      return;
-	  }
+	    supdating.emit();
 
-	if (Playerlist::isFinished())
-	  return;
-    
-	splayerStart.emit(plist->getActiveplayer());
+	    startTurn();
 
-	// let the player do his or her duties...
-	bool continue_loop = plist->getActiveplayer()->startTurn();
-	if (!continue_loop)
-	  return;
-	
-	//Now do some cleanup at the end of the turn.
-	finishTurn();
+	    // inform everyone about the next turn 
+	    snextTurn.emit(plist->getActiveplayer());
 
-        //...and initiate the next one.
-        plist->nextPlayer();
-        
-        //if it is the first player's turn now, a new round has started
-        if (Playerlist::getInstance()->getActiveplayer() == 
-	    Playerlist::getInstance()->getFirstLiving())
-        
-	  {
-	    if (plist->checkPlayers() == true)
+	    if (plist->getNoOfPlayers() <= 2)
 	      {
-		if (plist->getNoOfPlayers() <= 1)
-		  break;
-		if (plist->getActiveplayer()->isDead())
-		  plist->nextPlayer();
+		if (plist->checkPlayers()) //end of game detected
+		  return;
 	      }
-	    finishRound();
-	    snextRound.emit();
+
+	    if (Playerlist::isFinished())
+	      return;
+
+	    splayerStart.emit(plist->getActiveplayer());
+
+	    // let the player do his or her duties...
+	    bool continue_loop = plist->getActiveplayer()->startTurn();
+	    if (!continue_loop)
+	      return;
+
+	    //Now do some cleanup at the end of the turn.
+	    finishTurn();
+
+	    //...and initiate the next one.
+	    plist->nextPlayer();
+
+	    //if it is the first player's turn now, a new round has started
+	    if (Playerlist::getInstance()->getActiveplayer() == 
+		Playerlist::getInstance()->getFirstLiving())
+
+	      {
+		if (plist->checkPlayers() == true)
+		  {
+		    if (plist->getNoOfPlayers() <= 1)
+		      break;
+		    if (plist->getActiveplayer()->isDead())
+		      plist->nextPlayer();
+		  }
+		finishRound();
+		snextRound.emit();
+	      }
+	    if (Playerlist::getInstance()->getActiveplayer()->getType() == Player::NETWORKED)
+	      break;
 	  }
-	if (Playerlist::getInstance()->getActiveplayer()->getType() == Player::NETWORKED)
-	  break;
-    }
+      }
+    if (Playerlist::isFinished() == false)
+      {
+	Player *active = Playerlist::getInstance()->getActiveplayer();
+	if (active->getType() == Player::NETWORKED)
+	  {
+	    NetworkPlayer *player = dynamic_cast<NetworkPlayer*>(active);
+	    if (player->isConnected() == false)
+	      snextPlayerUnavailable.emit(active);
+	  }
+      }
 }
 
 void NextTurnNetworked::endTurn()
@@ -150,7 +160,7 @@ void NextTurnNetworked::startTurn()
     {
 
       //if (p->getType() != Player::NETWORKED)
-      
+
       //collect taxes
       Citylist::getInstance()->collectTaxes(p);
 
@@ -194,7 +204,7 @@ void NextTurnNetworked::finishRound()
   if (!d_turnmode)
     {
       //do this for all players at once
-      
+
       for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
 	{
 	  if ((*it)->isDead())
@@ -229,7 +239,7 @@ void NextTurnNetworked::finishRound()
       if (keeper)
 	keeper->nextTurn();
     }
-    
+
   if (d_random_turns)
     plist->randomizeOrder();
 
