@@ -5,6 +5,8 @@
 	* now popping up the game lobby dialog when a player is unavailable to
 	  take her turn.
 	* added better handling of sitting down as the active player.
+	* fixing the appearance of moves of players who we sat down as, after 
+	  starting the network game.  fixes bug #24061.
 
 2008-08-12  Ben Asselstine
 
