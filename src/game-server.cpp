@@ -305,6 +305,11 @@ void GameServer::onActionDone(NetworkAction *action)
   std::string desc = action->toString();
   std::cerr << "Game Server got " << desc <<"\n";
 
+  if (action->getAction()->getType() == Action::END_TURN)
+    local_player_moved(action->getOwner());
+  if (action->getAction()->getType() == Action::INIT_TURN)
+    local_player_starts_move(action->getOwner());
+
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     {
@@ -319,6 +324,9 @@ void GameServer::onHistoryDone(NetworkHistory *history)
 {
   std::string desc = history->toString();
   std::cerr << "Game Server got " << desc <<"\n";
+
+  if (history->getHistory()->getType() == History::PLAYER_VANQUISHED)
+    local_player_died(history->getOwner());
 
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 

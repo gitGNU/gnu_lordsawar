@@ -183,7 +183,7 @@ class GameLobbyDialog: public Decorated
     void on_player_stands(Player *p, std::string nickname);
     void on_player_sits(Player *p, std::string nickname);
     void on_remote_player_changes_name(Player *p);
-    void on_remote_player_died(Player *p);
+    void on_player_died(Player *p);
     void on_play_clicked();
     void on_cancel_clicked();
     void on_sitting_changed(Gtk::CellEditable *editable, const Glib::ustring &path);
@@ -193,6 +193,9 @@ class GameLobbyDialog: public Decorated
     void on_chatted(std::string nickname, std::string message);
 
     void on_reorder_playerlist();
+
+    void on_local_player_ends_turn(Player *p);
+    void on_local_player_starts_turn(Player *p);
 
 
 };

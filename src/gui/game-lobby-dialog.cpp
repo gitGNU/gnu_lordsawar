@@ -122,6 +122,10 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
 
     game_station->remote_player_moved.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn));
+    game_station->local_player_moved.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_local_player_ends_turn));
+    game_station->local_player_starts_move.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_local_player_starts_turn));
     game_station->remote_participant_joins.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_joins));
     game_station->remote_participant_departs.connect
@@ -137,7 +141,9 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
     game_station->playerlist_reorder_received.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_reorder_playerlist));
     game_station->remote_player_died.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_died));
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_died));
+    game_station->local_player_died.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_died));
 
     update_player_details();
     update_buttons();
@@ -466,6 +472,41 @@ void GameLobbyDialog::on_player_stands(Player *p, std::string nickname)
     }
 }
 
+void GameLobbyDialog::on_local_player_ends_turn(Player *p)
+{
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  Gtk::TreeModel::Children kids = player_list->children();
+  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
+       i != kids.end(); i++)
+    {
+      Gtk::TreeModel::Row row = *i;
+      if (row[player_columns.player_id] == p->getId())
+	{
+	  Glib::RefPtr<Gdk::Pixbuf> empty_pic
+	    = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, 1, 1);
+	  empty_pic->fill(0x00000000);
+	  row[player_columns.turn] = empty_pic;
+	}
+    }
+  update_scenario_details();
+  update_city_map();
+}
+void GameLobbyDialog::on_local_player_starts_turn(Player *p)
+{
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  Gtk::TreeModel::Children kids = player_list->children();
+  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
+       i != kids.end(); i++)
+    {
+      Gtk::TreeModel::Row row = *i;
+      Player *active = Playerlist::getActiveplayer();
+      if (row[player_columns.player_id] == active->getId())
+	(*i)[player_columns.turn] = 
+	  to_pixbuf(gc->getCursorPic(GraphicsCache::SWORD));
+    }
+  update_scenario_details();
+  update_city_map();
+}
 void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
@@ -536,7 +577,7 @@ void GameLobbyDialog::on_chatted(std::string nickname, std::string message)
   chat_scrolledwindow->get_vadjustment()->set_value(chat_scrolledwindow->get_vadjustment()->get_upper());
 }
 
-void GameLobbyDialog::on_remote_player_died(Player *p)
+void GameLobbyDialog::on_player_died(Player *p)
 {
   if (!p)
     return;

@@ -38,6 +38,9 @@ public:
   sigc::signal<void, Player*, std::string> player_stands;
   sigc::signal<void, std::string> remote_participant_departs;
   sigc::signal<void> playerlist_reorder_received;
+  sigc::signal<void, Player*> local_player_moved;
+  sigc::signal<void, Player*> local_player_died;
+  sigc::signal<void, Player*> local_player_starts_move;
 
 protected:
   GameStation();
