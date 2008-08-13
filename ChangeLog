@@ -4,6 +4,7 @@
 	  local players.  fixes bug #24057.
 	* now popping up the game lobby dialog when a player is unavailable to
 	  take her turn.
+	* added better handling of sitting down as the active player.
 
 2008-08-12  Ben Asselstine
 
