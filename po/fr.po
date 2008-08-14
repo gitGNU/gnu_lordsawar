@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-14 10:37-0400\n"
+"POT-Creation-Date: 2008-08-14 13:57-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -2359,38 +2359,38 @@ msgstr "Altro"
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr "Erreur lors du chargement du paquetage de combat. Nom du paquetage : "
 
-#: src/GameScenario.cpp:327
+#: src/GameScenario.cpp:334
 msgid "The Filename is well formed"
 msgstr "Le nom de fichier est correct"
 
-#: src/GameScenario.cpp:332
+#: src/GameScenario.cpp:339
 msgid "The Filename lacks the extension --> "
 msgstr "Il manque l'extension au nom du fichier --> "
 
-#: src/GameScenario.cpp:345
+#: src/GameScenario.cpp:352
 msgid "GameScenario: Something went wrong with saving.\n"
 msgstr ""
 "GameScenario: Quelque chose s'est mal déroulée pendant la sauvegarde.\n"
 
-#: src/GameScenario.cpp:411
+#: src/GameScenario.cpp:419
 msgid "savefile has wrong version, we want "
 msgstr "Le fichier sauvegardé a une mauvaise version. Il attendait "
 
-#: src/GameScenario.cpp:413
+#: src/GameScenario.cpp:421
 msgid "savefile offers "
 msgstr "Le fichier sauvegardé offre "
 
-#: src/GameScenario.cpp:566
+#: src/GameScenario.cpp:576
 msgid "Autosave failed.\n"
 msgstr "La sauvegarde automatique a échouée.\n"
 
-#: src/GameScenario.cpp:573
+#: src/GameScenario.cpp:583
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 "Erreur lors de la tentative de renommage du fichier temporaire dans autosave."
 "sav\n"
 
-#: src/GameScenario.cpp:574 src/gui/driver.cpp:638
+#: src/GameScenario.cpp:584 src/gui/driver.cpp:638
 #, fuzzy
 msgid "Error: "
 msgstr "Erruer :"
