@@ -171,6 +171,13 @@ unsigned int Stacklist::countArmies()
     return mysize;
 }
 
+unsigned int Stacklist::countHeroes()
+{
+  std::vector<Uint32> heroes;
+  getHeroes(heroes);
+  return heroes.size();
+}
+
 Stacklist::Stacklist()
     :d_activestack(0)
 {

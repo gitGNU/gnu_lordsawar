@@ -136,7 +136,7 @@ bool RealPlayer::maybeRecruitHero ()
   //give the player a hero if it's the first round.
   //otherwise we get a hero based on chance
   //a hero costs a random number of gold pieces
-  if (GameScenarioOptions::s_round == 1)
+  if (GameScenarioOptions::s_round == 1 && d_stacklist->countHeroes() == 0)
     gold_needed = 0;
   else
     {

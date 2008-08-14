@@ -139,6 +139,9 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         //! Returns the total number of armies in the list.
         unsigned int countArmies();
 
+        //! Returns the total number of heroes in the list.
+        unsigned int countHeroes();
+
         /** 
 	 * Sets the currently selected stack. The purpose of this method is 
          * to designate a stack to be the one the player is currently touching.
