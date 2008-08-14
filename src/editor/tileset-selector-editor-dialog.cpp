@@ -23,12 +23,12 @@
 #include "tileset-selector-editor-dialog.h"
 
 #include "glade-helpers.h"
-#include "../gui/image-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../File.h"
-#include "../shieldsetlist.h"
-#include "../GraphicsCache.h"
+#include "gui/image-helpers.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "File.h"
+#include "shieldsetlist.h"
+#include "GraphicsCache.h"
 
 
 TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Tileset *tileset)

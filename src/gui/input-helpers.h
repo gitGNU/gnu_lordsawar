@@ -18,7 +18,7 @@
 #ifndef GUI_INPUT_HELPERS_H
 #define GUI_INPUT_HELPERS_H
 
-#include "../input-events.h"
+#include "input-events.h"
 
 inline MouseButtonEvent to_input_event(GdkEventButton *e)
 {

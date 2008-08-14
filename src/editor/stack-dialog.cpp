@@ -24,12 +24,12 @@
 #include "stack-dialog.h"
 
 #include "glade-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../stack.h"
-#include "../army.h"
-#include "../playerlist.h"
-#include "../stacklist.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "stack.h"
+#include "army.h"
+#include "playerlist.h"
+#include "stacklist.h"
 
 #include "select-army-dialog.h"
 

@@ -23,8 +23,8 @@
 #include "armyset-info-dialog.h"
 
 #include "glade-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
+#include "ucompose.hpp"
+#include "defs.h"
 
 
 ArmySetInfoDialog::ArmySetInfoDialog(Armyset *armyset)

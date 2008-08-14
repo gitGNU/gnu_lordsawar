@@ -27,7 +27,7 @@
 #include <gtkmm/label.h>
 #include <gtkmm/image.h>
 #include <gtkmm/togglebutton.h>
-#include "../vectormap.h"
+#include "vectormap.h"
 #include "army-info-tip.h"
 
 class City;

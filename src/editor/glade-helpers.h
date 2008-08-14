@@ -20,7 +20,7 @@
 
 #include <string>
 
-#include "../Configuration.h"
+#include "Configuration.h"
 
 inline std::string get_glade_path()
 {

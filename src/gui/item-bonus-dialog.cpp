@@ -24,10 +24,10 @@
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../Item.h"
-#include "../Itemlist.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "Item.h"
+#include "Itemlist.h"
 
 ItemBonusDialog::ItemBonusDialog()
 {

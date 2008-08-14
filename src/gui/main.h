@@ -21,7 +21,7 @@
 
 #include <sigc++/trackable.h>
 
-#include "../defs.h"
+#include "defs.h"
 
 // initialize the GUI and run the main loop; only one instance is ever
 // constructed so Main::instance is a convenience for retrieving it

@@ -27,11 +27,11 @@
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
-#include "../ucompose.hpp"
-#include "../hero.h"
-#include "../defs.h"
-#include "../ruin.h"
-#include "../GameMap.h"
+#include "ucompose.hpp"
+#include "hero.h"
+#include "defs.h"
+#include "ruin.h"
+#include "GameMap.h"
 
 QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
 {

@@ -1,5 +1,5 @@
 #include "new-network-game-download-window.h"
-#include "../defs.h"
+#include "defs.h"
 
 NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow()
 : m_vbox(false,10)

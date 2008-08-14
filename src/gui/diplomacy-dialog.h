@@ -25,7 +25,7 @@
 #include <gtkmm/table.h>
 #include <gtkmm/togglebutton.h>
 
-#include "../player.h"
+#include "player.h"
 
 #include "decorated.h"
 //

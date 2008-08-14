@@ -27,9 +27,9 @@
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../File.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "File.h"
 
 SurrenderDialog::SurrenderDialog(int numEnemies)
 {

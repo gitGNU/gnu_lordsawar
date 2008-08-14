@@ -27,9 +27,9 @@
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/entry.h>
 
-#include "../heromap.h"
-#include "../player.h"
-#include "../hero.h"
+#include "heromap.h"
+#include "player.h"
+#include "hero.h"
 
 #include "decorated.h"
 struct SDL_Surface;

@@ -60,8 +60,7 @@ lordsawar_pbm_SOURCES =  pbm.cpp main.cpp pbm.h
 lordsawar_pbm_LDADD = $(GTKMM_LIBS) \
 			 $(LIBGNET_LIBS) \
 			 $(DEPENDSON) \
-                           $(SDL_LIBS) \
-               @LIBINTL@ -L..
+                           $(SDL_LIBS)  @LIBINTL@ -L..
 ##endif
 
 
@@ -72,6 +71,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\"
 INCLUDES = $(GTKMM_CFLAGS) \
     $(SDL_CFLAGS) \
-    -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' -I../..
+    -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' \
+    -I$(top_srcdir) -I$(top_srcdir)/src
 
 EXTRA_DIST = README

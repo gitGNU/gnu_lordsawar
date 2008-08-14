@@ -33,10 +33,10 @@
 
 #include "line-chart.h"
 
-#include "../LocationList.h"
-#include "../historymap.h"
-#include "../history.h"
-#include "../player.h"
+#include "LocationList.h"
+#include "historymap.h"
+#include "history.h"
+#include "player.h"
 class Citylist;
 
 struct SDL_Surface;

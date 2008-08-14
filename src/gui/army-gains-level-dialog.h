@@ -26,7 +26,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/radiobutton.h>
 
-#include "../army.h"
+#include "army.h"
 
 #include "decorated.h"
 // dialog for choosing what army stat to boost when a level is gained

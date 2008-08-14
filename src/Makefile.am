@@ -125,4 +125,4 @@ INCLUDES = $(SDL_CFLAGS) \
     $(LIBGNET_CFLAGS) \
     $(LIBSIGC_CFLAGS) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' \
-    -Iserver -I..
+    -I$(top_srcdir)

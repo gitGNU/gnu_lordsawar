@@ -25,14 +25,14 @@
 #include "city-dialog.h"
 
 #include "glade-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../city.h"
-#include "../army.h"
-#include "../playerlist.h"
-#include "../stacklist.h"
-#include "../citylist.h"
-#include "../CreateScenarioRandomize.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "city.h"
+#include "army.h"
+#include "playerlist.h"
+#include "stacklist.h"
+#include "citylist.h"
+#include "CreateScenarioRandomize.h"
 
 #include "select-army-dialog.h"
 

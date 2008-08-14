@@ -7,8 +7,8 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/button.h>
 #include <gtkmm/label.h>
-#include "../Tile.h"
-#include "../tilestyle.h"
+#include "Tile.h"
+#include "tilestyle.h"
 #include <list>
 #include <vector>
 #include <string>

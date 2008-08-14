@@ -24,10 +24,10 @@
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../Configuration.h"
-#include "../sound.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "Configuration.h"
+#include "sound.h"
 
 
 MainPreferencesDialog::MainPreferencesDialog()

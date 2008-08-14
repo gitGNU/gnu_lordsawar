@@ -35,7 +35,7 @@
 #include <gtkmm/widget.h>
 #include <gtkmm/scale.h>
 
-#include "../game-parameters.h"
+#include "game-parameters.h"
 #include <SDL.h>
 #include "game-options-dialog.h"
 

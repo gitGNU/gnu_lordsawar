@@ -40,18 +40,18 @@
 #include "armyset-window.h"
 #include "armyset-info-dialog.h"
 
-#include "../gui/gtksdl.h"
-#include "../gui/image-helpers.h"
-#include "../gui/input-helpers.h"
-#include "../gui/error-utils.h"
+#include "gui/gtksdl.h"
+#include "gui/image-helpers.h"
+#include "gui/input-helpers.h"
+#include "gui/error-utils.h"
 
-#include "../defs.h"
-#include "../Configuration.h"
-#include "../armysetlist.h"
-#include "../Tile.h"
-#include "../File.h"
+#include "defs.h"
+#include "Configuration.h"
+#include "armysetlist.h"
+#include "Tile.h"
+#include "File.h"
 
-#include "../ucompose.hpp"
+#include "ucompose.hpp"
 
 #include "glade-helpers.h"
 

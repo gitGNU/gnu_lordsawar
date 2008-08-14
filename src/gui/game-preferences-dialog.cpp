@@ -28,17 +28,17 @@
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../File.h"
-#include "../xmlhelper.h"
-#include "../armysetlist.h"
-#include "../shieldsetlist.h"
-#include "../GameScenario.h"
-#include "../GraphicsCache.h"
-#include "../tilesetlist.h"
-#include "../citysetlist.h"
-#include "../player.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "File.h"
+#include "xmlhelper.h"
+#include "armysetlist.h"
+#include "shieldsetlist.h"
+#include "GameScenario.h"
+#include "GraphicsCache.h"
+#include "tilesetlist.h"
+#include "citysetlist.h"
+#include "player.h"
 
 static bool inhibit_difficulty_combobox = false;
 

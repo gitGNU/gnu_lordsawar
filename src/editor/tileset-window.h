@@ -43,8 +43,8 @@
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/tooltips.h>
 
-#include "../Tile.h"
-#include "../tileset.h"
+#include "Tile.h"
+#include "tileset.h"
 
 //! Tileset Editor.  Edit an Tileset.
 class TileSetWindow: public sigc::trackable

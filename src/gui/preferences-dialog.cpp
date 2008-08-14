@@ -25,16 +25,16 @@
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../Configuration.h"
-#include "../sound.h"
-#include "../game.h"
-#include "../playerlist.h"
-#include "../citylist.h"
-#include "../ruinlist.h"
-#include "../ai_fast.h"
-#include "../GraphicsCache.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "Configuration.h"
+#include "sound.h"
+#include "game.h"
+#include "playerlist.h"
+#include "citylist.h"
+#include "ruinlist.h"
+#include "ai_fast.h"
+#include "GraphicsCache.h"
 
 
 PreferencesDialog::PreferencesDialog(bool readonly)

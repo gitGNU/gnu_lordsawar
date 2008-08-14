@@ -28,12 +28,12 @@
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../GameMap.h"
-#include "../File.h"
-#include "../sound.h"
-#include "../city.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "GameMap.h"
+#include "File.h"
+#include "sound.h"
+#include "city.h"
 
 HeroOfferDialog::HeroOfferDialog(Player *player, Hero *h, City *c, int gold)
 {

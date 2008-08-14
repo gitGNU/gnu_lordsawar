@@ -28,7 +28,7 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/button.h>
 
-#include "../vector.h"
+#include "vector.h"
 
 class Hero;
 class Item;

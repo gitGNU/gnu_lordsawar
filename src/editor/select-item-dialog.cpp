@@ -27,11 +27,11 @@
 #include "select-item-dialog.h"
 
 #include "glade-helpers.h"
-#include "../gui/input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../Item.h"
-#include "../Itemlist.h"
+#include "gui/input-helpers.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "Item.h"
+#include "Itemlist.h"
 
 SelectItemDialog::SelectItemDialog()
 {

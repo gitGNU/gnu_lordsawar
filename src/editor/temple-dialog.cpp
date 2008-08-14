@@ -24,10 +24,10 @@
 #include "temple-dialog.h"
 
 #include "glade-helpers.h"
-#include "../ucompose.hpp"
-#include "../CreateScenarioRandomize.h"
-#include "../defs.h"
-#include "../temple.h"
+#include "ucompose.hpp"
+#include "CreateScenarioRandomize.h"
+#include "defs.h"
+#include "temple.h"
 #include "RenamableLocation.h"
 
 TempleDialog::TempleDialog(Temple *t, CreateScenarioRandomize *randomizer)

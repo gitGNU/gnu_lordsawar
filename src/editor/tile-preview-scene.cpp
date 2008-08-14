@@ -23,10 +23,10 @@
 #include "tile-preview-scene.h"
 
 #include "glade-helpers.h"
-#include "../gui/image-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../File.h"
+#include "gui/image-helpers.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "File.h"
 
 
 TilePreviewScene::TilePreviewScene (Tile *tile, 

@@ -31,7 +31,7 @@
 #include <gtkmm/label.h>
 #include <sigc++/signal.h>
 
-#include "../game-parameters.h"
+#include "game-parameters.h"
 
 #include "decorated.h"
 // dialog for setting game options before the game starts

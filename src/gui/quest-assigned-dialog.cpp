@@ -27,9 +27,9 @@
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../GameMap.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "GameMap.h"
 
 QuestAssignedDialog::QuestAssignedDialog(Hero *h, Quest *q)
 {

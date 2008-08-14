@@ -43,19 +43,19 @@
 #include "tile-preview-dialog.h"
 #include "tileset-selector-editor-dialog.h"
 
-#include "../gui/gtksdl.h"
-#include "../gui/image-helpers.h"
-#include "../gui/input-helpers.h"
-#include "../gui/error-utils.h"
+#include "gui/gtksdl.h"
+#include "gui/image-helpers.h"
+#include "gui/input-helpers.h"
+#include "gui/error-utils.h"
 
-#include "../defs.h"
-#include "../Configuration.h"
-#include "../tilesetlist.h"
-#include "../Tile.h"
-#include "../File.h"
-#include "../overviewmap.h"
+#include "defs.h"
+#include "Configuration.h"
+#include "tilesetlist.h"
+#include "Tile.h"
+#include "File.h"
+#include "overviewmap.h"
 
-#include "../ucompose.hpp"
+#include "ucompose.hpp"
 
 #include "glade-helpers.h"
 

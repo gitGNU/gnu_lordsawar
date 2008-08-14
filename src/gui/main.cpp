@@ -28,10 +28,10 @@
 #include "main.h"
 
 #include "driver.h"
-#include "../defs.h"
-#include "../File.h"
-#include "../Configuration.h"
-#include "../timing.h"
+#include "defs.h"
+#include "File.h"
+#include "Configuration.h"
+#include "timing.h"
 
 
 struct Main::Impl: public sigc::trackable 

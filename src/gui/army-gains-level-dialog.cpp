@@ -27,9 +27,9 @@
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../army.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "army.h"
 
 //give a hero some more abilities
 ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)

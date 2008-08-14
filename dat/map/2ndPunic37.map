@@ -9231,6 +9231,7 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 	<vectoredunitlist>
 	</vectoredunitlist>
 	<scenario>
+		<d_id>25b188da-f9bd-4659-81f0-ded43e296d54</d_id>
 		<d_name>The Second Punic War</d_name>
 		<d_comment>Carthage has lost her dominance on the sea and you, Hannibal, are convinced that the only hope of avoiding the destruction of your city is to move to the attack - thru Spain and across the Alps.</d_comment>
 		<d_turn>0</d_turn>

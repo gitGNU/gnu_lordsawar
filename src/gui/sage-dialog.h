@@ -28,9 +28,9 @@
 #include <gtkmm/treemodelcolumn.h>
 #include <gtkmm/button.h>
 
-#include "../ruinmap.h"
-#include "../player.h"
-#include "../hero.h"
+#include "ruinmap.h"
+#include "player.h"
+#include "hero.h"
 
 struct SDL_Surface;
 

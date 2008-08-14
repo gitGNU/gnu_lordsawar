@@ -28,7 +28,7 @@
 #include <gtkmm/scale.h>
 #include <gtkmm/box.h>
 
-#include "../vector.h"
+#include "vector.h"
 
 #include "decorated.h"
 class Game;

@@ -26,7 +26,7 @@
 
 #include "glade-helpers.h"
 #include "input-helpers.h"
-#include "../defs.h"
+#include "defs.h"
 
 NetworkGameSelectorDialog::NetworkGameSelectorDialog()
 {

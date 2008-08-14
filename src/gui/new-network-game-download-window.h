@@ -1,5 +1,5 @@
 #include <boost/noncopyable.hpp>
-#include "../game-parameters.h"
+#include "game-parameters.h"
 #include <gtkmm.h>
 
 

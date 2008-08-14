@@ -40,16 +40,16 @@
 #include "stack-info-tip.h"
 #include "decorated.h"
 
-#include "../game-parameters.h"
-#include "../sidebar-stats.h"
-#include "../stack.h"
-#include "../fight.h"
-#include "../map-tip-position.h"
-#include "../callback-enums.h"
-#include "../vector.h"
-#include "../army.h"
-#include "../GraphicsCache.h"
-#include "../GameScenario.h"
+#include "game-parameters.h"
+#include "sidebar-stats.h"
+#include "stack.h"
+#include "fight.h"
+#include "map-tip-position.h"
+#include "callback-enums.h"
+#include "vector.h"
+#include "army.h"
+#include "GraphicsCache.h"
+#include "GameScenario.h"
 
 class Game;
 class SDL_Surface;

@@ -39,7 +39,7 @@
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/tooltips.h>
 
-#include "../rewardlist.h"
+#include "rewardlist.h"
 
 //! Scenario editor.  Manages Reward objects in the Rewardlist.
 class RewardlistDialog: public sigc::trackable

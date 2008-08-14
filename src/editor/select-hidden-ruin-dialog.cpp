@@ -27,12 +27,12 @@
 #include "select-hidden-ruin-dialog.h"
 
 #include "glade-helpers.h"
-#include "../gui/input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../ruin.h"
-#include "../ruinlist.h"
-#include "../playerlist.h"
+#include "gui/input-helpers.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "ruin.h"
+#include "ruinlist.h"
+#include "playerlist.h"
 
 SelectHiddenRuinDialog::SelectHiddenRuinDialog()
 {

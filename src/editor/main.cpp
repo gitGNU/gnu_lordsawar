@@ -25,10 +25,10 @@
 #include <time.h>
 #include <gtkmm/main.h>
 
-#include "../Configuration.h"
-#include "../File.h"
-#include "../GraphicsCache.h"
-#include "../timing.h"
+#include "Configuration.h"
+#include "File.h"
+#include "GraphicsCache.h"
+#include "timing.h"
 
 #include "main-window.h"
 

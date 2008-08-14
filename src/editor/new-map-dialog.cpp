@@ -26,14 +26,14 @@
 #include "new-map-dialog.h"
 
 #include "glade-helpers.h"
-#include "../defs.h"
-#include "../File.h"
-#include "../tileset.h"
-#include "../tilesetlist.h"
-#include "../armysetlist.h"
-#include "../citysetlist.h"
-#include "../shieldsetlist.h"
-#include "../GameMap.h"
+#include "defs.h"
+#include "File.h"
+#include "tileset.h"
+#include "tilesetlist.h"
+#include "armysetlist.h"
+#include "citysetlist.h"
+#include "shieldsetlist.h"
+#include "GameMap.h"
 
 
 NewMapDialog::NewMapDialog()

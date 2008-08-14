@@ -25,7 +25,7 @@
 #include <gtkmm/image.h>
 #include <gtkmm/label.h>
 #include <gtkmm/table.h>
-#include "../Tile.h"
+#include "Tile.h"
 #include "tile-preview-scene.h"
 
 

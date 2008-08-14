@@ -27,12 +27,12 @@
 #include "glade-helpers.h"
 #include "image-helpers.h"
 
-#include "../ucompose.hpp"
-#include "../vector.h"
-#include "../defs.h"
-#include "../army.h"
-#include "../GraphicsCache.h"
-#include "../playerlist.h"
+#include "ucompose.hpp"
+#include "vector.h"
+#include "defs.h"
+#include "army.h"
+#include "GraphicsCache.h"
+#include "playerlist.h"
 
 
 ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army, ArmyInfoTipType type)

@@ -34,15 +34,15 @@
 
 #include "itemlist-dialog.h"
 
-#include "../gui/input-helpers.h"
-#include "../gui/error-utils.h"
+#include "gui/input-helpers.h"
+#include "gui/error-utils.h"
 
-#include "../defs.h"
-#include "../Configuration.h"
-#include "../Itemlist.h"
-#include "../Tile.h"
+#include "defs.h"
+#include "Configuration.h"
+#include "Itemlist.h"
+#include "Tile.h"
 
-#include "../ucompose.hpp"
+#include "ucompose.hpp"
 
 #include "glade-helpers.h"
 

@@ -30,7 +30,7 @@
 #include <gtkmm/image.h>
 #include <gtkmm/label.h>
 #include <gtkmm/table.h>
-#include "../tileset.h"
+#include "tileset.h"
 
 
 //! Tileset selector editor.  

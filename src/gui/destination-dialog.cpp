@@ -30,14 +30,14 @@
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../GameMap.h"
-#include "../city.h"
-#include "../armysetlist.h"
-#include "../citylist.h"
-#include "../GraphicsCache.h"
-#include "../vectoredunitlist.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "GameMap.h"
+#include "city.h"
+#include "armysetlist.h"
+#include "citylist.h"
+#include "GraphicsCache.h"
+#include "vectoredunitlist.h"
 
 DestinationDialog::DestinationDialog(City *c, bool *see_all)
 {

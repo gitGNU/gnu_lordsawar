@@ -33,15 +33,15 @@
 
 #include "rewardlist-dialog.h"
 
-#include "../gui/input-helpers.h"
-#include "../gui/error-utils.h"
+#include "gui/input-helpers.h"
+#include "gui/error-utils.h"
 
-#include "../defs.h"
-#include "../Configuration.h"
-#include "../rewardlist.h"
+#include "defs.h"
+#include "Configuration.h"
+#include "rewardlist.h"
 
-#include "../ucompose.hpp"
-#include "../playerlist.h"
+#include "ucompose.hpp"
+#include "playerlist.h"
 
 #include "glade-helpers.h"
 #include "reward-dialog.h"

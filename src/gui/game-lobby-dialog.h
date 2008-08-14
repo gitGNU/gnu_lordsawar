@@ -36,9 +36,9 @@
 #include <gtkmm/cellrenderercombo.h>
 #include <gtkmm/cellrenderertoggle.h>
 #include <gtkmm/treeview.h>
-#include "../citymap.h"
-#include "../GameScenario.h"
-#include "../game-station.h"
+#include "citymap.h"
+#include "GameScenario.h"
+#include "game-station.h"
 
 #include "decorated.h"
 struct SDL_Surface;

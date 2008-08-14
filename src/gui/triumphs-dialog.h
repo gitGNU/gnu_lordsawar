@@ -24,7 +24,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/notebook.h>
 
-#include "../player.h"
+#include "player.h"
 
 #include "decorated.h"
 //

@@ -24,13 +24,13 @@
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../playerlist.h"
-#include "../player.h"
-#include "../army.h"
-#include "../armysetlist.h"
-#include "../GraphicsCache.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "playerlist.h"
+#include "player.h"
+#include "army.h"
+#include "armysetlist.h"
+#include "GraphicsCache.h"
 
 FightOrderDialog::FightOrderDialog(Player *theplayer)
 {

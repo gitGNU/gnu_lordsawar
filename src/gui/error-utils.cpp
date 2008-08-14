@@ -19,7 +19,7 @@
 
 #include <gtkmm/messagedialog.h>
 
-#include "../defs.h"
+#include "defs.h"
 
 
 void show_error(const Glib::ustring &msg)

@@ -1,8 +1,8 @@
 #include "new-game-progress-window.h"
-#include "../GameScenario.h"
+#include "GameScenario.h"
 #include "driver.h"
-#include "../playerlist.h"
-#include "../game-parameters.h"
+#include "playerlist.h"
+#include "game-parameters.h"
 
 Glib::StaticMutex mutex = GLIBMM_STATIC_MUTEX_INIT;
  

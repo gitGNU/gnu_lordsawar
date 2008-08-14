@@ -29,13 +29,13 @@
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../army.h"
-#include "../city.h"
-#include "../GraphicsCache.h"
-#include "../armysetlist.h"
-#include "../playerlist.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "army.h"
+#include "city.h"
+#include "GraphicsCache.h"
+#include "armysetlist.h"
+#include "playerlist.h"
 
 BuyProductionDialog::BuyProductionDialog(City *c)
 {

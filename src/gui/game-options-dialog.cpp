@@ -24,11 +24,11 @@
 
 #include "glade-helpers.h"
 #include "input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../File.h"
-#include "../Configuration.h"
-#include "../GameScenarioOptions.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "File.h"
+#include "Configuration.h"
+#include "GameScenarioOptions.h"
 
 GameOptionsDialog::GameOptionsDialog(bool readonly)
 {

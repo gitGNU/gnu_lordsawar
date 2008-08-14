@@ -18,10 +18,10 @@
 #ifndef RENAMABLERUIN_H
 #define RENAMABLERUIN_H
 
-#include "../defs.h"
-#include "../vector.h"
-#include "../Location.h"
-#include "../Renamable.h"
+#include "defs.h"
+#include "vector.h"
+#include "Location.h"
+#include "Renamable.h"
 
 //! Scenario Editor.  A game object that has a position and a changeable name.
 class RenamableLocation: public Location, public Renamable

@@ -23,10 +23,10 @@
 #include "tile-preview-dialog.h"
 
 #include "glade-helpers.h"
-#include "../gui/image-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../File.h"
+#include "gui/image-helpers.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "File.h"
 
 
 TilePreviewDialog::TilePreviewDialog(Tile *tile, Uint32 tileSize)

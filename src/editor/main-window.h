@@ -34,7 +34,7 @@
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/tooltips.h>
 
-#include "../map-tip-position.h"
+#include "map-tip-position.h"
 #include "editorbigmap.h"
 #include "RenamableLocation.h"
 
@@ -44,7 +44,7 @@ class SmallMap;
 class GameScenario;
 class CreateScenarioRandomize;
 
-#include "../UniquelyIdentified.h"
+#include "UniquelyIdentified.h"
 
 //! Scenario editor.  Edits a Scenario.
 class MainWindow: public sigc::trackable

@@ -24,10 +24,10 @@
 #include <sigc++/trackable.h>
 #include <sigc++/connection.h>
 
-#include "../vector.h"
-#include "../input-events.h"
-#include "../bigmap.h"
-#include "../Tile.h"
+#include "vector.h"
+#include "input-events.h"
+#include "bigmap.h"
+#include "Tile.h"
 
 class Stack;
 class MapRenderer;

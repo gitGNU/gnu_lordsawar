@@ -24,10 +24,10 @@
 #include "map-info-dialog.h"
 
 #include "glade-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../signpost.h"
-#include "../GameScenario.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "signpost.h"
+#include "GameScenario.h"
 
 
 MapInfoDialog::MapInfoDialog(GameScenario *g)

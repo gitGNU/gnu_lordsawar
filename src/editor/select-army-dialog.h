@@ -29,7 +29,7 @@
 #include <gtkmm/button.h>
 #include <SDL/SDL_types.h>
 
-#include "../gui/army-info-tip.h"
+#include "gui/army-info-tip.h"
 
 class Army;
 class City;

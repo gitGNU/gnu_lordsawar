@@ -26,11 +26,11 @@
 #include "load-scenario-dialog.h"
 
 #include "glade-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../Configuration.h"
-#include "../File.h"
-#include "../xmlhelper.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "Configuration.h"
+#include "File.h"
+#include "xmlhelper.h"
 
 
 LoadScenarioDialog::LoadScenarioDialog()

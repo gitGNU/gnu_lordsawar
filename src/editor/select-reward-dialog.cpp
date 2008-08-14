@@ -27,11 +27,11 @@
 #include "select-reward-dialog.h"
 
 #include "glade-helpers.h"
-#include "../gui/input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../reward.h"
-#include "../rewardlist.h"
+#include "gui/input-helpers.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "reward.h"
+#include "rewardlist.h"
 
 SelectRewardDialog::SelectRewardDialog()
 {

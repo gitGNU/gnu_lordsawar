@@ -39,8 +39,8 @@
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/tooltips.h>
 
-#include "../army.h"
-#include "../armyset.h"
+#include "army.h"
+#include "armyset.h"
 
 //! Armyset Editor.  Edit an Armyset.
 class ArmySetWindow: public sigc::trackable

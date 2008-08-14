@@ -72,6 +72,7 @@ liblwgui_a_SOURCES = \
 
 INCLUDES = \
    $(GTKMM_CFLAGS) \
-   $(SDL_CFLAGS)
+   $(SDL_CFLAGS) \
+   -I$(top_srcdir)/src
 
 AM_CXXFLAGS = -Wall

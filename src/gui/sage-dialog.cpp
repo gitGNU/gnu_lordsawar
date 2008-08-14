@@ -27,13 +27,13 @@
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../GameMap.h"
-#include "../File.h"
-#include "../sound.h"
-#include "../ruin.h"
-#include "../rewardlist.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "GameMap.h"
+#include "File.h"
+#include "sound.h"
+#include "ruin.h"
+#include "rewardlist.h"
 
 SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
 {

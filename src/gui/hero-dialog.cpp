@@ -28,11 +28,11 @@
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../hero.h"
-#include "../Item.h"
-#include "../GameMap.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "hero.h"
+#include "Item.h"
+#include "GameMap.h"
 
 HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 {
@@ -85,7 +85,7 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 
 #if 0
     // debug code
-    #include "../Itemlist.h"
+    #include "Itemlist.h"
     static bool first = true;
 
     if (first)

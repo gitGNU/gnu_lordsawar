@@ -27,7 +27,7 @@
 #include <gtkmm/label.h>
 #include <gtkmm/togglebutton.h>
 
-#include "../vectormap.h"
+#include "vectormap.h"
 
 #include "decorated.h"
 struct SDL_Surface;

@@ -28,13 +28,13 @@
 #include "select-army-dialog.h"
 
 #include "glade-helpers.h"
-#include "../gui/image-helpers.h"
-#include "../gui/input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../army.h"
-#include "../GraphicsCache.h"
-#include "../armysetlist.h"
+#include "gui/image-helpers.h"
+#include "gui/input-helpers.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "army.h"
+#include "GraphicsCache.h"
+#include "armysetlist.h"
 
 SelectArmyDialog::SelectArmyDialog(Player *p, bool defends_ruins,
 				   bool awardable)

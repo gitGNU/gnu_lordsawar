@@ -22,8 +22,8 @@
 
 #include "timed-message-dialog.h"
 
-#include "../ucompose.hpp"
-#include "../timing.h"
+#include "ucompose.hpp"
+#include "timing.h"
 
 TimedMessageDialog::TimedMessageDialog(Gtk::Window &parent, std::string message, int timeout, int grace)
 {

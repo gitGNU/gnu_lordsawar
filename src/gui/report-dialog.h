@@ -31,11 +31,11 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/alignment.h>
 
-#include "../LocationList.h"
-#include "../vectormap.h"
-#include "../citymap.h"
-#include "../armymap.h"
-#include "../player.h"
+#include "LocationList.h"
+#include "vectormap.h"
+#include "citymap.h"
+#include "armymap.h"
+#include "player.h"
 
 class Action;
 class BarChart;

@@ -32,16 +32,16 @@
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
-#include "../ucompose.hpp"
-#include "../timing.h"
-#include "../File.h"
-#include "../defs.h"
-#include "../player.h"
-#include "../playerlist.h"
-#include "../stack.h"
-#include "../army.h"
-#include "../GraphicsCache.h"
-#include "../Configuration.h"
+#include "ucompose.hpp"
+#include "timing.h"
+#include "File.h"
+#include "defs.h"
+#include "player.h"
+#include "playerlist.h"
+#include "stack.h"
+#include "army.h"
+#include "GraphicsCache.h"
+#include "Configuration.h"
 
 FightWindow::FightWindow(Fight &fight)
 {

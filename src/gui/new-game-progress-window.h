@@ -1,6 +1,6 @@
 #include <boost/noncopyable.hpp>
-#include "../game-parameters.h"
-#include "../GameScenario.h"
+#include "game-parameters.h"
+#include "GameScenario.h"
 #include <gtkmm.h>
 
 class NewGameProgressWindow : public Gtk::Window, boost::noncopyable

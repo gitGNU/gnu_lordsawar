@@ -23,7 +23,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/textview.h>
 #include <gtkmm/entry.h>
-#include "../tileset.h"
+#include "tileset.h"
 
 //! Scenario editor.  Edits the description of the scenario.
 class TileSetInfoDialog: public sigc::trackable

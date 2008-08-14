@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <sigc++/functors/mem_fun.h>
+#include <uuid/uuid.h>
 
 #include "GameScenario.h"
 #include "MapGenerator.h"
@@ -74,7 +75,13 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
     Shieldsetlist::getInstance();
 
     if (fl_counter == 0)
-        fl_counter = new FL_Counter();
+      fl_counter = new FL_Counter();
+
+    char buf[40];
+    uuid_t uu;
+    uuid_generate_time(uu);
+    uuid_unparse(uu, buf);
+    d_id = buf;
 }
 
 // savegame is a filename with absolute path!
@@ -373,6 +380,7 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
 
   //save the private GameScenario data last due to dependencies
   retval &= helper.openTag("scenario");
+  retval &= helper.saveData("id", d_id);
   retval &= helper.saveData("name", d_name);
   retval &= helper.saveData("comment", d_comment);
   retval &= helper.saveData("turn", s_round);
@@ -415,7 +423,9 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
 	}
 
       debug("loading scenario")
-	helper->getData(s_round, "turn");
+
+      helper->getData(d_id, "id");
+      helper->getData(s_round, "turn");
       helper->getData(d_turnmode, "turnmode");
       helper->getData(d_name, "name");
       helper->getData(d_comment, "comment");

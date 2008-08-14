@@ -25,8 +25,8 @@
 #include <gtkmm/alignment.h>
 #include <gtkmm/button.h>
 
-#include "../File.h"
-#include "../Configuration.h"
+#include "File.h"
+#include "Configuration.h"
 using namespace Gtk;
 using namespace Gdk;
 using namespace Glib;

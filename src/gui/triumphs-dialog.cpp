@@ -29,14 +29,14 @@
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../File.h"
-#include "../GameMap.h"
-#include "../GraphicsCache.h"
-#include "../armysetlist.h"
-#include "../playerlist.h"
-#include "../player.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "File.h"
+#include "GameMap.h"
+#include "GraphicsCache.h"
+#include "armysetlist.h"
+#include "playerlist.h"
+#include "player.h"
 
 TriumphsDialog::TriumphsDialog(Player *player)
 {

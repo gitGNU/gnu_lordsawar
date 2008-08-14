@@ -27,7 +27,7 @@
 #include "game-window.h"
 #include "game-lobby-dialog.h"
 #include "new-network-game-download-window.h"
-#include "../game-parameters.h"
+#include "game-parameters.h"
 
 // takes care of setting up the splash window and the game window, the
 // interaction between them and the model classes

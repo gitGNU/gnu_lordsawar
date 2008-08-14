@@ -28,8 +28,8 @@
 #include <gtkmm/progressbar.h>
 #include <gtkmm/alignment.h>
 
-#include "../game-parameters.h"
-#include "../fight.h"
+#include "game-parameters.h"
+#include "fight.h"
 
 class Fight;
 class Army;

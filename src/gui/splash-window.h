@@ -27,7 +27,7 @@
 #include <gtkmm/container.h>
 #include <gtkmm/widget.h>
 
-#include "../game-parameters.h"
+#include "game-parameters.h"
 
 
 #include "decorated.h"

@@ -26,9 +26,9 @@
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/entry.h>
 
-#include "../questmap.h"
-#include "../Quest.h"
-#include "../reward.h"
+#include "questmap.h"
+#include "Quest.h"
+#include "reward.h"
 
 struct SDL_Surface;
 

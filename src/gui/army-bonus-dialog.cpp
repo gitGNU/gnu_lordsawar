@@ -25,12 +25,12 @@
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../army.h"
-#include "../armysetlist.h"
-#include "../player.h"
-#include "../GraphicsCache.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "army.h"
+#include "armysetlist.h"
+#include "player.h"
+#include "GraphicsCache.h"
 
 ArmyBonusDialog::ArmyBonusDialog(Player *p)
 {

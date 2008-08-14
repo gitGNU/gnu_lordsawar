@@ -25,8 +25,8 @@
 #include <gtkmm/image.h>
 #include <gtkmm/label.h>
 
-#include "../ruinmap.h"
-#include "../player.h"
+#include "ruinmap.h"
+#include "player.h"
 
 struct SDL_Surface;
 

@@ -27,14 +27,14 @@
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../GameMap.h"
-#include "../File.h"
-#include "../sound.h"
-#include "../ruin.h"
-#include "../ruinlist.h"
-#include "../templelist.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "GameMap.h"
+#include "File.h"
+#include "sound.h"
+#include "ruin.h"
+#include "ruinlist.h"
+#include "templelist.h"
 
 RuinReportDialog::RuinReportDialog(Vector<int> pos)
 {

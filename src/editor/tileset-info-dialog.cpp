@@ -23,9 +23,9 @@
 #include "tileset-info-dialog.h"
 
 #include "glade-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../signpost.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "signpost.h"
 
 
 TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset)

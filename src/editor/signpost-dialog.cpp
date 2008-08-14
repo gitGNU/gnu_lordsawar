@@ -24,10 +24,10 @@
 #include "signpost-dialog.h"
 
 #include "glade-helpers.h"
-#include "../ucompose.hpp"
-#include "../defs.h"
-#include "../CreateScenarioRandomize.h"
-#include "../signpost.h"
+#include "ucompose.hpp"
+#include "defs.h"
+#include "CreateScenarioRandomize.h"
+#include "signpost.h"
 
 SignpostDialog::SignpostDialog(Signpost *s, CreateScenarioRandomize *randomizer)
 {

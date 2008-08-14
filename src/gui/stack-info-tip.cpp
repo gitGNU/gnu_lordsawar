@@ -29,12 +29,12 @@
 #include "gtksdl.h"
 #include <SDL_video.h>
 
-#include "../ucompose.hpp"
-#include "../vector.h"
-#include "../defs.h"
-#include "../stack.h"
-#include "../GraphicsCache.h"
-#include "../map-tip-position.h"
+#include "ucompose.hpp"
+#include "vector.h"
+#include "defs.h"
+#include "stack.h"
+#include "GraphicsCache.h"
+#include "map-tip-position.h"
 
 
 StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, const Stack *stack)

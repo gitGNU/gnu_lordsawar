@@ -83,6 +83,8 @@ class GameScenario: public GameScenarioOptions
 
         //! Returns the turn mode. See NextTurn for a description.
         bool getTurnmode() const {return d_turnmode;}
+        
+	std::string getId() const {return d_id;};
 
         //! Returns the name of the scenario.
         std::string getName(bool translate = true) const;
@@ -131,6 +133,7 @@ class GameScenario: public GameScenarioOptions
         std::string d_comment;
         bool d_turnmode; //see NextTurn for a description of this option
 	Uint32 d_playmode;
+	std::string d_id; //globally unique id identifying the scenario
 };
 
 #endif // GAME_SCENARIO_H
