@@ -77,11 +77,7 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
     if (fl_counter == 0)
       fl_counter = new FL_Counter();
 
-    char buf[40];
-    uuid_t uu;
-    uuid_generate_time(uu);
-    uuid_unparse(uu, buf);
-    d_id = buf;
+    setNewRandomId();
 }
 
 // savegame is a filename with absolute path!
@@ -613,4 +609,13 @@ GameScenario::PlayMode GameScenario::playModeFromString(const std::string str)
   else if (str == "GameScenario::PLAY_BY_MAIL")
     return GameScenario::PLAY_BY_MAIL;
   return GameScenario::HOTSEAT;
+}
+	
+void GameScenario::setNewRandomId()
+{
+  char buf[40];
+  uuid_t uu;
+  uuid_generate_time(uu);
+  uuid_unparse(uu, buf);
+  d_id = buf;
 }

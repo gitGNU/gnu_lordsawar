@@ -86,6 +86,8 @@ class GameScenario: public GameScenarioOptions
         
 	std::string getId() const {return d_id;};
 
+	void setNewRandomId();
+
         //! Returns the name of the scenario.
         std::string getName(bool translate = true) const;
 

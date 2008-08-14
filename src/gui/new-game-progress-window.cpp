@@ -37,6 +37,7 @@ NewGameProgressWindow::~NewGameProgressWindow()
 
 void NewGameProgressWindow::thread_worker()
 {
+  bool update_uuid = false;
   m_dispatcher();
   if (game_params.map_path.empty()) 
     {
@@ -45,6 +46,8 @@ void NewGameProgressWindow::thread_worker()
 							  game_params);
       game_params.map_path = path;
     }
+  else
+    update_uuid = true;
 
   m_dispatcher();
   bool broken = false;
@@ -57,6 +60,9 @@ void NewGameProgressWindow::thread_worker()
 
   if (game_scenario->getRound() == 0)
     {
+      if (update_uuid)
+	game_scenario->setNewRandomId();
+
       Playerlist::getInstance()->syncPlayers(game_params.players);
 
       m_dispatcher();
