@@ -497,10 +497,14 @@ class GraphicsCache
         SDL_Surface* d_razedpic[MAX_PLAYERS + 1]; //+1 for neutral
         SDL_Surface* d_flagpic[MAX_STACK_SIZE];
         SDL_Surface* d_flagmask[MAX_STACK_SIZE];
-	SDL_Surface* d_selector[SELECTOR_FRAMES];
-	SDL_Surface* d_selectormask[SELECTOR_FRAMES];
-	SDL_Surface* d_smallselector[SMALL_SELECTOR_FRAMES];
-	SDL_Surface* d_smallselectormask[SMALL_SELECTOR_FRAMES];
+	//SDL_Surface* d_selector[SELECTOR_FRAMES];
+	//SDL_Surface* d_selectormask[SELECTOR_FRAMES];
+	std::vector<SDL_Surface*> d_selector;
+	std::vector<SDL_Surface*> d_selectormask;
+	std::vector<SDL_Surface*> d_smallselector;
+	std::vector<SDL_Surface*> d_smallselectormask;
+	//SDL_Surface* d_smallselector[SMALL_SELECTOR_FRAMES];
+	//SDL_Surface* d_smallselectormask[SMALL_SELECTOR_FRAMES];
         SDL_Surface* d_prodshieldpic[PRODUCTION_SHIELD_TYPES];
 	SDL_Surface* d_smallruinedcity;
 	SDL_Surface* d_smallhero;

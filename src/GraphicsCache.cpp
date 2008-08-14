@@ -202,13 +202,13 @@ GraphicsCache::GraphicsCache()
     loadBridgePics();
     loadCursorPics();
     loadFlags();
-    for (int i = 0; i < SELECTOR_FRAMES; i++)
+    for (int i = 0; i < d_selector.size(); i++)
       {
         d_selector[i] = NULL;
         d_selectormask[i] = NULL;
       }
 
-    for (int i = 0; i < SMALL_SELECTOR_FRAMES; i++)
+    for (int i = 0; i < d_smallselector.size(); i++)
       {
         d_smallselector[i] = NULL;
         d_smallselectormask[i] = NULL;
@@ -257,13 +257,13 @@ GraphicsCache::~GraphicsCache()
         SDL_FreeSurface(d_flagmask[i]);
     }
 
-    for (int i = 0; i < SELECTOR_FRAMES; i++)
+    for (int i = 0; i < d_selector.size(); i++)
     {
         SDL_FreeSurface(d_selector[i]);
         SDL_FreeSurface(d_selectormask[i]);
     }
 
-    for (int i = 0; i < SMALL_SELECTOR_FRAMES; i++)
+    for (int i = 0; i < d_smallselector.size(); i++)
     {
         SDL_FreeSurface(d_smallselector[i]);
         SDL_FreeSurface(d_smallselectormask[i]);
@@ -2256,14 +2256,10 @@ void GraphicsCache::loadSelectors()
       fprintf (stderr,"Selector file %s is malformed\n", large.c_str());
       exit(1);
     }
-  for (int i = 0; i < SELECTOR_FRAMES; i++)
+  for (int i = 0; i < images.size(); i++)
     {
-      if (d_selector[i])
-	SDL_FreeSurface(d_selector[i]);
-      d_selector[i] = images[i];
-      if (d_selectormask[i])
-	SDL_FreeSurface(d_selectormask[i]);
-      d_selectormask[i] = masks[i];
+      d_selector.push_back(images[i]);
+      d_selectormask.push_back(masks[i]);
     }
 
   images.clear();
@@ -2274,14 +2270,10 @@ void GraphicsCache::loadSelectors()
       fprintf (stderr,"Selector file %s is malformed\n", small.c_str());
       exit(1);
     }
-  for (int i = 0; i < SMALL_SELECTOR_FRAMES; i++)
+  for (int i = 0; i < images.size(); i++)
     {
-      if (d_smallselector[i])
-	SDL_FreeSurface(d_smallselector[i]);
-      d_smallselector[i] = images[i];
-      if (d_smallselectormask[i])
-	SDL_FreeSurface(d_smallselectormask[i]);
-      d_smallselectormask[i] = masks[i];
+      d_smallselector.push_back(images[i]);
+      d_smallselectormask.push_back(masks[i]);
     }
 }
 
