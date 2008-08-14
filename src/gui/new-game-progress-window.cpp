@@ -56,6 +56,7 @@ void NewGameProgressWindow::thread_worker()
   if (broken)
     return;
 
+  game_scenario->setName(game_params.name);
   game_scenario->setPlayMode(d_play_mode);
 
   if (game_scenario->getRound() == 0)

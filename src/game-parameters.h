@@ -79,6 +79,7 @@ struct GameParameters
     bool random_turns;
     bool cities_can_produce_allies;
     int difficulty;
+    std::string name;
 };
 
 #endif

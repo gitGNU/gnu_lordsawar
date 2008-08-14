@@ -34,10 +34,12 @@
 #include <gtkmm/filechooserbutton.h>
 #include <gtkmm/widget.h>
 #include <gtkmm/scale.h>
+#include <gtkmm/entry.h>
 
 #include "game-parameters.h"
 #include <SDL.h>
 #include "game-options-dialog.h"
+#include "GameScenario.h"
 
 #include "decorated.h"
 class XML_Helper;
@@ -46,11 +48,11 @@ class XML_Helper;
 class GamePreferencesDialog: public Decorated
 {
  public:
-    GamePreferencesDialog();
+    GamePreferencesDialog(GameScenario::PlayMode mode);
     GamePreferencesDialog(std::string filename);
     ~GamePreferencesDialog();
 
-    void set_title(std::string title) {dialog->set_title(title);};
+    void set_title(std::string title);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -64,6 +66,8 @@ class GamePreferencesDialog: public Decorated
     std::auto_ptr<Gtk::Dialog> dialog;
 
     Gtk::Button *start_game_button;
+    Gtk::Label *game_name_label;
+    Gtk::Entry *game_name_entry;
     Gtk::ComboBoxText *tile_theme_combobox;
     Gtk::ComboBoxText *army_theme_combobox;
     Gtk::ComboBoxText *shield_theme_combobox;

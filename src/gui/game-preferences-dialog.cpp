@@ -96,6 +96,8 @@ void GamePreferencesDialog::init()
     xml->get_widget("difficulty_combobox", difficulty_combobox);
 
     xml->get_widget("players_vbox", players_vbox);
+    xml->get_widget("game_name_label", game_name_label);
+    xml->get_widget("game_name_entry", game_name_entry);
 
     // add default players
     default_player_names.push_back("The Sirians");
@@ -236,14 +238,22 @@ void GamePreferencesDialog::init()
   return;
 }
 
-GamePreferencesDialog::GamePreferencesDialog()
+GamePreferencesDialog::GamePreferencesDialog(GameScenario::PlayMode mode)
 {
   init();
+  if (mode != GameScenario::NETWORKED)
+    {
+      game_name_label->unparent();
+      game_name_entry->unparent();
+    }
+
 }
 
 GamePreferencesDialog::GamePreferencesDialog(std::string filename)
 {
   init ();
+  game_name_label->unparent();
+  game_name_entry->unparent();
   load_map_radio->set_active(true);
   load_map_filechooser->set_filename(filename);
   load_map_radio->set_sensitive(false);
@@ -665,6 +675,8 @@ void GamePreferencesDialog::on_start_game_clicked()
 
     g.difficulty = GameScenario::calculate_difficulty_rating(g);
 
+    g.name = game_name_entry->get_text();
+
     //don't start if the armyset size differs from the terrain set size.
     Uint32 army_tilesize = al->getTileSize(al->getArmysetId(g.army_theme));
     Uint32 terrain_size = tl->getTileset(g.tile_theme)->getTileSize();
@@ -897,3 +909,7 @@ bool GamePreferencesDialog::scan_players(std::string tag, XML_Helper* helper)
     return true;
 }
 
+void GamePreferencesDialog::set_title(std::string text)
+{
+  Decorated::set_title(text);
+}

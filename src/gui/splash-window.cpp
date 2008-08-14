@@ -172,7 +172,7 @@ void SplashWindow::on_rescue_crashed_game_clicked()
 
 void SplashWindow::on_new_game_clicked()
 {
-    GamePreferencesDialog d;
+    GamePreferencesDialog d(GameScenario::HOTSEAT);
     
     d.set_parent_window(*window.get());
     d.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
@@ -240,9 +240,10 @@ void SplashWindow::on_new_network_game_clicked()
       else
 	{
 	  //okay, we're a server.
-	  GamePreferencesDialog gpd;
+	  GamePreferencesDialog gpd(GameScenario::NETWORKED);
     
 	  gpd.set_parent_window(*window.get());
+	  gpd.set_title(_("New Networked Game"));
 	  gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_created));
 	  gpd.run();
 	  gpd.hide();
@@ -254,7 +255,7 @@ void SplashWindow::on_new_network_game_clicked()
 
 void SplashWindow::on_new_pbm_game_clicked()
 {
-  GamePreferencesDialog gpd;
+  GamePreferencesDialog gpd(GameScenario::PLAY_BY_MAIL);
     
   gpd.set_parent_window(*window.get());
   gpd.set_title(_("New Play By Mail game"));
