@@ -1,3 +1,9 @@
+2008-08-14  Ben Asselstine
+
+	* now not giving an initial hero if the player happens to already have
+	  a hero at the start of the game.
+	* fixed bug wrt loading saved hotseat games.
+
 2008-08-13  Ben Asselstine
 
 	* fixed turn indicator in the game lobby dialog to cycle properly for
