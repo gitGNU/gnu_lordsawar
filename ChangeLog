@@ -3,6 +3,9 @@
 	* now not giving an initial hero if the player happens to already have
 	  a hero at the start of the game.
 	* fixed bug wrt loading saved hotseat games.
+	* Barry deFreese fixed the big include mess so that there aren't 
+	  relative paths to headers in the source code.  Thanks Barry!
+	* added a uuid to each scenario.  This changes the saved-game schema.
 
 2008-08-13  Ben Asselstine
 
