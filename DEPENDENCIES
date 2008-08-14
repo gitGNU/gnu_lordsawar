@@ -32,6 +32,6 @@ Requirements:
 
 
 on Ubuntu 8.04, (Hardy Heron) you need the following packages:
-sudo apt-get install automake autoconf  libtool m4 autotools-dev g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-2.4-dev gettext subversion libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libglademm-2.4-dev libgnet-dev libboost-dev
+sudo apt-get install automake autoconf  libtool m4 autotools-dev g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-2.4-dev gettext subversion libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libglademm-2.4-dev libgnet-dev libboost-dev uuid-dev
 
 

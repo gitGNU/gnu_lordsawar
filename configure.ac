@@ -96,6 +96,21 @@ if test $expat = 0 ; then
    AC_CHECK_LIB(expat,XML_ParserCreate,[],[AC_MSG_ERROR([*** Expat not found!])])
 fi
 
+dnl Check for uuid
+uuid=0
+AC_ARG_WITH(uuid, [  --with-uuid=<dir>      Use libuuid from here],
+                      [
+                      uuid=$withval
+                      CPPFLAGS="$CPPFLAGS -I$withval/include"
+                      LDFLAGS="$LDFLAGS -L$withval/lib"
+                      LIBS="$LIBS -luuid"
+                      ]
+                      )
+#echo "UUID=$uuid"
+if test $uuid = 0 ; then
+   AC_CHECK_HEADERS(uuid/uuid.h,[],AC_MSG_ERROR([*** uuid headers not found!]))
+   AC_CHECK_LIB(uuid,uuid_generate,[],[AC_MSG_ERROR([*** libuuid not found!])])
+fi
 
 dnl this is needed in cross-compile with mingw32
 AC_ARG_ENABLE(winlibs,             
@@ -154,7 +169,6 @@ AC_SUBST(LIBSIGC_LIBS)
 AC_SUBST(HOME)
 
 
-	
 dnl----------------------------------------------------------------------
 dnl Below here are options to modify default behaviour
 
@@ -243,7 +257,8 @@ AC_CONFIG_FILES([
         help/figures/Makefile
         src/editor/Makefile
         src/pbm/Makefile
-        src/gui/Makefile])
+        src/gui/Makefile
+	intl/libgnuintl.h])
 AC_OUTPUT
 echo ""
 echo "LordsAWar is now configured. Type 'make' to compile it."
