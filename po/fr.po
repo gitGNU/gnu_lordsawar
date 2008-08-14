@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-14 13:57-0400\n"
+"POT-Creation-Date: 2008-08-14 18:42-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -2359,38 +2359,38 @@ msgstr "Altro"
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr "Erreur lors du chargement du paquetage de combat. Nom du paquetage : "
 
-#: src/GameScenario.cpp:334
+#: src/GameScenario.cpp:330
 msgid "The Filename is well formed"
 msgstr "Le nom de fichier est correct"
 
-#: src/GameScenario.cpp:339
+#: src/GameScenario.cpp:335
 msgid "The Filename lacks the extension --> "
 msgstr "Il manque l'extension au nom du fichier --> "
 
-#: src/GameScenario.cpp:352
+#: src/GameScenario.cpp:348
 msgid "GameScenario: Something went wrong with saving.\n"
 msgstr ""
 "GameScenario: Quelque chose s'est mal déroulée pendant la sauvegarde.\n"
 
-#: src/GameScenario.cpp:419
+#: src/GameScenario.cpp:415
 msgid "savefile has wrong version, we want "
 msgstr "Le fichier sauvegardé a une mauvaise version. Il attendait "
 
-#: src/GameScenario.cpp:421
+#: src/GameScenario.cpp:417
 msgid "savefile offers "
 msgstr "Le fichier sauvegardé offre "
 
-#: src/GameScenario.cpp:576
+#: src/GameScenario.cpp:572
 msgid "Autosave failed.\n"
 msgstr "La sauvegarde automatique a échouée.\n"
 
-#: src/GameScenario.cpp:583
+#: src/GameScenario.cpp:579
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 "Erreur lors de la tentative de renommage du fichier temporaire dans autosave."
 "sav\n"
 
-#: src/GameScenario.cpp:584 src/gui/driver.cpp:638
+#: src/GameScenario.cpp:580 src/gui/driver.cpp:638
 #, fuzzy
 msgid "Error: "
 msgstr "Erruer :"
@@ -2993,12 +2993,12 @@ msgstr "Mouvements : %i"
 msgid "Upkeep: %1"
 msgstr "Entretien : %i"
 
-#: src/gui/game-preferences-dialog.cpp:130
+#: src/gui/game-preferences-dialog.cpp:132
 #, fuzzy
 msgid "LordsAWar map files (*.map)"
 msgstr "File delle mappe di Freelords"
 
-#: src/gui/game-preferences-dialog.cpp:252
+#: src/gui/game-preferences-dialog.cpp:262
 #, fuzzy
 msgid "New Scenario"
 msgstr "Gestione Scenario"
@@ -3610,24 +3610,30 @@ msgstr "Tempio"
 msgid "Rescue Crashed Game"
 msgstr ""
 
-#: src/gui/splash-window.cpp:260
+#
+#: src/gui/splash-window.cpp:246
+#, fuzzy
+msgid "New Networked Game"
+msgstr "Nuovo Gioco in Rete"
+
+#: src/gui/splash-window.cpp:261
 msgid "New Play By Mail game"
 msgstr ""
 
-#: src/gui/splash-window.cpp:310
+#: src/gui/splash-window.cpp:311
 msgid "GGZ initialization failed. Exiting.\n"
 msgstr "inizializzazione della GGZ fallita.Esco\n"
 
-#: src/gui/splash-window.cpp:328
+#: src/gui/splash-window.cpp:329
 msgid "Play on GGZ"
 msgstr "Gioca su GGZ"
 
-#: src/gui/splash-window.cpp:329
+#: src/gui/splash-window.cpp:330
 #, fuzzy
 msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
 msgstr "Per piacere lancia Freelords da un client GGZ Gaming Zone."
 
-#: src/gui/splash-window.cpp:330
+#: src/gui/splash-window.cpp:331
 msgid "OK"
 msgstr "OK"
 

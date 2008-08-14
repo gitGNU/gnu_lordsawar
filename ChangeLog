@@ -6,6 +6,8 @@
 	* Barry deFreese fixed the big include mess so that there aren't 
 	  relative paths to headers in the source code.  Thanks Barry!
 	* added a uuid to each scenario.  This changes the saved-game schema.
+	* adding name to the game preferences dialog when we're doing a
+	  networked game.
 
 2008-08-13  Ben Asselstine
 
