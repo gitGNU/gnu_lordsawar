@@ -24,7 +24,6 @@
 #include <time.h>
 #include "Configuration.h"
 #include "File.h"
-#include <intl/libgnuintl.h>
 
 #include "pbm.h"
 
