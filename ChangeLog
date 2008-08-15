@@ -8,6 +8,8 @@
 	* added a uuid to each scenario.  This changes the saved-game schema.
 	* adding name to the game preferences dialog when we're doing a
 	  networked game.
+	* removed limitation on the number of frames in a stack selector
+	  animation.
 
 2008-08-13  Ben Asselstine
 
