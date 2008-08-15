@@ -245,7 +245,7 @@ void SplashWindow::on_new_network_game_clicked()
 	  gpd.set_parent_window(*window.get());
 	  gpd.set_title(_("New Networked Game"));
 	  gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_created));
-	  gpd.run();
+	  gpd.run(network_game_nickname);
 	  gpd.hide();
 	  return;
 	}

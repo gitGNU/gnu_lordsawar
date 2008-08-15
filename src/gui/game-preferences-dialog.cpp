@@ -278,10 +278,16 @@ void GamePreferencesDialog::hide()
   dialog->hide();
 }
 
-bool GamePreferencesDialog::run()
+bool GamePreferencesDialog::run(std::string nickname)
 {
     dialog->show_all();
-  update_shields();
+    if (mode == GameScenario::NETWORKED)
+      {
+	std::string text = nickname;
+	text += "'s game";
+	game_name_entry->set_text(text);
+      }
+    update_shields();
     int response = dialog->run();
     if (response == 0)
       return true;

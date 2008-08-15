@@ -39,6 +39,7 @@
 #include "game-server.h"
 #include "shieldsetlist.h"
 #include "NextTurnNetworked.h"
+#include "recently-played-game-list.h"
 
 namespace
 {
@@ -507,8 +508,15 @@ void GameLobbyDialog::on_local_player_starts_turn(Player *p)
   update_scenario_details();
   update_city_map();
 }
+
 void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
 {
+  if (GameServer::getInstance()->isListening() == false)
+    {
+      RecentlyPlayedGameList *rpgl = RecentlyPlayedGameList::getInstance();
+      rpgl->updateEntry(d_game_scenario);
+      rpgl->saveToFile(File::getSavePath() + "/recently-played.xml");
+    }
   GraphicsCache *gc = GraphicsCache::getInstance();
   Gtk::TreeModel::Children kids = player_list->children();
   for (Gtk::TreeModel::Children::iterator i = kids.begin(); 

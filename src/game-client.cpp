@@ -64,8 +64,10 @@ GameClient::~GameClient()
     network_connection->send(MESSAGE_TYPE_PARTICIPANT_DISCONNECT, d_nickname);
 }
 
-void GameClient::start(std::string host, int port, std::string nick)
+void GameClient::start(std::string host, Uint32 port, std::string nick)
 {
+  d_host = host;
+  d_port = port;
   player_id = -1;
   setNickname(nick);
   network_connection.reset(new NetworkConnection());

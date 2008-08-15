@@ -118,6 +118,7 @@ class Configuration : public sigc::trackable
         static bool s_quick_start;
         static bool s_cusp_of_war;
         static bool s_decorated;
+        static bool s_remember_recent_games;
 
 	static GameParameters::NeutralCities neutralCitiesFromString(const std::string str);
 	static std::string neutralCitiesToString(const GameParameters::NeutralCities neutrals);

@@ -31,6 +31,7 @@
 #include "Configuration.h"
 #include "File.h"
 #include "GraphicsCache.h"
+#include "recently-played-game-list.h"
 
 #include "gui/main.h"
 
@@ -43,6 +44,7 @@ int main(int argc, char* argv[])
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
+  RecentlyPlayedGameList::getInstance()->loadFromFile(File::getSavePath() + "/recently-played.xml");
 
   setlocale(LC_ALL, Configuration::s_lang.c_str());
 

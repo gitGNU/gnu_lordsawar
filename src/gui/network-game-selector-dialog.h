@@ -24,7 +24,11 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/button.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/spinbutton.h>
 
+class RecentlyPlayedNetworkedGame;
 #include "decorated.h"
 // dialog for joining remote games
 class NetworkGameSelectorDialog: public Decorated
@@ -42,10 +46,31 @@ class NetworkGameSelectorDialog: public Decorated
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     Gtk::Entry *hostname_entry;
+    Gtk::SpinButton *port_spinbutton;
     Gtk::Button *connect_button;
 
     void on_hostname_changed();
 
+    Gtk::TreeView *recent_treeview;
+
+    class RecentlyJoinedGamesColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	RecentlyJoinedGamesColumns() 
+        { add(name); add(turn);
+	  add(number_of_players); add(number_of_cities); add(host); add(port);}
+	
+	Gtk::TreeModelColumn<Glib::ustring> name;
+	Gtk::TreeModelColumn<unsigned int> turn;
+	Gtk::TreeModelColumn<unsigned int> number_of_players;
+	Gtk::TreeModelColumn<unsigned int> number_of_cities;
+	Gtk::TreeModelColumn<Glib::ustring> host;
+	Gtk::TreeModelColumn<unsigned int> port;
+    };
+    const RecentlyJoinedGamesColumns recently_joined_games_columns;
+    Glib::RefPtr<Gtk::ListStore> recently_joined_games_list;
+    void addRecentlyJoinedGame(RecentlyPlayedNetworkedGame*);
+
+    void on_recent_game_selected();
 };
 
 #endif

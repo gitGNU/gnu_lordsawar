@@ -58,7 +58,7 @@ class GamePreferencesDialog: public Decorated
 
     sigc::signal<void, GameParameters> game_started;
     
-    bool run();
+    bool run(std::string nickname = "guest");
     void hide();
     
  private:

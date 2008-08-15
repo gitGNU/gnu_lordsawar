@@ -24,6 +24,8 @@
 
 #include "network-game-selector-dialog.h"
 
+#include "recently-played-game-list.h"
+#include "recently-played-game.h"
 #include "glade-helpers.h"
 #include "input-helpers.h"
 #include "defs.h"
@@ -41,11 +43,49 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog()
     window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
 
     xml->get_widget("hostname_entry", hostname_entry);
+    xml->get_widget("port_spinbutton", port_spinbutton);
     hostname_entry->set_activates_default(true);
     hostname_entry->signal_changed().connect
 	(sigc::mem_fun(this, &NetworkGameSelectorDialog::on_hostname_changed));
     xml->get_widget("connect_button", connect_button);
     connect_button->set_sensitive(false);
+    recently_joined_games_list = 
+      Gtk::ListStore::create(recently_joined_games_columns);
+    xml->get_widget("recent_treeview", recent_treeview);
+    recent_treeview->set_model(recently_joined_games_list);
+    recent_treeview->append_column("Name", recently_joined_games_columns.name);
+    recent_treeview->append_column("Turn", recently_joined_games_columns.turn);
+    recent_treeview->append_column("Players", recently_joined_games_columns.number_of_players);
+    recent_treeview->append_column("Cities", recently_joined_games_columns.number_of_cities);
+    recent_treeview->append_column("Host", recently_joined_games_columns.host);
+    recent_treeview->append_column("Port", recently_joined_games_columns.port);
+    recent_treeview->set_headers_visible(true);
+    recent_treeview->get_selection()->signal_changed().connect
+          (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_recent_game_selected));
+    
+    RecentlyPlayedGameList *rpgl = RecentlyPlayedGameList::getInstance();
+    for (RecentlyPlayedGameList::iterator it = rpgl->begin(); it != rpgl->end();
+	 it++)
+      {
+	if ((*it)->getPlayMode() == GameScenario::NETWORKED)
+	  {
+	    RecentlyPlayedNetworkedGame *game;
+	    game = dynamic_cast<RecentlyPlayedNetworkedGame*>(*it);
+	    addRecentlyJoinedGame(game);
+	  }
+      }
+    port_spinbutton->set_value(LORDSAWAR_PORT);
+}
+	    
+void NetworkGameSelectorDialog::addRecentlyJoinedGame(RecentlyPlayedNetworkedGame*recent)
+{
+    Gtk::TreeIter i = recently_joined_games_list->append();
+    (*i)[recently_joined_games_columns.name] = recent->getName();
+    (*i)[recently_joined_games_columns.turn] = recent->getRound();
+    (*i)[recently_joined_games_columns.number_of_players] = recent->getNumberOfPlayers();
+    (*i)[recently_joined_games_columns.number_of_cities] = recent->getNumberOfCities();
+    (*i)[recently_joined_games_columns.host] = recent->getHost();
+    (*i)[recently_joined_games_columns.port] = recent->getPort();
 }
 
 
@@ -80,4 +120,13 @@ bool NetworkGameSelectorDialog::run()
     }
   else
     return false;
+}
+          
+void NetworkGameSelectorDialog::on_recent_game_selected()
+{
+  Glib::RefPtr<Gtk::TreeSelection> selection = recent_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+  Gtk::TreeModel::Row row = *iterrow;
+  hostname_entry->set_text(row[recently_joined_games_columns.host]);
+  port_spinbutton->set_value(row[recently_joined_games_columns.port]);
 }

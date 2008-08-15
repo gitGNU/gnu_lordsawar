@@ -54,6 +54,7 @@
 #include "NextTurnPbm.h"
 #include "NextTurnNetworked.h"
 #include "pbm/pbm.h"
+#include "recently-played-game-list.h"
 
 Driver::Driver(std::string load_filename)
 {
@@ -370,6 +371,11 @@ void Driver::on_game_scenario_received(std::string path)
   if (download_window.get())
     download_window->hide();
   GameScenario *game_scenario = load_game(path);
+  std::string host = GameClient::getInstance()->getHost();
+  Uint32 port = GameClient::getInstance()->getPort();
+  RecentlyPlayedGameList::getInstance()->addNetworkedEntry(game_scenario, host, port);
+  RecentlyPlayedGameList::getInstance()->saveToFile(File::getSavePath() + "/recently-played.xml");
+
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, 
