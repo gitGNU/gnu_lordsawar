@@ -108,6 +108,7 @@ void GameServer::start(GameScenario *game_scenario, int port, std::string nick)
 
   network_server->startListening(port);
 
+  listenForLocalEvents(Playerlist::getInstance()->getNeutral());
 }
 
 void GameServer::gotChat(void *conn, std::string message)

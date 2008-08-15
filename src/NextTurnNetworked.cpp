@@ -115,7 +115,8 @@ void NextTurnNetworked::start()
     if (Playerlist::isFinished() == false)
       {
 	Player *active = Playerlist::getInstance()->getActiveplayer();
-	if (active->getType() == Player::NETWORKED)
+	if (active->getType() == Player::NETWORKED &&
+	    Playerlist::getInstance()->getNeutral() != active)
 	  {
 	    NetworkPlayer *player = dynamic_cast<NetworkPlayer*>(active);
 	    if (player->isConnected() == false)
