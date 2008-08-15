@@ -72,8 +72,6 @@ const unsigned int PRODUCTION_SHIELD_TYPES = 7;
 const unsigned int MOVE_BONUS_WIDTH = 32;
 const unsigned int MOVE_BONUS_HEIGHT = 20;
 const unsigned int MOVE_BONUS_TYPES = 6;
-const unsigned int SELECTOR_FRAMES = 6;
-const unsigned int SMALL_SELECTOR_FRAMES = 4;
 
 // from www.boost.org - derivation from this class makes the derived class
 // noncopyable

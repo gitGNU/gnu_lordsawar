@@ -702,11 +702,11 @@ void GameBigMap::after_draw()
 	  static int smallframe = -1;
 
 	  bigframe++;
-	  if (bigframe > 5)
+	  if (bigframe >= gc->getNumberOfLargeSelectorFrames())
 	    bigframe = 0;
 
 	  smallframe++;
-	  if (smallframe > 3)
+	  if (smallframe >= gc->getNumberOfSmallSelectorFrames())
 	    smallframe = 0;
 
 	  p = tile_to_buffer_pos(p);

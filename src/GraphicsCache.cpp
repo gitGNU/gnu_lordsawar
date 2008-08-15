@@ -2190,15 +2190,17 @@ void GraphicsCache::loadTowerPics()
 
 }
 
-bool GraphicsCache::loadSelectorImages(std::string tileset, std::string filename, Uint32 size, std::vector<SDL_Surface*> &images, std::vector<SDL_Surface *> &masks, int num_frames)
+bool GraphicsCache::loadSelectorImages(std::string tileset, std::string filename, Uint32 size, std::vector<SDL_Surface*> &images, std::vector<SDL_Surface *> &masks)
 {
+  int num_frames;
   // to build flags, we need these three images as basic blocks
   SDL_Surface* selpics = File::getTilesetPicture(tileset, filename);
 
   if (!selpics)
     return false;
 
-  if (selpics->w != num_frames * size)
+  num_frames = selpics->w / size;
+  if (selpics->w % size != 0)
     {
       SDL_FreeSurface (selpics);
       return false;
@@ -2250,7 +2252,7 @@ void GraphicsCache::loadSelectors()
   int size = GameMap::getInstance()->getTileset()->getTileSize();
   std::vector<SDL_Surface*> images;
   std::vector<SDL_Surface*> masks;
-  bool success = loadSelectorImages(tileset, large, size, images, masks, SELECTOR_FRAMES);
+  bool success = loadSelectorImages(tileset, large, size, images, masks);
   if (!success)
     {
       fprintf (stderr,"Selector file %s is malformed\n", large.c_str());
@@ -2264,7 +2266,7 @@ void GraphicsCache::loadSelectors()
 
   images.clear();
   masks.clear();
-  success = loadSelectorImages(tileset, small, size, images, masks, SMALL_SELECTOR_FRAMES);
+  success = loadSelectorImages(tileset, small, size, images, masks);
   if (!success)
     {
       fprintf (stderr,"Selector file %s is malformed\n", small.c_str());

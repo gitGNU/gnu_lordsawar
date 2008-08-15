@@ -158,14 +158,9 @@ void TilesetSelectorEditorDialog::clearSelector()
 
 bool TilesetSelectorEditorDialog::loadSelector(std::string filename)
 {
-  int num_frames;
-  if (large_selector_radiobutton->get_active() == true)
-    num_frames = SELECTOR_FRAMES;
-  else
-    num_frames = SMALL_SELECTOR_FRAMES;
   std::vector<SDL_Surface *> images;
   std::vector<SDL_Surface *> masks;
-  bool success = GraphicsCache::loadSelectorImages(d_tileset->getSubDir(), filename, d_tileset->getTileSize(), images, masks, num_frames);
+  bool success = GraphicsCache::loadSelectorImages(d_tileset->getSubDir(), filename, d_tileset->getTileSize(), images, masks);
   if (success)
     {
       std::string subdir = Shieldsetlist::getInstance()->getShieldsetDir 
