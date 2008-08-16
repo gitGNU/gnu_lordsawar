@@ -1,3 +1,7 @@
+2008-08-16  Ben Asselstine
+
+	* added the ability to clear the recently joined game list.
+
 2008-08-15  Ben Asselstine
 
 	* added a recently joined game list that the client can use to quickly
