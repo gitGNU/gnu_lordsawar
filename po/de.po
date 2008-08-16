@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-14 21:30-0400\n"
+"POT-Creation-Date: 2008-08-15 19:00-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -2380,7 +2380,7 @@ msgstr ""
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:580 src/gui/driver.cpp:638
+#: src/GameScenario.cpp:580 src/gui/driver.cpp:644
 #, fuzzy
 msgid "Error: "
 msgstr "Fehler"
@@ -2550,43 +2550,43 @@ msgstr "GraphicsCache::getFlagPic keine Armee mitgeliefert! Breche ab...\n"
 msgid "Error, while loading a tileset. Tileset Name: "
 msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
 
-#: src/Configuration.cpp:158
+#: src/Configuration.cpp:160
 msgid "Configuration: Something went wrong while saving.\n"
 msgstr "Configuration: Fehler beim Speichern.\n"
 
-#: src/Configuration.cpp:180
+#: src/Configuration.cpp:182
 #, fuzzy
 msgid "Configuration file has wrong version, we want "
 msgstr "Spielstand hat falsche Version. Gefordert wird "
 
-#: src/Configuration.cpp:182
+#: src/Configuration.cpp:184
 #, fuzzy
 msgid "Configuration file offers "
 msgstr "Konfigurationsdatei gefunden: "
 
-#: src/Configuration.cpp:193
+#: src/Configuration.cpp:195
 msgid "I make a backup copy from "
 msgstr ""
 
-#: src/Configuration.cpp:300
+#: src/Configuration.cpp:303
 #, fuzzy
 msgid "Couldn't save the new configuration file..."
 msgstr "Konfigurationsdatei gefunden: "
 
-#: src/Configuration.cpp:301
+#: src/Configuration.cpp:304
 msgid "Check permissions of your home directory....aborting!"
 msgstr ""
 
-#: src/Configuration.cpp:305
+#: src/Configuration.cpp:308
 #, fuzzy
 msgid "Created the standard configuration file "
 msgstr "Konfigurationsdatei gefunden: "
 
-#: src/Configuration.cpp:318
+#: src/Configuration.cpp:321
 msgid "Couldn't create save game directory "
 msgstr "Konnte Verzeichnis für die Spielstände nicht anlegen"
 
-#: src/Configuration.cpp:320
+#: src/Configuration.cpp:323
 #, fuzzy
 msgid "Check permissions and the entries in your lordsawarrc file!"
 msgstr ""
@@ -3187,8 +3187,8 @@ msgstr ""
 msgid "Choose Game to Load"
 msgstr "Terraintyp"
 
-#: src/gui/game-window.cpp:934 src/gui/driver.cpp:261 src/gui/driver.cpp:420
-#: src/gui/driver.cpp:583 src/gui/driver.cpp:602
+#: src/gui/game-window.cpp:934 src/gui/driver.cpp:262 src/gui/driver.cpp:426
+#: src/gui/driver.cpp:589 src/gui/driver.cpp:608
 msgid "Corrupted saved game file."
 msgstr ""
 
@@ -3506,29 +3506,29 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr "Dein Held %s hat die Mission abgeschlossen."
 
-#: src/gui/driver.cpp:310
+#: src/gui/driver.cpp:311
 msgid "Server went away."
 msgstr ""
 
-#: src/gui/driver.cpp:326
+#: src/gui/driver.cpp:327
 #, fuzzy
 msgid "Could not connect."
 msgstr "FEHLER: Konnte Karte nicht laden "
 
-#: src/gui/driver.cpp:538 src/editor/main-window.cpp:383
+#: src/gui/driver.cpp:544 src/editor/main-window.cpp:383
 #: src/editor/main-window.cpp:429
 msgid "Neutral"
 msgstr "Neutraler Spieler"
 
-#: src/gui/driver.cpp:613
+#: src/gui/driver.cpp:619
 msgid "Save the scenario and mail it to the first player"
 msgstr ""
 
-#: src/gui/driver.cpp:636
+#: src/gui/driver.cpp:642
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 
-#: src/gui/driver.cpp:641
+#: src/gui/driver.cpp:647
 msgid "Now send the saved-game file to %1"
 msgstr ""
 
@@ -4238,31 +4238,31 @@ msgstr "Konnte kein einziges Armeeset finden!"
 msgid "Couldn't find any shieldsets!"
 msgstr "Konnte kein einziges Terrainset finden! "
 
-#: src/main.cpp:65
+#: src/main.cpp:67
 msgid "non-numerical value for cache size\n"
 msgstr "Nicht-numerischer Wert für die Größe des Caches\n"
 
-#: src/main.cpp:87
+#: src/main.cpp:89
 #, fuzzy
 msgid "Options:"
 msgstr "Optionen"
 
-#: src/main.cpp:88
+#: src/main.cpp:90
 #, fuzzy
 msgid "  -h, --help                 Shows this help screen"
 msgstr "-h,      --help             Zeigt diese Hilfe an\n"
 
-#: src/main.cpp:89
+#: src/main.cpp:91
 #, fuzzy
 msgid "  -c <size>                  Set the maximum cache size"
 msgstr "-c <Wert>                   legt die maximale Cachegröße fest"
 
-#: src/main.cpp:90
+#: src/main.cpp:92
 #, fuzzy
 msgid "  -t, --test                 Start with a test-scenario"
 msgstr "-t,      --test             Startet mit einem Testszenario"
 
-#: src/main.cpp:91
+#: src/main.cpp:93
 msgid "  -s, --stress-test          Non-interactive stress test"
 msgstr ""
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-14 21:30-0400\n"
+"POT-Creation-Date: 2008-08-15 19:00-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2106,7 +2106,7 @@ msgstr ""
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:580 src/gui/driver.cpp:638
+#: src/GameScenario.cpp:580 src/gui/driver.cpp:644
 msgid "Error: "
 msgstr ""
 
@@ -2259,39 +2259,39 @@ msgstr ""
 msgid "Error, while loading a tileset. Tileset Name: "
 msgstr ""
 
-#: src/Configuration.cpp:158
+#: src/Configuration.cpp:160
 msgid "Configuration: Something went wrong while saving.\n"
 msgstr ""
 
-#: src/Configuration.cpp:180
+#: src/Configuration.cpp:182
 msgid "Configuration file has wrong version, we want "
 msgstr ""
 
-#: src/Configuration.cpp:182
+#: src/Configuration.cpp:184
 msgid "Configuration file offers "
 msgstr ""
 
-#: src/Configuration.cpp:193
+#: src/Configuration.cpp:195
 msgid "I make a backup copy from "
 msgstr ""
 
-#: src/Configuration.cpp:300
+#: src/Configuration.cpp:303
 msgid "Couldn't save the new configuration file..."
 msgstr ""
 
-#: src/Configuration.cpp:301
+#: src/Configuration.cpp:304
 msgid "Check permissions of your home directory....aborting!"
 msgstr ""
 
-#: src/Configuration.cpp:305
+#: src/Configuration.cpp:308
 msgid "Created the standard configuration file "
 msgstr ""
 
-#: src/Configuration.cpp:318
+#: src/Configuration.cpp:321
 msgid "Couldn't create save game directory "
 msgstr ""
 
-#: src/Configuration.cpp:320
+#: src/Configuration.cpp:323
 msgid "Check permissions and the entries in your lordsawarrc file!"
 msgstr ""
 
@@ -2828,8 +2828,8 @@ msgstr ""
 msgid "Choose Game to Load"
 msgstr ""
 
-#: src/gui/game-window.cpp:934 src/gui/driver.cpp:261 src/gui/driver.cpp:420
-#: src/gui/driver.cpp:583 src/gui/driver.cpp:602
+#: src/gui/game-window.cpp:934 src/gui/driver.cpp:262 src/gui/driver.cpp:426
+#: src/gui/driver.cpp:589 src/gui/driver.cpp:608
 msgid "Corrupted saved game file."
 msgstr ""
 
@@ -3123,28 +3123,28 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr ""
 
-#: src/gui/driver.cpp:310
+#: src/gui/driver.cpp:311
 msgid "Server went away."
 msgstr ""
 
-#: src/gui/driver.cpp:326
+#: src/gui/driver.cpp:327
 msgid "Could not connect."
 msgstr ""
 
-#: src/gui/driver.cpp:538 src/editor/main-window.cpp:383
+#: src/gui/driver.cpp:544 src/editor/main-window.cpp:383
 #: src/editor/main-window.cpp:429
 msgid "Neutral"
 msgstr ""
 
-#: src/gui/driver.cpp:613
+#: src/gui/driver.cpp:619
 msgid "Save the scenario and mail it to the first player"
 msgstr ""
 
-#: src/gui/driver.cpp:636
+#: src/gui/driver.cpp:642
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 
-#: src/gui/driver.cpp:641
+#: src/gui/driver.cpp:647
 msgid "Now send the saved-game file to %1"
 msgstr ""
 
@@ -3758,27 +3758,27 @@ msgstr ""
 msgid "Couldn't find any shieldsets!"
 msgstr ""
 
-#: src/main.cpp:65
+#: src/main.cpp:67
 msgid "non-numerical value for cache size\n"
 msgstr ""
 
-#: src/main.cpp:87
+#: src/main.cpp:89
 msgid "Options:"
 msgstr ""
 
-#: src/main.cpp:88
+#: src/main.cpp:90
 msgid "  -h, --help                 Shows this help screen"
 msgstr ""
 
-#: src/main.cpp:89
+#: src/main.cpp:91
 msgid "  -c <size>                  Set the maximum cache size"
 msgstr ""
 
-#: src/main.cpp:90
+#: src/main.cpp:92
 msgid "  -t, --test                 Start with a test-scenario"
 msgstr ""
 
-#: src/main.cpp:91
+#: src/main.cpp:93
 msgid "  -s, --stress-test          Non-interactive stress test"
 msgstr ""
 
