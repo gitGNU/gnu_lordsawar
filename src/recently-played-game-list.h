@@ -60,6 +60,9 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 	bool removeEntry(std::string id);
 
 	bool save(XML_Helper* helper) const;
+
+	void removeAllNetworkedGames();
+	
     protected:
         //! Default Constructor.
 	/**

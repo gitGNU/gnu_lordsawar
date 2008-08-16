@@ -29,6 +29,7 @@
 #include "glade-helpers.h"
 #include "input-helpers.h"
 #include "defs.h"
+#include "File.h"
 
 NetworkGameSelectorDialog::NetworkGameSelectorDialog()
 {
@@ -47,6 +48,9 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog()
     hostname_entry->set_activates_default(true);
     hostname_entry->signal_changed().connect
 	(sigc::mem_fun(this, &NetworkGameSelectorDialog::on_hostname_changed));
+    xml->get_widget("clear_button", clear_button);
+    clear_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_clear_clicked));
     xml->get_widget("connect_button", connect_button);
     connect_button->set_sensitive(false);
     recently_joined_games_list = 
@@ -129,4 +133,13 @@ void NetworkGameSelectorDialog::on_recent_game_selected()
   Gtk::TreeModel::Row row = *iterrow;
   hostname_entry->set_text(row[recently_joined_games_columns.host]);
   port_spinbutton->set_value(row[recently_joined_games_columns.port]);
+}
+      
+void NetworkGameSelectorDialog::on_clear_clicked()
+{
+  RecentlyPlayedGameList *rpgl = RecentlyPlayedGameList::getInstance();
+  rpgl->removeAllNetworkedGames();
+  rpgl->saveToFile(File::getSavePath() + "/recently-played.xml");
+  recently_joined_games_list->clear();
+  recently_joined_games_list.reset();
 }

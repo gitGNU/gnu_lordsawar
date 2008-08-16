@@ -48,6 +48,7 @@ class NetworkGameSelectorDialog: public Decorated
     Gtk::Entry *hostname_entry;
     Gtk::SpinButton *port_spinbutton;
     Gtk::Button *connect_button;
+    Gtk::Button *clear_button;
 
     void on_hostname_changed();
 
@@ -71,6 +72,7 @@ class NetworkGameSelectorDialog: public Decorated
     void addRecentlyJoinedGame(RecentlyPlayedNetworkedGame*);
 
     void on_recent_game_selected();
+    void on_clear_clicked();
 };
 
 #endif

@@ -220,5 +220,18 @@ void RecentlyPlayedGameList::updateEntry(GameScenario *game_scenario)
 	}
     }
 }
-// End of file
 	
+void RecentlyPlayedGameList::removeAllNetworkedGames()
+{
+  for (RecentlyPlayedGameList::iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getPlayMode() == GameScenario::NETWORKED)
+	{
+	  erase (it);
+	  delete *it;
+	  it = begin();
+	  continue;
+	}
+    }
+}
+// End of file
