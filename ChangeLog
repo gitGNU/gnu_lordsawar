@@ -1,3 +1,8 @@
+2008-08-17  Ben Asselstine
+
+	* fixed a bug that caused vectored units to never leave the vectored
+	  unit list, even after they arrive.
+
 2008-08-16  Ben Asselstine
 
 	* added the ability to clear the recently joined game list.
