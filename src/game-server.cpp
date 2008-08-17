@@ -432,6 +432,22 @@ void GameServer::depart(void *conn)
   //see onConnectionLost
 }
 
+bool GameServer::player_already_sitting(Player *p)
+{
+  //check if the player p is already sitting down as a participant.
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    {
+      for (std::list<Uint32>::iterator j = (*i)->players.begin(); 
+	   j != (*i)->players.end(); j++)
+	{
+	  if (p->getId() == *j)
+	    return true;
+	}
+    }
+  return false;
+}
+
 void GameServer::sit(void *conn, Player *player, std::string nickname)
 {
   std::cout << "SIT: " << conn << " " << player << std::endl;
@@ -442,6 +458,10 @@ void GameServer::sit(void *conn, Player *player, std::string nickname)
   if (!part) 
     return;
 
+  //fixme: is another player already sitting here?
+  if (player_already_sitting(player) == true)
+    return;
+  
   add_to_player_list(part->players, player->getId());
 
   if (player)
@@ -499,7 +519,7 @@ GameServer::add_to_player_list(std::list<Uint32> &list, Uint32 id)
   return found;
 }
 
-void
+bool
 GameServer::remove_from_player_list(std::list<Uint32> &list, Uint32 id)
 {
   //remove player id from part.
@@ -509,9 +529,10 @@ GameServer::remove_from_player_list(std::list<Uint32> &list, Uint32 id)
       if (*i == id)
 	{
 	  list.erase (i);
-	  break;
+	  return true;
 	}
     }
+  return false;
 }
 
 void GameServer::stand(void *conn, Player *player, std::string nickname)
@@ -523,8 +544,13 @@ void GameServer::stand(void *conn, Player *player, std::string nickname)
   Participant *part = findParticipantByConn(conn);
   if (!part) 
     return;
+
   //remove player id from part.
-  remove_from_player_list (part->players, player->getId());
+  bool found = remove_from_player_list (part->players, player->getId());
+
+  if (!found)
+    //okay somebody's trying to boot another player.
+    return;
 
   if (player && player->getType() == Player::NETWORKED)
     dynamic_cast<NetworkPlayer*>(player)->setConnected(false);

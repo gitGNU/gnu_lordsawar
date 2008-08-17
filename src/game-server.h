@@ -104,10 +104,10 @@ private:
 
   void gotChat(void *conn, std::string message);
 
-
+  bool player_already_sitting(Player *p);
 
   bool add_to_player_list(std::list<Uint32> &list, Uint32 id);
-  void remove_from_player_list(std::list<Uint32> &list, Uint32 id);
+  bool remove_from_player_list(std::list<Uint32> &list, Uint32 id);
   //! A static pointer for the singleton instance.
   static GameServer * s_instance;
 };
