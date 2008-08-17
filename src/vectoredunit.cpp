@@ -88,19 +88,24 @@ bool VectoredUnit::armyArrives()
   dest = cl->getObjectAt(d_destination);
   if (!dest)
     {
-      std::list<Item*> items;
-      items = GameMap::getInstance()->getTile(d_destination)->getItems();
-      for (std::list<Item*>::iterator it = items.begin(); 
-	   it != items.end(); it++)
+      if (d_destination == Vector<int>(-1,-1))
+	return false;
+      Maptile *tile = GameMap::getInstance()->getTile(d_destination);
+      if (tile)
 	{
-	  if ((*it)->getPlanted() == true &&
-	      (*it)->getPlantableOwner() == d_owner)
+	  std::list<Item*> items = tile->getItems();
+	  for (std::list<Item*>::iterator it = items.begin(); 
+	       it != items.end(); it++)
 	    {
-	      Location loc = Location(d_destination);
-	      loc.addArmy(a);
-	      break;
-	    }
+	      if ((*it)->getPlanted() == true &&
+		  (*it)->getPlantableOwner() == d_owner)
+		{
+		  Location loc = Location(d_destination);
+		  loc.addArmy(a);
+		  break;
+		}
 
+	    }
 	}
     }
   else
@@ -115,7 +120,7 @@ bool VectoredUnit::nextTurn()
 {
   d_duration--;
   if (d_duration == 0)
-    d_owner->vectoredUnitArrives(this);
+    return d_owner->vectoredUnitArrives(this);
   return false;
 }
 
