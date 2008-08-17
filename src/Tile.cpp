@@ -128,6 +128,7 @@ int Tile::getTypeIndexForType(Tile::Type type)
     case MOUNTAIN: return 4; break;
     case SWAMP: return 5; break;
     }
+  return 0;
 }
 TileStyle *Tile::getRandomTileStyle (TileStyle::Type style)
 {
