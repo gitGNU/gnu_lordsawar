@@ -1735,7 +1735,7 @@ Action_Produce::~Action_Produce()
 std::string Action_Produce::dump() const
 {
   std::stringstream s;
-  s << "armytype " << d_army->getType() << " shows up at city " << d_city;
+  s << "army id " << d_army->getId() << " of type " << d_army->getType() << " shows up at city " << d_city;
   if (d_vectored)
     s <<" but it is vectored to another city";
   s <<"\n";

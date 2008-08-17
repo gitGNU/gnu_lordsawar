@@ -241,8 +241,13 @@ Item *findItemById(const std::list<Item *> &l, Uint32 id)
 void NetworkPlayer::decodeActionMove(const Action_Move *action)
 {
   Stack *stack = d_stacklist->getStackById(action->getStackId());
-  stack->moveToDest(action->getEndingPosition());
-  supdatingStack.emit(stack);
+  if (d_stacklist->getObjectAt(action->getEndingPosition()) == NULL)
+    {
+      stack->moveToDest(action->getEndingPosition());
+      supdatingStack.emit(stack);
+    }
+  //if there is a stack already there, then we just wait for the 
+  //"stack join" message that will follow.
 }
 
 void NetworkPlayer::decodeActionSplit(const Action_Split *action)
@@ -501,16 +506,16 @@ void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
     return;
   Army *a = action->getArmy();
   City *c = Citylist::getInstance()->getById(action->getCityId());
-  c->addArmy(new Army (*a, this));
   a->syncNewId();
+  Stack *s = c->addArmy(new Army (*a, this));
 }
 
 void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *action)
 {
   Army *a = action->getArmy();
   Vector<int> dest = action->getDestination();
-  GameMap::getInstance()->addArmy(dest, new Army (*a, this));
   a->syncNewId();
+  GameMap::getInstance()->addArmy(dest, new Army (*a, this));
 }
 
 void NetworkPlayer::decodeActionDiplomacyState(const Action_DiplomacyState *action)
@@ -552,9 +557,9 @@ void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
   if (action->getNumAllies())
     ally = Armysetlist::getInstance()->getArmy(getArmyset(),
                                                action->getAllyArmyType());
+  action->getHero()->syncNewId();
   doRecruitHero(action->getHero(), city, action->getCost(), 
 		action->getNumAllies(), ally);
-  action->getHero()->syncNewId();
 
 }
 

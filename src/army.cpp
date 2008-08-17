@@ -855,5 +855,5 @@ Army::Bonus Army::bonusFlagFromString(const std::string str)
 	
 void Army::syncNewId()
 {
-  fl_counter->syncToId(d_id);
+  fl_counter->syncToId(d_id + 1);
 }
