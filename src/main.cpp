@@ -82,6 +82,10 @@ int main(int argc, char* argv[])
 	    {
 	      kit.start_stress_test = true;
 	    }
+	  else if (parameter == "--robots" || parameter == "-r")
+	    {
+	      kit.start_robots = true;
+	    }
 	  else if (parameter == "--help" || parameter == "-h")
 	    {
 	      cout << argv[0] << " [OPTION]... [FILE]" << endl << endl;
@@ -91,6 +95,7 @@ int main(int argc, char* argv[])
 	      cout << _("  -c <size>                  Set the maximum cache size") <<endl;
 	      cout << _("  -t, --test                 Start with a test-scenario") << endl;
 	      cout << _("  -s, --stress-test          Non-interactive stress test") << endl;
+	      cout << _("  -r, --robots               Non-interactive network stress test") << endl;
 	      cout << endl;
 	      cout << "FILE can be a saved game file (.sav), or a map (.map) file." << endl;
 	      cout << endl;

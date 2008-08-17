@@ -80,6 +80,11 @@ Driver::Driver(std::string load_filename)
 	stress_test();
 	exit(0);
       }
+    if (Main::instance().start_robots) 
+      {
+	run();
+	return;
+      }
     splash_window->sdl_initialized.connect(sigc::mem_fun(*this, &Driver::run));
     splash_window->show();
 }
@@ -172,6 +177,11 @@ void Driver::run()
 	      game_window->load_game(game_scenario, nextTurn);
 	    }
 	}
+    }
+  else if (Main::instance().start_robots) 
+    {
+      Sound::deleteInstance();
+      lordsawaromatic("127.0.0.1", LORDSAWAR_PORT, Player::AI_FAST);
     }
   else
     {
@@ -357,7 +367,8 @@ void Driver::heartbeat()
     return;
   if (game_scenario_downloaded == "")
     {
-      download_window->pulse();
+      if (download_window.get())
+	download_window->pulse();
       return;
     }
   
@@ -747,6 +758,46 @@ void Driver::stress_test()
 
 }
 	
+void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type type)
+{
+  GameClient *game_client = GameClient::getInstance();
+  game_client->game_scenario_received.connect
+    (sigc::mem_fun(this, &Driver::on_game_scenario_downloaded));
+  game_client->client_disconnected.connect
+    (sigc::mem_fun(this, &Driver::on_server_went_away));
+  game_client->client_could_not_connect.connect
+    (sigc::mem_fun(this, &Driver::on_client_could_not_connect));
+  game_scenario_received.connect
+    (sigc::mem_fun(this, &Driver::on_game_scenario_received_for_robots));
+  game_client->setNickname("lordsawaromatic");
+  game_client->start(host, port, "lordsawaromatic");
+  heartbeat_conn = Glib::signal_timeout().connect
+    (bind_return(sigc::mem_fun(*this, &Driver::heartbeat), true), 1 * 1000);
+  robot_player_type = type;
+}
+
+void Driver::on_game_scenario_received_for_robots(std::string path)
+{
+  heartbeat_conn.disconnect();
+  GameScenario *game_scenario = load_game(path);
+  NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
+  Playerlist *pl = Playerlist::getInstance();
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+    {
+      if (*it == pl->getNeutral())
+	continue;
+      on_client_player_sat_down(*it);
+    }
+  pl->turnHumansInto(robot_player_type);
+      
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+    if ((*it)->getType() == robot_player_type)
+      GameClient::getInstance()->listenForLocalEvents(*it);
+
+  //end turn signals are listened to by next_turn, that are fired by the game client decoder
+  next_turn->start();
+}
+
 void Driver::on_show_lobby_requested()
 {
   if (game_lobby_dialog.get())

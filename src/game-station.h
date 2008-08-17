@@ -42,6 +42,7 @@ public:
   sigc::signal<void, Player*> local_player_died;
   sigc::signal<void, Player*> local_player_starts_move;
 
+  void listenForLocalEvents(Player *p);
 protected:
   GameStation();
   ~GameStation();
@@ -52,7 +53,6 @@ protected:
   void clearNetworkActionlist(std::list<NetworkAction*> &actions);
   void clearNetworkHistorylist(std::list<NetworkHistory*> &histories);
 
-  void listenForLocalEvents(Player *p);
   void stopListeningForLocalEvents(Player *p);
 
 private:

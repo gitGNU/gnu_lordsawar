@@ -723,6 +723,47 @@ void Playerlist::turnHumansIntoNetworkPlayers()
     }
 }
 
+void Playerlist::turnHumansInto(Player::Type type)
+{
+  for (iterator i = begin(); i != end(); i++)
+    {
+      if ((*i)->getType() == Player::HUMAN)
+	{
+	  switch (type)
+	    {
+	    case Player::AI_FAST:
+		{
+		  AI_Fast *new_p = new AI_Fast(**i);
+		  swap((*i), new_p);
+		  //delete *i; fixme
+		  i = begin();
+		  continue;
+		}
+	      break;
+	    case Player::AI_SMART:
+		{
+		  AI_Smart *new_p = new AI_Smart(**i);
+		  swap((*i), new_p);
+		  //delete *i; fixme
+		  i = begin();
+		  continue;
+		}
+	      break;
+	    case Player::NETWORKED:
+		{
+		  NetworkPlayer *new_p = new NetworkPlayer(**i);
+		  swap((*i), new_p);
+		  //delete *i; fixme
+		  i = begin();
+		  continue;
+		}
+	      break;
+	    case Player::HUMAN:
+	      break;
+	    }
+	}
+    }
+}
 std::list<Uint32> given_turn_order;
 bool Playerlist::inGivenOrder(const Player *lhs, const Player *rhs)  
 {

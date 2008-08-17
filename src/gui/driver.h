@@ -77,6 +77,11 @@ class Driver: public sigc::trackable
     void stress_test();
     void stressTestNextRound();
 
+    void lordsawaromatic(std::string host, unsigned short port, Player::Type type);
+    void on_game_scenario_received_for_robots(std::string path);
+  
+    Player::Type robot_player_type;
+
     void heartbeat();
     std::string game_scenario_downloaded;
 
