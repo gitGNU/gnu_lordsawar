@@ -4,6 +4,9 @@
 	  unit list, even after they arrive.
 	* fixed a bug that caused stack IDs to get out of sync in network
 	  play.
+	* added a --robots command-line option that will connect to a
+	  networked game onbeing served on localhost, and play each seat as 
+	  an ai player.
 
 2008-08-16  Ben Asselstine
 
