@@ -1975,6 +1975,7 @@ void Player::doVectorFromCity(City * c, Vector<int> dest)
 
 bool Player::vectorFromCity(City * c, Vector<int> dest)
 {
+  assert (dest != Vector<int>(-1,-1));
   doVectorFromCity(c, dest);
   
   Action_Vector* item = new Action_Vector();

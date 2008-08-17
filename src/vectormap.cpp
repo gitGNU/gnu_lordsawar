@@ -349,7 +349,7 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	      //make sure that dest is the top left tile of the city
 	      dest = nearestCity->getPos();
 	    }
-	  if (dest != city->getVectoring())
+	  if (dest != city->getVectoring() && dest != Vector<int>(-1, -1))
 	    {
 	      destination_chosen.emit(dest);
 	      Playerlist::getActiveplayer()->vectorFromCity(city, dest);
