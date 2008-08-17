@@ -3113,6 +3113,15 @@ bool Player::hasAlreadyInitializedTurn() const
     return false;
 }
 
+bool Player::hasAlreadyEndedTurn() const
+{
+    for (list<Action*>::const_iterator it = d_actions.begin();
+        it != d_actions.end(); it++)
+      if ((*it)->getType() == Action::END_TURN)
+	return true;
+    return false;
+}
+
 std::list<History*> Player::getHistoryForThisTurn() const
 {
   std::list<History*> history;

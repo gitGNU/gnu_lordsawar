@@ -1295,6 +1295,7 @@ class Player: public sigc::trackable
 	static bool safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders);
 	void addHistory(History *history);
 	bool hasAlreadyInitializedTurn() const;
+	bool hasAlreadyEndedTurn() const;
 	void loadPbmGame();
     protected:
         // do some fight cleaning up, setting

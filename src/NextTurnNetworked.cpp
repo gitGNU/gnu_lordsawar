@@ -150,7 +150,10 @@ void NextTurnNetworked::startTurn()
   //a shortcut
   Player* p = Playerlist::getActiveplayer();
 
-  if (p->hasAlreadyInitializedTurn())
+  //here we check to see if the player is about to start a new turn
+  //we do this check to see if we're re-sitting down again in the game lobby
+  //we want to prevent offering the player another hero, etc.
+  if (p->hasAlreadyInitializedTurn() && p->hasAlreadyEndedTurn() == false)
     return;
   p->initTurn();
 
