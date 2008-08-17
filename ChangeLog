@@ -2,6 +2,8 @@
 
 	* fixed a bug that caused vectored units to never leave the vectored
 	  unit list, even after they arrive.
+	* fixed a bug that caused stack IDs to get out of sync in network
+	  play.
 
 2008-08-16  Ben Asselstine
 
