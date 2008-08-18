@@ -7,9 +7,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: lordsawar 0.1.1\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-17 12:33-0400\n"
+"POT-Creation-Date: 2008-08-18 16:14-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,804 +18,1200 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: dat/glade/editor/main-window.glade.h:1
-msgid "All Cities"
+#: dat/glade/about-dialog.glade:10 dat/glade/game-window.glade:7
+#: dat/glade/splash-window.glade:7 src/gui/main.cpp:65
+msgid "LordsAWar!"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade.h:2
-msgid "All Ruins"
+#: dat/glade/about-dialog.glade:12
+msgid ""
+"Freedom is the most important \n"
+"feature of this game."
 msgstr ""
 
-#: dat/glade/editor/main-window.glade.h:3
-msgid "All Signs"
+#: dat/glade/about-dialog.glade:14
+msgid "The GPL version 2 or later."
 msgstr ""
 
-#: dat/glade/editor/main-window.glade.h:4
-msgid "All Temples"
+#: dat/glade/about-dialog.glade:17
+msgid "The LordsAWar Website"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade.h:5
-msgid "Draw terrain with a 1x1 pointer"
+#: dat/glade/about-dialog.glade:26
+msgid "translator-credits"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade.h:6
-msgid "Draw terrain with a 3x3 pointer"
+#: dat/glade/army-bonus-dialog.glade:8 dat/glade/game-window.glade:378
+msgid "Army Bonus"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade.h:7 src/editor/main.cpp:54
-msgid "LordsAWar! Scenario Editor"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:8
-msgid "Save Map _As..."
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:9
-msgid "Smooth _Entire Map"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:10
-msgid "Unnamed Cities"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:11
-msgid "Unnamed Ruins"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:12
-msgid "Unnamed Signs"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:13
-msgid "Unnamed Temples"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:14
-#: dat/glade/editor/armyset-window.glade.h:110
-#: dat/glade/editor/reward-list-dialog.glade.h:4
-#: dat/glade/editor/tileset-window.glade.h:47
-msgid "_Edit"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:15
-#: dat/glade/editor/armyset-window.glade.h:111
-#: dat/glade/editor/tileset-window.glade.h:48
-msgid "_File"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:16 dat/glade/game-window.glade.h:55
-msgid "_Fullscreen"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:17
-#: dat/glade/editor/armyset-window.glade.h:112
-#: dat/glade/editor/tileset-window.glade.h:49
-msgid "_Help"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:18
-msgid "_Items"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:19
-msgid "_Load Map"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:20
-msgid "_Map Info"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:21
-msgid "_New Map"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:22
-msgid "_Players"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:23
-#: dat/glade/editor/armyset-window.glade.h:115
-#: dat/glade/editor/tileset-window.glade.h:53
-#: dat/glade/splash-window.glade.h:8
-msgid "_Quit"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:24
-msgid "_Random"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:25
-msgid "_Rewards"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:26
-msgid "_Save Map"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:27
-msgid "_Smooth Screen"
-msgstr ""
-
-#: dat/glade/editor/main-window.glade.h:28
-#: dat/glade/editor/tileset-window.glade.h:55
-msgid "_View"
-msgstr ""
-
-#: dat/glade/editor/signpost-dialog.glade.h:1
-msgid "<b>Signpost</b>"
-msgstr ""
-
-#: dat/glade/editor/signpost-dialog.glade.h:2
-msgid "Edit Signpost"
-msgstr ""
-
-#: dat/glade/editor/signpost-dialog.glade.h:3
-#: dat/glade/editor/temple-dialog.glade.h:4
-#: dat/glade/editor/ruin-dialog.glade.h:12
-#: dat/glade/editor/city-dialog.glade.h:10
-msgid "Randomi_ze"
-msgstr ""
-
-#: dat/glade/editor/signpost-dialog.glade.h:4
-#: dat/glade/editor/temple-dialog.glade.h:6
-#: dat/glade/editor/ruin-dialog.glade.h:16
-#: dat/glade/editor/stack-dialog.glade.h:5
-#: dat/glade/editor/select-army-dialog.glade.h:2
-#: dat/glade/editor/players-dialog.glade.h:3
-#: dat/glade/editor/city-dialog.glade.h:13
-#: dat/glade/editor/map-info-dialog.glade.h:5
-#: dat/glade/editor/new-map-dialog.glade.h:22
-#: dat/glade/editor/armyset-info-dialog.glade.h:5
-#: dat/glade/editor/reward-dialog.glade.h:16
-#: dat/glade/editor/select-item-dialog.glade.h:2
-#: dat/glade/editor/select-reward-dialog.glade.h:2
-#: dat/glade/editor/select-hidden-ruin-dialog.glade.h:2
-#: dat/glade/editor/tileset-info-dialog.glade.h:5
-#: dat/glade/buy-production-dialog.glade.h:4
-#: dat/glade/game-preferences-dialog.glade.h:33
-#: dat/glade/load-scenario-dialog.glade.h:8
-#: dat/glade/city-rename-dialog.glade.h:2 dat/glade/city-raze-dialog.glade.h:1
-#: dat/glade/signpost-change-dialog.glade.h:2
-#: dat/glade/fight-order-dialog.glade.h:3
-#: dat/glade/hero-levels-dialog.glade.h:3
-#: dat/glade/army-bonus-dialog.glade.h:3
-#: dat/glade/new-network-game-dialog.glade.h:6
-#: dat/glade/game-lobby-dialog.glade.h:11
-#: dat/glade/pick-network-game-to-join-dialog.glade.h:4
+#: dat/glade/army-bonus-dialog.glade:40
+#: dat/glade/buy-production-dialog.glade:136
+#: dat/glade/city-raze-dialog.glade:37 dat/glade/city-rename-dialog.glade:37
+#: dat/glade/fight-order-dialog.glade:40 dat/glade/game-lobby-dialog.glade:37
+#: dat/glade/game-preferences-dialog.glade:37
+#: dat/glade/hero-levels-dialog.glade:40
+#: dat/glade/load-scenario-dialog.glade:41
+#: dat/glade/new-network-game-dialog.glade:37
+#: dat/glade/pick-network-game-to-join-dialog.glade:37
+#: dat/glade/signpost-change-dialog.glade:37
+#: dat/glade/editor/armyset-info-dialog.glade:37
+#: dat/glade/editor/city-dialog.glade:37
+#: dat/glade/editor/map-info-dialog.glade:113
+#: dat/glade/editor/new-map-dialog.glade:37
+#: dat/glade/editor/players-dialog.glade:70
+#: dat/glade/editor/reward-dialog.glade:37
+#: dat/glade/editor/ruin-dialog.glade:37
+#: dat/glade/editor/select-army-dialog.glade:120
+#: dat/glade/editor/select-hidden-ruin-dialog.glade:41
+#: dat/glade/editor/select-item-dialog.glade:41
+#: dat/glade/editor/select-reward-dialog.glade:41
+#: dat/glade/editor/signpost-dialog.glade:37
+#: dat/glade/editor/stack-dialog.glade:135
+#: dat/glade/editor/temple-dialog.glade:37
+#: dat/glade/editor/tileset-info-dialog.glade:37
 msgid "_Cancel"
 msgstr ""
 
-#: dat/glade/editor/signpost-dialog.glade.h:5
-#: dat/glade/editor/temple-dialog.glade.h:7
-#: dat/glade/editor/ruin-dialog.glade.h:17
-#: dat/glade/editor/stack-dialog.glade.h:6
-#: dat/glade/editor/players-dialog.glade.h:4
-#: dat/glade/editor/city-dialog.glade.h:14
-#: dat/glade/editor/map-info-dialog.glade.h:6
-#: dat/glade/editor/armyset-info-dialog.glade.h:6
-#: dat/glade/editor/reward-dialog.glade.h:17
-#: dat/glade/editor/tileset-info-dialog.glade.h:6
-#: dat/glade/history-report-dialog.glade.h:5
-#: dat/glade/report-dialog.glade.h:11 dat/glade/city-rename-dialog.glade.h:3
-#: dat/glade/city-raze-dialog.glade.h:2
-#: dat/glade/signpost-change-dialog.glade.h:3
-#: dat/glade/fight-order-dialog.glade.h:4
-#: dat/glade/hero-levels-dialog.glade.h:4
-#: dat/glade/army-bonus-dialog.glade.h:4 dat/glade/item-bonus-dialog.glade.h:3
-#: dat/glade/new-network-game-dialog.glade.h:7
-#: dat/glade/pick-network-game-to-join-dialog.glade.h:5
+#: dat/glade/army-bonus-dialog.glade:55 dat/glade/city-raze-dialog.glade:50
+#: dat/glade/city-rename-dialog.glade:50 dat/glade/fight-order-dialog.glade:55
+#: dat/glade/hero-levels-dialog.glade:55
+#: dat/glade/history-report-dialog.glade:37
+#: dat/glade/item-bonus-dialog.glade:41
+#: dat/glade/new-network-game-dialog.glade:52 dat/glade/report-dialog.glade:37
+#: dat/glade/signpost-change-dialog.glade:50
+#: dat/glade/editor/armyset-info-dialog.glade:50
+#: dat/glade/editor/city-dialog.glade:50
+#: dat/glade/editor/map-info-dialog.glade:123
+#: dat/glade/editor/players-dialog.glade:80
+#: dat/glade/editor/reward-dialog.glade:50
+#: dat/glade/editor/ruin-dialog.glade:50
+#: dat/glade/editor/signpost-dialog.glade:50
+#: dat/glade/editor/stack-dialog.glade:145
+#: dat/glade/editor/temple-dialog.glade:50
+#: dat/glade/editor/tileset-info-dialog.glade:50
 msgid "_OK"
 msgstr ""
 
-#: dat/glade/editor/temple-dialog.glade.h:1
-msgid "<b>Temple</b>"
+#: dat/glade/army-bonus-dialog.glade:126
+#: dat/glade/editor/armyset-window.glade:1559
+msgid "<b>Army Bonus</b>"
 msgstr ""
 
-#: dat/glade/editor/temple-dialog.glade.h:2
-msgid "Edit Temple"
+#: dat/glade/army-gains-level-dialog.glade:7
+msgid "Army Gained Level"
 msgstr ""
 
-#: dat/glade/editor/temple-dialog.glade.h:3
-#: dat/glade/editor/ruin-dialog.glade.h:8
-#: dat/glade/editor/city-dialog.glade.h:7
-#: dat/glade/editor/map-info-dialog.glade.h:4
-#: dat/glade/editor/armyset-window.glade.h:24
-#: dat/glade/editor/armyset-info-dialog.glade.h:4
-#: dat/glade/editor/itemlist-dialog.glade.h:14
-#: dat/glade/editor/tileset-window.glade.h:32
-#: dat/glade/editor/tileset-info-dialog.glade.h:4
-#: dat/glade/hero-offer-dialog.glade.h:2
-#: dat/glade/ruin-report-dialog.glade.h:3
-#: dat/glade/load-scenario-dialog.glade.h:5
-#: dat/glade/city-rename-dialog.glade.h:1
+#: dat/glade/army-gains-level-dialog.glade:91
+msgid "_Choose"
+msgstr ""
+
+#: dat/glade/buy-production-dialog.glade:7
+msgid "Buy Production"
+msgstr ""
+
+#: dat/glade/buy-production-dialog.glade:103
+msgid "<b>Buy Production</b>"
+msgstr ""
+
+#: dat/glade/buy-production-dialog.glade:143
+msgid "_Buy"
+msgstr ""
+
+#: dat/glade/city-defeated-dialog.glade:8
+msgid "Victory!"
+msgstr ""
+
+#: dat/glade/city-defeated-dialog.glade:38
+msgid "_Sack"
+msgstr ""
+
+#: dat/glade/city-defeated-dialog.glade:50
+msgid "_Pillage"
+msgstr ""
+
+#: dat/glade/city-defeated-dialog.glade:63 dat/glade/city-window.glade:510
+msgid "_Raze"
+msgstr ""
+
+#: dat/glade/city-defeated-dialog.glade:76
+msgid "_Occupy"
+msgstr ""
+
+#: dat/glade/city-defeated-dialog.glade:140
+msgid "The city is yours! Will you..."
+msgstr ""
+
+#: dat/glade/city-looted-dialog.glade:22
+#: dat/glade/hero-brings-allies-dialog.glade:22
+msgid "Your troops have looted the city!"
+msgstr ""
+
+#: dat/glade/city-looted-dialog.glade:47
+#: dat/glade/city-pillaged-dialog.glade:39
+#: dat/glade/city-razed-dialog.glade:47 dat/glade/city-sacked-dialog.glade:39
+#: dat/glade/game-loaded-dialog.glade:48
+#: dat/glade/hero-brings-allies-dialog.glade:47
+#: dat/glade/medal-awarded-dialog.glade:61
+#: dat/glade/military-advisor-dialog.glade:39
+#: dat/glade/next-player-turn-dialog.glade:65
+#: dat/glade/quest-assigned-dialog.glade:39
+#: dat/glade/ruinfight-finished-dialog.glade:39
+#: dat/glade/ruinfight-started-dialog.glade:39
+#: dat/glade/ruin-report-dialog.glade:39
+#: dat/glade/ruin-rewarded-dialog.glade:39 dat/glade/sage-dialog.glade:39
+msgid "_Continue"
+msgstr ""
+
+#: dat/glade/city-pillaged-dialog.glade:64
+msgid "Your troops have pillaged the city!"
+msgstr ""
+
+#: dat/glade/city-razed-dialog.glade:22 dat/glade/city-sacked-dialog.glade:64
+msgid "Your troops have sacked the city!"
+msgstr ""
+
+#: dat/glade/city-rename-dialog.glade:113
+#: dat/glade/game-lobby-dialog.glade:608 dat/glade/hero-offer-dialog.glade:253
+#: dat/glade/load-scenario-dialog.glade:144
+#: dat/glade/ruin-report-dialog.glade:148
+#: dat/glade/editor/armyset-info-dialog.glade:113
+#: dat/glade/editor/armyset-window.glade:336
+#: dat/glade/editor/city-dialog.glade:216
+#: dat/glade/editor/itemlist-dialog.glade:212
+#: dat/glade/editor/map-info-dialog.glade:45
+#: dat/glade/editor/ruin-dialog.glade:113
+#: dat/glade/editor/temple-dialog.glade:113
+#: dat/glade/editor/tileset-info-dialog.glade:113
+#: dat/glade/editor/tileset-window.glade:380
 msgid "Name:"
 msgstr ""
 
-#: dat/glade/editor/temple-dialog.glade.h:5
-#: dat/glade/editor/tileset-window.glade.h:46
-#: dat/glade/ruin-report-dialog.glade.h:4
-msgid "Type:"
+#: dat/glade/city-window.glade:41 dat/glade/destination-dialog.glade:41
+#: dat/glade/game-options-dialog.glade:81 dat/glade/game-over-dialog.glade:74
+#: dat/glade/hero-dialog.glade:207 dat/glade/main-preferences-dialog.glade:41
+#: dat/glade/player-died-dialog.glade:39 dat/glade/preferences-dialog.glade:41
+#: dat/glade/quest-expired-dialog.glade:48
+#: dat/glade/stack-info-dialog.glade:41
+#: dat/glade/surrender-refused-dialog.glade:37
+#: dat/glade/editor/itemlist-dialog.glade:37
+#: dat/glade/editor/reward-list-dialog.glade:37
+#: dat/glade/editor/tile-preview-dialog.glade:37
+#: dat/glade/editor/tileset-selector-editor-dialog.glade:37
+#: src/gui/game-window.cpp:2112
+msgid "_Close"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:1
-msgid "<b>Ruin</b>"
+#: dat/glade/city-window.glade:225 dat/glade/destination-dialog.glade:125
+#: src/gui/city-window.cpp:263 src/gui/destination-dialog.cpp:227
+msgid "Current:"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:2
-msgid "Cle_ar Keeper"
+#: dat/glade/city-window.glade:461 dat/glade/hero-dialog.glade:143
+msgid "Stop producing armies"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:3
-msgid "Clea_r Reward"
+#: dat/glade/city-window.glade:462
+msgid "_Stop"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:4
-msgid "Edit Ruin"
+#: dat/glade/city-window.glade:477 dat/glade/hero-dialog.glade:155
+msgid "Buy a production capability"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:5
-msgid "Is Hidden?"
+#: dat/glade/city-window.glade:478
+msgid "_Buy..."
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:6
-msgid "Is a Sage?"
+#: dat/glade/city-window.glade:493
+msgid "Set destination for produced armies"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:7
-msgid "Keeper:"
+#: dat/glade/city-window.glade:494
+msgid "_Vector..."
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:9
-msgid "New Reward:"
+#: dat/glade/city-window.glade:526
+msgid "R_ename"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:10
-#: dat/glade/editor/reward-dialog.glade.h:12
-msgid "Ran_domize"
+#: dat/glade/destination-dialog.glade:8
+msgid "Choose Destination"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:11
-msgid "Random Reward"
+#: dat/glade/destination-dialog.glade:167
+msgid "4t"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:13
-#: dat/glade/editor/city-dialog.glade.h:11
-#: dat/glade/editor/reward-dialog.glade.h:15
-msgid "Randomiz_e"
+#: dat/glade/destination-dialog.glade:227
+msgid ""
+"See\n"
+"All"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:14
-msgid "Seen By:"
+#: dat/glade/destination-dialog.glade:258
+msgid "Next Turn:"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:15 src/editor/players-dialog.cpp:60
-msgid "Type"
+#: dat/glade/destination-dialog.glade:364
+msgid "Turn After:"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade.h:18
-msgid "_Pick From List"
+#: dat/glade/destination-dialog.glade:471
+msgid "_Vector"
 msgstr ""
 
-#: dat/glade/editor/stack-dialog.glade.h:1
-#: dat/glade/stack-info-dialog.glade.h:1
-msgid "<b>Stack</b>"
+#: dat/glade/destination-dialog.glade:488
+msgid ""
+"Click here to vector to\n"
+"a new city"
 msgstr ""
 
-#: dat/glade/editor/stack-dialog.glade.h:2
-msgid "Edit Stack"
+#: dat/glade/destination-dialog.glade:528
+msgid "Chan_ge"
 msgstr ""
 
-#: dat/glade/editor/stack-dialog.glade.h:3
-#: dat/glade/editor/city-dialog.glade.h:8
-msgid "Player:"
+#: dat/glade/destination-dialog.glade:545
+msgid ""
+"Click here to change the\n"
+"destination of armies"
 msgstr ""
 
-#: dat/glade/editor/stack-dialog.glade.h:4
-#: dat/glade/editor/city-dialog.glade.h:12
-#: dat/glade/editor/reward-list-dialog.glade.h:2
-msgid "_Add"
+#: dat/glade/diplomacy-dialog.glade:8
+msgid "Diplomatic Proposals"
 msgstr ""
 
-#: dat/glade/editor/stack-dialog.glade.h:7
-#: dat/glade/editor/city-dialog.glade.h:15
-#: dat/glade/editor/reward-list-dialog.glade.h:5
-msgid "_Remove"
+#: dat/glade/diplomacy-dialog.glade:39
+msgid "Report"
 msgstr ""
 
-#: dat/glade/editor/select-army-dialog.glade.h:1
-msgid "Select Army"
+#: dat/glade/diplomacy-dialog.glade:84
+msgid "Your offers and replies"
 msgstr ""
 
-#: dat/glade/editor/select-army-dialog.glade.h:3
-#: dat/glade/editor/select-item-dialog.glade.h:3
-#: dat/glade/editor/select-reward-dialog.glade.h:3
-#: dat/glade/editor/select-hidden-ruin-dialog.glade.h:3
-msgid "_Select"
+#: dat/glade/diplomacy-dialog.glade:159
+msgid "player name"
 msgstr ""
 
-#: dat/glade/editor/players-dialog.glade.h:1
-#: dat/glade/game-preferences-dialog.glade.h:4
-#: dat/glade/preferences-dialog.glade.h:2
-#: dat/glade/game-lobby-dialog.glade.h:4
+#: dat/glade/diplomacy-dialog.glade:192
+msgid "Diplomatic State"
+msgstr ""
+
+#: dat/glade/diplomacy-dialog.glade:217
+msgid "Their Proposals"
+msgstr ""
+
+#: dat/glade/diplomacy-report-dialog.glade:8
+msgid "Diplomacy Report"
+msgstr ""
+
+#: dat/glade/fight-order-dialog.glade:8 dat/glade/game-window.glade:114
+msgid "Fight Order"
+msgstr ""
+
+#: dat/glade/fight-order-dialog.glade:126
+msgid "<b>Fight Order</b>"
+msgstr ""
+
+#: dat/glade/game-loaded-dialog.glade:7
+msgid "Game Loaded"
+msgstr ""
+
+#: dat/glade/game-lobby-dialog.glade:8
+msgid "Network Game"
+msgstr ""
+
+#: dat/glade/game-lobby-dialog.glade:48
+msgid "_Play"
+msgstr ""
+
+#: dat/glade/game-lobby-dialog.glade:142
+#: dat/glade/game-preferences-dialog.glade:182
+#: dat/glade/preferences-dialog.glade:99
+#: dat/glade/editor/players-dialog.glade:29
 msgid "<b>Players</b>"
 msgstr ""
 
-#: dat/glade/editor/players-dialog.glade.h:2
-msgid "Edit Players"
+#: dat/glade/game-lobby-dialog.glade:282
+msgid "Send:"
 msgstr ""
 
-#: dat/glade/editor/city-dialog.glade.h:1
-msgid "<b>City</b>"
+#: dat/glade/game-lobby-dialog.glade:337
+msgid "<b>Chat</b>"
 msgstr ""
 
-#: dat/glade/editor/city-dialog.glade.h:2
-msgid "<b>Production</b>"
+#: dat/glade/game-lobby-dialog.glade:425
+msgid "Show Options"
 msgstr ""
 
-#: dat/glade/editor/city-dialog.glade.h:3
-msgid "Burned down"
+#: dat/glade/game-lobby-dialog.glade:468
+msgid "Turn:"
 msgstr ""
 
-#: dat/glade/editor/city-dialog.glade.h:4
-msgid "Capital"
+#: dat/glade/game-lobby-dialog.glade:496
+msgid "Cities:"
 msgstr ""
 
-#: dat/glade/editor/city-dialog.glade.h:5
-msgid "Edit City"
+#: dat/glade/game-lobby-dialog.glade:524 dat/glade/game-lobby-dialog.glade:580
+msgid "0"
 msgstr ""
 
-#: dat/glade/editor/city-dialog.glade.h:6
-msgid "Income:"
+#: dat/glade/game-lobby-dialog.glade:552
+#: dat/glade/game-preferences-dialog.glade:801
+#: dat/glade/game-preferences-dialog.glade:822
+#: dat/glade/game-preferences-dialog.glade:843
+#: dat/glade/game-preferences-dialog.glade:864
+#: dat/glade/game-preferences-dialog.glade:885
+#: dat/glade/game-preferences-dialog.glade:906
+#: dat/glade/game-preferences-dialog.glade:927
+#: src/editor/new-map-dialog.cpp:154
+msgid "Random"
 msgstr ""
 
-#: dat/glade/editor/city-dialog.glade.h:9
-#: dat/glade/editor/reward-dialog.glade.h:11
-msgid "Ra_ndomize"
+#: dat/glade/game-lobby-dialog.glade:640
+msgid "<b>Scenario Details</b>"
 msgstr ""
 
-#: dat/glade/editor/map-info-dialog.glade.h:1
-#: dat/glade/editor/new-map-dialog.glade.h:2
-#: dat/glade/editor/armyset-info-dialog.glade.h:1
-#: dat/glade/game-preferences-dialog.glade.h:3
-#: dat/glade/game-lobby-dialog.glade.h:3
-msgid "<b>Map</b>"
+#: dat/glade/game-lobby-dialog.glade:674
+msgid "<b></b>"
 msgstr ""
 
-#: dat/glade/editor/map-info-dialog.glade.h:2
-#: dat/glade/editor/armyset-window.glade.h:18
-#: dat/glade/editor/tileset-info-dialog.glade.h:2
-#: dat/glade/load-scenario-dialog.glade.h:3
-msgid "Description:"
+#: dat/glade/game-options-dialog.glade:8
+msgid "Game Options"
 msgstr ""
 
-#: dat/glade/editor/map-info-dialog.glade.h:3
-msgid "Edit Map Info"
+#: dat/glade/game-options-dialog.glade:175
+msgid "View Enemies"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:1
-msgid "   Cities"
+#: dat/glade/game-options-dialog.glade:197
+msgid "View Production"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:3
-#: dat/glade/game-preferences-dialog.glade.h:5
-msgid "Army Set:"
+#: dat/glade/game-options-dialog.glade:219
+msgid "Quests"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:4
-#: dat/glade/game-preferences-dialog.glade.h:14
-msgid "City Set:"
+#: dat/glade/game-options-dialog.glade:241
+msgid "Hidden Map"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:5
-msgid "Fill style:"
+#: dat/glade/game-options-dialog.glade:268
+msgid "Neutral Cities:"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:6
-#: dat/glade/game-preferences-dialog.glade.h:17
-msgid "Forest"
+#: dat/glade/game-options-dialog.glade:293
+msgid ""
+"Average\n"
+"Strong\n"
+"Active"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:7
-#: dat/glade/game-preferences-dialog.glade.h:19
-msgid "Grass"
+#: dat/glade/game-options-dialog.glade:319 dat/glade/game-window.glade:263
+#: dat/glade/game-window.glade:1429
+msgid "Diplomacy"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:8
-#: dat/glade/game-preferences-dialog.glade.h:20
-msgid "Hills"
+#: dat/glade/game-options-dialog.glade:341
+msgid "Cusp of War"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:9
-#: dat/glade/game-preferences-dialog.glade.h:22
-msgid "Mountains"
+#: dat/glade/game-options-dialog.glade:368
+msgid "Razing Cities:"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:10
-msgid "New Map"
+#: dat/glade/game-options-dialog.glade:393
+msgid ""
+"Never Allowed\n"
+"Only On Capture\n"
+"Always Allowed"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:11
-#: dat/glade/game-preferences-dialog.glade.h:24
+#: dat/glade/game-options-dialog.glade:423
+msgid "<b>Affecting Difficulty</b>"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade:489
+msgid "Intense Combat"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade:511
+msgid "Quick Start"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade:533
+msgid "Military Advisor"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade:555
+msgid "Random Turns"
+msgstr ""
+
+#: dat/glade/game-options-dialog.glade:587
+msgid "<b>Not Affecting Difficulty</b>"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade:8
+msgid "New Game"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade:48
+msgid "_Start Game"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade:73
+msgid "<b>Game Name:</b>"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade:225
+msgid "Difficulty:"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade:250
+msgid ""
+"Beginner\n"
+"Intermediate\n"
+"Advanced\n"
+"I am the Lord Of War!\n"
+"Custom"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade:268
+msgid "###%"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade:301
+msgid "Edit Options"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade:378
+msgid "Generate map randomly:"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade:420
+#: dat/glade/editor/new-map-dialog.glade:98
+msgid "Size:"
+msgstr ""
+
+#: dat/glade/game-preferences-dialog.glade:445
+#: dat/glade/editor/new-map-dialog.glade:123
 msgid ""
 "Normal\n"
 "Small\n"
 "Tiny"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:14 dat/glade/game-window.glade.h:41
-msgid "Ruins"
+#: dat/glade/game-preferences-dialog.glade:477
+#: src/gui/history-report-dialog.cpp:114
+msgid "Cities"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:15
-#: dat/glade/game-preferences-dialog.glade.h:28
-msgid "Shield Set:"
+#: dat/glade/game-preferences-dialog.glade:614
+#: dat/glade/editor/new-map-dialog.glade:731
+msgid "Mountains"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:16
-msgid "Signposts"
+#: dat/glade/game-preferences-dialog.glade:642
+#: dat/glade/editor/new-map-dialog.glade:703
+msgid "Hills"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:17
-#: dat/glade/game-preferences-dialog.glade.h:29
-msgid "Size:"
+#: dat/glade/game-preferences-dialog.glade:670
+#: dat/glade/editor/new-map-dialog.glade:675
+msgid "Forest"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:18
-#: dat/glade/game-preferences-dialog.glade.h:30
+#: dat/glade/game-preferences-dialog.glade:698
+#: dat/glade/editor/new-map-dialog.glade:647
 msgid "Swamp"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:19
-msgid "Temples"
-msgstr ""
-
-#: dat/glade/editor/new-map-dialog.glade.h:20
-#: dat/glade/game-preferences-dialog.glade.h:31
-msgid "Tile Set:"
-msgstr ""
-
-#: dat/glade/editor/new-map-dialog.glade.h:21
-#: dat/glade/game-preferences-dialog.glade.h:32
+#: dat/glade/game-preferences-dialog.glade:726
+#: dat/glade/editor/new-map-dialog.glade:619
 msgid "Water"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade.h:23
-msgid "_Create Map"
+#: dat/glade/game-preferences-dialog.glade:754
+#: dat/glade/editor/new-map-dialog.glade:591
+msgid "Grass"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:1
-msgid "+1 Str in City"
+#: dat/glade/game-preferences-dialog.glade:967
+#: dat/glade/editor/new-map-dialog.glade:139
+msgid "Tile Set:"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:2
-msgid "+1 Str in Forest"
+#: dat/glade/game-preferences-dialog.glade:1009
+#: dat/glade/editor/new-map-dialog.glade:365
+msgid "Army Set:"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:3
-msgid "+1 Str in Hills"
+#: dat/glade/game-preferences-dialog.glade:1064
+#: dat/glade/editor/new-map-dialog.glade:200
+msgid "Shield Set:"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:4
-msgid "+1 Str in Open"
+#: dat/glade/game-preferences-dialog.glade:1106
+#: dat/glade/editor/new-map-dialog.glade:255
+msgid "City Set:"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:5
-msgid "+1 Str to Stack"
+#: dat/glade/game-preferences-dialog.glade:1150
+msgid "Cities can produce allies"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:6
-msgid "+1 to Stack in Hills"
+#: dat/glade/game-preferences-dialog.glade:1183
+msgid "Load map:"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:7
-msgid "+2 Str in City"
+#: dat/glade/game-preferences-dialog.glade:1202
+msgid "Choose a map"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:8
-msgid "+2 Str in Open"
+#: dat/glade/game-preferences-dialog.glade:1230
+#: dat/glade/editor/armyset-info-dialog.glade:82
+#: dat/glade/editor/map-info-dialog.glade:29
+#: dat/glade/editor/new-map-dialog.glade:909
+msgid "<b>Map</b>"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:9
-msgid "+2 Str to Stack"
+#: dat/glade/game-quit-dialog.glade:8 dat/glade/game-window.glade:92
+msgid "Quit"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:10
-msgid "-1 Str to Enemy Stack"
+#: dat/glade/game-quit-dialog.glade:37 dat/glade/temple-visit-dialog.glade:46
+msgid "_No"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:11
-#: dat/glade/army-bonus-dialog.glade.h:1
-msgid "<b>Army Bonus</b>"
+#: dat/glade/game-quit-dialog.glade:50 dat/glade/temple-visit-dialog.glade:56
+msgid "_Yes"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:12
-msgid "<b>Army</b>"
+#: dat/glade/game-quit-dialog.glade:75
+msgid ""
+"Are you sure you want to quit?\n"
+"\n"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:13
-msgid "<b>Move Bonus</b>"
+#: dat/glade/game-window.glade:42
+msgid "Game"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:14
-msgid "Armyset Information"
+#: dat/glade/game-window.glade:51
+msgid "Load Game"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:15
-msgid "Can Fly"
+#: dat/glade/game-window.glade:60
+msgid "Save Game"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:16
-msgid "Cost:"
+#: dat/glade/game-window.glade:69
+msgid "Save Game As..."
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:17
-msgid "Defends Ruins?"
+#: dat/glade/game-window.glade:77
+msgid "Show Lobby"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:19
-msgid "Exp Points:"
+#: dat/glade/game-window.glade:104
+msgid "Order"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:20
-msgid "Is Awardable?"
+#: dat/glade/game-window.glade:124
+msgid "Move All"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:21
-msgid "Is Hero?"
+#: dat/glade/game-window.glade:134 src/gui/game-window.cpp:1134
+msgid "Disband"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:22 src/editor/armyset-main.cpp:48
+#: dat/glade/game-window.glade:144 src/gui/game-window.cpp:1077
+#: src/editor/main-window.cpp:946
+msgid "Signpost"
+msgstr ""
+
+#: dat/glade/game-window.glade:154
+msgid "Group/Ungroup"
+msgstr ""
+
+#: dat/glade/game-window.glade:164
+msgid "Leave Here"
+msgstr ""
+
+#: dat/glade/game-window.glade:174
+msgid "Next"
+msgstr ""
+
+#: dat/glade/game-window.glade:190 src/gui/game-window.cpp:1191
+msgid "Resign"
+msgstr ""
+
+#: dat/glade/game-window.glade:204
+msgid "Reports"
+msgstr ""
+
+#: dat/glade/game-window.glade:213 dat/glade/report-dialog.glade:211
+msgid "Army"
+msgstr ""
+
+#: dat/glade/game-window.glade:223 dat/glade/game-window.glade:422
+#: dat/glade/history-report-dialog.glade:187 dat/glade/report-dialog.glade:320
+#: src/editor/main-window.cpp:942
+msgid "City"
+msgstr ""
+
+#: dat/glade/game-window.glade:233 dat/glade/game-window.glade:442
+#: dat/glade/history-report-dialog.glade:323 dat/glade/report-dialog.glade:429
+#: dat/glade/editor/reward-dialog.glade:104 src/gui/sage-dialog.cpp:158
+#: src/editor/players-dialog.cpp:103
+msgid "Gold"
+msgstr ""
+
+#: dat/glade/game-window.glade:243 dat/glade/report-dialog.glade:544
+msgid "Production"
+msgstr ""
+
+#: dat/glade/game-window.glade:253 dat/glade/report-dialog.glade:653
+msgid "Winning"
+msgstr ""
+
+#: dat/glade/game-window.glade:273
+msgid "Quest"
+msgstr ""
+
+#: dat/glade/game-window.glade:286
+msgid "Hero"
+msgstr ""
+
+#: dat/glade/game-window.glade:296
+msgid "Inspect"
+msgstr ""
+
+#: dat/glade/game-window.glade:306
+msgid "Plant Flag"
+msgstr ""
+
+#: dat/glade/game-window.glade:316
+msgid "Levels"
+msgstr ""
+
+#: dat/glade/game-window.glade:326
+msgid "Search"
+msgstr ""
+
+#: dat/glade/game-window.glade:340
+msgid "View"
+msgstr ""
+
+#: dat/glade/game-window.glade:349 dat/glade/editor/main-window.glade:244
+msgid "_Fullscreen"
+msgstr ""
+
+#: dat/glade/game-window.glade:359 dat/glade/splash-window.glade:165
+msgid "_Preferences"
+msgstr ""
+
+#: dat/glade/game-window.glade:368 dat/glade/editor/new-map-dialog.glade:509
+msgid "Ruins"
+msgstr ""
+
+#: dat/glade/game-window.glade:388
+msgid "Items"
+msgstr ""
+
+#: dat/glade/game-window.glade:398 dat/glade/stack-info-dialog.glade:8
+msgid "Stack Info"
+msgstr ""
+
+#: dat/glade/game-window.glade:412 src/gui/history-report-dialog.cpp:62
+msgid "History"
+msgstr ""
+
+#: dat/glade/game-window.glade:432 dat/glade/history-report-dialog.glade:239
+msgid "Events"
+msgstr ""
+
+#: dat/glade/game-window.glade:452 dat/glade/history-report-dialog.glade:407
+msgid "Winners"
+msgstr ""
+
+#: dat/glade/game-window.glade:468 dat/glade/triumphs-dialog.glade:8
+msgid "Triumphs"
+msgstr ""
+
+#: dat/glade/game-window.glade:482 dat/glade/editor/armyset-window.glade:117
+#: dat/glade/editor/main-window.glade:268
+#: dat/glade/editor/tileset-window.glade:148
+msgid "_Help"
+msgstr ""
+
+#: dat/glade/game-window.glade:500
+msgid "Online _Help"
+msgstr ""
+
+#: dat/glade/game-window.glade:525
+msgid "_Turn"
+msgstr ""
+
+#: dat/glade/game-window.glade:535
+msgid "End Turn"
+msgstr ""
+
+#: dat/glade/game-window.glade:754
+msgid "Turn: %6"
+msgstr ""
+
+#: dat/glade/game-window.glade:906
+msgid ""
+"Group\n"
+"Moves\n"
+"XX"
+msgstr ""
+
+#: dat/glade/game-window.glade:934
+msgid "Grp"
+msgstr ""
+
+#: dat/glade/game-window.glade:964 dat/glade/treachery-dialog.glade:83
+msgid "label1"
+msgstr ""
+
+#: dat/glade/game-window.glade:1224
+msgid "label2"
+msgstr ""
+
+#: dat/glade/game-window.glade:1326
+msgid "Move to the destination"
+msgstr ""
+
+#: dat/glade/game-window.glade:1344
+msgid "Select next stack that can move"
+msgstr ""
+
+#: dat/glade/game-window.glade:1362
+msgid "Leave the stack here"
+msgstr ""
+
+#: dat/glade/game-window.glade:1380
+msgid "Deselect the stack"
+msgstr ""
+
+#: dat/glade/game-window.glade:1411
+msgid "Center map on stack"
+msgstr ""
+
+#: dat/glade/game-window.glade:1447
+msgid "Let the stack defend"
+msgstr ""
+
+#: dat/glade/game-window.glade:1465
+msgid "Search ruin or temple"
+msgstr ""
+
+#: dat/glade/game-window.glade:1496
+msgid "Move all stacks"
+msgstr ""
+
+#: dat/glade/game-window.glade:1514
+msgid "End the turn"
+msgstr ""
+
+#: dat/glade/hero-dialog.glade:141
+msgid "_Drop"
+msgstr ""
+
+#: dat/glade/hero-dialog.glade:153
+msgid "_Pick up"
+msgstr ""
+
+#: dat/glade/hero-dialog.glade:177
+msgid "<b>Items</b>"
+msgstr ""
+
+#: dat/glade/hero-levels-dialog.glade:8
+msgid "Hero Levels"
+msgstr ""
+
+#: dat/glade/hero-levels-dialog.glade:126
+msgid "<b>Hero Levels</b>"
+msgstr ""
+
+#: dat/glade/hero-offer-dialog.glade:37 dat/glade/surrender-dialog.glade:37
+msgid "_Decline"
+msgstr ""
+
+#: dat/glade/hero-offer-dialog.glade:52 dat/glade/surrender-dialog.glade:52
+msgid "A_ccept"
+msgstr ""
+
+#: dat/glade/hero-offer-dialog.glade:202
+msgid "male"
+msgstr ""
+
+#: dat/glade/hero-offer-dialog.glade:221
+msgid "female"
+msgstr ""
+
+#: dat/glade/item-bonus-dialog.glade:8
+msgid "Item Bonus"
+msgstr ""
+
+#: dat/glade/item-bonus-dialog.glade:112
+msgid "<b>Item Bonus</b>"
+msgstr ""
+
+#: dat/glade/load-scenario-dialog.glade:8
+msgid "Load Scenario"
+msgstr ""
+
+#: dat/glade/load-scenario-dialog.glade:52
+msgid "_Load"
+msgstr ""
+
+#: dat/glade/load-scenario-dialog.glade:224
+msgid "<i>You can use the editor to make your own scenarios.</i>"
+msgstr ""
+
+#: dat/glade/load-scenario-dialog.glade:263
+msgid "Number of Players:"
+msgstr ""
+
+#: dat/glade/load-scenario-dialog.glade:326
+msgid "Number of Cities:"
+msgstr ""
+
+#: dat/glade/load-scenario-dialog.glade:389
+#: dat/glade/editor/armyset-window.glade:364
+#: dat/glade/editor/map-info-dialog.glade:69
+#: dat/glade/editor/tileset-info-dialog.glade:169
+msgid "Description:"
+msgstr ""
+
+#: dat/glade/load-scenario-dialog.glade:458
+msgid "<b>Scenarios</b>"
+msgstr ""
+
+#: dat/glade/main-preferences-dialog.glade:8
+#: dat/glade/preferences-dialog.glade:8
+msgid "Preferences"
+msgstr ""
+
+#: dat/glade/main-preferences-dialog.glade:91
+#: dat/glade/preferences-dialog.glade:154
+msgid "Show popup at beginning of _turn"
+msgstr ""
+
+#: dat/glade/main-preferences-dialog.glade:110
+msgid "Show standard window decorations"
+msgstr ""
+
+#: dat/glade/main-preferences-dialog.glade:132
+#: dat/glade/preferences-dialog.glade:180
+msgid "<b>Game</b>"
+msgstr ""
+
+#: dat/glade/main-preferences-dialog.glade:193
+#: dat/glade/preferences-dialog.glade:241
+msgid "Play _music"
+msgstr ""
+
+#: dat/glade/main-preferences-dialog.glade:217
+#: dat/glade/preferences-dialog.glade:265
+msgid "<i>Volume:</i>"
+msgstr ""
+
+#: dat/glade/main-preferences-dialog.glade:282
+#: dat/glade/preferences-dialog.glade:330
+msgid "<b>Sound</b>"
+msgstr ""
+
+#: dat/glade/medal-awarded-dialog.glade:7
+msgid "Medal Awarded"
+msgstr ""
+
+#: dat/glade/new-network-game-dialog.glade:8
+msgid "New Network Game"
+msgstr ""
+
+#: dat/glade/new-network-game-dialog.glade:77
+msgid "Nickname:"
+msgstr ""
+
+#: dat/glade/new-network-game-dialog.glade:141
+msgid ""
+"I want to join a game\n"
+"already in progress."
+msgstr ""
+
+#: dat/glade/new-network-game-dialog.glade:161
+msgid ""
+"I want to start a new game\n"
+"that others can join."
+msgstr ""
+
+#: dat/glade/next-player-turn-dialog.glade:7
+msgid "Next Turn"
+msgstr ""
+
+#: dat/glade/pick-network-game-to-join-dialog.glade:8
+msgid "Pick a game to Join"
+msgstr ""
+
+#: dat/glade/pick-network-game-to-join-dialog.glade:50
+msgid "_Connect"
+msgstr ""
+
+#: dat/glade/pick-network-game-to-join-dialog.glade:82
+msgid ""
+"Type in the name of the computer\n"
+"whose game you would like to join."
+msgstr ""
+
+#: dat/glade/pick-network-game-to-join-dialog.glade:114
+msgid "Hostname:"
+msgstr ""
+
+#: dat/glade/pick-network-game-to-join-dialog.glade:158
+msgid "Port:"
+msgstr ""
+
+#: dat/glade/pick-network-game-to-join-dialog.glade:326
+msgid "Clear List"
+msgstr ""
+
+#: dat/glade/pick-network-game-to-join-dialog.glade:374
+msgid "<b>Recently Joined Games</b>"
+msgstr ""
+
+#: dat/glade/player-died-dialog.glade:8
+msgid "Game Lost"
+msgstr ""
+
+#: dat/glade/player-resign-completed-dialog.glade:8
+msgid "Resigned"
+msgstr ""
+
+#: dat/glade/player-resign-completed-dialog.glade:62
+msgid ""
+"Ha!  Now I've burned everything!\n"
+"Let the enemy come!"
+msgstr ""
+
+#: dat/glade/quest-expired-dialog.glade:7
+msgid "Quest Expired"
+msgstr ""
+
+#: dat/glade/report-dialog.glade:131
+msgid "Number of armies each side owns"
+msgstr ""
+
+#: dat/glade/report-dialog.glade:240
+msgid "Number of cities each side owns"
+msgstr ""
+
+#: dat/glade/report-dialog.glade:349
+msgid "Amount of gold each side possesses"
+msgstr ""
+
+#: dat/glade/report-dialog.glade:458
+msgid "Armies you produced this turn"
+msgstr ""
+
+#: dat/glade/report-dialog.glade:573
+msgid "Who is the most powerful nation"
+msgstr ""
+
+#: dat/glade/ruinfight-finished-dialog.glade:79
+msgid "...is victorious! or ...is slain by it!"
+msgstr ""
+
+#: dat/glade/ruinfight-started-dialog.glade:64
+msgid "So and so encounters a monster and...."
+msgstr ""
+
+#: dat/glade/ruin-report-dialog.glade:176
+#: dat/glade/editor/temple-dialog.glade:186
+#: dat/glade/editor/tileset-window.glade:352
+msgid "Type:"
+msgstr ""
+
+#: dat/glade/ruin-report-dialog.glade:204
+msgid "Explored:"
+msgstr ""
+
+#: dat/glade/ruin-report-dialog.glade:320
+msgid "<b>Details</b>"
+msgstr ""
+
+#: dat/glade/ruin-rewarded-dialog.glade:118
+msgid "The Sages show thee the site of X where Y can be found."
+msgstr ""
+
+#: dat/glade/sage-dialog.glade:118
+msgid ""
+"The Sage greets you warmly...\n"
+"\"Welcome, O seeker of knowledge.\n"
+"I can show thee many things - items, money or maps.\n"
+"What wouldst thou ask of me\""
+msgstr ""
+
+#: dat/glade/signpost-change-dialog.glade:113
+msgid "Message:"
+msgstr ""
+
+#: dat/glade/splash-window.glade:60
+msgid "New _Campaign"
+msgstr ""
+
+#: dat/glade/splash-window.glade:75
+msgid "New _Game"
+msgstr ""
+
+#: dat/glade/splash-window.glade:90
+msgid "L_oad Game"
+msgstr ""
+
+#: dat/glade/splash-window.glade:105
+msgid "Load _Scenario"
+msgstr ""
+
+#: dat/glade/splash-window.glade:120
+msgid "New _Network Game"
+msgstr ""
+
+#: dat/glade/splash-window.glade:148
+msgid "New Play By _Mail Game"
+msgstr ""
+
+#: dat/glade/splash-window.glade:180 dat/glade/editor/armyset-window.glade:83
+#: dat/glade/editor/main-window.glade:83
+#: dat/glade/editor/tileset-window.glade:83
+msgid "_Quit"
+msgstr ""
+
+#: dat/glade/stack-info-dialog.glade:94 src/gui/stack-info-dialog.cpp:193
+#: src/editor/stack-dialog.cpp:86
+msgid "Str"
+msgstr ""
+
+#: dat/glade/stack-info-dialog.glade:126
+#: dat/glade/editor/stack-dialog.glade:29
+msgid "<b>Stack</b>"
+msgstr ""
+
+#: dat/glade/stack-info-dialog.glade:163
+msgid "_Group"
+msgstr ""
+
+#: dat/glade/stack-info-dialog.glade:180
+msgid "_Ungroup"
+msgstr ""
+
+#: dat/glade/surrender-dialog.glade:8
+msgid "An Offer of Peace!"
+msgstr ""
+
+#: dat/glade/surrender-refused-dialog.glade:8
+msgid "Surrender Refused!"
+msgstr ""
+
+#: dat/glade/temple-visit-dialog.glade:21
+msgid ""
+"Your armies have been blessed!\n"
+"\n"
+"Do you seek a quest?"
+msgstr ""
+
+#: dat/glade/treachery-dialog.glade:8
+msgid "Treachery!"
+msgstr ""
+
+#: dat/glade/treachery-dialog.glade:39
+msgid "Whoops!  _Pardon me, friend."
+msgstr ""
+
+#: dat/glade/treachery-dialog.glade:52
+msgid "_Attack!"
+msgstr ""
+
+#: dat/glade/triumphs-dialog.glade:37
+msgid "Continue"
+msgstr ""
+
+#: dat/glade/editor/armyset-info-dialog.glade:8
+msgid "Edit Armyset Info"
+msgstr ""
+
+#: dat/glade/editor/armyset-info-dialog.glade:169
+msgid "Id:"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:7 src/editor/armyset-main.cpp:48
 msgid "LordsAWar! Armyset Editor"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:23
-msgid "Max Moves:"
+#: dat/glade/editor/armyset-window.glade:36
+#: dat/glade/editor/main-window.glade:36
+#: dat/glade/editor/tileset-window.glade:36
+msgid "_File"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:25
-msgid "Picture:"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:26
-msgid "Save Armyset _As..."
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:27
-#: dat/glade/editor/tileset-window.glade.h:37
-#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:5
-msgid "Select A File"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:28
-msgid "Sight:"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:29
-msgid "Strength:"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:30
-msgid "Subtract All City Bonus"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:31
-msgid "Subtract All Non-Hero Bonuses"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:32
-msgid "Subtract all Hero Bonuses"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:33
-msgid "Travels faster in forests"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:34
-msgid "Travels faster in hills"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:35
-msgid "Travels faster in marshland"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:36
-msgid "Travels faster in mountains"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:37
-msgid "Turns:"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:38
-msgid "Upkeep:"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:39
-msgid ""
-"When checked, the army\n"
-"requires 2 movement points\n"
-"to travel over any kind of\n"
-"terrain"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:43
-msgid ""
-"When checked, the army\n"
-"requires 2 movement points\n"
-"to travel over forest"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:46
-msgid ""
-"When checked, the army\n"
-"requires 2 movement points\n"
-"to travel over hills"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:49
-msgid ""
-"When checked, the army\n"
-"requires 2 movement points\n"
-"to travel over marsh"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:52
-msgid ""
-"When checked, the army\n"
-"requires 2 movement points\n"
-"to travel over mountains"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:55
-msgid ""
-"When checked, the army \n"
-"negates 1 from the strength\n"
-"of an attacking stack"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:58
-msgid ""
-"When checked, the army \n"
-"negates any city bonuses\n"
-"that an enemy stack has\n"
-"in battle"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:62
-msgid ""
-"When checked, the army \n"
-"negates any hero bonuses\n"
-"that an attacking enemy\n"
-"stack has"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:66
-msgid ""
-"When checked, the army \n"
-"negates any non-hero \n"
-"bonuses that an attacking \n"
-"enemy stack has"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:70
-msgid ""
-"When checked, the army gets\n"
-"1 added to it's strength if it is\n"
-"standing in a city and it is\n"
-"attacked"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:74
-msgid ""
-"When checked, the army gets\n"
-"1 added to it's strength if it is\n"
-"standing in a city and it is \n"
-"attacked\n"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:79
-msgid ""
-"When checked, the army gets\n"
-"1 added to it's strength if it is\n"
-"standing in forest and it is\n"
-"attacked"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:83
-msgid ""
-"When checked, the army gets\n"
-"1 added to it's strength if it is\n"
-"standing out in the open\n"
-"(e.g. in grass, no buildings)\n"
-"and it is attacked"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:88
-msgid ""
-"When checked, the army gets\n"
-"2 added to it's strength if it is\n"
-"standing in a city and it is \n"
-"attacked\n"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:93
-msgid ""
-"When checked, the army gets\n"
-"2 added to it's strength if it is\n"
-"standing out in the open\n"
-"(e.g. in grass, no buildings)\n"
-"and it is attacked"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:98
-msgid ""
-"When checked, the stack\n"
-"with this army in it gets 1 \n"
-"added to it's strength in battle"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:101
-msgid ""
-"When checked, the stack\n"
-"with this army in it gets 2 \n"
-"added to it's strength in battle"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:104
-msgid ""
-"When checked, the stack \n"
-"with this army in it gets 1 \n"
-"added to it's strength if it \n"
-"is standing in hills and it \n"
-"is attacked\n"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:113
-msgid "_Load Armyset"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:114
+#: dat/glade/editor/armyset-window.glade:45
 msgid "_New Armyset"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:116
+#: dat/glade/editor/armyset-window.glade:53
+msgid "_Load Armyset"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:61
 msgid "_Save Armyset"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:117
+#: dat/glade/editor/armyset-window.glade:69
+msgid "Save Armyset _As..."
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:95
+#: dat/glade/editor/main-window.glade:95
+#: dat/glade/editor/reward-list-dialog.glade:150
+#: dat/glade/editor/tileset-window.glade:95
+msgid "_Edit"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:105
+msgid "Armyset Information"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:392
+msgid "Picture:"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:420
+#: dat/glade/editor/tileset-selector-editor-dialog.glade:176
+#: dat/glade/editor/tileset-window.glade:957
+msgid "Select A File"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:517
+msgid "Is Hero?"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:538
 msgid ""
 "can this army be \n"
 "given to a hero?"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:119
-msgid ""
-"can this army stand\n"
-"guard within a ruin?"
+#: dat/glade/editor/armyset-window.glade:541
+msgid "Is Awardable?"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:121
-msgid ""
-"how far this army\n"
-"can travel in a\n"
-"single turn"
+#: dat/glade/editor/armyset-window.glade:568
+msgid "Turns:"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:124
-msgid ""
-"how far this army can\n"
-"see when playing on\n"
-"a hidden map"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:127
-msgid ""
-"how many experience\n"
-"points this army is worth \n"
-"when it is killed"
-msgstr ""
-
-#: dat/glade/editor/armyset-window.glade.h:130
+#: dat/glade/editor/armyset-window.glade:593
 msgid ""
 "how many turns it\n"
 "takes for this army\n"
@@ -823,7 +1219,23 @@ msgid ""
 "a city"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:134
+#: dat/glade/editor/armyset-window.glade:631
+msgid "Cost:"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:656
+msgid ""
+"how much it costs to \n"
+"buy this army unit so \n"
+"that it can be \n"
+"produced in a city"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:695
+msgid "Upkeep:"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:720
 msgid ""
 "how much it costs \n"
 "per-turn to keep this \n"
@@ -832,201 +1244,760 @@ msgid ""
 "produced"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:139
-msgid ""
-"how much it costs to \n"
-"buy this army unit so \n"
-"that it can be \n"
-"produced in a city"
+#: dat/glade/editor/armyset-window.glade:760
+msgid "Strength:"
 msgstr ""
 
-#: dat/glade/editor/armyset-window.glade.h:143
+#: dat/glade/editor/armyset-window.glade:785
 msgid "how strong the army is"
 msgstr ""
 
-#: dat/glade/editor/armyset-info-dialog.glade.h:2
-msgid "Edit Armyset Info"
+#: dat/glade/editor/armyset-window.glade:820
+msgid "Max Moves:"
 msgstr ""
 
-#: dat/glade/editor/armyset-info-dialog.glade.h:3
-msgid "Id:"
+#: dat/glade/editor/armyset-window.glade:845
+msgid ""
+"how far this army\n"
+"can travel in a\n"
+"single turn"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:1
-msgid "+1 to Hero's Strength"
+#: dat/glade/editor/armyset-window.glade:883
+msgid "Exp Points:"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:2
-msgid "+1 to Stack's Strength"
+#: dat/glade/editor/armyset-window.glade:908
+msgid ""
+"how many experience\n"
+"points this army is worth \n"
+"when it is killed"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:3
-msgid "+2 Gold Per City"
+#: dat/glade/editor/armyset-window.glade:946
+msgid "Sight:"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:4
-msgid "+2 to Hero's Strength"
+#: dat/glade/editor/armyset-window.glade:971
+msgid ""
+"how far this army can\n"
+"see when playing on\n"
+"a hidden map"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:5
-msgid "+2 to Stack's Strength"
+#: dat/glade/editor/armyset-window.glade:1003
+msgid ""
+"can this army stand\n"
+"guard within a ruin?"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:6
-msgid "+3 Gold Per City"
+#: dat/glade/editor/armyset-window.glade:1006
+msgid "Defends Ruins?"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:7
-msgid "+3 to Hero's Strength"
+#: dat/glade/editor/armyset-window.glade:1065
+msgid ""
+"When checked, the army\n"
+"requires 2 movement points\n"
+"to travel over forest"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:8
-msgid "+3 to Stack's Strength"
+#: dat/glade/editor/armyset-window.glade:1069
+msgid "Travels faster in forests"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:9
-msgid "+4 Gold Per City"
+#: dat/glade/editor/armyset-window.glade:1087
+msgid ""
+"When checked, the army\n"
+"requires 2 movement points\n"
+"to travel over marsh"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:10
-msgid "+5 Gold Per City"
+#: dat/glade/editor/armyset-window.glade:1091
+msgid "Travels faster in marshland"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:11
-msgid "<b>Item</b>"
+#: dat/glade/editor/armyset-window.glade:1109
+msgid ""
+"When checked, the army\n"
+"requires 2 movement points\n"
+"to travel over hills"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:12
-msgid "Double Movement of Stack"
+#: dat/glade/editor/armyset-window.glade:1113
+msgid "Travels faster in hills"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:13
+#: dat/glade/editor/armyset-window.glade:1131
+msgid ""
+"When checked, the army\n"
+"requires 2 movement points\n"
+"to travel over mountains"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1135
+msgid "Travels faster in mountains"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1153
+msgid ""
+"When checked, the army\n"
+"requires 2 movement points\n"
+"to travel over any kind of\n"
+"terrain"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1158
+msgid "Can Fly"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1180
+msgid "<b>Move Bonus</b>"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1249
+msgid ""
+"When checked, the army gets\n"
+"1 added to it's strength if it is\n"
+"standing out in the open\n"
+"(e.g. in grass, no buildings)\n"
+"and it is attacked"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1255
+msgid "+1 Str in Open"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1273
+msgid ""
+"When checked, the army gets\n"
+"2 added to it's strength if it is\n"
+"standing out in the open\n"
+"(e.g. in grass, no buildings)\n"
+"and it is attacked"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1279
+msgid "+2 Str in Open"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1297
+msgid ""
+"When checked, the army gets\n"
+"1 added to it's strength if it is\n"
+"standing in forest and it is\n"
+"attacked"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1302
+msgid "+1 Str in Forest"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1320
+msgid ""
+"When checked, the army gets\n"
+"1 added to it's strength if it is\n"
+"standing in a city and it is\n"
+"attacked"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1325
+msgid "+1 Str in Hills"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1343
+msgid ""
+"When checked, the army gets\n"
+"1 added to it's strength if it is\n"
+"standing in a city and it is \n"
+"attacked\n"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1349
+msgid "+1 Str in City"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1367
+msgid ""
+"When checked, the army gets\n"
+"2 added to it's strength if it is\n"
+"standing in a city and it is \n"
+"attacked\n"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1373
+msgid "+2 Str in City"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1391
+msgid ""
+"When checked, the stack \n"
+"with this army in it gets 1 \n"
+"added to it's strength if it \n"
+"is standing in hills and it \n"
+"is attacked\n"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1398
+msgid "+1 to Stack in Hills"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1416
+msgid ""
+"When checked, the army \n"
+"negates any city bonuses\n"
+"that an enemy stack has\n"
+"in battle"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1421
+msgid "Subtract All City Bonus"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1439
+msgid ""
+"When checked, the army \n"
+"negates 1 from the strength\n"
+"of an attacking stack"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1443
+msgid "-1 Str to Enemy Stack"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1461
+msgid ""
+"When checked, the stack\n"
+"with this army in it gets 1 \n"
+"added to it's strength in battle"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1465
+msgid "+1 Str to Stack"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1483
+msgid ""
+"When checked, the stack\n"
+"with this army in it gets 2 \n"
+"added to it's strength in battle"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1487
+msgid "+2 Str to Stack"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1505
+msgid ""
+"When checked, the army \n"
+"negates any non-hero \n"
+"bonuses that an attacking \n"
+"enemy stack has"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1510
+msgid "Subtract All Non-Hero Bonuses"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1528
+msgid ""
+"When checked, the army \n"
+"negates any hero bonuses\n"
+"that an attacking enemy\n"
+"stack has"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1533
+msgid "Subtract all Hero Bonuses"
+msgstr ""
+
+#: dat/glade/editor/armyset-window.glade:1600
+msgid "<b>Army</b>"
+msgstr ""
+
+#: dat/glade/editor/city-dialog.glade:8
+msgid "Edit City"
+msgstr ""
+
+#: dat/glade/editor/city-dialog.glade:82
+msgid "<b>City</b>"
+msgstr ""
+
+#: dat/glade/editor/city-dialog.glade:131
+#: dat/glade/editor/stack-dialog.glade:45
+msgid "Player:"
+msgstr ""
+
+#: dat/glade/editor/city-dialog.glade:179
+msgid "Capital"
+msgstr ""
+
+#: dat/glade/editor/city-dialog.glade:267
+#: dat/glade/editor/reward-dialog.glade:618
+#: dat/glade/editor/ruin-dialog.glade:358
+msgid "Randomiz_e"
+msgstr ""
+
+#: dat/glade/editor/city-dialog.glade:301
+msgid "Income:"
+msgstr ""
+
+#: dat/glade/editor/city-dialog.glade:353
+#: dat/glade/editor/reward-dialog.glade:299
+msgid "Ra_ndomize"
+msgstr ""
+
+#: dat/glade/editor/city-dialog.glade:376
+msgid "Burned down"
+msgstr ""
+
+#: dat/glade/editor/city-dialog.glade:409
+msgid "<b>Production</b>"
+msgstr ""
+
+#: dat/glade/editor/city-dialog.glade:481
+#: dat/glade/editor/ruin-dialog.glade:158
+#: dat/glade/editor/signpost-dialog.glade:148
+#: dat/glade/editor/temple-dialog.glade:158
+msgid "Randomi_ze"
+msgstr ""
+
+#: dat/glade/editor/city-dialog.glade:496
+#: dat/glade/editor/reward-list-dialog.glade:118
+#: dat/glade/editor/stack-dialog.glade:93
+msgid "_Add"
+msgstr ""
+
+#: dat/glade/editor/city-dialog.glade:511
+#: dat/glade/editor/reward-list-dialog.glade:134
+#: dat/glade/editor/stack-dialog.glade:100
+msgid "_Remove"
+msgstr ""
+
+#: dat/glade/editor/itemlist-dialog.glade:8
 msgid "Item Editor"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:15
+#: dat/glade/editor/itemlist-dialog.glade:262
+msgid "+1 to Hero's Strength"
+msgstr ""
+
+#: dat/glade/editor/itemlist-dialog.glade:284
+msgid "+2 to Hero's Strength"
+msgstr ""
+
+#: dat/glade/editor/itemlist-dialog.glade:306
+msgid "+3 to Hero's Strength"
+msgstr ""
+
+#: dat/glade/editor/itemlist-dialog.glade:328
+msgid "+1 to Stack's Strength"
+msgstr ""
+
+#: dat/glade/editor/itemlist-dialog.glade:350
+msgid "+2 to Stack's Strength"
+msgstr ""
+
+#: dat/glade/editor/itemlist-dialog.glade:372
+msgid "+3 to Stack's Strength"
+msgstr ""
+
+#: dat/glade/editor/itemlist-dialog.glade:394
 msgid "Stack Can Fly"
 msgstr ""
 
-#: dat/glade/editor/itemlist-dialog.glade.h:16
-#: dat/glade/editor/reward-list-dialog.glade.h:3
-#: dat/glade/editor/tile-preview-dialog.glade.h:2
-#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:9
-#: dat/glade/city-window.glade.h:7 dat/glade/destination-dialog.glade.h:13
-#: dat/glade/player-died-dialog.glade.h:2 dat/glade/game-over-dialog.glade.h:1
-#: dat/glade/hero-dialog.glade.h:4
-#: dat/glade/surrender-refused-dialog.glade.h:2
-#: dat/glade/quest-expired-dialog.glade.h:2
-#: dat/glade/preferences-dialog.glade.h:8
-#: dat/glade/main-preferences-dialog.glade.h:8
-#: dat/glade/game-options-dialog.glade.h:22
-#: dat/glade/stack-info-dialog.glade.h:4 src/gui/game-window.cpp:2112
-msgid "_Close"
+#: dat/glade/editor/itemlist-dialog.glade:416
+msgid "Double Movement of Stack"
 msgstr ""
 
-#: dat/glade/editor/reward-dialog.glade.h:1
-msgid "<b>Reward</b>"
+#: dat/glade/editor/itemlist-dialog.glade:438
+msgid "+2 Gold Per City"
 msgstr ""
 
-#: dat/glade/editor/reward-dialog.glade.h:2 src/gui/sage-dialog.cpp:212
-msgid "Allies"
+#: dat/glade/editor/itemlist-dialog.glade:460
+msgid "+3 Gold Per City"
 msgstr ""
 
-#: dat/glade/editor/reward-dialog.glade.h:3
-msgid "Clear Ally Type"
+#: dat/glade/editor/itemlist-dialog.glade:482
+msgid "+4 Gold Per City"
 msgstr ""
 
-#: dat/glade/editor/reward-dialog.glade.h:4
-msgid "Clear Hidden Ruin"
+#: dat/glade/editor/itemlist-dialog.glade:504
+msgid "+5 Gold Per City"
 msgstr ""
 
-#: dat/glade/editor/reward-dialog.glade.h:5
-msgid "Clear Item"
+#: dat/glade/editor/itemlist-dialog.glade:536
+msgid "<b>Item</b>"
 msgstr ""
 
-#: dat/glade/editor/reward-dialog.glade.h:6
+#: dat/glade/editor/main-window.glade:7 src/editor/main.cpp:54
+msgid "LordsAWar! Scenario Editor"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:45
+msgid "_New Map"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:53
+msgid "_Load Map"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:61
+msgid "_Save Map"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:69
+msgid "Save Map _As..."
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:104
+msgid "_Players"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:112
+msgid "_Map Info"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:120
+msgid "_Items"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:128
+msgid "_Rewards"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:136
+msgid "_Smooth Screen"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:145
+msgid "Smooth _Entire Map"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:157
+msgid "_Random"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:166
+msgid "All Cities"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:174
+msgid "Unnamed Cities"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:182
+msgid "All Ruins"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:190
+msgid "Unnamed Ruins"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:199
+msgid "All Temples"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:207
+msgid "Unnamed Temples"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:215
+msgid "All Signs"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:223
+msgid "Unnamed Signs"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:235
+#: dat/glade/editor/tileset-window.glade:125
+msgid "_View"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:255
+msgid "_Toggle Tile Graphics"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:419
+msgid "Draw terrain with a 1x1 pointer"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:449
+#: dat/glade/editor/main-window.glade:479
+#: dat/glade/editor/main-window.glade:509
+msgid "Draw terrain with a 3x3 pointer"
+msgstr ""
+
+#: dat/glade/editor/map-info-dialog.glade:7
+msgid "Edit Map Info"
+msgstr ""
+
+#: dat/glade/editor/new-map-dialog.glade:8
+msgid "New Map"
+msgstr ""
+
+#: dat/glade/editor/new-map-dialog.glade:48
+msgid "_Create Map"
+msgstr ""
+
+#: dat/glade/editor/new-map-dialog.glade:317
+msgid "Fill style:"
+msgstr ""
+
+#: dat/glade/editor/new-map-dialog.glade:453
+msgid "Signposts"
+msgstr ""
+
+#: dat/glade/editor/new-map-dialog.glade:481
+msgid "Temples"
+msgstr ""
+
+#: dat/glade/editor/new-map-dialog.glade:868
+msgid "   Cities"
+msgstr ""
+
+#: dat/glade/editor/players-dialog.glade:7
+msgid "Edit Players"
+msgstr ""
+
+#: dat/glade/editor/reward-dialog.glade:8
 msgid "Edit Reward"
 msgstr ""
 
-#: dat/glade/editor/reward-dialog.glade.h:7 dat/glade/game-window.glade.h:13
-#: dat/glade/history-report-dialog.glade.h:3 dat/glade/report-dialog.glade.h:5
-#: src/gui/sage-dialog.cpp:158 src/editor/players-dialog.cpp:103
-msgid "Gold"
-msgstr ""
-
-#: dat/glade/editor/reward-dialog.glade.h:8
-msgid "Hidden Ruin"
-msgstr ""
-
-#: dat/glade/editor/reward-dialog.glade.h:9
+#: dat/glade/editor/reward-dialog.glade:126
 msgid "Item"
 msgstr ""
 
-#: dat/glade/editor/reward-dialog.glade.h:10
+#: dat/glade/editor/reward-dialog.glade:149 src/gui/sage-dialog.cpp:212
+msgid "Allies"
+msgstr ""
+
+#: dat/glade/editor/reward-dialog.glade:172
 msgid "Map"
 msgstr ""
 
-#: dat/glade/editor/reward-dialog.glade.h:13
+#: dat/glade/editor/reward-dialog.glade:220
+#: dat/glade/editor/ruin-dialog.glade:550
+msgid "Ran_domize"
+msgstr ""
+
+#: dat/glade/editor/reward-dialog.glade:283
+msgid "Clear Item"
+msgstr ""
+
+#: dat/glade/editor/reward-dialog.glade:381
+msgid "Clear Ally Type"
+msgstr ""
+
+#: dat/glade/editor/reward-dialog.glade:397
 msgid "Rand_omize"
 msgstr ""
 
-#: dat/glade/editor/reward-dialog.glade.h:14
-msgid "Random_ize"
-msgstr ""
-
-#: dat/glade/editor/reward-dialog.glade.h:18
-msgid "h:"
-msgstr ""
-
-#: dat/glade/editor/reward-dialog.glade.h:19
-msgid "w:"
-msgstr ""
-
-#: dat/glade/editor/reward-dialog.glade.h:20
+#: dat/glade/editor/reward-dialog.glade:434
 msgid "x:"
 msgstr ""
 
-#: dat/glade/editor/reward-dialog.glade.h:21
+#: dat/glade/editor/reward-dialog.glade:478
 msgid "y:"
 msgstr ""
 
-#: dat/glade/editor/select-item-dialog.glade.h:1
-msgid "Select Item"
+#: dat/glade/editor/reward-dialog.glade:522
+msgid "w:"
 msgstr ""
 
-#: dat/glade/editor/select-reward-dialog.glade.h:1
-msgid "Select Reward"
+#: dat/glade/editor/reward-dialog.glade:566
+msgid "h:"
 msgstr ""
 
-#: dat/glade/editor/reward-list-dialog.glade.h:1
+#: dat/glade/editor/reward-dialog.glade:644
+msgid "Hidden Ruin"
+msgstr ""
+
+#: dat/glade/editor/reward-dialog.glade:704
+msgid "Clear Hidden Ruin"
+msgstr ""
+
+#: dat/glade/editor/reward-dialog.glade:720
+msgid "Random_ize"
+msgstr ""
+
+#: dat/glade/editor/reward-dialog.glade:749
+msgid "<b>Reward</b>"
+msgstr ""
+
+#: dat/glade/editor/reward-list-dialog.glade:8
 msgid "Edit Rewards"
 msgstr ""
 
-#: dat/glade/editor/select-hidden-ruin-dialog.glade.h:1
+#: dat/glade/editor/ruin-dialog.glade:8
+msgid "Edit Ruin"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade:82
+msgid "<b>Ruin</b>"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade:189 src/editor/players-dialog.cpp:60
+msgid "Type"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade:265
+msgid "Keeper:"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade:342
+msgid "Cle_ar Keeper"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade:384
+msgid "Is a Sage?"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade:406
+msgid "Is Hidden?"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade:427
+msgid "Seen By:"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade:518
+msgid "_Pick From List"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade:534
+msgid "Clea_r Reward"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade:576
+msgid "New Reward:"
+msgstr ""
+
+#: dat/glade/editor/ruin-dialog.glade:598
+msgid "Random Reward"
+msgstr ""
+
+#: dat/glade/editor/select-army-dialog.glade:7
+msgid "Select Army"
+msgstr ""
+
+#: dat/glade/editor/select-army-dialog.glade:127
+#: dat/glade/editor/select-hidden-ruin-dialog.glade:52
+#: dat/glade/editor/select-item-dialog.glade:52
+#: dat/glade/editor/select-reward-dialog.glade:52
+msgid "_Select"
+msgstr ""
+
+#: dat/glade/editor/select-hidden-ruin-dialog.glade:8
 msgid "Select Hidden Ruin"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade.h:1
-msgid "<b>Tile Style Set</b>"
+#: dat/glade/editor/select-item-dialog.glade:8
+msgid "Select Item"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade.h:2
-msgid "<b>Tile Style Sets</b>"
+#: dat/glade/editor/select-reward-dialog.glade:8
+msgid "Select Reward"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade.h:3
-msgid "<b>Tile Style</b>"
+#: dat/glade/editor/signpost-dialog.glade:8
+msgid "Edit Signpost"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade.h:4
-msgid "<b>Tile</b>"
+#: dat/glade/editor/signpost-dialog.glade:82
+msgid "<b>Signpost</b>"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade.h:5
-msgid "First Colour:"
+#: dat/glade/editor/stack-dialog.glade:7
+msgid "Edit Stack"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade.h:6
+#: dat/glade/editor/temple-dialog.glade:8
+msgid "Edit Temple"
+msgstr ""
+
+#: dat/glade/editor/temple-dialog.glade:82
+msgid "<b>Temple</b>"
+msgstr ""
+
+#: dat/glade/editor/tile-preview-dialog.glade:8
+msgid "Preview Tile"
+msgstr ""
+
+#: dat/glade/editor/tileset-info-dialog.glade:8
+msgid "Edit Tileset Info"
+msgstr ""
+
+#: dat/glade/editor/tileset-info-dialog.glade:82
+msgid "<b>Tileset</b>"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade:8
+msgid "Selector Editor"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade:75
+msgid "Large"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade:94
+msgid "Small"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade:151
+msgid "Image:"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade:231
+msgid "Shieildset:"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade:300
+msgid "<b>Preview</b>"
+msgstr ""
+
+#: dat/glade/editor/tileset-selector-editor-dialog.glade:334
+msgid "<b>Army Unit Selector</b>"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:7 src/editor/tileset-main.cpp:48
+msgid "LordsAWar! Tileset Editor"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:45
+msgid "_New Tileset"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:53
+msgid "_Load Tileset"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:61
+msgid "_Save Tileset"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:69
+msgid "Save Tileset _As..."
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:105
+msgid "Tileset info"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:113
+msgid "_Army Unit Selector"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:135
+msgid "_Preview Tile"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:324
+msgid "Moves:"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:409
 msgid ""
 "Grass\n"
 "Water\n"
@@ -1036,11 +2007,44 @@ msgid ""
 "Swamp"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade.h:12
+#: dat/glade/editor/tileset-window.glade:486
+msgid "Smallmap Appearance:"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:582
+msgid "Pattern:"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:610
+msgid "First Colour:"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:638
+msgid "Second Colour:"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:666
+msgid "Third Colour:"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:696
+msgid ""
+"Solid\n"
+"Stippled\n"
+"Randomized\n"
+"Sunken\n"
+"Tablecloth"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:932
 msgid "Image File:"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade.h:13
+#: dat/glade/editor/tileset-window.glade:988
+msgid "Refresh Image from File"
+msgstr ""
+
+#: dat/glade/editor/tileset-window.glade:1072
 msgid ""
 "Lone\n"
 "Outer Top-Left\n"
@@ -1061,949 +2065,20 @@ msgid ""
 "Other"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade.h:30 src/editor/tileset-main.cpp:48
-msgid "LordsAWar! Tileset Editor"
+#: dat/glade/editor/tileset-window.glade:1149
+msgid "<b>Tile Style</b>"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade.h:31
-msgid "Moves:"
+#: dat/glade/editor/tileset-window.glade:1190
+msgid "<b>Tile Style Set</b>"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade.h:33
-msgid "Pattern:"
+#: dat/glade/editor/tileset-window.glade:1224
+msgid "<b>Tile Style Sets</b>"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade.h:34
-msgid "Refresh Image from File"
-msgstr ""
-
-#: dat/glade/editor/tileset-window.glade.h:35
-msgid "Save Tileset _As..."
-msgstr ""
-
-#: dat/glade/editor/tileset-window.glade.h:36
-msgid "Second Colour:"
-msgstr ""
-
-#: dat/glade/editor/tileset-window.glade.h:38
-msgid "Smallmap Appearance:"
-msgstr ""
-
-#: dat/glade/editor/tileset-window.glade.h:39
-msgid ""
-"Solid\n"
-"Stippled\n"
-"Randomized\n"
-"Sunken\n"
-"Tablecloth"
-msgstr ""
-
-#: dat/glade/editor/tileset-window.glade.h:44
-msgid "Third Colour:"
-msgstr ""
-
-#: dat/glade/editor/tileset-window.glade.h:45
-msgid "Tileset info"
-msgstr ""
-
-#: dat/glade/editor/tileset-window.glade.h:50
-msgid "_Load Tileset"
-msgstr ""
-
-#: dat/glade/editor/tileset-window.glade.h:51
-msgid "_New Tileset"
-msgstr ""
-
-#: dat/glade/editor/tileset-window.glade.h:52
-msgid "_Preview Tile"
-msgstr ""
-
-#: dat/glade/editor/tileset-window.glade.h:54
-msgid "_Save Tileset"
-msgstr ""
-
-#: dat/glade/editor/tileset-info-dialog.glade.h:1
-msgid "<b>Tileset</b>"
-msgstr ""
-
-#: dat/glade/editor/tileset-info-dialog.glade.h:3
-msgid "Edit Tileset Info"
-msgstr ""
-
-#: dat/glade/editor/tile-preview-dialog.glade.h:1
-msgid "Preview Tile"
-msgstr ""
-
-#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:1
-msgid "<b>Army Unit Selector</b>"
-msgstr ""
-
-#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:2
-msgid "<b>Preview</b>"
-msgstr ""
-
-#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:3
-msgid "Image:"
-msgstr ""
-
-#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:4
-msgid "Large"
-msgstr ""
-
-#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:6
-msgid "Selector Editor"
-msgstr ""
-
-#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:7
-msgid "Shieildset:"
-msgstr ""
-
-#: dat/glade/editor/tileset-selector-editor-dialog.glade.h:8
-msgid "Small"
-msgstr ""
-
-#: dat/glade/army-gains-level-dialog.glade.h:1
-msgid "Army Gained Level"
-msgstr ""
-
-#: dat/glade/army-gains-level-dialog.glade.h:2
-msgid "_Choose"
-msgstr ""
-
-#: dat/glade/buy-production-dialog.glade.h:1
-msgid "<b>Buy Production</b>"
-msgstr ""
-
-#: dat/glade/buy-production-dialog.glade.h:2
-msgid "Buy Production"
-msgstr ""
-
-#: dat/glade/buy-production-dialog.glade.h:3
-msgid "_Buy"
-msgstr ""
-
-#: dat/glade/city-defeated-dialog.glade.h:1
-msgid "The city is yours! Will you..."
-msgstr ""
-
-#: dat/glade/city-defeated-dialog.glade.h:2
-msgid "Victory!"
-msgstr ""
-
-#: dat/glade/city-defeated-dialog.glade.h:3
-msgid "_Occupy"
-msgstr ""
-
-#: dat/glade/city-defeated-dialog.glade.h:4
-msgid "_Pillage"
-msgstr ""
-
-#: dat/glade/city-defeated-dialog.glade.h:5 dat/glade/city-window.glade.h:8
-msgid "_Raze"
-msgstr ""
-
-#: dat/glade/city-defeated-dialog.glade.h:6
-msgid "_Sack"
-msgstr ""
-
-#: dat/glade/city-looted-dialog.glade.h:1
-#: dat/glade/hero-brings-allies-dialog.glade.h:1
-msgid "Your troops have looted the city!"
-msgstr ""
-
-#: dat/glade/city-looted-dialog.glade.h:2
-#: dat/glade/city-pillaged-dialog.glade.h:2
-#: dat/glade/city-sacked-dialog.glade.h:2
-#: dat/glade/game-loaded-dialog.glade.h:2 dat/glade/sage-dialog.glade.h:5
-#: dat/glade/ruin-rewarded-dialog.glade.h:2
-#: dat/glade/ruin-report-dialog.glade.h:5
-#: dat/glade/medal-awarded-dialog.glade.h:2
-#: dat/glade/quest-assigned-dialog.glade.h:1
-#: dat/glade/ruinfight-finished-dialog.glade.h:2
-#: dat/glade/ruinfight-started-dialog.glade.h:2
-#: dat/glade/hero-brings-allies-dialog.glade.h:2
-#: dat/glade/military-advisor-dialog.glade.h:1
-#: dat/glade/next-player-turn-dialog.glade.h:2
-#: dat/glade/city-razed-dialog.glade.h:2
-msgid "_Continue"
-msgstr ""
-
-#: dat/glade/city-pillaged-dialog.glade.h:1
-msgid "Your troops have pillaged the city!"
-msgstr ""
-
-#: dat/glade/city-sacked-dialog.glade.h:1
-#: dat/glade/city-razed-dialog.glade.h:1
-msgid "Your troops have sacked the city!"
-msgstr ""
-
-#: dat/glade/city-window.glade.h:1 dat/glade/hero-dialog.glade.h:2
-msgid "Buy a production capability"
-msgstr ""
-
-#: dat/glade/city-window.glade.h:2 dat/glade/destination-dialog.glade.h:8
-#: src/gui/city-window.cpp:263 src/gui/destination-dialog.cpp:227
-msgid "Current:"
-msgstr ""
-
-#: dat/glade/city-window.glade.h:3
-msgid "R_ename"
-msgstr ""
-
-#: dat/glade/city-window.glade.h:4
-msgid "Set destination for produced armies"
-msgstr ""
-
-#: dat/glade/city-window.glade.h:5 dat/glade/hero-dialog.glade.h:3
-msgid "Stop producing armies"
-msgstr ""
-
-#: dat/glade/city-window.glade.h:6
-msgid "_Buy..."
-msgstr ""
-
-#: dat/glade/city-window.glade.h:9
-msgid "_Stop"
-msgstr ""
-
-#: dat/glade/city-window.glade.h:10
-msgid "_Vector..."
-msgstr ""
-
-#: dat/glade/destination-dialog.glade.h:1
-msgid "4t"
-msgstr ""
-
-#: dat/glade/destination-dialog.glade.h:2
-msgid "Chan_ge"
-msgstr ""
-
-#: dat/glade/destination-dialog.glade.h:3
-msgid "Choose Destination"
-msgstr ""
-
-#: dat/glade/destination-dialog.glade.h:4
-msgid ""
-"Click here to change the\n"
-"destination of armies"
-msgstr ""
-
-#: dat/glade/destination-dialog.glade.h:6
-msgid ""
-"Click here to vector to\n"
-"a new city"
-msgstr ""
-
-#: dat/glade/destination-dialog.glade.h:9
-msgid "Next Turn:"
-msgstr ""
-
-#: dat/glade/destination-dialog.glade.h:10
-msgid ""
-"See\n"
-"All"
-msgstr ""
-
-#: dat/glade/destination-dialog.glade.h:12
-msgid "Turn After:"
-msgstr ""
-
-#: dat/glade/destination-dialog.glade.h:14
-msgid "_Vector"
-msgstr ""
-
-#: dat/glade/game-loaded-dialog.glade.h:1
-msgid "Game Loaded"
-msgstr ""
-
-#: dat/glade/player-died-dialog.glade.h:1
-msgid "Game Lost"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade.h:2
-#, no-c-format
-msgid "###%"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade.h:6
-msgid ""
-"Beginner\n"
-"Intermediate\n"
-"Advanced\n"
-"I am the Lord Of War!\n"
-"Custom"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade.h:11
-msgid "Choose a map"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade.h:12
-#: src/gui/history-report-dialog.cpp:114
-msgid "Cities"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade.h:13
-msgid "Cities can produce allies"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade.h:15
-msgid "Difficulty:"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade.h:16
-msgid "Edit Options"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade.h:18
-msgid "Generate map randomly:"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade.h:21
-msgid "Load map:"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade.h:23
-msgid "New Game"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade.h:27
-#: dat/glade/game-lobby-dialog.glade.h:7 src/editor/new-map-dialog.cpp:154
-msgid "Random"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade.h:34
-#: dat/glade/game-lobby-dialog.glade.h:12
-msgid "_Start Game"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:1 dat/glade/report-dialog.glade.h:3
-msgid "Army"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:2 dat/glade/army-bonus-dialog.glade.h:2
-msgid "Army Bonus"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:3
-msgid "Center map on stack"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:4 dat/glade/history-report-dialog.glade.h:1
-#: dat/glade/report-dialog.glade.h:4 src/editor/main-window.cpp:942
-msgid "City"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:5
-msgid "Deselect the stack"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:6 dat/glade/game-options-dialog.glade.h:7
-msgid "Diplomacy"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:7 src/gui/game-window.cpp:1134
-msgid "Disband"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:8
-msgid "End Turn"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:9
-msgid "End the turn"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:10 dat/glade/history-report-dialog.glade.h:2
-msgid "Events"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:11 dat/glade/fight-order-dialog.glade.h:2
-msgid "Fight Order"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:12
-msgid "Game"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:14
-msgid ""
-"Group\n"
-"Moves\n"
-"XX"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:17
-msgid "Group/Ungroup"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:18
-msgid "Grp"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:19
-msgid "Help"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:20
-msgid "Hero"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:21 src/gui/history-report-dialog.cpp:62
-msgid "History"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:22
-msgid "Inspect"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:23
-msgid "Items"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:24
-msgid "Leave Here"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:25
-msgid "Leave the stack here"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:26
-msgid "Let the stack defend"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:27
-msgid "Levels"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:28
-msgid "Load Game"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:29 dat/glade/splash-window.glade.h:3
-#: dat/glade/about-dialog.glade.h:3 src/gui/main.cpp:64
-msgid "LordsAWar!"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:30
-msgid "Move All"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:31
-msgid "Move all stacks"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:32
-msgid "Move to the destination"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:33
-msgid "Next"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:34
-msgid "Order"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:35
-msgid "Plant Flag"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:36 dat/glade/report-dialog.glade.h:8
-msgid "Production"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:37
-msgid "Quest"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:38 dat/glade/game-quit-dialog.glade.h:4
-msgid "Quit"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:39
-msgid "Reports"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:40 src/gui/game-window.cpp:1191
-msgid "Resign"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:42
-msgid "Save Game"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:43
-msgid "Save Game As..."
-msgstr ""
-
-#: dat/glade/game-window.glade.h:44
-msgid "Search"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:45
-msgid "Search ruin or temple"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:46
-msgid "Select next stack that can move"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:47 src/gui/game-window.cpp:1077
-#: src/editor/main-window.cpp:946
-msgid "Signpost"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:48 dat/glade/stack-info-dialog.glade.h:2
-msgid "Stack Info"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:49 dat/glade/triumphs-dialog.glade.h:2
-msgid "Triumphs"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:51
-#, no-c-format
-msgid "Turn: %6"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:52
-msgid "View"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:53 dat/glade/history-report-dialog.glade.h:4
-msgid "Winners"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:54 dat/glade/report-dialog.glade.h:10
-msgid "Winning"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:56 dat/glade/splash-window.glade.h:7
-msgid "_Preferences"
-msgstr ""
-
-#: dat/glade/game-window.glade.h:57
-msgid "_Turn"
-msgstr ""
-
-#: dat/glade/hero-dialog.glade.h:1
-msgid "<b>Items</b>"
-msgstr ""
-
-#: dat/glade/hero-dialog.glade.h:5
-msgid "_Drop"
-msgstr ""
-
-#: dat/glade/hero-dialog.glade.h:6
-msgid "_Pick up"
-msgstr ""
-
-#: dat/glade/hero-offer-dialog.glade.h:1 dat/glade/surrender-dialog.glade.h:1
-msgid "A_ccept"
-msgstr ""
-
-#: dat/glade/hero-offer-dialog.glade.h:3 dat/glade/surrender-dialog.glade.h:3
-msgid "_Decline"
-msgstr ""
-
-#: dat/glade/hero-offer-dialog.glade.h:4
-msgid "female"
-msgstr ""
-
-#: dat/glade/hero-offer-dialog.glade.h:5
-msgid "male"
-msgstr ""
-
-#: dat/glade/surrender-dialog.glade.h:2
-msgid "An Offer of Peace!"
-msgstr ""
-
-#: dat/glade/surrender-refused-dialog.glade.h:1
-msgid "Surrender Refused!"
-msgstr ""
-
-#: dat/glade/sage-dialog.glade.h:1
-msgid ""
-"The Sage greets you warmly...\n"
-"\"Welcome, O seeker of knowledge.\n"
-"I can show thee many things - items, money or maps.\n"
-"What wouldst thou ask of me\""
-msgstr ""
-
-#: dat/glade/ruin-rewarded-dialog.glade.h:1
-msgid "The Sages show thee the site of X where Y can be found."
-msgstr ""
-
-#: dat/glade/ruin-report-dialog.glade.h:1
-#: dat/glade/game-lobby-dialog.glade.h:2
-msgid "<b>Details</b>"
-msgstr ""
-
-#: dat/glade/ruin-report-dialog.glade.h:2
-msgid "Explored:"
-msgstr ""
-
-#: dat/glade/report-dialog.glade.h:1
-msgid "Amount of gold each side possesses"
-msgstr ""
-
-#: dat/glade/report-dialog.glade.h:2
-msgid "Armies you produced this turn"
-msgstr ""
-
-#: dat/glade/report-dialog.glade.h:6
-msgid "Number of armies each side owns"
-msgstr ""
-
-#: dat/glade/report-dialog.glade.h:7
-msgid "Number of cities each side owns"
-msgstr ""
-
-#: dat/glade/report-dialog.glade.h:9
-msgid "Who is the most powerful nation"
-msgstr ""
-
-#: dat/glade/load-scenario-dialog.glade.h:1
-msgid "<b>Scenarios</b>"
-msgstr ""
-
-#: dat/glade/load-scenario-dialog.glade.h:2
-msgid "<i>You can use the editor to make your own scenarios.</i>"
-msgstr ""
-
-#: dat/glade/load-scenario-dialog.glade.h:4
-msgid "Load Scenario"
-msgstr ""
-
-#: dat/glade/load-scenario-dialog.glade.h:6
-msgid "Number of Cities:"
-msgstr ""
-
-#: dat/glade/load-scenario-dialog.glade.h:7
-msgid "Number of Players:"
-msgstr ""
-
-#: dat/glade/load-scenario-dialog.glade.h:9
-msgid "_Load"
-msgstr ""
-
-#: dat/glade/medal-awarded-dialog.glade.h:1
-msgid "Medal Awarded"
-msgstr ""
-
-#: dat/glade/quest-expired-dialog.glade.h:1
-msgid "Quest Expired"
-msgstr ""
-
-#: dat/glade/preferences-dialog.glade.h:1
-#: dat/glade/main-preferences-dialog.glade.h:1
-msgid "<b>Game</b>"
-msgstr ""
-
-#: dat/glade/preferences-dialog.glade.h:3
-#: dat/glade/main-preferences-dialog.glade.h:2
-msgid "<b>Sound</b>"
-msgstr ""
-
-#: dat/glade/preferences-dialog.glade.h:4
-#: dat/glade/main-preferences-dialog.glade.h:3
-msgid "<i>Volume:</i>"
-msgstr ""
-
-#: dat/glade/preferences-dialog.glade.h:5
-#: dat/glade/main-preferences-dialog.glade.h:4
-msgid "Play _music"
-msgstr ""
-
-#: dat/glade/preferences-dialog.glade.h:6
-#: dat/glade/main-preferences-dialog.glade.h:5
-msgid "Preferences"
-msgstr ""
-
-#: dat/glade/preferences-dialog.glade.h:7
-#: dat/glade/main-preferences-dialog.glade.h:6
-msgid "Show popup at beginning of _turn"
-msgstr ""
-
-#: dat/glade/main-preferences-dialog.glade.h:7
-msgid "Show standard window decorations"
-msgstr ""
-
-#: dat/glade/ruinfight-finished-dialog.glade.h:1
-msgid "...is victorious! or ...is slain by it!"
-msgstr ""
-
-#: dat/glade/ruinfight-started-dialog.glade.h:1
-msgid "So and so encounters a monster and...."
-msgstr ""
-
-#: dat/glade/splash-window.glade.h:1
-msgid "L_oad Game"
-msgstr ""
-
-#: dat/glade/splash-window.glade.h:2
-msgid "Load _Scenario"
-msgstr ""
-
-#: dat/glade/splash-window.glade.h:4
-msgid "New _Campaign"
-msgstr ""
-
-#: dat/glade/splash-window.glade.h:5
-msgid "New _Game"
-msgstr ""
-
-#: dat/glade/splash-window.glade.h:6
-msgid "New _Network Game"
-msgstr ""
-
-#: dat/glade/temple-visit-dialog.glade.h:1
-msgid ""
-"Your armies have been blessed!\n"
-"\n"
-"Do you seek a quest?"
-msgstr ""
-
-#: dat/glade/temple-visit-dialog.glade.h:4
-#: dat/glade/game-quit-dialog.glade.h:5
-msgid "_No"
-msgstr ""
-
-#: dat/glade/temple-visit-dialog.glade.h:5
-#: dat/glade/game-quit-dialog.glade.h:6
-msgid "_Yes"
-msgstr ""
-
-#: dat/glade/next-player-turn-dialog.glade.h:1
-msgid "Next Turn"
-msgstr ""
-
-#: dat/glade/signpost-change-dialog.glade.h:1
-msgid "Message:"
-msgstr ""
-
-#: dat/glade/fight-order-dialog.glade.h:1
-msgid "<b>Fight Order</b>"
-msgstr ""
-
-#: dat/glade/hero-levels-dialog.glade.h:1
-msgid "<b>Hero Levels</b>"
-msgstr ""
-
-#: dat/glade/hero-levels-dialog.glade.h:2
-msgid "Hero Levels"
-msgstr ""
-
-#: dat/glade/item-bonus-dialog.glade.h:1
-msgid "<b>Item Bonus</b>"
-msgstr ""
-
-#: dat/glade/item-bonus-dialog.glade.h:2
-msgid "Item Bonus"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:1
-msgid "<b>Affecting Difficulty</b>"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:2
-msgid "<b>Not Affecting Difficulty</b>"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:3
-msgid ""
-"Average\n"
-"Strong\n"
-"Active"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:6
-msgid "Cusp of War"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:8
-msgid "Game Options"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:9
-msgid "Hidden Map"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:10
-msgid "Intense Combat"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:11
-msgid "Military Advisor"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:12
-msgid "Neutral Cities:"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:13
-msgid ""
-"Never Allowed\n"
-"Only On Capture\n"
-"Always Allowed"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:16
-msgid "Quests"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:17
-msgid "Quick Start"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:18
-msgid "Random Turns"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:19
-msgid "Razing Cities:"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:20
-msgid "View Enemies"
-msgstr ""
-
-#: dat/glade/game-options-dialog.glade.h:21
-msgid "View Production"
-msgstr ""
-
-#: dat/glade/triumphs-dialog.glade.h:1
-msgid "Continue"
-msgstr ""
-
-#: dat/glade/diplomacy-report-dialog.glade.h:1
-msgid "Diplomacy Report"
-msgstr ""
-
-#: dat/glade/diplomacy-dialog.glade.h:1
-msgid "Diplomatic Proposals"
-msgstr ""
-
-#: dat/glade/diplomacy-dialog.glade.h:2
-msgid "Diplomatic State"
-msgstr ""
-
-#: dat/glade/diplomacy-dialog.glade.h:3
-msgid "Report"
-msgstr ""
-
-#: dat/glade/diplomacy-dialog.glade.h:4
-msgid "Their Proposals"
-msgstr ""
-
-#: dat/glade/diplomacy-dialog.glade.h:5
-msgid "Your offers and replies"
-msgstr ""
-
-#: dat/glade/diplomacy-dialog.glade.h:6
-msgid "player name"
-msgstr ""
-
-#: dat/glade/treachery-dialog.glade.h:1
-msgid "Treachery!"
-msgstr ""
-
-#: dat/glade/treachery-dialog.glade.h:2
-msgid "Whoops!  _Pardon me, friend."
-msgstr ""
-
-#: dat/glade/treachery-dialog.glade.h:3
-msgid "_Attack!"
-msgstr ""
-
-#: dat/glade/stack-info-dialog.glade.h:3 src/gui/stack-info-dialog.cpp:193
-#: src/editor/stack-dialog.cpp:86
-msgid "Str"
-msgstr ""
-
-#: dat/glade/stack-info-dialog.glade.h:5
-msgid "_Group"
-msgstr ""
-
-#: dat/glade/stack-info-dialog.glade.h:6
-msgid "_Ungroup"
-msgstr ""
-
-#: dat/glade/game-quit-dialog.glade.h:1
-msgid ""
-"Are you sure you want to quit?\n"
-"\n"
-msgstr ""
-
-#: dat/glade/about-dialog.glade.h:1
-msgid ""
-"Freedom is the most important \n"
-"feature of this game."
-msgstr ""
-
-#: dat/glade/about-dialog.glade.h:4
-msgid "The GPL version 2 or later."
-msgstr ""
-
-#: dat/glade/about-dialog.glade.h:5
-msgid "The LordsAWar Website"
-msgstr ""
-
-#. TRANSLATORS: Replace this string with your names, one name per line.
-#: dat/glade/about-dialog.glade.h:7
-msgid "translator-credits"
-msgstr ""
-
-#: dat/glade/new-network-game-dialog.glade.h:1
-msgid ""
-"I want to join a game\n"
-"already in progress."
-msgstr ""
-
-#: dat/glade/new-network-game-dialog.glade.h:3
-msgid ""
-"I want to start a new game\n"
-"that others can join."
-msgstr ""
-
-#: dat/glade/new-network-game-dialog.glade.h:5
-msgid "New Network Game"
-msgstr ""
-
-#: dat/glade/game-lobby-dialog.glade.h:1
-msgid "0"
-msgstr ""
-
-#: dat/glade/game-lobby-dialog.glade.h:5
-msgid "Cities:"
-msgstr ""
-
-#: dat/glade/game-lobby-dialog.glade.h:6
-msgid "Network Game"
-msgstr ""
-
-#: dat/glade/game-lobby-dialog.glade.h:8
-msgid "Scenario:"
-msgstr ""
-
-#: dat/glade/game-lobby-dialog.glade.h:9
-msgid "Show Options"
-msgstr ""
-
-#: dat/glade/game-lobby-dialog.glade.h:10
-msgid "Turn:"
-msgstr ""
-
-#: dat/glade/pick-network-game-to-join-dialog.glade.h:1
-msgid "Hostname"
-msgstr ""
-
-#: dat/glade/pick-network-game-to-join-dialog.glade.h:2
-msgid ""
-"Type in the name of the computer\n"
-"whose game you would like to join."
+#: dat/glade/editor/tileset-window.glade:1258
+msgid "<b>Tile</b>"
 msgstr ""
 
 #: src/tilestyle.cpp:106 src/tilestyle.cpp:163
@@ -2106,7 +2181,7 @@ msgstr ""
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:580 src/gui/driver.cpp:644
+#: src/GameScenario.cpp:580 src/gui/driver.cpp:655
 msgid "Error: "
 msgstr ""
 
@@ -2828,8 +2903,8 @@ msgstr ""
 msgid "Choose Game to Load"
 msgstr ""
 
-#: src/gui/game-window.cpp:934 src/gui/driver.cpp:262 src/gui/driver.cpp:426
-#: src/gui/driver.cpp:589 src/gui/driver.cpp:608
+#: src/gui/game-window.cpp:934 src/gui/driver.cpp:272 src/gui/driver.cpp:437
+#: src/gui/driver.cpp:600 src/gui/driver.cpp:619
 msgid "Corrupted saved game file."
 msgstr ""
 
@@ -3123,28 +3198,28 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr ""
 
-#: src/gui/driver.cpp:311
+#: src/gui/driver.cpp:321
 msgid "Server went away."
 msgstr ""
 
-#: src/gui/driver.cpp:327
+#: src/gui/driver.cpp:337
 msgid "Could not connect."
 msgstr ""
 
-#: src/gui/driver.cpp:544 src/editor/main-window.cpp:383
+#: src/gui/driver.cpp:555 src/editor/main-window.cpp:383
 #: src/editor/main-window.cpp:429
 msgid "Neutral"
 msgstr ""
 
-#: src/gui/driver.cpp:619
+#: src/gui/driver.cpp:630
 msgid "Save the scenario and mail it to the first player"
 msgstr ""
 
-#: src/gui/driver.cpp:642
+#: src/gui/driver.cpp:653
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 
-#: src/gui/driver.cpp:647
+#: src/gui/driver.cpp:658
 msgid "Now send the saved-game file to %1"
 msgstr ""
 
@@ -3570,62 +3645,62 @@ msgstr ""
 msgid "error calculating path!"
 msgstr ""
 
-#: src/army.cpp:621 src/army.cpp:624 src/army.cpp:627 src/army.cpp:630
-#: src/army.cpp:633 src/army.cpp:636 src/army.cpp:639 src/army.cpp:642
-#: src/army.cpp:645 src/army.cpp:648 src/army.cpp:650 src/army.cpp:652
-#: src/army.cpp:655
+#: src/army.cpp:623 src/army.cpp:626 src/army.cpp:629 src/army.cpp:632
+#: src/army.cpp:635 src/army.cpp:638 src/army.cpp:641 src/army.cpp:644
+#: src/army.cpp:647 src/army.cpp:650 src/army.cpp:652 src/army.cpp:654
+#: src/army.cpp:657
 msgid "%1%2"
 msgstr ""
 
-#: src/army.cpp:622
+#: src/army.cpp:624
 msgid "+1 str in open"
 msgstr ""
 
-#: src/army.cpp:625
+#: src/army.cpp:627
 msgid "+2 str in open"
 msgstr ""
 
-#: src/army.cpp:628
+#: src/army.cpp:630
 msgid "+1 str in woods"
 msgstr ""
 
-#: src/army.cpp:631
+#: src/army.cpp:633
 msgid "+1 str in hills"
 msgstr ""
 
-#: src/army.cpp:634
+#: src/army.cpp:636
 msgid "+1 str in city"
 msgstr ""
 
-#: src/army.cpp:637
+#: src/army.cpp:639
 msgid "+2 str in city"
 msgstr ""
 
-#: src/army.cpp:640
+#: src/army.cpp:642
 msgid "+1 stack in hills"
 msgstr ""
 
-#: src/army.cpp:643
+#: src/army.cpp:645
 msgid "Cancel city bonus"
 msgstr ""
 
-#: src/army.cpp:646
+#: src/army.cpp:648
 msgid "-1 enemy stack"
 msgstr ""
 
-#: src/army.cpp:648
+#: src/army.cpp:650
 msgid "+1 stack"
 msgstr ""
 
-#: src/army.cpp:650
+#: src/army.cpp:652
 msgid "+2 stack"
 msgstr ""
 
-#: src/army.cpp:653
+#: src/army.cpp:655
 msgid "cancel non-hero"
 msgstr ""
 
-#: src/army.cpp:656
+#: src/army.cpp:658
 msgid "cancel hero"
 msgstr ""
 
@@ -3762,24 +3837,28 @@ msgstr ""
 msgid "non-numerical value for cache size\n"
 msgstr ""
 
-#: src/main.cpp:89
+#: src/main.cpp:93
 msgid "Options:"
 msgstr ""
 
-#: src/main.cpp:90
+#: src/main.cpp:94
 msgid "  -h, --help                 Shows this help screen"
 msgstr ""
 
-#: src/main.cpp:91
+#: src/main.cpp:95
 msgid "  -c <size>                  Set the maximum cache size"
 msgstr ""
 
-#: src/main.cpp:92
+#: src/main.cpp:96
 msgid "  -t, --test                 Start with a test-scenario"
 msgstr ""
 
-#: src/main.cpp:93
+#: src/main.cpp:97
 msgid "  -s, --stress-test          Non-interactive stress test"
+msgstr ""
+
+#: src/main.cpp:98
+msgid "  -r, --robots               Non-interactive network stress test"
 msgstr ""
 
 #: src/QCitySack.cpp:93
