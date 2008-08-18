@@ -10,6 +10,17 @@ AC_CANONICAL_HOST
 AC_CANONICAL_TARGET
 
 AM_INIT_AUTOMAKE
+
+IT_PROG_INTLTOOL([0.35.0])
+
+GETTEXT_PACKAGE=lordsawar
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$GETTEXT_PACKAGE"],
+                   [The domain to use with gettext])
+AM_GLIB_GNU_GETTEXT
+
+PROGRAMNAME_LOCALEDIR=[${datadir}/locale]
+AC_SUBST(PROGRAMNAME_LOCALEDIR)
     
 dnl Checks for programs.
 AC_PROG_CXX
@@ -132,8 +143,8 @@ dnl Now check gettext.h
 #             )
 
 #if test $winnls = no ; then
-AM_GNU_GETTEXT_VERSION(0.14.1)
-AM_GNU_GETTEXT
+AM_GNU_GETTEXT_VERSION([0.17])
+AM_GNU_GETTEXT([external])
 #fi
 
 AC_ARG_WITH(intl, [  --with-intl=<dir>      Use int from here],
@@ -247,9 +258,7 @@ AC_CONFIG_FILES([
         dat/music/Makefile
         dat/glade/Makefile
         dat/glade/editor/Makefile
-        intl/Makefile
         po/Makefile.in
-        po/Makefile 
         Makefile 
         src/Makefile
         doc/Makefile
@@ -257,8 +266,7 @@ AC_CONFIG_FILES([
         help/figures/Makefile
         src/editor/Makefile
         src/pbm/Makefile
-        src/gui/Makefile
-	intl/libgnuintl.h])
+        src/gui/Makefile])
 AC_OUTPUT
 echo ""
 echo "LordsAWar is now configured. Type 'make' to compile it."
