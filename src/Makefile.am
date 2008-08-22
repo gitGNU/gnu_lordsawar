@@ -18,7 +18,7 @@ SUBDIRS = gui . editor pbm
 MAINTAINERCLEANFILES= Makefile.in
 
 bin_PROGRAMS = lordsawar
-noinst_LTLIBRARIES = liblordsawar.la
+noinst_LTLIBRARIES = liblordsawar.la liblordsawarnet.la
 
 liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         AI_Allocation.cpp AI_Allocation.h AI_Diplomacy.cpp AI_Diplomacy.h \
@@ -27,18 +27,14 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         army.cpp army.h armysetlist.cpp armysetlist.h \
         armyset.cpp armyset.h bigmap.cpp bigmap.h \
         bridge.cpp bridge.h bridgelist.cpp bridgelist.h \
-        chat-client.cpp chat-client.h city.cpp city.h citylist.cpp citylist.h \
+        city.cpp city.h citylist.cpp citylist.h \
         citysetlist.cpp citysetlist.h cityset.cpp cityset.h \
         Configuration.cpp Configuration.h counter.cpp counter.h \
         CreateScenario.cpp CreateScenario.h \
 	CreateScenarioRandomize.cpp CreateScenarioRandomize.h \
 	fight.cpp fight.h File.cpp File.h FogMap.cpp FogMap.h \
-        game.cpp game.h gamebigmap.cpp gamebigmap.h \
-	game-client.cpp game-client.h \
-        game-client-decoder.cpp game-client-decoder.h \
         GameMap.cpp GameMap.h GameScenario.cpp GameScenario.h \
 	GameScenarioOptions.cpp GameScenarioOptions.h \
-	game-server.cpp game-server.h game-station.cpp game-station.h \
         GraphicsCache.cpp GraphicsCache.h hero.cpp hero.h \
         herotemplates.cpp herotemplates.h history.cpp history.h \
         Immovable.cpp Immovable.h Item.cpp Item.h \
@@ -47,16 +43,12 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         maptile.cpp maptile.h Movable.cpp Movable.h \
         MoveResult.cpp MoveResult.h Named.cpp Named.h Namable.cpp Namable.h \
         NamedLocation.cpp NamedLocation.h network_player.cpp network_player.h \
-	network-action.cpp network-action.h network-connection.cpp \
-        network-connection.h network-common.h \
+	network-action.cpp network-action.h \
         network-history.cpp network-history.h \
-        network-server.cpp network-server.h \
         NextTurn.cpp NextTurn.h NextTurnHotseat.cpp NextTurnHotseat.h \
 	NextTurnNetworked.cpp NextTurnNetworked.h \
         NextTurnPbm.cpp NextTurnPbm.h overviewmap.cpp overviewmap.h \
         Ownable.cpp Ownable.h path.cpp path.h \
-        pbm-game-client.cpp pbm-game-client.h \
-        pbm-game-server.cpp pbm-game-server.h \
         player.cpp player.h playerlist.cpp playerlist.h \
         port.cpp port.h portlist.cpp portlist.h \
         Positioned.cpp Positioned.h QCityOccupy.cpp QCityOccupy.h \
@@ -81,17 +73,29 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         vectoredunit.cpp vectoredunit.h \
         vectoredunitlist.cpp vectoredunitlist.h xmlhelper.cpp xmlhelper.h
 
+liblordsawarnet_la_SOURCES = \
+	game-client.cpp game-client.h \
+        game-client-decoder.cpp game-client-decoder.h \
+	game-server.cpp game-server.h game-station.cpp game-station.h \
+	network-connection.cpp chat-client.cpp chat-client.h \
+        network-connection.h network-common.h \
+        network-server.cpp network-server.h \
+        pbm/pbm.cpp pbm/pbm.h \
+        pbm-game-client.cpp pbm-game-client.h \
+        pbm-game-server.cpp pbm-game-server.h
+
 lordsawar_SOURCES = armymap.cpp armymap.h \
 	citymap.cpp citymap.h callback-enums.h defs.h \
         game-parameters.h heromap.cpp heromap.h \
         historymap.cpp historymap.h input-events.h \
         main.cpp map-tip-position.h \
-        pbm/pbm.cpp pbm/pbm.h \
 	questmap.cpp questmap.h rectangle.h \
         recently-played-game.cpp recently-played-game.h \
         recently-played-game-list.cpp recently-played-game-list.h \
 	ruinmap.cpp ruinmap.h sdl-draw.h sidebar-stats.h \
-	ucompose.hpp vector.h vectormap.cpp vectormap.h
+	ucompose.hpp vector.h vectormap.cpp vectormap.h \
+        game.cpp game.h gamebigmap.cpp gamebigmap.h 
+
 
 if FL_RESRC
 lordsawar_SOURCES += lordsawar.rc
@@ -107,12 +111,14 @@ liblordsawar_la_LIBADD = $(top_builddir)/src/gui/liblwgui.la \
 
 lordsawar_LDFLAGS =
 lordsawar_LDADD = $(top_builddir)/src/liblordsawar.la \
+    $(top_builddir)/src/liblordsawarnet.la \
     $(SDL_LIBS) \
     $(GTKMM_LIBS) \
     $(LIBGNET_LIBS) \
     $(LIBSIGC_LIBS) \
     $(top_builddir)/src/gui/liblwgui.la \
     @LIBINTL@
+
 lordsawar_DEPENDENCIES = \
   $(top_builddir)/src/gui/liblwgui.la
 

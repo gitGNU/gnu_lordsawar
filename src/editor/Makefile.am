@@ -67,19 +67,19 @@ endif
 lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawar.la \
                          $(GTKMM_LIBS) \
-			 $(LIBGNET_LIBS) \
+                         $(SDL_LIBS) \
                          @LIBINTL@ -L$(top_builddir)/src
 
 lordsawar_army_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawar.la \
+                         $(SDL_LIBS) \
                          $(GTKMM_LIBS) \
-		         $(LIBGNET_LIBS) \
                          @LIBINTL@ -L$(top_builddir)/src
 
 lordsawar_tile_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawar.la \
                          $(GTKMM_LIBS) \
-		         $(LIBGNET_LIBS) \
+                         $(SDL_LIBS) \
                          @LIBINTL@ -L$(top_builddir)/src
 endif
 

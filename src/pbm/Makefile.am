@@ -20,11 +20,10 @@ MAINTAINERCLEANFILES= Makefile.in
 ##if WANT_PBM
 bin_PROGRAMS = lordsawar-pbm
 
-lordsawar_pbm_SOURCES =  pbm.cpp main.cpp pbm.h
+lordsawar_pbm_SOURCES =  pbm.cpp main.cpp pbm.h ${top_srcdir}/src/pbm-game-client.cpp ${top_srcdir}/src/pbm-game-client.h ${top_srcdir}/src/game-client-decoder.cpp ${top_srcdir}/src/game-client-decoder.h ${top_srcdir}/src/chat-client.cpp ${top_srcdir}/src/chat-client.h
 
 
-lordsawar_pbm_LDADD = $(LIBSIGC_LIBS) \
-                         $(GLIBMM_LIBS) \
+lordsawar_pbm_LDADD = $(LIBSIGC_LIBS) $(GLIBMM_LIBS)\
                          $(top_builddir)/src/liblordsawar.la \
                          @LIBINTL@ \
                          -L$(top_builddir)/src
@@ -36,8 +35,10 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 
 AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\"
-INCLUDES = $(GTKMM_CFLAGS) \
+INCLUDES = \
     $(SDL_CFLAGS) \
+    $(LIBSIGC_CFLAGS) \
+    $(GLIBMM_CFLAGS) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' \
     -I$(top_srcdir) -I$(top_srcdir)/src
 
