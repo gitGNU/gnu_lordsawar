@@ -24,7 +24,7 @@ AC_SUBST(PROGRAMNAME_LOCALEDIR)
     
 dnl Checks for programs.
 AC_PROG_CXX
-AC_PROG_RANLIB
+AC_PROG_LIBTOOL
 
 dnl The minimum SDL version required
 SDL_VERSION=1.2.0
@@ -156,6 +156,13 @@ AC_ARG_WITH(intl, [  --with-intl=<dir>      Use int from here],
                       LTLIBINTL=""
                       ]
                       )
+
+dnl Check for glib
+
+PKG_CHECK_MODULES(GLIBMM, glibmm-2.4)
+
+AC_SUBST(GLIBMM_CFLAGS)
+AC_SUBST(GLIBMM_LIBS)
 
 dnl Check for gtkmm
 

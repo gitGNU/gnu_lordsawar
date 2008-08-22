@@ -1,5 +1,6 @@
 #   Copyright (C) 2007, 2008, Ole Laursen
 #   Copyright (C) 2007, 2008 Ben Asselstine
+#   Copyright (C) 2008 Barry deFreese
 # 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -17,42 +18,6 @@
 #   02110-1301, USA.
 MAINTAINERCLEANFILES= Makefile.in
 
-DEPENDSON = ../GameScenario.o ../army.o ../GameMap.o ../templelist.o ../ruinlist.o \
-        ../hero.o ../citylist.o ../Location.o ../UniquelyIdentified.o \
-	../stacklist.o \
-        ../File.o ../fight.o ../armysetlist.o ../temple.o ../ruin.o ../stack.o \
-	../city.o ../path.o ../action.o ../Configuration.o ../MapGenerator.o \
-	../ai_dummy.o ../ai_fast.o ../ai_smart.o ../xmlhelper.o ../counter.o \
-        ../CreateScenario.o ../history.o ../armyset.o \
-	../maptile.o ../real_player.o  ../player.o ../tilesetlist.o \
-	../Tile.o ../tileset.o ../playerlist.o \
-	../tilestyle.o ../tilestyleset.o \
-	../GraphicsCache.o ../QuestsManager.o ../Quest.o ../QKillHero.o \
-        ../QEnemyArmies.o ../QCityOccupy.o \
-        ../QCitySack.o ../QCityRaze.o ../QPillageGold.o ../QEnemyArmytype.o \
-        ../string_tokenizer.o ../reward.o ../rewardlist.o \
-        ../Item.o ../Itemlist.o ../Threat.o ../Threatlist.o ../AI_Analysis.o \
-	../AI_Allocation.o ../AI_Diplomacy.o ../MoveResult.o ../AICityInfo.o \
-        ../FogMap.o ../signpostlist.o ../signpost.o\
-	../sound.o ../road.o ../roadlist.o \
-        ../bridge.o ../bridgelist.o ../port.o ../portlist.o \
-        ../vectoredunitlist.o ../vectoredunit.o \
-        ../bigmap.o ../smallmap.o ../overviewmap.o ../timing.o \
-        ../gui/image-helpers.o ../gui/error-utils.o ../gui/gtksdl.o \
-        ../gui/army-info-tip.o ../MapRenderer.o \
-	../shield.o ../shieldset.o ../shieldstyle.o ../shieldsetlist.o \
-	../citysetlist.o ../cityset.o ../CreateScenarioRandomize.o \
-	../Ownable.o ../Movable.o ../Immovable.o ../Positioned.o \
-	../Named.o ../Namable.o ../Renamable.o ../NamedLocation.o \
-	../network_player.o ../game.o ../NextTurn.o ../gamebigmap.o \
-	../NextTurnPbm.o ../NextTurnHotseat.o ../NextTurnNetworked.o \
-	../herotemplates.o ../game-server.o \
-        ../game-client.o ../network-server.o \
-	../network-connection.o ../GameScenarioOptions.o ../network-action.o \
-	../network-history.o ../pbm-game-server.o \
-	../game-client-decoder.o ../pbm-game-client.o ../chat-client.o \
-	../game-station.o
-
 if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor lordsawar-army-editor lordsawar-tile-editor
 
@@ -61,7 +26,6 @@ armyset-main.cpp \
 armyset-window.cpp armyset-window.h  \
 armyset-info-dialog.cpp armyset-info-dialog.h \
 glade-helpers.h
-
 
 lordsawar_tile_editor_SOURCES = \
 tileset-main.cpp \
@@ -94,36 +58,29 @@ rewardlist-dialog.cpp rewardlist-dialog.h \
 select-hidden-ruin-dialog.cpp select-hidden-ruin-dialog.h \
 RenamableLocation.cpp RenamableLocation.h 
 
-# NewMapDialog.cpp Bigmap.cpp \
-# Smallmap.cpp MapGenDialog.cpp TempleDialog.cpp \
-# ArmyDialog.cpp CityDialog.cpp StackDialog.cpp \
-# RuinDialog.cpp PlayerDialog.cpp FindDialog.cpp \
-# ConditionDialog.cpp ReactionDialog.cpp \
-# SelectionDialog.cpp EventDialog.cpp ScenarioDialog.cpp \
-# SignpostDialog.cpp 
-
 if FL_RESRC
 lordsawar_editor_SOURCES += editor.rc
 endif
 .rc.o:
 	i586-mingw32msvc-windres -o $@ $<
 
-lordsawar_editor_LDADD = $(GTKMM_LIBS) \
+lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
+                         $(top_builddir)/src/liblordsawar.la \
+                         $(GTKMM_LIBS) \
 			 $(LIBGNET_LIBS) \
-			 $(DEPENDSON) \
-                           $(SDL_LIBS) \
-               @LIBINTL@ -L..
-lordsawar_army_editor_LDADD = $(GTKMM_LIBS) \
-		              $(LIBGNET_LIBS) \
-	                      $(DEPENDSON) \
-                              $(SDL_LIBS) \
-               @LIBINTL@ -L..
+                         @LIBINTL@ -L$(top_builddir)/src
 
-lordsawar_tile_editor_LDADD = $(GTKMM_LIBS) \
-		              $(LIBGNET_LIBS) \
-	                      $(DEPENDSON) \
-                              $(SDL_LIBS) \
-               @LIBINTL@ -L..
+lordsawar_army_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
+                         $(top_builddir)/src/liblordsawar.la \
+                         $(GTKMM_LIBS) \
+		         $(LIBGNET_LIBS) \
+                         @LIBINTL@ -L$(top_builddir)/src
+
+lordsawar_tile_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
+                         $(top_builddir)/src/liblordsawar.la \
+                         $(GTKMM_LIBS) \
+		         $(LIBGNET_LIBS) \
+                         @LIBINTL@ -L$(top_builddir)/src
 endif
 
 

@@ -1,5 +1,6 @@
 #   Copyright (C) 2007, Ole Laursen
 #   Copyright (C) 2007, 2008 Ben Asselstine
+#   Copyright (C) 2008 Barry deFreese
 # 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -17,9 +18,9 @@
 #   02110-1301, USA.
 MAINTAINERCLEANFILES= Makefile.in
 
-noinst_LIBRARIES = liblwgui.a
+noinst_LTLIBRARIES = liblwgui.la
 
-liblwgui_a_SOURCES = \
+liblwgui_la_SOURCES = \
     driver.cpp driver.h \
     fight-order-dialog.cpp fight-order-dialog.h \
     hero-levels-dialog.cpp hero-levels-dialog.h \
@@ -69,6 +70,8 @@ liblwgui_a_SOURCES = \
     new-game-progress-window.cpp new-game-progress-window.h \
     new-network-game-download-window.cpp new-network-game-download-window.h \
     decorated.cpp decorated.h
+
+liblwgui_la_LIBADD = @LTLIBOBJS@
 
 INCLUDES = \
    $(GTKMM_CFLAGS) \
