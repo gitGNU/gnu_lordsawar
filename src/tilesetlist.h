@@ -66,18 +66,6 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
 	 */
 	Tileset *getTileset(std::string dir) { return d_tilesets[dir];}
 
-	//! Load the pictures for all Tileset objects available to the game.
-	/**
-	 * Reads in the pixmaps for every Tile of every Tileset.
-	 * The images are held in TileStyle objects which are held by
-	 * TileStyleSet objects, which are held in Tile objects.
-	 * @note This can only be done after SDL is initialized.
-	 */
-	void instantiatePixmaps();
-
-	//! Load the pictures for the given tileset.
-	void instantiatePixmaps(std::string subdir);
-
     private:
         //! Default constructor.  Loads all tilesets it can find.
 	/**

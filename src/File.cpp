@@ -173,11 +173,6 @@ std::string File::getCitysetFile(string citysetname, string picname)
     return Configuration::s_dataPath + "/citysets/" + citysetname + "/" + picname;
 }
 
-SDL_Surface* File::getCitysetPicture(string citysetname, string picname)
-{
-    return loadImage(getCitysetFile(citysetname, picname));
-}
-
 SDL_Surface* File::getMiscPicture(string picname, bool alpha)
 {
     return loadImage(Configuration::s_dataPath + "/various/" + picname,alpha);

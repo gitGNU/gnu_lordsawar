@@ -17,7 +17,6 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <SDL_image.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "tileset.h"
@@ -58,12 +57,6 @@ Tileset::~Tileset()
 {
     for (unsigned int i=0; i < size(); i++)
         delete (*this)[i];
-}
-
-void Tileset::instantiatePixmaps()
-{
-    for (Uint32 i = 0; i < size(); i++)
-      (*this)[i]->instantiatePixmaps(d_dir, d_tileSize);
 }
 
 Uint32 Tileset::getIndex(Tile::Type type) const
@@ -140,6 +133,7 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 	// create a new tile style set with the information we got
 	// put it on the latest tile
 	TileStyleSet* tilestyleset = new TileStyleSet(helper);
+	tilestyleset->setSubDir(getSubDir());
 	tile->push_back(tilestyleset);
 	return true;
       }
@@ -202,5 +196,13 @@ int Tileset::getFreeTileStyleId()
 	return i;
     }
   return -1;
+}
+
+void Tileset::setSubDir(std::string dir)
+{
+  d_dir = dir;
+  for (Tileset::iterator i = begin(); i != end(); ++i)
+    for (Tile::iterator j = (*i)->begin(); j != (*i)->end(); j++)
+      (*j)->setSubDir(dir);
 }
 // End of file

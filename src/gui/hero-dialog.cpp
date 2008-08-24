@@ -33,9 +33,11 @@
 #include "hero.h"
 #include "Item.h"
 #include "GameMap.h"
+#include "GraphicsCache.h"
 
 HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 {
+    GraphicsCache *gc = GraphicsCache::getInstance();
     hero = h;
     pos = p;
     
@@ -56,7 +58,7 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 
     Gtk::Image *hero_image;
     xml->get_widget("hero_image", hero_image);
-    hero_image->property_pixbuf() = to_pixbuf(hero->getPixmap());
+    hero_image->property_pixbuf() = to_pixbuf(gc->getArmyPic(hero));
 
     xml->get_widget("info_label1", info_label1);
     xml->get_widget("info_label2", info_label2);

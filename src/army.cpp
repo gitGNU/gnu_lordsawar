@@ -25,12 +25,12 @@
 #include "army.h"
 #include "armysetlist.h"
 #include "counter.h"
-#include "GraphicsCache.h"
 #include "xmlhelper.h"
 #include "stacklist.h"
 #include "templelist.h"
 #include "ucompose.hpp"
 #include "Tile.h"
+#include "player.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -191,11 +191,6 @@ Army::Army(XML_Helper* helper, enum ArmyContents contents)
 
 Army::~Army()
 {
-    if (d_pixmap)
-        SDL_FreeSurface(d_pixmap);
-    if (d_mask)
-        SDL_FreeSurface(d_mask);
-
     sdying.emit(this);
 }
 
@@ -243,10 +238,7 @@ SDL_Surface* Army::getPixmap() const
     // if we have a pixmap (== prototype of an army) return it
     if (d_pixmap)
         return d_pixmap;
-    
-    //use the GraphicsCache to get a picture of the army's armyset_army
-    return GraphicsCache::getInstance()->getArmyPic(d_armyset, d_type,
-                                         d_owner, d_medal_bonus);
+    return NULL;
 }
 
 Uint32 Army::getStat(Stat stat, bool modified) const
@@ -601,15 +593,11 @@ bool Army::getFortified ()
 
 void Army::setPixmap(SDL_Surface* pixmap)
 {
-  if (d_pixmap)
-    SDL_FreeSurface(d_pixmap);
   d_pixmap = pixmap;
 }
         
 void Army::setMask(SDL_Surface* mask)
 {
-  if (d_mask)
-    SDL_FreeSurface(d_mask);
   d_mask = mask;
 }
 

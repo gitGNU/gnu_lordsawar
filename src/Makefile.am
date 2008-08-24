@@ -18,14 +18,14 @@ SUBDIRS = gui . editor pbm
 MAINTAINERCLEANFILES= Makefile.in
 
 bin_PROGRAMS = lordsawar
-noinst_LTLIBRARIES = liblordsawar.la liblordsawarnet.la
+noinst_LTLIBRARIES = liblordsawar.la liblordsawarnet.la liblordsawargfx.la
 
 liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         AI_Allocation.cpp AI_Allocation.h AI_Diplomacy.cpp AI_Diplomacy.h \
         ai_dummy.cpp ai_dummy.h ai_fast.cpp ai_fast.h \
         ai_smart.cpp ai_smart.h AICityInfo.cpp AICityInfo.h \
         army.cpp army.h armysetlist.cpp armysetlist.h \
-        armyset.cpp armyset.h bigmap.cpp bigmap.h \
+        armyset.cpp armyset.h \
         bridge.cpp bridge.h bridgelist.cpp bridgelist.h \
         city.cpp city.h citylist.cpp citylist.h \
         citysetlist.cpp citysetlist.h cityset.cpp cityset.h \
@@ -35,11 +35,11 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
 	fight.cpp fight.h File.cpp File.h FogMap.cpp FogMap.h \
         GameMap.cpp GameMap.h GameScenario.cpp GameScenario.h \
 	GameScenarioOptions.cpp GameScenarioOptions.h \
-        GraphicsCache.cpp GraphicsCache.h hero.cpp hero.h \
+	hero.cpp hero.h \
         herotemplates.cpp herotemplates.h history.cpp history.h \
         Immovable.cpp Immovable.h Item.cpp Item.h \
         Itemlist.cpp Itemlist.h Location.cpp Location.h LocationList.h \
-        MapGenerator.cpp MapGenerator.h MapRenderer.cpp MapRenderer.h \
+        MapGenerator.cpp MapGenerator.h \
         maptile.cpp maptile.h Movable.cpp Movable.h \
         MoveResult.cpp MoveResult.h Named.cpp Named.h Namable.cpp Namable.h \
         NamedLocation.cpp NamedLocation.h network_player.cpp network_player.h \
@@ -47,7 +47,7 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         network-history.cpp network-history.h \
         NextTurn.cpp NextTurn.h NextTurnHotseat.cpp NextTurnHotseat.h \
 	NextTurnNetworked.cpp NextTurnNetworked.h \
-        NextTurnPbm.cpp NextTurnPbm.h overviewmap.cpp overviewmap.h \
+        NextTurnPbm.cpp NextTurnPbm.h \
         Ownable.cpp Ownable.h path.cpp path.h \
         player.cpp player.h playerlist.cpp playerlist.h \
         port.cpp port.h portlist.cpp portlist.h \
@@ -63,7 +63,7 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         shield.cpp shield.h shieldset.cpp shieldset.h \
         shieldsetlist.cpp shieldsetlist.h shieldstyle.cpp shieldstyle.h \
         signpost.cpp signpost.h signpostlist.cpp signpostlist.h \
-        smallmap.cpp smallmap.h sound.cpp sound.h stack.cpp stack.h \
+	stack.cpp stack.h \
         stacklist.cpp stacklist.h string_tokenizer.cpp string_tokenizer.h \
         temple.cpp temple.h templelist.cpp templelist.h \
         Threat.cpp Threat.h Threatlist.cpp Threatlist.h \
@@ -71,7 +71,8 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         tilestyle.cpp tilestyle.h tilestyleset.cpp tilestyleset.h \
         timing.cpp timing.h UniquelyIdentified.cpp UniquelyIdentified.h \
         vectoredunit.cpp vectoredunit.h \
-        vectoredunitlist.cpp vectoredunitlist.h xmlhelper.cpp xmlhelper.h
+        vectoredunitlist.cpp vectoredunitlist.h xmlhelper.cpp xmlhelper.h \
+        rectangle.h vector.h ucompose.hpp
 
 liblordsawarnet_la_SOURCES = \
 	game-client.cpp game-client.h \
@@ -84,17 +85,24 @@ liblordsawarnet_la_SOURCES = \
         pbm-game-client.cpp pbm-game-client.h \
         pbm-game-server.cpp pbm-game-server.h
 
+liblordsawargfx_la_SOURCES = \
+	bigmap.cpp bigmap.h citymap.cpp citymap.h  \
+        historymap.cpp historymap.h heromap.cpp heromap.h \
+	ruinmap.cpp ruinmap.h questmap.cpp questmap.h \
+	vectormap.cpp vectormap.h overviewmap.cpp overviewmap.h \
+        smallmap.cpp smallmap.h \ 
+	MapRenderer.cpp MapRenderer.h  \
+	GraphicsCache.cpp GraphicsCache.h \
+	GraphicsLoader.cpp GraphicsLoader.h \
+	input-events.h map-tip-position.h sdl-draw.h 
+
+
 lordsawar_SOURCES = armymap.cpp armymap.h \
-	citymap.cpp citymap.h callback-enums.h defs.h \
-        game-parameters.h heromap.cpp heromap.h \
-        historymap.cpp historymap.h input-events.h \
-        main.cpp map-tip-position.h \
-	questmap.cpp questmap.h rectangle.h \
+	callback-enums.h defs.h game-parameters.h \
         recently-played-game.cpp recently-played-game.h \
         recently-played-game-list.cpp recently-played-game-list.h \
-	ruinmap.cpp ruinmap.h sdl-draw.h sidebar-stats.h \
-	ucompose.hpp vector.h vectormap.cpp vectormap.h \
-        game.cpp game.h gamebigmap.cpp gamebigmap.h 
+	sidebar-stats.h game.cpp game.h gamebigmap.cpp gamebigmap.h \
+	sound.cpp sound.h main.cpp 
 
 
 if FL_RESRC
@@ -112,6 +120,7 @@ liblordsawar_la_LIBADD = $(top_builddir)/src/gui/liblwgui.la \
 lordsawar_LDFLAGS =
 lordsawar_LDADD = $(top_builddir)/src/liblordsawar.la \
     $(top_builddir)/src/liblordsawarnet.la \
+    $(top_builddir)/src/liblordsawargfx.la \
     $(SDL_LIBS) \
     $(GTKMM_LIBS) \
     $(LIBGNET_LIBS) \
@@ -120,6 +129,9 @@ lordsawar_LDADD = $(top_builddir)/src/liblordsawar.la \
     @LIBINTL@
 
 lordsawar_DEPENDENCIES = \
+  $(top_builddir)/src/liblordsawar.la \
+  $(top_builddir)/src/liblordsawarnet.la \
+  $(top_builddir)/src/liblordsawargfx.la \
   $(top_builddir)/src/gui/liblwgui.la
 
 AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\" -Wunused-function

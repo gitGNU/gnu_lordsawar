@@ -64,16 +64,6 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	//! Set the name of this tilestyleset.
 	void setName(std::string name) {d_name = name;}
 
-	/**
-	 * Load all of the TileStyle images for this TileStyleSet.
-	 *
-	 * @param tileset    This TileStyleSet belongs to this Tileset.
-	 *                   This value is the name of tileset directory.
-	 * @param tilesize   The width and height of each cell in the
-	 *                   image identified to by TileStyleSet::d_name.
-	 */
-	void instantiatePixmaps(std::string tileset, Uint32 tilesize);
-
 	//! Save a TileStyleSet to an opened tile configuration file.
 	/**
 	 * @param  The opened XML tile configuration file.

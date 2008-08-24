@@ -63,8 +63,6 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 
 	SDL_Color getMaskColor() const;
 
-	void instantiatePixmaps(Shieldset *sh);
-
 	/**
 	 * Get the default colour for the Player with the given Id.
 	 *

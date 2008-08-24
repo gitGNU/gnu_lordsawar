@@ -702,12 +702,6 @@ void Playerlist::syncPlayers(std::vector<GameParameters::Player> players)
 
 }
 	
-void Playerlist::instantiateArmysetPixmaps()
-{
-  for (iterator i = begin(); i != end(); ++i)
-    Armysetlist::getInstance()->instantiatePixmaps((*i)->getArmyset());
-}
-
 void Playerlist::turnHumansIntoNetworkPlayers()
 {
   for (iterator i = begin(); i != end(); i++)

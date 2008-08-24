@@ -45,12 +45,6 @@ Shield::~Shield()
       delete *it;
 }
 
-void Shield::instantiatePixmaps(Shieldset *sh)
-{
-  for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiatePixmap(sh);
-}
-
 SDL_Color Shield::get_default_color_for_no(int player_no)
 {
     SDL_Color color;

@@ -18,10 +18,12 @@
 //  02110-1301, USA.
 
 #include <assert.h>
+#include <SDL_image.h>
 
 #include "rectangle.h"
 
 #include "GraphicsCache.h"
+#include "GraphicsLoader.h"
 #include "armysetlist.h"
 #include "shieldsetlist.h"
 #include "army.h"
@@ -217,19 +219,19 @@ GraphicsCache::GraphicsCache()
     loadProdShields();
     loadMoveBonusPics();
 
-    d_medalsmask = File::getMiscPicture("medals_mask.png");
-    d_smallruinedcity = File::getMiscPicture("smallruinedcity.png");
-    d_smallhero = File::getMiscPicture("hero.png");
-    d_small_ruin_unexplored = File::getMiscPicture("smallunexploredruin.png");
+    d_medalsmask = GraphicsLoader::getMiscPicture("medals_mask.png");
+    d_smallruinedcity = GraphicsLoader::getMiscPicture("smallruinedcity.png");
+    d_smallhero = GraphicsLoader::getMiscPicture("hero.png");
+    d_small_ruin_unexplored = GraphicsLoader::getMiscPicture("smallunexploredruin.png");
     d_small_stronghold_unexplored = 
-      File::getMiscPicture("smallunexploredstronghold.png");
-    d_small_ruin_explored = File::getMiscPicture("smallexploredruin.png");
-    d_small_temple = File::getMiscPicture("smalltemple.png");
+      GraphicsLoader::getMiscPicture("smallunexploredstronghold.png");
+    d_small_ruin_explored = GraphicsLoader::getMiscPicture("smallexploredruin.png");
+    d_small_temple = GraphicsLoader::getMiscPicture("smalltemple.png");
     std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
     std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
-    d_port = File::getCitysetPicture(cityset, "port.png");
-    d_explosion = File::getTilesetPicture(tileset, "misc/explosion.png");
-    d_signpost = File::getCitysetPicture(cityset, "signpost.png");
+    d_port = GraphicsLoader::getCitysetPicture(cityset, "port.png");
+    d_explosion = GraphicsLoader::getTilesetPicture(tileset, "misc/explosion.png");
+    d_signpost = GraphicsLoader::getCitysetPicture(cityset, "signpost.png");
 }
 
 GraphicsCache::~GraphicsCache()
@@ -428,6 +430,12 @@ SDL_Surface* GraphicsCache::getPlantedStandardPic(const Player* p)
     myitem = addPlantedStandardPic(p);
 
     return myitem->surface;
+}
+
+SDL_Surface* GraphicsCache::getArmyPic(Army *a)
+{
+  return getArmyPic(a->getOwner()->getArmyset(), a->getType(), 
+		    a->getOwner(), NULL);
 }
 
 SDL_Surface* GraphicsCache::getArmyPic(Uint32 armyset, Uint32 army, const Player* p,
@@ -1819,7 +1827,7 @@ void GraphicsCache::loadTemplePics()
   int ts = GameMap::getInstance()->getCityset()->getTileSize();
 
   // load the temple pictures
-  SDL_Surface* templepics = File::getCitysetPicture(cityset, "temples.png");
+  SDL_Surface* templepics = GraphicsLoader::getCitysetPicture(cityset, "temples.png");
 
   // copy alpha values, don't use them
   SDL_SetAlpha(templepics, 0, 0);
@@ -1855,7 +1863,7 @@ void GraphicsCache::loadRuinPics()
   int ts = GameMap::getInstance()->getCityset()->getTileSize();
 
   // load the ruin pictures
-  SDL_Surface* ruinpics = File::getCitysetPicture(cityset, "ruin.png");
+  SDL_Surface* ruinpics = GraphicsLoader::getCitysetPicture(cityset, "ruin.png");
 
   // copy alpha values, don't use them
   SDL_SetAlpha(ruinpics, 0, 0);
@@ -1887,7 +1895,7 @@ void GraphicsCache::loadRuinPics()
 void GraphicsCache::loadDiplomacyPics()
 {
   // load the diplomacy pictures
-  SDL_Surface* diplomacypics = File::getMiscPicture("diplomacy-small.png");
+  SDL_Surface* diplomacypics = GraphicsLoader::getMiscPicture("diplomacy-small.png");
   Uint32 ts = 30;
 
   // copy alpha values, don't use them
@@ -1916,7 +1924,7 @@ void GraphicsCache::loadDiplomacyPics()
 
   SDL_FreeSurface(diplomacypics);
   ts = 50;
-  diplomacypics = File::getMiscPicture("diplomacy-large.png");
+  diplomacypics = GraphicsLoader::getMiscPicture("diplomacy-large.png");
   // copy alpha values, don't use them
   SDL_SetAlpha(diplomacypics, 0, 0);
 
@@ -1951,7 +1959,7 @@ void GraphicsCache::loadRoadPics()
   int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
   // load the road pictures
-  SDL_Surface* roadpics = File::getTilesetPicture(tileset, "misc/roads.png");
+  SDL_Surface* roadpics = GraphicsLoader::getTilesetPicture(tileset, "misc/roads.png");
 
   // copy alpha values, don't use them
   SDL_SetAlpha(roadpics, 0, 0);
@@ -1986,7 +1994,7 @@ void GraphicsCache::loadFogPics()
   std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
 
   // load the fog pictures
-  SDL_Surface* fogpics = File::getTilesetPicture(tileset, "misc/fog.png");
+  SDL_Surface* fogpics = GraphicsLoader::getTilesetPicture(tileset, "misc/fog.png");
 
   // copy alpha values, don't use them
   SDL_SetAlpha(fogpics, 0, 0);
@@ -2021,7 +2029,7 @@ void GraphicsCache::loadBridgePics()
   int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
   // load the bridge pictures
-  SDL_Surface* bridgepics = File::getTilesetPicture(tileset, "misc/bridges.png");
+  SDL_Surface* bridgepics = GraphicsLoader::getTilesetPicture(tileset, "misc/bridges.png");
 
   // copy alpha values, don't use them
   SDL_SetAlpha(bridgepics, 0, 0);
@@ -2054,7 +2062,7 @@ void GraphicsCache::loadCursorPics()
   int ts = 16;
 
   // load the cursor pictures
-  SDL_Surface* cursorpics = File::getMiscPicture ("cursors.png");
+  SDL_Surface* cursorpics = GraphicsLoader::getMiscPicture ("cursors.png");
 
   SDL_PixelFormat* fmt = cursorpics->format;
 
@@ -2092,7 +2100,7 @@ void GraphicsCache::loadCityPics()
   int size = GameMap::getInstance()->getTileset()->getTileSize() * 2;
 
   // load the image for the razed city
-  SDL_Surface* razedpics = File::getCitysetPicture(tileset, "castle_razed.png");
+  SDL_Surface* razedpics = GraphicsLoader::getCitysetPicture(tileset, "castle_razed.png");
   // copy alpha values, don't use them
   SDL_SetAlpha(razedpics, 0, 0);
 
@@ -2118,7 +2126,7 @@ void GraphicsCache::loadCityPics()
   SDL_FreeSurface(razedpics);
 
   // load the city pictures
-  SDL_Surface* citypics = File::getCitysetPicture(tileset, "castles.png");
+  SDL_Surface* citypics = GraphicsLoader::getCitysetPicture(tileset, "castles.png");
 
   // copy alpha values, don't use them
   SDL_SetAlpha(citypics, 0, 0);
@@ -2163,7 +2171,7 @@ void GraphicsCache::loadTowerPics()
   int size = GameMap::getInstance()->getCityset()->getTileSize();
 
   // load the image for the towers
-  SDL_Surface* towerpics = File::getCitysetPicture(cityset, "towers.png");
+  SDL_Surface* towerpics = GraphicsLoader::getCitysetPicture(cityset, "towers.png");
   // copy alpha values, don't use them
   SDL_SetAlpha(towerpics, 0, 0);
 
@@ -2194,7 +2202,7 @@ bool GraphicsCache::loadSelectorImages(std::string tileset, std::string filename
 {
   int num_frames;
   // to build flags, we need these three images as basic blocks
-  SDL_Surface* selpics = File::getTilesetPicture(tileset, filename);
+  SDL_Surface* selpics = GraphicsLoader::getTilesetPicture(tileset, filename);
 
   if (!selpics)
     return false;
@@ -2284,7 +2292,7 @@ void GraphicsCache::loadProdShields()
   //load the production shieldset
   unsigned int i;
   SDL_Rect prodshieldrect;
-  SDL_Surface* prodshieldpics = File::getMiscPicture("prodshieldset.png");
+  SDL_Surface* prodshieldpics = GraphicsLoader::getMiscPicture("prodshieldset.png");
   // copy alpha values, don't use them
   SDL_SetAlpha(prodshieldpics, 0, 0);
   SDL_PixelFormat* fmt = prodshieldpics->format;
@@ -2313,7 +2321,7 @@ void GraphicsCache::loadMoveBonusPics()
   //load the movement bonus icons
   unsigned int i;
   SDL_Rect movebonusrect;
-  SDL_Surface* movebonuspics = File::getMiscPicture("movebonus.png");
+  SDL_Surface* movebonuspics = GraphicsLoader::getMiscPicture("movebonus.png");
   // copy alpha values, don't use them
   SDL_SetAlpha(movebonuspics, 0, 0);
   SDL_PixelFormat* fmt = movebonuspics->format;
@@ -2343,7 +2351,7 @@ void GraphicsCache::loadFlags()
   std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
 
   // to build flags, we need these three images as basic blocks
-  SDL_Surface* flag = File::getTilesetPicture(tileset, "misc/flags.png");
+  SDL_Surface* flag = GraphicsLoader::getTilesetPicture(tileset, "misc/flags.png");
   SDL_PixelFormat* fmt = flag->format;
   int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
 
@@ -2381,3 +2389,4 @@ void GraphicsCache::loadFlags()
   // free the temporary surfaces
   SDL_FreeSurface(flag);
 }
+

@@ -96,12 +96,6 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	//! Set the direction where the shieldset configuration file resides.
         void setSubDir(std::string dir) {d_dir = dir;}
 
-	//! Load the shield graphics for every Shield in this Shieldset.
-	/**
-	 * @note SDL must be initialized before this method is called.
-	 */
-        void instantiatePixmaps();
-
 	//! Find the shield of a given size and colour in this Shieldset.
 	/**
 	 * Scan through all Shield objects in this set for first one that is 

@@ -72,7 +72,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
         std::string getSubDir() const {return d_dir;}
 
 	//! Set the subdirectory of where this Tileset resides on disk.
-        void setSubDir(std::string dir) {d_dir = dir;}
+        void setSubDir(std::string dir);
 
         //! Returns the name of the tileset.
         std::string getName() const {return d_name;}
@@ -100,15 +100,6 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 
         //! Returns the index to the given terrain type.
         Uint32 getIndex(Tile::Type type) const;
-
-	//! Load the graphics for every Tile in the Tileset.
-	/**
-	 * Loads the images associated with every TileStyle that is associated 
-	 * with every Tile of this Tileset.
-	 *
-	 * @note SDL must be initialized before this method is called.
-	 */
-	void instantiatePixmaps();
 
 	void setLargeSelectorFilename(std::string p){d_large_selector = p;};
 	void setSmallSelectorFilename(std::string p){d_small_selector = p;};

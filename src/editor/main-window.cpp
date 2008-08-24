@@ -38,10 +38,10 @@
 
 #include "main-window.h"
 
-#include "gui/gtksdl.h"
-#include "gui/image-helpers.h"
-#include "gui/input-helpers.h"
-#include "gui/error-utils.h"
+#include "gtksdl.h"
+#include "image-helpers.h"
+#include "input-helpers.h"
+#include "error-utils.h"
 
 #include "ucompose.hpp"
 #include "tileset.h"
@@ -51,6 +51,7 @@
 #include "sound.h"
 #include "File.h"
 #include "GraphicsCache.h"
+#include "GraphicsLoader.h"
 #include "smallmap.h"
 #include "GameScenario.h"
 #include "CreateScenarioRandomize.h"
@@ -588,9 +589,9 @@ bool MainWindow::on_map_mouse_motion_event(GdkEventMotion *e)
 void MainWindow::on_sdl_surface_changed()
 {
     if (!sdl_inited) {
-        Armysetlist::getInstance()->instantiatePixmaps();
-        Tilesetlist::getInstance()->instantiatePixmaps();
-        Shieldsetlist::getInstance()->instantiatePixmaps();
+	GraphicsLoader::instantiatePixmaps(Armysetlist::getInstance());
+	GraphicsLoader::instantiatePixmaps(Tilesetlist::getInstance());
+	GraphicsLoader::instantiatePixmaps(Shieldsetlist::getInstance());
 	sdl_inited = true;
 	sdl_initialized.emit();
     }
@@ -1158,7 +1159,7 @@ void MainWindow::on_help_about_activated()
   dialog->set_transient_for(*window.get());
 
   dialog->set_version(PACKAGE_VERSION);
-  SDL_Surface *logo = File::getMiscPicture("castle_icon.png");
+  SDL_Surface *logo = GraphicsLoader::getMiscPicture("castle_icon.png");
   dialog->set_logo(to_pixbuf(logo));
   dialog->show_all();
   dialog->run();

@@ -187,21 +187,6 @@ bool Armysetlist::loadArmyset(std::string name)
 
   return true;
 }
-        
-void Armysetlist::instantiatePixmaps()
-{
-  for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiatePixmaps();
-}
-	
-void Armysetlist::instantiatePixmaps(Uint32 armyset)
-{
-  for (iterator it = begin(); it != end(); it++)
-    {
-      if ((*it)->getId() == armyset)
-	(*it)->instantiatePixmaps();
-    }
-}
 	
 SDL_Surface * Armysetlist::getShipPic (Uint32 id)
 {
@@ -253,3 +238,12 @@ SDL_Surface * Armysetlist::getStandardMask (Uint32 id)
   return NULL;
 }
 
+Armyset *Armysetlist::getArmyset(Uint32 id)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getId() == id)
+	return (*it);
+    }
+  return NULL;
+}

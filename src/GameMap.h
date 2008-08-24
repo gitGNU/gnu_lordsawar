@@ -158,9 +158,6 @@ class GameMap: public sigc::trackable
 	//! Get the positions of all of the items on the game map (in bags).
 	std::vector<Vector<int> > getItems();
 
-	//! instantiate the pixmaps we need for this game map.
-	void instantiatePixmaps();
-
     protected:
         //! Create the map with the given tileset
         GameMap(std::string TilesetName, std::string ShieldsetName,

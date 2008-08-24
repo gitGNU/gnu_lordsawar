@@ -99,12 +99,6 @@ Tile::~Tile()
       delete *it;
 }
 
-void Tile::instantiatePixmaps(std::string tileset, Uint32 tilesize)
-{
-  for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiatePixmaps(tileset, tilesize);
-}
-
 void Tile::setTypeByIndex(int idx)
 {
   switch (idx)

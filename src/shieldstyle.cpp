@@ -37,10 +37,6 @@ ShieldStyle::ShieldStyle(XML_Helper* helper)
 
 ShieldStyle::~ShieldStyle()
 {
-    if (d_pixmap)
-        SDL_FreeSurface(d_pixmap);
-    if (d_mask)
-        SDL_FreeSurface(d_mask);
 }
 
 SDL_Surface* ShieldStyle::getPixmap() const
@@ -54,77 +50,14 @@ SDL_Surface* ShieldStyle::getPixmap() const
 
 void ShieldStyle::setPixmap(SDL_Surface* pixmap)
 {
-  if (d_pixmap)
-    SDL_FreeSurface(d_pixmap);
   d_pixmap = pixmap;
 }
         
 void ShieldStyle::setMask(SDL_Surface* mask)
 {
-  if (d_mask)
-    SDL_FreeSurface(d_mask);
   d_mask = mask;
 }
 
-bool ShieldStyle::instantiatePixmap(Shieldset *sh)
-{
-    std::string s;
-
-    // The shield image consists of two halves. On the left is the shield 
-    // image, on the right the mask.
-    SDL_Surface* pic = File::getShieldPicture(sh->getSubDir(), 
-					      getImageName() + ".png");
-    if (!pic)
-    {
-        std::cerr <<"Could not load shield image: " << s <<std::endl;
-        exit(-1);
-    }
-
-    // don't use alpha information, just copy the channel! very important
-    SDL_SetAlpha(pic, 0, 0);
-    SDL_PixelFormat* fmt = pic->format;
-
-    int xsize = 0;
-    int ysize = 0;
-    switch (getType())
-      {
-      case ShieldStyle::SMALL:
-	xsize = sh->getSmallWidth(); ysize = sh->getSmallHeight(); break;
-      case ShieldStyle::MEDIUM:
-	xsize = sh->getMediumWidth(); ysize = sh->getMediumHeight(); break;
-      case ShieldStyle::LARGE:
-	xsize = sh->getLargeWidth(); ysize = sh->getLargeHeight(); break;
-      }
-
-    // mask out the shield image 
-    SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, 
-					    xsize, ysize,
-					    fmt->BitsPerPixel, fmt->Rmask, 
-					    fmt->Gmask, fmt->Bmask, fmt->Amask);
-    SDL_Rect r;
-    r.x = r.y = 0;
-    r.w = xsize;
-    r.h = ysize;
-    SDL_BlitSurface(pic, &r, tmp, 0);
-
-    SDL_Surface* pixmap = SDL_DisplayFormatAlpha(tmp);
-    setPixmap(pixmap);
-
-    SDL_FreeSurface(tmp);
-
-    // now extract the mask; it should have a certain data format since the 
-    // player colors are applied by modifying the RGB shifts
-    tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize, 32,
-                               0xFF000000, 0xFF0000, 0xFF00, 0xFF);
-
-    r.x = xsize;
-    SDL_BlitSurface(pic, &r, tmp, 0);
-    setMask(tmp);
-
-    SDL_FreeSurface(pic);
-
-    return true;
-}
 
 std::string ShieldStyle::shieldStyleTypeToString(const ShieldStyle::Type type)
 {

@@ -104,6 +104,7 @@
 #include "QuestsManager.h"
 #include "stack.h"
 #include "GraphicsCache.h"
+#include "GraphicsLoader.h"
 #include "QuestsManager.h"
 #include "Quest.h"
 #include "QCitySack.h"
@@ -802,8 +803,14 @@ void GameWindow::update_diplomacy_button (bool sensitive)
 
 bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
 {
-  Playerlist::getInstance()->instantiateArmysetPixmaps();
-  GameMap::getInstance()->instantiatePixmaps();
+  Playerlist *pl = Playerlist::getInstance();
+  Armysetlist *al = Armysetlist::getInstance();
+  for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
+    if ((*i)->getType() != Player::NETWORKED)
+      GraphicsLoader::instantiatePixmaps(al->getArmyset((*i)->getArmyset()));
+
+  GraphicsLoader::instantiatePixmaps(GameMap::getInstance()->getTileset());
+  GraphicsLoader::instantiatePixmaps(GameMap::getInstance()->getShieldset());
 
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();
@@ -1400,7 +1407,7 @@ void GameWindow::on_help_about_activated()
   dialog->set_transient_for(*window.get());
 
   dialog->set_version(PACKAGE_VERSION);
-  SDL_Surface *logo = File::getMiscPicture("castle_icon.png");
+  SDL_Surface *logo = GraphicsLoader::getMiscPicture("castle_icon.png");
   dialog->set_logo(to_pixbuf(logo));
   dialog->show_all();
   dialog->run();
@@ -1459,7 +1466,7 @@ void GameWindow::on_game_over(Player *winner)
   Gtk::Image *image;
   xml->get_widget("image", image);
 
-  SDL_Surface *win = File::getMiscPicture("win.png", false);
+  SDL_Surface *win = GraphicsLoader::getMiscPicture("win.png", false);
 
   image->property_pixbuf() = to_pixbuf(win);
 
@@ -1682,6 +1689,7 @@ void GameWindow::fill_in_group_info (Stack *s)
 
 void GameWindow::show_stack(Stack *s)
 {
+  GraphicsCache *gc = GraphicsCache::getInstance();
   s->sortForViewing (true);
   stats_box->hide();
 
@@ -1693,7 +1701,7 @@ void GameWindow::show_stack(Stack *s)
       Gtk::VBox *toggle_box = manage(new Gtk::VBox);
 
       // image
-      toggle_box->add(*manage(new Gtk::Image(to_pixbuf(army->getPixmap()))));
+      toggle_box->add(*manage(new Gtk::Image(to_pixbuf(gc->getArmyPic(army)))));
       // number of moves
       Glib::ustring moves_str = String::ucompose("%1", army->getMoves());
       toggle_box->add(*manage(new Gtk::Label(moves_str,
@@ -2625,6 +2633,7 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 
 void GameWindow::on_medal_awarded_to_army(Army *army)
 {
+  GraphicsCache *gc = GraphicsCache::getInstance();
   std::auto_ptr<Gtk::Dialog> dialog;
 
   Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -2640,7 +2649,7 @@ void GameWindow::on_medal_awarded_to_army(Army *army)
 
   Gtk::Image *image;
   xml->get_widget("image", image);
-  image->property_pixbuf() = to_pixbuf(army->getPixmap());
+  image->property_pixbuf() = to_pixbuf(gc->getArmyPic(army));
 
   Gtk::Label *label;
   xml->get_widget("label", label);

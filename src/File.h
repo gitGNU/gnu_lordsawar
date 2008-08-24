@@ -107,13 +107,6 @@ class File
           */
         static std::string getCityset(std::string citysetname);
 
-        /** Get a cityset picture
-          * @param citysetname       the name of the cityset
-          * @param picname          the name of the picture
-          * @return the surface which contains the picture
-          */
-        static SDL_Surface* getCitysetPicture(std::string citysetname, std::string picname);
-
 	// get a cityset path
 	static std::string getCitysetFile(std::string citysetname, std::string picname);
 	

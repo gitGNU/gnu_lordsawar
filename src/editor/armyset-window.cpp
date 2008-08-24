@@ -40,13 +40,15 @@
 #include "armyset-window.h"
 #include "armyset-info-dialog.h"
 
-#include "gui/gtksdl.h"
-#include "gui/image-helpers.h"
-#include "gui/input-helpers.h"
-#include "gui/error-utils.h"
+#include "gtksdl.h"
+#include "image-helpers.h"
+#include "input-helpers.h"
+#include "error-utils.h"
 
 #include "defs.h"
 #include "Configuration.h"
+#include "GraphicsCache.h"
+#include "GraphicsLoader.h"
 #include "armysetlist.h"
 #include "Tile.h"
 #include "File.h"
@@ -427,7 +429,7 @@ void ArmySetWindow::on_load_armyset_activated()
       if (tmp)
 	tmp[0] = '\0';
       d_armyset->setSubDir(dir);
-      d_armyset->instantiatePixmaps();
+      GraphicsLoader::instantiatePixmaps(d_armyset);
       Uint32 max = d_armyset->getSize();
       for (unsigned int i = 0; i < max; i++)
 	addArmyType(i);
@@ -516,7 +518,7 @@ void ArmySetWindow::on_help_about_activated()
   dialog->set_transient_for(*window.get());
 
   dialog->set_version(PACKAGE_VERSION);
-  SDL_Surface *logo = File::getMiscPicture("castle_icon.png");
+  SDL_Surface *logo = GraphicsLoader::getMiscPicture("castle_icon.png");
   dialog->set_logo(to_pixbuf(logo));
   dialog->show_all();
   dialog->run();
@@ -537,7 +539,7 @@ void ArmySetWindow::addArmyType(Uint32 army_type)
 void ArmySetWindow::on_sdl_surface_changed()
 {
   if (!sdl_inited) {
-    Armysetlist::getInstance()->instantiatePixmaps();
+    GraphicsLoader::instantiatePixmaps(Armysetlist::getInstance());
     sdl_inited = true;
     sdl_initialized.emit();
   }
@@ -673,7 +675,7 @@ void ArmySetWindow::on_image_changed()
       if (image_filechooserbutton->get_filename().substr(0, path.size()) !=path)
 	return;
       a->setImageName(dir);
-      d_armyset->instantiatePixmaps();
+      GraphicsLoader::instantiatePixmaps(d_armyset);
       army_image->property_pixbuf() = to_pixbuf(a->getPixmap());
     }
   return;

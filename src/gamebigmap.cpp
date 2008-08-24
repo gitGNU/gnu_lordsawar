@@ -43,6 +43,7 @@
 #include "File.h"
 #include "GameMap.h"
 #include "GraphicsCache.h"
+#include "GraphicsLoader.h"
 #include "game.h"
 #include "FogMap.h"
 
@@ -72,7 +73,7 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
   mouse_state = NONE;
   input_locked = false;
 
-  d_waypoints = File::getMiscPicture("waypoints.png");
+  d_waypoints = GraphicsLoader::getMiscPicture("waypoints.png");
   prev_mouse_pos = Vector<int>(0, 0);
 
   // setup timeout

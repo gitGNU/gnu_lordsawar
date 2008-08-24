@@ -50,6 +50,7 @@
 #include "GameMap.h"
 #include "Configuration.h"
 #include "GraphicsCache.h"
+#include "GraphicsLoader.h"
 #include "MapRenderer.h"
 #include "FogMap.h"
 
@@ -63,7 +64,7 @@ BigMap::BigMap()
     : d_renderer(0), buffer(0)
 {
     // load all pictures
-    d_itempic = File::getMiscPicture("items.png");
+    d_itempic = GraphicsLoader::getMiscPicture("items.png");
 
     // note: we are not fully initialized before set_view is called
     view.x = view.y = 0;
@@ -532,7 +533,7 @@ void BigMap::draw_stack(Stack *s)
 	    {
 	      r.w = r.h = army_tilesize;
 	      Army *a = *s->begin();
-	      SDL_BlitSurface(a->getPixmap(), 0, buffer, &r);
+	      SDL_BlitSurface(gc->getArmyPic(a), 0, buffer, &r);
 	    }
 	}
 

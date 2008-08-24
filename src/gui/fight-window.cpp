@@ -233,17 +233,19 @@ void FightWindow::add_army(Army *army, int initial_hp,
 			   int current_no, int max_rows,
 			   Gtk::AlignmentEnum alignment)
 {
+    GraphicsCache *gc = GraphicsCache::getInstance();
     // construct the army box
     Gtk::VBox *army_box = manage(new Gtk::VBox);
 	
     // image
-    Gtk::Image *image = new Gtk::Image(to_pixbuf(army->getPixmap()));
+    SDL_Surface *pic = gc->getArmyPic(army);
+    Gtk::Image *image = new Gtk::Image(to_pixbuf(pic));
     army_box->add(*manage(image));
     
     // hit points graph
     Gtk::ProgressBar *progress = manage(new Gtk::ProgressBar);
     progress->set_fraction(double(initial_hp) / army->getStat(Army::HP));
-    progress->property_width_request() = army->getPixmap()->w;
+    progress->property_width_request() = pic->w;
     progress->property_height_request() = 12;
     army_box->pack_start(*progress, Gtk::PACK_SHRINK, 4);
 

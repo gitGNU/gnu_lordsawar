@@ -109,19 +109,10 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
           * @return the id of the armyset (0 on error)
           */
 	Uint32 getArmysetId(std::string armyset) {return d_ids[armyset];}
+	Armyset *getArmyset(Uint32 id);
 
 	//! Returns a list of all Armyset objects available to the game.
         std::vector<Uint32> getArmysets() const;
-
-	//! Load the pictures for all Armyset objects available to the game.
-	/**
-	 * Reads in the pixmap and mask for every army of every armyset.
-	 * @note This can only be done after SDL is initialized.
-	 */
-	void instantiatePixmaps();
-
-	//! Load the pictures for the given armyset.
-	void instantiatePixmaps(Uint32 armyset);
 
     private:
         //! Default Constructor.  Loads all armyset objects it can find.

@@ -293,20 +293,6 @@ ooooooo
 	//! Set the id for this tilestyle.
 	void setId(Uint32 id) {d_id = id;}
  
-	//! Load the picture associated with this tile style.
-	/**
-	 * Load the image for this tilestyle.
-	 * @param tilestyles   The image that contains all of the tilestyles
-	 *                     in this tilestyleset.
-	 * @param tilesize     How big each tilestyle's picture is.  The
-	 *                     width and the height of each tilestyle cell of 
-	 *                     tilestyles are equal.
-	 * @param index        Load the index-th picture from the 
-	 *                     tilestyles image.
-	 */
-	void instantiatePixmap(SDL_Surface *tilestyles, Uint32 tilesize,
-			       int index);
-
 	//! Save a TileStyle to an opened tile configuration file.
 	/**
 	 * @param  The opened XML tile configuration file.
@@ -319,15 +305,13 @@ ooooooo
 	//! Get the name of the another style.
 	static std::string getTypeName(Type type);
 
+	void setPixmap(SDL_Surface *pixmap) {d_pixmap = pixmap;};
+
 	//! Return the style type enumeration given the type name.
 	static TileStyle::Type typeNameToType(std::string name);
     private:
         // DATA
 	//! The image of this tilestyle.
-	/**
-	 * It tilesize pixels wide and tilesize pixels high.  The tilesize
-	 * value is passed into TileStyle::instantiatePixmap.
-	 */
         SDL_Surface* d_pixmap; 
 
 	//! The type of the tilestyle.

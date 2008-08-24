@@ -30,10 +30,12 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "army.h"
+#include "GraphicsCache.h"
 
 //give a hero some more abilities
 ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
 {
+    GraphicsCache *gc = GraphicsCache::getInstance();
     army = a;
     
     Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -48,7 +50,7 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
     
     Gtk::Image *image;
     xml->get_widget("image", image);
-    image->property_pixbuf() = to_pixbuf(army->getPixmap());
+    image->property_pixbuf() = to_pixbuf(gc->getArmyPic(army));
     
     Gtk::Label *label;
     xml->get_widget("label", label);

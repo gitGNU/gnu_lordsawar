@@ -43,10 +43,10 @@
 #include "tile-preview-dialog.h"
 #include "tileset-selector-editor-dialog.h"
 
-#include "gui/gtksdl.h"
-#include "gui/image-helpers.h"
-#include "gui/input-helpers.h"
-#include "gui/error-utils.h"
+#include "gtksdl.h"
+#include "image-helpers.h"
+#include "input-helpers.h"
+#include "error-utils.h"
 
 #include "defs.h"
 #include "Configuration.h"
@@ -54,6 +54,8 @@
 #include "Tile.h"
 #include "File.h"
 #include "overviewmap.h"
+#include "GraphicsCache.h"
+#include "GraphicsLoader.h"
 
 #include "ucompose.hpp"
 
@@ -313,7 +315,7 @@ void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
   if (height)
     {
       d_tileset->setTileSize(height);
-      t->instantiatePixmaps(t->getSubDir(), height);
+      GraphicsLoader::instantiatePixmaps(t, d_tileset->getTileSize());
     }
   inhibit_image_change = true;
   image_filechooser_button->set_filename(n);
@@ -515,7 +517,7 @@ void TileSetWindow::on_load_tileset_activated()
       //hackus horribilium
       std::string back = "../../../../../../../../../../../../../../../../";
       d_tileset->setSubDir(back + dir);
-      d_tileset->instantiatePixmaps();
+      GraphicsLoader::instantiatePixmaps(d_tileset);
       for (Tileset::iterator i = d_tileset->begin(); i != d_tileset->end(); ++i)
 	{
 	  Gtk::TreeIter l = tiles_list->append();
@@ -603,7 +605,7 @@ void TileSetWindow::on_help_about_activated()
   dialog->set_transient_for(*window.get());
 
   dialog->set_version(PACKAGE_VERSION);
-  SDL_Surface *logo = File::getMiscPicture("tileset_icon.png");
+  SDL_Surface *logo = GraphicsLoader::getMiscPicture("tileset_icon.png");
   dialog->set_logo(to_pixbuf(logo));
   dialog->show_all();
   dialog->run();
@@ -614,7 +616,7 @@ void TileSetWindow::on_help_about_activated()
 void TileSetWindow::on_sdl_surface_changed()
 {
   if (!sdl_inited) {
-    Tilesetlist::getInstance()->instantiatePixmaps();
+    GraphicsLoader::instantiatePixmaps(Tilesetlist::getInstance());
     sdl_inited = true;
     sdl_initialized.emit();
   }
@@ -1068,7 +1070,7 @@ void TileSetWindow::on_image_chosen()
 void TileSetWindow::on_refresh_clicked()
 {
   TileStyleSet *set = get_selected_tilestyleset ();
-  set->instantiatePixmaps(set->getSubDir(), d_tileset->getTileSize());
+  GraphicsLoader::instantiatePixmaps(set, d_tileset->getTileSize());
 }
 
 void TileSetWindow::on_preview_tile_activated()

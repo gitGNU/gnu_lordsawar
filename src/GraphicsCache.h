@@ -122,6 +122,7 @@ class GraphicsCache
           */
         SDL_Surface* getArmyPic(Uint32 armyset, Uint32 army, const Player* p,
                                 const bool* medals);
+	SDL_Surface* getArmyPic(Army *a);
 
         /** Function for getting the shield picture from the cache
           * 
@@ -271,6 +272,8 @@ class GraphicsCache
           * @return image for the shield
           */
         SDL_Surface* getShieldPic(Uint32 type, const Player* p);
+
+
         SDL_Surface* getSmallRuinedCityPic();
         SDL_Surface* getSmallHeroPic();
         SDL_Surface* getPortPic();
@@ -464,7 +467,13 @@ class GraphicsCache
         
         //! Loads the images for the movement bonuses
         void loadMoveBonusPics();
-        
+        /** Get a cityset picture
+          * @param citysetname       the name of the cityset
+          * @param picname          the name of the picture
+          * @return the surface which contains the picture
+          */
+        static SDL_Surface* getCitysetPicture(std::string citysetname, std::string picname);
+
         //the data
         static GraphicsCache* s_instance;
 

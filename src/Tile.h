@@ -193,14 +193,6 @@ eoeoeoeo
         //! Set another alternate colour associated with this tile's pattern.
         void setThirdColor(SDL_Color color) {d_third_color = color;}
 
-	//! Load the pictures associated with this tile.
-	/**
-	 * @param tileset   The name of the tileset to load pictures for.
-	 * @param tilesize  The expected size of the tiles in the image.
-	 */
-	void instantiatePixmaps(std::string tileset, Uint32 tilesize);
-
-
 	//! Save a Tile to an opened tile configuration file.
 	/**
 	 * @param  The opened XML tile configuration file.

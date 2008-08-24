@@ -40,6 +40,7 @@
 #include "tilesetlist.h"
 #include "shieldsetlist.h"
 #include "citysetlist.h"
+#include "GraphicsCache.h"
 
 using namespace std;
 
@@ -865,10 +866,3 @@ std::vector<Vector<int> > GameMap::getItems()
   return items;
 }
 
-void GameMap::instantiatePixmaps()
-{
-  std::string tileset = getTileset()->getSubDir();
-  Tilesetlist::getInstance()->instantiatePixmaps(tileset);
-  std::string shieldset = getShieldset()->getSubDir();
-  Shieldsetlist::getInstance()->instantiatePixmaps(shieldset);
-}

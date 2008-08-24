@@ -990,7 +990,6 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	      d_stacklist->getActivestack()->sortForViewing(false);
 	      
 	    supdatingStack.emit(0);
-	    SDL_Delay(Configuration::s_displaySpeedDelay);
     
             MoveResult *moveResult = new MoveResult(moved);
             moveResult->setStepCount(stepCount);
@@ -1036,7 +1035,6 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
             stepCount++;
 
         supdatingStack.emit(0);
-        SDL_Delay(Configuration::s_displaySpeedDelay);
     
         MoveResult *moveResult = new MoveResult(true);
         moveResult->setStepCount(stepCount);

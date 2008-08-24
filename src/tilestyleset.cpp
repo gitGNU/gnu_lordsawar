@@ -20,7 +20,7 @@
 
 #include "tilestyleset.h"
 
-#include "File.h"
+#include "GraphicsCache.h"
 #include "xmlhelper.h"
 
 using namespace std;
@@ -41,17 +41,6 @@ TileStyleSet::~TileStyleSet()
 {
   for (unsigned int i=0; i < size(); i++)
     delete (*this)[i];
-}
-
-void TileStyleSet::instantiatePixmaps(std::string tileset, Uint32 tilesize)
-{
-  SDL_Surface* pixmaps = File::getTilesetPicture(tileset, d_name + ".png");
-  if (pixmaps)
-    {
-      for (unsigned int i=0; i < size(); i++)
-	(*this)[i]->instantiatePixmap(pixmaps, tilesize, i);
-      SDL_FreeSurface (pixmaps);
-    }
 }
 
 bool TileStyleSet::save(XML_Helper *helper)

@@ -17,7 +17,6 @@
 
 #include <iostream>
 #include <expat.h>
-#include <SDL_image.h>
 #include <SDL.h>
 #include "rectangle.h"
 #include <sigc++/functors/mem_fun.h>
@@ -52,12 +51,6 @@ Shieldset::~Shieldset()
 {
   for (iterator it = begin(); it != end(); it++)
       delete *it;
-}
-
-void Shieldset::instantiatePixmaps()
-{
-  for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiatePixmaps(this);
 }
 
 bool Shieldset::loadShield(string tag, XML_Helper* helper)

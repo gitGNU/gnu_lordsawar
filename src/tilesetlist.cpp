@@ -107,18 +107,3 @@ bool Tilesetlist::loadTileset(std::string name)
 
   return true;
 }
-        
-void Tilesetlist::instantiatePixmaps()
-{
-  for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiatePixmaps();
-}
-
-void Tilesetlist::instantiatePixmaps(std::string subdir)
-{
-  for (iterator it = begin(); it != end(); it++)
-    {
-      if ((*it)->getSubDir() == subdir)
-	(*it)->instantiatePixmaps();
-    }
-}

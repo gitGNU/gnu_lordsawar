@@ -39,6 +39,7 @@
 
 StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, const Stack *stack)
 {
+    GraphicsCache *gc = GraphicsCache::getInstance();
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
 				    + "/stack-info-window.glade");
@@ -51,7 +52,7 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, const Stack
 
     //fill up the hbox with images of the armies in the stack
     for (Stack::const_iterator it = stack->begin(); it != stack->end(); it++)
-      image_hbox->add(*manage(new Gtk::Image(to_pixbuf((*it)->getPixmap()))));
+      image_hbox->add(*manage(new Gtk::Image(to_pixbuf(gc->getArmyPic(*it)))));
 
     image_hbox->show_all();
 

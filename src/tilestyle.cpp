@@ -42,36 +42,8 @@ TileStyle::TileStyle(XML_Helper* helper)
 
 }
     
-void TileStyle::instantiatePixmap(SDL_Surface *tilestyles, Uint32 tilesize,
-				  int index)
-{
-  SDL_Surface* tmp;
-  SDL_PixelFormat* fmt = tilestyles->format;
-
-  tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, tilesize, tilesize, 
-			     fmt->BitsPerPixel,
-			     fmt->Rmask, fmt->Gmask, 
-			     fmt->Bmask, fmt->Amask);
-
-  SDL_Rect r;
-  r.x = index * tilesize;
-  r.y = 0;
-  r.w = r.h = tilesize;
-      
-  SDL_BlitSurface(tilestyles, &r, tmp, NULL);
-
-  if (d_pixmap)
-    free(d_pixmap);
-
-  d_pixmap = SDL_DisplayFormat(tmp);
-
-  SDL_FreeSurface(tmp);
-}
-
 TileStyle::~TileStyle()
 {
-  if (d_pixmap)
-    SDL_FreeSurface(d_pixmap);
 }
 
 bool TileStyle::save(XML_Helper *helper)

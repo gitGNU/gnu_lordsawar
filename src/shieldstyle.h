@@ -94,7 +94,6 @@ class ShieldStyle : public sigc::trackable
 	//! Returns the basename of the picture's filename.
 	std::string getImageName() const {return d_image;}
 
-	bool instantiatePixmap(Shieldset *sh);
     protected:
 
 	//! The size of the shield. (small, medium, or large)

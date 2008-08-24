@@ -138,20 +138,29 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 	//! Set the subdirectory that the armyset is in.
         void setSubDir(std::string dir) {d_dir = dir;}
 
-	//! Load the graphics associated with the Armyset.
-        void instantiatePixmaps();
-
 	//! Get the image of the stack in a ship (minus the mask).
 	SDL_Surface *getShipPic() const {return d_ship;}
+
+	//! Set the image of the stack in a ship
+	void setShipImage(SDL_Surface *ship) {d_ship = ship;};
 
 	//! Get the mask portion of the image of the stack in a ship.
 	SDL_Surface *getShipMask() const {return d_shipmask;}
 
+	//! Set the mask portion of the image of the stack in a ship.
+	void setShipMask(SDL_Surface *shipmask) {d_shipmask = shipmask;};
+
 	//! Get the image of the planted standard (minus the mask).
 	SDL_Surface *getStandardPic() const {return d_standard;}
 
+	//! Set the image of the planted standard (minus the mask).
+	void setStandardImage(SDL_Surface *s) {d_standard = s;};
+
 	//! Get the mask portion of the image of the planted standard.
 	SDL_Surface *getStandardMask() const {return d_standard_mask;}
+
+	//! Set the mask portion of the image of the planted standard.
+	void setStandardMask(SDL_Surface *s) {d_standard_mask = s;};
 
 	//! Find an army with a type in this armyset.
 	/**
@@ -171,9 +180,6 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 
         //! Callback function for the army tag (see XML_Helper)
         bool loadArmyTemplate(std::string tag, XML_Helper* helper);
-
-	//! Load the images associated with a particular Army.
-	bool instantiatePixmap(Army *a);
 
 	//! Load the image and mask of the stack's ship picture.
 	void loadShipPic();
