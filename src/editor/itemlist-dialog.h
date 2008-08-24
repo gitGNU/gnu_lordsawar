@@ -61,7 +61,7 @@ class ItemlistDialog: public sigc::trackable
     std::auto_ptr<Gtk::Dialog> dialog;
     std::string current_save_filename;
     Itemlist *d_itemlist; //current itemlist
-    Item *d_item; //current item
+    ItemProto *d_item; //current item
     Gtk::Entry *name_entry;
     Gtk::TreeView *items_treeview;
     Gtk::Button *add_item_button;
@@ -86,18 +86,18 @@ class ItemlistDialog: public sigc::trackable
         { add(name); add(item);}
 	
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<Item *> item;
+	Gtk::TreeModelColumn<ItemProto *> item;
     };
     const ItemsColumns items_columns;
     Glib::RefPtr<Gtk::ListStore> items_list;
 
     bool on_delete_event(GdkEventAny *e);
 
-    void addItem(Item *item);
+    void addItemProto(ItemProto *itemproto);
     void update_item_panel();
     void update_itemlist_buttons();
 
-    void fill_item_info(Item *item);
+    void fill_item_info(ItemProto *item);
 
     //callbacks
     void on_name_changed();
@@ -107,7 +107,7 @@ class ItemlistDialog: public sigc::trackable
 
 
     void on_checkbutton_toggled(Gtk::CheckButton *checkbutton, 
-				Item::Bonus bonus);
+				ItemProto::Bonus bonus);
     void on_add1str_toggled();
     void on_add2str_toggled();
     void on_add3str_toggled();

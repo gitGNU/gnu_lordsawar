@@ -77,7 +77,7 @@ ItemlistDialog::ItemlistDialog()
 
     Itemlist::iterator iter = d_itemlist->begin();
     for (;iter != d_itemlist->end(); iter++)
-      addItem((*iter).second);
+      addItemProto((*iter).second);
       
     Uint32 max = d_itemlist->size();
     if (max)
@@ -165,7 +165,7 @@ ItemlistDialog::update_item_panel()
       // Row selected
       Gtk::TreeModel::Row row = *iterrow;
 
-      Item *a = row[items_columns.item];
+      ItemProto *a = row[items_columns.item];
       fill_item_info(a);
     }
 }
@@ -184,11 +184,11 @@ void ItemlistDialog::hide()
   dialog->hide();
 }
 
-void ItemlistDialog::addItem(Item *item)
+void ItemlistDialog::addItemProto(ItemProto *itemproto)
 {
   Gtk::TreeIter i = items_list->append();
-  (*i)[items_columns.name] = item->getName();
-  (*i)[items_columns.item] = item;
+  (*i)[items_columns.name] = itemproto->getName();
+  (*i)[items_columns.item] = itemproto;
 }
 
 void ItemlistDialog::on_item_selected()
@@ -199,27 +199,27 @@ void ItemlistDialog::on_item_selected()
 
 static int inhibit_bonus_checkbuttons;
 
-void ItemlistDialog::fill_item_info(Item *item)
+void ItemlistDialog::fill_item_info(ItemProto *item)
 {
   name_entry->set_text(item->getName());
   inhibit_bonus_checkbuttons = 1;
-  add1str_checkbutton->set_active(item->getBonus(Item::ADD1STR));
-  add2str_checkbutton->set_active(item->getBonus(Item::ADD2STR));
-  add3str_checkbutton->set_active(item->getBonus(Item::ADD3STR));
-  add1stack_checkbutton->set_active(item->getBonus(Item::ADD1STACK));
-  add2stack_checkbutton->set_active(item->getBonus(Item::ADD2STACK));
-  add3stack_checkbutton->set_active(item->getBonus(Item::ADD3STACK));
-  flystack_checkbutton->set_active(item->getBonus(Item::FLYSTACK));
+  add1str_checkbutton->set_active(item->getBonus(ItemProto::ADD1STR));
+  add2str_checkbutton->set_active(item->getBonus(ItemProto::ADD2STR));
+  add3str_checkbutton->set_active(item->getBonus(ItemProto::ADD3STR));
+  add1stack_checkbutton->set_active(item->getBonus(ItemProto::ADD1STACK));
+  add2stack_checkbutton->set_active(item->getBonus(ItemProto::ADD2STACK));
+  add3stack_checkbutton->set_active(item->getBonus(ItemProto::ADD3STACK));
+  flystack_checkbutton->set_active(item->getBonus(ItemProto::FLYSTACK));
   doublemovestack_checkbutton->set_active 
-    (item->getBonus(Item::DOUBLEMOVESTACK));
+    (item->getBonus(ItemProto::DOUBLEMOVESTACK));
   add2goldpercity_checkbutton->set_active
-    (item->getBonus(Item::ADD2GOLDPERCITY));
+    (item->getBonus(ItemProto::ADD2GOLDPERCITY));
   add3goldpercity_checkbutton->set_active
-    (item->getBonus(Item::ADD3GOLDPERCITY));
+    (item->getBonus(ItemProto::ADD3GOLDPERCITY));
   add4goldpercity_checkbutton->set_active
-    (item->getBonus(Item::ADD4GOLDPERCITY));
+    (item->getBonus(ItemProto::ADD4GOLDPERCITY));
   add5goldpercity_checkbutton->set_active
-    (item->getBonus(Item::ADD5GOLDPERCITY));
+    (item->getBonus(ItemProto::ADD5GOLDPERCITY));
   inhibit_bonus_checkbuttons = 0;
 }
 
@@ -231,7 +231,7 @@ void ItemlistDialog::on_name_changed()
   if (iterrow) 
     {
       Gtk::TreeModel::Row row = *iterrow;
-      Item *a = row[items_columns.item];
+      ItemProto *a = row[items_columns.item];
       a->setName(name_entry->get_text());
       row[items_columns.name] = name_entry->get_text();
     }
@@ -239,7 +239,7 @@ void ItemlistDialog::on_name_changed()
 void ItemlistDialog::on_add_item_clicked()
 {
   //add a new empty item to the itemlist
-  Item *a = new Item("Untitled", false, NULL);
+  ItemProto *a = new ItemProto("Untitled", 0);
   //add it to the treeview
   Gtk::TreeIter i = items_list->append();
   a->setName("Untitled");
@@ -257,7 +257,7 @@ void ItemlistDialog::on_remove_item_clicked()
   if (iterrow) 
     {
       Gtk::TreeModel::Row row = *iterrow;
-      Item *a = row[items_columns.item];
+      ItemProto *a = row[items_columns.item];
       items_list->erase(iterrow);
       d_itemlist->remove(a);
     }
@@ -275,7 +275,7 @@ void ItemlistDialog::run()
 }
 
 void ItemlistDialog::on_checkbutton_toggled(Gtk::CheckButton *checkbutton, 
-					    Item::Bonus bonus)
+					    ItemProto::Bonus bonus)
 {
   if (inhibit_bonus_checkbuttons)
     return;
@@ -298,60 +298,60 @@ void ItemlistDialog::on_checkbutton_toggled(Gtk::CheckButton *checkbutton,
 
 void ItemlistDialog::on_add1str_toggled()
 {
-  on_checkbutton_toggled(add1str_checkbutton, Item::ADD1STR);
+  on_checkbutton_toggled(add1str_checkbutton, ItemProto::ADD1STR);
 }
 
 void ItemlistDialog::on_add2str_toggled()
 {
-  on_checkbutton_toggled(add2str_checkbutton, Item::ADD2STR);
+  on_checkbutton_toggled(add2str_checkbutton, ItemProto::ADD2STR);
 }
 
 void ItemlistDialog::on_add3str_toggled()
 {
-  on_checkbutton_toggled(add3str_checkbutton, Item::ADD3STR);
+  on_checkbutton_toggled(add3str_checkbutton, ItemProto::ADD3STR);
 }
 
 void ItemlistDialog::on_add1stack_toggled()
 {
-  on_checkbutton_toggled(add1stack_checkbutton, Item::ADD1STACK);
+  on_checkbutton_toggled(add1stack_checkbutton, ItemProto::ADD1STACK);
 }
 
 void ItemlistDialog::on_add2stack_toggled()
 {
-  on_checkbutton_toggled(add2stack_checkbutton, Item::ADD2STACK);
+  on_checkbutton_toggled(add2stack_checkbutton, ItemProto::ADD2STACK);
 }
 
 void ItemlistDialog::on_add3stack_toggled()
 {
-  on_checkbutton_toggled(add3stack_checkbutton, Item::ADD3STACK);
+  on_checkbutton_toggled(add3stack_checkbutton, ItemProto::ADD3STACK);
 }
 
 void ItemlistDialog::on_flystack_toggled()
 {
-  on_checkbutton_toggled(flystack_checkbutton, Item::FLYSTACK);
+  on_checkbutton_toggled(flystack_checkbutton, ItemProto::FLYSTACK);
 }
 
 void ItemlistDialog::on_doublemovestack_toggled()
 {
-  on_checkbutton_toggled(doublemovestack_checkbutton, Item::DOUBLEMOVESTACK);
+  on_checkbutton_toggled(doublemovestack_checkbutton, ItemProto::DOUBLEMOVESTACK);
 }
 
 void ItemlistDialog::on_add2goldpercity_toggled()
 {
-  on_checkbutton_toggled(add2goldpercity_checkbutton, Item::ADD2GOLDPERCITY);
+  on_checkbutton_toggled(add2goldpercity_checkbutton, ItemProto::ADD2GOLDPERCITY);
 }
 
 void ItemlistDialog::on_add3goldpercity_toggled()
 {
-  on_checkbutton_toggled(add2goldpercity_checkbutton, Item::ADD3GOLDPERCITY);
+  on_checkbutton_toggled(add2goldpercity_checkbutton, ItemProto::ADD3GOLDPERCITY);
 }
 
 void ItemlistDialog::on_add4goldpercity_toggled()
 {
-  on_checkbutton_toggled(add4goldpercity_checkbutton, Item::ADD4GOLDPERCITY);
+  on_checkbutton_toggled(add4goldpercity_checkbutton, ItemProto::ADD4GOLDPERCITY);
 }
 
 void ItemlistDialog::on_add5goldpercity_toggled()
 {
-  on_checkbutton_toggled(add5goldpercity_checkbutton, Item::ADD5GOLDPERCITY);
+  on_checkbutton_toggled(add5goldpercity_checkbutton, ItemProto::ADD5GOLDPERCITY);
 }

@@ -27,7 +27,7 @@
 #include <gtkmm/treeview.h>
 #include <list>
 #include <SDL.h>
-class Item;
+class ItemProto;
 
 #include "decorated.h"
 // dialog for showing the bonuses that items have
@@ -57,7 +57,7 @@ class ItemBonusDialog: public Decorated
     const ItemsColumns items_columns;
     Glib::RefPtr<Gtk::ListStore> items_list;
  private:
-    void addItem(Item *item);
+    void addItemProto(ItemProto *itemproto);
 };
 
 #endif

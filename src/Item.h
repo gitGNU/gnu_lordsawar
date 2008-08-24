@@ -28,7 +28,8 @@
 #include "defs.h"
 #include "player.h"
 #include "playerlist.h"
-#include "Renamable.h"
+
+#include "ItemProto.h"
 
 //! A carryable thing that confers special properties on it's holder.
 /** 
@@ -45,47 +46,25 @@
  * 
  */
 
-class Item: public Renamable
+
+class Item: public ItemProto
 {
     public:
 
-	// The item can confer these special properties.
-        enum Bonus {
-
-	  //! Add 1 to the strength of the wearer.
-	  ADD1STR         = 0x00000001,
-	  //! Add 2 to the strength of the wearer.
-	  ADD2STR         = 0x00000002,
-	  //! Add 3 to the strength of the wearer.
-	  ADD3STR         = 0x00000004,
-	  //! Add 1 to the strength of the Stack.
-	  ADD1STACK       = 0x00000008, 
-	  //! Add 2 to the strength of the Stack.
-	  ADD2STACK       = 0x00000010,
-	  //! Add 3 to the strength of the Stack.
-	  ADD3STACK       = 0x00000020, 
-	  //! Provides the gift of flight to the Stack.
-	  FLYSTACK        = 0x00000040,
-	  //! Makes the stack go two times as far.
-	  DOUBLEMOVESTACK = 0x00000080,
-	  //! Add 2 gold to the Player's treasury per City it holds.
-	  ADD2GOLDPERCITY = 0x00000100,
-	  //! Add 3 gold to the Player's treasury per City it holds.
-	  ADD3GOLDPERCITY = 0x00000200,
-	  //! Add 4 gold to the Player's treasury per City it holds.
-	  ADD4GOLDPERCITY = 0x00000400,
-	  //! Add 5 gold to the Player's treasury per City it holds.
-	  ADD5GOLDPERCITY = 0x00000800, 
-
-        };
-	static Uint32 bonusFlagsFromString(const std::string str);
-	static std::string bonusFlagsToString(const Uint32 bonus);
-        
 	//! Loading constructor.
         Item(XML_Helper* helper);
 
 	//! Copy constructor.
-        Item(const Item& orig);
+	/**
+	 *
+	 * @param clone   This parameter controls whether or not the Id 
+	 *                remains the same in the copied Item, or if the new
+	 *                Item gets a brand new unique Id.
+	 */
+        Item(const Item& orig, bool clone = false);
+
+	//! Copy constructor.  make an item from a prototype.
+	Item(const ItemProto &proto);
 
 	//! Creates a new Item from scratch.
         Item(std::string name, bool plantable, Player *plantable_owner);
@@ -95,18 +74,6 @@ class Item: public Renamable
         
         //! Save the item to the opened saved-game file.
         bool save(XML_Helper* helper) const;
-
-        //! Returns whether or not the Item has a particular special bonus.
-        bool getBonus(Item::Bonus bonus) const;
-
-	//! Add a bonus to the Item.
-	void addBonus(Item::Bonus bonus);
-
-	//! Remove a bonus from the Item.
-	void removeBonus(Item::Bonus bonus);
-        
-        //! Return the Id of the Item.  0 means the item is a prototype.
-        Uint32 getId() const {return d_id;}
 
 	//! Return whether or not the Item is of a kind that can be vectored to.
         bool isPlantable() const {return d_plantable;}
@@ -121,26 +88,9 @@ class Item: public Renamable
 	Player *getPlantableOwner() const 
 	  {return Playerlist::getInstance()->getPlayer(d_plantable_owner_id);}
 
-	//! Return some text describing the item's special abilities.
-        std::string getBonusDescription() const;
-
+	//! Return the type of this item.
+	Uint32 getType() const {return d_type;};
     private:
-
-	static std::string bonusFlagToString(Item::Bonus type);
-	static Item::Bonus bonusFlagFromString(std::string str);
-
-	//! The item's bonus.
-	/**
-	 * This value is a bitwise OR-ing of the valuesi in Item::Bonus.
-	 */
-        Uint32 d_bonus;
-        
-	//! The Id of the Item.
-	/**
-	 * This value is a unique Id among all other game objects.
-	 * This value does not change during gameplay.
-	 */
-        Uint32 d_id;
 
 	/**
 	 * This value indicates if the type of this Item can potentially be
@@ -165,6 +115,8 @@ class Item: public Renamable
 	//! Whether or not this Item is currently planted.
 	bool d_planted;
 
+	//! The item was instantiated from the item prototype that has this id.
+	Uint32 d_type;
 };
 
 #endif //ITEM_H

@@ -253,6 +253,7 @@ GamePreferencesDialog::GamePreferencesDialog(GameScenario::PlayMode play_mode)
 
 GamePreferencesDialog::GamePreferencesDialog(std::string filename)
 {
+  mode = GameScenario::HOTSEAT;
   init ();
   delete game_name_label;
   delete game_name_entry;

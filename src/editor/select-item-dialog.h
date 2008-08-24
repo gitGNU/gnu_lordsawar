@@ -31,9 +31,9 @@
 #include <gtkmm/button.h>
 
 
-class Item;
+class ItemProto;
 
-//! Scenario editor.  Select an Item object from the Itemlist.
+//! Scenario editor.  Select an ItemProto object from the Itemlist.
 class SelectItemDialog: public sigc::trackable
 {
  public:
@@ -43,13 +43,13 @@ class SelectItemDialog: public sigc::trackable
 
     void run();
 
-    const Item *get_selected_item() { return selected_item; }
+    const ItemProto *get_selected_item() { return selected_item; }
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     Gtk::Button *select_button;
 
-    const Item *selected_item;
+    const ItemProto *selected_item;
 
     Gtk::TreeView *items_treeview;
     class ItemsColumns: public Gtk::TreeModelColumnRecord {
@@ -58,13 +58,13 @@ class SelectItemDialog: public sigc::trackable
         { add(name); add(item);}
 	
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<Item *> item;
+	Gtk::TreeModelColumn<ItemProto *> item;
     };
     const ItemsColumns items_columns;
     Glib::RefPtr<Gtk::ListStore> items_list;
 
 
-    void addItem(Item *item);
+    void addItemProto(ItemProto *item);
     
     void set_select_button_state();
 };

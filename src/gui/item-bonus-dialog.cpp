@@ -26,7 +26,7 @@
 #include "image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
-#include "Item.h"
+#include "ItemProto.h"
 #include "Itemlist.h"
 
 ItemBonusDialog::ItemBonusDialog()
@@ -49,7 +49,7 @@ ItemBonusDialog::ItemBonusDialog()
 
     Itemlist::iterator iter = Itemlist::getInstance()->begin();
     for (;iter != Itemlist::getInstance()->end(); iter++)
-      addItem((*iter).second);
+      addItemProto((*iter).second);
 }
 
 void ItemBonusDialog::set_parent_window(Gtk::Window &parent)
@@ -77,11 +77,9 @@ void ItemBonusDialog::run()
 
 }
 
-void ItemBonusDialog::addItem(Item *item)
+void ItemBonusDialog::addItemProto(ItemProto *itemproto)
 {
-    if (item->isPlantable())
-      return;
     Gtk::TreeIter i = items_list->append();
-    (*i)[items_columns.name] = item->getName();
-    (*i)[items_columns.bonus] = item->getBonusDescription();
+    (*i)[items_columns.name] = itemproto->getName();
+    (*i)[items_columns.bonus] = itemproto->getBonusDescription();
 }

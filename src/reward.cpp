@@ -262,7 +262,7 @@ Item *Reward_Item::getRandomItem()
   Itemlist *il = Itemlist::getInstance();
   Itemlist::iterator it = il->begin();
   std::advance(it, rand() % il->size());
-  Item *i = it->second;
+  ItemProto *i = it->second;
   return new Item(*i);
 }
 

@@ -22,7 +22,7 @@
 #include <map>
 #include <sigc++/trackable.h>
 
-#include "Item.h"
+#include "ItemProto.h"
 
 //! A list of Item objects.
 /** 
@@ -35,7 +35,7 @@
  * you can get the item belonging to the index by the []-operator using the
  * item index as index.
  */
-class Itemlist : public std::map<Uint32, Item*>, public sigc::trackable
+class Itemlist : public std::map<Uint32, ItemProto*>, public sigc::trackable
 {
     public:
 
@@ -55,7 +55,7 @@ class Itemlist : public std::map<Uint32, Item*>, public sigc::trackable
 	//! Save the item data.  See XML_Helper for details.
 	bool save(XML_Helper* helper) const;
 
-	void remove(Item *item);
+	void remove(ItemProto *item);
 
     protected:
 	//! Default constructor.
@@ -68,7 +68,7 @@ class Itemlist : public std::map<Uint32, Item*>, public sigc::trackable
     private:
 
         //! Callback for loading an Item from an opened saved-game file.
-        bool loadItem(std::string tag, XML_Helper* helper);
+        bool loadItemProto(std::string tag, XML_Helper* helper);
 
         //! Erases an Item from the list and frees the Item too.
         void flErase(iterator it);

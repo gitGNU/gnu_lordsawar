@@ -68,7 +68,7 @@ void Itemlist::deleteInstance()
 
 Itemlist::Itemlist(XML_Helper* helper)
 {
-    helper->registerTag("item", sigc::mem_fun(*this, &Itemlist::loadItem));
+    helper->registerTag("itemproto", sigc::mem_fun(*this, &Itemlist::loadItemProto));
 }
 
 Itemlist::Itemlist()
@@ -80,12 +80,12 @@ Itemlist::~Itemlist()
     flClear();
 }
 
-bool Itemlist::loadItem(std::string tag, XML_Helper* helper)
+bool Itemlist::loadItemProto(std::string tag, XML_Helper* helper)
 {
-    if (tag != "item")
+    if (tag != "itemproto")
         return false;
 
-    Item* i = new Item(helper);
+    ItemProto* i = new ItemProto(helper);
     (*this)[(*this).size()] = i;
 
     return true;
@@ -117,12 +117,12 @@ bool Itemlist::save(XML_Helper* helper) const
     return retval;
 }
 
-void Itemlist::remove(Item *item)
+void Itemlist::remove(ItemProto *itemproto)
 {
   Uint32 index = 0;
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it).second == item)
+      if ((*it).second == itemproto)
 	{
 	  erase(index);
 	  break;

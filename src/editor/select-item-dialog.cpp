@@ -56,7 +56,7 @@ SelectItemDialog::SelectItemDialog()
     Itemlist *itemlist = Itemlist::getInstance();
     Itemlist::iterator iter = itemlist->begin();
     for (;iter != itemlist->end(); iter++)
-      addItem((*iter).second);
+      addItemProto((*iter).second);
       
     Uint32 max = itemlist->size();
     if (max)
@@ -68,7 +68,7 @@ SelectItemDialog::SelectItemDialog()
       }
 }
 
-void SelectItemDialog::addItem(Item *item)
+void SelectItemDialog::addItemProto(ItemProto *item)
 {
   Gtk::TreeIter i = items_list->append();
   (*i)[items_columns.name] = item->getName();
