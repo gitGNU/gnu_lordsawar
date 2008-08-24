@@ -25,6 +25,7 @@ lordsawar_pbm_SOURCES =  pbm.cpp main.cpp pbm.h ${top_srcdir}/src/pbm-game-clien
 
 lordsawar_pbm_LDADD = $(LIBSIGC_LIBS) $(GLIBMM_LIBS)\
                          $(top_builddir)/src/liblordsawar.la \
+			-lz \
                          @LIBINTL@ \
                          -L$(top_builddir)/src
 ##endif

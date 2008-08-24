@@ -37,10 +37,13 @@ AM_PATH_SDL($SDL_VERSION,
 	
 AC_SUBST(SDL_CFLAGS)
 AC_SUBST(SDL_LIBS)
-	
+
+
+SDLIMAGE_LIBS=
 dnl Now check for SDL_image
-AC_CHECK_LIB(SDL_image, IMG_Load, [],
+AC_CHECK_LIB(SDL_image, IMG_Load, [SDLIMAGE_LIBS="-lSDL_image -ltiff -ljpeg -lpng -lz"],
             AC_MSG_ERROR([*** SDL_image not found!]))
+AC_SUBST(SDLIMAGE_LIBS)
 AC_CHECK_HEADER(SDL_image.h, IMG_Load, [],
             AC_MSG_ERROR([*** SDL_image not found!]))
 
@@ -55,6 +58,7 @@ use_sound=1
 AC_ARG_ENABLE(sound, [  --enable-sound         Enable or disable sound usage (default on)],
                 use_sound="$enableval", use_sound="yes")
 
+SDLSOUND_LIBS=
 if test $use_sound = yes; then
 
     CFLAGS="$CFLAGS $SDL_CFLAGS"
@@ -84,11 +88,14 @@ if test $use_sound = yes; then
     fi
 
     AC_DEFINE([FL_SOUND], 1, [enables sound])
-else
+
+    SDLSOUND_LIBS="-lSDL_mixer"
+
     CFLAGS=$ac_save_CFLAGS
     LDFLAGS="$ac_save_LDFLAGS"
     LIBS="$ac_save_libs"
 fi
+AC_SUBST(SDLSOUND_LIBS)
 
 	
 dnl Check for expat

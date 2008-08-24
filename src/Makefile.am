@@ -90,7 +90,7 @@ liblordsawargfx_la_SOURCES = \
         historymap.cpp historymap.h heromap.cpp heromap.h \
 	ruinmap.cpp ruinmap.h questmap.cpp questmap.h \
 	vectormap.cpp vectormap.h overviewmap.cpp overviewmap.h \
-        smallmap.cpp smallmap.h \ 
+        smallmap.cpp smallmap.h \
 	MapRenderer.cpp MapRenderer.h  \
 	GraphicsCache.cpp GraphicsCache.h \
 	GraphicsLoader.cpp GraphicsLoader.h \
@@ -122,6 +122,8 @@ lordsawar_LDADD = $(top_builddir)/src/liblordsawar.la \
     $(top_builddir)/src/liblordsawarnet.la \
     $(top_builddir)/src/liblordsawargfx.la \
     $(SDL_LIBS) \
+    $(SDLIMAGE_LIBS) \
+    $(SDLSOUND_LIBS) \
     $(GTKMM_LIBS) \
     $(LIBGNET_LIBS) \
     $(LIBSIGC_LIBS) \

@@ -52,14 +52,6 @@ class File
           */
         static std::string getArmyset(std::string armysetname);
 
-        /** Get the armyset picture file
-          * 
-          * @param armysetname       the name of the armyset
-	  * @param pic               the name of the army picture 
-          * @return the surface which contains the army pictures of this armyset
-          */
-        static SDL_Surface* getArmyPicture(std::string armysetname, std::string pic);
-
         /** Scan the data directories for shieldsets
           * 
           * @return a list of available shieldsets
@@ -73,13 +65,6 @@ class File
           */
         static std::string getShieldset(std::string shieldsetname);
 
-        /** Get the shield picture file
-          * 
-          * @param shieldsetname       the name of the shieldset
-	  * @param pic                 the name of the shield picture
-          * @return the surface which contains the shield picture
-          */
-        static SDL_Surface* getShieldPicture(std::string armysetname, std::string pic);
         
         
 
@@ -89,13 +74,6 @@ class File
           * @return the full name of the description file
           */
         static std::string getTileset(std::string tilesetname);
-
-        /** Get a tileset picture
-          * @param tilesetname       the name of the tileset
-          * @param picname          the name of the picture
-          * @return the surface which contains the picture
-          */
-        static SDL_Surface* getTilesetPicture(std::string tilesetname, std::string picname);
 
 	// get a tileset path
 	static std::string getTilesetFile(std::string tilesetname, std::string picname);
@@ -113,31 +91,12 @@ class File
         //! load misc file, e.g. hero names 
         static std::string getMiscFile(std::string filename);
         
-        /** Load misc pic
-          * 
-          * @param picname  the name of the image (including the suffix!)
-          * @param alpha    set this to false if you encounter transparent
-          *                 images that should be opaque. :)
-          *                 Especially for background images...
-          * @return the surface which contains the image
-          */
-        static SDL_Surface* getMiscPicture(std::string picname, bool alpha=true);
-
-
-        
-        //! Load the picture of an item
-        static SDL_Surface* getItemPicture(std::string picname);
-
         //! Load the xml file describing the items
         static std::string getItemDescription();
         
         //! Get the path to an editor image
 	static std::string getEditorFile(std::string filename);
     
-        //! Load an editor image
-        static SDL_Surface* getEditorPic(std::string filename);
-        
-
         // Returns the filename of a music file (description or actual piece)
         static std::string getMusicFile(std::string filename);
         
@@ -154,22 +113,6 @@ class File
         static std::list<std::string> scanMaps();
 
     private:
-        /** Loads an image
-          * 
-          * This function loads an image, adjusts it to the current resolution etc.
-          * to improve blitting performance.
-          *
-          * @note Some of the images (.jpg??) become transparent if the alpha
-          * channel is copied (they don't have transparent bits anyway), so they
-          * should be loaded with alpha set to false
-          *
-          * @param filename     full filename (with path) of the image to load
-          * @param alpha        if set to true, copy the alpha channel as well
-          *                     (i.e. if the file has transparent pixels, they
-          *                     will be marked as transparent in the returned image)
-          * @return converted image or 0 if anything failed.
-          */
-        static SDL_Surface* loadImage(std::string filename, bool alpha = true);
 };
 
 #endif //FILE_H
