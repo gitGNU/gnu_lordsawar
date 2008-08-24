@@ -28,6 +28,7 @@
 #include "defs.h"
 #include "player.h"
 #include "playerlist.h"
+#include "UniquelyIdentified.h"
 
 #include "ItemProto.h"
 
@@ -47,7 +48,7 @@
  */
 
 
-class Item: public ItemProto
+class Item: public ItemProto, public UniquelyIdentified
 {
     public:
 

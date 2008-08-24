@@ -30,7 +30,7 @@
 using namespace std;
 
 Item::Item(XML_Helper* helper)
-	: ItemProto(helper)
+	: ItemProto(helper), UniquelyIdentified(helper)
 {
     
     helper->getData(d_plantable, "plantable");
@@ -50,7 +50,7 @@ Item::Item(XML_Helper* helper)
 }
 
 Item::Item(std::string name, bool plantable, Player *plantable_owner)
-	: ItemProto(name, 0)
+	: ItemProto(name, 0), UniquelyIdentified()
 {
   d_type = 0;
   d_bonus = 0;
@@ -62,20 +62,19 @@ Item::Item(std::string name, bool plantable, Player *plantable_owner)
 }
 
 Item::Item(const Item& orig, bool clone)
-:ItemProto(orig), d_plantable(orig.d_plantable), 
+:ItemProto(orig), UniquelyIdentified(orig), 
+    d_plantable(orig.d_plantable), 
     d_plantable_owner_id(orig.d_plantable_owner_id), d_planted(orig.d_planted),
     d_type(orig.d_type)
 {
-  if (clone)
-    d_id = orig.d_id;
-  else
-  d_id = fl_counter->getNextId();
+  if (!clone)
+    d_id = fl_counter->getNextId();
 }
 
 Item::Item(const ItemProto &proto)
 :ItemProto(proto)
 {
-  d_type = proto.getId();
+  d_type = proto.getTypeId();
   d_id = fl_counter->getNextId();
   d_plantable = false;
   d_plantable_owner_id = MAX_PLAYERS;

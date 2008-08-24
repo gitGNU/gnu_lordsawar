@@ -86,6 +86,7 @@ bool Itemlist::loadItemProto(std::string tag, XML_Helper* helper)
         return false;
 
     ItemProto* i = new ItemProto(helper);
+    i->setTypeId((*this).size());
     (*this)[(*this).size()] = i;
 
     return true;

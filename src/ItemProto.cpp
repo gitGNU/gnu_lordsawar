@@ -41,11 +41,11 @@ ItemProto::ItemProto(std::string name, Uint32 id)
 	: Renamable(name)
 {
   d_bonus = 0;
-  d_id = id;
+  d_type_id = id;
 }
 
 ItemProto::ItemProto(const ItemProto& orig)
-:Renamable(orig), d_bonus(orig.d_bonus), d_id(orig.d_id)
+:Renamable(orig), d_bonus(orig.d_bonus), d_type_id(orig.d_type_id)
 {
 }
 
