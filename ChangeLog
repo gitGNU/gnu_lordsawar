@@ -1,3 +1,9 @@
+2008-08-24  Ben Asselstine
+
+	* item objects now have item prototype objects that they are created
+	  from.  this changes the saved-game schema as well as the itemset
+	  schema.
+
 2008-08-17  Ben Asselstine
 
 	* fixed a bug that caused vectored units to never leave the vectored

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-23 20:33-0400\n"
+"POT-Creation-Date: 2008-08-24 08:23-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -4308,41 +4308,37 @@ msgstr "Création de la carte"
 msgid "Could not parse items description file. Exiting!\n"
 msgstr "Impossible de parser le fichier de description des objets. Sortie...\n"
 
-#: src/File.cpp:99
-msgid "ERROR: Couldn't load image "
-msgstr "ERREUR : Impossible de charger l'image "
-
-#: src/File.cpp:124
+#: src/File.cpp:102
 #, fuzzy
 msgid "Couldn't find any armysets!"
 msgstr "Un possible de trouver un paquetage de combat seul !"
 
-#: src/File.cpp:125 src/File.cpp:221 src/File.cpp:237 src/File.cpp:265
-#: src/File.cpp:281
+#: src/File.cpp:103 src/File.cpp:172 src/File.cpp:188 src/File.cpp:216
+#: src/File.cpp:232
 #, fuzzy
 msgid "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc"
 msgstr ""
 "Merci de vérifier le chemin d'accès dans /etc/freelordsrc o ~/.freelordsrc"
 
-#: src/File.cpp:126 src/File.cpp:222 src/File.cpp:238 src/File.cpp:282
+#: src/File.cpp:104 src/File.cpp:173 src/File.cpp:189 src/File.cpp:233
 msgid "Exiting!"
 msgstr "En cours de fermeture !"
 
-#: src/File.cpp:220
+#: src/File.cpp:171
 #, fuzzy
 msgid "Couldn't find any tilesets!"
 msgstr "Impossible de trouver un quadrillage !"
 
-#: src/File.cpp:236
+#: src/File.cpp:187
 #, fuzzy
 msgid "Couldn't find any citysets!"
 msgstr "Un possible de trouver un paquetage de combat seul !"
 
-#: src/File.cpp:264
+#: src/File.cpp:215
 msgid "Couldn't find a single map!"
 msgstr "Impossible de trouver une carte !"
 
-#: src/File.cpp:280
+#: src/File.cpp:231
 #, fuzzy
 msgid "Couldn't find any shieldsets!"
 msgstr "Impossible de trouver un quadrillage !"
@@ -4395,6 +4391,9 @@ msgstr ""
 #, c-format
 msgid "You must take over and sack the city of \"%s\"."
 msgstr ""
+
+#~ msgid "ERROR: Couldn't load image "
+#~ msgstr "ERREUR : Impossible de charger l'image "
 
 #~ msgid "Help"
 #~ msgstr "Aiuto"
