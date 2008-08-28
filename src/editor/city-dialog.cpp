@@ -28,7 +28,10 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "city.h"
+#include "armyprodbase.h"
 #include "army.h"
+#include "armyproto.h"
+#include "armyprodbase.h"
 #include "playerlist.h"
 #include "stacklist.h"
 #include "citylist.h"
@@ -117,7 +120,7 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
 
     for (int i = 0; i < city->getMaxNoOfProductionBases(); i++)
     {
-	const Army* a = city->getProductionBase(i);
+	const ArmyProdBase* a = city->getProductionBase(i);
 	if (a)
 	    add_army(a);
     }
@@ -206,9 +209,9 @@ void CityDialog::run()
       for (Gtk::TreeIter i = army_list->children().begin(),
 	   end = army_list->children().end(); i != end; ++i, ++c)
 	{
-	  const Army *a = (*i)[army_columns.army];
-	  Army *army = new Army(*a);
-	  army->setStat(Army::STRENGTH, (*i)[army_columns.strength]);
+	  const ArmyProdBase *a = (*i)[army_columns.army];
+	  ArmyProdBase *army = new ArmyProdBase(*a);
+	  army->setStrength((*i)[army_columns.strength]);
 	  army->setProduction((*i)[army_columns.duration]);
 	  city->addProductionBase(c, army);
 
@@ -231,9 +234,9 @@ void CityDialog::on_add_clicked()
   d.set_parent_window(*dialog.get());
   d.run();
 
-  const Army *army = d.get_selected_army();
+  const ArmyProto *army = d.get_selected_army();
   if (army)
-    add_army(army);
+    add_army(new ArmyProdBase(*army));
 }
 
 
@@ -250,7 +253,7 @@ void CityDialog::on_remove_clicked()
 
 void CityDialog::on_randomize_armies_clicked()
 {
-  const Army *army;
+  const ArmyProdBase *army;
   army_list->clear();
   //crapola
   city->setRandomArmytypes(true, 1);
@@ -282,13 +285,13 @@ void CityDialog::on_randomize_income_clicked()
   income_spinbutton->set_value(gold);
 }
 
-void CityDialog::add_army(const Army *a)
+void CityDialog::add_army(const ArmyProdBase *a)
 {
   Gtk::TreeIter i = army_list->append();
   (*i)[army_columns.army] = a;
   (*i)[army_columns.name] = a->getName();
-  (*i)[army_columns.strength] = a->getStat(Army::STRENGTH, false);
-  (*i)[army_columns.moves] = a->getStat(Army::MOVES, false);
+  (*i)[army_columns.strength] = a->getStrength();
+  (*i)[army_columns.moves] = a->getMaxMoves();
   (*i)[army_columns.upkeep] = a->getUpkeep();
   (*i)[army_columns.duration] = a->getProduction();
 

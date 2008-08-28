@@ -101,9 +101,9 @@ void FightOrderDialog::addArmyType(Uint32 army_type)
     GraphicsCache *gc = GraphicsCache::getInstance();
     Gtk::TreeIter i = armies_list->append();
     Armysetlist *alist = Armysetlist::getInstance();
-    const Army *a = alist->getArmy(player->getArmyset(), army_type);
+    const ArmyProto *a = alist->getArmy(player->getArmyset(), army_type);
     (*i)[armies_columns.name] = a->getName();
     (*i)[armies_columns.image] = to_pixbuf(gc->getArmyPic(player->getArmyset(),
                                            army_type, player, NULL));
-    (*i)[armies_columns.army_type] = a->getType();
+    (*i)[armies_columns.army_type] = a->getTypeId();
 }

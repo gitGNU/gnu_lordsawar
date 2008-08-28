@@ -30,7 +30,7 @@ class Tilesetlist;
 class TileStyleSet;
 class Armyset;
 class Armysetlist;
-class Army;
+class ArmyProto;
 
 /** \brief Loads images associated with armies, tiles and shields.
   * 
@@ -50,28 +50,36 @@ class GraphicsLoader
 
         /** Get the armyset picture file
           * 
-          * @param armysetname       the name of the armyset
-	  * @param pic               the name of the army picture 
+          * @param armysetsubdir     the name of the armyset.  this is the
+	  *                          subdirectory name of the armyset within
+	  *                          the armyset directory.
+	  * @param pic               the name of the army picture.
           * @return the surface which contains the army pictures of this armyset
           */
-        static SDL_Surface* getArmyPicture(std::string armysetname, std::string pic);
+        static SDL_Surface* getArmyPicture(std::string armysetsubdir, std::string pic);
         
         /** Get the shield picture file
           * 
-          * @param shieldsetname       the name of the shieldset
-	  * @param pic                 the name of the shield picture
+          * @param shieldsetsubdir     the name of the shieldset.  this is the
+	  *                            subdirectory name of the shieldset
+	  *                            within the shieldset directory.
+	  * @param pic                 the name of the shield picture.
           * @return the surface which contains the shield picture
           */
-        static SDL_Surface* getShieldPicture(std::string armysetname, std::string pic);
+        static SDL_Surface* getShieldsetPicture(std::string shieldsetsubdir, std::string pic);
+
         /** Get a tileset picture
-          * @param tilesetname       the name of the tileset
-          * @param picname          the name of the picture
+          * @param tilesetsubdir     the name of the tileset.  this is the
+	  *                          subdirectory name of the tileset within
+	  *                          the tileset directory.
+          * @param picname          the name of the picture.
           * @return the surface which contains the picture
           */
-        static SDL_Surface* getTilesetPicture(std::string tilesetname, std::string picname);
+        static SDL_Surface* getTilesetPicture(std::string tilesetsubdir, std::string picname);
+
         /** Load misc pic
           * 
-          * @param picname  the name of the image (including the suffix!)
+          * @param picname  the name of the image (including the suffix).
           * @param alpha    set this to false if you encounter transparent
           *                 images that should be opaque. :)
           *                 Especially for background images...
@@ -80,15 +88,16 @@ class GraphicsLoader
         static SDL_Surface* getMiscPicture(std::string picname, bool alpha=true);
 
         /** Get a cityset picture
-          * @param citysetname       the name of the cityset
-          * @param picname          the name of the picture
+          * @param citysetsubdir     the name of the cityset.  this is the
+	  *                          subdirectory name of the cityset within
+	  *                          the cityset directory.
+          * @param picname          the name of the picture.
           * @return the surface which contains the picture
           */
-        static SDL_Surface* getCitysetPicture(std::string citysetname, std::string picname);
-
+        static SDL_Surface* getCitysetPicture(std::string citysetsubdir, std::string picname);
 
     private:
-	static bool instantiatePixmaps(Armyset *set, Army *a);
+	static bool instantiatePixmaps(Armyset *set, ArmyProto *a);
         /** Loads an image
           * 
           * This function loads an image, adjusts it to the current resolution etc.

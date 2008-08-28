@@ -113,12 +113,12 @@ void TriumphsDialog::fill_in_page(Player *p)
 			   count), count);
   Gtk::Label *hero_label = new Gtk::Label(s);
 
-  const Army *hero = NULL;
+  const ArmyProto *hero = NULL;
   const Armysetlist* al = Armysetlist::getInstance();
   //let's go find the hero army
   for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
     {
-      const Army *a = al->getArmy (p->getArmyset(), j);
+      const ArmyProto *a = al->getArmy (p->getArmyset(), j);
       if (a->isHero())
 	{
 	  hero = a;
@@ -126,7 +126,7 @@ void TriumphsDialog::fill_in_page(Player *p)
 	}
     }
   Gtk::Image *hero_image = new Gtk::Image
-    (to_pixbuf(gc->getArmyPic(p->getArmyset(), hero->getType(), p, NULL)));
+    (to_pixbuf(gc->getArmyPic(p->getArmyset(), hero->getTypeId(), p, NULL)));
   Gtk::HBox *hero_hbox = new Gtk::HBox();
   hero_hbox->pack_start(*manage(hero_image), Gtk::PACK_SHRINK, 10);
   hero_hbox->pack_start(*manage(hero_label), Gtk::PACK_SHRINK, 10);
@@ -174,10 +174,10 @@ void TriumphsDialog::fill_in_page(Player *p)
 				    count), count);
   Gtk::Label *special_label = new Gtk::Label(s);
   //let's go find a special army
-  const Army *special = NULL;
+  const ArmyProto *special = NULL;
   for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
     {
-      const Army *a = al->getArmy (p->getArmyset(), j);
+      const ArmyProto *a = al->getArmy (p->getArmyset(), j);
       if (a->getAwardable())
 	{
 	  special = a;
@@ -186,7 +186,7 @@ void TriumphsDialog::fill_in_page(Player *p)
     }
   Gtk::Image *special_image = new Gtk::Image
     (to_pixbuf(gc->getArmyPic(p->getArmyset(), 
-			      special->getType(), p, NULL)));
+			      special->getTypeId(), p, NULL)));
   Gtk::HBox *special_hbox = new Gtk::HBox();
   special_hbox->pack_start(*manage(special_image), Gtk::PACK_SHRINK, 10);
   special_hbox->pack_start(*manage(special_label), Gtk::PACK_SHRINK, 10);

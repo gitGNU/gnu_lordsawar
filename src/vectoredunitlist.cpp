@@ -84,12 +84,12 @@ bool VectoredUnitlist::save(XML_Helper* helper) const
 
 bool VectoredUnitlist::load(std::string tag, XML_Helper* helper)
 {
-  if (tag == "army")
+  if (tag == "armyprodbase")
     {
       VectoredUnitlist::iterator it = end();
       it--;
       VectoredUnit *vectoredunit = *it;
-      vectoredunit->setArmy(new Army (helper, Army::PRODUCTION_BASE));
+      vectoredunit->setArmy(new ArmyProdBase (helper));
       return true;
     }
     

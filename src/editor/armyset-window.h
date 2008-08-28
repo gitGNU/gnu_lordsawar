@@ -39,7 +39,7 @@
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/tooltips.h>
 
-#include "army.h"
+#include "armyproto.h"
 #include "armyset.h"
 
 //! Armyset Editor.  Edit an Armyset.
@@ -64,7 +64,7 @@ class ArmySetWindow: public sigc::trackable
     Gtk::Widget *sdl_widget;
     std::string current_save_filename;
     Armyset *d_armyset; //current armyset
-    Army *d_army; //current army
+    ArmyProto *d_army; //current army
     Gtk::Image *army_image;
     Gtk::Entry *name_entry;
     Gtk::TreeView *armies_treeview;
@@ -114,7 +114,7 @@ class ArmySetWindow: public sigc::trackable
         { add(name); add(army);}
 	
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<Army *> army;
+	Gtk::TreeModelColumn<ArmyProto *> army;
     };
     const ArmiesColumns armies_columns;
     Glib::RefPtr<Gtk::ListStore> armies_list;
@@ -134,7 +134,7 @@ class ArmySetWindow: public sigc::trackable
     void on_edit_armyset_info_activated();
     void on_help_about_activated();
     void on_army_selected();
-    void fill_army_info(Army *army);
+    void fill_army_info(ArmyProto *army);
 
     bool load(std::string tag, XML_Helper *helper);
 

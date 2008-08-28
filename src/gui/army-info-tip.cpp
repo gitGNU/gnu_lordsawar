@@ -31,11 +31,13 @@
 #include "vector.h"
 #include "defs.h"
 #include "army.h"
+#include "armyprodbase.h"
+#include "armyproto.h"
 #include "GraphicsCache.h"
 #include "playerlist.h"
 
 
-ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army, ArmyInfoTipType type)
+ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
 {
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
@@ -49,19 +51,11 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army, ArmyInfoTipType 
     xml->get_widget("army_image", army_image);
     Player *p;
     int armyset;
-    if (army->getImageName() != "")
-      {
-	p = Playerlist::getActiveplayer();
-	armyset = p->getArmyset();
-      }
-    else
-      {
-	p = army->getOwner();
-	armyset = army->getArmyset();
-      }
+    p = army->getOwner();
+    armyset = army->getArmyset();
     GraphicsCache *gc = GraphicsCache::getInstance();
     army_image->property_pixbuf() = to_pixbuf (gc->getArmyPic(armyset, 
-							      army->getType(), 
+							      army->getTypeId(), 
 							      p, NULL));
 
     // fill in terrain image
@@ -81,23 +75,140 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army, ArmyInfoTipType 
     s += String::ucompose(_("Strength: %1"),
 			  army->getStat(Army::STRENGTH));
     s += "\n";
-    if (type == ARMY_TYPE)
+	
+    // note to translators: %1 is remaining moves, %2 is total moves
+    s += String::ucompose(_("Moves: %1/%2"),
+			  army->getMoves(), army->getStat(Army::MOVES));
+    s += "\n";
+    s += String::ucompose(_("Upkeep: %1"), army->getUpkeep());
+    info_label->set_text(s);
+
+    // move into correct position
+    window->get_child()->show();
+    Vector<int> pos(0, 0);
+    target->get_window()->get_origin(pos.x, pos.y);
+    if (target->has_no_window())
       {
-	// note to translators: %1 is remaining moves, %2 is total moves
-	s += String::ucompose(_("Movement: %1"), army->getStat(Army::MOVES));
-	s += "\n";
-	s += String::ucompose(_("Time: %1"), army->getProduction());
-	s += "\n";
-	s += String::ucompose(_("Cost: %1"), army->getUpkeep());
+	Gtk::Allocation a = target->get_allocation();
+	pos.x += a.get_x();
+	pos.y += a.get_y();
       }
-    else if (type == ARMY_INSTANCE)
+    Vector<int> size(0, 0);
+    window->get_size(size.x, size.y);
+    window->set_gravity(Gdk::GRAVITY_SOUTH);
+    pos.y -= size.y + 2;
+
+    window->move(pos.x, pos.y);
+    window->show();
+}
+
+ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army)
+{
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path()
+				    + "/army-info-window.glade");
+
+    Gtk::Window *w = 0;
+    xml->get_widget("window", w);
+    window.reset(w);
+
+    Gtk::Image *army_image;
+    xml->get_widget("army_image", army_image);
+    Player *p = Playerlist::getInstance()->getActiveplayer();
+    int armyset;
+    armyset = army->getArmyset();
+    GraphicsCache *gc = GraphicsCache::getInstance();
+    army_image->property_pixbuf() = to_pixbuf (gc->getArmyPic(armyset, 
+							      army->getTypeId(), 
+							      p, NULL));
+
+    // fill in terrain image
+    Gtk::Image *terrain_image;
+    xml->get_widget("terrain_image", terrain_image);
+    SDL_Surface *terrain = gc->getMoveBonusPic(army->getMoveBonus(), false);
+    terrain_image->property_pixbuf() = to_pixbuf(terrain);
+    //terrain_image->hide();
+
+    // fill in info
+    Gtk::Label *info_label;
+    xml->get_widget("info_label", info_label);
+    Glib::ustring s;
+    s += army->getName();
+    s += "\n";
+    // note to translators: %1 is melee strength, %2 is ranged strength
+    s += String::ucompose(_("Strength: %1"),
+			  army->getStrength());
+    s += "\n";
+    // note to translators: %1 is remaining moves, %2 is total moves
+    s += String::ucompose(_("Movement: %1"), army->getMaxMoves());
+    s += "\n";
+    s += String::ucompose(_("Time: %1"), army->getProduction());
+    s += "\n";
+    s += String::ucompose(_("Cost: %1"), army->getUpkeep());
+    info_label->set_text(s);
+
+    // move into correct position
+    window->get_child()->show();
+    Vector<int> pos(0, 0);
+    target->get_window()->get_origin(pos.x, pos.y);
+    if (target->has_no_window())
       {
-	// note to translators: %1 is remaining moves, %2 is total moves
-	s += String::ucompose(_("Moves: %1/%2"),
-			      army->getMoves(), army->getStat(Army::MOVES));
-	s += "\n";
-	s += String::ucompose(_("Upkeep: %1"), army->getUpkeep());
+	Gtk::Allocation a = target->get_allocation();
+	pos.x += a.get_x();
+	pos.y += a.get_y();
       }
+    Vector<int> size(0, 0);
+    window->get_size(size.x, size.y);
+    window->set_gravity(Gdk::GRAVITY_SOUTH);
+    pos.y -= size.y + 2;
+
+    window->move(pos.x, pos.y);
+    window->show();
+}
+
+ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
+{
+    Glib::RefPtr<Gnome::Glade::Xml> xml
+	= Gnome::Glade::Xml::create(get_glade_path()
+				    + "/army-info-window.glade");
+
+    Gtk::Window *w = 0;
+    xml->get_widget("window", w);
+    window.reset(w);
+
+    Gtk::Image *army_image;
+    xml->get_widget("army_image", army_image);
+    Player *p = Playerlist::getInstance()->getActiveplayer();
+    int armyset;
+    armyset = army->getArmyset();
+    GraphicsCache *gc = GraphicsCache::getInstance();
+    army_image->property_pixbuf() = to_pixbuf (gc->getArmyPic(armyset, 
+							      army->getTypeId(), 
+							      p, NULL));
+
+    // fill in terrain image
+    Gtk::Image *terrain_image;
+    xml->get_widget("terrain_image", terrain_image);
+    SDL_Surface *terrain = gc->getMoveBonusPic(army->getMoveBonus(), false);
+    terrain_image->property_pixbuf() = to_pixbuf(terrain);
+    //terrain_image->hide();
+
+    // fill in info
+    Gtk::Label *info_label;
+    xml->get_widget("info_label", info_label);
+    Glib::ustring s;
+    s += army->getName();
+    s += "\n";
+    // note to translators: %1 is melee strength, %2 is ranged strength
+    s += String::ucompose(_("Strength: %1"),
+			  army->getStrength());
+    s += "\n";
+    // note to translators: %1 is remaining moves, %2 is total moves
+    s += String::ucompose(_("Movement: %1"), army->getMaxMoves());
+    s += "\n";
+    s += String::ucompose(_("Time: %1"), army->getProduction());
+    s += "\n";
+    s += String::ucompose(_("Cost: %1"), army->getUpkeep());
     info_label->set_text(s);
 
     // move into correct position

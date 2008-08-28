@@ -35,6 +35,7 @@
 #include "vector.h"
 #include "fight.h"
 #include "army.h"
+#include "armyproto.h"
 #include "reward.h"
 
 class Stacklist;
@@ -532,7 +533,7 @@ class Player: public sigc::trackable
 	 * 
          * @note Only change the name and gender attributes of the Hero.
          */
-        void recruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const Army *ally);
+        void recruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const ArmyProto *ally);
 
 	void rename (std::string name);
         /** 
@@ -1407,7 +1408,7 @@ class Player: public sigc::trackable
         void doDeclareDiplomacy (DiplomaticState state, Player *player);
         void doProposeDiplomacy (DiplomaticProposal proposal, Player *player);
         void doConquerCity(City *city, Stack *stack);
-        void doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const Army *ally);
+        void doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const ArmyProto *ally);
         void doRename(std::string name);
 	const Army *doCityProducesArmy(City *city);
 	void doVectoredUnitArrives(VectoredUnit *unit);

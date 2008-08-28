@@ -46,11 +46,29 @@
 class Hero : public Army
 {
     public:
+
+        //! The different genders a Hero unit can have.
+	/**
+	 * The purpose of this enumeration is to show the correct 
+	 * recruitment picture for Hero units when they emerge in a 
+	 * City, and the Player has to decide if they want it or not.
+	 */
+        enum Gender {
+	  //! The hero has no gender (Not used).
+	  NONE = 0, 
+	  //! The hero is male.
+	  MALE = 1, 
+	  //! The hero is female.
+	  FEMALE = 2
+	};
+
+	static Hero::Gender genderFromString(const std::string str);
+	static std::string genderToString(const Hero::Gender gender);
         /**
 	 * Copies the prototype hero and creates a hero from it.
          */
 	//! Default constructor.
-        Hero(const Army& a, std::string name, Player *owner, bool for_template = false);
+        Hero(const Army& a, std::string name, Player *owner);
 
         /**
          * This performs a deep copy, including the Hero's items.
@@ -68,8 +86,7 @@ class Hero : public Army
         ~Hero();
 
         //! Saves the Hero to a saved-game file.
-        bool save(XML_Helper* helper, 
-		  enum ArmyContents contents = Army::INSTANCE) const;
+        bool save(XML_Helper* helper) const;
         
         /**
 	 * Returns a stat of the hero.  See Army::Stat, and Army::getStat.
@@ -126,10 +143,27 @@ class Hero : public Army
 	 */
 	Uint32 calculateNaturalCommand();
 
+	void setName(std::string name) {d_name = name;};
+	std::string getName() const {return d_name;};
+
+	bool isHero() const {return true;};
+
+        //! Set the gender of the hero.
+        void setGender(Gender gender){d_gender = gender;}
+
+        //! Return the gender of the hero.
+        Uint32 getGender() const {return d_gender;}
+
     private:
         
 	//! The hero's backpack that holds any number of Item objects.
         std::list<Item*> d_backpack;
+
+	//! The name of the hero.
+	std::string d_name;
+
+	//! Gender of the hero
+	Hero::Gender d_gender;
 };
 
 #endif //HERO_H

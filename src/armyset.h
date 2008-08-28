@@ -24,7 +24,7 @@
 #include <sigc++/trackable.h>
 
 #include "xmlhelper.h"
-#include "army.h"
+#include "armyproto.h"
 
 
 //! A collection of Army prototype objects.
@@ -55,7 +55,7 @@
  * The armyset configuration file is a same named XML file inside the Armyset's
  * directory.  E.g. army/${Armyset::d_dir}/${Armyset::d_dir}.xml.
  */
-class Armyset: public std::list<Army *>, public sigc::trackable
+class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 {
     public:
 
@@ -175,11 +175,11 @@ class Armyset: public std::list<Army *>, public sigc::trackable
 	 * @return The Army with the given army type id, or NULL if none
 	 *         could be found.
 	 */
-	Army * lookupArmyByType(Uint32 army_type);
+	ArmyProto * lookupArmyByType(Uint32 army_type);
     private:
 
         //! Callback function for the army tag (see XML_Helper)
-        bool loadArmyTemplate(std::string tag, XML_Helper* helper);
+        bool loadArmyProto(std::string tag, XML_Helper* helper);
 
 	//! Load the image and mask of the stack's ship picture.
 	void loadShipPic();

@@ -158,18 +158,18 @@ Uint32 CreateScenarioRandomize::getRandomCityIncome(bool capital)
 Army * CreateScenarioRandomize::getRandomRuinKeeper(Player *p)
 {
   // list all the army types that can be a sentinel.
-  std::vector<const Army*> occupants;
+  std::vector<const ArmyProto*> occupants;
   Armysetlist *al = Armysetlist::getInstance();
   for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
     {
-      const Army *a = al->getArmy (p->getArmyset(), j);
+      const ArmyProto *a = al->getArmy (p->getArmyset(), j);
       if (a->getDefendsRuins())
 	occupants.push_back(a);
     }
             
   if (!occupants.empty())
     {
-      const Army *a = occupants[rand() % occupants.size()];
+      const ArmyProto *a = occupants[rand() % occupants.size()];
       return (new Army(*a, p));
     }
   return NULL;
@@ -227,10 +227,10 @@ Reward *CreateScenarioRandomize::getNewRandomReward(bool hidden_ruins)
       break;
     case 2: //Allies
 	{
-	  const Army *a = Reward_Allies::randomArmyAlly();
+	  const ArmyProto *a = Reward_Allies::randomArmyAlly();
 	  if (a)
 	    reward = new Reward_Allies 
-	      (new Army (*a), Reward_Allies::getRandomAmountOfAllies());
+	      (a, Reward_Allies::getRandomAmountOfAllies());
 	  else
 	    reward = new Reward_Gold(Reward_Gold::getRandomGoldPieces());
 	}

@@ -27,6 +27,7 @@
 #include "city.h"
 #include "path.h"
 #include "army.h"
+#include "armyprodbase.h"
 #include "hero.h"
 #include "stacklist.h"
 #include "stack.h"
@@ -122,7 +123,7 @@ City::City(const City& c)
     for (int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
       {
 	if (c.d_prodbase[i] != NULL)
-	  d_prodbase[i] = new Army(*c.d_prodbase[i]);
+	  d_prodbase[i] = new ArmyProdBase(*c.d_prodbase[i]);
 	else
 	  d_prodbase[i] = NULL;
       }
@@ -164,7 +165,7 @@ bool City::save(XML_Helper* helper) const
       {
 	retval &= helper->openTag("slot");
 	if (d_prodbase[i])
-	  retval &= d_prodbase[i]->save(helper, Army::PRODUCTION_BASE);
+	  retval &= d_prodbase[i]->save(helper);
 	retval &= helper->closeTag();
       }
     retval &= helper->closeTag();
@@ -196,7 +197,7 @@ void City::setActiveProductionSlot(int index)
         return;
 
     d_active_production_slot = index;
-    const Army* a = getProductionBase(index);
+    const ArmyProdBase* a = getProductionBase(index);
 
     // set the duration to produce this armytype
     if (a)
@@ -250,15 +251,13 @@ int City::getFreeBasicSlot()
      return index;
 }
 
-bool City::hasProductionBase(const Army * army)
+bool City::hasProductionBase(const ArmyProto * army)
 {
-  return hasProductionBase(army->getType(), army->getArmyset());
+  return hasProductionBase(army->getTypeId(), army->getArmyset());
 }
 
-void City::addProductionBase(int idx, Army *army)
+void City::addProductionBase(int idx, ArmyProdBase *army)
 {
-    army->setOwner(d_owner);
-
     if (idx < 0)
     {
         // try to find an unoccupied production slot. If there is none, pick 
@@ -314,12 +313,6 @@ void City::conquer(Player* newowner)
     // remove vectoring info 
     setVectoring(Vector<int>(-1,-1));
 
-    for (int j = 0; j < getMaxNoOfProductionBases(); j++)
-      {
-	if (d_prodbase[j])
-	  d_prodbase[j]->setOwner(newowner);
-      }
-
     deFog(newowner);
 
     VectoredUnitlist *vul = VectoredUnitlist::getInstance();
@@ -327,13 +320,10 @@ void City::conquer(Player* newowner)
     vul->removeVectoredUnitsComingFrom(this);
 }
 
-void City::randomlyImproveOrDegradeArmy(Army *army)
+void City::randomlyImproveOrDegradeArmy(ArmyProdBase *army)
 {
   if (rand() % 30 == 0) //random chance of improving strength
-    {
-      army->setStat(Army::STRENGTH, 
-		    army->getStat(Army::STRENGTH, false) + 1);
-    }
+      army->setStrength(army->getStrength() + 1);
   if (rand() % 25 == 0) //random chance of improving turns
     {
       if (army->getProduction() > 1)
@@ -341,9 +331,8 @@ void City::randomlyImproveOrDegradeArmy(Army *army)
     }
   if (rand() % 50 == 0) //random chance of degrading strength
     {
-      if (army->getStat(Army::STRENGTH, false) > 1)
-	army->setStat(Army::STRENGTH, 
-		      army->getStat(Army::STRENGTH, false) - 1);
+      if (army->getStrength() > 1)
+	army->setStrength(army->getStrength() - 1);
     }
   if (rand() % 45 == 0) //random chance of improving turns
     {
@@ -352,10 +341,10 @@ void City::randomlyImproveOrDegradeArmy(Army *army)
     }
 }
 
-bool armyCompareStrength (const Army *lhs, const Army *rhs)
+bool armyCompareStrength (const ArmyProdBase *lhs, const ArmyProdBase *rhs)
 {
-  Uint32 lhs_strength = lhs->getStat(Army::STRENGTH, false);
-  Uint32 rhs_strength = rhs->getStat(Army::STRENGTH, false);
+  Uint32 lhs_strength = lhs->getStrength();
+  Uint32 rhs_strength = rhs->getStrength();
   return lhs_strength < rhs_strength; 
 }
 
@@ -364,7 +353,7 @@ void City::sortProduction()
   //sort them by strength
   if (getNoOfProductionBases() > 1)
     {
-      std::list<Army*> productibles;
+      std::list<ArmyProdBase*> productibles;
       int j;
       for (j = 0; j < getMaxNoOfProductionBases(); j++)
 	{
@@ -373,7 +362,7 @@ void City::sortProduction()
 	}
       productibles.sort(armyCompareStrength);
       j = 0;
-      for (std::list<Army*>::iterator it = productibles.begin();
+      for (std::list<ArmyProdBase*>::iterator it = productibles.begin();
 	   it != productibles.end(); it++, j++)
        	d_prodbase[j] = *it;
     }
@@ -398,7 +387,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
     army_type = 0;
   else
     army_type = 1 + likely + (rand () % 11);
-  Army *template_army = al->getArmy(set, army_type);
+  ArmyProto *template_army = al->getArmy(set, army_type);
   if (!template_army || 
       (template_army->getAwardable() == true && produce_allies == false) ||
       template_army->isHero())
@@ -406,7 +395,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
       produceScout();
       return;
     }
-  Army *army = new Army (*template_army);
+  ArmyProdBase *army = new ArmyProdBase (*template_army);
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(0, army);
 
@@ -426,7 +415,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
       sortProduction();
       return;
     }
-  army = new Army (*template_army);
+  army = new ArmyProdBase (*template_army);
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(1, army);
 
@@ -449,7 +438,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
       sortProduction();
       return;
     }
-  army = new Army (*template_army);
+  army = new ArmyProdBase (*template_army);
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(2, army);
 
@@ -469,7 +458,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
       sortProduction();
       return;
     }
-  army = new Army (*template_army);
+  army = new ArmyProdBase (*template_army);
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(3, army);
   sortProduction();
@@ -491,12 +480,10 @@ void City::produceStrongestProductionBase()
 	{
 	  if (d_prodbase[i] == NULL)
 	    continue;
-	  if (getProductionBase(i)->getStat(Army::STRENGTH,false) > 
-	      max_strength)
+	  if (getProductionBase(i)->getStrength() > max_strength)
 	    {
 	      strong_idx = i;
-	      max_strength = 
-		getProductionBase(i)->getStat(Army::STRENGTH,false);
+	      max_strength = getProductionBase(i)->getStrength();
 	    }
 	}
       if (strong_idx == -1)
@@ -514,7 +501,7 @@ void City::produceScout()
 {
   const Armysetlist* al = Armysetlist::getInstance();
   Uint32 set = d_owner->getArmyset();
-  Army *scout = al->getScout(set);
+  ArmyProto *scout = al->getScout(set);
   Army *a = new Army(*scout, d_owner);
   GameMap::getInstance()->addArmy(this, a);
 
@@ -536,12 +523,10 @@ void City::produceWeakestProductionBase()
 	{
 	  if (d_prodbase[i] == NULL)
 	    continue;
-	  if (getProductionBase(i)->getStat(Army::STRENGTH,false) < 
-	      min_strength)
+	  if (getProductionBase(i)->getStrength() < min_strength)
 	    {
 	      weak_idx = i;
-	      min_strength = 
-		getProductionBase(i)->getStat(Army::STRENGTH,false);
+	      min_strength = getProductionBase(i)->getStrength();
 	    }
 	}
       if (weak_idx == -1)
@@ -557,23 +542,24 @@ void City::produceWeakestProductionBase()
 
 const Army *City::armyArrives()
 {
-  const Army *army;
+  const ArmyProdBase *army;
   // vector the army to the new spot
   if (d_vectoring)
     {
       VectoredUnitlist *vul = VectoredUnitlist::getInstance();
       VectoredUnit *v = new VectoredUnit 
-	(getPos(), d_vector, new Army(*(d_prodbase[d_active_production_slot])),
+	(getPos(), d_vector, new ArmyProdBase(*(d_prodbase[d_active_production_slot])),
 	 MAX_TURNS_FOR_VECTORING, d_owner);
       vul->push_back(v);
       d_owner->cityChangeProduction(this, d_active_production_slot);
       army = getProductionBase(d_active_production_slot);
+      return new Army(*army, getOwner());
     }
   else //or make it here
     {
-      army = produceArmy();
+      return produceArmy();
     }
-  return army;
+  return NULL;
 }
 
 void City::nextTurn()
@@ -606,7 +592,7 @@ bool City::hasProductionBase(int type, Uint32 set) const
     {
       if (d_prodbase[i] == NULL)
 	continue;
-      if (d_prodbase[i]->getType() == (unsigned int) type)
+      if (d_prodbase[i]->getTypeId() == (unsigned int) type)
 	return true;
     }
 
@@ -622,10 +608,10 @@ int City::getArmytype(int slot) const
     return -1;
   if (d_prodbase[slot] == NULL)
     return -1;
-  return d_prodbase[slot]->getType();
+  return d_prodbase[slot]->getTypeId();
 }
 
-const Army* City::getProductionBase(int slot) const
+const ArmyProdBase * City::getProductionBase(int slot) const
 {
   if (getArmytype(slot) == -1)
     return 0;

@@ -66,7 +66,7 @@ BuyProductionDialog::BuyProductionDialog(City *c)
     // fill in purchasable armies
     for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
       {
-        const Army *a = al->getArmy (p->getArmyset(), j);
+        const ArmyProto *a = al->getArmy (p->getArmyset(), j);
         if (a->getProductionCost() > 0)
           purchasables.push_back(a);
       }
@@ -79,7 +79,7 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf
 	    = to_pixbuf(gc->getArmyPic(p->getArmyset(),
-                                       purchasables[i]->getType(), p, NULL));
+                                       purchasables[i]->getTypeId(), p, NULL));
 	
 	toggle->add(*manage(new Gtk::Image(pixbuf)));
 	production_toggles.push_back(toggle);
@@ -159,7 +159,7 @@ void BuyProductionDialog::fill_in_production_info()
     }
     else
     {
-	const Army *a = army_id_to_army();
+	const ArmyProto *a = army_id_to_army();
 
 	// fill in first column
 	s1 += a->getName();
@@ -168,14 +168,12 @@ void BuyProductionDialog::fill_in_production_info()
 	s1 += "\n";
 	// note to translators: %1 is melee strength, %2 is ranged strength
 	s1 += String::ucompose(_("Strength: %1"),
-			      a->getStat(Army::STRENGTH, false));
+			      a->getStrength());
 	
 	// fill in second column
 	s2 += String::ucompose(_("Cost: %1"), a->getProductionCost());
 	s2 += "\n";
-	s2 += String::ucompose(_("Moves: %1"), a->getStat(Army::MOVES, false));
-	s2 += "\n";
-	s2 += String::ucompose(_("Hitpoints: %1"), a->getStat(Army::HP, false));
+	s2 += String::ucompose(_("Moves: %1"), a->getMaxMoves());
 	s2 += "\n";
 	s2 += String::ucompose(_("Upkeep: %1"), a->getUpkeep());
     }
@@ -193,7 +191,7 @@ void BuyProductionDialog::set_buy_button_state()
     else
     {
 	int gold = city->getOwner()->getGold();
-	const Army *a = army_id_to_army();
+	const ArmyProto *a = army_id_to_army();
 	
 	if (int(a->getProductionCost()) > gold ||
 	    city->hasProductionBase(selected_army, 
@@ -204,7 +202,7 @@ void BuyProductionDialog::set_buy_button_state()
     buy_button->set_sensitive(can_buy);
 }
 
-const Army *BuyProductionDialog::army_id_to_army()
+const ArmyProto *BuyProductionDialog::army_id_to_army()
 {
     return purchasables[selected_army];
 }
@@ -221,7 +219,7 @@ bool BuyProductionDialog::on_production_button_event(GdkEventButton *e, Gtk::Tog
 	}
 	assert(slot != -1);
 
-	const Army *army = purchasables[slot];
+	const ArmyProto *army = purchasables[slot];
 
 	if (army)
 	    army_info_tip.reset(new ArmyInfoTip(toggle, army));

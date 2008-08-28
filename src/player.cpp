@@ -58,6 +58,7 @@
 #include "signpost.h"
 #include "vectoredunit.h"
 #include "ucompose.hpp"
+#include "armyprodbase.h"
 
 using namespace std;
 
@@ -1560,7 +1561,7 @@ void Player::doCityPillage(City *c, int& gold, int* pillaged_army_type)
       int slot = -1;
       for (i = 0; i < c->getNoOfProductionBases(); i++)
 	{
-	  const Army *a = c->getProductionBase(i);
+	  const ArmyProdBase *a = c->getProductionBase(i);
 	  if (a != NULL)
 	    {
 	      if (a->getProductionCost() == 0)
@@ -1577,9 +1578,9 @@ void Player::doCityPillage(City *c, int& gold, int* pillaged_army_type)
 	}
       if (slot > -1)
 	{
-	  const Army *a = c->getProductionBase(slot);
+	  const ArmyProdBase *a = c->getProductionBase(slot);
 	  if (pillaged_army_type)
-	    *pillaged_army_type = a->getType();
+	    *pillaged_army_type = a->getTypeId();
 	  if (a->getProductionCost() == 0)
 	    gold += 1500;
 	  else
@@ -1617,7 +1618,7 @@ void Player::doCitySack(City* c, int& gold, std::list<Uint32> *sacked_types)
 
   if (c->getNoOfProductionBases() > 1)
     {
-      const Army *a;
+      const ArmyProdBase *a;
       int i, max = 0;
       for (i = 0; i < c->getNoOfProductionBases(); i++)
 	{
@@ -1632,7 +1633,7 @@ void Player::doCitySack(City* c, int& gold, std::list<Uint32> *sacked_types)
 	  a = c->getProductionBase(i);
 	  if (a != NULL)
 	    {
-	      sacked_types->push_back(a->getType());
+	      sacked_types->push_back(a->getTypeId());
 	      if (a->getProductionCost() == 0)
 		gold += 1500;
 	      else
@@ -1694,7 +1695,7 @@ void Player::doCityBuyProduction(City* c, int slot, int type)
   Uint32 as = c->getOwner()->getArmyset();
 
   c->removeProductionBase(slot);
-  c->addProductionBase(slot, new Army(*al->getArmy(as, type)));
+  c->addProductionBase(slot, new ArmyProdBase(*al->getArmy(as, type)));
 
   // and do the rest of the neccessary actions
   withdrawGold(al->getArmy(as, type)->getProductionCost());
@@ -1755,7 +1756,7 @@ void Player::doGiveReward(Stack *s, Reward *reward)
       break;
     case Reward::ALLIES:
         {
-          const Army *a = dynamic_cast<Reward_Allies*>(reward)->getArmy();
+          const ArmyProto *a = dynamic_cast<Reward_Allies*>(reward)->getArmy();
 
           Reward_Allies::addAllies(s->getOwner(), s->getPos(), a,
       			     dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies());
@@ -2295,7 +2296,7 @@ void Player::tallyTriumph(Player *p, TriumphType type)
   d_triumph[id][type]++;
 }
 
-void Player::doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const Army *ally)
+void Player::doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const ArmyProto *ally)
 {
   History_HeroEmerges *item = new History_HeroEmerges();
   item->fillData(herotemplate, city);
@@ -2323,7 +2324,7 @@ void Player::doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesC
   supdatingStack.emit(0);
 }
 
-void Player::recruitHero(Hero* hero, City *city, int cost, int alliesCount, const Army *ally)
+void Player::recruitHero(Hero* hero, City *city, int cost, int alliesCount, const ArmyProto *ally)
 {
   Action_RecruitHero *action = new Action_RecruitHero();
   action->fillData(hero, city, cost, alliesCount, ally);
@@ -2595,7 +2596,7 @@ void Player::AI_maybeBuyScout()
 	  if (c->getArmytype(i) == -1)    // no production in this slot
 	    continue;
 
-	  const Army *proto = c->getProductionBase(i);
+	  const ArmyProdBase *proto = c->getProductionBase(i);
 	  if (proto->getProduction() == 1)
 	    {
 	      one_turn_army_exists = true;
@@ -2608,8 +2609,8 @@ void Player::AI_maybeBuyScout()
 	  int free_slot = c->getFreeBasicSlot();
 	  if (free_slot == -1)
 	    free_slot = 0;
-	  Army *scout = al->getScout(getArmyset());
-	  cityBuyProduction(c, free_slot, scout->getType());
+	  ArmyProto *scout = al->getScout(getArmyset());
+	  cityBuyProduction(c, free_slot, scout->getTypeId());
 	}
     }
 }
@@ -2865,7 +2866,7 @@ bool Player::AI_maybeVector(City *c, Uint32 safe_mp, Uint32 min_defenders,
   //can i just walk there faster?
 
   //find mp from source to target city
-  const Army *proto = c->getProductionBase(c->getActiveProductionSlot());
+  const ArmyProdBase *proto = c->getProductionBase(c->getActiveProductionSlot());
   Uint32 mp_from_source_city = Stack::scout(c->getOwner(), c->getPos(),
 					    target->getPos(), proto);
 
@@ -2873,7 +2874,7 @@ bool Player::AI_maybeVector(City *c, Uint32 safe_mp, Uint32 min_defenders,
   Uint32 mp_from_near_city = Stack::scout(c->getOwner(), near_city->getPos(),
 					  target->getPos(), proto);
 
-  Uint32 max_moves_per_turn = proto->getStat(Army::MOVES);
+  Uint32 max_moves_per_turn = proto->getMaxMoves();
 
   double turns_to_move_from_source_city = 
     (double)mp_from_source_city / (double)max_moves_per_turn;
@@ -2968,11 +2969,12 @@ bool Player::cityProducesArmy(City *city)
 {
   Action_Produce *item = new Action_Produce();
   const Army *army = doCityProducesArmy(city);
-  //const Army *army = city->getProductionBase(city->getActiveProductionSlot());
+  const ArmyProdBase *source_army = 
+    city->getProductionBase(city->getActiveProductionSlot());
   if (city->getVectoring() == Vector<int>(-1, -1))
-    item->fillData(army, city, false);
+    item->fillData(source_army, city, false);
   else
-    item->fillData(army, city, true);
+    item->fillData(source_army, city, true);
   addAction(item);
   return true;
 }
@@ -3008,7 +3010,7 @@ std::list<Action *> Player::getReportableActions()
 void Player::cityTooPoorToProduce(City *city, int slot)
 {
   cityChangeProduction(city, -1);
-  const Army *a = city->getProductionBase(slot);
+  const ArmyProdBase *a = city->getProductionBase(slot);
   Action_CityTooPoorToProduce *action = new Action_CityTooPoorToProduce();
   action->fillData(city, a);
   addAction(action);

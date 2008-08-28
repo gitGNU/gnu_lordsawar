@@ -86,7 +86,7 @@ Armysetlist::~Armysetlist()
             delete ((*it).second)[0];
 }
 
-Army* Armysetlist::getArmy(Uint32 id, Uint32 index) const
+ArmyProto* Armysetlist::getArmy(Uint32 id, Uint32 index) const
 {
     // always use ArmyProtoMap::find for searching, else a default entry is 
     // created, which can produce really bad results!!
@@ -103,7 +103,7 @@ Army* Armysetlist::getArmy(Uint32 id, Uint32 index) const
     return ((*it).second)[index];
 }
 
-Army* Armysetlist::getScout(Uint32 id) const
+ArmyProto* Armysetlist::getScout(Uint32 id) const
 {
     // always use ArmyProtoMap::find for searching, else a default entry is 
     // created, which can produce really bad results!!

@@ -40,6 +40,7 @@
 #include "armysetlist.h"
 #include "playerlist.h"
 #include "player.h"
+#include "armyprodbase.h"
 
 using namespace std;
 
@@ -988,11 +989,11 @@ bool Action_Buy::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_Buy::fillData(City* c, int slot, const Army *prod)
+bool Action_Buy::fillData(City* c, int slot, const ArmyProto *prod)
 {
     d_city = c->getId();
     d_slot = slot;
-    d_prod = prod->getType();
+    d_prod = prod->getTypeId();
 
     return true;
 }
@@ -1705,7 +1706,7 @@ Action_Produce::Action_Produce()
 Action_Produce::Action_Produce(const Action_Produce &action)
 : Action(action), d_city(action.d_city), d_vectored(action.d_vectored)
 {
-  d_army = new Army (*action.d_army, action.d_army->getOwner());
+  d_army = new ArmyProdBase (*action.d_army);
 }
 
 Action_Produce::Action_Produce(XML_Helper* helper)
@@ -1713,14 +1714,14 @@ Action_Produce::Action_Produce(XML_Helper* helper)
 {
   helper->getData(d_city, "city");
   helper->getData(d_vectored, "vectored");
-  helper->registerTag("army", sigc::mem_fun(this, &Action_Produce::load));
+  helper->registerTag("armyprodbase", sigc::mem_fun(this, &Action_Produce::load));
 }
 
 bool Action_Produce::load(std::string tag, XML_Helper *helper)
 {
-    if (tag == "army")
+    if (tag == "armyprodbase")
       {
-	d_army = new Army(helper);
+	d_army = new ArmyProdBase(helper);
 
 	return true;
       }
@@ -1735,7 +1736,7 @@ Action_Produce::~Action_Produce()
 std::string Action_Produce::dump() const
 {
   std::stringstream s;
-  s << "army id " << d_army->getId() << " of type " << d_army->getType() << " shows up at city " << d_city;
+  s << "army of type " << d_army->getTypeId() << " shows up at city " << d_city;
   if (d_vectored)
     s <<" but it is vectored to another city";
   s <<"\n";
@@ -1754,9 +1755,9 @@ bool Action_Produce::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Produce::fillData(const Army *army, City *city, bool vectored)
+bool Action_Produce::fillData(const ArmyProdBase *army, City *city, bool vectored)
 {
-  d_army = new Army(*army, army->getOwner());
+  d_army = new ArmyProdBase(*army);
   d_city = city->getId();
   d_vectored = vectored;
   return true;
@@ -1774,7 +1775,7 @@ Action_ProduceVectored::Action_ProduceVectored()
 Action_ProduceVectored::Action_ProduceVectored(const Action_ProduceVectored &action)
 : Action(action), d_dest(action.d_dest)
 {
-  d_army = new Army(*action.d_army, action.d_army->getOwner());
+  d_army = new ArmyProdBase(*action.d_army);
 }
 
 Action_ProduceVectored::Action_ProduceVectored(XML_Helper* helper)
@@ -1785,14 +1786,14 @@ Action_ProduceVectored::Action_ProduceVectored(XML_Helper* helper)
   d_dest.x = i;
   helper->getData(i, "y");
   d_dest.y = i;
-  helper->registerTag("army", sigc::mem_fun(this, &Action_ProduceVectored::load));
+  helper->registerTag("armyprodbase", sigc::mem_fun(this, &Action_ProduceVectored::load));
 }
 
 bool Action_ProduceVectored::load(std::string tag, XML_Helper *helper)
 {
-    if (tag == "army")
+    if (tag == "armyprodbase")
       {
-	d_army = new Army(helper);
+	d_army = new ArmyProdBase(helper);
 
 	return true;
       }
@@ -1807,7 +1808,7 @@ Action_ProduceVectored::~Action_ProduceVectored()
 std::string Action_ProduceVectored::dump() const
 {
   std::stringstream s;
-  s << "armytype " << d_army->getType() << " shows up at ";
+  s << "armytype " << d_army->getTypeId() << " shows up at ";
   s <<d_dest.x <<"," <<d_dest.y <<")\n";
 
   return s.str();
@@ -1824,9 +1825,9 @@ bool Action_ProduceVectored::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_ProduceVectored::fillData(Army *army, Vector<int> dest)
+bool Action_ProduceVectored::fillData(ArmyProdBase *army, Vector<int> dest)
 {
-  d_army = new Army (*army, army->getOwner());
+  d_army = new ArmyProdBase (*army);
   d_dest = dest;
   return true;
 }
@@ -2151,14 +2152,14 @@ bool Action_RecruitHero::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_RecruitHero::fillData(Hero* hero, City *city, int cost, int alliesCount, const Army *ally)
+bool Action_RecruitHero::fillData(Hero* hero, City *city, int cost, int alliesCount, const ArmyProto *ally)
 {
     d_hero = hero;
     d_city = city->getId();
     d_cost = cost;
     d_allies = alliesCount;
     if (alliesCount > 0)
-      d_ally_army_type = ally->getType();
+      d_ally_army_type = ally->getTypeId();
     else
       d_ally_army_type = 0;
     return true;
@@ -2255,10 +2256,10 @@ bool Action_CityTooPoorToProduce::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_CityTooPoorToProduce::fillData(City* c, const Army *army)
+bool Action_CityTooPoorToProduce::fillData(City* c, const ArmyProdBase *army)
 {
     d_city = c->getId();
-    d_army_type = army->getType();
+    d_army_type = army->getTypeId();
 
     return true;
 }

@@ -229,7 +229,7 @@ void QuestsManager::questCompleted(Uint32 heroId)
     else if (num == 1)
       {
         int num = (rand() % 8) + 1;
-        const Army *a = Reward_Allies::randomArmyAlly();
+        const ArmyProto *a = Reward_Allies::randomArmyAlly();
         Reward_Allies reward(a, num);
         p->giveReward(p->getActivestack(), &reward);
         quest_completed.emit(quest, &reward);

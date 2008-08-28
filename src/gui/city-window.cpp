@@ -34,6 +34,7 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "army.h"
+#include "armyprodbase.h"
 #include "player.h"
 #include "city.h"
 #include "GraphicsCache.h"
@@ -272,7 +273,7 @@ void CityWindow::fill_in_production_info()
     }
     else
     {
-        const Army* a = city->getProductionBase(slot);
+        const ArmyProdBase * a = city->getProductionBase(slot);
 
 	// fill in first column
 	s1 += a->getName();
@@ -282,11 +283,11 @@ void CityWindow::fill_in_production_info()
 	s1 += String::ucompose(_("Time: %1"), a->getProduction());
 	s1 += "\n";
 	s1 += String::ucompose(_("Strength: %1"),
-			      a->getStat(Army::STRENGTH, false));
+			      a->getStrength());
 	
 	// fill in second column
 	s2 += "\n";
-	s2 += String::ucompose(_("Moves: %1"), a->getStat(Army::MOVES, false));
+	s2 += String::ucompose(_("Moves: %1"), a->getMaxMoves());
 	s2 += "\n";
 	s2 += String::ucompose(_("Cost: %1"), a->getUpkeep());
 
@@ -298,7 +299,7 @@ void CityWindow::fill_in_production_info()
             s3 += String::ucompose(_(", then to %1"), 
                                    dest ? dest->getName() : "Standard");
           }
-      pic = to_pixbuf(gc->getArmyPic(as, a->getType(), player, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, a->getTypeId(), player, NULL));
     }
     
     current_image->set(pic);
@@ -354,7 +355,7 @@ bool CityWindow::on_production_button_event(GdkEventButton *e, Gtk::ToggleButton
 	}
 	assert(slot != -1);
 
-	const Army *army = city->getProductionBase(slot);
+	const ArmyProdBase *army = city->getProductionBase(slot);
 
 	if (army)
 	    army_info_tip.reset(new ArmyInfoTip(toggle, army));

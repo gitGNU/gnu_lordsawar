@@ -203,7 +203,7 @@ class Reward_Allies: public Reward
 	 * @param army  The Army prototype to create allies from.
 	 * @param count The number of Army units to create from the prototype.
 	 */
-        Reward_Allies(const Army *army, Uint32 count);
+        Reward_Allies(const ArmyProto *army, Uint32 count);
 
 	//! Secondary constructor.  Make a new reward of allies.
 	/**
@@ -226,13 +226,13 @@ class Reward_Allies: public Reward
         virtual bool save(XML_Helper* helper);
 
 	//! Return the army prototype of the allies associated with this reward.
-	const Army * getArmy() const {return d_army;}
+	const ArmyProto * getArmy() const {return d_army;}
 
 	//! Return the number allies that this reward will create.
 	Uint32 getNoOfAllies() const {return d_count;}
 
 	//! A static method that returns a random awardable Army prototype.
-        static const Army* randomArmyAlly();
+        static const ArmyProto* randomArmyAlly();
 
 	//! A static method that returns a number of allies between 1 and 8.
 	static const Uint32 getRandomAmountOfAllies();
@@ -251,7 +251,7 @@ class Reward_Allies: public Reward
 	 * @return True if the armies could successfully be added to the game
 	 *         map.  Returns false otherwise.
 	 */
-        static bool addAllies(Player *p, Vector<int> pos, const Army *army, Uint32 alliesCount);
+        static bool addAllies(Player *p, Vector<int> pos, const ArmyProto *army, Uint32 alliesCount);
 
 	//! A static method for adding allies to the game map.
 	/**
@@ -274,7 +274,7 @@ class Reward_Allies: public Reward
 
     private:
 	//! The Army prototype that represents the allies to give the Player.
-        const Army *d_army;
+        const ArmyProto *d_army;
 	//! The army type of the given prototype.
 	Uint32 d_army_type;
 	//! The army set of the given prototype.

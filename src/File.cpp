@@ -93,9 +93,8 @@ namespace
 
 std::list<std::string> File::scanArmysets()
 {
-    string path = Configuration::s_dataPath + "/army/";
-
-    std::list<std::string> retlist = get_xml_files_in_immediate_subdirs(path);
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getArmysetDir());
 
     if (retlist.empty())
     {
@@ -108,52 +107,74 @@ std::list<std::string> File::scanArmysets()
     return retlist;
 }
 
-
-string File::getArmyset(string armysetname)
+string File::getArmysetDir()
 {
-    return Configuration::s_dataPath + "/army/" + armysetname + "/" + 
-      armysetname + ".xml";
+  return Configuration::s_dataPath + "/army/";
 }
 
-string File::getTileset(string tilesetname)
+string File::getTilesetDir()
 {
-    return Configuration::s_dataPath + "/tilesets/" + tilesetname + "/" + tilesetname + ".xml";
+  return Configuration::s_dataPath + "/tilesets/";
 }
 
-std::string File::getTilesetFile(string tilesetname, string picname)
+string File::getCitysetDir()
 {
-    return Configuration::s_dataPath + "/tilesets/" + tilesetname + "/" + picname;
+  return Configuration::s_dataPath + "/citysets/";
+}
+
+string File::getShieldsetDir()
+{
+  return Configuration::s_dataPath + "/shield/";
+}
+
+string File::getArmyset(string armysetsubdir)
+{
+  return getArmysetDir() + armysetsubdir + "/" + armysetsubdir + ".xml";
+}
+
+string File::getTileset(string tilesetsubdir)
+{
+  return getTilesetDir() + tilesetsubdir + "/" + tilesetsubdir + ".xml";
+}
+
+std::string File::getTilesetFile(string tilesetsubdir, string picname)
+{
+  return getTilesetDir() + tilesetsubdir + "/" + picname;
+}
+
+std::string File::getShieldsetFile(string shieldsetsubdir, string picname)
+{
+  return getShieldsetDir() + shieldsetsubdir + "/" + picname;
 }
 
 string File::getMiscFile(string filename)
 {
-    return Configuration::s_dataPath + "/" + filename;
+  return Configuration::s_dataPath + "/" + filename;
 }
 
-string File::getCityset(string citysetname)
+string File::getCityset(string citysetdir)
 {
-    return Configuration::s_dataPath + "/citysets/" + citysetname + "/" + citysetname + ".xml";
+  return getCitysetDir() + citysetdir + "/" + citysetdir + ".xml";
 }
 
-std::string File::getCitysetFile(string citysetname, string picname)
+std::string File::getCitysetFile(string citysetsubdir, string picname)
 {
-    return Configuration::s_dataPath + "/citysets/" + citysetname + "/" + picname;
+  return getCitysetDir() + citysetsubdir + "/" + picname;
 }
 
 string File::getItemDescription()
 {
-    return Configuration::s_dataPath + "/various/items/items.xml";
+  return Configuration::s_dataPath + "/various/items/items.xml";
 }
-
 
 std::string File::getEditorFile(std::string filename)
 {
-    return Configuration::s_dataPath + "/various/editor/" + filename + ".png";
+  return Configuration::s_dataPath + "/various/editor/" + filename + ".png";
 }
 
 std::string File::getMusicFile(std::string filename)
 {
-    return std::string(Configuration::s_dataPath + "/music/" + filename.c_str());
+  return std::string(Configuration::s_dataPath + "/music/" + filename.c_str());
 }
 
 string File::getSavePath()
@@ -163,8 +184,8 @@ string File::getSavePath()
 
 list<string> File::scanTilesets()
 {
-    string path = Configuration::s_dataPath + "/tilesets/";
-    std::list<std::string> retlist = get_xml_files_in_immediate_subdirs(path);
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getTilesetDir());
     
     if (retlist.empty())
     {
@@ -179,8 +200,8 @@ list<string> File::scanTilesets()
 
 list<string> File::scanCitysets()
 {
-    string path = Configuration::s_dataPath + "/citysets/";
-    std::list<std::string> retlist = get_xml_files_in_immediate_subdirs(path);
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getCitysetDir());
     
     if (retlist.empty())
     {
@@ -219,12 +240,10 @@ list<string> File::scanMaps()
     return retlist;
 }
 
-
 std::list<std::string> File::scanShieldsets()
 {
-    string path = Configuration::s_dataPath + "/shield/";
-
-    std::list<std::string> retlist = get_xml_files_in_immediate_subdirs(path);
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getShieldsetDir());
 
     if (retlist.empty())
     {
@@ -237,11 +256,9 @@ std::list<std::string> File::scanShieldsets()
     return retlist;
 }
 
-
-string File::getShieldset(string shieldsetname)
+string File::getShieldset(string shieldsetsubdir)
 {
-    return Configuration::s_dataPath + "/shield/" + shieldsetname + "/" + 
-      shieldsetname + ".xml";
+  return getShieldsetDir() + shieldsetsubdir + "/" + shieldsetsubdir + ".xml";
 }
 
 // End of file

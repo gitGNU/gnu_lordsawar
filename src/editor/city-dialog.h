@@ -33,7 +33,7 @@
 
 class CreateScenarioRandomize;
 class City;
-class Army;
+class ArmyProdBase;
 
 //! Scenario editor.  Edits a City object.
 class CityDialog: public sigc::trackable
@@ -61,7 +61,7 @@ class CityDialog: public sigc::trackable
 	    { add(army); add(name);
 	      add(strength); add(moves); add(upkeep); add(duration); }
 
-	Gtk::TreeModelColumn<const Army *> army;
+	Gtk::TreeModelColumn<const ArmyProdBase *> army;
 	Gtk::TreeModelColumn<Glib::ustring> name;
 	Gtk::TreeModelColumn<int> strength, moves, upkeep, duration;
     };
@@ -83,7 +83,7 @@ class CityDialog: public sigc::trackable
     void on_selection_changed();
     void on_player_changed();
 
-    void add_army(const Army *a);
+    void add_army(const ArmyProdBase *a);
     void set_button_sensitivity();
     CreateScenarioRandomize *d_randomizer;
 };

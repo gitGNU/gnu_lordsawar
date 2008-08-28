@@ -146,7 +146,7 @@ void Ruin::populateWithRandomReward()
     setReward(new Reward_Gold(Reward_Gold::getRandomGoldPieces()));
   else if (num == 1)
     {
-      const Army *a = Reward_Allies::randomArmyAlly();
+      const ArmyProto *a = Reward_Allies::randomArmyAlly();
       setReward(new Reward_Allies(a, Reward_Allies::getRandomAmountOfAllies()));
     }
   else if (num == 2)

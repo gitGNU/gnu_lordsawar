@@ -32,6 +32,8 @@
 class Player;
 class Stack;
 class Army;
+class ArmyProdBase;
+class ArmyProto;
 class Hero;
 
 #define DEFAULT_CITY_NAME "Noname"
@@ -116,7 +118,7 @@ class City : public Ownable, public Location, public Renamable
 	 * @param army         The Army production base to add.  Look at the
 	 *                     Army class to find out what a production base is.
          */
-        void addProductionBase(int index, Army *army);
+        void addProductionBase(int index, ArmyProdBase *army);
 
         //! Clears the basic production of a given slot.
 	/**
@@ -181,7 +183,7 @@ class City : public Ownable, public Location, public Renamable
         bool hasProductionBase(int type, Uint32 armyset) const;
 
         //! Returns true if the city already has bought this production type.
-        bool hasProductionBase(const Army * army);
+        bool hasProductionBase(const ArmyProto * army);
 
         //! Return the first slot that doesn't have a production base.
 	int getFreeBasicSlot();
@@ -254,7 +256,7 @@ class City : public Ownable, public Location, public Renamable
         int getArmytype(int slot) const;
 
         //! Return the army production base of the given slot.
-        const Army* getProductionBase(int slot) const;
+        const ArmyProdBase * getProductionBase(int slot) const;
         
         //! Returns whether or not the city has been destroyed.
         bool isBurnt() const {return d_burnt;}
@@ -348,7 +350,7 @@ class City : public Ownable, public Location, public Renamable
 	 * It also works the other way.  Elephants can be altered to take 5 
 	 * turns instead of 4 turns, or have their strength decreased to 7.
 	 */
-	void randomlyImproveOrDegradeArmy(Army *army);
+	void randomlyImproveOrDegradeArmy(ArmyProdBase *army);
 
 	//! Sort the Army production bases that this city produces by strength.
 	/**
@@ -364,7 +366,7 @@ class City : public Ownable, public Location, public Renamable
 	 * potentially produce Army units from.  When a slot is empty, it is 
 	 * set to NULL.
 	 */
-        Army* d_prodbase[MAX_PRODUCTION_SLOTS_IN_A_CITY];
+        ArmyProdBase * d_prodbase[MAX_PRODUCTION_SLOTS_IN_A_CITY];
 
 	//! The maximum number of slots.
 	/**

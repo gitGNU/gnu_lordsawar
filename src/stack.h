@@ -36,6 +36,7 @@
 class Player;
 class Path;
 class Army;
+class ArmyProdBase;
 class XML_Helper;
 class Temple;
 
@@ -333,7 +334,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
 	//! how many movement points is it for a scout to travel this line.
 	static Uint32 scout(Player *p, Vector<int> src, Vector<int> dest, 
-			    const Army *proto = NULL);
+			    const ArmyProdBase *proto = NULL);
 
 	//! how many movement points is it for the stack to travel this line
 	static Uint32 scout(Stack *stack, Vector<int> dest);

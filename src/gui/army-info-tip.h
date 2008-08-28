@@ -25,14 +25,17 @@
 #include <gtkmm/widget.h>
 
 class Army;
+class ArmyProto;
+class ArmyProdBase;
 
 // shows a tooltip like window with information about an army
 class ArmyInfoTip: public sigc::trackable
 {
  public:
-     enum ArmyInfoTipType {ARMY_TYPE, ARMY_INSTANCE};
     // the tip is shown above target, simply delete the object to hide it again
-    ArmyInfoTip(Gtk::Widget *target, const Army *army, ArmyInfoTipType type = ARMY_TYPE);
+    ArmyInfoTip(Gtk::Widget *target, const Army *army);
+    ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army);
+    ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army);
 
  private:
     std::auto_ptr<Gtk::Window> window;

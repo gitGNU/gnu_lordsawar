@@ -32,7 +32,7 @@
 #include "gui/input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
-#include "army.h"
+#include "armyproto.h"
 #include "GraphicsCache.h"
 #include "armysetlist.h"
 
@@ -108,7 +108,9 @@ void SelectArmyDialog::fill_in_army_toggles()
     selectable.clear();
     for (unsigned int j = 0; j < al->getSize(armyset); j++)
     {
-	const Army *a = al->getArmy(armyset, j);
+	const ArmyProto *a = al->getArmy(armyset, j);
+	if (a->isHero())
+	  continue;
 	if ((d_defends_ruins && a->getDefendsRuins()) || 
 	    (!d_defends_ruins && !d_awardable))
 	  {
@@ -132,7 +134,7 @@ void SelectArmyDialog::fill_in_army_toggles()
 
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf
 	  = to_pixbuf(GraphicsCache::getInstance()->getArmyPic(armyset,
-							       selectable[i]->getType(),
+							       selectable[i]->getTypeId(),
 							       player, NULL));
 
 	toggle->add(*manage(new Gtk::Image(pixbuf)));
@@ -173,19 +175,16 @@ void SelectArmyDialog::fill_in_army_info()
     }
   else
     {
-      const Army *a = selected_army;
+      const ArmyProto *a = selected_army;
 
       // fill in first column
       s1 += a->getName();
       s1 += "\n";
-      s1 += String::ucompose(_("Strength: %1"),
-			     a->getStat(Army::STRENGTH, false));
+      s1 += String::ucompose(_("Strength: %1"), a->getStrength());
       s1 += "\n";
-      s1 += String::ucompose(_("Moves: %1"), a->getStat(Army::MOVES, false));
+      s1 += String::ucompose(_("Moves: %1"), a->getMaxMoves());
 
       // fill in second column
-      s2 += "\n";
-      s2 += String::ucompose(_("Hitpoints: %1"), a->getStat(Army::HP, false));
       s2 += "\n";
       s2 += String::ucompose(_("Upkeep: %1"), a->getUpkeep());
     }
@@ -211,7 +210,7 @@ bool SelectArmyDialog::on_army_button_event(GdkEventButton *e, Gtk::ToggleButton
     }
     assert(slot != -1);
 
-    const Army *army = selectable[slot];
+    const ArmyProto *army = selectable[slot];
 
     if (army)
       army_info_tip.reset(new ArmyInfoTip(toggle, army));

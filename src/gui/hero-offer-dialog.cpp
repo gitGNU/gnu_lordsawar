@@ -68,7 +68,7 @@ HeroOfferDialog::HeroOfferDialog(Player *player, Hero *h, City *c, int gold)
     male_radiobutton->signal_clicked().connect(
 	sigc::mem_fun(this, &HeroOfferDialog::on_male_toggled));
     
-    male_radiobutton->set_active(hero->getGender() == Army::MALE);
+    male_radiobutton->set_active(hero->getGender() == Hero::MALE);
     on_male_toggled();
     
     xml->get_widget("name", name_entry);

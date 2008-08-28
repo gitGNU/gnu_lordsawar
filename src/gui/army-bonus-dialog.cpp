@@ -91,7 +91,7 @@ void ArmyBonusDialog::addArmyType(Uint32 army_type)
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
     Player *p = d_player;
-    const Army *a;
+    const ArmyProto *a;
     a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
     if (a->isHero())
       return; //we don't want to show heroes in this list
@@ -100,9 +100,9 @@ void ArmyBonusDialog::addArmyType(Uint32 army_type)
     (*i)[armies_columns.image] = to_pixbuf(gc->getArmyPic(p->getArmyset(),
                                            army_type,
                                            p, NULL));
-    (*i)[armies_columns.str] = a->getStat(Army::STRENGTH, false);
-    (*i)[armies_columns.move] = a->getStat(Army::MOVES, false);
-    Uint32 b = a->getStat(Army::MOVE_BONUS, false);
+    (*i)[armies_columns.str] = a->getStrength();
+    (*i)[armies_columns.move] = a->getMaxMoves();
+    Uint32 b = a->getMoveBonus();
     (*i)[armies_columns.move_image] = to_pixbuf(gc->getMoveBonusPic(b, false));
     (*i)[armies_columns.bonus] = "-";
 

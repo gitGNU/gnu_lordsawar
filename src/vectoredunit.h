@@ -20,7 +20,7 @@
 
 #include <string>
 #include <sigc++/trackable.h>
-#include "army.h"
+#include "armyprodbase.h"
 #include "Location.h"
 
 //! An Army that is being vectored to another city.
@@ -43,7 +43,7 @@ class VectoredUnit: public Ownable, public Location, public sigc::trackable
 	 *                    show up at dest.
 	 * @param player      The player that owns the vectored Army unit.
          */
-        VectoredUnit(Vector<int> pos, Vector<int> dest, Army *army, 
+        VectoredUnit(Vector<int> pos, Vector<int> dest, ArmyProdBase *army, 
 		     int duration, Player *player);
 
         //! Copy constructor.
@@ -98,10 +98,10 @@ class VectoredUnit: public Ownable, public Location, public sigc::trackable
 	/**
 	 * @return A pointer to an Army in an Armyset.
 	 */
-	Army *getArmy() const { return d_army; };
+	ArmyProdBase *getArmy() const { return d_army; };
 
 	//! Set the Army prototype that is being vectored.
-	void setArmy(Army *army) {d_army = army;}
+	void setArmy(ArmyProdBase *army) {d_army = army;}
 
         //! Saves the vectored unit data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
@@ -122,7 +122,7 @@ class VectoredUnit: public Ownable, public Location, public sigc::trackable
 	Vector<int> d_destination;
 
 	//! A pointer to the Army prototype to vector.
-	Army *d_army;
+	ArmyProdBase *d_army;
 
 	//! The number of turns remaining until the Army shows up.
 	int d_duration;

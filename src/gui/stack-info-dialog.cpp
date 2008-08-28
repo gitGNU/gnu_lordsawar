@@ -94,7 +94,7 @@ void StackInfoDialog::addArmy (Army *h, Uint32 modified_strength, int idx)
     
   Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
-    to_pixbuf(gc->getArmyPic(player->getArmyset(), h->getType(), player, 
+    to_pixbuf(gc->getArmyPic(player->getArmyset(), h->getTypeId(), player, 
 			     NULL));
   
   Gtk::Image *image = NULL;
@@ -226,8 +226,7 @@ bool StackInfoDialog::on_army_button_event(GdkEventButton *e, Gtk::ToggleButton 
       const Army *army = armies[slot];
 
       if (army)
-	army_info_tip.reset(new ArmyInfoTip(toggle, army, 
-					    ArmyInfoTip::ARMY_INSTANCE));
+	army_info_tip.reset(new ArmyInfoTip(toggle, army));
       return true;
     }
   else if (event.button == MouseButtonEvent::RIGHT_BUTTON

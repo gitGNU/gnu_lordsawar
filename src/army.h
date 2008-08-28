@@ -29,9 +29,13 @@
 
 #include "defs.h"
 #include "Ownable.h"
+#include "armybase.h"
+#include "UniquelyIdentified.h"
 
 class Player;
 class XML_Helper;
+class ArmyProto;
+class ArmyProdBase;
 
 //! An instance of an Army unit, an Army unit type, or an Army production base.
  /**
@@ -60,72 +64,10 @@ class XML_Helper;
   * Maybe these three purposes will be split up into three or more classes 
   * in the future.
   */
-class Army : public Ownable, public sigc::trackable
+class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public sigc::trackable
 {
     public:
 
-	//! The purpose of this Army object.
-	enum ArmyContents {
-	  //! A prototype of an Army. e.g. Scouts.
-	  TYPE = 0, 
-	  //! A description of a kind of Army that a City can produce.
-	  PRODUCTION_BASE = 1, 
-	  //! An instance of an Army that is moving around the map in a Stack.
-	  INSTANCE = 2
-	};
-
-        //! The different genders an Army unit can have.
-	/**
-	 * The purpose of this enumeration is to show the correct 
-	 * recruitment picture for Hero units when they emerge in a 
-	 * City, and the Player has to decide if they want it or not.
-	 */
-        enum Gender {
-	  //! The Army unit has no gender (Not used).
-	  NONE = 0, 
-	  //! The Army unit is male.
-	  MALE = 1, 
-	  //! The Army unit is female.
-	  FEMALE = 2
-	};
-
-	static Army::Gender genderFromString(const std::string str);
-	static std::string genderToString(const Army::Gender gender);
-
-	//! The bitwise OR-able special bonus that the Army gives.
-        enum Bonus {
-	  //! Provides +1 strength to the Army when positioned in the open.
-	  ADD1STRINOPEN      = 0x00000001,
-	  //! Provides +2 strength to the Army when positioned in the open.
-	  ADD2STRINOPEN      = 0x00000002,
-	  //! Provides +1 strength to the Army when positioned in the forest.
-	  ADD1STRINFOREST    = 0x00000004,
-	  //! Provides +1 strength to the Army when positioned in the hills.
-	  ADD1STRINHILLS     = 0x00000008, 
-	  //! Provides +1 strength to the Army when positioned in a City.
-	  ADD1STRINCITY      = 0x00000010,
-	  //! Provides +2 strength to the Army when positioned in a City.
-	  ADD2STRINCITY      = 0x00000020,
-	  //! Provides +1 strength to the Stack when positioned in the hills.
-	  ADD1STACKINHILLS   = 0x00000040,
-	  //! Negate any City bonuses from an enemy Stack during a Fight.
-	  SUBALLCITYBONUS    = 0x00000080,
-	  //! Negates 1 strength point from an enemy Stack during a Fight.
-	  SUB1ENEMYSTACK     = 0x00000100,
-	  //! Provides +1 strength to all Army units in the Stack.
-	  ADD1STACK          = 0x00000200,
-	  //! Provides +2 strength to all Army units in the Stack.
-	  ADD2STACK          = 0x00000400,
-	  //! Negate all non-Hero bonuses in an enemy Stack during a Fight.
-	  SUBALLNONHEROBONUS = 0x00000800,
-	  //! Negate all Hero bonuses in an enemy Stack during a Fight.
-	  SUBALLHEROBONUS    = 0x00001000, //0 enemy hero bonus
-	  //! Provides a +1 strength to all Army units in a fortified Stack.
-	  FORTIFY            = 0x00002000,
-        };
-	static Uint32 bonusFlagsFromString(const std::string str);
-	static std::string bonusFlagsToString(const Uint32 bonus);
-        
 	//! Various kinds of statistics that an instance of Army unit has.
 	/**
 	 * This enumeration assists in getting and setting of statistics in
@@ -150,24 +92,14 @@ class Army : public Ownable, public sigc::trackable
 	  MOVES_MULTIPLIER = 9,
         };
 
-	static Uint32 moveFlagsFromString(const std::string str);
-	static std::string moveFlagsToString(const Uint32 move_bonus);
+	//! Copy constructor. 
+        Army(const ArmyProdBase& armyprodbase, Player* owner = 0);
 
-        /** 
-	 * Make a new instance of an Army unit by copying it from another.
-         * 
-	 * This constructor is used to create a new army from an 
-	 * Army prototype.  Army prototypes have an Army::d_id of 0; 
-	 * and this constructor behaves a bit differently when this is the 
-	 * case.  This constructor also is used to copy Army instances
-	 * during gameplay.
-	 *
-	 * @param army    The Army unit to create the new one from.
-	 * @param owner   The Player who owns this Army.
-	 * @param for_template   Whether the army should get and id
-         */
-	//! Copy constructor.
-        Army(const Army& army, Player* owner = 0, bool for_template = false);
+	//! Copy constructor. 
+        Army(const ArmyProto& armyproto, Player* owner = 0);
+
+	//! Copy constructor. 
+        Army(const Army& army, Player *owner = 0);
 
         /** 
 	 * Load an Army from an opened saved-game file or from an opened
@@ -180,10 +112,9 @@ class Army : public Ownable, public sigc::trackable
 	 * can produce.
          *
          * @param helper       The opened saved-game file to load from.
-         * @param contents     Which purpose this Army unit has.
          */
 	//! Loading constructor.
-        Army(XML_Helper* helper, enum ArmyContents contents = INSTANCE);
+        Army(XML_Helper* helper);
         
 	/**  
 	 * Creates an empty prototype Army unit.  This constructor is only
@@ -200,39 +131,11 @@ class Army : public Ownable, public sigc::trackable
         //! Set the Id of Armyset and type that this Army belongs to.
         void setArmyset(Uint32 armyset, Uint32 type);
 
-        //! Set the name of the Army.
-        void setName(std::string name){d_name = name;}
-
-        //! Set the basic image of the Army.
-        void setPixmap(SDL_Surface* pixmap);
-
-        //! Set the image mask of the unit type (for player colours).
-        void setMask(SDL_Surface* mask);
-
-        //! Set how much XP this unit is worth when killed.
-        void setXpReward(double xp_value){d_xp_value = xp_value;}
-
         //! Set an Army statistic.
         void setStat(Stat stat, Uint32 value);
 
-        //! Sets the descriptive text for this Army.
-        void setDescription(std::string text) {d_description = text;};
-        
-        //! Set how much gold this unit requires per turn.
-        void setUpkeep(Uint32 upkeep){d_upkeep = upkeep;}
-        
         //! Set the current number of hitpoints of this army.
         void setHP(Uint32 hp) {d_hp = hp;}
-
-        //! Set how many turns this unit type needs to be produced.
-        void setProduction(Uint32 production){d_production = production;}
-
-        //! Set the gold pieces needed to add this Army to a city's production.
-        void setProductionCost(Uint32 production_cost)
-	  {d_production_cost = production_cost;}
-
-        //! Set the gender of the army type.
-        void setGender(Gender gender){d_gender = gender;}
 
         /** 
          * When you select a stack on the map, you can toggle the armies 
@@ -242,9 +145,6 @@ class Army : public Ownable, public sigc::trackable
          */
 	//!Set the grouped state of this Army.
         void setGrouped(bool grouped){d_grouped = grouped;}
-
-	//! Sets whether or not the Army is a Hero.
-	void setHero(bool hero) {d_hero = hero;}
 
         //! Sets whether or not the Army has a particular medal.
         void setMedalBonus(Uint32 index, bool value) 
@@ -259,17 +159,6 @@ class Army : public Ownable, public sigc::trackable
         //! Sets the number of hits this Army unit has suffered against a foe.
         void setNumberHasBeenHit(double value) {d_number_hasbeenhit=value;}
 
-	//! Sets whether or not this Army prototype can found in a ruin.
-	void setDefendsRuins(bool defends) {d_defends_ruins = defends; }
-
-	/**
-	 * Sets whether or not this Army prototype can be a reward for
-	 * Quest, or if Army units of this kind can accompany a new
-	 * Hero when one emerges in a City.
-	 */
-	//! Sets the awardable state of an Army prototype.
-	void setAwardable (bool awardable) {d_awardable = awardable; }
-
 	//! Sets whether or not this Army unit is in a boat.
 	void setInShip (bool s);
 
@@ -281,67 +170,11 @@ class Army : public Ownable, public sigc::trackable
 	//! Get the Id of the Armyset to which the Army's type belongs.
         Uint32 getArmyset() const {return d_armyset;}
         
-        //! Returns the name of the Army.
-        std::string getName() const {return d_name;}
-
-        //! Return the unique id of this army.
-	/**
-	 * A unique Id for this Army unit instance among all other objects
-	 * in the game.
-	 * @note This value is 0 for Army prototypes.
-	 */
-        Uint32 getId() const {return d_id;}
-
         //! Get the type of this army.
 	/**
 	 * The type of the Army is the index of it's type in the Armyset.
 	 */
-        Uint32 getType() const {return d_type;}
-
-        //! Get the image of the army. 
-	/**
-	 * Getting the image for the Army unit involves the GraphicsCache.
-	 * Pixmaps of Army instances are coloured in the Player's colour,
-	 * and may have medals drawn on their image.
-	 * Pixmaps of Army types are not coloured.
-	 */
-        SDL_Surface* getPixmap() const;
-
-        //! Returns the mask (read-only) for player colors.
-        SDL_Surface* getMask() const {return d_mask;}
-
-	//! Returns the basename of the picture's filename
-	/**
-	 * Returns the filename that holds the image for this Army.
-	 * The filename does not have a path, and the filename does
-	 * not have an extension (e.g. .png).
-	 */
-	std::string getImageName() const {return d_image;}
-
-	//! Sets the filename of the image.
-	void setImageName(std::string image) {d_image = image;}
-
-        //! Returns the descriptive text of this Army.
-        std::string getDescription() const {return d_description;}
-
-        //! Returns how many gold pieces this Army needs per turn.
-        Uint32 getUpkeep() const {return d_upkeep;}
-        
-        //! Returns how many turns this Army needs to be produced.
-        Uint32 getProduction() const {return d_production;}
-
-        //! Returns how much gold setting up the production costs
-	/**
-	 * @return The amount of gold pieces required to add this Army
-	 *         into the City's suite of 4 production slots.
-	 */
-        Uint32 getProductionCost() const {return d_production_cost;}
-
-        //! Returns the number of XP that killing this Army garners it's killer.
-        double getXpReward() const {return d_xp_value;}
-
-        //! Return the gender of the Army.
-        Uint32 getGender() const {return d_gender;}
+        Uint32 getTypeId() const {return d_type_id;}
 
         /** 
          * If modified is set to false, you get the raw, inherent value of
@@ -363,15 +196,6 @@ class Army : public Ownable, public sigc::trackable
         //! Get the current number of movement points that the Army has.
         Uint32 getMoves() const {return d_moves;}
 
-        //! Get the move bonus.
-	/**
-	 * Get which kinds of terrain tiles this Army moves efficiently 
-	 * over top of.
-	 *
-	 * @return A bitwise OR-ing of the values in Tile::Type.
-	 */
-        Uint32 getMoveBonus() const {return d_move_bonus;}
-
         //! Get the current number of experience points that the Army unit has.
         double getXP() const {return d_xp;}
 
@@ -380,9 +204,6 @@ class Army : public Ownable, public sigc::trackable
 
         //! Returns the grouped state of the Army within a Stack.
         bool isGrouped() const {return d_grouped;}
-
-        //! Returns whether or not the Army is a Hero.
-        bool isHero() const {return d_hero;}
 
         //! Return which medals this Army unit has.
         bool* getMedalBonuses() const {return (bool*)&d_medal_bonus;}
@@ -399,25 +220,11 @@ class Army : public Ownable, public sigc::trackable
         //! Returns the number of hits this Army unit has suffered.
         double getNumberHasBeenHit() const {return d_number_hasbeenhit;}
 
-	//! Gets whether or not this army type can found in a ruin.
-	bool getDefendsRuins() const {return d_defends_ruins; }
-
-	/**
-	 * Gets whether or not this army can be a reward for completing a 
-	 * Quest, or if an Army unit of this type can accompany a new
-	 * Hero when one emerges in a City.
-	 */
-	//! Gets the awardable state of the Army.
-	bool getAwardable() const {return d_awardable; }
-
 	//! Return whether or not the Army is in a tower.
 	bool getFortified ();
 
 	//! Returns how many experience points the next level requires.
         Uint32 getXpNeededForNextLevel() const;
-
-	//! Generate a string that describes what bonuses this Army has.
-	std::string getArmyBonusDescription() const;
 
         /** 
 	 * Regenerate an amount of the Army unit's hitpoints but not 
@@ -500,11 +307,7 @@ class Army : public Ownable, public sigc::trackable
         void printAllDebugInfo() const;
 
         //! Saves the Army to an opened saved-game file.
-	/**
-	 * @param contents  What the purpose of this Army is.
-	 */
-        virtual bool save(XML_Helper* helper, 
-			  enum ArmyContents contents = INSTANCE) const;
+        virtual bool save(XML_Helper* helper) const;
         
 	/**
 	 * @note This signal is static because sometimes the army doesn't 
@@ -517,81 +320,23 @@ class Army : public Ownable, public sigc::trackable
 
 	void syncNewId();
 
+	virtual bool isHero() const {return false;};
+
+	//take these values from the army type that the instance points to.
+	bool getAwardable() const;
+	bool getDefendsRuins() const;
+	std::string getName() const;
+
     protected:
 
-	static std::string bonusFlagToString(Army::Bonus bonus);
-	static Army::Bonus bonusFlagFromString(std::string str);
-
         //! Generic method for saving Army data.  Useful to the Hero class.
-        bool saveData(XML_Helper* helper, 
-		      enum ArmyContents contents = INSTANCE) const;
+        bool saveData(XML_Helper* helper) const;
 
-        //! Copies the generic data from the Army prototype.
-        void copyVals(const Army* a);
-        
 	//! The index of the Army unit's type in it's Armyset.
-        Uint32 d_type;
+        Uint32 d_type_id;
 
 	//! The Id of the Armyset that the Army prototype belongs to.
         Uint32 d_armyset;
-
-	//! The picture of the Army prototype.
-        SDL_Surface* d_pixmap;
-
-	//! The mask portion of the Army prototype picture.
-        SDL_Surface* d_mask;
-        
-	//! The name of the Army unit.  e.g. Scouts.
-        std::string d_name;
-
-	//! The description of the Army unit.
-        std::string d_description;
-
-	//! How many turns the Army unit takes to be produced in a City.
-	/**
-	 * This value must be above 0.  Normal values for d_production are
-	 * 1 through 4.
-	 * This value does not change during gameplay.
-	 */
-        Uint32 d_production;
-
-        //! How many gold pieces needed to add this Army to a city's production.
-	/**
-	 * If d_production_cost is over zero, then the Army can be purchased.
-	 * If not, then the Army unit cannot be incorporated into a 
-	 * City's production at any price.
-	 *
-	 * This value does not change during gameplay.
-	 */
-        Uint32 d_production_cost;
-
-	//! The amount it costs to maintain this Army unit for this turn.
-	/**
-	 * @note The amount is in gold pieces.
-	 *
-	 * This value does not change during gameplay.
-	 *
-	 * @note Some special units have an upkeep of 0, but usually this
-	 * value is more than zero.
-	 */
-        Uint32 d_upkeep;
-
-	/**
-	 * The strength of the Army unit is the prime factor when 
-	 * calculating the outcome of a Fight.  This value should always
-	 * be 1 or more, but not exceeding 15.
-	 *
-	 * This value can permanently increase when the Army unit increases
-	 * it's level.
-	 *
-	 * Temporary increases due to the Army unit being on a certain kind 
-	 * of terrain, or because another Army unit has conferred strength 
-	 * on it (see Army::Bonus) are not reflected in d_strength.
-	 *
-	 * This value does not decrease during gameplay.
-	 */
-	//! The base strength of the Army unit.
-        Uint32 d_strength;
 
 	/**
 	 * The maximum number of hitpoints is the secondmost important
@@ -603,21 +348,6 @@ class Army : public Ownable, public sigc::trackable
 	 */
 	//! The maximum number of hitpoints this Army unit has.
         Uint32 d_max_hp;
-
-	//! The maximum number of movement points that this Army unit has.
-	/**
-	 * This value must always be above 1.  Sane values are above 7.
-	 *
-	 * This value can be permanently increased when the Army unit 
-	 * increases it's level.
-	 *
-	 * This value does not decrease during gameplay.
-	 *
-	 * @note When an Army unit is having it's movement doubled, or even
-	 * tripled due to a Hero carrying an Item, this value does not 
-	 * reflect that doubling or tripling.
-	 */
-        Uint32 d_max_moves;
 
 	//! Movement point multiplier of the Army unit.
 	/**
@@ -644,58 +374,6 @@ class Army : public Ownable, public sigc::trackable
 	 */
 	Uint32 d_max_moves_rest_bonus;
 
-	//! How far the Army unit can see on a hidden map.
-	/**
-	 * When a stack is moving on a hidden map, a certain number of
-	 * tiles get illuminated or unshaded.  d_sight is the radius of
-	 * tiles that this Army unit can illuminate.
-	 *
-	 * This value can be permanently increased when the Army unit 
-	 * increases it's level.
-	 *
-	 * This value does not decrease during gameplay.
-	 */
-        Uint32 d_sight;
-
-	//! The amount of XP this Army unit worth when killed by an assailant.
-	/**
-	 * When this Army unit is killed, d_xp_value is added to the killer's
-	 * experience points.
-	 *
-	 * This value must be over 0.
-	 *
-	 * This value does not change during gameplay.
-	 */
-        double d_xp_value;
-
-	//! The movement bonus of the Army unit.
-	/**
-	 * d_move_bonus represents the terrain tiles that the Army unit
-	 * can travel efficiently over.  Traveling efficiently entails
-	 * that it only costs 2 movement points to travel over that kind
-	 * of terrain, no matter what the actual terrain movement value is.
-	 *
-	 * The movement bonus is a bitwise OR-ing of the values in 
-	 * Tile::Type.
-	 *
-	 * When each of the members of Tile::Type are included in the
-	 * d_move_bonus value, the Army unit is flying.
-	 *
-	 * This value does not change during gameplay.
-	 */
-        Uint32 d_move_bonus;
-
-	/**
-	 * d_army_bonus represents the special abilities this Army unit has.
-	 * The special abilities are enumerated in Army::Bonus.
-	 *
-	 * The army bonus is a bitwise OR-ing of the values in Army::Bonus.
-	 *
-	 * This value does not change during gameplay.
-	 */
-	//! The special capbilities of the Army unit.
-        Uint32 d_army_bonus;
-
 	/**
 	 * Being in a ship affects the Army's strength in battle.
 	 * Every army has a strength of 4 when fighting on a boat.
@@ -707,22 +385,6 @@ class Army : public Ownable, public sigc::trackable
 	 */
 	//! Whether or not this Army unit is afloat in a boat.
 	bool d_ship;
-
-	//! The gender of the Army unit.
-	/**
-	 * d_gender is one of the values contained in Army::Gender.
-	 * This value does not change during gameplay (heh).
-	 */
-        Uint32 d_gender;
-
-	//! The Id of the Army unit.
-	/**
-	 * d_id is a unique value among all other game objects.  If it is 0,
-	 * the Army is a prototype.
-	 *
-	 * This value does not change during gameplay.
-	 */
-        Uint32 d_id;
 
 	//! The current number of hitpoints that the Army unit has.
 	/**
@@ -826,27 +488,6 @@ class Army : public Ownable, public sigc::trackable
 	 */
         double d_number_hasbeenhit;
 
-	//! Whether or not the Army prototype can defend a Ruin.
-	/**
-	 * Some Army unit can be the guardian of a Ruin.  Hero units fight
-	 * a single Army unit of this kind when they search a Ruin.  
-	 * d_defends_ruin indicates whether this Army unit can defend a Ruin 
-	 * or not.
-	 *
-	 * This value does not change during gameplay.
-	 */
-	bool d_defends_ruins;
-
-	//! The awardable status of the Army prototype.
-	/**
-	 * Whether or not this Army prototype can be a reward for a Quest, 
-	 * or if Army units of this kind can accompany a new Hero when one 
-	 * emerges in a City.
-	 *
-	 * This value does not change during gameplay.
-	 */
-	bool d_awardable;
-
 	//! A list of the Ids of Temples the Army unit has visited.
 	/**
 	 * As the Army unit gets blessed at various Temple objects, this
@@ -858,22 +499,12 @@ class Army : public Ownable, public sigc::trackable
 	 */
         std::list<Uint32> d_visitedTemples;
 
-	//! Whether or not this Army unit is a Hero.
-	bool d_hero;
-
 	//! The number of experience points per experience level.
 	/**
 	 * When an Army unit's d_xp surpasses a multiple of xp_per_level,
 	 * it increases it's d_level by 1.
 	 */
         static const int xp_per_level = 10;
-
-	//! The basename of the file containing the image for this Army unit.
-	/**
-	 * This value does not contain a path, and does not contain an
-	 * extension (e.g. .png).
-	 */
-	std::string d_image;
 };
 
 #endif // ARMY_H

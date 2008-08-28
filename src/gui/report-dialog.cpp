@@ -36,6 +36,7 @@
 #include "stacklist.h"
 #include "action.h"
 #include "GraphicsCache.h"
+#include "armyprodbase.h"
 #include "armysetlist.h"
 
 ReportDialog::ReportDialog(Player *player, ReportType type)
@@ -354,7 +355,7 @@ void ReportDialog::addProduction(const Action *action)
     {
       const Action_Produce *act;
       act = dynamic_cast<const Action_Produce*>(action);
-      army_type = act->getArmy()->getType();
+      army_type = act->getArmy()->getTypeId();
       Citylist::iterator cit = Citylist::getInstance()->begin();
       for (; cit != Citylist::getInstance()->end(); ++cit)
 	if ((*cit).getId() == act->getCityId())
@@ -369,7 +370,7 @@ void ReportDialog::addProduction(const Action *action)
     {
       const Action_ProduceVectored *act;
       act = dynamic_cast<const Action_ProduceVectored*>(action);
-      army_type = act->getArmy()->getType();
+      army_type = act->getArmy()->getTypeId();
       Vector<int> pos = act->getDestination();
       City *c = Citylist::getInstance()->getObjectAt(pos);
       s+="...";
@@ -387,7 +388,7 @@ void ReportDialog::addProduction(const Action *action)
       s = c->getName();
       s += " stops production!";
     }
-  const Army *a;
+  const ArmyProto *a;
   a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
   Gtk::TreeIter i = armies_list->append();
   (*i)[armies_columns.image] = to_pixbuf(gc->getArmyPic(p->getArmyset(),

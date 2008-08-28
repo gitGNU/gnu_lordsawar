@@ -662,8 +662,8 @@ bool Stack::armyCompareFightOrder (const Army *lhs, const Army *rhs)
 {
   std::list<Uint32> lhs_fight_order = lhs->getOwner()->getFightOrder();
   std::list<Uint32> rhs_fight_order = rhs->getOwner()->getFightOrder();
-  Uint32 lhs_rank = getFightOrder (lhs_fight_order, lhs->getType());
-  Uint32 rhs_rank = getFightOrder (rhs_fight_order, rhs->getType());
+  Uint32 lhs_rank = getFightOrder (lhs_fight_order, lhs->getTypeId());
+  Uint32 rhs_rank = getFightOrder (rhs_fight_order, rhs->getTypeId());
   //if (lhs_rank == rhs_rank)
     //return lhs->getId() < rhs->getId();
   return lhs_rank < rhs_rank; 
@@ -791,16 +791,21 @@ Uint32 Stack::countArmiesBlessedAtTemple(Uint32 temple_id)
 }
 	
 Uint32 Stack::scout(Player *p, Vector<int> src, Vector<int> dest, 
-		    const Army *proto)
+		    const ArmyProdBase *prodbase)
 {
   Stack *stack = new Stack(p, src);
 
-  if (!proto)
-    proto = Armysetlist::getInstance()->getScout(p->getArmyset());
-  if (!proto)
-    return 0;
+  Army *army;
+  if (!prodbase)
+    {
+      ArmyProto *proto = Armysetlist::getInstance()->getScout(p->getArmyset());
+      if (!proto)
+	return 0;
+      army = new Army (*proto, p);
+    }
+  else
+    army = new Army (*prodbase, p);
 
-  Army *army = new Army (*proto);
   if (!army)
     return 0;
   stack->push_back(army);
@@ -808,6 +813,7 @@ Uint32 Stack::scout(Player *p, Vector<int> src, Vector<int> dest,
   delete stack;
   return mp;
 }
+
 Uint32 Stack::scout(Stack *stack, Vector<int> dest)
 {
   Stack *scout_stack = new Stack(*stack);

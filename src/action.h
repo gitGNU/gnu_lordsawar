@@ -682,7 +682,7 @@ class Action_Buy : public Action
 	 * with the new Army unit type being produced.
 	 */
 	//! Populate the action with pertinent data.
-        bool fillData(City* c, int slot, const Army *prod);
+        bool fillData(City* c, int slot, const ArmyProto *prod);
 
 	Uint32 getCityId() const {return d_city;};
 	int getProductionSlot() const {return d_slot;};
@@ -1172,10 +1172,10 @@ class Action_Produce: public Action
 	 * it is being vectored elsewhere.
 	 */
 	//! Populate the action with pertinent data.
-        bool fillData(const Army *a, City *city, bool vectored);
+        bool fillData(const ArmyProdBase *a, City *city, bool vectored);
 
 	//! Get the instance of the army that was produced.
-	Army * getArmy() const {return d_army;}
+	ArmyProdBase * getArmy() const {return d_army;}
 
 	//! Get the Id of the City that produced the Army unit.
 	Uint32 getCityId() const {return d_city;}
@@ -1183,7 +1183,7 @@ class Action_Produce: public Action
 	//! Get whether or not the Army unit is being vectored elsewhere.
 	bool getVectored() const {return d_vectored;}
     private:
-	Army *d_army;
+	ArmyProdBase *d_army;
         Uint32 d_city;
         bool d_vectored;
 
@@ -1227,15 +1227,15 @@ class Action_ProduceVectored: public Action
 	 * it has showing up.
 	 */
 	//! Populate the action with pertinent data.
-        bool fillData(Army *army, Vector <int>dest);
+        bool fillData(ArmyProdBase *army, Vector <int>dest);
 
 	//! Get the army type Id that has shown up.
-	Army *getArmy() const {return d_army;}
+	ArmyProdBase *getArmy() const {return d_army;};
 
 	//! Get the position on the map where the army showed up.
 	Vector<int> getDestination() const {return d_dest;}
     private:
-	Army *d_army;
+	ArmyProdBase *d_army;
         Vector<int> d_dest;
 	bool load(std::string tag, XML_Helper *helper);
 };
@@ -1451,7 +1451,7 @@ class Action_RecruitHero : public Action
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action.
-        bool fillData(Hero* hero, City *city, int cost, int alliesCount, const Army *ally);
+        bool fillData(Hero* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
     
 	Hero* getHero() const {return d_hero;};
 	Uint32 getCityId() const {return d_city;};
@@ -1516,7 +1516,7 @@ class Action_CityTooPoorToProduce: public Action
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action.
-        bool fillData(City *city, const Army *army);
+        bool fillData(City *city, const ArmyProdBase *army);
     
 	Uint32 getCityId() const {return d_city;}
 	Uint32 getArmyType() const {return d_army_type;}

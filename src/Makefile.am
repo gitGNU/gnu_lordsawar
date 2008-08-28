@@ -24,8 +24,9 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         AI_Allocation.cpp AI_Allocation.h AI_Diplomacy.cpp AI_Diplomacy.h \
         ai_dummy.cpp ai_dummy.h ai_fast.cpp ai_fast.h \
         ai_smart.cpp ai_smart.h AICityInfo.cpp AICityInfo.h \
-        army.cpp army.h armysetlist.cpp armysetlist.h \
-        armyset.cpp armyset.h \
+	armybase.cpp armybase.h armyproto.cpp armyproto.h armyprodbase.cpp \
+        armyprodbase.h army.cpp army.h armysetlist.cpp armysetlist.h \
+        armyset.cpp armyset.h armyprotobase.cpp armyprotobase.h \
         bridge.cpp bridge.h bridgelist.cpp bridgelist.h \
         city.cpp city.h citylist.cpp citylist.h \
         citysetlist.cpp citysetlist.h cityset.cpp cityset.h \

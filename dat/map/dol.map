@@ -1639,48 +1639,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pikemen</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>4</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -1701,92 +1691,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Minotaurs</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINCITY</d_army_bonus>
 					<d_type>7</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Spiders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>1000</d_production_cost>
 					<d_upkeep>12</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINCITY</d_army_bonus>
 					<d_type>9</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -1803,48 +1773,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pikemen</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>4</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -1865,48 +1825,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINOPEN</d_army_bonus>
 					<d_type>12</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pegasi</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>1000</d_production_cost>
 					<d_upkeep>12</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
-					<d_army_bonus> Army::ADD1STACK</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACK</d_army_bonus>
 					<d_type>16</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -1927,48 +1877,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>6</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>10</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Elephants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>1500</d_production_cost>
 					<d_upkeep>15</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUB1ENEMYSTACK</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUB1ENEMYSTACK</d_army_bonus>
 					<d_type>14</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>8</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -1989,92 +1929,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>6</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>10</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Catapults</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>16</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUBALLCITYBONUS</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUBALLCITYBONUS</d_army_bonus>
 					<d_type>13</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Griffins</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>1500</d_production_cost>
 					<d_upkeep>15</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINCITY</d_army_bonus>
 					<d_type>17</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>6</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Unicorns</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>1500</d_production_cost>
 					<d_upkeep>15</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STACK</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACK</d_army_bonus>
 					<d_type>21</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>7</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -2091,92 +2011,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Dwarves</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINHILLS</d_army_bonus>
 					<d_type>6</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>8</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -2194,92 +2094,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital_owner>1</d_capital_owner>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giant Bats</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>30</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>15</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>6</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>10</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -2296,70 +2176,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Dwarves</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINHILLS</d_army_bonus>
 					<d_type>6</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -2378,70 +2243,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>6</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>10</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pegasi</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>1000</d_production_cost>
 					<d_upkeep>12</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
-					<d_army_bonus> Army::ADD1STACK</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACK</d_army_bonus>
 					<d_type>16</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Elephants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>1500</d_production_cost>
 					<d_upkeep>15</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUB1ENEMYSTACK</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUB1ENEMYSTACK</d_army_bonus>
 					<d_type>14</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>9</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -2461,92 +2311,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital_owner>3</d_capital_owner>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Wolfriders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STACKINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACKINHILLS</d_army_bonus>
 					<d_type>11</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINOPEN</d_army_bonus>
 					<d_type>12</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -2563,92 +2393,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Dwarves</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINHILLS</d_army_bonus>
 					<d_type>6</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pikemen</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>4</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Spiders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>1000</d_production_cost>
 					<d_upkeep>12</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINCITY</d_army_bonus>
 					<d_type>9</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -2665,70 +2475,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Dwarves</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINHILLS</d_army_bonus>
 					<d_type>6</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -2747,70 +2542,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Catapults</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>16</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUBALLCITYBONUS</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUBALLCITYBONUS</d_army_bonus>
 					<d_type>13</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pikemen</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>4</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -2829,92 +2609,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Spiders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>1000</d_production_cost>
 					<d_upkeep>12</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINCITY</d_army_bonus>
 					<d_type>9</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -2931,92 +2691,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Wolfriders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STACKINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACKINHILLS</d_army_bonus>
 					<d_type>11</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Griffins</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>1500</d_production_cost>
 					<d_upkeep>15</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINCITY</d_army_bonus>
 					<d_type>17</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>6</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -3033,48 +2773,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
 					<d_upkeep>4</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>2</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -3095,92 +2825,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINOPEN</d_army_bonus>
 					<d_type>12</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>8</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -3197,92 +2907,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Catapults</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>16</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUBALLCITYBONUS</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUBALLCITYBONUS</d_army_bonus>
 					<d_type>13</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Wolfriders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STACKINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACKINHILLS</d_army_bonus>
 					<d_type>11</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>8</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>6</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Elephants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>1500</d_production_cost>
 					<d_upkeep>15</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUB1ENEMYSTACK</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUB1ENEMYSTACK</d_army_bonus>
 					<d_type>14</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>8</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -3299,70 +2989,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pikemen</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>4</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>8</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -3381,92 +3056,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pikemen</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>4</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Minotaurs</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINCITY</d_army_bonus>
 					<d_type>7</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -3483,70 +3138,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Wolfriders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STACKINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACKINHILLS</d_army_bonus>
 					<d_type>11</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>8</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Elephants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>1500</d_production_cost>
 					<d_upkeep>15</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUB1ENEMYSTACK</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUB1ENEMYSTACK</d_army_bonus>
 					<d_type>14</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>8</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -3565,92 +3205,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pikemen</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>4</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>8</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -3667,92 +3287,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Catapults</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>16</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUBALLCITYBONUS</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUBALLCITYBONUS</d_army_bonus>
 					<d_type>13</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>8</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -3769,48 +3369,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pikemen</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>4</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -3831,92 +3421,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>6</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>10</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINOPEN</d_army_bonus>
 					<d_type>12</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Minotaurs</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINCITY</d_army_bonus>
 					<d_type>7</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Elephants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>1500</d_production_cost>
 					<d_upkeep>15</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUB1ENEMYSTACK</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUB1ENEMYSTACK</d_army_bonus>
 					<d_type>14</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>8</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -3933,92 +3503,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINOPEN</d_army_bonus>
 					<d_type>12</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Spiders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>1000</d_production_cost>
 					<d_upkeep>12</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINCITY</d_army_bonus>
 					<d_type>9</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -4035,48 +3585,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -4097,70 +3637,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>8</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -4179,70 +3704,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
 					<d_upkeep>4</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>2</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>6</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>10</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -4261,70 +3771,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
 					<d_upkeep>4</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>2</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Minotaurs</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINCITY</d_army_bonus>
 					<d_type>7</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -4343,48 +3838,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>6</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>10</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINOPEN</d_army_bonus>
 					<d_type>12</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -4405,48 +3890,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>6</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>10</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Wolfriders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STACKINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACKINHILLS</d_army_bonus>
 					<d_type>11</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -4468,92 +3943,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital_owner>6</d_capital_owner>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Wolfriders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STACKINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACKINHILLS</d_army_bonus>
 					<d_type>11</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Minotaurs</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINCITY</d_army_bonus>
 					<d_type>7</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -4570,92 +4025,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>100</d_production_cost>
 					<d_upkeep>4</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>2</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pikemen</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>4</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Minotaurs</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINCITY</d_army_bonus>
 					<d_type>7</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -4672,48 +4107,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>6</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>10</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Minotaurs</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINCITY</d_army_bonus>
 					<d_type>7</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -4734,48 +4159,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -4797,92 +4212,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital_owner>4</d_capital_owner>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Catapults</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>16</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUBALLCITYBONUS</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUBALLCITYBONUS</d_army_bonus>
 					<d_type>13</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>8</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -4899,92 +4294,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giant Bats</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>30</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>15</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
 					<d_upkeep>4</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>2</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Wolfriders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STACKINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACKINHILLS</d_army_bonus>
 					<d_type>11</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -5001,92 +4376,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Catapults</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>16</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUBALLCITYBONUS</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUBALLCITYBONUS</d_army_bonus>
 					<d_type>13</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pikemen</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>4</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pegasi</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>1000</d_production_cost>
 					<d_upkeep>12</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
-					<d_army_bonus> Army::ADD1STACK</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACK</d_army_bonus>
 					<d_type>16</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -5103,48 +4458,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Spiders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>1000</d_production_cost>
 					<d_upkeep>12</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINCITY</d_army_bonus>
 					<d_type>9</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -5165,70 +4510,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
 					<d_upkeep>4</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>2</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Wolfriders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STACKINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACKINHILLS</d_army_bonus>
 					<d_type>11</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -5247,48 +4577,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
 					<d_upkeep>4</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>2</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -5309,70 +4629,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Spiders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>1000</d_production_cost>
 					<d_upkeep>12</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINCITY</d_army_bonus>
 					<d_type>9</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -5391,70 +4696,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -5473,92 +4763,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pikemen</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>4</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pegasi</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>1000</d_production_cost>
 					<d_upkeep>12</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
-					<d_army_bonus> Army::ADD1STACK</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACK</d_army_bonus>
 					<d_type>16</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -5575,70 +4845,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
 					<d_upkeep>4</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>2</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Pikemen</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>4</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -5657,92 +4912,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Minotaurs</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINCITY</d_army_bonus>
 					<d_type>7</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>8</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -5759,48 +4994,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
 					<d_upkeep>4</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>2</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -5821,70 +5046,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Catapults</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>16</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUBALLCITYBONUS</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUBALLCITYBONUS</d_army_bonus>
 					<d_type>13</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINOPEN</d_army_bonus>
 					<d_type>12</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>8</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -5904,92 +5114,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital_owner>7</d_capital_owner>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Dwarves</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINHILLS</d_army_bonus>
 					<d_type>6</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -6006,92 +5196,72 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Wolfriders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STACKINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACKINHILLS</d_army_bonus>
 					<d_type>11</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Giants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>8</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 		</city>
 		<city>
@@ -6108,70 +5278,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Spiders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>1000</d_production_cost>
 					<d_upkeep>12</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINCITY</d_army_bonus>
 					<d_type>9</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -6190,70 +5345,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>6</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>10</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Wolfriders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STACKINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACKINHILLS</d_army_bonus>
 					<d_type>11</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Minotaurs</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINCITY</d_army_bonus>
 					<d_type>7</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -6272,48 +5412,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
 					<d_upkeep>4</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>2</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -6334,48 +5464,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Archers</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
 					<d_upkeep>7</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINFOREST</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 					<d_type>5</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Minotaurs</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINCITY</d_army_bonus>
 					<d_type>7</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -6396,70 +5516,55 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>6</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 					<d_type>10</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Minotaurs</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>800</d_production_cost>
 					<d_upkeep>10</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STRINCITY</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STRINCITY</d_army_bonus>
 					<d_type>7</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>5</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Elephants</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>4</d_production>
 					<d_production_cost>1500</d_production_cost>
 					<d_upkeep>15</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::SUB1ENEMYSTACK</d_army_bonus>
+					<d_army_bonus> ArmyBase::SUB1ENEMYSTACK</d_army_bonus>
 					<d_type>14</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>8</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -6478,48 +5583,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
 					<d_upkeep>4</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>2</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -6540,48 +5635,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Wolfriders</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD1STACKINHILLS</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD1STACKINHILLS</d_army_bonus>
 					<d_type>11</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Cav.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>3</d_production>
 					<d_production_cost>500</d_production_cost>
 					<d_upkeep>8</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
-					<d_army_bonus> Army::ADD2STRINOPEN</d_army_bonus>
+					<d_army_bonus> ArmyBase::ADD2STRINOPEN</d_army_bonus>
 					<d_type>12</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -6602,48 +5687,38 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 			<d_capital>false</d_capital>
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Light Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
 					<d_upkeep>3</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>1</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
-				<army>
+				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
-					<d_image></d_image>
 					<d_description></d_description>
 					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
 					<d_upkeep>5</d_upkeep>
-					<d_gender>Army::NONE</d_gender>
-					<d_awardable>false</d_awardable>
-					<d_defends_ruins>false</d_defends_ruins>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
 					<d_type>3</d_type>
 					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
-				</army>
+				</armyprodbase>
 			</slot>
 			<slot>
 			</slot>
@@ -6699,6 +5774,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>845</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>20</d_type>
@@ -6709,7 +5787,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>50</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>6</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -6743,6 +5820,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>871</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>25</d_type>
@@ -6753,7 +5833,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>8</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -6787,6 +5866,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>856</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>26</d_type>
@@ -6797,7 +5879,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>22</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>9</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -6831,6 +5912,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>874</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>24</d_type>
@@ -6841,7 +5925,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>20</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>7</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -6897,6 +5980,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>837</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>23</d_type>
@@ -6907,7 +5993,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>8</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -6941,6 +6026,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>839</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>19</d_type>
@@ -6951,7 +6039,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>7</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -6985,6 +6072,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>842</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>26</d_type>
@@ -6995,7 +6085,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>22</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>9</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -7029,6 +6118,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>848</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>22</d_type>
@@ -7039,7 +6131,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>8</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -7073,6 +6164,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>854</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>19</d_type>
@@ -7083,7 +6177,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>7</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -7128,6 +6221,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>643</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>26</d_type>
@@ -7138,7 +6234,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>22</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>9</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -7183,6 +6278,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>648</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>22</d_type>
@@ -7193,7 +6291,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>12</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>8</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -7227,6 +6324,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>651</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>23</d_type>
@@ -7237,7 +6337,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>8</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -7271,6 +6370,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>656</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>25</d_type>
@@ -7281,7 +6383,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>8</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>
@@ -7326,6 +6427,9 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_y></d_y>
 				</path>
 				<army>
+					<d_upkeep></d_upkeep>
+					<d_army_bonus></d_army_bonus>
+					<d_move_bonus></d_move_bonus>
 					<d_id>662</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>23</d_type>
@@ -7336,7 +6440,6 @@ abafaecacabdc9aecac7adbdadc7cbcbc4b2accac7cbaec8b9c9b7ee060502020600000006070700
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
 					<d_max_moves>16</d_max_moves>
-					<d_hero>false</d_hero>
 					<d_strength>8</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>10</d_expvalue>

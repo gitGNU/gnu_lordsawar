@@ -434,7 +434,7 @@ SDL_Surface* GraphicsCache::getPlantedStandardPic(const Player* p)
 
 SDL_Surface* GraphicsCache::getArmyPic(Army *a)
 {
-  return getArmyPic(a->getOwner()->getArmyset(), a->getType(), 
+  return getArmyPic(a->getOwner()->getArmyset(), a->getTypeId(), 
 		    a->getOwner(), NULL);
 }
 
@@ -1026,7 +1026,7 @@ ArmyCacheItem* GraphicsCache::addArmyPic(Uint32 armyset, Uint32 army,
 
   //Now the most important part: load the army picture
   //First, copy the army picture and change it to the display format
-  const Army* basearmy = Armysetlist::getInstance()->getArmy(armyset, army);
+  const ArmyProto * basearmy = Armysetlist::getInstance()->getArmy(armyset, army);
 
   // copy the pixmap including player colors
   myitem->surface = applyMask(basearmy->getPixmap(), basearmy->getMask(), p);
@@ -2095,12 +2095,12 @@ void GraphicsCache::loadCityPics()
 {
   SDL_Surface *tmp;
   SDL_PixelFormat *fmt;
-  // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
+  // GameMap has the actual cityset stored
+  std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
   int size = GameMap::getInstance()->getTileset()->getTileSize() * 2;
 
   // load the image for the razed city
-  SDL_Surface* razedpics = GraphicsLoader::getCitysetPicture(tileset, "castle_razed.png");
+  SDL_Surface* razedpics = GraphicsLoader::getCitysetPicture(cityset, "castle_razed.png");
   // copy alpha values, don't use them
   SDL_SetAlpha(razedpics, 0, 0);
 
@@ -2126,7 +2126,7 @@ void GraphicsCache::loadCityPics()
   SDL_FreeSurface(razedpics);
 
   // load the city pictures
-  SDL_Surface* citypics = GraphicsLoader::getCitysetPicture(tileset, "castles.png");
+  SDL_Surface* citypics = GraphicsLoader::getCitysetPicture(cityset, "castles.png");
 
   // copy alpha values, don't use them
   SDL_SetAlpha(citypics, 0, 0);

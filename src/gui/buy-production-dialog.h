@@ -29,7 +29,7 @@
 
 #include "army-info-tip.h"
 
-class Army;
+class ArmyProto;
 class City;
 
 #include "decorated.h"
@@ -59,13 +59,13 @@ class BuyProductionDialog: public Decorated
 
     std::vector<Gtk::ToggleButton *> production_toggles;
     bool ignore_toggles;
-    std::vector<const Army*> purchasables;
+    std::vector<const ArmyProto*> purchasables;
 
     void on_production_toggled(Gtk::ToggleButton *toggle);
     bool on_production_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
     void fill_in_production_info();
     void set_buy_button_state();
-    const Army *army_id_to_army();
+    const ArmyProto *army_id_to_army();
 };
 
 #endif

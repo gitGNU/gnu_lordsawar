@@ -34,6 +34,8 @@
 #include "AI_Diplomacy.h"
 #include "action.h"
 #include "xmlhelper.h"
+#include "armyprodbase.h"
+#include "armyproto.h"
 #include "history.h"
 
 using namespace std;
@@ -195,7 +197,7 @@ int AI_Smart::setBestProduction(City *c)
         if (c->getArmytype(i) == -1)    // no production in this slot
             continue;
 
-        const Army *proto = c->getProductionBase(i);
+        const ArmyProdBase *proto = c->getProductionBase(i);
         if (scoreArmyType(proto) > scorebasic)
         {
             selectbasic = i;
@@ -231,7 +233,7 @@ int AI_Smart::chooseArmyTypeToBuy(City *c)
 
     for (unsigned int i = 0; i < size; i++)
     {
-        const Army *proto = NULL;
+        const ArmyProto *proto = NULL;
 
         proto=al->getArmy(getArmyset(), i);
 
@@ -244,7 +246,7 @@ int AI_Smart::chooseArmyTypeToBuy(City *c)
             continue;
 	}
         
-       if (c->hasProductionBase(proto->getType(), getArmyset())==false)
+       if (c->hasProductionBase(proto->getTypeId(), getArmyset())==false)
        {
          debug("I can buy it " << i)
          int score = scoreArmyType(proto);
@@ -261,26 +263,51 @@ int AI_Smart::chooseArmyTypeToBuy(City *c)
     return bestIndex;
 }
 
-int AI_Smart::scoreArmyType(const Army *a)
+int AI_Smart::scoreArmyType(const ArmyProto *a)
 {
   //this treats armies with turns of 7 or higher unfairly
-  int max_strength = 60 / a->getProduction() * a->getStat(Army::STRENGTH);
+  int max_strength = 60 / a->getProduction() * a->getStrength();
 
   int city_bonus = 0;
-  switch (a->getStat(Army::ARMY_BONUS))
+  switch (a->getArmyBonus())
     {
     case Army::ADD1STRINCITY: city_bonus += 5; break;
     case Army::ADD2STRINCITY: city_bonus += 10; break;
     }
 
   int any_other_bonus = 0;
-  if (a->getStat(Army::ARMY_BONUS) && city_bonus == 0)
+  if (a->getArmyBonus() && city_bonus == 0)
     any_other_bonus += 2;
 
   int move_bonus = 0;
-  if (a->getStat(Army::MOVES) >  10)
+  if (a->getMaxMoves() >  10)
     move_bonus += 2;
-  if (a->getStat(Army::MOVES) >=  20)
+  if (a->getMaxMoves() >=  20)
+    move_bonus += 4;
+
+  return max_strength + city_bonus + move_bonus + any_other_bonus;
+}
+
+int AI_Smart::scoreArmyType(const ArmyProdBase *a)
+{
+  //this treats armies with turns of 7 or higher unfairly
+  int max_strength = 60 / a->getProduction() * a->getStrength();
+
+  int city_bonus = 0;
+  switch (a->getArmyBonus())
+    {
+    case Army::ADD1STRINCITY: city_bonus += 5; break;
+    case Army::ADD2STRINCITY: city_bonus += 10; break;
+    }
+
+  int any_other_bonus = 0;
+  if (a->getArmyBonus() && city_bonus == 0)
+    any_other_bonus += 2;
+
+  int move_bonus = 0;
+  if (a->getMaxMoves() >  10)
+    move_bonus += 2;
+  if (a->getMaxMoves() >=  20)
     move_bonus += 4;
 
   return max_strength + city_bonus + move_bonus + any_other_bonus;

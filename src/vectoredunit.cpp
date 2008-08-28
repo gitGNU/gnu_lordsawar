@@ -28,7 +28,7 @@
 #include "GameMap.h"
 #include "action.h"
 
-VectoredUnit::VectoredUnit(Vector<int> pos, Vector<int> dest, Army *army, int duration, Player *player)
+VectoredUnit::VectoredUnit(Vector<int> pos, Vector<int> dest, ArmyProdBase *army, int duration, Player *player)
     :Ownable(player), Location(pos), d_destination(dest), d_army(army), 
      d_duration(duration)
 {
@@ -72,7 +72,7 @@ bool VectoredUnit::save(XML_Helper* helper) const
         retval &= helper->saveData("owner", d_owner->getId());
     else
         retval &= helper->saveData("owner", -1);
-    retval &= d_army->save(helper, Army::PRODUCTION_BASE);
+    retval &= d_army->save(helper);
     retval &= helper->closeTag();
 
     return retval;

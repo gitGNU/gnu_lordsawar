@@ -133,7 +133,7 @@ RewardDialog::RewardDialog(Player *player, bool hidden_ruins, Reward *r)
       else if (r->getType() == Reward::ALLIES)
 	{
 	  reward = new Reward_Allies(*static_cast<Reward_Allies*>(r));
-	  ally = new Army(*static_cast<Reward_Allies*>(reward)->getArmy());
+	  ally = new ArmyProto(*static_cast<Reward_Allies*>(reward)->getArmy());
 	}
       else if (r->getType() == Reward::RUIN)
 	{
@@ -338,7 +338,7 @@ void RewardDialog::on_ally_clicked()
   if (d.get_selected_army())
     {
       on_clear_ally_clicked();
-      ally = new Army(*(d.get_selected_army()));
+      ally = new ArmyProto(*(d.get_selected_army()));
       set_ally_name();
     }
 }
@@ -355,12 +355,12 @@ void RewardDialog::on_clear_ally_clicked()
 
 void RewardDialog::on_randomize_allies_clicked()
 {
-  const Army *a = Reward_Allies::randomArmyAlly();
+  const ArmyProto *a = Reward_Allies::randomArmyAlly();
   if (!a)
     return;
     
   on_clear_ally_clicked();
-  ally = new Army(*a);
+  ally = new ArmyProto(*a);
   num_allies_spinbutton->set_value(Reward_Allies::getRandomAmountOfAllies());
 
   set_ally_name();

@@ -26,7 +26,7 @@
 #include <sigc++/trackable.h>
 
 #include "xmlhelper.h"
-#include "army.h"
+#include "armyproto.h"
 #include "armyset.h"
 
 
@@ -60,7 +60,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *
          * @return The requested army or 0 on error.
          */
-        Army* getArmy(Uint32 id, Uint32 index) const;
+        ArmyProto* getArmy(Uint32 id, Uint32 index) const;
 
 	//! Returns an army prototype of a scout from a given armyset.
         /** 
@@ -68,7 +68,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *
          * @return The requested scout or 0 on error.
          */
-        Army* getScout(Uint32 id) const;
+        ArmyProto* getScout(Uint32 id) const;
 
 	//! Get the unshaded ship image for the given Armyset.
 	SDL_Surface * getShipPic (Uint32 id);
@@ -138,7 +138,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 */
         bool loadArmyset (std::string name);
         
-        typedef std::map<Uint32, std::vector<Army*> > ArmyPrototypeMap;
+        typedef std::map<Uint32, std::vector<ArmyProto*> > ArmyPrototypeMap;
         typedef std::map<Uint32, std::string> NameMap;
         typedef std::map<std::string, Uint32> IdMap;
         

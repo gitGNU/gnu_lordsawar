@@ -35,6 +35,7 @@
 #include "GameMap.h"
 #include "city.h"
 #include "armysetlist.h"
+#include "armyprodbase.h"
 #include "citylist.h"
 #include "GraphicsCache.h"
 #include "vectoredunitlist.h"
@@ -233,8 +234,8 @@ void DestinationDialog::fill_in_vectoring_info()
     }
   else
     {
-      const Army* a = city->getProductionBase(slot);
-      pic = to_pixbuf(gc->getArmyPic(as, a->getType(), player, NULL));
+      const ArmyProdBase* a = city->getProductionBase(slot);
+      pic = to_pixbuf(gc->getArmyPic(as, a->getTypeId(), player, NULL));
       s1 = String::ucompose(_("%1t"), city->getDuration());
       turns_label->set_markup("<i>" + s1 + "</i>");
     }
@@ -246,7 +247,7 @@ void DestinationDialog::fill_in_vectoring_info()
   vul->getVectoredUnitsComingFrom(city->getPos(), vectored);
   for (it = vectored.begin(); it != vectored.end(); it++)
     {
-      int armytype = (*it)->getArmy()->getType();
+      int armytype = (*it)->getArmy()->getTypeId();
       if ((*it)->getDuration() == 2)
         {
           pic = to_pixbuf(gc->getArmyPic(as, armytype, player, NULL));
@@ -276,7 +277,7 @@ void DestinationDialog::fill_in_vectoring_info()
           case 2: image = next_turn_3_image; break;
           case 3: image = next_turn_4_image; break;
         }
-      pic = to_pixbuf(gc->getArmyPic(as, (*it)->getArmy()->getType(), player, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, (*it)->getArmy()->getTypeId(), player, NULL));
       image->set(pic);
       count++;
     }
@@ -292,7 +293,7 @@ void DestinationDialog::fill_in_vectoring_info()
           case 2: image = turn_after_3_image; break;
           case 3: image = turn_after_4_image; break;
         }
-      pic = to_pixbuf(gc->getArmyPic(as, (*it)->getArmy()->getType(), player, NULL));
+      pic = to_pixbuf(gc->getArmyPic(as, (*it)->getArmy()->getTypeId(), player, NULL));
       image->set(pic);
       count++;
     }

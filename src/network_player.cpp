@@ -37,6 +37,7 @@
 #include "path.h"
 #include "GameMap.h"
 #include "army.h"
+#include "armyprodbase.h"
 #include "hero.h"
 #include "action.h"
 #include "MoveResult.h"
@@ -504,17 +505,15 @@ void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
   //if it was vectored, we just wait for the Action_ProduceVectored later on.
   if (action->getVectored() == true)
     return;
-  Army *a = action->getArmy();
+  ArmyProdBase *a = action->getArmy();
   City *c = Citylist::getInstance()->getById(action->getCityId());
-  a->syncNewId();
   Stack *s = c->addArmy(new Army (*a, this));
 }
 
 void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *action)
 {
-  Army *a = action->getArmy();
+  ArmyProdBase *a = action->getArmy();
   Vector<int> dest = action->getDestination();
-  a->syncNewId();
   GameMap::getInstance()->addArmy(dest, new Army (*a, this));
 }
 
@@ -553,7 +552,7 @@ void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
 {
 
   City *city = Citylist::getInstance()->getById(action->getCityId());
-  Army *ally = 0;
+  ArmyProto *ally = 0;
   if (action->getNumAllies())
     ally = Armysetlist::getInstance()->getArmy(getArmyset(),
                                                action->getAllyArmyType());

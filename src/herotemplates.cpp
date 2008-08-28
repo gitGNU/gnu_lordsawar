@@ -74,14 +74,14 @@ int HeroTemplates::loadHeroTemplates()
   size_t bytesread = 0;
   char *tmp;
   const Armysetlist* al = Armysetlist::getInstance();
-  const Army* herotype;
+  const ArmyProto* herotype;
 
   // list all the army types that are heroes.
-  std::vector<const Army*> heroes;
+  std::vector<const ArmyProto*> heroes;
   Player *p = Playerlist::getInstance()->getNeutral();
   for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
     {
-      const Army *a = al->getArmy (p->getArmyset(), j);
+      const ArmyProto *a = al->getArmy (p->getArmyset(), j);
       if (a->isHero())
 	heroes.push_back(a);
     }
@@ -114,7 +114,7 @@ int HeroTemplates::loadHeroTemplates()
 	}
 
       herotype = heroes[rand() % heroes.size()];
-      Hero *newhero = new Hero (*herotype, "", NULL, true);
+      Hero *newhero = new Hero (*herotype, "", NULL);
       if (gender)
 	newhero->setGender(Hero::MALE);
       else

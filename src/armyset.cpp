@@ -51,8 +51,8 @@ Armyset::Armyset(XML_Helper *helper)
   helper->getData(d_id, "id");
   helper->getData(d_name, "name");
   helper->getData(d_tilesize, "tilesize");
-  helper->registerTag("army", sigc::mem_fun((*this), 
-					      &Armyset::loadArmyTemplate));
+  helper->registerTag("armyproto", sigc::mem_fun((*this), 
+						 &Armyset::loadArmyProto));
 }
 
 Armyset::~Armyset()
@@ -61,14 +61,14 @@ Armyset::~Armyset()
       delete *it;
 }
 
-bool Armyset::loadArmyTemplate(string tag, XML_Helper* helper)
+bool Armyset::loadArmyProto(string tag, XML_Helper* helper)
 {
-    if (tag == "army")
+    if (tag == "armyproto")
       {
 	std::string s;
-	// First step: Load the army data
-	Army* a = new Army(helper, Army::TYPE);
-	a->setArmyset(d_id, size());
+	ArmyProto* a = new ArmyProto(helper);
+	a->setTypeId(size());
+	a->setArmyset(d_id);
 	push_back(a);
       }
     return true;
@@ -85,18 +85,18 @@ bool Armyset::save(XML_Helper* helper)
     retval &= helper->saveData("tilesize", d_tilesize);
 
     for (const_iterator it = begin(); it != end(); it++)
-        (*it)->save(helper, Army::TYPE);
+      (*it)->save(helper);
     
     retval &= helper->closeTag();
 
     return retval;
 }
 
-Army * Armyset::lookupArmyByType(Uint32 army_type)
+ArmyProto * Armyset::lookupArmyByType(Uint32 army_type_id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it)->getType() == army_type)
+      if ((*it)->getTypeId() == army_type_id)
 	return *it;
     }
   return NULL;

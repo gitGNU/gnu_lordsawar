@@ -29,7 +29,7 @@
 #include "xmlhelper.h"
 #include "hero.h"
 #include "stack.h"
-#include "army.h"
+#include "armyprodbase.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -70,7 +70,7 @@ Citylist::Citylist(XML_Helper* helper)
 {
     // simply ask the helper to inform us when a city tag is opened
     helper->registerTag("city", sigc::mem_fun(this, &Citylist::load));
-    helper->registerTag("army", sigc::mem_fun(this, &Citylist::load));
+    helper->registerTag("armyprodbase", sigc::mem_fun(this, &Citylist::load));
     helper->registerTag("slot", sigc::mem_fun(this, &Citylist::load));
 }
 
@@ -113,7 +113,7 @@ Uint32 Citylist::calculateUpcomingUpkeep(Player *p)
 	    int slot =(*it).getActiveProductionSlot();
 	    if (slot == -1)
 	      continue;
-	    const Army *a = (*it).getProductionBase(slot);
+	    const ArmyProdBase *a = (*it).getProductionBase(slot);
 	    total += a->getUpkeep();
 	  }
       }
@@ -147,7 +147,7 @@ void Citylist::nextTurn(Player* p)
 	    int slot =(*it).getActiveProductionSlot();
 	    if (slot == -1)
 	      continue;
-	    const Army *a = (*it).getProductionBase(slot);
+	    const ArmyProdBase *a = (*it).getProductionBase(slot);
 	    diff -= a->getUpkeep();
     
 	    p->cityTooPoorToProduce(&(*it), slot);
@@ -373,14 +373,14 @@ bool Citylist::save(XML_Helper* helper) const
 
 bool Citylist::load(std::string tag, XML_Helper* helper)
 {
-    if (tag == "army")
+    if (tag == "armyprodbase")
       {
 	//add it to the right city
 	//how do i add it to the right slot?
 	Citylist::iterator it = end();
 	it--;
 	City *city = &*it;
-	Army *a = new Army (helper, Army::PRODUCTION_BASE);
+	ArmyProdBase *a = new ArmyProdBase (helper);
 	int slot = city->getMaxNoOfProductionBases() - 1;
 	city->addProductionBase(slot, a);
 	return true;

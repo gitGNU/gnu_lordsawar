@@ -27,7 +27,7 @@
 
 class Reward;
 class Item;
-class Army;
+class ArmyProto;
 class Ruin;
 class Player;
 
@@ -48,7 +48,7 @@ class RewardDialog: public sigc::trackable
     Player *d_player;
     Reward *reward;
     Item *item;
-    Army *ally;
+    ArmyProto *ally;
     Ruin *hidden_ruin;
     bool d_hidden_ruins;
     Gtk::RadioButton *gold_radiobutton;

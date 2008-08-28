@@ -29,6 +29,7 @@
 #include "armysetlist.h"
 #include "shieldset.h"
 #include "shieldsetlist.h"
+#include "armyproto.h"
 #include "tilesetlist.h"
 
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -47,8 +48,8 @@ void GraphicsLoader::instantiatePixmaps(Shieldset *shieldset)
 	  ShieldStyle *ss = *it;
 	  // The shield image consists of two halves. On the left is the shield 
 	  // image, on the right the mask.
-	  SDL_Surface* pic = getShieldPicture(shieldset->getSubDir(), 
-					      ss->getImageName() + ".png");
+	  SDL_Surface* pic = getShieldsetPicture(shieldset->getSubDir(), 
+						 ss->getImageName() + ".png");
 	  if (!pic)
 	    {
 	      std::cerr <<"Could not load shield image: " << s <<std::endl;
@@ -135,6 +136,7 @@ void GraphicsLoader::uninstantiatePixmaps(Shieldset *shieldset)
 	}
     }
 }
+
 void GraphicsLoader::instantiatePixmaps(Shieldsetlist *ssl, std::string subdir)
 {
   for (Shieldsetlist::iterator it = ssl->begin(); it != ssl->end(); it++)
@@ -173,6 +175,7 @@ void GraphicsLoader::uninstantiatePixmaps(Tileset *ts)
 	  }
       }
 }
+
 void GraphicsLoader::instantiatePixmaps(Tileset *ts)
 {
   uninstantiatePixmaps(ts);
@@ -185,7 +188,6 @@ void GraphicsLoader::instantiatePixmaps(Tileset *ts)
 
 void GraphicsLoader::instantiatePixmaps(TileStyleSet *tss, Uint32 tilesize)
 {
-
   SDL_Surface* pixmaps = getTilesetPicture(tss->getSubDir(), 
 					   tss->getName() + ".png");
   if (pixmaps)
@@ -290,7 +292,7 @@ void GraphicsLoader::loadStandardPic(Armyset *armyset)
   SDL_FreeSurface(standpic);
 }
 
-bool GraphicsLoader::instantiatePixmaps(Armyset *set, Army *a)
+bool GraphicsLoader::instantiatePixmaps(Armyset *set, ArmyProto *a)
 {
   std::string s;
 
@@ -426,14 +428,14 @@ SDL_Surface* GraphicsLoader::loadImage(std::string filename, bool alpha)
 
 }
 
-SDL_Surface* GraphicsLoader::getArmyPicture(std::string armysetname, std::string pic)
+SDL_Surface* GraphicsLoader::getArmyPicture(std::string armysetdir, std::string pic)
 {
-  return loadImage(Configuration::s_dataPath + "/army/" + armysetname + "/" + pic);
+  return loadImage(Configuration::s_dataPath + "/army/" + armysetdir + "/" + pic);
 }
 
-SDL_Surface* GraphicsLoader::getTilesetPicture(std::string tilesetname, std::string picname)
+SDL_Surface* GraphicsLoader::getTilesetPicture(std::string tilesetdir, std::string picname)
 {
-  return loadImage(File::getTilesetFile(tilesetname, picname));
+  return loadImage(File::getTilesetFile(tilesetdir, picname));
 }
 
 SDL_Surface* GraphicsLoader::getMiscPicture(std::string picname, bool alpha)
@@ -441,14 +443,14 @@ SDL_Surface* GraphicsLoader::getMiscPicture(std::string picname, bool alpha)
   return loadImage(Configuration::s_dataPath + "/various/" + picname,alpha);
 }
 
-SDL_Surface* GraphicsLoader::getShieldPicture(std::string shieldsetname, std::string pic)
+SDL_Surface* GraphicsLoader::getShieldsetPicture(std::string shieldsetdir, std::string picname)
 {
-  return loadImage(Configuration::s_dataPath + "/shield/" + shieldsetname + "/" + pic);
+  return loadImage(File::getShieldsetFile(shieldsetdir, picname));
 }
 
-SDL_Surface* GraphicsLoader::getCitysetPicture(std::string citysetname, std::string picname)
+SDL_Surface* GraphicsLoader::getCitysetPicture(std::string citysetdir, std::string picname)
 {
-  return loadImage(File::getCitysetFile(citysetname, picname));
+  return loadImage(File::getCitysetFile(citysetdir, picname));
 }
 
 // End of file

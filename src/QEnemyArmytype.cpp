@@ -60,7 +60,7 @@ int getVictimArmytype(Player *p, std::list<Vector<int> >&targets)
   if (specials.size() == 0)
     return -1;
   else
-    return specials[rand() % specials.size()]->getType();
+    return specials[rand() % specials.size()]->getTypeId();
 }
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -111,7 +111,7 @@ std::string QuestEnemyArmytype::getProgress() const
 {
     Armysetlist *al = Armysetlist::getInstance();
     Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
-    const Army *a = al->getArmy(set, d_type_to_kill);
+    const ArmyProto *a = al->getArmy(set, d_type_to_kill);
     char buffer[101]; buffer[100]='\0';
     snprintf(buffer, 100, _("You have not killed a unit of enemy %s yet."), 
 	     a->getName().c_str());
@@ -122,7 +122,7 @@ void QuestEnemyArmytype::getSuccessMsg(std::queue<std::string>& msgs) const
 {
     Armysetlist *al = Armysetlist::getInstance();
     Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
-    const Army *a = al->getArmy(set, d_type_to_kill);
+    const ArmyProto *a = al->getArmy(set, d_type_to_kill);
     char buffer[101]; buffer[100]='\0';
     snprintf(buffer, 100, _("You have killed a unit of enemy %s."), a->getName().c_str());
     
@@ -139,7 +139,7 @@ void QuestEnemyArmytype::initDescription()
 {
     Armysetlist *al = Armysetlist::getInstance();
     Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
-    const Army *a = al->getArmy(set, d_type_to_kill);
+    const ArmyProto *a = al->getArmy(set, d_type_to_kill);
     char buffer[101]; buffer[100]='\0';
     snprintf(buffer, 100, _("You must destroy a unit of enemy %s."), 
 	     a->getName().c_str());
@@ -164,7 +164,7 @@ void QuestEnemyArmytype::armyDied(Army *a, bool heroIsCulprit)
   if (!isActive())
     return;
     
-  if (a->getType() == d_type_to_kill)
+  if (a->getTypeId() == d_type_to_kill)
     {
       if (heroIsCulprit)
 	{

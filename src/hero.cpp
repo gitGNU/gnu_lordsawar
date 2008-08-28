@@ -29,19 +29,17 @@
 
 using namespace std;
 
-Hero::Hero(const Army& a, std::string name, Player *owner, bool for_template)
-  : Army (a, owner, for_template)
+Hero::Hero(const Army& a, std::string name, Player *owner)
+  : Army (a, owner), d_gender(NONE)
 {
     d_name = name;
-    d_hero = true;
 }
 
 Hero::Hero(Hero& h)
-  : Army(h, h.d_owner)
+  : Army(h, h.d_owner), d_gender(h.d_gender)
 {
     std::list<Item*>::iterator it;
 
-    d_hero = true;
     // copy the backpack of the other hero
     for (it = h.d_backpack.begin(); it != h.d_backpack.end(); it++)
     {
@@ -53,15 +51,14 @@ Hero::Hero(Hero& h)
 Hero::Hero(XML_Helper* helper)
     :Army(helper)
 {
-    d_hero = true;
-    helper->getData(d_name, "name");
-    std::string gender_str;
-    helper->getData(gender_str, "gender");
-    d_gender = Army::genderFromString(gender_str);
-
-    helper->registerTag("backpack", sigc::mem_fun(*this, &Hero::loadItems));
-    helper->registerTag("item", sigc::mem_fun(*this, &Hero::loadItems));
-
+  helper->getData(d_name, "name");
+  std::string gender_str;
+  if (!helper->getData(gender_str, "gender"))
+    d_gender = NONE;
+  else
+    d_gender = genderFromString(gender_str);
+  helper->registerTag("backpack", sigc::mem_fun(*this, &Hero::loadItems));
+  helper->registerTag("item", sigc::mem_fun(*this, &Hero::loadItems));
 }
 
 
@@ -75,17 +72,17 @@ Hero::~Hero()
     }
 }
 
-bool Hero::save(XML_Helper* helper, enum ArmyContents contents) const
+bool Hero::save(XML_Helper* helper) const
 {
     bool retval = true;
     std::list<Item*>::const_iterator it;
 
     retval &= helper->openTag("hero");
-    retval &= helper->saveData("name", d_name);
-    std::string gender_str = Army::genderToString(Army::Gender(d_gender));
-    retval &= helper->saveData("gender", gender_str);
 
-    retval &= saveData(helper, Army::INSTANCE);
+    retval &= helper->saveData("name", d_name);
+    std::string gender_str = genderToString(Hero::Gender(d_gender));
+    retval &= helper->saveData("gender", gender_str);
+    retval &= saveData(helper);
 
     // Now save the backpack
     retval &= helper->openTag("backpack");
@@ -104,10 +101,10 @@ bool Hero::loadItems(std::string tag, XML_Helper* helper)
       return true;
 
     if (tag == "item")
-    {
+      {
         Item* item = new Item(helper);
         d_backpack.push_back(item);
-    }
+      }
     
     return true;
 }
@@ -180,3 +177,33 @@ Uint32 Hero::calculateNaturalCommand()
   return command;
 }
 
+
+std::string Hero::genderToString(const Hero::Gender gender)
+{
+  switch (gender)
+    {
+    case Hero::NONE:
+      return "Hero::NONE";
+      break;
+    case Hero::MALE:
+      return "Hero::MALE";
+      break;
+    case Hero::FEMALE:
+      return "Hero::FEMALE";
+      break;
+    }
+  return "Hero::FEMALE";
+}
+
+Hero::Gender Hero::genderFromString(const std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Hero::Gender(atoi(str.c_str()));
+  if (str == "Hero::MALE")
+    return Hero::MALE;
+  else if (str == "Hero::NONE")
+    return Hero::NONE;
+  else if (str == "Hero::FEMALE")
+    return Hero::FEMALE;
+  return Hero::FEMALE;
+}

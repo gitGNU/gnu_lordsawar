@@ -238,7 +238,7 @@ void RuinDialog::on_keeper_clicked()
     d.set_parent_window(*dialog.get());
     d.run();
 
-    const Army *army = d.get_selected_army();
+    const ArmyProto *army = d.get_selected_army();
     if (army)
       {
 	keeper->flClear();

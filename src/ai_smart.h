@@ -34,6 +34,8 @@ class Threatlist;
 class Threat;
 class AI_Analysis;
 class XML_Helper;
+class ArmyProdBase;
+class ArmyProto;
 
 //! A more complex artificial intelligence Player.
 /** 
@@ -103,7 +105,8 @@ class AI_Smart : public RealPlayer
         int setBestProduction(City *c);
         
         // assign a score to an army type to try to figure out which is best
-        int scoreArmyType(const Army *proto);
+        int scoreArmyType(const ArmyProto *proto);
+        int scoreArmyType(const ArmyProdBase *proto);
 
         // suggest somewhere that a hero stack might like to visit
         Location *getAlternateHeroTarget(Stack *s);

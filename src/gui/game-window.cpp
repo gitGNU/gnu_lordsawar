@@ -1561,8 +1561,7 @@ bool GameWindow::on_army_button_event(GdkEventButton *e,
   if (event.button == MouseButtonEvent::RIGHT_BUTTON
       && event.state == MouseButtonEvent::PRESSED) {
 
-    army_info_tip.reset(new ArmyInfoTip(toggle, army, 
-					ArmyInfoTip::ARMY_INSTANCE));
+    army_info_tip.reset(new ArmyInfoTip(toggle, army));
 
     return true;
   }
@@ -2482,7 +2481,7 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<Uint32> sacked_t
 	}
       pic = to_pixbuf(gc->getArmyPic(as, *it, player, NULL));
       sack_image->set(pic);
-      const Army *a = 
+      const ArmyProto *a = 
 	Armysetlist::getInstance()->getArmy (player->getArmyset(), *it);
       s = String::ucompose("%1 gp", a->getProductionCost() / 2);
       sack_label->set_text(s);

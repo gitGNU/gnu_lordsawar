@@ -124,10 +124,10 @@ Reward_Allies::Reward_Allies(Uint32 army_type, Uint32 army_set, Uint32 count)
   d_army  = al->getArmy (army_set, army_type);
 }
 
-Reward_Allies::Reward_Allies(const Army *army, Uint32 count)
+Reward_Allies::Reward_Allies(const ArmyProto *army, Uint32 count)
     :Reward(Reward::ALLIES), d_count(count)
 {
-  d_army_type = army->getType();
+  d_army_type = army->getTypeId();
   d_army_set = army->getArmyset();
   d_army = army;
 }
@@ -167,18 +167,18 @@ const Uint32 Reward_Allies::getRandomAmountOfAllies()
   return (rand() % MAX_STACK_SIZE) + 1;
 }
 
-const Army* Reward_Allies::randomArmyAlly()
+const ArmyProto* Reward_Allies::randomArmyAlly()
 {
   Uint32 allytype;
   // list all the army types that can be allies.
-  std::vector<const Army*> allytypes;
+  std::vector<const ArmyProto*> allytypes;
   Armysetlist *al = Armysetlist::getInstance();
   Player *p = Playerlist::getInstance()->getActiveplayer();
   if (!p)
     p = Playerlist::getInstance()->getNeutral();
   for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
     {
-      const Army *a = al->getArmy (p->getArmyset(), j);
+      const ArmyProto *a = al->getArmy (p->getArmyset(), j);
       if (a->getAwardable())
         allytypes.push_back(a);
     }
@@ -189,7 +189,7 @@ const Army* Reward_Allies::randomArmyAlly()
   return allytypes[allytype];
 }
 
-bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const Army *army, Uint32 alliesCount)
+bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const ArmyProto *army, Uint32 alliesCount)
 {
   for (unsigned int i = 0; i < alliesCount; i++)
     {

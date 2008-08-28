@@ -31,7 +31,7 @@
 
 #include "gui/army-info-tip.h"
 
-class Army;
+class ArmyProto;
 class City;
 class Player;
 
@@ -46,7 +46,7 @@ class SelectArmyDialog: public sigc::trackable
 
     void run();
 
-    const Army *get_selected_army() { return selected_army; }
+    const ArmyProto *get_selected_army() { return selected_army; }
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
@@ -57,14 +57,14 @@ class SelectArmyDialog: public sigc::trackable
     Gtk::Button *select_button;
     std::vector<Uint32> armysets;
 
-    const Army *selected_army;
+    const ArmyProto *selected_army;
     Player *player;
     bool d_defends_ruins;
     bool d_awardable;
 
     std::vector<Gtk::ToggleButton *> army_toggles;
     bool ignore_toggles;
-    std::vector<const Army*> selectable;
+    std::vector<const ArmyProto*> selectable;
 
     void on_army_toggled(Gtk::ToggleButton *toggle);
     bool on_army_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);

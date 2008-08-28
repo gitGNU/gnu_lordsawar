@@ -102,7 +102,7 @@ void HeroLevelsDialog::addHero(Hero *h)
     Gtk::TreeIter i = heroes_list->append();
     (*i)[heroes_columns.name] = h->getName();
     (*i)[heroes_columns.image] = to_pixbuf(gc->getArmyPic(player->getArmyset(),
-                                           h->getType(), player, NULL));
+                                           h->getTypeId(), player, NULL));
     (*i)[heroes_columns.level] = String::ucompose(_("%1"), h->getLevel());
     (*i)[heroes_columns.exp] = (Uint32)h->getXP();
     (*i)[heroes_columns.needs] = (Uint32)h->getXpNeededForNextLevel();

@@ -205,7 +205,7 @@ bool RealPlayer::maybeRecruitHero ()
         else
           alliesCount = 0;
 
-        const Army *ally = 0;
+        const ArmyProto *ally = 0;
         if (alliesCount > 0)
         {
           ally = Reward_Allies::randomArmyAlly();
