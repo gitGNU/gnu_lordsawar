@@ -262,9 +262,11 @@ AC_CONFIG_FILES([
         dat/shield/Makefile 
         dat/shield/default/Makefile 
         dat/shield/plain/Makefile 
+        dat/shield/dol/Makefile 
         dat/citysets/Makefile 
         dat/citysets/default/Makefile 
         dat/citysets/bigdefault/Makefile 
+        dat/citysets/dol/Makefile 
         dat/various/Makefile 
         dat/various/items/Makefile
         dat/various/editor/Makefile
