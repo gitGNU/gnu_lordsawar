@@ -749,7 +749,7 @@ bool MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
   Armysetlist *al = Armysetlist::getInstance();
   Uint32 armyset = al->getArmysetId("Default");
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
-  Army *a = new Army(*basearmy, NULL);
+  Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);
   // try to get there with a scout
   Uint32 moves = p->calculate(&s, dest, false);
@@ -803,7 +803,7 @@ bool MapGenerator::isAccessible (int src_x, int src_y, int dest_x, int dest_y)
   Armysetlist *al = Armysetlist::getInstance();
   Uint32 armyset = al->getArmysetId("Default");
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
-  Army *a = new Army(*basearmy, NULL);
+  Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);
   // try to get there with a scout
   if (p->calculate(&s, dest, true) == 0)
@@ -831,7 +831,7 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
   Armysetlist *al = Armysetlist::getInstance();
   Uint32 armyset = al->getArmysetId("Default");
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 16);
-  Army *a = new Army(*basearmy, NULL);
+  Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);
   // try to get there with a giant bat
   Uint32 moves = p->calculate(&s, dest, false);

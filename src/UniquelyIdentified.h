@@ -36,6 +36,10 @@ class UniquelyIdentified
     UniquelyIdentified();
     //! Copy constructor.
     UniquelyIdentified(const UniquelyIdentified&);
+
+    //! non-default constructor. 
+    UniquelyIdentified(Uint32 id);
+
     //! Loading constructor.
     UniquelyIdentified(XML_Helper* helper);
     virtual ~UniquelyIdentified();

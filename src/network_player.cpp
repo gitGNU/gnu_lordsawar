@@ -268,8 +268,6 @@ void NetworkPlayer::decodeActionSplit(const Action_Split *action)
 
   //fixme: the new stack should have an Id of getNewStackId()
   Stack *new_stack = doStackSplit(stack);
-  printf ("new stack id is %d, while we expected %d\n", new_stack->getId(),
-	  action->getNewStackId());
 
 }
 
@@ -510,7 +508,6 @@ void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
   City *c = Citylist::getInstance()->getById(action->getCityId());
   Army *army = new Army (*a, this);
   Stack *s = c->addArmy(army);
-  printf ("produced army %d, in stack id %d\n", army->getId(), s->getId());
 }
 
 void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *action)
@@ -559,9 +556,9 @@ void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
   if (action->getNumAllies())
     ally = Armysetlist::getInstance()->getArmy(getArmyset(),
                                                action->getAllyArmyType());
-  doRecruitHero(action->getHero(), city, action->getCost(), 
-		action->getNumAllies(), ally);
-
+  Hero *hero = doRecruitHero(action->getHero(), city, action->getCost(), 
+			     action->getNumAllies(), ally);
+  //hero->syncNewId();
 }
 
 void NetworkPlayer::decodeActionRenamePlayer(const Action_RenamePlayer *action)

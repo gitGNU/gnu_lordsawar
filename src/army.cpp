@@ -67,6 +67,42 @@ Army::Army(const ArmyProto& a, Player* p)
   d_visitedTemples.clear();
 }
 
+Army::Army(const ArmyProto& a, Uint32 id, Player *p)
+    :ArmyBase(a), UniquelyIdentified(id), Ownable(p), 
+    d_type_id(a.getTypeId()), d_armyset(a.getArmyset()), 
+    d_max_hp(2), d_max_moves_multiplier(1), d_max_moves_rest_bonus(0),
+    d_ship(false), d_hp(2), d_moves(a.getMaxMoves()), d_xp(0), d_level(0),
+    d_grouped(false), d_battles_number(0), d_number_hashit(0), 
+    d_number_hasbeenhit(0)
+{
+  for(int i = 0; i < 3; i++)
+    d_medal_bonus[i] = 0;
+  d_visitedTemples.clear();
+}
+
+Army::Army(const ArmyProdBase& a, Uint32 id, Player *p)
+    :ArmyBase(a), UniquelyIdentified(id), Ownable(p), 
+    d_type_id(a.getTypeId()), d_armyset(a.getArmyset()), 
+    d_max_hp(2), d_max_moves_multiplier(1), d_max_moves_rest_bonus(0),
+    d_ship(false), d_hp(2), d_moves(a.getMaxMoves()), d_xp(0), d_level(0),
+    d_grouped(false), d_battles_number(0), d_number_hashit(0), 
+    d_number_hasbeenhit(0)
+{
+  for(int i = 0; i < 3; i++)
+    d_medal_bonus[i] = 0;
+  d_visitedTemples.clear();
+}
+
+Army* Army::createNonUniqueArmy(const ArmyProto& a, Player *player)
+{
+  return new Army(a, (Uint32) 0, player);
+}
+
+Army* Army::createNonUniqueArmy(const ArmyProdBase& a, Player *player)
+{
+  return new Army(a, (Uint32) 0, player);
+}
+
 Army::Army(const ArmyProdBase& a, Player* p)
     :ArmyBase(a), UniquelyIdentified(), Ownable(p), 
     d_type_id(a.getTypeId()), d_armyset(a.getArmyset()), 
@@ -476,11 +512,6 @@ bool Army::blessedAtTemple(Uint32 temple_id)
     return false;
 
   return true;
-}
-
-void Army::syncNewId()
-{
-  fl_counter->syncToId(d_id + 1);
 }
 
 bool Army::getDefendsRuins() const

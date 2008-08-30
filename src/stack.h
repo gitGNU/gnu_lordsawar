@@ -75,6 +75,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Destructor.
         ~Stack();
 
+	//! Create a stack with an id that isn't unique.
+	static Stack* createNonUniqueStack(Player *player, Vector<int> pos);
+
         //! Change the loyalty of the stack.
         void setPlayer(Player* p);
 
@@ -341,6 +344,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
 	void payUpkeep(Player *p);
     private:    
+
+
+	Stack(Uint32 id, Player* player, Vector<int> pos);
 
         //! Callback for loading the stack
         bool load(std::string tag, XML_Helper* helper);

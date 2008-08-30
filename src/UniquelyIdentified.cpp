@@ -32,6 +32,11 @@ UniquelyIdentified::UniquelyIdentified(const UniquelyIdentified& obj)
 {
 }
 
+UniquelyIdentified::UniquelyIdentified(Uint32 id)
+{
+    d_id = id;
+}
+
 UniquelyIdentified::UniquelyIdentified(XML_Helper* helper)
 {
     helper->getData(d_id, "id");

@@ -126,6 +126,9 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	//! Destructor.
         virtual ~Army();
 
+	static Army* createNonUniqueArmy(const ArmyProto& a, Player *p=NULL);
+	static Army* createNonUniqueArmy(const ArmyProdBase& a, Player *p=NULL);
+
         // Set functions:
         
         //! Set the Id of Armyset and type that this Army belongs to.
@@ -318,8 +321,6 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	//! Emitted when an Army has died.
         static sigc::signal<void, Army*> sdying;
 
-	void syncNewId();
-
 	virtual bool isHero() const {return false;};
 
 	//take these values from the army type that the instance points to.
@@ -505,6 +506,14 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 * it increases it's d_level by 1.
 	 */
         static const int xp_per_level = 10;
+
+    private:
+
+	//! Create an army with a non-unique id from an army prototype.
+	Army(const ArmyProto& a, Uint32 id, Player *player = NULL);
+	//! Create an army with a non-unique id from an army production base.
+	Army(const ArmyProdBase& a, Uint32 id, Player *player = NULL);
+
 };
 
 #endif // ARMY_H

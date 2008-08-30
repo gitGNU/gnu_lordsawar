@@ -53,6 +53,13 @@ Stack::Stack(Player* player, Vector<int> pos)
     d_path = new Path();
 }
 
+Stack::Stack(Uint32 id, Player* player, Vector<int> pos)
+    : UniquelyIdentified(id), Movable(pos), Ownable(player), 
+    d_defending(false), d_parked(false), d_deleting(false)
+{
+    d_path = new Path();
+}
+
 Stack::Stack(Stack& s)
     : UniquelyIdentified(s), Movable(s), Ownable(s), 
     d_defending(s.d_defending), d_parked(s.d_parked), d_deleting(false)
@@ -63,16 +70,14 @@ Stack::Stack(Stack& s)
     
     for (iterator sit = s.begin(); sit != s.end(); sit++)
     {
-        Army* a;
-        Army* h;
 	if ((*sit)->isHero())
 	  {
-	    h = new Hero(dynamic_cast<Hero&>(**sit));
+	    Army *h = new Hero(dynamic_cast<Hero&>(**sit));
 	    push_back(h);
 	  }
 	else
 	  {
-	    a = new Army((**sit), (*sit)->getOwner());
+	    Army *a = new Army((**sit), (*sit)->getOwner());
 	    push_back(a);
 	  }
     }
@@ -737,7 +742,7 @@ std::vector<Uint32> Stack::determineReachableArmies(Vector<int> dest)
     {
       if ((*it)->getMoves() > 0)
 	{
-	  Stack *stack = new Stack(getOwner(), getPos());
+	  Stack *stack = Stack::createNonUniqueStack(getOwner(), getPos());
 	  stack->push_back(*it);
 	  if (stack->getGroupMoves() >= 
 	      stack->getPath()->calculate(stack, dest))
@@ -758,7 +763,7 @@ std::vector<Uint32> Stack::determineReachableArmies(Vector<int> dest)
 	continue;
       if ((*it)->getMoves() > 0)
 	{
-	  Stack *stack = new Stack(getOwner(), getPos());
+	  Stack *stack = Stack::createNonUniqueStack(getOwner(), getPos());
 	  stack->push_back(*it);
 	  //also push back the rest of the known reachables
 	  std::vector<Uint32>::iterator iit = ids.begin();
@@ -793,7 +798,7 @@ Uint32 Stack::countArmiesBlessedAtTemple(Uint32 temple_id)
 Uint32 Stack::scout(Player *p, Vector<int> src, Vector<int> dest, 
 		    const ArmyProdBase *prodbase)
 {
-  Stack *stack = new Stack(p, src);
+  Stack *stack = Stack::createNonUniqueStack(p, src);
 
   Army *army;
   if (!prodbase)
@@ -801,10 +806,10 @@ Uint32 Stack::scout(Player *p, Vector<int> src, Vector<int> dest,
       ArmyProto *proto = Armysetlist::getInstance()->getScout(p->getArmyset());
       if (!proto)
 	return 0;
-      army = new Army (*proto, p);
+      army = Army::createNonUniqueArmy (*proto, p);
     }
   else
-    army = new Army (*prodbase, p);
+    army = Army::createNonUniqueArmy (*prodbase, p);
 
   if (!army)
     return 0;
@@ -821,4 +826,10 @@ Uint32 Stack::scout(Stack *stack, Vector<int> dest)
   delete scout_stack;
   return mp;
 }
+
+Stack* Stack::createNonUniqueStack(Player *player, Vector<int> pos)
+{
+  return new Stack(0, player, pos);
+}
+
 // End of file

@@ -2299,10 +2299,6 @@ void Player::tallyTriumph(Player *p, TriumphType type)
 
 Hero* Player::doRecruitHero(HeroProto* herotemplate, City *city, int cost, int alliesCount, const ArmyProto *ally)
 {
-  History_HeroEmerges *item = new History_HeroEmerges();
-  item->fillData(herotemplate, city);
-  addHistory(item);
-
   Hero *newhero = new Hero(*herotemplate);
   newhero->setOwner(this);
   GameMap::getInstance()->addArmy(city, newhero);
@@ -2331,6 +2327,10 @@ void Player::recruitHero(HeroProto* heroproto, City *city, int cost, int alliesC
   Action_RecruitHero *action = new Action_RecruitHero();
   action->fillData(heroproto, city, cost, alliesCount, ally);
   addAction(action);
+  History_HeroEmerges *item = new History_HeroEmerges();
+  item->fillData(heroproto, city);
+  addHistory(item);
+
   Hero *hero = doRecruitHero(heroproto, city, cost, alliesCount, ally);
 }
 
@@ -2977,7 +2977,6 @@ bool Player::cityProducesArmy(City *city)
     item->fillData(source_army, city, false);
   else
     item->fillData(source_army, city, true);
-  printf ("produced army %d, in stack %d\n", army->getId(), d_stacklist->getArmyStackById(army->getId())->getId());
   addAction(item);
   return true;
 }

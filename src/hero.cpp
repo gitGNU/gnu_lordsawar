@@ -27,17 +27,18 @@
 #include "stacklist.h"
 #include "templelist.h"
 #include "heroproto.h"
+#include "counter.h"
 
 using namespace std;
 
 Hero::Hero(const HeroProto& a)
-  : Army (dynamic_cast<const ArmyProto&>(a)), d_gender(Gender(a.getGender())),
-    d_name(a.getName())
+  : Army (dynamic_cast<const ArmyProto&>(a)), d_name(a.getName()),
+    d_gender(Gender(a.getGender()))
 {
 }
 
 Hero::Hero(Hero& h)
-  : Army(h, h.d_owner), d_gender(h.d_gender), d_name(h.d_name)
+  : Army(h, h.d_owner), d_name(h.d_name), d_gender(h.d_gender)
 {
     std::list<Item*>::iterator it;
 
