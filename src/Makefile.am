@@ -36,7 +36,7 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
 	fight.cpp fight.h File.cpp File.h FogMap.cpp FogMap.h \
         GameMap.cpp GameMap.h GameScenario.cpp GameScenario.h \
 	GameScenarioOptions.cpp GameScenarioOptions.h \
-	hero.cpp hero.h \
+	hero.cpp hero.h heroproto.cpp heroproto.h \
         herotemplates.cpp herotemplates.h history.cpp history.h \
         Immovable.cpp Immovable.h Item.cpp Item.h \
 	ItemProto.cpp ItemProto.h \

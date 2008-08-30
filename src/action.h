@@ -1451,16 +1451,16 @@ class Action_RecruitHero : public Action
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action.
-        bool fillData(Hero* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
+        bool fillData(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
     
-	Hero* getHero() const {return d_hero;};
+	HeroProto* getHero() const {return d_hero;};
 	Uint32 getCityId() const {return d_city;};
 	Uint32 getCost() const {return d_cost;};
 	Uint32 getNumAllies() const {return d_allies;};
 	Uint32 getAllyArmyType() const {return d_ally_army_type;};
 
         private:
-        Hero *d_hero;
+        HeroProto *d_hero;
         Uint32 d_city, d_cost, d_allies, d_ally_army_type;
 
         bool load(std::string tag, XML_Helper *helper);

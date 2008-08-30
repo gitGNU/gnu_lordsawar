@@ -23,6 +23,7 @@
 #include "armysetlist.h"
 #include "playerlist.h"
 #include "hero.h"
+#include "heroproto.h"
 
 HeroTemplates* HeroTemplates::d_instance = 0;
 
@@ -51,12 +52,12 @@ HeroTemplates::HeroTemplates()
 HeroTemplates::~HeroTemplates()
 {
   for (unsigned int i = 0; i < MAX_PLAYERS; ++i)
-    for (std::vector<Hero *>::iterator j = d_herotemplates[i].begin();
+    for (std::vector<HeroProto *>::iterator j = d_herotemplates[i].begin();
            j != d_herotemplates[i].end(); ++j)
       delete *j;
 }
 
-Hero *HeroTemplates::getRandomHero(int player_id)
+HeroProto *HeroTemplates::getRandomHero(int player_id)
 {
   int num = rand() % d_herotemplates[player_id].size();
   return d_herotemplates[player_id][num];
@@ -114,7 +115,7 @@ int HeroTemplates::loadHeroTemplates()
 	}
 
       herotype = heroes[rand() % heroes.size()];
-      Hero *newhero = new Hero (*herotype, "", NULL);
+      HeroProto *newhero = new HeroProto (*herotype);
       if (gender)
 	newhero->setGender(Hero::MALE);
       else

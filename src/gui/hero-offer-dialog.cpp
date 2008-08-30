@@ -35,7 +35,7 @@
 #include "sound.h"
 #include "city.h"
 
-HeroOfferDialog::HeroOfferDialog(Player *player, Hero *h, City *c, int gold)
+HeroOfferDialog::HeroOfferDialog(Player *player, HeroProto *h, City *c, int gold)
 {
     city = c;
     hero = h;

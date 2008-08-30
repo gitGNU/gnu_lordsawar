@@ -30,6 +30,7 @@
 #include "heromap.h"
 #include "player.h"
 #include "hero.h"
+#include "heroproto.h"
 
 #include "decorated.h"
 struct SDL_Surface;
@@ -38,7 +39,7 @@ struct SDL_Surface;
 class HeroOfferDialog: public Decorated
 {
  public:
-    HeroOfferDialog(Player *player, Hero *hero, City *city, int gold);
+    HeroOfferDialog(Player *player, HeroProto *hero, City *city, int gold);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -55,7 +56,7 @@ class HeroOfferDialog: public Decorated
     Gtk::RadioButton *male_radiobutton;
     Gtk::Entry *name_entry;
     
-    Hero *hero;
+    HeroProto *hero;
     City *city;
 
     void on_male_toggled();

@@ -252,7 +252,7 @@ class ArmyBase
 	 * d_gender is one of the values contained in Army::Gender.
 	 * This value does not change during gameplay (heh).
 	 */
-        Uint32 d_gender;
+        //Uint32 d_gender;
 
 	//! The amount of XP this Army unit worth when killed by an assailant.
 	/**

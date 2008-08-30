@@ -325,7 +325,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	//take these values from the army type that the instance points to.
 	bool getAwardable() const;
 	bool getDefendsRuins() const;
-	std::string getName() const;
+	virtual std::string getName() const;
 
     protected:
 

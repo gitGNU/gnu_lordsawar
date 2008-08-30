@@ -98,6 +98,7 @@
 #include "playerlist.h"
 #include "citylist.h"
 #include "hero.h"
+#include "heroproto.h"
 #include "temple.h"
 #include "city.h"
 #include "Quest.h"
@@ -1989,7 +1990,7 @@ void GameWindow::on_hero_brings_allies (int numAllies)
   dialog->hide();
 }
 
-bool GameWindow::on_hero_offers_service(Player *player, Hero *hero, City *city, int gold)
+bool GameWindow::on_hero_offers_service(Player *player, HeroProto *hero, City *city, int gold)
 {
   HeroOfferDialog d(player, hero, city, gold);
   d.set_parent_window(*window.get());

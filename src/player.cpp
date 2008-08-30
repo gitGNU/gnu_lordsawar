@@ -44,6 +44,7 @@
 #include "counter.h"
 #include "army.h"
 #include "hero.h"
+#include "heroproto.h"
 #include "Configuration.h"
 #include "GameScenarioOptions.h"
 #include "action.h"
@@ -2296,7 +2297,7 @@ void Player::tallyTriumph(Player *p, TriumphType type)
   d_triumph[id][type]++;
 }
 
-void Player::doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const ArmyProto *ally)
+Hero* Player::doRecruitHero(HeroProto* herotemplate, City *city, int cost, int alliesCount, const ArmyProto *ally)
 {
   History_HeroEmerges *item = new History_HeroEmerges();
   item->fillData(herotemplate, city);
@@ -2322,14 +2323,15 @@ void Player::doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesC
   }
   withdrawGold(cost);
   supdatingStack.emit(0);
+  return newhero;
 }
 
-void Player::recruitHero(Hero* hero, City *city, int cost, int alliesCount, const ArmyProto *ally)
+void Player::recruitHero(HeroProto* heroproto, City *city, int cost, int alliesCount, const ArmyProto *ally)
 {
   Action_RecruitHero *action = new Action_RecruitHero();
-  action->fillData(hero, city, cost, alliesCount, ally);
+  action->fillData(heroproto, city, cost, alliesCount, ally);
   addAction(action);
-  doRecruitHero(hero, city, cost, alliesCount, ally);
+  Hero *hero = doRecruitHero(heroproto, city, cost, alliesCount, ally);
 }
 
 void Player::doDeclareDiplomacy (DiplomaticState state, Player *player)
@@ -2975,6 +2977,7 @@ bool Player::cityProducesArmy(City *city)
     item->fillData(source_army, city, false);
   else
     item->fillData(source_army, city, true);
+  printf ("produced army %d, in stack %d\n", army->getId(), d_stacklist->getArmyStackById(army->getId())->getId());
   addAction(item);
   return true;
 }

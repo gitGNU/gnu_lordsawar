@@ -25,6 +25,7 @@
 class XML_Helper;
 
 class Hero;
+class HeroProto;
 class City;
 #include "army.h"
 
@@ -246,7 +247,7 @@ class History_HeroEmerges : public History
 	 * @param hero    The Hero that has emergerd.
 	 * @param city    The City where the Hero has emerged.
 	 */
-        bool fillData(Hero *hero, City *city);
+        bool fillData(HeroProto *hero, City *city);
 
 	//! Get the name of the Hero who appeared.
 	std::string getHeroName() const {return d_hero;}

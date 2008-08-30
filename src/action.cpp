@@ -41,6 +41,7 @@
 #include "playerlist.h"
 #include "player.h"
 #include "armyprodbase.h"
+#include "heroproto.h"
 
 using namespace std;
 
@@ -972,7 +973,7 @@ std::string Action_Buy::dump() const
 {
     std::stringstream s;
 
-    s <<"Production " <<d_prod <<"bought in city " <<d_city;
+    s <<"Production " <<d_prod <<" bought in city " <<d_city;
     s <<"slot: " <<d_slot << "\n";
 
     return s.str();
@@ -2105,21 +2106,21 @@ Action_RecruitHero::Action_RecruitHero(XML_Helper* helper)
     helper->getData(d_cost, "cost");
     helper->getData(d_allies, "allies");
     helper->getData(d_ally_army_type, "ally_army_type");
-    helper->registerTag("hero", sigc::mem_fun(this, &Action_RecruitHero::load));
+    helper->registerTag("heroproto", sigc::mem_fun(this, &Action_RecruitHero::load));
 }
 
 Action_RecruitHero::Action_RecruitHero(const Action_RecruitHero &action)
 : Action(action), d_city(action.d_city), d_cost(action.d_cost), 
     d_allies(action.d_allies), d_ally_army_type(action.d_ally_army_type)
 {
-  d_hero = new Hero(*action.d_hero);
+  d_hero = new HeroProto(*action.d_hero);
 }
 
 bool Action_RecruitHero::load(std::string tag, XML_Helper *helper)
 {
-    if (tag == "hero")
+    if (tag == "heroproto")
       {
-	d_hero = new Hero(helper);
+	d_hero = new HeroProto(helper);
 
 	return true;
       }
@@ -2134,7 +2135,7 @@ std::string Action_RecruitHero::dump() const
 {
     std::stringstream s;
 
-    s << "Hero " << d_hero->getId() << " recruited with " << d_allies << " allies\n";
+    s << "Hero " << d_hero->getName() << " recruited with " << d_allies << " allies\n";
 
     return s.str();
 }
@@ -2152,7 +2153,7 @@ bool Action_RecruitHero::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_RecruitHero::fillData(Hero* hero, City *city, int cost, int alliesCount, const ArmyProto *ally)
+bool Action_RecruitHero::fillData(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally)
 {
     d_hero = hero;
     d_city = city->getId();

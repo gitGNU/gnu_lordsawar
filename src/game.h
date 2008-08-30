@@ -127,7 +127,7 @@ class Game
     sigc::signal<void, Stack *, Stack *> ruinfight_started;
     sigc::signal<void, float> advice_asked;
     sigc::signal<void, Fight::Result> ruinfight_finished;
-    sigc::signal<bool, Player *, Hero *, City *, int> hero_offers_service;
+    sigc::signal<bool, Player *, HeroProto *, City *, int> hero_offers_service;
     sigc::signal<bool, int > enemy_offers_surrender;
     sigc::signal<void, bool> surrender_answered;
     sigc::signal<bool, Player *, Stack *, Player *, Vector<int> > stack_considers_treachery;
@@ -203,7 +203,7 @@ class Game
     void looting_city(City *city, int &gold);
     void unselect_active_stack();
     void select_active_stack();
-    bool recruitHero(Hero *hero, City *city, int gold);
+    bool recruitHero(HeroProto *hero, City *city, int gold);
 
     GameScenario* d_gameScenario;
     NextTurn* d_nextTurn;

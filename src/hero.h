@@ -68,7 +68,7 @@ class Hero : public Army
 	 * Copies the prototype hero and creates a hero from it.
          */
 	//! Default constructor.
-        Hero(const Army& a, std::string name, Player *owner);
+        Hero(const HeroProto& a);
 
         /**
          * This performs a deep copy, including the Hero's items.
@@ -144,7 +144,7 @@ class Hero : public Army
 	Uint32 calculateNaturalCommand();
 
 	void setName(std::string name) {d_name = name;};
-	std::string getName() const {return d_name;};
+	virtual std::string getName() const {return d_name;};
 
 	bool isHero() const {return true;};
 

@@ -22,7 +22,7 @@
 #include <vector>
 #include "defs.h"
 
-class Hero;
+class HeroProto;
 
 //! A list of Item objects.
 /** 
@@ -40,7 +40,7 @@ class HeroTemplates
         //! Explicitely deletes the singleton instance.
         static void deleteInstance();
 
-        Hero *getRandomHero(int player_id);
+        HeroProto *getRandomHero(int player_id);
         
     protected:
 	//! Default constructor. The function reads in the heronames file and produces a set of hero templates to be randomly selected from.
@@ -50,7 +50,7 @@ class HeroTemplates
 
     private:
         /* the contents of the heronames data file */
-        std::vector<Hero*> d_herotemplates[MAX_PLAYERS];
+        std::vector<HeroProto*> d_herotemplates[MAX_PLAYERS];
 
         static HeroTemplates* d_instance;
 

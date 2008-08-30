@@ -39,6 +39,7 @@
 #include "army.h"
 #include "armyprodbase.h"
 #include "hero.h"
+#include "heroproto.h"
 #include "action.h"
 #include "MoveResult.h"
 #include "Configuration.h"
@@ -507,7 +508,9 @@ void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
     return;
   ArmyProdBase *a = action->getArmy();
   City *c = Citylist::getInstance()->getById(action->getCityId());
-  Stack *s = c->addArmy(new Army (*a, this));
+  Army *army = new Army (*a, this);
+  Stack *s = c->addArmy(army);
+  printf ("produced army %d, in stack id %d\n", army->getId(), s->getId());
 }
 
 void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *action)
@@ -556,7 +559,6 @@ void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
   if (action->getNumAllies())
     ally = Armysetlist::getInstance()->getArmy(getArmyset(),
                                                action->getAllyArmyType());
-  action->getHero()->syncNewId();
   doRecruitHero(action->getHero(), city, action->getCost(), 
 		action->getNumAllies(), ally);
 

@@ -154,14 +154,7 @@ bool RealPlayer::maybeRecruitHero ()
   if (((((rand() % 6) == 0) && (gold_needed < getGold())) 
        || gold_needed == 0))
     {
-      Hero *herotemplate =HeroTemplates::getInstance()->getRandomHero(getId());
-#if 0
-      const Armysetlist* al = Armysetlist::getInstance();
-      const Army *heroType = al->getArmy (p->getArmyset(), 
-					  templateHero->getType());
-      Hero* newhero = new Hero(*heroType, templateHero->getName(), p);
-      newhero->setGender(Army::Gender(templateHero->getGender()));
-#endif
+      HeroProto *heroproto=HeroTemplates::getInstance()->getRandomHero(getId());
       if (gold_needed == 0)
 	{
 	  //we do it this way because maybe quickstart is on.
@@ -191,7 +184,7 @@ bool RealPlayer::maybeRecruitHero ()
       if (srecruitingHero.empty())
         accepted = true;
       else if (city)
-        accepted = srecruitingHero.emit(herotemplate, city, gold_needed);
+        accepted = srecruitingHero.emit(heroproto, city, gold_needed);
 
       if (accepted) {
         /* now maybe add a few allies */
@@ -213,7 +206,7 @@ bool RealPlayer::maybeRecruitHero ()
             alliesCount = 0;
         }
         
-        recruitHero(herotemplate, city, gold_needed, alliesCount, ally);
+        recruitHero(heroproto, city, gold_needed, alliesCount, ally);
       }
     }
   return accepted;

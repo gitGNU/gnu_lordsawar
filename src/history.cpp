@@ -21,6 +21,7 @@
 
 #include "history.h"
 #include "hero.h"
+#include "heroproto.h"
 #include "city.h"
 
 using namespace std;
@@ -373,7 +374,7 @@ bool History_HeroEmerges::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool History_HeroEmerges::fillData(Hero *hero, City *city)
+bool History_HeroEmerges::fillData(HeroProto *hero, City *city)
 {
   d_hero = hero->getName();
   d_city = city->getName();

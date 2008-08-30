@@ -42,6 +42,7 @@
 #include "army.h"
 #include "fight.h"
 #include "hero.h"
+#include "heroproto.h"
 #include "stacklist.h"
 #include "citylist.h"
 #include "ruinlist.h"
@@ -1253,9 +1254,9 @@ void Game::on_city_fight_finished(City *city, Fight::Result result)
   return;
 }
     
-bool Game::recruitHero(Hero *hero, City *city, int gold)
+bool Game::recruitHero(HeroProto *hero, City *city, int gold)
 {
-  bool retval = hero_offers_service (city->getOwner(), hero, city, gold);
+  bool retval = hero_offers_service.emit (city->getOwner(), hero, city, gold);
   if (d_gameScenario->getRound() == 1)
     city_visited.emit(city);
   return retval;

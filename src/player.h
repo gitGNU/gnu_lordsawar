@@ -41,6 +41,7 @@
 class Stacklist;
 class XML_Helper;
 class Hero;
+class HeroProto;
 class Action;
 class NetworkAction;
 class History;
@@ -533,7 +534,7 @@ class Player: public sigc::trackable
 	 * 
          * @note Only change the name and gender attributes of the Hero.
          */
-        void recruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const ArmyProto *ally);
+        void recruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
 
 	void rename (std::string name);
         /** 
@@ -1151,7 +1152,7 @@ class Player: public sigc::trackable
 	 * @return True if we're accepting a hero, false if not.
 	 */
         //! Emitted whenever a hero is recruited.
-        sigc::signal<bool, Hero*, City *, int> srecruitingHero;
+        sigc::signal<bool, HeroProto*, City *, int> srecruitingHero;
 
 	/**
 	 * @param army   The army that has gained a level.
@@ -1408,7 +1409,7 @@ class Player: public sigc::trackable
         void doDeclareDiplomacy (DiplomaticState state, Player *player);
         void doProposeDiplomacy (DiplomaticProposal proposal, Player *player);
         void doConquerCity(City *city, Stack *stack);
-        void doRecruitHero(Hero* herotemplate, City *city, int cost, int alliesCount, const ArmyProto *ally);
+        Hero* doRecruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
         void doRename(std::string name);
 	const Army *doCityProducesArmy(City *city);
 	void doVectoredUnitArrives(VectoredUnit *unit);
