@@ -1,6 +1,7 @@
 2008-08-30  Ben Asselstine
 
 	* hero objects now have a hero prototype object.
+	* stack and army objects can now be created without unique ids.
 
 2008-08-24  Ben Asselstine
 
