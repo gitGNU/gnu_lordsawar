@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-08-30 09:10-0400\n"
+"POT-Creation-Date: 2008-09-03 13:59-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -216,7 +216,7 @@ msgid "_Close"
 msgstr "Schließen"
 
 #: dat/glade/city-window.glade:225 dat/glade/destination-dialog.glade:125
-#: src/gui/city-window.cpp:264 src/gui/destination-dialog.cpp:228
+#: src/gui/city-window.cpp:264 src/gui/destination-dialog.cpp:229
 #, fuzzy
 msgid "Current:"
 msgstr "Zähler:"
@@ -1348,7 +1348,7 @@ msgstr ""
 
 #: dat/glade/editor/armyset-window.glade:420
 #: dat/glade/editor/tileset-selector-editor-dialog.glade:176
-#: dat/glade/editor/tileset-window.glade:957
+#: dat/glade/editor/tileset-window.glade:959
 #, fuzzy
 msgid "Select A File"
 msgstr "Wählt ein Artefakt"
@@ -2314,18 +2314,20 @@ msgid ""
 "Stippled\n"
 "Randomized\n"
 "Sunken\n"
-"Tablecloth"
+"Tablecloth\n"
+"Diagonal\n"
+"Crosshatched"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:932
+#: dat/glade/editor/tileset-window.glade:934
 msgid "Image File:"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:988
+#: dat/glade/editor/tileset-window.glade:990
 msgid "Refresh Image from File"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:1072
+#: dat/glade/editor/tileset-window.glade:1074
 msgid ""
 "Lone\n"
 "Outer Top-Left\n"
@@ -2346,22 +2348,22 @@ msgid ""
 "Other"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:1149
+#: dat/glade/editor/tileset-window.glade:1151
 #, fuzzy
 msgid "<b>Tile Style</b>"
 msgstr "Tempel"
 
-#: dat/glade/editor/tileset-window.glade:1190
+#: dat/glade/editor/tileset-window.glade:1192
 #, fuzzy
 msgid "<b>Tile Style Set</b>"
 msgstr "Tempel"
 
-#: dat/glade/editor/tileset-window.glade:1224
+#: dat/glade/editor/tileset-window.glade:1226
 #, fuzzy
 msgid "<b>Tile Style Sets</b>"
 msgstr "Tempel"
 
-#: dat/glade/editor/tileset-window.glade:1258
+#: dat/glade/editor/tileset-window.glade:1260
 #, fuzzy
 msgid "<b>Tile</b>"
 msgstr "Tempel"
@@ -2467,7 +2469,7 @@ msgstr ""
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:580 src/gui/driver.cpp:655
+#: src/GameScenario.cpp:580 src/gui/driver.cpp:661
 #, fuzzy
 msgid "Error: "
 msgstr "Fehler"
@@ -2816,32 +2818,32 @@ msgstr "Fehler: Armee und zu durchsuchende Ruine nicht am selben Platz\n"
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Armee versuchte Tempel an der falschen Position zu besuchen\n"
 
-#: src/player.cpp:2319
+#: src/player.cpp:2322
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Standardeinheiten"
 
-#: src/reward.cpp:425
+#: src/reward.cpp:424
 msgid "%1 Gold Piece"
 msgid_plural "%1 Gold Pieces"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/reward.cpp:433
+#: src/reward.cpp:432
 msgid "Allies: %1 x %2"
 msgstr ""
 
-#: src/reward.cpp:441
+#: src/reward.cpp:440
 #, fuzzy
 msgid "Item: %1"
 msgstr "Artefakt:"
 
-#: src/reward.cpp:448
+#: src/reward.cpp:447
 #, fuzzy
 msgid "Site: %1"
 msgstr "Größe:"
 
-#: src/reward.cpp:454
+#: src/reward.cpp:453
 msgid "Map: %1,%2 %3x%4"
 msgstr ""
 
@@ -2903,7 +2905,7 @@ msgstr "Bewegung: %i"
 msgid "Cost: %1"
 msgstr "Kosten:"
 
-#: src/gui/city-window.cpp:294 src/gui/destination-dialog.cpp:239
+#: src/gui/city-window.cpp:294 src/gui/destination-dialog.cpp:240
 msgid "%1t"
 msgstr ""
 
@@ -3271,8 +3273,8 @@ msgstr ""
 msgid "Choose Game to Load"
 msgstr "Terraintyp"
 
-#: src/gui/game-window.cpp:942 src/gui/driver.cpp:272 src/gui/driver.cpp:437
-#: src/gui/driver.cpp:600 src/gui/driver.cpp:619
+#: src/gui/game-window.cpp:942 src/gui/driver.cpp:272 src/gui/driver.cpp:443
+#: src/gui/driver.cpp:606 src/gui/driver.cpp:625
 msgid "Corrupted saved game file."
 msgstr ""
 
@@ -3590,29 +3592,29 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr "Dein Held %s hat die Mission abgeschlossen."
 
-#: src/gui/driver.cpp:321
+#: src/gui/driver.cpp:325
 msgid "Server went away."
 msgstr ""
 
-#: src/gui/driver.cpp:337
+#: src/gui/driver.cpp:341
 #, fuzzy
 msgid "Could not connect."
 msgstr "FEHLER: Konnte Karte nicht laden "
 
-#: src/gui/driver.cpp:555 src/editor/main-window.cpp:384
+#: src/gui/driver.cpp:561 src/editor/main-window.cpp:384
 #: src/editor/main-window.cpp:430
 msgid "Neutral"
 msgstr "Neutraler Spieler"
 
-#: src/gui/driver.cpp:630
+#: src/gui/driver.cpp:636
 msgid "Save the scenario and mail it to the first player"
 msgstr ""
 
-#: src/gui/driver.cpp:653
+#: src/gui/driver.cpp:659
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 
-#: src/gui/driver.cpp:658
+#: src/gui/driver.cpp:664
 msgid "Now send the saved-game file to %1"
 msgstr ""
 
