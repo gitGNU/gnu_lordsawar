@@ -717,10 +717,13 @@ void Playerlist::turnHumansIntoNetworkPlayers()
     }
 }
 
-void Playerlist::turnHumansInto(Player::Type type)
+void Playerlist::turnHumansInto(Player::Type type, int number_of_players)
 {
+  int count = 0;
   for (iterator i = begin(); i != end(); i++)
     {
+      if (count >= number_of_players && number_of_players > 0)
+	break;
       if ((*i)->getType() == Player::HUMAN)
 	{
 	  switch (type)
@@ -731,6 +734,7 @@ void Playerlist::turnHumansInto(Player::Type type)
 		  swap((*i), new_p);
 		  //delete *i; fixme
 		  i = begin();
+		  count++;
 		  continue;
 		}
 	      break;
@@ -740,6 +744,7 @@ void Playerlist::turnHumansInto(Player::Type type)
 		  swap((*i), new_p);
 		  //delete *i; fixme
 		  i = begin();
+		  count++;
 		  continue;
 		}
 	      break;
@@ -749,6 +754,7 @@ void Playerlist::turnHumansInto(Player::Type type)
 		  swap((*i), new_p);
 		  //delete *i; fixme
 		  i = begin();
+		  count++;
 		  continue;
 		}
 	      break;
@@ -758,6 +764,7 @@ void Playerlist::turnHumansInto(Player::Type type)
 	}
     }
 }
+
 std::list<Uint32> given_turn_order;
 bool Playerlist::inGivenOrder(const Player *lhs, const Player *rhs)  
 {

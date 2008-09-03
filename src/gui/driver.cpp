@@ -80,7 +80,7 @@ Driver::Driver(std::string load_filename)
 	stress_test();
 	exit(0);
       }
-    if (Main::instance().start_robots) 
+    if (Main::instance().start_robots != 0) 
       {
 	run();
 	return;
@@ -178,10 +178,11 @@ void Driver::run()
 	    }
 	}
     }
-  else if (Main::instance().start_robots) 
+  else if (Main::instance().start_robots != 0) 
     {
       Sound::deleteInstance();
-      lordsawaromatic("127.0.0.1", LORDSAWAR_PORT, Player::AI_FAST);
+      lordsawaromatic("127.0.0.1", LORDSAWAR_PORT, Player::AI_FAST,
+		      Main::instance().start_robots);
     }
   else
     {
@@ -763,7 +764,7 @@ void Driver::stress_test()
 
 }
 	
-void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type type)
+void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type type, int num_players)
 {
   GameClient *game_client = GameClient::getInstance();
   game_client->game_scenario_received.connect
@@ -779,6 +780,7 @@ void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type
   heartbeat_conn = Glib::signal_timeout().connect
     (bind_return(sigc::mem_fun(*this, &Driver::heartbeat), true), 1 * 1000);
   robot_player_type = type;
+  number_of_robots = num_players;
 }
 
 void Driver::on_game_scenario_received_for_robots(std::string path)
@@ -787,17 +789,26 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
   GameScenario *game_scenario = load_game(path);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   Playerlist *pl = Playerlist::getInstance();
+
+  int count = 0;
   for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
     {
-      if (*it == pl->getNeutral())
-	continue;
-      on_client_player_sat_down(*it);
+      if (count >= number_of_robots && number_of_robots > 0)
+	break;
+      if ((*it)->getType() == Player::NETWORKED)
+	{
+	  on_client_player_sat_down(*it);
+	  count++;
+	}
     }
-  pl->turnHumansInto(robot_player_type);
-      
+
+  pl->turnHumansInto(robot_player_type, number_of_robots);
+
   for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
     if ((*it)->getType() == robot_player_type)
-      GameClient::getInstance()->listenForLocalEvents(*it);
+      {
+	GameClient::getInstance()->listenForLocalEvents(*it);
+      }
 
   //end turn signals are listened to by next_turn, that are fired by the game client decoder
   GameClient *game_client = GameClient::getInstance();

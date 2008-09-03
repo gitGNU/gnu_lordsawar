@@ -224,7 +224,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         sigc::signal<void, Player*> ssurrender;
     
 	void turnHumansIntoNetworkPlayers();
-	void turnHumansInto(Player::Type type);
+	void turnHumansInto(Player::Type type, int num_players = -1);
 	void reorder(std::list<Uint32> order);
 
     protected:

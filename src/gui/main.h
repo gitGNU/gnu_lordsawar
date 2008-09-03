@@ -39,7 +39,7 @@ class Main: public sigc::trackable, public noncopyable
     bool iterate_main_loop();
 
     bool start_stress_test;
-    bool start_robots;
+    int start_robots;
     bool start_test_scenario;
     std::string load_filename;
     std::string turn_filename;

@@ -50,6 +50,7 @@ class Driver: public sigc::trackable
     std::string d_load_filename;
     sigc::connection heartbeat_conn;
     Player::Type robot_player_type;
+    int number_of_robots;
     std::string game_scenario_downloaded;
     sigc::signal<void, std::string> game_scenario_received;
     sigc::signal<void, Player*> player_replaced;
@@ -80,7 +81,7 @@ class Driver: public sigc::trackable
     void stress_test();
     void stressTestNextRound();
 
-    void lordsawaromatic(std::string host, unsigned short port, Player::Type type);
+    void lordsawaromatic(std::string host, unsigned short port, Player::Type type, int num_players);
     void on_game_scenario_received_for_robots(std::string path);
   
 

@@ -53,7 +53,7 @@ Main::Main(int &argc, char **&argv)
 
     start_test_scenario = false;
     start_stress_test = false;
-    start_robots = false;
+    start_robots = 0;
     load_filename = "";
     turn_filename = "";
     

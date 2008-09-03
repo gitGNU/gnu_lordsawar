@@ -84,7 +84,11 @@ int main(int argc, char* argv[])
 	    }
 	  else if (parameter == "--robots" || parameter == "-r")
 	    {
-	      kit.start_robots = true;
+	      kit.start_robots = -1;
+	    }
+	  else if (parameter == "--robot" || parameter == "-R")
+	    {
+	      kit.start_robots = 1;
 	    }
 	  else if (parameter == "--help" || parameter == "-h")
 	    {
