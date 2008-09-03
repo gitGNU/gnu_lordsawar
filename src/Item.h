@@ -56,13 +56,7 @@ class Item: public ItemProto, public UniquelyIdentified
         Item(XML_Helper* helper);
 
 	//! Copy constructor.
-	/**
-	 *
-	 * @param clone   This parameter controls whether or not the Id 
-	 *                remains the same in the copied Item, or if the new
-	 *                Item gets a brand new unique Id.
-	 */
-        Item(const Item& orig, bool clone = false);
+        Item(const Item& orig);
 
 	//! Copy constructor.  make an item from a prototype.
 	Item(const ItemProto &proto);
@@ -70,9 +64,14 @@ class Item: public ItemProto, public UniquelyIdentified
 	//! Creates a new Item from scratch.
         Item(std::string name, bool plantable, Player *plantable_owner);
 
+	static Item* createNonUniqueItem(std::string name, bool plantable,
+					 Player *plantable_owner);
         //! Destructor.
         ~Item();
         
+	//! Emitted when an item is destroyed.
+        sigc::signal<void, Item*> sdying;
+
         //! Save the item to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 
@@ -91,7 +90,12 @@ class Item: public ItemProto, public UniquelyIdentified
 
 	//! Return the type of this item.
 	Uint32 getType() const {return d_type;};
+
     private:
+
+	//! non-default constructor to make an item with a particular id.
+	Item(std::string name, bool plantable, Player *plantable_owner,
+	     Uint32 id);
 
 	/**
 	 * This value indicates if the type of this Item can potentially be

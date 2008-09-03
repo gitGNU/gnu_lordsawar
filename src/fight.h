@@ -120,7 +120,7 @@ class Fight
 	 */
         void battle(bool intense);
 
-        void battleFromHistory();
+        Result battleFromHistory();
         
         //! Returns the result of the fight.
         Result getResult() const {return d_result;}

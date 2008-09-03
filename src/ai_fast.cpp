@@ -41,6 +41,7 @@
 #include "stack.h"
 #include "GameScenarioOptions.h"
 #include "hero.h"
+#include "vectoredunitlist.h"
 
 using namespace std;
 
@@ -183,7 +184,7 @@ void AI_Fast::invadeCity(City* c)
       debug("Occupying it");
       cityOccupy(c);
     }
-  if (d_maniac)
+  else if (d_maniac)
     {
       debug ("Razing it");
       cityRaze(c);
@@ -254,7 +255,6 @@ bool AI_Fast::computerTurn()
     // we are using reversed order because new stacks come behind old stacks
     // and we want the freshly created stacks join the veterans and not the other
     // way round.
-    printf ("starting\n");
     for (Stacklist::reverse_iterator it = d_stacklist->rbegin(); it != d_stacklist->rend(); it++)
     {
         // game ended; emergency stop
@@ -444,8 +444,8 @@ bool AI_Fast::computerTurn()
 		else
 		  {
 		    cerr << "hit yet another bad spot." << moves << "\n";
-		    printf ("stack is at %d,%d, target is at %d,%d\n",
-			    s->getPos().x, s->getPos().y, target->getPos().x,
+		    printf ("stack %d is at %d,%d, target is at %d,%d\n",
+			    s->getId(), s->getPos().x, s->getPos().y, target->getPos().x,
 			    target->getPos().y);
 		    printf ("this error means the map has an unreachable city on it, which is supposed to be impossible.\n");
 		    printf ("if an enemy city is completely surrouned by other stacks, this error message is possible.\n");

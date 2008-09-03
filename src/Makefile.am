@@ -40,7 +40,8 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         herotemplates.cpp herotemplates.h history.cpp history.h \
         Immovable.cpp Immovable.h Item.cpp Item.h \
 	ItemProto.cpp ItemProto.h \
-        Itemlist.cpp Itemlist.h Location.cpp Location.h LocationList.h \
+        Itemlist.cpp Itemlist.h Location.cpp Location.h \
+	LocationBox.cpp LocationBox.h LocationList.h \
         MapGenerator.cpp MapGenerator.h \
         maptile.cpp maptile.h Movable.cpp Movable.h \
         MoveResult.cpp MoveResult.h Named.cpp Named.h Namable.cpp Namable.h \

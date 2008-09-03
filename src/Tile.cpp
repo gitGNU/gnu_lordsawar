@@ -73,7 +73,7 @@ bool Tile::save(XML_Helper *helper)
       retval &= helper->saveData("2nd_blue", d_second_color.b);
       break;
       //patterns with three colours
-    case RANDOMIZED: case TABLECLOTH:
+    case RANDOMIZED: case TABLECLOTH: case DIAGONAL:
       retval &= helper->saveData("red", d_color.r);
       retval &= helper->saveData("green", d_color.g);
       retval &= helper->saveData("blue", d_color.b);

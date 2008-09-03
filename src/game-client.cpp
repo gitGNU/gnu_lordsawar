@@ -239,8 +239,23 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
   case MESSAGE_TYPE_TURN_ORDER:
     gotTurnOrder (payload);
     break;
+
+  case MESSAGE_TYPE_NEXT_ROUND:
+    gotNextRound (atoi(payload.c_str()));
+    break;
+
+
+  case MESSAGE_TYPE_KILL_PLAYER:
+    gotKillPlayer(Playerlist::getInstance()->getPlayer(atoi(payload.c_str())));
+    break;
+
   }
 }
+
+void GameClient::gotKillPlayer(Player *player)
+{
+  player->kill();
+}  
 
 void GameClient::onHistoryDone(NetworkHistory *history)
 {
@@ -386,4 +401,10 @@ void GameClient::gotTurnOrder (std::string payload)
     }
   Playerlist::getInstance()->reorder(player_ids);
   playerlist_reorder_received.emit();
+}
+    
+void GameClient::gotNextRound (int round)
+{
+  //let's signal that we want to keep going.
+  round_begins.emit(round);
 }

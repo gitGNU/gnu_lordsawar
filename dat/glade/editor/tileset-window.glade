@@ -697,7 +697,9 @@ Swamp</property>
 Stippled
 Randomized
 Sunken
-Tablecloth</property>
+Tablecloth
+Diagonal
+Crosshatched</property>
 					  <property name="add_tearoffs">False</property>
 					  <property name="focus_on_click">True</property>
 					</widget>

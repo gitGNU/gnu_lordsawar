@@ -48,6 +48,9 @@ class Driver: public sigc::trackable
     std::auto_ptr<SplashWindow> splash_window;
     std::auto_ptr<NewNetworkGameDownloadWindow> download_window;
     std::string d_load_filename;
+    sigc::connection heartbeat_conn;
+    Player::Type robot_player_type;
+    std::string game_scenario_downloaded;
     sigc::signal<void, std::string> game_scenario_received;
     sigc::signal<void, Player*> player_replaced;
 
@@ -80,14 +83,11 @@ class Driver: public sigc::trackable
     void lordsawaromatic(std::string host, unsigned short port, Player::Type type);
     void on_game_scenario_received_for_robots(std::string path);
   
-    Player::Type robot_player_type;
 
     void heartbeat();
-    std::string game_scenario_downloaded;
 
     void on_client_player_chat(std::string message);
     void on_hosted_player_chat(std::string message);
-    sigc::connection heartbeat_conn;
 
     void on_show_lobby_requested();
 

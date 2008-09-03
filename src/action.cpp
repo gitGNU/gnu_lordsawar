@@ -474,7 +474,7 @@ std::string Action_Fight::dump() const
     for (uit = d_attackers.begin(); uit != d_attackers.end(); uit++)
         s << (*uit) <<" ";
 
-    s << "\nDefending stacks: ";
+    s << "\n Defending stacks: ";
     for (uit = d_defenders.begin(); uit != d_defenders.end(); uit++)
         s << (*uit) <<" ";
 
@@ -688,7 +688,7 @@ std::string Action_Temple::dump() const
 {
     std::stringstream s;
 
-    s <<"Stack " <<d_stack <<"visited temple " <<d_temple <<".\n";
+    s <<"Stack " <<d_stack <<" visited temple " <<d_temple <<".\n";
 
     return s.str();
 }
@@ -974,7 +974,7 @@ std::string Action_Buy::dump() const
     std::stringstream s;
 
     s <<"Production " <<d_prod <<" bought in city " <<d_city;
-    s <<"slot: " <<d_slot << "\n";
+    s <<" slot: " <<d_slot << "\n";
 
     return s.str();
 }
@@ -1229,13 +1229,13 @@ bool Action_Quest::fillData(Quest* q)
 // Action_Equip
 
 Action_Equip::Action_Equip()
-:Action(Action::HERO_EQUIP), d_hero(0), d_item(0)
+:Action(Action::HERO_EQUIP), d_hero(0), d_item(0), d_pos(Vector<int>(-1,-1))
 {
 }
 
 Action_Equip::Action_Equip (const Action_Equip &action)
 : Action(action), d_hero(action.d_hero), d_item(action.d_item),
-    d_slot(action.d_slot)
+    d_slot(action.d_slot), d_pos(action.d_pos)
 {
 }
 
@@ -1245,6 +1245,11 @@ Action_Equip::Action_Equip(XML_Helper* helper)
   helper->getData(d_hero, "hero");
   helper->getData(d_item, "item");
   helper->getData(d_slot, "dest");
+  int i;
+  helper->getData(i, "x");
+  d_pos.x = i;
+  helper->getData(i, "y");
+  d_pos.y = i;
 }
 
 Action_Equip::~Action_Equip()
@@ -1256,6 +1261,7 @@ std::string Action_Equip::dump() const
   std::stringstream ss;
 
   ss <<"Hero " <<d_hero <<" moved item " <<d_item <<" to slot " <<d_slot;
+  ss <<" at tile " << d_pos.x << "," << d_pos.y;
   ss <<std::endl;
 
   return ss.str();
@@ -1268,15 +1274,21 @@ bool Action_Equip::doSave(XML_Helper* helper) const
   retval &= helper->saveData("hero", d_hero);
   retval &= helper->saveData("item", d_item);
   retval &= helper->saveData("dest", d_slot);
+  int i = d_pos.x;
+  retval &= helper->saveData("x", i);
+  i = d_pos.y;
+  retval &= helper->saveData("y", i);
 
   return retval;
 }
 
-bool Action_Equip::fillData(Hero *hero, Item *item, Action_Equip::Slot slot)
+bool Action_Equip::fillData(Hero *hero, Item *item, Action_Equip::Slot slot,
+			    Vector<int> pos)
 {
   d_hero = hero->getId();
   d_item = item->getId();
   d_slot = slot;
+  d_pos = pos;
 
   return true;
 }
@@ -1731,7 +1743,8 @@ bool Action_Produce::load(std::string tag, XML_Helper *helper)
 
 Action_Produce::~Action_Produce()
 {
-  delete d_army;
+  if (d_army)
+    delete d_army;
 }
 
 std::string Action_Produce::dump() const
@@ -1771,22 +1784,31 @@ Action_ProduceVectored::Action_ProduceVectored()
 :Action(Action::PRODUCE_VECTORED_UNIT)
 {
   d_army = NULL;
+  d_dest = Vector<int>(-1,-1);
+  d_src = Vector<int>(-1,-1);
 }
 
 Action_ProduceVectored::Action_ProduceVectored(const Action_ProduceVectored &action)
-: Action(action), d_dest(action.d_dest)
+: Action(action), d_dest(action.d_dest), d_src(action.d_src)
 {
-  d_army = new ArmyProdBase(*action.d_army);
+  if (action.d_army)
+    d_army = new ArmyProdBase(*action.d_army);
+  else
+    d_army = NULL;
 }
 
 Action_ProduceVectored::Action_ProduceVectored(XML_Helper* helper)
-:Action(helper)
+:Action(helper), d_army(NULL)
 {
   int i;
-  helper->getData(i, "x");
+  helper->getData(i, "dest_x");
   d_dest.x = i;
-  helper->getData(i, "y");
+  helper->getData(i, "dest_y");
   d_dest.y = i;
+  helper->getData(i, "src_x");
+  d_src.x = i;
+  helper->getData(i, "src_y");
+  d_src.y = i;
   helper->registerTag("armyprodbase", sigc::mem_fun(this, &Action_ProduceVectored::load));
 }
 
@@ -1803,14 +1825,16 @@ bool Action_ProduceVectored::load(std::string tag, XML_Helper *helper)
 
 Action_ProduceVectored::~Action_ProduceVectored()
 {
-  delete d_army;
+  if (d_army)
+    delete d_army;
 }
 
 std::string Action_ProduceVectored::dump() const
 {
   std::stringstream s;
-  s << "armytype " << d_army->getTypeId() << " shows up at ";
-  s <<d_dest.x <<"," <<d_dest.y <<")\n";
+  s << "vectored army of type " << d_army->getTypeId() << " shows up at ";
+  s <<d_dest.x <<"," <<d_dest.y << " from " << d_src.x << "," << d_src.y;
+  s <<"\n";
 
   return s.str();
 }
@@ -1819,17 +1843,22 @@ bool Action_ProduceVectored::doSave(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->saveData("x", d_dest.x);
-  retval &= helper->saveData("y", d_dest.y);
+  retval &= helper->saveData("dest_x", d_dest.x);
+  retval &= helper->saveData("dest_y", d_dest.y);
+  retval &= helper->saveData("src_x", d_src.x);
+  retval &= helper->saveData("src_y", d_src.y);
   retval &= d_army->save(helper);
 
   return retval;
 }
 
-bool Action_ProduceVectored::fillData(ArmyProdBase *army, Vector<int> dest)
+bool Action_ProduceVectored::fillData(ArmyProdBase *army, Vector<int> dest,
+				      Vector<int> src)
 {
-  d_army = new ArmyProdBase (*army);
+  if (army)
+    d_army = new ArmyProdBase (*army);
   d_dest = dest;
+  d_src = src;
   return true;
 }
 

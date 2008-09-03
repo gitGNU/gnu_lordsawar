@@ -125,7 +125,9 @@ eoeoeoeo
 	   *
 	   * It is currently used for Type::SWAMP.
 	   */
-	  TABLECLOTH = 4
+	  TABLECLOTH = 4,
+	  DIAGONAL = 5, 
+	  CROSSHATCH = 6, 
 	};
                     
 

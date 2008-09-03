@@ -49,6 +49,7 @@
 #include "game-parameters.h"
 #include "signpost.h"
 #include "history.h"
+#include "vectoredunit.h"
 
 using namespace std;
 
@@ -112,6 +113,8 @@ void NetworkPlayer::levelArmy(Army* a)
 
 void NetworkPlayer::decodeActions(std::list<Action *> actions)
 {
+  if (isDead())
+    return;
   std::list<Action*>::iterator it = actions.begin();
   pruneActionlist();
   for (; it != actions.end(); it++)
@@ -243,31 +246,81 @@ Item *findItemById(const std::list<Item *> &l, Uint32 id)
 void NetworkPlayer::decodeActionMove(const Action_Move *action)
 {
   Stack *stack = d_stacklist->getStackById(action->getStackId());
-  if (d_stacklist->getObjectAt(action->getEndingPosition()) == NULL)
+  if (stack == NULL)
     {
+      printf ("couldn't find stack with id %d\n", action->getStackId());
+      printf ("is there a stack near the ending position?\n");
+      for (int x = -1; x <= 1; x++)
+	for (int y = -1; y <= 1; y++)
+	  {
+	    Vector<int> dest = action->getEndingPosition() + Vector<int>(x,y);
+	    Stack *s = d_stacklist->getOwnObjectAt(dest);
+	    printf ("stack at position %d,%d is %p\n", dest.x, dest.y, s);
+	    if (s)
+	      printf ("stack id is %d\n", s->getId());
+	  }
+    }
+  assert (stack != NULL);
+  //if (d_stacklist->getObjectAt(action->getEndingPosition()) == NULL)
+    //{
       stack->moveToDest(action->getEndingPosition());
       supdatingStack.emit(stack);
-    }
+    //}
+  //else
+    //printf ("there is something in the way at %d,%d\n", 
+	    //action->getEndingPosition().x, action->getEndingPosition().y);
   //if there is a stack already there, then we just wait for the 
   //"stack join" message that will follow.
+  //if there is an enemy stack already there, then we just wait for the
+  //"fight" message that will follow.
 }
 
 void NetworkPlayer::decodeActionSplit(const Action_Split *action)
 {
+  printf ("here1\n");
   Uint32 stack_id = action->getStackId();
+  printf ("here2\n");
   Stack *stack = d_stacklist->getStackById(stack_id);
+  printf ("here3\n");
+  if (stack == NULL)
+    printf ("couldn't find stack with id %d\n", stack_id);
+  assert (stack != NULL);
   
+  for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
+    (*it)->setGrouped(true);
   for (unsigned int i = 0; i < MAX_STACK_SIZE; ++i) {
     Uint32 army_id = action->getGroupedArmyId(i);
     if (army_id == 0)
       continue;
+  printf ("here4\n");
 
     Army *army = stack->getArmyById(army_id);
+    if (army == NULL)
+      {
+	printf ("couldn't find army with id %d in stack %d\n", army_id, stack_id);
+	printf ("available IDs are...\n");
+	for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
+	  printf ("%d ", (*it)->getId());
+	printf ("\n");
+      }
+    assert (army != NULL);
     army->setGrouped(false);
   }
 
-  //fixme: the new stack should have an Id of getNewStackId()
+  printf ("here5\n");
   Stack *new_stack = doStackSplit(stack);
+  printf ("here6\n");
+  if (!new_stack)
+    {
+      printf ("crap.  we couldn't split the stack\n");
+    }
+  assert (new_stack != NULL);
+  if (new_stack->getId() != action->getNewStackId())
+    {
+      printf ("created stack with id %d, but expected %d\n", new_stack->getId(),
+	      action->getNewStackId());
+    }
+  assert (new_stack->getId() == action->getNewStackId());
 
 }
 
@@ -284,11 +337,17 @@ void NetworkPlayer::decodeActionFight(const Action_Fight *action)
          end = defender_army_ids.end(); i != end; ++i)
     defenders.push_back(findStackById(*i));
 
+  Stack *attack = &*attackers.front();
+  Stack *defend = &*defenders.front();
   Fight fight(attackers, defenders, action->getBattleHistory());
-  fight.battleFromHistory();
+  Fight::Result result = fight.battleFromHistory();
   fight_started.emit(fight);
 
   cleanupAfterFight(attackers, defenders);
+  if (result == Fight::ATTACKER_WON)
+    {
+      printf ("there are %d attackers left in %d at %d,%d\n", attack->size(),attack->getId(), attack->getPos().x, attack->getPos().y);
+    }
 }
 
 void NetworkPlayer::decodeActionJoin(const Action_Join *action)
@@ -296,6 +355,8 @@ void NetworkPlayer::decodeActionJoin(const Action_Join *action)
   Stack *receiver = d_stacklist->getStackById(action->getReceivingStackId());
   Stack *joining = d_stacklist->getStackById(action->getJoiningStackId());
 
+  assert (receiver != NULL);
+  assert (joining != NULL);
   doStackJoin(receiver, joining, false);
 }
 
@@ -431,19 +492,24 @@ void NetworkPlayer::decodeActionQuest(const Action_Quest *action)
 void NetworkPlayer::decodeActionEquip(const Action_Equip *action)
 {
   Stack *stack = d_stacklist->getArmyStackById(action->getHeroId());
+  if (stack == NULL)
+    {
+      printf ("couldn't find hero with id %d\n", action->getHeroId());
+    }
+  assert (stack != NULL);
   Hero *hero = dynamic_cast<Hero *>(stack->getArmyById(action->getHeroId()));
   Item *item = 0;
 
   switch (action->getToBackpackOrToGround())
   {
   case Action_Equip::BACKPACK:
-    item = findItemById(GameMap::getInstance()->getTile(stack->getPos())->getItems(), action->getItemId());
-    doHeroPickupItem(hero, item, stack->getPos());
+    item = findItemById(GameMap::getInstance()->getTile(action->getItemPos())->getItems(), action->getItemId());
+    doHeroPickupItem(hero, item, action->getItemPos());
     break;
 
   case Action_Equip::GROUND:
     item = findItemById(hero->getBackpack(), action->getItemId());
-    doHeroDropItem(hero, item, stack->getPos());
+    doHeroDropItem(hero, item, action->getItemPos());
     break;
   }
 }
@@ -454,12 +520,20 @@ void NetworkPlayer::decodeActionLevel(const Action_Level *action)
   Army *army = stack->getArmyById(action->getArmyId());
 
   doLevelArmy(army, Army::Stat(action->getStatToIncrease()));
+  printf ("army is hero? %d\n", army->isHero());
+  printf ("new level is %d\n", army->getLevel());
 }
 
 void NetworkPlayer::decodeActionDisband(const Action_Disband *action)
 {
   Stack *stack = d_stacklist->getStackById(action->getStackId());
-  doStackDisband(stack);
+  if (stack == NULL)
+    {
+      printf ("couldn't find stack with id %d\n", action->getStackId());
+    }
+  assert (stack != NULL);
+  bool found = doStackDisband(stack);
+  assert (found == true);
 }
 
 void NetworkPlayer::decodeActionModifySignpost(const Action_ModifySignpost *act)
@@ -503,18 +577,26 @@ void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
 {
   //if it was vectored, we just wait for the Action_ProduceVectored later on.
   if (action->getVectored() == true)
+    {
+      printf ("produced unit but it's vectored.\n");
     return;
+    }
   ArmyProdBase *a = action->getArmy();
   City *c = Citylist::getInstance()->getById(action->getCityId());
   Army *army = new Army (*a, this);
   Stack *s = c->addArmy(army);
+  printf ("created army id %d, in stack %d of size %d\n", army->getId(), s->getId(), s->size());
 }
 
 void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *action)
 {
-  ArmyProdBase *a = action->getArmy();
-  Vector<int> dest = action->getDestination();
-  GameMap::getInstance()->addArmy(dest, new Army (*a, this));
+  //create a vectored unit.
+  VectoredUnit v(action->getOrigination(), action->getDestination(),
+		 action->getArmy(), 0, this);
+  Army *army = doVectoredUnitArrives(&v);
+  printf ("army is %p\n", army);
+  Stack *s = d_stacklist->getArmyStackById(army->getId());
+  printf ("created vectored army id %d, in stack %d of size %d\n", army->getId(), s->getId(), s->size());
 }
 
 void NetworkPlayer::decodeActionDiplomacyState(const Action_DiplomacyState *action)
@@ -545,7 +627,7 @@ void NetworkPlayer::decodeActionConquerCity(const Action_ConquerCity *action)
 {
   City *city = Citylist::getInstance()->getById(action->getCityId());
   Stack *stack = d_stacklist->getStackById(action->getStackId());
-  conquerCity(city, stack);
+  doConquerCity(city, stack);
 }
 
 void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
@@ -558,6 +640,8 @@ void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
                                                action->getAllyArmyType());
   Hero *hero = doRecruitHero(action->getHero(), city, action->getCost(), 
 			     action->getNumAllies(), ally);
+  printf ("created hero with id %d, in stack %d\n", hero->getId(),
+	 d_stacklist->getArmyStackById(hero->getId())->getId());
   //hero->syncNewId();
 }
 

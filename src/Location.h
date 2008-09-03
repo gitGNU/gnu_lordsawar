@@ -11,7 +11,7 @@
 #include <string>
 #include "vector.h"
 #include "stack.h"
-#include "Immovable.h"
+#include "LocationBox.h"
 #include "rectangle.h"
 
 class Player;
@@ -23,7 +23,7 @@ class ::UniquelyIdentified;
  * A Location is a map feature with a location, and a size. 
  * City, Ruin, Temple, Signpost and more classes are derived from Location.
  */
-class Location : public ::UniquelyIdentified, public Immovable
+class Location : public ::UniquelyIdentified, public LocationBox
 {
  public:
      //! Default constructor.
@@ -46,62 +46,6 @@ class Location : public ::UniquelyIdentified, public Immovable
      Location(XML_Helper* helper, Uint32 size = 1);
      //! Destructor.
     ~Location();
-    
-    //! Add an army to a tile that is included in this location.
-    /**
-     * @param army    The army instance to add to a tile in the location.
-     *
-     * @return A pointer to the stack where the Army was added.  Returns NULL
-     *         when the Army couldn't be added because the location is full.
-     */
-    Stack *addArmy(Army *army) const;
-
-    //! Returns whether or not this location obscured from view on a hidden map.
-    /**
-     * @note This method relies on Playerlist::getActiveplayer to know
-     *       which FogMap to query.
-     */
-    bool isFogged();
-
-    //! Unobscures the view of this location in the active player's FogMap.
-    void deFog();
-
-    //! Unobscures the view of this location in the given player's FogMap.
-    void deFog(Player *p);
-
-    //! Return the size of the location.
-    Uint32 getSize() const {return d_size;}
-
-    //! Returns whether or not the Location contains the given point?
-    bool contains(Vector<int> pos) const;
-
-    //! Returns a rectangle that describes the location.
-    Rectangle get_area() const
-	{ return Rectangle(getPos().x, getPos().y, d_size, d_size); }
-
- protected:
-
-    //! Obtains a stack in the location to put an Army unit in.
-    /**
-     * This method scans the tiles of the location for a place to put a new
-     * Army unit.  If the position is empty it makes a new stack in that
-     * position and returns that stack.  If a stack containing fewer than
-     * eight Army units is found, that stack is returned.  If no open spots 
-     * could be found, it returns NULL.
-     *
-     * @param owner  The player to own the new stack if one needs to be created.
-     *
-     * @return The stack that has room for one Army unit in the Location.  If
-     *         an available stack could not be found this method returns NULL.
-     */
-    Stack* getFreeStack(Player *owner) const;
-
-    //! The size of the location.
-    /**
-     * This size is the number tiles high and wide the location is.
-     * This value is always 1, except for City objects which are always 2.
-     */
-    Uint32 d_size;
 };
 
 #endif

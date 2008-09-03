@@ -24,6 +24,7 @@
 #include <string>
 class Player;
 class Army;
+class LocationBox;
 class Location;
 class Item;
 class XML_Helper;
@@ -493,7 +494,7 @@ class Reward_Map: public Reward
 	 */
 	static void getRandomMap(int *x, int *y, int *width, int *height);
 
-	Location *getLocation() {return d_loc;};
+	LocationBox *getLocation() {return d_loc;};
 
 	void setMapName(std::string name) {d_map_name = name;};
 	std::string getMapName() const {return d_map_name;};
@@ -512,7 +513,7 @@ class Reward_Map: public Reward
 	 *       map.
 	 */
 	Uint32 d_width;
-	Location *d_loc;
+	LocationBox *d_loc;
 	std::string d_map_name;
 };
 

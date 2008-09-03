@@ -349,7 +349,7 @@ Reward_Map::Reward_Map(Vector<int> pos, std::string name,
 		       Uint32 height, Uint32 width)
     :Reward(Reward::MAP, name), d_height(height), d_width(width)
 {
-  d_loc = new Location(pos);
+  d_loc = new LocationBox(pos);
   d_map_name = name;
 }
 
@@ -357,7 +357,7 @@ bool Reward_Map::loadMap(std::string tag, XML_Helper* helper)
 {
   if (tag == "map")
     {
-      d_loc = new Location(helper);
+      d_loc = new LocationBox(helper);
       helper->getData(d_height, "height");
       helper->getData(d_width, "width");
       return true;
@@ -377,7 +377,7 @@ Reward_Map::Reward_Map (const Reward_Map& orig)
 	:Reward(orig), d_height(orig.d_height), d_width(orig.d_width),
 	d_map_name(orig.d_map_name)
 {
-  d_loc = new Location(*orig.d_loc);
+  d_loc = new LocationBox(*orig.d_loc);
 }
 
 //FIXME: location has a name, and so does the reward!
@@ -389,7 +389,6 @@ bool Reward_Map::save(XML_Helper* helper)
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("name", d_name);
   retval &= helper->openTag("map");
-  retval &= helper->saveData("id", d_loc->getId());
   retval &= helper->saveData("x", d_loc->getPos().x);
   retval &= helper->saveData("y", d_loc->getPos().y);
   retval &= helper->saveData("map_name", d_map_name);

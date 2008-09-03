@@ -30,6 +30,8 @@
 #include "history.h"
 #include "QuestsManager.h"
 #include "network_player.h"
+#include "game-server.h"
+#include "GameScenarioOptions.h"
 
 #include "path.h"
 
@@ -60,6 +62,12 @@ void NextTurnNetworked::start()
     if (!plist->getActiveplayer())
         plist->nextPlayer();
 	
+    if (plist->getActiveplayer()->isDead())
+      plist->nextPlayer();
+
+    if (plist->getActiveplayer()->isDead())
+      return;
+
     if (plist->getActiveplayer()->getType() != Player::NETWORKED)
       {
 	while (!d_stop)
@@ -93,11 +101,13 @@ void NextTurnNetworked::start()
 	    //...and initiate the next one.
 	    plist->nextPlayer();
 
+
 	    //if it is the first player's turn now, a new round has started
 	    if (Playerlist::getInstance()->getActiveplayer() == 
 		Playerlist::getInstance()->getFirstLiving())
-
 	      {
+		if (GameServer::getInstance()->isListening() == false)
+		  break;
 		if (plist->checkPlayers() == true)
 		  {
 		    if (plist->getNoOfPlayers() <= 1)
@@ -134,6 +144,8 @@ void NextTurnNetworked::endTurn()
 
   if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getFirstLiving())
     {
+      if (GameServer::getInstance()->isListening() == false)
+	return;
       finishRound();
       snextRound.emit();
     }
@@ -249,4 +261,10 @@ void NextTurnNetworked::finishRound()
   if (d_random_turns)
     plist->randomizeOrder();
 
+}
+
+void NextTurnNetworked::start_round(int round)
+{
+  GameScenarioOptions::s_round++;
+  start();
 }

@@ -18,8 +18,14 @@
 #ifndef VECTOREDUNITLIST_H
 #define VECTOREDUNITLIST_H
 
-#include "vectoredunit.h"
-#include "LocationList.h"
+#include <SDL.h>
+#include <list>
+class VectoredUnit;
+class Player;
+class XML_Helper;
+
+#include "vector.h"
+
 #include <sigc++/trackable.h>
 
 class City;
@@ -71,7 +77,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 * @param pos  Any VectoredUnit object in the list that is being
 	 *             vectored to this tile is deleted from the list.
 	 */
-        void removeVectoredUnitsGoingTo(Vector<int> pos);
+        bool removeVectoredUnitsGoingTo(Vector<int> pos);
 
 	//! Cull the list of VectoredUnit objects going to the given city.
 	/**
@@ -85,7 +91,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 *              vectored to one of the tiles in this City are deleted
 	 *              from the list.
 	 */
-        void removeVectoredUnitsGoingTo(City *city);
+        bool removeVectoredUnitsGoingTo(City *city);
 
 	//! Cull the list of VectoredUnit objects being vectored from a place.
 	/**
@@ -99,7 +105,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 * @param pos  Any VectoredUnit object in the list that is being
 	 *             vectored from this tile is deleted from the list.
 	 */
-        void removeVectoredUnitsComingFrom(Vector<int> pos);
+        bool removeVectoredUnitsComingFrom(Vector<int> pos);
 
 	//! Cull the list of VectoredUnit objects coming from the given city.
 	/**
@@ -113,7 +119,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 *              vectored to one of the tiles in this City are deleted
 	 *              from the list.
 	 */
-        void removeVectoredUnitsComingFrom(City *city);
+        bool removeVectoredUnitsComingFrom(City *city);
 
 	//! Return the list of VectoredUnit objects with the given destination.
 	/**
@@ -191,6 +197,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 */
 	void changeDestination(City *city, Vector<int> new_dest);
 
+	iterator flErase(iterator object);
     protected:
 
 	//! Default constructor.
@@ -201,6 +208,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
         ~VectoredUnitlist();
 
     private:
+
 
         //! Callback for loading the VectoredUnitlist from a saved-game file.
         bool load(std::string tag, XML_Helper* helper);

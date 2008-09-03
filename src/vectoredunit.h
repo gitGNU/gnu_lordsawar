@@ -21,7 +21,8 @@
 #include <string>
 #include <sigc++/trackable.h>
 #include "armyprodbase.h"
-#include "Location.h"
+#include "Ownable.h"
+#include "LocationBox.h"
 
 //! An Army that is being vectored to another city.
 /**
@@ -29,7 +30,7 @@
  *  turns.   While an Army is "in the air", it is represented in one of these 
  *  objects.
  */
-class VectoredUnit: public Ownable, public Location, public sigc::trackable
+class VectoredUnit: public Ownable, public LocationBox, public sigc::trackable
 {
     public:
 	//! Default constructor.
@@ -114,7 +115,7 @@ class VectoredUnit: public Ownable, public Location, public sigc::trackable
         bool nextTurn();
 
 	//! Called when a vectored unit arrives at the destination.
-	bool armyArrives();
+	Army *armyArrives();
     private:
 
         // DATA

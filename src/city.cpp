@@ -36,6 +36,7 @@
 #include "citylist.h"
 #include "GameMap.h"
 #include "vectoredunitlist.h"
+#include "vectoredunit.h"
 #include "action.h"
 
 using namespace std;
@@ -316,7 +317,7 @@ void City::conquer(Player* newowner)
     deFog(newowner);
 
     VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-    vul->removeVectoredUnitsGoingTo(this);
+    bool found = vul->removeVectoredUnitsGoingTo(this);
     vul->removeVectoredUnitsComingFrom(this);
 }
 
@@ -542,18 +543,18 @@ void City::produceWeakestProductionBase()
 
 const Army *City::armyArrives()
 {
-  const ArmyProdBase *army;
   // vector the army to the new spot
   if (d_vectoring)
     {
       VectoredUnitlist *vul = VectoredUnitlist::getInstance();
       VectoredUnit *v = new VectoredUnit 
-	(getPos(), d_vector, new ArmyProdBase(*(d_prodbase[d_active_production_slot])),
+	(getPos(), d_vector, d_prodbase[d_active_production_slot],
 	 MAX_TURNS_FOR_VECTORING, d_owner);
       vul->push_back(v);
       d_owner->cityChangeProduction(this, d_active_production_slot);
-      army = getProductionBase(d_active_production_slot);
-      return new Army(*army, getOwner());
+      //we don't return an army when we've vectored it.
+      //it doesn't really exist until it lands at the destination.
+      return NULL;
     }
   else //or make it here
     {
@@ -616,6 +617,11 @@ const ArmyProdBase * City::getProductionBase(int slot) const
   if (getArmytype(slot) == -1)
     return 0;
   return d_prodbase[slot];
+}
+	
+const ArmyProdBase *City::getActiveProductionBase() const
+{
+  return getProductionBase(d_active_production_slot);
 }
 
 int City::getGoldNeededForUpgrade() const

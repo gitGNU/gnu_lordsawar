@@ -427,11 +427,15 @@ bool Player::deleteStack(Stack* stack)
 
 void Player::kill()
 {
+  doKill();
+}
+
+void Player::doKill()
+{
     if (d_immortal)
         // ignore it
         return;
-    
-                        
+
     History_PlayerVanquished* item;
     item = new History_PlayerVanquished();
     addHistory(item);
@@ -444,8 +448,8 @@ void Player::kill()
     // single cities
     Citylist* cl = Citylist::getInstance();
     for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
-        if ((*it).getOwner() == this)
-            (*it).setOwner(Playerlist::getInstance()->getNeutral());
+        if ((*it).getOwner() == this && (*it).isBurnt() == false)
+            Playerlist::getInstance()->getNeutral()->takeCityInPossession(&*it);
 
     d_diplomatic_rank = 0;
     d_diplomatic_title = std::string("");
@@ -708,9 +712,7 @@ Stack *Player::doStackSplit(Stack* s)
 
     Army* ungrouped = s->getFirstUngroupedArmy();
     if (!ungrouped)        //no armies to split
-    {
         return 0;
-    }
 
     bool all_ungrouped = true;    //the whole stack would be split
     for (Stack::iterator it = s->begin(); it != s->end(); it++)
@@ -721,9 +723,7 @@ Stack *Player::doStackSplit(Stack* s)
         }
     }
     if (all_ungrouped)
-    {
         return 0;
-    }
 
     Stack* new_stack = new Stack(this, s->getPos());
 
@@ -1511,7 +1511,7 @@ void Player::conquerCity(City *city, Stack *stack)
   Action_ConquerCity *action = new Action_ConquerCity();
   action->fillData(city, stack);
   addAction(action);
-                
+
   doConquerCity(city, stack);
 }
 
@@ -1529,7 +1529,7 @@ void Player::takeCityInPossession(City* c)
 
 void Player::doCityOccupy(City *c)
 {
-  //takeCityInPossession(c);
+  assert (c->getOwner() == this);
   
   soccupyingCity.emit(c, getActivestack());
   QuestsManager::getInstance()->cityOccupied(c, getActivestack());
@@ -1802,11 +1802,12 @@ bool Player::giveReward(Stack *s, Reward *reward)
   return true;
 }
 
-void Player::doStackDisband(Stack* s)
+bool Player::doStackDisband(Stack* s)
 {
     getStacklist()->setActivestack(0);
-    getStacklist()->deleteStack(s);
+    bool found = getStacklist()->deleteStack(s);
     supdatingStack.emit(0);
+    return found;
 }
 
 bool Player::stackDisband(Stack* s)
@@ -1819,9 +1820,7 @@ bool Player::stackDisband(Stack* s)
     item->fillData(s);
     addAction(item);
 
-    doStackDisband(s);
-    
-    return true;
+    return doStackDisband(s);
 }
 
 void Player::doHeroDropItem(Hero *h, Item *i, Vector<int> pos)
@@ -1835,7 +1834,7 @@ bool Player::heroDropItem(Hero *h, Item *i, Vector<int> pos)
   doHeroDropItem(h, i, pos);
   
   Action_Equip* item = new Action_Equip();
-  item->fillData(h, i, Action_Equip::GROUND);
+  item->fillData(h, i, Action_Equip::GROUND, pos);
   addAction(item);
   
   return true;
@@ -1850,6 +1849,14 @@ bool Player::heroDropAllItems(Hero *h, Vector<int> pos)
   return true;
 }
 
+bool Player::doHeroDropAllItems(Hero *h, Vector<int> pos)
+{
+  std::list<Item*> backpack = h->getBackpack();
+  for (std::list<Item*>::iterator i = backpack.begin(), end = backpack.end();
+       i != end; ++i)
+    doHeroDropItem(h, *i, pos);
+  return true;
+}
 void Player::doHeroPickupItem(Hero *h, Item *i, Vector<int> pos)
 {
   bool found = GameMap::getInstance()->getTile(pos)->removeItem(i);
@@ -1862,7 +1869,7 @@ bool Player::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
   doHeroPickupItem(h, i, pos);
   
   Action_Equip* item = new Action_Equip();
-  item->fillData(h, i, Action_Equip::BACKPACK);
+  item->fillData(h, i, Action_Equip::BACKPACK, pos);
   addAction(item);
   
   return true;
@@ -1975,7 +1982,6 @@ void Player::doVectorFromCity(City * c, Vector<int> dest)
 
 bool Player::vectorFromCity(City * c, Vector<int> dest)
 {
-  assert (dest != Vector<int>(-1,-1));
   doVectorFromCity(c, dest);
   
   Action_Vector* item = new Action_Vector();
@@ -2098,7 +2104,7 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
                         item = new History_HeroKilledSearching();
                         item->fillData(h);
 			h->getOwner()->addHistory(item);
-                        heroDropAllItems (h, (*it)->getPos());
+                        doHeroDropAllItems (h, (*it)->getPos());
                     }
                     else if (tile->getBuilding() == Maptile::CITY)
                     {
@@ -2108,7 +2114,7 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
                         item = new History_HeroKilledInCity();
                         item->fillData(h, c);
 			h->getOwner()->addHistory(item);
-                        heroDropAllItems (h, (*it)->getPos());
+                        doHeroDropAllItems (h, (*it)->getPos());
                     }
                     else //somewhere else
                     {
@@ -2116,7 +2122,7 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
                         item = new History_HeroKilledInBattle();
                         item->fillData(h);
 			h->getOwner()->addHistory(item);
-                        heroDropAllItems (h, (*it)->getPos());
+                        doHeroDropAllItems (h, (*it)->getPos());
                     }
                 }
                 //Add the XP bonus to the total of the battle;
@@ -2145,12 +2151,13 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
             if (owner)
             {
                 debug("Removing this stack from the owner's stacklist");
-                owner->deleteStack(*it);
+                bool found = owner->deleteStack(*it);
+		assert (found == true);
             }
             else // there is no owner - like for the ruin's occupants
                 debug("No owner for this stack - do stacklist too");
 
-            debug("Removing from the vector too (the vetor had "
+            debug("Removing from the vector too (the vector had "
                   << stacks.size() << " elt)");
             it = stacks.erase(it);
         }
@@ -2258,7 +2265,7 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
             army->setNumberHasHit(0);
             army->setNumberHasBeenHit(0);
 
-            if (army->isHero())
+            if (army->isHero() && getType() != Player::NETWORKED)
               {
                 while(army->canGainLevel())
                   {
@@ -2271,7 +2278,7 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
                     //levels per time depending on the XP and level itself
 
                     debug("ADVANCING LEVEL "<< "CANGAINLEVEL== " << army->canGainLevel());
-                    army->getOwner()->levelArmy(army);
+		    army->getOwner()->levelArmy(army);
                   }
                 debug("Army new XP=" << army->getXP())
               }
@@ -2838,6 +2845,7 @@ bool Player::AI_maybeDisband(Stack *s, City *city, Uint32 min_defenders,
 bool Player::AI_maybeVector(City *c, Uint32 safe_mp, Uint32 min_defenders,
 			    City *target, City **vector_city)
 {
+  assert (c->getOwner() == this);
   if (vector_city)
     *vector_city = NULL;
   Citylist *cl = Citylist::getInstance();
@@ -2856,6 +2864,7 @@ bool Player::AI_maybeVector(City *c, Uint32 safe_mp, Uint32 min_defenders,
   City *near_city = cl->getNearestFriendlyVectorableCity(target->getPos());
   if (!near_city)
     return false;
+  assert (near_city->getOwner() == this);
 
   //if it's us then it's easier to just walk.
   if (near_city == c)
@@ -2868,7 +2877,7 @@ bool Player::AI_maybeVector(City *c, Uint32 safe_mp, Uint32 min_defenders,
   //can i just walk there faster?
 
   //find mp from source to target city
-  const ArmyProdBase *proto = c->getProductionBase(c->getActiveProductionSlot());
+  const ArmyProdBase *proto = c->getActiveProductionBase();
   Uint32 mp_from_source_city = Stack::scout(c->getOwner(), c->getPos(),
 					    target->getPos(), proto);
 
@@ -2971,8 +2980,7 @@ bool Player::cityProducesArmy(City *city)
 {
   Action_Produce *item = new Action_Produce();
   const Army *army = doCityProducesArmy(city);
-  const ArmyProdBase *source_army = 
-    city->getProductionBase(city->getActiveProductionSlot());
+  const ArmyProdBase *source_army = city->getActiveProductionBase();
   if (city->getVectoring() == Vector<int>(-1, -1))
     item->fillData(source_army, city, false);
   else
@@ -2981,17 +2989,24 @@ bool Player::cityProducesArmy(City *city)
   return true;
 }
 	
-void Player::doVectoredUnitArrives(VectoredUnit *unit)
+Army* Player::doVectoredUnitArrives(VectoredUnit *unit)
 {
-  unit->armyArrives();
+  Army *army = unit->armyArrives();
+  return army;
 }
 
 bool Player::vectoredUnitArrives(VectoredUnit *unit)
 {
   Action_ProduceVectored *item = new Action_ProduceVectored();
-  item->fillData(unit->getArmy(), unit->getDestination());
+  item->fillData(unit->getArmy(), unit->getDestination(), unit->getPos());
   addAction(item);
-  doVectoredUnitArrives(unit);
+  Army *army = doVectoredUnitArrives(unit);
+  if (!army)
+    {
+    printf("whooops... this vectored unit failed to show up.\n");
+    exit (1);
+    }
+
   return true;
 }
 

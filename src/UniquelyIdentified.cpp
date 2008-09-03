@@ -25,21 +25,26 @@
 UniquelyIdentified::UniquelyIdentified()
 {
     d_id = fl_counter->getNextId();
+    d_unique = true;
 }
 
 UniquelyIdentified::UniquelyIdentified(const UniquelyIdentified& obj)
-    :d_id(obj.d_id)
+    :d_id(obj.d_id), d_unique(false)
 {
 }
 
 UniquelyIdentified::UniquelyIdentified(Uint32 id)
 {
     d_id = id;
+    d_unique = false;
+    syncNewId();
 }
 
 UniquelyIdentified::UniquelyIdentified(XML_Helper* helper)
 {
     helper->getData(d_id, "id");
+    //only unique objects are saved.
+    d_unique = true;
 }
 
 UniquelyIdentified::~UniquelyIdentified()

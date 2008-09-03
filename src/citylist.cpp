@@ -164,6 +164,7 @@ void Citylist::nextTurn(Player* p)
       }
 
 }
+
 static bool isFogged(void *object)
 {
   return ((City*)object)->isFogged();
@@ -420,16 +421,12 @@ void Citylist::stopVectoringTo(City *c)
     {
       if ((*it).isBurnt() == true)
 	continue;
-      if ((*it).getOwner() != c->getOwner())
-	continue;
       if ((*it).getVectoring() == Vector<int>(-1,-1))
 	continue;
       if (c->contains((*it).getVectoring()))
-	{
-	  (*it).setVectoring(Vector<int>(-1,-1));
-	}
-      return;
+	(*it).setVectoring(Vector<int>(-1,-1));
     }
+  return;
 }
 
 Vector<int> Citylist::calculateCenterOfTerritory (Player *p)

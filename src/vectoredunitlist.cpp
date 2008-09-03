@@ -18,9 +18,11 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "vectoredunitlist.h"
+#include "vectoredunit.h"
 #include "citylist.h"
 #include "city.h"
 #include "xmlhelper.h"
+#include "player.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -58,14 +60,14 @@ VectoredUnitlist::VectoredUnitlist()
 
 VectoredUnitlist::~VectoredUnitlist()
 {
-    for (iterator it = begin(); it != end(); it++)
-      delete *it;
+  for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
+    delete *it;
 }
 
 VectoredUnitlist::VectoredUnitlist(XML_Helper* helper)
 {
     helper->registerTag("vectoredunit", sigc::mem_fun(this, &VectoredUnitlist::load));
-    helper->registerTag("army", sigc::mem_fun(this, &VectoredUnitlist::load));
+    helper->registerTag("armyprodbase", sigc::mem_fun(this, &VectoredUnitlist::load));
 }
 
 bool VectoredUnitlist::save(XML_Helper* helper) const
@@ -74,7 +76,7 @@ bool VectoredUnitlist::save(XML_Helper* helper) const
 
     retval &= helper->openTag("vectoredunitlist");
 
-    for (const_iterator it = begin(); it != end(); it++)
+    for (VectoredUnitlist::const_iterator it = begin(); it != end(); it++)
         retval &= (*it)->save(helper);
     
     retval &= helper->closeTag();
@@ -84,19 +86,17 @@ bool VectoredUnitlist::save(XML_Helper* helper) const
 
 bool VectoredUnitlist::load(std::string tag, XML_Helper* helper)
 {
-  if (tag == "armyprodbase")
-    {
-      VectoredUnitlist::iterator it = end();
-      it--;
-      VectoredUnit *vectoredunit = *it;
-      vectoredunit->setArmy(new ArmyProdBase (helper));
-      return true;
-    }
-    
   if (tag == "vectoredunit")
     {
       VectoredUnit *r = new VectoredUnit(helper);
       push_back(r);
+      return true;
+    }
+
+  if (tag == "armyprodbase")
+    {
+      VectoredUnit *vectoredunit = back();
+      vectoredunit->setArmy(new ArmyProdBase (helper));
       return true;
     }
 
@@ -106,112 +106,121 @@ bool VectoredUnitlist::load(std::string tag, XML_Helper* helper)
 void VectoredUnitlist::nextTurn(Player* p)
 {
   Citylist *cl = Citylist::getInstance();
-  City *c;
   debug("next_turn(" <<p->getName() <<")");
-  bool advance;
 
-  iterator it = begin();
-  while (it != end())
+  for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
     {
-      advance = true;
-      c = cl->getObjectAt((*it)->getPos());
+      City *c = cl->getObjectAt((*it)->getPos());
       if (c)
 	{
 	  if (c->getOwner() == p)
-	    {
-	      if ((*it)->nextTurn() == true)
-		{
-		  iterator nextit = it;
-		  nextit++;
-		  erase(it);
-		  advance = false;
-		  it = nextit; //advance here instead of down there
-		}
-	    }
+	    (*it)->nextTurn();
 	}
       else //must be a standard
-	{
-	      if ((*it)->nextTurn() == true)
-		{
-		  iterator nextit = it;
-		  nextit++;
-		  erase(it);
-		  advance = false;
-		  it = nextit; //advance here instead of down there
-		}
-	}
-      if (advance)
-	++it;
+	(*it)->nextTurn();
     }
 
+  for (VectoredUnitlist::iterator it = begin(); it != end();)
+    {
+      if ((*it)->getDuration() <= 0)
+	{
+	  it = flErase(it);
+	  continue;
+	}
+      it++;
+    }
 }
 
-void VectoredUnitlist::removeVectoredUnitsGoingTo(Vector<int> pos)
+bool VectoredUnitlist::removeVectoredUnitsGoingTo(Vector<int> pos)
 {
-  iterator it = begin();
-  iterator nextit = it;
-  nextit++;
-  for (; nextit != end(); it++, nextit++)
+  bool found = false;
+  for (VectoredUnitlist::iterator it = begin(); it != end();)
     {
       if ((*it)->getDestination() == pos)
 	{
-	  erase(it);
-	  it = nextit;
-	  nextit++;
+	  found = true;
+	  it = flErase(it);
+	  continue;
 	}
+      it++;
     }
+  return found;
 }
 
-void VectoredUnitlist::removeVectoredUnitsComingFrom(Vector<int> pos)
+bool VectoredUnitlist::removeVectoredUnitsComingFrom(Vector<int> pos)
 {
-  iterator it = begin();
-  iterator nextit = it;
-  nextit++;
-  for (; nextit != end(); it++, nextit++)
+  bool found = false;
+  for (VectoredUnitlist::iterator it = begin(); it != end();)
     {
       if ((*it)->getPos() == pos)
 	{
-	  erase(it);
-	  it = nextit;
-	  nextit++;
+	  found = true;
+	  it = flErase(it);
+	  continue;
 	}
+      it++;
     }
+  return found;
 }
-void VectoredUnitlist::removeVectoredUnitsGoingTo(City *c)
+
+bool VectoredUnitlist::removeVectoredUnitsGoingTo(City *c)
 {
-  iterator it = begin();
-  iterator nextit = it;
-  nextit++;
-	  
-  for (; nextit != end(); it++, nextit++)
+  int count = 0;
+  int counter = 0;
+  bool found = false;
+  Citylist *cl = Citylist::getInstance();
+  for (VectoredUnitlist::iterator it = begin(); it != end();)
     {
       if (c->contains((*it)->getDestination()))
 	{
-	  erase(it);
-	  it = nextit;
-	  nextit++;
+	  found = true;
+	  it = flErase(it);
+	  counter++;
+	  continue;
 	}
+      it++;
     }
+  if (counter != count)
+    {
+      counter = 0;
+  for (VectoredUnitlist::iterator it = begin(); it != end();)
+    {
+      if (c->contains((*it)->getDestination()))
+	{
+	  printf ("crap!  we found another one on the second try\n");
+	  found = true;
+	  it = flErase(it);
+	  counter++;
+	  continue;
+	}
+      it++;
+    }
+  printf ("got another %d\n", counter);
+  if (counter)
+    exit(0);
+    }
+  return found;
 }
 
-void VectoredUnitlist::removeVectoredUnitsComingFrom(City *c)
+bool VectoredUnitlist::removeVectoredUnitsComingFrom(City *c)
 {
-  iterator it = begin();
-  iterator nextit = it;
-  nextit++;
-  for (; nextit != end(); it++, nextit++)
+  bool found = false;
+  for (VectoredUnitlist::iterator it = begin(); it != end();)
     {
       if (c->contains((*it)->getPos()))
 	{
-	  erase(it);
-	  it = nextit;
-	  nextit++;
+	  found = true;
+	  it = flErase(it);
+	  continue;
 	}
+      it++;
     }
+  return found;
 }
+
 void VectoredUnitlist::getVectoredUnitsGoingTo(City *c, std::list<VectoredUnit*>& vectored)
 {
-  for (iterator it = begin(); it != end(); it++)
+  for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
     {
       if (c->contains((*it)->getDestination()))
 	{
@@ -221,7 +230,7 @@ void VectoredUnitlist::getVectoredUnitsGoingTo(City *c, std::list<VectoredUnit*>
 }
 void VectoredUnitlist::getVectoredUnitsGoingTo(Vector<int> pos, std::list<VectoredUnit*>& vectored)
 {
-  for (iterator it = begin(); it != end(); it++)
+  for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getDestination() == pos)
 	{
@@ -231,7 +240,7 @@ void VectoredUnitlist::getVectoredUnitsGoingTo(Vector<int> pos, std::list<Vector
 }
 void VectoredUnitlist::getVectoredUnitsComingFrom(Vector<int> pos, std::list<VectoredUnit*>& vectored)
 {
-  for (iterator it = begin(); it != end(); it++)
+  for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getPos() == pos)
 	{
@@ -243,7 +252,7 @@ void VectoredUnitlist::getVectoredUnitsComingFrom(Vector<int> pos, std::list<Vec
 Uint32 VectoredUnitlist::getNumberOfVectoredUnitsGoingTo(Vector<int> pos)
 {
   Uint32 count = 0;
-  for (iterator it = begin(); it != end(); it++)
+  for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getDestination() == pos)
 	{
@@ -255,10 +264,15 @@ Uint32 VectoredUnitlist::getNumberOfVectoredUnitsGoingTo(Vector<int> pos)
 
 void VectoredUnitlist::changeDestination(City *c, Vector<int> new_dest)
 {
-  for (iterator it = begin(); it != end(); it++)
+  for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
     {
-      if (c->contains((*it)->getDestination()))
+      if (c->contains((*it)->getPos()))
 	(*it)->setDestination(new_dest);
     }
 }
 
+VectoredUnitlist::iterator VectoredUnitlist::flErase(iterator object)
+{
+  delete(*object);
+  return erase (object);
+}

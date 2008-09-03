@@ -361,7 +361,6 @@ class Citylist : public LocationList<City>, public sigc::trackable
 	//! Destructor.
         ~Citylist();
 
-
     private:
         //! A callback for loading City objects into the list of cities.
         bool load(std::string tag, XML_Helper* helper);

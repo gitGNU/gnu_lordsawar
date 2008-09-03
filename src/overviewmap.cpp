@@ -19,6 +19,7 @@
 
 #include <assert.h>
 #include <math.h>
+#include <stdlib.h>
 
 #include "overviewmap.h"
 #include "stacklist.h"
@@ -90,6 +91,29 @@ bool OverviewMap::isShadowed(Uint32 type, int i, int j)
   return false;
 }
 
+static int 
+prand(int i, int j)
+{
+  unsigned int x = i;
+  unsigned int y = j;
+  return (rand_r (&x) ^ rand_r (&y)) % 3;
+}
+
+static int 
+crand(int i, int j)
+{
+  return (i + 1) ^ (j + 1);
+  //return i + j + (i*j) + (i*100) + (j*43) / 43;
+}
+
+static int 
+drand(int i, int j)
+{
+  float f = i / 43 * j / 43;
+  f *= 10000000;
+  return (int) roundf(f) | i  + i + j;
+}
+
 void OverviewMap::draw_tile_pixel(SDL_Surface *surface, Tile::Pattern pattern,
 				  SDL_Color first_color, SDL_Color second_color,
 				  SDL_Color third_color,
@@ -120,7 +144,40 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface, Tile::Pattern pattern,
           Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
           SDL_Color th = third_color;
           Uint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
-          int num = rand() % 3;
+
+          int num = prand(i, j) % 3;
+          if (num == 0)
+            draw_pixel(surface, i, j, first);
+          else if (num == 1)
+            draw_pixel(surface, i, j, second);
+          else
+            draw_pixel(surface, i, j, third);
+        }
+        break;
+      case Tile::DIAGONAL:
+        {
+          SDL_Color s = second_color;
+          Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+          SDL_Color th = third_color;
+          Uint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
+
+          int num = drand(i, j) % 3;
+          if (num == 0)
+            draw_pixel(surface, i, j, first);
+          else if (num == 1)
+            draw_pixel(surface, i, j, second);
+          else
+            draw_pixel(surface, i, j, third);
+        }
+        break;
+      case Tile::CROSSHATCH:
+        {
+          SDL_Color s = second_color;
+          Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+          SDL_Color th = third_color;
+          Uint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
+
+          int num = crand(i, j) % 3;
           if (num == 0)
             draw_pixel(surface, i, j, first);
           else if (num == 1)

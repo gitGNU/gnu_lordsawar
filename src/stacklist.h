@@ -116,7 +116,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         static Stack* getAmbiguity(Stack* stack);
 
         //! Searches through the all players Stacklists and deletes the stack.
-        static void deleteStack(Stack* stack);
+        static bool deleteStack(Stack* stack);
 
         /** 
 	 * Scan each tile occupied by the given city and return a list of
@@ -220,6 +220,8 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	 */
         //! Return the stack at position (x,y) or 0 if there is none.
         Stack* getOwnObjectAt(int x, int y);
+        Stack* getOwnObjectAt(Vector<int> point)
+	  { return getOwnObjectAt(point.x, point.y);}
 
         Stack *getStackById(Uint32 id);
         Stack *getArmyStackById(Uint32 army);

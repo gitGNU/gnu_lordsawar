@@ -39,6 +39,7 @@
 #include "citylist.h"
 #include "GraphicsCache.h"
 #include "vectoredunitlist.h"
+#include "vectoredunit.h"
 
 DestinationDialog::DestinationDialog(City *c, bool *see_all)
 {

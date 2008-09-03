@@ -22,6 +22,7 @@
 
 #include "fight.h"
 #include <algorithm>
+#include <assert.h>
 #include <stdlib.h>     // for random numbers
 #include <math.h>       // for has_hit()
 #include "army.h"
@@ -262,7 +263,7 @@ Army *findArmyById(const std::list<Stack *> &l, Uint32 id)
   return 0;
 }
 
-void Fight::battleFromHistory()
+Fight::Result Fight::battleFromHistory()
 {
   for (std::list<FightItem>::iterator i = d_actions.begin(),
          end = d_actions.end(); i != end; ++i) {
@@ -272,8 +273,25 @@ void Fight::battleFromHistory()
     if (!a)
       a = findArmyById(d_defenders, f.id);
 
+    if (!a)
+      {
+	printf ("uh oh.  army id %d can't be found in the battle.\n", f.id);
+	printf ("do we have an army id of that in the stacklist anywhere?\n");
+      assert (false);
+      }
     a->damage(f.damage);
   }
+  //is there anybody alive in the attackers?
+  for (std::list<Stack*>::iterator it = d_attackers.begin(); it != d_attackers.end(); it++)
+    {
+      for (Stack::iterator i = (*it)->begin(); i != (*it)->end(); i++)
+	{
+	  if ((*i)->getHP() > 0)
+	    return Fight::ATTACKER_WON;
+	}
+    }
+
+  return Fight::DEFENDER_WON;
 }
 
 bool Fight::doRound()

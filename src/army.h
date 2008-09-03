@@ -33,6 +33,7 @@
 #include "UniquelyIdentified.h"
 
 class Player;
+class Temple;
 class XML_Helper;
 class ArmyProto;
 class ArmyProdBase;
@@ -270,10 +271,12 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 * visited the Temple at which it's parent stack is currently
 	 * sitting on.
 	 *
+	 * @param temple   The temple that the army is being blessed at.
+	 *
 	 * @return True if the Army unit was blessed, otherwise false.
 	 */
 	//! Bless the Army unit if it hasn't already visited this Temple.
-        bool bless();
+        bool bless(Temple *temple);
 
         //! Increases the experience points of the Army by the given amount.
         void gainXp(double n);

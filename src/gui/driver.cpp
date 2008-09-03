@@ -281,9 +281,13 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   if (game_scenario->s_random_turns == true)
     next_turn->snextRound.connect (sigc::mem_fun(GameServer::getInstance(), 
 						 &GameServer::sendTurnOrder));
+  next_turn->snextRound.connect (sigc::mem_fun(GameServer::getInstance(),
+					       &GameServer::sendNextRound));
   next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, 
 					      game_server, true));
+  Playerlist::getInstance()->splayerDead.connect
+    (sigc::mem_fun(GameServer::getInstance(), &GameServer::sendKillPlayer));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
   game_lobby_dialog->player_sat_down.connect
     (sigc::mem_fun(this, &Driver::on_hosted_player_sat_down));
@@ -382,13 +386,15 @@ void Driver::on_game_scenario_received(std::string path)
   if (download_window.get())
     download_window->hide();
   GameScenario *game_scenario = load_game(path);
-  std::string host = GameClient::getInstance()->getHost();
-  Uint32 port = GameClient::getInstance()->getPort();
+  GameClient *game_client = GameClient::getInstance();
+  std::string host = game_client->getHost();
+  Uint32 port = game_client->getPort();
   RecentlyPlayedGameList::getInstance()->addNetworkedEntry(game_scenario, host, port);
   RecentlyPlayedGameList::getInstance()->saveToFile(File::getSavePath() + "/recently-played.xml");
 
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
+  game_client->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_round));
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, 
 					      GameClient::getInstance(), false));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
@@ -663,7 +669,6 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
   return;
 }
 
-    
 void Driver::stressTestNextRound()
 {
   static int count = 1;
@@ -795,6 +800,9 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
       GameClient::getInstance()->listenForLocalEvents(*it);
 
   //end turn signals are listened to by next_turn, that are fired by the game client decoder
+  GameClient *game_client = GameClient::getInstance();
+  game_client->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_round));
+
   next_turn->start();
 }
 

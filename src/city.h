@@ -110,6 +110,9 @@ class City : public Ownable, public Location, public Renamable
 
 	//! Add an Army production base to a production slot.
         /**
+	 * This method is called when a new army production base has been
+	 * purchased/bought.
+	 *
          * @note This method overwrites the production slot if neccessary.
          * 
          * @param index        The index of the production slot; if set to -1,
@@ -258,6 +261,9 @@ class City : public Ownable, public Location, public Renamable
         //! Return the army production base of the given slot.
         const ArmyProdBase * getProductionBase(int slot) const;
         
+	//! Return the army production base this city is producing.
+	const ArmyProdBase *getActiveProductionBase() const;
+
         //! Returns whether or not the city has been destroyed.
         bool isBurnt() const {return d_burnt;}
 

@@ -803,7 +803,7 @@ void TileSetWindow::fill_colours(Tile *tile)
       c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
       tile_smallmap_second_colorbutton->set_color(c);
       break;
-    case Tile::RANDOMIZED: case Tile::TABLECLOTH:
+    case Tile::RANDOMIZED: case Tile::TABLECLOTH: case Tile::DIAGONAL: case Tile::CROSSHATCH:
       tile_smallmap_second_colorbutton->set_sensitive(true);
       tile_smallmap_third_colorbutton->set_sensitive(true);
       sdl = tile->getColor();

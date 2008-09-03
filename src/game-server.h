@@ -54,6 +54,8 @@ public:
   void stand_up (Player *player);
   void chat(std::string message);
   void sendTurnOrder();
+  void sendNextRound();
+  void sendKillPlayer(Player *player);
   sigc::signal<void> remote_participant_connected;
   sigc::signal<void> remote_participant_disconnected;
 

@@ -21,6 +21,7 @@
 //  02110-1301, USA.
 
 #include <sigc++/functors/mem_fun.h>
+#include <assert.h>
 
 #include "stacklist.h"
 #include "stack.h"
@@ -87,7 +88,7 @@ Stack* Stacklist::getAmbiguity(Stack* s)
 }
 
 //search all player's stacklists to find this stack
-void Stacklist::deleteStack(Stack* s)
+bool Stacklist::deleteStack(Stack* s)
 {
     for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
         pit != Playerlist::getInstance()->end(); pit++)
@@ -95,11 +96,9 @@ void Stacklist::deleteStack(Stack* s)
         Stacklist* mylist = (*pit)->getStacklist();
         for (const_iterator it = mylist->begin(); it != mylist->end(); it++)
             if ((*it) == s)
-            {
-                mylist->flRemove(s);
-                return;
-            }
+                return mylist->flRemove(s);
     }
+    return false;
 }
 
 void Stacklist::payUpkeep(Player *p)
@@ -293,6 +292,8 @@ bool Stacklist::flRemove(Stack* object)
     {
         if (d_activestack == object)
             d_activestack = 0;
+	assert (object->getId() == (*stackit)->getId());
+	printf ("about to delete stack with id %d\n", object->getId());
         delete object;
         erase(stackit);
         return true;

@@ -1397,9 +1397,10 @@ class Player: public sigc::trackable
         void doCityChangeProduction(City *c, int slot);
         void doGiveReward(Stack *s, Reward *reward);
         void doHeroDropItem(Hero *hero, Item *item, Vector<int> pos);
+	bool doHeroDropAllItems(Hero *h, Vector<int> pos);
         void doHeroPickupItem(Hero *hero, Item *item, Vector<int> pos);
         void doLevelArmy(Army *army, Army::Stat stat);
-        void doStackDisband(Stack *stack);
+        bool doStackDisband(Stack *stack);
         void doSignpostChange(Signpost *signpost, std::string message);
         void doCityRename(City *c, std::string name);
         void doVectorFromCity(City * c, Vector<int> dest);
@@ -1411,8 +1412,9 @@ class Player: public sigc::trackable
         void doConquerCity(City *city, Stack *stack);
         Hero* doRecruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
         void doRename(std::string name);
+	void doKill();
 	const Army *doCityProducesArmy(City *city);
-	void doVectoredUnitArrives(VectoredUnit *unit);
+	Army *doVectoredUnitArrives(VectoredUnit *unit);
 
 	void AI_maybeBuyScout();
 

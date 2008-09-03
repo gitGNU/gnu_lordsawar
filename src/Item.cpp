@@ -23,7 +23,6 @@
 #include "Item.h"
 #include "ItemProto.h"
 #include "File.h"
-#include "counter.h"
 #include "playerlist.h"
 #include "ucompose.hpp"
 
@@ -55,27 +54,40 @@ Item::Item(std::string name, bool plantable, Player *plantable_owner)
   d_type = 0;
   d_bonus = 0;
   d_plantable = plantable;
-  d_plantable_owner_id = plantable_owner->getId();
+  if (plantable_owner)
+    d_plantable_owner_id = plantable_owner->getId();
+  else
+    d_plantable_owner_id = MAX_PLAYERS;
   d_planted = false;
-  d_id = fl_counter->getNextId();
   //std::cerr << "item created with id " << d_id << std::endl;
 }
 
-Item::Item(const Item& orig, bool clone)
+Item::Item(std::string name, bool plantable, Player *plantable_owner, Uint32 id)
+	: ItemProto(name, 0), UniquelyIdentified(id)
+{
+  d_type = 0;
+  d_bonus = 0;
+  d_plantable = plantable;
+  if (plantable_owner)
+    d_plantable_owner_id = plantable_owner->getId();
+  else
+    d_plantable_owner_id = MAX_PLAYERS;
+  d_planted = false;
+  //std::cerr << "item created with id " << d_id << std::endl;
+}
+
+Item::Item(const Item& orig)
 :ItemProto(orig), UniquelyIdentified(orig), 
     d_plantable(orig.d_plantable), 
     d_plantable_owner_id(orig.d_plantable_owner_id), d_planted(orig.d_planted),
     d_type(orig.d_type)
 {
-  if (!clone)
-    d_id = fl_counter->getNextId();
 }
 
 Item::Item(const ItemProto &proto)
-:ItemProto(proto)
+:ItemProto(proto), UniquelyIdentified()
 {
   d_type = proto.getTypeId();
-  d_id = fl_counter->getNextId();
   d_plantable = false;
   d_plantable_owner_id = MAX_PLAYERS;
   d_planted = false;
@@ -83,6 +95,8 @@ Item::Item(const ItemProto &proto)
 
 Item::~Item()
 {
+  if (d_unique)
+    sdying.emit(this);
 }
 
 bool Item::save(XML_Helper* helper) const
@@ -107,4 +121,10 @@ bool Item::save(XML_Helper* helper) const
   retval &= helper->closeTag();
 
   return retval;
+}
+
+Item* Item::createNonUniqueItem(std::string name, bool plantable, 
+				Player *plantable_owner)
+{
+  return new Item(name, plantable, plantable_owner, 0);
 }

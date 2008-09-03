@@ -43,6 +43,7 @@ public:
   sigc::signal<void, Player *> remote_player_moved;
   sigc::signal<void, Player *> remote_player_named;
   sigc::signal<void, Player *> remote_player_died;
+  sigc::signal<void, int> round_begins;
 
 protected:
   class ActionLoader 

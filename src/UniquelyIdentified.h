@@ -51,6 +51,7 @@ class UniquelyIdentified
         
  protected:
     Uint32 d_id;
+    bool d_unique;
 };
 
 #endif

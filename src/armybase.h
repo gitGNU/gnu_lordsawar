@@ -155,14 +155,6 @@ class ArmyBase
         //! Generic method for saving Army base data.
         bool saveData(XML_Helper* helper) const;
 
-	//! How many turns the Army unit takes to be produced in a City.
-	/**
-	 * This value must be above 0.  Normal values for d_production are
-	 * 1 through 4.
-	 * This value does not change during gameplay.
-	 */
-        Uint32 d_production;
-
 	//! The amount it costs to maintain this Army unit for this turn.
 	/**
 	 * @note The amount is in gold pieces.
@@ -246,13 +238,6 @@ class ArmyBase
 	 */
 	//! The special capbilities of the Army unit.
         Uint32 d_army_bonus;
-
-	//! The gender of the Army unit.
-	/**
-	 * d_gender is one of the values contained in Army::Gender.
-	 * This value does not change during gameplay (heh).
-	 */
-        //Uint32 d_gender;
 
 	//! The amount of XP this Army unit worth when killed by an assailant.
 	/**

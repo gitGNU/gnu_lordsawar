@@ -64,6 +64,11 @@ void GameLobbyDialog::update_city_map()
       citymap.reset(new CityMap());
       citymap->map_changed.connect
 	(sigc::mem_fun(this, &GameLobbyDialog::on_map_changed));
+      if (d_game_scenario->getRound() > 1)
+	{
+	  citymap->resize();
+	  citymap->draw();
+	}
     }
   else
     {
@@ -298,6 +303,7 @@ void GameLobbyDialog::update_scenario_details()
   s = String::ucompose("%1", Citylist::getInstance()->size());
   cities_label->set_text(s);
 
+  update_city_map();
 }
 
 void GameLobbyDialog::set_parent_window(Gtk::Window &parent)
@@ -491,7 +497,6 @@ void GameLobbyDialog::on_local_player_ends_turn(Player *p)
 	}
     }
   update_scenario_details();
-  update_city_map();
 }
 void GameLobbyDialog::on_local_player_starts_turn(Player *p)
 {
@@ -507,7 +512,6 @@ void GameLobbyDialog::on_local_player_starts_turn(Player *p)
 	  to_pixbuf(gc->getCursorPic(GraphicsCache::SWORD));
     }
   update_scenario_details();
-  update_city_map();
 }
 
 void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
@@ -537,7 +541,6 @@ void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
 	  to_pixbuf(gc->getCursorPic(GraphicsCache::SWORD));
     }
   update_scenario_details();
-  update_city_map();
 }
 
 void GameLobbyDialog::on_remote_player_changes_name(Player *p)

@@ -861,16 +861,18 @@ class Action_Equip : public Action
 	 * it's Action_Equip::Slot.
 	 */
 	//! Populate the action with pertinent data.
-        bool fillData(Hero *hero, Item *item, Slot slot);
+        bool fillData(Hero *hero, Item *item, Slot slot, Vector<int> pos);
 
 	Uint32 getHeroId() const {return d_hero;};
 	Uint32 getItemId() const {return d_item;};
 	Uint32 getToBackpackOrToGround() const {return d_slot;};
+	Vector<int> getItemPos() const {return d_pos;};
 
         private:
         Uint32 d_hero;
         Uint32 d_item;
         Uint32 d_slot;
+	Vector<int> d_pos;
 };
 
 //-----------------------------------------------------------------------------
@@ -1227,16 +1229,20 @@ class Action_ProduceVectored: public Action
 	 * it has showing up.
 	 */
 	//! Populate the action with pertinent data.
-        bool fillData(ArmyProdBase *army, Vector <int>dest);
+        bool fillData(ArmyProdBase *army, Vector <int> dest, Vector<int> src);
 
 	//! Get the army type Id that has shown up.
 	ArmyProdBase *getArmy() const {return d_army;};
 
 	//! Get the position on the map where the army showed up.
 	Vector<int> getDestination() const {return d_dest;}
+
+	//! Get the position on the map where the army is coming from.
+	Vector<int> getOrigination() const {return d_src;}
     private:
 	ArmyProdBase *d_army;
         Vector<int> d_dest;
+        Vector<int> d_src;
 	bool load(std::string tag, XML_Helper *helper);
 };
 

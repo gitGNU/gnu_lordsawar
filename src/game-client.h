@@ -78,6 +78,8 @@ private:
   void sendHistories();
 
   void gotTurnOrder (std::string payload);
+  void gotNextRound (int round);
+  void gotKillPlayer(Player *player);
 
   void sat_down(Player *player, std::string nickname);
   void stood_up(Player *player, std::string nickname);

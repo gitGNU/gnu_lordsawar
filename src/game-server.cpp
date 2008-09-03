@@ -33,6 +33,7 @@
 #include "Configuration.h"
 #include "network_player.h"
 #include "real_player.h"
+#include "GameScenarioOptions.h"
 
 
 class NetworkAction;
@@ -261,6 +262,8 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_SERVER_DISCONNECT:
   case MESSAGE_TYPE_CHATTED:
   case MESSAGE_TYPE_TURN_ORDER:
+  case MESSAGE_TYPE_KILL_PLAYER:
+  case MESSAGE_TYPE_NEXT_ROUND:
     //faulty client
     break;
   }
@@ -833,6 +836,17 @@ void GameServer::sendChatRoster(void *conn)
 		       d_nickname);
 }
 
+void GameServer::sendKillPlayer(Player *p)
+{
+  std::stringstream player;
+  player << p->getId();
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    network_server->send((*i)->conn, MESSAGE_TYPE_KILL_PLAYER, player.str());
+
+  remote_player_died.emit(p);
+}
+
 void GameServer::sendTurnOrder()
 {
   std::stringstream players;
@@ -843,5 +857,16 @@ void GameServer::sendTurnOrder()
        end = participants.end(); i != end; ++i) 
     network_server->send((*i)->conn, MESSAGE_TYPE_TURN_ORDER, players.str());
   playerlist_reorder_received.emit();
+}
+
+void GameServer::sendNextRound()
+{
+  std::stringstream round;
+  d_game_scenario->nextRound();
+  round << GameScenarioOptions::s_round;
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    network_server->send((*i)->conn, MESSAGE_TYPE_NEXT_ROUND, round.str());
+
 }
 // End of file

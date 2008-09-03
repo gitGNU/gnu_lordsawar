@@ -32,6 +32,7 @@
 #include "counter.h"
 #include "army.h"
 #include "citylist.h"
+#include "templelist.h"
 #include "hero.h"
 #include "GameMap.h"
 #include "vector.h"
@@ -98,7 +99,8 @@ Stack::Stack(XML_Helper* helper)
 Stack::~Stack()
 {
   d_deleting = true;
-  sdying.emit(this);
+  if (d_unique)
+    sdying.emit(this);
 
   delete d_path;
   flClear();
@@ -374,7 +376,8 @@ int Stack::bless()
   int count = 0;
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it)->bless())
+      Temple *temple = Templelist::getInstance()->getObjectAt(getPos());
+      if ((*it)->bless(temple))
 	count++;
     }
   return count;

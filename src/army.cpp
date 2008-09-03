@@ -133,6 +133,8 @@ Army::Army(XML_Helper* helper)
     d_level(0), d_grouped(false), d_battles_number(0), d_number_hashit(0), 
     d_number_hasbeenhit(0)
 {
+  //d_owner is not read in here.  it is set to the owner of the stack
+  //in stack.cpp
   d_visitedTemples.clear();
 
   int ival = -1;
@@ -179,7 +181,8 @@ Army::Army(XML_Helper* helper)
 
 Army::~Army()
 {
-  sdying.emit(this);
+  if (d_unique)
+    sdying.emit(this);
 }
 
 void Army::setStat(Army::Stat stat, Uint32 value)
@@ -262,11 +265,9 @@ void Army::resetMoves()
 }
 
 /* is this temple one we've already visited? */
-bool Army::bless()
+bool Army::bless(Temple *temple)
 {
   bool visited = false;
-  Stack *stack = d_owner->getStacklist()->getActivestack();
-  Temple* temple = Templelist::getInstance()->getObjectAt(stack->getPos());
 
   if (!temple)
     return false;
@@ -455,7 +456,6 @@ void  Army::printAllDebugInfo() const
   std::cerr << "max_moves_rest_bonus = " 
     << d_max_moves_rest_bonus << std::endl;
   std::cerr << "upkeep = " << d_upkeep << std::endl;
-  std::cerr << "production = " << d_production << std::endl;
   std::cerr << "move_bonus = " << d_move_bonus << std::endl;
   std::cerr << "ship = " << d_ship << std::endl;
   std::cerr << "army_bonus = " << d_army_bonus << std::endl;
