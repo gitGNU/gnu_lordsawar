@@ -415,8 +415,7 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                   if (!land && getTile(x, y)->getType() != Tile::WATER)
                     continue;
                   if (land && getTile(x, y)->getType() == Tile::MOUNTAIN &&
-		      (a->getStat(Army::MOVE_BONUS) & Tile::MOUNTAIN) == 
-		      Tile::MOUNTAIN)
+		      (a->getStat(Army::MOVE_BONUS) & Tile::MOUNTAIN) == 0)
                     continue;
                   //is there somebody else's stack here?
                   s = Stacklist::getObjectAt(x, y);
