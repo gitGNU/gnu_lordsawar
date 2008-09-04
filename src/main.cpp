@@ -69,6 +69,19 @@ int main(int argc, char* argv[])
 		}
 	      Configuration::s_cacheSize = size;
 	    }
+	  else if (parameter == "--seed" || parameter == "-S")
+	    {
+	      i++;
+	      //convert the next argument
+	      char* error = 0;
+	      long seed = strtol(argv[i-1], &error, 10);
+	      if (error && (*error != '\0'))
+		{
+		  cerr <<_("non-numerical value for seed value\n");
+		  exit(-1);
+		}
+	      srand(seed);
+	    }
 	  else if (parameter == "--turn")
 	    {
 	      i++;
@@ -96,8 +109,9 @@ int main(int argc, char* argv[])
 	      cout << "LordsAWar! version " << VERSION << endl << endl;
 	      cout << _("Options:") << endl << endl; 
 	      cout << _("  -h, --help                 Shows this help screen") <<endl;
-	      cout << _("  -c <size>                  Set the maximum cache size") <<endl;
+	      cout << _("  -c <size>                  Set the cache size for imagery to SIZE bytes") <<endl;
 	      cout << _("  -t, --test                 Start with a test-scenario") << endl;
+	      cout << _("  -S, --seed <number>        Seed the random number generator with NUMBER") << endl;
 	      cout << _("  -s, --stress-test          Non-interactive stress test") << endl;
 	      cout << _("  -r, --robots               Non-interactive network stress test") << endl;
 	      cout << endl;
