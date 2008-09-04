@@ -43,6 +43,7 @@
 
 #include "decorated.h"
 class XML_Helper;
+class CycleButton;
 
 // dialog for choosing parameters for starting a new game
 class GamePreferencesDialog: public Decorated
@@ -105,7 +106,7 @@ class GamePreferencesDialog: public Decorated
     player_name_seq default_player_names;
     player_name_seq::iterator current_player_name;
     
-    std::list<Gtk::ComboBoxText *> player_types;
+    std::list<CycleButton*> player_types;
     std::list<Gtk::Entry *> player_names;
     std::list<Gtk::Image *> player_shields;
 

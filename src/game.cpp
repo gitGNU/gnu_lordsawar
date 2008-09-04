@@ -65,6 +65,7 @@
 #include "GameMap.h"
 #include "history.h"
 #include "pbm-game-server.h"
+#include "LocationBox.h"
 
 #include "herotemplates.h"
 
@@ -1110,10 +1111,10 @@ void Game::on_fight_started(Fight &fight)
   
   //FIXME: zoom the map here if we're attacking an observable human, 
   //from an unobservable computer player
-  bigmap->setFighting(true);
+  bigmap->setFighting(LocationBox(fight.getAttackers().front()->getPos()));
   bigmap->draw();
   fight_started.emit(fight);
-  bigmap->setFighting(false);
+  bigmap->setFighting(LocationBox(Vector<int>(-1,-1)));
   bigmap->draw();
 }
 

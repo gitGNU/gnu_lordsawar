@@ -69,7 +69,7 @@ liblwgui_la_SOURCES = \
     network-game-selector-dialog.cpp network-game-selector-dialog.h \
     new-game-progress-window.cpp new-game-progress-window.h \
     new-network-game-download-window.cpp new-network-game-download-window.h \
-    decorated.cpp decorated.h
+    decorated.cpp decorated.h cycle-button.cpp cycle-button.h
 
 liblwgui_la_LIBADD = @LTLIBOBJS@
 

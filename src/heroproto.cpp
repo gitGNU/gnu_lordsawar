@@ -51,6 +51,8 @@ HeroProto::HeroProto(XML_Helper* helper)
     d_gender = Hero::NONE;
   else
     d_gender = Hero::genderFromString(gender_str);
+  helper->getData(d_type_id, "type");
+  helper->getData(d_armyset, "armyset");
 }
 
 bool HeroProto::save(XML_Helper* helper) const
@@ -62,6 +64,8 @@ bool HeroProto::save(XML_Helper* helper) const
   retval &= ArmyProto::saveData(helper);
   std::string gender_str = Hero::genderToString(Hero::Gender(d_gender));
   retval &= helper->saveData("gender", gender_str);
+  retval &= helper->saveData("armyset", d_armyset);
+  retval &= helper->saveData("type", d_type_id);
 
   retval &= helper->closeTag();
 

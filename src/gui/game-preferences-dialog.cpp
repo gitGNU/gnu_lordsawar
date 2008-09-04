@@ -25,6 +25,7 @@
 #include <gtkmm/filefilter.h>
 
 #include "game-preferences-dialog.h"
+#include "cycle-button.h"
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
@@ -317,15 +318,16 @@ void GamePreferencesDialog::add_player(const Glib::ustring &type,
   //okay, add a new hbox, with a combo and an entry in it
   //add it to players_vbox
   Gtk::HBox *player_hbox = new Gtk::HBox();
-  Gtk::ComboBoxText *player_type = new Gtk::ComboBoxText();
-  player_type->signal_changed().connect
+  std::list<Gtk::Button*> states;
+  states.push_back(manage(new Gtk::Button(HUMAN_PLAYER_TYPE)));
+  states.push_back(manage(new Gtk::Button(EASY_PLAYER_TYPE)));
+  states.push_back(manage(new Gtk::Button(HARD_PLAYER_TYPE)));
+  states.push_back(manage(new Gtk::Button(NO_PLAYER_TYPE)));
+  CycleButton *player_type = new CycleButton(states);
+  player_type->signal_changed.connect
       (sigc::mem_fun(this, &GamePreferencesDialog::on_player_type_changed));
   Gtk::Entry *player_name = new Gtk::Entry();
   player_name->set_text(name);
-  player_type->append_text(HUMAN_PLAYER_TYPE);
-  player_type->append_text(EASY_PLAYER_TYPE);
-  player_type->append_text(HARD_PLAYER_TYPE);
-  player_type->append_text(NO_PLAYER_TYPE);
 
   if (type == HUMAN_PLAYER_TYPE)
     player_type->set_active(0);
@@ -340,7 +342,7 @@ void GamePreferencesDialog::add_player(const Glib::ustring &type,
   player_types.push_back(player_type);
   player_names.push_back(player_name);
   player_hbox->pack_start(*manage(player_name), Gtk::PACK_SHRINK, 10);
-  player_hbox->add(*manage(player_type));
+  player_hbox->add(*manage(player_type->get_widget()));
   players_vbox->add(*manage(player_hbox));
 }
 
@@ -360,7 +362,7 @@ void GamePreferencesDialog::on_random_map_toggled()
     
     if (random_map)
       {
-	std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
+	std::list<CycleButton *>::iterator c = player_types.begin();
 	std::list<Gtk::Entry *>::iterator e = player_names.begin();
 	for (; c != player_types.end(); c++, e++)
 	  {
@@ -374,7 +376,7 @@ void GamePreferencesDialog::on_random_map_toggled()
 	if (load_map_filechooser->get_filename().empty() == false)
 	  {
 	    //disable all names, and types
-	    std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
+	    std::list<CycleButton *>::iterator c = player_types.begin();
 	    std::list<Gtk::Entry *>::iterator e = player_names.begin();
 	    for (; c != player_types.end(); c++, e++)
 	      {
@@ -507,7 +509,7 @@ void GamePreferencesDialog::update_shields()
 void GamePreferencesDialog::on_player_type_changed()
 {
   Uint32 offcount = 0;
-    std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
+    std::list<CycleButton *>::iterator c = player_types.begin();
     for (; c != player_types.end(); c++)
       {
 	if (player_type_to_enum((*c)->get_active_text()) ==
@@ -524,7 +526,7 @@ void GamePreferencesDialog::on_player_type_changed()
 void GamePreferencesDialog::update_difficulty_rating()
 {
     GameParameters g;
-    std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
+    std::list<CycleButton *>::iterator c = player_types.begin();
     for (; c != player_types.end(); c++)
       {
 	GameParameters::Player p;
@@ -644,7 +646,7 @@ void GamePreferencesDialog::on_start_game_clicked()
 	g.map_path = load_map_filechooser->get_filename();
 
     int id = 0;
-    std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
+    std::list<CycleButton *>::iterator c = player_types.begin();
     std::list<Gtk::Entry *>::iterator e = player_names.begin();
     for (; c != player_types.end(); c++, e++, id++)
       {
@@ -793,7 +795,7 @@ void GamePreferencesDialog::on_difficulty_changed()
     {
       if (type_num)
 	{
-	  std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
+	  std::list<CycleButton *>::iterator c = player_types.begin();
 	  for (; c != player_types.end(); c++)
 	    {
 	      if ((*c)->get_active_row_number() != 3)

@@ -33,6 +33,7 @@ class City;
 class Ruin;
 class Signpost;
 class Temple;
+class LocationBox;
 
 /** Specialization of BigMap for the game (as opposed to the editor)
   */
@@ -69,7 +70,7 @@ class GameBigMap: public BigMap
 
     //the game object sets this when the active stack is fighting so we can 
     //draw a fight graphic, or not
-    void setFighting(bool ruckus) {d_fighting = ruckus;};
+    void setFighting(LocationBox ruckus) {d_fighting = ruckus;};
 
  private:
     SDL_Surface* d_waypoints;
@@ -96,7 +97,7 @@ class GameBigMap: public BigMap
     bool d_see_opponents_production;
     bool d_see_opponents_stacks;
     bool d_military_advisor;
-    bool d_fighting;
+    LocationBox d_fighting;
 };
 
 #endif

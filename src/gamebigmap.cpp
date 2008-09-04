@@ -46,6 +46,7 @@
 #include "GraphicsLoader.h"
 #include "game.h"
 #include "FogMap.h"
+#include "LocationBox.h"
 
 #include "timing.h"
 
@@ -62,12 +63,12 @@ namespace
 
 GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
 		       bool see_opponents_stacks, bool military_advisor)
+:d_fighting(LocationBox(Vector<int>(-1,-1)))
 {
   d_intense_combat = intense_combat;
   d_see_opponents_production = see_opponents_production;
   d_see_opponents_stacks = see_opponents_stacks;
   d_military_advisor = military_advisor;
-  d_fighting = false;
 
   current_tile.x = current_tile.y = 0;
   mouse_state = NONE;
@@ -725,12 +726,7 @@ void GameBigMap::after_draw()
 
 	  draw_stack (stack);
 
-	  if (d_fighting)
-	    {
-	      tmp = gc->getExplosionPic();
-	      SDL_BlitSurface(tmp, 0, buffer, &r);
-	    }
-	  else
+	  if (input_locked == false)
 	    {
 	      if (num_selected > 1)
 		tmp = gc->getSelectorPic(0, bigframe, stack->getOwner());
@@ -738,8 +734,18 @@ void GameBigMap::after_draw()
 		tmp = gc->getSelectorPic(1, smallframe, stack->getOwner());
 	      SDL_BlitSurface(tmp, 0, buffer, &r);
 	    }
-
 	}
+    }
+
+  if (d_fighting.getPos() != Vector<int>(-1,-1))
+    {
+      Vector<int> p = tile_to_buffer_pos(d_fighting.getPos());
+      SDL_Rect r;
+      r.x = p.x;
+      r.y = p.y;
+      r.w = r.h = tilesize;
+      SDL_Surface *tmp = gc->getExplosionPic();
+      SDL_BlitSurface(tmp, 0, buffer, &r);
     }
 }
 
