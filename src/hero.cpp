@@ -35,6 +35,7 @@ Hero::Hero(const HeroProto& a)
   : Army (dynamic_cast<const ArmyProto&>(a)), d_name(a.getName()),
     d_gender(Gender(a.getGender()))
 {
+  d_level = 1;
 }
 
 Hero::Hero(Hero& h)
