@@ -54,7 +54,6 @@ public:
   void stand_up (Player *player);
   void chat(std::string message);
   void sendTurnOrder();
-  void sendNextRound();
   void sendKillPlayer(Player *player);
   sigc::signal<void> remote_participant_connected;
   sigc::signal<void> remote_participant_disconnected;
@@ -86,6 +85,8 @@ private:
   void sendSeats(void *conn);
   void sendChatRoster(void *conn);
 
+  void checkRoundOver();
+
   void sendActions(Participant *part);
   void sendHistories(Participant *part);
 
@@ -105,6 +106,7 @@ private:
   bool dumpActionsAndHistories(XML_Helper *helper, Player *player);
 
   void gotChat(void *conn, std::string message);
+  void gotRoundOver(void *conn);
 
   bool player_already_sitting(Player *p);
 

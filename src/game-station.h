@@ -41,6 +41,7 @@ public:
   sigc::signal<void, Player*> local_player_moved;
   sigc::signal<void, Player*> local_player_died;
   sigc::signal<void, Player*> local_player_starts_move;
+  sigc::signal<void> round_begins;
 
   void listenForLocalEvents(Player *p);
 protected:

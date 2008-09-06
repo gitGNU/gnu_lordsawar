@@ -66,8 +66,6 @@ class NextTurnNetworked: public NextTurn
 	 */
 	sigc::signal<void, Player*> snextPlayerUnavailable;
 
-	//! clients get this called at the start of a round.
-	void start_round(int round);
     private:
         /**
            \brief The function for all actions which are taken at the beginning

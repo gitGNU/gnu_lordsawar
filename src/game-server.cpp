@@ -45,6 +45,7 @@ struct Participant
   std::list<NetworkAction *> actions;
   std::list<NetworkHistory *> histories;
   std::string nickname;
+  bool round_finished;
 };
 
 GameServer * GameServer::s_instance = 0;
@@ -112,25 +113,67 @@ void GameServer::start(GameScenario *game_scenario, int port, std::string nick)
   listenForLocalEvents(Playerlist::getInstance()->getNeutral());
 }
 
+void GameServer::checkRoundOver()
+{
+  bool all_finished = true;
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i)
+    {
+      if ((*i)->round_finished == false)
+	{
+	  all_finished = false;
+	  break;
+	}
+    }
+
+  if (all_finished)
+    {
+      printf ("hooray!  we're all done the round.\n");
+      for (std::list<Participant *>::iterator i = participants.begin(),
+	   end = participants.end(); i != end; ++i)
+	(*i)->round_finished = false;
+
+      //now we can send the start round message, and begin the round ourselves.
+      for (std::list<Participant *>::iterator i = participants.begin(),
+	   end = participants.end(); i != end; ++i)
+	network_server->send((*i)->conn, MESSAGE_TYPE_ROUND_START, "");
+
+      round_begins.emit();
+    }
+}
+
+void GameServer::gotRoundOver(void *conn)
+{
+  Participant *part = findParticipantByConn(conn);
+  if (part)
+    {
+      //mark the participant as finished for this round
+      part->round_finished = true;
+      //are all participants finished?
+      checkRoundOver();
+    }
+  return;
+}
+
 void GameServer::gotChat(void *conn, std::string message)
 {
-    Participant *part = findParticipantByConn(conn);
-    if (part)
-      {
-	gotChatMessage(part->nickname, message);
-	for (std::list<Participant *>::iterator i = participants.begin(),
-	     end = participants.end(); i != end; ++i)
-	  {
-	    //if ((*i)->conn != part->conn)
-	      //network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
-				   //part->nickname + ":" + message);
-	    //else
-	      network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
-				   message);
+  Participant *part = findParticipantByConn(conn);
+  if (part)
+    {
+      gotChatMessage(part->nickname, message);
+      for (std::list<Participant *>::iterator i = participants.begin(),
+	   end = participants.end(); i != end; ++i)
+	{
+	  //if ((*i)->conn != part->conn)
+	  //network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
+	  //part->nickname + ":" + message);
+	  //else
+	  network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
+			       message);
 
-	  }
-      }
-    return;
+	}
+    }
+  return;
 }
 void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
 {
@@ -240,6 +283,11 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     gotChat(conn, payload);
     break;
 
+  case MESSAGE_TYPE_ROUND_OVER:
+    //what do we do now?
+    gotRoundOver(conn);
+    break;
+
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECTED:
     break;
 
@@ -263,7 +311,6 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_CHATTED:
   case MESSAGE_TYPE_TURN_ORDER:
   case MESSAGE_TYPE_KILL_PLAYER:
-  case MESSAGE_TYPE_NEXT_ROUND:
     //faulty client
     break;
   }
@@ -350,7 +397,7 @@ void GameServer::notifyJoin(std::string nickname)
       network_server->send((*i)->conn, MESSAGE_TYPE_PARTICIPANT_CONNECTED, 
 			   nickname);
       //network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
-			   //nickname + " connected.");
+      //nickname + " connected.");
     }
   gotChatMessage("[server]", nickname + " connected.");
 }
@@ -464,7 +511,7 @@ void GameServer::sit(void *conn, Player *player, std::string nickname)
   //fixme: is another player already sitting here?
   if (player_already_sitting(player) == true)
     return;
-  
+
   add_to_player_list(part->players, player->getId());
 
   if (player)
@@ -774,7 +821,7 @@ void GameServer::sendSeats(void *conn)
     {
       if ((*i)->conn == part->conn)
 	continue;
-	  
+
       for (std::list<Uint32>::iterator j = (*i)->players.begin(); 
 	   j != (*i)->players.end(); j++)
 	{
@@ -818,7 +865,7 @@ void GameServer::sendSeats(void *conn)
       network_server->send(part->conn, type, d_nickname);
     }
 }
-    
+
 void GameServer::sendChatRoster(void *conn)
 {
   Participant *part = findParticipantByConn(conn);
@@ -859,14 +906,4 @@ void GameServer::sendTurnOrder()
   playerlist_reorder_received.emit();
 }
 
-void GameServer::sendNextRound()
-{
-  std::stringstream round;
-  d_game_scenario->nextRound();
-  round << GameScenarioOptions::s_round;
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
-    network_server->send((*i)->conn, MESSAGE_TYPE_NEXT_ROUND, round.str());
-
-}
 // End of file

@@ -172,6 +172,7 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
   case MESSAGE_TYPE_PARTICIPANT_CONNECT:
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECT:
   case MESSAGE_TYPE_CHAT:
+  case MESSAGE_TYPE_ROUND_OVER:
     //FIXME: faulty server.
     break;
 
@@ -240,15 +241,13 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     gotTurnOrder (payload);
     break;
 
-  case MESSAGE_TYPE_NEXT_ROUND:
-    gotNextRound (atoi(payload.c_str()));
-    break;
-
-
   case MESSAGE_TYPE_KILL_PLAYER:
     gotKillPlayer(Playerlist::getInstance()->getPlayer(atoi(payload.c_str())));
     break;
 
+  case MESSAGE_TYPE_ROUND_START:
+    round_begins.emit();
+    break;
   }
 }
 
@@ -402,9 +401,8 @@ void GameClient::gotTurnOrder (std::string payload)
   Playerlist::getInstance()->reorder(player_ids);
   playerlist_reorder_received.emit();
 }
-    
-void GameClient::gotNextRound (int round)
+
+void GameClient::sendRoundOver()
 {
-  //let's signal that we want to keep going.
-  round_begins.emit(round);
+  network_connection->send(MESSAGE_TYPE_ROUND_OVER, "");
 }

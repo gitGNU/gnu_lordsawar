@@ -282,11 +282,10 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   if (game_scenario->s_random_turns == true)
     next_turn->snextRound.connect (sigc::mem_fun(GameServer::getInstance(), 
 						 &GameServer::sendTurnOrder));
-  next_turn->snextRound.connect (sigc::mem_fun(GameServer::getInstance(),
-					       &GameServer::sendNextRound));
   next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, 
 					      game_server, true));
+  game_server->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
   Playerlist::getInstance()->splayerDead.connect
     (sigc::mem_fun(GameServer::getInstance(), &GameServer::sendKillPlayer));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
@@ -395,7 +394,7 @@ void Driver::on_game_scenario_received(std::string path)
 
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
-  game_client->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_round));
+  game_client->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
   game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, 
 					      GameClient::getInstance(), false));
   game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
@@ -788,6 +787,7 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
   heartbeat_conn.disconnect();
   GameScenario *game_scenario = load_game(path);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
+  GameClient::getInstance()->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
   Playerlist *pl = Playerlist::getInstance();
 
   int count = 0;
@@ -811,8 +811,6 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
       }
 
   //end turn signals are listened to by next_turn, that are fired by the game client decoder
-  GameClient *game_client = GameClient::getInstance();
-  game_client->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_round));
 
   next_turn->start();
 }

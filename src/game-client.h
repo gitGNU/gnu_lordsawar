@@ -59,6 +59,7 @@ public:
   std::string getHost() const{return d_host;};
   Uint32 getPort() const{return d_port;};
 
+  void sendRoundOver();
 protected:
   GameClient();
   ~GameClient();
@@ -78,7 +79,6 @@ private:
   void sendHistories();
 
   void gotTurnOrder (std::string payload);
-  void gotNextRound (int round);
   void gotKillPlayer(Player *player);
 
   void sat_down(Player *player, std::string nickname);

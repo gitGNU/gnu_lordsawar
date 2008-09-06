@@ -31,6 +31,7 @@
 #include "QuestsManager.h"
 #include "network_player.h"
 #include "game-server.h"
+#include "game-client.h"
 #include "GameScenarioOptions.h"
 
 #include "path.h"
@@ -106,17 +107,22 @@ void NextTurnNetworked::start()
 	    if (Playerlist::getInstance()->getActiveplayer() == 
 		Playerlist::getInstance()->getFirstLiving())
 	      {
-		if (GameServer::getInstance()->isListening() == false)
-		  break;
-		if (plist->checkPlayers() == true)
+		//if (GameServer::getInstance()->isListening() == true)
 		  {
-		    if (plist->getNoOfPlayers() <= 1)
-		      break;
-		    if (plist->getActiveplayer()->isDead())
-		      plist->nextPlayer();
+		    if (plist->checkPlayers() == true)
+		      {
+			if (plist->getNoOfPlayers() <= 1)
+			  break;
+			if (plist->getActiveplayer()->isDead())
+			  plist->nextPlayer();
+		      }
+		    finishRound();
+		    snextRound.emit();
+		    if (GameServer::getInstance()->isListening() == false)
+		      GameClient::getInstance()->sendRoundOver();
 		  }
-		finishRound();
-		snextRound.emit();
+		//both client and server exit this loop at the end of the round
+		break;
 	      }
 	    if (Playerlist::getInstance()->getActiveplayer()->getType() == Player::NETWORKED)
 	      break;
@@ -144,10 +150,14 @@ void NextTurnNetworked::endTurn()
 
   if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getFirstLiving())
     {
-      if (GameServer::getInstance()->isListening() == false)
-	return;
-      finishRound();
-      snextRound.emit();
+      //if (GameServer::getInstance()->isListening() == true)
+	//{
+	  finishRound();
+	  snextRound.emit();
+	  if (GameServer::getInstance()->isListening() == false)
+	    GameClient::getInstance()->sendRoundOver();
+	//}
+      return;
     }
 
   start();
@@ -261,10 +271,4 @@ void NextTurnNetworked::finishRound()
   if (d_random_turns)
     plist->randomizeOrder();
 
-}
-
-void NextTurnNetworked::start_round(int round)
-{
-  GameScenarioOptions::s_round++;
-  start();
 }
