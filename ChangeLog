@@ -1,3 +1,12 @@
+2008-09-07  Ben Asselstine
+
+	* limiting the recently played game list to the last 10.
+	* updating the turn indicator in the game window during network games.
+
+2008-09-04  Ben Asselstine
+
+	* improved the player type selector in the game preferences dialog.
+
 2008-08-30  Ben Asselstine
 
 	* hero objects now have a hero prototype object.
