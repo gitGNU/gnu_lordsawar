@@ -62,6 +62,8 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 	bool save(XML_Helper* helper) const;
 
 	void removeAllNetworkedGames();
+
+	void pruneGames();
 	
     protected:
         //! Default Constructor.
@@ -81,8 +83,8 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 	static bool orderByTime(RecentlyPlayedGame*rhs, RecentlyPlayedGame *lhs);
 
 	static const int TWO_WEEKS_OLD = 1209600; /* seconds */
-	//! Helper method to remove entries if they are deemed too old.
 	void pruneOldGames(int stale = TWO_WEEKS_OLD);
+	void pruneTooManyGames(int too_many = 10);
 
         //! A static pointer for the singleton instance.
         static RecentlyPlayedGameList* s_instance;

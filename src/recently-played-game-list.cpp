@@ -142,6 +142,7 @@ void RecentlyPlayedGameList::addNetworkedEntry(GameScenario *game_scenario, std:
     }
   if (g)
     push_back(g);
+  sort(orderByTime);
 }
 
 void RecentlyPlayedGameList::addEntry(GameScenario *game_scenario, std::string filename)
@@ -179,32 +180,57 @@ bool RecentlyPlayedGameList::orderByTime(RecentlyPlayedGame*rhs, RecentlyPlayedG
     return false;
 }
 
+void RecentlyPlayedGameList::pruneGames()
+{
+  sort(orderByTime);
+  pruneOldGames(TWO_WEEKS_OLD);
+  pruneTooManyGames(10);
+}
+
+void RecentlyPlayedGameList::pruneTooManyGames(int too_many)
+{
+  int count = 0;
+  for (RecentlyPlayedGameList::iterator it = begin(); it != end();)
+    {
+      count++;
+      if (count > too_many)
+	{
+	  delete *it;
+	  it = erase (it);
+	  continue;
+	}
+      it++;
+    }
+}
+
 void RecentlyPlayedGameList::pruneOldGames(int stale)
 {
   time_t now = time(NULL);
-  for (RecentlyPlayedGameList::iterator it = begin(); it != end(); it++)
+  for (RecentlyPlayedGameList::iterator it = begin(); it != end();)
     {
       if ((*it)->getTimeOfLastPlay() + stale < now)
 	{
-	  erase (it);
-	  it = begin();
+	  delete *it;
+	  it = erase (it);
 	  continue;
 	}
+      it++;
     }
 }
 
 bool RecentlyPlayedGameList::removeEntry(std::string id)
 {
   bool found = false;
-  for (RecentlyPlayedGameList::iterator it = begin(); it != end(); it++)
+  for (RecentlyPlayedGameList::iterator it = begin(); it != end();)
     {
       if ((*it)->getId() == id)
 	{
-	  erase (it);
-	  it = begin();
+	  delete *it;
+	  it = erase (it);
 	  found = true;
 	  continue;
 	}
+      it++;
     }
   return found;
 }

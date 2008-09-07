@@ -68,6 +68,7 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog()
           (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_recent_game_selected));
     
     RecentlyPlayedGameList *rpgl = RecentlyPlayedGameList::getInstance();
+    rpgl->pruneGames();
     for (RecentlyPlayedGameList::iterator it = rpgl->begin(); it != rpgl->end();
 	 it++)
       {
