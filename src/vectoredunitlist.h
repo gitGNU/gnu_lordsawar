@@ -20,6 +20,7 @@
 
 #include <SDL.h>
 #include <list>
+#include <string>
 class VectoredUnit;
 class Player;
 class XML_Helper;
