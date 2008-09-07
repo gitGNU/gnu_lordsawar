@@ -168,6 +168,10 @@ MainWindow::MainWindow()
 			 sigc::mem_fun(this, &MainWindow::on_save_map_activated));
     xml->connect_clicked("save_map_as_menuitem", 
 			 sigc::mem_fun(this, &MainWindow::on_save_map_as_activated));
+    xml->connect_clicked("export_as_bitmap_menuitem",
+			 sigc::mem_fun(this, &MainWindow::on_export_as_bitmap_activated));
+    xml->connect_clicked("export_as_bitmap_no_game_objects_menuitem",
+			 sigc::mem_fun(this, &MainWindow::on_export_as_bitmap_no_game_objects_activated));
     xml->connect_clicked("quit_menuitem", 
 			 sigc::mem_fun(this, &MainWindow::on_quit_activated));
 
@@ -676,6 +680,60 @@ void MainWindow::on_save_map_activated()
 	bool success = game_scenario->saveGame(current_save_filename, "map");
 	if (!success)
 	    show_error(_("Map was not saved!"));
+    }
+}
+
+void MainWindow::on_export_as_bitmap_activated()
+{
+    Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
+				   Gtk::FILE_CHOOSER_ACTION_SAVE);
+    Gtk::FileFilter sav_filter;
+    sav_filter.add_pattern("*.bmp");
+    chooser.set_filter(sav_filter);
+    chooser.set_current_folder(Configuration::s_savePath);
+
+    chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
+    chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+    
+    chooser.show_all();
+    int res = chooser.run();
+    
+    if (res == Gtk::RESPONSE_ACCEPT)
+    {
+	current_save_filename = chooser.get_filename();
+	chooser.hide();
+
+	bool success = bigmap->saveAsBitmap(current_save_filename);
+	if (!success)
+	    show_error(_("Map was not exported!"));
+    }
+}
+
+void MainWindow::on_export_as_bitmap_no_game_objects_activated()
+{
+    Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
+				   Gtk::FILE_CHOOSER_ACTION_SAVE);
+    Gtk::FileFilter sav_filter;
+    sav_filter.add_pattern("*.bmp");
+    chooser.set_filter(sav_filter);
+    chooser.set_current_folder(Configuration::s_savePath);
+
+    chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
+    chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+    
+    chooser.show_all();
+    int res = chooser.run();
+    
+    if (res == Gtk::RESPONSE_ACCEPT)
+    {
+	current_save_filename = chooser.get_filename();
+	chooser.hide();
+
+	bool success = bigmap->saveUnderlyingMapAsBitmap(current_save_filename);
+	if (!success)
+	    show_error(_("Map was not exported!"));
     }
 }
 

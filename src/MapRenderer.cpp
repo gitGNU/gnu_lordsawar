@@ -32,6 +32,28 @@ MapRenderer::MapRenderer(SDL_Surface* surface)
     d_surface = surface;
 }
  
+bool MapRenderer::saveAsBitmap(std::string filename)
+{
+  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+  SDL_PixelFormat *fmt = d_surface->format;
+  SDL_Surface *surf = SDL_CreateRGBSurface 
+    (SDL_SWSURFACE, 
+     GameMap::getWidth() * tilesize, GameMap::getHeight() * tilesize,
+     fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+
+  render(0, 0, 0, 0, GameMap::getWidth(), GameMap::getHeight(), surf);
+  remove (filename.c_str());
+  SDL_SaveBMP(surf, filename.c_str());
+  SDL_FreeSurface(surf);
+  return true;
+}
+
+bool MapRenderer::saveViewAsBitmap(std::string filename)
+{
+  remove (filename.c_str());
+  SDL_SaveBMP(d_surface, filename.c_str());
+  return true;
+}
 
 MapRenderer::~MapRenderer()
 {
@@ -39,6 +61,12 @@ MapRenderer::~MapRenderer()
 
 void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 			 int columns, int rows)
+{
+  return render(x, y, tileStartX, tileStartY, columns, rows, d_surface);
+}
+
+void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
+			 int columns, int rows, SDL_Surface *surface)
 {
     SDL_Rect r;
     GameMap* map = GameMap::getInstance();
@@ -48,7 +76,7 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
     r.w = r.h = tilesize;
     int drawY = y;
 
-    Uint32 background_color = SDL_MapRGB(d_surface->format, 0, 0, 0);
+    Uint32 background_color = SDL_MapRGB(surface->format, 0, 0, 0);
     
     for (int tileY = tileStartY; tileY < (tileStartY + rows); tileY++)
     {
@@ -60,7 +88,7 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 		r.x = drawX;
 		r.y = drawY;
 		
-		SDL_FillRect(d_surface, &r, background_color);
+		SDL_FillRect(surface, &r, background_color);
 	    }
 	    else {
 		// get correct tile
@@ -69,7 +97,7 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 		r.x = drawX;
 		r.y = drawY;
 		TileStyle *style = mtile->getTileStyle();
-		SDL_BlitSurface(style->getPixmap(), 0, d_surface, &r);
+		SDL_BlitSurface(style->getPixmap(), 0, surface, &r);
 
 	    }
 	    

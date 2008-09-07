@@ -99,6 +99,8 @@ class MainWindow: public sigc::trackable
     void on_new_map_activated();
     void on_load_map_activated();
     void on_save_map_activated();
+    void on_export_as_bitmap_activated();
+    void on_export_as_bitmap_no_game_objects_activated();
     void on_save_map_as_activated();
     void on_quit_activated();
     void on_edit_map_info_activated();

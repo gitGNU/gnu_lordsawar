@@ -264,136 +264,143 @@ MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
     return m;
 }
 
-void BigMap::blit_if_inside_buffer(const Location &obj, SDL_Surface *image)
+void BigMap::blit_object(const Location &obj, SDL_Surface *image, SDL_Surface *surface)
 {
-    if (is_overlapping(buffer_view, obj.get_area()))
+  Vector<int> p = tile_to_buffer_pos(obj.getPos());
+  SDL_Rect rect;
+  rect.x = p.x;
+  rect.y = p.y;
+  rect.w = obj.getSize();
+  rect.h = obj.getSize();
+  SDL_BlitSurface(image, 0, surface, &rect);
+}
+
+bool BigMap::blit_if_inside_buffer(const Location &obj, SDL_Surface *image,
+				   Rectangle &map_view, SDL_Surface *surface)
+{
+  if (is_overlapping(map_view, obj.get_area()))
     {
-	Vector<int> p = tile_to_buffer_pos(obj.getPos());
-	    
-	SDL_Rect rect;
-	rect.x = p.x;
-	rect.y = p.y;
-	rect.w = obj.getSize();
-	rect.h = obj.getSize();
-	SDL_BlitSurface(image, 0, buffer, &rect);
+      blit_object(obj, image, surface);
+      return true;
     }
+  return false;
 }
 
 
 /*
-fog display algorithm
+   fog display algorithm
 
-smallmap shows fog placement
- - it is a peek into the data model
+   smallmap shows fog placement
+   - it is a peek into the data model
 
-bigmap shows a rendering of that
-if a tile on the bigmap is partially fogged, then it is completely fogged on the small map.
+   bigmap shows a rendering of that
+   if a tile on the bigmap is partially fogged, then it is completely fogged on the small map.
 
-this means that partially fogged tiles depend on adjacent tiles being fogged
-completely fogged tiles depends on adjacent tiles being fogged
+   this means that partially fogged tiles depend on adjacent tiles being fogged
+   completely fogged tiles depends on adjacent tiles being fogged
 
-when one tile is fogged and is not surrounded by adjacent fogged tiles it is shown as not fogged on the bigmap, while it is shown as fogged on the small map.  it is then marked as defogged at the start of the next turn.
+   when one tile is fogged and is not surrounded by adjacent fogged tiles it is shown as not fogged on the bigmap, while it is shown as fogged on the small map.  it is then marked as defogged at the start of the next turn.
 
-every tile has 4 faces:
-it can connect to an adjacent tile darkly, lightly, or not at all
-a dark face means the whole side is black
-a light face means the side is a gradient
+   every tile has 4 faces:
+   it can connect to an adjacent tile darkly, lightly, or not at all
+   a dark face means the whole side is black
+   a light face means the side is a gradient
 
 
-graphics cache
-fog types:
-1 = light corner se: connects lightly to south and east
-2 = light corner sw: connects lightly to south and west
-3 = light corner nw: connects lightly to north and west
-4 = light corner ne: connects lightly to north and east
-5 = dark corner nw: connects darkly to north and west, lightly to south and east
-6 = dark corner ne: connects darkly to north and east, lightly to south and west
-7 = dark corner se: connects darkly to east and south, lightly to north and west
-8 = dark corner sw: connects darkly to south and west,  lightly to north and east
-9 = bottom to top: connects darkly to south, connects lightly to east and west
-10 =  top to bottom: connects darkly to north, connects lightly to east and west
-11 = right to left: connects darkly to west, connects lightly to north and south
-12 = left to right: connects darkly to east, connects lightly to north and south
-13 = all black: connects darkly to north, south, east and west
+   graphics cache
+   fog types:
+   1 = light corner se: connects lightly to south and east
+   2 = light corner sw: connects lightly to south and west
+   3 = light corner nw: connects lightly to north and west
+   4 = light corner ne: connects lightly to north and east
+   5 = dark corner nw: connects darkly to north and west, lightly to south and east
+   6 = dark corner ne: connects darkly to north and east, lightly to south and west
+   7 = dark corner se: connects darkly to east and south, lightly to north and west
+   8 = dark corner sw: connects darkly to south and west,  lightly to north and east
+   9 = bottom to top: connects darkly to south, connects lightly to east and west
+   10 =  top to bottom: connects darkly to north, connects lightly to east and west
+   11 = right to left: connects darkly to west, connects lightly to north and south
+   12 = left to right: connects darkly to east, connects lightly to north and south
+   13 = all black: connects darkly to north, south, east and west
 
-bigmap tile processing algorithm:
-for each tile currently being shown, examine each tile in normal order
+   bigmap tile processing algorithm:
+   for each tile currently being shown, examine each tile in normal order
 
-here are the cases that we can handle for fogging a tile:
-the sets are read as follows:
+   here are the cases that we can handle for fogging a tile:
+   the sets are read as follows:
 
-876
-5x4 = (fog tile type)
-321
-(bit count)
+   876
+   5x4 = (fog tile type)
+   321
+   (bit count)
 
-the most significant bit is in the 1st position, and the least sigificant bit
-is in the 8th position
+   the most significant bit is in the 1st position, and the least sigificant bit
+   is in the 8th position
 
-we check each position and if it's a fogged tile, then we add a 1 to that
-bit position.
+   we check each position and if it's a fogged tile, then we add a 1 to that
+   bit position.
 
-111
-1x1 = 13
-111
-(255)  (all 8 bits on is 255)
+   111
+   1x1 = 13
+   111
+   (255)  (all 8 bits on is 255)
 
-111      111      011     110
-1x1 = 5  1x1 = 6  1x1 = 7 1x1 = 8
-110      011      111     111
-(127)    (223)    (254)   (251) (e.g. 251 == 11111011)
+   111      111      011     110
+   1x1 = 5  1x1 = 6  1x1 = 7 1x1 = 8
+   110      011      111     111
+   (127)    (223)    (254)   (251) (e.g. 251 == 11111011)
 
-101      111      111     111
-1x1 = 9  1x0 = 12 1x1 =10 0x1 = 11
-111      111      101     111
-(253)    (239)    (191)   (247) (e.g. 247 == 11110111)
+   101      111      111     111
+   1x1 = 9  1x0 = 12 1x1 =10 0x1 = 11
+   111      111      101     111
+   (253)    (239)    (191)   (247) (e.g. 247 == 11110111)
 
-001      111      100     111
-1x1 = 9  1x1 = 10 1x1 = 9 1x1 = 10
-111      001      111     100
+   001      111      100     111
+   1x1 = 9  1x1 = 10 1x1 = 9 1x1 = 10
+   111      001      111     100
 (252)    (159)    (249)   (63)
 
-011      111      110     111
-0x1 = 11 0x1 = 11 1x0 =12 1x0 = 12
+	011      111      110     111
+	0x1 = 11 0x1 = 11 1x0 =12 1x0 = 12
 111      011      111     110
 (246)    (215)    (235)   (111)
 
-000      000      110      011
-0x1 = 1  1x0 = 2  1x0 = 3  0x1 = 4
+	000      000      110      011
+	0x1 = 1  1x0 = 2  1x0 = 3  0x1 = 4
 011      110      000      000
 (208)    (104)    (11)     (22)
 
 
-000      111      011      110
-1x1 = 9  1x1 = 10 0x1 = 11 1x0 = 12
+	000      111      011      110
+	1x1 = 9  1x1 = 10 0x1 = 11 1x0 = 12
 111      000      011      110
 (248)    (31)     (214)    (107)
 
 
-001      111      100     111
-0x1 = 1  0x1 = 4  1x0 = 2 1x0 = 3
+	001      111      100     111
+	0x1 = 1  0x1 = 4  1x0 = 2 1x0 = 3
 111      001      111     100
 (244)    (151)    (233)   (47)
 
-000      011      000     111
-0x1 = 1  0x1 = 4  1x0 = 2 1x0 = 3
+	000      011      000     111
+	0x1 = 1  0x1 = 4  1x0 = 2 1x0 = 3
 111      001      111     000
 (240)    (150)    (232)   (15)
 
-100      110      001     111
-1x0 = 2  1x0 = 3  0x1 = 1 0x1 = 4
+	100      110      001     111
+	1x0 = 2  1x0 = 3  0x1 = 1 0x1 = 4
 110      100      011     000
 (105)    (43)     (232)   (15)
 
-011      110
-1x1 = 14 1x1 = 15
+	011      110
+	1x1 = 14 1x1 = 15
 110      011
 (126)    (219)
 
-special note:
-none of these sets contain a so-called "lone" tile.
-a lone tile is a fogged tile surrounded by two unfogged tiles on either side.
- */
+	special note:
+	none of these sets contain a so-called "lone" tile.
+	a lone tile is a fogged tile surrounded by two unfogged tiles on either side.
+*/
 void BigMap::drawFogTile (int x, int y)
 {
   int idx = 0;
@@ -402,35 +409,35 @@ void BigMap::drawFogTile (int x, int y)
   for (int i = x - 1; i <= x + 1; i++)
     for (int j = y - 1; j <= y + 1; j++)
       {
-        foggyTile = false;
-        if (i == x && j == y)
-          continue;
-        if (i < 0 || j < 0 || 
-            i >= GameMap::getWidth() || j >= GameMap::getHeight())
-          foggyTile = true;
-        else
-          {
-            Vector<int> pos;
-            pos.x = i;
-            pos.y = j;
-            foggyTile = FogMap::isFogged(pos);
-          }
-        if (foggyTile)
-          {
-            switch (count)
-              {
-              case 0: idx += 1; break;
-              case 1: idx += 2; break;
-              case 2: idx += 4; break;
-              case 3: idx += 8; break;
-              case 4: idx += 16; break;
-              case 5: idx += 32; break;
-              case 6: idx += 64; break;
-              case 7: idx += 128; break;
-              }
-          }
+	foggyTile = false;
+	if (i == x && j == y)
+	  continue;
+	if (i < 0 || j < 0 || 
+	    i >= GameMap::getWidth() || j >= GameMap::getHeight())
+	  foggyTile = true;
+	else
+	  {
+	    Vector<int> pos;
+	    pos.x = i;
+	    pos.y = j;
+	    foggyTile = FogMap::isFogged(pos);
+	  }
+	if (foggyTile)
+	  {
+	    switch (count)
+	      {
+	      case 0: idx += 1; break;
+	      case 1: idx += 2; break;
+	      case 2: idx += 4; break;
+	      case 3: idx += 8; break;
+	      case 4: idx += 16; break;
+	      case 5: idx += 32; break;
+	      case 6: idx += 64; break;
+	      case 7: idx += 128; break;
+	      }
+	  }
 
-        count++;
+	count++;
       }
 
   //now idx relates to a particular fog picture
@@ -456,23 +463,23 @@ void BigMap::drawFogTile (int x, int y)
   if (type)
     {
       switch (type) //fixme: figure out why this flipping is necessary!
-        {
-        case 12: type = 10; break;
-        case 10: type = 12; break;
-        case 9: type = 11; break;
-        case 11: type = 9; break;
-        case 6: type = 8; break;
-        case 8: type = 6; break;
-        case 2: type = 4; break;
-        case 4: type = 2; break;
-        }
+	{
+	case 12: type = 10; break;
+	case 10: type = 12; break;
+	case 9: type = 11; break;
+	case 11: type = 9; break;
+	case 6: type = 8; break;
+	case 8: type = 6; break;
+	case 2: type = 4; break;
+	case 4: type = 2; break;
+	}
       Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
       SDL_Rect r;
       r.x = p.x;
       r.y = p.y;
       r.w = GameMap::getInstance()->getTileset()->getTileSize();
       SDL_BlitSurface(GraphicsCache::getInstance()->getFogPic(type - 1), 0, 
-                      buffer, &r);
+		      buffer, &r);
     }
   return;
 }
@@ -501,7 +508,7 @@ void BigMap::draw_stack(Stack *s)
       p = tile_to_buffer_pos(p);
 
       // draw stack
-		
+
       SDL_Rect r;
       r.x = p.x;
       r.y = p.y;
@@ -528,7 +535,7 @@ void BigMap::draw_stack(Stack *s)
 	      else
 		show_army = true;
 	    }
-		      
+
 	  if (show_army == true)
 	    {
 	      r.w = r.h = army_tilesize;
@@ -537,7 +544,7 @@ void BigMap::draw_stack(Stack *s)
 	    }
 	}
 
-		
+
       if (show_army)
 	{
 	  // draw flag
@@ -551,97 +558,132 @@ void BigMap::draw_stack(Stack *s)
 
 void BigMap::draw_buffer()
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
-    int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
-    d_renderer->render(0, 0, buffer_view.x, buffer_view.y,
-		       buffer_view.w, buffer_view.h);
+  draw_buffer (buffer_view, buffer);
+  after_draw();
 
-    for (Ruinlist::iterator i = Ruinlist::getInstance()->begin();
-	 i != Ruinlist::getInstance()->end(); ++i)
-      {
-        if (((*i).isHidden() == true && 
-               (*i).getOwner() == Playerlist::getActiveplayer()) ||
-             (*i).isHidden() == false)
-	  blit_if_inside_buffer(*i, gc->getRuinPic((*i).getType()));
-      }
+}
 
-    for (Signpostlist::iterator i = Signpostlist::getInstance()->begin();
-	 i != Signpostlist::getInstance()->end(); ++i)
-	blit_if_inside_buffer(*i, gc->getSignpostPic());
+bool BigMap::saveViewAsBitmap(std::string filename)
+{
+  remove (filename.c_str());
+  SDL_SaveBMP(buffer, filename.c_str());
+}
 
-    for (Templelist::iterator i = Templelist::getInstance()->begin();
-	 i != Templelist::getInstance()->end(); ++i)
-	blit_if_inside_buffer( *i, gc->getTemplePic(i->getType()));
+bool BigMap::saveUnderlyingMapAsBitmap(std::string filename)
+{
+  return d_renderer->saveAsBitmap(filename);
+}
 
-    for (Roadlist::iterator i = Roadlist::getInstance()->begin();
-	 i != Roadlist::getInstance()->end(); ++i)
-	blit_if_inside_buffer( *i, gc->getRoadPic(i->getType()));
+bool BigMap::saveAsBitmap(std::string filename)
+{
+  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+  SDL_PixelFormat *fmt = buffer->format;
+  SDL_Surface *surf = SDL_CreateRGBSurface 
+    (SDL_SWSURFACE, 
+     GameMap::getWidth() * tilesize, GameMap::getHeight() * tilesize,
+     fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
 
-    for (Bridgelist::iterator i = Bridgelist::getInstance()->begin();
-	 i != Bridgelist::getInstance()->end(); ++i)
-	blit_if_inside_buffer( *i, gc->getBridgePic(i->getType()));
+  draw_buffer(Rectangle (0, 0, GameMap::getWidth(), GameMap::getHeight()), surf);
+  remove (filename.c_str());
+  SDL_SaveBMP(surf, filename.c_str());
+  SDL_FreeSurface(surf);
+  return true;
+}
 
-    for (Portlist::iterator i = Portlist::getInstance()->begin();
-	 i != Portlist::getInstance()->end(); ++i)
-	blit_if_inside_buffer( *i, gc->getPortPic());
+void BigMap::draw_buffer(Rectangle map_view, SDL_Surface *surface)
+{
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+  d_renderer->render(0, 0, map_view.x, map_view.y, map_view.w, map_view.h,
+		     surface);
 
-    for (Citylist::iterator i = Citylist::getInstance()->begin();
-	 i != Citylist::getInstance()->end(); ++i)
-	blit_if_inside_buffer(*i, gc->getCityPic(&*i));
+  for (Ruinlist::iterator i = Ruinlist::getInstance()->begin();
+       i != Ruinlist::getInstance()->end(); ++i)
+    {
+      if (((*i).isHidden() == true && 
+	   (*i).getOwner() == Playerlist::getActiveplayer()) ||
+	  (*i).isHidden() == false)
+	blit_if_inside_buffer(*i, gc->getRuinPic((*i).getType()), map_view,
+			      surface);
+    }
 
-    GameMap *gm = GameMap::getInstance();
-    // If there are any items lying around, blit the itempic as well
-    for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
-        for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
-	    if (x < GameMap::getWidth() && y < GameMap::getHeight()
-		&& !gm->getTile(x,y)->getItems().empty())
+  for (Signpostlist::iterator i = Signpostlist::getInstance()->begin();
+       i != Signpostlist::getInstance()->end(); ++i)
+    blit_if_inside_buffer(*i, gc->getSignpostPic(), map_view, surface);
+
+  for (Templelist::iterator i = Templelist::getInstance()->begin();
+       i != Templelist::getInstance()->end(); ++i)
+    blit_if_inside_buffer( *i, gc->getTemplePic(i->getType()), map_view, surface);
+
+  for (Roadlist::iterator i = Roadlist::getInstance()->begin();
+       i != Roadlist::getInstance()->end(); ++i)
+    blit_if_inside_buffer( *i, gc->getRoadPic(i->getType()), map_view, surface);
+
+  for (Bridgelist::iterator i = Bridgelist::getInstance()->begin();
+       i != Bridgelist::getInstance()->end(); ++i)
+    blit_if_inside_buffer( *i, gc->getBridgePic(i->getType()), map_view, surface);
+
+  for (Portlist::iterator i = Portlist::getInstance()->begin();
+       i != Portlist::getInstance()->end(); ++i)
+    blit_if_inside_buffer( *i, gc->getPortPic(), map_view, surface);
+
+  for (Citylist::iterator i = Citylist::getInstance()->begin();
+       i != Citylist::getInstance()->end(); ++i)
+    blit_if_inside_buffer(*i, gc->getCityPic(&*i), map_view, surface);
+
+  GameMap *gm = GameMap::getInstance();
+  // If there are any items lying around, blit the itempic as well
+  for (int x = map_view.x; x < map_view.x + map_view.w; x++)
+    for (int y = map_view.y; y < map_view.y + map_view.h; y++)
+      if (x < GameMap::getWidth() && y < GameMap::getHeight()
+	  && !gm->getTile(x,y)->getItems().empty())
+	{
+	  std::list<Item*> items = gm->getTile(x, y)->getItems();
+	  bool standard_planted = false;
+	  Item *flag = NULL;
+	  for (std::list<Item*>::iterator it = items.begin(); 
+	       it != items.end(); it++)
 	    {
-	        std::list<Item*> items = gm->getTile(x, y)->getItems();
-                bool standard_planted = false;
-                Item *flag = NULL;
-                for (std::list<Item*>::iterator it = items.begin(); 
-                     it != items.end(); it++)
-                {
-                     if ((*it)->getPlanted() == true)
-                     {
-                           standard_planted = true;
-                           flag = *it;
-                           break;
-                     }
-                }
-
-                //only show one of the bag or the flag
-		Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
-                if (standard_planted && flag)
-                {
-		    Armysetlist *al = Armysetlist::getInstance();
-		    Player *player = flag->getPlantableOwner();
-		    int army_tilesize = al->getTileSize(player->getArmyset());
-		    SDL_Rect r;
-		    r.x = p.x+((tilesize/2)-(army_tilesize/2));
-		    r.y = p.y+((tilesize/2)-(army_tilesize/2));
-		    r.w = r.h = army_tilesize;
-                    SDL_Surface *surf;
-                    surf = gc->getPlantedStandardPic(player);
-		    SDL_BlitSurface(surf, 0, buffer,&r);
-                }
-                else
-                {
-		    SDL_Rect r;
-		    r.x = p.x+(tilesize-18);
-		    r.y = p.y+(tilesize-18);
-		    r.w = r.h = 16;
-		    SDL_BlitSurface(d_itempic, 0, buffer,&r);
-                }
+	      if ((*it)->getPlanted() == true)
+		{
+		  standard_planted = true;
+		  flag = *it;
+		  break;
+		}
 	    }
 
-    // Draw stacks
-    for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
-	 pit != Playerlist::getInstance()->end(); pit++)
+	  //only show one of the bag or the flag
+	  Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
+	  if (standard_planted && flag)
+	    {
+	      Armysetlist *al = Armysetlist::getInstance();
+	      Player *player = flag->getPlantableOwner();
+	      int army_tilesize = al->getTileSize(player->getArmyset());
+	      SDL_Rect r;
+	      r.x = p.x+((tilesize/2)-(army_tilesize/2));
+	      r.y = p.y+((tilesize/2)-(army_tilesize/2));
+	      r.w = r.h = army_tilesize;
+	      SDL_Surface *surf;
+	      surf = gc->getPlantedStandardPic(player);
+	      SDL_BlitSurface(surf, 0, surface,&r);
+	    }
+	  else
+	    {
+	      SDL_Rect r;
+	      r.x = p.x+(tilesize-18);
+	      r.y = p.y+(tilesize-18);
+	      r.w = r.h = 16;
+	      SDL_BlitSurface(d_itempic, 0, surface,&r);
+	    }
+	}
+
+  // Draw stacks
+  for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
+       pit != Playerlist::getInstance()->end(); pit++)
     {
-        Stacklist* mylist = (*pit)->getStacklist();
-        for (Stacklist::iterator it= mylist->begin(); it != mylist->end(); it++)
-        {
+      Stacklist* mylist = (*pit)->getStacklist();
+      for (Stacklist::iterator it= mylist->begin(); it != mylist->end(); it++)
+	{
 	  if (*pit == Playerlist::getInstance()->getActiveplayer() &&
 	      *it == (*pit)->getStacklist()->getActivestack())
 	    ; //skip it.  the selected stack gets drawn in gamebigmap.
@@ -650,40 +692,38 @@ void BigMap::draw_buffer()
 	}
     }
 
-    // fog it up
-    for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
-      {
-	for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
-	  {
-	    if (x < GameMap::getWidth() && y < GameMap::getHeight())
-	      {
-		Vector<int> pos;
-		pos.x = x;
-		pos.y = y;
-		if (FogMap::isFogged(pos))
-		  drawFogTile (x, y);
-	      }
-	  }
-      }
-
-    after_draw();
+  // fog it up
+  for (int x = map_view.x; x < map_view.x + map_view.w; x++)
+    {
+      for (int y = map_view.y; y < map_view.y + map_view.h; y++)
+	{
+	  if (x < GameMap::getWidth() && y < GameMap::getHeight())
+	    {
+	      Vector<int> pos;
+	      pos.x = x;
+	      pos.y = y;
+	      if (FogMap::isFogged(pos))
+		drawFogTile (x, y);
+	    }
+	}
+    }
 
 }
 
 void BigMap::blank ()
 {
-    // fog it up
-    for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
-      {
-	for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
-	  {
-	    if (x < GameMap::getWidth() && y < GameMap::getHeight())
-	      {
-		Vector<int> pos;
-		pos.x = x;
-		pos.y = y;
-		drawFogTile (x, y);
-	      }
-	  }
-      }
+  // fog it up
+  for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
+    {
+      for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
+	{
+	  if (x < GameMap::getWidth() && y < GameMap::getHeight())
+	    {
+	      Vector<int> pos;
+	      pos.x = x;
+	      pos.y = y;
+	      drawFogTile (x, y);
+	    }
+	}
+    }
 }

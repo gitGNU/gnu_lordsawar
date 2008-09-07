@@ -793,4 +793,3 @@ int EditorBigMap::calculateRoadType (Vector<int> t)
 	type = 0;
     return type;
 }
-

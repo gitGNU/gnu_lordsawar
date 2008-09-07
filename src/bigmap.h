@@ -72,6 +72,15 @@ class BigMap: public sigc::trackable
     sigc::signal<void, Rectangle> view_changed;
 
     void blank();
+
+    //! Save the whole map as one big image (bmp file).
+    bool saveAsBitmap(std::string filename);
+
+    //! Save the whole map, but not the game objects on top of it.
+    bool saveUnderlyingMapAsBitmap(std::string filename);
+
+    //! Save the current view as an image (bmp file).
+    bool saveViewAsBitmap(std::string filename);
  protected:
     MapRenderer* d_renderer;
 
@@ -92,7 +101,9 @@ class BigMap: public sigc::trackable
     Vector<int> tile_to_buffer_pos(Vector<int> tile);
     Vector<int> get_view_pos_from_view();
     void draw_buffer();  
-    void blit_if_inside_buffer(const Location &obj, SDL_Surface *image);
+    bool blit_if_inside_buffer(const Location &obj, SDL_Surface *image,
+			       Rectangle &map_view, SDL_Surface *surface);
+    void blit_object(const Location &obj, SDL_Surface *image, SDL_Surface *surface);
 
     virtual void after_draw() { }
 
@@ -100,6 +111,7 @@ class BigMap: public sigc::trackable
     void draw_stack(Stack *s);
  private:
     void drawFogTile(int x, int y);
+    void draw_buffer(Rectangle map_view, SDL_Surface *surface);
 };
 
 #endif

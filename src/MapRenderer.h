@@ -22,6 +22,7 @@
 #define MAPRENDERER_H
 
 #include <SDL.h>
+#include <string>
 
 /** Class which cares about rendering of the map.
   * 
@@ -49,9 +50,18 @@ class MapRenderer
           */
         void render(int x, int y, int tileX, int tileY, int columns, int rows);
 
+	void render(int x, int y, int tileStartX, int tileStartY,
+		    int columns, int rows, SDL_Surface *surface);
+
+	//! Save the current view of map tiles as an image (bmp file).
+	bool saveViewAsBitmap(std::string filename);
+
+	//! Save all of the map tiles as one big image (bmp file).
+	bool saveAsBitmap(std::string filename);
     private:
         //Data
         SDL_Surface* d_surface;
+
 };
 
 #endif // MAPRENDERER_H

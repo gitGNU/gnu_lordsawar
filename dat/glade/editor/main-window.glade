@@ -72,6 +72,22 @@
 		  </child>
 
 		  <child>
+		    <widget class="GtkMenuItem" id="export_as_bitmap_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">E_xport As Bitmap</property>
+		      <property name="use_underline">True</property>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="export_as_bitmap_no_game_objects_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">Export As Bitmap (no game objects)</property>
+		      <property name="use_underline">True</property>
+		    </widget>
+		  </child>
+
+		  <child>
 		    <widget class="GtkSeparatorMenuItem" id="separatormenuitem1">
 		      <property name="visible">True</property>
 		    </widget>
