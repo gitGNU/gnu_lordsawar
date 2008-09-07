@@ -1,5 +1,9 @@
 2008-09-07  Ben Asselstine
 
+	* added support for exporting maps as bitmaps in the scenario editor.
+
+2008-09-07  Ben Asselstine
+
 	* bumped version to 0.1.2.
 
 2008-09-07  Ben Asselstine
