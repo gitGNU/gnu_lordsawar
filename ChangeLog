@@ -1,5 +1,9 @@
 2008-09-07  Ben Asselstine
 
+	* bumped version to 0.1.2.
+
+2008-09-07  Ben Asselstine
+
 	* limiting the recently played game list to the last 10.
 	* updating the turn indicator in the game window during network games.
 
