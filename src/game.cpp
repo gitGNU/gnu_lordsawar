@@ -106,8 +106,7 @@ void Game::addPlayer(Player *p)
 	(p->advice_asked.connect
 	 (sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit)));
     }
-	
-      
+    
   connections[p->getId()].push_back
     (p->schangingStatus.connect 
      (sigc::mem_fun(this, &Game::update_sidebar_stats)));
@@ -189,7 +188,8 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 	Player *p = *i;
 	addPlayer(p);
     }
-    pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
+    if (gameScenario->getPlayMode() == GameScenario::HOTSEAT)
+      pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
     pl->ssurrender.connect(sigc::mem_fun(this, &Game::on_surrender_offered));
 
     d_nextTurn->splayerStart.connect(
@@ -237,6 +237,9 @@ void Game::end_turn()
     lock_inputs();
 
     d_nextTurn->endTurn();
+    if (d_gameScenario->getPlayMode() == GameScenario::NETWORKED &&
+	Playerlist::getActiveplayer()->getType() == Player::NETWORKED)
+      remote_next_player_turn.emit();
 }
 
 void Game::update_stack_info()

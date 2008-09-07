@@ -825,6 +825,7 @@ void Driver::start_network_game_requested(GameScenario *game_scenario, NextTurnN
 {
   if (game_window.get())
     {
+  
       Player *active = Playerlist::getActiveplayer();
       if (active->getType() == Player::NETWORKED)
 	game_window->show();
@@ -842,6 +843,7 @@ void Driver::start_network_game_requested(GameScenario *game_scenario, NextTurnN
       player_replaced.connect
 	(sigc::mem_fun(game_window.get(), &GameWindow::on_player_replaced));
       game_window->show();
+
       game_window->new_network_game (game_scenario, next_turn);
     }
 }

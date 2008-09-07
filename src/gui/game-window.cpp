@@ -122,6 +122,7 @@
 #include "Item.h"
 #include "shieldsetlist.h"
 #include "game-server.h"
+#include "game-client.h"
 #include "NextTurnHotseat.h"
 #include "NextTurnPbm.h"
 #include "NextTurnNetworked.h"
@@ -424,6 +425,10 @@ void GameWindow::init(int width, int height)
 
 void GameWindow::new_network_game(GameScenario *game_scenario, NextTurn *next_turn)
 {
+  if (GameServer::getInstance()->isListening() == true)
+    GameServer::getInstance()->round_begins.connect(sigc::mem_fun(this, &GameWindow::on_remote_next_player_turn));
+  else
+      GameClient::getInstance()->round_begins.connect(sigc::mem_fun(this, &GameWindow::on_remote_next_player_turn));
   bool success = false;
   //stop_game();
   success = setup_game(game_scenario, next_turn);
@@ -735,6 +740,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
 	 (sigc::mem_fun(*this, &GameWindow::on_bigmap_cursor_changed)));
     }
 
+  connections.push_back
+    (game->remote_next_player_turn.connect
+     (sigc::mem_fun(*this, &GameWindow::on_remote_next_player_turn)));
 }
 
 void GameWindow::show_city_production_report (bool destitute)
@@ -2587,6 +2595,21 @@ void GameWindow::show_shield_turn()
     shield_image[i]->clear();
 }
 
+void GameWindow::on_remote_next_player_turn()
+{
+  printf ("updating turn indicator now!\n");
+  std::auto_ptr<Gtk::Dialog> dialog;
+
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
+
+  if (Playerlist::isFinished()) //closed window while ai player moves
+    return;
+  d_quick_fights = false;
+  show_shield_turn();
+  turn_label->set_markup(String::ucompose("Turn %1", 
+					  GameScenarioOptions::s_round));
+}
+
 void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 {
   std::auto_ptr<Gtk::Dialog> dialog;
@@ -2628,7 +2651,7 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
       dialog->hide();
       show();
     }
-	
+
 }
 
 void GameWindow::on_medal_awarded_to_army(Army *army)

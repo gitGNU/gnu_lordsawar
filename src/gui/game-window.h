@@ -275,6 +275,7 @@ class GameWindow: public Decorated
     void on_ruin_visited(Ruin *ruin);
     void on_temple_visited(Temple *temple);
     void on_next_player_turn(Player *player, unsigned int turn_number);
+    void on_remote_next_player_turn();
     void on_hero_brings_allies(int alliesCount);
     void on_medal_awarded_to_army(Army *army);
     Army::Stat on_army_gains_level(Army *army);

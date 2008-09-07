@@ -141,6 +141,7 @@ class Game
     sigc::signal<void, Ruin *> ruin_visited;
     sigc::signal<void, Temple *> temple_visited;
     sigc::signal<void, Player *, unsigned int> next_player_turn;
+    sigc::signal<void> remote_next_player_turn;
     sigc::signal<void, int> hero_arrives;
     sigc::signal<void, Army *> medal_awarded_to_army;
     sigc::signal<Army::Stat, Army *> army_gains_level;
