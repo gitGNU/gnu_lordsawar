@@ -23,7 +23,6 @@
 #include "xmlhelper.h"
 #include "army.h"
 
-#include "defs.h"
 #include "Renamable.h"
 
 //! A carryable type of thing that confers special properties on it's holder.

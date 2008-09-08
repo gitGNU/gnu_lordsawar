@@ -18,7 +18,6 @@
 #ifndef NAMED_H
 #define NAMED_H
 
-#include "defs.h"
 #include <string>
 
 class XML_Helper;

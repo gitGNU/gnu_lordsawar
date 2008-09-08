@@ -18,7 +18,6 @@
 //  02110-1301, USA.
 
 #include "Tile.h"
-#include "defs.h"
 #include <iostream>
 
 using namespace std;

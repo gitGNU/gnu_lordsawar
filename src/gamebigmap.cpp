@@ -39,7 +39,6 @@
 #include "temple.h"
 #include "road.h"
 #include "playerlist.h"
-#include "defs.h"
 #include "File.h"
 #include "GameMap.h"
 #include "GraphicsCache.h"

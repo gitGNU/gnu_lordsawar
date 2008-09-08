@@ -31,7 +31,6 @@
 #include "defs.h"
 
 
-
 using namespace std;
 
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}

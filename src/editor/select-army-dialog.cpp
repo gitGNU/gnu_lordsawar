@@ -117,8 +117,8 @@ void SelectArmyDialog::fill_in_army_toggles()
 	    pushed_back = true;
 	    selectable.push_back(a);
 	  }
-	if ((d_awardable && a->getAwardable()) || 
-	    (!d_defends_ruins && !d_awardable) && !pushed_back)
+	if (((d_awardable && a->getAwardable()) || 
+	    (!d_defends_ruins && !d_awardable)) && !pushed_back)
 	  selectable.push_back(a);
 	pushed_back = false;
     }

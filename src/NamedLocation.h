@@ -18,7 +18,6 @@
 #ifndef NAMEDLOCATION_H
 #define NAMEDLOCATION_H
 
-#include "defs.h"
 #include "vector.h"
 #include "Location.h"
 #include "Namable.h"

@@ -27,7 +27,6 @@
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 
-#include "defs.h"
 #include "Ownable.h"
 #include "armybase.h"
 #include "UniquelyIdentified.h"

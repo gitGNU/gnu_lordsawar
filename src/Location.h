@@ -7,7 +7,6 @@
 #define LOCATION_H
 
 #include "UniquelyIdentified.h"
-#include "defs.h"
 #include <string>
 #include "vector.h"
 #include "stack.h"

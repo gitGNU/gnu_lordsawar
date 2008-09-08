@@ -26,7 +26,6 @@
 #include "playerlist.h"
 #include "stacklist.h"
 #include "citylist.h"
-#include "defs.h"
 
 using namespace std;
 

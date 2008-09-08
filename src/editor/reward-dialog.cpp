@@ -33,6 +33,7 @@
 #include "select-item-dialog.h"
 #include "select-army-dialog.h"
 #include "select-hidden-ruin-dialog.h"
+#include "armyproto.h"
 
 RewardDialog::RewardDialog(Player *player, bool hidden_ruins, Reward *r)
 {

@@ -25,7 +25,6 @@
 #include "xmlhelper.h"
 #include "army.h"
 
-#include "defs.h"
 #include "player.h"
 #include "playerlist.h"
 #include "UniquelyIdentified.h"

@@ -30,7 +30,6 @@
 #include "citylist.h"
 #include "ruinlist.h"
 #include "stacklist.h"
-#include "defs.h"
 #include "xmlhelper.h"
 #include "history.h"
 #include "citylist.h"

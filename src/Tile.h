@@ -24,7 +24,6 @@
 #include <SDL.h>
 
 #include "xmlhelper.h"
-#include "defs.h"
 
 #include "tilestyleset.h"
 

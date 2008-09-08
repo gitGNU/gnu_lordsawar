@@ -23,7 +23,6 @@
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 
-#include "defs.h"
 
 class Player;
 class XML_Helper;

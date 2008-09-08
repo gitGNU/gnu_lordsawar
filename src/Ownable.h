@@ -18,7 +18,6 @@
 #ifndef OWNABLE_H
 #define OWNABLE_H
 
-#include "defs.h"
 
 class Player;
 class XML_Helper;

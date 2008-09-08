@@ -28,9 +28,9 @@
 
 #include "Configuration.h"
 
-#include "defs.h"
 #include "string_tokenizer.h"
 #include "xmlhelper.h"
+#include "defs.h"
 
 using namespace std;
 

@@ -18,7 +18,6 @@
 #ifndef IMMOVABLE_H
 #define IMMOVABLE_H
 
-#include "defs.h"
 #include "vector.h"
 #include "Positioned.h"
 

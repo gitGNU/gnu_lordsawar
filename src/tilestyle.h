@@ -21,7 +21,6 @@
 #include <SDL.h>
 
 #include "xmlhelper.h"
-#include "defs.h"
 
 //! Describes the look of a Tile.
 /**

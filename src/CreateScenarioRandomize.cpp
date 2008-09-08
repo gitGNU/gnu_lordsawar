@@ -26,6 +26,7 @@
 #include "signpost.h"
 #include "armysetlist.h"
 #include "playerlist.h"
+#include "reward.h"
 
 using namespace std;
 

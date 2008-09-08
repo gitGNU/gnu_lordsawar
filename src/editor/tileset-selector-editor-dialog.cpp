@@ -19,6 +19,7 @@
 
 #include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
+#include <stdlib.h>
 
 #include "tileset-selector-editor-dialog.h"
 
@@ -112,8 +113,8 @@ void TilesetSelectorEditorDialog::on_image_chosen()
   std::string str = Configuration::s_dataPath + "/tilesets/" +  
     d_tileset->getSubDir() +"/";
   char mypath[PATH_MAX]; //god i hate path_max.  die die die
-  realpath(str.c_str(), mypath);
-  std::string path = mypath;
+  char *tmp = realpath(str.c_str(), mypath);
+  std::string path = tmp;
   if (selected_filename.substr(0, path.size()) !=path)
     return;
   std::string filename = &selected_filename.c_str()[path.size() + 1];

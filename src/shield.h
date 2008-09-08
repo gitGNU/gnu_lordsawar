@@ -23,7 +23,6 @@
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 
-#include "defs.h"
 #include "shieldstyle.h"
 
 class Player;

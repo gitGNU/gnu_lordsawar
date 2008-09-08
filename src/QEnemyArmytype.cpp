@@ -23,7 +23,6 @@
 #include "playerlist.h"
 #include "stacklist.h"
 #include "citylist.h"
-#include "defs.h"
 #include "armysetlist.h"
 
 using namespace std;

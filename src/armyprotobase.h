@@ -24,7 +24,6 @@
 
 #include <string>
 
-#include "defs.h"
 
 class XML_Helper;
 

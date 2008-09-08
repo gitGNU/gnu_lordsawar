@@ -18,7 +18,6 @@
 #ifndef MOVABLE_H
 #define MOVABLE_H
 
-#include "defs.h"
 #include "vector.h"
 #include "Positioned.h"
 

@@ -23,7 +23,6 @@
 
 #include "armyset.h"
 #include "File.h"
-#include "defs.h"
 #include "GraphicsCache.h"
 
 using namespace std;

@@ -23,7 +23,6 @@
 
 #include "MapRenderer.h"
 #include "GameMap.h"
-#include "defs.h"
 
 using namespace std;
 

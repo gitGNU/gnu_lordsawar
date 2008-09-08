@@ -32,6 +32,7 @@
 #include "ruin.h"
 #include "stack.h"
 #include "army.h"
+#include "reward.h"
 
 #include "select-army-dialog.h"
 #include "select-reward-dialog.h"

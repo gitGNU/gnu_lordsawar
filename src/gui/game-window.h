@@ -62,6 +62,7 @@ class Temple;
 class Quest;
 class City;
 class Reward;
+class Reward_Ruin;
 class NextTurn;
 
 /** The main window in which all the game action is going on.

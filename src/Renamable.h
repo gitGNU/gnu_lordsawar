@@ -18,7 +18,6 @@
 #ifndef RENAMABLE_H
 #define RENAMABLE_H
 
-#include "defs.h"
 #include "vector.h"
 #include "Named.h"
 

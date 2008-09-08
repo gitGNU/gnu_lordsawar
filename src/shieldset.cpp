@@ -24,7 +24,6 @@
 #include "shieldset.h"
 #include "shieldstyle.h"
 #include "File.h"
-#include "defs.h"
 
 using namespace std;
 

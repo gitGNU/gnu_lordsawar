@@ -19,7 +19,6 @@
 //  02110-1301, USA.
 
 #include "Threat.h"
-#include "defs.h"
 #include "stacklist.h"
 #include <iostream>
 #include "city.h"

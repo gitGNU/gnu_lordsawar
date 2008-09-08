@@ -24,13 +24,13 @@
 #include "GraphicsLoader.h"
 #include "Configuration.h"
 #include "File.h"
-#include "defs.h"
 #include "armyset.h"
 #include "armysetlist.h"
 #include "shieldset.h"
 #include "shieldsetlist.h"
 #include "armyproto.h"
 #include "tilesetlist.h"
+#include "defs.h"
 
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)

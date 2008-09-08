@@ -74,19 +74,6 @@ const unsigned int MOVE_BONUS_WIDTH = 32;
 const unsigned int MOVE_BONUS_HEIGHT = 20;
 const unsigned int MOVE_BONUS_TYPES = 6;
 
-// from www.boost.org - derivation from this class makes the derived class
-// noncopyable
-class noncopyable
-{
-protected:
-  noncopyable() {}
-  ~noncopyable() {}
-private:
-  noncopyable(const noncopyable&);
-  const noncopyable& operator=(const noncopyable&);
-};
-
-
 const unsigned short LORDSAWAR_PORT = 14998;
 #define HUMAN_PLAYER_TYPE _("Human")
 #define EASY_PLAYER_TYPE _("Easy")

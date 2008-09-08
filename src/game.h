@@ -33,6 +33,7 @@
 #include "fight.h"
 #include "game-parameters.h"
 #include "player.h"
+#include "defs.h"
 
 class NextTurn;
 class GameBigMap;

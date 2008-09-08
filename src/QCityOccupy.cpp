@@ -25,7 +25,6 @@
 #include "citylist.h"
 #include "playerlist.h"
 #include "stack.h"
-#include "defs.h"
 #include "xmlhelper.h"
 
 using namespace std;

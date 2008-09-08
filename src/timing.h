@@ -21,15 +21,14 @@
 #include <sigc++/slot.h>
 #include <sigc++/connection.h>
 #include <sigc++/signal.h>
-
-#include "defs.h"
+#include <boost/noncopyable.hpp>
 
 /** A simple timing framework 
   *
   * Main function is register_timer. The timer_registered signal hook is used
   * to do the actual work.
   */
-class Timing: public noncopyable
+class Timing: public boost::noncopyable
 {
  public:
     static Timing &instance();

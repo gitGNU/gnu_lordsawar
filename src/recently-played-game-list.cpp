@@ -25,6 +25,7 @@
 #include "xmlhelper.h"
 #include "Configuration.h"
 #include <sigc++/functors/mem_fun.h>
+#include "defs.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)

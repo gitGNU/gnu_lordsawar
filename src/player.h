@@ -35,8 +35,7 @@
 #include "vector.h"
 #include "fight.h"
 #include "army.h"
-#include "armyproto.h"
-#include "reward.h"
+#include "defs.h"
 
 class Stacklist;
 class XML_Helper;
@@ -57,6 +56,8 @@ class Fight;
 class Reward;
 class Signpost;
 class VectoredUnit;
+class ArmyProto;
+class Item;
 
 //! The abstract player class.
 /** 

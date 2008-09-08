@@ -21,7 +21,6 @@
 #include <SDL.h>
 #include <string>
 
-#include "defs.h"
 
 #include <sys/time.h>
 

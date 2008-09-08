@@ -15,10 +15,12 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <sstream>
 #include "network-history.h"
 #include "player.h"
 
 #include "xmlhelper.h"
+
 
 NetworkHistory::NetworkHistory(History *history, Player *owner)
      : Ownable(owner)

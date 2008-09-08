@@ -21,7 +21,6 @@
 #include "QPillageGold.h"
 #include "QuestsManager.h"
 #include "playerlist.h"
-#include "defs.h"
 
 using namespace std;
 

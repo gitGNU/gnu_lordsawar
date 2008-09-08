@@ -23,6 +23,7 @@
 #include "player.h"
 #include "playerlist.h"
 #include "stacklist.h"
+#include "stack.h"
 #include "FogMap.h"
 
 #include "xmlhelper.h"

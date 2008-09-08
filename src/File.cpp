@@ -27,9 +27,9 @@
 #include <glibmm/convert.h>
 
 #include "File.h"
-#include "defs.h"
 #include <SDL_image.h>
 #include "Configuration.h"
+#include "defs.h"
 
 using namespace std;
 

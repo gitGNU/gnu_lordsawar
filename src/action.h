@@ -30,6 +30,7 @@
 #include "reward.h"
 #include "player.h"
 #include "Ownable.h"
+#include "defs.h"
 
 class Quest;
 class Stack;

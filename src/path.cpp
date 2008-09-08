@@ -25,7 +25,6 @@
 #include <queue>
 
 #include "path.h"
-#include "defs.h"
 #include "army.h"
 #include "GameMap.h"
 #include "Location.h"

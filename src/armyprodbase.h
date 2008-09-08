@@ -24,7 +24,6 @@
 
 #include <string>
 
-#include "defs.h"
 
 #include "armyprotobase.h"
 class ArmyProto;

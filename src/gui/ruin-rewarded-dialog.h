@@ -31,6 +31,7 @@
 struct SDL_Surface;
 
 #include "decorated.h"
+class Reward_Ruin;
 
 // dialog for visiting a sage
 class RuinRewardedDialog: public Decorated

@@ -27,13 +27,13 @@
 #include "input-events.h"
 #include "GraphicsCache.h"
 #include "bigmap.h"
+#include "LocationBox.h"
 
 class Stack;
 class City;
 class Ruin;
 class Signpost;
 class Temple;
-class LocationBox;
 
 /** Specialization of BigMap for the game (as opposed to the editor)
   */

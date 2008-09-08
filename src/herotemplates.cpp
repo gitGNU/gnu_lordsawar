@@ -19,7 +19,6 @@
 #include "herotemplates.h"
 
 #include "File.h"
-#include "defs.h"
 #include "armysetlist.h"
 #include "playerlist.h"
 #include "hero.h"

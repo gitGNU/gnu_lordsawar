@@ -7,7 +7,6 @@
 #define LOCATION_BOX_H
 
 #include <SDL.h>
-#include "defs.h"
 #include <string>
 #include "vector.h"
 #include "Immovable.h"

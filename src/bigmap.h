@@ -26,6 +26,7 @@
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
 #include <sigc++/connection.h>
+#include <string>
 
 #include "vector.h"
 #include "input-events.h"

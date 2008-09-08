@@ -19,6 +19,7 @@
 #include <vector>
 #include "ItemProto.h"
 #include "ucompose.hpp"
+#include "defs.h"
 
 using namespace std;
 

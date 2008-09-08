@@ -31,7 +31,6 @@
 #include "stack.h"
 #include "path.h"
 #include "File.h"
-#include "defs.h"
 #include "citylist.h"
 #include "roadlist.h"
 #include "portlist.h"

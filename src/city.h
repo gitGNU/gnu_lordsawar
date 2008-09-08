@@ -28,6 +28,7 @@
 #include "Location.h"
 #include "Ownable.h"
 #include "Renamable.h"
+#include "defs.h"
 
 class Player;
 class Stack;

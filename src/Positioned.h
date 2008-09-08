@@ -18,7 +18,6 @@
 #ifndef POSITIONED_H
 #define POSITIONED_H
 
-#include "defs.h"
 #include "vector.h"
 
 class XML_Helper;
