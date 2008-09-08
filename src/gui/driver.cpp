@@ -104,7 +104,7 @@ void Driver::run()
       p.id = 1;
       p.name = "Evil";
       g.players.push_back(p);
-      for (int i = 2; i < MAX_PLAYERS; i++)
+      for (unsigned int i = 2; i < MAX_PLAYERS; i++)
 	{
 	  p.type = GameParameters::Player::OFF;
 	  p.id = i;
@@ -683,7 +683,7 @@ void Driver::stress_test()
   // quick load a test scenario
   GameParameters g;
   GameParameters::Player p;
-  for (int i = 0; i < MAX_PLAYERS; i++)
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
       p.type = GameParameters::Player::EASY;
       p.id = i;
@@ -790,7 +790,7 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
   GameClient::getInstance()->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
   Playerlist *pl = Playerlist::getInstance();
 
-  int count = 0;
+  unsigned int count = 0;
   for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
     {
       if (count >= number_of_robots && number_of_robots > 0)
@@ -805,7 +805,7 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
   pl->turnHumansInto(robot_player_type, number_of_robots);
 
   for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-    if ((*it)->getType() == robot_player_type)
+    if (Player::Type((*it)->getType()) == robot_player_type)
       {
 	GameClient::getInstance()->listenForLocalEvents(*it);
       }

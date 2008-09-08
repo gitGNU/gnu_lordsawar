@@ -91,9 +91,7 @@ SDL_Color Shieldset::getColor(Uint32 owner)
 	return (*it)->getColor();
     }
   SDL_Color def;
-  def.r= 0;
-  def.g= 0;
-  def.b= 0;
+  memset (&def, 0, sizeof (def));
   return def;
 }
 
@@ -105,9 +103,7 @@ SDL_Color Shieldset::getMaskColor(Uint32 owner)
 	return (*it)->getMaskColor();
     }
   SDL_Color def;
-  def.r= 0;
-  def.g= 0;
-  def.b= 0;
+  memset (&def, 0, sizeof (def));
   return def;
 }
 

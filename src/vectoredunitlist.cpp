@@ -168,7 +168,6 @@ bool VectoredUnitlist::removeVectoredUnitsGoingTo(City *c)
   int count = 0;
   int counter = 0;
   bool found = false;
-  Citylist *cl = Citylist::getInstance();
   for (VectoredUnitlist::iterator it = begin(); it != end();)
     {
       if (c->contains((*it)->getDestination()))

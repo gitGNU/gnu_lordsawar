@@ -307,7 +307,7 @@ Stack *AI_Allocation::findBestAttackerFor(Threat *threat)
       int mp = Stack::scout(s, closestPoint);
       if (mp <= 0)
 	continue;
-      if (s->getGroupMoves() < mp)
+      if (s->getGroupMoves() < (unsigned int) mp)
 	continue;
 
       //don't consider the stack if we're probably going to lose
@@ -334,7 +334,6 @@ int AI_Allocation::defaultStackMovements()
 	Stack* s = *it;
 	debug("thinking about stack " << s->getId() <<" at ("<<s->getPos().x<<","<<s->getPos().y<<")")
 	  d_owner->getStacklist()->setActivestack(s);
-	MoveResult *result = 0;
 	if (s->size() >= MAX_STACK_SIZE)
 	  {
 	    bool moved = false;
@@ -391,6 +390,7 @@ int AI_Allocation::defaultStackMovements()
 		debug("Mmmh, did not work.")
 		  //sleep (10);
 /*
+	MoveResult *result = 0;
 		  for (Citylist::iterator cit = allCities->begin(); cit != allCities->end(); cit++)
 		    if ((*cit).getOwner() != d_owner)
 		      {

@@ -2338,7 +2338,7 @@ void Player::recruitHero(HeroProto* heroproto, City *city, int cost, int alliesC
   item->fillData(heroproto, city);
   addHistory(item);
 
-  Hero *hero = doRecruitHero(heroproto, city, cost, alliesCount, ally);
+  doRecruitHero(heroproto, city, cost, alliesCount, ally);
 }
 
 void Player::doDeclareDiplomacy (DiplomaticState state, Player *player)
@@ -2925,8 +2925,8 @@ void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
 	continue;
       if (safeFromAttack(c, safe_mp, min_defenders) == false)
 	{
-	  City *target_city = Citylist::getInstance()->getObjectAt(dest);
-	  debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because it's not safe to anymore!\n")
+	  //City *target_city = Citylist::getInstance()->getObjectAt(dest);
+	  //debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because it's not safe to anymore!\n")
 	    c->setVectoring(Vector<int>(-1,-1));
 	  continue;
 	}
@@ -2934,8 +2934,8 @@ void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
       City *enemy_city = cl->getNearestEnemyCity(dest);
       if (!enemy_city)
 	{
-	  City *target_city = Citylist::getInstance()->getObjectAt(dest);
-	  debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because there aren't any more enemy cities!\n")
+	  //City *target_city = Citylist::getInstance()->getObjectAt(dest);
+	  //debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because there aren't any more enemy cities!\n")
 	    c->setVectoring(Vector<int>(-1,-1));
 	  continue;
 	}
@@ -2944,8 +2944,8 @@ void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
       if ((int)mp <= 0 || mp > mp_to_front)
 	{
 
-	  City *target_city = Citylist::getInstance()->getObjectAt(dest);
-	  debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because it's too far away from an enemy city!\n")
+	  //City *target_city = Citylist::getInstance()->getObjectAt(dest);
+	  //debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because it's too far away from an enemy city!\n")
 	    c->setVectoring(Vector<int>(-1,-1));
 	  continue;
 	}
@@ -2979,7 +2979,7 @@ const Army * Player::doCityProducesArmy(City *city)
 bool Player::cityProducesArmy(City *city)
 {
   Action_Produce *item = new Action_Produce();
-  const Army *army = doCityProducesArmy(city);
+  doCityProducesArmy(city);
   const ArmyProdBase *source_army = city->getActiveProductionBase();
   if (city->getVectoring() == Vector<int>(-1, -1))
     item->fillData(source_army, city, false);

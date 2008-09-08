@@ -912,6 +912,8 @@ bool GamePreferencesDialog::scan_players(std::string tag, XML_Helper* helper)
 	    break;
 	  case Player::AI_SMART: p.type = GameParameters::Player::HARD;
 	    break;
+	  case Player::NETWORKED: p.type = GameParameters::Player::HUMAN;
+	    break;
 	  }
         helper->getData(name, "name");
 	p.name = name;

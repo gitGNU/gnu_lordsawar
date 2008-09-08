@@ -311,6 +311,7 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_CHATTED:
   case MESSAGE_TYPE_TURN_ORDER:
   case MESSAGE_TYPE_KILL_PLAYER:
+  case MESSAGE_TYPE_ROUND_START:
     //faulty client
     break;
   }
@@ -328,7 +329,6 @@ void GameServer::onConnectionLost(void *conn)
   Participant *part = findParticipantByConn(conn);
   if (part)
     {
-      MessageType type;
       std::list<Uint32> players_to_stand = part->players;
 
       depart(conn);

@@ -567,6 +567,7 @@ bool BigMap::saveViewAsBitmap(std::string filename)
 {
   remove (filename.c_str());
   SDL_SaveBMP(buffer, filename.c_str());
+  return true;
 }
 
 bool BigMap::saveUnderlyingMapAsBitmap(std::string filename)

@@ -35,14 +35,11 @@ Tile::Tile()
 
 Tile::Tile(XML_Helper* helper)
 {
-    int i;
-    
     helper->getData(d_name, "name");
     helper->getData(d_moves, "moves");
     std::string type_str;
     helper->getData(type_str, "type");
     d_type = tileTypeFromString(type_str);
-
 }
 
 bool Tile::save(XML_Helper *helper)
@@ -73,7 +70,7 @@ bool Tile::save(XML_Helper *helper)
       retval &= helper->saveData("2nd_blue", d_second_color.b);
       break;
       //patterns with three colours
-    case RANDOMIZED: case TABLECLOTH: case DIAGONAL:
+    case RANDOMIZED: case TABLECLOTH: case DIAGONAL: case CROSSHATCH:
       retval &= helper->saveData("red", d_color.r);
       retval &= helper->saveData("green", d_color.g);
       retval &= helper->saveData("blue", d_color.b);

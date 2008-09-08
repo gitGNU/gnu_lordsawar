@@ -160,7 +160,7 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     cr->stroke();
 
     //draw the indicator line
-    if (d_x_indicator > -1 && d_x_indicator <= max_turn)
+    if (d_x_indicator > -1 && (unsigned int) d_x_indicator <= max_turn)
       {
 	//draw a line at turn x
 	cr->set_source_rgb(0.0, 0.0, 0.0);

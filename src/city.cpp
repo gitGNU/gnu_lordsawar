@@ -54,7 +54,7 @@ City::City(Vector<int> pos, string name, Uint32 gold)
 
 {
     // Initialise armytypes
-    for (int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
+    for (unsigned int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
       d_prodbase[i] = NULL;
 
     // set the tiles to city type
@@ -74,7 +74,7 @@ City::City(XML_Helper* helper)
 
     //initialize the city
 
-    for (int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
+    for (unsigned int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
       d_prodbase[i] = NULL;
 
     helper->getData(d_defense_level, "defense");
@@ -121,7 +121,7 @@ City::City(const City& c)
     d_vectoring(c.d_vectoring),d_vector(c.d_vector), d_capital(c.d_capital), 
     d_capital_owner(c.d_capital_owner)
 {
-    for (int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
+    for (unsigned int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
       {
 	if (c.d_prodbase[i] != NULL)
 	  d_prodbase[i] = new ArmyProdBase(*c.d_prodbase[i]);
@@ -317,7 +317,7 @@ void City::conquer(Player* newowner)
     deFog(newowner);
 
     VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-    bool found = vul->removeVectoredUnitsGoingTo(this);
+    vul->removeVectoredUnitsGoingTo(this);
     vul->removeVectoredUnitsComingFrom(this);
 }
 

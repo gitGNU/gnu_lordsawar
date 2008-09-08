@@ -482,7 +482,6 @@ void GameLobbyDialog::on_player_stands(Player *p, std::string nickname)
 
 void GameLobbyDialog::on_local_player_ends_turn(Player *p)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
   Gtk::TreeModel::Children kids = player_list->children();
   for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
        i != kids.end(); i++)

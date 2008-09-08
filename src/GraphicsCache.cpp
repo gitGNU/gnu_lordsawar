@@ -204,13 +204,13 @@ GraphicsCache::GraphicsCache()
     loadBridgePics();
     loadCursorPics();
     loadFlags();
-    for (int i = 0; i < d_selector.size(); i++)
+    for (unsigned int i = 0; i < d_selector.size(); i++)
       {
         d_selector[i] = NULL;
         d_selectormask[i] = NULL;
       }
 
-    for (int i = 0; i < d_smallselector.size(); i++)
+    for (unsigned int i = 0; i < d_smallselector.size(); i++)
       {
         d_smallselector[i] = NULL;
         d_smallselectormask[i] = NULL;
@@ -259,24 +259,24 @@ GraphicsCache::~GraphicsCache()
         SDL_FreeSurface(d_flagmask[i]);
     }
 
-    for (int i = 0; i < d_selector.size(); i++)
+    for (unsigned int i = 0; i < d_selector.size(); i++)
     {
         SDL_FreeSurface(d_selector[i]);
         SDL_FreeSurface(d_selectormask[i]);
     }
 
-    for (int i = 0; i < d_smallselector.size(); i++)
+    for (unsigned int i = 0; i < d_smallselector.size(); i++)
     {
         SDL_FreeSurface(d_smallselector[i]);
         SDL_FreeSurface(d_smallselectormask[i]);
     }
 
-    for (int i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
+    for (unsigned int i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
     {
         SDL_FreeSurface(d_prodshieldpic[i]);
     }
 
-    for (int i = 0; i < MOVE_BONUS_TYPES; i++)
+    for (unsigned int i = 0; i < MOVE_BONUS_TYPES; i++)
     {
         SDL_FreeSurface(d_movebonuspic[i]);
     }
@@ -2214,7 +2214,7 @@ bool GraphicsCache::loadSelectorImages(std::string tileset, std::string filename
       return false;
     }
 
-  if (selpics->h != size * 2)
+  if ((unsigned int) selpics->h != size * 2)
     {
       SDL_FreeSurface (selpics);
       return false;
@@ -2252,7 +2252,6 @@ bool GraphicsCache::loadSelectorImages(std::string tileset, std::string filename
 
 void GraphicsCache::loadSelectors()
 {
-  int i;
   std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
   std::string small = GameMap::getInstance()->getTileset()->getSmallSelectorFilename();
   std::string large = GameMap::getInstance()->getTileset()->getLargeSelectorFilename();
@@ -2266,7 +2265,7 @@ void GraphicsCache::loadSelectors()
       fprintf (stderr,"Selector file %s is malformed\n", large.c_str());
       exit(1);
     }
-  for (int i = 0; i < images.size(); i++)
+  for (unsigned int i = 0; i < images.size(); i++)
     {
       d_selector.push_back(images[i]);
       d_selectormask.push_back(masks[i]);
@@ -2280,7 +2279,7 @@ void GraphicsCache::loadSelectors()
       fprintf (stderr,"Selector file %s is malformed\n", small.c_str());
       exit(1);
     }
-  for (int i = 0; i < images.size(); i++)
+  for (unsigned int i = 0; i < images.size(); i++)
     {
       d_smallselector.push_back(images[i]);
       d_smallselectormask.push_back(masks[i]);

@@ -249,11 +249,11 @@ void OverviewMap::draw_tile_pixel(Maptile *t, int i, int j)
 
 int OverviewMap::calculateResizeFactor()
 {
-  if (GameMap::getWidth() <= MAP_SIZE_TINY_WIDTH && 
-      GameMap::getHeight() <= MAP_SIZE_TINY_HEIGHT)
+  if (GameMap::getWidth() <= (int)MAP_SIZE_TINY_WIDTH && 
+      GameMap::getHeight() <= (int)MAP_SIZE_TINY_HEIGHT)
     return 4;
-  else if (GameMap::getWidth() <= MAP_SIZE_SMALL_WIDTH && 
-	   GameMap::getHeight() <= MAP_SIZE_SMALL_HEIGHT)
+  else if (GameMap::getWidth() <= (int)MAP_SIZE_SMALL_WIDTH && 
+	   GameMap::getHeight() <= (int)MAP_SIZE_SMALL_HEIGHT)
     return 3;
   else
     return 2;

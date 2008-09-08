@@ -195,6 +195,6 @@ void RewardlistDialog::set_parent_window(Gtk::Window &parent)
 void RewardlistDialog::run()
 {
     dialog->show_all();
-    int response = dialog->run();
+    dialog->run();
 }
 

@@ -320,7 +320,6 @@ void NetworkPlayer::decodeActionFight(const Action_Fight *action)
     defenders.push_back(findStackById(*i));
 
   Stack *attack = &*attackers.front();
-  Stack *defend = &*defenders.front();
   Fight fight(attackers, defenders, action->getBattleHistory());
   Fight::Result result = fight.battleFromHistory();
   fight_started.emit(fight);

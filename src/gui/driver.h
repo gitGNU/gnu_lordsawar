@@ -50,7 +50,7 @@ class Driver: public sigc::trackable
     std::string d_load_filename;
     sigc::connection heartbeat_conn;
     Player::Type robot_player_type;
-    int number_of_robots;
+    unsigned int number_of_robots;
     std::string game_scenario_downloaded;
     sigc::signal<void, std::string> game_scenario_received;
     sigc::signal<void, Player*> player_replaced;

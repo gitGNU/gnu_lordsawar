@@ -271,7 +271,7 @@ void ItemlistDialog::set_parent_window(Gtk::Window &parent)
 void ItemlistDialog::run()
 {
     dialog->show_all();
-    int response = dialog->run();
+    dialog->run();
 }
 
 void ItemlistDialog::on_checkbutton_toggled(Gtk::CheckButton *checkbutton, 

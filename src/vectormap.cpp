@@ -23,6 +23,7 @@
 #include "playerlist.h"
 #include "GraphicsCache.h"
 #include "GameMap.h"
+#include "LocationBox.h"
 
 VectorMap::VectorMap(City *c, enum ShowVectoring v, bool see_opponents_production)
 {
@@ -328,13 +329,18 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	      if (planted_standard.x != -1 && planted_standard.y != -1)
 		{
 		  unsigned int dist = 4;
-		  if (flag.x <= dest.x + dist && dest.x >= dest.x - dist &&
-		      flag.y <= dest.y + dist && flag.y >= dest.y - dist)
-		    {
-		      dest = planted_standard;
-		    }
+		  LocationBox loc(dest - Vector<int>(dist,dist), dist * 2);
+		  if (loc.contains(flag))
+		    dest = planted_standard;
 		  else
-		    return; //no cities, no planted flag
+		    return;
+		  //if (flag.x <= (dest.x + dist) && dest.x >= (dest.x - dist) &&
+		      //flag.y <= (dest.y + dist) && flag.y >= (dest.y - dist))
+		    //{
+		      //dest = planted_standard;
+		    //}
+		  //else
+		    //return; //no cities, no planted flag
 		}
 	      else
 		return; //no cities, no planted flag

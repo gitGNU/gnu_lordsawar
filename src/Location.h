@@ -16,14 +16,14 @@
 
 class Player;
 class Location;
-class ::UniquelyIdentified;
+class UniquelyIdentified;
 
 //! A feature constructed on the game map.
 /** 
  * A Location is a map feature with a location, and a size. 
  * City, Ruin, Temple, Signpost and more classes are derived from Location.
  */
-class Location : public ::UniquelyIdentified, public LocationBox
+class Location : public UniquelyIdentified, public LocationBox
 {
  public:
      //! Default constructor.

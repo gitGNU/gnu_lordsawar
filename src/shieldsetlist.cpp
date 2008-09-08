@@ -115,9 +115,7 @@ SDL_Color Shieldsetlist::getColor(std::string shieldset, Uint32 owner)
   if (!s)
     {
       SDL_Color def;
-      def.r = 0;
-      def.g = 0;
-      def.b = 0;
+      memset (&def, 0, sizeof (def));
       return def;
     }
   return s->getColor(owner);
@@ -129,9 +127,7 @@ SDL_Color Shieldsetlist::getMaskColor(std::string shieldset, Uint32 owner)
   if (!s)
     {
       SDL_Color def;
-      def.r = 0;
-      def.g = 0;
-      def.b = 0;
+      memset (&def, 0, sizeof (def));
       return def;
     }
   return s->getMaskColor(owner);

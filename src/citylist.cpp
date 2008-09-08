@@ -133,7 +133,7 @@ void Citylist::nextTurn(Player* p)
     //fixme: here we want the upkeep that we would pay out to all cities.
     //and not the total upkeep.
     Uint32 upkeep_for_new_armies = calculateUpcomingUpkeep(p);
-    if (p->getGold() < upkeep_for_new_armies)
+    if (p->getGold() < (int)upkeep_for_new_armies)
       {
 	int diff = upkeep_for_new_armies - p->getGold();
 	//then we have to turn off enough production to make up for diff

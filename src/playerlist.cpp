@@ -39,6 +39,7 @@
 #include "real_player.h"
 #include "ai_smart.h"
 #include "ai_fast.h"
+#include "ai_dummy.h"
 #include "network_player.h"
 #include "GameMap.h"
 
@@ -728,6 +729,16 @@ void Playerlist::turnHumansInto(Player::Type type, int number_of_players)
 	{
 	  switch (type)
 	    {
+	    case Player::AI_DUMMY:
+		{
+		  AI_Dummy *new_p = new AI_Dummy(**i);
+		  swap((*i), new_p);
+		  //delete *i; fixme
+		  i = begin();
+		  count++;
+		  continue;
+		}
+	      break;
 	    case Player::AI_FAST:
 		{
 		  AI_Fast *new_p = new AI_Fast(**i);
