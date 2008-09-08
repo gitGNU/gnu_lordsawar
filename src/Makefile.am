@@ -117,27 +117,27 @@ endif
 localedir = $(datadir)/locale
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
-liblordsawar_la_LIBADD = $(top_builddir)/src/gui/liblwgui.la \
+liblordsawar_la_LIBADD = gui/liblwgui.la \
     @LTLIBOBJS@
 
 lordsawar_LDFLAGS =
-lordsawar_LDADD = $(top_builddir)/src/liblordsawar.la \
-    $(top_builddir)/src/liblordsawarnet.la \
-    $(top_builddir)/src/liblordsawargfx.la \
+lordsawar_LDADD = liblordsawar.la \
+    liblordsawarnet.la \
+    liblordsawargfx.la \
     $(SDL_LIBS) \
     $(SDLIMAGE_LIBS) \
     $(SDLSOUND_LIBS) \
     $(GTKMM_LIBS) \
     $(LIBGNET_LIBS) \
     $(LIBSIGC_LIBS) \
-    $(top_builddir)/src/gui/liblwgui.la \
+    gui/liblwgui.la \
     @LIBINTL@
 
 lordsawar_DEPENDENCIES = \
-  $(top_builddir)/src/liblordsawar.la \
-  $(top_builddir)/src/liblordsawarnet.la \
-  $(top_builddir)/src/liblordsawargfx.la \
-  $(top_builddir)/src/gui/liblwgui.la
+  liblordsawar.la \
+  liblordsawarnet.la \
+  liblordsawargfx.la \
+  gui/liblwgui.la
 
 AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\" -Wunused-function
 INCLUDES = $(SDL_CFLAGS) \
