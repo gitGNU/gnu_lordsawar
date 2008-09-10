@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lordsawar 0.1.2\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-07 10:56-0400\n"
+"POT-Creation-Date: 2008-09-08 13:53-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -626,7 +626,7 @@ msgid "Disband"
 msgstr ""
 
 #: dat/glade/game-window.glade:144 src/gui/game-window.cpp:1093
-#: src/editor/main-window.cpp:947
+#: src/editor/main-window.cpp:1005
 msgid "Signpost"
 msgstr ""
 
@@ -656,7 +656,7 @@ msgstr ""
 
 #: dat/glade/game-window.glade:223 dat/glade/game-window.glade:422
 #: dat/glade/history-report-dialog.glade:187 dat/glade/report-dialog.glade:320
-#: src/editor/main-window.cpp:943
+#: src/editor/main-window.cpp:1001
 msgid "City"
 msgstr ""
 
@@ -703,7 +703,7 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: dat/glade/game-window.glade:349 dat/glade/editor/main-window.glade:244
+#: dat/glade/game-window.glade:349 dat/glade/editor/main-window.glade:260
 msgid "_Fullscreen"
 msgstr ""
 
@@ -740,7 +740,7 @@ msgid "Triumphs"
 msgstr ""
 
 #: dat/glade/game-window.glade:482 dat/glade/editor/armyset-window.glade:117
-#: dat/glade/editor/main-window.glade:268
+#: dat/glade/editor/main-window.glade:284
 #: dat/glade/editor/tileset-window.glade:148
 msgid "_Help"
 msgstr ""
@@ -1084,7 +1084,7 @@ msgid "New Play By _Mail Game"
 msgstr ""
 
 #: dat/glade/splash-window.glade:180 dat/glade/editor/armyset-window.glade:83
-#: dat/glade/editor/main-window.glade:83
+#: dat/glade/editor/main-window.glade:99
 #: dat/glade/editor/tileset-window.glade:83
 msgid "_Quit"
 msgstr ""
@@ -1173,7 +1173,7 @@ msgid "Save Armyset _As..."
 msgstr ""
 
 #: dat/glade/editor/armyset-window.glade:95
-#: dat/glade/editor/main-window.glade:95
+#: dat/glade/editor/main-window.glade:111
 #: dat/glade/editor/reward-list-dialog.glade:150
 #: dat/glade/editor/tileset-window.glade:95
 msgid "_Edit"
@@ -1650,82 +1650,90 @@ msgstr ""
 msgid "Save Map _As..."
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:104
-msgid "_Players"
+#: dat/glade/editor/main-window.glade:77
+msgid "E_xport As Bitmap"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:112
-msgid "_Map Info"
+#: dat/glade/editor/main-window.glade:85
+msgid "Export As Bitmap (no game objects)"
 msgstr ""
 
 #: dat/glade/editor/main-window.glade:120
-msgid "_Items"
+msgid "_Players"
 msgstr ""
 
 #: dat/glade/editor/main-window.glade:128
-msgid "_Rewards"
+msgid "_Map Info"
 msgstr ""
 
 #: dat/glade/editor/main-window.glade:136
+msgid "_Items"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:144
+msgid "_Rewards"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:152
 msgid "_Smooth Screen"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:145
+#: dat/glade/editor/main-window.glade:161
 msgid "Smooth _Entire Map"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:157
+#: dat/glade/editor/main-window.glade:173
 msgid "_Random"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:166
+#: dat/glade/editor/main-window.glade:182
 msgid "All Cities"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:174
+#: dat/glade/editor/main-window.glade:190
 msgid "Unnamed Cities"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:182
+#: dat/glade/editor/main-window.glade:198
 msgid "All Ruins"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:190
+#: dat/glade/editor/main-window.glade:206
 msgid "Unnamed Ruins"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:199
+#: dat/glade/editor/main-window.glade:215
 msgid "All Temples"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:207
+#: dat/glade/editor/main-window.glade:223
 msgid "Unnamed Temples"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:215
+#: dat/glade/editor/main-window.glade:231
 msgid "All Signs"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:223
+#: dat/glade/editor/main-window.glade:239
 msgid "Unnamed Signs"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:235
+#: dat/glade/editor/main-window.glade:251
 #: dat/glade/editor/tileset-window.glade:125
 msgid "_View"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:255
+#: dat/glade/editor/main-window.glade:271
 msgid "_Toggle Tile Graphics"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:419
+#: dat/glade/editor/main-window.glade:435
 msgid "Draw terrain with a 1x1 pointer"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:449
-#: dat/glade/editor/main-window.glade:479
-#: dat/glade/editor/main-window.glade:509
+#: dat/glade/editor/main-window.glade:465
+#: dat/glade/editor/main-window.glade:495
+#: dat/glade/editor/main-window.glade:525
 msgid "Draw terrain with a 3x3 pointer"
 msgstr ""
 
@@ -2083,75 +2091,75 @@ msgstr ""
 msgid "<b>Tile</b>"
 msgstr ""
 
-#: src/tilestyle.cpp:78 src/tilestyle.cpp:135
+#: src/tilestyle.cpp:79 src/tilestyle.cpp:136
 msgid "Lone"
 msgstr ""
 
-#: src/tilestyle.cpp:81 src/tilestyle.cpp:137
+#: src/tilestyle.cpp:82 src/tilestyle.cpp:138
 msgid "Outer Top-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:84 src/tilestyle.cpp:139
+#: src/tilestyle.cpp:85 src/tilestyle.cpp:140
 msgid "Outer Top-Centre"
 msgstr ""
 
-#: src/tilestyle.cpp:87 src/tilestyle.cpp:141
+#: src/tilestyle.cpp:88 src/tilestyle.cpp:142
 msgid "Outer Top-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:90 src/tilestyle.cpp:143
+#: src/tilestyle.cpp:91 src/tilestyle.cpp:144
 msgid "Outer Bottom-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:93 src/tilestyle.cpp:145
+#: src/tilestyle.cpp:94 src/tilestyle.cpp:146
 msgid "Outer Bottom-Centre"
 msgstr ""
 
-#: src/tilestyle.cpp:96 src/tilestyle.cpp:147
+#: src/tilestyle.cpp:97 src/tilestyle.cpp:148
 msgid "Outer Bottom-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:99 src/tilestyle.cpp:149
+#: src/tilestyle.cpp:100 src/tilestyle.cpp:150
 msgid "Outer Middle-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:102 src/tilestyle.cpp:151
+#: src/tilestyle.cpp:103 src/tilestyle.cpp:152
 msgid "Outer Middle-Centre"
 msgstr ""
 
-#: src/tilestyle.cpp:105 src/tilestyle.cpp:153
+#: src/tilestyle.cpp:106 src/tilestyle.cpp:154
 msgid "Outer Middle-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:108 src/tilestyle.cpp:155
+#: src/tilestyle.cpp:109 src/tilestyle.cpp:156
 msgid "Inner Top-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:111 src/tilestyle.cpp:157
+#: src/tilestyle.cpp:112 src/tilestyle.cpp:158
 msgid "Inner Top-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:114 src/tilestyle.cpp:159
+#: src/tilestyle.cpp:115 src/tilestyle.cpp:160
 msgid "Inner Bottom-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:117 src/tilestyle.cpp:161
+#: src/tilestyle.cpp:118 src/tilestyle.cpp:162
 msgid "Inner Bottom-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:120 src/tilestyle.cpp:163
+#: src/tilestyle.cpp:121 src/tilestyle.cpp:164
 msgid "Top-Left To Bottom-Right Diagonal"
 msgstr ""
 
-#: src/tilestyle.cpp:123 src/tilestyle.cpp:165
+#: src/tilestyle.cpp:124 src/tilestyle.cpp:166
 msgid "Bottom-Left to Top-Right Diagonal"
 msgstr ""
 
-#: src/tilestyle.cpp:126 src/tilestyle.cpp:167
+#: src/tilestyle.cpp:127 src/tilestyle.cpp:168
 msgid "Other"
 msgstr ""
 
-#: src/armysetlist.cpp:183 src/editor/armyset-window.cpp:422
+#: src/armysetlist.cpp:182 src/editor/armyset-window.cpp:422
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr ""
 
@@ -2214,21 +2222,21 @@ msgstr ""
 msgid "Kill the hero named %s, servant of player %s"
 msgstr ""
 
-#: src/QEnemyArmytype.cpp:116
+#: src/QEnemyArmytype.cpp:115
 #, c-format
 msgid "You have not killed a unit of enemy %s yet."
 msgstr ""
 
-#: src/QEnemyArmytype.cpp:127
+#: src/QEnemyArmytype.cpp:126
 #, c-format
 msgid "You have killed a unit of enemy %s."
 msgstr ""
 
-#: src/QEnemyArmytype.cpp:130 src/QPillageGold.cpp:83 src/QEnemyArmies.cpp:134
+#: src/QEnemyArmytype.cpp:129 src/QPillageGold.cpp:82 src/QEnemyArmies.cpp:133
 msgid "Well done!"
 msgstr ""
 
-#: src/QEnemyArmytype.cpp:144
+#: src/QEnemyArmytype.cpp:143
 #, c-format
 msgid "You must destroy a unit of enemy %s."
 msgstr ""
@@ -2273,25 +2281,25 @@ msgstr ""
 msgid "Error, while loading a cityset. Cityset Name: "
 msgstr ""
 
-#: src/QPillageGold.cpp:73
+#: src/QPillageGold.cpp:72
 #, c-format
 msgid "You have already stolen %i gold."
 msgstr ""
 
-#: src/QCityOccupy.cpp:88 src/QCityRaze.cpp:88 src/QCitySack.cpp:88
+#: src/QCityOccupy.cpp:87 src/QCityRaze.cpp:87 src/QCitySack.cpp:87
 msgid "You aren't afraid of doing it, are you?"
 msgstr ""
 
-#: src/QCityOccupy.cpp:93
+#: src/QCityOccupy.cpp:92
 msgid "The priests thank you for occupying this evil place."
 msgstr ""
 
-#: src/QCityOccupy.cpp:101
+#: src/QCityOccupy.cpp:100
 #, c-format
 msgid "The occupation of city \"%s\" could not be accomplished."
 msgstr ""
 
-#: src/QCityOccupy.cpp:122
+#: src/QCityOccupy.cpp:121
 #, c-format
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
@@ -2376,111 +2384,111 @@ msgstr ""
 msgid "Error, while loading a shieldset. Shieldset Name: "
 msgstr ""
 
-#: src/MapGenerator.cpp:153
+#: src/MapGenerator.cpp:152
 msgid "Making random map"
 msgstr ""
 
-#: src/MapGenerator.cpp:156
+#: src/MapGenerator.cpp:155
 msgid "Flatening Plains  ... 10%"
 msgstr ""
 
-#: src/MapGenerator.cpp:157
+#: src/MapGenerator.cpp:156
 msgid "flattening plains..."
 msgstr ""
 
-#: src/MapGenerator.cpp:159
+#: src/MapGenerator.cpp:158
 msgid "Raining Water     ... 30%"
 msgstr ""
 
-#: src/MapGenerator.cpp:160
+#: src/MapGenerator.cpp:159
 msgid "raining water..."
 msgstr ""
 
-#: src/MapGenerator.cpp:163
+#: src/MapGenerator.cpp:162
 msgid "Raising Hills     ... 20%"
 msgstr ""
 
-#: src/MapGenerator.cpp:164
+#: src/MapGenerator.cpp:163
 msgid "raising hills..."
 msgstr ""
 
-#: src/MapGenerator.cpp:166
+#: src/MapGenerator.cpp:165
 msgid "Raising Mountains ... 30%"
 msgstr ""
 
-#: src/MapGenerator.cpp:167
+#: src/MapGenerator.cpp:166
 msgid "raising mountains..."
 msgstr ""
 
-#: src/MapGenerator.cpp:170
+#: src/MapGenerator.cpp:169
 msgid "Planting Forest   ... 40%"
 msgstr ""
 
-#: src/MapGenerator.cpp:171
+#: src/MapGenerator.cpp:170
 msgid "planting forests..."
 msgstr ""
 
-#: src/MapGenerator.cpp:173
+#: src/MapGenerator.cpp:172
 msgid "Watering Swamps   ... 50%"
 msgstr ""
 
-#: src/MapGenerator.cpp:174
+#: src/MapGenerator.cpp:173
 msgid "watering swamps..."
 msgstr ""
 
-#: src/MapGenerator.cpp:176
+#: src/MapGenerator.cpp:175
 msgid "Normalizing       ... 60%"
 msgstr ""
 
-#: src/MapGenerator.cpp:177
+#: src/MapGenerator.cpp:176
 msgid "normalizing terrain..."
 msgstr ""
 
-#: src/MapGenerator.cpp:181
+#: src/MapGenerator.cpp:180
 msgid "Building Cities   ... 70%"
 msgstr ""
 
-#: src/MapGenerator.cpp:182
+#: src/MapGenerator.cpp:181
 msgid "building cities..."
 msgstr ""
 
-#: src/MapGenerator.cpp:187
+#: src/MapGenerator.cpp:186
 msgid "Paving Roads      ... 75%"
 msgstr ""
 
-#: src/MapGenerator.cpp:188
+#: src/MapGenerator.cpp:187
 msgid "paving roads..."
 msgstr ""
 
-#: src/MapGenerator.cpp:192
+#: src/MapGenerator.cpp:191
 msgid "Ruining Ruins     ... 80%"
 msgstr ""
 
-#: src/MapGenerator.cpp:193
+#: src/MapGenerator.cpp:192
 msgid "ruining ruins..."
 msgstr ""
 
-#: src/MapGenerator.cpp:195
+#: src/MapGenerator.cpp:194
 msgid "Raising Signs     ... 88%"
 msgstr ""
 
-#: src/MapGenerator.cpp:196
+#: src/MapGenerator.cpp:195
 msgid "raising signs..."
 msgstr ""
 
-#: src/MapGenerator.cpp:198
+#: src/MapGenerator.cpp:197
 msgid "Spawning temples  ... 90%"
 msgstr ""
 
-#: src/MapGenerator.cpp:199
+#: src/MapGenerator.cpp:198
 msgid "spawning temples..."
 msgstr ""
 
-#: src/MapGenerator.cpp:201
+#: src/MapGenerator.cpp:200
 msgid "Done making map   ... 100%"
 msgstr ""
 
-#: src/QEnemyArmies.cpp:124
+#: src/QEnemyArmies.cpp:123
 #, c-format
 msgid "You have killed %i so far."
 msgstr ""
@@ -2519,16 +2527,16 @@ msgstr ""
 msgid "Map: %1,%2 %3x%4"
 msgstr ""
 
-#: src/QCityRaze.cpp:93
+#: src/QCityRaze.cpp:92
 msgid "The priests thank you for razing this evil place."
 msgstr ""
 
-#: src/QCityRaze.cpp:101
+#: src/QCityRaze.cpp:100
 #, c-format
 msgid "The razing of city \"%s\" could not be accomplished."
 msgstr ""
 
-#: src/QCityRaze.cpp:122
+#: src/QCityRaze.cpp:121
 #, c-format
 msgid "You must conquer the city \"%s\" and burn it to the ground."
 msgstr ""
@@ -2913,7 +2921,8 @@ msgid "Game was not saved!"
 msgstr ""
 
 #: src/gui/game-window.cpp:989 src/editor/armyset-window.cpp:471
-#: src/editor/main-window.cpp:684 src/editor/tileset-window.cpp:556
+#: src/editor/main-window.cpp:688 src/editor/main-window.cpp:715
+#: src/editor/main-window.cpp:742 src/editor/tileset-window.cpp:556
 #: src/editor/tileset-window.cpp:893
 msgid "Choose a Name"
 msgstr ""
@@ -3206,8 +3215,8 @@ msgstr ""
 msgid "Could not connect."
 msgstr ""
 
-#: src/gui/driver.cpp:561 src/editor/main-window.cpp:384
-#: src/editor/main-window.cpp:430
+#: src/gui/driver.cpp:561 src/editor/main-window.cpp:388
+#: src/editor/main-window.cpp:434
 msgid "Neutral"
 msgstr ""
 
@@ -3259,7 +3268,7 @@ msgstr ""
 msgid "Ruins and Temples"
 msgstr ""
 
-#: src/gui/ruin-report-dialog.cpp:135 src/editor/main-window.cpp:945
+#: src/gui/ruin-report-dialog.cpp:135 src/editor/main-window.cpp:1003
 msgid "Ruin"
 msgstr ""
 
@@ -3275,7 +3284,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/gui/ruin-report-dialog.cpp:146 src/editor/main-window.cpp:949
+#: src/gui/ruin-report-dialog.cpp:146 src/editor/main-window.cpp:1007
 msgid "Temple"
 msgstr ""
 
@@ -3433,39 +3442,39 @@ msgstr[1] ""
 msgid "A hero in %1 wants to join you!"
 msgstr ""
 
-#: src/CreateScenarioRandomize.cpp:192
+#: src/CreateScenarioRandomize.cpp:193
 msgid "southeast"
 msgstr ""
 
-#: src/CreateScenarioRandomize.cpp:194
+#: src/CreateScenarioRandomize.cpp:195
 msgid "east"
 msgstr ""
 
-#: src/CreateScenarioRandomize.cpp:196
+#: src/CreateScenarioRandomize.cpp:197
 msgid "northeast"
 msgstr ""
 
-#: src/CreateScenarioRandomize.cpp:198
+#: src/CreateScenarioRandomize.cpp:199
 msgid "south"
 msgstr ""
 
-#: src/CreateScenarioRandomize.cpp:200
+#: src/CreateScenarioRandomize.cpp:201
 msgid "north"
 msgstr ""
 
-#: src/CreateScenarioRandomize.cpp:202
+#: src/CreateScenarioRandomize.cpp:203
 msgid "southwest"
 msgstr ""
 
-#: src/CreateScenarioRandomize.cpp:204
+#: src/CreateScenarioRandomize.cpp:205
 msgid "west"
 msgstr ""
 
-#: src/CreateScenarioRandomize.cpp:206
+#: src/CreateScenarioRandomize.cpp:207
 msgid "northwest"
 msgstr ""
 
-#: src/CreateScenarioRandomize.cpp:207
+#: src/CreateScenarioRandomize.cpp:208
 #, c-format
 msgid "%s lies to the %s"
 msgstr ""
@@ -3486,43 +3495,47 @@ msgstr ""
 msgid "Upkeep"
 msgstr ""
 
-#: src/editor/main-window.cpp:373 src/editor/main-window.cpp:468
+#: src/editor/main-window.cpp:377 src/editor/main-window.cpp:472
 msgid "Untitled"
 msgstr ""
 
-#: src/editor/main-window.cpp:373 src/editor/main-window.cpp:468
+#: src/editor/main-window.cpp:377 src/editor/main-window.cpp:472
 msgid "No description"
 msgstr ""
 
-#: src/editor/main-window.cpp:634
+#: src/editor/main-window.cpp:638
 msgid "Choose Map to Load"
 msgstr ""
 
-#: src/editor/main-window.cpp:660
+#: src/editor/main-window.cpp:664
 msgid "Could not load map %1."
 msgstr ""
 
-#: src/editor/main-window.cpp:678 src/editor/main-window.cpp:705
+#: src/editor/main-window.cpp:682 src/editor/main-window.cpp:763
 msgid "Map was not saved!"
 msgstr ""
 
-#: src/editor/main-window.cpp:774
+#: src/editor/main-window.cpp:709 src/editor/main-window.cpp:736
+msgid "Map was not exported!"
+msgstr ""
+
+#: src/editor/main-window.cpp:832
 msgid "Auto"
 msgstr ""
 
-#: src/editor/main-window.cpp:919
+#: src/editor/main-window.cpp:977
 msgid "(%1, %2)"
 msgstr ""
 
-#: src/editor/main-window.cpp:941
+#: src/editor/main-window.cpp:999
 msgid "Stack"
 msgstr ""
 
-#: src/editor/ruin-dialog.cpp:216
+#: src/editor/ruin-dialog.cpp:217
 msgid "No keeper"
 msgstr ""
 
-#: src/editor/ruin-dialog.cpp:333
+#: src/editor/ruin-dialog.cpp:334
 msgid "No reward"
 msgstr ""
 
@@ -3530,15 +3543,15 @@ msgstr ""
 msgid "No army"
 msgstr ""
 
-#: src/editor/reward-dialog.cpp:329
+#: src/editor/reward-dialog.cpp:330
 msgid "No item"
 msgstr ""
 
-#: src/editor/reward-dialog.cpp:375
+#: src/editor/reward-dialog.cpp:376
 msgid "No ally"
 msgstr ""
 
-#: src/editor/reward-dialog.cpp:429
+#: src/editor/reward-dialog.cpp:430
 msgid "No Ruin"
 msgstr ""
 
@@ -3637,11 +3650,11 @@ msgstr ""
 msgid "Error loading music descriptions; disable music\n"
 msgstr ""
 
-#: src/gamebigmap.cpp:102
+#: src/gamebigmap.cpp:101
 msgid "original path of stack was blocked\n"
 msgstr ""
 
-#: src/gamebigmap.cpp:180
+#: src/gamebigmap.cpp:179
 msgid "error calculating path!"
 msgstr ""
 
@@ -3760,16 +3773,16 @@ msgstr ""
 msgid "  -r, --robots               Non-interactive network stress test"
 msgstr ""
 
-#: src/QCitySack.cpp:93
+#: src/QCitySack.cpp:92
 msgid "The priests thank you for sacking this evil place."
 msgstr ""
 
-#: src/QCitySack.cpp:101
+#: src/QCitySack.cpp:100
 #, c-format
 msgid "The sacking of \"%s\" could not be accomplished."
 msgstr ""
 
-#: src/QCitySack.cpp:121
+#: src/QCitySack.cpp:120
 #, c-format
 msgid "You must take over and sack the city of \"%s\"."
 msgstr ""

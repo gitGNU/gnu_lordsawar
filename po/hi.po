@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.6\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-07 10:56-0400\n"
+"POT-Creation-Date: 2008-09-08 13:53-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: विभू ॠषि <vibhu.rishi@gmail.com>\n"
 "Language-Team: Hindi <vibhu.rishi@gmail.com>\n"
@@ -697,7 +697,7 @@ msgid "Disband"
 msgstr ""
 
 #: dat/glade/game-window.glade:144 src/gui/game-window.cpp:1093
-#: src/editor/main-window.cpp:947
+#: src/editor/main-window.cpp:1005
 #, fuzzy
 msgid "Signpost"
 msgstr "Options"
@@ -732,7 +732,7 @@ msgstr "Army"
 
 #: dat/glade/game-window.glade:223 dat/glade/game-window.glade:422
 #: dat/glade/history-report-dialog.glade:187 dat/glade/report-dialog.glade:320
-#: src/editor/main-window.cpp:943
+#: src/editor/main-window.cpp:1001
 msgid "City"
 msgstr "शहर'"
 
@@ -785,7 +785,7 @@ msgstr "Esplorata:"
 msgid "View"
 msgstr "File"
 
-#: dat/glade/game-window.glade:349 dat/glade/editor/main-window.glade:244
+#: dat/glade/game-window.glade:349 dat/glade/editor/main-window.glade:260
 #, fuzzy
 msgid "_Fullscreen"
 msgstr "Fullscreen"
@@ -826,7 +826,7 @@ msgid "Triumphs"
 msgstr ""
 
 #: dat/glade/game-window.glade:482 dat/glade/editor/armyset-window.glade:117
-#: dat/glade/editor/main-window.glade:268
+#: dat/glade/editor/main-window.glade:284
 #: dat/glade/editor/tileset-window.glade:148
 #, fuzzy
 msgid "_Help"
@@ -1224,7 +1224,7 @@ msgid "New Play By _Mail Game"
 msgstr ""
 
 #: dat/glade/splash-window.glade:180 dat/glade/editor/armyset-window.glade:83
-#: dat/glade/editor/main-window.glade:83
+#: dat/glade/editor/main-window.glade:99
 #: dat/glade/editor/tileset-window.glade:83
 #, fuzzy
 msgid "_Quit"
@@ -1328,7 +1328,7 @@ msgid "Save Armyset _As..."
 msgstr "Save as"
 
 #: dat/glade/editor/armyset-window.glade:95
-#: dat/glade/editor/main-window.glade:95
+#: dat/glade/editor/main-window.glade:111
 #: dat/glade/editor/reward-list-dialog.glade:150
 #: dat/glade/editor/tileset-window.glade:95
 #, fuzzy
@@ -1858,97 +1858,105 @@ msgstr "Save as"
 msgid "Save Map _As..."
 msgstr "Save as"
 
-#: dat/glade/editor/main-window.glade:104
+#: dat/glade/editor/main-window.glade:77
+msgid "E_xport As Bitmap"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:85
+msgid "Export As Bitmap (no game objects)"
+msgstr ""
+
+#: dat/glade/editor/main-window.glade:120
 #, fuzzy
 msgid "_Players"
 msgstr "Giocatori"
 
-#: dat/glade/editor/main-window.glade:112
+#: dat/glade/editor/main-window.glade:128
 #, fuzzy
 msgid "_Map Info"
 msgstr "Gruppo"
 
-#: dat/glade/editor/main-window.glade:120
+#: dat/glade/editor/main-window.glade:136
 #, fuzzy
 msgid "_Items"
 msgstr "नग"
 
-#: dat/glade/editor/main-window.glade:128
+#: dat/glade/editor/main-window.glade:144
 #, fuzzy
 msgid "_Rewards"
 msgstr "Giocatori"
 
-#: dat/glade/editor/main-window.glade:136
+#: dat/glade/editor/main-window.glade:152
 #, fuzzy
 msgid "_Smooth Screen"
 msgstr "Smooth scrolling"
 
-#: dat/glade/editor/main-window.glade:145
+#: dat/glade/editor/main-window.glade:161
 msgid "Smooth _Entire Map"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:157
+#: dat/glade/editor/main-window.glade:173
 #, fuzzy
 msgid "_Random"
 msgstr "Random"
 
-#: dat/glade/editor/main-window.glade:166
+#: dat/glade/editor/main-window.glade:182
 #, fuzzy
 msgid "All Cities"
 msgstr "Cities'"
 
-#: dat/glade/editor/main-window.glade:174
+#: dat/glade/editor/main-window.glade:190
 #, fuzzy
 msgid "Unnamed Cities"
 msgstr "Cities'"
 
-#: dat/glade/editor/main-window.glade:182
+#: dat/glade/editor/main-window.glade:198
 #, fuzzy
 msgid "All Ruins"
 msgstr "खंडर"
 
-#: dat/glade/editor/main-window.glade:190
+#: dat/glade/editor/main-window.glade:206
 #, fuzzy
 msgid "Unnamed Ruins"
 msgstr "खंडर"
 
-#: dat/glade/editor/main-window.glade:199
+#: dat/glade/editor/main-window.glade:215
 #, fuzzy
 msgid "All Temples"
 msgstr "मंदिर"
 
-#: dat/glade/editor/main-window.glade:207
+#: dat/glade/editor/main-window.glade:223
 #, fuzzy
 msgid "Unnamed Temples"
 msgstr "मंदिर"
 
-#: dat/glade/editor/main-window.glade:215
+#: dat/glade/editor/main-window.glade:231
 #, fuzzy
 msgid "All Signs"
 msgstr "खंडर"
 
-#: dat/glade/editor/main-window.glade:223
+#: dat/glade/editor/main-window.glade:239
 #, fuzzy
 msgid "Unnamed Signs"
 msgstr "खंडर"
 
-#: dat/glade/editor/main-window.glade:235
+#: dat/glade/editor/main-window.glade:251
 #: dat/glade/editor/tileset-window.glade:125
 #, fuzzy
 msgid "_View"
 msgstr "File"
 
-#: dat/glade/editor/main-window.glade:255
+#: dat/glade/editor/main-window.glade:271
 msgid "_Toggle Tile Graphics"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:419
+#: dat/glade/editor/main-window.glade:435
 msgid "Draw terrain with a 1x1 pointer"
 msgstr ""
 
-#: dat/glade/editor/main-window.glade:449
-#: dat/glade/editor/main-window.glade:479
-#: dat/glade/editor/main-window.glade:509
+#: dat/glade/editor/main-window.glade:465
+#: dat/glade/editor/main-window.glade:495
+#: dat/glade/editor/main-window.glade:525
 msgid "Draw terrain with a 3x3 pointer"
 msgstr ""
 
@@ -2366,76 +2374,76 @@ msgstr "मंदिर"
 msgid "<b>Tile</b>"
 msgstr "मंदिर"
 
-#: src/tilestyle.cpp:78 src/tilestyle.cpp:135
+#: src/tilestyle.cpp:79 src/tilestyle.cpp:136
 #, fuzzy
 msgid "Lone"
 msgstr "कुछ नही"
 
-#: src/tilestyle.cpp:81 src/tilestyle.cpp:137
+#: src/tilestyle.cpp:82 src/tilestyle.cpp:138
 msgid "Outer Top-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:84 src/tilestyle.cpp:139
+#: src/tilestyle.cpp:85 src/tilestyle.cpp:140
 msgid "Outer Top-Centre"
 msgstr ""
 
-#: src/tilestyle.cpp:87 src/tilestyle.cpp:141
+#: src/tilestyle.cpp:88 src/tilestyle.cpp:142
 msgid "Outer Top-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:90 src/tilestyle.cpp:143
+#: src/tilestyle.cpp:91 src/tilestyle.cpp:144
 msgid "Outer Bottom-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:93 src/tilestyle.cpp:145
+#: src/tilestyle.cpp:94 src/tilestyle.cpp:146
 msgid "Outer Bottom-Centre"
 msgstr ""
 
-#: src/tilestyle.cpp:96 src/tilestyle.cpp:147
+#: src/tilestyle.cpp:97 src/tilestyle.cpp:148
 msgid "Outer Bottom-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:99 src/tilestyle.cpp:149
+#: src/tilestyle.cpp:100 src/tilestyle.cpp:150
 msgid "Outer Middle-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:102 src/tilestyle.cpp:151
+#: src/tilestyle.cpp:103 src/tilestyle.cpp:152
 msgid "Outer Middle-Centre"
 msgstr ""
 
-#: src/tilestyle.cpp:105 src/tilestyle.cpp:153
+#: src/tilestyle.cpp:106 src/tilestyle.cpp:154
 msgid "Outer Middle-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:108 src/tilestyle.cpp:155
+#: src/tilestyle.cpp:109 src/tilestyle.cpp:156
 msgid "Inner Top-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:111 src/tilestyle.cpp:157
+#: src/tilestyle.cpp:112 src/tilestyle.cpp:158
 msgid "Inner Top-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:114 src/tilestyle.cpp:159
+#: src/tilestyle.cpp:115 src/tilestyle.cpp:160
 msgid "Inner Bottom-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:117 src/tilestyle.cpp:161
+#: src/tilestyle.cpp:118 src/tilestyle.cpp:162
 msgid "Inner Bottom-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:120 src/tilestyle.cpp:163
+#: src/tilestyle.cpp:121 src/tilestyle.cpp:164
 msgid "Top-Left To Bottom-Right Diagonal"
 msgstr ""
 
-#: src/tilestyle.cpp:123 src/tilestyle.cpp:165
+#: src/tilestyle.cpp:124 src/tilestyle.cpp:166
 msgid "Bottom-Left to Top-Right Diagonal"
 msgstr ""
 
-#: src/tilestyle.cpp:126 src/tilestyle.cpp:167
+#: src/tilestyle.cpp:127 src/tilestyle.cpp:168
 msgid "Other"
 msgstr "Altro"
 
-#: src/armysetlist.cpp:183 src/editor/armyset-window.cpp:422
+#: src/armysetlist.cpp:182 src/editor/armyset-window.cpp:422
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr "Error, while loading an armyset. Armyset Name:"
 
@@ -2500,21 +2508,21 @@ msgstr "E' stato ucciso da un altro gruppo di armate!"
 msgid "Kill the hero named %s, servant of player %s"
 msgstr "Uccidi l'eroe chiamato %s, servitore del giocatore %s"
 
-#: src/QEnemyArmytype.cpp:116
+#: src/QEnemyArmytype.cpp:115
 #, fuzzy, c-format
 msgid "You have not killed a unit of enemy %s yet."
 msgstr "Devi distruggere %i unita' delle armate nemiche"
 
-#: src/QEnemyArmytype.cpp:127
+#: src/QEnemyArmytype.cpp:126
 #, fuzzy, c-format
 msgid "You have killed a unit of enemy %s."
 msgstr "Devi distruggere %i unita' delle armate nemiche"
 
-#: src/QEnemyArmytype.cpp:130 src/QPillageGold.cpp:83 src/QEnemyArmies.cpp:134
+#: src/QEnemyArmytype.cpp:129 src/QPillageGold.cpp:82 src/QEnemyArmies.cpp:133
 msgid "Well done!"
 msgstr "Ben fatto!"
 
-#: src/QEnemyArmytype.cpp:144
+#: src/QEnemyArmytype.cpp:143
 #, fuzzy, c-format
 msgid "You must destroy a unit of enemy %s."
 msgstr "Devi distruggere %i unita' delle armate nemiche"
@@ -2566,27 +2574,27 @@ msgstr "Errore nella GameMap::fillMap la size non corrisponde!! Sto Uscendo.\n"
 msgid "Error, while loading a cityset. Cityset Name: "
 msgstr "Error, while loading an armyset. Armyset Name:"
 
-#: src/QPillageGold.cpp:73
+#: src/QPillageGold.cpp:72
 #, fuzzy, c-format
 msgid "You have already stolen %i gold."
 msgstr "Sei riuscito ad uccidere %i armata."
 
-#: src/QCityOccupy.cpp:88 src/QCityRaze.cpp:88 src/QCitySack.cpp:88
+#: src/QCityOccupy.cpp:87 src/QCityRaze.cpp:87 src/QCitySack.cpp:87
 #, fuzzy
 msgid "You aren't afraid of doing it, are you?"
 msgstr "Non hai paura di farlo, giusto?"
 
-#: src/QCityOccupy.cpp:93
+#: src/QCityOccupy.cpp:92
 #, fuzzy
 msgid "The priests thank you for occupying this evil place."
 msgstr "I monaci ti ringraziano per aver esplorato questa tenebrosa locazione."
 
-#: src/QCityOccupy.cpp:101
+#: src/QCityOccupy.cpp:100
 #, c-format
 msgid "The occupation of city \"%s\" could not be accomplished."
 msgstr ""
 
-#: src/QCityOccupy.cpp:122
+#: src/QCityOccupy.cpp:121
 #, c-format
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
@@ -2684,125 +2692,125 @@ msgstr "Check permissions and the entries in your freelordsrc file!\n"
 msgid "Error, while loading a shieldset. Shieldset Name: "
 msgstr "Error, while loading an armyset. Armyset Name:"
 
-#: src/MapGenerator.cpp:153
+#: src/MapGenerator.cpp:152
 msgid "Making random map"
 msgstr "genero la mappa casuale"
 
-#: src/MapGenerator.cpp:156
+#: src/MapGenerator.cpp:155
 msgid "Flatening Plains  ... 10%"
 msgstr "Genero le pianure .. 10%"
 
-#: src/MapGenerator.cpp:157
+#: src/MapGenerator.cpp:156
 #, fuzzy
 msgid "flattening plains..."
 msgstr "Genero le pianure .. 10%"
 
-#: src/MapGenerator.cpp:159
+#: src/MapGenerator.cpp:158
 msgid "Raining Water     ... 30%"
 msgstr "Genero l'acqua   ... 30%"
 
-#: src/MapGenerator.cpp:160
+#: src/MapGenerator.cpp:159
 #, fuzzy
 msgid "raining water..."
 msgstr "Genero l'acqua   ... 30%"
 
-#: src/MapGenerator.cpp:163
+#: src/MapGenerator.cpp:162
 msgid "Raising Hills     ... 20%"
 msgstr "Genero le पहाड .. 20%"
 
-#: src/MapGenerator.cpp:164
+#: src/MapGenerator.cpp:163
 #, fuzzy
 msgid "raising hills..."
 msgstr "Genero le पहाड .. 20%"
 
-#: src/MapGenerator.cpp:166
+#: src/MapGenerator.cpp:165
 msgid "Raising Mountains ... 30%"
 msgstr "Genero le montagne .. 30%"
 
-#: src/MapGenerator.cpp:167
+#: src/MapGenerator.cpp:166
 #, fuzzy
 msgid "raising mountains..."
 msgstr "Genero le montagne .. 30%"
 
-#: src/MapGenerator.cpp:170
+#: src/MapGenerator.cpp:169
 msgid "Planting Forest   ... 40%"
 msgstr "Pianto le foreste .. 40%"
 
-#: src/MapGenerator.cpp:171
+#: src/MapGenerator.cpp:170
 #, fuzzy
 msgid "planting forests..."
 msgstr "Pianto le foreste .. 40%"
 
-#: src/MapGenerator.cpp:173
+#: src/MapGenerator.cpp:172
 msgid "Watering Swamps   ... 50%"
 msgstr "Genero le paludi ... 50%"
 
-#: src/MapGenerator.cpp:174
+#: src/MapGenerator.cpp:173
 #, fuzzy
 msgid "watering swamps..."
 msgstr "Genero le paludi ... 50%"
 
-#: src/MapGenerator.cpp:176
+#: src/MapGenerator.cpp:175
 msgid "Normalizing       ... 60%"
 msgstr "Normalizzo la mappa  60%"
 
-#: src/MapGenerator.cpp:177
+#: src/MapGenerator.cpp:176
 #, fuzzy
 msgid "normalizing terrain..."
 msgstr "Stai entrando nelle खंडर..."
 
-#: src/MapGenerator.cpp:181
+#: src/MapGenerator.cpp:180
 msgid "Building Cities   ... 70%"
 msgstr "Costruisco le Citta' 70%"
 
-#: src/MapGenerator.cpp:182
+#: src/MapGenerator.cpp:181
 #, fuzzy
 msgid "building cities..."
 msgstr "Costruisco le Citta' 70%"
 
-#: src/MapGenerator.cpp:187
+#: src/MapGenerator.cpp:186
 #, fuzzy
 msgid "Paving Roads      ... 75%"
 msgstr "Genero l'acqua   ... 30%"
 
-#: src/MapGenerator.cpp:188
+#: src/MapGenerator.cpp:187
 #, fuzzy
 msgid "paving roads..."
 msgstr "Genero l'acqua   ... 30%"
 
-#: src/MapGenerator.cpp:192
+#: src/MapGenerator.cpp:191
 msgid "Ruining Ruins     ... 80%"
 msgstr "Posiziono खंडर  80%"
 
-#: src/MapGenerator.cpp:193
+#: src/MapGenerator.cpp:192
 #, fuzzy
 msgid "ruining ruins..."
 msgstr "Posiziono खंडर  80%"
 
-#: src/MapGenerator.cpp:195
+#: src/MapGenerator.cpp:194
 #, fuzzy
 msgid "Raising Signs     ... 88%"
 msgstr "Genero le पहाड .. 20%"
 
-#: src/MapGenerator.cpp:196
+#: src/MapGenerator.cpp:195
 #, fuzzy
 msgid "raising signs..."
 msgstr "Genero le पहाड .. 20%"
 
-#: src/MapGenerator.cpp:198
+#: src/MapGenerator.cpp:197
 msgid "Spawning temples  ... 90%"
 msgstr "Spawning मंदिर  ... 90%"
 
-#: src/MapGenerator.cpp:199
+#: src/MapGenerator.cpp:198
 #, fuzzy
 msgid "spawning temples..."
 msgstr "Spawning मंदिर  ... 90%"
 
-#: src/MapGenerator.cpp:201
+#: src/MapGenerator.cpp:200
 msgid "Done making map   ... 100%"
 msgstr "Done making map   ... 100%"
 
-#: src/QEnemyArmies.cpp:124
+#: src/QEnemyArmies.cpp:123
 #, fuzzy, c-format
 msgid "You have killed %i so far."
 msgstr "Hai ucciso %i armate fino ad ora."
@@ -2846,17 +2854,17 @@ msgstr "Grandezza:"
 msgid "Map: %1,%2 %3x%4"
 msgstr ""
 
-#: src/QCityRaze.cpp:93
+#: src/QCityRaze.cpp:92
 #, fuzzy
 msgid "The priests thank you for razing this evil place."
 msgstr "I monaci ti ringraziano per aver esplorato questa tenebrosa locazione."
 
-#: src/QCityRaze.cpp:101
+#: src/QCityRaze.cpp:100
 #, c-format
 msgid "The razing of city \"%s\" could not be accomplished."
 msgstr ""
 
-#: src/QCityRaze.cpp:122
+#: src/QCityRaze.cpp:121
 #, c-format
 msgid "You must conquer the city \"%s\" and burn it to the ground."
 msgstr ""
@@ -3283,7 +3291,8 @@ msgid "Game was not saved!"
 msgstr "Game Saved."
 
 #: src/gui/game-window.cpp:989 src/editor/armyset-window.cpp:471
-#: src/editor/main-window.cpp:684 src/editor/tileset-window.cpp:556
+#: src/editor/main-window.cpp:688 src/editor/main-window.cpp:715
+#: src/editor/main-window.cpp:742 src/editor/tileset-window.cpp:556
 #: src/editor/tileset-window.cpp:893
 #, fuzzy
 msgid "Choose a Name"
@@ -3599,8 +3608,8 @@ msgstr ""
 msgid "Could not connect."
 msgstr "Non ho potuto creare la mappa "
 
-#: src/gui/driver.cpp:561 src/editor/main-window.cpp:384
-#: src/editor/main-window.cpp:430
+#: src/gui/driver.cpp:561 src/editor/main-window.cpp:388
+#: src/editor/main-window.cpp:434
 msgid "Neutral"
 msgstr "Neutral"
 
@@ -3655,7 +3664,7 @@ msgstr "लाभ"
 msgid "Ruins and Temples"
 msgstr "मंदिर"
 
-#: src/gui/ruin-report-dialog.cpp:135 src/editor/main-window.cpp:945
+#: src/gui/ruin-report-dialog.cpp:135 src/editor/main-window.cpp:1003
 msgid "Ruin"
 msgstr "Rovina"
 
@@ -3672,7 +3681,7 @@ msgstr "हाँ"
 msgid "No"
 msgstr "नहीं"
 
-#: src/gui/ruin-report-dialog.cpp:146 src/editor/main-window.cpp:949
+#: src/gui/ruin-report-dialog.cpp:146 src/editor/main-window.cpp:1007
 msgid "Temple"
 msgstr "मंदिर"
 
@@ -3856,47 +3865,47 @@ msgstr[1] "Un eroe vuole unirsi a te gratuitamente!"
 msgid "A hero in %1 wants to join you!"
 msgstr "Un eroe vuole unirsi a te"
 
-#: src/CreateScenarioRandomize.cpp:192
+#: src/CreateScenarioRandomize.cpp:193
 #, fuzzy
 msgid "southeast"
 msgstr "जंगल"
 
-#: src/CreateScenarioRandomize.cpp:194
+#: src/CreateScenarioRandomize.cpp:195
 #, fuzzy
 msgid "east"
 msgstr "Quest"
 
-#: src/CreateScenarioRandomize.cpp:196
+#: src/CreateScenarioRandomize.cpp:197
 #, fuzzy
 msgid "northeast"
 msgstr "जंगल"
 
-#: src/CreateScenarioRandomize.cpp:198
+#: src/CreateScenarioRandomize.cpp:199
 #, fuzzy
 msgid "south"
 msgstr "बारे"
 
-#: src/CreateScenarioRandomize.cpp:200
+#: src/CreateScenarioRandomize.cpp:201
 #, fuzzy
 msgid "north"
 msgstr "जंगल"
 
-#: src/CreateScenarioRandomize.cpp:202
+#: src/CreateScenarioRandomize.cpp:203
 #, fuzzy
 msgid "southwest"
 msgstr "जंगल"
 
-#: src/CreateScenarioRandomize.cpp:204
+#: src/CreateScenarioRandomize.cpp:205
 #, fuzzy
 msgid "west"
 msgstr "Quest"
 
-#: src/CreateScenarioRandomize.cpp:206
+#: src/CreateScenarioRandomize.cpp:207
 #, fuzzy
 msgid "northwest"
 msgstr "जंगल"
 
-#: src/CreateScenarioRandomize.cpp:207
+#: src/CreateScenarioRandomize.cpp:208
 #, c-format
 msgid "%s lies to the %s"
 msgstr ""
@@ -3921,49 +3930,54 @@ msgstr "चाल:"
 msgid "Upkeep"
 msgstr "Upkeep:"
 
-#: src/editor/main-window.cpp:373 src/editor/main-window.cpp:468
+#: src/editor/main-window.cpp:377 src/editor/main-window.cpp:472
 msgid "Untitled"
 msgstr ""
 
-#: src/editor/main-window.cpp:373 src/editor/main-window.cpp:468
+#: src/editor/main-window.cpp:377 src/editor/main-window.cpp:472
 #, fuzzy
 msgid "No description"
 msgstr "Posizione:"
 
-#: src/editor/main-window.cpp:634
+#: src/editor/main-window.cpp:638
 #, fuzzy
 msgid "Choose Map to Load"
 msgstr "Choose Tileset"
 
-#: src/editor/main-window.cpp:660
+#: src/editor/main-window.cpp:664
 #, fuzzy
 msgid "Could not load map %1."
 msgstr "Non ho potuto creare la mappa "
 
-#: src/editor/main-window.cpp:678 src/editor/main-window.cpp:705
+#: src/editor/main-window.cpp:682 src/editor/main-window.cpp:763
 #, fuzzy
 msgid "Map was not saved!"
 msgstr "Game Saved."
 
-#: src/editor/main-window.cpp:774
+#: src/editor/main-window.cpp:709 src/editor/main-window.cpp:736
+#, fuzzy
+msgid "Map was not exported!"
+msgstr "Game Saved."
+
+#: src/editor/main-window.cpp:832
 #, fuzzy
 msgid "Auto"
 msgstr "बारे"
 
-#: src/editor/main-window.cpp:919
+#: src/editor/main-window.cpp:977
 msgid "(%1, %2)"
 msgstr ""
 
-#: src/editor/main-window.cpp:941
+#: src/editor/main-window.cpp:999
 msgid "Stack"
 msgstr "Gruppo"
 
-#: src/editor/ruin-dialog.cpp:216
+#: src/editor/ruin-dialog.cpp:217
 #, fuzzy
 msgid "No keeper"
 msgstr "Occupante"
 
-#: src/editor/ruin-dialog.cpp:333
+#: src/editor/ruin-dialog.cpp:334
 #, fuzzy
 msgid "No reward"
 msgstr "Mappa Casuale"
@@ -3973,16 +3987,16 @@ msgstr "Mappa Casuale"
 msgid "No army"
 msgstr "कुछ नही"
 
-#: src/editor/reward-dialog.cpp:329
+#: src/editor/reward-dialog.cpp:330
 msgid "No item"
 msgstr ""
 
-#: src/editor/reward-dialog.cpp:375
+#: src/editor/reward-dialog.cpp:376
 #, fuzzy
 msgid "No ally"
 msgstr "कुछ नही"
 
-#: src/editor/reward-dialog.cpp:429
+#: src/editor/reward-dialog.cpp:430
 #, fuzzy
 msgid "No Ruin"
 msgstr "Rovina"
@@ -4092,11 +4106,11 @@ msgstr "Couldn't initialize X Windowing System\n"
 msgid "Error loading music descriptions; disable music\n"
 msgstr ""
 
-#: src/gamebigmap.cpp:102
+#: src/gamebigmap.cpp:101
 msgid "original path of stack was blocked\n"
 msgstr "original path of stack was blocked\n"
 
-#: src/gamebigmap.cpp:180
+#: src/gamebigmap.cpp:179
 msgid "error calculating path!"
 msgstr ""
 
@@ -4237,17 +4251,17 @@ msgstr ""
 msgid "  -r, --robots               Non-interactive network stress test"
 msgstr ""
 
-#: src/QCitySack.cpp:93
+#: src/QCitySack.cpp:92
 #, fuzzy
 msgid "The priests thank you for sacking this evil place."
 msgstr "I monaci ti ringraziano per aver esplorato questa tenebrosa locazione."
 
-#: src/QCitySack.cpp:101
+#: src/QCitySack.cpp:100
 #, c-format
 msgid "The sacking of \"%s\" could not be accomplished."
 msgstr ""
 
-#: src/QCitySack.cpp:121
+#: src/QCitySack.cpp:120
 #, c-format
 msgid "You must take over and sack the city of \"%s\"."
 msgstr ""
