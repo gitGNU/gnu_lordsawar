@@ -1,6 +1,7 @@
 2008-09-10  Ben Asselstine
 
 	* added support for zooming in and out on the game map.
+	* added stacklist method to enumerate the 3 best heroes.
 
 2008-09-07  Ben Asselstine
 
