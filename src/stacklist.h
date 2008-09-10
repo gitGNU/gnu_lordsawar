@@ -34,6 +34,7 @@ class City;
 class Stack;
 class XML_Helper;
 class Player;
+class Hero;
 
 //! A list of Stack objects for a single player.
 /** 
@@ -227,6 +228,8 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         Stack *getArmyStackById(Uint32 army);
 
 	void collectTaxes(Player *p, Uint32 num_cities);
+
+	std::list<Hero*> getTopHeroes(unsigned int num);
     private:
         //! Callback function for loading.
         bool load(std::string tag, XML_Helper* helper);
