@@ -762,6 +762,7 @@ void Game::lock_inputs()
 {
   // don't accept modifying user input from now on
   bigmap->set_input_locked(true);
+  bigmap->reset_zoom();
   smallmap->set_input_locked(true);
   input_locked = true;
   update_control_panel();

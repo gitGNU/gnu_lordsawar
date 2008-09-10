@@ -29,6 +29,10 @@ inline MouseButtonEvent to_input_event(GdkEventButton *e)
 	m.button = MouseButtonEvent::LEFT_BUTTON;
     else if (e->button == 3)
 	m.button = MouseButtonEvent::RIGHT_BUTTON;
+    else if (e->button == 4)
+	m.button = MouseButtonEvent::WHEEL_UP;
+    else if (e->button == 5)
+	m.button = MouseButtonEvent::WHEEL_DOWN;
     else
 	m.button = MouseButtonEvent::MIDDLE_BUTTON;
     

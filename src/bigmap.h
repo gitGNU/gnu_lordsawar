@@ -82,6 +82,7 @@ class BigMap: public sigc::trackable
 
     //! Save the current view as an image (bmp file).
     bool saveViewAsBitmap(std::string filename);
+    
  protected:
     MapRenderer* d_renderer;
 
@@ -89,6 +90,8 @@ class BigMap: public sigc::trackable
     Vector<int> view_pos; 	// precise position of view in pixels
 
     SDL_Surface* buffer;	// the buffer we draw things in
+    SDL_Surface* magnified_buffer;	// the zoomed buffer;
+    double magnification_factor; //how much we're zoomed
     Rectangle buffer_view;	// current view of the buffer, in tiles
 
     bool input_locked;
@@ -113,6 +116,7 @@ class BigMap: public sigc::trackable
  private:
     void drawFogTile(int x, int y);
     void draw_buffer(Rectangle map_view, SDL_Surface *surface);
+    void magnify();
 };
 
 #endif

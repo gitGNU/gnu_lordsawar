@@ -25,7 +25,8 @@ struct MouseButtonEvent
 {
     Vector<int> pos;
     
-    enum Button { LEFT_BUTTON, MIDDLE_BUTTON, RIGHT_BUTTON };
+    enum Button { LEFT_BUTTON, MIDDLE_BUTTON, RIGHT_BUTTON, 
+      WHEEL_UP, WHEEL_DOWN };
 
     Button button;
 

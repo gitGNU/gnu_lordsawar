@@ -166,7 +166,7 @@ GameWindow::GameWindow()
     xml->get_widget("map_image", map_image);
     xml->get_widget("map_eventbox", map_eventbox);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-			     Gdk::POINTER_MOTION_MASK);
+			     Gdk::POINTER_MOTION_MASK | Gdk::SCROLL_MASK);
       map_eventbox->signal_button_press_event().connect
        (sigc::mem_fun(*this, &GameWindow::on_map_mouse_button_event));
       map_eventbox->signal_button_release_event().connect
@@ -254,7 +254,6 @@ GameWindow::GameWindow()
     xml->get_widget("save_game_as_menuitem", save_game_as_menuitem);
     save_game_as_menuitem->signal_activate().connect
       (sigc::mem_fun(*this, &GameWindow::on_save_game_as_activated));
-
     xml->connect_clicked("quit_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_quit_activated));
     xml->connect_clicked("army_report_menuitem",
@@ -411,6 +410,8 @@ void GameWindow::init(int width, int height)
 	sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_button_event));
     sdl_widget->signal_motion_notify_event().connect(
 	sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_motion_event));
+    sdl_widget->signal_scroll_event().connect
+       (sigc::mem_fun(*this, &GameWindow::on_sdl_scroll_event));
     
     // connect to the special signal that signifies that a new surface has been
     // generated and attached to the widget
@@ -854,6 +855,23 @@ bool GameWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
     {
       game->get_bigmap().mouse_motion_event(to_input_event(e));
       sdl_widget->grab_focus();
+    }
+  return true;
+}
+    
+bool GameWindow::on_sdl_scroll_event(GdkEventScroll* event)
+{
+  switch (event->direction) 
+    {
+    case GDK_SCROLL_LEFT:
+    case GDK_SCROLL_RIGHT:
+      break;
+    case GDK_SCROLL_UP:
+      game->get_bigmap().zoom_in();
+      break;
+    case GDK_SCROLL_DOWN:
+      game->get_bigmap().zoom_out();
+      break;
     }
   return true;
 }

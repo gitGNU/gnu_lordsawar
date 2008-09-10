@@ -398,6 +398,26 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	  mouse_state = NONE;
 	}
     }
+  else if (e.button == MouseButtonEvent::WHEEL_UP)
+    {
+      zoom_in();
+    }
+  else if (e.button == MouseButtonEvent::WHEEL_DOWN)
+    {
+      zoom_out();
+    }
+}
+
+void GameBigMap::zoom_in()
+{
+  if ((zoom_step / 100.0) + magnification_factor <= max_magnification_factor / 100.0)
+    zoom_view(zoom_step);
+}
+
+void GameBigMap::zoom_out()
+{
+  if (magnification_factor - (zoom_step / 100.0) >= min_magnification_factor / 100.0)
+    zoom_view(-zoom_step);
 }
 
 void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
@@ -579,10 +599,10 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       Vector<int> screen_dim(screen->w, screen->h);
       view_pos = clip(Vector<int>(0, 0),
 		      view_pos + delta,
-		      GameMap::get_dim() * ts - screen_dim);
+		      GameMap::get_dim() * ts *magnification_factor - screen_dim);
 
       // calculate new view position in tiles, rounding up
-      Vector<int> new_view = (view_pos + Vector<int>(ts - 1, ts - 1)) / ts;
+      Vector<int> new_view = (view_pos + Vector<int>(ts * magnification_factor - 1, ts * magnification_factor - 1)) / (ts * magnification_factor);
 
       bool redraw_buffer = false;
 
@@ -644,6 +664,27 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
   prev_mouse_pos = e.pos;
   last_tile = tile;
+}
+
+void GameBigMap::reset_zoom()
+{
+  magnification_factor = 1.0;
+  screen_size_changed();
+  draw(true);
+  view_changed.emit(view);
+}
+
+void GameBigMap::zoom_view(double percent)
+{
+  magnification_factor += percent / 100.0;
+  //call with +2, or -2
+  //Rectangle new_view = view;
+  //new_view.dim += Vector<int>(tiles, tiles);
+  //new_view.pos += Vector<int>(tiles*-1/2, tiles*-1/2);
+  //set_view (new_view);
+  screen_size_changed();
+  draw(true);
+  view_changed.emit(view);
 }
 
 void GameBigMap::after_draw()

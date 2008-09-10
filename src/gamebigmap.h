@@ -72,6 +72,14 @@ class GameBigMap: public BigMap
     //draw a fight graphic, or not
     void setFighting(LocationBox ruckus) {d_fighting = ruckus;};
 
+    void reset_zoom();
+    void zoom_in();
+    void zoom_out();
+
+    static const double zoom_step = 10.0;
+    static const double max_magnification_factor = 200.0;
+    static const double min_magnification_factor = 50.0;
+
  private:
     SDL_Surface* d_waypoints;
     Vector<int> current_tile, prev_mouse_pos;
@@ -91,6 +99,7 @@ class GameBigMap: public BigMap
     // for the marching ants around selected stack
     sigc::connection selection_timeout_handler;
     bool on_selection_timeout();
+    void zoom_view(double percent);
 
     virtual void after_draw();
     bool d_intense_combat; 

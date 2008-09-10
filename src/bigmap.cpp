@@ -60,7 +60,7 @@ using namespace std;
 #define debug(x)
 
 BigMap::BigMap()
-    : d_renderer(0), buffer(0)
+    : d_renderer(0), buffer(0), magnified_buffer(0), magnification_factor(1.0)
 {
     // load all pictures
     d_itempic = GraphicsLoader::getMiscPicture("items.png");
@@ -75,6 +75,9 @@ BigMap::~BigMap()
 
     if (buffer)
         SDL_FreeSurface(buffer);
+
+    if (magnified_buffer)
+        SDL_FreeSurface(magnified_buffer);
 
     delete d_renderer;
 }
@@ -112,13 +115,14 @@ void BigMap::set_view(Rectangle new_view)
     // higher than the screen you actually see. That is how smooth scrolling
     // becomes comparatively easy. You just blit from the extended screen to
     // the screen with some offset.
+    // this represents a 1 tile border around the outside of the picture.
+    // it gets rid of the black border.
     buffer_view.dim = view.dim + Vector<int>(2, 2);
 
     SDL_PixelFormat* fmt = SDL_GetVideoSurface()->format;
-    buffer = SDL_CreateRGBSurface(SDL_SWSURFACE,
-                buffer_view.w * tilesize, buffer_view.h * tilesize,
-                fmt->BitsPerPixel,
-                fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+    buffer = SDL_CreateRGBSurface
+      (SDL_SWSURFACE, buffer_view.w * tilesize, buffer_view.h * tilesize,
+       fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
 
     // now set the MapRenderer so that it draws directly on the new surface
     d_renderer = new MapRenderer(buffer);
@@ -145,16 +149,21 @@ void BigMap::draw(bool redraw_buffer)
 	draw_buffer();
 
     // blit the visible part of buffer to the screen
-    Vector<int> p = view_pos - buffer_view.pos * tilesize;
-    assert(p.x >= 0 && p.x + screen->w <= buffer_view.w * tilesize &&
-	   p.y >= 0 && p.y + screen->h <= buffer_view.h * tilesize);
+    Vector<int> p = view_pos - (buffer_view.pos * tilesize * magnification_factor);
+    //assert(p.x >= 0 && p.x + screen->w <= buffer_view.w * tilesize * magnification_factor &&
+	   //p.y >= 0 && p.y + screen->h <= buffer_view.h * tilesize * magnification_factor);
     SDL_Rect src, dest;
     src.x = p.x;
     src.y = p.y;
-    dest.w = src.w = screen->w;
-    dest.h = src.h = screen->h;
+    src.w = screen->w;
+    src.h = screen->h;
+    dest.w = screen->w;
+    dest.h = screen->h;
     dest.x = dest.y = 0;
-    SDL_BlitSurface(buffer, &src, screen, &dest);
+    magnify();
+    //now we want to take a portion of what we magnified
+    SDL_BlitSurface(magnified_buffer, &src, screen, &dest);
+    //SDL_BlitSurface(buffer, &src, screen, &dest);
     SDL_UpdateRects(screen, 1, &dest);
 }
 
@@ -165,8 +174,8 @@ void BigMap::screen_size_changed()
 
     Rectangle new_view = view;
     
-    new_view.w = v->w / ts;
-    new_view.h = v->h / ts;
+    new_view.w = v->w / (ts * magnification_factor) + 1;
+    new_view.h = v->h / (ts * magnification_factor) + 1;
 
     new_view.pos = clip(Vector<int>(0,0), new_view.pos,
 			GameMap::get_dim() - new_view.dim);
@@ -185,8 +194,8 @@ Vector<int> BigMap::get_view_pos_from_view()
     int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
     // clip to make sure we don't see a black border at the bottom and right
-    return clip(Vector<int>(0, 0), view.pos * ts,
-		GameMap::get_dim() * ts - screen_dim);
+    return clip(Vector<int>(0, 0), view.pos * ts * magnification_factor,
+		GameMap::get_dim() * ts * magnification_factor - screen_dim);
 }
 
 Vector<int> BigMap::tile_to_buffer_pos(Vector<int> tile)
@@ -199,14 +208,14 @@ Vector<int> BigMap::mouse_pos_to_tile(Vector<int> pos)
 {
     int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
-    return (view_pos + pos) / ts;
+    return (view_pos + pos) / (ts * magnification_factor);
 }
 
 Vector<int> BigMap::mouse_pos_to_tile_offset(Vector<int> pos)
 {
     int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
-    return (view_pos + pos) % ts;
+    return (view_pos + pos) % (int)rint(ts * magnification_factor);
 }
 
 MapTipPosition BigMap::map_tip_position(Vector<int> tile)
@@ -219,8 +228,8 @@ MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
     // convert area to pixels on the SDL screen
     int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
 
-    Rectangle area(tile_area.pos * tilesize - view_pos,
-		   tile_area.dim * tilesize);
+    Rectangle area(tile_area.pos * tilesize * magnification_factor - view_pos,
+		   tile_area.dim * tilesize * magnification_factor);
 
     // calculate screen edge distances
     SDL_Surface *screen = SDL_GetVideoSurface();
@@ -726,4 +735,27 @@ void BigMap::blank ()
 	    }
 	}
     }
+}
+
+//here we want to magnify the entire buffer, not a subset
+void BigMap::magnify()
+{
+  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+  //magnify the buffer into a buffer of the correct size
+  if (magnified_buffer)
+    SDL_FreeSurface(magnified_buffer);
+  SDL_PixelFormat* fmt = SDL_GetVideoSurface()->format;
+  magnified_buffer = SDL_CreateRGBSurface
+    (SDL_SWSURFACE, buffer->w * magnification_factor, 
+     buffer->h * magnification_factor,
+     fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+  SDL_Rect s;
+  s.x = s.y = 0;
+  s.w = buffer->w;
+  s.h = buffer->h;
+  SDL_Rect r;
+  r.x = r.y = 0;
+  r.w = magnified_buffer->w;
+  r.h = magnified_buffer->h;
+  SDL_SoftStretch (buffer, &s, magnified_buffer, &r);
 }

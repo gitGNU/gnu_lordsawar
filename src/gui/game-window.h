@@ -189,6 +189,7 @@ class GameWindow: public Decorated
     bool on_sdl_mouse_button_event(GdkEventButton *e);
     bool on_sdl_mouse_motion_event(GdkEventMotion *e);
     bool on_sdl_key_event(GdkEventKey *e);
+    bool on_sdl_scroll_event(GdkEventScroll* event);
 
     bool on_map_mouse_button_event(GdkEventButton *e);
     bool on_map_mouse_motion_event(GdkEventMotion *e);
