@@ -177,14 +177,18 @@ void BigMap::screen_size_changed()
     new_view.w = v->w / (ts * magnification_factor) + 1;
     new_view.h = v->h / (ts * magnification_factor) + 1;
 
-    new_view.pos = clip(Vector<int>(0,0), new_view.pos,
-			GameMap::get_dim() - new_view.dim);
+    if (new_view.w <= GameMap::getWidth() && new_view.h <= GameMap::getHeight()
+	&& new_view.w >= 0 && new_view.h >= 0)
+      {
+	new_view.pos = clip(Vector<int>(0,0), new_view.pos,
+			    GameMap::get_dim() - new_view.dim);
 
-    if (new_view != view)
-    {
-	set_view(new_view);
-	view_changed.emit(view);
-    }
+	if (new_view != view)
+	  {
+	    set_view(new_view);
+	    view_changed.emit(view);
+	  }
+      }
 }
 
 Vector<int> BigMap::get_view_pos_from_view()

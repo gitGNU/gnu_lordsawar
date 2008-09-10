@@ -411,13 +411,35 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 void GameBigMap::zoom_in()
 {
   if ((zoom_step / 100.0) + magnification_factor <= max_magnification_factor / 100.0)
-    zoom_view(zoom_step);
+    {
+      SDL_Surface *v = SDL_GetVideoSurface();
+      int ts = GameMap::getInstance()->getTileset()->getTileSize();
+      Rectangle new_view;
+      double mag = magnification_factor + (zoom_step / 100.0);
+      new_view.w = v->w / (ts * mag) + 1;
+      new_view.h = v->h / (ts * mag) + 1;
+      if (new_view.w <= GameMap::getWidth() && 
+	  new_view.h <= GameMap::getHeight() && 
+	  new_view.w >= 0 && new_view.h >= 0)
+	zoom_view(zoom_step);
+    }
 }
 
 void GameBigMap::zoom_out()
 {
   if (magnification_factor - (zoom_step / 100.0) >= min_magnification_factor / 100.0)
-    zoom_view(-zoom_step);
+    {
+      SDL_Surface *v = SDL_GetVideoSurface();
+      int ts = GameMap::getInstance()->getTileset()->getTileSize();
+      Rectangle new_view;
+      double mag = magnification_factor - (zoom_step / 100.0);
+      new_view.w = v->w / (ts * mag) + 1;
+      new_view.h = v->h / (ts * mag) + 1;
+      if (new_view.w <= GameMap::getWidth() && 
+	  new_view.h <= GameMap::getHeight() && 
+	  new_view.w >= 0 && new_view.h >= 0)
+	zoom_view(-zoom_step);
+    }
 }
 
 void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
