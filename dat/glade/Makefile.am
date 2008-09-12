@@ -29,6 +29,7 @@ ruin-report-dialog.glade \
 history-report-dialog.glade \
 report-dialog.glade \
 load-scenario-dialog.glade \
+new-campaign-dialog.glade \
 medal-awarded-dialog.glade \
 quest-assigned-dialog.glade \
 quest-expired-dialog.glade \

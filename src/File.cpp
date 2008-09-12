@@ -22,6 +22,7 @@
 #include <config.h>
 
 #include <iostream>
+#include <algorithm>
 #include <glibmm/fileutils.h>
 #include <glibmm/ustring.h>
 #include <glibmm/convert.h>
@@ -29,6 +30,7 @@
 #include "File.h"
 #include <SDL_image.h>
 #include "Configuration.h"
+#include "Campaign.h"
 #include "defs.h"
 
 using namespace std;
@@ -211,6 +213,44 @@ list<string> File::scanCitysets()
         exit(-1);
     }
     
+    return retlist;
+}
+
+list<string> File::scanCampaigns()
+{
+    string path = Configuration::s_dataPath + "/campaign/";
+    std::list<std::string> retlist;
+    Glib::Dir dir(path);
+    
+    for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
+    {
+	string entry = *i;
+	string::size_type idx = entry.find(".map");
+	if (idx != string::npos)
+	{
+	    retlist.push_back(Glib::filename_to_utf8(entry));
+	}
+    }
+    
+    if (retlist.empty())
+    {
+        cerr << _("Couldn't find a single campaign!") << endl;
+        cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
+    }
+
+    //now we find the ones that are pointed to, and remove them
+    for (std::list<std::string>::iterator it = retlist.begin(); 
+	 it != retlist.end();)
+      {
+	std::string campaign = Campaign::get_campaign_from_scenario_file(*it);
+	if (find (retlist.begin(), retlist.end(), campaign) != retlist.end())
+	  {
+	    it = retlist.erase (it);
+	    continue;
+	  }
+	it++;
+      }
+
     return retlist;
 }
 

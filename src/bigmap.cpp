@@ -744,7 +744,6 @@ void BigMap::blank ()
 //here we want to magnify the entire buffer, not a subset
 void BigMap::magnify()
 {
-  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
   //magnify the buffer into a buffer of the correct size
   if (magnified_buffer)
     SDL_FreeSurface(magnified_buffer);

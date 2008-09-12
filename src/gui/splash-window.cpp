@@ -34,6 +34,7 @@
 
 #include "game-preferences-dialog.h"
 #include "load-scenario-dialog.h"
+#include "new-campaign-dialog.h"
 #include "glade-helpers.h"
 #include "Configuration.h"
 #include "defs.h"
@@ -88,6 +89,8 @@ SplashWindow::SplashWindow()
 			 sigc::mem_fun(*this, &SplashWindow::on_new_game_clicked));
     xml->connect_clicked("load_game_button",
 			 sigc::mem_fun(*this, &SplashWindow::on_load_game_clicked));
+    xml->connect_clicked("new_campaign_button",
+			 sigc::mem_fun(*this, &SplashWindow::on_new_campaign_clicked));
     xml->connect_clicked("load_scenario_button",
 			 sigc::mem_fun(*this, &SplashWindow::on_load_scenario_clicked));
     xml->connect_clicked("quit_button",
@@ -274,6 +277,27 @@ void SplashWindow::on_load_scenario_clicked()
     d.hide();
     
     std::string filename = d.get_scenario_filename();
+    if (!filename.empty())
+      {
+	GamePreferencesDialog gp(filename);
+	gp.set_parent_window(*window.get());
+	gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
+    
+	gp.run();
+      } 
+	//load_requested.emit(filename);
+}
+
+void SplashWindow::on_new_campaign_clicked()
+{
+    NewCampaignDialog d;
+    
+    d.set_parent_window(*window.get());
+    
+    d.run();
+    d.hide();
+    
+    std::string filename = d.get_campaign_filename();
     if (!filename.empty())
       {
 	GamePreferencesDialog gp(filename);

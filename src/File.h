@@ -26,6 +26,8 @@
 #include <list>
 #include <SDL.h>
 
+#include "xmlhelper.h"
+
 /** \brief Miscellaneous functions for unified file access
   * 
   * These functions should be the sole way to access any files. They will
@@ -109,10 +111,15 @@ class File
         // get the available citysets
         static std::list<std::string> scanCitysets();
 
-        // get the available maps
+        // get the available scenarios
         static std::list<std::string> scanMaps();
 
+	// get the available campaigns
+	static std::list<std::string> scanCampaigns();
+
     private:
+
+	static std::string get_campaign_from_scenario_file(std::string campaign);
 
 	static std::string getArmysetDir();
 	static std::string getTilesetDir();

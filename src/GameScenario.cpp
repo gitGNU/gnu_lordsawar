@@ -27,6 +27,7 @@
 #include <uuid/uuid.h>
 
 #include "GameScenario.h"
+#include "Campaign.h"
 #include "MapGenerator.h"
 #include "playerlist.h"
 #include "FogMap.h"
@@ -248,6 +249,7 @@ bool GameScenario::loadWithHelper(XML_Helper& helper)
   bool broken = false;
 
   helper.registerTag("scenario", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag("campaign", sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag("itemlist", sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag("playerlist", sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag("map", sigc::mem_fun(this, &GameScenario::load));
@@ -288,6 +290,7 @@ GameScenario::~GameScenario()
   Roadlist::deleteInstance();
   QuestsManager::deleteInstance();
   VectoredUnitlist::deleteInstance();
+  Campaign::deleteInstance();
 
   if (fl_counter)
     {
@@ -373,6 +376,7 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   retval &= Bridgelist::getInstance()->save(&helper);
   retval &= QuestsManager::getInstance()->save(&helper);
   retval &= VectoredUnitlist::getInstance()->save(&helper);
+  retval &= Campaign::getInstance()->save(&helper);
 
   //save the private GameScenario data last due to dependencies
   retval &= helper.openTag("scenario");
@@ -446,6 +450,13 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       helper->getData(playmode_str, "playmode");
       d_playmode = GameScenario::playModeFromString(playmode_str);
 
+      return true;
+    }
+  
+  if (tag == "campaign")
+    {
+      debug("loading campaign")
+      Campaign::getInstance(helper);
       return true;
     }
 
