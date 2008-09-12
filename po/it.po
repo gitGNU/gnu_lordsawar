@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-10 16:31-0400\n"
+"POT-Creation-Date: 2008-09-12 15:59-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -797,7 +797,7 @@ msgstr "Video"
 msgid "_Fullscreen"
 msgstr "Schermo Intero"
 
-#: dat/glade/game-window.glade:359 dat/glade/splash-window.glade:165
+#: dat/glade/game-window.glade:359 dat/glade/splash-window.glade:164
 #, fuzzy
 msgid "_Preferences"
 msgstr "Pelerine"
@@ -1201,37 +1201,37 @@ msgstr ""
 msgid "Message:"
 msgstr "Message"
 
-#: dat/glade/splash-window.glade:60
+#: dat/glade/splash-window.glade:59
 #, fuzzy
 msgid "New _Campaign"
 msgstr "Nuova Campagna"
 
-#: dat/glade/splash-window.glade:75
+#: dat/glade/splash-window.glade:74
 #, fuzzy
 msgid "New _Game"
 msgstr "Nuovo Gioco"
 
-#: dat/glade/splash-window.glade:90
+#: dat/glade/splash-window.glade:89
 #, fuzzy
 msgid "L_oad Game"
 msgstr "Carica Gioco"
 
-#: dat/glade/splash-window.glade:105
+#: dat/glade/splash-window.glade:104
 #, fuzzy
 msgid "Load _Scenario"
 msgstr "Carica uno Scenario"
 
 #
-#: dat/glade/splash-window.glade:120
+#: dat/glade/splash-window.glade:119
 #, fuzzy
 msgid "New _Network Game"
 msgstr "Nuovo Gioco in Rete"
 
-#: dat/glade/splash-window.glade:148
+#: dat/glade/splash-window.glade:147
 msgid "New Play By _Mail Game"
 msgstr ""
 
-#: dat/glade/splash-window.glade:180 dat/glade/editor/armyset-window.glade:83
+#: dat/glade/splash-window.glade:179 dat/glade/editor/armyset-window.glade:83
 #: dat/glade/editor/main-window.glade:99
 #: dat/glade/editor/tileset-window.glade:83
 #, fuzzy
@@ -2456,35 +2456,35 @@ msgstr "Altro"
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr "Errore, mentre caricavo un armyset. Nome dell'Armyset: "
 
-#: src/GameScenario.cpp:330
+#: src/GameScenario.cpp:333
 msgid "The Filename is well formed"
 msgstr "Il nome del file di salvataggio è ben formato"
 
-#: src/GameScenario.cpp:335
+#: src/GameScenario.cpp:338
 msgid "The Filename lacks the extension --> "
 msgstr "Il nome del file di salvataggio non ha l'estensione --> "
 
-#: src/GameScenario.cpp:348
+#: src/GameScenario.cpp:351
 msgid "GameScenario: Something went wrong with saving.\n"
 msgstr "GameScenario: Qualcosa è andato male durante il salvataggio.\n"
 
-#: src/GameScenario.cpp:415
+#: src/GameScenario.cpp:419
 msgid "savefile has wrong version, we want "
 msgstr "il file di salvatagio ha una versione sbagliata, vogliamo "
 
-#: src/GameScenario.cpp:417
+#: src/GameScenario.cpp:421
 msgid "savefile offers "
 msgstr "il file di salvataggio offre "
 
-#: src/GameScenario.cpp:572
+#: src/GameScenario.cpp:583
 msgid "Autosave failed.\n"
 msgstr ""
 
-#: src/GameScenario.cpp:579
+#: src/GameScenario.cpp:590
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:580 src/gui/driver.cpp:661
+#: src/GameScenario.cpp:591 src/gui/driver.cpp:661
 #, fuzzy
 msgid "Error: "
 msgstr "Errore"
@@ -3279,7 +3279,7 @@ msgstr "Difesa: %i"
 msgid "Save your Turn file and mail it back"
 msgstr ""
 
-#: src/gui/game-window.cpp:943 src/gui/splash-window.cpp:185
+#: src/gui/game-window.cpp:943 src/gui/splash-window.cpp:188
 #, fuzzy
 msgid "Choose Game to Load"
 msgstr "Scegli un Tileset"
@@ -3690,34 +3690,34 @@ msgstr "No"
 msgid "Temple"
 msgstr "Tempio"
 
-#: src/gui/splash-window.cpp:115
+#: src/gui/splash-window.cpp:118
 msgid "Rescue Crashed Game"
 msgstr ""
 
 #
-#: src/gui/splash-window.cpp:246
+#: src/gui/splash-window.cpp:249
 #, fuzzy
 msgid "New Networked Game"
 msgstr "Nuovo Gioco in Rete"
 
-#: src/gui/splash-window.cpp:261
+#: src/gui/splash-window.cpp:264
 msgid "New Play By Mail game"
 msgstr ""
 
-#: src/gui/splash-window.cpp:311
+#: src/gui/splash-window.cpp:335
 msgid "GGZ initialization failed. Exiting.\n"
 msgstr "inizializzazione della GGZ fallita.Esco\n"
 
-#: src/gui/splash-window.cpp:329
+#: src/gui/splash-window.cpp:353
 msgid "Play on GGZ"
 msgstr "Gioca su GGZ"
 
-#: src/gui/splash-window.cpp:330
+#: src/gui/splash-window.cpp:354
 #, fuzzy
 msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
 msgstr "Per piacere lancia Freelords da un client GGZ Gaming Zone."
 
-#: src/gui/splash-window.cpp:331
+#: src/gui/splash-window.cpp:355
 msgid "OK"
 msgstr "OK"
 
@@ -4179,36 +4179,41 @@ msgstr "Sto creando la mappa"
 msgid "Could not parse items description file. Exiting!\n"
 msgstr "Non ho potuto parsare il file delle descrizioni. Esco!.\n"
 
-#: src/File.cpp:101
+#: src/File.cpp:103
 #, fuzzy
 msgid "Couldn't find any armysets!"
 msgstr "Non sono riuscito a trovare nemmeno un armyset!"
 
-#: src/File.cpp:102 src/File.cpp:193 src/File.cpp:209 src/File.cpp:237
-#: src/File.cpp:251
+#: src/File.cpp:104 src/File.cpp:195 src/File.cpp:211 src/File.cpp:238
+#: src/File.cpp:277 src/File.cpp:291
 #, fuzzy
 msgid "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc"
 msgstr "Per piacere controlla il path in /etc/freelordsrc o ~/.freelordsrc"
 
-#: src/File.cpp:103 src/File.cpp:194 src/File.cpp:210 src/File.cpp:252
+#: src/File.cpp:105 src/File.cpp:196 src/File.cpp:212 src/File.cpp:292
 msgid "Exiting!"
 msgstr "Sto Uscendo!"
 
-#: src/File.cpp:192
+#: src/File.cpp:194
 #, fuzzy
 msgid "Couldn't find any tilesets!"
 msgstr "Non sono riuscito a trovare nemmeno un tileset!"
 
-#: src/File.cpp:208
+#: src/File.cpp:210
 #, fuzzy
 msgid "Couldn't find any citysets!"
 msgstr "Non sono riuscito a trovare nemmeno un armyset!"
 
-#: src/File.cpp:236
+#: src/File.cpp:237
+#, fuzzy
+msgid "Couldn't find a single campaign!"
+msgstr "Non sono riuscito a trovare nemmeno uno scenario!"
+
+#: src/File.cpp:276
 msgid "Couldn't find a single map!"
 msgstr "Non sono riuscito a trovare nemmeno uno scenario!"
 
-#: src/File.cpp:250
+#: src/File.cpp:290
 #, fuzzy
 msgid "Couldn't find any shieldsets!"
 msgstr "Non sono riuscito a trovare nemmeno un tileset!"
