@@ -291,6 +291,7 @@ bool GamePreferencesDialog::run(std::string nickname)
 	game_name_entry->set_text(text);
       }
     update_shields();
+    on_player_type_changed();
     int response = dialog->run();
     if (response == 0)
       return true;
