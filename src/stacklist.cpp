@@ -294,7 +294,6 @@ bool Stacklist::flRemove(Stack* object)
         if (d_activestack == object)
             d_activestack = 0;
 	assert (object->getId() == (*stackit)->getId());
-	printf ("about to delete stack with id %d\n", object->getId());
         delete object;
         erase(stackit);
         return true;
