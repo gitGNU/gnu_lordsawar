@@ -181,7 +181,7 @@ class Reward_Gold : public Reward
 	static Uint32 getRandomGoldPieces();
 
 	//! Save the gold reward to the opened saved-game file.
-        virtual bool save(XML_Helper* helper);
+        bool save(XML_Helper* helper);
 
 	//! Return the number of gold pieces associated with this reward.
 	Uint32 getGold() const {return d_gold;}
@@ -224,7 +224,7 @@ class Reward_Allies: public Reward
         ~Reward_Allies();
 
 	//! Save the allies reward to the opened saved-game file.
-        virtual bool save(XML_Helper* helper);
+        bool save(XML_Helper* helper);
 
 	//! Return the army prototype of the allies associated with this reward.
 	const ArmyProto * getArmy() const {return d_army;}
@@ -332,7 +332,7 @@ class Reward_Item: public Reward
 	/**
 	 * @param helper  The opened saved-game file to save the reward item to.
 	 */
-        virtual bool save(XML_Helper* helper);
+        bool save(XML_Helper* helper);
 
 	//! Get the Item object associated with this reward.
 	Item *getItem() const {return d_item;}
@@ -403,7 +403,7 @@ class Reward_Ruin: public Reward
 	 * @param helper  The opened saved-game file to write the ruin reward 
 	 *                to.
 	 */
-        virtual bool save(XML_Helper* helper);
+        bool save(XML_Helper* helper);
 
 	//! Return the Ruin object associated with this Reward_Ruin.
 	Ruin* getRuin() const 
@@ -472,7 +472,7 @@ class Reward_Map: public Reward
 	/**
 	 * @param helper  The opened saved-game file to write the ruin map to.
 	 */
-        virtual bool save(XML_Helper* helper);
+        bool save(XML_Helper* helper);
 
 	//! Get the height of the revealed portion of the game map.
 	Uint32 getHeight() const {return d_height;}

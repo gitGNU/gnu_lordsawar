@@ -1125,17 +1125,16 @@ bool Action_Reward::doSave(XML_Helper* helper) const
   bool retval = true;
 
   retval &= helper->saveData("stack", d_stack);
-  retval &= d_reward->save(helper);
-  //if (d_reward->getType() == Reward::GOLD)
-    //dynamic_cast<Reward_Gold*>(d_reward)->save(helper);
-  //else if (d_reward->getType() == Reward::ALLIES)
-    //dynamic_cast<Reward_Allies*>(d_reward)->save(helper);
-  //else if (d_reward->getType() == Reward::ITEM)
-    //dynamic_cast<Reward_Item*>(d_reward)->save(helper);
-  //else if (d_reward->getType() == Reward::RUIN)
-    //dynamic_cast<Reward_Ruin*>(d_reward)->save(helper);
-  //else if (d_reward->getType() == Reward::MAP)
-    //dynamic_cast<Reward_Map*>(d_reward)->save(helper);
+  if (d_reward->getType() == Reward::GOLD)
+    retval &= dynamic_cast<Reward_Gold*>(d_reward)->save(helper);
+  else if (d_reward->getType() == Reward::ALLIES)
+    retval &= dynamic_cast<Reward_Allies*>(d_reward)->save(helper);
+  else if (d_reward->getType() == Reward::ITEM)
+    retval &= dynamic_cast<Reward_Item*>(d_reward)->save(helper);
+  else if (d_reward->getType() == Reward::RUIN)
+    retval &= dynamic_cast<Reward_Ruin*>(d_reward)->save(helper);
+  else if (d_reward->getType() == Reward::MAP)
+    retval &= dynamic_cast<Reward_Map*>(d_reward)->save(helper);
 
   return retval;
 }
