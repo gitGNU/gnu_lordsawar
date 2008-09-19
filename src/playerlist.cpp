@@ -20,6 +20,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include "config.h"
 #include <sstream>
 #include <algorithm>
 #include <sigc++/functors/mem_fun.h>
@@ -222,7 +223,14 @@ Uint32 Playerlist::getNoOfPlayers() const
 Player* Playerlist::getFirstLiving() const
 {
     for (const_iterator it = begin(); ; it++)
-        if (!(*it)->isDead())
+        if (!(*it)->isDead() && *it != d_neutral)
+            return (*it);
+}
+
+Player* Playerlist::getFirstHuman() const
+{
+    for (const_iterator it = begin(); ; it++)
+        if (!(*it)->isDead() && (*it)->getType() == Player::HUMAN)
             return (*it);
 }
 

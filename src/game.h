@@ -24,6 +24,7 @@
 #include <sigc++/connection.h>
 #include <memory>
 #include <list>
+#include <string>
 
 #include "rectangle.h"
 #include "sidebar-stats.h"
@@ -148,6 +149,7 @@ class Game
     sigc::signal<Army::Stat, Army *> army_gains_level;
     sigc::signal<void, Player *> game_loaded;
     sigc::signal<void, Player *> game_over;
+    sigc::signal<void, std::string, int> next_scenario;
     sigc::signal<void, Player *> player_died;
     
     void addPlayer(Player *p);

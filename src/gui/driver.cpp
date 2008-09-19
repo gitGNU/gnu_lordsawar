@@ -38,6 +38,9 @@
 #include "File.h"
 #include "armysetlist.h"
 #include "playerlist.h"
+#include "player.h"
+#include "stacklist.h"
+#include "citylist.h"
 #include "xmlhelper.h"
 #include "Configuration.h"
 #include "ucompose.hpp"
@@ -511,12 +514,49 @@ void Driver::on_game_ended()
   splash_window->show();
 }
 
+void Driver::on_next_scenario(std::string scenario, int num_heroes)
+{
+  GameClient::deleteInstance();
+  PbmGameClient::deleteInstance();
+  GameServer::deleteInstance();
+  PbmGameServer::deleteInstance();
+
+  GraphicsCache::deleteInstance();
+
+  Player *p = Playerlist::getInstance()->getFirstLiving();
+
+  std::list<Hero*> heroes = p->getStacklist()->getTopHeroes(num_heroes);
+
+  //load the game again
+  GameScenario *game_scenario = load_game(scenario);
+
+
+  Player *player = Playerlist::getInstance()->getFirstHuman();
+  City *c = Citylist::getInstance()->getFirstCity(player);
+
+  for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); it++)
+    {
+      //munge the IDs of those heroes.
+      (*it)->assignNewId();
+      //munge the IDs of the items
+      std::list<Item*> backpack = (*it)->getBackpack();
+      for (std::list<Item*>::iterator i = backpack.begin(), 
+	   end = backpack.end(); i != end; ++i)
+	(*i)->assignNewId();
+      c->addArmy(*it);
+    }
+
+  delete game_scenario;
+}
+
 void Driver::init_game_window()
 {
     game_window.reset(new GameWindow);
 
     game_window->game_ended.connect(
 	sigc::mem_fun(*this, &Driver::on_game_ended));
+    game_window->next_scenario.connect(
+	sigc::mem_fun(*this, &Driver::on_next_scenario));
     game_window->show_lobby.connect(
 	sigc::mem_fun(*this, &Driver::on_show_lobby_requested));
     game_window->quit_requested.connect(

@@ -48,6 +48,8 @@ class UniquelyIdentified
     Uint32 getId() const {return d_id;}
 
     void syncNewId();
+
+    void assignNewId();
         
  protected:
     Uint32 d_id;

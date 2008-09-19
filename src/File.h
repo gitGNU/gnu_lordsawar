@@ -28,7 +28,7 @@
 
 #include "xmlhelper.h"
 
-/** \brief Miscellaneous functions for unified file access
+/** \brief Miscellaneous functions for file access
   * 
   * These functions should be the sole way to access any files. They will
   * automatically prepend the correct directory, extract the correct file etc.
@@ -102,6 +102,9 @@ class File
         // Returns the filename of a music file (description or actual piece)
         static std::string getMusicFile(std::string filename);
         
+        // Returns the filename of a campaign related scenario file 
+        static std::string getCampaignFile(std::string filename);
+
         // get save game path
         static std::string getSavePath();
 
@@ -117,14 +120,6 @@ class File
 	// get the available campaigns
 	static std::list<std::string> scanCampaigns();
 
-    private:
-
-	static std::string get_campaign_from_scenario_file(std::string campaign);
-
-	static std::string getArmysetDir();
-	static std::string getTilesetDir();
-	static std::string getCitysetDir();
-	static std::string getShieldsetDir();
 };
 
 #endif //FILE_H

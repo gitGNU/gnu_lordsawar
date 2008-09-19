@@ -18,6 +18,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include "config.h"
 #include "UniquelyIdentified.h"
 #include "counter.h"
 #include "xmlhelper.h"
@@ -57,3 +58,8 @@ void UniquelyIdentified::syncNewId()
   fl_counter->syncToId(d_id + 1);
 }
 
+void UniquelyIdentified::assignNewId()
+{
+  d_id = fl_counter->getNextId();
+  d_unique = true;
+}

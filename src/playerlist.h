@@ -125,6 +125,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	//! Return the first living Player in the list.
         Player* getFirstLiving() const;
 
+	Player* getFirstHuman() const;
+
 	/** 
 	 * Swap out a player from the list and replace it with a new one.
 	 * Specical care is taken to remove all references to the original

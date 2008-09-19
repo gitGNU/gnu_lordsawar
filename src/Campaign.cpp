@@ -15,6 +15,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include "config.h"
 #include <iostream>
 #include <fstream>
 #include "Campaign.h"
@@ -54,10 +55,15 @@ Campaign::Campaign(XML_Helper* helper)
   helper->getData(d_next_scenario, "next_scenario");
   helper->getData(d_name, "name");
   helper->getData(d_comment, "comment");
+  helper->getData(d_num_heroes, "num_heroes");
 }
 
 Campaign::Campaign()
 {
+  d_next_scenario = "";
+  d_name = "";
+  d_comment = "";
+  d_num_heroes = 0;
 }
 
 Campaign::~Campaign()
@@ -72,6 +78,7 @@ bool Campaign::save(XML_Helper* helper) const
     retval &= helper->saveData("name", d_name);
     retval &= helper->saveData("comment", d_comment);
     retval &= helper->saveData("next_scenario", d_next_scenario);
+    retval &= helper->saveData("num_heroes", d_num_heroes);
     retval &= helper->closeTag();
 
     return retval;

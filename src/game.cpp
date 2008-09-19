@@ -16,7 +16,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <config.h>
+#include "config.h"
 
 #include <algorithm>
 #include <vector>
@@ -66,6 +66,7 @@
 #include "history.h"
 #include "pbm-game-server.h"
 #include "LocationBox.h"
+#include "Campaign.h"
 
 #include "herotemplates.h"
 
@@ -1089,7 +1090,15 @@ void Game::on_player_died(Player *player)
 {
   const Playerlist* pl = Playerlist::getInstance();
   if (pl->getNoOfPlayers() <= 1)
-    game_over.emit(pl->getFirstLiving());
+    {
+      Campaign *campaign = Campaign::getInstance();
+      if (campaign->getNextScenario() != "" &&
+	  pl->getFirstLiving()->getType() == Player::HUMAN)
+	next_scenario.emit(File::getCampaignFile(campaign->getNextScenario()),
+			   campaign->getNumberOfHeroesToCarryOver());
+      else
+	game_over.emit(pl->getFirstLiving());
+    }
   else
     player_died.emit(player);
 }

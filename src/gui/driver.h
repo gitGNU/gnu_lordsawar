@@ -65,6 +65,7 @@ class Driver: public sigc::trackable
     void on_quit_requested();
 
     void on_game_ended();
+    void on_next_scenario(std::string scenario, int num_heroes);
 
     void init_game_window();
 

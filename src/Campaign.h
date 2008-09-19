@@ -19,11 +19,12 @@
 #define CAMPAIGN_H
 
 #include <string>
+#include <sigc++/trackable.h>
 
 #include "xmlhelper.h"
 
 //! Campign information associated with a scenario.
-class Campaign
+class Campaign : public sigc::trackable
 {
     public:
 
@@ -42,6 +43,7 @@ class Campaign
 	std::string getNextScenario() const {return d_next_scenario;};
 	std::string getName() const {return d_name;};
 	std::string getComment() const {return d_comment;};
+	int getNumberOfHeroesToCarryOver() const {return d_num_heroes;};
 
 	static std::string get_campaign_from_scenario_file(std::string campaign);
     protected:
@@ -73,6 +75,7 @@ class Campaign
 	std::string d_next_scenario;
 	std::string d_name;
 	std::string d_comment;
+	int d_num_heroes;
 };
 
 #endif //CAMPAIGN_H

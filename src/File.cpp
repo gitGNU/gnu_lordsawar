@@ -19,7 +19,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <config.h>
+#include "config.h"
 
 #include <iostream>
 #include <algorithm>
@@ -33,9 +33,7 @@
 #include "Campaign.h"
 #include "defs.h"
 
-using namespace std;
-
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
 
 namespace
@@ -49,7 +47,7 @@ namespace
 	for (Glib::Dir::iterator i = dir.begin(), end = dir.end();
 	     i != end; ++i)
 	{
-	    string entry = path + *i;
+	    std::string entry = path + *i;
 	    if (Glib::file_test(entry, Glib::FILE_TEST_IS_DIR))
 		dirlist.push_back(entry);
 	}
@@ -66,9 +64,9 @@ namespace
     
 	for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
 	{
-	    string entry = *i;
-	    string::size_type idx = entry.find(".xml");
-	    if (idx != string::npos)
+	    std::string entry = *i;
+	    std::string::size_type idx = entry.find(".xml");
+	    if (idx != std::string::npos)
 	    {
 		entry.replace(idx, 4, "");  //substitute the ".xml" with ""
 		retlist.push_back(Glib::filename_to_utf8(entry));
@@ -93,6 +91,31 @@ namespace
     }
 }
 
+std::string getArmysetDir()
+{
+  return Configuration::s_dataPath + "/" + ARMYSETDIR + "/";
+}
+
+std::string getTilesetDir()
+{
+  return Configuration::s_dataPath + "/" + TILESETDIR + "/";
+}
+
+std::string getCitysetDir()
+{
+  return Configuration::s_dataPath + "/" + CITYSETDIR + "/";
+}
+
+std::string getShieldsetDir()
+{
+  return Configuration::s_dataPath + "/" + SHIELDSETDIR + "/";
+}
+
+std::string getCampaignDir()
+{
+  return Configuration::s_dataPath + "/" + CAMPAIGNDIR + "/";
+}
+
 std::list<std::string> File::scanArmysets()
 {
     std::list<std::string> retlist = 
@@ -100,71 +123,51 @@ std::list<std::string> File::scanArmysets()
 
     if (retlist.empty())
     {
-        cerr << _("Couldn't find any armysets!") << endl;
-        cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
-        cerr << _("Exiting!") << endl;
-        exit(-1);
+      std::cerr << _("Couldn't find any armysets!") << std::endl;
+      std::cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << std::endl;
+      std::cerr << _("Exiting!") << std::endl;
+      exit(-1);
     }
 
     return retlist;
 }
 
-string File::getArmysetDir()
-{
-  return Configuration::s_dataPath + "/army/";
-}
-
-string File::getTilesetDir()
-{
-  return Configuration::s_dataPath + "/tilesets/";
-}
-
-string File::getCitysetDir()
-{
-  return Configuration::s_dataPath + "/citysets/";
-}
-
-string File::getShieldsetDir()
-{
-  return Configuration::s_dataPath + "/shield/";
-}
-
-string File::getArmyset(string armysetsubdir)
+std::string File::getArmyset(std::string armysetsubdir)
 {
   return getArmysetDir() + armysetsubdir + "/" + armysetsubdir + ".xml";
 }
 
-string File::getTileset(string tilesetsubdir)
+std::string File::getTileset(std::string tilesetsubdir)
 {
   return getTilesetDir() + tilesetsubdir + "/" + tilesetsubdir + ".xml";
 }
 
-std::string File::getTilesetFile(string tilesetsubdir, string picname)
+std::string File::getTilesetFile(std::string tilesetsubdir, std::string picname)
 {
   return getTilesetDir() + tilesetsubdir + "/" + picname;
 }
 
-std::string File::getShieldsetFile(string shieldsetsubdir, string picname)
+std::string File::getShieldsetFile(std::string shieldsetsubdir, std::string picname)
 {
   return getShieldsetDir() + shieldsetsubdir + "/" + picname;
 }
 
-string File::getMiscFile(string filename)
+std::string File::getMiscFile(std::string filename)
 {
   return Configuration::s_dataPath + "/" + filename;
 }
 
-string File::getCityset(string citysetdir)
+std::string File::getCityset(std::string citysetdir)
 {
   return getCitysetDir() + citysetdir + "/" + citysetdir + ".xml";
 }
 
-std::string File::getCitysetFile(string citysetsubdir, string picname)
+std::string File::getCitysetFile(std::string citysetsubdir, std::string picname)
 {
   return getCitysetDir() + citysetsubdir + "/" + picname;
 }
 
-string File::getItemDescription()
+std::string File::getItemDescription()
 {
   return Configuration::s_dataPath + "/various/items/items.xml";
 }
@@ -179,54 +182,59 @@ std::string File::getMusicFile(std::string filename)
   return std::string(Configuration::s_dataPath + "/music/" + filename.c_str());
 }
 
-string File::getSavePath()
+std::string File::getCampaignFile(std::string filename)
+{
+  return getCampaignDir() + "/" + filename;
+}
+
+std::string File::getSavePath()
 {
     return Configuration::s_savePath + "/";
 }
 
-list<string> File::scanTilesets()
+std::list<std::string> File::scanTilesets()
 {
     std::list<std::string> retlist = 
       get_xml_files_in_immediate_subdirs(getTilesetDir());
     
     if (retlist.empty())
     {
-        cerr << _("Couldn't find any tilesets!") << endl;
-        cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
-        cerr << _("Exiting!") << endl;
-        exit(-1);
+      std::cerr << _("Couldn't find any tilesets!") << std::endl;
+      std::cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << std::endl;
+      std::cerr << _("Exiting!") << std::endl;
+      exit(-1);
     }
     
     return retlist;
 }
 
-list<string> File::scanCitysets()
+std::list<std::string> File::scanCitysets()
 {
     std::list<std::string> retlist = 
       get_xml_files_in_immediate_subdirs(getCitysetDir());
     
     if (retlist.empty())
     {
-        cerr << _("Couldn't find any citysets!") << endl;
-        cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
-        cerr << _("Exiting!") << endl;
+      std::cerr << _("Couldn't find any citysets!") << std::endl;
+      std::cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << std::endl;
+      std::cerr << _("Exiting!") << std::endl;
         exit(-1);
     }
     
     return retlist;
 }
 
-list<string> File::scanCampaigns()
+std::list<std::string> File::scanCampaigns()
 {
-    string path = Configuration::s_dataPath + "/campaign/";
+    std::string path = getCampaignDir();
     std::list<std::string> retlist;
     Glib::Dir dir(path);
     
     for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
     {
-	string entry = *i;
-	string::size_type idx = entry.find(".map");
-	if (idx != string::npos)
+        std::string entry = *i;
+	std::string::size_type idx = entry.find(".map");
+	if (idx != std::string::npos)
 	{
 	    retlist.push_back(Glib::filename_to_utf8(entry));
 	}
@@ -234,8 +242,8 @@ list<string> File::scanCampaigns()
     
     if (retlist.empty())
     {
-        cerr << _("Couldn't find a single campaign!") << endl;
-        cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
+      std::cerr << _("Couldn't find a single campaign!") << std::endl;
+      std::cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << std::endl;
     }
 
     //now we find the ones that are pointed to, and remove them
@@ -254,18 +262,18 @@ list<string> File::scanCampaigns()
     return retlist;
 }
 
-list<string> File::scanMaps()
+std::list<std::string> File::scanMaps()
 {
-    string path = Configuration::s_dataPath + "/map/";
+  std::string path = Configuration::s_dataPath + "/" + MAPDIR + "/";
     
     std::list<std::string> retlist;
     Glib::Dir dir(path);
     
     for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
     {
-	string entry = *i;
-	string::size_type idx = entry.find(".map");
-	if (idx != string::npos)
+      std::string entry = *i;
+      std::string::size_type idx = entry.find(".map");
+      if (idx != std::string::npos)
 	{
 	    retlist.push_back(Glib::filename_to_utf8(entry));
 	}
@@ -273,8 +281,8 @@ list<string> File::scanMaps()
     
     if (retlist.empty())
     {
-        cerr << _("Couldn't find a single map!") << endl;
-        cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
+      std::cerr << _("Couldn't find a single map!") << std::endl;
+      std::cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << std::endl;
     }
 
     return retlist;
@@ -287,16 +295,16 @@ std::list<std::string> File::scanShieldsets()
 
     if (retlist.empty())
     {
-        cerr << _("Couldn't find any shieldsets!") << endl;
-        cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << endl;
-        cerr << _("Exiting!") << endl;
-        exit(-1);
+      std::cerr << _("Couldn't find any shieldsets!") << std::endl;
+      std::cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << std::endl;
+      std::cerr << _("Exiting!") << std::endl;
+      exit(-1);
     }
 
     return retlist;
 }
 
-string File::getShieldset(string shieldsetsubdir)
+std::string File::getShieldset(std::string shieldsetsubdir)
 {
   return getShieldsetDir() + shieldsetsubdir + "/" + shieldsetsubdir + ".xml";
 }

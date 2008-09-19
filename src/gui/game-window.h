@@ -99,6 +99,9 @@ class GameWindow: public Decorated
     // emitted when the game has ended and it is time to show the splash again
     sigc::signal<void> game_ended;
     
+    // emitted when we're in a campaign, and we want to go to the next scenario
+    sigc::signal<void, std::string, int> next_scenario;
+    
     sigc::signal<void> show_lobby;
 
     sigc::signal<void> quit_requested;
@@ -283,6 +286,7 @@ class GameWindow: public Decorated
     Army::Stat on_army_gains_level(Army *army);
     void on_game_loaded(Player *player);
     void on_game_over(Player *winner);
+    void on_next_scenario(std::string scenario, int num_heroes);
     void on_player_died(Player *player);
     void on_advice_asked(float percent);
     void end_turn_play_by_mail ();

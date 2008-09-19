@@ -25,6 +25,7 @@
 
 #include <list>
 #include <vector>
+#include <string>
 #include <sigc++/trackable.h>
 #include <SDL_types.h>
 #include "vector.h"
@@ -229,7 +230,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 
 	void collectTaxes(Player *p, Uint32 num_cities);
 
-	std::list<Hero*> getTopHeroes(unsigned int num);
+	std::list<Hero*> getTopHeroes(int num);
     private:
         //! Callback function for loading.
         bool load(std::string tag, XML_Helper* helper);

@@ -20,6 +20,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include "config.h"
 #include <sigc++/functors/mem_fun.h>
 #include <assert.h>
 #include <algorithm>
@@ -369,7 +370,7 @@ Stack* Stacklist::getOwnObjectAt(int x, int y)
   return 0;
 }
 
-std::list<Hero*> Stacklist::getTopHeroes(unsigned int num)
+std::list<Hero*> Stacklist::getTopHeroes(int num)
 {
   std::list<Hero*> result;
   std::vector<Uint32> hero_ids;
@@ -393,7 +394,7 @@ std::list<Hero*> Stacklist::getTopHeroes(unsigned int num)
   //now we yank out the top NUM heroes and put them in our list.
   if (num == -1)
     num = hero_ids.size();
-  for (unsigned int i = 0 ; i < num; i++)
+  for (int i = 0 ; i < num; i++)
     {
       Hero *hero = dynamic_cast<Hero*>(stack->getStrongestHero());
       if (hero)

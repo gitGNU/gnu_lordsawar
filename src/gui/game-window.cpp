@@ -720,6 +720,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
     (game->game_over.connect
      (sigc::mem_fun(*this, &GameWindow::on_game_over)));
   connections.push_back
+    (game->next_scenario.connect
+     (sigc::mem_fun(*this, &GameWindow::on_next_scenario)));
+  connections.push_back
     (game->player_died.connect
      (sigc::mem_fun(*this, &GameWindow::on_player_died)));
   connections.push_back
@@ -1472,6 +1475,13 @@ void GameWindow::stop_game()
       game.reset();
       current_save_filename = "";
     }
+}
+
+void GameWindow::on_next_scenario(std::string scenario, int num_heroes)
+{
+  stop_game();
+  //fixme: show a message here.  we won, but there's another scenario to go
+  next_scenario.emit(scenario, num_heroes);
 }
 
 void GameWindow::on_game_over(Player *winner)
