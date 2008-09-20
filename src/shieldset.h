@@ -51,6 +51,9 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 {
     public:
 
+	//! The xml tag of this object in a shieldset configuration file.
+	static std::string d_tag; 
+
 	//! Load a Shieldset from a shieldset configuration file.
 	/**
 	 * Make a new Shieldset object by reading it in from the shieldset

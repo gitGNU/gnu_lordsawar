@@ -33,6 +33,9 @@
 class VectoredUnit: public Ownable, public LocationBox, public sigc::trackable
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
 	//! Default constructor.
         /** 
 	 * Make a new vectored unit.

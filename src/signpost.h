@@ -34,6 +34,9 @@
 class Signpost: public Location, public Renamable
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
 	//! Default constructor.
         /**
          * @param pos          The location of the signpost on the game map.

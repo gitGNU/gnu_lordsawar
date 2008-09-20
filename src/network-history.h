@@ -24,6 +24,9 @@
 class NetworkHistory: public Ownable
 {
 public:
+    //! The xml tag of this object in a network stream.
+    static std::string d_tag; 
+
      //! Default constructor.
      NetworkHistory(History *history, Player *owner);
 

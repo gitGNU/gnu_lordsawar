@@ -18,6 +18,8 @@
 #include "road.h"
 #include "GameMap.h"
 
+std::string Road::d_tag = "road";
+
 Road::Road(Vector<int> pos, int type)
   :Location(pos), d_type(type)
 {
@@ -49,7 +51,7 @@ bool Road::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("road");
+    retval &= helper->openTag(Road::d_tag);
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);

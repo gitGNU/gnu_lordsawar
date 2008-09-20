@@ -36,6 +36,9 @@ class XML_Helper;
 class Rewardlist : public std::list<Reward*>, public sigc::trackable
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
         //! Returns the singleton instance. Creates a new one if required.
         static Rewardlist* getInstance();
 

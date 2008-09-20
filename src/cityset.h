@@ -40,6 +40,9 @@ class XML_Helper;
 class Cityset : public sigc::trackable
 {
     public:
+	//! The xml tag of this object in a cityset configuration file.
+	static std::string d_tag; 
+
 	//! Default constructor.
 	/**
 	 * Make a new Cityset object by reading it in from the cityset

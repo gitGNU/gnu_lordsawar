@@ -42,6 +42,8 @@
 #include "citysetlist.h"
 #include "GraphicsCache.h"
 
+std::string GameMap::d_tag = "map";
+std::string GameMap::d_itemstack_tag = "itemstack";
 using namespace std;
 
 //#include <iostream>
@@ -183,8 +185,9 @@ GameMap::GameMap(XML_Helper* helper)
     }
 
     //add some callbacks for item loading
-    helper->registerTag("itemstack", sigc::mem_fun(this, &GameMap::loadItems));
-    helper->registerTag("item", sigc::mem_fun(this, &GameMap::loadItems));
+    helper->registerTag(GameMap::d_itemstack_tag, 
+			sigc::mem_fun(this, &GameMap::loadItems));
+    helper->registerTag(Item::d_tag, sigc::mem_fun(this, &GameMap::loadItems));
 }
 
 
@@ -276,7 +279,7 @@ bool GameMap::save(XML_Helper* helper) const
     }
 
 
-    retval &= helper->openTag("map");
+    retval &= helper->openTag(GameMap::d_tag);
     retval &= helper->saveData("width", s_width);
     retval &= helper->saveData("height", s_height);
     retval &= helper->saveData("tileset", d_tileSet->getSubDir());
@@ -290,7 +293,7 @@ bool GameMap::save(XML_Helper* helper) const
         for (int j = 0; j < s_height; j++)
             if (!getTile(i,j)->getItems().empty())
             {
-                retval &= helper->openTag("itemstack");
+                retval &= helper->openTag(GameMap::d_itemstack_tag);
                 retval &= helper->saveData("x", i);
                 retval &= helper->saveData("y", j);
                 
@@ -312,13 +315,13 @@ bool GameMap::loadItems(std::string tag, XML_Helper* helper)
     static int x = 0;
     static int y = 0;
     
-    if (tag == "itemstack")
+    if (tag == GameMap::d_itemstack_tag)
     {
         helper->getData(x, "x");
         helper->getData(y, "y");
     }
 
-    if (tag == "item")
+    if (tag == Item::d_tag)
     {
         Item* item = new Item(helper);
         getTile(x, y)->addItem(item);

@@ -45,6 +45,9 @@ class City;
 class History
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
 	//! A History can be one of the following kinds.
         enum Type {
 	  //! The player started a turn.

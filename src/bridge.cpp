@@ -18,6 +18,8 @@
 #include "bridge.h"
 #include "GameMap.h"
 
+std::string Bridge::d_tag = "bridge";
+
 Bridge::Bridge(Vector<int> pos, int type)
   :Location(pos), d_type(type)
 {
@@ -49,7 +51,7 @@ bool Bridge::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("bridge");
+    retval &= helper->openTag(Bridge::d_tag);
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);

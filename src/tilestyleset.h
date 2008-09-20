@@ -39,6 +39,9 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 {
     public:
 
+	//! The xml tag of this object in a tileset configuration file.
+	static std::string d_tag; 
+
 	//! The default constructor.
         TileStyleSet();
 

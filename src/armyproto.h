@@ -31,6 +31,8 @@ class XML_Helper;
 class ArmyProto : public ArmyProtoBase
 {
     public:
+	//! The xml tag of this object in an armyset configuration file.
+	static std::string d_tag; 
 
 	//! Copy constructor.
         ArmyProto(const ArmyProto& armyproto);

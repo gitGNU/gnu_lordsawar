@@ -59,6 +59,9 @@ class XML_Helper;
 class Action
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
 	//! An Action can be one of the following kinds.
         enum Type {
 	        /** A stack has moved. */

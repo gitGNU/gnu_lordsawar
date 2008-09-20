@@ -115,6 +115,11 @@ class Item;
 class Player: public sigc::trackable
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+	//! The xml tag of the triumphs subobject in a saved-game file.
+	static std::string d_triumphs_tag; 
+
         //! The available player types.
         enum Type {
 	  //! Local human player.  See the RealPlayer class.

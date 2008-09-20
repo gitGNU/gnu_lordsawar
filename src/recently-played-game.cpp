@@ -24,6 +24,8 @@
 #include "citylist.h"
 #include "xmlhelper.h"
 
+std::string RecentlyPlayedGame::d_tag = "recentlyplayedgame";
+
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
@@ -93,7 +95,7 @@ RecentlyPlayedGame* RecentlyPlayedGame::handle_load(XML_Helper *helper)
 bool RecentlyPlayedGame::save(XML_Helper* helper) const
 {
   bool retval = true;
-  retval &= helper->openTag("recentlyplayedgame");
+  retval &= helper->openTag(RecentlyPlayedGame::d_tag);
   retval &= saveContents(helper);
   retval &= helper->closeTag();
   return retval;

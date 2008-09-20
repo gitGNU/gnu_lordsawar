@@ -24,6 +24,7 @@
 #include "heroproto.h"
 #include "city.h"
 
+std::string History::d_tag = "history";
 using namespace std;
 
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<< x << endl<<flush;}
@@ -176,7 +177,7 @@ bool History::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("history");
+    retval &= helper->openTag(History::d_tag);
     retval &= saveContents(helper);
     retval &= helper->closeTag();
 

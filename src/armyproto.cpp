@@ -27,6 +27,7 @@
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
+std::string ArmyProto::d_tag = "armyproto";
 
 ArmyProto::ArmyProto(const ArmyProto& a)
     :ArmyProtoBase(a),
@@ -64,7 +65,7 @@ bool ArmyProto::save(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("armyproto");
+  retval &= helper->openTag(d_tag);
 
   retval &= saveData(helper);
 

@@ -95,8 +95,8 @@ void GameClientDecoder::gotActions(const std::string &payload)
   ActionLoader loader;
   
   XML_Helper helper(&is);
-  helper.registerTag("action", sigc::mem_fun(loader, &ActionLoader::loadAction));
-  helper.registerTag("networkaction", sigc::mem_fun(loader, &ActionLoader::loadAction));
+  helper.registerTag(Action::d_tag, sigc::mem_fun(loader, &ActionLoader::loadAction));
+  helper.registerTag(NetworkAction::d_tag, sigc::mem_fun(loader, &ActionLoader::loadAction));
   helper.parse();
 
   decodeActions(loader.actions, Playerlist::getActiveplayer());
@@ -134,8 +134,8 @@ void GameClientDecoder::gotHistories(const std::string &payload)
   HistoryLoader loader;
   
   XML_Helper helper(&is);
-  helper.registerTag("history", sigc::mem_fun(loader, &HistoryLoader::loadHistory));
-  helper.registerTag("networkhistory", sigc::mem_fun(loader, &HistoryLoader::loadHistory));
+  helper.registerTag(History::d_tag, sigc::mem_fun(loader, &HistoryLoader::loadHistory));
+  helper.registerTag(NetworkHistory::d_tag, sigc::mem_fun(loader, &HistoryLoader::loadHistory));
   helper.parse();
 
   decodeHistories(loader.histories);

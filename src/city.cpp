@@ -39,6 +39,9 @@
 #include "vectoredunit.h"
 #include "action.h"
 
+std::string City::d_tag = "city";
+std::string City::d_slot_tag = "slot";
+
 using namespace std;
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -145,7 +148,7 @@ bool City::save(XML_Helper* helper) const
 
     svect << d_vector.x << " " << d_vector.y;
 
-    retval &= helper->openTag("city");
+    retval &= helper->openTag(City::d_tag);
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);
@@ -164,7 +167,7 @@ bool City::save(XML_Helper* helper) const
 
     for (int i = 0; i < d_numprodbase; i++)
       {
-	retval &= helper->openTag("slot");
+	retval &= helper->openTag(City::d_slot_tag);
 	if (d_prodbase[i])
 	  retval &= d_prodbase[i]->save(helper);
 	retval &= helper->closeTag();

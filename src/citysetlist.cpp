@@ -82,7 +82,7 @@ std::list<std::string> Citysetlist::getNames()
 
 bool Citysetlist::load(std::string tag, XML_Helper *helper)
 {
-  if (tag == "cityset")
+  if (tag == Cityset::d_tag)
     {
       Cityset *cityset = new Cityset(helper);
       push_back(cityset); 
@@ -96,7 +96,7 @@ bool Citysetlist::loadCityset(std::string name)
 
   XML_Helper helper(File::getCityset(name), ios::in, false);
 
-  helper.registerTag("cityset", sigc::mem_fun((*this), &Citysetlist::load));
+  helper.registerTag(Cityset::d_tag, sigc::mem_fun((*this), &Citysetlist::load));
 
   if (!helper.parse())
     {

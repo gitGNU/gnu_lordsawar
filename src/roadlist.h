@@ -31,6 +31,9 @@
 class Roadlist : public LocationList<Road>, public sigc::trackable
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
         //! Return the singleton instance.  Create a new one if needed.
         static Roadlist* getInstance();
 

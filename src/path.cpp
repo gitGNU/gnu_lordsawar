@@ -34,6 +34,8 @@
 #include "xmlhelper.h"
 #include "stack.h"
 
+std::string Path::d_tag = "path";
+
 using namespace std;
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -84,7 +86,7 @@ bool Path::save(XML_Helper* helper) const
         sy <<(*it)->y <<" ";
     }
 
-    retval &= helper->openTag("path");
+    retval &= helper->openTag(Path::d_tag);
     retval &= helper->saveData("size", size());
     retval &= helper->saveData("moves_exhausted_at_point", 
                                d_moves_exhausted_at_point);

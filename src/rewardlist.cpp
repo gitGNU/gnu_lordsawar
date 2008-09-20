@@ -22,6 +22,8 @@
 #include "reward.h"
 #include "xmlhelper.h"
 
+std::string Rewardlist::d_tag = "rewardlist";
+
 using namespace std;
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -78,8 +80,8 @@ Rewardlist::Rewardlist(Rewardlist *rewardlist)
 
 Rewardlist::Rewardlist(XML_Helper* helper)
 {
-  helper->registerTag("reward", sigc::mem_fun((*this), &Rewardlist::load));
-  load("rewardlist", helper);
+  helper->registerTag(Reward::d_tag, sigc::mem_fun((*this), &Rewardlist::load));
+  load(Rewardlist::d_tag, helper);
 }
 
 Rewardlist::~Rewardlist()
@@ -119,7 +121,7 @@ bool Rewardlist::save(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("rewardlist");
+  retval &= helper->openTag(Rewardlist::d_tag);
 
   //save rewards
   for (const_iterator it = begin(); it != end(); it++)
@@ -143,7 +145,7 @@ bool Rewardlist::save(XML_Helper* helper) const
 
 bool Rewardlist::load(string tag, XML_Helper* helper)
 {
-  if (tag == "reward")
+  if (tag == Reward::d_tag)
     {
       Reward *s = Reward::handle_load(helper);
       push_back(s);

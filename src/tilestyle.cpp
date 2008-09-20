@@ -20,6 +20,7 @@
 #include "tilestyle.h"
 #include "defs.h"
 
+std::string TileStyle::d_tag = "tilestyle";
 using namespace std;
 
 TileStyle::TileStyle()
@@ -52,7 +53,7 @@ bool TileStyle::save(XML_Helper *helper)
   bool retval = true;
 
   char *idstr = NULL;
-  retval &= helper->openTag("tilestyle");
+  retval &= helper->openTag(d_tag);
   if (asprintf (&idstr, "0x%02x", d_id) != -1)
     {
       retval &= helper->saveData("id", idstr);

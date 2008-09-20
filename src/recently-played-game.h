@@ -35,6 +35,9 @@ class RecentlyPlayedGame
 {
     public:
 
+	//! The xml tag of this object in a recently played game file.
+	static std::string d_tag; 
+
 	//! Loading constructor.
         /**
 	 * Make a new recently played game object by reading it in from an 

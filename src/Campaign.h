@@ -28,6 +28,9 @@ class Campaign : public sigc::trackable
 {
     public:
 
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
         //! Returns the singleton instance.
 	static Campaign* getInstance();
 
@@ -59,7 +62,7 @@ class Campaign : public sigc::trackable
   public:
       bool loadNextScenarioName(std::string tag, XML_Helper* helper)
 	{
-	  if (tag == "campaign")
+	  if (tag == Campaign::d_tag)
 	    {
 	      helper->getData(d_next_campaign, "next_campaign");
 	      return true;

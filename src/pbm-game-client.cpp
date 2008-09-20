@@ -64,10 +64,10 @@ bool PbmGameClient::loadWithHelper(XML_Helper &helper, Player *p)
   ActionLoader actionloader;
   HistoryLoader historyloader;
   bool broken = false;
-  helper.registerTag("networkaction", sigc::mem_fun(actionloader, &ActionLoader::loadAction));
-  helper.registerTag("action", sigc::mem_fun(actionloader, &ActionLoader::loadAction));
-  helper.registerTag("networkhistory", sigc::mem_fun(historyloader, &HistoryLoader::loadHistory));
-  helper.registerTag("history", sigc::mem_fun(historyloader, &HistoryLoader::loadHistory));
+  helper.registerTag(NetworkAction::d_tag, sigc::mem_fun(actionloader, &ActionLoader::loadAction));
+  helper.registerTag(Action::d_tag, sigc::mem_fun(actionloader, &ActionLoader::loadAction));
+  helper.registerTag(NetworkHistory::d_tag, sigc::mem_fun(historyloader, &HistoryLoader::loadHistory));
+  helper.registerTag(History::d_tag, sigc::mem_fun(historyloader, &HistoryLoader::loadHistory));
   if (!helper.parse())
     broken = true;
 

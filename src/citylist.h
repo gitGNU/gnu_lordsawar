@@ -37,6 +37,9 @@ class Player;
 class Citylist : public LocationList<City>, public sigc::trackable
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
         //! Returns the singleton instance.  Creates a new one if neccessary.
         static Citylist* getInstance();
 

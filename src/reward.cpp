@@ -30,6 +30,10 @@
 #include "GameMap.h"
 #include "ruin.h"
 #include "ucompose.hpp"
+
+std::string Reward::d_tag = "reward";
+std::string Reward::d_map_tag = "map";
+
 using namespace std;
 
 Reward::Reward(Type type, std::string name)
@@ -97,7 +101,7 @@ Reward_Gold::Reward_Gold (const Reward_Gold & orig)
 bool Reward_Gold::save(XML_Helper* helper)
 {
   bool retval = true;
-  retval &= helper->openTag("reward");
+  retval &= helper->openTag(Reward::d_tag);
   std::string type_str = rewardTypeToString(Reward::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("name", d_name);
@@ -151,7 +155,7 @@ Reward_Allies::Reward_Allies (const Reward_Allies& orig)
 bool Reward_Allies::save(XML_Helper* helper)
 {
   bool retval = true;
-  retval &= helper->openTag("reward");
+  retval &= helper->openTag(Reward::d_tag);
   std::string type_str = rewardTypeToString(Reward::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("name", d_name);
@@ -225,7 +229,7 @@ Reward_Item::Reward_Item(Item *item)
 
 bool Reward_Item::loadItem(std::string tag, XML_Helper* helper)
 {
-  if (tag == "item")
+  if (tag == Item::d_tag)
     {
       d_item = new Item(helper);
       return true;
@@ -237,7 +241,7 @@ bool Reward_Item::loadItem(std::string tag, XML_Helper* helper)
 Reward_Item::Reward_Item(XML_Helper* helper)
     :Reward(helper)
 {
-  helper->registerTag("item", sigc::mem_fun(this, &Reward_Item::loadItem));
+  helper->registerTag(Item::d_tag, sigc::mem_fun(this, &Reward_Item::loadItem));
 }
 
 Reward_Item::Reward_Item (const Reward_Item& orig)
@@ -248,7 +252,7 @@ Reward_Item::Reward_Item (const Reward_Item& orig)
 bool Reward_Item::save(XML_Helper* helper)
 {
   bool retval = true;
-  retval &= helper->openTag("reward");
+  retval &= helper->openTag(Reward::d_tag);
   std::string type_str = rewardTypeToString(Reward::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("name", d_name);
@@ -294,7 +298,7 @@ Reward_Ruin::Reward_Ruin (const Reward_Ruin& orig)
 bool Reward_Ruin::save(XML_Helper* helper)
 {
   bool retval = true;
-  retval &= helper->openTag("reward");
+  retval &= helper->openTag(Reward::d_tag);
   std::string type_str = rewardTypeToString(Reward::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("name", d_name);
@@ -355,7 +359,7 @@ Reward_Map::Reward_Map(Vector<int> pos, std::string name,
 
 bool Reward_Map::loadMap(std::string tag, XML_Helper* helper)
 {
-  if (tag == "map")
+  if (tag == Reward::d_map_tag)
     {
       d_loc = new LocationBox(helper);
       helper->getData(d_height, "height");
@@ -370,7 +374,7 @@ bool Reward_Map::loadMap(std::string tag, XML_Helper* helper)
 Reward_Map::Reward_Map(XML_Helper* helper)
     :Reward(helper)
 {
-  helper->registerTag("map", sigc::mem_fun(this, &Reward_Map::loadMap));
+  helper->registerTag(d_map_tag, sigc::mem_fun(this, &Reward_Map::loadMap));
 }
 
 Reward_Map::Reward_Map (const Reward_Map& orig)
@@ -384,11 +388,11 @@ Reward_Map::Reward_Map (const Reward_Map& orig)
 bool Reward_Map::save(XML_Helper* helper)
 {
   bool retval = true;
-  retval &= helper->openTag("reward");
+  retval &= helper->openTag(Reward::d_tag);
   std::string type_str = rewardTypeToString(Reward::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("name", d_name);
-  retval &= helper->openTag("map");
+  retval &= helper->openTag(Reward::d_map_tag);
   retval &= helper->saveData("x", d_loc->getPos().x);
   retval &= helper->saveData("y", d_loc->getPos().y);
   retval &= helper->saveData("map_name", d_map_name);

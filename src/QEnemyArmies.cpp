@@ -107,7 +107,7 @@ bool QuestEnemyArmies::save(XML_Helper *helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("quest");
+    retval &= helper->openTag(Quest::d_tag);
     retval &= Quest::save(helper);
     retval &= helper->saveData("to_kill", d_to_kill);
     retval &= helper->saveData("killed",  d_killed);

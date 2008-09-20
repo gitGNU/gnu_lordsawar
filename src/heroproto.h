@@ -32,6 +32,9 @@ class HeroProto : public ArmyProto
 {
     public:
 
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
 	//! Copy constructor.
         HeroProto(const HeroProto& heroproto);
 

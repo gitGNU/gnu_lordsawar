@@ -66,6 +66,8 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 #define debug(x)
 
+std::string Player::d_tag = "player";
+std::string Player::d_triumphs_tag = "triumphs";
 
 // signal
 sigc::signal<void, Player::Type> sendingTurn;
@@ -222,11 +224,11 @@ Player::Player(XML_Helper* helper)
 	    d_diplomatic_score[i] = val;
     }
 
-    helper->registerTag("action", sigc::mem_fun(this, &Player::load));
-    helper->registerTag("history", sigc::mem_fun(this, &Player::load));
-    helper->registerTag("stacklist", sigc::mem_fun(this, &Player::load));
-    helper->registerTag("fogmap", sigc::mem_fun(this, &Player::load));
-    helper->registerTag("triumphs", sigc::mem_fun(this, &Player::load));
+    helper->registerTag(Action::d_tag, sigc::mem_fun(this, &Player::load));
+    helper->registerTag(History::d_tag, sigc::mem_fun(this, &Player::load));
+    helper->registerTag(Stacklist::d_tag, sigc::mem_fun(this, &Player::load));
+    helper->registerTag(FogMap::d_tag, sigc::mem_fun(this, &Player::load));
+    helper->registerTag(d_triumphs_tag, sigc::mem_fun(this, &Player::load));
 
 }
 
@@ -531,7 +533,7 @@ bool Player::save(XML_Helper* helper) const
 
     //save the triumphs
 	    
-    helper->openTag("triumphs");
+    helper->openTag(Player::d_triumphs_tag);
     for (unsigned int i = 0; i < 5; i++)
       {
 	std::stringstream tally;
@@ -587,26 +589,26 @@ Player* Player::loadPlayer(XML_Helper* helper)
 
 bool Player::load(string tag, XML_Helper* helper)
 {
-    if (tag == "action")
+    if (tag == Action::d_tag)
     {
         Action* action;
         action = Action::handle_load(helper);
         d_actions.push_back(action);
     }
-    if (tag == "history")
+    if (tag == History::d_tag)
     {
         History* history;
         history = History::handle_load(helper);
         d_history.push_back(history);
     }
 
-    if (tag == "stacklist")
+    if (tag == Stacklist::d_tag)
         d_stacklist = new Stacklist(helper);
 
-    if (tag == "fogmap")
+    if (tag == FogMap::d_tag)
         d_fogmap = new FogMap(helper);
 
-    if (tag == "triumphs")
+    if (tag == Player::d_triumphs_tag)
       {
 	for (unsigned int i = 0; i < 5; i++)
 	  {

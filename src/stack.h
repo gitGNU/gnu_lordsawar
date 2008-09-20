@@ -52,6 +52,9 @@ class Temple;
 class Stack : public ::UniquelyIdentified, public Movable, public Ownable, public std::list<Army*>, public sigc::trackable
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
         /** 
 	 * Make a new stack.
          * 

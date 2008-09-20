@@ -27,6 +27,8 @@
 #include "xmlhelper.h"
 #include "armysetlist.h"
 
+std::string ArmyProdBase::d_tag = "armyprodbase";
+
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
@@ -55,7 +57,7 @@ bool ArmyProdBase::save(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("armyprodbase");
+  retval &= helper->openTag(ArmyProdBase::d_tag);
 
   ArmyProtoBase::saveData(helper);
 

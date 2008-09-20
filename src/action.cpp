@@ -43,6 +43,7 @@
 #include "armyprodbase.h"
 #include "heroproto.h"
 
+std::string Action::d_tag = "action";
 using namespace std;
 
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<< x << endl<<flush;}
@@ -73,7 +74,7 @@ bool Action::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("action");
+    retval &= helper->openTag(Action::d_tag);
     retval &= saveContents(helper);
     retval &= helper->closeTag();
 
@@ -446,7 +447,7 @@ Action_Fight::Action_Fight(XML_Helper* helper)
     std::istringstream si;
     Uint32 ui;
 
-    helper->registerTag("item", sigc::mem_fun(this, &Action_Fight::loadItem));
+    helper->registerTag(Item::d_tag, sigc::mem_fun(this, &Action_Fight::loadItem));
 
     // get attacking and defending stacks
     helper->getData(s, "attackers");
@@ -501,7 +502,7 @@ bool Action_Fight::doSave(XML_Helper* helper) const
     for (std::list<FightItem>::const_iterator fit = d_history.begin(); 
             fit != d_history.end(); fit++)
     {
-        retval &= helper->openTag("item");
+        retval &= helper->openTag(Item::d_tag);
         retval &= helper->saveData("turn", (*fit).turn);
         retval &= helper->saveData("id", (*fit).id);
         retval &= helper->saveData("damage", (*fit).damage);
@@ -1061,7 +1062,7 @@ Action_Reward::Action_Reward()
 
 bool Action_Reward::load(std::string tag, XML_Helper *helper)
 {
-    if (tag == "reward")
+    if (tag == Reward::d_tag)
       {
 	Uint32 t;
 	std::string type_str;
@@ -1096,7 +1097,7 @@ Action_Reward::Action_Reward(XML_Helper* helper)
 :Action(helper)
 {
   helper->getData(d_stack, "stack");
-  helper->registerTag("reward", sigc::mem_fun(this, &Action_Reward::load));
+  helper->registerTag(Reward::d_tag, sigc::mem_fun(this, &Action_Reward::load));
 }
 
 Action_Reward::~Action_Reward()
@@ -1726,12 +1727,12 @@ Action_Produce::Action_Produce(XML_Helper* helper)
 {
   helper->getData(d_city, "city");
   helper->getData(d_vectored, "vectored");
-  helper->registerTag("armyprodbase", sigc::mem_fun(this, &Action_Produce::load));
+  helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &Action_Produce::load));
 }
 
 bool Action_Produce::load(std::string tag, XML_Helper *helper)
 {
-    if (tag == "armyprodbase")
+    if (tag == ArmyProdBase::d_tag)
       {
 	d_army = new ArmyProdBase(helper);
 
@@ -1808,12 +1809,12 @@ Action_ProduceVectored::Action_ProduceVectored(XML_Helper* helper)
   d_src.x = i;
   helper->getData(i, "src_y");
   d_src.y = i;
-  helper->registerTag("armyprodbase", sigc::mem_fun(this, &Action_ProduceVectored::load));
+  helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &Action_ProduceVectored::load));
 }
 
 bool Action_ProduceVectored::load(std::string tag, XML_Helper *helper)
 {
-    if (tag == "armyprodbase")
+    if (tag == ArmyProdBase::d_tag)
       {
 	d_army = new ArmyProdBase(helper);
 
@@ -2134,7 +2135,7 @@ Action_RecruitHero::Action_RecruitHero(XML_Helper* helper)
     helper->getData(d_cost, "cost");
     helper->getData(d_allies, "allies");
     helper->getData(d_ally_army_type, "ally_army_type");
-    helper->registerTag("heroproto", sigc::mem_fun(this, &Action_RecruitHero::load));
+    helper->registerTag(HeroProto::d_tag, sigc::mem_fun(this, &Action_RecruitHero::load));
 }
 
 Action_RecruitHero::Action_RecruitHero(const Action_RecruitHero &action)
@@ -2146,7 +2147,7 @@ Action_RecruitHero::Action_RecruitHero(const Action_RecruitHero &action)
 
 bool Action_RecruitHero::load(std::string tag, XML_Helper *helper)
 {
-    if (tag == "heroproto")
+    if (tag == HeroProto::d_tag)
       {
 	d_hero = new HeroProto(helper);
 

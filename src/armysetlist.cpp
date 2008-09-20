@@ -160,7 +160,7 @@ std::vector<Uint32> Armysetlist::getArmysets() const
 
 bool Armysetlist::load(std::string tag, XML_Helper *helper)
 {
-  if (tag == "armyset")
+  if (tag == Armyset::d_tag)
     {
       Armyset *armyset = new Armyset(helper);
       push_back(armyset); 
@@ -175,7 +175,7 @@ bool Armysetlist::loadArmyset(std::string name)
 
   XML_Helper helper(File::getArmyset(name), ios::in, false);
 
-  helper.registerTag("armyset", sigc::mem_fun((*this), &Armysetlist::load));
+  helper.registerTag(Armyset::d_tag, sigc::mem_fun((*this), &Armysetlist::load));
 
   if (!helper.parse())
     {

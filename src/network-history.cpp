@@ -21,6 +21,7 @@
 
 #include "xmlhelper.h"
 
+std::string NetworkHistory::d_tag = "networkhistory";
 
 NetworkHistory::NetworkHistory(History *history, Player *owner)
      : Ownable(owner)
@@ -41,7 +42,7 @@ NetworkHistory::~NetworkHistory()
 bool NetworkHistory::save(XML_Helper* helper) const
 {
   bool retval = true;
-  retval &= helper->openTag("networkhistory");
+  retval &= helper->openTag(NetworkHistory::d_tag);
   retval &= helper->saveData("owner", d_owner->getId());
   d_history->save(helper);
   retval &= helper->closeTag();

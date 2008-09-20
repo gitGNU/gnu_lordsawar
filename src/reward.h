@@ -49,6 +49,12 @@ class Reward
 {
     public:
 
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
+	//! The xml tag of the map subobject of the map reward.
+	static std::string d_map_tag; 
+
 	//! The different kinds of Reward objects.
         enum Type {
 	  //! A number of gold pieces.

@@ -24,9 +24,12 @@
 #include "ruinlist.h"
 #include "xmlhelper.h"
 #include "playerlist.h"
+#include "reward.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
+
+std::string Ruinlist::d_tag = "ruinlist";
 
 Ruinlist* Ruinlist::s_instance = 0;
 
@@ -61,14 +64,14 @@ Ruinlist::Ruinlist()
 
 Ruinlist::Ruinlist(XML_Helper* helper)
 {
-    helper->registerTag("ruin", sigc::mem_fun(this, &Ruinlist::load));
+    helper->registerTag(Ruin::d_tag, sigc::mem_fun(this, &Ruinlist::load));
 }
 
 bool Ruinlist::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("ruinlist");
+    retval &= helper->openTag(Ruinlist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
         retval &= (*it).save(helper);
@@ -81,7 +84,7 @@ bool Ruinlist::save(XML_Helper* helper) const
 bool Ruinlist::load(std::string tag, XML_Helper* helper)
 {
     // Shouldn't happen, but one never knows...
-    if (tag != "ruin")
+    if (tag != Ruin::d_tag)
         return false;
 
     Ruin r(helper);
@@ -89,9 +92,9 @@ bool Ruinlist::load(std::string tag, XML_Helper* helper)
 
     //! since the ruin has only now been copied to its final state, we need
     //to register the callback for the occupants here.
-    helper->registerTag("stack", sigc::mem_fun(*begin(), &Ruin::load));
+    helper->registerTag(Stack::d_tag, sigc::mem_fun(*begin(), &Ruin::load));
     // same with rewards in ruins
-    helper->registerTag("reward", sigc::mem_fun(*begin(), &Ruin::load));
+    helper->registerTag(Reward::d_tag, sigc::mem_fun(*begin(), &Ruin::load));
 
     return true;
 }

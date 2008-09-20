@@ -34,6 +34,9 @@ class ArmyProdBase: public ArmyProtoBase
 {
     public:
 
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
 	//! Copy constructor.
         ArmyProdBase(const ArmyProdBase& prodbase);
 

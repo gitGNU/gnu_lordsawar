@@ -40,6 +40,13 @@ class ItemProto: public Renamable
 {
     public:
 
+	//! The xml tag of this object in an itemlist configuration file.
+	/**
+	 * @note This tag appears in the item configuration file, and in
+	 * saved-game files.
+	 */
+	static std::string d_tag;
+
 	// The item can confer these special properties.
         enum Bonus {
 

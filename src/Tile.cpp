@@ -20,6 +20,9 @@
 #include "Tile.h"
 #include <iostream>
 
+std::string Tile::d_tag = "tile";
+std::string Tile::d_smallmap_tag = "smallmap";
+
 using namespace std;
 
 Tile::Tile()
@@ -45,12 +48,12 @@ bool Tile::save(XML_Helper *helper)
 {
   bool retval = true;
 
-  retval &= helper->openTag("tile");
+  retval &= helper->openTag(d_tag);
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("moves", d_moves);
   std::string type_str = tileTypeToString(Tile::Type(d_type));
   retval &= helper->saveData("type", type_str);
-  retval &= helper->openTag("smallmap");
+  retval &= helper->openTag(d_smallmap_tag);
   switch (d_pattern)
     {
       //patterns with a single colour

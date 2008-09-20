@@ -42,6 +42,9 @@
 class TileStyle
 {
     public:
+	//! The xml tag of this object in a tileset configuration file.
+	static std::string d_tag; 
+
         //! Describe terrain tile styles.
 	  /**
 	   * All of the Tilestyle kinds can be described by using the

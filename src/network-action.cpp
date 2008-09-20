@@ -19,6 +19,8 @@
 
 #include "xmlhelper.h"
 
+std::string NetworkAction::d_tag = "networkaction";
+
 NetworkAction::NetworkAction(Action *action, Player *owner)
      : Ownable(owner)
 {
@@ -38,7 +40,7 @@ NetworkAction::~NetworkAction()
 bool NetworkAction::save(XML_Helper* helper) const
 {
   bool retval = true;
-  retval &= helper->openTag("networkaction");
+  retval &= helper->openTag(NetworkAction::d_tag);
   retval &= helper->saveData("owner", d_owner->getId());
   d_action->save(helper);
   retval &= helper->closeTag();

@@ -42,6 +42,7 @@
 #include "portlist.h"
 #include "port.h"
 
+std::string Stack::d_tag = "stack";
 using namespace std;
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -91,9 +92,9 @@ Stack::Stack(XML_Helper* helper)
   helper->getData(d_defending, "defending");
   helper->getData(d_parked, "parked");
 
-  helper->registerTag("path", sigc::mem_fun((*this), &Stack::load));
-  helper->registerTag("army", sigc::mem_fun((*this), &Stack::load));
-  helper->registerTag("hero", sigc::mem_fun((*this), &Stack::load));
+  helper->registerTag(Path::d_tag, sigc::mem_fun((*this), &Stack::load));
+  helper->registerTag(Army::d_tag, sigc::mem_fun((*this), &Stack::load));
+  helper->registerTag(Hero::d_tag, sigc::mem_fun((*this), &Stack::load));
 }
 
 Stack::~Stack()
@@ -488,7 +489,7 @@ bool Stack::save(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("stack");
+  retval &= helper->openTag(Stack::d_tag);
   retval &= helper->saveData("id", d_id);
   retval &= helper->saveData("x", getPos().x);
   retval &= helper->saveData("y", getPos().y);
@@ -514,14 +515,14 @@ bool Stack::save(XML_Helper* helper) const
 
 bool Stack::load(std::string tag, XML_Helper* helper)
 {
-  if (tag == "path")
+  if (tag == Path::d_tag)
     {
       d_path = new Path(helper);
 
       return true;
     }
 
-  if (tag == "army")
+  if (tag == Army::d_tag)
     {
       Army* a = new Army(helper);
       a->setOwner(d_owner);
@@ -530,7 +531,7 @@ bool Stack::load(std::string tag, XML_Helper* helper)
       return true;
     }
 
-  if (tag == "hero")
+  if (tag == Hero::d_tag)
     {
       Hero* h = new Hero(helper);
       h->setOwner(d_owner);

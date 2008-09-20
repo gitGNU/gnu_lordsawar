@@ -21,6 +21,7 @@
 #include "GameMap.h"
 #include "xmlhelper.h"
 
+std::string Roadlist::d_tag = "roadlist";
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
@@ -57,14 +58,14 @@ Roadlist::Roadlist()
 
 Roadlist::Roadlist(XML_Helper* helper)
 {
-    helper->registerTag("road", sigc::mem_fun(this, &Roadlist::load));
+    helper->registerTag(Road::d_tag, sigc::mem_fun(this, &Roadlist::load));
 }
 
 bool Roadlist::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("roadlist");
+    retval &= helper->openTag(Roadlist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
         retval &= (*it).save(helper);
@@ -76,7 +77,7 @@ bool Roadlist::save(XML_Helper* helper) const
 
 bool Roadlist::load(std::string tag, XML_Helper* helper)
 {
-    if (tag != "road")
+    if (tag != Road::d_tag)
     //what has happened?
         return false;
     

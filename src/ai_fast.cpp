@@ -80,7 +80,7 @@ bool AI_Fast::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("player");
+    retval &= helper->openTag(Player::d_tag);
     retval &= helper->saveData("join", d_join);
     retval &= helper->saveData("maniac", d_maniac);
     retval &= Player::save(helper);

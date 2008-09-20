@@ -50,13 +50,13 @@ protected:
   public:
       bool loadAction(std::string tag, XML_Helper* helper)
 	{
-	  if (tag == "action")
+	  if (tag == Action::d_tag)
 	    {
 	      NetworkAction *action = &*actions.back();
 	      action->setAction(Action::handle_load(helper));
 	      return true;
 	    }
-	  if (tag == "networkaction") 
+	  if (tag == NetworkAction::d_tag) 
 	    {
 	      NetworkAction * action = new NetworkAction(helper);
 	      actions.push_back(action);
@@ -72,13 +72,13 @@ protected:
   public:
       bool loadHistory(std::string tag, XML_Helper* helper)
 	{
-	  if (tag == "history")
+	  if (tag == History::d_tag)
 	    {
 	      NetworkHistory *history = &*histories.back();
 	      history->setHistory(History::handle_load(helper));
 	      return true;
 	    }
-	  if (tag == "networkhistory") 
+	  if (tag == NetworkHistory::d_tag) 
 	    {
 	      NetworkHistory* history = new NetworkHistory(helper);
 	      histories.push_back(history);

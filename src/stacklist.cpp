@@ -34,6 +34,7 @@
 #include "Item.h"
 #include "hero.h"
 
+std::string Stacklist::d_tag = "stacklist";
 using namespace std;
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -195,9 +196,9 @@ Stacklist::Stacklist(Stacklist *stacklist)
 Stacklist::Stacklist(XML_Helper* helper)
     :d_activestack(0)
 {
-    helper->registerTag("stack", sigc::mem_fun((*this), &Stacklist::load));
+    helper->registerTag(Stack::d_tag, sigc::mem_fun((*this), &Stacklist::load));
 
-    load("stacklist", helper);
+    load(Stacklist::d_tag, helper);
 }
 
 Stacklist::~Stacklist()
@@ -305,15 +306,11 @@ bool Stacklist::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("stacklist");
+    retval &= helper->openTag(Stacklist::d_tag);
     if (d_activestack)
-    {
-        retval &= helper->saveData("active", d_activestack->getId());
-    }
+      retval &= helper->saveData("active", d_activestack->getId());
     else
-    {
-        retval &= helper->saveData("active", 0);
-    }
+      retval &= helper->saveData("active", 0);
 
     //save stacks
     for (const_iterator it = begin(); it != end(); it++)
@@ -340,13 +337,13 @@ bool Stacklist::load(string tag, XML_Helper* helper)
 {
     static Uint32 active = 0;
     
-    if (tag == "stacklist")
+    if (tag == Stacklist::d_tag)
     {
         helper->getData(active, "active");
         return true;
     }
 
-    if (tag == "stack")
+    if (tag == Stack::d_tag)
     {
         Stack* s = new Stack(helper);
         if ((active != 0) && (s->getId() == active))

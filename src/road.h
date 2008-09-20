@@ -29,6 +29,9 @@
 class Road: public Location
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
         enum Type {
 	  CONNECTS_EAST_AND_WEST = 0,
 	  CONNECTS_NORTH_AND_SOUTH = 1,

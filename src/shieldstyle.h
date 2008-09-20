@@ -43,6 +43,9 @@ class ShieldStyle : public sigc::trackable
 {
     public:
 
+	//! The xml tag of this object in a shieldset configuration file.
+	static std::string d_tag; 
+
 	//! The size of the shield.
 	enum Type {
 	  //! Small shields are shown on the OverviewMap object.

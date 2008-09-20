@@ -53,6 +53,8 @@ class Hero;
 class Quest 
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
 
 	//! The various kinds of Quest objects.
         enum Type {

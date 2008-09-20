@@ -82,7 +82,7 @@ std::list<std::string> Tilesetlist::getNames()
 
 bool Tilesetlist::load(std::string tag, XML_Helper *helper)
 {
-  if (tag == "tileset")
+  if (tag == Tileset::d_tag)
     {
       Tileset *tileset = new Tileset(helper);
       push_back(tileset); 
@@ -96,7 +96,7 @@ bool Tilesetlist::loadTileset(std::string name)
 
   XML_Helper helper(File::getTileset(name), ios::in, false);
 
-  helper.registerTag("tileset", sigc::mem_fun((*this), &Tilesetlist::load));
+  helper.registerTag(Tileset::d_tag, sigc::mem_fun((*this), &Tilesetlist::load));
 
   if (!helper.parse())
     {

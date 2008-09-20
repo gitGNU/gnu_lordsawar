@@ -22,6 +22,8 @@
 
 #include "xmlhelper.h"
 
+std::string FL_Counter::d_tag = "counter";
+
 FL_Counter* fl_counter;
 
 FL_Counter::FL_Counter(Uint32 start)
@@ -55,7 +57,7 @@ bool FL_Counter::save(XML_Helper* helper)
 {
     bool retval =true;
 
-    retval &= helper->openTag("counter");
+    retval &= helper->openTag(FL_Counter::d_tag);
     retval &= helper->saveData("curID", d_curID);
     retval &= helper->closeTag();
 

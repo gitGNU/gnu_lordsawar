@@ -21,6 +21,8 @@
 #include "armyproto.h"
 #include "heroproto.h"
 
+std::string HeroProto::d_tag = "heroproto";
+
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
@@ -59,7 +61,7 @@ bool HeroProto::save(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("heroproto");
+  retval &= helper->openTag(HeroProto::d_tag);
 
   retval &= ArmyProto::saveData(helper);
   std::string gender_str = Hero::genderToString(Hero::Gender(d_gender));

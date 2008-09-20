@@ -34,8 +34,9 @@
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-Citylist* Citylist::s_instance = 0;
+std::string Citylist::d_tag = "citylist";
 
+Citylist* Citylist::s_instance = 0;
 
 Citylist* Citylist::getInstance()
 {
@@ -69,9 +70,9 @@ Citylist::Citylist()
 Citylist::Citylist(XML_Helper* helper)
 {
     // simply ask the helper to inform us when a city tag is opened
-    helper->registerTag("city", sigc::mem_fun(this, &Citylist::load));
-    helper->registerTag("armyprodbase", sigc::mem_fun(this, &Citylist::load));
-    helper->registerTag("slot", sigc::mem_fun(this, &Citylist::load));
+    helper->registerTag(City::d_tag, sigc::mem_fun(this, &Citylist::load));
+    helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &Citylist::load));
+    helper->registerTag(City::d_slot_tag, sigc::mem_fun(this, &Citylist::load));
 }
 
 Citylist::~Citylist()
@@ -362,7 +363,7 @@ bool Citylist::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("citylist");
+    retval &= helper->openTag(Citylist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
         (*it).save(helper);
@@ -374,7 +375,7 @@ bool Citylist::save(XML_Helper* helper) const
 
 bool Citylist::load(std::string tag, XML_Helper* helper)
 {
-    if (tag == "armyprodbase")
+    if (tag == ArmyProdBase::d_tag)
       {
 	//add it to the right city
 	//how do i add it to the right slot?
@@ -386,7 +387,7 @@ bool Citylist::load(std::string tag, XML_Helper* helper)
 	city->addProductionBase(slot, a);
 	return true;
       }
-    if (tag == "slot")
+    if (tag == City::d_slot_tag)
       {
 	Citylist::iterator it = end();
 	it--;
@@ -394,7 +395,7 @@ bool Citylist::load(std::string tag, XML_Helper* helper)
 	city->setMaxNoOfProductionBases(city->getMaxNoOfProductionBases() + 1);
 	return true;
       }
-    if (tag == "city")
+    if (tag == City::d_tag)
       {
 	City c(helper);
 	push_back(c);

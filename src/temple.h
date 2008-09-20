@@ -37,6 +37,9 @@ class Quest;
 class Temple : public NamedLocation
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
 	//! Default constructor.
         /**
          * @param pos          The location of the temple on the game map.

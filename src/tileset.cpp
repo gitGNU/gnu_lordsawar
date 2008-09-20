@@ -32,6 +32,8 @@ using namespace std;
 
 #define DEFAULT_TILE_SIZE 40
 	
+std::string Tileset::d_tag = "tileset";
+
 Tileset::Tileset(std::string name)
 	: d_name(name), d_tileSize(DEFAULT_TILE_SIZE), d_dir("")
 {
@@ -47,10 +49,10 @@ Tileset::Tileset(XML_Helper *helper)
     helper->getData(d_tileSize, "tilesize");
     helper->getData(d_large_selector, "large_selector");
     helper->getData(d_small_selector, "small_selector");
-    helper->registerTag("tile", sigc::mem_fun((*this), &Tileset::loadTile));
-    helper->registerTag("smallmap", sigc::mem_fun((*this), &Tileset::loadTile));
-    helper->registerTag("tilestyle", sigc::mem_fun((*this), &Tileset::loadTile));
-    helper->registerTag("tilestyleset", sigc::mem_fun((*this), &Tileset::loadTile));
+    helper->registerTag(Tile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+    helper->registerTag(Tile::d_smallmap_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+    helper->registerTag(TileStyle::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+    helper->registerTag(TileStyleSet::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
 }
 
 Tileset::~Tileset()
@@ -73,7 +75,7 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 {
     debug("loadTile()")
 
-    if (tag == "tile")
+    if (tag == Tile::d_tag)
       {
 	// create a new tile with the information we got
 	Tile* tile = new Tile(helper);
@@ -82,7 +84,7 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 	return true;
       }
 
-    if (tag == "smallmap")
+    if (tag == Tile::d_smallmap_tag)
       {
 	Uint32 i;
 	SDL_Color color;
@@ -114,7 +116,7 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 	return true;
       }
 
-    if (tag == "tilestyle")
+    if (tag == TileStyle::d_tag)
       {
 	Tile *tile = this->back();
 	TileStyleSet *tilestyleset = tile->back();
@@ -127,7 +129,7 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 	return true;
       }
 
-    if (tag == "tilestyleset")
+    if (tag == TileStyleSet::d_tag)
       {
 	Tile *tile = this->back();
 	// create a new tile style set with the information we got
@@ -154,7 +156,7 @@ bool Tileset::save(XML_Helper *helper)
 {
   bool retval = true;
 
-  retval &= helper->openTag("tileset");
+  retval &= helper->openTag(d_tag);
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("info", d_info);
   retval &= helper->saveData("tilesize", d_tileSize);

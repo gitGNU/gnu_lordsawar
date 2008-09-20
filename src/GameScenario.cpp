@@ -62,6 +62,7 @@
 #include "history.h"
 #include "xmlhelper.h"
 
+std::string GameScenario::d_tag = "scenario";
 using namespace std;
 
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -248,22 +249,22 @@ bool GameScenario::loadWithHelper(XML_Helper& helper)
 
   bool broken = false;
 
-  helper.registerTag("scenario", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("campaign", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("itemlist", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("playerlist", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("map", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("citylist", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("templelist", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("ruinlist", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("rewardlist", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("signpostlist", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("roadlist", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("counter", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("questlist", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("bridgelist", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("portlist", sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag("vectoredunitlist", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(Campaign::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(Itemlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(Playerlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(GameMap::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(Citylist::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(Templelist::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(Ruinlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(Rewardlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(Signpostlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(Roadlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(FL_Counter::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(QuestsManager::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(Bridgelist::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(Portlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(VectoredUnitlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
 
   if (!helper.parse())
     broken = true;
@@ -379,7 +380,7 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   retval &= Campaign::getInstance()->save(&helper);
 
   //save the private GameScenario data last due to dependencies
-  retval &= helper.openTag("scenario");
+  retval &= helper.openTag(GameScenario::d_tag);
   retval &= helper.saveData("id", d_id);
   retval &= helper.saveData("name", d_name);
   retval &= helper.saveData("comment", d_comment);
@@ -412,7 +413,7 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
 
 bool GameScenario::load(std::string tag, XML_Helper* helper)
 {
-  if (tag == "scenario")
+  if (tag == GameScenario::d_tag)
     {
       if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
 	{
@@ -453,42 +454,42 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       return true;
     }
   
-  if (tag == "campaign")
+  if (tag == Campaign::d_tag)
     {
       debug("loading campaign")
       Campaign::getInstance(helper);
       return true;
     }
 
-  if (tag == "counter")
+  if (tag == FL_Counter::d_tag)
     {
       debug("loading counter")
 	fl_counter = new FL_Counter(helper);
       return true;
     }
 
-  if (tag == "itemlist")
+  if (tag == Itemlist::d_tag)
     {
       debug("loading items");
       Itemlist::getInstance(helper);
       return true;
     }
 
-  if (tag == "playerlist")
+  if (tag == Playerlist::d_tag)
     {
       debug("loading players");
       Playerlist::getInstance(helper);
       return true;
     }
 
-  if (tag == "map")
+  if (tag == GameMap::d_tag)
     {
       debug("loading map")
 	GameMap::getInstance(helper);
       return true;
     }
 
-  if (tag == "citylist")
+  if (tag == Citylist::d_tag)
     {
       debug("loading cities")
 
@@ -496,63 +497,63 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       return true;
     }
 
-  if (tag == "templelist")
+  if (tag == Templelist::d_tag)
     {
       debug("loading temples")
 	Templelist::getInstance(helper);
       return true;
     }
 
-  if (tag == "ruinlist")
+  if (tag == Ruinlist::d_tag)
     {
       debug("loading ruins")
 	Ruinlist::getInstance(helper);
       return true;
     }
 
-  if (tag == "rewardlist")
+  if (tag == Rewardlist::d_tag)
     {
       debug("loading rewards")
 	Rewardlist::getInstance(helper);
       return true;
     }
 
-  if (tag == "signpostlist")
+  if (tag == Signpostlist::d_tag)
     {
       debug("loading signposts")
 	Signpostlist::getInstance(helper);
       return true;
     }
 
-  if (tag == "roadlist")
+  if (tag == Roadlist::d_tag)
     {
       debug("loading roads")
 	Roadlist::getInstance(helper);
       return true;
     }
 
-  if (tag == "questlist")
+  if (tag == QuestsManager::d_tag)
     {
       debug("loading quests")
 	QuestsManager::getInstance(helper);
       return true;
     }
 
-  if (tag == "vectoredunitlist")
+  if (tag == VectoredUnitlist::d_tag)
     {
       debug("loading vectored units")
 	VectoredUnitlist::getInstance(helper);
       return true;
     }
 
-  if (tag == "portlist")
+  if (tag == Portlist::d_tag)
     {
       debug("loading ports")
 	Portlist::getInstance(helper);
       return true;
     }
 
-  if (tag == "bridgelist")
+  if (tag == Bridgelist::d_tag)
     {
       debug("loading bridges")
 	Bridgelist::getInstance(helper);

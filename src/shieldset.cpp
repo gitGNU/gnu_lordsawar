@@ -27,6 +27,8 @@
 
 using namespace std;
 
+std::string Shieldset::d_tag = "shieldset";
+
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
@@ -40,9 +42,9 @@ Shieldset::Shieldset(XML_Helper *helper)
   helper->getData(d_medium_height, "medium_height");
   helper->getData(d_large_width, "large_width");
   helper->getData(d_large_height, "large_height");
-  helper->registerTag("shield", sigc::mem_fun((*this), 
-					      &Shieldset::loadShield));
-  helper->registerTag("shieldstyle", sigc::mem_fun((*this), 
+  helper->registerTag(Shield::d_tag, 
+		      sigc::mem_fun((*this), &Shieldset::loadShield));
+  helper->registerTag(ShieldStyle::d_tag, sigc::mem_fun((*this), 
 						   &Shieldset::loadShield));
 }
 
@@ -54,13 +56,13 @@ Shieldset::~Shieldset()
 
 bool Shieldset::loadShield(string tag, XML_Helper* helper)
 {
-    if (tag == "shield")
+    if (tag == Shield::d_tag)
       {
 	Shield* sh = new Shield(helper);
 	push_back(sh);
 	return true;
       }
-    if (tag == "shieldstyle")
+    if (tag == ShieldStyle::d_tag)
       {
 	ShieldStyle *sh = new ShieldStyle(helper);
 	(*back()).push_back(sh);

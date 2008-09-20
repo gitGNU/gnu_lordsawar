@@ -34,6 +34,8 @@
 #include "Tile.h"
 #include "player.h"
 
+std::string Army::d_tag = "army";
+
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
@@ -403,7 +405,7 @@ bool Army::save(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("army");
+  retval &= helper->openTag(Army::d_tag);
   retval &= saveData(helper);
   retval &= helper->closeTag();
 

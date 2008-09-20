@@ -48,6 +48,9 @@ class XML_Helper;
 class Tileset : public sigc::trackable, public std::vector<Tile*>
 {
     public:
+	//! The xml tag of this object in a tileset configuration file.
+	static std::string d_tag; 
+
 	//! Default constructor.
 	/**
 	 * Make a new Tileset.

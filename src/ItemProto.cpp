@@ -21,6 +21,7 @@
 #include "ucompose.hpp"
 #include "defs.h"
 
+std::string ItemProto::d_tag = "itemproto";
 using namespace std;
 
 ItemProto::ItemProto(XML_Helper* helper)
@@ -59,7 +60,7 @@ bool ItemProto::save(XML_Helper* helper) const
   bool retval = true;
 
   // A template is never saved, so we assume this class is a real-life item
-  retval &= helper->openTag("itemproto");
+  retval &= helper->openTag(d_tag);
   retval &= helper->saveData("name", getName());
   std::string bonus_str = bonusFlagsToString(d_bonus);
   retval &= helper->saveData("bonus", bonus_str);

@@ -39,6 +39,9 @@ class XML_Helper;
 class FL_Counter : public sigc::trackable
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
         //! Initialise the counter with a start value
         FL_Counter(Uint32 start = 0);
 

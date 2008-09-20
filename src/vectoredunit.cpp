@@ -28,6 +28,8 @@
 #include "GameMap.h"
 #include "action.h"
 
+std::string VectoredUnit::d_tag = "vectoredunit";
+
 VectoredUnit::VectoredUnit(Vector<int> pos, Vector<int> dest, ArmyProdBase *army, int duration, Player *player)
     :Ownable(player), LocationBox(pos), d_destination(dest), 
     d_duration(duration)
@@ -68,7 +70,7 @@ bool VectoredUnit::save(XML_Helper* helper) const
     bool retval = true;
     std::string name = "";
 
-    retval &= helper->openTag("vectoredunit");
+    retval &= helper->openTag(VectoredUnit::d_tag);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);
     retval &= helper->saveData("name", name);

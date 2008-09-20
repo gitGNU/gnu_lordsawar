@@ -44,6 +44,12 @@
 class Tile : public std::list<TileStyleSet*>
 {
     public:
+	//! The xml tag of this object in a tileset configuration file.
+	static std::string d_tag; 
+
+	//! The xml tag of the smallmap section in a tileset configuration file.
+	static std::string d_smallmap_tag; 
+
         //! Enumerate the kinds of terrain that a Stack can potentially move on.
         enum Type { 
 	  //! Synomymous with GRASS.

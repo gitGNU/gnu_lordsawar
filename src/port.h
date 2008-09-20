@@ -28,6 +28,9 @@
 class Port: public Location
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
 	//! Default constructor.
         /**
           * @param pos          The location of the port on the game map.

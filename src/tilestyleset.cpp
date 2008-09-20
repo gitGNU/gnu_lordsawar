@@ -23,6 +23,7 @@
 #include "GraphicsCache.h"
 #include "xmlhelper.h"
 
+std::string TileStyleSet::d_tag = "tilestyleset";
 using namespace std;
 
 #include <iostream>
@@ -47,7 +48,7 @@ bool TileStyleSet::save(XML_Helper *helper)
 {
   bool retval = true;
 
-  retval &= helper->openTag("tilestyleset");
+  retval &= helper->openTag(TileStyleSet::d_tag);
   retval &= helper->saveData("name", d_name);
   for (TileStyleSet::iterator i = begin(); i != end(); ++i)
     retval &= (*i)->save(helper);

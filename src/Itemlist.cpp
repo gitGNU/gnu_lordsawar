@@ -23,6 +23,8 @@
 #include "File.h"
 #include "defs.h"
 
+std::string Itemlist::d_tag = "itemlist";
+
 Itemlist* Itemlist::d_instance = 0;
 
 Itemlist* Itemlist::getInstance()
@@ -68,7 +70,7 @@ void Itemlist::deleteInstance()
 
 Itemlist::Itemlist(XML_Helper* helper)
 {
-    helper->registerTag("itemproto", sigc::mem_fun(*this, &Itemlist::loadItemProto));
+    helper->registerTag(ItemProto::d_tag, sigc::mem_fun(*this, &Itemlist::loadItemProto));
 }
 
 Itemlist::Itemlist()
@@ -82,7 +84,7 @@ Itemlist::~Itemlist()
 
 bool Itemlist::loadItemProto(std::string tag, XML_Helper* helper)
 {
-    if (tag != "itemproto")
+    if (tag != ItemProto::d_tag)
         return false;
 
     ItemProto* i = new ItemProto(helper);
@@ -108,7 +110,7 @@ bool Itemlist::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("itemlist");
+    retval &= helper->openTag(d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
       (*it).second->save(helper);

@@ -47,6 +47,12 @@ class Hero : public Army
 {
     public:
 
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
+	//! The xml tag of the backpack subobject in a saved-game file.
+	static std::string d_backpack_tag; 
+
         //! The different genders a Hero unit can have.
 	/**
 	 * The purpose of this enumeration is to show the correct 

@@ -24,6 +24,8 @@
 #include "xmlhelper.h"
 #include "GameScenarioOptions.h"
 
+std::string FogMap::d_tag = "fogmap";
+
 using namespace std;
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<flush;}
@@ -95,7 +97,7 @@ bool FogMap::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("fogmap");
+    retval &= helper->openTag(FogMap::d_tag);
     retval &= helper->saveData("width", d_width);
     retval &= helper->saveData("height", d_height);
 

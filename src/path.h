@@ -40,6 +40,9 @@ class Location;
 class Path : public std::list<Vector<int>*>
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
         //! Default constructor.
         Path();
         //! Make a new path by loading it from an opened saved-game file.

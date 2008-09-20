@@ -20,6 +20,7 @@
 #include "bridgelist.h"
 #include "xmlhelper.h"
 
+std::string Bridgelist::d_tag = "bridgelist";
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
@@ -56,14 +57,14 @@ Bridgelist::Bridgelist()
 
 Bridgelist::Bridgelist(XML_Helper* helper)
 {
-    helper->registerTag("bridge", sigc::mem_fun(this, &Bridgelist::load));
+    helper->registerTag(Bridge::d_tag, sigc::mem_fun(this, &Bridgelist::load));
 }
 
 bool Bridgelist::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("bridgelist");
+    retval &= helper->openTag(Bridgelist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
         retval &= (*it).save(helper);
@@ -75,7 +76,7 @@ bool Bridgelist::save(XML_Helper* helper) const
 
 bool Bridgelist::load(std::string tag, XML_Helper* helper)
 {
-    if (tag != "bridge")
+    if (tag != Bridge::d_tag)
     //what has happened?
         return false;
     

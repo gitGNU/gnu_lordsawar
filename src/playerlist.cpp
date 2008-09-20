@@ -48,6 +48,7 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
+std::string Playerlist::d_tag = "playerlist";
 Playerlist* Playerlist::s_instance = 0;
 Player* Playerlist::d_activeplayer = 0;
 bool Playerlist::s_finish = false;
@@ -93,10 +94,10 @@ Playerlist::Playerlist(XML_Helper* helper)
     //load data. This consists currently of two values: size (for checking
     //the size; we don't use it yet) and active(which player is active)
     //we do it by calling load with playerlist as string
-    load("playerlist", helper);
+    load(Playerlist::d_tag, helper);
     s_finish = false;
 
-    helper->registerTag("player", sigc::mem_fun(this, &Playerlist::load));
+    helper->registerTag(Player::d_tag, sigc::mem_fun(this, &Playerlist::load));
 }
 
 Playerlist::~Playerlist()
@@ -242,7 +243,7 @@ bool Playerlist::save(XML_Helper* helper) const
 
     bool retval = true;
 
-    retval &= helper->openTag("playerlist");
+    retval &= helper->openTag(Playerlist::d_tag);
     retval &= helper->saveData("active", d_activeplayer->getId());
     retval &= helper->saveData("neutral", d_neutral->getId());
 
@@ -259,17 +260,16 @@ bool Playerlist::load(string tag, XML_Helper* helper)
     static Uint32 active = 0;
     static Uint32 neutral = 0;
 
-    if (tag == "playerlist") //only called in the constructor
+    if (tag == Playerlist::d_tag) //only called in the constructor
     {
         helper->getData(active, "active");
         helper->getData(neutral, "neutral");
         return true;
     }
 
-    if (tag != "player")
+    if (tag != Player::d_tag)
         return false;
 
-    //else tag == "player"
     Player* p = Player::loadPlayer(helper);
     if(p == 0)
         return false;

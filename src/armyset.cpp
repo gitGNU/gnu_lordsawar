@@ -20,11 +20,13 @@
 #include <SDL.h>
 #include "rectangle.h"
 #include <sigc++/functors/mem_fun.h>
+#include <string>
 
 #include "armyset.h"
 #include "File.h"
 #include "GraphicsCache.h"
 
+std::string Armyset::d_tag = "armyset";
 using namespace std;
 
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -50,8 +52,8 @@ Armyset::Armyset(XML_Helper *helper)
   helper->getData(d_id, "id");
   helper->getData(d_name, "name");
   helper->getData(d_tilesize, "tilesize");
-  helper->registerTag("armyproto", sigc::mem_fun((*this), 
-						 &Armyset::loadArmyProto));
+  helper->registerTag(ArmyProto::d_tag, 
+		      sigc::mem_fun((*this), &Armyset::loadArmyProto));
 }
 
 Armyset::~Armyset()
@@ -62,7 +64,7 @@ Armyset::~Armyset()
 
 bool Armyset::loadArmyProto(string tag, XML_Helper* helper)
 {
-    if (tag == "armyproto")
+    if (tag == ArmyProto::d_tag)
       {
 	std::string s;
 	ArmyProto* a = new ArmyProto(helper);
@@ -77,7 +79,7 @@ bool Armyset::save(XML_Helper* helper)
 {
     bool retval = true;
 
-    retval &= helper->openTag("armyset");
+    retval &= helper->openTag(d_tag);
 
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("name", d_name);

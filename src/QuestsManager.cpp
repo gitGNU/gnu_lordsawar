@@ -36,6 +36,8 @@
 #include "xmlhelper.h"
 #include "history.h"
 
+std::string QuestsManager::d_tag = "questlist";
+
 QuestsManager* QuestsManager::s_instance = NULL;
 
 using namespace std;
@@ -77,7 +79,7 @@ QuestsManager::QuestsManager(XML_Helper* helper)
 {
     sharedInit();
     debug("QuestsManager: registerTag!");
-    helper->registerTag("quest", sigc::mem_fun((*this), &QuestsManager::load));
+    helper->registerTag(Quest::d_tag, sigc::mem_fun((*this), &QuestsManager::load));
 }
 //======================================================================
 QuestsManager::~QuestsManager()
@@ -319,7 +321,7 @@ bool QuestsManager::save(XML_Helper* helper) const
     debug("Saving quests\n");
 
 	bool retval = true;
-	retval &= helper->openTag("questlist");
+	retval &= helper->openTag(QuestsManager::d_tag);
     
     for (std::map<Uint32,Quest*>::const_iterator it = d_quests.begin(); 
 	 it != d_quests.end(); it++) 
@@ -341,7 +343,7 @@ bool QuestsManager::load(string tag, XML_Helper* helper)
 {
     debug("QuestsManager: load tag = " << tag);
 
-    if (tag == "quest")
+    if (tag == Quest::d_tag)
     {
         Uint32  questType, hero;
         helper->getData(questType, "type");

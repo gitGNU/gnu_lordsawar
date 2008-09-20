@@ -30,8 +30,9 @@
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-RecentlyPlayedGameList* RecentlyPlayedGameList::s_instance = 0;
+std::string RecentlyPlayedGameList::d_tag = "recentlyplayedgamelist";
 
+RecentlyPlayedGameList* RecentlyPlayedGameList::s_instance = 0;
 
 RecentlyPlayedGameList* RecentlyPlayedGameList::getInstance()
 {
@@ -56,7 +57,7 @@ bool RecentlyPlayedGameList::loadFromFile(std::string filename)
   if (in)
     {
       XML_Helper helper(filename.c_str(), std::ios::in, false);
-      helper.registerTag("recentlyplayedgame", sigc::mem_fun(this, &RecentlyPlayedGameList::load));
+      helper.registerTag(RecentlyPlayedGame::d_tag, sigc::mem_fun(this, &RecentlyPlayedGameList::load));
       bool retval = helper.parse();
       if (retval == false)
 	unlink(filename.c_str());
@@ -88,7 +89,7 @@ RecentlyPlayedGameList::RecentlyPlayedGameList()
 
 RecentlyPlayedGameList::RecentlyPlayedGameList(XML_Helper* helper)
 {
-  helper->registerTag("recentlyplayedgame", sigc::mem_fun(this, &RecentlyPlayedGameList::load));
+  helper->registerTag(RecentlyPlayedGame::d_tag, sigc::mem_fun(this, &RecentlyPlayedGameList::load));
 }
 
 RecentlyPlayedGameList::~RecentlyPlayedGameList()
@@ -102,7 +103,7 @@ bool RecentlyPlayedGameList::save(XML_Helper* helper) const
   bool retval = true;
 
   retval &= helper->begin(LORDSAWAR_RECENTLY_PLAYED_VERSION);
-  retval &= helper->openTag("recentlyplayedgamelist");
+  retval &= helper->openTag(RecentlyPlayedGameList::d_tag);
 
   for (const_iterator it = begin(); it != end(); it++)
     (*it)->save(helper);
@@ -118,7 +119,7 @@ bool RecentlyPlayedGameList::load(std::string tag, XML_Helper* helper)
     {
       return false;
     }
-  if (tag == "recentlyplayedgame")
+  if (tag == RecentlyPlayedGame::d_tag)
     {
       RecentlyPlayedGame *g = RecentlyPlayedGame::handle_load(helper);
       push_back(g);

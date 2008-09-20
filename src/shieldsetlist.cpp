@@ -83,7 +83,7 @@ std::list<std::string> Shieldsetlist::getNames()
 
 bool Shieldsetlist::load(std::string tag, XML_Helper *helper)
 {
-  if (tag == "shieldset")
+  if (tag == Shieldset::d_tag)
     {
       Shieldset *shieldset = new Shieldset(helper);
       push_back(shieldset); 
@@ -97,7 +97,7 @@ bool Shieldsetlist::loadShieldset(std::string name)
 
   XML_Helper helper(File::getShieldset(name), ios::in, false);
 
-  helper.registerTag("shieldset", sigc::mem_fun((*this), &Shieldsetlist::load));
+  helper.registerTag(Shieldset::d_tag, sigc::mem_fun((*this), &Shieldsetlist::load));
 
   if (!helper.parse())
     {

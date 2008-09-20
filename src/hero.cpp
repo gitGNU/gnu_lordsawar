@@ -29,6 +29,8 @@
 #include "heroproto.h"
 #include "counter.h"
 
+std::string Hero::d_tag = "hero";
+std::string Hero::d_backpack_tag = "backpack";
 using namespace std;
 
 Hero::Hero(const HeroProto& a)
@@ -60,8 +62,8 @@ Hero::Hero(XML_Helper* helper)
     d_gender = NONE;
   else
     d_gender = genderFromString(gender_str);
-  helper->registerTag("backpack", sigc::mem_fun(*this, &Hero::loadItems));
-  helper->registerTag("item", sigc::mem_fun(*this, &Hero::loadItems));
+  helper->registerTag(Hero::d_backpack_tag, sigc::mem_fun(*this, &Hero::loadItems));
+  helper->registerTag(Item::d_tag, sigc::mem_fun(*this, &Hero::loadItems));
 }
 
 
@@ -80,7 +82,7 @@ bool Hero::save(XML_Helper* helper) const
     bool retval = true;
     std::list<Item*>::const_iterator it;
 
-    retval &= helper->openTag("hero");
+    retval &= helper->openTag(Hero::d_tag);
 
     retval &= helper->saveData("name", d_name);
     std::string gender_str = genderToString(Hero::Gender(d_gender));
@@ -88,7 +90,7 @@ bool Hero::save(XML_Helper* helper) const
     retval &= saveData(helper);
 
     // Now save the backpack
-    retval &= helper->openTag("backpack");
+    retval &= helper->openTag(Hero::d_backpack_tag);
     for (it = d_backpack.begin(); it != d_backpack.end(); it++)
         retval &= (*it)->save(helper);
     retval &= helper->closeTag();
@@ -100,10 +102,10 @@ bool Hero::save(XML_Helper* helper) const
 
 bool Hero::loadItems(std::string tag, XML_Helper* helper)
 {
-    if (tag == "backpack")
+    if (tag == Hero::d_backpack_tag)
       return true;
 
-    if (tag == "item")
+    if (tag == Item::d_tag)
       {
         Item* item = new Item(helper);
         d_backpack.push_back(item);

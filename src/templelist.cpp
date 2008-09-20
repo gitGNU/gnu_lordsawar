@@ -27,6 +27,7 @@
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
+std::string Templelist::d_tag = "templelist";
 Templelist* Templelist::s_instance=0;
 
 Templelist* Templelist::getInstance()
@@ -60,14 +61,14 @@ Templelist::Templelist()
 
 Templelist::Templelist(XML_Helper* helper)
 {
-    helper->registerTag("temple", sigc::mem_fun(this, &Templelist::load));
+    helper->registerTag(Temple::d_tag, sigc::mem_fun(this, &Templelist::load));
 }
 
 bool Templelist::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("templelist");
+    retval &= helper->openTag(Templelist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
         retval &= (*it).save(helper);
@@ -79,7 +80,7 @@ bool Templelist::save(XML_Helper* helper) const
 
 bool Templelist::load(std::string tag, XML_Helper* helper)
 {
-    if (tag != "temple")    
+    if (tag != Temple::d_tag)    
     //what has happened?
         return false;
     

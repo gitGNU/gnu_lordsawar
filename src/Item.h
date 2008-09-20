@@ -50,6 +50,8 @@
 class Item: public ItemProto, public UniquelyIdentified
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
 
 	//! Loading constructor.
         Item(XML_Helper* helper);

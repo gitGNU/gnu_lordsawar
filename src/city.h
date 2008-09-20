@@ -63,6 +63,13 @@ class Hero;
 class City : public Ownable, public Location, public Renamable
 {
     public:
+
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
+	//! The xml tag of the slot subobject in a saved-game file.
+	static std::string d_slot_tag; 
+
 	//! Default constructor.
         /** 
           * Make a new city object.

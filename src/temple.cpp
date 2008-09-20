@@ -24,6 +24,8 @@
 #include "QuestsManager.h"
 #include "stack.h"
 
+std::string Temple::d_tag = "temple";
+
 Temple::Temple(Vector<int> pos, std::string name, int type)
   :NamedLocation(pos, name),d_type(type)
 {
@@ -52,7 +54,7 @@ bool Temple::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("temple");
+    retval &= helper->openTag(Temple::d_tag);
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);

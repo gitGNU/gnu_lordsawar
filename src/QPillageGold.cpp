@@ -57,7 +57,7 @@ bool QuestPillageGold::save(XML_Helper *helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("quest");
+    retval &= helper->openTag(Quest::d_tag);
     retval &= Quest::save(helper);
     retval &= helper->saveData("to_pillage", d_to_pillage);
     retval &= helper->saveData("pillaged",  d_pillaged);

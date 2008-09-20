@@ -43,6 +43,9 @@ class City;
 class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 {
     public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
         //! Gets the singleton instance or creates a new one.
         static VectoredUnitlist* getInstance();
 

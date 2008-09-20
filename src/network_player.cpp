@@ -83,7 +83,7 @@ bool NetworkPlayer::save(XML_Helper* helper) const
     // This may seem a bit dumb, but allows derived players (especially
     // AI's) to save additional data, such as character types or so.
     bool retval = true;
-    retval &= helper->openTag("player");
+    retval &= helper->openTag(Player::d_tag);
     retval &= Player::save(helper);
     retval &= helper->closeTag();
 

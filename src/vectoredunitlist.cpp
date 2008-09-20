@@ -24,6 +24,7 @@
 #include "xmlhelper.h"
 #include "player.h"
 
+std::string VectoredUnitlist::d_tag = "vectoredunitlist";
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
@@ -66,15 +67,15 @@ VectoredUnitlist::~VectoredUnitlist()
 
 VectoredUnitlist::VectoredUnitlist(XML_Helper* helper)
 {
-    helper->registerTag("vectoredunit", sigc::mem_fun(this, &VectoredUnitlist::load));
-    helper->registerTag("armyprodbase", sigc::mem_fun(this, &VectoredUnitlist::load));
+    helper->registerTag(VectoredUnit::d_tag, sigc::mem_fun(this, &VectoredUnitlist::load));
+    helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &VectoredUnitlist::load));
 }
 
 bool VectoredUnitlist::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("vectoredunitlist");
+    retval &= helper->openTag(VectoredUnitlist::d_tag);
 
     for (VectoredUnitlist::const_iterator it = begin(); it != end(); it++)
         retval &= (*it)->save(helper);
@@ -86,14 +87,14 @@ bool VectoredUnitlist::save(XML_Helper* helper) const
 
 bool VectoredUnitlist::load(std::string tag, XML_Helper* helper)
 {
-  if (tag == "vectoredunit")
+  if (tag == VectoredUnit::d_tag)
     {
       VectoredUnit *r = new VectoredUnit(helper);
       push_back(r);
       return true;
     }
 
-  if (tag == "armyprodbase")
+  if (tag == ArmyProdBase::d_tag)
     {
       VectoredUnit *vectoredunit = back();
       vectoredunit->setArmy(new ArmyProdBase (helper));

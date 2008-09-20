@@ -23,6 +23,8 @@
 #include "File.h"
 #include "xmlhelper.h"
 
+std::string Cityset::d_tag = "cityset";
+
 using namespace std;
 
 #include <iostream>

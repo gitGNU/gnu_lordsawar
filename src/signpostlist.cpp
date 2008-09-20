@@ -20,6 +20,8 @@
 #include "signpostlist.h"
 #include "xmlhelper.h"
 
+std::string Signpostlist::d_tag = "signpostlist";
+
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
@@ -56,14 +58,14 @@ Signpostlist::Signpostlist()
 
 Signpostlist::Signpostlist(XML_Helper* helper)
 {
-    helper->registerTag("signpost", sigc::mem_fun(this, &Signpostlist::load));
+    helper->registerTag(Signpost::d_tag, sigc::mem_fun(this, &Signpostlist::load));
 }
 
 bool Signpostlist::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("signpostlist");
+    retval &= helper->openTag(Signpostlist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
         retval &= (*it).save(helper);
@@ -75,7 +77,7 @@ bool Signpostlist::save(XML_Helper* helper) const
 
 bool Signpostlist::load(std::string tag, XML_Helper* helper)
 {
-    if (tag != "signpost")
+    if (tag != Signpost::d_tag)
     //what has happened?
         return false;
     

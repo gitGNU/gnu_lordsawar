@@ -351,7 +351,7 @@ bool ArmySetWindow::on_delete_event(GdkEventAny *e)
 
 bool ArmySetWindow::load(std::string tag, XML_Helper *helper)
 {
-  if (tag == "armyset")
+  if (tag == Armyset::d_tag)
     d_armyset = new Armyset(helper);
   return true;
 }
@@ -413,7 +413,7 @@ void ArmySetWindow::on_load_armyset_activated()
 	delete d_armyset;
       XML_Helper helper(current_save_filename, std::ios::in, false);
 
-      helper.registerTag("armyset", 
+      helper.registerTag(Armyset::d_tag, 
 			 sigc::mem_fun((*this), &ArmySetWindow::load));
 
 

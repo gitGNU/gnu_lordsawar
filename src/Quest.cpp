@@ -24,6 +24,8 @@
 #include "hero.h"
 #include "playerlist.h"
 #include "stacklist.h"
+
+std::string Quest::d_tag = "quest";
 using namespace std;
 
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}

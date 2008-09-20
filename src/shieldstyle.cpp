@@ -23,6 +23,8 @@
 #include "File.h"
 #include "shieldset.h"
 
+std::string ShieldStyle::d_tag = "shieldstyle";
+
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 

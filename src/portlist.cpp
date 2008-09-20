@@ -20,6 +20,8 @@
 #include "portlist.h"
 #include "xmlhelper.h"
 
+std::string Portlist::d_tag = "portlist";
+
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
@@ -56,14 +58,14 @@ Portlist::Portlist()
 
 Portlist::Portlist(XML_Helper* helper)
 {
-    helper->registerTag("port", sigc::mem_fun(this, &Portlist::load));
+    helper->registerTag(Port::d_tag, sigc::mem_fun(this, &Portlist::load));
 }
 
 bool Portlist::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("portlist");
+    retval &= helper->openTag(Portlist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
         retval &= (*it).save(helper);
@@ -75,7 +77,7 @@ bool Portlist::save(XML_Helper* helper) const
 
 bool Portlist::load(std::string tag, XML_Helper* helper)
 {
-    if (tag != "port")
+    if (tag != Port::d_tag)
     //what has happened?
         return false;
     

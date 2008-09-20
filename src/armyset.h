@@ -59,6 +59,9 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 {
     public:
 
+	//! The xml tag of this object in an armyset configuration file.
+	static std::string d_tag; 
+
 	//! Default constructor.
 	/**
 	 * Make a new Armyset.

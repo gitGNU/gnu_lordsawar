@@ -39,6 +39,13 @@ class Itemlist : public std::map<Uint32, ItemProto*>, public sigc::trackable
 {
     public:
 
+	//! The xml tag of this object.
+	/** 
+	 * @note This tag appears in the items configuration file, or in a 
+	 * saved-game file.
+	 */
+	static std::string d_tag; 
+
         //! Returns the singleton instance.
 	static Itemlist* getInstance();
 

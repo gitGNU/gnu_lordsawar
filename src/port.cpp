@@ -18,6 +18,8 @@
 #include "port.h"
 #include "GameMap.h"
 
+std::string Port::d_tag = "port";
+
 Port::Port(Vector<int> pos)
   :Location(pos)
 {
@@ -45,7 +47,7 @@ bool Port::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->openTag("port");
+    retval &= helper->openTag(Port::d_tag);
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);

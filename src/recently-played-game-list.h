@@ -36,6 +36,10 @@ class RecentlyPlayedGame;
 class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc::trackable
 {
     public:
+
+	//! The xml tag of this object in a recently played game file.
+	static std::string d_tag; 
+
         //! return the singleton instance of this class.
         static RecentlyPlayedGameList * getInstance();
 

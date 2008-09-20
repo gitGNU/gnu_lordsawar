@@ -23,6 +23,8 @@
 #include "rewardlist.h"
 #include <stdlib.h>
 
+std::string Ruin::d_tag = "ruin";
+
 Ruin::Ruin(Vector<int> pos, std::string name, int type, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
     :NamedLocation(pos, name), d_searched(searched), d_type(type),
     d_occupant(occupant), d_hidden(hidden), d_owner(owner), d_sage(sage)
@@ -78,7 +80,7 @@ bool Ruin::save(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag("ruin");
+  retval &= helper->openTag(Ruin::d_tag);
   retval &= helper->saveData("id", d_id);
   retval &= helper->saveData("x", getPos().x);
   retval &= helper->saveData("y", getPos().y);
@@ -103,7 +105,7 @@ bool Ruin::save(XML_Helper* helper) const
 
 bool Ruin::load(std::string tag, XML_Helper* helper)
 {
-  if (tag == "reward")
+  if (tag == Reward::d_tag)
     {
 	Uint32 t;
 	std::string type_str;
@@ -125,7 +127,7 @@ bool Ruin::load(std::string tag, XML_Helper* helper)
 	return true;
     }
 
-  if (tag == "stack")
+  if (tag == Stack::d_tag)
     {
       Stack* s = new Stack(helper);
       d_occupant = s;

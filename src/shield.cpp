@@ -24,6 +24,8 @@
 #include "xmlhelper.h"
 #include "ucompose.hpp"
 
+std::string Shield::d_tag = "shield";
+
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
