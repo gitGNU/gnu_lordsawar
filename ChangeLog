@@ -1,6 +1,8 @@
 2008-09-19  Ben Asselstine
 
 	* adding more machinery for single-player campaigns.
+	* fixed bug related to saving of rewards in an action.  Reported by
+	  Michael Schwendt.
 
 2008-09-12  Ben Asselstine
 
