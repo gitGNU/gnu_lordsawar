@@ -207,7 +207,7 @@ dnl Do we want to compile the play by mail server?
 AC_ARG_ENABLE(pbm,
             [  --enable-pbm     compile play-by-mail (default=yes)],
             use_pbm="$enableval", use_pbm="yes")
-AM_CONDITIONAL([WANT_PBM], [test $use_pbm= "yes"])
+AM_CONDITIONAL([WANT_PBM], [test $use_pbm = "yes"])
 
 dnl ...the standard screen resolution...
 AC_ARG_WITH(resolution,
