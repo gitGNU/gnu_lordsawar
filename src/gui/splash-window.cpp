@@ -70,7 +70,7 @@ SplashWindow::SplashWindow()
     xml->get_widget("window", w);
     window.reset(w);
     decorate(window.get(), File::getMiscFile("various/back.bmp"));
-    window_closed.connect(sigc::mem_fun(window.get(), &Gtk::Window::hide));
+    window_closed.connect(sigc::mem_fun(this, &SplashWindow::on_window_closed));
 
     xml->get_widget("sdl_container", sdl_container);
     w->signal_delete_event().connect(
@@ -152,6 +152,13 @@ void SplashWindow::hide()
 {
   sdl_container->hide();
     window->hide();
+}
+
+    
+void SplashWindow::on_window_closed()
+{
+  hide();
+  quit_requested.emit();
 }
 
 bool SplashWindow::on_delete_event(GdkEventAny *e)

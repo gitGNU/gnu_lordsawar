@@ -66,6 +66,7 @@ class SplashWindow: public Decorated
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
     bool on_delete_event(GdkEventAny *e);
+    void on_window_closed();
   
     std::string network_game_nickname;
     
