@@ -535,18 +535,18 @@ void GamePreferencesDialog::update_difficulty_rating()
 	g.players.push_back(p);
       }
 
-    g.see_opponents_stacks = Configuration::s_see_opponents_stacks;
-    g.see_opponents_production = Configuration::s_see_opponents_production;
-    g.play_with_quests = Configuration::s_play_with_quests;
-    g.hidden_map = Configuration::s_hidden_map;
-    g.neutral_cities = Configuration::s_neutral_cities;
-    g.razing_cities = Configuration::s_razing_cities;
-    g.diplomacy = Configuration::s_diplomacy;
-    g.cusp_of_war = Configuration::s_cusp_of_war;
-    g.random_turns = Configuration::s_random_turns;
+    g.see_opponents_stacks = GameScenarioOptions::s_see_opponents_stacks;
+    g.see_opponents_production = GameScenarioOptions::s_see_opponents_production;
+    g.play_with_quests = GameScenarioOptions::s_play_with_quests;
+    g.hidden_map = GameScenarioOptions::s_hidden_map;
+    g.neutral_cities = GameScenarioOptions::s_neutral_cities;
+    g.razing_cities = GameScenarioOptions::s_razing_cities;
+    g.diplomacy = GameScenarioOptions::s_diplomacy;
+    g.cusp_of_war = GameScenarioOptions::s_cusp_of_war;
+    g.random_turns = GameScenarioOptions::s_random_turns;
     g.quick_start = Configuration::s_quick_start;
-    g.intense_combat = Configuration::s_intense_combat;
-    g.military_advisor = Configuration::s_military_advisor;
+    g.intense_combat = GameScenarioOptions::s_intense_combat;
+    g.military_advisor = GameScenarioOptions::s_military_advisor;
 
     int difficulty = GameScenario::calculate_difficulty_rating(g);
     g.players.clear();
