@@ -8,6 +8,9 @@
 	* disabling mouse-wheel zoom when it's not our turn.
 	* fixed bug 24332.  now the difficulty setting in the game preferences
 	  dialog is properly synchronized with the game options dialog.
+	* fixed bug 24335.  now showing the splash screen after we encounter a
+	  corrupted save file while loading a game.
+
 
 2008-09-19  Ben Asselstine
 

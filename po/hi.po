@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.6\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-21 11:05-0400\n"
+"POT-Creation-Date: 2008-09-21 12:52-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: विभू ॠषि <vibhu.rishi@gmail.com>\n"
 "Language-Team: Hindi <vibhu.rishi@gmail.com>\n"
@@ -2475,7 +2475,7 @@ msgstr ""
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:592 src/gui/driver.cpp:701
+#: src/GameScenario.cpp:592 src/gui/driver.cpp:704
 #, fuzzy
 msgid "Error: "
 msgstr "Errore"
@@ -3281,7 +3281,7 @@ msgid "Choose Game to Load"
 msgstr "Choose Tileset"
 
 #: src/gui/game-window.cpp:971 src/gui/driver.cpp:276 src/gui/driver.cpp:446
-#: src/gui/driver.cpp:646 src/gui/driver.cpp:665
+#: src/gui/driver.cpp:649 src/gui/driver.cpp:668
 msgid "Corrupted saved game file."
 msgstr ""
 
@@ -3608,20 +3608,20 @@ msgstr ""
 msgid "Could not connect."
 msgstr "Non ho potuto creare la mappa "
 
-#: src/gui/driver.cpp:601 src/editor/main-window.cpp:388
+#: src/gui/driver.cpp:604 src/editor/main-window.cpp:388
 #: src/editor/main-window.cpp:434
 msgid "Neutral"
 msgstr "Neutral"
 
-#: src/gui/driver.cpp:676
+#: src/gui/driver.cpp:679
 msgid "Save the scenario and mail it to the first player"
 msgstr ""
 
-#: src/gui/driver.cpp:699
+#: src/gui/driver.cpp:702
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 
-#: src/gui/driver.cpp:704
+#: src/gui/driver.cpp:707
 msgid "Now send the saved-game file to %1"
 msgstr ""
 
