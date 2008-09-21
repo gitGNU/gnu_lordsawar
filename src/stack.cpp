@@ -568,9 +568,10 @@ Uint32 Stack::calculateMoveBonus() const
   int num_landedother = 0;
   if (size() == 0)
     return 0;
+  bool grouped = countGroupedArmies() > 0;
   for (const_iterator it = this->begin(); it != this->end(); it++)
     {
-      if ((*it)->isGrouped() == false)
+      if ((*it)->isGrouped() == false && grouped)
 	continue;
       bonus = (*it)->getStat(Army::MOVE_BONUS);
       if (bonus == Tile::GRASS || (bonus & Tile::WATER) == 0 || 
