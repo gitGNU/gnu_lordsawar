@@ -464,7 +464,10 @@ void Driver::on_load_requested(std::string filename)
 
     GameScenario *game_scenario = load_game(filename);
     if (game_scenario == NULL)
-      return;
+      {
+	splash_window->show();
+	return;
+      }
 
     init_game_window();
     
