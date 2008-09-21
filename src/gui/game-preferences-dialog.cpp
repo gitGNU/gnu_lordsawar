@@ -745,47 +745,47 @@ void GamePreferencesDialog::on_difficulty_changed()
   switch (difficulty_combobox->get_active_row_number()) 
     {
     case BEGINNER:
-      Configuration::s_see_opponents_stacks = true;
-      Configuration::s_see_opponents_production = true;
-      Configuration::s_play_with_quests = false;
-      Configuration::s_hidden_map = false;
-      Configuration::s_neutral_cities = GameParameters::AVERAGE;
-      Configuration::s_razing_cities = GameParameters::ALWAYS;
-      Configuration::s_diplomacy = false;
-      Configuration::s_cusp_of_war = false;
+      GameScenarioOptions::s_see_opponents_stacks = true;
+      GameScenarioOptions::s_see_opponents_production = true;
+      GameScenarioOptions::s_play_with_quests = false;
+      GameScenarioOptions::s_hidden_map = false;
+      GameScenarioOptions::s_neutral_cities = GameParameters::AVERAGE;
+      GameScenarioOptions::s_razing_cities = GameParameters::ALWAYS;
+      GameScenarioOptions::s_diplomacy = false;
+      GameScenarioOptions::s_cusp_of_war = false;
       type_num = 1; break;
 
     case INTERMEDIATE:
-      Configuration::s_see_opponents_stacks = false;
-      Configuration::s_see_opponents_production = true;
-      Configuration::s_play_with_quests = true;
-      Configuration::s_hidden_map = false;
-      Configuration::s_neutral_cities = GameParameters::STRONG;
-      Configuration::s_razing_cities = GameParameters::ALWAYS;
-      Configuration::s_diplomacy = true;
-      Configuration::s_cusp_of_war = false;
+      GameScenarioOptions::s_see_opponents_stacks = false;
+      GameScenarioOptions::s_see_opponents_production = true;
+      GameScenarioOptions::s_play_with_quests = true;
+      GameScenarioOptions::s_hidden_map = false;
+      GameScenarioOptions::s_neutral_cities = GameParameters::STRONG;
+      GameScenarioOptions::s_razing_cities = GameParameters::ALWAYS;
+      GameScenarioOptions::s_diplomacy = true;
+      GameScenarioOptions::s_cusp_of_war = false;
       type_num = 1; break;
 
     case ADVANCED:
-      Configuration::s_see_opponents_stacks = false;
-      Configuration::s_see_opponents_production = false;
-      Configuration::s_play_with_quests = true;
-      Configuration::s_hidden_map = true;
-      Configuration::s_neutral_cities = GameParameters::ACTIVE;
-      Configuration::s_razing_cities = GameParameters::ON_CAPTURE;
-      Configuration::s_diplomacy = true;
-      Configuration::s_cusp_of_war = false;
+      GameScenarioOptions::s_see_opponents_stacks = false;
+      GameScenarioOptions::s_see_opponents_production = false;
+      GameScenarioOptions::s_play_with_quests = true;
+      GameScenarioOptions::s_hidden_map = true;
+      GameScenarioOptions::s_neutral_cities = GameParameters::ACTIVE;
+      GameScenarioOptions::s_razing_cities = GameParameters::ON_CAPTURE;
+      GameScenarioOptions::s_diplomacy = true;
+      GameScenarioOptions::s_cusp_of_war = false;
       type_num = 2; break;
 
     case I_AM_THE_GREATEST:
-      Configuration::s_see_opponents_stacks = false;
-      Configuration::s_see_opponents_production = false;
-      Configuration::s_play_with_quests = true;
-      Configuration::s_hidden_map = true;
-      Configuration::s_neutral_cities = GameParameters::ACTIVE;
-      Configuration::s_razing_cities = GameParameters::NEVER;
-      Configuration::s_diplomacy = true;
-      Configuration::s_cusp_of_war = true;
+      GameScenarioOptions::s_see_opponents_stacks = false;
+      GameScenarioOptions::s_see_opponents_production = false;
+      GameScenarioOptions::s_play_with_quests = true;
+      GameScenarioOptions::s_hidden_map = true;
+      GameScenarioOptions::s_neutral_cities = GameParameters::ACTIVE;
+      GameScenarioOptions::s_razing_cities = GameParameters::NEVER;
+      GameScenarioOptions::s_diplomacy = true;
+      GameScenarioOptions::s_cusp_of_war = true;
       type_num = 2; break;
 
     case CUSTOM:
@@ -809,49 +809,52 @@ void GamePreferencesDialog::on_difficulty_changed()
 
 bool GamePreferencesDialog::is_beginner()
 {
-  return (Configuration::s_see_opponents_stacks == true &&
-	  Configuration::s_see_opponents_production == true &&
-	  Configuration::s_play_with_quests == false &&
-	  Configuration::s_hidden_map == false &&
-	  Configuration::s_neutral_cities == GameParameters::AVERAGE &&
-	  Configuration::s_razing_cities == GameParameters::ALWAYS &&
-	  Configuration::s_diplomacy == false &&
-	  Configuration::s_cusp_of_war == false);
+  return (GameScenarioOptions::s_see_opponents_stacks == true &&
+	  GameScenarioOptions::s_see_opponents_production == true &&
+	  GameScenarioOptions::s_play_with_quests == false &&
+	  GameScenarioOptions::s_hidden_map == false &&
+	  GameScenarioOptions::s_neutral_cities == GameParameters::AVERAGE &&
+	  GameScenarioOptions::s_razing_cities == GameParameters::ALWAYS &&
+	  GameScenarioOptions::s_diplomacy == false &&
+	  GameScenarioOptions::s_cusp_of_war == false);
 }
+
 bool GamePreferencesDialog::is_intermediate()
 {
-  return (
-	  Configuration::s_see_opponents_stacks == false &&
-	  Configuration::s_see_opponents_production == true &&
-	  Configuration::s_play_with_quests == true &&
-	  Configuration::s_hidden_map == false &&
-	  Configuration::s_neutral_cities == GameParameters::STRONG &&
-	  Configuration::s_razing_cities == GameParameters::ALWAYS &&
-	  Configuration::s_diplomacy == true &&
-	  Configuration::s_cusp_of_war == false);
+  return (GameScenarioOptions::s_see_opponents_stacks == false &&
+	  GameScenarioOptions::s_see_opponents_production == true &&
+	  GameScenarioOptions::s_play_with_quests == true &&
+	  GameScenarioOptions::s_hidden_map == false &&
+	  GameScenarioOptions::s_neutral_cities == GameParameters::STRONG &&
+	  GameScenarioOptions::s_razing_cities == GameParameters::ALWAYS &&
+	  GameScenarioOptions::s_diplomacy == true &&
+	  GameScenarioOptions::s_cusp_of_war == false);
 }
+
 bool GamePreferencesDialog::is_advanced()
 {
-  return (Configuration::s_see_opponents_stacks == false &&
-	  Configuration::s_see_opponents_production == false &&
-	  Configuration::s_play_with_quests == true &&
-	  Configuration::s_hidden_map == true &&
-	  Configuration::s_neutral_cities == GameParameters::ACTIVE &&
-	  Configuration::s_razing_cities == GameParameters::ON_CAPTURE &&
-	  Configuration::s_diplomacy == true &&
-	  Configuration::s_cusp_of_war == false);
+  return (GameScenarioOptions::s_see_opponents_stacks == false &&
+	  GameScenarioOptions::s_see_opponents_production == false &&
+	  GameScenarioOptions::s_play_with_quests == true &&
+	  GameScenarioOptions::s_hidden_map == true &&
+	  GameScenarioOptions::s_neutral_cities == GameParameters::ACTIVE &&
+	  GameScenarioOptions::s_razing_cities == GameParameters::ON_CAPTURE &&
+	  GameScenarioOptions::s_diplomacy == true &&
+	  GameScenarioOptions::s_cusp_of_war == false);
 }
+
 bool GamePreferencesDialog::is_greatest()
 {
-  return (Configuration::s_see_opponents_stacks == false &&
-	  Configuration::s_see_opponents_production == false &&
-	  Configuration::s_play_with_quests == true &&
-	  Configuration::s_hidden_map == true &&
-	  Configuration::s_neutral_cities == GameParameters::ACTIVE &&
-	  Configuration::s_razing_cities == GameParameters::NEVER &&
-	  Configuration::s_diplomacy == true &&
-	  Configuration::s_cusp_of_war == true);
+  return (GameScenarioOptions::s_see_opponents_stacks == false &&
+	  GameScenarioOptions::s_see_opponents_production == false &&
+	  GameScenarioOptions::s_play_with_quests == true &&
+	  GameScenarioOptions::s_hidden_map == true &&
+	  GameScenarioOptions::s_neutral_cities == GameParameters::ACTIVE &&
+	  GameScenarioOptions::s_razing_cities == GameParameters::NEVER &&
+	  GameScenarioOptions::s_diplomacy == true &&
+	  GameScenarioOptions::s_cusp_of_war == true);
 }
+
 void GamePreferencesDialog::on_map_chosen()
 {
   std::string selected_filename = load_map_filechooser->get_filename();
@@ -876,6 +879,7 @@ void GamePreferencesDialog::on_map_chosen()
   update_shields();
   return;
 }
+
 bool GamePreferencesDialog::scan_shieldset(std::string tag, XML_Helper* helper)
 {
     if (tag == "map")
@@ -884,6 +888,7 @@ bool GamePreferencesDialog::scan_shieldset(std::string tag, XML_Helper* helper)
       }
     return true;
 }
+
 bool GamePreferencesDialog::scan_players(std::string tag, XML_Helper* helper)
 {
     if (tag == "player")
