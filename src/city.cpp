@@ -674,13 +674,10 @@ Army *City::produceArmy()
       //we're an active neutral city
       //check to see if we've made 5 or not.
       //stop producing if we've made 5 armies in our neutral city
-      Stack *s = d_owner->getStacklist()->getObjectAt(getPos());
-      if (!s)
-	setActiveProductionSlot(d_active_production_slot);
-      else if (s->size() < 5)
-	setActiveProductionSlot(d_active_production_slot);
-      else
+      if (countDefenders() >= MAX_ARMIES_PRODUCED_IN_ACTIVE_NEUTRAL_CITY)
 	setActiveProductionSlot(-1);
+      else
+	setActiveProductionSlot(d_active_production_slot);
     }
   else // start producing next army of same type
     setActiveProductionSlot(d_active_production_slot);
@@ -734,5 +731,19 @@ Uint32 City::countCitiesVectoringToHere()
     }
 
   return count;
+}
+
+const ArmyProdBase *City::getProductionBaseBelongingTo(const Army *army)
+{
+  for (unsigned int i = 0; i < this->getMaxNoOfProductionBases(); i++)
+    {
+      const ArmyProdBase* armyprodbase = this->getProductionBase(i);
+      if (armyprodbase == NULL)
+	continue;
+      if (army->getArmyset() == armyprodbase->getArmyset() &&
+	  army->getTypeId() == armyprodbase->getTypeId())
+	return armyprodbase;
+    }
+  return NULL;
 }
 // End of file

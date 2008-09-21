@@ -268,6 +268,7 @@ class City : public Ownable, public Location, public Renamable
 
         //! Return the army production base of the given slot.
         const ArmyProdBase * getProductionBase(int slot) const;
+	const ArmyProdBase * getProductionBaseBelongingTo(const Army *army);
         
 	//! Return the army production base this city is producing.
 	const ArmyProdBase *getActiveProductionBase() const;

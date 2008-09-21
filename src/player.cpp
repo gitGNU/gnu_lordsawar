@@ -2981,8 +2981,8 @@ const Army * Player::doCityProducesArmy(City *city)
 bool Player::cityProducesArmy(City *city)
 {
   Action_Produce *item = new Action_Produce();
-  doCityProducesArmy(city);
-  const ArmyProdBase *source_army = city->getActiveProductionBase();
+  const Army *army = doCityProducesArmy(city);
+  const ArmyProdBase *source_army = city->getProductionBaseBelongingTo(army);
   if (city->getVectoring() == Vector<int>(-1, -1))
     item->fillData(source_army, city, false);
   else

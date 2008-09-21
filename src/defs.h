@@ -59,6 +59,7 @@ const unsigned int DIPLOMACY_MAX_SCORE = 15;
 const unsigned int DIPLOMACY_MIN_SCORE = 0;
 const unsigned int MAX_STACK_SIZE = 8;
 const unsigned int MAX_PRODUCTION_SLOTS_IN_A_CITY = 4;
+const unsigned int MAX_ARMIES_PRODUCED_IN_ACTIVE_NEUTRAL_CITY = 5;
 
 const unsigned int MAP_SIZE_TINY_WIDTH = 50;
 const unsigned int MAP_SIZE_TINY_HEIGHT = 75;
