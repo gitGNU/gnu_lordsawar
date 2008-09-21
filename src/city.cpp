@@ -735,6 +735,8 @@ Uint32 City::countCitiesVectoringToHere()
 
 const ArmyProdBase *City::getProductionBaseBelongingTo(const Army *army)
 {
+  if (!army)
+    return NULL;
   for (unsigned int i = 0; i < this->getMaxNoOfProductionBases(); i++)
     {
       const ArmyProdBase* armyprodbase = this->getProductionBase(i);

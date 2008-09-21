@@ -410,6 +410,8 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
 void GameBigMap::zoom_in()
 {
+  if (input_locked)
+    return;
   if ((zoom_step / 100.0) + magnification_factor <= max_magnification_factor / 100.0)
     {
       SDL_Surface *v = SDL_GetVideoSurface();
@@ -427,6 +429,8 @@ void GameBigMap::zoom_in()
 
 void GameBigMap::zoom_out()
 {
+  if (input_locked)
+    return;
   if (magnification_factor - (zoom_step / 100.0) >= min_magnification_factor / 100.0)
     {
       SDL_Surface *v = SDL_GetVideoSurface();
@@ -690,6 +694,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
 void GameBigMap::reset_zoom()
 {
+  printf ("resetting zoom!!\n");
   magnification_factor = 1.0;
   screen_size_changed();
   draw(true);
