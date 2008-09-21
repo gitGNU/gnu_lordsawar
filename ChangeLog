@@ -1,3 +1,11 @@
+2008-09-21  Ben Asselstine
+
+	* fixed bug 24331.  now the splash screen closes properly when [x] is
+	   pressed.
+	* fixed bug 24330.  now active neutral cities who have produced enough
+	  armies will not cause a crash when the production for that city is
+	  turned off.
+
 2008-09-19  Ben Asselstine
 
 	* adding more machinery for single-player campaigns.

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.6\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-19 19:07-0400\n"
+"POT-Creation-Date: 2008-09-21 10:10-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: विभू ॠषि <vibhu.rishi@gmail.com>\n"
 "Language-Team: Hindi <vibhu.rishi@gmail.com>\n"
@@ -2374,72 +2374,72 @@ msgstr "मंदिर"
 msgid "<b>Tile</b>"
 msgstr "मंदिर"
 
-#: src/tilestyle.cpp:79 src/tilestyle.cpp:136
+#: src/tilestyle.cpp:80 src/tilestyle.cpp:137
 #, fuzzy
 msgid "Lone"
 msgstr "कुछ नही"
 
-#: src/tilestyle.cpp:82 src/tilestyle.cpp:138
+#: src/tilestyle.cpp:83 src/tilestyle.cpp:139
 msgid "Outer Top-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:85 src/tilestyle.cpp:140
+#: src/tilestyle.cpp:86 src/tilestyle.cpp:141
 msgid "Outer Top-Centre"
 msgstr ""
 
-#: src/tilestyle.cpp:88 src/tilestyle.cpp:142
+#: src/tilestyle.cpp:89 src/tilestyle.cpp:143
 msgid "Outer Top-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:91 src/tilestyle.cpp:144
+#: src/tilestyle.cpp:92 src/tilestyle.cpp:145
 msgid "Outer Bottom-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:94 src/tilestyle.cpp:146
+#: src/tilestyle.cpp:95 src/tilestyle.cpp:147
 msgid "Outer Bottom-Centre"
 msgstr ""
 
-#: src/tilestyle.cpp:97 src/tilestyle.cpp:148
+#: src/tilestyle.cpp:98 src/tilestyle.cpp:149
 msgid "Outer Bottom-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:100 src/tilestyle.cpp:150
+#: src/tilestyle.cpp:101 src/tilestyle.cpp:151
 msgid "Outer Middle-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:103 src/tilestyle.cpp:152
+#: src/tilestyle.cpp:104 src/tilestyle.cpp:153
 msgid "Outer Middle-Centre"
 msgstr ""
 
-#: src/tilestyle.cpp:106 src/tilestyle.cpp:154
+#: src/tilestyle.cpp:107 src/tilestyle.cpp:155
 msgid "Outer Middle-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:109 src/tilestyle.cpp:156
+#: src/tilestyle.cpp:110 src/tilestyle.cpp:157
 msgid "Inner Top-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:112 src/tilestyle.cpp:158
+#: src/tilestyle.cpp:113 src/tilestyle.cpp:159
 msgid "Inner Top-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:115 src/tilestyle.cpp:160
+#: src/tilestyle.cpp:116 src/tilestyle.cpp:161
 msgid "Inner Bottom-Left"
 msgstr ""
 
-#: src/tilestyle.cpp:118 src/tilestyle.cpp:162
+#: src/tilestyle.cpp:119 src/tilestyle.cpp:163
 msgid "Inner Bottom-Right"
 msgstr ""
 
-#: src/tilestyle.cpp:121 src/tilestyle.cpp:164
+#: src/tilestyle.cpp:122 src/tilestyle.cpp:165
 msgid "Top-Left To Bottom-Right Diagonal"
 msgstr ""
 
-#: src/tilestyle.cpp:124 src/tilestyle.cpp:166
+#: src/tilestyle.cpp:125 src/tilestyle.cpp:167
 msgid "Bottom-Left to Top-Right Diagonal"
 msgstr ""
 
-#: src/tilestyle.cpp:127 src/tilestyle.cpp:168
+#: src/tilestyle.cpp:128 src/tilestyle.cpp:169
 msgid "Other"
 msgstr "Altro"
 
@@ -2447,35 +2447,35 @@ msgstr "Altro"
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr "Error, while loading an armyset. Armyset Name:"
 
-#: src/GameScenario.cpp:333
+#: src/GameScenario.cpp:334
 msgid "The Filename is well formed"
 msgstr "Il nome del file di salvataggio e' ben formato"
 
-#: src/GameScenario.cpp:338
+#: src/GameScenario.cpp:339
 msgid "The Filename lacks the extension --> "
 msgstr "Il nome del file di salvataggio non ha l'estensione --> "
 
-#: src/GameScenario.cpp:351
+#: src/GameScenario.cpp:352
 msgid "GameScenario: Something went wrong with saving.\n"
 msgstr "GameScenario: Qualcosa e' andato male durante il salvataggio.\n"
 
-#: src/GameScenario.cpp:419
+#: src/GameScenario.cpp:420
 msgid "savefile has wrong version, we want "
 msgstr "il file di salvatagio ha una versione sbagliata, vogliamo "
 
-#: src/GameScenario.cpp:421
+#: src/GameScenario.cpp:422
 msgid "savefile offers "
 msgstr "il file di salvataggio offre "
 
-#: src/GameScenario.cpp:583
+#: src/GameScenario.cpp:584
 msgid "Autosave failed.\n"
 msgstr ""
 
-#: src/GameScenario.cpp:590
+#: src/GameScenario.cpp:591
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:591 src/gui/driver.cpp:701
+#: src/GameScenario.cpp:592 src/gui/driver.cpp:701
 #, fuzzy
 msgid "Error: "
 msgstr "Errore"
@@ -2565,7 +2565,7 @@ msgstr "Turno अगला"
 msgid "Running Dog"
 msgstr ""
 
-#: src/GameMap.cpp:219
+#: src/GameMap.cpp:222
 msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
 msgstr "Errore nella GameMap::fillMap la size non corrisponde!! Sto Uscendo.\n"
 
@@ -2815,42 +2815,42 @@ msgstr "Done making map   ... 100%"
 msgid "You have killed %i so far."
 msgstr "Hai ucciso %i armate fino ad ora."
 
-#: src/player.cpp:1302
+#: src/player.cpp:1304
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr ""
 "Errore: il gruppo che esplora e la rovina che viene esplorata non sono nella "
 "stessa posizione\n"
 
-#: src/player.cpp:1391
+#: src/player.cpp:1393
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Il gruppo ha cercato di visitare il मंदिर alla locazione sbagliata\n"
 
-#: src/player.cpp:2322
+#: src/player.cpp:2324
 #, fuzzy
 msgid "%1 Standard"
 msgstr "आम सेना"
 
-#: src/reward.cpp:424
+#: src/reward.cpp:428
 msgid "%1 Gold Piece"
 msgid_plural "%1 Gold Pieces"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/reward.cpp:432
+#: src/reward.cpp:436
 msgid "Allies: %1 x %2"
 msgstr ""
 
-#: src/reward.cpp:440
+#: src/reward.cpp:444
 #, fuzzy
 msgid "Item: %1"
 msgstr "Oggetto:"
 
-#: src/reward.cpp:447
+#: src/reward.cpp:451
 #, fuzzy
 msgid "Site: %1"
 msgstr "Grandezza:"
 
-#: src/reward.cpp:453
+#: src/reward.cpp:457
 msgid "Map: %1,%2 %3x%4"
 msgstr ""
 
@@ -4169,7 +4169,7 @@ msgstr "नकशा बना रहा"
 msgid "Southeastern map"
 msgstr "नकशा बना रहा"
 
-#: src/Itemlist.cpp:54
+#: src/Itemlist.cpp:56
 msgid "Could not parse items description file. Exiting!\n"
 msgstr "Could not parse items description file. Exiting!\n"
 
