@@ -59,6 +59,8 @@ Stack *LocationBox::addArmy(Army *a) const
     // add army to stack
     stack->push_back(a);
     stack->sortForViewing(true);
+    stack->setDefending(false);
+    stack->setParked(false);
     return stack;
 }
 

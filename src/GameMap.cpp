@@ -450,7 +450,11 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
     }
 
   if (added_army)
-    return s;
+    {
+      s->setDefending(false);
+      s->setParked(false);
+      return s;
+    }
   else
     return NULL;
 }

@@ -1693,7 +1693,11 @@ void GameWindow::on_stack_info_changed(Stack *s)
   else
     {
       if (s->getOwner()->getType() == Player::HUMAN)
-	show_stack(s);
+	{
+	  s->setDefending(false);
+	  s->setParked(false);
+	  show_stack(s);
+	}
       else
 	show_stats();
     }
