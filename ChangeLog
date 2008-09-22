@@ -1,3 +1,8 @@
+2008-09-22  Ben Asselstine
+
+	* fixed bug 24344.  defending stacks now wake up when selected; also
+	  newly produced army units now "wake up" a defended stack.
+
 2008-09-21  Ben Asselstine
 
 	* fixed bug 24331.  now the splash screen closes properly when [x] is
