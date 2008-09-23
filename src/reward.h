@@ -21,6 +21,7 @@
 #include <SDL_types.h>
 #include "vector.h"
 #include "ruinlist.h"
+#include "SightMap.h"
 #include <string>
 class Player;
 class Army;
@@ -51,9 +52,6 @@ class Reward
 
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
-
-	//! The xml tag of the map subobject of the map reward.
-	static std::string d_map_tag; 
 
 	//! The different kinds of Reward objects.
         enum Type {
@@ -481,10 +479,10 @@ class Reward_Map: public Reward
         bool save(XML_Helper* helper);
 
 	//! Get the height of the revealed portion of the game map.
-	Uint32 getHeight() const {return d_height;}
+	Uint32 getHeight() const {return d_sightmap->h;}
 
 	//! Get the width of the revealed portion of the game map.
-	Uint32 getWidth() const {return d_width;}
+	Uint32 getWidth() const {return d_sightmap->w;}
 
 	//! Return a description of a random map.
 	/**
@@ -500,27 +498,15 @@ class Reward_Map: public Reward
 	 */
 	static void getRandomMap(int *x, int *y, int *width, int *height);
 
-	LocationBox *getLocation() {return d_loc;};
+	Vector<int> getLocation() {return d_sightmap->pos;};
 
-	void setMapName(std::string name) {d_map_name = name;};
-	std::string getMapName() const {return d_map_name;};
+	SightMap * getSightMap() {return d_sightmap;};
+
+	void setMapName(std::string name) {d_sightmap->setName(name);};
+	std::string getMapName() const {return d_sightmap->getName();};
 
     private:
-	//! The height of the revealed portion of the map (in tiles).
-	/**
-	 * @note d_height + getPos().x must not exceed the height of the game
-	 *       map.
-	 */
-	Uint32 d_height;
-
-	//! The width of the revealed portion of the map (in tiles).
-	/**
-	 * @note d_width + getPos().y must not exceed the width of the game
-	 *       map.
-	 */
-	Uint32 d_width;
-	LocationBox *d_loc;
-	std::string d_map_name;
+	SightMap *d_sightmap;
 };
 
 #endif

@@ -1782,9 +1782,7 @@ void Player::doGiveReward(Stack *s, Reward *reward)
     case Reward::MAP:
         {
           Reward_Map *map = dynamic_cast<Reward_Map*>(reward);
-          d_fogmap->alterFogRectangle(map->getLocation()->getPos(), 
-      				map->getHeight(), map->getWidth(), 
-      				FogMap::OPEN);
+          d_fogmap->alterFog(map->getSightMap());
         }
       break;
     }

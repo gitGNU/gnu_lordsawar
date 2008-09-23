@@ -160,15 +160,18 @@ bool GameScenario::setupCities(bool quick_start)
 {
   debug("GameScenario::setupCities")
 
-  for (Citylist::iterator it = Citylist::getInstance()->begin();
-       it != Citylist::getInstance()->end(); it++)
+  for (Playerlist::iterator it = Playerlist::getInstance()->begin();
+       it != Playerlist::getInstance()->end(); it++)
     {
-      if ((*it).isCapital() == true)
+      if ((*it) == Playerlist::getInstance()->getNeutral())
+	continue;
+      City *city = Citylist::getInstance()->getFirstCity(*it);
+      if (city)
 	{
-	  (*it).deFog((*it).getOwner());
+	  city->deFog(city->getOwner());
 	  History_CityWon *item = new History_CityWon();
-	  item->fillData(&*it);
-	  (*it).getCapitalOwner()->addHistory(item);
+	  item->fillData(city);
+	  city->getOwner()->addHistory(item);
 	}
     }
 

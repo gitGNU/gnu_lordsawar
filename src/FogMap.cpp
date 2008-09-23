@@ -19,6 +19,7 @@
 #include <sstream>
 
 #include "FogMap.h"
+#include "SightMap.h"
 
 #include "playerlist.h"
 #include "xmlhelper.h"
@@ -210,5 +211,10 @@ bool FogMap::isFogged(Vector <int> pos)
     return false;
 
   return false;
+}
+	
+void FogMap::alterFog(SightMap *sightmap)
+{
+  return alterFogRectangle(sightmap->pos, sightmap->h, sightmap->w, OPEN);
 }
 // End of file

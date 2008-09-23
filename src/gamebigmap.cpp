@@ -694,7 +694,6 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
 void GameBigMap::reset_zoom()
 {
-  printf ("resetting zoom!!\n");
   magnification_factor = 1.0;
   screen_size_changed();
   draw(true);

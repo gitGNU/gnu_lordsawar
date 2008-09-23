@@ -21,6 +21,7 @@
 #include "vector.h"
 
 class XML_Helper;
+class SightMap;
 
 //! What a player can see on a hidden map.
 /**
@@ -97,6 +98,12 @@ class FogMap
          * @param new_type The fog type which the area gets.
          */
         void alterFogRectangle(Vector<int> pt, int height, int width, FogType new_type);
+
+	//! Defog the map according to the given sightmap.
+	/** 
+         * @param sightmap The portion of the map to defog.
+         */
+	void alterFog(SightMap *sightmap);
 
 	//! Smooth the fogmap.
 	/** 

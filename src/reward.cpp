@@ -30,9 +30,9 @@
 #include "GameMap.h"
 #include "ruin.h"
 #include "ucompose.hpp"
+#include "SightMap.h"
 
 std::string Reward::d_tag = "reward";
-std::string Reward::d_map_tag = "map";
 
 using namespace std;
 
@@ -351,19 +351,16 @@ Reward_Ruin::~Reward_Ruin()
 
 Reward_Map::Reward_Map(Vector<int> pos, std::string name, 
 		       Uint32 height, Uint32 width)
-    :Reward(Reward::MAP, name), d_height(height), d_width(width)
+    :Reward(Reward::MAP, name)
 {
-  d_loc = new LocationBox(pos);
-  d_map_name = name;
+  d_sightmap = new SightMap(name, pos, height, width);
 }
 
 bool Reward_Map::loadMap(std::string tag, XML_Helper* helper)
 {
-  if (tag == Reward::d_map_tag)
+  if (tag == SightMap::d_tag)
     {
-      d_loc = new LocationBox(helper);
-      helper->getData(d_height, "height");
-      helper->getData(d_width, "width");
+      d_sightmap = new SightMap(helper);
       return true;
     }
     
@@ -374,31 +371,23 @@ bool Reward_Map::loadMap(std::string tag, XML_Helper* helper)
 Reward_Map::Reward_Map(XML_Helper* helper)
     :Reward(helper)
 {
-  helper->registerTag(d_map_tag, sigc::mem_fun(this, &Reward_Map::loadMap));
+  helper->registerTag(SightMap::d_tag, sigc::mem_fun(this, &Reward_Map::loadMap));
 }
 
 Reward_Map::Reward_Map (const Reward_Map& orig)
-	:Reward(orig), d_height(orig.d_height), d_width(orig.d_width),
-	d_map_name(orig.d_map_name)
+	:Reward(orig)
 {
-  d_loc = new LocationBox(*orig.d_loc);
+  d_sightmap = new SightMap(*orig.d_sightmap);
 }
 
-//FIXME: location has a name, and so does the reward!
 bool Reward_Map::save(XML_Helper* helper)
 {
   bool retval = true;
   retval &= helper->openTag(Reward::d_tag);
   std::string type_str = rewardTypeToString(Reward::Type(d_type));
   retval &= helper->saveData("type", type_str);
-  retval &= helper->saveData("name", d_name);
-  retval &= helper->openTag(Reward::d_map_tag);
-  retval &= helper->saveData("x", d_loc->getPos().x);
-  retval &= helper->saveData("y", d_loc->getPos().y);
-  retval &= helper->saveData("map_name", d_map_name);
-  retval &= helper->saveData("height", d_height);
-  retval &= helper->saveData("width", d_width);
-  retval &= helper->closeTag();
+  retval &= helper->saveData("name", d_sightmap->getName());
+  retval &= d_sightmap->save(helper);
   retval &= helper->closeTag();
   return retval;
 }
@@ -415,6 +404,8 @@ void Reward_Map::getRandomMap(int *x, int *y, int *width, int *height)
 
 Reward_Map::~Reward_Map()
 {
+  if (d_sightmap)
+    delete d_sightmap;
 }
 
 std::string Reward::getDescription()
@@ -455,8 +446,8 @@ std::string Reward::getDescription()
 	{
 	  Reward_Map *m = dynamic_cast<Reward_Map *>(this);
 	  s += String::ucompose(_("Map: %1,%2 %3x%4"), 
-				  m->getLocation()->getPos().x,
-				  m->getLocation()->getPos().y,
+				  m->getLocation().x,
+				  m->getLocation().y,
 				  m->getHeight(),
 				  m->getWidth());
 	  return s;
