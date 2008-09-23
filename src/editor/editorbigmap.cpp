@@ -60,6 +60,7 @@ EditorBigMap::EditorBigMap()
     pointer_size = 1;
     pointer_terrain = Tile::GRASS;
     pointer_tile_style_id = -1;
+    show_tile_types_instead_of_tile_styles = false;
 }
 
 EditorBigMap::~EditorBigMap()
@@ -231,9 +232,6 @@ std::vector<Vector<int> > EditorBigMap::get_cursor_tiles()
 
 void EditorBigMap::after_draw()
 {
-    if (pointer == POINTER)
-	return;
-    
     int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
     std::vector<Vector<int> > tiles;
 

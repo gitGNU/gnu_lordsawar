@@ -26,7 +26,6 @@
 #include <sigc++/functors/ptr_fun.h>
 
 #include <gtkmm/widget.h>
-#include <gtkmm/menuitem.h>
 #include <gtkmm/eventbox.h>
 #include <gtkmm/image.h>
 #include <gtkmm/dialog.h>
