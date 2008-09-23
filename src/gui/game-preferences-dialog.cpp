@@ -877,6 +877,7 @@ void GamePreferencesDialog::on_map_chosen()
     }
   helper.close();
   update_shields();
+  on_player_type_changed();
   return;
 }
 
