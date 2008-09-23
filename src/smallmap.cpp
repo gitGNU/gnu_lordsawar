@@ -27,6 +27,7 @@
 
 #include "vector.h"
 
+#include "GameScenarioOptions.h"
 #include "smallmap.h"
 #include "sdl-draw.h"
 #include "timing.h"
@@ -105,6 +106,12 @@ void SmallMap::after_draw()
   OverviewMap::after_draw();
   if (Playerlist::getActiveplayer()->getType() == Player::HUMAN ||
       Configuration::s_hidden_map == false)
+    {
+      draw_cities(false);
+      draw_selection();
+    }
+  //for the editor...
+  if (GameScenarioOptions::s_round == 0)
     {
       draw_cities(false);
       draw_selection();
