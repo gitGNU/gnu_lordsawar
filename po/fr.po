@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-22 16:08-0400\n"
+"POT-Creation-Date: 2008-09-23 18:17-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -2456,38 +2456,38 @@ msgstr "Altro"
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr "Erreur lors du chargement du paquetage de combat. Nom du paquetage : "
 
-#: src/GameScenario.cpp:334
+#: src/GameScenario.cpp:337
 msgid "The Filename is well formed"
 msgstr "Le nom de fichier est correct"
 
-#: src/GameScenario.cpp:339
+#: src/GameScenario.cpp:342
 msgid "The Filename lacks the extension --> "
 msgstr "Il manque l'extension au nom du fichier --> "
 
-#: src/GameScenario.cpp:352
+#: src/GameScenario.cpp:355
 msgid "GameScenario: Something went wrong with saving.\n"
 msgstr ""
 "GameScenario: Quelque chose s'est mal déroulée pendant la sauvegarde.\n"
 
-#: src/GameScenario.cpp:420
+#: src/GameScenario.cpp:423
 msgid "savefile has wrong version, we want "
 msgstr "Le fichier sauvegardé a une mauvaise version. Il attendait "
 
-#: src/GameScenario.cpp:422
+#: src/GameScenario.cpp:425
 msgid "savefile offers "
 msgstr "Le fichier sauvegardé offre "
 
-#: src/GameScenario.cpp:584
+#: src/GameScenario.cpp:587
 msgid "Autosave failed.\n"
 msgstr "La sauvegarde automatique a échouée.\n"
 
-#: src/GameScenario.cpp:591
+#: src/GameScenario.cpp:594
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 "Erreur lors de la tentative de renommage du fichier temporaire dans autosave."
 "sav\n"
 
-#: src/GameScenario.cpp:592 src/gui/driver.cpp:704
+#: src/GameScenario.cpp:595 src/gui/driver.cpp:704
 #, fuzzy
 msgid "Error: "
 msgstr "Erruer :"
@@ -2835,32 +2835,32 @@ msgstr ""
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Il gruppo ha cercato di visitare il tempio alla locazione sbagliata\n"
 
-#: src/player.cpp:2324
+#: src/player.cpp:2322
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Unité standard"
 
-#: src/reward.cpp:428
+#: src/reward.cpp:419
 msgid "%1 Gold Piece"
 msgid_plural "%1 Gold Pieces"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/reward.cpp:436
+#: src/reward.cpp:427
 msgid "Allies: %1 x %2"
 msgstr ""
 
-#: src/reward.cpp:444
+#: src/reward.cpp:435
 #, fuzzy
 msgid "Item: %1"
 msgstr "Oggetto:"
 
-#: src/reward.cpp:451
+#: src/reward.cpp:442
 #, fuzzy
 msgid "Site: %1"
 msgstr "Grandezza:"
 
-#: src/reward.cpp:457
+#: src/reward.cpp:448
 msgid "Map: %1,%2 %3x%4"
 msgstr ""
 

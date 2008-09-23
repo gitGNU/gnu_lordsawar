@@ -1,3 +1,9 @@
+2008-09-23  Ben Asselstine
+
+	* now defogging first city even if the player doesn't have a capital
+	  city.
+	* added new sightmap object owned by reward_map object.
+
 2008-09-22  Ben Asselstine
 
 	* fixed bug 24344.  defending stacks now wake up when selected; also
