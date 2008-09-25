@@ -80,6 +80,15 @@ std::list<std::string> Citysetlist::getNames()
   return names;
 }
 
+std::list<std::string> Citysetlist::getNames(Uint32 tilesize)
+{
+  std::list<std::string> names;
+  for (iterator it = begin(); it != end(); it++)
+    if ((*it)->getTileSize() == tilesize)
+      names.push_back((*it)->getName());
+  return names;
+}
+
 bool Citysetlist::load(std::string tag, XML_Helper *helper)
 {
   if (tag == Cityset::d_tag)
@@ -107,3 +116,13 @@ bool Citysetlist::loadCityset(std::string name)
 
   return true;
 }
+
+void Citysetlist::getSizes(std::list<Uint32> &sizes)
+{
+  for (iterator i = begin(); i != end(); i++)
+    {
+      if (find (sizes.begin(), sizes.end(), (*i)->getTileSize()) == sizes.end())
+	sizes.push_back((*i)->getTileSize());
+    }
+}
+

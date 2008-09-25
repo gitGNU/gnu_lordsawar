@@ -134,6 +134,15 @@ std::list<std::string> Armysetlist::getNames()
   return names;
 }
 
+std::list<std::string> Armysetlist::getNames(Uint32 tilesize)
+{
+  std::list<std::string> names;
+  for (iterator it = begin(); it != end(); it++)
+    if ((*it)->getTileSize() == tilesize)
+      names.push_back((*it)->getName());
+  return names;
+}
+
 std::string Armysetlist::getName(Uint32 id) const
 {
     NameMap::const_iterator it = d_names.find(id);
@@ -246,3 +255,13 @@ Armyset *Armysetlist::getArmyset(Uint32 id)
     }
   return NULL;
 }
+
+void Armysetlist::getSizes(std::list<Uint32> &sizes)
+{
+  for (iterator i = begin(); i != end(); i++)
+    {
+      if (find (sizes.begin(), sizes.end(), (*i)->getTileSize()) == sizes.end())
+	sizes.push_back((*i)->getTileSize());
+    }
+}
+

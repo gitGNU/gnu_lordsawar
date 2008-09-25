@@ -130,6 +130,7 @@ class GamePreferencesDialog: public Decorated
     void on_cities_random_toggled();
     void on_map_chosen();
     void on_tile_size_changed();
+    Uint32 get_active_tile_size();
     bool is_beginner();
     bool is_intermediate();
     bool is_advanced();

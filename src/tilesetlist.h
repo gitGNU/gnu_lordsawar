@@ -48,6 +48,12 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
         //! Returns the names of all tilesets available to the game.
 	std::list<std::string> getNames();
 
+        //! Returns the names of tilesets that have the given tile size.
+	std::list<std::string> getNames(Uint32 tilesize);
+
+        //! Returns the different tilesizes present in the tilesetlist.
+	void getSizes(std::list<Uint32> &sizes);
+
 	//! Return the name of the subdirectory for a given tileset.
         /** 
          * @param tileset       The name of the tileset to get the subdir of.

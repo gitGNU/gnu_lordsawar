@@ -44,6 +44,11 @@
 
 static bool inhibit_difficulty_combobox = false;
 
+Uint32 GamePreferencesDialog::get_active_tile_size()
+{
+  return (Uint32) atoi(tile_size_combobox->get_active_text().c_str());
+}
+
 void GamePreferencesDialog::init()
 {
     Gtk::Box *box;
@@ -138,63 +143,46 @@ void GamePreferencesDialog::init()
 
     //fill in tile sizes combobox
     tile_size_combobox = manage(new Gtk::ComboBoxText);
-    tile_size_combobox->append_text("40x40 pixels");
-    tile_size_combobox->append_text("80x80 pixels");
+    std::list<Uint32> sizes;
+    Tilesetlist::getInstance()->getSizes(sizes);
+    Citysetlist::getInstance()->getSizes(sizes);
+    Armysetlist::getInstance()->getSizes(sizes);
+    for (std::list<Uint32>::iterator it = sizes.begin(); it != sizes.end();
+	 it++)
+      {
+	Glib::ustring s = String::ucompose(_("%1x%1"), *it);
+	tile_size_combobox->append_text(s);
+      }
     tile_size_combobox->set_active(0);
     xml->get_widget("tile_size_box", box);
     box->pack_start(*tile_size_combobox, Gtk::PACK_SHRINK);
     tile_size_combobox->signal_changed().connect(
 	sigc::mem_fun(*this, &GamePreferencesDialog::on_tile_size_changed));
 
-    // fill in tile themes combobox
+    // make new tile themes combobox
     tile_theme_combobox = manage(new Gtk::ComboBoxText);
-    
-    Uint32 default_id = 0;
-    Uint32 counter = 0;
-    Tilesetlist *tl = Tilesetlist::getInstance();
-    std::list<std::string> tile_themes = tl->getNames();
-    for (std::list<std::string>::iterator i = tile_themes.begin(),
-	     end = tile_themes.end(); i != end; ++i)
-      {
-	if (*i == "Default")
-	  default_id = counter;
-	tile_theme_combobox->append_text(Glib::filename_to_utf8(*i));
-	counter++;
-      }
-
-    tile_theme_combobox->set_active(default_id);
-
     xml->get_widget("tile_theme_box", box);
     box->pack_start(*tile_theme_combobox, Gtk::PACK_SHRINK);
 
-    // fill in army themes combobox
+    // make new army themes combobox
     army_theme_combobox = manage(new Gtk::ComboBoxText);
-    
-    Armysetlist *al = Armysetlist::getInstance();
-    std::list<std::string> army_themes = al->getNames();
-    counter = 0;
-    default_id = 0;
-    for (std::list<std::string>::iterator i = army_themes.begin(),
-	     end = army_themes.end(); i != end; ++i)
-      {
-	if (*i == "Default")
-	  default_id = counter;
-	army_theme_combobox->append_text(Glib::filename_to_utf8(*i));
-	counter++;
-      }
-
-    army_theme_combobox->set_active(default_id);
-
     xml->get_widget("army_theme_box", box);
     box->pack_start(*army_theme_combobox, Gtk::PACK_SHRINK);
+
+    // make new city themes combobox
+    city_theme_combobox = manage(new Gtk::ComboBoxText);
+    xml->get_widget("city_theme_box", box);
+    box->pack_start(*city_theme_combobox, Gtk::PACK_SHRINK);
+
+    on_tile_size_changed();
 
     // fill in shield themes combobox
     shield_theme_combobox = manage(new Gtk::ComboBoxText);
     
     Shieldsetlist *sl = Shieldsetlist::getInstance();
     std::list<std::string> shield_themes = sl->getNames();
-    counter = 0;
-    default_id = 0;
+    Uint32 counter = 0;
+    Uint32 default_id = 0;
     for (std::list<std::string>::iterator i = shield_themes.begin(),
 	     end = shield_themes.end(); i != end; ++i)
       {
@@ -210,27 +198,6 @@ void GamePreferencesDialog::init()
 
     xml->get_widget("shield_theme_box", box);
     box->pack_start(*shield_theme_combobox, Gtk::PACK_SHRINK);
-
-    // fill in city themes combobox
-    city_theme_combobox = manage(new Gtk::ComboBoxText);
-    
-    Citysetlist *cl = Citysetlist::getInstance();
-    std::list<std::string> city_themes = cl->getNames();
-    counter = 0;
-    default_id = 0;
-    for (std::list<std::string>::iterator i = city_themes.begin(),
-	     end = city_themes.end(); i != end; ++i)
-      {
-	if (*i == "Default")
-	  default_id = counter;
-	city_theme_combobox->append_text(Glib::filename_to_utf8(*i));
-	counter++;
-      }
-
-    city_theme_combobox->set_active(default_id);
-
-    xml->get_widget("city_theme_box", box);
-    box->pack_start(*city_theme_combobox, Gtk::PACK_SHRINK);
 
     start_game_button->signal_clicked().connect
       (sigc::mem_fun(*this, &GamePreferencesDialog::on_start_game_clicked));
@@ -422,10 +389,6 @@ void GamePreferencesDialog::on_random_map_toggled()
     load_map_filechooser->set_sensitive(!random_map);
     random_map_container->set_sensitive(random_map);
     update_shields();
-}
-
-void GamePreferencesDialog::on_tile_size_changed()
-{
 }
 
 void GamePreferencesDialog::on_map_size_changed()
@@ -948,4 +911,56 @@ bool GamePreferencesDialog::scan_players(std::string tag, XML_Helper* helper)
 void GamePreferencesDialog::set_title(std::string text)
 {
   Decorated::set_title(text);
+}
+
+void GamePreferencesDialog::on_tile_size_changed()
+{
+  Uint32 default_id = 0;
+  Uint32 counter = 0;
+
+  tile_theme_combobox->clear_items();
+  Tilesetlist *tl = Tilesetlist::getInstance();
+  std::list<std::string> tile_themes = tl->getNames(get_active_tile_size());
+  for (std::list<std::string>::iterator i = tile_themes.begin(),
+       end = tile_themes.end(); i != end; ++i)
+    {
+      if (*i == "Default")
+	default_id = counter;
+      tile_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      counter++;
+    }
+
+  tile_theme_combobox->set_active(default_id);
+
+  army_theme_combobox->clear_items();
+  Armysetlist *al = Armysetlist::getInstance();
+  std::list<std::string> army_themes = al->getNames(get_active_tile_size());
+  counter = 0;
+  default_id = 0;
+  for (std::list<std::string>::iterator i = army_themes.begin(),
+       end = army_themes.end(); i != end; ++i)
+    {
+      if (*i == "Default")
+	default_id = counter;
+      army_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      counter++;
+    }
+
+  army_theme_combobox->set_active(default_id);
+
+  city_theme_combobox->clear_items();
+  Citysetlist *cl = Citysetlist::getInstance();
+  std::list<std::string> city_themes = cl->getNames(get_active_tile_size());
+  counter = 0;
+  default_id = 0;
+  for (std::list<std::string>::iterator i = city_themes.begin(),
+       end = city_themes.end(); i != end; ++i)
+    {
+      if (*i == "Default")
+	default_id = counter;
+      city_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      counter++;
+    }
+
+  city_theme_combobox->set_active(default_id);
 }

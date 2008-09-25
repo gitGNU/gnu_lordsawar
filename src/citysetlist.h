@@ -47,6 +47,12 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
         //! Returns the names of all citysets available to the game.
 	std::list<std::string> getNames();
 
+        //! Returns the names of citysets that have the given tile size.
+	std::list<std::string> getNames(Uint32 tilesize);
+
+        //! Returns the different tilesizes present in the citysetlist.
+	void getSizes(std::list<Uint32> &sizes);
+
 	//! Return the name of the subdirectory for a given cityset.
         /** 
          * @param cityset       The name of the cityset to get the subdir of.

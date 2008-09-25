@@ -72,11 +72,29 @@ Tilesetlist::~Tilesetlist()
     delete (*it);
 }
 
+void Tilesetlist::getSizes(std::list<Uint32> &sizes)
+{
+  for (iterator i = begin(); i != end(); i++)
+    {
+      if (find (sizes.begin(), sizes.end(), (*i)->getTileSize()) == sizes.end())
+	sizes.push_back((*i)->getTileSize());
+    }
+}
+
 std::list<std::string> Tilesetlist::getNames()
 {
   std::list<std::string> names;
   for (iterator it = begin(); it != end(); it++)
     names.push_back((*it)->getName());
+  return names;
+}
+
+std::list<std::string> Tilesetlist::getNames(Uint32 tilesize)
+{
+  std::list<std::string> names;
+  for (iterator it = begin(); it != end(); it++)
+    if ((*it)->getTileSize() == tilesize)
+      names.push_back((*it)->getName());
   return names;
 }
 

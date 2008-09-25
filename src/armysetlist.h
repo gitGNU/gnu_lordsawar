@@ -100,8 +100,14 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
          */
         std::string getName(Uint32 id) const;
 
+        //! Returns the different tilesizes present in the armysetlist.
+	void getSizes(std::list<Uint32> &sizes);
+
         //! Returns the names of all Armyset objects available to the game.
 	std::list<std::string> getNames();
+
+        //! Returns the names of armysets that have the given tile size.
+	std::list<std::string> getNames(Uint32 tilesize);
 
         /** Returns the Id of a specific armyset by name
           * 
