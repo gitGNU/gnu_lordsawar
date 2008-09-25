@@ -672,7 +672,7 @@ void TileSetWindow::fill_tile_info(Tile *tile)
   tile_name_entry->set_text(tile->getName());
   tile_type_combobox->set_active(tile->getTypeIndex());
   tile_moves_spinbutton->set_value(tile->getMoves());
-  tile_smallmap_pattern_combobox->set_active(tile->getPattern());
+  tile_smallmap_pattern_combobox->set_active(tile->getSmallTile()->getPattern());
   tile_smallmap_first_colorbutton->set_sensitive(true);
   fill_tilestylesets();
   fill_colours(tile);
@@ -735,7 +735,7 @@ void TileSetWindow::on_tile_first_color_changed()
       sdl.r = c.get_red() / 255;
       sdl.g = c.get_green() / 255;
       sdl.b = c.get_blue() / 255;
-      t->setColor(sdl);
+      t->getSmallTile()->setColor(sdl);
       fill_tile_smallmap(t);
     }
 }
@@ -755,7 +755,7 @@ void TileSetWindow::on_tile_second_color_changed()
       sdl.r = c.get_red() / 255;
       sdl.g = c.get_green() / 255;
       sdl.b = c.get_blue() / 255;
-      t->setSecondColor(sdl);
+      t->getSmallTile()->setSecondColor(sdl);
       fill_tile_smallmap(t);
     }
 }
@@ -775,7 +775,7 @@ void TileSetWindow::on_tile_third_color_changed()
       sdl.r = c.get_red() / 255;
       sdl.g = c.get_green() / 255;
       sdl.b = c.get_blue() / 255;
-      t->setThirdColor(sdl);
+      t->getSmallTile()->setThirdColor(sdl);
       fill_tile_smallmap(t);
     }
 }
@@ -784,35 +784,35 @@ void TileSetWindow::fill_colours(Tile *tile)
 {
   Gdk::Color c;
   SDL_Color sdl;
-  switch (tile->getPattern())
+  switch (tile->getSmallTile()->getPattern())
     {
-    case Tile::SOLID:
+    case SmallTile::SOLID:
       tile_smallmap_second_colorbutton->set_sensitive(false);
       tile_smallmap_third_colorbutton->set_sensitive(false);
-      sdl = tile->getColor();
+      sdl = tile->getSmallTile()->getColor();
       c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
       tile_smallmap_first_colorbutton->set_color(c);
       break;
-    case Tile::STIPPLED: case Tile::SUNKEN:
+    case SmallTile::STIPPLED: case SmallTile::SUNKEN:
       tile_smallmap_second_colorbutton->set_sensitive(true);
       tile_smallmap_third_colorbutton->set_sensitive(false);
-      sdl = tile->getColor();
+      sdl = tile->getSmallTile()->getColor();
       c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
       tile_smallmap_first_colorbutton->set_color(c);
-      sdl = tile->getSecondColor();
+      sdl = tile->getSmallTile()->getSecondColor();
       c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
       tile_smallmap_second_colorbutton->set_color(c);
       break;
-    case Tile::RANDOMIZED: case Tile::TABLECLOTH: case Tile::DIAGONAL: case Tile::CROSSHATCH:
+    case SmallTile::RANDOMIZED: case SmallTile::TABLECLOTH: case SmallTile::DIAGONAL: case SmallTile::CROSSHATCH:
       tile_smallmap_second_colorbutton->set_sensitive(true);
       tile_smallmap_third_colorbutton->set_sensitive(true);
-      sdl = tile->getColor();
+      sdl = tile->getSmallTile()->getColor();
       c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
       tile_smallmap_first_colorbutton->set_color(c);
-      sdl = tile->getSecondColor();
+      sdl = tile->getSmallTile()->getSecondColor();
       c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
       tile_smallmap_second_colorbutton->set_color(c);
-      sdl = tile->getThirdColor();
+      sdl = tile->getSmallTile()->getThirdColor();
       c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
       tile_smallmap_third_colorbutton->set_color(c);
       break;
@@ -829,8 +829,8 @@ void TileSetWindow::on_tile_pattern_changed()
       Gtk::TreeModel::Row row = *iterrow;
       Tile *t = row[tiles_columns.tile];
       int idx = tile_smallmap_pattern_combobox->get_active_row_number();
-      Tile::Pattern pattern = Tile::Pattern(idx);
-      t->setPattern(pattern);
+      SmallTile::Pattern pattern = SmallTile::Pattern(idx);
+      t->getSmallTile()->setPattern(pattern);
       fill_colours(t);
       fill_tile_smallmap(t);
     }
@@ -876,10 +876,10 @@ void TileSetWindow::fill_tile_smallmap(Tile *tile)
 	  else if (j == 32 - 1)
 	    shadowed = true;
 	  OverviewMap::draw_tile_pixel (tile_smallmap_surface, 
-					tile->getPattern(),
-					tile->getColor(),
-					tile->getSecondColor(),
-					tile->getThirdColor(),
+					tile->getSmallTile()->getPattern(),
+					tile->getSmallTile()->getColor(),
+					tile->getSmallTile()->getSecondColor(),
+					tile->getSmallTile()->getThirdColor(),
 					i, j, shadowed);
 	}
     }

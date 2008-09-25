@@ -114,7 +114,8 @@ drand(int i, int j)
   return (int) roundf(f) | i  + i + j;
 }
 
-void OverviewMap::draw_tile_pixel(SDL_Surface *surface, Tile::Pattern pattern,
+void OverviewMap::draw_tile_pixel(SDL_Surface *surface, 
+				  SmallTile::Pattern pattern,
 				  SDL_Color first_color, SDL_Color second_color,
 				  SDL_Color third_color,
 				  int i, int j, bool shadowed)
@@ -124,10 +125,10 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface, Tile::Pattern pattern,
   Uint32 first = SDL_MapRGB(surface->format, c.r, c.g, c.b);
   switch (pattern)
     {
-      case Tile::SOLID:
+      case SmallTile::SOLID:
         draw_pixel(surface, i, j, first);
         break;
-      case Tile::STIPPLED:
+      case SmallTile::STIPPLED:
         {
           SDL_Color s = second_color;
           Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
@@ -138,7 +139,7 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface, Tile::Pattern pattern,
             draw_pixel(surface, i, j, second);
         }
         break;
-      case Tile::RANDOMIZED:
+      case SmallTile::RANDOMIZED:
         {
           SDL_Color s = second_color;
           Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
@@ -154,7 +155,7 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface, Tile::Pattern pattern,
             draw_pixel(surface, i, j, third);
         }
         break;
-      case Tile::DIAGONAL:
+      case SmallTile::DIAGONAL:
         {
           SDL_Color s = second_color;
           Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
@@ -170,7 +171,7 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface, Tile::Pattern pattern,
             draw_pixel(surface, i, j, third);
         }
         break;
-      case Tile::CROSSHATCH:
+      case SmallTile::CROSSHATCH:
         {
           SDL_Color s = second_color;
           Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
@@ -186,7 +187,7 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface, Tile::Pattern pattern,
             draw_pixel(surface, i, j, third);
         }
         break;
-      case Tile::SUNKEN:
+      case SmallTile::SUNKEN:
         if (shadowed == false)
           draw_pixel(surface, i, j, first);
         else
@@ -196,7 +197,7 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface, Tile::Pattern pattern,
             draw_pixel(surface, i, j, shadow_color);
           }
         break;
-      case Tile::TABLECLOTH:
+      case SmallTile::TABLECLOTH:
           {
             SDL_Color s = second_color;
             Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);

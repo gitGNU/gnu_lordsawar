@@ -22,6 +22,7 @@
 #include "tileset.h"
 
 #include "File.h"
+#include "SmallTile.h"
 #include "xmlhelper.h"
 
 using namespace std;
@@ -50,7 +51,7 @@ Tileset::Tileset(XML_Helper *helper)
     helper->getData(d_large_selector, "large_selector");
     helper->getData(d_small_selector, "small_selector");
     helper->registerTag(Tile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
-    helper->registerTag(Tile::d_smallmap_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+    helper->registerTag(SmallTile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag(TileStyle::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag(TileStyleSet::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
 }
@@ -84,35 +85,11 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 	return true;
       }
 
-    if (tag == Tile::d_smallmap_tag)
+    if (tag == SmallTile::d_tag)
       {
-	Uint32 i;
-	SDL_Color color;
-	color.unused = 0;
 	Tile *tile = this->back();
-	helper->getData(i, "red");      color.r = i;
-	helper->getData(i, "green");    color.g = i;
-	helper->getData(i, "blue");     color.b = i;
-	tile->setColor(color);
-
-	helper->getData(i, "pattern");
-	Tile::Pattern pattern = static_cast<Tile::Pattern>(i);
-	tile->setPattern(pattern);
-    
-	if (pattern != Tile::SOLID)
-	  {
-	    helper->getData(i, "2nd_red");      color.r = i;
-	    helper->getData(i, "2nd_green");    color.g = i;
-	    helper->getData(i, "2nd_blue");     color.b = i;
-	    tile->setSecondColor(color);
-	    if (pattern != Tile::STIPPLED && pattern != Tile::SUNKEN)
-	      {
-		helper->getData(i, "3rd_red");      color.r = i;
-		helper->getData(i, "3rd_green");    color.g = i;
-		helper->getData(i, "3rd_blue");     color.b = i;
-		tile->setThirdColor(color);
-	      }
-	  }
+	SmallTile* smalltile = new SmallTile(helper);
+	tile->setSmallTile(smalltile);
 	return true;
       }
 

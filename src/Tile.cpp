@@ -18,21 +18,19 @@
 //  02110-1301, USA.
 
 #include "Tile.h"
+#include "SmallTile.h"
 #include <iostream>
 
 std::string Tile::d_tag = "tile";
-std::string Tile::d_smallmap_tag = "smallmap";
 
 using namespace std;
+
 
 Tile::Tile()
 {
   d_type = Tile::GRASS;
-  d_pattern = Tile::SOLID;
   d_moves = 0;
-  d_color.r = 80;
-  d_color.g = 172;
-  d_color.b = 28;
+  d_smalltile = new SmallTile();
 }
 
 Tile::Tile(XML_Helper* helper)
@@ -53,38 +51,7 @@ bool Tile::save(XML_Helper *helper)
   retval &= helper->saveData("moves", d_moves);
   std::string type_str = tileTypeToString(Tile::Type(d_type));
   retval &= helper->saveData("type", type_str);
-  retval &= helper->openTag(d_smallmap_tag);
-  switch (d_pattern)
-    {
-      //patterns with a single colour
-    case SOLID:
-      retval &= helper->saveData("red", d_color.r);
-      retval &= helper->saveData("green", d_color.g);
-      retval &= helper->saveData("blue", d_color.b);
-      break;
-      //patterns with two colours
-    case STIPPLED: case SUNKEN:
-      retval &= helper->saveData("red", d_color.r);
-      retval &= helper->saveData("green", d_color.g);
-      retval &= helper->saveData("blue", d_color.b);
-      retval &= helper->saveData("2nd_red", d_second_color.r);
-      retval &= helper->saveData("2nd_green", d_second_color.g);
-      retval &= helper->saveData("2nd_blue", d_second_color.b);
-      break;
-      //patterns with three colours
-    case RANDOMIZED: case TABLECLOTH: case DIAGONAL: case CROSSHATCH:
-      retval &= helper->saveData("red", d_color.r);
-      retval &= helper->saveData("green", d_color.g);
-      retval &= helper->saveData("blue", d_color.b);
-      retval &= helper->saveData("2nd_red", d_second_color.r);
-      retval &= helper->saveData("2nd_green", d_second_color.g);
-      retval &= helper->saveData("2nd_blue", d_second_color.b);
-      retval &= helper->saveData("3rd_red", d_third_color.r);
-      retval &= helper->saveData("3rd_green", d_third_color.g);
-      retval &= helper->saveData("3rd_blue", d_third_color.b);
-      break;
-    }
-  retval &= helper->closeTag();
+  retval &= d_smalltile->save(helper);
   for (Tile::iterator i = begin(); i != end(); ++i)
     retval &= (*i)->save(helper);
   retval &= helper->closeTag();

@@ -24,6 +24,7 @@
 #include "vector.h"
 #include "rectangle.h"
 #include "Tile.h"
+#include "SmallTile.h"
 
 class Maptile;
 
@@ -110,7 +111,7 @@ class OverviewMap
      */
     SDL_Surface *get_surface();
 
-    static void draw_tile_pixel(SDL_Surface *surface, Tile::Pattern pattern,
+    static void draw_tile_pixel(SDL_Surface *surface, SmallTile::Pattern pattern,
 				SDL_Color first_color, SDL_Color second_color,
 				SDL_Color third_color,
 				int i, int j, bool shadowed);

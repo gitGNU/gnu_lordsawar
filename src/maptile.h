@@ -8,6 +8,7 @@
 
 #include <list>
 #include "Tile.h"
+#include "SmallTile.h"
 #include "tileset.h"
 #include "Item.h"
 
@@ -106,19 +107,19 @@ class Maptile
 
         //! Get the smallmap color of this maptile.
         SDL_Color getColor() const
-	  {return (*d_tileSet)[d_index]->getColor();}
+	  {return (*d_tileSet)[d_index]->getSmallTile()->getColor();}
 
 	//! Get the pattern of this maptile on the smallmap.
-        Tile::Pattern getPattern() const
-	  {return (*d_tileSet)[d_index]->getPattern();}
+       SmallTile::Pattern getPattern() const
+	  {return (*d_tileSet)[d_index]->getSmallTile()->getPattern();}
 
 	//! Get the associated colour with the pattern.
         SDL_Color getSecondColor() const
-	  {return (*d_tileSet)[d_index]->getSecondColor();}
+	  {return (*d_tileSet)[d_index]->getSmallTile()->getSecondColor();}
 
 	//! Get the associated colour with the pattern.
         SDL_Color getThirdColor() const
-	  {return (*d_tileSet)[d_index]->getThirdColor();}
+	  {return (*d_tileSet)[d_index]->getSmallTile()->getThirdColor();}
 
         //! Get the tile type (the type of the underlying terrain).
         Tile::Type getMaptileType() const

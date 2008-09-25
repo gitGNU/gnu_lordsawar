@@ -27,6 +27,7 @@
 
 #include "tilestyleset.h"
 
+class SmallTile;
 //! Describes a kind of tile that a Stack can traverse.
 /** 
  * Many tiles are put together to form a tileset. Thus, a tile describes a
@@ -46,9 +47,6 @@ class Tile : public std::list<TileStyleSet*>
     public:
 	//! The xml tag of this object in a tileset configuration file.
 	static std::string d_tag; 
-
-	//! The xml tag of the smallmap section in a tileset configuration file.
-	static std::string d_smallmap_tag; 
 
         //! Enumerate the kinds of terrain that a Stack can potentially move on.
         enum Type { 
@@ -70,72 +68,6 @@ class Tile : public std::list<TileStyleSet*>
 	static std::string tileTypeToString(const Tile::Type type);
 	static Tile::Type tileTypeFromString(const std::string str);
 
-	//! The terrain tile's appearance as seen on the OverviewMap.
-	enum Pattern { 
-
-	  //! The terrain feature is shown as a single solid colour.
-	  SOLID = 0, 
-
-	  //! The terrain feature is checkered with two alternating colours.
-	  /**
-	   * The stippled pattern looks something like this:
-	   * @verbatim
-xoxoxoxo
-oxoxoxox
-xoxoxoxo
-oxoxoxox
-@endverbatim
-	   *
-	   * It is currently used for Type::FOREST, and Type::HILLS.
-	   */
-	  STIPPLED = 1, 
-
-	  //! The feature is random pixels with three different colours.
-	  /**
-	   * The random pattern looks something like this:
-	   * @verbatim
-xoexooxo
-exoxxeox
-xoeoxoxx
-eoxeooex
-@endverbatim
-	   *
-	   * It is currently used for Type::MOUNTAINS.
-	   */
-	  RANDOMIZED = 2, 
-
-	  //! The feature is shaded on the bottom and on the left.
-	  /**
-	   * The sunken pattern looks something like this:
-	   * @verbatim
-xxxxxxxo
-xxxxxxxo
-xxxxxxxo
-oooooooo
-@endverbatim
-	   *
-	   * It is currently used for Type::WATER.
-	   */
-	  SUNKEN = 3,
-
-	  //! The feature is shown as a 3 colour pattern.
-	  /**
-	   * The tablecloth pattern looks something like this:
-	   * @verbatim
-xexexexe
-eoeoeoeo
-xexexexe
-eoeoeoeo
-@endverbatim
-	   *
-	   * It is currently used for Type::SWAMP.
-	   */
-	  TABLECLOTH = 4,
-	  DIAGONAL = 5, 
-	  CROSSHATCH = 6, 
-	};
-                    
-
 	//! Default constructor.
 	Tile();
 
@@ -152,12 +84,6 @@ eoeoeoeo
         //! Get the number of movement points needed to cross this tile
         Uint32 getMoves() const {return d_moves;}
 
-        //! Get the colour associated with this tile for the smallmap.
-        SDL_Color getColor() const {return d_color;}
-
-        //! Set the colour associated with this tile for the smallmap.
-	void setColor(SDL_Color clr) {d_color = clr;}
-
         //! Get the type (grass, hill,...) of this tile type.
         Type getType() const {return d_type;}
 
@@ -168,37 +94,12 @@ eoeoeoeo
 	int getTypeIndex() {return getTypeIndexForType(d_type);}
 
 	void setTypeByIndex(int idx);
-        //! Get the pattern (solid, stippled, random) of this type.
-        Pattern getPattern() const {return d_pattern;}
-
-        //! set the pattern (solid, stippled, random) of this type.
-	void setPattern(Pattern pattern) {d_pattern = pattern;}
 
 	//! Get the name of this kind of tile (used in the editor).
 	std::string getName() const {return d_name;}
 
 	//! Set the name of this kind of tile (used in the editor).
 	void setName(std::string name) {d_name = name;}
-
-        //! Get the alternate colour associated with this tile's pattern.
-	/**
-	 * This "second" colour gets used when Tile::Pattern is
-	 * Tile::STIPPLED, Tile::RANDOMIZED, Tile::SUNKEN, or Tile::TABLECLOTH.
-	 */
-        SDL_Color getSecondColor() const {return d_second_color;}
-
-        //! Set the alternate colour associated with this tile's pattern.
-        void setSecondColor(SDL_Color color) {d_second_color = color;}
-
-        //! Get another alternate colour associated with this tile's pattern.
-	/**
-	 * This "third" colour gets used when Tile::Pattern is
-	 * Tile::RANDOMIZED, or Tile::TABLECLOTH.
-	 */
-        SDL_Color getThirdColor() const {return d_third_color;}
-
-        //! Set another alternate colour associated with this tile's pattern.
-        void setThirdColor(SDL_Color color) {d_third_color = color;}
 
 	//! Save a Tile to an opened tile configuration file.
 	/**
@@ -218,6 +119,8 @@ eoeoeoeo
 	 *         TileStyle could be found with that given style.
 	 */
 	TileStyle *getRandomTileStyle (TileStyle::Type style);
+	SmallTile * getSmallTile() {return d_smalltile;};
+	void setSmallTile(SmallTile *smalltile) {d_smalltile = smalltile;};
     private:
         // DATA
 
@@ -248,49 +151,7 @@ eoeoeoeo
 	 */
         Type d_type;
 
-	//! The general appearance of the terrain tile on the OverviewMap.
-	/**
-	 * Equates to the tileset.tile.smallmap.d_pattern XML entities in the 
-	 * tileset configuration file.
-	 */
-	Pattern d_pattern;
-
-	//! First colour.
-	/**
-	 * Equates to the following XML entities in the tileset configuration
-	 * file:
-	 * tileset.tile.smallmap.d_red 
-	 * tileset.tile.smallmap.d_green
-	 * tileset.tile.smallmap.d_blue
-	 */
-        SDL_Color d_color;
-
-	//! Second colour.
-	/**
-	 * Only used when Tile::Pattern is one of: Tile::STIPPLED, 
-	 * Tile::RANDOMIZED, Tile::SUNKEN, or Tile::TABLECLOTH.
-	 *
-	 * Equates to the following XML entities in the tileset configuration
-	 * file:
-	 * tileset.tile.smallmap.d_2nd_red 
-	 * tileset.tile.smallmap.d_2nd_green
-	 * tileset.tile.smallmap.d_2nd_blue
-	 */
-        SDL_Color d_second_color;
-
-	//! Third colour.
-	/**
-	 * Only used when Tile::Pattern is Tile::RANDOMIZED, or 
-	 * Tile::TABLECLOTH.
-	 *
-	 * Equates to the following XML entities in the tileset configuration
-	 * file:
-	 * tileset.tile.smallmap.d_3rd_red 
-	 * tileset.tile.smallmap.d_3rd_green
-	 * tileset.tile.smallmap.d_3rd_blue
-	 */
-        SDL_Color d_third_color;
-
+	SmallTile *d_smalltile;
 };
 
 #endif // TILE_H
