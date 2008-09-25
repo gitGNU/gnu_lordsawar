@@ -46,6 +46,7 @@ static bool inhibit_difficulty_combobox = false;
 
 void GamePreferencesDialog::init()
 {
+    Gtk::Box *box;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/game-preferences-dialog.glade");
 
@@ -135,6 +136,15 @@ void GamePreferencesDialog::init()
     load_map_filechooser->set_current_folder(Configuration::s_savePath);
     load_map_filechooser->set_filter(map_filter);
 
+    //fill in tile sizes combobox
+    tile_size_combobox = manage(new Gtk::ComboBoxText);
+    tile_size_combobox->append_text("40x40 pixels");
+    tile_size_combobox->append_text("80x80 pixels");
+    tile_size_combobox->set_active(0);
+    xml->get_widget("tile_size_box", box);
+    box->pack_start(*tile_size_combobox, Gtk::PACK_SHRINK);
+    tile_size_combobox->signal_changed().connect(
+	sigc::mem_fun(*this, &GamePreferencesDialog::on_tile_size_changed));
 
     // fill in tile themes combobox
     tile_theme_combobox = manage(new Gtk::ComboBoxText);
@@ -154,7 +164,6 @@ void GamePreferencesDialog::init()
 
     tile_theme_combobox->set_active(default_id);
 
-    Gtk::Box *box;
     xml->get_widget("tile_theme_box", box);
     box->pack_start(*tile_theme_combobox, Gtk::PACK_SHRINK);
 
@@ -413,6 +422,10 @@ void GamePreferencesDialog::on_random_map_toggled()
     load_map_filechooser->set_sensitive(!random_map);
     random_map_container->set_sensitive(random_map);
     update_shields();
+}
+
+void GamePreferencesDialog::on_tile_size_changed()
+{
 }
 
 void GamePreferencesDialog::on_map_size_changed()

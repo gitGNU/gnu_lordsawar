@@ -70,6 +70,7 @@ class GamePreferencesDialog: public Decorated
     Gtk::Button *start_game_button;
     Gtk::Label *game_name_label;
     Gtk::Entry *game_name_entry;
+    Gtk::ComboBoxText *tile_size_combobox;
     Gtk::ComboBoxText *tile_theme_combobox;
     Gtk::ComboBoxText *army_theme_combobox;
     Gtk::ComboBoxText *shield_theme_combobox;
@@ -128,6 +129,7 @@ class GamePreferencesDialog: public Decorated
     void on_mountains_random_toggled();
     void on_cities_random_toggled();
     void on_map_chosen();
+    void on_tile_size_changed();
     bool is_beginner();
     bool is_intermediate();
     bool is_advanced();
