@@ -1,3 +1,7 @@
+2008-09-25  Ben Asselstine
+
+	* fixed bug added tile-size selector in the game preferences dialog.
+
 2008-09-23  Ben Asselstine
 
 	* now defogging first city even if the player doesn't have a capital
