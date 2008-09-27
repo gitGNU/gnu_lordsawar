@@ -134,7 +134,7 @@ void Driver::run()
       g.quick_start = false;
       g.intense_combat = false;
       g.military_advisor = false;
-      g.army_theme = "Default";
+      g.army_theme = "default";
       g.tile_theme = "default";
       g.shield_theme = "default";
       g.city_theme = "default";
@@ -576,7 +576,7 @@ Driver::create_and_dump_scenario(const std::string &file, const GameParameters &
 
     // then fill the other players
     int c = 0;
-    int army_id = Armysetlist::getInstance()->getArmysetId(g.army_theme, 40);
+    int army_id = Armysetlist::getInstance()->getArmyset(g.army_theme)->getId();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
     for (std::vector<GameParameters::Player>::const_iterator
 	     i = g.players.begin(), end = g.players.end();
@@ -763,7 +763,7 @@ void Driver::stress_test()
   g.quick_start = false;
   g.intense_combat = false;
   g.military_advisor = false;
-  g.army_theme = "Default";
+  g.army_theme = "default";
   g.tile_theme = "default";
   g.shield_theme = "default";
   g.city_theme = "default";

@@ -119,8 +119,27 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	Uint32 getArmysetId(std::string armyset, Uint32 tilesize);
 	Armyset *getArmyset(Uint32 id);
 
+	//! Return the Armyset object by the name of the subdir.
+	/**
+	 * @param dir  The directory where the Armyset resides on disk.
+	 *             This value does not contain any slashes, and is
+	 *             presumed to be found inside the army/ directory.
+	 */
+	Armyset *getArmyset(std::string dir) { return d_armysets[dir];}
+
 	//! Returns a list of all Armyset objects available to the game.
         std::vector<Uint32> getArmysets() const;
+
+	//! Return the name of the subdirectory for a given armyset.
+        /** 
+         * @param name          The name of the Armyset to get the subdir of.
+	 * @param tilesize      The size of the Armyset to get the subdir of.
+	 *
+         * @return The name of the directory that holds the cityset.  See 
+	 *         Armyset::d_dir for more information about the nature of 
+	 *         the return value.
+         */
+	std::string getArmysetDir(std::string name, Uint32 tilesize);
 
     private:
         //! Default Constructor.  Loads all armyset objects it can find.
@@ -149,6 +168,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         typedef std::map<Uint32, std::vector<ArmyProto*> > ArmyPrototypeMap;
         typedef std::map<Uint32, std::string> NameMap;
         typedef std::map<std::string, Uint32> IdMap;
+        typedef std::map<std::string, Armyset*> ArmysetMap;
         
 	//! A map that provides Army objects by their index.
         ArmyPrototypeMap d_armies;
@@ -158,6 +178,9 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 
 	//! A map that provides Armyset:d_id by supplying a Armyset::d_name.
         IdMap d_ids;
+
+	//! A map that provides an Armyset when supplying a subdirectory name.
+        ArmysetMap d_armysets;
 
         //! A static pointer for the singleton instance.
         static Armysetlist* s_instance;

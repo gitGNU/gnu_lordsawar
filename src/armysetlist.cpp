@@ -72,6 +72,7 @@ Armysetlist::Armysetlist()
 	d_names[(*it)->getId()] = (*it)->getName();
 	d_ids[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = (*it)->getId();
 	(*it)->setSubDir(*i);
+	d_armysets[*i] = *it;
       }
 }
 
@@ -270,4 +271,9 @@ void Armysetlist::getSizes(std::list<Uint32> &sizes)
 Uint32 Armysetlist::getArmysetId(std::string armyset, Uint32 tilesize)
 {
   return d_ids[String::ucompose("%1 %2", armyset, tilesize)];
+}
+
+std::string Armysetlist::getArmysetDir(std::string name, Uint32 tilesize)
+{
+  return getArmyset(getArmysetId(name, tilesize))->getSubDir();
 }

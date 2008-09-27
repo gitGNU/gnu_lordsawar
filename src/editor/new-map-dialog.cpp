@@ -201,8 +201,9 @@ void NewMapDialog::run()
 	(Glib::filename_from_utf8(city_theme_combobox->get_active_text()),
 	 get_active_tile_size());
 
-      map.armyset = 
-	Glib::filename_from_utf8(army_theme_combobox->get_active_text());
+      map.armyset = Armysetlist::getInstance()->getArmysetDir
+	(Glib::filename_from_utf8(army_theme_combobox->get_active_text()),
+	 get_active_tile_size());
 
       if (map.fill_style == -1)
 	{
