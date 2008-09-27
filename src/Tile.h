@@ -121,6 +121,8 @@ class Tile : public std::list<TileStyleSet*>
 	TileStyle *getRandomTileStyle (TileStyle::Type style);
 	SmallTile * getSmallTile() {return d_smalltile;};
 	void setSmallTile(SmallTile *smalltile) {d_smalltile = smalltile;};
+	bool validate();
+
     private:
         // DATA
 
@@ -152,6 +154,10 @@ class Tile : public std::list<TileStyleSet*>
         Type d_type;
 
 	SmallTile *d_smalltile;
+
+	bool validateGrassAndSwamp(std::list<TileStyle::Type> types);
+	bool validateForestWaterAndHills(std::list<TileStyle::Type> types);
+	bool validateMountains(std::list<TileStyle::Type> types);
 };
 
 #endif // TILE_H

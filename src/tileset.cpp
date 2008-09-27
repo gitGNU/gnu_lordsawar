@@ -189,4 +189,14 @@ Uint32 Tileset::getDefaultTileSize()
 {
   return DEFAULT_TILE_SIZE;
 }
+
+bool Tileset::validate()
+{
+  for (Tileset::iterator i = begin(); i != end(); ++i)
+    {
+      if ((*i)->validate() == false)
+	return false;
+    }
+  return true;
+}
 // End of file

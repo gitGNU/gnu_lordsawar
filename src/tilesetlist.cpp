@@ -105,7 +105,14 @@ bool Tilesetlist::load(std::string tag, XML_Helper *helper)
   if (tag == Tileset::d_tag)
     {
       Tileset *tileset = new Tileset(helper);
-      push_back(tileset); 
+      if (tileset->validate() == true)
+	push_back(tileset); 
+      else
+	{
+	  fprintf (stderr, "tileset `%s' fails validation.\n", 
+		   tileset->getName().c_str());
+	  delete tileset;
+	}
     }
   return true;
 }

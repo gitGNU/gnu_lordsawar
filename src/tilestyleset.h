@@ -74,11 +74,13 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	bool save(XML_Helper *helper);
 
 	//! Return the subdirectory of this Tilestyleset.
-        std::string getSubDir() const {return d_dir;}
+        std::string getSubDir() const {return d_dir;};
 
 	//! Set the subdirectory of where this Tilestyleset resides on disk.
-        void setSubDir(std::string dir) {d_dir = dir;}
+        void setSubDir(std::string dir) {d_dir = dir;};
 
+	void getUniqueTileStyleTypes(std::list<TileStyle::Type> &types);
+	bool validate();
     private:
 
 	//! The name of the tilestyleset.

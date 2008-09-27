@@ -16,6 +16,7 @@
 //  02110-1301, USA.
 
 #include <SDL_image.h>
+#include <algorithm>
 #include <sigc++/functors/mem_fun.h>
 
 #include "tilestyleset.h"
@@ -56,4 +57,17 @@ bool TileStyleSet::save(XML_Helper *helper)
 
   return retval;
 }
+
+void TileStyleSet::getUniqueTileStyleTypes(std::list<TileStyle::Type> &types)
+{
+  for (TileStyleSet::iterator i = begin(); i != end(); ++i)
+    if (find (types.begin(), types.end(), (*i)->getType()) == types.end())
+      types.push_back((*i)->getType());
+}
+
+bool TileStyleSet::validate()
+{
+  return true;
+}
+
 // End of file

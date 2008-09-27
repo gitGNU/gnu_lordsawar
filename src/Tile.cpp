@@ -20,6 +20,7 @@
 #include "Tile.h"
 #include "SmallTile.h"
 #include <iostream>
+#include <algorithm>
 
 std::string Tile::d_tag = "tile";
 
@@ -148,4 +149,73 @@ Tile::Type Tile::tileTypeFromString(const std::string str)
   return Tile::GRASS;
 }
 
+      
+bool Tile::validateGrassAndSwamp(std::list<TileStyle::Type> types)
+{
+  //grass and swamp tiles only have lone styles and other styles.
+  for (std::list<TileStyle::Type>::iterator it = types.begin(); 
+       it != types.end(); it++)
+    {
+      if ((*it) != TileStyle::LONE && (*it) != TileStyle::OTHER)
+	return false;
+    }
+  return true;
+}
+
+bool Tile::validateForestWaterAndHills(std::list<TileStyle::Type> types)
+{
+  //forest, water and hill tiles have a full suite of styles
+  //"other" styles are optional.
+  if (types.size() == TileStyle::OTHER)
+    return true;
+  if (types.size() == TileStyle::OTHER - 1 &&
+      find (types.begin(), types.end(), TileStyle::OTHER) == types.end())
+    return true;
+  return false;
+}
+
+bool Tile::validateMountains(std::list<TileStyle::Type> types)
+{
+  //mountains have a full suite of styles, except lone styles.
+  //"other" styles are optional.
+  if (find (types.begin(), types.end(), TileStyle::LONE) != types.end())
+    return false;
+  if (types.size() < TileStyle::OTHER - 2)
+    return false;
+  return true;
+}
+
+bool Tile::validate()
+{
+  if (size() == 0)
+    return false;
+
+  for (Tile::iterator i = begin(); i != end(); ++i)
+    if ((*i)->validate() == false)
+      return false;
+
+  std::list<TileStyle::Type> types;
+  for (Tile::iterator i = begin(); i != end(); ++i)
+    (*i)->getUniqueTileStyleTypes(types);
+
+  if (types.empty())
+    return false;
+
+  switch (getType())
+    {
+    case Tile::GRASS: case Tile::SWAMP:
+      if (validateGrassAndSwamp(types) == false)
+	return false;
+      break;
+    case Tile::FOREST: case Tile::WATER: case Tile::HILLS:
+      if (validateForestWaterAndHills(types) == false)
+	return false;
+      break;
+    case Tile::MOUNTAIN:
+      if (validateMountains(types) == false)
+	return false;
+      break;
+    }
+  return true;
+}
 // End of file

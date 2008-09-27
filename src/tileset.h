@@ -140,6 +140,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 
 	int getFreeTileStyleId();
 
+	bool validate();
     private:
         //! Callback to load Tile objects into the Tileset.
         bool loadTile(std::string, XML_Helper* helper);
