@@ -51,6 +51,9 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	//! The xml tag of this object in a tileset configuration file.
 	static std::string d_tag; 
 
+	//! Return the default height and width of a tile in the tileset.
+	static Uint32 getDefaultTileSize();
+
 	//! Default constructor.
 	/**
 	 * Make a new Tileset.

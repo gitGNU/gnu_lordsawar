@@ -30,6 +30,7 @@
 #include "armyset.h"
 #include "File.h"
 #include "defs.h"
+#include "ucompose.hpp"
 
 
 using namespace std;
@@ -69,7 +70,7 @@ Armysetlist::Armysetlist()
 	for (Armyset::iterator ait = (*it)->begin(); ait != (*it)->end(); ait++)
 	  d_armies[(*it)->getId()].push_back(*ait);
 	d_names[(*it)->getId()] = (*it)->getName();
-	d_ids[(*it)->getName()] = (*it)->getId();
+	d_ids[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = (*it)->getId();
 	(*it)->setSubDir(*i);
       }
 }
@@ -266,3 +267,7 @@ void Armysetlist::getSizes(std::list<Uint32> &sizes)
     }
 }
 
+Uint32 Armysetlist::getArmysetId(std::string armyset, Uint32 tilesize)
+{
+  return d_ids[String::ucompose("%1 %2", armyset, tilesize)];
+}

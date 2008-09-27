@@ -55,13 +55,14 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 
 	//! Return the name of the subdirectory for a given cityset.
         /** 
-         * @param cityset       The name of the cityset to get the subdir of.
+         * @param name          The name of the cityset to get the subdir of.
+	 * @param tilesize      The size of the cityset to get the subdir of.
 	 *
          * @return The name of the directory that holds the cityset.  See 
 	 *         Cityset::d_dir for more information about the nature of 
 	 *         the return value.
          */
-	std::string getCitysetDir(std::string name) {return d_dirs[name];}
+	std::string getCitysetDir(std::string name, Uint32 tilesize);
 
 	//! Return the Cityset object by the name of the subdir.
 	/**
@@ -100,6 +101,10 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
         typedef std::map<std::string, Cityset*> CitysetMap;
 
 	//! A map that provides a subdirectory when supplying a Cityset name.
+	/**
+	 * the key for this map is actually the city name, a space, and then
+	 * the tile size.  e.g. "Default 80".
+	 */
         DirMap d_dirs;
 
 	//! A map that provides a Cityset when supplying a subdirectory name.

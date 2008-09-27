@@ -746,7 +746,7 @@ bool MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
   Stack s(NULL, src);
 
   Armysetlist *al = Armysetlist::getInstance();
-  Uint32 armyset = al->getArmysetId("Default");
+  Uint32 armyset = al->getArmysetId("Default", Tileset::getDefaultTileSize());
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
   Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);
@@ -800,7 +800,7 @@ bool MapGenerator::isAccessible (int src_x, int src_y, int dest_x, int dest_y)
   Stack s(NULL, src);
 
   Armysetlist *al = Armysetlist::getInstance();
-  Uint32 armyset = al->getArmysetId("Default");
+  Uint32 armyset = al->getArmysetId("Default", Tileset::getDefaultTileSize());
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
   Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);
@@ -828,7 +828,7 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
   Stack s(NULL, src);
 
   Armysetlist *al = Armysetlist::getInstance();
-  Uint32 armyset = al->getArmysetId("Default");
+  Uint32 armyset = al->getArmysetId("Default", Tileset::getDefaultTileSize());
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 16);
   Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);

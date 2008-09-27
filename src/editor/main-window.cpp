@@ -382,7 +382,9 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
 
     // ...however we need to do some of the setup by hand. We need to create a
     // neutral player to give cities a player upon creation...
-    Uint32 armyset_id = Armysetlist::getInstance()->getArmysetId(armyset);
+    Uint32 armyset_id = 
+      Armysetlist::getInstance()->getArmysetId(armyset,
+					       Tileset::getDefaultTileSize());
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
     Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, 
 				   ssl->getColor(shieldset, MAX_PLAYERS), 
@@ -428,7 +430,9 @@ void MainWindow::set_random_map(int width, int height,
     
     // We need to create a neutral player to give cities a player upon
     // creation...
-    Uint32 armyset_id = Armysetlist::getInstance()->getArmysetId(armyset);
+    Uint32 armyset_id = 
+      Armysetlist::getInstance()->getArmysetId(armyset,
+					       Tileset::getDefaultTileSize());
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
     Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, 
 				   ssl->getColor(shieldset, MAX_PLAYERS), 

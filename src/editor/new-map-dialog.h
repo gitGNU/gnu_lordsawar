@@ -66,6 +66,7 @@ class NewMapDialog
     Gtk::ComboBox *map_size_combobox;
     Gtk::ComboBoxText *fill_style_combobox;
     Gtk::Widget *random_map_container;
+    Gtk::ComboBoxText *tile_size_combobox;
     Gtk::ComboBoxText *tile_theme_combobox;
     Gtk::ComboBoxText *city_theme_combobox;
     Gtk::ComboBoxText *army_theme_combobox;
@@ -80,6 +81,7 @@ class NewMapDialog
     Gtk::Scale *ruins_scale;
     Gtk::Scale *temples_scale;
     Gtk::Scale *signposts_scale;
+    Gtk::Button *accept_button;
 
     enum { MAP_SIZE_NORMAL = 0, MAP_SIZE_SMALL, MAP_SIZE_TINY };
 
@@ -88,6 +90,8 @@ class NewMapDialog
 
     void add_fill_style(Tile::Type tile_type);
 
+    Uint32 get_active_tile_size();
+    void on_tile_size_changed();
     std::vector<int> fill_style;
 };
 

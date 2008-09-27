@@ -24,6 +24,7 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "citysetlist.h"
+#include "ucompose.hpp"
 #include "File.h"
 #include "defs.h"
 
@@ -62,7 +63,7 @@ Citysetlist::Citysetlist()
 	iterator it = end();
 	it--;
 	(*it)->setSubDir(*i);
-	d_dirs[(*it)->getName()] = *i;
+	d_dirs[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = *i;
 	d_citysets[*i] = *it;
       }
 }
@@ -127,3 +128,7 @@ void Citysetlist::getSizes(std::list<Uint32> &sizes)
     }
 }
 
+std::string Citysetlist::getCitysetDir(std::string name, Uint32 tilesize)
+{
+  return d_dirs[String::ucompose("%1 %2", name, tilesize)];
+}

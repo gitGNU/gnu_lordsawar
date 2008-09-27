@@ -33,6 +33,7 @@
 #include "armysetlist.h"
 #include "citysetlist.h"
 #include "shieldsetlist.h"
+#include "ucompose.hpp"
 #include "GameMap.h"
 
 
@@ -59,37 +60,57 @@ NewMapDialog::NewMapDialog()
     xml->get_widget("ruins_scale", ruins_scale);
     xml->get_widget("temples_scale", temples_scale);
     xml->get_widget("signposts_scale", signposts_scale);
+    xml->get_widget("accept_button", accept_button);
+
     // fill in tile themes combobox
-    tile_theme_combobox = manage(new Gtk::ComboBoxText);
-    shield_theme_combobox = manage(new Gtk::ComboBoxText);
-    city_theme_combobox = manage(new Gtk::ComboBoxText);
-    army_theme_combobox = manage(new Gtk::ComboBoxText);
     
     Uint32 counter = 0;
     Uint32 default_id = 0;
-    Tilesetlist *tl = Tilesetlist::getInstance();
-    std::list<std::string> tile_themes = tl->getNames();
-    for (std::list<std::string>::iterator i = tile_themes.begin(),
-	     end = tile_themes.end(); i != end; ++i)
+    Gtk::Box *box;
+
+    //fill in tile sizes combobox
+    tile_size_combobox = manage(new Gtk::ComboBoxText);
+    std::list<Uint32> sizes;
+    Tilesetlist::getInstance()->getSizes(sizes);
+    Citysetlist::getInstance()->getSizes(sizes);
+    Armysetlist::getInstance()->getSizes(sizes);
+    for (std::list<Uint32>::iterator it = sizes.begin(); it != sizes.end();
+	 it++)
       {
-	if (*i == "Default")
+	Glib::ustring s = String::ucompose(_("%1x%1"), *it);
+	tile_size_combobox->append_text(s);
+	if ((*it) == Tileset::getDefaultTileSize())
 	  default_id = counter;
-	tile_theme_combobox->append_text(Glib::filename_to_utf8(*i));
 	counter++;
       }
+    tile_size_combobox->set_active(default_id);
+    xml->get_widget("tile_size_box", box);
+    box->pack_start(*tile_size_combobox, Gtk::PACK_SHRINK);
+    tile_size_combobox->signal_changed().connect
+      (sigc::mem_fun(*this, &NewMapDialog::on_tile_size_changed));
 
-    tile_theme_combobox->set_active(default_id);
+    // make new tile themes combobox
+    tile_theme_combobox = manage(new Gtk::ComboBoxText);
+    xml->get_widget("tile_theme_box", box);
+    box->pack_start(*tile_theme_combobox, Gtk::PACK_SHRINK);
 
-    Gtk::Box *tile_set_box;
-    xml->get_widget("tile_set_box", tile_set_box);
-    tile_set_box->pack_start(*tile_theme_combobox, Gtk::PACK_SHRINK);
+    // make new army themes combobox
+    army_theme_combobox = manage(new Gtk::ComboBoxText);
+    xml->get_widget("army_theme_box", box);
+    box->pack_start(*army_theme_combobox, Gtk::PACK_SHRINK);
+
+    // make new city themes combobox
+    city_theme_combobox = manage(new Gtk::ComboBoxText);
+    xml->get_widget("city_theme_box", box);
+    box->pack_start(*city_theme_combobox, Gtk::PACK_SHRINK);
 
     counter = 0;
     default_id = 0;
+    shield_theme_combobox = manage(new Gtk::ComboBoxText);
     Shieldsetlist *sl = Shieldsetlist::getInstance();
     std::list<std::string> shield_themes = sl->getNames();
     for (std::list<std::string>::iterator i = shield_themes.begin(),
-	     end = shield_themes.end(); i != end; ++i)
+	 end = shield_themes.end(); i != end; ++i)
       {
 	if (*i == "Default")
 	  default_id = counter;
@@ -99,47 +120,10 @@ NewMapDialog::NewMapDialog()
 
     shield_theme_combobox->set_active(default_id);
 
-    Gtk::Box *shield_set_box;
-    xml->get_widget("shield_set_box", shield_set_box);
-    shield_set_box->pack_start(*shield_theme_combobox, Gtk::PACK_SHRINK);
+    xml->get_widget("shield_theme_box", box);
+    box->pack_start(*shield_theme_combobox, Gtk::PACK_SHRINK);
 
-    counter = 0;
-    default_id = 0;
-    Citysetlist *cl = Citysetlist::getInstance();
-    std::list<std::string> city_themes = cl->getNames();
-    for (std::list<std::string>::iterator i = city_themes.begin(),
-	     end = city_themes.end(); i != end; ++i)
-      {
-	if (*i == "Default")
-	  default_id = counter;
-	city_theme_combobox->append_text(Glib::filename_to_utf8(*i));
-	counter++;
-      }
-
-    city_theme_combobox->set_active(default_id);
-
-    Gtk::Box *city_set_box;
-    xml->get_widget("city_set_box", city_set_box);
-    city_set_box->pack_start(*city_theme_combobox, Gtk::PACK_SHRINK);
-
-    Gtk::Box *armyset_box;
-    xml->get_widget("armyset_box", armyset_box);
-    armyset_box->pack_start(*army_theme_combobox, Gtk::PACK_SHRINK);
-
-    counter = 0;
-    default_id = 0;
-    Armysetlist *al = Armysetlist::getInstance();
-    std::list<std::string> army_themes = al->getNames();
-    for (std::list<std::string>::iterator i = army_themes.begin(),
-	     end = army_themes.end(); i != end; ++i)
-      {
-	if (*i == "Default")
-	  default_id = counter;
-	army_theme_combobox->append_text(Glib::filename_to_utf8(*i));
-	counter++;
-      }
-
-    army_theme_combobox->set_active(default_id);
+    on_tile_size_changed();
 
     // create fill style combobox
     fill_style_combobox = manage(new Gtk::ComboBoxText);
@@ -150,22 +134,22 @@ NewMapDialog::NewMapDialog()
     add_fill_style(Tile::HILLS);
     add_fill_style(Tile::MOUNTAIN);
     add_fill_style(Tile::SWAMP);
-    
+
     fill_style_combobox->append_text(_("Random"));
     fill_style.push_back(-1);
-    
+
     Gtk::Alignment *alignment;
     xml->get_widget("fill_style_alignment", alignment);
     alignment->add(*fill_style_combobox);
 
     fill_style_combobox->signal_changed().connect(
-	sigc::mem_fun(*this, &NewMapDialog::on_fill_style_changed));
+						  sigc::mem_fun(*this, &NewMapDialog::on_fill_style_changed));
     fill_style_combobox->set_active(0);
 
     // map size
     map_size_combobox->set_active(MAP_SIZE_NORMAL);
     map_size_combobox->signal_changed().connect(
-	sigc::mem_fun(*this, &NewMapDialog::on_map_size_changed));
+						sigc::mem_fun(*this, &NewMapDialog::on_map_size_changed));
     on_map_size_changed();
 }
 
@@ -175,106 +159,170 @@ NewMapDialog::~NewMapDialog()
 
 void NewMapDialog::set_parent_window(Gtk::Window &parent)
 {
-    dialog->set_transient_for(parent);
+  dialog->set_transient_for(parent);
 }
 
 void NewMapDialog::run()
 {
-    dialog->show_all();
-    int response = dialog->run();
-    if (response == 0)		// accepted
+  dialog->show_all();
+  int response = dialog->run();
+  if (response == 0)		// accepted
     {
-	switch (map_size_combobox->get_active_row_number()) {
-	case MAP_SIZE_SMALL:
-	    map.width = MAP_SIZE_SMALL_WIDTH;
-	    map.height = MAP_SIZE_SMALL_HEIGHT;
-	    break;
-	
-	case MAP_SIZE_TINY:
-	    map.width = MAP_SIZE_TINY_WIDTH;
-	    map.height = MAP_SIZE_TINY_HEIGHT;
-	    break;
-	
-	case MAP_SIZE_NORMAL:
-	default:
-	    map.width = MAP_SIZE_NORMAL_WIDTH;
-	    map.height = MAP_SIZE_NORMAL_HEIGHT;
-	    break;
-	}
-	
-	int row = fill_style_combobox->get_active_row_number();
-	assert(row >= 0 && row < int(fill_style.size()));
-	map.fill_style = fill_style[row];
+      switch (map_size_combobox->get_active_row_number()) {
+      case MAP_SIZE_SMALL:
+	map.width = MAP_SIZE_SMALL_WIDTH;
+	map.height = MAP_SIZE_SMALL_HEIGHT;
+	break;
 
-	map.tileset = Tilesetlist::getInstance()->getTilesetDir
-	  (Glib::filename_from_utf8(tile_theme_combobox->get_active_text()));
+      case MAP_SIZE_TINY:
+	map.width = MAP_SIZE_TINY_WIDTH;
+	map.height = MAP_SIZE_TINY_HEIGHT;
+	break;
 
-	map.shieldset = Shieldsetlist::getInstance()->getShieldsetDir
-	  (Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
+      case MAP_SIZE_NORMAL:
+      default:
+	map.width = MAP_SIZE_NORMAL_WIDTH;
+	map.height = MAP_SIZE_NORMAL_HEIGHT;
+	break;
+      }
 
-	map.cityset = Citysetlist::getInstance()->getCitysetDir
-	  (Glib::filename_from_utf8(city_theme_combobox->get_active_text()));
+      int row = fill_style_combobox->get_active_row_number();
+      assert(row >= 0 && row < int(fill_style.size()));
+      map.fill_style = fill_style[row];
 
-	map.armyset = 
-	  Glib::filename_from_utf8(army_theme_combobox->get_active_text());
+      map.tileset = Tilesetlist::getInstance()->getTilesetDir
+	(Glib::filename_from_utf8(tile_theme_combobox->get_active_text()),
+	 get_active_tile_size());
 
-	if (map.fill_style == -1)
+      map.shieldset = Shieldsetlist::getInstance()->getShieldsetDir
+	(Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
+
+      map.cityset = Citysetlist::getInstance()->getCitysetDir
+	(Glib::filename_from_utf8(city_theme_combobox->get_active_text()),
+	 get_active_tile_size());
+
+      map.armyset = 
+	Glib::filename_from_utf8(army_theme_combobox->get_active_text());
+
+      if (map.fill_style == -1)
 	{
-	    map.grass = int(grass_scale->get_value());
-	    map.water = int(water_scale->get_value());
-	    map.swamp = int(swamp_scale->get_value());
-	    map.forest = int(forest_scale->get_value());
-	    map.hills = int(hills_scale->get_value());
-	    map.mountains = int(mountains_scale->get_value());
-	    map.cities = int(cities_scale->get_value());
-	    map.ruins = int(ruins_scale->get_value());
-	    map.temples = int(temples_scale->get_value());
-	    map.signposts = int(signposts_scale->get_value());
+	  map.grass = int(grass_scale->get_value());
+	  map.water = int(water_scale->get_value());
+	  map.swamp = int(swamp_scale->get_value());
+	  map.forest = int(forest_scale->get_value());
+	  map.hills = int(hills_scale->get_value());
+	  map.mountains = int(mountains_scale->get_value());
+	  map.cities = int(cities_scale->get_value());
+	  map.ruins = int(ruins_scale->get_value());
+	  map.temples = int(temples_scale->get_value());
+	  map.signposts = int(signposts_scale->get_value());
 	}
 
-	map_set = true;
+      map_set = true;
     }
-    else
-	map_set = false;
+  else
+    map_set = false;
 }
 
 void NewMapDialog::on_fill_style_changed()
 {
-    int row = fill_style_combobox->get_active_row_number();
-    assert(row >= 0 && row < int(fill_style.size()));
-    bool random_selected = fill_style[row] == -1;
-    random_map_container->set_sensitive(random_selected);
+  int row = fill_style_combobox->get_active_row_number();
+  assert(row >= 0 && row < int(fill_style.size()));
+  bool random_selected = fill_style[row] == -1;
+  random_map_container->set_sensitive(random_selected);
 }
 
 void NewMapDialog::on_map_size_changed()
 {
-    switch (map_size_combobox->get_active_row_number()) {
-    case MAP_SIZE_SMALL:
-	cities_scale->set_value(15);
-	ruins_scale->set_value(20);
-	temples_scale->set_value(20);
-	break;
-	
-    case MAP_SIZE_TINY:
-	cities_scale->set_value(10);
-	ruins_scale->set_value(15);
-	temples_scale->set_value(15);
-	break;
+  switch (map_size_combobox->get_active_row_number()) {
+  case MAP_SIZE_SMALL:
+    cities_scale->set_value(15);
+    ruins_scale->set_value(20);
+    temples_scale->set_value(20);
+    break;
 
-    case MAP_SIZE_NORMAL:
-    default:
-	cities_scale->set_value(20);
-	ruins_scale->set_value(25);
-	temples_scale->set_value(25);
-	break;
-    }
+  case MAP_SIZE_TINY:
+    cities_scale->set_value(10);
+    ruins_scale->set_value(15);
+    temples_scale->set_value(15);
+    break;
+
+  case MAP_SIZE_NORMAL:
+  default:
+    cities_scale->set_value(20);
+    ruins_scale->set_value(25);
+    temples_scale->set_value(25);
+    break;
+  }
 }
 
 void NewMapDialog::add_fill_style(Tile::Type tile_type)
 {
-    Tileset *tileset = GameMap::getInstance()->getTileset();
-    Tile *tile = (*tileset)[tileset->getIndex(tile_type)];
-    fill_style_combobox->append_text(tile->getName());
-    fill_style.push_back(tile_type);
+  Tileset *tileset = GameMap::getInstance()->getTileset();
+  Tile *tile = (*tileset)[tileset->getIndex(tile_type)];
+  fill_style_combobox->append_text(tile->getName());
+  fill_style.push_back(tile_type);
 }
 
+Uint32 NewMapDialog::get_active_tile_size()
+{
+  return (Uint32) atoi(tile_size_combobox->get_active_text().c_str());
+}
+
+void NewMapDialog::on_tile_size_changed()
+{
+  Uint32 default_id = 0;
+  Uint32 counter = 0;
+
+  tile_theme_combobox->clear_items();
+  Tilesetlist *tl = Tilesetlist::getInstance();
+  std::list<std::string> tile_themes = tl->getNames(get_active_tile_size());
+  for (std::list<std::string>::iterator i = tile_themes.begin(),
+       end = tile_themes.end(); i != end; ++i)
+    {
+      if (*i == "Default")
+	default_id = counter;
+      tile_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      counter++;
+    }
+
+  tile_theme_combobox->set_active(default_id);
+  if (tile_theme_combobox->get_children().size() == 0)
+    accept_button->set_sensitive(false);
+
+  army_theme_combobox->clear_items();
+  Armysetlist *al = Armysetlist::getInstance();
+  std::list<std::string> army_themes = al->getNames(get_active_tile_size());
+  counter = 0;
+  default_id = 0;
+  for (std::list<std::string>::iterator i = army_themes.begin(),
+       end = army_themes.end(); i != end; ++i)
+    {
+      if (*i == "Default")
+	default_id = counter;
+      army_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      counter++;
+    }
+
+  army_theme_combobox->set_active(default_id);
+  if (army_theme_combobox->get_children().size() == 0)
+    accept_button->set_sensitive(false);
+
+  city_theme_combobox->clear_items();
+  Citysetlist *cl = Citysetlist::getInstance();
+  std::list<std::string> city_themes = cl->getNames(get_active_tile_size());
+  counter = 0;
+  default_id = 0;
+  for (std::list<std::string>::iterator i = city_themes.begin(),
+       end = city_themes.end(); i != end; ++i)
+    {
+      if (*i == "Default")
+	default_id = counter;
+      city_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      counter++;
+    }
+
+  city_theme_combobox->set_active(default_id);
+  if (city_theme_combobox->get_children().size() == 0)
+    accept_button->set_sensitive(false);
+}

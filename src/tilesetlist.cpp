@@ -21,6 +21,7 @@
 #include <SDL_image.h>
 #include <SDL.h>
 #include "rectangle.h"
+#include "ucompose.hpp"
 #include <sigc++/functors/mem_fun.h>
 
 #include "tilesetlist.h"
@@ -62,7 +63,7 @@ Tilesetlist::Tilesetlist()
 	iterator it = end();
 	it--;
 	(*it)->setSubDir(*i);
-	d_dirs[(*it)->getName()] = *i;
+	d_dirs[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = *i;
 	d_tilesets[*i] = *it;
       }
 }
@@ -125,4 +126,9 @@ bool Tilesetlist::loadTileset(std::string name)
     }
 
   return true;
+}
+
+std::string Tilesetlist::getTilesetDir(std::string name, Uint32 tilesize)
+{
+  return d_dirs[String::ucompose("%1 %2", name, tilesize)];
 }

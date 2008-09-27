@@ -112,9 +112,11 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         /** Returns the Id of a specific armyset by name
           * 
           * @param armyset       the name of the armyset
+	  * @param tilesize      the height and width of tiles in the armyset.
+	  *
           * @return the id of the armyset (0 on error)
           */
-	Uint32 getArmysetId(std::string armyset) {return d_ids[armyset];}
+	Uint32 getArmysetId(std::string armyset, Uint32 tilesize);
 	Armyset *getArmyset(Uint32 id);
 
 	//! Returns a list of all Armyset objects available to the game.

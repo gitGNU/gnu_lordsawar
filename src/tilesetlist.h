@@ -57,12 +57,13 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
 	//! Return the name of the subdirectory for a given tileset.
         /** 
          * @param tileset       The name of the tileset to get the subdir of.
+	 * @param tilesize      The size of the tileset to get the subdir of.
 	 *
          * @return The name of the directory that holds the tileset.  See 
 	 *         Tileset::d_dir for more information about the nature of 
 	 *         the return value.
          */
-	std::string getTilesetDir(std::string name) {return d_dirs[name];}
+	std::string getTilesetDir(std::string name, Uint32 tilesize);
 
 	//! Return the Tileset object by the name of the subdir.
 	/**

@@ -576,7 +576,7 @@ Driver::create_and_dump_scenario(const std::string &file, const GameParameters &
 
     // then fill the other players
     int c = 0;
-    int army_id = Armysetlist::getInstance()->getArmysetId(g.army_theme);
+    int army_id = Armysetlist::getInstance()->getArmysetId(g.army_theme, 40);
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
     for (std::vector<GameParameters::Player>::const_iterator
 	     i = g.players.begin(), end = g.players.end();

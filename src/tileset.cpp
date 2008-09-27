@@ -184,4 +184,9 @@ void Tileset::setSubDir(std::string dir)
     for (Tile::iterator j = (*i)->begin(); j != (*i)->end(); j++)
       (*j)->setSubDir(dir);
 }
+
+Uint32 Tileset::getDefaultTileSize()
+{
+  return DEFAULT_TILE_SIZE;
+}
 // End of file
