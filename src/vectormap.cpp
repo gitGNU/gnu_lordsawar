@@ -334,13 +334,6 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 		    dest = planted_standard;
 		  else
 		    return;
-		  //if (flag.x <= (dest.x + dist) && dest.x >= (dest.x - dist) &&
-		      //flag.y <= (dest.y + dist) && flag.y >= (dest.y - dist))
-		    //{
-		      //dest = planted_standard;
-		    //}
-		  //else
-		    //return; //no cities, no planted flag
 		}
 	      else
 		return; //no cities, no planted flag
@@ -388,14 +381,12 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	      Vector<int>flag = planted_standard;
 	      if (planted_standard.x != -1 && planted_standard.y != -1)
 		{
-		  int dist = 4;
-		  if (flag.x <= dest.x + dist && dest.x >= dest.x - dist &&
-		      flag.y <= dest.y + dist && flag.y >= dest.y - dist)
-		    {
-		      dest = planted_standard;
-		    }
+		  unsigned int dist = 4;
+		  LocationBox loc(dest - Vector<int>(dist,dist), dist * 2);
+		  if (loc.contains(flag))
+		    dest = planted_standard;
 		  else
-		    return; //no cities, no planted flag
+		    return;
 		}
 	      else
 		return; //no cities, no planted flag
