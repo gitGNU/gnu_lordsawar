@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lordsawar 0.1.2\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-25 18:47-0400\n"
+"POT-Creation-Date: 2008-09-27 14:52-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -364,7 +364,7 @@ msgstr ""
 #: dat/glade/game-preferences-dialog.glade:885
 #: dat/glade/game-preferences-dialog.glade:906
 #: dat/glade/game-preferences-dialog.glade:927
-#: src/editor/new-map-dialog.cpp:154
+#: src/editor/new-map-dialog.cpp:138
 msgid "Random"
 msgstr ""
 
@@ -507,32 +507,32 @@ msgid "Cities"
 msgstr ""
 
 #: dat/glade/game-preferences-dialog.glade:614
-#: dat/glade/editor/new-map-dialog.glade:731
+#: dat/glade/editor/new-map-dialog.glade:786
 msgid "Mountains"
 msgstr ""
 
 #: dat/glade/game-preferences-dialog.glade:642
-#: dat/glade/editor/new-map-dialog.glade:703
+#: dat/glade/editor/new-map-dialog.glade:758
 msgid "Hills"
 msgstr ""
 
 #: dat/glade/game-preferences-dialog.glade:670
-#: dat/glade/editor/new-map-dialog.glade:675
+#: dat/glade/editor/new-map-dialog.glade:730
 msgid "Forest"
 msgstr ""
 
 #: dat/glade/game-preferences-dialog.glade:698
-#: dat/glade/editor/new-map-dialog.glade:647
+#: dat/glade/editor/new-map-dialog.glade:702
 msgid "Swamp"
 msgstr ""
 
 #: dat/glade/game-preferences-dialog.glade:726
-#: dat/glade/editor/new-map-dialog.glade:619
+#: dat/glade/editor/new-map-dialog.glade:674
 msgid "Water"
 msgstr ""
 
 #: dat/glade/game-preferences-dialog.glade:754
-#: dat/glade/editor/new-map-dialog.glade:591
+#: dat/glade/editor/new-map-dialog.glade:646
 msgid "Grass"
 msgstr ""
 
@@ -541,26 +541,27 @@ msgid "Cities can produce allies"
 msgstr ""
 
 #: dat/glade/game-preferences-dialog.glade:979
+#: dat/glade/editor/new-map-dialog.glade:139
 msgid "Tile Size:"
 msgstr ""
 
 #: dat/glade/game-preferences-dialog.glade:1028
-#: dat/glade/editor/new-map-dialog.glade:139
+#: dat/glade/editor/new-map-dialog.glade:200
 msgid "Tile Set:"
 msgstr ""
 
 #: dat/glade/game-preferences-dialog.glade:1070
-#: dat/glade/editor/new-map-dialog.glade:365
+#: dat/glade/editor/new-map-dialog.glade:359
 msgid "Army Set:"
 msgstr ""
 
 #: dat/glade/game-preferences-dialog.glade:1125
-#: dat/glade/editor/new-map-dialog.glade:200
+#: dat/glade/editor/new-map-dialog.glade:255
 msgid "Shield Set:"
 msgstr ""
 
 #: dat/glade/game-preferences-dialog.glade:1167
-#: dat/glade/editor/new-map-dialog.glade:255
+#: dat/glade/editor/new-map-dialog.glade:317
 msgid "City Set:"
 msgstr ""
 
@@ -575,7 +576,7 @@ msgstr ""
 #: dat/glade/game-preferences-dialog.glade:1272
 #: dat/glade/editor/armyset-info-dialog.glade:82
 #: dat/glade/editor/map-info-dialog.glade:29
-#: dat/glade/editor/new-map-dialog.glade:909
+#: dat/glade/editor/new-map-dialog.glade:964
 msgid "<b>Map</b>"
 msgstr ""
 
@@ -630,7 +631,7 @@ msgid "Disband"
 msgstr ""
 
 #: dat/glade/game-window.glade:144 src/gui/game-window.cpp:1114
-#: src/editor/main-window.cpp:1004
+#: src/editor/main-window.cpp:1008
 msgid "Signpost"
 msgstr ""
 
@@ -660,7 +661,7 @@ msgstr ""
 
 #: dat/glade/game-window.glade:223 dat/glade/game-window.glade:422
 #: dat/glade/history-report-dialog.glade:187 dat/glade/report-dialog.glade:320
-#: src/editor/main-window.cpp:1000
+#: src/editor/main-window.cpp:1004
 msgid "City"
 msgstr ""
 
@@ -715,7 +716,7 @@ msgstr ""
 msgid "_Preferences"
 msgstr ""
 
-#: dat/glade/game-window.glade:368 dat/glade/editor/new-map-dialog.glade:509
+#: dat/glade/game-window.glade:368 dat/glade/editor/new-map-dialog.glade:564
 msgid "Ruins"
 msgstr ""
 
@@ -1753,19 +1754,19 @@ msgstr ""
 msgid "_Create Map"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade:317
+#: dat/glade/editor/new-map-dialog.glade:414
 msgid "Fill style:"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade:453
+#: dat/glade/editor/new-map-dialog.glade:508
 msgid "Signposts"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade:481
+#: dat/glade/editor/new-map-dialog.glade:536
 msgid "Temples"
 msgstr ""
 
-#: dat/glade/editor/new-map-dialog.glade:868
+#: dat/glade/editor/new-map-dialog.glade:923
 msgid "   Cities"
 msgstr ""
 
@@ -2163,7 +2164,7 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: src/armysetlist.cpp:191 src/editor/armyset-window.cpp:422
+#: src/armysetlist.cpp:193 src/editor/armyset-window.cpp:422
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr ""
 
@@ -2281,7 +2282,7 @@ msgstr ""
 msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
 msgstr ""
 
-#: src/citysetlist.cpp:112
+#: src/citysetlist.cpp:114
 msgid "Error, while loading a cityset. Cityset Name: "
 msgstr ""
 
@@ -2344,7 +2345,7 @@ msgstr ""
 msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
 msgstr ""
 
-#: src/tilesetlist.cpp:121
+#: src/tilesetlist.cpp:130
 msgid "Error, while loading a tileset. Tileset Name: "
 msgstr ""
 
@@ -2497,15 +2498,15 @@ msgstr ""
 msgid "You have killed %i so far."
 msgstr ""
 
-#: src/player.cpp:1304
+#: src/player.cpp:1247
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr ""
 
-#: src/player.cpp:1393
+#: src/player.cpp:1336
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr ""
 
-#: src/player.cpp:2322
+#: src/player.cpp:2254
 msgid "%1 Standard"
 msgstr ""
 
@@ -2740,19 +2741,19 @@ msgstr ""
 msgid "Movement: %1"
 msgstr ""
 
-#: src/gui/game-preferences-dialog.cpp:140
+#: src/gui/game-preferences-dialog.cpp:142
 msgid "LordsAWar map files (*.map)"
 msgstr ""
 
-#: src/gui/game-preferences-dialog.cpp:153
+#: src/gui/game-preferences-dialog.cpp:155 src/editor/new-map-dialog.cpp:80
 msgid "%1x%1"
 msgstr ""
 
-#: src/gui/game-preferences-dialog.cpp:242
+#: src/gui/game-preferences-dialog.cpp:247
 msgid "New Scenario"
 msgstr ""
 
-#: src/gui/game-preferences-dialog.cpp:669
+#: src/gui/game-preferences-dialog.cpp:677
 msgid "Autogenerated"
 msgstr ""
 
@@ -2929,8 +2930,8 @@ msgid "Game was not saved!"
 msgstr ""
 
 #: src/gui/game-window.cpp:1010 src/editor/armyset-window.cpp:471
-#: src/editor/main-window.cpp:687 src/editor/main-window.cpp:714
-#: src/editor/main-window.cpp:741 src/editor/tileset-window.cpp:556
+#: src/editor/main-window.cpp:691 src/editor/main-window.cpp:718
+#: src/editor/main-window.cpp:745 src/editor/tileset-window.cpp:556
 #: src/editor/tileset-window.cpp:893
 msgid "Choose a Name"
 msgstr ""
@@ -3223,8 +3224,8 @@ msgstr ""
 msgid "Could not connect."
 msgstr ""
 
-#: src/gui/driver.cpp:604 src/editor/main-window.cpp:387
-#: src/editor/main-window.cpp:433
+#: src/gui/driver.cpp:604 src/editor/main-window.cpp:389
+#: src/editor/main-window.cpp:437
 msgid "Neutral"
 msgstr ""
 
@@ -3276,7 +3277,7 @@ msgstr ""
 msgid "Ruins and Temples"
 msgstr ""
 
-#: src/gui/ruin-report-dialog.cpp:135 src/editor/main-window.cpp:1002
+#: src/gui/ruin-report-dialog.cpp:135 src/editor/main-window.cpp:1006
 msgid "Ruin"
 msgstr ""
 
@@ -3292,7 +3293,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/gui/ruin-report-dialog.cpp:146 src/editor/main-window.cpp:1006
+#: src/gui/ruin-report-dialog.cpp:146 src/editor/main-window.cpp:1010
 msgid "Temple"
 msgstr ""
 
@@ -3503,39 +3504,39 @@ msgstr ""
 msgid "Upkeep"
 msgstr ""
 
-#: src/editor/main-window.cpp:376 src/editor/main-window.cpp:471
+#: src/editor/main-window.cpp:376 src/editor/main-window.cpp:475
 msgid "Untitled"
 msgstr ""
 
-#: src/editor/main-window.cpp:376 src/editor/main-window.cpp:471
+#: src/editor/main-window.cpp:376 src/editor/main-window.cpp:475
 msgid "No description"
 msgstr ""
 
-#: src/editor/main-window.cpp:637
+#: src/editor/main-window.cpp:641
 msgid "Choose Map to Load"
 msgstr ""
 
-#: src/editor/main-window.cpp:663
+#: src/editor/main-window.cpp:667
 msgid "Could not load map %1."
 msgstr ""
 
-#: src/editor/main-window.cpp:681 src/editor/main-window.cpp:762
+#: src/editor/main-window.cpp:685 src/editor/main-window.cpp:766
 msgid "Map was not saved!"
 msgstr ""
 
-#: src/editor/main-window.cpp:708 src/editor/main-window.cpp:735
+#: src/editor/main-window.cpp:712 src/editor/main-window.cpp:739
 msgid "Map was not exported!"
 msgstr ""
 
-#: src/editor/main-window.cpp:831
+#: src/editor/main-window.cpp:835
 msgid "Auto"
 msgstr ""
 
-#: src/editor/main-window.cpp:976
+#: src/editor/main-window.cpp:980
 msgid "(%1, %2)"
 msgstr ""
 
-#: src/editor/main-window.cpp:998
+#: src/editor/main-window.cpp:1002
 msgid "Stack"
 msgstr ""
 

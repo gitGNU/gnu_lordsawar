@@ -1,3 +1,11 @@
+2008-09-27  Ben Asselstine
+
+	* added a tile size selector to the new map dialog in the scenario
+	  editor.
+	* tilesets are now validated before using them.
+	* added new triumphs object to the player object.
+	* fixed some compiler errors on gcc 4.3.
+
 2008-09-25  Ben Asselstine
 
 	* fixed bug added tile-size selector in the game preferences dialog.

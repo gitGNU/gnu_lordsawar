@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.3.7\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-25 18:47-0400\n"
+"POT-Creation-Date: 2008-09-27 14:52-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Piotr Cychowski <cycholka@wp.pl>\n"
 "Language-Team: \n"
@@ -413,7 +413,7 @@ msgstr ""
 #: dat/glade/game-preferences-dialog.glade:885
 #: dat/glade/game-preferences-dialog.glade:906
 #: dat/glade/game-preferences-dialog.glade:927
-#: src/editor/new-map-dialog.cpp:154
+#: src/editor/new-map-dialog.cpp:138
 msgid "Random"
 msgstr "Losowa"
 
@@ -569,32 +569,32 @@ msgid "Cities"
 msgstr "Miasta"
 
 #: dat/glade/game-preferences-dialog.glade:614
-#: dat/glade/editor/new-map-dialog.glade:731
+#: dat/glade/editor/new-map-dialog.glade:786
 msgid "Mountains"
 msgstr "Góry"
 
 #: dat/glade/game-preferences-dialog.glade:642
-#: dat/glade/editor/new-map-dialog.glade:703
+#: dat/glade/editor/new-map-dialog.glade:758
 msgid "Hills"
 msgstr "Wzgórza"
 
 #: dat/glade/game-preferences-dialog.glade:670
-#: dat/glade/editor/new-map-dialog.glade:675
+#: dat/glade/editor/new-map-dialog.glade:730
 msgid "Forest"
 msgstr "Las"
 
 #: dat/glade/game-preferences-dialog.glade:698
-#: dat/glade/editor/new-map-dialog.glade:647
+#: dat/glade/editor/new-map-dialog.glade:702
 msgid "Swamp"
 msgstr "Bagno"
 
 #: dat/glade/game-preferences-dialog.glade:726
-#: dat/glade/editor/new-map-dialog.glade:619
+#: dat/glade/editor/new-map-dialog.glade:674
 msgid "Water"
 msgstr "Woda"
 
 #: dat/glade/game-preferences-dialog.glade:754
-#: dat/glade/editor/new-map-dialog.glade:591
+#: dat/glade/editor/new-map-dialog.glade:646
 msgid "Grass"
 msgstr "£±ka"
 
@@ -604,30 +604,31 @@ msgid "Cities can produce allies"
 msgstr "po³±cz jednostki"
 
 #: dat/glade/game-preferences-dialog.glade:979
+#: dat/glade/editor/new-map-dialog.glade:139
 #, fuzzy
 msgid "Tile Size:"
 msgstr "Nazwa pliku:"
 
 #: dat/glade/game-preferences-dialog.glade:1028
-#: dat/glade/editor/new-map-dialog.glade:139
+#: dat/glade/editor/new-map-dialog.glade:200
 #, fuzzy
 msgid "Tile Set:"
 msgstr "Nazwa pliku:"
 
 #: dat/glade/game-preferences-dialog.glade:1070
-#: dat/glade/editor/new-map-dialog.glade:365
+#: dat/glade/editor/new-map-dialog.glade:359
 #, fuzzy
 msgid "Army Set:"
 msgstr "Zestaw Wojsk"
 
 #: dat/glade/game-preferences-dialog.glade:1125
-#: dat/glade/editor/new-map-dialog.glade:200
+#: dat/glade/editor/new-map-dialog.glade:255
 #, fuzzy
 msgid "Shield Set:"
 msgstr "Nazwa pliku:"
 
 #: dat/glade/game-preferences-dialog.glade:1167
-#: dat/glade/editor/new-map-dialog.glade:255
+#: dat/glade/editor/new-map-dialog.glade:317
 #, fuzzy
 msgid "City Set:"
 msgstr "Miasto:"
@@ -645,7 +646,7 @@ msgstr "Wybierz drogê!"
 #: dat/glade/game-preferences-dialog.glade:1272
 #: dat/glade/editor/armyset-info-dialog.glade:82
 #: dat/glade/editor/map-info-dialog.glade:29
-#: dat/glade/editor/new-map-dialog.glade:909
+#: dat/glade/editor/new-map-dialog.glade:964
 #, fuzzy
 msgid "<b>Map</b>"
 msgstr "¦wi±tynia"
@@ -709,7 +710,7 @@ msgid "Disband"
 msgstr "Lizbona"
 
 #: dat/glade/game-window.glade:144 src/gui/game-window.cpp:1114
-#: src/editor/main-window.cpp:1004
+#: src/editor/main-window.cpp:1008
 #, fuzzy
 msgid "Signpost"
 msgstr "Opcje"
@@ -744,7 +745,7 @@ msgstr "CJednostka"
 
 #: dat/glade/game-window.glade:223 dat/glade/game-window.glade:422
 #: dat/glade/history-report-dialog.glade:187 dat/glade/report-dialog.glade:320
-#: src/editor/main-window.cpp:1000
+#: src/editor/main-window.cpp:1004
 msgid "City"
 msgstr "Miasto"
 
@@ -808,7 +809,7 @@ msgstr "Pe³ny ekran"
 msgid "_Preferences"
 msgstr "Pelerine"
 
-#: dat/glade/game-window.glade:368 dat/glade/editor/new-map-dialog.glade:509
+#: dat/glade/game-window.glade:368 dat/glade/editor/new-map-dialog.glade:564
 msgid "Ruins"
 msgstr "Ruiny"
 
@@ -1988,21 +1989,21 @@ msgstr "Nowa Gra"
 msgid "_Create Map"
 msgstr "Stwórz Now± Mapê"
 
-#: dat/glade/editor/new-map-dialog.glade:317
+#: dat/glade/editor/new-map-dialog.glade:414
 #, fuzzy
 msgid "Fill style:"
 msgstr "Typ pliku:"
 
-#: dat/glade/editor/new-map-dialog.glade:453
+#: dat/glade/editor/new-map-dialog.glade:508
 #, fuzzy
 msgid "Signposts"
 msgstr "Opcje"
 
-#: dat/glade/editor/new-map-dialog.glade:481
+#: dat/glade/editor/new-map-dialog.glade:536
 msgid "Temples"
 msgstr "¦wi±tynie"
 
-#: dat/glade/editor/new-map-dialog.glade:868
+#: dat/glade/editor/new-map-dialog.glade:923
 #, fuzzy
 msgid "   Cities"
 msgstr "Miasta"
@@ -2456,7 +2457,7 @@ msgstr ""
 msgid "Other"
 msgstr "Inne"
 
-#: src/armysetlist.cpp:191 src/editor/armyset-window.cpp:422
+#: src/armysetlist.cpp:193 src/editor/armyset-window.cpp:422
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
 
@@ -2581,7 +2582,7 @@ msgstr ""
 msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
 msgstr "B³±d w GameMap::fillMap: rozmiary siê nie zgadzaj±. Zamykam.\n"
 
-#: src/citysetlist.cpp:112
+#: src/citysetlist.cpp:114
 #, fuzzy
 msgid "Error, while loading a cityset. Cityset Name: "
 msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
@@ -2652,7 +2653,7 @@ msgstr "GraphicsCache::getFlagPic: nie dostarczono grupy! Zamykam...\n"
 msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
 msgstr "GraphicsCache::getFlagPic: nie dostarczono grupy! Zamykam...\n"
 
-#: src/tilesetlist.cpp:121
+#: src/tilesetlist.cpp:130
 #, fuzzy
 msgid "Error, while loading a tileset. Tileset Name: "
 msgstr "B³±d przy wczytywaniu zestawu wojsk. Nazwa zestawu: "
@@ -2823,16 +2824,16 @@ msgstr "Tworzenie mapy zakoñczone ... 100%"
 msgid "You have killed %i so far."
 msgstr "Dotychczas zabi³e¶ %i"
 
-#: src/player.cpp:1304
+#: src/player.cpp:1247
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr ""
 "B³±d: przeszukuj±ca grupa i ruiny nie znajduj± siê w tym samym miejscu\n"
 
-#: src/player.cpp:1393
+#: src/player.cpp:1336
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Grupa usi³owa³a odwiedziæ ¶wi±tyniê w niew³a¶ciwym miejscu\n"
 
-#: src/player.cpp:2322
+#: src/player.cpp:2254
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Jednostki Standardowe"
@@ -3102,21 +3103,21 @@ msgstr "Utrzymanie: %i"
 msgid "Movement: %1"
 msgstr "Ruch: %i"
 
-#: src/gui/game-preferences-dialog.cpp:140
+#: src/gui/game-preferences-dialog.cpp:142
 #, fuzzy
 msgid "LordsAWar map files (*.map)"
 msgstr "Pliki map"
 
-#: src/gui/game-preferences-dialog.cpp:153
+#: src/gui/game-preferences-dialog.cpp:155 src/editor/new-map-dialog.cpp:80
 msgid "%1x%1"
 msgstr ""
 
-#: src/gui/game-preferences-dialog.cpp:242
+#: src/gui/game-preferences-dialog.cpp:247
 #, fuzzy
 msgid "New Scenario"
 msgstr "Zarz±dzaj Scenariuszem"
 
-#: src/gui/game-preferences-dialog.cpp:669
+#: src/gui/game-preferences-dialog.cpp:677
 msgid "Autogenerated"
 msgstr ""
 
@@ -3316,8 +3317,8 @@ msgid "Game was not saved!"
 msgstr "Gra Zapisana"
 
 #: src/gui/game-window.cpp:1010 src/editor/armyset-window.cpp:471
-#: src/editor/main-window.cpp:687 src/editor/main-window.cpp:714
-#: src/editor/main-window.cpp:741 src/editor/tileset-window.cpp:556
+#: src/editor/main-window.cpp:691 src/editor/main-window.cpp:718
+#: src/editor/main-window.cpp:745 src/editor/tileset-window.cpp:556
 #: src/editor/tileset-window.cpp:893
 #, fuzzy
 msgid "Choose a Name"
@@ -3639,8 +3640,8 @@ msgstr ""
 msgid "Could not connect."
 msgstr "Nie uda³o siê wczytaæ mapy "
 
-#: src/gui/driver.cpp:604 src/editor/main-window.cpp:387
-#: src/editor/main-window.cpp:433
+#: src/gui/driver.cpp:604 src/editor/main-window.cpp:389
+#: src/editor/main-window.cpp:437
 msgid "Neutral"
 msgstr "Neutralny"
 
@@ -3696,7 +3697,7 @@ msgstr "bonus"
 msgid "Ruins and Temples"
 msgstr "Zrujnowana ¦wi±tynia"
 
-#: src/gui/ruin-report-dialog.cpp:135 src/editor/main-window.cpp:1002
+#: src/gui/ruin-report-dialog.cpp:135 src/editor/main-window.cpp:1006
 msgid "Ruin"
 msgstr "Ruiny"
 
@@ -3713,7 +3714,7 @@ msgstr "Tak"
 msgid "No"
 msgstr "Nie"
 
-#: src/gui/ruin-report-dialog.cpp:146 src/editor/main-window.cpp:1006
+#: src/gui/ruin-report-dialog.cpp:146 src/editor/main-window.cpp:1010
 msgid "Temple"
 msgstr "¦wi±tynia"
 
@@ -3967,45 +3968,45 @@ msgstr "Ruch:"
 msgid "Upkeep"
 msgstr "Utrzymanie:"
 
-#: src/editor/main-window.cpp:376 src/editor/main-window.cpp:471
+#: src/editor/main-window.cpp:376 src/editor/main-window.cpp:475
 msgid "Untitled"
 msgstr ""
 
-#: src/editor/main-window.cpp:376 src/editor/main-window.cpp:471
+#: src/editor/main-window.cpp:376 src/editor/main-window.cpp:475
 #, fuzzy
 msgid "No description"
 msgstr "Opis:"
 
-#: src/editor/main-window.cpp:637
+#: src/editor/main-window.cpp:641
 #, fuzzy
 msgid "Choose Map to Load"
 msgstr "Wybierz Zestaw Terenów"
 
-#: src/editor/main-window.cpp:663
+#: src/editor/main-window.cpp:667
 #, fuzzy
 msgid "Could not load map %1."
 msgstr "Nie uda³o siê wczytaæ mapy "
 
-#: src/editor/main-window.cpp:681 src/editor/main-window.cpp:762
+#: src/editor/main-window.cpp:685 src/editor/main-window.cpp:766
 #, fuzzy
 msgid "Map was not saved!"
 msgstr "Gra Zapisana"
 
-#: src/editor/main-window.cpp:708 src/editor/main-window.cpp:735
+#: src/editor/main-window.cpp:712 src/editor/main-window.cpp:739
 #, fuzzy
 msgid "Map was not exported!"
 msgstr "Gra Zapisana"
 
-#: src/editor/main-window.cpp:831
+#: src/editor/main-window.cpp:835
 #, fuzzy
 msgid "Auto"
 msgstr "O programie"
 
-#: src/editor/main-window.cpp:976
+#: src/editor/main-window.cpp:980
 msgid "(%1, %2)"
 msgstr ""
 
-#: src/editor/main-window.cpp:998
+#: src/editor/main-window.cpp:1002
 msgid "Stack"
 msgstr "Grupa"
 
