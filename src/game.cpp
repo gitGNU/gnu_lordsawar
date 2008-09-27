@@ -836,7 +836,7 @@ void Game::update_control_panel()
   if (stack)
     {
       can_move_selected_stack_along_path.emit
-	(!stack->getPath()->empty() && stack->enoughMoves() ||
+	((!stack->getPath()->empty() && stack->enoughMoves()) ||
 	 (!stack->getPath()->empty() && stack->getPath()->getMovesExhaustedAtPoint() > 0));
 
       /*

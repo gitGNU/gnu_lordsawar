@@ -75,7 +75,7 @@ void TriumphsDialog::run()
   dialog->run();
 }
 
-Uint32 TriumphsDialog::tally(Player *p, Player::TriumphType type)
+Uint32 TriumphsDialog::tally(Player *p, Triumphs::TriumphType type)
 {
   Playerlist *pl = Playerlist::getInstance();
   Uint32 count = 0;
@@ -83,12 +83,12 @@ Uint32 TriumphsDialog::tally(Player *p, Player::TriumphType type)
     {
       // add up what the other players did to us
       for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-	count += p->getTriumphTally(*it, type);
+	count += p->getTriumphs()->getTriumphTally(*it, type);
     }
   else
     {
       // add up what we did to that player
-      count = d_player->getTriumphTally(p, type);
+      count = d_player->getTriumphs()->getTriumphTally(p, type);
     }
   return count;
 }
@@ -101,7 +101,7 @@ void TriumphsDialog::fill_in_page(Player *p)
 	
   Uint32 count;
   Glib::ustring s;
-  count = tally(p, Player::TALLY_HERO);
+  count = tally(p, Triumphs::TALLY_HERO);
   if (p == d_player)
     s = String::ucompose (ngettext("%1 hero earned fates worthy of legend!",
 				   "%1 heroes earned fates worthy of legend!",
@@ -131,7 +131,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   hero_hbox->pack_start(*manage(hero_image), Gtk::PACK_SHRINK, 10);
   hero_hbox->pack_start(*manage(hero_label), Gtk::PACK_SHRINK, 10);
 
-  count = tally(p, Player::TALLY_SHIP);
+  count = tally(p, Triumphs::TALLY_SHIP);
   if (p == d_player)
     s = String::ucompose (ngettext("%1 navy not currently in service!",
 				   "%1 navies not currently in service!",
@@ -146,7 +146,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   ship_hbox->pack_start(*manage(ship_image), Gtk::PACK_SHRINK, 10);
   ship_hbox->pack_start(*manage(ship_label), Gtk::PACK_SHRINK, 10);
 
-  count = tally(p, Player::TALLY_NORMAL);
+  count = tally(p, Triumphs::TALLY_NORMAL);
   if (p == d_player)
     s = String::ucompose (ngettext("%1 army died to ensure final victory!",
 				   "%1 armies died to ensure final victory!",
@@ -162,7 +162,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   normal_hbox->pack_start(*manage(normal_image), Gtk::PACK_SHRINK, 10);
   normal_hbox->pack_start(*manage(normal_label), Gtk::PACK_SHRINK, 10);
 
-  count = tally(p, Player::TALLY_SPECIAL);
+  count = tally(p, Triumphs::TALLY_SPECIAL);
   if (p == d_player)
     s = String::ucompose 
       (ngettext ("%1 unnatural creature returned from whence it came!",
@@ -191,7 +191,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   special_hbox->pack_start(*manage(special_image), Gtk::PACK_SHRINK, 10);
   special_hbox->pack_start(*manage(special_label), Gtk::PACK_SHRINK, 10);
 
-  count = tally(p, Player::TALLY_FLAG);
+  count = tally(p, Triumphs::TALLY_FLAG);
   if (p == d_player)
     s = String::ucompose (ngettext ("%1 standard betrayed by it's guardian!",
 				    "%1 standards betrayed by it's guardian!",

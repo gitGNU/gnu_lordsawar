@@ -51,6 +51,8 @@ Uint32 GamePreferencesDialog::get_active_tile_size()
 
 void GamePreferencesDialog::init()
 {
+    Uint32 counter = 0;
+    Uint32 default_id = 0;
     Gtk::Box *box;
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path() + "/game-preferences-dialog.glade");
@@ -152,8 +154,11 @@ void GamePreferencesDialog::init()
       {
 	Glib::ustring s = String::ucompose(_("%1x%1"), *it);
 	tile_size_combobox->append_text(s);
+	if ((*it) == 40)
+	  default_id = counter;
+	counter++;
       }
-    tile_size_combobox->set_active(0);
+    tile_size_combobox->set_active(default_id);
     xml->get_widget("tile_size_box", box);
     box->pack_start(*tile_size_combobox, Gtk::PACK_SHRINK);
     tile_size_combobox->signal_changed().connect(
@@ -181,8 +186,8 @@ void GamePreferencesDialog::init()
     
     Shieldsetlist *sl = Shieldsetlist::getInstance();
     std::list<std::string> shield_themes = sl->getNames();
-    Uint32 counter = 0;
-    Uint32 default_id = 0;
+    counter = 0;
+    default_id = 0;
     for (std::list<std::string>::iterator i = shield_themes.begin(),
 	     end = shield_themes.end(); i != end; ++i)
       {
@@ -931,6 +936,8 @@ void GamePreferencesDialog::on_tile_size_changed()
     }
 
   tile_theme_combobox->set_active(default_id);
+  if (tile_theme_combobox->get_children().size() == 0)
+    start_game_button->set_sensitive(false);
 
   army_theme_combobox->clear_items();
   Armysetlist *al = Armysetlist::getInstance();
@@ -947,6 +954,8 @@ void GamePreferencesDialog::on_tile_size_changed()
     }
 
   army_theme_combobox->set_active(default_id);
+  if (army_theme_combobox->get_children().size() == 0)
+    start_game_button->set_sensitive(false);
 
   city_theme_combobox->clear_items();
   Citysetlist *cl = Citysetlist::getInstance();
@@ -963,4 +972,6 @@ void GamePreferencesDialog::on_tile_size_changed()
     }
 
   city_theme_combobox->set_active(default_id);
+  if (city_theme_combobox->get_children().size() == 0)
+    start_game_button->set_sensitive(false);
 }

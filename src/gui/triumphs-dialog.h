@@ -24,7 +24,9 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/notebook.h>
 
-#include "player.h"
+class Player;
+
+#include "Triumphs.h"
 
 #include "decorated.h"
 //
@@ -48,7 +50,7 @@ class TriumphsDialog: public Decorated
 
     void fill_in_info();
     void fill_in_page(Player *p);
-    Uint32 tally(Player *p, Player::TriumphType type);
+    Uint32 tally(Player *p, Triumphs::TriumphType type);
 };
 
 #endif

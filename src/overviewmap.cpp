@@ -111,7 +111,7 @@ drand(int i, int j)
 {
   float f = i / 43 * j / 43;
   f *= 10000000;
-  return (int) roundf(f) | i  + i + j;
+  return (int) roundf(f) | (i  + i + j);
 }
 
 void OverviewMap::draw_tile_pixel(SDL_Surface *surface, 

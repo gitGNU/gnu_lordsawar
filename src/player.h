@@ -58,6 +58,7 @@ class Signpost;
 class VectoredUnit;
 class ArmyProto;
 class Item;
+class Triumphs;
 
 //! The abstract player class.
 /** 
@@ -117,8 +118,6 @@ class Player: public sigc::trackable
     public:
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
-	//! The xml tag of the triumphs subobject in a saved-game file.
-	static std::string d_triumphs_tag; 
 
         //! The available player types.
         enum Type {
@@ -156,20 +155,6 @@ class Player: public sigc::trackable
 	  PROPOSE_WAR_IN_FIELD = 2, 
 	  //! Offer all-out war to an opponent.
 	  PROPOSE_WAR = 3 
-	};
-
-	//! Every player keeps a tally of frags.
-        enum TriumphType {
-	  //! Kills we've made of an opponent's Hero army units.
-	  TALLY_HERO = 0, 
-	  //! Kills we've made of an opponent's awardable Army units.
-	  TALLY_SPECIAL = 1, 
-	  //! Kills we've made of an opponents other Army units.
-	  TALLY_NORMAL = 2, 
-	  //! Kills we've made of an opponent's Army units on the water.
-	  TALLY_SHIP = 3, 
-	  //! Kills we've made of opponent's Heroes who carry a standard Item.
-	  TALLY_FLAG = 4
 	};
 
         /** 
@@ -426,20 +411,6 @@ class Player: public sigc::trackable
 	//! Returns the player's current score.
         Uint32 getScore();
 
-	/**
-	 * The player's triumphs are tallied as opponent's armies die.
-	 * This method gets a tally for certain kind of triumph.  
-	 * See TriumphsDialog for a caller of this method.
-	 *
-	 * @param player      The player to obtain a tally for.
-	 * @param type        The kind of kills to tally (Player::TriumphType).
-	 *
-	 * @return Zero or more number of armies killed.
-	 */
-	//! Returns a number of armies killed.
-	Uint32 getTriumphTally(Player *player, TriumphType type) const
-	  {return d_triumph[player->getId()][type];}
-
         //! Returns the list of stacks (Stacklist) owned by the player.
         Stacklist* getStacklist() const {return d_stacklist;}
 
@@ -448,6 +419,9 @@ class Player: public sigc::trackable
 
         //! Get the FogMap of the player.
         FogMap* getFogMap() const {return d_fogmap;}
+
+        //! Get the Triumphs of the player.
+        Triumphs* getTriumphs() const {return d_triumphs;}
 
         //! Get the fight order of the player.
 	std::list<Uint32> getFightOrder() const {return d_fight_order;}
@@ -1355,15 +1329,14 @@ class Player: public sigc::trackable
 	//! What the player can see on the hidden map.
         FogMap* d_fogmap;
 
+	//! A tally of the kills that this player has made
+        Triumphs* d_triumphs;
+
 	//! The order in which this Player's army types fight in battle.
 	/**
 	 * @note This value is related to the Player's ArmySet.
 	 */
 	std::list<Uint32> d_fight_order; 
-
-	//! A set of statistics for this Player.
-	// 5 is max TriumphType + 1
-	Uint32 d_triumph[MAX_PLAYERS][5]; 
 
 	//! How many gold pieces the Player paid out in the last turn.
 	Uint32 d_upkeep;
@@ -1522,7 +1495,6 @@ class Player: public sigc::trackable
         // return how much gold we got out
         int lootCity(City *city);
         void takeCityInPossession(City* c);
-	void tallyTriumph(Player *p, TriumphType type);
 };
 
 extern sigc::signal<void, Player::Type>  sendingTurn;

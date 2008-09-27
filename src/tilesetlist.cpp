@@ -16,6 +16,7 @@
 //  02110-1301, USA.
 
 #include <iostream>
+#include <algorithm>
 #include <expat.h>
 #include <SDL_image.h>
 #include <SDL.h>

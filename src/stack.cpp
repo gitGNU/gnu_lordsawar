@@ -290,7 +290,7 @@ Army* Stack::getStrongestArmy(bool hero) const
 
   for (const_iterator it = begin(); it != end(); ++it)
     {
-      if ((*it)->isHero() && hero || !hero)
+      if (((*it)->isHero() && hero) || !hero)
 	{
 	  if ((*it)->getStat(Army::STRENGTH) > highest_strength)
 	    {

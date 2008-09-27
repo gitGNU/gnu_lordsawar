@@ -76,7 +76,8 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         vectoredunit.cpp vectoredunit.h \
         vectoredunitlist.cpp vectoredunitlist.h xmlhelper.cpp xmlhelper.h \
         rectangle.h vector.h ucompose.hpp Campaign.cpp Campaign.h \
-	SightMap.cpp SightMap.h SmallTile.cpp SmallTile.h
+	SightMap.cpp SightMap.h SmallTile.cpp SmallTile.h \
+	Triumphs.cpp Triumphs.h
 
 liblordsawarnet_la_SOURCES = \
 	game-client.cpp game-client.h \

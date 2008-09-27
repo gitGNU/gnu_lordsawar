@@ -403,7 +403,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(0, army);
 
-  if ((rand() % 10) < 3 && !isCapital() && likely < 1 ||
+  if (((rand() % 10) < 3 && !isCapital() && likely < 1) ||
       template_army->getAwardable())
     {
       sortProduction();
@@ -423,7 +423,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(1, army);
 
-  if ((rand() % 10) < 4 && !isCapital() && likely < 2 ||
+  if (((rand() % 10) < 4 && !isCapital() && likely < 2) ||
       template_army->getAwardable())
     {
       sortProduction();
@@ -446,7 +446,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(2, army);
 
-  if ((rand() % 10) < 6 && !isCapital() && likely < 3 ||
+  if (((rand() % 10) < 6 && !isCapital() && likely < 3) ||
       template_army->getAwardable())
     {
       sortProduction();
@@ -737,7 +737,7 @@ const ArmyProdBase *City::getProductionBaseBelongingTo(const Army *army)
 {
   if (!army)
     return NULL;
-  for (unsigned int i = 0; i < this->getMaxNoOfProductionBases(); i++)
+  for (int i = 0; i < this->getMaxNoOfProductionBases(); i++)
     {
       const ArmyProdBase* armyprodbase = this->getProductionBase(i);
       if (armyprodbase == NULL)

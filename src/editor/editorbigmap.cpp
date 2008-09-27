@@ -692,8 +692,8 @@ void EditorBigMap::change_map_under_cursor()
 		for (int x = tile.x - 1; x <= tile.x + 1; ++x)
 		    for (int y = tile.y - 1; y <= tile.y + 1; ++y)
 		    {
-			if (x < 0 || x >= GameMap::getWidth() &&
-			    y < 0 || y >= GameMap::getHeight())
+			if ((x < 0 || x >= GameMap::getWidth()) &&
+			    (y < 0 || y >= GameMap::getHeight()))
 			    continue;
 
 			Vector<int> pos(x, y);

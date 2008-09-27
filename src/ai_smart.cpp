@@ -86,7 +86,7 @@ bool AI_Smart::startTurn()
 
     AI_setupVectoring(18, 2, 30);
 
-    int loopCount = 0;
+    //int loopCount = 0;
     while (true)
     {
         // if the code is working, this loop will eventually terminate.

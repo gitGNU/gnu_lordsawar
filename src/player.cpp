@@ -60,6 +60,7 @@
 #include "vectoredunit.h"
 #include "ucompose.hpp"
 #include "armyprodbase.h"
+#include "Triumphs.h"
 
 using namespace std;
 
@@ -67,7 +68,6 @@ using namespace std;
 #define debug(x)
 
 std::string Player::d_tag = "player";
-std::string Player::d_triumphs_tag = "triumphs";
 
 // signal
 sigc::signal<void, Player::Type> sendingTurn;
@@ -94,8 +94,6 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, int width,
       d_fight_order.push_back(i);
     }
 
-    memset(d_triumph, 0, sizeof(d_triumph));
-
     for (unsigned int i = 0 ; i < MAX_PLAYERS; i++)
     {
       d_diplomatic_state[i] = AT_PEACE;
@@ -104,6 +102,8 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, int width,
     }
     d_diplomatic_rank = 0;
     d_diplomatic_title = std::string("");
+
+    d_triumphs = new Triumphs();
 }
 
 Player::Player(const Player& player)
@@ -148,6 +148,8 @@ Player::Player(const Player& player)
       }
     d_diplomatic_rank = player.d_diplomatic_rank;
     d_diplomatic_title = player.d_diplomatic_title;
+
+    d_triumphs = new Triumphs(*player.getTriumphs());
 }
 
 Player::Player(XML_Helper* helper)
@@ -228,7 +230,7 @@ Player::Player(XML_Helper* helper)
     helper->registerTag(History::d_tag, sigc::mem_fun(this, &Player::load));
     helper->registerTag(Stacklist::d_tag, sigc::mem_fun(this, &Player::load));
     helper->registerTag(FogMap::d_tag, sigc::mem_fun(this, &Player::load));
-    helper->registerTag(d_triumphs_tag, sigc::mem_fun(this, &Player::load));
+    helper->registerTag(Triumphs::d_tag, sigc::mem_fun(this, &Player::load));
 
 }
 
@@ -530,35 +532,7 @@ bool Player::save(XML_Helper* helper) const
 
     retval &= d_stacklist->save(helper);
     retval &= d_fogmap->save(helper);
-
-    //save the triumphs
-	    
-    helper->openTag(Player::d_triumphs_tag);
-    for (unsigned int i = 0; i < 5; i++)
-      {
-	std::stringstream tally;
-	for (unsigned int j = 0; j < MAX_PLAYERS; j++)
-	    tally << d_triumph[j][i] << " ";
-	switch (TriumphType(i))
-	  {
-	  case TALLY_HERO:
-	    retval &= helper->saveData("hero", tally.str());
-	    break;
-	  case TALLY_NORMAL:
-	    retval &= helper->saveData("normal", tally.str());
-	    break;
-	  case TALLY_SPECIAL:
-	    retval &= helper->saveData("special", tally.str());
-	    break;
-	  case TALLY_SHIP:
-	    retval &= helper->saveData("ship", tally.str());
-	    break;
-	  case TALLY_FLAG:
-	    retval &= helper->saveData("flag", tally.str());
-	    break;
-	  }
-      }
-    helper->closeTag();
+    retval &= d_triumphs->save(helper);
 
     return retval;
 }
@@ -608,39 +582,8 @@ bool Player::load(string tag, XML_Helper* helper)
     if (tag == FogMap::d_tag)
         d_fogmap = new FogMap(helper);
 
-    if (tag == Player::d_triumphs_tag)
-      {
-	for (unsigned int i = 0; i < 5; i++)
-	  {
-	    std::string tally;
-	    std::stringstream stally;
-	    Uint32 val;
-	    switch (TriumphType(i))
-	      {
-	      case TALLY_HERO:
-		helper->getData(tally, "hero");
-		break;
-	      case TALLY_NORMAL:
-		helper->getData(tally, "normal");
-		break;
-	      case TALLY_SPECIAL:
-		helper->getData(tally, "special");
-		break;
-	      case TALLY_SHIP:
-		helper->getData(tally, "ship");
-		break;
-	      case TALLY_FLAG:
-		helper->getData(tally, "flag");
-		break;
-	      }
-	    stally.str(tally);
-	    for (unsigned int j = 0; j < MAX_PLAYERS; j++)
-	      {
-		stally >> val;
-		d_triumph[j][i] = val;
-	      }
-	  }
-      }
+    if (tag == Triumphs::d_tag)
+	d_triumphs = new Triumphs(helper);
 
     return true;
 }
@@ -2074,23 +2017,28 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
             {
 		//Tally up the triumphs
 		if ((*sit)->getAwardable()) //hey a special died
-		  tallyTriumph((*sit)->getOwner(), TALLY_SPECIAL);
+		  d_triumphs->tallyTriumph((*sit)->getOwner(), 
+					   Triumphs::TALLY_SPECIAL);
 		else if ((*sit)->isHero() == false)
-		  tallyTriumph((*sit)->getOwner(), TALLY_NORMAL);
+		  d_triumphs->tallyTriumph((*sit)->getOwner(), 
+					   Triumphs::TALLY_NORMAL);
 		if ((*sit)->getStat(Army::SHIP, false)) //hey it was on a boat
-		  tallyTriumph((*sit)->getOwner(), TALLY_SHIP);
+		  d_triumphs->tallyTriumph((*sit)->getOwner(), 
+					   Triumphs::TALLY_SHIP);
                 debug("Army: " << (*sit)->getName())
                 debug("Army: " << (*sit)->getXpReward())
                 if ((*sit)->isHero())
                 {
-		  tallyTriumph((*sit)->getOwner(), TALLY_HERO);
+		  d_triumphs->tallyTriumph((*sit)->getOwner(), 
+					   Triumphs::TALLY_HERO);
 		  Hero *hero = dynamic_cast<Hero*>((*sit));
 		  std::list<Item*> backpack = hero->getBackpack();
 		  for (std::list<Item*>::iterator i = backpack.begin(), 
 		       end = backpack.end(); i != end; ++i)
 		    {
 		      if ((*i)->isPlantable())
-			tallyTriumph((*sit)->getOwner(), TALLY_FLAG);
+			d_triumphs->tallyTriumph((*sit)->getOwner(), 
+						 Triumphs::TALLY_FLAG);
 		    }
                     //one of our heroes died
                     //drop hero's stuff
@@ -2286,22 +2234,6 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
           }
         it++;
     }
-}
-
-void Player::tallyTriumph(Player *p, TriumphType type)
-{
-  //ignore monsters in a ruin who aren't owned by a player
-  if (!p) 
-    return;
-  Uint32 id = p->getId();
-  //let's not tally fratricide
-  if (p == this) 
-    return;
-  //let's not tally neutrals
-  if (p == Playerlist::getInstance()->getNeutral()) 
-    return;
-  //we (this player) have killed P's army. it was of type TYPE.
-  d_triumph[id][type]++;
 }
 
 Hero* Player::doRecruitHero(HeroProto* herotemplate, City *city, int cost, int alliesCount, const ArmyProto *ally)
