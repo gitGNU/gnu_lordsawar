@@ -3,7 +3,7 @@ MAINTAINERCLEANFILES= Makefile.in
 
 map_bigstarkdir = $(datadir)/lordsawar/tilesets/bigstark
 map_bigstark_DATA = \
-    bigdefault.xml \
+    bigstark.xml \
     grass.png \
     water.png \
     forest.png \
@@ -13,7 +13,7 @@ map_bigstark_DATA = \
 
 EXTRA_DIST = \
     README \
-    bigdefault.xml \
+    bigstark.xml \
     grass.png \
     water.png \
     forest.png \

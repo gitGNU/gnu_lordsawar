@@ -3,7 +3,7 @@ MAINTAINERCLEANFILES= Makefile.in
 
 map_starkdir = $(datadir)/lordsawar/tilesets/stark
 map_stark_DATA = \
-    default.xml \
+    stark.xml \
     grass.png \
     water.png \
     forest.png \
@@ -13,7 +13,7 @@ map_stark_DATA = \
 
 EXTRA_DIST = \
     README \
-    default.xml \
+    stark.xml \
     grass.png \
     water.png \
     forest.png \
