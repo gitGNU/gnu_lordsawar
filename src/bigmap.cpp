@@ -52,7 +52,7 @@
 #include "GraphicsLoader.h"
 #include "MapRenderer.h"
 #include "FogMap.h"
-
+#include "sdl-draw.h"
 
 #include <iostream>
 using namespace std;
@@ -67,6 +67,8 @@ BigMap::BigMap()
 
     // note: we are not fully initialized before set_view is called
     view.x = view.y = 0;
+
+    d_grid_toggled = false;
 }
 
 BigMap::~BigMap()
@@ -705,6 +707,24 @@ void BigMap::draw_buffer(Rectangle map_view, SDL_Surface *surface)
 	}
     }
 
+  // draw the grid
+  if (d_grid_toggled)
+    {
+      for (int x = map_view.x; x < map_view.x + map_view.w; x++)
+	{
+	  for (int y = map_view.y; y < map_view.y + map_view.h; y++)
+	    {
+	      if (x < GameMap::getWidth() && y < GameMap::getHeight())
+		{
+		  Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
+		  Uint32 raw = SDL_MapRGB(surface->format, 0, 0, 0);
+		  draw_rect_clipped(surface, p.x, p.y, p.x + tilesize,
+				    p.y + tilesize, raw);
+		}
+	    }
+	}
+    }
+
   // fog it up
   for (int x = map_view.x; x < map_view.x + map_view.w; x++)
     {
@@ -761,4 +781,10 @@ void BigMap::magnify()
   r.w = magnified_buffer->w;
   r.h = magnified_buffer->h;
   SDL_SoftStretch (buffer, &s, magnified_buffer, &r);
+}
+
+void BigMap::toggle_grid()
+{
+  d_grid_toggled = !d_grid_toggled;
+  draw(true);
 }

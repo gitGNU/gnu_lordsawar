@@ -225,6 +225,7 @@ class GameWindow: public Decorated
     
     void on_fight_order_activated();
     void on_levels_activated();
+    void on_grid_toggled();
     void on_ruin_report_activated();
     void on_army_bonus_activated();
     void on_city_history_activated();

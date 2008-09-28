@@ -401,6 +401,15 @@
 			  <accelerator key="s" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="toggle_grid_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Toggle _Grid</property>
+			  <property name="use_underline">True</property>
+			  <accelerator key="g" modifiers="GDK_SHIFT_MASK" signal="activate"/>
+			</widget>
+		      </child>
 		    </widget>
 		  </child>
 		</widget>

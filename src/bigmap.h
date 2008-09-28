@@ -82,6 +82,7 @@ class BigMap: public sigc::trackable
 
     //! Save the current view as an image (bmp file).
     bool saveViewAsBitmap(std::string filename);
+    void toggle_grid();
     
  protected:
     MapRenderer* d_renderer;
@@ -97,6 +98,7 @@ class BigMap: public sigc::trackable
     bool input_locked;
 
     SDL_Surface* d_itempic;
+    bool d_grid_toggled;
 
     // helpers
     Vector<int> mouse_pos_to_tile(Vector<int> pos);

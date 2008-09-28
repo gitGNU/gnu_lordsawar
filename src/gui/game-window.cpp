@@ -256,6 +256,8 @@ GameWindow::GameWindow()
       (sigc::mem_fun(*this, &GameWindow::on_save_game_as_activated));
     xml->connect_clicked("quit_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_quit_activated));
+    xml->connect_clicked("toggle_grid_menuitem", 
+			 sigc::mem_fun(*this, &GameWindow::on_grid_toggled));
     xml->connect_clicked("army_report_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_army_report_activated));
     xml->connect_clicked("city_report_menuitem", 
@@ -3005,3 +3007,9 @@ void GameWindow::on_player_replaced(Player *p)
 {
   game->addPlayer(p);
 }
+
+void GameWindow::on_grid_toggled()
+{
+  game->get_bigmap().toggle_grid();
+}
+
