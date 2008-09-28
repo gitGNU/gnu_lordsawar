@@ -3,6 +3,8 @@
 	* increased number of possible tile styles from 256 to 65535.
 	* added new void tile type that can't be flown over.
 	* fixed bug #24394. fixed counting of triumphs.
+	* added the ability to show a grid on the map.  Suggested by Rob
+	  Kinyon.
 
 2008-09-27  Ben Asselstine
 
