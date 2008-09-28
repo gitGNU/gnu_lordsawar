@@ -440,6 +440,13 @@ Vector<int> OverviewMap::mapFromScreen(Vector<int> pos)
 
 Vector<int> OverviewMap::mapToSurface(Vector<int> pos)
 {
+    if (pos.x < 0 || pos.y < 0
+	   || pos.x >= GameMap::getWidth() || pos.y >= GameMap::getHeight())
+      {
+	printf ("pos.x is %d, pos.y is %d\n", pos.x, pos.y);
+	printf ("width is %d, height is %d\n", GameMap::getWidth(),
+		GameMap::getHeight());
+      }
     assert(pos.x >= 0 && pos.y >= 0
 	   && pos.x < GameMap::getWidth() && pos.y < GameMap::getHeight());
 

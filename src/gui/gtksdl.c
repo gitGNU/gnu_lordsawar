@@ -142,11 +142,14 @@ static void gtk_sdl_destroy (GtkObject *object)
 
 static void gtk_sdl_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 {
+  DEBUG_OUT ("before sdl size allocate");
   g_return_if_fail (widget != NULL);
   g_return_if_fail (GTK_IS_SDL (widget));
   g_return_if_fail (allocation != NULL);
 
   widget->allocation = *allocation;
+
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
   if (GTK_WIDGET_REALIZED (widget)) {
     gdk_window_move_resize (widget->window,
 			    allocation->x, allocation->y,
@@ -154,6 +157,7 @@ static void gtk_sdl_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 
     gtk_sdl_attach_surface (GTK_SDL(widget));
   }
+  DEBUG_OUT ("after sdl size allocate");
 }
 
 static void gtk_sdl_realize (GtkWidget *widget)
@@ -192,6 +196,7 @@ static void gtk_sdl_realize (GtkWidget *widget)
 
   gtk_widget_set_double_buffered(widget, FALSE);
 
+  gtk_sdl_size_allocate (widget, &widget->allocation);
   DEBUG_OUT ("after sdl realize");
 }
 

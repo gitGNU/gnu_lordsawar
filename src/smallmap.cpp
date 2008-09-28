@@ -37,6 +37,8 @@
 SmallMap::SmallMap()
 {
     input_locked = false;
+    view.pos = Vector<int>(0, 0);
+    view.dim = Vector<int>(3, 3);
 }
 
 void SmallMap::set_view(Rectangle new_view)
@@ -97,7 +99,7 @@ void SmallMap::center_view_on_pixel(Vector<int> pos, bool slide)
     slide_view(Rectangle(pos.x, pos.y, view.w, view.h));
   else
     set_view(Rectangle(pos.x, pos.y, view.w, view.h));
-	  
+
   view_changed.emit(view);
 }
 
