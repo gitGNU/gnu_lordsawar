@@ -140,6 +140,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 
 	int getFreeTileStyleId();
 
+	int getLargestTileStyleId();
+
 	bool validate();
     private:
         //! Callback to load Tile objects into the Tileset.

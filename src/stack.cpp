@@ -592,8 +592,7 @@ Uint32 Stack::calculateMoveBonus() const
   if (landed == false ||
       (num_landedother == 0 && num_landedhero <= num_flyer)) 
     {
-      d_bonus = Tile::GRASS | Tile::WATER | Tile::FOREST | Tile::HILLS |
-	Tile::MOUNTAIN | Tile::SWAMP;
+      d_bonus = Tile::isFlying();
       return d_bonus;
     }
 
@@ -609,8 +608,7 @@ Uint32 Stack::calculateMoveBonus() const
 	    {
 	      if ((*item)->getBonus(Item::FLYSTACK))
 		{
-		  d_bonus = Tile::GRASS | Tile::WATER | Tile::FOREST | 
-		    Tile::HILLS | Tile::MOUNTAIN | Tile::SWAMP;
+		  d_bonus = Tile::isFlying();
 		  return d_bonus;
 		}
 	    }
@@ -634,8 +632,7 @@ Uint32 Stack::calculateMoveBonus() const
 bool Stack::isFlying () const
 {
   Uint32 d_bonus = calculateMoveBonus();
-  if (d_bonus == (Tile::GRASS | Tile::WATER | Tile::FOREST | Tile::HILLS |
-		  Tile::MOUNTAIN | Tile::SWAMP))
+  if (d_bonus == Tile::isFlying())
     return true;
   else
     return false;

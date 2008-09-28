@@ -106,6 +106,45 @@ GameMap::GameMap(std::string TilesetName, std::string ShieldsetName,
 
 }
 
+void GameMap::processStyles(std::string styles, int chars_per_style)
+{
+  int c = chars_per_style;
+    int offset = 0;
+    for (int j = 0; j < s_height; j++)
+    {
+        // remove newline and carriage return lines
+        char test = styles[j*s_width*c + offset];
+        while (test == '\n' || test == '\r')
+        {
+            offset++;
+            test = styles[j*s_width*c + offset];
+        }
+
+        for (int i = 0; i < s_width; i++)
+        {
+	    char hexstr[15];
+            //due to the circumstances, styles is a long stream of
+            //hex digit pairs, so read it character for character
+	    hexstr[0] = '0';
+	    hexstr[1] = 'x';
+	    memcpy (&hexstr[2], &styles[j*s_width*c + (i * c) + offset], c);
+	    hexstr[2 + c + 1 - 1] = '\0';
+
+	    unsigned long int val = 0;
+	    char *end = NULL;
+	    val = strtoul (hexstr, &end, 16);
+	    Uint32 id = (Uint32) val;
+	    TileStyle *style = d_tileSet->getTileStyle(id);
+	    d_map[j*s_width + i]->setTileStyle(style);
+        }
+    }
+}
+    
+int GameMap::determineCharsPerStyle(std::string styles)
+{
+  return styles.length() / (s_width * s_height);
+}
+
 GameMap::GameMap(XML_Helper* helper)
 {
     std::string types;
@@ -153,36 +192,8 @@ GameMap::GameMap(XML_Helper* helper)
         }
     }
 
-    offset = 0;
-    for (int j = 0; j < s_height; j++)
-    {
-        // remove newline and carriage return lines
-        char test = styles[j*s_width*2 + offset];
-        while (test == '\n' || test == '\r')
-        {
-            offset++;
-            test = styles[j*s_width*2 + offset];
-        }
-
-        for (int i = 0; i < s_width; i++)
-        {
-	    char hexstr[5];
-            //due to the circumstances, styles is a long stream of
-            //hex digit pairs, so read it character for character
-	    hexstr[0] = '0';
-	    hexstr[1] = 'x';
-	    hexstr[2] = styles[j*s_width*2 + (i * 2) + offset];  
-	    hexstr[3] = styles[j*s_width*2 + (i * 2) + offset + 1];
-	    hexstr[4] = '\0';
-
-	    unsigned long int val = 0;
-	    char *end = NULL;
-	    val = strtoul (hexstr, &end, 16);
-	    Uint32 id = (Uint32) val;
-	    TileStyle *style = d_tileSet->getTileStyle(id);
-	    d_map[j*s_width + i]->setTileStyle(style);
-        }
-    }
+    int chars_per_style = determineCharsPerStyle(styles);
+    processStyles(styles, chars_per_style);
 
     //add some callbacks for item loading
     helper->registerTag(GameMap::d_itemstack_tag, 
@@ -265,13 +276,20 @@ bool GameMap::save(XML_Helper* helper) const
 
     std::stringstream styles;
     styles <<endl;
+	    
+    int largest_style_id = d_tileSet->getLargestTileStyleId();
     for (int i = 0; i < s_height; i++)
     {
         for (int j = 0; j < s_width; j++)
 	  {
 	    char *hexstr = NULL;
 	    TileStyle *style = getTile(j, i)->getTileStyle();
-	    asprintf (&hexstr, "%02x", style->getId());
+	    if (largest_style_id < 256)
+	      asprintf (&hexstr, "%02x", style->getId());
+	    else if (largest_style_id < 4096)
+	      asprintf (&hexstr, "%03x", style->getId());
+	    else if (largest_style_id < 65536)
+	      asprintf (&hexstr, "%04x", style->getId());
             styles << hexstr;
 	    free (hexstr);
 	  }
@@ -417,6 +435,8 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                     continue;
                   if (!land && getTile(x, y)->getType() != Tile::WATER)
                     continue;
+                  if (land && getTile(x, y)->getType() == Tile::VOID)
+		    continue;
                   if (land && getTile(x, y)->getType() == Tile::MOUNTAIN &&
 		      (a->getStat(Army::MOVE_BONUS) & Tile::MOUNTAIN) == 0)
                     continue;
@@ -532,6 +552,11 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
       if (from->getMaptileType() == Tile::MOUNTAIN &&
 	  Roadlist::getInstance()->getObjectAt(x, y) == NULL)
         return true;
+
+      if (from->getMaptileType() == Tile::VOID)
+	return true;
+      if (to->getMaptileType() == Tile::VOID)
+	return true;
     }
  return false;
 }

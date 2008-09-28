@@ -311,6 +311,11 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
 	      //am i blocked from entering sx,sy from pos?
 	      if (!flying && isBlockedDir(pos.x, pos.y, sx, sy))
 		continue;
+	      //flyers can't go through the void
+	      if (flying && isBlockedDir(pos.x, pos.y, sx, sy) &&
+		  GameMap::getInstance()->getTile(sx, sy)->getMaptileType()
+		  == Tile::VOID)
+		continue;
 
 	      int dsxy = distance[sy*width+sx];
 	      if (dsxy < -1)

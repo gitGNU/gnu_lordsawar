@@ -343,8 +343,7 @@ SDL_Surface* GraphicsCache::getSignpostPic()
 SDL_Surface* GraphicsCache::getMoveBonusPic(Uint32 bonus, bool has_ship)
 {
   Uint32 type;
-  if (bonus & Tile::FOREST && bonus & Tile::HILLS && bonus & Tile::WATER &&
-      bonus & Tile::MOUNTAIN && bonus & Tile::SWAMP) // show fly icon
+  if (bonus == Tile::isFlying()) // show fly icon
     type = 4; 
   else if (bonus & Tile::FOREST && bonus & Tile::HILLS) // show trees and hills
     type = 3;

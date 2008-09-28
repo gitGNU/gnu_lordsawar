@@ -411,7 +411,8 @@ Water
 Forest
 Hills
 Mountains
-Swamp</property>
+Swamp
+Void</property>
 					  <property name="add_tearoffs">False</property>
 					  <property name="focus_on_click">True</property>
 					</widget>

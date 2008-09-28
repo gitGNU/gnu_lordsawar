@@ -138,6 +138,8 @@ std::string ArmyBase::moveFlagsToString(const Uint32 bonus)
     move_bonuses += " " + Tile::tileTypeToString(Tile::MOUNTAIN);
   if (bonus & Tile::SWAMP)
     move_bonuses += " " + Tile::tileTypeToString(Tile::SWAMP);
+  if (bonus & Tile::VOID)
+    move_bonuses += " " + Tile::tileTypeToString(Tile::VOID);
   return move_bonuses;
 }
 

@@ -181,6 +181,8 @@ class GameMap: public sigc::trackable
         bool isBlockedAvenue(int x, int y, int destx, int desty);
         bool isDock(int x, int y);
 	void close_circles (int minx, int miny, int maxx, int maxy);
+	void processStyles(std::string styles, int chars_per_style);
+	int determineCharsPerStyle(std::string styles);
 
 	TileStyle *calculatePreferredStyle(int i, int j);
 	void demote_lone_tile(int minx, int miny, int maxx, int maxy, 

@@ -65,6 +65,7 @@ bool SmallTile::save(XML_Helper *helper)
   bool retval = true;
 
   retval &= helper->openTag(d_tag);
+  retval &= helper->saveData("pattern", d_pattern);
   switch (d_pattern)
     {
       //patterns with a single colour

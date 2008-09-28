@@ -156,7 +156,7 @@ Tile *Tileset::lookupTileByName(std::string name)
 	
 int Tileset::getFreeTileStyleId()
 {
-  int ids[256];
+  int ids[65535];
   memset (ids, 0, sizeof (ids));
   for (Tileset::iterator i = begin(); i != end(); ++i)
     {
@@ -168,13 +168,30 @@ int Tileset::getFreeTileStyleId()
 	    }
 	}
     }
-  //these ids range from 0 to 255.
-  for (unsigned int i = 0; i < 256; i++)
+  //these ids range from 0 to 65535.
+  for (unsigned int i = 0; i <= 65535; i++)
     {
       if (ids[i] == 0)
 	return i;
     }
   return -1;
+}
+
+int Tileset::getLargestTileStyleId()
+{
+  int largest = 0;
+  for (Tileset::iterator i = begin(); i != end(); ++i)
+    {
+      for (std::list<TileStyleSet*>::iterator j = (*i)->begin(); j != (*i)->end(); j++)
+	{
+	  for (std::vector<TileStyle*>::iterator k = (*j)->begin(); k != (*j)->end(); k++)
+	    {
+	      if ((*k)->getId() > largest)
+		largest = (*k)->getId();
+	    }
+	}
+    }
+  return largest;
 }
 
 void Tileset::setSubDir(std::string dir)

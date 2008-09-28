@@ -63,7 +63,9 @@ class Tile : public std::list<TileStyleSet*>
 	  //! Very hilly terrain, generally not passable except by flight.
 	  MOUNTAIN = 8, 
 	  //! Marshy terrain.
-	  SWAMP = 16 
+	  SWAMP = 16,
+	  //! Terrain that no army units can cross, even when flying.
+	  VOID = 32
 	};
 	static std::string tileTypeToString(const Tile::Type type);
 	static Tile::Type tileTypeFromString(const std::string str);
@@ -123,6 +125,9 @@ class Tile : public std::list<TileStyleSet*>
 	void setSmallTile(SmallTile *smalltile) {d_smalltile = smalltile;};
 	bool validate();
 
+	static Uint32 isFlying() 
+	  {return FOREST | HILLS | WATER | SWAMP | MOUNTAIN;};
+
     private:
         // DATA
 
@@ -155,8 +160,8 @@ class Tile : public std::list<TileStyleSet*>
 
 	SmallTile *d_smalltile;
 
-	bool validateGrassAndSwamp(std::list<TileStyle::Type> types);
-	bool validateForestWaterAndHills(std::list<TileStyle::Type> types);
+	bool validateGrass(std::list<TileStyle::Type> types);
+	bool validateForestWaterSwampAndHills(std::list<TileStyle::Type> types);
 	bool validateMountains(std::list<TileStyle::Type> types);
 };
 

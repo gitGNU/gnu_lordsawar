@@ -76,6 +76,7 @@ void Tile::setTypeByIndex(int idx)
     case 3: setType(HILLS); break;
     case 4: setType(MOUNTAIN); break;
     case 5: setType(SWAMP); break;
+    case 6: setType(VOID); break;
     }
 }
 int Tile::getTypeIndexForType(Tile::Type type)
@@ -88,6 +89,7 @@ int Tile::getTypeIndexForType(Tile::Type type)
     case HILLS: return 3; break;
     case MOUNTAIN: return 4; break;
     case SWAMP: return 5; break;
+    case VOID: return 6; break;
     }
   return 0;
 }
@@ -126,6 +128,8 @@ std::string Tile::tileTypeToString(const Tile::Type type)
       return "Tile::MOUNTAIN";
     case Tile::SWAMP:
       return "Tile::SWAMP";
+    case Tile::VOID:
+      return "Tile::VOID";
     }
   return "Tile::GRASS";
 }
@@ -146,13 +150,15 @@ Tile::Type Tile::tileTypeFromString(const std::string str)
     return Tile::MOUNTAIN;
   else if (str == "Tile::SWAMP")
     return Tile::SWAMP;
+  else if (str == "Tile::VOID")
+    return Tile::VOID;
   return Tile::GRASS;
 }
 
       
-bool Tile::validateGrassAndSwamp(std::list<TileStyle::Type> types)
+bool Tile::validateGrass(std::list<TileStyle::Type> types)
 {
-  //grass and swamp tiles only have lone styles and other styles.
+  //grass tiles only have lone styles and other styles.
   for (std::list<TileStyle::Type>::iterator it = types.begin(); 
        it != types.end(); it++)
     {
@@ -162,7 +168,7 @@ bool Tile::validateGrassAndSwamp(std::list<TileStyle::Type> types)
   return true;
 }
 
-bool Tile::validateForestWaterAndHills(std::list<TileStyle::Type> types)
+bool Tile::validateForestWaterSwampAndHills(std::list<TileStyle::Type> types)
 {
   //forest, water and hill tiles have a full suite of styles
   //"other" styles are optional.
@@ -203,12 +209,13 @@ bool Tile::validate()
 
   switch (getType())
     {
-    case Tile::GRASS: case Tile::SWAMP:
-      if (validateGrassAndSwamp(types) == false)
+    case Tile::GRASS:
+      if (validateGrass(types) == false)
 	return false;
       break;
-    case Tile::FOREST: case Tile::WATER: case Tile::HILLS:
-      if (validateForestWaterAndHills(types) == false)
+    case Tile::FOREST: case Tile::WATER: case Tile::HILLS: 
+    case Tile::SWAMP: case Tile::VOID:
+      if (validateForestWaterSwampAndHills(types) == false)
 	return false;
       break;
     case Tile::MOUNTAIN:
