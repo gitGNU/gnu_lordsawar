@@ -1,7 +1,7 @@
 SUBDIRS = misc
 MAINTAINERCLEANFILES= Makefile.in
 
-map_defaultdir = $(datadir)/lordsawar/tilesets/default
+map_defaultdir = $(datadir)/lordsawar/tilesets/stark
 map_default_DATA = \
     default.xml \
     grass.png \

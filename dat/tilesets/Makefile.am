@@ -1,2 +1,2 @@
-SUBDIRS = default bigdefault
+SUBDIRS = default bigdefault stark bigstark
 MAINTAINERCLEANFILES= Makefile.in
