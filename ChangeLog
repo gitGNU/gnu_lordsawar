@@ -1,3 +1,9 @@
+2008-09-28  Ben Asselstine
+
+	* increased number of possible tile styles from 256 to 65535.
+	* added new void tile type that can't be flown over.
+	* fixed bug #24394. fixed counting of triumphs.
+
 2008-09-27  Ben Asselstine
 
 	* added a tile size selector to the new map dialog in the scenario
