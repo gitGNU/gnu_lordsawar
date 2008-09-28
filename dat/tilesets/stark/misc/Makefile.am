@@ -1,7 +1,7 @@
 MAINTAINERCLEANFILES= Makefile.in
 
-map_defaultdir = $(datadir)/lordsawar/tilesets/stark/misc
-map_default_DATA = \
+map_starkdir = $(datadir)/lordsawar/tilesets/stark/misc
+map_stark_DATA = \
 	flags.png \
 	roads.png \
 	bridges.png \
