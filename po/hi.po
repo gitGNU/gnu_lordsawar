@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.6\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-27 18:37-0400\n"
+"POT-Creation-Date: 2008-09-28 16:17-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: विभू ॠषि <vibhu.rishi@gmail.com>\n"
 "Language-Team: Hindi <vibhu.rishi@gmail.com>\n"
@@ -1352,7 +1352,7 @@ msgstr ""
 
 #: dat/glade/editor/armyset-window.glade:420
 #: dat/glade/editor/tileset-selector-editor-dialog.glade:176
-#: dat/glade/editor/tileset-window.glade:959
+#: dat/glade/editor/tileset-window.glade:960
 #, fuzzy
 msgid "Select A File"
 msgstr "Seleziona un oggetto"
@@ -2296,31 +2296,32 @@ msgid ""
 "Forest\n"
 "Hills\n"
 "Mountains\n"
-"Swamp"
+"Swamp\n"
+"Void"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:486
+#: dat/glade/editor/tileset-window.glade:487
 msgid "Smallmap Appearance:"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:582
+#: dat/glade/editor/tileset-window.glade:583
 #, fuzzy
 msgid "Pattern:"
 msgstr "Giocatore:"
 
-#: dat/glade/editor/tileset-window.glade:610
+#: dat/glade/editor/tileset-window.glade:611
 msgid "First Colour:"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:638
+#: dat/glade/editor/tileset-window.glade:639
 msgid "Second Colour:"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:666
+#: dat/glade/editor/tileset-window.glade:667
 msgid "Third Colour:"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:696
+#: dat/glade/editor/tileset-window.glade:697
 msgid ""
 "Solid\n"
 "Stippled\n"
@@ -2331,15 +2332,15 @@ msgid ""
 "Crosshatched"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:934
+#: dat/glade/editor/tileset-window.glade:935
 msgid "Image File:"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:990
+#: dat/glade/editor/tileset-window.glade:991
 msgid "Refresh Image from File"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:1074
+#: dat/glade/editor/tileset-window.glade:1075
 msgid ""
 "Lone\n"
 "Outer Top-Left\n"
@@ -2360,22 +2361,22 @@ msgid ""
 "Other"
 msgstr ""
 
-#: dat/glade/editor/tileset-window.glade:1151
+#: dat/glade/editor/tileset-window.glade:1152
 #, fuzzy
 msgid "<b>Tile Style</b>"
 msgstr "मंदिर"
 
-#: dat/glade/editor/tileset-window.glade:1192
+#: dat/glade/editor/tileset-window.glade:1193
 #, fuzzy
 msgid "<b>Tile Style Set</b>"
 msgstr "मंदिर"
 
-#: dat/glade/editor/tileset-window.glade:1226
+#: dat/glade/editor/tileset-window.glade:1227
 #, fuzzy
 msgid "<b>Tile Style Sets</b>"
 msgstr "मंदिर"
 
-#: dat/glade/editor/tileset-window.glade:1260
+#: dat/glade/editor/tileset-window.glade:1261
 #, fuzzy
 msgid "<b>Tile</b>"
 msgstr "मंदिर"
@@ -2571,7 +2572,7 @@ msgstr "Turno अगला"
 msgid "Running Dog"
 msgstr ""
 
-#: src/GameMap.cpp:222
+#: src/GameMap.cpp:233
 msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
 msgstr "Errore nella GameMap::fillMap la size non corrisponde!! Sto Uscendo.\n"
 
@@ -2637,11 +2638,11 @@ msgstr ""
 msgid "Unexplored"
 msgstr ""
 
-#: src/GraphicsCache.cpp:744
+#: src/GraphicsCache.cpp:743
 msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
 msgstr "GraphicsCache::getFlagPic: nessun gruppo come argomento! Esco...\n"
 
-#: src/GraphicsCache.cpp:777
+#: src/GraphicsCache.cpp:776
 #, fuzzy
 msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
 msgstr "GraphicsCache::getFlagPic: nessun gruppo come argomento! Esco...\n"
@@ -3008,61 +3009,61 @@ msgstr ""
 msgid "where something important can be found!"
 msgstr ""
 
-#: src/gui/triumphs-dialog.cpp:106
+#: src/gui/triumphs-dialog.cpp:110
 msgid "%1 hero earned fates worthy of legend!"
 msgid_plural "%1 heroes earned fates worthy of legend!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:111
+#: src/gui/triumphs-dialog.cpp:115
 msgid "%1 so-called hero slaughtered without mercy!"
 msgid_plural "%1 so-called heroes slaughtered without mercy!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:136
+#: src/gui/triumphs-dialog.cpp:140
 msgid "%1 navy not currently in service!"
 msgid_plural "%1 navies not currently in service!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:140
+#: src/gui/triumphs-dialog.cpp:144
 msgid "%1 navy rests with the fishes!"
 msgid_plural "%1 navies rest with the fishes!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:151
+#: src/gui/triumphs-dialog.cpp:155
 msgid "%1 army died to ensure final victory!"
 msgid_plural "%1 armies died to ensure final victory!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:155
+#: src/gui/triumphs-dialog.cpp:159
 msgid "%1 army smote like sheep!"
 msgid_plural "%1 armies smote like sheep!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:168
+#: src/gui/triumphs-dialog.cpp:172
 msgid "%1 unnatural creature returned from whence it came!"
 msgid_plural "%1 unnatural creatures returned from whence they came!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:172
+#: src/gui/triumphs-dialog.cpp:176
 msgid "%1 unnatural creature dispatched!"
 msgid_plural "%1 unnatural creatures dispatched!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:196
+#: src/gui/triumphs-dialog.cpp:200
 msgid "%1 standard betrayed by it's guardian!"
 msgid_plural "%1 standards betrayed by it's guardian!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/triumphs-dialog.cpp:201
+#: src/gui/triumphs-dialog.cpp:205
 msgid "%1 standard wrested from a vanquished foe!"
 msgid_plural "%1 standards wrested from a vanquished foe!"
 msgstr[0] ""
