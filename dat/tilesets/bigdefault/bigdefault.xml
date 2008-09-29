@@ -241,7 +241,7 @@
 	<tilestyleset>
 		<d_name>mountains</d_name>
 		<tilestyle> <d_id>0xa3</d_id> <d_type>1</d_type> </tilestyle>
-		<tilestyle> <d_id>0xa4</d_id> <d_type>0</d_type> </tilestyle>
+		<tilestyle> <d_id>0xa4</d_id> <d_type>2</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa5</d_id> <d_type>2</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa6</d_id> <d_type>2</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa7</d_id> <d_type>2</d_type> </tilestyle>
@@ -264,6 +264,7 @@
 		<tilestyle> <d_id>0xb8</d_id> <d_type>7</d_type> </tilestyle>
 		<tilestyle> <d_id>0xb9</d_id> <d_type>8</d_type> </tilestyle>
 		<tilestyle> <d_id>0xba</d_id> <d_type>9</d_type> </tilestyle>
+		<tilestyle> <d_id>0x107</d_id> <d_type>0</d_type> </tilestyle>
 		<tilestyle> <d_id>0xbc</d_id> <d_type>7</d_type> </tilestyle>
 		<tilestyle> <d_id>0xbd</d_id> <d_type>8</d_type> </tilestyle>
 		<tilestyle> <d_id>0xbe</d_id> <d_type>9</d_type> </tilestyle>
