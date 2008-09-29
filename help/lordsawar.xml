@@ -1272,6 +1272,12 @@ End the turn.
 </para>
 </listitem>
 <listitem>
+<para>Shift+G</para>
+<para>
+Toggle a grid on the map.
+</para>
+</listitem>
+<listitem>
 <para>keypad keys</para>
 <para>
 The number keys on the keypad will move the selected stack in the given direction.
