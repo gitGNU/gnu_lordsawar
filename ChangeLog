@@ -1,6 +1,7 @@
 2008-09-29  Ben Asselstine
 
 	* Fixed bug in tileset validation.
+	* added ability to surround mountains with hills in the editor.
 
 2008-09-29  Janek Kozicki
 
