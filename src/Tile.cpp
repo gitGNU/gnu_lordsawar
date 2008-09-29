@@ -168,7 +168,7 @@ bool Tile::validateGrass(std::list<TileStyle::Type> types)
   return true;
 }
 
-bool Tile::validateForestWaterSwampAndHills(std::list<TileStyle::Type> types)
+bool Tile::validateFeature(std::list<TileStyle::Type> types)
 {
   //forest, water and hill tiles have a full suite of styles
   //"other" styles are optional.
@@ -178,17 +178,6 @@ bool Tile::validateForestWaterSwampAndHills(std::list<TileStyle::Type> types)
       find (types.begin(), types.end(), TileStyle::OTHER) == types.end())
     return true;
   return false;
-}
-
-bool Tile::validateMountains(std::list<TileStyle::Type> types)
-{
-  //mountains have a full suite of styles, except lone styles.
-  //"other" styles are optional.
-  if (find (types.begin(), types.end(), TileStyle::LONE) != types.end())
-    return false;
-  if (types.size() < TileStyle::OTHER - 2)
-    return false;
-  return true;
 }
 
 bool Tile::validate()
@@ -214,12 +203,8 @@ bool Tile::validate()
 	return false;
       break;
     case Tile::FOREST: case Tile::WATER: case Tile::HILLS: 
-    case Tile::SWAMP: case Tile::VOID:
-      if (validateForestWaterSwampAndHills(types) == false)
-	return false;
-      break;
-    case Tile::MOUNTAIN:
-      if (validateMountains(types) == false)
+    case Tile::SWAMP: case Tile::VOID: case Tile::MOUNTAIN:
+      if (validateFeature(types) == false)
 	return false;
       break;
     }

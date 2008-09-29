@@ -209,7 +209,9 @@ Uint32 Tileset::getDefaultTileSize()
 
 bool Tileset::validate()
 {
-  for (Tileset::iterator i = begin(); i != end(); ++i)
+  if (size() == 0)
+    return false;
+  for (Tileset::iterator i = begin(); i != end(); i++)
     {
       if ((*i)->validate() == false)
 	return false;

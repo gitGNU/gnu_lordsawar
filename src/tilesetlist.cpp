@@ -59,12 +59,24 @@ Tilesetlist::Tilesetlist()
     for (std::list<std::string>::const_iterator i = tilesets.begin(); 
 	 i != tilesets.end(); i++)
       {
-        loadTileset(*i);
-	iterator it = end();
-	it--;
-	(*it)->setSubDir(*i);
-	d_dirs[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = *i;
-	d_tilesets[*i] = *it;
+        if (loadTileset(*i) == true)
+	  {
+	    iterator it = end();
+	    it--;
+	    (*it)->setSubDir(*i);
+	    d_dirs[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = *i;
+	    d_tilesets[*i] = *it;
+	  }
+	else
+	  {
+	    //we failed validation
+	    iterator it = end();
+	    it--;
+	    fprintf (stderr, "tileset `%s' fails validation. skipping.\n",
+		     (*it)->getName().c_str());
+	    delete *it;
+	    erase (it);
+	  }
       }
 }
 
@@ -105,14 +117,7 @@ bool Tilesetlist::load(std::string tag, XML_Helper *helper)
   if (tag == Tileset::d_tag)
     {
       Tileset *tileset = new Tileset(helper);
-      if (tileset->validate() == true)
 	push_back(tileset); 
-      else
-	{
-	  fprintf (stderr, "tileset `%s' fails validation.\n", 
-		   tileset->getName().c_str());
-	  delete tileset;
-	}
     }
   return true;
 }
@@ -131,6 +136,11 @@ bool Tilesetlist::loadTileset(std::string name)
       std::cerr <<name <<std::endl <<std::flush;
       exit(-1);
     }
+
+  iterator it = end();
+  it--;
+  if ((*it)->validate() == false)
+    return false;
 
   return true;
 }

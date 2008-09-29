@@ -1,5 +1,3 @@
-// vim: set expandtab softtabstop=4 shiftwidth=4:
-//
 // Copyright (C) 2002 Vibhu Rishi
 // Copyright (C) 2002, 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
@@ -155,6 +153,21 @@ class MapGenerator
         void makeTerrain(Tile::Type t, int percent, bool contin);
         void makeStreamer(Tile::Type type, int percent, int width);
 
+        /**
+          * Water is special - in real world we usually have one big ocean, and
+          * everything flowing into it with rivers. To avoid generating lots of
+          * unconnected bodies of water (those should be swamps in general,
+          * maybe a pond) we need to find biggest body of water and connect
+          * others with it, using rivers. Ponds are allowed, but not too much of them.
+          */
+        void makeRivers();
+        
+        /**
+          * Once makeRivers() finds a connection path between two bodies of water
+          * it calls this function to put water on that path.
+          */
+        void connectWithWater(Vector<int> from, Vector<int> to);
+
         /** Mountains are specific - they must always be surrounded by hills,
           * othwerwise the map graphically looks bad. Besides who has ever seen
           * a mountain without even a tiny amount of hills around?
@@ -164,9 +177,10 @@ class MapGenerator
           */
         void surroundMountains();
         /** Paving roads and putting cities can create lone mountains.
-          * So we need to check in two passes.
+          * Making rivers can also create lone tiles.
+          * We need to rescue them!
           */
-        void verifyLoneMountains(bool second_pass);
+        void rescueLoneTiles(Tile::Type FIND_THIS, Tile::Type REPLACE, bool grow);
 
         /** Tries to find the nearest grass tile from a given location.
           *

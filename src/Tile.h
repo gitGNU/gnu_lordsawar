@@ -161,8 +161,7 @@ class Tile : public std::list<TileStyleSet*>
 	SmallTile *d_smalltile;
 
 	bool validateGrass(std::list<TileStyle::Type> types);
-	bool validateForestWaterSwampAndHills(std::list<TileStyle::Type> types);
-	bool validateMountains(std::list<TileStyle::Type> types);
+	bool validateFeature(std::list<TileStyle::Type> types);
 };
 
 #endif // TILE_H

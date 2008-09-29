@@ -1,5 +1,3 @@
-// vim: set expandtab softtabstop=4 shiftwidth=4:
-//
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2005, 2006 Andrea Paternesi

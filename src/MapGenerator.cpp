@@ -1,5 +1,3 @@
-// vim: set expandtab softtabstop=4 shiftwidth=4:
-//
 // Copyright (C) 2002 Vibhu Rishi
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 David Barnsdale
@@ -27,7 +25,10 @@
 #include <iostream>
 #include <math.h>  
 #include <deque>
+#include <vector>
 #include "vector.h"
+
+//#include <boost/foreach.hpp>
 
 #include "MapGenerator.h"
 #include "GameMap.h"
@@ -162,6 +163,8 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     progress.emit(.180, _("raining water..."));
     makeTerrain(Tile::WATER, d_pwater, true);  
     makeStreamer(Tile::WATER, d_pwater/3, 3);
+    rescueLoneTiles(Tile::WATER,Tile::GRASS,true);
+    makeRivers();
     cout <<_("Raising Hills     ... 20%") <<endl;
     progress.emit(.270, _("raising hills..."));
     makeTerrain(Tile::HILLS, d_phills, false);
@@ -169,7 +172,7 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     progress.emit(.360, _("raising mountains..."));
     makeTerrain(Tile::MOUNTAIN, d_pmountains, false);
     makeStreamer(Tile::MOUNTAIN, d_pmountains/3, 3);
-    verifyLoneMountains(false);
+    rescueLoneTiles(Tile::MOUNTAIN,Tile::GRASS,false);
     surroundMountains();
     cout <<_("Planting Forest   ... 40%") <<endl;
     progress.emit(.450, _("planting forests..."));
@@ -192,7 +195,7 @@ void MapGenerator::makeMap(int width, int height, bool roads)
 	progress.emit(.810, _("paving roads..."));
 	makeRoads();
       }
-    verifyLoneMountains(true);
+    rescueLoneTiles(Tile::MOUNTAIN,Tile::HILLS,false);
 
     cout <<_("Ruining Ruins     ... 80%") <<endl;
     progress.emit(.810, _("ruining ruins..."));
@@ -227,6 +230,315 @@ void MapGenerator::makePlains()
             d_terrain[j*d_width + i] = Tile::GRASS;
 }
 
+void MapGenerator::connectWithWater(Vector<int> from, Vector<int> to)
+{
+    Vector<float> delta = from - to;
+    if (dist<float>(from,to) > (float)(d_width*0.4))
+        // we don't want to mess up whole map with straight lines
+        return;
+
+    delta /= length(delta);
+    for(Vector<float>path = Vector<float>(from)+delta*2 ; dist<float>(path,Vector<float>(to)-delta*2) > 0.5 ; path -= delta)
+    {
+        int j = (int)(path.x);
+        int i = (int)(path.y);
+
+        int kind = rand()%4;
+        switch(kind)
+        {
+            case 0:
+                if((!(offmap(i,j))) && (!(offmap(i-1,j-1))))
+                {
+                    d_terrain[(j  )*d_width + i  ] = Tile::WATER;
+                    d_terrain[(j-1)*d_width + i-1] = Tile::WATER;
+                    d_terrain[(j  )*d_width + i-1] = Tile::WATER;
+                    d_terrain[(j-1)*d_width + i  ] = Tile::WATER;
+                }; break;
+
+            case 1:
+                if((!(offmap(i,j))) && (!(offmap(i+1,j+1))))
+                {
+                    d_terrain[(j  )*d_width + i  ] = Tile::WATER;
+                    d_terrain[(j+1)*d_width + i+1] = Tile::WATER;
+                    d_terrain[(j  )*d_width + i+1] = Tile::WATER;
+                    d_terrain[(j+1)*d_width + i  ] = Tile::WATER;
+                }; break;
+
+            case 2:
+                if((!(offmap(i,j))) && (!(offmap(i-1,j+1))))
+                {
+                    d_terrain[(j  )*d_width + i  ] = Tile::WATER;
+                    d_terrain[(j+1)*d_width + i-1] = Tile::WATER;
+                    d_terrain[(j  )*d_width + i-1] = Tile::WATER;
+                    d_terrain[(j+1)*d_width + i  ] = Tile::WATER;
+                }; break;
+
+            case 3:
+                if((!(offmap(i,j))) && (!(offmap(i+1,j-1))))
+                {
+                    d_terrain[(j  )*d_width + i  ] = Tile::WATER;
+                    d_terrain[(j-1)*d_width + i+1] = Tile::WATER;
+                    d_terrain[(j  )*d_width + i+1] = Tile::WATER;
+                    d_terrain[(j-1)*d_width + i  ] = Tile::WATER;
+                }; break;
+        }
+    }
+}
+
+void MapGenerator::makeRivers()
+{
+    // count how many separate bodies of water were found
+    int how_many=4;
+
+    int iter=0; // avoid deadlocks
+    // this loop allows maximum 3 distinctly separated bodies of water
+    while(++iter < 100 && how_many > 3)
+    {
+        how_many=0;
+
+        std::vector<std::vector<int> > box;
+        box.resize(d_height);
+        for(int j = 0; j < d_height; j++)
+            box[j].resize(d_width,0);
+
+        // first find all enclosed areas by scanning the map
+        // distinct areas have different numbers in box
+        for(int j = 1; j < d_height-1; j++)
+            for(int i = 1; i < d_width-1; i++)
+                if (box[j][i]==0 &&
+                        d_terrain[j*d_width + i] == Tile::WATER &&
+                        (
+                         (d_terrain[(j-1)*d_width + i-1] == Tile::WATER &&
+                          d_terrain[(j  )*d_width + i-1] == Tile::WATER &&
+                          d_terrain[(j-1)*d_width + i  ] == Tile::WATER)  ||
+
+                         (d_terrain[(j-1)*d_width + i  ] == Tile::WATER &&
+                          d_terrain[(j-1)*d_width + i+1] == Tile::WATER &&
+                          d_terrain[(j  )*d_width + i+1] == Tile::WATER) ||
+
+                         (d_terrain[(j  )*d_width + i+1] == Tile::WATER &&
+                          d_terrain[(j+1)*d_width + i+1] == Tile::WATER &&
+                          d_terrain[(j+1)*d_width + i  ] == Tile::WATER) ||
+
+                         (d_terrain[(j+1)*d_width + i  ] == Tile::WATER &&
+                          d_terrain[(j+1)*d_width + i-1] == Tile::WATER &&
+                          d_terrain[(j  )*d_width + i-1] == Tile::WATER))
+                   )
+                {
+                    box[j][i]=++how_many+3000;
+                    int counter=1;
+                    while(counter != 0)
+                    {
+                        counter=0;
+                        for(int J = 1; J < d_height-1; J++)
+                            for(int I = 1; I < d_width-1; I++)
+                            {
+                                if(d_terrain[J*d_width + I] == Tile::WATER &&
+                                        box[J][I]    ==0 &&
+                                        (box[J-1][I  ]==how_many+3000 ||
+                                         box[J  ][I-1]==how_many+3000 ||
+                                         box[J  ][I+1]==how_many+3000 ||
+                                         box[J+1][I  ]==how_many+3000))
+                                {
+                                    ++counter;
+                                    box[J][I]=how_many+2000;
+                                }
+                            }
+                        for(int J = 0; J < d_height; J++)
+                            for(int I = 0; I < d_width; I++)
+                            {
+                                if (box[J][I]==how_many+3000)
+                                    box[J][I]=how_many;
+                                if (box[J][I]==how_many+2000)
+                                    box[J][I]=how_many+3000;
+                            }
+                    }
+                }
+
+        // find two biggest bodies of water, and calculate centers for all of them
+        std::vector< Vector<float> > centers;
+        centers.resize(how_many+2,Vector<float>(0,0));
+        std::vector<float> counts;
+        counts.resize(how_many+2,0);
+        for(int j = 0; j < d_height; j++)
+            for(int i = 0; i < d_width; i++)
+                if(box[j][i] != 0)
+                {
+                    counts[box[j][i]] += 1;
+                    centers[box[j][i]] += Vector<float>(j,i);
+                }
+        // divide sum by counts to get a center
+        int max_count=0,max_count_2=0;
+        for(int h = 0; h < how_many+2; ++h)
+        {
+            if(counts[h]>0)
+            {
+                centers[h] /= counts[h];
+                if(max_count < (int)(counts[h]))
+                    max_count = (int)(counts[h]);
+                if(max_count_2 < (int)(counts[h]) && (int)(counts[h]) != max_count)
+                    max_count_2 = (int)(counts[h]);
+                int J=(int)(centers[h].x), I=(int)(centers[h].y);
+                if(box[J][I] != h)
+                // center doesn't necessarily fall on water tile, so fix this.
+                {
+                    //      // for debugging...
+                    //      box[J][I]+=5000;
+                    int i_up=0,i_dn=0,j_up=0,j_dn=0;
+                    while((I+i_up <  d_width-1 ) && (box[J     ][I+i_up] != h)) ++i_up;
+                    while((I-i_dn >  0         ) && (box[J     ][I-i_dn] != h)) ++i_dn;
+                    while((J+j_up <  d_height-1) && (box[J+j_up][I     ] != h)) ++j_up;
+                    while((J-j_dn >  0         ) && (box[J-j_dn][I     ] != h)) ++j_dn;
+
+                    int shortest = std::min( std::min(i_up,i_dn) , std::min(j_up,j_dn));
+
+                    if(shortest == i_up && I+i_up <  d_width)
+                        centers[h] = Vector<float>( J      , I+i_up );
+                    else
+                        if(shortest == i_dn && I-i_dn >= 0      )
+                            centers[h] = Vector<float>( J      , I-i_dn );
+                        else
+                            if(shortest == j_up && J+j_up <  d_height)
+                                centers[h] = Vector<float>( J+j_up , I      );
+                            else
+                                if(shortest == j_dn && J-j_dn >= 0       )
+                                    centers[h] = Vector<float>( J+j_dn , I      );
+                                else
+                                {
+                                    std::cout << "Sages are wondering about unforeseen mysteries behind the edge of the world.\n";
+                                    counts[h] = -1; // that's ok, but an interesting case. I'd like to see a map with such water :)
+                                }
+                }
+                //      // for debugging...
+                //      box[(int)(centers[h].x)][(int)(centers[h].y)]+=4000;
+            }
+        }
+
+        // determine what are the biggest bodies of water here
+        int the_biggest_area=0,second_biggest_area=0;
+        for(int h = 0; h < how_many+2; ++h)
+        {
+            if(counts[h]==max_count   && max_count   != 0)
+                the_biggest_area = h;
+            if(counts[h]==max_count_2 && max_count_2 != 0)
+                second_biggest_area = h;
+        }
+
+        // find shortest distances between areas
+        std::vector<std::vector<std::pair<float, std::pair<Vector<int>, Vector<int> > > > > distances; // I would prefer boost::tuple, but oh well...
+        distances.resize(how_many+2);
+        for(int h = 0; h < how_many+2; ++h)
+        {
+            distances[h].resize(how_many+3,std::make_pair(0,std::make_pair(Vector<int>(0,0),Vector<int>(0,0))));
+            for(int k = h+1; k < how_many+2; ++k)
+            {
+                if(counts[h] > 0 && counts[k] > 0) // h and k are two different areas
+                {
+                    // find tile from area h closest to the center of k 
+                    float min_dist = d_height*d_height;
+                    float min_h_j=0,min_h_i=0;
+                    for(int j = 1; j < d_height-1; j++)
+                        for(int i = 1; i < d_width-1; i++)
+                            if(box[j][i] == h)
+                            {
+                                float dj = j - centers[k].x;
+                                float di = i - centers[k].y;
+                                float dist = dj*dj + di*di;
+                                if(dist < min_dist)
+                                {
+                                    min_dist = dist;
+                                    min_h_j = j;
+                                    min_h_i = i;
+                                }
+                            }
+
+                    // then find tile from area k closest to that tile from h
+                    min_dist = d_height * d_height;
+                    float min_k_j=0,min_k_i=0;
+                    for(int j = 1; j < d_height-1; j++)
+                        for(int i = 1; i < d_width-1; i++)
+                            if(box[j][i] == k)
+                            {
+                                float dj = j - min_h_j;
+                                float di = i - min_h_i;
+                                float dist = dj*dj + di*di;
+                                if(dist < min_dist)
+                                {
+                                    min_dist = dist;
+                                    min_k_j = j;
+                                    min_k_i = i;
+                                }
+                            }
+
+                    if (min_k_j != 0 && 
+                            min_h_j != 0 && 
+                            min_k_i != 0 && 
+                            min_h_i != 0)
+                    {
+                        float dj = min_k_j - min_h_j;
+                        float di = min_k_i - min_h_i;
+                        distances[h][k] = std::make_pair(dj*dj + di*di , std::make_pair(Vector<int>(min_h_j,min_h_i) , Vector<int>(min_k_j,min_k_i)) );
+                    }
+                }
+            }
+        }
+
+        for(int connect_some_closest=0; connect_some_closest<14; ++connect_some_closest)
+        {
+            // connect 10 closest to each other, and 4 closest to two biggest bodies of water
+            int closest_h=-1,closest_k=-1,min=d_height*d_height;
+            int start_h=0;
+            if(connect_some_closest < 2 ) start_h=the_biggest_area;
+            else
+                if(connect_some_closest < 4) start_h=second_biggest_area;
+            for(int h = start_h; h < ((connect_some_closest >= 4) ? (how_many+2) : start_h+1); ++h)
+                for(int k = h+1; k < how_many+2; ++k)
+                    if(counts[h] > 0 && counts[k] > 0)
+                        if(distances[h][k].first > 0 && min > distances[h][k].first)
+                        {
+                            min = distances[h][k].first;
+                            closest_h = h;
+                            closest_k = k;
+                        }
+            if (closest_h != -1 &&
+                closest_k != -1)
+            {
+                connectWithWater(distances[closest_h][closest_k].second.first , distances[closest_h][closest_k].second.second);
+                // mark as done:
+                distances[closest_h][closest_k].first = d_height*d_height;
+            }
+        }
+        //          // for debugging...   print whole box
+        //          std::cerr << how_many << " separate bodies of water found.\n";
+        //          std::cerr << the_biggest_area << " is the biggest\n";
+        //          std::cerr << second_biggest_area << " is second in size\n";
+        //          std::vector<int> a;
+        //          BOOST_FOREACH(a,box)
+        //          {
+        //              BOOST_FOREACH(int i,a)
+        //              {
+        //                  if(i<4000)
+        //                      std::cout << i << " ";
+        //                  else
+        //                      if(i<5000)
+        //                      std::cout << "X" << " ";
+        //                      else
+        //                      if(i<7000)
+        //                      std::cout << "%" << " ";
+        //                      else
+        //                      if(i<14000)
+        //                      std::cout << "!" << " ";
+        //                      else
+        //                      std::cout << "|" << " ";
+        //              }
+        //              std::cout << "\n";
+        //          }
+        //          std::cout << "\n";
+
+    };
+    //std::cout << "There are " << how_many << (how_many<4?(std::string(" seas")):(std::string(" ponds"))) << " on this map.\n";
+}
+
 void MapGenerator::surroundMountains()
 {
     for(int j = 0; j < d_height; j++)
@@ -234,9 +546,16 @@ void MapGenerator::surroundMountains()
             if(d_terrain[j*d_width + i] == Tile::MOUNTAIN)
                 for(int J = -1; J <= +1; ++J)
                     for(int I = -1; I <= +1; ++I)
-                        if ((!(offmap(i+I,j+J))) &&
-                            (d_terrain[(j+J)*d_width + (i+I)] != Tile::MOUNTAIN))
-                            d_terrain[(j+J)*d_width + (i+I)] = Tile::HILLS;
+                        if((!(offmap(i+I,j+J))) &&
+                           (d_terrain[(j+J)*d_width + (i+I)] != Tile::MOUNTAIN))
+                        {
+                            if(d_terrain[(j+J)*d_width + (i+I)] != Tile::WATER)
+                                d_terrain[(j+J)*d_width + (i+I)] = Tile::HILLS;
+                            else 
+                            // water has priority here, there was some work done to conenct bodies of water
+                            // so don't break those connections.
+                                d_terrain[(j  )*d_width + (i  )] = Tile::HILLS;
+                        }
 }
 
 /**
@@ -968,18 +1287,30 @@ void MapGenerator::makeRoads()
   Portlist::deleteInstance();
 }
 
-void MapGenerator::verifyLoneMountains(bool second_pass)
+void MapGenerator::rescueLoneTiles(Tile::Type FIND_THIS, Tile::Type REPLACE, bool grow)
 {
     int box[3][3];
     memset (box, 0, sizeof (box));
 
-    Tile::Type REPLACE(second_pass?Tile::HILLS:Tile::GRASS);
+    if(grow)
+    {
+        for(int j = 1; j < d_height-1; j++)
+            for(int i = 1; i < d_width-1; i++)
+            {
+                if (d_terrain[j*d_width + i] == FIND_THIS &&
+                   (d_terrain[(j-1)*d_width + i-1] == FIND_THIS &&
+                    d_terrain[(j  )*d_width + i-1] == FIND_THIS &&
+                    d_terrain[(j-1)*d_width + i  ] != FIND_THIS))
+                    d_terrain[(j-1)*d_width + i  ] =  FIND_THIS;
+            }
+    }
+
     for(int iteration=0; iteration <8 ;++iteration)
     {
         for(int j = 0; j < d_height; j++)
             for(int i = 0; i < d_width; i++)
             {
-                if(d_terrain[j*d_width + i] == Tile::MOUNTAIN)
+                if(d_terrain[j*d_width + i] == FIND_THIS)
                 { 
                     for (int I = -1; I <= +1; ++I)
                         for (int J = -1; J <= +1; ++J)
@@ -1077,11 +1408,11 @@ void MapGenerator::verifyLoneMountains(bool second_pass)
                     if ( box[0][2] && !box[1][2] &&  box[2][2] &&  
                          box[0][1] &&  box[1][1] &&  box[2][1] && 
                          box[0][0] && !box[1][0] &&  box[2][0])
-                            d_terrain[j*d_width + i+(rand()%2?+1:-1)] = Tile::MOUNTAIN;
+                            d_terrain[j*d_width + i+(rand()%2?+1:-1)] = FIND_THIS;
                     if ( box[0][2] &&  box[1][2] &&  box[2][2] &&  
                         !box[0][1] &&  box[1][1] && !box[2][1] && 
                          box[0][0] &&  box[1][0] &&  box[2][0])
-                            d_terrain[(j+(rand()%2?+1:-1))*d_width + i] = Tile::MOUNTAIN;
+                            d_terrain[(j+(rand()%2?+1:-1))*d_width + i] = FIND_THIS;
 
                     if ( box[0][2] && !box[1][2] && !box[2][2] &&  
                          box[0][1] &&  box[1][1] && !box[2][1] && 
