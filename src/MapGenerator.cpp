@@ -1,9 +1,12 @@
+// vim: set expandtab softtabstop=4 shiftwidth=4:
+//
 // Copyright (C) 2002 Vibhu Rishi
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 David Barnsdale
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2008 Janek Kozicki
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -166,6 +169,8 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     progress.emit(.360, _("raising mountains..."));
     makeTerrain(Tile::MOUNTAIN, d_pmountains, false);
     makeStreamer(Tile::MOUNTAIN, d_pmountains/3, 3);
+    verifyLoneMountains(false);
+    surroundMountains();
     cout <<_("Planting Forest   ... 40%") <<endl;
     progress.emit(.450, _("planting forests..."));
     makeTerrain(Tile::FOREST, d_pforest, false);
@@ -175,7 +180,7 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     cout <<_("Normalizing       ... 60%") <<endl;
     progress.emit(.630, _("normalizing terrain..."));
     normalize();
-           
+
     // place buildings
     cout <<_("Building Cities   ... 70%") <<endl;
     progress.emit(.720, _("building cities..."));
@@ -187,6 +192,7 @@ void MapGenerator::makeMap(int width, int height, bool roads)
 	progress.emit(.810, _("paving roads..."));
 	makeRoads();
       }
+    verifyLoneMountains(true);
 
     cout <<_("Ruining Ruins     ... 80%") <<endl;
     progress.emit(.810, _("ruining ruins..."));
@@ -219,6 +225,18 @@ void MapGenerator::makePlains()
     for(int j = 0; j < d_height; j++)
         for(int i = 0; i < d_width; i++)
             d_terrain[j*d_width + i] = Tile::GRASS;
+}
+
+void MapGenerator::surroundMountains()
+{
+    for(int j = 0; j < d_height; j++)
+        for(int i = 0; i < d_width; i++)
+            if(d_terrain[j*d_width + i] == Tile::MOUNTAIN)
+                for(int J = -1; J <= +1; ++J)
+                    for(int I = -1; I <= +1; ++I)
+                        if ((!(offmap(i+I,j+J))) &&
+                            (d_terrain[(j+J)*d_width + (i+I)] != Tile::MOUNTAIN))
+                            d_terrain[(j+J)*d_width + (i+I)] = Tile::HILLS;
 }
 
 /**
@@ -556,6 +574,11 @@ void MapGenerator::putCity(int x, int y, int& city_count)
         d_terrain[y*d_width + x+1]     = Tile::GRASS;
         d_terrain[(y+1)*d_width + x]   = Tile::GRASS;
         d_terrain[(y+1)*d_width + x+1] = Tile::GRASS;
+        //cities cannot neighbor with mountain tiles
+        for (int Y = -1; Y <= 2; ++Y )
+            for (int X = -1; X <= 2; ++X)
+                if (d_terrain[(y+Y)*d_width + x+X] == Tile::MOUNTAIN)
+                    d_terrain[(y+Y)*d_width + x+X] = Tile::HILLS;
 
         city_count++;
 }
@@ -848,9 +871,9 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 	  int nexty = (**nextit).y;
 	  if (d_terrain[y*d_width + x] == Tile::MOUNTAIN)
 	    {
-	      d_terrain[y*d_width +x] = Tile::GRASS;
+	      d_terrain[y*d_width +x] = Tile::HILLS;
 	      Maptile *t = new Maptile(gm->getTileset(), 
-				       x, y, Tile::GRASS, NULL);
+				       x, y, Tile::HILLS, NULL);
 	      gm->setTile(x, y, t);
 	      calculateBlockedAvenue(x, y);
 	    }
@@ -944,3 +967,140 @@ void MapGenerator::makeRoads()
   Citylist::deleteInstance();
   Portlist::deleteInstance();
 }
+
+void MapGenerator::verifyLoneMountains(bool second_pass)
+{
+    int box[3][3];
+    memset (box, 0, sizeof (box));
+
+    Tile::Type REPLACE(second_pass?Tile::HILLS:Tile::GRASS);
+    for(int iteration=0; iteration <8 ;++iteration)
+    {
+        for(int j = 0; j < d_height; j++)
+            for(int i = 0; i < d_width; i++)
+            {
+                if(d_terrain[j*d_width + i] == Tile::MOUNTAIN)
+                { 
+                    for (int I = -1; I <= +1; ++I)
+                        for (int J = -1; J <= +1; ++J)
+                            if (!(offmap(i+I,j+J)))
+                                box[J+1][I+1] = (d_terrain[(j+J)*d_width + (i+I)] == d_terrain[j*d_width + i]);
+                            else
+                                box[J+1][I+1] = 0;
+
+                    if (!box[0][2] && !box[1][2] && /***********/ 
+                        /***********/  box[1][1] &&  box[2][1] && 
+                        !box[0][0] && !box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/ !box[1][2] && !box[2][2] && 
+                         box[0][1] &&  box[1][1] && /***********/
+                        /***********/ !box[1][0] && !box[2][0])
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (!box[0][2] && /***********/ !box[2][2] && 
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                        /***********/  box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/  box[1][2] && /***********/
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                        !box[0][0] && /***********/ !box[2][0])
+                            d_terrain[j*d_width + i] = REPLACE;
+
+                    if (/***********/ !box[1][2] && /***********/ 
+                        /***********/  box[1][1] &&  box[2][1] && 
+                        !box[0][0] && !box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/ !box[1][2] && /***********/ 
+                         box[0][1] &&  box[1][1] && /***********/
+                        /***********/ !box[1][0] && !box[2][0])
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/ /***********/ !box[2][2] && 
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                        /***********/  box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/  box[1][2] && /***********/
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                        /***********/ /***********/ !box[2][0])
+                            d_terrain[j*d_width + i] = REPLACE;
+
+                    if (!box[0][2] && !box[1][2] && /***********/ 
+                        /***********/  box[1][1] &&  box[2][1] && 
+                        /***********/ !box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/ !box[1][2] && !box[2][2] && 
+                         box[0][1] &&  box[1][1] && /***********/
+                        /***********/ !box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (!box[0][2] && /***********/ /***********/ 
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                        /***********/  box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/  box[1][2] && /***********/
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                        !box[0][0]    /***********/ /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+
+                    if (/***********/ !box[1][2] && /***********/ 
+                        !box[0][1] &&  box[1][1] &&  box[2][1] && 
+                        /***********/ !box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/ !box[1][2] && /***********/ 
+                         box[0][1] &&  box[1][1] && !box[2][1] &&
+                        /***********/ !box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/ !box[1][2] && /***********/ 
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                        /***********/  box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/  box[1][2] && /***********/
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                        /***********/ !box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+
+                    if ( box[0][2] && !box[1][2] && /***********/
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                        /***********/ !box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/ !box[1][2] &&  box[2][2] && 
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                        /***********/ !box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/ !box[1][2] && /***********/ 
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                         box[0][0] && !box[1][0]    /***********/)
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (/***********/ !box[1][2] && /***********/  
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                        /***********/ !box[1][0] &&  box[2][0])
+                            d_terrain[j*d_width + i] = REPLACE;
+
+
+                    if ( box[0][2] && !box[1][2] &&  box[2][2] &&  
+                         box[0][1] &&  box[1][1] &&  box[2][1] && 
+                         box[0][0] && !box[1][0] &&  box[2][0])
+                            d_terrain[j*d_width + i+(rand()%2?+1:-1)] = Tile::MOUNTAIN;
+                    if ( box[0][2] &&  box[1][2] &&  box[2][2] &&  
+                        !box[0][1] &&  box[1][1] && !box[2][1] && 
+                         box[0][0] &&  box[1][0] &&  box[2][0])
+                            d_terrain[(j+(rand()%2?+1:-1))*d_width + i] = Tile::MOUNTAIN;
+
+                    if ( box[0][2] && !box[1][2] && !box[2][2] &&  
+                         box[0][1] &&  box[1][1] && !box[2][1] && 
+                        !box[0][0] &&  box[1][0] &&  box[2][0])
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (!box[0][2] && !box[1][2] &&  box[2][2] &&  
+                        !box[0][1] &&  box[1][1] &&  box[2][1] && 
+                         box[0][0] &&  box[1][0] && !box[2][0])
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if ( box[0][2] &&  box[1][2] && !box[2][2] &&  
+                        !box[0][1] &&  box[1][1] &&  box[2][1] && 
+                        !box[0][0] && !box[1][0] &&  box[2][0])
+                            d_terrain[j*d_width + i] = REPLACE;
+                    if (!box[0][2] &&  box[1][2] &&  box[2][2] &&  
+                         box[0][1] &&  box[1][1] && !box[2][1] && 
+                         box[0][0] && !box[1][0] && !box[2][0])
+                            d_terrain[j*d_width + i] = REPLACE;
+                }
+            }
+    }
+}
+

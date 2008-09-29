@@ -1,8 +1,11 @@
+// vim: set expandtab softtabstop=4 shiftwidth=4:
+//
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2005, 2006 Andrea Paternesi
 // Copyright (C) 2006, 2007, 2008 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
+// Copyright (C) 2008 Janek Kozicki
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -644,7 +647,7 @@ TileStyle *GameMap::calculatePreferredStyle(int i, int j)
 	  continue;
 	if ((j+l) >= s_width || (j+l) < 0)
 	  continue;
-	box[k+1][l+1] = (getTile(j+l, i+k)->getType() == mtile->getType());
+	box[k+1][l+1] = are_those_tiles_similar(getTile(j+l, i+k)->getMaptileType(), mtile->getMaptileType(), false);
       }
   if (box[0][0] && box[0][1] && box[0][2] &&
       box[1][0] && box[1][1] && box[1][2] &&
@@ -795,6 +798,28 @@ void GameMap::close_circles (int minx, int miny, int maxx, int maxy)
     }
 }
 
+bool GameMap::are_those_tiles_similar(Tile::Type outer_tile,Tile::Type inner_tile, bool checking_loneliness)
+{
+    if(checking_loneliness || inner_tile == Tile::HILLS)
+    {
+        if( (outer_tile == Tile::MOUNTAIN && inner_tile == Tile::HILLS) ||
+            (inner_tile == Tile::MOUNTAIN && outer_tile == Tile::HILLS))
+            // Mountains and hills are similar, MapGenerator::surroundMountains()
+            // makes sure that mountains are surrounded by hills. So a hill tile
+            // with only a mountain neighbour is not a lone tile
+            //
+            // There never should be a lone mountain in grass (not surrounded by hills).
+            // Mountain surrounded by hills is perfectly correct.
+            return true;
+        return outer_tile == inner_tile;
+    } 
+    else 
+    { // to pick correct tile picture for a mountain we treat hills as a tile
+      // different than mountain.
+        return outer_tile == inner_tile;
+    }
+}
+
 int GameMap::tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, int j)
 {
   int box[3][3];
@@ -806,7 +831,7 @@ int GameMap::tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, int 
 	  continue;
 	if ((j+l) >= s_width || (j+l) < 0)
 	  continue;
-	box[k+1][l+1] = (getTile(j+l, i+k)->getMaptileType() == tile);
+	box[k+1][l+1] = are_those_tiles_similar(getTile(j+l, i+k)->getMaptileType(), tile, true);
       }
   if (box[0][0] && box[0][1] && box[1][0] && box[1][1])
     return 1;

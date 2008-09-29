@@ -1,9 +1,12 @@
+// vim: set expandtab softtabstop=4 shiftwidth=4:
+//
 // Copyright (C) 2002 Vibhu Rishi
 // Copyright (C) 2002, 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004 David Barnsdale
 // Copyright (C) 2004 Andrea Paternesi
 // Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2008 Janek Kozicki
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -84,7 +87,7 @@ class MapGenerator
         void setPercentages(int pwater, int pforest, int pswamp,
                             int phills, int pmountains);
 
-        
+
         //! Get number of cities
         int getNoCities() const {return d_nocities;}
 
@@ -96,8 +99,8 @@ class MapGenerator
 
         //! Get number of temples
         int getNoTemples() const {return d_notemples;}
-        
-        
+
+
         /** Creates a map
           * 
           * Use this function to start off the map generation. This
@@ -116,7 +119,7 @@ class MapGenerator
           * @return char array which represents the terrain map
           */
         const Tile::Type* getMap(int& width, int& height) const;
-        
+
         /** Get the buildings map (shallow copy)
           * 
           * @param width        is set to the width of the generated map
@@ -125,11 +128,11 @@ class MapGenerator
           */
         const Maptile::Building* getBuildings(int& width, int& height) const;
 
-	/**
-	 * @param fraction How far along the progress bar should be.
-	 * @param status   A description of what's being generated.
-	 */
-	//! Emitted when the generator generates something
+        /**
+         * @param fraction How far along the progress bar should be.
+         * @param status   A description of what's being generated.
+         */
+        //! Emitted when the generator generates something
         sigc::signal<void, double, std::string> progress;
 
     protected:
@@ -152,6 +155,19 @@ class MapGenerator
         void makeTerrain(Tile::Type t, int percent, bool contin);
         void makeStreamer(Tile::Type type, int percent, int width);
 
+        /** Mountains are specific - they must always be surrounded by hills,
+          * othwerwise the map graphically looks bad. Besides who has ever seen
+          * a mountain without even a tiny amount of hills around?
+          *
+          * This means that a lone montains becomes surrounded by hills and
+          * is not lone anymore. See GameMap::are_those_tiles_similar().
+          */
+        void surroundMountains();
+        /** Paving roads and putting cities can create lone mountains.
+          * So we need to check in two passes.
+          */
+        void verifyLoneMountains(bool second_pass);
+
         /** Tries to find the nearest grass tile from a given location.
           *
           * This function becomes e.g. neccessary if you want to create 
@@ -173,7 +189,7 @@ class MapGenerator
           * @param cities       the number of cities to distribute
           */
         void makeCities(int cities);
-        
+
         //! Returns true if position (x,y) is free for a city
         bool canPutCity(int x, int y);
 
@@ -187,10 +203,10 @@ class MapGenerator
           * @param building     the number of buildings to distribute
           */
         void makeBuildings(Maptile::Building b, int building);
-        
+
         //! Returns true if position (x,y) is free for buildings
         bool canPutBuilding(int x, int y);
-        
+
         /** Tries to place a city around a certain position.
           * 
           * This function is used internally for placing ports, that
@@ -202,7 +218,7 @@ class MapGenerator
           */
         bool tryToPlaceCity(int px, int py, int& city_count);
 
-        
+
         /** Normalizes the terrain
           * 
           * With normalization, we mean that if a tile is surrounded mainly

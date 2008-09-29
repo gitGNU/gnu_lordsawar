@@ -2,6 +2,7 @@
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2006 Andrea Paternesi
 // Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2008 Janek Kozicki
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -189,6 +190,7 @@ class GameMap: public sigc::trackable
 			      Tile::Type intype, Tile::Type outtype);
 	int tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, 
 						   int j);
+	bool are_those_tiles_similar(Tile::Type outer_tile,Tile::Type inner_tile, bool checking_loneliness);
 
         // Data
         static GameMap* s_instance;

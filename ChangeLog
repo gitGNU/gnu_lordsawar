@@ -1,3 +1,7 @@
+2008-09-28  Janek Kozicki
+	* MapGenerator is now generating hills around mountains. And mountains
+	  are never adjacent to grass.
+
 2008-09-28  Ben Asselstine
 
 	* increased number of possible tile styles from 256 to 65535.
