@@ -96,6 +96,18 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 		r.x = drawX;
 		r.y = drawY;
 		TileStyle *style = mtile->getTileStyle();
+		if (style == NULL)
+		  printf ("style for tile %d at col=%d,row=%d is null\n",
+			  mtile->getMaptileType(), tileX, tileY);
+		else
+		  {
+		    if (style->getPixmap() == NULL)
+		      {
+		  printf ("pic for style %d for tile %d at %d,%d is null\n",
+			  style->getType(),
+			  mtile->getMaptileType(), tileX, tileY);
+		      }
+		  }
 		SDL_BlitSurface(style->getPixmap(), 0, surface, &r);
 
 	    }

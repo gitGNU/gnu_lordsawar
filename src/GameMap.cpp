@@ -136,6 +136,8 @@ void GameMap::processStyles(std::string styles, int chars_per_style)
 	    val = strtoul (hexstr, &end, 16);
 	    Uint32 id = (Uint32) val;
 	    TileStyle *style = d_tileSet->getTileStyle(id);
+	    if (!style)
+	      style = d_tileSet->getTileStyle(0);
 	    d_map[j*s_width + i]->setTileStyle(style);
         }
     }
@@ -353,6 +355,7 @@ void GameMap::setTile(int x, int y, Maptile *tile)
 {
     delete d_map[y*s_width + x];
     d_map[y*s_width + x] = tile;
+    applyTileStyle (y, x);
 }
 
 Maptile* GameMap::getTile(int x, int y) const
@@ -877,10 +880,11 @@ void GameMap::applyTileStyles (int minx, int miny, int maxx, int maxy,
 
   if (smooth_terrain)
     {
-      demote_lone_tile(0, 0, s_height, s_width, Tile::FOREST, Tile::GRASS);
-      demote_lone_tile(0, 0, s_height, s_width, Tile::MOUNTAIN, Tile::HILLS);
-      demote_lone_tile(0, 0, s_height, s_width, Tile::HILLS, Tile::GRASS);
-      demote_lone_tile(0, 0, s_height, s_width, Tile::WATER, Tile::SWAMP);
+      demote_lone_tile(minx, miny, maxx, maxy, Tile::FOREST, Tile::GRASS);
+      demote_lone_tile(minx, miny, maxx, maxy, Tile::MOUNTAIN, Tile::HILLS);
+      demote_lone_tile(minx, miny, maxx, maxy, Tile::HILLS, Tile::GRASS);
+      demote_lone_tile(minx, miny, maxx, maxy, Tile::WATER, Tile::SWAMP);
+      surroundMountains(minx, miny, maxx, maxy);
     }
 
   for (int i = minx; i < maxx; i++)
@@ -891,16 +895,7 @@ void GameMap::applyTileStyles (int minx, int miny, int maxx, int maxy,
 	    continue;
 	  if (j < 0 || j >= s_width)
 	    continue;
-	  Maptile *mtile = getTile(j, i);
-	  Tileset *tileset = getTileset();
-	  TileStyle *style = calculatePreferredStyle(i, j);
-	  if (!style)
-	    style = tileset->getRandomTileStyle(mtile->getType(), 
-						TileStyle::LONE);
-	  if (!style)
-	    style = tileset->getRandomTileStyle(mtile->getType(), 
-						TileStyle::INNERMIDDLECENTER);
-	  mtile->setTileStyle(style);
+	  applyTileStyle(i, j);
 	}
     }
   close_circles(minx, miny, maxx, maxy);
@@ -928,7 +923,7 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
       if(getTile(j, i)->getMaptileType() == Tile::MOUNTAIN)
 	for(int J = -1; J <= +1; ++J)
 	  for(int I = -1; I <= +1; ++I)
-	    if((!(offmap(i+I,j+J))) &&
+	    if((!(offmap(j+J,i+I))) &&
 	       (getTile((j+J),(i+I))->getMaptileType() != Tile::MOUNTAIN))
 	      {
 		if(getTile((j+J), (i+I))->getMaptileType() != Tile::WATER)
@@ -943,3 +938,21 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 				       d_tileSet->getIndex(Tile::HILLS), NULL));
 	      }
 }
+
+void GameMap::applyTileStyle (int i, int j)
+{
+  Maptile *mtile = getTile(j, i);
+  Tileset *tileset = getTileset();
+  TileStyle *style = calculatePreferredStyle(i, j);
+  if (!style)
+    style = tileset->getRandomTileStyle(mtile->getType(), 
+					TileStyle::LONE);
+  if (!style)
+    style = tileset->getRandomTileStyle(mtile->getType(), 
+					TileStyle::INNERMIDDLECENTER);
+  if (!style)
+    printf ("applying null tile style at %d,%d for tile of kind %d\n", i, j,
+	    mtile->getMaptileType());
+  mtile->setTileStyle(style);
+}
+
