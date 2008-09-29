@@ -86,3 +86,22 @@ bool Bridgelist::load(std::string tag, XML_Helper* helper)
     return true;
 }
 
+int Bridgelist::calculateType(Vector<int> t)
+{
+    // examine neighbour tiles to discover whether there's a bridge on them
+    bool u = Bridgelist::getInstance()->getObjectAt(t + Vector<int>(0, -1));
+    bool b = Bridgelist::getInstance()->getObjectAt(t + Vector<int>(0, 1));
+    bool l = Bridgelist::getInstance()->getObjectAt(t + Vector<int>(-1, 0));
+    bool r = Bridgelist::getInstance()->getObjectAt(t + Vector<int>(1, 0));
+
+    if (u)
+      return Bridge::CONNECTS_TO_NORTH;
+    if (b)
+      return Bridge::CONNECTS_TO_SOUTH;
+    if (r)
+      return Bridge::CONNECTS_TO_EAST;
+    if (l)
+      return Bridge::CONNECTS_TO_WEST;
+    return Bridge::CONNECTS_TO_NORTH;
+}
+

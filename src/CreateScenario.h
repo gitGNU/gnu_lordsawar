@@ -204,6 +204,7 @@ class CreateScenario : public CreateScenarioRandomize
         bool setupPlayers(bool random_turns, int base_gold);
 
 	bool setupRoads();
+	bool setupBridges();
 
         //! Set up rewards to be given out for quests, ruins and sages
         bool setupRewards();

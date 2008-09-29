@@ -24,9 +24,8 @@
 #include <stdlib.h>
 #include <iostream>
 #include <math.h>  
-#include <deque>
-#include <vector>
-#include "vector.h"
+#include <algorithm>
+#include <set>
 
 //#include <boost/foreach.hpp>
 
@@ -140,6 +139,8 @@ void MapGenerator::setPercentages(int pwater, int pforest, int pswamp,
  *   = nothing
  * c = part of city/castle
  * See the TileMapTypes enum at the beginning of the class definition.
+ *
+ * See printMap() which is used for debugging maps.
  */
 void MapGenerator::makeMap(int width, int height, bool roads)
 {
@@ -204,9 +205,73 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     progress.emit(.900, _("raising signs..."));
     makeBuildings(Maptile::SIGNPOST,d_nosignposts);
     cout <<_("Spawning temples  ... 90%") <<endl;
-    progress.emit(.990, _("spawning temples..."));
+    progress.emit(.950, _("spawning temples..."));
     makeBuildings(Maptile::TEMPLE,d_notemples);
+    cout <<_("Building bridges  ... 95%") <<endl;
+    progress.emit(.990, _("building bridges..."));
+    makeBridges();
     cout <<_("Done making map   ... 100%") <<endl;
+
+//    printMap();
+}
+        
+void MapGenerator::placeBridge(Vector<int> pos, int type)
+{
+  if (type == 1)
+    {
+      d_building[pos.x*d_width + pos.y] = Maptile::BRIDGE;
+      d_building[(pos.x + 1)*d_width + pos.y] = Maptile::BRIDGE;
+    }
+  else if (type == 2)
+    {
+      d_building[pos.x*d_width + pos.y] = Maptile::BRIDGE;
+      d_building[pos.x*d_width + pos.y + 1] = Maptile::BRIDGE;
+    }
+
+}
+
+void MapGenerator::makeBridges()
+{
+  std::vector<pair<int , Vector<int> > >  bridges;
+  bridges = findBridgePlaces();
+  for (std::vector<pair<int, Vector<int> > >::iterator it = bridges.begin();
+       it != bridges.end(); it++)
+    placeBridge((*it).second + Vector<int>(1,1), (*it).first);
+}
+
+void MapGenerator::printMap(int j, int i)
+{
+    char ch='?';
+    bool adom_convention=true; // well, except mountains
+    switch(d_terrain[j*d_width + i])
+    {
+        case Tile::MOUNTAIN:  ch=adom_convention ? 'M' : 'M';break; // mountains
+        case Tile::HILLS   :  ch=adom_convention ? '~' : 'h';break; // hills
+        case Tile::WATER   :  ch=adom_convention ? '=' : '~';break; // water
+        case Tile::FOREST  :  ch=adom_convention ? '&' : '$';break; // forest
+        case Tile::GRASS   :  ch=adom_convention ? '.' : '.';break; // plains
+        case Tile::SWAMP   :  ch=adom_convention ? '~' : '_';break; // swamps
+        case Tile::VOID    :  ch=adom_convention ? '?' : '?';break;
+
+            // cannot print those, actually because they don't exist in Tile::Type
+            //     ch='C';break; // city/castle
+            //     ch='r';break; // ruins
+            //     ch='T';break; // temple
+            //     ch=' ';break; // nothing
+            //     ch='c';break; // part of city/castle
+    }
+    std::cout << ch;
+}
+
+void MapGenerator::printMap()
+{
+    for(int j = 0; j < d_height; j++)
+    {
+        for(int i = 0; i < d_width; i++)
+            printMap(j,i);
+        std::cout << "\n";
+    }
+    std::cout << "\n";
 }
 
 const Tile::Type* MapGenerator::getMap(int& width, int& height) const
@@ -237,13 +302,15 @@ void MapGenerator::connectWithWater(Vector<int> from, Vector<int> to)
         // we don't want to mess up whole map with straight lines
         return;
 
-    delta /= length(delta);
-    for(Vector<float>path = Vector<float>(from)+delta*2 ; dist<float>(path,Vector<float>(to)-delta*2) > 0.5 ; path -= delta)
+    int kind(rand()%4);
+    delta /= length(delta)*2;
+    for(Vector<float>path = Vector<float>(from)+delta*4 ; dist<float>(path,Vector<float>(to)-delta*4) > 0.5 ; path -= delta)
     {
         int j = (int)(path.x);
         int i = (int)(path.y);
 
-        int kind = rand()%4;
+        if(rand()%3 == 0) 
+            kind = rand()%4;
         switch(kind)
         {
             case 0:
@@ -287,12 +354,17 @@ void MapGenerator::connectWithWater(Vector<int> from, Vector<int> to)
 
 void MapGenerator::makeRivers()
 {
+    // river style:
+    //  1 - plenty of short rivers and islands
+    //  2 - longer rivers, less islands
+    //  3 - even longer rivers, even less islands
+    int river_style=rand()%3+1;
+
     // count how many separate bodies of water were found
-    int how_many=4;
+    int how_many;
 
     int iter=0; // avoid deadlocks
-    // this loop allows maximum 3 distinctly separated bodies of water
-    while(++iter < 100 && how_many > 3)
+    while(++iter < 20)
     {
         how_many=0;
 
@@ -355,6 +427,11 @@ void MapGenerator::makeRivers()
                     }
                 }
 
+        // this loop allows maximum 3 distinctly separated bodies of water
+        // so no need to continue the algorithm
+        if(how_many<4)
+            break;
+
         // find two biggest bodies of water, and calculate centers for all of them
         std::vector< Vector<float> > centers;
         centers.resize(how_many+2,Vector<float>(0,0));
@@ -407,6 +484,8 @@ void MapGenerator::makeRivers()
                                 {
                                     std::cout << "Sages are wondering about unforeseen mysteries behind the edge of the world.\n";
                                     counts[h] = -1; // that's ok, but an interesting case. I'd like to see a map with such water :)
+                                    // FIXME - can you make a message box here?
+                                    //MessageBox("Message from author: this is algorithmically a very interesting map, please make screenshot and send to cosurgi@gmail.com");
                                 }
                 }
                 //      // for debugging...
@@ -483,9 +562,11 @@ void MapGenerator::makeRivers()
             }
         }
 
-        for(int connect_some_closest=0; connect_some_closest<14; ++connect_some_closest)
+        for(int connect_some_closest=0; connect_some_closest<14; connect_some_closest+=river_style)
         {
-            // connect 10 closest to each other, and 4 closest to two biggest bodies of water
+            // if river_style is 1 then
+            //   connect 10 closest to each other, and 4 closest to two biggest bodies of water
+            // otherwise skip some - connect fewer of them.
             int closest_h=-1,closest_k=-1,min=d_height*d_height;
             int start_h=0;
             if(connect_some_closest < 2 ) start_h=the_biggest_area;
@@ -536,7 +617,11 @@ void MapGenerator::makeRivers()
         //          std::cout << "\n";
 
     };
-    //std::cout << "There are " << how_many << (how_many<4?(std::string(" seas")):(std::string(" ponds"))) << " on this map.\n";
+    //if(how_many>1)
+        //std::cout << "There are " << how_many << (how_many<4?(std::string(" seas")):(std::string(" lakes"))) << " on this map.\n";
+    //else
+        //std::cout << "There is 1 sea on this map.\n";
+    //std::cout << "River style was: " << river_style << "\n";
 }
 
 
@@ -975,7 +1060,11 @@ void MapGenerator::normalize()
 {
     std::map<Uint32,Uint32> ajacentTer;
     Tile::Type curTer=Tile::NONE, ajTer=Tile::NONE;
-    
+
+    // that was 40 before. Now with rivers, the smaller the value - the more connected rivers we got.
+    int center_tiles = rand()%40;
+    //std::cerr << center_tiles << "\% chance of disconnecting rivers.\n";
+
     // Go through every tile bar the outer edge
     for(int globy = 1; globy < (d_height-2); globy++)
         for(int globx = 1; globx < (d_width-2); globx++)
@@ -1009,7 +1098,7 @@ void MapGenerator::normalize()
                     d_terrain[globy*d_width +globx] = Tile::GRASS;
                 else if ((ajacentTer[curTer]==2) && (rand()%100 < 70 ))
                     d_terrain[globy*d_width +globx] = Tile::GRASS;
-                else if ((ajacentTer[curTer]==3) && (rand()%100 < 40 ))
+                else if ((ajacentTer[curTer]==3) && (rand()%100 < center_tiles ))
                     d_terrain[globy*d_width +globx] = Tile::GRASS;
             }
             else 
@@ -1211,6 +1300,64 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 
   return retval;
 }
+
+std::vector<pair<int , Vector<int> > > MapGenerator::findBridgePlaces()
+{
+    std::vector<pair<int , Vector<int> > > result;
+    result.clear();
+
+    for(int j = 0; j < d_height-5; j++)
+        for(int i = 0; i < d_width-5; i++)
+        {
+            if (
+                d_terrain[(j  )*d_width + i  ] != Tile::WATER &&
+                d_terrain[(j  )*d_width + i+1] != Tile::WATER &&
+                d_terrain[(j  )*d_width + i+2] != Tile::WATER &&
+                d_terrain[(j+1)*d_width + i  ] == Tile::WATER &&
+                d_terrain[(j+1)*d_width + i+1] == Tile::WATER &&
+                d_terrain[(j+1)*d_width + i+2] == Tile::WATER &&
+                d_terrain[(j+2)*d_width + i  ] == Tile::WATER &&
+                d_terrain[(j+2)*d_width + i+1] == Tile::WATER &&
+                d_terrain[(j+2)*d_width + i+2] == Tile::WATER &&
+                d_terrain[(j+3)*d_width + i  ] != Tile::WATER &&
+                d_terrain[(j+3)*d_width + i+1] != Tile::WATER &&
+                d_terrain[(j+3)*d_width + i+2] != Tile::WATER 
+                )
+                result.push_back(std::make_pair(1, Vector<int>(j,i) ));
+            if (
+                d_terrain[(j  )*d_width + i  ] != Tile::WATER &&
+                d_terrain[(j+1)*d_width + i  ] != Tile::WATER &&
+                d_terrain[(j+2)*d_width + i  ] != Tile::WATER &&
+                d_terrain[(j  )*d_width + i+1] == Tile::WATER &&
+                d_terrain[(j+1)*d_width + i+1] == Tile::WATER &&
+                d_terrain[(j+2)*d_width + i+1] == Tile::WATER &&
+                d_terrain[(j  )*d_width + i+2] == Tile::WATER &&
+                d_terrain[(j+1)*d_width + i+2] == Tile::WATER &&
+                d_terrain[(j+2)*d_width + i+2] == Tile::WATER &&
+                d_terrain[(j  )*d_width + i+3] != Tile::WATER &&
+                d_terrain[(j+1)*d_width + i+3] != Tile::WATER &&
+                d_terrain[(j+2)*d_width + i+3] != Tile::WATER 
+                )
+                result.push_back(std::make_pair(2, Vector<int>(j,i) ));
+        }
+    // randomize
+    std::random_shuffle(result.begin(),result.end());
+
+    // remove those that are too close to each other
+    std::set<int> bad;bad.clear();
+    for(size_t r = 0; r<result.size() ; ++r)
+        for(size_t s = r+1; s<result.size() ; ++s)
+            if(dist(Vector<float>(result[r].second),Vector<float>(result[s].second)) < 2.5)
+                bad.insert(r);
+    std::vector<pair<int , Vector<int> > > filter;filter.clear();
+    for(size_t r = 0; r<result.size() ; ++r)
+        if(bad.find(r) == bad.end())
+            filter.push_back(result[r]);
+    result=filter;
+
+    return result;
+}
+
 void MapGenerator::makeRoads()
 {
   GameMap::deleteInstance();

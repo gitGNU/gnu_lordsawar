@@ -363,6 +363,9 @@ bool CreateScenario::create(const GameParameters &g)
     if (!setupRoads())
         return false;
     
+    if (!setupBridges())
+        return false;
+    
     return true;
 }
 
@@ -503,6 +506,14 @@ bool CreateScenario::setupRoads()
   Roadlist* rl = Roadlist::getInstance();
   for (Roadlist::iterator it = rl->begin(); it != rl->end(); it++)
     (*it).setType(Roadlist::getInstance()->calculateType((*it).getPos()));
+  return true;
+}
+
+bool CreateScenario::setupBridges()
+{
+  Bridgelist* bl = Bridgelist::getInstance();
+  for (Bridgelist::iterator it = bl->begin(); it != bl->end(); it++)
+    (*it).setType(Bridgelist::getInstance()->calculateType((*it).getPos()));
   return true;
 }
 

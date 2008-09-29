@@ -46,6 +46,17 @@ class Bridgelist : public LocationList<Bridge>, public sigc::trackable
         //! Saves the list of Bridge objects to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 
+	//! Determines what the right Bridge::Type should be for the given tile.
+	/**
+	 * Scans the surrounding tiles to see which bridge picture fits best.
+	 *
+	 * @param tile  The position on the game map to calculate a bridge type
+	 *              for.
+	 *
+	 * @return The Bridge::Type that makes the most sense for the given 
+	 *         tile.
+	 */
+	int calculateType(Vector<int> t);
     protected:
         //! Default constructor.
         Bridgelist();

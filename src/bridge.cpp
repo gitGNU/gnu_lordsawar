@@ -66,21 +66,29 @@ std::string Bridge::bridgeTypeToString(const Bridge::Type type)
 {
   switch (type)
     {
-    case Bridge::CONNECTS_EAST_AND_WEST:
-      return "Bridge::CONNECTS_EAST_AND_WEST";
-    case Bridge::CONNECTS_NORTH_AND_SOUTH:
-      return "Bridge::CONNECTS_NORTH_AND_SOUTH";
+    case Bridge::CONNECTS_TO_EAST:
+      return "Bridge::CONNECTS_TO_EAST";
+    case Bridge::CONNECTS_TO_NORTH:
+      return "Bridge::CONNECTS_TO_NORTH";
+    case Bridge::CONNECTS_TO_WEST:
+      return "Bridge::CONNECTS_TO_WEST";
+    case Bridge::CONNECTS_TO_SOUTH:
+      return "Bridge::CONNECTS_TO_SOUTH";
     }
-  return "Bridge::CONNECTS_EAST_AND_WEST";
+  return "Bridge::CONNECTS_TO_EAST";
 }
 
 Bridge::Type Bridge::bridgeTypeFromString(const std::string str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Bridge::Type(atoi(str.c_str()));
-  if (str == "Bridge::CONNECTS_EAST_AND_WEST")
-    return Bridge::CONNECTS_EAST_AND_WEST;
-  else if (str == "Bridge::CONNECTS_NORTH_AND_SOUTH")
-    return Bridge::CONNECTS_NORTH_AND_SOUTH;
-  return Bridge::CONNECTS_EAST_AND_WEST;
+  if (str == "Bridge::CONNECTS_TO_EAST")
+    return Bridge::CONNECTS_TO_EAST;
+  else if (str == "Bridge::CONNECTS_TO_NORTH")
+    return Bridge::CONNECTS_TO_NORTH;
+  else if (str == "Bridge::CONNECTS_TO_WEST")
+    return Bridge::CONNECTS_TO_WEST;
+  else if (str == "Bridge::CONNECTS_TO_SOUTH")
+    return Bridge::CONNECTS_TO_SOUTH;
+  return Bridge::CONNECTS_TO_EAST;
 }

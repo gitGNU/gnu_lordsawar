@@ -25,6 +25,8 @@
 #define MAPGENERATOR_H
 
 #include <string>
+#include <deque>
+#include "vector.h"
 #include <vector>
 #include <sigc++/signal.h>
 
@@ -110,6 +112,12 @@ class MapGenerator
           */
         void makeMap(int width, int height, bool roads);
 
+        /** A debug function, prints map to std::cout, using convention mentioned
+          * at MapGenerator::makeMap
+          */
+        void printMap(int j, int i);
+        void printMap();
+
         /** Get the array for the terrain map (shallow copy)
           * 
           * @param width        is set to the width of the generated map
@@ -161,6 +169,9 @@ class MapGenerator
           * others with it, using rivers. Ponds are allowed, but not too much of them.
           */
         void makeRivers();
+
+        void makeBridges();
+	void placeBridge(Vector<int> pos, int type);
         
         /**
           * Once makeRivers() finds a connection path between two bodies of water
@@ -252,6 +263,38 @@ class MapGenerator
 	bool makeAccessible(Vector<int> src, Vector<int> dest);
 	bool makeAccessible(int src_x, int src_y, int dest_x, int dest_y);
 	void makeRoads();
+
+        /** Find all places where it's possible to place a bridge:
+          *
+          * Bridge length is 2 tiles. So we can find two options:
+          *
+          * type=1       type=2
+          *
+          * +-+-+-+      +-+-+-+-+
+          * |0|.|.|      |0|=|=|.|     x-----> width - i
+          * +-+-+-+      +-+-+-+-+     |
+          * |=|=|=|      |.|=|=|.|     | 
+          * +-+-+-+  or  +-+-+-+-+    \|/
+          * |=|=|=|      |.|=|=|.|     '
+          * +-+-+-+      +-+-+-+-+   height - j
+          * |.|.|.|               
+          * +-+-+-+               
+          *
+          * this functions returns a randommly sorted vector of all possible
+          * places for bridges in
+          *
+          * std::vector<std::pair<int , Vector<int> > >
+          *    .first is type, 
+          *    .second is (j,i) coordinates of '0' point in there.
+          *
+          * The vector is randomly sorted, so just pick the first few - as much
+          * as you need, and they will be in random (probably in not close to
+          * each other locations).
+          *
+          * The output is checked and "duplicate" brigdes (which are close to
+          * each other - because the river is straight) are removed.
+          */ 
+        std::vector<std::pair < int , Vector<int> > > findBridgePlaces();
 	bool placePort(int x, int y);
 	void calculateBlockedAvenue(int x, int y);
 

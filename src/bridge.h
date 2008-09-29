@@ -35,8 +35,10 @@ class Bridge: public Location
 
         enum Type 
 	  {
-	    CONNECTS_EAST_AND_WEST = 0,
-	    CONNECTS_NORTH_AND_SOUTH = 1,
+	    CONNECTS_TO_EAST = 0,
+	    CONNECTS_TO_NORTH = 1,
+	    CONNECTS_TO_WEST = 2,
+	    CONNECTS_TO_SOUTH = 3,
 	  };
 	static std::string bridgeTypeToString(const Bridge::Type type);
 	static Bridge::Type bridgeTypeFromString(const std::string str);
