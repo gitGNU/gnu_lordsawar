@@ -179,7 +179,7 @@ int Tileset::getFreeTileStyleId()
 
 int Tileset::getLargestTileStyleId()
 {
-  int largest = 0;
+  unsigned int largest = 0;
   for (Tileset::iterator i = begin(); i != end(); ++i)
     {
       for (std::list<TileStyleSet*>::iterator j = (*i)->begin(); j != (*i)->end(); j++)
@@ -214,7 +214,11 @@ bool Tileset::validate()
   for (Tileset::iterator i = begin(); i != end(); i++)
     {
       if ((*i)->validate() == false)
-	return false;
+	{
+	  fprintf (stderr, _("`%s' fails validation\n"), 
+		   (*i)->getName().c_str());
+	  return false;
+	}
     }
   return true;
 }

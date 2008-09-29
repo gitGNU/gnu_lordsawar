@@ -438,9 +438,19 @@ void EditorBigMap::change_map_under_cursor()
 	    maptile->setType(ts->getIndex(pointer_terrain));
 	    if (pointer_tile_style_id == -1)
 	      {
-		GameMap::getInstance()->applyTileStyles(tile.y-1, tile.x-1, 
-							tile.y+2, tile.x+2,
-							false);
+		if (pointer_terrain == Tile::MOUNTAIN)
+		  {
+		    GameMap *gm = GameMap::getInstance();
+		    gm->surroundMountains (tile.y-1, tile.x-1, 
+					   tile.y+2, tile.x+2);
+		    gm->applyTileStyles(tile.y-2, tile.x-2, 
+					tile.y+3, tile.x+3,
+					false);
+		  }
+		else
+		  GameMap::getInstance()->applyTileStyles(tile.y-1, tile.x-1, 
+							  tile.y+2, tile.x+2,
+							  false);
 	      }
 	    else
 	      {

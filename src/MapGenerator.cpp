@@ -173,7 +173,7 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     makeTerrain(Tile::MOUNTAIN, d_pmountains, false);
     makeStreamer(Tile::MOUNTAIN, d_pmountains/3, 3);
     rescueLoneTiles(Tile::MOUNTAIN,Tile::GRASS,false);
-    surroundMountains();
+    surroundMountains(0, d_width, 0, d_height);
     cout <<_("Planting Forest   ... 40%") <<endl;
     progress.emit(.450, _("planting forests..."));
     makeTerrain(Tile::FOREST, d_pforest, false);
@@ -539,24 +539,6 @@ void MapGenerator::makeRivers()
     //std::cout << "There are " << how_many << (how_many<4?(std::string(" seas")):(std::string(" ponds"))) << " on this map.\n";
 }
 
-void MapGenerator::surroundMountains()
-{
-    for(int j = 0; j < d_height; j++)
-        for(int i = 0; i < d_width; i++)
-            if(d_terrain[j*d_width + i] == Tile::MOUNTAIN)
-                for(int J = -1; J <= +1; ++J)
-                    for(int I = -1; I <= +1; ++I)
-                        if((!(offmap(i+I,j+J))) &&
-                           (d_terrain[(j+J)*d_width + (i+I)] != Tile::MOUNTAIN))
-                        {
-                            if(d_terrain[(j+J)*d_width + (i+I)] != Tile::WATER)
-                                d_terrain[(j+J)*d_width + (i+I)] = Tile::HILLS;
-                            else 
-                            // water has priority here, there was some work done to conenct bodies of water
-                            // so don't break those connections.
-                                d_terrain[(j  )*d_width + (i  )] = Tile::HILLS;
-                        }
-}
 
 /**
  * Makes Terrains.
@@ -1435,3 +1417,21 @@ void MapGenerator::rescueLoneTiles(Tile::Type FIND_THIS, Tile::Type REPLACE, boo
     }
 }
 
+void MapGenerator::surroundMountains(int minx, int maxx, int miny, int maxy)
+{
+  for(int j = miny; j < maxy; j++)
+    for(int i = minx; i < maxx; i++)
+      if(d_terrain[j*d_width + i] == Tile::MOUNTAIN)
+	for(int J = -1; J <= +1; ++J)
+	  for(int I = -1; I <= +1; ++I)
+	    if((!(offmap(i+I,j+J))) &&
+	       (d_terrain[(j+J)*d_width + (i+I)] != Tile::MOUNTAIN))
+	      {
+		if(d_terrain[(j+J)*d_width + (i+I)] != Tile::WATER)
+		  d_terrain[(j+J)*d_width + (i+I)] = Tile::HILLS;
+		else 
+		  // water has priority here, there was some work done to conenct bodies of water
+		  // so don't break those connections.
+		  d_terrain[(j  )*d_width + (i  )] = Tile::HILLS;
+	      }
+}

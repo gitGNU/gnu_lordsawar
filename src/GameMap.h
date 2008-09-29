@@ -162,6 +162,7 @@ class GameMap: public sigc::trackable
 	void applyTileStyles (int minx, int miny, int maxx, int maxy,
 			      bool smooth_terrain);
 
+	void surroundMountains(int minx, int minx, int maxx, int maxy);
 	//! Get the positions of all of the items on the game map (in bags).
 	std::vector<Vector<int> > getItems();
 
@@ -188,6 +189,7 @@ class GameMap: public sigc::trackable
 	TileStyle *calculatePreferredStyle(int i, int j);
 	void demote_lone_tile(int minx, int miny, int maxx, int maxy, 
 			      Tile::Type intype, Tile::Type outtype);
+
 	int tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, 
 						   int j);
 	bool are_those_tiles_similar(Tile::Type outer_tile,Tile::Type inner_tile, bool checking_loneliness);

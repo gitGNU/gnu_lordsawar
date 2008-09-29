@@ -175,7 +175,8 @@ class MapGenerator
           * This means that a lone montains becomes surrounded by hills and
           * is not lone anymore. See GameMap::are_those_tiles_similar().
           */
-        void surroundMountains();
+        void surroundMountains(int minx, int maxx, int miny, int maxy);
+
         /** Paving roads and putting cities can create lone mountains.
           * Making rivers can also create lone tiles.
           * We need to rescue them!

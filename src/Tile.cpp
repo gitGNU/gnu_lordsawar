@@ -205,7 +205,12 @@ bool Tile::validate()
     case Tile::FOREST: case Tile::WATER: case Tile::HILLS: 
     case Tile::SWAMP: case Tile::VOID: case Tile::MOUNTAIN:
       if (validateFeature(types) == false)
-	return false;
+	{
+	  if (validateGrass(types) == false)
+	    return false;
+	  else
+	    return true;
+	}
       break;
     }
   return true;
