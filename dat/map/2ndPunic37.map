@@ -221,6 +221,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>4</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>652</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>4</d_type>
@@ -230,10 +234,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>4</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -256,6 +256,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>870</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -265,10 +269,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -276,6 +276,13 @@
 					<hero>
 						<d_name>Hanibal</d_name>
 						<d_gender>Hero::MALE</d_gender>
+						<d_upkeep>0</d_upkeep>
+						<d_move_bonus></d_move_bonus>
+						<d_army_bonus></d_army_bonus>
+						<d_max_moves>14</d_max_moves>
+						<d_strength>5</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>10</d_expvalue>
 						<d_id>1436</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>27</d_type>
@@ -285,16 +292,9 @@
 						<d_xp>0.5</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>14</d_max_moves>
-						<d_strength>5</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>10</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>2</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
-						<d_upkeep>0</d_upkeep>
-						<d_move_bonus></d_move_bonus>
-						<d_army_bonus></d_army_bonus>
 						<backpack>
 						</backpack>
 					</hero>
@@ -407,11 +407,11 @@
 </d_map>
 			</fogmap>
 			<triumphs>
-				<d_hero>0 0 0 0 0 0 0 0</d_hero>
-				<d_special>0 0 0 0 0 0 0 0</d_special>
-				<d_normal>0 0 0 0 0 0 0 0</d_normal>
-				<d_ship>0 0 0 0 0 0 0 0</d_ship>
-				<d_flag>0 0 0 0 0 0 0 0</d_flag>
+				<d_hero>0 0 0 0 0 0 0 0 </d_hero>
+				<d_special>0 0 0 0 0 0 0 0 </d_special>
+				<d_normal>0 0 0 0 0 0 0 0 </d_normal>
+				<d_ship>0 0 0 0 0 0 0 0 </d_ship>
+				<d_flag>0 0 0 0 0 0 0 0 </d_flag>
 			</triumphs>
 		</player>
 		<player>
@@ -489,6 +489,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>830</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -498,10 +502,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -510,6 +510,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>3</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>831</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
@@ -519,10 +523,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>3</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -545,6 +545,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>3</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>839</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
@@ -554,10 +558,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>3</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -580,6 +580,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>841</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -589,10 +593,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -601,6 +601,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>3</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>842</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
@@ -610,10 +614,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>3</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -622,6 +622,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>3</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>843</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
@@ -631,10 +635,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>3</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -657,6 +657,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>833</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -666,10 +670,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -678,6 +678,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>3</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>834</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
@@ -687,10 +691,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>3</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -699,6 +699,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>3</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>835</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
@@ -708,10 +712,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>3</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -720,6 +720,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>3</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>836</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>3</d_type>
@@ -729,10 +733,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>3</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -741,6 +741,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>12</d_max_moves>
+						<d_strength>8</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>10</d_expvalue>
 						<d_id>1437</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>22</d_type>
@@ -750,10 +754,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>12</d_max_moves>
-						<d_strength>8</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>10</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -910,6 +910,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>654</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -919,10 +923,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -945,6 +945,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>656</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -954,10 +958,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -980,6 +980,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>658</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -989,10 +993,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1015,6 +1015,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>660</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -1024,10 +1028,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1050,6 +1050,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>672</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -1059,10 +1063,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1085,6 +1085,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>674</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -1094,10 +1098,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1120,6 +1120,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>12</d_max_moves>
+						<d_strength>2</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>827</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>2</d_type>
@@ -1129,10 +1133,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>12</d_max_moves>
-						<d_strength>2</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1141,6 +1141,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>12</d_max_moves>
+						<d_strength>2</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>828</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>2</d_type>
@@ -1150,10 +1154,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>12</d_max_moves>
-						<d_strength>2</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1176,6 +1176,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>845</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -1185,10 +1189,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1197,6 +1197,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>3</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>846</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>6</d_type>
@@ -1206,10 +1210,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>3</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1232,6 +1232,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>4</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>849</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>4</d_type>
@@ -1241,10 +1245,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>4</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1253,6 +1253,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>2</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>850</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>13</d_type>
@@ -1262,10 +1266,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>2</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1288,6 +1288,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>852</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -1297,10 +1301,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1323,6 +1323,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>854</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -1332,10 +1336,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1358,6 +1358,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>4</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>857</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>4</d_type>
@@ -1367,10 +1371,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>4</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1393,6 +1393,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>12</d_max_moves>
+						<d_strength>2</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>860</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>1</d_type>
@@ -1402,10 +1406,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>12</d_max_moves>
-						<d_strength>2</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1428,6 +1428,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>664</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -1437,10 +1441,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1449,6 +1449,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>12</d_max_moves>
+						<d_strength>2</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>861</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>2</d_type>
@@ -1458,10 +1462,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>12</d_max_moves>
-						<d_strength>2</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1470,6 +1470,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>12</d_max_moves>
+						<d_strength>2</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>862</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>2</d_type>
@@ -1479,10 +1483,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>12</d_max_moves>
-						<d_strength>2</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1505,6 +1505,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>668</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -1514,10 +1518,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1540,6 +1540,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>4</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>865</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>4</d_type>
@@ -1549,10 +1553,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>4</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1561,6 +1561,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>4</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>866</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>4</d_type>
@@ -1570,10 +1574,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>4</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1582,6 +1582,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>8</d_max_moves>
+						<d_strength>4</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>867</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>4</d_type>
@@ -1591,10 +1595,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>8</d_max_moves>
-						<d_strength>4</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1603,6 +1603,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>12</d_max_moves>
+						<d_strength>2</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>868</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>1</d_type>
@@ -1612,10 +1616,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>12</d_max_moves>
-						<d_strength>2</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1638,6 +1638,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>12</d_max_moves>
+						<d_strength>3</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>871</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>5</d_type>
@@ -1647,10 +1651,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>12</d_max_moves>
-						<d_strength>3</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1673,6 +1673,10 @@
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
 						<d_army_bonus></d_army_bonus>
+						<d_max_moves>16</d_max_moves>
+						<d_strength>1</d_strength>
+						<d_sight>1</d_sight>
+						<d_expvalue>1</d_expvalue>
 						<d_id>1283</d_id>
 						<d_armyset>1</d_armyset>
 						<d_type>0</d_type>
@@ -1682,10 +1686,6 @@
 						<d_xp>0</d_xp>
 						<d_max_moves_multiplier>1</d_max_moves_multiplier>
 						<d_level>1</d_level>
-						<d_max_moves>16</d_max_moves>
-						<d_strength>1</d_strength>
-						<d_sight>1</d_sight>
-						<d_expvalue>1</d_expvalue>
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
@@ -1826,11 +1826,11 @@
 1111111111111111111110000000000000000000000000000000000000000000333330330000000000000000000000000000
 1111111111111111111110000000000000000000000000000000000000000003333330330000000000000000000000000000
 1111111111111111111111111000000000000000000000000000000000000003333330220000000000000000000000000000
-1111111111111111111111111110000000000000000000000000000000000003333330220000033000000000000000000000
+1111111111111111111111111110000000000000000000000000000000000003333333320000033000000000000000000000
 1111111111111111111111111111000000000000000000000000000000333333333444333033333333000000000000000000
 1111111111111111111111111111100000000000000000000000000003333333344444333333333333000000000000000000
 1111111111111111111111111111100000000000000000000000000033333333344333333333333333333000000000000000
-1111111111111111111111111111100000000000000000000000000333333333330333033333333333333000000000000000
+1111111111111111111111111111100000000000000000000000000333333333333333033333333333333000000000000000
 1111111111111111111111111111110000000002222000000000003333333003330000003333300333330000000000000000
 1111111111111111111111111111110000002202222220000000003333330000000000000033000033330000000000000000
 1111111111111111111111111111110000002222222220000000003333330000000000000033000033330000000000000000
@@ -1916,106 +1916,106 @@
 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 </d_types>
 		<d_styles>
-2222222222222222222216070808112222222222222222222222222222222222222222222222221aed0009070806080302080504030007070007040206040708090007030400050300040807080409070202000502080900050002080408070407040408
-222222222222222222222810070a2a222222222222222222222222231c1f252222222222231e1c21030203080204050802090800050703070206040603080507090502060209090409030900040408060007040602040000090507020002060904070505
-2222222222222222222222280f2a222222222222222222222222232104051b1d2522222321080405050000050200070500080803060805060605070908030503040203000904030304000705000200080806000404040707080405040509070609070406
-22222222222222222222222222222222222222222222222222221709eded05061b201f2102040404080402060504070700060600080004080902050704080008090705080208030700020403030008030404040304050800060405070905040802080600
-2222222222222222222222222222222222222222222222222222281005f006090504020003070900070002040303080902060703050302090207050706080400030409030808000506020608040505040802040305050204090408030303020306000304
-2222222222222222222222222222222222222222222222231d2425280e1002060708070708040205030707040602060006000905040003080204070207080604040300020500040707000804000502040308060606090507030207090700000903080805
-22222222222222222222222222222222222222231e1d1f2109041b201f21ed080505020403080204040407070006070508020008000404090600080604030406070609080202020603080300020706070806060607090303080208090200050704030505
-222222222222222222222222222222222222221a0007050907080608000804020202030300050405000407020703080702090402040809020603090402000503000604080807030908070803000609020300020709000603030307020209030903060702
-22222222222222222222222222222222222222160209060307060909090600090208050503030700070908030304030402060600050900090509090406070005060309686e05040902020005050306050809050208060000050702080509040802000404
-22222222222222222222222222222222222222281008070908080509070802020305060806030907060307060206020504080206050903000507070203080205686a69888a00686e00080502030605040306070503090508040207060008000004000509
-2222222222222222222222222222222222222222160305050803050202070807030604030800040500070007040205000609090002030500030009040708096888727e717502929806050608040008000005080205040908020909060508040602020602
-2222222222222222222222222222222222222222280f0f0d10040908030308020208070303070508040803030905060209080707070600040707030009000281778e7b718a062d6104050500000002070606020002020507080507060306060800050502
-222222222222222222222222222222222222222222222222280e1000060002060603050600060404040804090205020707020905070604070709050308060681707778979800575d0802040704686e020502060207070705070905030602040202000606
-2222222222222222222222222222222222222222222222222222281002040502050507060908080703040909000200040906030504030404050568876b6a8788789598a3a8d7686a6e09686a6988866c696e000506040608060604030007090608090006
-2222222222222222222222222222222222222222222222222222222810000606000904080903050802080906090404060709050407060809066888727e7790727cd6a9cdced36f71866b888f728f738c8c91060305020902080802060200030009060902
-222222222222222222222222222222222222222222222222222222221a0207070609000409000207070202000709090206080508070400046888708e7b857e7183cdd9686d6e927a857b748f8c858f708d866c876e080403080402000905030409020704
-2222222222222222222222222222222222222222222222222222222226090402040508090505030507020906060404080202090200080068887174827879957a866e0092979806927a7790737894797a8d717b7898050602060604050006040603020705
-2222222222222222222222222222222222222222222222222222222228100402030503070209082d303161000409020002030200070768888c90827898040492949809000405030492977a78980308927a73857f04070205050308050602070506050300
-22222222222222222222222222222222222222222222222222222222221a0005020906052d6102463951662f610702020203050009046f858273897f0506050405020604080807000507767f020808036f74737c02000406070906090502000903070308
-22222222222222222222222222222222222222222222222222222222222600040706020846664c67354e373c480702000709080500037d82718c747c0305050700040309060207070406929802090806927a789808040605070004070307020200040807
-222222222222222222222222222222222222222222222222222222222217ed000804070757653952645b3f47663300030607000907689a95967a747f0408040909090409000809000602090303080a1005929809686e0303050808060400050309080307
-222222222222222222222222222222222222222222222222222222222226050603020300063453374f03343c4a4f060405080005098b8ad6a9767898080706000806020307090806020703020a0e2a1a0503060292996e0203020200082d303300080605
-222222222222222222222222222222222222222222222222222222222216040206050603604d544a66314d354344060600040909079298cdd37d830807080900040504000202030605090406152222260809ee06089298080608040306575b5d03050504
-2222222222222222222222222222222222222222222222222222222222160804030309056265375543525553404b6109080805020309686d6988910506050609070404070307090502060400272222281002eced02000006686e09060205050608060309
-2222222222222222222222222222222222222222222222222222222222160709060809090362655453543951645c5d05070708090508927a9089866d6e000704060600070306020700000709112222222810000a100705079298686b6e00030904030606
-22222222222222222222222222222222222222222222222222222222221a07070407080903023b52363539645d0604020209040308040592937a8285866e02070900060209030003090305031522222222280e2b210207020003927a86876a6e07050606
-2222222222222222222222222222222222222222222222222222222222170209020800070905573e653539440400040202060808090606070592937a7783050a0f0b100608090307080605091b1d25222222221603ec0507050500927a8f789807060705
-2222222222222222222222222222222222222222222222222222222222160602070800070207040434374e3a0908000403020309060002000204039296980a2a2222282910040909020400686e091b252222222810000304030302026f7e7c0509050809
-2222222222222222222320201f1e241d1c241f252320201e1f24252223210308000806060904002d4d3d5b5d0402050405050509040603080300090a0b0d2a222222222218060409070506929808041b25222222280f0c10090706049294980805030309
-222222231e1d252223210306f10009050907071b21030006ed051b1f2105686e00020009000303503d5d020904080200ef0809040807090000020a2a22222222222222221a03050205040808000707041b2522222222221704f004090605040507060409
-2222221909041b1e2104000309050308070309000704070206090603050992996d696e02000509575d0903060303040a0f0b0e0b10040200030a2a2222222222222320252810050302050802080208000315222222222219ec05eded0303080802020305
-2222221a020303070300080503686d696e02686c876e00060506030605050292947a866d6b696e0908040402090a0c2a22222222282910070a2a2222222222222217091b1d2102000603090603050600041b25222222222603ed04050706060805030005
-2222221a0002050004020007038b7895980792959798022d610506080604030204927a778f8f866a6a6e090700112222222222222222280e2a222222222222231c2103f00709ec02060407060009090409091422222222280e290b0b1009050409050404
-2222222810000403070304040292980807000008090900575d050507000809020603927a898c7e8574866c6b6e1b2522222222222222222222222222222223210505070a0e0b2910030409030303070905081b252222222222222222280c0f1003060200
-2222222218040305060804080408040209050403060609000400070404080404080804929779799496959393980312222222222222222222222222222222260960316115222222280f100009030509080809071b24252222222222222222222810050208
-2222222216060404080002040006080702070268876e08686e030403050300000304020407030803040706020405272222222222222222222222222222222810623e6315222222222217000709060006686e0807021b1e1c1c25222222222222280b1007
-222222221a0800070200020908090709040068888e8a098b8306080706020503050305030905070005080800060a2a222222222222222222222222222222221a00090a2a2222222222281004080500689a9809020409050206122222222222222222280e
-222222221604000606000507070406000000927a71866e9298070700070700070205040307050603050007020a2a222222222222222222222222222222222226060013222222222222222810000509929807040307070500ed1222222222222222222222
-22222222160304070703090800030905072d337d8c7898060905030502080308050807090002050802040a0d2a2222222222222222222222222222222222222810031b2522222222222222280c1003090000070803080309091b20242522222222222222
-2222222228100906020906090900070006625d9295980809000704090904606107040804080507080a0b2a22222222222222222222222222222222222222222321070413222222222222222222280e0f1007020009000708020304051b2522222222231c
-22222222221a0508020609020360330008686e0806002d2f33070902030057630002020907040a0d2a2222222222222222222222222222222222222222231d2103090311222222222222222222222222190403000202040008060302071b1d2522221709
-22222222232108060307030908575d686d888a0004006265663309090605060207020702030311222222222222222222222222222222222222222222221803050208061b252222222222222222222222280c10050600686e040004020205061b25221a03
-22222222160907080468696a6b69699a96949806050607423d63080309040306040907000a0d2a22222222222222222222222222222222222222222222281000050809081122222222222222222222222222280c10069298090709f1030004051b251607
-222222221a070907059295979496799807030304000209625d042d3304070508040308081422222222222222231f252324252222222222222222222222221a022d61070a2a222222222222222222222222222222190209070505020a0f0d10030613280e
-2222222216070604040403000407090708080202030302050602344f080403050600030a2a2222222222232421051217031122222222222222222222222217096263091122222222222222222222222222222222280b100405040a2a22221a050a2a2222
-222222232102050808090403070204070502000805050404030962630000060009070a2a222222222222190900001328292a222222222222222222222222180702040411222222222222222222222222222222222222170800041b1e2522280b2a222222
-222222180405000607000502030207080500060604060203060304686e0205080502122222222222222217090806142222222222222222222222222222221704000702152222222222222222222222222222222222222810020005001522222222222222
-22222321030904020409030808080006000308000003000803030581830300060509272222231c252222280f0e292a2222222222222222222222222222222609020305142222222222222222222222222222222222222218030509061422222222222222
-2222180203020902040000090205000504090006020703090005077d750009050603142222260713222222222222222222222222222222222222222222221702070a292a2222222222222222222222222222222222222228100703061122222222222222
-2222190800000906030400000906090602080509030805022d33066f7c08070704081b252218081522222222222222222222222222222222222222222222280e0b2a22222222222222222222222222222222231c2522222321020a0b2a22222222222222
-222228100008020304020008080202060709030600050002625d0392980008070503081522280b2a2222222222222222222222222222222222222222222222222222222222222222222222222222222222221a0713231c21090327222222222222222222
-2222222810090404070903050306090906000805000203090002686e0003090307040a2a2222222222222222222222222222222222222222222222222222222222222222222222222222222223241f1f252228101b21f106060313222222222222222222
-222222221a050405020007070508080902070607070205090809929805000604090a2a2222222222222222222222222222222222222222222222222222222222222222222222222222222223210906081b1d1d210304f003060a2a222222222222222222
-22222222160802040707030907040409050202080406686d6c696e0804020505ee11222222222222222222222222222222222222222222222222222222222222222222222222222222222218080608020609020505070a0d0d2a22222222222222222222
-2222222218060708090300060909000406070409686a9a9393799804090302000312222222222222222222222222222222222222222222222222222222222222222222222222222222222216000306030406000906001422222222222222222222222222
-22222222180904060907060000060006050502689a9498030609000708050a0b0c2a222222222222222222222222222222222222222222222222222222222222231f1f241c25222222222228290b10090302080305ef2722222222222222222222222222
-222222221a0005080703050702040004020609929800030504030606000a2a222222222222222222222222222222222222222222222222231d1e20242522222321090508031b1f2425222222222228100704080408082722222222222222222222222222
-22222222280f2910070a290b1008050804080803040907040303020300152222222222222222222222222223201f2420241d1f1f1c1d1f210809ee071b241d21080708020206ef0313222222222222280d0f100908051422222222222222222222222222
-22222222222222280b2a2222260209040604050a291000070804ee090a2a22222222222222231c1e1e1e1e210300ec0604030207ec0204020607000909070905060806080505090a2a2222222222222222222810060a2a22222222222222222222222222
-2222222222222222222222222810020505090a2a22280b0c0c0b0b0c2a2222222222222320210700040600030402060868696e0408000005080506000602070807070302070800142222222222222222222222280b2a2222222222222222222222222222
-22222222222222222222222222160200050a2a22222222222222222222222222222223210203050009080700080600009296996a6e03030704020504080209080907050807080a2a22222222222222222222222222222222222222222222222222222222
-2222222222222222222222222226eeecef152222222222222222222222222222232021030005080905090207050002070204927a8687876d6c876c6e000009050302080204061b1e25222222222222222222222222222222222222222222222222222222
-222222222222222222222222222810050013222222222222222222222222231e21030200030605030005080702686e0206040892937a8d8f7e70718309020405040504040008040214222222222222222222222222222222222222222222222222222222
-2222222222222222222222222223210800142222222222222222222222232106060706020707020307050504689a9802070600020492797a8f737b86696d6e09090909060400080813222222222222222222222222222222222222222222222222222222
-22222222222222222222222222180700081b1f1c241d1f20201c1c1e1e2100070400040802040000040703089298090509040908020304927a78957a718e866e050506060606040014222222222222222222222222222222222222222222222222222222
-22222222222222222222222222180204090700060003080705020900070402070300080407040605020202060500070405070705090500029298098472738f75060405040708080827222222222222222222222222222222222222222222222222222222
-2222222222222222222222222321030504686e030606030808020405040408030205080204686e0707050307060303070303090608030207020509927a8e857502000704060400ef13222222222222222222222222222222222222222222222222222222
-222222222222222222222222170802060692980602060407000700060709070206070403049298070603090400000806000202020704060700070408927a70866e0803070303ef0915222222222222222222222222222222222222222222222222222222
-22222222222222222222222321050500070600030805030705030004040806050706686e07050705060204040706040200020206040503090503030608927a789802020906060a292a222222222222222222222222222222222222222222222222222222
-22222222222222222222221a06040800090405050206020606020506686a69876e03929806070202000903040000020904070504030409060303030302009298000005040a0d2a2222222222222222222222222222222222222222222222222222222222
-222222222222222222231c2107030600020806000302080503040804929794979802030005090605040703000908080207040907030803050908060400040003050300071b24201f25222222222222222222222222222222222222222222222222222222
-22222222222222231c2105080704000005060209686c6c6e08080602030706040700040007030002020308060608040802060508000805080608090903030009020407ed05ee080412222222222222222222222222222222222222222222222222222222
-2222222222222321020407060507090409020909817278980509050905040806000800000706040609090204040205030305090306080208070607f0ecf0f0efeeeef0ef080904071b252222222222222222222222222222222222222222222222222222
-22222222222321040909070307020304070804688878980807070504060809090509000405080505070307040207050805070406000902070604020902f008efefeef00904030400031b2025222222222222222222222222222222222222222222222222
-2222222223210209060906070008040809086888789805090706020803060309030309050609020006050706030904030503070304090908030206030706030708090002060902020507071b1e1d201f1f25222222222222222222222222222222222222
-2222222321050409040607020606020406688878980408090707040904090700060508000009070206030002080203020804040908090605070702080406080002070809040308090508090008020206061b1e2522222222222222222222222222222222
-22222218030807080706020307040209078478980900060802000907090607030906080202030708070809040900000704060700040008040906080802050000080600070707040204030503000509040805051b1e1f2522222222222222222222222222
-222222170002050904020002040308686c9a98090004050200000909020505090302020403040004030003050402020700050400080802070602060706020506000407020707050708080202070006070409070208061222222222222222222222222222
-22222321040606000602050908686b88858308080707060808000005000304070809020905070709060206040005080400060207000706080604000604040303030409060807050206080505040008040609080604021222222222222222222222222222
-2223210709040203040904006888827e789809050709020003080406040006050206020009030204090302050305040300000706000606030407060707020208060006050307060908070200030600030407060203091b25222222222222222222222222
-2219020502030404060404688877789498020404070504040308070400030605040500050502060205080704060404030307060909080202060804040809080202060506070005030602040206050508090006060607081b252222222222222222222222
-221705000906030368696e92969698020200000409060205070004040706080904000902070904060403040905080806060807050208090809000004050600060707070207090708090005050703080309060600020507081b1f1e202522222222222222
-22180905020507688878980209040308070707000406060404090200060702020008050200020704050305020505000909070903000505040204020800000908090407070402080805040807060806060303060007080506020604001b1d1e2522222222
-221903050800689a9798050809090804070000070502070903000006040802050302090802020005060303060209070909070604070000090000050307050709040606060506080206020508080205070708090406090306080606050800021b25222222
-2219080703039298030707090504000002000409060802020603040008060806090403020703020709070602080402090404060802070905000006060702020605030609050506030909040800040505070203060809000600040207030200061b252222
-222810060603020706050903060906020806080808070300080204090307080904060409080304040500040009090008040604090305090906040806080404020805080607000803000900000908080004020905040604070709040502070609021b2424
-22232105080505050300050700040204090302050905090809060708080802000606030200060603060007040206080906090404020302080607040205050208080500080006090405040804080603040304070205070700040000080302040204040704
-22160600080404060705070708050603020302050302000303040405060906020302020003050407090202060407080309070709080503090604040903090006090204020506090207000700060403050007030909050803060903090603030503040707
-24210804020402070704000708030605050208080808050500070900090407060704000707020204040200090205050404000303080707060304070208020705050509090702030803020703040906070708070506040208080807040702060307060902
-ec000707020409050206090802070405080303040807070509040504090503040509000400080602020508030209080802080207060902030007040709060004030807030600050705030805020603000202070708060708000803090403000402050705
-05090000090803080203080304030803080508090202080302070700020406070304050202070703070503000500000304070205060807070504060405090807030306020703040405060309050000080509030007090809020402060309020300050407
-06050908080908030706000305000300080807090908030908020208070303030709080606060604090506050506050305020904000302060403020806020000090906050300080305020509080903000809020802030204060002090300090207040409
-04000906020205070005070905090504090507030509020709090606000003020000070902090700050209070802080806060002050006020903070900070800070509090404070606060004050902020300000500060607060004060702060506040207
-07080203020205040804030004030502070808030802090603030808060704020305040204060500000808020802040509020808040502060509030206040006060207090802070807060706070008040304020608030902090900030300080802050609
-05030509060305030002050305060602070603040503070603030402060902080004070604000705020205060502070907090409090805020807040404030204040700060705000806050400060908000602080607000505070607020608030003000609
-05040700060909000607000206060503070807020404000800040800040200070305050802040807080707040309040707090709000707080803090002090704020209040406080903030203030508070405040509080308000906090800000809000900
-06070006080208080404030808070008050004040807030607040204020005050605000404060207000403080800040409050707090700040803080903030408050209060800030803040400040602000006070004080409000909000200070403060708
-05080605020703030305040408000209060509040308030406090606030304050007090905000307030400000209000803090905050206000802050203080400060200000200070404060203030208050008090309060206050607050200060702040500
-02000203060405080504020409000606040502070006020307050706060305070306090609050203060306050209000305000703060703000208070608090308050004050303070804000003070803090800030507030306000909060603040203050405
-08080009080009050602050302050506050700040509090009040202060504040302000809090206090408080803050309030402020403020504000007030307040304020005050908030704030904090208020409040304050304090304070505000605
+2222222222222222222216060909272222222222222222222222222222222222222222222222221afa0500000203000000050808080000070306070708070602050603030800080903060802070602070207030707040208070805050502050905050003
+222222222222222222222810000a2a222222222222222222222222231f1d252222222222231c2421040404050509000905060807020202070805070907050302040908070002000203030407020404040702080900090408030005090508000805070403
+2222222222222222222222280f2a222222222222222222222222232104071b242522222321050204080408000600040405050608080506080309030407070204050402080700020304090408070702030908000500040000030303070804080305000002
+22222222222222222222222222222222222222222222222222221903fafa04091b1e242102070302060608020708050200060800030309090407090204020808070707070409060005050902000403000902000902070703050605080503040300020902
+2222222222222222222222222222222222222222222222222222281002ed02020700050207080704040908060003020708060700070608090605080709090606000907050702080809050407050304030902040405090300040207000800060609020006
+222222222222222222222222222222222222222222222223202025280e1008040309020200060704020406070007080704080707090509040905080300040504030405000700040802070509050206060703020608000005030606030900060904090000
+22222222222222222222222222222222222222231d1e202106051b1c1d21fa080508020407070505060309050008000704000506060602090907060008080702060805020308060800040208020205050208080704080600030902020508030004050207
+22222222222222222222222222222222222222260800000306000200060007060607050302020304000406080302070902060609050700000702080002050706030908020809030803060403080809070305060702060507050405070602030608000506
+22222222222222222222222222222222222222260505040204060503040006020808080703080505060807090606030807020503040802080206080306020402000009686e02070407040402070609040502040909030508090000030203030203090208
+22222222222222222222222222222222222222281002090202020204000309000900060602020807070408030006060006060706050508060607070509060506686d6c887508686e09070707030306070700030205080609050304030706080205060505
+22222222222222222222222222222222222222222607030603090505050907050406030600080605070506070406020203030309070503070207030704090968888f82858306929800020203070002070304040707060506000700040409090702090809
+2222222222222222222222222222222222222222280c0b0c1006090906080609090900030305030500070907060809020307050005020500080307020803086f77777b749109454507040803000502030204030406060302060900040008000006080007
+222222222222222222222222222222222222222222222222280b10020800080404060500080908080205060903060004080803080803090202070307050900848d899082866c6e450703030708686e050604030205090306060403000304060307050309
+22222222222222222222222222222222222222222222222222222810040206080807000702080404070402060502000405090908080305080203686c6a6d6d888e8973d6a5a986696e076869698886876c6e070905020706050909040500040800090306
+22222222222222222222222222222222222222222222222222222228100403090307040607090802080709020006090607030405040607040068887170747b7473a3d7cdd1d9778e866a888e708990857e7f090602040900000900080308080007040703
+222222222222222222222222222222222222222222222222222222221702080902050907050702070609000005090400030806070809000868888c827b8e827171cdd38f7278937a898c8c8e82778c7277866b6d6e060509000603060404040603050408
+222222222222222222222222222222222222222222222222222222221903000505070407030706020603080605030400080305090406026888777b8d7897957a7b787996799806927a8e77737895797a707b717898000500090202020808050306040800
+2222222222222222222222222222222222222222222222222222222228100403070302000506062d4c323305060606060500080602096888717e7e7898060092979809080505090892957a78980903927a7b778a07040600060008080606090905080707
+2222222222222222222222222222222222222222222222222222222222170303020804066033003b534a662f6107030006040503020576728e73747f09020800070204080005030908058b83090807037690717f02070703000408070504070203090703
+22222222222222222222222222222222222222222222222222222222221709090902090934662f4d474053534f0609060603040702067d727182777c0900020809080606020404060904929800090204927a789809020603090902060703020608070209
+22222222222222222222222222222222222222222222222222222222221afa0605030909573f5543645b65474b330009040902050068888e727e7b7c0007090507080403080508080005070402080a1005929805686e0402060307060706000504030500
+222222222222222222222222222222222222222222222222222222222216080502040703053447363a0846395541000706070004008489a3a97b7898040206030300050504000609090902050a0f2a170800090892996e090906030005604c3306070008
+2222222222222222222222222222222222222222222222222222222222180606090006026067474e4b31674a3c4400060407020906927acdd38f830507080206080705050805070406080603152222170007eb0404929806030400070962596307070003
+22222222222222222222222222222222222222222222222222222222222605090409030562653855394a553c524b61020507030005078b897e707c0304040206030200030504040407060708152222281000edeb05020507686e09080009040208020200
+22222222222222222222222222222222222222222222222222222222221a0908040306030262653654533636643e6306070207070504927a8989866b6e090202000702090006050800050307122222222810070a100300029298686a6e08000605030603
+22222222222222222222222222222222222222222222222222222222221a0907090602000509505340365264630606030808090905070992977a7777866e00000909080508040208030402031322222222280c2b210406000402927a866a876e04040700
+22222222222222222222222222222222222222222222222222222222221a0803060408050204625b3f5451440406060502050908080807020292977a717c080a0d0d100809050908000404021b1e25222222221809eb0900060606927a73789807040404
+2222222222222222222222222222222222222222222222222222222222190403060308070506050449394a440004040503050606020708070700079295980a2a2222280c10070802080402686e051b252222222810090304080905097d778a0908060402
+2222222222222222222324201f1d1c1c20241e25231f1c1d1f202522232100030700090802020360673d5c5d0409020302040600000906020500000a290e2a222222222219020606060509929800001b2522222228290e10060405029293980307000305
+22222223201c252223210608eb0600000002091b21020407fa061b1d2108686e04090903060306506463070805050703fb0407090500060604020a2a22222222222222222607050306020902050602081b2522222222221600ed03080303090500000009
+2222221604091b1d2105070200020005000802020802090203060403060492996d6b6e0206060857630307070408020a0b0e0b0e10000903060a2a222222222222231c252810020500060203020005060012222222222226ed05ebfb0705070605070002
+2222221808030809030303000868876a6e09686d6d6e06090903050500050692967a86696b6b6e0206000903040a0e2a22222222282910080a2a2222222222222216061b1c2108030208050504070509021b25222222222605fb07090000070202020008
+22222218050408060002040903847895980492799398062d330209040308030505927a8d717b866a696e000703272222222222222222280f2a222222222222231c2107ed0807eb0609070009030902090700272222222228290c290e1003040205000804
+2222222810070206060305000092980304080400070002625d060304040007090702927a828c738c77866d876e1b2522222222222222222222222222222223210502000a0b0f0f10080700020506050203081b252222222222222222280b0f1008090609
+22222222160408020700030007050608080905050203070509060305050604050608029294949695979393979800122222222222222222222222222222221a032d3061272222222829100409020403000808081b1d252222222222222222222810040005
+2222222217070809000807060605040403050768696e08686e07020808020208080409040807000605070208020527222222222222222222222222222222281062586327222222222217090207080403686e0203031b1f1f1f2522222222222228291000
+2222222219090602050904050304070508076888857508768304080203070905090802060708080305090505000a2a222222222222222222222222222222221a07090a2a2222222222281002080808689a9800050000080300152222222222222222280f
+222222221a02000209080402070206050202927a8f866e9298070700000204000904080305080203070504020a2a222222222222222222222222222222222216080527222222222222222810030406929807050308050306fa1122222222222222222222
+22222222180004060307050604090802056061768c7898070306080706090502000806040807000805050a0f2a2222222222222222222222222222222222222810031b2522222222222222280b1007080706020703020803081b1d1e2522222222222222
+222222222810040400000206040003040057639293980003080706040304606104020302060403050a292a2222222222222222222222222222222222222222232109001422222222222222222228290b1007020204000309050803031b2522222222231e
+222222222218060505030507092d330205686e0005022d4c33050304080757630004040809090a0f2a2222222222222222222222222222222222222222231c2105080715222222222222222222222222180508070503020007070206081b1d2522221a08
+222222222321090705040307086263686c888a050202623f4b3307000406080707080903070711222222222222222222222222222222222222222222222605020005041b252222222222222222222222280e10050802686e020604080609071b25221800
+222222221709020208686b6a6c6b6d9a937998060303033b645d030300030300000709090a0c2a22222222222222222222222222222222222222222222281009000806042722222222222222222222222222280e10069298030807eb020608021b252609
+2222222217080309099279979796939805060207040808576306603307050403040208092722222222222222231e25231e2522222222222222222222222216062d61050a2a222222222222222222222222222222190304020206060a0d0f10050427280c
+2222222226000007050309080904060304090205030609020707344f090304090007060a2a2222222222231e2100111607272222222222222222222222221a035763081122222222222222222222222222222222280c100004040a2a222216020a2a2222
+2222222321060002000508020002030803020605050908040305625d0800040402080a2a2222222222221607000613280f2a222222222222222222222222160900070912222222222222222222222222222222222222160008021b1e2522280e2a222222
+222222180705030704080908090802030609000508000409000907686e0702020907112222222222222217050807122222222222222222222222222222222603090707152222222222222222222222222222222222222810090508041522222222222222
+2222232104020304060609030608040609070906030509080404036f750403020206152222231e252222280e0f0f2a2222222222222222222222222222221a03030806112222222222222222222222222222222222222226030908021222222222222222
+22221a08000300080008060604040308060905060602050506070476830909060208152222260714222222222222222222222222222222222222222222221607050a0d2a2222222222222222222222222222222222222228100903081522222222222222
+22221a0308080700060703030000070804070806040005082d61066f8302000804031b252216001422222222222222222222222222222222222222222222280b0d2a2222222222222222222222222222222223202522222321000a0d2a22222222222222
+222228100002090709030904040609050604060302000605575d0392980009030308031122280b2a222222222222222222222222222222222222222222222222222222222222222222222222222222222222170915231c21030413222222222222222222
+2222222810090202050703000709080809030909060002090708686e0505030005030a2a22222222222222222222222222222222222222222222222222222222222222222222222222222222231e2420252228101b21eb05020727222222222222222222
+2222222226040402070400080209070803020003080305060005929803050602060a2a2222222222222222222222222222222222222222222222222222222222222222222222222222222223210800091b2420210303ed05050a2a222222222222222222
+2222222218000302060408080706060908080402070068696b876e0207000609eb12222222222222222222222222222222222222222222222222222222222222222222222222222222222216090306000607090705000a0c0e2a22222222222222222222
+2222222216080704080004050502090909050503686d9a9697949805000908070215222222222222222222222222222222222222222222222222222222222222222222222222222222222216090404090704070902001222222222222222222222222222
+222222221a0603080807070500020309020408689a9698030005080903090a0c0f2a22222222222222222222222222222222222222222222222222222222222223201d1c20252222222222280b0f10050008000202eb1222222222222222222222222222
+22222222170405090507020305020306090203929800070008030409040a2a222222222222222222222222222222222222222222222222231d1e1e202522222321020704061b1e1e25222222222228100005060704051422222222222222222222222222
+22222222280f0c10090a290e10080202030006080206080404090402051522222222222222222222222222231c20201f201f1d1c1f201c210702fa001b1f2421080809040002eb0812222222222222280b0d100007071322222222222222222222222222
+2222222222222228292a2222170602030300020a0b1002020607ed070a2a222222222222222324241d1d1f210205ed0205020903eb0804040303080202040504070406080405080a2a2222222222222222222810070a2a22222222222222222222222222
+2222222222222222222222222810080607020a2a22280c0f0c0c0e0b2a22222222222223242109030009020907080304686c6e0908070403060500040307000304000604000504142222222222222222222222280b2a2222222222222222222222222222
+22222222222222222222222222260703030a2a2222222222222222222222222222222321050309030609050905090305929599696e09060805090009060405020805000008080a2a22222222222222222222222222222222222222222222222222222222
+2222222222222222222222222216ededfb112222222222222222222222222222232021090700030605050706000800050606927a866b6b6c6d6b6a6e020607090705090404091b2425222222222222222222222222222222222222222222222222222222
+222222222222222222222222222810020814222222222222222222222222231e21060005080004040006030907686e0500000492977a8d897074717c03070706020500090404000411222222222222222222222222222222222222222222222222222222
+2222222222222222222222222223210204122222222222222222222222232108060806030204090202080807689a9809070000080592947a737b7b86876b6e06050408060806060714222222222222222222222222222222222222222222222222222222
+22222222222222222222222222190707061b241f241f1d201d20201d242103050505080702080603080302069298000200090607090405927a78957a7771866e050204060909080613222222222222222222222222222222222222222222222222222222
+222222222222222222222222221a0905080203090408080402000704090605030008070009060206090002020802040403060305040808039298067d898f7b83050505020804080511222222222222222222222222222222222222222222222222222222
+2222222222222222222222222321020403686e050709030405080504060802050802080607686e0903020505030408030805070602090706070308927a89707f00090305090504eb11222222222222222222222222222222222222222222222222222222
+2222222222222222222222221a0004070792980300050704020506060303080508000803049298070804050305080709000802000208030003080605927a72866e0609040904ed0714222222222222222222222222222222222222222222222222222222
+22222222222222222222222321060500050407020905060709050307020402000004686e04060007050800020405030908070008090503080906030007927a789804050908060a0b2a222222222222222222222222222222222222222222222222222222
+22222222222222222222221808020708050809030209040505030604686a6a876e07929803050708030708090806070304050403020707060800090004089298030302030a0c2a2222222222222222222222222222222222222222222222222222222222
+222222222222222222231d2103020703090508050304050705030200929393939803080800030308080000000907020602070203090407040608020604090208090004001b1c201c25222222222222222222222222222222222222222222222222222222
+22222222222222231f210706000207020002060568696b6e02090502070509090207050602020003050808060705050804000306020600020406000800000802070305ed02fb080715222222222222222222222222222222222222222222222222222222
+22222222222223210409000602050608080805078b8578980202070503090808090709020507030807030308070604040407080405030407020809edfbdfede3e1e1e3eb050803021b252222222222222222222222222222222222222222222222222222
+22222222222321020409020902030807050000688878980003050505090702000907090209040304000200020406070707070509040707060303000907ed099de7f9fd0409080509071b1e25222222222222222222222222222222222222222222222222
+2222222223210503070806070606020902096888789804000802080605060403090708030800030608080303020402040005030600070408060202000604040500020508030702080305001b241e201f1d25222222222222222222222222222222222222
+2222222321000609000906030508050502688878980706050509060505030607030409060306050005080409060602050902000207060402040704080900040302030604080805000606090902080400001b242522222222222222222222222222222222
+22222217090904080807070609040007056f78980903090504050307080206070506020206050702090407060805000008060206070800080303050802080504050403000600020402060907000808060207021b1e1e2522222222222222222222222222
+2222221a060606060402020508020268699a98040400060007030206020009080805060408020702000605090704080800040002040602090600030700020308050709030606030700070405000204080404000507091122222222222222222222222222
+22222321080903060904020307686c887b7f06070404050703090608040708020804070404090903020003080809000508040202060409080403050507000405040008070705070803090500090305050704050308021222222222222222222222222222
+2223210504000400000606076888777b789803030404030500050703030402050807070305080306050600000406040509060700090703070209070402060609020202060903090208000203040505030800030507061b25222222222222222222222222
+2216030205040208070400688873789498090407040200060402090703060805030004050403030807000208090905030608090900080502070209090807030807060408070405040506090403050606030404000906031b252222222222222222222222
+221907090407000468876e92959698060705030304040607090607060600030009090700060705050203070804090308040302070605040300080805060803050800060207080706000203020005090207080600040703021b1c241d2522222222222222
+22190805090004688878980909060903000902030908020603050009020500060306000304020906020803000209000308030506080602000000070903050503090305030403070400070202050304030309060803060602060300061b1f202522222222
+221a02040603689a9798020304070006030405060406020907080300090508030407060008080008050202060709030904070405000504070305080909040204090504050402030602020308090307000700050804090304020004000303041b25222222
+2226030606039298050805030707080006000205090306020407000200040805090800050204070602020606090404030306080206020309060008060406000305080604090309020304070905090207050708080608080308060802000705031b252222
+222810030608020207020809060708030506030409000509050702000507030400060406020405070304060808040800070004070907060402060205030208000702050705090407000904080209090808000507070908070508020509090605081b201d
+22232108020704000703090502020908080703030504060300090709070800020004070902020008020703030809090706020709040002040908030404000402050000040908020205020202000806040003030402020708090800000604020004000204
+22180302020403090308040008040209060606030206020809030603030804090804000006000708060806040305020600070600030708090004090009040708070706030503080002020302040407030803030808000708020606020704090308030304
+1d210404000605050709070500090008070704080409070800040009060403090304030008060503030906030606080302020903090600070802060405060305080405040708060907090004060804070800090505070203080606000207030700080005
+fb070400060402090004040804000008080208040505030709050207000302060705050007060007090203040303090002080207000402070903040705050402070800040200000209030302030909050702020503030209050307080708070504070605
+05070405070606000604050003040405060505080809040307020500080205020609060003090806030007050400080703030408020709060804060503080406050907080805040904080207060905090906050003020409040902060805000302070807
+09030603000808070700040706060506080905090604050206050307090005070000090906050602050708000300070807090702020003070305050304090702070400040906030400000302080909040605050705070305000705020402030806040905
+07020808090009060706090200040603000808080303090405000000040903000908080807050404020003020407050305030006030807070807050205070904040609000002020202050406020608040606070802050409090608040206050502050502
+06060407000500090806040403000902030009030705060800020302040702070003020207030803080204080003000304070508020906030806020900030600050709090908020609050207060908070603050809000805040904040307040705040502
+02060508090704050602020002040602040404050306080503020005030307040809000506040900050808060204050307090707050500050508000700050208020904060300040507020008030609090306040509040704020500020909080908090500
+07080504090400090709060905090204040807030406030005000904070402040905060606060503030009070000090206040209090408030207060809050006070403030707050908040406020307060506050200000402060708030006080709000006
+08050504070807060902020207050307050509080905000900090709090505050707060405030802040903020204060706030505070403070307040902060508030800060208070305080207090802050004090607090307060507070009040407040708
+09020904090008080807000702080306070304040700000809040906050603040709060509020006090203080705040407050703050600020907060300060607050909040208090807090604040707090305020508090507060009060604000000080209
+06090700080004000608090600080808070304000000040604040405090404030309030009040803030708030307090709030700030004070306090909000309070507070906070900060204030800090006070404020804050504040306000008070507
+03020604070605070203070308040603030204070607000803000802060306060300070904020705050407000500000809050505020402030207020708050400050007060004090305060300050406040600070702060704030808080402080600060300
 </d_styles>
 	</map>
 	<citylist>
@@ -2037,34 +2037,34 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Scouts</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>10</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>2</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>0</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>0</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
 				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
 					<d_description></d_description>
-					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
+					<d_production>2</d_production>
 					<d_upkeep>5</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>3</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>3</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2089,34 +2089,34 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Scouts</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>10</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>2</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>0</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>0</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
 				<armyprodbase>
 					<d_name>Pikemen</d_name>
 					<d_description></d_description>
-					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
+					<d_production>3</d_production>
 					<d_upkeep>5</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
-					<d_type>4</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>4</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2141,17 +2141,17 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Scouts</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>10</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>2</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>0</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>0</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2178,17 +2178,17 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Scouts</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>10</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>2</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>0</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>0</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2216,34 +2216,34 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Scouts</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>10</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>2</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>0</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>0</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
 				<armyprodbase>
 					<d_name>Pikemen</d_name>
 					<d_description></d_description>
-					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
+					<d_production>3</d_production>
 					<d_upkeep>5</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
-					<d_type>4</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>4</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2268,34 +2268,34 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
 					<d_description></d_description>
-					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
+					<d_production>2</d_production>
 					<d_upkeep>4</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>2</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>2</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
 				<armyprodbase>
 					<d_name>Scouts</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>10</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>2</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>0</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>0</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2320,34 +2320,34 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Pikemen</d_name>
 					<d_description></d_description>
-					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
+					<d_production>3</d_production>
 					<d_upkeep>5</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
-					<d_type>4</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>4</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>3</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>1</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>1</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2372,34 +2372,34 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
 					<d_description></d_description>
-					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
+					<d_production>2</d_production>
 					<d_upkeep>5</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>3</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>3</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>3</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>1</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>1</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2424,34 +2424,34 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Pikemen</d_name>
 					<d_description></d_description>
-					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
+					<d_production>3</d_production>
 					<d_upkeep>5</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
-					<d_type>4</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>4</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>3</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>1</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>1</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2476,34 +2476,34 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Scouts</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>10</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>2</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>0</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>0</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
 				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
 					<d_description></d_description>
-					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
+					<d_production>2</d_production>
 					<d_upkeep>5</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>3</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>3</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2528,17 +2528,17 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Scouts</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>10</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>2</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>0</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>0</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2565,17 +2565,17 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Heavy Inf.</d_name>
 					<d_description></d_description>
-					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
+					<d_production>2</d_production>
 					<d_upkeep>5</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>3</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>3</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2602,17 +2602,17 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Dwarves</d_name>
 					<d_description></d_description>
-					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
+					<d_production>2</d_production>
 					<d_upkeep>7</d_upkeep>
 					<d_move_bonus> Tile::HILLS</d_move_bonus>
 					<d_army_bonus> ArmyBase::ADD1STRINHILLS</d_army_bonus>
-					<d_type>6</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>6</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2639,34 +2639,34 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Light Cav.</d_name>
 					<d_description></d_description>
-					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
+					<d_production>2</d_production>
 					<d_upkeep>6</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
-					<d_type>10</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>10</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
 				<armyprodbase>
 					<d_name>Scouts</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>10</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>2</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>0</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>0</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2691,17 +2691,17 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Scouts</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>10</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>2</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>0</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>0</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2728,17 +2728,17 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Archers</d_name>
 					<d_description></d_description>
-					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
+					<d_production>2</d_production>
 					<d_upkeep>7</d_upkeep>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
 					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
-					<d_type>5</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>5</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2765,34 +2765,34 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
 					<d_description></d_description>
-					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
+					<d_production>2</d_production>
 					<d_upkeep>4</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>2</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>2</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
 				<armyprodbase>
 					<d_name>Heavy Cav.</d_name>
 					<d_description></d_description>
-					<d_production>3</d_production>
 					<d_production_cost>500</d_production_cost>
+					<d_production>3</d_production>
 					<d_upkeep>8</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus> ArmyBase::ADD2STRINOPEN</d_army_bonus>
-					<d_type>12</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>12</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2817,17 +2817,17 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Pikemen</d_name>
 					<d_description></d_description>
-					<d_production>3</d_production>
 					<d_production_cost>400</d_production_cost>
+					<d_production>3</d_production>
 					<d_upkeep>5</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
-					<d_type>4</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>8</d_max_moves>
 					<d_strength>4</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>4</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2854,17 +2854,17 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Light Cav.</d_name>
 					<d_description></d_description>
-					<d_production>2</d_production>
 					<d_production_cost>300</d_production_cost>
+					<d_production>2</d_production>
 					<d_upkeep>6</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
-					<d_type>10</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>20</d_max_moves>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>10</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2891,34 +2891,34 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>3</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>1</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>1</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
 				<armyprodbase>
 					<d_name>Scouts</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>10</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>2</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>0</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>0</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2943,17 +2943,17 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Scouts</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>10</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>2</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>0</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>16</d_max_moves>
 					<d_strength>1</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>0</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -2980,34 +2980,34 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
 					<d_description></d_description>
-					<d_production>2</d_production>
 					<d_production_cost>100</d_production_cost>
+					<d_production>2</d_production>
 					<d_upkeep>4</d_upkeep>
 					<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>2</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>2</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
 					<d_description></d_description>
-					<d_production>1</d_production>
 					<d_production_cost>50</d_production_cost>
+					<d_production>1</d_production>
 					<d_upkeep>3</d_upkeep>
 					<d_move_bonus></d_move_bonus>
 					<d_army_bonus></d_army_bonus>
-					<d_type>1</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
 					<d_strength>2</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>1</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -3032,17 +3032,17 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<armyprodbase>
 					<d_name>Archers</d_name>
 					<d_description></d_description>
-					<d_production>2</d_production>
 					<d_production_cost>400</d_production_cost>
+					<d_production>2</d_production>
 					<d_upkeep>7</d_upkeep>
 					<d_move_bonus> Tile::FOREST</d_move_bonus>
 					<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
-					<d_type>5</d_type>
-					<d_armyset>1</d_armyset>
 					<d_max_moves>12</d_max_moves>
 					<d_strength>3</d_strength>
 					<d_sight>1</d_sight>
 					<d_expvalue>1</d_expvalue>
+					<d_type>5</d_type>
+					<d_armyset>1</d_armyset>
 				</armyprodbase>
 			</slot>
 			<slot>
@@ -3085,19 +3085,19 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 	</templelist>
 	<ruinlist>
 		<ruin>
-			<d_id>149</d_id>
-			<d_x>80</d_x>
-			<d_y>35</d_y>
-			<d_name>The Sibyl's Cave</d_name>
+			<d_id>104</d_id>
+			<d_x>50</d_x>
+			<d_y>24</d_y>
+			<d_name>Dark Tower</d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
-			<d_sage>true</d_sage>
-			<d_hidden>true</d_hidden>
-			<d_owner>0</d_owner>
+			<d_sage>false</d_sage>
+			<d_hidden>false</d_hidden>
+			<d_owner>8</d_owner>
 			<stack>
-				<d_id>229</d_id>
-				<d_x>42</d_x>
-				<d_y>82</d_y>
+				<d_id>217</d_id>
+				<d_x>50</d_x>
+				<d_y>24</d_y>
 				<d_owner>-1</d_owner>
 				<d_defending>false</d_defending>
 				<d_parked>false</d_parked>
@@ -3108,22 +3108,22 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 					<d_y></d_y>
 				</path>
 				<army>
-						<d_upkeep>0</d_upkeep>
-						<d_move_bonus></d_move_bonus>
-						<d_army_bonus></d_army_bonus>
-					<d_id>230</d_id>
+					<d_upkeep>0</d_upkeep>
+					<d_move_bonus></d_move_bonus>
+					<d_army_bonus></d_army_bonus>
+					<d_max_moves>20</d_max_moves>
+					<d_strength>7</d_strength>
+					<d_sight>1</d_sight>
+					<d_expvalue>10</d_expvalue>
+					<d_id>218</d_id>
 					<d_armyset>1</d_armyset>
-					<d_type>23</d_type>
+					<d_type>24</d_type>
 					<d_hp>2</d_hp>
 					<d_ship>false</d_ship>
-					<d_moves>16</d_moves>
+					<d_moves>20</d_moves>
 					<d_xp>0</d_xp>
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
-					<d_max_moves>16</d_max_moves>
-					<d_strength>8</d_strength>
-					<d_sight>1</d_sight>
-					<d_expvalue>10</d_expvalue>
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
@@ -3154,9 +3154,13 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 					<d_y></d_y>
 				</path>
 				<army>
-						<d_upkeep>0</d_upkeep>
-						<d_move_bonus></d_move_bonus>
-						<d_army_bonus></d_army_bonus>
+					<d_upkeep>0</d_upkeep>
+					<d_move_bonus></d_move_bonus>
+					<d_army_bonus></d_army_bonus>
+					<d_max_moves>22</d_max_moves>
+					<d_strength>9</d_strength>
+					<d_sight>1</d_sight>
+					<d_expvalue>10</d_expvalue>
 					<d_id>228</d_id>
 					<d_armyset>1</d_armyset>
 					<d_type>26</d_type>
@@ -3166,10 +3170,6 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 					<d_xp>0</d_xp>
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
-					<d_max_moves>22</d_max_moves>
-					<d_strength>9</d_strength>
-					<d_sight>1</d_sight>
-					<d_expvalue>10</d_expvalue>
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
@@ -3177,19 +3177,19 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 			</stack>
 		</ruin>
 		<ruin>
-			<d_id>104</d_id>
-			<d_x>50</d_x>
-			<d_y>24</d_y>
-			<d_name>Dark Tower</d_name>
+			<d_id>149</d_id>
+			<d_x>80</d_x>
+			<d_y>35</d_y>
+			<d_name>The Sibyl's Cave</d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
-			<d_sage>false</d_sage>
-			<d_hidden>false</d_hidden>
-			<d_owner>8</d_owner>
+			<d_sage>true</d_sage>
+			<d_hidden>true</d_hidden>
+			<d_owner>0</d_owner>
 			<stack>
-				<d_id>217</d_id>
-				<d_x>50</d_x>
-				<d_y>24</d_y>
+				<d_id>229</d_id>
+				<d_x>42</d_x>
+				<d_y>82</d_y>
 				<d_owner>-1</d_owner>
 				<d_defending>false</d_defending>
 				<d_parked>false</d_parked>
@@ -3200,22 +3200,22 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 					<d_y></d_y>
 				</path>
 				<army>
-						<d_upkeep>0</d_upkeep>
-						<d_move_bonus></d_move_bonus>
-						<d_army_bonus></d_army_bonus>
-					<d_id>218</d_id>
+					<d_upkeep>0</d_upkeep>
+					<d_move_bonus></d_move_bonus>
+					<d_army_bonus></d_army_bonus>
+					<d_max_moves>16</d_max_moves>
+					<d_strength>8</d_strength>
+					<d_sight>1</d_sight>
+					<d_expvalue>10</d_expvalue>
+					<d_id>230</d_id>
 					<d_armyset>1</d_armyset>
-					<d_type>24</d_type>
+					<d_type>23</d_type>
 					<d_hp>2</d_hp>
 					<d_ship>false</d_ship>
-					<d_moves>20</d_moves>
+					<d_moves>16</d_moves>
 					<d_xp>0</d_xp>
 					<d_max_moves_multiplier>1</d_max_moves_multiplier>
 					<d_level>1</d_level>
-					<d_max_moves>20</d_max_moves>
-					<d_strength>7</d_strength>
-					<d_sight>1</d_sight>
-					<d_expvalue>10</d_expvalue>
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
@@ -3231,8 +3231,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Defender's Helmet</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>14</d_id>
-				<d_bonus> ItemProto::ADD1STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3242,8 +3242,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Scroll of Waterwalking</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>16</d_id>
-				<d_bonus> ItemProto::ADD1STR ItemProto::ADD3STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR ItemProto::ADD3STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3253,8 +3253,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Shield of Parrying</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>18</d_id>
-				<d_bonus> ItemProto::ADD1STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3264,8 +3264,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Field Plate</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>20</d_id>
-				<d_bonus> ItemProto::ADD1STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3275,8 +3275,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Healthy Cloak</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>22</d_id>
-				<d_bonus> ItemProto::ADD1STR ItemProto::ADD2STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR ItemProto::ADD2STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3286,8 +3286,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Ring of Endurance</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>24</d_id>
-				<d_bonus> ItemProto::ADD2STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD2STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3297,8 +3297,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Enchanted Dagger</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>28</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3308,8 +3308,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Enchanted Sword</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>30</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3319,8 +3319,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Enchanted Axe</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>32</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3330,8 +3330,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Defense Rapier</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>34</d_id>
-				<d_bonus> ItemProto::ADD1STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3341,8 +3341,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Skull Crusher</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>36</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3352,8 +3352,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Orcish Dagger</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>38</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3363,8 +3363,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Orcish Sword</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>40</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3374,8 +3374,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Magic Spear</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>42</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3385,8 +3385,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Enchanted Greatsword</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>44</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3396,8 +3396,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Orcish Greatsword</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>46</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3407,8 +3407,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Everburning Torch</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>48</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3418,8 +3418,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Dwarven Hammer</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>50</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3429,8 +3429,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Berserker Axe</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>52</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3440,8 +3440,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Elven Sword</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>54</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3451,8 +3451,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Power Halberd</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>56</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3462,8 +3462,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Baneblade</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>58</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3473,8 +3473,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Thrakil's Battleaxe</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>60</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3484,8 +3484,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Trident of the Seas</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>62</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3495,8 +3495,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Flaming Death</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>64</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3506,8 +3506,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Evening Star</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>66</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3517,8 +3517,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Sword of the Avatar</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>68</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3528,8 +3528,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Studded Armour</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>70</d_id>
-				<d_bonus> ItemProto::ADD1STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3539,8 +3539,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Ranger Vest</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>72</d_id>
-				<d_bonus> ItemProto::ADD3STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD3STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3550,8 +3550,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Wall Aegis</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>74</d_id>
-				<d_bonus> ItemProto::ADD1STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3561,8 +3561,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Golden Shield</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>76</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3572,8 +3572,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Silver Cap</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>78</d_id>
-				<d_bonus> ItemProto::ADD1STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3583,8 +3583,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Ruby Ring</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>80</d_id>
-				<d_bonus> ItemProto::ADD1STR ItemProto::ADD2STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR ItemProto::ADD2STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3594,8 +3594,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Golden Mask</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>82</d_id>
-				<d_bonus> ItemProto::ADD1STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3605,8 +3605,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Crystal Rose</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>84</d_id>
-				<d_bonus> ItemProto::ADD2STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD2STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3616,8 +3616,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Moon Blade</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>240</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3627,8 +3627,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Mace of the Zealot</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>242</d_id>
-				<d_bonus></d_bonus>
 				<d_type>0</d_type>
+				<d_bonus></d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3638,8 +3638,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Defender's Helmet</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>244</d_id>
-				<d_bonus> ItemProto::ADD1STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3649,8 +3649,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Scroll of Waterwalking</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>246</d_id>
-				<d_bonus> ItemProto::ADD1STR ItemProto::ADD3STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR ItemProto::ADD3STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3660,8 +3660,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Shield of Parrying</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>248</d_id>
-				<d_bonus> ItemProto::ADD1STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3671,8 +3671,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Field Plate</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>250</d_id>
-				<d_bonus> ItemProto::ADD1STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3682,8 +3682,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Healthy Cloak</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>252</d_id>
-				<d_bonus> ItemProto::ADD1STR ItemProto::ADD2STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD1STR ItemProto::ADD2STR</d_bonus>
 			</item>
 		</reward>
 		<reward>
@@ -3693,8 +3693,8 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 				<d_name>Ring of Endurance</d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>254</d_id>
-				<d_bonus> ItemProto::ADD2STR</d_bonus>
 				<d_type>0</d_type>
+				<d_bonus> ItemProto::ADD2STR</d_bonus>
 			</item>
 		</reward>
 	</rewardlist>
@@ -3842,6 +3842,12 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 	</questlist>
 	<vectoredunitlist>
 	</vectoredunitlist>
+	<campaign>
+		<d_name></d_name>
+		<d_comment></d_comment>
+		<d_next_scenario></d_next_scenario>
+		<d_num_heroes>0</d_num_heroes>
+	</campaign>
 	<scenario>
 		<d_id>25b188da-f9bd-4659-81f0-ded43e296d54</d_id>
 		<d_name>The Second Punic War</d_name>
@@ -3854,13 +3860,12 @@ ec000707020409050206090802070405080303040807070509040504090503040509000400080602
 		<d_hidden_map>false</d_hidden_map>
 		<d_diplomacy>false</d_diplomacy>
 		<d_cusp_of_war>false</d_cusp_of_war>
-		<d_neutral_cities>0</d_neutral_cities>
-		<d_razing_cities>2</d_razing_cities>
+		<d_neutral_cities>GameParameters::AVERAGE</d_neutral_cities>
+		<d_razing_cities>GameParameters::ALWAYS</d_razing_cities>
 		<d_intense_combat>false</d_intense_combat>
 		<d_military_advisor>false</d_military_advisor>
 		<d_random_turns>false</d_random_turns>
 		<d_surrender_already_offered>false</d_surrender_already_offered>
 		<d_playmode>GameScenario::HOTSEAT</d_playmode>
-
 	</scenario>
 </lordsawar>
