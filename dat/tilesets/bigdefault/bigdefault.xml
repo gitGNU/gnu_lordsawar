@@ -358,6 +358,12 @@
 		<tilestyle> <d_id>0xa0</d_id> <d_type>0</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa1</d_id> <d_type>0</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa2</d_id> <d_type>0</d_type> </tilestyle>
+		<tilestyle> <d_id>0x101</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0x102</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0x103</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0x104</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0x105</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0x106</d_id> <d_type>8</d_type> </tilestyle>
 	</tilestyleset>
     </tile>
 </tileset>
