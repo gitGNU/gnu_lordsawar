@@ -1,4 +1,13 @@
+2008-09-29  Ben Asselstine
+
+	* Fixed bug in tileset validation.
+
+2008-09-29  Janek Kozicki
+
+	* Rivers now run to lakes on generated maps.
+
 2008-09-28  Janek Kozicki
+
 	* MapGenerator is now generating hills around mountains. And mountains
 	  are never adjacent to grass.
 
