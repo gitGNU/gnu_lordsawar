@@ -2,10 +2,15 @@
 
 	* Fixed bug in tileset validation.
 	* added ability to surround mountains with hills in the editor.
+	* modified Bridge::Type, which breaks the save game format.
+	* now placing bridges on random maps.
 
 2008-09-29  Janek Kozicki
 
 	* Rivers now run to lakes on generated maps.
+	* Added 3 different river styles (chosen at random)
+	* Added a method for finding possible places for putting bridges
+	* Made new default tileset based on Wesnoth tileset.
 
 2008-09-28  Janek Kozicki
 

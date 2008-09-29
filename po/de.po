@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-29 15:23-0400\n"
+"POT-Creation-Date: 2008-09-29 17:16-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -2706,121 +2706,131 @@ msgstr ""
 msgid "Error, while loading a shieldset. Shieldset Name: "
 msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
 
-#: src/MapGenerator.cpp:156
+#: src/MapGenerator.cpp:157
 msgid "Making random map"
 msgstr "Erzeuge Zufallskarte"
 
-#: src/MapGenerator.cpp:159
+#: src/MapGenerator.cpp:160
 msgid "Flatening Plains  ... 10%"
 msgstr "Erzeuge Ebenen ... 10%"
 
-#: src/MapGenerator.cpp:160
+#: src/MapGenerator.cpp:161
 #, fuzzy
 msgid "flattening plains..."
 msgstr "Erzeuge Ebenen ... 10%"
 
-#: src/MapGenerator.cpp:162
+#: src/MapGenerator.cpp:163
 msgid "Raining Water     ... 30%"
 msgstr "Erzeuge Wasserflächen ... 30%"
 
-#: src/MapGenerator.cpp:163
+#: src/MapGenerator.cpp:164
 #, fuzzy
 msgid "raining water..."
 msgstr "Erzeuge Wasserflächen ... 30%"
 
-#: src/MapGenerator.cpp:168
+#: src/MapGenerator.cpp:169
 msgid "Raising Hills     ... 20%"
 msgstr "Erzeuge Hügel ... 20%"
 
-#: src/MapGenerator.cpp:169
+#: src/MapGenerator.cpp:170
 #, fuzzy
 msgid "raising hills..."
 msgstr "Erzeuge Hügel ... 20%"
 
-#: src/MapGenerator.cpp:171
+#: src/MapGenerator.cpp:172
 msgid "Raising Mountains ... 30%"
 msgstr "Erzeuge Berge ... 20%"
 
-#: src/MapGenerator.cpp:172
+#: src/MapGenerator.cpp:173
 #, fuzzy
 msgid "raising mountains..."
 msgstr "Erzeuge Berge ... 20%"
 
-#: src/MapGenerator.cpp:177
+#: src/MapGenerator.cpp:178
 msgid "Planting Forest   ... 40%"
 msgstr "Erzeuge Wald ... 40%"
 
-#: src/MapGenerator.cpp:178
+#: src/MapGenerator.cpp:179
 #, fuzzy
 msgid "planting forests..."
 msgstr "Erzeuge Wald ... 40%"
 
-#: src/MapGenerator.cpp:180
+#: src/MapGenerator.cpp:181
 msgid "Watering Swamps   ... 50%"
 msgstr "Erzeuge Sumpf ... 50%"
 
-#: src/MapGenerator.cpp:181
+#: src/MapGenerator.cpp:182
 #, fuzzy
 msgid "watering swamps..."
 msgstr "Erzeuge Sumpf ... 50%"
 
-#: src/MapGenerator.cpp:183
+#: src/MapGenerator.cpp:184
 msgid "Normalizing       ... 60%"
 msgstr "Verbessere Karte ... 60%"
 
-#: src/MapGenerator.cpp:184
+#: src/MapGenerator.cpp:185
 #, fuzzy
 msgid "normalizing terrain..."
 msgstr "Betreten der Ruine..."
 
-#: src/MapGenerator.cpp:188
+#: src/MapGenerator.cpp:189
 msgid "Building Cities   ... 70%"
 msgstr "Baue Städte ... 70%"
 
-#: src/MapGenerator.cpp:189
+#: src/MapGenerator.cpp:190
 #, fuzzy
 msgid "building cities..."
 msgstr "Baue Städte ... 70%"
 
-#: src/MapGenerator.cpp:194
+#: src/MapGenerator.cpp:195
 #, fuzzy
 msgid "Paving Roads      ... 75%"
 msgstr "Erzeuge Wasserflächen ... 30%"
 
-#: src/MapGenerator.cpp:195
+#: src/MapGenerator.cpp:196
 #, fuzzy
 msgid "paving roads..."
 msgstr "Erzeuge Wasserflächen ... 30%"
 
-#: src/MapGenerator.cpp:200
+#: src/MapGenerator.cpp:201
 msgid "Ruining Ruins     ... 80%"
 msgstr "Zerstöre Ruinen ... 80%"
 
-#: src/MapGenerator.cpp:201
+#: src/MapGenerator.cpp:202
 #, fuzzy
 msgid "ruining ruins..."
 msgstr "Zerstöre Ruinen ... 80%"
 
-#: src/MapGenerator.cpp:203
+#: src/MapGenerator.cpp:204
 #, fuzzy
 msgid "Raising Signs     ... 88%"
 msgstr "Erzeuge Hügel ... 20%"
 
-#: src/MapGenerator.cpp:204
+#: src/MapGenerator.cpp:205
 #, fuzzy
 msgid "raising signs..."
 msgstr "Erzeuge Hügel ... 20%"
 
-#: src/MapGenerator.cpp:206
+#: src/MapGenerator.cpp:207
 msgid "Spawning temples  ... 90%"
 msgstr "Richte Tempel ein ... 90%"
 
-#: src/MapGenerator.cpp:207
+#: src/MapGenerator.cpp:208
 #, fuzzy
 msgid "spawning temples..."
 msgstr "Richte Tempel ein ... 90%"
 
-#: src/MapGenerator.cpp:209
+#: src/MapGenerator.cpp:210
+#, fuzzy
+msgid "Building bridges  ... 95%"
+msgstr "Baue Städte ... 70%"
+
+#: src/MapGenerator.cpp:211
+#, fuzzy
+msgid "building bridges..."
+msgstr "Baue Städte ... 70%"
+
+#: src/MapGenerator.cpp:213
 msgid "Done making map   ... 100%"
 msgstr "Fertig mit Kartenerzeugung ... 100%"
 
@@ -4143,47 +4153,47 @@ msgstr "CreateScenario: falsche Größe angegeben\n"
 msgid "CreateScenario:: wrong height given\n"
 msgstr "CreateScenario: falsche Größe angegeben\n"
 
-#: src/CreateScenario.cpp:643
+#: src/CreateScenario.cpp:654
 #, fuzzy
 msgid "Northwestern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:646
+#: src/CreateScenario.cpp:657
 #, fuzzy
 msgid "Northern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:649
+#: src/CreateScenario.cpp:660
 #, fuzzy
 msgid "Northeastern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:652
+#: src/CreateScenario.cpp:663
 #, fuzzy
 msgid "Western map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:655
+#: src/CreateScenario.cpp:666
 #, fuzzy
 msgid "Central map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:658
+#: src/CreateScenario.cpp:669
 #, fuzzy
 msgid "Eastern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:661
+#: src/CreateScenario.cpp:672
 #, fuzzy
 msgid "Southwestern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:664
+#: src/CreateScenario.cpp:675
 #, fuzzy
 msgid "Southern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:667
+#: src/CreateScenario.cpp:678
 #, fuzzy
 msgid "Southeastern map"
 msgstr "Erzeuge Karte"
