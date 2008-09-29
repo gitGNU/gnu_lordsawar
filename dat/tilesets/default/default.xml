@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <tileset>
     <d_name>Default</d_name>
-    <d_info>The tileset based on Wesnoth tileset</d_info>
+    <d_info>A tileset based on Wesnoth tileset</d_info>
     <d_tilesize>40</d_tilesize>
     <d_large_selector>misc/selector.png</d_large_selector>
     <d_small_selector>misc/small_selector.png</d_small_selector>
@@ -241,7 +241,7 @@
 	<tilestyleset>
 		<d_name>mountains</d_name>
 		<tilestyle> <d_id>0xa3</d_id> <d_type>1</d_type> </tilestyle>
-		<tilestyle> <d_id>0xa4</d_id> <d_type>2</d_type> </tilestyle>
+		<tilestyle> <d_id>0xa4</d_id> <d_type>0</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa5</d_id> <d_type>2</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa6</d_id> <d_type>2</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa7</d_id> <d_type>2</d_type> </tilestyle>
