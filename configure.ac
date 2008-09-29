@@ -259,6 +259,10 @@ AC_CONFIG_FILES([
         dat/tilesets/default/misc/Makefile
         dat/tilesets/bigdefault/Makefile
         dat/tilesets/bigdefault/misc/Makefile
+        dat/tilesets/stark/Makefile
+        dat/tilesets/stark/misc/Makefile
+        dat/tilesets/bigstark/Makefile
+        dat/tilesets/bigstark/misc/Makefile
         dat/shield/Makefile 
         dat/shield/default/Makefile 
         dat/shield/plain/Makefile 
@@ -267,6 +271,7 @@ AC_CONFIG_FILES([
         dat/citysets/default/Makefile 
         dat/citysets/bigdefault/Makefile 
         dat/citysets/dol/Makefile 
+        dat/citysets/bigdol/Makefile 
         dat/various/Makefile 
         dat/various/items/Makefile
         dat/various/editor/Makefile
