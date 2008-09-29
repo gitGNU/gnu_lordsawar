@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-28 23:25-0400\n"
+"POT-Creation-Date: 2008-09-29 15:23-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -2706,121 +2706,121 @@ msgstr ""
 msgid "Error, while loading a shieldset. Shieldset Name: "
 msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
 
-#: src/MapGenerator.cpp:155
+#: src/MapGenerator.cpp:156
 msgid "Making random map"
 msgstr "Erzeuge Zufallskarte"
 
-#: src/MapGenerator.cpp:158
+#: src/MapGenerator.cpp:159
 msgid "Flatening Plains  ... 10%"
 msgstr "Erzeuge Ebenen ... 10%"
 
-#: src/MapGenerator.cpp:159
+#: src/MapGenerator.cpp:160
 #, fuzzy
 msgid "flattening plains..."
 msgstr "Erzeuge Ebenen ... 10%"
 
-#: src/MapGenerator.cpp:161
+#: src/MapGenerator.cpp:162
 msgid "Raining Water     ... 30%"
 msgstr "Erzeuge Wasserflächen ... 30%"
 
-#: src/MapGenerator.cpp:162
+#: src/MapGenerator.cpp:163
 #, fuzzy
 msgid "raining water..."
 msgstr "Erzeuge Wasserflächen ... 30%"
 
-#: src/MapGenerator.cpp:165
+#: src/MapGenerator.cpp:168
 msgid "Raising Hills     ... 20%"
 msgstr "Erzeuge Hügel ... 20%"
 
-#: src/MapGenerator.cpp:166
+#: src/MapGenerator.cpp:169
 #, fuzzy
 msgid "raising hills..."
 msgstr "Erzeuge Hügel ... 20%"
 
-#: src/MapGenerator.cpp:168
+#: src/MapGenerator.cpp:171
 msgid "Raising Mountains ... 30%"
 msgstr "Erzeuge Berge ... 20%"
 
-#: src/MapGenerator.cpp:169
+#: src/MapGenerator.cpp:172
 #, fuzzy
 msgid "raising mountains..."
 msgstr "Erzeuge Berge ... 20%"
 
-#: src/MapGenerator.cpp:174
+#: src/MapGenerator.cpp:177
 msgid "Planting Forest   ... 40%"
 msgstr "Erzeuge Wald ... 40%"
 
-#: src/MapGenerator.cpp:175
+#: src/MapGenerator.cpp:178
 #, fuzzy
 msgid "planting forests..."
 msgstr "Erzeuge Wald ... 40%"
 
-#: src/MapGenerator.cpp:177
+#: src/MapGenerator.cpp:180
 msgid "Watering Swamps   ... 50%"
 msgstr "Erzeuge Sumpf ... 50%"
 
-#: src/MapGenerator.cpp:178
+#: src/MapGenerator.cpp:181
 #, fuzzy
 msgid "watering swamps..."
 msgstr "Erzeuge Sumpf ... 50%"
 
-#: src/MapGenerator.cpp:180
+#: src/MapGenerator.cpp:183
 msgid "Normalizing       ... 60%"
 msgstr "Verbessere Karte ... 60%"
 
-#: src/MapGenerator.cpp:181
+#: src/MapGenerator.cpp:184
 #, fuzzy
 msgid "normalizing terrain..."
 msgstr "Betreten der Ruine..."
 
-#: src/MapGenerator.cpp:185
+#: src/MapGenerator.cpp:188
 msgid "Building Cities   ... 70%"
 msgstr "Baue Städte ... 70%"
 
-#: src/MapGenerator.cpp:186
+#: src/MapGenerator.cpp:189
 #, fuzzy
 msgid "building cities..."
 msgstr "Baue Städte ... 70%"
 
-#: src/MapGenerator.cpp:191
+#: src/MapGenerator.cpp:194
 #, fuzzy
 msgid "Paving Roads      ... 75%"
 msgstr "Erzeuge Wasserflächen ... 30%"
 
-#: src/MapGenerator.cpp:192
+#: src/MapGenerator.cpp:195
 #, fuzzy
 msgid "paving roads..."
 msgstr "Erzeuge Wasserflächen ... 30%"
 
-#: src/MapGenerator.cpp:197
+#: src/MapGenerator.cpp:200
 msgid "Ruining Ruins     ... 80%"
 msgstr "Zerstöre Ruinen ... 80%"
 
-#: src/MapGenerator.cpp:198
+#: src/MapGenerator.cpp:201
 #, fuzzy
 msgid "ruining ruins..."
 msgstr "Zerstöre Ruinen ... 80%"
 
-#: src/MapGenerator.cpp:200
+#: src/MapGenerator.cpp:203
 #, fuzzy
 msgid "Raising Signs     ... 88%"
 msgstr "Erzeuge Hügel ... 20%"
 
-#: src/MapGenerator.cpp:201
+#: src/MapGenerator.cpp:204
 #, fuzzy
 msgid "raising signs..."
 msgstr "Erzeuge Hügel ... 20%"
 
-#: src/MapGenerator.cpp:203
+#: src/MapGenerator.cpp:206
 msgid "Spawning temples  ... 90%"
 msgstr "Richte Tempel ein ... 90%"
 
-#: src/MapGenerator.cpp:204
+#: src/MapGenerator.cpp:207
 #, fuzzy
 msgid "spawning temples..."
 msgstr "Richte Tempel ein ... 90%"
 
-#: src/MapGenerator.cpp:206
+#: src/MapGenerator.cpp:209
 msgid "Done making map   ... 100%"
 msgstr "Fertig mit Kartenerzeugung ... 100%"
 
@@ -2879,6 +2879,11 @@ msgstr ""
 #: src/QCityRaze.cpp:121
 #, c-format
 msgid "You must conquer the city \"%s\" and burn it to the ground."
+msgstr ""
+
+#: src/tileset.cpp:219
+#, c-format
+msgid "`%s' fails validation\n"
 msgstr ""
 
 #: src/gui/city-window.cpp:164

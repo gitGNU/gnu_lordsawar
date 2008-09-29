@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lordsawar 0.1.2\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-28 23:25-0400\n"
+"POT-Creation-Date: 2008-09-29 15:23-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2394,107 +2394,107 @@ msgstr ""
 msgid "Error, while loading a shieldset. Shieldset Name: "
 msgstr ""
 
-#: src/MapGenerator.cpp:155
+#: src/MapGenerator.cpp:156
 msgid "Making random map"
 msgstr ""
 
-#: src/MapGenerator.cpp:158
+#: src/MapGenerator.cpp:159
 msgid "Flatening Plains  ... 10%"
 msgstr ""
 
-#: src/MapGenerator.cpp:159
+#: src/MapGenerator.cpp:160
 msgid "flattening plains..."
 msgstr ""
 
-#: src/MapGenerator.cpp:161
+#: src/MapGenerator.cpp:162
 msgid "Raining Water     ... 30%"
 msgstr ""
 
-#: src/MapGenerator.cpp:162
+#: src/MapGenerator.cpp:163
 msgid "raining water..."
 msgstr ""
 
-#: src/MapGenerator.cpp:165
+#: src/MapGenerator.cpp:168
 msgid "Raising Hills     ... 20%"
 msgstr ""
 
-#: src/MapGenerator.cpp:166
+#: src/MapGenerator.cpp:169
 msgid "raising hills..."
 msgstr ""
 
-#: src/MapGenerator.cpp:168
+#: src/MapGenerator.cpp:171
 msgid "Raising Mountains ... 30%"
 msgstr ""
 
-#: src/MapGenerator.cpp:169
+#: src/MapGenerator.cpp:172
 msgid "raising mountains..."
 msgstr ""
 
-#: src/MapGenerator.cpp:174
+#: src/MapGenerator.cpp:177
 msgid "Planting Forest   ... 40%"
 msgstr ""
 
-#: src/MapGenerator.cpp:175
+#: src/MapGenerator.cpp:178
 msgid "planting forests..."
 msgstr ""
 
-#: src/MapGenerator.cpp:177
+#: src/MapGenerator.cpp:180
 msgid "Watering Swamps   ... 50%"
 msgstr ""
 
-#: src/MapGenerator.cpp:178
+#: src/MapGenerator.cpp:181
 msgid "watering swamps..."
 msgstr ""
 
-#: src/MapGenerator.cpp:180
+#: src/MapGenerator.cpp:183
 msgid "Normalizing       ... 60%"
 msgstr ""
 
-#: src/MapGenerator.cpp:181
+#: src/MapGenerator.cpp:184
 msgid "normalizing terrain..."
 msgstr ""
 
-#: src/MapGenerator.cpp:185
+#: src/MapGenerator.cpp:188
 msgid "Building Cities   ... 70%"
 msgstr ""
 
-#: src/MapGenerator.cpp:186
+#: src/MapGenerator.cpp:189
 msgid "building cities..."
 msgstr ""
 
-#: src/MapGenerator.cpp:191
+#: src/MapGenerator.cpp:194
 msgid "Paving Roads      ... 75%"
 msgstr ""
 
-#: src/MapGenerator.cpp:192
+#: src/MapGenerator.cpp:195
 msgid "paving roads..."
 msgstr ""
 
-#: src/MapGenerator.cpp:197
+#: src/MapGenerator.cpp:200
 msgid "Ruining Ruins     ... 80%"
 msgstr ""
 
-#: src/MapGenerator.cpp:198
+#: src/MapGenerator.cpp:201
 msgid "ruining ruins..."
 msgstr ""
 
-#: src/MapGenerator.cpp:200
+#: src/MapGenerator.cpp:203
 msgid "Raising Signs     ... 88%"
 msgstr ""
 
-#: src/MapGenerator.cpp:201
+#: src/MapGenerator.cpp:204
 msgid "raising signs..."
 msgstr ""
 
-#: src/MapGenerator.cpp:203
+#: src/MapGenerator.cpp:206
 msgid "Spawning temples  ... 90%"
 msgstr ""
 
-#: src/MapGenerator.cpp:204
+#: src/MapGenerator.cpp:207
 msgid "spawning temples..."
 msgstr ""
 
-#: src/MapGenerator.cpp:206
+#: src/MapGenerator.cpp:209
 msgid "Done making map   ... 100%"
 msgstr ""
 
@@ -2549,6 +2549,11 @@ msgstr ""
 #: src/QCityRaze.cpp:121
 #, c-format
 msgid "You must conquer the city \"%s\" and burn it to the ground."
+msgstr ""
+
+#: src/tileset.cpp:219
+#, c-format
+msgid "`%s' fails validation\n"
 msgstr ""
 
 #: src/gui/city-window.cpp:164
