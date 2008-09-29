@@ -21,6 +21,7 @@
 
 #include "tileset.h"
 
+#include "defs.h"
 #include "File.h"
 #include "SmallTile.h"
 #include "xmlhelper.h"
