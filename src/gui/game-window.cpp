@@ -856,10 +856,16 @@ bool GameWindow::on_sdl_mouse_button_event(GdkEventButton *e)
 
 bool GameWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
 {
+  static guint prev = 0;
   if (game.get())
     {
-      game->get_bigmap().mouse_motion_event(to_input_event(e));
-      sdl_widget->grab_focus();
+      guint delta = e->time - prev;
+      if (delta > 40 || delta < 0)
+	{
+	  game->get_bigmap().mouse_motion_event(to_input_event(e));
+	  sdl_widget->grab_focus();
+	  prev = e->time;
+	}
     }
   return true;
 }
