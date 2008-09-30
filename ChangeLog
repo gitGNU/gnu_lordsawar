@@ -2,6 +2,8 @@
 
 	* fixed bug #24416.  new army units are now in the stack rotation.
 	* decorated windows now retain the proper default widget.
+	* decordated windows now have the same old window decorations as other
+	  applications.
 	* scenario editor now automatically selecting most useful size of 
 	  pointer according to the selected terrain.
 
