@@ -1,3 +1,7 @@
+2008-09-30  Ben Asselstine
+
+	* fixed bug #24416.  new army units are now in the stack rotation.
+
 2008-09-29  Ben Asselstine
 
 	* Fixed bug in tileset validation.

@@ -58,6 +58,8 @@ Stack *LocationBox::addArmy(Army *a) const
 
     // add army to stack
     stack->push_back(a);
+    if (stack->countGroupedArmies() == 0)
+      stack->ungroup();
     stack->sortForViewing(true);
     stack->setDefending(false);
     stack->setParked(false);

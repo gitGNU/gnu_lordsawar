@@ -477,6 +477,8 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
     {
       s->setDefending(false);
       s->setParked(false);
+      if (s->countGroupedArmies() == 0)
+	s->ungroup();
       return s;
     }
   else
