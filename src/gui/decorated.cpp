@@ -49,7 +49,7 @@ void Decorated::decorate(Gtk::Window *d, std::string filename, int alpha)
   RefPtr<Pixbuf> back;
   RefPtr<Pixmap> pixmap;
   RefPtr<Bitmap> bitmap;
-  window->set_decorated(false);
+  window->set_decorated(true);
   Gtk::Widget *focus = window->get_focus();
   Gtk::Widget *child = window->get_child();
   window->remove();
@@ -64,7 +64,7 @@ void Decorated::decorate(Gtk::Window *d, std::string filename, int alpha)
   Gtk::Alignment *align= manage(new Gtk::Alignment());
   align->set_padding(0, 0, 10, 10);
   title->unset_bg(Gtk::STATE_NORMAL);
-  align->add(*title);
+  //align->add(*title);
 
   eventbox->add(*align);
   titlebox->pack_start(*eventbox, true, true, 5);
@@ -89,12 +89,12 @@ void Decorated::decorate(Gtk::Window *d, std::string filename, int alpha)
   close_button->property_relief() = Gtk::RELIEF_NONE;
   close_button->property_can_focus() = false;
   close_button->signal_clicked().connect(sigc::mem_fun(this, &Decorated::on_hide));
-  titlebox->pack_end(*close_button, false, false, 0);
-  if (window->get_type_hint() == Gdk::WINDOW_TYPE_HINT_NORMAL)
-    titlebox->pack_end(*maximize_button, false, false, 0);
-  titlebox->pack_end(*minimize_button, false, false, 0);
-  windowdecoration->set_label_align(Gtk::ALIGN_RIGHT);
-  windowdecoration->set_label_widget(*titlebox);
+  //titlebox->pack_end(*close_button, false, false, 0);
+  //if (window->get_type_hint() == Gdk::WINDOW_TYPE_HINT_NORMAL)
+    //titlebox->pack_end(*maximize_button, false, false, 0);
+  //titlebox->pack_end(*minimize_button, false, false, 0);
+  //windowdecoration->set_label_align(Gtk::ALIGN_RIGHT);
+  //windowdecoration->set_label_widget(*titlebox);
 
 
   windowdecoration->add(*manage(child));
@@ -116,9 +116,6 @@ void Decorated::decorate(Gtk::Window *d, std::string filename, int alpha)
   window->set_style(copy);
   if (focus)
     window->set_focus(*focus);
-  bool yo = window->property_resizable();
-  printf ("resizeable is %d\n", yo);
-  window->property_resizable() = true;
 }
 
 void Decorated::on_maximize()
@@ -150,7 +147,10 @@ bool Decorated::on_mouse_motion_event(GdkEventMotion *e)
 void Decorated::set_title(std::string text)
 {
   if (Configuration::s_decorated)
-    title->set_text(text);
+    {
+      title->set_text(text);
+      window->set_title(text);
+    }
   else
     window->set_title(text);
 }
