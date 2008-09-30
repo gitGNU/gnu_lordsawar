@@ -48,6 +48,7 @@ void Decorated::decorate(Gtk::Window *d, std::string filename, int alpha)
   RefPtr<Pixmap> pixmap;
   RefPtr<Bitmap> bitmap;
   window->set_decorated(false);
+  Gtk::Widget *focus = window->get_focus();
   Gtk::Widget *child = window->get_child();
   window->remove();
   Gtk::Frame *windowdecoration =manage(new Gtk::Frame());
@@ -98,7 +99,9 @@ void Decorated::decorate(Gtk::Window *d, std::string filename, int alpha)
   copy->set_bg_pixmap(Gtk::STATE_NORMAL, pixmap);
   windowdecoration->show_all();
   window->set_style(copy);
-} 
+  if (focus)
+  window->set_focus(*focus);
+}
 
 bool Decorated::on_mouse_motion_event(GdkEventMotion *e)
 {
