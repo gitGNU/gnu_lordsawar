@@ -163,7 +163,7 @@ class GameMap: public sigc::trackable
 			      bool smooth_terrain);
 	void applyTileStyle (int i, int j);
 
-	void surroundMountains(int minx, int minx, int maxx, int maxy);
+	void surroundMountains(int minx, int miny, int maxx, int maxy);
 	//! Get the positions of all of the items on the game map (in bags).
 	std::vector<Vector<int> > getItems();
 
