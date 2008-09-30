@@ -25,6 +25,7 @@
 #include <gtkmm/alignment.h>
 #include <gtkmm/button.h>
 
+#include "defs.h"
 #include "File.h"
 #include "Configuration.h"
 using namespace Gtk;
@@ -36,6 +37,7 @@ Decorated::Decorated()
 
 Decorated::~Decorated()
 {
+  maximized = false;
 }
 
 void Decorated::decorate(Gtk::Window *d, std::string filename, int alpha)
@@ -68,15 +70,28 @@ void Decorated::decorate(Gtk::Window *d, std::string filename, int alpha)
   titlebox->pack_start(*eventbox, true, true, 5);
   Gtk::Button *minimize_button = manage(new Gtk::Button());
   minimize_button->set_label("_");
+  minimize_button->set_tooltip_text(_("Minimize"));
   minimize_button->property_relief() = Gtk::RELIEF_NONE;
   minimize_button->property_can_focus() = false;
   minimize_button->signal_clicked().connect(sigc::mem_fun(window, &Gtk::Window::iconify));
+  if (window->get_type_hint() == Gdk::WINDOW_TYPE_HINT_NORMAL)
+    {
+      maximize_button = manage(new Gtk::Button());
+      maximize_button->set_label("^");
+      maximize_button->set_tooltip_text(_("Maximize"));
+      maximize_button->property_relief() = Gtk::RELIEF_NONE;
+      maximize_button->property_can_focus() = false;
+      maximize_button->signal_clicked().connect(sigc::mem_fun(this, &Decorated::on_maximize));
+    }
   Gtk::Button *close_button = manage(new Gtk::Button());
   close_button->set_label("x");
+  close_button->set_tooltip_text(_("Close"));
   close_button->property_relief() = Gtk::RELIEF_NONE;
   close_button->property_can_focus() = false;
   close_button->signal_clicked().connect(sigc::mem_fun(this, &Decorated::on_hide));
   titlebox->pack_end(*close_button, false, false, 0);
+  if (window->get_type_hint() == Gdk::WINDOW_TYPE_HINT_NORMAL)
+    titlebox->pack_end(*maximize_button, false, false, 0);
   titlebox->pack_end(*minimize_button, false, false, 0);
   windowdecoration->set_label_align(Gtk::ALIGN_RIGHT);
   windowdecoration->set_label_widget(*titlebox);
@@ -100,7 +115,27 @@ void Decorated::decorate(Gtk::Window *d, std::string filename, int alpha)
   windowdecoration->show_all();
   window->set_style(copy);
   if (focus)
-  window->set_focus(*focus);
+    window->set_focus(*focus);
+  bool yo = window->property_resizable();
+  printf ("resizeable is %d\n", yo);
+  window->property_resizable() = true;
+}
+
+void Decorated::on_maximize()
+{
+  maximized = !maximized;
+  if (maximized)
+    {
+      window->maximize();
+      maximize_button->set_label("#");
+      maximize_button->set_tooltip_text(_("Restore"));
+    }
+  else
+    {
+      window->unmaximize();
+      maximize_button->set_label("^");
+      maximize_button->set_tooltip_text(_("Maximize"));
+    }
 }
 
 bool Decorated::on_mouse_motion_event(GdkEventMotion *e)
@@ -111,7 +146,7 @@ bool Decorated::on_mouse_motion_event(GdkEventMotion *e)
   return true;
 }
 
-    
+
 void Decorated::set_title(std::string text)
 {
   if (Configuration::s_decorated)
@@ -119,7 +154,7 @@ void Decorated::set_title(std::string text)
   else
     window->set_title(text);
 }
-  
+
 void Decorated::on_hide()
 {
   window_closed.emit();

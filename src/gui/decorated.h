@@ -19,6 +19,7 @@
 #define DECORATED_H
 
 #include <gtkmm/window.h>
+#include <gtkmm/button.h>
 
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
@@ -41,7 +42,11 @@ class Decorated: public sigc::trackable
 
     bool on_mouse_motion_event(GdkEventMotion *e);
 
+    void on_maximize();
     void on_hide();
+  
+    bool maximized;
+    Gtk::Button *maximize_button;
 };
 
 #endif
