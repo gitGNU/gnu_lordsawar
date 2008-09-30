@@ -4,6 +4,7 @@
 	* added ability to surround mountains with hills in the editor.
 	* modified Bridge::Type, which breaks the save game format.
 	* now placing bridges on random maps.
+	* speeding up bigmap dragging.
 
 2008-09-29  Janek Kozicki
 
