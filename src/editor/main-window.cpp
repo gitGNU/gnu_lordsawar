@@ -544,8 +544,17 @@ bool MainWindow::on_sdl_mouse_button_event(GdkEventButton *e)
 
 bool MainWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
 {
-    if (bigmap.get())
-	bigmap->mouse_motion_event(to_input_event(e));
+  static guint prev = 0;
+  if (bigmap.get())
+    {
+      guint delta = e->time - prev;
+      if (delta > 40 || delta < 0)
+	{
+	  bigmap->mouse_motion_event(to_input_event(e));
+	  sdl_widget->grab_focus();
+	  prev = e->time;
+	}
+    }
     
     return true;
 }
@@ -873,9 +882,45 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
   terrain_tile_style_hbox->show_all();
 }
 
+    
+void MainWindow::auto_select_appropriate_pointer()
+{
+  switch (get_terrain())
+    {
+    case Tile::GRASS:
+      //do 1x1
+      pointer_items[1].button->set_active();
+      break;
+    case Tile::WATER:
+    case Tile::FOREST:
+    case Tile::SWAMP:
+    case Tile::HILLS:
+    case Tile::VOID:
+	{
+	  Tileset *tileset = GameMap::getInstance()->getTileset();
+	  Tile *tile = (*tileset)[tileset->getIndex(get_terrain())];
+	  if (tile->consistsOnlyOfLoneAndOtherStyles())
+	    pointer_items[1].button->set_active();
+	  else
+	    pointer_items[2].button->set_active();
+	  break;
+	}
+    case Tile::MOUNTAIN:
+	//do 6x6
+      pointer_items[4].button->set_active();
+      break;
+    }
+}
+
 void MainWindow::on_tile_style_radiobutton_toggled()
 {
   on_pointer_radiobutton_toggled();
+      
+  //was the first one (auto) clicked?  if so, we want 1x1
+  if (get_tile_style_id() != -1)
+    pointer_items[1].button->set_active();
+  else
+    auto_select_appropriate_pointer();
 }
 
 void MainWindow::on_terrain_radiobutton_toggled()
@@ -883,6 +928,7 @@ void MainWindow::on_terrain_radiobutton_toggled()
   remove_tile_style_buttons();
   setup_tile_style_buttons(get_terrain());
   on_pointer_radiobutton_toggled();
+  auto_select_appropriate_pointer();
 }
 
 void MainWindow::on_pointer_radiobutton_toggled()

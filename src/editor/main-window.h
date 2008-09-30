@@ -185,6 +185,8 @@ class MainWindow: public sigc::trackable
     
     void popup_dialog_for_object(UniquelyIdentified *object);
 
+    void auto_select_appropriate_pointer();
+
     int d_width;
     int d_height;
     

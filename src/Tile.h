@@ -128,6 +128,8 @@ class Tile : public std::list<TileStyleSet*>
 	static Uint32 isFlying() 
 	  {return FOREST | HILLS | WATER | SWAMP | MOUNTAIN;};
 
+	bool consistsOnlyOfLoneAndOtherStyles();
+
     private:
         // DATA
 

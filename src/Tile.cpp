@@ -180,6 +180,13 @@ bool Tile::validateFeature(std::list<TileStyle::Type> types)
   return false;
 }
 
+bool Tile::consistsOnlyOfLoneAndOtherStyles()
+{
+  std::list<TileStyle::Type> types;
+  for (Tile::iterator i = begin(); i != end(); ++i)
+    (*i)->getUniqueTileStyleTypes(types);
+      return validateGrass(types);
+}
 bool Tile::validate()
 {
   if (size() == 0)
