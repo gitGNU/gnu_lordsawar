@@ -46,6 +46,7 @@
 //#include "netggz.h"
 #include "gtksdl.h"
 #include "main-preferences-dialog.h"
+#include "timed-message-dialog.h"
 
 namespace
 {
@@ -518,8 +519,14 @@ void SplashWindow::on_pbm_game_created(GameParameters g)
     
 void SplashWindow::on_preferences_clicked()
 {
+  bool saved = Configuration::s_decorated;
   MainPreferencesDialog d;
   d.set_parent_window(*window.get());
   d.run();
   d.hide();
+  if (saved != Configuration::s_decorated)
+    {
+      TimedMessageDialog dialog(*window.get(), _("Please exit the program and restart it for the changes to take effect."), 30);
+      dialog.run();
+    }
 }
