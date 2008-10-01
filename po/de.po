@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-29 20:24-0400\n"
+"POT-Creation-Date: 2008-09-30 18:49-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -705,7 +705,7 @@ msgid "Disband"
 msgstr "Lissabon"
 
 #: dat/glade/game-window.glade:144 src/gui/game-window.cpp:1122
-#: src/editor/main-window.cpp:1006
+#: src/editor/main-window.cpp:1052
 #, fuzzy
 msgid "Signpost"
 msgstr "Optionen"
@@ -740,7 +740,7 @@ msgstr "Army"
 
 #: dat/glade/game-window.glade:223 dat/glade/game-window.glade:431
 #: dat/glade/history-report-dialog.glade:187 dat/glade/report-dialog.glade:320
-#: src/editor/main-window.cpp:1002
+#: src/editor/main-window.cpp:1048
 msgid "City"
 msgstr "Stadt"
 
@@ -3322,8 +3322,8 @@ msgid "Game was not saved!"
 msgstr "Spiel gespeichert."
 
 #: src/gui/game-window.cpp:1018 src/editor/armyset-window.cpp:471
-#: src/editor/main-window.cpp:689 src/editor/main-window.cpp:716
-#: src/editor/main-window.cpp:743 src/editor/tileset-window.cpp:556
+#: src/editor/main-window.cpp:698 src/editor/main-window.cpp:725
+#: src/editor/main-window.cpp:752 src/editor/tileset-window.cpp:556
 #: src/editor/tileset-window.cpp:893
 #, fuzzy
 msgid "Choose a Name"
@@ -3696,7 +3696,7 @@ msgstr "Bonus"
 msgid "Ruins and Temples"
 msgstr "Zerstörter Tempel"
 
-#: src/gui/ruin-report-dialog.cpp:135 src/editor/main-window.cpp:1004
+#: src/gui/ruin-report-dialog.cpp:135 src/editor/main-window.cpp:1050
 msgid "Ruin"
 msgstr "Ruine"
 
@@ -3713,7 +3713,7 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
-#: src/gui/ruin-report-dialog.cpp:146 src/editor/main-window.cpp:1008
+#: src/gui/ruin-report-dialog.cpp:146 src/editor/main-window.cpp:1054
 msgid "Temple"
 msgstr "Tempel"
 
@@ -3970,36 +3970,36 @@ msgstr ""
 msgid "No description"
 msgstr "Position:"
 
-#: src/editor/main-window.cpp:639
+#: src/editor/main-window.cpp:648
 #, fuzzy
 msgid "Choose Map to Load"
 msgstr "Terraintyp"
 
-#: src/editor/main-window.cpp:665
+#: src/editor/main-window.cpp:674
 #, fuzzy
 msgid "Could not load map %1."
 msgstr "FEHLER: Konnte Karte nicht laden "
 
-#: src/editor/main-window.cpp:683 src/editor/main-window.cpp:764
+#: src/editor/main-window.cpp:692 src/editor/main-window.cpp:773
 #, fuzzy
 msgid "Map was not saved!"
 msgstr "Spiel gespeichert."
 
-#: src/editor/main-window.cpp:710 src/editor/main-window.cpp:737
+#: src/editor/main-window.cpp:719 src/editor/main-window.cpp:746
 #, fuzzy
 msgid "Map was not exported!"
 msgstr "Spiel gespeichert."
 
-#: src/editor/main-window.cpp:833
+#: src/editor/main-window.cpp:842
 #, fuzzy
 msgid "Auto"
 msgstr "Autoren"
 
-#: src/editor/main-window.cpp:978
+#: src/editor/main-window.cpp:1024
 msgid "(%1, %2)"
 msgstr ""
 
-#: src/editor/main-window.cpp:1000
+#: src/editor/main-window.cpp:1046
 msgid "Stack"
 msgstr "Armee"
 

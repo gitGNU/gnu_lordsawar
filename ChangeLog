@@ -1,3 +1,8 @@
+2008-10-01  Ben Asselstine
+
+	* fixed bug #24425.  now warning the user to restart the game if the
+	  window decorations are turned on or off in the main preferences.
+
 2008-09-30  Ben Asselstine
 
 	* fixed bug #24416.  new army units are now in the stack rotation.
