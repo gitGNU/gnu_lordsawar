@@ -2,6 +2,7 @@
 
 	* fixed bug #24425.  now warning the user to restart the game if the
 	  window decorations are turned on or off in the main preferences.
+	* added separate Backpack object.
 
 2008-09-30  Ben Asselstine
 

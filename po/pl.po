@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.3.7\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-09-30 18:49-0400\n"
+"POT-Creation-Date: 2008-10-01 13:22-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Piotr Cychowski <cycholka@wp.pl>\n"
 "Language-Team: \n"
@@ -804,7 +804,7 @@ msgstr "Grafika"
 msgid "_Fullscreen"
 msgstr "Pe³ny ekran"
 
-#: dat/glade/game-window.glade:359 dat/glade/splash-window.glade:164
+#: dat/glade/game-window.glade:359 dat/glade/splash-window.glade:165
 #, fuzzy
 msgid "_Preferences"
 msgstr "Pelerine"
@@ -1038,25 +1038,30 @@ msgstr ""
 msgid "Show standard window decorations"
 msgstr ""
 
-#: dat/glade/main-preferences-dialog.glade:132
+#: dat/glade/main-preferences-dialog.glade:128
+#, fuzzy
+msgid "<b>(requires restart)</b>"
+msgstr "¦wi±tynia"
+
+#: dat/glade/main-preferences-dialog.glade:157
 #: dat/glade/preferences-dialog.glade:180
 #, fuzzy
 msgid "<b>Game</b>"
 msgstr "¦wi±tynia"
 
-#: dat/glade/main-preferences-dialog.glade:193
+#: dat/glade/main-preferences-dialog.glade:218
 #: dat/glade/preferences-dialog.glade:241
 #, fuzzy
 msgid "Play _music"
 msgstr "W³±cz muzykê"
 
-#: dat/glade/main-preferences-dialog.glade:217
+#: dat/glade/main-preferences-dialog.glade:242
 #: dat/glade/preferences-dialog.glade:265
 #, fuzzy
 msgid "<i>Volume:</i>"
 msgstr "G³o¶no¶æ:"
 
-#: dat/glade/main-preferences-dialog.glade:282
+#: dat/glade/main-preferences-dialog.glade:307
 #: dat/glade/preferences-dialog.glade:330
 #, fuzzy
 msgid "<b>Sound</b>"
@@ -1211,36 +1216,36 @@ msgstr ""
 msgid "Message:"
 msgstr "Wiadomo¶æ"
 
-#: dat/glade/splash-window.glade:59
+#: dat/glade/splash-window.glade:60
 #, fuzzy
 msgid "New _Campaign"
 msgstr "Nowa Kampania"
 
-#: dat/glade/splash-window.glade:74
+#: dat/glade/splash-window.glade:75
 #, fuzzy
 msgid "New _Game"
 msgstr "Nowa Gra"
 
-#: dat/glade/splash-window.glade:89
+#: dat/glade/splash-window.glade:90
 #, fuzzy
 msgid "L_oad Game"
 msgstr "Wczytaj Grê"
 
-#: dat/glade/splash-window.glade:104
+#: dat/glade/splash-window.glade:105
 #, fuzzy
 msgid "Load _Scenario"
 msgstr "Wczytaj Scenariusz"
 
-#: dat/glade/splash-window.glade:119
+#: dat/glade/splash-window.glade:120
 #, fuzzy
 msgid "New _Network Game"
 msgstr "Nowa Gra Sieciowa"
 
-#: dat/glade/splash-window.glade:147
+#: dat/glade/splash-window.glade:148
 msgid "New Play By _Mail Game"
 msgstr ""
 
-#: dat/glade/splash-window.glade:179 dat/glade/editor/armyset-window.glade:83
+#: dat/glade/splash-window.glade:180 dat/glade/editor/armyset-window.glade:83
 #: dat/glade/editor/main-window.glade:99
 #: dat/glade/editor/tileset-window.glade:83
 #, fuzzy
@@ -3321,7 +3326,7 @@ msgstr "Obrona: %i"
 msgid "Save your Turn file and mail it back"
 msgstr ""
 
-#: src/gui/game-window.cpp:954 src/gui/splash-window.cpp:195
+#: src/gui/game-window.cpp:954 src/gui/splash-window.cpp:196
 #, fuzzy
 msgid "Choose Game to Load"
 msgstr "Wybierz Zestaw Terenów"
@@ -3738,35 +3743,39 @@ msgstr "Nie"
 msgid "Temple"
 msgstr "¦wi±tynia"
 
-#: src/gui/splash-window.cpp:118
+#: src/gui/splash-window.cpp:119
 msgid "Rescue Crashed Game"
 msgstr ""
 
-#: src/gui/splash-window.cpp:256
+#: src/gui/splash-window.cpp:257
 #, fuzzy
 msgid "New Networked Game"
 msgstr "Nowa Gra Sieciowa"
 
-#: src/gui/splash-window.cpp:271
+#: src/gui/splash-window.cpp:272
 msgid "New Play By Mail game"
 msgstr ""
 
-#: src/gui/splash-window.cpp:342
+#: src/gui/splash-window.cpp:343
 msgid "GGZ initialization failed. Exiting.\n"
 msgstr "Instalacja GGZ nie powiod³a siê. Zamykam.\n"
 
-#: src/gui/splash-window.cpp:360
+#: src/gui/splash-window.cpp:361
 msgid "Play on GGZ"
 msgstr "Graj na GGZ"
 
-#: src/gui/splash-window.cpp:361
+#: src/gui/splash-window.cpp:362
 #, fuzzy
 msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
 msgstr "Proszê uruchomiæ Freelords z klienta GGZ Gaming Zone."
 
-#: src/gui/splash-window.cpp:362
+#: src/gui/splash-window.cpp:363
 msgid "OK"
 msgstr "OK"
+
+#: src/gui/splash-window.cpp:529
+msgid "Please exit the program and restart it for the changes to take effect."
+msgstr ""
 
 #: src/gui/quest-report-dialog.cpp:73
 #, fuzzy
