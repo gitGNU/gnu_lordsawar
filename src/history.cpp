@@ -23,6 +23,7 @@
 #include "hero.h"
 #include "heroproto.h"
 #include "city.h"
+#include "xmlhelper.h"
 
 std::string History::d_tag = "history";
 using namespace std;

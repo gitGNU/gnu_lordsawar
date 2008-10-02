@@ -67,6 +67,7 @@
 #include "pbm-game-server.h"
 #include "LocationBox.h"
 #include "Campaign.h"
+#include "Backpack.h"
 
 #include "herotemplates.h"
 
@@ -867,13 +868,8 @@ void Game::update_control_panel()
 	      if ((*it)->isHero())
 		{
 		  Hero *hero = dynamic_cast<Hero*>((*it));
-		  std::list<Item*> backpack = hero->getBackpack();
-		  for (std::list<Item*>::iterator i = backpack.begin(), 
-		       end = backpack.end(); i != end; ++i)
+		  if (hero->getBackpack()->getPlantableItem(player))
 		    {
-		      if ((*i)->isPlantable() && 
-			  (*i)->getPlantableOwner() == player)
-			{
 			  //can't plant on city/ruin/temple/signpost
 			  Citylist *cl = Citylist::getInstance();
 			  City *city = cl->getObjectAt(stack->getPos());
@@ -901,7 +897,6 @@ void Game::update_control_panel()
 			      if (standard_already_planted == false)
 				can_plant_standard_selected_stack.emit(true);
 			    }
-			}
 		    }
 		}
 	    }

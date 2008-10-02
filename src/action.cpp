@@ -42,6 +42,7 @@
 #include "player.h"
 #include "armyprodbase.h"
 #include "heroproto.h"
+#include "Item.h"
 
 std::string Action::d_tag = "action";
 using namespace std;

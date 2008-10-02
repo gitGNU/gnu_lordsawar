@@ -20,6 +20,7 @@
 #include <algorithm>
 #include "armyproto.h"
 #include "heroproto.h"
+#include "xmlhelper.h"
 
 std::string HeroProto::d_tag = "heroproto";
 

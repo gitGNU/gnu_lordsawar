@@ -28,9 +28,10 @@
 #include "templelist.h"
 #include "heroproto.h"
 #include "counter.h"
+#include "Backpack.h"
+#include "xmlhelper.h"
 
 std::string Hero::d_tag = "hero";
-std::string Hero::d_backpack_tag = "backpack";
 using namespace std;
 
 Hero::Hero(const HeroProto& a)
@@ -38,19 +39,13 @@ Hero::Hero(const HeroProto& a)
     d_gender(Gender(a.getGender()))
 {
   d_level = 1;
+  d_backpack = new Backpack();
 }
 
 Hero::Hero(Hero& h)
   : Army(h, h.d_owner), d_name(h.d_name), d_gender(h.d_gender)
 {
-    std::list<Item*>::iterator it;
-
-    // copy the backpack of the other hero
-    for (it = h.d_backpack.begin(); it != h.d_backpack.end(); it++)
-    {
-        Item* item = new Item(**it);
-        d_backpack.push_back(item);
-    }
+  d_backpack = new Backpack(*h.d_backpack);
 }
 
 Hero::Hero(XML_Helper* helper)
@@ -62,19 +57,14 @@ Hero::Hero(XML_Helper* helper)
     d_gender = NONE;
   else
     d_gender = genderFromString(gender_str);
-  helper->registerTag(Hero::d_backpack_tag, sigc::mem_fun(*this, &Hero::loadItems));
-  helper->registerTag(Item::d_tag, sigc::mem_fun(*this, &Hero::loadItems));
+  helper->registerTag(Backpack::d_tag, 
+		      sigc::mem_fun(*this, &Hero::loadBackpack));
 }
 
 
 Hero::~Hero()
 {
-    //clear the backpack
-    while (!d_backpack.empty())
-    {
-        delete (*d_backpack.begin());
-        d_backpack.erase(d_backpack.begin());
-    }
+  delete d_backpack;
 }
 
 bool Hero::save(XML_Helper* helper) const
@@ -90,28 +80,21 @@ bool Hero::save(XML_Helper* helper) const
     retval &= saveData(helper);
 
     // Now save the backpack
-    retval &= helper->openTag(Hero::d_backpack_tag);
-    for (it = d_backpack.begin(); it != d_backpack.end(); it++)
-        retval &= (*it)->save(helper);
-    retval &= helper->closeTag();
+    retval &= d_backpack->save(helper);
 
     retval &= helper->closeTag();
 
     return retval;
 }
 
-bool Hero::loadItems(std::string tag, XML_Helper* helper)
+bool Hero::loadBackpack(std::string tag, XML_Helper* helper)
 {
-    if (tag == Hero::d_backpack_tag)
+  if (tag == Backpack::d_tag)
+    {
+      d_backpack = new Backpack(helper);
       return true;
-
-    if (tag == Item::d_tag)
-      {
-        Item* item = new Item(helper);
-        d_backpack.push_back(item);
-      }
-    
-    return true;
+    }
+  return false;
 }
 
 Uint32 Hero::getStat(Stat stat, bool modified) const
@@ -124,49 +107,9 @@ Uint32 Hero::getStat(Stat stat, bool modified) const
 
     // Add item bonuses that affect only this hero
     if (stat == Army::STRENGTH)
-    {
-        std::list<Item*>::const_iterator it;
-        for (it = d_backpack.begin(); it != d_backpack.end(); it++)
-          {
-            if ((*it)->getBonus(Item::ADD1STR))
-             bonus = 1;
-            if ((*it)->getBonus(Item::ADD2STR))
-             bonus = 2;
-            if ((*it)->getBonus(Item::ADD3STR))
-             bonus = 3;
-          }
-    }
+      bonus += d_backpack->countStrengthBonuses();
 
     return value + bonus;
-}
-
-bool Hero::addToBackpack(Item* item, int position)
-{
-    std::list<Item*>::iterator it = d_backpack.begin();
-    for (; position > 0; position--, it++);
-    
-    d_backpack.insert(it, item);
-    return true;
-}
-
-bool Hero::addToBackpack(Item* item)
-{
-    std::list<Item*>::iterator it = d_backpack.end();
-    d_backpack.insert(it, item);
-    return true;
-}
-
-bool Hero::removeFromBackpack(Item* item)
-{
-    std::list<Item*>::iterator it;
-    for (it = d_backpack.begin(); it != d_backpack.end(); it++)
-        if ((*it) == item)
-        {
-            d_backpack.erase(it);
-            return true;
-        }
-
-    return false;
 }
 
 Uint32 Hero::calculateNaturalCommand()

@@ -41,6 +41,7 @@
 #include "player.h"
 #include "portlist.h"
 #include "port.h"
+#include "Backpack.h"
 
 std::string Stack::d_tag = "stack";
 using namespace std;
@@ -458,13 +459,10 @@ void Stack::nextTurn()
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->isHero())
       {
-	std::list<Item*> backpack = dynamic_cast<Hero*>((*it))->getBackpack();
-	std::list<Item*>::const_iterator item;
-	for (item = backpack.begin(); item != backpack.end(); item++)
-	  {
-	    if ((*item)->getBonus(Item::DOUBLEMOVESTACK))
-	      movement_multiplier*=2;
-	  }
+	Hero *hero = dynamic_cast<Hero*>(*it);
+	Uint32 bonus = hero->getBackpack()->countMovementDoublers();
+	for (Uint32 i = 0; i < bonus; i++)
+	  movement_multiplier*=2;
       }
 
   //set the multipler on all armies in the stack
@@ -602,15 +600,10 @@ Uint32 Stack::calculateMoveBonus() const
       if ((*it)->isHero())
 	{
 	  Hero *h = dynamic_cast<Hero*>(*it);
-	  std::list<Item*> backpack = h->getBackpack();
-	  std::list<Item*>::const_iterator item;
-	  for (item = backpack.begin(); item != backpack.end(); item++)
+	  if (h->getBackpack()->countStackFlightGivers() > 0)
 	    {
-	      if ((*item)->getBonus(Item::FLYSTACK))
-		{
-		  d_bonus = Tile::isFlying();
-		  return d_bonus;
-		}
+	      d_bonus = Tile::isFlying();
+	      return d_bonus;
 	    }
 	}
     }

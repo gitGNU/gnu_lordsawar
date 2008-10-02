@@ -61,6 +61,7 @@
 #include "ucompose.hpp"
 #include "armyprodbase.h"
 #include "Triumphs.h"
+#include "Backpack.h"
 
 using namespace std;
 
@@ -1710,8 +1711,8 @@ void Player::doGiveReward(Stack *s, Reward *reward)
         }
       break;
     case Reward::ITEM:
-      static_cast<Hero*>(s->getFirstHero())->addToBackpack(
-      						     dynamic_cast<Reward_Item*>(reward)->getItem());
+      static_cast<Hero*>(s->getFirstHero())->getBackpack()->addToBackpack
+	(dynamic_cast<Reward_Item*>(reward)->getItem());
       break;
     case Reward::RUIN:
         {
@@ -1769,7 +1770,7 @@ bool Player::stackDisband(Stack* s)
 void Player::doHeroDropItem(Hero *h, Item *i, Vector<int> pos)
 {
   GameMap::getInstance()->getTile(pos)->addItem(i);
-  h->removeFromBackpack(i);
+  h->getBackpack()->removeFromBackpack(i);
 }
 
 bool Player::heroDropItem(Hero *h, Item *i, Vector<int> pos)
@@ -1785,26 +1786,25 @@ bool Player::heroDropItem(Hero *h, Item *i, Vector<int> pos)
 
 bool Player::heroDropAllItems(Hero *h, Vector<int> pos)
 {
-  std::list<Item*> backpack = h->getBackpack();
-  for (std::list<Item*>::iterator i = backpack.begin(), end = backpack.end();
-       i != end; ++i)
+  Backpack *backpack = h->getBackpack();
+  for (Backpack::iterator i = backpack->begin(); i != backpack->end(); i++)
     heroDropItem(h, *i, pos);
   return true;
 }
 
 bool Player::doHeroDropAllItems(Hero *h, Vector<int> pos)
 {
-  std::list<Item*> backpack = h->getBackpack();
-  for (std::list<Item*>::iterator i = backpack.begin(), end = backpack.end();
-       i != end; ++i)
+  Backpack *backpack = h->getBackpack();
+  for (Backpack::iterator i = backpack->begin(); i != backpack->end(); i++)
     doHeroDropItem(h, *i, pos);
   return true;
 }
+
 void Player::doHeroPickupItem(Hero *h, Item *i, Vector<int> pos)
 {
   bool found = GameMap::getInstance()->getTile(pos)->removeItem(i);
   if (found)
-    h->addToBackpack(i);
+    h->getBackpack()->addToBackpack(i);
 }
 
 bool Player::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
@@ -1955,21 +1955,17 @@ bool Player::heroPlantStandard(Stack* s)
     if ((*it)->isHero())
     {
       Hero *hero = dynamic_cast<Hero*>((*it));
-      std::list<Item*> backpack = hero->getBackpack();
-      for (std::list<Item*>::iterator i = backpack.begin(), 
-             end = backpack.end(); i != end; ++i)
-      {
-        if ((*i)->isPlantable() && (*i)->getPlantableOwner() == this)
+      Item *item = hero->getBackpack()->getPlantableItem(this);
+      if (item)
         {
           //drop the item, and plant it
-          doHeroPlantStandard(hero, *i, s->getPos());
+          doHeroPlantStandard(hero, item, s->getPos());
                   
-          Action_Plant * item = new Action_Plant();
-          item->fillData(hero, *i);
-          addAction(item);
+          Action_Plant * i = new Action_Plant();
+          i->fillData(hero, item);
+          addAction(i);
           return true;
         }
-      }
     }
   }
   return true;
@@ -1980,7 +1976,7 @@ void Player::doHeroPlantStandard(Hero *hero, Item *item, Vector<int> pos)
   item->setPlanted(true);
   GameMap *gm = GameMap::getInstance();
   gm->getTile(pos)->addItem(item);
-  hero->removeFromBackpack(item);
+  hero->getBackpack()->removeFromBackpack(item);
 }
 
 void Player::getHeroes(const std::list<Stack*> stacks, std::vector<Uint32>& dst)
@@ -2032,85 +2028,82 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
 		  d_triumphs->tallyTriumph((*sit)->getOwner(), 
 					   Triumphs::TALLY_HERO);
 		  Hero *hero = dynamic_cast<Hero*>((*sit));
-		  std::list<Item*> backpack = hero->getBackpack();
-		  for (std::list<Item*>::iterator i = backpack.begin(), 
-		       end = backpack.end(); i != end; ++i)
+		  Uint32 count = hero->getBackpack()->countPlantableItems();
+		  for (Uint32 i = 0; i < count; i++)
+		    d_triumphs->tallyTriumph((*sit)->getOwner(), 
+					     Triumphs::TALLY_FLAG);
+
+		  //one of our heroes died
+		  //drop hero's stuff
+		  Hero *h = static_cast<Hero *>(*sit);
+		  //now record the details of the death
+		  GameMap *gm = GameMap::getInstance();
+		  Maptile *tile = gm->getTile((*it)->getPos());
+		  if (tile->getBuilding() == Maptile::RUIN)
 		    {
-		      if ((*i)->isPlantable())
-			d_triumphs->tallyTriumph((*sit)->getOwner(), 
-						 Triumphs::TALLY_FLAG);
+		      History_HeroKilledSearching* item;
+		      item = new History_HeroKilledSearching();
+		      item->fillData(h);
+		      h->getOwner()->addHistory(item);
+		      doHeroDropAllItems (h, (*it)->getPos());
 		    }
-                    //one of our heroes died
-                    //drop hero's stuff
-                    Hero *h = static_cast<Hero *>(*sit);
-                    //now record the details of the death
-                    GameMap *gm = GameMap::getInstance();
-                    Maptile *tile = gm->getTile((*it)->getPos());
-                    if (tile->getBuilding() == Maptile::RUIN)
-                    {
-                        History_HeroKilledSearching* item;
-                        item = new History_HeroKilledSearching();
-                        item->fillData(h);
-			h->getOwner()->addHistory(item);
-                        doHeroDropAllItems (h, (*it)->getPos());
-                    }
-                    else if (tile->getBuilding() == Maptile::CITY)
-                    {
-		        Citylist *clist = Citylist::getInstance();
-                        City* c = clist->getObjectAt((*it)->getPos());
-                        History_HeroKilledInCity* item;
-                        item = new History_HeroKilledInCity();
-                        item->fillData(h, c);
-			h->getOwner()->addHistory(item);
-                        doHeroDropAllItems (h, (*it)->getPos());
-                    }
-                    else //somewhere else
-                    {
-                        History_HeroKilledInBattle* item;
-                        item = new History_HeroKilledInBattle();
-                        item->fillData(h);
-			h->getOwner()->addHistory(item);
-                        doHeroDropAllItems (h, (*it)->getPos());
-                    }
-                }
-                //Add the XP bonus to the total of the battle;
-                total+=(*sit)->getXpReward();
+		  else if (tile->getBuilding() == Maptile::CITY)
+		    {
+		      Citylist *clist = Citylist::getInstance();
+		      City* c = clist->getObjectAt((*it)->getPos());
+		      History_HeroKilledInCity* item;
+		      item = new History_HeroKilledInCity();
+		      item->fillData(h, c);
+		      h->getOwner()->addHistory(item);
+		      doHeroDropAllItems (h, (*it)->getPos());
+		    }
+		  else //somewhere else
+		    {
+		      History_HeroKilledInBattle* item;
+		      item = new History_HeroKilledInBattle();
+		      item->fillData(h);
+		      h->getOwner()->addHistory(item);
+		      doHeroDropAllItems (h, (*it)->getPos());
+		    }
+		}
+		//Add the XP bonus to the total of the battle;
+		total+=(*sit)->getXpReward();
 		//tell the quest manager that someone died
 		//(maybe it was a hero, or a target that's an army)
 		QuestsManager::getInstance()->armyDied(*sit, culprits);
-                // here we destroy the army, so we send
-                // the signal containing the fight data
-                debug("sending sdyingArmy!")
-                sdyingArmy.emit(*sit, culprits);
-                sit = (*it)->flErase(sit);
-                continue;
-            }
+		// here we destroy the army, so we send
+		// the signal containing the fight data
+		debug("sending sdyingArmy!")
+		  sdyingArmy.emit(*sit, culprits);
+		sit = (*it)->flErase(sit);
+		continue;
+	    }
 
-            // heal this army to full hitpoints
-            (*sit)->heal((*sit)->getStat(Army::HP));
+	    // heal this army to full hitpoints
+	    (*sit)->heal((*sit)->getStat(Army::HP));
 
-            sit++;
-        }
-        
-        debug("Is stack empty?")
-            
-        if ((*it)->empty())
-        {
-            if (owner)
-            {
-                debug("Removing this stack from the owner's stacklist");
-                bool found = owner->deleteStack(*it);
-		assert (found == true);
-            }
-            else // there is no owner - like for the ruin's occupants
-                debug("No owner for this stack - do stacklist too");
+	    sit++;
+	}
 
-            debug("Removing from the vector too (the vector had "
-                  << stacks.size() << " elt)");
-            it = stacks.erase(it);
-        }
-        else
-            it++;
+	debug("Is stack empty?")
+
+	  if ((*it)->empty())
+	    {
+	      if (owner)
+		{
+		  debug("Removing this stack from the owner's stacklist");
+		  bool found = owner->deleteStack(*it);
+		  assert (found == true);
+		}
+	      else // there is no owner - like for the ruin's occupants
+		debug("No owner for this stack - do stacklist too");
+
+	      debug("Removing from the vector too (the vector had "
+		    << stacks.size() << " elt)");
+	      it = stacks.erase(it);
+	    }
+	  else
+	    it++;
     }
     debug("after removeDead: size = " << stacks.size());
     return total;
@@ -2128,111 +2121,111 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
   double numberarmy = 0;
 
   for (it = stacks.begin(); it != stacks.end(); it++)
-      numberarmy += (*it)->size();
+    numberarmy += (*it)->size();
 
   for (it = stacks.begin(); it != stacks.end(); )
     {
       debug("Stack: " << (*it))
 
-      for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end();)
-        {
-          Army *army = *sit;
-          debug("Army: " << army)
+	for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end();)
+	  {
+	    Army *army = *sit;
+	    debug("Army: " << army)
 
-          // here we adds XP
-          army->gainXp((double)((xp_sum)/numberarmy));
-          debug("Army gets " << (double)((xp_sum)/numberarmy) << " XP")
+	      // here we adds XP
+	      army->gainXp((double)((xp_sum)/numberarmy));
+	    debug("Army gets " << (double)((xp_sum)/numberarmy) << " XP")
 
-          // here we adds 1 to number of battles
-          army->setBattlesNumber(army->getBattlesNumber()+1);
-          debug("Army battles " <<  army->getBattlesNumber())
+	      // here we adds 1 to number of battles
+	      army->setBattlesNumber(army->getBattlesNumber()+1);
+	    debug("Army battles " <<  army->getBattlesNumber())
 
-          // medals only go to non-ally armies.
-          if ((*it)->hasHero() && army->isHero() == false && 
-              army->getAwardable() == false)
-            {
-              if((army->getBattlesNumber())>10 && 
-                 !(army->getMedalBonus(2)))
-                {
-                  army->setMedalBonus(2,true);
-                  // We must recalculate the XPValue of this unit since it 
-                  // got a medal
-                  army->setXpReward(army->getXpReward()+1);
-                  // We get the medal bonus here
-                  army->setStat(Army::STRENGTH, army->getStat(Army::STRENGTH, false)+1);
-                  // Emit signal
-                  snewMedalArmy.emit(army);
-                }
+	      // medals only go to non-ally armies.
+	      if ((*it)->hasHero() && army->isHero() == false && 
+		  army->getAwardable() == false)
+		{
+		  if((army->getBattlesNumber())>10 && 
+		     !(army->getMedalBonus(2)))
+		    {
+		      army->setMedalBonus(2,true);
+		      // We must recalculate the XPValue of this unit since it 
+		      // got a medal
+		      army->setXpReward(army->getXpReward()+1);
+		      // We get the medal bonus here
+		      army->setStat(Army::STRENGTH, army->getStat(Army::STRENGTH, false)+1);
+		      // Emit signal
+		      snewMedalArmy.emit(army);
+		    }
 
-              debug("Army hits " <<  army->getNumberHasHit())
+		  debug("Army hits " <<  army->getNumberHasHit())
 
-              // Only give medals if the unit has attacked often enough, else
-              // medals lose the flair of something special; a value of n 
-              // means roughly to hit an equally strong unit around n 
-              // times. (note: one hit! An attack can consist of up to 
-              // strength hits)
-              if((army->getNumberHasHit()>50) && !army->getMedalBonus(0))
-                {
-                  army->setMedalBonus(0,true);
-                  // We must recalculate the XPValue of this unit since it
-                  // got a medal
-                  army->setXpReward(army->getXpReward()+1);
-                  // We get the medal bonus here
-                  army->setStat(Army::STRENGTH, army->getStat(Army::STRENGTH, false)+1);
-                  // Emit signal
-                  snewMedalArmy.emit(army);
-                }
+		    // Only give medals if the unit has attacked often enough, else
+		    // medals lose the flair of something special; a value of n 
+		    // means roughly to hit an equally strong unit around n 
+		    // times. (note: one hit! An attack can consist of up to 
+		    // strength hits)
+		    if((army->getNumberHasHit()>50) && !army->getMedalBonus(0))
+		      {
+			army->setMedalBonus(0,true);
+			// We must recalculate the XPValue of this unit since it
+			// got a medal
+			army->setXpReward(army->getXpReward()+1);
+			// We get the medal bonus here
+			army->setStat(Army::STRENGTH, army->getStat(Army::STRENGTH, false)+1);
+			// Emit signal
+			snewMedalArmy.emit(army);
+		      }
 
-              debug("army being hit " <<  army->getNumberHasBeenHit())
+		  debug("army being hit " <<  army->getNumberHasBeenHit())
 
-              // Gives the medal for good defense. The more negative the 
-              // number the more blows the unit evaded. n means roughly 
-              // avoid n hits from an equally strong unit. Since we want 
-              // to punish the case of the unit hiding among many others, 
-              // we set this value quite high.
-              if((army->getNumberHasBeenHit() < -100) && !army->getMedalBonus(1))
-                {
-                  army->setMedalBonus(1,true);
-                  // We must recalculate the XPValue of this unit since it 
-                  // got a medal
-                  army->setXpReward(army->getXpReward()+1);
-                  // We get the medal bonus here
-                  army->setStat(Army::STRENGTH, army->getStat(Army::STRENGTH, false)+1);
-                  // Emit signal
-                  snewMedalArmy.emit(army);
-                }
-              debug("Army hits " <<  army->getNumberHasHit())
+		    // Gives the medal for good defense. The more negative the 
+		    // number the more blows the unit evaded. n means roughly 
+		    // avoid n hits from an equally strong unit. Since we want 
+		    // to punish the case of the unit hiding among many others, 
+		    // we set this value quite high.
+		    if((army->getNumberHasBeenHit() < -100) && !army->getMedalBonus(1))
+		      {
+			army->setMedalBonus(1,true);
+			// We must recalculate the XPValue of this unit since it 
+			// got a medal
+			army->setXpReward(army->getXpReward()+1);
+			// We get the medal bonus here
+			army->setStat(Army::STRENGTH, army->getStat(Army::STRENGTH, false)+1);
+			// Emit signal
+			snewMedalArmy.emit(army);
+		      }
+		  debug("Army hits " <<  army->getNumberHasHit())
 
-              for(int i=0;i<3;i++)
-                {
-                  debug("MEDAL[" << i << "]==" << army->getMedalBonus(i))
-                }
-            }
+		    for(int i=0;i<3;i++)
+		      {
+			debug("MEDAL[" << i << "]==" << army->getMedalBonus(i))
+		      }
+		}
 
-            // We reset the hit values after the battle
-            army->setNumberHasHit(0);
-            army->setNumberHasBeenHit(0);
+	    // We reset the hit values after the battle
+	    army->setNumberHasHit(0);
+	    army->setNumberHasBeenHit(0);
 
-            if (army->isHero() && getType() != Player::NETWORKED)
-              {
-                while(army->canGainLevel())
-                  {
-                    // Units not associated to a player never raise levels.
-                    if (army->getOwner() == 
-                        Playerlist::getInstance()->getNeutral())
-                      break;
+	    if (army->isHero() && getType() != Player::NETWORKED)
+	      {
+		while(army->canGainLevel())
+		  {
+		    // Units not associated to a player never raise levels.
+		    if (army->getOwner() == 
+			Playerlist::getInstance()->getNeutral())
+		      break;
 
-                    //Here this for is to check if army must raise 2 or more 
-                    //levels per time depending on the XP and level itself
+		    //Here this for is to check if army must raise 2 or more 
+		    //levels per time depending on the XP and level itself
 
-                    debug("ADVANCING LEVEL "<< "CANGAINLEVEL== " << army->canGainLevel());
+		    debug("ADVANCING LEVEL "<< "CANGAINLEVEL== " << army->canGainLevel());
 		    army->getOwner()->levelArmy(army);
-                  }
-                debug("Army new XP=" << army->getXP())
-              }
-            sit++;
-          }
-        it++;
+		  }
+		debug("Army new XP=" << army->getXP())
+	      }
+	    sit++;
+	  }
+      it++;
     }
 }
 
@@ -2243,19 +2236,19 @@ Hero* Player::doRecruitHero(HeroProto* herotemplate, City *city, int cost, int a
   GameMap::getInstance()->addArmy(city, newhero);
 
   if (alliesCount > 0)
-  {
-    Reward_Allies::addAllies(this, city->getPos(), ally, alliesCount);
-    hero_arrives_with_allies.emit(alliesCount);
-  }
-  
+    {
+      Reward_Allies::addAllies(this, city->getPos(), ally, alliesCount);
+      hero_arrives_with_allies.emit(alliesCount);
+    }
+
   if (cost == 0)
-  {
-    // Initially give the first hero the player's standard.
-    std::string name = String::ucompose(_("%1 Standard"), getName());
-    Item *battle_standard = new Item (name, true, this);
-    battle_standard->addBonus(Item::ADD1STACK);
-    newhero->addToBackpack(battle_standard, 0);
-  }
+    {
+      // Initially give the first hero the player's standard.
+      std::string name = String::ucompose(_("%1 Standard"), getName());
+      Item *battle_standard = new Item (name, true, this);
+      battle_standard->addBonus(Item::ADD1STACK);
+      newhero->getBackpack()->addToBackpack(battle_standard, 0);
+    }
   withdrawGold(cost);
   supdatingStack.emit(0);
   return newhero;
@@ -2288,7 +2281,7 @@ void Player::doDeclareDiplomacy (DiplomaticState state, Player *player)
 void Player::declareDiplomacy (DiplomaticState state, Player *player)
 {
   doDeclareDiplomacy(state, player);
-  
+
   Action_DiplomacyState * item = new Action_DiplomacyState();
   item->fillData(player, state);
   addAction(item);
@@ -2380,7 +2373,7 @@ Player::DiplomaticState Player::negotiateDiplomacy (Player *player)
     }
 
 }
-	
+
 Player::DiplomaticState Player::getDiplomaticState (Player *player)
 {
   if (player == Playerlist::getInstance()->getNeutral())
@@ -2389,7 +2382,7 @@ Player::DiplomaticState Player::getDiplomaticState (Player *player)
     return AT_PEACE;
   return d_diplomatic_state[player->getId()];
 }
-	
+
 Player::DiplomaticProposal Player::getDiplomaticProposal (Player *player)
 {
   if (player == Playerlist::getInstance()->getNeutral())
@@ -2430,9 +2423,9 @@ void Player::improveDiplomaticRelationship (Player *player, Uint32 amount)
   Playerlist *pl = Playerlist::getInstance();
   if (pl->getNeutral() == player || player == this)
     return;
-  
+
   alterDiplomaticRelationshipScore (player, amount);
-  
+
   Action_DiplomacyScore* item = new Action_DiplomacyScore();
   item->fillData(player, amount);
   addAction(item);
@@ -2443,9 +2436,9 @@ void Player::deteriorateDiplomaticRelationship (Player *player, Uint32 amount)
   Playerlist *pl = Playerlist::getInstance();
   if (pl->getNeutral() == player || player == this)
     return;
-  
+
   alterDiplomaticRelationshipScore (player, -amount);
-  
+
   Action_DiplomacyScore* item = new Action_DiplomacyScore();
   item->fillData(player, -amount);
   addAction(item);
@@ -2482,7 +2475,7 @@ void Player::improveDiplomaticRelationship (Uint32 amount, Player *except)
       (*it)->improveDiplomaticRelationship (this, amount);
     }
 }
-		  
+
 void Player::deteriorateAlliesRelationship(Player *player, Uint32 amount,
 					   Player::DiplomaticState state)
 {
@@ -2522,12 +2515,12 @@ void Player::AI_maybeBuyScout()
   bool hero_exists = false;
   for (Stacklist::iterator it = d_stacklist->begin(); 
        it != d_stacklist->end(); it++)
-    
+
     if ((*it)->hasHero())
       hero_exists = true; 
-    
+
   if (Citylist::getInstance()->countCities(this) == 1 && 
-	hero_exists == false)
+      hero_exists == false)
     {
       bool one_turn_army_exists = false;
       City *c = Citylist::getInstance()->getFirstCity(this);
@@ -2591,7 +2584,7 @@ bool Player::AI_maybePickUpItems(Stack *s, int max_dist, int max_mp,
   //if no bags of stuff, or the bag is too far away
   if (min_dist == -1 || min_dist > max_dist)
     return false;
-  
+
   //are we not standing on it?
   if (s->getPos() != item_tile)
     {
@@ -2655,7 +2648,7 @@ bool Player::AI_maybeVisitTempleForBlessing(Stack *s, int dist, int max_mp,
 	  return false;
 	}
       stack_moved = stackMove(s);
-        
+
       //maybe we died -- an enemy stack was guarding the temple
       if (!d_stacklist->getActivestack())
 	{
@@ -2712,7 +2705,7 @@ bool Player::AI_maybeDisband(Stack *s, City *city, Uint32 min_defenders,
 
   if (city->countDefenders() - s->size() >= min_defenders)
     {
-    return stackDisband(s);
+      return stackDisband(s);
     }
 
   //okay, we need to disband part of our stack
@@ -2845,7 +2838,7 @@ void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
   //turn off vectoring for destinations that are far away from the
   //nearest enemy city
 
-	  
+
   debug("setting up vectoring\n");
   for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
     {
@@ -2859,7 +2852,7 @@ void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
 	{
 	  //City *target_city = Citylist::getInstance()->getObjectAt(dest);
 	  //debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because it's not safe to anymore!\n")
-	    c->setVectoring(Vector<int>(-1,-1));
+	  c->setVectoring(Vector<int>(-1,-1));
 	  continue;
 	}
 
@@ -2868,7 +2861,7 @@ void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
 	{
 	  //City *target_city = Citylist::getInstance()->getObjectAt(dest);
 	  //debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because there aren't any more enemy cities!\n")
-	    c->setVectoring(Vector<int>(-1,-1));
+	  c->setVectoring(Vector<int>(-1,-1));
 	  continue;
 	}
 
@@ -2878,7 +2871,7 @@ void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
 
 	  //City *target_city = Citylist::getInstance()->getObjectAt(dest);
 	  //debug("stopping vectoring from " << c->getName() <<" to " << target_city->getName() << " because it's too far away from an enemy city!\n")
-	    c->setVectoring(Vector<int>(-1,-1));
+	  c->setVectoring(Vector<int>(-1,-1));
 	  continue;
 	}
     }
@@ -2924,7 +2917,7 @@ bool Player::cityProducesArmy(City *city)
     }
   return true;
 }
-	
+
 Army* Player::doVectoredUnitArrives(VectoredUnit *unit)
 {
   Army *army = unit->armyArrives();
@@ -2939,8 +2932,8 @@ bool Player::vectoredUnitArrives(VectoredUnit *unit)
   Army *army = doVectoredUnitArrives(unit);
   if (!army)
     {
-    printf("whooops... this vectored unit failed to show up.\n");
-    exit (1);
+      printf("whooops... this vectored unit failed to show up.\n");
+      exit (1);
     }
 
   return true;
@@ -2986,7 +2979,7 @@ void Player::pruneActionlist(std::list<Action*> actions)
       if ((*ait)->getType() != Action::CITY_PROD)
 	continue;
       //if this city isn't already in the keepers list, then add it.
-  
+
       Action_Production *action = static_cast<Action_Production*>(*ait);
       bool found = false;
       std::list<Action_Production*>::const_iterator it;
@@ -3019,7 +3012,7 @@ void Player::pruneActionlist(std::list<Action*> actions)
 	}
     }
   //if (total)
-    //printf ("pruned %d city production actions.\n", total);
+  //printf ("pruned %d city production actions.\n", total);
 
 }
 
@@ -3060,20 +3053,20 @@ Player::Type Player::playerTypeFromString(const std::string str)
 
 bool Player::hasAlreadyInitializedTurn() const
 {
-    for (list<Action*>::const_iterator it = d_actions.begin();
-        it != d_actions.end(); it++)
-      if ((*it)->getType() == Action::INIT_TURN)
-	return true;
-    return false;
+  for (list<Action*>::const_iterator it = d_actions.begin();
+       it != d_actions.end(); it++)
+    if ((*it)->getType() == Action::INIT_TURN)
+      return true;
+  return false;
 }
 
 bool Player::hasAlreadyEndedTurn() const
 {
-    for (list<Action*>::const_iterator it = d_actions.begin();
-        it != d_actions.end(); it++)
-      if ((*it)->getType() == Action::END_TURN)
-	return true;
-    return false;
+  for (list<Action*>::const_iterator it = d_actions.begin();
+       it != d_actions.end(); it++)
+    if ((*it)->getType() == Action::END_TURN)
+      return true;
+  return false;
 }
 
 std::list<History*> Player::getHistoryForThisTurn() const

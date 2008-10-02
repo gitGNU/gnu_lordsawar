@@ -34,6 +34,7 @@
 #include "Item.h"
 #include "GameMap.h"
 #include "GraphicsCache.h"
+#include "Backpack.h"
 
 HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 {
@@ -93,19 +94,18 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     if (first)
     {
 	Item *item = (*Itemlist::getInstance())[0];
-	hero->addToBackpack(item, 0);
+	hero->getBackpack()->addToBackpack(item, 0);
 	item = (*Itemlist::getInstance())[1];
-	hero->addToBackpack(item, 0);
+	hero->getBackpack()->addToBackpack(item, 0);
 	item = (*Itemlist::getInstance())[5];
-	hero->addToBackpack(item, 0);
+	hero->getBackpack()->addToBackpack(item, 0);
 	first = false;
     }
 #endif
     
     // populate the item list
-    std::list<Item*> backpack = hero->getBackpack();
-    for (std::list<Item*>::iterator i = backpack.begin(), end = backpack.end();
-	i != end; ++i)
+    Backpack *backpack = hero->getBackpack();
+    for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
 	add_item(*i, true);
 
     std::list<Item*> ground
@@ -208,9 +208,8 @@ void HeroDialog::fill_in_info_labels()
     Uint32 bonus = 0;
     Glib::ustring s;
     // fill in first column
-    std::list<Item*> backpack = hero->getBackpack();
-    for (std::list<Item*>::iterator i = backpack.begin(), end = backpack.end();
-	i != end; ++i)
+    Backpack *backpack = hero->getBackpack();
+    for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
       {
         if ((*i)->getBonus(Item::ADD1STR))
           bonus += 1;
@@ -223,8 +222,7 @@ void HeroDialog::fill_in_info_labels()
     s += "\n";
 
     bonus = 0;
-    for (std::list<Item*>::iterator i = backpack.begin(), end = backpack.end();
-	i != end; ++i)
+    for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
       {
         if ((*i)->getBonus(Item::ADD1STACK))
           bonus += 1;

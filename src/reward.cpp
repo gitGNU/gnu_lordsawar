@@ -27,6 +27,7 @@
 #include "ruinlist.h"
 #include "rewardlist.h"
 #include "Itemlist.h"
+#include "Item.h"
 #include "GameMap.h"
 #include "ruin.h"
 #include "ucompose.hpp"

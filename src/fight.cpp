@@ -35,6 +35,7 @@
 #include "citylist.h"
 #include "city.h"
 #include "stack.h"
+#include "Backpack.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -424,18 +425,7 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
 	  if ((*fit)->army->isHero())
 	    {
 	      Hero *h = dynamic_cast<Hero*>((*fit)->army);
-	      std::list<Item*> backpack = h->getBackpack();
-	      std::list<Item*>::const_iterator item;
-	      // count up the bonuses from command items
-	      for (item = backpack.begin(); item != backpack.end(); item++)
-		{
-		  if ((*item)->getBonus(Item::ADD1STACK))
-		    hero_bonus += 1;
-		  if ((*item)->getBonus(Item::ADD2STACK))
-		    hero_bonus += 2;
-		  if ((*item)->getBonus(Item::ADD3STACK))
-		    hero_bonus += 3;
-		}
+	      hero_bonus = h->getBackpack()->countStackStrengthBonuses();
 	    }
 	}
     }

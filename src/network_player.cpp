@@ -50,6 +50,7 @@
 #include "signpost.h"
 #include "history.h"
 #include "vectoredunit.h"
+#include "Backpack.h"
 
 using namespace std;
 
@@ -491,7 +492,7 @@ void NetworkPlayer::decodeActionEquip(const Action_Equip *action)
     break;
 
   case Action_Equip::GROUND:
-    item = findItemById(hero->getBackpack(), action->getItemId());
+    item = hero->getBackpack()->getItemById(action->getItemId());
     doHeroDropItem(hero, item, action->getItemPos());
     break;
   }
@@ -551,7 +552,7 @@ void NetworkPlayer::decodeActionPlant(const Action_Plant *action)
 {
   Stack *stack = d_stacklist->getArmyStackById(action->getHeroId());
   Hero *hero = dynamic_cast<Hero *>(stack->getArmyById(action->getHeroId()));
-  Item *item = findItemById(hero->getBackpack(), action->getItemId());
+  Item *item = hero->getBackpack()->getItemById(action->getItemId());
     
   doHeroPlantStandard(hero, item, stack->getPos());
 }

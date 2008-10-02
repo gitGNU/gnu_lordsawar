@@ -58,6 +58,8 @@
 #include "NextTurnNetworked.h"
 #include "pbm/pbm.h"
 #include "recently-played-game-list.h"
+#include "Backpack.h"
+#include "Item.h"
 
 Driver::Driver(std::string load_filename)
 {
@@ -542,9 +544,8 @@ void Driver::on_next_scenario(std::string scenario, int num_heroes)
       //munge the IDs of those heroes.
       (*it)->assignNewId();
       //munge the IDs of the items
-      std::list<Item*> backpack = (*it)->getBackpack();
-      for (std::list<Item*>::iterator i = backpack.begin(), 
-	   end = backpack.end(); i != end; ++i)
+      Backpack *backpack = (*it)->getBackpack();
+      for (Backpack::iterator i = backpack->begin(); i != backpack->end(); i++)
 	(*i)->assignNewId();
       c->addArmy(*it);
     }

@@ -25,8 +25,9 @@
 #include <list>
 
 #include "army.h"
-#include "Item.h"
 #include "player.h"
+
+class Backpack;
 
 //! A Hero is an Army unit capable of carrying items, going on quests and more.
 /** 
@@ -49,9 +50,6 @@ class Hero : public Army
 
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
-
-	//! The xml tag of the backpack subobject in a saved-game file.
-	static std::string d_backpack_tag; 
 
         //! The different genders a Hero unit can have.
 	/**
@@ -103,43 +101,9 @@ class Hero : public Army
          */
         Uint32 getStat(Army::Stat stat, bool modified = true) const;
 
-        //! Add an Item to the backpack of the Hero.
-	/**
-	 * @param item      The Item to add to the d_backpack.
-	 * @param position  How deep into the backpack the Item is stored.
-	 *                  Subsequent Items get pushed down to make room.
-	 *                  This value starts at 0.
-	 *
-	 * This method is usually used to add an Item to the top of the
-	 * hero's backpack (e.g. position == 0).
-	 *
-	 * @return Always returns true.
-	 */
-        bool addToBackpack(Item* item, int position);
-
-	//! Add an Item to the bottom of the hero's backpack. 
-        bool addToBackpack(Item* item);
-
-        //! Remove an Item from the backpack of the hero.
-        /**
-	 * Scan the hero's d_backpack for the Item, and remove it if it is
-	 * found.
-	 *
-	 * @note This method removes the Item from the d_backpack, but does
-	 *       not destroy the Item.
-	 *
-	 * @param item   The Item to look for.
-	 *
-	 * @return True if the Item was found and removed.
-	 */
-        bool removeFromBackpack(Item* item);
-
         //! Returns the backpack of the hero.
-        std::list<Item*> getBackpack() {return d_backpack;}
+        Backpack* getBackpack() {return d_backpack;}
 
-        //! Callback to load the backpack from the opened saved-game file.
-        bool loadItems(std::string tag, XML_Helper* helper);
-        
 	//! Return the natural command of the hero.
 	/**
 	 * Natural command is used for bonus calculations during a Fight.
@@ -162,8 +126,10 @@ class Hero : public Army
 
     private:
         
+	bool loadBackpack(std::string tag, XML_Helper* helper);
+
 	//! The hero's backpack that holds any number of Item objects.
-        std::list<Item*> d_backpack;
+        Backpack *d_backpack;
 
 	//! The name of the hero.
 	std::string d_name;

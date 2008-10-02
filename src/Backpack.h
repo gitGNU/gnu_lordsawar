@@ -1,0 +1,128 @@
+//  Copyright (C) 2008 Ben Asselstine
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Library General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
+//  02110-1301, USA.
+
+#ifndef BACKPACK_H
+#define BACKPACK_H
+
+#include<list>
+#include <SDL.h>
+
+class XML_Helper;
+class Item;
+class Player;
+
+//! An object that carries items.
+/**
+ * Heroes have backpack objects that carry items.
+ */
+class Backpack: public std::list<Item*>
+{
+    public:
+	//! The xml tag of this object in a saved-game file.
+	static std::string d_tag; 
+
+        //! Standard constructor: create a backpack.
+	/**
+	 */
+        Backpack();
+
+	//! Loading constructor.
+	/**
+	 * Load the backpack from a file.
+	 * Backpacks are stored in the saved-game file at:
+	 * lordsawar.playerlist.player.stacklist.stack.hero.backpack.
+	 *
+	 * @param helper  The opened saved-game file to load the backpack from.
+	 */
+        Backpack(XML_Helper* helper);
+
+	//! Copy constructor.
+	Backpack(const Backpack&);
+
+	//! Destructor.
+        ~Backpack();
+
+	//! Save a backpack.
+        /**
+         * @param helper  The opened saved-game file to save the backpack to.
+	 *
+         * @return True if saving went well, false otherwise.
+         */
+        bool save(XML_Helper* helper) const;
+
+        //! Remove an Item from the backpack of the hero.
+        /**
+	 * Scan the hero's d_backpack for the Item, and remove it if it is
+	 * found.
+	 *
+	 * @note This method removes the Item from the d_backpack, but does
+	 *       not destroy the Item.
+	 *
+	 * @param item   The Item to look for.
+	 *
+	 * @return True if the Item was found and removed.
+	 */
+	bool removeFromBackpack(Item* item);
+
+	//! Add an Item to the bottom of the hero's backpack. 
+	bool addToBackpack(Item* item);
+
+        //! Add an Item to the backpack of the Hero.
+	/**
+	 * @param item      The Item to add to the d_backpack.
+	 * @param position  How deep into the backpack the Item is stored.
+	 *                  Subsequent Items get pushed down to make room.
+	 *                  This value starts at 0.
+	 *
+	 * This method is usually used to add an Item to the top of the
+	 * hero's backpack (e.g. position == 0).
+	 *
+	 * @return Always returns true.
+	 */
+	bool addToBackpack(Item* item, int position);
+
+	//! Tally up the strength bonuses inferred by items in the backpack.
+	Uint32 countStrengthBonuses();
+
+	//! Tally up the gold bonuses inferred by the items in the backpack.
+	Uint32 countGoldBonuses();
+
+	//! Tally the stack strength bonuses inferred by items in the backpack.
+	Uint32 countStackStrengthBonuses();
+
+	//! Count the number of items that double movement in the backpack.
+	Uint32 countMovementDoublers();
+
+	//! Return the first plantable item that can be planted by player.
+	Item *getPlantableItem(Player *player);
+
+	//! Tally the plantable items in the backpack.
+	Uint32 countPlantableItems();
+
+	//! Return the item with the given id.
+	Item *getItemById(Uint32 id);
+
+	//! Tally the items that let stacks fly.
+	Uint32 countStackFlightGivers();
+    private:
+
+	bool loadItem(std::string tag, XML_Helper* helper);
+};
+
+#endif
+
+// End of file

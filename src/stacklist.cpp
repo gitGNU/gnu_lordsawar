@@ -33,6 +33,7 @@
 #include "xmlhelper.h"
 #include "Item.h"
 #include "hero.h"
+#include "Backpack.h"
 
 std::string Stacklist::d_tag = "stacklist";
 using namespace std;
@@ -424,19 +425,8 @@ void Stacklist::collectTaxes(Player *p, Uint32 num_cities)
       Stack *stack = getArmyStackById(*it);
       Army *army = stack->getArmyById(*it);
       Hero *hero = static_cast<Hero*>(army);
-      std::list<Item*> backpack = hero->getBackpack();
-      std::list<Item*>::const_iterator item;
-      for (item = backpack.begin(); item != backpack.end(); item++)
-	{
-	  if ((*item)->getBonus(Item::ADD2GOLDPERCITY))
-	    p->addGold(2 * num_cities);
-	    if ((*item)->getBonus(Item::ADD3GOLDPERCITY))
-	      p->addGold(3 * num_cities);
-	    if ((*item)->getBonus(Item::ADD4GOLDPERCITY))
-	      p->addGold(4 * num_cities);
-	    if ((*item)->getBonus(Item::ADD5GOLDPERCITY))
-	      p->addGold(5 * num_cities);
-	  }
+      Uint32 bonus = hero->getBackpack()->countGoldBonuses();
+      p->addGold(bonus * num_cities);
     }
 }
 
