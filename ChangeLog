@@ -1,3 +1,7 @@
+2008-10-02  Ben Asselstine
+
+	* added separate MapBackpack object.
+
 2008-10-01  Ben Asselstine
 
 	* fixed bug #24425.  now warning the user to restart the game if the

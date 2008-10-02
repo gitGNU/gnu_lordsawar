@@ -11,6 +11,7 @@
 #include "SmallTile.h"
 #include "tileset.h"
 #include "Item.h"
+class MapBackpack;
 
 //! A single tile on the game map.
 /** 
@@ -125,22 +126,8 @@ class Maptile
         Tile::Type getMaptileType() const
 	  {return (*d_tileSet)[d_index]->getType();}
 
-        //! Add an Item to the maptile.
-	/**
-	 * Put an Item on this spot.  If there are others, specify the
-	 * position among the list of other items. 
-	 *
-	 * @param item          The item to add to the maptile.
-	 * @param position      Where to add it in the list of items already
-	 *                      here.  -1 means add to the end.
-	 */
-        void addItem(Item*, int position = -1);
-
-        //! Remove an Item from the maptile without deleting it.
-        bool removeItem(Item* item);
-
         //! Get the list of Item objects on this maptile.
-        std::list<Item*> getItems() const;
+        MapBackpack *getBackpack() const {return d_backpack;};
         
 	//! Whether or not this map tile considered to be "open terrain".
 	/**
@@ -193,7 +180,7 @@ class Maptile
 	//! The type of constructed object on this maptile.
         Building d_building;
 	//! The list of pointers to items on this maptile.
-        std::list<Item*> d_items;
+	MapBackpack *d_backpack;
 };
 
 #endif // MAPTILE_H

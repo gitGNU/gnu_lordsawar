@@ -53,6 +53,7 @@
 #include "MapRenderer.h"
 #include "FogMap.h"
 #include "sdl-draw.h"
+#include "MapBackpack.h"
 
 #include <iostream>
 using namespace std;
@@ -651,21 +652,13 @@ void BigMap::draw_buffer(Rectangle map_view, SDL_Surface *surface)
   for (int x = map_view.x; x < map_view.x + map_view.w; x++)
     for (int y = map_view.y; y < map_view.y + map_view.h; y++)
       if (x < GameMap::getWidth() && y < GameMap::getHeight()
-	  && !gm->getTile(x,y)->getItems().empty())
+	  && !gm->getTile(x,y)->getBackpack()->empty())
 	{
-	  std::list<Item*> items = gm->getTile(x, y)->getItems();
+	  MapBackpack *backpack = gm->getTile(x, y)->getBackpack();
 	  bool standard_planted = false;
-	  Item *flag = NULL;
-	  for (std::list<Item*>::iterator it = items.begin(); 
-	       it != items.end(); it++)
-	    {
-	      if ((*it)->getPlanted() == true)
-		{
-		  standard_planted = true;
-		  flag = *it;
-		  break;
-		}
-	    }
+	  Item *flag = backpack->getFirstPlantedItem();
+	  if (flag)
+	    standard_planted = true;
 
 	  //only show one of the bag or the flag
 	  Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));

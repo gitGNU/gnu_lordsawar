@@ -62,6 +62,7 @@
 #include "armyprodbase.h"
 #include "Triumphs.h"
 #include "Backpack.h"
+#include "MapBackpack.h"
 
 using namespace std;
 
@@ -1769,7 +1770,7 @@ bool Player::stackDisband(Stack* s)
 
 void Player::doHeroDropItem(Hero *h, Item *i, Vector<int> pos)
 {
-  GameMap::getInstance()->getTile(pos)->addItem(i);
+  GameMap::getInstance()->getTile(pos)->getBackpack()->addToBackpack(i);
   h->getBackpack()->removeFromBackpack(i);
 }
 
@@ -1802,7 +1803,7 @@ bool Player::doHeroDropAllItems(Hero *h, Vector<int> pos)
 
 void Player::doHeroPickupItem(Hero *h, Item *i, Vector<int> pos)
 {
-  bool found = GameMap::getInstance()->getTile(pos)->removeItem(i);
+  bool found = GameMap::getInstance()->getTile(pos)->getBackpack()->removeFromBackpack(i);
   if (found)
     h->getBackpack()->addToBackpack(i);
 }
@@ -1820,9 +1821,8 @@ bool Player::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
 
 bool Player::heroPickupAllItems(Hero *h, Vector<int> pos)
 {
-  std::list<Item*> bag = GameMap::getInstance()->getTile(pos)->getItems();
-  for (std::list<Item*>::iterator i = bag.begin(), end = bag.end();
-       i != end; ++i)
+  MapBackpack *backpack = GameMap::getInstance()->getTile(pos)->getBackpack();
+  for (MapBackpack::iterator i = backpack->begin(); i != backpack->end(); i++)
     heroPickupItem(h, *i, pos);
   return true;
 }
@@ -1975,7 +1975,7 @@ void Player::doHeroPlantStandard(Hero *hero, Item *item, Vector<int> pos)
 {
   item->setPlanted(true);
   GameMap *gm = GameMap::getInstance();
-  gm->getTile(pos)->addItem(item);
+  gm->getTile(pos)->getBackpack()->addToBackpack(item);
   hero->getBackpack()->removeFromBackpack(item);
 }
 

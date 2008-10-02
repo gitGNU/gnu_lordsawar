@@ -51,6 +51,7 @@
 #include "history.h"
 #include "vectoredunit.h"
 #include "Backpack.h"
+#include "MapBackpack.h"
 
 using namespace std;
 
@@ -487,7 +488,7 @@ void NetworkPlayer::decodeActionEquip(const Action_Equip *action)
   switch (action->getToBackpackOrToGround())
   {
   case Action_Equip::BACKPACK:
-    item = findItemById(GameMap::getInstance()->getTile(action->getItemPos())->getItems(), action->getItemId());
+    item = GameMap::getInstance()->getTile(action->getItemPos())->getBackpack()->getItemById(action->getItemId());
     doHeroPickupItem(hero, item, action->getItemPos());
     break;
 

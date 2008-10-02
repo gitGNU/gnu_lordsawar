@@ -64,6 +64,15 @@ class Backpack: public std::list<Item*>
          */
         bool save(XML_Helper* helper) const;
 
+	//! Save the contents of a backpack.
+        /**
+         * @param helper  The opened saved-game file to save the contents of
+	 *                the backpack to.
+	 *
+         * @return True if saving went well, false otherwise.
+         */
+        bool saveData(XML_Helper* helper) const;
+
         //! Remove an Item from the backpack of the hero.
         /**
 	 * Scan the hero's d_backpack for the Item, and remove it if it is

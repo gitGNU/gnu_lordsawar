@@ -27,6 +27,7 @@
 #include "city.h"
 #include "GameMap.h"
 #include "action.h"
+#include "MapBackpack.h"
 
 std::string VectoredUnit::d_tag = "vectoredunit";
 
@@ -101,20 +102,13 @@ Army *VectoredUnit::armyArrives()
       Maptile *tile = GameMap::getInstance()->getTile(d_destination);
       if (tile)
 	{
-	  std::list<Item*> items = tile->getItems();
-	  for (std::list<Item*>::iterator it = items.begin(); 
-	       it != items.end(); it++)
+	  if (tile->getBackpack()->getPlantedItem(d_owner))
 	    {
-	      if ((*it)->getPlanted() == true &&
-		  (*it)->getPlantableOwner() == d_owner)
-		{
-		  //army arrives on a planted standard
-		  Army *a = new Army(*d_army, d_owner);
-		  LocationBox loc = LocationBox(d_destination);
-		  loc.addArmy(a);
-		  return a;
-		}
-
+	      //army arrives on a planted standard
+	      Army *a = new Army(*d_army, d_owner);
+	      LocationBox loc = LocationBox(d_destination);
+	      loc.addArmy(a);
+	      return a;
 	    }
 	}
     }

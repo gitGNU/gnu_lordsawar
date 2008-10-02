@@ -55,13 +55,20 @@ Backpack::~Backpack()
     delete (*it);
 }
 
+bool Backpack::saveData(XML_Helper* helper) const
+{
+  bool retval = true;
+  for (const_iterator it = begin(); it != end(); it++)
+    retval &= (*it)->save(helper);
+  return true;
+}
+
 bool Backpack::save(XML_Helper* helper) const
 {
     bool retval = true;
 
     retval &= helper->openTag(Backpack::d_tag);
-    for (const_iterator it = begin(); it != end(); it++)
-      retval &= (*it)->save(helper);
+    retval &= saveData(helper);
     retval &= helper->closeTag();
 
     return retval;

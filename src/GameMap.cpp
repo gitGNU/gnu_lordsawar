@@ -42,6 +42,7 @@
 #include "shieldsetlist.h"
 #include "citysetlist.h"
 #include "GraphicsCache.h"
+#include "MapBackpack.h"
 
 std::string GameMap::d_tag = "map";
 std::string GameMap::d_itemstack_tag = "itemstack";
@@ -311,21 +312,9 @@ bool GameMap::save(XML_Helper* helper) const
 
     // last, save all items lying around somewhere
     for (int i = 0; i < s_width; i++)
-        for (int j = 0; j < s_height; j++)
-            if (!getTile(i,j)->getItems().empty())
-            {
-                retval &= helper->openTag(GameMap::d_itemstack_tag);
-                retval &= helper->saveData("x", i);
-                retval &= helper->saveData("y", j);
-                
-                std::list<Item*> items = getTile(i,j)->getItems();
-                
-                std::list<Item*>::const_iterator it;
-                for (it = items.begin(); it != items.end(); it++)
-                    (*it)->save(helper);
-
-                retval &= helper->closeTag();
-            }
+      for (int j = 0; j < s_height; j++)
+	if (!getTile(i,j)->getBackpack()->empty())
+	  retval &= getTile(i,j)->getBackpack()->save(helper);
      
     retval &= helper->closeTag();
     return retval;
@@ -345,7 +334,7 @@ bool GameMap::loadItems(std::string tag, XML_Helper* helper)
     if (tag == Item::d_tag)
     {
         Item* item = new Item(helper);
-        getTile(x, y)->addItem(item);
+        getTile(x, y)->getBackpack()->addToBackpack(item);
     }
 
     return true;
@@ -617,21 +606,14 @@ Vector<int> GameMap::findPlantedStandard(Player *p)
       {
         for (int y = 0; y < getHeight(); y++)
           {
-            std::list<Item*> items = getTile(x, y)->getItems();
-            for (std::list<Item*>::iterator it = items.begin(); 
-                 it != items.end(); it++)
-              {
-                if ((*it)->isPlantable() && (*it)->getPlantableOwner() == p &&
-		    (*it)->getPlanted() == true)
-                  {
-                    pos.x = x;
-                    pos.y = y;
-                    found = true;
-                    break;
-                  }
-              }
-            if (found)
-              break;
+	    MapBackpack *backpack = getTile(x, y)->getBackpack();
+	    found = backpack->getPlantedItem(p) != NULL;
+	    if (found)
+	      {
+		pos.x = x;
+		pos.y = y;
+		break;
+	      }
           }
       }
   return pos;
@@ -910,7 +892,7 @@ std::vector<Vector<int> > GameMap::getItems()
     for (int i = 0; i < s_width; i++)
       {
 	if (d_map[j*s_width + i])
-	  if (d_map[j*s_width + i]->getItems().empty() == false)
+	  if (d_map[j*s_width + i]->getBackpack()->empty() == false)
 	    items.push_back(Vector<int>(i, j));
 
       }

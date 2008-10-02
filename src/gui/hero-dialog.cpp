@@ -35,6 +35,7 @@
 #include "GameMap.h"
 #include "GraphicsCache.h"
 #include "Backpack.h"
+#include "MapBackpack.h"
 
 HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 {
@@ -108,11 +109,9 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
 	add_item(*i, true);
 
-    std::list<Item*> ground
-	= GameMap::getInstance()->getTile(pos)->getItems();
-    for (std::list<Item*>::iterator i = ground.begin(), end = ground.end();
-	i != end; ++i)
-	add_item(*i, false);
+    MapBackpack *ground = GameMap::getInstance()->getTile(pos)->getBackpack();
+    for (MapBackpack::iterator i = ground->begin(); i != ground->end(); i++)
+      add_item(*i, false);
 }
 
 void HeroDialog::set_parent_window(Gtk::Window &parent)
@@ -131,14 +130,14 @@ void HeroDialog::run()
     GameMap *gm = GameMap::getInstance();
     dialog->show();
     dialog->run();
-    if (gm->getTile(pos)->getItems().size() > 0 && 
+    if (gm->getTile(pos)->getBackpack()->size() > 0 && 
         gm->getTile(pos)->getMaptileType() == Tile::WATER)
       {
         // splash, items lost forever
-        while (gm->getTile(pos)->getItems().size())
+        while (gm->getTile(pos)->getBackpack()->size())
           {
-            std::list<Item*>::iterator i = gm->getTile(pos)->getItems().begin();
-            gm->getTile(pos)->removeItem(*i);
+	    MapBackpack::iterator i = gm->getTile(pos)->getBackpack()->begin();
+            gm->getTile(pos)->getBackpack()->removeFromBackpack(*i);
           }
       }
     

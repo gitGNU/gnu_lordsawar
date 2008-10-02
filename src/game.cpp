@@ -68,6 +68,7 @@
 #include "LocationBox.h"
 #include "Campaign.h"
 #include "Backpack.h"
+#include "MapBackpack.h"
 
 #include "herotemplates.h"
 
@@ -882,17 +883,11 @@ void Game::update_control_panel()
 			  if (!city && !temple && !ruin && !sign)
 			    {
 			      GameMap *gm = GameMap::getInstance();
-			      std::list<Item*> items;
+			      MapBackpack *backpack;
 			      Vector<int> pos = stack->getPos();
-			      items = gm->getTile(pos)->getItems();
-			      std::list<Item*>::iterator iit;
-			      bool standard_already_planted = false;
-			      for (iit = items.begin(); iit != items.end();
-				   iit++)
-				{
-				  if ((*iit)->getPlanted())
-				    standard_already_planted = true;
-				}
+			      backpack = gm->getTile(pos)->getBackpack();
+			      bool standard_already_planted = 
+				backpack->getFirstPlantedItem() != NULL;
 			      //are there any other standards here?
 			      if (standard_already_planted == false)
 				can_plant_standard_selected_stack.emit(true);

@@ -22,12 +22,14 @@
 #include <stdlib.h>
 #include <iostream>
 #include "tileset.h"
+#include "MapBackpack.h"
 
 Maptile::Maptile(Tileset* tileSet, int x, int y, Uint32 type, TileStyle *tileStyle)
     :d_index(type), d_building(NONE) 
 {
     d_tileSet = tileSet;
     d_tileStyle = tileStyle;
+    d_backpack = new MapBackpack(Vector<int>(x,y));
 }
 
 Maptile::Maptile(Tileset* tileSet, int x, int y, Tile::Type type, TileStyle *tileStyle)
@@ -47,15 +49,12 @@ Maptile::Maptile(Tileset* tileSet, int x, int y, Tile::Type type, TileStyle *til
       }
     if (found == false)
       d_index = 0;
+    d_backpack = new MapBackpack(Vector<int>(x,y));
 }
 
 Maptile::~Maptile()
 {
-    while (!d_items.empty())
-    {
-        delete (*d_items.begin());
-        d_items.erase(d_items.begin());
-    }
+    delete d_backpack;
 }
 
 Uint32 Maptile::getMoves() const
@@ -82,37 +81,6 @@ void Maptile::printDebugInfo() const
     std::cerr << "MAPTILE: type = " << d_index << std::endl;
     std::cerr << "MAPTILE: building = " << d_building << std::endl;
 }    
-
-void Maptile::addItem(Item* item, int position)
-{
-    if (position < 0)
-    {
-        d_items.push_back(item);
-        return;
-    }
-
-    std::list<Item*>::iterator it;
-    for (it = d_items.begin(); position > 0; position--, it++)
-      ;
-    d_items.insert(it, item);
-}
-
-bool Maptile::removeItem(Item* item)
-{
-    std::list<Item*>::iterator it;
-    for (it = d_items.begin(); it != d_items.end(); it++)
-        if ((*it) == item)
-        {
-            d_items.erase(it);
-            return true;
-        }
-    return false;
-}
-
-std::list<Item*> Maptile::getItems() const
-{
-    return d_items;
-}
 
 bool Maptile::isCityTerrain()
 {
