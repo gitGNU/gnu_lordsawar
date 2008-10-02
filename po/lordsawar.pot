@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lordsawar 0.1.2\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-01 13:22-0400\n"
+"POT-Creation-Date: 2008-10-01 20:45-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2205,7 +2205,7 @@ msgstr ""
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:595 src/gui/driver.cpp:704
+#: src/GameScenario.cpp:595 src/gui/driver.cpp:705
 msgid "Error: "
 msgstr ""
 
@@ -2318,31 +2318,31 @@ msgstr ""
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
 
-#: src/game.cpp:588
+#: src/game.cpp:589
 msgid "%1 (capital city)"
 msgstr ""
 
-#: src/game.cpp:594
+#: src/game.cpp:595
 msgid "Under rule of %1"
 msgstr ""
 
-#: src/game.cpp:597 src/gui/city-window.cpp:171
+#: src/game.cpp:598 src/gui/city-window.cpp:171
 msgid "Income: %1"
 msgstr ""
 
-#: src/game.cpp:599
+#: src/game.cpp:600
 msgid "Defense: %1"
 msgstr ""
 
-#: src/game.cpp:603
+#: src/game.cpp:604
 msgid "Status: razed!"
 msgstr ""
 
-#: src/game.cpp:633
+#: src/game.cpp:634
 msgid "Explored"
 msgstr ""
 
-#: src/game.cpp:636
+#: src/game.cpp:637
 msgid "Unexplored"
 msgstr ""
 
@@ -2515,37 +2515,37 @@ msgstr ""
 msgid "You have killed %i so far."
 msgstr ""
 
-#: src/player.cpp:1247
+#: src/player.cpp:1248
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr ""
 
-#: src/player.cpp:1336
+#: src/player.cpp:1337
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr ""
 
-#: src/player.cpp:2254
+#: src/player.cpp:2247
 msgid "%1 Standard"
 msgstr ""
 
-#: src/reward.cpp:419
+#: src/reward.cpp:420
 msgid "%1 Gold Piece"
 msgid_plural "%1 Gold Pieces"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/reward.cpp:427
+#: src/reward.cpp:428
 msgid "Allies: %1 x %2"
 msgstr ""
 
-#: src/reward.cpp:435
+#: src/reward.cpp:436
 msgid "Item: %1"
 msgstr ""
 
-#: src/reward.cpp:442
+#: src/reward.cpp:443
 msgid "Site: %1"
 msgstr ""
 
-#: src/reward.cpp:448
+#: src/reward.cpp:449
 msgid "Map: %1,%2 %3x%4"
 msgstr ""
 
@@ -2587,7 +2587,7 @@ msgstr ""
 
 #: src/gui/city-window.cpp:285 src/gui/army-info-tip.cpp:75
 #: src/gui/army-info-tip.cpp:139 src/gui/army-info-tip.cpp:203
-#: src/gui/buy-production-dialog.cpp:170 src/gui/hero-dialog.cpp:251
+#: src/gui/buy-production-dialog.cpp:170 src/gui/hero-dialog.cpp:249
 #: src/gui/army-gains-level-dialog.cpp:70
 #: src/editor/select-army-dialog.cpp:183
 msgid "Strength: %1"
@@ -2750,12 +2750,12 @@ msgstr[1] ""
 msgid "Fatal error"
 msgstr ""
 
-#: src/gui/army-info-tip.cpp:80 src/gui/hero-dialog.cpp:255
+#: src/gui/army-info-tip.cpp:80 src/gui/hero-dialog.cpp:253
 msgid "Moves: %1/%2"
 msgstr ""
 
 #: src/gui/army-info-tip.cpp:83 src/gui/buy-production-dialog.cpp:178
-#: src/gui/hero-dialog.cpp:258 src/editor/select-army-dialog.cpp:189
+#: src/gui/hero-dialog.cpp:256 src/editor/select-army-dialog.cpp:189
 msgid "Upkeep: %1"
 msgstr ""
 
@@ -2896,16 +2896,16 @@ msgstr ""
 msgid "A Sage!"
 msgstr ""
 
-#: src/gui/hero-dialog.cpp:79 src/editor/players-dialog.cpp:102
+#: src/gui/hero-dialog.cpp:80 src/editor/players-dialog.cpp:102
 #: src/editor/city-dialog.cpp:95 src/editor/stack-dialog.cpp:84
 msgid "Name"
 msgstr ""
 
-#: src/gui/hero-dialog.cpp:80
+#: src/gui/hero-dialog.cpp:81
 msgid "Attributes"
 msgstr ""
 
-#: src/gui/hero-dialog.cpp:81
+#: src/gui/hero-dialog.cpp:82
 msgid "Status"
 msgstr ""
 
@@ -2918,19 +2918,19 @@ msgstr ""
 msgid "On the ground"
 msgstr ""
 
-#: src/gui/hero-dialog.cpp:222
+#: src/gui/hero-dialog.cpp:221
 msgid "Battle: %1"
 msgstr ""
 
-#: src/gui/hero-dialog.cpp:240
+#: src/gui/hero-dialog.cpp:238
 msgid "Command: %1"
 msgstr ""
 
-#: src/gui/hero-dialog.cpp:242 src/gui/game-window.cpp:2724
+#: src/gui/hero-dialog.cpp:240 src/gui/game-window.cpp:2724
 msgid "Level: %1"
 msgstr ""
 
-#: src/gui/hero-dialog.cpp:244 src/gui/game-window.cpp:2722
+#: src/gui/hero-dialog.cpp:242 src/gui/game-window.cpp:2722
 msgid "Experience: %1"
 msgstr ""
 
@@ -2942,8 +2942,8 @@ msgstr ""
 msgid "Choose Game to Load"
 msgstr ""
 
-#: src/gui/game-window.cpp:979 src/gui/driver.cpp:276 src/gui/driver.cpp:446
-#: src/gui/driver.cpp:649 src/gui/driver.cpp:668
+#: src/gui/game-window.cpp:979 src/gui/driver.cpp:278 src/gui/driver.cpp:448
+#: src/gui/driver.cpp:650 src/gui/driver.cpp:669
 msgid "Corrupted saved game file."
 msgstr ""
 
@@ -3238,28 +3238,28 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr ""
 
-#: src/gui/driver.cpp:328
+#: src/gui/driver.cpp:330
 msgid "Server went away."
 msgstr ""
 
-#: src/gui/driver.cpp:344
+#: src/gui/driver.cpp:346
 msgid "Could not connect."
 msgstr ""
 
-#: src/gui/driver.cpp:604 src/editor/main-window.cpp:388
+#: src/gui/driver.cpp:605 src/editor/main-window.cpp:388
 #: src/editor/main-window.cpp:435
 msgid "Neutral"
 msgstr ""
 
-#: src/gui/driver.cpp:679
+#: src/gui/driver.cpp:680
 msgid "Save the scenario and mail it to the first player"
 msgstr ""
 
-#: src/gui/driver.cpp:702
+#: src/gui/driver.cpp:703
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 
-#: src/gui/driver.cpp:707
+#: src/gui/driver.cpp:708
 msgid "Now send the saved-game file to %1"
 msgstr ""
 

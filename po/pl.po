@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.3.7\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-01 13:22-0400\n"
+"POT-Creation-Date: 2008-10-01 20:45-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Piotr Cychowski <cycholka@wp.pl>\n"
 "Language-Team: \n"
@@ -2499,7 +2499,7 @@ msgstr ""
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:595 src/gui/driver.cpp:704
+#: src/GameScenario.cpp:595 src/gui/driver.cpp:705
 #, fuzzy
 msgid "Error: "
 msgstr "B³±d"
@@ -2622,35 +2622,35 @@ msgstr ""
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
 
-#: src/game.cpp:588
+#: src/game.cpp:589
 #, fuzzy
 msgid "%1 (capital city)"
 msgstr "%i ¿ywotno¶ci"
 
-#: src/game.cpp:594
+#: src/game.cpp:595
 msgid "Under rule of %1"
 msgstr ""
 
-#: src/game.cpp:597 src/gui/city-window.cpp:171
+#: src/game.cpp:598 src/gui/city-window.cpp:171
 #, fuzzy
 msgid "Income: %1"
 msgstr "Przedmiot:"
 
-#: src/game.cpp:599
+#: src/game.cpp:600
 #, fuzzy
 msgid "Defense: %1"
 msgstr "Obrona: %i"
 
-#: src/game.cpp:603
+#: src/game.cpp:604
 #, fuzzy
 msgid "Status: razed!"
 msgstr "Status:"
 
-#: src/game.cpp:633
+#: src/game.cpp:634
 msgid "Explored"
 msgstr ""
 
-#: src/game.cpp:636
+#: src/game.cpp:637
 msgid "Unexplored"
 msgstr ""
 
@@ -2844,42 +2844,42 @@ msgstr "Tworzenie mapy zakoñczone ... 100%"
 msgid "You have killed %i so far."
 msgstr "Dotychczas zabi³e¶ %i"
 
-#: src/player.cpp:1247
+#: src/player.cpp:1248
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr ""
 "B³±d: przeszukuj±ca grupa i ruiny nie znajduj± siê w tym samym miejscu\n"
 
-#: src/player.cpp:1336
+#: src/player.cpp:1337
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Grupa usi³owa³a odwiedziæ ¶wi±tyniê w niew³a¶ciwym miejscu\n"
 
-#: src/player.cpp:2254
+#: src/player.cpp:2247
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Jednostki Standardowe"
 
-#: src/reward.cpp:419
+#: src/reward.cpp:420
 msgid "%1 Gold Piece"
 msgid_plural "%1 Gold Pieces"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/reward.cpp:427
+#: src/reward.cpp:428
 msgid "Allies: %1 x %2"
 msgstr ""
 
-#: src/reward.cpp:435
+#: src/reward.cpp:436
 #, fuzzy
 msgid "Item: %1"
 msgstr "Przedmiot:"
 
-#: src/reward.cpp:442
+#: src/reward.cpp:443
 #, fuzzy
 msgid "Site: %1"
 msgstr "Rozmiar:"
 
-#: src/reward.cpp:448
+#: src/reward.cpp:449
 msgid "Map: %1,%2 %3x%4"
 msgstr ""
 
@@ -2926,7 +2926,7 @@ msgstr "Rozmiar:"
 
 #: src/gui/city-window.cpp:285 src/gui/army-info-tip.cpp:75
 #: src/gui/army-info-tip.cpp:139 src/gui/army-info-tip.cpp:203
-#: src/gui/buy-production-dialog.cpp:170 src/gui/hero-dialog.cpp:251
+#: src/gui/buy-production-dialog.cpp:170 src/gui/hero-dialog.cpp:249
 #: src/gui/army-gains-level-dialog.cpp:70
 #: src/editor/select-army-dialog.cpp:183
 #, fuzzy
@@ -3112,13 +3112,13 @@ msgstr[2] ""
 msgid "Fatal error"
 msgstr ""
 
-#: src/gui/army-info-tip.cpp:80 src/gui/hero-dialog.cpp:255
+#: src/gui/army-info-tip.cpp:80 src/gui/hero-dialog.cpp:253
 #, fuzzy
 msgid "Moves: %1/%2"
 msgstr "Ruch: %i"
 
 #: src/gui/army-info-tip.cpp:83 src/gui/buy-production-dialog.cpp:178
-#: src/gui/hero-dialog.cpp:258 src/editor/select-army-dialog.cpp:189
+#: src/gui/hero-dialog.cpp:256 src/editor/select-army-dialog.cpp:189
 #, fuzzy
 msgid "Upkeep: %1"
 msgstr "Utrzymanie: %i"
@@ -3276,17 +3276,17 @@ msgstr ""
 msgid "A Sage!"
 msgstr ""
 
-#: src/gui/hero-dialog.cpp:79 src/editor/players-dialog.cpp:102
+#: src/gui/hero-dialog.cpp:80 src/editor/players-dialog.cpp:102
 #: src/editor/city-dialog.cpp:95 src/editor/stack-dialog.cpp:84
 msgid "Name"
 msgstr "Nazwa"
 
-#: src/gui/hero-dialog.cpp:80
+#: src/gui/hero-dialog.cpp:81
 #, fuzzy
 msgid "Attributes"
 msgstr "Jednostki"
 
-#: src/gui/hero-dialog.cpp:81
+#: src/gui/hero-dialog.cpp:82
 #, fuzzy
 msgid "Status"
 msgstr "Status:"
@@ -3302,22 +3302,22 @@ msgstr "Plecak"
 msgid "On the ground"
 msgstr "nowa runda"
 
-#: src/gui/hero-dialog.cpp:222
+#: src/gui/hero-dialog.cpp:221
 #, fuzzy
 msgid "Battle: %1"
 msgstr "Przedmiot:"
 
-#: src/gui/hero-dialog.cpp:240
+#: src/gui/hero-dialog.cpp:238
 #, fuzzy
 msgid "Command: %1"
 msgstr "Komentarz:"
 
-#: src/gui/hero-dialog.cpp:242 src/gui/game-window.cpp:2724
+#: src/gui/hero-dialog.cpp:240 src/gui/game-window.cpp:2724
 #, fuzzy
 msgid "Level: %1"
 msgstr "Poziom:"
 
-#: src/gui/hero-dialog.cpp:244 src/gui/game-window.cpp:2722
+#: src/gui/hero-dialog.cpp:242 src/gui/game-window.cpp:2722
 #, fuzzy
 msgid "Experience: %1"
 msgstr "Obrona: %i"
@@ -3331,8 +3331,8 @@ msgstr ""
 msgid "Choose Game to Load"
 msgstr "Wybierz Zestaw Terenów"
 
-#: src/gui/game-window.cpp:979 src/gui/driver.cpp:276 src/gui/driver.cpp:446
-#: src/gui/driver.cpp:649 src/gui/driver.cpp:668
+#: src/gui/game-window.cpp:979 src/gui/driver.cpp:278 src/gui/driver.cpp:448
+#: src/gui/driver.cpp:650 src/gui/driver.cpp:669
 msgid "Corrupted saved game file."
 msgstr ""
 
@@ -3656,29 +3656,29 @@ msgstr ""
 msgid "complete and utter suicide!"
 msgstr "Twój bohater %s ukoñczy³ zadanie."
 
-#: src/gui/driver.cpp:328
+#: src/gui/driver.cpp:330
 msgid "Server went away."
 msgstr ""
 
-#: src/gui/driver.cpp:344
+#: src/gui/driver.cpp:346
 #, fuzzy
 msgid "Could not connect."
 msgstr "Nie uda³o siê wczytaæ mapy "
 
-#: src/gui/driver.cpp:604 src/editor/main-window.cpp:388
+#: src/gui/driver.cpp:605 src/editor/main-window.cpp:388
 #: src/editor/main-window.cpp:435
 msgid "Neutral"
 msgstr "Neutralny"
 
-#: src/gui/driver.cpp:679
+#: src/gui/driver.cpp:680
 msgid "Save the scenario and mail it to the first player"
 msgstr ""
 
-#: src/gui/driver.cpp:702
+#: src/gui/driver.cpp:703
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 
-#: src/gui/driver.cpp:707
+#: src/gui/driver.cpp:708
 msgid "Now send the saved-game file to %1"
 msgstr ""
 
