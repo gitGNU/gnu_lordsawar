@@ -1,3 +1,8 @@
+2008-10-03  Ben Asselstine
+
+	* fixed bug #24444.  ai picking up, or droppping all items now works.
+
+
 2008-10-02  Ben Asselstine
 
 	* added separate MapBackpack object.
