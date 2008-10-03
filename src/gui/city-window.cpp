@@ -95,7 +95,7 @@ CityWindow::CityWindow(City *c, bool razing_possible,
 	sigc::mem_fun(this, &CityWindow::on_raze_clicked));
 
     xml->get_widget("production_toggles_hbox", production_toggles_hbox);
-    for (int i = 1; i <= city->getMaxNoOfProductionBases(); ++i) {
+    for (unsigned int i = 1; i <= city->getMaxNoOfProductionBases(); ++i) {
 	Gtk::ToggleButton *toggle = new Gtk::ToggleButton();
 	production_toggles_hbox->pack_start(*manage(toggle), false, false, 0);
 	production_toggles.push_back(toggle);
@@ -189,7 +189,7 @@ void CityWindow::fill_in_production_toggles()
     empty_pic->fill(0x00000000);
     
     ignore_toggles = true;
-    for (int i = 0; i < city->getMaxNoOfProductionBases(); i++)
+    for (unsigned int i = 0; i < city->getMaxNoOfProductionBases(); i++)
     {
 	Gtk::ToggleButton *toggle = production_toggles[i];
 	toggle->foreach(sigc::mem_fun(toggle, &Gtk::Container::remove));

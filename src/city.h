@@ -25,6 +25,7 @@
 
 #include <list>
 #include <string>
+#include <vector>
 #include "Location.h"
 #include "Ownable.h"
 #include "Renamable.h"
@@ -61,7 +62,8 @@ class Hero;
  * city.  Conquering another player's capital city doesn't give any bonus
  * except for bragging rights.
  */
-class City : public Ownable, public Location, public Renamable
+class City : public Ownable, public Location, public Renamable,
+    public std::vector<ProdSlot*>
 {
     public:
 
@@ -219,7 +221,7 @@ class City : public Ownable, public Location, public Renamable
 	 * @return The maximum number of Army production bases that this city
 	 *         can have.
 	 */
-        Uint32 getMaxNoOfProductionBases() const {return d_slot.size();};
+        Uint32 getMaxNoOfProductionBases() const {return size();};
 
         //! Return the number of basic productions of the city.
 	/**
@@ -374,14 +376,6 @@ class City : public Ownable, public Location, public Renamable
 	void sortProduction();
 
         // DATA
-
-	//! The production slots for this city.
-	/**
-	 * Each slot holds an Army production base that the City can 
-	 * potentially produce Army units from.  When a slot is empty, it is 
-	 * set to NULL.
-	 */
-	std::vector<ProdSlot*> d_slot;
 
 	//! The active production slot.
 	/**
