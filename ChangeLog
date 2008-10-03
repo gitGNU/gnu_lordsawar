@@ -1,7 +1,7 @@
 2008-10-03  Ben Asselstine
 
 	* fixed bug #24444.  ai picking up, or droppping all items now works.
-
+	* added better bridge placement.  Patch by Janek Kozicki.
 
 2008-10-02  Ben Asselstine
 
