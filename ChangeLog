@@ -2,6 +2,9 @@
 
 	* fixed bug #24444.  ai picking up, or droppping all items now works.
 	* added better bridge placement.  Patch by Janek Kozicki.
+	* changed LocationList objects to contain pointers to objects rather
+	  than instances of objects.
+	* added new Production Slot object owned by cities.
 
 2008-10-02  Ben Asselstine
 
