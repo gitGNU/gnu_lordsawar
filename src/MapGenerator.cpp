@@ -230,13 +230,21 @@ void MapGenerator::placeBridge(Vector<int> pos, int type)
 
 }
 
+bool MapGenerator::canPlaceBridge(Vector<int> pos)
+{
+  if (d_building[pos.y*d_width + pos.x] == Maptile::NONE)
+    return true;
+  return false;
+}
+
 void MapGenerator::makeBridges()
 {
   std::vector<pair<int , Vector<int> > >  bridges;
   bridges = findBridgePlaces();
   for (std::vector<pair<int, Vector<int> > >::iterator it = bridges.begin();
        it != bridges.end(); it++)
-    placeBridge((*it).second + Vector<int>(1,1), (*it).first);
+    if (canPlaceBridge((*it).second + Vector<int>(1,1)) == true)
+      placeBridge((*it).second + Vector<int>(1,1), (*it).first);
 }
 
 void MapGenerator::printMap(int j, int i)
@@ -250,7 +258,7 @@ void MapGenerator::printMap(int j, int i)
         case Tile::WATER   :  ch=adom_convention ? '=' : '~';break; // water
         case Tile::FOREST  :  ch=adom_convention ? '&' : '$';break; // forest
         case Tile::GRASS   :  ch=adom_convention ? '.' : '.';break; // plains
-        case Tile::SWAMP   :  ch=adom_convention ? '~' : '_';break; // swamps
+        case Tile::SWAMP   :  ch=adom_convention ? '"' : '_';break; // swamps
         case Tile::VOID    :  ch=adom_convention ? '?' : '?';break;
 
             // cannot print those, actually because they don't exist in Tile::Type
@@ -1306,39 +1314,76 @@ std::vector<pair<int , Vector<int> > > MapGenerator::findBridgePlaces()
     std::vector<pair<int , Vector<int> > > result;
     result.clear();
 
-    for(int j = 0; j < d_height-5; j++)
-        for(int i = 0; i < d_width-5; i++)
+    for(int j = 1; j < d_height-5; j++)
+        for(int i = 1; i < d_width-5; i++)
         {
             if (
-                d_terrain[(j  )*d_width + i  ] != Tile::WATER &&
                 d_terrain[(j  )*d_width + i+1] != Tile::WATER &&
-                d_terrain[(j  )*d_width + i+2] != Tile::WATER &&
-                d_terrain[(j+1)*d_width + i  ] == Tile::WATER &&
                 d_terrain[(j+1)*d_width + i+1] == Tile::WATER &&
-                d_terrain[(j+1)*d_width + i+2] == Tile::WATER &&
-                d_terrain[(j+2)*d_width + i  ] == Tile::WATER &&
                 d_terrain[(j+2)*d_width + i+1] == Tile::WATER &&
-                d_terrain[(j+2)*d_width + i+2] == Tile::WATER &&
-                d_terrain[(j+3)*d_width + i  ] != Tile::WATER &&
                 d_terrain[(j+3)*d_width + i+1] != Tile::WATER &&
-                d_terrain[(j+3)*d_width + i+2] != Tile::WATER 
-                )
-                result.push_back(std::make_pair(1, Vector<int>(j,i) ));
-            if (
-                d_terrain[(j  )*d_width + i  ] != Tile::WATER &&
-                d_terrain[(j+1)*d_width + i  ] != Tile::WATER &&
-                d_terrain[(j+2)*d_width + i  ] != Tile::WATER &&
-                d_terrain[(j  )*d_width + i+1] == Tile::WATER &&
-                d_terrain[(j+1)*d_width + i+1] == Tile::WATER &&
-                d_terrain[(j+2)*d_width + i+1] == Tile::WATER &&
-                d_terrain[(j  )*d_width + i+2] == Tile::WATER &&
+                d_terrain[(j+1)*d_width + i  ] == Tile::WATER &&
+                d_terrain[(j+2)*d_width + i  ] == Tile::WATER &&
                 d_terrain[(j+1)*d_width + i+2] == Tile::WATER &&
-                d_terrain[(j+2)*d_width + i+2] == Tile::WATER &&
-                d_terrain[(j  )*d_width + i+3] != Tile::WATER &&
-                d_terrain[(j+1)*d_width + i+3] != Tile::WATER &&
-                d_terrain[(j+2)*d_width + i+3] != Tile::WATER 
+                d_terrain[(j+2)*d_width + i+2] == Tile::WATER
                 )
-                result.push_back(std::make_pair(2, Vector<int>(j,i) ));
+            {
+                int count_left =
+                (int)(d_terrain[(j  )*d_width + i  ] == Tile::WATER) +
+                (int)(d_terrain[(j+1)*d_width + i  ] == Tile::WATER) +
+                (int)(d_terrain[(j+2)*d_width + i  ] == Tile::WATER) +
+                (int)(d_terrain[(j+3)*d_width + i  ] == Tile::WATER) +
+                (int)(d_terrain[(j  )*d_width + i-1] == Tile::WATER) +
+                (int)(d_terrain[(j+1)*d_width + i-1] == Tile::WATER) +
+                (int)(d_terrain[(j+2)*d_width + i-1] == Tile::WATER) +
+                (int)(d_terrain[(j+3)*d_width + i-1] == Tile::WATER);
+                int count_right =
+                (int)(d_terrain[(j  )*d_width + i+2] == Tile::WATER) +
+                (int)(d_terrain[(j+1)*d_width + i+2] == Tile::WATER) +
+                (int)(d_terrain[(j+2)*d_width + i+2] == Tile::WATER) +
+                (int)(d_terrain[(j+3)*d_width + i+2] == Tile::WATER) +
+                (int)(d_terrain[(j  )*d_width + i+3] == Tile::WATER) +
+                (int)(d_terrain[(j+1)*d_width + i+3] == Tile::WATER) +
+                (int)(d_terrain[(j+2)*d_width + i+3] == Tile::WATER) +
+                (int)(d_terrain[(j+3)*d_width + i+3] == Tile::WATER);
+                
+                if(count_left > 5 && count_right > 5)
+                    result.push_back(std::make_pair(1, Vector<int>(j,i) ));
+            }
+            if (
+                d_terrain[(j+1)*d_width + i  ] != Tile::WATER &&
+                d_terrain[(j+1)*d_width + i+1] == Tile::WATER &&
+                d_terrain[(j+1)*d_width + i+2] == Tile::WATER &&
+                d_terrain[(j+1)*d_width + i+3] != Tile::WATER &&
+                d_terrain[(j  )*d_width + i+1] == Tile::WATER &&
+                d_terrain[(j  )*d_width + i+2] == Tile::WATER &&
+                d_terrain[(j+2)*d_width + i+1] == Tile::WATER &&
+                d_terrain[(j+2)*d_width + i+2] == Tile::WATER
+                )
+            {
+                int count_top =
+                (int)(d_terrain[(j  )*d_width + i  ] == Tile::WATER) +
+                (int)(d_terrain[(j  )*d_width + i+1] == Tile::WATER) +
+                (int)(d_terrain[(j  )*d_width + i+2] == Tile::WATER) +
+                (int)(d_terrain[(j  )*d_width + i+3] == Tile::WATER) +
+                (int)(d_terrain[(j-1)*d_width + i  ] == Tile::WATER) +
+                (int)(d_terrain[(j-1)*d_width + i+1] == Tile::WATER) +
+                (int)(d_terrain[(j-1)*d_width + i+2] == Tile::WATER) +
+                (int)(d_terrain[(j-1)*d_width + i+3] == Tile::WATER);
+
+                int count_bottom =
+                (int)(d_terrain[(j+2)*d_width + i  ] == Tile::WATER) +
+                (int)(d_terrain[(j+2)*d_width + i+1] == Tile::WATER) +
+                (int)(d_terrain[(j+2)*d_width + i+2] == Tile::WATER) +
+                (int)(d_terrain[(j+2)*d_width + i+3] == Tile::WATER) +
+                (int)(d_terrain[(j+3)*d_width + i  ] == Tile::WATER) +
+                (int)(d_terrain[(j+3)*d_width + i+1] == Tile::WATER) +
+                (int)(d_terrain[(j+3)*d_width + i+2] == Tile::WATER) +
+                (int)(d_terrain[(j+3)*d_width + i+3] == Tile::WATER);
+
+                if(count_top > 5 && count_bottom > 5)
+                    result.push_back(std::make_pair(2, Vector<int>(j,i) ));
+            }
         }
     // randomize
     std::random_shuffle(result.begin(),result.end());

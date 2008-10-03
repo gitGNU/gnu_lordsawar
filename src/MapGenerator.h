@@ -171,6 +171,7 @@ class MapGenerator
         void makeRivers();
 
         void makeBridges();
+	bool canPlaceBridge(Vector<int> pos);
 	void placeBridge(Vector<int> pos, int type);
         
         /**
