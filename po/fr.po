@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-01 20:45-0400\n"
+"POT-Creation-Date: 2008-10-03 18:27-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -139,7 +139,7 @@ msgstr "Gruppo"
 msgid "_Pillage"
 msgstr "Pillage"
 
-#: dat/glade/city-defeated-dialog.glade:63 dat/glade/city-window.glade:510
+#: dat/glade/city-defeated-dialog.glade:63 dat/glade/city-window.glade:434
 #, fuzzy
 msgid "_Raze"
 msgstr "Rasé"
@@ -219,42 +219,42 @@ msgid "_Close"
 msgstr "Fermer"
 
 #: dat/glade/city-window.glade:225 dat/glade/destination-dialog.glade:125
-#: src/gui/city-window.cpp:264 src/gui/destination-dialog.cpp:229
+#: src/gui/city-window.cpp:265 src/gui/destination-dialog.cpp:229
 #, fuzzy
 msgid "Current:"
 msgstr "Contatore:"
 
-#: dat/glade/city-window.glade:461 dat/glade/hero-dialog.glade:143
+#: dat/glade/city-window.glade:385 dat/glade/hero-dialog.glade:143
 #, fuzzy
 msgid "Stop producing armies"
 msgstr "Unisce le armate"
 
-#: dat/glade/city-window.glade:462
+#: dat/glade/city-window.glade:386
 #, fuzzy
 msgid "_Stop"
 msgstr "Sol"
 
-#: dat/glade/city-window.glade:477 dat/glade/hero-dialog.glade:155
+#: dat/glade/city-window.glade:401 dat/glade/hero-dialog.glade:155
 #, fuzzy
 msgid "Buy a production capability"
 msgstr "Acheter la production"
 
-#: dat/glade/city-window.glade:478
+#: dat/glade/city-window.glade:402
 #, fuzzy
 msgid "_Buy..."
 msgstr "Acheter"
 
-#: dat/glade/city-window.glade:493
+#: dat/glade/city-window.glade:417
 #, fuzzy
 msgid "Set destination for produced armies"
 msgstr "Unisce le armate"
 
-#: dat/glade/city-window.glade:494
+#: dat/glade/city-window.glade:418
 #, fuzzy
 msgid "_Vector..."
 msgstr "Vectoring"
 
-#: dat/glade/city-window.glade:526
+#: dat/glade/city-window.glade:450
 #, fuzzy
 msgid "R_ename"
 msgstr "Sans nom"
@@ -2593,7 +2593,7 @@ msgstr "Turno Successivo"
 msgid "Running Dog"
 msgstr ""
 
-#: src/GameMap.cpp:236
+#: src/GameMap.cpp:237
 msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
 msgstr ""
 "Erreur dans GameMap::fillMap : la taille ne correspond pas !!! Sortie.\n"
@@ -2628,35 +2628,35 @@ msgstr ""
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
 
-#: src/game.cpp:589
+#: src/game.cpp:590
 #, fuzzy
 msgid "%1 (capital city)"
 msgstr "vélocité %i"
 
-#: src/game.cpp:595
+#: src/game.cpp:596
 msgid "Under rule of %1"
 msgstr ""
 
-#: src/game.cpp:598 src/gui/city-window.cpp:171
+#: src/game.cpp:599 src/gui/city-window.cpp:172
 #, fuzzy
 msgid "Income: %1"
 msgstr "Oggetto:"
 
-#: src/game.cpp:600
+#: src/game.cpp:601
 #, fuzzy
 msgid "Defense: %1"
 msgstr "Défense : %i"
 
-#: src/game.cpp:604
+#: src/game.cpp:605
 #, fuzzy
 msgid "Status: razed!"
 msgstr "Stato:"
 
-#: src/game.cpp:634
+#: src/game.cpp:635
 msgid "Explored"
 msgstr ""
 
-#: src/game.cpp:637
+#: src/game.cpp:638
 msgid "Unexplored"
 msgstr ""
 
@@ -2851,17 +2851,17 @@ msgstr "Mappa costruita .... 100%"
 msgid "You have killed %i so far."
 msgstr "Hai ucciso %i armate fino ad ora."
 
-#: src/player.cpp:1248
+#: src/player.cpp:1249
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr ""
 "Errore: il gruppo che esplora e la rovina che viene esplorata non sono nella "
 "stessa posizione\n"
 
-#: src/player.cpp:1337
+#: src/player.cpp:1338
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Il gruppo ha cercato di visitare il tempio alla locazione sbagliata\n"
 
-#: src/player.cpp:2247
+#: src/player.cpp:2245
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Unité standard"
@@ -2910,77 +2910,77 @@ msgstr ""
 msgid "`%s' fails validation\n"
 msgstr ""
 
-#: src/gui/city-window.cpp:164
+#: src/gui/city-window.cpp:165
 #, fuzzy
 msgid "Capital city of %1"
 msgstr "Cité de %s"
 
-#: src/gui/city-window.cpp:169
+#: src/gui/city-window.cpp:170
 #, fuzzy
 msgid "Defence: %1"
 msgstr "Défense : %i"
 
-#: src/gui/city-window.cpp:269 src/gui/buy-production-dialog.cpp:156
+#: src/gui/city-window.cpp:270 src/gui/buy-production-dialog.cpp:156
 #, fuzzy
 msgid "No production"
 msgstr "Pas de production libre"
 
-#: src/gui/city-window.cpp:283 src/gui/army-info-tip.cpp:145
+#: src/gui/city-window.cpp:284 src/gui/army-info-tip.cpp:145
 #: src/gui/army-info-tip.cpp:209
 #, fuzzy
 msgid "Time: %1"
 msgstr "Grandezza:"
 
-#: src/gui/city-window.cpp:285 src/gui/army-info-tip.cpp:75
+#: src/gui/city-window.cpp:286 src/gui/army-info-tip.cpp:75
 #: src/gui/army-info-tip.cpp:139 src/gui/army-info-tip.cpp:203
-#: src/gui/buy-production-dialog.cpp:170 src/gui/hero-dialog.cpp:249
+#: src/gui/buy-production-dialog.cpp:170 src/gui/hero-dialog.cpp:248
 #: src/gui/army-gains-level-dialog.cpp:70
 #: src/editor/select-army-dialog.cpp:183
 #, fuzzy
 msgid "Strength: %1"
 msgstr "Force : %i"
 
-#: src/gui/city-window.cpp:290 src/gui/buy-production-dialog.cpp:176
+#: src/gui/city-window.cpp:291 src/gui/buy-production-dialog.cpp:176
 #: src/gui/army-gains-level-dialog.cpp:67
 #: src/editor/select-army-dialog.cpp:185
 #, fuzzy
 msgid "Moves: %1"
 msgstr "Mouvements : %i"
 
-#: src/gui/city-window.cpp:292 src/gui/army-info-tip.cpp:147
+#: src/gui/city-window.cpp:293 src/gui/army-info-tip.cpp:147
 #: src/gui/army-info-tip.cpp:211 src/gui/buy-production-dialog.cpp:174
 #, fuzzy
 msgid "Cost: %1"
 msgstr "Costo:"
 
-#: src/gui/city-window.cpp:294 src/gui/destination-dialog.cpp:240
+#: src/gui/city-window.cpp:295 src/gui/destination-dialog.cpp:240
 msgid "%1t"
 msgstr ""
 
-#: src/gui/city-window.cpp:299
+#: src/gui/city-window.cpp:300
 msgid ", then to %1"
 msgstr ""
 
-#: src/gui/city-window.cpp:443
+#: src/gui/city-window.cpp:444
 #, fuzzy
 msgid "Rename City"
 msgstr "Cité en ruines"
 
-#: src/gui/city-window.cpp:451
+#: src/gui/city-window.cpp:452
 msgid "Type the new name for this city:"
 msgstr ""
 
-#: src/gui/city-window.cpp:481
+#: src/gui/city-window.cpp:482
 #, fuzzy
 msgid "Raze City"
 msgstr "Cité en ruines"
 
-#: src/gui/city-window.cpp:487
+#: src/gui/city-window.cpp:488
 #, fuzzy
 msgid "Are you sure that you want to raze %1?"
 msgstr "Vuoi veramente rimuovere questo evento?"
 
-#: src/gui/city-window.cpp:490
+#: src/gui/city-window.cpp:491
 msgid "You won't be popular!"
 msgstr ""
 
@@ -3107,13 +3107,13 @@ msgstr[1] ""
 msgid "Fatal error"
 msgstr ""
 
-#: src/gui/army-info-tip.cpp:80 src/gui/hero-dialog.cpp:253
+#: src/gui/army-info-tip.cpp:80 src/gui/hero-dialog.cpp:252
 #, fuzzy
 msgid "Moves: %1/%2"
 msgstr "Mouvements : %i"
 
 #: src/gui/army-info-tip.cpp:83 src/gui/buy-production-dialog.cpp:178
-#: src/gui/hero-dialog.cpp:256 src/editor/select-army-dialog.cpp:189
+#: src/gui/hero-dialog.cpp:255 src/editor/select-army-dialog.cpp:189
 #, fuzzy
 msgid "Upkeep: %1"
 msgstr "Entretien : %i"
@@ -3269,48 +3269,48 @@ msgstr ""
 msgid "A Sage!"
 msgstr ""
 
-#: src/gui/hero-dialog.cpp:80 src/editor/players-dialog.cpp:102
+#: src/gui/hero-dialog.cpp:81 src/editor/players-dialog.cpp:102
 #: src/editor/city-dialog.cpp:95 src/editor/stack-dialog.cpp:84
 msgid "Name"
 msgstr "Nom "
 
-#: src/gui/hero-dialog.cpp:81
+#: src/gui/hero-dialog.cpp:82
 #, fuzzy
 msgid "Attributes"
 msgstr "Armate"
 
-#: src/gui/hero-dialog.cpp:82
+#: src/gui/hero-dialog.cpp:83
 #, fuzzy
 msgid "Status"
 msgstr "Stato:"
 
-#: src/gui/hero-dialog.cpp:152 src/gui/hero-dialog.cpp:185
-#: src/gui/hero-dialog.cpp:199
+#: src/gui/hero-dialog.cpp:151 src/gui/hero-dialog.cpp:184
+#: src/gui/hero-dialog.cpp:198
 #, fuzzy
 msgid "In backpack"
 msgstr "Sac à dos"
 
-#: src/gui/hero-dialog.cpp:170 src/gui/hero-dialog.cpp:201
+#: src/gui/hero-dialog.cpp:169 src/gui/hero-dialog.cpp:200
 #, fuzzy
 msgid "On the ground"
 msgstr "nouveau tour"
 
-#: src/gui/hero-dialog.cpp:221
+#: src/gui/hero-dialog.cpp:220
 #, fuzzy
 msgid "Battle: %1"
 msgstr "Oggetto:"
 
-#: src/gui/hero-dialog.cpp:238
+#: src/gui/hero-dialog.cpp:237
 #, fuzzy
 msgid "Command: %1"
 msgstr "Commento:"
 
-#: src/gui/hero-dialog.cpp:240 src/gui/game-window.cpp:2724
+#: src/gui/hero-dialog.cpp:239 src/gui/game-window.cpp:2724
 #, fuzzy
 msgid "Level: %1"
 msgstr "Livello:"
 
-#: src/gui/hero-dialog.cpp:242 src/gui/game-window.cpp:2722
+#: src/gui/hero-dialog.cpp:241 src/gui/game-window.cpp:2722
 #, fuzzy
 msgid "Experience: %1"
 msgstr "Défense : %i"
@@ -4184,47 +4184,47 @@ msgstr "CreateScenario:: mauvaise size donnée\n"
 msgid "CreateScenario:: wrong height given\n"
 msgstr "CreateScenario:: mauvaise size donnée\n"
 
-#: src/CreateScenario.cpp:654
+#: src/CreateScenario.cpp:656
 #, fuzzy
 msgid "Northwestern map"
 msgstr "Création de la carte"
 
-#: src/CreateScenario.cpp:657
+#: src/CreateScenario.cpp:659
 #, fuzzy
 msgid "Northern map"
 msgstr "Création de la carte"
 
-#: src/CreateScenario.cpp:660
+#: src/CreateScenario.cpp:662
 #, fuzzy
 msgid "Northeastern map"
 msgstr "Création de la carte"
 
-#: src/CreateScenario.cpp:663
+#: src/CreateScenario.cpp:665
 #, fuzzy
 msgid "Western map"
 msgstr "Création de la carte"
 
-#: src/CreateScenario.cpp:666
+#: src/CreateScenario.cpp:668
 #, fuzzy
 msgid "Central map"
 msgstr "Création de la carte"
 
-#: src/CreateScenario.cpp:669
+#: src/CreateScenario.cpp:671
 #, fuzzy
 msgid "Eastern map"
 msgstr "Création de la carte"
 
-#: src/CreateScenario.cpp:672
+#: src/CreateScenario.cpp:674
 #, fuzzy
 msgid "Southwestern map"
 msgstr "Création de la carte"
 
-#: src/CreateScenario.cpp:675
+#: src/CreateScenario.cpp:677
 #, fuzzy
 msgid "Southern map"
 msgstr "Création de la carte"
 
-#: src/CreateScenario.cpp:678
+#: src/CreateScenario.cpp:680
 #, fuzzy
 msgid "Southeastern map"
 msgstr "Création de la carte"
