@@ -1787,17 +1787,15 @@ bool Player::heroDropItem(Hero *h, Item *i, Vector<int> pos)
 
 bool Player::heroDropAllItems(Hero *h, Vector<int> pos)
 {
-  Backpack *backpack = h->getBackpack();
-  for (Backpack::iterator i = backpack->begin(); i != backpack->end(); i++)
-    heroDropItem(h, *i, pos);
+  while (h->getBackpack()->empty() == false)
+    heroDropItem(h, h->getBackpack()->front(), pos);
   return true;
 }
 
 bool Player::doHeroDropAllItems(Hero *h, Vector<int> pos)
 {
-  Backpack *backpack = h->getBackpack();
-  for (Backpack::iterator i = backpack->begin(); i != backpack->end(); i++)
-    doHeroDropItem(h, *i, pos);
+  while (h->getBackpack()->empty() == false)
+    doHeroDropItem(h, h->getBackpack()->front(), pos);
   return true;
 }
 
@@ -1822,8 +1820,8 @@ bool Player::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
 bool Player::heroPickupAllItems(Hero *h, Vector<int> pos)
 {
   MapBackpack *backpack = GameMap::getInstance()->getTile(pos)->getBackpack();
-  for (MapBackpack::iterator i = backpack->begin(); i != backpack->end(); i++)
-    heroPickupItem(h, *i, pos);
+  while (backpack->empty() == false)
+    heroPickupItem(h, backpack->front(), pos);
   return true;
 }
 
