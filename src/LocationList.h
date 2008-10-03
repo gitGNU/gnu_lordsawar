@@ -39,37 +39,41 @@ template<class T> class LocationList : public std::list<T>
  public:
   
   LocationList(){};  
-  ~LocationList() {};
+  ~LocationList() 
+    {
+      for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)
+	delete *it;
+    };
 
   //! Returns the object at position (x,y).  
-  T* getObjectAt(int x, int y) 
+  T getObjectAt(int x, int y) 
     {
       for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)
 	{
-	  Vector<int> p = (*it).getPos();
-	  int size = (*it).getSize() - 1;
+	  Vector<int> p = (*it)->getPos();
+	  int size = (*it)->getSize() - 1;
 
 	  if (p.x >= (x - size) && p.x <= x && p.y >= (y - size) && p.y <= y)
 	    {
-	      return &(*it);
+	      return (*it);
 	    }
 	}
       return 0;
     }
 
   //! Returns the object at position pos.  
-  T* getObjectAt(const Vector<int>& pos) 
+  T getObjectAt(const Vector<int>& pos) 
     {
       return getObjectAt(pos.x, pos.y);
     }
 
-  T* getNearestObject (const Vector<int>& pos, std::list<bool (*)(void*)> *filters)
+  T getNearestObject (const Vector<int>& pos, std::list<bool (*)(void*)> *filters)
     {
       int diff = -1;
       typename LocationList<T>::iterator diffit;
       for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)
         {
-          Vector<int> p = (*it).getPos();
+          Vector<int> p = (*it)->getPos();
           int delta = abs(p.x - pos.x) + abs(p.y - pos.y);
 	  if (filters)
 	    {
@@ -77,7 +81,7 @@ template<class T> class LocationList : public std::list<T>
 	      bool filtered = false;
 	      for (; fit != filters->end(); fit++)
 	        {
-	          if ((*fit)(&*it) == true)
+	          if ((*fit)(*it) == true)
 	            {
 		      filtered = true;
 		      break;
@@ -95,17 +99,17 @@ template<class T> class LocationList : public std::list<T>
             }
         }
       if (diff == -1) return 0;
-      return &(*diffit);
+      return (*diffit);
     }
 
-  T* getNearestObject (const Vector<int>& pos)
+  T getNearestObject (const Vector<int>& pos)
     {
       return getNearestObject (pos, NULL);
     }
 
-  T* getNearestObjectBefore (const Vector<int>& pos, int dist)
+  T getNearestObjectBefore (const Vector<int>& pos, int dist)
     {
-      T *t = getNearestObject(pos);
+      T t = getNearestObject(pos);
       if (!t)
 	return NULL;
       if (t->getPos().x <= pos.x + dist && t->getPos().x >= pos.x - dist &&
@@ -114,7 +118,7 @@ template<class T> class LocationList : public std::list<T>
       return NULL;
     }
 
-  T* getNearestObjectAfter(const Vector<int>& pos, int dist, 
+  T getNearestObjectAfter(const Vector<int>& pos, int dist, 
 			   std::list<bool (*)(void*)> *filters)
     {
       int diff = -1;
@@ -128,7 +132,7 @@ template<class T> class LocationList : public std::list<T>
 	      bool filtered = false;
 	      for (; fit != filters->end(); fit++)
 	        {
-	          if ((*fit)(&*it) == true)
+	          if ((*fit)(*it) == true)
 	            {
 		      filtered = true;
 		      break;
@@ -139,7 +143,7 @@ template<class T> class LocationList : public std::list<T>
 	        continue;
 	    }
           
-            Vector<int> p = (*it).getPos();
+            Vector<int> p = (*it)->getPos();
             int delta = abs(p.x - pos.x);
             if (delta < abs(p.y - pos.y))
                 delta = abs(p.y - pos.y);
@@ -152,14 +156,14 @@ template<class T> class LocationList : public std::list<T>
         }
     
       if (diff == -1) return 0;
-      return &(*diffit);
+      return (*diffit);
     }
 
-  T* getById(Uint32 id)
+  T getById(Uint32 id)
   {
     for (typename LocationList<T>::iterator i = this->begin(); i != this->end(); ++i)
-      if (i->getId() == id)
-        return &(*i);
+      if ((*i)->getId() == id)
+        return (*i);
     return 0;
   }
 };

@@ -316,9 +316,9 @@ Ruin *Reward_Ruin::getRandomHiddenRuin()
   Rewardlist *rw = Rewardlist::getInstance();
   for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
     {
-      if ((*it).isHidden())
-	if ((*it).getOwner() == NULL || 
-	    (*it).getOwner() == Playerlist::getInstance()->getNeutral())
+      if ((*it)->isHidden())
+	if ((*it)->getOwner() == NULL || 
+	    (*it)->getOwner() == Playerlist::getInstance()->getNeutral())
 	  {
 	    //is it already being pointed to by a reward in the rewardlist?
 	    bool found = false;
@@ -329,7 +329,7 @@ Ruin *Reward_Ruin::getRandomHiddenRuin()
 		    Ruin *r = static_cast<Reward_Ruin*>(*i)->getRuin();
 		    if (r)
 		      {
-			if (r->getPos() == (*it).getPos())
+			if (r->getPos() == (*it)->getPos())
 			  {
 			    found = true;
 			    break;
@@ -338,7 +338,7 @@ Ruin *Reward_Ruin::getRandomHiddenRuin()
 		  }
 	      }
 	    if (found == false)
-	      hidden_ruins.push_back(&*it);
+	      hidden_ruins.push_back(*it);
 	  }
     }
  if (hidden_ruins.empty())

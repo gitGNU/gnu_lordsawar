@@ -31,7 +31,7 @@
  * is implemented as a singleton because many classes use it for looking 
  * up ruins.
  */
-class Ruinlist : public LocationList<Ruin>, public sigc::trackable
+class Ruinlist : public LocationList<Ruin*>, public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.

@@ -75,7 +75,7 @@ class HistoryReportDialog: public Decorated
     Gtk::Alignment *gold_alignment;
     Gtk::Alignment *winner_alignment;
 
-    std::vector<LocationList<City>* > past_citylists;
+    std::vector<LocationList<City*>* > past_citylists;
     LineChart *city_chart;
     std::vector<std::list<NetworkHistory *> > past_eventlists;
     std::list<std::list<Uint32> > past_citycounts;

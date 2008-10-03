@@ -263,7 +263,7 @@ void NextTurnNetworked::finishRound()
   Ruinlist* rl = Ruinlist::getInstance();
   for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
     {
-      Stack* keeper = (*it).getOccupant();
+      Stack* keeper = (*it)->getOccupant();
       if (keeper)
 	keeper->nextTurn();
     }

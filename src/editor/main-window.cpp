@@ -480,27 +480,27 @@ void MainWindow::set_random_map(int width, int height,
 	    switch(build[j * width + i])
 	    {
 	    case Maptile::CITY:
-		Citylist::getInstance()->push_back(City(Vector<int>(i,j)));
-		(*Citylist::getInstance()->rbegin()).setOwner(
+		Citylist::getInstance()->push_back(new City(Vector<int>(i,j)));
+		(*Citylist::getInstance()->rbegin())->setOwner(
 		    Playerlist::getInstance()->getNeutral());
 		break;
 	    case Maptile::TEMPLE:
-		Templelist::getInstance()->push_back(Temple(Vector<int>(i,j)));
+		Templelist::getInstance()->push_back(new Temple(Vector<int>(i,j)));
 		break;
 	    case Maptile::RUIN:
-		Ruinlist::getInstance()->push_back(Ruin(Vector<int>(i,j)));
+		Ruinlist::getInstance()->push_back(new Ruin(Vector<int>(i,j)));
 		break;
 	    case Maptile::SIGNPOST:
-		Signpostlist::getInstance()->push_back(Signpost(Vector<int>(i,j)));
+		Signpostlist::getInstance()->push_back(new Signpost(Vector<int>(i,j)));
 		break;
 	    case Maptile::ROAD:
-		Roadlist::getInstance()->push_back(Road(Vector<int>(i,j)));
+		Roadlist::getInstance()->push_back(new Road(Vector<int>(i,j)));
 		break;
 	    case Maptile::BRIDGE:
-		Bridgelist::getInstance()->push_back(Bridge(Vector<int>(i,j)));
+		Bridgelist::getInstance()->push_back(new Bridge(Vector<int>(i,j)));
 		break;
 	    case Maptile::PORT:
-		Portlist::getInstance()->push_back(Port(Vector<int>(i,j)));
+		Portlist::getInstance()->push_back(new Port(Vector<int>(i,j)));
 		break;
 	    case Maptile::NONE:
 		break;
@@ -1146,7 +1146,7 @@ void MainWindow::on_random_all_cities_activated()
 {
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
-    randomize_city(&*it);
+    randomize_city(*it);
 }
 
 void MainWindow::on_random_unnamed_cities_activated()
@@ -1154,8 +1154,8 @@ void MainWindow::on_random_unnamed_cities_activated()
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
-      if ((*it).getName() == DEFAULT_CITY_NAME)
-	randomize_city(&*it);
+      if ((*it)->getName() == DEFAULT_CITY_NAME)
+	randomize_city(*it);
     }
 }
 
@@ -1174,7 +1174,7 @@ void MainWindow::on_random_all_ruins_activated()
 {
   Ruinlist *rl = Ruinlist::getInstance();
   for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
-    randomize_ruin(&*it);
+    randomize_ruin(*it);
 }
 
 void MainWindow::on_random_unnamed_ruins_activated()
@@ -1182,8 +1182,8 @@ void MainWindow::on_random_unnamed_ruins_activated()
   Ruinlist *rl = Ruinlist::getInstance();
   for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
     {
-      if ((*it).getName() == DEFAULT_RUIN_NAME)
-	randomize_ruin(&*it);
+      if ((*it)->getName() == DEFAULT_RUIN_NAME)
+	randomize_ruin(*it);
     }
 }
 
@@ -1195,7 +1195,7 @@ void MainWindow::on_random_all_temples_activated()
       std::string name = d_create_scenario_names->popRandomTempleName();
       if (name != "")
 	{
-	  Location *l = &*it;
+	  Location *l = *it;
 	  RenamableLocation *renamable_temple = 
 	    static_cast<RenamableLocation*>(l);
 	  renamable_temple->setName(name);
@@ -1208,12 +1208,12 @@ void MainWindow::on_random_unnamed_temples_activated()
   Templelist *tl = Templelist::getInstance();
   for (Templelist::iterator it = tl->begin(); it != tl->end(); it++)
     {
-      if ((*it).getName() == DEFAULT_TEMPLE_NAME)
+      if ((*it)->getName() == DEFAULT_TEMPLE_NAME)
 	{
 	  std::string name = d_create_scenario_names->popRandomTempleName();
 	  if (name != "")
 	    {
-	      Location *l = &*it;
+	      Location *l = *it;
 	      RenamableLocation *renamable_temple = 
 		static_cast<RenamableLocation*>(l);
 	      renamable_temple->setName(name);
@@ -1238,7 +1238,7 @@ void MainWindow::on_random_all_signs_activated()
 {
   Signpostlist *sl = Signpostlist::getInstance();
   for (Signpostlist::iterator it = sl->begin(); it != sl->end(); it++)
-    randomize_signpost(&*it);
+    randomize_signpost(*it);
 }
 
 void MainWindow::on_random_unnamed_signs_activated()
@@ -1246,8 +1246,8 @@ void MainWindow::on_random_unnamed_signs_activated()
   Signpostlist *sl = Signpostlist::getInstance();
   for (Signpostlist::iterator it = sl->begin(); it != sl->end(); it++)
     {
-      if ((*it).getName() == DEFAULT_SIGNPOST)
-	randomize_signpost(&*it);
+      if ((*it)->getName() == DEFAULT_SIGNPOST)
+	randomize_signpost(*it);
     }
 }
 

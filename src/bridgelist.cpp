@@ -67,7 +67,7 @@ bool Bridgelist::save(XML_Helper* helper) const
     retval &= helper->openTag(Bridgelist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
-        retval &= (*it).save(helper);
+        retval &= (*it)->save(helper);
     
     retval &= helper->closeTag();
 
@@ -80,8 +80,7 @@ bool Bridgelist::load(std::string tag, XML_Helper* helper)
     //what has happened?
         return false;
     
-    Bridge s(helper);
-    push_back(s);
+    push_back(new Bridge(helper));
 
     return true;
 }

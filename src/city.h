@@ -28,6 +28,7 @@
 #include "Location.h"
 #include "Ownable.h"
 #include "Renamable.h"
+#include "prodslot.h"
 #include "defs.h"
 
 class Player;
@@ -67,9 +68,6 @@ class City : public Ownable, public Location, public Renamable
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
 
-	//! The xml tag of the slot subobject in a saved-game file.
-	static std::string d_slot_tag; 
-
 	//! Default constructor.
         /** 
           * Make a new city object.
@@ -77,9 +75,11 @@ class City : public Ownable, public Location, public Renamable
           * @param pos       The location of the city on the game map.
           * @param name      The name of the city.
           * @param gold      The amount of gold the city produces each turn.
+	  * @param numslots  The number of production slots for this city.
           */
         City(Vector<int> pos, std::string name = DEFAULT_CITY_NAME, 
-	     Uint32 gold = DEFAULT_CITY_INCOME);
+	     Uint32 gold = DEFAULT_CITY_INCOME, 
+	     Uint32 numslots = MAX_PRODUCTION_SLOTS_IN_A_CITY);
 	//! Copy constructor.
         City(const City&);
         //! Loading constructor.
@@ -219,9 +219,7 @@ class City : public Ownable, public Location, public Renamable
 	 * @return The maximum number of Army production bases that this city
 	 *         can have.
 	 */
-        int getMaxNoOfProductionBases() const {return d_numprodbase;};
-
-	void setMaxNoOfProductionBases(int max) {d_numprodbase = max;};
+        Uint32 getMaxNoOfProductionBases() const {return d_slot.size();};
 
         //! Return the number of basic productions of the city.
 	/**
@@ -230,7 +228,7 @@ class City : public Ownable, public Location, public Renamable
 	 *
 	 * @return The current number of used slots that the city has.
 	 */
-        int getNoOfProductionBases();
+        Uint32 getNoOfProductionBases();
 
         //! Get the number of turns until current production base is finished.
         int getDuration() const {return d_duration;}
@@ -353,6 +351,8 @@ class City : public Ownable, public Location, public Renamable
 
     private:
 
+	bool load(std::string tag, XML_Helper *helper);
+
         //! Produces the currently active Army production base.
         Army * produceArmy();
 
@@ -381,13 +381,7 @@ class City : public Ownable, public Location, public Renamable
 	 * potentially produce Army units from.  When a slot is empty, it is 
 	 * set to NULL.
 	 */
-        ArmyProdBase * d_prodbase[MAX_PRODUCTION_SLOTS_IN_A_CITY];
-
-	//! The maximum number of slots.
-	/**
-	 * Equal to MAX_PRODUCTION_SLOTS_IN_A_CITY.
-	 */
-        int d_numprodbase;
+	std::vector<ProdSlot*> d_slot;
 
 	//! The active production slot.
 	/**

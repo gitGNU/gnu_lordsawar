@@ -381,11 +381,11 @@ namespace
     void remove_from_map(T *l, Vector<int> tile)
     {
 	for (typename T::iterator i = l->begin(), end = l->end(); i != end; ++i)
-	    if (i->contains(tile))
+	    if ((*i)->contains(tile))
 	    {
 		// erase from map
 		GameMap *gamemap = GameMap::getInstance();
-		Rectangle r = i->get_area();
+		Rectangle r = (*i)->get_area();
 		for (int x = r.x; x < r.x + r.w; ++x)
 		    for (int y = r.y; y < r.y + r.h; ++y)
 			gamemap->getTile(Vector<int>(x, y))->setBuilding(Maptile::NONE);
@@ -566,13 +566,13 @@ void EditorBigMap::change_map_under_cursor()
 		break;
 	    
 	    // create the city
-	    City c(tile);
-	    c.setOwner(Playerlist::getInstance()->getNeutral());
+	    City *c = new City(tile);
+	    c->setOwner(Playerlist::getInstance()->getNeutral());
 	    Citylist::getInstance()->push_back(c);
 
 	    bool replaced_grass = false;
 	    // notify the maptiles that a city has been placed here
-	    Rectangle r = c.get_area();
+	    Rectangle r = c->get_area();
 	    for (int x = r.x; x < r.x + r.w; ++x)
 		for (int y = r.y; y < r.y + r.h; ++y)
 		{
@@ -584,26 +584,26 @@ void EditorBigMap::change_map_under_cursor()
 		}
 
 	    //change allegiance of stacks under this city
-	    for (unsigned int x = 0; x < c.getSize(); x++)
+	    for (unsigned int x = 0; x < c->getSize(); x++)
 	      {
-		for (unsigned int y = 0; y < c.getSize(); y++)
+		for (unsigned int y = 0; y < c->getSize(); y++)
 		  {
-		    Stack *s = Stacklist::getObjectAt(c.getPos().x + x, 
-						      c.getPos().y + y);
+		    Stack *s = Stacklist::getObjectAt(c->getPos().x + x, 
+						      c->getPos().y + y);
 		    if (s)
 		      {
-			if (s->getOwner() != c.getOwner())
+			if (s->getOwner() != c->getOwner())
 			  {
 			    //remove it from the old player's list of stacks
 			    s->getOwner()->getStacklist()->remove(s);
 			    //and give it to the new player list of stacks
-			    c.getOwner()->getStacklist()->push_back(s);
+			    c->getOwner()->getStacklist()->push_back(s);
 			    //change the ownership of the stack
-			    s->setOwner(c.getOwner());
+			    s->setOwner(c->getOwner());
 			    //and all of it's armies
 			    for (Stack::iterator it = s->begin(); 
 				 it != s->end(); it++)
-			      (*it)->setOwner(c.getOwner());
+			      (*it)->setOwner(c->getOwner());
 			  }
 		      }
 		  }
@@ -627,7 +627,7 @@ void EditorBigMap::change_map_under_cursor()
 		  replaced_grass = true;
 		maptile->setType(grass_index);
 		Ruin *ruin = new Ruin(tile);
-		Ruinlist::getInstance()->push_back(*ruin);
+		Ruinlist::getInstance()->push_back(ruin);
 		if (replaced_grass)
 		  GameMap::getInstance()->applyTileStyles
 		    (0, 0, GameMap::getHeight(), GameMap::getWidth(), true);
@@ -643,7 +643,7 @@ void EditorBigMap::change_map_under_cursor()
 		if (maptile->getMaptileType() != Tile::GRASS)
 		  replaced_grass = true;
 		maptile->setType(grass_index);
-		Templelist::getInstance()->push_back(Temple(tile));
+		Templelist::getInstance()->push_back(new Temple(tile));
 		if (replaced_grass)
 		  GameMap::getInstance()->applyTileStyles
 		    (0, 0, GameMap::getHeight(), GameMap::getWidth(), true);
@@ -655,7 +655,7 @@ void EditorBigMap::change_map_under_cursor()
 		&& maptile->getMaptileType() == Tile::GRASS)
 	    {
 		maptile->setBuilding(Maptile::SIGNPOST);
-		Signpostlist::getInstance()->push_back(Signpost(tile));
+		Signpostlist::getInstance()->push_back(new Signpost(tile));
 	    }
 	    break;
 	    
@@ -665,7 +665,7 @@ void EditorBigMap::change_map_under_cursor()
 		maptile->getTileStyle()->getType() != TileStyle::INNERMIDDLECENTER)
 	    {
 		maptile->setBuilding(Maptile::PORT);
-		Portlist::getInstance()->push_back(Port(tile));
+		Portlist::getInstance()->push_back(new Port(tile));
 	    }
 	    break;
 	    
@@ -680,7 +680,7 @@ void EditorBigMap::change_map_under_cursor()
 		else
 		{
 		    maptile->setBuilding(Maptile::BRIDGE);
-		    Bridgelist::getInstance()->push_back(Bridge(tile, type));
+		    Bridgelist::getInstance()->push_back(new Bridge(tile, type));
 		}
 	        changed_tiles.dim = Vector<int>(1, 1);
 	    }
@@ -695,7 +695,7 @@ void EditorBigMap::change_map_under_cursor()
 		if (maptile->getBuilding() == Maptile::NONE)
 		{
 		    maptile->setBuilding(Maptile::ROAD);
-		    Roadlist::getInstance()->push_back(Road(tile, type));
+		    Roadlist::getInstance()->push_back(new Road(tile, type));
 		}
 
 		// now reconfigure all roads in the surroundings

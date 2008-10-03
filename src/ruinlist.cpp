@@ -74,7 +74,7 @@ bool Ruinlist::save(XML_Helper* helper) const
     retval &= helper->openTag(Ruinlist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
-        retval &= (*it).save(helper);
+        retval &= (*it)->save(helper);
     
     retval &= helper->closeTag();
 
@@ -87,8 +87,7 @@ bool Ruinlist::load(std::string tag, XML_Helper* helper)
     if (tag != Ruin::d_tag)
         return false;
 
-    Ruin r(helper);
-    push_front(r);
+    push_front(new Ruin(helper));
 
     //! since the ruin has only now been copied to its final state, we need
     //to register the callback for the occupants here.
@@ -160,7 +159,7 @@ Ruin* Ruinlist::getNearestVisibleRuin(const Vector<int>& pos, int dist)
 void Ruinlist::changeOwnership(Player *old_owner, Player *new_owner)
 {
   for (iterator it = begin(); it != end(); it++)
-    if ((*it).getOwner() == old_owner)
-      (*it).setOwner(new_owner);
+    if ((*it)->getOwner() == old_owner)
+      (*it)->setOwner(new_owner);
 }
 

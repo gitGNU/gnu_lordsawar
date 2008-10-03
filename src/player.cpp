@@ -454,8 +454,8 @@ void Player::doKill()
     // single cities
     Citylist* cl = Citylist::getInstance();
     for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
-        if ((*it).getOwner() == this && (*it).isBurnt() == false)
-            Playerlist::getInstance()->getNeutral()->takeCityInPossession(&*it);
+        if ((*it)->getOwner() == this && (*it)->isBurnt() == false)
+            Playerlist::getInstance()->getNeutral()->takeCityInPossession(*it);
 
     d_diplomatic_rank = 0;
     d_diplomatic_title = std::string("");
@@ -634,8 +634,8 @@ void Player::calculateIncome()
     Citylist *cl = Citylist::getInstance();
     for (Citylist::iterator i = cl->begin(), iend = cl->end(); i != iend; ++i)
       {
-	if ((*i).getOwner() == this)
-	  d_income += (*i).getGold();
+	if ((*i)->getOwner() == this)
+	  d_income += (*i)->getGold();
       }
 }
 
@@ -1843,11 +1843,11 @@ void Player::doResign()
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
-      if ((*it).getOwner() == this)
+      if ((*it)->getOwner() == this)
 	{
-	  (*it).setBurnt(true);
+	  (*it)->setBurnt(true);
 	  History_CityRazed* history = new History_CityRazed();
-	  history->fillData(&(*it));
+	  history->fillData((*it));
 	  addHistory(history);
 	}
     }
@@ -2840,7 +2840,7 @@ void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
   debug("setting up vectoring\n");
   for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
     {
-      City *c = &*cit;
+      City *c = *cit;
       if (c->getOwner() != this || c->isBurnt())
 	continue;
       Vector<int> dest = c->getVectoring();
@@ -2876,7 +2876,7 @@ void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
 
   for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
     {
-      City *c = &*cit;
+      City *c = *cit;
       if (c->getOwner() != this || c->isBurnt())
 	continue;
       City *enemy_city = cl->getNearestEnemyCity(c->getPos());

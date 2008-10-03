@@ -94,9 +94,10 @@ CityWindow::CityWindow(City *c, bool razing_possible,
     raze_button->signal_clicked().connect(
 	sigc::mem_fun(this, &CityWindow::on_raze_clicked));
 
+    xml->get_widget("production_toggles_hbox", production_toggles_hbox);
     for (int i = 1; i <= city->getMaxNoOfProductionBases(); ++i) {
-	Gtk::ToggleButton *toggle;
-	xml->get_widget(String::ucompose("production_toggle%1", i), toggle);
+	Gtk::ToggleButton *toggle = new Gtk::ToggleButton();
+	production_toggles_hbox->pack_start(*manage(toggle), false, false, 0);
 	production_toggles.push_back(toggle);
 	toggle->signal_toggled().connect(
 	    sigc::bind(sigc::mem_fun(this, &CityWindow::on_production_toggled),

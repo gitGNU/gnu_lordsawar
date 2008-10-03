@@ -40,45 +40,41 @@
 #include "action.h"
 
 std::string City::d_tag = "city";
-std::string City::d_slot_tag = "slot";
 
 using namespace std;
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-City::City(Vector<int> pos, string name, Uint32 gold)
-    :Ownable((Player *)0), Location(pos, 2), Renamable(name),
-    d_numprodbase(MAX_PRODUCTION_SLOTS_IN_A_CITY),
+City::City(Vector<int> pos, string name, Uint32 gold, Uint32 numslots)
+    :Ownable((Player *)0), Location(pos, CITY_WIDTH), Renamable(name),
      d_active_production_slot(-1),
      d_duration(-1), d_gold(gold),
      d_defense_level(1), d_burnt(false), d_vectoring(false),
-     d_capital(false), d_capital_owner(0)
+     d_vector(Vector<int>(-1,-1)), d_capital(false), d_capital_owner(0)
 
 {
-    // Initialise armytypes
-    for (unsigned int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
-      d_prodbase[i] = NULL;
+  // Initialise armytypes
+  for (unsigned int i = 0; i < numslots; i++)
+    d_slot.push_back(new ProdSlot());
 
-    // set the tiles to city type
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-            GameMap::getInstance()->getTile(getPos().x + i, getPos().y + j)
-                                  ->setBuilding(Maptile::CITY);
-    d_vector.x=-1;
-    d_vector.y=-1; 
+  // set the tiles to city type
+  for (unsigned int i = 0; i < getSize(); i++)
+    for (unsigned int j = 0; j < getSize(); j++)
+      {
+	Vector<int> pos = getPos() + Vector<int>(i, j);
+	GameMap::getInstance()->getTile(pos)->setBuilding(Maptile::CITY);
+      }
 }
 
 City::City(XML_Helper* helper)
-    :Ownable(helper), Location(helper, 2), Renamable(helper), 
-    d_numprodbase(0)
+    :Ownable(helper), Location(helper, CITY_WIDTH), Renamable(helper)
 {
   //note: the armies get loaded in citylist
 
     //initialize the city
 
-    for (unsigned int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
-      d_prodbase[i] = NULL;
+    d_slot.clear();
 
     helper->getData(d_defense_level, "defense");
     
@@ -114,30 +110,37 @@ City::City(XML_Helper* helper)
             GameMap::getInstance()->getTile(getPos().x+i, getPos().y+j)
                                   ->setBuilding(Maptile::CITY);
     
+  helper->registerTag(ProdSlot::d_tag, sigc::mem_fun(this, &City::load));
+}
+
+bool City::load(std::string tag, XML_Helper *helper)
+{
+  if (tag == ProdSlot::d_tag)
+    {
+      d_slot.push_back(new ProdSlot(helper));
+      return true;
+    }
+  return false;
 }
 
 City::City(const City& c)
-    :Ownable(c), Location(c), Renamable(c), d_numprodbase(c.d_numprodbase),
+    :Ownable(c), Location(c), Renamable(c), 
     d_active_production_slot(c.d_active_production_slot), 
     d_duration(c.d_duration), d_gold(c.d_gold), 
     d_defense_level(c.d_defense_level), d_burnt(c.d_burnt),
     d_vectoring(c.d_vectoring),d_vector(c.d_vector), d_capital(c.d_capital), 
     d_capital_owner(c.d_capital_owner)
 {
-    for (unsigned int i = 0; i < MAX_PRODUCTION_SLOTS_IN_A_CITY; i++)
-      {
-	if (c.d_prodbase[i] != NULL)
-	  d_prodbase[i] = new ArmyProdBase(*c.d_prodbase[i]);
-	else
-	  d_prodbase[i] = NULL;
-      }
+  for (std::vector<ProdSlot*>::const_iterator it = c.d_slot.begin(); 
+       it != c.d_slot.end(); it++)
+      d_slot.push_back(*it);
 }
 
 City::~City()
 {
     for (int i = 0; i < getMaxNoOfProductionBases(); i++)
-      if (d_prodbase[i])
-	delete d_prodbase[i];
+      if (d_slot[i])
+	delete d_slot[i];
 }
 
 bool City::save(XML_Helper* helper) const
@@ -165,21 +168,19 @@ bool City::save(XML_Helper* helper) const
       retval &= helper->saveData("capital_owner", d_capital_owner->getId());
     retval &= helper->saveData("vectoring", svect.str());
 
-    for (int i = 0; i < d_numprodbase; i++)
+    for (unsigned int i = 0; i < d_slot.size(); i++)
       {
-	retval &= helper->openTag(City::d_slot_tag);
-	if (d_prodbase[i])
-	  retval &= d_prodbase[i]->save(helper);
-	retval &= helper->closeTag();
+	if (d_slot[i])
+	  retval &= d_slot[i]->save(helper);
       }
     retval &= helper->closeTag();
     return retval;
 }
 
-int City::getNoOfProductionBases()
+Uint32 City::getNoOfProductionBases()
 {
-  int i, max = 0;
-  for (i = 0; i < this->getMaxNoOfProductionBases(); i++)
+  unsigned int max = 0;
+  for (unsigned int i = 0; i < this->getMaxNoOfProductionBases(); i++)
     {
       if (getProductionBase(i))
         max++;
@@ -197,7 +198,8 @@ void City::setActiveProductionSlot(int index)
     }
 
     // return on wrong data
-    if (((index >= d_numprodbase)) || (index >= 0 && getArmytype(index) == -1))
+    if (((index >= (int)d_slot.size())) || 
+	(index >= 0 && getArmytype(index) == -1))
         return;
 
     d_active_production_slot = index;
@@ -241,11 +243,11 @@ int City::getFreeBasicSlot()
 {
      int index=-1;
 
-     debug(getName()<< " BASIC SLOTS=" << d_numprodbase) 
-     for (int i = 0; i < d_numprodbase; i++)
+     debug(getName()<< " BASIC SLOTS=" << d_slot.size()) 
+     for (unsigned int i = 0; i < d_slot.size(); i++)
      {
-         debug(getName()<< " Index Value=" << d_prodbase[i])
-         if (d_prodbase[i] == NULL)
+         debug(getName()<< " Index Value=" << d_slot[i])
+         if (d_slot[i]->getArmyProdBase() == NULL)
          {
              index=i;
              return i;
@@ -266,8 +268,8 @@ void City::addProductionBase(int idx, ArmyProdBase *army)
     {
         // try to find an unoccupied production slot. If there is none, pick 
         // the slot with the highest index.
-        for (int i = 0; i < d_numprodbase; i++)
-            if (d_prodbase[i] == NULL)
+        for (unsigned int i = 0; i < d_slot.size(); i++)
+            if (d_slot[i]->getArmyProdBase() == NULL)
             {
                 idx = i;
                 break;
@@ -275,24 +277,24 @@ void City::addProductionBase(int idx, ArmyProdBase *army)
 
         if (idx < 0)
         {
-            idx = d_numprodbase - 1;
+            idx = d_slot.size() - 1;
         }
     }
-    if (idx >= d_numprodbase)
+    if (idx >= (int)d_slot.size())
       return;
     
-    if (d_prodbase[idx])
+    if (d_slot[idx]->getArmyProdBase())
       {
 	bool restore_production = false;
 	if (d_active_production_slot == idx)
 	  restore_production = true;
 	removeProductionBase(idx);
-	d_prodbase[idx] = army;
+	d_slot[idx]->setArmyProdBase(army);
 	if (restore_production)
 	  setActiveProductionSlot(idx);
       }
     else
-      d_prodbase[idx] = army;
+      d_slot[idx]->setArmyProdBase(army);
 }
 
 void City::removeProductionBase(int idx)
@@ -300,9 +302,8 @@ void City::removeProductionBase(int idx)
     if ((idx < 0) || (idx > (getMaxNoOfProductionBases() - 1)))
         return;
 
-    if (d_prodbase[idx])
-      delete d_prodbase[idx];
-    d_prodbase[idx] = NULL;
+    if (d_slot[idx]->getArmyProdBase() != NULL)
+      d_slot[idx]->clear();
 
     if (d_active_production_slot == idx)
         setActiveProductionSlot(-1);
@@ -361,14 +362,14 @@ void City::sortProduction()
       int j;
       for (j = 0; j < getMaxNoOfProductionBases(); j++)
 	{
-	  if (d_prodbase[j])
-	    productibles.push_back(d_prodbase[j]);
+	  if (d_slot[j]->getArmyProdBase())
+	    productibles.push_back(d_slot[j]->getArmyProdBase());
 	}
       productibles.sort(armyCompareStrength);
       j = 0;
       for (std::list<ArmyProdBase*>::iterator it = productibles.begin();
 	   it != productibles.end(); it++, j++)
-       	d_prodbase[j] = *it;
+       	d_slot[j]->setArmyProdBase(*it);
     }
   return;
 }
@@ -482,7 +483,7 @@ void City::produceStrongestProductionBase()
       int strong_idx = -1;
       for (int i = 0; i < getMaxNoOfProductionBases(); i++)
 	{
-	  if (d_prodbase[i] == NULL)
+	  if (d_slot[i]->getArmyProdBase() == NULL)
 	    continue;
 	  if (getProductionBase(i)->getStrength() > max_strength)
 	    {
@@ -525,7 +526,7 @@ void City::produceWeakestProductionBase()
       int weak_idx = -1;
       for (int i = 0; i < getMaxNoOfProductionBases(); i++)
 	{
-	  if (d_prodbase[i] == NULL)
+	  if (d_slot[i]->getArmyProdBase() == NULL)
 	    continue;
 	  if (getProductionBase(i)->getStrength() < min_strength)
 	    {
@@ -551,7 +552,8 @@ const Army *City::armyArrives()
     {
       VectoredUnitlist *vul = VectoredUnitlist::getInstance();
       VectoredUnit *v = new VectoredUnit 
-	(getPos(), d_vector, d_prodbase[d_active_production_slot],
+	(getPos(), d_vector, 
+	 d_slot[d_active_production_slot]->getArmyProdBase(),
 	 MAX_TURNS_FOR_VECTORING, d_owner);
       vul->push_back(v);
       d_owner->cityChangeProduction(this, d_active_production_slot);
@@ -592,11 +594,11 @@ bool City::hasProductionBase(int type, Uint32 set) const
 {
   if (type < 0)
     return false;
-  for (int i = 0; i < d_numprodbase; i++)
+  for (unsigned int i = 0; i < d_slot.size(); i++)
     {
-      if (d_prodbase[i] == NULL)
+      if (d_slot[i]->getArmyProdBase() == NULL)
 	continue;
-      if (d_prodbase[i]->getTypeId() == (unsigned int) type)
+      if (d_slot[i]->getArmyProdBase()->getTypeId() == (unsigned int) type)
 	return true;
     }
 
@@ -608,18 +610,18 @@ int City::getArmytype(int slot) const
   if (slot < 0)
     return -1;
 
-  if (slot >= d_numprodbase)
+  if (slot >= (int)d_slot.size())
     return -1;
-  if (d_prodbase[slot] == NULL)
+  if (d_slot[slot]->getArmyProdBase() == NULL)
     return -1;
-  return d_prodbase[slot]->getTypeId();
+  return d_slot[slot]->getArmyProdBase()->getTypeId();
 }
 
 const ArmyProdBase * City::getProductionBase(int slot) const
 {
   if (getArmytype(slot) == -1)
     return 0;
-  return d_prodbase[slot];
+  return d_slot[slot]->getArmyProdBase();
 }
 	
 const ArmyProdBase *City::getActiveProductionBase() const
@@ -724,9 +726,10 @@ Uint32 City::countCitiesVectoringToHere()
   Uint32 count = 0;
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
-      if ((*it).getOwner() != getOwner())
+      City *c = *it;
+      if (c->getOwner() != getOwner())
 	continue;
-      if ((*it).getVectoring() == getPos())
+      if (c->getVectoring() == getPos())
 	count++;
     }
 

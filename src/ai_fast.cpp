@@ -118,7 +118,7 @@ bool AI_Fast::startTurn()
 	Citylist *cl = Citylist::getInstance();
 	for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
 	  {
-	    City *c = &*cit;
+	    City *c = *cit;
 	    if (c->getOwner() != this || c->isBurnt())
 	      continue;
 	    if (c->getActiveProductionSlot() == -1)

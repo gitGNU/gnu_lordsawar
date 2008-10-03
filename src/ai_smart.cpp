@@ -319,7 +319,7 @@ void AI_Smart::examineCities()
     Citylist* cl = Citylist::getInstance();
     for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
     {
-        City *city = &(*it);
+        City *city = (*it);
         if ((city->isFriend(this)) && (city->isBurnt()==false))
         {
             // Here we wait to earn more money so we do not buy new productions

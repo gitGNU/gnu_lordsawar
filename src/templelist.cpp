@@ -71,7 +71,7 @@ bool Templelist::save(XML_Helper* helper) const
     retval &= helper->openTag(Templelist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
-        retval &= (*it).save(helper);
+        retval &= (*it)->save(helper);
     
     retval &= helper->closeTag();
 
@@ -84,8 +84,7 @@ bool Templelist::load(std::string tag, XML_Helper* helper)
     //what has happened?
         return false;
     
-    Temple t(helper);
-    push_back(t);
+    push_back(new Temple(helper));
 
     return true;
 }
@@ -111,7 +110,7 @@ Temple* Templelist::getNearestVisibleAndUsefulTemple(Stack *s,
 
   for (iterator it = begin(); it != end(); ++it)
     {
-      Temple *temple = &*it;
+      Temple *temple = *it;
       if (isFogged(temple))
 	continue;
 
@@ -119,7 +118,7 @@ Temple* Templelist::getNearestVisibleAndUsefulTemple(Stack *s,
 	  < (double)s->size() * (percent_can_be_blessed / 100.0))
 	continue;
 
-      Vector<int> p = (*it).getPos();
+      Vector<int> p = (*it)->getPos();
       int delta = abs(p.x - pos.x);
       if (delta < abs(p.y - pos.y))
 	delta = abs(p.y - pos.y);
@@ -132,7 +131,7 @@ Temple* Templelist::getNearestVisibleAndUsefulTemple(Stack *s,
     }
 
   if (diff == -1) return 0;
-  return &(*diffit);
+  return (*diffit);
 
 }
 

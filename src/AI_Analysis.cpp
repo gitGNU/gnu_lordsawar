@@ -184,7 +184,7 @@ void AI_Analysis::examineCities()
     Citylist* cl = Citylist::getInstance();
     for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
     {
-        City *city = &(*it);
+        City *city = (*it);
         if (!city->isFriend(d_owner) && !city->isBurnt())
         {
             d_threats->push_back(new Threat(city));
@@ -217,9 +217,9 @@ void AI_Analysis::examineRuins()
     for (Ruinlist::iterator it = ruins->begin(); it != ruins->end(); ++it)
     {
         Ruin ruin = *it;
-        if (!ruin.isSearched())
+        if (!ruin->isSearched())
         {
-            d_threats->push_back(new Threat(&ruin));
+            d_threats->push_back(new Threat(ruin));
         }
     }
 */
@@ -230,7 +230,7 @@ void AI_Analysis::calculateDanger()
     Citylist* cl = Citylist::getInstance();
     for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
     {
-        City *city = &(*it);
+        City *city = (*it);
         if (city->isFriend(d_owner))
         {
             AICityInfo *info = new AICityInfo(city);

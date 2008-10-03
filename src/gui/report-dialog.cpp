@@ -358,9 +358,9 @@ void ReportDialog::addProduction(const Action *action)
       army_type = act->getArmy()->getTypeId();
       Citylist::iterator cit = Citylist::getInstance()->begin();
       for (; cit != Citylist::getInstance()->end(); ++cit)
-	if ((*cit).getId() == act->getCityId())
+	if ((*cit)->getId() == act->getCityId())
 	  {
-	    s += (*cit).getName();
+	    s += (*cit)->getName();
 	    break;
 	  }
       if (act->getVectored())

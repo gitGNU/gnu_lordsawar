@@ -39,7 +39,7 @@ class HistoryMap: public OverviewMap, public sigc::trackable
      /**
       * @param clist  The list of the City objects to draw on the miniature map.
       */
-     HistoryMap(LocationList<City> *clist);
+     HistoryMap(LocationList<City*> *clist);
  
      //! Emitted when the cities are finished being drawn on the map surface.
      /**
@@ -55,12 +55,12 @@ class HistoryMap: public OverviewMap, public sigc::trackable
       * @param clist  The new list of City objects to draw onto the miniature
       *               map graphic.
       */
-     void updateCities (LocationList<City> *clist);
+     void updateCities (LocationList<City*> *clist);
 
  private:
 
      //! The set of city objects to show on the miniature map graphic.
-     LocationList<City> *d_clist;
+     LocationList<City*> *d_clist;
 
      //! Draw the City objects onto the miniature map graphic.
      /**

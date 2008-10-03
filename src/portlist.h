@@ -28,7 +28,7 @@
  * is implemented as a singleton because many classes use it for looking up
  * ports.
  */
-class Portlist : public LocationList<Port>, public sigc::trackable
+class Portlist : public LocationList<Port*>, public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.

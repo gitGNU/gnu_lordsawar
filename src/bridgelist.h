@@ -28,7 +28,7 @@
  * is implemented as a singleton because many classes use it for looking up
  * bridges.
  */
-class Bridgelist : public LocationList<Bridge>, public sigc::trackable
+class Bridgelist : public LocationList<Bridge*>, public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.

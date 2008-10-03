@@ -71,8 +71,6 @@ Citylist::Citylist(XML_Helper* helper)
 {
     // simply ask the helper to inform us when a city tag is opened
     helper->registerTag(City::d_tag, sigc::mem_fun(this, &Citylist::load));
-    helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &Citylist::load));
-    helper->registerTag(City::d_slot_tag, sigc::mem_fun(this, &Citylist::load));
 }
 
 Citylist::~Citylist()
@@ -85,9 +83,9 @@ int Citylist::countCities(Player* player) const
     
     for (const_iterator it = begin(); it != end(); it++)
     {
-        if ((*it).isBurnt())
+        if ((*it)->isBurnt())
           continue;
-        if ((*it).getOwner() == player) cities++;
+        if ((*it)->getOwner() == player) cities++;
     }
     
     return cities;
@@ -97,8 +95,8 @@ void Citylist::collectTaxes(Player* p)
 {
   // Collect the taxes
   for (const_iterator it = begin(); it != end(); it++)
-    if ((*it).getOwner() == p && (*it).isBurnt() == false)
-      p->addGold((*it).getGold());
+    if ((*it)->getOwner() == p && (*it)->isBurnt() == false)
+      p->addGold((*it)->getGold());
 
 }
 
@@ -107,14 +105,14 @@ Uint32 Citylist::calculateUpcomingUpkeep(Player *p)
 {
   Uint32 total = 0;
   for (const_iterator it = begin(); it != end(); it++)
-    if ((*it).getOwner() == p && (*it).isBurnt() == false)
+    if ((*it)->getOwner() == p && (*it)->isBurnt() == false)
       {
-	if ((*it).getDuration() == 1)
+	if ((*it)->getDuration() == 1)
 	  {
-	    int slot =(*it).getActiveProductionSlot();
+	    int slot =(*it)->getActiveProductionSlot();
 	    if (slot == -1)
 	      continue;
-	    const ArmyProdBase *a = (*it).getProductionBase(slot);
+	    const ArmyProdBase *a = (*it)->getProductionBase(slot);
 	    total += a->getUpkeep();
 	  }
       }
@@ -141,17 +139,17 @@ void Citylist::nextTurn(Player* p)
 	//gold pieces.
 	for (iterator it = begin(); it != end(); it++)
 	  {
-	    if ((*it).isBurnt() == true)
+	    if ((*it)->isBurnt() == true)
 	      continue;
-	    if ((*it).getOwner() != p)
+	    if ((*it)->getOwner() != p)
 	      continue;
-	    int slot =(*it).getActiveProductionSlot();
+	    int slot =(*it)->getActiveProductionSlot();
 	    if (slot == -1)
 	      continue;
-	    const ArmyProdBase *a = (*it).getProductionBase(slot);
+	    const ArmyProdBase *a = (*it)->getProductionBase(slot);
 	    diff -= a->getUpkeep();
     
-	    p->cityTooPoorToProduce(&(*it), slot);
+	    p->cityTooPoorToProduce((*it), slot);
 	    if (diff < 0)
 	      break;
 	  }
@@ -160,8 +158,8 @@ void Citylist::nextTurn(Player* p)
     // This iteration adds the city production to the player    
     for (iterator it = begin(); it != end(); it++)
       {
-        if ((*it).getOwner() == p)
-            (*it).nextTurn();
+        if ((*it)->getOwner() == p)
+            (*it)->nextTurn();
       }
 
 }
@@ -264,12 +262,12 @@ City* Citylist::getNearestCity(const Vector<int>& pos, Player *p)
     
     for (iterator it = begin(); it != end(); ++it)
     {
-        if ((*it).isBurnt())
+        if ((*it)->isBurnt())
             continue;
 
-        if ((*it).getOwner() == p)
+        if ((*it)->getOwner() == p)
         {
-            Vector<int> p = (*it).getPos();
+            Vector<int> p = (*it)->getPos();
             int delta = abs(p.x - pos.x);
             if (delta < abs(p.y - pos.y))
                 delta = abs(p.y - pos.y);
@@ -283,7 +281,7 @@ City* Citylist::getNearestCity(const Vector<int>& pos, Player *p)
     }
     
     if (diff == -1) return 0;
-    return &(*diffit);
+    return (*diffit);
 }
 
 City* Citylist::getNearestCity(const Vector<int>& pos)
@@ -353,8 +351,8 @@ City* Citylist::getNearestFriendlyVectorableCity(const Vector<int>& pos)
 City* Citylist::getFirstCity(Player* p)
 {
     for (iterator it = begin(); it != end(); it++)
-        if ((*it).getOwner() == p)
-            return &(*it);
+        if ((*it)->getOwner() == p)
+            return (*it);
 
     return 0;
 }
@@ -366,7 +364,7 @@ bool Citylist::save(XML_Helper* helper) const
     retval &= helper->openTag(Citylist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
-        (*it).save(helper);
+        (*it)->save(helper);
     
     retval &= helper->closeTag();
 
@@ -375,30 +373,9 @@ bool Citylist::save(XML_Helper* helper) const
 
 bool Citylist::load(std::string tag, XML_Helper* helper)
 {
-    if (tag == ArmyProdBase::d_tag)
-      {
-	//add it to the right city
-	//how do i add it to the right slot?
-	Citylist::iterator it = end();
-	it--;
-	City *city = &*it;
-	ArmyProdBase *a = new ArmyProdBase (helper);
-	int slot = city->getMaxNoOfProductionBases() - 1;
-	city->addProductionBase(slot, a);
-	return true;
-      }
-    if (tag == City::d_slot_tag)
-      {
-	Citylist::iterator it = end();
-	it--;
-	City *city = &*it;
-	city->setMaxNoOfProductionBases(city->getMaxNoOfProductionBases() + 1);
-	return true;
-      }
     if (tag == City::d_tag)
       {
-	City c(helper);
-	push_back(c);
+	push_back(new City(helper));
 	return true;
       }
     return false;
@@ -407,12 +384,12 @@ bool Citylist::load(std::string tag, XML_Helper* helper)
 void Citylist::changeOwnership(Player *old_owner, Player *new_owner)
 {
   for (iterator it = begin(); it != end(); it++)
-    if ((*it).getOwner() == old_owner)
+    if ((*it)->getOwner() == old_owner)
       {
-	(*it).setOwner(new_owner);
-	if ((*it).isCapital())
-	  if ((*it).getCapitalOwner() == old_owner)
-	    (*it).setCapitalOwner(new_owner);
+	(*it)->setOwner(new_owner);
+	if ((*it)->isCapital())
+	  if ((*it)->getCapitalOwner() == old_owner)
+	    (*it)->setCapitalOwner(new_owner);
       }
 }
 
@@ -420,12 +397,12 @@ void Citylist::stopVectoringTo(City *c)
 {
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it).isBurnt() == true)
+      if ((*it)->isBurnt() == true)
 	continue;
-      if ((*it).getVectoring() == Vector<int>(-1,-1))
+      if ((*it)->getVectoring() == Vector<int>(-1,-1))
 	continue;
-      if (c->contains((*it).getVectoring()))
-	(*it).setVectoring(Vector<int>(-1,-1));
+      if (c->contains((*it)->getVectoring()))
+	(*it)->setVectoring(Vector<int>(-1,-1));
     }
   return;
 }
@@ -439,9 +416,9 @@ Vector<int> Citylist::calculateCenterOfTerritory (Player *p)
   int count = 0;
   for (iterator it = begin(); it != end(); it++)
     {
-      if (p && (*it).getOwner() == p)
+      if (p && (*it)->getOwner() == p)
 	continue;
-      Vector<int> pos = (*it).getPos();
+      Vector<int> pos = (*it)->getPos();
       count++;
       if (pos.x > e)
 	e = pos.x;
@@ -461,9 +438,9 @@ bool Citylist::isVectoringTarget(City *target)
 {
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it).getOwner() != target->getOwner())
+      if ((*it)->getOwner() != target->getOwner())
 	continue;
-      if (target->contains((*it).getVectoring()))
+      if (target->contains((*it)->getVectoring()))
 	return true;
     }
   return false;
@@ -474,10 +451,10 @@ std::list<City*> Citylist::getCitiesVectoringTo(City *target)
   std::list<City*> cities;
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it).getOwner() != target->getOwner())
+      if ((*it)->getOwner() != target->getOwner())
 	continue;
-      if (target->contains((*it).getVectoring()))
-	cities.push_back(&(*it));
+      if (target->contains((*it)->getVectoring()))
+	cities.push_back((*it));
     }
   return cities;
 }

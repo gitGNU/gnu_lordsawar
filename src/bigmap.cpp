@@ -616,36 +616,40 @@ void BigMap::draw_buffer(Rectangle map_view, SDL_Surface *surface)
   for (Ruinlist::iterator i = Ruinlist::getInstance()->begin();
        i != Ruinlist::getInstance()->end(); ++i)
     {
-      if (((*i).isHidden() == true && 
-	   (*i).getOwner() == Playerlist::getActiveplayer()) ||
-	  (*i).isHidden() == false)
-	blit_if_inside_buffer(*i, gc->getRuinPic((*i).getType()), map_view,
+      Ruin *r = *i;
+      if ((r->isHidden() == true && 
+	   r->getOwner() == Playerlist::getActiveplayer()) ||
+	  r->isHidden() == false)
+	blit_if_inside_buffer(**i, gc->getRuinPic(r->getType()), map_view,
 			      surface);
     }
 
   for (Signpostlist::iterator i = Signpostlist::getInstance()->begin();
        i != Signpostlist::getInstance()->end(); ++i)
-    blit_if_inside_buffer(*i, gc->getSignpostPic(), map_view, surface);
+    blit_if_inside_buffer(**i, gc->getSignpostPic(), map_view, surface);
 
   for (Templelist::iterator i = Templelist::getInstance()->begin();
        i != Templelist::getInstance()->end(); ++i)
-    blit_if_inside_buffer( *i, gc->getTemplePic(i->getType()), map_view, surface);
+    blit_if_inside_buffer(**i, gc->getTemplePic((*i)->getType()), map_view, 
+			  surface);
 
   for (Roadlist::iterator i = Roadlist::getInstance()->begin();
        i != Roadlist::getInstance()->end(); ++i)
-    blit_if_inside_buffer( *i, gc->getRoadPic(i->getType()), map_view, surface);
+    blit_if_inside_buffer(**i, gc->getRoadPic((*i)->getType()), map_view, 
+			  surface);
 
   for (Bridgelist::iterator i = Bridgelist::getInstance()->begin();
        i != Bridgelist::getInstance()->end(); ++i)
-    blit_if_inside_buffer( *i, gc->getBridgePic(i->getType()), map_view, surface);
+    blit_if_inside_buffer(**i, gc->getBridgePic((*i)->getType()), map_view, 
+			  surface);
 
   for (Portlist::iterator i = Portlist::getInstance()->begin();
        i != Portlist::getInstance()->end(); ++i)
-    blit_if_inside_buffer( *i, gc->getPortPic(), map_view, surface);
+    blit_if_inside_buffer(**i, gc->getPortPic(), map_view, surface);
 
   for (Citylist::iterator i = Citylist::getInstance()->begin();
        i != Citylist::getInstance()->end(); ++i)
-    blit_if_inside_buffer(*i, gc->getCityPic(&*i), map_view, surface);
+    blit_if_inside_buffer(**i, gc->getCityPic(*i), map_view, surface);
 
   GameMap *gm = GameMap::getInstance();
   // If there are any items lying around, blit the itempic as well

@@ -34,7 +34,7 @@ class Player;
  * is implemented as a singleton because many classes use it for looking 
  * up cities.
  */
-class Citylist : public LocationList<City>, public sigc::trackable
+class Citylist : public LocationList<City*>, public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.

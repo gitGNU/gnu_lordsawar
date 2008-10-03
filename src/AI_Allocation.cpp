@@ -102,7 +102,7 @@ int AI_Allocation::allocateDefensiveStacks(Citylist *allCities)
   int count = 0;
   for (Citylist::iterator cit = allCities->begin(); cit != allCities->end(); ++cit)
     {
-      City *city = &(*cit);
+      City *city = (*cit);
       if (!city->isFriend(d_owner) || city->isBurnt())
 	continue;
 
@@ -392,10 +392,10 @@ int AI_Allocation::defaultStackMovements()
 /*
 	MoveResult *result = 0;
 		  for (Citylist::iterator cit = allCities->begin(); cit != allCities->end(); cit++)
-		    if ((*cit).getOwner() != d_owner)
+		    if ((*cit)->getOwner() != d_owner)
 		      {
 			debug("Let's try "<<(*cit).getName() <<" instead.")
-			  result = moveStack(s, (*cit).getPos());
+			  result = moveStack(s, (*cit)->getPos());
 			if (result && result->moveSucceeded())
 			  {
 			    debug("Worked")
@@ -435,7 +435,7 @@ bool AI_Allocation::stackReinforce(Stack *s)
   int moves = 1000;
   for (Citylist::iterator it = allCities->begin(); it != allCities->end(); ++it)
     {
-      City *city = &(*it);
+      City *city = (*it);
       int distToCity = dist(s->getPos(), city->getPos());
 
       //if the city already contains the given stack, then disregard it

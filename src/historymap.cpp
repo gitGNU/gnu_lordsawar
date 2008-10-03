@@ -27,7 +27,7 @@
 #include "GameMap.h"
 #include "GraphicsCache.h"
 
-HistoryMap::HistoryMap(LocationList<City> *clist)
+HistoryMap::HistoryMap(LocationList<City*> *clist)
 {
   d_clist = clist;
 }
@@ -45,18 +45,18 @@ void HistoryMap::drawCities()
 
   // Draw all cities as shields over the city location, in the colors of
   // the players.
-  LocationList<City>::iterator it = d_clist->begin();
+  LocationList<City*>::iterator it = d_clist->begin();
   for (; it != d_clist->end(); it++)
   {
       SDL_Surface *tmp;
-      if ((*it).isFogged())
+      if ((*it)->isFogged())
         continue;
-      if ((*it).isBurnt() == true)
+      if ((*it)->isBurnt() == true)
         tmp = gc->getSmallRuinedCityPic();
       else
-        tmp = gc->getShieldPic(0, (*it).getOwner());
+        tmp = gc->getShieldPic(0, (*it)->getOwner());
   
-      Vector<int> pos = (*it).getPos();
+      Vector<int> pos = (*it)->getPos();
       pos = mapToSurface(pos);
       SDL_Rect r;
       r.x = pos.x - (tmp->w/2);
@@ -67,7 +67,7 @@ void HistoryMap::drawCities()
   }
 }
 
-void HistoryMap::updateCities (LocationList<City> *clist)
+void HistoryMap::updateCities (LocationList<City*> *clist)
 {
   d_clist = clist;
   draw();

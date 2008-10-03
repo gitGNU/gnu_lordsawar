@@ -181,33 +181,33 @@ bool GameScenario::setupCities(bool quick_start)
   for (Citylist::iterator it = Citylist::getInstance()->begin();
        it != Citylist::getInstance()->end(); it++)
     {
-      if ((*it).getOwner() == Playerlist::getInstance()->getNeutral())
+      if ((*it)->getOwner() == Playerlist::getInstance()->getNeutral())
 	{
 	  switch (GameScenario::s_neutral_cities)
 	    {
 	    case GameParameters::AVERAGE:
-	      (*it).produceScout();
+	      (*it)->produceScout();
 	      break;
 	    case GameParameters::STRONG:
-	      (*it).produceStrongestProductionBase();
+	      (*it)->produceStrongestProductionBase();
 	      break;
 	    case GameParameters::ACTIVE:
 	      if (rand () % 100 >  20)
-		(*it).produceStrongestProductionBase();
+		(*it)->produceStrongestProductionBase();
 	      else
-		(*it).produceWeakestProductionBase();
+		(*it)->produceWeakestProductionBase();
 	      break;
 	    }
-	  (*it).setActiveProductionSlot(-1);
+	  (*it)->setActiveProductionSlot(-1);
 	}
       else
 	{
-	  if ((*it).isCapital())
-	    (*it).produceStrongestProductionBase();
+	  if ((*it)->isCapital())
+	    (*it)->produceStrongestProductionBase();
 	  else
-	    (*it).produceWeakestProductionBase();
+	    (*it)->produceWeakestProductionBase();
 
-	  (*it).setActiveProductionSlot(0);
+	  (*it)->setActiveProductionSlot(0);
 	}
 
     }

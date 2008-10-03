@@ -371,11 +371,12 @@ void OverviewMap::draw()
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
         it != Ruinlist::getInstance()->end(); it++)
     {
-        if (it->isHidden() == true && it->getOwner() != pl->getActiveplayer())
+        Ruin *r = *it;
+        if (r->isHidden() == true && r->getOwner() != pl->getActiveplayer())
           continue;
-        if (it->isFogged())
+        if (r->isFogged())
           continue;
-        Vector<int> pos = it->getPos();
+        Vector<int> pos = r->getPos();
         pos = mapToSurface(pos);
 
 	Uint32 raw;
@@ -389,9 +390,10 @@ void OverviewMap::draw()
     for (Templelist::iterator it = Templelist::getInstance()->begin();
         it != Templelist::getInstance()->end(); it++)
     {
-        if (it->isFogged())
+      Temple *t = *it;
+        if (t->isFogged())
           continue;
-        Vector<int> pos = it->getPos();
+        Vector<int> pos = t->getPos();
         pos = mapToSurface(pos);
 	Uint32 raw;
 	raw = SDL_MapRGB(surface->format, 255, 255, 255);
@@ -472,15 +474,16 @@ void OverviewMap::draw_cities (bool all_razed)
   for (Citylist::iterator it = Citylist::getInstance()->begin();
       it != Citylist::getInstance()->end(); it++)
   {
+      City *c = *it;
       SDL_Surface *tmp;
-      if (it->isFogged())
+      if (c->isFogged())
         continue;
-      if (it->isBurnt() == true || all_razed == true)
+      if (c->isBurnt() == true || all_razed == true)
         tmp = gc->getSmallRuinedCityPic();
       else
-        tmp = gc->getShieldPic(0, it->getOwner());
+        tmp = gc->getShieldPic(0, c->getOwner());
   
-      Vector<int> pos = it->getPos();
+      Vector<int> pos = c->getPos();
       pos = mapToSurface(pos);
       SDL_Rect r;
       r.x = pos.x - (tmp->w/2);

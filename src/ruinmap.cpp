@@ -44,23 +44,23 @@ void RuinMap::draw_ruins (bool show_selected)
   for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
       it != Ruinlist::getInstance()->end(); it++)
   {
-      if ((*it).isHidden() == true && 
-          (*it).getOwner() != Playerlist::getInstance()->getActiveplayer())
+      if ((*it)->isHidden() == true && 
+          (*it)->getOwner() != Playerlist::getInstance()->getActiveplayer())
         continue;
-      if ((*it).isFogged() == true)
+      if ((*it)->isFogged() == true)
         continue;
       SDL_Surface *tmp;
-      if (it->isSearched())
+      if ((*it)->isSearched())
         tmp = gc->getSmallRuinExploredPic();
       else
         {
-          if (it->getType() == Ruin::STRONGHOLD)
+          if ((*it)->getType() == Ruin::STRONGHOLD)
             tmp = gc->getSmallStrongholdUnexploredPic();
           else
             tmp = gc->getSmallRuinUnexploredPic();
         }
   
-      Vector<int> pos = it->getPos();
+      Vector<int> pos = (*it)->getPos();
       pos = mapToSurface(pos);
       SDL_Rect r;
       r.x = pos.x - (tmp->w/2);
@@ -70,7 +70,7 @@ void RuinMap::draw_ruins (bool show_selected)
       SDL_BlitSurface(tmp, 0, surface, &r);
       if (show_selected)
         {
-          if ((*it).getId() == ruin->getId()) //is this the selected ruin?
+          if ((*it)->getId() == ruin->getId()) //is this the selected ruin?
             {
               Uint32 raw = SDL_MapRGBA(surface->format,255, 255, 255, 255);
               draw_rect(surface, r.x, r.y, r.x + r.w, r.y + r.h, raw);
@@ -87,12 +87,12 @@ void RuinMap::draw_temples (bool show_selected)
   for (Templelist::iterator it = Templelist::getInstance()->begin();
       it != Templelist::getInstance()->end(); it++)
   {
-      if ((*it).isFogged() == true)
+      if ((*it)->isFogged() == true)
         continue;
       SDL_Surface *tmp;
       tmp = gc->getSmallTemplePic();
   
-      Vector<int> pos = it->getPos();
+      Vector<int> pos = (*it)->getPos();
       pos = mapToSurface(pos);
       SDL_Rect r;
       r.x = pos.x - (tmp->w/2);
@@ -102,7 +102,7 @@ void RuinMap::draw_temples (bool show_selected)
       SDL_BlitSurface(tmp, 0, surface, &r);
       if (show_selected)
         {
-          if ((*it).getId() == ruin->getId()) //is this the selected ruin?
+          if ((*it)->getId() == ruin->getId()) //is this the selected ruin?
             {
               Uint32 raw = SDL_MapRGBA(surface->format,255, 255, 255, 255);
               draw_rect(surface, r.x, r.y, r.x + r.w, r.y + r.h, raw);
@@ -110,6 +110,7 @@ void RuinMap::draw_temples (bool show_selected)
         }
   }
 }
+
 void RuinMap::after_draw()
 {
   draw_cities(true);

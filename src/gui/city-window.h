@@ -24,6 +24,7 @@
 #include <sigc++/trackable.h>
 #include <gtkmm/button.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/box.h>
 #include <gtkmm/label.h>
 #include <gtkmm/image.h>
 #include <gtkmm/togglebutton.h>
@@ -68,6 +69,7 @@ class CityWindow: public Decorated
     bool d_see_all;
 
 
+    Gtk::Box *production_toggles_hbox;
     std::vector<Gtk::ToggleButton *> production_toggles;
     bool ignore_toggles;
 

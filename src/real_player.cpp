@@ -160,10 +160,10 @@ bool RealPlayer::maybeRecruitHero ()
 	  //we do it this way because maybe quickstart is on.
 	  Citylist* cl = Citylist::getInstance();
 	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-	    if (!(*it).isBurnt() && (*it).getOwner() == this &&
-		(*it).getCapitalOwner() == this && (*it).isCapital())
+	    if (!(*it)->isBurnt() && (*it)->getOwner() == this &&
+		(*it)->getCapitalOwner() == this && (*it)->isCapital())
 	      {
-		city = &*it;
+		city = *it;
 		break;
 	      }
 	  if (!city) //no capital cities
@@ -174,8 +174,8 @@ bool RealPlayer::maybeRecruitHero ()
 	  std::vector<City*> cities;
 	  Citylist* cl = Citylist::getInstance();
 	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-	    if (!(*it).isBurnt() && (*it).getOwner() == this)
-	      cities.push_back(&(*it));
+	    if (!(*it)->isBurnt() && (*it)->getOwner() == this)
+	      cities.push_back((*it));
 	  if (cities.empty())
 	    return false;
 	  city = cities[rand() % cities.size()];

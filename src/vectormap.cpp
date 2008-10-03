@@ -199,22 +199,22 @@ void VectorMap::after_draw()
   // draw special shield for every city that player owns.
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
-      if ((*it).getOwner() == Playerlist::getActiveplayer())
+      if ((*it)->getOwner() == Playerlist::getActiveplayer())
         {
       
-          if ((*it).getActiveProductionSlot() == -1)
+          if ((*it)->getActiveProductionSlot() == -1)
             prod = false;
           else
             prod = true;
           if (show_vectoring == SHOW_ALL_VECTORING)
             {
               // first pass, identify every city that's a source or dest
-              if ((*it).getVectoring() != Vector<int>(-1, -1))
+              if ((*it)->getVectoring() != Vector<int>(-1, -1))
                 {
-                  City *c = cl->getNearestCity((*it).getVectoring(), 2);
+                  City *c = cl->getNearestCity((*it)->getVectoring(), 2);
                   if (c)
                     dests.push_back(c);
-                  srcs.push_back(&(*it));
+                  srcs.push_back((*it));
                 }
               //paint them all as away first, and then overwrite them
               //later in the second pass.
@@ -223,7 +223,7 @@ void VectorMap::after_draw()
           else
             {
               //is this the originating city?
-              if ((*it).getId() == city->getId())
+              if ((*it)->getId() == city->getId())
                 {
                   //then it's a "home" city.
                   type = 0; 
@@ -231,41 +231,41 @@ void VectorMap::after_draw()
               //is this the city i'm vectoring to?
               else if (city->getVectoring() != Vector<int>(-1, -1) &&
                        cl->getNearestCity(city->getVectoring(), 2)->getId() == 
-                         (*it).getId() && show_vectoring != SHOW_NO_VECTORING)
+                         (*it)->getId() && show_vectoring != SHOW_NO_VECTORING)
                 {
                   // then it's a "destination" city.
                   type = 2;
                 }
               //is this a city that is vectoring to me?
-              else if ((*it).getVectoring() != Vector<int>(-1, -1) &&
-                       cl->getNearestCity((*it).getVectoring(), 2)->getId() ==
+              else if ((*it)->getVectoring() != Vector<int>(-1, -1) &&
+                       cl->getNearestCity((*it)->getVectoring(), 2)->getId() ==
                        city->getId() && show_vectoring != SHOW_NO_VECTORING)
                 type = 3;
               //otherwise it's just another city, "away" from me
               else
                 type = 1; //away
 	      //show it as a ruined city if we can't vector to it.
-	      if (click_action == CLICK_VECTORS && (*it).canAcceptVectoredUnit() == false)
+	      if (click_action == CLICK_VECTORS && (*it)->canAcceptVectoredUnit() == false)
 		{
 		  prod = false;
 		  type = 3;
 		}
 	      if (click_action == CLICK_CHANGES_DESTINATION)
 		{
-		  if ((*it).canAcceptVectoredUnits (sources.size()) == false)
+		  if ((*it)->canAcceptVectoredUnits (sources.size()) == false)
 		    {
 		      prod = false; //this is a ruined city
 		      type = 3;
 		    }
 		}
 	    }
-	  draw_city (&(*it), type, prod);
+	  draw_city ((*it), type, prod);
 	}
       else
 	{
 	  type = 3;
 	  prod = false;
-	  draw_city (&(*it), type, prod); //an impossible combo
+	  draw_city ((*it), type, prod); //an impossible combo
 	}
     }
 
@@ -281,18 +281,18 @@ void VectorMap::after_draw()
       // draw lines from origination to city/planted standard
       for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
 	{
-	  if ((*it).isFogged() == true)
+	  if ((*it)->isFogged() == true)
 	    continue;
-	  if ((*it).getOwner() != city->getOwner())
+	  if ((*it)->getOwner() != city->getOwner())
 	    continue;
-	  if ((*it).getVectoring() == Vector<int>(-1, -1))
+	  if ((*it)->getVectoring() == Vector<int>(-1, -1))
 	    continue;
-	  if ((*it).getVectoring() == planted_standard)
+	  if ((*it)->getVectoring() == planted_standard)
 	    continue;
 
 	  //is this a city that is vectoring to me?
-	  if (city->contains((*it).getVectoring()))
-	    draw_vectoring_line_to_here_from((*it).getPos());
+	  if (city->contains((*it)->getVectoring()))
+	    draw_vectoring_line_to_here_from((*it)->getPos());
 	}
       // draw line from city to destination
       if (city->getVectoring().x != -1)

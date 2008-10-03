@@ -28,7 +28,7 @@
  * is implemented as a singleton because many classes use it for looking up
  * roads.
  */
-class Roadlist : public LocationList<Road>, public sigc::trackable
+class Roadlist : public LocationList<Road*>, public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.

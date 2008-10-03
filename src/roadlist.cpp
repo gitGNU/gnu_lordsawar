@@ -68,7 +68,7 @@ bool Roadlist::save(XML_Helper* helper) const
     retval &= helper->openTag(Roadlist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
-        retval &= (*it).save(helper);
+        retval &= (*it)->save(helper);
     
     retval &= helper->closeTag();
 
@@ -81,8 +81,7 @@ bool Roadlist::load(std::string tag, XML_Helper* helper)
     //what has happened?
         return false;
     
-    Road s(helper);
-    push_back(s);
+    push_back(new Road(helper));
 
     return true;
 }

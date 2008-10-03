@@ -31,7 +31,7 @@ class Stack;
  * is implemented as a singleton because many classes use it for looking 
  * up temples.
  */
-class Templelist : public LocationList<Temple>, public sigc::trackable
+class Templelist : public LocationList<Temple*>, public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.

@@ -1135,10 +1135,11 @@ void Game::center_view_on_city()
   for (Citylist::iterator i = Citylist::getInstance()->begin();
        i != Citylist::getInstance()->end(); i++)
     {
-      if (i->getOwner() == p && i->isCapital() &&
-	  i->getCapitalOwner() == p)
+      City *c = *i;
+      if (c->getOwner() == p && c->isCapital() &&
+	  c->getCapitalOwner() == p)
 	{
-	  smallmap->center_view_on_tile(i->getPos(), 
+	  smallmap->center_view_on_tile(c->getPos(), 
 					!GameScenario::s_hidden_map);
 	  return;
 	}
@@ -1148,11 +1149,12 @@ void Game::center_view_on_city()
   for (Citylist::iterator i = Citylist::getInstance()->begin();
        i != Citylist::getInstance()->end(); i++)
     {
-      if (i->getOwner() == p)
+      City *c = *i;
+      if (c->getOwner() == p)
 	{
 	  if (Playerlist::isFinished())
 	    return;
-	  smallmap->center_view_on_tile(i->getPos(), 
+	  smallmap->center_view_on_tile(c->getPos(), 
 					!GameScenario::s_hidden_map);
 	  break;
 	}

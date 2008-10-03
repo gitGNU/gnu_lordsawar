@@ -186,10 +186,10 @@ void CityDialog::run()
 	  // make sure player doesn't have other capitals
 	  Citylist* cl = Citylist::getInstance();
 	  for (Citylist::iterator i = cl->begin(); i != cl->end(); ++i)
-	    if ((*i).isCapital() && (*i).getOwner() == city->getOwner())
+	    if ((*i)->isCapital() && (*i)->getOwner() == city->getOwner())
 	      {
-		(*i).setCapital(false);
-		(*i).setCapitalOwner(NULL);
+		(*i)->setCapital(false);
+		(*i)->setCapitalOwner(NULL);
 	      }
 	  city->setCapital(true);
 	  city->setCapitalOwner(city->getOwner());

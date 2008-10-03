@@ -57,9 +57,9 @@ SelectHiddenRuinDialog::SelectHiddenRuinDialog()
     Ruinlist *ruinlist = Ruinlist::getInstance();
     Ruinlist::iterator iter = ruinlist->begin();
     for (;iter != ruinlist->end(); iter++)
-      if ((*iter).isHidden() && 
-	  (*iter).getOwner() == Playerlist::getInstance()->getNeutral())
-	addHiddenRuin(&*iter);
+      if ((*iter)->isHidden() && 
+	  (*iter)->getOwner() == Playerlist::getInstance()->getNeutral())
+	addHiddenRuin(*iter);
       
     Uint32 max = ruinlist->size();
     if (max)

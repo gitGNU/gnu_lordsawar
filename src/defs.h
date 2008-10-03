@@ -75,6 +75,8 @@ const unsigned int MOVE_BONUS_WIDTH = 32;
 const unsigned int MOVE_BONUS_HEIGHT = 20;
 const unsigned int MOVE_BONUS_TYPES = 6;
 
+const unsigned int CITY_WIDTH = 2;
+
 const unsigned short LORDSAWAR_PORT = 14998;
 #define HUMAN_PLAYER_TYPE _("Human")
 #define EASY_PLAYER_TYPE _("Easy")

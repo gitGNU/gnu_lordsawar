@@ -68,7 +68,7 @@ bool Signpostlist::save(XML_Helper* helper) const
     retval &= helper->openTag(Signpostlist::d_tag);
 
     for (const_iterator it = begin(); it != end(); it++)
-        retval &= (*it).save(helper);
+        retval &= (*it)->save(helper);
     
     retval &= helper->closeTag();
 
@@ -81,8 +81,7 @@ bool Signpostlist::load(std::string tag, XML_Helper* helper)
     //what has happened?
         return false;
     
-    Signpost s(helper);
-    push_back(s);
+    push_back(new Signpost(helper));
 
     return true;
 }

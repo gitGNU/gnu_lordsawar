@@ -403,27 +403,27 @@ bool CreateScenario::createMap()
             switch (map[y*d_width + x])
             {
                 case Maptile::SIGNPOST:
-                    Signpostlist::getInstance()->push_back(Signpost(Vector<int>(x,y)));
+                    Signpostlist::getInstance()->push_back(new Signpost(Vector<int>(x,y)));
                     break;
                 case Maptile::TEMPLE:
                     Templelist::getInstance()->push_back
-		      (Temple(Vector<int>(x,y), popRandomTempleName()));
+		      (new Temple(Vector<int>(x,y), popRandomTempleName()));
                     break;
                 case Maptile::RUIN:
 		    Ruinlist::getInstance()->push_back
-		      (Ruin(Vector<int>(x,y), popRandomRuinName()));
+		      (new Ruin(Vector<int>(x,y), popRandomRuinName()));
 		    break;
                 case Maptile::CITY:
-                    Citylist::getInstance()->push_back(City(Vector<int>(x,y)));
+                    Citylist::getInstance()->push_back(new City(Vector<int>(x,y)));
                     break;
                 case Maptile::ROAD:
-                    Roadlist::getInstance()->push_back(Road(Vector<int>(x,y)));
+                    Roadlist::getInstance()->push_back(new Road(Vector<int>(x,y)));
                     break;
                 case Maptile::PORT:
-                    Portlist::getInstance()->push_back(Port(Vector<int>(x,y)));
+                    Portlist::getInstance()->push_back(new Port(Vector<int>(x,y)));
                     break;
                 case Maptile::BRIDGE:
-                    Bridgelist::getInstance()->push_back(Bridge(Vector<int>(x,y)));
+                    Bridgelist::getInstance()->push_back(new Bridge(Vector<int>(x,y)));
                     break;
                 case Maptile::NONE:
 		    break;
@@ -452,16 +452,17 @@ bool CreateScenario::distributePlayers()
 
     for (Citylist::iterator cit = cl->begin(); cit != cl->end(); cit++, skipping++)
     {
+        City *c = *cit;
         if ((skipping >= cityskip) && (pit != pl->end()))
         {
             // distribute capitals for the players
-            (*cit).conquer(*pit);
-            (*cit).setCapitalOwner(*pit);
-            (*cit).setCapital(true);
+            c->conquer(*pit);
+            c->setCapitalOwner(*pit);
+            c->setCapital(true);
             skipping = 0;
 
 	    History_CityWon *item = new History_CityWon();
-	    item->fillData(&*cit);
+	    item->fillData(c);
 	    (*pit)->addHistory(item);
 
             pit++;
@@ -469,7 +470,7 @@ bool CreateScenario::distributePlayers()
                 pit++;
         }
         else
-            (*cit).setOwner(pl->getNeutral());
+            c->setOwner(pl->getNeutral());
 
     }
 
@@ -484,18 +485,19 @@ bool CreateScenario::setupCities(bool cities_can_produce_allies,
     for (Citylist::iterator it = Citylist::getInstance()->begin();
         it != Citylist::getInstance()->end(); it++)
     {
+        City *c = *it;
         //1. set a reasonable cityname
-        (*it).setName(popRandomCityName());
+        c->setName(popRandomCityName());
 
         //2. distribute the income a bit (TBD)
 
         //3. set the city production
-        (*it).setRandomArmytypes(cities_can_produce_allies, 
-				 number_of_armies_factor);
+        c->setRandomArmytypes(cities_can_produce_allies, 
+			      number_of_armies_factor);
 
 	if (rand() % 2 == 0)
-	  (*it).raiseDefense();
-	(*it).setGold(getRandomCityIncome((*it).isCapital()));
+	  c->raiseDefense();
+	c->setGold(getRandomCityIncome(c->isCapital()));
     }
 
     return true;
@@ -505,7 +507,7 @@ bool CreateScenario::setupRoads()
 {
   Roadlist* rl = Roadlist::getInstance();
   for (Roadlist::iterator it = rl->begin(); it != rl->end(); it++)
-    (*it).setType(Roadlist::getInstance()->calculateType((*it).getPos()));
+    (*it)->setType(Roadlist::getInstance()->calculateType((*it)->getPos()));
   return true;
 }
 
@@ -513,7 +515,7 @@ bool CreateScenario::setupBridges()
 {
   Bridgelist* bl = Bridgelist::getInstance();
   for (Bridgelist::iterator it = bl->begin(); it != bl->end(); it++)
-    (*it).setType(Bridgelist::getInstance()->calculateType((*it).getPos()));
+    (*it)->setType(Bridgelist::getInstance()->calculateType((*it)->getPos()));
   return true;
 }
 
@@ -524,7 +526,7 @@ bool CreateScenario::setupTemples()
     {
         // set a random temple type
         int type= (int) ((TEMPLE_TYPES*1.0) * (rand() / (RAND_MAX + 1.0)));
-        (*it).setType(type);
+        (*it)->setType(type);
 
     }
 
@@ -544,32 +546,32 @@ bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
         // set a random ruin type
         if (rand() % stronghold_factor == 0) //one in six ruins is a stronghold
           {
-            (*it).setType(Ruin::STRONGHOLD);
+            (*it)->setType(Ruin::STRONGHOLD);
             if (strongholds_invisible == true)
               {
-                (*it).setHidden(true);
-                (*it).setOwner(NULL);
+                (*it)->setHidden(true);
+                (*it)->setOwner(NULL);
               }
           }
         else
-          (*it).setType(Ruin::RUIN);
+          (*it)->setType(Ruin::RUIN);
 
         //one in twenty ruins is a sage
-        if (rand() % sage_factor == 0 && (*it).getType() == Ruin::RUIN) 
+        if (rand() % sage_factor == 0 && (*it)->getType() == Ruin::RUIN) 
           {
-            (*it).setSage (true);
+            (*it)->setSage (true);
             continue;
           }
 
 
         //one in ten ruins doesn't have a guardian
-        if (rand() % no_guardian_factor == 0 && (*it).getType() == Ruin::RUIN) 
+        if (rand() % no_guardian_factor == 0 && (*it)->getType() == Ruin::RUIN) 
           continue;
 
         // and set a guardian
         Stack* s;
         Army* a = 0;
-        Vector<int> pos = (*it).getPos();
+        Vector<int> pos = (*it)->getPos();
         
 	a = getRandomRuinKeeper(Playerlist::getInstance()->getNeutral());
         if (a)
@@ -581,7 +583,7 @@ bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
             a = 0;
 
             //now mark this stack as guard
-            (*it).setOccupant(s);
+            (*it)->setOccupant(s);
           }
     }
 
@@ -604,11 +606,11 @@ bool CreateScenario::setupSignposts(int ratio)
 	if (randno < dynamicPercent)
 	{
             // set up a signpost from the list of signposts
-	    (*it).setName(popRandomSignpost());
+	    (*it)->setName(popRandomSignpost());
 	}
 	else
 	{
-            (*it).setName(getDynamicSignpost(&*it));
+            (*it)->setName(getDynamicSignpost(*it));
 	}
     }
 
@@ -685,17 +687,17 @@ bool CreateScenario::setupRuinRewards()
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
 	 it != Ruinlist::getInstance()->end(); it++)
       {
-	if ((*it).isHidden() == true)
+	if ((*it)->isHidden() == true)
 	  {
 	    //add it to the reward list
-	    Reward_Ruin *newReward = new Reward_Ruin(&(*it)); //make a reward
+	    Reward_Ruin *newReward = new Reward_Ruin((*it)); //make a reward
 	    newReward->setName(newReward->getDescription());
 	    Rewardlist::getInstance()->push_back(newReward); //add it
 	  }
 	else
 	  {
-	    if ((*it).hasSage() == false && (*it).getReward() == NULL)
-	      (*it).populateWithRandomReward();
+	    if ((*it)->hasSage() == false && (*it)->getReward() == NULL)
+	      (*it)->populateWithRandomReward();
 	  }
       }
   return true;

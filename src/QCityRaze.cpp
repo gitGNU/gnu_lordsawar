@@ -106,8 +106,8 @@ City* QuestCityRaze::getCity() const
 {
     Citylist* cl = Citylist::getInstance();
     for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
-        if ((*it).getId() == d_city)
-            return &(*it);
+        if ((*it)->getId() == d_city)
+            return (*it);
 
     return 0;
 }
@@ -131,9 +131,9 @@ City* QuestCityRaze::chooseToRaze(Player *p)
     // Collect all cities
     Citylist* cl = Citylist::getInstance();
     for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-        if (!(*it).isBurnt() && (*it).getOwner() != p &&
-	    (*it).getOwner() != Playerlist::getInstance()->getNeutral())
-            cities.push_back(&(*it));
+        if (!(*it)->isBurnt() && (*it)->getOwner() != p &&
+	    (*it)->getOwner() != Playerlist::getInstance()->getNeutral())
+            cities.push_back((*it));
 
     // Find a suitable city for us to raze 
     if (cities.empty())
