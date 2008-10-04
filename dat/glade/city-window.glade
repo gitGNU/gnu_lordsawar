@@ -294,13 +294,31 @@
 			  </child>
 
 			  <child>
-			    <widget class="GtkHBox" id="production_toggles_hbox">
+			    <widget class="GtkScrolledWindow" id="scrolledwindow1">
 			      <property name="visible">True</property>
-			      <property name="homogeneous">False</property>
-			      <property name="spacing">6</property>
+			      <property name="can_focus">True</property>
+			      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+			      <property name="vscrollbar_policy">GTK_POLICY_NEVER</property>
+			      <property name="shadow_type">GTK_SHADOW_NONE</property>
+			      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 			      <child>
-				<placeholder/>
+				<widget class="GtkViewport" id="viewport1">
+				  <property name="visible">True</property>
+				  <property name="shadow_type">GTK_SHADOW_NONE</property>
+
+				  <child>
+				    <widget class="GtkHBox" id="production_toggles_hbox">
+				      <property name="visible">True</property>
+				      <property name="homogeneous">False</property>
+				      <property name="spacing">6</property>
+
+				      <child>
+					<placeholder/>
+				      </child>
+				    </widget>
+				  </child>
+				</widget>
 			      </child>
 			    </widget>
 			    <packing>
