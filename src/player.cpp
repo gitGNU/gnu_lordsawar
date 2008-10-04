@@ -1504,7 +1504,7 @@ void Player::doCityPillage(City *c, int& gold, int* pillaged_army_type)
 
   if (c->getNoOfProductionBases() > 0)
     {
-      int i;
+      unsigned int i;
       unsigned int max_cost = 0;
       int slot = -1;
       for (i = 0; i < c->getNoOfProductionBases(); i++)
@@ -1567,7 +1567,7 @@ void Player::doCitySack(City* c, int& gold, std::list<Uint32> *sacked_types)
   if (c->getNoOfProductionBases() > 1)
     {
       const ArmyProdBase *a;
-      int i, max = 0;
+      unsigned int i, max = 0;
       for (i = 0; i < c->getNoOfProductionBases(); i++)
 	{
 	  a = c->getProductionBase(i);
@@ -1667,7 +1667,7 @@ bool Player::cityBuyProduction(City* c, int slot, int type)
     return false;
 
   // can't put it in that slot
-  if (slot >= c->getMaxNoOfProductionBases())
+  if (slot >= (int)c->getMaxNoOfProductionBases())
     return false;
   
   Action_Buy* item = new Action_Buy();
@@ -2523,7 +2523,7 @@ void Player::AI_maybeBuyScout()
       bool one_turn_army_exists = false;
       City *c = Citylist::getInstance()->getFirstCity(this);
       //do we already have something that can be produced in one turn?
-      for (int i = 0; i < c->getMaxNoOfProductionBases(); i++)
+      for (unsigned int i = 0; i < c->getMaxNoOfProductionBases(); i++)
 	{
 	  if (c->getArmytype(i) == -1)    // no production in this slot
 	    continue;

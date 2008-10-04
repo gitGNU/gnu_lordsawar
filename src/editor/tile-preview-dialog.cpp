@@ -83,7 +83,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Uint32 tileSize)
 	scene += "bcd";
 	scene += "hij";
 	scene += "efg";
-	s = new TilePreviewScene(tile, tilestyle_images, 3, 3,scene);
+	s = new TilePreviewScene(tile, tilestyle_images, 3, 3, scene);
 	scenes.push_back(s);
 	scene.clear();
 	scene += "iiiii";
@@ -91,7 +91,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Uint32 tileSize)
 	scene += "iiiii";
 	scene += "iiiii";
 	scene += "iiiii";
-	s = new TilePreviewScene(tile, tilestyle_images, 5, 5,scene);
+	s = new TilePreviewScene(tile, tilestyle_images, 5, 5, scene);
 	scenes.push_back(s);
 	scene.clear();
 	scene += "iiii";
@@ -99,7 +99,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Uint32 tileSize)
 	scene += "ijhi";
 	scene += "imni";
 	scene += "iiii";
-	s = new TilePreviewScene(tile, tilestyle_images, 5, 4,scene);
+	s = new TilePreviewScene(tile, tilestyle_images, 5, 4, scene);
 	scenes.push_back(s);
 	break;
       case Tile::FOREST:
@@ -107,7 +107,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Uint32 tileSize)
 	scene += "bcd";
 	scene += "hij";
 	scene += "efg";
-	s = new TilePreviewScene(tile, tilestyle_images, 3, 3,scene);
+	s = new TilePreviewScene(tile, tilestyle_images, 3, 3, scene);
 	scenes.push_back(s);
 	break;
       case Tile::HILLS:
@@ -115,7 +115,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Uint32 tileSize)
 	scene += "bcd";
 	scene += "hij";
 	scene += "efg";
-	s = new TilePreviewScene(tile, tilestyle_images, 3, 3,scene);
+	s = new TilePreviewScene(tile, tilestyle_images, 3, 3, scene);
 	scenes.push_back(s);
 	break;
       case Tile::MOUNTAIN:
@@ -123,7 +123,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Uint32 tileSize)
 	scene += "bcd";
 	scene += "hij";
 	scene += "efg";
-	s = new TilePreviewScene(tile, tilestyle_images, 3, 3,scene);
+	s = new TilePreviewScene(tile, tilestyle_images, 3, 3, scene);
 	scenes.push_back(s);
 	break;
       case Tile::SWAMP:
@@ -132,7 +132,15 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Uint32 tileSize)
 	scene += "aaaaa";
 	scene += "aaaaa";
 	scene += "aaaaa";
-	s = new TilePreviewScene(tile, tilestyle_images, 5, 5,scene);
+	s = new TilePreviewScene(tile, tilestyle_images, 5, 5, scene);
+	scenes.push_back(s);
+	break;
+      case Tile::VOID:
+	scene.clear();
+	scene += "bcd";
+	scene += "hij";
+	scene += "efg";
+	s = new TilePreviewScene(tile, tilestyle_images, 3, 3, scene);
 	scenes.push_back(s);
 	break;
       }

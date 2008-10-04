@@ -118,7 +118,7 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
     army_treeview->get_selection()->signal_changed()
 	.connect(sigc::mem_fun(this, &CityDialog::on_selection_changed));
 
-    for (int i = 0; i < city->getMaxNoOfProductionBases(); i++)
+    for (unsigned int i = 0; i < city->getMaxNoOfProductionBases(); i++)
     {
 	const ArmyProdBase* a = city->getProductionBase(i);
 	if (a)
@@ -178,7 +178,7 @@ void CityDialog::run()
 
   if (response == 0)		// accepted
     {
-      int c = 0;
+      unsigned int c = 0;
       // set attributes
       bool capital = capital_checkbutton->get_active();
       if (capital)
@@ -255,9 +255,8 @@ void CityDialog::on_randomize_armies_clicked()
 {
   const ArmyProdBase *army;
   army_list->clear();
-  //crapola
   city->setRandomArmytypes(true, 1);
-  for (int i = 0; i < city->getMaxNoOfProductionBases(); i++)
+  for (unsigned int i = 0; i < city->getMaxNoOfProductionBases(); i++)
     {
       army = city->getProductionBase(i);
       if (army)
@@ -308,7 +307,7 @@ void CityDialog::on_selection_changed()
 void CityDialog::set_button_sensitivity()
 {
   Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
-  int armies = army_list->children().size();
+  unsigned int armies = army_list->children().size();
   add_button->set_sensitive(armies < city->getMaxNoOfProductionBases());
   remove_button->set_sensitive(i);
 }

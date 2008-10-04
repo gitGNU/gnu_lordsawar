@@ -296,7 +296,7 @@ void City::addProductionBase(int idx, ArmyProdBase *army)
 
 void City::removeProductionBase(int idx)
 {
-    if ((idx < 0) || (idx > (getMaxNoOfProductionBases() - 1)))
+    if ((idx < 0) || (idx > (int)(getMaxNoOfProductionBases() - 1)))
         return;
 
     if ((*this)[idx]->getArmyProdBase() != NULL)
@@ -356,7 +356,7 @@ void City::sortProduction()
   if (getNoOfProductionBases() > 1)
     {
       std::list<ArmyProdBase*> productibles;
-      int j;
+      unsigned int j;
       for (j = 0; j < getMaxNoOfProductionBases(); j++)
 	{
 	  if ((*this)[j]->getArmyProdBase())
@@ -374,8 +374,7 @@ void City::sortProduction()
 void City::setRandomArmytypes(bool produce_allies, int likely)
 {
   //remove armies any that happen to be being produced
-  int max = getMaxNoOfProductionBases();
-  for (int i = 0; i < max; i++)
+  for (unsigned int i = 0; i < getMaxNoOfProductionBases(); i++)
     removeProductionBase(i);
 
   const Armysetlist* al = Armysetlist::getInstance();
@@ -478,7 +477,7 @@ void City::produceStrongestProductionBase()
     {
       unsigned int max_strength = 0;
       int strong_idx = -1;
-      for (int i = 0; i < getMaxNoOfProductionBases(); i++)
+      for (unsigned int i = 0; i < getMaxNoOfProductionBases(); i++)
 	{
 	  if ((*this)[i]->getArmyProdBase() == NULL)
 	    continue;
@@ -521,7 +520,7 @@ void City::produceWeakestProductionBase()
     {
       unsigned int min_strength = 100;
       int weak_idx = -1;
-      for (int i = 0; i < getMaxNoOfProductionBases(); i++)
+      for (unsigned int i = 0; i < getMaxNoOfProductionBases(); i++)
 	{
 	  if ((*this)[i]->getArmyProdBase() == NULL)
 	    continue;
@@ -737,7 +736,7 @@ const ArmyProdBase *City::getProductionBaseBelongingTo(const Army *army)
 {
   if (!army)
     return NULL;
-  for (int i = 0; i < this->getMaxNoOfProductionBases(); i++)
+  for (unsigned int i = 0; i < this->getMaxNoOfProductionBases(); i++)
     {
       const ArmyProdBase* armyprodbase = this->getProductionBase(i);
       if (armyprodbase == NULL)

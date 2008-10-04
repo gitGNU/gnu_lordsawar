@@ -18,7 +18,8 @@
 #ifndef BACKPACK_H
 #define BACKPACK_H
 
-#include<list>
+#include <list>
+#include <string>
 #include <SDL.h>
 
 class XML_Helper;

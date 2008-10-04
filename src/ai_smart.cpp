@@ -192,7 +192,7 @@ int AI_Smart::setBestProduction(City *c)
     int scorebasic = -1;
 
     // we try to determine the most attractive basic production
-    for (int i = 0; i < c->getMaxNoOfProductionBases(); i++)
+    for (Uint32 i = 0; i < c->getMaxNoOfProductionBases(); i++)
     {
         if (c->getArmytype(i) == -1)    // no production in this slot
             continue;

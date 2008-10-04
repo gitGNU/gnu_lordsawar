@@ -204,7 +204,7 @@ void CityWindow::fill_in_production_toggles()
 	
 	toggle->add(*manage(new Gtk::Image(pic)));
 
-	toggle->set_active(i == production_index);
+	toggle->set_active((int)i == production_index);
 	toggle->show_all();
     }
     ignore_toggles = false;

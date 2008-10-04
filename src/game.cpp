@@ -1245,7 +1245,7 @@ void Game::on_city_fight_finished(City *city, Fight::Result result)
 	  if (o)
 	    {
 	      int army_type = o->getStrongestArmy()->getTypeId();
-	      for (int i = 0; i < city->getMaxNoOfProductionBases(); i++)
+	      for (Uint32 i = 0; i < city->getMaxNoOfProductionBases(); i++)
 		{
 		  if (city->getArmytype(i) == army_type)
 		    {
