@@ -31,6 +31,7 @@
 #include "Renamable.h"
 #include "prodslot.h"
 #include "defs.h"
+#include "prodslotlist.h"
 
 class Player;
 class Stack;
@@ -62,8 +63,8 @@ class Hero;
  * city.  Conquering another player's capital city doesn't give any bonus
  * except for bragging rights.
  */
-class City : public Ownable, public Location, public Renamable,
-    public std::vector<ProdSlot*>
+class City : public Ownable, public Location, public Renamable, 
+    public ProdSlotlist
 {
     public:
 
@@ -118,29 +119,6 @@ class City : public Ownable, public Location, public Renamable,
 	 */
         bool reduceDefense();
 
-	//! Add an Army production base to a production slot.
-        /**
-	 * This method is called when a new army production base has been
-	 * purchased/bought.
-	 *
-         * @note This method overwrites the production slot if neccessary.
-         * 
-         * @param index        The index of the production slot; if set to -1,
-         *                     the city will try to find a free production slot.
-	 *                     This must be a value between -1 and 3.
-	 * @param army         The Army production base to add.  Look at the
-	 *                     Army class to find out what a production base is.
-         */
-        void addProductionBase(int index, ArmyProdBase *army);
-
-        //! Clears the basic production of a given slot.
-	/**
-	 * @param index  The slot to remove the Army production base from.
-	 *               This method deletes the Army production base object.  
-	 *               This parameter must be a a value between 0 and 3.
-	 */
-        void removeProductionBase(int index);
-        
         //! Changes the owner of the city and prepares it for takeover.
 	/**
 	 * @param newowner  The pointer to the Player in Playerlist who is the
@@ -181,26 +159,6 @@ class City : public Ownable, public Location, public Renamable,
 	 */
         void nextTurn();
 
-        //! Returns whether or not the city can produce a given army type.
-	/**
-	 * This method scans the production slots of the city for the given 
-	 * army prototype.
-	 *
-	 * @param type      The index of the Army prototype in the Armyset.
-	 * @param armyset   The unique Id of the armyset for which to check
-	 *                  if the given type is already a production base
-	 *                  in this city.
-	 * @return True if the given army prototype is already a production
-	 *         base in the city.  Otherwise false.
-	 */
-        bool hasProductionBase(int type, Uint32 armyset) const;
-
-        //! Returns true if the city already has bought this production type.
-        bool hasProductionBase(const ArmyProto * army);
-
-        //! Return the first slot that doesn't have a production base.
-	int getFreeBasicSlot();
-
         //! Return the defense level of the city.
         int getDefenseLevel() const {return d_defense_level;}
 
@@ -213,65 +171,8 @@ class City : public Ownable, public Location, public Renamable,
 	 */
 	int getGoldNeededForUpgrade() const; 
 	
-        //! Returns the maximum number of production bases of the city.
-	/**
-	 * The city has this many production slots in total.  This value 
-	 * should always return 4.
-	 *
-	 * @return The maximum number of Army production bases that this city
-	 *         can have.
-	 */
-        Uint32 getMaxNoOfProductionBases() const {return size();};
-
-        //! Return the number of basic productions of the city.
-	/**
-	 * Scan the production slots and count how many are filled with an
-	 * Army production base.
-	 *
-	 * @return The current number of used slots that the city has.
-	 */
-        Uint32 getNoOfProductionBases();
-
-        //! Get the number of turns until current production base is finished.
-        int getDuration() const {return d_duration;}
-
-        //! Return the index of the active production slot.
-	/**
-	 * @return The index of the active production slot, or -1 if the City
-	 *         isn't producing anything.
-	 */
-        int getActiveProductionSlot() const {return d_active_production_slot;}
-        
-	//! Set the active production base of the city.
-        /**
-	 * Make the Army production base in particular slot active, so that
-	 * the Army starts being produced.
-	 *
-         * @param index  The index of the production slot to activate. 
-	 *               -1 means no production at all.   This must be a value
-	 *               between -1 and 3.
-         */
-        void setActiveProductionSlot(int index);
-        
         //! Return the income of the city per turn.
         Uint32 getGold() const {return d_gold;}
-
-        //! Return the index of the army in the given slot.
-	/**
-	 * @param slot  The production slot to return the army type for.  This
-	 *              value ranges between 0 and 3.
-	 *
-	 * @return The index of the Army prototype unit within it's Armyset,
-	 *         or -1 if no production base is allocated to that slot.
-	 */
-        int getArmytype(int slot) const;
-
-        //! Return the army production base of the given slot.
-        const ArmyProdBase * getProductionBase(int slot) const;
-	const ArmyProdBase * getProductionBaseBelongingTo(const Army *army);
-        
-	//! Return the army production base this city is producing.
-	const ArmyProdBase *getActiveProductionBase() const;
 
         //! Returns whether or not the city has been destroyed.
         bool isBurnt() const {return d_burnt;}
@@ -346,8 +247,6 @@ class City : public Ownable, public Location, public Renamable,
 	//! Return how many armies are in the city.
 	Uint32 countDefenders();
 
-	Uint32 countCitiesVectoringToHere();
-
 	//! This makes the army show up.  called when it's time.
 	const Army *armyArrives();
 
@@ -376,20 +275,6 @@ class City : public Ownable, public Location, public Renamable,
 	void sortProduction();
 
         // DATA
-
-	//! The active production slot.
-	/**
-	 * The Army production base in this slot is the Army unit that the
-	 * city is currently busy creating.
-	 */
-        int d_active_production_slot;
-
-	//! Number of turns until the next Army is produced.
-	/**
-	 *  Number of turns required to finish the current production.
-	 *  When this value hits 0, the new Army unit is created.
-	 */
-        int d_duration;
 
 	//! The City gives the Player this much gold per turn.
         Uint32 d_gold;

@@ -48,16 +48,11 @@ using namespace std;
 
 City::City(Vector<int> pos, string name, Uint32 gold, Uint32 numslots)
     :Ownable((Player *)0), Location(pos, CITY_WIDTH), Renamable(name),
-     d_active_production_slot(-1),
-     d_duration(-1), d_gold(gold),
-     d_defense_level(1), d_burnt(false), d_vectoring(false),
-     d_vector(Vector<int>(-1,-1)), d_capital(false), d_capital_owner(0)
+    ProdSlotlist(numslots), d_gold(gold), d_defense_level(1), d_burnt(false), 
+    d_vectoring(false), d_vector(Vector<int>(-1,-1)), 
+    d_capital(false), d_capital_owner(0)
 
 {
-  // Initialise armytypes
-  for (unsigned int i = 0; i < numslots; i++)
-    push_back(new ProdSlot());
-
   // set the tiles to city type
   for (unsigned int i = 0; i < getSize(); i++)
     for (unsigned int j = 0; j < getSize(); j++)
@@ -68,18 +63,13 @@ City::City(Vector<int> pos, string name, Uint32 gold, Uint32 numslots)
 }
 
 City::City(XML_Helper* helper)
-    :Ownable(helper), Location(helper, CITY_WIDTH), Renamable(helper)
+    :Ownable(helper), Location(helper, CITY_WIDTH), Renamable(helper),
+    ProdSlotlist(helper)
 {
-  //note: the armies get loaded in citylist
-
     //initialize the city
-
-    clear();
 
     helper->getData(d_defense_level, "defense");
     
-    helper->getData(d_active_production_slot, "active_production_slot");
-    helper->getData(d_duration, "duration");
     helper->getData(d_gold, "gold");
     helper->getData(d_burnt, "burnt");
     helper->getData(d_capital, "capital");
@@ -109,31 +99,14 @@ City::City(XML_Helper* helper)
         for (unsigned int j = 0; j < d_size; j++)
             GameMap::getInstance()->getTile(getPos().x+i, getPos().y+j)
                                   ->setBuilding(Maptile::CITY);
-    
-  helper->registerTag(ProdSlot::d_tag, sigc::mem_fun(this, &City::load));
-}
-
-bool City::load(std::string tag, XML_Helper *helper)
-{
-  if (tag == ProdSlot::d_tag)
-    {
-      push_back(new ProdSlot(helper));
-      return true;
-    }
-  return false;
 }
 
 City::City(const City& c)
-    :Ownable(c), Location(c), Renamable(c), 
-    d_active_production_slot(c.d_active_production_slot), 
-    d_duration(c.d_duration), d_gold(c.d_gold), 
-    d_defense_level(c.d_defense_level), d_burnt(c.d_burnt),
+    :Ownable(c), Location(c), Renamable(c), ProdSlotlist(c),
+    d_gold(c.d_gold), d_defense_level(c.d_defense_level), d_burnt(c.d_burnt),
     d_vectoring(c.d_vectoring),d_vector(c.d_vector), d_capital(c.d_capital), 
     d_capital_owner(c.d_capital_owner)
 {
-  for (std::vector<ProdSlot*>::const_iterator it = c.begin(); 
-       it != c.end(); it++)
-      push_back(*it);
 }
 
 City::~City()
@@ -155,9 +128,6 @@ bool City::save(XML_Helper* helper) const
     retval &= helper->saveData("name", getName());
     retval &= helper->saveData("owner", d_owner->getId());
     retval &= helper->saveData("defense", d_defense_level);
-    retval &= helper->saveData("active_production_slot", 
-			       d_active_production_slot);
-    retval &= helper->saveData("duration", d_duration);
     retval &= helper->saveData("gold", d_gold);
     retval &= helper->saveData("burnt", d_burnt);
     retval &= helper->saveData("capital", d_capital);
@@ -165,46 +135,9 @@ bool City::save(XML_Helper* helper) const
       retval &= helper->saveData("capital_owner", d_capital_owner->getId());
     retval &= helper->saveData("vectoring", svect.str());
 
-    for (unsigned int i = 0; i < size(); i++)
-      {
-	if ((*this)[i])
-	  retval &= (*this)[i]->save(helper);
-      }
+    retval &= ProdSlotlist::save(helper);
     retval &= helper->closeTag();
     return retval;
-}
-
-Uint32 City::getNoOfProductionBases()
-{
-  unsigned int max = 0;
-  for (unsigned int i = 0; i < this->getMaxNoOfProductionBases(); i++)
-    {
-      if (getProductionBase(i))
-        max++;
-    }
-  return max;
-}
-
-void City::setActiveProductionSlot(int index)
-{
-    if (index == -1)
-    {
-        d_active_production_slot = index;
-        d_duration = -1;
-        return;
-    }
-
-    // return on wrong data
-    if (((index >= (int)size())) || 
-	(index >= 0 && getArmytype(index) == -1))
-        return;
-
-    d_active_production_slot = index;
-    const ArmyProdBase* a = getProductionBase(index);
-
-    // set the duration to produce this armytype
-    if (a)
-        d_duration = a->getProduction(); 
 }
 
 bool City::raiseDefense()
@@ -235,77 +168,6 @@ bool City::reduceDefense()
     return true;
 }
 
-
-int City::getFreeBasicSlot() 
-{
-     int index=-1;
-
-     debug(getName()<< " BASIC SLOTS=" << size()) 
-     for (unsigned int i = 0; i < size(); i++)
-     {
-         debug(getName()<< " Index Value=" << (*this)[i])
-         if ((*this)[i]->getArmyProdBase() == NULL)
-         {
-             index=i;
-             return i;
-         }         
-     }
-
-     return index;
-}
-
-bool City::hasProductionBase(const ArmyProto * army)
-{
-  return hasProductionBase(army->getTypeId(), army->getArmyset());
-}
-
-void City::addProductionBase(int idx, ArmyProdBase *army)
-{
-    if (idx < 0)
-    {
-        // try to find an unoccupied production slot. If there is none, pick 
-        // the slot with the highest index.
-        for (unsigned int i = 0; i < size(); i++)
-            if ((*this)[i]->getArmyProdBase() == NULL)
-            {
-                idx = i;
-                break;
-            }
-
-        if (idx < 0)
-        {
-            idx = size() - 1;
-        }
-    }
-    if (idx >= (int)size())
-      return;
-    
-    if ((*this)[idx]->getArmyProdBase())
-      {
-	bool restore_production = false;
-	if (d_active_production_slot == idx)
-	  restore_production = true;
-	removeProductionBase(idx);
-	(*this)[idx]->setArmyProdBase(army);
-	if (restore_production)
-	  setActiveProductionSlot(idx);
-      }
-    else
-      (*this)[idx]->setArmyProdBase(army);
-}
-
-void City::removeProductionBase(int idx)
-{
-    if ((idx < 0) || (idx > (int)(getMaxNoOfProductionBases() - 1)))
-        return;
-
-    if ((*this)[idx]->getArmyProdBase() != NULL)
-      (*this)[idx]->clear();
-
-    if (d_active_production_slot == idx)
-        setActiveProductionSlot(-1);
-}
-
 void City::conquer(Player* newowner)
 {
   Citylist::getInstance()->stopVectoringTo(this);
@@ -320,6 +182,218 @@ void City::conquer(Player* newowner)
     VectoredUnitlist *vul = VectoredUnitlist::getInstance();
     vul->removeVectoredUnitsGoingTo(this);
     vul->removeVectoredUnitsComingFrom(this);
+}
+
+void City::produceStrongestProductionBase()
+{
+  debug("produceStrongestProductionBase()");
+
+  if (getNoOfProductionBases() == 0)
+    return;
+
+  Stack* stack = getFreeStack(d_owner);
+  if (stack)
+    {
+      unsigned int max_strength = 0;
+      int strong_idx = -1;
+      for (unsigned int i = 0; i < getMaxNoOfProductionBases(); i++)
+	{
+	  if ((*this)[i]->getArmyProdBase() == NULL)
+	    continue;
+	  if (getProductionBase(i)->getStrength() > max_strength)
+	    {
+	      strong_idx = i;
+	      max_strength = getProductionBase(i)->getStrength();
+	    }
+	}
+      if (strong_idx == -1)
+	return;
+
+      int savep = d_active_production_slot;
+      setActiveProductionSlot(strong_idx);
+      produceArmy();
+      setActiveProductionSlot(savep);
+      return;
+    }
+}
+
+void City::produceScout()
+{
+  const Armysetlist* al = Armysetlist::getInstance();
+  Uint32 set = d_owner->getArmyset();
+  ArmyProto *scout = al->getScout(set);
+  Army *a = new Army(*scout, d_owner);
+  GameMap::getInstance()->addArmy(this, a);
+
+}
+
+void City::produceWeakestProductionBase()
+{
+  debug("produceWeakestProductionBase()");
+
+  if (getNoOfProductionBases() == 0)
+    return;
+
+  Stack* stack = getFreeStack(d_owner);
+  if (stack)
+    {
+      unsigned int min_strength = 100;
+      int weak_idx = -1;
+      for (unsigned int i = 0; i < getMaxNoOfProductionBases(); i++)
+	{
+	  if ((*this)[i]->getArmyProdBase() == NULL)
+	    continue;
+	  if (getProductionBase(i)->getStrength() < min_strength)
+	    {
+	      weak_idx = i;
+	      min_strength = getProductionBase(i)->getStrength();
+	    }
+	}
+      if (weak_idx == -1)
+	return;
+
+      int savep = d_active_production_slot;
+      setActiveProductionSlot(weak_idx);
+      produceArmy();
+      setActiveProductionSlot(savep);
+      return;
+    }
+}
+
+const Army *City::armyArrives()
+{
+  // vector the army to the new spot
+  if (d_vectoring)
+    {
+      VectoredUnitlist *vul = VectoredUnitlist::getInstance();
+      VectoredUnit *v = new VectoredUnit 
+	(getPos(), d_vector, 
+	 (*this)[d_active_production_slot]->getArmyProdBase(),
+	 MAX_TURNS_FOR_VECTORING, d_owner);
+      vul->push_back(v);
+      d_owner->cityChangeProduction(this, d_active_production_slot);
+      //we don't return an army when we've vectored it.
+      //it doesn't really exist until it lands at the destination.
+      return NULL;
+    }
+  else //or make it here
+    {
+      return produceArmy();
+    }
+  return NULL;
+}
+
+void City::nextTurn()
+{
+  if (d_burnt)
+    return;
+
+  // check if an army should be produced
+  if (d_active_production_slot >= 0 && --d_duration == 0) 
+    {
+      if (d_owner->getGold() <= 0)
+	{
+	  //dont make or vector the unit
+	  //and also stop production
+	  d_owner->cityChangeProduction(this, -1);
+	  d_owner->vectorFromCity(this, Vector<int>(-1,-1));
+	  return;
+	}
+
+      d_owner->cityProducesArmy(this);
+
+    }
+}
+
+int City::getGoldNeededForUpgrade() const
+{
+  if (d_defense_level == 1)
+    return 1000;
+  else if (d_defense_level == 2)
+    return 2000;
+  else if (d_defense_level == 3)
+    return 3000;
+  return -1;
+}
+
+void City::setVectoring(Vector<int> p) 
+{
+  d_vector = p;
+  d_vectoring = true;
+
+  if (p.x == -1 || p.y == -1)
+    {
+      d_vectoring=false;
+      d_vector.x = -1;
+      d_vector.y = -1;
+    }
+}
+
+Army *City::produceArmy()
+{
+  // add produced army to stack
+  if (d_active_production_slot == -1)
+    return NULL;
+
+  debug("produce_army()\n");
+
+  // do not produce an army if the player has no gold.
+  // unless it's the neutrals
+  if (d_owner != Playerlist::getInstance()->getNeutral() && 
+      d_owner->getGold() < 0) 
+    return NULL;
+
+  Army *a = new Army(*(getProductionBase(d_active_production_slot)), d_owner);
+  GameMap::getInstance()->addArmy(this, a);
+
+  if (d_owner == Playerlist::getInstance()->getNeutral()) 
+    {
+      //we're an active neutral city
+      //check to see if we've made 5 or not.
+      //stop producing if we've made 5 armies in our neutral city
+      if (countDefenders() >= MAX_ARMIES_PRODUCED_IN_ACTIVE_NEUTRAL_CITY)
+	setActiveProductionSlot(-1);
+      else
+	setActiveProductionSlot(d_active_production_slot);
+    }
+  else // start producing next army of same type
+    setActiveProductionSlot(d_active_production_slot);
+  return a;
+}
+
+bool City::canAcceptVectoredUnit()
+{
+  return canAcceptVectoredUnits(0);
+}
+
+bool City::canAcceptVectoredUnits(Uint32 number_of_units)
+{
+  VectoredUnitlist *vul = VectoredUnitlist::getInstance();
+  if (vul->getNumberOfVectoredUnitsGoingTo(getPos()) + number_of_units >= 
+      MAX_ARMIES_VECTORED_TO_ONE_CITY)
+    return false;
+  return true;
+}
+
+bool City::changeVectorDestination(Vector<int> dest)
+{
+  VectoredUnitlist *vul = VectoredUnitlist::getInstance();
+  setVectoring(dest);
+  vul->changeDestination(this, dest);
+  return true;
+}
+
+Uint32 City::countDefenders()
+{
+  std::vector<Stack*> defenders;
+  defenders = getOwner()->getStacklist()->defendersInCity(this);
+
+  Uint32 armies = 0;
+  std::vector<Stack*>::iterator it = defenders.begin();
+  for (;it != defenders.end(); it++)
+    armies += (*it)->size();
+
+  return armies;
 }
 
 void City::randomlyImproveOrDegradeArmy(ArmyProdBase *army)
@@ -465,286 +539,4 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   sortProduction();
 }
 
-void City::produceStrongestProductionBase()
-{
-  debug("produceStrongestProductionBase()");
-
-  if (getNoOfProductionBases() == 0)
-    return;
-
-  Stack* stack = getFreeStack(d_owner);
-  if (stack)
-    {
-      unsigned int max_strength = 0;
-      int strong_idx = -1;
-      for (unsigned int i = 0; i < getMaxNoOfProductionBases(); i++)
-	{
-	  if ((*this)[i]->getArmyProdBase() == NULL)
-	    continue;
-	  if (getProductionBase(i)->getStrength() > max_strength)
-	    {
-	      strong_idx = i;
-	      max_strength = getProductionBase(i)->getStrength();
-	    }
-	}
-      if (strong_idx == -1)
-	return;
-
-      int savep = d_active_production_slot;
-      setActiveProductionSlot(strong_idx);
-      produceArmy();
-      setActiveProductionSlot(savep);
-      return;
-    }
-}
-
-void City::produceScout()
-{
-  const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 set = d_owner->getArmyset();
-  ArmyProto *scout = al->getScout(set);
-  Army *a = new Army(*scout, d_owner);
-  GameMap::getInstance()->addArmy(this, a);
-
-}
-
-void City::produceWeakestProductionBase()
-{
-  debug("produceWeakestProductionBase()");
-
-  if (getNoOfProductionBases() == 0)
-    return;
-
-  Stack* stack = getFreeStack(d_owner);
-  if (stack)
-    {
-      unsigned int min_strength = 100;
-      int weak_idx = -1;
-      for (unsigned int i = 0; i < getMaxNoOfProductionBases(); i++)
-	{
-	  if ((*this)[i]->getArmyProdBase() == NULL)
-	    continue;
-	  if (getProductionBase(i)->getStrength() < min_strength)
-	    {
-	      weak_idx = i;
-	      min_strength = getProductionBase(i)->getStrength();
-	    }
-	}
-      if (weak_idx == -1)
-	return;
-
-      int savep = d_active_production_slot;
-      setActiveProductionSlot(weak_idx);
-      produceArmy();
-      setActiveProductionSlot(savep);
-      return;
-    }
-}
-
-const Army *City::armyArrives()
-{
-  // vector the army to the new spot
-  if (d_vectoring)
-    {
-      VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-      VectoredUnit *v = new VectoredUnit 
-	(getPos(), d_vector, 
-	 (*this)[d_active_production_slot]->getArmyProdBase(),
-	 MAX_TURNS_FOR_VECTORING, d_owner);
-      vul->push_back(v);
-      d_owner->cityChangeProduction(this, d_active_production_slot);
-      //we don't return an army when we've vectored it.
-      //it doesn't really exist until it lands at the destination.
-      return NULL;
-    }
-  else //or make it here
-    {
-      return produceArmy();
-    }
-  return NULL;
-}
-
-void City::nextTurn()
-{
-  if (d_burnt)
-    return;
-
-  // check if an army should be produced
-  if (d_active_production_slot >= 0 && --d_duration == 0) 
-    {
-      if (d_owner->getGold() <= 0)
-	{
-	  //dont make or vector the unit
-	  //and also stop production
-	  d_owner->cityChangeProduction(this, -1);
-	  d_owner->vectorFromCity(this, Vector<int>(-1,-1));
-	  return;
-	}
-
-      d_owner->cityProducesArmy(this);
-
-    }
-}
-
-bool City::hasProductionBase(int type, Uint32 set) const
-{
-  if (type < 0)
-    return false;
-  for (unsigned int i = 0; i < size(); i++)
-    {
-      if ((*this)[i]->getArmyProdBase() == NULL)
-	continue;
-      if ((*this)[i]->getArmyProdBase()->getTypeId() == (unsigned int) type)
-	return true;
-    }
-
-  return false;
-}
-
-int City::getArmytype(int slot) const
-{
-  if (slot < 0)
-    return -1;
-
-  if (slot >= (int)size())
-    return -1;
-  if ((*this)[slot]->getArmyProdBase() == NULL)
-    return -1;
-  return (*this)[slot]->getArmyProdBase()->getTypeId();
-}
-
-const ArmyProdBase * City::getProductionBase(int slot) const
-{
-  if (getArmytype(slot) == -1)
-    return 0;
-  return (*this)[slot]->getArmyProdBase();
-}
-	
-const ArmyProdBase *City::getActiveProductionBase() const
-{
-  return getProductionBase(d_active_production_slot);
-}
-
-int City::getGoldNeededForUpgrade() const
-{
-  if (d_defense_level == 1)
-    return 1000;
-  else if (d_defense_level == 2)
-    return 2000;
-  else if (d_defense_level == 3)
-    return 3000;
-  return -1;
-}
-
-
-void City::setVectoring(Vector<int> p) 
-{
-  d_vector = p;
-  d_vectoring = true;
-
-  if (p.x == -1 || p.y == -1)
-    {
-      d_vectoring=false;
-      d_vector.x = -1;
-      d_vector.y = -1;
-    }
-}
-
-Army *City::produceArmy()
-{
-  // add produced army to stack
-  if (d_active_production_slot == -1)
-    return NULL;
-
-  debug("produce_army()\n");
-
-  // do not produce an army if the player has no gold.
-  // unless it's the neutrals
-  if (d_owner != Playerlist::getInstance()->getNeutral() && 
-      d_owner->getGold() < 0) 
-    return NULL;
-
-  Army *a = new Army(*(getProductionBase(d_active_production_slot)), d_owner);
-  GameMap::getInstance()->addArmy(this, a);
-
-  if (d_owner == Playerlist::getInstance()->getNeutral()) 
-    {
-      //we're an active neutral city
-      //check to see if we've made 5 or not.
-      //stop producing if we've made 5 armies in our neutral city
-      if (countDefenders() >= MAX_ARMIES_PRODUCED_IN_ACTIVE_NEUTRAL_CITY)
-	setActiveProductionSlot(-1);
-      else
-	setActiveProductionSlot(d_active_production_slot);
-    }
-  else // start producing next army of same type
-    setActiveProductionSlot(d_active_production_slot);
-  return a;
-}
-
-bool City::canAcceptVectoredUnit()
-{
-  return canAcceptVectoredUnits(0);
-}
-bool City::canAcceptVectoredUnits(Uint32 number_of_units)
-{
-  VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-  if (vul->getNumberOfVectoredUnitsGoingTo(getPos()) + number_of_units >= 
-      MAX_ARMIES_VECTORED_TO_ONE_CITY)
-    return false;
-  return true;
-}
-
-bool City::changeVectorDestination(Vector<int> dest)
-{
-  VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-  setVectoring(dest);
-  vul->changeDestination(this, dest);
-  return true;
-}
-
-Uint32 City::countDefenders()
-{
-  std::vector<Stack*> defenders;
-  defenders = getOwner()->getStacklist()->defendersInCity(this);
-
-  Uint32 armies = 0;
-  std::vector<Stack*>::iterator it = defenders.begin();
-  for (;it != defenders.end(); it++)
-    armies += (*it)->size();
-
-  return armies;
-}
-
-Uint32 City::countCitiesVectoringToHere()
-{
-  Citylist *cl = Citylist::getInstance();
-  Uint32 count = 0;
-  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
-    {
-      City *c = *it;
-      if (c->getOwner() != getOwner())
-	continue;
-      if (c->getVectoring() == getPos())
-	count++;
-    }
-
-  return count;
-}
-
-const ArmyProdBase *City::getProductionBaseBelongingTo(const Army *army)
-{
-  if (!army)
-    return NULL;
-  for (unsigned int i = 0; i < this->getMaxNoOfProductionBases(); i++)
-    {
-      const ArmyProdBase* armyprodbase = this->getProductionBase(i);
-      if (armyprodbase == NULL)
-	continue;
-      if (army->getArmyset() == armyprodbase->getArmyset() &&
-	  army->getTypeId() == armyprodbase->getTypeId())
-	return armyprodbase;
-    }
-  return NULL;
-}
 // End of file

@@ -204,7 +204,7 @@ static bool isNotOwnedByEnemy(void *object)
 static bool canNotAcceptVectoring(void *object)
 {
   City *c = ((City*)object);
-  Uint32 num = c->countCitiesVectoringToHere();
+  Uint32 num = Citylist::getInstance()->countCitiesVectoringTo(c);
   if (num < MAX_ARMIES_VECTORED_TO_ONE_CITY)
     return false;
   return true;
@@ -466,4 +466,18 @@ City* Citylist::getNearestCityPast(const Vector<int>& pos, int dist)
   return getNearestObjectAfter(pos, dist, &filters);
 }
 
+Uint32 Citylist::countCitiesVectoringTo(City *dest)
+{
+  Uint32 count = 0;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      City *c = *it;
+      if (c->getOwner() != dest->getOwner())
+	continue;
+      if (c->getVectoring() == dest->getPos())
+	count++;
+    }
+
+  return count;
+}
 // End of file

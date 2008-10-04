@@ -348,6 +348,8 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 
 	Uint32 calculateUpcomingUpkeep(Player *p);
 
+	Uint32 countCitiesVectoringTo(City *dest);
+
     protected:
         // CREATORS
 	//! Default constructor.

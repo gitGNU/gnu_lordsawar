@@ -78,7 +78,8 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         rectangle.h vector.h ucompose.hpp Campaign.cpp Campaign.h \
 	SightMap.cpp SightMap.h SmallTile.cpp SmallTile.h \
 	Triumphs.cpp Triumphs.h Backpack.cpp Backpack.h \
-	MapBackpack.cpp MapBackpack.h prodslot.cpp prodslot.h
+	MapBackpack.cpp MapBackpack.h prodslot.cpp prodslot.h \
+	prodslotlist.cpp prodslotlist.h
 
 liblordsawarnet_la_SOURCES = \
 	game-client.cpp game-client.h \
