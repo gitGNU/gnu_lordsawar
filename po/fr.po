@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-03 18:27-0400\n"
+"POT-Creation-Date: 2008-10-04 13:17-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -139,7 +139,7 @@ msgstr "Gruppo"
 msgid "_Pillage"
 msgstr "Pillage"
 
-#: dat/glade/city-defeated-dialog.glade:63 dat/glade/city-window.glade:434
+#: dat/glade/city-defeated-dialog.glade:63 dat/glade/city-window.glade:452
 #, fuzzy
 msgid "_Raze"
 msgstr "Rasé"
@@ -224,37 +224,37 @@ msgstr "Fermer"
 msgid "Current:"
 msgstr "Contatore:"
 
-#: dat/glade/city-window.glade:385 dat/glade/hero-dialog.glade:143
+#: dat/glade/city-window.glade:403 dat/glade/hero-dialog.glade:143
 #, fuzzy
 msgid "Stop producing armies"
 msgstr "Unisce le armate"
 
-#: dat/glade/city-window.glade:386
+#: dat/glade/city-window.glade:404
 #, fuzzy
 msgid "_Stop"
 msgstr "Sol"
 
-#: dat/glade/city-window.glade:401 dat/glade/hero-dialog.glade:155
+#: dat/glade/city-window.glade:419 dat/glade/hero-dialog.glade:155
 #, fuzzy
 msgid "Buy a production capability"
 msgstr "Acheter la production"
 
-#: dat/glade/city-window.glade:402
+#: dat/glade/city-window.glade:420
 #, fuzzy
 msgid "_Buy..."
 msgstr "Acheter"
 
-#: dat/glade/city-window.glade:417
+#: dat/glade/city-window.glade:435
 #, fuzzy
 msgid "Set destination for produced armies"
 msgstr "Unisce le armate"
 
-#: dat/glade/city-window.glade:418
+#: dat/glade/city-window.glade:436
 #, fuzzy
 msgid "_Vector..."
 msgstr "Vectoring"
 
-#: dat/glade/city-window.glade:450
+#: dat/glade/city-window.glade:468
 #, fuzzy
 msgid "R_ename"
 msgstr "Sans nom"

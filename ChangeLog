@@ -1,6 +1,11 @@
+2008-10-05  Ben Asselstine
+
+	fixing bug #24427.  can now close game window while ai is moving.
+
 2008-10-04  Ben Asselstine
 
 	* fixing gcc 4.3 build warnings and errors.
+	* added new production slot list object owned by cities.
 
 2008-10-03  Ben Asselstine
 
