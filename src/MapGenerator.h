@@ -169,6 +169,20 @@ class MapGenerator
           * others with it, using rivers. Ponds are allowed, but not too much of them.
           */
         void makeRivers();
+        /**
+          * This helper function searches whole map for enclosed ares of
+          * THIS_TILE. Each such area gets a subsequent number which is
+          * assigned to corresponding cell in box. Maximum number of areas
+          * found is how_many and equals to highest number found in box.
+          */ 
+        void findAreasOf(Tile::Type THIS_TILE,std::vector<std::vector<int> >& box,int& how_many);
+        /**
+          * Too much randomness and rivers can create too many small islands
+          * which normally would be eroded by water along the centuries of
+          * passing time. This function eliminates those islands keeping only
+          * few of them. The randomly generated map looks more realistic in this way.
+          */
+        void verifyIslands();
 
         void makeBridges();
 	bool canPlaceBridge(Vector<int> pos);

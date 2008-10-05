@@ -166,6 +166,7 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     makeStreamer(Tile::WATER, d_pwater/3, 3);
     rescueLoneTiles(Tile::WATER,Tile::GRASS,true);
     makeRivers();
+    verifyIslands();
     cout <<_("Raising Hills     ... 20%") <<endl;
     progress.emit(.270, _("raising hills..."));
     makeTerrain(Tile::HILLS, d_phills, false);
@@ -360,6 +361,110 @@ void MapGenerator::connectWithWater(Vector<int> from, Vector<int> to)
     }
 }
 
+void MapGenerator::findAreasOf(Tile::Type THIS_TILE,std::vector<std::vector<int> >& box,int& how_many)
+{
+    box.resize(d_height);
+    for(int j = 0; j < d_height; j++)
+        box[j].resize(d_width,0);
+
+    // find all enclosed areas by scanning the map
+    // distinct areas have different numbers in box
+    for(int j = 1; j < d_height-1; j++)
+        for(int i = 1; i < d_width-1; i++)
+            if (box[j][i]==0 &&
+                    d_terrain[j*d_width + i] == THIS_TILE &&
+                    (
+                     (d_terrain[(j-1)*d_width + i-1] == THIS_TILE &&
+                      d_terrain[(j  )*d_width + i-1] == THIS_TILE &&
+                      d_terrain[(j-1)*d_width + i  ] == THIS_TILE)  ||
+
+                     (d_terrain[(j-1)*d_width + i  ] == THIS_TILE &&
+                      d_terrain[(j-1)*d_width + i+1] == THIS_TILE &&
+                      d_terrain[(j  )*d_width + i+1] == THIS_TILE) ||
+
+                     (d_terrain[(j  )*d_width + i+1] == THIS_TILE &&
+                      d_terrain[(j+1)*d_width + i+1] == THIS_TILE &&
+                      d_terrain[(j+1)*d_width + i  ] == THIS_TILE) ||
+
+                     (d_terrain[(j+1)*d_width + i  ] == THIS_TILE &&
+                      d_terrain[(j+1)*d_width + i-1] == THIS_TILE &&
+                      d_terrain[(j  )*d_width + i-1] == THIS_TILE))
+               )
+            {
+                box[j][i]=++how_many+3000;
+                int counter=1;
+                while(counter != 0)
+                {
+                    counter=0;
+                    for(int J = 1; J < d_height-1; J++)
+                        for(int I = 1; I < d_width-1; I++)
+                        {
+                            if(d_terrain[J*d_width + I] == THIS_TILE &&
+                                    box[J][I]    ==0 &&
+                                    (box[J-1][I  ]==how_many+3000 ||
+                                     box[J  ][I-1]==how_many+3000 ||
+                                     box[J  ][I+1]==how_many+3000 ||
+                                     box[J+1][I  ]==how_many+3000))
+                            {
+                                ++counter;
+                                box[J][I]=how_many+2000;
+                            }
+                        }
+                    for(int J = 0; J < d_height; J++)
+                        for(int I = 0; I < d_width; I++)
+                        {
+                            if (box[J][I]==how_many+3000)
+                                box[J][I]=how_many;
+                            if (box[J][I]==how_many+2000)
+                                box[J][I]=how_many+3000;
+                        }
+                }
+            }
+}
+
+void MapGenerator::verifyIslands()
+{
+    int how_many=0;
+    std::vector<std::vector<int> > box;
+    findAreasOf(Tile::GRASS,box,how_many);
+
+    // count the size of each area
+    std::vector<float> counts;
+    counts.resize(how_many+2,0);
+    for(int j = 0; j < d_height; j++)
+        for(int i = 0; i < d_width; i++)
+            if(box[j][i] != 0)
+                counts[box[j][i]] += 1;
+
+    // find four largest land areas
+    std::set<int> largest;largest.clear();
+    int max;
+    for(int z=0 ; z<4 ; ++z)
+    {
+        max = -1;
+        for(size_t i=0 ; i<counts.size() ; ++i)
+        {
+            if(counts[i] > max && largest.find(counts[i]) == largest.end())
+                max = counts[i];
+        }
+        largest.insert(max);
+    }
+
+    // largest are good. Also one/third of all others is good:
+    std::set<int> good(largest);
+    for(size_t i=0 ; i<counts.size() ; ++i)
+        if(rand()%3 == 0) // that's one/third here
+            good.insert(counts[i]);
+
+    // now, eliminate all land that is not good
+    for(int I=0 ; I<(int)(counts.size()) ; ++I)
+        if(good.find(counts[I]) == good.end())
+            for(int j = 1; j < d_height-1; j++)
+                for(int i = 1; i < d_width-1; i++)
+                    if(box[j][i] == I)
+                        d_terrain[j*d_width + i] = Tile::WATER;
+}
+
 void MapGenerator::makeRivers()
 {
     // river style:
@@ -377,63 +482,8 @@ void MapGenerator::makeRivers()
         how_many=0;
 
         std::vector<std::vector<int> > box;
-        box.resize(d_height);
-        for(int j = 0; j < d_height; j++)
-            box[j].resize(d_width,0);
-
-        // first find all enclosed areas by scanning the map
-        // distinct areas have different numbers in box
-        for(int j = 1; j < d_height-1; j++)
-            for(int i = 1; i < d_width-1; i++)
-                if (box[j][i]==0 &&
-                        d_terrain[j*d_width + i] == Tile::WATER &&
-                        (
-                         (d_terrain[(j-1)*d_width + i-1] == Tile::WATER &&
-                          d_terrain[(j  )*d_width + i-1] == Tile::WATER &&
-                          d_terrain[(j-1)*d_width + i  ] == Tile::WATER)  ||
-
-                         (d_terrain[(j-1)*d_width + i  ] == Tile::WATER &&
-                          d_terrain[(j-1)*d_width + i+1] == Tile::WATER &&
-                          d_terrain[(j  )*d_width + i+1] == Tile::WATER) ||
-
-                         (d_terrain[(j  )*d_width + i+1] == Tile::WATER &&
-                          d_terrain[(j+1)*d_width + i+1] == Tile::WATER &&
-                          d_terrain[(j+1)*d_width + i  ] == Tile::WATER) ||
-
-                         (d_terrain[(j+1)*d_width + i  ] == Tile::WATER &&
-                          d_terrain[(j+1)*d_width + i-1] == Tile::WATER &&
-                          d_terrain[(j  )*d_width + i-1] == Tile::WATER))
-                   )
-                {
-                    box[j][i]=++how_many+3000;
-                    int counter=1;
-                    while(counter != 0)
-                    {
-                        counter=0;
-                        for(int J = 1; J < d_height-1; J++)
-                            for(int I = 1; I < d_width-1; I++)
-                            {
-                                if(d_terrain[J*d_width + I] == Tile::WATER &&
-                                        box[J][I]    ==0 &&
-                                        (box[J-1][I  ]==how_many+3000 ||
-                                         box[J  ][I-1]==how_many+3000 ||
-                                         box[J  ][I+1]==how_many+3000 ||
-                                         box[J+1][I  ]==how_many+3000))
-                                {
-                                    ++counter;
-                                    box[J][I]=how_many+2000;
-                                }
-                            }
-                        for(int J = 0; J < d_height; J++)
-                            for(int I = 0; I < d_width; I++)
-                            {
-                                if (box[J][I]==how_many+3000)
-                                    box[J][I]=how_many;
-                                if (box[J][I]==how_many+2000)
-                                    box[J][I]=how_many+3000;
-                            }
-                    }
-                }
+        
+        findAreasOf(Tile::WATER,box,how_many);
 
         // this loop allows maximum 3 distinctly separated bodies of water
         // so no need to continue the algorithm
@@ -1392,7 +1442,7 @@ std::vector<pair<int , Vector<int> > > MapGenerator::findBridgePlaces()
     std::set<int> bad;bad.clear();
     for(size_t r = 0; r<result.size() ; ++r)
         for(size_t s = r+1; s<result.size() ; ++s)
-            if(dist(Vector<float>(result[r].second),Vector<float>(result[s].second)) < 2.5)
+            if(dist(Vector<float>(result[r].second),Vector<float>(result[s].second)) < 4.5)
                 bad.insert(r);
     std::vector<pair<int , Vector<int> > > filter;filter.clear();
     for(size_t r = 0; r<result.size() ; ++r)
