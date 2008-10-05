@@ -1,6 +1,10 @@
 2008-10-05  Ben Asselstine
 
-	fixing bug #24427.  can now close game window while ai is moving.
+	* fixing bug #24427.  can now close game window while ai is moving.
+
+2008-10-04  Janek Kozicki
+
+	* Improve random map generation - remove small islands.
 
 2008-10-04  Ben Asselstine
 

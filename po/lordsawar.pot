@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lordsawar 0.1.2\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-04 13:17-0400\n"
+"POT-Creation-Date: 2008-10-05 12:45-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -198,7 +198,7 @@ msgstr ""
 #: dat/glade/editor/reward-list-dialog.glade:37
 #: dat/glade/editor/tile-preview-dialog.glade:37
 #: dat/glade/editor/tileset-selector-editor-dialog.glade:37
-#: src/gui/game-window.cpp:2168
+#: src/gui/game-window.cpp:2174
 msgid "_Close"
 msgstr ""
 
@@ -626,11 +626,11 @@ msgstr ""
 msgid "Move All"
 msgstr ""
 
-#: dat/glade/game-window.glade:134 src/gui/game-window.cpp:1179
+#: dat/glade/game-window.glade:134 src/gui/game-window.cpp:1187
 msgid "Disband"
 msgstr ""
 
-#: dat/glade/game-window.glade:144 src/gui/game-window.cpp:1122
+#: dat/glade/game-window.glade:144 src/gui/game-window.cpp:1130
 #: src/editor/main-window.cpp:1052
 msgid "Signpost"
 msgstr ""
@@ -647,7 +647,7 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: dat/glade/game-window.glade:190 src/gui/game-window.cpp:1236
+#: dat/glade/game-window.glade:190 src/gui/game-window.cpp:1244
 msgid "Resign"
 msgstr ""
 
@@ -2318,31 +2318,31 @@ msgstr ""
 msgid "You must take over the city \"%s\" and occupy it."
 msgstr ""
 
-#: src/game.cpp:590
+#: src/game.cpp:594
 msgid "%1 (capital city)"
 msgstr ""
 
-#: src/game.cpp:596
+#: src/game.cpp:600
 msgid "Under rule of %1"
 msgstr ""
 
-#: src/game.cpp:599 src/gui/city-window.cpp:172
+#: src/game.cpp:603 src/gui/city-window.cpp:172
 msgid "Income: %1"
 msgstr ""
 
-#: src/game.cpp:601
+#: src/game.cpp:605
 msgid "Defense: %1"
 msgstr ""
 
-#: src/game.cpp:605
+#: src/game.cpp:609
 msgid "Status: razed!"
 msgstr ""
 
-#: src/game.cpp:635
+#: src/game.cpp:639
 msgid "Explored"
 msgstr ""
 
-#: src/game.cpp:638
+#: src/game.cpp:642
 msgid "Unexplored"
 msgstr ""
 
@@ -2418,95 +2418,95 @@ msgstr ""
 msgid "raining water..."
 msgstr ""
 
-#: src/MapGenerator.cpp:169
+#: src/MapGenerator.cpp:170
 msgid "Raising Hills     ... 20%"
 msgstr ""
 
-#: src/MapGenerator.cpp:170
+#: src/MapGenerator.cpp:171
 msgid "raising hills..."
 msgstr ""
 
-#: src/MapGenerator.cpp:172
+#: src/MapGenerator.cpp:173
 msgid "Raising Mountains ... 30%"
 msgstr ""
 
-#: src/MapGenerator.cpp:173
+#: src/MapGenerator.cpp:174
 msgid "raising mountains..."
 msgstr ""
 
-#: src/MapGenerator.cpp:178
+#: src/MapGenerator.cpp:179
 msgid "Planting Forest   ... 40%"
 msgstr ""
 
-#: src/MapGenerator.cpp:179
+#: src/MapGenerator.cpp:180
 msgid "planting forests..."
 msgstr ""
 
-#: src/MapGenerator.cpp:181
+#: src/MapGenerator.cpp:182
 msgid "Watering Swamps   ... 50%"
 msgstr ""
 
-#: src/MapGenerator.cpp:182
+#: src/MapGenerator.cpp:183
 msgid "watering swamps..."
 msgstr ""
 
-#: src/MapGenerator.cpp:184
+#: src/MapGenerator.cpp:185
 msgid "Normalizing       ... 60%"
 msgstr ""
 
-#: src/MapGenerator.cpp:185
+#: src/MapGenerator.cpp:186
 msgid "normalizing terrain..."
 msgstr ""
 
-#: src/MapGenerator.cpp:189
+#: src/MapGenerator.cpp:190
 msgid "Building Cities   ... 70%"
 msgstr ""
 
-#: src/MapGenerator.cpp:190
+#: src/MapGenerator.cpp:191
 msgid "building cities..."
 msgstr ""
 
-#: src/MapGenerator.cpp:195
+#: src/MapGenerator.cpp:196
 msgid "Paving Roads      ... 75%"
 msgstr ""
 
-#: src/MapGenerator.cpp:196
+#: src/MapGenerator.cpp:197
 msgid "paving roads..."
 msgstr ""
 
-#: src/MapGenerator.cpp:201
+#: src/MapGenerator.cpp:202
 msgid "Ruining Ruins     ... 80%"
 msgstr ""
 
-#: src/MapGenerator.cpp:202
+#: src/MapGenerator.cpp:203
 msgid "ruining ruins..."
 msgstr ""
 
-#: src/MapGenerator.cpp:204
+#: src/MapGenerator.cpp:205
 msgid "Raising Signs     ... 88%"
 msgstr ""
 
-#: src/MapGenerator.cpp:205
+#: src/MapGenerator.cpp:206
 msgid "raising signs..."
 msgstr ""
 
-#: src/MapGenerator.cpp:207
+#: src/MapGenerator.cpp:208
 msgid "Spawning temples  ... 90%"
 msgstr ""
 
-#: src/MapGenerator.cpp:208
+#: src/MapGenerator.cpp:209
 msgid "spawning temples..."
 msgstr ""
 
-#: src/MapGenerator.cpp:210
+#: src/MapGenerator.cpp:211
 msgid "Building bridges  ... 95%"
 msgstr ""
 
-#: src/MapGenerator.cpp:211
+#: src/MapGenerator.cpp:212
 msgid "building bridges..."
 msgstr ""
 
-#: src/MapGenerator.cpp:213
+#: src/MapGenerator.cpp:214
 msgid "Done making map   ... 100%"
 msgstr ""
 
@@ -2926,315 +2926,315 @@ msgstr ""
 msgid "Command: %1"
 msgstr ""
 
-#: src/gui/hero-dialog.cpp:239 src/gui/game-window.cpp:2724
+#: src/gui/hero-dialog.cpp:239 src/gui/game-window.cpp:2730
 msgid "Level: %1"
 msgstr ""
 
-#: src/gui/hero-dialog.cpp:241 src/gui/game-window.cpp:2722
+#: src/gui/hero-dialog.cpp:241 src/gui/game-window.cpp:2728
 msgid "Experience: %1"
 msgstr ""
 
-#: src/gui/game-window.cpp:776
+#: src/gui/game-window.cpp:779
 msgid "Save your Turn file and mail it back"
 msgstr ""
 
-#: src/gui/game-window.cpp:954 src/gui/splash-window.cpp:196
+#: src/gui/game-window.cpp:957 src/gui/splash-window.cpp:196
 msgid "Choose Game to Load"
 msgstr ""
 
-#: src/gui/game-window.cpp:979 src/gui/driver.cpp:278 src/gui/driver.cpp:448
+#: src/gui/game-window.cpp:982 src/gui/driver.cpp:278 src/gui/driver.cpp:448
 #: src/gui/driver.cpp:650 src/gui/driver.cpp:669
 msgid "Corrupted saved game file."
 msgstr ""
 
-#: src/gui/game-window.cpp:1011
+#: src/gui/game-window.cpp:1014
 msgid "Game was not saved!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1018 src/editor/armyset-window.cpp:471
+#: src/gui/game-window.cpp:1021 src/editor/armyset-window.cpp:471
 #: src/editor/main-window.cpp:698 src/editor/main-window.cpp:725
 #: src/editor/main-window.cpp:752 src/editor/tileset-window.cpp:556
 #: src/editor/tileset-window.cpp:893
 msgid "Choose a Name"
 msgstr ""
 
-#: src/gui/game-window.cpp:1043
+#: src/gui/game-window.cpp:1046
 msgid "Error saving game!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1132
+#: src/gui/game-window.cpp:1140
 msgid "Change the message on this sign:"
 msgstr ""
 
-#: src/gui/game-window.cpp:1184
+#: src/gui/game-window.cpp:1192
 msgid "Are you sure you want to disband this group?"
 msgstr ""
 
-#: src/gui/game-window.cpp:1241
+#: src/gui/game-window.cpp:1249
 msgid "Are you sure you want to resign?"
 msgstr ""
 
-#: src/gui/game-window.cpp:1523
+#: src/gui/game-window.cpp:1530
 msgid "Congratulations to %1 for conquering the world!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1540
+#: src/gui/game-window.cpp:1546
 msgid "The rule of %1 has permanently ended!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1546
+#: src/gui/game-window.cpp:1552
 msgid "No further human resistance is possible"
 msgstr ""
 
-#: src/gui/game-window.cpp:1548
+#: src/gui/game-window.cpp:1554
 msgid "but the battle will continue!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1550
+#: src/gui/game-window.cpp:1556
 msgid "Press `CTRL-P' to stop the war"
 msgstr ""
 
-#: src/gui/game-window.cpp:1552
+#: src/gui/game-window.cpp:1558
 msgid "and visit the sites of thy old battles."
 msgstr ""
 
-#: src/gui/game-window.cpp:1899
+#: src/gui/game-window.cpp:1905
 msgid "%1 finds "
 msgstr ""
 
-#: src/gui/game-window.cpp:1903
+#: src/gui/game-window.cpp:1909
 msgid "%1 gold pieces."
 msgstr ""
 
-#: src/gui/game-window.cpp:1908
+#: src/gui/game-window.cpp:1914
 msgid "%1 allies!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1913
+#: src/gui/game-window.cpp:1919
 msgid "the %1!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1918
+#: src/gui/game-window.cpp:1924
 msgid "a map!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1944
+#: src/gui/game-window.cpp:1950
 msgid "Searching"
 msgstr ""
 
-#: src/gui/game-window.cpp:1974
+#: src/gui/game-window.cpp:1980
 msgid "Hero Victorious"
 msgstr ""
 
-#: src/gui/game-window.cpp:1976
+#: src/gui/game-window.cpp:1982
 msgid "Hero Defeated"
 msgstr ""
 
-#: src/gui/game-window.cpp:1983
+#: src/gui/game-window.cpp:1989
 msgid "...and is victorious!"
 msgstr ""
 
-#: src/gui/game-window.cpp:1985
+#: src/gui/game-window.cpp:1991
 msgid "...and is slain by it!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2026
+#: src/gui/game-window.cpp:2032
 msgid "Hero brings allies!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2032
+#: src/gui/game-window.cpp:2038
 msgid "The hero brings %1 ally!"
 msgid_plural "The hero brings %1 allies!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/game-window.cpp:2063
+#: src/gui/game-window.cpp:2069
 msgid "You graciously and benevolently accept their offer."
 msgstr ""
 
-#: src/gui/game-window.cpp:2091
+#: src/gui/game-window.cpp:2097
 msgid "Are you sure you want to attack %1?"
 msgstr ""
 
-#: src/gui/game-window.cpp:2094
+#: src/gui/game-window.cpp:2100
 msgid "Other players may not like this!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2148
+#: src/gui/game-window.cpp:2154
 msgid "%1 army has been blessed!"
 msgid_plural "%1 armies have been blessed!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/game-window.cpp:2151
+#: src/gui/game-window.cpp:2157
 msgid "We have already blessed thee!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2154
+#: src/gui/game-window.cpp:2160
 msgid "Seek more blessings in far temples!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2159
+#: src/gui/game-window.cpp:2165
 msgid "Do you seek a quest?"
 msgstr ""
 
-#: src/gui/game-window.cpp:2302
+#: src/gui/game-window.cpp:2308
 msgid "%1, you have triumphed in the battle of %2."
 msgstr ""
 
-#: src/gui/game-window.cpp:2303
+#: src/gui/game-window.cpp:2309
 msgid "%1, you have claimed victory in the battle of %2."
 msgstr ""
 
-#: src/gui/game-window.cpp:2304
+#: src/gui/game-window.cpp:2310
 msgid "%1, you have shown no mercy in the battle of %2."
 msgstr ""
 
-#: src/gui/game-window.cpp:2305
+#: src/gui/game-window.cpp:2311
 msgid "%1, you have slain the foe in the battle of %2."
 msgstr ""
 
-#: src/gui/game-window.cpp:2389
+#: src/gui/game-window.cpp:2395
 msgid "%1 Looted"
 msgstr ""
 
-#: src/gui/game-window.cpp:2396
+#: src/gui/game-window.cpp:2402
 msgid "Your armies loot %1 gold piece."
 msgid_plural "Your armies loot %1 gold pieces."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/game-window.cpp:2423
+#: src/gui/game-window.cpp:2429
 msgid "Pillaged %1"
 msgstr ""
 
-#: src/gui/game-window.cpp:2450
+#: src/gui/game-window.cpp:2456
 msgid "The loot is worth %1 gold piece."
 msgid_plural "The loot is worth %1 gold pieces."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/game-window.cpp:2478
+#: src/gui/game-window.cpp:2484
 msgid "Sacked %1"
 msgstr ""
 
-#: src/gui/game-window.cpp:2486
+#: src/gui/game-window.cpp:2492
 msgid "Ability to produce %1 unit has been lost"
 msgid_plural "Ability to produce %1 units has been lost"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/game-window.cpp:2579
+#: src/gui/game-window.cpp:2585
 msgid "Razed %1"
 msgstr ""
 
-#: src/gui/game-window.cpp:2584
+#: src/gui/game-window.cpp:2590
 msgid "The city of %1 is in ruins!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2685
+#: src/gui/game-window.cpp:2691
 msgid ""
 "%1\n"
 "Turn %2"
 msgstr ""
 
-#: src/gui/game-window.cpp:2720
+#: src/gui/game-window.cpp:2726
 msgid "%1 is awarded a medal!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2761
+#: src/gui/game-window.cpp:2767
 msgid "%1, your turn continues."
 msgstr ""
 
-#: src/gui/game-window.cpp:2795
+#: src/gui/game-window.cpp:2801
 msgid "%1 did not complete the quest."
 msgstr ""
 
-#: src/gui/game-window.cpp:2853
+#: src/gui/game-window.cpp:2859
 msgid "Advisor!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2861
+#: src/gui/game-window.cpp:2867
 msgid "My Good Lord!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2863
+#: src/gui/game-window.cpp:2869
 msgid "Great and Worthy Lord!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2865
+#: src/gui/game-window.cpp:2871
 msgid "O Champion of Justice!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2867
+#: src/gui/game-window.cpp:2873
 msgid "O Mighty Leader!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2869
+#: src/gui/game-window.cpp:2875
 msgid "O Great Warlord!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2874
+#: src/gui/game-window.cpp:2880
 msgid "This battle will surely be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2876 src/gui/game-window.cpp:2882
+#: src/gui/game-window.cpp:2882 src/gui/game-window.cpp:2888
 msgid "A battle here would be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2878
+#: src/gui/game-window.cpp:2884
 msgid "I believe this battle will surely be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2880
+#: src/gui/game-window.cpp:2886
 msgid "This battle would be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2884
+#: src/gui/game-window.cpp:2890
 msgid "I believe this battle will be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2886
+#: src/gui/game-window.cpp:2892
 msgid "This battle shall be"
 msgstr ""
 
-#: src/gui/game-window.cpp:2891
+#: src/gui/game-window.cpp:2897
 msgid "as simple as butchering sleeping cattle!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2893
+#: src/gui/game-window.cpp:2899
 msgid "an easy victory!  We cannot lose!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2895
+#: src/gui/game-window.cpp:2901
 msgid "a comfortable victory"
 msgstr ""
 
-#: src/gui/game-window.cpp:2897
+#: src/gui/game-window.cpp:2903
 msgid "a hard fought victory! But we shall win!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2899
+#: src/gui/game-window.cpp:2905
 msgid "very evenly matched!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2901
+#: src/gui/game-window.cpp:2907
 msgid "difficult but not impossible to win!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2903
+#: src/gui/game-window.cpp:2909
 msgid "a brave choice! I leave it to thee!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2905
+#: src/gui/game-window.cpp:2911
 msgid "a foolish decision!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2907
+#: src/gui/game-window.cpp:2913
 msgid "sheerest folly!  Thou shouldst not attack!"
 msgstr ""
 
-#: src/gui/game-window.cpp:2909
+#: src/gui/game-window.cpp:2915
 msgid "complete and utter suicide!"
 msgstr ""
 
