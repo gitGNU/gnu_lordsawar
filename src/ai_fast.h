@@ -84,7 +84,7 @@ class AI_Fast : public RealPlayer
         //! Returns the current behaviour
         bool getManiac() const {return d_maniac;};
 
-        
+	virtual void abortTurn();
         virtual bool startTurn();
         virtual void invadeCity(City* c);
         virtual void levelArmy(Army* a);
@@ -107,6 +107,7 @@ class AI_Fast : public RealPlayer
 
         AI_Analysis* d_analysis;
         AI_Diplomacy* d_diplomacy;
+	bool d_abort_requested;
 };
 
 #endif // AI_FAST_H

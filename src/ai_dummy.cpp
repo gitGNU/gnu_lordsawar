@@ -36,7 +36,7 @@
 //#define debug(x)
 
 AI_Dummy::AI_Dummy(std::string name, Uint32 armyset, SDL_Color color, int width, int height, int player_no)
-    :RealPlayer(name, armyset, color, width, height, Player::AI_DUMMY, player_no)
+    :RealPlayer(name, armyset, color, width, height, Player::AI_DUMMY, player_no), d_abort_requested(false)
 {
 }
 
@@ -44,10 +44,11 @@ AI_Dummy::AI_Dummy(const Player& player)
     :RealPlayer(player)
 {
     d_type = AI_DUMMY;
+    d_abort_requested = false;
 }
 
 AI_Dummy::AI_Dummy(XML_Helper* helper)
-    :RealPlayer(helper)
+    :RealPlayer(helper), d_abort_requested(false)
 {
 }
 
@@ -55,10 +56,17 @@ AI_Dummy::~AI_Dummy()
 {
 }
 
+void AI_Dummy::abortTurn()
+{
+  d_abort_requested = true;
+}
+
 bool AI_Dummy::startTurn()
 {
     //this is a dummy AI (neutral player) so there is not much point in
     //doing anything
+    if (d_abort_requested)
+      aborted_turn.emit();
     return true;
 }
 

@@ -631,6 +631,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
 		 game->can_select_next_movable_stack);
 
   // setup game callbacks
+  connections.push_back
+    (game->game_stopped.connect
+     (sigc::mem_fun(*this, &GameWindow::on_quit_confirmed)));
   connections.push_back 
     (game->sidebar_stats_changed.connect
      (sigc::mem_fun(*this, &GameWindow::on_sidebar_stats_changed)));
@@ -1065,8 +1068,13 @@ void GameWindow::on_quit_activated()
   if (response == 0) //end the game
     {
       stop_game();
-      game_ended.emit();
     }
+}
+
+void GameWindow::on_quit_confirmed()
+{
+  game.reset();
+  game_ended.emit();
 }
 
 void GameWindow::on_quests_activated()
@@ -1480,7 +1488,6 @@ void GameWindow::stop_game()
   if (game.get())
     {
       game->stopGame();
-      game.reset();
       current_save_filename = "";
     }
 }
@@ -1529,7 +1536,6 @@ void GameWindow::on_game_over(Player *winner)
   dialog->hide();
 
   stop_game();
-  game_ended.emit();
 }
 
 void GameWindow::on_player_died(Player *player)

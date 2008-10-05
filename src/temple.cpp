@@ -27,7 +27,7 @@
 std::string Temple::d_tag = "temple";
 
 Temple::Temple(Vector<int> pos, std::string name, int type)
-  :NamedLocation(pos, name),d_type(type)
+  :NamedLocation(pos, TEMPLE_WIDTH, name),d_type(type)
 {
     //mark the location on the game map as occupied by a temple
     GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::TEMPLE);

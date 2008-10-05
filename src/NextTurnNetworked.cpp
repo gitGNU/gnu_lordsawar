@@ -61,10 +61,10 @@ void NextTurnNetworked::start()
 
     //set first player as active if no active player exists
     if (!plist->getActiveplayer())
-        plist->nextPlayer();
+        nextPlayer();
 	
     if (plist->getActiveplayer()->isDead())
-      plist->nextPlayer();
+      nextPlayer();
 
     if (plist->getActiveplayer()->isDead())
       return;
@@ -100,7 +100,7 @@ void NextTurnNetworked::start()
 	    finishTurn();
 
 	    //...and initiate the next one.
-	    plist->nextPlayer();
+	    nextPlayer();
 
 
 	    //if it is the first player's turn now, a new round has started
@@ -114,7 +114,7 @@ void NextTurnNetworked::start()
 			if (plist->getNoOfPlayers() <= 1)
 			  break;
 			if (plist->getActiveplayer()->isDead())
-			  plist->nextPlayer();
+			  nextPlayer();
 		      }
 		    finishRound();
 		    snextRound.emit();
@@ -146,7 +146,7 @@ void NextTurnNetworked::endTurn()
   // Finish off the player and transfers the control to the start function
   // again.
   finishTurn();
-  Playerlist::getInstance()->nextPlayer();
+  nextPlayer();
 
   if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getFirstLiving())
     {

@@ -26,7 +26,7 @@
 std::string Ruin::d_tag = "ruin";
 
 Ruin::Ruin(Vector<int> pos, std::string name, int type, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
-    :NamedLocation(pos, name), d_searched(searched), d_type(type),
+    :NamedLocation(pos, RUIN_WIDTH, name), d_searched(searched), d_type(type),
     d_occupant(occupant), d_hidden(hidden), d_owner(owner), d_sage(sage)
 {
     d_owner = NULL;

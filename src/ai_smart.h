@@ -90,6 +90,7 @@ class AI_Smart : public RealPlayer
 	//! Destructor.
         ~AI_Smart();
 
+	virtual void abortTurn();
         virtual bool startTurn();
         virtual void invadeCity(City* c);
         virtual void levelArmy(Army* a);
@@ -123,6 +124,7 @@ class AI_Smart : public RealPlayer
         // DATA
         int d_mustmakemoney;  // used to avoid to buy new production 
                               // and to reinforce cities to earn more money
+	bool d_abort_requested;
 
 };
 

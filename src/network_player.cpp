@@ -61,7 +61,7 @@ using namespace std;
 NetworkPlayer::NetworkPlayer(string name, Uint32 armyset, SDL_Color color, int width,
 		       int height, Player::Type type, int player_no)
     :Player(name, armyset, color, width, height, type, player_no),
-    d_connected(false)
+    d_connected(false), d_abort_requested(false)
 {
 }
 
@@ -69,11 +69,13 @@ NetworkPlayer::NetworkPlayer(const Player& player)
     :Player(player), d_connected(false)
 {
     d_type = Player::NETWORKED;
+    d_abort_requested = false;
 }
 
 NetworkPlayer::NetworkPlayer(XML_Helper* helper)
     :Player(helper), d_connected(false)
 {
+    d_abort_requested = false;
 }
 
 NetworkPlayer::~NetworkPlayer()
@@ -90,6 +92,11 @@ bool NetworkPlayer::save(XML_Helper* helper) const
     retval &= helper->closeTag();
 
     return retval;
+}
+
+void NetworkPlayer::abortTurn()
+{
+  d_abort_requested = true;
 }
 
 bool NetworkPlayer::startTurn()

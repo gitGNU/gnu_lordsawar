@@ -21,6 +21,7 @@
 #define NEXT_TURN_H
 
 #include <sigc++/trackable.h>
+#include <sigc++/connection.h>
 #include "playerlist.h"
 #include "hero.h"
 
@@ -62,9 +63,6 @@ class NextTurn: public sigc::trackable
          */
         virtual void start()=0;
 
-        //! Interrupts the game on the next possible occasion
-        void stop() {d_stop = true;}
-        
         /**
            \brief go on to the next player
            
@@ -72,6 +70,10 @@ class NextTurn: public sigc::trackable
            a human player has pushed the next_turn button.
          */
         virtual void endTurn()=0;
+
+	void stop();
+
+	void nextPlayer();
 
         void setContinuingTurn() { continuing_turn = true; };
 
@@ -88,6 +90,9 @@ class NextTurn: public sigc::trackable
 
         //! Signal as a workaround for a display bug; updates the screen
         sigc::signal<void> supdating;
+
+	//! Signal when we're done doing next-turn duties.
+        sigc::signal<void> srequestAbort;
 
     protected:
 
@@ -111,6 +116,10 @@ class NextTurn: public sigc::trackable
 
         // whether we're starting a turn again from loading a game
         bool continuing_turn;
+
+    private:
+
+	sigc::connection abort;
 };
 
 #endif //NEXT_TURN_H

@@ -55,11 +55,13 @@ class RealPlayer : public Player
 
         virtual bool save(XML_Helper* helper) const;
 
+	virtual void abortTurn();
         virtual bool startTurn();
         virtual void endTurn();
         virtual void invadeCity(City* c);
         virtual void levelArmy(Army* a);
 
+	bool d_abort_requested;
     protected:
         bool maybeRecruitHero();
 };

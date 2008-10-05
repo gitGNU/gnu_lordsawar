@@ -50,7 +50,7 @@ using namespace std;
 
 AI_Fast::AI_Fast(string name, Uint32 armyset, SDL_Color color, int width, int height, int player_no)
     :RealPlayer(name, armyset, color, width, height, Player::AI_FAST, player_no), d_join(true),
-    d_maniac(false), d_analysis(0), d_diplomacy(0)
+    d_maniac(false), d_analysis(0), d_diplomacy(0), d_abort_requested(false)
 {
 }
 
@@ -59,10 +59,11 @@ AI_Fast::AI_Fast(const Player& player)
     d_diplomacy(0)
 {
     d_type = AI_FAST;
+    d_abort_requested = false;
 }
 
 AI_Fast::AI_Fast(XML_Helper* helper)
-    :RealPlayer(helper), d_analysis(0), d_diplomacy(0)
+    :RealPlayer(helper), d_analysis(0), d_diplomacy(0), d_abort_requested(false)
 {
     helper->getData(d_join, "join");
     helper->getData(d_maniac, "maniac");
@@ -87,6 +88,11 @@ bool AI_Fast::save(XML_Helper* helper) const
     retval &= helper->closeTag();
 
     return retval;
+}
+
+void AI_Fast::abortTurn()
+{
+  d_abort_requested = true;
 }
 
 bool AI_Fast::startTurn()
@@ -158,6 +164,8 @@ bool AI_Fast::startTurn()
 	  }
 	if (found)
 	  found = false;
+	if (d_abort_requested)
+	  break;
       }
 
     delete d_analysis;
@@ -169,6 +177,8 @@ bool AI_Fast::startTurn()
     if (GameScenarioOptions::s_diplomacy)
       d_diplomacy->makeProposals();
 
+    if (d_abort_requested)
+      aborted_turn.emit();
     return true;
 }
 
@@ -553,6 +563,8 @@ bool AI_Fast::computerTurn()
 	    continue;
 
 	  }
+	if (d_abort_requested)
+	  break;
     }
     return stack_moved;
 }

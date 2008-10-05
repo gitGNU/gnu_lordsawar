@@ -45,7 +45,7 @@ using namespace std;
 
 AI_Smart::AI_Smart(string name, unsigned int armyset, SDL_Color color, int width, int height, int player_no)
   :RealPlayer(name, armyset, color, width, height, Player::AI_SMART, player_no),
-   d_mustmakemoney(0)
+   d_mustmakemoney(0), d_abort_requested(false)
 {
 }
 
@@ -53,10 +53,11 @@ AI_Smart::AI_Smart(const Player& player)
     :RealPlayer(player),d_mustmakemoney(0)
 {
     d_type = AI_SMART;
+    d_abort_requested = false;
 }
 
 AI_Smart::AI_Smart(XML_Helper* helper)
-    :RealPlayer(helper),d_mustmakemoney(0)
+    :RealPlayer(helper),d_mustmakemoney(0), d_abort_requested(false)
 {
 }
 
@@ -107,12 +108,21 @@ bool AI_Smart::startTurn()
         // stop when no more stacks move
         if (moveCount == 0)
             break;
+	if (d_abort_requested)
+	  break;
     }
     d_stacklist->setActivestack(0);
 
     diplomacy.makeProposals();
     
+    if (d_abort_requested)
+      aborted_turn.emit();
     return true;
+}
+
+void AI_Smart::abortTurn()
+{
+  d_abort_requested = true;
 }
 
 void AI_Smart::invadeCity(City* c)

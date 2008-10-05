@@ -18,9 +18,7 @@
 //  02110-1301, USA.
 
 #include "NextTurn.h"
-
-
-#include "path.h"
+#include "playerlist.h"
 
 using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
@@ -31,6 +29,22 @@ NextTurn::NextTurn(bool turnmode, bool random_turns)
 {
   continuing_turn = false;
   
+  Player *active = Playerlist::getActiveplayer();
+  abort = srequestAbort.connect(sigc::mem_fun(active, &Player::abortTurn));
+}
+
+void NextTurn::stop() 
+{
+  d_stop = true;
+  srequestAbort.emit();
+}
+
+void NextTurn::nextPlayer()
+{
+  Playerlist::getInstance()->nextPlayer();
+  Player *active = Playerlist::getActiveplayer();
+  abort.disconnect();
+  abort = srequestAbort.connect(sigc::mem_fun(active, &Player::abortTurn));
 }
 
 NextTurn::~NextTurn()

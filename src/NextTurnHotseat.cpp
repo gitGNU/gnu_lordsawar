@@ -60,7 +60,7 @@ void NextTurnHotseat::start()
 
     //set first player as active if no active player exists
     if (!plist->getActiveplayer())
-        plist->nextPlayer();
+      nextPlayer();
 	
     while (!d_stop)
     {
@@ -91,14 +91,14 @@ void NextTurnHotseat::start()
 
 	// let the player do his or her duties...
 	bool continue_loop = plist->getActiveplayer()->startTurn();
-	if (!continue_loop)
+	if (!continue_loop || d_stop)
 	  return;
 	
 	//Now do some cleanup at the end of the turn.
 	finishTurn();
 
         //...and initiate the next one.
-        plist->nextPlayer();
+	nextPlayer();
         
         //if it is the first player's turn now, a new round has started
         if (Playerlist::getInstance()->getActiveplayer() == 
@@ -110,7 +110,7 @@ void NextTurnHotseat::start()
 		if (plist->getNoOfPlayers() <= 1)
 		  break;
 		if (plist->getActiveplayer()->isDead())
-		  plist->nextPlayer();
+		  nextPlayer();
 	      }
 	    finishRound();
 	    snextRound.emit();
@@ -123,7 +123,7 @@ void NextTurnHotseat::endTurn()
   // Finish off the player and transfers the control to the start function
   // again.
   finishTurn();
-  Playerlist::getInstance()->nextPlayer();
+  nextPlayer();
 
   if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getFirstLiving())
     {

@@ -19,8 +19,8 @@
 
 #include "xmlhelper.h"
 
-NamedLocation::NamedLocation(Vector<int> pos, std::string name)
-  :Location(pos), Namable(name)
+NamedLocation::NamedLocation(Vector<int> pos, Uint32 size, std::string name)
+  :Location(pos, size), Namable(name)
 {
 }
 

@@ -44,7 +44,8 @@ using namespace std;
 
 RealPlayer::RealPlayer(string name, Uint32 armyset, SDL_Color color, int width,
 		       int height, Player::Type type, int player_no)
-    :Player(name, armyset, color, width, height, type, player_no)
+    :Player(name, armyset, color, width, height, type, player_no),
+    d_abort_requested(false)
 {
 }
 
@@ -52,10 +53,11 @@ RealPlayer::RealPlayer(const Player& player)
     :Player(player)
 {
     d_type = HUMAN;
+    d_abort_requested = false;
 }
 
 RealPlayer::RealPlayer(XML_Helper* helper)
-    :Player(helper)
+    :Player(helper), d_abort_requested(false)
 {
 }
 
@@ -73,6 +75,11 @@ bool RealPlayer::save(XML_Helper* helper) const
     retval &= helper->closeTag();
 
     return retval;
+}
+
+void RealPlayer::abortTurn()
+{
+  aborted_turn.emit();
 }
 
 bool RealPlayer::startTurn()

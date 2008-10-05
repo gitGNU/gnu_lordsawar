@@ -479,6 +479,8 @@ class Player: public sigc::trackable
 	//! Callback to start a Player's turn.
         virtual bool startTurn() = 0;
 
+        virtual void abortTurn() = 0;
+
         /** 
 	 * This function is called before a player's turn starts.
          * The idea here is that it happens before heroes are recruited,
@@ -1267,6 +1269,9 @@ class Player: public sigc::trackable
 
         //! Player would like to end the turn.
         sigc::signal<void> ending_turn;
+
+        //! Player has confirmed to abort the turn.
+        sigc::signal<void> aborted_turn;
 
         sigc::signal<void, int> hero_arrives_with_allies;
 

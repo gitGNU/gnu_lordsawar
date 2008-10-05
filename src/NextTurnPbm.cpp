@@ -58,7 +58,8 @@ void NextTurnPbm::start()
 
     //set first player as active if no active player exists
     if (!plist->getActiveplayer())
-        plist->nextPlayer();
+        nextPlayer();
+
 	
     while (!d_stop)
     {
@@ -96,7 +97,7 @@ void NextTurnPbm::start()
 	finishTurn();
 
         //...and initiate the next one.
-        plist->nextPlayer();
+        nextPlayer();
         
         //if it is the first player's turn now, a new round has started
         if (Playerlist::getInstance()->getActiveplayer() == 
@@ -108,7 +109,7 @@ void NextTurnPbm::start()
 		if (plist->getNoOfPlayers() <= 1)
 		  break;
 		if (plist->getActiveplayer()->isDead())
-		  plist->nextPlayer();
+		  nextPlayer();
 	      }
 	    finishRound();
 	    snextRound.emit();
@@ -123,7 +124,7 @@ void NextTurnPbm::endTurn()
   // Finish off the player and transfers the control to the start function
   // again.
   finishTurn();
-  Playerlist::getInstance()->nextPlayer();
+  nextPlayer();
 
   if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getFirstLiving())
     {

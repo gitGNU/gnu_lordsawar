@@ -46,6 +46,7 @@ class NetworkPlayer : public Player
         virtual bool save(XML_Helper* helper) const;
         
         //! Actions, see player.h for explanation
+	virtual void abortTurn();
         virtual bool startTurn();
         virtual void endTurn();
         virtual void invadeCity(City* c);
@@ -58,6 +59,7 @@ class NetworkPlayer : public Player
 	void setConnected(bool connected) {d_connected = connected;}
     private:
 	bool d_connected;
+	bool d_abort_requested;
 	void decodeActionMove(const Action_Move *action);
 	void decodeActionSplit(const Action_Split *action);
 	void decodeActionFight(const Action_Fight *action);

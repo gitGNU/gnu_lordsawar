@@ -202,6 +202,7 @@ class GameWindow: public Decorated
     void on_save_game_as_activated();
     void on_show_lobby_activated();
     void on_quit_activated();
+    void on_quit_confirmed();
     void on_quests_activated();
     void on_disband_activated();
     void on_stack_info_activated();

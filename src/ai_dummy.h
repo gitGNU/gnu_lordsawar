@@ -60,9 +60,14 @@ class AI_Dummy : public RealPlayer
 	//! Destructor.
         ~AI_Dummy();
         
+        virtual void abortTurn();
         virtual bool startTurn();
         virtual void invadeCity(City* c);
         virtual void levelArmy(Army* a);
+
+    private:
+	//DATA
+	bool d_abort_requested;
 };
 
 #endif // AI_DUMMY_H

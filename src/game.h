@@ -151,6 +151,7 @@ class Game
     sigc::signal<void, Player *> game_over;
     sigc::signal<void, std::string, int> next_scenario;
     sigc::signal<void, Player *> player_died;
+    sigc::signal<void> game_stopped;
     
     void addPlayer(Player *p);
 

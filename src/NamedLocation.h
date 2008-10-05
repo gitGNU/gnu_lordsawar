@@ -33,7 +33,7 @@ class NamedLocation: public Location, public Namable
 {
  public:
      //! Default constructor.
-     NamedLocation(Vector<int> pos, std::string name);
+     NamedLocation(Vector<int> pos, Uint32 size, std::string name);
      //! Copy constructor.
      NamedLocation(const NamedLocation&);
      //! Loading constructor.

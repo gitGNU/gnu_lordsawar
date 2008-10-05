@@ -109,7 +109,11 @@ void Game::addPlayer(Player *p)
 	(p->advice_asked.connect
 	 (sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit)));
     }
-    
+      
+  connections[p->getId()].push_back
+    (p->aborted_turn.connect (sigc::mem_fun
+	   (game_stopped, &sigc::signal<void>::emit)));
+
   connections[p->getId()].push_back
     (p->schangingStatus.connect 
      (sigc::mem_fun(this, &Game::update_sidebar_stats)));
