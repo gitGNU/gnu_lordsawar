@@ -312,6 +312,7 @@ class MapGenerator
         std::vector<std::pair < int , Vector<int> > > findBridgePlaces();
 	bool placePort(int x, int y);
 	void calculateBlockedAvenue(int x, int y);
+	bool inhospitableTerrain(int x, int y, unsigned int width);
 
         //Data
         int d_xdir[8];

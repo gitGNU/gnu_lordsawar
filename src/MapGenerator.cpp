@@ -961,6 +961,16 @@ bool MapGenerator::seekPlain(int& x, int& y)
     return false;
 }
 
+bool MapGenerator::inhospitableTerrain(int x, int y, unsigned int width)
+{
+  for (unsigned int i = 0; i < width; i++)
+    for (unsigned int j = 0; j < width; j++)
+      if (d_terrain[(y+i)*d_width +(x+j)] == Tile::WATER ||
+	  d_terrain[(y+i)*d_width +(x+j)] == Tile::MOUNTAIN)
+	return true;
+  return false;
+}
+
 void MapGenerator::makeCities(int cities)
 {
 
@@ -972,24 +982,14 @@ void MapGenerator::makeCities(int cities)
     {
         int x = rand()%(d_width-2);
         int y = rand()%(d_height-2);
-        if((d_terrain[y*d_width +x] == Tile::WATER
-            || d_terrain[y*d_width + x+1] == Tile::WATER 
-            || d_terrain[(y+1)*d_width + x] == Tile::WATER
-            || d_terrain[(y+1)*d_width + x+1] == Tile::WATER
-            || d_terrain[y*d_width +x] == Tile::MOUNTAIN
-            || d_terrain[y*d_width + x+1] == Tile::MOUNTAIN
-            || d_terrain[(y+1)*d_width + x] == Tile::MOUNTAIN
-            || d_terrain[(y+1)*d_width + x+1] == Tile::MOUNTAIN)
-            && (iterations < 1000))
+        if (inhospitableTerrain(x, y, CITY_WIDTH) && (iterations < 1000))
         {
             iterations++;
             continue;
         }
         
         // check if we can put the building
-        if ((!canPutBuilding(x, y) || !canPutBuilding(x + 1, y) ||
-            !canPutBuilding(x, y + 1) || !canPutBuilding(x + 1,y + 1)) &&
-            ((iterations < 1000)))
+        if (!canPutCity(x, y) && iterations < 1000)
         {
             iterations++;
             continue;
@@ -1003,10 +1003,12 @@ void MapGenerator::makeCities(int cities)
 
 bool MapGenerator::canPutCity(int x,int y)
 {
-    if ((canPutBuilding(x,y))&&(canPutBuilding(x+1,y))&&(canPutBuilding(x,y+1))&&(canPutBuilding(x+1,y+1)))
-        return true;
-    else
+  for (unsigned int i = 0; i < CITY_WIDTH; i++)
+    for (unsigned int j = 0; j < CITY_WIDTH; j++)
+      if (canPutBuilding(x+i,y+j) == false)
         return false;
+        
+  return true;
 }
 
 void MapGenerator::putCity(int x, int y, int& city_count)
@@ -1014,13 +1016,12 @@ void MapGenerator::putCity(int x, int y, int& city_count)
         d_building[y*d_width + x] = Maptile::CITY;
 
         //cities shall only sit on grass tiles
-        d_terrain[y*d_width + x] = Tile::GRASS;
-        d_terrain[y*d_width + x+1]     = Tile::GRASS;
-        d_terrain[(y+1)*d_width + x]   = Tile::GRASS;
-        d_terrain[(y+1)*d_width + x+1] = Tile::GRASS;
+	for (unsigned int i = 0; i < CITY_WIDTH; i++)
+	  for (unsigned int j = 0; j < CITY_WIDTH; j++)
+	    d_terrain[(y+i)*d_width + (x+j)] = Tile::GRASS;
         //cities cannot neighbor with mountain tiles
-        for (int Y = -1; Y <= 2; ++Y )
-            for (int X = -1; X <= 2; ++X)
+        for (int Y = -1; Y <= (int)CITY_WIDTH; ++Y )
+            for (int X = -1; X <= (int)CITY_WIDTH; ++X)
                 if (d_terrain[(y+Y)*d_width + x+X] == Tile::MOUNTAIN)
                     d_terrain[(y+Y)*d_width + x+X] = Tile::HILLS;
 
@@ -1033,6 +1034,25 @@ void MapGenerator::makeBuildings(Maptile::Building b, int building)
     int iterations = 10;
     bool found_place = false;
 
+    unsigned int width = 1;
+
+    switch (b)
+      {
+      case Maptile::CITY:
+	width = CITY_WIDTH; break;
+      case Maptile::RUIN:
+	width = RUIN_WIDTH; break;
+      case Maptile::TEMPLE:
+	width = TEMPLE_WIDTH; break;
+      case Maptile::NONE:
+      case Maptile::SIGNPOST:
+      case Maptile::ROAD:
+      case Maptile::PORT:
+      case Maptile::BRIDGE:
+	width = 1;
+	break;
+      }
+
    //If number of iterations is smaller 10, look for a suitable
    //place. If this number is exceeded, place the temple on an
    //island if neccessary.
@@ -1043,11 +1063,14 @@ void MapGenerator::makeBuildings(Maptile::Building b, int building)
              x = rand()%d_width;
              y = rand()%d_height;
         
-             if (canPutBuilding(x, y) == true)
-             {
-		 found_place = true;
-		 break;
-             }
+	     found_place = true;
+	     for (unsigned int k = 0; k < width; k++)
+	       for (unsigned int l = 0; l < width; l++)
+		 if (canPutBuilding(x+k, y+l) == false)
+		   found_place = false;
+
+	     if (found_place == true)
+	       break;
 	}
 
 	if (found_place == true)
@@ -1079,10 +1102,11 @@ bool MapGenerator::canPutBuilding(int x,int y)
     //if the building is close to the map boundaries, return false
     if ((x < 3) || (x > (d_width-3)) || (y < 3) || (y > (d_height-3)))
         return false;
-        
+
+    int dist = (int)CITY_WIDTH + 1;
     //if there is another building too close, return false
-    for (int locx = x-3; locx <= x+3; locx++)
-        for (int locy = y-3; locy <= y+3; locy++)
+    for (int locx = x-dist; locx <= x+dist; locx++)
+        for (int locy = y-dist; locy <= y+dist; locy++)
         {
             if (offmap(locx, locy))
                 continue;
@@ -1185,6 +1209,7 @@ void MapGenerator::calculateBlockedAvenue(int x, int y)
 	}
     }
 }
+
 bool MapGenerator::placePort(int x, int y)
 {
   //if (Citylist::getInstance()->getNearestCity(Vector<int>(x, y), 2) == NULL)
