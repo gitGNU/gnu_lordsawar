@@ -116,9 +116,14 @@ bool Path::canMoveThere(const Stack* s, Vector<int> dest)
 {
   d_bonus=s->calculateMoveBonus();
   Vector<int> pos = s->getPos();
+  bool flying = s->isFlying();
+  if (flying && isBlockedDir(pos.x, pos.y, dest.x, dest.y) &&
+      GameMap::getInstance()->getTile(dest.x, dest.y)->getMaptileType()
+      == Tile::VOID)
+    return false;
   if (isBlocked(s, pos.x, pos.y, dest.x, dest.y))
     return false;
-  if (isBlockedDir(pos.x, pos.y, dest.x, dest.y))
+  if (isBlockedDir(pos.x, pos.y, dest.x, dest.y) && !flying)
     return false;
   return true;
 }
