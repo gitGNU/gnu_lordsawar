@@ -46,6 +46,7 @@
 #include "tilesetlist.h"
 #include "shieldsetlist.h"
 #include "stacklist.h"
+#include "stack.h"
 #include "GameMap.h"
 #include "player.h"
 #include "Configuration.h"
@@ -152,6 +153,22 @@ bool GameScenario::setupFog(bool hidden_map)
 	(*it)->getFogMap()->fill(FogMap::CLOSED);
       else
 	(*it)->getFogMap()->fill(FogMap::OPEN);
+    }
+  return true;
+}
+
+bool GameScenario::setupStacks(bool hidden_map)
+{
+  if (!hidden_map)
+    return true;
+  for (Playerlist::iterator it = Playerlist::getInstance()->begin();
+       it != Playerlist::getInstance()->end(); it++)
+    {
+      if ((*it) == Playerlist::getInstance()->getNeutral())
+	continue;
+      for (Stacklist::iterator sit = (*it)->getStacklist()->begin(); 
+	   sit != (*it)->getStacklist()->end(); sit++)
+	(*sit)->deFog();
     }
   return true;
 }

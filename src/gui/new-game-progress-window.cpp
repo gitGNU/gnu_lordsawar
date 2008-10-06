@@ -72,6 +72,8 @@ void NewGameProgressWindow::thread_worker()
       m_dispatcher();
       game_scenario->setupCities(game_params.quick_start);
       m_dispatcher();
+      game_scenario->setupStacks(game_params.hidden_map);
+      m_dispatcher();
       game_scenario->setupDiplomacy(game_params.diplomacy);
       m_dispatcher();
       if (game_scenario->s_random_turns)

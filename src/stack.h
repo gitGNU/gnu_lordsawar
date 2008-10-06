@@ -156,6 +156,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Returns true if all Army units in the stack are grouped.
 	bool isGrouped();
 
+	//! Uncovers some of the hidden map around this stack.
+	void deFog();
+
 	/**
 	 * Scan all adjacent tiles relative to the stack's position and 
 	 * see how much a move would cost in terms of movement points.

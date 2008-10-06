@@ -118,6 +118,7 @@ class GameScenario: public GameScenarioOptions
 
 	bool setupFog(bool hidden_map);
 	bool setupCities(bool quick_start);
+	bool setupStacks(bool hidden_map);
 	void setupDiplomacy(bool diplomacy);
         
 	Uint32 getPlayMode() const {return d_playmode;};

@@ -187,7 +187,14 @@ void Stack::moveToDest(Vector<int> dest)
   setParked(false);
 
   //update fogmap
-  getOwner()->getFogMap()->alterFogRadius(dest, getMaxSight(), FogMap::OPEN);
+  deFog();
+}
+
+void Stack::deFog()
+{
+  getOwner()->getFogMap()->alterFogRadius(getPos(), getMaxSight(), 
+					  FogMap::OPEN);
+  return;
 }
 
 bool Stack::isGrouped()
