@@ -303,119 +303,119 @@ bool BigMap::blit_if_inside_buffer(const Location &obj, SDL_Surface *image,
 
 
 /*
-   fog display algorithm
-
-   smallmap shows fog placement
-   - it is a peek into the data model
-
-   bigmap shows a rendering of that
-   if a tile on the bigmap is partially fogged, then it is completely fogged on the small map.
-
-   this means that partially fogged tiles depend on adjacent tiles being fogged
-   completely fogged tiles depends on adjacent tiles being fogged
-
-   when one tile is fogged and is not surrounded by adjacent fogged tiles it is shown as not fogged on the bigmap, while it is shown as fogged on the small map.  it is then marked as defogged at the start of the next turn.
-
-   every tile has 4 faces:
-   it can connect to an adjacent tile darkly, lightly, or not at all
-   a dark face means the whole side is black
-   a light face means the side is a gradient
-
-
-   graphics cache
-   fog types:
-   1 = light corner se: connects lightly to south and east
-   2 = light corner sw: connects lightly to south and west
-   3 = light corner nw: connects lightly to north and west
-   4 = light corner ne: connects lightly to north and east
-   5 = dark corner nw: connects darkly to north and west, lightly to south and east
-   6 = dark corner ne: connects darkly to north and east, lightly to south and west
-   7 = dark corner se: connects darkly to east and south, lightly to north and west
-   8 = dark corner sw: connects darkly to south and west,  lightly to north and east
-   9 = bottom to top: connects darkly to south, connects lightly to east and west
-   10 =  top to bottom: connects darkly to north, connects lightly to east and west
-   11 = right to left: connects darkly to west, connects lightly to north and south
-   12 = left to right: connects darkly to east, connects lightly to north and south
-   13 = all black: connects darkly to north, south, east and west
-
-   bigmap tile processing algorithm:
-   for each tile currently being shown, examine each tile in normal order
-
-   here are the cases that we can handle for fogging a tile:
-   the sets are read as follows:
-
-   876
-   5x4 = (fog tile type)
-   321
-   (bit count)
-
-   the most significant bit is in the 1st position, and the least sigificant bit
-   is in the 8th position
-
-   we check each position and if it's a fogged tile, then we add a 1 to that
-   bit position.
-
-   111
-   1x1 = 13
-   111
-   (255)  (all 8 bits on is 255)
-
-   111      111      011     110
-   1x1 = 5  1x1 = 6  1x1 = 7 1x1 = 8
-   110      011      111     111
-   (127)    (223)    (254)   (251) (e.g. 251 == 11111011)
-
-   101      111      111     111
-   1x1 = 9  1x0 = 12 1x1 =10 0x1 = 11
-   111      111      101     111
-   (253)    (239)    (191)   (247) (e.g. 247 == 11110111)
-
-   001      111      100     111
-   1x1 = 9  1x1 = 10 1x1 = 9 1x1 = 10
-   111      001      111     100
-(252)    (159)    (249)   (63)
-
-	011      111      110     111
-	0x1 = 11 0x1 = 11 1x0 =12 1x0 = 12
-111      011      111     110
-(246)    (215)    (235)   (111)
-
-	000      000      110      011
-	0x1 = 1  1x0 = 2  1x0 = 3  0x1 = 4
-011      110      000      000
-(208)    (104)    (11)     (22)
-
-
-	000      111      011      110
-	1x1 = 9  1x1 = 10 0x1 = 11 1x0 = 12
-111      000      011      110
-(248)    (31)     (214)    (107)
-
-
-	001      111      100     111
-	0x1 = 1  0x1 = 4  1x0 = 2 1x0 = 3
-111      001      111     100
-(244)    (151)    (233)   (47)
-
-	000      011      000     111
-	0x1 = 1  0x1 = 4  1x0 = 2 1x0 = 3
-111      001      111     000
-(240)    (150)    (232)   (15)
-
-	100      110      001     111
-	1x0 = 2  1x0 = 3  0x1 = 1 0x1 = 4
-110      100      011     000
-(105)    (43)     (232)   (15)
-
-	011      110
-	1x1 = 14 1x1 = 15
-110      011
-(126)    (219)
-
-	special note:
-	none of these sets contain a so-called "lone" tile.
-	a lone tile is a fogged tile surrounded by two unfogged tiles on either side.
-*/
+ * fog display algorithm
+ *
+ * smallmap shows fog placement
+ * - it is a peek into the data model
+ *
+ * bigmap shows a rendering of that
+ * if a tile on the bigmap is partially fogged, then it is completely fogged on the small map.
+ *
+ * this means that partially fogged tiles depend on adjacent tiles being fogged
+ * completely fogged tiles depends on adjacent tiles being fogged
+ *
+ * when one tile is fogged and is not surrounded by adjacent fogged tiles it is shown as not fogged on the bigmap, while it is shown as fogged on the small map.  it is then marked as defogged at the start of the next turn.
+ *
+ * every tile has 4 faces:
+ * it can connect to an adjacent tile darkly, lightly, or not at all
+ * a dark face means the whole side is black
+ * a light face means the side is a gradient *
+ *
+ *
+ * graphics cache
+ * fog types:
+ * 1 = light corner se: connects lightly to south and east
+ * 2 = light corner sw: connects lightly to south and west
+ * 3 = light corner nw: connects lightly to north and west
+ * 4 = light corner ne: connects lightly to north and east
+ * 5 = dark corner nw: connects darkly to north and west, lightly to south and east
+ * 6 = dark corner ne: connects darkly to north and east, lightly to south and west
+ * 7 = dark corner se: connects darkly to east and south, lightly to north and west
+ * 8 = dark corner sw: connects darkly to south and west,  lightly to north and east
+ * 9 = bottom to top: connects darkly to south, connects lightly to east and west
+ * 10 =  top to bottom: connects darkly to north, connects lightly to east and west
+ * 11 = right to left: connects darkly to west, connects lightly to north and south
+ * 12 = left to right: connects darkly to east, connects lightly to north and south
+ * 13 = all black: connects darkly to north, south, east and west
+ *
+ * bigmap tile processing algorithm:
+ * for each tile currently being shown, examine each tile in normal order
+ *
+ * here are the cases that we can handle for fogging a tile:
+ * the sets are read as follows:
+ *
+ * 876
+ * 5x4 = (fog tile type)
+ * 321
+ * (bit count)
+ *
+ * the most significant bit is in the 1st position, and the least sigificant bit
+ * is in the 8th position
+ *
+ * we check each position and if it's a fogged tile, then we add a 1 to that
+ * bit position.
+ *
+ * 111
+ * 1x1 = 13
+ * 111
+ * (255)  (all 8 bits on is 255)
+ *
+ * 111      111      011     110
+ * 1x1 = 5  1x1 = 6  1x1 = 7 1x1 = 8
+ * 110      011      111     111
+ * (127)    (223)    (254)   (251) (e.g. 251 == 11111011)
+ *
+ * 101      111      111     111
+ * 1x1 = 9  1x0 = 12 1x1 =10 0x1 = 11
+ * 111      111      101     111
+ * (253)    (239)    (191)   (247) (e.g. 247 == 11110111)
+ *
+ * 001      111      100     111
+ * 1x1 = 9  1x1 = 10 1x1 = 9 1x1 = 10
+ * 111      001      111     100
+ * (252)    (159)    (249)   (63)
+ *
+ * 011      111      110     111
+ * 0x1 = 11 0x1 = 11 1x0 =12 1x0 = 12
+ * 111      011      111     110
+ * (246)    (215)    (235)   (111)
+ *
+ * 000      000      110      011
+ * 0x1 = 1  1x0 = 2  1x0 = 3  0x1 = 4
+ * 011      110      000      000
+ * (208)    (104)    (11)     (22)
+ *
+ *
+ * 000      111      011      110
+ * 1x1 = 9  1x1 = 10 0x1 = 11 1x0 = 12
+ * 111      000      011      110
+ * (248)    (31)     (214)    (107)
+ *
+ *
+ * 001      111      100     111
+ * 0x1 = 1  0x1 = 4  1x0 = 2 1x0 = 3
+ * 111      001      111     100
+ * (244)    (151)    (233)   (47)
+ *
+ * 000      011      000     111
+ * 0x1 = 1  0x1 = 4  1x0 = 2 1x0 = 3
+ * 111      001      111     000
+ * (240)    (150)    (232)   (15)
+ *
+ * 100      110      001     111
+ * 1x0 = 2  1x0 = 3  0x1 = 1 0x1 = 4
+ * 110      100      011     000
+ * (105)    (43)     (232)   (15)
+ *
+ * 011      110
+ * 1x1 = 14 1x1 = 15
+ * 110      011
+ * (126)    (219)
+ *
+ *special note:
+ *none of these sets contain a so-called "lone" tile.
+ *a lone tile is a fogged tile surrounded by two unfogged tiles on either side.
+**/
 void BigMap::drawFogTile (int x, int y)
 {
   int idx = 0;
@@ -459,18 +459,18 @@ void BigMap::drawFogTile (int x, int y)
   int type = 0;
   switch (idx)
     {
-    case 208: case 212: case 240: case 244: type = 1; break;
-    case 104: case 105: case 232: case 233: type = 2; break;
-    case  11: case 15: case 43: case 47: type = 3; break;
-    case  22: case 150: case 151: case 23: type = 4; break;
+    case 208: case 212: case 240: case 244: case 242: case 216: case 220: case 210: case 217: case 211: case 218: type = 1; break;
+    case 104: case 105: case 232: case 233: case 121: case 120: case 110: case 106: case 122: case 124: case 234: type = 2; break;
+    case  11: case 15: case 43: case 47: case 59: case 27: case 79: case 75: case 155: case 203: case 139: case 91: type = 3; break;
+    case  22: case 150: case 151: case 23: case 87: case 86: case 158: case 118:case 94: case 30: case 62: type = 4; break;
     case 127: type = 5; break;
     case 223: type = 6; break;
     case 254: type = 7; break;
     case 251: type = 8; break;
-    case 248: case 249: case 252: case 253: type = 9; break;
-    case  31: case 63: case 159: case 191: type = 10; break;
-    case 214: case 215: case 246: case 247: type = 11; break;
-    case 107: case 111: case 235: case 239: type = 12; break;
+    case 248: case 249: case 252: case 253: case 250: type = 9; break;
+    case  31: case 63: case 159: case 191: case 95: type = 10; break;
+    case 214: case 215: case 246: case 247: case 222: type = 11; break;
+    case 107: case 111: case 235: case 239: case 123: type = 12; break;
     case 126: type = 14; break;
     case 219: type = 15; break;
     case 255: type = 13; break;
@@ -497,6 +497,49 @@ void BigMap::drawFogTile (int x, int y)
 		      buffer, &r);
     }
   return;
+}
+
+void BigMap::debugFogTile (int x, int y)
+{
+  int idx = 0;
+  int count = 0;
+  bool foggyTile;
+  printf ("isFogged() == %d ", FogMap::isFogged(Vector<int>(x,y)));
+  for (int i = x - 1; i <= x + 1; i++)
+    for (int j = y - 1; j <= y + 1; j++)
+      {
+	foggyTile = false;
+	if (i == x && j == y)
+	  continue;
+	if (i < 0 || j < 0 || 
+	    i >= GameMap::getWidth() || j >= GameMap::getHeight())
+	  foggyTile = true;
+	else
+	  {
+	    Vector<int> pos = Vector<int>(i, j);
+	    foggyTile = FogMap::isFogged(pos);
+	  }
+	if (foggyTile)
+	  {
+	    printf ("1");
+	    switch (count)
+	      {
+	      case 0: idx += 1; break;
+	      case 1: idx += 2; break;
+	      case 2: idx += 4; break;
+	      case 3: idx += 8; break;
+	      case 4: idx += 16; break;
+	      case 5: idx += 32; break;
+	      case 6: idx += 64; break;
+	      case 7: idx += 128; break;
+	      }
+	  }
+	else
+	    printf ("0");
+
+	count++;
+      }
+  printf (" = %d\n", idx);
 }
 
 void BigMap::draw_stack(Stack *s)

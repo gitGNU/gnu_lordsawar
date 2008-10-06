@@ -583,6 +583,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 
     }
   cursor_changed.emit(d_cursor);
+  //debugFogTile(tile.x, tile.y);
 }
 
 void GameBigMap::mouse_motion_event(MouseMotionEvent e)

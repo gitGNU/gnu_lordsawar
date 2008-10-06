@@ -84,6 +84,7 @@ class BigMap: public sigc::trackable
     bool saveViewAsBitmap(std::string filename);
     void toggle_grid();
     
+    void debugFogTile (int x, int y);
  protected:
     MapRenderer* d_renderer;
 
