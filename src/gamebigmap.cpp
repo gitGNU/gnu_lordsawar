@@ -124,11 +124,15 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
   if (input_locked)
     return;
 
+  Player *active = Playerlist::getActiveplayer();
   Vector<int> tile = mouse_pos_to_tile(e.pos);
 
   if (e.button == MouseButtonEvent::LEFT_BUTTON
       && e.state == MouseButtonEvent::PRESSED)
     {
+      if (active->getFogMap()->isCompletelyObscuredFogTile(tile) == true)
+	return;
+
       Stack* stack = Playerlist::getActiveplayer()->getActivestack();
 
       if (stack)
@@ -312,6 +316,8 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
     {
       if (e.state == MouseButtonEvent::PRESSED)
 	{
+	  if (active->getFogMap()->isCompletelyObscuredFogTile(tile) == true)
+	    return;
 	  if (City* c = Citylist::getInstance()->getObjectAt(tile))
 	    {
 	      city_queried (c, true);
@@ -448,7 +454,12 @@ void GameBigMap::zoom_out()
 
 void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 {
-  if (stack && mouse_state == DRAGGING_STACK)
+  Player *active = Playerlist::getActiveplayer();
+  if (active->getFogMap()->isCompletelyObscuredFogTile(tile))
+    {
+      d_cursor = GraphicsCache::HAND;
+    }
+  else if (stack && mouse_state == DRAGGING_STACK)
     {
       d_cursor = GraphicsCache::GOTO_ARROW;
     }
@@ -462,7 +473,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	  City *c = Citylist::getInstance()->getObjectAt(tile);
 	  if (c)
 	    {
-	      if (c->getOwner() == Playerlist::getActiveplayer())
+	      if (c->getOwner() == active)
 		d_cursor = GraphicsCache::FEET;
 	      else if (c->isBurnt() == true)
 		d_cursor = GraphicsCache::FEET;
@@ -501,7 +512,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	    {
 	      Maptile *t = GameMap::getInstance()->getTile(tile);
 	      Stack *st = Stacklist::getObjectAt(tile);
-	      if (st && st->getOwner() != Playerlist::getActiveplayer())
+	      if (st && st->getOwner() != active)
 		{
 		  int delta = abs(stack->getPos().x - st->getPos().x);
 		  if (delta <= 1)
@@ -554,10 +565,10 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
       d_cursor = GraphicsCache::HAND;
       Stack *st;
 
-      st = Playerlist::getActiveplayer()->getStacklist()->getObjectAt(tile);
+      st = active->getStacklist()->getObjectAt(tile);
       if (st)
 	{
-	  if (st->getOwner() == Playerlist::getActiveplayer())
+	  if (st->getOwner() == active)
 	    d_cursor = GraphicsCache::TARGET;
 	  else
 	    d_cursor = GraphicsCache::HAND;
@@ -570,7 +581,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	      City *c = Citylist::getInstance()->getObjectAt(tile);
 	      if (c->isBurnt() == true)
 		d_cursor = GraphicsCache::HAND;
-	      else if (c->getOwner() == Playerlist::getActiveplayer())
+	      else if (c->getOwner() == active)
 		d_cursor = GraphicsCache::ROOK;
 	      else if (d_see_opponents_production == true)
 		d_cursor = GraphicsCache::ROOK;
@@ -592,7 +603,8 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
   if (input_locked)
     return;
 
-  Stack* stack = Playerlist::getActiveplayer()->getActivestack();
+  Player *active = Playerlist::getActiveplayer();
+  Stack* stack = active->getActivestack();
   Vector<int> tile = mouse_pos_to_tile(e.pos);
   if (tile.x < 0)
     tile.x = 0;
@@ -606,7 +618,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
   if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
       && (mouse_state == NONE || mouse_state == SHOWING_STACK) && 
-      stack && stack->getPos() == tile)
+      stack && stack->getPos() == tile && active->getFogMap()->isCompletelyObscuredFogTile(tile) == false)
     {
       //initial drag
       mouse_state = DRAGGING_STACK;
@@ -654,7 +666,8 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
   // drag stack with left mouse button
   if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
-      && (mouse_state == DRAGGING_STACK))
+      && (mouse_state == DRAGGING_STACK) && 
+      active->getFogMap()->isCompletelyObscuredFogTile(tile) == false)
     {
       //subsequent dragging
       //alright.  calculate the path, and show it but don't move

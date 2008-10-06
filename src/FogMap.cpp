@@ -155,6 +155,29 @@ void FogMap::alterFogRectangle(Vector<int> pt, int height, int width, FogType ne
     }
 }
 
+bool FogMap::isCompletelyObscuredFogTile(Vector<int> pos)
+{
+  bool foggyTile;
+  for (int i = pos.x - 1; i <= pos.x + 1; i++)
+    for (int j = pos.y - 1; j <= pos.y + 1; j++)
+      {
+	foggyTile = false;
+	if (i == pos.x && j == pos.y)
+	  continue;
+	if (i < 0 || j < 0 || 
+	    i >= FogMap::getWidth() || j >= FogMap::getHeight())
+	  foggyTile = true;
+	else
+	  {
+	    Vector<int> pos = Vector<int>(i, j);
+	    foggyTile = FogMap::isFogged(pos);
+	  }
+	if (foggyTile == false)
+	  return false;
+      }
+  return true;
+}
+
 bool FogMap::isLoneFogTile(Vector<int> pos)
 {
   bool west_open = false;

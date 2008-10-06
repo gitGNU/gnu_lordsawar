@@ -138,6 +138,7 @@ class FogMap
 	 */
 	static bool isFogged(Vector <int> pos);
 
+	bool isCompletelyObscuredFogTile(Vector<int> pos);
     private:
         // Data
 	//! The width of the fog map.
