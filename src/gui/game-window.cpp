@@ -450,7 +450,6 @@ void GameWindow::continue_network_game(NextTurn *next_turn)
 void GameWindow::new_game(GameScenario *game_scenario, NextTurn *next_turn)
 {
   bool success = false;
-  stop_game();
   success = setup_game(game_scenario, next_turn);
   if (!success)
     return;
@@ -633,7 +632,7 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   // setup game callbacks
   connections.push_back
     (game->game_stopped.connect
-     (sigc::mem_fun(*this, &GameWindow::on_quit_confirmed)));
+     (sigc::mem_fun(*this, &GameWindow::on_game_stopped)));
   connections.push_back 
     (game->sidebar_stats_changed.connect
      (sigc::mem_fun(*this, &GameWindow::on_sidebar_stats_changed)));
@@ -972,32 +971,9 @@ void GameWindow::on_load_game_activated()
     {
       std::string filename = chooser.get_filename();
       current_save_filename = filename;
-      stop_game();
-    
-      bool broken = false;
-      GameScenario* game_scenario = new GameScenario(filename, broken);
-
-      if (broken)
-	{
-	  on_message_requested(_("Corrupted saved game file."));
-	  game_ended.emit();
-	  return;
-	}
-      if (game_scenario->getPlayMode() == GameScenario::HOTSEAT)
-	load_game(game_scenario, 
-		  new NextTurnHotseat(game_scenario->getTurnmode(),
-				      game_scenario->s_random_turns));
-      else if (game_scenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
-	{
-	  PbmGameServer::getInstance()->start();
-	  load_game(game_scenario, 
-		    new NextTurnPbm(game_scenario->getTurnmode(),
-				    game_scenario->s_random_turns));
-	}
-      else if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
-	load_game(game_scenario, 
-		  new NextTurnNetworked(game_scenario->getTurnmode(),
-					game_scenario->s_random_turns));
+      d_load_filename = filename;
+      stop_game("load-game");
+      //now look at on_game_stopped.
     }
 }
 
@@ -1067,14 +1043,44 @@ void GameWindow::on_quit_activated()
 
   if (response == 0) //end the game
     {
-      stop_game();
+      stop_game("quit");
     }
 }
 
-void GameWindow::on_quit_confirmed()
+void GameWindow::on_game_stopped()
 {
   game.reset();
-  game_ended.emit();
+  if (stop_action == "quit" || stop_action == "game-over")
+      game_ended.emit();
+  else if (stop_action == "next-scenario")
+      next_scenario.emit(d_scenario, d_num_heroes);
+  else if (stop_action == "load-game")
+    {
+      bool broken = false;
+      GameScenario* game_scenario = new GameScenario(d_load_filename, broken);
+
+      if (broken)
+	{
+	  on_message_requested(_("Corrupted saved game file."));
+	  game_ended.emit();
+	  return;
+	}
+      if (game_scenario->getPlayMode() == GameScenario::HOTSEAT)
+	load_game(game_scenario, 
+		  new NextTurnHotseat(game_scenario->getTurnmode(),
+				      game_scenario->s_random_turns));
+      else if (game_scenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
+	{
+	  PbmGameServer::getInstance()->start();
+	  load_game(game_scenario, 
+		    new NextTurnPbm(game_scenario->getTurnmode(),
+				    game_scenario->s_random_turns));
+	}
+      else if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
+	load_game(game_scenario, 
+		  new NextTurnNetworked(game_scenario->getTurnmode(),
+					game_scenario->s_random_turns));
+    }
 }
 
 void GameWindow::on_quests_activated()
@@ -1482,8 +1488,9 @@ void GameWindow::on_diplomacy_button_clicked()
   d.hide();
 }
 
-void GameWindow::stop_game()
+void GameWindow::stop_game(std::string action)
 {
+  stop_action = action;
   Sound::getInstance()->disableBackground();
   if (game.get())
     {
@@ -1494,9 +1501,10 @@ void GameWindow::stop_game()
 
 void GameWindow::on_next_scenario(std::string scenario, int num_heroes)
 {
-  stop_game();
   //fixme: show a message here.  we won, but there's another scenario to go
-  next_scenario.emit(scenario, num_heroes);
+  d_scenario = scenario;
+  d_num_heroes = num_heroes;
+  stop_game("next-scenario");
 }
 
 void GameWindow::on_game_over(Player *winner)
@@ -1535,7 +1543,7 @@ void GameWindow::on_game_over(Player *winner)
   dialog->run();
   dialog->hide();
 
-  stop_game();
+  stop_game("game-over");
 }
 
 void GameWindow::on_player_died(Player *player)

@@ -202,7 +202,7 @@ class GameWindow: public Decorated
     void on_save_game_as_activated();
     void on_show_lobby_activated();
     void on_quit_activated();
-    void on_quit_confirmed();
+    void on_game_stopped();
     void on_quests_activated();
     void on_disband_activated();
     void on_stack_info_activated();
@@ -307,7 +307,7 @@ class GameWindow: public Decorated
 
     bool setup_game(GameScenario *game_scenario, NextTurn *nextTurn);
     void setup_signals(GameScenario *game_scenario);
-    void stop_game();
+    void stop_game(std::string action);
     std::list<sigc::connection> connections;
     
     void setup_menuitem(Gtk::MenuItem*, sigc::slot<void> , sigc::signal<void, bool> &);
@@ -318,6 +318,10 @@ public:
     std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_button_images;
     std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_arrow_images;
     bool d_quick_fights; //do we speed up fights for this player's turn?
+    std::string stop_action; //hackhackhack
+    std::string d_scenario;
+    int d_num_heroes;
+    std::string d_load_filename;
 };
 
 #endif
