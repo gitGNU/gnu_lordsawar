@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-05 12:45-0400\n"
+"POT-Creation-Date: 2008-10-06 13:45-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -2472,38 +2472,38 @@ msgstr "Altro"
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr "Erreur lors du chargement du paquetage de combat. Nom du paquetage : "
 
-#: src/GameScenario.cpp:337
+#: src/GameScenario.cpp:354
 msgid "The Filename is well formed"
 msgstr "Le nom de fichier est correct"
 
-#: src/GameScenario.cpp:342
+#: src/GameScenario.cpp:359
 msgid "The Filename lacks the extension --> "
 msgstr "Il manque l'extension au nom du fichier --> "
 
-#: src/GameScenario.cpp:355
+#: src/GameScenario.cpp:372
 msgid "GameScenario: Something went wrong with saving.\n"
 msgstr ""
 "GameScenario: Quelque chose s'est mal déroulée pendant la sauvegarde.\n"
 
-#: src/GameScenario.cpp:423
+#: src/GameScenario.cpp:440
 msgid "savefile has wrong version, we want "
 msgstr "Le fichier sauvegardé a une mauvaise version. Il attendait "
 
-#: src/GameScenario.cpp:425
+#: src/GameScenario.cpp:442
 msgid "savefile offers "
 msgstr "Le fichier sauvegardé offre "
 
-#: src/GameScenario.cpp:587
+#: src/GameScenario.cpp:604
 msgid "Autosave failed.\n"
 msgstr "La sauvegarde automatique a échouée.\n"
 
-#: src/GameScenario.cpp:594
+#: src/GameScenario.cpp:611
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 "Erreur lors de la tentative de renommage du fichier temporaire dans autosave."
 "sav\n"
 
-#: src/GameScenario.cpp:595 src/gui/driver.cpp:705
+#: src/GameScenario.cpp:612 src/gui/driver.cpp:705
 #, fuzzy
 msgid "Error: "
 msgstr "Erruer :"
@@ -4170,7 +4170,7 @@ msgstr ""
 msgid "original path of stack was blocked\n"
 msgstr "Le chemin d'origine de l'empilement est bloqué\n"
 
-#: src/gamebigmap.cpp:179
+#: src/gamebigmap.cpp:183
 msgid "error calculating path!"
 msgstr ""
 

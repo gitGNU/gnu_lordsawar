@@ -1,6 +1,7 @@
 2008-10-06  Ben Asselstine
 
 	* fixed bug #24464.  initial stacks are now defogged on hidden map.
+	* now mouse cursor on hidden maps doesn't reveal obscured features.
 
 2008-10-05  Ben Asselstine
 

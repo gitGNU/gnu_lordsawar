@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-05 12:45-0400\n"
+"POT-Creation-Date: 2008-10-06 13:45-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -2465,35 +2465,35 @@ msgstr "Anderes"
 msgid "Error, while loading an armyset. Armyset Name: "
 msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
 
-#: src/GameScenario.cpp:337
+#: src/GameScenario.cpp:354
 msgid "The Filename is well formed"
 msgstr "Der Dateiname ist in Ordnung"
 
-#: src/GameScenario.cpp:342
+#: src/GameScenario.cpp:359
 msgid "The Filename lacks the extension --> "
 msgstr "Dem Dateinamen fehlt die Endung --> "
 
-#: src/GameScenario.cpp:355
+#: src/GameScenario.cpp:372
 msgid "GameScenario: Something went wrong with saving.\n"
 msgstr "GameScenario: Fehler beim Speichern.\n"
 
-#: src/GameScenario.cpp:423
+#: src/GameScenario.cpp:440
 msgid "savefile has wrong version, we want "
 msgstr "Spielstand hat falsche Version. Gefordert wird "
 
-#: src/GameScenario.cpp:425
+#: src/GameScenario.cpp:442
 msgid "savefile offers "
 msgstr "Spielstand hat "
 
-#: src/GameScenario.cpp:587
+#: src/GameScenario.cpp:604
 msgid "Autosave failed.\n"
 msgstr ""
 
-#: src/GameScenario.cpp:594
+#: src/GameScenario.cpp:611
 msgid "Error while trying to rename the temporary file to autosave.sav\n"
 msgstr ""
 
-#: src/GameScenario.cpp:595 src/gui/driver.cpp:705
+#: src/GameScenario.cpp:612 src/gui/driver.cpp:705
 #, fuzzy
 msgid "Error: "
 msgstr "Fehler"
@@ -4148,7 +4148,7 @@ msgstr ""
 msgid "original path of stack was blocked\n"
 msgstr "ursprünglicher Weg der Armee war blockiert\n"
 
-#: src/gamebigmap.cpp:179
+#: src/gamebigmap.cpp:183
 msgid "error calculating path!"
 msgstr ""
 
