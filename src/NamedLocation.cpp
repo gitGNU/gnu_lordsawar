@@ -29,8 +29,8 @@ NamedLocation::NamedLocation(const NamedLocation& object)
 {
 }
 
-NamedLocation::NamedLocation(XML_Helper* helper)
-  :Location(helper), Namable(helper)
+NamedLocation::NamedLocation(XML_Helper* helper, Uint32 size)
+  :Location(helper, size), Namable(helper)
 {
 }
 

@@ -250,7 +250,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    }
 	  else
 	    {
-	      if (City* c = Citylist::getInstance()->getObjectAt(tile.x, tile.y))
+	      if (City* c = Citylist::getInstance()->getObjectAt(tile))
 		{
 		  if (!c->isBurnt())
 		    {
@@ -312,12 +312,12 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
     {
       if (e.state == MouseButtonEvent::PRESSED)
 	{
-	  if (City* c = Citylist::getInstance()->getObjectAt(tile.x, tile.y))
+	  if (City* c = Citylist::getInstance()->getObjectAt(tile))
 	    {
 	      city_queried (c, true);
 	      mouse_state = SHOWING_CITY;
 	    }
-	  else if (Ruin* r = Ruinlist::getInstance()->getObjectAt(tile.x, tile.y))
+	  else if (Ruin* r = Ruinlist::getInstance()->getObjectAt(tile))
 	    {
 	      if ((r->isHidden() == true && 
 		   r->getOwner() == Playerlist::getActiveplayer()) ||
@@ -327,17 +327,17 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		  mouse_state = SHOWING_RUIN;
 		}
 	    }
-	  else if (Signpost* s = Signpostlist::getInstance()->getObjectAt(tile.x, tile.y))
+	  else if (Signpost* s = Signpostlist::getInstance()->getObjectAt(tile))
 	    {
 	      signpost_queried (s);
 	      mouse_state = SHOWING_SIGNPOST;
 	    }
-	  else if (Temple* t = Templelist::getInstance()->getObjectAt(tile.x, tile.y))
+	  else if (Temple* t = Templelist::getInstance()->getObjectAt(tile))
 	    {
 	      temple_queried.emit(t, true);
 	      mouse_state = SHOWING_TEMPLE;
 	    }
-	  else if (Stack *st = Stacklist::getObjectAt(tile.x, tile.y))
+	  else if (Stack *st = Stacklist::getObjectAt(tile))
 	    {
 	      if (d_see_opponents_stacks == true)
 		{

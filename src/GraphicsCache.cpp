@@ -1837,15 +1837,16 @@ void GraphicsCache::loadTemplePics()
       SDL_Surface* tmp;
       SDL_PixelFormat* fmt = templepics->format;
 
-      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
-				 fmt->Rmask, fmt->Gmask, 
+      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, 
+				 ts * TEMPLE_TILE_WIDTH, ts * TEMPLE_TILE_WIDTH,
+				 fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, 
 				 fmt->Bmask, fmt->Amask);
 
       SDL_Rect r;
-      r.x = i*ts;
+      r.x = i*(templepics->w/TEMPLE_TYPES);
       r.y = 0;
-      r.w = r.h = ts;
-      SDL_BlitSurface(templepics, &r, tmp, NULL);
+      r.w = r.h = templepics->w/TEMPLE_TYPES;
+      SDL_SoftStretch(templepics, &r, tmp, NULL);
 
       d_templepic[i] = SDL_DisplayFormatAlpha(tmp);
 
@@ -1873,15 +1874,16 @@ void GraphicsCache::loadRuinPics()
       SDL_Surface* tmp;
       SDL_PixelFormat* fmt = ruinpics->format;
 
-      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
-				 fmt->Rmask, fmt->Gmask, 
+      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, 
+				 ts * RUIN_TILE_WIDTH, ts * RUIN_TILE_WIDTH, 
+				 fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, 
 				 fmt->Bmask, fmt->Amask);
 
       SDL_Rect r;
-      r.x = i*ts;
+      r.x = i*(ruinpics->w/RUIN_TYPES);
       r.y = 0;
-      r.w = r.h = ts;
-      SDL_BlitSurface(ruinpics, &r, tmp, NULL);
+      r.w = r.h = (ruinpics->w/RUIN_TYPES);
+      SDL_SoftStretch(ruinpics, &r, tmp, NULL);
 
       d_ruinpic[i] = SDL_DisplayFormatAlpha(tmp);
 
@@ -2096,7 +2098,7 @@ void GraphicsCache::loadCityPics()
   SDL_PixelFormat *fmt;
   // GameMap has the actual cityset stored
   std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
-  int size = GameMap::getInstance()->getTileset()->getTileSize() * 2;
+  int size = GameMap::getInstance()->getTileset()->getTileSize() * CITY_TILE_WIDTH;
 
   // load the image for the razed city
   SDL_Surface* razedpics = GraphicsLoader::getCitysetPicture(cityset, "castle_razed.png");
@@ -2113,10 +2115,10 @@ void GraphicsCache::loadCityPics()
       //copy the razed city image...
 
       SDL_Rect r;
-      r.x = i * size;
+      r.x = i * (razedpics->w/(MAX_PLAYERS +1));
       r.y = 0;
-      r.w = r.h = size;
-      SDL_BlitSurface(razedpics, &r, tmp, 0);
+      r.w = r.h = (razedpics->w/(MAX_PLAYERS +1));
+      SDL_SoftStretch(razedpics, &r, tmp, 0);
 
       d_razedpic[i] = SDL_DisplayFormatAlpha(tmp);
     }
@@ -2140,10 +2142,10 @@ void GraphicsCache::loadCityPics()
       //copy the city image...
 
       SDL_Rect r;
-      r.x = i*size;
+      r.x = i*(citypics->w/(MAX_PLAYERS+1));
       r.y = 0;
-      r.w = r.h = size;
-      SDL_BlitSurface(citypics, &r, tmp, 0);
+      r.w = r.h = (citypics->w/(MAX_PLAYERS+1));
+      SDL_SoftStretch(citypics, &r, tmp, 0);
 
       d_citypic[i] = SDL_DisplayFormatAlpha(tmp);
 #if 0
@@ -2152,8 +2154,8 @@ void GraphicsCache::loadCityPics()
       d_citymask[i] = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size,
 					   32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
 
-      r.y = size;
-      SDL_BlitSurface(citypics, &r, d_citymask[i], 0);
+      r.y = citypics->h/2;
+      SDL_SoftStretch(citypics, &r, d_citymask[i], 0);
 #endif
     }
 

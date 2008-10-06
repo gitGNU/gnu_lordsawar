@@ -37,7 +37,7 @@ class NamedLocation: public Location, public Namable
      //! Copy constructor.
      NamedLocation(const NamedLocation&);
      //! Loading constructor.
-     NamedLocation(XML_Helper* helper);
+     NamedLocation(XML_Helper* helper, Uint32 size);
      //! Destructor.
     ~NamedLocation();
 

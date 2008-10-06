@@ -26,13 +26,19 @@
 std::string Ruin::d_tag = "ruin";
 
 Ruin::Ruin(Vector<int> pos, std::string name, int type, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
-    :NamedLocation(pos, RUIN_WIDTH, name), d_searched(searched), d_type(type),
-    d_occupant(occupant), d_hidden(hidden), d_owner(owner), d_sage(sage)
+    :NamedLocation(pos, RUIN_TILE_WIDTH, name), d_searched(searched), 
+    d_type(type), d_occupant(occupant), d_hidden(hidden), d_owner(owner), 
+    d_sage(sage)
 {
     d_owner = NULL;
     d_reward = NULL;
     //mark the location as being occupied by a ruin on the map
-    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::RUIN);
+    for (unsigned int i = 0; i < getSize(); i++)
+      for (unsigned int j = 0; j < getSize(); j++)
+	{
+	  Vector<int> pos = getPos() + Vector<int>(i, j);
+	  GameMap::getInstance()->getTile(pos)->setBuilding(Maptile::RUIN);
+	}
 }
 
 Ruin::Ruin(const Ruin& ruin)
@@ -43,8 +49,8 @@ Ruin::Ruin(const Ruin& ruin)
 }
 
 Ruin::Ruin(XML_Helper* helper)
-    :NamedLocation(helper), d_type(0), d_occupant(0), d_hidden(0), 
-    d_owner(0), d_sage(0), d_reward(0)
+    :NamedLocation(helper, RUIN_TILE_WIDTH), d_type(0), d_occupant(0), 
+    d_hidden(0), d_owner(0), d_sage(0), d_reward(0)
 {
     Uint32 ui;
     std::string type_str;
@@ -65,7 +71,12 @@ Ruin::Ruin(XML_Helper* helper)
       d_owner = NULL;
 
     //mark the location as being occupied by a ruin on the map
-    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::RUIN);
+    for (unsigned int i = 0; i < getSize(); i++)
+      for (unsigned int j = 0; j < getSize(); j++)
+	{
+	  Vector<int> pos = getPos() + Vector<int>(i, j);
+	  GameMap::getInstance()->getTile(pos)->setBuilding(Maptile::RUIN);
+	}
 }
 
 Ruin::~Ruin()

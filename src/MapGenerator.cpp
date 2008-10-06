@@ -982,7 +982,7 @@ void MapGenerator::makeCities(int cities)
     {
         int x = rand()%(d_width-2);
         int y = rand()%(d_height-2);
-        if (inhospitableTerrain(x, y, CITY_WIDTH) && (iterations < 1000))
+        if (inhospitableTerrain(x, y, CITY_TILE_WIDTH) && (iterations < 1000))
         {
             iterations++;
             continue;
@@ -1003,8 +1003,8 @@ void MapGenerator::makeCities(int cities)
 
 bool MapGenerator::canPutCity(int x,int y)
 {
-  for (unsigned int i = 0; i < CITY_WIDTH; i++)
-    for (unsigned int j = 0; j < CITY_WIDTH; j++)
+  for (unsigned int i = 0; i < CITY_TILE_WIDTH; i++)
+    for (unsigned int j = 0; j < CITY_TILE_WIDTH; j++)
       if (canPutBuilding(x+i,y+j) == false)
         return false;
         
@@ -1016,12 +1016,12 @@ void MapGenerator::putCity(int x, int y, int& city_count)
         d_building[y*d_width + x] = Maptile::CITY;
 
         //cities shall only sit on grass tiles
-	for (unsigned int i = 0; i < CITY_WIDTH; i++)
-	  for (unsigned int j = 0; j < CITY_WIDTH; j++)
+	for (unsigned int i = 0; i < CITY_TILE_WIDTH; i++)
+	  for (unsigned int j = 0; j < CITY_TILE_WIDTH; j++)
 	    d_terrain[(y+i)*d_width + (x+j)] = Tile::GRASS;
         //cities cannot neighbor with mountain tiles
-        for (int Y = -1; Y <= (int)CITY_WIDTH; ++Y )
-            for (int X = -1; X <= (int)CITY_WIDTH; ++X)
+        for (int Y = -1; Y <= (int)CITY_TILE_WIDTH; ++Y )
+            for (int X = -1; X <= (int)CITY_TILE_WIDTH; ++X)
                 if (d_terrain[(y+Y)*d_width + x+X] == Tile::MOUNTAIN)
                     d_terrain[(y+Y)*d_width + x+X] = Tile::HILLS;
 
@@ -1039,11 +1039,11 @@ void MapGenerator::makeBuildings(Maptile::Building b, int building)
     switch (b)
       {
       case Maptile::CITY:
-	width = CITY_WIDTH; break;
+	width = CITY_TILE_WIDTH; break;
       case Maptile::RUIN:
-	width = RUIN_WIDTH; break;
+	width = RUIN_TILE_WIDTH; break;
       case Maptile::TEMPLE:
-	width = TEMPLE_WIDTH; break;
+	width = TEMPLE_TILE_WIDTH; break;
       case Maptile::NONE:
       case Maptile::SIGNPOST:
       case Maptile::ROAD:
@@ -1103,7 +1103,7 @@ bool MapGenerator::canPutBuilding(int x,int y)
     if ((x < 3) || (x > (d_width-3)) || (y < 3) || (y > (d_height-3)))
         return false;
 
-    int dist = (int)CITY_WIDTH + 1;
+    int dist = (int)CITY_TILE_WIDTH + 1;
     //if there is another building too close, return false
     for (int locx = x-dist; locx <= x+dist; locx++)
         for (int locy = y-dist; locy <= y+dist; locy++)

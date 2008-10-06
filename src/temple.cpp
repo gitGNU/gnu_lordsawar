@@ -27,18 +27,28 @@
 std::string Temple::d_tag = "temple";
 
 Temple::Temple(Vector<int> pos, std::string name, int type)
-  :NamedLocation(pos, TEMPLE_WIDTH, name),d_type(type)
+  :NamedLocation(pos, TEMPLE_TILE_WIDTH, name),d_type(type)
 {
     //mark the location on the game map as occupied by a temple
-    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::TEMPLE);
+    for (unsigned int i = 0; i < getSize(); i++)
+      for (unsigned int j = 0; j < getSize(); j++)
+	{
+	  Vector<int> pos = getPos() + Vector<int>(i, j);
+	  GameMap::getInstance()->getTile(pos)->setBuilding(Maptile::TEMPLE);
+	}
 }
 
 Temple::Temple(XML_Helper* helper)
-    :NamedLocation(helper)
+    :NamedLocation(helper, TEMPLE_TILE_WIDTH)
 {
     //mark the location on the game map as occupied by a temple
     helper->getData(d_type, "type");
-    GameMap::getInstance()->getTile(getPos())->setBuilding(Maptile::TEMPLE);
+    for (unsigned int i = 0; i < getSize(); i++)
+      for (unsigned int j = 0; j < getSize(); j++)
+	{
+	  Vector<int> pos = getPos() + Vector<int>(i, j);
+	  GameMap::getInstance()->getTile(pos)->setBuilding(Maptile::TEMPLE);
+	}
 }
 
 Temple::Temple(const Temple& t)
