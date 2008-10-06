@@ -462,7 +462,7 @@ void BigMap::drawFogTile (int x, int y)
     case 208: case 212: case 240: case 244: case 242: case 216: case 220: case 210: case 217: case 211: case 218: case 209: type = 1; break;
     case 104: case 105: case 232: case 233: case 121: case 120: case 110: case 106: case 122: case 124: case 234: case 108: type = 2; break;
     case  11: case 15: case 43: case 47: case 59: case 27: case 79: case 75: case 155: case 203: case 139: case 91: type = 3; break;
-    case  22: case 150: case 151: case 23: case 87: case 86: case 158: case 118:case 94: case 30: case 62: type = 4; break;
+    case  22: case 150: case 151: case 23: case 87: case 86: case 158: case 118:case 94: case 30: case 62: case 54: type = 4; break;
     case 127: type = 5; break;
     case 223: type = 6; break;
     case 254: type = 7; break;
