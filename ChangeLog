@@ -4,6 +4,7 @@
 	* now mouse cursor on hidden maps doesn't reveal obscured features.
 	* fixed bug #24466.  loading games from the game-window works again.
 	* fixed bug #24471.  keypad movement works with flyers over water.
+	* added new city production menuitem in the game window.
 
 2008-10-05  Ben Asselstine
 
