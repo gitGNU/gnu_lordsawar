@@ -299,6 +299,8 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_fight_order_activated));
     xml->connect_clicked("resign_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_resign_activated));
+    xml->connect_clicked("production_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_production_activated));
     xml->connect_clicked("levels_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_levels_activated));
     xml->connect_clicked("ruin_report_menuitem",
@@ -1263,6 +1265,24 @@ void GameWindow::on_resign_activated()
       on_resignation_completed();
     }
 
+  return;
+}
+
+void GameWindow::on_production_activated()
+{
+  City *city;
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
+
+  if (currently_selected_stack)
+    {
+      Vector<int> pos = currently_selected_stack->getPos();
+      city = Citylist::getInstance()->getNearestVisibleFriendlyCity(pos);
+    }
+  else
+    city = Citylist::getInstance()->getFirstCity(Playerlist::getActiveplayer());
+
+  on_city_visited(city);
   return;
 }
 

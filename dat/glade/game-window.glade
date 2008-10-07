@@ -410,6 +410,15 @@
 			  <accelerator key="g" modifiers="GDK_SHIFT_MASK" signal="activate"/>
 			</widget>
 		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="production_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">City Production</property>
+			  <property name="use_underline">True</property>
+			  <accelerator key="c" modifiers="0" signal="activate"/>
+			</widget>
+		      </child>
 		    </widget>
 		  </child>
 		</widget>
