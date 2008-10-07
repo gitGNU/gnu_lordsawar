@@ -241,7 +241,10 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
     {
       Vector<int> *p = new Vector<int>(dest);
       push_back(p);
-      setMovesExhaustedAtPoint(1);
+      if (s->canMove() == true)
+	setMovesExhaustedAtPoint(1);
+      else
+	setMovesExhaustedAtPoint(0);
       return 1;
     }
   int width = GameMap::getWidth();

@@ -221,11 +221,15 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		    }
 		  else
 		    {
-		      if (!stack->getPath()->empty() && 
+		      if (stack->getPath()->empty() == false && 
 			  stack->getPath()->getMovesExhaustedAtPoint() == 0)
 			deselect = true;
 		      if ((d_cursor == GraphicsCache::SWORD ||
 			   d_cursor == GraphicsCache::HEART) &&
+			  stack->canMove() == false)
+			deselect = true;
+		      if ((d_cursor == GraphicsCache::FEET ||
+			   d_cursor == GraphicsCache::SHIP) &&
 			  stack->canMove() == false)
 			deselect = true;
 		    }
