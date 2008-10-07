@@ -1,5 +1,9 @@
 2008-10-07  Ben Asselstine
 
+	* bumped version to 0.1.3.
+
+2008-10-07  Ben Asselstine
+
 	* fixed bug #24473.  army units can now go into a boat at a bridge.
 	* fixed bug #24476.  stack now appears to be out of moves when it is
 	  out of moves in a special case wrt moving one tile at a time.
