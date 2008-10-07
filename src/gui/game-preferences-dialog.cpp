@@ -658,17 +658,17 @@ void GamePreferencesDialog::on_start_game_clicked()
 
     g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
 
-    g.see_opponents_stacks = Configuration::s_see_opponents_stacks;
-    g.see_opponents_production = Configuration::s_see_opponents_production;
-    g.play_with_quests = Configuration::s_play_with_quests;
-    g.hidden_map = Configuration::s_hidden_map;
-    g.neutral_cities = Configuration::s_neutral_cities;
-    g.razing_cities = Configuration::s_razing_cities;
-    g.diplomacy = Configuration::s_diplomacy;
-    g.random_turns = Configuration::s_random_turns;
+    g.see_opponents_stacks = GameScenarioOptions::s_see_opponents_stacks;
+    g.see_opponents_production = GameScenarioOptions::s_see_opponents_production;
+    g.play_with_quests = GameScenarioOptions::s_play_with_quests;
+    g.hidden_map = GameScenarioOptions::s_hidden_map;
+    g.neutral_cities = GameScenarioOptions::s_neutral_cities;
+    g.razing_cities = GameScenarioOptions::s_razing_cities;
+    g.diplomacy = GameScenarioOptions::s_diplomacy;
+    g.random_turns = GameScenarioOptions::s_random_turns;
     g.quick_start = Configuration::s_quick_start;
-    g.intense_combat = Configuration::s_intense_combat;
-    g.military_advisor = Configuration::s_military_advisor;
+    g.intense_combat = GameScenarioOptions::s_intense_combat;
+    g.military_advisor = GameScenarioOptions::s_military_advisor;
     g.cities_can_produce_allies = 
       cities_can_produce_allies_checkbutton->get_active();
 
