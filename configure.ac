@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl This is useful to force using autoreconf 2.5.x
 AC_PREREQ(2.59)
-AC_INIT([lordsawar], [0.1.2], [http://sv.nongnu.org/bugs/?group=lordsawar], [lordsawar])
+AC_INIT([lordsawar], [0.1.3], [http://sv.nongnu.org/bugs/?group=lordsawar], [lordsawar])
 AC_CONFIG_SRCDIR([config.h.in])
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
