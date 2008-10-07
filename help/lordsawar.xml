@@ -1278,6 +1278,12 @@ Toggle a grid on the map.
 </para>
 </listitem>
 <listitem>
+<para>C</para>
+<para>
+Show the city production window.
+</para>
+</listitem>
+<listitem>
 <para>keypad keys</para>
 <para>
 The number keys on the keypad will move the selected stack in the given direction.
