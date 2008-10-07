@@ -529,14 +529,18 @@ void Driver::on_next_scenario(std::string scenario, int num_heroes)
   GraphicsCache::deleteInstance();
 
   Player *p = Playerlist::getInstance()->getFirstLiving();
+  int gold = p->getGold();
 
   std::list<Hero*> heroes = p->getStacklist()->getTopHeroes(num_heroes);
 
   //load the game again
   GameScenario *game_scenario = load_game(scenario);
 
-
   Player *player = Playerlist::getInstance()->getFirstHuman();
+  player->withdrawGold(player->getGold());
+  if (gold > MAX_GOLD_TO_CARRY_OVER_TO_NEXT_SCENARIO)
+    gold = MAX_GOLD_TO_CARRY_OVER_TO_NEXT_SCENARIO;
+  player->addGold(gold);
   City *c = Citylist::getInstance()->getFirstCity(player);
 
   for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); it++)

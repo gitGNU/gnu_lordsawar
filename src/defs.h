@@ -28,9 +28,9 @@
 #include <string>
 #include <libintl.h>
 
-#define LORDSAWAR_SAVEGAME_VERSION "0.1.2"
-#define LORDSAWAR_CONFIG_VERSION "0.1.2"
-#define LORDSAWAR_RECENTLY_PLAYED_VERSION "0.1.2"
+#define LORDSAWAR_SAVEGAME_VERSION "0.1.3"
+#define LORDSAWAR_CONFIG_VERSION "0.1.3"
+#define LORDSAWAR_RECENTLY_PLAYED_VERSION "0.1.3"
 #define _(string) gettext(string) // Macro for the gettext
 #define __(astring) std::string(gettext(astring.c_str()))
 
@@ -78,6 +78,7 @@ const unsigned int MOVE_BONUS_TYPES = 6;
 const unsigned int CITY_TILE_WIDTH = 2;
 const unsigned int RUIN_TILE_WIDTH = 1;
 const unsigned int TEMPLE_TILE_WIDTH = 1;
+const int MAX_GOLD_TO_CARRY_OVER_TO_NEXT_SCENARIO = 5000;
 
 const unsigned short LORDSAWAR_PORT = 14998;
 #define HUMAN_PLAYER_TYPE _("Human")
