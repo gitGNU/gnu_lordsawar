@@ -521,19 +521,20 @@ void Driver::on_game_ended()
 
 void Driver::on_next_scenario(std::string scenario, int num_heroes)
 {
-  GameClient::deleteInstance();
-  PbmGameClient::deleteInstance();
-  GameServer::deleteInstance();
-  PbmGameServer::deleteInstance();
-
-  GraphicsCache::deleteInstance();
-
+  //crap.  the game isn't properly destroyed at this stage.
+  //it's nice because it lets us get the gold, and heroes.
+  //but it's bad because we're likely headed for a memory leak
   Player *p = Playerlist::getInstance()->getFirstLiving();
   int gold = p->getGold();
 
   std::list<Hero*> heroes = p->getStacklist()->getTopHeroes(num_heroes);
 
-  //load the game again
+  GameClient::deleteInstance();
+  PbmGameClient::deleteInstance();
+  GameServer::deleteInstance();
+  PbmGameServer::deleteInstance();
+
+  //load up the next scenario 
   GameScenario *game_scenario = load_game(scenario);
 
   Player *player = Playerlist::getInstance()->getFirstHuman();
@@ -554,7 +555,10 @@ void Driver::on_next_scenario(std::string scenario, int num_heroes)
       c->addArmy(*it);
     }
 
-  delete game_scenario;
+  NextTurnHotseat *nextTurn;
+  nextTurn = new NextTurnHotseat(game_scenario->getTurnmode(),
+				 game_scenario->s_random_turns);
+  game_window->new_game (game_scenario, nextTurn);
 }
 
 void Driver::init_game_window()

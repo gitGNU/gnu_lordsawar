@@ -1051,13 +1051,16 @@ void GameWindow::on_quit_activated()
 
 void GameWindow::on_game_stopped()
 {
-  game.reset();
   if (stop_action == "quit" || stop_action == "game-over")
+    {
+      game.reset();
       game_ended.emit();
+    }
   else if (stop_action == "next-scenario")
-      next_scenario.emit(d_scenario, d_num_heroes);
+    next_scenario.emit(d_scenario, d_num_heroes);
   else if (stop_action == "load-game")
     {
+      game.reset();
       bool broken = false;
       GameScenario* game_scenario = new GameScenario(d_load_filename, broken);
 
