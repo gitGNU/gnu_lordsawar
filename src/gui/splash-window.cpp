@@ -282,11 +282,11 @@ void SplashWindow::on_load_scenario_clicked()
     d.set_parent_window(*window.get());
     
     d.run();
-    d.hide();
     
     std::string filename = d.get_scenario_filename();
     if (!filename.empty())
       {
+	d.hide();
 	GamePreferencesDialog gp(filename);
 	gp.set_parent_window(*window.get());
 	gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
@@ -303,11 +303,11 @@ void SplashWindow::on_new_campaign_clicked()
     d.set_parent_window(*window.get());
     
     d.run();
-    d.hide();
     
     std::string filename = d.get_campaign_filename();
     if (!filename.empty())
       {
+	d.hide();
 	GamePreferencesDialog gp(filename);
 	gp.set_parent_window(*window.get());
 	gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));

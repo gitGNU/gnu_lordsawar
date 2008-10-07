@@ -252,9 +252,11 @@ std::list<std::string> File::scanCampaigns()
 	 it != retlist.end();)
       {
 	campaign = Campaign::get_campaign_from_scenario_file(path + "/" + *it);
-	if (find (retlist.begin(), retlist.end(), campaign) != retlist.end())
+	std::list<std::string>::iterator cit;
+	cit = find (retlist.begin(), retlist.end(), campaign);
+	if (cit != retlist.end())
 	  {
-	    it = retlist.erase (it);
+	    retlist.erase (cit);
 	    continue;
 	  }
 	it++;
