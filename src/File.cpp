@@ -226,6 +226,7 @@ std::list<std::string> File::scanCitysets()
 
 std::list<std::string> File::scanCampaigns()
 {
+    std::string campaign;
     std::string path = getCampaignDir();
     std::list<std::string> retlist;
     Glib::Dir dir(path);
@@ -250,7 +251,7 @@ std::list<std::string> File::scanCampaigns()
     for (std::list<std::string>::iterator it = retlist.begin(); 
 	 it != retlist.end();)
       {
-	std::string campaign = Campaign::get_campaign_from_scenario_file(*it);
+	campaign = Campaign::get_campaign_from_scenario_file(path + "/" + *it);
 	if (find (retlist.begin(), retlist.end(), campaign) != retlist.end())
 	  {
 	    it = retlist.erase (it);

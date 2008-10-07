@@ -64,13 +64,13 @@ class Campaign : public sigc::trackable
 	{
 	  if (tag == Campaign::d_tag)
 	    {
-	      helper->getData(d_next_campaign, "next_campaign");
+	      helper->getData(d_next_scenario, "next_scenario");
 	      return true;
 	    }
 	  return false;
 	}
 
-      std::string d_next_campaign;
+      std::string d_next_scenario;
     };
     private:
 

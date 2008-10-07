@@ -96,6 +96,6 @@ std::string Campaign::get_campaign_from_scenario_file(std::string campaign)
 		     sigc::mem_fun(loader, &CampaignNextScenarioNameLoader::loadNextScenarioName));
   helper.parse();
 
-  return loader.d_next_campaign;
+  return loader.d_next_scenario;
 }
 

@@ -31,6 +31,7 @@
 #include "Configuration.h"
 #include "File.h"
 #include "xmlhelper.h"
+#include "Campaign.h"
 
 
 NewCampaignDialog::NewCampaignDialog()
@@ -101,13 +102,12 @@ void NewCampaignDialog::add_campaign(std::string filename)
 {
     Gtk::TreeIter i = campaigns_list->append();
     (*i)[campaigns_columns.filename] = filename;
-    selected_filename = Configuration::s_dataPath + "/campaign/"
-      + std::string((*i)[campaigns_columns.filename]);
+    selected_filename = File::getCampaignFile(std::string((*i)[campaigns_columns.filename]));
 
     XML_Helper helper(selected_filename, std::ios::in, 
 		      Configuration::s_zipfiles);
 
-    helper.registerTag ("campaign", sigc::mem_fun
+    helper.registerTag (Campaign::d_tag, sigc::mem_fun
 			(this, &NewCampaignDialog::scan_campaign_details));
 
     if (!helper.parse())
@@ -123,7 +123,6 @@ void NewCampaignDialog::add_campaign(std::string filename)
 	(*i)[campaigns_columns.comment] = loaded_campaign_comment;
       }
 
-	
     helper.close();
 }
 
@@ -133,9 +132,13 @@ void NewCampaignDialog::on_selection_changed()
     Gtk::TreeIter i = campaigns_treeview->get_selection()->get_selected();
 
     if (i)
-      load_button->set_sensitive(true);
+      {
+	name_label->set_text((*i)[campaigns_columns.name]);
+	description_label->set_text((*i)[campaigns_columns.comment]);
+	load_button->set_sensitive(true);
+      }
     else
-	load_button->set_sensitive(false);
+      load_button->set_sensitive(false);
 }
 
 bool NewCampaignDialog::scan_campaign_details(std::string tag, 
@@ -158,8 +161,9 @@ bool NewCampaignDialog::scan_campaign_details(std::string tag,
 
 	loaded_campaign_name = name;
 	loaded_campaign_comment = comment;
+	return true;
     }
 
-    return true;
+    return false;
 }
 
