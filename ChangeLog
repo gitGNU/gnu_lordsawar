@@ -1,3 +1,7 @@
+2008-10-07  Ben Asselstine
+
+	* fixed bug #24473.  army units can now go into a boat at a bridge.
+
 2008-10-06  Ben Asselstine
 
 	* fixed bug #24464.  initial stacks are now defogged on hidden map.
