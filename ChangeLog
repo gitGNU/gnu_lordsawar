@@ -1,3 +1,8 @@
+2008-10-08  Ben Asselstine
+
+	* fixed bug #24484.  don't show the ruin report when there are no
+	  ruins or temples.
+
 2008-10-07  Ben Asselstine
 
 	* bumped version to 0.1.3.
