@@ -1054,25 +1054,17 @@ void GameWindow::on_quit_activated()
 
 void GameWindow::on_game_stopped()
 {
+  game.reset();
   if (stop_action == "quit" || stop_action == "game-over")
     {
-      game.reset();
       game_ended.emit();
     }
   else if (stop_action == "next-scenario")
     {
-      Player *p = Playerlist::getActiveplayer();
-      int gold = p->getGold();
-      printf ("gold is %d\n", gold);
-      std::list<Hero*> heroes = p->getStacklist()->getTopHeroes(d_num_heroes);
-      printf ("list of heroes is %d big\n", heroes.size());
-
-      game.reset();
-      next_scenario.emit(d_scenario, gold, heroes);
+      next_scenario.emit(d_scenario, d_gold, d_heroes);
     }
   else if (stop_action == "load-game")
     {
-      game.reset();
       bool broken = false;
       GameScenario* game_scenario = new GameScenario(d_load_filename, broken);
 
@@ -1545,11 +1537,12 @@ void GameWindow::stop_game(std::string action)
     }
 }
 
-void GameWindow::on_next_scenario(std::string scenario, int num_heroes)
+void GameWindow::on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes)
 {
   //fixme: show a message here.  we won, but there's another scenario to go
   d_scenario = scenario;
-  d_num_heroes = num_heroes;
+  d_gold = gold;
+  d_heroes = heroes;
   stop_game("next-scenario");
   //now go to on_game_stopped
 }

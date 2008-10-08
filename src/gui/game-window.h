@@ -289,7 +289,7 @@ class GameWindow: public Decorated
     Army::Stat on_army_gains_level(Army *army);
     void on_game_loaded(Player *player);
     void on_game_over(Player *winner);
-    void on_next_scenario(std::string scenario, int num_heroes);
+    void on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes);
     void on_player_died(Player *player);
     void on_advice_asked(float percent);
     void end_turn_play_by_mail ();
@@ -321,7 +321,8 @@ public:
     bool d_quick_fights; //do we speed up fights for this player's turn?
     std::string stop_action; //hackhackhack
     std::string d_scenario;
-    int d_num_heroes;
+    int d_gold;
+    std::list<Hero*> d_heroes;
     std::string d_load_filename;
 };
 

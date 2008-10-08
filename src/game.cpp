@@ -1096,8 +1096,14 @@ void Game::on_player_died(Player *player)
       Campaign *campaign = Campaign::getInstance();
       if (campaign->getNextScenario() != "" &&
 	  pl->getFirstLiving()->getType() == Player::HUMAN)
-	next_scenario.emit(File::getCampaignFile(campaign->getNextScenario()),
-			   campaign->getNumberOfHeroesToCarryOver());
+	{
+	  Player *p = pl->getFirstLiving();
+	  Uint32 num_heroes = campaign->getNumberOfHeroesToCarryOver();
+	  std::list<Hero*> heroes;
+	  heroes = p->getStacklist()->getTopHeroes(num_heroes);
+	  next_scenario.emit(File::getCampaignFile(campaign->getNextScenario()),
+			     p->getGold(), heroes);
+	}
       else
 	game_over.emit(pl->getFirstLiving());
     }
