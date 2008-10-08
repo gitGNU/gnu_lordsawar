@@ -100,7 +100,7 @@ class GameWindow: public Decorated
     sigc::signal<void> game_ended;
     
     // emitted when we're in a campaign, and we want to go to the next scenario
-    sigc::signal<void, std::string, int, std::list<Hero*> > next_scenario;
+    sigc::signal<void, std::string, int, std::list<Hero*>, std::string > next_scenario;
     
     sigc::signal<void> show_lobby;
 
@@ -289,7 +289,7 @@ class GameWindow: public Decorated
     Army::Stat on_army_gains_level(Army *army);
     void on_game_loaded(Player *player);
     void on_game_over(Player *winner);
-    void on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes);
+    void on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string player_name);
     void on_player_died(Player *player);
     void on_advice_asked(float percent);
     void end_turn_play_by_mail ();
@@ -323,6 +323,7 @@ public:
     std::string d_scenario;
     int d_gold;
     std::list<Hero*> d_heroes;
+    std::string d_player_name;
     std::string d_load_filename;
 };
 

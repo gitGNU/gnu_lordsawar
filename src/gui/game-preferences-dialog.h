@@ -50,7 +50,7 @@ class GamePreferencesDialog: public Decorated
 {
  public:
     GamePreferencesDialog(GameScenario::PlayMode mode);
-    GamePreferencesDialog(std::string filename);
+    GamePreferencesDialog(std::string filename, bool campaign = false);
     ~GamePreferencesDialog();
 
     void set_title(std::string title);
@@ -142,6 +142,7 @@ class GamePreferencesDialog: public Decorated
     bool scan_shieldset(std::string tag, XML_Helper* helper);
 SDL_Surface *getShieldPic(Uint32 type, Uint32 owner);
     GameParameters load_map_parameters;
+    bool d_campaign;
 };
 
 #endif

@@ -223,6 +223,7 @@ void GamePreferencesDialog::init()
 
 GamePreferencesDialog::GamePreferencesDialog(GameScenario::PlayMode play_mode)
 {
+  d_campaign = false;
   mode = play_mode;
   init();
   if (mode != GameScenario::NETWORKED)
@@ -233,8 +234,9 @@ GamePreferencesDialog::GamePreferencesDialog(GameScenario::PlayMode play_mode)
 
 }
 
-GamePreferencesDialog::GamePreferencesDialog(std::string filename)
+GamePreferencesDialog::GamePreferencesDialog(std::string filename, bool campaign)
 {
+  d_campaign = campaign;
   mode = GameScenario::HOTSEAT;
   init ();
   delete game_name_label;
@@ -243,8 +245,12 @@ GamePreferencesDialog::GamePreferencesDialog(std::string filename)
   load_map_filechooser->set_filename(filename);
   load_map_radio->set_sensitive(false);
   random_map_radio->set_sensitive(false);
-  load_map_filechooser->set_sensitive(false);
-  dialog->set_title(_("New Scenario"));
+  //load_map_filechooser->set_sensitive(false);
+  load_map_filechooser->set_child_visible(false);
+  if (campaign)
+    dialog->set_title(_("New Campaign"));
+  else
+    dialog->set_title(_("New Scenario"));
 }
 
 GamePreferencesDialog::~GamePreferencesDialog()
@@ -872,6 +878,33 @@ void GamePreferencesDialog::on_map_chosen()
   helper.close();
   update_shields();
   on_player_type_changed();
+
+  //loop through all players, making the non-humans unsensitive
+  if (d_campaign)
+    {
+      bool force = false;
+      std::list<CycleButton *>::iterator c = player_types.begin();
+      std::list<Gtk::Entry *>::iterator e = player_names.begin();
+      for (; c != player_types.end(); c++, e++)
+	{
+	  if ((*c)->get_active_text() != HUMAN_PLAYER_TYPE)
+	    {
+	      (*c)->set_sensitive(false);
+	      (*e)->set_sensitive(false);
+	    }
+	  else if ((*c)->get_active_text() == HUMAN_PLAYER_TYPE && force)
+	    {
+	      (*c)->set_sensitive(true);
+	      (*c)->set_active(1);
+	      (*c)->set_sensitive(false);
+	      (*e)->set_sensitive(false);
+	    }
+	  else if ((*c)->get_active_text() == HUMAN_PLAYER_TYPE)
+	    {
+	      force = true;
+	    }
+	}
+    }
   return;
 }
 

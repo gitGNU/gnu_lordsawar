@@ -519,7 +519,7 @@ void Driver::on_game_ended()
   splash_window->show();
 }
 
-void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes)
+void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string player_name)
 {
 
   GameClient::deleteInstance();
@@ -535,6 +535,7 @@ void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> h
   if (gold > MAX_GOLD_TO_CARRY_OVER_TO_NEXT_SCENARIO)
     gold = MAX_GOLD_TO_CARRY_OVER_TO_NEXT_SCENARIO;
   player->addGold(gold);
+  player->setName(player_name);
   City *c = Citylist::getInstance()->getFirstCity(player);
 
   for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); it++)

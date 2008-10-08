@@ -308,7 +308,7 @@ void SplashWindow::on_new_campaign_clicked()
     if (!filename.empty())
       {
 	d.hide();
-	GamePreferencesDialog gp(filename);
+	GamePreferencesDialog gp(filename, true);
 	gp.set_parent_window(*window.get());
 	gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
     

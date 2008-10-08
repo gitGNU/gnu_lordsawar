@@ -1102,7 +1102,7 @@ void Game::on_player_died(Player *player)
 	  std::list<Hero*> heroes;
 	  heroes = p->getStacklist()->getTopHeroes(num_heroes);
 	  next_scenario.emit(File::getCampaignFile(campaign->getNextScenario()),
-			     p->getGold(), heroes);
+			     p->getGold(), heroes, p->getName());
 	}
       else
 	game_over.emit(pl->getFirstLiving());

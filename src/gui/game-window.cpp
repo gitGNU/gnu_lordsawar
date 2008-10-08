@@ -1061,7 +1061,7 @@ void GameWindow::on_game_stopped()
     }
   else if (stop_action == "next-scenario")
     {
-      next_scenario.emit(d_scenario, d_gold, d_heroes);
+      next_scenario.emit(d_scenario, d_gold, d_heroes, d_player_name);
     }
   else if (stop_action == "load-game")
     {
@@ -1537,12 +1537,13 @@ void GameWindow::stop_game(std::string action)
     }
 }
 
-void GameWindow::on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes)
+void GameWindow::on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string name)
 {
   //fixme: show a message here.  we won, but there's another scenario to go
   d_scenario = scenario;
   d_gold = gold;
   d_heroes = heroes;
+  d_player_name = name;
   stop_game("next-scenario");
   //now go to on_game_stopped
 }
