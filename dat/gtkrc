@@ -61,7 +61,7 @@ style "darkilouche-default"
   text[PRELIGHT]    = @text_color 
   text[ACTIVE]      = @text_color 
   text[SELECTED]    = @text_color 
-  text[INSENSITIVE] = @bg_color
+  text[INSENSITIVE] = @text_color
 
   engine "clearlooks" 
   {
