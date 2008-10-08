@@ -2,6 +2,9 @@
 
 	* fixed bug #24484.  don't show the ruin report when there are no
 	  ruins or temples.
+	* fixed bug #24473.  now stacks can cross a bridge without going into
+	  a boat.
+
 
 2008-10-07  Ben Asselstine
 
