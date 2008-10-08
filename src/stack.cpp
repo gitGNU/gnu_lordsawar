@@ -138,6 +138,7 @@ void Stack::moveToDest(Vector<int> dest)
   City* on_city = Citylist::getInstance()->getObjectAt(pos.x, pos.y);
   Port* on_port = Portlist::getInstance()->getObjectAt(pos.x, pos.y);
   Bridge* on_bridge= Bridgelist::getInstance()->getObjectAt(pos.x, pos.y);
+  Bridge* to_bridge= Bridgelist::getInstance()->getObjectAt(dest.x, dest.y);
   bool on_water = (GameMap::getInstance()->getTile(pos.x,pos.y)->getMaptileType() == Tile::WATER);
   bool to_water = (GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType() == Tile::WATER);
   bool ship_load_unload = false;
@@ -145,8 +146,10 @@ void Stack::moveToDest(Vector<int> dest)
   if (!isFlying())
     {
       if ((on_water && to_city) || 
-	  (on_water && (on_port || on_bridge) && !to_water) ||
-	  ((on_city || on_port || on_bridge) && to_water))
+	  (on_water && on_port && !to_water) ||
+	  ((on_city || on_port) && to_water) ||
+	  (on_bridge && to_water && !to_bridge) ||
+	  (on_bridge && !to_water && hasShip()))
 	{
 	  ship_load_unload = true;
 	  for (Stack::iterator it = begin(); it != end(); it++)
