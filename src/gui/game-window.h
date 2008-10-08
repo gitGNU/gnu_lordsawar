@@ -100,7 +100,7 @@ class GameWindow: public Decorated
     sigc::signal<void> game_ended;
     
     // emitted when we're in a campaign, and we want to go to the next scenario
-    sigc::signal<void, std::string, int> next_scenario;
+    sigc::signal<void, std::string, int, std::list<Hero*> > next_scenario;
     
     sigc::signal<void> show_lobby;
 

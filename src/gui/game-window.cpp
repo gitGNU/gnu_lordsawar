@@ -91,6 +91,7 @@
 #include "GameScenarioOptions.h"
 #include "army.h"
 #include "ruin.h"
+#include "ruinlist.h"
 #include "path.h"
 #include "player.h"
 #include "stacklist.h"
@@ -100,6 +101,7 @@
 #include "hero.h"
 #include "heroproto.h"
 #include "temple.h"
+#include "templelist.h"
 #include "city.h"
 #include "Quest.h"
 #include "QuestsManager.h"
@@ -128,6 +130,7 @@
 #include "NextTurnNetworked.h"
 #include "pbm-game-server.h"
 #include "network_player.h"
+#include "Campaign.h"
 
 
 GameWindow::GameWindow()
@@ -1057,7 +1060,15 @@ void GameWindow::on_game_stopped()
       game_ended.emit();
     }
   else if (stop_action == "next-scenario")
-    next_scenario.emit(d_scenario, d_num_heroes);
+    {
+      Player *p = Playerlist::getActiveplayer();
+      int gold = p->getGold();
+      int num_heroes = Campaign::getInstance()->getNumberOfHeroesToCarryOver();
+      std::list<Hero*> heroes = p->getStacklist()->getTopHeroes(num_heroes);
+
+      game.reset();
+      next_scenario.emit(d_scenario, gold, heroes);
+    }
   else if (stop_action == "load-game")
     {
       game.reset();
@@ -1337,6 +1348,17 @@ void GameWindow::on_ruin_report_activated()
   if (currently_selected_stack)
     pos = currently_selected_stack->getPos();
 
+  if (Templelist::getInstance()->size() == 0 &&
+      Ruinlist::getInstance()->size() == 0)
+    {
+      std::string s = _("No ruins or temples to show!");
+      TimedMessageDialog dialog(*window.get(), s, 30);
+
+      dialog.show_all();
+      dialog.run();
+      dialog.hide();
+      return;
+    }
   RuinReportDialog d(pos);
   d.set_parent_window(*window.get());
   d.run();
@@ -1528,6 +1550,7 @@ void GameWindow::on_next_scenario(std::string scenario, int num_heroes)
   d_scenario = scenario;
   d_num_heroes = num_heroes;
   stop_game("next-scenario");
+  //now go to on_game_stopped
 }
 
 void GameWindow::on_game_over(Player *winner)
