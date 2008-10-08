@@ -1063,8 +1063,9 @@ void GameWindow::on_game_stopped()
     {
       Player *p = Playerlist::getActiveplayer();
       int gold = p->getGold();
-      int num_heroes = Campaign::getInstance()->getNumberOfHeroesToCarryOver();
-      std::list<Hero*> heroes = p->getStacklist()->getTopHeroes(num_heroes);
+      printf ("gold is %d\n", gold);
+      std::list<Hero*> heroes = p->getStacklist()->getTopHeroes(d_num_heroes);
+      printf ("list of heroes is %d big\n", heroes.size());
 
       game.reset();
       next_scenario.emit(d_scenario, gold, heroes);

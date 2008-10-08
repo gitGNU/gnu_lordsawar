@@ -37,7 +37,7 @@ NewGameProgressWindow::~NewGameProgressWindow()
 
 void NewGameProgressWindow::thread_worker()
 {
-  sleep(1);
+  sleep(2);
   bool update_uuid = false;
   m_dispatcher();
   if (game_params.map_path.empty()) 

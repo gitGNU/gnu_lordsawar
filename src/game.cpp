@@ -243,9 +243,12 @@ void Game::end_turn()
     update_control_panel();
     lock_inputs();
 
-    d_nextTurn->endTurn();
+    bool trigger_next_remote_player = false;
     if (d_gameScenario->getPlayMode() == GameScenario::NETWORKED &&
 	Playerlist::getActiveplayer()->getType() == Player::NETWORKED)
+      trigger_next_remote_player = true;
+    d_nextTurn->endTurn();
+    if (trigger_next_remote_player)
       remote_next_player_turn.emit();
 }
 
@@ -964,6 +967,11 @@ void Game::loadGame()
   //if pbm and not human, then bail
 
   Player *player = Playerlist::getActiveplayer();
+  if (!player)
+    {
+      Playerlist::getInstance()->nextPlayer();
+      player = Playerlist::getActiveplayer();
+    }
 
   if (player->getType() == Player::HUMAN && d_gameScenario->getPlayMode() == GameScenario::HOTSEAT)
     {
