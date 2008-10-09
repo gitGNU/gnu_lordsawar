@@ -42,3 +42,6 @@ calculate to city should be different for enemy cities
 
 bug: showing neutral battles *Again*
 favour cheaper army units for production when we don't have much money
+			   
+retain game options through multiple scenarios of a campaign.
+campaigns don't end well if we have a computer ending.

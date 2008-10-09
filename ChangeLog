@@ -1,3 +1,7 @@
+2008-10-09  Ben Asselstine
+
+	* added validation of map files.
+
 2008-10-08  Ben Asselstine
 
 	* fixed bug #24484.  don't show the ruin report when there are no
