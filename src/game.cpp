@@ -71,6 +71,7 @@
 #include "MapBackpack.h"
 
 #include "herotemplates.h"
+#include "GameScenarioOptions.h"
 
 Game *Game::current_game = 0;
 
@@ -1101,8 +1102,13 @@ void Game::on_player_died(Player *player)
 	  Uint32 num_heroes = campaign->getNumberOfHeroesToCarryOver();
 	  std::list<Hero*> heroes;
 	  heroes = p->getStacklist()->getTopHeroes(num_heroes);
+	  printf ("hidden map is %d\n", GameScenarioOptions::s_hidden_map);
+	  printf ("hidden map is %d\n", GameScenario::s_hidden_map);
+	  printf ("hidden map is %d\n", d_gameScenario->s_hidden_map);
+	  GameScenarioOptions opts = *d_gameScenario;
+	  printf ("hidden map is %d\n", opts.s_hidden_map);
 	  next_scenario.emit(File::getCampaignFile(campaign->getNextScenario()),
-			     p->getGold(), heroes, p->getName());
+			     p->getGold(), heroes, p->getName(), opts);
 	}
       else
 	game_over.emit(pl->getFirstLiving());

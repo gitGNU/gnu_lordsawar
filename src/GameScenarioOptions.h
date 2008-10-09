@@ -33,7 +33,7 @@ class GameScenarioOptions: public sigc::trackable
     public:
 
         GameScenarioOptions();
-        
+        GameScenarioOptions(const GameScenarioOptions &opts);
         ~GameScenarioOptions();
 
 

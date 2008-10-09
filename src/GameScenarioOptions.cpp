@@ -46,6 +46,23 @@ GameScenarioOptions::GameScenarioOptions()
 {
 }
 
+GameScenarioOptions::GameScenarioOptions(const GameScenarioOptions &opts)
+{
+ s_see_opponents_stacks=opts.s_see_opponents_stacks;
+ s_see_opponents_production=opts.s_see_opponents_production;
+ s_play_with_quests=opts.s_play_with_quests;
+ s_hidden_map=opts.s_hidden_map;
+ s_diplomacy=opts.s_diplomacy;
+ s_cusp_of_war=opts.s_cusp_of_war;
+ s_neutral_cities=opts.s_neutral_cities;
+ s_razing_cities=opts.s_razing_cities;
+ s_intense_combat=opts.s_intense_combat;
+ s_military_advisor=opts.s_military_advisor;
+ s_random_turns=opts.s_random_turns;
+ s_surrender_already_offered=opts.s_surrender_already_offered;
+ s_round=opts.s_round;
+}
+
 GameScenarioOptions::~GameScenarioOptions()
 {
 } 

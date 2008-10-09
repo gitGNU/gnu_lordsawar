@@ -519,7 +519,7 @@ void Driver::on_game_ended()
   splash_window->show();
 }
 
-void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string player_name)
+void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string player_name, GameScenarioOptions opts)
 {
 
   GameClient::deleteInstance();
@@ -529,6 +529,7 @@ void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> h
 
   //load up the next scenario 
   GameScenario *game_scenario = load_game(scenario);
+  game_scenario->setOptions(opts);
 
   Player *player = Playerlist::getInstance()->getFirstHuman();
   player->withdrawGold(player->getGold());

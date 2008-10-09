@@ -51,6 +51,7 @@ class Fight;
 class Quest;
 class Stack;
 class Reward;
+class GameScenarioOptions;
 
 /** Controls a game.
   * 
@@ -149,7 +150,7 @@ class Game
     sigc::signal<Army::Stat, Army *> army_gains_level;
     sigc::signal<void, Player *> game_loaded;
     sigc::signal<void, Player *> game_over;
-    sigc::signal<void, std::string, int, std::list<Hero*>, std::string > next_scenario;
+    sigc::signal<void, std::string, int, std::list<Hero*>, std::string, GameScenarioOptions > next_scenario;
     sigc::signal<void, Player *> player_died;
     sigc::signal<void> game_stopped;
     
