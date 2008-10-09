@@ -73,7 +73,7 @@ void TempleDialog::run()
     }
     else
       {
-	if (name_entry->get_text() != DEFAULT_TEMPLE_NAME)
+	if (name_entry->get_text() != Temple::getDefaultName())
 	  d_randomizer->pushRandomTempleName(name_entry->get_text());
       }
 }
@@ -81,7 +81,7 @@ void TempleDialog::run()
 void TempleDialog::on_randomize_name_clicked()
 {
   std::string existing_name = name_entry->get_text();
-  if (existing_name == "Shrine")
+  if (existing_name == Temple::getDefaultName())
     name_entry->set_text(d_randomizer->popRandomTempleName());
   else
     {

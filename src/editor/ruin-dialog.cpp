@@ -201,7 +201,7 @@ void RuinDialog::run()
     else
     {
         //put the ruin name back.
-	if (name_entry->get_text() != DEFAULT_RUIN_NAME)
+	if (name_entry->get_text() != Ruin::getDefaultName())
 	  d_randomizer->pushRandomRuinName(name_entry->get_text());
 	delete keeper;
 	keeper = 0;
@@ -253,7 +253,7 @@ void RuinDialog::on_keeper_clicked()
 void RuinDialog::on_randomize_name_clicked()
 {
   std::string existing_name = name_entry->get_text();
-  if (existing_name == DEFAULT_RUIN_NAME)
+  if (existing_name == Ruin::getDefaultName())
     name_entry->set_text(d_randomizer->popRandomRuinName());
   else
     {

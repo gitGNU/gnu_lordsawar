@@ -26,6 +26,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include <uuid/uuid.h>
 
+#include "ucompose.hpp"
 #include "GameScenario.h"
 #include "Campaign.h"
 #include "MapGenerator.h"
@@ -689,6 +690,62 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
 	  errors.push_back(_("Every player must have at least one city in the scenario."));
 	  break;
 	}
+    }
+
+  Uint32 count = 0;
+  Citylist *cl = Citylist::getInstance();
+  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+    {
+      if ((*it)->unnamed() == true)
+	count++;
+    }
+  if (count > 0)
+    {
+      std::string s;
+      s = String::ucompose(ngettext("There is %1 unnamed city", "There are %1 unnamed cities", count), count);
+      warnings.push_back(s);
+    }
+
+  count = 0;
+  Ruinlist *rl = Ruinlist::getInstance();
+  for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
+    {
+      if ((*it)->unnamed() == true)
+	count++;
+    }
+  if (count > 0)
+    {
+      std::string s;
+      s = String::ucompose(ngettext("There is %1 unnamed ruin", "There are %1 unnamed ruins", count), count);
+      warnings.push_back(s);
+    }
+
+  count = 0;
+  Templelist *tl = Templelist::getInstance();
+  for (Templelist::iterator it = tl->begin(); it != tl->end(); it++)
+    {
+      if ((*it)->unnamed() == true)
+	count++;
+    }
+  if (count > 0)
+    {
+      std::string s;
+      s = String::ucompose(ngettext("There is %1 unnamed temple", "There are %1 unnamed temples", count), count);
+      warnings.push_back(s);
+    }
+
+  count = 0;
+  Stacklist *sl = Playerlist::getInstance()->getNeutral()->getStacklist();
+  for (Stacklist::iterator it = sl->begin(); it != sl->end(); it++)
+    {
+      if (Ciitylist::getInstance()->getObjectAt((*it)->getPos()) == NULL)
+	count++;
+    }
+  if (count > 0)
+    {
+      std::string s;
+      s = String::ucompose(ngettext("There is %1 neutral stack not in a city", "There are %1 neutral stacks not in cities", count), count);
+      warnings.push_back(s);
     }
 
   if (errors.size() ==  0)

@@ -1157,7 +1157,7 @@ void MainWindow::on_random_unnamed_cities_activated()
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
-      if ((*it)->getName() == DEFAULT_CITY_NAME)
+      if ((*it)->unnamed() == true)
 	randomize_city(*it);
     }
 }
@@ -1185,7 +1185,7 @@ void MainWindow::on_random_unnamed_ruins_activated()
   Ruinlist *rl = Ruinlist::getInstance();
   for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
     {
-      if ((*it)->getName() == DEFAULT_RUIN_NAME)
+      if ((*it)->unnamed() == true)
 	randomize_ruin(*it);
     }
 }
@@ -1211,7 +1211,7 @@ void MainWindow::on_random_unnamed_temples_activated()
   Templelist *tl = Templelist::getInstance();
   for (Templelist::iterator it = tl->begin(); it != tl->end(); it++)
     {
-      if ((*it)->getName() == DEFAULT_TEMPLE_NAME)
+      if ((*it)->unnamed() == true)
 	{
 	  std::string name = d_create_scenario_names->popRandomTempleName();
 	  if (name != "")

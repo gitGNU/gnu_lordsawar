@@ -223,7 +223,7 @@ void CityDialog::run()
     }
   else
     {
-      if (name_entry->get_text() != DEFAULT_CITY_NAME)
+      if (name_entry->get_text() != City::getDefaultName())
 	d_randomizer->pushRandomCityName(name_entry->get_text());
     }
 }
@@ -268,7 +268,7 @@ void CityDialog::on_randomize_armies_clicked()
 void CityDialog::on_randomize_name_clicked()
 {
   std::string existing_name = name_entry->get_text();
-  if (existing_name == DEFAULT_CITY_NAME)
+  if (existing_name == City::getDefaultName())
     name_entry->set_text(d_randomizer->popRandomCityName());
   else
     {
