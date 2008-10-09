@@ -88,6 +88,14 @@
 		  </child>
 
 		  <child>
+		    <widget class="GtkMenuItem" id="validate_menuitem">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">_Validate</property>
+		      <property name="use_underline">True</property>
+		    </widget>
+		  </child>
+
+		  <child>
 		    <widget class="GtkSeparatorMenuItem" id="separatormenuitem1">
 		      <property name="visible">True</property>
 		    </widget>

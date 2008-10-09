@@ -88,6 +88,7 @@
 #include "new-map-dialog.h"
 #include "itemlist-dialog.h"
 #include "rewardlist-dialog.h"
+#include "timed-message-dialog.h"
 
 
 MainWindow::MainWindow()
@@ -171,6 +172,8 @@ MainWindow::MainWindow()
 			 sigc::mem_fun(this, &MainWindow::on_export_as_bitmap_activated));
     xml->connect_clicked("export_as_bitmap_no_game_objects_menuitem",
 			 sigc::mem_fun(this, &MainWindow::on_export_as_bitmap_no_game_objects_activated));
+    xml->connect_clicked("validate_menuitem",
+			 sigc::mem_fun(this, &MainWindow::on_validate_activated));
     xml->connect_clicked("quit_menuitem", 
 			 sigc::mem_fun(this, &MainWindow::on_quit_activated));
 
@@ -1272,3 +1275,27 @@ void MainWindow::on_help_about_activated()
   return;
 }
 
+void MainWindow::on_validate_activated()
+{
+  Glib::ustring s;
+  std::list<std::string> errors;
+  std::list<std::string> warnings;
+  game_scenario->validate(errors, warnings);
+  if (errors.size())
+    s = errors.front();
+  else
+    {
+      if (warnings.size())
+	s = warnings.front();
+      else
+	s = _("No errors.");
+    }
+  if (errors.size() > 1)
+    s += String::ucompose(ngettext("\nThere is %1 more error", "\nThere are %1 more errors", errors.size() - 1), errors.size() - 1);
+  if (warnings.size())
+    s += String::ucompose(ngettext("\nThere is %1 warning", "\nThere are %1 warnings", warnings.size()), warnings.size());
+  TimedMessageDialog dialog(*window.get(), s, 0);
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+}

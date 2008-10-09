@@ -448,6 +448,20 @@ void Driver::on_new_game_requested(GameParameters g)
 				  _("Corrupted saved game file."), 0);
 	dialog.run();
 	dialog.hide();
+	splash_window->show();
+	return;
+      }
+
+    std::list<std::string> e, w;
+    if (g.map_path != "" && game_scenario->validate(e, w) == false)
+      {
+	TimedMessageDialog dialog
+	  (*splash_window->get_window(), 
+	   _("Invalid map file.\n" 
+	     "Please validate it in the scenario editor."), 0);
+	dialog.run();
+	dialog.hide();
+	splash_window->show();
 	return;
       }
 

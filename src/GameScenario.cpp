@@ -668,3 +668,30 @@ void GameScenario::setOptions(GameScenarioOptions &opts)
   s_surrender_already_offered=opts.s_surrender_already_offered;
   s_round=opts.s_round;
 }
+
+bool GameScenario::validate(std::list<std::string> &errors, std::list<std::string> &warnings)
+{
+  Playerlist *pl = Playerlist::getInstance();
+  Uint32 num = pl->countPlayersAlive();
+  if (num < 2)
+    errors.push_back(_("There must be at least 2 players in the scenario."));
+
+  num = Citylist::getInstance()->size();
+  if (num < 2)
+    errors.push_back(_("There must be at least 2 cities in the scenario."));
+
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+    {
+      if (*it == pl->getNeutral())
+	continue;
+      if (Citylist::getInstance()->getFirstCity(*it) == NULL)
+	{
+	  errors.push_back(_("Every player must have at least one city in the scenario."));
+	  break;
+	}
+    }
+
+  if (errors.size() ==  0)
+    return true;
+  return false;
+}

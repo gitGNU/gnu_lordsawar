@@ -124,6 +124,8 @@ class GameScenario: public GameScenarioOptions
         
 	Uint32 getPlayMode() const {return d_playmode;};
 	void setPlayMode(GameScenario::PlayMode mode) {d_playmode = mode;};
+
+	bool validate(std::list<std::string> &errors, std::list<std::string> &warnings);
     private:
         /** Callback function for loading a game. See XML_Helper for details.
           *
