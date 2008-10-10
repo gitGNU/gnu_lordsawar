@@ -63,6 +63,7 @@ GameScenarioOptions::GameScenarioOptions(const GameScenarioOptions &opts)
  s_round=opts.s_round;
 }
 
+
 GameScenarioOptions::~GameScenarioOptions()
 {
 } 
@@ -122,5 +123,24 @@ int GameScenarioOptions::calculate_difficulty_rating(GameParameters g)
   if (g.cusp_of_war == true)
     total_difficulty += (float) 2.0;
   return (int) total_difficulty;
+}
+
+GameScenarioOptions GameScenarioOptions::clone()
+{
+  GameScenarioOptions opts;
+  opts.s_see_opponents_stacks = s_see_opponents_stacks;
+  opts.s_see_opponents_production = s_see_opponents_production;
+  opts.s_play_with_quests = s_play_with_quests;
+  opts.s_hidden_map = s_hidden_map;
+  opts.s_diplomacy = s_diplomacy;
+  opts.s_cusp_of_war = s_cusp_of_war;
+  opts.s_neutral_cities = s_neutral_cities;
+  opts.s_razing_cities = s_razing_cities;
+  opts.s_intense_combat = s_intense_combat;
+  opts.s_military_advisor = s_military_advisor;
+  opts.s_random_turns = s_random_turns;
+  opts.s_surrender_already_offered = s_surrender_already_offered;
+  opts.s_round = s_round;
+  return opts;
 }
 

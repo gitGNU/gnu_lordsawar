@@ -196,7 +196,8 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 	Player *p = *i;
 	addPlayer(p);
     }
-    if (gameScenario->getPlayMode() == GameScenario::HOTSEAT)
+    if (gameScenario->getPlayMode() == GameScenario::HOTSEAT ||
+	gameScenario->getPlayMode() == GameScenario::CAMPAIGN)
       pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
     pl->ssurrender.connect(sigc::mem_fun(this, &Game::on_surrender_offered));
 
@@ -974,7 +975,7 @@ void Game::loadGame()
       player = Playerlist::getActiveplayer();
     }
 
-  if (player->getType() == Player::HUMAN && d_gameScenario->getPlayMode() == GameScenario::HOTSEAT)
+  if (player->getType() == Player::HUMAN && (d_gameScenario->getPlayMode() == GameScenario::HOTSEAT || d_gameScenario->getPlayMode() == GameScenario::CAMPAIGN))
     {
       //human players want access to the controls and an info box
       unlock_inputs();
@@ -1102,11 +1103,7 @@ void Game::on_player_died(Player *player)
 	  Uint32 num_heroes = campaign->getNumberOfHeroesToCarryOver();
 	  std::list<Hero*> heroes;
 	  heroes = p->getStacklist()->getTopHeroes(num_heroes);
-	  printf ("hidden map is %d\n", GameScenarioOptions::s_hidden_map);
-	  printf ("hidden map is %d\n", GameScenario::s_hidden_map);
-	  printf ("hidden map is %d\n", d_gameScenario->s_hidden_map);
 	  GameScenarioOptions opts = *d_gameScenario;
-	  printf ("hidden map is %d\n", opts.s_hidden_map);
 	  next_scenario.emit(File::getCampaignFile(campaign->getNextScenario()),
 			     p->getGold(), heroes, p->getName(), opts);
 	}

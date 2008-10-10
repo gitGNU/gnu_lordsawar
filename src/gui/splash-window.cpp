@@ -310,7 +310,7 @@ void SplashWindow::on_new_campaign_clicked()
 	d.hide();
 	GamePreferencesDialog gp(filename, true);
 	gp.set_parent_window(*window.get());
-	gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
+	gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_campaign_started));
     
 	gp.run();
       } 
@@ -325,6 +325,11 @@ void SplashWindow::on_network_game_selected(std::string ip, unsigned short port)
 void SplashWindow::on_game_started(GameParameters g)
 {
   new_game_requested.emit(g);
+}
+
+void SplashWindow::on_campaign_started(GameParameters g)
+{
+  new_campaign_requested.emit(g);
 }
 
 

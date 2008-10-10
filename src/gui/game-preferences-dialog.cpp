@@ -238,6 +238,8 @@ GamePreferencesDialog::GamePreferencesDialog(std::string filename, bool campaign
 {
   d_campaign = campaign;
   mode = GameScenario::HOTSEAT;
+  if (campaign)
+    mode = GameScenario::CAMPAIGN;
   init ();
   delete game_name_label;
   delete game_name_entry;

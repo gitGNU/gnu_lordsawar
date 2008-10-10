@@ -54,7 +54,8 @@ class GameScenario: public GameScenarioOptions
 	  {
 	    HOTSEAT = 0, 
 	    NETWORKED = 1,
-	    PLAY_BY_MAIL = 2
+	    PLAY_BY_MAIL = 2,
+	    CAMPAIGN = 3
 	  };
 
 	static std::string playModeToString(const GameScenario::PlayMode mode);
@@ -71,10 +72,11 @@ class GameScenario: public GameScenarioOptions
         
         /** Load the game scenario using a specified save game
           * 
-          * @param savegame     the full name of the savegame to load
+          * @param savegame     the full name of the saved-game to load
           * @param broken       set to true if something goes wrong
+	  * @param load_opts    also load the options from the saved-game.
           */
-        GameScenario(std::string savegame, bool& broken);
+        GameScenario(std::string savegame, bool& broken, bool load_opts = true);
 
         GameScenario(XML_Helper &helper, bool &broken);
 
@@ -142,6 +144,7 @@ class GameScenario: public GameScenarioOptions
         bool d_turnmode; //see NextTurn for a description of this option
 	Uint32 d_playmode;
 	std::string d_id; //globally unique id identifying the scenario
+	bool d_load_opts;
 };
 
 #endif // GAME_SCENARIO_H

@@ -82,13 +82,15 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
       fl_counter = new FL_Counter();
 
     setNewRandomId();
+    d_load_opts = true;
 }
 
 // savegame is a filename with absolute path!
 
-GameScenario::GameScenario(string savegame, bool& broken)
-  :d_turnmode(true), d_playmode(GameScenario::HOTSEAT)
+GameScenario::GameScenario(string savegame, bool& broken, bool load_opts)
+  :d_turnmode(true), d_playmode(GameScenario::HOTSEAT), d_load_opts(load_opts)
 {
+  d_load_opts = load_opts;
   XML_Helper helper(savegame, ios::in, Configuration::s_zipfiles);
   broken = loadWithHelper(helper);
   helper.close();
@@ -97,6 +99,7 @@ GameScenario::GameScenario(string savegame, bool& broken)
 GameScenario::GameScenario(XML_Helper &helper, bool& broken)
   : d_turnmode(true), d_playmode(GameScenario::HOTSEAT)
 {
+  d_load_opts = true;
   broken = loadWithHelper(helper);
 }
 
@@ -447,6 +450,8 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       debug("loading scenario")
 
       helper->getData(d_id, "id");
+      if (d_load_opts)
+	{
       helper->getData(s_round, "turn");
       helper->getData(d_turnmode, "turnmode");
       helper->getData(d_name, "name");
@@ -468,6 +473,7 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       helper->getData(s_random_turns, "random_turns");
       helper->getData(s_surrender_already_offered, 
 		      "surrender_already_offered");
+	}
       std::string playmode_str;
       helper->getData(playmode_str, "playmode");
       d_playmode = GameScenario::playModeFromString(playmode_str);
@@ -627,6 +633,9 @@ std::string GameScenario::playModeToString(const GameScenario::PlayMode mode)
       case GameScenario::PLAY_BY_MAIL:
 	return "GameScenario::PLAY_BY_MAIL";
 	break;
+      case GameScenario::CAMPAIGN:
+	return "GameScenario::CAMPAIGN";
+	break;
     }
   return "GameScenario::HOTSEAT";
 }
@@ -641,6 +650,8 @@ GameScenario::PlayMode GameScenario::playModeFromString(const std::string str)
     return GameScenario::NETWORKED;
   else if (str == "GameScenario::PLAY_BY_MAIL")
     return GameScenario::PLAY_BY_MAIL;
+  else if (str == "GameScenario::CAMPAIGN")
+    return GameScenario::CAMPAIGN;
   return GameScenario::HOTSEAT;
 }
 	

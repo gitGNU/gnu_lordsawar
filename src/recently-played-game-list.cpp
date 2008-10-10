@@ -169,6 +169,14 @@ void RecentlyPlayedGameList::addEntry(GameScenario *game_scenario, std::string f
 	    push_back(g);
 	    break;
 	  }
+      case GameScenario::CAMPAIGN:
+	  {
+	    RecentlyPlayedCampaignGame *g = NULL;
+	    g = new RecentlyPlayedCampaignGame(game_scenario);
+	    g->fillData(filename);
+	    push_back(g);
+	    break;
+	  }
       default:
 	break;
     }

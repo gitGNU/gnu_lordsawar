@@ -67,6 +67,8 @@ Driver::Driver(std::string load_filename)
     splash_window.reset(new SplashWindow);
     splash_window->new_game_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_new_game_requested));
+    splash_window->new_campaign_requested.connect(
+	sigc::mem_fun(*this, &Driver::on_new_campaign_requested));
     splash_window->new_hosted_network_game_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_new_hosted_network_game_requested));
     splash_window->new_remote_network_game_requested.connect(
@@ -473,6 +475,46 @@ void Driver::on_new_game_requested(GameParameters g)
     game_window->new_game(game_scenario, next_turn);
 }
 
+void Driver::on_new_campaign_requested(GameParameters g)
+{
+    if (splash_window.get())
+	splash_window->hide();
+
+    NewGameProgressWindow pw(g, GameScenario::CAMPAIGN);
+    Gtk::Main::instance()->run(pw);
+    GameScenario *game_scenario = pw.getGameScenario();
+
+    if (game_scenario == NULL)
+      {
+	TimedMessageDialog dialog(*splash_window->get_window(),
+				  _("Corrupted saved game file."), 0);
+	dialog.run();
+	dialog.hide();
+	splash_window->show();
+	return;
+      }
+
+    std::list<std::string> e, w;
+    if (g.map_path != "" && game_scenario->validate(e, w) == false)
+      {
+	TimedMessageDialog dialog
+	  (*splash_window->get_window(), 
+	   _("Invalid map file.\n" 
+	     "Please validate it in the scenario editor."), 0);
+	dialog.run();
+	dialog.hide();
+	splash_window->show();
+	return;
+      }
+
+    NextTurn *next_turn = new NextTurnHotseat(game_scenario->getTurnmode(),
+					      game_scenario->s_random_turns);
+    init_game_window();
+    
+    game_window->show();
+    game_window->new_game(game_scenario, next_turn);
+}
+
 void Driver::on_load_requested(std::string filename)
 {
     if (splash_window.get())
@@ -521,7 +563,7 @@ void Driver::on_game_ended()
   if (game_window.get())
     {
       game_window->hide();
-      game_window.reset();
+      //game_window.reset();
     }
   GameClient::deleteInstance();
   PbmGameClient::deleteInstance();

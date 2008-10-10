@@ -1074,7 +1074,8 @@ void GameWindow::on_game_stopped()
 	  game_ended.emit();
 	  return;
 	}
-      if (game_scenario->getPlayMode() == GameScenario::HOTSEAT)
+      if (game_scenario->getPlayMode() == GameScenario::HOTSEAT ||
+	  game_scenario->getPlayMode() == GameScenario::CAMPAIGN)
 	load_game(game_scenario, 
 		  new NextTurnHotseat(game_scenario->getTurnmode(),
 				      game_scenario->s_random_turns));
@@ -2693,7 +2694,6 @@ void GameWindow::show_shield_turn()
 
 void GameWindow::on_remote_next_player_turn()
 {
-  printf ("updating turn indicator now!\n");
   std::auto_ptr<Gtk::Dialog> dialog;
 
   while (g_main_context_iteration(NULL, FALSE)); //doEvents

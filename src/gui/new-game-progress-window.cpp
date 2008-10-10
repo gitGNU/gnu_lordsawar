@@ -50,13 +50,25 @@ void NewGameProgressWindow::thread_worker()
   else
     update_uuid = true;
 
+  GameScenarioOptions opts = GameScenarioOptions::clone();
+  printf ("hidden map is %d\n", GameScenarioOptions::s_hidden_map);
+  printf ("round is %d\n", GameScenarioOptions::s_round);
+  printf ("hidden map is %d\n", opts.s_hidden_map);
+  printf ("round is %d\n", opts.s_round);
   m_dispatcher();
   bool broken = false;
-  GameScenario* game_scenario = new GameScenario(game_params.map_path, broken);
+						 
+  bool load_opts = d_play_mode == GameScenario::CAMPAIGN ? true : false;
+  GameScenario* game_scenario = new GameScenario(game_params.map_path, broken,
+						 load_opts);
 
   if (broken)
     return;
 
+  game_scenario->setOptions(opts);
+  printf ("hidden map is %d\n", game_scenario->s_hidden_map);
+  printf ("hidden map is %d\n", opts.s_hidden_map);
+  printf ("round is %d\n", game_scenario->s_round);
   game_scenario->setName(game_params.name);
   game_scenario->setPlayMode(d_play_mode);
 
