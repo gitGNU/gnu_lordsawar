@@ -677,13 +677,15 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
   if (num < 2)
     errors.push_back(_("There must be at least 2 players in the scenario."));
 
-  num = Citylist::getInstance()->size();
+  num = Citylist::getInstance()->countCities();
   if (num < 2)
     errors.push_back(_("There must be at least 2 cities in the scenario."));
 
   for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
     {
       if (*it == pl->getNeutral())
+	continue;
+      if ((*it)->isDead() == true)
 	continue;
       if (Citylist::getInstance()->getFirstCity(*it) == NULL)
 	{
@@ -696,7 +698,7 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
-      if ((*it)->unnamed() == true)
+      if ((*it)->isUnnamed() == true)
 	count++;
     }
   if (count > 0)
@@ -710,7 +712,7 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
   Ruinlist *rl = Ruinlist::getInstance();
   for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
     {
-      if ((*it)->unnamed() == true)
+      if ((*it)->isUnnamed() == true)
 	count++;
     }
   if (count > 0)
@@ -724,7 +726,7 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
   Templelist *tl = Templelist::getInstance();
   for (Templelist::iterator it = tl->begin(); it != tl->end(); it++)
     {
-      if ((*it)->unnamed() == true)
+      if ((*it)->isUnnamed() == true)
 	count++;
     }
   if (count > 0)
@@ -738,7 +740,7 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
   Stacklist *sl = Playerlist::getInstance()->getNeutral()->getStacklist();
   for (Stacklist::iterator it = sl->begin(); it != sl->end(); it++)
     {
-      if (Ciitylist::getInstance()->getObjectAt((*it)->getPos()) == NULL)
+      if (Citylist::getInstance()->getObjectAt((*it)->getPos()) == NULL)
 	count++;
     }
   if (count > 0)

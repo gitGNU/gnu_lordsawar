@@ -250,7 +250,7 @@ class City : public Ownable, public Location, public Renamable,
 	//! This makes the army show up.  called when it's time.
 	const Army *armyArrives();
 
-	bool unnamed() {return getName() == getDefaultName() ? true : false;};
+	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
 
 	static std::string getDefaultName() {return DEFAULT_CITY_NAME;};
 

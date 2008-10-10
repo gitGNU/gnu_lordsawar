@@ -74,7 +74,7 @@ class Temple : public NamedLocation
         //! Save the temple to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 
-	bool unnamed() {return getName() == getDefaultName() ? true : false;};
+	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
 
 	static std::string getDefaultName() {return DEFAULT_TEMPLE_NAME;};
     protected:

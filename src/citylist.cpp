@@ -77,6 +77,20 @@ Citylist::~Citylist()
 {
 }
 
+int Citylist::countCities() const
+{
+    int cities = 0;
+    
+    for (const_iterator it = begin(); it != end(); it++)
+    {
+        if ((*it)->isBurnt())
+          continue;
+        cities++;
+    }
+    
+    return cities;
+}
+
 int Citylist::countCities(Player* player) const
 {
     int cities = 0;

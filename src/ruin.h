@@ -140,7 +140,7 @@ class Ruin : public NamedLocation, public sigc::trackable
 	 */
 	void populateWithRandomReward();
 
-	bool unnamed() {return getName() == getDefaultName() ? true : false;};
+	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
 	
 	static std::string getDefaultName() {return DEFAULT_RUIN_NAME;};
 

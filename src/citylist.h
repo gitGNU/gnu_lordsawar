@@ -68,6 +68,9 @@ class Citylist : public LocationList<City*>, public sigc::trackable
         //! Count the number of City objects that a given player owns. 
         int countCities(Player* p) const;
 
+	//! Count the total number of inhabitable cities.
+	int countCities() const;
+
         //! Returns the closest city that is owned by an enemy player.
 	/**
 	 * Scans through all of the City objects in the list for the nearest
