@@ -107,7 +107,7 @@ void SmallMap::after_draw()
 {
   OverviewMap::after_draw();
   if (Playerlist::getActiveplayer()->getType() == Player::HUMAN ||
-      Configuration::s_hidden_map == false)
+      GameScenarioOptions::s_hidden_map == false)
     {
       draw_cities(false);
       draw_selection();
