@@ -50,25 +50,28 @@ void NewGameProgressWindow::thread_worker()
   else
     update_uuid = true;
 
-  GameScenarioOptions opts = GameScenarioOptions::clone();
-  printf ("hidden map is %d\n", GameScenarioOptions::s_hidden_map);
-  printf ("round is %d\n", GameScenarioOptions::s_round);
-  printf ("hidden map is %d\n", opts.s_hidden_map);
-  printf ("round is %d\n", opts.s_round);
   m_dispatcher();
   bool broken = false;
 						 
-  bool load_opts = d_play_mode == GameScenario::CAMPAIGN ? true : false;
+  bool load_opts = d_play_mode == GameScenario::CAMPAIGN ? false : true;
   GameScenario* game_scenario = new GameScenario(game_params.map_path, broken,
 						 load_opts);
+
+  GameScenarioOptions::s_see_opponents_stacks=game_params.see_opponents_stacks;
+  GameScenarioOptions::s_see_opponents_production=game_params.see_opponents_production;
+  GameScenarioOptions::s_play_with_quests=game_params.play_with_quests;
+  GameScenarioOptions::s_hidden_map=game_params.hidden_map;
+  GameScenarioOptions::s_diplomacy=game_params.diplomacy;
+  GameScenarioOptions::s_cusp_of_war=game_params.cusp_of_war;
+  GameScenarioOptions::s_neutral_cities=game_params.neutral_cities;
+  GameScenarioOptions::s_razing_cities=game_params.razing_cities;
+  GameScenarioOptions::s_intense_combat=game_params.intense_combat;
+  GameScenarioOptions::s_military_advisor=game_params.military_advisor;
+  GameScenarioOptions::s_random_turns=game_params.random_turns;
 
   if (broken)
     return;
 
-  game_scenario->setOptions(opts);
-  printf ("hidden map is %d\n", game_scenario->s_hidden_map);
-  printf ("hidden map is %d\n", opts.s_hidden_map);
-  printf ("round is %d\n", game_scenario->s_round);
   game_scenario->setName(game_params.name);
   game_scenario->setPlayMode(d_play_mode);
 
@@ -81,20 +84,7 @@ void NewGameProgressWindow::thread_worker()
 
       m_dispatcher();
 
-      game_scenario->setupFog(game_params.hidden_map);
-      m_dispatcher();
-      game_scenario->setupCities(game_params.quick_start);
-      m_dispatcher();
-      game_scenario->setupStacks(game_params.hidden_map);
-      m_dispatcher();
-      game_scenario->setupDiplomacy(game_params.diplomacy);
-      m_dispatcher();
-      if (game_scenario->s_random_turns)
-	Playerlist::getInstance()->randomizeOrder();
-      m_dispatcher();
-      game_scenario->nextRound();
-      if (d_play_mode == GameScenario::NETWORKED)
-	Playerlist::getInstance()->turnHumansIntoNetworkPlayers();
+      game_scenario->initialize(game_params);
 
       m_dispatcher();
 

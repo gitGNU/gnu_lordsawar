@@ -29,6 +29,11 @@
 #include "GameScenarioOptions.h"
 #include "xmlhelper.h"
 
+#include "armysetlist.h"
+#include "armyset.h"
+#include "GameMap.h"
+#include "Configuration.h"
+
 class XML_Helper;
 
 //! A class to hold several scenario options.
@@ -118,33 +123,37 @@ class GameScenario: public GameScenarioOptions
         bool loadWithHelper(XML_Helper &helper);
         bool saveWithHelper(XML_Helper &helper) const;
 
-	bool setupFog(bool hidden_map);
-	bool setupCities(bool quick_start);
-	bool setupStacks(bool hidden_map);
-	void setupDiplomacy(bool diplomacy);
-	void setOptions(GameScenarioOptions &opts);
         
 	Uint32 getPlayMode() const {return d_playmode;};
 	void setPlayMode(GameScenario::PlayMode mode) {d_playmode = mode;};
 
 	bool validate(std::list<std::string> &errors, std::list<std::string> &warnings);
-    private:
-        /** Callback function for loading a game. See XML_Helper for details.
-          *
-          * @param tag      the tag name
-          * @param helper   the helper for parsing the save game file
-          * @return true if all went well, false otherwise.
-          */
-        bool load(std::string tag, XML_Helper* helper);
-	void quickStart();
 
-        // DATA
-        std::string d_name;
-        std::string d_comment;
-        bool d_turnmode; //see NextTurn for a description of this option
-	Uint32 d_playmode;
-	std::string d_id; //globally unique id identifying the scenario
-	bool d_load_opts;
+	void initialize(GameParameters g);
+
+	static GameParameters loadGameParameters(std::string filename, bool &broken);
+
+    private:
+	  /** Callback function for loading a game. See XML_Helper for details.
+	   *
+	   * @param tag      the tag name
+	   * @param helper   the helper for parsing the save game file
+	   * @return true if all went well, false otherwise.
+	   */
+	  bool load(std::string tag, XML_Helper* helper);
+	  void quickStart();
+	  bool setupFog(bool hidden_map);
+	  bool setupCities(bool quick_start);
+	  bool setupStacks(bool hidden_map);
+	  void setupDiplomacy(bool diplomacy);
+
+	  // DATA
+	  std::string d_name;
+	  std::string d_comment;
+	  bool d_turnmode; //see NextTurn for a description of this option
+	  Uint32 d_playmode;
+	  std::string d_id; //globally unique id identifying the scenario
+	  bool d_load_opts;
 };
 
 #endif // GAME_SCENARIO_H

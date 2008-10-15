@@ -87,9 +87,6 @@ int AI_Allocation::move()
 	d_stacks->clear();
 	delete d_stacks;
 	d_stacks = 0;
-
-	if (Playerlist::isFinished())
-	  return 0;
       }
 
     return count;

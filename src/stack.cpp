@@ -677,8 +677,6 @@ bool Stack::armyCompareFightOrder (const Army *lhs, const Army *rhs)
   std::list<Uint32> rhs_fight_order = rhs->getOwner()->getFightOrder();
   Uint32 lhs_rank = getFightOrder (lhs_fight_order, lhs->getTypeId());
   Uint32 rhs_rank = getFightOrder (rhs_fight_order, rhs->getTypeId());
-  //if (lhs_rank == rhs_rank)
-    //return lhs->getId() < rhs->getId();
   return lhs_rank < rhs_rank; 
 }
 

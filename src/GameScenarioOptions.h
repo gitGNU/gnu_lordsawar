@@ -33,7 +33,6 @@ class GameScenarioOptions: public sigc::trackable
     public:
 
         GameScenarioOptions();
-        GameScenarioOptions(const GameScenarioOptions &opts);
         ~GameScenarioOptions();
 
 
@@ -51,7 +50,6 @@ class GameScenarioOptions: public sigc::trackable
 	static bool s_surrender_already_offered;
 	static int s_difficulty;
 
-	static GameScenarioOptions clone();
         static unsigned int s_round;
 
 	static int calculate_difficulty_rating(GameParameters g);

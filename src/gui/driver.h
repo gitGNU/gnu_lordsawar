@@ -66,7 +66,7 @@ class Driver: public sigc::trackable
     void on_quit_requested();
 
     void on_game_ended();
-    void on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string player_name, GameScenarioOptions opts);
+    void on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string player_name);
 
     void init_game_window();
 
@@ -79,7 +79,7 @@ class Driver: public sigc::trackable
     void on_client_could_not_connect();
 
     GameScenario *new_game(GameParameters g);
-    GameScenario *load_game(std::string file_path);
+    GameScenario *load_game(std::string file_path, bool campaign = false);
     void stress_test();
     void stressTestNextRound();
 

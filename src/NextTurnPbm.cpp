@@ -83,9 +83,6 @@ void NextTurnPbm::start()
 	      return;
 	  }
 
-	if (Playerlist::isFinished())
-	  return;
-    
 	splayerStart.emit(plist->getActiveplayer());
 
 	// let the player do his or her duties...

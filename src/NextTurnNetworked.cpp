@@ -86,9 +86,6 @@ void NextTurnNetworked::start()
 		  return;
 	      }
 
-	    if (Playerlist::isFinished())
-	      return;
-
 	    splayerStart.emit(plist->getActiveplayer());
 
 	    // let the player do his or her duties...
@@ -128,7 +125,7 @@ void NextTurnNetworked::start()
 	      break;
 	  }
       }
-    if (Playerlist::isFinished() == false)
+    if (d_stop == true)
       {
 	Player *active = Playerlist::getInstance()->getActiveplayer();
 	if (active->getType() == Player::NETWORKED &&

@@ -64,12 +64,6 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         //! Returns the active player (the Player whose turn it is).
         static Player* getActiveplayer() {return d_activeplayer;}
         
-        //! Returns whether all of the players are finished playing the game.
-        static bool isFinished() {return s_finish;}
-
-        //! Set whether or not all players are finished the game.
-        static void finish() {s_finish = true;}
-        
         //! Sets the active player to the next player in the order.
         void nextPlayer();
 
@@ -127,8 +121,6 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
          */
 	//! Return the first living Player in the list.
         Player* getFirstLiving() const;
-
-	Player* getFirstHuman() const;
 
 	/** 
 	 * Swap out a player from the list and replace it with a new one.
@@ -262,9 +254,6 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         // DATA
 	//! The pointer to the player whose turn it is in the list.
         static Player* d_activeplayer;
-
-	//! Whether or not the game is over.
-        static bool s_finish;
 
 	//! The pointer to the neutral player in the list.
         Player* d_neutral;

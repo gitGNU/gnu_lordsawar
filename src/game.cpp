@@ -1026,7 +1026,6 @@ void Game::loadGame()
 void Game::stopGame()
 {
   d_nextTurn->stop();
-  Playerlist::finish();
 }
 
 bool Game::saveGame(std::string file)
@@ -1103,9 +1102,8 @@ void Game::on_player_died(Player *player)
 	  Uint32 num_heroes = campaign->getNumberOfHeroesToCarryOver();
 	  std::list<Hero*> heroes;
 	  heroes = p->getStacklist()->getTopHeroes(num_heroes);
-	  GameScenarioOptions opts = *d_gameScenario;
 	  next_scenario.emit(File::getCampaignFile(campaign->getNextScenario()),
-			     p->getGold(), heroes, p->getName(), opts);
+			     p->getGold(), heroes, p->getName());
 	}
       else
 	game_over.emit(pl->getFirstLiving());
@@ -1173,8 +1171,6 @@ void Game::center_view_on_city()
       City *c = *i;
       if (c->getOwner() == p)
 	{
-	  if (Playerlist::isFinished())
-	    return;
 	  smallmap->center_view_on_tile(c->getPos(), 
 					!GameScenario::s_hidden_map);
 	  break;

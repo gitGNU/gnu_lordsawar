@@ -84,9 +84,6 @@ void NextTurnHotseat::start()
 	      return;
 	  }
 
-	if (Playerlist::isFinished())
-	  return;
-    
 	splayerStart.emit(plist->getActiveplayer());
 
 	// let the player do his or her duties...
@@ -123,6 +120,13 @@ void NextTurnHotseat::endTurn()
   // Finish off the player and transfers the control to the start function
   // again.
   finishTurn();
+  if (Playerlist::getInstance()->checkPlayers() == true)
+    {
+      if (d_stop)
+	return;
+      if (Playerlist::getInstance()->getNoOfPlayers() <= 1)
+	return;
+    }
   nextPlayer();
 
   if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getFirstLiving())

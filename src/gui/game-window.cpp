@@ -343,8 +343,6 @@ GameWindow::GameWindow()
 	menubar->set_style(copy);
       }
 
-
-
 }
 
 GameWindow::~GameWindow()
@@ -825,6 +823,7 @@ void GameWindow::update_diplomacy_button (bool sensitive)
 
 bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
 {
+  currently_selected_stack = NULL;
   Playerlist *pl = Playerlist::getInstance();
   Armysetlist *al = Armysetlist::getInstance();
   for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
@@ -1061,7 +1060,7 @@ void GameWindow::on_game_stopped()
     }
   else if (stop_action == "next-scenario")
     {
-      next_scenario.emit(d_scenario, d_gold, d_heroes, d_player_name, d_opts);
+      next_scenario.emit(d_scenario, d_gold, d_heroes, d_player_name);
     }
   else if (stop_action == "load-game")
     {
@@ -1538,14 +1537,13 @@ void GameWindow::stop_game(std::string action)
     }
 }
 
-void GameWindow::on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string name, GameScenarioOptions opts)
+void GameWindow::on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string name)
 {
   //fixme: show a message here.  we won, but there's another scenario to go
   d_scenario = scenario;
   d_gold = gold;
   d_heroes = heroes;
   d_player_name = name;
-  d_opts = opts;
   stop_game("next-scenario");
   //now go to on_game_stopped
 }
@@ -2698,8 +2696,6 @@ void GameWindow::on_remote_next_player_turn()
 
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
-  if (Playerlist::isFinished()) //closed window while ai player moves
-    return;
   d_quick_fights = false;
   show_shield_turn();
   turn_label->set_markup(String::ucompose("Turn %1", 
@@ -2712,8 +2708,6 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
-  if (Playerlist::isFinished()) //closed window while ai player moves
-    return;
   d_quick_fights = false;
   show_shield_turn();
   if (player->getType() != Player::HUMAN)

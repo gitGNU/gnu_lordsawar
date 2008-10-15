@@ -267,10 +267,6 @@ bool AI_Fast::computerTurn()
     // way round.
     for (Stacklist::reverse_iterator it = d_stacklist->rbegin(); it != d_stacklist->rend(); it++)
     {
-        // game ended; emergency stop
-        if (Playerlist::isFinished())
-            break;
-
         d_stacklist->setActivestack(*it);
         Stack* s = *it;
 	s->group();

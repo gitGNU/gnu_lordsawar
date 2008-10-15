@@ -60,6 +60,8 @@
 #include "recently-played-game-list.h"
 #include "Backpack.h"
 #include "Item.h"
+#include "city.h"
+#include "FogMap.h"
 
 Driver::Driver(std::string load_filename)
 {
@@ -153,7 +155,7 @@ void Driver::run()
   else if (Main::instance().turn_filename != "") 
     {
       PbmGameClient *pbm_game_client = PbmGameClient::getInstance();
-      GameScenario *game_scenario = load_game(d_load_filename);
+      GameScenario *game_scenario = load_game(d_load_filename, false);
       if (game_scenario == NULL)
 	return;
       //now apply the actions in the turn file
@@ -392,7 +394,7 @@ void Driver::on_game_scenario_received(std::string path)
   heartbeat_conn.disconnect();
   if (download_window.get())
     download_window->hide();
-  GameScenario *game_scenario = load_game(path);
+  GameScenario *game_scenario = load_game(path, false);
   GameClient *game_client = GameClient::getInstance();
   std::string host = game_client->getHost();
   Uint32 port = game_client->getPort();
@@ -520,7 +522,7 @@ void Driver::on_load_requested(std::string filename)
     if (splash_window.get())
 	splash_window->hide();
 
-    GameScenario *game_scenario = load_game(filename);
+    GameScenario *game_scenario = load_game(filename, false);
     if (game_scenario == NULL)
       {
 	splash_window->show();
@@ -575,7 +577,7 @@ void Driver::on_game_ended()
   splash_window->show();
 }
 
-void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string player_name, GameScenarioOptions opts)
+void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string player_name)
 {
 
   GameClient::deleteInstance();
@@ -583,11 +585,46 @@ void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> h
   GameServer::deleteInstance();
   PbmGameServer::deleteInstance();
 
+  //remove load_opts stuff from GameScenario, etc
+  
   //load up the next scenario 
-  GameScenario *game_scenario = load_game(scenario);
-  game_scenario->setOptions(opts);
+  GameParameters g;
+  //players is empty
+  bool broken = false;
+  g = GameScenario::loadGameParameters(scenario, broken);
+  g.map_path = scenario;
+  //go get players from scenario file
+  g.see_opponents_stacks = GameScenarioOptions::s_see_opponents_stacks;
+  g.see_opponents_production = GameScenarioOptions::s_see_opponents_production;
+  g.play_with_quests = GameScenarioOptions::s_play_with_quests;
+  g.hidden_map = GameScenarioOptions::s_hidden_map;
+  g.diplomacy = GameScenarioOptions::s_diplomacy;
+  g.neutral_cities = GameScenarioOptions::s_neutral_cities;
+  g.razing_cities = GameScenarioOptions::s_razing_cities;
+  g.cusp_of_war = GameScenarioOptions::s_cusp_of_war;
+  g.intense_combat = GameScenarioOptions::s_intense_combat;
+  g.military_advisor = GameScenarioOptions::s_military_advisor;
+  g.random_turns = GameScenarioOptions::s_random_turns;
+  g.quick_start = false;
 
-  Player *player = Playerlist::getInstance()->getFirstHuman();
+  Uint32 player_id = 0;
+  for (std::vector<GameParameters::Player>::iterator
+       i = g.players.begin(), end = g.players.end(); i != end; ++i) 
+    {
+      if ((*i).type == GameParameters::Player::HUMAN)
+	{
+	  player_id = (Uint32) (*i).id;
+	  (*i).name = player_name;
+	  break;
+	}
+    }
+
+  game_window->hide();
+  NewGameProgressWindow pw(g, GameScenario::CAMPAIGN);
+  Gtk::Main::instance()->run(pw);
+  GameScenario *game_scenario = pw.getGameScenario();
+
+  Player *player = Playerlist::getInstance()->getPlayer(player_id);
   player->withdrawGold(player->getGold());
   if (gold > MAX_GOLD_TO_CARRY_OVER_TO_NEXT_SCENARIO)
     gold = MAX_GOLD_TO_CARRY_OVER_TO_NEXT_SCENARIO;
@@ -603,6 +640,7 @@ void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> h
       Backpack *backpack = (*it)->getBackpack();
       for (Backpack::iterator i = backpack->begin(); i != backpack->end(); i++)
 	(*i)->assignNewId();
+      (*it)->setOwner(player);
       c->addArmy(*it);
     }
 
@@ -610,7 +648,7 @@ void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> h
   nextTurn = new NextTurnHotseat(game_scenario->getTurnmode(),
 				 game_scenario->s_random_turns);
   game_window->show();
-  game_window->load_game (game_scenario, nextTurn);
+  game_window->new_game (game_scenario, nextTurn);
 }
 
 void Driver::init_game_window()
@@ -699,11 +737,14 @@ Driver::create_and_dump_scenario(const std::string &file, const GameParameters &
 }
 
 
-GameScenario *Driver::load_game(std::string file_path)
+GameScenario *Driver::load_game(std::string file_path, bool campaign)
 {
     bool broken = false;
-    GameScenario* game_scenario = new GameScenario(file_path, broken);
+  printf ("hidden map is %d\n", GameScenario::s_hidden_map);
+    GameScenario* game_scenario = new GameScenario(file_path, broken,
+						   campaign ? false : true);
 
+  printf ("hidden map is %d\n", game_scenario->s_hidden_map);
     if (broken)
       {
 	TimedMessageDialog dialog(*splash_window->get_window(),
@@ -855,10 +896,7 @@ void Driver::stress_test()
   if (game_scenario->getRound() == 0)
     {
       Playerlist::getInstance()->syncPlayers(g.players);
-      game_scenario->setupFog(g.hidden_map);
-      game_scenario->setupCities(g.quick_start);
-      game_scenario->setupDiplomacy(g.diplomacy);
-      game_scenario->nextRound();
+      game_scenario->initialize(g);
     }
 
   nextTurn->start();
@@ -889,7 +927,7 @@ void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type
 void Driver::on_game_scenario_received_for_robots(std::string path)
 {
   heartbeat_conn.disconnect();
-  GameScenario *game_scenario = load_game(path);
+  GameScenario *game_scenario = load_game(path, false);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   GameClient::getInstance()->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
   Playerlist *pl = Playerlist::getInstance();

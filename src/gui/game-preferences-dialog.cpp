@@ -862,22 +862,12 @@ void GamePreferencesDialog::on_map_chosen()
   std::string selected_filename = load_map_filechooser->get_filename();
   if (selected_filename.empty())
     return;
-  //try to read the file, grab the players
-  XML_Helper helper(selected_filename, std::ios::in, Configuration::s_zipfiles);
-
-  load_map_parameters.players.clear();
-  helper.registerTag("player",
-		     sigc::mem_fun(this, &GamePreferencesDialog::scan_players));
-  helper.registerTag("map",
-		     sigc::mem_fun(this, &GamePreferencesDialog::scan_shieldset));
-
-  if (!helper.parse())
-    {
-      std::cerr << "Error: Could not parse " << selected_filename << std::endl;
-      load_map_filechooser->set_filename("");
-      return;
-    }
-  helper.close();
+  bool broken;
+  load_map_parameters = GameScenario::loadGameParameters(selected_filename,
+							 broken);
+  if (broken)
+    return;
+  on_random_map_toggled();
   update_shields();
   on_player_type_changed();
 
@@ -904,61 +894,11 @@ void GamePreferencesDialog::on_map_chosen()
 	  else if ((*c)->get_active_text() == HUMAN_PLAYER_TYPE)
 	    {
 	      force = true;
+	      (*c)->set_sensitive(false);
 	    }
 	}
     }
   return;
-}
-
-bool GamePreferencesDialog::scan_shieldset(std::string tag, XML_Helper* helper)
-{
-    if (tag == "map")
-      {
-        helper->getData(load_map_parameters.shield_theme, "shieldset");
-      }
-    return true;
-}
-
-bool GamePreferencesDialog::scan_players(std::string tag, XML_Helper* helper)
-{
-    if (tag == "player")
-    {
-        int type;
-	int id;
-	std::string name;
-        if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
-        {
-            std::cerr << "scenario has wrong version, we want "
-		      << LORDSAWAR_SAVEGAME_VERSION <<",\n"
-		      << "scenario offers " << helper->getVersion() <<".\n";
-            return false;
-        }
-
-	GameParameters::Player p;
-        helper->getData(id, "id");
-	p.id = id;
-        helper->getData(type, "type");
-	switch (Player::Type(type))
-	  {
-	  case Player::HUMAN: p.type = GameParameters::Player::HUMAN;
-	    break;
-	  case Player::AI_FAST: p.type = GameParameters::Player::EASY;
-	    break;
-	  case Player::AI_DUMMY: p.type = GameParameters::Player::EASY;
-	    break;
-	  case Player::AI_SMART: p.type = GameParameters::Player::HARD;
-	    break;
-	  case Player::NETWORKED: p.type = GameParameters::Player::HUMAN;
-	    break;
-	  }
-        helper->getData(name, "name");
-	p.name = name;
-	if (p.id != 8) //is not neutral
-	  load_map_parameters.players.push_back(p);
-	on_random_map_toggled();
-    }
-
-    return true;
 }
 
 void GamePreferencesDialog::set_title(std::string text)

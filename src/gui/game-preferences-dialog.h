@@ -138,8 +138,6 @@ class GamePreferencesDialog: public Decorated
     void update_difficulty_combobox();
     void update_difficulty_rating();
     void update_shields();
-    bool scan_players(std::string tag, XML_Helper* helper);
-    bool scan_shieldset(std::string tag, XML_Helper* helper);
 SDL_Surface *getShieldPic(Uint32 type, Uint32 owner);
     GameParameters load_map_parameters;
     bool d_campaign;

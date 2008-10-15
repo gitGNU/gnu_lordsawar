@@ -168,8 +168,6 @@ void SmallMap::slide_view(Rectangle new_view)
     {
       while (1)
 	{
-	  if (Playerlist::isFinished()) //window closed while ai player moves
-	      return;
 	  Rectangle tmp_view(view);
 	  tmp_view.x = slide(tmp_view.x, new_view.x);
 	  tmp_view.y = slide(tmp_view.y, new_view.y);

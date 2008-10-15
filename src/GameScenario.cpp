@@ -450,12 +450,12 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       debug("loading scenario")
 
       helper->getData(d_id, "id");
-      if (d_load_opts)
-	{
-      helper->getData(s_round, "turn");
       helper->getData(d_turnmode, "turnmode");
       helper->getData(d_name, "name");
       helper->getData(d_comment, "comment");
+      helper->getData(s_round, "turn");
+      if (d_load_opts)
+	{
       helper->getData(s_see_opponents_stacks, "view_enemies");
       helper->getData(s_see_opponents_production, "view_production");
       helper->getData(s_play_with_quests, "quests");
@@ -664,23 +664,6 @@ void GameScenario::setNewRandomId()
   d_id = buf;
 }
 	
-void GameScenario::setOptions(GameScenarioOptions &opts)
-{
-  s_see_opponents_stacks=opts.s_see_opponents_stacks;
-  s_see_opponents_production=opts.s_see_opponents_production;
-  s_play_with_quests=opts.s_play_with_quests;
-  s_hidden_map=opts.s_hidden_map;
-  s_diplomacy=opts.s_diplomacy;
-  s_cusp_of_war=opts.s_cusp_of_war;
-  s_neutral_cities=opts.s_neutral_cities;
-  s_razing_cities=opts.s_razing_cities;
-  s_intense_combat=opts.s_intense_combat;
-  s_military_advisor=opts.s_military_advisor;
-  s_random_turns=opts.s_random_turns;
-  s_surrender_already_offered=opts.s_surrender_already_offered;
-  s_round=opts.s_round;
-}
-
 bool GameScenario::validate(std::list<std::string> &errors, std::list<std::string> &warnings)
 {
   Playerlist *pl = Playerlist::getInstance();
@@ -765,3 +748,118 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
     return true;
   return false;
 }
+
+void GameScenario::initialize(GameParameters g)
+{
+  setupFog(g.hidden_map);
+  setupCities(g.quick_start);
+  setupStacks(g.hidden_map);
+  setupDiplomacy(g.diplomacy);
+  if (s_random_turns)
+    Playerlist::getInstance()->randomizeOrder();
+  nextRound();
+  if (d_playmode == GameScenario::NETWORKED)
+    Playerlist::getInstance()->turnHumansIntoNetworkPlayers();
+}
+
+class ParamLoader
+{
+public:
+    bool loadParam(std::string tag, XML_Helper* helper)
+      {
+	if (tag == Player::d_tag)
+	  {
+	    int type;
+	    int id;
+	    std::string name;
+	    GameParameters::Player p;
+	    helper->getData(id, "id");
+	    p.id = id;
+	    helper->getData(type, "type");
+	    switch (Player::Type(type))
+	      {
+	      case Player::HUMAN: 
+		p.type = GameParameters::Player::HUMAN;
+		break;
+	      case Player::AI_FAST: 
+		p.type = GameParameters::Player::EASY;
+		break;
+	      case Player::AI_DUMMY: 
+		p.type = GameParameters::Player::EASY;
+		break;
+	      case Player::AI_SMART: 
+		p.type = GameParameters::Player::HARD;
+		break;
+	      case Player::NETWORKED: 
+		p.type = GameParameters::Player::HUMAN;
+		break;
+	      }
+	    helper->getData(name, "name");
+	    p.name = name;
+	    if (p.id != 8) //is not neutral
+	      game_params.players.push_back(p);
+	    else
+	      {
+		int armyset_id;
+		helper->getData(armyset_id, "armyset");
+		Armysetlist *al = Armysetlist::getInstance();
+		Armyset *armyset = al->getArmyset(armyset_id);
+		game_params.army_theme = armyset->getSubDir();
+	      }
+
+	    return true;
+	  }
+	if (tag == GameMap::d_tag)
+	  {
+	    helper->getData(game_params.shield_theme, "shieldset");
+	    helper->getData(game_params.tile_theme, "tileset");
+	    helper->getData(game_params.city_theme, "cityset");
+	    return true;
+	  }
+	if (tag == GameScenario::d_tag)
+	  {
+	    helper->getData(game_params.see_opponents_stacks, 
+			    "view_enemies");
+	    helper->getData(game_params.see_opponents_production, 
+			    "view_production");
+	    helper->getData(game_params.play_with_quests, "quests");
+	    helper->getData(game_params.hidden_map, "hidden_map");
+	    helper->getData(game_params.diplomacy, "diplomacy");
+	    helper->getData(game_params.cusp_of_war, "cusp_of_war");
+	    std::string neutral_cities_str;
+	    helper->getData(neutral_cities_str, "neutral_cities");
+	    game_params.neutral_cities = 
+	      Configuration::neutralCitiesFromString(neutral_cities_str);
+	    std::string razing_cities_str;
+	    helper->getData(razing_cities_str, "razing_cities");
+	    game_params.razing_cities = 
+	      Configuration::razingCitiesFromString(razing_cities_str);
+	    helper->getData(game_params.intense_combat, 
+			    "intense_combat");
+	    helper->getData(game_params.military_advisor, 
+			    "military_advisor");
+	    helper->getData(game_params.random_turns, "random_turns");
+	    return true;
+	  }
+	return false;
+      };
+    GameParameters game_params;
+};
+GameParameters GameScenario::loadGameParameters(std::string filename, bool &broken)
+{
+  ParamLoader loader;
+  
+  XML_Helper helper(filename, std::ios::in, Configuration::s_zipfiles);
+  helper.registerTag(GameMap::d_tag, 
+		     sigc::mem_fun(loader, &ParamLoader::loadParam));
+  helper.registerTag(GameScenario::d_tag, 
+		     sigc::mem_fun(loader, &ParamLoader::loadParam));
+  helper.registerTag(Player::d_tag, 
+		     sigc::mem_fun(loader, &ParamLoader::loadParam));
+  bool retval = helper.parse();
+
+  broken = !retval;
+  helper.close();
+  return loader.game_params;
+}
+

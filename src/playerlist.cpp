@@ -51,7 +51,6 @@ using namespace std;
 std::string Playerlist::d_tag = "playerlist";
 Playerlist* Playerlist::s_instance = 0;
 Player* Playerlist::d_activeplayer = 0;
-bool Playerlist::s_finish = false;
 
 Playerlist* Playerlist::getInstance()
 {
@@ -83,7 +82,6 @@ void Playerlist::deleteInstance()
 Playerlist::Playerlist()
     :d_neutral(0)
 {
-    s_finish = false;
     d_activeplayer = 0;
 }
 
@@ -95,7 +93,6 @@ Playerlist::Playerlist(XML_Helper* helper)
     //the size; we don't use it yet) and active(which player is active)
     //we do it by calling load with playerlist as string
     load(Playerlist::d_tag, helper);
-    s_finish = false;
 
     helper->registerTag(Player::d_tag, sigc::mem_fun(this, &Playerlist::load));
 }
@@ -225,13 +222,6 @@ Player* Playerlist::getFirstLiving() const
 {
     for (const_iterator it = begin(); ; it++)
         if (!(*it)->isDead() && *it != d_neutral)
-            return (*it);
-}
-
-Player* Playerlist::getFirstHuman() const
-{
-    for (const_iterator it = begin(); ; it++)
-        if (!(*it)->isDead() && (*it)->getType() == Player::HUMAN)
             return (*it);
 }
 
