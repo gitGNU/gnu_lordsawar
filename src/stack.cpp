@@ -146,7 +146,7 @@ void Stack::moveToDest(Vector<int> dest)
   if (!isFlying())
     {
       if ((on_water && to_city) || 
-	  (on_water && on_port && !to_water) ||
+	  (on_water && on_port && !to_water && hasShip()) ||
 	  ((on_city || on_port) && to_water) ||
 	  (on_bridge && to_water && !to_bridge) ||
 	  (on_bridge && !to_water && hasShip()))
