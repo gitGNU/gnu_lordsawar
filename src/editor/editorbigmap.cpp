@@ -460,6 +460,24 @@ void EditorBigMap::change_map_under_cursor()
 		maptile->setTileStyle (tile_style);
 	      }
 	    changed_tiles.dim = Vector<int>(1, 1);
+	    //change the boatedness of stacks that might be here.
+	    if (Stacklist::getObjectAt(tile))
+	      {
+		Stack* s = Stacklist::getObjectAt(tile);
+		Port *port = Portlist::getInstance()->getObjectAt(tile);
+		Bridge *bridge = Bridgelist::getInstance()->getObjectAt(tile);
+		if (pointer_terrain == Tile::WATER && s->hasShip() == false && 
+		    !port && !bridge)
+		  {
+		    for (Stack::iterator it = s->begin(); it != s->end(); it++)
+		      (*it)->setInShip(true);
+		  }
+		else if (pointer_terrain != Tile::WATER && s->hasShip() == true)
+		  {
+		    for (Stack::iterator it = s->begin(); it != s->end(); it++)
+		      (*it)->setInShip(false);
+		  }
+	      }
 	    break;
 	    
 	case ERASE:
@@ -518,11 +536,20 @@ void EditorBigMap::change_map_under_cursor()
 		Stack* s = new Stack(p, tile);
 		const Armysetlist* al = Armysetlist::getInstance();
 		Army* a = new Army(*al->getArmy(p->getArmyset(), 0), p);
+		GameMap *gm = GameMap::getInstance();
+		if (gm->getTile(s->getPos())->getBuilding() == Maptile::PORT ||
+		    gm->getTile(s->getPos())->getBuilding() == Maptile::BRIDGE)
+		  a->setInShip(false);
+		else if (gm->getTile(s->getPos())->getMaptileType() == 
+			 Tile::WATER)
+		  a->setInShip(true);
+		else
+		  a->setInShip(false);
 		s->push_back(a);
+		s->group();
 		p->addStack(s);
 		//if we're on a city, change the allegiance of the stack
 		//and it's armies to that of the city
-		GameMap *gm = GameMap::getInstance();
 		if (gm->getTile(s->getPos())->getBuilding() == Maptile::CITY)
 		  {
 		    Citylist *clist = Citylist::getInstance();
@@ -666,6 +693,16 @@ void EditorBigMap::change_map_under_cursor()
 	    {
 		maptile->setBuilding(Maptile::PORT);
 		Portlist::getInstance()->push_back(new Port(tile));
+		if (Stacklist::getObjectAt(tile))
+		  {
+		    Stack* s = Stacklist::getObjectAt(tile);
+		    if (s->hasShip() == true)
+		      {
+			for (Stack::iterator it = s->begin(); it != s->end(); 
+			     it++)
+			  (*it)->setInShip(false);
+		      }
+		  }
 	    }
 	    break;
 	    
@@ -681,6 +718,16 @@ void EditorBigMap::change_map_under_cursor()
 		{
 		    maptile->setBuilding(Maptile::BRIDGE);
 		    Bridgelist::getInstance()->push_back(new Bridge(tile, type));
+		    if (Stacklist::getObjectAt(tile))
+		      {
+			Stack* s = Stacklist::getObjectAt(tile);
+			if (s->hasShip() == true)
+			  {
+			    for (Stack::iterator it = s->begin(); it != s->end(); 
+				 it++)
+			      (*it)->setInShip(false);
+			  }
+		      }
 		}
 	        changed_tiles.dim = Vector<int>(1, 1);
 	    }

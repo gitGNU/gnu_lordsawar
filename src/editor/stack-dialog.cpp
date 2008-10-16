@@ -141,12 +141,15 @@ void StackDialog::run()
 	    }
 	}
 
+	stack->group();
+	bool ship = stack->hasShip();
 	// add added armies to stack
 	for (Gtk::TreeIter j = army_list->children().begin(),
 		 jend = army_list->children().end(); j != jend; ++j)
 	{
 	    Army *a = (*j)[army_columns.army];
 	    
+	    a->setInShip(ship);
 	    if (std::find(stack->begin(), stack->end(), a) == stack->end())
 		stack->push_back(a);
 	}
