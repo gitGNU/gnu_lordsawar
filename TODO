@@ -45,3 +45,25 @@ favour cheaper army units for production when we don't have much money
 			   
 retain game options through multiple scenarios of a campaign.
 campaigns don't end well if we have a computer ending.
+new GameScenarioOptions layout
+	users are: GamePreferencesDialog, GameOptionsDialog
+	newgameprogressdialog
+	gamescenario, game
+	need static access, because we can't pass it around everywhere
+when we read in a file, it overwrites the options we have.
+	so let's not overwrite
+	it would require it's own section.
+		and then we have to decide not to read that section in somehow
+	we can just optionally read in those values from the file
+	but the values should really hold the correct values.
+it is only in special cases when they don't.
+	what are those special cases?
+	when loading a scenario/ new campaign, next scenario in a campaign
+	how about on a random map?
+		is fine on a random map.
+
+
+use loadGameParameters everywhere it makes sense
+	game-preferences-dialog
+
+add campaign support in the editor
