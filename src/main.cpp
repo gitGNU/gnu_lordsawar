@@ -99,9 +99,10 @@ int main(int argc, char* argv[])
 	    {
 	      kit.start_robots = -1;
 	    }
-	  else if (parameter == "--robot" || parameter == "-R")
+	  else if (parameter == "--record" || parameter == "-R")
 	    {
-	      kit.start_robots = 1;
+	      i++;
+	      kit.record = argv[i-1];
 	    }
 	  else if (parameter == "--help" || parameter == "-h")
 	    {
@@ -114,6 +115,7 @@ int main(int argc, char* argv[])
 	      cout << _("  -S, --seed <number>        Seed the random number generator with NUMBER") << endl;
 	      cout << _("  -s, --stress-test          Non-interactive stress test") << endl;
 	      cout << _("  -r, --robots               Non-interactive network stress test") << endl;
+	      cout << _("  -R, --record FILE          Record gameplay to FILE") << endl;
 	      cout << endl;
 	      cout << "FILE can be a saved game file (.sav), or a map (.map) file." << endl;
 	      cout << endl;

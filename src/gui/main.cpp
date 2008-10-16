@@ -56,6 +56,7 @@ Main::Main(int &argc, char **&argv)
     start_robots = 0;
     load_filename = "";
     turn_filename = "";
+    record = "";
     
     Glib::thread_init();
     try

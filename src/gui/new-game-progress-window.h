@@ -6,7 +6,8 @@
 class NewGameProgressWindow : public Gtk::Window, boost::noncopyable
 {
   public:
-    NewGameProgressWindow(GameParameters g, GameScenario::PlayMode mode);
+    NewGameProgressWindow(GameParameters g, GameScenario::PlayMode mode,
+			  std::string recording_file);
     virtual ~NewGameProgressWindow();
 
     void thread_worker();
@@ -48,6 +49,7 @@ class NewGameProgressWindow : public Gtk::Window, boost::noncopyable
     GameScenario *d_game_scenario;
 
     GameScenario::PlayMode d_play_mode;
+    std::string d_recording_file;
 
 };
 

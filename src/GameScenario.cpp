@@ -72,7 +72,8 @@ using namespace std;
 
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
 			   GameScenario::PlayMode playmode)
-    :d_name(name),d_comment(comment), d_turnmode(turnmode), d_playmode(playmode)
+    :d_name(name),d_comment(comment), d_turnmode(turnmode), 
+    d_playmode(playmode), recording_file("")
 {
     Armysetlist::getInstance();
     Tilesetlist::getInstance();
@@ -82,24 +83,21 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
       fl_counter = new FL_Counter();
 
     setNewRandomId();
-    d_load_opts = true;
 }
 
 // savegame is a filename with absolute path!
 
-GameScenario::GameScenario(string savegame, bool& broken, bool load_opts)
-  :d_turnmode(true), d_playmode(GameScenario::HOTSEAT), d_load_opts(load_opts)
+GameScenario::GameScenario(string savegame, bool& broken)
+  :d_turnmode(true), d_playmode(GameScenario::HOTSEAT), recording_file("")
 {
-  d_load_opts = load_opts;
   XML_Helper helper(savegame, ios::in, Configuration::s_zipfiles);
   broken = loadWithHelper(helper);
   helper.close();
 }
 
 GameScenario::GameScenario(XML_Helper &helper, bool& broken)
-  : d_turnmode(true), d_playmode(GameScenario::HOTSEAT)
+  : d_turnmode(true), d_playmode(GameScenario::HOTSEAT), recording_file("")
 {
-  d_load_opts = true;
   broken = loadWithHelper(helper);
 }
 
@@ -454,8 +452,6 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       helper->getData(d_name, "name");
       helper->getData(d_comment, "comment");
       helper->getData(s_round, "turn");
-      if (d_load_opts)
-	{
       helper->getData(s_see_opponents_stacks, "view_enemies");
       helper->getData(s_see_opponents_production, "view_production");
       helper->getData(s_play_with_quests, "quests");
@@ -473,7 +469,6 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       helper->getData(s_random_turns, "random_turns");
       helper->getData(s_surrender_already_offered, 
 		      "surrender_already_offered");
-	}
       std::string playmode_str;
       helper->getData(playmode_str, "playmode");
       d_playmode = GameScenario::playModeFromString(playmode_str);
@@ -593,6 +588,21 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
 void GameScenario::nextRound()
 {
   s_round++;
+
+  if (recording_file != "")
+    {
+      XML_Helper helper(recording_file, std::ios::app, 
+			Configuration::s_zipfiles);
+      //what do i do now?
+      Playerlist *pl = Playerlist::getInstance();
+      for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+	{
+	  (*it)->saveNetworkActions(&helper);
+	  //somehow dump the action list of each player, while 
+	  //appending to recording file.
+	}
+      helper.close();
+    }
 
   char filename[1024];
   if (Configuration::s_autosave_policy == 2)
@@ -863,3 +873,12 @@ GameParameters GameScenario::loadGameParameters(std::string filename, bool &brok
   return loader.game_params;
 }
 
+void GameScenario::startRecordingEventsToFile(std::string filename)
+{
+  recording_file = filename;
+}
+
+void GameScenario::stopRecordingEventsToFile()
+{
+  recording_file = "";
+}

@@ -468,6 +468,8 @@ class Player: public sigc::trackable
          */
         static Player* loadPlayer(XML_Helper* helper);
 
+	void saveNetworkActions(XML_Helper *helper);
+
         /** 
 	 * This function is called when a player's turn starts. 
 	 * For AI players this function should start the algorithm.

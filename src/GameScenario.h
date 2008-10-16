@@ -79,9 +79,8 @@ class GameScenario: public GameScenarioOptions
           * 
           * @param savegame     the full name of the saved-game to load
           * @param broken       set to true if something goes wrong
-	  * @param load_opts    also load the options from the saved-game.
           */
-        GameScenario(std::string savegame, bool& broken, bool load_opts = true);
+        GameScenario(std::string savegame, bool& broken);
 
         GameScenario(XML_Helper &helper, bool &broken);
 
@@ -133,6 +132,9 @@ class GameScenario: public GameScenarioOptions
 
 	static GameParameters loadGameParameters(std::string filename, bool &broken);
 
+	void startRecordingEventsToFile(std::string filename);
+	void stopRecordingEventsToFile();
+
     private:
 	  /** Callback function for loading a game. See XML_Helper for details.
 	   *
@@ -153,7 +155,7 @@ class GameScenario: public GameScenarioOptions
 	  bool d_turnmode; //see NextTurn for a description of this option
 	  Uint32 d_playmode;
 	  std::string d_id; //globally unique id identifying the scenario
-	  bool d_load_opts;
+	  std::string recording_file;
 };
 
 #endif // GAME_SCENARIO_H

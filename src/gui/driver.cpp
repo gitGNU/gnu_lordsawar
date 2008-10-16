@@ -155,7 +155,7 @@ void Driver::run()
   else if (Main::instance().turn_filename != "") 
     {
       PbmGameClient *pbm_game_client = PbmGameClient::getInstance();
-      GameScenario *game_scenario = load_game(d_load_filename, false);
+      GameScenario *game_scenario = load_game(d_load_filename);
       if (game_scenario == NULL)
 	return;
       //now apply the actions in the turn file
@@ -272,7 +272,8 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
     if (splash_window.get())
 	splash_window->hide();
 
-    NewGameProgressWindow pw(g, GameScenario::NETWORKED);
+    NewGameProgressWindow pw(g, GameScenario::NETWORKED, 
+			     Main::instance().record);
     Gtk::Main::instance()->run(pw);
     GameScenario *game_scenario = pw.getGameScenario();
 
@@ -394,7 +395,7 @@ void Driver::on_game_scenario_received(std::string path)
   heartbeat_conn.disconnect();
   if (download_window.get())
     download_window->hide();
-  GameScenario *game_scenario = load_game(path, false);
+  GameScenario *game_scenario = load_game(path);
   GameClient *game_client = GameClient::getInstance();
   std::string host = game_client->getHost();
   Uint32 port = game_client->getPort();
@@ -442,7 +443,8 @@ void Driver::on_new_game_requested(GameParameters g)
     if (splash_window.get())
 	splash_window->hide();
 
-    NewGameProgressWindow pw(g, GameScenario::HOTSEAT);
+    NewGameProgressWindow pw(g, GameScenario::HOTSEAT, 
+			     Main::instance().record);
     Gtk::Main::instance()->run(pw);
     GameScenario *game_scenario = pw.getGameScenario();
 
@@ -482,7 +484,8 @@ void Driver::on_new_campaign_requested(GameParameters g)
     if (splash_window.get())
 	splash_window->hide();
 
-    NewGameProgressWindow pw(g, GameScenario::CAMPAIGN);
+    NewGameProgressWindow pw(g, GameScenario::CAMPAIGN,
+			     Main::instance().record);
     Gtk::Main::instance()->run(pw);
     GameScenario *game_scenario = pw.getGameScenario();
 
@@ -522,7 +525,7 @@ void Driver::on_load_requested(std::string filename)
     if (splash_window.get())
 	splash_window->hide();
 
-    GameScenario *game_scenario = load_game(filename, false);
+    GameScenario *game_scenario = load_game(filename);
     if (game_scenario == NULL)
       {
 	splash_window->show();
@@ -620,7 +623,8 @@ void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> h
     }
 
   game_window->hide();
-  NewGameProgressWindow pw(g, GameScenario::CAMPAIGN);
+  NewGameProgressWindow pw(g, GameScenario::CAMPAIGN,
+			   Main::instance().record);
   Gtk::Main::instance()->run(pw);
   GameScenario *game_scenario = pw.getGameScenario();
 
@@ -737,14 +741,11 @@ Driver::create_and_dump_scenario(const std::string &file, const GameParameters &
 }
 
 
-GameScenario *Driver::load_game(std::string file_path, bool campaign)
+GameScenario *Driver::load_game(std::string file_path)
 {
     bool broken = false;
-  printf ("hidden map is %d\n", GameScenario::s_hidden_map);
-    GameScenario* game_scenario = new GameScenario(file_path, broken,
-						   campaign ? false : true);
+    GameScenario* game_scenario = new GameScenario(file_path, broken);
 
-  printf ("hidden map is %d\n", game_scenario->s_hidden_map);
     if (broken)
       {
 	TimedMessageDialog dialog(*splash_window->get_window(),
@@ -753,6 +754,8 @@ GameScenario *Driver::load_game(std::string file_path, bool campaign)
 	dialog.hide();
 	return NULL;
       }
+    if (Main::instance().record != "")
+      game_scenario->startRecordingEventsToFile(Main::instance().record);
     return game_scenario;
 }
 
@@ -761,7 +764,8 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
   std::string filename;
   std::string temp_filename = File::getSavePath() + "pbmtmp.sav";
       
-  NewGameProgressWindow pw(g, GameScenario::PLAY_BY_MAIL);
+  NewGameProgressWindow pw(g, GameScenario::PLAY_BY_MAIL,
+			   Main::instance().record);
   Gtk::Main::instance()->run(pw);
   GameScenario *game_scenario = pw.getGameScenario();
   if (game_scenario == NULL)
@@ -885,6 +889,8 @@ void Driver::stress_test()
   if (broken)
     return;
 
+  if (Main::instance().record != "")
+    game_scenario->startRecordingEventsToFile(Main::instance().record);
   NextTurnHotseat *nextTurn;
   nextTurn = new NextTurnHotseat(game_scenario->getTurnmode(),
 				 game_scenario->s_random_turns);
@@ -927,7 +933,7 @@ void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type
 void Driver::on_game_scenario_received_for_robots(std::string path)
 {
   heartbeat_conn.disconnect();
-  GameScenario *game_scenario = load_game(path, false);
+  GameScenario *game_scenario = load_game(path);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   GameClient::getInstance()->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
   Playerlist *pl = Playerlist::getInstance();

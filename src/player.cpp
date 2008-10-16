@@ -3096,4 +3096,14 @@ void Player::loadPbmGame()
       history_written.emit(copy);
     }
 }
+
+void Player::saveNetworkActions(XML_Helper *helper)
+{
+  for (list<Action*>::const_iterator it = d_actions.begin();
+       it != d_actions.end(); it++)
+    {
+      NetworkAction *copy = new NetworkAction(*it, this);
+      copy->save(helper);
+    }
+}
 // End of file

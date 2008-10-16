@@ -6,8 +6,9 @@
 
 Glib::StaticMutex mutex = GLIBMM_STATIC_MUTEX_INIT;
  
-NewGameProgressWindow::NewGameProgressWindow(GameParameters g, GameScenario::PlayMode mode)
-: game_params(g), m_end_thread(false), m_vbox(false,10), d_play_mode(mode)
+NewGameProgressWindow::NewGameProgressWindow(GameParameters g, GameScenario::PlayMode mode, std::string recording_file)
+: game_params(g), m_end_thread(false), m_vbox(false,10), d_play_mode(mode),
+    d_recording_file(recording_file)
 {
   add(m_vbox);
   m_vbox.set_border_width(10);
@@ -53,9 +54,7 @@ void NewGameProgressWindow::thread_worker()
   m_dispatcher();
   bool broken = false;
 						 
-  bool load_opts = d_play_mode == GameScenario::CAMPAIGN ? false : true;
-  GameScenario* game_scenario = new GameScenario(game_params.map_path, broken,
-						 load_opts);
+  GameScenario* game_scenario = new GameScenario(game_params.map_path, broken);
 
   GameScenarioOptions::s_see_opponents_stacks=game_params.see_opponents_stacks;
   GameScenarioOptions::s_see_opponents_production=game_params.see_opponents_production;
@@ -72,6 +71,8 @@ void NewGameProgressWindow::thread_worker()
   if (broken)
     return;
 
+  if (d_recording_file != "")
+    game_scenario->startRecordingEventsToFile(d_recording_file);
   game_scenario->setName(game_params.name);
   game_scenario->setPlayMode(d_play_mode);
 

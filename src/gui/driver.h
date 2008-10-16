@@ -79,7 +79,7 @@ class Driver: public sigc::trackable
     void on_client_could_not_connect();
 
     GameScenario *new_game(GameParameters g);
-    GameScenario *load_game(std::string file_path, bool campaign = false);
+    GameScenario *load_game(std::string file_path);
     void stress_test();
     void stressTestNextRound();
 

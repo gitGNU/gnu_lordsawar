@@ -42,6 +42,7 @@ class Main: public sigc::trackable, public boost::noncopyable
     bool start_test_scenario;
     std::string load_filename;
     std::string turn_filename;
+    std::string record;
     
  private:
     struct Impl;
