@@ -4,6 +4,9 @@
 	  to another file.
 	* addressing bug #24580.  stacks now move over too-large friendly
 	  stacks.
+	* fixed bug #24582.  landborn stacks can now leave a port without
+	  losing moves.
+
 
 2008-10-09  Ben Asselstine
 
