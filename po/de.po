@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-16 14:39-0400\n"
+"POT-Creation-Date: 2008-10-16 16:51-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -2889,15 +2889,15 @@ msgstr "Fertig mit Kartenerzeugung ... 100%"
 msgid "You have killed %i so far."
 msgstr "Du hast bereits %i getötet."
 
-#: src/player.cpp:1249
+#: src/player.cpp:1281
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr "Fehler: Armee und zu durchsuchende Ruine nicht am selben Platz\n"
 
-#: src/player.cpp:1338
+#: src/player.cpp:1370
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Armee versuchte Tempel an der falschen Position zu besuchen\n"
 
-#: src/player.cpp:2245
+#: src/player.cpp:2277
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Standardeinheiten"

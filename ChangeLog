@@ -6,7 +6,8 @@
 	  stacks.
 	* fixed bug #24582.  landborn stacks can now leave a port without
 	  losing moves.
-
+	* fixed bug 24583.  now putting stacks in boats automatically in the
+	  scenario editor.
 
 2008-10-09  Ben Asselstine
 
