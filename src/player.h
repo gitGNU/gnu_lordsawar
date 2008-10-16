@@ -1294,6 +1294,9 @@ class Player: public sigc::trackable
         //! Move stack s one step forward on it's Path.
         bool stackMoveOneStep(Stack* s);
 
+	//! Move stack s one step forward on it's Path, over another stack.
+	bool stackMoveOneStepOverTooLargeFriendlyStacks(Stack *s);
+
         void addAction(Action *action);
 
         // DATA

@@ -235,6 +235,8 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	void collectTaxes(Player *p, Uint32 num_cities);
 
 	std::list<Hero*> getTopHeroes(int num);
+
+	static bool canJumpOverTooLargeStack(Stack *s);
     private:
         //! Callback function for loading.
         bool load(std::string tag, XML_Helper* helper);

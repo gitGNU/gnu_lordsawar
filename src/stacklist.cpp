@@ -430,4 +430,36 @@ void Stacklist::collectTaxes(Player *p, Uint32 num_cities)
     }
 }
 
+// do we have enough movement points to get to a place on our path
+// where we can drop the stack on a suitable tile?
+//suitable = empty tile, or 
+//a tile with a friendly stack that has a small enough stack to merge with
+//we're currently at a tile prior to a stack that's too big.
+//problem point: getting into a boat.
+
+bool Stacklist::canJumpOverTooLargeStack(Stack *s)
+{
+  bool found = false;
+  Uint32 mp = s->getGroupMoves();
+  for (Path::iterator it = s->getPath()->begin(); it != s->getPath()->end(); it++)
+    {
+      Uint32 moves = s->calculateTileMovementCost(**it);
+      if (moves > mp)
+	return false;
+      mp -= moves;
+      Stack *another_stack = getObjectAt(**it);
+      if (another_stack)
+	{
+	  if (another_stack->getOwner() != s->getOwner())
+	    return false;
+	}
+      else
+	{
+	  found = true;
+	  break;
+	}
+    }
+  return found;
+}
+
 // End of file

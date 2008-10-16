@@ -854,7 +854,8 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
     }
 
     int stepCount = 0;
-    while (s->getPath()->size() > 1 && stackMoveOneStep(s))
+    while (s->getPath()->size() > 1 && stackMoveOneStep(s) ||
+	   stackMoveOneStepOverTooLargeFriendlyStacks(s))
       {
 	stepCount++;
         supdatingStack.emit(0);
@@ -1013,6 +1014,37 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
     MoveResult *moveResult = new MoveResult(true);
     moveResult->setStepCount(stepCount);
     return moveResult;
+}
+
+	   
+bool Player::stackMoveOneStepOverTooLargeFriendlyStacks(Stack *s)
+{
+  if (!s)
+    return false;
+
+  if (!s->enoughMoves())
+    return false;
+
+  if (s->getPath()->size() <= 1)
+    return false;
+
+  Vector<int> dest = *s->getPath()->front();
+  Stack *another_stack = d_stacklist->getObjectAt(dest);
+  if (!another_stack)
+    return false;
+
+  if (another_stack->getOwner() != s->getOwner())
+    return false;
+
+  if (d_stacklist->canJumpOverTooLargeStack(s) == false)
+    return false;
+
+  Action_Move* item = new Action_Move();
+  item->fillData(s, dest);
+  addAction(item);
+
+  s->moveOneStep();
+  return true;
 }
 
 bool Player::stackMoveOneStep(Stack* s)
