@@ -452,6 +452,11 @@ bool Stacklist::canJumpOverTooLargeStack(Stack *s)
 	{
 	  if (another_stack->getOwner() != s->getOwner())
 	    return false;
+	  if (s->canJoin(another_stack) == true)
+	    {
+	      found = true;
+	      break;
+	    }
 	}
       else
 	{
