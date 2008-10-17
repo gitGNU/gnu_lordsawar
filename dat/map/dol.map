@@ -5793,6 +5793,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -5850,6 +5851,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -5896,6 +5898,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -5942,6 +5945,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -5988,6 +5992,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 			<reward>
@@ -6056,6 +6061,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -6102,6 +6108,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -6148,6 +6155,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -6194,6 +6202,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -6240,6 +6249,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -6308,6 +6318,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -6354,6 +6365,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -6400,6 +6412,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -6446,6 +6459,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>

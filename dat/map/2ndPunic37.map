@@ -216,6 +216,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -237,6 +238,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -272,6 +274,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<hero>
 						<d_name>Hanibal</d_name>
@@ -295,6 +298,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>2</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 						<backpack>
 						</backpack>
 					</hero>
@@ -470,6 +474,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -505,6 +510,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -526,6 +532,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -561,6 +568,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -596,6 +604,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -617,6 +626,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -638,6 +648,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -673,6 +684,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -694,6 +706,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -715,6 +728,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -736,6 +750,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -757,6 +772,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 			</stacklist>
@@ -926,6 +942,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -961,6 +978,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -996,6 +1014,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1031,6 +1050,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1066,6 +1086,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1101,6 +1122,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1136,6 +1158,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -1157,6 +1180,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1192,6 +1216,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -1213,6 +1238,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1248,6 +1274,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -1269,6 +1296,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1304,6 +1332,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1339,6 +1368,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1374,6 +1404,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1409,6 +1440,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1444,6 +1476,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -1465,6 +1498,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -1486,6 +1520,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1521,6 +1556,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1556,6 +1592,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -1577,6 +1614,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -1598,6 +1636,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 					<army>
 						<d_upkeep>0</d_upkeep>
@@ -1619,6 +1658,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1654,6 +1694,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 				<stack>
@@ -1689,6 +1730,7 @@
 						<d_medals>0 0 0 </d_medals>
 						<d_battlesnumber>0</d_battlesnumber>
 						<d_visited_temples></d_visited_temples>
+						<d_grouped>true</d_grouped>
 					</army>
 				</stack>
 			</stacklist>
@@ -3127,6 +3169,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -3173,6 +3216,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
@@ -3219,6 +3263,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 					<d_medals>0 0 0 </d_medals>
 					<d_battlesnumber>0</d_battlesnumber>
 					<d_visited_temples></d_visited_temples>
+					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
 		</ruin>
