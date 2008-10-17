@@ -1,5 +1,12 @@
 2008-10-17  Ben Asselstine
 
+	* now loading and saving stack groupedness.  This changes the 
+	  saved-game schema.
+	* fixing bug #24592.  disallowing hero leveling up strength stat 
+	  beyond 9.
+
+2008-10-16  Ben Asselstine
+
 	* added new --record command-line option to continually save actions
 	  to another file.
 	* addressing bug #24580.  stacks now move over too-large friendly
