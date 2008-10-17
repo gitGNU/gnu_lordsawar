@@ -301,3 +301,19 @@ widget_class "*GtkCTree*" style "evolution-hack"
 widget_class "*GtkList*" style "evolution-hack"
 widget_class "*GtkCList*" style "evolution-hack"
 widget_class "*.ETree.*" style "evolution-hack"
+
+style "menu_color"
+{
+fg[NORMAL] = @fg_color
+fg[PRELIGHT] = @fg_color
+fg[SELECTED] = @selected_fg_color
+fg[ACTIVE] = @fg_color
+fg[INSENSITIVE] = darker (@bg_color)
+bg[NORMAL] = @bg_color
+bg[PRELIGHT] = shade (1.02, @bg_color)
+bg[SELECTED] = shade (1.5, @bg_color)
+bg[INSENSITIVE] = @bg_color
+bg[ACTIVE] = shade (0.9, @bg_color)
+}
+
+widget_class "Menu" style "menu_color" 
