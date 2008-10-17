@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-16 16:51-0400\n"
+"POT-Creation-Date: 2008-10-17 12:07-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -2970,7 +2970,7 @@ msgstr "Größe:"
 #: src/gui/city-window.cpp:286 src/gui/army-info-tip.cpp:75
 #: src/gui/army-info-tip.cpp:139 src/gui/army-info-tip.cpp:203
 #: src/gui/buy-production-dialog.cpp:170 src/gui/hero-dialog.cpp:248
-#: src/gui/army-gains-level-dialog.cpp:70
+#: src/gui/army-gains-level-dialog.cpp:71
 #: src/editor/select-army-dialog.cpp:183
 #, fuzzy
 msgid "Strength: %1"

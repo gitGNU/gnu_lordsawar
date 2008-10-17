@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lordsawar 0.1.3\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-16 16:51-0400\n"
+"POT-Creation-Date: 2008-10-17 12:07-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2632,7 +2632,7 @@ msgstr ""
 #: src/gui/city-window.cpp:286 src/gui/army-info-tip.cpp:75
 #: src/gui/army-info-tip.cpp:139 src/gui/army-info-tip.cpp:203
 #: src/gui/buy-production-dialog.cpp:170 src/gui/hero-dialog.cpp:248
-#: src/gui/army-gains-level-dialog.cpp:70
+#: src/gui/army-gains-level-dialog.cpp:71
 #: src/editor/select-army-dialog.cpp:183
 msgid "Strength: %1"
 msgstr ""
