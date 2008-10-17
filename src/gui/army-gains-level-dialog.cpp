@@ -67,7 +67,8 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
     add_item(Army::MOVES, _("Moves: %1"));
     if (show_sight_stat == true)
       add_item(Army::SIGHT, _("Sight: %1"));
-    add_item(Army::STRENGTH, _("Strength: %1"));
+    if (a->getStat(Army::STRENGTH, false) < MAX_ARMY_STRENGTH)
+      add_item(Army::STRENGTH, _("Strength: %1"));
 
     stat_items[0].radio->set_active(true);
     on_stat_toggled();

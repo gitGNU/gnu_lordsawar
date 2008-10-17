@@ -193,8 +193,8 @@ void Army::setStat(Army::Stat stat, Uint32 value)
     {
     case STRENGTH:  
       d_strength = value;
-      if (d_strength > 9)
-	d_strength = 9;
+      if (d_strength > MAX_ARMY_STRENGTH)
+	d_strength = MAX_ARMY_STRENGTH;
       break;
     case HP:        
       d_max_hp = value;
@@ -382,8 +382,8 @@ int Army::gainLevel(Stat stat)
     {
     case STRENGTH:
       d_strength += delta;
-      if (d_strength > 9)
-	d_strength = 9;
+      if (d_strength > MAX_ARMY_STRENGTH)
+	d_strength = MAX_ARMY_STRENGTH;
       break;
     case HP:
       d_max_hp += delta;
