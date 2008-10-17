@@ -153,7 +153,8 @@ void Stack::moveToDest(Vector<int> dest, bool skipping)
 	  (on_bridge && to_water && !to_bridge) ||
 	  (on_bridge && !to_water && hasShip()) ||
 	  (on_water && to_water && !on_bridge && !on_port && 
-	   hasShip() == false))
+	   hasShip() == false) ||
+	  (!on_water && !to_water && hasShip() == true))
 	{
 	  if (!skipping)
 	    {
