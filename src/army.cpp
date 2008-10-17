@@ -179,6 +179,7 @@ Army::Army(XML_Helper* helper)
       if (ival != -1)
 	d_visitedTemples.push_front(ival);
     }
+  helper->getData(d_grouped, "grouped");
 }
 
 Army::~Army()
@@ -442,6 +443,7 @@ bool Army::saveData(XML_Helper* helper) const
   for(;tit != tend;++tit)
     temples << (*tit) << " ";
   retval &= helper->saveData("visited_temples", temples.str());
+  retval &= helper->saveData("grouped", d_grouped);
 
   return retval;
 }
