@@ -118,18 +118,18 @@ void Stack::setPlayer(Player* p)
     (*it)->setOwner(p);
 }
 
-void Stack::moveOneStep()
+void Stack::moveOneStep(bool skipping)
 {
   debug("move_one_step()");
 
   Vector<int> dest = *getPath()->front();
-  moveToDest(dest);
+  moveToDest(dest, skipping);
 
   //now remove first point of the path
   d_path->eraseFirstPoint();
 }
 
-void Stack::moveToDest(Vector<int> dest)
+void Stack::moveToDest(Vector<int> dest, bool skipping)
 {
   Vector<int> pos = getPos();
     
@@ -145,20 +145,27 @@ void Stack::moveToDest(Vector<int> dest)
   //here we mark the armies as being on or off a boat
   if (!isFlying())
     {
+      /* skipping refers to when we have to move over another friendly stack
+       * of a size that's too big to join with. */
       if ((on_water && to_city) || 
 	  (on_water && on_port && !to_water && hasShip()) ||
 	  ((on_city || on_port) && to_water) ||
 	  (on_bridge && to_water && !to_bridge) ||
-	  (on_bridge && !to_water && hasShip()))
+	  (on_bridge && !to_water && hasShip()) ||
+	  (on_water && to_water && !on_bridge && !on_port && 
+	   hasShip() == false))
 	{
-	  ship_load_unload = true;
-	  for (Stack::iterator it = begin(); it != end(); it++)
+	  if (!skipping)
 	    {
-	      if (to_water && 
-		  ((*it)->getStat(Army::MOVE_BONUS) & Tile::WATER) == 0)
-		(*it)->setInShip(true);
-	      else
-		(*it)->setInShip(false);
+	      ship_load_unload = true;
+	      for (Stack::iterator it = begin(); it != end(); it++)
+		{
+		  if (to_water && 
+		      ((*it)->getStat(Army::MOVE_BONUS) & Tile::WATER) == 0)
+		    (*it)->setInShip(true);
+		  else
+		    (*it)->setInShip(false);
+		}
 	    }
 	}
     }

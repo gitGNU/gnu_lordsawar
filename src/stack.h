@@ -118,9 +118,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         void decrementMoves(Uint32 moves);
 
         //! Sets the stack's position to the next point in it's Path.
-        void moveOneStep();
+        void moveOneStep(bool skipping = false);
 
-        void moveToDest(Vector<int> dest);
+        void moveToDest(Vector<int> dest, bool skipping = false);
 
 	/**
 	 * Adds one to the strength of each Army unit in the stack.

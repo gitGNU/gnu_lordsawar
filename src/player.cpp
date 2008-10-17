@@ -1043,7 +1043,7 @@ bool Player::stackMoveOneStepOverTooLargeFriendlyStacks(Stack *s)
   item->fillData(s, dest);
   addAction(item);
 
-  s->moveOneStep();
+  s->moveOneStep(true);
   return true;
 }
 
