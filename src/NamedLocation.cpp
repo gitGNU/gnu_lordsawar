@@ -19,19 +19,21 @@
 
 #include "xmlhelper.h"
 
-NamedLocation::NamedLocation(Vector<int> pos, Uint32 size, std::string name)
-  :Location(pos, size), Namable(name)
+NamedLocation::NamedLocation(Vector<int> pos, Uint32 size, std::string name,
+			     std::string desc)
+  :Location(pos, size), Namable(name), d_description(desc)
 {
 }
 
 NamedLocation::NamedLocation(const NamedLocation& object)
-  :Location(object), Namable(object)
+  :Location(object), Namable(object), d_description(object.d_description)
 {
 }
 
 NamedLocation::NamedLocation(XML_Helper* helper, Uint32 size)
   :Location(helper, size), Namable(helper)
 {
+  helper->getData(d_description, "description");
 }
 
 NamedLocation::~NamedLocation()

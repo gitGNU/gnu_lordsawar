@@ -62,6 +62,8 @@ RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
 
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(ruin->getName());
+    xml->get_widget("description_entry", description_entry);
+    description_entry->set_text(ruin->getDescription());
 
     xml->get_widget("type_entry", type_entry);
     type_entry->set_value(ruin->getType());
@@ -162,6 +164,7 @@ void RuinDialog::run()
         Location *l = ruin;
         RenamableLocation *renamable_ruin = static_cast<RenamableLocation*>(l);
         renamable_ruin->setName(name_entry->get_text());
+	renamable_ruin->setDescription(description_entry->get_text());
 	ruin->setType(type_entry->get_value_as_int());
 
 	// get rid of old occupant and insert new

@@ -346,6 +346,7 @@ Uint32 Stack::countGroupedArmies() const
 
 void Stack::group()
 {
+  debug("Stack::group()")
   if (empty())
     return;
   for (iterator it = begin(); it != end(); ++it)
@@ -355,6 +356,7 @@ void Stack::group()
 
 void Stack::ungroup()
 {
+  debug("Stack::ungroup()")
   if (empty())
     return;
   for (iterator it = begin(); it != end(); ++it)
@@ -388,7 +390,7 @@ void Stack::getHeroes(std::vector<Uint32>& dst) const
     for (const_iterator it = begin(); it != end(); ++it)
       {
 	// if hero - add it to the vector
-	debug("Army type: " << (*it)->getType())
+	debug("Army type: " << (*it)->getTypeId())
 	  if ((*it)->isHero() && (*it)->getHP() > 0)
 	    dst.push_back((*it)->getId());
       }

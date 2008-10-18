@@ -18,7 +18,7 @@
 #include "RenamableLocation.h"
 
 RenamableLocation::RenamableLocation(Vector<int> pos)
-  :Location(pos), Renamable("")
+  :Location(pos), Renamable(""), d_description("")
 {
 }
 

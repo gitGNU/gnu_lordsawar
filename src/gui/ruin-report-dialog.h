@@ -55,6 +55,7 @@ class RuinReportDialog: public Decorated
     Gtk::Label *name_label;
     Gtk::Label *type_label;
     Gtk::Label *explored_label;
+    Gtk::Label *description_label;
 };
 
 #endif

@@ -705,15 +705,13 @@ bool Player::stackSplit(Stack* s)
 void Player::doStackJoin(Stack* receiver, Stack* joining, bool grouped)
 {
     // Now if grouped is set to false, ungroup all the receiving stack's armies
-    // (by default, only the joining stacks armies will continue to move). Note
-    // that the computer player silently ignores the grouped value and always
-    // moves all armies in a stack.
+    // (by default, only the joining stacks armies will continue to move). 
     for (Stack::iterator it = receiver->begin(); it != receiver->end(); it++)
         (*it)->setGrouped(grouped);
 
     for (Stack::iterator it = joining->begin(); it != joining->end(); it++)
     {
-        receiver->push_back(*it);
+        receiver->push_front(*it);
         (*it)->setGrouped(true);
     }
 
@@ -732,6 +730,7 @@ bool Player::stackJoin(Stack* receiver, Stack* joining, bool grouped)
 
     if (joining->canJoin(receiver) == false)
       {
+	//fixme: this is a bad idea.  it seems recursively bad.
 	Stack *already_there = Stacklist::getAmbiguity(joining);
 	stackJoin(joining, already_there,  false);
         return false;

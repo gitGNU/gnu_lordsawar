@@ -5733,6 +5733,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_y>24</d_y>
 			<d_name>Light of Vangala</d_name>
 			<d_type>0</d_type>
+			<d_description>Light of Vangala can bless your armies or give you quests.</d_description>
 		</temple>
 		<temple>
 			<d_id>627</d_id>
@@ -5740,6 +5741,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_y>82</d_y>
 			<d_name>Shrine</d_name>
 			<d_type>0</d_type>
+			<d_description>Shrine can bless your armies or give you quests.</d_description>
 		</temple>
 		<temple>
 			<d_id>637</d_id>
@@ -5747,6 +5749,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_y>77</d_y>
 			<d_name>Dol Esta Primo</d_name>
 			<d_type>0</d_type>
+			<d_description>Dol Esta Primo can bless your armies or give you quests.</d_description>
 		</temple>
 	</templelist>
 	<ruinlist>
@@ -5796,6 +5799,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>Stormy Tower is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>657</d_id>
@@ -5807,6 +5811,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_sage>false</d_sage>
 			<d_hidden>true</d_hidden>
 			<d_owner>8</d_owner>
+			<d_description>Fallen Temple is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>652</d_id>
@@ -5854,6 +5859,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>Ancient ruins is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>649</d_id>
@@ -5901,6 +5907,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>Barren ruins is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>646</d_id>
@@ -5948,6 +5955,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>Dark Dungeon is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>640</d_id>
@@ -6006,17 +6014,19 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_bonus> ItemProto::ADD1STR</d_bonus>
 				</item>
 			</reward>
+			<d_description>Orcish Hut is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>639</d_id>
 			<d_x>49</d_x>
 			<d_y>77</d_y>
-			<d_name></d_name>
+			<d_name>Creepy Dungeon</d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
 			<d_hidden>false</d_hidden>
 			<d_owner>8</d_owner>
+			<d_description>Creepy Dungeon is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>638</d_id>
@@ -6064,6 +6074,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>Harren's Tomb is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>636</d_id>
@@ -6111,6 +6122,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>Harren Gale is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>635</d_id>
@@ -6158,6 +6170,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>Volta's Vale is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>634</d_id>
@@ -6205,6 +6218,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>Grief's Den is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>633</d_id>
@@ -6252,28 +6266,31 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>Greff's Hollow is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>632</d_id>
 			<d_x>64</d_x>
 			<d_y>78</d_y>
-			<d_name></d_name>
+			<d_name>Dark Cellars</d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
 			<d_hidden>false</d_hidden>
 			<d_owner>8</d_owner>
+			<d_description>Dark Cellars is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>631</d_id>
 			<d_x>102</d_x>
 			<d_y>66</d_y>
-			<d_name></d_name>
+			<d_name>Abandoned Temple</d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
 			<d_hidden>false</d_hidden>
 			<d_owner>8</d_owner>
+			<d_description>Abandoned Temple is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>630</d_id>
@@ -6321,6 +6338,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>Burgbane is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>629</d_id>
@@ -6368,6 +6386,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>High Tomb of Gor is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>628</d_id>
@@ -6415,6 +6434,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>Crypt of the Lost Sailor is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>843</d_id>
@@ -6462,6 +6482,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
+			<d_description>Volta's Keep is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 	</ruinlist>
 	<rewardlist>

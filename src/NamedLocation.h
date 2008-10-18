@@ -18,6 +18,7 @@
 #ifndef NAMEDLOCATION_H
 #define NAMEDLOCATION_H
 
+#include <string>
 #include "vector.h"
 #include "Location.h"
 #include "Namable.h"
@@ -27,13 +28,15 @@ class XML_Helper;
 //! A game object that has a position and a name.
 /** 
  * A NamedLocation is a game object on the map that has a position and a name.
+ * It also has a description.
  */
 
 class NamedLocation: public Location, public Namable
 {
  public:
      //! Default constructor.
-     NamedLocation(Vector<int> pos, Uint32 size, std::string name);
+     NamedLocation(Vector<int> pos, Uint32 size, std::string name, 
+		   std::string desc);
      //! Copy constructor.
      NamedLocation(const NamedLocation&);
      //! Loading constructor.
@@ -41,6 +44,9 @@ class NamedLocation: public Location, public Namable
      //! Destructor.
     ~NamedLocation();
 
+    std::string getDescription() const {return d_description;};
+ private:
+    std::string d_description;
 };
 
 #endif

@@ -81,6 +81,7 @@ RuinReportDialog::RuinReportDialog(Vector<int> pos)
   xml->get_widget("name_label", name_label);
   xml->get_widget("type_label", type_label);
   xml->get_widget("explored_label", explored_label);
+  xml->get_widget("description_label", description_label);
 
   fill_in_ruin_info();
 }
@@ -127,6 +128,7 @@ void RuinReportDialog::fill_in_ruin_info()
 {
   NamedLocation *l = ruinmap->getNamedLocation();
   name_label->set_text(l->getName());
+  description_label->set_text(l->getDescription());
   Ruin *ruin = Ruinlist::getInstance()->getObjectAt(l->getPos());
   Temple *temple = Templelist::getInstance()->getObjectAt(l->getPos());
   if (ruin)

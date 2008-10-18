@@ -26,7 +26,9 @@
 std::string Ruin::d_tag = "ruin";
 
 Ruin::Ruin(Vector<int> pos, std::string name, int type, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
-    :NamedLocation(pos, RUIN_TILE_WIDTH, name), d_searched(searched), 
+:NamedLocation(pos, RUIN_TILE_WIDTH, name,
+	        name + _(" is inhabited by monsters and full of treasure!")), 
+    d_searched(searched), 
     d_type(type), d_occupant(occupant), d_hidden(hidden), d_owner(owner), 
     d_sage(sage)
 {
@@ -96,6 +98,7 @@ bool Ruin::save(XML_Helper* helper) const
   retval &= helper->saveData("x", getPos().x);
   retval &= helper->saveData("y", getPos().y);
   retval &= helper->saveData("name", getName());
+  retval &= helper->saveData("description", getDescription());
   std::string type_str = ruinTypeToString(Ruin::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("searched", d_searched);

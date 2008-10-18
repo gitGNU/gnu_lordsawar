@@ -47,6 +47,7 @@ class RuinDialog: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     Gtk::Entry *name_entry;
+    Gtk::Entry *description_entry;
     Gtk::SpinButton *type_entry;
     Gtk::Button *keeper_button;
     Gtk::Button *randomize_name_button;
