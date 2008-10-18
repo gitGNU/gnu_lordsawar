@@ -2,6 +2,8 @@
 
 	* ruins and temples now have descriptions.  This changes the
 	  saved-game schema.
+	* fixed bug #24591.  balancing ruin difficulty with a hint in the
+	  report.
 
 2008-10-17  Ben Asselstine
 
