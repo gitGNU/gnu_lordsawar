@@ -141,7 +141,36 @@ void RuinReportDialog::fill_in_ruin_info()
       if (ruin->isSearched())
         explored_label->set_text(_("Yes"));
       else
-        explored_label->set_text(_("No"));
+	{
+	  std::string hint = " ";
+	  explored_label->set_text(_("No"));
+	  //add the difficulty hint.
+	  if (ruin->getOccupant() != NULL)
+	    {
+	      Stack *s = ruin->getOccupant();
+	      switch ((*s->front()).getStat(Army::STRENGTH))
+		{
+		case 9: 
+		  hint += _("It is especially well-guarded."); break;
+		case 8: 
+		  hint += _("Rumour speaks of a formidable force within."); 
+		  break;
+		case 7: 
+		  hint += _("Even heroes are wary of this site."); break;
+		case 6: 
+		  hint += _("Bones litter this place."); break;
+		case 5: case 4: case 3: case 2: case 1: 
+		  hint += _("It is guarded."); break;
+		case 0: 
+		  hint += _(""); break;
+		default: 
+		  hint += _(""); break;
+		}
+	    }
+	  else
+	    hint += _("Bones litter this place."); break;
+	  description_label->set_text(description_label->get_text() + hint);
+	}
     }
   else if (temple)
     {
@@ -150,4 +179,5 @@ void RuinReportDialog::fill_in_ruin_info()
     }
   else
     type_label->set_text("");
+
 }
