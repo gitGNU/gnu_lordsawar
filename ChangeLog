@@ -1,3 +1,8 @@
+2008-10-18  Ben Asselstine
+
+	* ruins and temples now have descriptions.  This changes the
+	  saved-game schema.
+
 2008-10-17  Ben Asselstine
 
 	* now loading and saving stack groupedness.  This changes the 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.8\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-17 12:07-0400\n"
+"POT-Creation-Date: 2008-10-18 14:54-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: Andrea Paternesi <patton73@users.df.net>\n"
 "Language-Team: Italian <patton73@users.df.net>\n"
@@ -1016,8 +1016,10 @@ msgid "Number of Cities:"
 msgstr "Nuovo giocatore"
 
 #: dat/glade/load-scenario-dialog.glade:389
+#: dat/glade/ruin-report-dialog.glade:316
 #: dat/glade/editor/armyset-window.glade:364
 #: dat/glade/editor/map-info-dialog.glade:69
+#: dat/glade/editor/ruin-dialog.glade:186
 #: dat/glade/editor/tileset-info-dialog.glade:169
 msgid "Description:"
 msgstr "Descrizione:"
@@ -1199,7 +1201,7 @@ msgstr "Tipo:"
 msgid "Explored:"
 msgstr ""
 
-#: dat/glade/ruin-report-dialog.glade:320
+#: dat/glade/ruin-report-dialog.glade:376
 #, fuzzy
 msgid "<b>Details</b>"
 msgstr "Scenario"
@@ -1746,7 +1748,7 @@ msgstr "Catapulta"
 
 #: dat/glade/editor/city-dialog.glade:267
 #: dat/glade/editor/reward-dialog.glade:618
-#: dat/glade/editor/ruin-dialog.glade:358
+#: dat/glade/editor/ruin-dialog.glade:419
 #, fuzzy
 msgid "Randomiz_e"
 msgstr "Casuale"
@@ -2053,7 +2055,7 @@ msgid "Map"
 msgstr "Nuovo Gioco"
 
 #: dat/glade/editor/reward-dialog.glade:220
-#: dat/glade/editor/ruin-dialog.glade:550
+#: dat/glade/editor/ruin-dialog.glade:611
 #, fuzzy
 msgid "Ran_domize"
 msgstr "Casuale"
@@ -2123,48 +2125,48 @@ msgstr "Edita"
 msgid "<b>Ruin</b>"
 msgstr "Compra la produzione"
 
-#: dat/glade/editor/ruin-dialog.glade:189 src/editor/players-dialog.cpp:60
+#: dat/glade/editor/ruin-dialog.glade:250 src/editor/players-dialog.cpp:60
 msgid "Type"
 msgstr "Tipo"
 
-#: dat/glade/editor/ruin-dialog.glade:265
+#: dat/glade/editor/ruin-dialog.glade:326
 #, fuzzy
 msgid "Keeper:"
 msgstr "Occupante"
 
-#: dat/glade/editor/ruin-dialog.glade:342
+#: dat/glade/editor/ruin-dialog.glade:403
 #, fuzzy
 msgid "Cle_ar Keeper"
 msgstr "Occupante"
 
-#: dat/glade/editor/ruin-dialog.glade:384
+#: dat/glade/editor/ruin-dialog.glade:445
 msgid "Is a Sage?"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade:406
+#: dat/glade/editor/ruin-dialog.glade:467
 #, fuzzy
 msgid "Is Hidden?"
 msgstr "Eroi"
 
-#: dat/glade/editor/ruin-dialog.glade:427
+#: dat/glade/editor/ruin-dialog.glade:488
 msgid "Seen By:"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade:518
+#: dat/glade/editor/ruin-dialog.glade:579
 msgid "_Pick From List"
 msgstr ""
 
-#: dat/glade/editor/ruin-dialog.glade:534
+#: dat/glade/editor/ruin-dialog.glade:595
 #, fuzzy
 msgid "Clea_r Reward"
 msgstr "Occupante"
 
-#: dat/glade/editor/ruin-dialog.glade:576
+#: dat/glade/editor/ruin-dialog.glade:637
 #, fuzzy
 msgid "New Reward:"
 msgstr "Mappa Casuale"
 
-#: dat/glade/editor/ruin-dialog.glade:598
+#: dat/glade/editor/ruin-dialog.glade:659
 #, fuzzy
 msgid "Random Reward"
 msgstr "Mappa Casuale"
@@ -2891,20 +2893,24 @@ msgstr "Mappa costruita .... 100%"
 msgid "You have killed %i so far."
 msgstr "Hai ucciso %i armate fino ad ora."
 
-#: src/player.cpp:1281
+#: src/player.cpp:1280
 msgid "Error: searching stack and ruin to be searched not on same position\n"
 msgstr ""
 "Errore: il gruppo che esplora e la rovina che viene esplorata non sono nella "
 "stessa posizione\n"
 
-#: src/player.cpp:1370
+#: src/player.cpp:1369
 msgid "Stack tried to visit temple at wrong location\n"
 msgstr "Il gruppo ha cercato di visitare il tempio alla locazione sbagliata\n"
 
-#: src/player.cpp:2277
+#: src/player.cpp:2276
 #, fuzzy
 msgid "%1 Standard"
 msgstr "Unità standard"
+
+#: src/ruin.cpp:30
+msgid " is inhabited by monsters and full of treasure!"
+msgstr ""
 
 #: src/reward.cpp:420
 msgid "%1 Gold Piece"
@@ -2943,6 +2949,10 @@ msgstr ""
 #: src/QCityRaze.cpp:121
 #, c-format
 msgid "You must conquer the city \"%s\" and burn it to the ground."
+msgstr ""
+
+#: src/temple.cpp:31
+msgid " can bless your armies or give you quests."
 msgstr ""
 
 #: src/tileset.cpp:219
@@ -3765,24 +3775,24 @@ msgstr "bonus"
 msgid "Ruins and Temples"
 msgstr "Tempio in Rovina"
 
-#: src/gui/ruin-report-dialog.cpp:135 src/editor/main-window.cpp:1053
+#: src/gui/ruin-report-dialog.cpp:137 src/editor/main-window.cpp:1053
 msgid "Ruin"
 msgstr "Rovina"
 
-#: src/gui/ruin-report-dialog.cpp:137
+#: src/gui/ruin-report-dialog.cpp:139
 #, fuzzy
 msgid "Stronghold"
 msgstr "Forza:"
 
-#: src/gui/ruin-report-dialog.cpp:140
+#: src/gui/ruin-report-dialog.cpp:142
 msgid "Yes"
 msgstr "Si"
 
-#: src/gui/ruin-report-dialog.cpp:142 src/gui/ruin-report-dialog.cpp:147
+#: src/gui/ruin-report-dialog.cpp:144 src/gui/ruin-report-dialog.cpp:149
 msgid "No"
 msgstr "No"
 
-#: src/gui/ruin-report-dialog.cpp:146 src/editor/main-window.cpp:1057
+#: src/gui/ruin-report-dialog.cpp:148 src/editor/main-window.cpp:1057
 msgid "Temple"
 msgstr "Tempio"
 
@@ -4102,12 +4112,12 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/editor/ruin-dialog.cpp:217
+#: src/editor/ruin-dialog.cpp:220
 #, fuzzy
 msgid "No keeper"
 msgstr "Occupante"
 
-#: src/editor/ruin-dialog.cpp:334
+#: src/editor/ruin-dialog.cpp:337
 #, fuzzy
 msgid "No reward"
 msgstr "Mappa Casuale"
