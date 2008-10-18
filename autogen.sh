@@ -1,5 +1,5 @@
 #!/bin/sh
 autoreconf --verbose --install --force --symlink
-#gettextize -f
+gettextize -f
 #echo "Running intltoolize"
-#intltoolize --copy --force --automake
+intltoolize --copy --force --automake
