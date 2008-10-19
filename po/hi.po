@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frelords 0.3.6\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-18 18:56-0400\n"
+"POT-Creation-Date: 2008-10-18 22:23-0400\n"
 "PO-Revision-Date: 2004-03-04 13:00+0100\n"
 "Last-Translator: विभू ॠषि <vibhu.rishi@gmail.com>\n"
 "Language-Team: Hindi <vibhu.rishi@gmail.com>\n"
@@ -1013,6 +1013,7 @@ msgstr "%s की बसती"
 #: dat/glade/editor/armyset-window.glade:364
 #: dat/glade/editor/map-info-dialog.glade:69
 #: dat/glade/editor/ruin-dialog.glade:186
+#: dat/glade/editor/temple-dialog.glade:186
 #: dat/glade/editor/tileset-info-dialog.glade:169
 #, fuzzy
 msgid "Description:"
@@ -1184,7 +1185,7 @@ msgid "So and so encounters a monster and...."
 msgstr ""
 
 #: dat/glade/ruin-report-dialog.glade:176
-#: dat/glade/editor/temple-dialog.glade:186
+#: dat/glade/editor/temple-dialog.glade:247
 #: dat/glade/editor/tileset-window.glade:352
 #, fuzzy
 msgid "Type:"

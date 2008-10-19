@@ -4,6 +4,8 @@
 	  saved-game schema.
 	* fixed bug #24591.  balancing ruin difficulty with a hint in the
 	  report.
+	* now showing the heroes progressing to the next scenario in a 
+	  campaign.
 
 2008-10-17  Ben Asselstine
 
