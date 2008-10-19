@@ -142,7 +142,7 @@ void RuinReportDialog::fill_in_ruin_info()
         explored_label->set_text(_("Yes"));
       else
 	{
-	  std::string hint = " ";
+	  std::string hint = "  ";
 	  explored_label->set_text(_("No"));
 	  //add the difficulty hint.
 	  if (ruin->getOccupant() != NULL)
@@ -168,7 +168,7 @@ void RuinReportDialog::fill_in_ruin_info()
 		}
 	    }
 	  else
-	    hint += _("Bones litter this place."); break;
+	    hint += _("Bones litter this place.");
 	  description_label->set_text(description_label->get_text() + hint);
 	}
     }
