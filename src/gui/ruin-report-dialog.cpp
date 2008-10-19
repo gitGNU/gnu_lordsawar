@@ -162,9 +162,9 @@ void RuinReportDialog::fill_in_ruin_info()
 		case 5: case 4: case 3: case 2: case 1: 
 		  hint += _("It is guarded."); break;
 		case 0: 
-		  hint += _(""); break;
+		  hint += ""; break;
 		default: 
-		  hint += _(""); break;
+		  hint += ""; break;
 		}
 	    }
 	  else

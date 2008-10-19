@@ -7,7 +7,7 @@
   <property name="border_width">5</property>
   <property name="visible">True</property>
   <property name="destroy_with_parent">False</property>
-  <property name="name" translatable="yes">LordsAWar!</property>
+  <property name="name">LordsAWar!</property>
   <property name="copyright" translatable="yes"></property>
   <property name="comments" translatable="yes">Freedom is the most important 
 feature of this game.</property>

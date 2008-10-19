@@ -63,7 +63,7 @@ Main::Main(int &argc, char **&argv)
     {
 	impl->gtk_main.reset(new Gtk::Main(argc, argv));
 
-	g_set_application_name(_("LordsAWar!"));
+	g_set_application_name("LordsAWar!");
 
 	Timing::instance().timer_registered.connect(
 	    sigc::mem_fun(*impl, &Main::Impl::on_timer_registered));

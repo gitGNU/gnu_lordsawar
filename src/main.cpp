@@ -46,11 +46,17 @@ int main(int argc, char* argv[])
   initialize_configuration();
   RecentlyPlayedGameList::getInstance()->loadFromFile(File::getSavePath() + "/recently-played.xml");
 
-  setlocale(LC_ALL, Configuration::s_lang.c_str());
+  #if ENABLE_NLS
+  cout << "Configuration::s_lang.c_str(): " << Configuration::s_lang.c_str() << endl;
+  //cout << "setlocale: " << setlocale(LC_ALL, Configuration::s_lang.c_str()) << endl;  //Not working?
+  cout << "setlocale: " << setlocale(LC_ALL, "") << endl;
+  cout << "bindtextdomain: " << bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR) << endl;
+  cout << "bind_textdomain_codeset: " << bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8") << endl;
+  cout << "textdomain: " << textdomain (GETTEXT_PACKAGE) << endl;
+  #endif
 
   Main kit(argc, argv);
 
-  textdomain ("lordsawar");
   if (argc > 1)
     {
       for (int i = 2; i <= argc; i++)
