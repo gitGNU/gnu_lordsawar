@@ -42,6 +42,7 @@ class TempleDialog: public sigc::trackable
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     Gtk::Entry *name_entry;
+    Gtk::Entry *description_entry;
     Gtk::SpinButton *type_entry;
     Temple *temple;
     Gtk::Button *randomize_name_button;

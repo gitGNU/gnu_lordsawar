@@ -46,6 +46,9 @@ TempleDialog::TempleDialog(Temple *t, CreateScenarioRandomize *randomizer)
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(temple->getName());
 
+    xml->get_widget("description_entry", description_entry);
+    description_entry->set_text(temple->getDescription());
+
     xml->get_widget("type_entry", type_entry);
     type_entry->set_value(temple->getType());
     xml->get_widget("randomize_name_button", randomize_name_button);
@@ -70,6 +73,7 @@ void TempleDialog::run()
       RenamableLocation *renamable_temple = static_cast<RenamableLocation*>(l);
       renamable_temple->setName(name_entry->get_text());
       temple->setType(type_entry->get_value_as_int());
+      renamable_temple->setDescription(description_entry->get_text());
     }
     else
       {
