@@ -36,7 +36,7 @@
 #include "hero.h"
 #include "GraphicsCache.h"
 
-HeroLevelsDialog::HeroLevelsDialog(Player *theplayer)
+void HeroLevelsDialog::init(Player *theplayer)
 {
     player = theplayer;
     
@@ -61,7 +61,20 @@ HeroLevelsDialog::HeroLevelsDialog(Player *theplayer)
     heroes_treeview->append_column("Str", heroes_columns.str);
     heroes_treeview->append_column("Move", heroes_columns.move);
     heroes_treeview->set_headers_visible(true);
+}
 
+HeroLevelsDialog::HeroLevelsDialog(std::list<Hero*> heroes)
+{
+  init ((*heroes.front()).getOwner());
+          
+  for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); it++)
+    addHero(*it);
+}
+
+HeroLevelsDialog::HeroLevelsDialog(Player *theplayer)
+{
+
+  init (theplayer);
     const Stacklist* sl = theplayer->getStacklist();
     for (Stacklist::const_iterator it = sl->begin(); it != sl->end(); it++)
       for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)

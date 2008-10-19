@@ -1543,6 +1543,22 @@ void GameWindow::on_next_scenario(std::string scenario, int gold, std::list<Hero
   d_scenario = scenario;
   d_gold = gold;
   d_heroes = heroes;
+  if (d_heroes.size() > 0)
+    {
+      Glib::ustring s;
+      s = String::ucompose
+	(ngettext("%1 hero rallies to the call of battle!",
+		  "%1 heroes rally to the call of battle!", d_heroes.size()), 
+	 d_heroes.size());
+      TimedMessageDialog dialog(*window.get(), s, 30);
+      dialog.show_all();
+      dialog.run();
+      dialog.hide();
+      HeroLevelsDialog d((*heroes.front()).getOwner());
+      d.set_parent_window(*window.get());
+      d.run();
+      d.hide();
+    }
   d_player_name = name;
   stop_game("next-scenario");
   //now go to on_game_stopped

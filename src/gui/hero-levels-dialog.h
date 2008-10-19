@@ -39,6 +39,7 @@ class HeroLevelsDialog: public Decorated
 {
  public:
     HeroLevelsDialog(Player *player);
+    HeroLevelsDialog(std::list<Hero*> heroes);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -68,6 +69,8 @@ class HeroLevelsDialog: public Decorated
     const HeroesColumns heroes_columns;
     Glib::RefPtr<Gtk::ListStore> heroes_list;
  private:
+
+    void init(Player *theplayer);
     void addHero(Hero *h);
 };
 
