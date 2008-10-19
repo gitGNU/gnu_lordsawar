@@ -120,7 +120,7 @@ void Stack::setPlayer(Player* p)
 
 void Stack::moveOneStep(bool skipping)
 {
-  debug("move_one_step()");
+  debug("moveOneStep()");
 
   Vector<int> dest = *getPath()->front();
   moveToDest(dest, skipping);
