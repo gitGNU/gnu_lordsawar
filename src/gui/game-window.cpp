@@ -1803,7 +1803,10 @@ void GameWindow::fill_in_group_info (Stack *s)
   terrain_image->property_pixbuf() = to_pixbuf(terrain);
   group_moves_label->set_text(String::ucompose("%1",
 					       s->getGroupMoves()));
+  //printf ("toggling group/ungroup!\n");
+  group_ungroup_toggle->set_sensitive(false);
   group_ungroup_toggle->set_active(s->isGrouped());
+  group_ungroup_toggle->set_sensitive(true);
 }
 
 void GameWindow::show_stack(Stack *s)
