@@ -2,6 +2,7 @@
 
 	* applying translations patch from Tobias.
 	* fixed bug #24595.  city history report works again.
+	* fixed bug #24590.  not ungrouping armies upon joining stacks.
 
 2008-10-18  Ben Asselstine
 

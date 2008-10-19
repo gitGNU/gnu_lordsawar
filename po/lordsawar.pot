@@ -3,14 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: src/playerlist.cpp:367 src/gui/ruin-report-dialog.cpp:165
-#: src/gui/ruin-report-dialog.cpp:167
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: lordsawar 0.1.3\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-18 23:30-0400\n"
+"POT-Creation-Date: 2008-10-19 11:02-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-
-#: dat/glade/about-dialog.glade:10 dat/glade/game-window.glade:7
-#: dat/glade/splash-window.glade:7 src/gui/main.cpp:66
-msgid "LordsAWar!"
-msgstr ""
 
 #: dat/glade/about-dialog.glade:12
 msgid ""
@@ -475,10 +468,6 @@ msgid ""
 "Advanced\n"
 "I am the Lord Of War!\n"
 "Custom"
-msgstr ""
-
-#: dat/glade/game-preferences-dialog.glade:268
-msgid "###%"
 msgstr ""
 
 #: dat/glade/game-preferences-dialog.glade:301
@@ -2860,95 +2849,95 @@ msgstr ""
 msgid "Score"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:375
+#: src/gui/history-report-dialog.cpp:378
 msgid "City History"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:378
+#: src/gui/history-report-dialog.cpp:381
 msgid "Event History"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:381
+#: src/gui/history-report-dialog.cpp:384
 msgid "Gold History"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:384
+#: src/gui/history-report-dialog.cpp:387
 msgid "Winner History"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:411 src/gui/history-report-dialog.cpp:430
+#: src/gui/history-report-dialog.cpp:414 src/gui/history-report-dialog.cpp:433
 msgid "On turn %1 you %2 "
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:413
+#: src/gui/history-report-dialog.cpp:416
 msgid "%1 gold piece!"
 msgid_plural "%1 gold pieces!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/history-report-dialog.cpp:432
+#: src/gui/history-report-dialog.cpp:435
 msgid "%1 city!"
 msgid_plural "%1 cities!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gui/history-report-dialog.cpp:454
+#: src/gui/history-report-dialog.cpp:457
 msgid "On turn %1 you %2 coming %3"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:482
+#: src/gui/history-report-dialog.cpp:485
 msgid "%1 finds a sage!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:490
+#: src/gui/history-report-dialog.cpp:493
 msgid "%1 emerges in %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:499
+#: src/gui/history-report-dialog.cpp:502
 msgid "%1 begins a quest!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:507
+#: src/gui/history-report-dialog.cpp:510
 msgid "%1 finishes a quest!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:515
+#: src/gui/history-report-dialog.cpp:518
 msgid "%1 is killed in %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:524
+#: src/gui/history-report-dialog.cpp:527
 msgid "%1 is killed in battle!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:532
+#: src/gui/history-report-dialog.cpp:535
 msgid "%1 is killed while searching!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:541
+#: src/gui/history-report-dialog.cpp:544
 msgid "%1 conquers %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:550
+#: src/gui/history-report-dialog.cpp:553
 msgid "%1 utterly vanquished!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:560
+#: src/gui/history-report-dialog.cpp:563
 msgid "%1 at peace with %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:570
+#: src/gui/history-report-dialog.cpp:573
 msgid "%1 at war with %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:580
+#: src/gui/history-report-dialog.cpp:583
 msgid "Treachery by %1 on %2!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:589
+#: src/gui/history-report-dialog.cpp:592
 msgid "%1 finds allies!"
 msgstr ""
 
-#: src/gui/history-report-dialog.cpp:594
+#: src/gui/history-report-dialog.cpp:597
 msgid "unknown"
 msgstr ""
 
@@ -3894,45 +3883,45 @@ msgstr ""
 msgid "Couldn't find any shieldsets!"
 msgstr ""
 
-#: src/main.cpp:67
+#: src/main.cpp:73
 msgid "non-numerical value for cache size\n"
 msgstr ""
 
-#: src/main.cpp:80
+#: src/main.cpp:86
 msgid "non-numerical value for seed value\n"
 msgstr ""
 
-#: src/main.cpp:111
+#: src/main.cpp:117
 msgid "Options:"
 msgstr ""
 
-#: src/main.cpp:112
+#: src/main.cpp:118
 msgid "  -h, --help                 Shows this help screen"
 msgstr ""
 
-#: src/main.cpp:113
+#: src/main.cpp:119
 msgid ""
 "  -c <size>                  Set the cache size for imagery to SIZE bytes"
 msgstr ""
 
-#: src/main.cpp:114
+#: src/main.cpp:120
 msgid "  -t, --test                 Start with a test-scenario"
 msgstr ""
 
-#: src/main.cpp:115
+#: src/main.cpp:121
 msgid ""
 "  -S, --seed <number>        Seed the random number generator with NUMBER"
 msgstr ""
 
-#: src/main.cpp:116
+#: src/main.cpp:122
 msgid "  -s, --stress-test          Non-interactive stress test"
 msgstr ""
 
-#: src/main.cpp:117
+#: src/main.cpp:123
 msgid "  -r, --robots               Non-interactive network stress test"
 msgstr ""
 
-#: src/main.cpp:118
+#: src/main.cpp:124
 msgid "  -R, --record FILE          Record gameplay to FILE"
 msgstr ""
 
