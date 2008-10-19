@@ -252,7 +252,7 @@ void HistoryReportDialog::generatePastCitylists()
   LocationList<City*> *clist = new LocationList<City*>();
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-    clist->push_back(*it);
+    clist->push_back(new City(**it));
   for (LocationList<City*>::iterator it = clist->begin(); it != clist->end(); ++it)
     {
       (*it)->setOwner(Playerlist::getInstance()->getNeutral());
@@ -317,7 +317,10 @@ void HistoryReportDialog::generatePastCitylists()
 	}
       //and add it to the list
       past_citylists.push_back(clist);
-      LocationList<City*> *new_clist = new LocationList<City*>(*clist);
+      LocationList<City*> *new_clist = new LocationList<City*>();
+      for (LocationList<City*>::iterator it = clist->begin(); 
+	   it != clist->end(); ++it)
+	new_clist->push_back(new City(**it));
       clist = new_clist;
       if (last_turn == true)
 	break;
