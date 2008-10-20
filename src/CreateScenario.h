@@ -23,6 +23,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 #include <SDL.h>
 #include "CreateScenarioRandomize.h"
 #include "game-parameters.h"
@@ -30,6 +31,7 @@
 class MapGenerator;
 class GameScenario;
 class Player;
+class City;
 
 /** \brief Creates and dumps (i.e. saves) a scenario.
   * 
@@ -172,6 +174,8 @@ class CreateScenario : public CreateScenarioRandomize
         //! Creates the map and distributes cities, temples and ruins
         bool createMap();
 
+	void createCapitalCity(Player *player, City *city);
+	bool tooNearToOtherCapitalCities(City *c, std::list<City*> capitals, Uint32 distance);
 
         //! Distributes the players over the map
         bool distributePlayers();

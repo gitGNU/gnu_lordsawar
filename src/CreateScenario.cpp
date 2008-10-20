@@ -324,14 +324,6 @@ bool CreateScenario::create(const GameParameters &g)
           (*pit)->getFogMap()->fill(FogMap::CLOSED);
       }
 
-    if (!distributePlayers())
-        return false;
-
-    int number_of_armies_factor;
-    getCityDifficulty(g.difficulty, &number_of_armies_factor);
-    if (!setupCities(g.cities_can_produce_allies, number_of_armies_factor))
-        return false;
-
     if (!setupTemples())
         return false;
     
@@ -342,11 +334,6 @@ bool CreateScenario::create(const GameParameters &g)
     getRuinDifficulty (g.difficulty, &sage_factor, &no_guardian_factor,
 		       &stronghold_factor);
     if (!setupRuins(GameScenario::s_play_with_quests, 20, 10, 6))
-        return false;
-
-    int signpost_ratio;
-    getSignpostDifficulty (g.difficulty, g.hidden_map, &signpost_ratio);
-    if (!setupSignposts(signpost_ratio))
         return false;
 
     int base_gold;
@@ -366,6 +353,19 @@ bool CreateScenario::create(const GameParameters &g)
     if (!setupBridges())
         return false;
     
+    if (!distributePlayers())
+        return false;
+
+    int number_of_armies_factor;
+    getCityDifficulty(g.difficulty, &number_of_armies_factor);
+    if (!setupCities(g.cities_can_produce_allies, number_of_armies_factor))
+        return false;
+
+    int signpost_ratio;
+    getSignpostDifficulty (g.difficulty, g.hidden_map, &signpost_ratio);
+    if (!setupSignposts(signpost_ratio))
+        return false;
+
     return true;
 }
 
@@ -434,45 +434,74 @@ bool CreateScenario::createMap()
     return true;
 }
 
+void CreateScenario::createCapitalCity(Player *player, City *city)
+{
+  // distribute capitals for the players
+  city->conquer(player);
+  city->setCapitalOwner(player);
+  city->setCapital(true);
+
+  History_CityWon *item = new History_CityWon();
+  item->fillData(city);
+  player->addHistory(item);
+}
+
+bool CreateScenario::tooNearToOtherCapitalCities(City *c, std::list<City*> capitals, Uint32 distance)
+{
+  for (std::list<City*>::iterator it = capitals.begin(); it != capitals.end(); 
+       it++)
+    {
+      int d = dist(c->getPos(), (*it)->getPos());
+      if ((Uint32) d < distance)
+	return true;
+    }
+  return false;
+}
+
 bool CreateScenario::distributePlayers()
 {
     debug("CreateScenario::distributePlayers")
 
-    //how many cities we skip after a player assignment
-    int cityskip = (Citylist::getInstance()->size() - 1)
-	/ (Playerlist::getInstance()->size() - 1);
-    
-    int skipping = 0;
     Citylist* cl = Citylist::getInstance();
     const Playerlist* pl = Playerlist::getInstance();
 
-    Playerlist::const_iterator pit = pl->begin();
-    if ((*pit) == pl->getNeutral())
-        pit++;
-
-    for (Citylist::iterator cit = cl->begin(); cit != cl->end(); cit++, skipping++)
-    {
+    //okay, everyone starts out as neutral.
+    for (Citylist::iterator cit = cl->begin(); cit != cl->end(); cit++)
+      {
         City *c = *cit;
-        if ((skipping >= cityskip) && (pit != pl->end()))
-        {
-            // distribute capitals for the players
-            c->conquer(*pit);
-            c->setCapitalOwner(*pit);
-            c->setCapital(true);
-            skipping = 0;
+	if (c->isBurnt() == false)
+	  c->setOwner(pl->getNeutral());
+      }
 
-	    History_CityWon *item = new History_CityWon();
-	    item->fillData(c);
-	    (*pit)->addHistory(item);
-
-            pit++;
-            if ((*pit) == pl->getNeutral())
-                pit++;
-        }
-        else
-            c->setOwner(pl->getNeutral());
-
-    }
+    std::list<City*> capitals;
+    //now pick some equidistant cities for capitals, that aren't too close.
+    for (Playerlist::const_iterator pit = pl->begin(); pit != pl->end(); pit++)
+      {
+	int tries = 0;
+	if (*pit == pl->getNeutral())
+	  continue;
+	while (1)
+	  {
+	    Vector<int> pos = Vector<int>(rand() % d_width, rand() % d_height);
+	    City *city = Citylist::getInstance()->getNearestCity(pos);
+	    if (city->isBurnt() == false && city->isCapital() == false)
+	      {
+		if (tooNearToOtherCapitalCities(city, capitals, 30) == false || 
+		    tries > 50)
+		  {
+		    createCapitalCity(*pit, city);
+		    capitals.push_back(city);
+		    break;
+		  }
+		else
+		  tries++;
+	      }
+	    else
+	      tries++;
+	    if (tries > 100)
+	      break;
+	  }
+      }
 
     return true;
 }
