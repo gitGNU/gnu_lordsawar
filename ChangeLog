@@ -2,6 +2,7 @@
 
 	* fixed bug #24615.  initial razed cities now correctly appear in the 
 	  city history report.
+	* fixing bug #24607.  capital cities are now farther apart.
 
 2008-10-19  Ben Asselstine
 
