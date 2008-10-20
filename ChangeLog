@@ -1,3 +1,8 @@
+2008-10-20  Ben Asselstine
+
+	* fixed bug #24615.  initial razed cities now correctly appear in the 
+	  city history report.
+
 2008-10-19  Ben Asselstine
 
 	* applying translations patch from Tobias.
