@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-20 12:51-0400\n"
+"POT-Creation-Date: 2008-10-20 15:31-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -4274,47 +4274,47 @@ msgstr "CreateScenario: falsche Größe angegeben\n"
 msgid "CreateScenario:: wrong height given\n"
 msgstr "CreateScenario: falsche Größe angegeben\n"
 
-#: src/CreateScenario.cpp:656
+#: src/CreateScenario.cpp:685
 #, fuzzy
 msgid "Northwestern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:659
+#: src/CreateScenario.cpp:688
 #, fuzzy
 msgid "Northern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:662
+#: src/CreateScenario.cpp:691
 #, fuzzy
 msgid "Northeastern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:665
+#: src/CreateScenario.cpp:694
 #, fuzzy
 msgid "Western map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:668
+#: src/CreateScenario.cpp:697
 #, fuzzy
 msgid "Central map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:671
+#: src/CreateScenario.cpp:700
 #, fuzzy
 msgid "Eastern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:674
+#: src/CreateScenario.cpp:703
 #, fuzzy
 msgid "Southwestern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:677
+#: src/CreateScenario.cpp:706
 #, fuzzy
 msgid "Southern map"
 msgstr "Erzeuge Karte"
 
-#: src/CreateScenario.cpp:680
+#: src/CreateScenario.cpp:709
 #, fuzzy
 msgid "Southeastern map"
 msgstr "Erzeuge Karte"

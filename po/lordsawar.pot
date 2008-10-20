@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lordsawar 0.1.3\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-20 12:51-0400\n"
+"POT-Creation-Date: 2008-10-20 15:31-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3810,39 +3810,39 @@ msgstr ""
 msgid "CreateScenario:: wrong height given\n"
 msgstr ""
 
-#: src/CreateScenario.cpp:656
+#: src/CreateScenario.cpp:685
 msgid "Northwestern map"
 msgstr ""
 
-#: src/CreateScenario.cpp:659
+#: src/CreateScenario.cpp:688
 msgid "Northern map"
 msgstr ""
 
-#: src/CreateScenario.cpp:662
+#: src/CreateScenario.cpp:691
 msgid "Northeastern map"
 msgstr ""
 
-#: src/CreateScenario.cpp:665
+#: src/CreateScenario.cpp:694
 msgid "Western map"
 msgstr ""
 
-#: src/CreateScenario.cpp:668
+#: src/CreateScenario.cpp:697
 msgid "Central map"
 msgstr ""
 
-#: src/CreateScenario.cpp:671
+#: src/CreateScenario.cpp:700
 msgid "Eastern map"
 msgstr ""
 
-#: src/CreateScenario.cpp:674
+#: src/CreateScenario.cpp:703
 msgid "Southwestern map"
 msgstr ""
 
-#: src/CreateScenario.cpp:677
+#: src/CreateScenario.cpp:706
 msgid "Southern map"
 msgstr ""
 
-#: src/CreateScenario.cpp:680
+#: src/CreateScenario.cpp:709
 msgid "Southeastern map"
 msgstr ""
 
