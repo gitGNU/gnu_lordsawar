@@ -149,7 +149,7 @@ void Stack::moveToDest(Vector<int> dest, bool skipping)
        * of a size that's too big to join with. */
       if ((on_water && to_city) || 
 	  (on_water && on_port && !to_water && hasShip()) ||
-	  ((on_city || on_port) && to_water) ||
+	  ((on_city || on_port) && to_water && !to_bridge) ||
 	  (on_bridge && to_water && !to_bridge) ||
 	  (on_bridge && !to_water && hasShip()) ||
 	  (on_water && to_water && !on_bridge && !on_port && !to_bridge &&
