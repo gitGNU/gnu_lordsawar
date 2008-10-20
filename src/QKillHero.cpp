@@ -94,12 +94,12 @@ bool QuestKillHero::save(XML_Helper* helper) const
 std::string QuestKillHero::getProgress() const
 {
     std::stringstream ss;
-    ss <<_("You're still searching for him...");
 
     // add info about the location of the hunted:
     Stack* s = 0;
     Quest::getHeroById(d_victim, &s);
 
+    ss <<_("You're still searching for him...");
     ss << _("Seen lately near (") << s->getPos().x << ", " << s->getPos().y
        << ")";
     return ss.str();
@@ -176,7 +176,7 @@ void QuestKillHero::armyDied(Army *a, bool heroIsCulprit)
     {
       /*The Hero was killed by a stack without heroes so the quest expires*/
       //debug("SORRY: YOUR QUEST 'KILL HERO' HS EXPIRED BECAUSE THE HERO TO KILL WAS KILLED BY ANOTHER ONE");
-      //d_q_mgr.questExpired(d_hero);
+      d_q_mgr.questExpired(d_hero);
       //hopefully this is handled by questsmanager, and not here!
       return;
     }
