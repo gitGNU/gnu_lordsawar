@@ -3137,4 +3137,21 @@ void Player::saveNetworkActions(XML_Helper *helper)
       copy->save(helper);
     }
 }
+	
+bool Player::conqueredCity(City *c)
+{
+  if (!c)
+    return false;
+  for (list<History*>::const_iterator it = d_history.begin();
+       it != d_history.end(); it++)
+    {
+      if ((*it)->getType() == History::CITY_WON)
+	{
+	  History_CityWon *event = dynamic_cast<History_CityWon*>(*it);
+	  if (event->getCityId() == c->getId())
+	    return true;
+	}
+    }    
+  return false;
+}
 // End of file

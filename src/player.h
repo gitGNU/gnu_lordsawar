@@ -1286,6 +1286,8 @@ class Player: public sigc::trackable
 	bool hasAlreadyInitializedTurn() const;
 	bool hasAlreadyEndedTurn() const;
 	void loadPbmGame();
+	//! Check the history to see if we ever conquered the given city.
+	bool conqueredCity(City *c);
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,
