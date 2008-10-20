@@ -147,7 +147,7 @@ void Stack::moveToDest(Vector<int> dest, bool skipping)
     {
       /* skipping refers to when we have to move over another friendly stack
        * of a size that's too big to join with. */
-      if ((on_water && to_city) || 
+      if ((on_water && to_city && !on_bridge) || 
 	  (on_water && on_port && !to_water && hasShip()) ||
 	  ((on_city || on_port) && to_water && !to_bridge) ||
 	  (on_bridge && to_water && !to_bridge) ||
