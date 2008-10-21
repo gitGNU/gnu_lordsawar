@@ -14,14 +14,16 @@ NewGameProgressWindow::NewGameProgressWindow(GameParameters g, GameScenario::Pla
   m_vbox.set_border_width(10);
   m_vbox.pack_start(m_label);
   m_vbox.pack_start(m_pbar);
+  property_default_width() = 320;
  
   m_dispatcher.connect( sigc::mem_fun( m_pbar , &Gtk::ProgressBar::pulse ));
 
+  set_title(_("Please wait..."));
+  m_label.set_text(_("Generating."));
   m_thread = Glib::Thread::create( sigc::mem_fun(*this,&NewGameProgressWindow::thread_worker),true);
 
   d_game_scenario = NULL;
 
-  set_title(_("Generating."));
   show_all();
 }
 
