@@ -116,9 +116,16 @@ void Game::addPlayer(Player *p)
 	   (game_stopped, &sigc::signal<void>::emit)));
 
   connections[p->getId()].push_back
-    (p->schangingStatus.connect 
+    (p->schangingStats.connect 
      (sigc::mem_fun(this, &Game::update_sidebar_stats)));
         
+  connections[p->getId()].push_back
+    (p->schangingStatus.connect 
+	 (sigc::mem_fun(progress_status_changed, &sigc::signal<void, std::string>::emit)));
+        
+  connections[p->getId()].push_back
+    (p->sbusy.connect (sigc::mem_fun (progress_changed, 
+				      &sigc::signal<void>::emit)));
   connections[p->getId()].push_back
     (p->supdatingStack.connect (sigc::mem_fun(this, &Game::stackUpdate)));
   connections[p->getId()].push_back
@@ -544,7 +551,10 @@ void Game::stackUpdate(Stack* s)
   if (!s)
     s = Playerlist::getActiveplayer()->getActivestack();
 
-  //FIXME: if player is not to be observed, bail now
+  //if player is not to be observed, bail now
+  if (s != NULL && s->getOwner()->isObservable() == false)
+      return;
+
   if (s)
     smallmap->center_view_on_tile(s->getPos(), true);
 
@@ -1042,8 +1052,12 @@ void Game::init_turn_for_player(Player* p)
       smallmap->blank();
       bigmap->blank();
     }
+
   next_player_turn.emit(p, d_gameScenario->getRound());
-  center_view_on_city();
+
+  if (p->isObservable() == true)
+    center_view_on_city();
+
   if (p->getType() == Player::HUMAN)
     {
       unlock_inputs();
@@ -1114,30 +1128,36 @@ void Game::on_player_died(Player *player)
 
 void Game::on_fight_started(Fight &fight)
 {
-#if 0
-  Player* pd = fight.getDefenders().front()->getOwner();
-  Player* pa = fight.getAttackers().front()->getOwner();
-  if ((pa->getType() == Player::HUMAN || pd->getType() == Player::HUMAN) ||
-      (pa->getType() != Player::HUMAN && pd->getType() != Player::HUMAN 
-       && pd != Playerlist::getInstance()->getNeutral()))
-  {
-
-    //short circuit the battle sequence
-    if (pa->getType() != Player::HUMAN && pd->getType() != Player::HUMAN &&
-        GameScenario::s_hidden_map == true)
-      return;
-  }
-  else
-    return; //short circuit the battle sequence
-#endif
   
-  //FIXME: zoom the map here if we're attacking an observable human, 
-  //from an unobservable computer player
-  bigmap->setFighting(LocationBox(fight.getAttackers().front()->getPos()));
-  bigmap->draw();
-  fight_started.emit(fight);
-  bigmap->setFighting(LocationBox(Vector<int>(-1,-1)));
-  bigmap->draw();
+  //don't show the battle if the ai is attacking neutral
+  bool ai_attacking_neutral = false;
+  if (fight.getDefenders().front()->getOwner() == Playerlist::getInstance()->getNeutral() && Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    ai_attacking_neutral = true;
+
+  //show the battle if we're attacking an observable player
+  bool attacking_observable_player = false;
+  if (fight.getDefenders().front()->getOwner()->isObservable())
+    attacking_observable_player = true;
+
+  //don't show the battle if we're ai and we're on a hidden map
+  bool ai_attacking_on_hidden_map = false;
+  if (fight.getDefenders().front()->getOwner()->getType() != Player::HUMAN &&
+      GameScenario::s_hidden_map == true)
+    ai_attacking_on_hidden_map = true;
+
+  if ((Playerlist::getActiveplayer()->isObservable() == true ||
+      attacking_observable_player) && !ai_attacking_neutral &&
+      !ai_attacking_on_hidden_map)
+    {
+      if (GameScenario::s_hidden_map == false)
+	smallmap->center_view_on_tile(fight.getAttackers().front()->getPos(),
+				      true);
+      bigmap->setFighting(LocationBox(fight.getAttackers().front()->getPos()));
+      bigmap->draw();
+      fight_started.emit(fight);
+      bigmap->setFighting(LocationBox(Vector<int>(-1,-1)));
+      bigmap->draw();
+    }
 }
 
 void Game::center_view_on_city()

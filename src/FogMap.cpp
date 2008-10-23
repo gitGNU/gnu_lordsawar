@@ -126,6 +126,8 @@ FogMap::FogType FogMap::getFogTile(Vector<int> pos) const
 
 void FogMap::alterFogRadius(Vector<int> pt, int radius, FogType new_type)
 {
+    // this doesn't draw a circle, it draws a square
+    // it isn't a bug, except for being badly named
     int x = pt.x - radius;
     int y = pt.y - radius;
     int size = 2 * radius + 1;

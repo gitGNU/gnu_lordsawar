@@ -20,7 +20,7 @@
 #ifndef RUIN_H
 #define RUIN_H
 
-#define DEFAULT_RUIN_NAME  ""
+#define DEFAULT_RUIN_NAME  "Ruin"
 #include <string>
 #include <sigc++/trackable.h>
 #include "NamedLocation.h"

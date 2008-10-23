@@ -216,18 +216,20 @@ void ReportDialog::updateArmyChart()
   Gdk::Color colour;
   Glib::ustring s;
   Uint32 total;
-  Playerlist::iterator pit = Playerlist::getInstance()->begin();
-  for (; pit != Playerlist::getInstance()->end(); ++pit)
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
-      if (*pit == Playerlist::getInstance()->getNeutral())
+      Player *p = Playerlist::getInstance()->getPlayer(i);
+      if (p == NULL)
+	continue;
+      if (p == Playerlist::getInstance()->getNeutral())
 	continue;
       total = 0;
-      total = (*pit)->getStacklist()->countArmies();
+      total = p->getStacklist()->countArmies();
       bars.push_back(total);
-      SDL_Color sdl = (*pit)->getColor();
+      SDL_Color sdl = p->getColor();
       colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
       colours.push_back(colour);
-      if (*pit == d_player)
+      if (p == d_player)
 	{
 	  s = String::ucompose(ngettext("You have %1 army!",
 					"You have %1 armies!",
@@ -238,8 +240,8 @@ void ReportDialog::updateArmyChart()
 
   army_chart = new BarChart(bars, colours, 0);
   army_alignment->add(*manage(army_chart));
-
 }
+
 void ReportDialog::updateCityChart()
 {
   std::list<Uint32> bars;
@@ -247,18 +249,20 @@ void ReportDialog::updateCityChart()
   Gdk::Color colour;
   Glib::ustring s;
   Uint32 total;
-  Playerlist::iterator pit = Playerlist::getInstance()->begin();
-  for (; pit != Playerlist::getInstance()->end(); ++pit)
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
-      if (*pit == Playerlist::getInstance()->getNeutral())
+      Player *p = Playerlist::getInstance()->getPlayer(i);
+      if (p == NULL)
 	continue;
-      total = Citylist::getInstance()->countCities(*pit);
+      if (p == Playerlist::getInstance()->getNeutral())
+	continue;
+      total = Citylist::getInstance()->countCities(p);
 
       bars.push_back(total);
-      SDL_Color sdl = (*pit)->getColor();
+      SDL_Color sdl = p->getColor();
       colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
       colours.push_back(colour);
-      if (*pit == d_player)
+      if (p == d_player)
 	{
 	  s = String::ucompose(ngettext("You have %1 city!",
 					"You have %1 cities!",
@@ -279,17 +283,19 @@ void ReportDialog::updateGoldChart()
   Glib::ustring s;
   Uint32 total;
   bars.clear();
-  Playerlist::iterator pit = Playerlist::getInstance()->begin();
-  for (; pit != Playerlist::getInstance()->end(); ++pit)
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
-      if (*pit == Playerlist::getInstance()->getNeutral())
+      Player *p = Playerlist::getInstance()->getPlayer(i);
+      if (p == NULL)
 	continue;
-      total = (*pit)->getGold();
+      if (p == Playerlist::getInstance()->getNeutral())
+	continue;
+      total = p->getGold();
       bars.push_back(total);
-      SDL_Color sdl = (*pit)->getColor();
+      SDL_Color sdl = p->getColor();
       colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
       colours.push_back(colour);
-      if (*pit == d_player)
+      if (p == d_player)
 	{
 	  s = String::ucompose(ngettext("You have %1 gold piece!",
 					"You have %1 gold pieces!",
@@ -325,15 +331,17 @@ void ReportDialog::updateWinningChart()
   std::list<Gdk::Color> colours;
   Gdk::Color colour;
   Glib::ustring s;
-  Playerlist::iterator pit = Playerlist::getInstance()->begin();
   Uint32 score;
-  for (; pit != Playerlist::getInstance()->end(); ++pit)
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
-      if (*pit == Playerlist::getInstance()->getNeutral())
+      Player *p = Playerlist::getInstance()->getPlayer(i);
+      if (p == NULL)
 	continue;
-      score = (*pit)->getScore();
+      if (p == Playerlist::getInstance()->getNeutral())
+	continue;
+      score = p->getScore();
       bars.push_back(score);
-      SDL_Color sdl = (*pit)->getColor();
+      SDL_Color sdl = p->getColor();
       colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
       colours.push_back(colour);
     }

@@ -67,7 +67,7 @@ AI_Smart::~AI_Smart()
 
 bool AI_Smart::startTurn()
 {
-    
+  sbusy.emit();
   AI_maybeBuyScout();
   maybeRecruitHero();
   
@@ -87,9 +87,11 @@ bool AI_Smart::startTurn()
 
     AI_setupVectoring(18, 2, 30);
 
+    sbusy.emit();
     //int loopCount = 0;
     while (true)
     {
+        sbusy.emit();
         // if the code is working, this loop will eventually terminate.
         // However, in case there is a bug somewhere, we don't want the AI players to move forever,
         // so loopCount is a safeguard to prevent that.

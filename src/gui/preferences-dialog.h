@@ -19,6 +19,7 @@
 #ifndef PREFERENCES_DIALOG_H
 #define PREFERENCES_DIALOG_H
 
+#include <map>
 #include <memory>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
@@ -33,6 +34,7 @@
 
 #include "decorated.h"
 class Game;
+class Player;
 // dialog for showing sound and game preferences
 class PreferencesDialog: public Decorated
 {
@@ -56,7 +58,14 @@ class PreferencesDialog: public Decorated
     void on_show_turn_popup_toggled();
     void on_play_music_toggled();
     void on_music_volume_changed();
-    std::list<Gtk::ComboBoxText *> player_types;
+    void on_observe_toggled(Gtk::CheckButton *button);
+    void on_type_changed(Gtk::ComboBoxText *combo);
+
+    typedef std::map<Player*, Gtk::ComboBoxText*> PlayerTypeMap;
+    PlayerTypeMap player_types;
+
+    typedef std::map<Player*, Gtk::CheckButton*> PlayerObserveMap;
+    PlayerObserveMap player_observed;
 };
 
 #endif

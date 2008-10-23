@@ -97,8 +97,10 @@ void AI_Fast::abortTurn()
 
 bool AI_Fast::startTurn()
 {
+    sbusy.emit();
     AI_maybeBuyScout();
 
+    sbusy.emit();
     // maniac AI's never recruit heroes, otherwise take everything we can get
     if (!d_maniac)
       maybeRecruitHero();
@@ -139,9 +141,11 @@ bool AI_Fast::startTurn()
     if (!d_maniac)
 	AI_setupVectoring(18, 3, 30);
 
+    sbusy.emit();
     // this is a recursively-programmed quite staightforward AI,we just call:
     while (computerTurn() == true)
       {
+	sbusy.emit();
 	bool found = false;
     
 	//are there any stacks with paths that can move?

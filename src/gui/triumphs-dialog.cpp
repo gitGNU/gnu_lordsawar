@@ -225,11 +225,13 @@ void TriumphsDialog::fill_in_page(Player *p)
 
 void TriumphsDialog::fill_in_info()
 {
-  Playerlist::iterator pit = Playerlist::getInstance()->begin();
-  for (; pit != Playerlist::getInstance()->end(); ++pit)
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
-      if (*pit == Playerlist::getInstance()->getNeutral())
+      Player *p = Playerlist::getInstance()->getPlayer(i);
+      if (p == NULL)
 	continue;
-      fill_in_page(*pit);
+      if (p == Playerlist::getInstance()->getNeutral())
+	continue;
+      fill_in_page(p);
     }
 }

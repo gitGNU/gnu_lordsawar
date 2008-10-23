@@ -177,6 +177,7 @@
 			<d_diplomatic_title>Statesman</d_diplomatic_title>
 			<d_diplomatic_proposals>0 0 0 0 0 0 0 0 </d_diplomatic_proposals>
 			<d_diplomatic_scores>8 8 8 8 8 8 8 8 </d_diplomatic_scores>
+			<d_observable>true</d_observable>
 			<history>
 				<d_type>History::CITY_WON</d_type>
 				<d_city>133</d_city>
@@ -435,6 +436,7 @@
 			<d_diplomatic_title>Statesman</d_diplomatic_title>
 			<d_diplomatic_proposals>0 0 0 0 0 0 0 0 </d_diplomatic_proposals>
 			<d_diplomatic_scores>8 8 8 8 8 8 8 8 </d_diplomatic_scores>
+			<d_observable>true</d_observable>
 			<history>
 				<d_type>History::CITY_WON</d_type>
 				<d_city>156</d_city>
@@ -907,6 +909,7 @@
 			<d_diplomatic_title></d_diplomatic_title>
 			<d_diplomatic_proposals>0 0 0 0 0 0 0 0 </d_diplomatic_proposals>
 			<d_diplomatic_scores>8 8 8 8 8 8 8 8 </d_diplomatic_scores>
+			<d_observable>true</d_observable>
 			<stacklist>
 				<d_active>0</d_active>
 				<stack>

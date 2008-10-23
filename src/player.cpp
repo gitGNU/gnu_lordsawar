@@ -77,7 +77,8 @@ sigc::signal<void, Player::Type> sendingTurn;
 Player::Player(string name, Uint32 armyset, SDL_Color color, int width,
 	       int height, Type type, int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
-    d_dead(false), d_immortal(false), d_type(type), d_upkeep(0), d_income(0)
+    d_dead(false), d_immortal(false), d_type(type), d_upkeep(0), d_income(0),
+    d_observable(true)
 {
     if (player_no != -1)
 	d_id = player_no;
@@ -113,7 +114,7 @@ Player::Player(const Player& player)
     d_gold(player.d_gold), d_dead(player.d_dead), d_immortal(player.d_immortal),
     d_type(player.d_type), d_id(player.d_id), 
     d_fight_order(player.d_fight_order), d_upkeep(player.d_upkeep), 
-    d_income(player.d_income)
+    d_income(player.d_income), d_observable(player.d_observable)
 {
     // as the other player is propably dumped somehow, we need to deep copy
     // everything. This costs a lot, but the only useful situation for this
@@ -227,6 +228,7 @@ Player::Player(XML_Helper* helper)
             sdiplomatic_scores >> val;
 	    d_diplomatic_score[i] = val;
     }
+    helper->getData(d_observable, "observable");
 
     helper->registerTag(Action::d_tag, sigc::mem_fun(this, &Player::load));
     helper->registerTag(History::d_tag, sigc::mem_fun(this, &Player::load));
@@ -356,7 +358,7 @@ SDL_Color Player::getMaskColor() const
 void Player::addGold(int gold)
 {
     d_gold += gold;
-    schangingStatus.emit();
+    schangingStats.emit();
 }
 
 void Player::withdrawGold(int gold)
@@ -364,7 +366,7 @@ void Player::withdrawGold(int gold)
     d_gold -= gold;
     if (d_gold < 0)
       d_gold = 0; /* bankrupt.  should we start turning off city production? */
-    schangingStatus.emit();
+    schangingStats.emit();
 }
 
 std::string Player::getName(bool translate) const
@@ -442,6 +444,7 @@ void Player::doKill()
         // ignore it
         return;
 
+    d_observable = false;
     History_PlayerVanquished* item;
     item = new History_PlayerVanquished();
     addHistory(item);
@@ -521,6 +524,8 @@ bool Player::save(XML_Helper* helper) const
 	diplomatic_scores << d_diplomatic_score[i] << " ";
       }
     retval &= helper->saveData("diplomatic_scores", diplomatic_scores.str());
+
+    retval &= helper->saveData("observable", d_observable);
 
     //save the actionlist
     for (list<Action*>::const_iterator it = d_actions.begin();
@@ -1050,6 +1055,8 @@ bool Player::stackMoveOneStep(Stack* s)
 {
   if (!s)
     return false;
+
+  sbusy.emit();
 
   if (!s->enoughMoves())
     return false;
@@ -2329,6 +2336,20 @@ void Player::doProposeDiplomacy (DiplomaticProposal proposal, Player *player)
     return;
   if (proposal == d_diplomatic_proposal[player->getId()])
     return;
+  if (proposal == PROPOSE_PEACE)
+    {
+      std::string s = _("Peace negotiated with ") + player->getName();
+      if (getDiplomaticState(player) == AT_PEACE ||
+	  getDiplomaticProposal(player) == PROPOSE_PEACE)
+	schangingStatus.emit(s);
+    }
+  else if (proposal == PROPOSE_WAR)
+    {
+      std::string s = _("War declared with ") + player->getName();
+      if (getDiplomaticState(player) == AT_WAR ||
+	  getDiplomaticProposal(player) == PROPOSE_WAR)
+      schangingStatus.emit(s);
+    }
   d_diplomatic_proposal[player->getId()] = proposal;
 }
 

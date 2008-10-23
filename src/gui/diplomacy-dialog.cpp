@@ -63,13 +63,16 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
   // put the shields across the top of the proposals table, minus our own
   Uint32 i = 0;
   Uint32 j = 0;
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+  for (unsigned int k = 0; k < MAX_PLAYERS; k++)
     {
-      if (pl->getNeutral() == *it)
+      Player *p = pl->getPlayer(k);
+      if (p == NULL)
 	continue;
-      if ((*it) == d_player)
+      if (pl->getNeutral() == p)
 	continue;
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = to_pixbuf(gc->getShieldPic(2, (*it)));
+      if (p == d_player)
+	continue;
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = to_pixbuf(gc->getShieldPic(2, p));
       Gtk::Image *im = manage(new Gtk::Image(pixbuf));
       //im->set_padding(11, 0);
       d_proposals_table->attach(*im, i + 0, i + 1, 0, 1, 
@@ -86,26 +89,28 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
   //fill in diplomatic state
   i = 0;
   j = 0;
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+  for (unsigned int k = 0; k < MAX_PLAYERS; k++)
     {
-      if (pl->getNeutral() == *it)
+      Player *p = pl->getPlayer(k);
+      if (p == NULL)
 	continue;
-      if ((*it) == d_player)
+      if (pl->getNeutral() == p)
 	continue;
-      if ((*it)->isDead())
+      if (p == d_player)
+	continue;
+      if (p->isDead())
 	{
 	  i++;
 	  continue;
 	}
       j = 0;
-      Player::DiplomaticState state = d_player->getDiplomaticState (*it);
+      Player::DiplomaticState state = d_player->getDiplomaticState (p);
       Glib::RefPtr<Gdk::Pixbuf> pixbuf = to_pixbuf(gc->getDiplomacyPic(1, 
 								       state));
       Gtk::Image *im = manage(new Gtk::Image(pixbuf));
       d_proposals_table->attach(*im, i + 0, i + 1, j + 1, j + 2, 
 				Gtk::SHRINK, Gtk::SHRINK);
-      Player::DiplomaticProposal proposal = 
-	(*it)->getDiplomaticProposal (d_player);
+      Player::DiplomaticProposal proposal = p->getDiplomaticProposal (d_player);
       if (proposal != Player::NO_PROPOSAL)
 	{
 	  j = 1;
@@ -137,11 +142,14 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
   // fill in the togglebuttons
   i = 0;
   j = 0;
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+  for (unsigned int k = 0; k < MAX_PLAYERS; k++)
     {
-      if (pl->getNeutral() == *it)
+      Player *p = pl->getPlayer(k);
+      if (p == NULL)
 	continue;
-      if ((*it) == d_player)
+      if (pl->getNeutral() == p)
+	continue;
+      if (p == d_player)
 	continue;
 
       //show the peace radio buttons
@@ -152,15 +160,15 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       radio1->add(*manage(new Gtk::Image(pixbuf)));
       radio1->set_mode(false);
       Gtk::RadioButtonGroup group = radio1->get_group();
-      if ((*it)->isDead())
+      if (p->isDead())
 	radio1->set_sensitive(false);
       else
-	radio1->set_active (d_player->getDiplomaticProposal(*it) == 
+	radio1->set_active (d_player->getDiplomaticProposal(p) == 
 			    Player::PROPOSE_PEACE);
       radio1->signal_toggled().connect(
 	    sigc::bind(sigc::mem_fun
 		       (this, &DiplomacyDialog::on_proposal_toggled),
-		       radio1, *it, Player::PROPOSE_PEACE));
+		       radio1, p, Player::PROPOSE_PEACE));
       d_offers_table->attach(*radio1, i, i + 1, j + 0, j + 1,
 			     Gtk::SHRINK, Gtk::SHRINK);
 
@@ -171,15 +179,15 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       radio2->add(*manage(new Gtk::Image(pixbuf2)));
       radio2->set_mode(false);
       radio2->set_group(group);
-      if ((*it)->isDead())
+      if (p->isDead())
 	radio2->set_sensitive(false);
       else
-	radio2->set_active (d_player->getDiplomaticProposal(*it) == 
+	radio2->set_active (d_player->getDiplomaticProposal(p) == 
 			    Player::PROPOSE_WAR_IN_FIELD);
       radio2->signal_toggled().connect(
 	    sigc::bind(sigc::mem_fun(this, 
 				     &DiplomacyDialog::on_proposal_toggled),
-		       radio2, *it, Player::PROPOSE_WAR_IN_FIELD));
+		       radio2, p, Player::PROPOSE_WAR_IN_FIELD));
       d_offers_table->attach(*radio2, i, i + 1, j + 0, j + 1,
 			     Gtk::SHRINK, Gtk::SHRINK);
 
@@ -190,15 +198,15 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       radio3->add(*manage(new Gtk::Image(pixbuf3)));
       radio3->set_mode(false);
       radio3->set_group(group);
-      if ((*it)->isDead())
+      if (p->isDead())
 	radio3->set_sensitive(false);
       else
-	radio3->set_active (d_player->getDiplomaticProposal(*it) == 
+	radio3->set_active (d_player->getDiplomaticProposal(p) == 
 			    Player::PROPOSE_WAR);
       radio3->signal_toggled().connect(
 	    sigc::bind(sigc::mem_fun(this, 
 				     &DiplomacyDialog::on_proposal_toggled),
-		       radio3, *it, Player::PROPOSE_WAR));
+		       radio3, p, Player::PROPOSE_WAR));
       d_offers_table->attach(*radio3, i, i + 1, j + 0, j + 1,
 			     Gtk::SHRINK, Gtk::SHRINK);
       i++;

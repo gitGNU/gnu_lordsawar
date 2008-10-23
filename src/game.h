@@ -101,6 +101,8 @@ class Game
     sigc::signal<void, Vector<int> > current_map_position;
     sigc::signal<void, SDL_Surface *> smallmap_changed;
     sigc::signal<void, SidebarStats> sidebar_stats_changed;
+    sigc::signal<void, std::string> progress_status_changed;
+    sigc::signal<void> progress_changed;
     sigc::signal<void, bool>
 	can_select_next_movable_stack,
 	can_center_selected_stack,

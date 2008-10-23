@@ -1121,6 +1121,10 @@ class Player: public sigc::trackable
         bool heroPlantStandard(Stack *stack);
 
 	void cityTooPoorToProduce(City *city, int slot);
+
+	bool isObservable() const {return d_observable;};
+	void setObservable(bool observable) {d_observable = observable;};
+
 	/**
 	 * @param city   The city being invaded.
 	 * @param loot   The gold looted.
@@ -1211,8 +1215,14 @@ class Player: public sigc::trackable
 	/**
 	 * Emitted when the player's treasury has been changed.
 	 */
-        //! Emitted whenever a player's status changes.
-        sigc::signal<void> schangingStatus;
+        //! Emitted whenever a player's stats changes.
+        sigc::signal<void> schangingStats;
+
+	//! Emitted whenever a computer player does something of note.
+        sigc::signal<void, std::string> schangingStatus;
+
+	//! Emitted whenever any player does anything at all.
+	sigc::signal<void> sbusy;
 
 	/**
 	 * Emitted when the player's stack moves, is disbanded, gets blessed,
@@ -1370,6 +1380,9 @@ class Player: public sigc::trackable
 
 	//! A quantification of how much this Player likes every other Player.
 	Uint32 d_diplomatic_score[MAX_PLAYERS];
+
+	//! Whether or not this player is observable by the user.
+	bool d_observable;
 
 	//! assists in scorekeeping for diplomacy
 	void alterDiplomaticRelationshipScore (Player *player, int amount);

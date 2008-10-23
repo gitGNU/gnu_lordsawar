@@ -34,6 +34,7 @@
 #include <gtkmm/togglebutton.h>
 #include <gtkmm/box.h>
 #include <gtkmm/checkmenuitem.h>
+#include <gtkmm/progressbar.h>
 #include <gtkmm/menubar.h>
 
 #include "army-info-tip.h"
@@ -143,6 +144,9 @@ class GameWindow: public Decorated
     Gtk::Label *group_moves_label;
     Gtk::Image *terrain_image;
     Gtk::Box *stats_box;
+    Gtk::Box *progress_box;
+    Gtk::ProgressBar *turn_progressbar;
+    Gtk::Label *progress_status_label;
     Gtk::Image *map_image;
 
     Gtk::Label *cities_stats_label;
@@ -242,6 +246,7 @@ class GameWindow: public Decorated
     
     // info pane at the bottom
     void show_stats();
+    void show_progress();
     void show_stack(Stack *s);
     void fill_in_group_info (Stack *s);
     void on_army_toggled(Gtk::ToggleButton *toggle, Army *army);
@@ -257,6 +262,8 @@ class GameWindow: public Decorated
 
     // game callbacks
     void on_sidebar_stats_changed(SidebarStats s);
+    void on_progress_status_changed(std::string status);
+    void on_progress_changed();
     void on_smallmap_changed(SDL_Surface *map);
     void on_smallmap_slid(Rectangle view);
     void on_bigmap_cursor_changed(GraphicsCache::CursorType cursor);

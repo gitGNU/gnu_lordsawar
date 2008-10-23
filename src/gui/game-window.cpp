@@ -162,8 +162,12 @@ GameWindow::GameWindow()
 		  group_ungroup_toggle));
     xml->get_widget("terrain_image", terrain_image);
     xml->get_widget("stats_box", stats_box);
+    xml->get_widget("progress_box", progress_box);
+    xml->get_widget("turn_progressbar", turn_progressbar);
+    xml->get_widget("progress_status_label", progress_status_label);
     stack_info_box->hide();
-    stats_box->show();
+    stats_box->hide();
+    progress_box->show();
 
     // the map image
     xml->get_widget("map_image", map_image);
@@ -639,6 +643,12 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   connections.push_back 
     (game->sidebar_stats_changed.connect
      (sigc::mem_fun(*this, &GameWindow::on_sidebar_stats_changed)));
+  connections.push_back 
+    (game->progress_status_changed.connect
+     (sigc::mem_fun(*this, &GameWindow::on_progress_status_changed)));
+  connections.push_back 
+    (game->progress_changed.connect
+     (sigc::mem_fun(*this, &GameWindow::on_progress_changed)));
   connections.push_back
     (game->smallmap_changed.connect
      (sigc::mem_fun(*this, &GameWindow::on_smallmap_changed)));
@@ -1730,6 +1740,16 @@ void GameWindow::ensure_one_army_button_active()
     }
 }
 
+void GameWindow::on_progress_status_changed(std::string string)
+{
+  progress_status_label->set_markup("<b>" + string + "</b>");
+}
+
+void GameWindow::on_progress_changed()
+{
+  turn_progressbar->pulse();
+}
+
 void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 {
   if (Configuration::s_decorated)
@@ -1768,7 +1788,12 @@ void GameWindow::on_stack_info_changed(Stack *s)
   currently_selected_stack = s;
 
   if (!s)
-    show_stats();
+    {
+      if (Playerlist::getActiveplayer()->getType() == Player::HUMAN)
+	show_stats();
+      else
+	show_progress();
+    }
   else
     {
       if (s->getOwner()->getType() == Player::HUMAN)
@@ -1778,7 +1803,7 @@ void GameWindow::on_stack_info_changed(Stack *s)
 	  show_stack(s);
 	}
       else
-	show_stats();
+	show_progress();
     }
   return;
 }
@@ -1792,7 +1817,20 @@ void GameWindow::show_stats()
   stack_info_box->get_parent()->property_height_request() = height;
   stats_box->get_parent()->property_height_request() = height;
   stack_info_container->hide();
+  progress_box->hide();
   stats_box->show();
+}
+
+void GameWindow::show_progress()
+{
+  turn_progressbar->property_fraction() = 0.0;
+  if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getNeutral())
+    progress_status_label->set_text("");
+  else
+    progress_status_label->set_markup("<b>" + Playerlist::getActiveplayer()->getName() + "</b>");
+  stats_box->hide();
+  stack_info_container->hide();
+  progress_box->show();
 }
 
 void GameWindow::fill_in_group_info (Stack *s)
@@ -1814,6 +1852,7 @@ void GameWindow::show_stack(Stack *s)
   GraphicsCache *gc = GraphicsCache::getInstance();
   s->sortForViewing (true);
   stats_box->hide();
+  progress_box->hide();
 
   army_buttons.clear(); 
   for (Stack::iterator i = s->begin(), end = s->end(); i != end; ++i)
@@ -2684,6 +2723,8 @@ void GameWindow::on_ruin_visited(Ruin *ruin)
 
 void GameWindow::show_shield_turn()
 {
+  Gdk::Color black("black");
+  Gdk::Color white("white");
   Playerlist* pl = Playerlist::getInstance();
   GraphicsCache *gc = GraphicsCache::getInstance();
   unsigned int c = 0;
@@ -2699,9 +2740,9 @@ void GameWindow::show_shield_turn()
 	  continue;
 	}
       if (*i == pl->getActiveplayer())
-	shield_image[c]->get_parent()->modify_bg(Gtk::STATE_NORMAL, shield_image[c]->get_parent()->get_style()->get_black());
+	shield_image[c]->get_parent()->modify_bg(Gtk::STATE_NORMAL, black);
       else
-	shield_image[c]->get_parent()->modify_bg(Gtk::STATE_NORMAL, shield_image[c]->get_parent()->get_style()->get_white());
+	shield_image[c]->get_parent()->modify_bg(Gtk::STATE_NORMAL, white);
       shield_image[c]->property_pixbuf()=to_pixbuf(gc->getShieldPic(1,(*i)));
       c++;
     }
@@ -2713,6 +2754,7 @@ void GameWindow::on_remote_next_player_turn()
 {
   std::auto_ptr<Gtk::Dialog> dialog;
 
+  on_stack_info_changed(NULL);
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
   d_quick_fights = false;
@@ -2724,6 +2766,8 @@ void GameWindow::on_remote_next_player_turn()
 void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 {
   std::auto_ptr<Gtk::Dialog> dialog;
+
+  on_stack_info_changed(NULL);
 
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 

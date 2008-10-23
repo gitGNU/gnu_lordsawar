@@ -154,64 +154,65 @@ void MapGenerator::makeMap(int width, int height, bool roads)
         for (int j = 0; j < width; j++)
             d_building[i*width + j] = Maptile::NONE;
 
-    cout <<_("Making random map") <<endl;
+    debug("Making random map:");
    
     // create the terrain
-    cout <<_("Flatening Plains  ... 10%") <<endl;
+    debug("flatening plains");
     progress.emit(.090, _("flattening plains..."));
     makePlains();
-    cout <<_("Raining Water     ... 30%") <<endl;
+    debug("raining water");
     progress.emit(.180, _("raining water..."));
     makeTerrain(Tile::WATER, d_pwater, true);  
     makeStreamer(Tile::WATER, d_pwater/3, 3);
     rescueLoneTiles(Tile::WATER,Tile::GRASS,true);
     makeRivers();
     verifyIslands();
-    cout <<_("Raising Hills     ... 20%") <<endl;
+    debug("raising hills");
     progress.emit(.270, _("raising hills..."));
     makeTerrain(Tile::HILLS, d_phills, false);
-    cout <<_("Raising Mountains ... 30%") <<endl;
+    debug("raising mountains");
     progress.emit(.360, _("raising mountains..."));
     makeTerrain(Tile::MOUNTAIN, d_pmountains, false);
     makeStreamer(Tile::MOUNTAIN, d_pmountains/3, 3);
     rescueLoneTiles(Tile::MOUNTAIN,Tile::GRASS,false);
     surroundMountains(0, d_width, 0, d_height);
-    cout <<_("Planting Forest   ... 40%") <<endl;
+    debug("planting forest");
     progress.emit(.450, _("planting forests..."));
     makeTerrain(Tile::FOREST, d_pforest, false);
-    cout <<_("Watering Swamps   ... 50%") <<endl;
+    debug("watering swamps");
     progress.emit(.540, _("watering swamps..."));
     makeTerrain(Tile::SWAMP, d_pswamp, false);
-    cout <<_("Normalizing       ... 60%") <<endl;
+    debug("normalizing terrain");
     progress.emit(.630, _("normalizing terrain..."));
     normalize();
 
     // place buildings
-    cout <<_("Building Cities   ... 70%") <<endl;
+    debug("building cities");
     progress.emit(.720, _("building cities..."));
     makeCities(d_nocities);
 
     if (roads)
       {
-	cout <<_("Paving Roads      ... 75%") <<endl;
+	debug("paving roads");
 	progress.emit(.810, _("paving roads..."));
 	makeRoads();
       }
     rescueLoneTiles(Tile::MOUNTAIN,Tile::HILLS,false);
 
-    cout <<_("Ruining Ruins     ... 80%") <<endl;
+    debug("ruining ruins");
     progress.emit(.810, _("ruining ruins..."));
     makeBuildings(Maptile::RUIN,d_noruins);
-    cout <<_("Raising Signs     ... 88%") <<endl;
+    debug("raising signs");
     progress.emit(.900, _("raising signs..."));
     makeBuildings(Maptile::SIGNPOST,d_nosignposts);
-    cout <<_("Spawning temples  ... 90%") <<endl;
+    debug("spawning temples");
     progress.emit(.950, _("spawning temples..."));
     makeBuildings(Maptile::TEMPLE,d_notemples);
-    cout <<_("Building bridges  ... 95%") <<endl;
+    debug("building bridges");
     progress.emit(.990, _("building bridges..."));
     makeBridges();
-    cout <<_("Done making map   ... 100%") <<endl;
+
+    debug("Done making map.");
 
 //    printMap();
 }

@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
 	      long size = strtol(argv[i-1], &error, 10);
 	      if (error && (*error != '\0'))
 		{
-		  cerr <<_("non-numerical value for cache size\n");
+		  cerr <<_("non-numerical value for cache size") <<endl;
 		  exit(-1);
 		}
 	      Configuration::s_cacheSize = size;
@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
 	      long seed = strtol(argv[i-1], &error, 10);
 	      if (error && (*error != '\0'))
 		{
-		  cerr <<_("non-numerical value for seed value\n");
+		  cerr <<_("non-numerical value for seed value") <<endl;
 		  exit(-1);
 		}
 	      srand(seed);
@@ -113,19 +113,19 @@ int main(int argc, char* argv[])
 	  else if (parameter == "--help" || parameter == "-h")
 	    {
 	      cout << argv[0] << " [OPTION]... [FILE]" << endl << endl;
-	      cout << "LordsAWar! version " << VERSION << endl << endl;
+	      cout << "LordsAWar! " << _("version") << " " << VERSION << endl << endl;
 	      cout << _("Options:") << endl << endl; 
-	      cout << _("  -h, --help                 Shows this help screen") <<endl;
-	      cout << _("  -c <size>                  Set the cache size for imagery to SIZE bytes") <<endl;
-	      cout << _("  -t, --test                 Start with a test-scenario") << endl;
-	      cout << _("  -S, --seed <number>        Seed the random number generator with NUMBER") << endl;
-	      cout << _("  -s, --stress-test          Non-interactive stress test") << endl;
-	      cout << _("  -r, --robots               Non-interactive network stress test") << endl;
-	      cout << _("  -R, --record FILE          Record gameplay to FILE") << endl;
+	      cout << "  -h, --help                 " << _("Shows this help screen") <<endl;
+	      cout << "  -c <size>                  " << _("Set the cache size for imagery to SIZE bytes") <<endl;
+	      cout << "  -t, --test                 " << _("Start with a test-scenario") << endl;
+	      cout << "  -S, --seed <number>        " << _("Seed the random number generator with NUMBER") << endl;
+	      cout << "  -s, --stress-test          " << _("Non-interactive stress test") << endl;
+	      cout << "  -r, --robots               " << _("Non-interactive network stress test") << endl;
+	      cout << "  -R, --record FILE          " << _("Record gameplay to FILE") << endl;
 	      cout << endl;
-	      cout << "FILE can be a saved game file (.sav), or a map (.map) file." << endl;
+	      cout << _("FILE can be a saved game file (.sav), or a map (.map) file.") << endl;
 	      cout << endl;
-	      cout << "Report bugs to <" << PACKAGE_BUGREPORT ">." << endl;
+	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
 	      exit(0);
 	    }
 	  else
@@ -135,25 +135,25 @@ int main(int argc, char* argv[])
 
   if (kit.load_filename != "" && kit.start_test_scenario)
     {
-      cerr <<"Error: Cannot specify -t and have a file specified." << endl;
+      cerr <<_("Error: Cannot specify -t and have a file specified.") << endl;
       exit (1);
     }
 
   if (kit.load_filename != "" && kit.start_stress_test)
     {
-      cerr <<"Error: Cannot specify -s and have a file specified." << endl;
+      cerr <<_("Error: Cannot specify -s and have a file specified.") << endl;
       exit (1);
     }
 
   if (kit.start_stress_test && kit.start_test_scenario)
     {
-      cerr <<"Error: Cannot specify -s and -t simultaneously." << endl;
+      cerr <<_("Error: Cannot specify -s and -t simultaneously.") << endl;
       exit (1);
     }
 
   if (kit.turn_filename != "" && kit.load_filename == "")
     {
-      cerr <<"Error: Must specify a file to load when specifying --turn." << endl;
+      cerr <<_("Error: Must specify a file to load when specifying --turn.") << endl;
       exit (1);
     }
 
