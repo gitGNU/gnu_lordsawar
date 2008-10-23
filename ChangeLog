@@ -1,3 +1,11 @@
+2008-10-22  Ben Asselstine
+
+	* ordered players by id in the diplomacy, triumphs and other reports
+	  (they were in random order with random turns.)
+	* changed the preferences dialog to add a new ability to not see the 
+	  actions of a given player.
+	* added a turn progress bar to the main game window.
+
 2008-10-20  Ben Asselstine
 
 	* fixed bug #24615.  initial razed cities now correctly appear in the 
