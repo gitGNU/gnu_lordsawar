@@ -3143,6 +3143,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_sage>false</d_sage>
 			<d_hidden>false</d_hidden>
 			<d_owner>8</d_owner>
+			<d_description>Dark Tower is inhabited by monsters and full of treasure!</d_description>
 			<stack>
 				<d_id>217</d_id>
 				<d_x>50</d_x>
@@ -3179,7 +3180,6 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
-			<d_description>Dark Tower is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>131</d_id>
@@ -3191,6 +3191,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_sage>false</d_sage>
 			<d_hidden>true</d_hidden>
 			<d_owner>8</d_owner>
+			<d_description>Abandoned Town is inhabited by monsters and full of treasure!</d_description>
 			<stack>
 				<d_id>227</d_id>
 				<d_x>36</d_x>
@@ -3227,7 +3228,6 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
-			<d_description>Abandoned Town is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 		<ruin>
 			<d_id>149</d_id>
@@ -3239,6 +3239,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_sage>true</d_sage>
 			<d_hidden>true</d_hidden>
 			<d_owner>0</d_owner>
+			<d_description>The Sibyl's cave is inhabited by monsters and full of treasure!</d_description>
 			<stack>
 				<d_id>229</d_id>
 				<d_x>42</d_x>
@@ -3275,7 +3276,6 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 					<d_grouped>false</d_grouped>
 				</army>
 			</stack>
-			<d_description>The Sibyl's cave is inhabited by monsters and full of treasure!</d_description>
 		</ruin>
 	</ruinlist>
 	<rewardlist>
