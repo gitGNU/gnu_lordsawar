@@ -111,7 +111,7 @@ bool Citysetlist::loadCityset(std::string name)
 
   if (!helper.parse())
     {
-      std::cerr <<_("Error, while loading a cityset. Cityset Name: ");
+      std::cerr << "Error, while loading a cityset. Cityset Name: ";
       std::cerr <<name <<std::endl <<std::flush;
       exit(-1);
     }

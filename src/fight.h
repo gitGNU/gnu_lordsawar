@@ -32,6 +32,7 @@ class Stack;
 class Fighter;
 class Hero;
 class Army;
+class LocationBox;
 
 //! A description of a round of casualties during a Fight.
 /** 
@@ -153,6 +154,7 @@ class Fight
 
         std::map<Uint32, Uint32> getInitialHPs() { return initial_hps; }
         
+	static LocationBox calculateFightBox(Fight &fight);
     private:
 	//! Calculates one round of the fight.
         /** 

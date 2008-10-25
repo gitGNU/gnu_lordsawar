@@ -216,7 +216,7 @@ bool Tileset::validate()
     {
       if ((*i)->validate() == false)
 	{
-	  fprintf (stderr, _("`%s' fails validation\n"), 
+	  fprintf (stderr, "`%s' fails validation\n", 
 		   (*i)->getName().c_str());
 	  return false;
 	}

@@ -234,7 +234,7 @@ bool GameMap::fill(MapGenerator* generator)
     //the sizes should definitely match, else we have a problem here
     if (width != s_width || height != s_height)
     {
-        std::cerr <<_("Error in GameMap::fillMap: sizes don't match!! Exiting.\n");
+        std::cerr << "Error in GameMap::fillMap: sizes don't match!! Exiting.\n";
         exit(-1);
     }
 

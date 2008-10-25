@@ -123,9 +123,9 @@ std::list<std::string> File::scanArmysets()
 
     if (retlist.empty())
     {
-      std::cerr << _("Couldn't find any armysets!") << std::endl;
-      std::cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << std::endl;
-      std::cerr << _("Exiting!") << std::endl;
+      std::cerr << "Couldn't find any armysets!" << std::endl;
+      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+      std::cerr << "Exiting!" << std::endl;
       exit(-1);
     }
 
@@ -199,9 +199,9 @@ std::list<std::string> File::scanTilesets()
     
     if (retlist.empty())
     {
-      std::cerr << _("Couldn't find any tilesets!") << std::endl;
-      std::cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << std::endl;
-      std::cerr << _("Exiting!") << std::endl;
+      std::cerr << "Couldn't find any tilesets!" << std::endl;
+      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+      std::cerr << "Exiting!" << std::endl;
       exit(-1);
     }
     
@@ -215,9 +215,9 @@ std::list<std::string> File::scanCitysets()
     
     if (retlist.empty())
     {
-      std::cerr << _("Couldn't find any citysets!") << std::endl;
-      std::cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << std::endl;
-      std::cerr << _("Exiting!") << std::endl;
+      std::cerr << "Couldn't find any citysets!" << std::endl;
+      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+      std::cerr << "Exiting!" << std::endl;
         exit(-1);
     }
     
@@ -243,8 +243,8 @@ std::list<std::string> File::scanCampaigns()
     
     if (retlist.empty())
     {
-      std::cerr << _("Couldn't find a single campaign!") << std::endl;
-      std::cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << std::endl;
+      std::cerr << "Couldn't find a single campaign!" << std::endl;
+      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
     }
 
     //now we find the ones that are pointed to, and remove them
@@ -284,8 +284,8 @@ std::list<std::string> File::scanMaps()
     
     if (retlist.empty())
     {
-      std::cerr << _("Couldn't find a single map!") << std::endl;
-      std::cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << std::endl;
+      std::cerr << "Couldn't find a single map!" << std::endl;
+      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
     }
 
     return retlist;
@@ -298,9 +298,9 @@ std::list<std::string> File::scanShieldsets()
 
     if (retlist.empty())
     {
-      std::cerr << _("Couldn't find any shieldsets!") << std::endl;
-      std::cerr << _("Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc") << std::endl;
-      std::cerr << _("Exiting!") << std::endl;
+      std::cerr << "Couldn't find any shieldsets!" << std::endl;
+      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+      std::cerr << "Exiting!" << std::endl;
       exit(-1);
     }
 

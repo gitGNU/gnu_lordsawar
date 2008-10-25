@@ -88,7 +88,7 @@ Sound::Sound()
 
     if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
     {
-        std::cerr <<_("Couldn't initialize SDL-mixer\n");
+        std::cerr << "Couldn't initialize SDL-mixer\n";
         std::cerr <<Mix_GetError() <<std::endl;
         d_broken = true;
         return;
@@ -99,7 +99,7 @@ Sound::Sound()
 
     if (!helper.parse())
     {
-        std::cerr<<_("Error loading music descriptions; disable music\n");
+        std::cerr<< "Error loading music descriptions; disable music\n";
         d_broken = true;
         Mix_CloseAudio();
 	return;

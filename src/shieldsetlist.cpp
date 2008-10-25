@@ -101,7 +101,7 @@ bool Shieldsetlist::loadShieldset(std::string name)
 
   if (!helper.parse())
     {
-      std::cerr <<_("Error, while loading a shieldset. Shieldset Name: ");
+      std::cerr << "Error, while loading a shieldset. Shieldset Name: ";
       std::cerr <<name <<std::endl <<std::flush;
       exit(-1);
     }

@@ -197,7 +197,7 @@ void CreateScenario::setWidth(int width)
 
     if (width < 0)
     {
-        std::cerr <<_("CreateScenario:: wrong width given\n");
+        std::cerr << "CreateScenario:: wrong width given\n";
         return;
     }
 
@@ -212,7 +212,7 @@ void CreateScenario::setHeight(int height)
 
     if (height < 0)
     {
-        std::cerr <<_("CreateScenario:: wrong height given\n");
+        std::cerr << "CreateScenario:: wrong height given\n";
         return;
     }
 

@@ -31,6 +31,13 @@ class LocationBox : public Immovable
       * @param size    The number of tiles wide and high the feature is.
       */
      LocationBox(Vector<int> pos, Uint32 size = 1);
+
+     //! Non-Standard constructor.
+     /**
+      * Make a LocationBox from two points.
+      */
+     LocationBox(Vector<int> src, Vector<int> dest);
+
      //! Copy constructor.
      LocationBox(const LocationBox&);
      //! Loading constructor.

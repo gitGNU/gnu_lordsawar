@@ -33,6 +33,23 @@ LocationBox::LocationBox(Vector<int> pos, Uint32 size)
 {
 }
 
+LocationBox::LocationBox(Vector<int> src, Vector<int> dest)
+    :Immovable(dist(Vector<int>(0,0), src) < dist(Vector<int>(0,0), dest) ?
+	       src : dest)
+{
+  if (dest.x > src.x)
+    d_size =  dest.x - src.x + 1;
+  else if (dest.x < src.x)
+    d_size =  src.x - dest.x + 1;
+  else
+    {
+      if (dest.y > src.y)
+	d_size =  dest.y - src.y + 1;
+      else
+	d_size =  src.y - dest.y + 1;
+    }
+}
+
 LocationBox::LocationBox(const LocationBox& loc)
   : Immovable(loc), d_size(loc.d_size)
 {

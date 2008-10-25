@@ -1126,6 +1126,7 @@ void Game::on_player_died(Player *player)
     player_died.emit(player);
 }
 
+      
 void Game::on_fight_started(Fight &fight)
 {
   
@@ -1149,10 +1150,12 @@ void Game::on_fight_started(Fight &fight)
       attacking_observable_player) && !ai_attacking_neutral &&
       !ai_attacking_on_hidden_map)
     {
+      Vector<int> pos = fight.getAttackers().front()->getPos();
       if (GameScenario::s_hidden_map == false)
-	smallmap->center_view_on_tile(fight.getAttackers().front()->getPos(),
-				      true);
-      bigmap->setFighting(LocationBox(fight.getAttackers().front()->getPos()));
+	smallmap->center_view_on_tile(pos, true);
+      LocationBox box = Fight::calculateFightBox(fight);
+      printf ("box->size is %d\n", box.getSize());
+      bigmap->setFighting(box);
       bigmap->draw();
       fight_started.emit(fight);
       bigmap->setFighting(LocationBox(Vector<int>(-1,-1)));

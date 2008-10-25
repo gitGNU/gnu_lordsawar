@@ -157,7 +157,7 @@ bool Configuration::saveConfigurationFile(string filename)
     
     if (!retval)
     {
-        std::cerr <<_("Configuration: Something went wrong while saving.\n");
+        std::cerr << "Configuration: Something went wrong while saving.\n";
         return false;
     }
     
@@ -192,7 +192,7 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
 	    //            string orig = string(getenv("HOME"))+s_filename;
 	    //            string dest = string(getenv("HOME"))+s_filename+".OLD";
 	    //#endif
-            cerr <<_("I make a backup copy from ") << orig << " to " << dest << endl;
+            cerr << "I make a backup copy from " << orig << " to " << dest << endl;
 
             ofstream ofs(dest.c_str());
 	    ifstream ifs(orig.c_str());
@@ -300,12 +300,12 @@ void initialize_configuration()
 	bool saveconf = conf.saveConfigurationFile(Configuration::configuration_file_path);
 	if (!saveconf)
 	{
-            std::cerr << _("Couldn't save the new configuration file...") << std::endl;
-            std::cerr << _("Check permissions of your home directory....aborting!") << std::endl;
+            std::cerr << "Couldn't save the new configuration file..." << std::endl;
+            std::cerr << "Check permissions of your home directory....aborting!" << std::endl;
 	    exit(-1);
 	}
 	else
-	    std::cerr <<_("Created the standard configuration file ") << Configuration::configuration_file_path << std::endl;
+	    std::cerr << "Created the standard configuration file " << Configuration::configuration_file_path << std::endl;
     }
     
 #ifndef __WIN32__
@@ -318,9 +318,9 @@ void initialize_configuration()
         Uint32 mask = 0755; //make directory only readable for user and group
         if (mkdir(Configuration::s_savePath.c_str(), mask))
         {
-            std::cerr <<_("Couldn't create save game directory ");
+            std::cerr << "Couldn't create save game directory ";
             std::cerr << Configuration::s_savePath <<".\n";
-            std::cerr <<_("Check permissions and the entries in your lordsawarrc file!") << std::endl;
+            std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
             exit(-1);
         }
     }

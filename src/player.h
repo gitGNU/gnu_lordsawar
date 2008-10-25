@@ -1298,6 +1298,7 @@ class Player: public sigc::trackable
 	void loadPbmGame();
 	//! Check the history to see if we ever conquered the given city.
 	bool conqueredCity(City *c);
+	std::list<Vector<int> > getStackTrack(Stack *s);
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,

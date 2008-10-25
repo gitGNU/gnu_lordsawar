@@ -62,7 +62,7 @@ namespace
 
 GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
 		       bool see_opponents_stacks, bool military_advisor)
-:d_fighting(LocationBox(Vector<int>(-1,-1)))
+:d_fighting(LocationBox(Vector<int>(-1,-1))), d_dragging(false)
 {
   d_intense_combat = intense_combat;
   d_see_opponents_production = see_opponents_production;
@@ -98,7 +98,7 @@ void GameBigMap::select_active_stack()
   if (!stack->getPath()->checkPath(stack))
     {
       //error handling is required here, up to now we only barf on cerr
-      cerr << _("original path of stack was blocked\n");
+      cerr << "original path of stack was blocked\n";
     }
 
   stack_selected.emit(stack);
@@ -180,7 +180,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
 	  int dist = stack->getPath()->calculate(stack, p);
 	  if (dist == -2)
-	    cerr << _("error calculating path!");
+	    cerr << "error calculating path!";
 
 	  Vector<int>* dest = 0;
 	  if (!stack->getPath()->empty())
@@ -287,6 +287,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
     {
       if (mouse_state == DRAGGING_STACK)
 	{
+	  d_dragging = false;
 	  Stack* stack = Playerlist::getActiveplayer()->getActivestack();
 	  //march a dragged stack!
 	  mouse_state = NONE;
@@ -626,6 +627,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
     {
       //initial drag
       mouse_state = DRAGGING_STACK;
+      d_dragging = true;
     }
   else if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
 	   && (mouse_state == NONE || mouse_state == DRAGGING_MAP) && !stack)
@@ -749,8 +751,12 @@ void GameBigMap::after_draw()
       // draw all waypoints
       Uint32 pathcount = 0;
       bool canMoveThere = true;
+      list<Vector<int>*>::iterator end = stack->getPath()->end();
+      //if we're dragging, we don't draw the last waypoint circle
+      if (stack->getPath()->size() > 0 && d_dragging)
+	end--;
       for (list<Vector<int>*>::iterator it = stack->getPath()->begin();
-	   it != stack->getPath()->end(); it++)
+	   it != end; it++)
 	{
 	  size_t wpsize = 40; //waypoint images are always 40x40
 	  pos = tile_to_buffer_pos(**it);
@@ -775,9 +781,31 @@ void GameBigMap::after_draw()
 
 	}
 
+      if (d_dragging)
+	{
+	  list<Vector<int>*>::iterator it = stack->getPath()->end();
+	  it--;
+	  //this is where the ghosted army unit picture goes.
+	  Army *a = *stack->begin();
+	  SDL_Surface *tmp = gc->getArmyPic(a);
+	  SDL_Surface *surf = GraphicsCache::createGhostedSurface(tmp);
+	  size_t wpsize = tmp->w;
+	  pos = tile_to_buffer_pos(**it);
+	  SDL_Rect r1, r2;
+	  r1.y = 0;
+	  r1.w = r1.h = tmp->w; 
+	  int offset = (tilesize - tmp->w) / 2;
+	  if (offset < 0)
+	    offset = 0;
+	  r2.x = pos.x + offset;
+	  r2.y = pos.y + offset;
+	  r2.w = r2.h = wpsize;
+	  SDL_BlitSurface(surf, 0, buffer, &r2);
+	  SDL_FreeSurface(surf);
+	}
     }
 
-  if (stack)
+  if (stack && d_fighting.getPos() == Vector<int>(-1,-1))
     {
       // draw the selection
       Vector<int> p = stack->getPos();
@@ -827,9 +855,17 @@ void GameBigMap::after_draw()
       SDL_Rect r;
       r.x = p.x;
       r.y = p.y;
-      r.w = r.h = tilesize;
+      r.w = r.h = tilesize * d_fighting.getSize();
       SDL_Surface *tmp = gc->getExplosionPic();
-      SDL_BlitSurface(tmp, 0, buffer, &r);
+      SDL_SetAlpha(tmp, 0, 0);
+      SDL_PixelFormat* fmt = tmp->format;
+      SDL_Surface *explode = SDL_CreateRGBSurface
+	(SDL_SWSURFACE, d_fighting.getSize() * tilesize, 
+	 d_fighting.getSize() * tilesize,
+       fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
+      SDL_SoftStretch(tmp, 0, explode, 0);
+      SDL_BlitSurface(explode, 0, buffer, &r);
+      SDL_FreeSurface(explode);
     }
 }
 

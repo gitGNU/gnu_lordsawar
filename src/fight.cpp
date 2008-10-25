@@ -724,3 +724,25 @@ void Fight::fillInInitialHPs()
     for (Stack::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
       initial_hps[(*j)->getId()] = (*j)->getHP();
 }
+	
+LocationBox Fight::calculateFightBox(Fight &fight)
+{
+  Citylist *cl = Citylist::getInstance();
+  Vector<int> dest = fight.getAttackers().front()->getPos();
+  if (cl->getObjectAt(dest) == NULL)
+    return LocationBox(dest);
+  Player *p = fight.getAttackers().front()->getOwner();
+  Stack *s = fight.getAttackers().front();
+  std::list<Vector<int> > tracks = p->getStackTrack(s);
+  if (tracks.size() >= 2)
+    {
+      std::list<Vector<int> >::iterator it = tracks.end();
+      it--; it--;
+      return LocationBox(*it, dest);
+    }
+  else
+    {
+      //this shouldn't be the case
+      return LocationBox(s->getPos(), dest);
+    }
+}

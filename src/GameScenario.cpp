@@ -353,12 +353,12 @@ bool GameScenario::saveGame(string filename, string extension) const
 
   if (strtoken->getLastToken() == extension)
     {
-      debug(_("The Filename is well formed"))
+      debug("The Filename is well formed")
 	std::cerr <<"";  //dummy call if debug statement is commented out
     }
   else 
     {
-      debug(_("The Filename lacks the extension --> ") << extension)
+      debug("The Filename lacks the extension --> " << extension)
 	goodfilename += "." + extension;
     }
 
@@ -371,7 +371,7 @@ bool GameScenario::saveGame(string filename, string extension) const
   if (retval)
     return true;
 
-  std::cerr <<_("GameScenario: Something went wrong with saving.\n");
+  std::cerr << "GameScenario: Something went wrong with saving.\n";
   return false;
 }
 
@@ -439,9 +439,9 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
     {
       if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
 	{
-	  cerr <<_("savefile has wrong version, we want ");
+	  cerr << "savefile has wrong version, we want ";
 	  std::cerr <<LORDSAWAR_SAVEGAME_VERSION <<",\n";
-	  cerr <<_("savefile offers ") <<helper->getVersion() <<".\n";
+	  cerr << "savefile offers " <<helper->getVersion() <<".\n";
 	  return false;
 	}
 
@@ -618,15 +618,15 @@ void GameScenario::nextRound()
   // (and we have a savefile for debugging)
   if (!saveGame(File::getSavePath() + "tmp.sav"))
     {
-      std::cerr<<_("Autosave failed.\n");
+      std::cerr<< "Autosave failed.\n";
       return;
     }
   if (rename(std::string(File::getSavePath() + "tmp.sav").c_str(),
 	     std::string(File::getSavePath() + filename).c_str()))
     {
       char* err = strerror(errno);
-      std::cerr <<_("Error while trying to rename the temporary file to autosave.sav\n");
-      std::cerr <<_("Error: ") <<err <<std::endl;
+      std::cerr << "Error while trying to rename the temporary file to autosave.sav\n";
+      std::cerr << "Error: " <<err <<std::endl;
     }
 }
 

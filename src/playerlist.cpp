@@ -309,7 +309,7 @@ void Playerlist::calculateDiplomaticRankings()
       _("Diplomat"),
       _("Pragmatist"),
       _("Politician"),
-      _("Deciever"),
+      _("Deceiver"),
       _("Scoundrel"),
       _("Turncoat"),
       _("Running Dog"),

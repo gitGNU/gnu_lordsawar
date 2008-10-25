@@ -284,10 +284,12 @@ Action_Move::Action_Move()
     :Action(Action::STACK_MOVE), d_stack(0)
 {
     d_dest.x = d_dest.y = 0;
+    d_delta.x = d_delta.y = 0;
 }
 
 Action_Move::Action_Move (const Action_Move &action)
-:Action(action), d_stack(action.d_stack), d_dest(action.d_dest)
+:Action(action), d_stack(action.d_stack), d_dest(action.d_dest), 
+    d_delta(action.d_delta)
 {
 }
 
@@ -301,6 +303,10 @@ Action_Move::Action_Move(XML_Helper* helper)
     d_dest.x = i;
     helper->getData(i, "y");
     d_dest.y = i;
+    helper->getData(i, "delta_x");
+    d_delta.x = i;
+    helper->getData(i, "delta_y");
+    d_delta.y = i;
 }
 
 Action_Move::~Action_Move()
@@ -324,6 +330,8 @@ bool Action_Move::doSave(XML_Helper* helper) const
     retval &= helper->saveData("stack", d_stack);
     retval &= helper->saveData("x", d_dest.x);
     retval &= helper->saveData("y", d_dest.y);
+    retval &= helper->saveData("delta_x", d_delta.x);
+    retval &= helper->saveData("delta_y", d_delta.y);
 
     return retval;
 }
@@ -332,6 +340,7 @@ bool Action_Move::fillData(Stack* s, Vector<int> dest)
 {
     d_stack = s->getId();
     d_dest = dest;
+    d_delta = dest - s->getPos();
     return true;
 }
 

@@ -213,10 +213,12 @@ class Action_Move : public Action
     
 	Uint32 getStackId() const {return d_stack;};
 	Vector<int> getEndingPosition() const {return d_dest;};
+	Vector<int> getPositionDelta() const {return d_delta;};
 
         private:
         Uint32 d_stack;
         Vector<int> d_dest;
+	Vector<int> d_delta;
 };
 
 //! A temporary record of a Stack being disbanded.

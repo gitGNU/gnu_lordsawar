@@ -740,7 +740,7 @@ SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
 
     if (!s)
     {
-        std::cerr <<_("GraphicsCache::getFlagPic: no stack supplied! Exiting...\n");
+        std::cerr << "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n";
         exit(-1);
     }
     
@@ -773,7 +773,7 @@ SDL_Surface* GraphicsCache::getSelectorPic(Uint32 type, Uint32 frame,
 
     if (!p)
     {
-        std::cerr <<_("GraphicsCache::getSelectorPic: no player supplied! Exiting...\n");
+        std::cerr << "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n";
         exit(-1);
     }
     
@@ -2390,3 +2390,15 @@ void GraphicsCache::loadFlags()
   SDL_FreeSurface(flag);
 }
 
+	  
+SDL_Surface* GraphicsCache::createGhostedSurface(SDL_Surface *s)
+{
+  SDL_Surface *tmp;
+  SDL_PixelFormat* fmt = s->format;
+  tmp = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, 
+				 s->w, s->h,
+				 fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, 
+				 fmt->Bmask, 0xAAAAAAAA);
+  SDL_BlitSurface (s, 0, tmp, 0);
+  return tmp;
+}

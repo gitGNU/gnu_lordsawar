@@ -40,8 +40,8 @@
 #include "armysetlist.h"
 #include "army.h"
 
-//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
-#define debug(x)
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
+//#define debug(x)
 #define offmap(bx,by) (by<0)||(by>=d_height)||(bx<0)||(bx>=d_width)
 
 using namespace std;

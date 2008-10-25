@@ -1284,7 +1284,7 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r)
   if ((s->getPos().x != r->getPos().x) ||
       (s->getPos().y != r->getPos().y))
   {
-    cerr <<_("Error: searching stack and ruin to be searched not on same position\n");
+    cerr <<  "Error: searching stack and ruin to be searched not on same position\n" ;
     exit(-1);
   }
 
@@ -1373,7 +1373,7 @@ Quest* Player::stackGetQuest(Stack* s, Temple* t, bool except_raze)
     if (!s || !t || (s->getPos().x != t->getPos().x) 
 	|| (s->getPos().y != t->getPos().y))
       {
-	cerr <<_("Stack tried to visit temple at wrong location\n");
+	cerr << "Stack tried to visit temple at wrong location\n";
 	exit(-1);
       }
 
@@ -3174,5 +3174,32 @@ bool Player::conqueredCity(City *c)
 	}
     }    
   return false;
+}
+
+std::list<Vector<int> > Player::getStackTrack(Stack *s)
+{
+  std::list<Vector<int> > points;
+  Vector<int> delta = Vector<int>(0,0);
+  for (list<Action*>::const_iterator it = d_actions.begin();
+       it != d_actions.end(); it++)
+    {
+      if ((*it)->getType() == Action::STACK_MOVE)
+	{
+	  Action_Move *action = dynamic_cast<Action_Move*>(*it);
+	  if (action->getStackId() == s->getId())
+	    {
+	      if (points.size() == 0)
+		delta = action->getPositionDelta();
+	      points.push_back(action->getEndingPosition());
+	    }
+	}
+    }
+  if (points.size() >= 1)
+    {
+      Vector<int> pos = points.front() + delta;
+      if (pos != points.front())
+	points.push_front(pos);
+    }
+  return points;
 }
 // End of file

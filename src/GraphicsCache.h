@@ -317,6 +317,8 @@ class GraphicsCache
 
 	Uint32 getNumberOfLargeSelectorFrames() {return d_selector.size();};
 	Uint32 getNumberOfSmallSelectorFrames() {return d_smallselector.size();}
+
+	static SDL_Surface* createGhostedSurface(SDL_Surface *s);
     private:
         GraphicsCache();
         ~GraphicsCache();

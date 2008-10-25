@@ -50,7 +50,7 @@ XML_Helper::XML_Helper(std::string filename, std::ios::openmode mode, bool zip)
     // is propably possible, but there is little point in using it anyway.
     if ((mode & std::ios::in) && (mode & std::ios::out))
     {
-        std::cerr <<_("XML_Helper: Either open file for reading or writing, not both, exiting\n");
+        std::cerr << "XML_Helper: Either open file for reading or writing, not both, exiting\n";
         exit(-1);
     }
 
@@ -62,7 +62,7 @@ XML_Helper::XML_Helper(std::string filename, std::ios::openmode mode, bool zip)
         if (!(*d_fin))
         //error opening
         {
-            std::cerr <<filename <<_(": Error opening file for reading. Exiting\n");
+            std::cerr <<filename << ": Error opening file for reading. Exiting\n";
             exit(-1);
         }
 
@@ -72,13 +72,13 @@ XML_Helper::XML_Helper(std::string filename, std::ios::openmode mode, bool zip)
 
         if (d_fin->eof())
         {
-            std::cerr <<_("File too short (<=1 byte), propably broken. Skipping load\n");
+            std::cerr << "File too short (<=1 byte), propably broken. Skipping load\n";
             d_failed = true;
         }
 
         if (tmp=='Z') 
         {  
-            std::cout <<filename <<_(": The file is obfuscated, attempting to read it....\n"); 
+            std::cout <<filename << ": The file is obfuscated, attempting to read it....\n"; 
             d_fin->seekg (0,std::ios::end);
             long length = d_fin->tellg();
             d_fin->seekg (1, std::ios::beg);    
@@ -121,7 +121,7 @@ XML_Helper::XML_Helper(std::string filename, std::ios::openmode mode, bool zip)
                                    std::ios::out & std::ios::trunc);
         if (!(*d_fout))
         {
-            std::cerr <<filename <<_(": Error opening file for writing. Exiting\n");
+            std::cerr <<filename << ": Error opening file for writing. Exiting\n";
             exit(-1);
         }
 
@@ -148,7 +148,7 @@ XML_Helper::~XML_Helper()
 {
     if (d_tags.size() != 0)
     // should never happen unless there was an error
-        std::cerr <<_("XML_Helper: dtags not empty!!\n");
+        std::cerr << "XML_Helper: dtags not empty!!\n";
     
     debug("Called destructor\n")    
     close();
@@ -166,13 +166,13 @@ bool XML_Helper::openTag(std::string name)
 {
     if (!d_out)
     {
-        std::cerr <<_("XML_Helper: no output stream given\n");
+        std::cerr << "XML_Helper: no output stream given\n";
         return false;
     }
 
     if ((name[0] == 'd') && (name[1] == '_'))
     {
-        std::cerr <<name <<_(": The tag name starts with a \"d\". Not creating tag!\n");
+        std::cerr <<name << ": The tag name starts with a \"d\". Not creating tag!\n";
         return false;
     }
 
@@ -192,7 +192,7 @@ bool XML_Helper::closeTag()
 {
     if (!d_out)
     {
-        std::cerr <<_("XML_Helper: no output stream given.\n");
+        std::cerr << "XML_Helper: no output stream given.\n";
         return false;
     }
 
@@ -214,12 +214,12 @@ bool XML_Helper::saveData(std::string name, std::string value)
 
     if (name.empty())
     {
-        std::cerr <<_("XML_Helper: save_data with empty name\n");
+        std::cerr << "XML_Helper: save_data with empty name\n";
         return false;
     }
     if (!d_out)
     {
-        std::cerr <<_("XML_Helper: no output stream given.\n");
+        std::cerr << "XML_Helper: no output stream given.\n";
         return false;
     }
 
@@ -235,12 +235,12 @@ bool XML_Helper::saveData(std::string name, int value)
 
     if (name.empty())
     {
-        std::cerr <<_("XML_Helper: save_data with empty name\n");
+        std::cerr << "XML_Helper: save_data with empty name\n";
         return false;
     }
     if (!d_out)
     {
-        std::cerr <<_("XML_Helper: no output stream given.\n");
+        std::cerr << "XML_Helper: no output stream given.\n";
         return false;
     }
 
@@ -256,12 +256,12 @@ bool XML_Helper::saveData(std::string name, Uint32 value)
 
     if (name.empty())
     {
-        std::cerr <<_("XML_Helper: save_data with empty name\n");
+        std::cerr << "XML_Helper: save_data with empty name\n";
         return false;
     }
     if (!d_out)
     {
-        std::cerr <<_("XML_Helper: no output stream given.\n");
+        std::cerr << "XML_Helper: no output stream given.\n";
         return false;
     }
 
@@ -277,12 +277,12 @@ bool XML_Helper::saveData(std::string name, bool value)
 
     if (name.empty())
     {
-        std::cerr <<_("XML_Helper: save_data with empty name\n");
+        std::cerr << "XML_Helper: save_data with empty name\n";
         return false;
     }
     if (!d_out)
     {
-        std::cerr <<_("XML_Helper: no output stream given.\n");
+        std::cerr << "XML_Helper: no output stream given.\n";
         return false;
     }
 
@@ -301,12 +301,12 @@ bool XML_Helper::saveData(std::string name, double value)
 
     if (name.empty())
     {
-        std::cerr <<_("XML_Helper: save_data with empty name\n");
+        std::cerr << "XML_Helper: save_data with empty name\n";
         return false;
     }
     if (!d_out)
     {
-        std::cerr <<_("XML_Helper: no output stream given.\n");
+        std::cerr << "XML_Helper: no output stream given.\n";
         return false;
     }
 
@@ -329,7 +329,7 @@ bool XML_Helper::close()
         if (d_zip)        
         {
             debug("I zip IT")
-            debug(_("Saving game and obfuscating the Savefile.\n")) 
+            debug("Saving game and obfuscating the Savefile.\n") 
             std::string tmp = d_outbuf->str();
             tmp+='\0';
 
@@ -557,10 +557,10 @@ bool XML_Helper::parse()
         if (!XML_ParseBuffer(d_parser, strlen(buffer), my_eof))
         //error parsing
         {
-            std::cerr <<_("XML_Helper: error parsing xml document.\n");
-            std::cerr <<_("Line ") <<XML_GetCurrentLineNumber(d_parser);
+            std::cerr <<"XML_Helper: error parsing xml document.\n";
+            std::cerr <<"Line " <<XML_GetCurrentLineNumber(d_parser);
             std::cerr <<": " <<XML_ErrorString(XML_GetErrorCode(d_parser)) <<"\n";
-            std::cerr << _("Buffercontent = ") << buffer << std::endl;
+            std::cerr <<"Buffercontent = " << buffer << std::endl;
             d_failed = true;
         }
     }
@@ -630,7 +630,7 @@ bool XML_Helper::tag_open(std::string tag, std::string version)
             bool retval = (it->second)(*ls_it, this);
             if (retval == false)
             {
-                std::cerr <<(*ls_it) <<_(": Callback for tag returned false. Stop parsing document.\n");
+                std::cerr <<(*ls_it) << ": Callback for tag returned false. Stop parsing document.\n";
                 error = true;
                 d_failed = true;
             }
@@ -673,7 +673,7 @@ bool XML_Helper::tag_close(std::string tag, std::string cdata)
             
             if (retval == false)
             {
-                std::cerr <<tag <<_(": Callback for tag returned false. Stop parsing document.\n");
+                std::cerr <<tag <<": Callback for tag returned false. Stop parsing document.\n";
                 error = true;
                 d_failed = true;
             }
