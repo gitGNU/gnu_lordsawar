@@ -62,7 +62,7 @@ namespace
 
 GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
 		       bool see_opponents_stacks, bool military_advisor)
-:d_fighting(LocationBox(Vector<int>(-1,-1))), d_dragging(false)
+:d_fighting(LocationBox(Vector<int>(-1,-1)))
 {
   d_intense_combat = intense_combat;
   d_see_opponents_production = see_opponents_production;
@@ -287,7 +287,6 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
     {
       if (mouse_state == DRAGGING_STACK)
 	{
-	  d_dragging = false;
 	  Stack* stack = Playerlist::getActiveplayer()->getActivestack();
 	  //march a dragged stack!
 	  mouse_state = NONE;
@@ -627,7 +626,6 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
     {
       //initial drag
       mouse_state = DRAGGING_STACK;
-      d_dragging = true;
     }
   else if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
 	   && (mouse_state == NONE || mouse_state == DRAGGING_MAP) && !stack)
@@ -678,6 +676,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       //subsequent dragging
       //alright.  calculate the path, and show it but don't move
       //be careful that we don't drop our path on bad objects
+      //also, slide the whole view if we drag out of view
       if (is_inside(view, tile) == false)
 	{
 	  Vector<int> delta(0,0);
@@ -753,7 +752,7 @@ void GameBigMap::after_draw()
       bool canMoveThere = true;
       list<Vector<int>*>::iterator end = stack->getPath()->end();
       //if we're dragging, we don't draw the last waypoint circle
-      if (stack->getPath()->size() > 0 && d_dragging)
+      if (stack->getPath()->size() > 0 && mouse_state == DRAGGING_STACK)
 	end--;
       for (list<Vector<int>*>::iterator it = stack->getPath()->begin();
 	   it != end; it++)
@@ -781,14 +780,13 @@ void GameBigMap::after_draw()
 
 	}
 
-      if (d_dragging)
+      if (mouse_state == DRAGGING_STACK)
 	{
 	  list<Vector<int>*>::iterator it = stack->getPath()->end();
 	  it--;
 	  //this is where the ghosted army unit picture goes.
 	  Army *a = *stack->begin();
 	  SDL_Surface *tmp = gc->getArmyPic(a);
-	  SDL_Surface *surf = GraphicsCache::createGhostedSurface(tmp);
 	  size_t wpsize = tmp->w;
 	  pos = tile_to_buffer_pos(**it);
 	  SDL_Rect r1, r2;
@@ -800,8 +798,7 @@ void GameBigMap::after_draw()
 	  r2.x = pos.x + offset;
 	  r2.y = pos.y + offset;
 	  r2.w = r2.h = wpsize;
-	  SDL_BlitSurface(surf, 0, buffer, &r2);
-	  SDL_FreeSurface(surf);
+	  SDL_BlitSurface(tmp, 0, buffer, &r2);
 	}
     }
 

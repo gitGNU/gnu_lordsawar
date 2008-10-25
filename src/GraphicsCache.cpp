@@ -2389,16 +2389,3 @@ void GraphicsCache::loadFlags()
   // free the temporary surfaces
   SDL_FreeSurface(flag);
 }
-
-	  
-SDL_Surface* GraphicsCache::createGhostedSurface(SDL_Surface *s)
-{
-  SDL_Surface *tmp;
-  SDL_PixelFormat* fmt = s->format;
-  tmp = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_SRCALPHA, 
-				 s->w, s->h,
-				 fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, 
-				 fmt->Bmask, 0xAAAAAAAA);
-  SDL_BlitSurface (s, 0, tmp, 0);
-  return tmp;
-}

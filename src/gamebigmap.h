@@ -107,7 +107,6 @@ class GameBigMap: public BigMap
     bool d_see_opponents_stacks;
     bool d_military_advisor;
     LocationBox d_fighting;
-    bool d_dragging;
 };
 
 #endif
