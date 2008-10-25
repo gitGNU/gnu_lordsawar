@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lordsawar 0.1.4\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-24 13:10-0400\n"
+"POT-Creation-Date: 2008-10-25 11:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -344,10 +344,6 @@ msgstr ""
 
 #: dat/glade/game-lobby-dialog.glade:496
 msgid "Cities:"
-msgstr ""
-
-#: dat/glade/game-lobby-dialog.glade:524 dat/glade/game-lobby-dialog.glade:580
-msgid "0"
 msgstr ""
 
 #: dat/glade/game-lobby-dialog.glade:552
@@ -756,7 +752,7 @@ msgstr ""
 msgid "_Turn"
 msgstr ""
 
-#: dat/glade/game-window.glade:553
+#: dat/glade/game-window.glade:553 dat/glade/game-window.glade:1608
 msgid "End Turn"
 msgstr ""
 
@@ -817,10 +813,6 @@ msgstr ""
 
 #: dat/glade/game-window.glade:1590
 msgid "Move all stacks"
-msgstr ""
-
-#: dat/glade/game-window.glade:1608
-msgid "End the turn"
 msgstr ""
 
 #: dat/glade/hero-dialog.glade:141
@@ -1040,7 +1032,7 @@ msgid "...is victorious! or ...is slain by it!"
 msgstr ""
 
 #: dat/glade/ruinfight-started-dialog.glade:64
-msgid "So and so encounters a monster and...."
+msgid "So and so encounters a monster and..."
 msgstr ""
 
 #: dat/glade/ruin-report-dialog.glade:176
@@ -2178,42 +2170,6 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: src/armysetlist.cpp:194 src/editor/armyset-window.cpp:422
-msgid "Error, while loading an armyset. Armyset Name: "
-msgstr ""
-
-#: src/GameScenario.cpp:356
-msgid "The Filename is well formed"
-msgstr ""
-
-#: src/GameScenario.cpp:361
-msgid "The Filename lacks the extension --> "
-msgstr ""
-
-#: src/GameScenario.cpp:374
-msgid "GameScenario: Something went wrong with saving.\n"
-msgstr ""
-
-#: src/GameScenario.cpp:442
-msgid "savefile has wrong version, we want "
-msgstr ""
-
-#: src/GameScenario.cpp:444
-msgid "savefile offers "
-msgstr ""
-
-#: src/GameScenario.cpp:621
-msgid "Autosave failed.\n"
-msgstr ""
-
-#: src/GameScenario.cpp:628
-msgid "Error while trying to rename the temporary file to autosave.sav\n"
-msgstr ""
-
-#: src/GameScenario.cpp:629 src/gui/driver.cpp:810
-msgid "Error: "
-msgstr ""
-
 #: src/GameScenario.cpp:682
 msgid "There must be at least 2 players in the scenario."
 msgstr ""
@@ -2313,7 +2269,7 @@ msgid "Politician"
 msgstr ""
 
 #: src/playerlist.cpp:312
-msgid "Deciever"
+msgid "Deceiver"
 msgstr ""
 
 #: src/playerlist.cpp:313
@@ -2326,14 +2282,6 @@ msgstr ""
 
 #: src/playerlist.cpp:315
 msgid "Running Dog"
-msgstr ""
-
-#: src/GameMap.cpp:237
-msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
-msgstr ""
-
-#: src/citysetlist.cpp:114
-msgid "Error, while loading a cityset. Cityset Name: "
 msgstr ""
 
 #: src/QPillageGold.cpp:72
@@ -2387,56 +2335,12 @@ msgstr ""
 msgid "Unexplored"
 msgstr ""
 
-#: src/GraphicsCache.cpp:743
-msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
-msgstr ""
-
-#: src/GraphicsCache.cpp:776
-msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
-msgstr ""
-
-#: src/tilesetlist.cpp:135
-msgid "Error, while loading a tileset. Tileset Name: "
-msgstr ""
-
-#: src/Configuration.cpp:160
-msgid "Configuration: Something went wrong while saving.\n"
-msgstr ""
-
 #: src/Configuration.cpp:182
 msgid "Configuration file has wrong version, we want "
 msgstr ""
 
 #: src/Configuration.cpp:184
 msgid "Configuration file offers "
-msgstr ""
-
-#: src/Configuration.cpp:195
-msgid "I make a backup copy from "
-msgstr ""
-
-#: src/Configuration.cpp:303
-msgid "Couldn't save the new configuration file..."
-msgstr ""
-
-#: src/Configuration.cpp:304
-msgid "Check permissions of your home directory....aborting!"
-msgstr ""
-
-#: src/Configuration.cpp:308
-msgid "Created the standard configuration file "
-msgstr ""
-
-#: src/Configuration.cpp:321
-msgid "Couldn't create save game directory "
-msgstr ""
-
-#: src/Configuration.cpp:323
-msgid "Check permissions and the entries in your lordsawarrc file!"
-msgstr ""
-
-#: src/shieldsetlist.cpp:104
-msgid "Error, while loading a shieldset. Shieldset Name: "
 msgstr ""
 
 #: src/MapGenerator.cpp:161
@@ -2496,14 +2400,6 @@ msgstr ""
 msgid "You have killed %i so far."
 msgstr ""
 
-#: src/player.cpp:1287
-msgid "Error: searching stack and ruin to be searched not on same position\n"
-msgstr ""
-
-#: src/player.cpp:1376
-msgid "Stack tried to visit temple at wrong location\n"
-msgstr ""
-
 #: src/player.cpp:2283
 msgid "%1 Standard"
 msgstr ""
@@ -2558,11 +2454,6 @@ msgstr ""
 
 #: src/temple.cpp:31
 msgid " can bless your armies or give you quests."
-msgstr ""
-
-#: src/tileset.cpp:219
-#, c-format
-msgid "`%s' fails validation\n"
 msgstr ""
 
 #: src/gui/city-window.cpp:165
@@ -3280,6 +3171,10 @@ msgstr ""
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 
+#: src/gui/driver.cpp:810
+msgid "Error: "
+msgstr ""
+
 #: src/gui/driver.cpp:813
 msgid "Now send the saved-game file to %1"
 msgstr ""
@@ -3559,6 +3454,10 @@ msgstr ""
 msgid "Choose an Armyset to Load"
 msgstr ""
 
+#: src/editor/armyset-window.cpp:422
+msgid "Error, while loading an armyset. Armyset Name: "
+msgstr ""
+
 #: src/editor/city-dialog.cpp:96
 msgid "Strength"
 msgstr ""
@@ -3675,95 +3574,8 @@ msgstr ""
 msgid "Upk"
 msgstr ""
 
-#: src/xmlhelper.cpp:53
-msgid ""
-"XML_Helper: Either open file for reading or writing, not both, exiting\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:65
-msgid ": Error opening file for reading. Exiting\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:75
-msgid "File too short (<=1 byte), propably broken. Skipping load\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:81
-msgid ": The file is obfuscated, attempting to read it....\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:124
-msgid ": Error opening file for writing. Exiting\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:151
-msgid "XML_Helper: dtags not empty!!\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:169
-msgid "XML_Helper: no output stream given\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:175
-msgid ": The tag name starts with a \"d\". Not creating tag!\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:195 src/xmlhelper.cpp:222 src/xmlhelper.cpp:243
-#: src/xmlhelper.cpp:264 src/xmlhelper.cpp:285 src/xmlhelper.cpp:309
-msgid "XML_Helper: no output stream given.\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:217 src/xmlhelper.cpp:238 src/xmlhelper.cpp:259
-#: src/xmlhelper.cpp:280 src/xmlhelper.cpp:304
-msgid "XML_Helper: save_data with empty name\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:332
-msgid "Saving game and obfuscating the Savefile.\n"
-msgstr ""
-
 #: src/xmlhelper.cpp:360
 msgid "Saving game without obfuscation.\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:560
-msgid "XML_Helper: error parsing xml document.\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:561
-msgid "Line "
-msgstr ""
-
-#: src/xmlhelper.cpp:563
-msgid "Buffercontent = "
-msgstr ""
-
-#: src/xmlhelper.cpp:633 src/xmlhelper.cpp:676
-msgid ": Callback for tag returned false. Stop parsing document.\n"
-msgstr ""
-
-#: src/sound.cpp:91
-msgid "Couldn't initialize SDL-mixer\n"
-msgstr ""
-
-#: src/sound.cpp:102
-msgid "Error loading music descriptions; disable music\n"
-msgstr ""
-
-#: src/gamebigmap.cpp:101
-msgid "original path of stack was blocked\n"
-msgstr ""
-
-#: src/gamebigmap.cpp:183
-msgid "error calculating path!"
-msgstr ""
-
-#: src/CreateScenario.cpp:200
-msgid "CreateScenario:: wrong width given\n"
-msgstr ""
-
-#: src/CreateScenario.cpp:215
-msgid "CreateScenario:: wrong height given\n"
 msgstr ""
 
 #: src/CreateScenario.cpp:685
@@ -3804,39 +3616,6 @@ msgstr ""
 
 #: src/Itemlist.cpp:56
 msgid "Could not parse items description file. Exiting!\n"
-msgstr ""
-
-#: src/File.cpp:126
-msgid "Couldn't find any armysets!"
-msgstr ""
-
-#: src/File.cpp:127 src/File.cpp:203 src/File.cpp:219 src/File.cpp:247
-#: src/File.cpp:288 src/File.cpp:302
-msgid "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc"
-msgstr ""
-
-#: src/File.cpp:128 src/File.cpp:204 src/File.cpp:220 src/File.cpp:303
-msgid "Exiting!"
-msgstr ""
-
-#: src/File.cpp:202
-msgid "Couldn't find any tilesets!"
-msgstr ""
-
-#: src/File.cpp:218
-msgid "Couldn't find any citysets!"
-msgstr ""
-
-#: src/File.cpp:246
-msgid "Couldn't find a single campaign!"
-msgstr ""
-
-#: src/File.cpp:287
-msgid "Couldn't find a single map!"
-msgstr ""
-
-#: src/File.cpp:301
-msgid "Couldn't find any shieldsets!"
 msgstr ""
 
 #: src/main.cpp:73

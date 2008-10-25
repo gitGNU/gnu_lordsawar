@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreeLords 0.3.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2008-10-24 13:10-0400\n"
+"POT-Creation-Date: 2008-10-25 11:21-0400\n"
 "PO-Revision-Date: 2005-03-03\n"
 "Last-Translator: Ulf Lorenz <ulf82@users.sf.net>\n"
 "Language-Team: German <ulf82@users.sf.net>\n"
@@ -389,10 +389,6 @@ msgstr "Runde: %i"
 #, fuzzy
 msgid "Cities:"
 msgstr "Städte"
-
-#: dat/glade/game-lobby-dialog.glade:524 dat/glade/game-lobby-dialog.glade:580
-msgid "0"
-msgstr ""
 
 #: dat/glade/game-lobby-dialog.glade:552
 #: dat/glade/game-preferences-dialog.glade:801
@@ -848,7 +844,7 @@ msgstr ""
 msgid "_Turn"
 msgstr "NextTurn"
 
-#: dat/glade/game-window.glade:553
+#: dat/glade/game-window.glade:553 dat/glade/game-window.glade:1608
 #, fuzzy
 msgid "End Turn"
 msgstr "Zufallskarte"
@@ -920,11 +916,6 @@ msgstr "Betreten von Ruine oder Tempel"
 #, fuzzy
 msgid "Move all stacks"
 msgstr "Bewegung:"
-
-#: dat/glade/game-window.glade:1608
-#, fuzzy
-msgid "End the turn"
-msgstr "einer neuen Runde"
 
 #: dat/glade/hero-dialog.glade:141
 #, fuzzy
@@ -1176,7 +1167,7 @@ msgid "...is victorious! or ...is slain by it!"
 msgstr ""
 
 #: dat/glade/ruinfight-started-dialog.glade:64
-msgid "So and so encounters a monster and...."
+msgid "So and so encounters a monster and..."
 msgstr ""
 
 #: dat/glade/ruin-report-dialog.glade:176
@@ -2467,43 +2458,6 @@ msgstr ""
 msgid "Other"
 msgstr "Anderes"
 
-#: src/armysetlist.cpp:194 src/editor/armyset-window.cpp:422
-msgid "Error, while loading an armyset. Armyset Name: "
-msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
-
-#: src/GameScenario.cpp:356
-msgid "The Filename is well formed"
-msgstr "Der Dateiname ist in Ordnung"
-
-#: src/GameScenario.cpp:361
-msgid "The Filename lacks the extension --> "
-msgstr "Dem Dateinamen fehlt die Endung --> "
-
-#: src/GameScenario.cpp:374
-msgid "GameScenario: Something went wrong with saving.\n"
-msgstr "GameScenario: Fehler beim Speichern.\n"
-
-#: src/GameScenario.cpp:442
-msgid "savefile has wrong version, we want "
-msgstr "Spielstand hat falsche Version. Gefordert wird "
-
-#: src/GameScenario.cpp:444
-msgid "savefile offers "
-msgstr "Spielstand hat "
-
-#: src/GameScenario.cpp:621
-msgid "Autosave failed.\n"
-msgstr ""
-
-#: src/GameScenario.cpp:628
-msgid "Error while trying to rename the temporary file to autosave.sav\n"
-msgstr ""
-
-#: src/GameScenario.cpp:629 src/gui/driver.cpp:810
-#, fuzzy
-msgid "Error: "
-msgstr "Fehler"
-
 #: src/GameScenario.cpp:682
 msgid "There must be at least 2 players in the scenario."
 msgstr ""
@@ -2607,7 +2561,7 @@ msgstr "Position:"
 
 #: src/playerlist.cpp:312
 #, fuzzy
-msgid "Deciever"
+msgid "Deceiver"
 msgstr "Deaktivieren"
 
 #: src/playerlist.cpp:313
@@ -2623,16 +2577,6 @@ msgstr "NextTurn"
 #: src/playerlist.cpp:315
 msgid "Running Dog"
 msgstr ""
-
-#: src/GameMap.cpp:237
-msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
-msgstr ""
-"Fehler in GameMap::fillMap: Grenzen stimmen nicht überein!! Breche ab.\n"
-
-#: src/citysetlist.cpp:114
-#, fuzzy
-msgid "Error, while loading a cityset. Cityset Name: "
-msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
 
 #: src/QPillageGold.cpp:72
 #, fuzzy, c-format
@@ -2691,24 +2635,6 @@ msgstr ""
 msgid "Unexplored"
 msgstr ""
 
-#: src/GraphicsCache.cpp:743
-msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
-msgstr "GraphicsCache::getFlagPic keine Armee mitgeliefert! Breche ab...\n"
-
-#: src/GraphicsCache.cpp:776
-#, fuzzy
-msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
-msgstr "GraphicsCache::getFlagPic keine Armee mitgeliefert! Breche ab...\n"
-
-#: src/tilesetlist.cpp:135
-#, fuzzy
-msgid "Error, while loading a tileset. Tileset Name: "
-msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
-
-#: src/Configuration.cpp:160
-msgid "Configuration: Something went wrong while saving.\n"
-msgstr "Configuration: Fehler beim Speichern.\n"
-
 #: src/Configuration.cpp:182
 #, fuzzy
 msgid "Configuration file has wrong version, we want "
@@ -2718,40 +2644,6 @@ msgstr "Spielstand hat falsche Version. Gefordert wird "
 #, fuzzy
 msgid "Configuration file offers "
 msgstr "Konfigurationsdatei gefunden: "
-
-#: src/Configuration.cpp:195
-msgid "I make a backup copy from "
-msgstr ""
-
-#: src/Configuration.cpp:303
-#, fuzzy
-msgid "Couldn't save the new configuration file..."
-msgstr "Konfigurationsdatei gefunden: "
-
-#: src/Configuration.cpp:304
-msgid "Check permissions of your home directory....aborting!"
-msgstr ""
-
-#: src/Configuration.cpp:308
-#, fuzzy
-msgid "Created the standard configuration file "
-msgstr "Konfigurationsdatei gefunden: "
-
-#: src/Configuration.cpp:321
-msgid "Couldn't create save game directory "
-msgstr "Konnte Verzeichnis für die Spielstände nicht anlegen"
-
-#: src/Configuration.cpp:323
-#, fuzzy
-msgid "Check permissions and the entries in your lordsawarrc file!"
-msgstr ""
-"Überprüfen Sie die Zugriffsrechte und die Einträge in der Datei "
-"freelordsrc!\n"
-
-#: src/shieldsetlist.cpp:104
-#, fuzzy
-msgid "Error, while loading a shieldset. Shieldset Name: "
-msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
 
 #: src/MapGenerator.cpp:161
 #, fuzzy
@@ -2823,14 +2715,6 @@ msgstr "Baue Städte ... 70%"
 msgid "You have killed %i so far."
 msgstr "Du hast bereits %i getötet."
 
-#: src/player.cpp:1287
-msgid "Error: searching stack and ruin to be searched not on same position\n"
-msgstr "Fehler: Armee und zu durchsuchende Ruine nicht am selben Platz\n"
-
-#: src/player.cpp:1376
-msgid "Stack tried to visit temple at wrong location\n"
-msgstr "Armee versuchte Tempel an der falschen Position zu besuchen\n"
-
 #: src/player.cpp:2283
 #, fuzzy
 msgid "%1 Standard"
@@ -2889,11 +2773,6 @@ msgstr ""
 
 #: src/temple.cpp:31
 msgid " can bless your armies or give you quests."
-msgstr ""
-
-#: src/tileset.cpp:219
-#, c-format
-msgid "`%s' fails validation\n"
 msgstr ""
 
 #: src/gui/city-window.cpp:165
@@ -3679,6 +3558,11 @@ msgstr ""
 msgid "Error while trying to rename the temporary file to "
 msgstr ""
 
+#: src/gui/driver.cpp:810
+#, fuzzy
+msgid "Error: "
+msgstr "Fehler"
+
 #: src/gui/driver.cpp:813
 msgid "Now send the saved-game file to %1"
 msgstr ""
@@ -3996,6 +3880,10 @@ msgstr ""
 msgid "Choose an Armyset to Load"
 msgstr "Terraintyp"
 
+#: src/editor/armyset-window.cpp:422
+msgid "Error, while loading an armyset. Armyset Name: "
+msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
+
 #: src/editor/city-dialog.cpp:96
 #, fuzzy
 msgid "Strength"
@@ -4131,101 +4019,9 @@ msgstr "LP:"
 msgid "Upk"
 msgstr "Unterhalt:"
 
-#: src/xmlhelper.cpp:53
-msgid ""
-"XML_Helper: Either open file for reading or writing, not both, exiting\n"
-msgstr ""
-"XML_Helper: Datei entweder zum Lesen oder zum Schreiben öffnen, nicht "
-"beides. Breche ab\n"
-
-#: src/xmlhelper.cpp:65
-msgid ": Error opening file for reading. Exiting\n"
-msgstr ": Fehler beim Öffnen zum Lesen. Breche ab\n"
-
-#: src/xmlhelper.cpp:75
-msgid "File too short (<=1 byte), propably broken. Skipping load\n"
-msgstr ""
-
-#: src/xmlhelper.cpp:81
-msgid ": The file is obfuscated, attempting to read it....\n"
-msgstr ": Der Spielstand wurde komprimiert, versuche ihn zu lesen...\n"
-
-#: src/xmlhelper.cpp:124
-msgid ": Error opening file for writing. Exiting\n"
-msgstr ": Fehler beim Öffnen der Datei zum Schreiben. Breche ab\n"
-
-#: src/xmlhelper.cpp:151
-msgid "XML_Helper: dtags not empty!!\n"
-msgstr "XML_Helper: dtags nicht leer!!\n"
-
-#: src/xmlhelper.cpp:169
-msgid "XML_Helper: no output stream given\n"
-msgstr "XML_Helper: Kein Ausgabestream gegeben\n"
-
-#: src/xmlhelper.cpp:175
-msgid ": The tag name starts with a \"d\". Not creating tag!\n"
-msgstr ": Das Tag fängt mit \"d_\" an. Ignoriere Tag!\n"
-
-#: src/xmlhelper.cpp:195 src/xmlhelper.cpp:222 src/xmlhelper.cpp:243
-#: src/xmlhelper.cpp:264 src/xmlhelper.cpp:285 src/xmlhelper.cpp:309
-msgid "XML_Helper: no output stream given.\n"
-msgstr "XML_Helper: Kein Ausgabestrom gegeben.\n"
-
-#: src/xmlhelper.cpp:217 src/xmlhelper.cpp:238 src/xmlhelper.cpp:259
-#: src/xmlhelper.cpp:280 src/xmlhelper.cpp:304
-msgid "XML_Helper: save_data with empty name\n"
-msgstr "XML_Helper: save_data mit leeren Namen aufgerufen\n"
-
-#: src/xmlhelper.cpp:332
-msgid "Saving game and obfuscating the Savefile.\n"
-msgstr "Speichere und komprimiere Spielstand.\n"
-
 #: src/xmlhelper.cpp:360
 msgid "Saving game without obfuscation.\n"
 msgstr "Speichere Spielstand ohne Kompression.\n"
-
-#: src/xmlhelper.cpp:560
-msgid "XML_Helper: error parsing xml document.\n"
-msgstr "XML_Helper: Fehler beim Parsen der XML-Datei.\n"
-
-#: src/xmlhelper.cpp:561
-msgid "Line "
-msgstr "Zeile "
-
-#: src/xmlhelper.cpp:563
-msgid "Buffercontent = "
-msgstr "Inhalt des Puffers: "
-
-#: src/xmlhelper.cpp:633 src/xmlhelper.cpp:676
-msgid ": Callback for tag returned false. Stop parsing document.\n"
-msgstr ": Callback für Tag lieferte false zurück. Beende Parsen der Datei.\n"
-
-#: src/sound.cpp:91
-#, fuzzy
-msgid "Couldn't initialize SDL-mixer\n"
-msgstr "Konnte X nicht initialisieren\n"
-
-#: src/sound.cpp:102
-msgid "Error loading music descriptions; disable music\n"
-msgstr ""
-
-#: src/gamebigmap.cpp:101
-msgid "original path of stack was blocked\n"
-msgstr "ursprünglicher Weg der Armee war blockiert\n"
-
-#: src/gamebigmap.cpp:183
-msgid "error calculating path!"
-msgstr ""
-
-#: src/CreateScenario.cpp:200
-#, fuzzy
-msgid "CreateScenario:: wrong width given\n"
-msgstr "CreateScenario: falsche Größe angegeben\n"
-
-#: src/CreateScenario.cpp:215
-#, fuzzy
-msgid "CreateScenario:: wrong height given\n"
-msgstr "CreateScenario: falsche Größe angegeben\n"
 
 #: src/CreateScenario.cpp:685
 #, fuzzy
@@ -4275,46 +4071,6 @@ msgstr "Erzeuge Karte"
 #: src/Itemlist.cpp:56
 msgid "Could not parse items description file. Exiting!\n"
 msgstr "Konnte Artefaktbeschreibungsdatei nich parsen. Breche ab!\n"
-
-#: src/File.cpp:126
-#, fuzzy
-msgid "Couldn't find any armysets!"
-msgstr "Konnte kein einziges Armeeset finden!"
-
-#: src/File.cpp:127 src/File.cpp:203 src/File.cpp:219 src/File.cpp:247
-#: src/File.cpp:288 src/File.cpp:302
-#, fuzzy
-msgid "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc"
-msgstr "Überprüfen Sie die Pfadnamen in /etc/freelordsrc oder ~/.freelordsrc"
-
-#: src/File.cpp:128 src/File.cpp:204 src/File.cpp:220 src/File.cpp:303
-msgid "Exiting!"
-msgstr "Breche ab!"
-
-#: src/File.cpp:202
-#, fuzzy
-msgid "Couldn't find any tilesets!"
-msgstr "Konnte kein einziges Terrainset finden! "
-
-#: src/File.cpp:218
-#, fuzzy
-msgid "Couldn't find any citysets!"
-msgstr "Konnte kein einziges Armeeset finden!"
-
-#: src/File.cpp:246
-#, fuzzy
-msgid "Couldn't find a single campaign!"
-msgstr "Konnte kein einziges Armeeset finden!"
-
-#: src/File.cpp:287
-#, fuzzy
-msgid "Couldn't find a single map!"
-msgstr "Konnte kein einziges Armeeset finden!"
-
-#: src/File.cpp:301
-#, fuzzy
-msgid "Couldn't find any shieldsets!"
-msgstr "Konnte kein einziges Terrainset finden! "
 
 #: src/main.cpp:73
 #, fuzzy
@@ -4406,6 +4162,168 @@ msgstr ""
 #, c-format
 msgid "You must take over and sack the city of \"%s\"."
 msgstr ""
+
+#, fuzzy
+#~ msgid "End the turn"
+#~ msgstr "einer neuen Runde"
+
+#~ msgid "The Filename is well formed"
+#~ msgstr "Der Dateiname ist in Ordnung"
+
+#~ msgid "The Filename lacks the extension --> "
+#~ msgstr "Dem Dateinamen fehlt die Endung --> "
+
+#~ msgid "GameScenario: Something went wrong with saving.\n"
+#~ msgstr "GameScenario: Fehler beim Speichern.\n"
+
+#~ msgid "savefile has wrong version, we want "
+#~ msgstr "Spielstand hat falsche Version. Gefordert wird "
+
+#~ msgid "savefile offers "
+#~ msgstr "Spielstand hat "
+
+#~ msgid "Error in GameMap::fillMap: sizes don't match!! Exiting.\n"
+#~ msgstr ""
+#~ "Fehler in GameMap::fillMap: Grenzen stimmen nicht überein!! Breche ab.\n"
+
+#, fuzzy
+#~ msgid "Error, while loading a cityset. Cityset Name: "
+#~ msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
+
+#~ msgid "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n"
+#~ msgstr "GraphicsCache::getFlagPic keine Armee mitgeliefert! Breche ab...\n"
+
+#, fuzzy
+#~ msgid "GraphicsCache::getSelectorPic: no player supplied! Exiting...\n"
+#~ msgstr "GraphicsCache::getFlagPic keine Armee mitgeliefert! Breche ab...\n"
+
+#, fuzzy
+#~ msgid "Error, while loading a tileset. Tileset Name: "
+#~ msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
+
+#~ msgid "Configuration: Something went wrong while saving.\n"
+#~ msgstr "Configuration: Fehler beim Speichern.\n"
+
+#, fuzzy
+#~ msgid "Couldn't save the new configuration file..."
+#~ msgstr "Konfigurationsdatei gefunden: "
+
+#, fuzzy
+#~ msgid "Created the standard configuration file "
+#~ msgstr "Konfigurationsdatei gefunden: "
+
+#~ msgid "Couldn't create save game directory "
+#~ msgstr "Konnte Verzeichnis für die Spielstände nicht anlegen"
+
+#, fuzzy
+#~ msgid "Check permissions and the entries in your lordsawarrc file!"
+#~ msgstr ""
+#~ "Überprüfen Sie die Zugriffsrechte und die Einträge in der Datei "
+#~ "freelordsrc!\n"
+
+#, fuzzy
+#~ msgid "Error, while loading a shieldset. Shieldset Name: "
+#~ msgstr "Fehler beim Laden der Einheiten. Name des Sets: "
+
+#~ msgid ""
+#~ "Error: searching stack and ruin to be searched not on same position\n"
+#~ msgstr "Fehler: Armee und zu durchsuchende Ruine nicht am selben Platz\n"
+
+#~ msgid "Stack tried to visit temple at wrong location\n"
+#~ msgstr "Armee versuchte Tempel an der falschen Position zu besuchen\n"
+
+#~ msgid ""
+#~ "XML_Helper: Either open file for reading or writing, not both, exiting\n"
+#~ msgstr ""
+#~ "XML_Helper: Datei entweder zum Lesen oder zum Schreiben öffnen, nicht "
+#~ "beides. Breche ab\n"
+
+#~ msgid ": Error opening file for reading. Exiting\n"
+#~ msgstr ": Fehler beim Öffnen zum Lesen. Breche ab\n"
+
+#~ msgid ": The file is obfuscated, attempting to read it....\n"
+#~ msgstr ": Der Spielstand wurde komprimiert, versuche ihn zu lesen...\n"
+
+#~ msgid ": Error opening file for writing. Exiting\n"
+#~ msgstr ": Fehler beim Öffnen der Datei zum Schreiben. Breche ab\n"
+
+#~ msgid "XML_Helper: dtags not empty!!\n"
+#~ msgstr "XML_Helper: dtags nicht leer!!\n"
+
+#~ msgid "XML_Helper: no output stream given\n"
+#~ msgstr "XML_Helper: Kein Ausgabestream gegeben\n"
+
+#~ msgid ": The tag name starts with a \"d\". Not creating tag!\n"
+#~ msgstr ": Das Tag fängt mit \"d_\" an. Ignoriere Tag!\n"
+
+#~ msgid "XML_Helper: no output stream given.\n"
+#~ msgstr "XML_Helper: Kein Ausgabestrom gegeben.\n"
+
+#~ msgid "XML_Helper: save_data with empty name\n"
+#~ msgstr "XML_Helper: save_data mit leeren Namen aufgerufen\n"
+
+#~ msgid "Saving game and obfuscating the Savefile.\n"
+#~ msgstr "Speichere und komprimiere Spielstand.\n"
+
+#~ msgid "XML_Helper: error parsing xml document.\n"
+#~ msgstr "XML_Helper: Fehler beim Parsen der XML-Datei.\n"
+
+#~ msgid "Line "
+#~ msgstr "Zeile "
+
+#~ msgid "Buffercontent = "
+#~ msgstr "Inhalt des Puffers: "
+
+#~ msgid ": Callback for tag returned false. Stop parsing document.\n"
+#~ msgstr ""
+#~ ": Callback für Tag lieferte false zurück. Beende Parsen der Datei.\n"
+
+#, fuzzy
+#~ msgid "Couldn't initialize SDL-mixer\n"
+#~ msgstr "Konnte X nicht initialisieren\n"
+
+#~ msgid "original path of stack was blocked\n"
+#~ msgstr "ursprünglicher Weg der Armee war blockiert\n"
+
+#, fuzzy
+#~ msgid "CreateScenario:: wrong width given\n"
+#~ msgstr "CreateScenario: falsche Größe angegeben\n"
+
+#, fuzzy
+#~ msgid "CreateScenario:: wrong height given\n"
+#~ msgstr "CreateScenario: falsche Größe angegeben\n"
+
+#, fuzzy
+#~ msgid "Couldn't find any armysets!"
+#~ msgstr "Konnte kein einziges Armeeset finden!"
+
+#, fuzzy
+#~ msgid "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc"
+#~ msgstr ""
+#~ "Überprüfen Sie die Pfadnamen in /etc/freelordsrc oder ~/.freelordsrc"
+
+#~ msgid "Exiting!"
+#~ msgstr "Breche ab!"
+
+#, fuzzy
+#~ msgid "Couldn't find any tilesets!"
+#~ msgstr "Konnte kein einziges Terrainset finden! "
+
+#, fuzzy
+#~ msgid "Couldn't find any citysets!"
+#~ msgstr "Konnte kein einziges Armeeset finden!"
+
+#, fuzzy
+#~ msgid "Couldn't find a single campaign!"
+#~ msgstr "Konnte kein einziges Armeeset finden!"
+
+#, fuzzy
+#~ msgid "Couldn't find a single map!"
+#~ msgstr "Konnte kein einziges Armeeset finden!"
+
+#, fuzzy
+#~ msgid "Couldn't find any shieldsets!"
+#~ msgstr "Konnte kein einziges Terrainset finden! "
 
 #~ msgid "Making random map"
 #~ msgstr "Erzeuge Zufallskarte"
