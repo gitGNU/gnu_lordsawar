@@ -1624,13 +1624,9 @@ void GameWindow::on_player_died(Player *player)
       player->getType() == Player::HUMAN)
     {
       s += "\n";
-      s += _("No further human resistance is possible");
+      s += _("No further human resistance is possible\nbut the battle will continue!");
       s += "\n";
-      s += _("but the battle will continue!");
-      s += "\n";
-      s += _("Press `CTRL-P' to stop the war");
-      s += "\n";
-      s += _("and visit the sites of thy old battles.");
+      s += _("Press `CTRL-P' to stop the war\nand visit the sites of thy old battles.");
     }
 
   TimedMessageDialog dialog(*window.get(), s, 30);

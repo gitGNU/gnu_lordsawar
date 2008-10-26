@@ -152,7 +152,7 @@ void GamePreferencesDialog::init()
     for (std::list<Uint32>::iterator it = sizes.begin(); it != sizes.end();
 	 it++)
       {
-	Glib::ustring s = String::ucompose(_("%1x%1"), *it);
+	Glib::ustring s = String::ucompose("%1x%1", *it);
 	tile_size_combobox->append_text(s);
 	if ((*it) == Tileset::getDefaultTileSize())
 	  default_id = counter;

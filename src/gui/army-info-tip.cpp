@@ -71,7 +71,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     Glib::ustring s;
     s += army->getName();
     s += "\n";
-    // note to translators: %1 is melee strength, %2 is ranged strength
+    // note to translators: %1 is ranged strength
     s += String::ucompose(_("Strength: %1"),
 			  army->getStat(Army::STRENGTH));
     s += "\n";
@@ -135,12 +135,12 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army)
     Glib::ustring s;
     s += army->getName();
     s += "\n";
-    // note to translators: %1 is melee strength, %2 is ranged strength
+    // note to translators: %1 is melee strength
     s += String::ucompose(_("Strength: %1"),
 			  army->getStrength());
     s += "\n";
-    // note to translators: %1 is remaining moves, %2 is total moves
-    s += String::ucompose(_("Movement: %1"), army->getMaxMoves());
+    // note to translators: %1 is total moves
+    s += String::ucompose(_("Moves: %1"), army->getMaxMoves());
     s += "\n";
     s += String::ucompose(_("Time: %1"), army->getProduction());
     s += "\n";

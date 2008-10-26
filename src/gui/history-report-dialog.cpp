@@ -420,11 +420,13 @@ void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
 	  break;
 	}
     }
-  s = String::ucompose(_("On turn %1 you %2 "), turn, 
-		       turn == past_citylists.size() ? "have" : "had");
-  s += String::ucompose(ngettext("%1 gold piece!",
-				 "%1 gold pieces!",
-				 count), count);
+  turn == past_citylists.size() ?
+    s = String::ucompose(ngettext("On turn %1 you have %2 gold piece!",
+				  "On turn %1 you have %2 gold pieces!",
+				  count), turn, count) :
+    s = String::ucompose(ngettext("On turn %1 you had %2 gold piece!",
+				  "On turn %1 you had %2 gold pieces!",
+				  count), turn, count);
   gold_label->set_text(s);
 
   //update the city chart
@@ -439,11 +441,13 @@ void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
 	  break;
 	}
     }
-  s = String::ucompose(_("On turn %1 you %2 "), turn,
-		       turn == past_citylists.size() ? "have" : "had");
-  s += String::ucompose(ngettext("%1 city!",
-				 "%1 cities!",
-				 count), count);
+  turn == past_citylists.size() ?
+    s = String::ucompose(ngettext("On turn %1 you have %2 city!",
+				  "On turn %1 you have %2 gold cities!",
+				  count), turn, count) :
+    s = String::ucompose(ngettext("On turn %1 you had %2 city!",
+				  "On turn %1 you had %2 cities!",
+				  count), turn, count);
   city_label->set_text(s);
 
   //on turn # you were coming #
@@ -463,9 +467,11 @@ void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
 	    }
 	}
     }
-  s = String::ucompose(_("On turn %1 you %2 coming %3"), turn,
-		       turn == past_citylists.size() ? "are" : "were",
-		       ReportDialog::calculateRank(scores, *scores.begin()));
+  turn == past_citylists.size() ?
+    s = String::ucompose(_("On turn %1 you are coming %2!"),
+			 turn, ReportDialog::calculateRank(scores, *scores.begin())):
+    s = String::ucompose(_("On turn %1 you were coming %2!"),
+			 turn, ReportDialog::calculateRank(scores, *scores.begin()));
   winner_label->set_text(s);
 }
 
