@@ -363,12 +363,17 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkMenuItem" id="ruin_report_menuitem">
+			<widget class="GtkMenuItem" id="toggle_grid_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Ruins</property>
+			  <property name="label" translatable="yes">Toggle _Grid</property>
 			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_ruin_report_menuitem_activate" last_modification_time="Sun, 26 Aug 2007 21:30:51 GMT"/>
-			  <accelerator key="period" modifiers="0" signal="activate"/>
+			  <accelerator key="g" modifiers="GDK_SHIFT_MASK" signal="activate"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkSeparatorMenuItem" id="separator3">
+			  <property name="visible">True</property>
 			</widget>
 		      </child>
 
@@ -393,30 +398,64 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkMenuItem" id="stack_info_menuitem">
+			<widget class="GtkSeparatorMenuItem" id="separator4">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Stack Info</property>
-			  <property name="use_underline">True</property>
-			  <signal name="activate" handler="on_stack_info_menuitem_activate" last_modification_time="Sun, 17 Feb 2008 14:06:01 GMT"/>
-			  <accelerator key="s" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
-			<widget class="GtkMenuItem" id="toggle_grid_menuitem">
+			<widget class="GtkMenuItem" id="build_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">Toggle _Grid</property>
+			  <property name="label" translatable="yes">Build</property>
 			  <property name="use_underline">True</property>
-			  <accelerator key="g" modifiers="GDK_SHIFT_MASK" signal="activate"/>
+			  <accelerator key="b" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 
 		      <child>
 			<widget class="GtkMenuItem" id="production_menuitem">
 			  <property name="visible">True</property>
-			  <property name="label" translatable="yes">City Production</property>
+			  <property name="label" translatable="yes">Cities</property>
 			  <property name="use_underline">True</property>
 			  <accelerator key="c" modifiers="0" signal="activate"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="production_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Production</property>
+			  <property name="use_underline">True</property>
+			  <accelerator key="p" modifiers="0" signal="activate"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="vectoring_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Vectoring</property>
+			  <property name="use_underline">True</property>
+			  <accelerator key="v" modifiers="0" signal="activate"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="ruin_report_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Ruins</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_ruin_report_menuitem_activate" last_modification_time="Sun, 26 Aug 2007 21:30:51 GMT"/>
+			  <accelerator key="period" modifiers="0" signal="activate"/>
+			</widget>
+		      </child>
+
+		      <child>
+			<widget class="GtkMenuItem" id="stack_info_menuitem">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Stack</property>
+			  <property name="use_underline">True</property>
+			  <signal name="activate" handler="on_stack_info_menuitem_activate" last_modification_time="Sun, 17 Feb 2008 14:06:01 GMT"/>
+			  <accelerator key="s" modifiers="0" signal="activate"/>
 			</widget>
 		      </child>
 		    </widget>

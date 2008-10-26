@@ -231,6 +231,7 @@ class GameWindow: public Decorated
     void on_fight_order_activated();
     void on_levels_activated();
     void on_production_activated();
+    void on_vectoring_activated();
     void on_grid_toggled();
     void on_ruin_report_activated();
     void on_army_bonus_activated();
