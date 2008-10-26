@@ -377,10 +377,8 @@ void HistoryReportDialog::on_turn_changed(Gtk::Scale *scale)
   fill_in_turn_info(turn);
 }
 
-void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
+void HistoryReportDialog::update_window_title()
 {
-  Glib::ustring s;
-  Uint32 count;
   switch (history_notebook->get_current_page())
     {
     case CITY:
@@ -396,6 +394,13 @@ void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
       set_title(_("Winner History"));
       break;
     }
+}
+
+void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
+{
+  Glib::ustring s;
+  Uint32 count;
+  update_window_title();
 
   //update the event list
   events_list->clear();
@@ -479,6 +484,7 @@ void HistoryReportDialog::on_switch_page(GtkNotebookPage *page, guint number)
 {
   if (closing)
     return;
+  update_window_title();
 }
 
 void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)

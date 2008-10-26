@@ -107,6 +107,7 @@ class HistoryReportDialog: public Decorated
     void on_turn_changed(Gtk::Scale *scale);
     void fill_in_turn_info(Uint32 turn);
     void on_switch_page(GtkNotebookPage *page, guint number);
+    void update_window_title();
 
     bool closing;
 };
