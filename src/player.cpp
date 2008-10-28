@@ -736,8 +736,8 @@ bool Player::stackJoin(Stack* receiver, Stack* joining, bool grouped)
     if (joining->canJoin(receiver) == false)
       {
 	//fixme: this is a bad idea.  it seems recursively bad.
-	Stack *already_there = Stacklist::getAmbiguity(joining);
-	stackJoin(joining, already_there,  false);
+	//Stack *already_there = Stacklist::getAmbiguity(joining);
+	//doStackJoin(joining, already_there,  false);
         return false;
       }
     
