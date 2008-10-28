@@ -1284,6 +1284,24 @@ Show the city production window.
 </para>
 </listitem>
 <listitem>
+<para>B</para>
+<para>
+Show the city production window.
+</para>
+</listitem>
+<listitem>
+<para>P</para>
+<para>
+Show the city production window.
+</para>
+</listitem>
+<listitem>
+<para>V</para>
+<para>
+Show the city vectoring window.
+</para>
+</listitem>
+<listitem>
 <para>keypad keys</para>
 <para>
 The number keys on the keypad will move the selected stack in the given direction.
