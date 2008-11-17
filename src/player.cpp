@@ -858,7 +858,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
     }
 
     int stepCount = 0;
-    while (s->getPath()->size() > 1 && stackMoveOneStep(s) ||
+    while ((s->getPath()->size() > 1 && stackMoveOneStep(s)) ||
 	   stackMoveOneStepOverTooLargeFriendlyStacks(s))
       {
 	stepCount++;

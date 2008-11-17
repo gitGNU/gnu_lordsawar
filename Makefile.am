@@ -4,7 +4,7 @@ CLEANFILES = *~
 
 lordsawarconfigdir = $(LORDSAWAR_DATADIR)
 
-ACLOCAL_AMFLAGS = -I ./m4
+#ACLOCAL_AMFLAGS = -I ./m4
 
 EXTRA_DIST = DEPENDENCIES README $(INTLTOOL_FILES)
 
@@ -16,3 +16,5 @@ DISTCLEANFILES = intltool-extract \
                  intltool-merge \
                  intltool-update \
                  po/.intltool-merge-cache
+
+ACLOCAL_AMFLAGS = -I m4

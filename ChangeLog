@@ -1,3 +1,7 @@
+2008-11-17  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* Makefile.am (ACLOCAL_AMFLAGS): New variable.
+
 2008-10-26  Ben Asselstine
 
 	* added more view menu items.
