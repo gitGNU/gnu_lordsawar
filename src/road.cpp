@@ -88,6 +88,14 @@ std::string Road::roadTypeToString(const Road::Type type)
       return "Road::CONNECTS_EAST_WEST_AND_SOUTH";
     case Road::CONNECTS_NORTH_SOUTH_AND_WEST:
       return "Road::CONNECTS_NORTH_SOUTH_AND_WEST";
+    case Road::CONNECTS_NORTH:
+      return "Road::CONNECTS_NORTH";
+    case Road::CONNECTS_SOUTH:
+      return "Road::CONNECTS_SOUTH";
+    case Road::CONNECTS_EAST:
+      return "Road::CONNECTS_EAST";
+    case Road::CONNECTS_WEST:
+      return "Road::CONNECTS_WEST";
     }
   return "Road::CONNECTS_EAST_AND_WEST";
 }
@@ -118,5 +126,13 @@ Road::Type Road::roadTypeFromString(const std::string str)
     return Road::CONNECTS_EAST_WEST_AND_SOUTH;
   else if (str == "Road::CONNECTS_NORTH_SOUTH_AND_WEST")
     return Road::CONNECTS_NORTH_SOUTH_AND_WEST;
+  else if (str == "Road::CONNECTS_NORTH")
+    return Road::CONNECTS_NORTH;
+  else if (str == "Road::CONNECTS_SOUTH")
+    return Road::CONNECTS_SOUTH;
+  else if (str == "Road::CONNECTS_EAST")
+    return Road::CONNECTS_EAST;
+  else if (str == "Road::CONNECTS_WEST")
+    return Road::CONNECTS_WEST;
   return Road::CONNECTS_EAST_AND_WEST;
 }

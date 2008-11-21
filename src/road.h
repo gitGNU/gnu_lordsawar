@@ -44,6 +44,10 @@ class Road: public Location
 	  CONNECTS_EAST_WEST_AND_NORTH = 8,
 	  CONNECTS_EAST_WEST_AND_SOUTH = 9,
 	  CONNECTS_NORTH_SOUTH_AND_WEST = 10,
+	  CONNECTS_WEST = 11,
+	  CONNECTS_NORTH = 12,
+	  CONNECTS_EAST = 13,
+	  CONNECTS_SOUTH = 14,
 	};
 	static std::string roadTypeToString(const Road::Type type);
 	static Road::Type roadTypeFromString(const std::string str);

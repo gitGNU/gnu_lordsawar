@@ -6632,7 +6632,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>123</d_id>
 			<d_x>91</d_x>
 			<d_y>119</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_SOUTH</d_type>
 		</road>
 		<road>
 			<d_id>124</d_id>
@@ -6692,13 +6692,13 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>133</d_id>
 			<d_x>90</d_x>
 			<d_y>128</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_NORTH</d_type>
 		</road>
 		<road>
 			<d_id>134</d_id>
 			<d_x>89</d_x>
 			<d_y>142</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_WEST</d_type>
 		</road>
 		<road>
 			<d_id>135</d_id>
@@ -6752,13 +6752,13 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>143</d_id>
 			<d_x>82</d_x>
 			<d_y>144</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_WEST</d_type>
 		</road>
 		<road>
 			<d_id>144</d_id>
 			<d_x>79</d_x>
 			<d_y>144</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_WEST</d_type>
 		</road>
 		<road>
 			<d_id>145</d_id>
@@ -6854,7 +6854,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>160</d_id>
 			<d_x>63</d_x>
 			<d_y>144</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_EAST</d_type>
 		</road>
 		<road>
 			<d_id>161</d_id>
@@ -6962,7 +6962,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>178</d_id>
 			<d_x>65</d_x>
 			<d_y>135</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_SOUTH</d_type>
 		</road>
 		<road>
 			<d_id>183</d_id>
@@ -7028,7 +7028,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>193</d_id>
 			<d_x>101</d_x>
 			<d_y>10</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_SOUTH</d_type>
 		</road>
 		<road>
 			<d_id>194</d_id>
@@ -7274,7 +7274,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>287</d_id>
 			<d_x>5</d_x>
 			<d_y>23</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_EAST</d_type>
 		</road>
 		<road>
 			<d_id>288</d_id>
@@ -7394,7 +7394,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>309</d_id>
 			<d_x>93</d_x>
 			<d_y>83</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_WEST</d_type>
 		</road>
 		<road>
 			<d_id>327</d_id>
@@ -7490,13 +7490,13 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>342</d_id>
 			<d_x>17</d_x>
 			<d_y>87</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_NORTH</d_type>
 		</road>
 		<road>
 			<d_id>343</d_id>
 			<d_x>23</d_x>
 			<d_y>72</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_WEST</d_type>
 		</road>
 		<road>
 			<d_id>344</d_id>
@@ -7562,13 +7562,13 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>354</d_id>
 			<d_x>12</d_x>
 			<d_y>71</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_SOUTH</d_type>
 		</road>
 		<road>
 			<d_id>355</d_id>
 			<d_x>28</d_x>
 			<d_y>86</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_WEST</d_type>
 		</road>
 		<road>
 			<d_id>356</d_id>
@@ -7670,7 +7670,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>372</d_id>
 			<d_x>12</d_x>
 			<d_y>84</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_EAST</d_type>
 		</road>
 		<road>
 			<d_id>373</d_id>
@@ -7778,7 +7778,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>390</d_id>
 			<d_x>74</d_x>
 			<d_y>76</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_SOUTH</d_type>
 		</road>
 		<road>
 			<d_id>391</d_id>
@@ -7886,13 +7886,13 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>408</d_id>
 			<d_x>26</d_x>
 			<d_y>9</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_SOUTH</d_type>
 		</road>
 		<road>
 			<d_id>409</d_id>
 			<d_x>45</d_x>
 			<d_y>116</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_SOUTH</d_type>
 		</road>
 		<road>
 			<d_id>410</d_id>
@@ -7976,7 +7976,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>423</d_id>
 			<d_x>45</d_x>
 			<d_y>130</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_NORTH</d_type>
 		</road>
 		<road>
 			<d_id>875</d_id>
@@ -8024,7 +8024,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>882</d_id>
 			<d_x>79</d_x>
 			<d_y>9</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_EAST</d_type>
 		</road>
 		<road>
 			<d_id>883</d_id>
@@ -8066,7 +8066,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>889</d_id>
 			<d_x>83</d_x>
 			<d_y>18</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_NORTH</d_type>
 		</road>
 		<road>
 			<d_id>890</d_id>
@@ -8114,7 +8114,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>897</d_id>
 			<d_x>28</d_x>
 			<d_y>33</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_NORTH</d_type>
 		</road>
 		<road>
 			<d_id>904</d_id>
@@ -8150,7 +8150,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>909</d_id>
 			<d_x>71</d_x>
 			<d_y>92</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_EAST</d_type>
 		</road>
 	</roadlist>
 	<portlist>

@@ -3784,7 +3784,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>1101</d_id>
 			<d_x>76</d_x>
 			<d_y>36</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_SOUTH</d_type>
 		</road>
 		<road>
 			<d_id>1102</d_id>
@@ -3832,7 +3832,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>1109</d_id>
 			<d_x>81</d_x>
 			<d_y>39</d_y>
-			<d_type>Road::CONNECTS_NORTH_AND_SOUTH</d_type>
+			<d_type>Road::CONNECTS_NORTH</d_type>
 		</road>
 		<road>
 			<d_id>1111</d_id>
@@ -3862,7 +3862,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>1121</d_id>
 			<d_x>91</d_x>
 			<d_y>41</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_WEST</d_type>
 		</road>
 		<road>
 			<d_id>1122</d_id>
@@ -3874,7 +3874,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>1123</d_id>
 			<d_x>83</d_x>
 			<d_y>41</d_y>
-			<d_type>Road::CONNECTS_EAST_AND_WEST</d_type>
+			<d_type>Road::CONNECTS_EAST</d_type>
 		</road>
 		<road>
 			<d_id>1124</d_id>

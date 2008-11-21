@@ -1,3 +1,9 @@
+2008-11-21  Ben Asselstine
+
+	* added better signposts, roads, and bridges; Thanks to J. W. Bjerk.
+	* added new road-ending graphics.  This changes the saved-game schema.
+	* updated scenario files to use new road-ending graphics.
+
 2008-11-17  gettextize  <bug-gnu-gettext@gnu.org>
 
 	* Makefile.am (ACLOCAL_AMFLAGS): New variable.

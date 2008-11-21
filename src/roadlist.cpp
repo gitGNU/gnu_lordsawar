@@ -131,13 +131,13 @@ int Roadlist::calculateType (Vector<int> t)
     else if (!u && b && !l && r)
 	type = 5;
     else if (u && !b && !l && !r)
-	type = 1;
+	type = Road::CONNECTS_NORTH;
     else if (!u && b && !l && !r)
-	type = 1;
+	type = Road::CONNECTS_SOUTH;
     else if (!u && !b && l && !r)
-	type = 0;
+	type = Road::CONNECTS_WEST;
     else if (!u && !b && !l && r)
-	type = 0;
+	type = Road::CONNECTS_EAST;
     return type;
 }
 
