@@ -221,13 +221,25 @@ void MapGenerator::placeBridge(Vector<int> pos, int type)
 {
   if (type == 1)
     {
+      if (!(offmap(pos.y,pos.x-1)) &&
+	  d_terrain[(pos.x-1)*d_width + pos.y] != Tile::WATER)
+	d_building[(pos.x-1)*d_width + pos.y] = Maptile::ROAD;
       d_building[pos.x*d_width + pos.y] = Maptile::BRIDGE;
       d_building[(pos.x + 1)*d_width + pos.y] = Maptile::BRIDGE;
+      if (!(offmap(pos.y,pos.x+2)) &&
+	  d_terrain[(pos.x+2)*d_width + pos.y] != Tile::WATER)
+	d_building[(pos.x+2)*d_width + pos.y] = Maptile::ROAD;
     }
   else if (type == 2)
     {
+      if (!(offmap(pos.y-1,pos.x)) &&
+	  d_terrain[pos.x*d_width + pos.y-1] != Tile::WATER)
+	d_building[pos.x*d_width + pos.y-1] = Maptile::ROAD;
       d_building[pos.x*d_width + pos.y] = Maptile::BRIDGE;
       d_building[pos.x*d_width + pos.y + 1] = Maptile::BRIDGE;
+      if (!(offmap(pos.y+2,pos.x)) &&
+	  d_terrain[pos.x*d_width + pos.y+2] != Tile::WATER)
+	d_building[pos.x*d_width + pos.y+2] = Maptile::ROAD;
     }
 
 }

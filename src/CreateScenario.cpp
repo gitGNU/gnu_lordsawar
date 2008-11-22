@@ -532,11 +532,12 @@ bool CreateScenario::setupCities(bool cities_can_produce_allies,
     return true;
 }
 
+
 bool CreateScenario::setupRoads()
 {
   Roadlist* rl = Roadlist::getInstance();
   for (Roadlist::iterator it = rl->begin(); it != rl->end(); it++)
-    (*it)->setType(Roadlist::getInstance()->calculateType((*it)->getPos()));
+    (*it)->setType(calculateRoadType((*it)->getPos()));
   return true;
 }
 
@@ -847,4 +848,72 @@ void CreateScenario::getBaseGold (int difficulty, int *base_gold)
     *base_gold = 800;
   else
     *base_gold = 700;
+}
+
+int CreateScenario::calculateRoadType (Vector<int> t)
+{
+    Roadlist *rl = Roadlist::getInstance();
+    Bridgelist *bl = Bridgelist::getInstance();
+
+    // examine neighbour tiles to discover whether there's a road or
+    // bridge on them
+    bool u = false; //up
+    bool b = false; //bottom
+    bool l = false; //left
+    bool r = false; //right
+
+    if (t.y > 0)
+      u = rl->getObjectAt(t + Vector<int>(0, -1));
+    if (t.y < GameMap::getHeight() - 1)
+      b = rl->getObjectAt(t + Vector<int>(0, 1));
+    if (t.x > 0)
+      l = rl->getObjectAt(t + Vector<int>(-1, 0));
+    if (t.x < GameMap::getWidth() - 1)
+      r = rl->getObjectAt(t + Vector<int>(1, 0));
+
+    if (!u && t.y > 0)
+      u = bl->getObjectAt(t + Vector<int>(0, -1));
+    if (!b && t.y < GameMap::getHeight() - 1)
+      b = bl->getObjectAt(t + Vector<int>(0, 1));
+    if (!l && t.x > 0)
+      l = bl->getObjectAt(t + Vector<int>(-1, 0));
+    if (!r && t.x < GameMap::getWidth() - 1)
+      r = bl->getObjectAt(t + Vector<int>(1, 0));
+
+    // then translate this to the type
+    int type = 2; 
+    //show road type 2 when no other road tiles are around
+    if (!u && !b && !l && !r)
+	type = 2;
+    else if (u && b && l && r)
+	type = 2;
+    else if (!u && b && l && r)
+	type = 9;
+    else if (u && !b && l && r)
+	type = 8;
+    else if (u && b && !l && r)
+	type = 7;
+    else if (u && b && l && !r)
+	type = 10;
+    else if (u && b && !l && !r)
+	type = 1;
+    else if (!u && !b && l && r)
+	type = 0;
+    else if (u && !b && l && !r)
+	type = 3;
+    else if (u && !b && !l && r)
+	type = 4;
+    else if (!u && b && l && !r)
+	type = 6;
+    else if (!u && b && !l && r)
+	type = 5;
+    else if (u && !b && !l && !r)
+	type = Road::CONNECTS_NORTH;
+    else if (!u && b && !l && !r)
+	type = Road::CONNECTS_SOUTH;
+    else if (!u && !b && l && !r)
+	type = Road::CONNECTS_WEST;
+    else if (!u && !b && !l && r)
+	type = Road::CONNECTS_EAST;
+    return type;
 }

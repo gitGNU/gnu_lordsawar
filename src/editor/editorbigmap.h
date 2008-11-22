@@ -90,7 +90,6 @@ class EditorBigMap: public BigMap
     void change_map_under_cursor();
     std::vector<Vector<int> > get_cursor_tiles();
     std::vector<Vector<int> > get_screen_tiles();
-    int calculateRoadType (Vector<int> t);
     bool show_tile_types_instead_of_tile_styles;
 };
 

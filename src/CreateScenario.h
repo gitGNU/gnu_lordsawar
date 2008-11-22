@@ -27,6 +27,7 @@
 #include <SDL.h>
 #include "CreateScenarioRandomize.h"
 #include "game-parameters.h"
+#include "vector.h"
 
 class MapGenerator;
 class GameScenario;
@@ -170,6 +171,7 @@ class CreateScenario : public CreateScenarioRandomize
         bool dump(std::string filename) const;
 
 	MapGenerator *getGenerator() const {return d_generator;};
+	static int calculateRoadType (Vector<int> t);
     private:
         //! Creates the map and distributes cities, temples and ruins
         bool createMap();
@@ -236,6 +238,7 @@ class CreateScenario : public CreateScenarioRandomize
 	//! Based on the difficulty, get how much gold each player should
 	//start with.
 	void getBaseGold (int difficulty, int *base_gold);
+
 
         //data
         //for map creation
