@@ -30,6 +30,7 @@
 
 #include "citylist.h"
 #include "ruinlist.h"
+#include "vectoredunitlist.h"
 #include "stacklist.h"
 #include "xmlhelper.h"
 #include "history.h"
@@ -528,6 +529,8 @@ void Playerlist::swap(Player *old_player, Player *new_player)
   clist->changeOwnership (old_player, new_player);
   Ruinlist *rlist = Ruinlist::getInstance();
   rlist->changeOwnership (old_player, new_player);
+  VectoredUnitlist *vlist = VectoredUnitlist::getInstance();
+  vlist->changeOwnership (old_player, new_player);
   if (old_player == d_activeplayer)
     {
       d_activeplayer = new_player;

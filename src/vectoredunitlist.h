@@ -201,6 +201,8 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 */
 	void changeDestination(City *city, Vector<int> new_dest);
 
+	void changeOwnership(Player *old_owner, Player *new_owner);
+
 	iterator flErase(iterator object);
     protected:
 

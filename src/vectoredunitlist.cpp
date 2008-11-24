@@ -276,3 +276,10 @@ VectoredUnitlist::iterator VectoredUnitlist::flErase(iterator object)
   delete(*object);
   return erase (object);
 }
+
+void VectoredUnitlist::changeOwnership(Player *old_owner, Player *new_owner)
+{
+  for (iterator it = begin(); it != end(); it++)
+    if ((*it)->getOwner() == old_owner)
+      (*it)->setOwner(new_owner);
+}
