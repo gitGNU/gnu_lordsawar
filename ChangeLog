@@ -1,3 +1,7 @@
+2008-11-24  Ben Asselstine  <benasselstine@gmail.com>
+
+	* src/gui/buy-production-dialog.h: fixed bug #24915.
+
 2008-11-24  Ben Asselstine
 
 	* fixed bug wrt changing players from human to computer, and vectored
