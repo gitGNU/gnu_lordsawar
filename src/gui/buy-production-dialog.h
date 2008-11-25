@@ -29,7 +29,7 @@
 
 #include "army-info-tip.h"
 
-class ArmyProto;
+#include "armyproto.h"
 class City;
 
 #include "decorated.h"
@@ -45,7 +45,7 @@ class BuyProductionDialog: public Decorated
     void hide();
 
     enum { NO_ARMY_SELECTED = -1 };
-    int get_selected_army() { return selected_army; }
+    int get_selected_army() { return purchasables[selected_army]->getTypeId(); }
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
