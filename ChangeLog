@@ -1,3 +1,7 @@
+2008-11-25  Ben Asselstine  <benasselstine@gmail.com>
+
+	* configure.ac: added check for boost headers.
+
 2008-11-24  Ben Asselstine  <benasselstine@gmail.com>
 
 	* src/gui/buy-production-dialog.h: fixed bug #24915.
