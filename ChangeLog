@@ -1,5 +1,10 @@
 2008-11-25  Ben Asselstine  <benasselstine@gmail.com>
 
+	* src/MapGenerator.cpp: now connecting bridges with roads to nearby
+	places.
+
+2008-11-25  Ben Asselstine  <benasselstine@gmail.com>
+
 	* configure.ac: added check for boost headers.
 
 2008-11-24  Ben Asselstine  <benasselstine@gmail.com>
