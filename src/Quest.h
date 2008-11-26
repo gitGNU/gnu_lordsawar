@@ -221,6 +221,12 @@ class Quest
 	//! Returns if the Quest will be deleted at the end of the round.
         bool isPendingDeletion() const {return d_pending;}
 
+	//! Determine the name of the hero, even if it's dead.
+	std::string getHeroNameForDeadHero();
+
+	//! Determine the name of a hero, given the id.
+	static std::string getHeroNameForDeadHero(Uint32 id);
+
     protected:
 	//! The QuestsManager object that this Quest object is associated with.
         QuestsManager& d_q_mgr;

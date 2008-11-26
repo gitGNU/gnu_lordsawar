@@ -23,6 +23,7 @@
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
 
+#include "history.h"
 #include "QKillHero.h"
 #include "QuestsManager.h"
 #include "playerlist.h"
@@ -107,9 +108,9 @@ std::string QuestKillHero::getProgress() const
 //=======================================================================
 void QuestKillHero::getSuccessMsg(std::queue<std::string>& msgs) const
 {
-    std::string name = getHeroById(d_victim)->getName();
+    std::string name = getHeroNameForDeadHero(d_victim);
     char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, _("You slayed the wicked hero %s. He deserved that!"), name.c_str());
+    snprintf(buffer, 100, _("You have slain the wicked hero %s."), name.c_str());
     msgs.push(std::string(buffer));
 }
 //=======================================================================
@@ -117,10 +118,10 @@ void QuestKillHero::getExpiredMsg(std::queue<std::string>& msgs) const
 {
     char buffer[101]; buffer[100]='\0';
     snprintf(buffer, 100, _("You could not slay the wicked hero %s"),
-            getHeroById(d_victim)->getName().c_str());
+            getHeroNameForDeadHero(d_victim).c_str());
 
     msgs.push(std::string(buffer));
-    msgs.push(_("He was slain by other fellows!"));
+    msgs.push(_("The hero was slain by other fellows!"));
 }
 //=======================================================================
 void QuestKillHero::initDescription()

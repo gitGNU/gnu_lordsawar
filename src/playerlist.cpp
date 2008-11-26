@@ -812,3 +812,13 @@ void Playerlist::reorder(std::list<Uint32> order)
   d_activeplayer = getFirstLiving();
 }
 
+History *Playerlist::getHistoryForHeroId(Uint32 id)
+{
+  for (iterator it = begin(); it != end(); ++it)
+    {
+      History *event = (*it)->getHistoryForHeroId(id);
+      if (event)
+	return event;
+    }
+  return NULL;
+}

@@ -337,12 +337,13 @@ bool History_GoldTotal::fillData(int gold)
 //History_HeroEmerges
 
 History_HeroEmerges::History_HeroEmerges()
-:History(History::HERO_EMERGES), d_hero(""), d_city("")
+:History(History::HERO_EMERGES), d_hero(""), d_hero_id(0), d_city("")
 {
 }
 
 History_HeroEmerges::History_HeroEmerges(const History_HeroEmerges &history)
-:History(history), d_hero(history.d_hero), d_city(history.d_city)
+:History(history), d_hero(history.d_hero), d_hero_id(history.d_hero_id), 
+    d_city(history.d_city)
 {
 }
 
@@ -351,6 +352,7 @@ History_HeroEmerges::History_HeroEmerges(XML_Helper* helper)
 {
   helper->getData(d_hero, "hero");
   helper->getData(d_city, "city");
+  helper->getData(d_hero_id, "hero_id");
 }
 
 History_HeroEmerges::~History_HeroEmerges()
@@ -361,7 +363,7 @@ std::string History_HeroEmerges::dump() const
 {
   std::stringstream s;
 
-  s <<"hero " << d_hero << " emerges in " << d_city << "\n";
+  s <<"hero " << d_hero_id <<" (" << d_hero << ") emerges in " << d_city << "\n";
 
   return s.str();
 }
@@ -372,14 +374,16 @@ bool History_HeroEmerges::doSave(XML_Helper* helper) const
 
   retval &= helper->saveData("hero", d_hero);
   retval &= helper->saveData("city", d_city);
+  retval &= helper->saveData("hero_id", d_hero_id);
 
   return retval;
 }
 
-bool History_HeroEmerges::fillData(HeroProto *hero, City *city)
+bool History_HeroEmerges::fillData(Hero *hero, City *city)
 {
   d_hero = hero->getName();
   d_city = city->getName();
+  d_hero_id = hero->getId();
   return true;
 }
 

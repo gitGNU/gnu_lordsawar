@@ -250,10 +250,12 @@ class History_HeroEmerges : public History
 	 * @param hero    The Hero that has emergerd.
 	 * @param city    The City where the Hero has emerged.
 	 */
-        bool fillData(HeroProto *hero, City *city);
+        bool fillData(Hero *hero, City *city);
 
 	//! Get the name of the Hero who appeared.
 	std::string getHeroName() const {return d_hero;}
+
+	Uint32 getHeroId() const {return d_hero_id;};
 
 	//! Get the name of the City where the Hero has emerged.
 	std::string getCityName() const {return d_city;}
@@ -261,6 +263,9 @@ class History_HeroEmerges : public History
     private:
 	//! The name of the Hero who emerged.
 	std::string d_hero;
+
+	//! The id of the hero
+	Uint32 d_hero_id;
 
 	//! The name of the City where the Hero emerged.
 	std::string d_city;

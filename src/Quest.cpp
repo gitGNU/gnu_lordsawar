@@ -24,6 +24,7 @@
 #include "hero.h"
 #include "playerlist.h"
 #include "stacklist.h"
+#include "history.h"
 
 std::string Quest::d_tag = "quest";
 using namespace std;
@@ -100,4 +101,17 @@ bool Quest::isActive()
     }
 
     return true;
+}
+
+
+std::string Quest::getHeroNameForDeadHero()
+{
+  return getHeroNameForDeadHero(d_hero);
+}
+
+std::string Quest::getHeroNameForDeadHero(Uint32 id)
+{
+  History *history = Playerlist::getInstance()->getHistoryForHeroId(id);
+  History_HeroEmerges *event = dynamic_cast<History_HeroEmerges*>(history);
+  return event->getHeroName();
 }

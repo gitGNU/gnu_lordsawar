@@ -517,8 +517,8 @@ void QuestsManager::nextTurn(Player *p)
     {
       if ((*it)->getPlayer() == p)
 	{
-	  quest_expired.emit(*it);
 	  Quest *q = *it;
+	  quest_expired.emit(q);
 	  it = d_inactive_quests.erase(it);
 	  if (q)
 	    delete q;

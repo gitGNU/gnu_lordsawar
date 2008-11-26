@@ -28,6 +28,8 @@
 #include <sigc++/signal.h>
 #include "game-parameters.h"
 
+class History;
+
 #include "player.h"
 
 //! A list of all of the Player objects in a scenario.
@@ -224,6 +226,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	void turnHumansInto(Player::Type type, int num_players = -1);
 	void reorder(std::list<Uint32> order);
 
+	History *getHistoryForHeroId(Uint32 id);
     protected:
 	//! Default constructor.
         Playerlist();

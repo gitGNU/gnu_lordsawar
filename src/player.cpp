@@ -2296,11 +2296,14 @@ void Player::recruitHero(HeroProto* heroproto, City *city, int cost, int alliesC
   Action_RecruitHero *action = new Action_RecruitHero();
   action->fillData(heroproto, city, cost, alliesCount, ally);
   addAction(action);
-  History_HeroEmerges *item = new History_HeroEmerges();
-  item->fillData(heroproto, city);
-  addHistory(item);
 
-  doRecruitHero(heroproto, city, cost, alliesCount, ally);
+  Hero *hero = doRecruitHero(heroproto, city, cost, alliesCount, ally);
+  if (hero)
+    {
+      History_HeroEmerges *item = new History_HeroEmerges();
+      item->fillData(hero, city);
+      addHistory(item);
+    }
 }
 
 void Player::doDeclareDiplomacy (DiplomaticState state, Player *player)
@@ -3202,5 +3205,21 @@ std::list<Vector<int> > Player::getStackTrack(Stack *s)
 	points.push_front(pos);
     }
   return points;
+}
+	
+History *Player::getHistoryForHeroId(Uint32 id)
+{
+  std::list<History*>::const_iterator pit;
+  for (pit = d_history.begin(); pit != d_history.end(); pit++)
+    {
+      if ((*pit)->getType() == History::HERO_EMERGES)
+	{
+	  History_HeroEmerges *event;
+	  event = dynamic_cast<History_HeroEmerges *>(*pit);
+	  if (event->getHeroId() == id)
+	    return *pit;
+	}
+    }
+  return NULL;
 }
 // End of file
