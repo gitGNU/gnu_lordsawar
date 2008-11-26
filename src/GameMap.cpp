@@ -960,7 +960,7 @@ Vector<int> GameMap::findNearestObjectInDir(Vector<int> pos, Vector<int> dir)
   if (temple)
     objects.push_back(temple->getPos());
   Ruin *ruin = Ruinlist::getInstance()->getNearestObjectInDir(pos, dir);
-  if (ruin)
+  if (ruin && ruin->isHidden() == false)
     objects.push_back(ruin->getPos());
   if (objects.size() == 0)
     return Vector<int>(-1,-1);
