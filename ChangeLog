@@ -3,6 +3,7 @@
 	* src/overviewmap.cpp: now optionally drawing overviewmap objects for
 	a different player.
 	* fixed bug #24926.
+	* fixed bug #24933.  this changes the saved-game schema.
 
 2008-11-25  Ben Asselstine  <benasselstine@gmail.com>
 
