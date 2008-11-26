@@ -49,7 +49,7 @@ void HistoryMap::drawCities()
   for (; it != d_clist->end(); it++)
   {
       SDL_Surface *tmp;
-      if ((*it)->isFogged())
+      if ((*it)->isFogged(getViewingPlayer()))
         continue;
       if ((*it)->isBurnt() == true)
         tmp = gc->getSmallRuinedCityPic();
@@ -70,6 +70,6 @@ void HistoryMap::drawCities()
 void HistoryMap::updateCities (LocationList<City*> *clist)
 {
   d_clist = clist;
-  draw();
+  draw(Playerlist::getActiveplayer());
   after_draw();
 }

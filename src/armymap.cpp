@@ -57,7 +57,7 @@ void ArmyMap::draw_stacks()
                 continue;
 
             // don't draw stacks on tiles we can't see
-            if (FogMap::isFogged (pos) == true)
+            if (FogMap::isFogged (pos, Playerlist::getActiveplayer()) == true)
                 continue;
 
             pos = mapToSurface(pos);

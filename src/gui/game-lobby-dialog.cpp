@@ -67,7 +67,7 @@ void GameLobbyDialog::update_city_map()
       if (d_game_scenario->getRound() > 1)
 	{
 	  citymap->resize();
-	  citymap->draw();
+	  citymap->draw(Playerlist::getActiveplayer());
 	}
     }
   else
@@ -635,7 +635,7 @@ bool GameLobbyDialog::run()
   if (d_game_scenario->s_hidden_map == false)
     {
       citymap->resize();
-      citymap->draw();
+      citymap->draw(Playerlist::getActiveplayer());
     }
 
   people_treeview->remove_all_columns();

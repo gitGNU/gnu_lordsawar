@@ -22,6 +22,7 @@
 
 #include "xmlhelper.h"
 #include "templelist.h"
+#include "playerlist.h"
 #include "stack.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -91,7 +92,7 @@ bool Templelist::load(std::string tag, XML_Helper* helper)
 
 static bool isFogged(void *t)
 {
-  return ((Temple*)t)->isFogged();
+  return ((Temple*)t)->isFogged(Playerlist::getActiveplayer());
 }
 
 Temple * Templelist::getNearestVisibleTemple(const Vector<int>& pos)

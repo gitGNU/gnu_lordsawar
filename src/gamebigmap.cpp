@@ -816,7 +816,7 @@ void GameBigMap::after_draw()
       // draw the selection
       Vector<int> p = stack->getPos();
       if (is_inside(buffer_view, Vector<int>(p.x, p.y)) &&
-	  FogMap::isFogged(p) == false)
+	  FogMap::isFogged(p, Playerlist::getActiveplayer()) == false)
 	{
 	  static int bigframe = -1;
 	  static int smallframe = -1;

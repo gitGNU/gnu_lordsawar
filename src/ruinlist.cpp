@@ -109,7 +109,7 @@ static bool isHiddenAndNotOwnedByActivePlayer(void *r)
 
 static bool isFogged(void *r)
 {
-  return ((Ruin*)r)->isFogged();
+  return ((Ruin*)r)->isFogged(Playerlist::getActiveplayer());
 }
 
 static bool isSearched(void *r)

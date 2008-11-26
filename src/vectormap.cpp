@@ -58,7 +58,7 @@ void VectorMap::draw_planted_standard(Vector<int> flag)
 
 void VectorMap::draw_city (City *c, Uint32 &type, bool &prod)
 {
-  if (c->isFogged())
+  if (c->isFogged(getViewingPlayer()))
     return;
   GraphicsCache *gc = GraphicsCache::getInstance();
   SDL_Surface *tmp;
@@ -153,7 +153,7 @@ void VectorMap::draw_lines (std::list<City*> srcs, std::list<City*> dests)
     {
       if ((*it)->getVectoring() == Vector<int>(-1, -1))
 	continue;
-      if ((*it)->isFogged() == true)
+      if ((*it)->isFogged(getViewingPlayer()) == true)
         continue;
       City *c = cl->getNearestObjectBefore((*it)->getVectoring(), 2);
       if (c)
@@ -281,7 +281,7 @@ void VectorMap::after_draw()
       // draw lines from origination to city/planted standard
       for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
 	{
-	  if ((*it)->isFogged() == true)
+	  if ((*it)->isFogged(getViewingPlayer()) == true)
 	    continue;
 	  if ((*it)->getOwner() != city->getOwner())
 	    continue;
@@ -353,14 +353,14 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	      destination_chosen.emit(dest);
 	      Playerlist::getActiveplayer()->vectorFromCity(city, dest);
 	      setClickAction(CLICK_SELECTS);
-	      draw();
+	      draw(Playerlist::getActiveplayer());
 	    }
 	  else if (dest == Vector<int>(-1, -1)) //stop vectoring
 	    {
 	      destination_chosen.emit(dest);
 	      Playerlist::getActiveplayer()->vectorFromCity(city, dest);
 	      setClickAction(CLICK_SELECTS);
-	      draw();
+	      draw(Playerlist::getActiveplayer());
 	    }
 	  break;
 	case CLICK_SELECTS:
@@ -371,7 +371,7 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	  if (nearestCity == NULL)
 	    return;
 	  city = nearestCity;
-	  draw();
+	  draw(Playerlist::getActiveplayer());
 	  break;
 	case CLICK_CHANGES_DESTINATION:
 	  nearestCity = cl->getNearestVisibleFriendlyCity(dest, 4);
@@ -401,7 +401,7 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	    {
 	      destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
-	      draw();
+	      draw(Playerlist::getActiveplayer());
 	    }
 	  bool is_source_city = false;
 	  std::list<City*> sources = cl->getCitiesVectoringTo(city);
@@ -421,10 +421,10 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	      Playerlist::getActiveplayer()->changeVectorDestination(city, 
 								     dest);
 	      setClickAction(CLICK_SELECTS);
-	      draw();
+	      draw(Playerlist::getActiveplayer());
 	      if (dest != planted_standard)
 		city = nearestCity;
-	      draw();
+	      draw(Playerlist::getActiveplayer());
 	    }
 	  break;
 	}

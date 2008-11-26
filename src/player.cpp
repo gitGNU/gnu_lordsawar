@@ -1781,6 +1781,7 @@ bool Player::giveReward(Stack *s, Reward *reward)
   item->fillData(s, reward);
   addAction(item);
   //FIXME: get rid of this reward now that we're done with it
+  //but we need to show it still... (in the case of quest completions)
 
   return true;
 }

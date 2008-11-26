@@ -63,10 +63,9 @@ class LocationBox : public Immovable
 
     //! Returns whether or not this location obscured from view on a hidden map.
     /**
-     * @note This method relies on Playerlist::getActiveplayer to know
-     *       which FogMap to query.
+     * @param player The player whose map to query.
      */
-    bool isFogged();
+    bool isFogged(Player *player);
 
     //! Unobscures the view of this location in the active player's FogMap.
     void deFog();

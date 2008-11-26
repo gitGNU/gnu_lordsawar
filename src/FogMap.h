@@ -22,6 +22,7 @@
 
 class XML_Helper;
 class SightMap;
+class Player;
 
 //! What a player can see on a hidden map.
 /**
@@ -133,10 +134,11 @@ class FogMap
 	 * obscured or not.
 	 *
 	 * @param pos  The position in the fogmap to query.
+	 * @param player The player's fogmap to query.
 	 *
 	 * @return True if the position is obscured due to fog, false if not.
 	 */
-	static bool isFogged(Vector <int> pos);
+	static bool isFogged(Vector <int> pos, Player *player);
 
 	bool isCompletelyObscuredFogTile(Vector<int> pos);
     private:

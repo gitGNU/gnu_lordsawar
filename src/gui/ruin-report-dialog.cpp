@@ -100,7 +100,7 @@ void RuinReportDialog::hide()
 void RuinReportDialog::run()
 {
   ruinmap->resize();
-  ruinmap->draw();
+  ruinmap->draw(Playerlist::getActiveplayer());
 
   Sound::getInstance()->playMusic("hero", 1);
   dialog->show_all();

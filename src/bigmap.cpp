@@ -435,7 +435,7 @@ void BigMap::drawFogTile (int x, int y)
 	    Vector<int> pos;
 	    pos.x = i;
 	    pos.y = j;
-	    foggyTile = FogMap::isFogged(pos);
+	    foggyTile = FogMap::isFogged(pos, Playerlist::getActiveplayer());
 	  }
 	if (foggyTile)
 	  {
@@ -504,7 +504,7 @@ void BigMap::debugFogTile (int x, int y)
   int idx = 0;
   int count = 0;
   bool foggyTile;
-  printf ("isFogged() == %d ", FogMap::isFogged(Vector<int>(x,y)));
+  printf ("isFogged() == %d ", FogMap::isFogged(Vector<int>(x,y), Playerlist::getActiveplayer()));
   for (int i = x - 1; i <= x + 1; i++)
     for (int j = y - 1; j <= y + 1; j++)
       {
@@ -517,7 +517,7 @@ void BigMap::debugFogTile (int x, int y)
 	else
 	  {
 	    Vector<int> pos = Vector<int>(i, j);
-	    foggyTile = FogMap::isFogged(pos);
+	    foggyTile = FogMap::isFogged(pos, Playerlist::getActiveplayer());
 	  }
 	if (foggyTile)
 	  {
@@ -775,7 +775,7 @@ void BigMap::draw_buffer(Rectangle map_view, SDL_Surface *surface)
 	      Vector<int> pos;
 	      pos.x = x;
 	      pos.y = y;
-	      if (FogMap::isFogged(pos))
+	      if (FogMap::isFogged(pos, Playerlist::getActiveplayer()))
 		drawFogTile (x, y);
 	    }
 	}

@@ -27,6 +27,7 @@
 #include "SmallTile.h"
 
 class Maptile;
+class Player;
 
 //! Generates a miniature graphic of the game map.
 /**
@@ -90,7 +91,7 @@ class OverviewMap
      *
      * This method calls the after_draw method from the derived classes.
      */
-    void draw();
+    void draw(Player *player);
 
     //! Redraw a portion of the map graphic.
     /**
@@ -115,6 +116,9 @@ class OverviewMap
 				SDL_Color first_color, SDL_Color second_color,
 				SDL_Color third_color,
 				int i, int j, bool shadowed);
+
+    Player * getViewingPlayer() {return d_player;};
+    void setViewingPlayer(Player *player) {d_player = player;};
  private:
     //! An SDL surface of the terrain without the features.
     /**
@@ -187,6 +191,8 @@ class OverviewMap
 
     //! The surface containing the drawn map.
     SDL_Surface* surface;
+
+    Player *d_player;
 };
 
 #endif // OVERVIEWMAP_H

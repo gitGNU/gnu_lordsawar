@@ -26,7 +26,6 @@
 #include "citylist.h"
 #include "ruinlist.h"
 #include "templelist.h"
-#include "playerlist.h"
 #include "city.h"
 #include "ruin.h"
 #include "temple.h"
@@ -41,6 +40,7 @@ OverviewMap::OverviewMap()
 {
     surface = 0;
     static_surface = 0;
+    d_player = Playerlist::getActiveplayer();
 }
 
 OverviewMap::~OverviewMap()
@@ -322,7 +322,7 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
 
 	draw_terrain_pixels(Rectangle(pos, dim));
     }
-    draw();
+    draw(d_player);
 }
 
 void OverviewMap::draw_terrain_pixels(Rectangle r)
@@ -352,10 +352,10 @@ void OverviewMap::after_draw()
 {
 }
 
-void OverviewMap::draw()
+void OverviewMap::draw(Player *player)
 {
+    d_player = player;
     Uint32 fog_color = SDL_MapRGB(surface->format, 0, 0, 0);
-    Playerlist *pl = Playerlist::getInstance();
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
     assert(surface);
 
@@ -372,9 +372,9 @@ void OverviewMap::draw()
         it != Ruinlist::getInstance()->end(); it++)
     {
         Ruin *r = *it;
-        if (r->isHidden() == true && r->getOwner() != pl->getActiveplayer())
+        if (r->isHidden() == true && r->getOwner() != d_player)
           continue;
-        if (r->isFogged())
+        if (r->isFogged(d_player))
           continue;
         Vector<int> pos = r->getPos();
         pos = mapToSurface(pos);
@@ -391,7 +391,7 @@ void OverviewMap::draw()
         it != Templelist::getInstance()->end(); it++)
     {
       Temple *t = *it;
-        if (t->isFogged())
+        if (t->isFogged(d_player))
           continue;
         Vector<int> pos = t->getPos();
         pos = mapToSurface(pos);
@@ -409,7 +409,7 @@ void OverviewMap::draw()
           Vector <int> pos;
           pos.x = i;
           pos.y = j;
-          if (FogMap::isFogged(pos) == true)
+          if (FogMap::isFogged(pos, d_player) == true)
             {
               pos = mapToSurface(pos);
               draw_filled_rect(surface, pos.x, pos.y,
@@ -476,7 +476,7 @@ void OverviewMap::draw_cities (bool all_razed)
   {
       City *c = *it;
       SDL_Surface *tmp;
-      if (c->isFogged())
+      if (c->isFogged(d_player))
         continue;
       if (c->isBurnt() == true || all_razed == true)
         tmp = gc->getSmallRuinedCityPic();

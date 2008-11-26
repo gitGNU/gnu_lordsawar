@@ -539,7 +539,7 @@ bool MainWindow::on_sdl_mouse_button_event(GdkEventButton *e)
 	button_event = e;	// save it for later use
 	bigmap->mouse_button_event(to_input_event(e));
 	if (smallmap.get())
-	  smallmap->draw();
+	  smallmap->draw(Playerlist::getActiveplayer());
     }
     
     return true;
@@ -619,7 +619,7 @@ void MainWindow::on_sdl_surface_changed()
     }
     
     if (smallmap.get())
-	smallmap->draw();
+	smallmap->draw(Playerlist::getActiveplayer());
 }
 
 void MainWindow::on_new_map_activated()
@@ -1076,7 +1076,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 
 	// we might have changed something visible
 	bigmap->draw();
-	smallmap->draw();
+	smallmap->draw(Playerlist::getActiveplayer());
     }
     else if (City *o = dynamic_cast<City *>(object))
     {
@@ -1086,7 +1086,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 
 	// we might have changed something visible
 	bigmap->draw();
-	smallmap->draw();
+	smallmap->draw(Playerlist::getActiveplayer());
     }
     else if (Ruin *o = dynamic_cast<Ruin *>(object))
     {

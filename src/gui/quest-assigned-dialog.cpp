@@ -81,7 +81,7 @@ void QuestAssignedDialog::hide()
 void QuestAssignedDialog::run()
 {
     questmap->resize();
-    questmap->draw();
+    questmap->draw(Playerlist::getActiveplayer());
 
     dialog->show_all();
     dialog->run();

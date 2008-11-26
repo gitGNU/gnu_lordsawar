@@ -102,6 +102,8 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
 	s += String::ucompose("You are shown the site of %1\n", 
 			      ruin->getName());
 	questmap->set_target(ruin->getPos());
+	if (ruin->getReward() == NULL)
+	  ruin->populateWithRandomReward();
 	Reward *ruin_reward = ruin->getReward();
 	if (ruin_reward->getType() == Reward::ALLIES)
 	  s += _("where powerful allies can be found!");
@@ -139,7 +141,7 @@ void QuestCompletedDialog::hide()
 void QuestCompletedDialog::run()
 {
   questmap->resize();
-  questmap->draw();
+  questmap->draw(quest->getHero()->getOwner());
 
   dialog->show_all();
   dialog->run();

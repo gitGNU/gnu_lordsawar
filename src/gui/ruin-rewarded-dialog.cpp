@@ -77,7 +77,7 @@ void RuinRewardedDialog::hide()
 void RuinRewardedDialog::run()
 {
   ruinmap->resize();
-  ruinmap->draw();
+  ruinmap->draw(Playerlist::getActiveplayer());
 
   Glib::ustring s;
   s += String::ucompose(_("The sages show thee the site of %1\n"),

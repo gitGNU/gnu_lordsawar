@@ -310,7 +310,7 @@ void Game::redraw()
       {
 	//if (Playerlist::getActiveplayer()->getType() == Player::HUMAN ||
 	    //GameScenario::s_hidden_map == false)
-	  smallmap->draw();
+	  smallmap->draw(Playerlist::getActiveplayer());
       }
 }
 
@@ -1142,7 +1142,7 @@ void Game::on_fight_started(Fight &fight)
 
   //don't show the battle if we're ai and we're on a hidden map
   bool ai_attacking_on_hidden_map = false;
-  if (fight.getDefenders().front()->getOwner()->getType() != Player::HUMAN &&
+  if (fight.getAttackers().front()->getOwner()->getType() != Player::HUMAN &&
       GameScenario::s_hidden_map == true)
     ai_attacking_on_hidden_map = true;
 
@@ -1154,7 +1154,6 @@ void Game::on_fight_started(Fight &fight)
       if (GameScenario::s_hidden_map == false)
 	smallmap->center_view_on_tile(pos, true);
       LocationBox box = Fight::calculateFightBox(fight);
-      printf ("box->size is %d\n", box.getSize());
       bigmap->setFighting(box);
       bigmap->draw();
       fight_started.emit(fight);

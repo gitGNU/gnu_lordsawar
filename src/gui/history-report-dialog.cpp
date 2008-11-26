@@ -352,7 +352,7 @@ void HistoryReportDialog::hide()
 void HistoryReportDialog::run()
 {
   historymap->resize();
-  historymap->draw();
+  historymap->draw(Playerlist::getActiveplayer());
 
   dialog->show_all();
   dialog->run();

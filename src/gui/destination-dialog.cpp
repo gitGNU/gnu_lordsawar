@@ -111,7 +111,7 @@ void DestinationDialog::hide()
 void DestinationDialog::run()
 {
     vectormap->resize();
-    vectormap->draw();
+    vectormap->draw(Playerlist::getActiveplayer());
     see_all_toggle->set_active(*d_see_all);
     dialog->show();
     dialog->run();
@@ -151,7 +151,7 @@ void DestinationDialog::on_see_all_toggled(Gtk::ToggleButton *toggle)
     vectormap->setShowVectoring(VectorMap::SHOW_ALL_VECTORING);
   else
     vectormap->setShowVectoring(VectorMap::SHOW_ORIGIN_CITY_VECTORING);
-  vectormap->draw();
+  vectormap->draw(Playerlist::getActiveplayer());
 }
 
 void DestinationDialog::on_vector_toggled(Gtk::ToggleButton *toggle)
@@ -162,13 +162,13 @@ void DestinationDialog::on_vector_toggled(Gtk::ToggleButton *toggle)
   if (toggle->get_active() == false)
     {
       vectormap->setClickAction(VectorMap::CLICK_SELECTS);
-      vectormap->draw();
+      vectormap->draw(Playerlist::getActiveplayer());
       fill_in_vectoring_info();
     }
   else
     {
       vectormap->setClickAction(VectorMap::CLICK_VECTORS);
-      vectormap->draw();
+      vectormap->draw(Playerlist::getActiveplayer());
     }
 }
 
@@ -180,13 +180,13 @@ void DestinationDialog::on_change_toggled(Gtk::ToggleButton *toggle)
   if (toggle->get_active() == false)
     {
       vectormap->setClickAction(VectorMap::CLICK_SELECTS);
-      vectormap->draw();
+      vectormap->draw(Playerlist::getActiveplayer());
       fill_in_vectoring_info();
     }
   else
     {
       vectormap->setClickAction(VectorMap::CLICK_CHANGES_DESTINATION);
-      vectormap->draw();
+      vectormap->draw(Playerlist::getActiveplayer());
     }
 }
 

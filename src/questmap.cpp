@@ -112,12 +112,12 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
     }
   draw_line(surface, start.x, start.y, end.x, end.y, raw);
 }
+
 void QuestMap::after_draw()
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  Playerlist *plist = Playerlist::getInstance();
-  Player *p = plist->getActiveplayer();
-  Stacklist *sl = p->getStacklist();
+  Hero *hero = quest->getHero();
+  Player *p = hero->getOwner();
 
   if (!quest)
     {
@@ -127,7 +127,7 @@ void QuestMap::after_draw()
     }
 
 
-  Vector<int> start = sl->getPosition (quest->getHeroId ());
+  Vector<int> start = p->getStacklist()->getPosition (quest->getHeroId ());
 
   if (quest->isPendingDeletion() == false)
     {
@@ -180,8 +180,7 @@ void QuestMap::draw_target()
 {
   if (d_target.x == -1 && d_target.y == -1)
     return;
-  Playerlist *plist = Playerlist::getInstance();
-  Player *p = plist->getActiveplayer();
+  Player *p = quest->getHero()->getOwner();
   Stacklist *sl = p->getStacklist();
   Vector<int> start = sl->getPosition (quest->getHeroId ());
   draw_target(start, d_target);

@@ -136,11 +136,11 @@ void ReportDialog::hide()
 void ReportDialog::run()
 {
   citymap->resize();
-  citymap->draw();
+  citymap->draw(Playerlist::getActiveplayer());
   vectormap->resize();
-  vectormap->draw();
+  vectormap->draw(Playerlist::getActiveplayer());
   armymap->resize();
-  armymap->draw();
+  armymap->draw(Playerlist::getActiveplayer());
 
   dialog->show_all();
   dialog->run();

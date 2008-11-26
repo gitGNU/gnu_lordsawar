@@ -148,7 +148,7 @@ void CityWindow::hide()
 void CityWindow::run()
 {
     prodmap->resize();
-    prodmap->draw();
+    prodmap->draw(Playerlist::getActiveplayer());
     dialog->show();
     dialog->run();
 }
@@ -381,7 +381,7 @@ void CityWindow::on_on_hold_clicked() //stop button
 	production_toggles[i]->set_active(false);
     ignore_toggles = false;
     fill_in_production_info();
-    prodmap->draw();
+    prodmap->draw(Playerlist::getActiveplayer());
 }
 
 void CityWindow::on_buy_clicked()
@@ -418,7 +418,7 @@ void CityWindow::on_destination_clicked()
     d.set_parent_window(*dialog.get());
     d.run();
     fill_in_production_info();
-    prodmap->draw();
+    prodmap->draw(Playerlist::getActiveplayer());
 }
 
 void CityWindow::on_map_changed(SDL_Surface *map)

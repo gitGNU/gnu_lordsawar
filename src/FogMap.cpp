@@ -172,7 +172,7 @@ bool FogMap::isCompletelyObscuredFogTile(Vector<int> pos)
 	else
 	  {
 	    Vector<int> pos = Vector<int>(i, j);
-	    foggyTile = FogMap::isFogged(pos);
+	    foggyTile = FogMap::isFogged(pos, Playerlist::getActiveplayer());
 	  }
 	if (foggyTile == false)
 	  return false;
@@ -221,14 +221,14 @@ void FogMap::smooth()
     }
 }
 
-bool FogMap::isFogged(Vector <int> pos)
+bool FogMap::isFogged(Vector <int> pos, Player *player)
 {
   //is this tile visible, or not?
-  FogMap *fogmap = Playerlist::getActiveplayer()->getFogMap();
+  FogMap *fogmap = player->getFogMap();
   if (fogmap->getFogTile(pos) == FogMap::CLOSED)
     return true;
-  if (Playerlist::getActiveplayer())
-    if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+  if (player)
+    if (player->getType() != Player::HUMAN &&
 	GameScenarioOptions::s_hidden_map == true)
       return true;
                 
@@ -237,7 +237,7 @@ bool FogMap::isFogged(Vector <int> pos)
 
   return false;
 }
-	
+
 void FogMap::alterFog(SightMap *sightmap)
 {
   return alterFogRectangle(sightmap->pos, sightmap->h, sightmap->w, OPEN);

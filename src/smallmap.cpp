@@ -46,7 +46,7 @@ void SmallMap::set_view(Rectangle new_view)
     if (view != new_view)
     {
 	view = new_view;
-	draw();
+	draw(Playerlist::getActiveplayer());
     }
 }
 
@@ -105,8 +105,9 @@ void SmallMap::center_view_on_pixel(Vector<int> pos, bool slide)
 
 void SmallMap::after_draw()
 {
+  Player *p = getViewingPlayer();
   OverviewMap::after_draw();
-  if (Playerlist::getActiveplayer()->getType() == Player::HUMAN ||
+  if (p->getType() == Player::HUMAN ||
       GameScenarioOptions::s_hidden_map == false)
     {
       draw_cities(false);
@@ -173,7 +174,7 @@ void SmallMap::slide_view(Rectangle new_view)
 	  tmp_view.y = slide(tmp_view.y, new_view.y);
 
 	  view = tmp_view;
-	  draw();
+	  draw(Playerlist::getActiveplayer());
 	  view_slid.emit(view);
 
 	  if (tmp_view.x == new_view.x && tmp_view.y == new_view.y)

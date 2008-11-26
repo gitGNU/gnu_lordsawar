@@ -112,7 +112,7 @@ void HeroOfferDialog::hide()
 bool HeroOfferDialog::run()
 {
     heromap->resize();
-    heromap->draw();
+    heromap->draw(Playerlist::getActiveplayer());
 
     Sound::getInstance()->playMusic("hero", 1);
     dialog->show_all();
