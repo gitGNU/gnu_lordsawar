@@ -273,7 +273,10 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		}
 	      else if (Ruin *r = Ruinlist::getInstance()->getObjectAt(tile))
 		{
-		  ruin_queried (r, false);
+		  if ((r->isHidden() == true && 
+		       r->getOwner() == Playerlist::getActiveplayer()) ||
+		      r->isHidden() == false)
+		    ruin_queried (r, false);
 		}
 	      else if (Temple *t = Templelist::getInstance()->getObjectAt(tile))
 		{
@@ -591,7 +594,13 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 		d_cursor = GraphicsCache::ROOK;
 	    }
 	  else if (t->getBuilding() == Maptile::RUIN)
-	    d_cursor = GraphicsCache::RUIN;
+	    {
+	      Ruin *ruin = Ruinlist::getInstance()->getObjectAt(tile);
+	      if (ruin->isHidden() == true && ruin->getOwner() == active)
+		d_cursor = GraphicsCache::RUIN;
+	      else if (ruin->isHidden() == false)
+		d_cursor = GraphicsCache::RUIN;
+	    }
 	  else if (t->getBuilding() == Maptile::TEMPLE)
 	    d_cursor = GraphicsCache::RUIN;
 	}
