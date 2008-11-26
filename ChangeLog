@@ -1,7 +1,14 @@
+2008-11-26  Ben Asselstine  <benasselstine@gmail.com>
+
+	* src/overviewmap.cpp: now optionally drawing overviewmap objects for
+	a different player.
+	* fixed bug #24926.
+
 2008-11-25  Ben Asselstine  <benasselstine@gmail.com>
 
-	* src/gamebigmap.c: no longer showing ruin cursor when hovering over
+	* src/gamebigmap.cpp: no longer showing ruin cursor when hovering over
 	a hidden ruin.
+
 2008-11-25  Ben Asselstine  <benasselstine@gmail.com>
 
 	* src/MapGenerator.cpp: now connecting bridges with roads to nearby
