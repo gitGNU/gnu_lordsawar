@@ -287,15 +287,19 @@ bool GameMap::save(XML_Helper* helper) const
         for (int j = 0; j < s_width; j++)
 	  {
 	    char *hexstr = NULL;
+	    int byteswritten = -1;
 	    TileStyle *style = getTile(j, i)->getTileStyle();
 	    if (largest_style_id < 256)
-	      asprintf (&hexstr, "%02x", style->getId());
+	      byteswritten = asprintf (&hexstr, "%02x", style->getId());
 	    else if (largest_style_id < 4096)
-	      asprintf (&hexstr, "%03x", style->getId());
+	      byteswritten = asprintf (&hexstr, "%03x", style->getId());
 	    else if (largest_style_id < 65536)
-	      asprintf (&hexstr, "%04x", style->getId());
-            styles << hexstr;
-	    free (hexstr);
+	      byteswritten = asprintf (&hexstr, "%04x", style->getId());
+	    if (hexstr && byteswritten > -1)
+	      {
+		styles << hexstr;
+		free (hexstr);
+	      }
 	  }
         styles <<endl;
     }
@@ -940,3 +944,61 @@ void GameMap::applyTileStyle (int i, int j)
   mtile->setTileStyle(style);
 }
 
+Vector<int> GameMap::findNearestObjectInDir(Vector<int> pos, Vector<int> dir)
+{
+  std::vector<Vector<int> > objects;
+  Road *road = Roadlist::getInstance()->getNearestObjectInDir(pos, dir);
+  if (road)
+    objects.push_back(road->getPos());
+  Bridge *bridge = Bridgelist::getInstance()->getNearestObjectInDir(pos, dir);
+  if (bridge)
+    objects.push_back(bridge->getPos());
+  City *city = Citylist::getInstance()->getNearestObjectInDir(pos, dir);
+  if (city)
+    objects.push_back(city->getPos());
+  Temple *temple = Templelist::getInstance()->getNearestObjectInDir(pos, dir);
+  if (temple)
+    objects.push_back(temple->getPos());
+  Ruin *ruin = Ruinlist::getInstance()->getNearestObjectInDir(pos, dir);
+  if (ruin)
+    objects.push_back(ruin->getPos());
+  if (objects.size() == 0)
+    return Vector<int>(-1,-1);
+
+  int min_distance = -1;
+  Vector<int> closest = Vector<int>(-1,-1);
+  for (unsigned int i = 0; i < objects.size(); i++)
+    {
+      int distance = dist(pos, objects[i]);
+      if (min_distance == -1 || distance < min_distance)
+	{
+	  min_distance = distance;
+	  closest = objects[i];
+	}
+    }
+  return closest;
+}
+
+Vector<int> GameMap::findNearestObjectToTheNorth(Vector<int> pos)
+{
+  Vector<int> dir = Vector<int>(0, -1);
+  return findNearestObjectInDir(pos, dir);
+}
+
+Vector<int> GameMap::findNearestObjectToTheSouth(Vector<int> pos)
+{
+  Vector<int> dir = Vector<int>(0, 1);
+  return findNearestObjectInDir(pos, dir);
+}
+
+Vector<int> GameMap::findNearestObjectToTheEast(Vector<int> pos)
+{
+  Vector<int> dir = Vector<int>(1, 0);
+  return findNearestObjectInDir(pos, dir);
+}
+
+Vector<int> GameMap::findNearestObjectToTheWest(Vector<int> pos)
+{
+  Vector<int> dir = Vector<int>(-1, 0);
+  return findNearestObjectInDir(pos, dir);
+}

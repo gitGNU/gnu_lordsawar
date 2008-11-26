@@ -185,7 +185,8 @@ class MapGenerator
         void verifyIslands();
 
         void makeBridges();
-	bool canPlaceBridge(Vector<int> pos);
+	bool findBridgePurpose(Vector<int> pos, int type, Vector<int> &src, Vector<int> &dest);
+	bool canPlaceBridge(Vector<int> pos, int type, Vector<int> &src, Vector<int> &dest);
 	void placeBridge(Vector<int> pos, int type);
         
         /**
@@ -273,6 +274,8 @@ class MapGenerator
 
 	bool makeRoad(int src_x, int src_y, int dest_x, int dest_y);
 	bool makeRoad(Vector<int> src, Vector<int>dest);
+	int tryRoad(int src_x, int src_y, int dest_x, int dest_y);
+	int tryRoad(Vector<int> src, Vector<int>dest);
 	bool isAccessible(int src_x, int src_y, int dest_x, int dest_y);
 	bool isAccessible(Vector<int> src, Vector<int> dest);
 	bool makeAccessible(Vector<int> src, Vector<int> dest);
@@ -313,6 +316,7 @@ class MapGenerator
 	bool placePort(int x, int y);
 	void calculateBlockedAvenue(int x, int y);
 	bool inhospitableTerrain(int x, int y, unsigned int width);
+
 
         //Data
         int d_xdir[8];

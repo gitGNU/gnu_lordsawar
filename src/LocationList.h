@@ -67,6 +67,39 @@ template<class T> class LocationList : public std::list<T>
       return getObjectAt(pos.x, pos.y);
     }
 
+  T getNearestObjectInDir(const Vector<int> &pos, const Vector<int> dir)
+    {
+      int diff = -1;
+      typename LocationList<T>::iterator diffit;
+      for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)
+        {
+          Vector<int> p = (*it)->getPos();
+          int delta = abs(p.x - pos.x) + abs(p.y - pos.y);
+	  //if dir is -1, then the difference between pos.x and p.x should be positive
+	  //if dir is +1, then the difference between pos.x and p.x should be negative
+	  //if looking west, and the object is to the east
+	  if (dir.x < 0 && (pos.x - p.x) <= 0)
+	    continue;
+	  //if looking east , and the object is to the west
+	  if (dir.x > 0 && (pos.x - p.x) >= 0)
+	    continue;
+	  //if looking north, and the object is to the south
+	  if (dir.y < 0 && (pos.y - p.y) <= 0)
+	    continue;
+	  //if looking south, and the object is to the north
+	  if (dir.y > 0 && (pos.y - p.y) >= 0)
+	    continue;
+
+          if ((diff > delta) || (diff == -1))
+            {
+              diff = delta;
+              diffit = it;
+            }
+        }
+      if (diff == -1) return 0;
+      return (*diffit);
+    }
+
   T getNearestObject (const Vector<int>& pos, std::list<bool (*)(void*)> *filters)
     {
       int diff = -1;

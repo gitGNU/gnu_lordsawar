@@ -167,6 +167,11 @@ class GameMap: public sigc::trackable
 	//! Get the positions of all of the items on the game map (in bags).
 	std::vector<Vector<int> > getItems();
 
+	Vector<int> findNearestObjectToTheNorth(Vector<int> pos);
+	Vector<int> findNearestObjectToTheSouth(Vector<int> pos);
+	Vector<int> findNearestObjectToTheEast(Vector<int> pos);
+	Vector<int> findNearestObjectToTheWest(Vector<int> pos);
+
     protected:
         //! Create the map with the given tileset
         GameMap(std::string TilesetName, std::string ShieldsetName,
@@ -194,6 +199,7 @@ class GameMap: public sigc::trackable
 	int tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, 
 						   int j);
 	bool are_those_tiles_similar(Tile::Type outer_tile,Tile::Type inner_tile, bool checking_loneliness);
+	Vector<int> findNearestObjectInDir(Vector<int> pos, Vector<int> dir);
 
         // Data
         static GameMap* s_instance;

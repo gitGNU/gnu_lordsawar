@@ -21,6 +21,8 @@
 /* A simple 2D vector structure.
  *
  * Implements a lot of overloaded operators to ease calculations.
+ * x is the axis in the left/right direction.
+ * y is the axis in the up/down direction.
  */
 template <typename T>
 struct Vector

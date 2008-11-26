@@ -37,8 +37,12 @@
 #include "citylist.h"
 #include "roadlist.h"
 #include "portlist.h"
+#include "ruinlist.h"
+#include "templelist.h"
+#include "bridgelist.h"
 #include "armysetlist.h"
 #include "army.h"
+#include "vector.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -217,48 +221,142 @@ void MapGenerator::makeMap(int width, int height, bool roads)
 //    printMap();
 }
         
+#define  NORTH_SOUTH_BRIDGE 1
+#define  EAST_WEST_BRIDGE 2
+
 void MapGenerator::placeBridge(Vector<int> pos, int type)
 {
-  if (type == 1)
+  Bridgelist *bl = Bridgelist::getInstance();
+  if (type == NORTH_SOUTH_BRIDGE)
     {
-      if (!(offmap(pos.y,pos.x-1)) &&
-	  d_terrain[(pos.x-1)*d_width + pos.y] != Tile::WATER)
-	d_building[(pos.x-1)*d_width + pos.y] = Maptile::ROAD;
-      d_building[pos.x*d_width + pos.y] = Maptile::BRIDGE;
-      d_building[(pos.x + 1)*d_width + pos.y] = Maptile::BRIDGE;
-      if (!(offmap(pos.y,pos.x+2)) &&
-	  d_terrain[(pos.x+2)*d_width + pos.y] != Tile::WATER)
-	d_building[(pos.x+2)*d_width + pos.y] = Maptile::ROAD;
+      d_building[pos.y*d_width + pos.x] = Maptile::BRIDGE;
+      d_building[(pos.y + 1)*d_width + pos.x] = Maptile::BRIDGE;
+      bl->push_back(new Bridge(Vector<int>(pos.x, pos.y)));
+      bl->push_back(new Bridge(Vector<int>(pos.x+1, pos.y)));
     }
-  else if (type == 2)
+  else if (type == EAST_WEST_BRIDGE)
     {
-      if (!(offmap(pos.y-1,pos.x)) &&
-	  d_terrain[pos.x*d_width + pos.y-1] != Tile::WATER)
-	d_building[pos.x*d_width + pos.y-1] = Maptile::ROAD;
-      d_building[pos.x*d_width + pos.y] = Maptile::BRIDGE;
-      d_building[pos.x*d_width + pos.y + 1] = Maptile::BRIDGE;
-      if (!(offmap(pos.y+2,pos.x)) &&
-	  d_terrain[pos.x*d_width + pos.y+2] != Tile::WATER)
-	d_building[pos.x*d_width + pos.y+2] = Maptile::ROAD;
+      d_building[pos.y*d_width + pos.x] = Maptile::BRIDGE;
+      d_building[pos.y*d_width + pos.x + 1] = Maptile::BRIDGE;
+      bl->push_back(new Bridge(Vector<int>(pos.x, pos.y)));
+      bl->push_back(new Bridge(Vector<int>(pos.x, pos.y+1)));
     }
-
+  GameMap::getInstance()->calculateBlockedAvenues();
 }
 
-bool MapGenerator::canPlaceBridge(Vector<int> pos)
+bool MapGenerator::findBridgePurpose(Vector<int> pos, int type, 
+				     Vector<int> &src, Vector<int> &dest)
 {
-  if (d_building[pos.y*d_width + pos.x] == Maptile::NONE)
+  if (type == EAST_WEST_BRIDGE)
+    {
+      src = GameMap::getInstance()->findNearestObjectToTheWest(pos);
+      dest = GameMap::getInstance()->findNearestObjectToTheEast(pos);
+    }
+  else if (type == NORTH_SOUTH_BRIDGE)
+    {
+      src = GameMap::getInstance()->findNearestObjectToTheNorth(pos);
+      dest = GameMap::getInstance()->findNearestObjectToTheSouth(pos);
+    }
+  if (src == Vector<int>(-1,-1) || dest == Vector<int>(-1,-1))
+    return false;
+  return true;
+}
+
+bool MapGenerator::canPlaceBridge(Vector<int> pos, int type, Vector<int> &src, Vector<int> &dest)
+{
+  if (d_building[pos.y*d_width + pos.x] == Maptile::NONE &&
+      findBridgePurpose(pos, type, src, dest) == true)
     return true;
   return false;
 }
 
 void MapGenerator::makeBridges()
 {
+  GameMap::deleteInstance();
+  Citylist::deleteInstance();
+  Roadlist::deleteInstance();
+  Ruinlist::deleteInstance();
+  Templelist::deleteInstance();
+  Portlist::deleteInstance();
+  Bridgelist::deleteInstance();
+
+  GameMap::setWidth(d_width);
+  GameMap::setHeight(d_height);
+  GameMap::getInstance("default", "default", "default")->fill(this);
+
+  //the game map class smooths the map, so let's take what it smoothed.
+  for (int y = 0; y < d_height; y++)
+    for (int x = 0; x < d_width; x++)
+      d_terrain[y*d_width + x] = 
+	GameMap::getInstance()->getTile(x, y)->getMaptileType();
+
+  //load up the roadlist, and stuff.
+
+  for (int y = 0; y < d_height; y++)
+    for (int x = 0; x < d_width; x++)
+      {
+	if (d_building[y*d_width + x] == Maptile::CITY)
+	  Citylist::getInstance()->push_back(new City(Vector<int>(x,y)));
+	else if (d_building[y*d_width + x] == Maptile::ROAD)
+	  Roadlist::getInstance()->push_back(new Road(Vector<int>(x,y)));
+	else if (d_building[y*d_width + x] == Maptile::RUIN)
+	  Ruinlist::getInstance()->push_back(new Ruin(Vector<int>(x,y)));
+	else if (d_building[y*d_width + x] == Maptile::TEMPLE)
+	  Templelist::getInstance()->push_back(new Temple(Vector<int>(x,y)));
+	else if (d_building[y*d_width + x] == Maptile::PORT)
+	  Portlist::getInstance()->push_back(new Port(Vector<int>(x,y)));
+      }
+  GameMap::getInstance()->calculateBlockedAvenues();
+
+  Vector<int> src, dest;
   std::vector<pair<int , Vector<int> > >  bridges;
   bridges = findBridgePlaces();
   for (std::vector<pair<int, Vector<int> > >::iterator it = bridges.begin();
        it != bridges.end(); it++)
-    if (canPlaceBridge((*it).second + Vector<int>(1,1)) == true)
-      placeBridge((*it).second + Vector<int>(1,1), (*it).first);
+    {
+      Vector<int> pos = (*it).second + Vector<int>(1,1);
+      Vector<int> edge1; 
+      Vector<int> edge2; 
+      if ((*it).first == NORTH_SOUTH_BRIDGE)
+	{
+	  edge1 = pos - Vector<int>(0, 1);
+	  edge2 = pos + Vector<int>(0, 2);
+	}
+      else if ((*it).first == EAST_WEST_BRIDGE)
+	{
+	  edge1 = pos - Vector<int>(1, 0);
+	  edge2 = pos + Vector<int>(2, 0);
+	}
+      if (offmap(edge1.x, edge1.y) || offmap(edge2.x, edge2.y))
+	continue;
+      if (canPlaceBridge((*it).second + Vector<int>(1,1), (*it).first, src, 
+			 dest) == true)
+	{
+	  int leg1 = tryRoad (src, edge1);
+	  int leg2 = tryRoad (dest, edge2);
+	  int shortcut = tryRoad (src, dest);
+	  bool construct_bridge_and_roads = true;
+	  if (leg1 <= 0 || leg2 <= 0)
+	    construct_bridge_and_roads = false;
+	  if (shortcut > 0 && (leg1 + leg2 + 2) > shortcut)
+	    construct_bridge_and_roads = false;
+
+	  if (construct_bridge_and_roads)
+	    {
+	      makeRoad(src, edge1);
+	      makeRoad(dest, edge2);
+	      placeBridge(pos, (*it).first);
+	    }
+	}
+    }
+
+  Roadlist::deleteInstance();
+  Ruinlist::deleteInstance();
+  Templelist::deleteInstance();
+  GameMap::deleteInstance();
+  Citylist::deleteInstance();
+  Portlist::deleteInstance();
+  Bridgelist::deleteInstance();
 }
 
 void MapGenerator::printMap(int j, int i)
@@ -1239,6 +1337,33 @@ bool MapGenerator::placePort(int x, int y)
   return false;
 }
 
+int MapGenerator::tryRoad(Vector<int> src, Vector<int>dest)
+{
+  return tryRoad (src.x, src.y, dest.x, dest.y);
+}
+
+int MapGenerator::tryRoad(int src_x, int src_y, int dest_x, int dest_y)
+{
+  bool retval = true;
+  GameMap *gm = GameMap::getInstance();
+  Vector<int> src(src_x, src_y);
+  Vector<int> dest(dest_x, dest_y);
+
+  Path *p = new Path();
+  Stack s(NULL, src);
+
+  Armysetlist *al = Armysetlist::getInstance();
+  Uint32 armyset = al->getArmysetId("Default", Tileset::getDefaultTileSize());
+  const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
+  Army *a = Army::createNonUniqueArmy(*basearmy);
+  s.push_back(a);
+  // try to get there with a scout
+  Uint32 moves = p->calculate(&s, dest, false);
+
+  delete p;
+  return (int)moves;
+}
+
 bool MapGenerator::makeRoad(Vector<int> src, Vector<int>dest)
 {
   return makeRoad (src.x, src.y, dest.x, dest.y);
@@ -1269,7 +1394,8 @@ bool MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
 	{
 	  int x = (**it).x;
 	  int y = (**it).y;
-	  if (gm->getTile(x, y)->getMaptileType() == Tile::WATER)
+	  if (gm->getTile(x, y)->getMaptileType() == Tile::WATER &&
+	      gm->getTile(x, y)->getBuilding() != Maptile::BRIDGE)
 	    {
 	      retval = false;
 	      break;
@@ -1436,7 +1562,7 @@ std::vector<pair<int , Vector<int> > > MapGenerator::findBridgePlaces()
                 (int)(d_terrain[(j+3)*d_width + i+3] == Tile::WATER);
                 
                 if(count_left > 5 && count_right > 5)
-                    result.push_back(std::make_pair(1, Vector<int>(j,i) ));
+                    result.push_back(std::make_pair(1, Vector<int>(i,j) ));
             }
             if (
                 d_terrain[(j+1)*d_width + i  ] != Tile::WATER &&
@@ -1470,7 +1596,7 @@ std::vector<pair<int , Vector<int> > > MapGenerator::findBridgePlaces()
                 (int)(d_terrain[(j+3)*d_width + i+3] == Tile::WATER);
 
                 if(count_top > 5 && count_bottom > 5)
-                    result.push_back(std::make_pair(2, Vector<int>(j,i) ));
+                    result.push_back(std::make_pair(2, Vector<int>(i,j) ));
             }
         }
     // randomize
