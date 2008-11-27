@@ -4,6 +4,7 @@
 	a different player.
 	* fixed bug #24926.
 	* fixed bug #24933.  this changes the saved-game schema.
+	* src/gui/hero-dialog.cpp: now displaying hero events.
 
 2008-11-25  Ben Asselstine  <benasselstine@gmail.com>
 
