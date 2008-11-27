@@ -36,6 +36,7 @@
 #include "GraphicsCache.h"
 #include "Backpack.h"
 #include "MapBackpack.h"
+#include "history.h"
 
 HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 {
@@ -85,25 +86,19 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     item_treeview->get_selection()->signal_changed()
 	.connect(sigc::mem_fun(this, &HeroDialog::on_selection_changed));
 
+    events_list = Gtk::ListStore::create(events_columns);
+    xml->get_widget("events_treeview", events_treeview);
+    events_treeview->append_column("", events_columns.desc);
+    events_treeview->set_model(events_list);
+    events_list->clear();
+    std::list<History* > events;
+    events = hero->getOwner()->getHistoryForHeroId(hero->getId());
+    for (std::list<History*>::iterator i = events.begin(); i != events.end();
+	 i++)
+      addHistoryEvent(*i);
+
     on_selection_changed();
 
-#if 0
-    // debug code
-    #include "Itemlist.h"
-    static bool first = true;
-
-    if (first)
-    {
-	Item *item = (*Itemlist::getInstance())[0];
-	hero->getBackpack()->addToBackpack(item, 0);
-	item = (*Itemlist::getInstance())[1];
-	hero->getBackpack()->addToBackpack(item, 0);
-	item = (*Itemlist::getInstance())[5];
-	hero->getBackpack()->addToBackpack(item, 0);
-	first = false;
-    }
-#endif
-    
     // populate the item list
     Backpack *backpack = hero->getBackpack();
     for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
@@ -112,6 +107,89 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     MapBackpack *ground = GameMap::getInstance()->getTile(pos)->getBackpack();
     for (MapBackpack::iterator i = ground->begin(); i != ground->end(); i++)
       add_item(*i, false);
+}
+
+void HeroDialog::addHistoryEvent(History *history)
+{
+  Glib::ustring s = "";
+  Gtk::TreeIter i = events_list->append();
+
+  switch (history->getType())
+    {
+    case History::FOUND_SAGE: 
+	{
+	  History_FoundSage *ev;
+	  ev = static_cast<History_FoundSage *>(history);
+	  s = String::ucompose(_("%1 finds a sage!"), ev->getHeroName());
+	  break;
+	}
+    case History::HERO_EMERGES:
+	{
+	  History_HeroEmerges *ev;
+	  ev = static_cast<History_HeroEmerges *>(history);
+	  s = String::ucompose(_("%1 emerges in %2!"), ev->getHeroName(),
+			       ev->getCityName());
+	  break;
+	}
+    case History::HERO_QUEST_STARTED:
+	{
+	  History_HeroQuestStarted *ev;
+	  ev = static_cast<History_HeroQuestStarted*>(history);
+	  s = String::ucompose(_("%1 begins a quest!"), ev->getHeroName());
+	  break;
+	}
+    case History::HERO_QUEST_COMPLETED:
+	{
+	  History_HeroQuestCompleted *ev;
+	  ev = static_cast<History_HeroQuestCompleted *>(history);
+	  s = String::ucompose(_("%1 finishes a quest!"), ev->getHeroName());
+	  break;
+	}
+    case History::HERO_KILLED_IN_CITY:
+	{
+	  History_HeroKilledInCity *ev;
+	  ev = static_cast<History_HeroKilledInCity *>(history);
+	  s = String::ucompose(_("%1 is killed in %2!"), ev->getHeroName(),
+			       ev->getCityName());
+	  break;
+	}
+    case History::HERO_KILLED_IN_BATTLE:
+	{
+	  History_HeroKilledInBattle *ev;
+	  ev = static_cast<History_HeroKilledInBattle *>(history);
+	  s = String::ucompose(_("%1 is killed in battle!"), ev->getHeroName());
+	  break;
+	}
+    case History::HERO_KILLED_SEARCHING:
+	{
+	  History_HeroKilledSearching *ev;
+	  ev = static_cast<History_HeroKilledSearching *>(history);
+	  s = String::ucompose(_("%1 is killed while searching!"), 
+			       ev->getHeroName());
+	  break;
+	}
+    case History::HERO_CITY_WON:
+	{
+	  History_HeroCityWon *ev;
+	  ev = static_cast<History_HeroCityWon *>(history);
+	  s = String::ucompose(_("%1 conquers %2!"), ev->getHeroName(), 
+			       ev->getCityName());
+	  break;
+	}
+    case History::HERO_FINDS_ALLIES:
+	{
+	  History_HeroFindsAllies *ev;
+	  ev = static_cast<History_HeroFindsAllies*>(history);
+	  s = String::ucompose(_("%1 finds allies!"), ev->getHeroName());
+	  break;
+	}
+    default:
+      s = _("unknown");
+      break;
+    }
+
+  (*i)[events_columns.desc] = s;
+  (*i)[events_columns.history] = history;
 }
 
 void HeroDialog::set_parent_window(Gtk::Window &parent)
@@ -140,7 +218,6 @@ void HeroDialog::run()
             gm->getTile(pos)->getBackpack()->removeFromBackpack(*i);
           }
       }
-    
 }
 
 void HeroDialog::on_selection_changed()

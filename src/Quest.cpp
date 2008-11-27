@@ -103,7 +103,6 @@ bool Quest::isActive()
     return true;
 }
 
-
 std::string Quest::getHeroNameForDeadHero()
 {
   return getHeroNameForDeadHero(d_hero);
@@ -111,7 +110,11 @@ std::string Quest::getHeroNameForDeadHero()
 
 std::string Quest::getHeroNameForDeadHero(Uint32 id)
 {
-  History *history = Playerlist::getInstance()->getHistoryForHeroId(id);
+  std::list<History *>events;
+  events = Playerlist::getInstance()->getHistoryForHeroId(id);
+  if (events.size() == 0)
+    return "";
+  History *history = events.front();
   History_HeroEmerges *event = dynamic_cast<History_HeroEmerges*>(history);
   return event->getHeroName();
 }

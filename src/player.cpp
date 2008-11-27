@@ -3207,19 +3207,94 @@ std::list<Vector<int> > Player::getStackTrack(Stack *s)
   return points;
 }
 	
-History *Player::getHistoryForHeroId(Uint32 id)
+std::list<History *>Player::getHistoryForHeroId(Uint32 id)
 {
+  std::string hero_name = "";
+  std::list<History*> events;
   std::list<History*>::const_iterator pit;
   for (pit = d_history.begin(); pit != d_history.end(); pit++)
     {
-      if ((*pit)->getType() == History::HERO_EMERGES)
+      switch ((*pit)->getType())
 	{
-	  History_HeroEmerges *event;
-	  event = dynamic_cast<History_HeroEmerges *>(*pit);
-	  if (event->getHeroId() == id)
-	    return *pit;
+	case History::HERO_EMERGES:
+	    {
+	      History_HeroEmerges *event;
+	      event = dynamic_cast<History_HeroEmerges *>(*pit);
+	      if (event->getHeroId() == id)
+		{
+		  hero_name = event->getHeroName();
+		  events.push_back(*pit);
+		}
+	      break;
+	    }
+	case History::FOUND_SAGE:
+	    {
+	      History_FoundSage *event;
+	      event = dynamic_cast<History_FoundSage*>(*pit);
+	      if (event->getHeroName() == hero_name)
+		events.push_back(*pit);
+	      break;
+	    }
+	case History::HERO_QUEST_STARTED:
+	    {
+	      History_HeroQuestStarted *event;
+	      event = dynamic_cast<History_HeroQuestStarted*>(*pit);
+	      if (event->getHeroName() == hero_name)
+		events.push_back(*pit);
+	      break;
+	    }
+	case History::HERO_QUEST_COMPLETED:
+	    {
+	      History_HeroQuestCompleted *event;
+	      event = dynamic_cast<History_HeroQuestCompleted*>(*pit);
+	      if (event->getHeroName() == hero_name)
+		events.push_back(*pit);
+	      break;
+	    }
+	case History::HERO_KILLED_IN_CITY:
+	    {
+	      History_HeroKilledInCity *event;
+	      event = dynamic_cast<History_HeroKilledInCity*>(*pit);
+	      if (event->getHeroName() == hero_name)
+		events.push_back(*pit);
+	      break;
+	    }
+	case History::HERO_KILLED_IN_BATTLE:
+	    {
+	      History_HeroKilledInBattle *event;
+	      event = dynamic_cast<History_HeroKilledInBattle*>(*pit);
+	      if (event->getHeroName() == hero_name)
+		events.push_back(*pit);
+	      break;
+	    }
+	case History::HERO_KILLED_SEARCHING:
+	    {
+	      History_HeroKilledSearching*event;
+	      event = dynamic_cast<History_HeroKilledSearching*>(*pit);
+	      if (event->getHeroName() == hero_name)
+		events.push_back(*pit);
+	      break;
+	    }
+	case History::HERO_CITY_WON:
+	    {
+	      History_HeroCityWon *event;
+	      event = dynamic_cast<History_HeroCityWon*>(*pit);
+	      if (event->getHeroName() == hero_name)
+		events.push_back(*pit);
+	      break;
+	    }
+	case History::HERO_FINDS_ALLIES:
+	    {
+	      History_HeroFindsAllies *event;
+	      event = dynamic_cast<History_HeroFindsAllies*>(*pit);
+	      if (event->getHeroName() == hero_name)
+		events.push_back(*pit);
+	      break;
+	    }
+	default:
+	  break;
 	}
     }
-  return NULL;
+  return events;
 }
 // End of file

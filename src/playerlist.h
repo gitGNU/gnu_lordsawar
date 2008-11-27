@@ -226,7 +226,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	void turnHumansInto(Player::Type type, int num_players = -1);
 	void reorder(std::list<Uint32> order);
 
-	History *getHistoryForHeroId(Uint32 id);
+	std::list<History *>getHistoryForHeroId(Uint32 id);
     protected:
 	//! Default constructor.
         Playerlist();

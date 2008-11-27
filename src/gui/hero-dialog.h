@@ -32,6 +32,7 @@
 
 class Hero;
 class Item;
+class History;
 
 #include "decorated.h"
 
@@ -52,6 +53,7 @@ class HeroDialog: public Decorated
     Hero *hero;
     Vector<int> pos;
     Gtk::TreeView *item_treeview;
+    Gtk::TreeView *events_treeview;
     Gtk::Button *drop_button;
     Gtk::Button *pickup_button;
     Gtk::Label *info_label1;
@@ -71,11 +73,23 @@ class HeroDialog: public Decorated
     const ItemColumns item_columns;
     Glib::RefPtr<Gtk::ListStore> item_list;
 
+    class EventsColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	EventsColumns() 
+        { add(desc); add(history); }
+	
+	Gtk::TreeModelColumn<Glib::ustring> desc;
+	Gtk::TreeModelColumn<History *> history;
+    };
+    const EventsColumns events_columns;
+    Glib::RefPtr<Gtk::ListStore> events_list;
+
     void on_selection_changed();
     void on_drop_clicked();
     void on_pickup_clicked();
 
     void add_item(Item *item, bool in_backpack);
+    void addHistoryEvent(History *event);
     void fill_in_info_labels();
 };
 
