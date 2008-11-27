@@ -62,6 +62,7 @@
 #include "Item.h"
 #include "city.h"
 #include "FogMap.h"
+#include "history.h"
 
 Driver::Driver(std::string load_filename)
 {
@@ -646,6 +647,9 @@ void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> h
 	(*i)->assignNewId();
       (*it)->setOwner(player);
       c->addArmy(*it);
+      History_HeroEmerges *item = new History_HeroEmerges();
+      item->fillData((*it), c);
+      player->addHistory(item);
     }
 
   NextTurnHotseat *nextTurn;
