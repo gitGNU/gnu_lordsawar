@@ -20,10 +20,8 @@ NewGameProgressWindow::NewGameProgressWindow(GameParameters g, GameScenario::Pla
 
   set_title(_("Please wait..."));
   m_label.set_text(_("Generating."));
-  m_thread = Glib::Thread::create( sigc::mem_fun(*this,&NewGameProgressWindow::thread_worker),true);
-
   d_game_scenario = NULL;
-
+  m_thread = Glib::Thread::create( sigc::mem_fun(*this,&NewGameProgressWindow::thread_worker),true);
   show_all();
 }
 
@@ -40,9 +38,9 @@ NewGameProgressWindow::~NewGameProgressWindow()
 
 void NewGameProgressWindow::thread_worker()
 {
-  sleep(2);
   bool update_uuid = false;
   m_dispatcher();
+  sleep(2);
   if (game_params.map_path.empty()) 
     {
       // construct new random scenario if we're not going to load the game
