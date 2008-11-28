@@ -48,11 +48,11 @@ int main(int argc, char* argv[])
 
   #if ENABLE_NLS
   cout << "Configuration::s_lang.c_str(): " << Configuration::s_lang.c_str() << endl;
-  //cout << "setlocale: " << setlocale(LC_ALL, Configuration::s_lang.c_str()) << endl;  //Not working?
-  cout << "setlocale: " << setlocale(LC_ALL, "") << endl;
-  cout << "bindtextdomain: " << bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR) << endl;
-  cout << "bind_textdomain_codeset: " << bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8") << endl;
-  cout << "textdomain: " << textdomain (GETTEXT_PACKAGE) << endl;
+  setlocale(LC_ALL, Configuration::s_lang.c_str());
+  //setlocale(LC_ALL, "");
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
   #endif
 
   Main kit(argc, argv);
