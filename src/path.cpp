@@ -257,7 +257,7 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
   //}
 
   // Some notes concerning the path finding algorithm. The algorithm
-  // uses two different lists. There is a distance array, which contains how
+  // uses two different lists. There is a nodes array, which contains how
   // many MP one needs to get to the location (x,y), and a process queue that
   // tells you at what point the number of movement points is calculated next.
   //
@@ -278,21 +278,25 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
   // the conversion between x/y coordinates and index is (size is map size)
   // index = y*width + x    <=>    x = index % width;   y = index / width
   int length = width*height;
-  int distance[length];
+  struct node
+    {
+      int moves;
+    };
+  struct node nodes[length];
   std::queue<Vector<int> > process;
   bool flying = s->isFlying();
 
-  // initial filling of the distance vector
+  // initial filling of the nodes vector
   for (int i = 0; i < width*height; i++)
     {
       // -1 means don't know yet
       // -2 means can't go there at all
       // 0 or more is number of movement points needed to get there
-      distance[i] = -1;
+      nodes[i].moves = -1;
       if (isBlocked(s, i % width, i/width, dest.x, dest.y))
-	distance[i] = -2;
+	nodes[i].moves = -2;
     }
-  distance[start.y*width+start.x] = 0;
+  nodes[start.y*width+start.x].moves = 0;
 
   // now the main loop
   process.push(Vector<int>(start.x, start.y));
@@ -301,7 +305,7 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
       Vector<int> pos = process.front();
       process.pop();                          // remove the first item
 
-      int dxy = distance[pos.y*width+pos.x];   // always >= 0
+      int dxy = nodes[pos.y*width+pos.x].moves;   // always >= 0
 
       for (int sx = pos.x-1; sx <= pos.x+1; sx++)
 	{
@@ -325,7 +329,7 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
 		  == Tile::VOID)
 		continue;
 
-	      int dsxy = distance[sy*width+sx];
+	      int dsxy = nodes[sy*width+sx].moves;
 	      if (dsxy < -1)
 		continue; // can't move there anyway
 
@@ -342,7 +346,7 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
 
 	      if (dsxy == -1 || dsxy > newDsxy)
 		{
-		  distance[sy*width+sx] = newDsxy;
+		  nodes[sy*width+sx].moves = newDsxy;
 
 		  // append the item to the queue
 		  process.push(Vector<int>(sx, sy));
@@ -351,12 +355,12 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
 	}
     }
 
-  // The distance array is now completely populated.
+  // The nodes array is now completely populated.
   // What we have to do now is find the shortest path to the destination.
   // We do that by starting at the destination and moving at each step to
   // the neighbour closest to the start.
 
-  int dist = distance[dest.y * width + dest.x];
+  int dist = nodes[dest.y * width + dest.x].moves;
   if (dist < 0)
     {
       setMovesExhaustedAtPoint(0);
@@ -407,7 +411,7 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
 	  if (!flying && isBlockedDir(x, y, newx, newy))
 	    continue;
 
-	  dist = distance[newy*width+newx];
+	  dist = nodes[newy*width+newx].moves;
 	  if (dist >= 0 && dist < min)
 	    {
 	      rx = newx;
@@ -436,7 +440,7 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
   setMovesExhaustedAtPoint(pathcount);
 
   debug("...done");
-  return distance[dest.y * width + dest.x];
+  return nodes[dest.y * width + dest.x].moves;
 }
 
 void Path::eraseFirstPoint()
