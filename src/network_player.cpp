@@ -222,6 +222,9 @@ void NetworkPlayer::decodeAction(const Action *a)
     case Action::INIT_TURN:
       return decodeActionInitTurn
 	(dynamic_cast<const Action_InitTurn*>(a));
+    case Action::CITY_LOOT:
+      return decodeActionLoot
+	(dynamic_cast<const Action_Loot*>(a));
     }
 
   return;
@@ -652,6 +655,13 @@ void NetworkPlayer::decodeActionCityTooPoorToProduce(const Action_CityTooPoorToP
 
 void NetworkPlayer::decodeActionInitTurn(const Action_InitTurn*action)
 {
+}
+
+void NetworkPlayer::decodeActionLoot (const Action_Loot *action)
+{
+  Uint32 player_id = action->getLootedPlayerId();
+  Player *looted = Playerlist::getInstance()->getPlayer(player_id);
+  doLootCity(looted, action->getAmountToAdd(), action->getAmountToSubtract());
 }
 
 // End of file

@@ -1449,34 +1449,33 @@ void Player::adjustDiplomacyFromConqueringCity(City *city)
   }
 }
 
-int Player::lootCity(City *city)
+void Player::calculateLoot(Player *looted, Uint32 &added, Uint32 &subtracted)
 {
-  Player *defender = city->getOwner();
+  Player *defender = looted;
   int gold = 0;
 
   // if the attacked city isn't neutral, loot some gold
   if (defender != Playerlist::getInstance()->getNeutral())
   {
     Citylist *clist = Citylist::getInstance();
-    int amt = (defender->getGold() / (2 * clist->countCities (defender)) * 2);
+    int amt = (defender->getGold() / (2 * (clist->countCities (defender)+1)) * 2);
     // give (Enemy-Gold/(2Enemy-Cities)) to the attacker 
     // and then take away twice that from the defender.
     // the idea here is that some money is taken in the invasion
     // and other monies are lost forever
-    defender->withdrawGold (amt);
+    // NOTE: +1 because the looted player just lost a city
+    subtracted = amt;
     amt /= 2;
-    addGold (amt);
+    added = amt;
     gold = amt;
   }
 
-  return gold;
+  return;
 }
 
 void Player::doConquerCity(City *city, Stack *stack)
 {
-  int gold = lootCity(city);
   takeCityInPossession(city);
-  sinvadingCity.emit(city, gold);
   
   History_CityWon *item = new History_CityWon();
   item->fillData(city);
@@ -1497,7 +1496,30 @@ void Player::conquerCity(City *city, Stack *stack)
   action->fillData(city, stack);
   addAction(action);
 
+  Player *looted = city->getOwner();
   doConquerCity(city, stack);
+  if (getType() != Player::NETWORKED)
+    lootCity(city, looted);
+}
+
+void Player::lootCity(City *city, Player *looted)
+{
+  Uint32 added = 0;
+  Uint32 subtracted = 0;
+  calculateLoot(looted, added, subtracted);
+  sinvadingCity.emit(city, added);
+  doLootCity(looted, added, subtracted);
+  Action_Loot *item = new Action_Loot();
+  item->fillData(this, looted, added, subtracted);
+  addAction(item);
+  return;
+}
+
+void Player::doLootCity(Player *looted, Uint32 added, Uint32 subtracted)
+{
+  addGold(added);
+  looted->withdrawGold(subtracted);
+  return;
 }
 
 void Player::takeCityInPossession(City* c)

@@ -1416,6 +1416,7 @@ class Player: public sigc::trackable
         void doDeclareDiplomacy (DiplomaticState state, Player *player);
         void doProposeDiplomacy (DiplomaticProposal proposal, Player *player);
         void doConquerCity(City *city, Stack *stack);
+	void doLootCity(Player *looted, Uint32 added, Uint32 subtracted);
         Hero* doRecruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
         void doRename(std::string name);
 	void doKill();
@@ -1519,8 +1520,9 @@ class Player: public sigc::trackable
         void updateArmyValues(std::list<Stack*>& stacks, double xp_sum);
 
         void adjustDiplomacyFromConqueringCity(City *city);
-        // return how much gold we got out
-        int lootCity(City *city);
+
+        void lootCity(City *city, Player *looted);
+	void calculateLoot(Player *looted, Uint32 &added, Uint32 &subtracted);
         void takeCityInPossession(City* c);
 };
 

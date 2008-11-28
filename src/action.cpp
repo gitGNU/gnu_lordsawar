@@ -172,6 +172,8 @@ Action* Action::handle_load(XML_Helper* helper)
           return (new Action_CityTooPoorToProduce(helper));
       case INIT_TURN:
           return (new Action_InitTurn(helper));
+      case CITY_LOOT:
+          return (new Action_Loot(helper));
     }
 
   return 0;
@@ -272,6 +274,10 @@ Action* Action::copy(const Action* a)
             return 
               (new Action_InitTurn
                 (*dynamic_cast<const Action_InitTurn*>(a)));
+        case CITY_LOOT:
+            return 
+              (new Action_Loot
+                (*dynamic_cast<const Action_Loot*>(a)));
     }
 
     return 0;
@@ -2338,6 +2344,67 @@ bool Action_InitTurn::doSave(XML_Helper* helper) const
   return retval;
 }
 
+//-----------------------------------------------------------------------------
+//Action_Loot
+
+Action_Loot::Action_Loot()
+    :Action(Action::CITY_LOOT), d_looting_player_id(0), d_looted_player_id(0),
+    d_gold_added(0), d_gold_removed(0)
+{
+}
+
+Action_Loot::Action_Loot(const Action_Loot &action)
+: Action(action), d_looting_player_id(action.d_looting_player_id),
+    d_looted_player_id(action.d_looted_player_id),
+    d_gold_added(action.d_gold_added), d_gold_removed(action.d_gold_removed)
+{
+}
+
+Action_Loot::Action_Loot(XML_Helper* helper)
+    :Action(helper)
+{
+    helper->getData(d_looting_player_id, "looting_player_id");
+    helper->getData(d_looted_player_id, "looted_player_id");
+    helper->getData(d_gold_added, "gold_added");
+    helper->getData(d_gold_removed, "gold_removed");
+}
+
+Action_Loot::~Action_Loot()
+{
+}
+
+std::string Action_Loot::dump() const
+{
+    std::stringstream s;
+    s <<"player " <<d_looting_player_id << " took " << d_gold_added << 
+      " gold pieces from player " << d_looted_player_id << 
+      " who lost a total of " << d_gold_removed << "gold pieces.\n";
+    return s.str();
+}
+
+bool Action_Loot::doSave(XML_Helper* helper) const
+{
+    bool retval = true;
+
+    retval &= helper->saveData("looting_player_id", d_looting_player_id);
+    retval &= helper->saveData("looted_player_id", d_looted_player_id);
+    retval &= helper->saveData("gold_added", d_gold_added);
+    retval &= helper->saveData("gold_removed", d_gold_removed);
+
+    return retval;
+}
+
+        
+bool Action_Loot::fillData(Player *looter, Player *looted, Uint32 amount_to_add,
+			   Uint32 amount_to_subtract)
+{
+    d_looting_player_id = looter->getId();
+    d_looted_player_id = looted->getId();
+    d_gold_added = amount_to_add;
+    d_gold_removed = amount_to_subtract;
+    return true;
+}
+
 std::string Action::actionTypeToString(Action::Type type)
 {
   switch (type)
@@ -2412,6 +2479,8 @@ std::string Action::actionTypeToString(Action::Type type)
       return "Action::CITY_DESTITUTE";
     case Action::INIT_TURN:
       return "Action::INIT_TURN";
+    case Action::CITY_LOOT:
+      return "Action::CITY_LOOT";
     }
       
   return "Action::MOVE";
@@ -2491,5 +2560,8 @@ Action::Type Action::actionTypeFromString(std::string str)
     return Action::CITY_DESTITUTE;
   else if (str == "Action::INIT_TURN")
     return Action::INIT_TURN;
+  else if (str == "Action::CITY_LOOT")
+    return Action::CITY_LOOT;
   return Action::STACK_MOVE;
 }
+

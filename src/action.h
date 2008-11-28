@@ -136,6 +136,7 @@ class Action
                 PLAYER_RENAME = 33,
 		CITY_DESTITUTE = 34,
 		INIT_TURN = 35,
+		CITY_LOOT = 36,
         };
 	static std::string actionTypeToString(Action::Type type);
 	static Action::Type actionTypeFromString(std::string str);
@@ -1557,6 +1558,49 @@ class Action_InitTurn: public Action
 
 	//! Save this action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
+};
+
+//-----------------------------------------------------------------------------
+
+//! A temporary record of what happened when a Player loots a City.
+/**
+ * The purpose of the Action_Loot class is to record when a Player has
+ * defeated a City and has looted it.  Looting a city results in the
+ * looting player's coffers gaining some gold pieces while the looted
+ * player's coffers decrease.
+ */
+class Action_Loot : public Action
+{
+    public:
+	//! Make a new city looting action.
+        Action_Loot();
+	//! Copy constructor
+	Action_Loot(const Action_Loot &action);
+	//! Load a new city looting action from an opened saved-game file.
+        Action_Loot(XML_Helper* helper);
+	//! Destroy a city looting action.
+        ~Action_Loot();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this city looting action to an opened saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Populate the action with the players involved and the amounts.
+        bool fillData(Player *looter, Player *looted, Uint32 amount_to_add,
+		      Uint32 amount_to_subtract);
+
+	Uint32 getAmountToAdd() const { return d_gold_added;};
+	Uint32 getAmountToSubtract() const { return d_gold_removed;};
+	Uint32 getLootingPlayerId() const {return d_looting_player_id;};
+	Uint32 getLootedPlayerId() const {return d_looted_player_id;};
+
+        private:
+	Uint32 d_looting_player_id;
+	Uint32 d_looted_player_id;
+	Uint32 d_gold_added;
+	Uint32 d_gold_removed;
 };
 
 #endif //ACTION_H
