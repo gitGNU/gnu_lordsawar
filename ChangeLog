@@ -1,3 +1,8 @@
+2008-11-28  Ben Asselstine  <benasselstine@gmail.com>
+
+	* src/path.cpp: fixed bug #24618 - account for boat loading/unloading
+	movement penalty when calculating shortest paths.
+
 2008-11-27  Ben Asselstine  <benasselstine@gmail.com>
 
 	* src/action.cpp: added new city loot action.  This changes the saved-
