@@ -31,7 +31,6 @@
 #include "armysetlist.h"
 #include "counter.h"
 #include "army.h"
-#include "citylist.h"
 #include "templelist.h"
 #include "hero.h"
 #include "GameMap.h"
@@ -39,10 +38,6 @@
 #include "xmlhelper.h"
 #include "FogMap.h"
 #include "player.h"
-#include "portlist.h"
-#include "bridgelist.h"
-#include "bridge.h"
-#include "port.h"
 #include "Backpack.h"
 
 std::string Stack::d_tag = "stack";
@@ -129,36 +124,51 @@ void Stack::moveOneStep(bool skipping)
   d_path->eraseFirstPoint();
 }
 
-void Stack::moveToDest(Vector<int> dest, bool skipping)
+bool Stack::isMovingToOrFromAShip(Vector<int> dest, bool &on_ship) const
 {
   Vector<int> pos = getPos();
-    
-  Uint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType();
-  City* to_city = Citylist::getInstance()->getObjectAt(dest.x, dest.y);
-  City* on_city = Citylist::getInstance()->getObjectAt(pos.x, pos.y);
-  Port* on_port = Portlist::getInstance()->getObjectAt(pos.x, pos.y);
-  Bridge* on_bridge= Bridgelist::getInstance()->getObjectAt(pos.x, pos.y);
-  Bridge* to_bridge= Bridgelist::getInstance()->getObjectAt(dest.x, dest.y);
+
+  bool to_city = GameMap::getInstance()->getTile(dest)->getBuilding() == Maptile::CITY;
+  bool on_city = GameMap::getInstance()->getTile(pos)->getBuilding() == Maptile::CITY;
+
+  bool on_port = GameMap::getInstance()->getTile(pos)->getBuilding() == Maptile::PORT;
+  bool on_bridge = GameMap::getInstance()->getTile(pos)->getBuilding() == Maptile::BRIDGE;
+  bool to_bridge = GameMap::getInstance()->getTile(dest)->getBuilding() == Maptile::BRIDGE;
   bool on_water = (GameMap::getInstance()->getTile(pos.x,pos.y)->getMaptileType() == Tile::WATER);
   bool to_water = (GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType() == Tile::WATER);
-  bool ship_load_unload = false;
   //here we mark the armies as being on or off a boat
+  /* skipping refers to when we have to move over another friendly stack
+   * of a size that's too big to join with. */
+  if ((on_water && to_city && !on_bridge) || 
+      (on_water && on_port && !to_water && on_ship) ||
+      ((on_city || on_port) && to_water && !to_bridge) ||
+      (on_bridge && to_water && !to_bridge) ||
+      (on_bridge && !to_water && on_ship) ||
+      (on_water && to_water && !on_bridge && !on_port && !to_bridge &&
+       on_ship == false) ||
+      (!on_water && !to_water && on_ship == true))
+    {
+      on_ship = !on_ship;
+      return true;
+    }
+  return false;
+}
+
+void Stack::moveToDest(Vector<int> dest, bool skipping)
+{
+  bool ship_load_unload = false;
   if (!isFlying())
     {
-      /* skipping refers to when we have to move over another friendly stack
-       * of a size that's too big to join with. */
-      if ((on_water && to_city && !on_bridge) || 
-	  (on_water && on_port && !to_water && hasShip()) ||
-	  ((on_city || on_port) && to_water && !to_bridge) ||
-	  (on_bridge && to_water && !to_bridge) ||
-	  (on_bridge && !to_water && hasShip()) ||
-	  (on_water && to_water && !on_bridge && !on_port && !to_bridge &&
-	   hasShip() == false) ||
-	  (!on_water && !to_water && hasShip() == true))
+      bool on_ship = hasShip();
+      if (isMovingToOrFromAShip(dest, on_ship) == true)
 	{
 	  if (!skipping)
 	    {
 	      ship_load_unload = true;
+	      Vector<int> pos = getPos();
+	      GameMap *gm = GameMap::getInstance();
+	      bool to_water = (gm->getTile(dest.x,dest.y)->getMaptileType() 
+			       == Tile::WATER);
 	      for (Stack::iterator it = begin(); it != end(); it++)
 		{
 		  if (to_water && 
@@ -176,6 +186,7 @@ void Stack::moveToDest(Vector<int> dest, bool skipping)
 	(*it)->setInShip(false);
     }
 
+  Uint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType();
   //how many moves does the stack need to travel to dest?
   int needed_moves = calculateTileMovementCost(dest);
 
@@ -848,7 +859,7 @@ Stack* Stack::createNonUniqueStack(Player *player, Vector<int> pos)
   return new Stack(0, player, pos);
 }
 
-Uint32 Stack::getMaxGroupMoves() const
+Uint32 Stack::getMaxGroupLandMoves() const
 {
   if (empty())
     return 0;
@@ -857,8 +868,60 @@ Uint32 Stack::getMaxGroupMoves() const
 
   //copy the stack, reset the moves and return the group moves
   Stack *copy = new Stack (*this);
+  if (copy->countGroupedArmies() == 0)
+    copy->group();
+  copy->decrementMoves(copy->getGroupMoves());
   copy->nextTurn();
   Uint32 moves = copy->getGroupMoves();
+  if (isFlying() == true)
+    {
+      delete copy;
+      return moves;
+    }
+
+  //alright, we're not flying.  what would our group moves be if we were on land
+  //remove ship status from all army units
+  copy->decrementMoves(copy->getGroupMoves());
+  for (Stack::iterator it = copy->begin(); it != copy->end(); it++)
+    (*it)->setInShip(false);
+  copy->nextTurn();
+
+  moves = copy->getGroupMoves();
+  delete copy;
+  return moves;
+}
+
+Uint32 Stack::getMaxGroupBoatMoves() const
+{
+  if (empty())
+    return 0;
+
+  assert(!empty());
+
+  //copy the stack, reset the moves and return the group moves
+  Stack *copy = new Stack (*this);
+  if (copy->countGroupedArmies() == 0)
+    copy->group();
+  copy->nextTurn();
+  Uint32 moves = copy->getGroupMoves();
+  if (isFlying() == true)
+    {
+      delete copy;
+      return moves;
+    }
+  //alright, we're not flying.  what would our group moves be if we were on water?
+  copy->decrementMoves(copy->getGroupMoves());
+	      
+  for (Stack::iterator it = copy->begin(); it != copy->end(); it++)
+    {
+      if (((*it)->getStat(Army::MOVE_BONUS) & Tile::WATER) == 0)
+	(*it)->setInShip(true);
+      else
+	(*it)->setInShip(false);
+    }
+  copy->nextTurn();
+
+  moves = copy->getGroupMoves();
   delete copy;
   return moves;
 }

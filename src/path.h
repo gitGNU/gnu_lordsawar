@@ -122,11 +122,16 @@ class Path : public std::list<Vector<int>*>
 	 * @param zigzag       Whether we're using the normal way to
 	 *                     calculate paths or not.  False means we never 
 	 *                     go diagonally.  True means we do.
+	 * @param turns        This variable gets filled up with the number of
+	 *                     turns it takes to get to the destination.  If
+	 *                     the destination can be reached in this turn,
+	 *                     the value returned is 0.
 	 *
          * @return The number of movement points needed to destination or 0
          *         if no path is possible.
          */
 	//! Calculate a Stack object's Path to a destination on the GameMap.
+        Uint32 calculate(Stack* stack, Vector<int> dest, Uint32 &turns, bool zigzag = true);
         Uint32 calculate(Stack* stack, Vector<int> dest, bool zigzag = true);
 
 	//! Recalculate a Stack object's Path.
@@ -245,6 +250,9 @@ class Path : public std::list<Vector<int>*>
          */
 	//! Calculates movement points to traverse an adjacent tile.
         int pointsToMoveTo(const Stack *s, int x, int y, int destx, int desty) const;
+
+	void calculate (Stack* s, Vector<int> dest, Uint32 &mp, Uint32 &turns, bool zigzag);
+	bool load_or_unload(Stack *s, Vector<int> src, Vector<int> dest, bool &on_ship);
 
         // Data
 

@@ -153,8 +153,11 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         //! Returns the minimum number of movement points of all Army units.
         Uint32 getGroupMoves() const;
 
-	//! Returns the MP the stack has when all Army units are refreshed.
-        Uint32 getMaxGroupMoves() const;
+	//! Returns the maximum MP the stack would have if it were on land
+        Uint32 getMaxGroupLandMoves() const;
+
+	//! Returns the max MP the stack would have if it were in the water
+        Uint32 getMaxGroupBoatMoves() const;
 
 	//! Returns true if all Army units in the stack are grouped.
 	bool isGrouped();
@@ -352,6 +355,8 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	static Uint32 scout(Stack *stack, Vector<int> dest);
 
 	void payUpkeep(Player *p);
+
+	bool isMovingToOrFromAShip(Vector<int> dest, bool &on_ship) const;
     private:    
 
 

@@ -229,7 +229,17 @@ Uint32 Path::calculateToCity (Stack *s, Location *c, bool zigzag)
   return mp;
 }
 
-Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
+bool Path::load_or_unload(Stack *s, Vector<int> src, Vector<int> dest, bool &on_ship)
+{
+  //do we load or unload if we step from SRC to DEST?
+  Vector<int> old = s->getPos();
+  s->setPos(src);
+  bool retval = s->isMovingToOrFromAShip(dest, on_ship);
+  s->setPos(old);
+  return retval;
+}
+
+void Path::calculate (Stack* s, Vector<int> dest, Uint32 &moves, Uint32 &turns, bool zigzag)
 {
   int mp;
   Vector<int> start = s->getPos();
@@ -245,11 +255,16 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
 	setMovesExhaustedAtPoint(1);
       else
 	setMovesExhaustedAtPoint(0);
-      return 1;
+      moves = 1;
+      turns = 0;
+      return;
     }
   int width = GameMap::getWidth();
   int height = GameMap::getHeight();
   d_bonus = s->calculateMoveBonus();
+  int land_reset_moves = s->getMaxGroupLandMoves();
+  int boat_reset_moves = s->getMaxGroupBoatMoves();
+
   //if (isBlocked(s, dest.x, dest.y, dest.x, dest.y))
   //{
   //s->setMovesExhaustedAtPoint(0);
@@ -281,10 +296,13 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
   struct node
     {
       int moves;
+      int turns;
+      int moves_left;
     };
   struct node nodes[length];
   std::queue<Vector<int> > process;
   bool flying = s->isFlying();
+  bool on_ship = s->hasShip();
 
   // initial filling of the nodes vector
   for (int i = 0; i < width*height; i++)
@@ -293,10 +311,14 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
       // -2 means can't go there at all
       // 0 or more is number of movement points needed to get there
       nodes[i].moves = -1;
+      nodes[i].moves_left = 0;
+      nodes[i].turns = 0;
       if (isBlocked(s, i % width, i/width, dest.x, dest.y))
 	nodes[i].moves = -2;
     }
   nodes[start.y*width+start.x].moves = 0;
+  nodes[start.y*width+start.x].moves_left = s->getGroupMoves();
+  nodes[start.y*width+start.x].turns = 0;
 
   // now the main loop
   process.push(Vector<int>(start.x, start.y));
@@ -341,12 +363,27 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
 		}
 	      int newDsxy = dxy;
 	      mp = pointsToMoveTo(s, pos.x, pos.y, sx, sy);
-	      if (mp >= 0)
-		newDsxy += mp;
+	      if (mp < 0)
+		mp = 0;
+	      if (!flying && load_or_unload(s, pos, Vector<int>(sx, sy), on_ship) == true)
+		mp = nodes[pos.y*width+pos.x].moves_left;
+	      newDsxy += mp;
+
 
 	      if (dsxy == -1 || dsxy > newDsxy)
 		{
 		  nodes[sy*width+sx].moves = newDsxy;
+		  nodes[sy*width+sx].moves_left = 
+		    nodes[pos.y*width+pos.x].moves_left - mp;
+		  nodes[sy*width+sx].turns = nodes[pos.y*width+pos.x].turns ;
+		  while (nodes[sy*width+sx].moves_left <= 0)
+		    {
+		      if (on_ship)
+			nodes[sy*width+sx].moves_left += boat_reset_moves;
+		      else
+			nodes[sy*width+sx].moves_left += land_reset_moves;
+		      nodes[sy*width+sx].turns++;
+		    }
 
 		  // append the item to the queue
 		  process.push(Vector<int>(sx, sy));
@@ -364,7 +401,9 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
   if (dist < 0)
     {
       setMovesExhaustedAtPoint(0);
-      return 0;
+      moves = 0;
+      turns = 0;
+      return;
     }
 
   // choose the order in which we process directions so as to favour
@@ -440,7 +479,24 @@ Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
   setMovesExhaustedAtPoint(pathcount);
 
   debug("...done");
-  return nodes[dest.y * width + dest.x].moves;
+  moves = nodes[dest.y * width + dest.x].moves;
+  turns = nodes[dest.y * width + dest.x].turns;
+  return;
+}
+
+Uint32 Path::calculate (Stack* s, Vector<int> dest, Uint32 &turns, bool zigzag)
+{
+  Uint32 mp = 0;
+  calculate(s, dest, mp, turns, zigzag);
+  return mp;
+}
+
+Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
+{
+  Uint32 mp = 0;
+  Uint32 turns = 0;
+  calculate(s, dest, mp, turns, zigzag);
+  return mp;
 }
 
 void Path::eraseFirstPoint()
