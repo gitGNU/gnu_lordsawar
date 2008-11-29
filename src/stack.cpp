@@ -65,7 +65,7 @@ Stack::Stack(Uint32 id, Player* player, Vector<int> pos)
     d_path = new Path();
 }
 
-Stack::Stack(Stack& s)
+Stack::Stack(const Stack& s)
     : UniquelyIdentified(s), Movable(s), Ownable(s), 
     d_defending(s.d_defending), d_parked(s.d_parked), d_deleting(false)
 {
@@ -73,7 +73,7 @@ Stack::Stack(Stack& s)
     d_path = new Path();
     //deep copy the other stack's armies
     
-    for (iterator sit = s.begin(); sit != s.end(); sit++)
+    for (const_iterator sit = s.begin(); sit != s.end(); sit++)
     {
 	if ((*sit)->isHero())
 	  {
@@ -848,4 +848,18 @@ Stack* Stack::createNonUniqueStack(Player *player, Vector<int> pos)
   return new Stack(0, player, pos);
 }
 
+Uint32 Stack::getMaxGroupMoves() const
+{
+  if (empty())
+    return 0;
+
+  assert(!empty());
+
+  //copy the stack, reset the moves and return the group moves
+  Stack *copy = new Stack (*this);
+  copy->nextTurn();
+  Uint32 moves = copy->getGroupMoves();
+  delete copy;
+  return moves;
+}
 // End of file

@@ -70,7 +70,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	 * deep copy of the stack's Army units.
 	 */
         //! Copy constructor.
-        Stack(Stack& s);
+        Stack(const Stack& s);
 
         //! Loading constructor.
         Stack(XML_Helper* helper);
@@ -152,6 +152,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
         //! Returns the minimum number of movement points of all Army units.
         Uint32 getGroupMoves() const;
+
+	//! Returns the MP the stack has when all Army units are refreshed.
+        Uint32 getMaxGroupMoves() const;
 
 	//! Returns true if all Army units in the stack are grouped.
 	bool isGrouped();
