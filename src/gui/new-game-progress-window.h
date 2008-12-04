@@ -6,12 +6,17 @@
 class NewGameProgressWindow : public Gtk::Window, boost::noncopyable
 {
   public:
+        
+    static NewGameProgressWindow *getInstance();
     NewGameProgressWindow(GameParameters g, GameScenario::PlayMode mode,
 			  std::string recording_file);
     virtual ~NewGameProgressWindow();
 
     void thread_worker();
     GameScenario *getGameScenario() const {return d_game_scenario;};
+
+    //!make the progress bar move
+    void pulse();
 
   /* Das machen wir mit boost::noncopyable
   private: // Nicht kopierbar!
@@ -51,5 +56,6 @@ class NewGameProgressWindow : public Gtk::Window, boost::noncopyable
     GameScenario::PlayMode d_play_mode;
     std::string d_recording_file;
 
+    static NewGameProgressWindow *s_instance;
 };
 

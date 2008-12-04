@@ -25,6 +25,7 @@
 #include <vector>
 #include <list>
 #include <SDL.h>
+#include <sigc++/signal.h>
 #include "CreateScenarioRandomize.h"
 #include "game-parameters.h"
 #include "vector.h"
@@ -172,6 +173,10 @@ class CreateScenario : public CreateScenarioRandomize
 
 	MapGenerator *getGenerator() const {return d_generator;};
 	static int calculateRoadType (Vector<int> t);
+        
+        //! Emitted when the generator generates something
+	sigc::signal<void> progress;
+
     private:
         //! Creates the map and distributes cities, temples and ruins
         bool createMap();
@@ -239,6 +244,7 @@ class CreateScenario : public CreateScenarioRandomize
 	//start with.
 	void getBaseGold (int difficulty, int *base_gold);
 
+	void on_progress(double percent, std::string description);
 
         //data
         //for map creation

@@ -6,6 +6,8 @@
 
 Glib::StaticMutex mutex = GLIBMM_STATIC_MUTEX_INIT;
  
+NewGameProgressWindow *NewGameProgressWindow::s_instance = 0;
+
 NewGameProgressWindow::NewGameProgressWindow(GameParameters g, GameScenario::PlayMode mode, std::string recording_file)
 : game_params(g), m_end_thread(false), m_vbox(false,10), d_play_mode(mode),
     d_recording_file(recording_file)
@@ -38,6 +40,7 @@ NewGameProgressWindow::~NewGameProgressWindow()
 
 void NewGameProgressWindow::thread_worker()
 {
+  s_instance = this;
   bool update_uuid = false;
   m_dispatcher();
   sleep(2);
@@ -98,9 +101,21 @@ void NewGameProgressWindow::thread_worker()
     {
       Glib::Mutex::Lock lock(mutex);
       if(m_end_thread)
-	return;
+	{
+	  s_instance = NULL;
+  	  return;
+	}
     }
   hide();
+  s_instance = NULL;
 }
 
+void NewGameProgressWindow::pulse()
+{
+  m_dispatcher();
+}
 
+NewGameProgressWindow * NewGameProgressWindow::getInstance()
+{
+  return s_instance;
+}

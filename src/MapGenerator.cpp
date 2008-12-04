@@ -348,6 +348,7 @@ void MapGenerator::makeBridges()
 	      placeBridge(pos, (*it).first);
 	    }
 	}
+	progress.emit(.990, _("paving bridges..."));
     }
 
   Roadlist::deleteInstance();
@@ -1656,6 +1657,7 @@ void MapGenerator::makeRoads()
 	continue;
 
       makeRoad(src, dest);
+      progress.emit(.810, _("paving roads..."));
     }
 
   //make all cities accessible by allowing movement to a central city

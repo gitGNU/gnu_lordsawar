@@ -21,6 +21,7 @@
 //  02110-1301, USA.
 
 #include <sstream>
+#include <sigc++/functors/mem_fun.h>
 
 #include "CreateScenario.h"
 #include "GameScenario.h"
@@ -104,6 +105,12 @@ void CreateScenario::setMaptype(MapType type)
         delete d_generator;
 
     d_generator = new MapGenerator();
+    d_generator->progress.connect (sigc::mem_fun(*this, &CreateScenario::on_progress));
+}
+    
+void CreateScenario::on_progress(double percent, std::string description)
+{
+  progress.emit();
 }
 
 void CreateScenario::setPercentages(int pgrass, int pwater, int pforest,

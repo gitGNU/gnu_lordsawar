@@ -738,12 +738,15 @@ Driver::create_and_dump_scenario(const std::string &file, const GameParameters &
     std::string path = File::getSavePath();
     path += file;
     
+    if (NewGameProgressWindow::getInstance())
+      {
+	creator.progress.connect(sigc::mem_fun(NewGameProgressWindow::getInstance(), &NewGameProgressWindow::pulse));
+      }
     creator.create(g);
     creator.dump(path);
     
     return path;
 }
-
 
 GameScenario *Driver::load_game(std::string file_path)
 {
