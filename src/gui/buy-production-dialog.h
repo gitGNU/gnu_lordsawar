@@ -45,7 +45,7 @@ class BuyProductionDialog: public Decorated
     void hide();
 
     enum { NO_ARMY_SELECTED = -1 };
-    int get_selected_army() { return purchasables[selected_army]->getTypeId(); }
+    int get_selected_army() { return selected_army == NO_ARMY_SELECTED ? NO_ARMY_SELECTED : purchasables[selected_army]->getTypeId(); }
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
