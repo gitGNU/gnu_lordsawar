@@ -1,3 +1,8 @@
+2008-12-04  Ben Asselstine  <benasselstine@gmail.com>
+
+	* src/gui/new-game-progress-window.cpp: making the progress bar
+	busier.
+
 2008-12-03  Ben Asselstine  <benasselstine@gmail.com>
 
 	* src/gui/buy-production-dialog.h: fixed crashing bug #25006.
