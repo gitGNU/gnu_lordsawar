@@ -95,6 +95,19 @@ eoeoeoeo
 	  TABLECLOTH = 4,
 	  DIAGONAL = 5, 
 	  CROSSHATCH = 6, 
+	  //! The feature is shaded on the top and on the left, and striped too.
+	  /**
+	   * The sunken striped pattern looks something like this:
+	   * @verbatim
+oooooooo
+oeeeeeee
+oxxxxxxx
+oeeeeeee
+@endverbatim
+	   *
+	   * It is currently used for Type::WATER.
+	   */
+	  SUNKEN_STRIPED = 7,
 	};
                     
 

@@ -85,6 +85,7 @@ bool SmallTile::save(XML_Helper *helper)
       break;
       //patterns with three colours
     case RANDOMIZED: case TABLECLOTH: case DIAGONAL: case CROSSHATCH:
+    case SUNKEN_STRIPED:
       retval &= helper->saveData("red", d_color.r);
       retval &= helper->saveData("green", d_color.g);
       retval &= helper->saveData("blue", d_color.b);

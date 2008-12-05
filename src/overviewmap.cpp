@@ -197,6 +197,23 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface,
             draw_pixel(surface, i, j, shadow_color);
           }
         break;
+      case SmallTile::SUNKEN_STRIPED:
+        if (shadowed == false)
+	  {
+            SDL_Color th = third_color;
+            Uint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
+	    if (j % 1 == 0)
+	      draw_pixel(surface, i, j, first);
+	    else
+	      draw_pixel(surface, i, j, third);
+	  }
+        else
+          {
+            SDL_Color s = second_color;
+            Uint32 shadow_color = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+            draw_pixel(surface, i, j, shadow_color);
+          }
+        break;
       case SmallTile::TABLECLOTH:
           {
             SDL_Color s = second_color;
