@@ -346,7 +346,8 @@ void OverviewMap::draw_terrain_pixels(Rectangle r)
 {
     GameMap *gm = GameMap::getInstance();
     // draw static map
-    Uint32 road_color = SDL_MapRGB(static_surface->format, 164, 84, 0);
+    SDL_Color rd = GameMap::getInstance()->getTileset()->getRoadColor();
+    Uint32 road_color = SDL_MapRGB(static_surface->format, rd.r, rd.g, rd.b);
     
     for (int i = r.x; i < r.x + r.w; ++i)
         for (int j = r.y; j < r.y + r.h; ++j)

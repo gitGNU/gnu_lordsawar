@@ -50,6 +50,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
     public:
 	//! The xml tag of this object in a tileset configuration file.
 	static std::string d_tag; 
+	static std::string d_road_smallmap_tag; 
 
 	//! Return the default height and width of a tile in the tileset.
 	static Uint32 getDefaultTileSize();
@@ -143,6 +144,10 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	int getLargestTileStyleId();
 
 	bool validate();
+
+        //! Get the colour associated with the road on the smallmap.
+        SDL_Color getRoadColor() const {return d_road_color;};
+	void setRoadColor(SDL_Color color) {d_road_color = color;};
     private:
         //! Callback to load Tile objects into the Tileset.
         bool loadTile(std::string, XML_Helper* helper);
@@ -189,6 +194,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	//! A map that provides a TileStyle when supplying a TileStyle id.
         TileStyleIdMap d_tilestyles;
 
+        SDL_Color d_road_color;
 };
 
 #endif // TILESET_H

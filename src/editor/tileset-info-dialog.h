@@ -23,6 +23,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/textview.h>
 #include <gtkmm/entry.h>
+#include <gtkmm/colorbutton.h>
 #include "tileset.h"
 
 //! Scenario editor.  Edits the description of the scenario.
@@ -40,6 +41,8 @@ class TileSetInfoDialog: public sigc::trackable
     std::auto_ptr<Gtk::Dialog> dialog;
     Gtk::Entry *name_entry;
     Gtk::TextView *description_textview;
+    Gtk::ColorButton *road_colorbutton;
+
 };
 
 #endif

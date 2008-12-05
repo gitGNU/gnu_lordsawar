@@ -35,6 +35,7 @@ using namespace std;
 #define DEFAULT_TILE_SIZE 40
 	
 std::string Tileset::d_tag = "tileset";
+std::string Tileset::d_road_smallmap_tag = "road_smallmap";
 
 Tileset::Tileset(std::string name)
 	: d_name(name), d_tileSize(DEFAULT_TILE_SIZE), d_dir("")
@@ -52,6 +53,7 @@ Tileset::Tileset(XML_Helper *helper)
     helper->getData(d_large_selector, "large_selector");
     helper->getData(d_small_selector, "small_selector");
     helper->registerTag(Tile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+    helper->registerTag(Tileset::d_road_smallmap_tag, sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag(SmallTile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag(TileStyle::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag(TileStyleSet::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
@@ -83,6 +85,18 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 	Tile* tile = new Tile(helper);
 	this->push_back(tile);
 
+	return true;
+      }
+
+    if (tag == Tileset::d_road_smallmap_tag)
+      {
+	Uint32 i;
+	SDL_Color color;
+	color.unused = 0;
+	helper->getData(i, "red");      color.r = i;
+	helper->getData(i, "green");    color.g = i;
+	helper->getData(i, "blue");     color.b = i;
+	d_road_color = color;
 	return true;
       }
 
@@ -140,6 +154,11 @@ bool Tileset::save(XML_Helper *helper)
   retval &= helper->saveData("tilesize", d_tileSize);
   retval &= helper->saveData("large_selector", d_large_selector);
   retval &= helper->saveData("small_selector", d_small_selector);
+  retval &= helper->openTag(d_road_smallmap_tag);
+  retval &= helper->saveData("red", d_road_color.r);
+  retval &= helper->saveData("green", d_road_color.g);
+  retval &= helper->saveData("blue", d_road_color.b);
+  retval &= helper->closeTag();
   for (Tileset::iterator i = begin(); i != end(); ++i)
     retval &= (*i)->save(helper);
   retval &= helper->closeTag();

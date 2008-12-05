@@ -5,6 +5,11 @@
     <d_tilesize>40</d_tilesize>
     <d_large_selector>misc/selector.png</d_large_selector>
     <d_small_selector>misc/small_selector.png</d_small_selector>
+    <road_smallmap>
+        <d_red>164</d_red>
+        <d_green>84</d_green>
+        <d_blue>0</d_blue>
+    </road_smallmap>
     <tile>
         <d_name>Grass</d_name>
         <d_moves>2</d_moves>
