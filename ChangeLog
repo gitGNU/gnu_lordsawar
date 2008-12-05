@@ -1,3 +1,7 @@
+2008-12-05  Ben Asselstine  <benasselstine@gmail.com>
+
+	* src/SmallTile.cpp: added new type SUNKEN_STRIPED.
+
 2008-12-04  Ben Asselstine  <benasselstine@gmail.com>
 
 	* src/gui/new-game-progress-window.cpp: making the progress bar
