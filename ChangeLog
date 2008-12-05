@@ -1,6 +1,8 @@
 2008-12-05  Ben Asselstine  <benasselstine@gmail.com>
 
 	* src/SmallTile.cpp: added new type SUNKEN_STRIPED.
+	* src/tileset.cpp: added configurable smallmap road colour.  This
+	changes the tileset configuration schema.
 
 2008-12-04  Ben Asselstine  <benasselstine@gmail.com>
 
