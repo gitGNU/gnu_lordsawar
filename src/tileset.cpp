@@ -43,6 +43,10 @@ Tileset::Tileset(std::string name)
   d_info = "";
   d_large_selector = "misc/selector.png";
   d_small_selector = "misc/small_selector.png";
+  d_road_color.r = 0;
+  d_road_color.g = 0;
+  d_road_color.b = 0;
+  d_road_color.unused = 0;
 }
 
 Tileset::Tileset(XML_Helper *helper)
