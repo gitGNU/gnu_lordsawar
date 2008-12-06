@@ -1669,6 +1669,7 @@ void MapGenerator::makeRoads()
 	continue;
       if (isAccessible(center->getPos(), (*it)->getPos()) == false)
 	makeAccessible(center->getPos(), (*it)->getPos());
+      progress.emit(.810, _("paving roads..."));
     }
 
   Roadlist::deleteInstance();
