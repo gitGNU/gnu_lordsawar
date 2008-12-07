@@ -908,23 +908,27 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 {
   for(int j = miny; j < maxy; j++)
     for(int i = minx; i < maxx; i++)
-      if(getTile(j, i)->getMaptileType() == Tile::MOUNTAIN)
-	for(int J = -1; J <= +1; ++J)
-	  for(int I = -1; I <= +1; ++I)
-	    if((!(offmap(j+J,i+I))) &&
-	       (getTile((j+J),(i+I))->getMaptileType() != Tile::MOUNTAIN))
-	      {
-		if(getTile((j+J), (i+I))->getMaptileType() != Tile::WATER)
-		  setTile(j+J, i+I, 
-			  new Maptile (d_tileSet, j+J, i+I, 
-				       d_tileSet->getIndex(Tile::HILLS), NULL));
-		else 
-		  // water has priority here, there was some work done to conenct bodies of water
-		  // so don't break those connections.
-		  setTile(j, i, 
-			  new Maptile (d_tileSet, j, i, 
-				       d_tileSet->getIndex(Tile::HILLS), NULL));
-	      }
+      {
+	if (offmap(j, i))
+	  continue;
+	if(getTile(j, i)->getMaptileType() == Tile::MOUNTAIN)
+	  for(int J = -1; J <= +1; ++J)
+	    for(int I = -1; I <= +1; ++I)
+	      if((!(offmap(j+J,i+I))) &&
+		 (getTile((j+J),(i+I))->getMaptileType() != Tile::MOUNTAIN))
+		{
+		  if(getTile((j+J), (i+I))->getMaptileType() != Tile::WATER)
+		    setTile(j+J, i+I, 
+			    new Maptile (d_tileSet, j+J, i+I, 
+					 d_tileSet->getIndex(Tile::HILLS), NULL));
+		  else 
+		    // water has priority here, there was some work done to conenct bodies of water
+		    // so don't break those connections.
+		    setTile(j, i, 
+			    new Maptile (d_tileSet, j, i, 
+					 d_tileSet->getIndex(Tile::HILLS), NULL));
+		}
+      }
 }
 
 void GameMap::applyTileStyle (int i, int j)
