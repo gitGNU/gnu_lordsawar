@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
   RecentlyPlayedGameList::getInstance()->loadFromFile(File::getSavePath() + "/recently-played.xml");
 
   #if ENABLE_NLS
-  cout << "Configuration::s_lang.c_str(): " << Configuration::s_lang.c_str() << endl;
+  //cout << "Configuration::s_lang.c_str(): " << Configuration::s_lang.c_str() << endl;
   setlocale(LC_ALL, Configuration::s_lang.c_str());
   //setlocale(LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
