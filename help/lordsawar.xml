@@ -3,9 +3,9 @@
 http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
   <!ENTITY legal SYSTEM "legal.xml">
 <!ENTITY app "<application>LordsAWar!</application>">
-<!ENTITY appversion "0.1.4">
-<!ENTITY date "October 2008">
-<!ENTITY manrevision "0.1.4">
+<!ENTITY appversion "0.1.5">
+<!ENTITY date "December 2008">
+<!ENTITY manrevision "0.1.5">
 ]>
 
 <article id="index" lang="en"> 

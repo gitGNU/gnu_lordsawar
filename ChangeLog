@@ -1,5 +1,9 @@
 2008-12-07  Ben Asselstine  <benasselstine@gmail.com>
 
+	* bumped version to 0.1.5.
+
+2008-12-07  Ben Asselstine  <benasselstine@gmail.com>
+
 	* src/GameMap.cpp (surroundMountains): check for tiles that are off
 	the map.
 
