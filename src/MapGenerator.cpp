@@ -206,15 +206,15 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     debug("ruining ruins");
     progress.emit(.810, _("ruining ruins..."));
     makeBuildings(Maptile::RUIN,d_noruins);
-    debug("raising signs");
-    progress.emit(.900, _("raising signs..."));
-    makeBuildings(Maptile::SIGNPOST,d_nosignposts);
     debug("spawning temples");
-    progress.emit(.950, _("spawning temples..."));
+    progress.emit(.900, _("spawning temples..."));
     makeBuildings(Maptile::TEMPLE,d_notemples);
     debug("building bridges");
-    progress.emit(.990, _("building bridges..."));
+    progress.emit(.950, _("building bridges..."));
     makeBridges();
+    debug("raising signs");
+    progress.emit(.990, _("raising signs..."));
+    makeBuildings(Maptile::SIGNPOST,d_nosignposts);
 
     debug("Done making map.");
 
@@ -348,7 +348,7 @@ void MapGenerator::makeBridges()
 	      placeBridge(pos, (*it).first);
 	    }
 	}
-	progress.emit(.990, _("paving bridges..."));
+	progress.emit(.950, _("paving bridges..."));
     }
 
   Roadlist::deleteInstance();
