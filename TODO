@@ -1,5 +1,5 @@
 
- scp lordsawar-0.1.5-pre.tar.gz benasselstine@dl.sv.nongnu.org:/releases/lordsawar/
+ scp lordsawar-0.1.5-pre1.tar.gz benasselstine@dl.sv.nongnu.org:/releases/lordsawar/
 
 buildings can be put on tiles that get turned into water
 	or turned into forest
