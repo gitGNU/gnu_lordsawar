@@ -3014,43 +3014,177 @@ void GameWindow::on_advice_asked(float percent)
   s += "\n";
 
   num = rand() % 7;
-  if (num == 0)
-    s += _("This battle will surely be");
-  else if (num == 1)
-    s += _("A battle here would be");
-  else if (num == 2)
-    s += _("I believe this battle will surely be");
-  else if (num == 3)
-    s += _("This battle would be");
-  else if (num == 4)
-    s += _("A battle here would be");
-  else if (num == 5)
-    s += _("I believe this battle will be");
-  else if (num == 6)
-    s += _("This battle shall be");
-  s += "\n";
-
-
+  num = rand() % 7;
   if (percent >= 90.0)
-    s += _("as simple as butchering sleeping cattle!");
+    {
+      if (num == 0)
+	s += _("This battle will surely be as simple as butchering sleeping cattle!");
+      else if (num == 1)
+	s += _("A battle here would be as simple as butchering sleeping cattle!");
+      else if (num == 2)
+	s += _("I believe this battle will surely be as simple as butchering sleeping cattle!");
+      else if (num == 3)
+	s += _("This battle would be as simple as butchering sleeping cattle!");
+      else if (num == 4)
+	s += _("A battle here would be as simple as butchering sleeping cattle!");
+      else if (num == 5)
+	s += _("I believe this battle will be as simple as butchering sleeping cattle!");
+      else if (num == 6)
+	s += _("This battle shall be as simple as butchering sleeping cattle!");
+    }
   else if (percent >= 80.0)
-    s += _("an easy victory!  We cannot lose!");
+    {
+      if (num == 0)
+	s += _("This battle will surely be an easy victory!  We cannot lose!");
+      else if (num == 1)
+	s += _("A battle here would be an easy victory!  We cannot lose!");
+      else if (num == 2)
+	s += _("I believe this battle will surely be an easy victory!  We cannot lose!");
+      else if (num == 3)
+	s += _("This battle would be an easy victory!  We cannot lose!");
+      else if (num == 4)
+	s += _("A battle here would be an easy victory!  We cannot lose!");
+      else if (num == 5)
+	s += _("I believe this battle will be an easy victory!  We cannot lose!");
+      else if (num == 6)
+	s += _("This battle shall be an easy victory!  We cannot lose!");
+    }
   else if (percent >= 70.0)
-    s += _("a comfortable victory");
+    {
+      if (num == 0)
+	s += _("This battle will surely be a comfortable victory");
+      else if (num == 1)
+	s += _("A battle here would be a comfortable victory");
+      else if (num == 2)
+	s += _("I believe this battle will surely be a comfortable victory");
+      else if (num == 3)
+	s += _("This battle would be a comfortable victory");
+      else if (num == 4)
+	s += _("A battle here would be a comfortable victory");
+      else if (num == 5)
+	s += _("I believe this battle will be a comfortable victory");
+      else if (num == 6)
+	s += _("This battle shall be a comfortable victory");
+    }
   else if (percent >= 60.0)
-    s += _("a hard fought victory! But we shall win!");
+    {
+      if (num == 0)
+	s += _("This battle will surely be a hard fought victory! But we shall win!");
+      else if (num == 1)
+	s += _("A battle here would be a hard fought victory! But we shall win!");
+      else if (num == 2)
+	s += _("I believe this battle will surely be a hard fought victory! But we shall win!");
+      else if (num == 3)
+	s += _("This battle would be a hard fought victory! But we shall win!");
+      else if (num == 4)
+	s += _("A battle here would be a hard fought victory! But we shall win!");
+      else if (num == 5)
+	s += _("I believe this battle will be a hard fought victory! But we shall win!");
+      else if (num == 6)
+	s += _("This battle shall be a hard fought victory! But we shall win!");
+    }
   else if (percent >= 50.0)
-    s += _("very evenly matched!");
+    {
+      if (num == 0)
+	s += _("This battle will surely be very evenly matched!");
+      else if (num == 1)
+	s += _("A battle here would be very evenly matched!");
+      else if (num == 2)
+	s += _("I believe this battle will surely be very evenly matched!");
+      else if (num == 3)
+	s += _("This battle would be very evenly matched!");
+      else if (num == 4)
+	s += _("A battle here would be very evenly matched!");
+      else if (num == 5)
+	s += _("I believe this battle will be very evenly matched!");
+      else if (num == 6)
+	s += _("This battle shall be very evenly matched!");
+    }
   else if (percent >= 40.0)
-    s += _("difficult but not impossible to win!");
+    {
+      if (num == 0)
+	s += _("This battle will surely be difficult but not impossible to win!");
+      else if (num == 1)
+	s += _("A battle here would be difficult but not impossible to win!");
+      else if (num == 2)
+	s += _("I believe this battle will surely be difficult but not impossible to win!");
+      else if (num == 3)
+	s += _("This battle would be difficult but not impossible to win!");
+      else if (num == 4)
+	s += _("A battle here would be difficult but not impossible to win!");
+      else if (num == 5)
+	s += _("I believe this battle will be difficult but not impossible to win!");
+      else if (num == 6)
+	s += _("This battle shall be difficult but not impossible to win!");
+    }
   else if (percent >= 30.0)
-    s += _("a brave choice! I leave it to thee!");
+    {
+      if (num == 0)
+	s += _("This battle will surely be a brave choice! I leave it to thee!");
+      else if (num == 1)
+	s += _("A battle here would be a brave choice! I leave it to thee!");
+      else if (num == 2)
+	s += _("I believe this battle will surely be a brave choice! I leave it to thee!");
+      else if (num == 3)
+	s += _("This battle would be a brave choice! I leave it to thee!");
+      else if (num == 4)
+	s += _("A battle here would be a brave choice! I leave it to thee!");
+      else if (num == 5)
+	s += _("I believe this battle will be a brave choice! I leave it to thee!");
+      else if (num == 6)
+	s += _("This battle shall be a brave choice! I leave it to thee!");
+    }
   else if (percent >= 20.0)
-    s += _("a foolish decision!");
+    {
+      if (num == 0)
+	s += _("This battle will surely be a foolish decision!");
+      else if (num == 1)
+	s += _("A battle here would be a foolish decision!");
+      else if (num == 2)
+	s += _("I believe this battle will surely be a foolish decision!");
+      else if (num == 3)
+	s += _("This battle would be a foolish decision!");
+      else if (num == 4)
+	s += _("A battle here would be a foolish decision!");
+      else if (num == 5)
+	s += _("I believe this battle will be a foolish decision!");
+      else if (num == 6)
+	s += _("This battle shall be a foolish decision!");
+    }
   else if (percent >= 10.0)
-    s += _("sheerest folly!  Thou shouldst not attack!");
+    {
+      if (num == 0)
+	s += _("This battle will surely be sheerest folly!  Thou shouldst not attack!");
+      else if (num == 1)
+	s += _("A battle here would be sheerest folly!  Thou shouldst not attack!");
+      else if (num == 2)
+	s += _("I believe this battle will surely be sheerest folly!  Thou shouldst not attack!");
+      else if (num == 3)
+	s += _("This battle would be sheerest folly!  Thou shouldst not attack!");
+      else if (num == 4)
+	s += _("A battle here would be sheerest folly!  Thou shouldst not attack!");
+      else if (num == 5)
+	s += _("I believe this battle will be sheerest folly!  Thou shouldst not attack!");
+      else if (num == 6)
+	s += _("This battle shall be sheerest folly!  Thou shouldst not attack!");
+    }
   else
-    s += _("complete and utter suicide!");
+    {
+      if (num == 0)
+	s += _("This battle will surely be complete and utter suicide!");
+      else if (num == 1)
+	s += _("A battle here would be complete and utter suicide!");
+      else if (num == 2)
+	s += _("I believe this battle will surely be complete and utter suicide!");
+      else if (num == 3)
+	s += _("This battle would be complete and utter suicide!");
+      else if (num == 4)
+	s += _("A battle here would be complete and utter suicide!");
+      else if (num == 5)
+	s += _("I believe this battle will be complete and utter suicide!");
+      else if (num == 6)
+	s += _("This battle shall be complete and utter suicide!");
+    }
   label->set_text(s);
 
   dialog->show_all();

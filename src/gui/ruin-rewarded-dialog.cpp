@@ -93,7 +93,7 @@ void RuinRewardedDialog::run()
   else if (reward->getType() == Reward::MAP)
     s += _("where a map can be found!");
   else if (reward->getType() == Reward::RUIN)
-    s += _("where crapola can be found!");
+    s += _("where nothing can be found!");
   else if (reward->getType() == Reward::GOLD)
     s += _("where gold can be found!");
   else //this one shouldn't happen
