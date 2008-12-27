@@ -116,15 +116,15 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
 void QuestMap::after_draw()
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  Hero *hero = quest->getHero();
-  Player *p = hero->getOwner();
-
   if (!quest)
     {
       draw_cities(true);
       map_changed.emit(surface);
       return;
     }
+  Hero *hero = quest->getHero();
+  Player *p = hero->getOwner();
+
 
 
   Vector<int> start = p->getStacklist()->getPosition (quest->getHeroId ());
