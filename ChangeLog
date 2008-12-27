@@ -1,3 +1,8 @@
+2008-12-27  Ben Asselstine  <benasselstine@gmail.com>
+
+	* src/questmap.cpp (after_draw): fixed quest dialog to not crash when 
+	there isn't a quest.  Reported by Martin Thoma.
+
 2008-12-07  Ben Asselstine  <benasselstine@gmail.com>
 
 	* bumped version to 0.1.5.
