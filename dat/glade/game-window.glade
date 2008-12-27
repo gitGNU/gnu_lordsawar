@@ -413,7 +413,7 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkMenuItem" id="production_menuitem">
+			<widget class="GtkMenuItem" id="cities_menuitem">
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">Cities</property>
 			  <property name="use_underline">True</property>
