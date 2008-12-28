@@ -1,3 +1,7 @@
+2008-12-28  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added danish translation.  Submitted by Joe Hansen.
+
 2008-12-27  Ben Asselstine  <benasselstine@gmail.com>
 
 	* src/questmap.cpp (after_draw): fixed quest dialog to not crash when 
