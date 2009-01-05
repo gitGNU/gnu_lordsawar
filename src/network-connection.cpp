@@ -97,7 +97,6 @@ void NetworkConnection::gotConnectionEvent(GConn* conn, GConnEvent* event)
     {
       if (event->length < 2)
       {
-	printf ("misbehaving server!\n");
         // misbehaving server
         gnet_conn_disconnect(conn);
         break;
