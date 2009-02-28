@@ -1,3 +1,10 @@
+2009-02-28  Ben Asselstine  <benasselstine@gmail.com>
+
+	* merged patch from the freebsd folks.
+	* added another danish translation.  Submitted by Joe Hansen.
+	* added new dutch translation from the translation project.
+	* fixed typos in english translations.  Reported by Joe Hansen.
+
 2008-12-28  Ben Asselstine  <benasselstine@gmail.com>
 
 	* added danish translation.  Submitted by Joe Hansen.
