@@ -1,4 +1,4 @@
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -1099,7 +1099,7 @@ void Game::init_turn_for_player(Player* p)
     }
   else
     {
-      SDL_Delay(250);
+      //SDL_Delay(250);
     }
 }
 

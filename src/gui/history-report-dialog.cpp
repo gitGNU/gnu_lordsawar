@@ -448,7 +448,7 @@ void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
     }
   turn == past_citylists.size() ?
     s = String::ucompose(ngettext("On turn %1 you have %2 city!",
-				  "On turn %1 you have %2 gold cities!",
+				  "On turn %1 you have %2 cities!",
 				  count), turn, count) :
     s = String::ucompose(ngettext("On turn %1 you had %2 city!",
 				  "On turn %1 you had %2 cities!",

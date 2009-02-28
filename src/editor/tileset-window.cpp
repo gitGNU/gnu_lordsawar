@@ -474,7 +474,7 @@ void TileSetWindow::on_new_tileset_activated()
 void TileSetWindow::on_load_tileset_activated()
 {
   Gtk::FileChooserDialog chooser(*window.get(), 
-				 _("Choose an Tileset to Load"));
+				 _("Choose a Tileset to Load"));
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*.xml");
   chooser.set_filter(sav_filter);
