@@ -1,56 +1,47 @@
-# Danish translation of lordsawar.
-# Copyright (C) 2009 Yoyodyne, Inc & Joe Hansen.
+# Lordsawar
+# Copyright (C) 2009 Yoyodyne, Inc.
 # This file is distributed under the same license as the lordsawar package.
-# Joe Hansen <joedalton2@yahoo.dk>, 2008, 2009.
-# Korrekturlæsning: Lars Christian Jensen, 2009.
-#
-# Konventioner
-# loot -> røve
-# pillage -> plyndre
-# occupy -> besætte
-# raze - > rasere
-# sack -> brænde
+# Erwin Poeze <erwin.poeze@gmail.com>, 2008
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lordsawar 0.1.5\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
 "POT-Creation-Date: 2008-10-26 13:58-0400\n"
-"PO-Revision-Date: 2009-02-23 00:00+0000\n"
-"Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
-"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"PO-Revision-Date: 2009-01-02 17:25+0100\n"
+"Last-Translator: Erwin Poeze <erwin.poeze@gmail.com>\n"
+"Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: dat/glade/about-dialog.glade:12
 msgid ""
 "Freedom is the most important \n"
 "feature of this game."
 msgstr ""
-"Frihed er den vigtigste egenskab \n"
-"ved dette spil."
+"Vrijheid is de belangrijkste \n"
+"eigenschap van dit spel."
 
 #: dat/glade/about-dialog.glade:14
 msgid "The GPL version 2 or later."
-msgstr "GPL version 2 eller senere."
+msgstr "GPL-versie 2 of nieuwer."
 
 #: dat/glade/about-dialog.glade:17
 msgid "The LordsAWar Website"
-msgstr "LordsAWar hjemmesiden"
+msgstr "De website van LordsAWar"
 
 #: dat/glade/about-dialog.glade:26
 msgid "translator-credits"
-msgstr ""
-"Joe Hansen <joedalton2@yahoo.dk>, 2008.\n"
-"\n"
-"Dansk-gruppen <dansk@dansk-gruppen.dk>\n"
-"Mere info: http://www.dansk-gruppen.dk"
+msgstr "Erwin Poeze"
 
 #: dat/glade/army-bonus-dialog.glade:8 dat/glade/game-window.glade:383
 msgid "Army Bonus"
-msgstr "Hærbonus"
+msgstr "Legerbonus"
 
 #: dat/glade/army-bonus-dialog.glade:40
 #: dat/glade/buy-production-dialog.glade:136
@@ -78,7 +69,7 @@ msgstr "Hærbonus"
 #: dat/glade/editor/temple-dialog.glade:37
 #: dat/glade/editor/tileset-info-dialog.glade:37
 msgid "_Cancel"
-msgstr "_Afbryd"
+msgstr "_Annuleren"
 
 #: dat/glade/army-bonus-dialog.glade:55 dat/glade/city-raze-dialog.glade:50
 #: dat/glade/city-rename-dialog.glade:50 dat/glade/fight-order-dialog.glade:55
@@ -98,61 +89,61 @@ msgstr "_Afbryd"
 #: dat/glade/editor/temple-dialog.glade:50
 #: dat/glade/editor/tileset-info-dialog.glade:50
 msgid "_OK"
-msgstr "_O.k."
+msgstr "_Ok"
 
 #: dat/glade/army-bonus-dialog.glade:126
 #: dat/glade/editor/armyset-window.glade:1559
 msgid "<b>Army Bonus</b>"
-msgstr "<b>Hærbonus</b>"
+msgstr "<b>Legerbonus</b>"
 
 #: dat/glade/army-gains-level-dialog.glade:7
 msgid "Army Gained Level"
-msgstr "Hær opnåede et højere niveau"
+msgstr "Veroverde niveau van leger"
 
 #: dat/glade/army-gains-level-dialog.glade:91
 msgid "_Choose"
-msgstr "_Vælg"
+msgstr "_Kies"
 
 #: dat/glade/buy-production-dialog.glade:7
 msgid "Buy Production"
-msgstr "Køb produktion"
+msgstr "Productiefaciliteit kopen"
 
 #: dat/glade/buy-production-dialog.glade:103
 msgid "<b>Buy Production</b>"
-msgstr "<b>Køb produktion</b>"
+msgstr "<b>Koopproductie</b>"
 
 #: dat/glade/buy-production-dialog.glade:143
 msgid "_Buy"
-msgstr "_Køb"
+msgstr "_Koop"
 
 #: dat/glade/city-defeated-dialog.glade:8
 msgid "Victory!"
-msgstr "Sejr!"
+msgstr "Overwinning!"
 
 #: dat/glade/city-defeated-dialog.glade:38
 msgid "_Sack"
-msgstr "_Brænd"
+msgstr "_Plunder"
 
 #: dat/glade/city-defeated-dialog.glade:50
 msgid "_Pillage"
-msgstr "_Plyndr"
+msgstr "_Plunderen"
 
 #: dat/glade/city-defeated-dialog.glade:63 dat/glade/city-window.glade:452
 msgid "_Raze"
-msgstr "_Raser"
+msgstr "_Verwoest"
 
 #: dat/glade/city-defeated-dialog.glade:76
 msgid "_Occupy"
-msgstr "_Besæt"
+msgstr "_Bezetten"
 
 #: dat/glade/city-defeated-dialog.glade:140
 msgid "The city is yours! Will you..."
-msgstr "Byen er din! Vil du..."
+msgstr "De stad is van jou! Je zult..."
 
 #: dat/glade/city-looted-dialog.glade:22
 #: dat/glade/hero-brings-allies-dialog.glade:22
 msgid "Your troops have looted the city!"
-msgstr "Dine tropper har røvet byen!"
+msgstr "Je troepen hebben de stad buitgemaakt!"
 
 #: dat/glade/city-looted-dialog.glade:47
 #: dat/glade/city-pillaged-dialog.glade:39
@@ -168,15 +159,15 @@ msgstr "Dine tropper har røvet byen!"
 #: dat/glade/ruin-report-dialog.glade:39
 #: dat/glade/ruin-rewarded-dialog.glade:39 dat/glade/sage-dialog.glade:39
 msgid "_Continue"
-msgstr "_Fortsæt"
+msgstr "_Volgende"
 
 #: dat/glade/city-pillaged-dialog.glade:64
 msgid "Your troops have pillaged the city!"
-msgstr "Dine tropper har plyndret byen!"
+msgstr "Je troepen hebben de stad geplunderd!"
 
 #: dat/glade/city-razed-dialog.glade:22 dat/glade/city-sacked-dialog.glade:64
 msgid "Your troops have sacked the city!"
-msgstr "Dine tropper har brændt byen ned!"
+msgstr "Je troepen hebben de stad geplunderd!"
 
 #: dat/glade/city-rename-dialog.glade:113
 #: dat/glade/game-lobby-dialog.glade:608 dat/glade/hero-offer-dialog.glade:253
@@ -192,7 +183,7 @@ msgstr "Dine tropper har brændt byen ned!"
 #: dat/glade/editor/tileset-info-dialog.glade:113
 #: dat/glade/editor/tileset-window.glade:380
 msgid "Name:"
-msgstr "Navn:"
+msgstr "Naam:"
 
 #: dat/glade/city-window.glade:41 dat/glade/destination-dialog.glade:41
 #: dat/glade/game-options-dialog.glade:81 dat/glade/game-over-dialog.glade:74
@@ -207,16 +198,16 @@ msgstr "Navn:"
 #: dat/glade/editor/tileset-selector-editor-dialog.glade:37
 #: src/gui/game-window.cpp:2312
 msgid "_Close"
-msgstr "_Luk"
+msgstr "_Sluiten"
 
 #: dat/glade/city-window.glade:225 dat/glade/destination-dialog.glade:125
 #: src/gui/city-window.cpp:265 src/gui/destination-dialog.cpp:229
 msgid "Current:"
-msgstr "Aktuel:"
+msgstr "Huidige:"
 
 #: dat/glade/city-window.glade:403 dat/glade/hero-dialog.glade:143
 msgid "Stop producing armies"
-msgstr "Stop produktion af hære"
+msgstr "Aanmaken van legers stoppen"
 
 #: dat/glade/city-window.glade:404
 msgid "_Stop"
@@ -224,29 +215,28 @@ msgstr "_Stop"
 
 #: dat/glade/city-window.glade:419 dat/glade/hero-dialog.glade:155
 msgid "Buy a production capability"
-msgstr "Køb en produktionkapacitet"
+msgstr "Een productiefaciliteit kopen"
 
 #: dat/glade/city-window.glade:420
 msgid "_Buy..."
-msgstr "_Køb..."
+msgstr "_Koop..."
 
 #: dat/glade/city-window.glade:435
 msgid "Set destination for produced armies"
-msgstr "Vælg destination for producerede hære"
+msgstr "Bestemming van geproduceerde legers instellen"
 
 #: dat/glade/city-window.glade:436
 msgid "_Vector..."
-msgstr "_Vektor..."
+msgstr "_Vector..."
 
 #: dat/glade/city-window.glade:468
 msgid "R_ename"
-msgstr "O_mdøb"
+msgstr "_Hernoem"
 
 #: dat/glade/destination-dialog.glade:8
 msgid "Choose Destination"
-msgstr "Vælg destination"
+msgstr "Bestemming kiezen"
 
-# uafklaret, spørg projekt
 #: dat/glade/destination-dialog.glade:167
 msgid "4t"
 msgstr "4t"
@@ -256,116 +246,116 @@ msgid ""
 "See\n"
 "All"
 msgstr ""
-"Se\n"
-"Alle"
+"Zie\n"
+"Alles"
 
 #: dat/glade/destination-dialog.glade:258
 msgid "Next Turn:"
-msgstr "Næste runde:"
+msgstr "Volgende beurt:"
 
 #: dat/glade/destination-dialog.glade:364
 msgid "Turn After:"
-msgstr "Runde efter:"
+msgstr "Beurt na:"
 
 #: dat/glade/destination-dialog.glade:471
 msgid "_Vector"
-msgstr "_Vektor"
+msgstr "_Vector"
 
 #: dat/glade/destination-dialog.glade:488
 msgid ""
 "Click here to vector to\n"
 "a new city"
 msgstr ""
-"Klik her for at sætte vektor til\n"
-"en ny by"
+"Klik hier om naar een\n"
+"nieuwe stad te gaan"
 
 #: dat/glade/destination-dialog.glade:528
 msgid "Chan_ge"
-msgstr "Ænd_re"
+msgstr "_Verander"
 
 #: dat/glade/destination-dialog.glade:545
 msgid ""
 "Click here to change the\n"
 "destination of armies"
 msgstr ""
-"Klik her for at ændre\n"
-"destinationen for hære"
+"Klik hier om de bestemming\n"
+"van legers te veranderen"
 
 #: dat/glade/diplomacy-dialog.glade:8
 msgid "Diplomatic Proposals"
-msgstr "Diplomatiske forslag"
+msgstr "Diplomatieke voorstellen"
 
 #: dat/glade/diplomacy-dialog.glade:39
 msgid "Report"
-msgstr "Rapport"
+msgstr "Rapporteer"
 
 #: dat/glade/diplomacy-dialog.glade:84
 msgid "Your offers and replies"
-msgstr "Dine tilbud og svar"
+msgstr "Je aanbiedingen en reacties"
 
 #: dat/glade/diplomacy-dialog.glade:159
 msgid "player name"
-msgstr "spillernavn"
+msgstr "spelersnaam"
 
 #: dat/glade/diplomacy-dialog.glade:192
 msgid "Diplomatic State"
-msgstr "Diplomatisk status"
+msgstr "Diplomatieke status"
 
 #: dat/glade/diplomacy-dialog.glade:217
 msgid "Their Proposals"
-msgstr "Deres forslag"
+msgstr "Hun voorstel"
 
 #: dat/glade/diplomacy-report-dialog.glade:8
 msgid "Diplomacy Report"
-msgstr "Diplomatisk rapport"
+msgstr "Diplomatiek overzicht"
 
 #: dat/glade/fight-order-dialog.glade:8 dat/glade/game-window.glade:114
 msgid "Fight Order"
-msgstr "Kamporden"
+msgstr "Vechtvolgorde"
 
 #: dat/glade/fight-order-dialog.glade:126
+#, fuzzy
 msgid "<b>Fight Order</b>"
-msgstr "<b>Kamporden</b>"
+msgstr "<b>vechtvolgorde</b>"
 
 #: dat/glade/game-loaded-dialog.glade:7
 msgid "Game Loaded"
-msgstr "Spil indlæst"
+msgstr "Spel geladen"
 
-# i tvivl om et eller to s'er. Det hedder netværkssamfund.
 #: dat/glade/game-lobby-dialog.glade:8
 msgid "Network Game"
-msgstr "Netværksspil"
+msgstr "Netwerkspel"
 
 #: dat/glade/game-lobby-dialog.glade:48
 msgid "_Play"
-msgstr "_Spil"
+msgstr "_Speel"
 
 #: dat/glade/game-lobby-dialog.glade:142
 #: dat/glade/game-preferences-dialog.glade:182
 #: dat/glade/preferences-dialog.glade:99
 #: dat/glade/editor/players-dialog.glade:29
 msgid "<b>Players</b>"
-msgstr "<b>Spillere</b>"
+msgstr "<b>Spelers</b>"
 
 #: dat/glade/game-lobby-dialog.glade:282
 msgid "Send:"
-msgstr "Send:"
+msgstr "Verzend:"
 
 #: dat/glade/game-lobby-dialog.glade:337
 msgid "<b>Chat</b>"
-msgstr "<b>Snak</b>"
+msgstr "<b>Chat</b>"
 
 #: dat/glade/game-lobby-dialog.glade:425
 msgid "Show Options"
-msgstr "Vis indstillinger"
+msgstr "Opties tonen"
 
 #: dat/glade/game-lobby-dialog.glade:468
 msgid "Turn:"
-msgstr "Runde:"
+msgstr "Zet:"
 
 #: dat/glade/game-lobby-dialog.glade:496
 msgid "Cities:"
-msgstr "Byer:"
+msgstr "Steden:"
 
 #: dat/glade/game-lobby-dialog.glade:552
 #: dat/glade/game-preferences-dialog.glade:801
@@ -377,11 +367,11 @@ msgstr "Byer:"
 #: dat/glade/game-preferences-dialog.glade:927
 #: src/editor/new-map-dialog.cpp:138
 msgid "Random"
-msgstr "Tilfældig"
+msgstr "Willekeurig"
 
 #: dat/glade/game-lobby-dialog.glade:640
 msgid "<b>Scenario Details</b>"
-msgstr "<b>Scenariedetaljer</b>"
+msgstr "<b>Scenariodetails</b>"
 
 #: dat/glade/game-lobby-dialog.glade:674
 msgid "<b></b>"
@@ -389,27 +379,27 @@ msgstr "<b></b>"
 
 #: dat/glade/game-options-dialog.glade:8
 msgid "Game Options"
-msgstr "Spilindstillinger"
+msgstr "Spelopties"
 
 #: dat/glade/game-options-dialog.glade:175
 msgid "View Enemies"
-msgstr "Vis fjender"
+msgstr "Vijanden bekijken"
 
 #: dat/glade/game-options-dialog.glade:197
 msgid "View Production"
-msgstr "Vis produktion"
+msgstr "Productie bekijken"
 
 #: dat/glade/game-options-dialog.glade:219
 msgid "Quests"
-msgstr "Missioner"
+msgstr "Zoektochten"
 
 #: dat/glade/game-options-dialog.glade:241
 msgid "Hidden Map"
-msgstr "Skjult kort"
+msgstr "Verborgen kaart"
 
 #: dat/glade/game-options-dialog.glade:268
 msgid "Neutral Cities:"
-msgstr "Neutrale byer:"
+msgstr "Neutrale steden:"
 
 #: dat/glade/game-options-dialog.glade:293
 msgid ""
@@ -417,22 +407,22 @@ msgid ""
 "Strong\n"
 "Active"
 msgstr ""
-"Gennemsnit\n"
-"Stærk\n"
-"Aktiv"
+"Gemiddeld\n"
+"Sterk\n"
+"Actief"
 
 #: dat/glade/game-options-dialog.glade:319 dat/glade/game-window.glade:263
 #: dat/glade/game-window.glade:1562
 msgid "Diplomacy"
-msgstr "Diplomati"
+msgstr "Diplomatie"
 
 #: dat/glade/game-options-dialog.glade:341
 msgid "Cusp of War"
-msgstr "På nippet til krig"
+msgstr ""
 
 #: dat/glade/game-options-dialog.glade:368
 msgid "Razing Cities:"
-msgstr "Raser byer med jorden:"
+msgstr "Steden aan het verwoesten:"
 
 #: dat/glade/game-options-dialog.glade:393
 msgid ""
@@ -440,49 +430,49 @@ msgid ""
 "Only On Capture\n"
 "Always Allowed"
 msgstr ""
-"Aldrig tilladt\n"
-"Kun ved erobring\n"
-"Altid tilladt"
+"Nooit toegestaan\n"
+"Alleen bij gevangenneming\n"
+"Altijd toegestaan"
 
 #: dat/glade/game-options-dialog.glade:423
 msgid "<b>Affecting Difficulty</b>"
-msgstr "<b>Påvirker sværhedsgrad</b>"
+msgstr "<b>Beïnvloed moeilijkheidsgraad</b>"
 
 #: dat/glade/game-options-dialog.glade:489
 msgid "Intense Combat"
-msgstr "Intens kamp"
+msgstr "Zware strijd"
 
 #: dat/glade/game-options-dialog.glade:511
 msgid "Quick Start"
-msgstr "Hurtigstart"
+msgstr "Direct starten"
 
 #: dat/glade/game-options-dialog.glade:533
 msgid "Military Advisor"
-msgstr "Militærrådgiver"
+msgstr "Militair-adviseur"
 
 #: dat/glade/game-options-dialog.glade:555
 msgid "Random Turns"
-msgstr "Tilfældige runder"
+msgstr "Willekeurige zetten"
 
 #: dat/glade/game-options-dialog.glade:587
 msgid "<b>Not Affecting Difficulty</b>"
-msgstr "<b>Påvirker ikke sværhedsgrad</b>"
+msgstr "<b>Beïnvloed moeilijkheidsgraad niet</b>"
 
 #: dat/glade/game-preferences-dialog.glade:8
 msgid "New Game"
-msgstr "Nyt spil"
+msgstr "Nieuw spel"
 
 #: dat/glade/game-preferences-dialog.glade:48
 msgid "_Start Game"
-msgstr "_Start spil"
+msgstr "_Start spel"
 
 #: dat/glade/game-preferences-dialog.glade:73
 msgid "<b>Game Name:</b>"
-msgstr "<b>Spilnavn:</b>"
+msgstr "<b>Spelnaam:</b>"
 
 #: dat/glade/game-preferences-dialog.glade:225
 msgid "Difficulty:"
-msgstr "Sværhedsgrad:"
+msgstr "Moeilijkheidsgraad:"
 
 #: dat/glade/game-preferences-dialog.glade:250
 msgid ""
@@ -492,24 +482,24 @@ msgid ""
 "I am the Lord Of War!\n"
 "Custom"
 msgstr ""
-"Begynder\n"
-"Mellem\n"
-"Dygtig\n"
-"Jeg er krigsherren!\n"
-"Tilpasset"
+"Beginner\n"
+"Gevorderde\n"
+"Vergevorderde\n"
+"Ik ben de oorlogsheer!\n"
+"Eigen instelling"
 
 #: dat/glade/game-preferences-dialog.glade:301
 msgid "Edit Options"
-msgstr "Rediger indstillinger"
+msgstr "Bewerkopties"
 
 #: dat/glade/game-preferences-dialog.glade:378
 msgid "Generate map randomly:"
-msgstr "Opret tilfældig kort:"
+msgstr "Kaart willekeurig aanmaken:"
 
 #: dat/glade/game-preferences-dialog.glade:420
 #: dat/glade/editor/new-map-dialog.glade:98
 msgid "Size:"
-msgstr "Størrelse:"
+msgstr "Grootte:"
 
 #: dat/glade/game-preferences-dialog.glade:445
 #: dat/glade/editor/new-map-dialog.glade:123
@@ -518,96 +508,96 @@ msgid ""
 "Small\n"
 "Tiny"
 msgstr ""
-"Normal\n"
-"Lille\n"
-"Meget lille"
+"Normaal\n"
+"Klein\n"
+"Heel klein"
 
 #: dat/glade/game-preferences-dialog.glade:477 dat/glade/game-window.glade:418
 #: src/gui/history-report-dialog.cpp:114
 msgid "Cities"
-msgstr "Byer"
+msgstr "Steden"
 
 #: dat/glade/game-preferences-dialog.glade:614
 #: dat/glade/editor/new-map-dialog.glade:786
 msgid "Mountains"
-msgstr "Bjerge"
+msgstr "Bergen"
 
 #: dat/glade/game-preferences-dialog.glade:642
 #: dat/glade/editor/new-map-dialog.glade:758
 msgid "Hills"
-msgstr "Bakker"
+msgstr "Heuvels"
 
 #: dat/glade/game-preferences-dialog.glade:670
 #: dat/glade/editor/new-map-dialog.glade:730
 msgid "Forest"
-msgstr "Skov"
+msgstr "Bos"
 
 #: dat/glade/game-preferences-dialog.glade:698
 #: dat/glade/editor/new-map-dialog.glade:702
 msgid "Swamp"
-msgstr "Sump"
+msgstr "Moeras"
 
 #: dat/glade/game-preferences-dialog.glade:726
 #: dat/glade/editor/new-map-dialog.glade:674
 msgid "Water"
-msgstr "Vand"
+msgstr "Water"
 
 #: dat/glade/game-preferences-dialog.glade:754
 #: dat/glade/editor/new-map-dialog.glade:646
 msgid "Grass"
-msgstr "Græs"
+msgstr "Gras"
 
 #: dat/glade/game-preferences-dialog.glade:961
 msgid "Cities can produce allies"
-msgstr "Byer kan producere allierede"
+msgstr "Steden kunnen bondgenoten produceren"
 
 #: dat/glade/game-preferences-dialog.glade:979
 #: dat/glade/editor/new-map-dialog.glade:139
 msgid "Tile Size:"
-msgstr "Feltstørrelse:"
+msgstr "Tegelgrootte:"
 
 #: dat/glade/game-preferences-dialog.glade:1028
 #: dat/glade/editor/new-map-dialog.glade:200
 msgid "Tile Set:"
-msgstr "Feltsæt:"
+msgstr "Tegelverzameling:"
 
 #: dat/glade/game-preferences-dialog.glade:1070
 #: dat/glade/editor/new-map-dialog.glade:359
 msgid "Army Set:"
-msgstr "Hærsæt:"
+msgstr "Legerverzameling:"
 
 #: dat/glade/game-preferences-dialog.glade:1125
 #: dat/glade/editor/new-map-dialog.glade:255
 msgid "Shield Set:"
-msgstr "Skjoldsæt:"
+msgstr "Schildverzameling:"
 
 #: dat/glade/game-preferences-dialog.glade:1167
 #: dat/glade/editor/new-map-dialog.glade:317
 msgid "City Set:"
-msgstr "Bysæt:"
+msgstr "Stedenverzameling:"
 
 #: dat/glade/game-preferences-dialog.glade:1225
 msgid "Load map:"
-msgstr "Indlæs kort:"
+msgstr "Kaart laden:"
 
 #: dat/glade/game-preferences-dialog.glade:1244
 msgid "Choose a map"
-msgstr "Vælg et kort"
+msgstr "Kies een kaart:"
 
 #: dat/glade/game-preferences-dialog.glade:1272
 #: dat/glade/editor/armyset-info-dialog.glade:82
 #: dat/glade/editor/map-info-dialog.glade:29
 #: dat/glade/editor/new-map-dialog.glade:964
 msgid "<b>Map</b>"
-msgstr "<b>Kort</b>"
+msgstr "<b>Kaart</b>"
 
 #: dat/glade/game-quit-dialog.glade:8 dat/glade/game-window.glade:92
 msgid "Quit"
-msgstr "Afslut"
+msgstr "Stop"
 
 #: dat/glade/game-quit-dialog.glade:37 dat/glade/temple-visit-dialog.glade:46
 msgid "_No"
-msgstr "_Nej"
+msgstr "_Nee"
 
 #: dat/glade/game-quit-dialog.glade:50 dat/glade/temple-visit-dialog.glade:56
 msgid "_Yes"
@@ -618,189 +608,190 @@ msgid ""
 "Are you sure you want to quit?\n"
 "\n"
 msgstr ""
-"Er du sikker?\n"
+"Weet je zeker dat je wilt stoppen?\n"
 "\n"
 
 #: dat/glade/game-window.glade:42
 msgid "Game"
-msgstr "Spil"
+msgstr "Spel"
 
 #: dat/glade/game-window.glade:51
 msgid "Load Game"
-msgstr "Hent spil"
+msgstr "Spel laden"
 
 #: dat/glade/game-window.glade:60
 msgid "Save Game"
-msgstr "Gem spil"
+msgstr "Spel bewaren"
 
 #: dat/glade/game-window.glade:69
 msgid "Save Game As..."
-msgstr "Gem spil som..."
+msgstr "Spel bewaren als..."
 
 #: dat/glade/game-window.glade:77
 msgid "Show Lobby"
-msgstr "Vis lobby"
+msgstr "Hal tonen"
 
 #: dat/glade/game-window.glade:104
 msgid "Order"
-msgstr "Orden"
+msgstr "Volgorde"
 
 #: dat/glade/game-window.glade:124
 msgid "Move All"
-msgstr "Flyt alle"
+msgstr "Alles bewegen"
 
 #: dat/glade/game-window.glade:134 src/gui/game-window.cpp:1219
 msgid "Disband"
-msgstr "Opløs"
+msgstr "Ontbinden"
 
 #: dat/glade/game-window.glade:144 src/gui/game-window.cpp:1162
 #: src/editor/main-window.cpp:1055
 msgid "Signpost"
-msgstr "Vejskilt"
+msgstr "Wegwijzer"
 
 #: dat/glade/game-window.glade:154
 msgid "Group/Ungroup"
-msgstr "Grupper/afgrupper"
+msgstr "Groepeer/groep losmaken"
 
 #: dat/glade/game-window.glade:164
 msgid "Leave Here"
-msgstr "Efterlad her"
+msgstr "Hier laten"
 
 #: dat/glade/game-window.glade:174
 msgid "Next"
-msgstr "Næste"
+msgstr "Volgende"
 
 #: dat/glade/game-window.glade:190 src/gui/game-window.cpp:1276
 msgid "Resign"
-msgstr "Gå af"
+msgstr "Terugtrekken"
 
 #: dat/glade/game-window.glade:204
 msgid "Reports"
-msgstr "Rapporter"
+msgstr "Rapporten"
 
 #: dat/glade/game-window.glade:213 dat/glade/report-dialog.glade:211
 msgid "Army"
-msgstr "Hær"
+msgstr "Leger"
 
 #: dat/glade/game-window.glade:223 dat/glade/game-window.glade:479
 #: dat/glade/history-report-dialog.glade:187 dat/glade/report-dialog.glade:320
 #: src/editor/main-window.cpp:1051
 msgid "City"
-msgstr "By"
+msgstr "Stad"
 
 #: dat/glade/game-window.glade:233 dat/glade/game-window.glade:499
 #: dat/glade/history-report-dialog.glade:323 dat/glade/report-dialog.glade:429
 #: dat/glade/editor/reward-dialog.glade:104 src/gui/sage-dialog.cpp:158
 #: src/editor/players-dialog.cpp:103
 msgid "Gold"
-msgstr "Guld"
+msgstr "Goud"
 
 #: dat/glade/game-window.glade:243 dat/glade/game-window.glade:427
 #: dat/glade/report-dialog.glade:544
 msgid "Production"
-msgstr "Produktion"
+msgstr "Productie"
 
 #: dat/glade/game-window.glade:253 dat/glade/report-dialog.glade:653
 msgid "Winning"
-msgstr "Sejrherrer"
+msgstr "Winnen"
 
 #: dat/glade/game-window.glade:273
 msgid "Quest"
-msgstr "Mission"
+msgstr "Zoektocht"
 
 #: dat/glade/game-window.glade:286
 msgid "Hero"
-msgstr "Helt"
+msgstr "Held"
 
 #: dat/glade/game-window.glade:296
 msgid "Inspect"
-msgstr "Inspicer"
+msgstr "Inspecteren"
 
 #: dat/glade/game-window.glade:306
 msgid "Plant Flag"
-msgstr "Placer flag"
+msgstr "Vlag plaatsen"
 
 #: dat/glade/game-window.glade:316
 msgid "Levels"
-msgstr "Niveauer"
+msgstr "Niveaus"
 
 #: dat/glade/game-window.glade:326
 msgid "Search"
-msgstr "Søg"
+msgstr "Zoeken"
 
 #: dat/glade/game-window.glade:340
+#, fuzzy
 msgid "View"
-msgstr "Vis"
+msgstr "Kijken"
 
 #: dat/glade/game-window.glade:349 dat/glade/editor/main-window.glade:268
 msgid "_Fullscreen"
-msgstr "_Fuldskærm"
+msgstr "_Volledig scherm"
 
 #: dat/glade/game-window.glade:359 dat/glade/splash-window.glade:165
 msgid "_Preferences"
-msgstr "_Præferencer"
+msgstr "_Voorkeuren"
 
 #: dat/glade/game-window.glade:368
 msgid "Toggle _Grid"
-msgstr "Slå _gitter til/fra"
+msgstr "_Raster aan-/uitzetten"
 
 #: dat/glade/game-window.glade:393
 msgid "Items"
-msgstr "Udstyr"
+msgstr "Items"
 
 #: dat/glade/game-window.glade:409
 msgid "Build"
-msgstr "Byg"
+msgstr "Bouwen"
 
 #: dat/glade/game-window.glade:436
 msgid "Vectoring"
-msgstr "Vektoring"
+msgstr "Omzetten naar vectoren"
 
 #: dat/glade/game-window.glade:445 dat/glade/editor/new-map-dialog.glade:564
 msgid "Ruins"
-msgstr "Ruiner"
+msgstr "Ruïnes"
 
 #: dat/glade/game-window.glade:455 src/editor/main-window.cpp:1049
 msgid "Stack"
-msgstr "Stak"
+msgstr "Stapel"
 
 #: dat/glade/game-window.glade:469 src/gui/history-report-dialog.cpp:62
 msgid "History"
-msgstr "Historie"
+msgstr "Geschiedenis"
 
 #: dat/glade/game-window.glade:489 dat/glade/history-report-dialog.glade:239
 msgid "Events"
-msgstr "Begivenheder"
+msgstr "Gebeurtenissen"
 
 #: dat/glade/game-window.glade:509 dat/glade/history-report-dialog.glade:407
 msgid "Winners"
-msgstr "Vindere"
+msgstr "Winnaars"
 
 #: dat/glade/game-window.glade:525 dat/glade/triumphs-dialog.glade:8
 msgid "Triumphs"
-msgstr "Triumfer"
+msgstr "Triomfen"
 
 #: dat/glade/game-window.glade:539 dat/glade/editor/armyset-window.glade:117
 #: dat/glade/editor/main-window.glade:292
 #: dat/glade/editor/tileset-window.glade:148
 msgid "_Help"
-msgstr "_Hjælp"
+msgstr "_Hulp"
 
 #: dat/glade/game-window.glade:557
 msgid "Online _Help"
-msgstr "Internet_hjælp"
+msgstr "Online _hulp"
 
 #: dat/glade/game-window.glade:582
 msgid "_Turn"
-msgstr "_Runde"
+msgstr "_Zet"
 
 #: dat/glade/game-window.glade:592 dat/glade/game-window.glade:1647
 msgid "End Turn"
-msgstr "Afslut runde"
+msgstr "Einde zet"
 
 #: dat/glade/game-window.glade:811
 msgid "Turn: %6"
-msgstr "Runde: %6"
+msgstr "Zet: %6"
 
 #: dat/glade/game-window.glade:963
 msgid ""
@@ -808,8 +799,8 @@ msgid ""
 "Moves\n"
 "XX"
 msgstr ""
-"Gruppe\n"
-"Bevægelser\n"
+"Groep\n"
+"Zetten\n"
 "XX"
 
 #: dat/glade/game-window.glade:991
@@ -818,99 +809,99 @@ msgstr "Grp"
 
 #: dat/glade/game-window.glade:1459
 msgid "Move to the destination"
-msgstr "Flyt til destinationen"
+msgstr "Naar de bestemming verplaatsen"
 
 #: dat/glade/game-window.glade:1477
 msgid "Select next stack that can move"
-msgstr "Vælg næste stak som kan bevæge sig"
+msgstr "Volgende stapel om te bewegen selecteren"
 
 #: dat/glade/game-window.glade:1495
 msgid "Leave the stack here"
-msgstr "Efterlad stakken her"
+msgstr "De stapel hier laten"
 
 #: dat/glade/game-window.glade:1513
 msgid "Deselect the stack"
-msgstr "Fravælg stakken"
+msgstr "De stapel deselecteren"
 
 #: dat/glade/game-window.glade:1544
 msgid "Center map on stack"
-msgstr "Centrer kort på stak"
+msgstr "Kaart rond stapel centreren"
 
 #: dat/glade/game-window.glade:1580
 msgid "Let the stack defend"
-msgstr "Lad stakken forsvare"
+msgstr "Stapel laten verdedigen"
 
 #: dat/glade/game-window.glade:1598
 msgid "Search ruin or temple"
-msgstr "Undersøg ruin eller tempel"
+msgstr "Ruïne of tempel zoeken"
 
 #: dat/glade/game-window.glade:1629
 msgid "Move all stacks"
-msgstr "Flyt alle stakke"
+msgstr "Alle stapels verplaatsen"
 
 #: dat/glade/hero-dialog.glade:141
 msgid "_Drop"
-msgstr "S_mid"
+msgstr "_Laat vallen"
 
 #: dat/glade/hero-dialog.glade:153
 msgid "_Pick up"
-msgstr "_Saml op"
+msgstr "_Pak op"
 
 #: dat/glade/hero-dialog.glade:177
 msgid "<b>Items</b>"
-msgstr "<b>Udstyr</b>"
+msgstr "<b>Items</b>"
 
 #: dat/glade/hero-levels-dialog.glade:8
 msgid "Hero Levels"
-msgstr "Helteniveauer"
+msgstr "Heldniveaus"
 
 #: dat/glade/hero-levels-dialog.glade:126
 msgid "<b>Hero Levels</b>"
-msgstr "<b>Helteniveauer</b>"
+msgstr "<b>Heldniveaus</b>"
 
 #: dat/glade/hero-offer-dialog.glade:37 dat/glade/surrender-dialog.glade:37
 msgid "_Decline"
-msgstr "_Afslå"
+msgstr "_Afnemen"
 
 #: dat/glade/hero-offer-dialog.glade:52 dat/glade/surrender-dialog.glade:52
 msgid "A_ccept"
-msgstr "A_ccepter"
+msgstr "A_ccepteren"
 
 #: dat/glade/hero-offer-dialog.glade:202
 msgid "male"
-msgstr "mand"
+msgstr "mannelijk"
 
 #: dat/glade/hero-offer-dialog.glade:221
 msgid "female"
-msgstr "kvinde"
+msgstr "vrouwelijk"
 
 #: dat/glade/item-bonus-dialog.glade:8
 msgid "Item Bonus"
-msgstr "Udstyrsbonus"
+msgstr "Itembonus"
 
 #: dat/glade/item-bonus-dialog.glade:112
 msgid "<b>Item Bonus</b>"
-msgstr "<b>Udstyrsbonus</b>"
+msgstr "<b>Itembonus</b>"
 
 #: dat/glade/load-scenario-dialog.glade:8
 msgid "Load Scenario"
-msgstr "Indlæs scenarie"
+msgstr "Scenario laden"
 
 #: dat/glade/load-scenario-dialog.glade:52
 msgid "_Load"
-msgstr "Ind_læs"
+msgstr "_Laden"
 
 #: dat/glade/load-scenario-dialog.glade:224
 msgid "<i>You can use the editor to make your own scenarios.</i>"
-msgstr "<i>Du kan bruge redigeringsmuligheden til at lave dine egne scenarier.</i>"
+msgstr "<i>Je kunt eigen scenario's met de editor maken.</i>"
 
 #: dat/glade/load-scenario-dialog.glade:263
 msgid "Number of Players:"
-msgstr "Antal spillere:"
+msgstr "Aantal spelers:"
 
 #: dat/glade/load-scenario-dialog.glade:326
 msgid "Number of Cities:"
-msgstr "Antal byer:"
+msgstr "Aantal steden:"
 
 #: dat/glade/load-scenario-dialog.glade:389
 #: dat/glade/ruin-report-dialog.glade:316
@@ -920,179 +911,179 @@ msgstr "Antal byer:"
 #: dat/glade/editor/temple-dialog.glade:186
 #: dat/glade/editor/tileset-info-dialog.glade:169
 msgid "Description:"
-msgstr "Beskrivelse:"
+msgstr "Beschrijving:"
 
 #: dat/glade/load-scenario-dialog.glade:458
 msgid "<b>Scenarios</b>"
-msgstr "<b>Scenarier</b>"
+msgstr "<b>Scenario's</b>"
 
 #: dat/glade/main-preferences-dialog.glade:8
 #: dat/glade/preferences-dialog.glade:8
 msgid "Preferences"
-msgstr "Præferencer"
+msgstr "Voorkeuren"
 
 #: dat/glade/main-preferences-dialog.glade:91
 #: dat/glade/preferences-dialog.glade:154
 msgid "Show popup at beginning of _turn"
-msgstr "Vis pop op i begyndelsen af _runde"
+msgstr "Popup bij start van zet _tonen"
 
 #: dat/glade/main-preferences-dialog.glade:110
 msgid "Show standard window decorations"
-msgstr "Vis standardvinduedekorationer"
+msgstr "Standaard vensterversiering tonen"
 
 #: dat/glade/main-preferences-dialog.glade:128
 msgid "<b>(requires restart)</b>"
-msgstr "<b>(kræver genstart)</b>"
+msgstr "<b><vereist herstart)</b>"
 
 #: dat/glade/main-preferences-dialog.glade:157
 #: dat/glade/preferences-dialog.glade:180
 msgid "<b>Game</b>"
-msgstr "<b>Spil</b>"
+msgstr "<b>Spel</b>"
 
 #: dat/glade/main-preferences-dialog.glade:218
 #: dat/glade/preferences-dialog.glade:241
 msgid "Play _music"
-msgstr "Afspil _musik"
+msgstr "_Muziek afspelen"
 
 #: dat/glade/main-preferences-dialog.glade:242
 #: dat/glade/preferences-dialog.glade:265
 msgid "<i>Volume:</i>"
-msgstr "<i>Lydstyrke:</i>"
+msgstr "<i>Geluidsterkte:</i>"
 
 #: dat/glade/main-preferences-dialog.glade:307
 #: dat/glade/preferences-dialog.glade:330
 msgid "<b>Sound</b>"
-msgstr "<b>Lyd</b>"
+msgstr "<b>Geluid</b>"
 
 #: dat/glade/medal-awarded-dialog.glade:7
 msgid "Medal Awarded"
-msgstr "Medalje tildelt"
+msgstr "Medaille toegekend"
 
 #: dat/glade/new-network-game-dialog.glade:8
 msgid "New Network Game"
-msgstr "Nyt netværksspil"
+msgstr "Nieuw netwerkspel"
 
 #: dat/glade/new-network-game-dialog.glade:77
 msgid "Nickname:"
-msgstr "Øgenavn:"
+msgstr "Bijnaam:"
 
 #: dat/glade/new-network-game-dialog.glade:141
 msgid ""
 "I want to join a game\n"
 "already in progress."
 msgstr ""
-"Jeg ønsker at slutte mig til\n"
-"et spil der allerede er i gang."
+"Ik wil meedoen\n"
+"aan een lopend spel."
 
 #: dat/glade/new-network-game-dialog.glade:161
 msgid ""
 "I want to start a new game\n"
 "that others can join."
 msgstr ""
-"Jeg ønsker at begynde et nyt spil\n"
-"som andre kan slutte sig til."
+"Ik wil een nieuw spel starten\n"
+"waar anderen aan mee kunnen doen."
 
 #: dat/glade/next-player-turn-dialog.glade:7
 msgid "Next Turn"
-msgstr "Næste runde"
+msgstr "Volgende zet"
 
 #: dat/glade/pick-network-game-to-join-dialog.glade:8
 msgid "Pick a game to Join"
-msgstr "Vælg et spil du ønsker at slutte dig til"
+msgstr "Kies een spel om aan mee te doen"
 
 #: dat/glade/pick-network-game-to-join-dialog.glade:50
 msgid "_Connect"
-msgstr "_Forbind"
+msgstr "_Verbind"
 
 #: dat/glade/pick-network-game-to-join-dialog.glade:82
 msgid ""
 "Type in the name of the computer\n"
 "whose game you would like to join."
 msgstr ""
-"Indtast navnet på den computer\n"
-"hvis spil du ønsker at slutte dig til."
+"Typ de naam van de computer\n"
+"aan wiens spel je wilt meedoen. "
 
 #: dat/glade/pick-network-game-to-join-dialog.glade:114
 msgid "Hostname:"
-msgstr "Værtsnavn:"
+msgstr "Hostnaam:"
 
 #: dat/glade/pick-network-game-to-join-dialog.glade:158
 msgid "Port:"
-msgstr "Port:"
+msgstr "Poort:"
 
 #: dat/glade/pick-network-game-to-join-dialog.glade:327
 msgid "Clear List"
-msgstr "Ryd liste"
+msgstr "Lijst wissen"
 
 #: dat/glade/pick-network-game-to-join-dialog.glade:375
 msgid "<b>Recently Joined Games</b>"
-msgstr "<b>Nyligt tilsluttede spil</b>"
+msgstr "<b>Recent bij aangesloten spelen</b>"
 
 #: dat/glade/player-died-dialog.glade:8
 msgid "Game Lost"
-msgstr "Spil tabt"
+msgstr "Spel verloren"
 
 #: dat/glade/player-resign-completed-dialog.glade:8
 msgid "Resigned"
-msgstr "Trådt tilbage"
+msgstr "Teruggetrokken"
 
 #: dat/glade/player-resign-completed-dialog.glade:62
 msgid ""
 "Ha!  Now I've burned everything!\n"
 "Let the enemy come!"
 msgstr ""
-"Ha!  Jeg har brændt alt!\n"
-"Lad fjenden komme!"
+"Zo! Ik heb nu alles platgebrand!\n"
+"Laat de vijand maar komen!"
 
 #: dat/glade/quest-expired-dialog.glade:7
 msgid "Quest Expired"
-msgstr "Mission udløbet"
+msgstr "Zoektocht verlopen"
 
 #: dat/glade/report-dialog.glade:131
 msgid "Number of armies each side owns"
-msgstr "Antal hære hver side ejer"
+msgstr "Aantal legers in bezit van iedere partij"
 
 #: dat/glade/report-dialog.glade:240
 msgid "Number of cities each side owns"
-msgstr "Antal byer hver side ejer"
+msgstr "Aantal steden in bezit van iedere partij"
 
 #: dat/glade/report-dialog.glade:349
 msgid "Amount of gold each side possesses"
-msgstr "Guld hver side er i besiddelse af"
+msgstr "Hoeveelheid goud in het bezit van iedere partij"
 
 #: dat/glade/report-dialog.glade:458
 msgid "Armies you produced this turn"
-msgstr "Hære du producerede denne runde"
+msgstr "Legers die je deze beurt hebt geproduceerd"
 
 #: dat/glade/report-dialog.glade:573
 msgid "Who is the most powerful nation"
-msgstr "Hvem er den mest magtfulde nation"
+msgstr "Wie is de krachtigste natie"
 
 #: dat/glade/ruinfight-finished-dialog.glade:79
 msgid "...is victorious! or ...is slain by it!"
-msgstr "...er sejrrig! eller ...er dræbt!"
+msgstr "...is zegevierend! of ...is er door afgeslacht!"
 
 #: dat/glade/ruinfight-started-dialog.glade:64
 msgid "So and so encounters a monster and..."
-msgstr "Den og den møder et monster og..."
+msgstr "Die en die komen een monster tegen en..."
 
 #: dat/glade/ruin-report-dialog.glade:176
 #: dat/glade/editor/temple-dialog.glade:247
 #: dat/glade/editor/tileset-window.glade:352
 msgid "Type:"
-msgstr "Type:"
+msgstr "Soort:"
 
 #: dat/glade/ruin-report-dialog.glade:204
 msgid "Explored:"
-msgstr "Udforsket:"
+msgstr "Onderzocht:"
 
 #: dat/glade/ruin-report-dialog.glade:376
 msgid "<b>Details</b>"
-msgstr "<b>Detaljer</b>"
+msgstr "<b>Details</b>"
 
 #: dat/glade/ruin-rewarded-dialog.glade:118
 msgid "The Sages show thee the site of X where Y can be found."
-msgstr "Vismændene viser dig stedet X hvor Y kan findes."
+msgstr "De Wijsgeer toont je de plek van X waar Y kan worden gevonden. "
 
 #: dat/glade/sage-dialog.glade:118
 msgid ""
@@ -1101,74 +1092,74 @@ msgid ""
 "I can show thee many things - items, money or maps.\n"
 "What wouldst thou ask of me\""
 msgstr ""
-"Vismanden byder dig varmt velkommen...\n"
-"»Velkommen, du søger af viden.\n"
-"Jeg kan vise dig mange ting - udstyr, penge eller kort.\n"
-"Hvad ønsker eder af mig«"
+"De Wijsgeer groet je hartelijk...\n"
+"\"Welkom, oh speurder naar kennis.\n"
+"Ik kan gij vele zaken laten zien - items, geld of kaarten.\n"
+"Wat wilt gij van mij weten\""
 
 #: dat/glade/signpost-change-dialog.glade:113
 msgid "Message:"
-msgstr "Besked:"
+msgstr "Boodschap:"
 
 #: dat/glade/splash-window.glade:60
 msgid "New _Campaign"
-msgstr "Ny _kampagne"
+msgstr "Nieuwe _campagne"
 
 #: dat/glade/splash-window.glade:75
 msgid "New _Game"
-msgstr "Nyt _spil"
+msgstr "Nieuw _spel"
 
 #: dat/glade/splash-window.glade:90
 msgid "L_oad Game"
-msgstr "H_ent spil"
+msgstr "Spel l_aden"
 
 #: dat/glade/splash-window.glade:105
 msgid "Load _Scenario"
-msgstr "Hent _scenarie"
+msgstr "_Scenario laden"
 
 #: dat/glade/splash-window.glade:120
 msgid "New _Network Game"
-msgstr "Nyt _netværksspil"
+msgstr "Nieuw _netwerkspel"
 
 #: dat/glade/splash-window.glade:148
 msgid "New Play By _Mail Game"
-msgstr "Nyt spil per _post spil"
+msgstr "Nieuw speel-via-e-mail-spel"
 
 #: dat/glade/splash-window.glade:180 dat/glade/editor/armyset-window.glade:83
 #: dat/glade/editor/main-window.glade:107
 #: dat/glade/editor/tileset-window.glade:83
 msgid "_Quit"
-msgstr "_Afslut"
+msgstr "_Stoppen"
 
 #: dat/glade/stack-info-dialog.glade:8
 msgid "Stack Info"
-msgstr "Stakinfo"
+msgstr "Stapelinformatie"
 
 #: dat/glade/stack-info-dialog.glade:94 src/gui/stack-info-dialog.cpp:193
 #: src/editor/stack-dialog.cpp:86
 msgid "Str"
-msgstr "St"
+msgstr "Str"
 
 #: dat/glade/stack-info-dialog.glade:126
 #: dat/glade/editor/stack-dialog.glade:29
 msgid "<b>Stack</b>"
-msgstr "<b>Stak</b>"
+msgstr "<b>Stapel</b>"
 
 #: dat/glade/stack-info-dialog.glade:163
 msgid "_Group"
-msgstr "_Gruppere"
+msgstr "_Groep"
 
 #: dat/glade/stack-info-dialog.glade:180
 msgid "_Ungroup"
-msgstr "Afgr_uppere"
+msgstr "_Groep loslaten"
 
 #: dat/glade/surrender-dialog.glade:8
 msgid "An Offer of Peace!"
-msgstr "Et tilbud om fred!"
+msgstr "Een vredesoffer!"
 
 #: dat/glade/surrender-refused-dialog.glade:8
 msgid "Surrender Refused!"
-msgstr "Overgivelse afvist!"
+msgstr "Overgave geweigerd!"
 
 #: dat/glade/temple-visit-dialog.glade:21
 msgid ""
@@ -1176,29 +1167,29 @@ msgid ""
 "\n"
 "Do you seek a quest?"
 msgstr ""
-"Dine hære er blevet velsignet!\n"
+"Je legers zijn gezegend!\n"
 "\n"
-"Søger du en mission?"
+"Ben je op zoektocht? "
 
 #: dat/glade/treachery-dialog.glade:8
 msgid "Treachery!"
-msgstr "Forræderi!"
+msgstr "Schatkamer!"
 
 #: dat/glade/treachery-dialog.glade:39
 msgid "Whoops!  _Pardon me, friend."
-msgstr "Ups!  _Undskyld mig, ven."
+msgstr "Whoops!  _Neem mij niet kwalijk."
 
 #: dat/glade/treachery-dialog.glade:52
 msgid "_Attack!"
-msgstr "_Angrib!"
+msgstr "_Aanvallen!"
 
 #: dat/glade/triumphs-dialog.glade:37
 msgid "Continue"
-msgstr "Fortsæt"
+msgstr "Volgende"
 
 #: dat/glade/editor/armyset-info-dialog.glade:8
 msgid "Edit Armyset Info"
-msgstr "Rediger hærsætinfo"
+msgstr "Informatie legerverzameling bewerken"
 
 #: dat/glade/editor/armyset-info-dialog.glade:169
 msgid "Id:"
@@ -1206,71 +1197,70 @@ msgstr "Id:"
 
 #: dat/glade/editor/armyset-window.glade:7 src/editor/armyset-main.cpp:48
 msgid "LordsAWar! Armyset Editor"
-msgstr "LordsAWar! Redigering af hærsæt"
+msgstr "LordsAWar! Editor legerverzameling"
 
 #: dat/glade/editor/armyset-window.glade:36
 #: dat/glade/editor/main-window.glade:36
 #: dat/glade/editor/tileset-window.glade:36
 msgid "_File"
-msgstr "_Fil"
+msgstr "_Bestand"
 
 #: dat/glade/editor/armyset-window.glade:45
 msgid "_New Armyset"
-msgstr "_Nyt hærsæt"
+msgstr "_Nieuwe legerverzameling"
 
 #: dat/glade/editor/armyset-window.glade:53
 msgid "_Load Armyset"
-msgstr "_Hent hærsæt"
+msgstr "Legerverzameling laden"
 
 #: dat/glade/editor/armyset-window.glade:61
 msgid "_Save Armyset"
-msgstr "_Gem hærsæt"
+msgstr "Legerverzameling bewaren"
 
 #: dat/glade/editor/armyset-window.glade:69
 msgid "Save Armyset _As..."
-msgstr "Gem hærsæt _som..."
+msgstr "Legerverzameling bewaren als..."
 
 #: dat/glade/editor/armyset-window.glade:95
 #: dat/glade/editor/main-window.glade:119
 #: dat/glade/editor/reward-list-dialog.glade:150
 #: dat/glade/editor/tileset-window.glade:95
 msgid "_Edit"
-msgstr "_Rediger"
+msgstr "_Bewerken"
 
 #: dat/glade/editor/armyset-window.glade:105
 msgid "Armyset Information"
-msgstr "Hærsætinformation"
+msgstr "Informatie over legerverzameling"
 
 #: dat/glade/editor/armyset-window.glade:392
 msgid "Picture:"
-msgstr "Billede:"
+msgstr "Afbeelding:"
 
 #: dat/glade/editor/armyset-window.glade:420
 #: dat/glade/editor/tileset-selector-editor-dialog.glade:176
 #: dat/glade/editor/tileset-window.glade:960
 msgid "Select A File"
-msgstr "Vælg en fil"
+msgstr "Een bestand selecteren"
 
 #: dat/glade/editor/armyset-window.glade:517
 msgid "Is Hero?"
-msgstr "Er helt?"
+msgstr "Is een held?"
 
 #: dat/glade/editor/armyset-window.glade:538
 msgid ""
 "can this army be \n"
 "given to a hero?"
 msgstr ""
-"kan denne hær blive \n"
-"givet til en helt?"
+"kan die leger aan \n"
+"een held gegeven worden?"
 
-# ved ikke helt med den her.
 #: dat/glade/editor/armyset-window.glade:541
 msgid "Is Awardable?"
-msgstr "Er belønningsfuld?"
+msgstr "Is prijzenswaardig?"
 
 #: dat/glade/editor/armyset-window.glade:568
 msgid "Turns:"
-msgstr "Runder:"
+msgstr "Zetten:"
 
 #: dat/glade/editor/armyset-window.glade:593
 msgid ""
@@ -1279,14 +1269,14 @@ msgid ""
 "to be produced in\n"
 "a city"
 msgstr ""
-"hvor mange runder\n"
-"det tager for denne hær\n"
-"at blive produceret i\n"
-"en by"
+"hoeveel zetten het\n"
+"kost het om dit leger\n"
+"in een stad geproduceerd\n"
+"te hebben"
 
 #: dat/glade/editor/armyset-window.glade:631
 msgid "Cost:"
-msgstr "Pris:"
+msgstr "Kosten:"
 
 #: dat/glade/editor/armyset-window.glade:656
 msgid ""
@@ -1295,14 +1285,14 @@ msgid ""
 "that it can be \n"
 "produced in a city"
 msgstr ""
-"hvor meget det koster at \n"
-"købe denne hærenhed så \n"
-"den kan blive \n"
-"produceret i en by"
+"hoeveel het kost om \n"
+"deze legereenheid te kopen \n"
+"zodat het kan worden \n"
+"geproduceerd in een stad"
 
 #: dat/glade/editor/armyset-window.glade:695
 msgid "Upkeep:"
-msgstr "Vedligeholdelse:"
+msgstr ""
 
 #: dat/glade/editor/armyset-window.glade:720
 msgid ""
@@ -1312,23 +1302,23 @@ msgid ""
 "after it has been \n"
 "produced"
 msgstr ""
-"hvor meget det koster \n"
-"per runde at vedligeholde \n"
-"denne hær i marken \n"
-"efter at den blevet \n"
-"produceret"
+"hoeveel het kost \n"
+"per zet om dit leger \n"
+"in het veld te houden \n"
+"nadat het geproduceerd \n"
+"is"
 
 #: dat/glade/editor/armyset-window.glade:760
 msgid "Strength:"
-msgstr "Styrke:"
+msgstr "Sterkte:"
 
 #: dat/glade/editor/armyset-window.glade:785
 msgid "how strong the army is"
-msgstr "hvor stærk hæren er"
+msgstr "hoe sterk het leger is"
 
 #: dat/glade/editor/armyset-window.glade:820
 msgid "Max Moves:"
-msgstr "Maks bevægelse:"
+msgstr "Maximum aantal zetten:"
 
 #: dat/glade/editor/armyset-window.glade:845
 msgid ""
@@ -1336,13 +1326,13 @@ msgid ""
 "can travel in a\n"
 "single turn"
 msgstr ""
-"hvor langt denne hær\n"
-"kan rejse i en\n"
-"enkelt runde"
+"hoever dit leger\n"
+"kan reizen in een\n"
+"enkele zet"
 
 #: dat/glade/editor/armyset-window.glade:883
 msgid "Exp Points:"
-msgstr "Erfaringspoint:"
+msgstr "Erv.-punten"
 
 #: dat/glade/editor/armyset-window.glade:908
 msgid ""
@@ -1350,13 +1340,13 @@ msgid ""
 "points this army is worth \n"
 "when it is killed"
 msgstr ""
-"hvor mange erfaringspoint\n"
-"denne hær er værd \n"
-"hvis den dræbes"
+"hoeveel ervaringspunten\n"
+"is dit leger waard \n"
+"als het uitgeroeid is"
 
 #: dat/glade/editor/armyset-window.glade:946
 msgid "Sight:"
-msgstr "Synsvidde:"
+msgstr "Zicht:"
 
 #: dat/glade/editor/armyset-window.glade:971
 msgid ""
@@ -1364,21 +1354,21 @@ msgid ""
 "see when playing on\n"
 "a hidden map"
 msgstr ""
-"hvor langt denne hær kan\n"
-"se når der spilles på\n"
-"et skjult kort"
+"hoe ver kan dit leger\n"
+"kijken tijdens het spelen\n"
+"op een verborgen kaart"
 
 #: dat/glade/editor/armyset-window.glade:1003
 msgid ""
 "can this army stand\n"
 "guard within a ruin?"
 msgstr ""
-"kan denne hær stå\n"
-"vagt ved en ruin?"
+"kan dit leger op wacht\n"
+"staan in een ruïne?"
 
 #: dat/glade/editor/armyset-window.glade:1006
 msgid "Defends Ruins?"
-msgstr "Forsvarer ruiner?"
+msgstr "Ruïnes verdedigen?"
 
 #: dat/glade/editor/armyset-window.glade:1065
 msgid ""
@@ -1386,13 +1376,13 @@ msgid ""
 "requires 2 movement points\n"
 "to travel over forest"
 msgstr ""
-"Hvis afkrydset kræver\n"
-"hæren 2 bevægelsespoint\n"
-"for at rejse igennem skov"
+"Indien aangevinkt heeft het\n"
+"leger twee bewegingspunten nodig\n"
+"om over bos te reizen"
 
 #: dat/glade/editor/armyset-window.glade:1069
 msgid "Travels faster in forests"
-msgstr "Rejser hurtigere i skove"
+msgstr "Reist sneller in bossen"
 
 #: dat/glade/editor/armyset-window.glade:1087
 msgid ""
@@ -1400,13 +1390,13 @@ msgid ""
 "requires 2 movement points\n"
 "to travel over marsh"
 msgstr ""
-"Hvis afkrydset kræver\n"
-"hæren 2 bevægelsespoint\n"
-"for at rejse over marsk"
+"Indien aangevinkt heeft het\n"
+"leger twee bewegingspunten\n"
+"nodig om te reizen door moeras "
 
 #: dat/glade/editor/armyset-window.glade:1091
 msgid "Travels faster in marshland"
-msgstr "Rejser hurtigere i marsk"
+msgstr "Reist sneller door moerasgebied"
 
 #: dat/glade/editor/armyset-window.glade:1109
 msgid ""
@@ -1414,13 +1404,13 @@ msgid ""
 "requires 2 movement points\n"
 "to travel over hills"
 msgstr ""
-"Hvis afkrydset behøver\n"
-"hæren 2 bevægelsespoint\n"
-"for at rejse over bakker"
+"Indien aangevinkt heeft het leger\n"
+"twee bewegingspunten nodig om\n"
+"te reizen over heuvels"
 
 #: dat/glade/editor/armyset-window.glade:1113
 msgid "Travels faster in hills"
-msgstr "Rejser hurtigere i bakker"
+msgstr "Reist sneller in heuvels"
 
 #: dat/glade/editor/armyset-window.glade:1131
 msgid ""
@@ -1428,13 +1418,13 @@ msgid ""
 "requires 2 movement points\n"
 "to travel over mountains"
 msgstr ""
-"Hvis afkrydset kræver\n"
-"hæren 2 bevægelsespoint\n"
-"for at rejse over bjerge"
+"Indien aangevinkt heeft het leger\n"
+"twee bewegingspunten nodig\n"
+"om te reizen door bergen"
 
 #: dat/glade/editor/armyset-window.glade:1135
 msgid "Travels faster in mountains"
-msgstr "Rejser hurtigere i bjerge"
+msgstr "Reist sneller door bergen"
 
 #: dat/glade/editor/armyset-window.glade:1153
 msgid ""
@@ -1443,18 +1433,18 @@ msgid ""
 "to travel over any kind of\n"
 "terrain"
 msgstr ""
-"Hvis afkrydset kræver\n"
-"hæren 2 bevægelsespoint\n"
-"for at rejse over enhver\n"
-"form for terræn"
+"Indien aangevinkt heeft het leger\n"
+"twee bewegingspunten nodig\n"
+"om te reizen over ieder soort\n"
+"terrein"
 
 #: dat/glade/editor/armyset-window.glade:1158
 msgid "Can Fly"
-msgstr "Kan flyve"
+msgstr "Kan vliegen"
 
 #: dat/glade/editor/armyset-window.glade:1180
 msgid "<b>Move Bonus</b>"
-msgstr "<b>Bevægelsesbonus</b>"
+msgstr "<b>Verplaatsbonus</b>"
 
 #: dat/glade/editor/armyset-window.glade:1249
 msgid ""
@@ -1464,14 +1454,15 @@ msgid ""
 "(e.g. in grass, no buildings)\n"
 "and it is attacked"
 msgstr ""
-"Hvis afkrydset får hæren 1\n"
-"ekstra i styrke hvis den står\n"
-"i det åbne (f.eks. græs, ingen\n"
-"bygninger) og den angribes"
+"Indien aangevinkt krijgt het leger\n"
+"1 aan zijn sterkte toegevoegd als het\n"
+"zich verdedigt in open veld\n"
+"(b.v. in gras, geen bebouwing)\n"
+"tijdens een aanval"
 
 #: dat/glade/editor/armyset-window.glade:1255
 msgid "+1 Str in Open"
-msgstr "+1 i styrke i det åbne"
+msgstr "+1 Str in open"
 
 #: dat/glade/editor/armyset-window.glade:1273
 msgid ""
@@ -1481,14 +1472,15 @@ msgid ""
 "(e.g. in grass, no buildings)\n"
 "and it is attacked"
 msgstr ""
-"Hvis afkrydset får hæren 2\n"
-"ekstra i styrke hvis den står\n"
-"i det åbne (f.eks. græs, ingen\n"
-"bygninger) og den angribes"
+"Aangevinkt wordt de sterkte van het\n"
+"leger met 2 verhoogd als het zich\n"
+"in open veld bevindt (b.v. in\n"
+"weiland, zonder gebouwen) en het wordt\n"
+"aangevallen"
 
 #: dat/glade/editor/armyset-window.glade:1279
 msgid "+2 Str in Open"
-msgstr "+2 i styrke i det åbne"
+msgstr "+2 sterkte in open veld"
 
 #: dat/glade/editor/armyset-window.glade:1297
 msgid ""
@@ -1497,15 +1489,15 @@ msgid ""
 "standing in forest and it is\n"
 "attacked"
 msgstr ""
-"Hvis afkrydset får hæren 1\n"
-"ekstra i styrke hvis den står\n"
-"i en skov og den angribes"
+"Aangevinkt wordt de sterkte van het\n"
+"leger met 1 verhoogd als het zich\n"
+"in het bos bevindt en wordt\n"
+"aangevallen"
 
 #: dat/glade/editor/armyset-window.glade:1302
 msgid "+1 Str in Forest"
-msgstr "+1 styrke i skov"
+msgstr "+1 sterkte in bos"
 
-# skal det ikke være hills her?
 #: dat/glade/editor/armyset-window.glade:1320
 msgid ""
 "When checked, the army gets\n"
@@ -1513,13 +1505,14 @@ msgid ""
 "standing in a city and it is\n"
 "attacked"
 msgstr ""
-"Hvis afkrydset får hæren 1\n"
-"ekstra i styrke hvis den står\n"
-"i en by og den angribes"
+"Aangevinkt wordt de sterkte van het\n"
+"leger met 1 verhoogd als het zich\n"
+"in de stad bevindt en wordt\n"
+"aangevallen"
 
 #: dat/glade/editor/armyset-window.glade:1325
 msgid "+1 Str in Hills"
-msgstr "+1 styrke i bakker"
+msgstr "+1 sterkte in heuvels"
 
 #: dat/glade/editor/armyset-window.glade:1343
 msgid ""
@@ -1528,13 +1521,14 @@ msgid ""
 "standing in a city and it is \n"
 "attacked\n"
 msgstr ""
-"Hvis afkrydset får hæren 1\n"
-"ekstra i styrke hvis den står\n"
-"i en by og den angribes\n"
+"Aangevinkt wordt de sterkte van het\n"
+"leger met 1 verhoogd als het zich\n"
+"in de stad bevindt en wordt\n"
+"aangevallen\n"
 
 #: dat/glade/editor/armyset-window.glade:1349
 msgid "+1 Str in City"
-msgstr "+1 styrke i by"
+msgstr "+1 sterkte in stad"
 
 #: dat/glade/editor/armyset-window.glade:1367
 msgid ""
@@ -1543,13 +1537,14 @@ msgid ""
 "standing in a city and it is \n"
 "attacked\n"
 msgstr ""
-"Hvis afkrydset får hæren 2\n"
-"ekstra i styrke hvis den står\n"
-"i en by og den angribes\n"
+"Aangevinkt wordt de sterkte van het\n"
+"leger met 2 verhoogd als het zich\n"
+"in de stad bevindt en wordt\n"
+"aangevallen\n"
 
 #: dat/glade/editor/armyset-window.glade:1373
 msgid "+2 Str in City"
-msgstr "+2 styrke i by"
+msgstr "+2 sterkte in stad"
 
 #: dat/glade/editor/armyset-window.glade:1391
 msgid ""
@@ -1559,14 +1554,14 @@ msgid ""
 "is standing in hills and it \n"
 "is attacked\n"
 msgstr ""
-"Hvis afkrydset får stakken\n"
-"med denne hær 1 ekstra i styrke \n"
-"hvis den står i bakker og den \n"
-"den angribes\n"
+"Aangevinkt wordt de sterkte van de stapel\n"
+"met daarin dit leger met 1 verhoogd als\n"
+"het zich in de heuvels bevindt en wordt\n"
+"aangevallen\n"
 
 #: dat/glade/editor/armyset-window.glade:1398
 msgid "+1 to Stack in Hills"
-msgstr "+1 til stak i bakker"
+msgstr "+1 aan stapel in heuvels"
 
 #: dat/glade/editor/armyset-window.glade:1416
 msgid ""
@@ -1575,14 +1570,14 @@ msgid ""
 "that an enemy stack has\n"
 "in battle"
 msgstr ""
-"Hvis afkrydset ignorerer \n"
-"hæren enhver bybonus som \n"
-"en fjendtlig stak har i \n"
-"kamp"
+"Aangevinkt vermindert het leger\n"
+"iedere stadsbonus die een\n"
+"vijandige stapel heeft in\n"
+"de strijd"
 
 #: dat/glade/editor/armyset-window.glade:1421
 msgid "Subtract All City Bonus"
-msgstr "Fjern alle bybonusser"
+msgstr "Alle stadsbonussen verminderen"
 
 #: dat/glade/editor/armyset-window.glade:1439
 msgid ""
@@ -1590,13 +1585,13 @@ msgid ""
 "negates 1 from the strength\n"
 "of an attacking stack"
 msgstr ""
-"Hvis afkrydset ignorerer \n"
-"hæren 1 styrke fra en \n"
-"angribende stak"
+"Aangevinkt vermindert het leger\n"
+"de sterkte van een aanvallende\n"
+"stapel met 1"
 
 #: dat/glade/editor/armyset-window.glade:1443
 msgid "-1 Str to Enemy Stack"
-msgstr "-1 styrke til fjendtlig stak"
+msgstr "-1 sterkte aan vijandige stapel"
 
 #: dat/glade/editor/armyset-window.glade:1461
 msgid ""
@@ -1604,13 +1599,13 @@ msgid ""
 "with this army in it gets 1 \n"
 "added to it's strength in battle"
 msgstr ""
-"Hvis afkrydset får stakken\n"
-"med denne hær 1 tilføjet til\n"
-"sin styrke i kamp"
+"Aangevinkt vermeerdert de sterkte\n"
+"tijdens de strijd met 1 van de\n"
+"stapel met dit leger erin"
 
 #: dat/glade/editor/armyset-window.glade:1465
 msgid "+1 Str to Stack"
-msgstr "+1 styrke til stak"
+msgstr "+1 sterkte aan stapel"
 
 #: dat/glade/editor/armyset-window.glade:1483
 msgid ""
@@ -1618,13 +1613,13 @@ msgid ""
 "with this army in it gets 2 \n"
 "added to it's strength in battle"
 msgstr ""
-"Hvis afkrydset får stakken\n"
-"med denne hær 2 tilføjet til\n"
-"sin styrke i kamp"
+"Aangevinkt vermeerdert de sterkte\n"
+"tijdens de strijd met 2 van de\n"
+"stapel met dit leger erin"
 
 #: dat/glade/editor/armyset-window.glade:1487
 msgid "+2 Str to Stack"
-msgstr "+2 styrke til stak"
+msgstr "+2 sterkte aan stapel"
 
 #: dat/glade/editor/armyset-window.glade:1505
 msgid ""
@@ -1633,14 +1628,13 @@ msgid ""
 "bonuses that an attacking \n"
 "enemy stack has"
 msgstr ""
-"Hvis afkrydset ignorerer \n"
-"hæren alle ikke-helte \n"
-"bonusser som en angribende \n"
-"fjendtlig stak har"
+"Aangevinkt ontkent het leger\n"
+"iedere niet-heldbonus dat een\n"
+"aanvallende, vijandige stapel heeft"
 
 #: dat/glade/editor/armyset-window.glade:1510
 msgid "Subtract All Non-Hero Bonuses"
-msgstr "Fjerne alle ikke-helte bonusser"
+msgstr "Alle niet-heldbonussen verminderen"
 
 #: dat/glade/editor/armyset-window.glade:1528
 msgid ""
@@ -1649,309 +1643,310 @@ msgid ""
 "that an attacking enemy\n"
 "stack has"
 msgstr ""
-"Hvis afkrydset ignorerer \n"
-"hæren alle helte \n"
-"bonusser som en angribende \n"
-"fjendtlig stak har"
+"Aangevinkt ontkent het leger\n"
+"iedere heldbonus dat een\n"
+"aanvallende, vijandige stapel\n"
+"heeft"
 
 #: dat/glade/editor/armyset-window.glade:1533
 msgid "Subtract all Hero Bonuses"
-msgstr "Fjern alle helte bonusser"
+msgstr "Alle heldbonussen verminderen"
 
 #: dat/glade/editor/armyset-window.glade:1600
 msgid "<b>Army</b>"
-msgstr "<b>Hær</b>"
+msgstr "<b>Leger</b>"
 
 #: dat/glade/editor/city-dialog.glade:8
 msgid "Edit City"
-msgstr "Rediger by"
+msgstr "Stad bewerken"
 
 #: dat/glade/editor/city-dialog.glade:82
 msgid "<b>City</b>"
-msgstr "<b>By</b>"
+msgstr "<b>Stad</b>"
 
 #: dat/glade/editor/city-dialog.glade:131
 #: dat/glade/editor/stack-dialog.glade:45
 msgid "Player:"
-msgstr "Spiller:"
+msgstr "Speler:"
 
 #: dat/glade/editor/city-dialog.glade:179
 msgid "Capital"
-msgstr "Hovedstad"
+msgstr "Hoofdstad"
 
 #: dat/glade/editor/city-dialog.glade:267
 #: dat/glade/editor/reward-dialog.glade:618
 #: dat/glade/editor/ruin-dialog.glade:419
 msgid "Randomiz_e"
-msgstr "Til_fældiggør"
+msgstr "Willekeurig mak_en"
 
 #: dat/glade/editor/city-dialog.glade:301
+#, fuzzy
 msgid "Income:"
-msgstr "Indtægt:"
+msgstr "Inkomend:"
 
 #: dat/glade/editor/city-dialog.glade:353
 #: dat/glade/editor/reward-dialog.glade:299
 msgid "Ra_ndomize"
-msgstr "Ti_lfældiggør"
+msgstr "Willekeurig make_n"
 
 #: dat/glade/editor/city-dialog.glade:376
 msgid "Burned down"
-msgstr "Brændt ned"
+msgstr "Plat gebrand"
 
 #: dat/glade/editor/city-dialog.glade:409
 msgid "<b>Production</b>"
-msgstr "<b>Produktion</b>"
+msgstr "<b>Productie</b>"
 
 #: dat/glade/editor/city-dialog.glade:481
 #: dat/glade/editor/ruin-dialog.glade:158
 #: dat/glade/editor/signpost-dialog.glade:148
 #: dat/glade/editor/temple-dialog.glade:158
 msgid "Randomi_ze"
-msgstr "Tilfældigg_ør"
+msgstr "Willekeurig m_aken"
 
 #: dat/glade/editor/city-dialog.glade:496
 #: dat/glade/editor/reward-list-dialog.glade:118
 #: dat/glade/editor/stack-dialog.glade:93
 msgid "_Add"
-msgstr "_Tilføj"
+msgstr "_Toevoegen"
 
 #: dat/glade/editor/city-dialog.glade:511
 #: dat/glade/editor/reward-list-dialog.glade:134
 #: dat/glade/editor/stack-dialog.glade:100
 msgid "_Remove"
-msgstr "_Fjern"
+msgstr "_Verwijderen"
 
 #: dat/glade/editor/itemlist-dialog.glade:8
 msgid "Item Editor"
-msgstr "Udstyrsredigering"
+msgstr "Itemeditor"
 
 #: dat/glade/editor/itemlist-dialog.glade:262
 msgid "+1 to Hero's Strength"
-msgstr "+1 til helts styrke"
+msgstr "Held's sterkte met +1 verhogen"
 
 #: dat/glade/editor/itemlist-dialog.glade:284
 msgid "+2 to Hero's Strength"
-msgstr "+2 til helts styrke"
+msgstr "Held's sterkte met +2 verhogen"
 
 #: dat/glade/editor/itemlist-dialog.glade:306
 msgid "+3 to Hero's Strength"
-msgstr "+3 til helts styrke"
+msgstr "Held's sterkte met +3 verhogen"
 
 #: dat/glade/editor/itemlist-dialog.glade:328
 msgid "+1 to Stack's Strength"
-msgstr "+1 til stakkens styrke"
+msgstr "Stapelsterkte met +1 verhogen"
 
 #: dat/glade/editor/itemlist-dialog.glade:350
 msgid "+2 to Stack's Strength"
-msgstr "+2 til stakkens styrke"
+msgstr "Stapelsterkte met +2 verhogen"
 
 #: dat/glade/editor/itemlist-dialog.glade:372
 msgid "+3 to Stack's Strength"
-msgstr "+3 til stakkens styrke"
+msgstr "Stapelsterkte met +3 verhogen"
 
 #: dat/glade/editor/itemlist-dialog.glade:394
 msgid "Stack Can Fly"
-msgstr "Stak kan flyve"
+msgstr "Stapel kan vliegen"
 
 #: dat/glade/editor/itemlist-dialog.glade:416
 msgid "Double Movement of Stack"
-msgstr "Dobbelt bevægelse for stak"
+msgstr "Dubbele verplaatsing van stapel"
 
 #: dat/glade/editor/itemlist-dialog.glade:438
 msgid "+2 Gold Per City"
-msgstr "+2 guld per by"
+msgstr "+2 goud per stad"
 
 #: dat/glade/editor/itemlist-dialog.glade:460
 msgid "+3 Gold Per City"
-msgstr "+3 guld per by"
+msgstr "+3 goud per stad"
 
 #: dat/glade/editor/itemlist-dialog.glade:482
 msgid "+4 Gold Per City"
-msgstr "+4 guld per by"
+msgstr "+4 goud per stad"
 
 #: dat/glade/editor/itemlist-dialog.glade:504
 msgid "+5 Gold Per City"
-msgstr "+5 guld per by"
+msgstr "+5 goud per stad"
 
 #: dat/glade/editor/itemlist-dialog.glade:536
 msgid "<b>Item</b>"
-msgstr "<b>Udstyr</b>"
+msgstr "<b>Item</b>"
 
 #: dat/glade/editor/main-window.glade:7 src/editor/main.cpp:54
 msgid "LordsAWar! Scenario Editor"
-msgstr "LordsAWar! Scenarieredigering"
+msgstr "LordsAWar! Scenario-editor"
 
 #: dat/glade/editor/main-window.glade:45
 msgid "_New Map"
-msgstr "_Nyt kort"
+msgstr "_Nieuwe kaart"
 
 #: dat/glade/editor/main-window.glade:53
 msgid "_Load Map"
-msgstr "_Hent kort"
+msgstr "Kaart _laden"
 
 #: dat/glade/editor/main-window.glade:61
 msgid "_Save Map"
-msgstr "_Gem kort"
+msgstr "Kaart _bewaren"
 
 #: dat/glade/editor/main-window.glade:69
 msgid "Save Map _As..."
-msgstr "Gem kort _som..."
+msgstr "Kaart bewaren _als..."
 
 #: dat/glade/editor/main-window.glade:77
 msgid "E_xport As Bitmap"
-msgstr "E_ksporter som bitmap"
+msgstr "Als bitmap e_xporteren"
 
 #: dat/glade/editor/main-window.glade:85
 msgid "Export As Bitmap (no game objects)"
-msgstr "Eksporter som bitmap (ingen spilobjekter)"
+msgstr "Als bitmap exporteren (geen spelobjecten)"
 
 #: dat/glade/editor/main-window.glade:93
 msgid "_Validate"
-msgstr "_Valider"
+msgstr "_Valideren"
 
 #: dat/glade/editor/main-window.glade:128
 msgid "_Players"
-msgstr "_Spillere"
+msgstr "_Spelers"
 
 #: dat/glade/editor/main-window.glade:136
 msgid "_Map Info"
-msgstr "_Kortinfo"
+msgstr "_Kaartinfo"
 
 #: dat/glade/editor/main-window.glade:144
 msgid "_Items"
-msgstr "_Udstyr"
+msgstr "_Items"
 
 #: dat/glade/editor/main-window.glade:152
 msgid "_Rewards"
-msgstr "_Belønninger"
+msgstr "_Beloningen"
 
 #: dat/glade/editor/main-window.glade:160
 msgid "_Smooth Screen"
-msgstr "_Glat skærm"
+msgstr "Scherm _opschonen"
 
 #: dat/glade/editor/main-window.glade:169
 msgid "Smooth _Entire Map"
-msgstr "Udglat _hele kortet"
+msgstr "Gehele kaart opschonen"
 
 #: dat/glade/editor/main-window.glade:181
 msgid "_Random"
-msgstr "_Tilfældig"
+msgstr "_Willekeurig"
 
 #: dat/glade/editor/main-window.glade:190
 msgid "All Cities"
-msgstr "Alle byer"
+msgstr "Alle steden"
 
 #: dat/glade/editor/main-window.glade:198
 msgid "Unnamed Cities"
-msgstr "Unavngivne byer"
+msgstr "Onbenoemde steden"
 
 #: dat/glade/editor/main-window.glade:206
 msgid "All Ruins"
-msgstr "Alle ruiner"
+msgstr "Alle ruïnes"
 
 #: dat/glade/editor/main-window.glade:214
 msgid "Unnamed Ruins"
-msgstr "Unavngivne ruiner"
+msgstr "Onbenoemde ruïnes"
 
 #: dat/glade/editor/main-window.glade:223
 msgid "All Temples"
-msgstr "Alle templer"
+msgstr "Alle tempels"
 
 #: dat/glade/editor/main-window.glade:231
 msgid "Unnamed Temples"
-msgstr "Unavngivne templer"
+msgstr "Onbenoemde tempels"
 
 #: dat/glade/editor/main-window.glade:239
 msgid "All Signs"
-msgstr "Alle vejskilte"
+msgstr "Alle tekens"
 
 #: dat/glade/editor/main-window.glade:247
 msgid "Unnamed Signs"
-msgstr "Unavngivne vejskilte"
+msgstr "Onbenoemde tekens"
 
 #: dat/glade/editor/main-window.glade:259
 #: dat/glade/editor/tileset-window.glade:125
 msgid "_View"
-msgstr "_Vis"
+msgstr "_Bekijk"
 
 #: dat/glade/editor/main-window.glade:279
 msgid "_Toggle Tile Graphics"
-msgstr "_Slå feltgrafik til/fra"
+msgstr "Tegelgraphics aan-/uitschakelen"
 
 #: dat/glade/editor/main-window.glade:443
 msgid "Draw terrain with a 1x1 pointer"
-msgstr "Tegn terræn med en 1x1 pil"
+msgstr "Teken terrein met een 1x1-pen"
 
 #: dat/glade/editor/main-window.glade:473
 #: dat/glade/editor/main-window.glade:503
 #: dat/glade/editor/main-window.glade:533
 msgid "Draw terrain with a 3x3 pointer"
-msgstr "Tegn terræn med en 3x3 pil"
+msgstr "Teken terrein met een 3x3-pen"
 
 #: dat/glade/editor/map-info-dialog.glade:7
 msgid "Edit Map Info"
-msgstr "Rediger kortinfo"
+msgstr "Kaartinformatie bewerken"
 
 #: dat/glade/editor/new-map-dialog.glade:8
 msgid "New Map"
-msgstr "Nyt kort"
+msgstr "Nieuwe kaart"
 
 #: dat/glade/editor/new-map-dialog.glade:48
 msgid "_Create Map"
-msgstr "_Opret kort"
+msgstr "Kaart _aanmaken"
 
 #: dat/glade/editor/new-map-dialog.glade:414
 msgid "Fill style:"
-msgstr "Udfyldningsstil:"
+msgstr "Vulstijl:"
 
 #: dat/glade/editor/new-map-dialog.glade:508
 msgid "Signposts"
-msgstr "Vejskilte"
+msgstr "Uitkijkposten"
 
 #: dat/glade/editor/new-map-dialog.glade:536
 msgid "Temples"
-msgstr "Templer"
+msgstr "Tempels"
 
 #: dat/glade/editor/new-map-dialog.glade:923
 msgid "   Cities"
-msgstr "   byer"
+msgstr "   Steden"
 
 #: dat/glade/editor/players-dialog.glade:7
 msgid "Edit Players"
-msgstr "Rediger spillere"
+msgstr "Bewerk spelers"
 
 #: dat/glade/editor/reward-dialog.glade:8
 msgid "Edit Reward"
-msgstr "Rediger belønning"
+msgstr "Bewerk beloning"
 
 #: dat/glade/editor/reward-dialog.glade:126
 msgid "Item"
-msgstr "Udstyr"
+msgstr "Item"
 
 #: dat/glade/editor/reward-dialog.glade:149 src/gui/sage-dialog.cpp:212
 msgid "Allies"
-msgstr "Allierede"
+msgstr "Bondgenoten"
 
 #: dat/glade/editor/reward-dialog.glade:172
 msgid "Map"
-msgstr "Kort"
+msgstr "Kaart"
 
 #: dat/glade/editor/reward-dialog.glade:220
 #: dat/glade/editor/ruin-dialog.glade:611
 msgid "Ran_domize"
-msgstr "Tilfæl_diggør"
+msgstr "_Willekeurig maken"
 
 #: dat/glade/editor/reward-dialog.glade:283
 msgid "Clear Item"
-msgstr "Fjern udstyr"
+msgstr "Item wissen"
 
 #: dat/glade/editor/reward-dialog.glade:381
 msgid "Clear Ally Type"
-msgstr "Fjern allierettype"
+msgstr "Bondgenoottype wissen"
 
 #: dat/glade/editor/reward-dialog.glade:397
 msgid "Rand_omize"
-msgstr "Tilfæl_diggør"
+msgstr "Willekeurig _maken"
 
 #: dat/glade/editor/reward-dialog.glade:434
 msgid "x:"
@@ -1971,31 +1966,31 @@ msgstr "h:"
 
 #: dat/glade/editor/reward-dialog.glade:644
 msgid "Hidden Ruin"
-msgstr "Skjult ruin"
+msgstr "Verborgen ruïne"
 
 #: dat/glade/editor/reward-dialog.glade:704
 msgid "Clear Hidden Ruin"
-msgstr "Fjern skjult ruin"
+msgstr "Verborgen ruïne wissen"
 
 #: dat/glade/editor/reward-dialog.glade:720
 msgid "Random_ize"
-msgstr "Tilfæld_iggør"
+msgstr "W_illekeurig maken"
 
 #: dat/glade/editor/reward-dialog.glade:749
 msgid "<b>Reward</b>"
-msgstr "<b>Belønning</b>"
+msgstr "<b>Beloning</b>"
 
 #: dat/glade/editor/reward-list-dialog.glade:8
 msgid "Edit Rewards"
-msgstr "Rediger belønninger"
+msgstr "Bewerk beloningen"
 
 #: dat/glade/editor/ruin-dialog.glade:8
 msgid "Edit Ruin"
-msgstr "Rediger ruin"
+msgstr "Bewerk ruïne"
 
 #: dat/glade/editor/ruin-dialog.glade:82
 msgid "<b>Ruin</b>"
-msgstr "<b>Ruin</b>"
+msgstr "<b>Ruïne</b>"
 
 #: dat/glade/editor/ruin-dialog.glade:250 src/editor/players-dialog.cpp:60
 msgid "Type"
@@ -2003,78 +1998,78 @@ msgstr "Type"
 
 #: dat/glade/editor/ruin-dialog.glade:326
 msgid "Keeper:"
-msgstr "Vogter:"
+msgstr ""
 
 #: dat/glade/editor/ruin-dialog.glade:403
 msgid "Cle_ar Keeper"
-msgstr "Fj_ern vogter"
+msgstr ""
 
 #: dat/glade/editor/ruin-dialog.glade:445
 msgid "Is a Sage?"
-msgstr "Er en vismand?"
+msgstr "Is een sage?"
 
 #: dat/glade/editor/ruin-dialog.glade:467
 msgid "Is Hidden?"
-msgstr "Er skjult?"
+msgstr "Is verborgen?"
 
 #: dat/glade/editor/ruin-dialog.glade:488
 msgid "Seen By:"
-msgstr "Set af:"
+msgstr "Gezien door:"
 
 #: dat/glade/editor/ruin-dialog.glade:579
 msgid "_Pick From List"
-msgstr "_Vælg fra liste"
+msgstr "_Kies uit lijst"
 
 #: dat/glade/editor/ruin-dialog.glade:595
 msgid "Clea_r Reward"
-msgstr "Fje_rn belønning"
+msgstr "Beloning _wissen"
 
 #: dat/glade/editor/ruin-dialog.glade:637
 msgid "New Reward:"
-msgstr "Ny belønning:"
+msgstr "Nieuwe beloning:"
 
 #: dat/glade/editor/ruin-dialog.glade:659
 msgid "Random Reward"
-msgstr "Tilfældig belønning"
+msgstr "Willekeurige beloning"
 
 #: dat/glade/editor/select-army-dialog.glade:7
 msgid "Select Army"
-msgstr "Vælg hær"
+msgstr "Selecteer leger"
 
 #: dat/glade/editor/select-army-dialog.glade:127
 #: dat/glade/editor/select-hidden-ruin-dialog.glade:52
 #: dat/glade/editor/select-item-dialog.glade:52
 #: dat/glade/editor/select-reward-dialog.glade:52
 msgid "_Select"
-msgstr "_Vælg"
+msgstr "_Selecteer"
 
 #: dat/glade/editor/select-hidden-ruin-dialog.glade:8
 msgid "Select Hidden Ruin"
-msgstr "Vælg skjult ruin"
+msgstr "Selecteer verborgen ruïne"
 
 #: dat/glade/editor/select-item-dialog.glade:8
 msgid "Select Item"
-msgstr "Vælg udstyr"
+msgstr "Selecteer item"
 
 #: dat/glade/editor/select-reward-dialog.glade:8
 msgid "Select Reward"
-msgstr "Vælg belønning"
+msgstr "Selecteer beloning"
 
 #: dat/glade/editor/signpost-dialog.glade:8
 msgid "Edit Signpost"
-msgstr "Rediger vejskilt"
+msgstr "Bewerk uitkijkpost"
 
 #: dat/glade/editor/signpost-dialog.glade:82
 msgid "<b>Signpost</b>"
-msgstr "<b>Vejskilt</b>"
+msgstr "<b>Uitkijkpost</b>"
 
 #: dat/glade/editor/stack-dialog.glade:7
 msgid "Edit Stack"
-msgstr "Rediger stak"
+msgstr "Bewerk stapel"
 
 #: dat/glade/editor/temple-dialog.glade:8
 msgid "Edit Temple"
-msgstr "Rediger tempel"
+msgstr "Bewerk tempel"
 
 #: dat/glade/editor/temple-dialog.glade:82
 msgid "<b>Temple</b>"
@@ -2082,80 +2077,79 @@ msgstr "<b>Tempel</b>"
 
 #: dat/glade/editor/tile-preview-dialog.glade:8
 msgid "Preview Tile"
-msgstr "Forhåndsvis felt"
+msgstr "Voorvertoon tegel"
 
 #: dat/glade/editor/tileset-info-dialog.glade:8
 msgid "Edit Tileset Info"
-msgstr "Rediger feltsætinfo"
+msgstr "Bewerk informatie tegelset"
 
 #: dat/glade/editor/tileset-info-dialog.glade:82
 msgid "<b>Tileset</b>"
-msgstr "<b>Feltsæt</b>"
+msgstr "<b>Tegelset</b>"
 
 #: dat/glade/editor/tileset-selector-editor-dialog.glade:8
 msgid "Selector Editor"
-msgstr "Udvælgelsesredigering"
+msgstr "Aanwijzereditor"
 
 #: dat/glade/editor/tileset-selector-editor-dialog.glade:75
 msgid "Large"
-msgstr "Stor"
+msgstr "Groot"
 
 #: dat/glade/editor/tileset-selector-editor-dialog.glade:94
 msgid "Small"
-msgstr "Lille"
+msgstr "Klein"
 
 #: dat/glade/editor/tileset-selector-editor-dialog.glade:151
 msgid "Image:"
-msgstr "Billede:"
+msgstr "Afbeelding:"
 
-# stavefejl, engelsk
 #: dat/glade/editor/tileset-selector-editor-dialog.glade:231
 msgid "Shieildset:"
-msgstr "Skjoldsæt:"
+msgstr "Schildset:"
 
 #: dat/glade/editor/tileset-selector-editor-dialog.glade:300
 msgid "<b>Preview</b>"
-msgstr "<b>Forhåndsvisning</b>"
+msgstr "<b>Voorvertoon</b>"
 
 #: dat/glade/editor/tileset-selector-editor-dialog.glade:334
 msgid "<b>Army Unit Selector</b>"
-msgstr "<b>Hærenhedsvælger</b>"
+msgstr "<b>Legereenheidkiezer</b>"
 
 #: dat/glade/editor/tileset-window.glade:7 src/editor/tileset-main.cpp:48
 msgid "LordsAWar! Tileset Editor"
-msgstr "LordsAWar! Feltsætredigering"
+msgstr "LordsAWar! Tegelset-editor"
 
 #: dat/glade/editor/tileset-window.glade:45
 msgid "_New Tileset"
-msgstr "_Nyt feltsæt"
+msgstr "_Nieuwe tegelset"
 
 #: dat/glade/editor/tileset-window.glade:53
 msgid "_Load Tileset"
-msgstr "_Hent feltsæt"
+msgstr "Tegelset _laden"
 
 #: dat/glade/editor/tileset-window.glade:61
 msgid "_Save Tileset"
-msgstr "_Gem feltsæt"
+msgstr "Tegelset bewaren"
 
 #: dat/glade/editor/tileset-window.glade:69
 msgid "Save Tileset _As..."
-msgstr "Gem feltsæt _som..."
+msgstr "Tegelset bewaren als..."
 
 #: dat/glade/editor/tileset-window.glade:105
 msgid "Tileset info"
-msgstr "Feltsætinfo"
+msgstr "Tegelsetinformatie"
 
 #: dat/glade/editor/tileset-window.glade:113
 msgid "_Army Unit Selector"
-msgstr "_Hærenhedvælger"
+msgstr "_Legereenheidkiezer"
 
 #: dat/glade/editor/tileset-window.glade:135
 msgid "_Preview Tile"
-msgstr "_Forhåndsvis felt"
+msgstr "Tegel _voorvertonen"
 
 #: dat/glade/editor/tileset-window.glade:324
 msgid "Moves:"
-msgstr "Bevægelser:"
+msgstr "Beweegt:"
 
 #: dat/glade/editor/tileset-window.glade:409
 msgid ""
@@ -2167,33 +2161,33 @@ msgid ""
 "Swamp\n"
 "Void"
 msgstr ""
-"Græs\n"
-"Vand\n"
-"Skov\n"
-"Bakker\n"
-"Bjerge\n"
-"Sump\n"
-"Tom"
+"Gras\n"
+"Water\n"
+"Bos\n"
+"Heuvels\n"
+"Bergen\n"
+"Moeras\n"
+"Leegte"
 
 #: dat/glade/editor/tileset-window.glade:487
 msgid "Smallmap Appearance:"
-msgstr "Udseende på små kort:"
+msgstr "Uiterlijk minikaart"
 
 #: dat/glade/editor/tileset-window.glade:583
 msgid "Pattern:"
-msgstr "Mønster:"
+msgstr "Patroon:"
 
 #: dat/glade/editor/tileset-window.glade:611
 msgid "First Colour:"
-msgstr "Første farve:"
+msgstr "Eerste kleur:"
 
 #: dat/glade/editor/tileset-window.glade:639
 msgid "Second Colour:"
-msgstr "Anden farve:"
+msgstr "Tweede kleur:"
 
 #: dat/glade/editor/tileset-window.glade:667
 msgid "Third Colour:"
-msgstr "Tredje farve:"
+msgstr "Derde kleur:"
 
 #: dat/glade/editor/tileset-window.glade:697
 msgid ""
@@ -2205,21 +2199,21 @@ msgid ""
 "Diagonal\n"
 "Crosshatched"
 msgstr ""
-"Solid\n"
-"Duppet\n"
-"Tilfældigt\n"
-"Synket\n"
-"Borddug\n"
-"Diagonal\n"
-"Krydsskraveret"
+"Massief\n"
+"Gestippeld\n"
+"Willekeurig\n"
+"Verzonken\n"
+"Tafelkleed\n"
+"Diagonaal\n"
+"Kruislings"
 
 #: dat/glade/editor/tileset-window.glade:935
 msgid "Image File:"
-msgstr "Billedfil:"
+msgstr "Afbeeldingsbestand:"
 
 #: dat/glade/editor/tileset-window.glade:991
 msgid "Refresh Image from File"
-msgstr "Opdater billede fra fil"
+msgstr "Afbeelding vanuit bestand vernieuwen"
 
 #: dat/glade/editor/tileset-window.glade:1075
 msgid ""
@@ -2241,410 +2235,410 @@ msgid ""
 "Bottom-Left To Top-Right\n"
 "Other"
 msgstr ""
-"Alene\n"
-"Ydre top-venstre\n"
-"Ydre top-centrum\n"
-"Ydre top-højre\n"
-"Ydre bund-venstre\n"
-"Ydre bund-centrum\n"
-"Ydre bund-højre\n"
-"Ydre midt-venstre\n"
-"Indre midt-centrum\n"
-"Ydre midt-højre\n"
-"Indre top-venstre\n"
-"Indre top-højre\n"
-"Indre bund-venstre\n"
-"Indre bund-højre\n"
-"Top-venstre til bund-højre\n"
-"Bund-venstre til top-højre\n"
-"Andre"
+"Alleen\n"
+"Buiten linksboven\n"
+"Buiten middenboven\n"
+"Buiten rechtsboven\n"
+"Buiten linksonder\n"
+"Buiten middenonder\n"
+"Buiten rechtsonder\n"
+"Buiten linksmidden\n"
+"Binnen centrum\n"
+"Buiten rechtsmidden\n"
+"Binnen linksboven\n"
+"Binnen rechtsboven\n"
+"Binnen linksonder\n"
+"Binnen rechtsonder\n"
+"Linksboven naar rechtsonder\n"
+"Linksonder naar rechtsboven\n"
+"Anders"
 
 #: dat/glade/editor/tileset-window.glade:1152
 msgid "<b>Tile Style</b>"
-msgstr "<b>Feltstil</b>"
+msgstr "<b>Tegelstijl</b>"
 
 #: dat/glade/editor/tileset-window.glade:1193
 msgid "<b>Tile Style Set</b>"
-msgstr "<b>Feltstilsæt</b>"
+msgstr "<b>Tegelstijlset</b>"
 
 #: dat/glade/editor/tileset-window.glade:1227
 msgid "<b>Tile Style Sets</b>"
-msgstr "<b>Feltstilsæt</b>"
+msgstr "<b>Tegelstijlsets</b>"
 
 #: dat/glade/editor/tileset-window.glade:1261
 msgid "<b>Tile</b>"
-msgstr "<n>Felt</b>"
+msgstr "<b>Tegel</b>"
 
 #: src/tilestyle.cpp:80 src/tilestyle.cpp:137
 msgid "Lone"
-msgstr "Alene"
+msgstr "Alleen"
 
 #: src/tilestyle.cpp:83 src/tilestyle.cpp:139
 msgid "Outer Top-Left"
-msgstr "Ydre top-venstre"
+msgstr ""
 
 #: src/tilestyle.cpp:86 src/tilestyle.cpp:141
 msgid "Outer Top-Centre"
-msgstr "Ydre top-centrum"
+msgstr ""
 
 #: src/tilestyle.cpp:89 src/tilestyle.cpp:143
 msgid "Outer Top-Right"
-msgstr "Ydre top-højre"
+msgstr ""
 
 #: src/tilestyle.cpp:92 src/tilestyle.cpp:145
 msgid "Outer Bottom-Left"
-msgstr "Ydre bund-venstre"
+msgstr ""
 
 #: src/tilestyle.cpp:95 src/tilestyle.cpp:147
 msgid "Outer Bottom-Centre"
-msgstr "Ydre bund-centrum"
+msgstr ""
 
 #: src/tilestyle.cpp:98 src/tilestyle.cpp:149
 msgid "Outer Bottom-Right"
-msgstr "Ydre bund-højre"
+msgstr ""
 
 #: src/tilestyle.cpp:101 src/tilestyle.cpp:151
 msgid "Outer Middle-Left"
-msgstr "Ydre midt-venstre"
+msgstr ""
 
 #: src/tilestyle.cpp:104 src/tilestyle.cpp:153
 msgid "Outer Middle-Centre"
-msgstr "Ydre midt-centrum"
+msgstr ""
 
 #: src/tilestyle.cpp:107 src/tilestyle.cpp:155
 msgid "Outer Middle-Right"
-msgstr "Ydre midt-højre"
+msgstr ""
 
 #: src/tilestyle.cpp:110 src/tilestyle.cpp:157
 msgid "Inner Top-Left"
-msgstr "Indre top-venstre"
+msgstr ""
 
 #: src/tilestyle.cpp:113 src/tilestyle.cpp:159
 msgid "Inner Top-Right"
-msgstr "Indre top-højre"
+msgstr ""
 
 #: src/tilestyle.cpp:116 src/tilestyle.cpp:161
 msgid "Inner Bottom-Left"
-msgstr "Indre bund-venstre"
+msgstr ""
 
 #: src/tilestyle.cpp:119 src/tilestyle.cpp:163
 msgid "Inner Bottom-Right"
-msgstr "Indre bund-højre"
+msgstr ""
 
 #: src/tilestyle.cpp:122 src/tilestyle.cpp:165
 msgid "Top-Left To Bottom-Right Diagonal"
-msgstr "Top-venstre til bund-højre diagonal"
+msgstr ""
 
 #: src/tilestyle.cpp:125 src/tilestyle.cpp:167
 msgid "Bottom-Left to Top-Right Diagonal"
-msgstr "Bund-venstre til top-højre diagonal"
+msgstr ""
 
 #: src/tilestyle.cpp:128 src/tilestyle.cpp:169
 msgid "Other"
-msgstr "Andre"
+msgstr ""
 
 #: src/GameScenario.cpp:682
 msgid "There must be at least 2 players in the scenario."
-msgstr "Der skal være mindst 2 spillere i scenariet."
+msgstr "In het scenario moeten minstens twee spelers zijn."
 
 #: src/GameScenario.cpp:686
 msgid "There must be at least 2 cities in the scenario."
-msgstr "Der skal være mindst 2 byer i scenariet."
+msgstr "In het scenario moeten minstens twee steden zijn."
 
 #: src/GameScenario.cpp:696
 msgid "Every player must have at least one city in the scenario."
-msgstr "Hver spiller må have mindst en by i scenariet."
+msgstr "In het scenario moet iedere speler minstens één stad hebben."
 
 #: src/GameScenario.cpp:711
 msgid "There is %1 unnamed city"
 msgid_plural "There are %1 unnamed cities"
-msgstr[0] "Der er %1 unavngiven by"
-msgstr[1] "Der er %1 unavngivne byer"
+msgstr[0] "Er is %1 onbenoemde stad"
+msgstr[1] "Er zijn %1 onbenoemde steden"
 
 #: src/GameScenario.cpp:725
 msgid "There is %1 unnamed ruin"
 msgid_plural "There are %1 unnamed ruins"
-msgstr[0] "Der er %1 unavngiven ruin"
-msgstr[1] "Der er %1 unavngivne ruiner"
+msgstr[0] "Er is %1 onbenoemde ruïne"
+msgstr[1] "Er zijn %1 onbenoemde ruïnes"
 
 #: src/GameScenario.cpp:739
 msgid "There is %1 unnamed temple"
 msgid_plural "There are %1 unnamed temples"
-msgstr[0] "Der er %1 unavngiven tempel"
-msgstr[1] "Der er %1 unavngivne templer"
+msgstr[0] "Er is %1 onbenoemde tempel"
+msgstr[1] "Er zijn %1 onbenoemde tempels"
 
 #: src/GameScenario.cpp:753
 msgid "There is %1 neutral stack not in a city"
 msgid_plural "There are %1 neutral stacks not in cities"
-msgstr[0] "Der er %1 neutral stak ikke i en by"
-msgstr[1] "Der er %2 neutrale stakke ikke i en by"
+msgstr[0] "Er is %1 neutrale stapel niet in een stad"
+msgstr[1] "Er zijn %1 neutrale stapels niet in steden"
 
 #: src/QKillHero.cpp:102
 msgid "You're still searching for him..."
-msgstr "Du leder stadig efter ham..."
+msgstr "Je bent nog steeds naar hem op zoek..."
 
 #: src/QKillHero.cpp:103
 msgid "Seen lately near ("
-msgstr "Set for nylig nær ("
+msgstr "Laatst gezien nabij ("
 
 #: src/QKillHero.cpp:112
 #, c-format
 msgid "You slayed the wicked hero %s. He deserved that!"
-msgstr "Du dræbte den onde helt %s. Han fortjente det!"
+msgstr ""
 
 #: src/QKillHero.cpp:119
 #, c-format
 msgid "You could not slay the wicked hero %s"
-msgstr "Du kunne dræbe den onde helt %s"
+msgstr ""
 
 #: src/QKillHero.cpp:123
 msgid "He was slain by other fellows!"
-msgstr "Han blev dræbt af andre!"
+msgstr ""
 
 #: src/QKillHero.cpp:131
 #, c-format
 msgid "Kill the hero named %s, servant of player %s"
-msgstr "Dræb helten ved navn %s, tjener af spiller %s"
+msgstr ""
 
 #: src/QEnemyArmytype.cpp:115
 #, c-format
 msgid "You have not killed a unit of enemy %s yet."
-msgstr "Du har endnu ikke dræbt en enhed hos fjenden %s."
+msgstr ""
 
 #: src/QEnemyArmytype.cpp:126
 #, c-format
 msgid "You have killed a unit of enemy %s."
-msgstr "Du har dræbt en enhed hos fjenden %s."
+msgstr ""
 
 #: src/QEnemyArmytype.cpp:129 src/QPillageGold.cpp:82 src/QEnemyArmies.cpp:133
 msgid "Well done!"
-msgstr "Godt gjort!"
+msgstr ""
 
 #: src/QEnemyArmytype.cpp:143
 #, c-format
 msgid "You must destroy a unit of enemy %s."
-msgstr "Du skal knuse en enhed hos fjenden %s."
+msgstr ""
 
 #: src/playerlist.cpp:308
 msgid "Statesman"
-msgstr "Statsmand"
+msgstr ""
 
 #: src/playerlist.cpp:309
 msgid "Diplomat"
-msgstr "Diplomat"
+msgstr ""
 
 #: src/playerlist.cpp:310
 msgid "Pragmatist"
-msgstr "Pragmatiker"
+msgstr ""
 
 #: src/playerlist.cpp:311
 msgid "Politician"
-msgstr "Politiker"
+msgstr ""
 
 #: src/playerlist.cpp:312
 msgid "Deceiver"
-msgstr "Forræder"
+msgstr ""
 
 #: src/playerlist.cpp:313
 msgid "Scoundrel"
-msgstr "Svindler"
+msgstr ""
 
 #: src/playerlist.cpp:314
 msgid "Turncoat"
-msgstr "Vendekåbe"
+msgstr ""
 
 #: src/playerlist.cpp:315
 msgid "Running Dog"
-msgstr "Kujon"
+msgstr ""
 
 #: src/QPillageGold.cpp:72
 #, c-format
 msgid "You have already stolen %i gold."
-msgstr "Du har allerede stjålet %i guld."
+msgstr ""
 
 #: src/QCityOccupy.cpp:87 src/QCityRaze.cpp:87 src/QCitySack.cpp:87
 msgid "You aren't afraid of doing it, are you?"
-msgstr "Du er ikke bange for det, er du?"
+msgstr ""
 
 #: src/QCityOccupy.cpp:92
 msgid "The priests thank you for occupying this evil place."
-msgstr "Præsterne takker dog for at besætte dette onde sted."
+msgstr ""
 
 #: src/QCityOccupy.cpp:100
 #, c-format
 msgid "The occupation of city \"%s\" could not be accomplished."
-msgstr "Besættelsen af byen »%s« kunne ikke opnås."
+msgstr ""
 
 #: src/QCityOccupy.cpp:121
 #, c-format
 msgid "You must take over the city \"%s\" and occupy it."
-msgstr "Du må overtage byen »%s« og besætte den."
+msgstr ""
 
 #: src/game.cpp:609
 msgid "%1 (capital city)"
-msgstr "%1 (hovedstad)"
+msgstr ""
 
 #: src/game.cpp:615
 msgid "Under rule of %1"
-msgstr "Under ledelse af %1"
+msgstr ""
 
 #: src/game.cpp:618 src/gui/city-window.cpp:172
 msgid "Income: %1"
-msgstr "Indtægt: %1"
+msgstr ""
 
 #: src/game.cpp:620
 msgid "Defense: %1"
-msgstr "Forsvar: %1"
+msgstr ""
 
 #: src/game.cpp:624
 msgid "Status: razed!"
-msgstr "Status: nedbrændt!"
+msgstr ""
 
 #: src/game.cpp:654
 msgid "Explored"
-msgstr "Udforsket"
+msgstr ""
 
 #: src/game.cpp:657
 msgid "Unexplored"
-msgstr "Ikke udforsket"
+msgstr ""
 
 #: src/Configuration.cpp:182
 msgid "Configuration file has wrong version, we want "
-msgstr "Konfigurationsfil har forkert version, vi ønsker "
+msgstr ""
 
 #: src/Configuration.cpp:184
 msgid "Configuration file offers "
-msgstr "Konfigurationsfil tilbyder "
+msgstr ""
 
 #: src/MapGenerator.cpp:161
 msgid "flattening plains..."
-msgstr "flade stepper..."
+msgstr ""
 
 #: src/MapGenerator.cpp:164
 msgid "raining water..."
-msgstr "løbende vand..."
+msgstr ""
 
 #: src/MapGenerator.cpp:171
 msgid "raising hills..."
-msgstr "rejse bakker..."
+msgstr ""
 
 #: src/MapGenerator.cpp:174
 msgid "raising mountains..."
-msgstr "rejse bjerge..."
+msgstr ""
 
 #: src/MapGenerator.cpp:180
 msgid "planting forests..."
-msgstr "plante skove..."
+msgstr ""
 
 #: src/MapGenerator.cpp:183
 msgid "watering swamps..."
-msgstr "vande sumpe..."
+msgstr ""
 
 #: src/MapGenerator.cpp:186
 msgid "normalizing terrain..."
-msgstr "normalisere terræn..."
+msgstr ""
 
 #: src/MapGenerator.cpp:191
 msgid "building cities..."
-msgstr "bygge byer..."
+msgstr ""
 
 #: src/MapGenerator.cpp:197
 msgid "paving roads..."
-msgstr "lægge veje..."
+msgstr ""
 
 #: src/MapGenerator.cpp:203
 msgid "ruining ruins..."
-msgstr "ødelægge ruiner..."
+msgstr ""
 
 #: src/MapGenerator.cpp:206
 msgid "raising signs..."
-msgstr "hejse vejskilte..."
+msgstr ""
 
 #: src/MapGenerator.cpp:209
 msgid "spawning temples..."
-msgstr "producere massevis af templer..."
+msgstr ""
 
 #: src/MapGenerator.cpp:212
 msgid "building bridges..."
-msgstr "bygge broer..."
+msgstr ""
 
 #: src/QEnemyArmies.cpp:123
 #, c-format
 msgid "You have killed %i so far."
-msgstr "Du har dræbt %i indtil nu."
+msgstr ""
 
 #: src/player.cpp:2283
 msgid "%1 Standard"
-msgstr "%1 standard"
+msgstr ""
 
 #: src/player.cpp:2341
 msgid "Peace negotiated with "
-msgstr "Fred forhandlet med "
+msgstr ""
 
 #: src/player.cpp:2348
 msgid "War declared with "
-msgstr "Krig erklæret med "
+msgstr ""
 
 #: src/ruin.cpp:30
 msgid " is inhabited by monsters and full of treasure!"
-msgstr " er beboet af monstre og fuld af skatte!"
+msgstr ""
 
 #: src/reward.cpp:420
 msgid "%1 Gold Piece"
 msgid_plural "%1 Gold Pieces"
-msgstr[0] "%1 guldstykke"
-msgstr[1] "%1 guldstykker"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/reward.cpp:428
 msgid "Allies: %1 x %2"
-msgstr "Allierede: %1 x %2"
+msgstr ""
 
 #: src/reward.cpp:436
 msgid "Item: %1"
-msgstr "Udstyr: %1"
+msgstr ""
 
 #: src/reward.cpp:443
 msgid "Site: %1"
-msgstr "Sted: %1"
+msgstr ""
 
 #: src/reward.cpp:449
 msgid "Map: %1,%2 %3x%4"
-msgstr "Kort: %1,%2 %3x%4"
+msgstr ""
 
 #: src/QCityRaze.cpp:92
 msgid "The priests thank you for razing this evil place."
-msgstr "Præsterne takker dig for at have raseret dette onde sted."
+msgstr ""
 
 #: src/QCityRaze.cpp:100
 #, c-format
 msgid "The razing of city \"%s\" could not be accomplished."
-msgstr "Raseringen af byen »%s« kunne ikke gennemføres."
+msgstr ""
 
 #: src/QCityRaze.cpp:121
 #, c-format
 msgid "You must conquer the city \"%s\" and burn it to the ground."
-msgstr "Du må erobre byen »%s« og brænde den til grunden."
+msgstr ""
 
 #: src/temple.cpp:31
 msgid " can bless your armies or give you quests."
-msgstr " kan velsigne dine hære eller give dig missioner."
+msgstr ""
 
 #: src/gui/city-window.cpp:165
 msgid "Capital city of %1"
-msgstr "Hovedstad for %1"
+msgstr ""
 
 #: src/gui/city-window.cpp:170
 msgid "Defence: %1"
-msgstr "Forsvar: %1"
+msgstr ""
 
 #: src/gui/city-window.cpp:270 src/gui/buy-production-dialog.cpp:156
 msgid "No production"
-msgstr "Ingen produktion"
+msgstr ""
 
 #: src/gui/city-window.cpp:284 src/gui/army-info-tip.cpp:145
 #: src/gui/army-info-tip.cpp:209
 msgid "Time: %1"
-msgstr "Tid: %1"
+msgstr ""
 
 #: src/gui/city-window.cpp:286 src/gui/army-info-tip.cpp:75
 #: src/gui/army-info-tip.cpp:139 src/gui/army-info-tip.cpp:203
@@ -2652,574 +2646,569 @@ msgstr "Tid: %1"
 #: src/gui/army-gains-level-dialog.cpp:71
 #: src/editor/select-army-dialog.cpp:183
 msgid "Strength: %1"
-msgstr "Styrke: %1"
+msgstr ""
 
 #: src/gui/city-window.cpp:291 src/gui/army-info-tip.cpp:143
 #: src/gui/buy-production-dialog.cpp:176
 #: src/gui/army-gains-level-dialog.cpp:67
 #: src/editor/select-army-dialog.cpp:185
 msgid "Moves: %1"
-msgstr "Bevægelser: %1"
+msgstr ""
 
 #: src/gui/city-window.cpp:293 src/gui/army-info-tip.cpp:147
 #: src/gui/army-info-tip.cpp:211 src/gui/buy-production-dialog.cpp:174
 msgid "Cost: %1"
-msgstr "Pris: %1"
+msgstr ""
 
 #: src/gui/city-window.cpp:295 src/gui/destination-dialog.cpp:240
 msgid "%1t"
-msgstr "%1t"
+msgstr ""
 
 #: src/gui/city-window.cpp:300
 msgid ", then to %1"
-msgstr ", så til %1"
+msgstr ""
 
 #: src/gui/city-window.cpp:444
 msgid "Rename City"
-msgstr "Omdøb by"
+msgstr ""
 
 #: src/gui/city-window.cpp:452
 msgid "Type the new name for this city:"
-msgstr "Indtast det nye navn for denne by:"
+msgstr ""
 
 #: src/gui/city-window.cpp:482
 msgid "Raze City"
-msgstr "Raser by"
+msgstr ""
 
 #: src/gui/city-window.cpp:488
 msgid "Are you sure that you want to raze %1?"
-msgstr "Er du sikker på at du vil rasere %1?"
+msgstr ""
 
 #: src/gui/city-window.cpp:491
 msgid "You won't be popular!"
-msgstr "Du bliver ikke populær!"
+msgstr ""
 
 #: src/gui/preferences-dialog.cpp:73
 msgid "Observe"
-msgstr "Observer"
+msgstr ""
 
 #: src/gui/preferences-dialog.cpp:79 src/gui/preferences-dialog.cpp:140
 #: src/gui/preferences-dialog.cpp:192 src/gui/preferences-dialog.cpp:205
 msgid "Human"
-msgstr "Menneske"
+msgstr ""
 
 #: src/gui/preferences-dialog.cpp:80
 msgid "Computer"
-msgstr "Computer"
+msgstr ""
 
 #: src/gui/quest-completed-dialog.cpp:60 src/gui/quest-assigned-dialog.cpp:58
 #: src/gui/quest-report-dialog.cpp:63
 msgid "Quest for %1"
-msgstr "Mission for %1"
+msgstr ""
 
 #: src/gui/quest-completed-dialog.cpp:65
 msgid "%1 completed the quest!"
-msgstr "%1 færdiggjorde missionen!"
+msgstr ""
 
 #: src/gui/quest-completed-dialog.cpp:81
 msgid "You have been rewarded with %1 gold piece."
 msgid_plural "You have been rewarded with %1 gold pieces."
-msgstr[0] "Du er blevet belønnet med %1 guldstykke."
-msgstr[1] "Du er blevet belønnet med %1 guldstykker."
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/quest-completed-dialog.cpp:89
 msgid "You have been rewarded with %1 ally."
 msgid_plural "You have been rewarded with %1 allies."
-msgstr[0] "Du er blevet belønnet med %1 allieret."
-msgstr[1] "Du er blevet belønnet med %1 allierede."
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/quest-completed-dialog.cpp:107 src/gui/ruin-rewarded-dialog.cpp:87
 msgid "where powerful allies can be found!"
-msgstr "hvor magtfulde allierede kan findes!"
+msgstr ""
 
 #: src/gui/quest-completed-dialog.cpp:111 src/gui/ruin-rewarded-dialog.cpp:91
 msgid "where the %1 can be found!"
-msgstr "hvor %1 kan findes!"
+msgstr ""
 
 #: src/gui/quest-completed-dialog.cpp:115 src/gui/ruin-rewarded-dialog.cpp:94
 msgid "where a map can be found!"
-msgstr "hvor et kort kan findes!"
+msgstr ""
 
 #: src/gui/quest-completed-dialog.cpp:117 src/gui/ruin-rewarded-dialog.cpp:96
 msgid "where crapola can be found!"
-msgstr "hvor skrald kan findes!"
+msgstr ""
 
 #: src/gui/quest-completed-dialog.cpp:119 src/gui/ruin-rewarded-dialog.cpp:98
 msgid "where gold can be found!"
-msgstr "hvor guld kan findes!"
+msgstr ""
 
 #: src/gui/quest-completed-dialog.cpp:121 src/gui/ruin-rewarded-dialog.cpp:100
 msgid "where something important can be found!"
-msgstr "hvor noget vigtigt kan findes!"
+msgstr ""
 
 #: src/gui/triumphs-dialog.cpp:110
 msgid "%1 hero earned fates worthy of legend!"
 msgid_plural "%1 heroes earned fates worthy of legend!"
-msgstr[0] "%1 helt opnåede legendegerninger!"
-msgstr[1] "%1 helte opnåede legendegerninger!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/triumphs-dialog.cpp:115
 msgid "%1 so-called hero slaughtered without mercy!"
 msgid_plural "%1 so-called heroes slaughtered without mercy!"
-msgstr[0] "%1 såkaldt helt myrdet uden nåde!"
-msgstr[1] "%1 såkaldte helte myrdet uden nåde!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/triumphs-dialog.cpp:140
 msgid "%1 navy not currently in service!"
 msgid_plural "%1 navies not currently in service!"
-msgstr[0] "%1 flåde er ikke i aktuel tjeneste!"
-msgstr[1] "%1 flåder er ikke i aktuel tjeneste!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/triumphs-dialog.cpp:144
 msgid "%1 navy rests with the fishes!"
 msgid_plural "%1 navies rest with the fishes!"
-msgstr[0] "%1 flåde sover med fiskene!"
-msgstr[1] "%2 flåder sover med fiskene!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/triumphs-dialog.cpp:155
 msgid "%1 army died to ensure final victory!"
 msgid_plural "%1 armies died to ensure final victory!"
-msgstr[0] "%1 hær døde for at sikre endelig sejr!"
-msgstr[1] "%1 hære døde for at sikre endelig sejr!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/triumphs-dialog.cpp:159
 msgid "%1 army smote like sheep!"
 msgid_plural "%1 armies smote like sheep!"
-msgstr[0] "%1 hær stak af som får!"
-msgstr[1] "%2 hære stak af som får!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/triumphs-dialog.cpp:172
 msgid "%1 unnatural creature returned from whence it came!"
 msgid_plural "%1 unnatural creatures returned from whence they came!"
-msgstr[0] "%1 unaturlig skabning vendte tilbage hvorfra den kom!"
-msgstr[1] "%1 unaturlige skabninger vendte tilbage hvorfra de kom!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/triumphs-dialog.cpp:176
 msgid "%1 unnatural creature dispatched!"
 msgid_plural "%1 unnatural creatures dispatched!"
-msgstr[0] "%1 unaturlig skabning tog af sted!"
-msgstr[1] "%1 unaturlige skabninger tog af sted!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/triumphs-dialog.cpp:200
 msgid "%1 standard betrayed by it's guardian!"
 msgid_plural "%1 standards betrayed by it's guardian!"
-msgstr[0] "%1 fane forrådt af sin vogter!"
-msgstr[1] "%1 faner forrådt af sin vogter!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/triumphs-dialog.cpp:205
 msgid "%1 standard wrested from a vanquished foe!"
 msgid_plural "%1 standards wrested from a vanquished foe!"
-msgstr[0] "%1 fane erobret fra en knust fjende!"
-msgstr[1] "%1 faner erobret fra en knust fjende!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/error-utils.cpp:30
 msgid "Fatal error"
-msgstr "Fatal fejl"
+msgstr ""
 
 #: src/gui/army-info-tip.cpp:80 src/gui/hero-dialog.cpp:252
 msgid "Moves: %1/%2"
-msgstr "Bevægelser: %1/%2"
+msgstr ""
 
 #: src/gui/army-info-tip.cpp:83 src/gui/buy-production-dialog.cpp:178
 #: src/gui/hero-dialog.cpp:255 src/editor/select-army-dialog.cpp:189
 msgid "Upkeep: %1"
-msgstr "Vedligeholdelse: %1"
+msgstr ""
 
 #: src/gui/army-info-tip.cpp:207
 msgid "Movement: %1"
-msgstr "Bevægelse: %1"
+msgstr ""
 
 #: src/gui/game-preferences-dialog.cpp:142
 msgid "LordsAWar map files (*.map)"
-msgstr "LordsAWar kortfiler (*.map)"
+msgstr ""
 
 #: src/gui/game-preferences-dialog.cpp:253
 msgid "New Campaign"
-msgstr "Ny kampagne"
+msgstr ""
 
 #: src/gui/game-preferences-dialog.cpp:255
 msgid "New Scenario"
-msgstr "Nyt scenarie"
+msgstr ""
 
 #: src/gui/game-preferences-dialog.cpp:688
 msgid "Autogenerated"
-msgstr "Autooprettet"
+msgstr ""
 
 #: src/gui/buy-production-dialog.cpp:167
 msgid "Duration: %1"
-msgstr "Varighed: %1"
+msgstr ""
 
 #: src/gui/quest-assigned-dialog.cpp:65
 msgid "This hero already has a quest."
-msgstr "Denne helt har allerede en mission."
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:114 src/gui/history-report-dialog.cpp:119
 #: src/gui/history-report-dialog.cpp:124 src/editor/city-dialog.cpp:99
 msgid "Turns"
-msgstr "Runder"
+msgstr "Zetten"
 
 #: src/gui/history-report-dialog.cpp:119
 msgid "Gold Pieces"
-msgstr "Guldstykker"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:124
 msgid "Score"
-msgstr "Point"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:387
 msgid "City History"
-msgstr "Byhistorie"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:390
 msgid "Event History"
-msgstr "Begivenhedshistorie"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:393
 msgid "Gold History"
-msgstr "Guldhistorie"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:396
 msgid "Winner History"
-msgstr "Sejrshistorie"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:424
 msgid "On turn %1 you have %2 gold piece!"
 msgid_plural "On turn %1 you have %2 gold pieces!"
-msgstr[0] "I runde %1 har du %2 guldstykke!"
-msgstr[1] "I runde %1 har du %2 guldstykker!"
+msgstr[0] "Bij zet %1 heb je %2 gouden stuk!"
+msgstr[1] "Bij zet %1 heb je %2 gouden stukken!"
 
 #: src/gui/history-report-dialog.cpp:427
 msgid "On turn %1 you had %2 gold piece!"
 msgid_plural "On turn %1 you had %2 gold pieces!"
-msgstr[0] "I runde %1 havde du %2 guldstykke!"
-msgstr[1] "I runde %1 havde du %2 guldstykker!"
+msgstr[0] "Bij zet %1 had je %2 gouden stuk!"
+msgstr[1] "Bij zet %1 had je %2 gouden stukken!"
 
-# fejl i engelsk?
 #: src/gui/history-report-dialog.cpp:445
 msgid "On turn %1 you have %2 city!"
 msgid_plural "On turn %1 you have %2 gold cities!"
-msgstr[0] "I runde %1 har du %2 by!"
-msgstr[1] "I runde %1 har du %2 byer!"
+msgstr[0] "Bij zet %1 heb je %2 stad!"
+msgstr[1] "Bij zet %1 heb je %2 steden!"
 
 #: src/gui/history-report-dialog.cpp:448
 msgid "On turn %1 you had %2 city!"
 msgid_plural "On turn %1 you had %2 cities!"
-msgstr[0] "I runde %1 havde du %2 by!"
-msgstr[1] "I runde %1 havde du %2 byer!"
+msgstr[0] "Bij zet %1 had je %2 stad!"
+msgstr[1] "Bij zet %1 had je %2 steden!"
 
 #: src/gui/history-report-dialog.cpp:471
 msgid "On turn %1 you are coming %2!"
-msgstr "I runde %1 er du nummer %2!"
+msgstr "Bij zet %1 ben je %2!"
 
 #: src/gui/history-report-dialog.cpp:473
 msgid "On turn %1 you were coming %2!"
-msgstr "I runde %1 blev du nummer %2!"
+msgstr "Bij zet %1 was je %2!"
 
 #: src/gui/history-report-dialog.cpp:500
 msgid "%1 finds a sage!"
-msgstr "%1 finder en vismand!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:508
 msgid "%1 emerges in %2!"
-msgstr "%1 kommer frem i %2!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:517
 msgid "%1 begins a quest!"
-msgstr "%1 begynder på en mission!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:525
 msgid "%1 finishes a quest!"
-msgstr "%1 afslutter en mission!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:533
 msgid "%1 is killed in %2!"
-msgstr "%1 dræbes i %2!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:542
 msgid "%1 is killed in battle!"
-msgstr "%1 dræbes i kamp!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:550
 msgid "%1 is killed while searching!"
-msgstr "%1 dræbes under udforskning!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:559
 msgid "%1 conquers %2!"
-msgstr "%1 erobrer %2!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:568
 msgid "%1 utterly vanquished!"
-msgstr "%1 forsvinder fuldstændig!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:578
 msgid "%1 at peace with %2!"
-msgstr "%1 indgår fred med %2!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:588
 msgid "%1 at war with %2!"
-msgstr "%1 er i krig med %2!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:598
 msgid "Treachery by %1 on %2!"
-msgstr "Forræderi af %1 mod %2!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:607
 msgid "%1 finds allies!"
-msgstr "%1 finder allierede!"
+msgstr ""
 
 #: src/gui/history-report-dialog.cpp:612
 msgid "unknown"
-msgstr "ukendt"
+msgstr ""
 
 #: src/gui/sage-dialog.cpp:70 src/gui/ruin-rewarded-dialog.cpp:61
 msgid "A Sage!"
-msgstr "En vismand!"
+msgstr ""
 
 #: src/gui/hero-dialog.cpp:81 src/editor/players-dialog.cpp:102
 #: src/editor/city-dialog.cpp:95 src/editor/stack-dialog.cpp:84
 msgid "Name"
-msgstr "Navn"
+msgstr ""
 
 #: src/gui/hero-dialog.cpp:82
 msgid "Attributes"
-msgstr "Karaktertræk"
+msgstr ""
 
 #: src/gui/hero-dialog.cpp:83
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 #: src/gui/hero-dialog.cpp:151 src/gui/hero-dialog.cpp:184
 #: src/gui/hero-dialog.cpp:198
 msgid "In backpack"
-msgstr "I oppakning"
+msgstr ""
 
 #: src/gui/hero-dialog.cpp:169 src/gui/hero-dialog.cpp:200
 msgid "On the ground"
-msgstr "På jorden"
+msgstr ""
 
 #: src/gui/hero-dialog.cpp:220
 msgid "Battle: %1"
-msgstr "Kamp: %1"
+msgstr ""
 
 #: src/gui/hero-dialog.cpp:237
 msgid "Command: %1"
-msgstr "Kommando: %1"
+msgstr ""
 
 #: src/gui/hero-dialog.cpp:239 src/gui/game-window.cpp:2868
 msgid "Level: %1"
-msgstr "Niveau: %1"
+msgstr ""
 
 #: src/gui/hero-dialog.cpp:241 src/gui/game-window.cpp:2866
 msgid "Experience: %1"
-msgstr "Erfaring: %1"
+msgstr ""
 
 #: src/gui/game-window.cpp:798
 msgid "Save your Turn file and mail it back"
-msgstr "Gem din rundefil og send den tilbage"
+msgstr "Je zetten bewaren en terug e-mailen"
 
 #: src/gui/game-window.cpp:977 src/gui/splash-window.cpp:196
 msgid "Choose Game to Load"
-msgstr "Vælg spil til indlæsning"
+msgstr ""
 
 #: src/gui/game-window.cpp:1011
 msgid "Game was not saved!"
-msgstr "Spil blev ikke gemt!"
+msgstr ""
 
 #: src/gui/game-window.cpp:1018 src/editor/armyset-window.cpp:471
 #: src/editor/main-window.cpp:701 src/editor/main-window.cpp:728
 #: src/editor/main-window.cpp:755 src/editor/tileset-window.cpp:556
 #: src/editor/tileset-window.cpp:893
 msgid "Choose a Name"
-msgstr "Vælg et navn"
+msgstr ""
 
 #: src/gui/game-window.cpp:1043
 msgid "Error saving game!"
-msgstr "Fejl under gemning af spil!"
+msgstr ""
 
 #: src/gui/game-window.cpp:1089 src/gui/driver.cpp:283 src/gui/driver.cpp:454
 #: src/gui/driver.cpp:495 src/gui/driver.cpp:752 src/gui/driver.cpp:774
 msgid "Corrupted saved game file."
-msgstr "Korrupt gemt spilfil."
+msgstr ""
 
 #: src/gui/game-window.cpp:1172
 msgid "Change the message on this sign:"
-msgstr "Ændr beskeden på dette vejskilt:"
+msgstr ""
 
 #: src/gui/game-window.cpp:1224
 msgid "Are you sure you want to disband this group?"
-msgstr "Er du sikker på, at du ønsker at opløse denne gruppe?"
+msgstr ""
 
 #: src/gui/game-window.cpp:1281
 msgid "Are you sure you want to resign?"
-msgstr "Er du sikker på, at du ønsker at trække dig tilbage?"
+msgstr ""
 
 #: src/gui/game-window.cpp:1392
 msgid "No ruins or temples to show!"
-msgstr "Ingen ruiner eller templer at vise!"
+msgstr ""
 
 #: src/gui/game-window.cpp:1595
 msgid "%1 hero rallies to the call of battle!"
 msgid_plural "%1 heroes rally to the call of battle!"
-msgstr[0] "%1 helt kommer til slagmarken!"
-msgstr[1] "%1 helte kommer til slagmarken!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/game-window.cpp:1640
 msgid "Congratulations to %1 for conquering the world!"
-msgstr "Tillykke til %1 for at erobre verden!"
+msgstr ""
 
 #: src/gui/game-window.cpp:1656
 msgid "The rule of %1 has permanently ended!"
-msgstr "%1s regime er afsluttet!"
+msgstr ""
 
 #: src/gui/game-window.cpp:1662
 msgid ""
 "No further human resistance is possible\n"
 "but the battle will continue!"
 msgstr ""
-"Ingen yderligere menneskelig modstand er mulig,\n"
-"men slaget vil fortsætte!"
 
 #: src/gui/game-window.cpp:1664
 msgid ""
 "Press `CTRL-P' to stop the war\n"
 "and visit the sites of thy old battles."
 msgstr ""
-"Tryk Control+P for at afslutte krigen\n"
-"og besøge stederne for de gamle slag."
 
 #: src/gui/game-window.cpp:2043
 msgid "%1 finds "
-msgstr "%s finder "
+msgstr ""
 
 #: src/gui/game-window.cpp:2047
 msgid "%1 gold pieces."
-msgstr "%1 guldstykker."
+msgstr ""
 
 #: src/gui/game-window.cpp:2052
 msgid "%1 allies!"
-msgstr "%1 allierede!"
+msgstr ""
 
 #: src/gui/game-window.cpp:2057
 msgid "the %1!"
-msgstr "%1!"
+msgstr ""
 
 #: src/gui/game-window.cpp:2062
 msgid "a map!"
-msgstr "et kort!"
+msgstr ""
 
 #: src/gui/game-window.cpp:2088
 msgid "Searching"
-msgstr "Søger"
+msgstr ""
 
 #: src/gui/game-window.cpp:2118
 msgid "Hero Victorious"
-msgstr "Helt vinder"
+msgstr ""
 
 #: src/gui/game-window.cpp:2120
 msgid "Hero Defeated"
-msgstr "Helt besejret"
+msgstr ""
 
 #: src/gui/game-window.cpp:2127
 msgid "...and is victorious!"
-msgstr "...og vinder!"
+msgstr ""
 
 #: src/gui/game-window.cpp:2129
 msgid "...and is slain by it!"
-msgstr "...og dræbes!"
+msgstr ""
 
 #: src/gui/game-window.cpp:2170
 msgid "Hero brings allies!"
-msgstr "Helt medbringer allierede!"
+msgstr ""
 
 #: src/gui/game-window.cpp:2176
 msgid "The hero brings %1 ally!"
 msgid_plural "The hero brings %1 allies!"
-msgstr[0] "Helten medbringer %1 allieret!"
-msgstr[1] "Helten medbringer %1 allierede!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/game-window.cpp:2207
 msgid "You graciously and benevolently accept their offer."
-msgstr "Du accepterer nådigt og velvilligt deres tilbud."
+msgstr ""
 
 #: src/gui/game-window.cpp:2235
 msgid "Are you sure you want to attack %1?"
-msgstr "Er du sikker på, at du ønsker at angribe %1?"
+msgstr ""
 
 #: src/gui/game-window.cpp:2238
 msgid "Other players may not like this!"
-msgstr "Andre spillere vil måske ikke bryde sig om det!"
+msgstr ""
 
 #: src/gui/game-window.cpp:2292
 msgid "%1 army has been blessed!"
 msgid_plural "%1 armies have been blessed!"
-msgstr[0] "%1 hær er blevet velsignet!"
-msgstr[1] "%1 hære er blevet velsignet!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/game-window.cpp:2295
 msgid "We have already blessed thee!"
-msgstr "Vi har allerede velsignet jer!"
+msgstr ""
 
 #: src/gui/game-window.cpp:2298
 msgid "Seek more blessings in far temples!"
-msgstr "Søg yderligere velsignelser i fjerne templer!"
+msgstr ""
 
 #: src/gui/game-window.cpp:2303
 msgid "Do you seek a quest?"
-msgstr "Søger du en mission?"
+msgstr ""
 
 #: src/gui/game-window.cpp:2446
 msgid "%1, you have triumphed in the battle of %2."
-msgstr "%1, du har vundet i slaget %2."
+msgstr ""
 
 #: src/gui/game-window.cpp:2447
 msgid "%1, you have claimed victory in the battle of %2."
-msgstr "%1, du har opnået sejr i slaget %2."
+msgstr ""
 
 #: src/gui/game-window.cpp:2448
 msgid "%1, you have shown no mercy in the battle of %2."
-msgstr "%1, du har ikke vist nogen nåde i slaget %2."
+msgstr ""
 
 #: src/gui/game-window.cpp:2449
 msgid "%1, you have slain the foe in the battle of %2."
-msgstr "%1, du har besejret fjenden i slaget %2."
+msgstr ""
 
 #: src/gui/game-window.cpp:2533
 msgid "%1 Looted"
-msgstr "%1 plyndret"
+msgstr ""
 
 #: src/gui/game-window.cpp:2540
 msgid "Your armies loot %1 gold piece."
 msgid_plural "Your armies loot %1 gold pieces."
-msgstr[0] "Dine hære plyndrer %1 guldstykke."
-msgstr[1] "Dine hære plyndrer %1 guldstykker."
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/game-window.cpp:2567
 msgid "Pillaged %1"
-msgstr "Røvede %1"
+msgstr ""
 
 #: src/gui/game-window.cpp:2594
 msgid "The loot is worth %1 gold piece."
 msgid_plural "The loot is worth %1 gold pieces."
-msgstr[0] "Byttet er %1 guldstykke værd."
-msgstr[1] "Byttet er %2 guldstykker værd."
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/game-window.cpp:2622
 msgid "Sacked %1"
-msgstr "Plyndrede %1"
+msgstr ""
 
 #: src/gui/game-window.cpp:2630
 msgid "Ability to produce %1 unit has been lost"
 msgid_plural "Ability to produce %1 units has been lost"
-msgstr[0] "Muligheden for at producere %1 enhed er blevet tabt"
-msgstr[1] "Muligheden for at producere %1 enheder er blevet tabt"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/game-window.cpp:2723
 msgid "Razed %1"
-msgstr "Brændte %1 ned"
+msgstr ""
 
 #: src/gui/game-window.cpp:2728
 msgid "The city of %1 is in ruins!"
-msgstr "Byen %1 er i ruiner!"
+msgstr ""
 
 #: src/gui/game-window.cpp:2829
 msgid ""
@@ -3227,475 +3216,469 @@ msgid ""
 "Turn %2"
 msgstr ""
 "%1\n"
-"Runde %2"
+"Zet %2"
 
 #: src/gui/game-window.cpp:2864
 msgid "%1 is awarded a medal!"
-msgstr "%1 tildeles en medalje!"
+msgstr ""
 
 #: src/gui/game-window.cpp:2905
 msgid "%1, your turn continues."
-msgstr "%1, din runde fortsætter."
+msgstr "%1, je zet gaat door."
 
 #: src/gui/game-window.cpp:2939
 msgid "%1 did not complete the quest."
-msgstr "%1 færdiggjorde ikke missionen."
+msgstr ""
 
 #: src/gui/game-window.cpp:2997
 msgid "Advisor!"
-msgstr "Rådgiver!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3005
 msgid "My Good Lord!"
-msgstr "Min fyrste!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3007
 msgid "Great and Worthy Lord!"
-msgstr "Storslået fyrste!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3009
 msgid "O Champion of Justice!"
-msgstr "Retfærdighedens mester!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3011
 msgid "O Mighty Leader!"
-msgstr "Store leder!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3013
 msgid "O Great Warlord!"
-msgstr "Store krigsherre!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3018
 msgid "This battle will surely be"
-msgstr "Dette slag vil helt sikkert være"
+msgstr ""
 
 #: src/gui/game-window.cpp:3020 src/gui/game-window.cpp:3026
 msgid "A battle here would be"
-msgstr "Et slag her vil være"
+msgstr ""
 
 #: src/gui/game-window.cpp:3022
 msgid "I believe this battle will surely be"
-msgstr "Jeg tror, at dette slag vil være"
+msgstr ""
 
 #: src/gui/game-window.cpp:3024
 msgid "This battle would be"
-msgstr "Dette slag vil være"
+msgstr ""
 
 #: src/gui/game-window.cpp:3028
 msgid "I believe this battle will be"
-msgstr "Jeg tror, dette slag vil være"
+msgstr ""
 
 #: src/gui/game-window.cpp:3030
 msgid "This battle shall be"
-msgstr "Dette slag skal være"
+msgstr ""
 
 #: src/gui/game-window.cpp:3035
 msgid "as simple as butchering sleeping cattle!"
-msgstr "så simpelt som at slagte kvæg!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3037
 msgid "an easy victory!  We cannot lose!"
-msgstr "en nem sejr!  Vi kan ikke tabe!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3039
 msgid "a comfortable victory"
-msgstr "en komfortabel sejr"
+msgstr ""
 
 #: src/gui/game-window.cpp:3041
 msgid "a hard fought victory! But we shall win!"
-msgstr "en hårdt tilkæmpet sejr! Men vi vil vinde!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3043
 msgid "very evenly matched!"
-msgstr "meget lige!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3045
 msgid "difficult but not impossible to win!"
-msgstr "svær men ikke umulig at vinde!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3047
 msgid "a brave choice! I leave it to thee!"
-msgstr "en modigt valg! Jeg overlader det til dig!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3049
 msgid "a foolish decision!"
-msgstr "en tåbelig beslutning!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3051
 msgid "sheerest folly!  Thou shouldst not attack!"
-msgstr "den største tåbelighed!  Du skal ikke angribe!"
+msgstr ""
 
 #: src/gui/game-window.cpp:3053
 msgid "complete and utter suicide!"
-msgstr "det rene selvmord!"
+msgstr ""
 
 #: src/gui/driver.cpp:335
 msgid "Server went away."
-msgstr "Server forsvandt."
+msgstr ""
 
 #: src/gui/driver.cpp:351
 msgid "Could not connect."
-msgstr "Kunne ikke forbinde."
+msgstr ""
 
 #: src/gui/driver.cpp:466 src/gui/driver.cpp:507
 msgid ""
 "Invalid map file.\n"
 "Please validate it in the scenario editor."
 msgstr ""
-"Ugyldig kortfil.\n"
-"Valider det venligst i scenarieredigeringen."
 
 #: src/gui/driver.cpp:707 src/editor/main-window.cpp:391
 #: src/editor/main-window.cpp:438
 msgid "Neutral"
-msgstr "Neutral"
+msgstr ""
 
 #: src/gui/driver.cpp:785
 msgid "Save the scenario and mail it to the first player"
-msgstr "Gem scenariet og send det til den første spiller"
+msgstr ""
 
 #: src/gui/driver.cpp:808
 msgid "Error while trying to rename the temporary file to "
-msgstr "Fejl under forsøg på at omdøbe den midlertidige til til "
+msgstr ""
 
 #: src/gui/driver.cpp:810
 msgid "Error: "
-msgstr "Fejl: "
+msgstr ""
 
 #: src/gui/driver.cpp:813
 msgid "Now send the saved-game file to %1"
-msgstr "Send nu den gemte fil til %1"
+msgstr ""
 
 #: src/gui/hero-levels-dialog.cpp:119 src/gui/report-dialog.cpp:324
 msgid "%1"
-msgstr "%1"
+msgstr ""
 
 #: src/gui/ruin-rewarded-dialog.cpp:83
 msgid "The sages show thee the site of %1\n"
-msgstr "Vismændene viser dig stedet for %1\n"
+msgstr ""
 
 #: src/gui/surrender-refused-dialog.cpp:50
 msgid "Off with their heads!  I want it ALL!"
-msgstr "Af med deres hoveder!  Jeg vil have det hele!"
+msgstr ""
 
 #: src/gui/surrender-dialog.cpp:52
 msgid "Your final opponent comes on bended knee and offers surrender!"
 msgid_plural "%1 opponents come on bended knee and offer surrender!"
-msgstr[0] "Din sidste modstander kommer på bøjede knæ og tilbyder overgivelse!"
-msgstr[1] "%1 modstandere kommer på deres bøjede knæ og tilbyder overgivelse!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/surrender-dialog.cpp:55
 msgid ""
 "\n"
 "Do you accept?"
 msgstr ""
-"\n"
-"Accepterer du?"
 
 #: src/gui/stack-info-dialog.cpp:196
 msgid "Move"
-msgstr "Flyt"
+msgstr ""
 
 #: src/gui/stack-info-dialog.cpp:199
 msgid "Bonus"
-msgstr "Bonus"
+msgstr ""
 
 #: src/gui/ruin-report-dialog.cpp:79
 msgid "Ruins and Temples"
-msgstr "Ruiner og templer"
+msgstr ""
 
 #: src/gui/ruin-report-dialog.cpp:137 src/editor/main-window.cpp:1053
 msgid "Ruin"
-msgstr "Ruin"
+msgstr ""
 
 #: src/gui/ruin-report-dialog.cpp:139
 msgid "Stronghold"
-msgstr "Fæstningsværk"
+msgstr ""
 
 #: src/gui/ruin-report-dialog.cpp:142
 msgid "Yes"
-msgstr "Ja"
+msgstr ""
 
 #: src/gui/ruin-report-dialog.cpp:146 src/gui/ruin-report-dialog.cpp:178
 msgid "No"
-msgstr "Nej"
+msgstr ""
 
 #: src/gui/ruin-report-dialog.cpp:154
 msgid "It is especially well-guarded."
-msgstr "Den er særdeles godt bevogtet."
+msgstr ""
 
 #: src/gui/ruin-report-dialog.cpp:156
 msgid "Rumour speaks of a formidable force within."
-msgstr "Rygterne fortæller om en formidabel styrke indenfor."
+msgstr ""
 
 #: src/gui/ruin-report-dialog.cpp:159
 msgid "Even heroes are wary of this site."
-msgstr "Selv helte er nervøse for dette sted."
+msgstr ""
 
 #: src/gui/ruin-report-dialog.cpp:161 src/gui/ruin-report-dialog.cpp:171
 msgid "Bones litter this place."
-msgstr "Knogler ligger spredt over dette sted."
+msgstr ""
 
 #: src/gui/ruin-report-dialog.cpp:163
 msgid "It is guarded."
-msgstr "Den er bevogtet."
+msgstr ""
 
 #: src/gui/ruin-report-dialog.cpp:177 src/editor/main-window.cpp:1057
 msgid "Temple"
-msgstr "Tempel"
+msgstr ""
 
 #: src/gui/splash-window.cpp:119
 msgid "Rescue Crashed Game"
-msgstr "Red nedbrudt spil"
+msgstr ""
 
 #: src/gui/splash-window.cpp:257
 msgid "New Networked Game"
-msgstr "Nyt netværksspil"
+msgstr ""
 
 #: src/gui/splash-window.cpp:272
 msgid "New Play By Mail game"
-msgstr "Nyt per e-post spil"
+msgstr ""
 
 #: src/gui/splash-window.cpp:348
 msgid "GGZ initialization failed. Exiting.\n"
-msgstr "GGZ-initialisering mislykkedes. Afslutter.\n"
+msgstr ""
 
 #: src/gui/splash-window.cpp:366
 msgid "Play on GGZ"
-msgstr "Spil på GGZ"
+msgstr ""
 
 #: src/gui/splash-window.cpp:367
 msgid "Please launch LordsAWar from a GGZ Gaming Zone client."
-msgstr "Venligst start LordsAWar fra en GGZ Gaming Zone klient."
+msgstr ""
 
 #: src/gui/splash-window.cpp:368
 msgid "OK"
-msgstr "O.k."
+msgstr ""
 
 #: src/gui/splash-window.cpp:534
 msgid "Please exit the program and restart it for the changes to take effect."
-msgstr "Forlad venligst programmet og genstart det for at ændringerne kan træde i kraft."
+msgstr ""
 
 #: src/gui/quest-report-dialog.cpp:73
 msgid "No Quest"
-msgstr "Ingen mission"
+msgstr ""
 
 #: src/gui/quest-report-dialog.cpp:78
 msgid "Seek a quest in a temple!"
-msgstr "Opsøg en mission i et tempel!"
+msgstr ""
 
 #: src/gui/quest-report-dialog.cpp:81
 msgid "Quest?  What Quest?"
-msgstr "Mission?  Hvilken mission?"
+msgstr ""
 
 #: src/gui/quest-report-dialog.cpp:84
 msgid "Thou hast no quests!"
-msgstr "Du har ingen missioner!"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:97
 msgid "You produced %1 army this turn!"
 msgid_plural "You produced %1 armies this turn!"
-msgstr[0] "Du producerede %1 hær denne runde!"
-msgstr[1] "Du producerede %1 hære denne runde!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/report-dialog.cpp:195
 msgid "Army Report"
-msgstr "Hærrapport"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:198
 msgid "City Report"
-msgstr "Byrapport"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:201
 msgid "Gold Report"
-msgstr "Guldrapport"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:204
 msgid "Production Report"
-msgstr "Produktionsrapport"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:207
 msgid "Winning Report"
-msgstr "Sejrsrapport"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:234
 msgid "You have %1 army!"
 msgid_plural "You have %1 armies!"
-msgstr[0] "Du har %1 hær!"
-msgstr[1] "Du har %1 hære!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/report-dialog.cpp:267
 msgid "You have %1 city!"
 msgid_plural "You have %1 cities!"
-msgstr[0] "Du har %1 by!"
-msgstr[1] "Du har %1 byer!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/report-dialog.cpp:300
 msgid "You have %1 gold piece!"
 msgid_plural "You have %1 gold pieces!"
-msgstr[0] "Du har %1 guldstykke!"
-msgstr[1] "Du har %1 guldstykker!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/report-dialog.cpp:314
 msgid "first"
-msgstr "første"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:314
 msgid "second"
-msgstr "anden"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:314
 msgid "third"
-msgstr "tredje"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:314
 msgid "fourth"
-msgstr "fjerde"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:314
 msgid "fifth"
-msgstr "femte"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:315
 msgid "sixth"
-msgstr "sjette"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:315
 msgid "seventh"
-msgstr "syvende"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:315
 msgid "eighth"
-msgstr "ottende"
+msgstr ""
 
 #: src/gui/report-dialog.cpp:348
 msgid "You are coming %1"
-msgstr "Du er %1"
+msgstr ""
 
-# det er ikke et flag/fane det her?
 #: src/gui/report-dialog.cpp:388
 msgid "Standard"
-msgstr "Standard"
+msgstr ""
 
 #: src/gui/army-gains-level-dialog.cpp:58
 msgid "%1 has advanced to level %2!"
-msgstr "%1 er forfremmet til niveau %2!"
+msgstr ""
 
 #: src/gui/army-gains-level-dialog.cpp:62
 msgid "Choose an attribute to improve:"
-msgstr "Vælg et karaktertræk at forbedre:"
+msgstr ""
 
 #: src/gui/army-gains-level-dialog.cpp:69
 msgid "Sight: %1"
-msgstr "Synsvidde: %1"
+msgstr ""
 
 #: src/gui/hero-offer-dialog.cpp:63
 msgid "Hero offer for %1"
-msgstr "Helt ofrer for %1"
+msgstr ""
 
 #: src/gui/hero-offer-dialog.cpp:83
 msgid "A hero in %2 wants to join you for %1 gold piece!"
 msgid_plural "A hero in %2 wants to join you for %1 gold pieces!"
-msgstr[0] "En helt i %2 ønsker at slutte sig til dig for %1 guldstykke!"
-msgstr[1] "En helt i %2 ønsker at slutte sig til dig for %1 guldstykker!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gui/hero-offer-dialog.cpp:87
 msgid "A hero in %1 wants to join you!"
-msgstr "En helt i %1 ønsker at slutte sig til dig!"
+msgstr ""
 
 #: src/CreateScenarioRandomize.cpp:193
 msgid "southeast"
-msgstr "sydøst"
+msgstr ""
 
 #: src/CreateScenarioRandomize.cpp:195
 msgid "east"
-msgstr "øst"
+msgstr ""
 
 #: src/CreateScenarioRandomize.cpp:197
 msgid "northeast"
-msgstr "nordøst"
+msgstr ""
 
 #: src/CreateScenarioRandomize.cpp:199
 msgid "south"
-msgstr "syd"
+msgstr ""
 
 #: src/CreateScenarioRandomize.cpp:201
 msgid "north"
-msgstr "nord"
+msgstr ""
 
 #: src/CreateScenarioRandomize.cpp:203
 msgid "southwest"
-msgstr "sydvest"
+msgstr ""
 
 #: src/CreateScenarioRandomize.cpp:205
 msgid "west"
-msgstr "vest"
+msgstr ""
 
 #: src/CreateScenarioRandomize.cpp:207
 msgid "northwest"
-msgstr "nordvest"
+msgstr ""
 
 #: src/CreateScenarioRandomize.cpp:208
 #, c-format
 msgid "%s lies to the %s"
-msgstr "%s ligger mod %s"
+msgstr ""
 
 #: src/editor/armyset-window.cpp:391
 msgid "Choose an Armyset to Load"
-msgstr "Vælg et hærsæt til indlæsning"
+msgstr ""
 
 #: src/editor/armyset-window.cpp:422
 msgid "Error, while loading an armyset. Armyset Name: "
-msgstr "Fejl under indlæsning af hærsæt. Navn på hærsæt: "
+msgstr ""
 
 #: src/editor/city-dialog.cpp:96
 msgid "Strength"
-msgstr "Styrke"
+msgstr ""
 
 #: src/editor/city-dialog.cpp:97
 msgid "Max Moves"
-msgstr "Maks bevægelser"
+msgstr ""
 
 #: src/editor/city-dialog.cpp:98
 msgid "Upkeep"
-msgstr "Vedligeholdelse"
+msgstr ""
 
 #: src/editor/main-window.cpp:379 src/editor/main-window.cpp:476
 msgid "Untitled"
-msgstr "Intet navn"
+msgstr ""
 
 #: src/editor/main-window.cpp:379 src/editor/main-window.cpp:476
 msgid "No description"
-msgstr "Ingen beskrivelse"
+msgstr ""
 
 #: src/editor/main-window.cpp:651
 msgid "Choose Map to Load"
-msgstr "Vælg kort til indlæsning"
+msgstr ""
 
 #: src/editor/main-window.cpp:677
 msgid "Could not load map %1."
-msgstr "Kunne ikke indlæse kort %1."
+msgstr ""
 
 #: src/editor/main-window.cpp:695 src/editor/main-window.cpp:776
 msgid "Map was not saved!"
-msgstr "Kort blev ikke gemt!"
+msgstr ""
 
 #: src/editor/main-window.cpp:722 src/editor/main-window.cpp:749
 msgid "Map was not exported!"
-msgstr "Kort blev ikke eksporteret!"
+msgstr ""
 
 #: src/editor/main-window.cpp:845
 msgid "Auto"
-msgstr "Auto"
+msgstr ""
 
-# nogen grund til at den her skal oversættes?
 #: src/editor/main-window.cpp:1027
 msgid "(%1, %2)"
-msgstr "(%1, %2)"
+msgstr ""
 
 #: src/editor/main-window.cpp:1291
 msgid "No errors."
-msgstr "Ingen fejl."
+msgstr ""
 
 #: src/editor/main-window.cpp:1294
 msgid ""
@@ -3705,11 +3688,7 @@ msgid_plural ""
 "\n"
 "There are %1 more errors"
 msgstr[0] ""
-"\n"
-"Der er %1 yderligere fejl"
 msgstr[1] ""
-"\n"
-"Der er %1 yderligere fejl"
 
 #: src/editor/main-window.cpp:1296
 msgid ""
@@ -3719,179 +3698,174 @@ msgid_plural ""
 "\n"
 "There are %1 warnings"
 msgstr[0] ""
-"\n"
-"Der er %! advarsel"
 msgstr[1] ""
-"\n"
-"Der er %! advarsler"
 
 #: src/editor/ruin-dialog.cpp:220
 msgid "No keeper"
-msgstr "Ingen vogter"
+msgstr ""
 
 #: src/editor/ruin-dialog.cpp:337
 msgid "No reward"
-msgstr "Ingen belønning"
+msgstr ""
 
 #: src/editor/select-army-dialog.cpp:172
 msgid "No army"
-msgstr "Ingen hær"
+msgstr ""
 
 #: src/editor/reward-dialog.cpp:330
 msgid "No item"
-msgstr "Intet udstyr"
+msgstr ""
 
 #: src/editor/reward-dialog.cpp:376
 msgid "No ally"
-msgstr "Ingen allierede"
+msgstr ""
 
 #: src/editor/reward-dialog.cpp:430
 msgid "No Ruin"
-msgstr "Ingen ruin"
+msgstr ""
 
-# engelsk fejl a tileset to load
 #: src/editor/tileset-window.cpp:477
 msgid "Choose an Tileset to Load"
-msgstr "Vælg et feltsæt til indlæsning"
+msgstr ""
 
 #: src/editor/tileset-window.cpp:508
 msgid "Error, while loading an tileset. Tileset Name: "
-msgstr "Fejl under indlæsning af feltsæt. Navn på feltsæt: "
+msgstr ""
 
 #: src/editor/stack-dialog.cpp:88
 msgid "Mov"
-msgstr "Bev."
+msgstr ""
 
 #: src/editor/stack-dialog.cpp:90
 msgid "HP"
-msgstr "L"
+msgstr ""
 
 #: src/editor/stack-dialog.cpp:92
 msgid "Upk"
-msgstr "Vedl."
+msgstr ""
 
 #: src/xmlhelper.cpp:360
 msgid "Saving game without obfuscation.\n"
-msgstr "Gem spil uden tilsløring.\n"
+msgstr ""
 
 #: src/CreateScenario.cpp:685
 msgid "Northwestern map"
-msgstr "Nordvestlige kort"
+msgstr ""
 
 #: src/CreateScenario.cpp:688
 msgid "Northern map"
-msgstr "Nordlige kort"
+msgstr ""
 
 #: src/CreateScenario.cpp:691
 msgid "Northeastern map"
-msgstr "Nordøstlige kort"
+msgstr ""
 
 #: src/CreateScenario.cpp:694
 msgid "Western map"
-msgstr "Vestlige kort"
+msgstr ""
 
 #: src/CreateScenario.cpp:697
 msgid "Central map"
-msgstr "Centrale kort"
+msgstr ""
 
 #: src/CreateScenario.cpp:700
 msgid "Eastern map"
-msgstr "Østlige kort"
+msgstr ""
 
 #: src/CreateScenario.cpp:703
 msgid "Southwestern map"
-msgstr "Sydvestlige kort"
+msgstr ""
 
 #: src/CreateScenario.cpp:706
 msgid "Southern map"
-msgstr "Sydlige kort"
+msgstr ""
 
 #: src/CreateScenario.cpp:709
 msgid "Southeastern map"
-msgstr "Sydøstlige kort"
+msgstr ""
 
 #: src/Itemlist.cpp:56
 msgid "Could not parse items description file. Exiting!\n"
-msgstr "Kunne ikke fortolke fil for udstyrsbeskrivelse. Afslutter!\n"
+msgstr ""
 
 #: src/main.cpp:73
 msgid "non-numerical value for cache size"
-msgstr "ikke-numerisk værdi for mellemlagerstørrelse"
+msgstr ""
 
 #: src/main.cpp:86
 msgid "non-numerical value for seed value"
-msgstr "ikke-numerisk værdi for kerneværdi"
+msgstr ""
 
 #: src/main.cpp:116
 msgid "version"
-msgstr "version"
+msgstr ""
 
 #: src/main.cpp:117
 msgid "Options:"
-msgstr "Indstillinger:"
+msgstr ""
 
 #: src/main.cpp:118
 msgid "Shows this help screen"
-msgstr "Vis denne hjælpeskærm"
+msgstr ""
 
 #: src/main.cpp:119
 msgid "Set the cache size for imagery to SIZE bytes"
-msgstr "Indstil mellemlagerstørrelsen for billederne til SIZE byte"
+msgstr ""
 
 #: src/main.cpp:120
 msgid "Start with a test-scenario"
-msgstr "Start med et prøvescenarie"
+msgstr ""
 
 #: src/main.cpp:121
 msgid "Seed the random number generator with NUMBER"
-msgstr "Fød generatoren for tilfældige numre med NUMBER"
+msgstr ""
 
 #: src/main.cpp:122
 msgid "Non-interactive stress test"
-msgstr "Ikke-interaktiv strestest"
+msgstr ""
 
 #: src/main.cpp:123
 msgid "Non-interactive network stress test"
-msgstr "Ikke-interaktive netværksstrestest"
+msgstr ""
 
 #: src/main.cpp:124
 msgid "Record gameplay to FILE"
-msgstr "Optag spil til FILE"
+msgstr ""
 
 #: src/main.cpp:126
 msgid "FILE can be a saved game file (.sav), or a map (.map) file."
-msgstr "FILE kan være en gemt spilfil (.sav), eller en kortfil (.map)."
+msgstr ""
 
 #: src/main.cpp:128
 msgid "Report bugs to"
-msgstr "Indberet fejl til"
+msgstr ""
 
 #: src/main.cpp:138
 msgid "Error: Cannot specify -t and have a file specified."
-msgstr "Fejl: Kan ikke angive -t og samtidig have en fil specificeret."
+msgstr ""
 
 #: src/main.cpp:144
 msgid "Error: Cannot specify -s and have a file specified."
-msgstr "Fejl: Kan ikke angive -s og samtidig have en fil specificeret."
+msgstr ""
 
 #: src/main.cpp:150
 msgid "Error: Cannot specify -s and -t simultaneously."
-msgstr "Fejl: Kan ikke angive -s og -t samtidig."
+msgstr ""
 
 #: src/main.cpp:156
 msgid "Error: Must specify a file to load when specifying --turn."
-msgstr "Fejl: Der skal angives en fil til indlæsning når --turn er angivet."
+msgstr ""
 
 #: src/QCitySack.cpp:92
 msgid "The priests thank you for sacking this evil place."
-msgstr "Præsterne takker dig for at have brændt dette onde sted ned."
+msgstr "De priesters bedanken je voor het plunderen van deze duivelse plaats."
 
 #: src/QCitySack.cpp:100
 #, c-format
 msgid "The sacking of \"%s\" could not be accomplished."
-msgstr "Nedbrændingen af »%s« kunne ikke gennemføres."
+msgstr ""
 
 #: src/QCitySack.cpp:120
 #, c-format
 msgid "You must take over and sack the city of \"%s\"."
-msgstr "Du skal overtage og brænde byen »%s« ned."
+msgstr ""
