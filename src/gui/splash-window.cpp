@@ -135,6 +135,8 @@ SplashWindow::SplashWindow()
      G_CALLBACK(surface_attached_helper), this); 
       
       sdl_container->add(*sdl_widget); 
+      //Gtk::RC::add_default_file(File::getMiscFile("gtkrc"));
+	//Gtk::RC::reparse_all(Gtk::Settings::get_default(), true);
 }
 
 SplashWindow::~SplashWindow()

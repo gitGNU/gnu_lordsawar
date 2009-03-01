@@ -275,7 +275,8 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
 
     NewGameProgressWindow pw(g, GameScenario::NETWORKED, 
 			     Main::instance().record);
-    Gtk::Main::instance()->run(pw);
+    pw.thread_worker();
+    //Gtk::Main::instance()->run(pw);
     GameScenario *game_scenario = pw.getGameScenario();
 
     if (game_scenario == NULL)
@@ -441,12 +442,10 @@ void Driver::on_game_scenario_downloaded(std::string path)
 
 void Driver::on_new_game_requested(GameParameters g)
 {
-    if (splash_window.get())
-	splash_window->hide();
-
     NewGameProgressWindow pw(g, GameScenario::HOTSEAT, 
 			     Main::instance().record);
-    Gtk::Main::instance()->run(pw);
+    pw.thread_worker();
+    //Gtk::Main::instance()->run(pw);
     GameScenario *game_scenario = pw.getGameScenario();
 
     if (game_scenario == NULL)
@@ -472,6 +471,9 @@ void Driver::on_new_game_requested(GameParameters g)
 	return;
       }
 
+    if (splash_window.get())
+	splash_window->hide();
+
     NextTurn *next_turn = new NextTurnHotseat(game_scenario->getTurnmode(),
 					      game_scenario->s_random_turns);
     init_game_window();
@@ -487,7 +489,8 @@ void Driver::on_new_campaign_requested(GameParameters g)
 
     NewGameProgressWindow pw(g, GameScenario::CAMPAIGN,
 			     Main::instance().record);
-    Gtk::Main::instance()->run(pw);
+    pw.thread_worker();
+    //Gtk::Main::instance()->run(pw);
     GameScenario *game_scenario = pw.getGameScenario();
 
     if (game_scenario == NULL)
@@ -626,7 +629,8 @@ void Driver::on_next_scenario(std::string scenario, int gold, std::list<Hero*> h
   game_window->hide();
   NewGameProgressWindow pw(g, GameScenario::CAMPAIGN,
 			   Main::instance().record);
-  Gtk::Main::instance()->run(pw);
+  pw.thread_worker();
+  //Gtk::Main::instance()->run(pw);
   GameScenario *game_scenario = pw.getGameScenario();
 
   Player *player = Playerlist::getInstance()->getPlayer(player_id);
@@ -773,7 +777,8 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
       
   NewGameProgressWindow pw(g, GameScenario::PLAY_BY_MAIL,
 			   Main::instance().record);
-  Gtk::Main::instance()->run(pw);
+  pw.thread_worker();
+  //Gtk::Main::instance()->run(pw);
   GameScenario *game_scenario = pw.getGameScenario();
   if (game_scenario == NULL)
     {

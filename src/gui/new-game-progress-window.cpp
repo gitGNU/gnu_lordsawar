@@ -18,31 +18,24 @@ NewGameProgressWindow::NewGameProgressWindow(GameParameters g, GameScenario::Pla
   m_vbox.pack_start(m_pbar);
   property_default_width() = 320;
  
-  m_dispatcher.connect( sigc::mem_fun( m_pbar , &Gtk::ProgressBar::pulse ));
+  //m_dispatcher.connect( sigc::mem_fun( m_pbar , &Gtk::ProgressBar::pulse ));
 
   set_title(_("Please wait..."));
   m_label.set_text(_("Generating."));
   d_game_scenario = NULL;
-  m_thread = Glib::Thread::create( sigc::mem_fun(*this,&NewGameProgressWindow::thread_worker),true);
+  //m_thread = Glib::Thread::create( sigc::mem_fun(*this,&NewGameProgressWindow::thread_worker),true);
   show_all();
 }
 
 NewGameProgressWindow::~NewGameProgressWindow()
 {
-  {
-    Glib::Mutex::Lock lock(mutex);                    
-    if(m_end_thread == false)
-       m_end_thread = true;
-  }
-  if(m_thread->joinable())
-    m_thread->join();
 }
 
 void NewGameProgressWindow::thread_worker()
 {
   s_instance = this;
   bool update_uuid = false;
-  m_dispatcher();
+  //m_dispatcher();
   sleep(2);
   if (game_params.map_path.empty()) 
     {
@@ -86,33 +79,25 @@ void NewGameProgressWindow::thread_worker()
 
       Playerlist::getInstance()->syncPlayers(game_params.players);
 
-      m_dispatcher();
+      //m_dispatcher();
 
       game_scenario->initialize(game_params);
 
-      m_dispatcher();
+      //m_dispatcher();
 
     }
 
   d_game_scenario = game_scenario;
 
-  m_dispatcher();
+  //m_dispatcher();
 
-    {
-      Glib::Mutex::Lock lock(mutex);
-      if(m_end_thread)
-	{
-	  s_instance = NULL;
-  	  return;
-	}
-    }
   hide();
   s_instance = NULL;
 }
 
 void NewGameProgressWindow::pulse()
 {
-  m_dispatcher();
+  //m_dispatcher();
 }
 
 NewGameProgressWindow * NewGameProgressWindow::getInstance()
