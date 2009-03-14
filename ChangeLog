@@ -1,3 +1,13 @@
+2009-03-01  Ben Asselstine  <benasselstine@gmail.com>
+
+	* bumped to version 0.1.6.
+
+2009-03-01  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed theme rendering bug.
+	* fixed xcb locking crash bug by removing the new game progress
+	window.
+
 2009-02-28  Ben Asselstine  <benasselstine@gmail.com>
 
 	* merged patch from the freebsd folks.
