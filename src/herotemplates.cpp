@@ -23,6 +23,7 @@
 #include "playerlist.h"
 #include "hero.h"
 #include "heroproto.h"
+#include "xmlhelper.h"
 #include <sstream>
 
 HeroTemplates* HeroTemplates::d_instance = 0;
@@ -66,46 +67,54 @@ HeroProto *HeroTemplates::getRandomHero(int player_id)
 int HeroTemplates::loadHeroTemplates()
 {
   const Armysetlist* al = Armysetlist::getInstance();
-  const ArmyProto* herotype;
+
+  d_heroes.clear();
 
   // list all the army types that are heroes.
-  std::vector<const ArmyProto*> heroes;
   Player *p = Playerlist::getInstance()->getNeutral();
   for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
     {
       const ArmyProto *a = al->getArmy (p->getArmyset(), j);
       if (a->isHero())
-	heroes.push_back(a);
+	d_heroes.push_back(a);
     }
-  std::ifstream file(File::getMiscFile("heronames").c_str());
-  if (file.good()) 
+  XML_Helper helper(File::getMiscFile("heronames.xml"), std::ios::in, false);
+
+  helper.registerTag("herotemplate", sigc::mem_fun((*this), &HeroTemplates::load));
+
+  if (!helper.parse())
     {
-      std::string buffer, name;
-      int side, gender;
-
-      while (std::getline(file, buffer)) 
-	{
-	  std::istringstream line(buffer);
-	  if (!(line >> side >> gender >> name))
-	    return -2;
-
-	  if (side < 0 || side > (int) MAX_PLAYERS)
-	    return -4;
-
-	  herotype = heroes[rand() % heroes.size()];
-	  HeroProto *newhero = new HeroProto (*herotype);
-	  if (gender)
-	    newhero->setGender(Hero::MALE);
-	  else
-	    newhero->setGender(Hero::FEMALE);
-
-	  newhero->setName (name);
-	  d_herotemplates[side].push_back (newhero);
-	}
+      std::cerr << "Error, while loading a template from heronames.xml" <<std::endl <<std::flush;
+      exit(-1);
     }
-  else
-    return -1;
-  file.close();
+
+  helper.close();
   return 0;
+}
+
+bool HeroTemplates::load(std::string tag, XML_Helper *helper)
+{
+  if (tag == "herotemplate")
+    {
+      std::string name;
+      helper->getData(name, "name");
+      Uint32 owner;
+      helper->getData(owner, "owner");
+      std::string gender_str;
+      if (owner >= (int) MAX_PLAYERS)
+	return false;
+      helper->getData(gender_str, "gender");
+      Hero::Gender gender;
+      gender = Hero::genderFromString(gender_str);
+
+      const ArmyProto *herotype = d_heroes[rand() % d_heroes.size()];
+      HeroProto *newhero = new HeroProto (*herotype);
+      newhero->setGender(gender);
+      newhero->setGender(Hero::FEMALE);
+
+      newhero->setName (_(name.c_str()));
+      d_herotemplates[owner].push_back (newhero);
+    }
+  return true;
 }
 

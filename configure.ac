@@ -282,6 +282,7 @@ LORDSAWAR_DATADIR=${LORDSAWAR_DATADIR/'${prefix}'/$prefix}
 AC_SUBST(LORDSAWAR_DATADIR)
 
 AC_CONFIG_FILES([
+	intltool-extract intltool-merge intltool-update
         dat/Makefile 
         dat/army/Makefile 
         dat/army/default/Makefile 

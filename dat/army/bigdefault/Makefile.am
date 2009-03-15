@@ -1,6 +1,9 @@
 MAINTAINERCLEANFILES= Makefile.in
 
 lordsawararmydefaultdir = $(datadir)/lordsawar/army/bigdefault
+
+@INTLTOOL_XML_RULE@
+
 lordsawararmydefault_DATA = \
 	bigdefault.xml \
 	archers.png \
@@ -35,8 +38,8 @@ lordsawararmydefault_DATA = \
 	plantedstandard.png
 
 EXTRA_DIST = \
+	bigdefault.xml.in \
 	README \
-	bigdefault.xml \
 	archers.png \
 	archons.png \
 	catapults.png \

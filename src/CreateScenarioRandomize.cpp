@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -38,28 +38,16 @@ CreateScenarioRandomize::CreateScenarioRandomize()
     // Fill the namelists 
     bool success = true;
     
-    std::ifstream file(File::getMiscFile("citynames").c_str());
-    success &= loadNames(d_citynames, file);
-    file.close();
-
-    file.open(File::getMiscFile("templenames").c_str());
-    success &= loadNames(d_templenames, file);
-    file.close();
-
-    file.open(File::getMiscFile("ruinnames").c_str());
-    success &= loadNames(d_ruinnames, file);
-    file.close();
-
-    file.open(File::getMiscFile("signposts").c_str());
-    success &= loadNames(d_signposts, file);
-    file.close();
+    d_citynames = new NameList("citynames.xml", "city");
+    d_templenames = new NameList("templenames.xml", "temple");
+    d_ruinnames = new NameList("ruinnames.xml", "ruin");
+    d_signposts = new NameList("signposts.xml", "signpost");
 
     if (!success)
     {
         std::cerr <<"CreateScenarioRandomize: Didn't succeed in reading object names. Aborting!\n";
         exit(-1);
     }
-
 }
 
 CreateScenarioRandomize::~CreateScenarioRandomize()
@@ -67,85 +55,44 @@ CreateScenarioRandomize::~CreateScenarioRandomize()
     debug("CreateScenarioRandomize::~CreateScenarioRandomize")
 }
 
-
-bool CreateScenarioRandomize::loadNames(std::vector<std::string>& list, std::ifstream& namefile)
-{
-    debug("CreateScenarioRandomize::loadNames")
-
-    int counter;
-    char buffer[101];
-    buffer[100] = '\0';
-    
-    if (!namefile)
-    {
-        std::cerr << "Critical Error: Couldn't open names data file\n";
-        return false;
-    }
-
-    namefile >> counter;
-    list.resize(counter);
-
-    //with getline, the first call will get the first line to the end, i.e.
-    //a newline character. Thus, we throw away the result of the first call.
-    namefile.getline(buffer, 100);
-
-    for (counter--; counter >= 0; counter--)
-    {
-        namefile.getline(buffer, 100);
-        list[counter] = std::string(buffer);
-    }
-
-    return true;
-}
-
-std::string CreateScenarioRandomize::popRandomListName(std::vector<std::string> &list)
-{
-  std::string name;
-  if (list.empty())
-    return "";
-  int randno = rand() % list.size();
-  name = list[randno];
-  return name;
-}
-
 std::string CreateScenarioRandomize::popRandomCityName()
 {
-  return popRandomListName(d_citynames);
+  return _(d_citynames->popRandomName().c_str());
 }
 
 void CreateScenarioRandomize::pushRandomCityName(std::string name)
 {
-  d_citynames.push_back(name);
+  d_citynames->push_back(name);
 }
 
 std::string CreateScenarioRandomize::popRandomRuinName()
 {
-  return popRandomListName(d_ruinnames);
+  return _(d_ruinnames->popRandomName().c_str());
 }
 
 void CreateScenarioRandomize::pushRandomRuinName(std::string name)
 {
-  d_ruinnames.push_back(name);
+  d_ruinnames->push_back(name);
 }
 
 std::string CreateScenarioRandomize::popRandomTempleName()
 {
-  return popRandomListName(d_templenames);
+  return _(d_templenames->popRandomName().c_str());
 }
 
 void CreateScenarioRandomize::pushRandomTempleName(std::string name)
 {
-  d_templenames.push_back(name);
+  d_templenames->push_back(name);
 }
 
 std::string CreateScenarioRandomize::popRandomSignpost()
 {
-  return popRandomListName(d_signposts);
+  return _(d_signposts->popRandomName().c_str());
 }
 
 void CreateScenarioRandomize::pushRandomSignpost(std::string name)
 {
-  d_signposts.push_back(name);
+  d_signposts->push_back(name);
 }
 
 Uint32 CreateScenarioRandomize::getRandomCityIncome(bool capital)

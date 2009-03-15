@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -24,6 +24,7 @@
 
 #include <string>
 
+#include "defs.h"
 
 class XML_Helper;
 
@@ -65,7 +66,7 @@ class ArmyProtoBase : public ArmyBase
         Uint32 getTypeId() const {return d_type_id;}
 
         //! Returns the descriptive text of this Army.
-        std::string getDescription() const {return d_description;}
+        std::string getDescription() const {return _(d_description.c_str());}
 
         //! Returns how much gold setting up the production costs
 	/**
@@ -93,7 +94,7 @@ class ArmyProtoBase : public ArmyBase
         void setName(std::string name){d_name = name;}
 
         //! Returns the name of the Army.
-        std::string getName() const {return d_name;};
+        std::string getName() const {return _(d_name.c_str());};
 
         //! Returns how many turns this Army needs to be produced.
         Uint32 getProduction() const {return d_production;};

@@ -1,6 +1,6 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include <sigc++/trackable.h>
 
 #include "Tile.h"
+#include "defs.h"
 
 class XML_Helper;
 
@@ -82,7 +83,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
         void setSubDir(std::string dir);
 
         //! Returns the name of the tileset.
-        std::string getName() const {return d_name;}
+        std::string getName() const {return _(d_name.c_str());}
 
 	//! Set the name of the tileset.
 	/**
@@ -91,7 +92,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
         void setName(std::string name) {d_name = name;}
 
         //! Returns the description of the tileset.
-        std::string getInfo() const {return d_info;}
+        std::string getInfo() const {return _(d_info.c_str());}
 
 	//! Set the description of the tileset.
 	/**

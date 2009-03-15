@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //  Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -22,7 +22,9 @@
 #include <vector>
 #include "defs.h"
 
+class ArmyProto;
 class HeroProto;
+class XML_Helper;
 
 //! A list of Item objects.
 /** 
@@ -48,9 +50,14 @@ class HeroTemplates
 	//! Destructor.
         ~HeroTemplates();
 
+	bool load(std::string tag, XML_Helper *helper);
+
     private:
         /* the contents of the heronames data file */
         std::vector<HeroProto*> d_herotemplates[MAX_PLAYERS];
+
+	//a list of hero prototypes contained in the the army set.  usually 1.
+	std::vector<const ArmyProto*> d_heroes;
 
         static HeroTemplates* d_instance;
 

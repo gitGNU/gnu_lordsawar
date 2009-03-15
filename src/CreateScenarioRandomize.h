@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include <vector>
 #include <SDL.h>
 #include "game-parameters.h"
+#include "namelist.h"
 
 class Signpost;
 class Army;
@@ -49,9 +50,9 @@ class CreateScenarioRandomize
 	std::string popRandomSignpost();
 	void pushRandomSignpost(std::string name);
 	Uint32 getRandomCityIncome(bool capital = false);
-	bool randomSignpostsEmpty() {return d_signposts.empty();}
+	bool randomSignpostsEmpty() {return d_signposts->empty();}
 	std::string getDynamicSignpost(Signpost *signpost);
-	int getNumSignposts() {return d_signposts.size();}
+	int getNumSignposts() {return d_signposts->size();}
 	Army * getRandomRuinKeeper(Player *p);
 	Reward *getNewRandomReward(bool hidden_ruins);
 
@@ -62,8 +63,10 @@ class CreateScenarioRandomize
 	bool loadNames(std::vector<std::string>& list, std::ifstream& file);
 
         //the namelists
-        std::vector<std::string> d_citynames, d_signposts;
-        std::vector<std::string> d_templenames, d_ruinnames;
+	NameList *d_citynames;
+	NameList *d_signposts;
+	NameList *d_templenames;
+	NameList *d_ruinnames;
 };
 
 #endif  //CREATE_SCENARIO_RANDOMIZE_H

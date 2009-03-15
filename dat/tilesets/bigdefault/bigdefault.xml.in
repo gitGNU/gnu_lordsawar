@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <tileset>
-    <d_name>Default</d_name>
-    <d_info>The doublesized tileset based on Wesnoth tileset</d_info>
+    <_d_name>Default</_d_name>
+    <_d_info>The doublesized tileset based on Wesnoth tileset</_d_info>
     <d_tilesize>80</d_tilesize>
     <d_large_selector>misc/selector.png</d_large_selector>
     <d_small_selector>misc/small_selector.png</d_small_selector>
@@ -11,7 +11,7 @@
         <d_blue>0</d_blue>
     </road_smallmap>
     <tile>
-        <d_name>Grass</d_name>
+        <_d_name>Grass</_d_name>
         <d_moves>2</d_moves>
         <d_type>Tile::GRASS</d_type>
         <smallmap>
@@ -35,7 +35,7 @@
 	</tilestyleset>
     </tile>
     <tile>
-        <d_name>Water</d_name>
+        <_d_name>Water</_d_name>
         <d_moves>2</d_moves>
         <d_type>Tile::WATER</d_type>
 	<smallmap>
@@ -87,7 +87,7 @@
 	</tilestyleset>
     </tile>
     <tile>
-        <d_name>Forest</d_name>
+        <_d_name>Forest</_d_name>
         <d_moves>3</d_moves>
         <d_type>Tile::FOREST</d_type>
 	<smallmap>
@@ -163,7 +163,7 @@
 	</tilestyleset>
     </tile>
     <tile>
-        <d_name>Hills</d_name>
+        <_d_name>Hills</_d_name>
         <d_moves>4</d_moves>
         <d_type>Tile::HILLS</d_type>
 	<smallmap>
@@ -228,7 +228,7 @@
 	</tilestyleset>
     </tile>
     <tile>
-        <d_name>Mountains</d_name>
+        <_d_name>Mountains</_d_name>
         <d_moves>6</d_moves>
         <d_type>Tile::MOUNTAIN</d_type>
 	<smallmap>
@@ -307,7 +307,7 @@
 	</tilestyleset>
     </tile>
     <tile>
-        <d_name>Swamp</d_name>
+        <_d_name>Swamp</_d_name>
         <d_moves>8</d_moves>
         <d_type>Tile::SWAMP</d_type>
 	<smallmap>

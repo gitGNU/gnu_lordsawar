@@ -1,6 +1,9 @@
 MAINTAINERCLEANFILES= Makefile.in
 
 lordsawarshielddoldir = $(datadir)/lordsawar/shield/dol
+
+@INTLTOOL_XML_RULE@
+
 lordsawarshielddol_DATA = \
 	dol.xml \
 	small-white-shield.png \
@@ -33,7 +36,7 @@ lordsawarshielddol_DATA = \
 
 EXTRA_DIST = \
 	README \
-	dol.xml \
+	dol.xml.in \
 	small-white-shield.png \
 	small-green-shield.png \
 	small-yellow-shield.png \

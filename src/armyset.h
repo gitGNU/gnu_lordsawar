@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 
 #include "xmlhelper.h"
 #include "armyproto.h"
+#include "defs.h"
 
 
 //! A collection of Army prototype objects.
@@ -121,7 +122,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	 *
          * @return The name or an empty string on error.
          */
-        std::string getName() const {return d_name;}
+        std::string getName() const {return _(d_name.c_str());}
 
 	//! Set the name of the armyset.
 	/**

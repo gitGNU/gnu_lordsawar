@@ -2,7 +2,7 @@
 // Copyright (C) 2002 Mark L. Amidon
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -252,7 +252,7 @@ class City : public Ownable, public Location, public Renamable,
 
 	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
 
-	static std::string getDefaultName() {return DEFAULT_CITY_NAME;};
+	static std::string getDefaultName() {return _(DEFAULT_CITY_NAME);};
 
     private:
 

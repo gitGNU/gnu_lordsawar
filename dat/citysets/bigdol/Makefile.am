@@ -1,6 +1,9 @@
 MAINTAINERCLEANFILES= Makefile.in
 
 cityset_bigdoldir = $(datadir)/lordsawar/citysets/bigdol
+
+@INTLTOOL_XML_RULE@
+
 cityset_bigdol_DATA = \
 	bigdol.xml \
 	castle_razed.png \
@@ -12,8 +15,8 @@ cityset_bigdol_DATA = \
 	towers.png
 
 EXTRA_DIST = \
+	bigdol.xml.in \
 	README \
-	bigdol.xml \
 	castle_razed.png \
 	castles.png \
 	port.png \

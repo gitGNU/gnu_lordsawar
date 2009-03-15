@@ -3906,7 +3906,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 	<scenario>
 		<d_id>25b188da-f9bd-4659-81f0-ded43e296d54</d_id>
 		<d_name>The Second Punic War</d_name>
-		<d_comment>Carthage has lost her dominance on the sea and you, Hannibal, are convinced that the only hope of avoiding the destruction of your city is to move to the attack - thru Spain and across the Alps.</d_comment>
+		<_d_comment>Carthage has lost her dominance on the sea and you, Hannibal, are convinced that the only hope of avoiding the destruction of your city is to move to the attack - through Spain and across the Alps.</_d_comment>
 		<d_turn>0</d_turn>
 		<d_turnmode>true</d_turnmode>
 		<d_view_enemies>false</d_view_enemies>

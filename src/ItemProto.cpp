@@ -61,7 +61,7 @@ bool ItemProto::save(XML_Helper* helper) const
 
   // A template is never saved, so we assume this class is a real-life item
   retval &= helper->openTag(d_tag);
-  retval &= helper->saveData("name", getName());
+  retval &= helper->saveData("name", getName(false));
   std::string bonus_str = bonusFlagsToString(d_bonus);
   retval &= helper->saveData("bonus", bonus_str);
 

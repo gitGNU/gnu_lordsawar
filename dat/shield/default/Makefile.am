@@ -1,6 +1,9 @@
 MAINTAINERCLEANFILES= Makefile.in
 
 lordsawarshielddefaultdir = $(datadir)/lordsawar/shield/default
+
+@INTLTOOL_XML_RULE@
+
 lordsawarshielddefault_DATA = \
 	default.xml \
 	small-white-shield.png \
@@ -33,7 +36,7 @@ lordsawarshielddefault_DATA = \
 
 EXTRA_DIST = \
 	README \
-	default.xml \
+	default.xml.in \
 	small-white-shield.png \
 	small-green-shield.png \
 	small-yellow-shield.png \

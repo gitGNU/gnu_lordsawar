@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ bool Signpost::save(XML_Helper* helper) const
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);
-    retval &= helper->saveData("name", getName());
+    retval &= helper->saveData("name", getName(false));
     retval &= helper->closeTag();
     
     return retval;

@@ -1,6 +1,6 @@
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -106,7 +106,7 @@ bool Item::save(XML_Helper* helper) const
 
   // A template is never saved, so we assume this class is a real-life item
   retval &= helper->openTag(Item::d_tag);
-  retval &= helper->saveData("name", getName());
+  retval &= helper->saveData("name", getName(false));
   retval &= helper->saveData("plantable", d_plantable);
   if (d_plantable)
     {

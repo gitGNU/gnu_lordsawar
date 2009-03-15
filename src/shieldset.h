@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include "xmlhelper.h"
 #include "shield.h"
 
+#include "defs.h"
 
 //! A list of Shield graphic objects in a shield theme.
 /**
@@ -88,7 +89,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
         Uint32 getSize() const {return size();}
 
 	//! Return the name of the Shieldset.
-        std::string getName() const {return d_name;}
+        std::string getName() const {return _(d_name.c_str());}
 
 	//! Set the name of the Shieldset.
         void setName(std::string name) {d_name = name;}

@@ -2,6 +2,9 @@ SUBDIRS = misc
 MAINTAINERCLEANFILES= Makefile.in
 
 map_bigdefaultdir = $(datadir)/lordsawar/tilesets/bigdefault
+
+@INTLTOOL_XML_RULE@
+
 map_bigdefault_DATA = \
     bigdefault.xml \
     grass.png \
@@ -12,8 +15,8 @@ map_bigdefault_DATA = \
     swamp.png 
 
 EXTRA_DIST = \
+    bigdefault.xml.in \
     README \
-    bigdefault.xml \
     grass.png \
     water.png \
     forest.png \

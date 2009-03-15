@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include "vector.h"
 #include "Named.h"
 
+#include "defs.h"
+
 class XML_Helper;
 
 //! A game object that has a name that can be altered.
@@ -40,7 +42,13 @@ class Renamable: private Named
     ~Renamable();
     
     //! Return the name of the object on the game map.
-    std::string getName() const {return d_name;}
+    std::string getName(bool translate = false) const 
+      {
+	if (translate == true) 
+	  return _(d_name.c_str());
+	else return d_name; 
+      }
+
 
     //! Set the name of the object on the game map.
     void setName(std::string name) {d_name = name;}

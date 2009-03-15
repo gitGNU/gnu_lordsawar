@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 #include <vector>
 #include <SDL.h>
 #include <sigc++/trackable.h>
+
+#include "defs.h"
 
 class XML_Helper;
 
@@ -62,10 +64,10 @@ class Cityset : public sigc::trackable
         void setSubDir(std::string dir) {d_dir = dir;}
 
         //! Returns the name of the cityset.
-        std::string getName() const {return d_name;}
+        std::string getName() const {return _(d_name.c_str());}
 
         //! Returns the description of the cityset.
-        std::string getInfo() const {return d_info;}
+        std::string getInfo() const {return _(d_info.c_str());}
 
         //! Returns the width and height in pixels of the city images.
         Uint32 getTileSize() const {return d_tileSize;}

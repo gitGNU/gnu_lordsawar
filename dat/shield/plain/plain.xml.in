@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <shieldset version="0.3">
-    <d_name>Default</d_name>
+    <_d_name>Plain</_d_name>
     <d_small_width>8</d_small_width>
     <d_small_height>8</d_small_height>
     <d_medium_width>11</d_medium_width>
@@ -12,15 +12,15 @@
         <d_color>252 252 252</d_color>
         <shieldstyle>
             <d_type>ShieldStyle::SMALL</d_type>
-            <d_image>small-white-shield</d_image>
+            <d_image>small-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::MEDIUM</d_type>
-            <d_image>medium-white-shield</d_image>
+            <d_image>medium-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::LARGE</d_type>
-            <d_image>large-white-shield</d_image>
+            <d_image>large-shield</d_image>
         </shieldstyle>
     </shield>
     <shield>
@@ -28,15 +28,15 @@
         <d_color>80 193 28</d_color>
         <shieldstyle>
             <d_type>ShieldStyle::SMALL</d_type>
-            <d_image>small-green-shield</d_image>
+            <d_image>small-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::MEDIUM</d_type>
-            <d_image>medium-green-shield</d_image>
+            <d_image>medium-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::LARGE</d_type>
-            <d_image>large-green-shield</d_image>
+            <d_image>large-shield</d_image>
         </shieldstyle>
     </shield>
     <shield>
@@ -44,15 +44,15 @@
         <d_color>252 236 32</d_color>
         <shieldstyle>
             <d_type>ShieldStyle::SMALL</d_type>
-            <d_image>small-yellow-shield</d_image>
+            <d_image>small-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::MEDIUM</d_type>
-            <d_image>medium-yellow-shield</d_image>
+            <d_image>medium-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::LARGE</d_type>
-            <d_image>large-yellow-shield</d_image>
+            <d_image>large-shield</d_image>
         </shieldstyle>
     </shield>
     <shield>
@@ -60,15 +60,15 @@
         <d_color>92 92 208</d_color>
         <shieldstyle>
             <d_type>ShieldStyle::SMALL</d_type>
-            <d_image>small-lightblue-shield</d_image>
+            <d_image>small-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::MEDIUM</d_type>
-            <d_image>medium-lightblue-shield</d_image>
+            <d_image>medium-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::LARGE</d_type>
-            <d_image>large-lightblue-shield</d_image>
+            <d_image>large-shield</d_image>
         </shieldstyle>
     </shield>
     <shield>
@@ -76,15 +76,15 @@
         <d_color>252 160 0</d_color>
         <shieldstyle>
             <d_type>ShieldStyle::SMALL</d_type>
-            <d_image>small-red-shield</d_image>
+            <d_image>small-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::MEDIUM</d_type>
-            <d_image>medium-red-shield</d_image>
+            <d_image>medium-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::LARGE</d_type>
-            <d_image>large-red-shield</d_image>
+            <d_image>large-shield</d_image>
         </shieldstyle>
     </shield>
     <shield>
@@ -92,15 +92,15 @@
         <d_color>44 184 252</d_color>
         <shieldstyle>
             <d_type>ShieldStyle::SMALL</d_type>
-            <d_image>small-darkblue-shield</d_image>
+            <d_image>small-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::MEDIUM</d_type>
-            <d_image>medium-darkblue-shield</d_image>
+            <d_image>medium-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::LARGE</d_type>
-            <d_image>large-darkblue-shield</d_image>
+            <d_image>large-shield</d_image>
         </shieldstyle>
     </shield>
     <shield>
@@ -108,15 +108,15 @@
         <d_color>196 28 0</d_color>
         <shieldstyle>
             <d_type>ShieldStyle::SMALL</d_type>
-            <d_image>small-orange-shield</d_image>
+            <d_image>small-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::MEDIUM</d_type>
-            <d_image>medium-orange-shield</d_image>
+            <d_image>medium-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::LARGE</d_type>
-            <d_image>large-orange-shield</d_image>
+            <d_image>large-shield</d_image>
         </shieldstyle>
     </shield>
     <shield>
@@ -124,15 +124,15 @@
         <d_color>0 0 0</d_color>
         <shieldstyle>
             <d_type>ShieldStyle::SMALL</d_type>
-            <d_image>small-black-shield</d_image>
+            <d_image>small-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::MEDIUM</d_type>
-            <d_image>medium-black-shield</d_image>
+            <d_image>medium-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::LARGE</d_type>
-            <d_image>large-black-shield</d_image>
+            <d_image>large-shield</d_image>
         </shieldstyle>
     </shield>
     <shield>
@@ -140,15 +140,15 @@
         <d_color>204 204 204</d_color>
         <shieldstyle>
             <d_type>ShieldStyle::SMALL</d_type>
-            <d_image>small-neutral-shield</d_image>
+            <d_image>small-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::MEDIUM</d_type>
-            <d_image>medium-neutral-shield</d_image>
+            <d_image>medium-shield</d_image>
         </shieldstyle>
         <shieldstyle>
             <d_type>ShieldStyle::LARGE</d_type>
-            <d_image>large-neutral-shield</d_image>
+            <d_image>large-shield</d_image>
         </shieldstyle>
     </shield>
 </shieldset>

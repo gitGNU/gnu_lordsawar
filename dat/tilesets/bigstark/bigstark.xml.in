@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <tileset>
-    <d_name>Default</d_name>
-    <d_info>A tileset based on Wesnoth tileset</d_info>
-    <d_tilesize>40</d_tilesize>
+    <_d_name>Stark</_d_name>
+    <_d_info>The doublesized stark tileset</_d_info>
+    <d_tilesize>80</d_tilesize>
     <d_large_selector>misc/selector.png</d_large_selector>
     <d_small_selector>misc/small_selector.png</d_small_selector>
     <road_smallmap>
@@ -11,7 +11,7 @@
         <d_blue>0</d_blue>
     </road_smallmap>
     <tile>
-        <d_name>Grass</d_name>
+        <_d_name>Grass</_d_name>
         <d_moves>2</d_moves>
         <d_type>Tile::GRASS</d_type>
         <smallmap>
@@ -35,7 +35,7 @@
 	</tilestyleset>
     </tile>
     <tile>
-        <d_name>Water</d_name>
+        <_d_name>Water</_d_name>
         <d_moves>2</d_moves>
         <d_type>Tile::WATER</d_type>
 	<smallmap>
@@ -87,7 +87,7 @@
 	</tilestyleset>
     </tile>
     <tile>
-        <d_name>Forest</d_name>
+        <_d_name>Forest</_d_name>
         <d_moves>3</d_moves>
         <d_type>Tile::FOREST</d_type>
 	<smallmap>
@@ -163,7 +163,7 @@
 	</tilestyleset>
     </tile>
     <tile>
-        <d_name>Hills</d_name>
+        <_d_name>Hills</_d_name>
         <d_moves>4</d_moves>
         <d_type>Tile::HILLS</d_type>
 	<smallmap>
@@ -228,7 +228,7 @@
 	</tilestyleset>
     </tile>
     <tile>
-        <d_name>Mountains</d_name>
+        <_d_name>Mountains</_d_name>
         <d_moves>6</d_moves>
         <d_type>Tile::MOUNTAIN</d_type>
 	<smallmap>
@@ -306,7 +306,7 @@
 	</tilestyleset>
     </tile>
     <tile>
-        <d_name>Swamp</d_name>
+        <_d_name>Swamp</_d_name>
         <d_moves>8</d_moves>
         <d_type>Tile::SWAMP</d_type>
 	<smallmap>
@@ -323,46 +323,12 @@
 	</smallmap>
 	<tilestyleset>
 		<d_name>swamp</d_name>
-		<tilestyle> <d_id>0xde</d_id> <d_type>1</d_type> </tilestyle>
-		<tilestyle> <d_id>0xdf</d_id> <d_type>2</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe1</d_id> <d_type>2</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe2</d_id> <d_type>2</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe3</d_id> <d_type>2</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe4</d_id> <d_type>3</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe5</d_id> <d_type>7</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe6</d_id> <d_type>10</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe7</d_id> <d_type>5</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe8</d_id> <d_type>11</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe9</d_id> <d_type>8</d_type> </tilestyle>
-		<tilestyle> <d_id>0xea</d_id> <d_type>9</d_type> </tilestyle>
-		<tilestyle> <d_id>0xeb</d_id> <d_type>0</d_type> </tilestyle>
-		<tilestyle> <d_id>0xec</d_id> <d_type>9</d_type> </tilestyle>
+		<tilestyle> <d_id>0xec</d_id> <d_type>0</d_type> </tilestyle>
 		<tilestyle> <d_id>0xed</d_id> <d_type>0</d_type> </tilestyle>
-		<tilestyle> <d_id>0xee</d_id> <d_type>7</d_type> </tilestyle>
-		<tilestyle> <d_id>0xef</d_id> <d_type>8</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf1</d_id> <d_type>9</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf2</d_id> <d_type>7</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf3</d_id> <d_type>12</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf4</d_id> <d_type>2</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf5</d_id> <d_type>13</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf6</d_id> <d_type>8</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf7</d_id> <d_type>9</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf8</d_id> <d_type>4</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf9</d_id> <d_type>5</d_type> </tilestyle>
-		<tilestyle> <d_id>0xfa</d_id> <d_type>0</d_type> </tilestyle>
-		<tilestyle> <d_id>0xfb</d_id> <d_type>0</d_type> </tilestyle>
-		<tilestyle> <d_id>0xfc</d_id> <d_type>5</d_type> </tilestyle>
-		<tilestyle> <d_id>0xfd</d_id> <d_type>6</d_type> </tilestyle>
-		<tilestyle> <d_id>0xfe</d_id> <d_type>14</d_type> </tilestyle>
-		<tilestyle> <d_id>0xff</d_id> <d_type>15</d_type> </tilestyle>
-		<tilestyle> <d_id>0x9b</d_id> <d_type>1</d_type> </tilestyle>
-		<tilestyle> <d_id>0x9c</d_id> <d_type>3</d_type> </tilestyle>
-		<tilestyle> <d_id>0x9d</d_id> <d_type>4</d_type> </tilestyle>
-		<tilestyle> <d_id>0x9e</d_id> <d_type>6</d_type> </tilestyle>
-		<tilestyle> <d_id>0x9f</d_id> <d_type>10</d_type> </tilestyle>
-		<tilestyle> <d_id>0xa0</d_id> <d_type>11</d_type> </tilestyle>
-		<tilestyle> <d_id>0xa1</d_id> <d_type>12</d_type> </tilestyle>
-		<tilestyle> <d_id>0xa2</d_id> <d_type>13</d_type> </tilestyle>
+		<tilestyle> <d_id>0xee</d_id> <d_type>0</d_type> </tilestyle>
+		<tilestyle> <d_id>0xef</d_id> <d_type>0</d_type> </tilestyle>
+		<tilestyle> <d_id>0xf0</d_id> <d_type>0</d_type> </tilestyle>
+		<tilestyle> <d_id>0xf1</d_id> <d_type>0</d_type> </tilestyle>
 	</tilestyleset>
     </tile>
 </tileset>

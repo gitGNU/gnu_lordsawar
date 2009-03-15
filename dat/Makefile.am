@@ -2,12 +2,15 @@ SUBDIRS = army tilesets various map music glade shield citysets campaign
 MANTAINERCLEANFILES= Makefile.in
 
 lordsawardatadir = $(datadir)/lordsawar
+
+@INTLTOOL_XML_RULE@
+
 lordsawardata_DATA = \
-    citynames \
-    heronames \
-    templenames \
-    ruinnames \
-    signposts \
+    citynames.xml \
+    heronames.xml \
+    templenames.xml \
+    ruinnames.xml \
+    signposts.xml \
     gtkrc
 
 lwdesktopdir= $(datadir)/applications
@@ -21,10 +24,10 @@ lordsawar32icon=
 
 EXTRA_DIST = \
     README \
-    citynames \
-    heronames \
-    templenames \
-    ruinnames \
-    signposts \
+    citynames.xml.in \
+    heronames.xml.in \
+    templenames.xml.in \
+    ruinnames.xml.in \
+    signposts.xml.in \
     lordsawar.desktop \
     gtkrc

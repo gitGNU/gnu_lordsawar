@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -112,7 +112,7 @@ NewMapDialog::NewMapDialog()
     for (std::list<std::string>::iterator i = shield_themes.begin(),
 	 end = shield_themes.end(); i != end; ++i)
       {
-	if (*i == "Default")
+	if (*i == _("Default"))
 	  default_id = counter;
 	shield_theme_combobox->append_text(Glib::filename_to_utf8(*i));
 	counter++;
@@ -281,7 +281,7 @@ void NewMapDialog::on_tile_size_changed()
   for (std::list<std::string>::iterator i = tile_themes.begin(),
        end = tile_themes.end(); i != end; ++i)
     {
-      if (*i == "Default")
+      if (*i == _("Default"))
 	default_id = counter;
       tile_theme_combobox->append_text(Glib::filename_to_utf8(*i));
       counter++;
@@ -299,7 +299,7 @@ void NewMapDialog::on_tile_size_changed()
   for (std::list<std::string>::iterator i = army_themes.begin(),
        end = army_themes.end(); i != end; ++i)
     {
-      if (*i == "Default")
+      if (*i == _("Default"))
 	default_id = counter;
       army_theme_combobox->append_text(Glib::filename_to_utf8(*i));
       counter++;
@@ -317,7 +317,7 @@ void NewMapDialog::on_tile_size_changed()
   for (std::list<std::string>::iterator i = city_themes.begin(),
        end = city_themes.end(); i != end; ++i)
     {
-      if (*i == "Default")
+      if (*i == _("Default"))
 	default_id = counter;
       city_theme_combobox->append_text(Glib::filename_to_utf8(*i));
       counter++;

@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2003 Michael Bartl
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ class Temple : public NamedLocation
 
 	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
 
-	static std::string getDefaultName() {return DEFAULT_TEMPLE_NAME;};
+	static std::string getDefaultName() {return _(DEFAULT_TEMPLE_NAME);};
     protected:
 	
 	//! The type of the temple.

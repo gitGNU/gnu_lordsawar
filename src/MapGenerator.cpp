@@ -3,7 +3,7 @@
 // Copyright (C) 2004 David Barnsdale
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2008 Janek Kozicki
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -1345,8 +1345,6 @@ int MapGenerator::tryRoad(Vector<int> src, Vector<int>dest)
 
 int MapGenerator::tryRoad(int src_x, int src_y, int dest_x, int dest_y)
 {
-  bool retval = true;
-  GameMap *gm = GameMap::getInstance();
   Vector<int> src(src_x, src_y);
   Vector<int> dest(dest_x, dest_y);
 
@@ -1354,7 +1352,8 @@ int MapGenerator::tryRoad(int src_x, int src_y, int dest_x, int dest_y)
   Stack s(NULL, src);
 
   Armysetlist *al = Armysetlist::getInstance();
-  Uint32 armyset = al->getArmysetId("Default", Tileset::getDefaultTileSize());
+  Uint32 armyset = al->getArmysetId(_("Default"), 
+				    Tileset::getDefaultTileSize());
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
   Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);
@@ -1381,7 +1380,8 @@ bool MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
   Stack s(NULL, src);
 
   Armysetlist *al = Armysetlist::getInstance();
-  Uint32 armyset = al->getArmysetId("Default", Tileset::getDefaultTileSize());
+  Uint32 armyset = al->getArmysetId(_("Default"), 
+				    Tileset::getDefaultTileSize());
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
   Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);
@@ -1436,7 +1436,8 @@ bool MapGenerator::isAccessible (int src_x, int src_y, int dest_x, int dest_y)
   Stack s(NULL, src);
 
   Armysetlist *al = Armysetlist::getInstance();
-  Uint32 armyset = al->getArmysetId("Default", Tileset::getDefaultTileSize());
+  Uint32 armyset = al->getArmysetId(_("Default"), 
+				    Tileset::getDefaultTileSize());
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
   Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);
@@ -1464,7 +1465,8 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
   Stack s(NULL, src);
 
   Armysetlist *al = Armysetlist::getInstance();
-  Uint32 armyset = al->getArmysetId("Default", Tileset::getDefaultTileSize());
+  Uint32 armyset = al->getArmysetId(_("Default"), 
+				    Tileset::getDefaultTileSize());
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 16);
   Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);
