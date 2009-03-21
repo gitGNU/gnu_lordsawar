@@ -465,6 +465,11 @@ void Driver::on_new_game_requested(GameParameters g)
 	  (*splash_window->get_window(), 
 	   _("Invalid map file.\n" 
 	     "Please validate it in the scenario editor."), 0);
+	std::list<std::string>::iterator it = e.begin();
+	for (; it != e.end(); it++)
+	  {
+	    printf ("error: %s\n", (*it).c_str());
+	  }
 	dialog.run();
 	dialog.hide();
 	splash_window->show();
@@ -722,7 +727,8 @@ Driver::create_and_dump_scenario(const std::string &file, const GameParameters &
     creator.setCityset(g.city_theme);
     creator.setNoCities(g.map.cities);
     creator.setNoRuins(g.map.ruins);
-    creator.setNoTemples(4);
+    creator.setNoTemples(g.map.temples);
+    creator.setNoSignposts(g.map.signposts);
 
     // terrain: the scenario generator also accepts input with a sum of
     // more than 100%, so the thing is rather easy here

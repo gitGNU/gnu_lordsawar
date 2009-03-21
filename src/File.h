@@ -117,6 +117,9 @@ class File
         // get the available scenarios
         static std::list<std::string> scanMaps();
 
+	// get the available scenarios in the user's personal collection
+	static std::list<std::string> scanUserMaps();
+
 	// get the available campaigns
 	static std::list<std::string> scanCampaigns();
 

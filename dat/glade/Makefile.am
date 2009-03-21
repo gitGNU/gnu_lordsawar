@@ -64,7 +64,8 @@ game-quit-dialog.glade \
 about-dialog.glade \
 new-network-game-dialog.glade \
 game-lobby-dialog.glade \
-pick-network-game-to-join-dialog.glade
+pick-network-game-to-join-dialog.glade \
+new-random-map-dialog.glade
 
 EXTRA_DIST = $(glade_DATA) \
 README

@@ -70,3 +70,6 @@ add campaign support in the editor
 anywhere where we presume the order of the displayed players is in order of white, to black is wrong.
   as a result, preferences dialog is screwed if random turns is turned on.
   there must be other places too.
+
+
+upload to dl.sv.gnu.org.  cd /releases/lordsawar

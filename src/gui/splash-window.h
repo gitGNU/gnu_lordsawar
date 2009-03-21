@@ -72,7 +72,6 @@ class SplashWindow: public Decorated
     std::string network_game_nickname;
     
     void on_new_campaign_clicked();
-    void on_new_game_clicked();
     void on_new_network_game_clicked();
     void on_new_pbm_game_clicked();
     void on_load_game_clicked();

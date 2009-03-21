@@ -1,3 +1,11 @@
+2009-03-21  Ben Asselstine  <benasselstine@gmail.com>
+
+	* revamped the main menu and scenario loading.
+	* separated the random map stuff from the player dialog.
+	* added a new random map dialog.
+	* users can now add a new scenario to the library.
+	* removed cyclebuttons.
+
 2009-03-15  Ben Asselstine  <benasselstine@gmail.com>
 
 	* added more translation strings from data files.

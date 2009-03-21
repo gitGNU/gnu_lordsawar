@@ -38,7 +38,6 @@ various_DATA = \
     parley_offered.png \
     parley_refused.png \
     background.png \
-    cycle.png \
     back.bmp
 
 EXTRA_DIST = \
@@ -77,5 +76,4 @@ EXTRA_DIST = \
     parley_offered.png \
     parley_refused.png \
     background.png \
-    cycle.png \
     back.bmp

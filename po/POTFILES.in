@@ -65,6 +65,7 @@ dat/glade/surrender-refused-dialog.glade
 dat/glade/temple-visit-dialog.glade
 dat/glade/treachery-dialog.glade
 dat/glade/triumphs-dialog.glade
+dat/glade/new-random-map-dialog.glade
 dat/glade/editor/armyset-info-dialog.glade
 dat/glade/editor/armyset-window.glade
 dat/glade/editor/city-dialog.glade

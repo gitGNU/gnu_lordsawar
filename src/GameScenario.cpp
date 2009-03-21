@@ -676,6 +676,7 @@ void GameScenario::setNewRandomId()
 	
 bool GameScenario::validate(std::list<std::string> &errors, std::list<std::string> &warnings)
 {
+  std::string s;
   Playerlist *pl = Playerlist::getInstance();
   Uint32 num = pl->countPlayersAlive();
   if (num < 2)
@@ -693,7 +694,10 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
 	continue;
       if (Citylist::getInstance()->getFirstCity(*it) == NULL)
 	{
-	  errors.push_back(_("Every player must have at least one city in the scenario."));
+	  s = String::ucompose
+	    (_("The player called `%1' lacks a starting city."), 
+	     (*it)->getName().c_str());
+	  errors.push_back(s);
 	  break;
 	}
     }
@@ -707,7 +711,6 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
     }
   if (count > 0)
     {
-      std::string s;
       s = String::ucompose(ngettext("There is %1 unnamed city", "There are %1 unnamed cities", count), count);
       warnings.push_back(s);
     }
@@ -777,6 +780,11 @@ class ParamLoader
 public:
     bool loadParam(std::string tag, XML_Helper* helper)
       {
+	if (tag == Playerlist::d_tag)
+	  {
+	    helper->getData(d_neutral, "neutral");
+	    return true;
+	  }
 	if (tag == Player::d_tag)
 	  {
 	    int type;
@@ -806,7 +814,7 @@ public:
 	      }
 	    helper->getData(name, "name");
 	    p.name = name;
-	    if (p.id != 8) //is not neutral
+	    if (p.id != d_neutral) //is not neutral
 	      game_params.players.push_back(p);
 	    else
 	      {
@@ -854,6 +862,7 @@ public:
 	return false;
       };
     GameParameters game_params;
+    int d_neutral;
 };
 GameParameters GameScenario::loadGameParameters(std::string filename, bool &broken)
 {
@@ -863,6 +872,8 @@ GameParameters GameScenario::loadGameParameters(std::string filename, bool &brok
   helper.registerTag(GameMap::d_tag, 
 		     sigc::mem_fun(loader, &ParamLoader::loadParam));
   helper.registerTag(GameScenario::d_tag, 
+		     sigc::mem_fun(loader, &ParamLoader::loadParam));
+  helper.registerTag(Playerlist::d_tag, 
 		     sigc::mem_fun(loader, &ParamLoader::loadParam));
   helper.registerTag(Player::d_tag, 
 		     sigc::mem_fun(loader, &ParamLoader::loadParam));

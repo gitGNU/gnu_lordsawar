@@ -265,6 +265,28 @@ std::list<std::string> File::scanCampaigns()
     return retlist;
 }
 
+std::list<std::string> File::scanUserMaps()
+{
+  std::string path = Configuration::s_savePath + "/";
+    
+    std::list<std::string> retlist;
+    Glib::Dir dir(path);
+    
+    for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
+    {
+      std::string entry = *i;
+      std::string::size_type idx = entry.find(".map");
+      if (idx != std::string::npos)
+	{
+	  if (entry == "random.map")
+	    continue;
+	  retlist.push_back(Glib::filename_to_utf8(entry));
+	}
+    }
+    
+    return retlist;
+}
+
 std::list<std::string> File::scanMaps()
 {
   std::string path = Configuration::s_dataPath + "/" + MAPDIR + "/";

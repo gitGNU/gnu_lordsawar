@@ -43,13 +43,12 @@
 
 #include "decorated.h"
 class XML_Helper;
-class CycleButton;
 
 // dialog for choosing parameters for starting a new game
 class GamePreferencesDialog: public Decorated
 {
  public:
-    GamePreferencesDialog(GameScenario::PlayMode mode);
+    GamePreferencesDialog(std::string filename, GameScenario::PlayMode mode);
     GamePreferencesDialog(std::string filename, bool campaign = false);
     ~GamePreferencesDialog();
 
@@ -63,74 +62,34 @@ class GamePreferencesDialog: public Decorated
     void hide();
     
  private:
-    void init();
+    void init(std::string filename);
     std::auto_ptr<Gtk::Dialog> dialog;
     GameScenario::PlayMode mode;
 
     Gtk::Button *start_game_button;
     Gtk::Label *game_name_label;
     Gtk::Entry *game_name_entry;
-    Gtk::ComboBoxText *tile_size_combobox;
-    Gtk::ComboBoxText *tile_theme_combobox;
-    Gtk::ComboBoxText *army_theme_combobox;
-    Gtk::ComboBoxText *shield_theme_combobox;
-    Gtk::ComboBoxText *city_theme_combobox;
     Gtk::Label *difficulty_label;
-    Gtk::RadioButton *random_map_radio;
-    Gtk::RadioButton *load_map_radio;
-    Gtk::FileChooserButton *load_map_filechooser;
-    Gtk::Widget *random_map_container;
-    Gtk::ComboBox *map_size_combobox;
-    Gtk::Scale *grass_scale;
-    Gtk::ToggleButton *grass_random_togglebutton;
-    Gtk::Scale *water_scale;
-    Gtk::ToggleButton *water_random_togglebutton;
-    Gtk::Scale *swamp_scale;
-    Gtk::ToggleButton *swamp_random_togglebutton;
-    Gtk::Scale *forest_scale;
-    Gtk::ToggleButton *forest_random_togglebutton;
-    Gtk::Scale *hills_scale;
-    Gtk::ToggleButton *hills_random_togglebutton;
-    Gtk::Scale *mountains_scale;
-    Gtk::ToggleButton *mountains_random_togglebutton;
-    Gtk::Scale *cities_scale;
-    Gtk::ToggleButton *cities_random_togglebutton;
-    Gtk::CheckButton *cities_can_produce_allies_checkbutton;
     Gtk::ComboBox *difficulty_combobox;
 
-    enum { MAP_SIZE_NORMAL = 0, MAP_SIZE_SMALL, MAP_SIZE_TINY };
     enum { BEGINNER = 0, INTERMEDIATE, ADVANCED, I_AM_THE_GREATEST, CUSTOM};
 
     Gtk::VBox *players_vbox;
 
     typedef std::vector<Glib::ustring> player_name_seq;
-    player_name_seq default_player_names;
-    player_name_seq::iterator current_player_name;
     
-    std::list<CycleButton*> player_types;
+    std::list<Gtk::ComboBoxText *> player_types;
     std::list<Gtk::Entry *> player_names;
     std::list<Gtk::Image *> player_shields;
 
     GameOptionsDialog *game_options_dialog;
 
-    void add_player(const Glib::ustring &type, const Glib::ustring &name);
-    void on_add_player_clicked();
-    void on_random_map_toggled();
-    void on_map_size_changed();
+    void add_player(GameParameters::Player::Type type,
+				       const Glib::ustring &name);
     void on_difficulty_changed();
     void on_start_game_clicked();
     void on_edit_options_clicked();
     void on_player_type_changed();
-    void on_grass_random_toggled();
-    void on_water_random_toggled();
-    void on_swamp_random_toggled();
-    void on_forest_random_toggled();
-    void on_hills_random_toggled();
-    void on_mountains_random_toggled();
-    void on_cities_random_toggled();
-    void on_map_chosen();
-    void on_tile_size_changed();
-    Uint32 get_active_tile_size();
     bool is_beginner();
     bool is_intermediate();
     bool is_advanced();
@@ -138,9 +97,10 @@ class GamePreferencesDialog: public Decorated
     void update_difficulty_combobox();
     void update_difficulty_rating();
     void update_shields();
-SDL_Surface *getShieldPic(Uint32 type, Uint32 owner);
-    GameParameters load_map_parameters;
+    SDL_Surface *getShieldPic(Uint32 type, Uint32 owner);
+    std::string d_filename;
     bool d_campaign;
+    std::string d_shieldset;
 };
 
 #endif

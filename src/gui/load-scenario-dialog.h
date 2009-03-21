@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -54,6 +54,8 @@ class LoadScenarioDialog: public Decorated
     Gtk::Label *num_players_label;
     Gtk::Label *num_cities_label;
     Gtk::TreeView *scenarios_treeview;
+    Gtk::Button *add_scenario_button;
+    Gtk::Button *remove_scenario_button;
 
     class ScenariosColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -76,6 +78,9 @@ class LoadScenarioDialog: public Decorated
     bool scan_scenario_details(std::string tag, XML_Helper* helper);
     bool scan_scenario_name(std::string tag, XML_Helper* helper);
     void add_scenario(std::string filename);
+    void on_add_scenario_clicked();
+    void on_remove_scenario_clicked();
+    int copy_file (Glib::ustring from, Glib::ustring to);
 };
 
 #endif
