@@ -205,6 +205,7 @@ src/gui/hero-offer-dialog.cpp
 src/gui/main.cpp
 src/gui/item-bonus-dialog.cpp
 src/gui/fight-window.cpp
+src/gui/new-random-map-dialog.cpp
 src/CreateScenarioRandomize.cpp
 src/vectoredunitlist.cpp
 src/editor/itemlist-dialog.cpp
