@@ -248,9 +248,22 @@ void SplashWindow::on_new_network_game_clicked()
 	  std::string filename = d.get_scenario_filename();
 	  if (filename.empty())
 	    return;
+	  d.hide();
+	  if (filename == "random.map")
+	    {
+	      NewRandomMapDialog nrmd;
+	      int res = nrmd.run();
+	      if (res == Gtk::RESPONSE_ACCEPT)
+		{
+		  GameParameters g = nrmd.getParams();
+		  filename = Driver::create_and_dump_scenario("random.map", g);
+		}
+	      else
+		return;
+	    }
 
 	  GamePreferencesDialog gpd(filename, GameScenario::NETWORKED);
-    
+
 	  gpd.set_parent_window(*window.get());
 	  gpd.set_title(_("New Networked Game"));
 	  gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_created));
@@ -267,12 +280,25 @@ void SplashWindow::on_new_pbm_game_clicked()
   LoadScenarioDialog d;
   d.set_parent_window(*window.get());
   d.run();
-    
+
   std::string filename = d.get_scenario_filename();
   if (filename.empty())
     return;
+  d.hide();
+  if (filename == "random.map")
+    {
+      NewRandomMapDialog nrmd;
+      int res = nrmd.run();
+      if (res == Gtk::RESPONSE_ACCEPT)
+	{
+	  GameParameters g = nrmd.getParams();
+	  filename = Driver::create_and_dump_scenario("random.map", g);
+	}
+      else
+	return;
+    }
   GamePreferencesDialog gpd(filename, GameScenario::PLAY_BY_MAIL);
-    
+
   gpd.set_parent_window(*window.get());
   gpd.set_title(_("New Play By Mail game"));
   gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_pbm_game_created));
@@ -282,58 +308,56 @@ void SplashWindow::on_new_pbm_game_clicked()
 
 void SplashWindow::on_load_scenario_clicked()
 {
-    LoadScenarioDialog d;
-    
-    d.set_parent_window(*window.get());
-    
-    d.run();
-    
-    std::string filename = d.get_scenario_filename();
-    if (!filename.empty())
-      {
-	d.hide();
-	if (filename == "random.map")
-	  {
-	    //okay it's time to make us a random map.
-	    NewRandomMapDialog nrmd;
-	    int res = nrmd.run();
-            if (res == Gtk::RESPONSE_ACCEPT)
-	      {
-		//grab details from nrmd.map and make us a map.
-		GameParameters g = nrmd.getParams();
-		filename = Driver::create_and_dump_scenario("random.map", g);
-	      }
-	    else
-	      return;
-	  }
-	GamePreferencesDialog gp(filename);
-	gp.set_parent_window(*window.get());
-	gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
-    
-	gp.run();
-      } 
-	//load_requested.emit(filename);
+  LoadScenarioDialog d;
+
+  d.set_parent_window(*window.get());
+
+  d.run();
+
+  std::string filename = d.get_scenario_filename();
+  if (!filename.empty())
+    {
+      d.hide();
+      if (filename == "random.map")
+	{
+	  NewRandomMapDialog nrmd;
+	  int res = nrmd.run();
+	  if (res == Gtk::RESPONSE_ACCEPT)
+	    {
+	      GameParameters g = nrmd.getParams();
+	      filename = Driver::create_and_dump_scenario("random.map", g);
+	    }
+	  else
+	    return;
+	}
+      GamePreferencesDialog gp(filename);
+      gp.set_parent_window(*window.get());
+      gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
+
+      gp.run();
+    } 
+  //load_requested.emit(filename);
 }
 
 void SplashWindow::on_new_campaign_clicked()
 {
-    NewCampaignDialog d;
-    
-    d.set_parent_window(*window.get());
-    
-    d.run();
-    
-    std::string filename = d.get_campaign_filename();
-    if (!filename.empty())
-      {
-	d.hide();
-	GamePreferencesDialog gp(filename, true);
-	gp.set_parent_window(*window.get());
-	gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_campaign_started));
-    
-	gp.run();
-      } 
-	//load_requested.emit(filename);
+  NewCampaignDialog d;
+
+  d.set_parent_window(*window.get());
+
+  d.run();
+
+  std::string filename = d.get_campaign_filename();
+  if (!filename.empty())
+    {
+      d.hide();
+      GamePreferencesDialog gp(filename, true);
+      gp.set_parent_window(*window.get());
+      gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_campaign_started));
+
+      gp.run();
+    } 
+  //load_requested.emit(filename);
 }
 
 void SplashWindow::on_network_game_selected(std::string ip, unsigned short port)
@@ -371,7 +395,7 @@ void SplashWindow::on_pbm_game_created(GameParameters g)
 {
   new_pbm_game_requested.emit(g);
 }
-    
+
 void SplashWindow::on_preferences_clicked()
 {
   bool saved = Configuration::s_decorated;
