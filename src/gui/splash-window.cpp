@@ -246,7 +246,7 @@ void SplashWindow::on_new_network_game_clicked()
 	  d.set_parent_window(*window.get());
 	  d.run();
 	  std::string filename = d.get_scenario_filename();
-	  if (!filename.empty())
+	  if (filename.empty())
 	    return;
 
 	  GamePreferencesDialog gpd(filename, GameScenario::NETWORKED);
@@ -269,7 +269,7 @@ void SplashWindow::on_new_pbm_game_clicked()
   d.run();
     
   std::string filename = d.get_scenario_filename();
-  if (!filename.empty())
+  if (filename.empty())
     return;
   GamePreferencesDialog gpd(filename, GameScenario::PLAY_BY_MAIL);
     
