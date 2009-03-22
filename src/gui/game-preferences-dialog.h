@@ -49,7 +49,6 @@ class GamePreferencesDialog: public Decorated
 {
  public:
     GamePreferencesDialog(std::string filename, GameScenario::PlayMode mode);
-    GamePreferencesDialog(std::string filename, bool campaign = false);
     ~GamePreferencesDialog();
 
     void set_title(std::string title);
@@ -99,7 +98,6 @@ class GamePreferencesDialog: public Decorated
     void update_shields();
     SDL_Surface *getShieldPic(Uint32 type, Uint32 owner);
     std::string d_filename;
-    bool d_campaign;
     std::string d_shieldset;
 };
 

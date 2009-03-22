@@ -92,6 +92,5 @@ const std::string ARMYSETDIR = "army";
 const std::string TILESETDIR = "tilesets";
 const std::string CITYSETDIR = "citysets";
 const std::string SHIELDSETDIR = "shield";
-const std::string CAMPAIGNDIR = "campaign";
 const std::string MAPDIR = "map";
 #endif // DEFINITIONS_H

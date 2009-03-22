@@ -66,7 +66,6 @@
 #include "history.h"
 #include "pbm-game-server.h"
 #include "LocationBox.h"
-#include "Campaign.h"
 #include "Backpack.h"
 #include "MapBackpack.h"
 
@@ -203,8 +202,7 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 	Player *p = *i;
 	addPlayer(p);
     }
-    if (gameScenario->getPlayMode() == GameScenario::HOTSEAT ||
-	gameScenario->getPlayMode() == GameScenario::CAMPAIGN)
+    if (gameScenario->getPlayMode() == GameScenario::HOTSEAT)
       pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
     pl->ssurrender.connect(sigc::mem_fun(this, &Game::on_surrender_offered));
 
@@ -988,7 +986,7 @@ void Game::loadGame()
       player = Playerlist::getActiveplayer();
     }
 
-  if (player->getType() == Player::HUMAN && (d_gameScenario->getPlayMode() == GameScenario::HOTSEAT || d_gameScenario->getPlayMode() == GameScenario::CAMPAIGN))
+  if (player->getType() == Player::HUMAN && (d_gameScenario->getPlayMode() == GameScenario::HOTSEAT))
     {
       //human players want access to the controls and an info box
       unlock_inputs();
@@ -1110,21 +1108,7 @@ void Game::on_player_died(Player *player)
 {
   const Playerlist* pl = Playerlist::getInstance();
   if (pl->getNoOfPlayers() <= 1)
-    {
-      Campaign *campaign = Campaign::getInstance();
-      if (campaign->getNextScenario() != "" &&
-	  pl->getFirstLiving()->getType() == Player::HUMAN)
-	{
-	  Player *p = pl->getFirstLiving();
-	  Uint32 num_heroes = campaign->getNumberOfHeroesToCarryOver();
-	  std::list<Hero*> heroes;
-	  heroes = p->getStacklist()->getTopHeroes(num_heroes);
-	  next_scenario.emit(File::getCampaignFile(campaign->getNextScenario()),
-			     p->getGold(), heroes, p->getName());
-	}
-      else
-	game_over.emit(pl->getFirstLiving());
-    }
+    game_over.emit(pl->getFirstLiving());
   else
     player_died.emit(player);
 }

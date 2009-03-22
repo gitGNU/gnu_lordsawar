@@ -34,7 +34,6 @@
 
 #include "game-preferences-dialog.h"
 #include "load-scenario-dialog.h"
-#include "new-campaign-dialog.h"
 #include "glade-helpers.h"
 #include "Configuration.h"
 #include "defs.h"
@@ -90,8 +89,6 @@ SplashWindow::SplashWindow()
     
     xml->connect_clicked("load_game_button",
 			 sigc::mem_fun(*this, &SplashWindow::on_load_game_clicked));
-    xml->connect_clicked("new_campaign_button",
-			 sigc::mem_fun(*this, &SplashWindow::on_new_campaign_clicked));
     xml->connect_clicked("load_scenario_button",
 			 sigc::mem_fun(*this, &SplashWindow::on_load_scenario_clicked));
     xml->connect_clicked("quit_button",
@@ -331,30 +328,9 @@ void SplashWindow::on_load_scenario_clicked()
 	  else
 	    return;
 	}
-      GamePreferencesDialog gp(filename);
+      GamePreferencesDialog gp(filename, GameScenario::HOTSEAT);
       gp.set_parent_window(*window.get());
       gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
-
-      gp.run();
-    } 
-  //load_requested.emit(filename);
-}
-
-void SplashWindow::on_new_campaign_clicked()
-{
-  NewCampaignDialog d;
-
-  d.set_parent_window(*window.get());
-
-  d.run();
-
-  std::string filename = d.get_campaign_filename();
-  if (!filename.empty())
-    {
-      d.hide();
-      GamePreferencesDialog gp(filename, true);
-      gp.set_parent_window(*window.get());
-      gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_campaign_started));
 
       gp.run();
     } 
@@ -369,11 +345,6 @@ void SplashWindow::on_network_game_selected(std::string ip, unsigned short port)
 void SplashWindow::on_game_started(GameParameters g)
 {
   new_game_requested.emit(g);
-}
-
-void SplashWindow::on_campaign_started(GameParameters g)
-{
-  new_campaign_requested.emit(g);
 }
 
 void

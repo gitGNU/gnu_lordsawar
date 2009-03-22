@@ -135,7 +135,6 @@ void GamePreferencesDialog::init(std::string filename)
 
 GamePreferencesDialog::GamePreferencesDialog(std::string filename, GameScenario::PlayMode play_mode)
 {
-  d_campaign = false;
   mode = play_mode;
   init(filename);
   if (mode != GameScenario::NETWORKED)
@@ -144,22 +143,6 @@ GamePreferencesDialog::GamePreferencesDialog(std::string filename, GameScenario:
       delete game_name_entry;
     }
 
-}
-
-GamePreferencesDialog::GamePreferencesDialog(std::string filename, bool campaign)
-{
-  d_campaign = campaign;
-  mode = GameScenario::HOTSEAT;
-  if (campaign)
-    mode = GameScenario::CAMPAIGN;
-  init (filename);
-  delete game_name_label;
-  delete game_name_entry;
-
-  if (campaign)
-    dialog->set_title(_("New Campaign"));
-  else
-    dialog->set_title(_("New Scenario"));
 }
 
 GamePreferencesDialog::~GamePreferencesDialog()

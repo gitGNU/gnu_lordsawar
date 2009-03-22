@@ -131,7 +131,6 @@
 #include "NextTurnNetworked.h"
 #include "pbm-game-server.h"
 #include "network_player.h"
-#include "Campaign.h"
 
 
 GameWindow::GameWindow()
@@ -748,9 +747,6 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
     (game->game_over.connect
      (sigc::mem_fun(*this, &GameWindow::on_game_over)));
   connections.push_back
-    (game->next_scenario.connect
-     (sigc::mem_fun(*this, &GameWindow::on_next_scenario)));
-  connections.push_back
     (game->player_died.connect
      (sigc::mem_fun(*this, &GameWindow::on_player_died)));
   connections.push_back
@@ -1079,10 +1075,6 @@ void GameWindow::on_game_stopped()
     {
       game_ended.emit();
     }
-  else if (stop_action == "next-scenario")
-    {
-      next_scenario.emit(d_scenario, d_gold, d_heroes, d_player_name);
-    }
   else if (stop_action == "load-game")
     {
       bool broken = false;
@@ -1094,8 +1086,7 @@ void GameWindow::on_game_stopped()
 	  game_ended.emit();
 	  return;
 	}
-      if (game_scenario->getPlayMode() == GameScenario::HOTSEAT ||
-	  game_scenario->getPlayMode() == GameScenario::CAMPAIGN)
+      if (game_scenario->getPlayMode() == GameScenario::HOTSEAT)
 	load_game(game_scenario, 
 		  new NextTurnHotseat(game_scenario->getTurnmode(),
 				      game_scenario->s_random_turns));
@@ -1585,33 +1576,6 @@ void GameWindow::stop_game(std::string action)
       game->stopGame();
       current_save_filename = "";
     }
-}
-
-void GameWindow::on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string name)
-{
-  //fixme: show a message here.  we won, but there's another scenario to go
-  d_scenario = scenario;
-  d_gold = gold;
-  d_heroes = heroes;
-  if (d_heroes.size() > 0)
-    {
-      Glib::ustring s;
-      s = String::ucompose
-	(ngettext("%1 hero rallies to the call of battle!",
-		  "%1 heroes rally to the call of battle!", d_heroes.size()), 
-	 d_heroes.size());
-      TimedMessageDialog dialog(*window.get(), s, 30);
-      dialog.show_all();
-      dialog.run();
-      dialog.hide();
-      HeroLevelsDialog d((*heroes.front()).getOwner());
-      d.set_parent_window(*window.get());
-      d.run();
-      d.hide();
-    }
-  d_player_name = name;
-  stop_game("next-scenario");
-  //now go to on_game_stopped
 }
 
 void GameWindow::on_game_over(Player *winner)

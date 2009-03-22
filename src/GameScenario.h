@@ -60,7 +60,6 @@ class GameScenario: public GameScenarioOptions
 	    HOTSEAT = 0, 
 	    NETWORKED = 1,
 	    PLAY_BY_MAIL = 2,
-	    CAMPAIGN = 3
 	  };
 
 	static std::string playModeToString(const GameScenario::PlayMode mode);

@@ -84,8 +84,6 @@ RecentlyPlayedGame* RecentlyPlayedGame::handle_load(XML_Helper *helper)
     {
     case GameScenario::HOTSEAT:
       return new RecentlyPlayedHotseatGame(helper);
-    case GameScenario::CAMPAIGN:
-      return new RecentlyPlayedCampaignGame(helper);
     case GameScenario::PLAY_BY_MAIL:
       return new RecentlyPlayedPbmGame(helper);
     case GameScenario::NETWORKED:
@@ -196,37 +194,6 @@ bool RecentlyPlayedNetworkedGame::fillData(std::string host, Uint32 port)
 {
   d_host = host;
   d_port = port;
-  return true;
-}
-
-//-----------------------------------------------------------------------------
-//RecentlyPlayedCampaignGame
-
-RecentlyPlayedCampaignGame::RecentlyPlayedCampaignGame(GameScenario *scen)
-	:RecentlyPlayedGame(scen), d_filename("")
-{
-}
-
-RecentlyPlayedCampaignGame::RecentlyPlayedCampaignGame(XML_Helper *helper)
-	:RecentlyPlayedGame(helper)
-{
-  helper->getData(d_filename, "filename");
-}
-
-RecentlyPlayedCampaignGame::~RecentlyPlayedCampaignGame()
-{
-}
-
-bool RecentlyPlayedCampaignGame::doSave(XML_Helper *helper) const
-{
-  bool retval = true;
-  retval &= helper->saveData("filename", d_filename);
-  return retval;
-}
-
-bool RecentlyPlayedCampaignGame::fillData(std::string filename)
-{
-  d_filename = filename;
   return true;
 }
 

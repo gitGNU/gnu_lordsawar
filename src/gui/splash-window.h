@@ -55,7 +55,6 @@ class SplashWindow: public Decorated
     sigc::signal<void, GameParameters, int, std::string > new_hosted_network_game_requested;
     sigc::signal<void, GameParameters> new_pbm_game_requested;
     sigc::signal<void, GameParameters> new_game_requested;
-    sigc::signal<void, GameParameters> new_campaign_requested;
     sigc::signal<void, std::string> load_requested;
     sigc::signal<void> quit_requested;
 
@@ -71,7 +70,6 @@ class SplashWindow: public Decorated
   
     std::string network_game_nickname;
     
-    void on_new_campaign_clicked();
     void on_new_network_game_clicked();
     void on_new_pbm_game_clicked();
     void on_load_game_clicked();
@@ -81,7 +79,6 @@ class SplashWindow: public Decorated
     void on_rescue_crashed_game_clicked();
 	
     void on_game_started(GameParameters g);
-    void on_campaign_started(GameParameters g);
     void on_network_game_created(GameParameters g);
     void on_pbm_game_created(GameParameters g);
     void on_network_game_selected(std::string ip, unsigned short port);

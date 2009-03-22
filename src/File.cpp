@@ -30,7 +30,6 @@
 #include "File.h"
 #include <SDL_image.h>
 #include "Configuration.h"
-#include "Campaign.h"
 #include "defs.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
@@ -111,11 +110,6 @@ std::string getShieldsetDir()
   return Configuration::s_dataPath + "/" + SHIELDSETDIR + "/";
 }
 
-std::string getCampaignDir()
-{
-  return Configuration::s_dataPath + "/" + CAMPAIGNDIR + "/";
-}
-
 std::list<std::string> File::scanArmysets()
 {
     std::list<std::string> retlist = 
@@ -182,11 +176,6 @@ std::string File::getMusicFile(std::string filename)
   return std::string(Configuration::s_dataPath + "/music/" + filename.c_str());
 }
 
-std::string File::getCampaignFile(std::string filename)
-{
-  return getCampaignDir() + "/" + filename;
-}
-
 std::string File::getSavePath()
 {
     return Configuration::s_savePath + "/";
@@ -221,47 +210,6 @@ std::list<std::string> File::scanCitysets()
         exit(-1);
     }
     
-    return retlist;
-}
-
-std::list<std::string> File::scanCampaigns()
-{
-    std::string campaign;
-    std::string path = getCampaignDir();
-    std::list<std::string> retlist;
-    Glib::Dir dir(path);
-    
-    for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
-    {
-        std::string entry = *i;
-	std::string::size_type idx = entry.find(".map");
-	if (idx != std::string::npos)
-	{
-	    retlist.push_back(Glib::filename_to_utf8(entry));
-	}
-    }
-    
-    if (retlist.empty())
-    {
-      std::cerr << "Couldn't find a single campaign!" << std::endl;
-      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
-    }
-
-    //now we find the ones that are pointed to, and remove them
-    for (std::list<std::string>::iterator it = retlist.begin(); 
-	 it != retlist.end();)
-      {
-	campaign = Campaign::get_campaign_from_scenario_file(path + "/" + *it);
-	std::list<std::string>::iterator cit;
-	cit = find (retlist.begin(), retlist.end(), campaign);
-	if (cit != retlist.end())
-	  {
-	    retlist.erase (cit);
-	    continue;
-	  }
-	it++;
-      }
-
     return retlist;
 }
 

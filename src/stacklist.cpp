@@ -367,46 +367,6 @@ Stack* Stacklist::getOwnObjectAt(int x, int y)
   return 0;
 }
 
-std::list<Hero*> Stacklist::getTopHeroes(int num)
-{
-  std::list<Hero*> result;
-  std::vector<Uint32> hero_ids;
-
-  if (num == 0)
-    return result;
-
-  //load up a stack with all the heroes we have
-  Stack *stack = Stack::createNonUniqueStack(NULL, Vector<int>(1,1));
-  if (!stack)
-    return result;
-
-  getHeroes(hero_ids);
-  for (std::vector<Uint32>::iterator it = hero_ids.begin(); 
-       it != hero_ids.end(); it++)
-    {
-      Stack *hero_stack = getArmyStackById(*it);
-      Hero *hero = dynamic_cast<Hero*>(hero_stack->getArmyById(*it));
-      stack->push_back(new Hero(*hero));
-    }
-  //now we yank out the top NUM heroes and put them in our list.
-  if (num == -1)
-    num = hero_ids.size();
-  for (int i = 0 ; i < num; i++)
-    {
-      Hero *hero = dynamic_cast<Hero*>(stack->getStrongestHero());
-      if (hero)
-	{
-	  result.push_back(hero);
-	  stack->erase(find (stack->begin(), stack->end(), hero));
-	  if (stack->size() == 0)
-	    break;
-	}
-    }
-  stack->flClear();
-  delete stack;
-  return result;
-}
-
 void Stacklist::getHeroes(std::vector<Uint32>& dst)
 {
   for (Stacklist::iterator it = begin(); it != end(); it++)

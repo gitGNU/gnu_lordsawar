@@ -50,7 +50,6 @@ liblwgui_la_SOURCES = \
     diplomacy-dialog.cpp diplomacy-dialog.h \
     diplomacy-report-dialog.cpp diplomacy-report-dialog.h \
     load-scenario-dialog.cpp load-scenario-dialog.h \
-    new-campaign-dialog.cpp new-campaign-dialog.h \
     quest-assigned-dialog.cpp quest-assigned-dialog.h \
     quest-completed-dialog.cpp quest-completed-dialog.h \
     bar-chart.cpp bar-chart.h \

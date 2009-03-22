@@ -56,7 +56,6 @@ class Driver: public sigc::trackable
     sigc::signal<void, Player*> player_replaced;
 
     void on_new_game_requested(GameParameters g);
-    void on_new_campaign_requested(GameParameters g);
     void on_new_remote_network_game_requested(std::string host, unsigned short port, std::string nick);
     void on_new_hosted_network_game_requested(GameParameters g, int port, std::string nick);
     void on_new_pbm_game_requested(GameParameters g);
@@ -66,7 +65,6 @@ class Driver: public sigc::trackable
     void on_quit_requested();
 
     void on_game_ended();
-    void on_next_scenario(std::string scenario, int gold, std::list<Hero*> heroes, std::string player_name);
 
     void init_game_window();
 

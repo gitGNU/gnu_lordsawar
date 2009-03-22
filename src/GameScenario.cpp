@@ -28,7 +28,6 @@
 
 #include "ucompose.hpp"
 #include "GameScenario.h"
-#include "Campaign.h"
 #include "MapGenerator.h"
 #include "playerlist.h"
 #include "FogMap.h"
@@ -272,7 +271,6 @@ bool GameScenario::loadWithHelper(XML_Helper& helper)
   bool broken = false;
 
   helper.registerTag(d_tag, sigc::mem_fun(this, &GameScenario::load));
-  helper.registerTag(Campaign::d_tag, sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag(Itemlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag(Playerlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag(GameMap::d_tag, sigc::mem_fun(this, &GameScenario::load));
@@ -313,7 +311,6 @@ GameScenario::~GameScenario()
   Roadlist::deleteInstance();
   QuestsManager::deleteInstance();
   VectoredUnitlist::deleteInstance();
-  Campaign::deleteInstance();
 
   if (fl_counter)
     {
@@ -399,7 +396,6 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   retval &= Bridgelist::getInstance()->save(&helper);
   retval &= QuestsManager::getInstance()->save(&helper);
   retval &= VectoredUnitlist::getInstance()->save(&helper);
-  retval &= Campaign::getInstance()->save(&helper);
 
   //save the private GameScenario data last due to dependencies
   retval &= helper.openTag(GameScenario::d_tag);
@@ -476,13 +472,6 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       return true;
     }
   
-  if (tag == Campaign::d_tag)
-    {
-      debug("loading campaign")
-      Campaign::getInstance(helper);
-      return true;
-    }
-
   if (tag == FL_Counter::d_tag)
     {
       debug("loading counter")
@@ -643,9 +632,6 @@ std::string GameScenario::playModeToString(const GameScenario::PlayMode mode)
       case GameScenario::PLAY_BY_MAIL:
 	return "GameScenario::PLAY_BY_MAIL";
 	break;
-      case GameScenario::CAMPAIGN:
-	return "GameScenario::CAMPAIGN";
-	break;
     }
   return "GameScenario::HOTSEAT";
 }
@@ -660,8 +646,6 @@ GameScenario::PlayMode GameScenario::playModeFromString(const std::string str)
     return GameScenario::NETWORKED;
   else if (str == "GameScenario::PLAY_BY_MAIL")
     return GameScenario::PLAY_BY_MAIL;
-  else if (str == "GameScenario::CAMPAIGN")
-    return GameScenario::CAMPAIGN;
   return GameScenario::HOTSEAT;
 }
 	

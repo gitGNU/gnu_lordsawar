@@ -102,9 +102,6 @@ class File
         // Returns the filename of a music file (description or actual piece)
         static std::string getMusicFile(std::string filename);
         
-        // Returns the filename of a campaign related scenario file 
-        static std::string getCampaignFile(std::string filename);
-
         // get save game path
         static std::string getSavePath();
 
@@ -119,9 +116,6 @@ class File
 
 	// get the available scenarios in the user's personal collection
 	static std::list<std::string> scanUserMaps();
-
-	// get the available campaigns
-	static std::list<std::string> scanCampaigns();
 
 };
 

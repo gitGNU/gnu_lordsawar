@@ -166,20 +166,4 @@ class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
 	Uint32 d_port;
 };
 
-class RecentlyPlayedCampaignGame : public RecentlyPlayedGame
-{
-    public:
-	//! Make a new campaign game entry.
-	RecentlyPlayedCampaignGame(GameScenario *game_scenario);
-	//! Load a new campaign game from an opened saved-game file.
-	RecentlyPlayedCampaignGame(XML_Helper *helper);
-	//! Destroy a campaign game entry.
-	~RecentlyPlayedCampaignGame();
-
-	virtual bool doSave(XML_Helper *helper) const;
-	bool fillData(std::string filename);
-    private:
-	std::string d_filename;
-};
-
 #endif // RECENTLY_PLAYED_GAME_H
