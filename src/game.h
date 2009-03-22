@@ -119,6 +119,7 @@ class Game
 	can_disband_stack,
 	can_change_signpost,
 	can_see_history,
+	can_see_diplomacy,
 	received_diplomatic_proposal,
 	city_too_poor_to_produce,
 	can_end_turn;

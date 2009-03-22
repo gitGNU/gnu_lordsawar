@@ -72,6 +72,7 @@ TileSetWindow::TileSetWindow()
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
     window.reset(w);
+    w->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
     xml->get_widget("tiles_treeview", tiles_treeview);
     xml->get_widget("tile_name_entry", tile_name_entry);
@@ -603,6 +604,7 @@ void TileSetWindow::on_help_about_activated()
   xml->get_widget("dialog", d);
   dialog.reset(d);
   dialog->set_transient_for(*window.get());
+  d->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
   SDL_Surface *logo = GraphicsLoader::getMiscPicture("tileset_icon.png");

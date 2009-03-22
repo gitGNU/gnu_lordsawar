@@ -131,6 +131,7 @@ class GameWindow: public Decorated
     Gtk::MenuItem *disband_menuitem;
     Gtk::MenuItem *stack_info_menuitem;
     Gtk::MenuItem *signpost_menuitem;
+    Gtk::MenuItem *diplomacy_report_menuitem;
     Gtk::MenuItem *city_history_menuitem;
     Gtk::MenuItem *event_history_menuitem;
     Gtk::MenuItem *gold_history_menuitem;

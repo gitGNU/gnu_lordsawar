@@ -818,6 +818,7 @@ void Game::update_control_panel()
       can_disband_stack.emit(false);
       can_change_signpost.emit(false);
       can_see_history.emit(false);
+      can_see_diplomacy.emit(false);
 
       return;
     }
@@ -942,6 +943,8 @@ void Game::update_control_panel()
     can_see_history.emit(true);
   else
     can_see_history.emit(false);
+    
+  can_see_diplomacy.emit(GameScenarioOptions::s_diplomacy);
 
   can_end_turn.emit(true);
 }

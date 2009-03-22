@@ -71,6 +71,7 @@ SplashWindow::SplashWindow()
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
     window.reset(w);
+    window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     decorate(window.get(), File::getMiscFile("various/back.bmp"));
     window_closed.connect(sigc::mem_fun(this, &SplashWindow::on_window_closed));
 

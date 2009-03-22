@@ -144,6 +144,7 @@ GameWindow::GameWindow()
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
     window.reset(w);
+    w->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     decorate(window.get(), File::getMiscFile("various/back.bmp"));
     
     window_closed.connect
@@ -274,8 +275,7 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_gold_report_activated));
     xml->connect_clicked("winning_report_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_winning_report_activated));
-    xml->connect_clicked("diplomacy_report_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_diplomacy_report_activated));
+    xml->get_widget("diplomacy_report_menuitem", diplomacy_report_menuitem);
     xml->connect_clicked("quests_menuitem", 
 			 sigc::mem_fun(*this, &GameWindow::on_quests_activated));
     xml->connect_clicked("fullscreen_menuitem", 
@@ -633,6 +633,10 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   setup_menuitem(winner_history_menuitem,
 		 sigc::mem_fun(*this, &GameWindow::on_winner_history_activated),
 		 game->can_see_history);
+  setup_menuitem(diplomacy_report_menuitem,
+		 sigc::mem_fun(*this, 
+			       &GameWindow::on_diplomacy_report_activated),
+		 game->can_see_diplomacy); 
   setup_menuitem(group_ungroup_menuitem,
 		 sigc::mem_fun(*this, &GameWindow::on_group_ungroup_activated),
 		 game->can_group_ungroup_selected_stack);
@@ -1536,6 +1540,7 @@ void GameWindow::on_help_about_activated()
   Gtk::AboutDialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
+  d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   Decorated decorator;
   decorator.decorate(dialog.get());
   decorator.window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));

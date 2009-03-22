@@ -46,6 +46,7 @@ NewRandomMapDialog::NewRandomMapDialog()
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
     dialog.reset(d);
+    d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     decorate(dialog.get());
 
     xml->get_widget("map_size_combobox", map_size_combobox);
