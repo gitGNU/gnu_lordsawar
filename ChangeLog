@@ -1,5 +1,8 @@
 2009-03-21  Ben Asselstine  <benasselstine@gmail.com>
 
+	* added icons for various game windows.
+	* fixed bug wrt diplomacy report showing when not playing with
+	diplomacy.
 	* revamped the main menu and scenario loading.
 	* separated the random map stuff from the player dialog.
 	* added a new random map dialog.
