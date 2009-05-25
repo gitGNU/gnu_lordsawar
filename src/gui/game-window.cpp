@@ -2832,7 +2832,7 @@ void GameWindow::on_medal_awarded_to_army(Army *army)
   Glib::ustring s;
   s += String::ucompose(_("%1 is awarded a medal!"), army->getName());
   s += "\n\n";
-  s += String::ucompose(_("Experience: %1"), std::setprecision(2), army->getXP());
+  s += String::ucompose(_("Experience: %1"), std::setprecision(3), army->getXP());
   s += "\n";
   s += String::ucompose(_("Level: %1"), army->getLevel());
   label->set_text(s);

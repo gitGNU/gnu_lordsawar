@@ -316,7 +316,7 @@ void HeroDialog::fill_in_info_labels()
     s += String::ucompose(_("Level: %1"), hero->getLevel());
     s += "\n";
     s += String::ucompose(_("Experience: %1"),
-			  std::setprecision(2), hero->getXP());
+			  std::setprecision(3), hero->getXP());
     info_label1->set_text(s);
 
     // fill in second column
