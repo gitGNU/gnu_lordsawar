@@ -1,3 +1,7 @@
+2009-05-25  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed precision for shown experience points to be 3 instead of 2.
+
 2009-03-22  Ben Asselstine  <benasselstine@gmail.com>
 
 	* removed unfinished support for campaigns.
