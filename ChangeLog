@@ -2,6 +2,8 @@
 
 	* greying out expensive units in the buy-production dialog.  Suggested 
 	by Frans de Jonge.
+	* When choosing to occupy/pillage a city, the occupy button should be
+	on the right.  Suggested by Frans de Jonge.
 
 2009-05-25  Ben Asselstine  <benasselstine@gmail.com>
 
