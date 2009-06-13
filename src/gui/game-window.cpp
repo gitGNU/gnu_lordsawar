@@ -922,13 +922,21 @@ bool GameWindow::on_sdl_key_event(GdkEventKey *e)
 {
   static int left_shift_down = 0;
   static int right_shift_down = 0;
+  static int left_control_down = 0;
+  static int right_control_down = 0;
   if (e->keyval == GDK_Shift_L) 
     left_shift_down = !left_shift_down;
   else if (e->keyval == GDK_Shift_R)
     right_shift_down = !right_shift_down;
+  else if (e->keyval == GDK_Control_L)
+    left_control_down = !left_control_down;
+  else if (e->keyval == GDK_Control_R)
+    right_control_down = !right_control_down;
 
   if (e->keyval == GDK_Shift_L || e->keyval == GDK_Shift_R)
     game->get_bigmap().set_shift_key_down (right_shift_down || left_shift_down);
+  if (e->keyval == GDK_Control_L || e->keyval == GDK_Control_R)
+    game->get_bigmap().set_control_key_down (right_control_down || left_control_down);
 
   return true;
 }

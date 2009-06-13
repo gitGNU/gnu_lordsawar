@@ -50,7 +50,9 @@ class GameBigMap: public BigMap
     void mouse_button_event(MouseButtonEvent e);
     void mouse_motion_event(MouseMotionEvent e);
     void set_shift_key_down (bool down);
-    bool is_shift_key_down () const {return shift_key_is_down;}
+    bool is_shift_key_down () const {return control_key_is_down;}
+    void set_control_key_down (bool down);
+    bool is_control_key_down () const {return control_key_is_down;}
 
     // whether the map accepts input events
     void set_input_locked(bool locked) { input_locked = locked; }
@@ -92,6 +94,7 @@ class GameBigMap: public BigMap
 	DRAGGING_STACK
     } mouse_state;
     bool shift_key_is_down;
+    bool control_key_is_down;
 	
     GraphicsCache::CursorType d_cursor;
     void determine_mouse_cursor(Stack *stack, Vector<int> tile);

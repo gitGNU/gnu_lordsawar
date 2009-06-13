@@ -82,6 +82,7 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
 				      sigc::mem_fun(*this, &GameBigMap::on_selection_timeout),
 				      selection_timeout);
   shift_key_is_down = false;
+  control_key_is_down = false;
 }
 
 GameBigMap::~GameBigMap()
@@ -126,6 +127,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
   Player *active = Playerlist::getActiveplayer();
   Vector<int> tile = mouse_pos_to_tile(e.pos);
+  current_tile = tile;
 
   if (e.button == MouseButtonEvent::LEFT_BUTTON
       && e.state == MouseButtonEvent::PRESSED)
@@ -251,17 +253,20 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
       else
 	{
 	  stack = Stacklist::getObjectAt(tile.x, tile.y);
-	  if (stack && stack->isFriend(Playerlist::getActiveplayer()))
+	  if (stack && stack->isFriend(Playerlist::getActiveplayer()) && 
+	      d_cursor == GraphicsCache::TARGET)
 	    {
 	      Playerlist::getActiveplayer()->getStacklist()->setActivestack(stack);
 	      select_active_stack();
 	    }
 	  else
 	    {
-	      if (City* c = Citylist::getInstance()->getObjectAt(tile))
+	      City* c = Citylist::getInstance()->getObjectAt(tile);
+	      if (c != NULL && d_cursor == GraphicsCache::ROOK)
 		{
 		  if (!c->isBurnt())
 		    {
+		      set_control_key_down (false);
 		      if (d_see_opponents_production == true)
 			city_queried (c, false);
 		      else
@@ -606,6 +611,10 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	}
 
     }
+  if (control_key_is_down == true)
+    {
+      set_control_key_down (true);
+    }
   cursor_changed.emit(d_cursor);
   //debugFogTile(tile.x, tile.y);
 }
@@ -619,6 +628,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
   Player *active = Playerlist::getActiveplayer();
   Stack* stack = active->getActivestack();
   Vector<int> tile = mouse_pos_to_tile(e.pos);
+  current_tile = tile;
   if (tile.x < 0)
     tile.x = 0;
   if (tile.y < 0)
@@ -873,6 +883,52 @@ void GameBigMap::after_draw()
       SDL_BlitSurface(explode, 0, buffer, &r);
       SDL_FreeSurface(explode);
     }
+}
+
+void GameBigMap::set_control_key_down (bool down)
+{
+  Stack* active_stack = Playerlist::getActiveplayer()->getActivestack();
+  if (active_stack)
+    {
+      control_key_is_down = down;
+      return;
+    }
+  if (GameMap::getInstance()->getTile(current_tile)->getBuilding() != 
+      Maptile::CITY)
+    {
+      control_key_is_down = down;
+      return;
+    }
+  Stack* stack;
+  stack = Playerlist::getActiveplayer()->getStacklist()->getObjectAt(current_tile);
+  if (!stack)
+    {
+      control_key_is_down = down;
+      return;
+    }
+
+  if (d_cursor == GraphicsCache::TARGET)
+    {
+      City *city = Citylist::getInstance()->getObjectAt(current_tile);
+      if (city->isBurnt() == false)
+	{
+	  //control_key_is_down = down;
+	  d_cursor = GraphicsCache::ROOK;
+	  cursor_changed.emit(d_cursor);
+	}
+      control_key_is_down = down;
+    }
+  else if (d_cursor == GraphicsCache::ROOK)
+    {
+      if (control_key_is_down == true)
+	{
+	  d_cursor = GraphicsCache::TARGET;
+	  cursor_changed.emit(d_cursor);
+	}
+      control_key_is_down = down;
+    }
+  else
+    control_key_is_down = down;
 }
 
 void GameBigMap::set_shift_key_down (bool down)
