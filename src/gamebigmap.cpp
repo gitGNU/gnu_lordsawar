@@ -137,15 +137,18 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
       Stack* stack = Playerlist::getActiveplayer()->getActivestack();
 
+      if (d_cursor == GraphicsCache::HAND)
+	return;
+
       if (stack)
 	{
 	  bool path_already_set = stack->getPath()->size() > 0;
 	  // ask for military advice
 	  if (d_cursor == GraphicsCache::QUESTION)
 	    {
+	      set_shift_key_down (false);
 	      Playerlist::getActiveplayer()->stackFightAdvise
 		(stack, tile, d_intense_combat); 
-	      set_shift_key_down (false);
 	      return;
 	    }
 	  Vector<int> p;
@@ -611,10 +614,6 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	}
 
     }
-  if (control_key_is_down == true)
-    {
-      set_control_key_down (true);
-    }
   cursor_changed.emit(d_cursor);
   //debugFogTile(tile.x, tile.y);
 }
@@ -641,13 +640,13 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
   if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
       && (mouse_state == NONE || mouse_state == SHOWING_STACK) && 
-      stack && stack->getPos() == tile && active->getFogMap()->isCompletelyObscuredFogTile(tile) == false)
+      stack && stack->getPos() == tile && active->getFogMap()->isCompletelyObscuredFogTile(tile) == false && d_cursor != GraphicsCache::HAND)
     {
       //initial drag
       mouse_state = DRAGGING_STACK;
     }
   else if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
-	   && (mouse_state == NONE || mouse_state == DRAGGING_MAP) && !stack)
+	   && (mouse_state == NONE || mouse_state == DRAGGING_MAP) && d_cursor == GraphicsCache::HAND)
     {
       Vector<int> delta = -(e.pos - prev_mouse_pos);
 
@@ -725,6 +724,10 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
     }
 
   determine_mouse_cursor (stack, tile);
+  if (control_key_is_down == true)
+    set_control_key_down (true);
+  if (shift_key_is_down == true)
+    set_shift_key_down (true);
 
   prev_mouse_pos = e.pos;
   last_tile = tile;
@@ -912,7 +915,6 @@ void GameBigMap::set_control_key_down (bool down)
       City *city = Citylist::getInstance()->getObjectAt(current_tile);
       if (city->isBurnt() == false)
 	{
-	  //control_key_is_down = down;
 	  d_cursor = GraphicsCache::ROOK;
 	  cursor_changed.emit(d_cursor);
 	}
@@ -920,7 +922,7 @@ void GameBigMap::set_control_key_down (bool down)
     }
   else if (d_cursor == GraphicsCache::ROOK)
     {
-      if (control_key_is_down == true)
+      //if (control_key_is_down == true)
 	{
 	  d_cursor = GraphicsCache::TARGET;
 	  cursor_changed.emit(d_cursor);
@@ -933,35 +935,39 @@ void GameBigMap::set_control_key_down (bool down)
 
 void GameBigMap::set_shift_key_down (bool down)
 {
-  if (d_military_advisor == false)
-    return;
-  static GraphicsCache::CursorType prev_cursor = GraphicsCache::HEART;
+      
+  Stack* active_stack = Playerlist::getActiveplayer()->getActivestack();
 
-  Stack* stack = Playerlist::getActiveplayer()->getActivestack();
-  if (!stack)
-    return;
-
-  if (d_cursor == GraphicsCache::HEART ||
-      d_cursor == GraphicsCache::SWORD)
+  if (active_stack)
     {
-      if (shift_key_is_down == false)
+      if (d_cursor == GraphicsCache::SHIP || d_cursor == GraphicsCache::FEET) 
 	{
-	  shift_key_is_down = down;
-	  prev_cursor = d_cursor;
-	  d_cursor = GraphicsCache::QUESTION;
+	  d_cursor = GraphicsCache::HAND;
 	  cursor_changed.emit(d_cursor);
 	}
-    }
-  else if (d_cursor == GraphicsCache::QUESTION)
-    {
-      if (shift_key_is_down == true)
+      else if (d_cursor == GraphicsCache::HAND)
 	{
-	  shift_key_is_down = down;
-	  d_cursor = prev_cursor;
-	  cursor_changed.emit(d_cursor);
+	  determine_mouse_cursor(active_stack, current_tile);
 	}
     }
-  else
-    shift_key_is_down = down;
+
+  if (d_military_advisor == true)
+    {
+      if (active_stack)
+	{
+	  shift_key_is_down = down;
+	  if (d_cursor == GraphicsCache::SWORD)
+	    {
+	      d_cursor = GraphicsCache::QUESTION;
+	      cursor_changed.emit(d_cursor);
+	    }
+	  else if (d_cursor == GraphicsCache::QUESTION)
+	    {
+	      d_cursor = GraphicsCache::SWORD;
+	      cursor_changed.emit(d_cursor);
+	    }
+	}
+    }
+  shift_key_is_down = down;
 }
 
