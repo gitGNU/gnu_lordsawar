@@ -87,32 +87,42 @@ void ItemProto::removeBonus(ItemProto::Bonus bonus)
 
 std::string ItemProto::getBonusDescription() const
 {
+  Uint32 battle = 0;
+  Uint32 command = 0;
+  Uint32 goldpercity = 0;
   // the attributes column
   std::vector<Glib::ustring> s;
   if (getBonus(ItemProto::ADD1STR))
-    s.push_back(_("+1 Battle"));
+    battle++;
   if (getBonus(ItemProto::ADD2STR))
-    s.push_back(_("+2 Battle"));
+    battle+=2;
   if (getBonus(ItemProto::ADD3STR))
-    s.push_back(_("+3 Battle"));
+    battle+=3;
   if (getBonus(ItemProto::ADD1STACK))
-    s.push_back(_("+1 Command"));
+    command++;
   if (getBonus(ItemProto::ADD2STACK))
-    s.push_back(_("+2 Command"));
+    command+=2;
   if (getBonus(ItemProto::ADD3STACK))
-    s.push_back(_("+3 Command"));
+    command+=3;
   if (getBonus(ItemProto::FLYSTACK))
     s.push_back(_("Allows Flight"));
   if (getBonus(ItemProto::DOUBLEMOVESTACK))
     s.push_back(_("Doubles Movement"));
   if (getBonus(ItemProto::ADD2GOLDPERCITY))
-    s.push_back(_("+2 gold per city"));
+    goldpercity+=2;
   if (getBonus(ItemProto::ADD3GOLDPERCITY))
-    s.push_back(_("+3 gold per city"));
+    goldpercity+=3;
   if (getBonus(ItemProto::ADD4GOLDPERCITY))
-    s.push_back(_("+4 gold per city"));
+    goldpercity+=4;
   if (getBonus(ItemProto::ADD5GOLDPERCITY))
-    s.push_back(_("+5 gold per city"));
+    goldpercity+=5;
+
+  if (battle > 0)
+    s.push_back(String::ucompose(_("+%1 Battle"), battle));
+  if (command > 0)
+    s.push_back(String::ucompose(_("+%1 Command"), command));
+  if (goldpercity > 0)
+    s.push_back(String::ucompose(_("+%1 gold per city"), goldpercity));
 
   Glib::ustring str;
   bool first = true;
