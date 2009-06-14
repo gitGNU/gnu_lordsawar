@@ -183,15 +183,14 @@ GameWindow::GameWindow()
        (sigc::mem_fun(*this, &GameWindow::on_map_mouse_motion_event));
 
     // the stats
-    Gtk::Image *image;
-    xml->get_widget("cities_stats_image", image);
-    image->property_file() = File::getMiscFile("various/smallcity.png");
-    xml->get_widget("gold_stats_image", image);
-    image->property_file() = File::getMiscFile("various/smalltreasury.png");
-    xml->get_widget("income_stats_image", image);
-    image->property_file() = File::getMiscFile("various/smallincome.png");
-    xml->get_widget("upkeep_stats_image", image);
-    image->property_file() = File::getMiscFile("various/smallupkeep.png");
+    xml->get_widget("cities_stats_image", cities_stats_image);
+    cities_stats_image->property_file() = File::getMiscFile("various/smallcity.png");
+    xml->get_widget("gold_stats_image", gold_stats_image);
+    gold_stats_image->property_file() = File::getMiscFile("various/smalltreasury.png");
+    xml->get_widget("income_stats_image", income_stats_image);
+    income_stats_image->property_file() = File::getMiscFile("various/smallincome.png");
+    xml->get_widget("upkeep_stats_image", upkeep_stats_image);
+    upkeep_stats_image->property_file() = File::getMiscFile("various/smallupkeep.png");
     
     xml->get_widget("cities_stats_label", cities_stats_label);
     xml->get_widget("gold_stats_label", gold_stats_label);
@@ -920,23 +919,11 @@ void GameWindow::on_bigmap_cursor_changed(GraphicsCache::CursorType cursor)
 
 bool GameWindow::on_sdl_key_event(GdkEventKey *e)
 {
-  static int left_shift_down = 0;
-  static int right_shift_down = 0;
-  static int left_control_down = 0;
-  static int right_control_down = 0;
-  if (e->keyval == GDK_Shift_L) 
-    left_shift_down = !left_shift_down;
-  else if (e->keyval == GDK_Shift_R)
-    right_shift_down = !right_shift_down;
-  else if (e->keyval == GDK_Control_L)
-    left_control_down = !left_control_down;
-  else if (e->keyval == GDK_Control_R)
-    right_control_down = !right_control_down;
 
   if (e->keyval == GDK_Shift_L || e->keyval == GDK_Shift_R)
-    game->get_bigmap().set_shift_key_down (right_shift_down || left_shift_down);
+    game->get_bigmap().set_shift_key_down (e->type == GDK_KEY_PRESS);
   if (e->keyval == GDK_Control_L || e->keyval == GDK_Control_R)
-    game->get_bigmap().set_control_key_down (right_control_down || left_control_down);
+    game->get_bigmap().set_control_key_down (e->type == GDK_KEY_PRESS);
 
   return true;
 }
@@ -1776,6 +1763,27 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
       upkeep_stats_label->set_markup(String::ucompose("%1", s.upkeep));
       turn_label->set_markup(String::ucompose("Turn %1", s.turns));
     }
+  Glib::ustring tip;
+  tip = String::ucompose(
+			 ngettext("You have %1 city!",
+				  "You have %1 cities!", s.cities), s.cities);
+  cities_stats_image->set_tooltip_text(tip);
+  cities_stats_label->set_tooltip_text(tip);
+  tip = String::ucompose(
+			 ngettext("You have %1 gold piece in your treasury!",
+				  "You have %1 gold pieces in your treasury!", s.gold), s.gold);
+  gold_stats_image->set_tooltip_text(tip);
+  gold_stats_label->set_tooltip_text(tip);
+  tip = String::ucompose(
+			 ngettext("You earn %1 gold piece in income!",
+				  "You earn %1 gold pieces in income!", s.income), s.income);
+  income_stats_image->set_tooltip_text(tip);
+  income_stats_label->set_tooltip_text(tip);
+  tip = String::ucompose(
+			 ngettext("You pay %1 gold piece in upkeep!",
+				  "You pay %1 gold pieces in upkeep!", s.upkeep), s.upkeep);
+  upkeep_stats_image->set_tooltip_text(tip);
+  upkeep_stats_label->set_tooltip_text(tip);
 }
 
 void GameWindow::on_smallmap_changed(SDL_Surface *map)

@@ -330,6 +330,10 @@ public:
     std::list<Hero*> d_heroes;
     std::string d_player_name;
     std::string d_load_filename;
+    Gtk::Image *cities_stats_image;
+    Gtk::Image *gold_stats_image;
+    Gtk::Image *income_stats_image;
+    Gtk::Image *upkeep_stats_image;
 };
 
 #endif
