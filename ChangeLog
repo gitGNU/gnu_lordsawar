@@ -1,5 +1,7 @@
 2009-06-14  Ben Asselstine  <benasselstine@gmail.com>
 
+	* fixed item description generation to sum the battle, command, and 
+	gold per city bonuses.  Reported by Jon Eicher.
 	* added information to statistic icon tooltips (gold/upkeep/etc).
 	Suggested by Frans de Jonge.
 	* Shift + hover over a ruin or temple shows a ruin cursor.  Suggested
