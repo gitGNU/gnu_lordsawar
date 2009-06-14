@@ -151,6 +151,25 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		(stack, tile, d_intense_combat); 
 	      return;
 	    }
+	  else if (d_cursor == GraphicsCache::RUIN)
+	    {
+	      if (Ruin *r = Ruinlist::getInstance()->getObjectAt(tile))
+		{
+		  if ((r->isHidden() == true && 
+		       r->getOwner() == Playerlist::getActiveplayer()) ||
+		      r->isHidden() == false)
+		    {
+		      set_shift_key_down (false);
+		      ruin_queried (r, false);
+		    }
+		}
+	      else if (Temple *t = Templelist::getInstance()->getObjectAt(tile))
+		{
+		  temple_queried (t, false);
+		  set_shift_key_down (false);
+		}
+	      return;
+	    }
 	  Vector<int> p;
 	  p.x = tile.x; p.y = tile.y;
 
@@ -890,25 +909,26 @@ void GameBigMap::after_draw()
 
 void GameBigMap::set_control_key_down (bool down)
 {
-  Stack* active_stack = Playerlist::getActiveplayer()->getActivestack();
-  if (active_stack)
-    {
-      control_key_is_down = down;
-      return;
-    }
+  control_key_is_down = down;
+  Player *active = Playerlist::getActiveplayer();
+  if (active->getFogMap()->isCompletelyObscuredFogTile(current_tile) == true)
+    return;
   if (GameMap::getInstance()->getTile(current_tile)->getBuilding() != 
       Maptile::CITY)
+      return;
+  Stack* active_stack = active->getActivestack();
+  if (active_stack)
+      return;
+  //if the key has been released, just show what we'd normally show.
+  if (control_key_is_down == false)
     {
-      control_key_is_down = down;
+      determine_mouse_cursor(active_stack, current_tile);
       return;
     }
   Stack* stack;
   stack = Playerlist::getActiveplayer()->getStacklist()->getObjectAt(current_tile);
   if (!stack)
-    {
-      control_key_is_down = down;
-      return;
-    }
+    return;
 
   if (d_cursor == GraphicsCache::TARGET)
     {
@@ -918,56 +938,71 @@ void GameBigMap::set_control_key_down (bool down)
 	  d_cursor = GraphicsCache::ROOK;
 	  cursor_changed.emit(d_cursor);
 	}
-      control_key_is_down = down;
     }
-  else if (d_cursor == GraphicsCache::ROOK)
-    {
-      //if (control_key_is_down == true)
-	{
-	  d_cursor = GraphicsCache::TARGET;
-	  cursor_changed.emit(d_cursor);
-	}
-      control_key_is_down = down;
-    }
-  else
-    control_key_is_down = down;
 }
 
 void GameBigMap::set_shift_key_down (bool down)
 {
-      
-  Stack* active_stack = Playerlist::getActiveplayer()->getActivestack();
+  shift_key_is_down = down;
+  Player *active = Playerlist::getActiveplayer();
+  if (active->getFogMap()->isCompletelyObscuredFogTile(current_tile) == true)
+      return;
+
+  Stack* active_stack = active->getActivestack();
+
+  //if the key has been released, just show what we'd normally show.
+  if (shift_key_is_down == false)
+    {
+      determine_mouse_cursor(active_stack, current_tile);
+      return;
+    }
+
+  //otherwise the shift key is down and we need to do some more checking
+  Maptile::Building b = GameMap::getInstance()->getTile(current_tile)->getBuilding();
+  if (b == Maptile::RUIN)
+    {
+      Ruin *r = Ruinlist::getInstance()->getObjectAt(current_tile);
+      if (r)
+	{
+	  if ((r->isHidden() == true && 
+	       r->getOwner() == Playerlist::getActiveplayer()) ||
+	      r->isHidden() == false)
+	    b = Maptile::RUIN;
+	  else
+	    b = Maptile::NONE;
+	}
+    }
 
   if (active_stack)
     {
       if (d_cursor == GraphicsCache::SHIP || d_cursor == GraphicsCache::FEET) 
 	{
-	  d_cursor = GraphicsCache::HAND;
+	  if (b == Maptile::RUIN || b == Maptile::TEMPLE)
+	    d_cursor = GraphicsCache::RUIN;
+	  else
+	    d_cursor = GraphicsCache::HAND;
 	  cursor_changed.emit(d_cursor);
 	}
-      else if (d_cursor == GraphicsCache::HAND)
+    }
+  else
+    {
+      if (d_cursor != GraphicsCache::RUIN)
 	{
-	  determine_mouse_cursor(active_stack, current_tile);
+	  if (b == Maptile::RUIN || b == Maptile::TEMPLE)
+	    {
+	      d_cursor = GraphicsCache::RUIN;
+	      cursor_changed.emit(d_cursor);
+	    }
 	}
     }
 
   if (d_military_advisor == true)
     {
-      if (active_stack)
+      if (active_stack && d_cursor == GraphicsCache::SWORD)
 	{
-	  shift_key_is_down = down;
-	  if (d_cursor == GraphicsCache::SWORD)
-	    {
 	      d_cursor = GraphicsCache::QUESTION;
 	      cursor_changed.emit(d_cursor);
-	    }
-	  else if (d_cursor == GraphicsCache::QUESTION)
-	    {
-	      d_cursor = GraphicsCache::SWORD;
-	      cursor_changed.emit(d_cursor);
-	    }
 	}
     }
-  shift_key_is_down = down;
 }
 
