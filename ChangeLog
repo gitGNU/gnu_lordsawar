@@ -1,17 +1,23 @@
+2009-06-14  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added information to statistic icon tooltips (gold/upkeep/etc).
+	Suggested by Frans de Jonge.
+	* Shift + hover over a ruin or temple shows a ruin cursor.  Suggested
+	by Frans de Jonge.
+
 2009-06-13  Ben Asselstine  <benasselstine@gmail.com>
 
 	* now bringing up the city dialog by hitting ctrl and clicking on a 
-	stack in the city.  This is useful for when cities are full.  Suggested
-	by Frans De Jonge.
+	stack in the city.  Suggested by Frans de Jonge.
 	* can now drag the map when we have a stack selected by holding down
-	the shift key.  Suggested by Frans De Jonge.
+	the shift key.  Suggested by Frans de Jonge.
 
 2009-06-12  Ben Asselstine  <benasselstine@gmail.com>
 
 	* greying out expensive units in the buy-production dialog.  Suggested 
 	by Frans de Jonge.
-	* When choosing to occupy/pillage a city, the occupy button should be
-	on the right.  Suggested by Frans de Jonge.
+	* When choosing to occupy/pillage a city, the occupy button is now 
+	on the left.  Suggested by Frans de Jonge.
 
 2009-05-25  Ben Asselstine  <benasselstine@gmail.com>
 
