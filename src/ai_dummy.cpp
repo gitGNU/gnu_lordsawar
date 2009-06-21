@@ -59,6 +59,7 @@ AI_Dummy::~AI_Dummy()
 void AI_Dummy::abortTurn()
 {
   d_abort_requested = true;
+  aborted_turn.emit();
 }
 
 bool AI_Dummy::startTurn()
