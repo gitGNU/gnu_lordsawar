@@ -170,6 +170,30 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		}
 	      return;
 	    }
+	  else if (d_cursor == GraphicsCache::ROOK)
+	    {
+	      City* c = Citylist::getInstance()->getObjectAt(tile);
+	      if (c != NULL)
+		{
+		  if (!c->isBurnt())
+		    {
+		      set_control_key_down (false);
+		      if (d_see_opponents_production == true)
+			{
+			  city_queried (c, false);
+			  set_shift_key_down (false);
+			}
+		      else
+			{
+			  if (c->getOwner() == Playerlist::getActiveplayer())
+			    {
+			      city_queried (c, false);
+			      set_shift_key_down (false);
+			    }
+			}
+		    }
+		}
+	    }
 	  Vector<int> p;
 	  p.x = tile.x; p.y = tile.y;
 
@@ -290,11 +314,17 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		    {
 		      set_control_key_down (false);
 		      if (d_see_opponents_production == true)
-			city_queried (c, false);
+			{
+			  city_queried (c, false);
+			  set_shift_key_down (false);
+			}
 		      else
 			{
 			  if (c->getOwner() == Playerlist::getActiveplayer())
-			    city_queried (c, false);
+			    {
+			      city_queried (c, false);
+			      set_shift_key_down (false);
+			    }
 			}
 		    }
 		}
@@ -939,6 +969,16 @@ void GameBigMap::set_control_key_down (bool down)
 	  cursor_changed.emit(d_cursor);
 	}
     }
+  else if (d_cursor == GraphicsCache::HAND &&
+	   d_see_opponents_production == true)
+    {
+      City *city = Citylist::getInstance()->getObjectAt(current_tile);
+      if (city->isBurnt() == false)
+	{
+	  d_cursor = GraphicsCache::ROOK;
+	  cursor_changed.emit(d_cursor);
+	}
+    }
 }
 
 void GameBigMap::set_shift_key_down (bool down)
@@ -970,6 +1010,20 @@ void GameBigMap::set_shift_key_down (bool down)
 	    b = Maptile::RUIN;
 	  else
 	    b = Maptile::NONE;
+	}
+    }
+  else if (b == Maptile::CITY)
+    {
+      if (d_cursor == GraphicsCache::TARGET)
+	{
+	  d_cursor = GraphicsCache::ROOK;
+	  cursor_changed.emit(d_cursor);
+	}
+      else if (d_cursor == GraphicsCache::HAND &&
+	       d_see_opponents_production == true)
+	{
+	  d_cursor = GraphicsCache::ROOK;
+	  cursor_changed.emit(d_cursor);
 	}
     }
 
