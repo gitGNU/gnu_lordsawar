@@ -202,7 +202,7 @@ class XML_Helper
 
         
         //! Used internally for the expat callback
-        bool tag_open(std::string tag, std::string version);
+        bool tag_open(std::string tag, std::string version, std::string lang);
 
         //! Used internally for the expat callback
         bool tag_close(std::string tag, std::string cdata = "");
@@ -212,6 +212,8 @@ class XML_Helper
           * to a line. Used for beautification.
           */
         inline void addTabs();
+
+	bool lang_check(std::string lang);
         
         
         //streams, d_fout and d_fin are used when it comes to file
@@ -230,6 +232,7 @@ class XML_Helper
 
         std::map<std::string, XML_Slot> d_callbacks;
         std::map<std::string, std::string> d_data;
+        std::map<std::string, std::string> d_lang;
         
         std::string d_last_opened;
         std::string d_version;

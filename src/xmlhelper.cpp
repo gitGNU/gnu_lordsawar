@@ -596,7 +596,7 @@ bool XML_Helper::parse()
  * which has led tag_open to already call the callback.
  */
 
-bool XML_Helper::tag_open(std::string tag, std::string version)
+bool XML_Helper::tag_open(std::string tag, std::string version, std::string lang)
 {
     if (d_failed)
         return false;
@@ -610,7 +610,10 @@ bool XML_Helper::tag_open(std::string tag, std::string version)
     //look if the tag starts with "d_". If so, it is a data tag without anything
     //important in between
     if ((tag[0] == 'd') && (tag[1] == '_'))
-        return true;
+      {
+	d_lang[tag] = lang;
+	return true;
+      }
     
     //first of all, look if another important tag has already been opened
     //and call the appropriate callback if so
@@ -638,11 +641,29 @@ bool XML_Helper::tag_open(std::string tag, std::string version)
 
         //clear d_data (we are just setting up a new tag)
         d_data.clear();
+        d_lang.clear();
     }
 
     d_last_opened = tag;
 
     return true;
+}
+
+bool XML_Helper::lang_check(std::string lang)
+{
+  static char *envlang = getenv("LANG");
+  if (lang == "")
+    return true;
+  if (lang == envlang)
+    return true;
+  //try harder
+  char *first_underscore = strchr (envlang, '_');
+  if (first_underscore)
+    {
+      if (strncmp (lang.c_str(), envlang, first_underscore - envlang) == 0)
+	return true;
+    }
+  return false;
 }
 
 bool XML_Helper::tag_close(std::string tag, std::string cdata)
@@ -656,7 +677,8 @@ bool XML_Helper::tag_close(std::string tag, std::string cdata)
     if ((tag[0] == 'd') && (tag[1] == '_'))
     {
         // save the data (we close a data tag)
-        d_data[tag] = cdata;
+	if (lang_check(d_lang[tag]))
+	  d_data[tag] = cdata;
         return true;    //data tags end here with their execution
     }
 
@@ -682,6 +704,7 @@ bool XML_Helper::tag_close(std::string tag, std::string cdata)
 
     //clear d_data (we are just setting up a new tag)
     d_data.clear();
+    d_lang.clear();
     
     return true;
 }
@@ -697,14 +720,18 @@ void start_handler(void* udata, const XML_Char* name, const XML_Char** atts)
     
     XML_Helper* helper = static_cast<XML_Helper*>(udata);
     std::string version = "";
+    std::string lang = "";
 
     //the only attribute we know and handle are version strings
     if ((atts[0] != 0) && (std::string(atts[0]) == "version"))
         version = std::string(atts[1]);
 
+    if ((atts[0] != 0) && (std::string(atts[0]) == "xml:lang"))
+        lang = std::string(atts[1]);
+
     my_cdata = "";
 
-    error = !helper->tag_open(std::string(name), version);
+    error = !helper->tag_open(std::string(name), version, lang);
 }
 
 //the cdata handler, just sums up the string  s
