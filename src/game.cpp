@@ -1232,6 +1232,7 @@ void Game::on_surrender_offered(Player *recipient)
   Playerlist *plist = Playerlist::getInstance();
   if (enemy_offers_surrender.emit(plist->countPlayersAlive() - 1))
     {
+      plist->surrender();
       surrender_answered.emit(true);
       game_over.emit(recipient);
     }

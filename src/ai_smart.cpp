@@ -125,7 +125,8 @@ bool AI_Smart::startTurn()
 void AI_Smart::abortTurn()
 {
   d_abort_requested = true;
-  aborted_turn.emit();
+  if (surrendered)
+    aborted_turn.emit();
 }
 
 void AI_Smart::invadeCity(City* c)

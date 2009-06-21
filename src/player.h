@@ -1300,6 +1300,15 @@ class Player: public sigc::trackable
 	bool conqueredCity(City *c);
 	std::list<Vector<int> > getStackTrack(Stack *s);
 	std::list<History *> getHistoryForHeroId(Uint32 id);
+	//! Set whether or not this player has surrendered.
+	/*
+	 * computer players may surrender to a lone human player who has most
+	 * of the cities on the board.
+	 * this method merely sets the surrendered member so that we can
+	 * quit properly. e.g. it triggers the aborted_Turn signal to be fired
+	 * at a different time in fast, smart and dummy players.
+	 */
+	void setSurrendered(bool surr);
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,
@@ -1385,6 +1394,9 @@ class Player: public sigc::trackable
 
 	//! Whether or not this player is observable by the user.
 	bool d_observable;
+
+	//! Whether or not this player has surrendered.
+	bool surrendered;
 
 	//! assists in scorekeeping for diplomacy
 	void alterDiplomaticRelationshipScore (Player *player, int amount);

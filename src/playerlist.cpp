@@ -823,3 +823,15 @@ std::list<History *>Playerlist::getHistoryForHeroId(Uint32 id)
     }
   return no_events;
 }
+
+void Playerlist::surrender()
+{
+  //the last human player has accepted surrender
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getType() != Player::HUMAN)
+	{
+	  (*it)->setSurrendered(true);
+	}
+    }
+}

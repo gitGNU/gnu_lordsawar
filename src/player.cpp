@@ -78,7 +78,7 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, int width,
 	       int height, Type type, int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
     d_dead(false), d_immortal(false), d_type(type), d_upkeep(0), d_income(0),
-    d_observable(true)
+    d_observable(true), surrendered(false)
 {
     if (player_no != -1)
 	d_id = player_no;
@@ -114,7 +114,8 @@ Player::Player(const Player& player)
     d_gold(player.d_gold), d_dead(player.d_dead), d_immortal(player.d_immortal),
     d_type(player.d_type), d_id(player.d_id), 
     d_fight_order(player.d_fight_order), d_upkeep(player.d_upkeep), 
-    d_income(player.d_income), d_observable(player.d_observable)
+    d_income(player.d_income), d_observable(player.d_observable),
+    surrendered(player.surrendered)
 {
     // as the other player is propably dumped somehow, we need to deep copy
     // everything. This costs a lot, but the only useful situation for this
@@ -156,7 +157,7 @@ Player::Player(const Player& player)
 }
 
 Player::Player(XML_Helper* helper)
-    :d_stacklist(0), d_fogmap(0)
+    :d_stacklist(0), d_fogmap(0), surrendered(false)
 {
     helper->getData(d_id, "id");
     helper->getData(d_name, "name");
@@ -3318,5 +3319,10 @@ std::list<History *>Player::getHistoryForHeroId(Uint32 id)
 	}
     }
   return events;
+}
+
+void Player::setSurrendered(bool surr)
+{
+  surrendered = surr;
 }
 // End of file

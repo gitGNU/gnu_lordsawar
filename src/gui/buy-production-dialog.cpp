@@ -102,7 +102,7 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 		       toggle), false);
 	toggle->set_sensitive
 	  (city->hasProductionBase(purchasables[i]) == false);
-	if (purchasables[i]->getProductionCost() > c->getOwner()->getGold())
+	if ((int)purchasables[i]->getProductionCost() > c->getOwner()->getGold())
 	  toggle->set_sensitive (false);
     }
 

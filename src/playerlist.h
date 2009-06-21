@@ -227,6 +227,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	void reorder(std::list<Uint32> order);
 
 	std::list<History *>getHistoryForHeroId(Uint32 id);
+
+	void surrender();
     protected:
 	//! Default constructor.
         Playerlist();

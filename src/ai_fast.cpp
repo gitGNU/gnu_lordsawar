@@ -93,7 +93,8 @@ bool AI_Fast::save(XML_Helper* helper) const
 void AI_Fast::abortTurn()
 {
   d_abort_requested = true;
-  aborted_turn.emit();
+  if (surrendered)
+    aborted_turn.emit();
 }
 
 bool AI_Fast::startTurn()
