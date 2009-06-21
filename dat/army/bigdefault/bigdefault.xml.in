@@ -1,11 +1,11 @@
 <armyset version="">
 	<d_id>2</d_id>
-	<d_name>Default</d_name>
+	<_d_name>Default</_d_name>
 	<d_tilesize>80</d_tilesize>
 	<armyproto>
-		<d_name>Scouts</d_name>
+		<_d_name>Scouts</_d_name>
 		<d_image>scouts</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>1</d_production>
 		<d_production_cost>10</d_production_cost>
 		<d_upkeep>2</d_upkeep>
@@ -21,9 +21,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Light Inf.</d_name>
+		<_d_name>Light Inf.</_d_name>
 		<d_image>lightinf</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>1</d_production>
 		<d_production_cost>50</d_production_cost>
 		<d_upkeep>3</d_upkeep>
@@ -39,9 +39,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Orcish Mob</d_name>
+		<_d_name>Orcish Mob</_d_name>
 		<d_image>orcishmob</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>100</d_production_cost>
 		<d_upkeep>4</d_upkeep>
@@ -57,9 +57,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Heavy Inf.</d_name>
+		<_d_name>Heavy Inf.</_d_name>
 		<d_image>heavyinf</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>300</d_production_cost>
 		<d_upkeep>5</d_upkeep>
@@ -75,9 +75,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Pikemen</d_name>
+		<_d_name>Pikemen</_d_name>
 		<d_image>pikeman</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>3</d_production>
 		<d_production_cost>400</d_production_cost>
 		<d_upkeep>5</d_upkeep>
@@ -93,9 +93,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Archers</d_name>
+		<_d_name>Archers</_d_name>
 		<d_image>archers</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>400</d_production_cost>
 		<d_upkeep>7</d_upkeep>
@@ -111,9 +111,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Dwarves</d_name>
+		<_d_name>Dwarves</_d_name>
 		<d_image>dwarves</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>400</d_production_cost>
 		<d_upkeep>7</d_upkeep>
@@ -129,9 +129,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Minotaurs</d_name>
+		<_d_name>Minotaurs</_d_name>
 		<d_image>minotaurs</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>800</d_production_cost>
 		<d_upkeep>10</d_upkeep>
@@ -147,9 +147,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Giants</d_name>
+		<_d_name>Giants</_d_name>
 		<d_image>giants</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>800</d_production_cost>
 		<d_upkeep>10</d_upkeep>
@@ -165,9 +165,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Spiders</d_name>
+		<_d_name>Spiders</_d_name>
 		<d_image>spiders</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>1000</d_production_cost>
 		<d_upkeep>12</d_upkeep>
@@ -183,9 +183,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Light Cav.</d_name>
+		<_d_name>Light Cav.</_d_name>
 		<d_image>lightcav</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>300</d_production_cost>
 		<d_upkeep>6</d_upkeep>
@@ -201,9 +201,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Wolfriders</d_name>
+		<_d_name>Wolfriders</_d_name>
 		<d_image>wolfriders</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>500</d_production_cost>
 		<d_upkeep>8</d_upkeep>
@@ -219,9 +219,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Heavy Cav.</d_name>
+		<_d_name>Heavy Cav.</_d_name>
 		<d_image>heavycav</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>3</d_production>
 		<d_production_cost>500</d_production_cost>
 		<d_upkeep>8</d_upkeep>
@@ -237,9 +237,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Catapults</d_name>
+		<_d_name>Catapults</_d_name>
 		<d_image>catapults</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>500</d_production_cost>
 		<d_upkeep>16</d_upkeep>
@@ -255,9 +255,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Elephants</d_name>
+		<_d_name>Elephants</_d_name>
 		<d_image>elephants</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>1500</d_production_cost>
 		<d_upkeep>15</d_upkeep>
@@ -273,9 +273,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Giant Bats</d_name>
+		<_d_name>Giant Bats</_d_name>
 		<d_image>giantbats</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>1</d_production>
 		<d_production_cost>30</d_production_cost>
 		<d_upkeep>5</d_upkeep>
@@ -291,9 +291,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Pegasi</d_name>
+		<_d_name>Pegasi</_d_name>
 		<d_image>pegasi</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>3</d_production>
 		<d_production_cost>1000</d_production_cost>
 		<d_upkeep>12</d_upkeep>
@@ -309,9 +309,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Griffins</d_name>
+		<_d_name>Griffins</_d_name>
 		<d_image>griffins</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>3</d_production>
 		<d_production_cost>1500</d_production_cost>
 		<d_upkeep>15</d_upkeep>
@@ -327,9 +327,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Giant Worms</d_name>
+		<_d_name>Giant Worms</_d_name>
 		<d_image>giantworms</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
@@ -345,9 +345,9 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Ghosts</d_name>
+		<_d_name>Ghosts</_d_name>
 		<d_image>ghosts</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
@@ -363,9 +363,9 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Wizards</d_name>
+		<_d_name>Wizards</_d_name>
 		<d_image>wizards</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
@@ -381,9 +381,9 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Unicorns</d_name>
+		<_d_name>Unicorns</_d_name>
 		<d_image>unicorns</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>1500</d_production_cost>
 		<d_upkeep>15</d_upkeep>
@@ -399,9 +399,9 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Elementals</d_name>
+		<_d_name>Elementals</_d_name>
 		<d_image>elementals</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
@@ -417,9 +417,9 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Devils</d_name>
+		<_d_name>Devils</_d_name>
 		<d_image>devils</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
@@ -435,9 +435,9 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Demons</d_name>
+		<_d_name>Demons</_d_name>
 		<d_image>daemons</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
@@ -453,9 +453,9 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Archons</d_name>
+		<_d_name>Archons</_d_name>
 		<d_image>archons</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
@@ -471,9 +471,9 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>Dragons</d_name>
+		<_d_name>Dragons</_d_name>
 		<d_image>dragons</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
@@ -489,9 +489,9 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
-		<d_name>hero</d_name>
+		<_d_name>hero</_d_name>
 		<d_image>hero</d_image>
-		<d_description></d_description>
+		<_d_description></_d_description>
 		<d_production>0</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>0</d_upkeep>
