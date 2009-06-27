@@ -21,6 +21,7 @@
 #include <SDL_image.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <glibmm/timeval.h>
 
 #include "gamebigmap.h"
 
@@ -46,6 +47,7 @@
 #include "game.h"
 #include "FogMap.h"
 #include "LocationBox.h"
+#include "Configuration.h"
 
 #include "timing.h"
 
@@ -132,6 +134,20 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
   if (e.button == MouseButtonEvent::LEFT_BUTTON
       && e.state == MouseButtonEvent::PRESSED)
     {
+      bool double_clicked = false;
+      static Glib::TimeVal last_clicked;
+      if (last_clicked.as_double() == 0.0)
+	last_clicked.assign_current_time();
+      else
+	{
+	  Glib::TimeVal clicked_now;
+	  clicked_now.assign_current_time();
+	  double click_delta = clicked_now.as_double() - 
+	    last_clicked.as_double();
+	  if (click_delta <= Configuration::s_double_click_threshold / 1000.0)
+	    double_clicked = true;
+	  last_clicked = clicked_now;
+	}
       if (active->getFogMap()->isCompletelyObscuredFogTile(tile) == true)
 	return;
 
@@ -198,13 +214,26 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	  p.x = tile.x; p.y = tile.y;
 
 	  // clicked on the already active stack
-	  if (stack->getPos().x == tile.x && stack->getPos().y == tile.y)
+	  if (stack->getPos() == tile)
 	    {
-	      // clear the path
-	      stack->getPath()->flClear();
-	      path_set.emit();
-	      draw();
-	      return;
+	      if (double_clicked == true)
+		{
+		  if (stack->isGrouped() == true)
+		    stack->ungroup();
+		  else
+		    stack->group();
+		  draw();
+		  stack_grouped_or_ungrouped.emit(stack);
+		  return;
+		}
+	      else
+		{
+		  // clear the path
+		  stack->getPath()->flClear();
+		  path_set.emit();
+		  draw();
+		  return;
+		}
 	    }
 
 	  //clicked on an enemy city that is too far away

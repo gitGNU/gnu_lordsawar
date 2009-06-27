@@ -165,6 +165,8 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 		  GameScenario::s_military_advisor));
     bigmap->stack_selected.connect(
 	sigc::mem_fun(this, &Game::on_stack_selected));
+    bigmap->stack_grouped_or_ungrouped.connect(
+	sigc::mem_fun(this, &Game::on_stack_grouped_or_ungrouped));
     bigmap->path_set.connect(
 	sigc::mem_fun(this, &Game::update_control_panel));
     bigmap->city_queried.connect(
@@ -585,6 +587,12 @@ void Game::newMedalArmy(Army* a)
 
   medal_awarded_to_army.emit(a);
   update_stack_info();
+}
+
+void Game::on_stack_grouped_or_ungrouped(Stack *s)
+{
+  update_stack_info();
+  update_control_panel();
 }
 
 void Game::on_stack_selected(Stack* s)

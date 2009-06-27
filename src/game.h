@@ -180,6 +180,7 @@ class Game
 
     // bigmap callbacks
     void on_stack_selected(Stack* s);
+    void on_stack_grouped_or_ungrouped(Stack *s);
     void on_city_queried (City* c, bool brief);
     void on_ruin_queried (Ruin* r, bool brief);
     void on_temple_queried (Temple* t, bool brief);

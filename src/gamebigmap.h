@@ -59,6 +59,7 @@ class GameBigMap: public BigMap
 
     // signals for mouse clicks, deselect is signified with a null pointer
     sigc::signal<void, Stack*> stack_selected;
+    sigc::signal<void, Stack*> stack_grouped_or_ungrouped;
     sigc::signal<void, City*, bool> city_queried; // true => show brief info
     sigc::signal<void, Ruin*, bool> ruin_queried; //true => show brief info
     sigc::signal<void, Signpost*> signpost_queried;
