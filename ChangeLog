@@ -7,6 +7,8 @@
 	* fixing reward generation so that map rewards can be created.
 	* fixing #26784.  pressing shift while hovering over a city turns the
 	mouse cursor into a rook icon.  Suggested by Frans De Jonge.
+	* fixing #26896.  adding double clicking of stacks to group them.
+	Suggested by Frans de Jonge.
 
 2009-06-21  Ben Asselstine  <benasselstine@gmail.com>
 
