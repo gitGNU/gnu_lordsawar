@@ -1,3 +1,11 @@
+2009-06-27  Ben Asselstine  <benasselstine@gmail.com>
+
+	* mixing player shields with production shields on production map.
+	* adding white box around the active city on the production map.
+	* fixing vectoring so that only 4 cities at a time can vector to a 
+	single city.
+	* fixing reward generation so that map rewards can be created.
+
 2009-06-21  Ben Asselstine  <benasselstine@gmail.com>
 
 	* adding shift+hover over unit in city.  Suggested by Frans de Jonge.
