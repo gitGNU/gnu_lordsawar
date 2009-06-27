@@ -1019,6 +1019,11 @@ void GameBigMap::set_shift_key_down (bool down)
 	  d_cursor = GraphicsCache::ROOK;
 	  cursor_changed.emit(d_cursor);
 	}
+      else if (d_cursor == GraphicsCache::FEET)
+	{
+	  d_cursor = GraphicsCache::ROOK;
+	  cursor_changed.emit(d_cursor);
+	}
       else if (d_cursor == GraphicsCache::HAND &&
 	       d_see_opponents_production == true)
 	{
