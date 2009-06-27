@@ -1860,6 +1860,10 @@ void GameWindow::fill_in_group_info (Stack *s)
   //printf ("toggling group/ungroup!\n");
   group_ungroup_toggle->set_sensitive(false);
   group_ungroup_toggle->set_active(s->isGrouped());
+  if (group_ungroup_toggle->get_active() == true)
+    group_ungroup_toggle->set_label(_("UnGrp"));
+  else
+    group_ungroup_toggle->set_label(_("Grp"));
   group_ungroup_toggle->set_sensitive(true);
 }
 
