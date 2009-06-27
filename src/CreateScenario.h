@@ -217,11 +217,6 @@ class CreateScenario : public CreateScenarioRandomize
 	bool setupRoads();
 	bool setupBridges();
 
-        //! Set up rewards to be given out for quests, ruins and sages
-        bool setupRewards();
-        bool setupItemRewards();
-        bool setupRuinRewards();
-	bool setupMapRewards();
 	void quickStart();
 
 	//! Given the difficulty, get some characteristics of ruins

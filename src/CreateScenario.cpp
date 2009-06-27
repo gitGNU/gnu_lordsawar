@@ -351,9 +351,6 @@ bool CreateScenario::create(const GameParameters &g)
     if (!setupItems())
         return false;
 
-    if (!setupRewards())
-        return false;
-
     if (!setupRoads())
         return false;
     
@@ -671,95 +668,9 @@ bool CreateScenario::setupPlayers(bool random_turns,
     return true;
 }
 
-bool CreateScenario::setupRewards()
-{
-  debug("CreateScenario::setupRewards")
-  setupItemRewards();
-  setupRuinRewards();
-  setupMapRewards();
-  return true;
-}
-
-bool CreateScenario::setupMapRewards()
-{
-  debug("CreateScenario::setupMapRewards")
-  if (GameScenario::s_hidden_map == false)
-    return true;
-  //okay, let's make some maps
-  //split the terrain into a 3x3 grid
-  Vector<int> step = Vector<int>(GameMap::getWidth() / 3, 
-				 GameMap::getHeight() / 3);
-  Reward_Map *reward = new Reward_Map(Vector<int>(step.x * 0, 0), 
-				      _("Northwestern map"), step.x, step.y);
-  Rewardlist::getInstance()->push_back(reward);
-  reward = new Reward_Map(Vector<int>(step.x * 1, 0), 
-			  _("Northern map"), step.x, step.y);
-  Rewardlist::getInstance()->push_back(reward);
-  reward = new Reward_Map(Vector<int>(step.x * 2, 0), 
-			  _("Northeastern map"), step.x, step.y);
-  Rewardlist::getInstance()->push_back(reward);
-  reward = new Reward_Map(Vector<int>(step.x * 0, step.y * 1), 
-			  _("Western map"), step.x, step.y);
-  Rewardlist::getInstance()->push_back(reward);
-  reward = new Reward_Map(Vector<int>(step.x * 1, step.y * 1), 
-			  _("Central map"), step.x, step.y);
-  Rewardlist::getInstance()->push_back(reward);
-  reward = new Reward_Map(Vector<int>(step.x * 2, step.y * 1), 
-			  _("Eastern map"), step.x, step.y);
-  Rewardlist::getInstance()->push_back(reward);
-  reward = new Reward_Map(Vector<int>(step.x * 0, step.y * 2), 
-			  _("Southwestern map"), step.x, step.y);
-  Rewardlist::getInstance()->push_back(reward);
-  reward = new Reward_Map(Vector<int>(step.x * 1, step.y * 2), 
-			  _("Southern map"), step.x, step.y);
-  Rewardlist::getInstance()->push_back(reward);
-  reward = new Reward_Map(Vector<int>(step.x * 2, step.y * 2), 
-			  _("Southeastern map"), step.x, step.y);
-  Rewardlist::getInstance()->push_back(reward);
-  return true;
-}
-bool CreateScenario::setupRuinRewards()
-{
-  debug("CreateScenario::setupRuinRewards")
-    for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
-	 it != Ruinlist::getInstance()->end(); it++)
-      {
-	if ((*it)->isHidden() == true)
-	  {
-	    //add it to the reward list
-	    Reward_Ruin *newReward = new Reward_Ruin((*it)); //make a reward
-	    newReward->setName(newReward->getDescription());
-	    Rewardlist::getInstance()->push_back(newReward); //add it
-	  }
-	else
-	  {
-	    if ((*it)->hasSage() == false && (*it)->getReward() == NULL)
-	      (*it)->populateWithRandomReward();
-	  }
-      }
-  return true;
-}
-
 bool CreateScenario::setupItems()
 {
   Itemlist::createStandardInstance();
-  return true;
-}
-
-bool CreateScenario::setupItemRewards()
-{
-  debug("CreateScenario::setupItemRewards")
-  Itemlist *il = Itemlist::getInstance();
-  Itemlist::iterator iter;
-  for (iter = il->begin(); iter != il->end(); iter++)
-    {
-      Item templateItem = *iter->second;
-      Item *newItem = new Item(templateItem); //instantiate it
-      Reward_Item *newReward = new Reward_Item(newItem); //make a reward
-      newReward->setName(newReward->getDescription());
-      Rewardlist::getInstance()->push_back(newReward); //add it
-    }
-
   return true;
 }
 

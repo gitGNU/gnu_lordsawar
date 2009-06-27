@@ -145,6 +145,10 @@ class GameScenario: public GameScenarioOptions
 	  void quickStart();
 	  bool setupFog(bool hidden_map);
 	  bool setupCities(bool quick_start);
+	  bool setupRewards(bool hidden_map);
+	  bool setupMapRewards();
+	  bool setupRuinRewards();
+	  bool setupItemRewards();
 	  bool setupStacks(bool hidden_map);
 	  void setupDiplomacy(bool diplomacy);
 
