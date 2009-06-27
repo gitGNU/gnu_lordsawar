@@ -5,6 +5,8 @@
 	* fixing vectoring so that only 4 cities at a time can vector to a 
 	single city.
 	* fixing reward generation so that map rewards can be created.
+	* fixing #26784.  pressing shift while hovering over a city turns the
+	mouse cursor into a rook icon.  Suggested by Frans De Jonge.
 
 2009-06-21  Ben Asselstine  <benasselstine@gmail.com>
 
