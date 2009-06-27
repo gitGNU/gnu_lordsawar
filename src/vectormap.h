@@ -197,6 +197,8 @@ private:
      *              orange.
      */
     void draw_vectoring_line(Vector<int> src, Vector<int> dest, bool to);
+
+    void draw_square_around_active_city();
 };
 
 #endif

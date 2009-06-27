@@ -215,11 +215,11 @@ static bool isNotOwnedByEnemy(void *object)
   return true;
 }
 
-static bool canNotAcceptVectoring(void *object)
+static bool canNotAcceptMoreVectoring(void *object)
 {
   City *c = ((City*)object);
   Uint32 num = Citylist::getInstance()->countCitiesVectoringTo(c);
-  if (num < MAX_ARMIES_VECTORED_TO_ONE_CITY)
+  if (num < MAX_CITIES_VECTORED_TO_ONE_CITY)
     return false;
   return true;
 }
@@ -358,7 +358,7 @@ City* Citylist::getNearestFriendlyVectorableCity(const Vector<int>& pos)
   std::list<bool (*)(void *)> filters;
   filters.push_back(isBurnt);
   filters.push_back(isNotOwnedByActivePlayer);
-  filters.push_back(canNotAcceptVectoring);
+  filters.push_back(canNotAcceptMoreVectoring);
   return getNearestObject(pos, &filters);
 }
 
@@ -460,6 +460,16 @@ bool Citylist::isVectoringTarget(City *target)
   return false;
 }
 
+std::list<City*> Citylist::getCitiesVectoringTo(Vector<int> target)
+{
+  std::list<City*> cities;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if (target == (*it)->getVectoring())
+	cities.push_back((*it));
+    }
+  return cities;
+}
 std::list<City*> Citylist::getCitiesVectoringTo(City *target)
 {
   std::list<City*> cities;

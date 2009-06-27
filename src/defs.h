@@ -50,7 +50,7 @@ const unsigned int ROAD_TYPES=16;
 const unsigned int FOG_TYPES=15; 
 const unsigned int BRIDGE_TYPES=4; 
 const unsigned int CURSOR_TYPES=12; 
-const unsigned int MAX_ARMIES_VECTORED_TO_ONE_CITY = 4;
+const unsigned int MAX_CITIES_VECTORED_TO_ONE_CITY = 4;
 const unsigned int MAX_TURNS_FOR_VECTORING = 2;
 const unsigned int MAX_BOAT_MOVES = 18;
 const unsigned int CUSP_OF_WAR_ROUND = 9;
@@ -70,7 +70,7 @@ const unsigned int MAP_SIZE_NORMAL_HEIGHT = 156;
 
 const unsigned int PRODUCTION_SHIELD_WIDTH = 10;
 const unsigned int PRODUCTION_SHIELD_HEIGHT = 10;
-const unsigned int PRODUCTION_SHIELD_TYPES = 7;
+const unsigned int PRODUCTION_SHIELD_TYPES = 8;
 const unsigned int MOVE_BONUS_WIDTH = 32;
 const unsigned int MOVE_BONUS_HEIGHT = 20;
 const unsigned int MOVE_BONUS_TYPES = 6;

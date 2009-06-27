@@ -290,11 +290,14 @@ class GraphicsCache
           * As with the other functions, use solely this function to get the 
           * shield images. And DON'T modify the images!
           *
-          * @param type home/away/destination/source.  one sees home/away
+          * @param type home/away/destination/source/invalid.  
+	  * one sees home/away
 	  * normally, but when "see all" is turned on, one sees source/dest.
           * @param prod city production is going on, true or false
           * @return image for the shield
 	  * note that type=source, production=false is impossible
+	  * note that type=invalid,production=true is used to show the symbol
+	  * that means no more units can be vectored to this city.
           */
         SDL_Surface* getProdShieldPic(Uint32 type, bool prod);
 

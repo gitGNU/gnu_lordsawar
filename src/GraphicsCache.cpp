@@ -1430,7 +1430,8 @@ ProdShieldCacheItem* GraphicsCache::addProdShieldPic(Uint32 type, bool prod)
 {
   debug("GraphicsCache::addProdShieldPic, prod="<<prod<<", type="<<type)
 
-    // type is 0 for home, 1 for away, 2 for destination, 3 for source
+    // type is 0 for home, 1 for away, 2 for destination, 3 for source,
+    // 4 for invalid
 
     SDL_Surface* mysurf = NULL;
   switch (type)
@@ -1454,10 +1455,10 @@ ProdShieldCacheItem* GraphicsCache::addProdShieldPic(Uint32 type, bool prod)
 	mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[4]);
       break;
     case 3: //source city
-      if (prod)
-	mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[6]);
-      else
-	return NULL;
+      mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[6]);
+      break;
+    case 4: //invalid
+      mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[7]);
       break;
     }
 

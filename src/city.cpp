@@ -361,16 +361,16 @@ Army *City::produceArmy()
   return a;
 }
 
-bool City::canAcceptVectoredUnit()
+bool City::canAcceptMoreVectoring()
 {
-  return canAcceptVectoredUnits(0);
+  return canAcceptMoreVectoring(0);
 }
 
-bool City::canAcceptVectoredUnits(Uint32 number_of_units)
+bool City::canAcceptMoreVectoring(Uint32 number_of_cities)
 {
-  VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-  if (vul->getNumberOfVectoredUnitsGoingTo(getPos()) + number_of_units >= 
-      MAX_ARMIES_VECTORED_TO_ONE_CITY)
+  //here we presume that it's one unit per city
+  Uint32 num = Citylist::getInstance()->countCitiesVectoringTo(this);
+  if (num + number_of_cities >= MAX_CITIES_VECTORED_TO_ONE_CITY)
     return false;
   return true;
 }

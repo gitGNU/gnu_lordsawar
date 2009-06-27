@@ -1985,6 +1985,13 @@ void Player::doVectorFromCity(City * c, Vector<int> dest)
 
 bool Player::vectorFromCity(City * c, Vector<int> dest)
 {
+  if (dest != Vector<int>(-1,-1))
+    {
+      std::list<City*> cities;
+      cities = Citylist::getInstance()->getCitiesVectoringTo(dest);
+      if (cities.size() >= MAX_CITIES_VECTORED_TO_ONE_CITY)
+	return false;
+    }
   doVectorFromCity(c, dest);
   
   Action_Vector* item = new Action_Vector();
@@ -1993,14 +2000,56 @@ bool Player::vectorFromCity(City * c, Vector<int> dest)
   return true;
 }
 
-bool Player::changeVectorDestination(City *c, Vector<int> dest)
+bool Player::changeVectorDestination(Vector<int> src, Vector<int> dest)
 {
+  //DEST can be a flag.
+  //SRC can be a flag too.
+  //Note: we don't actually have a way in the gui to change the vectoring 
+  //from the planted standard (flag).
   bool retval = true;
+  //sanity checks:
+  //disallow changing vectoring from or to a city that isn't ours
+  //disallow vectoring to something that isn't our city or our planted 
+  //standard.
   Citylist *cl = Citylist::getInstance();
-  std::list<City*> sources = cl->getCitiesVectoringTo(c);
+  City *src_city = cl->getObjectAt(src);
+  if (src_city == NULL)
+    {
+      //maybe it's a flag we're changing the vector destination from.
+      if (GameMap::getInstance()->findPlantedStandard(this) != src)
+	return false;
+    }
+  else
+    {
+      if (src_city->getOwner() != this)
+	return false;
+    }
+  City *dest_city = cl->getObjectAt(dest);
+  if (dest_city == NULL)
+    {
+      if (GameMap::getInstance()->findPlantedStandard(this) != dest)
+	return false;
+    }
+  else
+    {
+      if (dest_city->getOwner() != this)
+	return false;
+    }
+
+  //check to see if the destination has enough room to accept all of the
+  //cities we want to send to it.
+  std::list<City*> sources = cl->getCitiesVectoringTo(src);
+  std::list<City*> alreadyvectored = cl->getCitiesVectoringTo(dest);
+
+  if (alreadyvectored.size() + sources.size() > MAX_CITIES_VECTORED_TO_ONE_CITY)
+    return false;
+
+  //okay, do the vectoring changes.
   std::list<City*>::iterator it = sources.begin();
   for (; it != sources.end(); it++)
     retval &= (*it)->changeVectorDestination(dest);
+  // it's okay that this doesn't produce any actions
+  // because the actions take effect when we end our turn.
   return retval;
 }
 
@@ -3044,7 +3093,7 @@ void Player::pruneActionlist()
   pruneActionlist(d_actions);
 }
 
-void Player::pruneActionlist(std::list<Action*> actions)
+void Player::pruneCityProductions(std::list<Action*> actions)
 {
   //remove duplicate city production actions
 
@@ -3090,6 +3139,60 @@ void Player::pruneActionlist(std::list<Action*> actions)
     }
   //if (total)
   //printf ("pruned %d city production actions.\n", total);
+}
+
+void Player::pruneCityVectorings(std::list<Action*> actions)
+{
+  //remove duplicate city vectoring actions
+
+  //enumerate the ones we want
+  std::list<Action_Vector*> keepers;
+  std::list<Action*>::reverse_iterator ait;
+  for (ait = actions.rbegin(); ait != actions.rend(); ait++)
+    {
+      if ((*ait)->getType() != Action::CITY_VECTOR)
+	continue;
+      //if this city isn't already in the keepers list, then add it.
+
+      Action_Vector *action = static_cast<Action_Vector *>(*ait);
+      bool found = false;
+      std::list<Action_Vector*>::const_iterator it;
+      for (it = keepers.begin(); it != keepers.end(); it++)
+	{
+	  if (action->getCityId() == (*it)->getCityId())
+	    {
+	      found = true;
+	      break;
+	    }
+	}
+      if (found == false)
+	keepers.push_back(action);
+
+    }
+
+  //now delete all city vector events that aren't in keepers
+  int total = 0;
+  std::list<Action*>::iterator bit;
+  for (bit = actions.begin(); bit != actions.end(); bit++)
+    {
+      if ((*bit)->getType() != Action::CITY_VECTOR)
+	continue;
+      if (find (keepers.begin(), keepers.end(), (*bit)) == keepers.end())
+	{
+	  total++;
+	  actions.erase (bit);
+	  bit = actions.begin();
+	  continue;
+	}
+    }
+  //if (total)
+  //printf ("pruned %d city vector actions.\n", total);
+}
+
+void Player::pruneActionlist(std::list<Action*> actions)
+{
+  pruneCityProductions(actions);
+  pruneCityVectorings(actions);
 
 }
 

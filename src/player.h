@@ -1082,13 +1082,12 @@ class Player: public sigc::trackable
 	 * Callback to change the vectoring destination for all of the
 	 * player's cities that are vectoring to a particular city.
 	 *
-	 * Computer players don't currently consider vectoring units, so
-	 * only human players use this method.
+	 * SRC and DEST can both be the player's planted standard.
 	 *
-	 * This callback must result in one or more Action_Vector elements 
-	 * being given to the addAction method.
+	 * This callback doesn't generate any actions because the vector
+	 * actions take place after the turn has ended.
 	 *
-	 * @param  city   The city being vectored to.
+	 * @param  src    The place that we want to take all the vectoring from.
          * @param  dest   The place on the map to vector to.  The destination 
 	 *                point should be co-located with a City or a 
 	 *                planted standard Item.
@@ -1096,7 +1095,7 @@ class Player: public sigc::trackable
          * @return False on error, true otherwise.
          */
 	//! Callback to make a mass change to vectoring.
-	bool changeVectorDestination(City *city, Vector<int> dest);
+	bool changeVectorDestination(Vector<int> src, Vector<int> dest);
 
         /** 
 	 * Callback to plant the Player's flag Item on the ground.
@@ -1536,6 +1535,8 @@ class Player: public sigc::trackable
         void lootCity(City *city, Player *looted);
 	void calculateLoot(Player *looted, Uint32 &added, Uint32 &subtracted);
         void takeCityInPossession(City* c);
+	static void pruneCityVectorings(std::list<Action*> actions);
+	static void pruneCityProductions(std::list<Action*> actions);
 };
 
 extern sigc::signal<void, Player::Type>  sendingTurn;

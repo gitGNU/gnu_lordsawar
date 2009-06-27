@@ -204,29 +204,30 @@ class City : public Ownable, public Location, public Renamable,
 
 	//! Returns true if the city isn't accepting too many vectored armies.
 	/**
-	 * Scans all of the vectoring units going to this city.  If vectoring
+	 * Scans all of the cities vectoring to this city.  If vectoring
 	 * to this city would accrue the count to 
-	 * MAX_ARMIES_VECTORED_TO_ONE_CITY, this method returns false.
+	 * MAX_CITIES_VECTORED_TO_ONE_CITY, this method returns false.
 	 *
 	 * @return True if the city can have another city vectoring to it.
 	 *         Otherwise false.
 	 */
-	bool canAcceptVectoredUnit();
+	bool canAcceptMoreVectoring();
 
-	//! Returns true if the city can accept a number of vectored armies.
+	//! Returns true if the city can accept vectoring from a set of cities.
 	/**
 	 * Instead of checking to see if one unit can be vectored here like in 
-	 * City::canAcceptVectoredUnit, this method checks if the city can
+	 * City::canAcceptMoreVectoring, this method checks if the city can
 	 * receive multiple units (from an equal number of cities, because a
 	 * city can only produce and vector one army at a time).
 	 *
-	 * @param number_of_units  The number of vectored units to check to
-	 *                         see if this city can receive.
+	 * @param number_of_cities The number of cities to check to
+	 *                         see if this city can receive on top of what
+	 *                         it's already receiving.
 	 *
 	 * @return True if the city can have this many more cities vectoring 
 	 *         to it.  Otherwise false.
 	 */
-	bool canAcceptVectoredUnits(Uint32 number_of_units);
+	bool canAcceptMoreVectoring(Uint32 number_of_cities);
 
 	//! Changes the vectoring destination, but for en-route units too.
 	/**

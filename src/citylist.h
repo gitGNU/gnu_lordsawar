@@ -329,6 +329,9 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 */
 	std::list<City*> getCitiesVectoringTo(City *target);
 
+	//! Return the list of cities vectoring to the given spot on the map.
+	std::list<City*> getCitiesVectoringTo(Vector<int> target);
+
 	//! Get the nearest city that is farther than a given number tiles.
 	/**
 	 * Scans through all of the City objects in the list for the nearest

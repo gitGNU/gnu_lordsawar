@@ -24,6 +24,7 @@
 #include "GraphicsCache.h"
 #include "GameMap.h"
 #include "LocationBox.h"
+#include "shieldsetlist.h"
 
 VectorMap::VectorMap(City *c, enum ShowVectoring v, bool see_opponents_production)
 {
@@ -62,10 +63,20 @@ void VectorMap::draw_city (City *c, Uint32 &type, bool &prod)
     return;
   GraphicsCache *gc = GraphicsCache::getInstance();
   SDL_Surface *tmp;
-  if (c->isBurnt() == true || (type == 3 && prod == false))
+  if (c->isBurnt() == true)
     tmp = gc->getSmallRuinedCityPic ();
+  //else if(type == 4 && prod == false)
+    //tmp = gc->getProdShieldPic (type, prod);
   else
-    tmp = gc->getProdShieldPic (type, prod);
+    {
+      if (Playerlist::getInstance()->getActiveplayer() != c->getOwner())
+	{
+	  std::string s = GameMap::getInstance()->getShieldset()->getSubDir();
+	  tmp = gc->getShieldPic (s, 0, c->getOwner()->getId());
+	}
+      else
+	tmp = gc->getProdShieldPic (type, prod);
+    }
 
   Vector<int> start;
   
@@ -93,10 +104,10 @@ void VectorMap::draw_cities (std::list<City*> citylist, Uint32 type)
 	{
 	case CLICK_VECTORS:
 	case CLICK_CHANGES_DESTINATION:
-	  if ((*it)->canAcceptVectoredUnit() == false)
+	  if ((*it)->canAcceptMoreVectoring() == false)
 	    {
-	      prod = false; //this is a ruined city
-	      type = 3;
+	      prod = false; //the inn is full
+	      type = 4;
 	    }
 	  else
 	    {
@@ -240,22 +251,22 @@ void VectorMap::after_draw()
               else if ((*it)->getVectoring() != Vector<int>(-1, -1) &&
                        cl->getNearestCity((*it)->getVectoring(), 2)->getId() ==
                        city->getId() && show_vectoring != SHOW_NO_VECTORING)
-                type = 3;
+                type = 3; 
               //otherwise it's just another city, "away" from me
               else
                 type = 1; //away
 	      //show it as a ruined city if we can't vector to it.
-	      if (click_action == CLICK_VECTORS && (*it)->canAcceptVectoredUnit() == false)
+	      if (click_action == CLICK_VECTORS && (*it)->canAcceptMoreVectoring() == false)
 		{
 		  prod = false;
-		  type = 3;
+		  type = 4; //the inn is full
 		}
 	      if (click_action == CLICK_CHANGES_DESTINATION)
 		{
-		  if ((*it)->canAcceptVectoredUnits (sources.size()) == false)
+		  if ((*it)->canAcceptMoreVectoring (sources.size()) == false)
 		    {
-		      prod = false; //this is a ruined city
-		      type = 3;
+		      prod = false; //the inn is full
+		      type = 4;
 		    }
 		}
 	    }
@@ -263,7 +274,7 @@ void VectorMap::after_draw()
 	}
       else
 	{
-	  type = 3;
+	  type = 2;
 	  prod = false;
 	  draw_city ((*it), type, prod); //an impossible combo
 	}
@@ -304,11 +315,29 @@ void VectorMap::after_draw()
   if (flag.x != -1 && flag.y != -1)
     draw_planted_standard(flag);
 
+  draw_square_around_active_city();  
   map_changed.emit(surface);
+}
+
+void VectorMap::draw_square_around_active_city()
+{
+  Uint32 white = SDL_MapRGBA(surface->format, 252, 255, 255, 255);
+
+  Vector<int> start = city->getPos();
+  start = mapToSurface(start);
+  start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
+  std::string s = GameMap::getInstance()->getShieldset()->getSubDir();
+  Shieldset *ss = Shieldsetlist::getInstance()->getShieldset(s);
+  Uint32 width = ss->getSmallWidth();
+  Uint32 height = ss->getSmallHeight();
+  start -= Vector<int>(width,height)/2;
+  Vector<int> end = start + Vector<int>(width,height);
+  draw_rect (surface, start.x-3, start.y-3, end.x+2, end.y+2, white);
 }
 
 void VectorMap::mouse_button_event(MouseButtonEvent e)
 {
+  Player *active = Playerlist::getActiveplayer();
   if (e.button == MouseButtonEvent::LEFT_BUTTON && 
       e.state == MouseButtonEvent::PRESSED)
     {
@@ -350,17 +379,17 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	    }
 	  if (dest != city->getVectoring() && dest != Vector<int>(-1, -1))
 	    {
-	      destination_chosen.emit(dest);
-	      Playerlist::getActiveplayer()->vectorFromCity(city, dest);
+	      if (active->vectorFromCity(city, dest) == true)
+		destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
-	      draw(Playerlist::getActiveplayer());
+	      draw(active);
 	    }
 	  else if (dest == Vector<int>(-1, -1)) //stop vectoring
 	    {
-	      destination_chosen.emit(dest);
-	      Playerlist::getActiveplayer()->vectorFromCity(city, dest);
+	      if (active->vectorFromCity(city, dest) == true)
+		destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
-	      draw(Playerlist::getActiveplayer());
+	      draw(active);
 	    }
 	  break;
 	case CLICK_SELECTS:
@@ -371,7 +400,7 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	  if (nearestCity == NULL)
 	    return;
 	  city = nearestCity;
-	  draw(Playerlist::getActiveplayer());
+	  draw(active);
 	  break;
 	case CLICK_CHANGES_DESTINATION:
 	  nearestCity = cl->getNearestVisibleFriendlyCity(dest, 4);
@@ -399,9 +428,13 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 
 	  if (dest == Vector<int>(-1, -1)) //stop vectoring
 	    {
+	      //we were doing change destination,
+	      //and we clicked back on our own city
+	      //this is the same thing as a cancel.
 	      destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
-	      draw(Playerlist::getActiveplayer());
+	      draw(active);
+	      return;
 	    }
 	  bool is_source_city = false;
 	  std::list<City*> sources = cl->getCitiesVectoringTo(city);
@@ -415,16 +448,16 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 		}
 	    }
 	  //if it's not one of our sources, then select it
+	  //why do we care if it's one of our sources anyway?
 	  if (is_source_city == false)
 	    {
-	      destination_chosen.emit(dest);
-	      Playerlist::getActiveplayer()->changeVectorDestination(city, 
-								     dest);
+	      if (active->changeVectorDestination(city->getPos(), dest) == true)
+		destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
-	      draw(Playerlist::getActiveplayer());
+	      draw(active);
 	      if (dest != planted_standard)
 		city = nearestCity;
-	      draw(Playerlist::getActiveplayer());
+	      draw(active);
 	    }
 	  break;
 	}
