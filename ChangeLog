@@ -4,6 +4,7 @@
 	disbanding if any.
 	* adding an are-you-sure dialog when razing a city after defeating it.
 	* automatically selecting the first scenario in the new scenario dialog.
+	* added a map to the hero inspect dialog.
 
 2009-06-27  Ben Asselstine  <benasselstine@gmail.com>
 
