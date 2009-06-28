@@ -756,8 +756,9 @@ void Game::invading_city(City* city, int gold)
 	break;
 
       case CITY_DEFEATED_RAZE:
-	player->cityRaze(city);
-	city_razed.emit (city);
+	//the razing just happened in the are-you-sure dialog, and the user
+	//was sure.
+	city_razed.emit(city);
 	player->deteriorateDiplomaticRelationship (5);
 	break;
 

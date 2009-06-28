@@ -2504,15 +2504,25 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 
   dialog->show();
 
-  int response = dialog->run();
+  while (1)
+    {
+      int response = dialog->run();
+      switch (response) 
+	{
+	default:
+	case 0: return CITY_DEFEATED_OCCUPY;
+	case 1: 
+		{
+		  bool razed = CityWindow::on_raze_clicked(city, dialog.get());
+		  if (razed == false)
+		    continue;
+		  return CITY_DEFEATED_RAZE;
+		}
+	case 2: return CITY_DEFEATED_PILLAGE;
+	case 3: return CITY_DEFEATED_SACK;
+	}
+    }
   dialog->hide();
-  switch (response) {
-  default:
-  case 0: return CITY_DEFEATED_OCCUPY;
-  case 1: return CITY_DEFEATED_RAZE;
-  case 2: return CITY_DEFEATED_PILLAGE;
-  case 3: return CITY_DEFEATED_SACK;
-  }
 }
 
 void GameWindow::on_city_looted (City *city, int gold)

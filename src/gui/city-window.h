@@ -45,6 +45,8 @@ class CityWindow: public Decorated
     void run();
     void hide();
     
+    static bool on_raze_clicked (City *city, Gtk::Dialog *parent);
+    
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
     std::auto_ptr<VectorMap> prodmap;

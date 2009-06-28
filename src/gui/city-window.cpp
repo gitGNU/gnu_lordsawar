@@ -466,6 +466,11 @@ void CityWindow::on_rename_clicked ()
 
 void CityWindow::on_raze_clicked ()
 {
+  on_raze_clicked (city, dialog.get());
+}
+
+bool CityWindow::on_raze_clicked (City *city, Gtk::Dialog *parent)
+{
     std::auto_ptr<Gtk::Dialog> razedialog;
     
     Glib::RefPtr<Gnome::Glade::Xml> razexml
@@ -477,7 +482,7 @@ void CityWindow::on_raze_clicked ()
     Decorated decorator;
     decorator.decorate(razedialog.get());
     decorator.window_closed.connect(sigc::mem_fun(razedialog.get(), &Gtk::Dialog::hide));
-    razedialog->set_transient_for(*dialog.get());
+    razedialog->set_transient_for(*parent);
     
     Glib::ustring s = _("Raze City");
 
@@ -496,10 +501,9 @@ void CityWindow::on_raze_clicked ()
 
     if (response == 0)		// burn it to the ground ralphie boy!
       {
-        Playerlist *pl = Playerlist::getInstance();
-        Player *p = pl->getActiveplayer();
-        p->cityRaze(city);
-dialog->hide();
+	Playerlist::getActiveplayer()->cityRaze(city);
+	parent->hide();
+	return true;
       }
-  return;
+  return false;
 }
