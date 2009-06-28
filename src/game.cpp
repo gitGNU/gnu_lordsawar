@@ -815,7 +815,6 @@ void Game::update_control_panel()
       can_park_selected_stack.emit(false);
       can_deselect_selected_stack.emit(false);
       can_search_selected_stack.emit(false);
-      can_inspect_selected_stack.emit(false);
       can_plant_standard_selected_stack.emit(false);
       can_move_selected_stack.emit(false);
       can_move_selected_stack_along_path.emit(false);
@@ -889,7 +888,6 @@ void Game::update_control_panel()
 	  if (stack->getFirstHero()->getMoves() > 0 && ruin)
 	    can_search_selected_stack.emit(!ruin->isSearched());
 
-	  can_inspect_selected_stack.emit(true);
 	  //does the hero have the player's standard?
 	  for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
 	    {
@@ -925,7 +923,6 @@ void Game::update_control_panel()
 	}
       else
 	{
-	  can_inspect_selected_stack.emit(false);
 	  can_plant_standard_selected_stack.emit(false);
 	}
 
@@ -942,7 +939,6 @@ void Game::update_control_panel()
       can_move_selected_stack_along_path.emit(false);
       can_disband_stack.emit(false);
       can_group_ungroup_selected_stack.emit(false);
-      can_inspect_selected_stack.emit(false);
       can_plant_standard_selected_stack.emit(false);
     }
 

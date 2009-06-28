@@ -315,6 +315,8 @@ GameWindow::GameWindow()
 			 sigc::mem_fun(*this, &GameWindow::on_vectoring_activated));
     xml->connect_clicked("levels_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_levels_activated));
+    xml->connect_clicked("inspect_menuitem",
+			 sigc::mem_fun(*this, &GameWindow::on_inspect_activated));
     xml->connect_clicked("ruin_report_menuitem",
 			 sigc::mem_fun(*this, &GameWindow::on_ruin_report_activated));
     xml->connect_clicked("army_bonus_menuitem",
@@ -612,9 +614,6 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   setup_menuitem(search_menuitem,
 		 sigc::mem_fun(game.get(), &Game::search_selected_stack),
 		 game->can_search_selected_stack);
-  setup_menuitem(inspect_menuitem,
-		 sigc::mem_fun(*this, &GameWindow::on_inspect_activated),
-		 game->can_inspect_selected_stack);
   setup_menuitem(plant_standard_menuitem,
 		 sigc::mem_fun(*this, 
 			       &GameWindow::on_plant_standard_activated),
@@ -2972,8 +2971,17 @@ void GameWindow::on_inspect_activated ()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  HeroDialog d(dynamic_cast<Hero*>(currently_selected_stack->getFirstHero()), 
-	       currently_selected_stack->getPos());
+  if (Playerlist::getActiveplayer()->getStacklist()->getHeroes().size() == 0)
+    return;
+  Hero *hero = NULL;
+  Vector<int> pos = Vector<int>(-1,-1);
+  if (currently_selected_stack != NULL)
+    {
+      hero = dynamic_cast<Hero*>(currently_selected_stack->getFirstHero());
+      pos = currently_selected_stack->getPos();
+    }
+    
+  HeroDialog d(hero, pos);
   d.set_parent_window(*window.get());
   d.run();
   d.hide();

@@ -62,7 +62,12 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     heroes = Playerlist::getActiveplayer()->getStacklist()->getHeroes();
     heroesmap.reset(new HeroesMap(heroes));
     if (hero)
+      heroesmap->setSelectedHero(hero);
+    else
       {
+	Player *p = Playerlist::getActiveplayer();
+	hero = *heroes.begin();
+	pos = p->getStacklist()->getPosition(hero->getId());
 	heroesmap->setSelectedHero(hero);
       }
     heroesmap->map_changed.connect(
