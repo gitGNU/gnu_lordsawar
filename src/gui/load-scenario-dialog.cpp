@@ -80,8 +80,11 @@ LoadScenarioDialog::LoadScenarioDialog()
        i != end; ++i)
     add_scenario(Configuration::s_savePath + "/" + *i);
 
-  load_button->set_sensitive(false);
-  remove_scenario_button->set_sensitive(false);
+
+  Gtk::TreeModel::Row row;
+  row = scenarios_treeview->get_model()->children()[0];
+  if(row)
+    scenarios_treeview->get_selection()->select(row);
 }
 
 void LoadScenarioDialog::set_parent_window(Gtk::Window &parent)
