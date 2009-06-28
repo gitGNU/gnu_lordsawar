@@ -44,6 +44,7 @@
 #include "GameMap.h"
 #include "citylist.h"
 #include "playerlist.h"
+#include "File.h"
 
 CityWindow::CityWindow(City *c, bool razing_possible, 
 		       bool see_opponents_production)
@@ -483,6 +484,7 @@ bool CityWindow::on_raze_clicked (City *city, Gtk::Dialog *parent)
     decorator.decorate(razedialog.get());
     decorator.window_closed.connect(sigc::mem_fun(razedialog.get(), &Gtk::Dialog::hide));
     razedialog->set_transient_for(*parent);
+    d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     
     Glib::ustring s = _("Raze City");
 
