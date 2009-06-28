@@ -80,12 +80,23 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 
     xml->get_widget("drop_button", drop_button);
     xml->get_widget("pickup_button", pickup_button);
-
     drop_button->signal_clicked()
 	.connect(sigc::mem_fun(this, &HeroDialog::on_drop_clicked));
     pickup_button->signal_clicked()
 	.connect(sigc::mem_fun(this, &HeroDialog::on_pickup_clicked));
     
+    xml->get_widget("next_button", next_button);
+    xml->get_widget("prev_button", prev_button);
+    next_button->signal_clicked()
+	.connect(sigc::mem_fun(this, &HeroDialog::on_next_clicked));
+    prev_button->signal_clicked()
+	.connect(sigc::mem_fun(this, &HeroDialog::on_prev_clicked));
+    if (heroes.size() <= 1)
+      {
+	next_button->set_sensitive(false);
+	prev_button->set_sensitive(false);
+      }
+
     item_list = Gtk::ListStore::create(item_columns);
     xml->get_widget("treeview", item_treeview);
     item_treeview->set_model(item_list);
@@ -250,6 +261,40 @@ void HeroDialog::on_drop_clicked()
     }
 }
 
+void HeroDialog::on_next_clicked()
+{
+  std::list<Hero*> heroes;
+  heroes = Playerlist::getActiveplayer()->getStacklist()->getHeroes();
+  std::list<Hero*>::iterator next;
+  next = find (heroes.begin(), heroes.end(), hero);
+  if (next != heroes.end())
+    {
+      next++;
+      if (next == heroes.end())
+	next = heroes.begin();
+      hero = *next;
+      heroesmap->setSelectedHero(hero);
+      show_hero();
+      heroesmap->draw(Playerlist::getActiveplayer());
+    }
+}
+void HeroDialog::on_prev_clicked()
+{
+  std::list<Hero*> heroes;
+  heroes = Playerlist::getActiveplayer()->getStacklist()->getHeroes();
+  std::list<Hero*>::reverse_iterator prev;
+  prev = find (heroes.rbegin(), heroes.rend(), hero);
+  if (prev != heroes.rend())
+    {
+      prev++;
+      if (prev == heroes.rend())
+	prev = heroes.rbegin();
+      hero = *prev;
+      heroesmap->setSelectedHero(hero);
+      show_hero();
+      heroesmap->draw(Playerlist::getActiveplayer());
+    }
+}
 void HeroDialog::on_pickup_clicked()
 {
     Gtk::TreeIter i = item_treeview->get_selection()->get_selected();

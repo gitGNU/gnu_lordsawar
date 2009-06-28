@@ -63,6 +63,8 @@ class HeroDialog: public Decorated
     Gtk::Label *info_label2;
     Gtk::Label *hero_name_label;
     Gtk::Image *hero_army_image;
+    Gtk::Button *next_button;
+    Gtk::Button *prev_button;
 
     class ItemColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -92,6 +94,8 @@ class HeroDialog: public Decorated
     void on_selection_changed();
     void on_drop_clicked();
     void on_pickup_clicked();
+    void on_next_clicked();
+    void on_prev_clicked();
 
     void add_item(Item *item, bool in_backpack);
     void addHistoryEvent(History *event);
@@ -100,6 +104,7 @@ class HeroDialog: public Decorated
     void on_map_changed(SDL_Surface *map);
     bool on_map_mouse_button_event(GdkEventButton *e);
     void show_hero();
+    void update_buttons();
 };
 
 #endif
