@@ -1,3 +1,9 @@
+2009-06-28  Ben Asselstine  <benasselstine@gmail.com>
+
+	* improved disband stack dialog to show how many heroes we're 
+	disbanding if any.
+	* adding an are-you-sure dialog when razing a city after defeating it.
+
 2009-06-27  Ben Asselstine  <benasselstine@gmail.com>
 
 	* mixing player shields with production shields on production map.
