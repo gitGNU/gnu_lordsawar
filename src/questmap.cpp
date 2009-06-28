@@ -165,7 +165,7 @@ void QuestMap::after_draw()
 
   start += Vector<int>(int (pixels_per_tile / 2), int (pixels_per_tile / 2));
 
-  SDL_Surface *tmp = gc->getSmallHeroPic ();
+  SDL_Surface *tmp = gc->getSmallHeroPic (true);
     
   SDL_Rect r;
   r.x = start.x - (tmp->w / 2);

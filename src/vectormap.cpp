@@ -39,7 +39,7 @@ void VectorMap::draw_planted_standard(Vector<int> flag)
   //it can't possibly be fogged
   GraphicsCache *gc = GraphicsCache::getInstance();
   SDL_Surface *tmp;
-  tmp = gc->getSmallHeroPic();
+  tmp = gc->getSmallHeroPic(true);
 
   Vector<int> start;
   

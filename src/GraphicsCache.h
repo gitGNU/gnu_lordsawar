@@ -275,7 +275,8 @@ class GraphicsCache
 
 
         SDL_Surface* getSmallRuinedCityPic();
-        SDL_Surface* getSmallHeroPic();
+	//! Return a small hero picture, either white (active==true) or black.
+        SDL_Surface* getSmallHeroPic(bool active);
         SDL_Surface* getPortPic();
         SDL_Surface* getExplosionPic();
         SDL_Surface* getSignpostPic();
@@ -524,6 +525,7 @@ class GraphicsCache
         SDL_Surface* d_prodshieldpic[PRODUCTION_SHIELD_TYPES];
 	SDL_Surface* d_smallruinedcity;
 	SDL_Surface* d_smallhero;
+	SDL_Surface* d_smallinactivehero;
         SDL_Surface* d_movebonuspic[MOVE_BONUS_TYPES];
 	SDL_Surface* d_port;
 	SDL_Surface* d_explosion;

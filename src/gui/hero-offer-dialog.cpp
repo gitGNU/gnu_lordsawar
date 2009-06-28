@@ -19,7 +19,6 @@
 #include <config.h>
 
 #include <libglademm/xml.h>
-#include <gtkmm/eventbox.h>
 #include <sigc++/functors/mem_fun.h>
 #include <gtkmm/label.h>
 
@@ -56,9 +55,6 @@ HeroOfferDialog::HeroOfferDialog(Player *player, HeroProto *h, City *c, int gold
     heromap.reset(new HeroMap(city));
     heromap->map_changed.connect(
 	sigc::mem_fun(this, &HeroOfferDialog::on_map_changed));
-
-    Gtk::EventBox *map_eventbox;
-    xml->get_widget("map_eventbox", map_eventbox);
 
     set_title(String::ucompose(_("Hero offer for %1"),
 				       player->getName()));

@@ -96,6 +96,7 @@ liblordsawarnet_la_SOURCES = \
 liblordsawargfx_la_SOURCES = \
 	bigmap.cpp bigmap.h citymap.cpp citymap.h  \
         historymap.cpp historymap.h heromap.cpp heromap.h \
+	heroesmap.cpp heroesmap.h \
 	ruinmap.cpp ruinmap.h questmap.cpp questmap.h \
 	vectormap.cpp vectormap.h overviewmap.cpp overviewmap.h \
         smallmap.cpp smallmap.h \

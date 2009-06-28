@@ -34,6 +34,7 @@
 #include "Item.h"
 #include "hero.h"
 #include "Backpack.h"
+#include "LocationList.h"
 
 std::string Stacklist::d_tag = "stacklist";
 using namespace std;
@@ -427,4 +428,43 @@ bool Stacklist::canJumpOverTooLargeStack(Stack *s)
   return found;
 }
 
+std::list<Hero*> Stacklist::getHeroes()
+{
+  std::list<Hero*> heroes;
+  std::vector<Uint32> hero_ids;
+  getHeroes(hero_ids);
+  for (std::vector<Uint32>::iterator it = hero_ids.begin(); 
+       it != hero_ids.end(); it++)
+    {
+        Stack *s = getArmyStackById(*it);
+	if (s)
+	  {
+	    Hero *h = dynamic_cast<Hero*>(s->getArmyById(*it));
+	    if (h)
+	      heroes.push_back(h);
+	  }
+    }
+  return heroes;
+}
+	
+Hero *Stacklist::getNearestHero(Vector<int> pos, int dist)
+{
+  std::list<Hero*> heroes = getHeroes();
+  LocationList<Location*> hero_locales;
+  for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); it++)
+    {
+      hero_locales.push_back(new Location(getPosition((*it)->getId()), 1));
+    }
+  Location *hero_locale = hero_locales.getNearestObjectBefore(pos, dist);
+  if (hero_locale)
+    {
+      for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); 
+	   it++)
+	{
+	  if (getPosition((*it)->getId()) == hero_locale->getPos())
+	    return (*it);
+	}
+    }
+  return NULL;
+}
 // End of file

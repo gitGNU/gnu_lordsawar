@@ -19,6 +19,7 @@ various_DATA = \
     win.png \
     lordsawar_logo.png \
     hero.png \
+    hero-inactive.png \
     prodshieldset.png \
     smallruinedcity.png \
     movebonus.png \
@@ -57,6 +58,7 @@ EXTRA_DIST = \
     win.png \
     lordsawar_logo.png \
     hero.png \
+    hero-inactive.png \
     prodshieldset.png \
     smallruinedcity.png \
     movebonus.png \

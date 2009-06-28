@@ -661,6 +661,36 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
   return false;
 }
 
+bool GameScenario::autoSave()
+{
+  char filename[1024];
+  if (Configuration::s_autosave_policy == 2)
+    snprintf(filename,sizeof(filename), "autosave-%03d.sav", s_round - 1);
+  else if (Configuration::s_autosave_policy == 1)
+    snprintf(filename,sizeof(filename), "autosave.sav");
+  else
+    return true;
+  // autosave to the file "autosave.sav". This is crude, but should work
+  //
+  // As a more enhanced version: autosave to a temporary file, then rename
+  // the file. Avoids screwing up the autosave if something goes wrong
+  // (and we have a savefile for debugging)
+  if (!saveGame(File::getSavePath() + "tmp.sav"))
+    {
+      std::cerr<< "Autosave failed.\n";
+      return false;
+    }
+  if (rename(std::string(File::getSavePath() + "tmp.sav").c_str(),
+	     std::string(File::getSavePath() + filename).c_str()))
+    {
+      char* err = strerror(errno);
+      std::cerr << "Error while trying to rename the temporary file to autosave.sav\n";
+      std::cerr << "Error: " <<err <<std::endl;
+      return false;
+    }
+  return true;
+}
+
 void GameScenario::nextRound()
 {
   s_round++;
@@ -679,31 +709,8 @@ void GameScenario::nextRound()
 	}
       helper.close();
     }
+  autoSave();
 
-  char filename[1024];
-  if (Configuration::s_autosave_policy == 2)
-    snprintf(filename,sizeof(filename), "autosave-%03d.sav", s_round - 1);
-  else if (Configuration::s_autosave_policy == 1)
-    snprintf(filename,sizeof(filename), "autosave.sav");
-  else
-    return;
-  // autosave to the file "autosave.sav". This is crude, but should work
-  //
-  // As a more enhanced version: autosave to a temporary file, then rename
-  // the file. Avoids screwing up the autosave if something goes wrong
-  // (and we have a savefile for debugging)
-  if (!saveGame(File::getSavePath() + "tmp.sav"))
-    {
-      std::cerr<< "Autosave failed.\n";
-      return;
-    }
-  if (rename(std::string(File::getSavePath() + "tmp.sav").c_str(),
-	     std::string(File::getSavePath() + filename).c_str()))
-    {
-      char* err = strerror(errno);
-      std::cerr << "Error while trying to rename the temporary file to autosave.sav\n";
-      std::cerr << "Error: " <<err <<std::endl;
-    }
 }
 
 std::string GameScenario::playModeToString(const GameScenario::PlayMode mode)
@@ -845,6 +852,8 @@ void GameScenario::initialize(GameParameters g)
   nextRound();
   if (d_playmode == GameScenario::NETWORKED)
     Playerlist::getInstance()->turnHumansIntoNetworkPlayers();
+  else
+    autoSave();
 }
 
 class ParamLoader

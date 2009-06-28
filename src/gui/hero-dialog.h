@@ -29,6 +29,7 @@
 #include <gtkmm/button.h>
 
 #include "vector.h"
+#include "heroesmap.h"
 
 class Hero;
 class Item;
@@ -49,15 +50,19 @@ class HeroDialog: public Decorated
     
  private:
     std::auto_ptr<Gtk::Dialog> dialog;
+    std::auto_ptr<HeroesMap> heroesmap;
 
     Hero *hero;
     Vector<int> pos;
+    Gtk::Image *map_image;
     Gtk::TreeView *item_treeview;
     Gtk::TreeView *events_treeview;
     Gtk::Button *drop_button;
     Gtk::Button *pickup_button;
     Gtk::Label *info_label1;
     Gtk::Label *info_label2;
+    Gtk::Label *hero_name_label;
+    Gtk::Image *hero_army_image;
 
     class ItemColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -91,6 +96,10 @@ class HeroDialog: public Decorated
     void add_item(Item *item, bool in_backpack);
     void addHistoryEvent(History *event);
     void fill_in_info_labels();
+
+    void on_map_changed(SDL_Surface *map);
+    bool on_map_mouse_button_event(GdkEventButton *e);
+    void show_hero();
 };
 
 #endif

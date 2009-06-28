@@ -237,6 +237,10 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	std::list<Hero*> getTopHeroes(int num);
 
 	static bool canJumpOverTooLargeStack(Stack *s);
+
+	std::list<Hero*> getHeroes();
+
+	Hero *getNearestHero(Vector<int> pos, int dist);
     private:
         //! Callback function for loading.
         bool load(std::string tag, XML_Helper* helper);

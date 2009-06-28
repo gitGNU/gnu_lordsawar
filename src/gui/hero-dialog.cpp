@@ -23,11 +23,14 @@
 #include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
 #include <gtkmm/image.h>
+#include <gtkmm/eventbox.h>
+#include <vector>
 
 #include "hero-dialog.h"
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
+#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "hero.h"
@@ -37,10 +40,10 @@
 #include "Backpack.h"
 #include "MapBackpack.h"
 #include "history.h"
+#include "stacklist.h"
 
 HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
     hero = h;
     pos = p;
     
@@ -53,20 +56,28 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     dialog.reset(d);
     decorate(dialog.get());
     window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
-    set_title(hero->getName());
+    xml->get_widget("map_image", map_image);
 
-    Gtk::Label *hero_label;
-    xml->get_widget("hero_label", hero_label);
-    hero_label->set_markup("<b>" + hero->getName() + "</b>");
+    std::list<Hero*> heroes;
+    heroes = Playerlist::getActiveplayer()->getStacklist()->getHeroes();
+    heroesmap.reset(new HeroesMap(heroes));
+    if (hero)
+      {
+	heroesmap->setSelectedHero(hero);
+      }
+    heroesmap->map_changed.connect(
+	sigc::mem_fun(this, &HeroDialog::on_map_changed));
+    Gtk::EventBox *map_eventbox;
+    xml->get_widget("map_eventbox", map_eventbox);
+    map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
+    map_eventbox->signal_button_press_event().connect(
+	sigc::mem_fun(*this, &HeroDialog::on_map_mouse_button_event));
 
-    Gtk::Image *hero_image;
-    xml->get_widget("hero_image", hero_image);
-    hero_image->property_pixbuf() = to_pixbuf(gc->getArmyPic(hero));
-
+    xml->get_widget("hero_label", hero_name_label);
+    xml->get_widget("hero_image", hero_army_image);
     xml->get_widget("info_label1", info_label1);
     xml->get_widget("info_label2", info_label2);
-    fill_in_info_labels();
-	
+
     xml->get_widget("drop_button", drop_button);
     xml->get_widget("pickup_button", pickup_button);
 
@@ -91,22 +102,9 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     events_treeview->append_column("", events_columns.desc);
     events_treeview->set_model(events_list);
     events_list->clear();
-    std::list<History* > events;
-    events = hero->getOwner()->getHistoryForHeroId(hero->getId());
-    for (std::list<History*>::iterator i = events.begin(); i != events.end();
-	 i++)
-      addHistoryEvent(*i);
 
     on_selection_changed();
 
-    // populate the item list
-    Backpack *backpack = hero->getBackpack();
-    for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
-	add_item(*i, true);
-
-    MapBackpack *ground = GameMap::getInstance()->getTile(pos)->getBackpack();
-    for (MapBackpack::iterator i = ground->begin(); i != ground->end(); i++)
-      add_item(*i, false);
 }
 
 void HeroDialog::addHistoryEvent(History *history)
@@ -205,19 +203,22 @@ void HeroDialog::hide()
 
 void HeroDialog::run()
 {
-    GameMap *gm = GameMap::getInstance();
-    dialog->show();
-    dialog->run();
-    if (gm->getTile(pos)->getBackpack()->size() > 0 && 
-        gm->getTile(pos)->getMaptileType() == Tile::WATER)
-      {
-        // splash, items lost forever
-        while (gm->getTile(pos)->getBackpack()->size())
-          {
-	    MapBackpack::iterator i = gm->getTile(pos)->getBackpack()->begin();
-            gm->getTile(pos)->getBackpack()->removeFromBackpack(*i);
-          }
-      }
+  heroesmap->resize();
+  heroesmap->draw(Playerlist::getActiveplayer());
+  GameMap *gm = GameMap::getInstance();
+  dialog->show_all();
+  show_hero();
+  dialog->run();
+  if (gm->getTile(pos)->getBackpack()->size() > 0 && 
+      gm->getTile(pos)->getMaptileType() == Tile::WATER)
+    {
+      // splash, items lost forever
+      while (gm->getTile(pos)->getBackpack()->size())
+        {
+	  MapBackpack::iterator i = gm->getTile(pos)->getBackpack()->begin();
+          gm->getTile(pos)->getBackpack()->removeFromBackpack(*i);
+        }
+    }
 }
 
 void HeroDialog::on_selection_changed()
@@ -331,4 +332,51 @@ void HeroDialog::fill_in_info_labels()
     s += "\n";
     s += String::ucompose(_("Upkeep: %1"), hero->getUpkeep());
     info_label2->set_text(s);
+}
+
+void HeroDialog::on_map_changed(SDL_Surface *map)
+{
+    map_image->property_pixbuf() = to_pixbuf(map);
+}
+
+bool HeroDialog::on_map_mouse_button_event(GdkEventButton *e)
+{
+    if (e->type != GDK_BUTTON_PRESS)
+	return true;	// useless event
+    
+    heroesmap->mouse_button_event(to_input_event(e));
+    
+    hero = heroesmap->getSelectedHero();
+    pos = Playerlist::getActiveplayer()->getStacklist()->getPosition(hero->getId());
+    show_hero();
+    heroesmap->draw(Playerlist::getActiveplayer());
+    return true;
+}
+
+void HeroDialog::show_hero()
+{
+    GraphicsCache *gc = GraphicsCache::getInstance();
+    set_title(hero->getName());
+    hero_name_label->set_markup("<b>" + hero->getName() + "</b>");
+    hero_army_image->property_pixbuf() = to_pixbuf(gc->getArmyPic(hero));
+
+    fill_in_info_labels();
+    std::list<History* > events;
+    events = hero->getOwner()->getHistoryForHeroId(hero->getId());
+    events_list->clear();
+    for (std::list<History*>::iterator i = events.begin(); i != events.end();
+	 i++)
+      addHistoryEvent(*i);
+	
+    // populate the item list
+    item_list->clear();
+    Backpack *backpack = hero->getBackpack();
+    for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
+	add_item(*i, true);
+
+    MapBackpack *ground = GameMap::getInstance()->getTile(pos)->getBackpack();
+    for (MapBackpack::iterator i = ground->begin(); i != ground->end(); i++)
+      add_item(*i, false);
+
+  return;
 }

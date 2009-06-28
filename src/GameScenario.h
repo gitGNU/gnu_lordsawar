@@ -117,7 +117,6 @@ class GameScenario: public GameScenarioOptions
           * @return true if all went well, false otherwise
           */
         bool saveGame(std::string filename, std::string extension = "sav") const;
-
         bool loadWithHelper(XML_Helper &helper);
         bool saveWithHelper(XML_Helper &helper) const;
 
@@ -151,6 +150,7 @@ class GameScenario: public GameScenarioOptions
 	  bool setupItemRewards();
 	  bool setupStacks(bool hidden_map);
 	  void setupDiplomacy(bool diplomacy);
+	  bool autoSave();
 
 	  // DATA
 	  std::string d_name;

@@ -222,6 +222,7 @@ GraphicsCache::GraphicsCache()
     d_medalsmask = GraphicsLoader::getMiscPicture("medals_mask.png");
     d_smallruinedcity = GraphicsLoader::getMiscPicture("smallruinedcity.png");
     d_smallhero = GraphicsLoader::getMiscPicture("hero.png");
+    d_smallinactivehero = GraphicsLoader::getMiscPicture("hero-inactive.png");
     d_small_ruin_unexplored = GraphicsLoader::getMiscPicture("smallunexploredruin.png");
     d_small_stronghold_unexplored = 
       GraphicsLoader::getMiscPicture("smallunexploredstronghold.png");
@@ -289,6 +290,7 @@ GraphicsCache::~GraphicsCache()
     SDL_FreeSurface(d_medalsmask);
     SDL_FreeSurface(d_smallruinedcity);
     SDL_FreeSurface(d_smallhero);
+    SDL_FreeSurface(d_smallinactivehero);
     SDL_FreeSurface(d_small_temple);
     SDL_FreeSurface(d_small_ruin_unexplored);
     SDL_FreeSurface(d_small_stronghold_unexplored);
@@ -303,9 +305,12 @@ SDL_Surface* GraphicsCache::getSmallRuinedCityPic()
   return d_smallruinedcity;
 }
 
-SDL_Surface* GraphicsCache::getSmallHeroPic()
+SDL_Surface* GraphicsCache::getSmallHeroPic(bool active)
 {
-  return d_smallhero;
+  if (active)
+    return d_smallhero;
+  else
+    return d_smallinactivehero;
 }
 
 SDL_Surface* GraphicsCache::getSmallRuinExploredPic()
