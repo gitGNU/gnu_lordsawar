@@ -1193,6 +1193,7 @@ void GameWindow::on_disband_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
+  Stack *stack = Playerlist::getActiveplayer()->getActivestack();
   std::auto_ptr<Gtk::Dialog> dialog;
 
   Glib::RefPtr<Gnome::Glade::Xml> xml
@@ -1211,7 +1212,17 @@ void GameWindow::on_disband_activated()
   Gtk::Label *l;
   xml->get_widget("label", l);
 
-  l->set_text(_("Are you sure you want to disband this group?"));
+  std::vector<Uint32> heroes;
+  stack->getHeroes(heroes);
+  Glib::ustring s = _("Are you sure you want to disband this group?");
+  if (heroes.size() > 0)
+    {
+      s += "\n";
+      s += String::ucompose( ngettext("(It contains %1 hero).",
+				      "(It contains %1 heroes).", 
+				      heroes.size()), heroes.size());
+    }
+  l->set_text(s);
   dialog->show_all();
   int response = dialog->run();
   dialog->hide();
