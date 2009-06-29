@@ -114,6 +114,7 @@ class GameWindow: public Decorated
     std::auto_ptr<Gtk::Window> map_tip;	// tooltip appears over the map
     std::auto_ptr<Gtk::Window> stack_tip;// tooltip appears over the map
     Gtk::Container *sdl_container;
+    Gtk::Container *map_container;
     Gtk::Widget *sdl_widget;
     Gtk::MenuBar *menubar;
     Gtk::CheckMenuItem *fullscreen_menuitem;
@@ -318,6 +319,7 @@ class GameWindow: public Decorated
     
     void setup_menuitem(Gtk::MenuItem*, sigc::slot<void> , sigc::signal<void, bool> &);
     void setup_button(Gtk::Button *, sigc::slot<void> slot, sigc::signal<void, bool> &);
+
 public:
     // not part of the API, but for surface_attached_helper
     void on_sdl_surface_changed();

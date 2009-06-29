@@ -156,6 +156,9 @@ GameWindow::GameWindow()
     xml->get_widget("sdl_container", sdl_container);
     xml->get_widget("stack_info_box", stack_info_box);
     xml->get_widget("stack_info_container", stack_info_container);
+    Gtk::Viewport *vp;
+    xml->get_widget("sdl_viewport", vp);
+    decorate_border(vp, 175);
     xml->get_widget("group_moves_label", group_moves_label);
     xml->get_widget("group_togglebutton", group_ungroup_toggle);
     group_ungroup_toggle->signal_toggled().connect
@@ -173,6 +176,7 @@ GameWindow::GameWindow()
     // the map image
     xml->get_widget("map_image", map_image);
     xml->get_widget("map_eventbox", map_eventbox);
+    xml->get_widget("map_container", map_container);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
 			     Gdk::POINTER_MOTION_MASK | Gdk::SCROLL_MASK);
       map_eventbox->signal_button_press_event().connect
@@ -181,6 +185,11 @@ GameWindow::GameWindow()
        (sigc::mem_fun(*this, &GameWindow::on_map_mouse_button_event));
       map_eventbox->signal_motion_notify_event().connect
        (sigc::mem_fun(*this, &GameWindow::on_map_mouse_motion_event));
+    Gtk::Viewport *mvp;
+    xml->get_widget("map_viewport", mvp);
+    decorate_border(mvp, 175);
+    xml->get_widget("control_panel_viewport", vp);
+    decorate_border(vp, 175);
 
     // the stats
     xml->get_widget("cities_stats_image", cities_stats_image);
@@ -1798,6 +1807,8 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 
 void GameWindow::on_smallmap_changed(SDL_Surface *map)
 {
+  map_container->property_height_request() = map->h;
+  map_container->property_width_request() = map->w;
   map_image->property_pixbuf() = to_pixbuf(map);
 }
 
@@ -1865,8 +1876,12 @@ void GameWindow::fill_in_group_info (Stack *s)
   GraphicsCache *gc = GraphicsCache::getInstance();
   SDL_Surface *terrain = gc->getMoveBonusPic(bonus, s->hasShip());
   terrain_image->property_pixbuf() = to_pixbuf(terrain);
-  group_moves_label->set_text(String::ucompose("%1",
-					       s->getGroupMoves()));
+  if (Configuration::s_decorated == true)
+    group_moves_label->set_markup(String::ucompose("<b>%1</b>",
+						   s->getGroupMoves()));
+  else
+    group_moves_label->set_markup(String::ucompose("%1",
+						   s->getGroupMoves()));
   //printf ("toggling group/ungroup!\n");
   group_ungroup_toggle->set_sensitive(false);
   group_ungroup_toggle->set_active(s->isGrouped());

@@ -20,6 +20,8 @@
 
 #include <gtkmm/window.h>
 #include <gtkmm/button.h>
+#include <gtkmm/viewport.h>
+
 
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
@@ -31,6 +33,8 @@ class Decorated: public sigc::trackable
     ~Decorated();
 
     void decorate(Gtk::Window *window, std::string background_filename="", int alpha = 255);
+
+    void decorate_border(Gtk::Viewport *container, int alpha = 255);
 
     void set_title(std::string title);
 

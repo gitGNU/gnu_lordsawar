@@ -159,3 +159,25 @@ void Decorated::on_hide()
 {
   window_closed.emit();
 }
+
+void Decorated::decorate_border(Gtk::Viewport *container, int alpha)
+{
+  if (Configuration::s_decorated == false)
+    return;
+  Glib::RefPtr<Gtk::Style> copy;
+  Glib::RefPtr<Gdk::Pixbuf> back;
+  Glib::RefPtr<Gdk::Pixmap> pixmap;
+  Glib::RefPtr<Gdk::Bitmap> bitmap;
+  copy = container->get_style()->copy();
+  back = Gdk::Pixbuf::create_from_file
+    (File::getMiscFile("various/back.bmp"));
+  pixmap = Gdk::Pixmap::create
+    (window->get_window(), back->get_width(), back->get_height());
+  back->composite_color(back, 0, 0, 
+			back->get_width(), back->get_height(), 
+			0.0, 0.0, 1.0, 1.0, Gdk::INTERP_NEAREST, alpha, 
+			0, 0, 64, 0, 0);
+  back->render_pixmap_and_mask(pixmap, bitmap, 10);
+  copy->set_bg_pixmap(Gtk::STATE_NORMAL, pixmap);
+  container->set_style(copy);
+}
