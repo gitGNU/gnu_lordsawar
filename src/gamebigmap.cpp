@@ -198,6 +198,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 			{
 			  city_queried (c, false);
 			  set_shift_key_down (false);
+			  return;
 			}
 		      else
 			{
@@ -205,6 +206,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 			    {
 			      city_queried (c, false);
 			      set_shift_key_down (false);
+			      return;
 			    }
 			}
 		    }
