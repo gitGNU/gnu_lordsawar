@@ -278,7 +278,7 @@
 						<d_grouped>true</d_grouped>
 					</army>
 					<hero>
-						<d_name>Hanibal</d_name>
+						<d_name>Hannibal</d_name>
 						<d_gender>Hero::MALE</d_gender>
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
