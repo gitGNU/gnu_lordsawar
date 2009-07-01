@@ -2778,8 +2778,6 @@ void GameWindow::on_ruin_visited(Ruin *ruin)
 
 void GameWindow::show_shield_turn() //show turn indicator
 {
-  Gdk::Color black("black");
-  Gdk::Color white("white");
   Playerlist* pl = Playerlist::getInstance();
   GraphicsCache *gc = GraphicsCache::getInstance();
   unsigned int c = 0;
