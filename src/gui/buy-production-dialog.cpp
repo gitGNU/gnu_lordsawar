@@ -36,6 +36,7 @@
 #include "GraphicsCache.h"
 #include "armysetlist.h"
 #include "playerlist.h"
+#include "File.h"
 
 BuyProductionDialog::BuyProductionDialog(City *c)
 {
@@ -52,6 +53,7 @@ BuyProductionDialog::BuyProductionDialog(City *c)
     dialog.reset(d);
     decorate(dialog.get());
     window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     
     xml->get_widget("production_info_label1", production_info_label1);
     xml->get_widget("production_info_label2", production_info_label2);

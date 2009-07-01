@@ -31,6 +31,7 @@
 #include "armysetlist.h"
 #include "player.h"
 #include "GraphicsCache.h"
+#include "File.h"
 
 ArmyBonusDialog::ArmyBonusDialog(Player *p)
 {
@@ -44,6 +45,7 @@ ArmyBonusDialog::ArmyBonusDialog(Player *p)
     dialog.reset(d);
     decorate(dialog.get());
     window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
     armies_list = Gtk::ListStore::create(armies_columns);
     xml->get_widget("treeview", armies_treeview);

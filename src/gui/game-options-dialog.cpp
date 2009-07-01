@@ -41,6 +41,7 @@ GameOptionsDialog::GameOptionsDialog(bool readonly)
     dialog.reset(d);
     decorate(dialog.get());
     window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
     d_readonly = readonly;
     xml->get_widget("difficultoptionstable", difficultoptionstable);
