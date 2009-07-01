@@ -2,6 +2,7 @@
 
 	* added a listbox of heroes to the hero dialog, to solve the problem
 	with getting stats for co-located heroes.
+	* updated the manual with newer looking dialogs.
 
 2009-06-30  Ben Asselstine  <benasselstine@gmail.com>
 
