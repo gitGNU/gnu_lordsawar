@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -55,16 +55,26 @@ class HeroDialog: public Decorated
     Hero *hero;
     Vector<int> pos;
     Gtk::Image *map_image;
+    Gtk::TreeView *heroes_treeview;
     Gtk::TreeView *item_treeview;
     Gtk::TreeView *events_treeview;
     Gtk::Button *drop_button;
     Gtk::Button *pickup_button;
     Gtk::Label *info_label1;
     Gtk::Label *info_label2;
-    Gtk::Label *hero_name_label;
-    Gtk::Image *hero_army_image;
     Gtk::Button *next_button;
     Gtk::Button *prev_button;
+
+    class HeroesColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	HeroesColumns() 
+        { add(hero); add(name); }
+	
+	Gtk::TreeModelColumn<Hero *> hero;
+	Gtk::TreeModelColumn<Glib::ustring> name;
+    };
+    const HeroesColumns heroes_columns;
+    Glib::RefPtr<Gtk::ListStore> heroes_list;
 
     class ItemColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -91,13 +101,15 @@ class HeroDialog: public Decorated
     const EventsColumns events_columns;
     Glib::RefPtr<Gtk::ListStore> events_list;
 
-    void on_selection_changed();
+    void on_hero_changed();
+    void on_item_selection_changed();
     void on_drop_clicked();
     void on_pickup_clicked();
     void on_next_clicked();
     void on_prev_clicked();
 
     void add_item(Item *item, bool in_backpack);
+    void add_hero(Hero *hero);
     void addHistoryEvent(History *event);
     void fill_in_info_labels();
 
@@ -105,6 +117,8 @@ class HeroDialog: public Decorated
     bool on_map_mouse_button_event(GdkEventButton *e);
     void show_hero();
     void update_buttons();
+    bool inhibit_hero_changed;
+    void update_hero_list();
 };
 
 #endif

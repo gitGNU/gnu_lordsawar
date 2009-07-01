@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@
 
 HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 {
+  inhibit_hero_changed = false;
     hero = h;
     pos = p;
     
@@ -78,8 +79,6 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     map_eventbox->signal_button_press_event().connect(
 	sigc::mem_fun(*this, &HeroDialog::on_map_mouse_button_event));
 
-    xml->get_widget("hero_label", hero_name_label);
-    xml->get_widget("hero_image", hero_army_image);
     xml->get_widget("info_label1", info_label1);
     xml->get_widget("info_label2", info_label2);
 
@@ -102,6 +101,28 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 	prev_button->set_sensitive(false);
       }
 
+    heroes_list = Gtk::ListStore::create(heroes_columns);
+    xml->get_widget("heroes_treeview", heroes_treeview);
+    heroes_treeview->set_model(heroes_list);
+    heroes_treeview->append_column(_("Hero"), heroes_columns.name);
+
+    heroes_list->clear();
+    Uint32 count = 0;
+    for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end();
+	 it++)
+      {
+	add_hero (*it);
+      if (*it == hero)
+	{
+	  Gtk::TreeModel::Row row;
+	  row = heroes_treeview->get_model()->children()[count];
+	  heroes_treeview->get_selection()->select(row);
+	}
+      count++;
+      }
+    heroes_treeview->get_selection()->signal_changed()
+	.connect(sigc::mem_fun(this, &HeroDialog::on_hero_changed));
+
     item_list = Gtk::ListStore::create(item_columns);
     xml->get_widget("treeview", item_treeview);
     item_treeview->set_model(item_list);
@@ -111,7 +132,7 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     item_treeview->append_column(_("Status"), item_columns.status);
 
     item_treeview->get_selection()->signal_changed()
-	.connect(sigc::mem_fun(this, &HeroDialog::on_selection_changed));
+	.connect(sigc::mem_fun(this, &HeroDialog::on_item_selection_changed));
 
     events_list = Gtk::ListStore::create(events_columns);
     xml->get_widget("events_treeview", events_treeview);
@@ -119,8 +140,7 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     events_treeview->set_model(events_list);
     events_list->clear();
 
-    on_selection_changed();
-
+    on_item_selection_changed();
 }
 
 void HeroDialog::addHistoryEvent(History *history)
@@ -237,7 +257,46 @@ void HeroDialog::run()
     }
 }
 
-void HeroDialog::on_selection_changed()
+void HeroDialog::update_hero_list()
+{
+  inhibit_hero_changed = true;
+    std::list<Hero*> heroes;
+    heroes = Playerlist::getActiveplayer()->getStacklist()->getHeroes();
+    Uint32 count = 0;
+    for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end();
+	 it++)
+      {
+      if (*it == hero)
+	{
+	  Gtk::TreeModel::Row row;
+	  row = heroes_treeview->get_model()->children()[count];
+	  heroes_treeview->get_selection()->select(row);
+	}
+      count++;
+      }
+  inhibit_hero_changed = false;
+}
+
+void HeroDialog::on_hero_changed()
+{
+  if (inhibit_hero_changed == true)
+    return;
+  Glib::RefPtr<Gtk::TreeSelection> selection = heroes_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+
+  if (iterrow)
+    {
+      Gtk::TreeModel::Row row = *iterrow;
+      hero = row[heroes_columns.hero];
+      pos = Playerlist::getActiveplayer()->getStacklist()->getPosition(hero->getId());
+      heroesmap->setSelectedHero(hero);
+      show_hero();
+      heroesmap->draw(Playerlist::getActiveplayer());
+    }
+
+}
+
+void HeroDialog::on_item_selection_changed()
 {
     Gtk::TreeIter i = item_treeview->get_selection()->get_selected();
     if (i)
@@ -261,7 +320,7 @@ void HeroDialog::on_drop_clicked()
 	Item *item = (*i)[item_columns.item];
 	hero->getOwner()->heroDropItem (hero, item, pos);
 	(*i)[item_columns.status] = _("On the ground");
-	on_selection_changed();
+	on_item_selection_changed();
 	fill_in_info_labels();
     }
 }
@@ -282,6 +341,7 @@ void HeroDialog::on_next_clicked()
       show_hero();
       heroesmap->draw(Playerlist::getActiveplayer());
     }
+  update_hero_list();
 }
 void HeroDialog::on_prev_clicked()
 {
@@ -299,6 +359,7 @@ void HeroDialog::on_prev_clicked()
       show_hero();
       heroesmap->draw(Playerlist::getActiveplayer());
     }
+  update_hero_list();
 }
 void HeroDialog::on_pickup_clicked()
 {
@@ -310,9 +371,16 @@ void HeroDialog::on_pickup_clicked()
           item->setPlanted(false);
 	hero->getOwner()->heroPickupItem (hero, item, pos);
 	(*i)[item_columns.status] = _("In backpack");
-	on_selection_changed();
+	on_item_selection_changed();
 	fill_in_info_labels();
     }
+}
+
+void HeroDialog::add_hero(Hero *h)
+{
+    Gtk::TreeIter i = heroes_list->append();
+    (*i)[heroes_columns.name] = h->getName();
+    (*i)[heroes_columns.hero] = h;
 }
 
 void HeroDialog::add_item(Item *item, bool in_backpack)
@@ -400,15 +468,13 @@ bool HeroDialog::on_map_mouse_button_event(GdkEventButton *e)
     pos = Playerlist::getActiveplayer()->getStacklist()->getPosition(hero->getId());
     show_hero();
     heroesmap->draw(Playerlist::getActiveplayer());
+    update_hero_list();
     return true;
 }
 
 void HeroDialog::show_hero()
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
     set_title(hero->getName());
-    hero_name_label->set_markup("<b>" + hero->getName() + "</b>");
-    hero_army_image->property_pixbuf() = to_pixbuf(gc->getArmyPic(hero));
 
     fill_in_info_labels();
     std::list<History* > events;
