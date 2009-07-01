@@ -116,6 +116,124 @@ The objective of the game is to conquer all of the cities on the map.  This is a
 </mediaobject>
 </screenshot>
 </figure>
+<para>
+<itemizedlist>
+<listitem>
+A - Temple
+<para>
+A Temple is where stacks can go to get blessed, and heroes can find quests.
+</para>
+</listitem>
+<listitem>
+B - Port
+<para>
+A Port is where army units can get on or off ships.
+</para>
+</listitem>
+<listitem>
+C - Selected Stack
+<para>
+Army units must be first selected (with left-click) to command them.  This stack has one army unit (shown by the length of the flag).
+</para>
+</listitem>
+<listitem>
+D - City
+<para>
+A City is a place that creates Army units, and provides valuable income.
+</para>
+</listitem>
+<listitem>
+E - Unselected Stack
+<para>
+This unselected stack has one army unit.
+</para>
+</listitem>
+<listitem>
+F - Ruin
+<para>
+A Ruin is a place a Hero can go to risk life for valuable rewards.
+</para>
+</listitem>
+<listitem>
+G - Hills
+<para>
+Some army units can move switfly through hills, although most cannot.
+</para>
+</listitem>
+<listitem>
+H - Mountains
+<para>
+No army unit can move through mountains, they must be traversed around, or flown over.
+</para>
+</listitem>
+<listitem>
+I - Forest
+<para>
+Some army units can move swiftly through forests, although most cannot.
+</para>
+</listitem>
+<listitem>
+J - Swamp
+<para>
+No army units can travel swiftly through swamp, although it can be flown over by stacks that have the gift of flight.
+</para>
+</listitem>
+<listitem>
+K - Signpost
+<para>
+Signposts contain information that the player can view by right-clicking on it.
+</para>
+</listitem>
+<listitem>
+L - Turn Indicator
+<para>
+The Turn Indicator shows what round it is, and who's turn it is.
+</para>
+</listitem>
+<listitem>
+M - Miniature Map
+<para>
+The Miniature Map is the zoomed out view of the entire map.
+</para>
+</listitem>
+<listitem>
+N - Zoomed-In Area
+<para>
+The Zoomed-In Area denote by a white box is show on the left.
+</para>
+</listitem>
+<listitem>
+O - Moves Left for the Army Unit
+<para>
+This value is the number of movement points the army unit has left.
+</para>
+</listitem>
+<listitem>
+P - Selected Army Unit in Stack
+<para>
+The button appears pushed-in, meaning that this army unit is part of the stack.  Other army units may appear to the right of this unit, in their own button.  There can be up to 8 army units in a stack.
+</para>
+</listitem>
+<listitem>
+Q - Moves Left for the Stack
+<para>
+This value is the number of movement points that the stack has left.
+</para>
+</listitem>
+<listitem>
+R - Movement Bonus
+<para>
+This graphic denotes which terrain the stack can move through swiftly.  In this case the stack has the gift of flight.
+</para>
+</listitem>
+<listitem>
+S - Water
+<para>
+Only army units on ships can go in the water, although some army units can fly over the water.
+</para>
+</listitem>
+</itemizedlist>
+</para>
 </sect2>
 <sect2 id="lordsawar-main-screen-buttons">
 	<title>A Closer Look at the Buttons</title> 
@@ -717,10 +835,10 @@ The yellow player commits to the battle by left-clicking on the red army unit wi
 </mediaobject>
 </screenshot>
 </figure>
-Here is the fight screen.  The attacker is always depicted on the bottom of the fight window, while the defender is always shown on the top.  The shields of both players is shown, along with the army units fighting.  The progress bar indicates how many hitpoints each of the army units have left.  Every army unit has precisely two hitpoints, and strength is used as the main determinator if the aunit is hit or not.  In this battle each army unit has a single hitpoint left.
+Here is the fight screen.  The attacker is always depicted on the bottom of the fight window, while the defender is always shown on the top.  The shields of both players is shown, along with the army units fighting.  The progress bar indicates how many hitpoints each of the army units have left.  Every army unit has precisely two hitpoints, and strength is used as the main determinator if the aunit is hit or not.  In this battle the Orcish Mob is unscathed as it dispatches the single unit of Light Infantry.
 </para>
 <para>
-The battle finishes, and the yellow unit of Orcish Mob fails to kill the unit of red's Light infantry.  The yellow player loses the unit of Orcish Mob:
+The battle finishes, and the yellow unit of Orcish Mob succeds in killing the unit of red's Light infantry.  The red player loses the unit of Light Infantry:
 <figure id="fought-one-on-one-fig">
 <screenshot>
 <mediaobject>
@@ -747,7 +865,7 @@ Here the yellow player wishes to attack the red player.  The yellow player has s
 </screenshot>
 </figure>
 <para>
-The yellow player commits to the battle by left-clicking on the red city withe sword cursor.  The battle ensues:
+The yellow player commits to the battle by left-clicking on the red city with the sword cursor.  The battle ensues:
 <figure id="fighting-one-on-two-fig">
 <screenshot>
 <mediaobject>
@@ -757,10 +875,10 @@ The yellow player commits to the battle by left-clicking on the red city withe s
 </mediaobject>
 </screenshot>
 </figure>
-Here is the fight screen.  The Orcish mob has just dispatched one of the two army units; and hasn't lost a single hitpoint in doing so.  The battle is down to a single unit of Light Calvary, and a single unit of Orcish Mob.
+Here is the fight screen.  The Orcish mob has just dispatched a single enemy army unit, and has lost a single hitpoint in doing so.  The battle is now down to two units of Light Infantry, and a single injured unit of Orcish Mob.
 </para>
 <para>
-The battle finishes, and the yellow unit of Orcish Mob succeeds in killing the final Light Cavalry unit.  The yellow player captures the city:
+The battle finishes, and the yellow unit of Orcish Mob does not succeed in killing the remaining enemy units, an as a result the unit Orcish Mob dies.  The red player retains the city:
 <figure id="fought-one-on-two-fig">
 <screenshot>
 <mediaobject>
