@@ -2776,7 +2776,7 @@ void GameWindow::on_ruin_visited(Ruin *ruin)
   d.hide();
 }
 
-void GameWindow::show_shield_turn()
+void GameWindow::show_shield_turn() //show turn indicator
 {
   Gdk::Color black("black");
   Gdk::Color white("white");
@@ -2795,10 +2795,10 @@ void GameWindow::show_shield_turn()
 	  continue;
 	}
       if (*i == pl->getActiveplayer())
-	shield_image[c]->get_parent()->modify_bg(Gtk::STATE_NORMAL, black);
+	shield_image[c]->property_pixbuf()=to_pixbuf(gc->getShieldPic(1,(*i)));
       else
-	shield_image[c]->get_parent()->modify_bg(Gtk::STATE_NORMAL, white);
-      shield_image[c]->property_pixbuf()=to_pixbuf(gc->getShieldPic(1,(*i)));
+	shield_image[c]->property_pixbuf()=to_pixbuf(gc->getShieldPic(0,(*i)));
+      shield_image[c]->property_tooltip_text() = (*i)->getName();
       c++;
     }
   for (unsigned int i = c; i < MAX_PLAYERS; i++)
