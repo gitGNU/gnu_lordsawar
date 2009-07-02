@@ -357,10 +357,10 @@ bool CityWindow::on_production_button_event(GdkEventButton *e, Gtk::ToggleButton
 	}
 	assert(slot != -1);
 
-	const ArmyProdBase *army = city->getProductionBase(slot);
+	const ArmyProdBase *prodbase = city->getProductionBase(slot);
 
-	if (army)
-	    army_info_tip.reset(new ArmyInfoTip(toggle, army));
+	if (prodbase)
+	    army_info_tip.reset(new ArmyInfoTip(toggle, prodbase, city));
 	return true;
     }
     else if (event.button == MouseButtonEvent::RIGHT_BUTTON

@@ -27,6 +27,7 @@
 class Army;
 class ArmyProto;
 class ArmyProdBase;
+class City;
 
 // shows a tooltip like window with information about an army
 class ArmyInfoTip: public sigc::trackable
@@ -34,7 +35,7 @@ class ArmyInfoTip: public sigc::trackable
  public:
     // the tip is shown above target, simply delete the object to hide it again
     ArmyInfoTip(Gtk::Widget *target, const Army *army);
-    ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army);
+    ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army, City *city);
     ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army);
 
  private:

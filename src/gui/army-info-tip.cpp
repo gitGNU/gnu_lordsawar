@@ -35,6 +35,7 @@
 #include "armyproto.h"
 #include "GraphicsCache.h"
 #include "playerlist.h"
+#include "city.h"
 
 
 ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
@@ -102,7 +103,8 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     window->show();
 }
 
-ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army)
+ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army, 
+			 City *city)
 {
     Glib::RefPtr<Gnome::Glade::Xml> xml
 	= Gnome::Glade::Xml::create(get_glade_path()
@@ -114,7 +116,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army)
 
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
-    Player *p = Playerlist::getInstance()->getActiveplayer();
+    Player *p = city->getOwner();
     int armyset;
     armyset = army->getArmyset();
     GraphicsCache *gc = GraphicsCache::getInstance();
