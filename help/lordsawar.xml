@@ -1497,7 +1497,7 @@ After the game server is running, the lobby screen is shown.  Clients also see t
 </figure>
 </para>
 <para>
-The lobby screen has three main portions: the chat window, the seats, and the map.  The figure shows two people (ben and benny) playing a five-sided game with a map that has 71 cities.  Both ben and benny are responsible for playing for two players each, although one of ben's players is a computer player.  It is currently benny's turn to move The Sirians.  Nobody is playing for the Lord Bane player, but that's not a problem because it's not their turn yet.
+The lobby screen has three main portions: the chat window, the seats, and the map.  The figure shows two people (ben and benny) playing a five-sided game with a map that has 80 cities.  Benny is responsible for playing for one human player, while Ben is responsible for playing all other players, one of which is human and the rest are computer players.  It is currently benny's turn to move The Sirians.
 <para>
 As clients connect to the server, they appear in the People list of the chat window.  To send a message to all other players, type in a message into the box next to "Send:" and press the Enter key.  As clients leave, their name gets removed from the People list.
 </para>
