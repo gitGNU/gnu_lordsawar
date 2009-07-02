@@ -2000,7 +2000,8 @@ bool Player::vectorFromCity(City * c, Vector<int> dest)
   return true;
 }
 
-bool Player::changeVectorDestination(Vector<int> src, Vector<int> dest)
+bool Player::doChangeVectorDestination(Vector<int> src, Vector<int> dest,
+				       std::list<City*> &vectored)
 {
   //DEST can be a flag.
   //SRC can be a flag too.
@@ -2048,9 +2049,25 @@ bool Player::changeVectorDestination(Vector<int> src, Vector<int> dest)
   std::list<City*>::iterator it = sources.begin();
   for (; it != sources.end(); it++)
     retval &= (*it)->changeVectorDestination(dest);
-  // it's okay that this doesn't produce any actions
-  // because the actions take effect when we end our turn.
+  vectored = sources;
   return retval;
+}
+
+bool Player::changeVectorDestination(Vector<int> src, Vector<int> dest)
+{
+  std::list<City*> vectored;
+  bool retval = doChangeVectorDestination(src, dest, vectored);
+  if (retval == false)
+    return retval;
+
+  std::list<City*>::iterator it = vectored.begin();
+  for (; it != vectored.end(); it++)
+    {
+      Action_Vector* item = new Action_Vector();
+      item->fillData((*it), dest);
+      addAction(item);
+    }
+  return true;
 }
 
 bool Player::heroPlantStandard(Stack* s)

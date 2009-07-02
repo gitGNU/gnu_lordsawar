@@ -1084,9 +1084,6 @@ class Player: public sigc::trackable
 	 *
 	 * SRC and DEST can both be the player's planted standard.
 	 *
-	 * This callback doesn't generate any actions because the vector
-	 * actions take place after the turn has ended.
-	 *
 	 * @param  src    The place that we want to take all the vectoring from.
          * @param  dest   The place on the map to vector to.  The destination 
 	 *                point should be co-located with a City or a 
@@ -1433,6 +1430,8 @@ class Player: public sigc::trackable
 	void doKill();
 	const Army *doCityProducesArmy(City *city);
 	Army *doVectoredUnitArrives(VectoredUnit *unit);
+	bool doChangeVectorDestination(Vector<int> src, Vector<int> dest,
+				       std::list<City*> &vectored);
 
 	void AI_maybeBuyScout();
 
