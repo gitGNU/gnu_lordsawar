@@ -35,6 +35,8 @@
 #include "stack.h"
 #include "GraphicsCache.h"
 #include "map-tip-position.h"
+#include "decorated.h"
+#include "File.h"
 
 
 StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, const Stack *stack)
@@ -47,6 +49,8 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, const Stack
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
     window.reset(w);
+    Decorated decorator;
+    decorator.decorate(window.get(),File::getMiscFile("various/background.png"), 200);
 
     xml->get_widget("image_hbox", image_hbox);
 

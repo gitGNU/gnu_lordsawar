@@ -36,6 +36,8 @@
 #include "GraphicsCache.h"
 #include "playerlist.h"
 #include "city.h"
+#include "decorated.h"
+#include "File.h"
 
 
 ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
@@ -47,6 +49,8 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
     window.reset(w);
+    Decorated decorator;
+    decorator.decorate(window.get(),File::getMiscFile("various/background.png"), 200);
 
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
@@ -113,6 +117,8 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
     window.reset(w);
+    Decorated decorator;
+    decorator.decorate(window.get(),File::getMiscFile("various/background.png"), 200);
 
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
@@ -177,6 +183,8 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
     window.reset(w);
+    Decorated decorator;
+    decorator.decorate(window.get(),File::getMiscFile("various/background.png"), 200);
 
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);

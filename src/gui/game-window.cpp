@@ -81,6 +81,7 @@
 #include "stack-info-dialog.h"
 #include "timed-message-dialog.h"
 #include "destination-dialog.h"
+#include "decorated.h"
 
 #include "ucompose.hpp"
 #include "defs.h"
@@ -1961,6 +1962,7 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
 {
   // init the map tip
   map_tip.reset(new Gtk::Window(Gtk::WINDOW_POPUP));
+
   Gtk::Frame *f = manage(new Gtk::Frame);
   f->property_shadow_type() = Gtk::SHADOW_ETCHED_OUT;
 
@@ -1970,6 +1972,8 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
   f->add(*l);
 
   map_tip->add(*f);
+  Decorated decorator;
+  decorator.decorate(map_tip.get(),File::getMiscFile("various/background.png"), 200);
   f->show_all();
 
   // get screen position
