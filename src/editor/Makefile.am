@@ -34,6 +34,8 @@ lordsawar_tile_editor_SOURCES = \
 	tile-preview-dialog.cpp tile-preview-dialog.h \
 	tile-preview-scene.cpp tile-preview-scene.h \
 	tileset-selector-editor-dialog.cpp tileset-selector-editor-dialog.h \
+	tileset-explosion-picture-editor-dialog.cpp \
+	tileset-explosion-picture-editor-dialog.h \
 	glade-helpers.h
 
 lordsawar_editor_SOURCES = \

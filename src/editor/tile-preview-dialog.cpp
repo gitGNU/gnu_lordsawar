@@ -48,7 +48,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Uint32 tileSize)
     xml->get_widget("refresh_button", refresh_button);
     refresh_button->signal_clicked().connect
       (sigc::mem_fun(this, &TilePreviewDialog::on_refresh_clicked));
-    xml->get_widget("scene_box", scene_box);
+    xml->get_widget("preview_image", preview_image);
 
     std::vector<Glib::RefPtr<Gdk::Pixbuf> > base_tilestyles;
     base_tilestyles = 
@@ -144,7 +144,6 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Uint32 tileSize)
 	scenes.push_back(s);
 	break;
       }
-    scene_table = NULL;
     d_tile = tile;
     current_scene = scenes.begin();
     if (*current_scene)
@@ -210,8 +209,7 @@ void TilePreviewDialog::update_scene(TilePreviewScene *scene)
 {
   if (!scene)
     return;
-  if (scene_table)
-    delete scene_table;
+  /*
   scene_table = new Gtk::Table(scene->getHeight(), scene->getWidth());
   scene_box->add(*manage(scene_table));
   for (int i = 0; i < scene->getHeight(); i++)
@@ -232,7 +230,9 @@ void TilePreviewDialog::update_scene(TilePreviewScene *scene)
 	  image->show();
 	}
     }
-  scene_table->show_all();
+    */
+  preview_image->property_pixbuf() = scene->renderScene(d_tileSize);
+  preview_image->show_all();
 }
 
 void TilePreviewDialog::update_buttons()

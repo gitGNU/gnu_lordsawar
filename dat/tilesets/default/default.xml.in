@@ -5,6 +5,7 @@
     <d_tilesize>40</d_tilesize>
     <d_large_selector>misc/selector.png</d_large_selector>
     <d_small_selector>misc/small_selector.png</d_small_selector>
+    <d_explosion>misc/explosion.png</d_explosion>
     <road_smallmap>
         <d_red>164</d_red>
         <d_green>84</d_green>

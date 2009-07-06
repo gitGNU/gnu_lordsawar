@@ -23,7 +23,8 @@ select-hidden-ruin-dialog.glade \
 tileset-window.glade \
 tileset-info-dialog.glade \
 tile-preview-dialog.glade \
-tileset-selector-editor-dialog.glade
+tileset-selector-editor-dialog.glade \
+tileset-explosion-picture-editor-dialog.glade
 
 EXTRA_DIST = $(glade_DATA) \
 README

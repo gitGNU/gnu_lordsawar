@@ -42,6 +42,7 @@
 #include "tileset-info-dialog.h"
 #include "tile-preview-dialog.h"
 #include "tileset-selector-editor-dialog.h"
+#include "tileset-explosion-picture-editor-dialog.h"
 
 #include "gtksdl.h"
 #include "image-helpers.h"
@@ -130,6 +131,9 @@ TileSetWindow::TileSetWindow()
     xml->get_widget("army_unit_selector_menuitem", army_unit_selector_menuitem);
     army_unit_selector_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &TileSetWindow::on_army_unit_selector_activated));
+    xml->get_widget("explosion_picture_menuitem", explosion_picture_menuitem);
+    explosion_picture_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &TileSetWindow::on_explosion_picture_activated));
     xml->get_widget("preview_tile_menuitem", preview_tile_menuitem);
     preview_tile_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &TileSetWindow::on_preview_tile_activated));
@@ -1088,5 +1092,11 @@ void TileSetWindow::on_preview_tile_activated()
 void TileSetWindow::on_army_unit_selector_activated()
 {
   TilesetSelectorEditorDialog d(d_tileset);
+  d.run();
+}
+
+void TileSetWindow::on_explosion_picture_activated()
+{
+  TilesetExplosionPictureEditorDialog d(d_tileset);
   d.run();
 }

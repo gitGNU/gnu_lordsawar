@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,47 +15,49 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef TILE_PREVIEW_DIALOG_H
-#define TILE_PREVIEW_DIALOG_H
+#ifndef TILESET_EXPLOSION_PICTURE_EDITOR_DIALOG_H
+#define TILESET_EXPLOSION_PICTURE_EDITOR_DIALOG_H
 
 #include <memory>
+#include <map>
 #include <sigc++/trackable.h>
+#include <sigc++/connection.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/button.h>
 #include <gtkmm/image.h>
+#include <gtkmm/radiobutton.h>
+#include <gtkmm/filechooserbutton.h>
 #include <gtkmm/label.h>
-#include "Tile.h"
+#include "tileset.h"
 #include "tile-preview-scene.h"
 
 
-//! Tile Preview Dialog.  Shows completeness and correctness of tilesets.
-class TilePreviewDialog: public sigc::trackable
+//! Tileset explosion picture editor.  
+class TilesetExplosionPictureEditorDialog: public sigc::trackable
 {
  public:
-    TilePreviewDialog(Tile *tile, Uint32 tileSize);
+    TilesetExplosionPictureEditorDialog(Tileset * tileset);
 
     void set_parent_window(Gtk::Window &parent);
 
     void run();
     
  private:
-    Tile *d_tile;
     std::auto_ptr<Gtk::Dialog> dialog;
-    Gtk::Button *next_button;
-    Gtk::Button *previous_button;
-    Gtk::Button *refresh_button;
-    Gtk::Image *preview_image;
+    Gtk::RadioButton *large_explosion_radiobutton;
+    Gtk::RadioButton *small_explosion_radiobutton;
+    Gtk::FileChooserButton *explosion_filechooserbutton;
+    Gtk::Image *scene_image;
+    Tileset *d_tileset;
 
-    std::vector<Glib::RefPtr<Gdk::Pixbuf> > tilestyle_images;
+    void on_image_chosen();
+    void on_large_toggled();
+    void on_small_toggled();
+    void show_explosion_image(std::string filename);
+    void update_panel();
 
-    void on_next_clicked();
-    void on_previous_clicked();
-    void on_refresh_clicked();
-    void update_buttons();
-    void update_scene(TilePreviewScene *scene);
-    std::list<TilePreviewScene*> scenes;
-    std::list<TilePreviewScene*>::iterator current_scene;
-    Uint32 d_tileSize;
+    void update_scene(TilePreviewScene *scene, std::string filename);
+
 };
 
 #endif

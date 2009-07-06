@@ -93,6 +93,7 @@ class TileSetWindow: public sigc::trackable
     Gtk::MenuItem *save_tileset_as_menuitem;
     Gtk::MenuItem *edit_tileset_info_menuitem;
     Gtk::MenuItem *army_unit_selector_menuitem;
+    Gtk::MenuItem *explosion_picture_menuitem;
     Gtk::MenuItem *preview_tile_menuitem;
     Gtk::ComboBox *tilestyle_combobox;
     Gtk::Image *tilestyle_image;
@@ -161,6 +162,7 @@ class TileSetWindow: public sigc::trackable
     void on_quit_activated();
     void on_edit_tileset_info_activated();
     void on_army_unit_selector_activated();
+    void on_explosion_picture_activated();
     void on_preview_tile_activated();
     void on_help_about_activated();
     void on_tile_selected();

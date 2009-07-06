@@ -43,6 +43,7 @@ Tileset::Tileset(std::string name)
   d_info = "";
   d_large_selector = "misc/selector.png";
   d_small_selector = "misc/small_selector.png";
+  d_explosion = "misc/explosion.png";
   d_road_color.r = 0;
   d_road_color.g = 0;
   d_road_color.b = 0;
@@ -56,6 +57,7 @@ Tileset::Tileset(XML_Helper *helper)
     helper->getData(d_tileSize, "tilesize");
     helper->getData(d_large_selector, "large_selector");
     helper->getData(d_small_selector, "small_selector");
+    helper->getData(d_explosion, "explosion");
     helper->registerTag(Tile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag(Tileset::d_road_smallmap_tag, sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag(SmallTile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
@@ -158,6 +160,7 @@ bool Tileset::save(XML_Helper *helper)
   retval &= helper->saveData("tilesize", d_tileSize);
   retval &= helper->saveData("large_selector", d_large_selector);
   retval &= helper->saveData("small_selector", d_small_selector);
+  retval &= helper->saveData("explosion", d_explosion);
   retval &= helper->openTag(d_road_smallmap_tag);
   retval &= helper->saveData("red", d_road_color.r);
   retval &= helper->saveData("green", d_road_color.g);

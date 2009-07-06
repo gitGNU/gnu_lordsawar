@@ -26,6 +26,7 @@ public:
   int getWidth() {return d_width;}
   int getHeight() {return d_height;}
   Tile *getTile() {return d_tile;}
+  Glib::RefPtr<Gdk::Pixbuf> renderScene(Uint32 tilesize);
 private:
   //data:
     std::list<TileStyle::Type> d_model;
