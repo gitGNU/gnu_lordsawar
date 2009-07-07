@@ -65,6 +65,9 @@ class AI_Dummy : public RealPlayer
         virtual void invadeCity(City* c);
         virtual void levelArmy(Army* a);
 
+	void setDefensiveProduction(City *city);
+	void examineCities();
+
     private:
 	//DATA
 	bool d_abort_requested;

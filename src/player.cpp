@@ -3082,6 +3082,19 @@ bool Player::vectoredUnitArrives(VectoredUnit *unit)
   return true;
 }
 
+std::list<Action_Produce *> Player::getUnitsProducedThisTurn()
+{
+  std::list<Action_Produce *> actions;
+  std::list<Action *>::reverse_iterator it = d_actions.rbegin();
+  for (; it != d_actions.rend(); it++)
+    {
+      if ((*it)->getType() == Action::PRODUCE_UNIT)
+	actions.push_back(dynamic_cast<Action_Produce*>(*it));
+      else if ((*it)->getType() == Action::INIT_TURN)
+	break;
+    }
+  return actions;
+}
 std::list<Action *> Player::getReportableActions()
 {
   std::list<Action *> actions;

@@ -64,7 +64,7 @@ struct GameParameters
     bool diplomacy;
 
     enum NeutralCities {
-        AVERAGE = 0, STRONG, ACTIVE
+        AVERAGE = 0, STRONG, ACTIVE, DEFENSIVE
     };
     NeutralCities neutral_cities;
     enum RazingCities {

@@ -400,7 +400,7 @@ void GamePreferencesDialog::on_difficulty_changed()
       GameScenarioOptions::s_see_opponents_production = false;
       GameScenarioOptions::s_play_with_quests = true;
       GameScenarioOptions::s_hidden_map = true;
-      GameScenarioOptions::s_neutral_cities = GameParameters::ACTIVE;
+      GameScenarioOptions::s_neutral_cities = GameParameters::DEFENSIVE;
       GameScenarioOptions::s_razing_cities = GameParameters::NEVER;
       GameScenarioOptions::s_diplomacy = true;
       GameScenarioOptions::s_cusp_of_war = true;

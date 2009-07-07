@@ -42,6 +42,7 @@ class XML_Helper;
 class Hero;
 class HeroProto;
 class Action;
+class Action_Produce;
 class NetworkAction;
 class History;
 class NetworkHistory;
@@ -250,6 +251,9 @@ class Player: public sigc::trackable
 
         //! Returns the unique ID of the player.
         Uint32 getId() const {return d_id;}
+
+	//! Returns a list of the player's unit production actions for this turn.
+	std::list<Action_Produce *> getUnitsProducedThisTurn();
 
 	//! Returns a list of the player's actions to show in a report.
 	std::list<Action *> getReportableActions();

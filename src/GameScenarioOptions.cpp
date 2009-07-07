@@ -98,6 +98,8 @@ int GameScenarioOptions::calculate_difficulty_rating(GameParameters g)
   if (g.neutral_cities == GameParameters::STRONG)
     total_difficulty += (float) 3.0;
   else if (g.neutral_cities == GameParameters::ACTIVE)
+    total_difficulty += (float) 5.0;
+  else if (g.neutral_cities == GameParameters::DEFENSIVE)
     total_difficulty += (float) 6.0;
   if (g.razing_cities == GameParameters::ON_CAPTURE)
     total_difficulty += (float) 3.0;

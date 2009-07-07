@@ -302,6 +302,10 @@ bool GameScenario::setupCities(bool quick_start)
 	      else
 		(*it)->produceWeakestProductionBase();
 	      break;
+	    case GameParameters::DEFENSIVE:
+	      (*it)->produceScout();
+	      (*it)->produceScout();
+	      break;
 	    }
 	  (*it)->setActiveProductionSlot(-1);
 	}
