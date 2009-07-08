@@ -87,6 +87,7 @@ dat/glade/editor/temple-dialog.glade
 dat/glade/editor/tile-preview-dialog.glade
 dat/glade/editor/tileset-info-dialog.glade
 dat/glade/editor/tileset-selector-editor-dialog.glade
+dat/glade/editor/tileset-explosion-picture-editor-dialog.glade
 dat/glade/editor/tileset-window.glade
 src/FogMap.cpp
 src/templelist.cpp
