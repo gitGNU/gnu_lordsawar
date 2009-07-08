@@ -73,7 +73,7 @@ void AI_Dummy::setDefensiveProduction(City *city)
       if (rand() % 2 == 0)
 	{
 	  int idx = rand() % city->getMaxNoOfProductionBases();
-	  city->setActiveProductionSlot(idx);
+	  cityChangeProduction(city, idx);
 	}
     }
   else
@@ -84,7 +84,7 @@ void AI_Dummy::setDefensiveProduction(City *city)
 	{
 	  if ((*it)->getCityId() == city->getId())
 	    {
-	      city->setActiveProductionSlot(-1);
+	      cityChangeProduction(city, -1);
 	      break;
 	    }
 	}
@@ -107,7 +107,7 @@ void AI_Dummy::examineCities()
 bool AI_Dummy::startTurn()
 {
       
-  if (GameScenarioOptions::s_neutral_cities == GameParameters::ACTIVE)
+  if (GameScenarioOptions::s_neutral_cities == GameParameters::DEFENSIVE)
     {
       //setup production defensive style.
       if (d_gold > 100)
