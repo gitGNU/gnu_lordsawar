@@ -556,7 +556,7 @@ void Driver::init_game_window()
     game_window->quit_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_quit_requested));
 
-    game_window->init(640, 480);
+    game_window->init(640, 450);
 
 }
 
