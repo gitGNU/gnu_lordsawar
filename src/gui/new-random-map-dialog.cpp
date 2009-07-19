@@ -357,20 +357,23 @@ GameParameters NewRandomMapDialog::getParams()
   case MAP_SIZE_SMALL:
     g.map.width = MAP_SIZE_SMALL_WIDTH;
     g.map.height = MAP_SIZE_SMALL_HEIGHT;
-    g.map.ruins = 20;
+    g.map.ruins = int(ruins_scale->get_value());
+    g.map.temples = int(temples_scale->get_value());
     break;
 
   case MAP_SIZE_TINY:
     g.map.width = MAP_SIZE_TINY_WIDTH;
     g.map.height = MAP_SIZE_TINY_HEIGHT;
-    g.map.ruins = 15;
+    g.map.ruins = int(ruins_scale->get_value());
+    g.map.temples = int(temples_scale->get_value());
     break;
 
   case MAP_SIZE_NORMAL:
   default:
     g.map.width = MAP_SIZE_NORMAL_WIDTH;
     g.map.height = MAP_SIZE_NORMAL_HEIGHT;
-    g.map.ruins = 35;
+    g.map.ruins = int(ruins_scale->get_value());
+    g.map.temples = int(temples_scale->get_value());
     break;
   }
 
