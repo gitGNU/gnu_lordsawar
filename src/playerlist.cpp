@@ -835,3 +835,20 @@ void Playerlist::surrender()
 	}
     }
 }
+
+bool Playerlist::isEndOfRound()
+{
+  //check to see if all players have moved this round.
+  //do all players have the same number of history:end_turn events?
+  if (d_activeplayer == NULL)
+    return false;
+  Uint32 count = d_activeplayer->countEndTurnHistoryEntries();
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if (*it == d_activeplayer)
+	continue;
+      if (count != (*it)->countEndTurnHistoryEntries())
+	return false;
+    }
+  return true;
+}

@@ -68,7 +68,8 @@ void AI_Dummy::abortTurn()
 
 void AI_Dummy::setDefensiveProduction(City *city)
 {
-  if (city->getActiveProductionSlot() == -1)
+  if (city->getActiveProductionSlot() == -1 &&
+      city->countDefenders() < MAX_ARMIES_PRODUCED_IN_NEUTRAL_CITY)
     {
       if (rand() % 2 == 0)
 	{

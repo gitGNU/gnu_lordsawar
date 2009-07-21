@@ -3292,6 +3292,18 @@ std::list<History*> Player::getHistoryForThisTurn() const
   return history;
 }
 
+Uint32 Player::countEndTurnHistoryEntries() const
+{
+  Uint32 count = 0;
+  for (list<History*>::const_iterator it = d_history.begin();
+       it != d_history.end(); it++)
+    {
+      if ((*it)->getType() == History::END_TURN)
+	count++;
+    }
+  return count;
+}
+
 void Player::loadPbmGame() 
 {
   for (list<Action*>::const_iterator it = d_actions.begin();

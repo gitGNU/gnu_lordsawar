@@ -87,7 +87,6 @@ class NextTurnHotseat: public NextTurn
            Game Turn.
          */
         void finishRound();
-
 };
 
 #endif //NEXT_TURN_HOTSEAT_H

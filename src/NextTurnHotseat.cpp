@@ -129,7 +129,9 @@ void NextTurnHotseat::endTurn()
     }
   nextPlayer();
 
-  if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getFirstLiving())
+  //this is problematic when the first player dies.
+  //end the turn if all living players have ended their turn.
+  if (Playerlist::getInstance()->isEndOfRound() == true)
     {
       finishRound();
       snextRound.emit();

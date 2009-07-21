@@ -229,6 +229,11 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	std::list<History *>getHistoryForHeroId(Uint32 id);
 
 	void surrender();
+
+	/** 
+	  \brief Check to see if this is the end of the round or not.
+	  */
+	bool isEndOfRound();
     protected:
 	//! Default constructor.
         Playerlist();

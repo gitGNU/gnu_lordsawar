@@ -1309,6 +1309,7 @@ class Player: public sigc::trackable
 	 * at a different time in fast, smart and dummy players.
 	 */
 	void setSurrendered(bool surr);
+	Uint32 countEndTurnHistoryEntries() const;
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,

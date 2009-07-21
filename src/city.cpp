@@ -351,7 +351,7 @@ Army *City::produceArmy()
       //we're an active neutral city
       //check to see if we've made 5 or not.
       //stop producing if we've made 5 armies in our neutral city
-      if (countDefenders() >= MAX_ARMIES_PRODUCED_IN_ACTIVE_NEUTRAL_CITY)
+      if (countDefenders() >= MAX_ARMIES_PRODUCED_IN_NEUTRAL_CITY)
 	setActiveProductionSlot(-1);
       else
 	setActiveProductionSlot(d_active_production_slot);
