@@ -20,7 +20,6 @@
 
 #include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
-#include <gtkmm/alignment.h>
 
 #include "ruin-dialog.h"
 

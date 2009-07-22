@@ -20,10 +20,7 @@
 
 #include <memory>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/button.h>
-#include <gtkmm/image.h>
-#include <gtkmm/label.h>
+#include <gtkmm.h>
 #include "Tile.h"
 #include "tile-preview-scene.h"
 

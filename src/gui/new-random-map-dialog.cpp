@@ -21,7 +21,6 @@
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
 #include <libglademm/xml.h>
-#include <gtkmm/alignment.h>
 
 #include "new-random-map-dialog.h"
 

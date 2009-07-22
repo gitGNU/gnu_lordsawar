@@ -4,9 +4,6 @@
 
 #include <memory>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/button.h>
-#include <gtkmm/label.h>
 #include "Tile.h"
 #include "tilestyle.h"
 #include <list>

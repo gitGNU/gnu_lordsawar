@@ -24,18 +24,7 @@
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
 #include <sigc++/connection.h>
-#include <gtkmm/window.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/eventbox.h>
-#include <gtkmm/container.h>
-#include <gtkmm/image.h>
-#include <gtkmm/button.h>
-#include <gtkmm/label.h>
-#include <gtkmm/togglebutton.h>
-#include <gtkmm/box.h>
-#include <gtkmm/checkmenuitem.h>
-#include <gtkmm/progressbar.h>
-#include <gtkmm/menubar.h>
+#include <gtkmm.h>
 
 #include "army-info-tip.h"
 #include "stack-info-tip.h"

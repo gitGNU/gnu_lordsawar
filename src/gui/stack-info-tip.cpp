@@ -19,8 +19,6 @@
 #include <config.h>
 
 #include <libglademm/xml.h>
-#include <gtkmm/image.h>
-#include <gtkmm/label.h>
 
 #include "stack-info-tip.h"
 
@@ -37,7 +35,6 @@
 #include "map-tip-position.h"
 #include "decorated.h"
 #include "File.h"
-
 
 StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, const Stack *stack)
 {

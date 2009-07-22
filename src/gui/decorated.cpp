@@ -17,13 +17,6 @@
 
 #include "decorated.h"
 #include <sigc++/functors/mem_fun.h>
-#include <gtkmm/window.h>
-#include <gtkmm/label.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/box.h>
-#include <gtkmm/eventbox.h>
-#include <gtkmm/alignment.h>
-#include <gtkmm/button.h>
 
 #include "defs.h"
 #include "File.h"

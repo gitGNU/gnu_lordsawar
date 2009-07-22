@@ -17,7 +17,7 @@
 
 #include <config.h>
 
-#include <gtkmm/messagedialog.h>
+#include <gtkmm.h>
 
 #include "defs.h"
 

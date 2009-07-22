@@ -21,8 +21,7 @@
 
 #include <memory>
 #include <sigc++/trackable.h>
-#include <gtkmm/window.h>
-#include <gtkmm/widget.h>
+#include <gtkmm.h>
 
 class Army;
 class ArmyProto;

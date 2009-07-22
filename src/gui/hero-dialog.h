@@ -21,12 +21,7 @@
 
 #include <memory>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/label.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treemodelcolumn.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/button.h>
+#include <gtkmm.h>
 
 #include "vector.h"
 #include "heroesmap.h"

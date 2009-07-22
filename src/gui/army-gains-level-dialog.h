@@ -22,9 +22,7 @@
 #include <memory>
 #include <vector>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/box.h>
-#include <gtkmm/radiobutton.h>
+#include <gtkmm.h>
 
 #include "army.h"
 

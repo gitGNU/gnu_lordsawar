@@ -21,12 +21,7 @@
 #include <memory>
 #include <vector>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/image.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treemodelcolumn.h>
-#include <gtkmm/button.h>
+#include <gtkmm.h>
 
 #include "ruinmap.h"
 #include "player.h"

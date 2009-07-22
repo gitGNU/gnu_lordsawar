@@ -19,10 +19,6 @@
 
 #include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
-#include <gtkmm/label.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/notebook.h>
-#include <gtkmm/image.h>
 
 #include "triumphs-dialog.h"
 

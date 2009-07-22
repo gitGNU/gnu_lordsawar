@@ -19,10 +19,6 @@
 #include <config.h>
 
 #include <libglademm/xml.h>
-#include <gtkmm/eventbox.h>
-#include <gtkmm/label.h>
-#include <gtkmm/image.h>
-#include <gtkmm/togglebutton.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "destination-dialog.h"

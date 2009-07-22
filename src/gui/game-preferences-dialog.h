@@ -22,19 +22,7 @@
 #include <memory>
 #include <vector>
 #include <sigc++/signal.h>
-#include <gtkmm/window.h>
-#include <gtkmm/container.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/combobox.h>
-#include <gtkmm/comboboxtext.h>
-#include <gtkmm/radiobutton.h>
-#include <gtkmm/togglebutton.h>
-#include <gtkmm/image.h>
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/filechooserbutton.h>
-#include <gtkmm/widget.h>
-#include <gtkmm/scale.h>
-#include <gtkmm/entry.h>
+#include <gtkmm.h>
 
 #include "game-parameters.h"
 #include <SDL.h>

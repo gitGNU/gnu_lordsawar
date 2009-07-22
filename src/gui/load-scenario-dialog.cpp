@@ -23,7 +23,6 @@
 #include <fstream>
 #include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
-#include <gtkmm/filechooserdialog.h>
 
 #include "load-scenario-dialog.h"
 
@@ -33,7 +32,6 @@
 #include "Configuration.h"
 #include "File.h"
 #include "xmlhelper.h"
-#include <gtkmm/stock.h>
 
 
 LoadScenarioDialog::LoadScenarioDialog()

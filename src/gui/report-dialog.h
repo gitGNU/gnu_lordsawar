@@ -21,15 +21,7 @@
 #include <memory>
 #include <vector>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/image.h>
-#include <gtkmm/label.h>
-#include <gtkmm/notebook.h>
-#include <gtkmm/button.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treemodelcolumn.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/alignment.h>
+#include <gtkmm.h>
 
 #include "LocationList.h"
 #include "vectormap.h"

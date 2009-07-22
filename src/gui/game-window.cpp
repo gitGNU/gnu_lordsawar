@@ -28,21 +28,6 @@
 #include <sigc++/adaptors/hide.h>
 
 #include <libglademm/xml.h>
-#include <gtkmm/widget.h>
-#include <gtkmm/menuitem.h>
-#include <gtkmm/box.h>
-#include <gtkmm/table.h>
-#include <gtkmm/progressbar.h>
-#include <gdkmm/cursor.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/aboutdialog.h>
-#include <gtkmm/stock.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/filechooserdialog.h>
-#include <gtkmm/messagedialog.h>
-#include <gtkmm/stock.h>
-#include <gtkmm/alignment.h>
 #include <glib.h>
 
 #include "game-window.h"

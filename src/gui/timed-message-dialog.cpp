@@ -18,7 +18,6 @@
 #include <config.h>
 
 #include <assert.h>
-#include <gtkmm/messagedialog.h>
 
 #include "timed-message-dialog.h"
 

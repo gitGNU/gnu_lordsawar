@@ -21,9 +21,7 @@
 
 #include <memory>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/spinbutton.h>
+#include <gtkmm.h>
 
 class CreateScenarioRandomize;
 

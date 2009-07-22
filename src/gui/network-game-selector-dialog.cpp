@@ -18,9 +18,7 @@
 #include <config.h>
 
 #include <libglademm/xml.h>
-#include <gtkmm/eventbox.h>
 #include <sigc++/functors/mem_fun.h>
-#include <gtkmm/label.h>
 
 #include "network-game-selector-dialog.h"
 

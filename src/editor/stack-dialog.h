@@ -21,13 +21,7 @@
 
 #include <memory>
 #include <sigc++/trackable.h>
-#include <gtkmm/button.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/spinbutton.h>
-#include <gtkmm/comboboxtext.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/liststore.h>
+#include <gtkmm.h>
 
 
 class Stack;

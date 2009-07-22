@@ -24,9 +24,6 @@
 #include <numeric>
 #include <vector>
 #include <libglademm/xml.h>
-#include <gtkmm/box.h>
-#include <gtkmm/image.h>
-#include <gtkmm/alignment.h>
 
 #include "fight-window.h"
 

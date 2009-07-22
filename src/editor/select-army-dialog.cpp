@@ -19,9 +19,6 @@
 #include <config.h>
 
 #include <libglademm/xml.h>
-#include <gtkmm/image.h>
-#include <gtkmm/table.h>
-#include <gtkmm/alignment.h>
 #include <sigc++/functors/mem_fun.h>
 #include <assert.h>
 

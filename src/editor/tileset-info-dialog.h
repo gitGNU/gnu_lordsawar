@@ -20,10 +20,7 @@
 
 #include <memory>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/textview.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/colorbutton.h>
+#include <gtkmm.h>
 #include "tileset.h"
 
 //! Scenario editor.  Edits the description of the scenario.

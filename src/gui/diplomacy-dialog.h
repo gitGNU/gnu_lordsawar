@@ -21,9 +21,7 @@
 #include <memory>
 #include <vector>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/table.h>
-#include <gtkmm/togglebutton.h>
+#include <gtkmm.h>
 
 #include "player.h"
 

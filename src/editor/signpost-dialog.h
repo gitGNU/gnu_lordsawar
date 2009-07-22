@@ -21,9 +21,7 @@
 
 #include <memory>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/textview.h>
-#include <gtkmm/button.h>
+#include <gtkmm.h>
 
 class Signpost;
 class CreateScenarioRandomize;

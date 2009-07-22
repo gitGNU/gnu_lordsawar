@@ -20,9 +20,7 @@
 
 #include <memory>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/spinbutton.h>
+#include <gtkmm.h>
 #include "armyset.h"
 
 //! Armyset Editor.  Edit the description of the Armyset.

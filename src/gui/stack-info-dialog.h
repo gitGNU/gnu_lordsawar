@@ -21,11 +21,7 @@
 #include <memory>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/image.h>
-#include <gtkmm/label.h>
-#include <gtkmm/table.h>
-#include <gtkmm/checkbutton.h>
+#include <gtkmm.h>
 #include <list>
 #include <SDL.h>
 

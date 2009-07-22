@@ -22,12 +22,7 @@
 #include <map>
 #include <sigc++/trackable.h>
 #include <sigc++/connection.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/button.h>
-#include <gtkmm/image.h>
-#include <gtkmm/radiobutton.h>
-#include <gtkmm/filechooserbutton.h>
-#include <gtkmm/label.h>
+#include <gtkmm.h>
 #include "tileset.h"
 #include "tile-preview-scene.h"
 

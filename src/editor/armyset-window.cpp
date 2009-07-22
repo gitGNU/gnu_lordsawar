@@ -25,18 +25,6 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 
-#include <gtkmm/widget.h>
-#include <gtkmm/menuitem.h>
-#include <gtkmm/eventbox.h>
-#include <gtkmm/image.h>
-#include <gtkmm/box.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/aboutdialog.h>
-#include <gtkmm/stock.h>
-#include <gtkmm/filechooserdialog.h>
-#include <gtkmm/menu.h>
-#include <gtkmm/menuitem.h>
-
 #include "armyset-window.h"
 #include "armyset-info-dialog.h"
 

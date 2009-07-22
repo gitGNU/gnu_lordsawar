@@ -22,10 +22,7 @@
 #include <memory>
 #include <vector>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/image.h>
-#include <gtkmm/radiobutton.h>
-#include <gtkmm/entry.h>
+#include <gtkmm.h>
 
 #include "heromap.h"
 #include "player.h"

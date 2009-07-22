@@ -21,13 +21,7 @@
 
 #include <memory>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/button.h>
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/radiobutton.h>
-#include <gtkmm/comboboxtext.h>
-#include <gtkmm/spinbutton.h>
+#include <gtkmm.h>
 
 class Ruin;
 class Stack;

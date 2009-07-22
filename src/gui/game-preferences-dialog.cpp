@@ -21,8 +21,6 @@
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
 #include <libglademm/xml.h>
-#include <gtkmm/box.h>
-#include <gtkmm/filefilter.h>
 
 #include "game-preferences-dialog.h"
 

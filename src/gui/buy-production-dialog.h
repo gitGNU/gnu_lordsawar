@@ -22,10 +22,7 @@
 #include <memory>
 #include <vector>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/label.h>
-#include <gtkmm/togglebutton.h>
-#include <gtkmm/button.h>
+#include <gtkmm.h>
 
 #include "army-info-tip.h"
 

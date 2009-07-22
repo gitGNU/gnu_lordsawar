@@ -21,15 +21,7 @@
 #include <memory>
 #include <vector>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/container.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treemodelcolumn.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/textview.h>
-#include <gtkmm/label.h>
-#include <gtkmm/button.h>
-
+#include <gtkmm.h>
 
 class Ruin;
 

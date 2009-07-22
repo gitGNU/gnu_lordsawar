@@ -21,7 +21,7 @@
 #include <iostream>
 #include <assert.h>
 #include <glib.h>
-#include <gtkmm/main.h>
+#include <gtkmm.h>
 #include <sigc++/trackable.h>
 #include <sigc++/functors/mem_fun.h>
 

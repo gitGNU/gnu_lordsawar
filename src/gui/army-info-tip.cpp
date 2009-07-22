@@ -19,8 +19,6 @@
 #include <config.h>
 
 #include <libglademm/xml.h>
-#include <gtkmm/image.h>
-#include <gtkmm/label.h>
 
 #include "army-info-tip.h"
 

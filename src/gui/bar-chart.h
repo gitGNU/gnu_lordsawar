@@ -17,7 +17,7 @@
 #ifndef BAR_CHART_H
 #define BAR_CHART_H
 
-#include <gtkmm/drawingarea.h>
+#include <gtkmm.h>
 #include <list>
 
 class BarChart: public Gtk::DrawingArea

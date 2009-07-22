@@ -18,7 +18,7 @@
 #ifndef LINE_CHART_H
 #define LINE_CHART_H
 
-#include <gtkmm/drawingarea.h>
+#include <gtkmm.h>
 #include <list>
 #include <string>
 

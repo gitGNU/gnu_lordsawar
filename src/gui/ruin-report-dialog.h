@@ -21,9 +21,7 @@
 #include <memory>
 #include <vector>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/image.h>
-#include <gtkmm/label.h>
+#include <gtkmm.h>
 
 #include "ruinmap.h"
 #include "player.h"

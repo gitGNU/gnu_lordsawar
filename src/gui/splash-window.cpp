@@ -20,14 +20,6 @@
 
 #include <sigc++/slot.h>
 #include <libglademm/xml.h>
-#include <gtkmm/window.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/image.h>
-#include <gtkmm/table.h>
-#include <gtkmm/radiobutton.h>
-#include <gtkmm/filechooserdialog.h>
-#include <gtkmm/messagedialog.h>
-#include <gtkmm/stock.h>
 
 #include "splash-window.h"
 #include "driver.h"

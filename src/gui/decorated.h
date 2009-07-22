@@ -18,11 +18,7 @@
 #ifndef DECORATED_H
 #define DECORATED_H
 
-#include <gtkmm/window.h>
-#include <gtkmm/button.h>
-#include <gtkmm/viewport.h>
-
-
+#include <gtkmm.h>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 

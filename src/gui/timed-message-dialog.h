@@ -19,9 +19,8 @@
 #define TIMED_MESSAGE_DIALOG_H
 
 #include <sigc++/trackable.h>
-#include <glibmm/main.h>
-#include <gtkmm/window.h>
-#include <gtkmm/messagedialog.h>
+#include <glibmm.h>
+#include <gtkmm.h>
 #include <string>
 
 // used for displaying a timed dialog that goes away after a period of time

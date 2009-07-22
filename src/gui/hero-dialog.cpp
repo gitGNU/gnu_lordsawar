@@ -22,8 +22,6 @@
 
 #include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
-#include <gtkmm/image.h>
-#include <gtkmm/eventbox.h>
 #include <vector>
 
 #include "hero-dialog.h"

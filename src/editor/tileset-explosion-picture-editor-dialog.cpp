@@ -25,7 +25,6 @@
 
 #include "glade-helpers.h"
 #include "gui/image-helpers.h"
-#include "gtkmm/image.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"

@@ -22,14 +22,7 @@
 #include <memory>
 #include <vector>
 #include <sigc++/signal.h>
-#include <gtkmm/window.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/combobox.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treemodelcolumn.h>
-#include <gtkmm/cellrenderercombo.h>
-#include <gtkmm/treeview.h>
-
+#include <gtkmm.h>
 
 class Player;
 

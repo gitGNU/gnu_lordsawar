@@ -19,9 +19,6 @@
 
 #include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
-#include <gtkmm/label.h>
-#include <gtkmm/radiobutton.h>
-#include <gtkmm/image.h>
 
 #include "diplomacy-dialog.h"
 #include "diplomacy-report-dialog.h"

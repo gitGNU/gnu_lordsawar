@@ -21,10 +21,8 @@
 
 #include <memory>
 #include <sigc++/trackable.h>
-#include <gtkmm/window.h>
-#include <gtkmm/widget.h>
+#include <gtkmm.h>
 #include "map-tip-position.h"
-#include <gtkmm/box.h>
 
 class Stack;
 

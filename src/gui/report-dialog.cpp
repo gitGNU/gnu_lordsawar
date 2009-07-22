@@ -19,7 +19,6 @@
 
 #include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
-#include <gtkmm/label.h>
 
 #include "report-dialog.h"
 

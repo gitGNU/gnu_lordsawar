@@ -24,15 +24,7 @@
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
 #include <libglademm/xml.h>
-#include <gtkmm/window.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/container.h>
-#include <gtkmm/image.h>
-#include <gtkmm/button.h>
-#include <gtkmm/table.h>
-#include <gtkmm/checkmenuitem.h>
-#include <gtkmm/radiobutton.h>
-#include <gtkmm/tooltips.h>
+#include <gtkmm.h>
 
 #include "map-tip-position.h"
 #include "editorbigmap.h"

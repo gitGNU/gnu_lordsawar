@@ -23,12 +23,7 @@
 #include <string>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/button.h>
-#include <gtkmm/label.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treemodelcolumn.h>
-#include <gtkmm/treeview.h>
+#include <gtkmm.h>
 
 class XML_Helper;
 

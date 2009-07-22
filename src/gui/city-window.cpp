@@ -21,9 +21,6 @@
 #include <assert.h>
 
 #include <libglademm/xml.h>
-#include <gtkmm/image.h>
-#include <gtkmm/eventbox.h>
-#include <gtkmm/entry.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "city-window.h"

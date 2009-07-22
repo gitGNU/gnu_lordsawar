@@ -25,12 +25,6 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 
-#include <gtkmm/widget.h>
-#include <gtkmm/eventbox.h>
-#include <gtkmm/image.h>
-#include <gtkmm/box.h>
-#include <gtkmm/dialog.h>
-
 #include "rewardlist-dialog.h"
 
 #include "gui/input-helpers.h"

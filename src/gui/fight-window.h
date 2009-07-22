@@ -24,9 +24,7 @@
 #include <list>
 #include <sigc++/trackable.h>
 #include <glibmm/main.h>
-#include <gtkmm/window.h>
-#include <gtkmm/progressbar.h>
-#include <gtkmm/alignment.h>
+#include <gtkmm.h>
 
 #include "game-parameters.h"
 #include "fight.h"

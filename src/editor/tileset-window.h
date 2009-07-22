@@ -23,25 +23,7 @@
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
 #include <libglademm/xml.h>
-#include <gtkmm/window.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/container.h>
-#include <gtkmm/comboboxtext.h>
-#include <gtkmm/combobox.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treemodelcolumn.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/textview.h>
-#include <gtkmm/filechooserbutton.h>
-#include <gtkmm/image.h>
-#include <gtkmm/button.h>
-#include <gtkmm/spinbutton.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/colorbutton.h>
-#include <gtkmm/table.h>
-#include <gtkmm/checkmenuitem.h>
-#include <gtkmm/radiobutton.h>
-#include <gtkmm/tooltips.h>
+#include <gtkmm.h>
 
 #include "Tile.h"
 #include "tileset.h"

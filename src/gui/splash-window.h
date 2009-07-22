@@ -20,12 +20,9 @@
 #define GUI_SPLASH_WINDOW_H
 
 #include <memory>
-#include <gtkmm/window.h>
-#include <gtkmm/button.h>
+#include <gtkmm.h>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
-#include <gtkmm/container.h>
-#include <gtkmm/widget.h>
 
 #include "game-parameters.h"
 

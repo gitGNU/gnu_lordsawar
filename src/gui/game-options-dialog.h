@@ -21,14 +21,7 @@
 #include <memory>
 #include <vector>
 #include <sigc++/trackable.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/combobox.h>
-#include <gtkmm/table.h>
-#include <gtkmm/comboboxtext.h>
-#include <gtkmm/togglebutton.h>
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/widget.h>
-#include <gtkmm/label.h>
+#include <gtkmm.h>
 #include <sigc++/signal.h>
 
 #include "game-parameters.h"

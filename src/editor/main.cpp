@@ -23,7 +23,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
-#include <gtkmm/main.h>
+#include <gtkmm.h>
 
 #include "Configuration.h"
 #include "File.h"
