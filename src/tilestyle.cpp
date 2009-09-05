@@ -16,8 +16,11 @@
 //  02110-1301, USA.
 
 #include <iostream>
+#include <iomanip>
+
 
 #include "tilestyle.h"
+#include "ucompose.hpp"
 #include "defs.h"
 
 std::string TileStyle::d_tag = "tilestyle";
@@ -52,15 +55,11 @@ bool TileStyle::save(XML_Helper *helper)
 {
   bool retval = true;
 
-  char *idstr = NULL;
   retval &= helper->openTag(d_tag);
-  if (asprintf (&idstr, "0x%02x", d_id) != -1)
-    {
-      retval &= helper->saveData("id", idstr);
-      free (idstr);
-    }
-  else
-    retval &= false;
+  Glib::ustring idstr;
+  
+  idstr = String::ucompose ("0x%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(2), d_id));
+  retval &= helper->saveData("id", idstr);
   retval &= helper->saveData("type", d_type);
   retval &= helper->closeTag();
 

@@ -21,9 +21,12 @@
 //  02110-1301, USA.
 
 #include <sstream>
+#include <iostream>
+#include <iomanip>
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
 
+#include "ucompose.hpp"
 #include "GameMap.h"
 #include "citylist.h"
 #include "bridgelist.h"
@@ -48,7 +51,6 @@ std::string GameMap::d_tag = "map";
 std::string GameMap::d_itemstack_tag = "itemstack";
 using namespace std;
 
-//#include <iostream>
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<flush;}
 #define debug(x)
 
@@ -286,20 +288,16 @@ bool GameMap::save(XML_Helper* helper) const
     {
         for (int j = 0; j < s_width; j++)
 	  {
-	    char *hexstr = NULL;
-	    int byteswritten = -1;
+	    Glib::ustring hexstr;
 	    TileStyle *style = getTile(j, i)->getTileStyle();
 	    if (largest_style_id < 256)
-	      byteswritten = asprintf (&hexstr, "%02x", style->getId());
+	      hexstr = String::ucompose ("%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(2), style->getId()));
 	    else if (largest_style_id < 4096)
-	      byteswritten = asprintf (&hexstr, "%03x", style->getId());
+	      hexstr = String::ucompose ("%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(3), style->getId()));
 	    else if (largest_style_id < 65536)
-	      byteswritten = asprintf (&hexstr, "%04x", style->getId());
-	    if (hexstr && byteswritten > -1)
-	      {
-		styles << hexstr;
-		free (hexstr);
-	      }
+	      hexstr = String::ucompose ("%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(4), style->getId()));
+
+	    styles << hexstr;
 	  }
         styles <<endl;
     }
