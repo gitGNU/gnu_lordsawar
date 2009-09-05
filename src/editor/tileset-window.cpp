@@ -504,7 +504,7 @@ void TileSetWindow::on_load_tileset_activated()
 	  exit(-1);
 	}
 
-      char *dir = strdup(current_save_filename.c_str());
+      char *dir = g_strdup(current_save_filename.c_str());
       char *tmp = strrchr (dir, '/');
       if (tmp)
 	tmp[0] = '\0';
@@ -1022,7 +1022,7 @@ void TileSetWindow::on_image_chosen()
   //now make a new one
   TileStyleSet *set = new TileStyleSet();
   Gtk::TreeIter i = tilestylesets_list->append();
-  char *dir = strdup (selected_filename.c_str());
+  char *dir = g_strdup (selected_filename.c_str());
   char *tmp = strrchr (dir, '/');
   if (!tmp)
     return;
@@ -1035,7 +1035,7 @@ void TileSetWindow::on_image_chosen()
   (*i)[tilestylesets_columns.subdir] = set->getSubDir();
 
   tmp++;
-  char *name = strdup (tmp);
+  char *name = g_strdup (tmp);
   tmp = strrchr (name, '.');
   if (tmp)
     tmp[0] = '\0';
