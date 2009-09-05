@@ -15,6 +15,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 #include "bar-chart.h"
+#include "ucompose.hpp"
 #include <cairomm/context.h>
 
 BarChart::BarChart(std::list<unsigned int> bars, std::list<Gdk::Color> colours,
@@ -161,10 +162,8 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
     cr->set_source_rgb (0.0, 0.0, 0.0);
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
-    char buf[15];
 
-    snprintf (buf, sizeof (buf), "%d", max / 2);
-    layout->set_text(buf);
+    layout->set_text(String::ucompose("%1", max / 2));
     layout->get_pixel_size (w, h);
     cr->move_to(((float)0.5 * ((float)width - (hoffs * 2.0))) + (hoffs / 2) - 
 		( w/2), i + lw + voffs + (voffs / 2) + 1);
@@ -172,8 +171,7 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
-    snprintf (buf, sizeof (buf), "%d", max);
-    layout->set_text(buf);
+    layout->set_text(String::ucompose("%1", max));
     layout->get_pixel_size (w, h);
     cr->move_to(((float)1.0 * ((float)width - ((float)hoffs * 2.0))) - 1 - 
 		(w / 2), i + lw + voffs + (voffs / 2) + 1);

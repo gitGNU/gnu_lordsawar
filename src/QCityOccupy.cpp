@@ -19,6 +19,7 @@
 #include <sstream>
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
+#include "ucompose.hpp"
 
 #include "QCityOccupy.h"
 #include "QuestsManager.h"
@@ -94,13 +95,11 @@ void QuestCityOccupy::getSuccessMsg(std::queue<std::string>& msgs) const
 //=======================================================================
 void QuestCityOccupy::getExpiredMsg(std::queue<std::string>& msgs) const
 {
-    char buf[101]; buf[100] = '\0';
     const City* c = getCity();
 
-    snprintf(buf, 100, _("The occupation of city \"%s\" could not be "
-			 "accomplished."), 
-	     c->getName().c_str());
-    msgs.push(buf);
+    msgs.push(String::ucompose
+	      (_("The occupation of city \"%1\" could not be accomplished."), 
+	       c->getName()));
 }
 //=======================================================================
 City* QuestCityOccupy::getCity() const
@@ -116,12 +115,8 @@ City* QuestCityOccupy::getCity() const
 void QuestCityOccupy::initDescription()
 {
   const City* c = getCity();
-  char buffer[121]; buffer[120]='\0';
-
-  snprintf(buffer, 100, _("You must take over the city \"%s\" and occupy it."),
-	   c->getName().c_str());
-
-  d_description = std::string(buffer);
+  d_description = String::ucompose
+    (_("You must take over the city \"%1\" and occupy it."), c->getName());
 }
 //=======================================================================
 City * QuestCityOccupy::chooseToOccupy(Player *p)

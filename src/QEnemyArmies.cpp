@@ -20,6 +20,7 @@
 
 #include <sstream>
 #include <sigc++/functors/mem_fun.h>
+#include "ucompose.hpp"
 
 #include "QEnemyArmies.h"
 #include "QuestsManager.h"
@@ -119,17 +120,12 @@ bool QuestEnemyArmies::save(XML_Helper *helper) const
 //=======================================================================
 std::string QuestEnemyArmies::getProgress() const
 {
-    char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, _("You have killed %i so far."), d_killed);
-    return std::string(buffer);
+    return String::ucompose (_("You have killed %1 so far."), d_killed);
 }
 //=======================================================================
 void QuestEnemyArmies::getSuccessMsg(std::queue<std::string>& msgs) const
 {
-    char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, "You have managed to slaughter %i armies.", d_killed);
-    
-    msgs.push(std::string(buffer));
+    msgs.push(String::ucompose(_("You have managed to slaughter %1 armies."), d_killed));
     msgs.push(_("Well done!"));
 }
 //=======================================================================
@@ -140,11 +136,8 @@ void QuestEnemyArmies::getExpiredMsg(std::queue<std::string>& msgs) const
 //=======================================================================
 void QuestEnemyArmies::initDescription()
 {
-    char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, "You shall slaughter %i armies of the treacherous %s",
-	     d_to_kill, d_victim_player->getName().c_str());
-
-    d_description = std::string(buffer);
+    d_description = String::ucompose(_("You shall slaughter %1 armies of the treacherous %2."),
+				     d_to_kill, d_victim_player->getName());
 }
 
 bool QuestEnemyArmies::isFeasible(Uint32 heroId)

@@ -20,6 +20,7 @@
 //  02110-1301, USA.
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <stdlib.h>
 #include <errno.h>
@@ -667,11 +668,11 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
 
 bool GameScenario::autoSave()
 {
-  char filename[1024];
+  Glib::ustring filename = "";
   if (Configuration::s_autosave_policy == 2)
-    snprintf(filename,sizeof(filename), "autosave-%03d.sav", s_round - 1);
+    filename = String::ucompose("autosave-%1.sav", Glib::ustring::format(std::setfill(L'0'), std::setw(3), s_round - 1));
   else if (Configuration::s_autosave_policy == 1)
-    snprintf(filename,sizeof(filename), "autosave.sav");
+    filename = "autosave.sav";
   else
     return true;
   // autosave to the file "autosave.sav". This is crude, but should work

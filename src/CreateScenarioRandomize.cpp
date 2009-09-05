@@ -18,6 +18,7 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include "ucompose.hpp"
 
 #include "CreateScenarioRandomize.h"
 
@@ -127,7 +128,6 @@ std::string CreateScenarioRandomize::getDynamicSignpost(Signpost *signpost)
 {
   char *dir = NULL;
   int xdir, ydir;
-  char buf[101]; buf[100] = '\0';
   Vector<int> signpostPos = signpost->getPos();
   City *nearCity = Citylist::getInstance()->getNearestCity(signpostPos);
   if (nearCity == NULL)
@@ -152,9 +152,7 @@ std::string CreateScenarioRandomize::getDynamicSignpost(Signpost *signpost)
     dir = _("west");
   else if (xdir <= -1 && ydir <= -1)
     dir = _("northwest");
-  snprintf(buf,100,_("%s lies to the %s"), 
-	   nearCity->getName().c_str(), dir);
-  return buf;
+  return String::ucompose("%1 lies to the %2", nearCity->getName(), dir);
 }
   
 Reward *CreateScenarioRandomize::getNewRandomReward(bool hidden_ruins)

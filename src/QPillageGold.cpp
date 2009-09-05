@@ -17,6 +17,7 @@
 
 #include <sstream>
 #include <sigc++/functors/mem_fun.h>
+#include "ucompose.hpp"
 
 #include "QPillageGold.h"
 #include "QuestsManager.h"
@@ -68,17 +69,12 @@ bool QuestPillageGold::save(XML_Helper *helper) const
 //=======================================================================
 std::string QuestPillageGold::getProgress() const
 {
-    char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, _("You have already stolen %i gold."), d_pillaged);
-    return std::string(buffer);
+    return String::ucompose(_("You have already stolen %1 gold."), d_pillaged);
 }
 //=======================================================================
 void QuestPillageGold::getSuccessMsg(std::queue<std::string>& msgs) const
 {
-    char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, "You have managed to sack and pillage %i gold.", d_pillaged);
-    
-    msgs.push(std::string(buffer));
+    msgs.push(String::ucompose(_("You have managed to sack and pillage %1 gold."), d_pillaged));
     msgs.push(_("Well done!"));
 }
 //=======================================================================
@@ -89,10 +85,7 @@ void QuestPillageGold::getExpiredMsg(std::queue<std::string>& msgs) const
 //=======================================================================
 void QuestPillageGold::initDescription()
 {
-    char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, "You shall sack and pillage %i gold from thy mighty foes", d_to_pillage);
-
-    d_description = std::string(buffer);
+    d_description = String::ucompose(_("You shall sack and pillage %1 gold from thy mighty foes."), d_to_pillage);
 }
 	
 void QuestPillageGold::armyDied(Army *a, bool heroIsCulprit)

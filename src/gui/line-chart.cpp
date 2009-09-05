@@ -16,6 +16,7 @@
 //  02110-1301, USA.
 
 #include "line-chart.h"
+#include "ucompose.hpp"
 #include <cairomm/context.h>
 
 LineChart::LineChart(std::list<std::list<unsigned int> > lines, 
@@ -97,9 +98,8 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     std::string text_font = "Sans 8";
     Pango::FontDescription font_desc (text_font);
     layout->set_font_description (font_desc);
-    char buf[15];
-    snprintf (buf, sizeof (buf), "%d", d_max_height_value);
-    layout->set_text(buf);
+
+    layout->set_text(String::ucompose("%1", d_max_height_value));
     int w, h;
     layout->get_pixel_size (w, h);
     if (w * (hoffs / 4) > hoffs)
@@ -178,8 +178,7 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
-    snprintf (buf, sizeof (buf), "%d", max_turn);
-    layout->set_text(buf);
+    layout->set_text(String::ucompose("%1", max_turn));
     layout->get_pixel_size (w, h);
     cr->move_to((width - (hoffs * 2)) + hoffs - (w / 2), 
 		origin_y - voffs + (voffs / 4) + 1);
@@ -204,8 +203,7 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
-    snprintf (buf, sizeof (buf), "%d", d_max_height_value);
-    layout->set_text(buf);
+    layout->set_text(String::ucompose("%1", d_max_height_value));
     layout->get_pixel_size (w, h);
     cr->move_to(origin_x + hoffs - (hoffs / 4) - 1 - w, voffs + 1 - (h/2));
     cr->set_source_rgb (0.0, 0.0, 0.0);

@@ -17,6 +17,7 @@
 
 #include <sstream>
 #include <sigc++/functors/mem_fun.h>
+#include "ucompose.hpp"
 
 #include "QEnemyArmytype.h"
 #include "QuestsManager.h"
@@ -111,10 +112,8 @@ std::string QuestEnemyArmytype::getProgress() const
     Armysetlist *al = Armysetlist::getInstance();
     Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
     const ArmyProto *a = al->getArmy(set, d_type_to_kill);
-    char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, _("You have not killed a unit of enemy %s yet."), 
-	     a->getName().c_str());
-    return std::string(buffer);
+    return String::ucompose(
+	     _("You have not killed a unit of enemy %1 yet."), a->getName());
 }
 //=======================================================================
 void QuestEnemyArmytype::getSuccessMsg(std::queue<std::string>& msgs) const
@@ -122,10 +121,7 @@ void QuestEnemyArmytype::getSuccessMsg(std::queue<std::string>& msgs) const
     Armysetlist *al = Armysetlist::getInstance();
     Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
     const ArmyProto *a = al->getArmy(set, d_type_to_kill);
-    char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, _("You have killed a unit of enemy %s."), a->getName().c_str());
-    
-    msgs.push(std::string(buffer));
+    msgs.push(String::ucompose(_("You have killed a unit of enemy %1."), a->getName()));
     msgs.push(_("Well done!"));
 }
 //=======================================================================
@@ -139,11 +135,8 @@ void QuestEnemyArmytype::initDescription()
     Armysetlist *al = Armysetlist::getInstance();
     Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
     const ArmyProto *a = al->getArmy(set, d_type_to_kill);
-    char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, _("You must destroy a unit of enemy %s."), 
-	     a->getName().c_str());
-
-    d_description = std::string(buffer);
+    d_description = String::ucompose(_("You must destroy a unit of enemy %1."), 
+	     a->getName());
 }
 //=======================================================================
 bool QuestEnemyArmytype::isFeasible(Uint32 heroId)

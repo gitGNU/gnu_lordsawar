@@ -19,6 +19,7 @@
 #include <sstream>
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
+#include "ucompose.hpp"
 
 #include "QCityRaze.h"
 #include "QuestsManager.h"
@@ -94,12 +95,10 @@ void QuestCityRaze::getSuccessMsg(std::queue<std::string>& msgs) const
 //=======================================================================
 void QuestCityRaze::getExpiredMsg(std::queue<std::string>& msgs) const
 {
-    char buf[101]; buf[100] = '\0';
     const City* c = getCity();
-
-    snprintf(buf, 100, _("The razing of city \"%s\" could not be "
-			 "accomplished."), c->getName().c_str());
-    msgs.push(buf);
+    msgs.push(String::ucompose
+	      (_("The razing of city \"%1\" could not be accomplished."), 
+	       c->getName()));
 }
 //=======================================================================
 City* QuestCityRaze::getCity() const
@@ -115,13 +114,10 @@ City* QuestCityRaze::getCity() const
 void QuestCityRaze::initDescription()
 {
     const City* c = getCity();
-    char buffer[121]; buffer[120]='\0';
-    
-    snprintf(buffer, 100, 
-	     _("You must conquer the city \"%s\" and burn it to the ground."),
-            c->getName().c_str());
 
-    d_description = std::string(buffer);
+    d_description = String::ucompose 
+      ( _("You must conquer the city \"%1\" and burn it to the ground."),
+	c->getName());
 }
 //=======================================================================
 City* QuestCityRaze::chooseToRaze(Player *p)

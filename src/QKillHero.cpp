@@ -22,6 +22,7 @@
 #include <sstream>
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
+#include "ucompose.hpp"
 
 #include "history.h"
 #include "QKillHero.h"
@@ -109,30 +110,21 @@ std::string QuestKillHero::getProgress() const
 void QuestKillHero::getSuccessMsg(std::queue<std::string>& msgs) const
 {
     std::string name = getHeroNameForDeadHero(d_victim);
-    char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, _("You have slain the wicked hero %s."), name.c_str());
-    msgs.push(std::string(buffer));
+    msgs.push(String::ucompose(_("You have slain the wicked hero %1."), name));
 }
 //=======================================================================
 void QuestKillHero::getExpiredMsg(std::queue<std::string>& msgs) const
 {
-    char buffer[101]; buffer[100]='\0';
-    snprintf(buffer, 100, _("You could not slay the wicked hero %s"),
-            getHeroNameForDeadHero(d_victim).c_str());
-
-    msgs.push(std::string(buffer));
+    msgs.push(String::ucompose(_("You could not slay the wicked hero %1"),
+            getHeroNameForDeadHero(d_victim)));
     msgs.push(_("The hero was slain by other fellows!"));
 }
 //=======================================================================
 void QuestKillHero::initDescription()
 {
-    char buffer[101]; buffer[100]='\0';
     Hero* v = Quest::getHeroById(d_victim);
-    
-    snprintf(buffer, 100, _("Kill the hero named %s, servant of player %s"),
-            v->getName().c_str(), v->getOwner()->getName().c_str());
-    
-    d_description = std::string(buffer);
+    d_description = String::ucompose(_("Kill the hero named %1, servant of player %2."),
+            v->getName(), v->getOwner()->getName());
 }
 //=======================================================================
 Hero* QuestKillHero::chooseToKill()

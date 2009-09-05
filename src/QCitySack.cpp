@@ -19,6 +19,7 @@
 #include <sstream>
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
+#include "ucompose.hpp"
 
 #include "QCitySack.h"
 #include "QuestsManager.h"
@@ -94,12 +95,9 @@ void QuestCitySack::getSuccessMsg(std::queue<std::string>& msgs) const
 //=======================================================================
 void QuestCitySack::getExpiredMsg(std::queue<std::string>& msgs) const
 {
-    char buf[101]; buf[100] = '\0';
     const City* c = getCity();
-
-    snprintf(buf, 100, _("The sacking of \"%s\" could not be accomplished."), 
-	     c->getName().c_str());
-    msgs.push(buf);
+    msgs.push(String::ucompose(_("The sacking of \"%1\" could not be accomplished."), 
+			       c->getName()));
 }
 //=======================================================================
 City* QuestCitySack::getCity() const
@@ -115,12 +113,7 @@ City* QuestCitySack::getCity() const
 void QuestCitySack::initDescription()
 {
     const City* c = getCity();
-    char buffer[121]; buffer[120]='\0';
-    
-    snprintf(buffer, 100, _("You must take over and sack the city of \"%s\"."),
-            c->getName().c_str());
-
-    d_description = std::string(buffer);
+    d_description = String::ucompose (_("You must take over and sack the city of \"%1\"."), c->getName());
 }
 //=======================================================================
 City * QuestCitySack::chooseToSack(Player *p)

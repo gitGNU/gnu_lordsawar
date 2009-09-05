@@ -25,6 +25,7 @@
 
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
+#include "ucompose.hpp"
 
 #include <gtkmm.h>
 #include "tileset-window.h"
@@ -319,9 +320,8 @@ void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
   for (unsigned int i = 0; i < t->size(); i++)
     {
       Gtk::TreeIter l = tilestyles_list->append();
-      char buf[10];
-      snprintf (buf, sizeof(buf), "0x%02x", (*t)[i]->getId());
-      (*l)[tilestyles_columns.name] = buf;
+      (*l)[tilestyles_columns.name] = 
+	String::ucompose("0x%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(2), (*t)[i]->getId()));
       (*l)[tilestyles_columns.tilestyle] = (*t)[i];
     }
 }
@@ -684,9 +684,7 @@ void TileSetWindow::on_add_tile_clicked()
   (*i)[tiles_columns.name] = t->getName();
   (*i)[tiles_columns.tile] = t;
   d_tileset->push_back(t);
-  char path[20];
-  snprintf (path, sizeof (path), "%d", d_tileset->size() - 1);
-  tiles_treeview->set_cursor (Gtk::TreePath (path));
+  tiles_treeview->set_cursor (Gtk::TreePath (String::ucompose("%1", d_tileset->size() - 1)));
   update_tile_preview_menuitem();
 }
 
@@ -913,9 +911,7 @@ void TileSetWindow::on_add_tilestyleset_clicked()
 
       Tile *tile = get_selected_tile ();
       tile->push_back(t);
-      char path[20];
-      snprintf (path, sizeof (path), "%d", tile->size() - 1);
-      tilestylesets_treeview->set_cursor (Gtk::TreePath (path));
+      tilestylesets_treeview->set_cursor (Gtk::TreePath (String::ucompose("%1", tile->size() - 1)));
       image_filechooser_button->set_filename(filename);
     }
 }
