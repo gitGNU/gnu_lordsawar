@@ -1,6 +1,6 @@
 2009-09-05  Ben Asselstine  <benasselstine@gmail.com>
 
-	* expunging asprintf
+	* expunging asprintf, snprintf.
 
 2009-07-21  Ben Asselstine  <benasselstine@gmail.com>
 
