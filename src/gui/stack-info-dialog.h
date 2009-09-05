@@ -52,6 +52,8 @@ class StackInfoDialog: public Decorated
     std::auto_ptr<ArmyInfoTip> army_info_tip;
     std::vector<Gtk::ToggleButton *> toggles;
     std::vector<const Army*> armies;
+    Gtk::Button *group_button;
+    Gtk::Button *ungroup_button;
 
     void addArmy (Army *a, Uint32 modified_strength, int idx);
     void on_group_clicked();

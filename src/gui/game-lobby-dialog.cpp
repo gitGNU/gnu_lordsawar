@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 #include <config.h>
 
-#include <libglademm/xml.h>
+#include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "game-lobby-dialog.h"
@@ -83,9 +83,9 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
   d_game_scenario = gamescenario;
   d_game_station = game_station;
   d_next_turn = next_turn;
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path()
-				    + "/game-lobby-dialog.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path()
+				    + "/game-lobby-dialog.ui");
 
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
@@ -121,9 +121,9 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
 
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
-    xml->connect_clicked(
-	"show_options_button",
-	sigc::mem_fun(*this, &GameLobbyDialog::on_show_options_clicked));
+    xml->get_widget("show_options_button", show_options_button);
+    show_options_button->signal_clicked().connect
+	(sigc::mem_fun(*this, &GameLobbyDialog::on_show_options_clicked));
 
     game_station->remote_player_moved.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn));
@@ -665,7 +665,7 @@ bool GameLobbyDialog::run()
 	}
     }
   int response = dialog->run();
-  if (response == 1)
+  if (response == Gtk::RESPONSE_ACCEPT)
     return true;
   else
     return false;

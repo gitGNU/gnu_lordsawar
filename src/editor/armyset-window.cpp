@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 
+#include <gtkmm.h>
 #include "armyset-window.h"
 #include "armyset-info-dialog.h"
 
@@ -50,8 +51,8 @@ ArmySetWindow::ArmySetWindow()
 {
   d_armyset = NULL;
     sdl_inited = false;
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/armyset-window.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path() + "/armyset-window.ui");
 
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
@@ -175,15 +176,15 @@ ArmySetWindow::ArmySetWindow()
     xml->get_widget("save_armyset_as_menuitem", save_armyset_as_menuitem);
     save_armyset_as_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_save_armyset_as_activated));
-    xml->connect_clicked 
-      ("quit_menuitem", 
-       sigc::mem_fun(this, &ArmySetWindow::on_quit_activated));
+    xml->get_widget("quit_menuitem", quit_menuitem);
+    quit_menuitem->signal_activate().connect
+       (sigc::mem_fun(this, &ArmySetWindow::on_quit_activated));
     xml->get_widget("edit_armyset_info_menuitem", edit_armyset_info_menuitem);
     edit_armyset_info_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_edit_armyset_info_activated));
-    xml->connect_clicked 
-      ("help_about_menuitem", 
-       sigc::mem_fun(this, &ArmySetWindow::on_help_about_activated));
+    xml->get_widget ("help_about_menuitem", help_about_menuitem);
+    help_about_menuitem->signal_activate().connect
+       (sigc::mem_fun(this, &ArmySetWindow::on_help_about_activated));
 
     w->signal_delete_event().connect(
 	sigc::mem_fun(*this, &ArmySetWindow::on_delete_event));
@@ -499,8 +500,8 @@ void ArmySetWindow::on_help_about_activated()
 {
   std::auto_ptr<Gtk::AboutDialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/../about-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/../about-dialog.ui");
 
   Gtk::AboutDialog *d;
   xml->get_widget("dialog", d);

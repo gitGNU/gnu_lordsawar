@@ -22,7 +22,6 @@
 #include <memory>
 #include <vector>
 #include <gtkmm.h>
-#include <sigc++/signal.h>
 #include "citymap.h"
 #include "GameScenario.h"
 #include "game-station.h"
@@ -76,6 +75,7 @@ class GameLobbyDialog: public Decorated
     Gtk::Label *cities_label;
     Gtk::Button *play_button;
     Gtk::Button *cancel_button;
+    Gtk::Button *show_options_button;
     Gtk::ScrolledWindow *chat_scrolledwindow;
     Gtk::TextView *chat_textview;
     Gtk::Entry *chat_entry;

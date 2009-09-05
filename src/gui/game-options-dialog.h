@@ -23,6 +23,7 @@
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 #include <sigc++/signal.h>
+#include <gtkmm.h>
 
 #include "game-parameters.h"
 

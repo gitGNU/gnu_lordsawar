@@ -17,6 +17,7 @@
 
 #include "decorated.h"
 #include <sigc++/functors/mem_fun.h>
+#include <gtkmm.h>
 
 #include "defs.h"
 #include "File.h"

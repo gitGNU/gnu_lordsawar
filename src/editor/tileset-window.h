@@ -22,7 +22,6 @@
 #include <vector>
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
-#include <libglademm/xml.h>
 #include <gtkmm.h>
 
 #include "Tile.h"
@@ -77,10 +76,13 @@ class TileSetWindow: public sigc::trackable
     Gtk::MenuItem *army_unit_selector_menuitem;
     Gtk::MenuItem *explosion_picture_menuitem;
     Gtk::MenuItem *preview_tile_menuitem;
+    Gtk::MenuItem *quit_menuitem;
+    Gtk::MenuItem *help_about_menuitem;
     Gtk::ComboBox *tilestyle_combobox;
     Gtk::Image *tilestyle_image;
     Gtk::FileChooserButton *image_filechooser_button;
     Gtk::Button *refresh_button;
+
     std::vector<Glib::RefPtr<Gdk::Pixbuf> > tilestyle_standard_images;
     std::vector<Glib::RefPtr<Gdk::Pixbuf> > tilestyle_images;
     Gtk::Image *tilestyle_standard_image;

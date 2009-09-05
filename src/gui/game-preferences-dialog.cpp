@@ -20,7 +20,7 @@
 
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
-#include <libglademm/xml.h>
+#include <gtkmm.h>
 
 #include "game-preferences-dialog.h"
 
@@ -59,8 +59,8 @@ void GamePreferencesDialog::init(std::string filename)
 {
   d_filename = filename;
   bool broken;
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/game-preferences-dialog.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path() + "/game-preferences-dialog.ui");
 
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
@@ -83,8 +83,8 @@ void GamePreferencesDialog::init(std::string filename)
     start_game_button->signal_clicked().connect
       (sigc::mem_fun(*this, &GamePreferencesDialog::on_start_game_clicked));
 
-    xml->connect_clicked(
-	"edit_options_button",
+    xml->get_widget("edit_options_button", edit_options_button);
+    edit_options_button->signal_clicked().connect(
 	sigc::mem_fun(*this, &GamePreferencesDialog::on_edit_options_clicked));
 
   game_options_dialog = new GameOptionsDialog(false);
@@ -171,7 +171,7 @@ bool GamePreferencesDialog::run(std::string nickname)
   update_shields();
   on_player_type_changed();
   int response = dialog->run();
-  if (response == 0)
+  if (response == Gtk::RESPONSE_ACCEPT)
     return true;
   return false;
 }

@@ -20,7 +20,7 @@
 
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
-#include <libglademm/xml.h>
+#include <gtkmm.h>
 
 #include "new-map-dialog.h"
 
@@ -40,8 +40,8 @@ NewMapDialog::NewMapDialog()
 {
     map_set = false;
     
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/new-map-dialog.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path() + "/new-map-dialog.ui");
 
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
@@ -165,7 +165,7 @@ void NewMapDialog::run()
 {
   dialog->show_all();
   int response = dialog->run();
-  if (response == 0)		// accepted
+  if (response == Gtk::RESPONSE_ACCEPT)	// accepted
     {
       switch (map_size_combobox->get_active_row_number()) {
       case MAP_SIZE_SMALL:

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 #include <config.h>
 
-#include <libglademm/xml.h>
+#include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "diplomacy-dialog.h"
@@ -38,8 +38,8 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
   GraphicsCache *gc = GraphicsCache::getInstance();
   Playerlist *pl = Playerlist::getInstance();
   d_player = player;
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/diplomacy-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/diplomacy-dialog.ui");
 
   Gtk::Dialog *d = 0;
   xml->get_widget("dialog", d);
@@ -53,9 +53,8 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
   xml->get_widget("player_shield_image", d_player_shield_image);
   xml->get_widget("report_button", d_report_button);
     
-  xml->connect_clicked("report_button",
-		       sigc::mem_fun(*this, 
-				     &DiplomacyDialog::on_report_clicked));
+  d_report_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &DiplomacyDialog::on_report_clicked));
 
   // put the shields across the top of the proposals table, minus our own
   Uint32 i = 0;

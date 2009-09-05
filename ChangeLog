@@ -1,3 +1,8 @@
+2009-07-18  Ben Asselstine  <benasselstine@gmail.com>
+
+	* removed libglade dependency.
+	* decorating timed message windows.
+
 2009-07-08  Ben Asselstine  <benasselstine@gmail.com>
 
 	* added more difficult "defensive" mode for neutral cities.

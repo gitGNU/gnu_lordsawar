@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--*- mode: xml -*-->
+<interface>
+  <object class="GtkAboutDialog" id="dialog">
+    <property name="border_width">5</property>
+    <property name="visible">True</property>
+    <property name="destroy_with_parent">False</property>
+    <property name="name">LordsAWar!</property>
+    <property name="copyright" translatable="yes"/>
+    <property name="comments" translatable="yes">Freedom is the most important 
+feature of this game.</property>
+    <property name="license" translatable="yes">The GPL version 2 or later.</property>
+    <property name="wrap_license">False</property>
+    <property name="website">www.lordsawar.com</property>
+    <property name="website_label" translatable="yes">The LordsAWar Website</property>
+    <property name="authors">Ben Asselstine
+Ole Laursen
+Many other LordsAWar and Freelords contributors</property>
+    <property name="documenters">Ben Asselstine
+Many other Freelords contributors</property>
+    <property name="artists">Leon Harmon
+Sune Theodorsen
+Mark Jones</property>
+    <property comments="TRANSLATORS: Replace this string with your names, one name per line." name="translator_credits" translatable="yes">translator-credits</property>
+  </object>
+</interface>

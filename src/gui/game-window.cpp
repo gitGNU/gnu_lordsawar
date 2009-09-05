@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, 2008, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/adaptors/hide.h>
 
-#include <libglademm/xml.h>
+#include <gtkmm.h>
 #include <glib.h>
 
 #include "game-window.h"
@@ -123,8 +123,8 @@ GameWindow::GameWindow()
 {
     sdl_inited = false;
     
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/game-window.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path() + "/game-window.ui");
 
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
@@ -256,26 +256,34 @@ GameWindow::GameWindow()
     xml->get_widget("save_game_as_menuitem", save_game_as_menuitem);
     save_game_as_menuitem->signal_activate().connect
       (sigc::mem_fun(*this, &GameWindow::on_save_game_as_activated));
-    xml->connect_clicked("quit_menuitem", 
-			 sigc::mem_fun(*this, &GameWindow::on_quit_activated));
-    xml->connect_clicked("toggle_grid_menuitem", 
-			 sigc::mem_fun(*this, &GameWindow::on_grid_toggled));
-    xml->connect_clicked("army_report_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_army_report_activated));
-    xml->connect_clicked("city_report_menuitem", 
-			 sigc::mem_fun(*this, &GameWindow::on_city_report_activated));
-    xml->connect_clicked("gold_report_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_gold_report_activated));
-    xml->connect_clicked("winning_report_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_winning_report_activated));
+    xml->get_widget("quit_menuitem", quit_menuitem);
+    quit_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_quit_activated));
+    xml->get_widget("toggle_grid_menuitem", toggle_grid_menuitem);
+    toggle_grid_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_grid_toggled));
+    xml->get_widget("army_report_menuitem", army_report_menuitem);
+    army_report_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_army_report_activated));
+    xml->get_widget("city_report_menuitem", city_report_menuitem);
+    city_report_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_city_report_activated));
+    xml->get_widget("gold_report_menuitem", gold_report_menuitem);
+    gold_report_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_gold_report_activated));
+    xml->get_widget("winning_report_menuitem", winning_report_menuitem);
+    winning_report_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_winning_report_activated));
     xml->get_widget("diplomacy_report_menuitem", diplomacy_report_menuitem);
-    xml->connect_clicked("quests_menuitem", 
-			 sigc::mem_fun(*this, &GameWindow::on_quests_activated));
-    xml->connect_clicked("fullscreen_menuitem", 
-			 sigc::mem_fun(*this, &GameWindow::on_fullscreen_activated));
+    xml->get_widget("quests_menuitem", quests_menuitem);
+    quests_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_quests_activated));
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
-    xml->connect_clicked("preferences_menuitem", 
-			 sigc::mem_fun(*this, &GameWindow::on_preferences_activated));
+    fullscreen_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_fullscreen_activated));
+    xml->get_widget("preferences_menuitem", preferences_menuitem);
+    preferences_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_preferences_activated));
 
     xml->get_widget("show_lobby_menuitem", show_lobby_menuitem);
     show_lobby_menuitem->signal_activate().connect
@@ -296,36 +304,51 @@ GameWindow::GameWindow()
     xml->get_widget("leave_menuitem", leave_menuitem);
     xml->get_widget("next_menuitem", next_menuitem);
 
-    xml->connect_clicked("fight_order_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_fight_order_activated));
-    xml->connect_clicked("resign_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_resign_activated));
-    xml->connect_clicked("production_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_production_activated));
-    xml->connect_clicked("cities_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_production_activated));
-    xml->connect_clicked("build_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_production_activated));
-    xml->connect_clicked("vectoring_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_vectoring_activated));
-    xml->connect_clicked("levels_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_levels_activated));
-    xml->connect_clicked("inspect_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_inspect_activated));
-    xml->connect_clicked("ruin_report_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_ruin_report_activated));
-    xml->connect_clicked("army_bonus_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_army_bonus_activated));
-    xml->connect_clicked("item_bonus_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_item_bonus_activated));
-    xml->connect_clicked("production_report_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_production_report_activated));
-    xml->connect_clicked("triumphs_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_triumphs_activated));
-    xml->connect_clicked("help_about_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_help_about_activated));
-    xml->connect_clicked("online_help_menuitem",
-			 sigc::mem_fun(*this, &GameWindow::on_online_help_activated));
+    xml->get_widget("fight_order_menuitem", fight_order_menuitem);
+    fight_order_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_fight_order_activated));
+    xml->get_widget("resign_menuitem", resign_menuitem);
+    resign_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_resign_activated));
+    xml->get_widget("production_menuitem", production_menuitem);
+    production_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_production_activated));
+    xml->get_widget("cities_menuitem", cities_menuitem);
+    cities_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_production_activated));
+    xml->get_widget("build_menuitem", build_menuitem);
+    build_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_production_activated));
+    xml->get_widget("vectoring_menuitem", vectoring_menuitem);
+    vectoring_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_vectoring_activated));
+    xml->get_widget("levels_menuitem", levels_menuitem);
+    levels_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_levels_activated));
+    xml->get_widget("inspect_menuitem", inspect_menuitem);
+    inspect_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_inspect_activated));
+    xml->get_widget("ruin_report_menuitem", ruin_report_menuitem);
+    ruin_report_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_ruin_report_activated));
+    xml->get_widget("army_bonus_menuitem", army_bonus_menuitem);
+    army_bonus_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_army_bonus_activated));
+    xml->get_widget("item_bonus_menuitem", item_bonus_menuitem);
+    item_bonus_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_item_bonus_activated));
+    xml->get_widget("production_report_menuitem", production_report_menuitem);
+    production_report_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_production_report_activated));
+    xml->get_widget("triumphs_menuitem", triumphs_menuitem);
+    triumphs_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_triumphs_activated));
+    xml->get_widget("help_about_menuitem", help_about_menuitem);
+    help_about_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_help_about_activated));
+    xml->get_widget("online_help_menuitem", online_help_menuitem);
+    online_help_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_online_help_activated));
     d_quick_fights = false;
 
     if (Configuration::s_decorated == true)
@@ -336,8 +359,7 @@ GameWindow::GameWindow()
 	Glib::RefPtr<Gdk::Pixmap> pixmap;
 	Glib::RefPtr<Gdk::Bitmap> bitmap;
 	copy = menubar->get_style()->copy();
-	back = Gdk::Pixbuf::create_from_file
-	  (File::getMiscFile("various/back.bmp"));
+	back = Gdk::Pixbuf::create_from_file(File::getMiscFile("various/back.bmp"));
 	pixmap = Gdk::Pixmap::create
 	  (window->get_window(), back->get_width(), back->get_height());
 	back->composite_color(back, 0, 0, 
@@ -1037,8 +1059,8 @@ void GameWindow::on_save_game_as_activated()
 void GameWindow::on_quit_activated()
 {
   std::auto_ptr<Gtk::Dialog> dialog;
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/game-quit-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/game-quit-dialog.ui");
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
   dialog.reset(d);
@@ -1051,7 +1073,7 @@ void GameWindow::on_quit_activated()
   int response = dialog->run();
   dialog->hide();
 
-  if (response == 0) //end the game
+  if (response == Gtk::RESPONSE_ACCEPT) //end the game
     {
       stop_game("quit");
     }
@@ -1132,8 +1154,8 @@ void GameWindow::on_signpost_activated()
     return;
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/signpost-change-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/signpost-change-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -1162,7 +1184,7 @@ void GameWindow::on_signpost_activated()
   int response = dialog->run();
   dialog->hide();
 
-  if (response == 0)
+  if (response == Gtk::RESPONSE_ACCEPT)
     Playerlist::getActiveplayer()->signpostChange(s, e->get_text());
 
   return;
@@ -1190,8 +1212,8 @@ void GameWindow::on_disband_activated()
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/disband-stack-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/disband-stack-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -1221,7 +1243,7 @@ void GameWindow::on_disband_activated()
   int response = dialog->run();
   dialog->hide();
 
-  if (response == 0) //disband the active stack
+  if (response == Gtk::RESPONSE_ACCEPT) //disband the active stack
     Playerlist::getActiveplayer()->stackDisband(NULL);
 
   return;
@@ -1231,9 +1253,9 @@ void GameWindow::on_resignation_completed()
 {
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + 
-				"/player-resign-completed-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + 
+				"/player-resign-completed-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -1257,8 +1279,8 @@ void GameWindow::on_resign_activated()
 
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/player-resign-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/player-resign-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -1277,7 +1299,7 @@ void GameWindow::on_resign_activated()
   dialog->show_all();
   int response = dialog->run();
 
-  if (response == 0) //disband all stacks, raze all cities
+  if (response == Gtk::RESPONSE_ACCEPT) //disband all stacks, raze all cities
     {
       Playerlist::getActiveplayer()->resign();
       dialog->hide();
@@ -1525,8 +1547,8 @@ void GameWindow::on_help_about_activated()
 {
   std::auto_ptr<Gtk::AboutDialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/about-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/about-dialog.ui");
 
   Gtk::AboutDialog *d;
   xml->get_widget("dialog", d);
@@ -1583,8 +1605,8 @@ void GameWindow::on_game_over(Player *winner)
 
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/game-over-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/game-over-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -2024,8 +2046,8 @@ void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
 	return on_ruin_rewarded(static_cast<Reward_Ruin*>(reward));
     }
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/ruin-searched-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/ruin-searched-dialog.ui");
 
 
   Gtk::Dialog *d;
@@ -2077,8 +2099,8 @@ void GameWindow::on_ruinfight_started(Stack *attackers, Stack *defenders)
   //so and so encounters a wolf...
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/ruinfight-started-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/ruinfight-started-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -2106,8 +2128,8 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
 {
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/ruinfight-finished-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/ruinfight-finished-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -2159,8 +2181,8 @@ void GameWindow::on_hero_brings_allies (int numAllies)
 {
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/hero-brings-allies-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/hero-brings-allies-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -2222,8 +2244,8 @@ bool GameWindow::on_stack_considers_treachery (Player *me, Stack *stack,
 {
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/treachery-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/treachery-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -2241,11 +2263,11 @@ bool GameWindow::on_stack_considers_treachery (Player *me, Stack *stack,
   s += _("Other players may not like this!");
   label->set_text(s);
   dialog->show_all();
-  int retval = dialog->run();
+  int response = dialog->run();
   dialog->hide();
-  if (retval == Gtk::RESPONSE_DELETE_EVENT)
+  if (response == Gtk::RESPONSE_DELETE_EVENT)
     return false;
-  else if (retval)
+  else if (response == Gtk::RESPONSE_ACCEPT)
     return true;
   else
     return false;
@@ -2265,8 +2287,8 @@ bool GameWindow::on_temple_searched(bool hasHero, Temple *temple, int blessCount
   QuestsManager *qm = QuestsManager::getInstance();
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/temple-visit-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/temple-visit-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -2320,9 +2342,9 @@ bool GameWindow::on_temple_searched(bool hasHero, Temple *temple, int blessCount
   dialog->hide();
 
   if (hasHero == false || GameScenario::s_play_with_quests == false)
-    response = 1;
+    response = Gtk::RESPONSE_ACCEPT;
 
-  if (response == 0)		// accepted a quest
+  if (response == Gtk::RESPONSE_ACCEPT)		// accepted a quest
     return true;
   else
     return false;
@@ -2413,8 +2435,8 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
   std::auto_ptr<Gtk::Dialog> dialog;
   if (gold)
     on_city_looted (city, gold);
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/city-defeated-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/city-defeated-dialog.ui");
 
 
   Gtk::Dialog *d;
@@ -2513,16 +2535,16 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
       switch (response) 
 	{
 	default:
-	case 0: return CITY_DEFEATED_OCCUPY;
-	case 1: 
+	case 1: return CITY_DEFEATED_OCCUPY;
+	case 2: 
 		{
 		  bool razed = CityWindow::on_raze_clicked(city, dialog.get());
 		  if (razed == false)
 		    continue;
 		  return CITY_DEFEATED_RAZE;
 		}
-	case 2: return CITY_DEFEATED_PILLAGE;
-	case 3: return CITY_DEFEATED_SACK;
+	case 3: return CITY_DEFEATED_PILLAGE;
+	case 4: return CITY_DEFEATED_SACK;
 	}
     }
   dialog->hide();
@@ -2532,8 +2554,8 @@ void GameWindow::on_city_looted (City *city, int gold)
 {
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/city-looted-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/city-looted-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -2565,8 +2587,8 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
   Player *player = city->getOwner();
   unsigned int as = player->getArmyset();
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/city-pillaged-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/city-pillaged-dialog.ui");
 
   Gtk::Dialog *d;
   Gtk::Image *pillaged_army_type_image;
@@ -2621,8 +2643,8 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<Uint32> sacked_t
   unsigned int as = player->getArmyset();
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/city-sacked-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/city-sacked-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -2722,8 +2744,8 @@ void GameWindow::on_city_razed (City *city)
 {
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/city-razed-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/city-razed-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -2819,9 +2841,9 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
     return;
   if (Configuration::s_showNextPlayer == true)
     {
-      Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + 
-				    "/next-player-turn-dialog.glade");
+      Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path() + 
+				    "/next-player-turn-dialog.ui");
 
       Gtk::Dialog *d;
       xml->get_widget("dialog", d);
@@ -2854,8 +2876,8 @@ void GameWindow::on_medal_awarded_to_army(Army *army)
   GraphicsCache *gc = GraphicsCache::getInstance();
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/medal-awarded-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/medal-awarded-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -2899,8 +2921,8 @@ void GameWindow::on_game_loaded(Player *player)
 {
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/game-loaded-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/game-loaded-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -2933,8 +2955,8 @@ void GameWindow::on_quest_expired(Quest *quest)
 {
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/quest-expired-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/quest-expired-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);
@@ -3003,8 +3025,8 @@ void GameWindow::on_advice_asked(float percent)
   //have a PERCENT chance of winning the fight
   std::auto_ptr<Gtk::Dialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/military-advisor-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/military-advisor-dialog.ui");
 
   Gtk::Dialog *d;
   xml->get_widget("dialog", d);

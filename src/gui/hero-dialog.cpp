@@ -20,7 +20,7 @@
 
 #include <iomanip>
 
-#include <libglademm/xml.h>
+#include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 #include <vector>
 
@@ -46,9 +46,9 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     hero = h;
     pos = p;
     
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path()
-				    + "/hero-dialog.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path()
+				    + "/hero-dialog.ui");
 
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);

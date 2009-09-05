@@ -18,10 +18,12 @@
 #include <config.h>
 
 #include <assert.h>
+#include <gtkmm.h>
 
 #include "timed-message-dialog.h"
 
 #include "ucompose.hpp"
+#include "decorated.h"
 #include "defs.h"
 #include "timing.h"
 #include "decorated.h"
@@ -38,6 +40,12 @@ TimedMessageDialog::TimedMessageDialog(Gtk::Window &parent, std::string message,
   window->set_message(message);
   window->signal_response().connect
        (sigc::mem_fun(*this, &TimedMessageDialog::on_response));
+<<<<<<< .mine
+  Decorated decorator;
+  decorator.decorate(window);
+  decorator.window_closed.connect(sigc::mem_fun(window, &Gtk::Dialog::hide));
+  window->set_transient_for(parent);
+=======
 
   Decorated decorator;
   decorator.decorate(window);
@@ -46,6 +54,7 @@ TimedMessageDialog::TimedMessageDialog(Gtk::Window &parent, std::string message,
 
   window->set_transient_for(parent);
 
+>>>>>>> .r1958
 }
 
 void TimedMessageDialog::on_response(int id)

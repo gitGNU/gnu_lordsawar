@@ -19,7 +19,7 @@
 #include <config.h>
 
 #include <sigc++/slot.h>
-#include <libglademm/xml.h>
+#include <gtkmm.h>
 
 #include "splash-window.h"
 #include "driver.h"
@@ -56,8 +56,8 @@ SplashWindow::SplashWindow()
     d_networkready = false;
 #endif
 
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/splash-window.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path() + "/splash-window.ui");
 
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
@@ -79,19 +79,24 @@ SplashWindow::SplashWindow()
     xml->get_widget("table", table);
     table->attach(*splash_image, 0, 2, 0, 2, Gtk::EXPAND | Gtk::FILL);
     
-    xml->connect_clicked("load_game_button",
-			 sigc::mem_fun(*this, &SplashWindow::on_load_game_clicked));
-    xml->connect_clicked("load_scenario_button",
-			 sigc::mem_fun(*this, &SplashWindow::on_load_scenario_clicked));
-    xml->connect_clicked("quit_button",
-			 sigc::mem_fun(*this, &SplashWindow::on_quit_clicked));
-
-    xml->connect_clicked("new_network_game_button",
-			 sigc::mem_fun(*this, &SplashWindow::on_new_network_game_clicked));
-    xml->connect_clicked("new_pbm_game_button",
-			 sigc::mem_fun(*this, &SplashWindow::on_new_pbm_game_clicked));
-    xml->connect_clicked("preferences_button",
-			 sigc::mem_fun(*this, &SplashWindow::on_preferences_clicked));
+    xml->get_widget("load_game_button", load_game_button);
+    load_game_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &SplashWindow::on_load_game_clicked));
+    xml->get_widget("load_scenario_button", load_scenario_button);
+    load_scenario_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &SplashWindow::on_load_scenario_clicked));
+    xml->get_widget("quit_button", quit_button);
+    quit_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &SplashWindow::on_quit_clicked));
+    xml->get_widget("new_network_game_button", new_network_game_button);
+    new_network_game_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &SplashWindow::on_new_network_game_clicked));
+    xml->get_widget("new_pbm_game_button", new_pbm_game_button);
+    new_pbm_game_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &SplashWindow::on_new_pbm_game_clicked));
+    xml->get_widget("preferences_button", preferences_button);
+    preferences_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &SplashWindow::on_preferences_clicked));
     Sound::getInstance()->playMusic("intro");
 
     if (Configuration::s_autosave_policy == 1)
@@ -197,9 +202,9 @@ void SplashWindow::on_load_game_clicked()
 
 void SplashWindow::on_new_network_game_clicked()
 {
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + 
-				"/new-network-game-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + 
+				"/new-network-game-dialog.ui");
   std::auto_ptr<Gtk::Dialog> dialog;
   Gtk::Dialog *d;
   Gtk::RadioButton *client_radiobutton;
@@ -220,7 +225,7 @@ void SplashWindow::on_new_network_game_clicked()
   nick_entry->set_activates_default(true);
   int response = dialog->run();
   dialog->hide();
-  if (response == 0) //we hit okay
+  if (response == Gtk::RESPONSE_ACCEPT) //we hit connect
     {
       network_game_nickname = nick_entry->get_text();
       if (client_radiobutton->get_active() == true)

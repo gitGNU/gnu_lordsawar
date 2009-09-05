@@ -19,7 +19,7 @@
 #define TIMED_MESSAGE_DIALOG_H
 
 #include <sigc++/trackable.h>
-#include <glibmm.h>
+#include <glibmm/main.h>
 #include <gtkmm.h>
 #include <string>
 

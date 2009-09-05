@@ -2,29 +2,29 @@ MAINTAINERCLEANFILES= Makefile.in
 
 gladedir = $(datadir)/lordsawar/glade/editor
 glade_DATA = \
-main-window.glade \
-signpost-dialog.glade \
-temple-dialog.glade \
-ruin-dialog.glade \
-stack-dialog.glade \
-select-army-dialog.glade \
-players-dialog.glade \
-city-dialog.glade \
-map-info-dialog.glade \
-new-map-dialog.glade \
-armyset-window.glade \
-armyset-info-dialog.glade \
-itemlist-dialog.glade \
-reward-dialog.glade \
-select-item-dialog.glade \
-select-reward-dialog.glade \
-reward-list-dialog.glade \
-select-hidden-ruin-dialog.glade \
-tileset-window.glade \
-tileset-info-dialog.glade \
-tile-preview-dialog.glade \
-tileset-selector-editor-dialog.glade \
-tileset-explosion-picture-editor-dialog.glade
+main-window.ui \
+signpost-dialog.ui \
+temple-dialog.ui \
+ruin-dialog.ui \
+stack-dialog.ui \
+select-army-dialog.ui \
+players-dialog.ui \
+city-dialog.ui \
+map-info-dialog.ui \
+new-map-dialog.ui \
+armyset-window.ui \
+armyset-info-dialog.ui \
+itemlist-dialog.ui \
+reward-dialog.ui \
+select-item-dialog.ui \
+select-reward-dialog.ui \
+reward-list-dialog.ui \
+select-hidden-ruin-dialog.ui \
+tileset-window.ui \
+tileset-info-dialog.ui \
+tile-preview-dialog.ui \
+tileset-selector-editor-dialog.ui \
+tileset-explosion-picture-editor-dialog.ui
 
 EXTRA_DIST = $(glade_DATA) \
 README

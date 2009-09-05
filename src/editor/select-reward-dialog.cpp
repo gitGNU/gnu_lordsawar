@@ -17,7 +17,7 @@
 
 #include <config.h>
 
-#include <libglademm/xml.h>
+#include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 #include <assert.h>
 
@@ -34,9 +34,9 @@ SelectRewardDialog::SelectRewardDialog()
 {
     selected_reward = 0;
     
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path()
-				    + "/select-reward-dialog.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path()
+				    + "/select-reward-dialog.ui");
 
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
@@ -85,7 +85,7 @@ void SelectRewardDialog::run()
     dialog->show_all();
     int response = dialog->run();
 
-    if (response != 1)
+    if (response != Gtk::RESPONSE_ACCEPT)
 	selected_reward = 0;
     else
       {

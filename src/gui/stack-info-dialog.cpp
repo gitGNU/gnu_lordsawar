@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,11 +17,11 @@
 
 #include <config.h>
 
-#include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "stack-info-dialog.h"
 
+#include <gtkmm.h>
 #include "glade-helpers.h"
 #include "input-helpers.h"
 #include "image-helpers.h"
@@ -40,9 +40,9 @@ StackInfoDialog::StackInfoDialog(Stack *s)
 {
   stack = s;
     
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path()
-				    + "/stack-info-dialog.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path()
+				    + "/stack-info-dialog.ui");
 
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
@@ -52,12 +52,13 @@ StackInfoDialog::StackInfoDialog(Stack *s)
 
     xml->get_widget("stack_table", stack_table);
 
-    xml->connect_clicked
-      ("group_button", 
-       sigc::mem_fun(*this, &StackInfoDialog::on_group_clicked));
-    xml->connect_clicked
-      ("ungroup_button", 
-       sigc::mem_fun(*this, &StackInfoDialog::on_ungroup_clicked));
+
+    xml->get_widget("group_button", group_button);
+    group_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &StackInfoDialog::on_group_clicked));
+    xml->get_widget("ungroup_button", ungroup_button);
+    ungroup_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &StackInfoDialog::on_ungroup_clicked));
     fill_stack_info();
 }
 

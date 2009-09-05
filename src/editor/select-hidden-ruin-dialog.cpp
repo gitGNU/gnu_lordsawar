@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 #include <config.h>
 
-#include <libglademm/xml.h>
+#include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 #include <assert.h>
 
@@ -35,9 +35,9 @@ SelectHiddenRuinDialog::SelectHiddenRuinDialog()
 {
     selected_hidden_ruin = 0;
     
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path()
-				    + "/select-hidden-ruin-dialog.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path()
+				    + "/select-hidden-ruin-dialog.ui");
 
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
@@ -93,7 +93,7 @@ void SelectHiddenRuinDialog::run()
     dialog->show_all();
     int response = dialog->run();
 
-    if (response != 1)
+    if (response != Gtk::RESPONSE_ACCEPT)
 	selected_hidden_ruin = 0;
     else
       {

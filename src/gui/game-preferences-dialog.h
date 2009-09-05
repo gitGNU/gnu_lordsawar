@@ -54,6 +54,7 @@ class GamePreferencesDialog: public Decorated
     GameScenario::PlayMode mode;
 
     Gtk::Button *start_game_button;
+    Gtk::Button *edit_options_button;
     Gtk::Label *game_name_label;
     Gtk::Entry *game_name_entry;
     Gtk::Label *difficulty_label;

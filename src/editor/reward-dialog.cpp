@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 #include <config.h>
 
-#include <libglademm/xml.h>
+#include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "reward-dialog.h"
@@ -44,9 +44,9 @@ RewardDialog::RewardDialog(Player *player, bool hidden_ruins, Reward *r)
   item = NULL;
   ally = NULL;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path()
-				+ "/reward-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path()
+				+ "/reward-dialog.ui");
 
   Gtk::Dialog *d = 0;
   xml->get_widget("dialog", d);
@@ -200,7 +200,7 @@ void RewardDialog::run()
   dialog->show_all();
   int response = dialog->run();
 
-  if (response == 0)		// accepted
+  if (response == Gtk::RESPONSE_ACCEPT)	// accepted
     {
       if (gold_radiobutton->get_active() == true)
 	reward = new Reward_Gold(gold_spinbutton->get_value_as_int());

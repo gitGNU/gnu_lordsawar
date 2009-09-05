@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 #include <vector>
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
-#include <libglademm/xml.h>
 #include <gtkmm.h>
 
 #include "Itemlist.h"

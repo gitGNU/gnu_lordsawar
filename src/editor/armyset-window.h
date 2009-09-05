@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 #include <vector>
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
-#include <libglademm/xml.h>
 #include <gtkmm.h>
 
 #include "armyproto.h"
@@ -93,6 +92,8 @@ class ArmySetWindow: public sigc::trackable
     Gtk::MenuItem *save_armyset_menuitem;
     Gtk::MenuItem *save_armyset_as_menuitem;
     Gtk::MenuItem *edit_armyset_info_menuitem;
+    Gtk::MenuItem *quit_menuitem;
+    Gtk::MenuItem *help_about_menuitem;
 
     class ArmiesColumns: public Gtk::TreeModelColumnRecord {
     public:

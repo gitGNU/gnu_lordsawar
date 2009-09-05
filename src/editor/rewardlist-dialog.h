@@ -22,7 +22,6 @@
 #include <vector>
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
-#include <libglademm/xml.h>
 #include <gtkmm.h>
 
 #include "rewardlist.h"

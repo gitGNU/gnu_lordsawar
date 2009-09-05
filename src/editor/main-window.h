@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 #include <vector>
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
-#include <libglademm/xml.h>
 #include <gtkmm.h>
 
 #include "map-tip-position.h"
@@ -61,6 +60,30 @@ class MainWindow: public sigc::trackable
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
     Gtk::CheckMenuItem *fullscreen_menuitem;
+    Gtk::MenuItem *new_map_menuitem;
+    Gtk::MenuItem *load_map_menuitem;
+    Gtk::MenuItem *save_map_menuitem;
+    Gtk::MenuItem *save_map_as_menuitem;
+    Gtk::MenuItem *export_as_bitmap_menuitem;
+    Gtk::MenuItem *export_as_bitmap_no_game_objects_menuitem;
+    Gtk::MenuItem *validate_menuitem;
+    Gtk::MenuItem *quit_menuitem;
+    Gtk::MenuItem *edit_players_menuitem;
+    Gtk::MenuItem *edit_map_info_menuitem;
+    Gtk::MenuItem *toggle_tile_graphics_menuitem;
+    Gtk::MenuItem *smooth_map_menuitem;
+    Gtk::MenuItem *smooth_screen_menuitem;
+    Gtk::MenuItem *edit_items_menuitem ;
+    Gtk::MenuItem *edit_rewards_menuitem;
+    Gtk::MenuItem *random_all_cities_menuitem;
+    Gtk::MenuItem *random_unnamed_cities_menuitem;
+    Gtk::MenuItem *random_all_ruins_menuitem;
+    Gtk::MenuItem *random_unnamed_ruins_menuitem;
+    Gtk::MenuItem *random_all_temples_menuitem;
+    Gtk::MenuItem *random_unnamed_temples_menuitem;
+    Gtk::MenuItem *random_all_signs_menuitem;
+    Gtk::MenuItem *random_unnamed_signs_menuitem;
+    Gtk::MenuItem *help_about_menuitem;
     Gtk::HBox *terrain_tile_style_hbox;
     Gtk::Image *map_image;
     std::string current_save_filename;
@@ -147,7 +170,7 @@ class MainWindow: public sigc::trackable
     
     Tile::Type get_terrain();
     int get_tile_style_id();
-    void setup_pointer_radiobutton(Glib::RefPtr<Gnome::Glade::Xml> xml,
+    void setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
 	std::string prefix, std::string image_file,
 	EditorBigMap::Pointer pointer, int size);
     void setup_terrain_radiobuttons();

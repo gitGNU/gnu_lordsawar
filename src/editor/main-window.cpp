@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 
+#include <gtkmm.h>
 #include "main-window.h"
 
 #include "gtksdl.h"
@@ -85,8 +86,8 @@ MainWindow::MainWindow()
 {
     sdl_inited = false;
     
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/main-window.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path() + "/main-window.ui");
 
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
@@ -151,78 +152,97 @@ MainWindow::MainWindow()
     
     
     // connect callbacks for the menu
-    xml->connect_clicked("new_map_menuitem",
-			 sigc::mem_fun(this, &MainWindow::on_new_map_activated));
-    xml->connect_clicked("load_map_menuitem",
-			 sigc::mem_fun(this, &MainWindow::on_load_map_activated));
-    xml->connect_clicked("save_map_menuitem",
-			 sigc::mem_fun(this, &MainWindow::on_save_map_activated));
-    xml->connect_clicked("save_map_as_menuitem", 
-			 sigc::mem_fun(this, &MainWindow::on_save_map_as_activated));
-    xml->connect_clicked("export_as_bitmap_menuitem",
-			 sigc::mem_fun(this, &MainWindow::on_export_as_bitmap_activated));
-    xml->connect_clicked("export_as_bitmap_no_game_objects_menuitem",
-			 sigc::mem_fun(this, &MainWindow::on_export_as_bitmap_no_game_objects_activated));
-    xml->connect_clicked("validate_menuitem",
-			 sigc::mem_fun(this, &MainWindow::on_validate_activated));
-    xml->connect_clicked("quit_menuitem", 
-			 sigc::mem_fun(this, &MainWindow::on_quit_activated));
+    xml->get_widget("new_map_menuitem", new_map_menuitem);
+    new_map_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_new_map_activated));
+    xml->get_widget("load_map_menuitem", load_map_menuitem);
+    load_map_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_load_map_activated));
+    xml->get_widget("save_map_menuitem", save_map_menuitem);
+    save_map_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_save_map_activated));
+    xml->get_widget("save_map_as_menuitem", save_map_as_menuitem);
+    save_map_as_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_save_map_as_activated));
+    xml->get_widget("export_as_bitmap_menuitem", export_as_bitmap_menuitem);
+    export_as_bitmap_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_export_as_bitmap_activated));
+    xml->get_widget("export_as_bitmap_no_game_objects_menuitem",
+		    export_as_bitmap_no_game_objects_menuitem);
+    export_as_bitmap_no_game_objects_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_export_as_bitmap_no_game_objects_activated));
+    xml->get_widget("validate_menuitem", validate_menuitem);
+    validate_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_validate_activated));
+    xml->get_widget("quit_menuitem", quit_menuitem);
+    quit_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_quit_activated));
 
-    xml->connect_clicked("edit_players_menuitem", 
-			 sigc::mem_fun(this, &MainWindow::on_edit_players_activated));
-    xml->connect_clicked("edit_map_info_menuitem", 
-			 sigc::mem_fun(this, &MainWindow::on_edit_map_info_activated));
+    xml->get_widget("edit_players_menuitem", edit_players_menuitem);
+    edit_players_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_edit_players_activated));
+    xml->get_widget("edit_map_info_menuitem", edit_map_info_menuitem);
+    edit_map_info_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_edit_map_info_activated));
     
-    xml->connect_clicked("fullscreen_menuitem", 
-			 sigc::mem_fun(this, &MainWindow::on_fullscreen_activated));
-    xml->connect_clicked("toggle_tile_graphics_menuitem", 
-			 sigc::mem_fun(this, &MainWindow::on_tile_graphics_toggled));
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
-    xml->connect_clicked("smooth_map_menuitem", 
-			 sigc::mem_fun(this, 
-				       &MainWindow::on_smooth_map_activated));
-    xml->connect_clicked("smooth_screen_menuitem", sigc::mem_fun
-			 (this, &MainWindow::on_smooth_screen_activated));
-    xml->connect_clicked("edit_items_menuitem", 
-			 sigc::mem_fun(this, 
-				       &MainWindow::on_edit_items_activated));
-    xml->connect_clicked("edit_rewards_menuitem", 
-			 sigc::mem_fun(this, 
-				       &MainWindow::on_edit_rewards_activated));
-    xml->connect_clicked
-      ("random_all_cities_menuitem", 
-       sigc::mem_fun(this, &MainWindow::on_random_all_cities_activated));
-    xml->connect_clicked
-      ("random_unnamed_cities_menuitem", 
-       sigc::mem_fun(this, &MainWindow::on_random_unnamed_cities_activated));
-    xml->connect_clicked
-      ("random_all_ruins_menuitem", 
-       sigc::mem_fun(this, &MainWindow::on_random_all_ruins_activated));
-    xml->connect_clicked
-      ("random_unnamed_ruins_menuitem", 
-       sigc::mem_fun(this, &MainWindow::on_random_unnamed_ruins_activated));
-    xml->connect_clicked
-      ("random_all_temples_menuitem", 
-       sigc::mem_fun(this, &MainWindow::on_random_all_temples_activated));
-    xml->connect_clicked
-      ("random_unnamed_temples_menuitem", 
-       sigc::mem_fun(this, &MainWindow::on_random_unnamed_temples_activated));
-    xml->connect_clicked
-      ("random_all_signs_menuitem", 
-       sigc::mem_fun(this, &MainWindow::on_random_all_signs_activated));
-    xml->connect_clicked
-      ("random_unnamed_signs_menuitem", 
-       sigc::mem_fun(this, &MainWindow::on_random_unnamed_signs_activated));
-    xml->connect_clicked
-      ("help_about_menuitem", 
-       sigc::mem_fun(this, &MainWindow::on_help_about_activated));
+    fullscreen_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_fullscreen_activated));
+    xml->get_widget("toggle_tile_graphics_menuitem", toggle_tile_graphics_menuitem);
+    toggle_tile_graphics_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_tile_graphics_toggled));
+    xml->get_widget("smooth_map_menuitem", smooth_map_menuitem);
+    smooth_map_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_smooth_map_activated));
+    xml->get_widget("smooth_screen_menuitem", smooth_screen_menuitem);
+    smooth_screen_menuitem->signal_activate().connect
+      (sigc::mem_fun (this, &MainWindow::on_smooth_screen_activated));
+    xml->get_widget("edit_items_menuitem", edit_items_menuitem);
+    edit_items_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_edit_items_activated));
+    xml->get_widget("edit_rewards_menuitem", edit_rewards_menuitem);
+    edit_rewards_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_edit_rewards_activated));
+    xml->get_widget ("random_all_cities_menuitem", random_all_cities_menuitem);
+    random_all_cities_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_random_all_cities_activated));
+    xml->get_widget ("random_unnamed_cities_menuitem", 
+		     random_unnamed_cities_menuitem);
+    random_unnamed_cities_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_random_unnamed_cities_activated));
+    xml->get_widget ("random_all_ruins_menuitem", random_all_ruins_menuitem);
+    random_all_ruins_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_random_all_ruins_activated));
+    xml->get_widget ("random_unnamed_ruins_menuitem", 
+		     random_unnamed_ruins_menuitem);
+    random_unnamed_ruins_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_random_unnamed_ruins_activated));
+    xml->get_widget ("random_all_temples_menuitem", 
+		     random_all_temples_menuitem);
+    random_all_temples_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_random_all_temples_activated));
+    xml->get_widget ("random_unnamed_temples_menuitem", 
+		     random_unnamed_temples_menuitem);
+    random_unnamed_temples_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_random_unnamed_temples_activated));
+    xml->get_widget ("random_all_signs_menuitem", 
+		     random_all_signs_menuitem);
+    random_all_signs_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_random_all_signs_activated));
+    xml->get_widget ("random_unnamed_signs_menuitem", 
+		     random_unnamed_signs_menuitem);
+    random_unnamed_signs_menuitem->signal_activate().connect
+       (sigc::mem_fun(this, &MainWindow::on_random_unnamed_signs_activated));
+    xml->get_widget ("help_about_menuitem", help_about_menuitem);
+    help_about_menuitem->signal_activate().connect
+       (sigc::mem_fun(this, &MainWindow::on_help_about_activated));
 }
 
 MainWindow::~MainWindow()
 {
 }
 
-void MainWindow::setup_pointer_radiobutton(Glib::RefPtr<Gnome::Glade::Xml> xml,
+void MainWindow::setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
 					   std::string prefix,
 					   std::string image_file,
 					   EditorBigMap::Pointer pointer,
@@ -1249,8 +1269,8 @@ void MainWindow::on_help_about_activated()
 {
   std::auto_ptr<Gtk::AboutDialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/../about-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/../about-dialog.ui");
 
   Gtk::AboutDialog *d;
   xml->get_widget("dialog", d);

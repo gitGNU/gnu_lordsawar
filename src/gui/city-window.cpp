@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 #include <assert.h>
 
-#include <libglademm/xml.h>
+#include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "city-window.h"
@@ -48,8 +48,8 @@ CityWindow::CityWindow(City *c, bool razing_possible,
 {
     city = c;
     
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/city-window.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path() + "/city-window.ui");
 
     Gtk::Dialog *d = 0;
     xml->get_widget("dialog", d);
@@ -389,6 +389,7 @@ void CityWindow::on_buy_clicked()
     d.run();
 
     int army = d.get_selected_army();
+    d.hide();
     if (army != BuyProductionDialog::NO_ARMY_SELECTED)
     {
 	int slot = -1;
@@ -428,8 +429,8 @@ void CityWindow::on_rename_clicked ()
 {
     std::auto_ptr<Gtk::Dialog> renamedialog;
     
-    Glib::RefPtr<Gnome::Glade::Xml> renamexml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/city-rename-dialog.glade");
+    Glib::RefPtr<Gtk::Builder> renamexml
+	= Gtk::Builder::create_from_file(get_glade_path() + "/city-rename-dialog.ui");
 	
     Gtk::Dialog *d;
     renamexml->get_widget("dialog", d);
@@ -454,7 +455,7 @@ void CityWindow::on_rename_clicked ()
     d->show_all();
     int response = d->run();
 
-    if (response == 0)		// changed city name
+    if (response == Gtk::RESPONSE_ACCEPT)		// changed city name
       {
         Playerlist::getActiveplayer()->cityRename(city, e->get_text());
         fill_in_city_info();
@@ -471,8 +472,8 @@ bool CityWindow::on_raze_clicked (City *city, Gtk::Dialog *parent)
 {
     std::auto_ptr<Gtk::Dialog> razedialog;
     
-    Glib::RefPtr<Gnome::Glade::Xml> razexml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/city-raze-dialog.glade");
+    Glib::RefPtr<Gtk::Builder> razexml
+	= Gtk::Builder::create_from_file(get_glade_path() + "/city-raze-dialog.ui");
 	
     Gtk::Dialog *d;
     razexml->get_widget("dialog", d);
@@ -498,7 +499,7 @@ bool CityWindow::on_raze_clicked (City *city, Gtk::Dialog *parent)
     d->show_all();
     int response = d->run();
 
-    if (response == 0)		// burn it to the ground ralphie boy!
+    if (response == Gtk::RESPONSE_ACCEPT) // burn it to the ground ralphie boy!
       {
 	Playerlist::getActiveplayer()->cityRaze(city);
 	parent->hide();

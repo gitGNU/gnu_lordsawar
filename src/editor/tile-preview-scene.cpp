@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 
 #include <config.h>
 
-#include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "tile-preview-scene.h"

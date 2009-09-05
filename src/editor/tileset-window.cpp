@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 
+#include <gtkmm.h>
 #include "tileset-window.h"
 #include "tileset-info-dialog.h"
 #include "tile-preview-dialog.h"
@@ -55,8 +56,8 @@ TileSetWindow::TileSetWindow()
 {
   d_tileset = NULL;
     sdl_inited = false;
-    Glib::RefPtr<Gnome::Glade::Xml> xml
-	= Gnome::Glade::Xml::create(get_glade_path() + "/tileset-window.glade");
+    Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path() + "/tileset-window.ui");
 
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
@@ -110,9 +111,9 @@ TileSetWindow::TileSetWindow()
     xml->get_widget("save_tileset_as_menuitem", save_tileset_as_menuitem);
     save_tileset_as_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &TileSetWindow::on_save_tileset_as_activated));
-    xml->connect_clicked 
-      ("quit_menuitem", 
-       sigc::mem_fun(this, &TileSetWindow::on_quit_activated));
+    xml->get_widget("quit_menuitem", quit_menuitem);
+    quit_menuitem->signal_activate().connect
+       (sigc::mem_fun(this, &TileSetWindow::on_quit_activated));
     xml->get_widget("edit_tileset_info_menuitem", edit_tileset_info_menuitem);
     edit_tileset_info_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &TileSetWindow::on_edit_tileset_info_activated));
@@ -125,9 +126,9 @@ TileSetWindow::TileSetWindow()
     xml->get_widget("preview_tile_menuitem", preview_tile_menuitem);
     preview_tile_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &TileSetWindow::on_preview_tile_activated));
-    xml->connect_clicked 
-      ("help_about_menuitem", 
-       sigc::mem_fun(this, &TileSetWindow::on_help_about_activated));
+    xml->get_widget ("help_about_menuitem", help_about_menuitem);
+    help_about_menuitem->signal_activate().connect
+       (sigc::mem_fun(this, &TileSetWindow::on_help_about_activated));
     xml->get_widget("tilestyle_image", tilestyle_image);
 
     w->signal_delete_event().connect(
@@ -589,8 +590,8 @@ void TileSetWindow::on_help_about_activated()
 {
   std::auto_ptr<Gtk::AboutDialog> dialog;
 
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path() + "/../about-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/../about-dialog.ui");
 
   Gtk::AboutDialog *d;
   xml->get_widget("dialog", d);

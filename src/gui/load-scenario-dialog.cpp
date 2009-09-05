@@ -21,8 +21,8 @@
 #include <list>
 
 #include <fstream>
-#include <libglademm/xml.h>
 #include <sigc++/functors/mem_fun.h>
+#include <gtkmm.h>
 
 #include "load-scenario-dialog.h"
 
@@ -36,9 +36,9 @@
 
 LoadScenarioDialog::LoadScenarioDialog()
 {
-  Glib::RefPtr<Gnome::Glade::Xml> xml
-    = Gnome::Glade::Xml::create(get_glade_path()
-				+ "/load-scenario-dialog.glade");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path()
+				+ "/load-scenario-dialog.ui");
 
   Gtk::Dialog *d = 0;
   xml->get_widget("dialog", d);
@@ -106,7 +106,7 @@ void LoadScenarioDialog::run()
 
   dialog->show();
   int response = dialog->run();
-  if (response != 1)
+  if (response != Gtk::RESPONSE_ACCEPT)
     selected_filename = "";
 
   dialog->get_size(width, height);

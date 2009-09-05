@@ -58,7 +58,13 @@ class SplashWindow: public Decorated
  private:
     std::auto_ptr<Gtk::Window> window;
     Gtk::Button *crash_button;
-	
+    Gtk::Button *load_game_button;
+    Gtk::Button *load_scenario_button;
+    Gtk::Button *quit_button;
+    Gtk::Button *new_network_game_button;
+    Gtk::Button *new_pbm_game_button;
+    Gtk::Button *preferences_button;
+	    
     bool sdl_inited;
     Gtk::Container *sdl_container;
     Gtk::Widget *sdl_widget;
@@ -94,6 +100,5 @@ class SplashWindow: public Decorated
  public:
     void on_sdl_surface_changed();
 };
-
 
 #endif
