@@ -20,6 +20,7 @@
 #ifndef OVERVIEWMAP_H
 #define OVERVIEWMAP_H
 
+#include <gtkmm.h>
 #include <SDL.h>
 #include "vector.h"
 #include "rectangle.h"
@@ -142,7 +143,7 @@ class OverviewMap
      *
      * @return True if the given pixel location should be shaded, false if not.
      */
-    bool isShadowed(Uint32 type, int i, int j);
+    bool isShadowed(guint32 type, int i, int j);
 
     //! Draw the given tile at the given pixel location on the map.
     /**

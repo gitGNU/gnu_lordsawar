@@ -18,6 +18,8 @@
 #ifndef SHIELDSET_H
 #define SHIELDSET_H
 
+#include <gtkmm.h>
+#include <SDL.h>
 #include <string>
 #include <map>
 #include <vector>
@@ -68,25 +70,25 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
         ~Shieldset();
 
 	//! Return the number of pixels high the small shields are.
-	Uint32 getSmallHeight() const {return d_small_height;}
+	guint32 getSmallHeight() const {return d_small_height;}
 
 	//! Return the number of pixels wide the small shields are.
-	Uint32 getSmallWidth() const {return d_small_width;}
+	guint32 getSmallWidth() const {return d_small_width;}
 
 	//! Return the number of pixels high the medium shields are.
-	Uint32 getMediumHeight() const {return d_medium_height;}
+	guint32 getMediumHeight() const {return d_medium_height;}
 
 	//! Return the number of pixels wide the medium shields are.
-	Uint32 getMediumWidth() const {return d_medium_width;}
+	guint32 getMediumWidth() const {return d_medium_width;}
 
 	//! Return the number of pixels the large shields are.
-	Uint32 getLargeHeight() const {return d_large_height;}
+	guint32 getLargeHeight() const {return d_large_height;}
 
 	//! Return the number of pixels wide the large shields are.
-	Uint32 getLargeWidth() const {return d_large_width;}
+	guint32 getLargeWidth() const {return d_large_width;}
 
 	//! Return the total number of shields in this shieldset.
-        Uint32 getSize() const {return size();}
+        guint32 getSize() const {return size();}
 
 	//! Return the name of the Shieldset.
         std::string getName() const {return _(d_name.c_str());}
@@ -112,10 +114,10 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	 *         If no Shield object could be found that matches the given
 	 *         parameters, NULL is returned.
 	 */
-	ShieldStyle * lookupShieldByTypeAndColour(Uint32 type, Uint32 colour);
+	ShieldStyle * lookupShieldByTypeAndColour(guint32 type, guint32 colour);
 
-	SDL_Color getColor(Uint32 owner);
-	SDL_Color getMaskColor(Uint32 owner);
+	SDL_Color getColor(guint32 owner);
+	SDL_Color getMaskColor(guint32 owner);
     private:
 
         //! Callback function to load Shield objects into the Shieldset.
@@ -143,42 +145,42 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	 * Equates to the shieldset.d_small_height XML entity in the shieldset 
 	 * configuration file.
 	 */
-	Uint32 d_small_height;
+	guint32 d_small_height;
 
 	//! The number of pixels wide the small shield occupies onscreen.
 	/**
 	 * Equates to the shieldset.d_small_width XML entity in the shieldset 
 	 * configuration file.
 	 */
-	Uint32 d_small_width;
+	guint32 d_small_width;
 
 	//! The number of pixels high the medium shield occupies onscreen.
 	/**
 	 * Equates to the shieldset.d_medium_height XML entity in the shieldset 
 	 * configuration file.
 	 */
-	Uint32 d_medium_height;
+	guint32 d_medium_height;
 
 	//! The number of pixels wide the medium shield occupies onscreen.
 	/**
 	 * Equates to the shieldset.d_medium_width XML entity in the shieldset 
 	 * configuration file.
 	 */
-	Uint32 d_medium_width;
+	guint32 d_medium_width;
 
 	//! The number of pixels high the large shield occupies onscreen.
 	/**
 	 * Equates to the shieldset.d_large_height XML entity in the shieldset 
 	 * configuration file.
 	 */
-	Uint32 d_large_height;
+	guint32 d_large_height;
 
 	//! The number of pixels wide the large shield occupies onscreen.
 	/**
 	 * Equates to the shieldset.d_large_width XML entity in the shieldset 
 	 * configuration file.
 	 */
-	Uint32 d_large_width;
+	guint32 d_large_width;
 };
 
 #endif // SHIELDSET_H

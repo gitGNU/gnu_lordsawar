@@ -98,7 +98,7 @@ bool HeroTemplates::load(std::string tag, XML_Helper *helper)
     {
       std::string name;
       helper->getData(name, "name");
-      Uint32 owner;
+      guint32 owner;
       helper->getData(owner, "owner");
       std::string gender_str;
       if (owner >= (int) MAX_PLAYERS)

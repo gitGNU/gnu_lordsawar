@@ -81,8 +81,8 @@ class City : public Ownable, public Location, public Renamable,
 	  * @param numslots  The number of production slots for this city.
           */
         City(Vector<int> pos, std::string name = DEFAULT_CITY_NAME, 
-	     Uint32 gold = DEFAULT_CITY_INCOME, 
-	     Uint32 numslots = MAX_PRODUCTION_SLOTS_IN_A_CITY);
+	     guint32 gold = DEFAULT_CITY_INCOME, 
+	     guint32 numslots = MAX_PRODUCTION_SLOTS_IN_A_CITY);
 	//! Copy constructor.
         City(const City&);
         //! Loading constructor.
@@ -99,7 +99,7 @@ class City : public Ownable, public Location, public Renamable,
         bool save(XML_Helper* helper) const;
         
         //! Set the gold the city produces each turn.
-        void setGold(Uint32 gold){d_gold = gold;}
+        void setGold(guint32 gold){d_gold = gold;}
 
         //! Set whether or not the city is destroyed.
         void setBurnt(bool burnt){d_burnt = burnt;}
@@ -172,7 +172,7 @@ class City : public Ownable, public Location, public Renamable,
 	int getGoldNeededForUpgrade() const; 
 	
         //! Return the income of the city per turn.
-        Uint32 getGold() const {return d_gold;}
+        guint32 getGold() const {return d_gold;}
 
         //! Returns whether or not the city has been destroyed.
         bool isBurnt() const {return d_burnt;}
@@ -227,7 +227,7 @@ class City : public Ownable, public Location, public Renamable,
 	 * @return True if the city can have this many more cities vectoring 
 	 *         to it.  Otherwise false.
 	 */
-	bool canAcceptMoreVectoring(Uint32 number_of_cities);
+	bool canAcceptMoreVectoring(guint32 number_of_cities);
 
 	//! Changes the vectoring destination, but for en-route units too.
 	/**
@@ -246,7 +246,7 @@ class City : public Ownable, public Location, public Renamable,
 	bool changeVectorDestination(Vector<int> dest);
 
 	//! Return how many armies are in the city.
-	Uint32 countDefenders();
+	guint32 countDefenders();
 
 	//! This makes the army show up.  called when it's time.
 	const Army *armyArrives();
@@ -282,7 +282,7 @@ class City : public Ownable, public Location, public Renamable,
         // DATA
 
 	//! The City gives the Player this much gold per turn.
-        Uint32 d_gold;
+        guint32 d_gold;
 
 	//! The defense level of the city.
 	/**

@@ -52,15 +52,15 @@ class ArmyBonusDialog: public Decorated
 	
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<Uint32> str;
-	Gtk::TreeModelColumn<Uint32> move;
+	Gtk::TreeModelColumn<guint32> str;
+	Gtk::TreeModelColumn<guint32> move;
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > move_image;
 	Gtk::TreeModelColumn<Glib::ustring> bonus;
     };
     const ArmiesColumns armies_columns;
     Glib::RefPtr<Gtk::ListStore> armies_list;
  private:
-    void addArmyType(Uint32 army_type);
+    void addArmyType(guint32 army_type);
     Player *d_player; //show armies in this player's colour
 };
 

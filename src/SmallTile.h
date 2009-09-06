@@ -18,6 +18,7 @@
 #ifndef SMALLTILE_H
 #define SMALLTILE_H
 
+#include <gtkmm.h>
 #include <string>
 #include <SDL.h>
 

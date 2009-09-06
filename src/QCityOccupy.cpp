@@ -34,7 +34,7 @@ using namespace std;
 #define debug(x)
 
 //=======================================================================
-QuestCityOccupy::QuestCityOccupy (QuestsManager& mgr, Uint32 hero) 
+QuestCityOccupy::QuestCityOccupy (QuestsManager& mgr, guint32 hero) 
     : Quest(mgr, hero, Quest::CITYOCCUPY)
 {
     // find us a victim
@@ -55,7 +55,7 @@ QuestCityOccupy::QuestCityOccupy (QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
-QuestCityOccupy::QuestCityOccupy (QuestsManager& mgr, Uint32 hero, Uint32 target) 
+QuestCityOccupy::QuestCityOccupy (QuestsManager& mgr, guint32 hero, guint32 target) 
     : Quest(mgr, hero, Quest::CITYOCCUPY)
 {
     d_city = target;
@@ -63,7 +63,7 @@ QuestCityOccupy::QuestCityOccupy (QuestsManager& mgr, Uint32 hero, Uint32 target
     initDescription();
 }
 //=======================================================================
-bool QuestCityOccupy::isFeasible(Uint32 heroId)
+bool QuestCityOccupy::isFeasible(guint32 heroId)
 {
   if (QuestCityOccupy::chooseToOccupy(getHeroById(heroId)->getOwner()))
     return true;

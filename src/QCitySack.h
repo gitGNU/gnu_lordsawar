@@ -44,7 +44,7 @@ class QuestCitySack : public Quest, public sigc::trackable
 	 * @param q_mgr  The quests manager to associate this quest with.
 	 * @param hero   The Id of the Hero who is responsible for the quest.
 	 */
-        QuestCitySack(QuestsManager& q_mgr, Uint32 hero);
+        QuestCitySack(QuestsManager& q_mgr, guint32 hero);
 
 	//! Loading constructor.
 	/**
@@ -54,7 +54,7 @@ class QuestCitySack : public Quest, public sigc::trackable
         QuestCitySack(QuestsManager& q_mgr, XML_Helper* helper);
 
         // Construct from remote action.
-        QuestCitySack(QuestsManager& q_mgr, Uint32 hero, Uint32 target);
+        QuestCitySack(QuestsManager& q_mgr, guint32 hero, guint32 target);
         
 	//! Returns whether or not this quest is impossible.
         /**
@@ -69,7 +69,7 @@ class QuestCitySack : public Quest, public sigc::trackable
 	 *
 	 * @return Whether or not the quest is possible.
          */
-        static bool isFeasible(Uint32 heroId);
+        static bool isFeasible(guint32 heroId);
 
         //! Saves the sacking quest data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
@@ -84,7 +84,7 @@ class QuestCitySack : public Quest, public sigc::trackable
         void getExpiredMsg(std::queue<std::string>& msgs) const;
 
         //! Returns the id of the City object to be sacked.
-        Uint32 getCityId() const {return d_city;}
+        guint32 getCityId() const {return d_city;}
 
         //! Returns a pointer to the City object to be sacked.
         City* getCity() const;
@@ -138,7 +138,7 @@ class QuestCitySack : public Quest, public sigc::trackable
         static City* chooseToSack(Player *p);
 
 	//! The Id of the target City object to sack.
-        Uint32 d_city;
+        guint32 d_city;
 };
 
 #endif

@@ -44,7 +44,7 @@ namespace
 {
     const int default_gold = 1000;
 
-    Glib::ustring player_type_to_string(Uint32 type)
+    Glib::ustring player_type_to_string(guint32 type)
     {
 	switch (type)
 	{

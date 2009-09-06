@@ -54,7 +54,7 @@ class HeroProto : public ArmyProto
         void setGender(Hero::Gender gender){d_gender = gender;}
 
         //! Return the gender of the hero.
-        Uint32 getGender() const {return d_gender;}
+        guint32 getGender() const {return d_gender;}
         
         //! Saves the hero prototype to an action
         virtual bool save(XML_Helper* helper) const;

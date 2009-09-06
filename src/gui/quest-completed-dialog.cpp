@@ -74,7 +74,7 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
     }
     if (reward->getType() == Reward::GOLD)
       {
-        Uint32 gold = dynamic_cast<Reward_Gold*>(reward)->getGold();
+        guint32 gold = dynamic_cast<Reward_Gold*>(reward)->getGold();
         s += String::ucompose(
 	    ngettext("You have been rewarded with %1 gold piece.",
 		     "You have been rewarded with %1 gold pieces.",
@@ -82,7 +82,7 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
       }
     else if (reward->getType() == Reward::ALLIES)
       {
-        Uint32 num = dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies();
+        guint32 num = dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies();
         s += String::ucompose(
 	    ngettext("You have been rewarded with %1 ally.",
 		     "You have been rewarded with %1 allies.",

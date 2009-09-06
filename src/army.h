@@ -22,7 +22,7 @@
 #ifndef ARMY_H
 #define ARMY_H
 
-#include <SDL.h>
+#include <gtkmm.h>
 #include <string>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
@@ -135,13 +135,13 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
         // Set functions:
         
         //! Set the Id of Armyset and type that this Army belongs to.
-        void setArmyset(Uint32 armyset, Uint32 type);
+        void setArmyset(guint32 armyset, guint32 type);
 
         //! Set an Army statistic.
-        void setStat(Stat stat, Uint32 value);
+        void setStat(Stat stat, guint32 value);
 
         //! Set the current number of hitpoints of this army.
-        void setHP(Uint32 hp) {d_hp = hp;}
+        void setHP(guint32 hp) {d_hp = hp;}
 
         /** 
          * When you select a stack on the map, you can toggle the armies 
@@ -153,11 +153,11 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
         void setGrouped(bool grouped){d_grouped = grouped;}
 
         //! Sets whether or not the Army has a particular medal.
-        void setMedalBonus(Uint32 index, bool value) 
+        void setMedalBonus(guint32 index, bool value) 
 	  {d_medal_bonus[index]=value;}
         
         //! Sets the number of battles the Army unit participated in.
-        void setBattlesNumber(Uint32 value) {d_battles_number=value;}
+        void setBattlesNumber(guint32 value) {d_battles_number=value;}
          
         //! Sets the number of hits this Army unit has scored against a foe.
         void setNumberHasHit(double value) {d_number_hashit=value;}
@@ -174,13 +174,13 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
         // Get functions
         
 	//! Get the Id of the Armyset to which the Army's type belongs.
-        Uint32 getArmyset() const {return d_armyset;}
+        guint32 getArmyset() const {return d_armyset;}
         
         //! Get the type of this army.
 	/**
 	 * The type of the Army is the index of it's type in the Armyset.
 	 */
-        Uint32 getTypeId() const {return d_type_id;}
+        guint32 getTypeId() const {return d_type_id;}
 
         /** 
          * If modified is set to false, you get the raw, inherent value of
@@ -194,19 +194,19 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 * @return The value of the statistic.
          */
 	//! Returns the value of the given stat for the Army.
-        virtual Uint32 getStat(Stat stat, bool modified=true) const;
+        virtual guint32 getStat(Stat stat, bool modified=true) const;
 
         //! Get the current number of hitpoints that the Army has.
-        Uint32 getHP() const {return d_hp;}
+        guint32 getHP() const {return d_hp;}
 
         //! Get the current number of movement points that the Army has.
-        Uint32 getMoves() const {return d_moves;}
+        guint32 getMoves() const {return d_moves;}
 
         //! Get the current number of experience points that the Army unit has.
         double getXP() const {return d_xp;}
 
         //! Get the current level of the Army.
-        Uint32 getLevel() const {return d_level;}
+        guint32 getLevel() const {return d_level;}
 
         //! Returns the grouped state of the Army within a Stack.
         bool isGrouped() const {return d_grouped;}
@@ -215,10 +215,10 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
         bool* getMedalBonuses() const {return (bool*)&d_medal_bonus;}
 
         //! Return whether or not the Army has a particular medal.
-        bool getMedalBonus(Uint32 index) const {return d_medal_bonus[index];}
+        bool getMedalBonus(guint32 index) const {return d_medal_bonus[index];}
 
         //! Returns the number of battles the Army unit participated in.
-        Uint32 getBattlesNumber() const {return d_battles_number;}
+        guint32 getBattlesNumber() const {return d_battles_number;}
 
         //! Returns the number of blows the Army unit has scored against a foe.
         double getNumberHasHit() const {return d_number_hashit;}
@@ -230,7 +230,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	bool getFortified ();
 
 	//! Returns how many experience points the next level requires.
-        Uint32 getXpNeededForNextLevel() const;
+        guint32 getXpNeededForNextLevel() const;
 
         /** 
 	 * Regenerate an amount of the Army unit's hitpoints but not 
@@ -242,7 +242,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 *                 fully healed after battle.
          */
 	//! Heal the Army unit.
-        void heal(Uint32 hp = 0);
+        void heal(guint32 hp = 0);
 
         /** 
 	 * Decrease the number of hitpoints that this Army has.
@@ -252,7 +252,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
          * @return True if the Army unit has died, otherwise false.
          */
 	//! Damage the Army.
-        bool damage(Uint32 damageDone);
+        bool damage(guint32 damageDone);
 
         /** 
 	 * Reduce the number of moves that the Army unit has.
@@ -263,7 +263,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
          * @param moves      The number of movement points to consume.
          */
 	//! Consume some movement points.
-        void decrementMoves(Uint32 moves);
+        void decrementMoves(guint32 moves);
 
         //! Restores the number of movement points to the maximum level.
         void resetMoves();
@@ -310,7 +310,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
         int computeLevelGain(Stat stat);
 
 	//! Returns whether or not the army was blessed at the given temple.
-        bool blessedAtTemple(Uint32 temple_id);
+        bool blessedAtTemple(guint32 temple_id);
 
         void printAllDebugInfo() const;
 
@@ -339,10 +339,10 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
         bool saveData(XML_Helper* helper) const;
 
 	//! The index of the Army unit's type in it's Armyset.
-        Uint32 d_type_id;
+        guint32 d_type_id;
 
 	//! The Id of the Armyset that the Army prototype belongs to.
-        Uint32 d_armyset;
+        guint32 d_armyset;
 
 	/**
 	 * The maximum number of hitpoints is the secondmost important
@@ -353,7 +353,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 * This value does not change during gameplay.
 	 */
 	//! The maximum number of hitpoints this Army unit has.
-        Uint32 d_max_hp;
+        guint32 d_max_hp;
 
 	//! Movement point multiplier of the Army unit.
 	/**
@@ -366,7 +366,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 * This value typically changes from 1 to 2, and back to 1 during
 	 * gameplay.
 	 */
-	Uint32 d_max_moves_multiplier;
+	guint32 d_max_moves_multiplier;
 
 	//! Movement point bonus due to resting.
 	/**
@@ -378,7 +378,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 *
 	 * This value is a number between 0 and 2.
 	 */
-	Uint32 d_max_moves_rest_bonus;
+	guint32 d_max_moves_rest_bonus;
 
 	/**
 	 * Being in a ship affects the Army's strength in battle.
@@ -403,7 +403,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 *
 	 * d_hp does not exceed d_max_hp.
 	 */
-        Uint32 d_hp;
+        guint32 d_hp;
 
 	//! The current number of movement points that the Army unit has.
 	/**
@@ -415,7 +415,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 *
 	 * d_moves does not exceed d_moves_hp.
 	 */
-        Uint32 d_moves;
+        guint32 d_moves;
 
 	//! The current level of experience points the Army unit has.
 	/**
@@ -437,7 +437,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 *
 	 * @note Only Hero units advance in levels.
 	 */
-        Uint32 d_level;
+        guint32 d_level;
 
 	//! Whether or not the Army unit is grouped into it's parent Stack.
 	/**
@@ -474,7 +474,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 *
 	 * This value does not decrease during gameplay.
 	 */
-        Uint32 d_battles_number;
+        guint32 d_battles_number;
 
         //! The weighted number of hits per battle for this Army unit.
 	/**
@@ -503,7 +503,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 *
 	 * The length of the list does not decrease during gameplay.
 	 */
-        std::list<Uint32> d_visitedTemples;
+        std::list<guint32> d_visitedTemples;
 
 	//! The number of experience points per experience level.
 	/**
@@ -515,9 +515,9 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
     private:
 
 	//! Create an army with a non-unique id from an army prototype.
-	Army(const ArmyProto& a, Uint32 id, Player *player = NULL);
+	Army(const ArmyProto& a, guint32 id, Player *player = NULL);
 	//! Create an army with a non-unique id from an army production base.
-	Army(const ArmyProdBase& a, Uint32 id, Player *player = NULL);
+	Army(const ArmyProdBase& a, guint32 id, Player *player = NULL);
 
 };
 

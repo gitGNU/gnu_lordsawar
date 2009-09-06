@@ -64,7 +64,7 @@ void QuestEnemyArmies::update_targets()
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 //=======================================================================
-QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero)
+QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, guint32 hero)
     : Quest(q_mgr, hero, Quest::KILLARMIES), d_killed(0)
 {
     // have us be informed when hostilities break out
@@ -80,7 +80,7 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero)
 QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper) 
     : Quest(q_mgr, helper)
 {
-    Uint32 ui;
+    guint32 ui;
     
     helper->getData(d_to_kill, "to_kill");
     helper->getData(d_killed,  "killed");
@@ -92,8 +92,8 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
-QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero,
-                                   Uint32 armies_to_kill, Uint32 victim_player)
+QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, guint32 hero,
+                                   guint32 armies_to_kill, guint32 victim_player)
     : Quest(q_mgr, hero, Quest::KILLARMIES), d_killed(0)
 {
     // have us be informed when hostilities break out
@@ -140,7 +140,7 @@ void QuestEnemyArmies::initDescription()
 				     d_to_kill, d_victim_player->getName());
 }
 
-bool QuestEnemyArmies::isFeasible(Uint32 heroId)
+bool QuestEnemyArmies::isFeasible(guint32 heroId)
 {
   if (getVictimPlayer(getHeroById(heroId)->getOwner()))
     return true;

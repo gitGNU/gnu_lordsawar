@@ -29,7 +29,7 @@
 #include <vector>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
-#include <SDL_types.h>
+#include <gtkmm.h>
 #include <SDL_video.h>
 
 #include "vector.h"
@@ -173,7 +173,7 @@ class Player: public sigc::trackable
 	 *                     the next free Id it used.
          */
 	//! Default constructor.
-        Player (std::string name, Uint32 armyset, SDL_Color color, int width,
+        Player (std::string name, guint32 armyset, SDL_Color color, int width,
 		int height, Type type, int player_no = -1);
 
         //! Copy constructor
@@ -197,7 +197,7 @@ class Player: public sigc::trackable
          * @param type     The player's type (Player::Type).
          */
 	//! Create a player.
-        static Player* create(std::string name, Uint32 armyset, 
+        static Player* create(std::string name, guint32 armyset, 
 			      SDL_Color color, int width, int height, 
 			      Type type);
         
@@ -217,7 +217,7 @@ class Player: public sigc::trackable
         void setName(std::string name){d_name = name;}
         
         //! Change the player's Armyset.
-        void setArmyset(Uint32 armyset){d_armyset = armyset;}
+        void setArmyset(guint32 armyset){d_armyset = armyset;}
 
         //! Set the type of the player (to be used by derived classes only.)
         void setType(Type type) {d_type = type;}
@@ -250,7 +250,7 @@ class Player: public sigc::trackable
         bool deleteStack(Stack* stack);
 
         //! Returns the unique ID of the player.
-        Uint32 getId() const {return d_id;}
+        guint32 getId() const {return d_id;}
 
 	//! Returns a list of the player's unit production actions for this turn.
 	std::list<Action_Produce *> getUnitsProducedThisTurn();
@@ -262,7 +262,7 @@ class Player: public sigc::trackable
         std::list<History*>* getHistorylist() {return &d_history;}
 
         //! Return the Id of the player's Armyset.
-        Uint32 getArmyset() const {return d_armyset;}
+        guint32 getArmyset() const {return d_armyset;}
 
         //! Return whether or not the player has been killed.
         bool isDead() const {return d_dead;}
@@ -271,17 +271,17 @@ class Player: public sigc::trackable
         bool isImmortal() const {return d_immortal;}
 
         //! Return the type of the player (Player::Type).
-        Uint32 getType() {return d_type;}
+        guint32 getType() {return d_type;}
 
         /**
 	 * Return the amount of upkeep in gold pieces that the player spent 
 	 * in the previous turn.  
 	 */
 	//! Return the upkeep.
-        Uint32 getUpkeep() {return d_upkeep;}
+        guint32 getUpkeep() {return d_upkeep;}
 
 	//! Return the income from all of the player's cities.
-        Uint32 getIncome () {return d_income;}
+        guint32 getIncome () {return d_income;}
 
 	/**
 	 * Perform a summation of the upkeep value for every Army in the 
@@ -312,10 +312,10 @@ class Player: public sigc::trackable
 	void proposeDiplomacy (DiplomaticProposal proposal, Player *player);
 
 	//! Set this player's rank in diplomatic matters.  Starts at 1.
-	void setDiplomaticRank (Uint32 rank) {d_diplomatic_rank = rank;};
+	void setDiplomaticRank (guint32 rank) {d_diplomatic_rank = rank;};
 
 	//! What diplomatic rank does this player have?  Starts at 1.
-	Uint32 getDiplomaticRank () {return d_diplomatic_rank;};
+	guint32 getDiplomaticRank () {return d_diplomatic_rank;};
 
 	//! What rank do we have?  As a name.
 	std::string getDiplomaticTitle() {return d_diplomatic_title;};
@@ -326,7 +326,7 @@ class Player: public sigc::trackable
 	DiplomaticState negotiateDiplomacy (Player *player);
 
 	//! Get the diplomatic score with respect to an opponent.
-	Uint32 getDiplomaticScore (Player *p);
+	guint32 getDiplomaticScore (Player *p);
 
 	/**
 	 * Change the player's opinion of an opponent for the better.
@@ -337,7 +337,7 @@ class Player: public sigc::trackable
 	 *
 	 */
 	//! Make your diplomatic view of another player increase.
-	void improveDiplomaticRelationship (Player *p, Uint32 amount);
+	void improveDiplomaticRelationship (Player *p, guint32 amount);
 
 	/**
 	 * Change all players opinion of you for the better, except for 
@@ -350,7 +350,7 @@ class Player: public sigc::trackable
 	 * @note Pass except as NULL to not except a player.
 	 */
 	//! Make all other players diplomatic view of you increase.
-	void improveDiplomaticRelationship (Uint32 amount, Player *except);
+	void improveDiplomaticRelationship (guint32 amount, Player *except);
 
 	/**
 	 * Change the player's view of an opponent for the worse.
@@ -361,7 +361,7 @@ class Player: public sigc::trackable
 	 *
 	 */
 	//! Make your diplomatic view of another player decrease.
-	void deteriorateDiplomaticRelationship (Player *player, Uint32 amount);
+	void deteriorateDiplomaticRelationship (Player *player, guint32 amount);
 
 	/**
 	 * Change all players opinion of you for the worse.
@@ -370,7 +370,7 @@ class Player: public sigc::trackable
 	 *                  is 1 and the maximum value is 15.
 	 */
 	//! Make all other players diplomatic view of you worsen
-	void deteriorateDiplomaticRelationship (Uint32 amount);
+	void deteriorateDiplomaticRelationship (guint32 amount);
 
 	/**
 	 * Change all players opinion of another player for the worse, 
@@ -383,7 +383,7 @@ class Player: public sigc::trackable
 	 *                  to make the deterioration happen.
 	 */
 	//! Make players you are at state with you think less of player.
-	void deteriorateAlliesRelationship(Player *player, Uint32 amount, 
+	void deteriorateAlliesRelationship(Player *player, guint32 amount, 
 					   Player::DiplomaticState state);
 
 	/**
@@ -397,7 +397,7 @@ class Player: public sigc::trackable
 	 *                  to make the improvement happen.
 	 */
 	//! Make players who are at STATE with PLAYER think better of you.
-	void improveAlliesRelationship(Player *player, Uint32 amount, 
+	void improveAlliesRelationship(Player *player, guint32 amount, 
 				       Player::DiplomaticState state);
 
         //! Returns the colour of the player.
@@ -413,7 +413,7 @@ class Player: public sigc::trackable
         std::string getName(bool translate = true) const;
 
 	//! Returns the player's current score.
-        Uint32 getScore();
+        guint32 getScore();
 
         //! Returns the list of stacks (Stacklist) owned by the player.
         Stacklist* getStacklist() const {return d_stacklist;}
@@ -428,10 +428,10 @@ class Player: public sigc::trackable
         Triumphs* getTriumphs() const {return d_triumphs;}
 
         //! Get the fight order of the player.
-	std::list<Uint32> getFightOrder() const {return d_fight_order;}
+	std::list<guint32> getFightOrder() const {return d_fight_order;}
 
         //! Set the fight order of the player.
-	void setFightOrder(std::list<Uint32> order);
+	void setFightOrder(std::list<guint32> order);
 
         //! Show debugging information for the player's Action list.
         void dumpActionlist() const;
@@ -800,7 +800,7 @@ class Player: public sigc::trackable
          * @return False on error, true otherwise.
          */
 	//! Callback to sack a city.
-        void citySack(City* city, int& gold, std::list<Uint32> *sacked_types);
+        void citySack(City* city, int& gold, std::list<guint32> *sacked_types);
 
         /** 
 	 * Raze (permanently destroy) a city.
@@ -1163,7 +1163,7 @@ class Player: public sigc::trackable
 	 *                     participated in the death of this player's Army.
 	 */
         //! Emitted when a player's Army dies.
-        sigc::signal<void, Army*, std::vector<Uint32> > sdyingArmy;
+        sigc::signal<void, Army*, std::vector<guint32> > sdyingArmy;
 
 	/**
 	 * @param ruin    The ruin being searched.
@@ -1194,7 +1194,7 @@ class Player: public sigc::trackable
 	 * @param army_types  The list of Army types traded-in for gold pieces.
 	 */
         //! Emitted whenever the player pillages a city.
-        sigc::signal<void, City*, Stack*, int, Uint32> spillagingCity;
+        sigc::signal<void, City*, Stack*, int, guint32> spillagingCity;
 
 	/**
 	 * @param city        The city that has been sacked.
@@ -1203,7 +1203,7 @@ class Player: public sigc::trackable
 	 * @param army_types  The list of Army types traded-in for gold pieces.
 	 */
         //! Emitted whenever the player sacks a city.
-        sigc::signal<void, City*, Stack*, int, std::list<Uint32> > ssackingCity;
+        sigc::signal<void, City*, Stack*, int, std::list<guint32> > ssackingCity;
 
 	/**
 	 * @param city        The city that has been razed.
@@ -1291,7 +1291,7 @@ class Player: public sigc::trackable
         sigc::signal<void, NetworkHistory *> history_written;
         
 	//! is it safe to vector from the given city?
-	static bool safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders);
+	static bool safeFromAttack(City *c, guint32 safe_mp, guint32 min_defenders);
 	void addHistory(History *history);
 	bool hasAlreadyInitializedTurn() const;
 	bool hasAlreadyEndedTurn() const;
@@ -1299,7 +1299,7 @@ class Player: public sigc::trackable
 	//! Check the history to see if we ever conquered the given city.
 	bool conqueredCity(City *c);
 	std::list<Vector<int> > getStackTrack(Stack *s);
-	std::list<History *> getHistoryForHeroId(Uint32 id);
+	std::list<History *> getHistoryForHeroId(guint32 id);
 	//! Set whether or not this player has surrendered.
 	/*
 	 * computer players may surrender to a lone human player who has most
@@ -1309,7 +1309,7 @@ class Player: public sigc::trackable
 	 * at a different time in fast, smart and dummy players.
 	 */
 	void setSurrendered(bool surr);
-	Uint32 countEndTurnHistoryEntries() const;
+	guint32 countEndTurnHistoryEntries() const;
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,
@@ -1334,7 +1334,7 @@ class Player: public sigc::trackable
         std::string d_name;
 
 	//! The ArmySet of the Player.
-        Uint32 d_armyset;
+        guint32 d_armyset;
 
 	//! The number of gold pieces the Player has in the treasury.
         int d_gold;
@@ -1346,10 +1346,10 @@ class Player: public sigc::trackable
         bool d_immortal;
 
 	//! The kind of Player (see Player::Type).
-        Uint32 d_type;
+        guint32 d_type;
 
 	//! A unique numeric identifier identifying this Player.
-        Uint32 d_id;
+        guint32 d_id;
 
 	//! A list of actions that this Player made this turn.
         std::list<Action*> d_actions;
@@ -1370,19 +1370,19 @@ class Player: public sigc::trackable
 	/**
 	 * @note This value is related to the Player's ArmySet.
 	 */
-	std::list<Uint32> d_fight_order; 
+	std::list<guint32> d_fight_order; 
 
 	//! How many gold pieces the Player paid out in the last turn.
-	Uint32 d_upkeep;
+	guint32 d_upkeep;
 
 	//! How many gold pieces the Player made from taxes in the last turn.
-	Uint32 d_income;
+	guint32 d_income;
 
 	//! The diplomatic view that this Player has of each other Player.
 	DiplomaticState d_diplomatic_state[MAX_PLAYERS];
 
 	//! The diplomatic rank this Player has among all other Players.
-	Uint32 d_diplomatic_rank;
+	guint32 d_diplomatic_rank;
 
 	//! The title that goes along with the diplomatic rank.
 	std::string d_diplomatic_title;
@@ -1391,7 +1391,7 @@ class Player: public sigc::trackable
 	DiplomaticProposal d_diplomatic_proposal[MAX_PLAYERS];
 
 	//! A quantification of how much this Player likes every other Player.
-	Uint32 d_diplomatic_score[MAX_PLAYERS];
+	guint32 d_diplomatic_score[MAX_PLAYERS];
 
 	//! Whether or not this player is observable by the user.
 	bool d_observable;
@@ -1410,7 +1410,7 @@ class Player: public sigc::trackable
         int doStackVisitTemple(Stack *s, Temple *t);
         void doCityOccupy(City *c);
         void doCityPillage(City *c, int& gold, int* pillaged_army_type);
-        void doCitySack(City *c, int& gold, std::list<Uint32> *sacked_types);
+        void doCitySack(City *c, int& gold, std::list<guint32> *sacked_types);
         void doCityRaze(City *c);
         void doCityBuyProduction(City *c, int slot, int type);
         void doCityChangeProduction(City *c, int slot);
@@ -1423,13 +1423,13 @@ class Player: public sigc::trackable
         void doSignpostChange(Signpost *signpost, std::string message);
         void doCityRename(City *c, std::string name);
         void doVectorFromCity(City * c, Vector<int> dest);
-        void doSetFightOrder(std::list<Uint32> order);
+        void doSetFightOrder(std::list<guint32> order);
         void doResign();
         void doHeroPlantStandard(Hero *hero, Item *item, Vector<int> pos);
         void doDeclareDiplomacy (DiplomaticState state, Player *player);
         void doProposeDiplomacy (DiplomaticProposal proposal, Player *player);
         void doConquerCity(City *city, Stack *stack);
-	void doLootCity(Player *looted, Uint32 added, Uint32 subtracted);
+	void doLootCity(Player *looted, guint32 added, guint32 subtracted);
         Hero* doRecruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
         void doRename(std::string name);
 	void doKill();
@@ -1476,14 +1476,14 @@ class Player: public sigc::trackable
 
 
 
-	bool AI_maybeVector(City *c, Uint32 safe_mp, Uint32 min_defenders,
+	bool AI_maybeVector(City *c, guint32 safe_mp, guint32 min_defenders,
 			    City *target, City **vector_city = NULL);
 
 
-	void AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
-			       Uint32 mp_to_front);
+	void AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
+			       guint32 mp_to_front);
 
-	bool AI_maybeDisband(Stack *s, City *city, Uint32 min_defenders, 
+	bool AI_maybeDisband(Stack *s, City *city, guint32 min_defenders, 
 			     int safe_mp, bool &stack_died);
 
 	void pruneActionlist();
@@ -1502,7 +1502,7 @@ class Player: public sigc::trackable
          */
 	//! Get heroes.
         void getHeroes(const std::list<Stack*> stacks, 
-		       std::vector<Uint32>& heroes);
+		       std::vector<guint32>& heroes);
 
         /** 
 	 * Goes through a list of stacks and removes all armies with less
@@ -1517,7 +1517,7 @@ class Player: public sigc::trackable
          */
 	//! Remove dead Armies from a list of stacks after a fight.
         double removeDeadArmies(std::list<Stack*>& stacks,
-                                std::vector<Uint32>& culprits);
+                                std::vector<guint32>& culprits);
         
         /** 
 	 * Increases the number of experience points of a stack
@@ -1537,7 +1537,7 @@ class Player: public sigc::trackable
         void adjustDiplomacyFromConqueringCity(City *city);
 
         void lootCity(City *city, Player *looted);
-	void calculateLoot(Player *looted, Uint32 &added, Uint32 &subtracted);
+	void calculateLoot(Player *looted, guint32 &added, guint32 &subtracted);
         void takeCityInPossession(City* c);
 	static void pruneCityVectorings(std::list<Action*> actions);
 	static void pruneCityProductions(std::list<Action*> actions);

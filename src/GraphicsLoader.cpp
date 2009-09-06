@@ -186,7 +186,7 @@ void GraphicsLoader::instantiatePixmaps(Tileset *ts)
     }
 }
 
-void GraphicsLoader::instantiatePixmaps(TileStyleSet *tss, Uint32 tilesize)
+void GraphicsLoader::instantiatePixmaps(TileStyleSet *tss, guint32 tilesize)
 {
   SDL_Surface* pixmaps = getTilesetPicture(tss->getSubDir(), 
 					   tss->getName() + ".png");
@@ -232,7 +232,7 @@ void GraphicsLoader::loadShipPic(Armyset *armyset)
   // copy alpha values, don't use them
   SDL_SetAlpha(shippic, 0, 0);
   SDL_PixelFormat* fmt = shippic->format;
-  Uint32 tilesize = armyset->getTileSize();
+  guint32 tilesize = armyset->getTileSize();
   SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, 
 					  tilesize, tilesize, 
 					  fmt->BitsPerPixel, fmt->Rmask, 
@@ -310,7 +310,7 @@ bool GraphicsLoader::instantiatePixmaps(Armyset *set, ArmyProto *a)
       exit(-1);
     }
 
-  Uint32 size = set->getTileSize();
+  guint32 size = set->getTileSize();
   // don't use alpha information, just copy the channel! very important
   SDL_SetAlpha(pic, 0, 0);
   SDL_PixelFormat* fmt = pic->format;

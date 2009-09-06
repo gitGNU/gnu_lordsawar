@@ -23,6 +23,7 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+#include <gtkmm.h>
 #include <string>
 #include <SDL_types.h>
 #include <sigc++/trackable.h>
@@ -82,11 +83,11 @@ class Configuration : public sigc::trackable
         static std::string s_lang;
 
         // if using hardware surfaces for pixmaps or not
-        static Uint32 s_surfaceFlags;
+        static guint32 s_surfaceFlags;
         static bool s_hardware;
 
         //the maximum size of the graphics cache
-        static Uint32 s_cacheSize;
+        static guint32 s_cacheSize;
 
         //zip and obfuscate save files
         static bool s_zipfiles;
@@ -101,8 +102,8 @@ class Configuration : public sigc::trackable
 
         // music settings; the cache size is given in pieces instead of memory
         static bool s_musicenable;
-        static Uint32 s_musicvolume;
-        static Uint32 s_musiccache;
+        static guint32 s_musicvolume;
+        static guint32 s_musiccache;
 
 	// various default game settings
         static bool s_see_opponents_stacks;
@@ -119,7 +120,7 @@ class Configuration : public sigc::trackable
         static bool s_cusp_of_war;
         static bool s_decorated;
         static bool s_remember_recent_games;
-	static Uint32 s_double_click_threshold;
+	static guint32 s_double_click_threshold;
 
 	static GameParameters::NeutralCities neutralCitiesFromString(const std::string str);
 	static std::string neutralCitiesToString(const GameParameters::NeutralCities neutrals);

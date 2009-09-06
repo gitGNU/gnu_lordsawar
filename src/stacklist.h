@@ -27,7 +27,7 @@
 #include <vector>
 #include <string>
 #include <sigc++/trackable.h>
-#include <SDL_types.h>
+#include <gtkmm.h>
 #include "vector.h"
 #include <sstream>
 
@@ -100,7 +100,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	 *         returned.
 	 */
         //! Return position of an Army.
-        static Vector<int> getPosition(Uint32 id);
+        static Vector<int> getPosition(guint32 id);
 
         /** 
 	 * This method finds stacks which occupy the same tile.
@@ -229,10 +229,10 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         Stack* getOwnObjectAt(Vector<int> point)
 	  { return getOwnObjectAt(point.x, point.y);}
 
-        Stack *getStackById(Uint32 id);
-        Stack *getArmyStackById(Uint32 army);
+        Stack *getStackById(guint32 id);
+        Stack *getArmyStackById(guint32 army);
 
-	void collectTaxes(Player *p, Uint32 num_cities);
+	void collectTaxes(Player *p, guint32 num_cities);
 
 	std::list<Hero*> getTopHeroes(int num);
 
@@ -246,7 +246,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         bool load(std::string tag, XML_Helper* helper);
 
 
-	void getHeroes(std::vector<Uint32>& dst);
+	void getHeroes(std::vector<guint32>& dst);
 	//! A pointer to the currently selected Stack.
         Stack* d_activestack;
 };

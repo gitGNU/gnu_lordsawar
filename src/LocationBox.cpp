@@ -28,7 +28,7 @@
 
 #include "xmlhelper.h"
 
-LocationBox::LocationBox(Vector<int> pos, Uint32 size)
+LocationBox::LocationBox(Vector<int> pos, guint32 size)
     :Immovable(pos), d_size(size)
 {
 }
@@ -55,7 +55,7 @@ LocationBox::LocationBox(const LocationBox& loc)
 {
 }
 
-LocationBox::LocationBox(XML_Helper* helper, Uint32 size)
+LocationBox::LocationBox(XML_Helper* helper, guint32 size)
     :Immovable(helper)
 {
     d_size = size;

@@ -137,7 +137,7 @@ void GameMap::processStyles(std::string styles, int chars_per_style)
 	    unsigned long int val = 0;
 	    char *end = NULL;
 	    val = strtoul (hexstr, &end, 16);
-	    Uint32 id = (Uint32) val;
+	    guint32 id = (guint32) val;
 	    TileStyle *style = d_tileSet->getTileStyle(id);
 	    if (!style)
 	      style = d_tileSet->getTileStyle(0);
@@ -246,7 +246,7 @@ bool GameMap::fill(MapGenerator* generator)
     for (int j = 0; j < height; j++)
         for (int i = 0; i < width; i++)
         {
-            Uint32 index = d_tileSet->getIndex(terrain[j*width + i]);
+            guint32 index = d_tileSet->getIndex(terrain[j*width + i]);
             d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, index, NULL);
         }
 
@@ -254,7 +254,7 @@ bool GameMap::fill(MapGenerator* generator)
     return true;
 }
 
-bool GameMap::fill(Uint32 type)
+bool GameMap::fill(guint32 type)
 {
     for (int i = 0; i < s_width; i++)
         for (int j = 0; j < s_height; j++)
@@ -379,9 +379,9 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
 {
   Stack *s = NULL;
   bool added_army = false;
-  Uint32 i, j;
-  Uint32 d;
-  Uint32 max;
+  guint32 i, j;
+  guint32 d;
+  guint32 max;
   int x, y;
   if (s_height > s_width)
     max = s_height;

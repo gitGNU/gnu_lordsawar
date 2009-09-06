@@ -18,6 +18,7 @@
 #ifndef TILESTYLE_H
 #define TILESTYLE_H
 
+#include <gtkmm.h>
 #include <SDL.h>
 
 #include "xmlhelper.h"
@@ -290,10 +291,10 @@ ooooooo
 	/*
 	 * The id is unique among all other tilestyles in the Tileset.
 	 */
-	Uint32 getId() const {return d_id;}
+	guint32 getId() const {return d_id;}
 
 	//! Set the id for this tilestyle.
-	void setId(Uint32 id) {d_id = id;}
+	void setId(guint32 id) {d_id = id;}
  
 	//! Save a TileStyle to an opened tile configuration file.
 	/**
@@ -326,7 +327,7 @@ ooooooo
 	 * This id shows up in the saved-game file in the lordsawar.map.styles
 	 * XML entity as a hexidecimal number.
 	 */
-	Uint32 d_id;
+	guint32 d_id;
 };
 
 #endif // TILESTYLE_H

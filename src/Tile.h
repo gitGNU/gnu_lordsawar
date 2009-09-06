@@ -21,7 +21,7 @@
 #define TILE_H
 
 #include <string>
-#include <SDL.h>
+#include <gtkmm.h>
 
 #include "xmlhelper.h"
 
@@ -84,7 +84,7 @@ class Tile : public std::list<TileStyleSet*>
         ~Tile();
 
         //! Get the number of movement points needed to cross this tile
-        Uint32 getMoves() const {return d_moves;}
+        guint32 getMoves() const {return d_moves;}
 
         //! Get the type (grass, hill,...) of this tile type.
         Type getType() const {return d_type;}
@@ -125,7 +125,7 @@ class Tile : public std::list<TileStyleSet*>
 	void setSmallTile(SmallTile *smalltile) {d_smalltile = smalltile;};
 	bool validate();
 
-	static Uint32 isFlying() 
+	static guint32 isFlying() 
 	  {return FOREST | HILLS | WATER | SWAMP | MOUNTAIN;};
 
 	bool consistsOnlyOfLoneAndOtherStyles();
@@ -151,7 +151,7 @@ class Tile : public std::list<TileStyleSet*>
 	 * Equates to the tileset.tile.d_moves XML entities in the tileset
 	 * configuration file.
 	 */
-        Uint32 d_moves;
+        guint32 d_moves;
 	
 	//! The kind of terrain tile this instance represents.
 	/**

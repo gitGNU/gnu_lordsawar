@@ -45,7 +45,7 @@ public:
   //! Deletes the singleton instance.
   static void deleteInstance();
 
-  void start(std::string host, Uint32 port, std::string nick);
+  void start(std::string host, guint32 port, std::string nick);
   void request_seat_manifest();
 
   sigc::signal<void> client_connected;
@@ -57,7 +57,7 @@ public:
   void chat(std::string message);
 
   std::string getHost() const{return d_host;};
-  Uint32 getPort() const{return d_port;};
+  guint32 getPort() const{return d_port;};
 
   void sendRoundOver();
 protected:
@@ -90,7 +90,7 @@ private:
   static GameClient * s_instance;
   bool d_connected;
   std::string d_host;
-  Uint32 d_port;
+  guint32 d_port;
 };
 
 #endif

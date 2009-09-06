@@ -19,7 +19,7 @@
 #define ITEM_PROTO_H
 
 #include <string>
-#include <SDL.h>
+#include <gtkmm.h>
 #include "xmlhelper.h"
 #include "army.h"
 
@@ -76,8 +76,8 @@ class ItemProto: public Renamable
 	  ADD5GOLDPERCITY = 0x00000800, 
 
         };
-	static Uint32 bonusFlagsFromString(const std::string str);
-	static std::string bonusFlagsToString(const Uint32 bonus);
+	static guint32 bonusFlagsFromString(const std::string str);
+	static std::string bonusFlagsToString(const guint32 bonus);
         
 	//! Loading constructor.
         ItemProto(XML_Helper* helper);
@@ -86,7 +86,7 @@ class ItemProto: public Renamable
         ItemProto(const ItemProto& orig);
 
 	//! Creates a new Item Prototype from scratch.
-        ItemProto(std::string name, Uint32 id);
+        ItemProto(std::string name, guint32 id);
 
         //! Destructor.
         ~ItemProto();
@@ -95,7 +95,7 @@ class ItemProto: public Renamable
         bool save(XML_Helper* helper) const;
 
         //! Returns whether or not the Item has a particular special bonus.
-        Uint32 getBonus() const {return d_bonus;};
+        guint32 getBonus() const {return d_bonus;};
 
         //! Returns whether or not the Item has a particular special bonus.
         bool getBonus(ItemProto::Bonus bonus) const;
@@ -107,10 +107,10 @@ class ItemProto: public Renamable
 	void removeBonus(ItemProto::Bonus bonus);
         
         //! Return the Id of the Item prototype.
-        Uint32 getTypeId() const {return d_type_id;};
+        guint32 getTypeId() const {return d_type_id;};
 
 	//! Set the id of the item prototype.
-	void setTypeId(Uint32 id) {d_type_id = id;};
+	void setTypeId(guint32 id) {d_type_id = id;};
 
 	//! Return some text describing the item's special abilities.
         std::string getBonusDescription() const;
@@ -120,7 +120,7 @@ class ItemProto: public Renamable
 	/**
 	 * This value is a bitwise OR-ing of the values in ItemProto::Bonus.
 	 */
-        Uint32 d_bonus;
+        guint32 d_bonus;
         
 
     private:
@@ -130,7 +130,7 @@ class ItemProto: public Renamable
 	 * This value is a unique Id among all other game objects.
 	 * This value does not change during gameplay.
 	 */
-        Uint32 d_type_id;
+        guint32 d_type_id;
 
 	static std::string bonusFlagToString(ItemProto::Bonus type);
 	static ItemProto::Bonus bonusFlagFromString(std::string str);

@@ -33,7 +33,7 @@ using namespace std;
 //#define debug(x)
 
 
-Quest::Quest(QuestsManager& q_mgr, Uint32 hero, Type type)
+Quest::Quest(QuestsManager& q_mgr, guint32 hero, Type type)
     :d_q_mgr(q_mgr), d_hero(hero), d_type(type), d_pending(false)
 {
   Hero *h = getHeroById(hero);
@@ -51,7 +51,7 @@ Quest::Quest(QuestsManager& q_mgr, XML_Helper* helper)
     helper->getData(d_player_id, "player");
 }
 
-Hero* Quest::getHeroById(Uint32 hero, Stack** stack)
+Hero* Quest::getHeroById(guint32 hero, Stack** stack)
 {
     Playerlist* pl = Playerlist::getInstance();
 	Playerlist::const_iterator pit;
@@ -108,7 +108,7 @@ std::string Quest::getHeroNameForDeadHero()
   return getHeroNameForDeadHero(d_hero);
 }
 
-std::string Quest::getHeroNameForDeadHero(Uint32 id)
+std::string Quest::getHeroNameForDeadHero(guint32 id)
 {
   std::list<History *>events;
   events = Playerlist::getInstance()->getHistoryForHeroId(id);

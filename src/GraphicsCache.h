@@ -103,7 +103,7 @@ class GraphicsCache
         void clear();
 
         //! Get the current cache size, the maximum is in Configuration::s_cacheSize
-        Uint32 getCacheSize() const {return d_cachesize;}
+        guint32 getCacheSize() const {return d_cachesize;}
 
         /** Function for getting the army picture from the cache
           * 
@@ -120,7 +120,7 @@ class GraphicsCache
           * @param player       the player owning the army
           * @return the image of the unit
           */
-        SDL_Surface* getArmyPic(Uint32 armyset, Uint32 army, const Player* p,
+        SDL_Surface* getArmyPic(guint32 armyset, guint32 army, const Player* p,
                                 const bool* medals);
 	SDL_Surface* getArmyPic(Army *a);
 
@@ -139,8 +139,8 @@ class GraphicsCache
           * @param colour       which player the shield is for
           * @return the image of the shield
           */
-        SDL_Surface* getShieldPic(std::string shieldset, Uint32 type, Uint32 colour);
-        SDL_Surface* getShieldPic(Uint32 type, Player *p);
+        SDL_Surface* getShieldPic(std::string shieldset, guint32 type, guint32 colour);
+        SDL_Surface* getShieldPic(guint32 type, Player *p);
 
         /** Function for getting a ruin picture
           *
@@ -260,7 +260,7 @@ class GraphicsCache
           * @param p the player to draw it for
           * @return image for the flag
           */
-        SDL_Surface* getSelectorPic(Uint32 type, Uint32 frame, const Player* p);
+        SDL_Surface* getSelectorPic(guint32 type, guint32 frame, const Player* p);
 
         /** Function for getting shield pictures.
           *
@@ -271,7 +271,7 @@ class GraphicsCache
           * @param p the player to draw it for
           * @return image for the shield
           */
-        SDL_Surface* getShieldPic(Uint32 type, const Player* p);
+        SDL_Surface* getShieldPic(guint32 type, const Player* p);
 
 
         SDL_Surface* getSmallRuinedCityPic();
@@ -280,7 +280,7 @@ class GraphicsCache
         SDL_Surface* getPortPic();
         SDL_Surface* getExplosionPic();
         SDL_Surface* getSignpostPic();
-        SDL_Surface* getMoveBonusPic(Uint32 bonus, bool has_ship);
+        SDL_Surface* getMoveBonusPic(guint32 bonus, bool has_ship);
         SDL_Surface *getSmallTemplePic();
         SDL_Surface *getSmallRuinExploredPic();
         SDL_Surface* getSmallRuinUnexploredPic();
@@ -300,7 +300,7 @@ class GraphicsCache
 	  * note that type=invalid,production=true is used to show the symbol
 	  * that means no more units can be vectored to this city.
           */
-        SDL_Surface* getProdShieldPic(Uint32 type, bool prod);
+        SDL_Surface* getProdShieldPic(guint32 type, bool prod);
 
 
         /** Modify an image with player colors.
@@ -317,10 +317,10 @@ class GraphicsCache
         SDL_Surface* applyMask(SDL_Surface* image, SDL_Surface* mask, const Player* p);
 	static SDL_Surface* applyMask(SDL_Surface* image, SDL_Surface* mask, SDL_Color mask_color, bool isNeutral);
         
-	static bool loadSelectorImages(std::string tileset, std::string filename, Uint32 tilesize, std::vector<SDL_Surface*> &images, std::vector<SDL_Surface *> &masks);
+	static bool loadSelectorImages(std::string tileset, std::string filename, guint32 tilesize, std::vector<SDL_Surface*> &images, std::vector<SDL_Surface *> &masks);
 
-	Uint32 getNumberOfLargeSelectorFrames() {return d_selector.size();};
-	Uint32 getNumberOfSmallSelectorFrames() {return d_smallselector.size();}
+	guint32 getNumberOfLargeSelectorFrames() {return d_selector.size();};
+	guint32 getNumberOfSmallSelectorFrames() {return d_smallselector.size();}
 
     private:
         GraphicsCache();
@@ -348,11 +348,11 @@ class GraphicsCache
         CursorCacheItem* addCursorPic(int type);
 
         //! Creates a new army picture with the given parameters.
-        ArmyCacheItem* addArmyPic(Uint32 armyset, Uint32 army, const Player* p,
+        ArmyCacheItem* addArmyPic(guint32 armyset, guint32 army, const Player* p,
                                   const bool* medalsbonus);
 
         //! Creates a new shield picture with the given parameters.
-        ShieldCacheItem* addShieldPic(std::string shieldset, Uint32 type, Uint32 colour);
+        ShieldCacheItem* addShieldPic(std::string shieldset, guint32 type, guint32 colour);
 
         //! Creates a new city picture with the given parameters.
         CityCacheItem* addCityPic(int type, const Player* p);
@@ -370,14 +370,14 @@ class GraphicsCache
         FlagCacheItem* addFlagPic(int size, const Player* p);
 
         //! Creates a new selector picture with the given parameters.
-        SelectorCacheItem* addSelectorPic(Uint32 type, Uint32 frame, 
+        SelectorCacheItem* addSelectorPic(guint32 type, guint32 frame, 
 					  const Player* p);
 
         //! Creates a new production shield picture with the given parameters.
-        ProdShieldCacheItem* addProdShieldPic(Uint32 type, bool prod);
+        ProdShieldCacheItem* addProdShieldPic(guint32 type, bool prod);
 
         //! Creates a new movement bonus picture with the given parameters.
-        MoveBonusCacheItem* addMoveBonusPic(Uint32 type);
+        MoveBonusCacheItem* addMoveBonusPic(guint32 type);
 
         //! Checks if the cache has exceeded the maximum size and reduce it.
         void checkPictures();
@@ -482,7 +482,7 @@ class GraphicsCache
         //the data
         static GraphicsCache* s_instance;
 
-        Uint32 d_cachesize;
+        guint32 d_cachesize;
         std::list<ArmyCacheItem*> d_armylist;
         std::list<CityCacheItem*> d_citylist;
         std::list<TowerCacheItem*> d_towerlist;

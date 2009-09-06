@@ -45,7 +45,7 @@ void ArmyMap::draw_stacks()
     {
         Stacklist* mylist = (*pit)->getStacklist();
         SDL_Color c = (*pit)->getColor();
-	Uint32 outline = SDL_MapRGB(surface->format, c.r, c.g, c.b);
+	guint32 outline = SDL_MapRGB(surface->format, c.r, c.g, c.b);
         
         for (Stacklist::iterator it= mylist->begin(); it != mylist->end(); it++)
         {

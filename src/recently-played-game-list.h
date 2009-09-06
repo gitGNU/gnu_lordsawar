@@ -18,6 +18,7 @@
 #ifndef RECENTLYPLAYEDGAMELIST_H
 #define RECENTLYPLAYEDGAMELIST_H
 
+#include <gtkmm.h>
 #include <string>
 #include <list>
 #include <sigc++/trackable.h>
@@ -57,7 +58,7 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 
 	//! Add a game entry to the list of recently played games
 	void addEntry(GameScenario *game_scenario, std::string filename);
-	void addNetworkedEntry(GameScenario *game_scenario, std::string host, Uint32 port);
+	void addNetworkedEntry(GameScenario *game_scenario, std::string host, guint32 port);
 	void updateEntry(GameScenario *game_scenario);
 
 	//! Remove a game entry from the list, by it's scenario id.

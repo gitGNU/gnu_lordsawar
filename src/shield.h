@@ -18,6 +18,7 @@
 #ifndef SHIELD_H
 #define SHIELD_H
 
+#include <gtkmm.h>
 #include <SDL.h>
 #include <string>
 #include <sigc++/trackable.h>
@@ -58,7 +59,7 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
         virtual ~Shield();
 
         //! Get the player that this shield will belong to.
-	Uint32 getOwner() const {return d_owner;}
+	guint32 getOwner() const {return d_owner;}
 
         //! Returns the colour of the player.
         SDL_Color getColor() const {return d_color;}
@@ -90,7 +91,7 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	 * shieldset configuration file.
 	 * Equates to the Shield::ShieldColour enumeration.
 	 */
-	Uint32 d_owner;
+	guint32 d_owner;
 
 	//! The player's colour.
 	/**

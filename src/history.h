@@ -255,7 +255,7 @@ class History_HeroEmerges : public History
 	//! Get the name of the Hero who appeared.
 	std::string getHeroName() const {return d_hero;}
 
-	Uint32 getHeroId() const {return d_hero_id;};
+	guint32 getHeroId() const {return d_hero_id;};
 
 	//! Get the name of the City where the Hero has emerged.
 	std::string getCityName() const {return d_city;}
@@ -265,7 +265,7 @@ class History_HeroEmerges : public History
 	std::string d_hero;
 
 	//! The id of the hero
-	Uint32 d_hero_id;
+	guint32 d_hero_id;
 
 	//! The name of the City where the Hero emerged.
 	std::string d_city;
@@ -296,11 +296,11 @@ class History_CityWon : public History
         bool fillData(City *city);
 
 	//! Get the Id of the City object that was defeated.
-	Uint32 getCityId() const {return d_city;}
+	guint32 getCityId() const {return d_city;}
     
     private:
 	//! The Id of the City object that was defeated.
-	Uint32 d_city;
+	guint32 d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -373,11 +373,11 @@ class History_CityRazed : public History
         bool fillData(City *city);
 
 	//! Get the Id of the City object that was razed.
-	Uint32 getCityId() const {return d_city;}
+	guint32 getCityId() const {return d_city;}
     
     private:
 	//! The Id of the City that was razed.
-        Uint32 d_city;
+        guint32 d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -575,10 +575,10 @@ class History_Score: public History
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the player's score for this turn.
-        bool fillData(Uint32 score);
+        bool fillData(guint32 score);
 
 	//! Get the player's score for this turn.
-	Uint32 getScore() const {return d_score;}
+	guint32 getScore() const {return d_score;}
     
     private:
 	//! The player's score.
@@ -633,11 +633,11 @@ class History_DiplomacyPeace : public History
         bool fillData(Player *opponent);
 
 	//! Get the Id of the Player object we are at peace with.
-	Uint32 getOpponentId() const {return d_opponent_id;}
+	guint32 getOpponentId() const {return d_opponent_id;}
     
     private:
 	//! The Id of the Player object we are at peace with.
-	Uint32 d_opponent_id;
+	guint32 d_opponent_id;
 };
 
 //-----------------------------------------------------------------------------
@@ -665,11 +665,11 @@ class History_DiplomacyWar: public History
         bool fillData(Player *opponent);
 
 	//! Get the Id of the Player object we are at war with.
-	Uint32 getOpponentId() const {return d_opponent_id;}
+	guint32 getOpponentId() const {return d_opponent_id;}
     
     private:
 	// The Id of the Player object we are at war with.
-	Uint32 d_opponent_id;
+	guint32 d_opponent_id;
 };
 
 //-----------------------------------------------------------------------------
@@ -697,11 +697,11 @@ class History_DiplomacyTreachery: public History
         bool fillData(Player *opponent);
 
 	//! Get the Id of the Player object that we peformed treachery on.
-	Uint32 getOpponentId() const {return d_opponent_id;}
+	guint32 getOpponentId() const {return d_opponent_id;}
     
     private:
 	//! The Id of the Player object that we peformed treachery on.
-	Uint32 d_opponent_id;
+	guint32 d_opponent_id;
 };
 
 //-----------------------------------------------------------------------------

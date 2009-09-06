@@ -46,7 +46,7 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-City::City(Vector<int> pos, string name, Uint32 gold, Uint32 numslots)
+City::City(Vector<int> pos, string name, guint32 gold, guint32 numslots)
     :Ownable((Player *)0), Location(pos, CITY_TILE_WIDTH), Renamable(name),
     ProdSlotlist(numslots), d_gold(gold), d_defense_level(1), d_burnt(false), 
     d_vectoring(false), d_vector(Vector<int>(-1,-1)), 
@@ -75,7 +75,7 @@ City::City(XML_Helper* helper)
     helper->getData(d_capital, "capital");
     if (d_capital)
       {
-	Uint32 ui;
+	guint32 ui;
         helper->getData(ui, "capital_owner");
         d_capital_owner = Playerlist::getInstance()->getPlayer(ui);
       }
@@ -220,7 +220,7 @@ void City::produceStrongestProductionBase()
 void City::produceScout()
 {
   const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 set = d_owner->getArmyset();
+  guint32 set = d_owner->getArmyset();
   ArmyProto *scout = al->getScout(set);
   Army *a = new Army(*scout, d_owner);
   GameMap::getInstance()->addArmy(this, a);
@@ -366,10 +366,10 @@ bool City::canAcceptMoreVectoring()
   return canAcceptMoreVectoring(0);
 }
 
-bool City::canAcceptMoreVectoring(Uint32 number_of_cities)
+bool City::canAcceptMoreVectoring(guint32 number_of_cities)
 {
   //here we presume that it's one unit per city
-  Uint32 num = Citylist::getInstance()->countCitiesVectoringTo(this);
+  guint32 num = Citylist::getInstance()->countCitiesVectoringTo(this);
   if (num + number_of_cities >= MAX_CITIES_VECTORED_TO_ONE_CITY)
     return false;
   return true;
@@ -383,12 +383,12 @@ bool City::changeVectorDestination(Vector<int> dest)
   return true;
 }
 
-Uint32 City::countDefenders()
+guint32 City::countDefenders()
 {
   std::vector<Stack*> defenders;
   defenders = getOwner()->getStacklist()->defendersInCity(this);
 
-  Uint32 armies = 0;
+  guint32 armies = 0;
   std::vector<Stack*>::iterator it = defenders.begin();
   for (;it != defenders.end(); it++)
     armies += (*it)->size();
@@ -419,8 +419,8 @@ void City::randomlyImproveOrDegradeArmy(ArmyProdBase *army)
 
 bool armyCompareStrength (const ArmyProdBase *lhs, const ArmyProdBase *rhs)
 {
-  Uint32 lhs_strength = lhs->getStrength();
-  Uint32 rhs_strength = rhs->getStrength();
+  guint32 lhs_strength = lhs->getStrength();
+  guint32 rhs_strength = rhs->getStrength();
   return lhs_strength < rhs_strength; 
 }
 
@@ -452,7 +452,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
     removeProductionBase(i);
 
   const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 set = d_owner->getArmyset();
+  guint32 set = d_owner->getArmyset();
 
   int army_type;
   int num = rand() % 10;

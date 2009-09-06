@@ -20,7 +20,7 @@
 
 #include <string>
 #include <vector>
-#include <SDL.h>
+#include <gtkmm.h>
 #include <sigc++/trackable.h>
 
 #include "tilestyle.h"

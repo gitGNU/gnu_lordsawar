@@ -54,7 +54,7 @@ Ruin::Ruin(XML_Helper* helper)
     :NamedLocation(helper, RUIN_TILE_WIDTH), d_type(0), d_occupant(0), 
     d_hidden(0), d_owner(0), d_sage(0), d_reward(0)
 {
-    Uint32 ui;
+    guint32 ui;
     std::string type_str;
     helper->getData(type_str, "type");
     d_type = ruinTypeFromString(type_str);
@@ -121,7 +121,7 @@ bool Ruin::load(std::string tag, XML_Helper* helper)
 {
   if (tag == Reward::d_tag)
     {
-	Uint32 t;
+	guint32 t;
 	std::string type_str;
 	helper->getData(type_str, "type");
 	t = Reward::rewardTypeFromString(type_str);

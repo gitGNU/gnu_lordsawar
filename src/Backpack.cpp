@@ -89,9 +89,9 @@ bool Backpack::loadItem(std::string tag, XML_Helper* helper)
   return false;
 }
 
-Uint32 Backpack::countStrengthBonuses()
+guint32 Backpack::countStrengthBonuses()
 {
-  Uint32 bonus = 0;
+  guint32 bonus = 0;
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getBonus(Item::ADD1STR))
@@ -104,9 +104,9 @@ Uint32 Backpack::countStrengthBonuses()
   return bonus;
 }
 
-Uint32 Backpack::countStackStrengthBonuses()
+guint32 Backpack::countStackStrengthBonuses()
 {
-  Uint32 bonus = 0;
+  guint32 bonus = 0;
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getBonus(Item::ADD1STACK))
@@ -120,9 +120,9 @@ Uint32 Backpack::countStackStrengthBonuses()
 }
 
 
-Uint32 Backpack::countGoldBonuses()
+guint32 Backpack::countGoldBonuses()
 {
-  Uint32 bonus = 0;
+  guint32 bonus = 0;
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getBonus(Item::ADD2GOLDPERCITY))
@@ -137,27 +137,27 @@ Uint32 Backpack::countGoldBonuses()
   return bonus;
 }
 
-Uint32 Backpack::countMovementDoublers()
+guint32 Backpack::countMovementDoublers()
 {
-  Uint32 bonus = 0;
+  guint32 bonus = 0;
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->getBonus(Item::DOUBLEMOVESTACK))
       bonus++;
   return bonus;
 }
 
-Uint32 Backpack::countStackFlightGivers()
+guint32 Backpack::countStackFlightGivers()
 {
-  Uint32 bonus = 0;
+  guint32 bonus = 0;
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->getBonus(Item::FLYSTACK))
       bonus++;
   return bonus;
 }
 
-Uint32 Backpack::countPlantableItems()
+guint32 Backpack::countPlantableItems()
 {
-  Uint32 count = 0;
+  guint32 count = 0;
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->isPlantable())
       count++;
@@ -172,7 +172,7 @@ Item *Backpack::getPlantableItem(Player *player)
   return NULL;
 }
 	
-Item *Backpack::getItemById(Uint32 id)
+Item *Backpack::getItemById(guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->getId() == id)

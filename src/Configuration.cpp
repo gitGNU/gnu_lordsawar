@@ -53,15 +53,15 @@ string Configuration::s_lang = "";
 int Configuration::s_displaySpeedDelay = 0;
 int Configuration::s_displayFightRoundDelayFast = 250;
 int Configuration::s_displayFightRoundDelaySlow = 500;
-Uint32 Configuration::s_surfaceFlags = SDL_SWSURFACE;
-Uint32 Configuration::s_cacheSize = 1000000;
+guint32 Configuration::s_surfaceFlags = SDL_SWSURFACE;
+guint32 Configuration::s_cacheSize = 1000000;
 bool Configuration::s_zipfiles = false;
 int Configuration::s_autosave_policy = 1;
 bool Configuration::s_hardware = false;
 bool Configuration::s_ggz = false;
 bool Configuration::s_musicenable = true;
-Uint32 Configuration::s_musicvolume = 64;
-Uint32 Configuration::s_musiccache = 10000000;
+guint32 Configuration::s_musicvolume = 64;
+guint32 Configuration::s_musiccache = 10000000;
 string Configuration::s_filename = "";
 bool Configuration::s_see_opponents_stacks = false;
 bool Configuration::s_see_opponents_production = false;
@@ -77,7 +77,7 @@ bool Configuration::s_quick_start = false;
 bool Configuration::s_cusp_of_war = false;
 bool Configuration::s_decorated = true;
 bool Configuration::s_remember_recent_games = true;
-Uint32 Configuration::s_double_click_threshold = 400; //milliseconds
+guint32 Configuration::s_double_click_threshold = 400; //milliseconds
 
 Configuration::Configuration()
 {
@@ -319,7 +319,7 @@ void initialize_configuration()
     if (stat(Configuration::s_savePath.c_str(), &testdir)
         || !S_ISDIR(testdir.st_mode))
     {
-        Uint32 mask = 0755; //make directory only readable for user and group
+        guint32 mask = 0755; //make directory only readable for user and group
         if (mkdir(Configuration::s_savePath.c_str(), mask))
         {
             std::cerr << "Couldn't create save game directory ";

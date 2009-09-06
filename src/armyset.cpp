@@ -17,7 +17,7 @@
 
 #include <iostream>
 #include <expat.h>
-#include <SDL.h>
+#include <gtkmm.h>
 #include "rectangle.h"
 #include <sigc++/functors/mem_fun.h>
 #include <string>
@@ -33,7 +33,7 @@ using namespace std;
 //#define debug(x)
 
 #define DEFAULT_ARMY_TILE_SIZE 40
-Armyset::Armyset(Uint32 id, std::string name)
+Armyset::Armyset(guint32 id, std::string name)
 	: d_id(id), d_name(name), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE)
 {
   d_ship = NULL;
@@ -93,7 +93,7 @@ bool Armyset::save(XML_Helper* helper)
     return retval;
 }
 
-ArmyProto * Armyset::lookupArmyByType(Uint32 army_type_id)
+ArmyProto * Armyset::lookupArmyByType(guint32 army_type_id)
 {
   for (iterator it = begin(); it != end(); it++)
     {

@@ -86,7 +86,7 @@ class Triumphs
 	 * @return Zero or more number of armies killed.
 	 */
 	//! Returns a number of armies killed.
-	Uint32 getTriumphTally(Player *player, TriumphType type) const
+	guint32 getTriumphTally(Player *player, TriumphType type) const
 	  {return d_triumph[player->getId()][type];}
 
 	void tallyTriumph(Player *p, TriumphType type);
@@ -94,7 +94,7 @@ class Triumphs
 
 	//! A set of tally statistics for frags of army units
 	// 5 is max TriumphType + 1
-	Uint32 d_triumph[MAX_PLAYERS][5]; 
+	guint32 d_triumph[MAX_PLAYERS][5]; 
 };
 
 #endif

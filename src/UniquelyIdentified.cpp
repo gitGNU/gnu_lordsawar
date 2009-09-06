@@ -34,7 +34,7 @@ UniquelyIdentified::UniquelyIdentified(const UniquelyIdentified& obj)
 {
 }
 
-UniquelyIdentified::UniquelyIdentified(Uint32 id)
+UniquelyIdentified::UniquelyIdentified(guint32 id)
 {
     d_id = id;
     d_unique = false;

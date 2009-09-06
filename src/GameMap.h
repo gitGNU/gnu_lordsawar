@@ -26,6 +26,7 @@
 
 #include <vector>
 
+#include <gtkmm.h>
 #include "vector.h"
 #include "rectangle.h"
 #include "maptile.h"
@@ -141,7 +142,7 @@ class GameMap: public sigc::trackable
           * @param type             the type of the terrain(index in the tileset)
           * @return true on success, false on error
           */
-        bool fill(Uint32 type);
+        bool fill(guint32 type);
 
         /** Save the contents of the map
           * 

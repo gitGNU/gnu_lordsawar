@@ -41,7 +41,7 @@ class NetworkAction;
 struct Participant
 {
   void *conn;
-  std::list<Uint32> players;
+  std::list<guint32> players;
   std::list<NetworkAction *> actions;
   std::list<NetworkHistory *> histories;
   std::string nickname;
@@ -329,11 +329,11 @@ void GameServer::onConnectionLost(void *conn)
   Participant *part = findParticipantByConn(conn);
   if (part)
     {
-      std::list<Uint32> players_to_stand = part->players;
+      std::list<guint32> players_to_stand = part->players;
 
       depart(conn);
       participants.remove(part);
-      for (std::list<Uint32>::iterator it = players_to_stand.begin();
+      for (std::list<guint32>::iterator it = players_to_stand.begin();
 	   it != players_to_stand.end(); it++)
 	notifyStand(Playerlist::getInstance()->getPlayer(*it), d_nickname);
       remote_participant_disconnected.emit();
@@ -488,7 +488,7 @@ bool GameServer::player_already_sitting(Player *p)
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     {
-      for (std::list<Uint32>::iterator j = (*i)->players.begin(); 
+      for (std::list<guint32>::iterator j = (*i)->players.begin(); 
 	   j != (*i)->players.end(); j++)
 	{
 	  if (p->getId() == *j)
@@ -553,10 +553,10 @@ void GameServer::notifyStand(Player *player, std::string nickname)
 }
 
 bool
-GameServer::add_to_player_list(std::list<Uint32> &list, Uint32 id)
+GameServer::add_to_player_list(std::list<guint32> &list, guint32 id)
 {
   bool found = false;
-  for (std::list<Uint32>::iterator i = list.begin(); i != list.end(); i++)
+  for (std::list<guint32>::iterator i = list.begin(); i != list.end(); i++)
     {
       if (*i == id)
 	{
@@ -570,10 +570,10 @@ GameServer::add_to_player_list(std::list<Uint32> &list, Uint32 id)
 }
 
 bool
-GameServer::remove_from_player_list(std::list<Uint32> &list, Uint32 id)
+GameServer::remove_from_player_list(std::list<guint32> &list, guint32 id)
 {
   //remove player id from part.
-  for (std::list<Uint32>::iterator i = list.begin(); 
+  for (std::list<guint32>::iterator i = list.begin(); 
        i != list.end(); i++)
     {
       if (*i == id)
@@ -704,7 +704,7 @@ bool GameServer::dumpActionsAndHistories(XML_Helper *helper, Player *player)
        end = participants.end(); i != end; ++i)
     {
       bool found = false;
-      for (std::list<Uint32>::iterator it = (*i)->players.begin();
+      for (std::list<guint32>::iterator it = (*i)->players.begin();
 	   it != (*i)->players.end(); it++)
 	{
 	  if (*it == player->getId())
@@ -822,7 +822,7 @@ void GameServer::sendSeats(void *conn)
       if ((*i)->conn == part->conn)
 	continue;
 
-      for (std::list<Uint32>::iterator j = (*i)->players.begin(); 
+      for (std::list<guint32>::iterator j = (*i)->players.begin(); 
 	   j != (*i)->players.end(); j++)
 	{
 	  Player *player = Playerlist::getInstance()->getPlayer(*j);
@@ -844,7 +844,7 @@ void GameServer::sendSeats(void *conn)
 	}
     }
   //send out seatedness info for local server
-  for (std::list<Uint32>::iterator j = players_seated_locally.begin(); 
+  for (std::list<guint32>::iterator j = players_seated_locally.begin(); 
        j != players_seated_locally.end(); j++)
     {
       Player *player = Playerlist::getInstance()->getPlayer(*j);

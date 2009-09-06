@@ -249,7 +249,7 @@ bool XML_Helper::saveData(std::string name, int value)
     return true;
 }
 
-bool XML_Helper::saveData(std::string name, Uint32 value)
+bool XML_Helper::saveData(std::string name, guint32 value)
 {
     //prepend a "d_" to show that this is a data tag
     name = "d_" + name;
@@ -318,7 +318,7 @@ bool XML_Helper::saveData(std::string name, double value)
 /* This is a wrapper for the AMD64 platform */
 bool XML_Helper::saveData(std::string name, unsigned long int value)
 {
-    return saveData(name, static_cast<Uint32>(value));
+    return saveData(name, static_cast<guint32>(value));
 }
 /* End wrapper AMD64 */
 
@@ -495,7 +495,7 @@ bool XML_Helper::getData(int& data, std::string name)
     return true;
 }
 
-bool XML_Helper::getData(Uint32& data, std::string name)
+bool XML_Helper::getData(guint32& data, std::string name)
 {
     //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
@@ -505,12 +505,12 @@ bool XML_Helper::getData(Uint32& data, std::string name)
 
     if (it == d_data.end())
     {
-        std::cerr<<"XML_Helper::getData(Uint32, \"" <<name <<"\") failed\n";
+        std::cerr<<"XML_Helper::getData(guint32, \"" <<name <<"\") failed\n";
         d_failed = true;
         return false;
     }
     
-    data = static_cast<Uint32>(atoi((*it).second.c_str()));
+    data = static_cast<guint32>(atoi((*it).second.c_str()));
     return true;
 
     

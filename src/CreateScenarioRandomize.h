@@ -21,7 +21,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <SDL.h>
+#include <gtkmm.h>
 #include "game-parameters.h"
 #include "namelist.h"
 
@@ -49,7 +49,7 @@ class CreateScenarioRandomize
 	void pushRandomTempleName(std::string name);
 	std::string popRandomSignpost();
 	void pushRandomSignpost(std::string name);
-	Uint32 getRandomCityIncome(bool capital = false);
+	guint32 getRandomCityIncome(bool capital = false);
 	bool randomSignpostsEmpty() {return d_signposts->empty();}
 	std::string getDynamicSignpost(Signpost *signpost);
 	int getNumSignposts() {return d_signposts->size();}

@@ -56,12 +56,12 @@ class FightOrderDialog: public Decorated
 	
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<Uint32> army_type;
+	Gtk::TreeModelColumn<guint32> army_type;
     };
     const ArmiesColumns armies_columns;
     Glib::RefPtr<Gtk::ListStore> armies_list;
  private:
-    void addArmyType(Uint32 army_type);
+    void addArmyType(guint32 army_type);
 };
 
 #endif

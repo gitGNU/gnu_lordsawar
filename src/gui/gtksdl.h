@@ -42,7 +42,7 @@ struct _GtkSDL
 
   SDL_Surface *surface;
   gint bpp;
-  Uint32 flags;
+  guint32 flags;
 };
 
 struct _GtkSDLClass
@@ -53,7 +53,7 @@ struct _GtkSDLClass
 };
 
 
-GtkWidget *gtk_sdl_new (gint width, gint height, gint bpp, Uint32 flags);
+GtkWidget *gtk_sdl_new (gint width, gint height, gint bpp, guint32 flags);
 GType gtk_sdl_get_type (void);
 //void gtk_sdl_size (GtkSDL *sdl, gint width, gint height);
 

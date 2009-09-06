@@ -48,10 +48,10 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 	std::list<std::string> getNames();
 
         //! Returns the names of citysets that have the given tile size.
-	std::list<std::string> getNames(Uint32 tilesize);
+	std::list<std::string> getNames(guint32 tilesize);
 
         //! Returns the different tilesizes present in the citysetlist.
-	void getSizes(std::list<Uint32> &sizes);
+	void getSizes(std::list<guint32> &sizes);
 
 	//! Return the name of the subdirectory for a given cityset.
         /** 
@@ -62,7 +62,7 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 	 *         Cityset::d_dir for more information about the nature of 
 	 *         the return value.
          */
-	std::string getCitysetDir(std::string name, Uint32 tilesize);
+	std::string getCitysetDir(std::string name, guint32 tilesize);
 
 	//! Return the Cityset object by the name of the subdir.
 	/**

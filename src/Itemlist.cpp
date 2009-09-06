@@ -122,7 +122,7 @@ bool Itemlist::save(XML_Helper* helper) const
 
 void Itemlist::remove(ItemProto *itemproto)
 {
-  Uint32 index = 0;
+  guint32 index = 0;
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it).second == itemproto)

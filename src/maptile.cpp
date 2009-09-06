@@ -24,7 +24,7 @@
 #include "tileset.h"
 #include "MapBackpack.h"
 
-Maptile::Maptile(Tileset* tileSet, int x, int y, Uint32 type, TileStyle *tileStyle)
+Maptile::Maptile(Tileset* tileSet, int x, int y, guint32 type, TileStyle *tileStyle)
     :d_index(type), d_building(NONE) 
 {
     d_tileSet = tileSet;
@@ -57,7 +57,7 @@ Maptile::~Maptile()
     delete d_backpack;
 }
 
-Uint32 Maptile::getMoves() const
+guint32 Maptile::getMoves() const
 {
     if (d_building == Maptile::CITY)
         return 1;

@@ -21,6 +21,7 @@
 #ifndef ACTION_H
 #define ACTION_H
 
+#include <gtkmm.h>
 #include <string>
 #include "vector.h"
 #include <sigc++/trackable.h>
@@ -212,12 +213,12 @@ class Action_Move : public Action
 	//! Populate the move action with the stack and it's new position.
         bool fillData(Stack* s, Vector<int> dest);
     
-	Uint32 getStackId() const {return d_stack;};
+	guint32 getStackId() const {return d_stack;};
 	Vector<int> getEndingPosition() const {return d_dest;};
 	Vector<int> getPositionDelta() const {return d_delta;};
 
         private:
-        Uint32 d_stack;
+        guint32 d_stack;
         Vector<int> d_dest;
 	Vector<int> d_delta;
 };
@@ -249,10 +250,10 @@ class Action_Disband: public Action
 	//! Populate the action with the Stack being removed.
         bool fillData(Stack* s);
     
-	Uint32 getStackId() const {return d_stack;};
+	guint32 getStackId() const {return d_stack;};
 
         private:
-        Uint32 d_stack;
+        guint32 d_stack;
 };
 
 //-----------------------------------------------------------------------------
@@ -293,12 +294,12 @@ class Action_Split : public Action
 	//! Populate the action with pertinent data.
         bool fillData(Stack* orig, Stack* added);
     
-	Uint32 getStackId() const {return d_orig;};
-	Uint32 getNewStackId() const {return d_added;};
-	Uint32 getGroupedArmyId(int idx) const {return d_armies_moved[idx];};
+	guint32 getStackId() const {return d_orig;};
+	guint32 getNewStackId() const {return d_added;};
+	guint32 getGroupedArmyId(int idx) const {return d_armies_moved[idx];};
         private:
-        Uint32 d_orig, d_added;
-        Uint32 d_armies_moved[MAX_STACK_SIZE];
+        guint32 d_orig, d_added;
+        guint32 d_armies_moved[MAX_STACK_SIZE];
 };
 
 //-----------------------------------------------------------------------------
@@ -335,14 +336,14 @@ class Action_Fight : public Action, public sigc::trackable
 
 
 	std::list<FightItem> getBattleHistory() const {return d_history;};
-	std::list<Uint32> getAttackerArmyIds() const {return d_attackers;};
-	std::list<Uint32> getDefenderArmyIds() const {return d_defenders;};
+	std::list<guint32> getAttackerArmyIds() const {return d_attackers;};
+	std::list<guint32> getDefenderArmyIds() const {return d_defenders;};
 
         private:
         
         std::list<FightItem> d_history;
-        std::list<Uint32> d_attackers;
-        std::list<Uint32> d_defenders;
+        std::list<guint32> d_attackers;
+        std::list<guint32> d_defenders;
 
         bool loadItem(std::string tag, XML_Helper* helper);
 };
@@ -380,10 +381,10 @@ class Action_Join : public Action
 	//! Populate the action with pertinent data.
         bool fillData(Stack* orig, Stack* joining);
     
-	Uint32 getReceivingStackId() const {return d_orig_id;};
-	Uint32 getJoiningStackId() const {return d_joining_id;};
+	guint32 getReceivingStackId() const {return d_orig_id;};
+	guint32 getJoiningStackId() const {return d_joining_id;};
         private:
-        Uint32 d_orig_id, d_joining_id;
+        guint32 d_orig_id, d_joining_id;
 };
 
 //-----------------------------------------------------------------------------
@@ -421,13 +422,13 @@ class Action_Ruin : public Action
 	//! Set whether or not the Stack was successful in searching the ruin.
         void setSearched(bool searched) {d_searched = searched;}
     
-	Uint32 getRuinId() const {return d_ruin;};
-	Uint32 getStackId() const {return d_stack;};
+	guint32 getRuinId() const {return d_ruin;};
+	guint32 getStackId() const {return d_stack;};
 	bool getSearchSuccessful() const {return d_searched;};
 
         private:
-        Uint32 d_ruin;
-        Uint32 d_stack;
+        guint32 d_ruin;
+        guint32 d_stack;
         bool d_searched;
 };
 
@@ -464,12 +465,12 @@ class Action_Temple : public Action
 	//! Populate the action with pertinent data.
         bool fillData(Temple* t, Stack* s);
     
-	Uint32 getTempleId() const {return d_temple;};
-	Uint32 getStackId() const {return d_stack;};
+	guint32 getTempleId() const {return d_temple;};
+	guint32 getStackId() const {return d_stack;};
 
         private:
-        Uint32 d_temple;
-        Uint32 d_stack;
+        guint32 d_temple;
+        guint32 d_stack;
 };
 
 
@@ -503,10 +504,10 @@ class Action_Occupy : public Action
 	//! Populate the action with the City being occupied.
         bool fillData (City* c);
     
-	Uint32 getCityId() const {return d_city;};
+	guint32 getCityId() const {return d_city;};
 
         private:
-        Uint32 d_city;
+        guint32 d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -539,10 +540,10 @@ class Action_Pillage : public Action
 	//! Populate the action with the City that has been pillaged.
         bool fillData(City* c);
 
-	Uint32 getCityId() const {return d_city;};
+	guint32 getCityId() const {return d_city;};
 
         private:
-        Uint32 d_city;
+        guint32 d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -575,10 +576,10 @@ class Action_Sack : public Action
 	//! Populate the action with the City that has been sacked.
         bool fillData(City* c);
 
-	Uint32 getCityId() const {return d_city;};
+	guint32 getCityId() const {return d_city;};
 
         private:
-        Uint32 d_city;
+        guint32 d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -610,10 +611,10 @@ class Action_Raze : public Action
 	//! Populate the action with the City that has been razed.
         bool fillData (City* c);
     
-	Uint32 getCityId() const {return d_city;};
+	guint32 getCityId() const {return d_city;};
 
         private:
-        Uint32 d_city;
+        guint32 d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -645,10 +646,10 @@ class Action_Upgrade : public Action
 	//! Populate the action with the City that has been upgraded.
         bool fillData(City* c);
 
-	Uint32 getCityId() const {return d_city;};
+	guint32 getCityId() const {return d_city;};
 
         private:
-        Uint32 d_city;
+        guint32 d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -691,11 +692,11 @@ class Action_Buy : public Action
 	//! Populate the action with pertinent data.
         bool fillData(City* c, int slot, const ArmyProto *prod);
 
-	Uint32 getCityId() const {return d_city;};
+	guint32 getCityId() const {return d_city;};
 	int getProductionSlot() const {return d_slot;};
 	int getBoughtArmyTypeId() const {return d_prod;};
         private:
-        Uint32 d_city;
+        guint32 d_city;
         int d_slot, d_prod;
 };
 
@@ -735,11 +736,11 @@ class Action_Production : public Action
 	//! Populate the action with pertinent data.
         bool fillData(City* c, int slot);
 
-	Uint32 getCityId() const {return d_city;};
+	guint32 getCityId() const {return d_city;};
 	int getSlot() const {return d_prod;};
 
         private:
-        Uint32 d_city;
+        guint32 d_city;
         int d_prod;
 };
 
@@ -778,11 +779,11 @@ class Action_Reward : public Action
     
 
 	Reward *getReward() const {return d_reward;};
-	Uint32 getStackId() const {return d_stack;};
+	guint32 getStackId() const {return d_stack;};
 
         private:
 	Reward *d_reward;
-        Uint32 d_stack;
+        guint32 d_stack;
 
         bool load(std::string tag, XML_Helper *helper);
 	
@@ -816,16 +817,16 @@ class Action_Quest : public Action
 	//! Populate the Action_Quest with a Quest.
         bool fillData(Quest* q);
 
-	Uint32 getHeroId() const {return d_hero;};
-	Uint32 getQuestType() const {return d_questtype;};
-	Uint32 getData() const {return d_data;};
-	Uint32 getVictimPlayerId() const {return d_victim_player;};
+	guint32 getHeroId() const {return d_hero;};
+	guint32 getQuestType() const {return d_questtype;};
+	guint32 getData() const {return d_data;};
+	guint32 getVictimPlayerId() const {return d_victim_player;};
 
         private:
-        Uint32 d_hero;
-        Uint32 d_questtype;
-        Uint32 d_data;
-	Uint32 d_victim_player; //victim player, only KILLARMIES uses this
+        guint32 d_hero;
+        guint32 d_questtype;
+        guint32 d_data;
+	guint32 d_victim_player; //victim player, only KILLARMIES uses this
 };
 
 //-----------------------------------------------------------------------------
@@ -870,15 +871,15 @@ class Action_Equip : public Action
 	//! Populate the action with pertinent data.
         bool fillData(Hero *hero, Item *item, Slot slot, Vector<int> pos);
 
-	Uint32 getHeroId() const {return d_hero;};
-	Uint32 getItemId() const {return d_item;};
-	Uint32 getToBackpackOrToGround() const {return d_slot;};
+	guint32 getHeroId() const {return d_hero;};
+	guint32 getItemId() const {return d_item;};
+	guint32 getToBackpackOrToGround() const {return d_slot;};
 	Vector<int> getItemPos() const {return d_pos;};
 
         private:
-        Uint32 d_hero;
-        Uint32 d_item;
-        Uint32 d_slot;
+        guint32 d_hero;
+        guint32 d_item;
+        guint32 d_slot;
 	Vector<int> d_pos;
 };
 
@@ -917,12 +918,12 @@ class Action_Level : public Action
 	//! Populate the action with pertinent data.
         bool fillData(Army *unit, Army::Stat raised);
 
-	Uint32 getArmyId() const {return d_army;};
-	Uint32 getStatToIncrease() const {return d_stat;};
+	guint32 getArmyId() const {return d_army;};
+	guint32 getStatToIncrease() const {return d_stat;};
 
         private:
-        Uint32 d_army;
-        Uint32 d_stat;
+        guint32 d_army;
+        guint32 d_stat;
 };
 
 //-----------------------------------------------------------------------------
@@ -955,11 +956,11 @@ class Action_ModifySignpost: public Action
 	//! Populate the action with the signpost and the new message.
         bool fillData(Signpost * s, std::string message);
     
-	Uint32 getSignpostId() const {return d_signpost;};
+	guint32 getSignpostId() const {return d_signpost;};
 	std::string getSignContents() const {return d_message;};
 
         private:
-        Uint32 d_signpost;
+        guint32 d_signpost;
 	std::string d_message;
 };
 
@@ -992,10 +993,10 @@ class Action_RenameCity: public Action
 	//! Populate the action with the city being renamed and the new name.
         bool fillData(City *c, std::string name);
     
-	Uint32 getCityId() const {return d_city;};
+	guint32 getCityId() const {return d_city;};
 	std::string getNewCityName() const {return d_name;};
         private:
-        Uint32 d_city;
+        guint32 d_city;
 	std::string d_name;
 };
 
@@ -1034,11 +1035,11 @@ class Action_Vector: public Action
 	//! Populate the action with pertinent data.
         bool fillData(City* src, Vector <int> dest);
     
-	Uint32 getCityId() const {return d_city;};
+	guint32 getCityId() const {return d_city;};
 	Vector<int> getVectoringDestination() const {return d_dest;};
 
         private:
-        Uint32 d_city;
+        guint32 d_city;
         Vector<int> d_dest;
 };
 
@@ -1068,12 +1069,12 @@ class Action_FightOrder: public Action
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with a list of ranks, one per Army unit type.
-        bool fillData(std::list<Uint32> order);
+        bool fillData(std::list<guint32> order);
     
-	std::list<Uint32> getFightOrder() const {return d_order;};
+	std::list<guint32> getFightOrder() const {return d_order;};
 
         private:
-	std::list<Uint32> d_order;
+	std::list<guint32> d_order;
 };
 
 //-----------------------------------------------------------------------------
@@ -1135,12 +1136,12 @@ class Action_Plant: public Action
 	//! Populate the action with the Id of the Hero and the Id of the Item.
         bool fillData(Hero *hero, Item *item);
 
-	Uint32 getHeroId() const {return d_hero;};
-	Uint32 getItemId() const {return d_item;};
+	guint32 getHeroId() const {return d_hero;};
+	guint32 getItemId() const {return d_item;};
 
         private:
-        Uint32 d_hero;
-        Uint32 d_item;
+        guint32 d_hero;
+        guint32 d_item;
 };
 
 //-----------------------------------------------------------------------------
@@ -1187,13 +1188,13 @@ class Action_Produce: public Action
 	ArmyProdBase * getArmy() const {return d_army;}
 
 	//! Get the Id of the City that produced the Army unit.
-	Uint32 getCityId() const {return d_city;}
+	guint32 getCityId() const {return d_city;}
 
 	//! Get whether or not the Army unit is being vectored elsewhere.
 	bool getVectored() const {return d_vectored;}
     private:
 	ArmyProdBase *d_army;
-        Uint32 d_city;
+        guint32 d_city;
         bool d_vectored;
 
 	bool load(std::string tag, XML_Helper *helper);
@@ -1290,13 +1291,13 @@ class Action_DiplomacyState: public Action
         bool fillData(Player *player, Player::DiplomaticState state);
 
 	//! Get the Id of the Player that we have entered a new state for.
-	Uint32 getOpponentId() const {return d_opponent_id;}
+	guint32 getOpponentId() const {return d_opponent_id;}
 
 	//! Get the state that we're in with the other Player.
 	Player::DiplomaticState getDiplomaticState() const
 	  {return d_diplomatic_state;};
     private:
-	Uint32 d_opponent_id;
+	guint32 d_opponent_id;
 	Player::DiplomaticState d_diplomatic_state;
 };
 
@@ -1336,13 +1337,13 @@ class Action_DiplomacyProposal: public Action
         bool fillData(Player *player, Player::DiplomaticProposal proposal);
 
 	//! Get the Id of the Player that our proposal is for.
-	Uint32 getOpponentId() const {return d_opponent_id;}
+	guint32 getOpponentId() const {return d_opponent_id;}
 
 	//! Get the proposal that we're offering.
 	Player::DiplomaticProposal getDiplomaticProposal() const
 	  {return d_diplomatic_proposal;};
     private:
-	Uint32 d_opponent_id;
+	guint32 d_opponent_id;
 	Player::DiplomaticProposal d_diplomatic_proposal;
 };
 
@@ -1384,12 +1385,12 @@ class Action_DiplomacyScore: public Action
         bool fillData(Player *player, int amount);
 
 	//! Get the Id of the Player that our opinion has changed of.
-	Uint32 getOpponentId() const {return d_opponent_id;}
+	guint32 getOpponentId() const {return d_opponent_id;}
 
 	//! Get the amount of the opinion change.
 	int getAmountChange() const {return d_amount;};
     private:
-	Uint32 d_opponent_id;
+	guint32 d_opponent_id;
 	int d_amount;
 };
 
@@ -1437,10 +1438,10 @@ class Action_ConquerCity : public Action
 	//! Populate the action with the City being conquered.
         bool fillData (City* c, Stack *s);
     
-	Uint32 getCityId() const {return d_city;};
-	Uint32 getStackId() const {return d_stack;};
+	guint32 getCityId() const {return d_city;};
+	guint32 getStackId() const {return d_stack;};
         private:
-        Uint32 d_city, d_stack;
+        guint32 d_city, d_stack;
 };
 
 //-----------------------------------------------------------------------------
@@ -1467,14 +1468,14 @@ class Action_RecruitHero : public Action
         bool fillData(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
     
 	HeroProto* getHero() const {return d_hero;};
-	Uint32 getCityId() const {return d_city;};
-	Uint32 getCost() const {return d_cost;};
-	Uint32 getNumAllies() const {return d_allies;};
-	Uint32 getAllyArmyType() const {return d_ally_army_type;};
+	guint32 getCityId() const {return d_city;};
+	guint32 getCost() const {return d_cost;};
+	guint32 getNumAllies() const {return d_allies;};
+	guint32 getAllyArmyType() const {return d_ally_army_type;};
 
         private:
         HeroProto *d_hero;
-        Uint32 d_city, d_cost, d_allies, d_ally_army_type;
+        guint32 d_city, d_cost, d_allies, d_ally_army_type;
 
         bool load(std::string tag, XML_Helper *helper);
 };
@@ -1531,12 +1532,12 @@ class Action_CityTooPoorToProduce: public Action
 	//! Populate the action.
         bool fillData(City *city, const ArmyProdBase *army);
     
-	Uint32 getCityId() const {return d_city;}
-	Uint32 getArmyType() const {return d_army_type;}
+	guint32 getCityId() const {return d_city;}
+	guint32 getArmyType() const {return d_army_type;}
 
         private:
-	Uint32 d_city;
-	Uint32 d_army_type;
+	guint32 d_city;
+	guint32 d_army_type;
 };
 
 //-----------------------------------------------------------------------------
@@ -1588,19 +1589,19 @@ class Action_Loot : public Action
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the players involved and the amounts.
-        bool fillData(Player *looter, Player *looted, Uint32 amount_to_add,
-		      Uint32 amount_to_subtract);
+        bool fillData(Player *looter, Player *looted, guint32 amount_to_add,
+		      guint32 amount_to_subtract);
 
-	Uint32 getAmountToAdd() const { return d_gold_added;};
-	Uint32 getAmountToSubtract() const { return d_gold_removed;};
-	Uint32 getLootingPlayerId() const {return d_looting_player_id;};
-	Uint32 getLootedPlayerId() const {return d_looted_player_id;};
+	guint32 getAmountToAdd() const { return d_gold_added;};
+	guint32 getAmountToSubtract() const { return d_gold_removed;};
+	guint32 getLootingPlayerId() const {return d_looting_player_id;};
+	guint32 getLootedPlayerId() const {return d_looted_player_id;};
 
         private:
-	Uint32 d_looting_player_id;
-	Uint32 d_looted_player_id;
-	Uint32 d_gold_added;
-	Uint32 d_gold_removed;
+	guint32 d_looting_player_id;
+	guint32 d_looted_player_id;
+	guint32 d_gold_added;
+	guint32 d_gold_removed;
 };
 
 #endif //ACTION_H

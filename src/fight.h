@@ -23,7 +23,7 @@
 #ifndef FIGHT_H
 #define FIGHT_H
 
-#include <SDL_types.h>
+#include <gtkmm.h>
 #include <list>
 #include <vector>
 #include <map>
@@ -44,7 +44,7 @@ struct FightItem
   //! The round number of the battle.
   int turn;
   //! The id of the army who was attacked in this event.
-  Uint32 id;
+  guint32 id;
   //! The amount of damage that the army sustained.
   int damage;
 };
@@ -136,7 +136,7 @@ class Fight
         std::list<Stack*> getDefenders() const {return d_defenders;}
         
 	//! Get the modified strength bonus of the given Army unit.
-	Uint32 getModifiedStrengthBonus(Army *a);
+	guint32 getModifiedStrengthBonus(Army *a);
 
         // CONSTANTS
         //! The number of rounds the fight lasts.
@@ -152,7 +152,7 @@ class Fight
         static void orderArmies(std::list<Stack*> stacks, 
 				std::vector<Army*> &armies);
 
-        std::map<Uint32, Uint32> getInitialHPs() { return initial_hps; }
+        std::map<guint32, guint32> getInitialHPs() { return initial_hps; }
         
 	static LocationBox calculateFightBox(Fight &fight);
     private:
@@ -211,7 +211,7 @@ class Fight
 	//! The defenders in the fight.
         std::list<Fighter*> d_def_close;
 
-        std::map<Uint32, Uint32> initial_hps;
+        std::map<guint32, guint32> initial_hps;
         
 	//! The list of fight events that gets calculated.
         std::list<FightItem> d_actions;

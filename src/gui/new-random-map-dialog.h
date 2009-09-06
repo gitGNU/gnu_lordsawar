@@ -97,7 +97,7 @@ class NewRandomMapDialog: public Decorated
     void on_mountains_random_toggled();
     void on_cities_random_toggled();
 
-    Uint32 get_active_tile_size();
+    guint32 get_active_tile_size();
     void on_tile_size_changed();
 };
 

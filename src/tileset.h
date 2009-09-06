@@ -54,7 +54,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	static std::string d_road_smallmap_tag; 
 
 	//! Return the default height and width of a tile in the tileset.
-	static Uint32 getDefaultTileSize();
+	static guint32 getDefaultTileSize();
 
 	//! Default constructor.
 	/**
@@ -101,13 +101,13 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
         void setInfo(std::string info) {d_info = info;}
 
         //! Returns the tilesize of the tileset.
-        Uint32 getTileSize() const {return d_tileSize;}
+        guint32 getTileSize() const {return d_tileSize;}
 
 	//! Sets the tilesize of the tileset.
-	void setTileSize(Uint32 tileSize) {d_tileSize = tileSize;}
+	void setTileSize(guint32 tileSize) {d_tileSize = tileSize;}
 
         //! Returns the index to the given terrain type.
-        Uint32 getIndex(Tile::Type type) const;
+        guint32 getIndex(Tile::Type type) const;
 
 	void setLargeSelectorFilename(std::string p){d_large_selector = p;};
 	void setSmallSelectorFilename(std::string p){d_small_selector = p;};
@@ -117,7 +117,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	std::string getExplosionFilename() {return d_explosion;};
 
 	//! Lookup tilestyle by it's id in this tileset.
-	TileStyle *getTileStyle(Uint32 id) {return d_tilestyles[id];}
+	TileStyle *getTileStyle(guint32 id) {return d_tilestyles[id];}
 
 	//! Lookup a random tile style.
 	/**
@@ -132,7 +132,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	 * @return A pointer to the matching TileStyle object, or NULL if no 
 	 *         TileStyle could be found with that given style.
 	 */
-	TileStyle *getRandomTileStyle(Uint32 index, TileStyle::Type style);
+	TileStyle *getRandomTileStyle(guint32 index, TileStyle::Type style);
 
 	//! Save a Tileset to an opened tile configuration file.
 	/**
@@ -180,7 +180,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	 * It represents the size in pixels of the width and height of tile
 	 * imagery onscreen.
 	 */
-        Uint32 d_tileSize;
+        guint32 d_tileSize;
 
 	//! The subdirectory of the Tileset.
 	/**
@@ -194,7 +194,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	std::string d_large_selector;
 	std::string d_explosion;
 
-        typedef std::map<Uint32, TileStyle*> TileStyleIdMap;
+        typedef std::map<guint32, TileStyle*> TileStyleIdMap;
 	//! A map that provides a TileStyle when supplying a TileStyle id.
         TileStyleIdMap d_tilestyles;
 

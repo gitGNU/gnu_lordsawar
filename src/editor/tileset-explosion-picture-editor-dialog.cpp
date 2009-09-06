@@ -120,7 +120,7 @@ void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filen
   base_tilestyles = 
     disassemble_row(File::getMiscFile("various/editor/tilestyles.png"), 17);
 
-  Uint32 size = d_tileset->getTileSize();
+  guint32 size = d_tileset->getTileSize();
   std::vector<Glib::RefPtr<Gdk::Pixbuf> >::iterator it;
   for (it = base_tilestyles.begin(); it != base_tilestyles.end(); it++)
     tilestyle_images.push_back((*it)->scale_simple((int)size, (int)size, 

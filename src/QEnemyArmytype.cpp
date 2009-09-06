@@ -66,7 +66,7 @@ int getVictimArmytype(Player *p, std::list<Vector<int> >&targets)
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 //=======================================================================
-QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, Uint32 hero)
+QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, guint32 hero)
     : Quest(q_mgr, hero, Quest::KILLARMYTYPE)
 {
     Player *p = getHero()->getOwner();
@@ -85,8 +85,8 @@ QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
-QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, Uint32 hero,
-                                       Uint32 type_to_kill)
+QuestEnemyArmytype::QuestEnemyArmytype(QuestsManager& q_mgr, guint32 hero,
+                                       guint32 type_to_kill)
     : Quest(q_mgr, hero, Quest::KILLARMYTYPE)
 {
     // pick a victim
@@ -110,7 +110,7 @@ bool QuestEnemyArmytype::save(XML_Helper *helper) const
 std::string QuestEnemyArmytype::getProgress() const
 {
     Armysetlist *al = Armysetlist::getInstance();
-    Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
+    guint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
     const ArmyProto *a = al->getArmy(set, d_type_to_kill);
     return String::ucompose(
 	     _("You have not killed a unit of enemy %1 yet."), a->getName());
@@ -119,7 +119,7 @@ std::string QuestEnemyArmytype::getProgress() const
 void QuestEnemyArmytype::getSuccessMsg(std::queue<std::string>& msgs) const
 {
     Armysetlist *al = Armysetlist::getInstance();
-    Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
+    guint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
     const ArmyProto *a = al->getArmy(set, d_type_to_kill);
     msgs.push(String::ucompose(_("You have killed a unit of enemy %1."), a->getName()));
     msgs.push(_("Well done!"));
@@ -133,13 +133,13 @@ void QuestEnemyArmytype::getExpiredMsg(std::queue<std::string>& msgs) const
 void QuestEnemyArmytype::initDescription()
 {
     Armysetlist *al = Armysetlist::getInstance();
-    Uint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
+    guint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
     const ArmyProto *a = al->getArmy(set, d_type_to_kill);
     d_description = String::ucompose(_("You must destroy a unit of enemy %1."), 
 	     a->getName());
 }
 //=======================================================================
-bool QuestEnemyArmytype::isFeasible(Uint32 heroId)
+bool QuestEnemyArmytype::isFeasible(guint32 heroId)
 {
   std::list< Vector<int> >targets;
   int type = getVictimArmytype(getHeroById(heroId)->getOwner(), targets);

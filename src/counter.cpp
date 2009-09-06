@@ -26,7 +26,7 @@ std::string FL_Counter::d_tag = "counter";
 
 FL_Counter* fl_counter;
 
-FL_Counter::FL_Counter(Uint32 start)
+FL_Counter::FL_Counter(guint32 start)
     :d_curID(start)
 {
 }
@@ -40,15 +40,15 @@ FL_Counter::~FL_Counter()
 {
 }
 
-void FL_Counter::syncToId(Uint32 id)
+void FL_Counter::syncToId(guint32 id)
 {
   if (id > d_curID)
     d_curID = id;
 }
 
-Uint32 FL_Counter::getNextId()
+guint32 FL_Counter::getNextId()
 {
-  Uint32 ret = d_curID;
+  guint32 ret = d_curID;
   d_curID++;
   return ret;
 }

@@ -128,7 +128,7 @@ bool RecentlyPlayedGameList::load(std::string tag, XML_Helper* helper)
   return false;
 }
 
-void RecentlyPlayedGameList::addNetworkedEntry(GameScenario *game_scenario, std::string host, Uint32 port)
+void RecentlyPlayedGameList::addNetworkedEntry(GameScenario *game_scenario, std::string host, guint32 port)
 {
   if (Configuration::s_remember_recent_games == false)
     return;

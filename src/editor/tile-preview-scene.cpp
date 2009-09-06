@@ -31,7 +31,7 @@
 TilePreviewScene::TilePreviewScene (Tile *tile, 
 				    std::vector<Glib::RefPtr<Gdk::Pixbuf> > 
 				      standard_images, 
-				    Uint32 height, Uint32 width, 
+				    guint32 height, guint32 width, 
 				    std::string scene)
 {
   std::list<TileStyle::Type> tilescene;
@@ -77,7 +77,7 @@ void TilePreviewScene::regenerate()
     }
 }
   
-Glib::RefPtr<Gdk::Pixbuf> TilePreviewScene::renderScene(Uint32 tilesize)
+Glib::RefPtr<Gdk::Pixbuf> TilePreviewScene::renderScene(guint32 tilesize)
 {
   Glib::RefPtr<Gdk::Pixbuf> dest;
   dest = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB,true, 8, (int)(d_height * tilesize), (int)(d_width * tilesize));

@@ -24,7 +24,6 @@
 
 #include <string>
 #include <list>
-#include <SDL.h>
 
 #include "xmlhelper.h"
 

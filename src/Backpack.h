@@ -20,7 +20,7 @@
 
 #include <list>
 #include <string>
-#include <SDL.h>
+#include <gtkmm.h>
 
 class XML_Helper;
 class Item;
@@ -106,28 +106,28 @@ class Backpack: public std::list<Item*>
 	bool addToBackpack(Item* item, int position);
 
 	//! Tally up the strength bonuses inferred by items in the backpack.
-	Uint32 countStrengthBonuses();
+	guint32 countStrengthBonuses();
 
 	//! Tally up the gold bonuses inferred by the items in the backpack.
-	Uint32 countGoldBonuses();
+	guint32 countGoldBonuses();
 
 	//! Tally the stack strength bonuses inferred by items in the backpack.
-	Uint32 countStackStrengthBonuses();
+	guint32 countStackStrengthBonuses();
 
 	//! Count the number of items that double movement in the backpack.
-	Uint32 countMovementDoublers();
+	guint32 countMovementDoublers();
 
 	//! Return the first plantable item that can be planted by player.
 	Item *getPlantableItem(Player *player);
 
 	//! Tally the plantable items in the backpack.
-	Uint32 countPlantableItems();
+	guint32 countPlantableItems();
 
 	//! Return the item with the given id.
-	Item *getItemById(Uint32 id);
+	Item *getItemById(guint32 id);
 
 	//! Tally the items that let stacks fly.
-	Uint32 countStackFlightGivers();
+	guint32 countStackFlightGivers();
     private:
 
 	bool loadItem(std::string tag, XML_Helper* helper);

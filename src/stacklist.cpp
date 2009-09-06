@@ -58,7 +58,7 @@ Stack* Stacklist::getObjectAt(int x, int y)
 
 }
 
-Vector<int> Stacklist::getPosition(Uint32 id)
+Vector<int> Stacklist::getPosition(guint32 id)
 {
     for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
         pit != Playerlist::getInstance()->end(); pit++)
@@ -176,7 +176,7 @@ unsigned int Stacklist::countArmies()
 
 unsigned int Stacklist::countHeroes()
 {
-  std::vector<Uint32> heroes;
+  std::vector<guint32> heroes;
   getHeroes(heroes);
   return heroes.size();
 }
@@ -250,7 +250,7 @@ Stack* Stacklist::getNextMovable()
 	return d_activestack;
 }
 
-Stack *Stacklist::getStackById(Uint32 id)
+Stack *Stacklist::getStackById(guint32 id)
 {
   for (Stacklist::iterator i = begin(), e = end(); i != e; ++i)
     if ((*i)->getId() == id)
@@ -259,7 +259,7 @@ Stack *Stacklist::getStackById(Uint32 id)
   return 0;
 }
 
-Stack *Stacklist::getArmyStackById(Uint32 army)
+Stack *Stacklist::getArmyStackById(guint32 army)
 {
   for (Stacklist::iterator i = begin(), e = end(); i != e; ++i)
     if ((*i)->getArmyById(army))
@@ -337,7 +337,7 @@ bool Stacklist::enoughMoves() const
 
 bool Stacklist::load(string tag, XML_Helper* helper)
 {
-    static Uint32 active = 0;
+    static guint32 active = 0;
     
     if (tag == Stacklist::d_tag)
     {
@@ -368,25 +368,25 @@ Stack* Stacklist::getOwnObjectAt(int x, int y)
   return 0;
 }
 
-void Stacklist::getHeroes(std::vector<Uint32>& dst)
+void Stacklist::getHeroes(std::vector<guint32>& dst)
 {
   for (Stacklist::iterator it = begin(); it != end(); it++)
     (*it)->getHeroes(dst);
 }
 
-void Stacklist::collectTaxes(Player *p, Uint32 num_cities)
+void Stacklist::collectTaxes(Player *p, guint32 num_cities)
 {
-  std::vector<Uint32> hero_ids;
+  std::vector<guint32> hero_ids;
   getHeroes(hero_ids);
 
   //now let's see if we have any items that give us gold per city
-  for (std::vector<Uint32>::iterator it = hero_ids.begin(); 
+  for (std::vector<guint32>::iterator it = hero_ids.begin(); 
        it != hero_ids.end(); it++)
     {
       Stack *stack = getArmyStackById(*it);
       Army *army = stack->getArmyById(*it);
       Hero *hero = static_cast<Hero*>(army);
-      Uint32 bonus = hero->getBackpack()->countGoldBonuses();
+      guint32 bonus = hero->getBackpack()->countGoldBonuses();
       p->addGold(bonus * num_cities);
     }
 }
@@ -401,10 +401,10 @@ void Stacklist::collectTaxes(Player *p, Uint32 num_cities)
 bool Stacklist::canJumpOverTooLargeStack(Stack *s)
 {
   bool found = false;
-  Uint32 mp = s->getGroupMoves();
+  guint32 mp = s->getGroupMoves();
   for (Path::iterator it = s->getPath()->begin(); it != s->getPath()->end(); it++)
     {
-      Uint32 moves = s->calculateTileMovementCost(**it);
+      guint32 moves = s->calculateTileMovementCost(**it);
       if (moves > mp)
 	return false;
       mp -= moves;
@@ -431,9 +431,9 @@ bool Stacklist::canJumpOverTooLargeStack(Stack *s)
 std::list<Hero*> Stacklist::getHeroes()
 {
   std::list<Hero*> heroes;
-  std::vector<Uint32> hero_ids;
+  std::vector<guint32> hero_ids;
   getHeroes(hero_ids);
-  for (std::vector<Uint32>::iterator it = hero_ids.begin(); 
+  for (std::vector<guint32>::iterator it = hero_ids.begin(); 
        it != hero_ids.end(); it++)
     {
         Stack *s = getArmyStackById(*it);

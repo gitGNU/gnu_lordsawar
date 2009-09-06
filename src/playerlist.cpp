@@ -194,7 +194,7 @@ Player* Playerlist::getPlayer(string name) const
     return 0;
 }
 
-Player* Playerlist::getPlayer(Uint32 id) const
+Player* Playerlist::getPlayer(guint32 id) const
 {
     debug("getPlayer()");
     for (const_iterator it = begin(); it != end(); it++)
@@ -206,7 +206,7 @@ Player* Playerlist::getPlayer(Uint32 id) const
     return 0;
 }
 
-Uint32 Playerlist::getNoOfPlayers() const
+guint32 Playerlist::getNoOfPlayers() const
 {
     unsigned int number = 0;
 
@@ -248,8 +248,8 @@ bool Playerlist::save(XML_Helper* helper) const
 
 bool Playerlist::load(string tag, XML_Helper* helper)
 {
-    static Uint32 active = 0;
-    static Uint32 neutral = 0;
+    static guint32 active = 0;
+    static guint32 neutral = 0;
 
     if (tag == Playerlist::d_tag) //only called in the constructor
     {
@@ -288,7 +288,7 @@ Playerlist::iterator Playerlist::flErase(Playerlist::iterator it)
 
 struct rankable_t
 {
-  Uint32 score;
+  guint32 score;
   Player *player;
 };
 
@@ -380,7 +380,7 @@ void Playerlist::calculateDiplomaticRankings()
 	continue;
       if ((*it)->isDead () == true)
 	continue;
-      Uint32 rank = (*it)->getDiplomaticRank();
+      guint32 rank = (*it)->getDiplomaticRank();
       // recall that the first rank is 1, and not 0.
       (*it)->setDiplomaticTitle (available_titles[rank - 1]);
     }
@@ -390,10 +390,10 @@ void Playerlist::calculateDiplomaticRankings()
 
 void Playerlist::calculateWinners()
 {
-    Uint32 score;
-    Uint32 total_gold = 0;
-    Uint32 total_armies = 0;
-    Uint32 total_cities = 0;
+    guint32 score;
+    guint32 total_gold = 0;
+    guint32 total_armies = 0;
+    guint32 total_cities = 0;
     for (const_iterator it = begin(); it != end(); it++)
       {
 	if ((*it) == d_neutral)
@@ -420,7 +420,7 @@ void Playerlist::calculateWinners()
 	float army_component = (float)
 	  ((float) (*it)->getStacklist()->countArmies() / 
 	   (float)total_armies) * 20.0;
-	score = (Uint32) (city_component + gold_component + army_component);
+	score = (guint32) (city_component + gold_component + army_component);
 	History_Score *item = new History_Score();
 	item->fillData(score);
 	(*it)->addHistory(item);
@@ -433,18 +433,18 @@ void Playerlist::calculateWinners()
     return;
 }
 
-Uint32 Playerlist::countHumanPlayersAlive()
+guint32 Playerlist::countHumanPlayersAlive()
 {
-  Uint32 retval = 0;
+  guint32 retval = 0;
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->isDead() == false && (*it)->getType() == Player::HUMAN)
       retval++;
   return retval;
 }
 
-Uint32 Playerlist::countPlayersAlive ()
+guint32 Playerlist::countPlayersAlive ()
 {
-  Uint32 numAlive = 0; 
+  guint32 numAlive = 0; 
 
   for (const_iterator it = begin (); it != end (); it++)
     {
@@ -601,11 +601,11 @@ void Playerlist::nextRound(bool diplomacy, bool *surrender_already_offered)
 
 void Playerlist::syncPlayer(GameParameters::Player player)
 {
-  Player *p = getPlayer((Uint32)player.id);
+  Player *p = getPlayer((guint32)player.id);
   if (!p)
     {
       //player was off originally, but now it's on
-      Uint32 armyset = d_neutral->getArmyset();
+      guint32 armyset = d_neutral->getArmyset();
       int width = d_neutral->getFogMap()->getWidth();
       int height = d_neutral->getFogMap()->getHeight();
       int gold = d_neutral->getGold();
@@ -776,14 +776,14 @@ void Playerlist::turnHumansInto(Player::Type type, int number_of_players)
     }
 }
 
-std::list<Uint32> given_turn_order;
+std::list<guint32> given_turn_order;
 bool Playerlist::inGivenOrder(const Player *lhs, const Player *rhs)  
 {
   if (given_turn_order.size() == 0)
     return true;
 
   int count = 0;
-  for(std::list<Uint32>::iterator it = given_turn_order.begin(); 
+  for(std::list<guint32>::iterator it = given_turn_order.begin(); 
       it != given_turn_order.end(); it++)
     {
       count++;
@@ -792,7 +792,7 @@ bool Playerlist::inGivenOrder(const Player *lhs, const Player *rhs)
     }
   int lhs_rank = count;
   count = 0;
-  for(std::list<Uint32>::iterator it = given_turn_order.begin(); 
+  for(std::list<guint32>::iterator it = given_turn_order.begin(); 
       it != given_turn_order.end(); it++)
     {
       count++;
@@ -804,7 +804,7 @@ bool Playerlist::inGivenOrder(const Player *lhs, const Player *rhs)
 }
 
 
-void Playerlist::reorder(std::list<Uint32> order)
+void Playerlist::reorder(std::list<guint32> order)
 {
   given_turn_order = order;
   sort(inGivenOrder);
@@ -812,7 +812,7 @@ void Playerlist::reorder(std::list<Uint32> order)
   d_activeplayer = getFirstLiving();
 }
 
-std::list<History *>Playerlist::getHistoryForHeroId(Uint32 id)
+std::list<History *>Playerlist::getHistoryForHeroId(guint32 id)
 {
   std::list<History*> no_events;
   for (iterator it = begin(); it != end(); ++it)
@@ -842,7 +842,7 @@ bool Playerlist::isEndOfRound()
   //do all players have the same number of history:end_turn events?
   if (d_activeplayer == NULL)
     return false;
-  Uint32 count = d_activeplayer->countEndTurnHistoryEntries();
+  guint32 count = d_activeplayer->countEndTurnHistoryEntries();
   for (iterator it = begin(); it != end(); it++)
     {
       if (*it == d_activeplayer)

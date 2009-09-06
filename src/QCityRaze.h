@@ -41,7 +41,7 @@ class QuestCityRaze: public Quest, public sigc::trackable
 	 * @param q_mgr  The quests manager to associate this quest with.
 	 * @param hero   The Id of the Hero who is responsible for the quest.
 	 */
-        QuestCityRaze(QuestsManager& q_mgr, Uint32 hero);
+        QuestCityRaze(QuestsManager& q_mgr, guint32 hero);
 
 	//! Loading constructor.
 	/**
@@ -51,7 +51,7 @@ class QuestCityRaze: public Quest, public sigc::trackable
         QuestCityRaze(QuestsManager& q_mgr, XML_Helper* helper);
 
         // Construct from remote action.
-        QuestCityRaze(QuestsManager& q_mgr, Uint32 hero, Uint32 target);
+        QuestCityRaze(QuestsManager& q_mgr, guint32 hero, guint32 target);
         
 	//! Returns whether or not this quest is impossible.
         /**
@@ -66,7 +66,7 @@ class QuestCityRaze: public Quest, public sigc::trackable
 	 *
 	 * @return Whether or not the quest is possible.
          */
-        static bool isFeasible(Uint32 heroId);
+        static bool isFeasible(guint32 heroId);
 
         //! Saves the occupy quest data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
@@ -85,7 +85,7 @@ class QuestCityRaze: public Quest, public sigc::trackable
         void getExpiredMsg(std::queue<std::string>& msgs) const;
 
         //! Returns the id of the City object to be razed.
-        Uint32 getCityId() const {return d_city;}
+        guint32 getCityId() const {return d_city;}
 
         //! Returns a pointer to the City object to be razed.
         City* getCity() const;
@@ -139,7 +139,7 @@ class QuestCityRaze: public Quest, public sigc::trackable
         static City* chooseToRaze(Player *p);
 
 	//! The Id of the target City object to raze.
-        Uint32 d_city;
+        guint32 d_city;
 
 };
 

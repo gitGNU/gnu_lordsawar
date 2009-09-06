@@ -70,10 +70,10 @@ class HistoryReportDialog: public Decorated
     std::vector<LocationList<City*>* > past_citylists;
     LineChart *city_chart;
     std::vector<std::list<NetworkHistory *> > past_eventlists;
-    std::list<std::list<Uint32> > past_citycounts;
-    std::list<std::list<Uint32> > past_goldcounts;
+    std::list<std::list<guint32> > past_citycounts;
+    std::list<std::list<guint32> > past_goldcounts;
     LineChart *gold_chart;
-    std::list<std::list<Uint32> > past_rankcounts;
+    std::list<std::list<guint32> > past_rankcounts;
     LineChart *rank_chart;
 
     Gtk::Image *map_image;
@@ -97,7 +97,7 @@ class HistoryReportDialog: public Decorated
     void on_close_button();
     void on_map_changed(SDL_Surface *map);
     void on_turn_changed(Gtk::Scale *scale);
-    void fill_in_turn_info(Uint32 turn);
+    void fill_in_turn_info(guint32 turn);
     void on_switch_page(GtkNotebookPage *page, guint number);
     void update_window_title();
 

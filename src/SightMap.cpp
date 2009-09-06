@@ -30,7 +30,7 @@ SightMap::SightMap(XML_Helper* helper)
     helper->getData(h, "height");
 }
 
-SightMap::SightMap(std::string name, Vector<int> pos, Uint32 height, Uint32 width)
+SightMap::SightMap(std::string name, Vector<int> pos, guint32 height, guint32 width)
 :Rectangle(pos, Vector<int>(width, height)), Renamable(name)
 {
 }

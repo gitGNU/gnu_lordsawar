@@ -64,7 +64,7 @@ GameClient::~GameClient()
     network_connection->send(MESSAGE_TYPE_PARTICIPANT_DISCONNECT, d_nickname);
 }
 
-void GameClient::start(std::string host, Uint32 port, std::string nick)
+void GameClient::start(std::string host, guint32 port, std::string nick)
 {
   d_host = host;
   d_port = port;
@@ -386,7 +386,7 @@ void GameClient::request_seat_manifest()
     
 void GameClient::gotTurnOrder (std::string payload)
 {
-  std::list<Uint32> player_ids;
+  std::list<guint32> player_ids;
   std::stringstream players;
   players.str(payload);
 

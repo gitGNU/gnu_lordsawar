@@ -105,7 +105,7 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     heroes_treeview->append_column(_("Hero"), heroes_columns.name);
 
     heroes_list->clear();
-    Uint32 count = 0;
+    guint32 count = 0;
     for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end();
 	 it++)
       {
@@ -260,7 +260,7 @@ void HeroDialog::update_hero_list()
   inhibit_hero_changed = true;
     std::list<Hero*> heroes;
     heroes = Playerlist::getActiveplayer()->getStacklist()->getHeroes();
-    Uint32 count = 0;
+    guint32 count = 0;
     for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end();
 	 it++)
       {
@@ -398,7 +398,7 @@ void HeroDialog::add_item(Item *item, bool in_backpack)
 
 void HeroDialog::fill_in_info_labels()
 {
-    Uint32 bonus = 0;
+    guint32 bonus = 0;
     Glib::ustring s;
     // fill in first column
     Backpack *backpack = hero->getBackpack();

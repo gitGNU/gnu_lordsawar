@@ -39,7 +39,7 @@ ItemProto::ItemProto(XML_Helper* helper)
 
 }
 
-ItemProto::ItemProto(std::string name, Uint32 id)
+ItemProto::ItemProto(std::string name, guint32 id)
 	: Renamable(name)
 {
   d_bonus = 0;
@@ -87,9 +87,9 @@ void ItemProto::removeBonus(ItemProto::Bonus bonus)
 
 std::string ItemProto::getBonusDescription() const
 {
-  Uint32 battle = 0;
-  Uint32 command = 0;
-  Uint32 goldpercity = 0;
+  guint32 battle = 0;
+  guint32 command = 0;
+  guint32 goldpercity = 0;
   // the attributes column
   std::vector<Glib::ustring> s;
   if (getBonus(ItemProto::ADD1STR))
@@ -170,7 +170,7 @@ std::string ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
   return "ItemProto::ADD1STR";
 }
 
-std::string ItemProto::bonusFlagsToString(Uint32 bonus)
+std::string ItemProto::bonusFlagsToString(guint32 bonus)
 {
   std::string bonuses;
   if (bonus & ItemProto::ADD1STR)
@@ -200,9 +200,9 @@ std::string ItemProto::bonusFlagsToString(Uint32 bonus)
   return bonuses;
 }
 
-Uint32 ItemProto::bonusFlagsFromString(std::string str)
+guint32 ItemProto::bonusFlagsFromString(std::string str)
 {
-  Uint32 total = 0;
+  guint32 total = 0;
   std::stringstream bonuses;
   bonuses.str(str);
 

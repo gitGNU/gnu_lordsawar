@@ -67,7 +67,7 @@ void GameStation::listenForLocalEvents(Player *p)
 void GameStation::stopListeningForLocalEvents(Player *p)
 {
   sigc::connection connection;
-  std::map<Uint32, sigc::connection>::iterator it;
+  std::map<guint32, sigc::connection>::iterator it;
   it = action_listeners.find(p->getId());
   if (it != action_listeners.end())
     {

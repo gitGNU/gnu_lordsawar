@@ -58,7 +58,7 @@ SelectHiddenRuinDialog::SelectHiddenRuinDialog()
 	  (*iter)->getOwner() == Playerlist::getInstance()->getNeutral())
 	addHiddenRuin(*iter);
       
-    Uint32 max = ruinlist->size();
+    guint32 max = ruinlist->size();
     if (max)
       {
 	Gtk::TreeModel::Row row;

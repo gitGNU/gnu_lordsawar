@@ -121,7 +121,7 @@ class GameScenario: public GameScenarioOptions
         bool saveWithHelper(XML_Helper &helper) const;
 
         
-	Uint32 getPlayMode() const {return d_playmode;};
+	guint32 getPlayMode() const {return d_playmode;};
 	void setPlayMode(GameScenario::PlayMode mode) {d_playmode = mode;};
 
 	bool validate(std::list<std::string> &errors, std::list<std::string> &warnings);
@@ -156,7 +156,7 @@ class GameScenario: public GameScenarioOptions
 	  std::string d_name;
 	  std::string d_comment;
 	  bool d_turnmode; //see NextTurn for a description of this option
-	  Uint32 d_playmode;
+	  guint32 d_playmode;
 	  std::string d_id; //globally unique id identifying the scenario
 	  std::string recording_file;
 };

@@ -42,7 +42,7 @@
 
 namespace
 {
-    Glib::ustring player_type_to_string(Uint32 type)
+    Glib::ustring player_type_to_string(guint32 type)
     {
 	switch (type)
 	{

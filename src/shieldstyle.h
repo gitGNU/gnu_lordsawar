@@ -18,6 +18,7 @@
 #ifndef SHIELDSTYLE_H
 #define SHIELDSTYLE_H
 
+#include <gtkmm.h>
 #include <SDL.h>
 #include <string>
 #include <sigc++/trackable.h>
@@ -85,7 +86,7 @@ class ShieldStyle : public sigc::trackable
         // Get functions
         
         //! Get the size of this shield.
-        Uint32 getType() const {return d_type;}
+        guint32 getType() const {return d_type;}
 
         //! Get the image of the shield.
         SDL_Surface* getPixmap() const;
@@ -104,7 +105,7 @@ class ShieldStyle : public sigc::trackable
 	 * configuration file.
 	 * Equates to the ShieldStyle::Type enumeration.
 	 */
-        Uint32 d_type;
+        guint32 d_type;
 
 	//! The unshaded image portion of the shield's picture.
         SDL_Surface* d_pixmap;

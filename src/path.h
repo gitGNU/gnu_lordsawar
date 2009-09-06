@@ -23,7 +23,7 @@
 #ifndef PATH_H
 #define PATH_H
 
-#include <SDL_types.h>
+#include <gtkmm.h>
 #include <list>
 #include "vector.h"
 
@@ -131,14 +131,14 @@ class Path : public std::list<Vector<int>*>
          *         if no path is possible.
          */
 	//! Calculate a Stack object's Path to a destination on the GameMap.
-        Uint32 calculate(Stack* stack, Vector<int> dest, Uint32 &turns, bool zigzag = true);
-        Uint32 calculate(Stack* stack, Vector<int> dest, bool zigzag = true);
+        guint32 calculate(Stack* stack, Vector<int> dest, guint32 &turns, bool zigzag = true);
+        guint32 calculate(Stack* stack, Vector<int> dest, bool zigzag = true);
 
 	//! Recalculate a Stack object's Path.
 	void recalculate (Stack* s);
 
 	//! Return the number of points the stack can move along it's path.
-	Uint32 getMovesExhaustedAtPoint() {return d_moves_exhausted_at_point;}
+	guint32 getMovesExhaustedAtPoint() {return d_moves_exhausted_at_point;}
 
 	/**
 	 * Set the point at which the stack can't move along it's path.
@@ -153,13 +153,13 @@ class Path : public std::list<Vector<int>*>
 	 *                cannot be moved to.
 	 */
 	//! Set the number of points the stack can move along it's path.
-	void setMovesExhaustedAtPoint(Uint32 index) 
+	void setMovesExhaustedAtPoint(guint32 index) 
 	  {d_moves_exhausted_at_point = index;}
 
         void eraseFirstPoint();
         
 	//! find which tile in the city is quickest to move to.
-	Uint32 calculateToCity (Stack *s, Location *c, bool zigzag = true);
+	guint32 calculateToCity (Stack *s, Location *c, bool zigzag = true);
     private:
         /** 
          * This method returns whether or not a Stack can pass over a tile.  
@@ -251,16 +251,16 @@ class Path : public std::list<Vector<int>*>
 	//! Calculates movement points to traverse an adjacent tile.
         int pointsToMoveTo(const Stack *s, int x, int y, int destx, int desty) const;
 
-	void calculate (Stack* s, Vector<int> dest, Uint32 &mp, Uint32 &turns, bool zigzag);
+	void calculate (Stack* s, Vector<int> dest, guint32 &mp, guint32 &turns, bool zigzag);
 	bool load_or_unload(Stack *s, Vector<int> src, Vector<int> dest, bool &on_ship);
 
         // Data
 
 	//! A cached copy of a Stack object's movement bonus.
-        Uint32 d_bonus;
+        guint32 d_bonus;
 
 	//! The point in the path that can't be reached.
-	Uint32 d_moves_exhausted_at_point;
+	guint32 d_moves_exhausted_at_point;
 };
 
 #endif // PATH_H

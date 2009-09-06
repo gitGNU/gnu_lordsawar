@@ -20,9 +20,9 @@
 #ifndef FL_COUNTER_H
 #define FL_COUNTER_H
 
+#include <gtkmm.h>
 #include <string>
 #include <sigc++/trackable.h>
-#include <SDL.h>
 
 class XML_Helper;
 
@@ -43,22 +43,22 @@ class FL_Counter : public sigc::trackable
 	static std::string d_tag; 
 
         //! Initialise the counter with a start value
-        FL_Counter(Uint32 start = 0);
+        FL_Counter(guint32 start = 0);
 
         //! Load the counter. See XML_Helper for details.
         FL_Counter(XML_Helper* helper);
         ~FL_Counter();
 
         //! Returns a unique id
-        Uint32 getNextId();
+        guint32 getNextId();
 
-	void syncToId(Uint32 id);
+	void syncToId(guint32 id);
 
         //! Saves the current counter position
         bool save(XML_Helper* helper);
 
     private:
-        Uint32 d_curID;
+        guint32 d_curID;
 };
 
 extern FL_Counter* fl_counter;

@@ -356,7 +356,7 @@ void ArmySetWindow::on_new_armyset_activated()
       delete d_armyset;
     }
   std::string name = "";
-  Uint32 id = 0;
+  guint32 id = 0;
   d_armyset = new Armyset(id, name);
   ArmySetInfoDialog d(d_armyset);
   d.set_parent_window(*window.get());
@@ -421,7 +421,7 @@ void ArmySetWindow::on_load_armyset_activated()
 	tmp[0] = '\0';
       d_armyset->setSubDir(dir);
       GraphicsLoader::instantiatePixmaps(d_armyset);
-      Uint32 max = d_armyset->getSize();
+      guint32 max = d_armyset->getSize();
       for (unsigned int i = 0; i < max; i++)
 	addArmyType(i);
       if (max)
@@ -518,7 +518,7 @@ void ArmySetWindow::on_help_about_activated()
   return;
 }
 
-void ArmySetWindow::addArmyType(Uint32 army_type)
+void ArmySetWindow::addArmyType(guint32 army_type)
 {
   ArmyProto *a;
   //go get army_type in d_armyset
@@ -568,7 +568,7 @@ void ArmySetWindow::fill_army_info(ArmyProto *army)
   defends_ruins_checkbutton->set_active(army->getDefendsRuins());
   sight_spinbutton->set_value(army->getSight());
 
-  Uint32 bonus = army->getMoveBonus();
+  guint32 bonus = army->getMoveBonus();
   can_fly_checkbutton->set_active (bonus == 
 				   (Tile::GRASS | Tile::WATER | 
 				    Tile::FOREST | Tile::HILLS | 
@@ -814,7 +814,7 @@ void ArmySetWindow::on_move_forests_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getMoveBonus();
+      guint32 bonus = a->getMoveBonus();
       if (move_forests_checkbutton->get_active() == true)
 	{
 	  //if (can_fly_checkbutton->get_active())
@@ -839,7 +839,7 @@ void ArmySetWindow::on_move_marshes_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getMoveBonus();
+      guint32 bonus = a->getMoveBonus();
       if (move_marshes_checkbutton->get_active() == true)
 	{
 	  //if (can_fly_checkbutton->get_active())
@@ -864,7 +864,7 @@ void ArmySetWindow::on_move_hills_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getMoveBonus();
+      guint32 bonus = a->getMoveBonus();
       if (move_hills_checkbutton->get_active() == true)
 	{
 	  //if (can_fly_checkbutton->get_active())
@@ -889,7 +889,7 @@ void ArmySetWindow::on_move_mountains_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getMoveBonus();
+      guint32 bonus = a->getMoveBonus();
       if (move_mountains_checkbutton->get_active() == true)
 	{
 	  //if (can_fly_checkbutton->get_active())
@@ -914,7 +914,7 @@ void ArmySetWindow::on_can_fly_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getMoveBonus();
+      guint32 bonus = a->getMoveBonus();
       if (can_fly_checkbutton->get_active() == true)
 	{
 	  bonus = (Tile::GRASS | Tile::WATER | Tile::FOREST | Tile::HILLS |
@@ -937,7 +937,7 @@ void ArmySetWindow::on_add1strinopen_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (add1strinopen_checkbutton->get_active() == true)
 	bonus |= Army::ADD1STRINOPEN;
       else
@@ -958,7 +958,7 @@ void ArmySetWindow::on_add2strinopen_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (add2strinopen_checkbutton->get_active() == true)
 	bonus |= Army::ADD2STRINOPEN ;
       else
@@ -979,7 +979,7 @@ void ArmySetWindow::on_add1strinforest_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (add1strinforest_checkbutton->get_active() == true)
 	bonus |= Army::ADD1STRINFOREST;
       else
@@ -1000,7 +1000,7 @@ void ArmySetWindow::on_add1strinhills_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (add1strinhills_checkbutton->get_active() == true)
 	bonus |= Army::ADD1STRINHILLS;
       else
@@ -1021,7 +1021,7 @@ void ArmySetWindow::on_add1strincity_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (add1strincity_checkbutton->get_active() == true)
 	bonus |= Army::ADD1STRINCITY ;
       else
@@ -1042,7 +1042,7 @@ void ArmySetWindow::on_add2strincity_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (add2strincity_checkbutton->get_active() == true)
 	bonus |= Army::ADD2STRINCITY ;
       else
@@ -1063,7 +1063,7 @@ void ArmySetWindow::on_add1stackinhills_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (add1stackinhills_checkbutton->get_active() == true)
 	bonus |= Army::ADD1STACKINHILLS;
       else
@@ -1084,7 +1084,7 @@ void ArmySetWindow::on_suballcitybonus_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (suballcitybonus_checkbutton->get_active() == true)
 	bonus |= Army::SUBALLCITYBONUS;
       else
@@ -1105,7 +1105,7 @@ void ArmySetWindow::on_sub1enemystack_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (sub1enemystack_checkbutton->get_active() == true)
 	bonus |= Army::SUB1ENEMYSTACK;
       else
@@ -1126,7 +1126,7 @@ void ArmySetWindow::on_add1stack_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (add1stack_checkbutton->get_active() == true)
 	bonus |= Army::ADD1STACK;
       else
@@ -1147,7 +1147,7 @@ void ArmySetWindow::on_add2stack_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (add2stack_checkbutton->get_active() == true)
 	bonus |= Army::ADD2STACK;
       else
@@ -1168,7 +1168,7 @@ void ArmySetWindow::on_suballnonherobonus_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (suballnonherobonus_checkbutton->get_active() == true)
 	bonus |= Army::SUBALLNONHEROBONUS;
       else
@@ -1189,7 +1189,7 @@ void ArmySetWindow::on_suballherobonus_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      Uint32 bonus = a->getArmyBonus();
+      guint32 bonus = a->getArmyBonus();
       if (suballherobonus_checkbutton->get_active() == true)
 	bonus |= Army::SUBALLHEROBONUS;
       else

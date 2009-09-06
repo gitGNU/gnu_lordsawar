@@ -40,7 +40,7 @@ QuestMap::QuestMap(Quest *q)
 void QuestMap::draw_stacks(Player *p, std::list< Vector<int> > targets)
 {
   SDL_Color c = p->getColor();
-  Uint32 outline = SDL_MapRGB(surface->format, c.r, c.g, c.b);
+  guint32 outline = SDL_MapRGB(surface->format, c.r, c.g, c.b);
   int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
         
   for (std::list< Vector<int> >::iterator it= targets.begin(); it != targets.end(); it++)
@@ -68,7 +68,7 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
 
   start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
   end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
-  Uint32 raw = SDL_MapRGBA(surface->format,252, 160, 0, 255);
+  guint32 raw = SDL_MapRGBA(surface->format,252, 160, 0, 255);
   int xsize = 8;
   int ysize = 8;
   //draw an 8 by 8 box, with a smaller box inside of it

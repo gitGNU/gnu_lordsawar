@@ -26,7 +26,7 @@
 
 // from example on libsdl.org
 inline void
-draw_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+draw_pixel(SDL_Surface *surface, int x, int y, guint32 pixel)
 {
     int bpp = surface->format->BytesPerPixel;
     /* Here p is the address to the pixel we want to set */
@@ -54,13 +54,13 @@ draw_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
         break;
 
     case 4:
-        *(Uint32 *)p = pixel;
+        *(guint32 *)p = pixel;
         break;
     }
 }
 
 inline void
-draw_pixel_clipped(SDL_Surface *surface, int x, int y, Uint32 pixel)
+draw_pixel_clipped(SDL_Surface *surface, int x, int y, guint32 pixel)
 {
     if (x < surface->clip_rect.x ||
 	x >= surface->clip_rect.x + surface->clip_rect.w)
@@ -75,14 +75,14 @@ draw_pixel_clipped(SDL_Surface *surface, int x, int y, Uint32 pixel)
 
 
 inline void
-draw_hline(SDL_Surface *surface, int x1, int x2, int y, Uint32 color)
+draw_hline(SDL_Surface *surface, int x1, int x2, int y, guint32 color)
 {
     for (int x = x1; x <= x2; ++x)
 	draw_pixel(surface, x, y, color);
 }
 
 inline void
-draw_hline_clipped(SDL_Surface *surface, int x1, int x2, int y, Uint32 color)
+draw_hline_clipped(SDL_Surface *surface, int x1, int x2, int y, guint32 color)
 {
     if (x1 < surface->clip_rect.x)
 	x1 = surface->clip_rect.x;
@@ -102,14 +102,14 @@ draw_hline_clipped(SDL_Surface *surface, int x1, int x2, int y, Uint32 color)
 }
 
 inline void
-draw_vline(SDL_Surface *surface, int x, int y1, int y2, Uint32 color)
+draw_vline(SDL_Surface *surface, int x, int y1, int y2, guint32 color)
 {
     for (int y = y1; y <= y2; ++y)
 	draw_pixel(surface, x, y, color);
 }
 
 inline void
-draw_vline_clipped(SDL_Surface *surface, int x, int y1, int y2, Uint32 color)
+draw_vline_clipped(SDL_Surface *surface, int x, int y1, int y2, guint32 color)
 {
     if (y1 < surface->clip_rect.y)
 	y1 = surface->clip_rect.y;
@@ -129,7 +129,7 @@ draw_vline_clipped(SDL_Surface *surface, int x, int y1, int y2, Uint32 color)
 }
 
 inline void
-draw_rect(SDL_Surface *surface, int x1, int y1, int x2, int y2, Uint32 color)
+draw_rect(SDL_Surface *surface, int x1, int y1, int x2, int y2, guint32 color)
 {
     draw_hline(surface, x1, x2, y1, color);
     draw_hline(surface, x1, x2, y2, color);
@@ -138,7 +138,7 @@ draw_rect(SDL_Surface *surface, int x1, int y1, int x2, int y2, Uint32 color)
 }
 
 inline void
-draw_rect_clipped(SDL_Surface *surface, int x1, int y1, int x2, int y2, Uint32 color)
+draw_rect_clipped(SDL_Surface *surface, int x1, int y1, int x2, int y2, guint32 color)
 {
     draw_hline_clipped(surface, x1, x2, y1, color);
     draw_hline_clipped(surface, x1, x2, y2, color);
@@ -147,7 +147,7 @@ draw_rect_clipped(SDL_Surface *surface, int x1, int y1, int x2, int y2, Uint32 c
 }
 
 inline void
-draw_filled_rect(SDL_Surface *surface, int x1, int y1, int x2, int y2, Uint32 color)
+draw_filled_rect(SDL_Surface *surface, int x1, int y1, int x2, int y2, guint32 color)
 {
     SDL_Rect r;
     r.x = x1;
@@ -158,7 +158,7 @@ draw_filled_rect(SDL_Surface *surface, int x1, int y1, int x2, int y2, Uint32 co
 }
 
 inline void
-draw_line(SDL_Surface *surface, int X1, int Y1, int X2, int Y2, Uint32 color)
+draw_line(SDL_Surface *surface, int X1, int Y1, int X2, int Y2, guint32 color)
 {
     // this code is borrowed from the Allegro game programming library
     // (alleg.sf.net)

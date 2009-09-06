@@ -21,7 +21,7 @@
 #define ITEM_H
 
 #include <string>
-#include <SDL.h>
+#include <gtkmm.h>
 #include "xmlhelper.h"
 #include "army.h"
 
@@ -90,13 +90,13 @@ class Item: public ItemProto, public UniquelyIdentified
 	  {return Playerlist::getInstance()->getPlayer(d_plantable_owner_id);}
 
 	//! Return the type of this item.
-	Uint32 getType() const {return d_type;};
+	guint32 getType() const {return d_type;};
 
     private:
 
 	//! non-default constructor to make an item with a particular id.
 	Item(std::string name, bool plantable, Player *plantable_owner,
-	     Uint32 id);
+	     guint32 id);
 
 	/**
 	 * This value indicates if the type of this Item can potentially be
@@ -112,7 +112,7 @@ class Item: public ItemProto, public UniquelyIdentified
 	 * yellow player.
 	 */
 	//! The Id of the Player who can plant this Item.
-	Uint32 d_plantable_owner_id;
+	guint32 d_plantable_owner_id;
 
 	/**
 	 * When the Item is planted, the player can vector Army units to 
@@ -122,7 +122,7 @@ class Item: public ItemProto, public UniquelyIdentified
 	bool d_planted;
 
 	//! The item was instantiated from the item prototype that has this id.
-	Uint32 d_type;
+	guint32 d_type;
 };
 
 #endif //ITEM_H

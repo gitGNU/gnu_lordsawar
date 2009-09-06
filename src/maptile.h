@@ -65,7 +65,7 @@ class Maptile
          * @param type             The terrain type (index in the tileset).
 	 * @param tileStyle        The look of this tile to use.
          */
-        Maptile(Tileset* tileSet, int x, int y, Uint32 type, 
+        Maptile(Tileset* tileSet, int x, int y, guint32 type, 
 		TileStyle *tileStyle);
 
 	//! Slower constructor.
@@ -85,13 +85,13 @@ class Maptile
         ~Maptile();
 
         //! Set the type of the terrain (type is an index in the tileset).
-        void setType(Uint32 index){d_index = index;}
+        void setType(guint32 index){d_index = index;}
 
         //! Set which kind of building is on this maptile.
         void setBuilding(Building building){d_building = building;}
 
         //! Get the index of the tile type in the tileset.
-        Uint32 getType() const {return d_index;}
+        guint32 getType() const {return d_index;}
 
         //! Get which building is on the maptile.
         Building getBuilding() const {return d_building;}
@@ -104,7 +104,7 @@ class Maptile
 	 * @return The number of movement points required to cross this 
 	 *         Maptile.
 	 */
-        Uint32 getMoves() const;
+        guint32 getMoves() const;
 
         //! Get the smallmap color of this maptile.
         SDL_Color getColor() const
@@ -172,7 +172,7 @@ class Maptile
 	 * The Maptile has a type, in the form of a Tile.  This Tile is
 	 * identified by it's index within Maptile::d_tileSet.
 	 */
-        Uint32 d_index;
+        guint32 d_index;
 	//! The Tileset of the Tile referred to by Maptile::d_index.
         Tileset* d_tileSet;
 	//! The look of the maptile.

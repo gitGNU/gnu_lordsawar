@@ -55,7 +55,7 @@ class StackInfoDialog: public Decorated
     Gtk::Button *group_button;
     Gtk::Button *ungroup_button;
 
-    void addArmy (Army *a, Uint32 modified_strength, int idx);
+    void addArmy (Army *a, guint32 modified_strength, int idx);
     void on_group_clicked();
     void on_ungroup_clicked();
     void fill_stack_info();

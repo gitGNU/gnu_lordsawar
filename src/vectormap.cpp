@@ -57,7 +57,7 @@ void VectorMap::draw_planted_standard(Vector<int> flag)
     }
 }
 
-void VectorMap::draw_city (City *c, Uint32 &type, bool &prod)
+void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
 {
   if (c->isFogged(getViewingPlayer()))
     return;
@@ -93,7 +93,7 @@ void VectorMap::draw_city (City *c, Uint32 &type, bool &prod)
       SDL_BlitSurface(tmp, 0, surface, &r);
     }
 }
-void VectorMap::draw_cities (std::list<City*> citylist, Uint32 type)
+void VectorMap::draw_cities (std::list<City*> citylist, guint32 type)
 {
   bool prod;
 
@@ -130,7 +130,7 @@ void VectorMap::draw_cities (std::list<City*> citylist, Uint32 type)
 
 void VectorMap::draw_vectoring_line(Vector<int> src, Vector<int> dest, bool to)
 {
-  Uint32 color;
+  guint32 color;
   Vector<int> start = src;
   Vector <int> end = dest;
   start = mapToSurface(start);
@@ -188,7 +188,7 @@ void VectorMap::draw_lines (std::list<City*> srcs, std::list<City*> dests)
 void VectorMap::after_draw()
 {
   Vector<int> start;
-  Uint32 type = 0;
+  guint32 type = 0;
   bool prod = false;
   Vector<int> end;
   Citylist *cl = Citylist::getInstance();
@@ -321,15 +321,15 @@ void VectorMap::after_draw()
 
 void VectorMap::draw_square_around_active_city()
 {
-  Uint32 white = SDL_MapRGBA(surface->format, 252, 255, 255, 255);
+  guint32 white = SDL_MapRGBA(surface->format, 252, 255, 255, 255);
 
   Vector<int> start = city->getPos();
   start = mapToSurface(start);
   start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
   std::string s = GameMap::getInstance()->getShieldset()->getSubDir();
   Shieldset *ss = Shieldsetlist::getInstance()->getShieldset(s);
-  Uint32 width = ss->getSmallWidth();
-  Uint32 height = ss->getSmallHeight();
+  guint32 width = ss->getSmallWidth();
+  guint32 height = ss->getSmallHeight();
   start -= Vector<int>(width,height)/2;
   Vector<int> end = start + Vector<int>(width,height);
   draw_rect (surface, start.x-3, start.y-3, end.x+2, end.y+2, white);

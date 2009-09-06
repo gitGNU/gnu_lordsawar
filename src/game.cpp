@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <vector>
 #include <assert.h>
+#include <gtkmm.h>
 #include <SDL.h>
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/adaptors/bind.h>
@@ -771,7 +772,7 @@ void Game::invading_city(City* city, int gold)
 	break;
 
       case CITY_DEFEATED_SACK:
-	std::list<Uint32> sacked_types;
+	std::list<guint32> sacked_types;
 	player->citySack(city, gold, &sacked_types);
 	city_sacked.emit(city, gold, sacked_types);
 	break;
@@ -1277,7 +1278,7 @@ void Game::on_city_fight_finished(City *city, Fight::Result result)
 	  if (o)
 	    {
 	      int army_type = o->getStrongestArmy()->getTypeId();
-	      for (Uint32 i = 0; i < city->getMaxNoOfProductionBases(); i++)
+	      for (guint32 i = 0; i < city->getMaxNoOfProductionBases(); i++)
 		{
 		  if (city->getArmytype(i) == army_type)
 		    {

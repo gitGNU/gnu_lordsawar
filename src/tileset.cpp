@@ -71,9 +71,9 @@ Tileset::~Tileset()
         delete (*this)[i];
 }
 
-Uint32 Tileset::getIndex(Tile::Type type) const
+guint32 Tileset::getIndex(Tile::Type type) const
 {
-    for (Uint32 i = 0; i < size(); i++)
+    for (guint32 i = 0; i < size(); i++)
         if (type == (*this)[i]->getType())
             return i;
 
@@ -96,7 +96,7 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 
     if (tag == Tileset::d_road_smallmap_tag)
       {
-	Uint32 i;
+	guint32 i;
 	SDL_Color color;
 	color.unused = 0;
 	helper->getData(i, "red");      color.r = i;
@@ -141,7 +141,7 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
     return false;
 }
 
-TileStyle *Tileset::getRandomTileStyle(Uint32 index, TileStyle::Type style)
+TileStyle *Tileset::getRandomTileStyle(guint32 index, TileStyle::Type style)
 {
   Tile *tile = (*this)[index];
   if (tile)
@@ -229,7 +229,7 @@ void Tileset::setSubDir(std::string dir)
       (*j)->setSubDir(dir);
 }
 
-Uint32 Tileset::getDefaultTileSize()
+guint32 Tileset::getDefaultTileSize()
 {
   return DEFAULT_TILE_SIZE;
 }

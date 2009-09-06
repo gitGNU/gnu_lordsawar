@@ -51,7 +51,7 @@ OverviewMap::~OverviewMap()
 	SDL_FreeSurface(static_surface);
 }
 
-bool OverviewMap::isShadowed(Uint32 type, int i, int j)
+bool OverviewMap::isShadowed(guint32 type, int i, int j)
 {
   GameMap *gm = GameMap::getInstance();
   int x = int(i / pixels_per_tile);
@@ -122,7 +122,7 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface,
 {
   SDL_Color c = first_color;
   
-  Uint32 first = SDL_MapRGB(surface->format, c.r, c.g, c.b);
+  guint32 first = SDL_MapRGB(surface->format, c.r, c.g, c.b);
   switch (pattern)
     {
       case SmallTile::SOLID:
@@ -131,7 +131,7 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface,
       case SmallTile::STIPPLED:
         {
           SDL_Color s = second_color;
-          Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+          guint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
          
           if ((i+j) % 2 == 0)
             draw_pixel(surface, i, j, first);
@@ -142,9 +142,9 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface,
       case SmallTile::RANDOMIZED:
         {
           SDL_Color s = second_color;
-          Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+          guint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
           SDL_Color th = third_color;
-          Uint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
+          guint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
 
           int num = prand(i, j) % 3;
           if (num == 0)
@@ -158,9 +158,9 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface,
       case SmallTile::DIAGONAL:
         {
           SDL_Color s = second_color;
-          Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+          guint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
           SDL_Color th = third_color;
-          Uint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
+          guint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
 
           int num = drand(i, j) % 3;
           if (num == 0)
@@ -174,9 +174,9 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface,
       case SmallTile::CROSSHATCH:
         {
           SDL_Color s = second_color;
-          Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+          guint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
           SDL_Color th = third_color;
-          Uint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
+          guint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
 
           int num = crand(i, j) % 3;
           if (num == 0)
@@ -193,7 +193,7 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface,
         else
           {
             SDL_Color s = second_color;
-            Uint32 shadow_color = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+            guint32 shadow_color = SDL_MapRGB(surface->format, s.r, s.g, s.b);
             draw_pixel(surface, i, j, shadow_color);
           }
         break;
@@ -201,7 +201,7 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface,
         if (shadowed == false)
 	  {
             SDL_Color th = third_color;
-            Uint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
+            guint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
 	    if (j % 1 == 0)
 	      draw_pixel(surface, i, j, first);
 	    else
@@ -210,16 +210,16 @@ void OverviewMap::draw_tile_pixel(SDL_Surface *surface,
         else
           {
             SDL_Color s = second_color;
-            Uint32 shadow_color = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+            guint32 shadow_color = SDL_MapRGB(surface->format, s.r, s.g, s.b);
             draw_pixel(surface, i, j, shadow_color);
           }
         break;
       case SmallTile::TABLECLOTH:
           {
             SDL_Color s = second_color;
-            Uint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
+            guint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
             SDL_Color th = third_color;
-            Uint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
+            guint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
             if (i % 4 == 0 && j % 4 == 0)
               draw_pixel(surface, i, j, first);
             else if (i % 4 == 0 && j % 4 == 1)
@@ -347,7 +347,7 @@ void OverviewMap::draw_terrain_pixels(Rectangle r)
     GameMap *gm = GameMap::getInstance();
     // draw static map
     SDL_Color rd = GameMap::getInstance()->getTileset()->getRoadColor();
-    Uint32 road_color = SDL_MapRGB(static_surface->format, rd.r, rd.g, rd.b);
+    guint32 road_color = SDL_MapRGB(static_surface->format, rd.r, rd.g, rd.b);
     
     for (int i = r.x; i < r.x + r.w; ++i)
         for (int j = r.y; j < r.y + r.h; ++j)
@@ -373,7 +373,7 @@ void OverviewMap::after_draw()
 void OverviewMap::draw(Player *player)
 {
     d_player = player;
-    Uint32 fog_color = SDL_MapRGB(surface->format, 0, 0, 0);
+    guint32 fog_color = SDL_MapRGB(surface->format, 0, 0, 0);
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
     assert(surface);
 
@@ -397,7 +397,7 @@ void OverviewMap::draw(Player *player)
         Vector<int> pos = r->getPos();
         pos = mapToSurface(pos);
 
-	Uint32 raw;
+	guint32 raw;
 	raw = SDL_MapRGB(surface->format, 255, 255, 255);
 
 	draw_filled_rect(surface, pos.x, pos.y,
@@ -413,7 +413,7 @@ void OverviewMap::draw(Player *player)
           continue;
         Vector<int> pos = t->getPos();
         pos = mapToSurface(pos);
-	Uint32 raw;
+	guint32 raw;
 	raw = SDL_MapRGB(surface->format, 255, 255, 255);
 
 	draw_filled_rect(surface, pos.x, pos.y,

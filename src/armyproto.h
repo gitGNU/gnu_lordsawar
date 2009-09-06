@@ -22,6 +22,8 @@
 #ifndef ARMY_PROTO_H
 #define ARMY_PROTO_H
 
+#include <gtkmm.h>
+#include <SDL.h>
 #include <string>
 
 class XML_Helper;

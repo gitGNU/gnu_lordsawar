@@ -206,7 +206,7 @@ int AI_Smart::setBestProduction(City *c)
     int scorebasic = -1;
 
     // we try to determine the most attractive basic production
-    for (Uint32 i = 0; i < c->getMaxNoOfProductionBases(); i++)
+    for (guint32 i = 0; i < c->getMaxNoOfProductionBases(); i++)
     {
         if (c->getArmytype(i) == -1)    // no production in this slot
             continue;
@@ -234,7 +234,7 @@ int AI_Smart::setBestProduction(City *c)
 int AI_Smart::chooseArmyTypeToBuy(City *c)
 {
     int bestScore, bestIndex;
-    Uint32 size = 0;
+    guint32 size = 0;
 
     const Armysetlist* al = Armysetlist::getInstance();
 

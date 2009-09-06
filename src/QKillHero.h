@@ -45,7 +45,7 @@ class QuestKillHero : public Quest, public sigc::trackable
 	 * @param q_mgr  The quests manager to associate this quest with.
 	 * @param hero   The Id of the Hero who is responsible for the quest.
 	 */
-        QuestKillHero(QuestsManager& q_mgr, Uint32 hero);
+        QuestKillHero(QuestsManager& q_mgr, guint32 hero);
 
 	//! Loading constructor.
 	/**
@@ -55,7 +55,7 @@ class QuestKillHero : public Quest, public sigc::trackable
         QuestKillHero(QuestsManager& q_mgr, XML_Helper* helper);
 
         // Construct from remote action.
-        QuestKillHero(QuestsManager& q_mgr, Uint32 hero, Uint32 victim);
+        QuestKillHero(QuestsManager& q_mgr, guint32 hero, guint32 victim);
         
 	//! Returns whether or not this quest is impossible.
         /**
@@ -66,7 +66,7 @@ class QuestKillHero : public Quest, public sigc::trackable
 	 *
 	 * @return Whether or not the quest is possible.
          */
-        static bool isFeasible(Uint32 heroId);
+        static bool isFeasible(guint32 heroId);
 
         //! Saves the kill-hero quest data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
@@ -81,7 +81,7 @@ class QuestKillHero : public Quest, public sigc::trackable
         void getExpiredMsg(std::queue<std::string>& msgs) const;
 
         //! Returns the Id of the hunted hero object.
-        Uint32 getVictim() const {return d_victim;}
+        guint32 getVictim() const {return d_victim;}
 
 	//! Callback for when an Army object is killed.
 	/**
@@ -115,7 +115,7 @@ class QuestKillHero : public Quest, public sigc::trackable
         static Hero* chooseToKill();
         
         //! The Id of the Hero object to be hunted and killed.
-        Uint32 d_victim;
+        guint32 d_victim;
 };
 
 #endif

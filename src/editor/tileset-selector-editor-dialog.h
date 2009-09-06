@@ -56,9 +56,9 @@ class TilesetSelectorEditorDialog: public sigc::trackable
 
     bool loadSelector(std::string filename);
     void clearSelector();
-    std::map< Uint32, std::list<SDL_Surface*>* > selectors;
+    std::map< guint32, std::list<SDL_Surface*>* > selectors;
     sigc::connection heartbeat;
-    std::map<Uint32, std::list<SDL_Surface*>::iterator> frame;
+    std::map<guint32, std::list<SDL_Surface*>::iterator> frame;
 
     void on_heartbeat();
 

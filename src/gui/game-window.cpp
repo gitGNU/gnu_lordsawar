@@ -1228,7 +1228,7 @@ void GameWindow::on_disband_activated()
   Gtk::Label *l;
   xml->get_widget("label", l);
 
-  std::vector<Uint32> heroes;
+  std::vector<guint32> heroes;
   stack->getHeroes(heroes);
   Glib::ustring s = _("Are you sure you want to disband this group?");
   if (heroes.size() > 0)
@@ -1880,7 +1880,7 @@ void GameWindow::show_progress()
 
 void GameWindow::fill_in_group_info (Stack *s)
 {
-  Uint32 bonus = s->calculateMoveBonus();
+  guint32 bonus = s->calculateMoveBonus();
   GraphicsCache *gc = GraphicsCache::getInstance();
   SDL_Surface *terrain = gc->getMoveBonusPic(bonus, s->hasShip());
   terrain_image->property_pixbuf() = to_pixbuf(terrain);
@@ -2636,7 +2636,7 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
   dialog->hide();
 }
 
-void GameWindow::on_city_sacked(City *city, int gold, std::list<Uint32> sacked_types)
+void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_types)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   Player *player = city->getOwner();
@@ -2690,7 +2690,7 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<Uint32> sacked_t
   int i = 0;
   Gtk::Label *sack_label = NULL;
   Gtk::Image *sack_image = NULL;
-  for (std::list<Uint32>::iterator it = sacked_types.begin(); it != sacked_types.end(); it++)
+  for (std::list<guint32>::iterator it = sacked_types.begin(); it != sacked_types.end(); it++)
     {
       switch (i)
 	{

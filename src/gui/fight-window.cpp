@@ -67,7 +67,7 @@ FightWindow::FightWindow(Fight &fight)
     // add the armies
     std::vector<Gtk::HBox *> close_hboxes;
     int close;
-    std::map<Uint32, Uint32> initial_hps = fight.getInitialHPs();
+    std::map<guint32, guint32> initial_hps = fight.getInitialHPs();
 
     // ... attackers
     close = 0;

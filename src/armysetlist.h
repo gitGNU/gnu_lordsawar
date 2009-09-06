@@ -20,6 +20,7 @@
 #ifndef ARMYSETLIST_H
 #define ARMYSETLIST_H
 
+#include <gtkmm.h>
 #include <string>
 #include <map>
 #include <vector>
@@ -60,7 +61,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *
          * @return The requested army or 0 on error.
          */
-        ArmyProto* getArmy(Uint32 id, Uint32 index) const;
+        ArmyProto* getArmy(guint32 id, guint32 index) const;
 
 	//! Returns an army prototype of a scout from a given armyset.
         /** 
@@ -68,20 +69,20 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *
          * @return The requested scout or 0 on error.
          */
-        ArmyProto* getScout(Uint32 id) const;
+        ArmyProto* getScout(guint32 id) const;
 
 	//! Get the unshaded ship image for the given Armyset.
-	SDL_Surface * getShipPic (Uint32 id);
+	SDL_Surface * getShipPic (guint32 id);
 
 	//! Get the ship mask picture for the given Armyset.
-	SDL_Surface * getShipMask (Uint32 id);
+	SDL_Surface * getShipMask (guint32 id);
 
 	//! Get the unshaded planted standard picture for the given Armyset.
-	SDL_Surface * getStandardPic (Uint32 id);
+	SDL_Surface * getStandardPic (guint32 id);
 
 	//! Get the planted standard mask for the given Armyset.
-	SDL_Surface * getStandardMask (Uint32 id);
-        Uint32 getTileSize(Uint32 id);
+	SDL_Surface * getStandardMask (guint32 id);
+        guint32 getTileSize(guint32 id);
 
 	//! Returns the size of a specific armyset.
         /** 
@@ -90,7 +91,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
          * @return The number of Army prototype objects in the Armyset.
 	 *         Returns 0 on error. 
          */
-        Uint32 getSize(Uint32 id) const;
+        guint32 getSize(guint32 id) const;
 
 	//! Return the name of a given armyset.
         /** 
@@ -98,16 +99,16 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *
          * @return The name of the Armyset or an empty string on error.
          */
-        std::string getName(Uint32 id) const;
+        std::string getName(guint32 id) const;
 
         //! Returns the different tilesizes present in the armysetlist.
-	void getSizes(std::list<Uint32> &sizes);
+	void getSizes(std::list<guint32> &sizes);
 
         //! Returns the names of all Armyset objects available to the game.
 	std::list<std::string> getNames();
 
         //! Returns the names of armysets that have the given tile size.
-	std::list<std::string> getNames(Uint32 tilesize);
+	std::list<std::string> getNames(guint32 tilesize);
 
         /** Returns the Id of a specific armyset by name
           * 
@@ -116,8 +117,8 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	  *
           * @return the id of the armyset (0 on error)
           */
-	Uint32 getArmysetId(std::string armyset, Uint32 tilesize);
-	Armyset *getArmyset(Uint32 id);
+	guint32 getArmysetId(std::string armyset, guint32 tilesize);
+	Armyset *getArmyset(guint32 id);
 
 	//! Return the Armyset object by the name of the subdir.
 	/**
@@ -128,7 +129,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	Armyset *getArmyset(std::string dir) { return d_armysets[dir];}
 
 	//! Returns a list of all Armyset objects available to the game.
-        std::vector<Uint32> getArmysets() const;
+        std::vector<guint32> getArmysets() const;
 
 	//! Return the name of the subdirectory for a given armyset.
         /** 
@@ -139,7 +140,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *         Armyset::d_dir for more information about the nature of 
 	 *         the return value.
          */
-	std::string getArmysetDir(std::string name, Uint32 tilesize);
+	std::string getArmysetDir(std::string name, guint32 tilesize);
 
     private:
         //! Default Constructor.  Loads all armyset objects it can find.
@@ -165,9 +166,9 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 */
         bool loadArmyset (std::string name);
         
-        typedef std::map<Uint32, std::vector<ArmyProto*> > ArmyPrototypeMap;
-        typedef std::map<Uint32, std::string> NameMap;
-        typedef std::map<std::string, Uint32> IdMap;
+        typedef std::map<guint32, std::vector<ArmyProto*> > ArmyPrototypeMap;
+        typedef std::map<guint32, std::string> NameMap;
+        typedef std::map<std::string, guint32> IdMap;
         typedef std::map<std::string, Armyset*> ArmysetMap;
         
 	//! A map that provides Army objects by their index.

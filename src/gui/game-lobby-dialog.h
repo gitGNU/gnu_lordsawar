@@ -96,7 +96,7 @@ class GameLobbyDialog: public Decorated
 	Gtk::TreeModelColumn<bool> sitting;
 	Gtk::TreeModelColumn<Glib::ustring> person, name, type;
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > turn;
-	Gtk::TreeModelColumn<Uint32> player_id;
+	Gtk::TreeModelColumn<guint32> player_id;
     };
     const PlayerColumns player_columns;
     Glib::RefPtr<Gtk::ListStore> player_list;

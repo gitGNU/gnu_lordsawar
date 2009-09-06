@@ -97,10 +97,10 @@ bool Hero::loadBackpack(std::string tag, XML_Helper* helper)
   return false;
 }
 
-Uint32 Hero::getStat(Stat stat, bool modified) const
+guint32 Hero::getStat(Stat stat, bool modified) const
 {
-    Uint32 bonus = 0;
-    Uint32 value = Army::getStat(stat, modified);
+    guint32 bonus = 0;
+    guint32 value = Army::getStat(stat, modified);
 
     if (!modified)
         return value;
@@ -112,10 +112,10 @@ Uint32 Hero::getStat(Stat stat, bool modified) const
     return value + bonus;
 }
 
-Uint32 Hero::calculateNaturalCommand()
+guint32 Hero::calculateNaturalCommand()
 {
-  Uint32 command = 0;
-  Uint32 strength = getStat(Army::STRENGTH, true);
+  guint32 command = 0;
+  guint32 strength = getStat(Army::STRENGTH, true);
   if (strength == 9)
     command += 3;
   else if (strength > 6)

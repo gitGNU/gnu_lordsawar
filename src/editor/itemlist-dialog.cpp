@@ -73,7 +73,7 @@ ItemlistDialog::ItemlistDialog()
     for (;iter != d_itemlist->end(); iter++)
       addItemProto((*iter).second);
       
-    Uint32 max = d_itemlist->size();
+    guint32 max = d_itemlist->size();
     if (max)
       {
 	Gtk::TreeModel::Row row;

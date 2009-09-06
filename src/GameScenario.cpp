@@ -756,7 +756,7 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
 {
   std::string s;
   Playerlist *pl = Playerlist::getInstance();
-  Uint32 num = pl->countPlayersAlive();
+  guint32 num = pl->countPlayersAlive();
   if (num < 2)
     errors.push_back(_("There must be at least 2 players in the scenario."));
 
@@ -780,7 +780,7 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
 	}
     }
 
-  Uint32 count = 0;
+  guint32 count = 0;
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {

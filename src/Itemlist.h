@@ -35,7 +35,7 @@
  * you can get the item belonging to the index by the []-operator using the
  * item index as index.
  */
-class Itemlist : public std::map<Uint32, ItemProto*>, public sigc::trackable
+class Itemlist : public std::map<guint32, ItemProto*>, public sigc::trackable
 {
     public:
 

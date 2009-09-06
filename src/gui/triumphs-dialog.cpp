@@ -71,10 +71,10 @@ void TriumphsDialog::run()
   dialog->run();
 }
 
-Uint32 TriumphsDialog::tally(Player *p, Triumphs::TriumphType type)
+guint32 TriumphsDialog::tally(Player *p, Triumphs::TriumphType type)
 {
   Playerlist *pl = Playerlist::getInstance();
-  Uint32 count = 0;
+  guint32 count = 0;
   if (p == d_player)
     {
       // add up what the other players did to us
@@ -99,7 +99,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   //here we tally up the stats, make a vbox and append it as a new page
   //tally it up differently when p == d_player
 	
-  Uint32 count;
+  guint32 count;
   Glib::ustring s;
   count = tally(p, Triumphs::TALLY_HERO);
   if (p == d_player)

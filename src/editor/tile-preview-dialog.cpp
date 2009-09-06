@@ -29,7 +29,7 @@
 #include "File.h"
 
 
-TilePreviewDialog::TilePreviewDialog(Tile *tile, Uint32 tileSize)
+TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()

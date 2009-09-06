@@ -75,7 +75,7 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
     r.w = r.h = tilesize;
     int drawY = y;
 
-    Uint32 background_color = SDL_MapRGB(surface->format, 0, 0, 0);
+    guint32 background_color = SDL_MapRGB(surface->format, 0, 0, 0);
     
     for (int tileY = tileStartY; tileY < (tileStartY + rows); tileY++)
     {

@@ -110,10 +110,10 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	 * @return A pointer to the Player if it is found, or NULL if it isn't.
 	 */
         //! Lookup a Player by it's Id.
-        Player* getPlayer(Uint32 id) const;
+        Player* getPlayer(guint32 id) const;
 
         //! Returns the number of living players (neutral player excluded.)
-        Uint32 getNoOfPlayers() const;
+        guint32 getNoOfPlayers() const;
 
         /** 
 	 * Scan the list of players for the first Player that is alive.
@@ -174,10 +174,10 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	void nextRound(bool diplomacy, bool *surrender_already_offered);
 
 	//! Return the number of human players left alive in the list.
-	Uint32 countHumanPlayersAlive();
+	guint32 countHumanPlayersAlive();
 
 	//! Return the number of players left alive, not including neutral.
-	Uint32 countPlayersAlive();
+	guint32 countPlayersAlive();
 
 	/**
 	 * The purpose of randomzing the Playerlist is to implement
@@ -224,9 +224,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
     
 	void turnHumansIntoNetworkPlayers();
 	void turnHumansInto(Player::Type type, int num_players = -1);
-	void reorder(std::list<Uint32> order);
+	void reorder(std::list<guint32> order);
 
-	std::list<History *>getHistoryForHeroId(Uint32 id);
+	std::list<History *>getHistoryForHeroId(guint32 id);
 
 	void surrender();
 

@@ -27,7 +27,7 @@
 
 #include "xmlhelper.h"
 
-Location::Location(Vector<int> pos, Uint32 size)
+Location::Location(Vector<int> pos, guint32 size)
     :UniquelyIdentified(), LocationBox(pos, size)
 {
 }
@@ -37,7 +37,7 @@ Location::Location(const Location& loc)
 {
 }
 
-Location::Location(XML_Helper* helper, Uint32 size)
+Location::Location(XML_Helper* helper, guint32 size)
     :UniquelyIdentified(helper), LocationBox(helper)
 {
     d_size = size;

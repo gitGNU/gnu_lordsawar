@@ -96,7 +96,7 @@ void SelectArmyDialog::fill_in_army_toggles()
 {
     const Armysetlist* al = Armysetlist::getInstance();
 
-    Uint32 armyset = 0;
+    guint32 armyset = 0;
     if (player)
       armyset = player->getArmyset();
     bool pushed_back = false;

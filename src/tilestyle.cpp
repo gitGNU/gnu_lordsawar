@@ -41,7 +41,7 @@ TileStyle::TileStyle(XML_Helper* helper)
   helper->getData(idstr, "id");
   unsigned long int val = 0;
   val = strtoul (idstr.c_str(), &end, 0);
-  d_id = (Uint32) val;
+  d_id = (guint32) val;
   helper->getData(i, "type");
   d_type = static_cast<TileStyle::Type>(i);
 

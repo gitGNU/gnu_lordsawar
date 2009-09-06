@@ -85,7 +85,7 @@ class GamePreferencesDialog: public Decorated
     void update_difficulty_combobox();
     void update_difficulty_rating();
     void update_shields();
-    SDL_Surface *getShieldPic(Uint32 type, Uint32 owner);
+    SDL_Surface *getShieldPic(guint32 type, guint32 owner);
     std::string d_filename;
     std::string d_shieldset;
 };

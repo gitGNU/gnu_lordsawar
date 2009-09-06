@@ -23,7 +23,7 @@
 #ifndef PRODSLOTLIST_H
 #define PRODSLOTLIST_H
 
-#include <SDL.h>
+#include <gtkmm.h>
 #include <list>
 #include <string>
 #include <vector>
@@ -51,7 +51,7 @@ class ProdSlotlist: public std::vector<ProdSlot*>
 	  *
 	  * @param numslots  The number of production slots in the list.
           */
-        ProdSlotlist(Uint32 numslots = MAX_PRODUCTION_SLOTS_IN_A_CITY);
+        ProdSlotlist(guint32 numslots = MAX_PRODUCTION_SLOTS_IN_A_CITY);
 	//! Copy constructor.
         ProdSlotlist(const ProdSlotlist&);
         //! Loading constructor.
@@ -104,7 +104,7 @@ class ProdSlotlist: public std::vector<ProdSlot*>
 	 * @return True if the given army prototype is already a production
 	 *         base in the list.  Otherwise false.
 	 */
-        bool hasProductionBase(int type, Uint32 armyset) const;
+        bool hasProductionBase(int type, guint32 armyset) const;
 
         //! Returns true if the list already contains this production type.
         bool hasProductionBase(const ArmyProto * army);
@@ -120,7 +120,7 @@ class ProdSlotlist: public std::vector<ProdSlot*>
 	 * @return The maximum number of Army production bases that this list
 	 *         can have.
 	 */
-        Uint32 getMaxNoOfProductionBases() const {return size();};
+        guint32 getMaxNoOfProductionBases() const {return size();};
 
         //! Return the number of production bases in the list.
 	/**
@@ -129,7 +129,7 @@ class ProdSlotlist: public std::vector<ProdSlot*>
 	 *
 	 * @return The current number of used slots that the list has.
 	 */
-        Uint32 getNoOfProductionBases();
+        guint32 getNoOfProductionBases();
 
         //! Get the number of turns until current production base is finished.
         int getDuration() const {return d_duration;}

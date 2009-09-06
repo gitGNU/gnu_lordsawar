@@ -32,7 +32,7 @@ SmallTile::SmallTile()
 
 SmallTile::SmallTile(XML_Helper* helper)
 {
-  Uint32 i;
+  guint32 i;
   SDL_Color color;
   color.unused = 0;
   helper->getData(i, "red");      color.r = i;

@@ -61,7 +61,7 @@ Reward::~Reward()
 
 Reward* Reward::handle_load(XML_Helper* helper)
 {
-    Uint32 t;
+    guint32 t;
     std::string type_str;
     helper->getData(type_str, "type");
     t = rewardTypeFromString(type_str);
@@ -83,7 +83,7 @@ Reward* Reward::handle_load(XML_Helper* helper)
     return 0;
 }
 
-Reward_Gold::Reward_Gold(Uint32 gold)
+Reward_Gold::Reward_Gold(guint32 gold)
     :Reward(Reward::GOLD), d_gold(gold)
 {
 }
@@ -115,12 +115,12 @@ Reward_Gold::~Reward_Gold()
 {
 }
 
-Uint32 Reward_Gold::getRandomGoldPieces()
+guint32 Reward_Gold::getRandomGoldPieces()
 {
   return 310 + (rand() % 1000);
 }
 
-Reward_Allies::Reward_Allies(Uint32 army_type, Uint32 army_set, Uint32 count)
+Reward_Allies::Reward_Allies(guint32 army_type, guint32 army_set, guint32 count)
     :Reward(Reward::ALLIES), d_count(count)
 {
   Armysetlist *al = Armysetlist::getInstance();
@@ -129,7 +129,7 @@ Reward_Allies::Reward_Allies(Uint32 army_type, Uint32 army_set, Uint32 count)
   d_army  = al->getArmy (army_set, army_type);
 }
 
-Reward_Allies::Reward_Allies(const ArmyProto *army, Uint32 count)
+Reward_Allies::Reward_Allies(const ArmyProto *army, guint32 count)
     :Reward(Reward::ALLIES), d_count(count)
 {
   d_army_type = army->getTypeId();
@@ -167,14 +167,14 @@ bool Reward_Allies::save(XML_Helper* helper)
   return retval;
 }
 	
-const Uint32 Reward_Allies::getRandomAmountOfAllies()
+const guint32 Reward_Allies::getRandomAmountOfAllies()
 {
   return (rand() % MAX_STACK_SIZE) + 1;
 }
 
 const ArmyProto* Reward_Allies::randomArmyAlly()
 {
-  Uint32 allytype;
+  guint32 allytype;
   // list all the army types that can be allies.
   std::vector<const ArmyProto*> allytypes;
   Armysetlist *al = Armysetlist::getInstance();
@@ -194,7 +194,7 @@ const ArmyProto* Reward_Allies::randomArmyAlly()
   return allytypes[allytype];
 }
 
-bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const ArmyProto *army, Uint32 alliesCount)
+bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const ArmyProto *army, guint32 alliesCount)
 {
   for (unsigned int i = 0; i < alliesCount; i++)
     {
@@ -206,7 +206,7 @@ bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const ArmyProto *army,
   return true;
 }
 
-bool Reward_Allies::addAllies(Player *p, Location *l, const Army *army, Uint32 alliesCount)
+bool Reward_Allies::addAllies(Player *p, Location *l, const Army *army, guint32 alliesCount)
 {
   for (unsigned int i = 0; i < alliesCount; i++)
     {
@@ -285,8 +285,8 @@ Reward_Ruin::Reward_Ruin(Ruin *ruin)
 Reward_Ruin::Reward_Ruin(XML_Helper* helper)
     :Reward(helper)
 {
-  Uint32 x;
-  Uint32 y;
+  guint32 x;
+  guint32 y;
   helper->getData(x, "x");
   helper->getData(y, "y");
   d_ruin_pos = Vector<int>(x,y);
@@ -351,7 +351,7 @@ Reward_Ruin::~Reward_Ruin()
 }
 
 Reward_Map::Reward_Map(Vector<int> pos, std::string name, 
-		       Uint32 height, Uint32 width)
+		       guint32 height, guint32 width)
     :Reward(Reward::MAP, name)
 {
   d_sightmap = new SightMap(name, pos, height, width);

@@ -96,7 +96,7 @@ void CreateScenarioRandomize::pushRandomSignpost(std::string name)
   d_signposts->push_back(name);
 }
 
-Uint32 CreateScenarioRandomize::getRandomCityIncome(bool capital)
+guint32 CreateScenarioRandomize::getRandomCityIncome(bool capital)
 {
   if (capital)
     return 33 + (rand() % 8);

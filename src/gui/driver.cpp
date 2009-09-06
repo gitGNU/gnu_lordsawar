@@ -227,7 +227,7 @@ Driver::~Driver()
 
 void Driver::on_hosted_player_sat_down(Player *player)
 {
-  Uint32 id = player->getId();
+  guint32 id = player->getId();
   GameServer *game_server = GameServer::getInstance();
   game_server->sit_down(player);
   player_replaced.emit(Playerlist::getInstance()->getPlayer(id));
@@ -235,7 +235,7 @@ void Driver::on_hosted_player_sat_down(Player *player)
 
 void Driver::on_hosted_player_stood_up(Player *player)
 {
-  Uint32 id = player->getId();
+  guint32 id = player->getId();
   GameServer *game_server = GameServer::getInstance();
   game_server->stand_up(player);
   player_replaced.emit(Playerlist::getInstance()->getPlayer(id));
@@ -398,7 +398,7 @@ void Driver::on_game_scenario_received(std::string path)
   GameScenario *game_scenario = load_game(path);
   GameClient *game_client = GameClient::getInstance();
   std::string host = game_client->getHost();
-  Uint32 port = game_client->getPort();
+  guint32 port = game_client->getPort();
   RecentlyPlayedGameList::getInstance()->addNetworkedEntry(game_scenario, host, port);
   RecentlyPlayedGameList::getInstance()->saveToFile(File::getSavePath() + "/recently-played.xml");
 

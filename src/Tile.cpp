@@ -99,7 +99,7 @@ TileStyle *Tile::getRandomTileStyle (TileStyle::Type style)
   for (iterator it = begin(); it != end(); ++it)
     {
       TileStyleSet *tilestyleset = *it;
-      for (Uint32 k = 0; k < tilestyleset->size(); k++)
+      for (guint32 k = 0; k < tilestyleset->size(); k++)
 	{
 	  TileStyle *tilestyle = (*tilestyleset)[k];
 	  if (tilestyle->getType() == style)

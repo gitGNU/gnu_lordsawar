@@ -18,6 +18,7 @@
 #ifndef ARMYSET_H
 #define ARMYSET_H
 
+#include <gtkmm.h>
 #include <string>
 #include <map>
 #include <vector>
@@ -71,7 +72,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	 *              objects.  Must be more than 0.  
 	 * @param name  The name of the Armyset.  Analagous to Armyset::d_name.
 	 */
-	Armyset(Uint32 id, std::string name);
+	Armyset(guint32 id, std::string name);
 	//! Loading constructor.
 	/**
 	 * Load armyset XML entities from armyset configuration files.
@@ -91,7 +92,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
          * @return The number of Army prototype objects in the armyset or 0 
 	 *         on error (an armyset should never have a size of 0).
          */
-        Uint32 getSize() const {return size();}
+        guint32 getSize() const {return size();}
 
 	//! Get the tile size of the Armyset.
 	/**
@@ -100,20 +101,20 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	 * Analagous to the tileset.d_tilesize XML entity in the armyset 
 	 * configuration file.
 	 */
-        Uint32 getTileSize() const {return d_tilesize;}
+        guint32 getTileSize() const {return d_tilesize;}
 
 	//! Get the unique identifier for this armyset.
 	/**
 	 * Analagous to the tileset.d_id XML entity in the armyset 
 	 * configuration file.
 	 */
-        Uint32 getId() const {return d_id;}
+        guint32 getId() const {return d_id;}
 
 	//! Set the unique identifier for this armyset.
 	/**
 	 * @note This method is only used in the armyset editor.  
 	 */
-        void setId(Uint32 id) {d_id = id;}
+        void setId(guint32 id) {d_id = id;}
 
 	//! Returns the name of the armyset.
         /** 
@@ -179,7 +180,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	 * @return The Army with the given army type id, or NULL if none
 	 *         could be found.
 	 */
-	ArmyProto * lookupArmyByType(Uint32 army_type);
+	ArmyProto * lookupArmyByType(guint32 army_type);
     private:
 
         //! Callback function for the army tag (see XML_Helper)
@@ -196,7 +197,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	 * This Id is unique among all other armysets.
 	 * It is analgous to tileset.d_id in the armyset configuration files.
 	 */
-        Uint32 d_id;
+        guint32 d_id;
 
 	//! The name of the Armyset.
 	/**
@@ -222,7 +223,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	 * The tilesize is the height of the army image file, and it is also
 	 * precisely equal to half of the image's width.
 	 */
-	Uint32 d_tilesize;
+	guint32 d_tilesize;
 
 	//! The unshaded picture of the stack when it's in a boat.
 	SDL_Surface *d_ship;

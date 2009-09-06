@@ -115,9 +115,9 @@ void Citylist::collectTaxes(Player* p)
 }
 
 //calculate the amount of money new armies will cost in the upcoming turn.
-Uint32 Citylist::calculateUpcomingUpkeep(Player *p)
+guint32 Citylist::calculateUpcomingUpkeep(Player *p)
 {
-  Uint32 total = 0;
+  guint32 total = 0;
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->getOwner() == p && (*it)->isBurnt() == false)
       {
@@ -145,7 +145,7 @@ void Citylist::nextTurn(Player* p)
 
     //fixme: here we want the upkeep that we would pay out to all cities.
     //and not the total upkeep.
-    Uint32 upkeep_for_new_armies = calculateUpcomingUpkeep(p);
+    guint32 upkeep_for_new_armies = calculateUpcomingUpkeep(p);
     if (p->getGold() < (int)upkeep_for_new_armies)
       {
 	int diff = upkeep_for_new_armies - p->getGold();
@@ -218,7 +218,7 @@ static bool isNotOwnedByEnemy(void *object)
 static bool canNotAcceptMoreVectoring(void *object)
 {
   City *c = ((City*)object);
-  Uint32 num = Citylist::getInstance()->countCitiesVectoringTo(c);
+  guint32 num = Citylist::getInstance()->countCitiesVectoringTo(c);
   if (num < MAX_CITIES_VECTORED_TO_ONE_CITY)
     return false;
   return true;
@@ -490,9 +490,9 @@ City* Citylist::getNearestCityPast(const Vector<int>& pos, int dist)
   return getNearestObjectAfter(pos, dist, &filters);
 }
 
-Uint32 Citylist::countCitiesVectoringTo(City *dest)
+guint32 Citylist::countCitiesVectoringTo(City *dest)
 {
-  Uint32 count = 0;
+  guint32 count = 0;
   for (iterator it = begin(); it != end(); it++)
     {
       City *c = *it;

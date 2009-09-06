@@ -164,7 +164,7 @@ void NextTurnHotseat::startTurn()
       //collect taxes
       Citylist::getInstance()->collectTaxes(p);
 
-      Uint32 num_cities = Citylist::getInstance()->countCities(p);
+      guint32 num_cities = Citylist::getInstance()->countCities(p);
       p->getStacklist()->collectTaxes(p, num_cities);
 
       //vector armies (needs to preceed city's next turn)
@@ -213,7 +213,7 @@ void NextTurnHotseat::finishRound()
 	  //collect monies from cities
 	  Citylist::getInstance()->collectTaxes(*it);
 
-	  Uint32 num_cities = Citylist::getInstance()->countCities(*it);
+	  guint32 num_cities = Citylist::getInstance()->countCities(*it);
 	  (*it)->getStacklist()->collectTaxes((*it), num_cities);
 
 	  //vector armies (needs to preceed city's next turn)

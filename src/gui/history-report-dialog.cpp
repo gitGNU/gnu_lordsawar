@@ -123,7 +123,7 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
 			     _("Score"), _("Turns"));
   winner_alignment->add(*manage(rank_chart));
 
-  fill_in_turn_info((Uint32)turn_scale->get_value());
+  fill_in_turn_info((guint32)turn_scale->get_value());
 }
 
 HistoryReportDialog::~HistoryReportDialog()
@@ -172,7 +172,7 @@ void HistoryReportDialog::generatePastEventlists()
 	  if (*pit == Playerlist::getInstance()->getNeutral())
 	    continue;
 	  //dump everything up to the next turn
-	  Uint32 id = (*pit)->getId();
+	  guint32 id = (*pit)->getId();
 	  if (hit[id] == hist[id]->end())
 	    continue;
 	  for (; hit[id] != hist[id]->end(); ++hit[id])
@@ -277,7 +277,7 @@ void HistoryReportDialog::generatePastCitylists()
 	  if (*pit == Playerlist::getInstance()->getNeutral())
 	    continue;
 	  //dump everything up to the next turn
-	  Uint32 id = (*pit)->getId();
+	  guint32 id = (*pit)->getId();
 	  if (hit[id] == hist[id]->end())
 	    continue;
 	  for (; hit[id] != hist[id]->end(); hit[id]++)
@@ -289,7 +289,7 @@ void HistoryReportDialog::generatePastCitylists()
 		}
 	      else if ((*hit[id])->getType() == History::CITY_WON)
 		{
-		  Uint32 city_id;
+		  guint32 city_id;
 		  city_id = dynamic_cast<History_CityWon*>(*hit[id])->getCityId();
 		  //find city with this city id in clist
 		  LocationList<City*>::iterator cit = clist->begin();
@@ -302,7 +302,7 @@ void HistoryReportDialog::generatePastCitylists()
 		}
 	      else if ((*hit[id])->getType() == History::CITY_RAZED)
 		{
-		  Uint32 city_id;
+		  guint32 city_id;
 		  city_id = dynamic_cast<History_CityRazed*>(*hit[id])->getCityId();
 		  //find city with this city id in clist
 		  LocationList<City*>::iterator cit = clist->begin();
@@ -365,7 +365,7 @@ void HistoryReportDialog::on_map_changed(SDL_Surface *map)
 void HistoryReportDialog::on_turn_changed(Gtk::Scale *scale)
 {
   //tell the historymap to show another set of cities
-  Uint32 turn = (Uint32)turn_scale->get_value();
+  guint32 turn = (guint32)turn_scale->get_value();
   if (turn > past_citylists.size() - 1)
     historymap->updateCities(Citylist::getInstance());
   else
@@ -395,10 +395,10 @@ void HistoryReportDialog::update_window_title()
     }
 }
 
-void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
+void HistoryReportDialog::fill_in_turn_info(guint32 turn)
 {
   Glib::ustring s;
-  Uint32 count;
+  guint32 count;
   update_window_title();
 
   //update the event list
@@ -413,8 +413,8 @@ void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
 
   //update the gold chart
   //on turn # you had # gold pieces
-  std::list<Uint32> goldlist = *past_goldcounts.begin();
-  std::list<Uint32>::iterator it = goldlist.begin();
+  std::list<guint32> goldlist = *past_goldcounts.begin();
+  std::list<guint32>::iterator it = goldlist.begin();
   count=1;
   for (; it != goldlist.end(); it++, count++)
     {
@@ -434,7 +434,7 @@ void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
   gold_label->set_text(s);
 
   //update the city chart
-  std::list<Uint32> citylist = *past_citycounts.begin();
+  std::list<guint32> citylist = *past_citycounts.begin();
   it = citylist.begin();
   count = 0;
   for (; it != citylist.end(); it++, count++)
@@ -455,8 +455,8 @@ void HistoryReportDialog::fill_in_turn_info(Uint32 turn)
   city_label->set_text(s);
 
   //on turn # you were coming #
-  std::list<Uint32> scores;
-  std::list<std::list<Uint32> >::iterator rit = past_rankcounts.begin();
+  std::list<guint32> scores;
+  std::list<std::list<guint32> >::iterator rit = past_rankcounts.begin();
   for (; rit != past_rankcounts.end(); rit++)
     {
       it = (*rit).begin();
@@ -640,7 +640,7 @@ void HistoryReportDialog::generatePastWinningCounts()
 	continue;
       std::list<History*> *hist = (*pit)->getHistorylist();
       std::list<History*>::iterator hit = hist->begin();
-      std::list<Uint32> line;
+      std::list<guint32> line;
       for (; hit != hist->end(); hit++)
 	{
 	  if ((*hit)->getType() == History::SCORE)
@@ -649,7 +649,7 @@ void HistoryReportDialog::generatePastWinningCounts()
 	      line.push_back (event->getScore());
 	    }
 	}
-      line.push_back ((Uint32)(*pit)->getScore());
+      line.push_back ((guint32)(*pit)->getScore());
       if (*pit == d_player)
 	past_rankcounts.push_front(line);
       else
@@ -669,10 +669,10 @@ void HistoryReportDialog::generatePastCityCounts()
       //go through the past city lists, searching for cities owned by this
       //player
 
-      std::list<Uint32> line;
+      std::list<guint32> line;
       for (unsigned int i = 0; i < past_citylists.size(); i++)
 	{
-	  Uint32 total_cities = 0;
+	  guint32 total_cities = 0;
 	  LocationList<City*>::iterator it = past_citylists[i]->begin();
 	  for (; it != past_citylists[i]->end(); it++)
 	    {
@@ -702,7 +702,7 @@ void HistoryReportDialog::generatePastGoldCounts()
 	continue;
       std::list<History*> *hist = (*pit)->getHistorylist();
       std::list<History*>::iterator hit = hist->begin();
-      std::list<Uint32> line;
+      std::list<guint32> line;
       for (; hit != hist->end(); hit++)
 	{
 	  if ((*hit)->getType() == History::GOLD_TOTAL)
@@ -711,7 +711,7 @@ void HistoryReportDialog::generatePastGoldCounts()
 	      line.push_back (event->getGold());
 	    }
 	}
-      line.push_back ((Uint32)(*pit)->getGold());
+      line.push_back ((guint32)(*pit)->getGold());
       if (*pit == d_player)
 	past_goldcounts.push_front(line);
       else

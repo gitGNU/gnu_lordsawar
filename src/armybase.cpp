@@ -82,7 +82,7 @@ bool ArmyBase::saveData(XML_Helper* helper) const
 
 std::string ArmyBase::getArmyBonusDescription() const
 {
-  Uint32 bonus = d_army_bonus;
+  guint32 bonus = d_army_bonus;
   Glib::ustring s = "";
   if (bonus & ArmyBase::ADD1STRINOPEN)
     s += String::ucompose(_("%1%2"), s == "" ? " " : "& ", 
@@ -124,7 +124,7 @@ std::string ArmyBase::getArmyBonusDescription() const
   return s;
 }
 
-std::string ArmyBase::moveFlagsToString(const Uint32 bonus)
+std::string ArmyBase::moveFlagsToString(const guint32 bonus)
 {
   std::string move_bonuses;
   //we don't add grass, because it's always implied.
@@ -143,9 +143,9 @@ std::string ArmyBase::moveFlagsToString(const Uint32 bonus)
   return move_bonuses;
 }
 
-Uint32 ArmyBase::moveFlagsFromString(const std::string str)
+guint32 ArmyBase::moveFlagsFromString(const std::string str)
 {
-  Uint32 total = 0;
+  guint32 total = 0;
   std::stringstream bonuses;
   bonuses.str(str);
 
@@ -196,7 +196,7 @@ std::string ArmyBase::bonusFlagToString(const ArmyBase::Bonus bonus)
   return "";
 }
 
-std::string ArmyBase::bonusFlagsToString(const Uint32 bonus)
+std::string ArmyBase::bonusFlagsToString(const guint32 bonus)
 {
   std::string bonuses;
   if (bonus & ArmyBase::ADD1STRINOPEN)
@@ -230,9 +230,9 @@ std::string ArmyBase::bonusFlagsToString(const Uint32 bonus)
   return bonuses;
 }
 
-Uint32 ArmyBase::bonusFlagsFromString(const std::string str)
+guint32 ArmyBase::bonusFlagsFromString(const std::string str)
 {
-  Uint32 total = 0;
+  guint32 total = 0;
   std::stringstream bonuses;
   bonuses.str(str);
 

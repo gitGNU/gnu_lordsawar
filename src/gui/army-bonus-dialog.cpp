@@ -58,7 +58,7 @@ ArmyBonusDialog::ArmyBonusDialog(Player *p)
     armies_treeview->append_column("Bonus", armies_columns.bonus);
     armies_treeview->set_headers_visible(true);
 
-    Uint32 max = Armysetlist::getInstance()->getSize(d_player->getArmyset());
+    guint32 max = Armysetlist::getInstance()->getSize(d_player->getArmyset());
     for (unsigned int i = 0; i < max; i++)
       addArmyType(i);
 }
@@ -89,7 +89,7 @@ void ArmyBonusDialog::run()
 
 }
 
-void ArmyBonusDialog::addArmyType(Uint32 army_type)
+void ArmyBonusDialog::addArmyType(guint32 army_type)
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
     Player *p = d_player;
@@ -104,7 +104,7 @@ void ArmyBonusDialog::addArmyType(Uint32 army_type)
                                            p, NULL));
     (*i)[armies_columns.str] = a->getStrength();
     (*i)[armies_columns.move] = a->getMaxMoves();
-    Uint32 b = a->getMoveBonus();
+    guint32 b = a->getMoveBonus();
     (*i)[armies_columns.move_image] = to_pixbuf(gc->getMoveBonusPic(b, false));
     (*i)[armies_columns.bonus] = "-";
 

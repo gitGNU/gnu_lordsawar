@@ -43,7 +43,7 @@ class QuestPillageGold : public Quest, public sigc::trackable
 	 * @param q_mgr  The quests manager to associate this quest with.
 	 * @param hero   The Id of the Hero who is responsible for the quest.
 	 */
-        QuestPillageGold(QuestsManager& q_mgr, Uint32 hero);
+        QuestPillageGold(QuestsManager& q_mgr, guint32 hero);
 
 	//! Loading constructor.
 	/**
@@ -53,10 +53,10 @@ class QuestPillageGold : public Quest, public sigc::trackable
         QuestPillageGold(QuestsManager& q_mgr, XML_Helper* helper);
      
         // Construct from remote action.
-        QuestPillageGold(QuestsManager& q_mgr, Uint32 hero, Uint32 gold);
+        QuestPillageGold(QuestsManager& q_mgr, guint32 hero, guint32 gold);
         
 	//! Returns that this quest is feasible.
-        static bool isFeasible(Uint32 heroId) {return true;}
+        static bool isFeasible(guint32 heroId) {return true;}
 
         //! Saves the sack and pillage quest data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
@@ -71,7 +71,7 @@ class QuestPillageGold : public Quest, public sigc::trackable
         void getExpiredMsg(std::queue<std::string>& msgs) const;
 
         //! Returns the amount of gold to be pillaged.
-        Uint32 getGoldToPillage() {return d_to_pillage;}
+        guint32 getGoldToPillage() {return d_to_pillage;}
          
 	//! Callback for when an Army object is killed.
 	/**
@@ -106,10 +106,10 @@ class QuestPillageGold : public Quest, public sigc::trackable
         void initDescription();
 
         //! The amount of gold pieces to sack and pillage to succeed.
-        Uint32 d_to_pillage;
+        guint32 d_to_pillage;
 
         //! The number of gold pieces already sacked and pillaged.
-        Uint32 d_pillaged;
+        guint32 d_pillaged;
 
 	//! The player whose cities this quest is targetting.
 	Player *d_victim_player;

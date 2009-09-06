@@ -244,7 +244,7 @@ void EditorBigMap::after_draw()
 	  {
 	    Vector<int> pos = tile_to_buffer_pos(*i);
 	    SDL_Color tc = GameMap::getInstance()->getTile(*i)->getColor();
-	    const Uint32 color = SDL_MapRGB(buffer->format, tc.r, tc.g, tc.b);
+	    const guint32 color = SDL_MapRGB(buffer->format, tc.r, tc.g, tc.b);
 	    draw_filled_rect(buffer, pos.x, pos.y,
 			     pos.x + tilesize, pos.y + tilesize, color);
 	  }
@@ -258,8 +258,8 @@ void EditorBigMap::after_draw()
     {
 	Vector<int> pos = tile_to_buffer_pos(*i);
 
-	const Uint32 outline = SDL_MapRGB(buffer->format, 200, 200, 200);
-	const Uint32 red_outline = SDL_MapRGB(buffer->format, 200, 50, 50);
+	const guint32 outline = SDL_MapRGB(buffer->format, 200, 200, 200);
+	const guint32 red_outline = SDL_MapRGB(buffer->format, 200, 50, 50);
 
 	SDL_Rect r;
 	r.x = pos.x;

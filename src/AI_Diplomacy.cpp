@@ -108,7 +108,7 @@ void AI_Diplomacy::neutralsDwindlingNeedFirstEnemy()
   int target_level = (int)((float)cl->size() * (float) 0.06);
   target_level++;
   bool at_war = false;
-  Uint32 neutral_cities = cl->countCities(pl->getNeutral());
+  guint32 neutral_cities = cl->countCities(pl->getNeutral());
   if (neutral_cities && (int)neutral_cities > target_level)
     {
       //Pick a new opponent if we don't already have one.

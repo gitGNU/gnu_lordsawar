@@ -99,7 +99,7 @@ class Hero : public Army
          * value of the hero. Otherwise, all items are checked for a 
          * bonus.
          */
-        Uint32 getStat(Army::Stat stat, bool modified = true) const;
+        guint32 getStat(Army::Stat stat, bool modified = true) const;
 
         //! Returns the backpack of the hero.
         Backpack* getBackpack() {return d_backpack;}
@@ -111,7 +111,7 @@ class Hero : public Army
 	 * @return A number that is added to the strength to other Army and
 	 *         Hero units in the Stack. 
 	 */
-	Uint32 calculateNaturalCommand();
+	guint32 calculateNaturalCommand();
 
 	void setName(std::string name) {d_name = name;};
 	virtual std::string getName() const {return d_name;};
@@ -122,7 +122,7 @@ class Hero : public Army
         void setGender(Gender gender){d_gender = gender;}
 
         //! Return the gender of the hero.
-        Uint32 getGender() const {return d_gender;}
+        guint32 getGender() const {return d_gender;}
 
     private:
         

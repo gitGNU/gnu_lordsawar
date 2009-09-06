@@ -26,7 +26,7 @@
 
 #include <string>
 #include <list>
-#include <SDL_types.h>
+#include <gtkmm.h>
 
 #include "player.h"
 
@@ -46,7 +46,7 @@ class RealPlayer : public Player
 {
     public:
         // CREATORS
-        RealPlayer(std::string name, Uint32 armyset, SDL_Color color, 
+        RealPlayer(std::string name, guint32 armyset, SDL_Color color, 
 		   int width, int height, Player::Type type = Player::HUMAN, 
 		   int player_no = -1);
         RealPlayer(const Player&);

@@ -83,7 +83,7 @@ class Quest
 	 * @param hero  The Id of the Hero object that owns this quest.
 	 * @param type  The type of Quest the Hero is going on.
 	 */
-        Quest(QuestsManager& q_mgr, Uint32 hero, Type type);
+        Quest(QuestsManager& q_mgr, guint32 hero, Type type);
         
         //! Loading constructor.
 	/**
@@ -110,7 +110,7 @@ class Quest
 	 *
          * @return A pointer to the Hero object or NULL if the Hero is dead.
          */
-        static Hero* getHeroById(Uint32 hero, Stack** stack = NULL);
+        static Hero* getHeroById(guint32 hero, Stack** stack = NULL);
 
 	//! Return the description of the Quest.
 	/** 
@@ -196,7 +196,7 @@ class Quest
 	std::list< Vector<int> > getTargets() {return d_targets;}
 
 	//! Return the Id of the Hero object responsible for this Quest object.
-        Uint32 getHeroId() const { return d_hero; }
+        guint32 getHeroId() const { return d_hero; }
 
         //! Return a pointer to the Hero object responsible for the Quest.
         Hero* getHero() const { return getHeroById(d_hero); }
@@ -205,7 +205,7 @@ class Quest
         std::string getHeroName() const {return d_hero_name;}
 
         //! Return the type of the quest (one of values listed in Quest::Type).
-        Uint32 getType() const { return d_type; }
+        guint32 getType() const { return d_type; }
 
         //! Return the Player who owns the Hero of the Quest.
         Player *getPlayer() const 
@@ -225,7 +225,7 @@ class Quest
 	std::string getHeroNameForDeadHero();
 
 	//! Determine the name of a hero, given the id.
-	static std::string getHeroNameForDeadHero(Uint32 id);
+	static std::string getHeroNameForDeadHero(guint32 id);
 
     protected:
 	//! The QuestsManager object that this Quest object is associated with.
@@ -238,13 +238,13 @@ class Quest
         std::string d_description;
 
 	//! The Id of the Hero object responsible for this Quest.
-        Uint32 d_hero;
+        guint32 d_hero;
 
 	//! The Id of the Player owning the Hero.
-	Uint32 d_player_id;
+	guint32 d_player_id;
 
         //! The type of the Quest (one of Quest::Type).
-        Uint32 d_type;
+        guint32 d_type;
 
         //! If set to false, this quest is deactivated and not to be processed.
         bool d_pending;

@@ -55,7 +55,7 @@ SelectRewardDialog::SelectRewardDialog()
     for (;iter != rewardlist->end(); iter++)
       addReward(*iter);
       
-    Uint32 max = rewardlist->size();
+    guint32 max = rewardlist->size();
     if (max)
       {
 	Gtk::TreeModel::Row row;

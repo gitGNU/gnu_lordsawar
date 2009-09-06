@@ -84,14 +84,14 @@ QuestsManager::QuestsManager(XML_Helper* helper)
 //======================================================================
 QuestsManager::~QuestsManager()
 {
-    std::map<Uint32,Quest*>::iterator it;
+    std::map<guint32,Quest*>::iterator it;
 
     for (it = d_quests.begin(); it != d_quests.end(); it++) 
         delete (*it).second;
     cleanup();
 }
 //======================================================================
-Quest* QuestsManager::createNewQuest(Uint32 heroId, bool razing_possible)
+Quest* QuestsManager::createNewQuest(guint32 heroId, bool razing_possible)
 {
     // don't let a hero have more than one quest
     if (d_quests.count(heroId))
@@ -145,7 +145,7 @@ Quest* QuestsManager::createNewQuest(Uint32 heroId, bool razing_possible)
     return quest;
 }
 
-Quest* QuestsManager::createNewKillHeroQuest(Uint32 heroId, Uint32 targetHeroId)
+Quest* QuestsManager::createNewKillHeroQuest(guint32 heroId, guint32 targetHeroId)
 {
   Quest *quest = new QuestKillHero(*this, heroId, targetHeroId);
     
@@ -154,9 +154,9 @@ Quest* QuestsManager::createNewKillHeroQuest(Uint32 heroId, Uint32 targetHeroId)
   return quest;
 }
 
-Quest* QuestsManager::createNewEnemyArmiesQuest(Uint32 heroId, 
-						Uint32 num_armies, 
-						Uint32 victim_player_id)
+Quest* QuestsManager::createNewEnemyArmiesQuest(guint32 heroId, 
+						guint32 num_armies, 
+						guint32 victim_player_id)
 {
   Quest *quest = new QuestEnemyArmies(*this, heroId, num_armies, 
 				      victim_player_id);
@@ -166,7 +166,7 @@ Quest* QuestsManager::createNewEnemyArmiesQuest(Uint32 heroId,
   return quest;
 }
 
-Quest* QuestsManager::createNewCitySackQuest(Uint32 heroId, Uint32 cityId)
+Quest* QuestsManager::createNewCitySackQuest(guint32 heroId, guint32 cityId)
 {
   Quest *quest = new QuestCitySack(*this, heroId, cityId);
 
@@ -175,7 +175,7 @@ Quest* QuestsManager::createNewCitySackQuest(Uint32 heroId, Uint32 cityId)
   return quest;
 }
 
-Quest* QuestsManager::createNewCityRazeQuest(Uint32 heroId, Uint32 cityId)
+Quest* QuestsManager::createNewCityRazeQuest(guint32 heroId, guint32 cityId)
 {
   Quest *quest = new QuestCityRaze(*this, heroId, cityId);
 
@@ -184,7 +184,7 @@ Quest* QuestsManager::createNewCityRazeQuest(Uint32 heroId, Uint32 cityId)
   return quest;
 }
 
-Quest* QuestsManager::createNewCityOccupyQuest(Uint32 heroId, Uint32 cityId)
+Quest* QuestsManager::createNewCityOccupyQuest(guint32 heroId, guint32 cityId)
 {
   Quest *quest = new QuestCityOccupy(*this, heroId, cityId);
 
@@ -193,8 +193,8 @@ Quest* QuestsManager::createNewCityOccupyQuest(Uint32 heroId, Uint32 cityId)
   return quest;
 }
 
-Quest* QuestsManager::createNewEnemyArmytypeQuest(Uint32 heroId, 
-						  Uint32 armyTypeId)
+Quest* QuestsManager::createNewEnemyArmytypeQuest(guint32 heroId, 
+						  guint32 armyTypeId)
 {
   Quest *quest = new QuestEnemyArmytype(*this, heroId, armyTypeId);
 
@@ -203,7 +203,7 @@ Quest* QuestsManager::createNewEnemyArmytypeQuest(Uint32 heroId,
   return quest;
 }
 
-Quest* QuestsManager::createNewPillageGoldQuest(Uint32 heroId, Uint32 amount)
+Quest* QuestsManager::createNewPillageGoldQuest(guint32 heroId, guint32 amount)
 {
   Quest *quest = new QuestPillageGold(*this, heroId, amount);
 
@@ -213,7 +213,7 @@ Quest* QuestsManager::createNewPillageGoldQuest(Uint32 heroId, Uint32 amount)
 }
 
 //========================================================================
-void QuestsManager::questCompleted(Uint32 heroId)
+void QuestsManager::questCompleted(guint32 heroId)
 {
     Quest *quest = d_quests[heroId];
     Player *p = quest->getHero()->getOwner();
@@ -281,7 +281,7 @@ void QuestsManager::questCompleted(Uint32 heroId)
 }
 
 //========================================================================
-void QuestsManager::questExpired(Uint32 heroId)
+void QuestsManager::questExpired(guint32 heroId)
 {
     Quest *quest = d_quests[heroId];
 
@@ -306,7 +306,7 @@ std::vector<Quest*> QuestsManager::getPlayerQuests(Player *player)
         for (Stack::const_iterator sit = (*it)->begin();
             sit != (*it)->end(); sit++)
 	    {
-            Uint32 heroId = (*sit)->getId();
+            guint32 heroId = (*sit)->getId();
             if (((*sit)->isHero()) && (d_quests.count(heroId)))
             {
                 debug("heroId = " << heroId << " - has quest: " 
@@ -325,7 +325,7 @@ bool QuestsManager::save(XML_Helper* helper) const
 	bool retval = true;
 	retval &= helper->openTag(QuestsManager::d_tag);
     
-    for (std::map<Uint32,Quest*>::const_iterator it = d_quests.begin(); 
+    for (std::map<guint32,Quest*>::const_iterator it = d_quests.begin(); 
 	 it != d_quests.end(); it++) 
       {
 	if ((*it).second == NULL)
@@ -347,7 +347,7 @@ bool QuestsManager::load(string tag, XML_Helper* helper)
 
     if (tag == Quest::d_tag)
     {
-        Uint32  questType, hero;
+        guint32  questType, hero;
         helper->getData(questType, "type");
         helper->getData(hero, "hero");
 
@@ -409,7 +409,7 @@ void QuestsManager::sharedInit()
     d_questsFeasible.push_back(&(QuestPillageGold::isFeasible));
 }
 //========================================================================
-void QuestsManager::deactivateQuest(Uint32 heroId)
+void QuestsManager::deactivateQuest(guint32 heroId)
 {
     Quest *q = d_quests[heroId];
     q->deactivate();
@@ -432,11 +432,11 @@ void QuestsManager::cleanup(Player::Type type)
       }
 }
 
-void QuestsManager::armyDied(Army *a, std::vector<Uint32>& culprits)
+void QuestsManager::armyDied(Army *a, std::vector<guint32>& culprits)
 {
   //tell all quests that an army died
   //each quest takes care of what happens when an army dies
-  std::map<Uint32,Quest*>::iterator it;
+  std::map<guint32,Quest*>::iterator it;
   for (it = d_quests.begin(); it != d_quests.end(); it++) 
     {
       if ((*it).second == NULL)
@@ -467,7 +467,7 @@ void QuestsManager::armyDied(Army *a, std::vector<Uint32>& culprits)
 void QuestsManager::cityAction(City *c, Stack *s, 
 			       CityDefeatedAction action, int gold)
 {
-  std::map<Uint32,Quest*>::iterator it;
+  std::map<guint32,Quest*>::iterator it;
   //did any of the heroes who have outstanding quests do this?
   for (it = d_quests.begin(); it != d_quests.end(); it++) 
     {

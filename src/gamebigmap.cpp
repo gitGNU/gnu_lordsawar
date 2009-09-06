@@ -850,7 +850,7 @@ void GameBigMap::after_draw()
       c.r = c.g = c.b = 0;
 
       // draw all waypoints
-      Uint32 pathcount = 0;
+      guint32 pathcount = 0;
       bool canMoveThere = true;
       list<Vector<int>*>::iterator end = stack->getPath()->end();
       //if we're dragging, we don't draw the last waypoint circle

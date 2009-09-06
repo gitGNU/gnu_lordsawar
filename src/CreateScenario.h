@@ -24,6 +24,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <gtkmm.h>
 #include <SDL.h>
 #include <sigc++/signal.h>
 #include "CreateScenarioRandomize.h"
@@ -113,7 +114,7 @@ class CreateScenario : public CreateScenarioRandomize
           * @param type     the type of the player (see class player for more info)
           * @return a pointer to the created player
           */
-        Player* addPlayer(std::string name, Uint32 armyset, SDL_Color color,
+        Player* addPlayer(std::string name, guint32 armyset, SDL_Color color,
 			  int type);
 
         /** Almost the same as addPlayer, but performs some additional checks
@@ -124,7 +125,7 @@ class CreateScenario : public CreateScenarioRandomize
           * @param type     the type of the player (see class player for more info)
           * @return false if a neutral player already exists, true otherwise
           */
-        bool addNeutral(std::string name, Uint32 armyset, SDL_Color color,
+        bool addNeutral(std::string name, guint32 armyset, SDL_Color color,
                         int type);
 
         
@@ -182,7 +183,7 @@ class CreateScenario : public CreateScenarioRandomize
         bool createMap();
 
 	void createCapitalCity(Player *player, City *city);
-	bool tooNearToOtherCapitalCities(City *c, std::list<City*> capitals, Uint32 distance);
+	bool tooNearToOtherCapitalCities(City *c, std::list<City*> capitals, guint32 distance);
 
         //! Distributes the players over the map
         bool distributePlayers();

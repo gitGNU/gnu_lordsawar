@@ -22,7 +22,7 @@
 #ifndef ARMY_BASE_H
 #define ARMY_BASE_H
 
-#include <SDL.h>
+#include <gtkmm.h>
 #include <string>
 
 
@@ -63,8 +63,8 @@ class ArmyBase
 	  //! Provides a +1 strength to all Army units in a fortified Stack.
 	  FORTIFY            = 0x00002000,
         };
-	static Uint32 bonusFlagsFromString(const std::string str);
-	static std::string bonusFlagsToString(const Uint32 bonus);
+	static guint32 bonusFlagsFromString(const std::string str);
+	static std::string bonusFlagsToString(const guint32 bonus);
 	static ArmyBase::Bonus bonusFlagFromString(const std::string str);
 	static std::string bonusFlagToString(const ArmyBase::Bonus bonus);
         
@@ -92,8 +92,8 @@ class ArmyBase
 	  MOVES_MULTIPLIER = 9,
         };
 
-	static Uint32 moveFlagsFromString(const std::string str);
-	static std::string moveFlagsToString(const Uint32 move_bonus);
+	static guint32 moveFlagsFromString(const std::string str);
+	static std::string moveFlagsToString(const guint32 move_bonus);
 
 	//! Copy constructor.
         ArmyBase(const ArmyBase& army);
@@ -110,19 +110,19 @@ class ArmyBase
         // Set functions:
         
         //! Set how much gold this unit requires per turn.
-        void setUpkeep(Uint32 upkeep){d_upkeep = upkeep;}
+        void setUpkeep(guint32 upkeep){d_upkeep = upkeep;}
         
         //! Set the strength of the army.
-        void setStrength(Uint32 strength) {d_strength = strength;}
+        void setStrength(guint32 strength) {d_strength = strength;}
 
         // Get functions
         
         //! Returns how many gold pieces this Army needs per turn.
-        Uint32 getUpkeep() const {return d_upkeep;}
+        guint32 getUpkeep() const {return d_upkeep;}
         
 
         //! Get the army bonus of the army.
-        Uint32 getArmyBonus() const {return d_army_bonus;}
+        guint32 getArmyBonus() const {return d_army_bonus;}
 
         //! Get the move bonus.
 	/**
@@ -131,16 +131,16 @@ class ArmyBase
 	 *
 	 * @return A bitwise OR-ing of the values in Tile::Type.
 	 */
-        Uint32 getMoveBonus() const {return d_move_bonus;}
+        guint32 getMoveBonus() const {return d_move_bonus;}
 
         //! Get the move bonus of the army.
-        Uint32 getMaxMoves() const {return d_max_moves;}
+        guint32 getMaxMoves() const {return d_max_moves;}
 
         //! Get the strength of the army.
-        Uint32 getStrength() const {return d_strength;}
+        guint32 getStrength() const {return d_strength;}
 
         //! Get the distance this army can see on a hidden map.
-        Uint32 getSight() const {return d_sight;}
+        guint32 getSight() const {return d_sight;}
 
 	std::string getArmyBonusDescription() const;
 
@@ -163,7 +163,7 @@ class ArmyBase
 	 * @note Some special units have an upkeep of 0, but usually this
 	 * value is more than zero.
 	 */
-        Uint32 d_upkeep;
+        guint32 d_upkeep;
 
 	/**
 	 * The strength of the Army unit is the prime factor when 
@@ -180,7 +180,7 @@ class ArmyBase
 	 * This value does not decrease during gameplay.
 	 */
 	//! The base strength of the Army unit.
-        Uint32 d_strength;
+        guint32 d_strength;
 
 	//! The maximum number of movement points that this Army unit has.
 	/**
@@ -195,7 +195,7 @@ class ArmyBase
 	 * tripled due to a Hero carrying an Item, this value does not 
 	 * reflect that doubling or tripling.
 	 */
-        Uint32 d_max_moves;
+        guint32 d_max_moves;
 
 	//! How far the Army unit can see on a hidden map.
 	/**
@@ -208,7 +208,7 @@ class ArmyBase
 	 *
 	 * This value does not decrease during gameplay.
 	 */
-        Uint32 d_sight;
+        guint32 d_sight;
 
 	//! The movement bonus of the Army unit.
 	/**
@@ -225,7 +225,7 @@ class ArmyBase
 	 *
 	 * This value does not change during gameplay.
 	 */
-        Uint32 d_move_bonus;
+        guint32 d_move_bonus;
 
 	/**
 	 * d_army_bonus represents the special abilities this Army unit has.
@@ -236,7 +236,7 @@ class ArmyBase
 	 * This value does not change during gameplay.
 	 */
 	//! The special capbilities of the Army unit.
-        Uint32 d_army_bonus;
+        guint32 d_army_bonus;
 
 	//! The amount of XP this Army unit worth when killed by an assailant.
 	/**

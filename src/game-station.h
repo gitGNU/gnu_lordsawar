@@ -57,8 +57,8 @@ protected:
   void stopListeningForLocalEvents(Player *p);
 
 private:
-  std::map<Uint32, sigc::connection> action_listeners;
-  std::map<Uint32, sigc::connection> history_listeners;
+  std::map<guint32, sigc::connection> action_listeners;
+  std::map<guint32, sigc::connection> history_listeners;
 };
 
 #endif

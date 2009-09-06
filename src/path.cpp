@@ -188,7 +188,7 @@ void Path::recalculate (Stack* s)
   return;
 }
 
-Uint32 Path::calculateToCity (Stack *s, Location *c, bool zigzag)
+guint32 Path::calculateToCity (Stack *s, Location *c, bool zigzag)
 {
   int min_dist = -1;
   Vector<int> shortest = c->getPos();
@@ -239,7 +239,7 @@ bool Path::load_or_unload(Stack *s, Vector<int> src, Vector<int> dest, bool &on_
   return retval;
 }
 
-void Path::calculate (Stack* s, Vector<int> dest, Uint32 &moves, Uint32 &turns, bool zigzag)
+void Path::calculate (Stack* s, Vector<int> dest, guint32 &moves, guint32 &turns, bool zigzag)
 {
   int mp;
   Vector<int> start = s->getPos();
@@ -465,11 +465,11 @@ void Path::calculate (Stack* s, Vector<int> dest, Uint32 &moves, Uint32 &turns, 
     }
 
   //calculate when the waypoints show no more movement possible
-  Uint32 pathcount = 0;
-  Uint32 moves_left = s->getGroupMoves();
+  guint32 pathcount = 0;
+  guint32 moves_left = s->getGroupMoves();
   for (iterator it = begin(); it != end(); it++)
     {
-      Uint32 moves = s->calculateTileMovementCost(**it);
+      guint32 moves = s->calculateTileMovementCost(**it);
       if (moves_left >= moves)
 	moves_left -= moves;
       else
@@ -484,17 +484,17 @@ void Path::calculate (Stack* s, Vector<int> dest, Uint32 &moves, Uint32 &turns, 
   return;
 }
 
-Uint32 Path::calculate (Stack* s, Vector<int> dest, Uint32 &turns, bool zigzag)
+guint32 Path::calculate (Stack* s, Vector<int> dest, guint32 &turns, bool zigzag)
 {
-  Uint32 mp = 0;
+  guint32 mp = 0;
   calculate(s, dest, mp, turns, zigzag);
   return mp;
 }
 
-Uint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
+guint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
 {
-  Uint32 mp = 0;
-  Uint32 turns = 0;
+  guint32 mp = 0;
+  guint32 turns = 0;
   calculate(s, dest, mp, turns, zigzag);
   return mp;
 }
@@ -586,7 +586,7 @@ bool Path::isBlocked(const Stack* s, int x, int y, int destx, int desty) const
 
 int Path::pointsToMoveTo(const Stack *s, int x, int y, int destx, int desty) const
 {
-  Uint32 moves;
+  guint32 moves;
   const Maptile* tile = GameMap::getInstance()->getTile(destx,desty);
 
   if (x == destx && y == desty) //probably shouldn't happen

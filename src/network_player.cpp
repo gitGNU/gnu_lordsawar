@@ -58,7 +58,7 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-NetworkPlayer::NetworkPlayer(string name, Uint32 armyset, SDL_Color color, int width,
+NetworkPlayer::NetworkPlayer(string name, guint32 armyset, SDL_Color color, int width,
 		       int height, Player::Type type, int player_no)
     :Player(name, armyset, color, width, height, type, player_no),
     d_connected(false), d_abort_requested(false)
@@ -232,7 +232,7 @@ void NetworkPlayer::decodeAction(const Action *a)
 
 // decode helpers
   
-Stack *findStackById(Uint32 id)
+Stack *findStackById(guint32 id)
 {
   for (Playerlist::iterator j = Playerlist::getInstance()->begin(), jend = Playerlist::getInstance()->end();
        j != jend; ++j) {
@@ -243,7 +243,7 @@ Stack *findStackById(Uint32 id)
   return 0;
 }
 
-Item *findItemById(const std::list<Item *> &l, Uint32 id) 
+Item *findItemById(const std::list<Item *> &l, guint32 id) 
 {
   for (std::list<Item *>::const_iterator i = l.begin(), end = l.end(); i != end; ++i)
     if ((*i)->getId() == id)
@@ -280,14 +280,14 @@ void NetworkPlayer::decodeActionMove(const Action_Move *action)
 
 void NetworkPlayer::decodeActionSplit(const Action_Split *action)
 {
-  Uint32 stack_id = action->getStackId();
+  guint32 stack_id = action->getStackId();
   Stack *stack = d_stacklist->getStackById(stack_id);
   assert (stack != NULL);
   
   for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
     (*it)->setGrouped(true);
   for (unsigned int i = 0; i < MAX_STACK_SIZE; ++i) {
-    Uint32 army_id = action->getGroupedArmyId(i);
+    guint32 army_id = action->getGroupedArmyId(i);
     if (army_id == 0)
       continue;
 
@@ -321,13 +321,13 @@ void NetworkPlayer::decodeActionSplit(const Action_Split *action)
 void NetworkPlayer::decodeActionFight(const Action_Fight *action)
 {
   std::list<Stack *> attackers, defenders;
-  std::list<Uint32> attacker_army_ids = action->getAttackerArmyIds();
-  for (std::list<Uint32>::const_iterator i = attacker_army_ids.begin(),
+  std::list<guint32> attacker_army_ids = action->getAttackerArmyIds();
+  for (std::list<guint32>::const_iterator i = attacker_army_ids.begin(),
          end = attacker_army_ids.end(); i != end; ++i)
     attackers.push_back(d_stacklist->getStackById(*i));
 
-  std::list<Uint32> defender_army_ids = action->getDefenderArmyIds();
-  for (std::list<Uint32>::const_iterator i = defender_army_ids.begin(),
+  std::list<guint32> defender_army_ids = action->getDefenderArmyIds();
+  for (std::list<guint32>::const_iterator i = defender_army_ids.begin(),
          end = defender_army_ids.end(); i != end; ++i)
     defenders.push_back(findStackById(*i));
 
@@ -416,7 +416,7 @@ void NetworkPlayer::decodeActionSack(const Action_Sack *action)
 {
   City *city = Citylist::getInstance()->getById(action->getCityId());
   int gold;
-  std::list<Uint32> sacked_types;
+  std::list<guint32> sacked_types;
   doCitySack(city, gold, &sacked_types);
   // FIXME: the game class doesn't listen for sack signals, so it doesn't
   // redraw the map as it should
@@ -659,7 +659,7 @@ void NetworkPlayer::decodeActionInitTurn(const Action_InitTurn*action)
 
 void NetworkPlayer::decodeActionLoot (const Action_Loot *action)
 {
-  Uint32 player_id = action->getLootedPlayerId();
+  guint32 player_id = action->getLootedPlayerId();
   Player *looted = Playerlist::getInstance()->getPlayer(player_id);
   doLootCity(looted, action->getAmountToAdd(), action->getAmountToSubtract());
 }

@@ -72,7 +72,7 @@ void RuinMap::draw_ruins (bool show_selected)
         {
           if ((*it)->getId() == ruin->getId()) //is this the selected ruin?
             {
-              Uint32 raw = SDL_MapRGBA(surface->format,255, 255, 255, 255);
+              guint32 raw = SDL_MapRGBA(surface->format,255, 255, 255, 255);
               draw_rect(surface, r.x, r.y, r.x + r.w, r.y + r.h, raw);
             }
         }
@@ -104,7 +104,7 @@ void RuinMap::draw_temples (bool show_selected)
         {
           if ((*it)->getId() == ruin->getId()) //is this the selected ruin?
             {
-              Uint32 raw = SDL_MapRGBA(surface->format,255, 255, 255, 255);
+              guint32 raw = SDL_MapRGBA(surface->format,255, 255, 255, 255);
               draw_rect(surface, r.x, r.y, r.x + r.w, r.y + r.h, raw);
             }
         }

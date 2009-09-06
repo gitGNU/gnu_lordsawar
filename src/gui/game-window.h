@@ -295,7 +295,7 @@ class GameWindow: public Decorated
     void on_quest_assigned(Hero *hero, Quest *quest);
     CityDefeatedAction on_city_defeated(City *city, int gold);
     void on_city_pillaged(City *city, int gold, int pillaged_army_type);
-    void on_city_sacked(City *city, int gold, std::list<Uint32> sacked_types);
+    void on_city_sacked(City *city, int gold, std::list<guint32> sacked_types);
     void on_city_razed(City *city);
     void on_city_visited(City *city);
     void on_ruin_visited(Ruin *ruin);

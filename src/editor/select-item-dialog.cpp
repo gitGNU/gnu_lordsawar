@@ -55,7 +55,7 @@ SelectItemDialog::SelectItemDialog()
     for (;iter != itemlist->end(); iter++)
       addItemProto((*iter).second);
       
-    Uint32 max = itemlist->size();
+    guint32 max = itemlist->size();
     if (max)
       {
 	Gtk::TreeModel::Row row;

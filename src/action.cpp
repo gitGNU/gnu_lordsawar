@@ -461,7 +461,7 @@ Action_Fight::Action_Fight(XML_Helper* helper)
 {
     std::string s;
     std::istringstream si;
-    Uint32 ui;
+    guint32 ui;
 
     helper->registerTag(Item::d_tag, sigc::mem_fun(this, &Action_Fight::loadItem));
 
@@ -485,7 +485,7 @@ Action_Fight::~Action_Fight()
 std::string Action_Fight::dump() const
 {
     std::stringstream s;
-    std::list<Uint32>::const_iterator uit;
+    std::list<guint32>::const_iterator uit;
 
     s << "Battle fought.\n Attacking stacks: ";
     for (uit = d_attackers.begin(); uit != d_attackers.end(); uit++)
@@ -501,7 +501,7 @@ std::string Action_Fight::dump() const
 bool Action_Fight::doSave(XML_Helper* helper) const
 {
     std::stringstream si;
-    std::list<Uint32>::const_iterator uit;
+    std::list<guint32>::const_iterator uit;
     bool retval = true;
     
 
@@ -1080,7 +1080,7 @@ bool Action_Reward::load(std::string tag, XML_Helper *helper)
 {
     if (tag == Reward::d_tag)
       {
-	Uint32 t;
+	guint32 t;
 	std::string type_str;
 	helper->getData(type_str, "type");
 	t = Reward::rewardTypeFromString(type_str);
@@ -1582,10 +1582,10 @@ Action_FightOrder::Action_FightOrder(XML_Helper* helper)
 {
   std::string fight_order;
   std::stringstream sfight_order;
-  Uint32 val;
+  guint32 val;
   helper->getData(fight_order, "order");
   sfight_order.str(fight_order);
-  Uint32 size = Armysetlist::getInstance()->getSize(Playerlist::getInstance()->getFirstLiving()->getArmyset());
+  guint32 size = Armysetlist::getInstance()->getSize(Playerlist::getInstance()->getFirstLiving()->getArmyset());
   for (unsigned int i = 0; i < size; i++)
     {
       sfight_order >> val;
@@ -1602,7 +1602,7 @@ std::string Action_FightOrder::dump() const
   std::stringstream s;
 
   s <<"changed fight order to:" ;
-  std::list<Uint32>::const_iterator it = d_order.begin();
+  std::list<guint32>::const_iterator it = d_order.begin();
   for ( ;it != d_order.end(); it++)
     {
       s <<" " << (*it);
@@ -1617,7 +1617,7 @@ bool Action_FightOrder::doSave(XML_Helper* helper) const
   bool retval = true;
 
   std::stringstream fight_order;
-  for (std::list<Uint32>::const_iterator it = d_order.begin();
+  for (std::list<guint32>::const_iterator it = d_order.begin();
        it != d_order.end(); it++)
     {
       fight_order << (*it) << " ";
@@ -1627,7 +1627,7 @@ bool Action_FightOrder::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_FightOrder::fillData(std::list<Uint32> order)
+bool Action_FightOrder::fillData(std::list<guint32> order)
 {
   d_order = order;
   return true;
@@ -1895,7 +1895,7 @@ Action_DiplomacyState::Action_DiplomacyState(const Action_DiplomacyState &action
 Action_DiplomacyState::Action_DiplomacyState(XML_Helper* helper)
 :Action(helper)
 {
-  Uint32 diplomatic_state;
+  guint32 diplomatic_state;
   helper->getData(d_opponent_id, "opponent_id");
   helper->getData(diplomatic_state, "state");
   d_diplomatic_state = Player::DiplomaticState(diplomatic_state);
@@ -1925,7 +1925,7 @@ bool Action_DiplomacyState::doSave(XML_Helper* helper) const
   bool retval = true;
 
   retval &= helper->saveData("opponent_id", d_opponent_id);
-  retval &= helper->saveData("state", (Uint32)d_diplomatic_state);
+  retval &= helper->saveData("state", (guint32)d_diplomatic_state);
 
   return retval;
 }
@@ -1955,7 +1955,7 @@ Action_DiplomacyProposal::Action_DiplomacyProposal(const Action_DiplomacyProposa
 Action_DiplomacyProposal::Action_DiplomacyProposal(XML_Helper* helper)
 :Action(helper)
 {
-  Uint32 diplomatic_proposal;
+  guint32 diplomatic_proposal;
   helper->getData(d_opponent_id, "opponent_id");
   helper->getData(diplomatic_proposal, "proposal");
   d_diplomatic_proposal = Player::DiplomaticProposal(diplomatic_proposal);
@@ -1986,7 +1986,7 @@ bool Action_DiplomacyProposal::doSave(XML_Helper* helper) const
   bool retval = true;
 
   retval &= helper->saveData("opponent_id", d_opponent_id);
-  retval &= helper->saveData("proposal", (Uint32)d_diplomatic_proposal);
+  retval &= helper->saveData("proposal", (guint32)d_diplomatic_proposal);
 
   return retval;
 }
@@ -2395,8 +2395,8 @@ bool Action_Loot::doSave(XML_Helper* helper) const
 }
 
         
-bool Action_Loot::fillData(Player *looter, Player *looted, Uint32 amount_to_add,
-			   Uint32 amount_to_subtract)
+bool Action_Loot::fillData(Player *looter, Player *looted, guint32 amount_to_add,
+			   guint32 amount_to_subtract)
 {
     d_looting_player_id = looter->getId();
     d_looted_player_id = looted->getId();

@@ -23,7 +23,7 @@
 
 #include <string>
 #include <list>
-#include <SDL_types.h>
+#include <gtkmm.h>
 
 #include "real_player.h"
 
@@ -50,7 +50,7 @@ class AI_Dummy : public RealPlayer
 	 *                     the next free Id it used.
          */
 	//! Default constructor.
-        AI_Dummy (std::string name, Uint32 armyset, SDL_Color color, 
+        AI_Dummy (std::string name, guint32 armyset, SDL_Color color, 
 		  int width, int height, int player_no = -1);
 
 	//! Copy constructor.

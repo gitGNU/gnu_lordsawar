@@ -148,7 +148,7 @@ private:
      *              the city is being vectored from.
      * @param prod  Whether or not we're showing production or vectoring.
      */
-    void draw_city (City *city, Uint32 &type, bool &prod);
+    void draw_city (City *city, guint32 &type, bool &prod);
 
     //! Draw a list of city objects in the given fashion.
     /**
@@ -159,7 +159,7 @@ private:
      *              city is being vectored to.  When type is 3 it means that 
      *              the city is being vectored from.
      */
-    void draw_cities (std::list<City*> citylist, Uint32 type);
+    void draw_cities (std::list<City*> citylist, guint32 type);
 
     //! Draw lines from src to dests according to each city's vectoring policy.
     void draw_lines (std::list<City*> srcs, std::list<City*> dests);

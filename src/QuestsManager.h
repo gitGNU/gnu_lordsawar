@@ -99,23 +99,23 @@ class QuestsManager : public sigc::trackable
 	 *
 	 * @return A pointer to the new Quest object.
 	 */
-        Quest* createNewQuest(Uint32 heroId, bool razing_possible);
+        Quest* createNewQuest(guint32 heroId, bool razing_possible);
 
         //! Create new kill hero quest from remote action. 
-	Quest* createNewKillHeroQuest(Uint32 heroId, Uint32 targetHeroId);
+	Quest* createNewKillHeroQuest(guint32 heroId, guint32 targetHeroId);
         //! Create new enemy armies quest from remote action. 
-	Quest* createNewEnemyArmiesQuest(Uint32 heroId, Uint32 num_armies, 
-					 Uint32 victim_player_id);
+	Quest* createNewEnemyArmiesQuest(guint32 heroId, guint32 num_armies, 
+					 guint32 victim_player_id);
         //! Create new city sacking quest from remote action. 
-	Quest* createNewCitySackQuest(Uint32 heroId, Uint32 cityId);
+	Quest* createNewCitySackQuest(guint32 heroId, guint32 cityId);
         //! Create new city razing quest from remote action. 
-	Quest* createNewCityRazeQuest(Uint32 heroId, Uint32 cityId);
+	Quest* createNewCityRazeQuest(guint32 heroId, guint32 cityId);
         //! Create new city occupation quest from remote action. 
-	Quest* createNewCityOccupyQuest(Uint32 heroId, Uint32 cityId);
+	Quest* createNewCityOccupyQuest(guint32 heroId, guint32 cityId);
         //! Create new kill enemy army type quest from remote action. 
-	Quest* createNewEnemyArmytypeQuest(Uint32 heroId, Uint32 armyTypeId);
+	Quest* createNewEnemyArmytypeQuest(guint32 heroId, guint32 armyTypeId);
         //! Create new pillage gold quest from remote action. 
-	Quest* createNewPillageGoldQuest(Uint32 heroId, Uint32 amount);
+	Quest* createNewPillageGoldQuest(guint32 heroId, guint32 amount);
         
 	//! Mark the Quest that the given Hero object is on to be completed.
         /**
@@ -125,7 +125,7 @@ class QuestsManager : public sigc::trackable
 	 *  @param heroId  The id of the Hero object who has a Quest that we
 	 *                 want to mark as complete.
          */
-        void questCompleted(Uint32 heroId);
+        void questCompleted(guint32 heroId);
 
 	//! Mark the Quest that the given Hero object is on to be expired.
         /** 
@@ -135,7 +135,7 @@ class QuestsManager : public sigc::trackable
 	 *  @param heroId  The id of the Hero object who has a Quest that we
 	 *                 want to mark as expired.
          */
-        void questExpired(Uint32 heroId);
+        void questExpired(guint32 heroId);
 
 	//! Callback when an Army object is killed.
         /** 
@@ -147,7 +147,7 @@ class QuestsManager : public sigc::trackable
 	 *  @param culprits  The list of Army object Ids that were involved in
 	 *                   killing the given army.
          */
-	void armyDied(Army *army, std::vector<Uint32>& culprits);
+	void armyDied(Army *army, std::vector<guint32>& culprits);
 
 	//! Callback when a city is razed.
 	/**
@@ -255,7 +255,7 @@ class QuestsManager : public sigc::trackable
     private:
 
 	//! Definition of a function pointer for the Quest::isFeasible methods.
-        typedef bool (*QFeasibilityType)(Uint32);
+        typedef bool (*QFeasibilityType)(guint32);
 
 	//! Callback for loading Quest objects into the QuestsManager.
         bool load(std::string tag, XML_Helper* helper);
@@ -268,7 +268,7 @@ class QuestsManager : public sigc::trackable
 	 * @note A Hero can only have one quest, so giving the heroId is as
 	 *       good as specifying a particular quest.
 	 */
-        void deactivateQuest(Uint32 heroId);
+        void deactivateQuest(guint32 heroId);
 
         //! This method performs cleanup of the marked quests
 	/**
@@ -294,7 +294,7 @@ class QuestsManager : public sigc::trackable
         // Data
         
 	//! A hash of all Quests in this QuestsManager.  Lookup by HeroId.
-        std::map<Uint32,Quest*> d_quests;
+        std::map<guint32,Quest*> d_quests;
 
         //! A list of quests that have been marked as 'to-delete'.
         std::list<Quest*> d_inactive_quests;

@@ -176,7 +176,7 @@ bool GamePreferencesDialog::run(std::string nickname)
   return false;
 }
 
-SDL_Surface *GamePreferencesDialog::getShieldPic(Uint32 type, Uint32 owner)
+SDL_Surface *GamePreferencesDialog::getShieldPic(guint32 type, guint32 owner)
 {
   Shieldsetlist *sl = Shieldsetlist::getInstance();
 
@@ -266,7 +266,7 @@ void GamePreferencesDialog::update_shields()
 
 void GamePreferencesDialog::on_player_type_changed()
 {
-  Uint32 offcount = 0;
+  guint32 offcount = 0;
   std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
   for (; c != player_types.end(); c++)
     {

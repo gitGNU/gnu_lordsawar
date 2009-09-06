@@ -45,11 +45,11 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
 	 * @param q_mgr  The quests manager to associate this quest with.
 	 * @param hero   The Id of the Hero who is responsible for the quest.
 	 */
-        QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero);
+        QuestEnemyArmies(QuestsManager& q_mgr, guint32 hero);
 
         // Construct from remote action.
-        QuestEnemyArmies(QuestsManager& q_mgr, Uint32 hero,
-                         Uint32 armies_to_kill, Uint32 victim_player);
+        QuestEnemyArmies(QuestsManager& q_mgr, guint32 hero,
+                         guint32 armies_to_kill, guint32 victim_player);
         
 	//! Loading constructor.
 	/**
@@ -72,7 +72,7 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
 	 *
 	 * @return Whether or not the quest is possible.
          */
-        static bool isFeasible(Uint32 heroId);
+        static bool isFeasible(guint32 heroId);
 
         //! Saves the kill-armies quest data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
@@ -87,10 +87,10 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
         void getExpiredMsg(std::queue<std::string>& msgs) const;
 
         //! Returns the number of Army objects to be killed in this Quest.
-        Uint32 getArmiesToKill() {return d_to_kill;}
+        guint32 getArmiesToKill() {return d_to_kill;}
          
 	//! Returns the enemy player whose Army objects are to be killed.
-	Uint32 getVictimPlayerId() {return d_victim_player->getId();}
+	guint32 getVictimPlayerId() {return d_victim_player->getId();}
 
 	//! Callback for when an Army object is killed.
 	/**
@@ -120,10 +120,10 @@ class QuestEnemyArmies : public Quest, public sigc::trackable
         void update_targets();
 
 	//! The number of Army objects the Hero must kill to succeed.
-        Uint32 d_to_kill;
+        guint32 d_to_kill;
 
 	//! The number of Army objects the Hero has already killed.
-        Uint32 d_killed;
+        guint32 d_killed;
 
 	//! The victim player who the Hero is targeting Army objects of.
 	Player *d_victim_player;

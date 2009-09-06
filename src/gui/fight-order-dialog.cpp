@@ -52,8 +52,8 @@ FightOrderDialog::FightOrderDialog(Player *theplayer)
     armies_treeview->append_column("", armies_columns.image);
     armies_treeview->append_column("", armies_columns.name);
 
-    std::list<Uint32> fight_order = theplayer->getFightOrder();
-    std::list<Uint32>::iterator it = fight_order.begin();
+    std::list<guint32> fight_order = theplayer->getFightOrder();
+    std::list<guint32>::iterator it = fight_order.begin();
     for (; it != fight_order.end(); it++)
       {
         addArmyType(*it);
@@ -87,7 +87,7 @@ void FightOrderDialog::run()
 
     if (response == Gtk::RESPONSE_ACCEPT)
       {
-        std::list<Uint32> fight_order;
+        std::list<guint32> fight_order;
         for (Gtk::TreeIter i = armies_list->children().begin(),
 	     end = armies_list->children().end(); i != end; ++i) 
           fight_order.push_back((*i)[armies_columns.army_type]);
@@ -96,7 +96,7 @@ void FightOrderDialog::run()
       }
 }
 
-void FightOrderDialog::addArmyType(Uint32 army_type)
+void FightOrderDialog::addArmyType(guint32 army_type)
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
     Gtk::TreeIter i = armies_list->append();

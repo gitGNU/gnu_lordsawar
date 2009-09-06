@@ -20,8 +20,9 @@
 
 #include <string>
 #include <vector>
-#include <SDL.h>
+#include <gtkmm.h>
 #include <sigc++/trackable.h>
+#include <gtkmm.h>
 
 #include "defs.h"
 
@@ -70,7 +71,7 @@ class Cityset : public sigc::trackable
         std::string getInfo() const {return _(d_info.c_str());}
 
         //! Returns the width and height in pixels of the city images.
-        Uint32 getTileSize() const {return d_tileSize;}
+        guint32 getTileSize() const {return d_tileSize;}
 
     private:
 
@@ -99,7 +100,7 @@ class Cityset : public sigc::trackable
 	 * It represents the size in pixels of the width and height of city
 	 * imagery onscreen.
 	 */
-        Uint32 d_tileSize;
+        guint32 d_tileSize;
 
 	//! The subdirectory of the cityset.
 	/**

@@ -22,7 +22,7 @@
 #ifndef UNIQUELYIDENTIFIED_H
 #define UNIQUELYIDENTIFIED_H
 
-#include <SDL_types.h>
+#include <gtkmm.h>
 #include "vector.h"
 #include "rectangle.h"
 
@@ -38,21 +38,21 @@ class UniquelyIdentified
     UniquelyIdentified(const UniquelyIdentified&);
 
     //! non-default constructor. 
-    UniquelyIdentified(Uint32 id);
+    UniquelyIdentified(guint32 id);
 
     //! Loading constructor.
     UniquelyIdentified(XML_Helper* helper);
     virtual ~UniquelyIdentified();
 
     //! Returns the id of the object.
-    Uint32 getId() const {return d_id;}
+    guint32 getId() const {return d_id;}
 
     void syncNewId();
 
     void assignNewId();
         
  protected:
-    Uint32 d_id;
+    guint32 d_id;
     bool d_unique;
 };
 

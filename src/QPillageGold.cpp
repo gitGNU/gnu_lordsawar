@@ -28,7 +28,7 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 //=======================================================================
-QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, Uint32 hero)
+QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, guint32 hero)
     : Quest(q_mgr, hero, Quest::PILLAGEGOLD), d_pillaged(0)
 {
     //pick an amount of gold to sack and pillage
@@ -46,7 +46,7 @@ QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
-QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, Uint32 hero, Uint32 gold)
+QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, guint32 hero, guint32 gold)
     : Quest(q_mgr, hero, Quest::PILLAGEGOLD), d_pillaged(0)
 {
     d_to_pillage = gold;

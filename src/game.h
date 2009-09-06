@@ -139,7 +139,7 @@ class Game
     sigc::signal<void, Hero *, Quest *> quest_assigned;
     sigc::signal<CityDefeatedAction, City *, int> city_defeated;
     sigc::signal<void, City *, int, unsigned int> city_pillaged;
-    sigc::signal<void, City *, int, std::list<Uint32> > city_sacked;
+    sigc::signal<void, City *, int, std::list<guint32> > city_sacked;
     sigc::signal<void, City *> city_razed;
     sigc::signal<void, City *> city_visited;
     sigc::signal<void, Ruin *> ruin_visited;

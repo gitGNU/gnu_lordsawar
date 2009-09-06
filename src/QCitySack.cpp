@@ -34,7 +34,7 @@ using namespace std;
 #define debug(x)
 
 //=======================================================================
-QuestCitySack::QuestCitySack (QuestsManager& mgr, Uint32 hero) 
+QuestCitySack::QuestCitySack (QuestsManager& mgr, guint32 hero) 
     : Quest(mgr, hero, Quest::CITYSACK)
 {
     // find us a victim
@@ -56,7 +56,7 @@ QuestCitySack::QuestCitySack (QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
-QuestCitySack::QuestCitySack (QuestsManager& mgr, Uint32 hero, Uint32 target) 
+QuestCitySack::QuestCitySack (QuestsManager& mgr, guint32 hero, guint32 target) 
     : Quest(mgr, hero, Quest::CITYSACK)
 {
     d_city = target;
@@ -64,7 +64,7 @@ QuestCitySack::QuestCitySack (QuestsManager& mgr, Uint32 hero, Uint32 target)
     initDescription();
 }
 //=======================================================================
-bool QuestCitySack::isFeasible(Uint32 heroId)
+bool QuestCitySack::isFeasible(guint32 heroId)
 {
   if (QuestCitySack::chooseToSack(getHeroById(heroId)->getOwner()))
     return true;

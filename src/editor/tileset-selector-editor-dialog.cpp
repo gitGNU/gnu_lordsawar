@@ -144,7 +144,7 @@ void TilesetSelectorEditorDialog::show_preview_selectors(std::string filename)
 
 void TilesetSelectorEditorDialog::clearSelector()
 {
-  for (std::map< Uint32, std::list<SDL_Surface*>* >::iterator it = selectors.begin();
+  for (std::map< guint32, std::list<SDL_Surface*>* >::iterator it = selectors.begin();
        it != selectors.end(); it++)
     {
       for (std::list<SDL_Surface *>::iterator lit = (*it).second->begin(); lit != (*it).second->end(); lit++)
@@ -241,7 +241,7 @@ void TilesetSelectorEditorDialog::on_heartbeat()
   int x = 0;
   int y = 0;
   int count = 0;
-  for (std::map< Uint32, std::list<SDL_Surface*>* >::iterator it = selectors.begin();
+  for (std::map< guint32, std::list<SDL_Surface*>* >::iterator it = selectors.begin();
        it != selectors.end(); it++)
     {
       //make a pixbuf and attach it

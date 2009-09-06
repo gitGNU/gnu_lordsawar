@@ -93,7 +93,7 @@ private:
   std::auto_ptr<NetworkServer> network_server;
 
   std::list<Participant *> participants;
-  std::list<Uint32> players_seated_locally;
+  std::list<guint32> players_seated_locally;
 
   Participant * play_by_mail_participant;
 
@@ -110,8 +110,8 @@ private:
 
   bool player_already_sitting(Player *p);
 
-  bool add_to_player_list(std::list<Uint32> &list, Uint32 id);
-  bool remove_from_player_list(std::list<Uint32> &list, Uint32 id);
+  bool add_to_player_list(std::list<guint32> &list, guint32 id);
+  bool remove_from_player_list(std::list<guint32> &list, guint32 id);
   //! A static pointer for the singleton instance.
   static GameServer * s_instance;
 };

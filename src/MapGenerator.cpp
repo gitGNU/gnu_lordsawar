@@ -1252,7 +1252,7 @@ bool MapGenerator::tryToPlaceCity(int px,int py ,int& city_count)
 
 void MapGenerator::normalize()
 {
-    std::map<Uint32,Uint32> ajacentTer;
+    std::map<guint32,guint32> ajacentTer;
     Tile::Type curTer=Tile::NONE, ajTer=Tile::NONE;
 
     // that was 40 before. Now with rivers, the smaller the value - the more connected rivers we got.
@@ -1352,13 +1352,13 @@ int MapGenerator::tryRoad(int src_x, int src_y, int dest_x, int dest_y)
   Stack s(NULL, src);
 
   Armysetlist *al = Armysetlist::getInstance();
-  Uint32 armyset = al->getArmysetId(_("Default"), 
+  guint32 armyset = al->getArmysetId(_("Default"), 
 				    Tileset::getDefaultTileSize());
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
   Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);
   // try to get there with a scout
-  Uint32 moves = p->calculate(&s, dest, false);
+  guint32 moves = p->calculate(&s, dest, false);
 
   delete p;
   return (int)moves;
@@ -1380,13 +1380,13 @@ bool MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
   Stack s(NULL, src);
 
   Armysetlist *al = Armysetlist::getInstance();
-  Uint32 armyset = al->getArmysetId(_("Default"), 
+  guint32 armyset = al->getArmysetId(_("Default"), 
 				    Tileset::getDefaultTileSize());
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
   Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);
   // try to get there with a scout
-  Uint32 moves = p->calculate(&s, dest, false);
+  guint32 moves = p->calculate(&s, dest, false);
 
   if (moves != 0)
     {
@@ -1436,7 +1436,7 @@ bool MapGenerator::isAccessible (int src_x, int src_y, int dest_x, int dest_y)
   Stack s(NULL, src);
 
   Armysetlist *al = Armysetlist::getInstance();
-  Uint32 armyset = al->getArmysetId(_("Default"), 
+  guint32 armyset = al->getArmysetId(_("Default"), 
 				    Tileset::getDefaultTileSize());
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
   Army *a = Army::createNonUniqueArmy(*basearmy);
@@ -1465,13 +1465,13 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
   Stack s(NULL, src);
 
   Armysetlist *al = Armysetlist::getInstance();
-  Uint32 armyset = al->getArmysetId(_("Default"), 
+  guint32 armyset = al->getArmysetId(_("Default"), 
 				    Tileset::getDefaultTileSize());
   const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 16);
   Army *a = Army::createNonUniqueArmy(*basearmy);
   s.push_back(a);
   // try to get there with a giant bat
-  Uint32 moves = p->calculate(&s, dest, false);
+  guint32 moves = p->calculate(&s, dest, false);
 
   if (moves != 0)
     {

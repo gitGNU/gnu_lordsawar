@@ -63,7 +63,7 @@ Item::Item(std::string name, bool plantable, Player *plantable_owner)
   //std::cerr << "item created with id " << d_id << std::endl;
 }
 
-Item::Item(std::string name, bool plantable, Player *plantable_owner, Uint32 id)
+Item::Item(std::string name, bool plantable, Player *plantable_owner, guint32 id)
 	: ItemProto(name, 0), UniquelyIdentified(id)
 {
   d_type = 0;

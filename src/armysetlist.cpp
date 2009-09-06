@@ -21,6 +21,7 @@
 #include <iostream>
 #include <algorithm>
 #include <expat.h>
+#include <gtkmm.h>
 #include <SDL_image.h>
 #include <SDL.h>
 #include "rectangle.h"
@@ -88,7 +89,7 @@ Armysetlist::~Armysetlist()
             delete ((*it).second)[0];
 }
 
-ArmyProto* Armysetlist::getArmy(Uint32 id, Uint32 index) const
+ArmyProto* Armysetlist::getArmy(guint32 id, guint32 index) const
 {
     // always use ArmyProtoMap::find for searching, else a default entry is 
     // created, which can produce really bad results!!
@@ -105,7 +106,7 @@ ArmyProto* Armysetlist::getArmy(Uint32 id, Uint32 index) const
     return ((*it).second)[index];
 }
 
-ArmyProto* Armysetlist::getScout(Uint32 id) const
+ArmyProto* Armysetlist::getScout(guint32 id) const
 {
     // always use ArmyProtoMap::find for searching, else a default entry is 
     // created, which can produce really bad results!!
@@ -118,7 +119,7 @@ ArmyProto* Armysetlist::getScout(Uint32 id) const
     return ((*it).second)[0];
 }
 
-Uint32 Armysetlist::getSize(Uint32 id) const
+guint32 Armysetlist::getSize(guint32 id) const
 {
     ArmyPrototypeMap::const_iterator it = d_armies.find(id);
 
@@ -137,7 +138,7 @@ std::list<std::string> Armysetlist::getNames()
   return names;
 }
 
-std::list<std::string> Armysetlist::getNames(Uint32 tilesize)
+std::list<std::string> Armysetlist::getNames(guint32 tilesize)
 {
   std::list<std::string> names;
   for (iterator it = begin(); it != end(); it++)
@@ -146,7 +147,7 @@ std::list<std::string> Armysetlist::getNames(Uint32 tilesize)
   return names;
 }
 
-std::string Armysetlist::getName(Uint32 id) const
+std::string Armysetlist::getName(guint32 id) const
 {
     NameMap::const_iterator it = d_names.find(id);
 
@@ -157,9 +158,9 @@ std::string Armysetlist::getName(Uint32 id) const
     return (*it).second;
 }
 
-std::vector<Uint32> Armysetlist::getArmysets() const
+std::vector<guint32> Armysetlist::getArmysets() const
 {
-    std::vector<Uint32> retlist;
+    std::vector<guint32> retlist;
     
     NameMap::const_iterator it;
     for (it = d_names.begin(); it != d_names.end(); it++)
@@ -199,7 +200,7 @@ bool Armysetlist::loadArmyset(std::string name)
   return true;
 }
 	
-SDL_Surface * Armysetlist::getShipPic (Uint32 id)
+SDL_Surface * Armysetlist::getShipPic (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
@@ -209,7 +210,7 @@ SDL_Surface * Armysetlist::getShipPic (Uint32 id)
   return NULL;
 }
 
-SDL_Surface * Armysetlist::getShipMask (Uint32 id)
+SDL_Surface * Armysetlist::getShipMask (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
@@ -219,7 +220,7 @@ SDL_Surface * Armysetlist::getShipMask (Uint32 id)
   return NULL;
 }
 
-Uint32 Armysetlist::getTileSize(Uint32 id)
+guint32 Armysetlist::getTileSize(guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
@@ -229,7 +230,7 @@ Uint32 Armysetlist::getTileSize(Uint32 id)
   return 0;
 }
 
-SDL_Surface * Armysetlist::getStandardPic (Uint32 id)
+SDL_Surface * Armysetlist::getStandardPic (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
@@ -239,7 +240,7 @@ SDL_Surface * Armysetlist::getStandardPic (Uint32 id)
   return NULL;
 }
 
-SDL_Surface * Armysetlist::getStandardMask (Uint32 id)
+SDL_Surface * Armysetlist::getStandardMask (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
@@ -249,7 +250,7 @@ SDL_Surface * Armysetlist::getStandardMask (Uint32 id)
   return NULL;
 }
 
-Armyset *Armysetlist::getArmyset(Uint32 id)
+Armyset *Armysetlist::getArmyset(guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
@@ -259,7 +260,7 @@ Armyset *Armysetlist::getArmyset(Uint32 id)
   return NULL;
 }
 
-void Armysetlist::getSizes(std::list<Uint32> &sizes)
+void Armysetlist::getSizes(std::list<guint32> &sizes)
 {
   for (iterator i = begin(); i != end(); i++)
     {
@@ -268,12 +269,12 @@ void Armysetlist::getSizes(std::list<Uint32> &sizes)
     }
 }
 
-Uint32 Armysetlist::getArmysetId(std::string armyset, Uint32 tilesize)
+guint32 Armysetlist::getArmysetId(std::string armyset, guint32 tilesize)
 {
   return d_ids[String::ucompose("%1 %2", armyset, tilesize)];
 }
 
-std::string Armysetlist::getArmysetDir(std::string name, Uint32 tilesize)
+std::string Armysetlist::getArmysetDir(std::string name, guint32 tilesize)
 {
   return getArmyset(getArmysetId(name, tilesize))->getSubDir();
 }

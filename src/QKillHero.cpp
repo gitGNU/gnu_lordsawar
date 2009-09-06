@@ -36,7 +36,7 @@ using namespace std;
 //#define debug(x)
 
 //=======================================================================
-QuestKillHero::QuestKillHero(QuestsManager& mgr, Uint32 hero) 
+QuestKillHero::QuestKillHero(QuestsManager& mgr, guint32 hero) 
     : Quest(mgr, hero, Quest::KILLHERO)
 {
     // find a suitable hero for us
@@ -62,7 +62,7 @@ QuestKillHero::QuestKillHero(QuestsManager& q_mgr, XML_Helper* helper)
     initDescription();
 }
 //=======================================================================
-QuestKillHero::QuestKillHero(QuestsManager& q_mgr, Uint32 hero, Uint32 victim) 
+QuestKillHero::QuestKillHero(QuestsManager& q_mgr, guint32 hero, guint32 victim) 
     : Quest(q_mgr, hero, Quest::KILLHERO)
 {
     d_victim = victim;
@@ -75,7 +75,7 @@ QuestKillHero::QuestKillHero(QuestsManager& q_mgr, Uint32 hero, Uint32 victim)
     initDescription();
 }
 //=======================================================================
-bool QuestKillHero::isFeasible(Uint32 heroId)
+bool QuestKillHero::isFeasible(guint32 heroId)
 {
     // chooseToKill returns 0 if no enemy heroes exist
     return (chooseToKill() != 0);

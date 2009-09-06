@@ -18,7 +18,7 @@
 #ifndef REWARD_H
 #define REWARD_H
 
-#include <SDL_types.h>
+#include <gtkmm.h>
 #include "vector.h"
 #include "ruinlist.h"
 #include "SightMap.h"
@@ -169,7 +169,7 @@ class Reward_Gold : public Reward
 	/**
 	 * @param gold  The number of gold pieces to award the Player.
 	 */
-        Reward_Gold(Uint32 gold);
+        Reward_Gold(guint32 gold);
 	//! Loading constructor.
 	Reward_Gold(XML_Helper *helper);
 	//! Copy constructor.
@@ -182,17 +182,17 @@ class Reward_Gold : public Reward
 	 * This method provides a random number of gold pieces suitable for a
 	 * reward in the game.
 	 */
-	static Uint32 getRandomGoldPieces();
+	static guint32 getRandomGoldPieces();
 
 	//! Save the gold reward to the opened saved-game file.
         bool save(XML_Helper* helper);
 
 	//! Return the number of gold pieces associated with this reward.
-	Uint32 getGold() const {return d_gold;}
+	guint32 getGold() const {return d_gold;}
 
     private:
 	//! The number of gold pieces to award the player.
-        Uint32 d_gold;
+        guint32 d_gold;
 };
 
 //! A number of powerful allies.
@@ -208,7 +208,7 @@ class Reward_Allies: public Reward
 	 * @param army  The Army prototype to create allies from.
 	 * @param count The number of Army units to create from the prototype.
 	 */
-        Reward_Allies(const ArmyProto *army, Uint32 count);
+        Reward_Allies(const ArmyProto *army, guint32 count);
 
 	//! Secondary constructor.  Make a new reward of allies.
 	/**
@@ -216,7 +216,7 @@ class Reward_Allies: public Reward
 	 * @param army_set   The Id of the Armyset that the type belongs to.
 	 * @param count      The number of Armies to create from the prototype.
 	 */
-        Reward_Allies(Uint32 army_type, Uint32 army_set, Uint32 count);
+        Reward_Allies(guint32 army_type, guint32 army_set, guint32 count);
 
 	//! Make a new reward of allies from another one.
 	Reward_Allies(const Reward_Allies& orig);
@@ -234,13 +234,13 @@ class Reward_Allies: public Reward
 	const ArmyProto * getArmy() const {return d_army;}
 
 	//! Return the number allies that this reward will create.
-	Uint32 getNoOfAllies() const {return d_count;}
+	guint32 getNoOfAllies() const {return d_count;}
 
 	//! A static method that returns a random awardable Army prototype.
         static const ArmyProto* randomArmyAlly();
 
 	//! A static method that returns a number of allies between 1 and 8.
-	static const Uint32 getRandomAmountOfAllies();
+	static const guint32 getRandomAmountOfAllies();
 
 	//! A static method for adding allies to the game map.
 	/**
@@ -256,7 +256,7 @@ class Reward_Allies: public Reward
 	 * @return True if the armies could successfully be added to the game
 	 *         map.  Returns false otherwise.
 	 */
-        static bool addAllies(Player *p, Vector<int> pos, const ArmyProto *army, Uint32 alliesCount);
+        static bool addAllies(Player *p, Vector<int> pos, const ArmyProto *army, guint32 alliesCount);
 
 	//! A static method for adding allies to the game map.
 	/**
@@ -275,17 +275,17 @@ class Reward_Allies: public Reward
 	 * @return True if the armies could successfully be added to the game
 	 *         map.  Returns false otherwise.
 	 */
-        static bool addAllies(Player *p, Location *l, const Army *army, Uint32 alliesCount);
+        static bool addAllies(Player *p, Location *l, const Army *army, guint32 alliesCount);
 
     private:
 	//! The Army prototype that represents the allies to give the Player.
         const ArmyProto *d_army;
 	//! The army type of the given prototype.
-	Uint32 d_army_type;
+	guint32 d_army_type;
 	//! The army set of the given prototype.
-	Uint32 d_army_set;
+	guint32 d_army_set;
 	//! The number of allies to give the Player.
-        Uint32 d_count;
+        guint32 d_count;
 };
 
 //! A useful item to be awarded to a Hero.
@@ -447,7 +447,7 @@ class Reward_Map: public Reward
 	 * @param width   The width of the revealed portion of the game map.
 	 */
         Reward_Map(Vector<int> pos, std::string name, 
-		   Uint32 height, Uint32 width);
+		   guint32 height, guint32 width);
 
 	//! Loading constructor.
 	/**
@@ -479,10 +479,10 @@ class Reward_Map: public Reward
         bool save(XML_Helper* helper);
 
 	//! Get the height of the revealed portion of the game map.
-	Uint32 getHeight() const {return d_sightmap->h;}
+	guint32 getHeight() const {return d_sightmap->h;}
 
 	//! Get the width of the revealed portion of the game map.
-	Uint32 getWidth() const {return d_sightmap->w;}
+	guint32 getWidth() const {return d_sightmap->w;}
 
 	//! Return a description of a random map.
 	/**

@@ -18,8 +18,6 @@
 #include <iostream>
 #include <algorithm>
 #include <expat.h>
-#include <SDL_image.h>
-#include <SDL.h>
 #include "rectangle.h"
 #include <sigc++/functors/mem_fun.h>
 
@@ -82,7 +80,7 @@ std::list<std::string> Citysetlist::getNames()
   return names;
 }
 
-std::list<std::string> Citysetlist::getNames(Uint32 tilesize)
+std::list<std::string> Citysetlist::getNames(guint32 tilesize)
 {
   std::list<std::string> names;
   for (iterator it = begin(); it != end(); it++)
@@ -119,7 +117,7 @@ bool Citysetlist::loadCityset(std::string name)
   return true;
 }
 
-void Citysetlist::getSizes(std::list<Uint32> &sizes)
+void Citysetlist::getSizes(std::list<guint32> &sizes)
 {
   for (iterator i = begin(); i != end(); i++)
     {
@@ -128,7 +126,7 @@ void Citysetlist::getSizes(std::list<Uint32> &sizes)
     }
 }
 
-std::string Citysetlist::getCitysetDir(std::string name, Uint32 tilesize)
+std::string Citysetlist::getCitysetDir(std::string name, guint32 tilesize)
 {
   return d_dirs[String::ucompose("%1 %2", name, tilesize)];
 }

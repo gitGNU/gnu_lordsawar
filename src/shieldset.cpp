@@ -71,7 +71,7 @@ bool Shieldset::loadShield(string tag, XML_Helper* helper)
     return false;
 }
 
-ShieldStyle * Shieldset::lookupShieldByTypeAndColour(Uint32 type, Uint32 owner)
+ShieldStyle * Shieldset::lookupShieldByTypeAndColour(guint32 type, guint32 owner)
 {
   for (iterator it = begin(); it != end(); it++)
     {
@@ -84,7 +84,7 @@ ShieldStyle * Shieldset::lookupShieldByTypeAndColour(Uint32 type, Uint32 owner)
   return NULL;
 }
 
-SDL_Color Shieldset::getColor(Uint32 owner)
+SDL_Color Shieldset::getColor(guint32 owner)
 {
   for (iterator it = begin(); it != end(); it++)
     {
@@ -96,7 +96,7 @@ SDL_Color Shieldset::getColor(Uint32 owner)
   return def;
 }
 
-SDL_Color Shieldset::getMaskColor(Uint32 owner)
+SDL_Color Shieldset::getMaskColor(guint32 owner)
 {
   for (iterator it = begin(); it != end(); it++)
     {

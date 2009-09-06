@@ -249,9 +249,9 @@ void VectoredUnitlist::getVectoredUnitsComingFrom(Vector<int> pos, std::list<Vec
     }
 }
 
-Uint32 VectoredUnitlist::getNumberOfVectoredUnitsGoingTo(Vector<int> pos)
+guint32 VectoredUnitlist::getNumberOfVectoredUnitsGoingTo(Vector<int> pos)
 {
-  Uint32 count = 0;
+  guint32 count = 0;
   for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getDestination() == pos)

@@ -43,7 +43,7 @@ Triumphs::Triumphs(XML_Helper* helper)
     {
       std::string tally;
       std::stringstream stally;
-      Uint32 val;
+      guint32 val;
       switch (TriumphType(i))
 	{
 	case TALLY_HERO:
@@ -120,7 +120,7 @@ void Triumphs::tallyTriumph(Player *p, TriumphType type)
   //ignore monsters in a ruin who aren't owned by a player
   if (!p) 
     return;
-  Uint32 id = p->getId();
+  guint32 id = p->getId();
   //let's not tally neutrals
   if (p == Playerlist::getInstance()->getNeutral()) 
     return;

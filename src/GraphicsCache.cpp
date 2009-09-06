@@ -44,9 +44,9 @@
 //surface is designed for (and the surface itself, of course).
 struct ArmyCacheItem
 {
-    Uint32 armyset;
-    Uint32 index;
-    Uint32 player_id;
+    guint32 armyset;
+    guint32 index;
+    guint32 player_id;
     bool medals[3];
     SDL_Surface* surface;
 };
@@ -54,14 +54,14 @@ struct ArmyCacheItem
 //the structure to store ships in
 struct ShipCacheItem
 {
-    Uint32 player_id;
+    guint32 player_id;
     SDL_Surface* surface;
 };
 
 //the structure to store planted standard in
 struct PlantedStandardCacheItem
 {
-    Uint32 player_id;
+    guint32 player_id;
     SDL_Surface* surface;
 };
 
@@ -119,31 +119,31 @@ struct CursorCacheItem
 struct CityCacheItem
 {
     int type;
-    Uint32 player_id;
+    guint32 player_id;
     SDL_Surface* surface;
 };
 
 //the structure to store towers in
 struct TowerCacheItem
 {
-    Uint32 player_id;
+    guint32 player_id;
     SDL_Surface* surface;
 };
 
 // the structure to store flags in
 struct FlagCacheItem
 {
-    Uint32 size;
-    Uint32 player_id;
+    guint32 size;
+    guint32 player_id;
     SDL_Surface* surface;
 };
 
 // the structure to store selector images in
 struct SelectorCacheItem
 {
-    Uint32 type;
-    Uint32 frame;
-    Uint32 player_id;
+    guint32 type;
+    guint32 frame;
+    guint32 player_id;
     SDL_Surface* surface;
 };
 
@@ -151,15 +151,15 @@ struct SelectorCacheItem
 struct ShieldCacheItem
 {
     std::string shieldset;
-    Uint32 type;
-    Uint32 colour;
+    guint32 type;
+    guint32 colour;
     SDL_Surface* surface;
 };
 
 // the structure to store production shield images in
 struct ProdShieldCacheItem
 {
-    Uint32 type;
+    guint32 type;
     bool prod;
     SDL_Surface* surface;
 };
@@ -167,7 +167,7 @@ struct ProdShieldCacheItem
 // the structure to store movement bonus images in
 struct MoveBonusCacheItem
 {
-    Uint32 type; // 0=empty, 1=trees, 2=foothills, 3=hills+trees, 4=fly, 5=boat
+    guint32 type; // 0=empty, 1=trees, 2=foothills, 3=hills+trees, 4=fly, 5=boat
     SDL_Surface* surface;
 };
 //-----------------------------------------------------
@@ -345,9 +345,9 @@ SDL_Surface* GraphicsCache::getSignpostPic()
   return d_signpost;
 }
 
-SDL_Surface* GraphicsCache::getMoveBonusPic(Uint32 bonus, bool has_ship)
+SDL_Surface* GraphicsCache::getMoveBonusPic(guint32 bonus, bool has_ship)
 {
-  Uint32 type;
+  guint32 type;
   if (bonus == Tile::isFlying()) // show fly icon
     type = 4; 
   else if (bonus & Tile::FOREST && bonus & Tile::HILLS) // show trees and hills
@@ -442,7 +442,7 @@ SDL_Surface* GraphicsCache::getArmyPic(Army *a)
 		    a->getOwner(), NULL);
 }
 
-SDL_Surface* GraphicsCache::getArmyPic(Uint32 armyset, Uint32 army, const Player* p,
+SDL_Surface* GraphicsCache::getArmyPic(guint32 armyset, guint32 army, const Player* p,
                                        const bool *medals)
 {
     debug("getting army pic " <<armyset <<" " <<army <<" " <<p->getName())
@@ -488,8 +488,8 @@ SDL_Surface* GraphicsCache::getArmyPic(Uint32 armyset, Uint32 army, const Player
 }
 
 SDL_Surface* GraphicsCache::getShieldPic(std::string shieldset, 
-					 Uint32 type, 
-					 Uint32 colour)
+					 guint32 type, 
+					 guint32 colour)
 {
     debug("getting shield pic " <<shieldset <<" " <<type <<" " <<colour)
 
@@ -518,7 +518,7 @@ SDL_Surface* GraphicsCache::getShieldPic(std::string shieldset,
     return myitem->surface;
 }
         
-SDL_Surface* GraphicsCache::getShieldPic(Uint32 type, Player *p)
+SDL_Surface* GraphicsCache::getShieldPic(guint32 type, Player *p)
 {
   std::string shieldset = GameMap::getInstance()->getShieldset()->getSubDir();
   return getShieldPic(shieldset, type, p->getId());
@@ -771,7 +771,7 @@ SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getSelectorPic(Uint32 type, Uint32 frame, 
+SDL_Surface* GraphicsCache::getSelectorPic(guint32 type, guint32 frame, 
 					   const Player *p)
 {
     debug("GraphicsCache::getSelectorPic " <<type <<", " << frame << ", player" <<s->getOwner()->getName())
@@ -806,7 +806,7 @@ SDL_Surface* GraphicsCache::getSelectorPic(Uint32 type, Uint32 frame,
 }
 
 
-SDL_Surface* GraphicsCache::getProdShieldPic(Uint32 type, bool prod)
+SDL_Surface* GraphicsCache::getProdShieldPic(guint32 type, bool prod)
 {
     debug("GraphicsCache::getProdShieldPic " <<type <<", " << ", prod " <<prod)
 
@@ -925,7 +925,7 @@ void GraphicsCache::checkPictures()
   // used. This should not be a problem with the normal map (the surfaces are
   // copied and discarded), but when selecting armies from armyset, where
   // you can have these images assigned to buttons.
-  Uint32 maxcache = Configuration::s_cacheSize;
+  guint32 maxcache = Configuration::s_cacheSize;
   if (maxcache < (1<<21))
     maxcache = (1<<21);
 
@@ -1014,7 +1014,7 @@ void GraphicsCache::checkPictures()
     eraseLastArmyItem();
 }
 
-ArmyCacheItem* GraphicsCache::addArmyPic(Uint32 armyset, Uint32 army,
+ArmyCacheItem* GraphicsCache::addArmyPic(guint32 armyset, guint32 army,
 					 const Player* p, 
 					 const bool *medalsbonus)
 {
@@ -1080,7 +1080,7 @@ ArmyCacheItem* GraphicsCache::addArmyPic(Uint32 armyset, Uint32 army,
 }
 
 ShieldCacheItem* GraphicsCache::addShieldPic(std::string shieldset, 
-					     Uint32 type, Uint32 colour)
+					     guint32 type, guint32 colour)
 {
   debug("ADD shield pic: " <<shieldset <<"," <<type <<"," <<colour)
 
@@ -1399,7 +1399,7 @@ FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player* p)
   return myitem;
 }
 
-SelectorCacheItem* GraphicsCache::addSelectorPic(Uint32 type, Uint32 frame, const Player* p)
+SelectorCacheItem* GraphicsCache::addSelectorPic(guint32 type, guint32 frame, const Player* p)
 {
   debug("GraphicsCache::addSelectorPic, player="<<p->getName()<<", type="<<type<< ", " << frame)
 
@@ -1431,7 +1431,7 @@ SelectorCacheItem* GraphicsCache::addSelectorPic(Uint32 type, Uint32 frame, cons
   return myitem;
 }
 
-ProdShieldCacheItem* GraphicsCache::addProdShieldPic(Uint32 type, bool prod)
+ProdShieldCacheItem* GraphicsCache::addProdShieldPic(guint32 type, bool prod)
 {
   debug("GraphicsCache::addProdShieldPic, prod="<<prod<<", type="<<type)
 
@@ -1485,7 +1485,7 @@ ProdShieldCacheItem* GraphicsCache::addProdShieldPic(Uint32 type, bool prod)
   return myitem;
 }
 
-MoveBonusCacheItem* GraphicsCache::addMoveBonusPic(Uint32 type)
+MoveBonusCacheItem* GraphicsCache::addMoveBonusPic(guint32 type)
 {
   debug("GraphicsCache::addMoveBonusPic, type="<<type)
 
@@ -1903,7 +1903,7 @@ void GraphicsCache::loadDiplomacyPics()
 {
   // load the diplomacy pictures
   SDL_Surface* diplomacypics = GraphicsLoader::getMiscPicture("diplomacy-small.png");
-  Uint32 ts = 30;
+  guint32 ts = 30;
 
   // copy alpha values, don't use them
   SDL_SetAlpha(diplomacypics, 0, 0);
@@ -2205,7 +2205,7 @@ void GraphicsCache::loadTowerPics()
 
 }
 
-bool GraphicsCache::loadSelectorImages(std::string tileset, std::string filename, Uint32 size, std::vector<SDL_Surface*> &images, std::vector<SDL_Surface *> &masks)
+bool GraphicsCache::loadSelectorImages(std::string tileset, std::string filename, guint32 size, std::vector<SDL_Surface*> &images, std::vector<SDL_Surface *> &masks)
 {
   int num_frames;
   // to build flags, we need these three images as basic blocks

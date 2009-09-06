@@ -74,7 +74,7 @@ std::string Player::d_tag = "player";
 // signal
 sigc::signal<void, Player::Type> sendingTurn;
 
-Player::Player(string name, Uint32 armyset, SDL_Color color, int width,
+Player::Player(string name, guint32 armyset, SDL_Color color, int width,
 	       int height, Type type, int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
     d_dead(false), d_immortal(false), d_type(type), d_upkeep(0), d_income(0),
@@ -91,7 +91,7 @@ Player::Player(string name, Uint32 armyset, SDL_Color color, int width,
 
     //initial fight order is the order in which the armies appear
     //in the default.xml file.
-    Uint32 size = Armysetlist::getInstance()->getSize(d_armyset);
+    guint32 size = Armysetlist::getInstance()->getSize(d_armyset);
     for (unsigned int i = 0; i < size; i++)
     {
       d_fight_order.push_back(i);
@@ -184,10 +184,10 @@ Player::Player(XML_Helper* helper)
     // Read in Fight Order.  One ranking per army type.
     std::string fight_order;
     std::stringstream sfight_order;
-    Uint32 val;
+    guint32 val;
     helper->getData(fight_order, "fight_order");
     sfight_order.str(fight_order);
-    Uint32 size = Armysetlist::getInstance()->getSize(d_armyset);
+    guint32 size = Armysetlist::getInstance()->getSize(d_armyset);
     for (unsigned int i = 0; i < size; i++)
     {
             sfight_order >> val;
@@ -254,7 +254,7 @@ Player::~Player()
     d_fight_order.clear();
 }
 
-Player* Player::create(std::string name, Uint32 armyset, SDL_Color color, int width, int height, Type type)
+Player* Player::create(std::string name, guint32 armyset, SDL_Color color, int width, int height, Type type)
 {
   switch(type)
   {
@@ -472,9 +472,9 @@ bool Player::save(XML_Helper* helper) const
     // we do not want to have the character of the colors written out
     // (savefile is unicode encoded => may create problems)
     std::stringstream s;
-    s << static_cast<Uint32>(d_color.r) <<" ";
-    s << static_cast<Uint32>(d_color.g) <<" ";
-    s << static_cast<Uint32>(d_color.b);
+    s << static_cast<guint32>(d_color.r) <<" ";
+    s << static_cast<guint32>(d_color.g) <<" ";
+    s << static_cast<guint32>(d_color.b);
 
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("name", d_name);
@@ -491,7 +491,7 @@ bool Player::save(XML_Helper* helper) const
 
     // save the fight order, one ranking per army type
     std::stringstream fight_order;
-    for (std::list<Uint32>::const_iterator it = d_fight_order.begin();
+    for (std::list<guint32>::const_iterator it = d_fight_order.begin();
          it != d_fight_order.end(); it++)
       {
         fight_order << (*it) << " ";
@@ -613,10 +613,10 @@ void Player::addHistory(History *history)
 }
 
 
-Uint32 Player::getScore()
+guint32 Player::getScore()
 {
   //go get our last published score in the history
-  Uint32 score = 0;
+  guint32 score = 0;
   std::list<History*>::iterator it = d_history.begin();
   for (; it != d_history.end(); it++)
     {
@@ -645,12 +645,12 @@ void Player::calculateIncome()
       }
 }
 
-void Player::doSetFightOrder(std::list<Uint32> order)
+void Player::doSetFightOrder(std::list<guint32> order)
 {
   d_fight_order = order;
 }
 
-void Player::setFightOrder(std::list<Uint32> order) 
+void Player::setFightOrder(std::list<guint32> order) 
 {
   doSetFightOrder(order);
   
@@ -773,7 +773,7 @@ bool Player::stackSplitAndMoveToJoin(Stack* s, Stack *join)
 
   Path::iterator it = s->getPath()->end();
   it--;
-  std::vector<Uint32> ids;
+  std::vector<guint32> ids;
   ids = s->determineReachableArmies(**(it));
   if (ids.size() == 0)
     return false;
@@ -803,7 +803,7 @@ bool Player::stackSplitAndMoveToAttack(Stack* s)
 
   Path::iterator it = s->getPath()->end();
   it--;
-  std::vector<Uint32> ids;
+  std::vector<guint32> ids;
   ids = s->determineReachableArmies(**(it));
   if (ids.size() == 0)
     return false;
@@ -1093,7 +1093,7 @@ void Player::cleanupAfterFight(std::list<Stack*> &attackers,
                                std::list<Stack*> &defenders)
 {
   // get attacker and defender heroes and more...
-  std::vector<Uint32> attackerHeroes, defenderHeroes;
+  std::vector<guint32> attackerHeroes, defenderHeroes;
     
   getHeroes(attackers, attackerHeroes);
   getHeroes(defenders, defenderHeroes);
@@ -1205,7 +1205,7 @@ Fight::Result ruinfight (Stack **attacker, Stack **defender)
 {
   Stack *loser;
   Fight::Result result;
-  Uint32 hero_strength, monster_strength;
+  guint32 hero_strength, monster_strength;
   hero_strength = (*attacker)->getFirstHero()->getStat(Army::STRENGTH, true);
   monster_strength = (*defender)->getStrongestArmy()->getStat(Army::STRENGTH, true);
   float base_factor = 0.28;
@@ -1450,7 +1450,7 @@ void Player::adjustDiplomacyFromConqueringCity(City *city)
   }
 }
 
-void Player::calculateLoot(Player *looted, Uint32 &added, Uint32 &subtracted)
+void Player::calculateLoot(Player *looted, guint32 &added, guint32 &subtracted)
 {
   Player *defender = looted;
   int gold = 0;
@@ -1505,8 +1505,8 @@ void Player::conquerCity(City *city, Stack *stack)
 
 void Player::lootCity(City *city, Player *looted)
 {
-  Uint32 added = 0;
-  Uint32 subtracted = 0;
+  guint32 added = 0;
+  guint32 subtracted = 0;
   calculateLoot(looted, added, subtracted);
   sinvadingCity.emit(city, added);
   doLootCity(looted, added, subtracted);
@@ -1516,7 +1516,7 @@ void Player::lootCity(City *city, Player *looted)
   return;
 }
 
-void Player::doLootCity(Player *looted, Uint32 added, Uint32 subtracted)
+void Player::doLootCity(Player *looted, guint32 added, guint32 subtracted)
 {
   addGold(added);
   looted->withdrawGold(subtracted);
@@ -1619,7 +1619,7 @@ void Player::cityPillage(City* c, int& gold, int* pillaged_army_type)
   doCityPillage(c, gold, pillaged_army_type);
 }
 
-void Player::doCitySack(City* c, int& gold, std::list<Uint32> *sacked_types)
+void Player::doCitySack(City* c, int& gold, std::list<guint32> *sacked_types)
 {
   gold = 0;
   //trade in all of the army types except for one
@@ -1661,7 +1661,7 @@ void Player::doCitySack(City* c, int& gold, std::list<Uint32> *sacked_types)
   //takeCityInPossession(c);
 }
 
-void Player::citySack(City* c, int& gold, std::list<Uint32> *sacked_types)
+void Player::citySack(City* c, int& gold, std::list<guint32> *sacked_types)
 {
   debug("Player::citySack");
 
@@ -1701,7 +1701,7 @@ void Player::cityRaze(City* c)
 void Player::doCityBuyProduction(City* c, int slot, int type)
 {
   const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 as = c->getOwner()->getArmyset();
+  guint32 as = c->getOwner()->getArmyset();
 
   c->removeProductionBase(slot);
   c->addProductionBase(slot, new ArmyProdBase(*al->getArmy(as, type)));
@@ -1713,7 +1713,7 @@ void Player::doCityBuyProduction(City* c, int slot, int type)
 bool Player::cityBuyProduction(City* c, int slot, int type)
 {
   const Armysetlist* al = Armysetlist::getInstance();
-  Uint32 as = c->getOwner()->getArmyset();
+  guint32 as = c->getOwner()->getArmyset();
 
   // sort out unusual values (-1 is allowed and means "scrap production")
   if ((type <= -1) || (type >= (int)al->getSize(as)))
@@ -2105,7 +2105,7 @@ void Player::doHeroPlantStandard(Hero *hero, Item *item, Vector<int> pos)
   hero->getBackpack()->removeFromBackpack(item);
 }
 
-void Player::getHeroes(const std::list<Stack*> stacks, std::vector<Uint32>& dst)
+void Player::getHeroes(const std::list<Stack*> stacks, std::vector<guint32>& dst)
 {
     std::list<Stack*>::const_iterator it;
     for (it = stacks.begin(); it != stacks.end(); it++)
@@ -2113,7 +2113,7 @@ void Player::getHeroes(const std::list<Stack*> stacks, std::vector<Uint32>& dst)
 }
 
 double Player::removeDeadArmies(std::list<Stack*>& stacks,
-                                std::vector<Uint32>& culprits)
+                                std::vector<guint32>& culprits)
 {
     double total=0;
     Player *owner = NULL;
@@ -2154,8 +2154,8 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
 		  d_triumphs->tallyTriumph((*sit)->getOwner(), 
 					   Triumphs::TALLY_HERO);
 		  Hero *hero = dynamic_cast<Hero*>((*sit));
-		  Uint32 count = hero->getBackpack()->countPlantableItems();
-		  for (Uint32 i = 0; i < count; i++)
+		  guint32 count = hero->getBackpack()->countPlantableItems();
+		  for (guint32 i = 0; i < count; i++)
 		    d_triumphs->tallyTriumph((*sit)->getOwner(), 
 					     Triumphs::TALLY_FLAG);
 
@@ -2535,7 +2535,7 @@ Player::DiplomaticProposal Player::getDiplomaticProposal (Player *player)
   return d_diplomatic_proposal[player->getId()];
 }
 
-Uint32 Player::getDiplomaticScore (Player *player)
+guint32 Player::getDiplomaticScore (Player *player)
 {
   Playerlist *pl = Playerlist::getInstance();
   if (pl->getNeutral() == player)
@@ -2554,14 +2554,14 @@ void Player::alterDiplomaticRelationshipScore (Player *player, int amount)
     }
   else if (amount < 0)
     {
-      if ((Uint32) (amount * -1) > d_diplomatic_score[player->getId()])
+      if ((guint32) (amount * -1) > d_diplomatic_score[player->getId()])
 	d_diplomatic_score[player->getId()] = DIPLOMACY_MIN_SCORE;
       else
 	d_diplomatic_score[player->getId()] += amount;
     }
 }
 
-void Player::improveDiplomaticRelationship (Player *player, Uint32 amount)
+void Player::improveDiplomaticRelationship (Player *player, guint32 amount)
 {
   Playerlist *pl = Playerlist::getInstance();
   if (pl->getNeutral() == player || player == this)
@@ -2574,7 +2574,7 @@ void Player::improveDiplomaticRelationship (Player *player, Uint32 amount)
   addAction(item);
 }
 
-void Player::deteriorateDiplomaticRelationship (Player *player, Uint32 amount)
+void Player::deteriorateDiplomaticRelationship (Player *player, guint32 amount)
 {
   Playerlist *pl = Playerlist::getInstance();
   if (pl->getNeutral() == player || player == this)
@@ -2587,7 +2587,7 @@ void Player::deteriorateDiplomaticRelationship (Player *player, Uint32 amount)
   addAction(item);
 }
 
-void Player::deteriorateDiplomaticRelationship (Uint32 amount)
+void Player::deteriorateDiplomaticRelationship (guint32 amount)
 {
   Playerlist *pl = Playerlist::getInstance();
   for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
@@ -2602,7 +2602,7 @@ void Player::deteriorateDiplomaticRelationship (Uint32 amount)
     }
 }
 
-void Player::improveDiplomaticRelationship (Uint32 amount, Player *except)
+void Player::improveDiplomaticRelationship (guint32 amount, Player *except)
 {
   Playerlist *pl = Playerlist::getInstance();
   for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
@@ -2619,7 +2619,7 @@ void Player::improveDiplomaticRelationship (Uint32 amount, Player *except)
     }
 }
 
-void Player::deteriorateAlliesRelationship(Player *player, Uint32 amount,
+void Player::deteriorateAlliesRelationship(Player *player, guint32 amount,
 					   Player::DiplomaticState state)
 {
   Playerlist *pl = Playerlist::getInstance();
@@ -2636,7 +2636,7 @@ void Player::deteriorateAlliesRelationship(Player *player, Uint32 amount,
     }
 }
 
-void Player::improveAlliesRelationship(Player *player, Uint32 amount,
+void Player::improveAlliesRelationship(Player *player, guint32 amount,
 				       Player::DiplomaticState state)
 {
   Playerlist *pl = Playerlist::getInstance();
@@ -2735,7 +2735,7 @@ bool Player::AI_maybePickUpItems(Stack *s, int max_dist, int max_mp,
       Vector<int> old_dest(-1,-1);
       if (s->getPath()->size())
 	old_dest = *s->getPath()->back();
-      Uint32 mp = s->getPath()->calculate(s, item_tile);
+      guint32 mp = s->getPath()->calculate(s, item_tile);
       if ((int)mp > max_mp)
 	{
 	  //nope.  unreachable.  set in our old path.
@@ -2782,7 +2782,7 @@ bool Player::AI_maybeVisitTempleForBlessing(Stack *s, int dist, int max_mp,
       Vector<int> old_dest(-1,-1);
       if (s->getPath()->size())
 	old_dest = *s->getPath()->back();
-      Uint32 mp = s->getPath()->calculate(s, temple->getPos());
+      guint32 mp = s->getPath()->calculate(s, temple->getPos());
       if ((int)mp > max_mp)
 	{
 	  //nope.  unreachable.  set in our old path.
@@ -2812,7 +2812,7 @@ bool Player::AI_maybeVisitTempleForBlessing(Stack *s, int dist, int max_mp,
   return stack_moved;
 }
 
-bool Player::safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders)
+bool Player::safeFromAttack(City *c, guint32 safe_mp, guint32 min_defenders)
 {
   //if there isn't an enemy city nearby to the source
   // calculate mp to nearest enemy city
@@ -2822,7 +2822,7 @@ bool Player::safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders)
   City *enemy_city = Citylist::getInstance()->getNearestEnemyCity(c->getPos());
   if (enemy_city)
     {
-      Uint32 mp = Stack::scout (c->getOwner(), c->getPos(), 
+      guint32 mp = Stack::scout (c->getOwner(), c->getPos(), 
 				enemy_city->getPos());
       if ((int)mp <= 0 || mp >= safe_mp)
 	{
@@ -2834,7 +2834,7 @@ bool Player::safeFromAttack(City *c, Uint32 safe_mp, Uint32 min_defenders)
   return false;
 }
 
-bool Player::AI_maybeDisband(Stack *s, City *city, Uint32 min_defenders, 
+bool Player::AI_maybeDisband(Stack *s, City *city, guint32 min_defenders, 
 			     int safe_mp, bool &stack_killed)
 {
   //to prevent armies from piling up in far away places, 
@@ -2870,7 +2870,7 @@ bool Player::AI_maybeDisband(Stack *s, City *city, Uint32 min_defenders,
       Vector<int> dest = s->getPos() + (*it);
       if (d_stacklist->getObjectAt(dest) == NULL)
 	{
-	  Uint32 mp = s->getPath()->calculate(s, dest);
+	  guint32 mp = s->getPath()->calculate(s, dest);
 	  if ((int)mp <= 0)
 	    continue;
 	  found = dest;
@@ -2910,7 +2910,7 @@ bool Player::AI_maybeDisband(Stack *s, City *city, Uint32 min_defenders,
   return stackDisband(s);
 }
 
-bool Player::AI_maybeVector(City *c, Uint32 safe_mp, Uint32 min_defenders,
+bool Player::AI_maybeVector(City *c, guint32 safe_mp, guint32 min_defenders,
 			    City *target, City **vector_city)
 {
   assert (c->getOwner() == this);
@@ -2946,14 +2946,14 @@ bool Player::AI_maybeVector(City *c, Uint32 safe_mp, Uint32 min_defenders,
 
   //find mp from source to target city
   const ArmyProdBase *proto = c->getActiveProductionBase();
-  Uint32 mp_from_source_city = Stack::scout(c->getOwner(), c->getPos(),
+  guint32 mp_from_source_city = Stack::scout(c->getOwner(), c->getPos(),
 					    target->getPos(), proto);
 
   //find mp from nearer vectorable city to target city
-  Uint32 mp_from_near_city = Stack::scout(c->getOwner(), near_city->getPos(),
+  guint32 mp_from_near_city = Stack::scout(c->getOwner(), near_city->getPos(),
 					  target->getPos(), proto);
 
-  Uint32 max_moves_per_turn = proto->getMaxMoves();
+  guint32 max_moves_per_turn = proto->getMaxMoves();
 
   double turns_to_move_from_source_city = 
     (double)mp_from_source_city / (double)max_moves_per_turn;
@@ -2973,8 +2973,8 @@ bool Player::AI_maybeVector(City *c, Uint32 safe_mp, Uint32 min_defenders,
   return true;
 }
 
-void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
-			       Uint32 mp_to_front)
+void Player::AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
+			       guint32 mp_to_front)
 {
   Citylist *cl = Citylist::getInstance();
   //turn off vectoring where it isn't safe anymore
@@ -3008,7 +3008,7 @@ void Player::AI_setupVectoring(Uint32 safe_mp, Uint32 min_defenders,
 	  continue;
 	}
 
-      Uint32 mp = Stack::scout(this, dest, enemy_city->getPos(), NULL);
+      guint32 mp = Stack::scout(this, dest, enemy_city->getPos(), NULL);
       if ((int)mp <= 0 || mp > mp_to_front)
 	{
 
@@ -3292,9 +3292,9 @@ std::list<History*> Player::getHistoryForThisTurn() const
   return history;
 }
 
-Uint32 Player::countEndTurnHistoryEntries() const
+guint32 Player::countEndTurnHistoryEntries() const
 {
-  Uint32 count = 0;
+  guint32 count = 0;
   for (list<History*>::const_iterator it = d_history.begin();
        it != d_history.end(); it++)
     {
@@ -3375,7 +3375,7 @@ std::list<Vector<int> > Player::getStackTrack(Stack *s)
   return points;
 }
 	
-std::list<History *>Player::getHistoryForHeroId(Uint32 id)
+std::list<History *>Player::getHistoryForHeroId(guint32 id)
 {
   std::string hero_name = "";
   std::list<History*> events;

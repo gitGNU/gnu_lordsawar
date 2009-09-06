@@ -150,7 +150,7 @@ class Ruin : public NamedLocation, public sigc::trackable
         bool d_searched;
 
 	//! The type of the ruin.
-        Uint32 d_type;
+        guint32 d_type;
 
 	//! The keeper of the ruin.
 	/**

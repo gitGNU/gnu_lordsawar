@@ -85,7 +85,7 @@ class NewMapDialog
 
     void add_fill_style(Tile::Type tile_type);
 
-    Uint32 get_active_tile_size();
+    guint32 get_active_tile_size();
     void on_tile_size_changed();
     std::vector<int> fill_style;
 };

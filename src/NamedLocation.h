@@ -35,12 +35,12 @@ class NamedLocation: public Location, public Namable
 {
  public:
      //! Default constructor.
-     NamedLocation(Vector<int> pos, Uint32 size, std::string name, 
+     NamedLocation(Vector<int> pos, guint32 size, std::string name, 
 		   std::string desc);
      //! Copy constructor.
      NamedLocation(const NamedLocation&);
      //! Loading constructor.
-     NamedLocation(XML_Helper* helper, Uint32 size);
+     NamedLocation(XML_Helper* helper, guint32 size);
      //! Destructor.
     ~NamedLocation();
 

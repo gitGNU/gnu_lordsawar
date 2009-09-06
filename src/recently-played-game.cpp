@@ -43,7 +43,7 @@ RecentlyPlayedGame::RecentlyPlayedGame(GameScenario *game_scenario)
 RecentlyPlayedGame::RecentlyPlayedGame(XML_Helper* helper)
 {
   helper->getData(d_id, "id");
-  Uint32 t;
+  guint32 t;
   helper->getData(t, "time");
   d_time = t;
   helper->getData(d_round, "round");
@@ -63,7 +63,7 @@ bool RecentlyPlayedGame::saveContents(XML_Helper *helper) const
 {
   bool retval = true;
   retval &= helper->saveData("id", d_id);
-  Uint32 t = d_time;
+  guint32 t = d_time;
   retval &= helper->saveData("time", t);
   retval &= helper->saveData("round", d_round);
   retval &= helper->saveData("number_of_cities", d_number_of_cities);
@@ -190,7 +190,7 @@ bool RecentlyPlayedNetworkedGame::doSave(XML_Helper *helper) const
   return retval;
 }
 
-bool RecentlyPlayedNetworkedGame::fillData(std::string host, Uint32 port)
+bool RecentlyPlayedNetworkedGame::fillData(std::string host, guint32 port)
 {
   d_host = host;
   d_port = port;

@@ -19,7 +19,7 @@
 #define SIGHTMAP_H
 
 #include <string>
-#include <SDL.h>
+#include <gtkmm.h>
 #include "rectangle.h"
 #include "Renamable.h"
 #include "xmlhelper.h"
@@ -47,7 +47,7 @@ class SightMap: public Rectangle, public Renamable
 	/**
 	 * @param pos  The top-left corner of the sightmap on the game map.
 	 */
-        SightMap(std::string name, Vector<int> pos, Uint32 height, Uint32 width);
+        SightMap(std::string name, Vector<int> pos, guint32 height, guint32 width);
 
         //! Destructor.
         ~SightMap();

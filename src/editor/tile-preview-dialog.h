@@ -29,7 +29,7 @@
 class TilePreviewDialog: public sigc::trackable
 {
  public:
-    TilePreviewDialog(Tile *tile, Uint32 tileSize);
+    TilePreviewDialog(Tile *tile, guint32 tileSize);
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -52,7 +52,7 @@ class TilePreviewDialog: public sigc::trackable
     void update_scene(TilePreviewScene *scene);
     std::list<TilePreviewScene*> scenes;
     std::list<TilePreviewScene*>::iterator current_scene;
-    Uint32 d_tileSize;
+    guint32 d_tileSize;
 };
 
 #endif

@@ -6,7 +6,7 @@
 #ifndef LOCATION_BOX_H
 #define LOCATION_BOX_H
 
-#include <SDL.h>
+#include <gtkmm.h>
 #include <string>
 #include "vector.h"
 #include "Immovable.h"
@@ -30,7 +30,7 @@ class LocationBox : public Immovable
       *                position on the game map.
       * @param size    The number of tiles wide and high the feature is.
       */
-     LocationBox(Vector<int> pos, Uint32 size = 1);
+     LocationBox(Vector<int> pos, guint32 size = 1);
 
      //! Non-Standard constructor.
      /**
@@ -48,7 +48,7 @@ class LocationBox : public Immovable
       * @param size    The size of the place.  This value is not read in
       *                from the saved-game file.
       */
-     LocationBox(XML_Helper* helper, Uint32 size = 1);
+     LocationBox(XML_Helper* helper, guint32 size = 1);
      //! Destructor.
     ~LocationBox();
     
@@ -74,7 +74,7 @@ class LocationBox : public Immovable
     void deFog(Player *p);
 
     //! Return the size of the location.
-    Uint32 getSize() const {return d_size;}
+    guint32 getSize() const {return d_size;}
 
     //! Returns whether or not the Location contains the given point?
     bool contains(Vector<int> pos) const;
@@ -105,7 +105,7 @@ class LocationBox : public Immovable
      * This size is the number tiles high and wide the location is.
      * This value is always 1, except for City objects which are always 2.
      */
-    Uint32 d_size;
+    guint32 d_size;
 };
 
 #endif

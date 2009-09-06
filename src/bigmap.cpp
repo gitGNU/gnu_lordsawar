@@ -757,7 +757,7 @@ void BigMap::draw_buffer(Rectangle map_view, SDL_Surface *surface)
 	      if (x < GameMap::getWidth() && y < GameMap::getHeight())
 		{
 		  Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
-		  Uint32 raw = SDL_MapRGB(surface->format, 0, 0, 0);
+		  guint32 raw = SDL_MapRGB(surface->format, 0, 0, 0);
 		  draw_rect_clipped(surface, p.x, p.y, p.x + tilesize,
 				    p.y + tilesize, raw);
 		}

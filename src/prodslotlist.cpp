@@ -44,7 +44,7 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-ProdSlotlist::ProdSlotlist(Uint32 numslots)
+ProdSlotlist::ProdSlotlist(guint32 numslots)
      : d_active_production_slot(-1), d_duration(-1)
 {
   // Initialise armytypes
@@ -101,7 +101,7 @@ bool ProdSlotlist::save(XML_Helper* helper) const
     return retval;
 }
 
-Uint32 ProdSlotlist::getNoOfProductionBases()
+guint32 ProdSlotlist::getNoOfProductionBases()
 {
   unsigned int max = 0;
   for (unsigned int i = 0; i < getMaxNoOfProductionBases(); i++)
@@ -204,7 +204,7 @@ void ProdSlotlist::removeProductionBase(int idx)
         setActiveProductionSlot(-1);
 }
 
-bool ProdSlotlist::hasProductionBase(int type, Uint32 set) const
+bool ProdSlotlist::hasProductionBase(int type, guint32 set) const
 {
   if (type < 0)
     return false;

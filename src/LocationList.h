@@ -22,6 +22,7 @@
 #ifndef LOCATIONLIST_H
 #define LOCATIONLIST_H
 
+#include <gtkmm.h>
 #include <list>
 #include "ruin.h"
 #include "temple.h"
@@ -192,7 +193,7 @@ template<class T> class LocationList : public std::list<T>
       return (*diffit);
     }
 
-  T getById(Uint32 id)
+  T getById(guint32 id)
   {
     for (typename LocationList<T>::iterator i = this->begin(); i != this->end(); ++i)
       if ((*i)->getId() == id)

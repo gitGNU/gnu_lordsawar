@@ -18,6 +18,7 @@
 #ifndef TILESETLIST_H
 #define TILESETLIST_H
 
+#include <gtkmm.h>
 #include <string>
 #include <map>
 #include <vector>
@@ -49,10 +50,10 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
 	std::list<std::string> getNames();
 
         //! Returns the names of tilesets that have the given tile size.
-	std::list<std::string> getNames(Uint32 tilesize);
+	std::list<std::string> getNames(guint32 tilesize);
 
         //! Returns the different tilesizes present in the tilesetlist.
-	void getSizes(std::list<Uint32> &sizes);
+	void getSizes(std::list<guint32> &sizes);
 
 	//! Return the name of the subdirectory for a given tileset.
         /** 
@@ -63,7 +64,7 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
 	 *         Tileset::d_dir for more information about the nature of 
 	 *         the return value.
          */
-	std::string getTilesetDir(std::string name, Uint32 tilesize);
+	std::string getTilesetDir(std::string name, guint32 tilesize);
 
 	//! Return the Tileset object by the name of the subdir.
 	/**

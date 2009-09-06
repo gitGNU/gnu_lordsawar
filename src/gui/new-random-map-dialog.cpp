@@ -86,17 +86,17 @@ NewRandomMapDialog::NewRandomMapDialog()
 
     // fill in tile themes combobox
     
-    Uint32 counter = 0;
-    Uint32 default_id = 0;
+    guint32 counter = 0;
+    guint32 default_id = 0;
     Gtk::Box *box;
 
     //fill in tile sizes combobox
     tile_size_combobox = manage(new Gtk::ComboBoxText);
-    std::list<Uint32> sizes;
+    std::list<guint32> sizes;
     Tilesetlist::getInstance()->getSizes(sizes);
     Citysetlist::getInstance()->getSizes(sizes);
     Armysetlist::getInstance()->getSizes(sizes);
-    for (std::list<Uint32>::iterator it = sizes.begin(); it != sizes.end();
+    for (std::list<guint32>::iterator it = sizes.begin(); it != sizes.end();
 	 it++)
       {
 	Glib::ustring s = String::ucompose("%1x%1", *it);
@@ -258,15 +258,15 @@ void NewRandomMapDialog::on_map_size_changed()
   }
 }
 
-Uint32 NewRandomMapDialog::get_active_tile_size()
+guint32 NewRandomMapDialog::get_active_tile_size()
 {
-  return (Uint32) atoi(tile_size_combobox->get_active_text().c_str());
+  return (guint32) atoi(tile_size_combobox->get_active_text().c_str());
 }
 
 void NewRandomMapDialog::on_tile_size_changed()
 {
-  Uint32 default_id = 0;
-  Uint32 counter = 0;
+  guint32 default_id = 0;
+  guint32 counter = 0;
 
   tile_theme_combobox->clear_items();
   Tilesetlist *tl = Tilesetlist::getInstance();

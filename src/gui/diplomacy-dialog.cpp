@@ -57,8 +57,8 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
     (sigc::mem_fun(*this, &DiplomacyDialog::on_report_clicked));
 
   // put the shields across the top of the proposals table, minus our own
-  Uint32 i = 0;
-  Uint32 j = 0;
+  guint32 i = 0;
+  guint32 j = 0;
   for (unsigned int k = 0; k < MAX_PLAYERS; k++)
     {
       Player *p = pl->getPlayer(k);

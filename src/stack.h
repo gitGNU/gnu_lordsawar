@@ -115,7 +115,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         void nextTurn();
 
         //! Reduces movement points of the Army units in the Stack.
-        void decrementMoves(Uint32 moves);
+        void decrementMoves(guint32 moves);
 
         //! Sets the stack's position to the next point in it's Path.
         void moveOneStep(bool skipping = false);
@@ -151,13 +151,13 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         Path* getPath() const {return d_path;}
 
         //! Returns the minimum number of movement points of all Army units.
-        Uint32 getGroupMoves() const;
+        guint32 getGroupMoves() const;
 
 	//! Returns the maximum MP the stack would have if it were on land
-        Uint32 getMaxGroupLandMoves() const;
+        guint32 getMaxGroupLandMoves() const;
 
 	//! Returns the max MP the stack would have if it were in the water
-        Uint32 getMaxGroupBoatMoves() const;
+        guint32 getMaxGroupBoatMoves() const;
 
 	//! Returns true if all Army units in the stack are grouped.
 	bool isGrouped();
@@ -197,7 +197,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         //! Get the first ungrouped Army unit in the Stack.
         Army* getFirstUngroupedArmy() const;
 
-        Army* getArmyById(Uint32 id) const;
+        Army* getArmyById(guint32 id) const;
         
         //! True if the stack contains a Hero unit.  Otherwise, false.
         bool hasHero() const;
@@ -215,7 +215,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	 *                  units in the stack.
 	 */
 	// Return the Ids of all of the Hero units in the Stack.
-        void getHeroes(std::vector<Uint32>& dst) const;
+        void getHeroes(std::vector<guint32>& dst) const;
 
         //! Return the defending status of the stack.
         bool getDefending() const {return d_defending;}
@@ -227,7 +227,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         bool getDeleting() const {return d_deleting;}
 
         //! Return the maximum sight of the stack.
-        Uint32 getMaxSight() const;
+        guint32 getMaxSight() const;
 
         //! Erase the stack, deleting the Army units too.
         void flClear();
@@ -265,7 +265,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	* @return A bitwise OR-ing of the values in Tile::Type.
         */
 	//! Calculate the move bonus for the Stack.
-        Uint32 calculateMoveBonus() const;
+        guint32 calculateMoveBonus() const;
 
 	//! Calculate if the Stack has the gift of flight.
         bool isFlying () const;
@@ -285,7 +285,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	 *         adjacent tile is impossible.
 	 */
 	//! Return the movement points it costs to travel to an adjacent tile.
-	Uint32 calculateTileMovementCost(Vector<int> pos) const;
+	guint32 calculateTileMovementCost(Vector<int> pos) const;
 
 	//! Set each Army unit in the Stack to a grouped state.
 	void group();
@@ -294,7 +294,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	void ungroup();
 
 	//! Count the number of armies in the stack that are selected.
-	Uint32 countGroupedArmies() const;
+	guint32 countGroupedArmies() const;
 
 	//! Returns true if this stack can join the given stack.
 	/**
@@ -323,7 +323,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	bool getFortified();
 	
 	//! Calculate the number of gold pieces this stack costs this turn.
-	Uint32 getUpkeep();
+	guint32 getUpkeep();
         
 	/**
 	 * This comparator function compares the fight order of two Army units.
@@ -342,17 +342,17 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
 	//! Return a list of army Ids in the stack that can reach the given 
 	//! destination.
-	std::vector<Uint32> determineReachableArmies(Vector<int> dest);
+	std::vector<guint32> determineReachableArmies(Vector<int> dest);
 
 	//! returns how many armies in the stack have visited the given temple.
-	Uint32 countArmiesBlessedAtTemple(Uint32 temple_id);
+	guint32 countArmiesBlessedAtTemple(guint32 temple_id);
 
 	//! how many movement points is it for a scout to travel this line.
-	static Uint32 scout(Player *p, Vector<int> src, Vector<int> dest, 
+	static guint32 scout(Player *p, Vector<int> src, Vector<int> dest, 
 			    const ArmyProdBase *proto = NULL);
 
 	//! how many movement points is it for the stack to travel this line
-	static Uint32 scout(Stack *stack, Vector<int> dest);
+	static guint32 scout(Stack *stack, Vector<int> dest);
 
 	void payUpkeep(Player *p);
 
@@ -360,7 +360,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
     private:    
 
 
-	Stack(Uint32 id, Player* player, Vector<int> pos);
+	Stack(guint32 id, Player* player, Vector<int> pos);
 
         //! Callback for loading the stack
         bool load(std::string tag, XML_Helper* helper);

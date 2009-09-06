@@ -18,7 +18,7 @@
 #ifndef VECTOREDUNITLIST_H
 #define VECTOREDUNITLIST_H
 
-#include <SDL.h>
+#include <gtkmm.h>
 #include <list>
 #include <string>
 class VectoredUnit;
@@ -186,7 +186,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 * @return The number of VectoredUnit objects that are being vectored
 	 *         to the given position on the game map.
 	 */
-        Uint32 getNumberOfVectoredUnitsGoingTo(Vector<int> pos);
+        guint32 getNumberOfVectoredUnitsGoingTo(Vector<int> pos);
 
 	//! Change the destination of vectored units as they are "in the air".
 	/**

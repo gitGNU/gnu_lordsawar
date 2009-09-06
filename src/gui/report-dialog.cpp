@@ -82,7 +82,7 @@ ReportDialog::ReportDialog(Player *player, ReportType type)
 
   //loop through the action list looking for production actions
   std::list<Action*> actions = player->getReportableActions();
-  Uint32 total = 0;
+  guint32 total = 0;
   std::list<Action*>::const_iterator it;
   for (it = actions.begin(); it != actions.end(); it++)
     {
@@ -210,11 +210,11 @@ void ReportDialog::fill_in_info()
 
 void ReportDialog::updateArmyChart()
 {
-  std::list<Uint32> bars;
+  std::list<guint32> bars;
   std::list<Gdk::Color> colours;
   Gdk::Color colour;
   Glib::ustring s;
-  Uint32 total;
+  guint32 total;
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
       Player *p = Playerlist::getInstance()->getPlayer(i);
@@ -243,11 +243,11 @@ void ReportDialog::updateArmyChart()
 
 void ReportDialog::updateCityChart()
 {
-  std::list<Uint32> bars;
+  std::list<guint32> bars;
   std::list<Gdk::Color> colours;
   Gdk::Color colour;
   Glib::ustring s;
-  Uint32 total;
+  guint32 total;
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
       Player *p = Playerlist::getInstance()->getPlayer(i);
@@ -276,11 +276,11 @@ void ReportDialog::updateCityChart()
 
 void ReportDialog::updateGoldChart()
 {
-  std::list<Uint32> bars;
+  std::list<guint32> bars;
   std::list<Gdk::Color> colours;
   Gdk::Color colour;
   Glib::ustring s;
-  Uint32 total;
+  guint32 total;
   bars.clear();
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
@@ -306,15 +306,15 @@ void ReportDialog::updateGoldChart()
   gold_alignment->add(*manage(gold_chart));
 }
 
-std::string ReportDialog::calculateRank(std::list<Uint32> scores, Uint32 score)
+std::string ReportDialog::calculateRank(std::list<guint32> scores, guint32 score)
 {
   char* rank_strings[MAX_PLAYERS] =
     {
       _("first"), _("second"), _("third"), _("fourth"), _("fifth"),
       _("sixth"), _("seventh"), _("eighth"),
     };
-  Uint32 rank = 0;
-  std::list<Uint32>::iterator it = scores.begin();
+  guint32 rank = 0;
+  std::list<guint32>::iterator it = scores.begin();
   for (; it != scores.end(); it++)
     {
       if (score < *it)
@@ -326,11 +326,11 @@ std::string ReportDialog::calculateRank(std::list<Uint32> scores, Uint32 score)
 
 void ReportDialog::updateWinningChart()
 {
-  std::list<Uint32> bars;
+  std::list<guint32> bars;
   std::list<Gdk::Color> colours;
   Gdk::Color colour;
   Glib::ustring s;
-  Uint32 score;
+  guint32 score;
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
       Player *p = Playerlist::getInstance()->getPlayer(i);

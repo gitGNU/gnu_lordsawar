@@ -20,6 +20,7 @@
 
 #include <string>
 #include <list>
+#include <gtkmm.h>
 #include <SDL.h>
 #include <SDL_image.h>
 
@@ -46,7 +47,7 @@ class GraphicsLoader
 	static void instantiatePixmaps(Armysetlist *asl);
 	static void instantiatePixmaps(Tilesetlist *tsl);
 	static void instantiatePixmaps(Tileset *ts);
-	static void instantiatePixmaps(TileStyleSet *tss, Uint32 tilesize);
+	static void instantiatePixmaps(TileStyleSet *tss, guint32 tilesize);
 
         /** Get the armyset picture file
           * 

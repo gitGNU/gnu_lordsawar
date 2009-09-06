@@ -69,7 +69,7 @@ Army::Army(const ArmyProto& a, Player* p)
   d_visitedTemples.clear();
 }
 
-Army::Army(const ArmyProto& a, Uint32 id, Player *p)
+Army::Army(const ArmyProto& a, guint32 id, Player *p)
     :ArmyBase(a), UniquelyIdentified(id), Ownable(p), 
     d_type_id(a.getTypeId()), d_armyset(a.getArmyset()), 
     d_max_hp(2), d_max_moves_multiplier(1), d_max_moves_rest_bonus(0),
@@ -82,7 +82,7 @@ Army::Army(const ArmyProto& a, Uint32 id, Player *p)
   d_visitedTemples.clear();
 }
 
-Army::Army(const ArmyProdBase& a, Uint32 id, Player *p)
+Army::Army(const ArmyProdBase& a, guint32 id, Player *p)
     :ArmyBase(a), UniquelyIdentified(id), Ownable(p), 
     d_type_id(a.getTypeId()), d_armyset(a.getArmyset()), 
     d_max_hp(2), d_max_moves_multiplier(1), d_max_moves_rest_bonus(0),
@@ -97,12 +97,12 @@ Army::Army(const ArmyProdBase& a, Uint32 id, Player *p)
 
 Army* Army::createNonUniqueArmy(const ArmyProto& a, Player *player)
 {
-  return new Army(a, (Uint32) 0, player);
+  return new Army(a, (guint32) 0, player);
 }
 
 Army* Army::createNonUniqueArmy(const ArmyProdBase& a, Player *player)
 {
-  return new Army(a, (Uint32) 0, player);
+  return new Army(a, (guint32) 0, player);
 }
 
 Army::Army(const ArmyProdBase& a, Player* p)
@@ -188,7 +188,7 @@ Army::~Army()
     sdying.emit(this);
 }
 
-void Army::setStat(Army::Stat stat, Uint32 value)
+void Army::setStat(Army::Stat stat, guint32 value)
 {
   switch (stat)
     {
@@ -221,7 +221,7 @@ void Army::setStat(Army::Stat stat, Uint32 value)
     }
 }
 
-Uint32 Army::getStat(Stat stat, bool modified) const
+guint32 Army::getStat(Stat stat, bool modified) const
 {
   switch (stat)
     {
@@ -275,7 +275,7 @@ bool Army::bless(Temple *temple)
   if (!temple)
     return false;
 
-  Uint32 templeId = temple->getId();
+  guint32 templeId = temple->getId();
   std::list<unsigned int>::const_iterator tit = d_visitedTemples.begin();
   std::list<unsigned int>::const_iterator tend = d_visitedTemples.end();
   for(;tit != tend;++tit)
@@ -296,7 +296,7 @@ bool Army::bless(Temple *temple)
 }
 
 
-void Army::heal(Uint32 hp)
+void Army::heal(guint32 hp)
 {
   if (hp == 0)
     {
@@ -316,7 +316,7 @@ void Army::heal(Uint32 hp)
     d_hp = getStat(HP);
 }
 
-bool Army::damage(Uint32 damageDone)
+bool Army::damage(guint32 damageDone)
 {
   if (damageDone >= d_hp)
     d_hp = 0;
@@ -325,7 +325,7 @@ bool Army::damage(Uint32 damageDone)
   return (d_hp == 0);
 }
 
-void Army::decrementMoves(Uint32 moves)
+void Army::decrementMoves(guint32 moves)
 {
   if (moves >= d_moves)
     d_moves = 0;
@@ -343,7 +343,7 @@ bool Army::canGainLevel() const
   return getXP() >= getXpNeededForNextLevel();
 }
 
-Uint32 Army::getXpNeededForNextLevel() const
+guint32 Army::getXpNeededForNextLevel() const
 {
   return xp_per_level * getLevel();
 }
@@ -508,7 +508,7 @@ bool Army::getFortified ()
   return (d_army_bonus & Army::FORTIFY) == Army::FORTIFY;
 }
 
-bool Army::blessedAtTemple(Uint32 temple_id)
+bool Army::blessedAtTemple(guint32 temple_id)
 {
   unsigned int id = temple_id;
   if (std::find (d_visitedTemples.begin(), d_visitedTemples.end(), id) ==

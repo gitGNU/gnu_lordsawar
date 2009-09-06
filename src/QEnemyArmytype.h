@@ -41,7 +41,7 @@ class QuestEnemyArmytype : public Quest, public sigc::trackable
 	 * @param q_mgr  The quests manager to associate this quest with.
 	 * @param hero   The Id of the Hero who is responsible for the quest.
 	 */
-        QuestEnemyArmytype(QuestsManager& q_mgr, Uint32 hero);
+        QuestEnemyArmytype(QuestsManager& q_mgr, guint32 hero);
 
 	//! Loading constructor.
 	/**
@@ -51,7 +51,7 @@ class QuestEnemyArmytype : public Quest, public sigc::trackable
         QuestEnemyArmytype(QuestsManager& q_mgr, XML_Helper* helper);
 
         // Construct from remote action.
-        QuestEnemyArmytype(QuestsManager& q_mgr, Uint32 hero, Uint32 type_to_kill);
+        QuestEnemyArmytype(QuestsManager& q_mgr, guint32 hero, guint32 type_to_kill);
 
 	//! Returns whether or not this quest is impossible.
         /**
@@ -63,7 +63,7 @@ class QuestEnemyArmytype : public Quest, public sigc::trackable
 	 *
 	 * @return Whether or not the quest is possible.
          */
-        static bool isFeasible(Uint32 heroId);
+        static bool isFeasible(guint32 heroId);
 
         //! Saves the kill-armytype quest data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
@@ -82,7 +82,7 @@ class QuestEnemyArmytype : public Quest, public sigc::trackable
 	 * @return The index of the Army protoype in the Armyset belonging to
 	 *         the Player who owns the Hero responsible for this Quest.
 	 */
-        Uint32 getArmytypeToKill() {return d_type_to_kill;}
+        guint32 getArmytypeToKill() {return d_type_to_kill;}
          
 	//!Callback when an Army object is killed.
 	/**
@@ -113,7 +113,7 @@ class QuestEnemyArmytype : public Quest, public sigc::trackable
 	 * The index of the Army protoype in the Armyset belonging to the 
 	 * Player who owns the Hero responsible for this Quest.
 	 */
-        Uint32 d_type_to_kill;
+        guint32 d_type_to_kill;
 };
 
 #endif

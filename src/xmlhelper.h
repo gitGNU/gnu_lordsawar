@@ -72,6 +72,7 @@
 #ifndef XML_HELPER_H
 #define XML_HELPER_H
 
+#include <gtkmm.h>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -140,7 +141,7 @@ class XML_Helper
           */
         bool saveData(std::string identifier, const std::string value);
         bool saveData(std::string identifier, const int value);
-        bool saveData(std::string identifier, const Uint32 value);
+        bool saveData(std::string identifier, const guint32 value);
         bool saveData(std::string identifier, const bool value);
         bool saveData(std::string identifier, const double value);
         /* amd64 fix, UL: still neccessary?*/
@@ -187,7 +188,7 @@ class XML_Helper
         bool getData(std::string& data, std::string name);
         bool getData(bool& data, std::string name);
         bool getData(int& data, std::string name);
-        bool getData(Uint32& data, std::string name);
+        bool getData(guint32& data, std::string name);
         bool getData(double& data, std::string name);
 
         //! Returns the version number of the save file

@@ -88,7 +88,7 @@ void StackInfoDialog::run()
 
 }
 
-void StackInfoDialog::addArmy (Army *h, Uint32 modified_strength, int idx)
+void StackInfoDialog::addArmy (Army *h, guint32 modified_strength, int idx)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   Player *player = h->getOwner();
@@ -99,7 +99,7 @@ void StackInfoDialog::addArmy (Army *h, Uint32 modified_strength, int idx)
 			     NULL));
   
   Gtk::Image *image = NULL;
-  Uint32 move_bonus = h->getStat(Army::MOVE_BONUS);
+  guint32 move_bonus = h->getStat(Army::MOVE_BONUS);
   bool ship = h->getStat(Army::SHIP);
   if (ship || move_bonus == (Tile::GRASS | Tile::WATER | Tile::FOREST | 
 			     Tile::HILLS | Tile::SWAMP | Tile::MOUNTAIN))
@@ -202,7 +202,7 @@ void StackInfoDialog::fill_stack_info()
 
   for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
     {
-      Uint32 str = fight.getModifiedStrengthBonus(*it);
+      guint32 str = fight.getModifiedStrengthBonus(*it);
       addArmy(*it, str, idx);
       idx++;
     }

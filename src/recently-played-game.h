@@ -18,7 +18,7 @@
 #ifndef RECENTLY_PLAYED_GAME_H
 #define RECENTLY_PLAYED_GAME_H
 
-#include <SDL.h>
+#include <gtkmm.h>
 #include <string>
 
 
@@ -68,15 +68,15 @@ class RecentlyPlayedGame
 	void setTimeOfLastPlay(time_t then) { d_time = then;};
 
 	//! Get the round that we last saw this game at.
-	Uint32 getRound() const { return d_round;};
+	guint32 getRound() const { return d_round;};
 
 	//! Set the round that we last saw this game at.
-	void setRound(Uint32 round) { d_round = round;};
+	void setRound(guint32 round) { d_round = round;};
 	//! Get the number of cities in the game
-	Uint32 getNumberOfCities() const {return d_number_of_cities;};
+	guint32 getNumberOfCities() const {return d_number_of_cities;};
 
 	//! Get the number of players in the game
-	Uint32 getNumberOfPlayers() const {return d_number_of_players;};
+	guint32 getNumberOfPlayers() const {return d_number_of_players;};
 
 	//! Get the kind of game
 	GameScenario::PlayMode getPlayMode() const {return d_playmode;};
@@ -106,9 +106,9 @@ class RecentlyPlayedGame
 
 	std::string d_id;
 	time_t d_time;
-	Uint32 d_round;
-	Uint32 d_number_of_cities;
-	Uint32 d_number_of_players;
+	guint32 d_round;
+	guint32 d_number_of_cities;
+	guint32 d_number_of_players;
 	GameScenario::PlayMode d_playmode;
 	std::string d_name;
 
@@ -157,13 +157,13 @@ class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
 	~RecentlyPlayedNetworkedGame();
 
 	virtual bool doSave(XML_Helper *helper) const;
-	bool fillData(std::string host, Uint32 port);
+	bool fillData(std::string host, guint32 port);
 
 	std::string getHost() const {return d_host;};
-	Uint32 getPort() const {return d_port;};
+	guint32 getPort() const {return d_port;};
     private:
 	std::string d_host;
-	Uint32 d_port;
+	guint32 d_port;
 };
 
 #endif // RECENTLY_PLAYED_GAME_H

@@ -108,7 +108,7 @@ class ArmySetWindow: public sigc::trackable
 
     bool on_delete_event(GdkEventAny *e);
 
-    void addArmyType(Uint32 army_type);
+    void addArmyType(guint32 army_type);
     void update_army_panel();
     void update_armyset_buttons();
     void update_armyset_menuitems();

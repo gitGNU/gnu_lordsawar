@@ -53,7 +53,7 @@ Stack::Stack(Player* player, Vector<int> pos)
     d_path = new Path();
 }
 
-Stack::Stack(Uint32 id, Player* player, Vector<int> pos)
+Stack::Stack(guint32 id, Player* player, Vector<int> pos)
     : UniquelyIdentified(id), Movable(pos), Ownable(player), 
     d_defending(false), d_parked(false), d_deleting(false)
 {
@@ -186,7 +186,7 @@ void Stack::moveToDest(Vector<int> dest, bool skipping)
 	(*it)->setInShip(false);
     }
 
-  Uint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType();
+  guint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType();
   //how many moves does the stack need to travel to dest?
   int needed_moves = calculateTileMovementCost(dest);
 
@@ -235,7 +235,7 @@ bool Stack::isGrouped()
 }
 
 // return the maximum moves of this stack by checking the moves of each army
-Uint32 Stack::getGroupMoves() const
+guint32 Stack::getGroupMoves() const
 {
   if (empty())
     return 0;
@@ -291,7 +291,7 @@ int Stack::getMinTileMoves() const
 
 // decrement each armys moves by needed moves to travel
 
-void Stack::decrementMoves(Uint32 moves)
+void Stack::decrementMoves(guint32 moves)
 {
   debug("decrement_moves()");
 
@@ -319,7 +319,7 @@ Army* Stack::getStrongestHero() const
 Army* Stack::getStrongestArmy(bool hero) const
 {
   Army *strongest = 0;
-  Uint32 highest_strength = 0;
+  guint32 highest_strength = 0;
 
   for (const_iterator it = begin(); it != end(); ++it)
     {
@@ -335,7 +335,7 @@ Army* Stack::getStrongestArmy(bool hero) const
   return strongest;
 }
 
-Army *Stack::getArmyById(Uint32 id) const
+Army *Stack::getArmyById(guint32 id) const
 {
   for (Stack::const_iterator i = begin(), e = end(); i != e; ++i)
     if ((*i)->getId() == id)
@@ -344,9 +344,9 @@ Army *Stack::getArmyById(Uint32 id) const
   return 0;
 }
 
-Uint32 Stack::countGroupedArmies() const
+guint32 Stack::countGroupedArmies() const
 {
-  Uint32 count = 0;
+  guint32 count = 0;
   if (empty())
     return 0;
   for (const_iterator it = begin(); it != end(); ++it)
@@ -395,7 +395,7 @@ Army* Stack::getFirstHero() const
   return 0;
 }
 
-void Stack::getHeroes(std::vector<Uint32>& dst) const
+void Stack::getHeroes(std::vector<guint32>& dst) const
 {
   debug("getHeroes - stack = " << this)
     for (const_iterator it = begin(); it != end(); ++it)
@@ -419,11 +419,11 @@ int Stack::bless()
   return count;
 }
 
-Uint32 Stack::calculateTileMovementCost(Vector<int> pos) const
+guint32 Stack::calculateTileMovementCost(Vector<int> pos) const
 {
   Maptile* tile = GameMap::getInstance()->getTile(pos);
-  Uint32 moves = tile->getMoves();
-  Uint32 bonus = calculateMoveBonus();
+  guint32 moves = tile->getMoves();
+  guint32 bonus = calculateMoveBonus();
   if (bonus & tile->getMaptileType() && moves > 1)
     moves = 2;
   else if (isFlying() && moves > 1)
@@ -437,7 +437,7 @@ bool Stack::enoughMoves() const
     return true; //we have enough moves to move nowhere!
 
   Vector<int> p = **(d_path->begin());
-  Uint32 needed = calculateTileMovementCost(p);
+  guint32 needed = calculateTileMovementCost(p);
 
   // now check if all armies fulfill this requirement
   for (const_iterator it = begin(); it != end(); it++)
@@ -468,9 +468,9 @@ Army* Stack::getFirstUngroupedArmy() const
   return 0;
 }
 
-Uint32 Stack::getMaxSight() const
+guint32 Stack::getMaxSight() const
 {
-  Uint32 max = 0;
+  guint32 max = 0;
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->getStat(Army::SIGHT) > max)
       max = (*it)->getStat(Army::SIGHT);
@@ -486,7 +486,7 @@ void Stack::payUpkeep(Player *p)
 
 void Stack::nextTurn()
 {
-  Uint32 movement_multiplier = 1;
+  guint32 movement_multiplier = 1;
   setParked(false);
 
   //count the number of items that double the movement in the stack.
@@ -494,8 +494,8 @@ void Stack::nextTurn()
     if ((*it)->isHero())
       {
 	Hero *hero = dynamic_cast<Hero*>(*it);
-	Uint32 bonus = hero->getBackpack()->countMovementDoublers();
-	for (Uint32 i = 0; i < bonus; i++)
+	guint32 bonus = hero->getBackpack()->countMovementDoublers();
+	for (guint32 i = 0; i < bonus; i++)
 	  movement_multiplier*=2;
       }
 
@@ -588,12 +588,12 @@ Stack::iterator Stack::flErase(Stack::iterator object)
   return erase(object);
 }
 
-Uint32 Stack::calculateMoveBonus() const
+guint32 Stack::calculateMoveBonus() const
 {
-  Uint32 d_bonus = 0;
+  guint32 d_bonus = 0;
 
   bool landed = false;
-  Uint32 bonus;
+  guint32 bonus;
   // check to see if we're all flying
   int num_landedhero = 0;
   int num_flyer = 0;
@@ -658,7 +658,7 @@ Uint32 Stack::calculateMoveBonus() const
 
 bool Stack::isFlying () const
 {
-  Uint32 d_bonus = calculateMoveBonus();
+  guint32 d_bonus = calculateMoveBonus();
   if (d_bonus == Tile::isFlying())
     return true;
   else
@@ -679,10 +679,10 @@ bool Stack::hasShip () const
   return false;
 }
 
-Uint32 getFightOrder(std::list<Uint32> values, Uint32 value)
+guint32 getFightOrder(std::list<guint32> values, guint32 value)
 {
-  Uint32 count = 0;
-  for (std::list<Uint32>::const_iterator it = values.begin(); 
+  guint32 count = 0;
+  for (std::list<guint32>::const_iterator it = values.begin(); 
        it != values.end(); it++)
     {
       count++;
@@ -694,10 +694,10 @@ Uint32 getFightOrder(std::list<Uint32> values, Uint32 value)
 
 bool Stack::armyCompareFightOrder (const Army *lhs, const Army *rhs)  
 {
-  std::list<Uint32> lhs_fight_order = lhs->getOwner()->getFightOrder();
-  std::list<Uint32> rhs_fight_order = rhs->getOwner()->getFightOrder();
-  Uint32 lhs_rank = getFightOrder (lhs_fight_order, lhs->getTypeId());
-  Uint32 rhs_rank = getFightOrder (rhs_fight_order, rhs->getTypeId());
+  std::list<guint32> lhs_fight_order = lhs->getOwner()->getFightOrder();
+  std::list<guint32> rhs_fight_order = rhs->getOwner()->getFightOrder();
+  guint32 lhs_rank = getFightOrder (lhs_fight_order, lhs->getTypeId());
+  guint32 rhs_rank = getFightOrder (rhs_fight_order, rhs->getTypeId());
   return lhs_rank < rhs_rank; 
 }
 
@@ -737,9 +737,9 @@ bool Stack::getFortified()
   return false;
 }
 
-Uint32 Stack::getUpkeep()
+guint32 Stack::getUpkeep()
 {
-  Uint32 upkeep = 0;
+  guint32 upkeep = 0;
   for (iterator it = begin(); it != end(); it++)
     upkeep += (*it)->getUpkeep();
   return upkeep;
@@ -747,7 +747,7 @@ Uint32 Stack::getUpkeep()
 
 bool Stack::canJoin(const Stack *stack) const
 {
-  Uint32 joinSize = countGroupedArmies();
+  guint32 joinSize = countGroupedArmies();
   if (joinSize == 0)
     joinSize = size();
 
@@ -761,9 +761,9 @@ bool Stack::canJoin(const Stack *stack) const
 
 }
 
-std::vector<Uint32> Stack::determineReachableArmies(Vector<int> dest)
+std::vector<guint32> Stack::determineReachableArmies(Vector<int> dest)
 {
-  std::vector<Uint32> ids;
+  std::vector<guint32> ids;
   //try each army individually to see if it reaches
   for (iterator it = begin(); it != end(); it++)
     {
@@ -793,7 +793,7 @@ std::vector<Uint32> Stack::determineReachableArmies(Vector<int> dest)
 	  Stack *stack = Stack::createNonUniqueStack(getOwner(), getPos());
 	  stack->push_back(*it);
 	  //also push back the rest of the known reachables
-	  std::vector<Uint32>::iterator iit = ids.begin();
+	  std::vector<guint32>::iterator iit = ids.begin();
 	  for (; iit != ids.end(); iit++)
 	    {
 	      Army *army = getArmyById(*iit);
@@ -811,9 +811,9 @@ std::vector<Uint32> Stack::determineReachableArmies(Vector<int> dest)
   return ids;
 }
 
-Uint32 Stack::countArmiesBlessedAtTemple(Uint32 temple_id)
+guint32 Stack::countArmiesBlessedAtTemple(guint32 temple_id)
 {
-  Uint32 blessed = 0;
+  guint32 blessed = 0;
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->blessedAtTemple(temple_id))
@@ -822,7 +822,7 @@ Uint32 Stack::countArmiesBlessedAtTemple(Uint32 temple_id)
     return blessed;
 }
 	
-Uint32 Stack::scout(Player *p, Vector<int> src, Vector<int> dest, 
+guint32 Stack::scout(Player *p, Vector<int> src, Vector<int> dest, 
 		    const ArmyProdBase *prodbase)
 {
   Stack *stack = Stack::createNonUniqueStack(p, src);
@@ -841,15 +841,15 @@ Uint32 Stack::scout(Player *p, Vector<int> src, Vector<int> dest,
   if (!army)
     return 0;
   stack->push_back(army);
-  Uint32 mp = stack->getPath()->calculate(stack, dest);
+  guint32 mp = stack->getPath()->calculate(stack, dest);
   delete stack;
   return mp;
 }
 
-Uint32 Stack::scout(Stack *stack, Vector<int> dest)
+guint32 Stack::scout(Stack *stack, Vector<int> dest)
 {
   Stack *scout_stack = new Stack(*stack);
-  Uint32 mp = scout_stack->getPath()->calculate(scout_stack, dest);
+  guint32 mp = scout_stack->getPath()->calculate(scout_stack, dest);
   delete scout_stack;
   return mp;
 }
@@ -859,7 +859,7 @@ Stack* Stack::createNonUniqueStack(Player *player, Vector<int> pos)
   return new Stack(0, player, pos);
 }
 
-Uint32 Stack::getMaxGroupLandMoves() const
+guint32 Stack::getMaxGroupLandMoves() const
 {
   if (empty())
     return 0;
@@ -872,7 +872,7 @@ Uint32 Stack::getMaxGroupLandMoves() const
     copy->group();
   copy->decrementMoves(copy->getGroupMoves());
   copy->nextTurn();
-  Uint32 moves = copy->getGroupMoves();
+  guint32 moves = copy->getGroupMoves();
   if (isFlying() == true)
     {
       delete copy;
@@ -891,7 +891,7 @@ Uint32 Stack::getMaxGroupLandMoves() const
   return moves;
 }
 
-Uint32 Stack::getMaxGroupBoatMoves() const
+guint32 Stack::getMaxGroupBoatMoves() const
 {
   if (empty())
     return 0;
@@ -903,7 +903,7 @@ Uint32 Stack::getMaxGroupBoatMoves() const
   if (copy->countGroupedArmies() == 0)
     copy->group();
   copy->nextTurn();
-  Uint32 moves = copy->getGroupMoves();
+  guint32 moves = copy->getGroupMoves();
   if (isFlying() == true)
     {
       delete copy;

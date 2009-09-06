@@ -396,7 +396,7 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
 
     // ...however we need to do some of the setup by hand. We need to create a
     // neutral player to give cities a player upon creation...
-    Uint32 armyset_id = 
+    guint32 armyset_id = 
       Armysetlist::getInstance()->getArmyset(armyset)->getId();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
     Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, 
@@ -443,7 +443,7 @@ void MainWindow::set_random_map(int width, int height,
     
     // We need to create a neutral player to give cities a player upon
     // creation...
-    Uint32 armyset_id = 
+    guint32 armyset_id = 
       Armysetlist::getInstance()->getArmyset(armyset)->getId();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
     Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, 
@@ -844,7 +844,7 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
   Gtk::RadioButton::Group group;
   //iterate through tilestyles of a certain TERRAIN tile
   Tileset *tileset = GameMap::getInstance()->getTileset();
-  Uint32 index = tileset->getIndex(terrain);
+  guint32 index = tileset->getIndex(terrain);
   Tile *tile = (*tileset)[index];
   if (tile == NULL)
     return;

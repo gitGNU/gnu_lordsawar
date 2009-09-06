@@ -23,7 +23,6 @@
 #include <vector>
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
-#include <SDL/SDL_types.h>
 
 #include "gui/army-info-tip.h"
 
@@ -51,7 +50,7 @@ class SelectArmyDialog: public sigc::trackable
     Gtk::Label *army_info_label2;
     Gtk::Table *toggles_table;
     Gtk::Button *select_button;
-    std::vector<Uint32> armysets;
+    std::vector<guint32> armysets;
 
     const ArmyProto *selected_army;
     Player *player;

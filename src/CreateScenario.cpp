@@ -229,7 +229,7 @@ void CreateScenario::setHeight(int height)
     GameMap::setHeight(height);
 }
 
-Player* CreateScenario::addPlayer(std::string name, Uint32 armyset,
+Player* CreateScenario::addPlayer(std::string name, guint32 armyset,
                                 SDL_Color color, int type)
 {
     debug("CreateScenario::addPlayer")
@@ -241,7 +241,7 @@ Player* CreateScenario::addPlayer(std::string name, Uint32 armyset,
     return p;
 }
 
-bool CreateScenario::addNeutral(std::string name, Uint32 armyset,
+bool CreateScenario::addNeutral(std::string name, guint32 armyset,
                                 SDL_Color color, int type)
 {
     // for consistency, we only allow exactly one neutral player
@@ -450,13 +450,13 @@ void CreateScenario::createCapitalCity(Player *player, City *city)
   player->addHistory(item);
 }
 
-bool CreateScenario::tooNearToOtherCapitalCities(City *c, std::list<City*> capitals, Uint32 distance)
+bool CreateScenario::tooNearToOtherCapitalCities(City *c, std::list<City*> capitals, guint32 distance)
 {
   for (std::list<City*>::iterator it = capitals.begin(); it != capitals.end(); 
        it++)
     {
       int d = dist(c->getPos(), (*it)->getPos());
-      if ((Uint32) d < distance)
+      if ((guint32) d < distance)
 	return true;
     }
   return false;

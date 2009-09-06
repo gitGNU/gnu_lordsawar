@@ -68,7 +68,7 @@ void SmallMap::draw_selection()
     assert(pos.x >= 0 && pos.x + w < surface->w &&
 	   pos.y >= 0 && pos.y + h < surface->h);
     
-    Uint32 raw = SDL_MapRGB(surface->format, 255, 255, 255);
+    guint32 raw = SDL_MapRGB(surface->format, 255, 255, 255);
     draw_rect(surface, pos.x, pos.y, pos.x + w, pos.y + h, raw);
     draw_rect(surface, pos.x+1, pos.y+1, pos.x + w-1, pos.y + h-1, raw);
 }
@@ -185,7 +185,7 @@ void SmallMap::slide_view(Rectangle new_view)
 
 void SmallMap::blank()
 {
-  Uint32 fog_color = SDL_MapRGB(surface->format, 0, 0, 0);
+  guint32 fog_color = SDL_MapRGB(surface->format, 0, 0, 0);
   int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
   //fog it up
   for (int i = 0; i < GameMap::getWidth(); i++)

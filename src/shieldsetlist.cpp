@@ -109,7 +109,7 @@ bool Shieldsetlist::loadShieldset(std::string name)
   return true;
 }
         
-SDL_Color Shieldsetlist::getColor(std::string shieldset, Uint32 owner)
+SDL_Color Shieldsetlist::getColor(std::string shieldset, guint32 owner)
 {
   Shieldset *s = getShieldset(shieldset);
   if (!s)
@@ -121,7 +121,7 @@ SDL_Color Shieldsetlist::getColor(std::string shieldset, Uint32 owner)
   return s->getColor(owner);
 }
 
-SDL_Color Shieldsetlist::getMaskColor(std::string shieldset, Uint32 owner)
+SDL_Color Shieldsetlist::getMaskColor(std::string shieldset, guint32 owner)
 {
   Shieldset *s = getShieldset(shieldset);
   if (!s)
@@ -132,7 +132,7 @@ SDL_Color Shieldsetlist::getMaskColor(std::string shieldset, Uint32 owner)
     }
   return s->getMaskColor(owner);
 }
-ShieldStyle *Shieldsetlist::getShield(std::string shieldset, Uint32 type, Uint32 colour)
+ShieldStyle *Shieldsetlist::getShield(std::string shieldset, guint32 type, guint32 colour)
 {
   Shieldset *s = getShieldset(shieldset);
   if (!s)

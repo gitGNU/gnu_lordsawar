@@ -21,7 +21,7 @@
 #include <list>
 #include <vector>
 #include <sigc++/trackable.h>
-#include <SDL_types.h>
+#include <gtkmm.h>
 #include "reward.h"
 
 class XML_Helper;

@@ -813,7 +813,7 @@ bool History_Score::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool History_Score::fillData(Uint32 score)
+bool History_Score::fillData(guint32 score)
 {
   d_score = score;
   return true;

@@ -52,7 +52,7 @@ DiplomacyReportDialog::DiplomacyReportDialog(Player *player)
   int order[MAX_PLAYERS];
 
   /* find the diplomatic order of the players */
-  for (Uint32 i = 0; i < MAX_PLAYERS; i++)
+  for (guint32 i = 0; i < MAX_PLAYERS; i++)
     {
       order[i] = -1;
       for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
@@ -68,7 +68,7 @@ DiplomacyReportDialog::DiplomacyReportDialog(Player *player)
     }
 
   /* show the players in order of their diplomatic ranking. */
-  for (Uint32 i = 0; i < MAX_PLAYERS; i++)
+  for (guint32 i = 0; i < MAX_PLAYERS; i++)
     {
       if (order[i] == -1)
 	continue;
@@ -82,7 +82,7 @@ DiplomacyReportDialog::DiplomacyReportDialog(Player *player)
       Gtk::Label *label = manage(new Gtk::Label(p->getDiplomaticTitle()));
       d_table->attach(*label, 0, 1, i + 1, i + 2, Gtk::SHRINK, Gtk::SHRINK);
   
-      for (Uint32 j = 0; j < MAX_PLAYERS; j++)
+      for (guint32 j = 0; j < MAX_PLAYERS; j++)
 	{
 	  if (order[j] == -1)
 	    continue;

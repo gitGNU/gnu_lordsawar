@@ -31,7 +31,7 @@ class Location : public UniquelyIdentified, public LocationBox
       *                position on the game map.
       * @param size    The number of tiles wide and high the feature is.
       */
-     Location(Vector<int> pos, Uint32 size = 1);
+     Location(Vector<int> pos, guint32 size = 1);
      //! Copy constructor.
      Location(const Location&);
      //! Loading constructor.
@@ -42,7 +42,7 @@ class Location : public UniquelyIdentified, public LocationBox
       * @param size    The size of the feature.  This value is not read in
       *                from the saved-game file.
       */
-     Location(XML_Helper* helper, Uint32 size = 1);
+     Location(XML_Helper* helper, guint32 size = 1);
      //! Destructor.
     ~Location();
 };

@@ -49,7 +49,7 @@ class TriumphsDialog: public Decorated
 
     void fill_in_info();
     void fill_in_page(Player *p);
-    Uint32 tally(Player *p, Triumphs::TriumphType type);
+    guint32 tally(Player *p, Triumphs::TriumphType type);
 };
 
 #endif

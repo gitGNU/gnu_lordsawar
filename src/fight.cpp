@@ -251,7 +251,7 @@ void Fight::battle(bool intense)
     }
 }
 
-Army *findArmyById(const std::list<Stack *> &l, Uint32 id)
+Army *findArmyById(const std::list<Stack *> &l, guint32 id)
 {
   for (std::list<Stack *>::const_iterator i = l.begin(), end = l.end();
        i != end; ++i) {
@@ -334,7 +334,7 @@ void Fight::calculateBaseStrength(std::list<Fighter*> fighters)
 
 void Fight::calculateTerrainModifiers(std::list<Fighter*> fighters)
 { 
-  Uint32 army_bonus;
+  guint32 army_bonus;
   GameMap *gm = GameMap::getInstance();
   Maptile *mtile;
   std::list<Fighter*>::iterator fit;
@@ -376,16 +376,16 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
 					bool friendlyIsDefending,
 					Hero *strongestHero)
 {
-  Uint32 army_bonus;
+  guint32 army_bonus;
   GameMap *gm = GameMap::getInstance();
   Maptile *mtile;
   std::list<Fighter*>::iterator fit;
 
   //find highest non-hero bonus
-  Uint32 highest_non_hero_bonus = 0;
+  guint32 highest_non_hero_bonus = 0;
   for (fit = friendly.begin(); fit != friendly.end(); fit++)
     {
-      Uint32 non_hero_bonus = 0;
+      guint32 non_hero_bonus = 0;
       if ((*fit)->army->isHero())
 	continue;
       mtile = gm->getTile((*fit)->pos);
@@ -416,7 +416,7 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
     }
 
   //find hero bonus of strongest hero
-  Uint32 hero_bonus = 0;
+  guint32 hero_bonus = 0;
   if (strongestHero)
     {
       // first get command items from ALL heroes in the stack
@@ -447,7 +447,7 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
 	}
     }
 
-  Uint32 fortify_bonus = 0;
+  guint32 fortify_bonus = 0;
   for (fit = friendly.begin(); fit != friendly.end(); fit++)
     {
       army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
@@ -458,7 +458,7 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
 	}
     }
 
-  Uint32 city_bonus = 0;
+  guint32 city_bonus = 0;
   if (friendlyIsDefending)
     {
       // calculate the city bonus
@@ -503,7 +503,7 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
 	}
     }
 
-  Uint32 total_bonus = highest_non_hero_bonus + hero_bonus + fortify_bonus + 
+  guint32 total_bonus = highest_non_hero_bonus + hero_bonus + fortify_bonus + 
     city_bonus;
 
   if (total_bonus > 5) //total bonus can't exceed 5
@@ -518,7 +518,7 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
 
 void Fight::calculateFinalStrengths (std::list<Fighter*> friendly, std::list<Fighter*> enemy)
 {
-  Uint32 army_bonus;
+  guint32 army_bonus;
   std::list<Fighter*>::iterator efit;
   std::list<Fighter*>::iterator ffit;
   for (efit = enemy.begin(); efit != enemy.end(); efit++)
@@ -564,7 +564,7 @@ void Fight::calculateBonus()
   Hero *h = dynamic_cast<Hero*>(a);
   calculateModifiedStrengths (d_att_close, d_def_close, false, h);
   Hero *strongestHero = 0;
-  Uint32 highest_strength = 0;
+  guint32 highest_strength = 0;
   for (it = d_defenders.begin(); it != d_defenders.end(); it++)
     {
       a = (*it)->getStrongestHero();
@@ -587,7 +587,7 @@ void Fight::calculateBonus()
 void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 {
   static int misses_in_a_row;
-  Uint32 sides = 0;
+  guint32 sides = 0;
 
   if (!attacker || !defender)
     return;
@@ -700,7 +700,7 @@ void Fight::remove(Fighter* f)
   debug("Fight: fighter without list!")
 }
 	
-Uint32 Fight::getModifiedStrengthBonus(Army *a)
+guint32 Fight::getModifiedStrengthBonus(Army *a)
 {
   std::list<Fighter*>::iterator it;
   for (it = d_att_close.begin(); it != d_att_close.end(); it++)

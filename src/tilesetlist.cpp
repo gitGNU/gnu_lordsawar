@@ -86,7 +86,7 @@ Tilesetlist::~Tilesetlist()
     delete (*it);
 }
 
-void Tilesetlist::getSizes(std::list<Uint32> &sizes)
+void Tilesetlist::getSizes(std::list<guint32> &sizes)
 {
   for (iterator i = begin(); i != end(); i++)
     {
@@ -103,7 +103,7 @@ std::list<std::string> Tilesetlist::getNames()
   return names;
 }
 
-std::list<std::string> Tilesetlist::getNames(Uint32 tilesize)
+std::list<std::string> Tilesetlist::getNames(guint32 tilesize)
 {
   std::list<std::string> names;
   for (iterator it = begin(); it != end(); it++)
@@ -145,7 +145,7 @@ bool Tilesetlist::loadTileset(std::string name)
   return true;
 }
 
-std::string Tilesetlist::getTilesetDir(std::string name, Uint32 tilesize)
+std::string Tilesetlist::getTilesetDir(std::string name, guint32 tilesize)
 {
   return d_dirs[String::ucompose("%1 %2", name, tilesize)];
 }

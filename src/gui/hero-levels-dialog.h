@@ -58,10 +58,10 @@ class HeroLevelsDialog: public Decorated
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
 	Gtk::TreeModelColumn<Glib::ustring> name;
 	Gtk::TreeModelColumn<Glib::ustring> level;
-	Gtk::TreeModelColumn<Uint32> exp;
-	Gtk::TreeModelColumn<Uint32> needs;
-	Gtk::TreeModelColumn<Uint32> str;
-	Gtk::TreeModelColumn<Uint32> move;
+	Gtk::TreeModelColumn<guint32> exp;
+	Gtk::TreeModelColumn<guint32> needs;
+	Gtk::TreeModelColumn<guint32> str;
+	Gtk::TreeModelColumn<guint32> move;
     };
     const HeroesColumns heroes_columns;
     Glib::RefPtr<Gtk::ListStore> heroes_list;

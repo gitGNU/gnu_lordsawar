@@ -21,6 +21,7 @@
 #ifndef MAPRENDERER_H
 #define MAPRENDERER_H
 
+#include <gtkmm.h>
 #include <SDL.h>
 #include <string>
 
