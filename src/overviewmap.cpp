@@ -96,7 +96,7 @@ prand(int i, int j)
 {
   unsigned int x = i;
   unsigned int y = j;
-  return (rand_r (&x) ^ rand_r (&y)) % 3;
+  return (rand () % 3);
 }
 
 static int 

@@ -44,7 +44,7 @@ class NextTurnPbm: public NextTurn
         /**
            \brief destructor
          */
-        ~NextTurnPbm();
+        virtual ~NextTurnPbm();
         
         /**
            \brief start a new game

@@ -46,7 +46,7 @@ public:
   void listenForLocalEvents(Player *p);
 protected:
   GameStation();
-  ~GameStation();
+  virtual ~GameStation();
 
   virtual void onActionDone(NetworkAction *action) = 0;
   virtual void onHistoryDone(NetworkHistory *history) = 0;

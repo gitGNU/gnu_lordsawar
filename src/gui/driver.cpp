@@ -556,7 +556,15 @@ void Driver::init_game_window()
     game_window->quit_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_quit_requested));
 
-    game_window->init(640, 450);
+    //make the width+height suitable for the screen size.
+    Glib::RefPtr<Gdk::Screen> screen = Gdk::Display::get_default()->get_default_screen();
+    guint32 screen_height = screen->get_height();
+    guint32 height = 450;
+    screen_height = 600;
+    if (screen_height <= 600)
+      height = 400;
+    guint32 width = (int)((float)height * 1.42223);
+    game_window->init(width, height);
 
 }
 

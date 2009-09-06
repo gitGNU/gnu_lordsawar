@@ -42,7 +42,7 @@ class NextTurnNetworked: public NextTurn
         /**
            \brief destructor
          */
-        ~NextTurnNetworked();
+        virtual ~NextTurnNetworked();
         
         /**
            \brief start a new game

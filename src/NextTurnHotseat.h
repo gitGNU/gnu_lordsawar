@@ -50,7 +50,7 @@ class NextTurnHotseat: public NextTurn
         /**
            \brief destructor
          */
-        ~NextTurnHotseat();
+        virtual ~NextTurnHotseat();
         
         /**
            \brief start a new game
