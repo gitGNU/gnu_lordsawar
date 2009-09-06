@@ -25,7 +25,6 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <sigc++/functors/mem_fun.h>
-#include <uuid/uuid.h>
 
 #include "ucompose.hpp"
 #include "GameScenario.h"
@@ -750,11 +749,7 @@ GameScenario::PlayMode GameScenario::playModeFromString(const std::string str)
 	
 void GameScenario::setNewRandomId()
 {
-  char buf[40];
-  uuid_t uu;
-  uuid_generate_time(uu);
-  uuid_unparse(uu, buf);
-  d_id = buf;
+  d_id = String::ucompose("%1%2%3", time(NULL), getpid(), rand());
 }
 	
 bool GameScenario::validate(std::list<std::string> &errors, std::list<std::string> &warnings)

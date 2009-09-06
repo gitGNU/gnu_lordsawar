@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl This is useful to force using autoreconf 2.5.x
 AC_PREREQ(2.59)
-AC_INIT([lordsawar], [0.1.6], [http://sv.nongnu.org/bugs/?group=lordsawar], [lordsawar])
+AC_INIT([lordsawar], [0.1.6-pre5], [http://sv.nongnu.org/bugs/?group=lordsawar], [lordsawar])
 AC_CONFIG_SRCDIR([config.h.in])
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
@@ -112,22 +112,6 @@ AC_ARG_WITH(expat, [  --with-expat=<dir>      Use expat from here],
 if test $expat = 0 ; then
    AC_CHECK_HEADERS(expat.h,[],AC_MSG_ERROR([*** Expat not found!]))
    AC_CHECK_LIB(expat,XML_ParserCreate,[],[AC_MSG_ERROR([*** Expat not found!])])
-fi
-
-dnl Check for uuid
-uuid=0
-AC_ARG_WITH(uuid, [  --with-uuid=<dir>      Use libuuid from here],
-                      [
-                      uuid=$withval
-                      CPPFLAGS="$CPPFLAGS -I$withval/include"
-                      LDFLAGS="$LDFLAGS -L$withval/lib"
-                      LIBS="$LIBS -luuid"
-                      ]
-                      )
-#echo "UUID=$uuid"
-if test $uuid = 0 ; then
-   AC_CHECK_HEADERS(uuid/uuid.h,[],AC_MSG_ERROR([*** uuid headers not found!]))
-   AC_CHECK_LIB(uuid,uuid_generate,[],[AC_MSG_ERROR([*** libuuid not found!])])
 fi
 
 dnl this is needed in cross-compile with mingw32
